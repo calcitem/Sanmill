@@ -1455,6 +1455,8 @@
     "@endWithStalemateDraw": {},
     "removeOpponentsPieceAndChangeSideToMove": "移除对手的一枚棋子然后由对方继续走棋。",
     "@removeOpponentsPieceAndChangeSideToMove": {},
+    "bothPlayersRemoveOpponentsPiece": "双方各移除对手的一枚相邻棋子，然后继续游戏。",
+    "@bothPlayersRemoveOpponentsPiece": {},
     "aiResponseDelayTime": "AI 响应延迟时间",
     "@aiResponseDelayTime": {},
     "aiIsDelaying": "AI 目前处于延迟响应阶段。请稍等片刻再继续。",

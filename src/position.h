@@ -245,6 +245,10 @@ public:
     int pieceToRemoveCount[COLOR_NB] {0, 0, 0};
     bool isNeedStalemateRemoval {false};
     bool isStalemateRemoving {false};
+    // Tracks that both players are performing stalemate removals
+    // (bothPlayersRemoveOpponentsPiece). Adjacency restriction applies
+    // to both sides while this flag is set.
+    bool isBothStalemateRemoving {false};
 
     // Used during move import to specify which capture line should be selected
     // when there are multiple intervention capture lines available

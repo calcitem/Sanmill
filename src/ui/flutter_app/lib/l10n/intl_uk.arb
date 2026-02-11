@@ -4029,5 +4029,7 @@
     "includeVariationsCurrentLine": "Тільки поточна лінія",
     "@includeVariationsCurrentLine": {},
     "includeVariationsMainline": "Ні, тільки основна лінія",
-    "@includeVariationsMainline": {}
+    "@includeVariationsMainline": {},
+    "bothPlayersRemoveOpponentsPiece": "Обидва гравці прибирають по одній сусідній фішці суперника, потім гра продовжується.",
+    "@bothPlayersRemoveOpponentsPiece": {}
 }

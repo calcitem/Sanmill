@@ -4029,5 +4029,7 @@
     "includeVariationsCurrentLine": "Solo línea actual",
     "@includeVariationsCurrentLine": {},
     "includeVariationsMainline": "No, solo línea principal",
-    "@includeVariationsMainline": {}
+    "@includeVariationsMainline": {},
+    "bothPlayersRemoveOpponentsPiece": "Ambos jugadores retiran una pieza adyacente del oponente y luego el juego continúa.",
+    "@bothPlayersRemoveOpponentsPiece": {}
 }

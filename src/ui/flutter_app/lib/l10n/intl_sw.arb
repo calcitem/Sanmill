@@ -4029,5 +4029,7 @@
     "includeVariationsCurrentLine": "Mstari wa sasa tu",
     "@includeVariationsCurrentLine": {},
     "includeVariationsMainline": "Hapana, mstari mkuu tu",
-    "@includeVariationsMainline": {}
+    "@includeVariationsMainline": {},
+    "bothPlayersRemoveOpponentsPiece": "Wachezaji wote wawili huondoa kijisehemu kimoja cha mpinzani kilicho karibu, kisha mchezo unaendelea.",
+    "@bothPlayersRemoveOpponentsPiece": {}
 }

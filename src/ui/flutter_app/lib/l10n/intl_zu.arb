@@ -4029,5 +4029,7 @@
     "includeVariationsCurrentLine": "Umugqa wamanje kuphela",
     "@includeVariationsCurrentLine": {},
     "includeVariationsMainline": "Cha, umugqa oyinhloko kuphela",
-    "@includeVariationsMainline": {}
+    "@includeVariationsMainline": {},
+    "bothPlayersRemoveOpponentsPiece": "Abadlali bobabili basusa isigaxa esisodwa somphikisi esiseduze, bese umdlalo uyaqhubeka.",
+    "@bothPlayersRemoveOpponentsPiece": {}
 }

@@ -4029,5 +4029,7 @@
     "includeVariationsCurrentLine": "Μόνο τρέχουσα γραμμή",
     "@includeVariationsCurrentLine": {},
     "includeVariationsMainline": "Όχι, μόνο κύρια γραμμή",
-    "@includeVariationsMainline": {}
+    "@includeVariationsMainline": {},
+    "bothPlayersRemoveOpponentsPiece": "Και οι δύο παίκτες αφαιρούν ένα γειτονικό πιόνι του αντιπάλου και μετά το παιχνίδι συνεχίζεται.",
+    "@bothPlayersRemoveOpponentsPiece": {}
 }

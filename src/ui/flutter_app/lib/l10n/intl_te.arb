@@ -4029,5 +4029,7 @@
     "includeVariationsCurrentLine": "ప్రస్తుత రేఖ మాత్రమే",
     "@includeVariationsCurrentLine": {},
     "includeVariationsMainline": "కాదు, ప్రధాన రేఖ మాత్రమే",
-    "@includeVariationsMainline": {}
+    "@includeVariationsMainline": {},
+    "bothPlayersRemoveOpponentsPiece": "ఇద్దరు ఆటగాళ్లు ప్రత్యర్థి యొక్క ఒక పక్కనున్న పావును తొలగిస్తారు, తరువాత ఆట కొనసాగుతుంది.",
+    "@bothPlayersRemoveOpponentsPiece": {}
 }

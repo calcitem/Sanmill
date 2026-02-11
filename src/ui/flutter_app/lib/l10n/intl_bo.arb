@@ -4029,5 +4029,7 @@
     "includeVariationsCurrentLine": "མིག་སྔའི་ལམ་ཁོ་ན།",
     "@includeVariationsCurrentLine": {},
     "includeVariationsMainline": "མིན་༎ གཙོ་བོའི་ལམ་ཁོ་ན།",
-    "@includeVariationsMainline": {}
+    "@includeVariationsMainline": {},
+    "bothPlayersRemoveOpponentsPiece": "གང་ཟག་གཉིས་ཀས་ཕ་རོལ་གྱི་ཉེ་འགྲམ་གྱི་རྡོ་གཅིག་བསུབ་དགོས། དེ་ནས་རྩེད་མོ་མུ་མཐུད་བྱེད།",
+    "@bothPlayersRemoveOpponentsPiece": {}
 }

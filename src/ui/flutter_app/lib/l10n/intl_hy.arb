@@ -4029,5 +4029,7 @@
     "includeVariationsCurrentLine": "Միայն ընթացիկ գիծ",
     "@includeVariationsCurrentLine": {},
     "includeVariationsMainline": "Ոչ, միայն հիմնական գիծ",
-    "@includeVariationsMainline": {}
+    "@includeVariationsMainline": {},
+    "bothPlayersRemoveOpponentsPiece": "Both players remove one of the opponent's adjacent pieces, then the game continues.",
+    "@bothPlayersRemoveOpponentsPiece": {}
 }

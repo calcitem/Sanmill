@@ -4029,5 +4029,7 @@
     "includeVariationsCurrentLine": "Faqat joriy chiziq",
     "@includeVariationsCurrentLine": {},
     "includeVariationsMainline": "Yo'q, faqat asosiy chiziq",
-    "@includeVariationsMainline": {}
+    "@includeVariationsMainline": {},
+    "bothPlayersRemoveOpponentsPiece": "Ikkala o'yinchi ham raqibning bir qo'shni donasini olib tashlaydi, so'ng o'yin davom etadi.",
+    "@bothPlayersRemoveOpponentsPiece": {}
 }

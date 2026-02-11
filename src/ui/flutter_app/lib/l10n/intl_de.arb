@@ -3321,5 +3321,7 @@
     "includeVariationsCurrentLine": "Nur aktuelle Linie",
     "@includeVariationsCurrentLine": {},
     "includeVariationsMainline": "Nein, nur Hauptlinie",
-    "@includeVariationsMainline": {}
+    "@includeVariationsMainline": {},
+    "bothPlayersRemoveOpponentsPiece": "Beide Spieler entfernen einen benachbarten Stein des Gegners, dann geht das Spiel weiter.",
+    "@bothPlayersRemoveOpponentsPiece": {}
 }

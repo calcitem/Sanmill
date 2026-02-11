@@ -4029,5 +4029,7 @@
     "includeVariationsCurrentLine": "Само текуща линия",
     "@includeVariationsCurrentLine": {},
     "includeVariationsMainline": "Не, само основна линия",
-    "@includeVariationsMainline": {}
+    "@includeVariationsMainline": {},
+    "bothPlayersRemoveOpponentsPiece": "И двамата играчи премахват по една съседна фигура на противника, след което играта продължава.",
+    "@bothPlayersRemoveOpponentsPiece": {}
 }

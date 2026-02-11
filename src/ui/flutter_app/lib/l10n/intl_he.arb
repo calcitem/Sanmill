@@ -4029,5 +4029,7 @@
     "includeVariationsCurrentLine": "קו נוכחי בלבד",
     "@includeVariationsCurrentLine": {},
     "includeVariationsMainline": "לא, קו ראשי בלבד",
-    "@includeVariationsMainline": {}
+    "@includeVariationsMainline": {},
+    "bothPlayersRemoveOpponentsPiece": "שני השחקנים מסירים כלי שכן אחד של היריב, ואז המשחק ממשיך.",
+    "@bothPlayersRemoveOpponentsPiece": {}
 }

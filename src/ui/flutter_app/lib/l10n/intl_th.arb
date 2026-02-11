@@ -4029,5 +4029,7 @@
     "includeVariationsCurrentLine": "เฉพาะเส้นปัจจุบัน",
     "@includeVariationsCurrentLine": {},
     "includeVariationsMainline": "ไม่ เฉพาะเส้นหลักเท่านั้น",
-    "@includeVariationsMainline": {}
+    "@includeVariationsMainline": {},
+    "bothPlayersRemoveOpponentsPiece": "ผู้เล่นทั้งสองฝ่ายนำหมากที่อยู่ติดกันของฝ่ายตรงข้ามออกคนละตัว จากนั้นเกมดำเนินต่อไป",
+    "@bothPlayersRemoveOpponentsPiece": {}
 }

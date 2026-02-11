@@ -4029,5 +4029,7 @@
     "includeVariationsCurrentLine": "Pouze aktuální linie",
     "@includeVariationsCurrentLine": {},
     "includeVariationsMainline": "Ne, pouze hlavní linie",
-    "@includeVariationsMainline": {}
+    "@includeVariationsMainline": {},
+    "bothPlayersRemoveOpponentsPiece": "Oba hráči odeberou jednu ze sousedních soupeřových figurek, poté hra pokračuje.",
+    "@bothPlayersRemoveOpponentsPiece": {}
 }

@@ -4029,5 +4029,7 @@
     "includeVariationsCurrentLine": "Vain nykyinen linja",
     "@includeVariationsCurrentLine": {},
     "includeVariationsMainline": "Ei, vain päälinja",
-    "@includeVariationsMainline": {}
+    "@includeVariationsMainline": {},
+    "bothPlayersRemoveOpponentsPiece": "Molemmat pelaajat poistavat yhden vastustajan viereisen nappulan, sitten peli jatkuu.",
+    "@bothPlayersRemoveOpponentsPiece": {}
 }

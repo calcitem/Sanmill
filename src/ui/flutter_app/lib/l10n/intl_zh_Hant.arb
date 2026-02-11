@@ -4045,5 +4045,7 @@
     "includeVariationsCurrentLine": "僅當前路徑",
     "@includeVariationsCurrentLine": {},
     "includeVariationsMainline": "否，僅主線",
-    "@includeVariationsMainline": {}
+    "@includeVariationsMainline": {},
+    "bothPlayersRemoveOpponentsPiece": "雙方各移除對手的一枚相鄰棋子，然後繼續遊戲。",
+    "@bothPlayersRemoveOpponentsPiece": {}
 }

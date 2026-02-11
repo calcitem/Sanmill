@@ -4029,5 +4029,7 @@
     "includeVariationsCurrentLine": "صرف موجودہ لائن",
     "@includeVariationsCurrentLine": {},
     "includeVariationsMainline": "نہیں، صرف مرکزی لائن",
-    "@includeVariationsMainline": {}
+    "@includeVariationsMainline": {},
+    "bothPlayersRemoveOpponentsPiece": "دونوں کھلاڑی حریف کا ایک ملحقہ مہرہ ہٹاتے ہیں، پھر کھیل جاری رہتا ہے۔",
+    "@bothPlayersRemoveOpponentsPiece": {}
 }

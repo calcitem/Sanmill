@@ -335,6 +335,8 @@ Provide helpful advice about Nine Men's Morris strategy and tactics.''';
         return 'Remove opponent piece and change turn';
       case StalemateAction.endWithStalemateDraw:
         return 'Draw';
+      case StalemateAction.bothPlayersRemoveOpponentsPiece:
+        return 'Both players remove one opponent piece and continue';
     }
   }
 

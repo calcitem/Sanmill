@@ -54,6 +54,8 @@ enum StalemateAction {
   removeOpponentsPieceAndChangeSideToMove,
   @HiveField(4)
   endWithStalemateDraw,
+  @HiveField(5)
+  bothPlayersRemoveOpponentsPiece,
 }
 
 // Currently unused
@@ -69,6 +71,7 @@ String enumName(Object enumEntry) {
     StalemateAction.removeOpponentsPieceAndMakeNextMove: 'XM',
     StalemateAction.removeOpponentsPieceAndChangeSideToMove: 'X ->',
     StalemateAction.endWithStalemateDraw: '=',
+    StalemateAction.bothPlayersRemoveOpponentsPiece: 'XX',
   };
 
   return nameMap[enumEntry] ?? '';

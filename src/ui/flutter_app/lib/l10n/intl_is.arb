@@ -4029,5 +4029,7 @@
     "includeVariationsCurrentLine": "Aðeins núverandi lína",
     "@includeVariationsCurrentLine": {},
     "includeVariationsMainline": "Nei, aðeins aðallína",
-    "@includeVariationsMainline": {}
+    "@includeVariationsMainline": {},
+    "bothPlayersRemoveOpponentsPiece": "Báðir leikmenn fjarlægja einn aðliggjandi peð andstæðingsins, síðan heldur leikurinn áfram.",
+    "@bothPlayersRemoveOpponentsPiece": {}
 }

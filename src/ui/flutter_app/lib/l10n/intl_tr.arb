@@ -4029,5 +4029,7 @@
     "includeVariationsCurrentLine": "Sadece mevcut hat",
     "@includeVariationsCurrentLine": {},
     "includeVariationsMainline": "Hayır, sadece ana hat",
-    "@includeVariationsMainline": {}
+    "@includeVariationsMainline": {},
+    "bothPlayersRemoveOpponentsPiece": "Her iki oyuncu da rakibin komşu taşlarından birini kaldırır, ardından oyun devam eder.",
+    "@bothPlayersRemoveOpponentsPiece": {}
 }

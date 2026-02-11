@@ -4029,5 +4029,7 @@
     "includeVariationsCurrentLine": "Ainult praegune joon",
     "@includeVariationsCurrentLine": {},
     "includeVariationsMainline": "Ei, ainult põhiliin",
-    "@includeVariationsMainline": {}
+    "@includeVariationsMainline": {},
+    "bothPlayersRemoveOpponentsPiece": "Mõlemad mängijad eemaldavad ühe vastase naabermalendi, seejärel mäng jätkub.",
+    "@bothPlayersRemoveOpponentsPiece": {}
 }

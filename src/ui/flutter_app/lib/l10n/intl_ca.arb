@@ -4029,5 +4029,7 @@
     "includeVariationsCurrentLine": "Només línia actual",
     "@includeVariationsCurrentLine": {},
     "includeVariationsMainline": "No, només línia principal",
-    "@includeVariationsMainline": {}
+    "@includeVariationsMainline": {},
+    "bothPlayersRemoveOpponentsPiece": "Ambdós jugadors retiren una peça adjacent de l'oponent, i després el joc continua.",
+    "@bothPlayersRemoveOpponentsPiece": {}
 }

@@ -4029,5 +4029,7 @@
     "includeVariationsCurrentLine": "Tik dabartinė linija",
     "@includeVariationsCurrentLine": {},
     "includeVariationsMainline": "Ne, tik pagrindinė linija",
-    "@includeVariationsMainline": {}
+    "@includeVariationsMainline": {},
+    "bothPlayersRemoveOpponentsPiece": "Abu žaidėjai pašalina po vieną gretimą priešininko figūrą, tada žaidimas tęsiamas.",
+    "@bothPlayersRemoveOpponentsPiece": {}
 }

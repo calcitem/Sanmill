@@ -4029,5 +4029,7 @@
     "includeVariationsCurrentLine": "Len aktuálna línia",
     "@includeVariationsCurrentLine": {},
     "includeVariationsMainline": "Nie, len hlavná línia",
-    "@includeVariationsMainline": {}
+    "@includeVariationsMainline": {},
+    "bothPlayersRemoveOpponentsPiece": "Obaja hráči odoberú jednu susednú súperovu figúrku, potom hra pokračuje.",
+    "@bothPlayersRemoveOpponentsPiece": {}
 }

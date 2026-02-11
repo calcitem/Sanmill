@@ -4029,5 +4029,7 @@
     "includeVariationsCurrentLine": "ફક્ત વર્તમાન લાઇન",
     "@includeVariationsCurrentLine": {},
     "includeVariationsMainline": "ના, ફક્ત મુખ્ય રેખા",
-    "@includeVariationsMainline": {}
+    "@includeVariationsMainline": {},
+    "bothPlayersRemoveOpponentsPiece": "બંને ખેલાડીઓ વિરોધીના એક પાડોશી મહોરાને દૂર કરે છે, પછી રમત ચાલુ રહે છે.",
+    "@bothPlayersRemoveOpponentsPiece": {}
 }

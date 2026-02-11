@@ -4029,5 +4029,7 @@
     "includeVariationsCurrentLine": "လက်ရှိလမ်းကြောင်းသာ",
     "@includeVariationsCurrentLine": {},
     "includeVariationsMainline": "မလိုပါ၊ ပင်မလမ်းကြောင်းသာ",
-    "@includeVariationsMainline": {}
+    "@includeVariationsMainline": {},
+    "bothPlayersRemoveOpponentsPiece": "ကစားသမားနှစ်ဦးလုံးသည် ပြိုင်ဘက်၏ အနီးအနားရှိ ကျောက်တုံးတစ်ခုကို ဖယ်ရှားပြီး ဂိမ်းကို ဆက်လက်ကစားသည်။",
+    "@bothPlayersRemoveOpponentsPiece": {}
 }

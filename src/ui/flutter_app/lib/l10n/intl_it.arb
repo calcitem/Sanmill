@@ -4029,5 +4029,7 @@
     "includeVariationsCurrentLine": "Solo linea corrente",
     "@includeVariationsCurrentLine": {},
     "includeVariationsMainline": "No, solo linea principale",
-    "@includeVariationsMainline": {}
+    "@includeVariationsMainline": {},
+    "bothPlayersRemoveOpponentsPiece": "Entrambi i giocatori rimuovono una pedina adiacente dell'avversario, poi il gioco continua.",
+    "@bothPlayersRemoveOpponentsPiece": {}
 }

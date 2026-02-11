@@ -151,6 +151,10 @@ class Position {
 
   bool isNeedStalemateRemoval = false;
   bool isStalemateRemoving = false;
+  // Tracks that both players are performing stalemate removals
+  // (bothPlayersRemoveOpponentsPiece). Adjacency restriction applies
+  // to both sides while this flag is set.
+  bool isBothStalemateRemoving = false;
 
   // Used during move import to specify which capture line should be selected
   // when there are multiple intervention capture lines available
@@ -2015,6 +2019,12 @@ class Position {
       return const GameResponseOK();
     }
 
+    // Clear the both-stalemate-removing flag once both sides have
+    // finished their stalemate removals.
+    if (isBothStalemateRemoving) {
+      isBothStalemateRemoving = false;
+    }
+
     if (pieceInHandCount[sideToMove] == 0) {
       if (_checkIfGameIsOver()) {
         SoundManager().playTone(Sound.remove);
@@ -2251,6 +2261,15 @@ class Position {
         case StalemateAction.endWithStalemateDraw:
           setGameOver(PieceColor.draw, GameOverReason.drawStalemateCondition);
           return true;
+        case StalemateAction.bothPlayersRemoveOpponentsPiece:
+          // Both players remove one of the opponent's adjacent pieces,
+          // then the game continues. The stalemated side removes first.
+          pieceToRemoveCount[sideToMove] = 1;
+          pieceToRemoveCount[sideToMove.opponent] = 1;
+          // Track that both sides are performing stalemate removals
+          // so adjacency restriction is enforced for both removals.
+          isBothStalemateRemoving = true;
+          break;
         case null:
           logger.e("[position] _checkIfGameIsOver: Invalid StalemateAction.");
           break;
@@ -3787,6 +3806,7 @@ extension SetupPosition on Position {
 
     isNeedStalemateRemoval = false;
     isStalemateRemoving = false;
+    isBothStalemateRemoving = false;
 
     placedPieceNumber = 0;
     selectedPieceNumber = 0;
@@ -3884,6 +3904,7 @@ extension SetupPosition on Position {
 
     isNeedStalemateRemoval = pos.isNeedStalemateRemoval;
     isStalemateRemoving = pos.isStalemateRemoving;
+    isBothStalemateRemoving = pos.isBothStalemateRemoving;
 
     placedPieceNumber = pos.placedPieceNumber;
     selectedPieceNumber = pos.selectedPieceNumber;
@@ -4045,12 +4066,20 @@ extension SetupPosition on Position {
     if ((DB().ruleSettings.stalemateAction ==
                 StalemateAction.removeOpponentsPieceAndChangeSideToMove ||
             DB().ruleSettings.stalemateAction ==
-                StalemateAction.removeOpponentsPieceAndMakeNextMove) ==
+                StalemateAction.removeOpponentsPieceAndMakeNextMove ||
+            DB().ruleSettings.stalemateAction ==
+                StalemateAction.bothPlayersRemoveOpponentsPiece) ==
         false) {
       return false;
     }
 
     if (isStalemateRemoving == true) {
+      return true;
+    }
+
+    // Both-stalemate-removing flag: adjacency restriction applies to
+    // both the stalemated side and the non-stalemated side.
+    if (isBothStalemateRemoving == true) {
       return true;
     }
 

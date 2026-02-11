@@ -4029,5 +4029,7 @@
     "includeVariationsCurrentLine": "ಪ್ರಸ್ತುತ ಮಾರ್ಗ ಮಾತ್ರ",
     "@includeVariationsCurrentLine": {},
     "includeVariationsMainline": "ಇಲ್ಲ, ಮುಖ್ಯ ಮಾರ್ಗ ಮಾತ್ರ",
-    "@includeVariationsMainline": {}
+    "@includeVariationsMainline": {},
+    "bothPlayersRemoveOpponentsPiece": "ಎರಡೂ ಆಟಗಾರರು ಎದುರಾಳಿಯ ಒಂದು ಪಕ್ಕದ ಕಾಯಿಯನ್ನು ತೆಗೆಯುತ್ತಾರೆ, ನಂತರ ಆಟ ಮುಂದುವರಿಯುತ್ತದೆ.",
+    "@bothPlayersRemoveOpponentsPiece": {}
 }

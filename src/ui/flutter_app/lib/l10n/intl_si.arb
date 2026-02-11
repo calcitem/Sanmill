@@ -4029,5 +4029,7 @@
     "includeVariationsCurrentLine": "වත්මන් රේඛාව පමණයි",
     "@includeVariationsCurrentLine": {},
     "includeVariationsMainline": "නැත, ප්‍රධාන රේඛාව පමණයි",
-    "@includeVariationsMainline": {}
+    "@includeVariationsMainline": {},
+    "bothPlayersRemoveOpponentsPiece": "කෙළිකරුවන් දෙදෙනාම ප්‍රතිවාදියාගේ යාබද ගුටියක් ඉවත් කරයි, ඉන්පසු ක්‍රීඩාව ඉදිරියට යයි.",
+    "@bothPlayersRemoveOpponentsPiece": {}
 }

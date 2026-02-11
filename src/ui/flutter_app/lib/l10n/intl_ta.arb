@@ -4029,5 +4029,7 @@
     "includeVariationsCurrentLine": "தற்போதைய வரி மட்டும்",
     "@includeVariationsCurrentLine": {},
     "includeVariationsMainline": "இல்லை, பிரதான வரி மட்டும்",
-    "@includeVariationsMainline": {}
+    "@includeVariationsMainline": {},
+    "bothPlayersRemoveOpponentsPiece": "இரு வீரர்களும் எதிரியின் அருகிலுள்ள ஒரு காயை நீக்குவர், பின்னர் விளையாட்டு தொடரும்.",
+    "@bothPlayersRemoveOpponentsPiece": {}
 }

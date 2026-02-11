@@ -4029,5 +4029,7 @@
     "includeVariationsCurrentLine": "Толькі бягучая лінія",
     "@includeVariationsCurrentLine": {},
     "includeVariationsMainline": "Не, толькі галоўная лінія",
-    "@includeVariationsMainline": {}
+    "@includeVariationsMainline": {},
+    "bothPlayersRemoveOpponentsPiece": "Абодва гульцы выдаляюць адну з суседніх фігур суперніка, потым гульня працягваецца.",
+    "@bothPlayersRemoveOpponentsPiece": {}
 }

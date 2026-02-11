@@ -4029,5 +4029,7 @@
     "includeVariationsCurrentLine": "Kun gjeldende linje",
     "@includeVariationsCurrentLine": {},
     "includeVariationsMainline": "Nei, kun hovedlinje",
-    "@includeVariationsMainline": {}
+    "@includeVariationsMainline": {},
+    "bothPlayersRemoveOpponentsPiece": "Begge spillere fjerner en av motstanderens tilstøtende brikker, deretter fortsetter spillet.",
+    "@bothPlayersRemoveOpponentsPiece": {}
 }

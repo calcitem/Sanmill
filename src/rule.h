@@ -31,6 +31,7 @@ enum class StalemateAction {
     removeOpponentsPieceAndMakeNextMove = 2,
     removeOpponentsPieceAndChangeSideToMove = 3,
     endWithStalemateDraw = 4,
+    bothPlayersRemoveOpponentsPiece = 5,
 };
 
 struct CaptureRuleConfig

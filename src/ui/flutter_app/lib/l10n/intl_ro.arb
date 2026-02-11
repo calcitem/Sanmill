@@ -4029,5 +4029,7 @@
     "includeVariationsCurrentLine": "Doar linia curentă",
     "@includeVariationsCurrentLine": {},
     "includeVariationsMainline": "Nu, doar linia principală",
-    "@includeVariationsMainline": {}
+    "@includeVariationsMainline": {},
+    "bothPlayersRemoveOpponentsPiece": "Ambii jucători elimină câte o piesă adiacentă a adversarului, apoi jocul continuă.",
+    "@bothPlayersRemoveOpponentsPiece": {}
 }

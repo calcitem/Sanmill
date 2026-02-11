@@ -4029,5 +4029,7 @@
     "includeVariationsCurrentLine": "Yalnız cari xətt",
     "@includeVariationsCurrentLine": {},
     "includeVariationsMainline": "Xeyr, yalnız əsas xətt",
-    "@includeVariationsMainline": {}
+    "@includeVariationsMainline": {},
+    "bothPlayersRemoveOpponentsPiece": "Hər iki oyunçu rəqibin qonşu daşlarından birini çıxarır, sonra oyun davam edir.",
+    "@bothPlayersRemoveOpponentsPiece": {}
 }

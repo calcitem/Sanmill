@@ -4029,5 +4029,7 @@
     "includeVariationsCurrentLine": "Alleen huidige lijn",
     "@includeVariationsCurrentLine": {},
     "includeVariationsMainline": "Nee, alleen hoofdlijn",
-    "@includeVariationsMainline": {}
+    "@includeVariationsMainline": {},
+    "bothPlayersRemoveOpponentsPiece": "Beide spelers verwijderen een aangrenzend stuk van de tegenstander, daarna gaat het spel verder.",
+    "@bothPlayersRemoveOpponentsPiece": {}
 }

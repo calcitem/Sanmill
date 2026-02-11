@@ -4029,5 +4029,7 @@
     "includeVariationsCurrentLine": "Tikai pašreizējā līnija",
     "@includeVariationsCurrentLine": {},
     "includeVariationsMainline": "Nē, tikai galvenā līnija",
-    "@includeVariationsMainline": {}
+    "@includeVariationsMainline": {},
+    "bothPlayersRemoveOpponentsPiece": "Abi spēlētāji noņem vienu pretinieka blakus esošo figūru, pēc tam spēle turpinās.",
+    "@bothPlayersRemoveOpponentsPiece": {}
 }

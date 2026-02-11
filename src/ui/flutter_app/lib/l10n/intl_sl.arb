@@ -4029,5 +4029,7 @@
     "includeVariationsCurrentLine": "Samo trenutna linija",
     "@includeVariationsCurrentLine": {},
     "includeVariationsMainline": "Ne, samo glavna linija",
-    "@includeVariationsMainline": {}
+    "@includeVariationsMainline": {},
+    "bothPlayersRemoveOpponentsPiece": "Oba igralca odstranita po eno sosednjo nasprotnikovo figuro, nato se igra nadaljuje.",
+    "@bothPlayersRemoveOpponentsPiece": {}
 }

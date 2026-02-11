@@ -4029,5 +4029,7 @@
     "includeVariationsCurrentLine": "Hanya garis semasa",
     "@includeVariationsCurrentLine": {},
     "includeVariationsMainline": "Tidak, garis utama sahaja",
-    "@includeVariationsMainline": {}
+    "@includeVariationsMainline": {},
+    "bothPlayersRemoveOpponentsPiece": "Kedua-dua pemain mengalihkan satu buah catur lawan yang bersebelahan, kemudian permainan diteruskan.",
+    "@bothPlayersRemoveOpponentsPiece": {}
 }

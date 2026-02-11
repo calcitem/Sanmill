@@ -61,6 +61,12 @@ class _StalemateActionModal extends StatelessWidget {
         StalemateAction.endWithStalemateDraw,
         key: const Key('end_with_stalemate_draw'),
       ),
+      _buildRadioListTile(
+        context,
+        S.of(context).bothPlayersRemoveOpponentsPiece,
+        StalemateAction.bothPlayersRemoveOpponentsPiece,
+        key: const Key('both_players_remove_opponents_piece'),
+      ),
     ];
   }
 

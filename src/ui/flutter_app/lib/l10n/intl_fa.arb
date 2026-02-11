@@ -4029,5 +4029,7 @@
     "includeVariationsCurrentLine": "فقط خط فعلی",
     "@includeVariationsCurrentLine": {},
     "includeVariationsMainline": "خیر، فقط خط اصلی",
-    "@includeVariationsMainline": {}
+    "@includeVariationsMainline": {},
+    "bothPlayersRemoveOpponentsPiece": "هر دو بازیکن یکی از مهره‌های مجاور حریف را حذف می‌کنند و سپس بازی ادامه می‌یابد.",
+    "@bothPlayersRemoveOpponentsPiece": {}
 }

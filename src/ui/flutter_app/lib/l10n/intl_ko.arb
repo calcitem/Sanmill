@@ -4029,5 +4029,7 @@
     "includeVariationsCurrentLine": "현재 라인만",
     "@includeVariationsCurrentLine": {},
     "includeVariationsMainline": "아니요, 본선만",
-    "@includeVariationsMainline": {}
+    "@includeVariationsMainline": {},
+    "bothPlayersRemoveOpponentsPiece": "양 플레이어가 상대방의 인접한 말 하나씩을 제거한 후 게임을 계속합니다.",
+    "@bothPlayersRemoveOpponentsPiece": {}
 }

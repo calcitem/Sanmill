@@ -4029,5 +4029,7 @@
     "includeVariationsCurrentLine": "Vetëm linja aktuale",
     "@includeVariationsCurrentLine": {},
     "includeVariationsMainline": "Jo, vetëm linja kryesore",
-    "@includeVariationsMainline": {}
+    "@includeVariationsMainline": {},
+    "bothPlayersRemoveOpponentsPiece": "Të dy lojtarët heqin nga një gurë fqinj të kundërshtarit, pastaj loja vazhdon.",
+    "@bothPlayersRemoveOpponentsPiece": {}
 }

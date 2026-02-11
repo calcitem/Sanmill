@@ -4029,5 +4029,7 @@
     "includeVariationsCurrentLine": "បន្ទាត់បច្ចុប្បន្នប៉ុណ្ណោះ",
     "@includeVariationsCurrentLine": {},
     "includeVariationsMainline": "ទេ គ្រាន់តែខ្សែបន្ទាត់ចម្បង",
-    "@includeVariationsMainline": {}
+    "@includeVariationsMainline": {},
+    "bothPlayersRemoveOpponentsPiece": "អ្នកលេងទាំងពីរដកគ្រាប់ជិតខាងរបស់គូប្រកួតម្នាក់ៗ រួចហើយការលេងបន្ត។",
+    "@bothPlayersRemoveOpponentsPiece": {}
 }

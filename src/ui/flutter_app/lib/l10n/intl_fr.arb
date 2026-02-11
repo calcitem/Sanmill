@@ -4029,5 +4029,7 @@
     "includeVariationsCurrentLine": "Ligne actuelle uniquement",
     "@includeVariationsCurrentLine": {},
     "includeVariationsMainline": "Non, ligne principale uniquement",
-    "@includeVariationsMainline": {}
+    "@includeVariationsMainline": {},
+    "bothPlayersRemoveOpponentsPiece": "Les deux joueurs retirent chacun un pion adjacent de l'adversaire, puis le jeu continue.",
+    "@bothPlayersRemoveOpponentsPiece": {}
 }

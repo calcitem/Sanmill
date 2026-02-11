@@ -4029,5 +4029,7 @@
     "includeVariationsCurrentLine": "Endast aktuell linje",
     "@includeVariationsCurrentLine": {},
     "includeVariationsMainline": "Nej, endast huvudlinje",
-    "@includeVariationsMainline": {}
+    "@includeVariationsMainline": {},
+    "bothPlayersRemoveOpponentsPiece": "Båda spelarna tar bort en av motståndarens angränsande pjäser, sedan fortsätter spelet.",
+    "@bothPlayersRemoveOpponentsPiece": {}
 }

@@ -4029,5 +4029,7 @@
     "includeVariationsCurrentLine": "現在のラインのみ",
     "@includeVariationsCurrentLine": {},
     "includeVariationsMainline": "いいえ、本線のみ",
-    "@includeVariationsMainline": {}
+    "@includeVariationsMainline": {},
+    "bothPlayersRemoveOpponentsPiece": "両方のプレイヤーが相手の隣接する駒を1つずつ取り除き、ゲームを続行します。",
+    "@bothPlayersRemoveOpponentsPiece": {}
 }

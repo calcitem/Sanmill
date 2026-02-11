@@ -4029,5 +4029,7 @@
     "includeVariationsCurrentLine": "የአሁኑ መስመር ብቻ",
     "@includeVariationsCurrentLine": {},
     "includeVariationsMainline": "አይ፣ ዋና መስመር ብቻ",
-    "@includeVariationsMainline": {}
+    "@includeVariationsMainline": {},
+    "bothPlayersRemoveOpponentsPiece": "ሁለቱም ተጫዋቾች ከተቃራኒ ተጫዋቹ አንድ አጎራባች ክፋይ ያስወግዳሉ፣ ከዚያ ጨዋታው ይቀጥላል።",
+    "@bothPlayersRemoveOpponentsPiece": {}
 }

@@ -4029,5 +4029,7 @@
     "includeVariationsCurrentLine": "الخط الحالي فقط",
     "@includeVariationsCurrentLine": {},
     "includeVariationsMainline": "لا، الخط الرئيسي فقط",
-    "@includeVariationsMainline": {}
+    "@includeVariationsMainline": {},
+    "bothPlayersRemoveOpponentsPiece": "يقوم كلا اللاعبين بإزالة إحدى قطع الخصم المجاورة، ثم تستمر اللعبة.",
+    "@bothPlayersRemoveOpponentsPiece": {}
 }

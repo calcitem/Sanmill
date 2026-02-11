@@ -3286,5 +3286,7 @@
     "includeVariationsCurrentLine": "Csak jelenlegi vonal",
     "@includeVariationsCurrentLine": {},
     "includeVariationsMainline": "Nem, csak fővonalas",
-    "@includeVariationsMainline": {}
+    "@includeVariationsMainline": {},
+    "bothPlayersRemoveOpponentsPiece": "Mindkét játékos eltávolítja az ellenfél egy szomszédos bábuját, majd a játék folytatódik.",
+    "@bothPlayersRemoveOpponentsPiece": {}
 }

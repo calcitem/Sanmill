@@ -4029,5 +4029,7 @@
     "includeVariationsCurrentLine": "Само тренутна линија",
     "@includeVariationsCurrentLine": {},
     "includeVariationsMainline": "Не, само главна линија",
-    "@includeVariationsMainline": {}
+    "@includeVariationsMainline": {},
+    "bothPlayersRemoveOpponentsPiece": "Оба играча уклањају по једну суседну фигуру противника, затим се игра наставља.",
+    "@bothPlayersRemoveOpponentsPiece": {}
 }

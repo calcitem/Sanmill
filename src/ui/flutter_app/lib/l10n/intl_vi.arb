@@ -4029,5 +4029,7 @@
     "includeVariationsCurrentLine": "Chỉ đường hiện tại",
     "@includeVariationsCurrentLine": {},
     "includeVariationsMainline": "Không, chỉ đường chính",
-    "@includeVariationsMainline": {}
+    "@includeVariationsMainline": {},
+    "bothPlayersRemoveOpponentsPiece": "Cả hai người chơi đều loại bỏ một quân cờ liền kề của đối thủ, sau đó trò chơi tiếp tục.",
+    "@bothPlayersRemoveOpponentsPiece": {}
 }

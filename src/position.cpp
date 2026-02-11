@@ -973,6 +973,7 @@ bool Position::reset()
 
     isNeedStalemateRemoval = false;
     isStalemateRemoving = false;
+    isBothStalemateRemoving = false;
 
     mobilityDiff = 0;
 
@@ -1849,6 +1850,12 @@ bool Position::remove_piece(Square s, bool updateRecord)
         return true;
     }
 
+    // Clear the both-stalemate-removing flag once both sides have
+    // finished their stalemate removals.
+    if (isBothStalemateRemoving) {
+        isBothStalemateRemoving = false;
+    }
+
     if (pieceInHandCount[sideToMove] == 0) {
         if (check_if_game_is_over()) {
             return true;
@@ -2068,6 +2075,15 @@ bool Position::check_if_game_is_over()
         case StalemateAction::endWithStalemateDraw:
             set_gameover(DRAW, GameOverReason::drawStalemateCondition);
             return true;
+        case StalemateAction::bothPlayersRemoveOpponentsPiece:
+            // Both players remove one of the opponent's adjacent pieces,
+            // then the game continues. The stalemated side removes first.
+            pieceToRemoveCount[sideToMove] = 1;
+            pieceToRemoveCount[~sideToMove] = 1;
+            // Track that both sides are performing stalemate removals
+            // so adjacency restriction is enforced for both removals.
+            isBothStalemateRemoving = true;
+            break;
         }
     }
 
@@ -3290,11 +3306,19 @@ bool Position::is_stalemate_removal()
     if (!(rule.stalemateAction ==
               StalemateAction::removeOpponentsPieceAndChangeSideToMove ||
           rule.stalemateAction ==
-              StalemateAction::removeOpponentsPieceAndMakeNextMove)) {
+              StalemateAction::removeOpponentsPieceAndMakeNextMove ||
+          rule.stalemateAction ==
+              StalemateAction::bothPlayersRemoveOpponentsPiece)) {
         return false;
     }
 
     if (isStalemateRemoving == true) {
+        return true;
+    }
+
+    // Both-stalemate-removing flag: adjacency restriction applies to
+    // both the stalemated side and the non-stalemated side.
+    if (isBothStalemateRemoving == true) {
         return true;
     }
 

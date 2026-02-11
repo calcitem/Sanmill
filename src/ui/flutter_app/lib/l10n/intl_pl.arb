@@ -4029,5 +4029,7 @@
     "includeVariationsCurrentLine": "Tylko bieżąca linia",
     "@includeVariationsCurrentLine": {},
     "includeVariationsMainline": "Nie, tylko linia główna",
-    "@includeVariationsMainline": {}
+    "@includeVariationsMainline": {},
+    "bothPlayersRemoveOpponentsPiece": "Obaj gracze usuwają po jednym sąsiednim pionku przeciwnika, następnie gra jest kontynuowana.",
+    "@bothPlayersRemoveOpponentsPiece": {}
 }

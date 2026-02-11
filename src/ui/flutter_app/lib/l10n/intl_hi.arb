@@ -4029,5 +4029,7 @@
     "includeVariationsCurrentLine": "केवल वर्तमान लाइन",
     "@includeVariationsCurrentLine": {},
     "includeVariationsMainline": "नहीं, केवल मुख्य लाइन",
-    "@includeVariationsMainline": {}
+    "@includeVariationsMainline": {},
+    "bothPlayersRemoveOpponentsPiece": "दोनों खिलाड़ी प्रतिद्वंद्वी की एक निकटवर्ती गोटी हटाते हैं, फिर खेल जारी रहता है।",
+    "@bothPlayersRemoveOpponentsPiece": {}
 }

@@ -443,7 +443,7 @@ void init(OptionsMap &o)
     o["StalemateAction"] << Option(
         static_cast<int>(StalemateAction::endWithStalemateLoss),
         static_cast<int>(StalemateAction::endWithStalemateLoss),
-        static_cast<int>(StalemateAction::endWithStalemateDraw),
+        static_cast<int>(StalemateAction::bothPlayersRemoveOpponentsPiece),
         on_stalemateAction);
     o["MayFly"] << Option(true, on_mayFly);
     o["NMoveRule"] << Option(100, 10, 200, on_nMoveRule);

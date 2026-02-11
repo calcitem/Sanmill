@@ -4029,5 +4029,7 @@
     "includeVariationsCurrentLine": "Hanya garis saat ini",
     "@includeVariationsCurrentLine": {},
     "includeVariationsMainline": "Tidak, hanya garis utama",
-    "@includeVariationsMainline": {}
+    "@includeVariationsMainline": {},
+    "bothPlayersRemoveOpponentsPiece": "Kedua pemain menghapus satu bidak lawan yang bersebelahan, lalu permainan berlanjut.",
+    "@bothPlayersRemoveOpponentsPiece": {}
 }
