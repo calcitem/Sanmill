@@ -1314,6 +1314,17 @@ class _PuzzlePageState extends State<PuzzlePage> {
   void _giveUp() {
     final S s = S.of(context);
 
+    // The dialog reveals the full solution, so mark solutionViewed immediately.
+    // Even if the user cancels and returns to the puzzle, they have already
+    // seen the answer and should not earn full stars on a subsequent solve.
+    _solutionViewed = true;
+    final PuzzleProgress currentProgress =
+        _puzzleManager.getProgress(widget.puzzle.id) ??
+        PuzzleProgress(puzzleId: widget.puzzle.id);
+    _puzzleManager.updateProgress(
+      currentProgress.copyWith(solutionViewed: true),
+    );
+
     showDialog<void>(
       context: context,
       builder: (BuildContext dialogContext) {
