@@ -140,16 +140,27 @@ class DailyPuzzleService {
     }
   }
 
-  /// Calculate current streak
+  /// Calculate current streak.
+  ///
+  /// If today has not been completed yet the streak is still considered
+  /// active as long as yesterday was completed (the user still has a chance
+  /// to extend it today).  In that case we start counting from yesterday.
   int _calculateCurrentStreak(DailyPuzzleStats stats, DateTime today) {
     if (stats.completedDates.isEmpty) {
       return 0;
     }
 
-    int streak = 0;
-    DateTime checkDate = today;
+    final String todayStr = _normalizeDate(today).toIso8601String();
+    final bool completedToday = stats.completedDates.contains(todayStr);
 
-    // Check backwards from today
+    // Start from today if completed, otherwise from yesterday so an ongoing
+    // streak is not prematurely reported as 0.
+    DateTime checkDate = completedToday
+        ? today
+        : today.subtract(const Duration(days: 1));
+
+    int streak = 0;
+
     while (true) {
       final String dateStr = _normalizeDate(checkDate).toIso8601String();
       if (stats.completedDates.contains(dateStr)) {

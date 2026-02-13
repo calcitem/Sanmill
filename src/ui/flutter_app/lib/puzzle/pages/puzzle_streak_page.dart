@@ -43,6 +43,16 @@ class _PuzzleStreakPageState extends State<PuzzleStreakPage> {
     _loadBestStreak();
   }
 
+  @override
+  void dispose() {
+    // Persist any active streak so it is not lost when the page is popped
+    // without going through the normal quit / failure flow (e.g. system back).
+    if (_isActive && _currentStreak > 0 && !_failed) {
+      _saveStreakResult();
+    }
+    super.dispose();
+  }
+
   /// Load the all-time best streak from persisted history.
   void _loadBestStreak() {
     try {
@@ -661,6 +671,8 @@ class _PuzzleStreakPageState extends State<PuzzleStreakPage> {
             ),
             TextButton(
               onPressed: () {
+                // Persist the streak before leaving so it is not lost.
+                _saveStreakResult();
                 Navigator.of(dialogContext).pop();
                 if (mounted) {
                   Navigator.of(context).pop();
