@@ -686,7 +686,8 @@ class _PuzzlePageState extends State<PuzzlePage> {
       _onPuzzleSolved(feedback);
       return feedback;
     } else if (feedback.result == ValidationResult.wrong) {
-      // Wrong solution - show error message with option to view solution
+      // Wrong solution - notify parent and show error message
+      widget.onFailed?.call();
       if (!autoCheck && mounted) {
         _showWrongMoveDialog();
       }
@@ -927,14 +928,25 @@ class _PuzzlePageState extends State<PuzzlePage> {
     final int movesPlayed = _moveCountNotifier.value;
     final int oldRating = DB().puzzleSettings.userRating;
 
-    // Record completion with solution viewed status
+    // Check persisted solutionViewed status to prevent star inflation.
+    // The local _solutionViewed flag can be reset by _resetPuzzle(), so we
+    // must also consult the persisted progress to detect prior solution views.
+    final PuzzleProgress? priorProgress = _puzzleManager.getProgress(
+      widget.puzzle.id,
+    );
+    final bool effectiveSolutionViewed =
+        _solutionViewed || (priorProgress?.solutionViewed ?? false);
+
+    // Record completion with solution viewed status.
+    // Use _hintsUsed (current session only) instead of merging with
+    // priorProgress.hintsUsed so that a clean retry can earn full stars.
     _puzzleManager.completePuzzle(
       puzzleId: widget.puzzle.id,
       moveCount: _moveCountNotifier.value,
       difficulty: widget.puzzle.difficulty,
       optimalMoveCount: widget.puzzle.optimalMoveCount,
       hintsUsed: _hintsUsed,
-      solutionViewed: _solutionViewed,
+      solutionViewed: effectiveSolutionViewed,
     );
 
     final int newRating = DB().puzzleSettings.userRating;
@@ -953,7 +965,17 @@ class _PuzzlePageState extends State<PuzzlePage> {
       ),
     );
 
-    // Show completion dialog
+    // Notify parent (e.g. PuzzleRush / PuzzleStreak) that the puzzle was solved.
+    widget.onSolved?.call();
+
+    // In Rush/Streak mode the parent has already advanced to the next puzzle
+    // via setState, so showing a completion dialog here would target a stale
+    // widget tree and cause timing conflicts.
+    if (widget.onSolved != null) {
+      return;
+    }
+
+    // Show completion dialog (standalone puzzle mode only)
     showDialog<void>(
       context: context,
       barrierDismissible: false,
@@ -977,12 +999,20 @@ class _PuzzlePageState extends State<PuzzlePage> {
     ValidationFeedback feedback,
   ) {
     final S s = S.of(context);
+
+    // Use persisted progress to compute stars consistently with completePuzzle().
+    final PuzzleProgress? priorProgress = _puzzleManager.getProgress(
+      widget.puzzle.id,
+    );
+    final bool effectiveSolutionViewed =
+        _solutionViewed || (priorProgress?.solutionViewed ?? false);
+
     final int stars = PuzzleProgress.calculateStars(
       moveCount: _moveCountNotifier.value,
       optimalMoveCount: widget.puzzle.optimalMoveCount,
       difficulty: widget.puzzle.difficulty,
       hintsUsed: _hintsUsed,
-      solutionViewed: _solutionViewed,
+      solutionViewed: effectiveSolutionViewed,
     );
 
     final String? completionMessage = widget.puzzle

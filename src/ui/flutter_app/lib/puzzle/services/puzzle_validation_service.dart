@@ -172,7 +172,13 @@ class PuzzleValidationService {
     return PuzzleValidationReport(errors: errors, warnings: warnings);
   }
 
-  /// Validate that moves alternate sides correctly
+  /// Validate that moves alternate sides correctly.
+  ///
+  /// In Mill games a player who forms a mill gets an extra removal move on the
+  /// same turn.  If the puzzle encodes that removal as a separate [PuzzleMove]
+  /// entry (same side as the preceding placement), strict alternation would be
+  /// violated.  We therefore emit a *warning* rather than an error so that
+  /// legitimate puzzles are not rejected.
   static void _validateAlternatingSides(
     PuzzleSolution solution,
     int solutionNumber,
@@ -186,12 +192,15 @@ class PuzzleValidationService {
     PieceColor expectedSide = solution.moves.first.side;
     for (int i = 0; i < solution.moves.length; i++) {
       if (solution.moves[i].side != expectedSide) {
-        errors.add(
-          'Solution $solutionNumber: Move ${i + 1} has incorrect side '
-          '(expected ${expectedSide.name}, got ${solution.moves[i].side.name})',
+        // Consecutive moves by the same side may indicate a removal sub-move,
+        // which is valid in Mill games.  Report as a warning, not an error.
+        warnings.add(
+          'Solution $solutionNumber: Move ${i + 1} has unexpected side '
+          '(expected ${expectedSide.name}, got ${solution.moves[i].side.name}). '
+          'This may be valid if it represents a removal after forming a mill.',
         );
       }
-      expectedSide = expectedSide.opponent;
+      expectedSide = solution.moves[i].side.opponent;
     }
   }
 

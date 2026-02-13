@@ -99,20 +99,34 @@ class PuzzleSettings {
     return copyWith(progressMap: newMap);
   }
 
-  /// Get total number of completed puzzles
+  /// Get total number of completed puzzles.
+  ///
+  /// Only counts progress entries whose puzzle still exists in [allPuzzles],
+  /// so deleted puzzles don't inflate the completed count.
   int get totalCompleted {
-    return progressMap.values.where((PuzzleProgress p) => p.completed).length;
+    final Set<String> existingIds = allPuzzles
+        .map((PuzzleInfo p) => p.id)
+        .toSet();
+    return progressMap.values
+        .where(
+          (PuzzleProgress p) => p.completed && existingIds.contains(p.puzzleId),
+        )
+        .length;
   }
 
-  /// Get total number of stars earned
+  /// Get total number of stars earned.
+  ///
+  /// Only counts progress for puzzles that still exist in [allPuzzles].
   int get totalStars {
-    return progressMap.values.fold<int>(
-      0,
-      (int sum, PuzzleProgress p) => sum + p.stars,
-    );
+    final Set<String> existingIds = allPuzzles
+        .map((PuzzleInfo p) => p.id)
+        .toSet();
+    return progressMap.values
+        .where((PuzzleProgress p) => existingIds.contains(p.puzzleId))
+        .fold<int>(0, (int sum, PuzzleProgress p) => sum + p.stars);
   }
 
-  /// Get completion percentage
+  /// Get completion percentage (always in 0–100 range).
   double get completionPercentage {
     if (allPuzzles.isEmpty) {
       return 0.0;

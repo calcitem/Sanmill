@@ -56,12 +56,26 @@ class PuzzleManager {
     logger.i("$_tag Ready - ${customPuzzlesOnly.length} custom puzzles loaded");
   }
 
-  /// Load built-in puzzles from assets/predefined collection
+  /// Load built-in puzzles from assets/predefined collection.
+  ///
+  /// Merges built-in puzzles with existing custom puzzles instead of replacing
+  /// them, so user-created puzzles are never lost.
   Future<void> loadBuiltInPuzzles() async {
     logger.i("$_tag Loading built-in puzzles");
     final List<PuzzleInfo> builtInPuzzles = _getBuiltInPuzzles();
+
+    // Collect IDs of built-in puzzles for fast lookup.
+    final Set<String> builtInIds = builtInPuzzles
+        .map((PuzzleInfo p) => p.id)
+        .toSet();
+
+    // Keep existing custom puzzles that don't collide with built-in IDs.
+    final List<PuzzleInfo> customPuzzles = settingsNotifier.value.allPuzzles
+        .where((PuzzleInfo p) => p.isCustom && !builtInIds.contains(p.id))
+        .toList();
+
     final PuzzleSettings newSettings = settingsNotifier.value.copyWith(
-      allPuzzles: builtInPuzzles,
+      allPuzzles: <PuzzleInfo>[...builtInPuzzles, ...customPuzzles],
     );
     _saveSettings(newSettings);
   }

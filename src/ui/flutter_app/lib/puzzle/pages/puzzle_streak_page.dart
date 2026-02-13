@@ -32,12 +32,40 @@ class _PuzzleStreakPageState extends State<PuzzleStreakPage> {
   // Streak state
   bool _isActive = false;
   int _currentStreak = 0;
-  int _bestStreak = 0; // Personal best
+  int _bestStreak = 0; // Personal best (persisted across sessions)
   int _currentPuzzleIndex = 0;
   final List<PuzzleInfo> _streakPuzzles = <PuzzleInfo>[];
   bool _failed = false;
 
-  // Stopwatch for tracking time
+  @override
+  void initState() {
+    super.initState();
+    _loadBestStreak();
+  }
+
+  /// Load the all-time best streak from persisted history.
+  void _loadBestStreak() {
+    try {
+      final dynamic data = DB().puzzleAnalyticsBox.get('puzzleStreakHistory');
+      if (data == null) {
+        return;
+      }
+      final List<dynamic> history = data as List<dynamic>;
+      int best = 0;
+      for (final dynamic entry in history) {
+        final int streak =
+            (entry as Map<dynamic, dynamic>)['streak'] as int? ?? 0;
+        if (streak > best) {
+          best = streak;
+        }
+      }
+      setState(() {
+        _bestStreak = best;
+      });
+    } catch (e) {
+      logger.e('[PuzzleStreakPage] Failed to load best streak: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

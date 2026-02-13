@@ -56,21 +56,24 @@ class PuzzleHintService {
     );
 
     if (_currentHintLevel == 0) {
-      // First hint: provide textual hint if available
       _currentHintLevel++;
-      _hintsGiven++;
+      // First hint: provide textual hint if available.
+      // Only count as a hint if we actually return one; skip silently
+      // to the next level when no textual hint exists so a single user
+      // request never increments _hintsGiven more than once.
       if (puzzle.hint != null && puzzle.hint!.isNotEmpty) {
+        _hintsGiven++;
         return PuzzleHint(type: HintType.textual, content: puzzle.hint!);
       }
-      // If no textual hint, fall through to next level
+      // No textual hint — fall through without incrementing _hintsGiven.
     }
 
     if (_currentHintLevel == 1) {
       // Second hint: show the next move
       _currentHintLevel++;
-      _hintsGiven++;
       final String? nextMove = _getNextPlayerMove(currentPlayerMoveIndex);
       if (nextMove != null) {
+        _hintsGiven++;
         return PuzzleHint(
           type: HintType.nextMove,
           // Store raw move notation; UI layer formats with localization.
@@ -78,6 +81,7 @@ class PuzzleHintService {
           moveIndex: currentPlayerMoveIndex,
         );
       }
+      // No next move available — fall through without incrementing.
     }
 
     if (_currentHintLevel == 2) {

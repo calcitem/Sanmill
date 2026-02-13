@@ -211,17 +211,35 @@ class PuzzleValidator {
       }
     }
 
-    // 2. Fallback to parsing title/description
+    // 2. Fallback to parsing title/description.
+    //    Use a context-aware regex that matches "capture N" or "remove N"
+    //    (case-insensitive) so we don't accidentally pick up unrelated numbers
+    //    like difficulty levels or puzzle IDs.
     int? fromText(String text) {
-      final RegExpMatch? match = RegExp(r'\d+').firstMatch(text);
-      if (match == null) {
-        return null;
+      final RegExpMatch? contextual = RegExp(
+        r'(?:capture|remove)\s+(\d+)',
+        caseSensitive: false,
+      ).firstMatch(text);
+      if (contextual != null) {
+        final int? value = int.tryParse(contextual.group(1) ?? '');
+        if (value != null && value > 0) {
+          return value;
+        }
       }
-      final int? value = int.tryParse(match.group(0) ?? '');
-      if (value == null || value <= 0) {
-        return null;
+
+      // Last resort: match bare number only if the text is very short
+      // (e.g. a tag-like description such as "2 pieces").
+      if (text.length <= 20) {
+        final RegExpMatch? bare = RegExp(r'\d+').firstMatch(text);
+        if (bare != null) {
+          final int? value = int.tryParse(bare.group(0) ?? '');
+          if (value != null && value > 0) {
+            return value;
+          }
+        }
       }
-      return value;
+
+      return null;
     }
 
     return fromText(puzzle.title) ?? fromText(puzzle.description);
