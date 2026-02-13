@@ -159,7 +159,7 @@ class GameController {
       barrierDismissible: false,
       builder: (BuildContext dialogContext) {
         return AlertDialog(
-          title: const Text("Restart Request"),
+          title: Text(S.of(dialogContext).restartRequest),
           content: Text(
             S.of(dialogContext).opponentRequestedToRestartTheGameDoYouAccept,
           ),
@@ -172,7 +172,7 @@ class GameController {
                 // Call reset with lanRestart flag true (do not dispose networkService)
                 reset(lanRestart: true);
               },
-              child: const Text("Yes"),
+              child: Text(S.of(dialogContext).yes),
             ),
             TextButton(
               // If rejected, send rejected message and do nothing
@@ -185,7 +185,7 @@ class GameController {
                 networkService?.sendMove("restart:rejected");
                 headerTipNotifier.showTip(rejectedMessage);
               },
-              child: const Text("No"),
+              child: Text(S.of(dialogContext).no),
             ),
           ],
         );
@@ -216,9 +216,7 @@ class GameController {
       builder: (BuildContext dialogContext) {
         return AlertDialog(
           title: Text(S.of(context).confirmResignation),
-          content: const Text(
-            "S.of(context).areYouSureYouWantToResignThisGame",
-          ),
+          content: Text(S.of(dialogContext).areYouSureYouWantToResignThisGame),
           actions: <Widget>[
             TextButton(
               onPressed: () {
@@ -246,19 +244,19 @@ class GameController {
                   );
 
                   // Show resignation message
-                  headerTipNotifier.showTip(
-                    "S.of(context).youResignedGameOver",
-                  );
+                  headerTipNotifier.showTip(S.of(context).youResignedGameOver);
                   gameResultNotifier.showResult(force: true);
 
                   // Play sound if enabled
                   SoundManager().playTone(Sound.lose);
                 } catch (e) {
                   logger.e("$_logTag Failed to send resignation: $e");
-                  headerTipNotifier.showTip("Failed to send resignation: $e");
+                  headerTipNotifier.showTip(
+                    S.of(context).failedToSendResignation,
+                  );
                 }
               },
-              child: const Text("Resign"),
+              child: Text(S.of(dialogContext).resign),
             ),
           ],
         );
@@ -723,7 +721,9 @@ class GameController {
         return AlertDialog(
           title: Text(S.of(dialogContext).takeBackRequest),
           content: Text(
-            "Opponent requests to take back $steps move(s). Accept?",
+            S
+                .of(dialogContext)
+                .opponentRequestsTakeBackAccept(steps.toString()),
           ),
           actions: <Widget>[
             TextButton(
@@ -734,14 +734,14 @@ class GameController {
                 HistoryNavigator.doEachMove(HistoryNavMode.takeBack, 1);
                 // Also mark the next turn, etc. as needed
               },
-              child: const Text("Yes"),
+              child: Text(S.of(dialogContext).yes),
             ),
             TextButton(
               onPressed: () {
                 Navigator.of(dialogContext).pop(false);
                 networkService?.sendMove("take back:$steps:rejected");
               },
-              child: const Text("No"),
+              child: Text(S.of(dialogContext).no),
             ),
           ],
         );

@@ -429,9 +429,9 @@ class _GameBoardState extends State<GameBoard>
                       );
                     } else if (snapshot.hasError) {
                       // Handle errors appropriately
-                      return const Center(
-                        key: Key('center_error'),
-                        child: Text('Error loading images'),
+                      return Center(
+                        key: const Key('center_error'),
+                        child: Text(S.of(context).errorLoadingImages),
                       );
                     } else {
                       final GameImages? gameImages = snapshot.data;

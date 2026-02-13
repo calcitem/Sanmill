@@ -344,7 +344,7 @@ class PlayAreaState extends State<PlayArea> {
     // Check if perfect database is enabled
     if (!DB().generalSettings.usePerfectDatabase) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("perfectDatabaseNotEnabled")),
+        SnackBar(content: Text(S.of(context).perfectDatabaseNotEnabled)),
       );
       return;
     }

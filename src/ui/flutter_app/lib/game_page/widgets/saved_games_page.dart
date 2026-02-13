@@ -524,7 +524,9 @@ class _SavedGamesPageState extends State<SavedGamesPage> {
       if (newFile.existsSync()) {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('File $newName.pgn already exists')),
+            SnackBar(
+              content: Text(S.of(context).fileAlreadyExists('$newName.pgn')),
+            ),
           );
         }
         return;

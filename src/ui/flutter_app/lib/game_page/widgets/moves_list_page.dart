@@ -1767,7 +1767,7 @@ class MovesListPageState extends State<MovesListPage> {
                           FluentIcons.arrow_right_24_regular,
                           color: Colors.white,
                         ),
-                        label: const Text('Jump to variation'),
+                        label: Text(S.of(context).jumpToVariation),
                         style: ElevatedButton.styleFrom(
                           backgroundColor:
                               DB().colorSettings.pieceHighlightColor,
@@ -1780,7 +1780,7 @@ class MovesListPageState extends State<MovesListPage> {
                           _showVariationContextMenu(variationNode);
                         },
                         icon: const Icon(FluentIcons.more_vertical_24_regular),
-                        label: const Text('More'),
+                        label: Text(S.of(context).more),
                         style: OutlinedButton.styleFrom(
                           foregroundColor: DB().colorSettings.messageColor,
                         ),
@@ -1804,15 +1804,15 @@ class MovesListPageState extends State<MovesListPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Variation: $notation'),
+          title: Text(S.of(context).variationNotation(notation)),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               ListTile(
                 leading: const Icon(FluentIcons.arrow_right_24_regular),
-                title: const Text('Jump to this variation'),
-                subtitle: const Text('Switch to this branch'),
+                title: Text(S.of(context).jumpToThisVariation),
+                subtitle: Text(S.of(context).switchToThisBranch),
                 onTap: () {
                   Navigator.of(context).pop();
                   _navigateToNode(variationNode);
@@ -1820,8 +1820,8 @@ class MovesListPageState extends State<MovesListPage> {
               ),
               ListTile(
                 leading: const Icon(FluentIcons.arrow_sort_up_24_regular),
-                title: const Text('Set as main line'),
-                subtitle: const Text('Make this the primary variation'),
+                title: Text(S.of(context).setAsMainLine),
+                subtitle: Text(S.of(context).makeThisPrimaryVariation),
                 onTap: () {
                   Navigator.of(context).pop();
                   _promoteToMainLine(variationNode);
@@ -1833,10 +1833,10 @@ class MovesListPageState extends State<MovesListPage> {
                   color: Colors.red.shade700,
                 ),
                 title: Text(
-                  'Delete branch',
+                  S.of(context).deleteBranch,
                   style: TextStyle(color: Colors.red.shade700),
                 ),
-                subtitle: const Text('Remove this variation permanently'),
+                subtitle: Text(S.of(context).removeVariationPermanently),
                 onTap: () {
                   Navigator.of(context).pop();
                   _confirmDeleteBranch(variationNode);
@@ -1860,7 +1860,7 @@ class MovesListPageState extends State<MovesListPage> {
     final PgnNode<ExtMove>? parent = variationNode.parent;
     if (parent == null) {
       rootScaffoldMessengerKey.currentState?.showSnackBar(
-        const SnackBar(content: Text('Cannot promote: no parent node')),
+        SnackBar(content: Text(S.of(context).cannotPromoteNoParent)),
       );
       return;
     }
@@ -1868,7 +1868,7 @@ class MovesListPageState extends State<MovesListPage> {
     // Check if it's already the main line
     if (parent.children.isNotEmpty && parent.children.first == variationNode) {
       rootScaffoldMessengerKey.currentState?.showSnackBar(
-        const SnackBar(content: Text('Already the main variation')),
+        SnackBar(content: Text(S.of(context).alreadyMainVariation)),
       );
       return;
     }
@@ -1907,14 +1907,12 @@ class MovesListPageState extends State<MovesListPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Delete Branch'),
+          title: Text(S.of(context).deleteBranchTitle),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text(
-                'Are you sure you want to delete the variation "$notation" and all its continuations?',
-              ),
+              Text(S.of(context).deleteBranchConfirmWithNotation(notation)),
               const SizedBox(height: 16),
               if (containsActiveNode)
                 Container(
@@ -1931,10 +1929,10 @@ class MovesListPageState extends State<MovesListPage> {
                         color: Colors.orange.shade700,
                       ),
                       const SizedBox(width: 8),
-                      const Expanded(
+                      Expanded(
                         child: Text(
-                          'Warning: This branch contains your current position. You will be moved to the parent position.',
-                          style: TextStyle(fontSize: 12),
+                          S.of(context).deleteBranchContainsPosition,
+                          style: const TextStyle(fontSize: 12),
                         ),
                       ),
                     ],
@@ -1956,7 +1954,7 @@ class MovesListPageState extends State<MovesListPage> {
                 backgroundColor: Colors.red.shade700,
                 foregroundColor: Colors.white,
               ),
-              child: const Text('Delete'),
+              child: Text(S.of(context).delete),
             ),
           ],
         );
@@ -1989,7 +1987,7 @@ class MovesListPageState extends State<MovesListPage> {
     final PgnNode<ExtMove>? parent = variationNode.parent;
     if (parent == null) {
       rootScaffoldMessengerKey.currentState?.showSnackBar(
-        const SnackBar(content: Text('Cannot delete: no parent node')),
+        SnackBar(content: Text(S.of(context).cannotDeleteNoParent)),
       );
       return;
     }
@@ -2011,7 +2009,9 @@ class MovesListPageState extends State<MovesListPage> {
       parent.children.remove(variationNode);
     });
 
-    rootScaffoldMessengerKey.currentState?.showSnackBarClear('Branch deleted');
+    rootScaffoldMessengerKey.currentState?.showSnackBarClear(
+      S.of(context).branchDeleted,
+    );
 
     // Refresh the display
     _refreshAllNodes();
@@ -2054,7 +2054,7 @@ class MovesListPageState extends State<MovesListPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Variations'),
+          title: Text(S.of(context).variations),
           content: SingleChildScrollView(
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -2212,7 +2212,7 @@ class MovesListPageState extends State<MovesListPage> {
 
     if (variationStartNode == null || variationStartNode.parent == null) {
       rootScaffoldMessengerKey.currentState?.showSnackBar(
-        const SnackBar(content: Text('Cannot delete: already on main line')),
+        SnackBar(content: Text(S.of(context).cannotDeleteAlreadyMainLine)),
       );
       return;
     }
@@ -2267,7 +2267,7 @@ class MovesListPageState extends State<MovesListPage> {
                 backgroundColor: Colors.red.shade700,
                 foregroundColor: Colors.white,
               ),
-              child: const Text('Delete'),
+              child: Text(S.of(context).delete),
             ),
           ],
         );
@@ -2290,7 +2290,9 @@ class MovesListPageState extends State<MovesListPage> {
       parent.children.remove(variationNode);
     });
 
-    rootScaffoldMessengerKey.currentState?.showSnackBarClear('Branch deleted');
+    rootScaffoldMessengerKey.currentState?.showSnackBarClear(
+      S.of(context).branchDeleted,
+    );
 
     // Refresh the display
     _refreshAllNodes();
@@ -3262,7 +3264,7 @@ class MoveListItemState extends State<MoveListItem> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Branch moves'),
+          title: Text(S.of(context).branchMoves),
           content: SingleChildScrollView(
             child: Column(
               mainAxisSize: MainAxisSize.min,

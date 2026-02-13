@@ -119,7 +119,9 @@ class LanConfigDialogState extends State<LanConfigDialog>
 
       logger.e("Error getting network interfaces: $e");
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Error detecting network interfaces: $e")),
+        SnackBar(
+          content: Text("${S.of(context).errorDetectingNetworkInterfaces}: $e"),
+        ),
       );
     }
   }

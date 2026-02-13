@@ -281,13 +281,13 @@ class _AnnotationToolbarState extends State<AnnotationToolbar> {
         ),
         _buildControlButton(
           context,
-          tooltip: 'Undo',
+          tooltip: S.of(context).undo,
           icon: FluentIcons.arrow_undo_24_regular,
           onTap: () => setState(() => widget.annotationManager.undo()),
         ),
         _buildControlButton(
           context,
-          tooltip: 'Redo',
+          tooltip: S.of(context).redo,
           icon: FluentIcons.arrow_redo_24_regular,
           onTap: () => setState(() => widget.annotationManager.redo()),
         ),

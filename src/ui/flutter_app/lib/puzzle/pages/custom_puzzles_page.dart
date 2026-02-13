@@ -97,7 +97,7 @@ class _CustomPuzzlesPageState extends State<CustomPuzzlesPage> {
                             context,
                             settingsTheme,
                           ),
-                          tooltip: 'Contribute to Sanmill',
+                          tooltip: s.contributeToSanmill,
                         ),
                       // Export selected
                       if (_selectedPuzzleIds.isNotEmpty)
@@ -126,7 +126,7 @@ class _CustomPuzzlesPageState extends State<CustomPuzzlesPage> {
                         icon: const Icon(FluentIcons.info_24_regular),
                         onPressed: () =>
                             _showContributionInfo(context, settingsTheme),
-                        tooltip: 'How to Contribute',
+                        tooltip: s.howToContribute,
                       ),
                       // Multi-select button
                       IconButton(

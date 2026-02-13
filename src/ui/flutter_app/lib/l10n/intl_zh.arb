@@ -4047,5 +4047,89 @@
     "includeVariationsCurrentLine": "仅当前路径",
     "@includeVariationsCurrentLine": {},
     "includeVariationsMainline": "仅主线",
-    "@includeVariationsMainline": {}
+    "@includeVariationsMainline": {},
+    "jumpToVariation": "跳转到变着",
+    "@jumpToVariation": {},
+    "variationNotation": "变着：{notation}",
+    "@variationNotation": {
+        "placeholders": {
+            "notation": {
+                "type": "String"
+            }
+        }
+    },
+    "jumpToThisVariation": "跳转到此变着",
+    "@jumpToThisVariation": {},
+    "switchToThisBranch": "切换到此分支",
+    "@switchToThisBranch": {},
+    "setAsMainLine": "设为主线",
+    "@setAsMainLine": {},
+    "makeThisPrimaryVariation": "将此变着设为主要变着",
+    "@makeThisPrimaryVariation": {},
+    "deleteBranch": "删除分支",
+    "@deleteBranch": {},
+    "removeVariationPermanently": "永久删除此变着",
+    "@removeVariationPermanently": {},
+    "cannotPromoteNoParent": "无法提升：没有父节点",
+    "@cannotPromoteNoParent": {},
+    "alreadyMainVariation": "已经是主要变着",
+    "@alreadyMainVariation": {},
+    "deleteBranchTitle": "删除分支",
+    "@deleteBranchTitle": {},
+    "deleteBranchConfirmWithNotation": "确定要删除变着 \"{notation}\" 及其所有后续内容吗？",
+    "@deleteBranchConfirmWithNotation": {
+        "placeholders": {
+            "notation": {
+                "type": "String"
+            }
+        }
+    },
+    "deleteBranchContainsPosition": "警告：此分支包含您当前的位置。您将被移动到父级位置。",
+    "@deleteBranchContainsPosition": {},
+    "cannotDeleteNoParent": "无法删除：没有父节点",
+    "@cannotDeleteNoParent": {},
+    "branchDeleted": "分支已删除",
+    "@branchDeleted": {},
+    "cannotDeleteAlreadyMainLine": "无法删除：已经在主线上",
+    "@cannotDeleteAlreadyMainLine": {},
+    "branchMoves": "分支走法",
+    "@branchMoves": {},
+    "variations": "变着",
+    "@variations": {},
+    "resign": "认输",
+    "@resign": {},
+    "failedToSendResignation": "发送认输信息失败",
+    "@failedToSendResignation": {},
+    "opponentRequestsTakeBackAccept": "对手请求悔棋 {steps} 步。接受吗？",
+    "@opponentRequestsTakeBackAccept": {
+        "placeholders": {
+            "steps": {
+                "type": "String"
+            }
+        }
+    },
+    "errorLoadingImages": "加载图片出错",
+    "@errorLoadingImages": {},
+    "fileAlreadyExists": "文件 {name} 已存在",
+    "@fileAlreadyExists": {
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "errorDetectingNetworkInterfaces": "检测网络接口出错",
+    "@errorDetectingNetworkInterfaces": {},
+    "contributeToSanmill": "贡献给 Sanmill",
+    "@contributeToSanmill": {},
+    "howToContribute": "如何贡献",
+    "@howToContribute": {},
+    "perfectDatabaseNotEnabled": "完美数据库未启用",
+    "@perfectDatabaseNotEnabled": {},
+    "redo": "重做",
+    "@redo": {},
+    "movePieceUp": "向上移动棋子",
+    "@movePieceUp": {},
+    "movePieceDiagonallyDown": "对角向下移动棋子",
+    "@movePieceDiagonallyDown": {}
 }
