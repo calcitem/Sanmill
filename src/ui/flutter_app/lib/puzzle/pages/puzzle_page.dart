@@ -5,6 +5,8 @@
 //
 // Main puzzle solving page
 
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart' show Box;
@@ -762,25 +764,27 @@ class _PuzzlePageState extends State<PuzzlePage> {
       return;
     }
 
+    // Persist solutionViewed BEFORE resetting so the flag survives the reset.
+    // Always create progress if none exists; otherwise a fresh puzzle would
+    // lose the solutionViewed flag and the user could earn full stars after
+    // viewing the solution.
+    final PuzzleSettings settings = _puzzleManager.settingsNotifier.value;
+    final PuzzleProgress currentProgress =
+        settings.getProgress(widget.puzzle.id) ??
+        PuzzleProgress(puzzleId: widget.puzzle.id);
+    _puzzleManager.updateProgress(
+      currentProgress.copyWith(solutionViewed: true),
+    );
+
+    // Reset to initial position first so the board is ready for playback.
+    // _resetPuzzle() clears local flags (_solutionViewed, _hintsUsed), so we
+    // must set _solutionViewed = true AFTER the reset to keep it consistent.
+    _resetPuzzle();
+
     setState(() {
       _isPlayingSolution = true;
       _solutionViewed = true;
     });
-
-    // Mark solution as viewed in progress
-    final PuzzleSettings settings = _puzzleManager.settingsNotifier.value;
-    final PuzzleProgress? currentProgress = settings.getProgress(
-      widget.puzzle.id,
-    );
-    if (currentProgress != null) {
-      final PuzzleProgress updatedProgress = currentProgress.copyWith(
-        solutionViewed: true,
-      );
-      _puzzleManager.updateProgress(updatedProgress);
-    }
-
-    // Reset to initial position
-    _resetPuzzle();
 
     // Show info message
     if (mounted) {
@@ -1130,18 +1134,22 @@ class _PuzzlePageState extends State<PuzzlePage> {
   }
 
   void _loadNextPuzzle() {
-    // Get a random unsolved puzzle from the same category or difficulty
+    // Pick a random unsolved puzzle, preferring the same category.
     final List<PuzzleInfo> allPuzzles = _puzzleManager.getAllPuzzles();
     final PuzzleSettings settings = _puzzleManager.settingsNotifier.value;
+    final Random rng = Random();
 
-    // Filter for unsolved puzzles, preferring same category or difficulty
+    // Filter for unsolved puzzles (excluding the current one).
     final List<PuzzleInfo> candidates = allPuzzles.where((PuzzleInfo p) {
+      if (p.id == widget.puzzle.id) {
+        return false;
+      }
       final PuzzleProgress? progress = settings.getProgress(p.id);
       return progress == null || !progress.completed;
     }).toList();
 
     if (candidates.isEmpty) {
-      // All puzzles solved! Show message and go back
+      // All puzzles solved! Show message and go back.
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(S.of(context).allPuzzlesCompleted)),
       );
@@ -1149,22 +1157,17 @@ class _PuzzlePageState extends State<PuzzlePage> {
       return;
     }
 
-    // Prefer puzzles from same category
+    // Prefer puzzles from the same category; fall back to any unsolved puzzle.
     final List<PuzzleInfo> sameCategoryPuzzles = candidates
-        .where(
-          (PuzzleInfo p) =>
-              p.category == widget.puzzle.category && p.id != widget.puzzle.id,
-        )
+        .where((PuzzleInfo p) => p.category == widget.puzzle.category)
         .toList();
 
-    PuzzleInfo nextPuzzle;
-    if (sameCategoryPuzzles.isNotEmpty) {
-      nextPuzzle = sameCategoryPuzzles.first;
-    } else {
-      nextPuzzle = candidates.first;
-    }
+    final List<PuzzleInfo> pool = sameCategoryPuzzles.isNotEmpty
+        ? sameCategoryPuzzles
+        : candidates;
+    final PuzzleInfo nextPuzzle = pool[rng.nextInt(pool.length)];
 
-    // Replace current page with new puzzle
+    // Replace current page with new puzzle.
     Navigator.of(context).pushReplacement<void, void>(
       MaterialPageRoute<void>(
         builder: (BuildContext context) => PuzzlePage(puzzle: nextPuzzle),

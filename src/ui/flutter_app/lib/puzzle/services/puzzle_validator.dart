@@ -60,6 +60,14 @@ class PuzzleValidator {
   late final int _initialOpponentPiecesTotal;
   bool _warnedMissingCaptureTarget = false;
 
+  /// Tracks whether a mill was formed at any point during the current attempt.
+  ///
+  /// The engine's `Act.remove` state is transient: it is only active while the
+  /// removal sub-move is pending.  Once the removal is executed the action
+  /// reverts.  For `formMill` puzzles we need to remember that a mill was
+  /// formed even after the removal has been played.
+  bool _millFormedDuringAttempt = false;
+
   /// Full move history in notation form (player + opponent).
   ///
   /// Puzzle mode records all moves from the mainline (including auto-played
@@ -93,6 +101,12 @@ class PuzzleValidator {
   ValidationFeedback validateSolution(Position currentPosition) {
     logger.i("$_tag Validating solution for puzzle ${puzzle.id}");
     logger.t("$_tag Player moves: $_playerMoves");
+
+    // Record transient mill-formation state so the objective check survives
+    // even after the removal sub-move has been executed.
+    if (currentPosition.action == Act.remove) {
+      _millFormedDuringAttempt = true;
+    }
 
     // First, check if the move sequence matches any expected solution.
     //
@@ -157,11 +171,12 @@ class PuzzleValidator {
     }
   }
 
-  /// Check if a mill was formed
+  /// Check if a mill was formed at any point during this attempt.
+  ///
+  /// Uses both the transient engine state (`Act.remove` currently pending)
+  /// and the persistent flag that was set the first time a mill was observed.
   bool _checkMillFormed(Position position) {
-    // A mill should have been formed in the current position
-    // This is indicated by the ability to remove opponent's piece
-    return position.action == Act.remove;
+    return _millFormedDuringAttempt || position.action == Act.remove;
   }
 
   /// Check if required pieces were captured
@@ -285,6 +300,7 @@ class PuzzleValidator {
   /// Reset validator state
   void reset() {
     _playerMoves.clear();
+    _millFormedDuringAttempt = false;
     logger.i("$_tag Validator reset for puzzle ${puzzle.id}");
   }
 
