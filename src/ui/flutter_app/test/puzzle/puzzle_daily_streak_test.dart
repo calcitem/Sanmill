@@ -76,8 +76,8 @@ void main() {
 
   // -----------------------------------------------------------------------
   // Because _calculateCurrentStreak is private, we test the streak logic
-  // through a standalone reimplementation of the same algorithm.  This is
-  // valid because the test verifies the *algorithm*, not Hive persistence.
+  // through a standalone copy of the same algorithm.  This is valid because
+  // the test verifies the *algorithm*, not Hive persistence.
   //
   // The algorithm is extracted verbatim from DailyPuzzleService so any
   // future drift will be caught by reviewing this file.
