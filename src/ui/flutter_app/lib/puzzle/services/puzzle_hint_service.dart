@@ -100,49 +100,57 @@ class PuzzleHintService {
     return null;
   }
 
-  /// Get a specific hint type
+  /// Get a specific hint type.
+  ///
+  /// Only increments the hint counter when a hint is actually returned.
+  /// Previously the counter was incremented unconditionally, which inflated
+  /// the hints-used metric when the requested hint type was unavailable.
   PuzzleHint? getHintOfType(HintType type, int currentPlayerMoveIndex) {
     logger.i("$_tag Getting hint of type $type for puzzle ${puzzle.id}");
-    _hintsGiven++;
+
+    PuzzleHint? result;
 
     switch (type) {
       case HintType.textual:
         if (puzzle.hint != null && puzzle.hint!.isNotEmpty) {
-          return PuzzleHint(type: HintType.textual, content: puzzle.hint!);
+          result = PuzzleHint(type: HintType.textual, content: puzzle.hint!);
         }
-        return null;
 
       case HintType.nextMove:
         final String? nextMove = _getNextPlayerMove(currentPlayerMoveIndex);
         if (nextMove != null) {
-          return PuzzleHint(
+          result = PuzzleHint(
             type: HintType.nextMove,
             // Store raw move notation; UI layer formats with localization.
             content: nextMove,
             moveIndex: currentPlayerMoveIndex,
           );
         }
-        return null;
 
       case HintType.highlight:
         final List<int>? squares = _getHighlightSquares(currentPlayerMoveIndex);
         if (squares != null && squares.isNotEmpty) {
-          return PuzzleHint(
+          result = PuzzleHint(
             type: HintType.highlight,
             // Store a generic marker; UI layer can provide localized text.
             content: '',
             highlightSquares: squares,
           );
         }
-        return null;
 
       case HintType.showSolution:
-        return PuzzleHint(
+        result = PuzzleHint(
           type: HintType.showSolution,
           // Store raw solution string; UI layer formats with localization.
           content: _getFullSolution(),
         );
     }
+
+    if (result != null) {
+      _hintsGiven++;
+    }
+
+    return result;
   }
 
   PuzzleSolution? _getPrimarySolution() {

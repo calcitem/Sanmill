@@ -451,10 +451,14 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
       );
     }
 
-    // Ensure at least one solution is marked as optimal
+    // Ensure at least one solution is marked as optimal.
+    // Preserve all existing fields (e.g. description) when promoting a
+    // solution to optimal.
     if (!puzzleSolutions.any((PuzzleSolution s) => s.isOptimal)) {
+      final PuzzleSolution first = puzzleSolutions.first;
       puzzleSolutions.first = PuzzleSolution(
-        moves: puzzleSolutions.first.moves,
+        moves: first.moves,
+        description: first.description,
       );
     }
 
