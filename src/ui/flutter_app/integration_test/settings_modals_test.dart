@@ -95,7 +95,7 @@ void main() {
       );
 
       // Dismiss the bottom sheet by tapping outside or pressing back
-        await tester.tapAt(Offset.zero);
+      await tester.tapAt(Offset.zero);
       await tester.pumpAndSettle();
     });
 
@@ -119,7 +119,7 @@ void main() {
       await tester.pumpAndSettle();
 
       // Dismiss the modal
-        await tester.tapAt(Offset.zero);
+      await tester.tapAt(Offset.zero);
       await tester.pumpAndSettle();
     });
   });
@@ -267,7 +267,7 @@ void main() {
       await tester.pumpAndSettle();
 
       // Dismiss the modal
-        await tester.tapAt(Offset.zero);
+      await tester.tapAt(Offset.zero);
       await tester.pumpAndSettle();
     });
 
@@ -291,7 +291,7 @@ void main() {
       await tester.pumpAndSettle();
 
       // Dismiss the modal
-        await tester.tapAt(Offset.zero);
+      await tester.tapAt(Offset.zero);
       await tester.pumpAndSettle();
     });
 
@@ -410,7 +410,7 @@ void main() {
       await tester.pumpAndSettle();
 
       // Dismiss
-        await tester.tapAt(Offset.zero);
+      await tester.tapAt(Offset.zero);
       await tester.pumpAndSettle();
     });
 
@@ -433,7 +433,7 @@ void main() {
       await tester.pumpAndSettle();
 
       // Dismiss
-        await tester.tapAt(Offset.zero);
+      await tester.tapAt(Offset.zero);
       await tester.pumpAndSettle();
     });
 
@@ -456,7 +456,7 @@ void main() {
       await tester.pumpAndSettle();
 
       // Dismiss
-        await tester.tapAt(Offset.zero);
+      await tester.tapAt(Offset.zero);
       await tester.pumpAndSettle();
     });
 

@@ -389,5 +389,208 @@ void main() {
         scrollableKey: 'appearance_settings_page_settings_list',
       );
     });
+
+    testWidgets('Toggle toolbar at bottom', (WidgetTester tester) async {
+      await initApp(tester);
+      await navigateToGroupChild(
+        tester,
+        'drawer_item_settings_group',
+        'drawer_item_appearance_child',
+      );
+
+      final bool initialValue = DB().displaySettings.isToolbarAtBottom;
+
+      await scrollToAndTap(
+        tester,
+        targetKey: 'display_settings_card_toolbar_at_bottom_switch_tile',
+        scrollableKey: 'appearance_settings_page_settings_list',
+      );
+
+      expect(
+        DB().displaySettings.isToolbarAtBottom,
+        isNot(equals(initialValue)),
+        reason: 'Toolbar at bottom should have toggled',
+      );
+    });
+
+    testWidgets('Toggle annotation toolbar shown', (WidgetTester tester) async {
+      await initApp(tester);
+      await navigateToGroupChild(
+        tester,
+        'drawer_item_settings_group',
+        'drawer_item_appearance_child',
+      );
+
+      final bool initialValue = DB().displaySettings.isAnnotationToolbarShown;
+
+      await scrollToAndTap(
+        tester,
+        targetKey: 'display_settings_card_annotation_toolbar_shown_switch_tile',
+        scrollableKey: 'appearance_settings_page_settings_list',
+      );
+
+      expect(
+        DB().displaySettings.isAnnotationToolbarShown,
+        isNot(equals(initialValue)),
+        reason: 'Annotation toolbar shown should have toggled',
+      );
+    });
+
+    testWidgets('Toggle capturable pieces highlight shown', (
+      WidgetTester tester,
+    ) async {
+      await initApp(tester);
+      await navigateToGroupChild(
+        tester,
+        'drawer_item_settings_group',
+        'drawer_item_appearance_child',
+      );
+
+      final bool initialValue =
+          DB().displaySettings.isCapturablePiecesHighlightShown;
+
+      await scrollToAndTap(
+        tester,
+        targetKey:
+            'display_settings_card_capturable_pieces_highlight_shown_switch_tile',
+        scrollableKey: 'appearance_settings_page_settings_list',
+      );
+
+      expect(
+        DB().displaySettings.isCapturablePiecesHighlightShown,
+        isNot(equals(initialValue)),
+        reason: 'Capturable pieces highlight shown should have toggled',
+      );
+    });
+
+    testWidgets('Toggle screenshot game info shown', (
+      WidgetTester tester,
+    ) async {
+      await initApp(tester);
+      await navigateToGroupChild(
+        tester,
+        'drawer_item_settings_group',
+        'drawer_item_appearance_child',
+      );
+
+      final bool initialValue = DB().displaySettings.isScreenshotGameInfoShown;
+
+      await scrollToAndTap(
+        tester,
+        targetKey:
+            'display_settings_card_screenshot_game_info_shown_switch_tile',
+        scrollableKey: 'appearance_settings_page_settings_list',
+      );
+
+      expect(
+        DB().displaySettings.isScreenshotGameInfoShown,
+        isNot(equals(initialValue)),
+        reason: 'Screenshot game info shown should have toggled',
+      );
+    });
+
+    testWidgets('Toggle piece pick up animation enabled', (
+      WidgetTester tester,
+    ) async {
+      await initApp(tester);
+      await navigateToGroupChild(
+        tester,
+        'drawer_item_settings_group',
+        'drawer_item_appearance_child',
+      );
+
+      final bool initialValue =
+          DB().displaySettings.isPiecePickUpAnimationEnabled;
+
+      await scrollToAndTap(
+        tester,
+        targetKey:
+            'display_settings_card_piece_pick_up_animation_enabled_switch_tile',
+        scrollableKey: 'appearance_settings_page_settings_list',
+      );
+
+      expect(
+        DB().displaySettings.isPiecePickUpAnimationEnabled,
+        isNot(equals(initialValue)),
+        reason: 'Piece pick up animation enabled should have toggled',
+      );
+    });
+
+    testWidgets('Import color settings tile is accessible', (
+      WidgetTester tester,
+    ) async {
+      await initApp(tester);
+      await navigateToGroupChild(
+        tester,
+        'drawer_item_settings_group',
+        'drawer_item_appearance_child',
+      );
+
+      await scrollToAndVerify(
+        tester,
+        targetKey: 'color_settings_card_import_color_settings_list_tile',
+        scrollableKey: 'appearance_settings_page_settings_list',
+      );
+    });
+
+    testWidgets('Board color tile is accessible', (WidgetTester tester) async {
+      await initApp(tester);
+      await navigateToGroupChild(
+        tester,
+        'drawer_item_settings_group',
+        'drawer_item_appearance_child',
+      );
+
+      await scrollToAndVerify(
+        tester,
+        targetKey: 'color_settings_card_board_color_settings_list_tile',
+        scrollableKey: 'appearance_settings_page_settings_list',
+      );
+    });
+
+    testWidgets('Drawer color tile is accessible', (WidgetTester tester) async {
+      await initApp(tester);
+      await navigateToGroupChild(
+        tester,
+        'drawer_item_settings_group',
+        'drawer_item_appearance_child',
+      );
+
+      await scrollToAndVerify(
+        tester,
+        targetKey: 'color_settings_card_drawer_color_settings_list_tile',
+        scrollableKey: 'appearance_settings_page_settings_list',
+      );
+    });
+
+    testWidgets('Font size setting is accessible', (WidgetTester tester) async {
+      await initApp(tester);
+      await navigateToGroupChild(
+        tester,
+        'drawer_item_settings_group',
+        'drawer_item_appearance_child',
+      );
+
+      await scrollToAndVerify(
+        tester,
+        targetKey: 'display_settings_card_font_size_settings_list_tile',
+        scrollableKey: 'appearance_settings_page_settings_list',
+      );
+    });
+
+    testWidgets('Board top setting is accessible', (WidgetTester tester) async {
+      await initApp(tester);
+      await navigateToGroupChild(
+        tester,
+        'drawer_item_settings_group',
+        'drawer_item_appearance_child',
+      );
+
+      await scrollToAndVerify(
+        tester,
+        targetKey: 'display_settings_card_board_top_settings_list_tile',
+        scrollableKey: 'appearance_settings_page_settings_list',
+      );
+    });
   });
 }
