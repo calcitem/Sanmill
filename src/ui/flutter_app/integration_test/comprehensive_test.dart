@@ -20,6 +20,7 @@ import 'package:integration_test/integration_test.dart';
 // Import all test files
 import 'about_page_test.dart' as about_page;
 import 'appearance_settings_test.dart' as appearance_settings;
+import 'board_interaction_test.dart' as board_interaction;
 import 'developer_options_test.dart' as developer_options;
 import 'drawer_navigation_test.dart' as drawer_navigation;
 import 'game_mode_switching_test.dart' as game_mode_switching;
@@ -57,6 +58,7 @@ void main() {
   game_options_modal.main();
   history_navigation.main();
   info_dialog.main();
+  board_interaction.main();
 
   // Settings page tests
   general_settings.main();

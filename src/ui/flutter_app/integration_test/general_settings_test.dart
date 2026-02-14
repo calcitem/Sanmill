@@ -449,5 +449,128 @@ void main() {
         reason: 'AI is lazy should have toggled',
       );
     });
+
+    testWidgets('Toggle use opening book switch', (WidgetTester tester) async {
+      await initApp(tester);
+      await navigateToGroupChild(
+        tester,
+        'drawer_item_settings_group',
+        'drawer_item_general_settings_child',
+      );
+
+      final bool initialValue = DB().generalSettings.useOpeningBook;
+
+      await scrollToAndTap(
+        tester,
+        targetKey:
+            'general_settings_page_settings_card_ais_play_style_use_opening_book',
+      );
+
+      expect(
+        DB().generalSettings.useOpeningBook,
+        isNot(equals(initialValue)),
+        reason: 'Use opening book should have toggled',
+      );
+    });
+
+    testWidgets('Toggle keep mute when taking back switch', (
+      WidgetTester tester,
+    ) async {
+      await initApp(tester);
+      await navigateToGroupChild(
+        tester,
+        'drawer_item_settings_group',
+        'drawer_item_general_settings_child',
+      );
+
+      final bool initialValue = DB().generalSettings.keepMuteWhenTakingBack;
+
+      await scrollToAndTap(
+        tester,
+        targetKey:
+            'general_settings_page_settings_card_play_sounds_keep_mute_when_taking_back',
+      );
+
+      expect(
+        DB().generalSettings.keepMuteWhenTakingBack,
+        isNot(equals(initialValue)),
+        reason: 'Keep mute when taking back should have toggled',
+      );
+    });
+
+    testWidgets('Human move time item is accessible', (
+      WidgetTester tester,
+    ) async {
+      await initApp(tester);
+      await navigateToGroupChild(
+        tester,
+        'drawer_item_settings_group',
+        'drawer_item_general_settings_child',
+      );
+
+      await scrollToAndVerify(
+        tester,
+        targetKey:
+            'general_settings_page_settings_card_difficulty_human_move_time',
+      );
+    });
+
+    testWidgets('Toggle use perfect database switch', (
+      WidgetTester tester,
+    ) async {
+      await initApp(tester);
+      await navigateToGroupChild(
+        tester,
+        'drawer_item_settings_group',
+        'drawer_item_general_settings_child',
+      );
+
+      final bool initialValue = DB().generalSettings.usePerfectDatabase;
+
+      await scrollToAndTap(
+        tester,
+        targetKey:
+            'general_settings_page_settings_card_ais_play_style_use_perfect_database',
+      );
+
+      expect(
+        DB().generalSettings.usePerfectDatabase,
+        isNot(equals(initialValue)),
+        reason: 'Use perfect database should have toggled',
+      );
+    });
+
+    testWidgets('LLM prompts card is accessible', (WidgetTester tester) async {
+      await initApp(tester);
+      await navigateToGroupChild(
+        tester,
+        'drawer_item_settings_group',
+        'drawer_item_general_settings_child',
+      );
+
+      // LLM card is only shown when rule settings look like Nine Men's Morris
+      // Ensure Nine Men's Morris rules are active
+      await scrollToAndVerify(
+        tester,
+        targetKey: 'general_settings_page_settings_card_llm_prompts',
+      );
+    });
+
+    testWidgets('Background music enabled switch is accessible', (
+      WidgetTester tester,
+    ) async {
+      await initApp(tester);
+      await navigateToGroupChild(
+        tester,
+        'drawer_item_settings_group',
+        'drawer_item_general_settings_child',
+      );
+
+      await scrollToAndVerify(
+        tester,
+        targetKey:
+            'general_settings_page_settings_card_play_sounds_background_music_enabled',
+      );
+    });
   });
 }
