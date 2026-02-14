@@ -16,6 +16,7 @@ import '../../game_page/services/import_export/pgn.dart';
 import '../../game_page/services/mill.dart';
 import '../../game_page/services/transform/transform.dart';
 import '../../generated/intl/l10n.dart';
+import '../../rule_settings/models/rule_settings.dart';
 import '../../shared/database/database.dart';
 import '../../shared/services/logger.dart';
 import '../../shared/themes/app_theme.dart';
@@ -74,6 +75,10 @@ class _PuzzlePageState extends State<PuzzlePage> {
   PieceColor? _previousPuzzleHumanColor;
   bool _previousIsPuzzleAutoMoveInProgress = false;
 
+  // Store original rule settings so they can be restored when the user
+  // leaves puzzle mode.  Null when the rules were not switched.
+  RuleSettings? _originalRuleSettings;
+
   @override
   void initState() {
     super.initState();
@@ -93,6 +98,10 @@ class _PuzzlePageState extends State<PuzzlePage> {
     _previousGameMode = controller.gameInstance.gameMode;
     _previousPuzzleHumanColor = controller.puzzleHumanColor;
     _previousIsPuzzleAutoMoveInProgress = controller.isPuzzleAutoMoveInProgress;
+
+    // Snapshot the user's rule settings once.  All rule-switching during
+    // this puzzle session will be undone against this snapshot.
+    _originalRuleSettings = DB().ruleSettings;
 
     _initializePuzzle();
   }
@@ -129,21 +138,64 @@ class _PuzzlePageState extends State<PuzzlePage> {
       logger.i('[PuzzlePage] Restored game mode to $_previousGameMode');
     }
 
+    // Restore the user's original rule settings if they were overridden for
+    // this puzzle.  The DB setter automatically schedules an engine update
+    // via its debounce timer, so the engine will pick up the restored rules
+    // shortly after the page is popped.
+    if (_originalRuleSettings != null) {
+      DB().ruleSettings = _originalRuleSettings!;
+      logger.i('[PuzzlePage] Restored original rule settings');
+    }
+
     _moveCountNotifier.dispose();
     super.dispose();
   }
 
-  void _initializePuzzle() {
-    // Check rule variant compatibility first (uses original puzzle metadata).
+  /// Ensure the engine is configured with the rules required by this puzzle.
+  ///
+  /// For known variants the rules are applied automatically and silently.
+  /// For unknown / custom variants the user is shown a warning because the
+  /// app cannot determine the correct settings to apply.
+  void _applyPuzzleRulesIfNeeded() {
     final RuleVariant currentVariant = RuleVariant.fromRuleSettings(
       DB().ruleSettings,
     );
-    if (widget.puzzle.ruleVariantId != currentVariant.id) {
-      // Show warning dialog after build is complete
+    final String puzzleVariantId = widget.puzzle.ruleVariantId;
+
+    // Rules already match — nothing to do.
+    if (puzzleVariantId == currentVariant.id) {
+      return;
+    }
+
+    // Try to find the canonical settings for the puzzle's variant.
+    final RuleSettings? puzzleSettings =
+        RuleVariant.canonicalSettings[puzzleVariantId];
+
+    if (puzzleSettings != null) {
+      // Known variant — apply automatically so the puzzle works correctly.
+      DB().ruleSettings = puzzleSettings;
+
+      // Force an immediate engine update after the current frame so that
+      // move-legality checks use the new rules from the start.
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        GameController().engine.setRuleOptions();
+      });
+
+      logger.i(
+        '[PuzzlePage] Auto-switched rules to "$puzzleVariantId" '
+        'for puzzle "${widget.puzzle.id}"',
+      );
+    } else {
+      // Unknown / custom variant — cannot auto-switch; warn the user.
       WidgetsBinding.instance.addPostFrameCallback((_) {
         _showRuleMismatchWarning(currentVariant);
       });
     }
+  }
+
+  void _initializePuzzle() {
+    // Ensure the engine uses the correct rules for this puzzle.
+    _applyPuzzleRulesIfNeeded();
 
     // Set up the game controller with the *transformed* puzzle position.
     final GameController controller = GameController();

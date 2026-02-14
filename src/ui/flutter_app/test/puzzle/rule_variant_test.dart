@@ -72,6 +72,133 @@ void main() {
       expect(variant.id, contains('7p'));
       expect(variant.id, contains('diag'));
     });
+
+    // -----------------------------------------------------------------------
+    // Exhaustive detection for every named RuleSettings subclass.
+    // Each test verifies that _generateVariantId returns the expected ID and
+    // that the display name is populated from the lookup table.
+    // -----------------------------------------------------------------------
+
+    test('should identify Morabaraba', () {
+      final RuleVariant v = RuleVariant.fromRuleSettings(
+        const MorabarabaRuleSettings(),
+      );
+      expect(v.id, 'morabaraba');
+      expect(v.name, 'Morabaraba');
+    });
+
+    test('should identify Dooz', () {
+      final RuleVariant v = RuleVariant.fromRuleSettings(
+        const DoozRuleSettings(),
+      );
+      expect(v.id, 'dooz');
+      expect(v.name, 'Dooz');
+    });
+
+    test('should identify Lasker Morris', () {
+      final RuleVariant v = RuleVariant.fromRuleSettings(
+        const LaskerMorrisSettings(),
+      );
+      expect(v.id, 'lasker_morris');
+      expect(v.name, 'Lasker Morris');
+    });
+
+    test('should identify Russian Mill (One-Time Mill)', () {
+      final RuleVariant v = RuleVariant.fromRuleSettings(
+        const OneTimeMillRuleSettings(),
+      );
+      expect(v.id, 'russian_mill');
+      expect(v.name, 'Russian Mill');
+    });
+
+    test('should identify Cham Gonu', () {
+      final RuleVariant v = RuleVariant.fromRuleSettings(
+        const ChamGonuRuleSettings(),
+      );
+      expect(v.id, 'cham_gonu');
+      expect(v.name, 'Cham Gonu');
+    });
+
+    test('should identify Zhi Qi', () {
+      final RuleVariant v = RuleVariant.fromRuleSettings(
+        const ZhiQiRuleSettings(),
+      );
+      expect(v.id, 'zhi_qi');
+      expect(v.name, 'Zhi Qi');
+    });
+
+    test('should identify Cheng San Qi', () {
+      final RuleVariant v = RuleVariant.fromRuleSettings(
+        const ChengSanQiRuleSettings(),
+      );
+      expect(v.id, 'cheng_san_qi');
+      expect(v.name, 'Cheng San Qi');
+    });
+
+    test('should identify Da San Qi', () {
+      final RuleVariant v = RuleVariant.fromRuleSettings(
+        const DaSanQiRuleSettings(),
+      );
+      expect(v.id, 'da_san_qi');
+      expect(v.name, 'Da San Qi');
+    });
+
+    test('should identify Mul-Mulan', () {
+      final RuleVariant v = RuleVariant.fromRuleSettings(
+        const MulMulanRuleSettings(),
+      );
+      expect(v.id, 'mul_mulan');
+      expect(v.name, 'Mul-Mulan');
+    });
+
+    test('should identify Nerenchi', () {
+      final RuleVariant v = RuleVariant.fromRuleSettings(
+        const NerenchiRuleSettings(),
+      );
+      expect(v.id, 'nerenchi');
+      expect(v.name, 'Nerenchi');
+    });
+
+    test('should identify El Filja', () {
+      final RuleVariant v = RuleVariant.fromRuleSettings(
+        const ELFiljaRuleSettings(),
+      );
+      expect(v.id, 'el_filja');
+      expect(v.name, 'El Filja');
+    });
+  });
+
+  // ---------------------------------------------------------------------------
+  // Canonical settings round-trip
+  // ---------------------------------------------------------------------------
+  group('RuleVariant.canonicalSettings', () {
+    test('every canonical entry should round-trip through detection', () {
+      // Ensures that for every (id, settings) pair registered in the
+      // canonical map, _generateVariantId(settings) returns the same id.
+      for (final MapEntry<String, RuleSettings> entry
+          in RuleVariant.canonicalSettings.entries) {
+        final RuleVariant v = RuleVariant.fromRuleSettings(entry.value);
+        expect(
+          v.id,
+          entry.key,
+          reason:
+              'Detection of canonical settings for "${entry.key}" '
+              'produced "${v.id}" instead',
+        );
+      }
+    });
+
+    test('every canonical entry should have a display name', () {
+      for (final String id in RuleVariant.canonicalSettings.keys) {
+        final RuleVariant? v = PredefinedVariants.getById(id);
+        expect(v, isNotNull, reason: 'No PredefinedVariant for "$id"');
+        expect(
+          v!.name,
+          isNot(contains('Piece Variant')),
+          reason: '"$id" should have a named display name, not fallback',
+        );
+      }
+    });
   });
 
   // ---------------------------------------------------------------------------
@@ -100,8 +227,12 @@ void main() {
   // PredefinedVariants
   // ---------------------------------------------------------------------------
   group('PredefinedVariants', () {
-    test('should have 5 predefined variants', () {
-      expect(PredefinedVariants.all.length, 5);
+    test('should have all predefined variants', () {
+      // One entry per named variant in RuleVariant.canonicalSettings.
+      expect(
+        PredefinedVariants.all.length,
+        RuleVariant.canonicalSettings.length,
+      );
     });
 
     test('nineMensMorris should have correct ID', () {

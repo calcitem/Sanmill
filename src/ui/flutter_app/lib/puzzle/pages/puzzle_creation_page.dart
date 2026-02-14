@@ -462,6 +462,13 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
       );
     }
 
+    // Capture the current rule variant so the puzzle records which rules it
+    // was designed for.  When the puzzle is opened later under a different
+    // rule set, the app can detect the mismatch and auto-switch.
+    final String currentRuleVariantId = RuleVariant.fromRuleSettings(
+      DB().ruleSettings,
+    ).id;
+
     // Create puzzle info
     final PuzzleInfo puzzle = PuzzleInfo(
       id: puzzleId,
@@ -482,6 +489,7 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
       author: _authorController.text.trim().isEmpty
           ? null
           : _authorController.text.trim(),
+      ruleVariantId: currentRuleVariantId,
     );
 
     // Save puzzle
