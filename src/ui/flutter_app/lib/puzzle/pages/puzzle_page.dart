@@ -5,6 +5,7 @@
 //
 // Main puzzle solving page
 
+import 'dart:convert';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -153,9 +154,13 @@ class _PuzzlePageState extends State<PuzzlePage> {
 
   /// Ensure the engine is configured with the rules required by this puzzle.
   ///
-  /// For known variants the rules are applied automatically and silently.
-  /// For unknown / custom variants the user is shown a warning because the
-  /// app cannot determine the correct settings to apply.
+  /// Resolution order:
+  /// 1. If the current active rules already match the puzzle — do nothing.
+  /// 2. Look up [RuleVariant.canonicalSettings] by the puzzle's variant ID.
+  /// 3. Deserialize the embedded [PuzzleInfo.ruleSettingsJson] snapshot
+  ///    (covers user-customised rule sets that are not among the 13 named
+  ///    variants).
+  /// 4. If none of the above succeeds, show a mismatch warning.
   void _applyPuzzleRulesIfNeeded() {
     final RuleVariant currentVariant = RuleVariant.fromRuleSettings(
       DB().ruleSettings,
@@ -167,12 +172,26 @@ class _PuzzlePageState extends State<PuzzlePage> {
       return;
     }
 
-    // Try to find the canonical settings for the puzzle's variant.
-    final RuleSettings? puzzleSettings =
+    // 1) Try canonical lookup for the 13 named variants.
+    RuleSettings? puzzleSettings =
         RuleVariant.canonicalSettings[puzzleVariantId];
 
+    // 2) Fallback: try the embedded rule-settings snapshot.
+    if (puzzleSettings == null && widget.puzzle.ruleSettingsJson != null) {
+      try {
+        final Map<String, dynamic> json =
+            jsonDecode(widget.puzzle.ruleSettingsJson!) as Map<String, dynamic>;
+        puzzleSettings = RuleSettings.fromJson(json);
+      } catch (e) {
+        logger.e(
+          '[PuzzlePage] Failed to deserialize ruleSettingsJson '
+          'for puzzle "${widget.puzzle.id}": $e',
+        );
+      }
+    }
+
     if (puzzleSettings != null) {
-      // Known variant — apply automatically so the puzzle works correctly.
+      // Apply the resolved settings so the engine validates moves correctly.
       DB().ruleSettings = puzzleSettings;
 
       // Force an immediate engine update after the current frame so that
@@ -186,7 +205,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
         'for puzzle "${widget.puzzle.id}"',
       );
     } else {
-      // Unknown / custom variant — cannot auto-switch; warn the user.
+      // No canonical entry and no snapshot — warn the user.
       WidgetsBinding.instance.addPostFrameCallback((_) {
         _showRuleMismatchWarning(currentVariant);
       });

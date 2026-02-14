@@ -3,6 +3,8 @@
 
 // puzzle_creation_page.dart
 
+import 'dart:convert';
+
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart' show Box;
@@ -12,6 +14,7 @@ import '../../game_page/services/mill.dart';
 import '../../game_page/widgets/game_page.dart';
 import '../../game_page/widgets/mini_board.dart';
 import '../../generated/intl/l10n.dart';
+import '../../rule_settings/models/rule_settings.dart';
 import '../../shared/database/database.dart';
 import '../../shared/services/logger.dart';
 import '../../shared/themes/app_theme.dart';
@@ -465,9 +468,14 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
     // Capture the current rule variant so the puzzle records which rules it
     // was designed for.  When the puzzle is opened later under a different
     // rule set, the app can detect the mismatch and auto-switch.
+    final RuleSettings currentRuleSettings = DB().ruleSettings;
     final String currentRuleVariantId = RuleVariant.fromRuleSettings(
-      DB().ruleSettings,
+      currentRuleSettings,
     ).id;
+
+    // Always store a full rule-settings snapshot so that even custom
+    // (non-predefined) variants can be reconstructed exactly.
+    final String ruleSnapshot = jsonEncode(currentRuleSettings.toJson());
 
     // Create puzzle info
     final PuzzleInfo puzzle = PuzzleInfo(
@@ -490,6 +498,7 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
           ? null
           : _authorController.text.trim(),
       ruleVariantId: currentRuleVariantId,
+      ruleSettingsJson: ruleSnapshot,
     );
 
     // Save puzzle

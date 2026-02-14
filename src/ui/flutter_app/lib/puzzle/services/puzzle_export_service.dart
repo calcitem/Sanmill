@@ -387,6 +387,12 @@ class PuzzleExportService {
       map['rating'] = puzzle.rating;
     }
 
+    // Include the full rule-settings snapshot so that custom (non-predefined)
+    // variants survive an export/import round-trip.
+    if (puzzle.ruleSettingsJson != null) {
+      map['ruleSettingsJson'] = puzzle.ruleSettingsJson;
+    }
+
     return map;
   }
 
