@@ -775,7 +775,7 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
       key: const Key('rotate_button'),
       onPressed: () => setSetupPositionTransform(
         context,
-        TransformationType.rotate90Degrees,
+        TransformationType.rotate90,
       ),
       icon: const Icon(FluentIcons.arrow_rotate_clockwise_24_regular),
       label: Text(
@@ -789,7 +789,7 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
     final ToolbarItem horizontalFlipButton = ToolbarItem.icon(
       key: const Key('horizontal_flip_button'),
       onPressed: () =>
-          setSetupPositionTransform(context, TransformationType.horizontalFlip),
+          setSetupPositionTransform(context, TransformationType.mirrorHorizontal),
       icon: const Icon(FluentIcons.flip_horizontal_24_regular),
       label: Text(
         S.of(context).horizontalFlip,
@@ -802,7 +802,7 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
     final ToolbarItem verticalFlipButton = ToolbarItem.icon(
       key: const Key('vertical_flip_button'),
       onPressed: () =>
-          setSetupPositionTransform(context, TransformationType.verticalFlip),
+          setSetupPositionTransform(context, TransformationType.mirrorVertical),
       icon: const Icon(FluentIcons.flip_vertical_24_regular),
       label: Text(
         S.of(context).verticalFlip,
@@ -815,7 +815,7 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
     final ToolbarItem innerOuterFlipButton = ToolbarItem.icon(
       key: const Key('inner_outer_flip_button'),
       onPressed: () =>
-          setSetupPositionTransform(context, TransformationType.innerOuterFlip),
+          setSetupPositionTransform(context, TransformationType.swap),
       icon: const Icon(FluentIcons.arrow_expand_24_regular),
       label: Text(
         S.of(context).innerOuterFlip,
