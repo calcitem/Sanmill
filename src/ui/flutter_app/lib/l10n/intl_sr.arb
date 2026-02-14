@@ -2001,7 +2001,7 @@
     "@llmProvider": {},
     "baseUrl": "Osnovni URL",
     "@baseUrl": {},
-    "model": "Model",
+    "model": "Модел",
     "@model": {},
     "temperature": "Temperatura",
     "@temperature": {},
