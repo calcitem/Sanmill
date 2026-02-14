@@ -4091,5 +4091,9 @@
     "movePieceUp": "Move piece up",
     "@movePieceUp": {},
     "movePieceDiagonallyDown": "Move piece diagonally down",
-    "@movePieceDiagonallyDown": {}
+    "@movePieceDiagonallyDown": {},
+    "puzzleTransform": "রূপান্তর",
+    "@puzzleTransform": {},
+    "puzzleTransformed": "বোর্ড রূপান্তরিত হয়েছে।",
+    "@puzzleTransformed": {}
 }

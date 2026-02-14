@@ -3383,5 +3383,9 @@
     "movePieceUp": "Move piece up",
     "@movePieceUp": {},
     "movePieceDiagonallyDown": "Move piece diagonally down",
-    "@movePieceDiagonallyDown": {}
+    "@movePieceDiagonallyDown": {},
+    "puzzleTransform": "Transformieren",
+    "@puzzleTransform": {},
+    "puzzleTransformed": "Brett transformiert.",
+    "@puzzleTransformed": {}
 }

@@ -4091,5 +4091,9 @@
     "movePieceUp": "Move piece up",
     "@movePieceUp": {},
     "movePieceDiagonallyDown": "Move piece diagonally down",
-    "@movePieceDiagonallyDown": {}
+    "@movePieceDiagonallyDown": {},
+    "puzzleTransform": "បំលែង",
+    "@puzzleTransform": {},
+    "puzzleTransformed": "ក្ដារត្រូវបានបំលែង។",
+    "@puzzleTransformed": {}
 }

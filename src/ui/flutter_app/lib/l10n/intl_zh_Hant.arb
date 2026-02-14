@@ -4107,5 +4107,9 @@
     "movePieceUp": "Move piece up",
     "@movePieceUp": {},
     "movePieceDiagonallyDown": "Move piece diagonally down",
-    "@movePieceDiagonallyDown": {}
+    "@movePieceDiagonallyDown": {},
+    "puzzleTransform": "變換",
+    "@puzzleTransform": {},
+    "puzzleTransformed": "棋盤已變換。",
+    "@puzzleTransformed": {}
 }

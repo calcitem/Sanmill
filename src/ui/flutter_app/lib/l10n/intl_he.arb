@@ -4091,5 +4091,9 @@
     "movePieceUp": "Move piece up",
     "@movePieceUp": {},
     "movePieceDiagonallyDown": "Move piece diagonally down",
-    "@movePieceDiagonallyDown": {}
+    "@movePieceDiagonallyDown": {},
+    "puzzleTransform": "המרה",
+    "@puzzleTransform": {},
+    "puzzleTransformed": "הלוח הומר.",
+    "@puzzleTransformed": {}
 }
