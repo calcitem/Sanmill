@@ -667,7 +667,7 @@
             }
         }
     },
-    "info": "Info",
+    "info": "Informacije",
     "@info": {
         "description": "Info"
     },
@@ -809,7 +809,7 @@
     "@versionInfo": {
         "description": "Version info"
     },
-    "eula": "EULA",
+    "eula": "Licenčna pogodba",
     "@eula": {
         "description": "EULA"
     },
@@ -1003,7 +1003,7 @@
     "@bottom": {
         "description": "Bottom"
     },
-    "center": "Center",
+    "center": "Sredina",
     "@center": {
         "description": "Center"
     },
@@ -1463,7 +1463,7 @@
     "@whatIsMcts": {},
     "goldenJade": "Zlati žad",
     "@goldenJade": {},
-    "forestWood": "Forest Wood",
+    "forestWood": "Gozdni les",
     "@forestWood": {},
     "darkMystery": "Temna skrivnost",
     "@darkMystery": {},
@@ -1619,9 +1619,9 @@
     "@useOpeningBook": {},
     "currentRule": "Trenutni",
     "@currentRule": {},
-    "nineMensMorris": "Nine Men's Morris",
+    "nineMensMorris": "Mlin z devetimi figurami",
     "@nineMensMorris": {},
-    "twelveMensMorris": "Twelve Men's Morris",
+    "twelveMensMorris": "Mlin z dvanajstimi figurami",
     "@twelveMensMorris": {},
     "morabaraba": "Morabaraba",
     "@morabaraba": {},
@@ -1641,7 +1641,7 @@
     "@ruleSet": {},
     "laskerMorris": "Lasker Morris",
     "@laskerMorris": {},
-    "oneTimeMill": "One-Time Mill",
+    "oneTimeMill": "Enkratni mlin",
     "@oneTimeMill": {},
     "daSanQi": "Da San Qi",
     "@daSanQi": {},
@@ -2071,7 +2071,7 @@
     "@draws": {},
     "lastUpdated": "Nazadnje posodobljeno",
     "@lastUpdated": {},
-    "format": "Format:",
+    "format": "Oblika:",
     "@format": {},
     "resetStatistics": "Ponastavi statistiko",
     "@resetStatistics": {},
@@ -2215,7 +2215,7 @@
     "@puzzles": {
         "description": "Puzzles menu item"
     },
-    "puzzle": "Puzzle",
+    "puzzle": "Uganka",
     "@puzzle": {
         "description": "Puzzle"
     },
@@ -2287,7 +2287,7 @@
     "@puzzleCategoryCapturePieces": {
         "description": "Capture pieces category"
     },
-    "puzzleCategoryWinGame": "Win Game",
+    "puzzleCategoryWinGame": "Zmaga",
     "@puzzleCategoryWinGame": {
         "description": "Win the game category"
     },
@@ -2835,7 +2835,7 @@
             }
         }
     },
-    "dailyPuzzleStreak": "Streak",
+    "dailyPuzzleStreak": "Serija",
     "@dailyPuzzleStreak": {
         "description": "Daily puzzle streak label"
     },
@@ -2888,7 +2888,7 @@
     "@allPuzzlesDesc": {
         "description": "All puzzles mode description"
     },
-    "puzzleRush": "Puzzle Rush",
+    "puzzleRush": "Uganka na čas",
     "@puzzleRush": {
         "description": "Puzzle rush mode name"
     },
@@ -2936,7 +2936,7 @@
     "@puzzleRushOutOfLives": {
         "description": "Out of lives message"
     },
-    "puzzleRushComplete": "Rush Complete!",
+    "puzzleRushComplete": "Rush končan!",
     "@puzzleRushComplete": {
         "description": "Rush complete message"
     },
@@ -2956,7 +2956,7 @@
     "@puzzleRushPlayAgain": {
         "description": "Play again button"
     },
-    "puzzleBattle": "Puzzle Battle",
+    "puzzleBattle": "Bitka ugank",
     "@puzzleBattle": {
         "description": "Puzzle battle mode name"
     },
@@ -3004,7 +3004,7 @@
     "@puzzleCreate": {
         "description": "Create puzzle button"
     },
-    "puzzleStreak": "Puzzle Streak",
+    "puzzleStreak": "Zaporedje ugank",
     "@puzzleStreak": {
         "description": "Puzzle streak mode name"
     },
@@ -4032,65 +4032,65 @@
     "@includeVariationsMainline": {},
     "bothPlayersRemoveOpponentsPiece": "Oba igralca odstranita po eno sosednjo nasprotnikovo figuro, nato se igra nadaljuje.",
     "@bothPlayersRemoveOpponentsPiece": {},
-    "jumpToVariation": "Jump to variation",
+    "jumpToVariation": "Skoči na varianto",
     "@jumpToVariation": {},
-    "variationNotation": "Variation: {notation}",
+    "variationNotation": "Varianta: {notation}",
     "@variationNotation": {},
-    "jumpToThisVariation": "Jump to this variation",
+    "jumpToThisVariation": "Skoči na to varianto",
     "@jumpToThisVariation": {},
-    "switchToThisBranch": "Switch to this branch",
+    "switchToThisBranch": "Preklopi na to vejo",
     "@switchToThisBranch": {},
-    "setAsMainLine": "Set as main line",
+    "setAsMainLine": "Nastavi kot glavno vrstico",
     "@setAsMainLine": {},
-    "makeThisPrimaryVariation": "Make this the primary variation",
+    "makeThisPrimaryVariation": "Nastavi kot primarno varianto",
     "@makeThisPrimaryVariation": {},
-    "deleteBranch": "Delete branch",
+    "deleteBranch": "Izbriši vejo",
     "@deleteBranch": {},
-    "removeVariationPermanently": "Remove this variation permanently",
+    "removeVariationPermanently": "Trajno odstrani to varianto",
     "@removeVariationPermanently": {},
-    "cannotPromoteNoParent": "Cannot promote: no parent node",
+    "cannotPromoteNoParent": "Ni mogoče napredovati: ni nadrejenega vozlišča",
     "@cannotPromoteNoParent": {},
-    "alreadyMainVariation": "Already the main variation",
+    "alreadyMainVariation": "Je že primarna varianta",
     "@alreadyMainVariation": {},
-    "deleteBranchTitle": "Delete Branch",
+    "deleteBranchTitle": "Izbriši vejo",
     "@deleteBranchTitle": {},
-    "deleteBranchConfirmWithNotation": "Are you sure you want to delete the variation \"{notation}\" and all its continuations?",
+    "deleteBranchConfirmWithNotation": "Ali ste prepričani, da želite izbrisati varianto \"{notation}\" in vse njene nadaljevanja?",
     "@deleteBranchConfirmWithNotation": {},
-    "deleteBranchContainsPosition": "Warning: This branch contains your current position. You will be moved to the parent position.",
+    "deleteBranchContainsPosition": "Opozorilo: Ta veja vsebuje vaš trenutni položaj. Premaknjeni boste na nadrejeni položaj.",
     "@deleteBranchContainsPosition": {},
-    "cannotDeleteNoParent": "Cannot delete: no parent node",
+    "cannotDeleteNoParent": "Ni mogoče izbrisati: ni nadrejenega vozlišča",
     "@cannotDeleteNoParent": {},
-    "branchDeleted": "Branch deleted",
+    "branchDeleted": "Veja izbrisana",
     "@branchDeleted": {},
-    "cannotDeleteAlreadyMainLine": "Cannot delete: already on main line",
+    "cannotDeleteAlreadyMainLine": "Ni mogoče izbrisati: že na glavni vrstici",
     "@cannotDeleteAlreadyMainLine": {},
-    "branchMoves": "Branch moves",
+    "branchMoves": "Poteze veje",
     "@branchMoves": {},
-    "variations": "Variations",
+    "variations": "Variante",
     "@variations": {},
-    "resign": "Resign",
+    "resign": "Predaj se",
     "@resign": {},
-    "failedToSendResignation": "Failed to send resignation",
+    "failedToSendResignation": "Pošiljanje predaje ni uspelo",
     "@failedToSendResignation": {},
-    "opponentRequestsTakeBackAccept": "Opponent requests to take back {steps} move(s). Accept?",
+    "opponentRequestsTakeBackAccept": "Nasprotnik zahteva vrnitev {steps} poteze. Sprejmi?",
     "@opponentRequestsTakeBackAccept": {},
-    "errorLoadingImages": "Error loading images",
+    "errorLoadingImages": "Napaka pri nalaganju slik",
     "@errorLoadingImages": {},
-    "fileAlreadyExists": "File {name} already exists",
+    "fileAlreadyExists": "Datoteka {name} že obstaja",
     "@fileAlreadyExists": {},
-    "errorDetectingNetworkInterfaces": "Error detecting network interfaces",
+    "errorDetectingNetworkInterfaces": "Napaka pri zaznavi omrežnih vmesnikov",
     "@errorDetectingNetworkInterfaces": {},
-    "contributeToSanmill": "Contribute to Sanmill",
+    "contributeToSanmill": "Prispevajte k Sanmill",
     "@contributeToSanmill": {},
-    "howToContribute": "How to Contribute",
+    "howToContribute": "Kako prispevati",
     "@howToContribute": {},
-    "perfectDatabaseNotEnabled": "Perfect database is not enabled",
+    "perfectDatabaseNotEnabled": "Popolna baza podatkov ni omogočena",
     "@perfectDatabaseNotEnabled": {},
-    "redo": "Redo",
+    "redo": "Ponovi",
     "@redo": {},
-    "movePieceUp": "Move piece up",
+    "movePieceUp": "Premakni figuro navzgor",
     "@movePieceUp": {},
-    "movePieceDiagonallyDown": "Move piece diagonally down",
+    "movePieceDiagonallyDown": "Premakni figuro diagonalno navzdol",
     "@movePieceDiagonallyDown": {},
     "puzzleTransform": "Preoblikuj",
     "@puzzleTransform": {},

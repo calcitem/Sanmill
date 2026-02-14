@@ -60,7 +60,7 @@
     "@noGameRecord": {
         "description": "No record"
     },
-    "ok": "OK",
+    "ok": "ОК",
     "@ok": {
         "description": "OK"
     },
@@ -433,7 +433,7 @@
     "@human": {
         "description": "Human"
     },
-    "ai": "AI",
+    "ai": "ИИ",
     "@ai": {
         "description": "AI"
     },
@@ -809,7 +809,7 @@
     "@versionInfo": {
         "description": "Version info"
     },
-    "eula": "EULA",
+    "eula": "Лицензионно споразумение",
     "@eula": {
         "description": "EULA"
     },
@@ -2888,7 +2888,7 @@
     "@allPuzzlesDesc": {
         "description": "All puzzles mode description"
     },
-    "puzzleRush": "Puzzle Rush",
+    "puzzleRush": "Пъзел на бързина",
     "@puzzleRush": {
         "description": "Puzzle rush mode name"
     },
@@ -2924,7 +2924,7 @@
     "@puzzleRushQuitConfirm": {
         "description": "Quit rush confirmation message"
     },
-    "puzzleRushResults": "Rush Results",
+    "puzzleRushResults": "Резултати от Rush",
     "@puzzleRushResults": {
         "description": "Puzzle rush results header"
     },
@@ -3004,7 +3004,7 @@
     "@puzzleCreate": {
         "description": "Create puzzle button"
     },
-    "puzzleStreak": "Puzzle Streak",
+    "puzzleStreak": "Серия пъзели",
     "@puzzleStreak": {
         "description": "Puzzle streak mode name"
     },
@@ -4032,65 +4032,65 @@
     "@includeVariationsMainline": {},
     "bothPlayersRemoveOpponentsPiece": "И двамата играчи премахват по една съседна фигура на противника, след което играта продължава.",
     "@bothPlayersRemoveOpponentsPiece": {},
-    "jumpToVariation": "Jump to variation",
+    "jumpToVariation": "Преминаване към вариант",
     "@jumpToVariation": {},
-    "variationNotation": "Variation: {notation}",
+    "variationNotation": "Вариант: {notation}",
     "@variationNotation": {},
-    "jumpToThisVariation": "Jump to this variation",
+    "jumpToThisVariation": "Преминаване към този вариант",
     "@jumpToThisVariation": {},
-    "switchToThisBranch": "Switch to this branch",
+    "switchToThisBranch": "Превключване към този клон",
     "@switchToThisBranch": {},
-    "setAsMainLine": "Set as main line",
+    "setAsMainLine": "Задаване като основна линия",
     "@setAsMainLine": {},
-    "makeThisPrimaryVariation": "Make this the primary variation",
+    "makeThisPrimaryVariation": "Направи това основен вариант",
     "@makeThisPrimaryVariation": {},
-    "deleteBranch": "Delete branch",
+    "deleteBranch": "Изтриване на клон",
     "@deleteBranch": {},
-    "removeVariationPermanently": "Remove this variation permanently",
+    "removeVariationPermanently": "Премахване на този вариант завинаги",
     "@removeVariationPermanently": {},
-    "cannotPromoteNoParent": "Cannot promote: no parent node",
+    "cannotPromoteNoParent": "Не може да се повиши: няма родителски възел",
     "@cannotPromoteNoParent": {},
-    "alreadyMainVariation": "Already the main variation",
+    "alreadyMainVariation": "Вече е основният вариант",
     "@alreadyMainVariation": {},
-    "deleteBranchTitle": "Delete Branch",
+    "deleteBranchTitle": "Изтриване на клон",
     "@deleteBranchTitle": {},
-    "deleteBranchConfirmWithNotation": "Are you sure you want to delete the variation \"{notation}\" and all its continuations?",
+    "deleteBranchConfirmWithNotation": "Сигурни ли сте, че искате да изтриете варианта \"{notation}\" и всичките му продължения?",
     "@deleteBranchConfirmWithNotation": {},
-    "deleteBranchContainsPosition": "Warning: This branch contains your current position. You will be moved to the parent position.",
+    "deleteBranchContainsPosition": "Внимание: Този клон съдържа текущата ви позиция. Ще бъдете преместени на родителската позиция.",
     "@deleteBranchContainsPosition": {},
-    "cannotDeleteNoParent": "Cannot delete: no parent node",
+    "cannotDeleteNoParent": "Не може да се изтрие: няма родителски възел",
     "@cannotDeleteNoParent": {},
-    "branchDeleted": "Branch deleted",
+    "branchDeleted": "Клонът е изтрит",
     "@branchDeleted": {},
-    "cannotDeleteAlreadyMainLine": "Cannot delete: already on main line",
+    "cannotDeleteAlreadyMainLine": "Не може да се изтрие: вече е на основната линия",
     "@cannotDeleteAlreadyMainLine": {},
-    "branchMoves": "Branch moves",
+    "branchMoves": "Ходове на клона",
     "@branchMoves": {},
-    "variations": "Variations",
+    "variations": "Варианти",
     "@variations": {},
-    "resign": "Resign",
+    "resign": "Предай се",
     "@resign": {},
-    "failedToSendResignation": "Failed to send resignation",
+    "failedToSendResignation": "Неуспешно изпращане на предаване",
     "@failedToSendResignation": {},
-    "opponentRequestsTakeBackAccept": "Opponent requests to take back {steps} move(s). Accept?",
+    "opponentRequestsTakeBackAccept": "Противникът иска да върне {steps} ход(а). Приемате ли?",
     "@opponentRequestsTakeBackAccept": {},
-    "errorLoadingImages": "Error loading images",
+    "errorLoadingImages": "Грешка при зареждане на изображения",
     "@errorLoadingImages": {},
-    "fileAlreadyExists": "File {name} already exists",
+    "fileAlreadyExists": "Файлът {name} вече съществува",
     "@fileAlreadyExists": {},
-    "errorDetectingNetworkInterfaces": "Error detecting network interfaces",
+    "errorDetectingNetworkInterfaces": "Грешка при откриване на мрежови интерфейси",
     "@errorDetectingNetworkInterfaces": {},
-    "contributeToSanmill": "Contribute to Sanmill",
+    "contributeToSanmill": "Допринесете за Sanmill",
     "@contributeToSanmill": {},
-    "howToContribute": "How to Contribute",
+    "howToContribute": "Как да допринесете",
     "@howToContribute": {},
-    "perfectDatabaseNotEnabled": "Perfect database is not enabled",
+    "perfectDatabaseNotEnabled": "Перфектната база данни не е активирана",
     "@perfectDatabaseNotEnabled": {},
-    "redo": "Redo",
+    "redo": "Повтори",
     "@redo": {},
-    "movePieceUp": "Move piece up",
+    "movePieceUp": "Премести фигурата нагоре",
     "@movePieceUp": {},
-    "movePieceDiagonallyDown": "Move piece diagonally down",
+    "movePieceDiagonallyDown": "Премести фигурата диагонално надолу",
     "@movePieceDiagonallyDown": {},
     "puzzleTransform": "Трансформирай",
     "@puzzleTransform": {},

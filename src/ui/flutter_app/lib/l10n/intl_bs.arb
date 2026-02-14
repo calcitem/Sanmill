@@ -667,7 +667,7 @@
             }
         }
     },
-    "info": "Info",
+    "info": "Informacije",
     "@info": {
         "description": "Info"
     },
@@ -1619,9 +1619,9 @@
     "@useOpeningBook": {},
     "currentRule": "Trenutno",
     "@currentRule": {},
-    "nineMensMorris": "Nine Men's Morris",
+    "nineMensMorris": "Mlin s devet figura",
     "@nineMensMorris": {},
-    "twelveMensMorris": "Twelve Men's Morris",
+    "twelveMensMorris": "Mlin s dvanaest figura",
     "@twelveMensMorris": {},
     "morabaraba": "Morabaraba",
     "@morabaraba": {},
@@ -1641,7 +1641,7 @@
     "@ruleSet": {},
     "laskerMorris": "Lasker Morris",
     "@laskerMorris": {},
-    "oneTimeMill": "One-Time Mill",
+    "oneTimeMill": "Jednokratni mlin",
     "@oneTimeMill": {},
     "daSanQi": "Da San Qi",
     "@daSanQi": {},
@@ -2215,7 +2215,7 @@
     "@puzzles": {
         "description": "Puzzles menu item"
     },
-    "puzzle": "Puzzle",
+    "puzzle": "Zagonetka",
     "@puzzle": {
         "description": "Puzzle"
     },
@@ -2235,11 +2235,11 @@
     "@clearFilter": {
         "description": "Clear all filters"
     },
-    "puzzleStatistics": "Puzzle Statistics",
+    "puzzleStatistics": "Statistika zagonetki",
     "@puzzleStatistics": {
         "description": "Puzzle statistics"
     },
-    "totalPuzzles": "Total Puzzles",
+    "totalPuzzles": "Ukupno zagonetki",
     "@totalPuzzles": {
         "description": "Total puzzles"
     },
@@ -2247,7 +2247,7 @@
     "@completed": {
         "description": "Completed"
     },
-    "totalStars": "Total Stars",
+    "totalStars": "Ukupno zvjezdica",
     "@totalStars": {
         "description": "Total stars earned"
     },
@@ -2283,11 +2283,11 @@
     "@puzzleCategoryFormMill": {
         "description": "Form a mill category"
     },
-    "puzzleCategoryCapturePieces": "Capture",
+    "puzzleCategoryCapturePieces": "Zaroblavanje",
     "@puzzleCategoryCapturePieces": {
         "description": "Capture pieces category"
     },
-    "puzzleCategoryWinGame": "Win Game",
+    "puzzleCategoryWinGame": "Pobijedi igru",
     "@puzzleCategoryWinGame": {
         "description": "Win the game category"
     },
@@ -2299,7 +2299,7 @@
     "@puzzleCategoryFindBestMove": {
         "description": "Find best move category"
     },
-    "puzzleCategoryEndgame": "Endgame",
+    "puzzleCategoryEndgame": "Završnica",
     "@puzzleCategoryEndgame": {
         "description": "Endgame category"
     },
@@ -2335,7 +2335,7 @@
     "@giveUp": {
         "description": "Give up on puzzle"
     },
-    "puzzleSolved": "Puzzle Solved!",
+    "puzzleSolved": "Zagonetka riješena!",
     "@puzzleSolved": {
         "description": "Puzzle completion message"
     },
@@ -2363,7 +2363,7 @@
     "@puzzleEdit": {
         "description": "Edit an existing puzzle"
     },
-    "puzzleCustom": "Custom",
+    "puzzleCustom": "Prilagođeno",
     "@puzzleCustom": {
         "description": "Custom puzzle badge"
     },
@@ -2610,11 +2610,11 @@
     "@puzzleCreationSteps": {
         "description": "Steps for creating a puzzle"
     },
-    "puzzleSetupPosition": "Setup Position",
+    "puzzleSetupPosition": "Postavi poziciju",
     "@puzzleSetupPosition": {
         "description": "Setup the board position section"
     },
-    "puzzlePositionSnapshotted2": "Position Snapshotted",
+    "puzzlePositionSnapshotted2": "Pozicija snimljena",
     "@puzzlePositionSnapshotted2": {
         "description": "Header showing position has been snapshotted (title case)"
     },
@@ -2746,7 +2746,7 @@
     "@puzzleDifficulty": {
         "description": "Puzzle difficulty field"
     },
-    "puzzleHint": "Hint",
+    "puzzleHint": "Savjet",
     "@puzzleHint": {
         "description": "Puzzle hint field"
     },
@@ -2786,7 +2786,7 @@
     "@puzzleSolutionRequired": {
         "description": "Solution required error"
     },
-    "puzzleCreated": "Puzzle created",
+    "puzzleCreated": "Zagonetka kreirana",
     "@puzzleCreated": {
         "description": "Puzzle created message"
     },
@@ -2818,7 +2818,7 @@
     "@comingSoon": {
         "description": "Coming soon message"
     },
-    "dailyPuzzle": "Daily Puzzle",
+    "dailyPuzzle": "Dnevna zagonetka",
     "@dailyPuzzle": {
         "description": "Daily puzzle feature name"
     },
@@ -2835,7 +2835,7 @@
             }
         }
     },
-    "dailyPuzzleStreak": "Streak",
+    "dailyPuzzleStreak": "Niz",
     "@dailyPuzzleStreak": {
         "description": "Daily puzzle streak label"
     },
@@ -2864,7 +2864,7 @@
     "@dailyPuzzleStreakHint": {
         "description": "Streak hint message"
     },
-    "dailyPuzzleCurrentStreak": "Current Streak",
+    "dailyPuzzleCurrentStreak": "Trenutni niz",
     "@dailyPuzzleCurrentStreak": {
         "description": "Current streak label"
     },
@@ -2872,7 +2872,7 @@
     "@dailyPuzzleLongestStreak": {
         "description": "Longest streak label"
     },
-    "dailyPuzzleTotalCompleted": "Total Completed",
+    "dailyPuzzleTotalCompleted": "Ukupno završeno",
     "@dailyPuzzleTotalCompleted": {
         "description": "Total completed puzzles label"
     },
@@ -2888,7 +2888,7 @@
     "@allPuzzlesDesc": {
         "description": "All puzzles mode description"
     },
-    "puzzleRush": "Puzzle Rush",
+    "puzzleRush": "Zagonetka Trka",
     "@puzzleRush": {
         "description": "Puzzle rush mode name"
     },
@@ -2916,7 +2916,7 @@
     "@puzzleRushRule3": {
         "description": "Puzzle rush rule 3"
     },
-    "puzzleRushStart": "Start Rush",
+    "puzzleRushStart": "Započni trku",
     "@puzzleRushStart": {
         "description": "Start puzzle rush button"
     },
@@ -2924,7 +2924,7 @@
     "@puzzleRushQuitConfirm": {
         "description": "Quit rush confirmation message"
     },
-    "puzzleRushResults": "Rush Results",
+    "puzzleRushResults": "Rezultati trke",
     "@puzzleRushResults": {
         "description": "Puzzle rush results header"
     },
@@ -2936,7 +2936,7 @@
     "@puzzleRushOutOfLives": {
         "description": "Out of lives message"
     },
-    "puzzleRushComplete": "Rush Complete!",
+    "puzzleRushComplete": "Trka završena!",
     "@puzzleRushComplete": {
         "description": "Rush complete message"
     },
@@ -2952,11 +2952,11 @@
     "@puzzleRushAccuracy": {
         "description": "Accuracy label"
     },
-    "puzzleRushPlayAgain": "Play Again",
+    "puzzleRushPlayAgain": "Igraj ponovo",
     "@puzzleRushPlayAgain": {
         "description": "Play again button"
     },
-    "puzzleBattle": "Puzzle Battle",
+    "puzzleBattle": "Zagonetka Bitka",
     "@puzzleBattle": {
         "description": "Puzzle battle mode name"
     },
@@ -2984,11 +2984,11 @@
     "@puzzleBattleFeature3": {
         "description": "Puzzle battle feature 3"
     },
-    "puzzleBattleFeature4": "🏆 Leaderboards",
+    "puzzleBattleFeature4": "🏆 Rang liste",
     "@puzzleBattleFeature4": {
         "description": "Puzzle battle feature 4"
     },
-    "customPuzzles": "Custom Puzzles",
+    "customPuzzles": "Prilagođene zagonetke",
     "@customPuzzles": {
         "description": "Custom puzzles mode name"
     },
@@ -2996,15 +2996,15 @@
     "@customPuzzlesDesc": {
         "description": "Custom puzzles mode description"
     },
-    "puzzleMultiSelectMode": "Multi-Select Mode",
+    "puzzleMultiSelectMode": "Režim višestrukog odabira",
     "@puzzleMultiSelectMode": {
         "description": "Multi-select mode label"
     },
-    "puzzleCreate": "Create Puzzle",
+    "puzzleCreate": "Kreiraj zagonetku",
     "@puzzleCreate": {
         "description": "Create puzzle button"
     },
-    "puzzleStreak": "Puzzle Streak",
+    "puzzleStreak": "Zagonetka Niz",
     "@puzzleStreak": {
         "description": "Puzzle streak mode name"
     },
@@ -3032,11 +3032,11 @@
     "@puzzleStreakRule3": {
         "description": "Puzzle streak rule 3"
     },
-    "puzzleStreakStart": "Start Streak",
+    "puzzleStreakStart": "Započni niz",
     "@puzzleStreakStart": {
         "description": "Start puzzle streak button"
     },
-    "puzzleStreakCurrent": "Current",
+    "puzzleStreakCurrent": "Trenutni",
     "@puzzleStreakCurrent": {
         "description": "Current streak label"
     },
@@ -3056,7 +3056,7 @@
     "@puzzleStreakNewRecord": {
         "description": "New record message"
     },
-    "puzzleStreakFinalScore": "Final Score",
+    "puzzleStreakFinalScore": "Konačni rezultat",
     "@puzzleStreakFinalScore": {
         "description": "Final score label"
     },
@@ -3217,7 +3217,7 @@
     "@puzzleCreationWorkflow": {
         "description": "Title for puzzle creation workflow dialog"
     },
-    "puzzleWorkflowStepSetup": "Setup Position",
+    "puzzleWorkflowStepSetup": "Postavi poziciju",
     "@puzzleWorkflowStepSetup": {
         "description": "Workflow step: setup position"
     },
@@ -3241,7 +3241,7 @@
     "@puzzleWorkflowStepDetailsDesc": {
         "description": "Description for add details workflow step"
     },
-    "puzzleWorkflowStepSave": "Save Puzzle",
+    "puzzleWorkflowStepSave": "Sačuvaj zagonetku",
     "@puzzleWorkflowStepSave": {
         "description": "Workflow step: save puzzle"
     },
@@ -3301,7 +3301,7 @@
     "@noMoreHintsAvailable": {
         "description": "Message when no more hints are available"
     },
-    "hintDialogTitle": "Hint",
+    "hintDialogTitle": "Savjet",
     "@hintDialogTitle": {
         "description": "Title for hint dialog"
     },
@@ -3378,7 +3378,7 @@
     "@exportForContributionStepDesc": {
         "description": "Description for export step"
     },
-    "submitStep": "Submit",
+    "submitStep": "Pošalji",
     "@submitStep": {
         "description": "Title for submit step"
     },
@@ -3519,7 +3519,7 @@
     "@examples": {
         "description": "Examples label"
     },
-    "aiChatTitle": "AI Assistant",
+    "aiChatTitle": "AI Asistent",
     "@aiChatTitle": {
         "description": "AI chat assistant dialog title"
     },
@@ -3656,7 +3656,7 @@
             }
         }
     },
-    "clearLogs": "Clear Logs",
+    "clearLogs": "Obriši zapise",
     "@clearLogs": {
         "description": "Label for clear logs action"
     },
@@ -3725,7 +3725,7 @@
     "@puzzleNoMoreHints": {
         "description": "Message shown when no more hints available"
     },
-    "puzzleHintDialogTitle": "Hint",
+    "puzzleHintDialogTitle": "Savjet",
     "@puzzleHintDialogTitle": {
         "description": "Title for hint dialog"
     },
@@ -3866,7 +3866,7 @@
     "@puzzleContributeStep3Desc": {
         "description": "Step 3 description in contribution guide"
     },
-    "puzzleContributeStep4Title": "Submit",
+    "puzzleContributeStep4Title": "Pošalji",
     "@puzzleContributeStep4Title": {
         "description": "Step 4 title in contribution guide"
     },
@@ -4032,65 +4032,65 @@
     "@includeVariationsMainline": {},
     "bothPlayersRemoveOpponentsPiece": "Oba igrača uklanjaju po jednu susjednu figuru protivnika, zatim se igra nastavlja.",
     "@bothPlayersRemoveOpponentsPiece": {},
-    "jumpToVariation": "Jump to variation",
+    "jumpToVariation": "Skoči na varijaciju",
     "@jumpToVariation": {},
-    "variationNotation": "Variation: {notation}",
+    "variationNotation": "Varijacija: {notation}",
     "@variationNotation": {},
-    "jumpToThisVariation": "Jump to this variation",
+    "jumpToThisVariation": "Skoči na ovu varijaciju",
     "@jumpToThisVariation": {},
-    "switchToThisBranch": "Switch to this branch",
+    "switchToThisBranch": "Prebaci na ovu granu",
     "@switchToThisBranch": {},
-    "setAsMainLine": "Set as main line",
+    "setAsMainLine": "Postavi kao glavnu liniju",
     "@setAsMainLine": {},
-    "makeThisPrimaryVariation": "Make this the primary variation",
+    "makeThisPrimaryVariation": "Učini ovo glavnom varijacijom",
     "@makeThisPrimaryVariation": {},
-    "deleteBranch": "Delete branch",
+    "deleteBranch": "Obriši granu",
     "@deleteBranch": {},
-    "removeVariationPermanently": "Remove this variation permanently",
+    "removeVariationPermanently": "Trajno ukloni ovu varijaciju",
     "@removeVariationPermanently": {},
-    "cannotPromoteNoParent": "Cannot promote: no parent node",
+    "cannotPromoteNoParent": "Nije moguće promovirati: nema roditeljskog čvora",
     "@cannotPromoteNoParent": {},
-    "alreadyMainVariation": "Already the main variation",
+    "alreadyMainVariation": "Već je glavna varijacija",
     "@alreadyMainVariation": {},
-    "deleteBranchTitle": "Delete Branch",
+    "deleteBranchTitle": "Obriši granu",
     "@deleteBranchTitle": {},
-    "deleteBranchConfirmWithNotation": "Are you sure you want to delete the variation \"{notation}\" and all its continuations?",
+    "deleteBranchConfirmWithNotation": "Jeste li sigurni da želite obrisati varijaciju \"{notation}\" i sva njena nastavljena kretanja?",
     "@deleteBranchConfirmWithNotation": {},
-    "deleteBranchContainsPosition": "Warning: This branch contains your current position. You will be moved to the parent position.",
+    "deleteBranchContainsPosition": "Upozorenje: Ova grana sadrži vašu trenutnu poziciju. Bićete premješteni na roditeljsku poziciju.",
     "@deleteBranchContainsPosition": {},
-    "cannotDeleteNoParent": "Cannot delete: no parent node",
+    "cannotDeleteNoParent": "Nije moguće obrisati: nema roditeljskog čvora",
     "@cannotDeleteNoParent": {},
-    "branchDeleted": "Branch deleted",
+    "branchDeleted": "Grana obrisana",
     "@branchDeleted": {},
-    "cannotDeleteAlreadyMainLine": "Cannot delete: already on main line",
+    "cannotDeleteAlreadyMainLine": "Nije moguće obrisati: već je na glavnoj liniji",
     "@cannotDeleteAlreadyMainLine": {},
-    "branchMoves": "Branch moves",
+    "branchMoves": "Potezi grane",
     "@branchMoves": {},
-    "variations": "Variations",
+    "variations": "Varijacije",
     "@variations": {},
-    "resign": "Resign",
+    "resign": "Predaj se",
     "@resign": {},
-    "failedToSendResignation": "Failed to send resignation",
+    "failedToSendResignation": "Neuspješno slanje predaje",
     "@failedToSendResignation": {},
-    "opponentRequestsTakeBackAccept": "Opponent requests to take back {steps} move(s). Accept?",
+    "opponentRequestsTakeBackAccept": "Protivnik traži povlačenje {steps} potez(a). Prihvatiti?",
     "@opponentRequestsTakeBackAccept": {},
-    "errorLoadingImages": "Error loading images",
+    "errorLoadingImages": "Greška pri učitavanju slika",
     "@errorLoadingImages": {},
-    "fileAlreadyExists": "File {name} already exists",
+    "fileAlreadyExists": "Datoteka {name} već postoji",
     "@fileAlreadyExists": {},
-    "errorDetectingNetworkInterfaces": "Error detecting network interfaces",
+    "errorDetectingNetworkInterfaces": "Greška pri otkrivanju mrežnih sučelja",
     "@errorDetectingNetworkInterfaces": {},
-    "contributeToSanmill": "Contribute to Sanmill",
+    "contributeToSanmill": "Doprinesite Sanmill-u",
     "@contributeToSanmill": {},
-    "howToContribute": "How to Contribute",
+    "howToContribute": "Kako doprinijeti",
     "@howToContribute": {},
-    "perfectDatabaseNotEnabled": "Perfect database is not enabled",
+    "perfectDatabaseNotEnabled": "Savršena baza podataka nije omogućena",
     "@perfectDatabaseNotEnabled": {},
-    "redo": "Redo",
+    "redo": "Ponovi",
     "@redo": {},
-    "movePieceUp": "Move piece up",
+    "movePieceUp": "Pomakni figuru gore",
     "@movePieceUp": {},
-    "movePieceDiagonallyDown": "Move piece diagonally down",
+    "movePieceDiagonallyDown": "Pomakni figuru dijagonalno dolje",
     "@movePieceDiagonallyDown": {},
     "puzzleTransform": "Transformiši",
     "@puzzleTransform": {},

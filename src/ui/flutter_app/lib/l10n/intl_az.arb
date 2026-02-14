@@ -28,7 +28,7 @@
     "@humanVsHuman": {
         "description": "Human Vs Human"
     },
-    "aiVsAi": "AI Vs. AI",
+    "aiVsAi": "Süni zəka süni zəkaya qarşı",
     "@aiVsAi": {
         "description": "AI Vs AI"
     },
@@ -809,7 +809,7 @@
     "@versionInfo": {
         "description": "Version info"
     },
-    "eula": "EULA",
+    "eula": "Lisenziya müqaviləsi",
     "@eula": {
         "description": "EULA"
     },
@@ -825,7 +825,7 @@
     "@appVersion": {
         "description": "App Version"
     },
-    "general": "General",
+    "general": "Ümumi",
     "@general": {
         "description": "General"
     },
@@ -1619,9 +1619,9 @@
     "@useOpeningBook": {},
     "currentRule": "Cari",
     "@currentRule": {},
-    "nineMensMorris": "Nine Men's Morris",
+    "nineMensMorris": "Doqquz Daşlı Morris",
     "@nineMensMorris": {},
-    "twelveMensMorris": "Twelve Men's Morris",
+    "twelveMensMorris": "On iki Daşlı Morris",
     "@twelveMensMorris": {},
     "morabaraba": "Morabaraba",
     "@morabaraba": {},
@@ -1641,7 +1641,7 @@
     "@ruleSet": {},
     "laskerMorris": "Lasker Morris",
     "@laskerMorris": {},
-    "oneTimeMill": "One-Time Mill",
+    "oneTimeMill": "Birvaxtlı dəyirman",
     "@oneTimeMill": {},
     "daSanQi": "Da San Qi",
     "@daSanQi": {},
@@ -2888,7 +2888,7 @@
     "@allPuzzlesDesc": {
         "description": "All puzzles mode description"
     },
-    "puzzleRush": "Puzzle Rush",
+    "puzzleRush": "Tapmaca Yarışı",
     "@puzzleRush": {
         "description": "Puzzle rush mode name"
     },
@@ -2956,7 +2956,7 @@
     "@puzzleRushPlayAgain": {
         "description": "Play again button"
     },
-    "puzzleBattle": "Puzzle Battle",
+    "puzzleBattle": "Tapmaca Döyüşü",
     "@puzzleBattle": {
         "description": "Puzzle battle mode name"
     },
@@ -3004,7 +3004,7 @@
     "@puzzleCreate": {
         "description": "Create puzzle button"
     },
-    "puzzleStreak": "Puzzle Streak",
+    "puzzleStreak": "Tapmaca Seriyası",
     "@puzzleStreak": {
         "description": "Puzzle streak mode name"
     },
@@ -3032,7 +3032,7 @@
     "@puzzleStreakRule3": {
         "description": "Puzzle streak rule 3"
     },
-    "puzzleStreakStart": "Start Streak",
+    "puzzleStreakStart": "Seriyanı başla",
     "@puzzleStreakStart": {
         "description": "Start puzzle streak button"
     },
@@ -4032,65 +4032,65 @@
     "@includeVariationsMainline": {},
     "bothPlayersRemoveOpponentsPiece": "Hər iki oyunçu rəqibin qonşu daşlarından birini çıxarır, sonra oyun davam edir.",
     "@bothPlayersRemoveOpponentsPiece": {},
-    "jumpToVariation": "Jump to variation",
+    "jumpToVariation": "Variasiyaya keç",
     "@jumpToVariation": {},
-    "variationNotation": "Variation: {notation}",
+    "variationNotation": "Variasiya: {notation}",
     "@variationNotation": {},
-    "jumpToThisVariation": "Jump to this variation",
+    "jumpToThisVariation": "Bu variasiyaya keç",
     "@jumpToThisVariation": {},
-    "switchToThisBranch": "Switch to this branch",
+    "switchToThisBranch": "Bu qola keç",
     "@switchToThisBranch": {},
-    "setAsMainLine": "Set as main line",
+    "setAsMainLine": "Əsas xətt olaraq təyin et",
     "@setAsMainLine": {},
-    "makeThisPrimaryVariation": "Make this the primary variation",
+    "makeThisPrimaryVariation": "Bunu əsas variasiya et",
     "@makeThisPrimaryVariation": {},
-    "deleteBranch": "Delete branch",
+    "deleteBranch": "Qolu sil",
     "@deleteBranch": {},
-    "removeVariationPermanently": "Remove this variation permanently",
+    "removeVariationPermanently": "Bu variasiyanı həmişəlik sil",
     "@removeVariationPermanently": {},
-    "cannotPromoteNoParent": "Cannot promote: no parent node",
+    "cannotPromoteNoParent": "Yüksəltmək olmur: üst qovşaq yoxdur",
     "@cannotPromoteNoParent": {},
-    "alreadyMainVariation": "Already the main variation",
+    "alreadyMainVariation": "Artıq əsas variasiyadır",
     "@alreadyMainVariation": {},
-    "deleteBranchTitle": "Delete Branch",
+    "deleteBranchTitle": "Qolu sil",
     "@deleteBranchTitle": {},
-    "deleteBranchConfirmWithNotation": "Are you sure you want to delete the variation \"{notation}\" and all its continuations?",
+    "deleteBranchConfirmWithNotation": "\"{notation}\" variasiyasını və bütün davamlarını silmək istədiyinizə əminsiniz?",
     "@deleteBranchConfirmWithNotation": {},
-    "deleteBranchContainsPosition": "Warning: This branch contains your current position. You will be moved to the parent position.",
+    "deleteBranchContainsPosition": "Xəbərdarlıq: Bu qol cari mövqeyinizi ehtiva edir. Üst mövqeyə köçürüləcəksiniz.",
     "@deleteBranchContainsPosition": {},
-    "cannotDeleteNoParent": "Cannot delete: no parent node",
+    "cannotDeleteNoParent": "Silmək olmur: üst qovşaq yoxdur",
     "@cannotDeleteNoParent": {},
-    "branchDeleted": "Branch deleted",
+    "branchDeleted": "Qol silindi",
     "@branchDeleted": {},
-    "cannotDeleteAlreadyMainLine": "Cannot delete: already on main line",
+    "cannotDeleteAlreadyMainLine": "Silmək olmur: artıq əsas xətdədir",
     "@cannotDeleteAlreadyMainLine": {},
-    "branchMoves": "Branch moves",
+    "branchMoves": "Qol hərəkətləri",
     "@branchMoves": {},
-    "variations": "Variations",
+    "variations": "Variasiyalar",
     "@variations": {},
-    "resign": "Resign",
+    "resign": "Təslim ol",
     "@resign": {},
-    "failedToSendResignation": "Failed to send resignation",
+    "failedToSendResignation": "Təslim göndərilmədi",
     "@failedToSendResignation": {},
-    "opponentRequestsTakeBackAccept": "Opponent requests to take back {steps} move(s). Accept?",
+    "opponentRequestsTakeBackAccept": "{steps} hərəkəti geri almaq istəyir. Qəbul edirsiniz?",
     "@opponentRequestsTakeBackAccept": {},
-    "errorLoadingImages": "Error loading images",
+    "errorLoadingImages": "Şəkilləri yükləmədə xəta",
     "@errorLoadingImages": {},
-    "fileAlreadyExists": "File {name} already exists",
+    "fileAlreadyExists": "{name} faylı artıq mövcuddur",
     "@fileAlreadyExists": {},
-    "errorDetectingNetworkInterfaces": "Error detecting network interfaces",
+    "errorDetectingNetworkInterfaces": "Şəbəkə interfeysləri aşkarlanmasında xəta",
     "@errorDetectingNetworkInterfaces": {},
-    "contributeToSanmill": "Contribute to Sanmill",
+    "contributeToSanmill": "Sanmill-ə töhfə verin",
     "@contributeToSanmill": {},
-    "howToContribute": "How to Contribute",
+    "howToContribute": "Necə töhfə vermək olar",
     "@howToContribute": {},
-    "perfectDatabaseNotEnabled": "Perfect database is not enabled",
+    "perfectDatabaseNotEnabled": "Mükəmməl verilənlər bazası aktiv deyil",
     "@perfectDatabaseNotEnabled": {},
-    "redo": "Redo",
+    "redo": "Yenidən et",
     "@redo": {},
-    "movePieceUp": "Move piece up",
+    "movePieceUp": "Fiquru yuxarı hərəkət etdir",
     "@movePieceUp": {},
-    "movePieceDiagonallyDown": "Move piece diagonally down",
+    "movePieceDiagonallyDown": "Fiquru diaqonal aşağı hərəkət etdir",
     "@movePieceDiagonallyDown": {},
     "puzzleTransform": "Çevir",
     "@puzzleTransform": {},

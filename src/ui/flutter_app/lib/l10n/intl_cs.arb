@@ -667,7 +667,7 @@
             }
         }
     },
-    "info": "Info",
+    "info": "Informace",
     "@info": {
         "description": "Info"
     },
@@ -809,7 +809,7 @@
     "@versionInfo": {
         "description": "Version info"
     },
-    "eula": "EULA",
+    "eula": "Licenční smlouva",
     "@eula": {
         "description": "EULA"
     },
@@ -1619,9 +1619,9 @@
     "@useOpeningBook": {},
     "currentRule": "Aktuální",
     "@currentRule": {},
-    "nineMensMorris": "Nine Men's Morris",
+    "nineMensMorris": "Mlýn (devět kamenů)",
     "@nineMensMorris": {},
-    "twelveMensMorris": "Twelve Men's Morris",
+    "twelveMensMorris": "Mlýn (dvanáct kamenů)",
     "@twelveMensMorris": {},
     "morabaraba": "Morabaraba",
     "@morabaraba": {},
@@ -1641,7 +1641,7 @@
     "@ruleSet": {},
     "laskerMorris": "Lasker Morris",
     "@laskerMorris": {},
-    "oneTimeMill": "One-Time Mill",
+    "oneTimeMill": "Jednorázový mlýn",
     "@oneTimeMill": {},
     "daSanQi": "Da San Qi",
     "@daSanQi": {},
@@ -1699,7 +1699,7 @@
     "@restartRequestRejected": {},
     "notConnectedToLanOpponent": "Nejste připojeni k soupeři v místní síti.",
     "@notConnectedToLanOpponent": {},
-    "llmPrompt": "LLM prompt",
+    "llmPrompt": "Výzva LLM",
     "@llmPrompt": {},
     "gameRestarted": "Hra byla restartována.",
     "@gameRestarted": {},
@@ -2215,7 +2215,7 @@
     "@puzzles": {
         "description": "Puzzles menu item"
     },
-    "puzzle": "Puzzle",
+    "puzzle": "Hádanka",
     "@puzzle": {
         "description": "Puzzle"
     },
@@ -2888,7 +2888,7 @@
     "@allPuzzlesDesc": {
         "description": "All puzzles mode description"
     },
-    "puzzleRush": "Puzzle Rush",
+    "puzzleRush": "Řešení na čas",
     "@puzzleRush": {
         "description": "Puzzle rush mode name"
     },
@@ -2916,7 +2916,7 @@
     "@puzzleRushRule3": {
         "description": "Puzzle rush rule 3"
     },
-    "puzzleRushStart": "Start Rush",
+    "puzzleRushStart": "Zahájit Rush",
     "@puzzleRushStart": {
         "description": "Start puzzle rush button"
     },
@@ -3004,7 +3004,7 @@
     "@puzzleCreate": {
         "description": "Create puzzle button"
     },
-    "puzzleStreak": "Puzzle Streak",
+    "puzzleStreak": "Série hádanek",
     "@puzzleStreak": {
         "description": "Puzzle streak mode name"
     },
@@ -3032,7 +3032,7 @@
     "@puzzleStreakRule3": {
         "description": "Puzzle streak rule 3"
     },
-    "puzzleStreakStart": "Start Streak",
+    "puzzleStreakStart": "Zahájit sérii",
     "@puzzleStreakStart": {
         "description": "Start puzzle streak button"
     },
@@ -4032,65 +4032,65 @@
     "@includeVariationsMainline": {},
     "bothPlayersRemoveOpponentsPiece": "Oba hráči odeberou jednu ze sousedních soupeřových figurek, poté hra pokračuje.",
     "@bothPlayersRemoveOpponentsPiece": {},
-    "jumpToVariation": "Jump to variation",
+    "jumpToVariation": "Přejít na variantu",
     "@jumpToVariation": {},
-    "variationNotation": "Variation: {notation}",
+    "variationNotation": "Varianta: {notation}",
     "@variationNotation": {},
-    "jumpToThisVariation": "Jump to this variation",
+    "jumpToThisVariation": "Přejít na tuto variantu",
     "@jumpToThisVariation": {},
-    "switchToThisBranch": "Switch to this branch",
+    "switchToThisBranch": "Přepnout na tuto větev",
     "@switchToThisBranch": {},
-    "setAsMainLine": "Set as main line",
+    "setAsMainLine": "Nastavit jako hlavní linii",
     "@setAsMainLine": {},
-    "makeThisPrimaryVariation": "Make this the primary variation",
+    "makeThisPrimaryVariation": "Nastavit jako hlavní variantu",
     "@makeThisPrimaryVariation": {},
-    "deleteBranch": "Delete branch",
+    "deleteBranch": "Smazat větev",
     "@deleteBranch": {},
-    "removeVariationPermanently": "Remove this variation permanently",
+    "removeVariationPermanently": "Trvale odstranit tuto variantu",
     "@removeVariationPermanently": {},
-    "cannotPromoteNoParent": "Cannot promote: no parent node",
+    "cannotPromoteNoParent": "Nelze povýšit: žádný nadřazený uzel",
     "@cannotPromoteNoParent": {},
-    "alreadyMainVariation": "Already the main variation",
+    "alreadyMainVariation": "Již je hlavní varianta",
     "@alreadyMainVariation": {},
-    "deleteBranchTitle": "Delete Branch",
+    "deleteBranchTitle": "Smazat větev",
     "@deleteBranchTitle": {},
-    "deleteBranchConfirmWithNotation": "Are you sure you want to delete the variation \"{notation}\" and all its continuations?",
+    "deleteBranchConfirmWithNotation": "Opravdu chcete smazat variantu \"{notation}\" a všechna její pokračování?",
     "@deleteBranchConfirmWithNotation": {},
-    "deleteBranchContainsPosition": "Warning: This branch contains your current position. You will be moved to the parent position.",
+    "deleteBranchContainsPosition": "Upozornění: Tato větev obsahuje vaši aktuální pozici. Budete přesunuti na nadřazenou pozici.",
     "@deleteBranchContainsPosition": {},
-    "cannotDeleteNoParent": "Cannot delete: no parent node",
+    "cannotDeleteNoParent": "Nelze smazat: žádný nadřazený uzel",
     "@cannotDeleteNoParent": {},
-    "branchDeleted": "Branch deleted",
+    "branchDeleted": "Větev smazána",
     "@branchDeleted": {},
-    "cannotDeleteAlreadyMainLine": "Cannot delete: already on main line",
+    "cannotDeleteAlreadyMainLine": "Nelze smazat: již na hlavní linii",
     "@cannotDeleteAlreadyMainLine": {},
-    "branchMoves": "Branch moves",
+    "branchMoves": "Tahy větve",
     "@branchMoves": {},
-    "variations": "Variations",
+    "variations": "Varianty",
     "@variations": {},
-    "resign": "Resign",
+    "resign": "Vzdát se",
     "@resign": {},
-    "failedToSendResignation": "Failed to send resignation",
+    "failedToSendResignation": "Nepodařilo se odeslat vzdání",
     "@failedToSendResignation": {},
-    "opponentRequestsTakeBackAccept": "Opponent requests to take back {steps} move(s). Accept?",
+    "opponentRequestsTakeBackAccept": "Soupeř žádá o vrácení {steps} tahu(ů). Přijmout?",
     "@opponentRequestsTakeBackAccept": {},
-    "errorLoadingImages": "Error loading images",
+    "errorLoadingImages": "Chyba při načítání obrázků",
     "@errorLoadingImages": {},
-    "fileAlreadyExists": "File {name} already exists",
+    "fileAlreadyExists": "Soubor {name} již existuje",
     "@fileAlreadyExists": {},
-    "errorDetectingNetworkInterfaces": "Error detecting network interfaces",
+    "errorDetectingNetworkInterfaces": "Chyba při detekci síťových rozhraní",
     "@errorDetectingNetworkInterfaces": {},
-    "contributeToSanmill": "Contribute to Sanmill",
+    "contributeToSanmill": "Přispějte do Sanmill",
     "@contributeToSanmill": {},
-    "howToContribute": "How to Contribute",
+    "howToContribute": "Jak přispět",
     "@howToContribute": {},
-    "perfectDatabaseNotEnabled": "Perfect database is not enabled",
+    "perfectDatabaseNotEnabled": "Dokonalá databáze není povolena",
     "@perfectDatabaseNotEnabled": {},
-    "redo": "Redo",
+    "redo": "Znovu",
     "@redo": {},
-    "movePieceUp": "Move piece up",
+    "movePieceUp": "Přesunout figurku nahoru",
     "@movePieceUp": {},
-    "movePieceDiagonallyDown": "Move piece diagonally down",
+    "movePieceDiagonallyDown": "Přesunout figurku šikmo dolů",
     "@movePieceDiagonallyDown": {},
     "puzzleTransform": "Transformovat",
     "@puzzleTransform": {},

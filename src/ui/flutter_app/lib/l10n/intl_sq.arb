@@ -667,7 +667,7 @@
             }
         }
     },
-    "info": "Info",
+    "info": "Informacion",
     "@info": {
         "description": "Info"
     },
@@ -809,7 +809,7 @@
     "@versionInfo": {
         "description": "Version info"
     },
-    "eula": "EULA",
+    "eula": "Marrëveshja e licencës",
     "@eula": {
         "description": "EULA"
     },
@@ -1467,7 +1467,7 @@
     "@forestWood": {},
     "darkMystery": "Misteri i Errët",
     "@darkMystery": {},
-    "midnightBlue": "Midnight Blue",
+    "midnightBlue": "Blu e mesnatës",
     "@midnightBlue": {},
     "greenForest": "Pylli i Gjelbër",
     "@greenForest": {},
@@ -1619,9 +1619,9 @@
     "@useOpeningBook": {},
     "currentRule": "Aktual",
     "@currentRule": {},
-    "nineMensMorris": "Nine Men's Morris",
+    "nineMensMorris": "Morris me nëntë figura",
     "@nineMensMorris": {},
-    "twelveMensMorris": "Twelve Men's Morris",
+    "twelveMensMorris": "Morris me dymbëdhjetë figura",
     "@twelveMensMorris": {},
     "morabaraba": "Morabaraba",
     "@morabaraba": {},
@@ -1641,7 +1641,7 @@
     "@ruleSet": {},
     "laskerMorris": "Lasker Morris",
     "@laskerMorris": {},
-    "oneTimeMill": "One-Time Mill",
+    "oneTimeMill": "Mulli njëherësh",
     "@oneTimeMill": {},
     "daSanQi": "Da San Qi",
     "@daSanQi": {},
@@ -1699,7 +1699,7 @@
     "@restartRequestRejected": {},
     "notConnectedToLanOpponent": "Nuk jeni lidhur me kundërshtarin në LAN.",
     "@notConnectedToLanOpponent": {},
-    "llmPrompt": "LLM prompt",
+    "llmPrompt": "Komanda LLM",
     "@llmPrompt": {},
     "gameRestarted": "Loja u rinis.",
     "@gameRestarted": {},
@@ -2215,7 +2215,7 @@
     "@puzzles": {
         "description": "Puzzles menu item"
     },
-    "puzzle": "Puzzle",
+    "puzzle": "Enigmë",
     "@puzzle": {
         "description": "Puzzle"
     },
@@ -2359,7 +2359,7 @@
     "@puzzleCreateNew": {
         "description": "Create a new custom puzzle"
     },
-    "puzzleEdit": "Edit Puzzle",
+    "puzzleEdit": "Modifiko enigmën",
     "@puzzleEdit": {
         "description": "Edit an existing puzzle"
     },
@@ -2888,7 +2888,7 @@
     "@allPuzzlesDesc": {
         "description": "All puzzles mode description"
     },
-    "puzzleRush": "Puzzle Rush",
+    "puzzleRush": "Enigma Rush",
     "@puzzleRush": {
         "description": "Puzzle rush mode name"
     },
@@ -3241,7 +3241,7 @@
     "@puzzleWorkflowStepDetailsDesc": {
         "description": "Description for add details workflow step"
     },
-    "puzzleWorkflowStepSave": "Save Puzzle",
+    "puzzleWorkflowStepSave": "Ruaj enigmën",
     "@puzzleWorkflowStepSave": {
         "description": "Workflow step: save puzzle"
     },
@@ -3799,7 +3799,7 @@
             }
         }
     },
-    "puzzleShareSubject": "Puzzles ({count})",
+    "puzzleShareSubject": "Enigma ({count})",
     "@puzzleShareSubject": {
         "description": "Subject line when sharing puzzles",
         "placeholders": {
@@ -4032,65 +4032,65 @@
     "@includeVariationsMainline": {},
     "bothPlayersRemoveOpponentsPiece": "Të dy lojtarët heqin nga një gurë fqinj të kundërshtarit, pastaj loja vazhdon.",
     "@bothPlayersRemoveOpponentsPiece": {},
-    "jumpToVariation": "Jump to variation",
+    "jumpToVariation": "Kalo te varianti",
     "@jumpToVariation": {},
-    "variationNotation": "Variation: {notation}",
+    "variationNotation": "Varianti: {notation}",
     "@variationNotation": {},
-    "jumpToThisVariation": "Jump to this variation",
+    "jumpToThisVariation": "Kalo te ky variant",
     "@jumpToThisVariation": {},
-    "switchToThisBranch": "Switch to this branch",
+    "switchToThisBranch": "Kalo te kjo degë",
     "@switchToThisBranch": {},
-    "setAsMainLine": "Set as main line",
+    "setAsMainLine": "Vendos si linjë kryesore",
     "@setAsMainLine": {},
-    "makeThisPrimaryVariation": "Make this the primary variation",
+    "makeThisPrimaryVariation": "Bëje këtë variantin kryesor",
     "@makeThisPrimaryVariation": {},
-    "deleteBranch": "Delete branch",
+    "deleteBranch": "Fshi degën",
     "@deleteBranch": {},
-    "removeVariationPermanently": "Remove this variation permanently",
+    "removeVariationPermanently": "Hiq këtë variant përgjithmonë",
     "@removeVariationPermanently": {},
-    "cannotPromoteNoParent": "Cannot promote: no parent node",
+    "cannotPromoteNoParent": "Nuk mund të promovohet: nuk ka nyje prind",
     "@cannotPromoteNoParent": {},
-    "alreadyMainVariation": "Already the main variation",
+    "alreadyMainVariation": "Tashmë është varianti kryesor",
     "@alreadyMainVariation": {},
-    "deleteBranchTitle": "Delete Branch",
+    "deleteBranchTitle": "Fshi degën",
     "@deleteBranchTitle": {},
-    "deleteBranchConfirmWithNotation": "Are you sure you want to delete the variation \"{notation}\" and all its continuations?",
+    "deleteBranchConfirmWithNotation": "A jeni i sigurt që dëshironi të fshini variantin \"{notation}\" dhe të gjitha vazhdimësinë e tij?",
     "@deleteBranchConfirmWithNotation": {},
-    "deleteBranchContainsPosition": "Warning: This branch contains your current position. You will be moved to the parent position.",
+    "deleteBranchContainsPosition": "Paralajmërim: Kjo degë përmban pozicionin tuaj aktual. Do të zhvendoseni te pozicioni prind.",
     "@deleteBranchContainsPosition": {},
-    "cannotDeleteNoParent": "Cannot delete: no parent node",
+    "cannotDeleteNoParent": "Nuk mund të fshihet: nuk ka nyje prind",
     "@cannotDeleteNoParent": {},
-    "branchDeleted": "Branch deleted",
+    "branchDeleted": "Dega u fshi",
     "@branchDeleted": {},
-    "cannotDeleteAlreadyMainLine": "Cannot delete: already on main line",
+    "cannotDeleteAlreadyMainLine": "Nuk mund të fshihet: tashmë në linjën kryesore",
     "@cannotDeleteAlreadyMainLine": {},
-    "branchMoves": "Branch moves",
+    "branchMoves": "Lëvizjet e degës",
     "@branchMoves": {},
-    "variations": "Variations",
+    "variations": "Variantet",
     "@variations": {},
-    "resign": "Resign",
+    "resign": "Dorëzohu",
     "@resign": {},
-    "failedToSendResignation": "Failed to send resignation",
+    "failedToSendResignation": "Dështoi dërgimi i dorëzimit",
     "@failedToSendResignation": {},
-    "opponentRequestsTakeBackAccept": "Opponent requests to take back {steps} move(s). Accept?",
+    "opponentRequestsTakeBackAccept": "Kundërshtari kërkon të tërheqë {steps} lëvizje. Pranoni?",
     "@opponentRequestsTakeBackAccept": {},
-    "errorLoadingImages": "Error loading images",
+    "errorLoadingImages": "Gabim gjatë ngarkimit të imazheve",
     "@errorLoadingImages": {},
-    "fileAlreadyExists": "File {name} already exists",
+    "fileAlreadyExists": "Skedari {name} ekziston tashmë",
     "@fileAlreadyExists": {},
-    "errorDetectingNetworkInterfaces": "Error detecting network interfaces",
+    "errorDetectingNetworkInterfaces": "Gabim gjatë zbulimit të ndërfaqeve të rrjetit",
     "@errorDetectingNetworkInterfaces": {},
-    "contributeToSanmill": "Contribute to Sanmill",
+    "contributeToSanmill": "Kontribuoni në Sanmill",
     "@contributeToSanmill": {},
-    "howToContribute": "How to Contribute",
+    "howToContribute": "Si të kontribuoni",
     "@howToContribute": {},
-    "perfectDatabaseNotEnabled": "Perfect database is not enabled",
+    "perfectDatabaseNotEnabled": "Baza e të dhënave perfekte nuk është e aktivizuar",
     "@perfectDatabaseNotEnabled": {},
-    "redo": "Redo",
+    "redo": "Ribëj",
     "@redo": {},
-    "movePieceUp": "Move piece up",
+    "movePieceUp": "Lëviz figurën lart",
     "@movePieceUp": {},
-    "movePieceDiagonallyDown": "Move piece diagonally down",
+    "movePieceDiagonallyDown": "Lëviz figurën diagonalisht poshtë",
     "@movePieceDiagonallyDown": {},
     "puzzleTransform": "Transformo",
     "@puzzleTransform": {},

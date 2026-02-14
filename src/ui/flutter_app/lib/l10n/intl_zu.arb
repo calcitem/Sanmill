@@ -238,7 +238,7 @@
             }
         }
     },
-    "winRate": "Win Rate",
+    "winRate": "Izinga Lokunqoba",
     "@winRate": {
         "description": "Win Rate"
     },
@@ -2295,7 +2295,7 @@
     "@puzzleCategoryDefend": {
         "description": "Defense category"
     },
-    "puzzleCategoryFindBestMove": "Best Move",
+    "puzzleCategoryFindBestMove": "Isinyathelo Esihle",
     "@puzzleCategoryFindBestMove": {
         "description": "Find best move category"
     },
@@ -3906,11 +3906,11 @@
     "@puzzleContributeReqInstructive": {
         "description": "Quality requirement: instructive or entertaining"
     },
-    "monthJanuary": "January",
+    "monthJanuary": "uMasingana",
     "@monthJanuary": {
         "description": "January month name"
     },
-    "monthFebruary": "February",
+    "monthFebruary": "uNhlolanja",
     "@monthFebruary": {
         "description": "February month name"
     },
@@ -3918,7 +3918,7 @@
     "@monthMarch": {
         "description": "March month name"
     },
-    "monthApril": "April",
+    "monthApril": "u-Ephreli",
     "@monthApril": {
         "description": "April month name"
     },
@@ -3930,7 +3930,7 @@
     "@monthJune": {
         "description": "June month name"
     },
-    "monthJuly": "July",
+    "monthJuly": "uNtulikazi",
     "@monthJuly": {
         "description": "July month name"
     },
@@ -3938,7 +3938,7 @@
     "@monthAugust": {
         "description": "August month name"
     },
-    "monthSeptember": "September",
+    "monthSeptember": "uMandulo",
     "@monthSeptember": {
         "description": "September month name"
     },
@@ -4032,65 +4032,65 @@
     "@includeVariationsMainline": {},
     "bothPlayersRemoveOpponentsPiece": "Abadlali bobabili basusa isigaxa esisodwa somphikisi esiseduze, bese umdlalo uyaqhubeka.",
     "@bothPlayersRemoveOpponentsPiece": {},
-    "jumpToVariation": "Jump to variation",
+    "jumpToVariation": "Gxumela ku-variation",
     "@jumpToVariation": {},
-    "variationNotation": "Variation: {notation}",
+    "variationNotation": "Ukuhluka: {notation}",
     "@variationNotation": {},
-    "jumpToThisVariation": "Jump to this variation",
+    "jumpToThisVariation": "Gxumela kule variation",
     "@jumpToThisVariation": {},
-    "switchToThisBranch": "Switch to this branch",
+    "switchToThisBranch": "Shintshela kule gatsha",
     "@switchToThisBranch": {},
-    "setAsMainLine": "Set as main line",
+    "setAsMainLine": "Setha njengomugqa oyinhloko",
     "@setAsMainLine": {},
-    "makeThisPrimaryVariation": "Make this the primary variation",
+    "makeThisPrimaryVariation": "Yenza lesi sibe yi-variation eyinhloko",
     "@makeThisPrimaryVariation": {},
-    "deleteBranch": "Delete branch",
+    "deleteBranch": "Susa igatsha",
     "@deleteBranch": {},
-    "removeVariationPermanently": "Remove this variation permanently",
+    "removeVariationPermanently": "Susa le variation unomphela",
     "@removeVariationPermanently": {},
-    "cannotPromoteNoParent": "Cannot promote: no parent node",
+    "cannotPromoteNoParent": "Ayikwazi ukukhushulwa: ayikho i-node yomzali",
     "@cannotPromoteNoParent": {},
-    "alreadyMainVariation": "Already the main variation",
+    "alreadyMainVariation": "Sekuvele yi-variation eyinhloko",
     "@alreadyMainVariation": {},
-    "deleteBranchTitle": "Delete Branch",
+    "deleteBranchTitle": "Susa igatsha",
     "@deleteBranchTitle": {},
-    "deleteBranchConfirmWithNotation": "Are you sure you want to delete the variation \"{notation}\" and all its continuations?",
+    "deleteBranchConfirmWithNotation": "Uqinisekile ukuthi ufuna ukususa i-variation \"{notation}\" nazo zonke iziqhubekelo zayo?",
     "@deleteBranchConfirmWithNotation": {},
-    "deleteBranchContainsPosition": "Warning: This branch contains your current position. You will be moved to the parent position.",
+    "deleteBranchContainsPosition": "Isexwayiso: Le gatsha linesikhundla sakho samanje. Uzothunyelwa esimweni somzali.",
     "@deleteBranchContainsPosition": {},
-    "cannotDeleteNoParent": "Cannot delete: no parent node",
+    "cannotDeleteNoParent": "Ayikwazi ukususwa: ayikho i-node yomzali",
     "@cannotDeleteNoParent": {},
-    "branchDeleted": "Branch deleted",
+    "branchDeleted": "Igatsha lisusiwe",
     "@branchDeleted": {},
-    "cannotDeleteAlreadyMainLine": "Cannot delete: already on main line",
+    "cannotDeleteAlreadyMainLine": "Ayikwazi ukususwa: isivele isemgqeni oyinhloko",
     "@cannotDeleteAlreadyMainLine": {},
-    "branchMoves": "Branch moves",
+    "branchMoves": "Izinyathelo zegatsha",
     "@branchMoves": {},
-    "variations": "Variations",
+    "variations": "Ukuhlukana",
     "@variations": {},
-    "resign": "Resign",
+    "resign": "Yeka",
     "@resign": {},
-    "failedToSendResignation": "Failed to send resignation",
+    "failedToSendResignation": "Yehlulekile ukuthumela ukuyeka",
     "@failedToSendResignation": {},
-    "opponentRequestsTakeBackAccept": "Opponent requests to take back {steps} move(s). Accept?",
+    "opponentRequestsTakeBackAccept": "Isitha sicela ukubuyisela emuva izinyathelo ezi-{steps}. Vuma?",
     "@opponentRequestsTakeBackAccept": {},
-    "errorLoadingImages": "Error loading images",
+    "errorLoadingImages": "Iphutha lokulayisha izithombe",
     "@errorLoadingImages": {},
-    "fileAlreadyExists": "File {name} already exists",
+    "fileAlreadyExists": "Ifayela {name} selikhona kakade",
     "@fileAlreadyExists": {},
-    "errorDetectingNetworkInterfaces": "Error detecting network interfaces",
+    "errorDetectingNetworkInterfaces": "Iphutha lokuthola ama-interface enethiwekhi",
     "@errorDetectingNetworkInterfaces": {},
-    "contributeToSanmill": "Contribute to Sanmill",
+    "contributeToSanmill": "Nikeza ku-Sanmill",
     "@contributeToSanmill": {},
-    "howToContribute": "How to Contribute",
+    "howToContribute": "Indlela yokunikeza",
     "@howToContribute": {},
-    "perfectDatabaseNotEnabled": "Perfect database is not enabled",
+    "perfectDatabaseNotEnabled": "Idathabheyisi ephelele ayivuliwe",
     "@perfectDatabaseNotEnabled": {},
-    "redo": "Redo",
+    "redo": "Phinda",
     "@redo": {},
-    "movePieceUp": "Move piece up",
+    "movePieceUp": "Hambisa isiqephu siye phezulu",
     "@movePieceUp": {},
-    "movePieceDiagonallyDown": "Move piece diagonally down",
+    "movePieceDiagonallyDown": "Hambisa isiqephu ngesikwelekiso phansi",
     "@movePieceDiagonallyDown": {},
     "puzzleTransform": "Guqula",
     "@puzzleTransform": {},

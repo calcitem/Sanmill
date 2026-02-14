@@ -667,7 +667,7 @@
             }
         }
     },
-    "info": "Info",
+    "info": "Informacije",
     "@info": {
         "description": "Info"
     },
@@ -1619,9 +1619,9 @@
     "@useOpeningBook": {},
     "currentRule": "Trenutačno",
     "@currentRule": {},
-    "nineMensMorris": "Nine Men's Morris",
+    "nineMensMorris": "Mlin s devet figura",
     "@nineMensMorris": {},
-    "twelveMensMorris": "Twelve Men's Morris",
+    "twelveMensMorris": "Mlin s dvanaest figura",
     "@twelveMensMorris": {},
     "morabaraba": "Morabaraba",
     "@morabaraba": {},
@@ -1775,7 +1775,7 @@
     "@yourTurn": {},
     "unableToReconnectPleaseRestartTheGame": "Nije moguće ponovo se povezati, ponovo pokrenite igru.",
     "@unableToReconnectPleaseRestartTheGame": {},
-    "host": "Host",
+    "host": "Domaćin",
     "@host": {},
     "join": "Pridruži se",
     "@join": {},
@@ -2215,7 +2215,7 @@
     "@puzzles": {
         "description": "Puzzles menu item"
     },
-    "puzzle": "Puzzle",
+    "puzzle": "Zagonetka",
     "@puzzle": {
         "description": "Puzzle"
     },
@@ -2223,7 +2223,7 @@
     "@noPuzzlesAvailable": {
         "description": "Message when no puzzles are available"
     },
-    "filter": "Filter",
+    "filter": "Filtar",
     "@filter": {
         "description": "Filter"
     },
@@ -2363,7 +2363,7 @@
     "@puzzleEdit": {
         "description": "Edit an existing puzzle"
     },
-    "puzzleCustom": "Custom",
+    "puzzleCustom": "Prilagođeno",
     "@puzzleCustom": {
         "description": "Custom puzzle badge"
     },
@@ -2888,7 +2888,7 @@
     "@allPuzzlesDesc": {
         "description": "All puzzles mode description"
     },
-    "puzzleRush": "Puzzle Rush",
+    "puzzleRush": "Zagonetka Utrka",
     "@puzzleRush": {
         "description": "Puzzle rush mode name"
     },
@@ -2956,7 +2956,7 @@
     "@puzzleRushPlayAgain": {
         "description": "Play again button"
     },
-    "puzzleBattle": "Puzzle Battle",
+    "puzzleBattle": "Zagonetka Bitka",
     "@puzzleBattle": {
         "description": "Puzzle battle mode name"
     },
@@ -3004,7 +3004,7 @@
     "@puzzleCreate": {
         "description": "Create puzzle button"
     },
-    "puzzleStreak": "Puzzle Streak",
+    "puzzleStreak": "Zagonetka Niz",
     "@puzzleStreak": {
         "description": "Puzzle streak mode name"
     },
@@ -4032,65 +4032,65 @@
     "@includeVariationsMainline": {},
     "bothPlayersRemoveOpponentsPiece": "Oba igrača uklanjaju po jednu susjednu figuru protivnika, zatim se igra nastavlja.",
     "@bothPlayersRemoveOpponentsPiece": {},
-    "jumpToVariation": "Jump to variation",
+    "jumpToVariation": "Skoči na varijaciju",
     "@jumpToVariation": {},
-    "variationNotation": "Variation: {notation}",
+    "variationNotation": "Varijacija: {notation}",
     "@variationNotation": {},
-    "jumpToThisVariation": "Jump to this variation",
+    "jumpToThisVariation": "Skoči na ovu varijaciju",
     "@jumpToThisVariation": {},
-    "switchToThisBranch": "Switch to this branch",
+    "switchToThisBranch": "Prebaci na ovu granu",
     "@switchToThisBranch": {},
-    "setAsMainLine": "Set as main line",
+    "setAsMainLine": "Postavi kao glavnu liniju",
     "@setAsMainLine": {},
-    "makeThisPrimaryVariation": "Make this the primary variation",
+    "makeThisPrimaryVariation": "Učini ovo primarnom varijacijom",
     "@makeThisPrimaryVariation": {},
-    "deleteBranch": "Delete branch",
+    "deleteBranch": "Obriši granu",
     "@deleteBranch": {},
-    "removeVariationPermanently": "Remove this variation permanently",
+    "removeVariationPermanently": "Trajno ukloni ovu varijaciju",
     "@removeVariationPermanently": {},
-    "cannotPromoteNoParent": "Cannot promote: no parent node",
+    "cannotPromoteNoParent": "Nije moguće promovirati: nema roditeljskog čvora",
     "@cannotPromoteNoParent": {},
-    "alreadyMainVariation": "Already the main variation",
+    "alreadyMainVariation": "Već je glavna varijacija",
     "@alreadyMainVariation": {},
-    "deleteBranchTitle": "Delete Branch",
+    "deleteBranchTitle": "Obriši granu",
     "@deleteBranchTitle": {},
-    "deleteBranchConfirmWithNotation": "Are you sure you want to delete the variation \"{notation}\" and all its continuations?",
+    "deleteBranchConfirmWithNotation": "Jeste li sigurni da želite obrisati varijaciju \"{notation}\" i sve njene nastavke?",
     "@deleteBranchConfirmWithNotation": {},
-    "deleteBranchContainsPosition": "Warning: This branch contains your current position. You will be moved to the parent position.",
+    "deleteBranchContainsPosition": "Upozorenje: Ova grana sadrži vašu trenutnu poziciju. Bit ćete premješteni na roditeljsku poziciju.",
     "@deleteBranchContainsPosition": {},
-    "cannotDeleteNoParent": "Cannot delete: no parent node",
+    "cannotDeleteNoParent": "Nije moguće obrisati: nema roditeljskog čvora",
     "@cannotDeleteNoParent": {},
-    "branchDeleted": "Branch deleted",
+    "branchDeleted": "Grana obrisana",
     "@branchDeleted": {},
-    "cannotDeleteAlreadyMainLine": "Cannot delete: already on main line",
+    "cannotDeleteAlreadyMainLine": "Nije moguće obrisati: već je na glavnoj liniji",
     "@cannotDeleteAlreadyMainLine": {},
-    "branchMoves": "Branch moves",
+    "branchMoves": "Potezi grane",
     "@branchMoves": {},
-    "variations": "Variations",
+    "variations": "Varijacije",
     "@variations": {},
-    "resign": "Resign",
+    "resign": "Predaj se",
     "@resign": {},
-    "failedToSendResignation": "Failed to send resignation",
+    "failedToSendResignation": "Neuspješno slanje predaje",
     "@failedToSendResignation": {},
-    "opponentRequestsTakeBackAccept": "Opponent requests to take back {steps} move(s). Accept?",
+    "opponentRequestsTakeBackAccept": "Protivnik traži povlačenje {steps} potez(a). Prihvatiti?",
     "@opponentRequestsTakeBackAccept": {},
-    "errorLoadingImages": "Error loading images",
+    "errorLoadingImages": "Greška pri učitavanju slika",
     "@errorLoadingImages": {},
-    "fileAlreadyExists": "File {name} already exists",
+    "fileAlreadyExists": "Datoteka {name} već postoji",
     "@fileAlreadyExists": {},
-    "errorDetectingNetworkInterfaces": "Error detecting network interfaces",
+    "errorDetectingNetworkInterfaces": "Greška pri otkrivanju mrežnih sučelja",
     "@errorDetectingNetworkInterfaces": {},
-    "contributeToSanmill": "Contribute to Sanmill",
+    "contributeToSanmill": "Doprinesite Sanmill-u",
     "@contributeToSanmill": {},
-    "howToContribute": "How to Contribute",
+    "howToContribute": "Kako doprinijeti",
     "@howToContribute": {},
-    "perfectDatabaseNotEnabled": "Perfect database is not enabled",
+    "perfectDatabaseNotEnabled": "Savršena baza podataka nije omogućena",
     "@perfectDatabaseNotEnabled": {},
-    "redo": "Redo",
+    "redo": "Ponovi",
     "@redo": {},
-    "movePieceUp": "Move piece up",
+    "movePieceUp": "Pomakni figuru gore",
     "@movePieceUp": {},
-    "movePieceDiagonallyDown": "Move piece diagonally down",
+    "movePieceDiagonallyDown": "Pomakni figuru dijagonalno dolje",
     "@movePieceDiagonallyDown": {},
     "puzzleTransform": "Transformiraj",
     "@puzzleTransform": {},
