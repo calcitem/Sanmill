@@ -396,5 +396,173 @@ void main() {
         reason: 'One time use mill should have toggled',
       );
     });
+
+    testWidgets('Toggle stop placing when two empty squares', (
+      WidgetTester tester,
+    ) async {
+      await initApp(tester);
+      await navigateToGroupChild(
+        tester,
+        'drawer_item_settings_group',
+        'drawer_item_rule_settings_child',
+      );
+
+      final bool initialValue =
+          DB().ruleSettings.stopPlacingWhenTwoEmptySquares;
+
+      await scrollToAndTap(
+        tester,
+        targetKey: 'rule_settings_switch_stop_placing_when_two_empty_squares',
+        scrollableKey: 'rule_settings_list',
+      );
+
+      expect(
+        DB().ruleSettings.stopPlacingWhenTwoEmptySquares,
+        isNot(equals(initialValue)),
+        reason: 'Stop placing when two empty squares should have toggled',
+      );
+    });
+
+    testWidgets('Stalemate action tile is accessible', (
+      WidgetTester tester,
+    ) async {
+      await initApp(tester);
+      await navigateToGroupChild(
+        tester,
+        'drawer_item_settings_group',
+        'drawer_item_rule_settings_child',
+      );
+
+      await scrollToAndVerify(
+        tester,
+        targetKey: 'rule_settings_tile_stalemate_action',
+        scrollableKey: 'rule_settings_list',
+      );
+    });
+
+    testWidgets('Board full action tile is accessible', (
+      WidgetTester tester,
+    ) async {
+      await initApp(tester);
+      await navigateToGroupChild(
+        tester,
+        'drawer_item_settings_group',
+        'drawer_item_rule_settings_child',
+      );
+
+      await scrollToAndVerify(
+        tester,
+        targetKey: 'rule_settings_tile_board_full_action',
+        scrollableKey: 'rule_settings_list',
+      );
+    });
+
+    testWidgets('Mill formation action in placing phase tile is accessible', (
+      WidgetTester tester,
+    ) async {
+      await initApp(tester);
+      await navigateToGroupChild(
+        tester,
+        'drawer_item_settings_group',
+        'drawer_item_rule_settings_child',
+      );
+
+      await scrollToAndVerify(
+        tester,
+        targetKey: 'rule_settings_tile_mill_formation_action_in_placing_phase',
+        scrollableKey: 'rule_settings_list',
+      );
+    });
+
+    testWidgets('Endgame N-move rule tile is accessible', (
+      WidgetTester tester,
+    ) async {
+      await initApp(tester);
+      await navigateToGroupChild(
+        tester,
+        'drawer_item_settings_group',
+        'drawer_item_rule_settings_child',
+      );
+
+      await scrollToAndVerify(
+        tester,
+        targetKey: 'rule_settings_tile_endgame_n_move_rule',
+        scrollableKey: 'rule_settings_list',
+      );
+    });
+
+    testWidgets('Custodian capture card is accessible', (
+      WidgetTester tester,
+    ) async {
+      await initApp(tester);
+      await navigateToGroupChild(
+        tester,
+        'drawer_item_settings_group',
+        'drawer_item_rule_settings_child',
+      );
+
+      await scrollToAndVerify(
+        tester,
+        targetKey: 'rule_settings_card_custodian_capture',
+        scrollableKey: 'rule_settings_list',
+      );
+    });
+
+    testWidgets('Toggle custodian capture enabled', (
+      WidgetTester tester,
+    ) async {
+      await initApp(tester);
+      await navigateToGroupChild(
+        tester,
+        'drawer_item_settings_group',
+        'drawer_item_rule_settings_child',
+      );
+
+      final bool initialValue = DB().ruleSettings.enableCustodianCapture;
+
+      await scrollToAndTap(
+        tester,
+        targetKey: 'rule_settings_switch_custodian_capture_enabled',
+        scrollableKey: 'rule_settings_list',
+      );
+
+      expect(
+        DB().ruleSettings.enableCustodianCapture,
+        isNot(equals(initialValue)),
+        reason: 'Custodian capture enabled should have toggled',
+      );
+    });
+
+    testWidgets('Intervention capture card is accessible', (
+      WidgetTester tester,
+    ) async {
+      await initApp(tester);
+      await navigateToGroupChild(
+        tester,
+        'drawer_item_settings_group',
+        'drawer_item_rule_settings_child',
+      );
+
+      await scrollToAndVerify(
+        tester,
+        targetKey: 'rule_settings_card_intervention_capture',
+        scrollableKey: 'rule_settings_list',
+      );
+    });
+
+    testWidgets('Leap capture card is accessible', (WidgetTester tester) async {
+      await initApp(tester);
+      await navigateToGroupChild(
+        tester,
+        'drawer_item_settings_group',
+        'drawer_item_rule_settings_child',
+      );
+
+      await scrollToAndVerify(
+        tester,
+        targetKey: 'rule_settings_card_leap_capture',
+        scrollableKey: 'rule_settings_list',
+      );
+    });
   });
 }
