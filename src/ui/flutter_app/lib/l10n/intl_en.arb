@@ -4131,5 +4131,13 @@
     "movePieceUp": "Move piece up",
     "@movePieceUp": {},
     "movePieceDiagonallyDown": "Move piece diagonally down",
-    "@movePieceDiagonallyDown": {}
+    "@movePieceDiagonallyDown": {},
+    "puzzleTransform": "Transform",
+    "@puzzleTransform": {
+        "description": "Tooltip for the puzzle board transform button"
+    },
+    "puzzleTransformed": "Board transformed.",
+    "@puzzleTransformed": {
+        "description": "Snackbar message after a puzzle board transformation is applied"
+    }
 }
