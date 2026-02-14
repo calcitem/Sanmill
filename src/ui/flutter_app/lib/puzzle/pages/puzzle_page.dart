@@ -152,24 +152,41 @@ class _PuzzlePageState extends State<PuzzlePage> {
     super.dispose();
   }
 
-  /// Ensure the engine is configured with the *exact* rules this puzzle was
-  /// created under.
+  /// Ensure the engine uses the correct *structural* rules for this puzzle.
   ///
-  /// Resolution order (highest fidelity first):
+  /// The variant-ID detection covers structural parameters that affect move
+  /// legality (piece count, board topology, capture mechanics, etc.) but
+  /// intentionally ignores generic tuning knobs (nMoveRule, endgameNMoveRule,
+  /// threefoldRepetitionRule …).  Since puzzles are short tactical exercises,
+  /// these tuning parameters are extremely unlikely to influence gameplay.
   ///
-  /// 1. **Full snapshot** ([PuzzleInfo.ruleSettingsJson]) — always preferred
-  ///    when present because it captures every parameter including generic
-  ///    tuning knobs such as `nMoveRule`, `endgameNMoveRule`, `mayFly`, etc.
-  ///    that are NOT part of the variant-identity detection.
-  /// 2. **Canonical lookup** by [PuzzleInfo.ruleVariantId] — used for older
-  ///    puzzles that were saved before the snapshot field was introduced.
-  ///    Restores the *standard* settings for a named variant but cannot
-  ///    reproduce user tweaks (e.g. a custom nMoveRule within Nine Men's
-  ///    Morris).
-  /// 3. **Mismatch warning** — shown only when neither source is available
-  ///    and the active rules differ from the puzzle's variant.
+  /// Keeping the user's own tuning preferences when the variant already
+  /// matches avoids silently overriding their settings with those of the
+  /// puzzle creator — which would be unfriendly for imported puzzles.
+  ///
+  /// Resolution order:
+  ///
+  /// 1. **Variant IDs match** → do nothing.  The structural rules are
+  ///    already correct; honour the solver's tuning preferences.
+  /// 2. **Variant IDs differ + snapshot available** → apply the full
+  ///    snapshot for exact reconstruction (essential for custom variants
+  ///    that have no canonical entry).
+  /// 3. **Variant IDs differ + canonical entry** → apply the named
+  ///    variant's standard settings (for older puzzles without a snapshot).
+  /// 4. **Variant IDs differ + nothing available** → warn the user.
   void _applyPuzzleRulesIfNeeded() {
-    // --- 1) Best case: use the full snapshot for exact reconstruction ------
+    final RuleVariant currentVariant = RuleVariant.fromRuleSettings(
+      DB().ruleSettings,
+    );
+    final String puzzleVariantId = widget.puzzle.ruleVariantId;
+
+    // --- 1) Variant IDs already agree — structural rules are correct ------
+
+    if (puzzleVariantId == currentVariant.id) {
+      return;
+    }
+
+    // --- 2) Try the embedded rule-settings snapshot -----------------------
 
     if (widget.puzzle.ruleSettingsJson != null) {
       try {
@@ -193,22 +210,11 @@ class _PuzzlePageState extends State<PuzzlePage> {
           '[PuzzlePage] Failed to deserialize ruleSettingsJson '
           'for puzzle "${widget.puzzle.id}": $e',
         );
-        // Fall through to variant-ID lookup.
+        // Fall through to canonical lookup.
       }
     }
 
-    // --- 2) Fallback: canonical lookup by variant ID ----------------------
-
-    final RuleVariant currentVariant = RuleVariant.fromRuleSettings(
-      DB().ruleSettings,
-    );
-    final String puzzleVariantId = widget.puzzle.ruleVariantId;
-
-    // If the variant IDs already agree there is nothing more we can do
-    // without a snapshot — accept the current settings as-is.
-    if (puzzleVariantId == currentVariant.id) {
-      return;
-    }
+    // --- 3) Canonical lookup by variant ID --------------------------------
 
     final RuleSettings? canonicalSettings =
         RuleVariant.canonicalSettings[puzzleVariantId];
@@ -227,7 +233,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
       return;
     }
 
-    // --- 3) No snapshot, no canonical match — warn the user ---------------
+    // --- 4) No snapshot, no canonical match — warn the user ---------------
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _showRuleMismatchWarning(currentVariant);
