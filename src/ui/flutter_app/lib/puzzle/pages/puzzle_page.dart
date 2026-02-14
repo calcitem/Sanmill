@@ -152,50 +152,70 @@ class _PuzzlePageState extends State<PuzzlePage> {
     super.dispose();
   }
 
-  /// Ensure the engine is configured with the rules required by this puzzle.
+  /// Ensure the engine is configured with the *exact* rules this puzzle was
+  /// created under.
   ///
-  /// Resolution order:
-  /// 1. If the current active rules already match the puzzle — do nothing.
-  /// 2. Look up [RuleVariant.canonicalSettings] by the puzzle's variant ID.
-  /// 3. Deserialize the embedded [PuzzleInfo.ruleSettingsJson] snapshot
-  ///    (covers user-customised rule sets that are not among the 13 named
-  ///    variants).
-  /// 4. If none of the above succeeds, show a mismatch warning.
+  /// Resolution order (highest fidelity first):
+  ///
+  /// 1. **Full snapshot** ([PuzzleInfo.ruleSettingsJson]) — always preferred
+  ///    when present because it captures every parameter including generic
+  ///    tuning knobs such as `nMoveRule`, `endgameNMoveRule`, `mayFly`, etc.
+  ///    that are NOT part of the variant-identity detection.
+  /// 2. **Canonical lookup** by [PuzzleInfo.ruleVariantId] — used for older
+  ///    puzzles that were saved before the snapshot field was introduced.
+  ///    Restores the *standard* settings for a named variant but cannot
+  ///    reproduce user tweaks (e.g. a custom nMoveRule within Nine Men's
+  ///    Morris).
+  /// 3. **Mismatch warning** — shown only when neither source is available
+  ///    and the active rules differ from the puzzle's variant.
   void _applyPuzzleRulesIfNeeded() {
-    final RuleVariant currentVariant = RuleVariant.fromRuleSettings(
-      DB().ruleSettings,
-    );
-    final String puzzleVariantId = widget.puzzle.ruleVariantId;
+    // --- 1) Best case: use the full snapshot for exact reconstruction ------
 
-    // Rules already match — nothing to do.
-    if (puzzleVariantId == currentVariant.id) {
-      return;
-    }
-
-    // 1) Try canonical lookup for the 13 named variants.
-    RuleSettings? puzzleSettings =
-        RuleVariant.canonicalSettings[puzzleVariantId];
-
-    // 2) Fallback: try the embedded rule-settings snapshot.
-    if (puzzleSettings == null && widget.puzzle.ruleSettingsJson != null) {
+    if (widget.puzzle.ruleSettingsJson != null) {
       try {
         final Map<String, dynamic> json =
             jsonDecode(widget.puzzle.ruleSettingsJson!) as Map<String, dynamic>;
-        puzzleSettings = RuleSettings.fromJson(json);
+        final RuleSettings snapshotSettings = RuleSettings.fromJson(json);
+
+        DB().ruleSettings = snapshotSettings;
+
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          GameController().engine.setRuleOptions();
+        });
+
+        logger.i(
+          '[PuzzlePage] Applied rule-settings snapshot '
+          'for puzzle "${widget.puzzle.id}"',
+        );
+        return;
       } catch (e) {
         logger.e(
           '[PuzzlePage] Failed to deserialize ruleSettingsJson '
           'for puzzle "${widget.puzzle.id}": $e',
         );
+        // Fall through to variant-ID lookup.
       }
     }
 
-    if (puzzleSettings != null) {
-      // Apply the resolved settings so the engine validates moves correctly.
-      DB().ruleSettings = puzzleSettings;
+    // --- 2) Fallback: canonical lookup by variant ID ----------------------
 
-      // Force an immediate engine update after the current frame so that
-      // move-legality checks use the new rules from the start.
+    final RuleVariant currentVariant = RuleVariant.fromRuleSettings(
+      DB().ruleSettings,
+    );
+    final String puzzleVariantId = widget.puzzle.ruleVariantId;
+
+    // If the variant IDs already agree there is nothing more we can do
+    // without a snapshot — accept the current settings as-is.
+    if (puzzleVariantId == currentVariant.id) {
+      return;
+    }
+
+    final RuleSettings? canonicalSettings =
+        RuleVariant.canonicalSettings[puzzleVariantId];
+
+    if (canonicalSettings != null) {
+      DB().ruleSettings = canonicalSettings;
+
       WidgetsBinding.instance.addPostFrameCallback((_) {
         GameController().engine.setRuleOptions();
       });
@@ -204,12 +224,14 @@ class _PuzzlePageState extends State<PuzzlePage> {
         '[PuzzlePage] Auto-switched rules to "$puzzleVariantId" '
         'for puzzle "${widget.puzzle.id}"',
       );
-    } else {
-      // No canonical entry and no snapshot — warn the user.
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        _showRuleMismatchWarning(currentVariant);
-      });
+      return;
     }
+
+    // --- 3) No snapshot, no canonical match — warn the user ---------------
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _showRuleMismatchWarning(currentVariant);
+    });
   }
 
   void _initializePuzzle() {
