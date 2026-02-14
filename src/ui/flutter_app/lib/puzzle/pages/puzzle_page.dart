@@ -14,6 +14,7 @@ import 'package:hive_ce_flutter/hive_flutter.dart' show Box;
 import '../../appearance_settings/models/color_settings.dart';
 import '../../game_page/services/import_export/pgn.dart';
 import '../../game_page/services/mill.dart';
+import '../../game_page/services/transform/transform.dart';
 import '../../generated/intl/l10n.dart';
 import '../../shared/database/database.dart';
 import '../../shared/services/logger.dart';
@@ -23,6 +24,7 @@ import '../services/puzzle_auto_player.dart';
 import '../services/puzzle_hint_service.dart';
 import '../services/puzzle_manager.dart';
 import '../services/puzzle_rating_service.dart';
+import '../services/puzzle_transform_service.dart';
 import '../services/puzzle_validator.dart';
 import '../widgets/puzzle_game_board.dart';
 import '../widgets/puzzle_solution_view.dart';
@@ -60,6 +62,13 @@ class _PuzzlePageState extends State<PuzzlePage> {
   bool _isPlayingSolution = false;
   DateTime _attemptStartedAt = DateTime.now();
 
+  // Board symmetry transformation state.
+  // A random transformation is applied when the puzzle loads to prevent
+  // memorization and increase replayability.  The player can also cycle
+  // through transformations manually via the AppBar button.
+  TransformationType _currentTransform = TransformationType.identity;
+  late PuzzleInfo _transformedPuzzle;
+
   // Store original game state to restore on exit
   GameMode? _previousGameMode;
   PieceColor? _previousPuzzleHumanColor;
@@ -68,8 +77,16 @@ class _PuzzlePageState extends State<PuzzlePage> {
   @override
   void initState() {
     super.initState();
-    _validator = PuzzleValidator(puzzle: widget.puzzle);
-    _hintService = PuzzleHintService(puzzle: widget.puzzle);
+
+    // Apply a random board symmetry transformation to prevent memorization.
+    _currentTransform = randomTransformationType(excludeIdentity: false);
+    _transformedPuzzle = PuzzleTransformService.transformPuzzle(
+      widget.puzzle,
+      _currentTransform,
+    );
+
+    _validator = PuzzleValidator(puzzle: _transformedPuzzle);
+    _hintService = PuzzleHintService(puzzle: _transformedPuzzle);
 
     // Save current game state before entering puzzle mode
     final GameController controller = GameController();
@@ -84,8 +101,14 @@ class _PuzzlePageState extends State<PuzzlePage> {
   void didUpdateWidget(covariant PuzzlePage oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.puzzle.id != widget.puzzle.id) {
-      _validator = PuzzleValidator(puzzle: widget.puzzle);
-      _hintService = PuzzleHintService(puzzle: widget.puzzle);
+      // New puzzle — pick a fresh random transformation.
+      _currentTransform = randomTransformationType(excludeIdentity: false);
+      _transformedPuzzle = PuzzleTransformService.transformPuzzle(
+        widget.puzzle,
+        _currentTransform,
+      );
+      _validator = PuzzleValidator(puzzle: _transformedPuzzle);
+      _hintService = PuzzleHintService(puzzle: _transformedPuzzle);
       _initializePuzzle();
     }
   }
@@ -111,7 +134,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
   }
 
   void _initializePuzzle() {
-    // Check rule variant compatibility first
+    // Check rule variant compatibility first (uses original puzzle metadata).
     final RuleVariant currentVariant = RuleVariant.fromRuleSettings(
       DB().ruleSettings,
     );
@@ -122,7 +145,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
       });
     }
 
-    // Set up the game controller with puzzle position
+    // Set up the game controller with the *transformed* puzzle position.
     final GameController controller = GameController();
 
     // Ensure puzzle mode is active and reset the controller state
@@ -132,22 +155,23 @@ class _PuzzlePageState extends State<PuzzlePage> {
 
     // Validate FEN format before loading
     final Position tempPosition = Position();
-    if (!tempPosition.validateFen(widget.puzzle.initialPosition)) {
+    if (!tempPosition.validateFen(_transformedPuzzle.initialPosition)) {
       logger.e(
-        '[PuzzlePage] Invalid FEN format: ${widget.puzzle.initialPosition}',
+        '[PuzzlePage] Invalid FEN format: '
+        '${_transformedPuzzle.initialPosition}',
       );
       _showFenErrorDialog();
       return;
     }
 
-    // Load the initial position from FEN
+    // Load the transformed initial position from FEN
     final bool loaded = controller.position.setFen(
-      widget.puzzle.initialPosition,
+      _transformedPuzzle.initialPosition,
     );
     if (!loaded) {
       logger.e(
         '[PuzzlePage] Failed to load puzzle position: '
-        '${widget.puzzle.initialPosition}',
+        '${_transformedPuzzle.initialPosition}',
       );
       _showFenErrorDialog();
       return;
@@ -163,7 +187,8 @@ class _PuzzlePageState extends State<PuzzlePage> {
     _isAutoPlayingOpponent = false;
 
     // Store the starting position for exports and history
-    controller.gameRecorder.setupPosition = widget.puzzle.initialPosition;
+    controller.gameRecorder.setupPosition =
+        _transformedPuzzle.initialPosition;
 
     // Refresh UI elements that depend on game state
     controller.headerIconsNotifier.showIcons();
@@ -175,6 +200,52 @@ class _PuzzlePageState extends State<PuzzlePage> {
     _validator.reset();
     _hintService.reset();
     _attemptStartedAt = DateTime.now();
+  }
+
+  /// Applies a new board symmetry transformation to the puzzle.
+  ///
+  /// Recomputes the transformed puzzle from the original [widget.puzzle],
+  /// recreates the validator and hint service with the new data, and
+  /// re-initializes the game board.
+  void _applyTransformation(TransformationType type) {
+    _currentTransform = type;
+    _transformedPuzzle = PuzzleTransformService.transformPuzzle(
+      widget.puzzle,
+      _currentTransform,
+    );
+    _validator = PuzzleValidator(puzzle: _transformedPuzzle);
+    _hintService = PuzzleHintService(puzzle: _transformedPuzzle);
+
+    _initializePuzzle();
+    setState(() {
+      _hintsUsed = false;
+      _solutionViewed = false;
+    });
+    _isSolved = false;
+    _isAutoPlayingOpponent = false;
+    GameController().headerIconsNotifier.showIcons();
+  }
+
+  /// Cycles to the next transformation type and re-initializes the puzzle.
+  void _cycleTransformation() {
+    if (_isPlayingSolution) {
+      return;
+    }
+
+    final List<TransformationType> allTypes = TransformationType.values;
+    final int currentIndex = allTypes.indexOf(_currentTransform);
+    final int nextIndex = (currentIndex + 1) % allTypes.length;
+
+    _applyTransformation(allTypes[nextIndex]);
+
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(S.of(context).transformed),
+          duration: const Duration(seconds: 1),
+        ),
+      );
+    }
   }
 
   /// Show error dialog when FEN validation fails
@@ -381,6 +452,13 @@ class _PuzzlePageState extends State<PuzzlePage> {
                                 tooltip: s.undo,
                               );
                             },
+                      ),
+                      // Transform button — cycle through board symmetries
+                      IconButton(
+                        icon: const Icon(Icons.rotate_right),
+                        onPressed:
+                            _isPlayingSolution ? null : _cycleTransformation,
+                        tooltip: s.rotate,
                       ),
                       // Hint button
                       if (DB().puzzleSettings.showHints &&
@@ -750,7 +828,8 @@ class _PuzzlePageState extends State<PuzzlePage> {
       return;
     }
 
-    final PuzzleSolution? solution = widget.puzzle.optimalSolution;
+    // Use the transformed puzzle's solution so moves match the board.
+    final PuzzleSolution? solution = _transformedPuzzle.optimalSolution;
     if (solution == null || solution.moves.isEmpty) {
       logger.w('[PuzzlePage] No solution available to show');
       if (mounted) {
@@ -863,8 +942,9 @@ class _PuzzlePageState extends State<PuzzlePage> {
     _isAutoPlayingOpponent = true;
     controller.isPuzzleAutoMoveInProgress = true;
 
-    // Convert solutions to legacy format for auto-player
-    final List<List<String>> legacySolutions = widget.puzzle.solutions
+    // Convert transformed solutions to legacy format for auto-player.
+    // The transformed notations match the current board orientation.
+    final List<List<String>> legacySolutions = _transformedPuzzle.solutions
         .map(
           (PuzzleSolution s) =>
               s.moves.map((PuzzleMove m) => m.notation).toList(),
@@ -1355,14 +1435,14 @@ class _PuzzlePageState extends State<PuzzlePage> {
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      // Show all solutions with expansion tiles
-                      ...widget.puzzle.solutions.asMap().entries.map((
+                      // Show transformed solutions matching current board.
+                      ..._transformedPuzzle.solutions.asMap().entries.map((
                         MapEntry<int, PuzzleSolution> solutionEntry,
                       ) {
                         final int solutionIndex = solutionEntry.key;
                         final PuzzleSolution solution = solutionEntry.value;
                         final bool isOnlySolution =
-                            widget.puzzle.solutions.length == 1;
+                            _transformedPuzzle.solutions.length == 1;
 
                         return Padding(
                           padding: const EdgeInsets.only(bottom: 8.0),
