@@ -809,7 +809,7 @@
     "@versionInfo": {
         "description": "Version info"
     },
-    "eula": "EULA",
+    "eula": "བཀོལ་སྤྱོད་ཆིངས་ཡིག",
     "@eula": {
         "description": "EULA"
     },
@@ -1079,7 +1079,7 @@
     "@showAnalysis": {
         "description": "Show analysis"
     },
-    "threads": "Threads",
+    "threads": "སྐུད་ཕྲེང་།",
     "@threads": {
         "description": "Threads"
     },
@@ -1095,11 +1095,11 @@
     "@tutorial": {
         "description": "Tutorial"
     },
-    "classicMill": "Classic Mill",
+    "classicMill": "སྲོལ་རྒྱུན་འཁོར་ལོ།",
     "@classicMill": {
         "description": "Classic Mill"
     },
-    "mixedMill": "Mixed Mill",
+    "mixedMill": "མ་འདྲེས་འཁོར་ལོ།",
     "@mixedMill": {
         "description": "Mixed Mill"
     },
@@ -2091,11 +2091,11 @@
     "@boardInnerRingSize": {},
     "boardShadowEnabled": "ཤོག་སྒོར་གྱི་གནམ་གྲིབ་",
     "@boardShadowEnabled": {},
-    "trapAwareness": "Trap awareness",
+    "trapAwareness": "འཕར་ཁའི་ཤེས་རྟོགས།",
     "@trapAwareness": {},
-    "trapAwarenessDescription": "Highlight trap moves with bold circles and arrows during analysis.",
+    "trapAwarenessDescription": "དཔྱད་བརྗོད་སྐབས་འཕར་ཁའི་བསྒུལ་བ་སྦོམ་པོའི་ཐིག་དང་མདའ་རྟགས་ཀྱིས་མཚོན།",
     "@trapAwarenessDescription": {},
-    "trapExists": "Trap exists. Trap moves: {trapMoves}",
+    "trapExists": "འཕར་ཁ་ཡོད། འཕར་ཁའི་བསྒུལ་བ: {trapMoves}",
     "@trapExists": {
         "placeholders": {
             "trapMoves": {
@@ -2183,99 +2183,99 @@
     "@voiceAssistantSettings": {},
     "voiceAssistantSettingsDescription": "དཔེ་གཞི་དང་སྐད་ཡིག་དང་སྤྱོད་ལམ་སྒྲིག་འགོད་བྱེད།",
     "@voiceAssistantSettingsDescription": {},
-    "llmAssistedDevelopment": "LLM-assisted development",
+    "llmAssistedDevelopment": "LLM གྲོགས་རམ་ཐོག་གི་ཡར་རྒྱས།",
     "@llmAssistedDevelopment": {
         "description": "Developer tool: build a developer prompt for an external LLM and copy it to clipboard"
     },
-    "llmAssistedDevelopmentInputHint": "Describe the task you want the LLM to help with...",
+    "llmAssistedDevelopmentInputHint": "LLM གིས་རོགས་རམ་བྱ་རྒྱུའི་ལས་ཀ་བཤད་བྱོས...",
     "@llmAssistedDevelopmentInputHint": {
         "description": "Hint text for the LLM-assisted development input field"
     },
-    "download": "Download",
+    "download": "ཕབ་ལེན།",
     "@download": {
         "description": "Download button text"
     },
-    "status": "Status",
+    "status": "གནས་ཚུལ།",
     "@status": {
         "description": "Status label"
     },
-    "unknown": "Unknown",
+    "unknown": "མི་ཤེས།",
     "@unknown": {
         "description": "Unknown value"
     },
-    "enableAiChat": "Enable AI Chat",
+    "enableAiChat": "AI སྐད་ཆ་སྤྱོད་འགོ་བཙུགས།",
     "@enableAiChat": {},
-    "allowChatWithAiAssistant": "Allow chatting with AI assistant (experimental)",
+    "allowChatWithAiAssistant": "AI གྲོགས་རམ་དང་སྐད་ཆ་ཤོད་ཆོག (ཚོད་ལྟ)",
     "@allowChatWithAiAssistant": {},
-    "enablePiecePickUpAnimation": "Enable piece pick-up animation",
+    "enablePiecePickUpAnimation": "རྡོ་རིས་བླངས་པའི་རིག་བཟོ་སྤྱོད།",
     "@enablePiecePickUpAnimation": {
         "description": "Enable piece pick-up and drop animation when moving"
     },
-    "puzzles": "Puzzles",
+    "puzzles": "གསང་བརྟག",
     "@puzzles": {
         "description": "Puzzles menu item"
     },
-    "puzzle": "Puzzle",
+    "puzzle": "གསང་བརྟག",
     "@puzzle": {
         "description": "Puzzle"
     },
-    "noPuzzlesAvailable": "No puzzles available",
+    "noPuzzlesAvailable": "གསང་བརྟག་མེད།",
     "@noPuzzlesAvailable": {
         "description": "Message when no puzzles are available"
     },
-    "filter": "Filter",
+    "filter": "བླུགས་ཤོག",
     "@filter": {
         "description": "Filter"
     },
-    "category": "Category",
+    "category": "སྡེ་ཚན།",
     "@category": {
         "description": "Category"
     },
-    "clearFilter": "Clear Filter",
+    "clearFilter": "བླུགས་ཤོག་བསལ།",
     "@clearFilter": {
         "description": "Clear all filters"
     },
-    "puzzleStatistics": "Puzzle Statistics",
+    "puzzleStatistics": "གསང་བརྟག་གྲངས་ཐོ།",
     "@puzzleStatistics": {
         "description": "Puzzle statistics"
     },
-    "totalPuzzles": "Total Puzzles",
+    "totalPuzzles": "གསང་བརྟག་བསྡོམས།",
     "@totalPuzzles": {
         "description": "Total puzzles"
     },
-    "completed": "Completed",
+    "completed": "ཚང་གྲུབ།",
     "@completed": {
         "description": "Completed"
     },
-    "totalStars": "Total Stars",
+    "totalStars": "སྐར་མ་བསྡོམས།",
     "@totalStars": {
         "description": "Total stars earned"
     },
-    "completionPercentage": "Completion",
+    "completionPercentage": "བརྒྱ་ཆ།",
     "@completionPercentage": {
         "description": "Completion percentage"
     },
-    "puzzleDifficultyBeginner": "Beginner",
+    "puzzleDifficultyBeginner": "ལས་གསར།",
     "@puzzleDifficultyBeginner": {
         "description": "Beginner difficulty"
     },
-    "puzzleDifficultyEasy": "Easy",
+    "puzzleDifficultyEasy": "སླ་པོ།",
     "@puzzleDifficultyEasy": {
         "description": "Easy difficulty"
     },
-    "puzzleDifficultyMedium": "Medium",
+    "puzzleDifficultyMedium": "འབྲིང་།",
     "@puzzleDifficultyMedium": {
         "description": "Medium difficulty"
     },
-    "puzzleDifficultyHard": "Hard",
+    "puzzleDifficultyHard": "དཀའ་པོ།",
     "@puzzleDifficultyHard": {
         "description": "Hard difficulty"
     },
-    "puzzleDifficultyExpert": "Expert",
+    "puzzleDifficultyExpert": "ཆེས་མཁས།",
     "@puzzleDifficultyExpert": {
         "description": "Expert difficulty"
     },
-    "puzzleDifficultyMaster": "Master",
+    "puzzleDifficultyMaster": "སློབ་དཔོན།",
     "@puzzleDifficultyMaster": {
         "description": "Master difficulty"
     },
@@ -2283,95 +2283,95 @@
     "@puzzleCategoryFormMill": {
         "description": "Form a mill category"
     },
-    "puzzleCategoryCapturePieces": "Capture",
+    "puzzleCategoryCapturePieces": "བཟུང་བ།",
     "@puzzleCategoryCapturePieces": {
         "description": "Capture pieces category"
     },
-    "puzzleCategoryWinGame": "Win Game",
+    "puzzleCategoryWinGame": "རྒྱལ་ཁ།",
     "@puzzleCategoryWinGame": {
         "description": "Win the game category"
     },
-    "puzzleCategoryDefend": "Defense",
+    "puzzleCategoryDefend": "སྲུང་སྐྱོབ།",
     "@puzzleCategoryDefend": {
         "description": "Defense category"
     },
-    "puzzleCategoryFindBestMove": "Best Move",
+    "puzzleCategoryFindBestMove": "མཆོག་ཏུ་གྱུར་བའི་བསྒུལ་བ།",
     "@puzzleCategoryFindBestMove": {
         "description": "Find best move category"
     },
-    "puzzleCategoryEndgame": "Endgame",
+    "puzzleCategoryEndgame": "མཇུག་རྩེད།",
     "@puzzleCategoryEndgame": {
         "description": "Endgame category"
     },
-    "puzzleCategoryOpening": "Opening",
+    "puzzleCategoryOpening": "འགོ་རྩེད།",
     "@puzzleCategoryOpening": {
         "description": "Opening category"
     },
-    "puzzleCategoryMixed": "Mixed",
+    "puzzleCategoryMixed": "མ་འདྲེས།",
     "@puzzleCategoryMixed": {
         "description": "Mixed tactics category"
     },
-    "exitPuzzle": "Exit Puzzle?",
+    "exitPuzzle": "གསང་བརྟག་ནས་ཐོན་ནམ།",
     "@exitPuzzle": {
         "description": "Exit puzzle confirmation"
     },
-    "puzzleProgressWillBeLost": "Progress will be lost. Continue?",
+    "puzzleProgressWillBeLost": "ཡར་རྒྱས་བརླག་འགྱུར། མུ་མཐུད་ནམ།",
     "@puzzleProgressWillBeLost": {
         "description": "Warning about losing puzzle progress"
     },
-    "moves": "Moves",
+    "moves": "བསྒུལ་བ།",
     "@moves": {
         "description": "Number of moves"
     },
-    "optimal": "Optimal",
+    "optimal": "མཆོག་ཏུ་གྱུར་བ།",
     "@optimal": {
         "description": "Optimal move count"
     },
-    "checkSolution": "Check Solution",
+    "checkSolution": "ཐབས་ཤེས་ལྟ།",
     "@checkSolution": {
         "description": "Check if solution is correct"
     },
-    "giveUp": "Give Up",
+    "giveUp": "བློས་གཏོང་།",
     "@giveUp": {
         "description": "Give up on puzzle"
     },
-    "puzzleSolved": "Puzzle Solved!",
+    "puzzleSolved": "གསང་བརྟག་སེལ་ཟིན!",
     "@puzzleSolved": {
         "description": "Puzzle completion message"
     },
-    "hintsUsed": "Hints Used",
+    "hintsUsed": "བེད་སྤྱོད་བྱས་པའི་ལམ་སྟོན།",
     "@hintsUsed": {
         "description": "Hints were used"
     },
-    "tryAgain": "Try Again",
+    "tryAgain": "ཡང་བསྐྱར་ཚོད་ལྟ།",
     "@tryAgain": {
         "description": "Try the puzzle again"
     },
-    "backToList": "Back to List",
+    "backToList": "ཐོ་གཞུང་ལ་ཕྱིར།",
     "@backToList": {
         "description": "Go back to puzzle list"
     },
-    "solution": "Solution",
+    "solution": "ཐབས་ཤེས།",
     "@solution": {
         "description": "Puzzle solution"
     },
-    "puzzleCreateNew": "Create New Puzzle",
+    "puzzleCreateNew": "གསང་བརྟག་གསར་བཟོ།",
     "@puzzleCreateNew": {
         "description": "Create a new custom puzzle"
     },
-    "puzzleEdit": "Edit Puzzle",
+    "puzzleEdit": "གསང་བརྟག་བཅོས་བསྒྱུར།",
     "@puzzleEdit": {
         "description": "Edit an existing puzzle"
     },
-    "puzzleCustom": "Custom",
+    "puzzleCustom": "རང་བཟོ།",
     "@puzzleCustom": {
         "description": "Custom puzzle badge"
     },
-    "puzzleRuleMismatch": "Rules Mismatch",
+    "puzzleRuleMismatch": "སྒྲིག་གཞི་མི་མཐུན།",
     "@puzzleRuleMismatch": {
         "description": "Badge shown when puzzle rules don't match current settings"
     },
-    "puzzleRuleMismatchWarning": "For {puzzleRules}, currently {currentRules}",
+    "puzzleRuleMismatchWarning": "{puzzleRules} གི་ཆེད་དུ། ད་ལྟ {currentRules} ཡིན།",
     "@puzzleRuleMismatchWarning": {
         "description": "Warning message when opening a puzzle with mismatched rules",
         "placeholders": {
@@ -2385,19 +2385,19 @@
             }
         }
     },
-    "puzzleRuleMismatchContinue": "Continue",
+    "puzzleRuleMismatchContinue": "མུ་མཐུད།",
     "@puzzleRuleMismatchContinue": {
         "description": "Button to continue opening a puzzle despite rule mismatch"
     },
-    "puzzleCompatibleOnly": "Compatible Only",
+    "puzzleCompatibleOnly": "མཐུན་སྒྲིག་ཡོད་པ་ཁོ་ན།",
     "@puzzleCompatibleOnly": {
         "description": "Filter option to show only puzzles compatible with current rules"
     },
-    "puzzleSelect": "Select Puzzles",
+    "puzzleSelect": "གསང་བརྟག་འདེམས།",
     "@puzzleSelect": {
         "description": "Enter multi-select mode"
     },
-    "puzzleSelectedCount": "{count} Selected",
+    "puzzleSelectedCount": "{count} འདེམས་ཟིན།",
     "@puzzleSelectedCount": {
         "description": "Number of selected puzzles",
         "placeholders": {
@@ -2406,15 +2406,15 @@
             }
         }
     },
-    "puzzleSelectAll": "Select All",
+    "puzzleSelectAll": "ཚང་མ་འདེམས།",
     "@puzzleSelectAll": {
         "description": "Select all puzzles"
     },
-    "puzzleExport": "Export",
+    "puzzleExport": "ཕྱི་འདྲེན།",
     "@puzzleExport": {
         "description": "Export selected puzzles"
     },
-    "puzzleImport": "Import",
+    "puzzleImport": "ནང་འདྲེན།",
     "@puzzleImport": {
         "description": "Import puzzles from file"
     },
@@ -2427,7 +2427,7 @@
             }
         }
     },
-    "puzzleExportFailed": "Failed to export puzzles",
+    "puzzleExportFailed": "གསང་བརྟག་ཕྱི་འདྲེན་མི་ཐུབ།",
     "@puzzleExportFailed": {
         "description": "Puzzle export failure message"
     },
@@ -2440,19 +2440,19 @@
             }
         }
     },
-    "puzzleImportFailed": "Failed to import puzzles",
+    "puzzleImportFailed": "གསང་བརྟག་ནང་འདྲེན་མི་ཐུབ།",
     "@puzzleImportFailed": {
         "description": "Puzzle import failure message"
     },
-    "puzzleImportNoFileSelected": "No file selected",
+    "puzzleImportNoFileSelected": "ཡིག་ཆ་འདེམས་མེད།",
     "@puzzleImportNoFileSelected": {
         "description": "Error when no file is selected for import"
     },
-    "puzzleImportInvalidFilePath": "Invalid file path",
+    "puzzleImportInvalidFilePath": "ཡིག་ཆའི་ལམ་བུ་མི་ནོར།",
     "@puzzleImportInvalidFilePath": {
         "description": "Error when file path is invalid"
     },
-    "puzzleImportErrorPickingFile": "Error picking file: {error}",
+    "puzzleImportErrorPickingFile": "ཡིག་ཆ་འདེམས་པར་ནོར་འཁྲུལ: {error}",
     "@puzzleImportErrorPickingFile": {
         "description": "Error when picking file fails",
         "placeholders": {
@@ -2461,15 +2461,15 @@
             }
         }
     },
-    "puzzleImportFileNotExist": "File does not exist",
+    "puzzleImportFileNotExist": "ཡིག་ཆ་མི་གནས།",
     "@puzzleImportFileNotExist": {
         "description": "Error when file does not exist"
     },
-    "puzzleImportInvalidFormat": "Invalid file format: missing puzzles field",
+    "puzzleImportInvalidFormat": "ཡིག་ཆའི་རྣམ་གཞག་མི་ནོར: puzzles ཞིང་མེད།",
     "@puzzleImportInvalidFormat": {
         "description": "Error when file format is invalid"
     },
-    "puzzleImportIncompatibleVersion": "Incompatible file format version: {version} (expected {expected})",
+    "puzzleImportIncompatibleVersion": "ཡིག་ཆའི་རྣམ་གཞག་ཐོན་རིམ་མི་མཐུན: {version} (བསམ་ཡུལ {expected})",
     "@puzzleImportIncompatibleVersion": {
         "description": "Error when file format version is incompatible",
         "placeholders": {
@@ -2481,7 +2481,7 @@
             }
         }
     },
-    "puzzleImportInvalidFen": "Puzzle {index} (\"{title}\") has invalid FEN format",
+    "puzzleImportInvalidFen": "གསང་བརྟག {index} (\"{title}\") ལ་ FEN རྣམ་གཞག་མི་ནོར།",
     "@puzzleImportInvalidFen": {
         "description": "Error when puzzle has invalid FEN",
         "placeholders": {
@@ -2493,7 +2493,7 @@
             }
         }
     },
-    "puzzleImportRuleMismatchWarning": "Puzzle {index} (\"{title}\") uses different rules: {puzzleRules} (current: {currentRules}). This puzzle may not work correctly with your current settings.",
+    "puzzleImportRuleMismatchWarning": "གསང་བརྟག {index} (\"{title}\") ལ་སྒྲིག་གཞི་མི་གཅིག: {puzzleRules} (ད་ལྟ: {currentRules})། འདི་ཁྱེད་ཀྱི་ད་ལྟའི་སྒྲིག་གཞིའི་ཐོག་ལ་ཡག་པོ་ལས་མི་ཐུབ།",
     "@puzzleImportRuleMismatchWarning": {
         "description": "Warning when puzzle uses different rule variant",
         "placeholders": {
@@ -2511,7 +2511,7 @@
             }
         }
     },
-    "puzzleImportParseFailed": "Failed to parse puzzle {index}: {error}",
+    "puzzleImportParseFailed": "གསང་བརྟག {index} དཔྱད་འབྱེད་མི་ཐུབ: {error}",
     "@puzzleImportParseFailed": {
         "description": "Error when parsing puzzle fails",
         "placeholders": {
@@ -2523,15 +2523,15 @@
             }
         }
     },
-    "puzzleImportErrors": "Errors:",
+    "puzzleImportErrors": "ནོར་འཁྲུལ:",
     "@puzzleImportErrors": {
         "description": "Label for error list"
     },
-    "puzzleImportWarnings": "Warnings:",
+    "puzzleImportWarnings": "ཉེན་བརྡ:",
     "@puzzleImportWarnings": {
         "description": "Label for warning list"
     },
-    "puzzleImportErrorReading": "Error reading file: {error}",
+    "puzzleImportErrorReading": "ཡིག་ཆ་ཀློག་པར་ནོར་འཁྲུལ: {error}",
     "@puzzleImportErrorReading": {
         "description": "Error when reading file fails",
         "placeholders": {
@@ -2540,43 +2540,43 @@
             }
         }
     },
-    "puzzleValidationTitleRequired": "Puzzle must have a title",
+    "puzzleValidationTitleRequired": "གསང་བརྟག་ལ་མིང་དགོས།",
     "@puzzleValidationTitleRequired": {
         "description": "Validation error: title required"
     },
-    "puzzleValidationDescriptionRequired": "Puzzle must have a description",
+    "puzzleValidationDescriptionRequired": "གསང་བརྟག་ལ་འགྲེལ་བཤད་དགོས།",
     "@puzzleValidationDescriptionRequired": {
         "description": "Validation error: description required"
     },
-    "puzzleValidationPositionRequired": "Puzzle must have a valid position",
+    "puzzleValidationPositionRequired": "གསང་བརྟག་ལ་ནོར་མེད་གནས་བབ་དགོས།",
     "@puzzleValidationPositionRequired": {
         "description": "Validation error: position required"
     },
-    "puzzleValidationInvalidFen": "Puzzle has invalid FEN format. Please check the position.",
+    "puzzleValidationInvalidFen": "གསང་བརྟག་ལ་ FEN རྣམ་གཞག་མི་ནོར། གནས་བབ་ལྟོས།",
     "@puzzleValidationInvalidFen": {
         "description": "Validation error: invalid FEN"
     },
-    "puzzleValidationSolutionRequired": "Puzzle must have a solution",
+    "puzzleValidationSolutionRequired": "གསང་བརྟག་ལ་ཐབས་ཤེས་དགོས།",
     "@puzzleValidationSolutionRequired": {
         "description": "Validation error: solution required"
     },
-    "puzzleValidationTitleTooShort": "Title too short (minimum 5 characters)",
+    "puzzleValidationTitleTooShort": "མིང་ཐུང་དྲགས (ཉུང་མཐའ་ཡིག་འབྲུ 5)",
     "@puzzleValidationTitleTooShort": {
         "description": "Validation error: title too short"
     },
-    "puzzleValidationTitleTooLong": "Title too long (maximum 100 characters)",
+    "puzzleValidationTitleTooLong": "མིང་རིང་དྲགས (མང་མཐའ་ཡིག་འབྲུ 100)",
     "@puzzleValidationTitleTooLong": {
         "description": "Validation error: title too long"
     },
-    "puzzleValidationDescriptionTooShort": "Description too short (minimum 10 characters)",
+    "puzzleValidationDescriptionTooShort": "འགྲེལ་བཤད་ཐུང་དྲགས (ཉུང་མཐའ་ཡིག་འབྲུ 10)",
     "@puzzleValidationDescriptionTooShort": {
         "description": "Validation error: description too short"
     },
-    "puzzleValidationDescriptionTooLong": "Description too long (maximum 500 characters)",
+    "puzzleValidationDescriptionTooLong": "འགྲེལ་བཤད་རིང་དྲགས (མང་མཐའ་ཡིག་འབྲུ 500)",
     "@puzzleValidationDescriptionTooLong": {
         "description": "Validation error: description too long"
     },
-    "puzzleValidationAuthorRequired": "Please add your name as author before contributing",
+    "puzzleValidationAuthorRequired": "ཞལ་འདེབས་མ་བྱས་གོང་རང་གི་མིང་རྩོམ་པ་པོར་བཀོད།",
     "@puzzleValidationAuthorRequired": {
         "description": "Validation error: author required for contribution"
     },
@@ -2598,35 +2598,35 @@
             }
         }
     },
-    "puzzleCannotDeleteBuiltIn": "Cannot delete built-in puzzles",
+    "puzzleCannotDeleteBuiltIn": "ནང་བཟོའི་གསང་བརྟག་བསུབ་མི་ཐུབ།",
     "@puzzleCannotDeleteBuiltIn": {
         "description": "Error when trying to delete built-in puzzles"
     },
-    "puzzleCreationInstructions": "How to Create a Puzzle",
+    "puzzleCreationInstructions": "གསང་བརྟག་ཇི་ལྟར་བཟོ་དགོས།",
     "@puzzleCreationInstructions": {
         "description": "Puzzle creation instructions header"
     },
-    "puzzleCreationSteps": "1. Setup board\n2. Snapshot position\n3. Record moves\n4. Fill details\n5. Save",
+    "puzzleCreationSteps": "1. པང་ལེབ་གཏན་འབེབས\n2. གནས་བབ་ཟིན་ཐོ\n3. བསྒུལ་བ་ཐོ་བཀོད\n4. ཞིབ་ཕྲ་བཀོད\n5. ཉར་ཚགས",
     "@puzzleCreationSteps": {
         "description": "Steps for creating a puzzle"
     },
-    "puzzleSetupPosition": "Setup Position",
+    "puzzleSetupPosition": "གནས་བབ་གཏན་འབེབས།",
     "@puzzleSetupPosition": {
         "description": "Setup the board position section"
     },
-    "puzzlePositionSnapshotted2": "Position Snapshotted",
+    "puzzlePositionSnapshotted2": "གནས་བབ་ཟིན་ཐོ་བཀོད་ཟིན།",
     "@puzzlePositionSnapshotted2": {
         "description": "Header showing position has been snapshotted (title case)"
     },
-    "puzzleInitialPosition": "Initial Position",
+    "puzzleInitialPosition": "འགོ་གནས་བབ།",
     "@puzzleInitialPosition": {
         "description": "Label for initial puzzle position"
     },
-    "puzzleFinalPosition": "Final Position",
+    "puzzleFinalPosition": "མཇུག་གནས་བབ།",
     "@puzzleFinalPosition": {
         "description": "Label for final puzzle position after solution"
     },
-    "puzzleNoPositionSnapshotted": "No snapshot yet",
+    "puzzleNoPositionSnapshotted": "ཟིན་ཐོ་མེད།",
     "@puzzleNoPositionSnapshotted": {
         "description": "No position snapshotted message"
     },
@@ -2634,23 +2634,23 @@
     "@puzzleSnapshotPositionFirst": {
         "description": "Error when trying to record without position"
     },
-    "puzzleRecordSolution": "Record Solution",
+    "puzzleRecordSolution": "ཐབས་ཤེས་ཐོ་བཀོད།",
     "@puzzleRecordSolution": {
         "description": "Record solution moves section"
     },
-    "puzzleStartRecording": "Start Recording",
+    "puzzleStartRecording": "ཐོ་བཀོད་འགོ་བཙུགས།",
     "@puzzleStartRecording": {
         "description": "Start recording solution moves"
     },
-    "puzzleStopRecording": "Stop Recording",
+    "puzzleStopRecording": "ཐོ་བཀོད་མཚམས་འཇོག",
     "@puzzleStopRecording": {
         "description": "Stop recording solution moves"
     },
-    "puzzleRecording": "Recording...",
+    "puzzleRecording": "ཐོ་བཀོད་བྱེད་བཞིན...",
     "@puzzleRecording": {
         "description": "Currently recording moves"
     },
-    "puzzleRecordingStarted": "Recording started",
+    "puzzleRecordingStarted": "ཐོ་བཀོད་འགོ་བཙུགས་ཟིན།",
     "@puzzleRecordingStarted": {
         "description": "Recording started message"
     },
@@ -2672,7 +2672,7 @@
             }
         }
     },
-    "puzzleNoSolutionRecorded": "No solution yet",
+    "puzzleNoSolutionRecorded": "ཐབས་ཤེས་མེད།",
     "@puzzleNoSolutionRecorded": {
         "description": "No solution recorded message"
     },
@@ -2680,7 +2680,7 @@
     "@puzzleClearSolution": {
         "description": "Clear recorded solution"
     },
-    "puzzleSolutionTab": "Solution {number}",
+    "puzzleSolutionTab": "ཐབས་ཤེས {number}",
     "@puzzleSolutionTab": {
         "description": "Tab label for solution number",
         "placeholders": {
@@ -2689,23 +2689,23 @@
             }
         }
     },
-    "puzzleAddSolution": "Add Another Solution",
+    "puzzleAddSolution": "ཐབས་ཤེས་གཞན་པ་སྣོན།",
     "@puzzleAddSolution": {
         "description": "Button to add another solution"
     },
-    "puzzleRemoveSolution": "Remove This Solution",
+    "puzzleRemoveSolution": "ཐབས་ཤེས་འདི་བསུབ།",
     "@puzzleRemoveSolution": {
         "description": "Button to remove current solution"
     },
-    "puzzleOptimalSolution": "⭐ Optimal",
+    "puzzleOptimalSolution": "⭐ མཆོག་ཏུ་གྱུར་བ།",
     "@puzzleOptimalSolution": {
         "description": "Badge for optimal solution"
     },
-    "puzzleAlternativeSolution": "Alternative",
+    "puzzleAlternativeSolution": "གཞན་པའི་ཐབས་ཤེས།",
     "@puzzleAlternativeSolution": {
         "description": "Badge for alternative solution"
     },
-    "puzzleMarkAsOptimal": "Mark as Optimal",
+    "puzzleMarkAsOptimal": "མཆོག་ཏུ་གྱུར་བར་རྟགས་རྒྱག",
     "@puzzleMarkAsOptimal": {
         "description": "Button to mark solution as optimal"
     },
@@ -2718,115 +2718,115 @@
             }
         }
     },
-    "puzzleRemoveSolutionConfirm": "Remove this solution?",
+    "puzzleRemoveSolutionConfirm": "ཐབས་ཤེས་འདི་བསུབ་རྒྱུ།",
     "@puzzleRemoveSolutionConfirm": {
         "description": "Confirmation dialog for removing solution"
     },
-    "puzzleAtLeastOneSolution": "At least one solution required",
+    "puzzleAtLeastOneSolution": "ཐབས་ཤེས་གཅིག་ཉུང་མཐའ་དགོས།",
     "@puzzleAtLeastOneSolution": {
         "description": "At least one solution required validation message"
     },
-    "puzzleDetails": "Puzzle Details",
+    "puzzleDetails": "གསང་བརྟག་ཞིབ་ཕྲ།",
     "@puzzleDetails": {
         "description": "Puzzle details section"
     },
-    "puzzleTitle": "Title",
+    "puzzleTitle": "མིང་།",
     "@puzzleTitle": {
         "description": "Puzzle title field"
     },
-    "puzzleDescription": "Description",
+    "puzzleDescription": "འགྲེལ་བཤད།",
     "@puzzleDescription": {
         "description": "Puzzle description field"
     },
-    "puzzleCategory": "Category",
+    "puzzleCategory": "སྡེ་ཚན།",
     "@puzzleCategory": {
         "description": "Puzzle category field"
     },
-    "puzzleDifficulty": "Difficulty",
+    "puzzleDifficulty": "དཀའ་ཚད།",
     "@puzzleDifficulty": {
         "description": "Puzzle difficulty field"
     },
-    "puzzleHint": "Hint",
+    "puzzleHint": "ལམ་སྟོན།",
     "@puzzleHint": {
         "description": "Puzzle hint field"
     },
-    "puzzleTags": "Tags",
+    "puzzleTags": "ཐག་རིས།",
     "@puzzleTags": {
         "description": "Puzzle tags field"
     },
-    "puzzleTagsHint": "Comma separated",
+    "puzzleTagsHint": "ཚེག་གིས་དབྱེ།",
     "@puzzleTagsHint": {
         "description": "Hint for tags input"
     },
-    "puzzleAuthor": "Author",
+    "puzzleAuthor": "རྩོམ་པ་པོ།",
     "@puzzleAuthor": {
         "description": "Puzzle author field"
     },
-    "puzzleCompletionMessage": "Completion Message",
+    "puzzleCompletionMessage": "ཚང་གྲུབ་འཕྲིན།",
     "@puzzleCompletionMessage": {
         "description": "Completion message shown after solving puzzle"
     },
-    "puzzleCompletionMessageHint": "Explain the tactic or congratulate the solver",
+    "puzzleCompletionMessageHint": "ཐབས་ལམ་བཤད་པའམ་སེལ་མཁན་ལ་བཀྲ་ཤིས་བདེ་ལེགས་ཞུ།",
     "@puzzleCompletionMessageHint": {
         "description": "Hint text for completion message field"
     },
-    "puzzleTitleRequired": "Title is required",
+    "puzzleTitleRequired": "མིང་དགོས།",
     "@puzzleTitleRequired": {
         "description": "Title required error"
     },
-    "puzzleDescriptionRequired": "Description is required",
+    "puzzleDescriptionRequired": "འགྲེལ་བཤད་དགོས།",
     "@puzzleDescriptionRequired": {
         "description": "Description required error"
     },
-    "puzzlePositionRequired": "Position is required",
+    "puzzlePositionRequired": "གནས་བབ་དགོས།",
     "@puzzlePositionRequired": {
         "description": "Position required error"
     },
-    "puzzleSolutionRequired": "Solution is required",
+    "puzzleSolutionRequired": "ཐབས་ཤེས་དགོས།",
     "@puzzleSolutionRequired": {
         "description": "Solution required error"
     },
-    "puzzleCreated": "Puzzle created",
+    "puzzleCreated": "གསང་བརྟག་གསར་བཟོས་ཟིན།",
     "@puzzleCreated": {
         "description": "Puzzle created message"
     },
-    "puzzleUpdated": "Puzzle updated",
+    "puzzleUpdated": "གསང་བརྟག་གསར་བཅོས་ཟིན།",
     "@puzzleUpdated": {
         "description": "Puzzle updated message"
     },
-    "puzzleSaveFailed": "Failed to save puzzle",
+    "puzzleSaveFailed": "གསང་བརྟག་ཉར་ཚགས་མི་ཐུབ།",
     "@puzzleSaveFailed": {
         "description": "Puzzle save failed message"
     },
-    "optional": "optional",
+    "optional": "འདེམ་རུང་།",
     "@optional": {
         "description": "Optional field indicator"
     },
-    "yourProgress": "Your Progress",
+    "yourProgress": "ཁྱེད་ཀྱི་ཡར་རྒྱས།",
     "@yourProgress": {
         "description": "Your progress header"
     },
-    "quit": "Quit",
+    "quit": "ཐོན།",
     "@quit": {
         "description": "Quit button"
     },
-    "all": "All",
+    "all": "ཚང་མ།",
     "@all": {
         "description": "All option in filters"
     },
-    "comingSoon": "Coming Soon",
+    "comingSoon": "མྱུར་དུ་འོང་།",
     "@comingSoon": {
         "description": "Coming soon message"
     },
-    "dailyPuzzle": "Daily Puzzle",
+    "dailyPuzzle": "ཉིན་རེའི་གསང་བརྟག",
     "@dailyPuzzle": {
         "description": "Daily puzzle feature name"
     },
-    "dailyPuzzleDesc": "Solve a new puzzle every day",
+    "dailyPuzzleDesc": "ཉིན་རེ་གསང་བརྟག་གསར་པ་སེལ།",
     "@dailyPuzzleDesc": {
         "description": "Daily puzzle description"
     },
-    "dailyPuzzleNumber": "Day #{dayNumber}",
+    "dailyPuzzleNumber": "ཉིན #{dayNumber}",
     "@dailyPuzzleNumber": {
         "description": "Daily puzzle day number",
         "placeholders": {
@@ -2835,19 +2835,19 @@
             }
         }
     },
-    "dailyPuzzleStreak": "Streak",
+    "dailyPuzzleStreak": "མཐུད་རྒྱུན།",
     "@dailyPuzzleStreak": {
         "description": "Daily puzzle streak label"
     },
-    "dailyPuzzleDayStreak": "day streak",
+    "dailyPuzzleDayStreak": "ཉིན་མཐུད་རྒྱུན།",
     "@dailyPuzzleDayStreak": {
         "description": "Day streak suffix"
     },
-    "dailyPuzzleDays": "days",
+    "dailyPuzzleDays": "ཉིན།",
     "@dailyPuzzleDays": {
         "description": "Days label"
     },
-    "dailyPuzzleBestStreak": "Best: {longestStreak} days",
+    "dailyPuzzleBestStreak": "མཆོག: {longestStreak} ཉིན།",
     "@dailyPuzzleBestStreak": {
         "description": "Best streak display",
         "placeholders": {
@@ -2856,259 +2856,259 @@
             }
         }
     },
-    "dailyPuzzleStart": "Start Daily Puzzle",
+    "dailyPuzzleStart": "ཉིན་རེའི་གསང་བརྟག་འགོ་བཙུགས།",
     "@dailyPuzzleStart": {
         "description": "Start daily puzzle button"
     },
-    "dailyPuzzleStreakHint": "Complete daily puzzles to build your streak!",
+    "dailyPuzzleStreakHint": "མཐུད་རྒྱུན་བཟོ་ཆེད་ཉིན་རེའི་གསང་བརྟག་ཚང་གྲུབ་བྱོས!",
     "@dailyPuzzleStreakHint": {
         "description": "Streak hint message"
     },
-    "dailyPuzzleCurrentStreak": "Current Streak",
+    "dailyPuzzleCurrentStreak": "ད་ལྟའི་མཐུད་རྒྱུན།",
     "@dailyPuzzleCurrentStreak": {
         "description": "Current streak label"
     },
-    "dailyPuzzleLongestStreak": "Longest Streak",
+    "dailyPuzzleLongestStreak": "རིང་ཤོས་མཐུད་རྒྱུན།",
     "@dailyPuzzleLongestStreak": {
         "description": "Longest streak label"
     },
-    "dailyPuzzleTotalCompleted": "Total Completed",
+    "dailyPuzzleTotalCompleted": "བསྡོམས་ཚང་གྲུབ།",
     "@dailyPuzzleTotalCompleted": {
         "description": "Total completed puzzles label"
     },
-    "dailyPuzzleStreakInfo": "Solve puzzles every day to maintain your streak. Missing a day will reset it!",
+    "dailyPuzzleStreakInfo": "མཐུད་རྒྱུན་གནས་པར་ཉིན་རེ་གསང་བརྟག་སེལ། ཉིན་གཅིག་ཡལ་ན་བསྐྱར་གཏན་འབེབས!",
     "@dailyPuzzleStreakInfo": {
         "description": "Streak info message"
     },
-    "allPuzzles": "All Puzzles",
+    "allPuzzles": "གསང་བརྟག་ཚང་མ།",
     "@allPuzzles": {
         "description": "All puzzles mode name"
     },
-    "allPuzzlesDesc": "Browse all available puzzles",
+    "allPuzzlesDesc": "གསང་བརྟག་ཡོད་ཚང་མ་བལྟ།",
     "@allPuzzlesDesc": {
         "description": "All puzzles mode description"
     },
-    "puzzleRush": "Puzzle Rush",
+    "puzzleRush": "གསང་བརྟག་མྱུར་བཏགས།",
     "@puzzleRush": {
         "description": "Puzzle rush mode name"
     },
-    "puzzleRushDesc": "Solve puzzles against the clock",
+    "puzzleRushDesc": "དུས་ཚོད་ནང་གསང་བརྟག་སེལ།",
     "@puzzleRushDesc": {
         "description": "Puzzle rush mode description"
     },
-    "puzzleRushTagline": "Solve as many puzzles as you can in 5 minutes!",
+    "puzzleRushTagline": "སྐར་མ 5 ནང་གསང་བརྟག་མང་ཤོས་སེལ!",
     "@puzzleRushTagline": {
         "description": "Puzzle rush tagline"
     },
-    "puzzleRushRules": "Rules",
+    "puzzleRushRules": "སྒྲིག་གཞི།",
     "@puzzleRushRules": {
         "description": "Puzzle rush rules header"
     },
-    "puzzleRushRule1": "⏱️ 5 minutes on the clock",
+    "puzzleRushRule1": "⏱️ དུས་ཚོད་སྐར་མ 5",
     "@puzzleRushRule1": {
         "description": "Puzzle rush rule 1"
     },
-    "puzzleRushRule2": "❤️ 3 lives - 1 lost per mistake",
+    "puzzleRushRule2": "❤️ སྲོག 3 - ནོར་འཁྲུལ་རེར་ 1 ཉམས",
     "@puzzleRushRule2": {
         "description": "Puzzle rush rule 2"
     },
-    "puzzleRushRule3": "🏆 Maximize your score!",
+    "puzzleRushRule3": "🏆 གྲངས་ཐོ་མང་ཤོས་ཐོབ!",
     "@puzzleRushRule3": {
         "description": "Puzzle rush rule 3"
     },
-    "puzzleRushStart": "Start Rush",
+    "puzzleRushStart": "མྱུར་བཏགས་འགོ་བཙུགས!",
     "@puzzleRushStart": {
         "description": "Start puzzle rush button"
     },
-    "puzzleRushQuitConfirm": "Quit rush? Progress will be lost.",
+    "puzzleRushQuitConfirm": "མྱུར་བཏགས་ཐོན་ནམ? ཡར་རྒྱས་བརླག་འགྱུར།",
     "@puzzleRushQuitConfirm": {
         "description": "Quit rush confirmation message"
     },
-    "puzzleRushResults": "Rush Results",
+    "puzzleRushResults": "མྱུར་བཏགས་འབྲས་བུ།",
     "@puzzleRushResults": {
         "description": "Puzzle rush results header"
     },
-    "puzzleRushTimeUp": "Time's Up!",
+    "puzzleRushTimeUp": "དུས་ཚོད་ཟད་ཟིན!",
     "@puzzleRushTimeUp": {
         "description": "Time up message"
     },
-    "puzzleRushOutOfLives": "Out of Lives",
+    "puzzleRushOutOfLives": "སྲོག་ཟད་ཟིན!",
     "@puzzleRushOutOfLives": {
         "description": "Out of lives message"
     },
-    "puzzleRushComplete": "Rush Complete!",
+    "puzzleRushComplete": "མྱུར་བཏགས་ཚང་གྲུབ!",
     "@puzzleRushComplete": {
         "description": "Rush complete message"
     },
-    "puzzleRushSolved": "Solved",
+    "puzzleRushSolved": "སེལ་ཟིན།",
     "@puzzleRushSolved": {
         "description": "Puzzles solved label"
     },
-    "puzzleRushFailed": "Failed",
+    "puzzleRushFailed": "ཕམ།",
     "@puzzleRushFailed": {
         "description": "Puzzles failed label"
     },
-    "puzzleRushAccuracy": "Accuracy",
+    "puzzleRushAccuracy": "ཡང་དག",
     "@puzzleRushAccuracy": {
         "description": "Accuracy label"
     },
-    "puzzleRushPlayAgain": "Play Again",
+    "puzzleRushPlayAgain": "ཡང་བསྐྱར་རྩེ།",
     "@puzzleRushPlayAgain": {
         "description": "Play again button"
     },
-    "puzzleBattle": "Puzzle Battle",
+    "puzzleBattle": "གསང་བརྟག་འགྲན་བསྡུར།",
     "@puzzleBattle": {
         "description": "Puzzle battle mode name"
     },
-    "puzzleBattleDesc": "Compete with other players",
+    "puzzleBattleDesc": "རྩེད་མཁན་གཞན་དང་འགྲན།",
     "@puzzleBattleDesc": {
         "description": "Puzzle battle mode description"
     },
-    "puzzleBattleComingSoon": "Coming Soon!",
+    "puzzleBattleComingSoon": "མྱུར་དུ་འོང་!",
     "@puzzleBattleComingSoon": {
         "description": "Puzzle battle coming soon message"
     },
-    "puzzleBattleStayTuned": "This feature is currently in development. Stay tuned!",
+    "puzzleBattleStayTuned": "ནུས་པ་འདི་ད་ལྟ་ཡར་རྒྱས་བྱེད་བཞིན། བསྒུགས་རོགས!",
     "@puzzleBattleStayTuned": {
         "description": "Puzzle battle stay tuned message"
     },
-    "puzzleBattleFeature1": "⚔️ 1v1 puzzle races",
+    "puzzleBattleFeature1": "⚔️ གཅིག་དང་གཅིག་གསང་བརྟག་འགྲན",
     "@puzzleBattleFeature1": {
         "description": "Puzzle battle feature 1"
     },
-    "puzzleBattleFeature2": "🎯 Live opponent matching",
+    "puzzleBattleFeature2": "🎯 ལྷན་དུ་རྩེད་མཁན་འཚོལ",
     "@puzzleBattleFeature2": {
         "description": "Puzzle battle feature 2"
     },
-    "puzzleBattleFeature3": "📊 Rating system",
+    "puzzleBattleFeature3": "📊 ཐོབ་གྲངས་ལམ་ལུགས",
     "@puzzleBattleFeature3": {
         "description": "Puzzle battle feature 3"
     },
-    "puzzleBattleFeature4": "🏆 Leaderboards",
+    "puzzleBattleFeature4": "🏆 མཐོ་གོང་ཐོ།",
     "@puzzleBattleFeature4": {
         "description": "Puzzle battle feature 4"
     },
-    "customPuzzles": "Custom Puzzles",
+    "customPuzzles": "རང་བཟོའི་གསང་བརྟག",
     "@customPuzzles": {
         "description": "Custom puzzles mode name"
     },
-    "customPuzzlesDesc": "Create and manage your puzzles",
+    "customPuzzlesDesc": "རང་གི་གསང་བརྟག་བཟོ་དང་བཀོལ།",
     "@customPuzzlesDesc": {
         "description": "Custom puzzles mode description"
     },
-    "puzzleMultiSelectMode": "Multi-Select Mode",
+    "puzzleMultiSelectMode": "མང་འདེམ་བྱེད་སྟངས།",
     "@puzzleMultiSelectMode": {
         "description": "Multi-select mode label"
     },
-    "puzzleCreate": "Create Puzzle",
+    "puzzleCreate": "གསང་བརྟག་གསར་བཟོ།",
     "@puzzleCreate": {
         "description": "Create puzzle button"
     },
-    "puzzleStreak": "Puzzle Streak",
+    "puzzleStreak": "གསང་བརྟག་མཐུད་རྒྱུན།",
     "@puzzleStreak": {
         "description": "Puzzle streak mode name"
     },
-    "puzzleStreakDesc": "Solve consecutively without mistakes",
+    "puzzleStreakDesc": "ནོར་འཁྲུལ་མེད་པར་མཐུད་སེལ།",
     "@puzzleStreakDesc": {
         "description": "Puzzle streak mode description"
     },
-    "puzzleStreakTagline": "How many can you solve in a row?",
+    "puzzleStreakTagline": "མཐུད་རྒྱུན་ནང་ཅི་ཙམ་སེལ་ཐུབ?",
     "@puzzleStreakTagline": {
         "description": "Puzzle streak tagline"
     },
-    "puzzleStreakRules": "Rules",
+    "puzzleStreakRules": "སྒྲིག་གཞི།",
     "@puzzleStreakRules": {
         "description": "Puzzle streak rules header"
     },
-    "puzzleStreakRule1": "🎯 Solve as many puzzles as possible",
+    "puzzleStreakRule1": "🎯 གསང་བརྟག་མང་ཤོས་སེལ",
     "@puzzleStreakRule1": {
         "description": "Puzzle streak rule 1"
     },
-    "puzzleStreakRule2": "❌ One mistake and it's over",
+    "puzzleStreakRule2": "❌ ནོར་འཁྲུལ་གཅིག་ལ་མཇུག",
     "@puzzleStreakRule2": {
         "description": "Puzzle streak rule 2"
     },
-    "puzzleStreakRule3": "🏆 Beat your personal record",
+    "puzzleStreakRule3": "🏆 རང་གི་ཐོ་འགོད་བརྒལ",
     "@puzzleStreakRule3": {
         "description": "Puzzle streak rule 3"
     },
-    "puzzleStreakStart": "Start Streak",
+    "puzzleStreakStart": "མཐུད་རྒྱུན་འགོ་བཙུགས།",
     "@puzzleStreakStart": {
         "description": "Start puzzle streak button"
     },
-    "puzzleStreakCurrent": "Current",
+    "puzzleStreakCurrent": "ད་ལྟའི།",
     "@puzzleStreakCurrent": {
         "description": "Current streak label"
     },
-    "puzzleStreakBest": "Best",
+    "puzzleStreakBest": "མཆོག་ཏུ།",
     "@puzzleStreakBest": {
         "description": "Best streak label"
     },
-    "puzzleStreakResults": "Streak Results",
+    "puzzleStreakResults": "མཐུད་རྒྱུན་འབྲས་བུ།",
     "@puzzleStreakResults": {
         "description": "Streak results header"
     },
-    "puzzleStreakEnded": "Streak Ended",
+    "puzzleStreakEnded": "མཐུད་རྒྱུན་མཇུག་བསྡུས།",
     "@puzzleStreakEnded": {
         "description": "Streak ended message"
     },
-    "puzzleStreakNewRecord": "New Record!",
+    "puzzleStreakNewRecord": "ཐོ་འགོད་གསར་པ!",
     "@puzzleStreakNewRecord": {
         "description": "New record message"
     },
-    "puzzleStreakFinalScore": "Final Score",
+    "puzzleStreakFinalScore": "མཇུག་གི་གྲངས་ཐོ།",
     "@puzzleStreakFinalScore": {
         "description": "Final score label"
     },
-    "puzzleStreakTryAgain": "Try Again",
+    "puzzleStreakTryAgain": "ཡང་བསྐྱར་ཚོད་ལྟ།",
     "@puzzleStreakTryAgain": {
         "description": "Try again button"
     },
-    "puzzleStreakQuitConfirm": "Are you sure you want to quit? Your streak will be lost.",
+    "puzzleStreakQuitConfirm": "ཐོན་རྒྱུ་ཡིན་པ་གཏན་ཁེལ་ལམ། མཐུད་རྒྱུན་བརླག་འགྱུར།",
     "@puzzleStreakQuitConfirm": {
         "description": "Quit streak confirmation"
     },
-    "puzzleHistory": "History",
+    "puzzleHistory": "ལོ་རྒྱུས།",
     "@puzzleHistory": {
         "description": "Puzzle history page name"
     },
-    "puzzleHistoryDesc": "View your puzzle attempts",
+    "puzzleHistoryDesc": "གསང་བརྟག་ཚོད་ལྟ་ལྟ།",
     "@puzzleHistoryDesc": {
         "description": "Puzzle history description"
     },
-    "puzzleHistoryEmpty": "No Puzzle History",
+    "puzzleHistoryEmpty": "གསང་བརྟག་ལོ་རྒྱུས་མེད།",
     "@puzzleHistoryEmpty": {
         "description": "Empty history message"
     },
-    "puzzleHistoryEmptyHint": "Start solving puzzles to see your history here",
+    "puzzleHistoryEmptyHint": "གསང་བརྟག་སེལ་འགོ་བཙུགས་ནས་ལོ་རྒྱུས་ལྟ།",
     "@puzzleHistoryEmptyHint": {
         "description": "Empty history hint"
     },
-    "puzzleHistorySuccess": "Success Only",
+    "puzzleHistorySuccess": "རྒྱལ་ཁ་ཁོ་ན།",
     "@puzzleHistorySuccess": {
         "description": "Success filter"
     },
-    "puzzleHistoryFailed": "Failed Only",
+    "puzzleHistoryFailed": "ཕམ་ཁོ་ན།",
     "@puzzleHistoryFailed": {
         "description": "Failed filter"
     },
-    "puzzleHistoryUnknown": "Unknown Puzzle",
+    "puzzleHistoryUnknown": "མི་ཤེས་པའི་གསང་བརྟག",
     "@puzzleHistoryUnknown": {
         "description": "Unknown puzzle label"
     },
-    "puzzleHistoryHints": "hints",
+    "puzzleHistoryHints": "ལམ་སྟོན།",
     "@puzzleHistoryHints": {
         "description": "Hints label"
     },
-    "puzzleStatisticsDesc": "View detailed analytics",
+    "puzzleStatisticsDesc": "ཞིབ་ཕྲའི་དཔྱད་བརྗོད་ལྟ།",
     "@puzzleStatisticsDesc": {
         "description": "Statistics page description"
     },
-    "puzzleStatsRating": "Your Puzzle Rating",
+    "puzzleStatsRating": "ཁྱེད་ཀྱི་གསང་བརྟག་ཐོབ་གྲངས།",
     "@puzzleStatsRating": {
         "description": "Puzzle rating header"
     },
-    "puzzleStatsProvisional": "Provisional ({gamesLeft} games left)",
+    "puzzleStatsProvisional": "གནས་སྐབས ({gamesLeft} རྩེད་མོ་ལྷག)",
     "@puzzleStatsProvisional": {
         "description": "Provisional rating message",
         "placeholders": {
@@ -3117,195 +3117,195 @@
             }
         }
     },
-    "puzzleStatsGamesPlayed": "Games Played",
+    "puzzleStatsGamesPlayed": "རྩེད་མོ་རྩེས་ཟིན།",
     "@puzzleStatsGamesPlayed": {
         "description": "Games played label"
     },
-    "puzzleStatsDeviation": "Deviation",
+    "puzzleStatsDeviation": "ཁྱད་པར།",
     "@puzzleStatsDeviation": {
         "description": "Rating deviation label"
     },
-    "puzzleStatsPerformance": "Performance Overview",
+    "puzzleStatsPerformance": "ནུས་པའི་ཡོངས་ཁུངས།",
     "@puzzleStatsPerformance": {
         "description": "Performance overview header"
     },
-    "puzzleStatsSuccessRate": "Success Rate",
+    "puzzleStatsSuccessRate": "རྒྱལ་ཚད།",
     "@puzzleStatsSuccessRate": {
         "description": "Success rate label"
     },
-    "puzzleStatsAvgTime": "Avg. Time",
+    "puzzleStatsAvgTime": "སྤྱིར་བཏང་དུས་ཚོད།",
     "@puzzleStatsAvgTime": {
         "description": "Average time label"
     },
-    "puzzleStatsSolved": "Solved",
+    "puzzleStatsSolved": "སེལ་ཟིན།",
     "@puzzleStatsSolved": {
         "description": "Solved count label"
     },
-    "puzzleStatsFailed": "Failed",
+    "puzzleStatsFailed": "ཕམ།",
     "@puzzleStatsFailed": {
         "description": "Failed count label"
     },
-    "puzzleStatsByDifficulty": "Success by Difficulty",
+    "puzzleStatsByDifficulty": "དཀའ་ཚད་ལྟར་རྒྱལ་ཚད།",
     "@puzzleStatsByDifficulty": {
         "description": "Success by difficulty header"
     },
-    "puzzleStatsByCategory": "Success by Category",
+    "puzzleStatsByCategory": "སྡེ་ཚན་ལྟར་རྒྱལ་ཚད།",
     "@puzzleStatsByCategory": {
         "description": "Success by category header"
     },
-    "puzzleStatsRecentActivity": "Recent Activity",
+    "puzzleStatsRecentActivity": "ཉེ་ཆའི་བྱེད་སྒོ།",
     "@puzzleStatsRecentActivity": {
         "description": "Recent activity header"
     },
-    "puzzleStatsNoActivity": "No recent activity",
+    "puzzleStatsNoActivity": "ཉེ་ཆའི་བྱེད་སྒོ་མེད།",
     "@puzzleStatsNoActivity": {
         "description": "No activity message"
     },
-    "edit": "Edit",
+    "edit": "བཅོས་བསྒྱུར།",
     "@edit": {
         "description": "Edit button"
     },
-    "save": "Save",
+    "save": "ཉར་ཚགས།",
     "@save": {
         "description": "Save button"
     },
-    "noCustomPuzzles": "No Custom Puzzles",
+    "noCustomPuzzles": "རང་བཟོའི་གསང་བརྟག་མེད།",
     "@noCustomPuzzles": {
         "description": "Message when there are no custom puzzles"
     },
-    "noCustomPuzzlesHint": "Create your own puzzles to practice specific positions",
+    "noCustomPuzzlesHint": "གནས་བབ་ངེས་ཅན་སྦྱོང་བརྡར་ཆེད་རང་གི་གསང་བརྟག་བཟོ།",
     "@noCustomPuzzlesHint": {
         "description": "Hint message for creating custom puzzles"
     },
-    "plannedFeatures": "This feature is planned for a future release",
+    "plannedFeatures": "ནུས་པ་འདི་མ་འོངས་པའི་ཐོན་རིམ་ནང་འཆར་གཞི་བཟོས་ཡོད།",
     "@plannedFeatures": {
         "description": "Message for features under development"
     },
-    "puzzleInvalidPosition": "Invalid position",
+    "puzzleInvalidPosition": "གནས་བབ་ནོར་བ།",
     "@puzzleInvalidPosition": {
         "description": "Error message when puzzle position is invalid"
     },
-    "puzzleOpenBoardSetup": "Open Board (Setup Position)",
+    "puzzleOpenBoardSetup": "པང་ལེབ་ཁ་ཕྱེ (གནས་བབ་གཏན་འབེབས)",
     "@puzzleOpenBoardSetup": {
         "description": "Open the game board in Setup Position mode to arrange the starting position."
     },
-    "puzzleOpenBoardPlay": "Open Board (Play Moves)",
+    "puzzleOpenBoardPlay": "པང་ལེབ་ཁ་ཕྱེ (རྩེད་མོ་རྩེ)",
     "@puzzleOpenBoardPlay": {
         "description": "Open the game board to play the solution moves while recording."
     },
-    "puzzleRecordingHintUseButton": "Use the button below to open the board, then press Back to return.",
+    "puzzleRecordingHintUseButton": "འོག་གི་ཨེབ་གཅུས་མནན་ནས་པང་ལེབ་ཁ་ཕྱེ། དེ་ནས་ Back མནན་ནས་ཕྱིར་ལོག",
     "@puzzleRecordingHintUseButton": {
         "description": "Hint telling users to use the provided button to navigate to the board and return."
     },
-    "puzzleInvalidPositionFormat": "Invalid position format. Please check the game board.",
+    "puzzleInvalidPositionFormat": "གནས་བབ་རྣམ་གཞག་ནོར་བ། རྩེད་པང་ལྟ།",
     "@puzzleInvalidPositionFormat": {
         "description": "Error message when position format is invalid"
     },
-    "puzzleFailedLoadPosition": "Failed to load position. Please resnapshot.",
+    "puzzleFailedLoadPosition": "གནས་བབ་ཐོན་སྟེགས་སུ་འཇུག་མ་ཐུབ། བསྐྱར་ཟིན་ཐོ་བཀོད།",
     "@puzzleFailedLoadPosition": {
         "description": "Error message when failed to load position"
     },
-    "puzzleInvalidPositionFormatRecapture": "Invalid position format. Please resnapshot the position.",
+    "puzzleInvalidPositionFormatRecapture": "གནས་བབ་རྣམ་གཞག་ནོར་བ། གནས་བབ་བསྐྱར་ཟིན་ཐོ་བཀོད།",
     "@puzzleInvalidPositionFormatRecapture": {
         "description": "Error message when position format is invalid and needs to be re-snapshotted"
     },
-    "puzzleShowDetailedWorkflow": "Show detailed workflow",
+    "puzzleShowDetailedWorkflow": "ཞིབ་ཕྲའི་ལས་རིམ་སྟོན།",
     "@puzzleShowDetailedWorkflow": {
         "description": "Tooltip for showing detailed workflow"
     },
-    "puzzleCreationWorkflow": "Puzzle Creation Workflow",
+    "puzzleCreationWorkflow": "གསང་བརྟག་བཟོ་བའི་ལས་རིམ།",
     "@puzzleCreationWorkflow": {
         "description": "Title for puzzle creation workflow dialog"
     },
-    "puzzleWorkflowStepSetup": "Setup Position",
+    "puzzleWorkflowStepSetup": "གནས་བབ་གཏན་འབེབས།",
     "@puzzleWorkflowStepSetup": {
         "description": "Workflow step: setup position"
     },
-    "puzzleWorkflowStepSetupDesc": "Open board, setup position, snapshot",
+    "puzzleWorkflowStepSetupDesc": "པང་ལེབ་ཁ་ཕྱེ, གནས་བབ་གཏན་འབེབས, ཟིན་ཐོ།",
     "@puzzleWorkflowStepSetupDesc": {
         "description": "Description for setup position workflow step"
     },
-    "puzzleWorkflowStepRecord": "Record Solution",
+    "puzzleWorkflowStepRecord": "ཐབས་ཤེས་ཐོ་བཀོད།",
     "@puzzleWorkflowStepRecord": {
         "description": "Workflow step: record solution"
     },
-    "puzzleWorkflowStepRecordDesc": "Start recording, play moves, stop",
+    "puzzleWorkflowStepRecordDesc": "ཐོ་བཀོད་འགོ་བཙུགས, བསྒུལ་བ་རྩེ, མཚམས་འཇོག",
     "@puzzleWorkflowStepRecordDesc": {
         "description": "Description for record solution workflow step"
     },
-    "puzzleWorkflowStepDetails": "Add Details",
+    "puzzleWorkflowStepDetails": "ཞིབ་ཕྲ་བཀོད།",
     "@puzzleWorkflowStepDetails": {
         "description": "Workflow step: add details"
     },
-    "puzzleWorkflowStepDetailsDesc": "Fill title, category, difficulty",
+    "puzzleWorkflowStepDetailsDesc": "མིང, སྡེ་ཚན, དཀའ་ཚད་བཀོད།",
     "@puzzleWorkflowStepDetailsDesc": {
         "description": "Description for add details workflow step"
     },
-    "puzzleWorkflowStepSave": "Save Puzzle",
+    "puzzleWorkflowStepSave": "གསང་བརྟག་ཉར་ཚགས།",
     "@puzzleWorkflowStepSave": {
         "description": "Workflow step: save puzzle"
     },
-    "puzzleWorkflowStepSaveDesc": "Click save button",
+    "puzzleWorkflowStepSaveDesc": "ཉར་ཚགས་ཨེབ་གཅུས་མནན།",
     "@puzzleWorkflowStepSaveDesc": {
         "description": "Description for save puzzle workflow step"
     },
-    "puzzleWorkflowTip": "Tip: You'll navigate between this page and the game board. Your progress is saved!",
+    "puzzleWorkflowTip": "ལམ་སྟོན: ཤོག་ངོས་འདི་དང་རྩེད་པང་བར་སྤོ་འགྱུར་བྱེད། ཁྱེད་ཀྱི་ཡར་རྒྱས་ཉར་ཚགས་ཡོད།",
     "@puzzleWorkflowTip": {
         "description": "Tip message for puzzle creation workflow"
     },
-    "puzzlePositionSnapshotHelp": "Position Snapshot Help",
+    "puzzlePositionSnapshotHelp": "གནས་བབ་ཟིན་ཐོའི་རོགས་རམ།",
     "@puzzlePositionSnapshotHelp": {
         "description": "Title for position snapshot help dialog"
     },
-    "puzzlePositionSnapshotHelpContent": "How to snapshot the puzzle starting position:\n\n1. Click \"Open Board (Setup Position)\" to manually place pieces, OR click \"Open Board (Play Moves)\" to reach the position by making moves\n\n2. Arrange the board to your desired puzzle starting position\n\n3. Press the back button to return to this page\n\n4. The position will be automatically snapshotted and saved\n\nThis snapshotted position will be used as the starting point for your puzzle.",
+    "puzzlePositionSnapshotHelpContent": "གསང་བརྟག་འགོ་གནས་བབ་ཇི་ལྟར་ཟིན་ཐོ་བཀོད:\n\n1. \"པང་ལེབ་ཁ་ཕྱེ\" མནན (གནས་བབ་གཏན་འབེབས)\n2. པང་ལེབ་ཐོག་རྡོ་རིས་བཀོད\n3. ཤོག་ངོས་འདིར་ཕྱིར་ལོག\n4. \"གནས་བབ་ཟིན་ཐོ\" མནན",
     "@puzzlePositionSnapshotHelpContent": {
         "description": "Help content for snapshotting puzzle starting position"
     },
-    "puzzleSolutionRecordingHelp": "Solution Recording Help",
+    "puzzleSolutionRecordingHelp": "ཐབས་ཤེས་ཐོ་བཀོད་རོགས་རམ།",
     "@puzzleSolutionRecordingHelp": {
         "description": "Title for solution recording help dialog"
     },
-    "puzzleSolutionRecordingHelpContent": "How to record the solution moves:",
+    "puzzleSolutionRecordingHelpContent": "ཐབས་ཤེས་བསྒུལ་བ་ཇི་ལྟར་ཐོ་བཀོད:",
     "@puzzleSolutionRecordingHelpContent": {
         "description": "Header text for solution recording help"
     },
-    "puzzleSolutionStep1": "Snapshot the starting position first",
+    "puzzleSolutionStep1": "སྔོན་ལ་འགོ་གནས་བབ་ཟིན་ཐོ་བཀོད།",
     "@puzzleSolutionStep1": {
         "description": "Step 1 for recording solution"
     },
-    "puzzleSolutionStep2": "Click \"Start Recording\" button (this resets the board to your snapshotted position)",
+    "puzzleSolutionStep2": "\"ཐོ་བཀོད་འགོ་བཙུགས\" མནན (པང་ལེབ་ཟིན་ཐོའི་གནས་བབ་ལ་བསྐྱར་གཏན་འབེབས)",
     "@puzzleSolutionStep2": {
         "description": "Step 2 for recording solution"
     },
-    "puzzleSolutionStep4": "Return here and click \"Stop Recording\"",
+    "puzzleSolutionStep4": "ཤོག་ངོས་འདིར་ཕྱིར་ལོག་ནས \"ཐོ་བཀོད་མཚམས་འཇོག\" མནན",
     "@puzzleSolutionStep4": {
         "description": "Step 4 for recording solution"
     },
-    "puzzleSolutionRecordingTip": "Tip: The board will automatically reset to your snapshotted position when you start recording.",
+    "puzzleSolutionRecordingTip": "ལམ་སྟོན: ཐོ་བཀོད་འགོ་བཙུགས་སྐབས་པང་ལེབ་རང་འགུལ་གྱིས་ཟིན་ཐོའི་གནས་བབ་ལ་བསྐྱར་གཏན་འབེབས།",
     "@puzzleSolutionRecordingTip": {
         "description": "Tip message for solution recording"
     },
-    "puzzleMultipleSolutionsSupported": "You can add multiple solutions (no limit). Mark the shortest/best one as optimal.",
+    "puzzleMultipleSolutionsSupported": "ཐབས་ཤེས་མང་པོ་སྣོན་ཆོག (ཚད་མེད)། ཐུང་ཤོས/ཡག་ཤོས་མཆོག་ཏུ་གྱུར་བར་རྟགས་རྒྱག",
     "@puzzleMultipleSolutionsSupported": {
         "description": "Information about multiple solutions support"
     },
-    "puzzleShowPositionSnapshotHelp": "Show position snapshot help",
+    "puzzleShowPositionSnapshotHelp": "གནས་བབ་ཟིན་ཐོའི་རོགས་རམ་སྟོན།",
     "@puzzleShowPositionSnapshotHelp": {
         "description": "Tooltip for position snapshot help button"
     },
-    "puzzleShowSolutionRecordingHelp": "Show solution recording help",
+    "puzzleShowSolutionRecordingHelp": "ཐབས་ཤེས་ཐོ་བཀོད་རོགས་རམ་སྟོན།",
     "@puzzleShowSolutionRecordingHelp": {
         "description": "Tooltip for solution recording help button"
     },
-    "noMoreHintsAvailable": "No more hints available",
+    "noMoreHintsAvailable": "ལམ་སྟོན་ད་གཞི་མེད།",
     "@noMoreHintsAvailable": {
         "description": "Message when no more hints are available"
     },
-    "hintDialogTitle": "Hint",
+    "hintDialogTitle": "ལམ་སྟོན།",
     "@hintDialogTitle": {
         "description": "Title for hint dialog"
     },
-    "optimalSolutionWithMoves": "Optimal solution ({moves} moves):",
+    "optimalSolutionWithMoves": "མཆོག་ཏུ་གྱུར་བའི་ཐབས་ཤེས ({moves} བསྒུལ་བ):",
     "@optimalSolutionWithMoves": {
         "description": "Label showing optimal solution with number of moves",
         "placeholders": {
@@ -3314,111 +3314,111 @@
             }
         }
     },
-    "validationErrors": "Validation Errors",
+    "validationErrors": "ཚོད་ལྟའི་ནོར་འཁྲུལ།",
     "@validationErrors": {
         "description": "Title for validation errors dialog"
     },
-    "contributePuzzlesToSanmill": "Contribute Puzzles to Sanmill",
+    "contributePuzzlesToSanmill": "Sanmill ལ་གསང་བརྟག་ཞལ་འདེབས།",
     "@contributePuzzlesToSanmill": {
         "description": "Title for contribute puzzles dialog"
     },
-    "whatHappensNext": "What happens next:",
+    "whatHappensNext": "རྗེས་ལ་ཅི་བྱུང་:",
     "@whatHappensNext": {
         "description": "Label for what happens next section"
     },
-    "contributionStep1": "1. Your puzzles will be exported to a JSON file",
+    "contributionStep1": "1. ཁྱེད་ཀྱི་གསང་བརྟག JSON ཡིག་ཆར་ཕྱི་འདྲེན།",
     "@contributionStep1": {
         "description": "Step 1 in contribution process"
     },
-    "contributionStep2": "2. You can share this file via the share dialog",
+    "contributionStep2": "2. མཉམ་སྤྱོད་གླེང་སྒྲོམ་ནས་ཡིག་ཆ་མཉམ་སྤྱོད་བྱེད་ཆོག",
     "@contributionStep2": {
         "description": "Step 2 in contribution process"
     },
-    "contributionStep4": "4. Puzzles will be reviewed by maintainers",
+    "contributionStep4": "4. བདག་གཉེར་བས་གསང་བརྟག་ལྟ་ཞིབ་བྱ།",
     "@contributionStep4": {
         "description": "Step 4 in contribution process"
     },
-    "contributionStep5": "5. Once approved, they become built-in puzzles!",
+    "contributionStep5": "5. ཆོག་མཆན་ཐོབ་རྗེས་ནང་བཟོའི་གསང་བརྟག་ཏུ་གྱུར!",
     "@contributionStep5": {
         "description": "Step 5 in contribution process"
     },
-    "exportForContribution": "Export for Contribution",
+    "exportForContribution": "ཞལ་འདེབས་ཆེད་ཕྱི་འདྲེན།",
     "@exportForContribution": {
         "description": "Button text for exporting puzzles for contribution"
     },
-    "startContributing": "Start Contributing",
+    "startContributing": "ཞལ་འདེབས་འགོ་བཙུགས།",
     "@startContributing": {
         "description": "Button text to start contributing puzzles"
     },
-    "quickStart": "Quick Start:",
+    "quickStart": "མྱུར་འགོ:",
     "@quickStart": {
         "description": "Label for quick start section"
     },
-    "createQualityPuzzles": "Create Quality Puzzles",
+    "createQualityPuzzles": "ཡག་པོའི་གསང་བརྟག་བཟོ།",
     "@createQualityPuzzles": {
         "description": "Title for creating quality puzzles step"
     },
-    "createQualityPuzzlesDesc": "Ensure your puzzle has a clear solution, good metadata, and teaches something valuable.",
+    "createQualityPuzzlesDesc": "གསང་བརྟག་ལ་གསལ་བའི་ཐབས་ཤེས་དང་མེ་ལོང་ཡག་པོ་ཡོད་ཅིང་ཁེ་ཕན་ཅན་ཡིན་པ་ཚོད་ལྟ་བྱོས།",
     "@createQualityPuzzlesDesc": {
         "description": "Description for creating quality puzzles"
     },
-    "addYourName": "Add Your Name",
+    "addYourName": "མིང་སྣོན།",
     "@addYourName": {
         "description": "Title for adding author name step"
     },
-    "addYourNameDesc": "Edit your puzzle and add your name as the author to get credit.",
+    "addYourNameDesc": "ཐོབ་ཐང་ཐོབ་ཆེད་གསང་བརྟག་བཅོས་བསྒྱུར་བྱས་ནས་མིང་རྩོམ་པ་པོར་སྣོན།",
     "@addYourNameDesc": {
         "description": "Description for adding author name"
     },
-    "exportForContributionStep": "Export for Contribution",
+    "exportForContributionStep": "ཞལ་འདེབས་ཆེད་ཕྱི་འདྲེན།",
     "@exportForContributionStep": {
         "description": "Title for export step"
     },
-    "exportForContributionStepDesc": "Select your puzzles and tap the upload icon to export in the correct format.",
+    "exportForContributionStepDesc": "གསང་བརྟག་འདེམས་ནས་ཕྱི་འདྲེན་རྟགས་ལ་མནན།",
     "@exportForContributionStepDesc": {
         "description": "Description for export step"
     },
-    "submitStep": "Submit",
+    "submitStep": "ཕུལ་བ།",
     "@submitStep": {
         "description": "Title for submit step"
     },
-    "submitStepDesc": "Share the exported file via GitHub Pull Request, Issue, or email.",
+    "submitStepDesc": "GitHub Pull Request, Issue, ཡང་ན་ email ནས་ཕྱི་འདྲེན་ཡིག་ཆ་མཉམ་སྤྱོད།",
     "@submitStepDesc": {
         "description": "Description for submit step"
     },
-    "fullDocumentation": "Full Documentation",
+    "fullDocumentation": "ཡིག་ཆ་ཚང་མ།",
     "@fullDocumentation": {
         "description": "Label for full documentation link"
     },
-    "fullDocumentationDesc": "See PUZZLE_CONTRIBUTION_GUIDE.md in the repository for complete instructions, quality guidelines, and submission options.",
+    "fullDocumentationDesc": "PUZZLE_CONTRIBUTION_GUIDE.md ལ་མཁོ་ཆའི་ལམ་སྟོན་ཚང་མ་ལྟོས།",
     "@fullDocumentationDesc": {
         "description": "Description for full documentation"
     },
-    "qualityRequirements": "Quality Requirements:",
+    "qualityRequirements": "ཡག་ཆའི་ཆ་རྐྱེན:",
     "@qualityRequirements": {
         "description": "Label for quality requirements section"
     },
-    "qualityReqClearSolution": "✓ Clear, unique solution",
+    "qualityReqClearSolution": "✓ གསལ་བའི་ཐབས་ཤེས",
     "@qualityReqClearSolution": {
         "description": "Quality requirement: clear solution"
     },
-    "qualityReqCompleteMetadata": "✓ Complete metadata (title, description, etc.)",
+    "qualityReqCompleteMetadata": "✓ ཚང་བའི་མེ་ལོང (མིང, འགྲེལ་བཤད, སོགས)",
     "@qualityReqCompleteMetadata": {
         "description": "Quality requirement: complete metadata"
     },
-    "qualityReqAuthorAttribution": "✓ Author attribution",
+    "qualityReqAuthorAttribution": "✓ རྩོམ་པ་པོའི་ཐོབ་ཐང",
     "@qualityReqAuthorAttribution": {
         "description": "Quality requirement: author attribution"
     },
-    "qualityReqAccurateDifficulty": "✓ Accurate difficulty rating",
+    "qualityReqAccurateDifficulty": "✓ ཡང་དག་པའི་དཀའ་ཚད",
     "@qualityReqAccurateDifficulty": {
         "description": "Quality requirement: accurate difficulty"
     },
-    "qualityReqInstructive": "✓ Instructive or entertaining",
+    "qualityReqInstructive": "✓ ཤེས་བྱ་ཡོད་པའམ་སྤྲོ་བ་ཅན",
     "@qualityReqInstructive": {
         "description": "Quality requirement: instructive or entertaining"
     },
-    "nextMoveHint": "Next move: {move}",
+    "nextMoveHint": "རྗེས་མའི་བསྒུལ་བ: {move}",
     "@nextMoveHint": {
         "description": "Hint showing the next move in a puzzle",
         "placeholders": {
@@ -3428,7 +3428,7 @@
             }
         }
     },
-    "completeSolutionHint": "Complete solution: {solution}",
+    "completeSolutionHint": "ཐབས་ཤེས་ཚང་མ: {solution}",
     "@completeSolutionHint": {
         "description": "Hint showing the complete puzzle solution",
         "placeholders": {
@@ -3438,23 +3438,23 @@
             }
         }
     },
-    "payAttentionToPositions": "Pay attention to these positions",
+    "payAttentionToPositions": "གནས་བབ་འདི་དག་ལ་དོ་སྣང་བྱོས།",
     "@payAttentionToPositions": {
         "description": "Hint to focus on specific board positions"
     },
-    "noSolutionAvailable": "No solution available",
+    "noSolutionAvailable": "ཐབས་ཤེས་མེད།",
     "@noSolutionAvailable": {
         "description": "Message when no solution is available for a puzzle"
     },
-    "keepGoingObjectiveNotAchieved": "Keep going! The objective hasn't been achieved yet.",
+    "keepGoingObjectiveNotAchieved": "མུ་མཐུད! དམིགས་ཡུལ་འགྲུབ་མེད།",
     "@keepGoingObjectiveNotAchieved": {
         "description": "Feedback message when puzzle objective is not yet met"
     },
-    "perfectSolvedOptimal": "Perfect! Solved in optimal moves!",
+    "perfectSolvedOptimal": "མཆོག་ཏུ! མཆོག་ཏུ་གྱུར་བའི་བསྒུལ་བ་ནང་སེལ་ཟིན!",
     "@perfectSolvedOptimal": {
         "description": "Success message when puzzle is solved optimally"
     },
-    "correctMovesOptimal": "Correct! ({count} moves, optimal: {optimal})",
+    "correctMovesOptimal": "ཡག་པོ! (བསྒུལ་བ {count}, མཆོག: {optimal})",
     "@correctMovesOptimal": {
         "description": "Success message showing move count vs optimal",
         "placeholders": {
@@ -3468,15 +3468,15 @@
             }
         }
     },
-    "correctAlternativeSolution": "Correct! You found an alternative solution!",
+    "correctAlternativeSolution": "ཡག་པོ! གཞན་པའི་ཐབས་ཤེས་རྙེད!",
     "@correctAlternativeSolution": {
         "description": "Success message for finding an alternative solution"
     },
-    "justNow": "Just now",
+    "justNow": "ད་ལྟ།",
     "@justNow": {
         "description": "Time indicator for very recent activity"
     },
-    "minutesAgo": "{minutes}m ago",
+    "minutesAgo": "སྐར་མ {minutes} སྔོན།",
     "@minutesAgo": {
         "description": "Relative time in minutes",
         "placeholders": {
@@ -3485,7 +3485,7 @@
             }
         }
     },
-    "hoursAgo": "{hours}h ago",
+    "hoursAgo": "ཆུ་ཚོད {hours} སྔོན།",
     "@hoursAgo": {
         "description": "Relative time in hours",
         "placeholders": {
@@ -3494,7 +3494,7 @@
             }
         }
     },
-    "daysAgo": "{days}d ago",
+    "daysAgo": "ཉིན {days} སྔོན།",
     "@daysAgo": {
         "description": "Relative time in days",
         "placeholders": {
@@ -3503,95 +3503,95 @@
             }
         }
     },
-    "invalidPuzzle": "Invalid Puzzle",
+    "invalidPuzzle": "གསང་བརྟག་ནོར་བ།",
     "@invalidPuzzle": {
         "description": "Title for invalid puzzle error"
     },
-    "invalidPuzzleMessage": "This puzzle has an invalid position format and cannot be loaded. Please contact the puzzle author or try a different puzzle.",
+    "invalidPuzzleMessage": "གསང་བརྟག་འདིའི་གནས་བབ་རྣམ་གཞག་མི་ནོར་ཞིང་ཐོན་སྟེགས་སུ་འཇུག་མི་ཐུབ། རྩོམ་པ་པོ་ལ་འབྲེལ་བ་བྱོས་ཡང་ན་གསང་བརྟག་གཞན་ལ་ཚོད་ལྟ་བྱོས།",
     "@invalidPuzzleMessage": {
         "description": "Error message for invalid puzzle format"
     },
-    "keepTrying": "Keep trying!",
+    "keepTrying": "མུ་མཐུད་ཚོད་ལྟ!",
     "@keepTrying": {
         "description": "Encouragement message to continue attempting puzzle"
     },
-    "examples": "Examples",
+    "examples": "དཔེ་མཚོན།",
     "@examples": {
         "description": "Examples label"
     },
-    "aiChatTitle": "AI Assistant",
+    "aiChatTitle": "AI གྲོགས་རམ།",
     "@aiChatTitle": {
         "description": "AI chat assistant dialog title"
     },
-    "aiChatWelcomeMessage": "Hello! I'm your Mill game assistant. Ask me about strategies, positions, or any questions about the current game.",
+    "aiChatWelcomeMessage": "བཀྲ་ཤིས། ང་ཁྱེད་ཀྱི་འཁོར་ལོ་རྩེད་མོའི་གྲོགས་རམ་ཡིན། ཐབས་ལམ, གནས་བབ, ཡང་ན་ད་ལྟའི་རྩེད་མོའི་སྐོར་དྲིས།",
     "@aiChatWelcomeMessage": {
         "description": "Welcome message in AI chat"
     },
-    "aiChatInputHint": "Ask about the game...",
+    "aiChatInputHint": "རྩེད་མོའི་སྐོར་དྲིས...",
     "@aiChatInputHint": {
         "description": "Hint text for AI chat input field"
     },
-    "aiChatErrorMessage": "Sorry, I encountered an error. Please try again.",
+    "aiChatErrorMessage": "དགོངས་དག ནོར་འཁྲུལ་བྱུང་། ཡང་བསྐྱར་ཚོད་ལྟ་བྱོས།",
     "@aiChatErrorMessage": {
         "description": "Error message in AI chat"
     },
-    "aiChatNotConfigured": "AI assistant is not configured. Please configure LLM settings first.",
+    "aiChatNotConfigured": "AI གྲོགས་རམ་སྒྲིག་འགོད་མེད། LLM སྒྲིག་གཞི་སྔོན་ལ་སྒྲིག་འགོད་བྱོས།",
     "@aiChatNotConfigured": {
         "description": "Message when LLM is not configured"
     },
-    "aiChatButtonTooltip": "Chat with AI Assistant",
+    "aiChatButtonTooltip": "AI གྲོགས་རམ་དང་སྐད་ཆ།",
     "@aiChatButtonTooltip": {
         "description": "Tooltip for AI chat button"
     },
-    "aiChatClearHistory": "Clear chat history",
+    "aiChatClearHistory": "སྐད་ཆའི་ལོ་རྒྱུས་བསལ།",
     "@aiChatClearHistory": {
         "description": "Tooltip for clear chat history button"
     },
-    "aiChatClearHistoryConfirm": "Clear Chat History?",
+    "aiChatClearHistoryConfirm": "སྐད་ཆའི་ལོ་རྒྱུས་བསལ་རྒྱུ?",
     "@aiChatClearHistoryConfirm": {
         "description": "Title for clear history confirmation dialog"
     },
-    "aiChatClearHistoryMessage": "This will delete all messages and start a new conversation. This action cannot be undone.",
+    "aiChatClearHistoryMessage": "འཕྲིན་ཚང་མ་བསུབ་ཅིང་སྐད་ཆ་གསར་པ་འགོ་བཙུགས། བྱ་བ་འདི་སླར་གསོ་མི་ཐུབ།",
     "@aiChatClearHistoryMessage": {
         "description": "Message for clear history confirmation dialog"
     },
-    "aiChatCleared": "Chat history cleared",
+    "aiChatCleared": "སྐད་ཆའི་ལོ་རྒྱུས་བསལ་ཟིན།",
     "@aiChatCleared": {
         "description": "Message shown after clearing chat history"
     },
-    "logs": "Logs",
+    "logs": "ཐོ་གཞུང་།",
     "@logs": {
         "description": "Label for the logs setting"
     },
-    "downloadLogs": "Download Logs",
+    "downloadLogs": "ཐོ་གཞུང་ཕབ་ལེན།",
     "@downloadLogs": {
         "description": "Tooltip for the download logs button"
     },
-    "noLogsAvailable": "No Logs Available",
+    "noLogsAvailable": "ཐོ་གཞུང་མེད།",
     "@noLogsAvailable": {
         "description": "Title shown when there are no logs to display"
     },
-    "noLogsDescription": "Logs will appear here as the app runs. Try using the app and come back to see the logs.",
+    "noLogsDescription": "ཉེར་སྤྱོད་ལག་ལེན་བཏང་སྐབས་ཐོ་གཞུང་འདིར་མངོན། ཉེར་སྤྱོད་བེད་སྤྱོད་བྱས་ནས་ཡང་བསྐྱར་ལྟ།",
     "@noLogsDescription": {
         "description": "Description shown when there are no logs"
     },
-    "noLogsToDownload": "No logs available to download",
+    "noLogsToDownload": "ཕབ་ལེན་བྱ་རྒྱུའི་ཐོ་གཞུང་མེད།",
     "@noLogsToDownload": {
         "description": "Message shown when trying to download but no logs exist"
     },
-    "downloadFailed": "Download failed",
+    "downloadFailed": "ཕབ་ལེན་ཕམ།",
     "@downloadFailed": {
         "description": "Message shown when log download fails"
     },
-    "refresh": "Refresh",
+    "refresh": "གསར་སྒྱུར།",
     "@refresh": {
         "description": "Label for refresh action"
     },
-    "shareLogs": "Share Logs",
+    "shareLogs": "ཐོ་གཞུང་མཉམ་སྤྱོད།",
     "@shareLogs": {
         "description": "Tooltip for the share logs button"
     },
-    "downloadSuccess": "Downloaded to {path}",
+    "downloadSuccess": "{path} ལ་ཕབ་ལེན་ཟིན།",
     "@downloadSuccess": {
         "description": "Message shown when logs are successfully downloaded",
         "placeholders": {
@@ -3600,39 +3600,39 @@
             }
         }
     },
-    "selectMode": "Select Mode",
+    "selectMode": "བྱེད་སྟངས་འདེམས།",
     "@selectMode": {
         "description": "Label for selection mode"
     },
-    "copySelected": "Copy Selected",
+    "copySelected": "འདེམས་ཟིན་པ་ཕབ།",
     "@copySelected": {
         "description": "Label for copy selected action"
     },
-    "selectStartPoint": "Tap to select start point",
+    "selectStartPoint": "འགོ་ཚུགས་ས་མནན།",
     "@selectStartPoint": {
         "description": "Hint text for selecting start point"
     },
-    "selectEndPoint": "Tap to select end point",
+    "selectEndPoint": "མཇུག་ས་མནན།",
     "@selectEndPoint": {
         "description": "Hint text for selecting end point"
     },
-    "nothingSelected": "No logs selected",
+    "nothingSelected": "ཐོ་གཞུང་འདེམས་མེད།",
     "@nothingSelected": {
         "description": "Message shown when trying to copy but no logs are selected"
     },
-    "scrollToTop": "Scroll to top (oldest)",
+    "scrollToTop": "སྟེང་ལ་སྤོ (རྙིང་ཤོས)",
     "@scrollToTop": {
         "description": "Tooltip for scroll to top button"
     },
-    "scrollToBottom": "Scroll to bottom (newest)",
+    "scrollToBottom": "འོག་ལ་སྤོ (གསར་ཤོས)",
     "@scrollToBottom": {
         "description": "Tooltip for scroll to bottom button"
     },
-    "newestLogsAtBottom": "Newest logs at bottom",
+    "newestLogsAtBottom": "གསར་ཤོས་ཐོ་གཞུང་འོག་ཏུ།",
     "@newestLogsAtBottom": {
         "description": "Hint text indicating log order"
     },
-    "logsCount": "Logs: {current} / {max}",
+    "logsCount": "ཐོ་གཞུང་: {current} / {max}",
     "@logsCount": {
         "description": "Display current log count and buffer size",
         "placeholders": {
@@ -3644,7 +3644,7 @@
             }
         }
     },
-    "logsBufferFull": "Log buffer full ({current}/{max}). Old logs are being removed.",
+    "logsBufferFull": "ཐོ་གཞུང་ཆ་ཚང ({current}/{max})། ཐོ་གཞུང་རྙིང་པ་བསུབ་བཞིན།",
     "@logsBufferFull": {
         "description": "Warning message when log buffer is full",
         "placeholders": {
@@ -3656,59 +3656,59 @@
             }
         }
     },
-    "clearLogs": "Clear Logs",
+    "clearLogs": "ཐོ་གཞུང་བསལ།",
     "@clearLogs": {
         "description": "Label for clear logs action"
     },
-    "clearLogsConfirmation": "Are you sure you want to clear all logs? This action cannot be undone.",
+    "clearLogsConfirmation": "ཐོ་གཞུང་ཚང་མ་བསལ་རྒྱུ་ཡིན་པ་གཏན་ཁེལ་ལམ? བྱ་བ་འདི་སླར་གསོ་མི་ཐུབ།",
     "@clearLogsConfirmation": {
         "description": "Confirmation message for clearing logs"
     },
-    "clear": "Clear",
+    "clear": "བསལ།",
     "@clear": {
         "description": "Label for clear button"
     },
-    "logsCleared": "Logs cleared",
+    "logsCleared": "ཐོ་གཞུང་བསལ་ཟིན།",
     "@logsCleared": {
         "description": "Message shown when logs are cleared successfully"
     },
-    "puzzleInvalidPuzzle": "Invalid Puzzle",
+    "puzzleInvalidPuzzle": "གསང་བརྟག་ནོར་བ།",
     "@puzzleInvalidPuzzle": {
         "description": "Title for invalid puzzle error dialog"
     },
-    "puzzleInvalidPuzzleMessage": "This puzzle has an invalid position format and cannot be loaded. Please contact the puzzle author or try a different puzzle.",
+    "puzzleInvalidPuzzleMessage": "གསང་བརྟག་འདིའི་གནས་བབ་རྣམ་གཞག་ནོར་བས་ཐོན་སྟེགས་སུ་འཇུག་མི་ཐུབ།",
     "@puzzleInvalidPuzzleMessage": {
         "description": "Message for invalid puzzle error dialog"
     },
-    "puzzleBackToList": "Back to List",
+    "puzzleBackToList": "ཐོ་གཞུང་ལ་ཕྱིར།",
     "@puzzleBackToList": {
         "description": "Button to go back to puzzle list"
     },
-    "puzzleWrongMove": "Wrong move. Try again.",
+    "puzzleWrongMove": "བསྒུལ་བ་ནོར་བ། ཡང་བསྐྱར་ཚོད་ལྟ།",
     "@puzzleWrongMove": {
         "description": "Message shown when user makes wrong move"
     },
-    "puzzleWrongMoveMessage": "That move doesn't match the solution. You can try again or view the correct solution.",
+    "puzzleWrongMoveMessage": "བསྒུལ་བ་འདི་ཐབས་ཤེས་དང་མི་མཐུན། ཡང་བསྐྱར་ཚོད་ལྟའམ་ནོར་མེད་ཐབས་ཤེས་ལྟ།",
     "@puzzleWrongMoveMessage": {
         "description": "Detailed message in wrong move dialog"
     },
-    "puzzleShowSolution": "Show Solution",
+    "puzzleShowSolution": "ཐབས་ཤེས་སྟོན།",
     "@puzzleShowSolution": {
         "description": "Button to show the puzzle solution"
     },
-    "puzzlePlayingSolution": "Playing the solution...",
+    "puzzlePlayingSolution": "ཐབས་ཤེས་རྩེད་བཞིན...",
     "@puzzlePlayingSolution": {
         "description": "Message shown while solution is being played"
     },
-    "puzzleSolutionComplete": "Solution playback complete",
+    "puzzleSolutionComplete": "ཐབས་ཤེས་རྩེད་ཚང་ཟིན།",
     "@puzzleSolutionComplete": {
         "description": "Message shown after solution playback finishes"
     },
-    "puzzleNoSolutionAvailable": "No solution available for this puzzle",
+    "puzzleNoSolutionAvailable": "གསང་བརྟག་འདིའི་ཐབས་ཤེས་མེད།",
     "@puzzleNoSolutionAvailable": {
         "description": "Error message when puzzle has no solution"
     },
-    "puzzleSolutionViewedNote": "Solution viewed (no stars)",
+    "puzzleSolutionViewedNote": "ཐབས་ཤེས་བལྟས་ཟིན (སྐར་མ་མེད)",
     "@puzzleSolutionViewedNote": {
         "description": "Note shown in completion dialog when solution was viewed"
     },
@@ -3721,27 +3721,27 @@
             }
         }
     },
-    "puzzleNoMoreHints": "No more hints available",
+    "puzzleNoMoreHints": "ལམ་སྟོན་ད་གཞི་མེད།",
     "@puzzleNoMoreHints": {
         "description": "Message shown when no more hints available"
     },
-    "puzzleHintDialogTitle": "Hint",
+    "puzzleHintDialogTitle": "ལམ་སྟོན།",
     "@puzzleHintDialogTitle": {
         "description": "Title for hint dialog"
     },
-    "puzzleValidationErrors": "Validation Errors",
+    "puzzleValidationErrors": "ཚོད་ལྟའི་ནོར་འཁྲུལ།",
     "@puzzleValidationErrors": {
         "description": "Title for validation errors dialog"
     },
-    "puzzleValidationErrorsMessage": "The following puzzles need to be fixed before contributing:",
+    "puzzleValidationErrorsMessage": "ཞལ་འདེབས་མ་བྱས་གོང་གསང་བརྟག་འདི་དག་བཅོས་དགོས:",
     "@puzzleValidationErrorsMessage": {
         "description": "Message for validation errors dialog"
     },
-    "puzzleContributeDialogTitle": "Contribute Puzzles to Sanmill",
+    "puzzleContributeDialogTitle": "Sanmill ལ་གསང་བརྟག་ཞལ་འདེབས།",
     "@puzzleContributeDialogTitle": {
         "description": "Title for contribute puzzles dialog"
     },
-    "puzzleContributeCount": "You are about to export {count} puzzle(s) for contribution.",
+    "puzzleContributeCount": "ཁྱེད་ཀྱིས་གསང་བརྟག {count} ཞལ་འདེབས་ཆེད་ཕྱི་འདྲེན་བྱ་འདོད།",
     "@puzzleContributeCount": {
         "description": "Message showing number of puzzles to contribute",
         "placeholders": {
@@ -3750,47 +3750,47 @@
             }
         }
     },
-    "puzzleContributeWhatNext": "What happens next:",
+    "puzzleContributeWhatNext": "རྗེས་ལ་ཅི་བྱུང:",
     "@puzzleContributeWhatNext": {
         "description": "Label for what happens next section"
     },
-    "puzzleContributeStep1": "1. Your puzzles will be exported to a JSON file",
+    "puzzleContributeStep1": "1. ཁྱེད་ཀྱི་གསང་བརྟག JSON ཡིག་ཆར་ཕྱི་འདྲེན།",
     "@puzzleContributeStep1": {
         "description": "Contribution step 1"
     },
-    "puzzleContributeStep2": "2. You can share this file via the share dialog",
+    "puzzleContributeStep2": "2. མཉམ་སྤྱོད་གླེང་སྒྲོམ་ནས་ཡིག་ཆ་མཉམ་སྤྱོད་བྱེད་ཆོག",
     "@puzzleContributeStep2": {
         "description": "Contribution step 2"
     },
-    "puzzleContributeStep3": "3. Submit via GitHub, email, or GitHub issue (see guide)",
+    "puzzleContributeStep3": "3. GitHub, email, ཡང་ན་ GitHub issue ནས་ཕུལ (ལམ་སྟོན་ལྟོས)",
     "@puzzleContributeStep3": {
         "description": "Contribution step 3"
     },
-    "puzzleContributeStep4": "4. Puzzles will be reviewed by maintainers",
+    "puzzleContributeStep4": "4. བདག་གཉེར་བས་གསང་བརྟག་ལྟ་ཞིབ་བྱ།",
     "@puzzleContributeStep4": {
         "description": "Contribution step 4"
     },
-    "puzzleContributeStep5": "5. Once approved, they become built-in puzzles!",
+    "puzzleContributeStep5": "5. ཆོག་མཆན་ཐོབ་རྗེས་ནང་བཟོའི་གསང་བརྟག་ཏུ་གྱུར!",
     "@puzzleContributeStep5": {
         "description": "Contribution step 5"
     },
-    "puzzleContributeLicense": "By contributing, you agree to license your puzzle content under CC BY-SA 4.0 (Creative Commons Attribution-ShareAlike).",
+    "puzzleContributeLicense": "ཞལ་འདེབས་བྱས་པས་ཁྱེད་ཀྱི་གསང་བརྟག CC BY-SA 4.0 ཐོག་ཆོག་མཆན་སྤྲོད་པར་མོས།",
     "@puzzleContributeLicense": {
         "description": "License agreement message for contributions"
     },
-    "puzzleExportForContribution": "Export for Contribution",
+    "puzzleExportForContribution": "ཞལ་འདེབས་ཆེད་ཕྱི་འདྲེན།",
     "@puzzleExportForContribution": {
         "description": "Button label for exporting puzzles for contribution"
     },
-    "puzzleStartContributing": "Start Contributing",
+    "puzzleStartContributing": "ཞལ་འདེབས་འགོ་བཙུགས།",
     "@puzzleStartContributing": {
         "description": "Button label to start contributing"
     },
-    "puzzleContributeInfo": "How to Contribute Puzzles",
+    "puzzleContributeInfo": "གསང་བརྟག་ཇི་ལྟར་ཞལ་འདེབས་བྱེད།",
     "@puzzleContributeInfo": {
         "description": "Title for contribution info dialog"
     },
-    "puzzleShareMessage": "Check out these {count} puzzles!",
+    "puzzleShareMessage": "གསང་བརྟག {count} འདི་ལྟོས!",
     "@puzzleShareMessage": {
         "description": "Message when sharing puzzles",
         "placeholders": {
@@ -3799,7 +3799,7 @@
             }
         }
     },
-    "puzzleShareSubject": "Puzzles ({count})",
+    "puzzleShareSubject": "གསང་བརྟག ({count})",
     "@puzzleShareSubject": {
         "description": "Subject line when sharing puzzles",
         "placeholders": {
@@ -3808,11 +3808,11 @@
             }
         }
     },
-    "puzzleContributionShareText": "Puzzle contribution.\n\nSee PUZZLE_CONTRIBUTION_GUIDE.md for submission instructions.",
+    "puzzleContributionShareText": "གསང་བརྟག་ཞལ་འདེབས།\n\nPUZZLE_CONTRIBUTION_GUIDE.md ལ་ཕུལ་བའི་ལམ་སྟོན་ལྟོས།",
     "@puzzleContributionShareText": {
         "description": "Message when sharing puzzle for contribution"
     },
-    "puzzleContributionShareSubject": "Puzzle Contribution: {title}",
+    "puzzleContributionShareSubject": "གསང་བརྟག་ཞལ་འདེབས: {title}",
     "@puzzleContributionShareSubject": {
         "description": "Subject line when sharing puzzle contribution",
         "placeholders": {
@@ -3821,11 +3821,11 @@
             }
         }
     },
-    "puzzleContributionsShareText": "Puzzle contributions.\n\nSee PUZZLE_CONTRIBUTION_GUIDE.md for submission instructions.",
+    "puzzleContributionsShareText": "གསང་བརྟག་ཞལ་འདེབས་ཚང་མ།\n\nPUZZLE_CONTRIBUTION_GUIDE.md ལ་ཕུལ་བའི་ལམ་སྟོན་ལྟོས།",
     "@puzzleContributionsShareText": {
         "description": "Message when sharing multiple puzzles for contribution"
     },
-    "puzzleContributionsShareSubject": "Puzzle Contributions ({count} puzzles)",
+    "puzzleContributionsShareSubject": "གསང་བརྟག་ཞལ་འདེབས ({count} གསང་བརྟག)",
     "@puzzleContributionsShareSubject": {
         "description": "Subject line when sharing multiple puzzle contributions",
         "placeholders": {
@@ -3834,123 +3834,123 @@
             }
         }
     },
-    "puzzleContributeHelp": "Help make this program better by contributing your puzzles!",
+    "puzzleContributeHelp": "གསང་བརྟག་ཞལ་འདེབས་བྱས་ནས་ལས་རིམ་འདི་ཡར་རྒྱས་གཏོང!",
     "@puzzleContributeHelp": {
         "description": "Header text for contribution help dialog"
     },
-    "puzzleContributeQuickStart": "Quick Start:",
+    "puzzleContributeQuickStart": "མྱུར་འགོ:",
     "@puzzleContributeQuickStart": {
         "description": "Quick start section header"
     },
-    "puzzleContributeStep1Title": "Create Quality Puzzles",
+    "puzzleContributeStep1Title": "ཡག་པོའི་གསང་བརྟག་བཟོ།",
     "@puzzleContributeStep1Title": {
         "description": "Step 1 title in contribution guide"
     },
-    "puzzleContributeStep1Desc": "Ensure your puzzle has a clear solution, good metadata, and teaches something valuable.",
+    "puzzleContributeStep1Desc": "གསང་བརྟག་ལ་གསལ་བའི་ཐབས་ཤེས་དང་མེ་ལོང་ཡག་པོ་ཡོད་ཅིང་ཁེ་ཕན་ཅན་ཡིན་པ་ཚོད་ལྟ་བྱོས།",
     "@puzzleContributeStep1Desc": {
         "description": "Step 1 description in contribution guide"
     },
-    "puzzleContributeStep2Title": "Add Your Name",
+    "puzzleContributeStep2Title": "མིང་སྣོན།",
     "@puzzleContributeStep2Title": {
         "description": "Step 2 title in contribution guide"
     },
-    "puzzleContributeStep2Desc": "Edit your puzzle and add your name as the author to get credit.",
+    "puzzleContributeStep2Desc": "ཐོབ་ཐང་ཐོབ་ཆེད་གསང་བརྟག་བཅོས་བསྒྱུར་བྱས་ནས་མིང་རྩོམ་པ་པོར་སྣོན།",
     "@puzzleContributeStep2Desc": {
         "description": "Step 2 description in contribution guide"
     },
-    "puzzleContributeStep3Title": "Export for Contribution",
+    "puzzleContributeStep3Title": "ཞལ་འདེབས་ཆེད་ཕྱི་འདྲེན།",
     "@puzzleContributeStep3Title": {
         "description": "Step 3 title in contribution guide"
     },
-    "puzzleContributeStep3Desc": "Select your puzzles and tap the upload icon to export in the correct format.",
+    "puzzleContributeStep3Desc": "གསང་བརྟག་འདེམས་ནས་ཕྱི་འདྲེན་རྟགས་ལ་མནན།",
     "@puzzleContributeStep3Desc": {
         "description": "Step 3 description in contribution guide"
     },
-    "puzzleContributeStep4Title": "Submit",
+    "puzzleContributeStep4Title": "ཕུལ་བ།",
     "@puzzleContributeStep4Title": {
         "description": "Step 4 title in contribution guide"
     },
-    "puzzleContributeStep4Desc": "Share the exported file via GitHub Pull Request, Issue, or email.",
+    "puzzleContributeStep4Desc": "GitHub Pull Request, Issue, ཡང་ན་ email ནས་ཕྱི་འདྲེན་ཡིག་ཆ་མཉམ་སྤྱོད།",
     "@puzzleContributeStep4Desc": {
         "description": "Step 4 description in contribution guide"
     },
-    "puzzleContributeFullDocs": "Full Documentation",
+    "puzzleContributeFullDocs": "ཡིག་ཆ་ཚང་མ།",
     "@puzzleContributeFullDocs": {
         "description": "Full documentation label"
     },
-    "puzzleContributeDocsDesc": "See PUZZLE_CONTRIBUTION_GUIDE.md in the repository for complete instructions, quality guidelines, and submission options.",
+    "puzzleContributeDocsDesc": "PUZZLE_CONTRIBUTION_GUIDE.md ལ་མཁོ་ཆའི་ལམ་སྟོན་ཚང་མ་ལྟོས།",
     "@puzzleContributeDocsDesc": {
         "description": "Description for full documentation"
     },
-    "puzzleContributeQualityRequirements": "Quality Requirements:",
+    "puzzleContributeQualityRequirements": "ཡག་ཆའི་ཆ་རྐྱེན:",
     "@puzzleContributeQualityRequirements": {
         "description": "Quality requirements section header"
     },
-    "puzzleContributeReqClearSolution": "✓ Clear, unique solution",
+    "puzzleContributeReqClearSolution": "✓ གསལ་བའི་ཐབས་ཤེས",
     "@puzzleContributeReqClearSolution": {
         "description": "Quality requirement: clear solution"
     },
-    "puzzleContributeReqMetadata": "✓ Complete metadata (title, description, etc.)",
+    "puzzleContributeReqMetadata": "✓ ཚང་བའི་མེ་ལོང (མིང, འགྲེལ་བཤད, སོགས)",
     "@puzzleContributeReqMetadata": {
         "description": "Quality requirement: complete metadata"
     },
-    "puzzleContributeReqAttribution": "✓ Author attribution",
+    "puzzleContributeReqAttribution": "✓ རྩོམ་པ་པོའི་ཐོབ་ཐང",
     "@puzzleContributeReqAttribution": {
         "description": "Quality requirement: author attribution"
     },
-    "puzzleContributeReqDifficulty": "✓ Accurate difficulty rating",
+    "puzzleContributeReqDifficulty": "✓ ཡང་དག་པའི་དཀའ་ཚད",
     "@puzzleContributeReqDifficulty": {
         "description": "Quality requirement: difficulty rating"
     },
-    "puzzleContributeReqInstructive": "✓ Instructive or entertaining",
+    "puzzleContributeReqInstructive": "✓ ཤེས་བྱ་ཡོད་པའམ་སྤྲོ་བ་ཅན",
     "@puzzleContributeReqInstructive": {
         "description": "Quality requirement: instructive or entertaining"
     },
-    "monthJanuary": "January",
+    "monthJanuary": "ཟླ་དང་པོ།",
     "@monthJanuary": {
         "description": "January month name"
     },
-    "monthFebruary": "February",
+    "monthFebruary": "ཟླ་གཉིས།",
     "@monthFebruary": {
         "description": "February month name"
     },
-    "monthMarch": "March",
+    "monthMarch": "ཟླ་གསུམ།",
     "@monthMarch": {
         "description": "March month name"
     },
-    "monthApril": "April",
+    "monthApril": "ཟླ་བཞི།",
     "@monthApril": {
         "description": "April month name"
     },
-    "monthMay": "May",
+    "monthMay": "ཟླ་ལྔ།",
     "@monthMay": {
         "description": "May month name"
     },
-    "monthJune": "June",
+    "monthJune": "ཟླ་དྲུག",
     "@monthJune": {
         "description": "June month name"
     },
-    "monthJuly": "July",
+    "monthJuly": "ཟླ་བདུན།",
     "@monthJuly": {
         "description": "July month name"
     },
-    "monthAugust": "August",
+    "monthAugust": "ཟླ་བརྒྱད།",
     "@monthAugust": {
         "description": "August month name"
     },
-    "monthSeptember": "September",
+    "monthSeptember": "ཟླ་དགུ།",
     "@monthSeptember": {
         "description": "September month name"
     },
-    "monthOctober": "October",
+    "monthOctober": "ཟླ་བཅུ།",
     "@monthOctober": {
         "description": "October month name"
     },
-    "monthNovember": "November",
+    "monthNovember": "ཟླ་བཅུ་གཅིག",
     "@monthNovember": {
         "description": "November month name"
     },
-    "monthDecember": "December",
+    "monthDecember": "ཟླ་བཅུ་གཉིས།",
     "@monthDecember": {
         "description": "December month name"
     },
@@ -4032,65 +4032,65 @@
     "@includeVariationsMainline": {},
     "bothPlayersRemoveOpponentsPiece": "གང་ཟག་གཉིས་ཀས་ཕ་རོལ་གྱི་ཉེ་འགྲམ་གྱི་རྡོ་གཅིག་བསུབ་དགོས། དེ་ནས་རྩེད་མོ་མུ་མཐུད་བྱེད།",
     "@bothPlayersRemoveOpponentsPiece": {},
-    "jumpToVariation": "Jump to variation",
+    "jumpToVariation": "འགྱུར་བ་ལ་མཆོངས།",
     "@jumpToVariation": {},
-    "variationNotation": "Variation: {notation}",
+    "variationNotation": "འགྱུར་བ: {notation}",
     "@variationNotation": {},
-    "jumpToThisVariation": "Jump to this variation",
+    "jumpToThisVariation": "འགྱུར་བ་འདི་ལ་མཆོངས།",
     "@jumpToThisVariation": {},
-    "switchToThisBranch": "Switch to this branch",
+    "switchToThisBranch": "ཡན་ལག་འདི་ལ་བརྗེ།",
     "@switchToThisBranch": {},
-    "setAsMainLine": "Set as main line",
+    "setAsMainLine": "གཙོ་གྲས་ཀྱི་ཐིག་ལ་འགོད།",
     "@setAsMainLine": {},
-    "makeThisPrimaryVariation": "Make this the primary variation",
+    "makeThisPrimaryVariation": "འདི་གཙོ་བོའི་འགྱུར་བ་ལ་འགོད།",
     "@makeThisPrimaryVariation": {},
-    "deleteBranch": "Delete branch",
+    "deleteBranch": "ཡན་ལག་བསུབ།",
     "@deleteBranch": {},
-    "removeVariationPermanently": "Remove this variation permanently",
+    "removeVariationPermanently": "འགྱུར་བ་འདི་རྩ་བ་ནས་བསུབ།",
     "@removeVariationPermanently": {},
-    "cannotPromoteNoParent": "Cannot promote: no parent node",
+    "cannotPromoteNoParent": "སྤེལ་མི་ཐུབ: ཕ་མའི་མདུད་པ་མེད།",
     "@cannotPromoteNoParent": {},
-    "alreadyMainVariation": "Already the main variation",
+    "alreadyMainVariation": "ད་ལྟ་ནས་གཙོ་བོའི་འགྱུར་བ་རེད།",
     "@alreadyMainVariation": {},
-    "deleteBranchTitle": "Delete Branch",
+    "deleteBranchTitle": "ཡན་ལག་བསུབ།",
     "@deleteBranchTitle": {},
-    "deleteBranchConfirmWithNotation": "Are you sure you want to delete the variation \"{notation}\" and all its continuations?",
+    "deleteBranchConfirmWithNotation": "ཁྱེད་ཀྱིས་འགྱུར་བ \"{notation}\" དང་དེའི་རྗེས་མའི་ཚང་མ་བསུབ་རྒྱུ་ཡིན་པ་གཏན་ཁེལ་ལམ།",
     "@deleteBranchConfirmWithNotation": {},
-    "deleteBranchContainsPosition": "Warning: This branch contains your current position. You will be moved to the parent position.",
+    "deleteBranchContainsPosition": "ཉེན་བརྡ: ཡན་ལག་འདིའི་ནང་ཁྱེད་ཀྱི་ད་ལྟའི་གནས་བབ་ཡོད། ཁྱེད་ཕ་མའི་གནས་བབ་ལ་སྤོ་སྒུལ་བྱེད་རྒྱུ།",
     "@deleteBranchContainsPosition": {},
-    "cannotDeleteNoParent": "Cannot delete: no parent node",
+    "cannotDeleteNoParent": "བསུབ་མི་ཐུབ: ཕ་མའི་མདུད་པ་མེད།",
     "@cannotDeleteNoParent": {},
-    "branchDeleted": "Branch deleted",
+    "branchDeleted": "ཡན་ལག་བསུབས་ཟིན།",
     "@branchDeleted": {},
-    "cannotDeleteAlreadyMainLine": "Cannot delete: already on main line",
+    "cannotDeleteAlreadyMainLine": "བསུབ་མི་ཐུབ: ད་ལྟ་ནས་གཙོ་གྲས་ཀྱི་ཐིག་ལ་ཡོད།",
     "@cannotDeleteAlreadyMainLine": {},
-    "branchMoves": "Branch moves",
+    "branchMoves": "ཡན་ལག་གི་འགུལ་སྐྱོད།",
     "@branchMoves": {},
-    "variations": "Variations",
+    "variations": "འགྱུར་བ།",
     "@variations": {},
-    "resign": "Resign",
+    "resign": "ཕམ་ལེན།",
     "@resign": {},
-    "failedToSendResignation": "Failed to send resignation",
+    "failedToSendResignation": "ཕམ་ལེན་བཏང་མ་ཐུབ།",
     "@failedToSendResignation": {},
-    "opponentRequestsTakeBackAccept": "Opponent requests to take back {steps} move(s). Accept?",
+    "opponentRequestsTakeBackAccept": "གཉེན་ཟླས་རྒྱབ་ལ་{steps}ཐེངས་ལེན་རྒྱུ་བཅོལ་བ། ཁས་ལེན་ནམ།",
     "@opponentRequestsTakeBackAccept": {},
-    "errorLoadingImages": "Error loading images",
+    "errorLoadingImages": "པར་རིས་ཐོན་སྟེགས་སུ་འཇུག་པར་ནོར་འཁྲུལ།",
     "@errorLoadingImages": {},
-    "fileAlreadyExists": "File {name} already exists",
+    "fileAlreadyExists": "ཡིག་ཆ {name} སྔ་ནས་ཡོད།",
     "@fileAlreadyExists": {},
-    "errorDetectingNetworkInterfaces": "Error detecting network interfaces",
+    "errorDetectingNetworkInterfaces": "དྲ་རྒྱའི་འབྲེལ་མཐུད་ངོས་ཟིན་པར་ནོར་འཁྲུལ།",
     "@errorDetectingNetworkInterfaces": {},
-    "contributeToSanmill": "Contribute to Sanmill",
+    "contributeToSanmill": "Sanmill ལ་ཞལ་འདེབས་གནང་།",
     "@contributeToSanmill": {},
-    "howToContribute": "How to Contribute",
+    "howToContribute": "ཞལ་འདེབས་ཇི་ལྟར་གནང་དགོས།",
     "@howToContribute": {},
-    "perfectDatabaseNotEnabled": "Perfect database is not enabled",
+    "perfectDatabaseNotEnabled": "ཡག་པོའི་གཞི་གྲངས་མཛོད་སྤྱོད་འགོ་བཙུགས་མེད།",
     "@perfectDatabaseNotEnabled": {},
-    "redo": "Redo",
+    "redo": "བསྐྱར་བཟོ།",
     "@redo": {},
-    "movePieceUp": "Move piece up",
+    "movePieceUp": "རྡོ་རིས་གོང་དུ་སྤོ།",
     "@movePieceUp": {},
-    "movePieceDiagonallyDown": "Move piece diagonally down",
+    "movePieceDiagonallyDown": "རྡོ་རིས་ཟུར་ཐིག་ནས་མར་སྤོ།",
     "@movePieceDiagonallyDown": {},
     "puzzleTransform": "བསྒྱུར་བ།",
     "@puzzleTransform": {},

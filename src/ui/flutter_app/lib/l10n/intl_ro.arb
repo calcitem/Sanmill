@@ -28,7 +28,7 @@
     "@humanVsHuman": {
         "description": "Human Vs Human"
     },
-    "aiVsAi": "AI Vs. AI",
+    "aiVsAi": "IA vs. IA",
     "@aiVsAi": {
         "description": "AI Vs AI"
     },
@@ -433,7 +433,7 @@
     "@human": {
         "description": "Human"
     },
-    "ai": "AI",
+    "ai": "IA",
     "@ai": {
         "description": "AI"
     },
@@ -667,7 +667,7 @@
             }
         }
     },
-    "info": "Info",
+    "info": "Informații",
     "@info": {
         "description": "Info"
     },
@@ -809,7 +809,7 @@
     "@versionInfo": {
         "description": "Version info"
     },
-    "eula": "EULA",
+    "eula": "Acord de licență",
     "@eula": {
         "description": "EULA"
     },
@@ -1543,7 +1543,7 @@
     "@analysisToolbarBackgroundColor": {},
     "analysisToolbarIconColor": "Culoarea pictogramei barei de instrumente de analiză",
     "@analysisToolbarIconColor": {},
-    "transformed": "Transformed.",
+    "transformed": "Transformat.",
     "@transformed": {},
     "cannotTransform": "Nu se poate transforma.",
     "@cannotTransform": {},
@@ -1621,7 +1621,7 @@
     "@currentRule": {},
     "nineMensMorris": "Țintar",
     "@nineMensMorris": {},
-    "twelveMensMorris": "Twelve Men's Morris",
+    "twelveMensMorris": "Moara cu douăsprezece piese",
     "@twelveMensMorris": {},
     "morabaraba": "Morabaraba",
     "@morabaraba": {},
@@ -2697,7 +2697,7 @@
     "@puzzleRemoveSolution": {
         "description": "Button to remove current solution"
     },
-    "puzzleOptimalSolution": "⭐ Optimal",
+    "puzzleOptimalSolution": "⭐ Optim",
     "@puzzleOptimalSolution": {
         "description": "Badge for optimal solution"
     },
@@ -2835,7 +2835,7 @@
             }
         }
     },
-    "dailyPuzzleStreak": "Streak",
+    "dailyPuzzleStreak": "Serie",
     "@dailyPuzzleStreak": {
         "description": "Daily puzzle streak label"
     },
@@ -2888,7 +2888,7 @@
     "@allPuzzlesDesc": {
         "description": "All puzzles mode description"
     },
-    "puzzleRush": "Puzzle Rush",
+    "puzzleRush": "Puzzle în viteză",
     "@puzzleRush": {
         "description": "Puzzle rush mode name"
     },
@@ -2936,7 +2936,7 @@
     "@puzzleRushOutOfLives": {
         "description": "Out of lives message"
     },
-    "puzzleRushComplete": "Rush Complete!",
+    "puzzleRushComplete": "Rush complet!",
     "@puzzleRushComplete": {
         "description": "Rush complete message"
     },
@@ -3032,7 +3032,7 @@
     "@puzzleStreakRule3": {
         "description": "Puzzle streak rule 3"
     },
-    "puzzleStreakStart": "Start Streak",
+    "puzzleStreakStart": "Start serie",
     "@puzzleStreakStart": {
         "description": "Start puzzle streak button"
     },
@@ -4032,65 +4032,65 @@
     "@includeVariationsMainline": {},
     "bothPlayersRemoveOpponentsPiece": "Ambii jucători elimină câte o piesă adiacentă a adversarului, apoi jocul continuă.",
     "@bothPlayersRemoveOpponentsPiece": {},
-    "jumpToVariation": "Jump to variation",
+    "jumpToVariation": "Salt la variație",
     "@jumpToVariation": {},
-    "variationNotation": "Variation: {notation}",
+    "variationNotation": "Variație: {notation}",
     "@variationNotation": {},
-    "jumpToThisVariation": "Jump to this variation",
+    "jumpToThisVariation": "Salt la această variație",
     "@jumpToThisVariation": {},
-    "switchToThisBranch": "Switch to this branch",
+    "switchToThisBranch": "Comută la această ramură",
     "@switchToThisBranch": {},
-    "setAsMainLine": "Set as main line",
+    "setAsMainLine": "Setează ca linie principală",
     "@setAsMainLine": {},
-    "makeThisPrimaryVariation": "Make this the primary variation",
+    "makeThisPrimaryVariation": "Setează ca variație principală",
     "@makeThisPrimaryVariation": {},
-    "deleteBranch": "Delete branch",
+    "deleteBranch": "Șterge ramura",
     "@deleteBranch": {},
-    "removeVariationPermanently": "Remove this variation permanently",
+    "removeVariationPermanently": "Elimină această variație permanent",
     "@removeVariationPermanently": {},
-    "cannotPromoteNoParent": "Cannot promote: no parent node",
+    "cannotPromoteNoParent": "Nu se poate promova: niciun nod părinte",
     "@cannotPromoteNoParent": {},
-    "alreadyMainVariation": "Already the main variation",
+    "alreadyMainVariation": "Este deja variația principală",
     "@alreadyMainVariation": {},
-    "deleteBranchTitle": "Delete Branch",
+    "deleteBranchTitle": "Șterge ramura",
     "@deleteBranchTitle": {},
-    "deleteBranchConfirmWithNotation": "Are you sure you want to delete the variation \"{notation}\" and all its continuations?",
+    "deleteBranchConfirmWithNotation": "Sigur doriți să ștergeți variația \"{notation}\" și toate continuările sale?",
     "@deleteBranchConfirmWithNotation": {},
-    "deleteBranchContainsPosition": "Warning: This branch contains your current position. You will be moved to the parent position.",
+    "deleteBranchContainsPosition": "Atenție: Această ramură conține poziția dvs. curentă. Veți fi mutat la poziția părinte.",
     "@deleteBranchContainsPosition": {},
-    "cannotDeleteNoParent": "Cannot delete: no parent node",
+    "cannotDeleteNoParent": "Nu se poate șterge: niciun nod părinte",
     "@cannotDeleteNoParent": {},
-    "branchDeleted": "Branch deleted",
+    "branchDeleted": "Ramura ștearsă",
     "@branchDeleted": {},
-    "cannotDeleteAlreadyMainLine": "Cannot delete: already on main line",
+    "cannotDeleteAlreadyMainLine": "Nu se poate șterge: deja pe linia principală",
     "@cannotDeleteAlreadyMainLine": {},
-    "branchMoves": "Branch moves",
+    "branchMoves": "Mutările ramurii",
     "@branchMoves": {},
-    "variations": "Variations",
+    "variations": "Variații",
     "@variations": {},
-    "resign": "Resign",
+    "resign": "Renunță",
     "@resign": {},
-    "failedToSendResignation": "Failed to send resignation",
+    "failedToSendResignation": "Trimiterea renunțării a eșuat",
     "@failedToSendResignation": {},
-    "opponentRequestsTakeBackAccept": "Opponent requests to take back {steps} move(s). Accept?",
+    "opponentRequestsTakeBackAccept": "Adversarul solicită retragerea a {steps} mutare(ări). Acceptați?",
     "@opponentRequestsTakeBackAccept": {},
-    "errorLoadingImages": "Error loading images",
+    "errorLoadingImages": "Eroare la încărcarea imaginilor",
     "@errorLoadingImages": {},
-    "fileAlreadyExists": "File {name} already exists",
+    "fileAlreadyExists": "Fișierul {name} există deja",
     "@fileAlreadyExists": {},
-    "errorDetectingNetworkInterfaces": "Error detecting network interfaces",
+    "errorDetectingNetworkInterfaces": "Eroare la detectarea interfețelor de rețea",
     "@errorDetectingNetworkInterfaces": {},
-    "contributeToSanmill": "Contribute to Sanmill",
+    "contributeToSanmill": "Contribuiți la Sanmill",
     "@contributeToSanmill": {},
-    "howToContribute": "How to Contribute",
+    "howToContribute": "Cum să contribuiți",
     "@howToContribute": {},
-    "perfectDatabaseNotEnabled": "Perfect database is not enabled",
+    "perfectDatabaseNotEnabled": "Baza de date perfectă nu este activată",
     "@perfectDatabaseNotEnabled": {},
-    "redo": "Redo",
+    "redo": "Refaceți",
     "@redo": {},
-    "movePieceUp": "Move piece up",
+    "movePieceUp": "Mută piesa în sus",
     "@movePieceUp": {},
-    "movePieceDiagonallyDown": "Move piece diagonally down",
+    "movePieceDiagonallyDown": "Mută piesa diagonal în jos",
     "@movePieceDiagonallyDown": {},
     "puzzleTransform": "Transformă",
     "@puzzleTransform": {},

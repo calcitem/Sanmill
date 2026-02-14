@@ -805,11 +805,11 @@
     "@helpContent": {
         "description": "Help Content"
     },
-    "versionInfo": "Version info",
+    "versionInfo": "Versionsinfo",
     "@versionInfo": {
         "description": "Version info"
     },
-    "eula": "EULA",
+    "eula": "Licensaftale",
     "@eula": {
         "description": "EULA"
     },
@@ -1461,7 +1461,7 @@
     "@stalemateRemovalRegardlessOfMillFormation": {},
     "whatIsMcts": "MCTS er en begyndervenlig algoritme, der træffer beslutninger ved at udforske og evaluere forskellige bevægelser gennem simuleringer.",
     "@whatIsMcts": {},
-    "goldenJade": "Golden Jade",
+    "goldenJade": "Gyldent jade",
     "@goldenJade": {},
     "forestWood": "Skov Skov",
     "@forestWood": {},
@@ -1475,7 +1475,7 @@
     "@greenMeadow": {},
     "stonyPath": "Stenet sti",
     "@stonyPath": {},
-    "pastelPink": "Pastel Pink",
+    "pastelPink": "Pastelrosa",
     "@pastelPink": {},
     "turquoiseSea": "Turkis hav",
     "@turquoiseSea": {},
@@ -1619,9 +1619,9 @@
     "@useOpeningBook": {},
     "currentRule": "Nuværende",
     "@currentRule": {},
-    "nineMensMorris": "Nine Men's Morris",
+    "nineMensMorris": "Mølle (ni brikker)",
     "@nineMensMorris": {},
-    "twelveMensMorris": "Twelve Men's Morris",
+    "twelveMensMorris": "Mølle (tolv brikker)",
     "@twelveMensMorris": {},
     "morabaraba": "Morabaraba",
     "@morabaraba": {},
@@ -1641,7 +1641,7 @@
     "@ruleSet": {},
     "laskerMorris": "Lasker Morris",
     "@laskerMorris": {},
-    "oneTimeMill": "One-Time Mill",
+    "oneTimeMill": "Engangsmølle",
     "@oneTimeMill": {},
     "daSanQi": "Da San Qi",
     "@daSanQi": {},
@@ -1699,7 +1699,7 @@
     "@restartRequestRejected": {},
     "notConnectedToLanOpponent": "Ikke forbundet til LAN modstander.",
     "@notConnectedToLanOpponent": {},
-    "llmPrompt": "LLM prompt",
+    "llmPrompt": "LLM-prompt",
     "@llmPrompt": {},
     "gameRestarted": "Spil genstartet.",
     "@gameRestarted": {},
@@ -2263,7 +2263,7 @@
     "@puzzleDifficultyEasy": {
         "description": "Easy difficulty"
     },
-    "puzzleDifficultyMedium": "Medium",
+    "puzzleDifficultyMedium": "Mellem",
     "@puzzleDifficultyMedium": {
         "description": "Medium difficulty"
     },
@@ -2283,7 +2283,7 @@
     "@puzzleCategoryFormMill": {
         "description": "Form a mill category"
     },
-    "puzzleCategoryCapturePieces": "Capture",
+    "puzzleCategoryCapturePieces": "Fangst",
     "@puzzleCategoryCapturePieces": {
         "description": "Capture pieces category"
     },
@@ -2835,7 +2835,7 @@
             }
         }
     },
-    "dailyPuzzleStreak": "Streak",
+    "dailyPuzzleStreak": "Serie",
     "@dailyPuzzleStreak": {
         "description": "Daily puzzle streak label"
     },
@@ -2984,7 +2984,7 @@
     "@puzzleBattleFeature3": {
         "description": "Puzzle battle feature 3"
     },
-    "puzzleBattleFeature4": "🏆 Leaderboards",
+    "puzzleBattleFeature4": "🏆 Ranglister",
     "@puzzleBattleFeature4": {
         "description": "Puzzle battle feature 4"
     },
@@ -2996,7 +2996,7 @@
     "@customPuzzlesDesc": {
         "description": "Custom puzzles mode description"
     },
-    "puzzleMultiSelectMode": "Multi-Select Mode",
+    "puzzleMultiSelectMode": "Multivalg",
     "@puzzleMultiSelectMode": {
         "description": "Multi-select mode label"
     },
@@ -3032,7 +3032,7 @@
     "@puzzleStreakRule3": {
         "description": "Puzzle streak rule 3"
     },
-    "puzzleStreakStart": "Start Streak",
+    "puzzleStreakStart": "Start streak",
     "@puzzleStreakStart": {
         "description": "Start puzzle streak button"
     },
@@ -3559,7 +3559,7 @@
     "@aiChatCleared": {
         "description": "Message shown after clearing chat history"
     },
-    "logs": "Logs",
+    "logs": "Logfiler",
     "@logs": {
         "description": "Label for the logs setting"
     },
@@ -4032,65 +4032,65 @@
     "@includeVariationsMainline": {},
     "bothPlayersRemoveOpponentsPiece": "Begge spillere fjerner en af modstanderens tilstødende brikker, derefter fortsætter spillet.",
     "@bothPlayersRemoveOpponentsPiece": {},
-    "jumpToVariation": "Jump to variation",
+    "jumpToVariation": "Hop til variation",
     "@jumpToVariation": {},
     "variationNotation": "Variation: {notation}",
     "@variationNotation": {},
-    "jumpToThisVariation": "Jump to this variation",
+    "jumpToThisVariation": "Hop til denne variation",
     "@jumpToThisVariation": {},
-    "switchToThisBranch": "Switch to this branch",
+    "switchToThisBranch": "Skift til denne gren",
     "@switchToThisBranch": {},
-    "setAsMainLine": "Set as main line",
+    "setAsMainLine": "Sæt som hovedelinje",
     "@setAsMainLine": {},
-    "makeThisPrimaryVariation": "Make this the primary variation",
+    "makeThisPrimaryVariation": "Gør dette til primær variation",
     "@makeThisPrimaryVariation": {},
-    "deleteBranch": "Delete branch",
+    "deleteBranch": "Slet gren",
     "@deleteBranch": {},
-    "removeVariationPermanently": "Remove this variation permanently",
+    "removeVariationPermanently": "Fjern denne variation permanent",
     "@removeVariationPermanently": {},
-    "cannotPromoteNoParent": "Cannot promote: no parent node",
+    "cannotPromoteNoParent": "Kan ikke forfremme: ingen overordnet node",
     "@cannotPromoteNoParent": {},
-    "alreadyMainVariation": "Already the main variation",
+    "alreadyMainVariation": "Er allerede primær variation",
     "@alreadyMainVariation": {},
-    "deleteBranchTitle": "Delete Branch",
+    "deleteBranchTitle": "Slet gren",
     "@deleteBranchTitle": {},
-    "deleteBranchConfirmWithNotation": "Are you sure you want to delete the variation \"{notation}\" and all its continuations?",
+    "deleteBranchConfirmWithNotation": "Er du sikker på, at du vil slette variationen \"{notation}\" og alle dens fortsættelser?",
     "@deleteBranchConfirmWithNotation": {},
-    "deleteBranchContainsPosition": "Warning: This branch contains your current position. You will be moved to the parent position.",
+    "deleteBranchContainsPosition": "Advarsel: Denne gren indeholder din nuværende position. Du vil blive flyttet til den overordnede position.",
     "@deleteBranchContainsPosition": {},
-    "cannotDeleteNoParent": "Cannot delete: no parent node",
+    "cannotDeleteNoParent": "Kan ikke slette: ingen overordnet node",
     "@cannotDeleteNoParent": {},
-    "branchDeleted": "Branch deleted",
+    "branchDeleted": "Gren slettet",
     "@branchDeleted": {},
-    "cannotDeleteAlreadyMainLine": "Cannot delete: already on main line",
+    "cannotDeleteAlreadyMainLine": "Kan ikke slette: allerede på hovedlinjen",
     "@cannotDeleteAlreadyMainLine": {},
-    "branchMoves": "Branch moves",
+    "branchMoves": "Grenbevægelser",
     "@branchMoves": {},
-    "variations": "Variations",
+    "variations": "Variationer",
     "@variations": {},
-    "resign": "Resign",
+    "resign": "Giv op",
     "@resign": {},
-    "failedToSendResignation": "Failed to send resignation",
+    "failedToSendResignation": "Kunne ikke sende opgivelse",
     "@failedToSendResignation": {},
-    "opponentRequestsTakeBackAccept": "Opponent requests to take back {steps} move(s). Accept?",
+    "opponentRequestsTakeBackAccept": "Modstanderen anmoder om at tage {steps} træk tilbage. Acceptér?",
     "@opponentRequestsTakeBackAccept": {},
-    "errorLoadingImages": "Error loading images",
+    "errorLoadingImages": "Fejl ved indlæsning af billeder",
     "@errorLoadingImages": {},
-    "fileAlreadyExists": "File {name} already exists",
+    "fileAlreadyExists": "Filen {name} findes allerede",
     "@fileAlreadyExists": {},
-    "errorDetectingNetworkInterfaces": "Error detecting network interfaces",
+    "errorDetectingNetworkInterfaces": "Fejl ved detektering af netværksgrænseflader",
     "@errorDetectingNetworkInterfaces": {},
-    "contributeToSanmill": "Contribute to Sanmill",
+    "contributeToSanmill": "Bidrag til Sanmill",
     "@contributeToSanmill": {},
-    "howToContribute": "How to Contribute",
+    "howToContribute": "Sådan bidrager du",
     "@howToContribute": {},
-    "perfectDatabaseNotEnabled": "Perfect database is not enabled",
+    "perfectDatabaseNotEnabled": "Perfekt database er ikke aktiveret",
     "@perfectDatabaseNotEnabled": {},
-    "redo": "Redo",
+    "redo": "Gentag",
     "@redo": {},
-    "movePieceUp": "Move piece up",
+    "movePieceUp": "Flyt brik op",
     "@movePieceUp": {},
-    "movePieceDiagonallyDown": "Move piece diagonally down",
+    "movePieceDiagonallyDown": "Flyt brik diagonalt ned",
     "@movePieceDiagonallyDown": {},
     "puzzleTransform": "Transformér",
     "@puzzleTransform": {},

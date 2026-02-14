@@ -1,6 +1,6 @@
 {
     "@@locale": "is",
-    "appName": "Mill",
+    "appName": "Mylna",
     "@appName": {
         "description": "The app name"
     },
@@ -809,7 +809,7 @@
     "@versionInfo": {
         "description": "Version info"
     },
-    "eula": "EULA",
+    "eula": "Leyfissamningur",
     "@eula": {
         "description": "EULA"
     },
@@ -1619,9 +1619,9 @@
     "@useOpeningBook": {},
     "currentRule": "Núverandi",
     "@currentRule": {},
-    "nineMensMorris": "Nine Men's Morris",
+    "nineMensMorris": "Níu manna mylna",
     "@nineMensMorris": {},
-    "twelveMensMorris": "Twelve Men's Morris",
+    "twelveMensMorris": "Tólf manna mylna",
     "@twelveMensMorris": {},
     "morabaraba": "Morabaraba",
     "@morabaraba": {},
@@ -1641,7 +1641,7 @@
     "@ruleSet": {},
     "laskerMorris": "Lasker Morris",
     "@laskerMorris": {},
-    "oneTimeMill": "One-Time Mill",
+    "oneTimeMill": "Eins-skiptis mylna",
     "@oneTimeMill": {},
     "daSanQi": "Da San Qi",
     "@daSanQi": {},
@@ -2888,7 +2888,7 @@
     "@allPuzzlesDesc": {
         "description": "All puzzles mode description"
     },
-    "puzzleRush": "Puzzle Rush",
+    "puzzleRush": "Þraut hlaup",
     "@puzzleRush": {
         "description": "Puzzle rush mode name"
     },
@@ -2956,7 +2956,7 @@
     "@puzzleRushPlayAgain": {
         "description": "Play again button"
     },
-    "puzzleBattle": "Puzzle Battle",
+    "puzzleBattle": "Þraut bardagi",
     "@puzzleBattle": {
         "description": "Puzzle battle mode name"
     },
@@ -3004,7 +3004,7 @@
     "@puzzleCreate": {
         "description": "Create puzzle button"
     },
-    "puzzleStreak": "Puzzle Streak",
+    "puzzleStreak": "Þraut röð",
     "@puzzleStreak": {
         "description": "Puzzle streak mode name"
     },
@@ -3559,7 +3559,7 @@
     "@aiChatCleared": {
         "description": "Message shown after clearing chat history"
     },
-    "logs": "Logs",
+    "logs": "Skrár",
     "@logs": {
         "description": "Label for the logs setting"
     },
@@ -3632,7 +3632,7 @@
     "@newestLogsAtBottom": {
         "description": "Hint text indicating log order"
     },
-    "logsCount": "Logs: {current} / {max}",
+    "logsCount": "Skrár: {current} / {max}",
     "@logsCount": {
         "description": "Display current log count and buffer size",
         "placeholders": {
@@ -4032,65 +4032,65 @@
     "@includeVariationsMainline": {},
     "bothPlayersRemoveOpponentsPiece": "Báðir leikmenn fjarlægja einn aðliggjandi peð andstæðingsins, síðan heldur leikurinn áfram.",
     "@bothPlayersRemoveOpponentsPiece": {},
-    "jumpToVariation": "Jump to variation",
+    "jumpToVariation": "Hoppa á afbrigði",
     "@jumpToVariation": {},
-    "variationNotation": "Variation: {notation}",
+    "variationNotation": "Afbrigði: {notation}",
     "@variationNotation": {},
-    "jumpToThisVariation": "Jump to this variation",
+    "jumpToThisVariation": "Hoppa á þetta afbrigði",
     "@jumpToThisVariation": {},
-    "switchToThisBranch": "Switch to this branch",
+    "switchToThisBranch": "Skipta yfir á þessa grein",
     "@switchToThisBranch": {},
-    "setAsMainLine": "Set as main line",
+    "setAsMainLine": "Stilla sem aðallínu",
     "@setAsMainLine": {},
-    "makeThisPrimaryVariation": "Make this the primary variation",
+    "makeThisPrimaryVariation": "Gera þetta að aðalafbrigði",
     "@makeThisPrimaryVariation": {},
-    "deleteBranch": "Delete branch",
+    "deleteBranch": "Eyða grein",
     "@deleteBranch": {},
-    "removeVariationPermanently": "Remove this variation permanently",
+    "removeVariationPermanently": "Fjarlægja þetta afbrigði varanlega",
     "@removeVariationPermanently": {},
-    "cannotPromoteNoParent": "Cannot promote: no parent node",
+    "cannotPromoteNoParent": "Ekki hægt að hækka: enginn yfirhnútur",
     "@cannotPromoteNoParent": {},
-    "alreadyMainVariation": "Already the main variation",
+    "alreadyMainVariation": "Er nú þegar aðalafbrigði",
     "@alreadyMainVariation": {},
-    "deleteBranchTitle": "Delete Branch",
+    "deleteBranchTitle": "Eyða grein",
     "@deleteBranchTitle": {},
-    "deleteBranchConfirmWithNotation": "Are you sure you want to delete the variation \"{notation}\" and all its continuations?",
+    "deleteBranchConfirmWithNotation": "Ertu viss um að þú viljir eyða afbrigðinu \"{notation}\" og öllum framhöldum þess?",
     "@deleteBranchConfirmWithNotation": {},
-    "deleteBranchContainsPosition": "Warning: This branch contains your current position. You will be moved to the parent position.",
+    "deleteBranchContainsPosition": "Viðvörun: Þessi grein inniheldur núverandi stöðu þína. Þú verður færður í yfirstöðu.",
     "@deleteBranchContainsPosition": {},
-    "cannotDeleteNoParent": "Cannot delete: no parent node",
+    "cannotDeleteNoParent": "Ekki hægt að eyða: enginn yfirhnútur",
     "@cannotDeleteNoParent": {},
-    "branchDeleted": "Branch deleted",
+    "branchDeleted": "Grein eytt",
     "@branchDeleted": {},
-    "cannotDeleteAlreadyMainLine": "Cannot delete: already on main line",
+    "cannotDeleteAlreadyMainLine": "Ekki hægt að eyða: þegar á aðallínu",
     "@cannotDeleteAlreadyMainLine": {},
-    "branchMoves": "Branch moves",
+    "branchMoves": "Leikir greinar",
     "@branchMoves": {},
-    "variations": "Variations",
+    "variations": "Afbrigði",
     "@variations": {},
-    "resign": "Resign",
+    "resign": "Gefast upp",
     "@resign": {},
-    "failedToSendResignation": "Failed to send resignation",
+    "failedToSendResignation": "Ekki tókst að senda uppgjöf",
     "@failedToSendResignation": {},
-    "opponentRequestsTakeBackAccept": "Opponent requests to take back {steps} move(s). Accept?",
+    "opponentRequestsTakeBackAccept": "Andstæðingur biður um að taka til baka {steps} leik(i). Samþykkja?",
     "@opponentRequestsTakeBackAccept": {},
-    "errorLoadingImages": "Error loading images",
+    "errorLoadingImages": "Villa við hleðslu mynda",
     "@errorLoadingImages": {},
-    "fileAlreadyExists": "File {name} already exists",
+    "fileAlreadyExists": "Skráin {name} er nú þegar til",
     "@fileAlreadyExists": {},
-    "errorDetectingNetworkInterfaces": "Error detecting network interfaces",
+    "errorDetectingNetworkInterfaces": "Villa við greiningu netviðmóta",
     "@errorDetectingNetworkInterfaces": {},
-    "contributeToSanmill": "Contribute to Sanmill",
+    "contributeToSanmill": "Leggðu til Sanmill",
     "@contributeToSanmill": {},
-    "howToContribute": "How to Contribute",
+    "howToContribute": "Hvernig á að leggja til",
     "@howToContribute": {},
-    "perfectDatabaseNotEnabled": "Perfect database is not enabled",
+    "perfectDatabaseNotEnabled": "Fullkomin gagnagrunnur er ekki virkur",
     "@perfectDatabaseNotEnabled": {},
-    "redo": "Redo",
+    "redo": "Endurgera",
     "@redo": {},
-    "movePieceUp": "Move piece up",
+    "movePieceUp": "Færa peð upp",
     "@movePieceUp": {},
-    "movePieceDiagonallyDown": "Move piece diagonally down",
+    "movePieceDiagonallyDown": "Færa peð á ská niður",
     "@movePieceDiagonallyDown": {},
     "puzzleTransform": "Umbreyta",
     "@puzzleTransform": {},

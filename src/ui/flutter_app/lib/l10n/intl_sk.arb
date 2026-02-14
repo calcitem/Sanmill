@@ -667,7 +667,7 @@
             }
         }
     },
-    "info": "Info",
+    "info": "Informácie",
     "@info": {
         "description": "Info"
     },
@@ -809,7 +809,7 @@
     "@versionInfo": {
         "description": "Version info"
     },
-    "eula": "EULA",
+    "eula": "Licenčná zmluva",
     "@eula": {
         "description": "EULA"
     },
@@ -1619,9 +1619,9 @@
     "@useOpeningBook": {},
     "currentRule": "Aktuálny",
     "@currentRule": {},
-    "nineMensMorris": "Nine Men's Morris",
+    "nineMensMorris": "Mlyn (deväť kameňov)",
     "@nineMensMorris": {},
-    "twelveMensMorris": "Twelve Men's Morris",
+    "twelveMensMorris": "Mlyn (dvanásť kameňov)",
     "@twelveMensMorris": {},
     "morabaraba": "Morabaraba",
     "@morabaraba": {},
@@ -2215,7 +2215,7 @@
     "@puzzles": {
         "description": "Puzzles menu item"
     },
-    "puzzle": "Puzzle",
+    "puzzle": "Hlavolam",
     "@puzzle": {
         "description": "Puzzle"
     },
@@ -2888,7 +2888,7 @@
     "@allPuzzlesDesc": {
         "description": "All puzzles mode description"
     },
-    "puzzleRush": "Puzzle Rush",
+    "puzzleRush": "Hlavolam Rush",
     "@puzzleRush": {
         "description": "Puzzle rush mode name"
     },
@@ -2936,7 +2936,7 @@
     "@puzzleRushOutOfLives": {
         "description": "Out of lives message"
     },
-    "puzzleRushComplete": "Rush Complete!",
+    "puzzleRushComplete": "Rush dokončený!",
     "@puzzleRushComplete": {
         "description": "Rush complete message"
     },
@@ -2956,7 +2956,7 @@
     "@puzzleRushPlayAgain": {
         "description": "Play again button"
     },
-    "puzzleBattle": "Puzzle Battle",
+    "puzzleBattle": "Súboj hlavolamov",
     "@puzzleBattle": {
         "description": "Puzzle battle mode name"
     },
@@ -3048,7 +3048,7 @@
     "@puzzleStreakResults": {
         "description": "Streak results header"
     },
-    "puzzleStreakEnded": "Streak Ended",
+    "puzzleStreakEnded": "Séria ukončená",
     "@puzzleStreakEnded": {
         "description": "Streak ended message"
     },
@@ -4032,65 +4032,65 @@
     "@includeVariationsMainline": {},
     "bothPlayersRemoveOpponentsPiece": "Obaja hráči odoberú jednu susednú súperovu figúrku, potom hra pokračuje.",
     "@bothPlayersRemoveOpponentsPiece": {},
-    "jumpToVariation": "Jump to variation",
+    "jumpToVariation": "Prejsť na variant",
     "@jumpToVariation": {},
-    "variationNotation": "Variation: {notation}",
+    "variationNotation": "Variant: {notation}",
     "@variationNotation": {},
-    "jumpToThisVariation": "Jump to this variation",
+    "jumpToThisVariation": "Prejsť na tento variant",
     "@jumpToThisVariation": {},
-    "switchToThisBranch": "Switch to this branch",
+    "switchToThisBranch": "Prepnúť na túto vetvu",
     "@switchToThisBranch": {},
-    "setAsMainLine": "Set as main line",
+    "setAsMainLine": "Nastaviť ako hlavnú líniu",
     "@setAsMainLine": {},
-    "makeThisPrimaryVariation": "Make this the primary variation",
+    "makeThisPrimaryVariation": "Nastaviť ako hlavný variant",
     "@makeThisPrimaryVariation": {},
-    "deleteBranch": "Delete branch",
+    "deleteBranch": "Zmazať vetvu",
     "@deleteBranch": {},
-    "removeVariationPermanently": "Remove this variation permanently",
+    "removeVariationPermanently": "Trvalo odstrániť tento variant",
     "@removeVariationPermanently": {},
-    "cannotPromoteNoParent": "Cannot promote: no parent node",
+    "cannotPromoteNoParent": "Nie je možné povýšiť: žiadny nadradený uzol",
     "@cannotPromoteNoParent": {},
-    "alreadyMainVariation": "Already the main variation",
+    "alreadyMainVariation": "Už je hlavný variant",
     "@alreadyMainVariation": {},
-    "deleteBranchTitle": "Delete Branch",
+    "deleteBranchTitle": "Zmazať vetvu",
     "@deleteBranchTitle": {},
-    "deleteBranchConfirmWithNotation": "Are you sure you want to delete the variation \"{notation}\" and all its continuations?",
+    "deleteBranchConfirmWithNotation": "Ste si istí, že chcete zmazať variant \"{notation}\" a všetky jeho pokračovania?",
     "@deleteBranchConfirmWithNotation": {},
-    "deleteBranchContainsPosition": "Warning: This branch contains your current position. You will be moved to the parent position.",
+    "deleteBranchContainsPosition": "Upozornenie: Táto vetva obsahuje vašu aktuálnu pozíciu. Budete presunutí na nadradenú pozíciu.",
     "@deleteBranchContainsPosition": {},
-    "cannotDeleteNoParent": "Cannot delete: no parent node",
+    "cannotDeleteNoParent": "Nie je možné zmazať: žiadny nadradený uzol",
     "@cannotDeleteNoParent": {},
-    "branchDeleted": "Branch deleted",
+    "branchDeleted": "Vetva zmazaná",
     "@branchDeleted": {},
-    "cannotDeleteAlreadyMainLine": "Cannot delete: already on main line",
+    "cannotDeleteAlreadyMainLine": "Nie je možné zmazať: už je na hlavnej línii",
     "@cannotDeleteAlreadyMainLine": {},
-    "branchMoves": "Branch moves",
+    "branchMoves": "Ťahy vetvy",
     "@branchMoves": {},
-    "variations": "Variations",
+    "variations": "Varianty",
     "@variations": {},
-    "resign": "Resign",
+    "resign": "Vzdať sa",
     "@resign": {},
-    "failedToSendResignation": "Failed to send resignation",
+    "failedToSendResignation": "Nepodarilo sa odoslať vzdanie",
     "@failedToSendResignation": {},
-    "opponentRequestsTakeBackAccept": "Opponent requests to take back {steps} move(s). Accept?",
+    "opponentRequestsTakeBackAccept": "Súper žiada o vrátenie {steps} ťahu(ov). Prijať?",
     "@opponentRequestsTakeBackAccept": {},
-    "errorLoadingImages": "Error loading images",
+    "errorLoadingImages": "Chyba pri načítaní obrázkov",
     "@errorLoadingImages": {},
-    "fileAlreadyExists": "File {name} already exists",
+    "fileAlreadyExists": "Súbor {name} už existuje",
     "@fileAlreadyExists": {},
-    "errorDetectingNetworkInterfaces": "Error detecting network interfaces",
+    "errorDetectingNetworkInterfaces": "Chyba pri detekcii sieťových rozhraní",
     "@errorDetectingNetworkInterfaces": {},
-    "contributeToSanmill": "Contribute to Sanmill",
+    "contributeToSanmill": "Prispejte do Sanmill",
     "@contributeToSanmill": {},
-    "howToContribute": "How to Contribute",
+    "howToContribute": "Ako prispieť",
     "@howToContribute": {},
-    "perfectDatabaseNotEnabled": "Perfect database is not enabled",
+    "perfectDatabaseNotEnabled": "Dokonalá databáza nie je povolená",
     "@perfectDatabaseNotEnabled": {},
-    "redo": "Redo",
+    "redo": "Zopakovať",
     "@redo": {},
-    "movePieceUp": "Move piece up",
+    "movePieceUp": "Presunúť figúrku nahor",
     "@movePieceUp": {},
-    "movePieceDiagonallyDown": "Move piece diagonally down",
+    "movePieceDiagonallyDown": "Presunúť figúrku uhlopriečne nadol",
     "@movePieceDiagonallyDown": {},
     "puzzleTransform": "Transformovať",
     "@puzzleTransform": {},
