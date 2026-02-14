@@ -10,6 +10,8 @@ void main() {
       // Simulate rapid settings changes like in Monkey test
       // Each change schedules an engine update, but only the last one should execute
 
+      const int _ = 0;
+
       // Mock the engine.setGeneralOptions() call
       // In real scenario, this would be called after debounce period
 
