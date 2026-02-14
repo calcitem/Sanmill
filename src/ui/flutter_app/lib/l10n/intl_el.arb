@@ -1699,7 +1699,7 @@
     "@restartRequestRejected": {},
     "notConnectedToLanOpponent": "Δεν υπάρχει σύνδεση με αντίπαλο στο LAN.",
     "@notConnectedToLanOpponent": {},
-    "llmPrompt": "Πρodelays  ducting ductdelays  duct LLM",
+    "llmPrompt": "Προτροπή LLM",
     "@llmPrompt": {},
     "gameRestarted": "Το παιχνίδι επανεκκινήθηκε.",
     "@gameRestarted": {},
