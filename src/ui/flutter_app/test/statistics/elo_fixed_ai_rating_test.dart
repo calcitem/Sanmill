@@ -139,26 +139,28 @@ void main() {
   // Adjustments: MCTS without perfect DB
   // ---------------------------------------------------------------------------
   group('getFixedAiEloRating MCTS adjustment', () {
-    test('MCTS without perfect DB should have significantly reduced rating',
-        () {
-      mockDB.generalSettings = const GeneralSettings(
-        searchAlgorithm: SearchAlgorithm.mtdf,
-        usePerfectDatabase: false,
-      );
-      final int mtdf = EloRatingService.getFixedAiEloRating(15);
+    test(
+      'MCTS without perfect DB should have significantly reduced rating',
+      () {
+        mockDB.generalSettings = const GeneralSettings(
+          searchAlgorithm: SearchAlgorithm.mtdf,
+          usePerfectDatabase: false,
+        );
+        final int mtdf = EloRatingService.getFixedAiEloRating(15);
 
-      mockDB.generalSettings = const GeneralSettings(
-        searchAlgorithm: SearchAlgorithm.mcts,
-        usePerfectDatabase: false,
-      );
-      final int mcts = EloRatingService.getFixedAiEloRating(15);
+        mockDB.generalSettings = const GeneralSettings(
+          searchAlgorithm: SearchAlgorithm.mcts,
+          usePerfectDatabase: false,
+        );
+        final int mcts = EloRatingService.getFixedAiEloRating(15);
 
-      expect(
-        mcts,
-        lessThan(mtdf),
-        reason: 'MCTS without PDB should be much weaker',
-      );
-    });
+        expect(
+          mcts,
+          lessThan(mtdf),
+          reason: 'MCTS without PDB should be much weaker',
+        );
+      },
+    );
   });
 
   // ---------------------------------------------------------------------------
@@ -181,14 +183,10 @@ void main() {
   // ---------------------------------------------------------------------------
   group('getFixedAiEloRating perfect database', () {
     test('perfect DB should increase rating', () {
-      mockDB.generalSettings = const GeneralSettings(
-        usePerfectDatabase: false,
-      );
+      mockDB.generalSettings = const GeneralSettings(usePerfectDatabase: false);
       final int without = EloRatingService.getFixedAiEloRating(20);
 
-      mockDB.generalSettings = const GeneralSettings(
-        usePerfectDatabase: true,
-      );
+      mockDB.generalSettings = const GeneralSettings(usePerfectDatabase: true);
       final int with_ = EloRatingService.getFixedAiEloRating(20);
 
       expect(

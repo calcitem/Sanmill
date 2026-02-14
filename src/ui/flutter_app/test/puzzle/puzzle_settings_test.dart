@@ -25,9 +25,7 @@ PuzzleInfo _makePuzzle(String id) {
         '********/********/******** w p p 0 9 0 9 0 0 0 0 0 0 0 0 1',
     solutions: const <PuzzleSolution>[
       PuzzleSolution(
-        moves: <PuzzleMove>[
-          PuzzleMove(notation: 'a1', side: PieceColor.white),
-        ],
+        moves: <PuzzleMove>[PuzzleMove(notation: 'a1', side: PieceColor.white)],
       ),
     ],
   );
@@ -249,14 +247,12 @@ void main() {
     });
 
     test('fromJson should parse basic fields', () {
-      final PuzzleSettings settings = PuzzleSettings.fromJson(
-        <String, dynamic>{
-          'showHints': false,
-          'autoShowSolution': true,
-          'soundEnabled': false,
-          'userRating': 2000,
-        },
-      );
+      final PuzzleSettings settings = PuzzleSettings.fromJson(<String, dynamic>{
+        'showHints': false,
+        'autoShowSolution': true,
+        'soundEnabled': false,
+        'userRating': 2000,
+      });
 
       expect(settings.showHints, isFalse);
       expect(settings.autoShowSolution, isTrue);

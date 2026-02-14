@@ -220,8 +220,7 @@ void main() {
         final List<int> invMap = inverseTransformMap(forwardMap);
         // Find the matching type
         TransformationType? invType;
-        for (final TransformationType candidate
-            in TransformationType.values) {
+        for (final TransformationType candidate in TransformationType.values) {
           final List<int> candidateMap = getTransformMap(candidate);
           bool matches = true;
           for (int i = 0; i < 24; i++) {

@@ -91,10 +91,7 @@ void main() {
   // ---------------------------------------------------------------------------
   group('isFenMoveList edge cases', () {
     test('should detect FEN in tag', () {
-      expect(
-        isFenMoveList('[FEN "********/********/********"]'),
-        isTrue,
-      );
+      expect(isFenMoveList('[FEN "********/********/********"]'), isTrue);
     });
 
     test('should reject without FEN tag', () {
@@ -120,8 +117,7 @@ void main() {
     });
 
     test('should handle multiple tag pairs', () {
-      const String pgn =
-          '[Event "Test"]\n[White "Alice"]\n[Black "Bob"]';
+      const String pgn = '[Event "Test"]\n[White "Alice"]\n[Black "Bob"]';
       final String tags = getTagPairs(pgn);
       expect(tags, contains('[Event "Test"]'));
       expect(tags, contains('[Black "Bob"]'));
@@ -163,10 +159,7 @@ void main() {
   // ---------------------------------------------------------------------------
   group('isPlayOkMoveList edge cases', () {
     test('PlayOK site tag should be detected', () {
-      expect(
-        isPlayOkMoveList('[Site "PlayOK"] 1. 12 13'),
-        isTrue,
-      );
+      expect(isPlayOkMoveList('[Site "PlayOK"] 1. 12 13'), isTrue);
     });
 
     test('numeric-only moves should be detected as PlayOK', () {
@@ -191,46 +184,28 @@ void main() {
   // ---------------------------------------------------------------------------
   group('isGoldTokenMoveList edge cases', () {
     test('should detect "GoldToken" keyword', () {
-      expect(
-        isGoldTokenMoveList('GoldToken game record 12345'),
-        isTrue,
-      );
+      expect(isGoldTokenMoveList('GoldToken game record 12345'), isTrue);
     });
 
     test('should detect "Place to" keyword', () {
-      expect(
-        isGoldTokenMoveList('Place to d6, take f4'),
-        isTrue,
-      );
+      expect(isGoldTokenMoveList('Place to d6, take f4'), isTrue);
     });
 
     test('should detect ", take " keyword', () {
-      expect(
-        isGoldTokenMoveList('move d6-f6, take a7'),
-        isTrue,
-      );
+      expect(isGoldTokenMoveList('move d6-f6, take a7'), isTrue);
     });
 
     test('should detect " -> " keyword', () {
-      expect(
-        isGoldTokenMoveList('1. d6 -> f6'),
-        isTrue,
-      );
+      expect(isGoldTokenMoveList('1. d6 -> f6'), isTrue);
     });
 
     test('should not detect standard PGN', () {
-      expect(
-        isGoldTokenMoveList('1. d6 f4 2. b4 a1 *'),
-        isFalse,
-      );
+      expect(isGoldTokenMoveList('1. d6 f4 2. b4 a1 *'), isFalse);
     });
 
     test('should handle bracketed content removal', () {
       // GoldToken with brackets should still be detected after removal
-      expect(
-        isGoldTokenMoveList('(header) GoldToken game'),
-        isTrue,
-      );
+      expect(isGoldTokenMoveList('(header) GoldToken game'), isTrue);
     });
   });
 }

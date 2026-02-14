@@ -125,10 +125,7 @@ void main() {
           draws: 2,
         );
 
-        final PlayerStats updated = original.copyWith(
-          rating: 1600,
-          wins: 6,
-        );
+        final PlayerStats updated = original.copyWith(rating: 1600, wins: 6);
 
         expect(updated.rating, 1600);
         expect(updated.wins, 6);
@@ -298,10 +295,7 @@ void main() {
     group('updateAiDifficultyStats', () {
       test('should add new level stats', () {
         const StatsSettings settings = StatsSettings();
-        const PlayerStats newStats = PlayerStats(
-          rating: 500,
-          gamesPlayed: 3,
-        );
+        const PlayerStats newStats = PlayerStats(rating: 500, gamesPlayed: 3);
 
         final StatsSettings updated = settings.updateAiDifficultyStats(
           2,
@@ -319,10 +313,7 @@ void main() {
           },
         );
 
-        const PlayerStats newStats = PlayerStats(
-          rating: 600,
-          gamesPlayed: 10,
-        );
+        const PlayerStats newStats = PlayerStats(rating: 600, gamesPlayed: 10);
         final StatsSettings updated = settings.updateAiDifficultyStats(
           2,
           newStats,
@@ -334,9 +325,7 @@ void main() {
 
       test('should not modify existing levels when adding a new one', () {
         const StatsSettings settings = StatsSettings(
-          aiDifficultyStatsMap: <int, PlayerStats>{
-            1: PlayerStats(rating: 300),
-          },
+          aiDifficultyStatsMap: <int, PlayerStats>{1: PlayerStats(rating: 300)},
         );
 
         final StatsSettings updated = settings.updateAiDifficultyStats(
@@ -360,10 +349,7 @@ void main() {
         final StatsSettings copy = original.copyWith();
 
         expect(copy.isStatsEnabled, original.isStatsEnabled);
-        expect(
-          copy.shouldSuggestMctsSwitch,
-          original.shouldSuggestMctsSwitch,
-        );
+        expect(copy.shouldSuggestMctsSwitch, original.shouldSuggestMctsSwitch);
       });
 
       test('should override only specified fields', () {

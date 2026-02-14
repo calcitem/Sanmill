@@ -773,10 +773,8 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
     // Rotate
     final ToolbarItem rotateButton = ToolbarItem.icon(
       key: const Key('rotate_button'),
-      onPressed: () => setSetupPositionTransform(
-        context,
-        TransformationType.rotate90,
-      ),
+      onPressed: () =>
+          setSetupPositionTransform(context, TransformationType.rotate90),
       icon: const Icon(FluentIcons.arrow_rotate_clockwise_24_regular),
       label: Text(
         S.of(context).rotate,
@@ -788,8 +786,10 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
     // Horizontal Flip
     final ToolbarItem horizontalFlipButton = ToolbarItem.icon(
       key: const Key('horizontal_flip_button'),
-      onPressed: () =>
-          setSetupPositionTransform(context, TransformationType.mirrorHorizontal),
+      onPressed: () => setSetupPositionTransform(
+        context,
+        TransformationType.mirrorHorizontal,
+      ),
       icon: const Icon(FluentIcons.flip_horizontal_24_regular),
       label: Text(
         S.of(context).horizontalFlip,

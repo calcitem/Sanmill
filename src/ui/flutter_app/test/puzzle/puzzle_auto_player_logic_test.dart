@@ -194,16 +194,16 @@ void main() {
     test('should return noOp when game is over', () async {
       final PuzzleAutoPlayOutcome outcome =
           await PuzzleAutoPlayer.autoPlayOpponentResponses(
-        solutions: <List<String>>[
-          <String>['d6', 'f4'],
-        ],
-        humanColor: PieceColor.white,
-        isGameOver: () => true,
-        sideToMove: () => PieceColor.black,
-        movesSoFar: () => <String>[],
-        applyMove: (String move) => true,
-        onWrongMove: () async {},
-      );
+            solutions: <List<String>>[
+              <String>['d6', 'f4'],
+            ],
+            humanColor: PieceColor.white,
+            isGameOver: () => true,
+            sideToMove: () => PieceColor.black,
+            movesSoFar: () => <String>[],
+            applyMove: (String move) => true,
+            onWrongMove: () async {},
+          );
 
       expect(outcome, PuzzleAutoPlayOutcome.noOp);
     });
@@ -211,16 +211,16 @@ void main() {
     test('should return noOp when it is human turn', () async {
       final PuzzleAutoPlayOutcome outcome =
           await PuzzleAutoPlayer.autoPlayOpponentResponses(
-        solutions: <List<String>>[
-          <String>['d6', 'f4'],
-        ],
-        humanColor: PieceColor.white,
-        isGameOver: () => false,
-        sideToMove: () => PieceColor.white, // Human's turn
-        movesSoFar: () => <String>[],
-        applyMove: (String move) => true,
-        onWrongMove: () async {},
-      );
+            solutions: <List<String>>[
+              <String>['d6', 'f4'],
+            ],
+            humanColor: PieceColor.white,
+            isGameOver: () => false,
+            sideToMove: () => PieceColor.white, // Human's turn
+            movesSoFar: () => <String>[],
+            applyMove: (String move) => true,
+            onWrongMove: () async {},
+          );
 
       expect(outcome, PuzzleAutoPlayOutcome.noOp);
     });
@@ -232,20 +232,20 @@ void main() {
 
       final PuzzleAutoPlayOutcome outcome =
           await PuzzleAutoPlayer.autoPlayOpponentResponses(
-        solutions: <List<String>>[
-          <String>['d6', 'f4', 'b4'],
-        ],
-        humanColor: PieceColor.white,
-        isGameOver: () => false,
-        sideToMove: () => currentSide,
-        movesSoFar: () => <String>['d6'].sublist(0, moveCount),
-        applyMove: (String move) {
-          moveCount++;
-          currentSide = PieceColor.white; // Switch to human
-          return true;
-        },
-        onWrongMove: () async {},
-      );
+            solutions: <List<String>>[
+              <String>['d6', 'f4', 'b4'],
+            ],
+            humanColor: PieceColor.white,
+            isGameOver: () => false,
+            sideToMove: () => currentSide,
+            movesSoFar: () => <String>['d6'].sublist(0, moveCount),
+            applyMove: (String move) {
+              moveCount++;
+              currentSide = PieceColor.white; // Switch to human
+              return true;
+            },
+            onWrongMove: () async {},
+          );
 
       expect(outcome, PuzzleAutoPlayOutcome.playedMoves);
       expect(moveCount, 1);
@@ -256,18 +256,18 @@ void main() {
 
       final PuzzleAutoPlayOutcome outcome =
           await PuzzleAutoPlayer.autoPlayOpponentResponses(
-        solutions: <List<String>>[
-          <String>['d6', 'f4'],
-        ],
-        humanColor: PieceColor.white,
-        isGameOver: () => false,
-        sideToMove: () => PieceColor.black,
-        movesSoFar: () => <String>['c3'], // Not matching any solution
-        applyMove: (String move) => true,
-        onWrongMove: () async {
-          wrongMoveCalled = true;
-        },
-      );
+            solutions: <List<String>>[
+              <String>['d6', 'f4'],
+            ],
+            humanColor: PieceColor.white,
+            isGameOver: () => false,
+            sideToMove: () => PieceColor.black,
+            movesSoFar: () => <String>['c3'], // Not matching any solution
+            applyMove: (String move) => true,
+            onWrongMove: () async {
+              wrongMoveCalled = true;
+            },
+          );
 
       expect(outcome, PuzzleAutoPlayOutcome.wrongMove);
       expect(wrongMoveCalled, isTrue);
@@ -276,16 +276,16 @@ void main() {
     test('should return reachedEndOfLine at solution end', () async {
       final PuzzleAutoPlayOutcome outcome =
           await PuzzleAutoPlayer.autoPlayOpponentResponses(
-        solutions: <List<String>>[
-          <String>['d6'],
-        ],
-        humanColor: PieceColor.white,
-        isGameOver: () => false,
-        sideToMove: () => PieceColor.black,
-        movesSoFar: () => <String>['d6'], // Already at end
-        applyMove: (String move) => true,
-        onWrongMove: () async {},
-      );
+            solutions: <List<String>>[
+              <String>['d6'],
+            ],
+            humanColor: PieceColor.white,
+            isGameOver: () => false,
+            sideToMove: () => PieceColor.black,
+            movesSoFar: () => <String>['d6'], // Already at end
+            applyMove: (String move) => true,
+            onWrongMove: () async {},
+          );
 
       expect(outcome, PuzzleAutoPlayOutcome.reachedEndOfLine);
     });

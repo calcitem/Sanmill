@@ -94,11 +94,11 @@ void main() {
     test('fromValue constructor should sanitize', () {
       final SafeTextEditingController controller =
           SafeTextEditingController.fromValue(
-        const TextEditingValue(
-          text: 'abc',
-          selection: TextSelection.collapsed(offset: 50),
-        ),
-      );
+            const TextEditingValue(
+              text: 'abc',
+              selection: TextSelection.collapsed(offset: 50),
+            ),
+          );
 
       expect(controller.value.selection.baseOffset, 3);
     });

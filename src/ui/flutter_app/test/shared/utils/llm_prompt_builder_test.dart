@@ -26,14 +26,8 @@ void main() {
     });
 
     test('should be case-insensitive', () {
-      expect(
-        looksLikeSanmillLog('ERROR AT PACKAGE:SANMILL/MAIN.DART'),
-        isTrue,
-      );
-      expect(
-        looksLikeSanmillLog('INFO SCORE cp 100'),
-        isTrue,
-      );
+      expect(looksLikeSanmillLog('ERROR AT PACKAGE:SANMILL/MAIN.DART'), isTrue);
+      expect(looksLikeSanmillLog('INFO SCORE cp 100'), isTrue);
     });
 
     test('should return false for empty string', () {
@@ -56,10 +50,7 @@ void main() {
   group('extractSanmillLog', () {
     test('should return trimmed log for valid Sanmill logs', () {
       const String log = '  Error at package:sanmill/main.dart:42  ';
-      expect(
-        extractSanmillLog(log),
-        'Error at package:sanmill/main.dart:42',
-      );
+      expect(extractSanmillLog(log), 'Error at package:sanmill/main.dart:42');
     });
 
     test('should return null for empty string', () {
@@ -76,10 +67,7 @@ void main() {
 
     test('should return trimmed text for info score logs', () {
       const String log = '  info score cp 50 depth 8  ';
-      expect(
-        extractSanmillLog(log),
-        'info score cp 50 depth 8',
-      );
+      expect(extractSanmillLog(log), 'info score cp 50 depth 8');
     });
   });
 

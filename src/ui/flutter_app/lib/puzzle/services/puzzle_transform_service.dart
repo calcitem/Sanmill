@@ -34,15 +34,10 @@ class PuzzleTransformService {
       return puzzle;
     }
 
-    final String transformedFen = transformFEN(
-      puzzle.initialPosition,
-      type,
-    );
+    final String transformedFen = transformFEN(puzzle.initialPosition, type);
 
     final List<PuzzleSolution> transformedSolutions = puzzle.solutions
-        .map(
-          (PuzzleSolution s) => transformSolution(s, type),
-        )
+        .map((PuzzleSolution s) => transformSolution(s, type))
         .toList();
 
     return puzzle.copyWith(
@@ -61,9 +56,7 @@ class PuzzleTransformService {
     }
 
     final List<PuzzleMove> transformedMoves = solution.moves
-        .map(
-          (PuzzleMove m) => transformMove(m, type),
-        )
+        .map((PuzzleMove m) => transformMove(m, type))
         .toList();
 
     return PuzzleSolution(

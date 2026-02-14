@@ -43,11 +43,14 @@ void main() {
       expect(list.hasPrevious, isFalse);
     });
 
-    test('list at first element should have previous (movePrevious goes to head)', () {
-      final PointedList<int> list = PointedList<int>.from(<int>[1, 2, 3]);
-      list.globalIterator.moveToFirst();
-      expect(list.hasPrevious, isTrue);
-    });
+    test(
+      'list at first element should have previous (movePrevious goes to head)',
+      () {
+        final PointedList<int> list = PointedList<int>.from(<int>[1, 2, 3]);
+        list.globalIterator.moveToFirst();
+        expect(list.hasPrevious, isTrue);
+      },
+    );
 
     test('list at head (null index) should not have previous', () {
       final PointedList<int> list = PointedList<int>.from(<int>[1, 2, 3]);

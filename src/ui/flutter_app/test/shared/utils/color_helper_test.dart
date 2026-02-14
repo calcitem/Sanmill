@@ -44,14 +44,8 @@ void main() {
       const Color different = Color(0xFF00FF00); // Green
 
       // "different" is farther from the reference than "same"
-      expect(
-        pickColorWithMaxDifference(same, different, reference),
-        different,
-      );
-      expect(
-        pickColorWithMaxDifference(different, same, reference),
-        different,
-      );
+      expect(pickColorWithMaxDifference(same, different, reference), different);
+      expect(pickColorWithMaxDifference(different, same, reference), different);
     });
 
     test('should work with transparency differences', () {

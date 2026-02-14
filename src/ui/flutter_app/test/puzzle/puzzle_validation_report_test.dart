@@ -128,11 +128,7 @@ void main() {
   group('DailyPuzzleStats', () {
     test('should store completed dates and longest streak', () {
       final DailyPuzzleStats stats = DailyPuzzleStats(
-        completedDates: <String>[
-          '2026-02-12',
-          '2026-02-13',
-          '2026-02-14',
-        ],
+        completedDates: <String>['2026-02-12', '2026-02-13', '2026-02-14'],
         longestStreak: 3,
       );
 

@@ -112,9 +112,7 @@ void main() {
     });
 
     test('FEN character should be unique per phase', () {
-      final Set<String> fens = Phase.values
-          .map((Phase p) => p.fen)
-          .toSet();
+      final Set<String> fens = Phase.values.map((Phase p) => p.fen).toSet();
       expect(fens.length, Phase.values.length);
     });
 
@@ -124,7 +122,7 @@ void main() {
         expect(
           RegExp(r'^[a-z]$').hasMatch(p.fen),
           isTrue,
-          reason: 'FEN "${ p.fen}" for $p should be lowercase letter',
+          reason: 'FEN "${p.fen}" for $p should be lowercase letter',
         );
       }
     });
@@ -139,9 +137,7 @@ void main() {
     });
 
     test('FEN character should be unique per action', () {
-      final Set<String> fens = Act.values
-          .map((Act a) => a.fen)
-          .toSet();
+      final Set<String> fens = Act.values.map((Act a) => a.fen).toSet();
       expect(fens.length, Act.values.length);
     });
 
@@ -189,11 +185,7 @@ void main() {
     });
 
     test('toNagString should return valid PGN termination markers', () {
-      const Set<String> validTerminations = <String>{
-        '1-0',
-        '0-1',
-        '1/2-1/2',
-      };
+      const Set<String> validTerminations = <String>{'1-0', '0-1', '1/2-1/2'};
       for (final GameResult r in GameResult.values) {
         expect(
           validTerminations.contains(r.toNagString()),

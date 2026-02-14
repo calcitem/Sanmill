@@ -80,12 +80,14 @@ void main() {
       expect(isRuleSupportingPerfectDatabase(), isTrue);
     });
 
-    test('Morabaraba should NOT support (boardFullAction != firstPlayerLose)',
-        () {
-      mockDB.ruleSettings = const MorabarabaRuleSettings();
+    test(
+      'Morabaraba should NOT support (boardFullAction != firstPlayerLose)',
+      () {
+        mockDB.ruleSettings = const MorabarabaRuleSettings();
 
-      expect(isRuleSupportingPerfectDatabase(), isFalse);
-    });
+        expect(isRuleSupportingPerfectDatabase(), isFalse);
+      },
+    );
 
     test('One-time mill should NOT support (oneTimeUseMill = true)', () {
       mockDB.ruleSettings = const OneTimeMillRuleSettings();
@@ -112,37 +114,33 @@ void main() {
     });
 
     test('custom with custodian capture should NOT support', () {
-      mockDB.ruleSettings = const RuleSettings(
-        enableCustodianCapture: true,
-      );
+      mockDB.ruleSettings = const RuleSettings(enableCustodianCapture: true);
 
       expect(isRuleSupportingPerfectDatabase(), isFalse);
     });
 
     test('custom with intervention capture should NOT support', () {
-      mockDB.ruleSettings = const RuleSettings(
-        enableInterventionCapture: true,
-      );
+      mockDB.ruleSettings = const RuleSettings(enableInterventionCapture: true);
 
       expect(isRuleSupportingPerfectDatabase(), isFalse);
     });
 
     test('custom with mayRemoveFromMillsAlways should NOT support', () {
-      mockDB.ruleSettings = const RuleSettings(
-        mayRemoveFromMillsAlways: true,
-      );
+      mockDB.ruleSettings = const RuleSettings(mayRemoveFromMillsAlways: true);
 
       expect(isRuleSupportingPerfectDatabase(), isFalse);
     });
 
-    test('custom with stalemateAction = changeSideToMove should NOT support',
-        () {
-      mockDB.ruleSettings = const RuleSettings(
-        stalemateAction: StalemateAction.changeSideToMove,
-      );
+    test(
+      'custom with stalemateAction = changeSideToMove should NOT support',
+      () {
+        mockDB.ruleSettings = const RuleSettings(
+          stalemateAction: StalemateAction.changeSideToMove,
+        );
 
-      expect(isRuleSupportingPerfectDatabase(), isFalse);
-    });
+        expect(isRuleSupportingPerfectDatabase(), isFalse);
+      },
+    );
 
     test('custom with flyPieceCount != 3 should NOT support', () {
       mockDB.ruleSettings = const RuleSettings(flyPieceCount: 4);
@@ -173,15 +171,17 @@ void main() {
       expect(isRuleSupportingPerfectDatabase(), isFalse);
     });
 
-    test('custom with non-standard mill formation action should NOT support',
-        () {
-      mockDB.ruleSettings = const RuleSettings(
-        millFormationActionInPlacingPhase:
-            MillFormationActionInPlacingPhase.markAndDelayRemovingPieces,
-      );
+    test(
+      'custom with non-standard mill formation action should NOT support',
+      () {
+        mockDB.ruleSettings = const RuleSettings(
+          millFormationActionInPlacingPhase:
+              MillFormationActionInPlacingPhase.markAndDelayRemovingPieces,
+        );
 
-      expect(isRuleSupportingPerfectDatabase(), isFalse);
-    });
+        expect(isRuleSupportingPerfectDatabase(), isFalse);
+      },
+    );
   });
 
   // ---------------------------------------------------------------------------

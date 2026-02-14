@@ -92,9 +92,7 @@ void main() {
       category: PuzzleCategory.formMill,
       difficulty: PuzzleDifficulty.easy,
       initialPosition: initialPosition,
-      solutions: <PuzzleSolution>[
-        PuzzleSolution(moves: solutionMoves),
-      ],
+      solutions: <PuzzleSolution>[PuzzleSolution(moves: solutionMoves)],
     );
   }
 

@@ -214,9 +214,11 @@ void main() {
       // 30 consecutive days ending today.
       for (int i = 29; i >= 0; i--) {
         dates.add(
-          DateTime.utc(2026, 2, 13)
-              .subtract(Duration(days: i))
-              .toIso8601String(),
+          DateTime.utc(
+            2026,
+            2,
+            13,
+          ).subtract(Duration(days: i)).toIso8601String(),
         );
       }
 
@@ -231,9 +233,11 @@ void main() {
       // 10 consecutive days ending yesterday (today not completed).
       for (int i = 10; i >= 1; i--) {
         dates.add(
-          DateTime.utc(2026, 2, 13)
-              .subtract(Duration(days: i))
-              .toIso8601String(),
+          DateTime.utc(
+            2026,
+            2,
+            13,
+          ).subtract(Duration(days: i)).toIso8601String(),
         );
       }
 

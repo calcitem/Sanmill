@@ -260,8 +260,7 @@ void main() {
       recorder.appendMove(ExtMove('b4', side: PieceColor.white));
 
       // Move back to second node
-      recorder.activeNode =
-          recorder.pgnRoot.children.first.children.first;
+      recorder.activeNode = recorder.pgnRoot.children.first.children.first;
 
       final List<ExtMove> path = recorder.currentPath;
       expect(path.length, 2); // d6, f4
@@ -341,10 +340,7 @@ void main() {
       final GameRecorder recorder = controller.gameRecorder;
       final String result = recorder.gameResultPgn;
 
-      expect(
-        <String>['1-0', '0-1', '1/2-1/2', '*'].contains(result),
-        isTrue,
-      );
+      expect(<String>['1-0', '0-1', '1/2-1/2', '*'].contains(result), isTrue);
     });
   });
 
