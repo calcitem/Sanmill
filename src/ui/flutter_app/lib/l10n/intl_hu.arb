@@ -3348,5 +3348,9 @@
     "movePieceUp": "Move piece up",
     "@movePieceUp": {},
     "movePieceDiagonallyDown": "Move piece diagonally down",
-    "@movePieceDiagonallyDown": {}
+    "@movePieceDiagonallyDown": {},
+    "puzzleTransform": "Átalakítás",
+    "@puzzleTransform": {},
+    "puzzleTransformed": "Tábla átalakítva.",
+    "@puzzleTransformed": {}
 }

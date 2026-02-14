@@ -4091,5 +4091,9 @@
     "movePieceUp": "Move piece up",
     "@movePieceUp": {},
     "movePieceDiagonallyDown": "Move piece diagonally down",
-    "@movePieceDiagonallyDown": {}
+    "@movePieceDiagonallyDown": {},
+    "puzzleTransform": "변환",
+    "@puzzleTransform": {},
+    "puzzleTransformed": "보드가 변환되었습니다.",
+    "@puzzleTransformed": {}
 }

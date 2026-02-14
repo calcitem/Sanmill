@@ -4091,5 +4091,9 @@
     "movePieceUp": "Move piece up",
     "@movePieceUp": {},
     "movePieceDiagonallyDown": "Move piece diagonally down",
-    "@movePieceDiagonallyDown": {}
+    "@movePieceDiagonallyDown": {},
+    "puzzleTransform": "மாற்றம்",
+    "@puzzleTransform": {},
+    "puzzleTransformed": "பலகை மாற்றப்பட்டது.",
+    "@puzzleTransformed": {}
 }

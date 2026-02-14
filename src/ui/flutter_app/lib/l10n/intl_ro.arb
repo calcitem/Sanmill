@@ -4091,5 +4091,9 @@
     "movePieceUp": "Move piece up",
     "@movePieceUp": {},
     "movePieceDiagonallyDown": "Move piece diagonally down",
-    "@movePieceDiagonallyDown": {}
+    "@movePieceDiagonallyDown": {},
+    "puzzleTransform": "Transformă",
+    "@puzzleTransform": {},
+    "puzzleTransformed": "Tabla a fost transformată.",
+    "@puzzleTransformed": {}
 }

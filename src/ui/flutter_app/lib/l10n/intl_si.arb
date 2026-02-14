@@ -4091,5 +4091,9 @@
     "movePieceUp": "Move piece up",
     "@movePieceUp": {},
     "movePieceDiagonallyDown": "Move piece diagonally down",
-    "@movePieceDiagonallyDown": {}
+    "@movePieceDiagonallyDown": {},
+    "puzzleTransform": "පරිවර්තනය",
+    "@puzzleTransform": {},
+    "puzzleTransformed": "පුවරුව පරිවර්තනය කරන ලදි.",
+    "@puzzleTransformed": {}
 }
