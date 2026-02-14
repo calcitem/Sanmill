@@ -14,11 +14,7 @@ void main() {
 
     test('should set squareBB[s] = 1 << s for each valid square', () {
       for (int s = 8; s < 32; s++) {
-        expect(
-          squareBB[s],
-          1 << s,
-          reason: 'squareBB[$s] should be ${1 << s}',
-        );
+        expect(squareBB[s], 1 << s, reason: 'squareBB[$s] should be ${1 << s}');
       }
     });
 
@@ -61,11 +57,7 @@ void main() {
 
     test('should return the correct bitboard for valid squares', () {
       for (int s = 8; s < 32; s++) {
-        expect(
-          squareBb(s),
-          1 << s,
-          reason: 'squareBb($s)',
-        );
+        expect(squareBb(s), 1 << s, reason: 'squareBb($s)');
       }
     });
 

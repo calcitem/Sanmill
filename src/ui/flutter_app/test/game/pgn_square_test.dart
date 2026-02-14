@@ -31,11 +31,7 @@ void main() {
       for (final String file in files) {
         for (final String rank in ranks) {
           final Square? sq = Square.parse('$file$rank');
-          expect(
-            sq,
-            isNotNull,
-            reason: 'Should parse "$file$rank"',
-          );
+          expect(sq, isNotNull, reason: 'Should parse "$file$rank"');
           expect(sq!.name, '$file$rank');
         }
       }
@@ -74,10 +70,7 @@ void main() {
     test('hashCode should be consistent with equality', () {
       expect(const Square('a1').hashCode, const Square('a1').hashCode);
       // Different squares should (likely) have different hashes
-      expect(
-        const Square('a1').hashCode,
-        isNot(const Square('g7').hashCode),
-      );
+      expect(const Square('a1').hashCode, isNot(const Square('g7').hashCode));
     });
   });
 

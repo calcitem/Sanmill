@@ -105,7 +105,8 @@ void main() {
       expect(
         changeBelow,
         greaterThan(changeAtOrAbove),
-        reason: 'K=20 below 2400 should produce larger change than K=10 at 2400',
+        reason:
+            'K=20 below 2400 should produce larger change than K=10 at 2400',
       );
     });
 

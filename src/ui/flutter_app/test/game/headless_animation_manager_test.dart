@@ -40,10 +40,7 @@ void main() {
       final GameController controller = GameController();
       controller.reset();
 
-      expect(
-        () => HeadlessAnimationManager(),
-        returnsNormally,
-      );
+      expect(() => HeadlessAnimationManager(), returnsNormally);
     });
 
     test('should have allowAnimations set to false', () {

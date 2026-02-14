@@ -187,8 +187,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
     _isAutoPlayingOpponent = false;
 
     // Store the starting position for exports and history
-    controller.gameRecorder.setupPosition =
-        _transformedPuzzle.initialPosition;
+    controller.gameRecorder.setupPosition = _transformedPuzzle.initialPosition;
 
     // Refresh UI elements that depend on game state
     controller.headerIconsNotifier.showIcons();
@@ -456,8 +455,9 @@ class _PuzzlePageState extends State<PuzzlePage> {
                       // Transform button — cycle through board symmetries
                       IconButton(
                         icon: const Icon(Icons.rotate_right),
-                        onPressed:
-                            _isPlayingSolution ? null : _cycleTransformation,
+                        onPressed: _isPlayingSolution
+                            ? null
+                            : _cycleTransformation,
                         tooltip: s.rotate,
                       ),
                       // Hint button

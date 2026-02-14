@@ -39,11 +39,7 @@ void main() {
     test('should store possible moves', () {
       final PositionAnalysisResult result = PositionAnalysisResult(
         possibleMoves: <MoveAnalysisResult>[
-          MoveAnalysisResult(
-            move: 'a1',
-            outcome: GameOutcome.win,
-            score: 100,
-          ),
+          MoveAnalysisResult(move: 'a1', outcome: GameOutcome.win, score: 100),
         ],
       );
 

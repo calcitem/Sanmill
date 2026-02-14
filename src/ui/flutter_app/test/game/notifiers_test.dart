@@ -172,10 +172,7 @@ void main() {
     test('should be accessible from GameController', () {
       final GameController controller = GameController();
       expect(controller.boardSemanticsNotifier, isNotNull);
-      expect(
-        controller.boardSemanticsNotifier,
-        isA<BoardSemanticsNotifier>(),
-      );
+      expect(controller.boardSemanticsNotifier, isA<BoardSemanticsNotifier>());
     });
   });
 
@@ -186,10 +183,7 @@ void main() {
     test('should be accessible from GameController', () {
       final GameController controller = GameController();
       expect(controller.setupPositionNotifier, isNotNull);
-      expect(
-        controller.setupPositionNotifier,
-        isA<SetupPositionNotifier>(),
-      );
+      expect(controller.setupPositionNotifier, isA<SetupPositionNotifier>());
     });
   });
 

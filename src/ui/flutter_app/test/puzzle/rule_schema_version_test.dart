@@ -80,12 +80,8 @@ void main() {
     });
 
     test('same settings should produce same hash', () {
-      final String hash1 = calculator.calculateLatestHash(
-        const RuleSettings(),
-      );
-      final String hash2 = calculator.calculateLatestHash(
-        const RuleSettings(),
-      );
+      final String hash1 = calculator.calculateLatestHash(const RuleSettings());
+      final String hash2 = calculator.calculateLatestHash(const RuleSettings());
 
       expect(hash1, hash2);
     });
@@ -143,7 +139,8 @@ void main() {
         expect(
           hashes.add(hash),
           isTrue,
-          reason: 'Duplicate hash found for variant with '
+          reason:
+              'Duplicate hash found for variant with '
               '${v.piecesCount} pieces',
         );
       }
@@ -181,9 +178,7 @@ void main() {
     });
 
     test('getEquivalentHashes should include the hash itself', () {
-      final List<String> equivalents = manager.getEquivalentHashes(
-        'some_hash',
-      );
+      final List<String> equivalents = manager.getEquivalentHashes('some_hash');
 
       expect(equivalents, contains('some_hash'));
     });

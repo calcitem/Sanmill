@@ -84,9 +84,7 @@ void main() {
     });
 
     test('should parse PGN with NAGs', () {
-      final PgnGame<PgnNodeData> game = PgnGame.parsePgn(
-        '1. d6! f4? *',
-      );
+      final PgnGame<PgnNodeData> game = PgnGame.parsePgn('1. d6! f4? *');
 
       final List<PgnNodeData> mainline = game.moves.mainline().toList();
       expect(mainline.length, 2);
@@ -99,9 +97,7 @@ void main() {
     });
 
     test('should parse move notation like "a1-a4"', () {
-      final PgnGame<PgnNodeData> game = PgnGame.parsePgn(
-        '1. d6 f4 2. d6-d5 *',
-      );
+      final PgnGame<PgnNodeData> game = PgnGame.parsePgn('1. d6 f4 2. d6-d5 *');
 
       final List<PgnNodeData> mainline = game.moves.mainline().toList();
       expect(mainline.length, 3);
@@ -118,25 +114,19 @@ void main() {
     });
 
     test('should handle PGN with result 1-0', () {
-      final PgnGame<PgnNodeData> game = PgnGame.parsePgn(
-        '1. d6 f4 1-0',
-      );
+      final PgnGame<PgnNodeData> game = PgnGame.parsePgn('1. d6 f4 1-0');
 
       expect(game.headers['Result'], '1-0');
     });
 
     test('should handle PGN with result 0-1', () {
-      final PgnGame<PgnNodeData> game = PgnGame.parsePgn(
-        '1. d6 f4 0-1',
-      );
+      final PgnGame<PgnNodeData> game = PgnGame.parsePgn('1. d6 f4 0-1');
 
       expect(game.headers['Result'], '0-1');
     });
 
     test('should handle PGN with result 1/2-1/2', () {
-      final PgnGame<PgnNodeData> game = PgnGame.parsePgn(
-        '1. d6 f4 1/2-1/2',
-      );
+      final PgnGame<PgnNodeData> game = PgnGame.parsePgn('1. d6 f4 1/2-1/2');
 
       expect(game.headers['Result'], '1/2-1/2');
     });
@@ -147,9 +137,7 @@ void main() {
   // ---------------------------------------------------------------------------
   group('PgnGame.parsePgn edge cases', () {
     test('should handle extra whitespace', () {
-      final PgnGame<PgnNodeData> game = PgnGame.parsePgn(
-        '  1.  d6   f4   *  ',
-      );
+      final PgnGame<PgnNodeData> game = PgnGame.parsePgn('  1.  d6   f4   *  ');
 
       final List<PgnNodeData> mainline = game.moves.mainline().toList();
       expect(mainline.length, 2);
@@ -170,7 +158,10 @@ void main() {
       );
 
       // The starting comment should be in game.comments or first node
-      expect(game.comments.isNotEmpty || game.moves.children.isNotEmpty, isTrue);
+      expect(
+        game.comments.isNotEmpty || game.moves.children.isNotEmpty,
+        isTrue,
+      );
     });
 
     test('should handle empty tag pairs gracefully', () {

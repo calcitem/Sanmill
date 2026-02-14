@@ -14,10 +14,7 @@ void main() {
       });
 
       test('should contain role description', () {
-        expect(
-          PromptDefaults.llmPromptHeader,
-          contains('Nine Men\'s Morris'),
-        );
+        expect(PromptDefaults.llmPromptHeader, contains('Nine Men\'s Morris'));
       });
 
       test('should contain board reference information', () {
@@ -39,18 +36,9 @@ void main() {
 
       test('should describe mill combinations', () {
         expect(PromptDefaults.llmPromptHeader, contains('Mill Combinations'));
-        expect(
-          PromptDefaults.llmPromptHeader,
-          contains('Inner Ring Mills'),
-        );
-        expect(
-          PromptDefaults.llmPromptHeader,
-          contains('Middle Ring Mills'),
-        );
-        expect(
-          PromptDefaults.llmPromptHeader,
-          contains('Outer Ring Mills'),
-        );
+        expect(PromptDefaults.llmPromptHeader, contains('Inner Ring Mills'));
+        expect(PromptDefaults.llmPromptHeader, contains('Middle Ring Mills'));
+        expect(PromptDefaults.llmPromptHeader, contains('Outer Ring Mills'));
       });
 
       test('should contain game phases', () {
@@ -69,10 +57,7 @@ void main() {
       });
 
       test('should contain output requirements', () {
-        expect(
-          PromptDefaults.llmPromptFooter,
-          contains('Output Requirements'),
-        );
+        expect(PromptDefaults.llmPromptFooter, contains('Output Requirements'));
       });
 
       test('should contain format instructions', () {

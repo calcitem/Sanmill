@@ -31,9 +31,7 @@ PuzzleInfo _makePuzzle({
         '********/********/******** w p p 0 9 0 9 0 0 0 0 0 0 0 0 1',
     solutions: const <PuzzleSolution>[
       PuzzleSolution(
-        moves: <PuzzleMove>[
-          PuzzleMove(notation: 'a1', side: PieceColor.white),
-        ],
+        moves: <PuzzleMove>[PuzzleMove(notation: 'a1', side: PieceColor.white)],
       ),
     ],
     rating: rating,
@@ -114,7 +112,10 @@ void main() {
           PuzzleDifficulty.easy,
         );
         expect(easy.length, 2);
-        expect(easy.every((PuzzleInfo p) => p.difficulty == PuzzleDifficulty.easy), isTrue);
+        expect(
+          easy.every((PuzzleInfo p) => p.difficulty == PuzzleDifficulty.easy),
+          isTrue,
+        );
       });
 
       test('should return empty for no matches', () {
@@ -179,7 +180,8 @@ void main() {
           expect(
             sorted[i].difficulty.index,
             lessThanOrEqualTo(sorted[i + 1].difficulty.index),
-            reason: 'Puzzle ${sorted[i].id} should not be harder than '
+            reason:
+                'Puzzle ${sorted[i].id} should not be harder than '
                 '${sorted[i + 1].id}',
           );
         }
@@ -197,7 +199,8 @@ void main() {
           expect(
             sorted[i].rating!,
             lessThanOrEqualTo(sorted[i + 1].rating!),
-            reason: 'Rating ${sorted[i].rating} should be <= '
+            reason:
+                'Rating ${sorted[i].rating} should be <= '
                 '${sorted[i + 1].rating}',
           );
         }
@@ -266,14 +269,8 @@ void main() {
         puzzles: <PuzzleInfo>[],
       );
 
-      expect(
-        empty.getPuzzlesByDifficulty(PuzzleDifficulty.easy),
-        isEmpty,
-      );
-      expect(
-        empty.getPuzzlesByCategory(PuzzleCategory.formMill),
-        isEmpty,
-      );
+      expect(empty.getPuzzlesByDifficulty(PuzzleDifficulty.easy), isEmpty);
+      expect(empty.getPuzzlesByCategory(PuzzleCategory.formMill), isEmpty);
       expect(empty.getCustomPuzzles(), isEmpty);
       expect(empty.getBuiltInPuzzles(), isEmpty);
     });
@@ -292,9 +289,7 @@ void main() {
           PuzzleDifficulty.easy: 50,
           PuzzleDifficulty.hard: 50,
         },
-        byCategory: <PuzzleCategory, int>{
-          PuzzleCategory.formMill: 100,
-        },
+        byCategory: <PuzzleCategory, int>{PuzzleCategory.formMill: 100},
         averageRating: 1500.0,
       );
 

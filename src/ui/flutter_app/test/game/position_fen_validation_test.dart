@@ -116,9 +116,7 @@ void main() {
     test('FEN with invalid board length should fail', () {
       final Position p = Position();
       expect(
-        p.validateFen(
-          '****/****/****  w p p 0 9 0 9 0 0 0 0 0 0 0 0 1',
-        ),
+        p.validateFen('****/****/****  w p p 0 9 0 9 0 0 0 0 0 0 0 0 1'),
         isFalse,
       );
     });
@@ -176,9 +174,7 @@ void main() {
     test('setFen with valid FEN should succeed', () {
       final Position p = Position();
       expect(
-        p.setFen(
-          '********/********/******** w p p 0 9 0 9 0 0 0 0 0 0 0 0 1',
-        ),
+        p.setFen('********/********/******** w p p 0 9 0 9 0 0 0 0 0 0 0 0 1'),
         isTrue,
       );
     });
@@ -202,25 +198,19 @@ void main() {
 
     test('setFen should update sideToMove', () {
       final Position p = Position();
-      p.setFen(
-        '********/********/******** b p p 0 9 0 9 0 0 0 0 0 0 0 0 1',
-      );
+      p.setFen('********/********/******** b p p 0 9 0 9 0 0 0 0 0 0 0 0 1');
       expect(p.sideToMove, PieceColor.black);
     });
 
     test('setFen should update phase', () {
       final Position p = Position();
-      p.setFen(
-        'O@O@O@O@/O@*****/******** w m s 5 0 3 4 0 0 0 0 0 0 0 0 1',
-      );
+      p.setFen('O@O@O@O@/O@*****/******** w m s 5 0 3 4 0 0 0 0 0 0 0 0 1');
       expect(p.phase, Phase.moving);
     });
 
     test('setFen should update board positions', () {
       final Position p = Position();
-      p.setFen(
-        'O*******/*O******/**O***** w p p 1 8 1 8 0 0 0 0 0 0 0 0 1',
-      );
+      p.setFen('O*******/*O******/**O***** w p p 1 8 1 8 0 0 0 0 0 0 0 0 1');
 
       // Inner ring position 0 (d5 = square 8) should be white
       expect(p.board[8], PieceColor.white);

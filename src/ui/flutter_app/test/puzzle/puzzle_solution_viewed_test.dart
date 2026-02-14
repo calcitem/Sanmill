@@ -28,18 +28,20 @@ void main() {
       expect(stars, equals(0));
     });
 
-    test('calculateStars returns 3 when solutionViewed is false and optimal',
-        () {
-      final int stars = PuzzleProgress.calculateStars(
-        moveCount: 5,
-        optimalMoveCount: 5,
-        difficulty: PuzzleDifficulty.easy,
-        hintsUsed: false,
-        solutionViewed: false,
-      );
+    test(
+      'calculateStars returns 3 when solutionViewed is false and optimal',
+      () {
+        final int stars = PuzzleProgress.calculateStars(
+          moveCount: 5,
+          optimalMoveCount: 5,
+          difficulty: PuzzleDifficulty.easy,
+          hintsUsed: false,
+          solutionViewed: false,
+        );
 
-      expect(stars, equals(3));
-    });
+        expect(stars, equals(3));
+      },
+    );
 
     test(
       'solutionViewed overrides hints - 0 stars even without hints used',
@@ -120,8 +122,9 @@ void main() {
       // we create a fresh PuzzleProgress and set solutionViewed.
       const PuzzleProgress? priorProgress = null;
       final PuzzleProgress newProgress =
-          (priorProgress ?? PuzzleProgress(puzzleId: 'fresh'))
-              .copyWith(solutionViewed: true);
+          (priorProgress ?? PuzzleProgress(puzzleId: 'fresh')).copyWith(
+            solutionViewed: true,
+          );
 
       expect(newProgress.puzzleId, equals('fresh'));
       expect(newProgress.solutionViewed, isTrue);

@@ -20,9 +20,7 @@ void main() {
     test('should store output events', () {
       final MemoryOutput output = MemoryOutput();
 
-      output.output(
-        OutputEvent(Level.info, <String>['test message']),
-      );
+      output.output(OutputEvent(Level.info, <String>['test message']));
 
       expect(output.logs.length, 1);
       expect(output.logs.first.lines, contains('test message'));

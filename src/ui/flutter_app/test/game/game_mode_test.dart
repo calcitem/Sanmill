@@ -62,8 +62,9 @@ void main() {
   // ---------------------------------------------------------------------------
   group('GameMode.whoIsAI', () {
     test('humanVsAi with aiMovesFirst=false: black is AI', () {
-      (DB.instance as MockDB).generalSettings =
-          DB().generalSettings.copyWith(aiMovesFirst: false);
+      (DB.instance as MockDB).generalSettings = DB().generalSettings.copyWith(
+        aiMovesFirst: false,
+      );
 
       final Map<PieceColor, bool> who = GameMode.humanVsAi.whoIsAI;
       expect(who[PieceColor.white], isFalse);
@@ -71,8 +72,9 @@ void main() {
     });
 
     test('humanVsAi with aiMovesFirst=true: white is AI', () {
-      (DB.instance as MockDB).generalSettings =
-          DB().generalSettings.copyWith(aiMovesFirst: true);
+      (DB.instance as MockDB).generalSettings = DB().generalSettings.copyWith(
+        aiMovesFirst: true,
+      );
 
       final Map<PieceColor, bool> who = GameMode.humanVsAi.whoIsAI;
       expect(who[PieceColor.white], isTrue);

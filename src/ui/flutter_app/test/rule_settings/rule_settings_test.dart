@@ -302,14 +302,8 @@ void main() {
   group('enumName', () {
     test('should map BoardFullAction values', () {
       expect(enumName(BoardFullAction.firstPlayerLose), '0-1');
-      expect(
-        enumName(BoardFullAction.firstAndSecondPlayerRemovePiece),
-        'W->B',
-      );
-      expect(
-        enumName(BoardFullAction.secondAndFirstPlayerRemovePiece),
-        'B->W',
-      );
+      expect(enumName(BoardFullAction.firstAndSecondPlayerRemovePiece), 'W->B');
+      expect(enumName(BoardFullAction.secondAndFirstPlayerRemovePiece), 'B->W');
       expect(enumName(BoardFullAction.sideToMoveRemovePiece), 'X');
       expect(enumName(BoardFullAction.agreeToDraw), '=');
     });
@@ -326,10 +320,7 @@ void main() {
         'X ->',
       );
       expect(enumName(StalemateAction.endWithStalemateDraw), '=');
-      expect(
-        enumName(StalemateAction.bothPlayersRemoveOpponentsPiece),
-        'XX',
-      );
+      expect(enumName(StalemateAction.bothPlayersRemoveOpponentsPiece), 'XX');
     });
 
     test('should return empty string for unknown enum entry', () {

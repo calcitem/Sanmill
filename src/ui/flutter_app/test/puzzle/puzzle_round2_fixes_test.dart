@@ -64,47 +64,49 @@ void main() {
   // -----------------------------------------------------------------------
   // Fix B: PuzzleSolution description preserved when forcing isOptimal.
   // -----------------------------------------------------------------------
-  group('Fix B: PuzzleSolution description preserved on isOptimal promotion',
-      () {
-    test('description is preserved when creating optimal replacement', () {
-      // Simulate the _savePuzzle fix: replace the first solution with
-      // isOptimal=true while preserving description.
-      const PuzzleSolution original = PuzzleSolution(
-        moves: <PuzzleMove>[
-          PuzzleMove(notation: 'a1', side: PieceColor.white),
-        ],
-        description: 'Main line',
-        isOptimal: false,
-      );
+  group(
+    'Fix B: PuzzleSolution description preserved on isOptimal promotion',
+    () {
+      test('description is preserved when creating optimal replacement', () {
+        // Simulate the _savePuzzle fix: replace the first solution with
+        // isOptimal=true while preserving description.
+        const PuzzleSolution original = PuzzleSolution(
+          moves: <PuzzleMove>[
+            PuzzleMove(notation: 'a1', side: PieceColor.white),
+          ],
+          description: 'Main line',
+          isOptimal: false,
+        );
 
-      // Fixed code: passes description explicitly.
-      final PuzzleSolution promoted = PuzzleSolution(
-        moves: original.moves,
-        description: original.description,
-      );
+        // Fixed code: passes description explicitly.
+        final PuzzleSolution promoted = PuzzleSolution(
+          moves: original.moves,
+          description: original.description,
+        );
 
-      expect(promoted.isOptimal, isTrue);
-      expect(promoted.description, equals('Main line'));
-      expect(promoted.moves.length, equals(1));
-    });
+        expect(promoted.isOptimal, isTrue);
+        expect(promoted.description, equals('Main line'));
+        expect(promoted.moves.length, equals(1));
+      });
 
-    test('null description remains null after promotion', () {
-      const PuzzleSolution original = PuzzleSolution(
-        moves: <PuzzleMove>[
-          PuzzleMove(notation: 'a1', side: PieceColor.white),
-        ],
-        isOptimal: false,
-      );
+      test('null description remains null after promotion', () {
+        const PuzzleSolution original = PuzzleSolution(
+          moves: <PuzzleMove>[
+            PuzzleMove(notation: 'a1', side: PieceColor.white),
+          ],
+          isOptimal: false,
+        );
 
-      final PuzzleSolution promoted = PuzzleSolution(
-        moves: original.moves,
-        description: original.description,
-      );
+        final PuzzleSolution promoted = PuzzleSolution(
+          moves: original.moves,
+          description: original.description,
+        );
 
-      expect(promoted.isOptimal, isTrue);
-      expect(promoted.description, isNull);
-    });
-  });
+        expect(promoted.isOptimal, isTrue);
+        expect(promoted.description, isNull);
+      });
+    },
+  );
 
   // -----------------------------------------------------------------------
   // Fix C: getHintOfType only increments _hintsGiven on successful hint.
@@ -244,10 +246,7 @@ void main() {
       );
 
       final PuzzleHintService service = PuzzleHintService(puzzle: puzzle);
-      final PuzzleHint? hint = service.getHintOfType(
-        HintType.showSolution,
-        0,
-      );
+      final PuzzleHint? hint = service.getHintOfType(HintType.showSolution, 0);
 
       expect(hint, isNotNull);
       expect(service.hintsGiven, equals(1));

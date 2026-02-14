@@ -60,9 +60,7 @@ void main() {
 
       // The returned list should be unmodifiable
       expect(
-        () => manager.messages.add(
-          _makeMessage(id: '2', content: 'Injected'),
-        ),
+        () => manager.messages.add(_makeMessage(id: '2', content: 'Injected')),
         throwsUnsupportedError,
       );
     });
@@ -178,9 +176,7 @@ void main() {
     test('should keep messages under limit', () {
       // Add more messages than the max context window
       for (int i = 0; i < 15; i++) {
-        manager.addMessage(
-          _makeMessage(id: '$i', content: 'Message $i'),
-        );
+        manager.addMessage(_makeMessage(id: '$i', content: 'Message $i'));
       }
 
       // Should be trimmed to max context messages or less
@@ -199,9 +195,7 @@ void main() {
 
       // Add many subsequent messages
       for (int i = 0; i < 15; i++) {
-        manager.addMessage(
-          _makeMessage(id: '$i', content: 'Chat message $i'),
-        );
+        manager.addMessage(_makeMessage(id: '$i', content: 'Chat message $i'));
       }
 
       // Welcome message should still be first
@@ -217,9 +211,7 @@ void main() {
       // Add very long messages to exceed token budget
       final String longContent = 'A' * 2000; // ~500 tokens each
       for (int i = 0; i < 10; i++) {
-        manager.addMessage(
-          _makeMessage(id: '$i', content: longContent),
-        );
+        manager.addMessage(_makeMessage(id: '$i', content: longContent));
       }
 
       // Should be trimmed based on token count
@@ -236,9 +228,7 @@ void main() {
     });
 
     test('short message should have reasonable token count', () {
-      manager.addMessage(
-        _makeMessage(id: '1', content: 'Hello world'),
-      );
+      manager.addMessage(_makeMessage(id: '1', content: 'Hello world'));
 
       // "Hello world" = 11 chars + 20 overhead = 31 chars / 4 ≈ 8 tokens
       expect(manager.estimatedTokenUsage, greaterThan(0));
@@ -246,14 +236,10 @@ void main() {
     });
 
     test('longer messages should have more tokens', () {
-      manager.addMessage(
-        _makeMessage(id: '1', content: 'Short'),
-      );
+      manager.addMessage(_makeMessage(id: '1', content: 'Short'));
       final int shortTokens = manager.estimatedTokenUsage;
 
-      manager.addMessage(
-        _makeMessage(id: '2', content: 'A' * 400),
-      );
+      manager.addMessage(_makeMessage(id: '2', content: 'A' * 400));
       final int withLongTokens = manager.estimatedTokenUsage;
 
       expect(withLongTokens, greaterThan(shortTokens));
@@ -262,9 +248,7 @@ void main() {
     test('tokenBudgetRemaining should decrease with messages', () {
       final int initial = manager.tokenBudgetRemaining;
 
-      manager.addMessage(
-        _makeMessage(id: '1', content: 'Hello world'),
-      );
+      manager.addMessage(_makeMessage(id: '1', content: 'Hello world'));
 
       expect(manager.tokenBudgetRemaining, lessThan(initial));
     });
@@ -298,11 +282,7 @@ void main() {
         _makeMessage(id: '1', content: 'What is the best opening?'),
       );
       manager.addMessage(
-        _makeMessage(
-          id: '2',
-          content: 'Consider d6 or f4.',
-          isUser: false,
-        ),
+        _makeMessage(id: '2', content: 'Consider d6 or f4.', isUser: false),
       );
 
       final String history = manager.getConversationHistory();
@@ -316,9 +296,7 @@ void main() {
       manager.addMessage(
         _makeMessage(id: 'welcome', content: 'Hi', isUser: false),
       );
-      manager.addMessage(
-        _makeMessage(id: '1', content: 'Question'),
-      );
+      manager.addMessage(_makeMessage(id: '1', content: 'Question'));
       manager.addMessage(
         _makeMessage(
           id: '2',
@@ -338,9 +316,7 @@ void main() {
       manager.addMessage(
         _makeMessage(id: 'welcome', content: 'Hi', isUser: false),
       );
-      manager.addMessage(
-        _makeMessage(id: '1', content: 'A' * 500),
-      );
+      manager.addMessage(_makeMessage(id: '1', content: 'A' * 500));
 
       final String history = manager.getConversationHistory();
 

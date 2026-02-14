@@ -119,10 +119,14 @@ void main() {
 
       AppTheme.updateCustomTheme(custom);
 
-      expect(AppTheme.colorThemes[ColorTheme.custom]?.boardLineColor,
-          Colors.purple);
-      expect(AppTheme.colorThemes[ColorTheme.custom]?.darkBackgroundColor,
-          Colors.indigo);
+      expect(
+        AppTheme.colorThemes[ColorTheme.custom]?.boardLineColor,
+        Colors.purple,
+      );
+      expect(
+        AppTheme.colorThemes[ColorTheme.custom]?.darkBackgroundColor,
+        Colors.indigo,
+      );
     });
   });
 
@@ -203,10 +207,7 @@ void main() {
       expect(AppTheme.smallFontSize, lessThan(AppTheme.defaultFontSize));
       expect(AppTheme.defaultFontSize, lessThan(AppTheme.largeFontSize));
       expect(AppTheme.largeFontSize, lessThan(AppTheme.extraLargeFontSize));
-      expect(
-        AppTheme.extraLargeFontSize,
-        lessThan(AppTheme.hugeFontSize),
-      );
+      expect(AppTheme.extraLargeFontSize, lessThan(AppTheme.hugeFontSize));
       expect(AppTheme.hugeFontSize, lessThan(AppTheme.giantFontSize));
     });
 

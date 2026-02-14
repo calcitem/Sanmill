@@ -15,14 +15,13 @@ void main() {
   // ---------------------------------------------------------------------------
   group('CustomFeedbackLocalizations', () {
     test('should return values from the provided map', () {
-      const CustomFeedbackLocalizations loc = CustomFeedbackLocalizations(
-        <String, String>{
-          'submitButtonText': 'Go',
-          'feedbackDescriptionText': 'Describe',
-          'draw': 'Paint',
-          'navigate': 'Move',
-        },
-      );
+      const CustomFeedbackLocalizations loc =
+          CustomFeedbackLocalizations(<String, String>{
+            'submitButtonText': 'Go',
+            'feedbackDescriptionText': 'Describe',
+            'draw': 'Paint',
+            'navigate': 'Move',
+          });
 
       expect(loc.submitButtonText, 'Go');
       expect(loc.feedbackDescriptionText, 'Describe');
@@ -50,11 +49,13 @@ void main() {
       expect(delegate.isSupported(const Locale('de')), isTrue);
     });
 
-    test('isSupported should return true for unsupported locale (fallback)',
-        () {
-      // Even unsupported locales return true (with fallback)
-      expect(delegate.isSupported(const Locale('xx')), isTrue);
-    });
+    test(
+      'isSupported should return true for unsupported locale (fallback)',
+      () {
+        // Even unsupported locales return true (with fallback)
+        expect(delegate.isSupported(const Locale('xx')), isTrue);
+      },
+    );
 
     test('shouldReload should return false', () {
       expect(
@@ -67,43 +68,42 @@ void main() {
       expect(delegate.toString(), contains('DefaultFeedbackLocalizations'));
     });
 
-    test('load should return English localizations for English locale',
-        () async {
-      final FeedbackLocalizations loc = await delegate.load(
-        const Locale('en'),
-      );
+    test(
+      'load should return English localizations for English locale',
+      () async {
+        final FeedbackLocalizations loc = await delegate.load(
+          const Locale('en'),
+        );
 
-      expect(loc.submitButtonText, 'Submit');
-      expect(loc.feedbackDescriptionText, "What's wrong?");
-      expect(loc.draw, 'Draw');
-      expect(loc.navigate, 'Navigate');
-    });
+        expect(loc.submitButtonText, 'Submit');
+        expect(loc.feedbackDescriptionText, "What's wrong?");
+        expect(loc.draw, 'Draw');
+        expect(loc.navigate, 'Navigate');
+      },
+    );
 
-    test('load should return Chinese localizations for Chinese locale',
-        () async {
-      final FeedbackLocalizations loc = await delegate.load(
-        const Locale('zh'),
-      );
+    test(
+      'load should return Chinese localizations for Chinese locale',
+      () async {
+        final FeedbackLocalizations loc = await delegate.load(
+          const Locale('zh'),
+        );
 
-      expect(loc.submitButtonText, '提交');
-      expect(loc.draw, '涂鸦');
-      expect(loc.navigate, '导航');
-    });
+        expect(loc.submitButtonText, '提交');
+        expect(loc.draw, '涂鸦');
+        expect(loc.navigate, '导航');
+      },
+    );
 
-    test('load should return German localizations for German locale',
-        () async {
-      final FeedbackLocalizations loc = await delegate.load(
-        const Locale('de'),
-      );
+    test('load should return German localizations for German locale', () async {
+      final FeedbackLocalizations loc = await delegate.load(const Locale('de'));
 
       expect(loc.submitButtonText, 'Senden');
       expect(loc.draw, 'Zeichnen');
     });
 
     test('load should fall back to English for unknown locale', () async {
-      final FeedbackLocalizations loc = await delegate.load(
-        const Locale('xx'),
-      );
+      final FeedbackLocalizations loc = await delegate.load(const Locale('xx'));
 
       expect(loc.submitButtonText, 'Submit');
       expect(loc.draw, 'Draw');
@@ -111,14 +111,28 @@ void main() {
 
     test('should support major world languages', () async {
       const List<String> majorLanguages = <String>[
-        'en', 'zh', 'de', 'fr', 'es', 'pt', 'ru', 'ja', 'ko',
-        'ar', 'hi', 'tr', 'it', 'pl', 'nl', 'sv', 'th', 'vi',
+        'en',
+        'zh',
+        'de',
+        'fr',
+        'es',
+        'pt',
+        'ru',
+        'ja',
+        'ko',
+        'ar',
+        'hi',
+        'tr',
+        'it',
+        'pl',
+        'nl',
+        'sv',
+        'th',
+        'vi',
       ];
 
       for (final String lang in majorLanguages) {
-        final FeedbackLocalizations loc = await delegate.load(
-          Locale(lang),
-        );
+        final FeedbackLocalizations loc = await delegate.load(Locale(lang));
         expect(
           loc.submitButtonText,
           isNotEmpty,
@@ -143,10 +157,7 @@ void main() {
     });
 
     test('delegate static instance should be non-null', () {
-      expect(
-        CustomFeedbackLocalizationsDelegate.delegate,
-        isNotNull,
-      );
+      expect(CustomFeedbackLocalizationsDelegate.delegate, isNotNull);
     });
   });
 }

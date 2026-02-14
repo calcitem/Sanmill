@@ -61,14 +61,10 @@ void main() {
 
     test('different FEN should produce different keys', () {
       final Position p1 = Position();
-      p1.setFen(
-        'O@O*****/********/******** w p p 3 6 3 6 0 0 0 0 0 0 0 0 1',
-      );
+      p1.setFen('O@O*****/********/******** w p p 3 6 3 6 0 0 0 0 0 0 0 0 1');
 
       final Position p2 = Position();
-      p2.setFen(
-        '********/O@O*****/******** w p p 3 6 3 6 0 0 0 0 0 0 0 0 1',
-      );
+      p2.setFen('********/O@O*****/******** w p p 3 6 3 6 0 0 0 0 0 0 0 0 1');
 
       expect(p1.st.key, isNot(equals(p2.st.key)));
     });

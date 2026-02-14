@@ -66,9 +66,7 @@ void main() {
           timestamp: baseTime,
         );
 
-        final ChatMessage updated = original.copyWith(
-          content: 'Hello World',
-        );
+        final ChatMessage updated = original.copyWith(content: 'Hello World');
 
         expect(updated.content, 'Hello World');
         expect(updated.id, original.id);

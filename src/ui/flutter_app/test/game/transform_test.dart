@@ -41,21 +41,12 @@ void main() {
     const String sample = 'ABCDEFGHIJKLMNOPQRSTUVWX';
 
     test('identity should return the same string', () {
-      expect(
-        transformString(sample, TransformationType.identity),
-        sample,
-      );
+      expect(transformString(sample, TransformationType.identity), sample);
     });
 
     test('identity applied twice should be unchanged', () {
-      final String first = transformString(
-        sample,
-        TransformationType.identity,
-      );
-      final String second = transformString(
-        first,
-        TransformationType.identity,
-      );
+      final String first = transformString(sample, TransformationType.identity);
+      final String second = transformString(first, TransformationType.identity);
       expect(second, sample);
     });
 
@@ -124,10 +115,7 @@ void main() {
     });
 
     test('innerOuterFlip should swap inner and outer rings', () {
-      final String result = transformString(
-        sample,
-        TransformationType.swap,
-      );
+      final String result = transformString(sample, TransformationType.swap);
       // Inner (0-7) and outer (16-23) should swap
       // Middle (8-15) stays in middle
       // After flip: result[16..23] = A..H, result[8..15] = I..P, result[0..7] = Q..X
@@ -142,7 +130,8 @@ void main() {
   // ---------------------------------------------------------------------------
   group('transformFEN', () {
     test('identity should preserve FEN string', () {
-      const String fen = 'O@O*****/********/********'
+      const String fen =
+          'O@O*****/********/********'
           ' w p p 3 6 3 6 0 0 0 0 0 0 0 0 1';
       final String result = transformFEN(fen, TransformationType.identity);
 
@@ -151,19 +140,18 @@ void main() {
     });
 
     test('should preserve the non-board part after transformation', () {
-      const String fen = 'O@O*****/********/********'
+      const String fen =
+          'O@O*****/********/********'
           ' w m s 3 6 3 6 0 1 0 0 0 0 0 0 1';
-      final String result = transformFEN(
-        fen,
-        TransformationType.rotate90,
-      );
+      final String result = transformFEN(fen, TransformationType.rotate90);
 
       // Non-board part (from position 26 onward) should be unchanged
       expect(result.substring(26), fen.substring(26));
     });
 
     test('transformFEN rotate90 x4 should return original', () {
-      const String fen = 'O@O*****/********/********'
+      const String fen =
+          'O@O*****/********/********'
           ' w p p 3 6 3 6 0 0 0 0 0 0 0 0 1';
       String result = fen;
       for (int i = 0; i < 4; i++) {
@@ -173,7 +161,8 @@ void main() {
     });
 
     test('transformFEN horizontalFlip x2 should return original', () {
-      const String fen = 'O@O*****/********/********'
+      const String fen =
+          'O@O*****/********/********'
           ' w p p 3 6 3 6 0 0 0 0 0 0 0 0 1';
       String result = fen;
       result = transformFEN(result, TransformationType.mirrorHorizontal);
@@ -187,26 +176,17 @@ void main() {
   // ---------------------------------------------------------------------------
   group('transformMoveNotation', () {
     test('identity should preserve move notations', () {
-      expect(
-        transformMoveNotation('d5', TransformationType.identity),
-        'd5',
-      );
+      expect(transformMoveNotation('d5', TransformationType.identity), 'd5');
       expect(
         transformMoveNotation('d5-e4', TransformationType.identity),
         'd5-e4',
       );
-      expect(
-        transformMoveNotation('xd5', TransformationType.identity),
-        'xd5',
-      );
+      expect(transformMoveNotation('xd5', TransformationType.identity), 'xd5');
     });
 
     test('rotate90 should transform place move correctly', () {
       // d5 is index 0, rotate90 maps 0 -> 2, index 2 is e4
-      expect(
-        transformMoveNotation('d5', TransformationType.rotate90),
-        'e4',
-      );
+      expect(transformMoveNotation('d5', TransformationType.rotate90), 'e4');
     });
 
     test('rotate90 should transform slide move correctly', () {
@@ -219,28 +199,16 @@ void main() {
 
     test('rotate90 should transform remove move correctly', () {
       // d5(0)->2(e4)
-      expect(
-        transformMoveNotation('xd5', TransformationType.rotate90),
-        'xe4',
-      );
+      expect(transformMoveNotation('xd5', TransformationType.rotate90), 'xe4');
     });
 
     test('swap should swap inner and outer ring squares', () {
       // d5 is inner ring index 0, swap maps 0 -> 16, index 16 is d7
-      expect(
-        transformMoveNotation('d5', TransformationType.swap),
-        'd7',
-      );
+      expect(transformMoveNotation('d5', TransformationType.swap), 'd7');
       // d7 is outer ring index 16, swap maps 16 -> 0, index 0 is d5
-      expect(
-        transformMoveNotation('d7', TransformationType.swap),
-        'd5',
-      );
+      expect(transformMoveNotation('d7', TransformationType.swap), 'd5');
       // d6 is middle ring index 8, swap maps 8 -> 8 (unchanged)
-      expect(
-        transformMoveNotation('d6', TransformationType.swap),
-        'd6',
-      );
+      expect(transformMoveNotation('d6', TransformationType.swap), 'd6');
     });
 
     test('special moves should be preserved', () {
@@ -377,15 +345,13 @@ void main() {
     });
 
     test('all mappings should have exactly 24 entries', () {
-      transformationMap.forEach(
-        (TransformationType type, List<int> mapping) {
-          expect(
-            mapping.length,
-            24,
-            reason: 'Mapping for $type should have 24 entries',
-          );
-        },
-      );
+      transformationMap.forEach((TransformationType type, List<int> mapping) {
+        expect(
+          mapping.length,
+          24,
+          reason: 'Mapping for $type should have 24 entries',
+        );
+      });
     });
 
     test('identity mapping should be 0..23', () {
@@ -396,16 +362,14 @@ void main() {
     });
 
     test('all mappings should be permutations of 0..23', () {
-      transformationMap.forEach(
-        (TransformationType type, List<int> mapping) {
-          final List<int> sorted = List<int>.from(mapping)..sort();
-          expect(
-            sorted,
-            List<int>.generate(24, (int i) => i),
-            reason: 'Mapping for $type should be a permutation',
-          );
-        },
-      );
+      transformationMap.forEach((TransformationType type, List<int> mapping) {
+        final List<int> sorted = List<int>.from(mapping)..sort();
+        expect(
+          sorted,
+          List<int>.generate(24, (int i) => i),
+          reason: 'Mapping for $type should be a permutation',
+        );
+      });
     });
   });
 }

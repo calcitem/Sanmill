@@ -86,11 +86,7 @@ void main() {
         for (final Color c in colors) {
           final int json = ColorAdapter.colorToJson(c);
           final Color restored = ColorAdapter.colorFromJson(json);
-          expect(
-            restored,
-            c,
-            reason: 'Round-trip for $c',
-          );
+          expect(restored, c, reason: 'Round-trip for $c');
         }
       });
     });

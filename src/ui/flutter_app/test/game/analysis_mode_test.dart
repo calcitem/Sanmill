@@ -65,16 +65,8 @@ void main() {
 
     test('enable should store analysis results', () {
       final List<MoveAnalysisResult> results = <MoveAnalysisResult>[
-        MoveAnalysisResult(
-          move: 'a1',
-          outcome: GameOutcome.win,
-          score: 100,
-        ),
-        MoveAnalysisResult(
-          move: 'b4',
-          outcome: GameOutcome.draw,
-          score: 0,
-        ),
+        MoveAnalysisResult(move: 'a1', outcome: GameOutcome.win, score: 100),
+        MoveAnalysisResult(move: 'b4', outcome: GameOutcome.draw, score: 0),
       ];
 
       AnalysisMode.enable(results);
@@ -96,11 +88,7 @@ void main() {
     test('disable should reset all state', () {
       AnalysisMode.enable(
         <MoveAnalysisResult>[
-          MoveAnalysisResult(
-            move: 'a1',
-            outcome: GameOutcome.win,
-            score: 100,
-          ),
+          MoveAnalysisResult(move: 'a1', outcome: GameOutcome.win, score: 100),
         ],
         trapMoves: <String>['a1'],
       );
@@ -130,10 +118,7 @@ void main() {
     });
 
     test('should return false for non-trap moves', () {
-      AnalysisMode.enable(
-        <MoveAnalysisResult>[],
-        trapMoves: <String>['a1'],
-      );
+      AnalysisMode.enable(<MoveAnalysisResult>[], trapMoves: <String>['a1']);
 
       expect(AnalysisMode.isTrapMove('b4'), isFalse);
       expect(AnalysisMode.isTrapMove(''), isFalse);
@@ -159,11 +144,7 @@ void main() {
   group('AnalysisMode.toggle', () {
     test('should enable when disabled and results are provided', () {
       final List<MoveAnalysisResult> results = <MoveAnalysisResult>[
-        MoveAnalysisResult(
-          move: 'a1',
-          outcome: GameOutcome.win,
-          score: 100,
-        ),
+        MoveAnalysisResult(move: 'a1', outcome: GameOutcome.win, score: 100),
       ];
 
       AnalysisMode.toggle(results);
@@ -197,15 +178,9 @@ void main() {
   // ---------------------------------------------------------------------------
   group('AnalysisMode colors and opacity', () {
     test('getColorForOutcome should return distinct colors', () {
-      final Color winColor = AnalysisMode.getColorForOutcome(
-        GameOutcome.win,
-      );
-      final Color lossColor = AnalysisMode.getColorForOutcome(
-        GameOutcome.loss,
-      );
-      final Color drawColor = AnalysisMode.getColorForOutcome(
-        GameOutcome.draw,
-      );
+      final Color winColor = AnalysisMode.getColorForOutcome(GameOutcome.win);
+      final Color lossColor = AnalysisMode.getColorForOutcome(GameOutcome.loss);
+      final Color drawColor = AnalysisMode.getColorForOutcome(GameOutcome.draw);
 
       expect(winColor, isNot(lossColor));
       expect(winColor, isNot(drawColor));
@@ -266,10 +241,7 @@ void main() {
     });
 
     test('withValue should preserve name and add value', () {
-      final GameOutcome outcome = GameOutcome.withValue(
-        GameOutcome.win,
-        '100',
-      );
+      final GameOutcome outcome = GameOutcome.withValue(GameOutcome.win, '100');
 
       expect(outcome.name, 'win');
       expect(outcome.valueStr, '100');

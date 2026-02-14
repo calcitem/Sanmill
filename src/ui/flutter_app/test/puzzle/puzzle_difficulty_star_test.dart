@@ -61,21 +61,23 @@ void main() {
       expect(PuzzleDifficulty.master.starThreshold, 0);
     });
 
-    test('thresholds should decrease or stay same with increasing difficulty',
-        () {
-      int prevThreshold = PuzzleDifficulty.values.first.starThreshold;
-      for (int i = 1; i < PuzzleDifficulty.values.length; i++) {
-        final int current = PuzzleDifficulty.values[i].starThreshold;
-        expect(
-          current,
-          lessThanOrEqualTo(prevThreshold),
-          reason:
-              '${PuzzleDifficulty.values[i]} threshold should be <= '
-              '${PuzzleDifficulty.values[i - 1]} threshold',
-        );
-        prevThreshold = current;
-      }
-    });
+    test(
+      'thresholds should decrease or stay same with increasing difficulty',
+      () {
+        int prevThreshold = PuzzleDifficulty.values.first.starThreshold;
+        for (int i = 1; i < PuzzleDifficulty.values.length; i++) {
+          final int current = PuzzleDifficulty.values[i].starThreshold;
+          expect(
+            current,
+            lessThanOrEqualTo(prevThreshold),
+            reason:
+                '${PuzzleDifficulty.values[i]} threshold should be <= '
+                '${PuzzleDifficulty.values[i - 1]} threshold',
+          );
+          prevThreshold = current;
+        }
+      },
+    );
   });
 
   // ---------------------------------------------------------------------------
@@ -358,9 +360,9 @@ void main() {
     });
 
     test('fromJson with missing fields should use defaults', () {
-      final PuzzleProgress progress = PuzzleProgress.fromJson(
-        <String, dynamic>{'puzzleId': 'minimal'},
-      );
+      final PuzzleProgress progress = PuzzleProgress.fromJson(<String, dynamic>{
+        'puzzleId': 'minimal',
+      });
 
       expect(progress.puzzleId, 'minimal');
       expect(progress.completed, isFalse);
@@ -404,9 +406,7 @@ void main() {
   group('PuzzleSolution', () {
     test('constructor defaults', () {
       const PuzzleSolution solution = PuzzleSolution(
-        moves: <PuzzleMove>[
-          PuzzleMove(notation: 'a1', side: PieceColor.white),
-        ],
+        moves: <PuzzleMove>[PuzzleMove(notation: 'a1', side: PieceColor.white)],
       );
 
       expect(solution.moves.length, 1);
@@ -456,14 +456,10 @@ void main() {
 
     test('equality should work for identical solutions', () {
       const PuzzleSolution s1 = PuzzleSolution(
-        moves: <PuzzleMove>[
-          PuzzleMove(notation: 'a1', side: PieceColor.white),
-        ],
+        moves: <PuzzleMove>[PuzzleMove(notation: 'a1', side: PieceColor.white)],
       );
       const PuzzleSolution s2 = PuzzleSolution(
-        moves: <PuzzleMove>[
-          PuzzleMove(notation: 'a1', side: PieceColor.white),
-        ],
+        moves: <PuzzleMove>[PuzzleMove(notation: 'a1', side: PieceColor.white)],
       );
 
       expect(s1, equals(s2));
@@ -543,28 +539,16 @@ void main() {
     });
 
     test('equality should work', () {
-      const PuzzleMove m1 = PuzzleMove(
-        notation: 'a1',
-        side: PieceColor.white,
-      );
-      const PuzzleMove m2 = PuzzleMove(
-        notation: 'a1',
-        side: PieceColor.white,
-      );
+      const PuzzleMove m1 = PuzzleMove(notation: 'a1', side: PieceColor.white);
+      const PuzzleMove m2 = PuzzleMove(notation: 'a1', side: PieceColor.white);
 
       expect(m1, equals(m2));
       expect(m1.hashCode, m2.hashCode);
     });
 
     test('different notation should not be equal', () {
-      const PuzzleMove m1 = PuzzleMove(
-        notation: 'a1',
-        side: PieceColor.white,
-      );
-      const PuzzleMove m2 = PuzzleMove(
-        notation: 'b2',
-        side: PieceColor.white,
-      );
+      const PuzzleMove m1 = PuzzleMove(notation: 'a1', side: PieceColor.white);
+      const PuzzleMove m2 = PuzzleMove(notation: 'b2', side: PieceColor.white);
 
       expect(m1, isNot(equals(m2)));
     });

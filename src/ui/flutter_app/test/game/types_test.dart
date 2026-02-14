@@ -337,8 +337,7 @@ void main() {
     });
 
     test('all values should be valid standard notation', () {
-      for (final String notation
-          in playOkNotationToStandardNotation.values) {
+      for (final String notation in playOkNotationToStandardNotation.values) {
         expect(
           notationToSquare(notation),
           isNot(-1),

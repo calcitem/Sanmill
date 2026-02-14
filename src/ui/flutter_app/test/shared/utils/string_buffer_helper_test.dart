@@ -109,9 +109,7 @@ void main() {
   // ---------------------------------------------------------------------------
   group('CustomStringBuffer.writeComma (screenReaderSupport on)', () {
     setUp(() {
-      mockDB.generalSettings = const GeneralSettings(
-        screenReaderSupport: true,
-      );
+      mockDB.generalSettings = const GeneralSettings(screenReaderSupport: true);
     });
 
     test('should write content with comma + newline', () {
@@ -159,9 +157,7 @@ void main() {
   // ---------------------------------------------------------------------------
   group('CustomStringBuffer.writePeriod (screenReaderSupport on)', () {
     setUp(() {
-      mockDB.generalSettings = const GeneralSettings(
-        screenReaderSupport: true,
-      );
+      mockDB.generalSettings = const GeneralSettings(screenReaderSupport: true);
     });
 
     test('should write content with period + newline', () {
@@ -184,9 +180,7 @@ void main() {
   // ---------------------------------------------------------------------------
   group('Combined usage', () {
     test('should build a complete numbered list with screen reader', () {
-      mockDB.generalSettings = const GeneralSettings(
-        screenReaderSupport: true,
-      );
+      mockDB.generalSettings = const GeneralSettings(screenReaderSupport: true);
 
       final StringBuffer buffer = StringBuffer();
       buffer.writeNumber(1);

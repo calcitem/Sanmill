@@ -98,17 +98,11 @@ void main() {
     });
 
     test('should throw for invalid move format', () {
-      expect(
-        () => ExtMove('zzz', side: PieceColor.white),
-        throwsA(anything),
-      );
+      expect(() => ExtMove('zzz', side: PieceColor.white), throwsA(anything));
     });
 
     test('should throw for same-square move', () {
-      expect(
-        () => ExtMove('a1-a1', side: PieceColor.white),
-        throwsA(anything),
-      );
+      expect(() => ExtMove('a1-a1', side: PieceColor.white), throwsA(anything));
     });
   });
 
@@ -179,11 +173,7 @@ void main() {
       for (final MoveQuality q in MoveQuality.values) {
         final int? nag = ExtMove.moveQualityToNag(q);
         if (nag != null) {
-          expect(
-            ExtMove.nagToMoveQuality(nag),
-            q,
-            reason: 'Round-trip for $q',
-          );
+          expect(ExtMove.nagToMoveQuality(nag), q, reason: 'Round-trip for $q');
         }
       }
     });
@@ -301,9 +291,30 @@ void main() {
   group('ExtMove all square constructions', () {
     // All valid standard notation squares
     const List<String> allSquares = <String>[
-      'd5', 'e5', 'e4', 'e3', 'd3', 'c3', 'c4', 'c5',
-      'd6', 'f6', 'f4', 'f2', 'd2', 'b2', 'b4', 'b6',
-      'd7', 'g7', 'g4', 'g1', 'd1', 'a1', 'a4', 'a7',
+      'd5',
+      'e5',
+      'e4',
+      'e3',
+      'd3',
+      'c3',
+      'c4',
+      'c5',
+      'd6',
+      'f6',
+      'f4',
+      'f2',
+      'd2',
+      'b2',
+      'b4',
+      'b6',
+      'd7',
+      'g7',
+      'g4',
+      'g1',
+      'd1',
+      'a1',
+      'a4',
+      'a7',
     ];
 
     test('should construct place moves for all squares', () {

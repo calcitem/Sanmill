@@ -11,18 +11,9 @@ void main() {
   group('LocaleAdapter', () {
     group('localeToJson', () {
       test('should return language code for non-null locale', () {
-        expect(
-          LocaleAdapter.localeToJson(const Locale('en')),
-          'en',
-        );
-        expect(
-          LocaleAdapter.localeToJson(const Locale('de')),
-          'de',
-        );
-        expect(
-          LocaleAdapter.localeToJson(const Locale('zh')),
-          'zh',
-        );
+        expect(LocaleAdapter.localeToJson(const Locale('en')), 'en');
+        expect(LocaleAdapter.localeToJson(const Locale('de')), 'de');
+        expect(LocaleAdapter.localeToJson(const Locale('zh')), 'zh');
       });
 
       test('should return null for null locale', () {
@@ -38,18 +29,9 @@ void main() {
       });
 
       test('should return Locale for various language codes', () {
-        expect(
-          LocaleAdapter.localeFromJson('de')?.languageCode,
-          'de',
-        );
-        expect(
-          LocaleAdapter.localeFromJson('zh')?.languageCode,
-          'zh',
-        );
-        expect(
-          LocaleAdapter.localeFromJson('ja')?.languageCode,
-          'ja',
-        );
+        expect(LocaleAdapter.localeFromJson('de')?.languageCode, 'de');
+        expect(LocaleAdapter.localeFromJson('zh')?.languageCode, 'zh');
+        expect(LocaleAdapter.localeFromJson('ja')?.languageCode, 'ja');
       });
 
       test('should return null for "Default" string', () {

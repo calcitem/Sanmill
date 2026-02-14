@@ -261,8 +261,11 @@ void main() {
 
       // Mainline should follow A → B → C
       final List<PgnNodeData> mainline = root.mainline().toList();
-      expect(mainline.map((PgnNodeData d) => d.san).toList(),
-          <String>['A', 'B', 'C']);
+      expect(mainline.map((PgnNodeData d) => d.san).toList(), <String>[
+        'A',
+        'B',
+        'C',
+      ]);
 
       // Variation branch should be accessible
       expect(a.children.length, 2);

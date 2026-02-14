@@ -65,10 +65,7 @@ void main() {
 
     test('should generate custom variant ID for non-standard rules', () {
       final RuleVariant variant = RuleVariant.fromRuleSettings(
-        const RuleSettings(
-          piecesCount: 7,
-          hasDiagonalLines: true,
-        ),
+        const RuleSettings(piecesCount: 7, hasDiagonalLines: true),
       );
 
       expect(variant.id, contains('custom_'));
@@ -82,21 +79,15 @@ void main() {
   // ---------------------------------------------------------------------------
   group('RuleVariant equality', () {
     test('same rules should produce equal variants', () {
-      final RuleVariant v1 = RuleVariant.fromRuleSettings(
-        const RuleSettings(),
-      );
-      final RuleVariant v2 = RuleVariant.fromRuleSettings(
-        const RuleSettings(),
-      );
+      final RuleVariant v1 = RuleVariant.fromRuleSettings(const RuleSettings());
+      final RuleVariant v2 = RuleVariant.fromRuleSettings(const RuleSettings());
 
       expect(v1, equals(v2));
       expect(v1.hashCode, v2.hashCode);
     });
 
     test('different rules should produce different variants', () {
-      final RuleVariant v1 = RuleVariant.fromRuleSettings(
-        const RuleSettings(),
-      );
+      final RuleVariant v1 = RuleVariant.fromRuleSettings(const RuleSettings());
       final RuleVariant v2 = RuleVariant.fromRuleSettings(
         const TwelveMensMorrisRuleSettings(),
       );
@@ -141,21 +132,13 @@ void main() {
 
     test('all predefined variants should have non-empty descriptions', () {
       for (final RuleVariant v in PredefinedVariants.all) {
-        expect(
-          v.description,
-          isNotEmpty,
-          reason: 'Description for ${v.id}',
-        );
+        expect(v.description, isNotEmpty, reason: 'Description for ${v.id}');
       }
     });
 
     test('all predefined variants should have non-empty hashes', () {
       for (final RuleVariant v in PredefinedVariants.all) {
-        expect(
-          v.ruleHash,
-          isNotEmpty,
-          reason: 'Hash for ${v.id}',
-        );
+        expect(v.ruleHash, isNotEmpty, reason: 'Hash for ${v.id}');
       }
     });
   });
