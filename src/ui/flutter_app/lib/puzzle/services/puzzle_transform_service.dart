@@ -10,7 +10,6 @@
 // equivalent orientations.  This prevents memorization and increases
 // puzzle replayability.
 
-import '../../game_page/services/mill.dart';
 import '../../game_page/services/transform/transform.dart';
 import '../models/puzzle_models.dart';
 

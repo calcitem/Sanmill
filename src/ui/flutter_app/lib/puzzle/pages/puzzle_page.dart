@@ -232,7 +232,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
       return;
     }
 
-    final List<TransformationType> allTypes = TransformationType.values;
+    const List<TransformationType> allTypes = TransformationType.values;
     final int currentIndex = allTypes.indexOf(_currentTransform);
     final int nextIndex = (currentIndex + 1) % allTypes.length;
 
