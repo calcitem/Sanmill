@@ -23,7 +23,7 @@ import 'init_test_environment.dart';
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
-  late Map<String, dynamic> dbBackup;
+  Map<String, dynamic>? dbBackup;
   late bool originalTestMode;
 
   setUpAll(() async {

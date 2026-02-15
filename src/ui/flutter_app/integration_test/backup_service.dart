@@ -18,7 +18,13 @@ Future<Map<String, dynamic>> backupDatabase() async {
 }
 
 /// Restores the database settings from a backup.
-Future<void> restoreDatabase(Map<String, dynamic> backup) async {
+///
+/// If [backup] is null (e.g. because setUpAll failed before
+/// [backupDatabase] could run), this is a no-op.
+Future<void> restoreDatabase(Map<String, dynamic>? backup) async {
+  if (backup == null) {
+    return;
+  }
   DB().ruleSettings = backup[ruleSettingsKey] as RuleSettings;
   DB().generalSettings = backup[generalSettingsKey] as GeneralSettings;
 }

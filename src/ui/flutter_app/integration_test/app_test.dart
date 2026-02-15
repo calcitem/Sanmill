@@ -22,7 +22,7 @@ void main() {
   // Make sure integration test binding is initialized
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
-  late Map<String, dynamic> dbBackup;
+  Map<String, dynamic>? dbBackup;
 
   setUpAll(() async {
     logger.i('Initializing test environment...');

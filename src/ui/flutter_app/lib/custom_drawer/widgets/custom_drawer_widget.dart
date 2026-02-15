@@ -263,7 +263,7 @@ class CustomDrawerState extends State<CustomDrawer>
       final bool isExpanded = _expansionState[item.itemValue] ?? false;
 
       configuredItem = CustomDrawerItem<dynamic>(
-        key: ValueKey<dynamic>('parent_${item.itemValue}_$isExpanded'),
+        key: item.key,
         currentSelectedValue: item.currentSelectedValue,
         onSelectionChanged: (dynamic _) {},
         itemValue: item.itemValue,

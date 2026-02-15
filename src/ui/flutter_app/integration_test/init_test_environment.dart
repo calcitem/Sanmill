@@ -9,8 +9,19 @@ import 'package:sanmill/shared/database/database.dart';
 import 'package:sanmill/shared/services/environment_config.dart';
 import 'package:sanmill/shared/services/logger.dart';
 
+/// Whether the test environment has already been initialized.
+bool _initialized = false;
+
 /// Initializes environment configurations and necessary dependencies for tests.
+///
+/// This function is idempotent: calling it multiple times (e.g. from separate
+/// test files that are all imported by comprehensive_test.dart) is safe and
+/// will only perform initialization once.
 Future<void> initTestEnvironment() async {
+  if (_initialized) {
+    return;
+  }
+
   // Configure environment
   EnvironmentConfig.test = false;
   EnvironmentConfig.devMode = true;
@@ -34,4 +45,6 @@ Future<void> initTestEnvironment() async {
   if (DB().generalSettings.firstRun == true) {
     DB().generalSettings = DB().generalSettings.copyWith(firstRun: false);
   }
+
+  _initialized = true;
 }

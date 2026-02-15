@@ -22,7 +22,7 @@ import 'init_test_environment.dart';
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
-  late Map<String, dynamic> dbBackup;
+  Map<String, dynamic>? dbBackup;
 
   setUpAll(() async {
     await initTestEnvironment();
@@ -237,8 +237,13 @@ void main() {
       verifyWidgetExists(tester, 'play_area_toolbar_item_game');
       verifyWidgetExists(tester, 'play_area_toolbar_item_options');
 
-      // Switch to Setup Position - toolbar should still be present
+      // Switch to Setup Position - main toolbar is intentionally hidden
+      // in this mode (see play_area.dart), so we only verify the page loads.
       await navigateToDrawerItem(tester, 'drawer_item_setup_position');
+      verifyPageDisplayed(tester, 'game_page_scaffold');
+
+      // Switch back to Human vs AI - toolbar should reappear
+      await navigateToDrawerItem(tester, 'drawer_item_human_vs_ai');
       verifyWidgetExists(tester, 'play_area_toolbar_item_game');
       verifyWidgetExists(tester, 'play_area_toolbar_item_options');
     });
