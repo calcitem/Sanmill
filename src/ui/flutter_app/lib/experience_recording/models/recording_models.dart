@@ -59,8 +59,8 @@ class RecordingEvent {
     return RecordingEvent(
       timestampMs: json['timestampMs'] as int? ?? 0,
       type: _eventTypeFromString(json['type'] as String? ?? 'custom'),
-      data: (json['data'] as Map<String, dynamic>?) ??
-          const <String, dynamic>{},
+      data:
+          (json['data'] as Map<String, dynamic>?) ?? const <String, dynamic>{},
     );
   }
 
@@ -83,14 +83,13 @@ class RecordingEvent {
 
   /// Serializes this event to a JSON-compatible map.
   Map<String, dynamic> toJson() => <String, dynamic>{
-        'timestampMs': timestampMs,
-        'type': type.name,
-        'data': data,
-      };
+    'timestampMs': timestampMs,
+    'type': type.name,
+    'data': data,
+  };
 
   @override
-  String toString() =>
-      'RecordingEvent(${type.name}, +${timestampMs}ms, $data)';
+  String toString() => 'RecordingEvent(${type.name}, +${timestampMs}ms, $data)';
 }
 
 /// A complete recording session capturing an initial configuration snapshot
@@ -120,15 +119,17 @@ class RecordingSession {
       id: json['id'] as String? ?? '',
       appVersion: json['appVersion'] as String? ?? '',
       deviceInfo: json['deviceInfo'] as String? ?? '',
-      startTime: DateTime.tryParse(json['startTime'] as String? ?? '') ??
+      startTime:
+          DateTime.tryParse(json['startTime'] as String? ?? '') ??
           DateTime.now(),
       durationMs: json['durationMs'] as int? ?? 0,
       initialSnapshot:
           (json['initialSnapshot'] as Map<String, dynamic>?) ??
-              const <String, dynamic>{},
+          const <String, dynamic>{},
       events: rawEvents
-          .map((dynamic e) =>
-              RecordingEvent.fromJson(e as Map<String, dynamic>))
+          .map(
+            (dynamic e) => RecordingEvent.fromJson(e as Map<String, dynamic>),
+          )
           .toList(),
       gameMode: json['gameMode'] as String?,
       notes: json['notes'] as String?,
@@ -170,17 +171,16 @@ class RecordingSession {
 
   /// Serializes this session to a JSON-compatible map.
   Map<String, dynamic> toJson() => <String, dynamic>{
-        'id': id,
-        'appVersion': appVersion,
-        'deviceInfo': deviceInfo,
-        'startTime': startTime.toIso8601String(),
-        'durationMs': durationMs,
-        'initialSnapshot': initialSnapshot,
-        'events':
-            events.map((RecordingEvent e) => e.toJson()).toList(),
-        if (gameMode != null) 'gameMode': gameMode,
-        if (notes != null) 'notes': notes,
-      };
+    'id': id,
+    'appVersion': appVersion,
+    'deviceInfo': deviceInfo,
+    'startTime': startTime.toIso8601String(),
+    'durationMs': durationMs,
+    'initialSnapshot': initialSnapshot,
+    'events': events.map((RecordingEvent e) => e.toJson()).toList(),
+    if (gameMode != null) 'gameMode': gameMode,
+    if (notes != null) 'notes': notes,
+  };
 
   /// Creates a copy of this session with selected fields replaced.
   RecordingSession copyWith({

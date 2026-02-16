@@ -28,12 +28,7 @@ enum ReplaySpeed {
 }
 
 /// The current state of the replay engine.
-enum ReplayState {
-  idle,
-  playing,
-  paused,
-  finished,
-}
+enum ReplayState { idle, playing, paused, finished }
 
 /// Service that replays a previously recorded [RecordingSession].
 ///
@@ -56,8 +51,9 @@ class ReplayService {
   // Observable state
   // -----------------------------------------------------------------------
 
-  final ValueNotifier<ReplayState> stateNotifier =
-      ValueNotifier<ReplayState>(ReplayState.idle);
+  final ValueNotifier<ReplayState> stateNotifier = ValueNotifier<ReplayState>(
+    ReplayState.idle,
+  );
 
   /// Current event index (0-based). -1 when idle.
   final ValueNotifier<int> progressNotifier = ValueNotifier<int>(-1);
@@ -65,8 +61,9 @@ class ReplayService {
   /// Total number of events in the loaded session.
   final ValueNotifier<int> totalEventsNotifier = ValueNotifier<int>(0);
 
-  final ValueNotifier<ReplaySpeed> speedNotifier =
-      ValueNotifier<ReplaySpeed>(ReplaySpeed.x1);
+  final ValueNotifier<ReplaySpeed> speedNotifier = ValueNotifier<ReplaySpeed>(
+    ReplaySpeed.x1,
+  );
 
   ReplayState get state => stateNotifier.value;
   bool get isPlaying => state == ReplayState.playing;
@@ -118,8 +115,10 @@ class ReplayService {
     // Reset game to match initial state.
     GameController().reset(force: true);
 
-    logger.i('$_logTag Replay started: ${session.id} '
-        '(${session.events.length} events)');
+    logger.i(
+      '$_logTag Replay started: ${session.id} '
+      '(${session.events.length} events)',
+    );
 
     // Dispatch events sequentially.
     await _dispatchEvents(context);
@@ -190,8 +189,7 @@ class ReplayService {
       if (_currentIndex > 0) {
         final int deltaMs =
             event.timestampMs - events[_currentIndex - 1].timestampMs;
-        final int scaledMs =
-            (deltaMs / speedNotifier.value.multiplier).round();
+        final int scaledMs = (deltaMs / speedNotifier.value.multiplier).round();
         if (scaledMs > 0) {
           await Future<void>.delayed(Duration(milliseconds: scaledMs));
         }
@@ -231,8 +229,7 @@ class ReplayService {
 
       case RecordingEventType.gameReset:
         final bool force = event.data['force'] as bool? ?? false;
-        final bool lanRestart =
-            event.data['lanRestart'] as bool? ?? false;
+        final bool lanRestart = event.data['lanRestart'] as bool? ?? false;
         GameController().reset(force: force, lanRestart: lanRestart);
         break;
 
@@ -291,10 +288,7 @@ class ReplayService {
     }
   }
 
-  void _applyHistoryNavigation(
-    String action,
-    Map<String, dynamic> data,
-  ) {
+  void _applyHistoryNavigation(String action, Map<String, dynamic> data) {
     switch (action) {
       case 'stepForward':
         HistoryNavigator.doEachMove(HistoryNavMode.stepForward, 1);

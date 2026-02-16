@@ -41,8 +41,8 @@ class _SessionListPageState extends State<SessionListPage> {
 
   Future<void> _loadSessions() async {
     setState(() => _isLoading = true);
-    final List<RecordingSession> sessions =
-        await RecordingService().listSessions();
+    final List<RecordingSession> sessions = await RecordingService()
+        .listSessions();
     if (mounted) {
       setState(() {
         _sessions = sessions;
@@ -57,12 +57,12 @@ class _SessionListPageState extends State<SessionListPage> {
 
   Future<void> _shareSession(RecordingSession session) async {
     try {
-      final String path =
-          await RecordingService().getSessionFilePath(session.id);
-      await Share.shareXFiles(
-        <XFile>[XFile(path)],
-        subject: 'Sanmill Recording ${session.id.substring(0, 8)}',
+      final String path = await RecordingService().getSessionFilePath(
+        session.id,
       );
+      await Share.shareXFiles(<XFile>[
+        XFile(path),
+      ], subject: 'Sanmill Recording ${session.id.substring(0, 8)}');
     } catch (e) {
       logger.e('$_logTag Share failed: $e');
     }
@@ -70,11 +70,11 @@ class _SessionListPageState extends State<SessionListPage> {
 
   Future<void> _copyToClipboard(RecordingSession session) async {
     try {
-      final RecordingSession? full =
-          await RecordingService().loadSession(session.id);
+      final RecordingSession? full = await RecordingService().loadSession(
+        session.id,
+      );
       if (full != null) {
-        final String json =
-            full.toJson().toString(); // Compact representation.
+        final String json = full.toJson().toString(); // Compact representation.
         await Clipboard.setData(ClipboardData(text: json));
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -164,8 +164,8 @@ class _SessionListPageState extends State<SessionListPage> {
 
     if (confirmed == true) {
       // Load the full session data.
-      final RecordingSession? fullSession =
-          await RecordingService().loadSession(session.id);
+      final RecordingSession? fullSession = await RecordingService()
+          .loadSession(session.id);
       if (fullSession == null || !mounted) {
         return;
       }
@@ -173,9 +173,7 @@ class _SessionListPageState extends State<SessionListPage> {
       // Pop back to game page and start replay.
       Navigator.pop(context);
 
-      unawaited(
-        ReplayService().startReplay(fullSession, context: context),
-      );
+      unawaited(ReplayService().startReplay(fullSession, context: context));
     }
   }
 
@@ -200,25 +198,24 @@ class _SessionListPageState extends State<SessionListPage> {
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : _sessions.isEmpty
-              ? Center(
-                  child: Text(
-                    S.of(context).noRecordingSessions,
-                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                          color: AppTheme.listTileSubtitleColor,
-                        ),
-                  ),
-                )
-              : RefreshIndicator(
-                  onRefresh: _loadSessions,
-                  child: ListView.separated(
-                    padding: const EdgeInsets.all(12),
-                    itemCount: _sessions.length,
-                    separatorBuilder: (_, __) =>
-                        const SizedBox(height: 8),
-                    itemBuilder: (BuildContext ctx, int index) =>
-                        _buildSessionCard(ctx, _sessions[index]),
-                  ),
+          ? Center(
+              child: Text(
+                S.of(context).noRecordingSessions,
+                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                  color: AppTheme.listTileSubtitleColor,
                 ),
+              ),
+            )
+          : RefreshIndicator(
+              onRefresh: _loadSessions,
+              child: ListView.separated(
+                padding: const EdgeInsets.all(12),
+                itemCount: _sessions.length,
+                separatorBuilder: (_, __) => const SizedBox(height: 8),
+                itemBuilder: (BuildContext ctx, int index) =>
+                    _buildSessionCard(ctx, _sessions[index]),
+              ),
+            ),
     );
   }
 
@@ -235,8 +232,11 @@ class _SessionListPageState extends State<SessionListPage> {
             // Header row: date + game mode badge.
             Row(
               children: <Widget>[
-                const Icon(Icons.fiber_manual_record,
-                    size: 10, color: Colors.red),
+                const Icon(
+                  Icons.fiber_manual_record,
+                  size: 10,
+                  color: Colors.red,
+                ),
                 const SizedBox(width: 6),
                 Expanded(
                   child: Text(
@@ -268,7 +268,7 @@ class _SessionListPageState extends State<SessionListPage> {
                 _statChip(
                   Icons.list_alt,
                   '${session.events.length} '
-                      '${S.of(context).sessionEventCount}',
+                  '${S.of(context).sessionEventCount}',
                 ),
               ],
             ),
@@ -279,8 +279,8 @@ class _SessionListPageState extends State<SessionListPage> {
               Text(
                 session.notes!,
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: AppTheme.listTileSubtitleColor,
-                    ),
+                  color: AppTheme.listTileSubtitleColor,
+                ),
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
               ),
@@ -308,8 +308,11 @@ class _SessionListPageState extends State<SessionListPage> {
                   onPressed: () => _copyToClipboard(session),
                 ),
                 IconButton(
-                  icon: const Icon(Icons.delete_outline,
-                      size: 18, color: Colors.red),
+                  icon: const Icon(
+                    Icons.delete_outline,
+                    size: 18,
+                    color: Colors.red,
+                  ),
                   tooltip: S.of(context).deleteSession,
                   onPressed: () => _deleteSession(session),
                 ),
@@ -329,10 +332,7 @@ class _SessionListPageState extends State<SessionListPage> {
         const SizedBox(width: 4),
         Text(
           label,
-          style: TextStyle(
-            fontSize: 12,
-            color: AppTheme.listTileSubtitleColor,
-          ),
+          style: TextStyle(fontSize: 12, color: AppTheme.listTileSubtitleColor),
         ),
       ],
     );
