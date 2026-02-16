@@ -154,7 +154,12 @@ void main() {
           await actions.performAction(tester, gameActionProbability: 0.80);
 
           // After each action, let the AI respond.
-          await tester.pumpAndSettle(const Duration(milliseconds: 500));
+          // Use try-catch since pumpAndSettle may timeout during AI thinking.
+          try {
+            await tester.pumpAndSettle(const Duration(seconds: 3));
+          } on FlutterError {
+            await tester.pump(const Duration(milliseconds: 200));
+          }
 
           if (i % 20 == 0) {
             print('[HvAI] Action $i/$kActionsPerHvAIGame');
@@ -198,7 +203,36 @@ void main() {
     );
 
     // -----------------------------------------------------------------------
-    // Scenario 4: Multi-mode cycling
+    // Scenario 4: Setup Position - random piece placement
+    // -----------------------------------------------------------------------
+    testWidgets(
+      'SetupPosition - random piece placement and removal',
+      (WidgetTester tester) async {
+        await _setupFastGame(tester);
+        await navigateToDrawerItem(tester, 'drawer_item_setup_position');
+
+        final SmartActions actions = SmartActions(seed: 500);
+
+        // Tap random board positions to place and remove pieces freely.
+        for (int i = 0; i < 60; i++) {
+          await actions.performAction(
+            tester,
+            gameActionProbability: 0.90,
+          );
+          await tester.pump(const Duration(milliseconds: 50));
+
+          if (i % 20 == 0) {
+            print('[SetupPosition] Action $i/60');
+          }
+        }
+
+        actions.printSummary();
+        verifyPageDisplayed(tester, 'game_page_scaffold');
+      },
+    );
+
+    // -----------------------------------------------------------------------
+    // Scenario 5: Multi-mode cycling
     // -----------------------------------------------------------------------
     testWidgets(
       'Multi-mode - cycle through game modes and play',
@@ -210,6 +244,7 @@ void main() {
           'drawer_item_human_vs_human',
           'drawer_item_human_vs_ai',
           'drawer_item_ai_vs_ai',
+          'drawer_item_setup_position',
         ];
 
         int actionCount = 0;
@@ -218,14 +253,18 @@ void main() {
             print('[MultiMode] Switching to $mode (cycle $cycle)');
             try {
               await navigateToDrawerItem(tester, mode);
-              await startNewGame(tester);
+              // Setup position does not have a "new game" toolbar action
+              // the same way, so only call startNewGame for play modes.
+              if (mode != 'drawer_item_setup_position') {
+                await startNewGame(tester);
+              }
             } catch (e) {
               print('[MultiMode] Navigation failed: $e');
               continue;
             }
 
             // Perform some actions in this mode.
-            final int actionsThisMode = kActionsPerMultiMode ~/ 9;
+            final int actionsThisMode = kActionsPerMultiMode ~/ 12;
             for (int i = 0; i < actionsThisMode; i++) {
               if (mode == 'drawer_item_ai_vs_ai') {
                 await actions.performAction(
@@ -251,7 +290,7 @@ void main() {
     );
 
     // -----------------------------------------------------------------------
-    // Scenario 5: Rule variant testing
+    // Scenario 6: Rule variant testing
     // -----------------------------------------------------------------------
     testWidgets(
       'Rule variants - play with different rule sets',
@@ -293,7 +332,7 @@ void main() {
     );
 
     // -----------------------------------------------------------------------
-    // Scenario 6: Settings chaos
+    // Scenario 7: Settings chaos
     // -----------------------------------------------------------------------
     testWidgets(
       'Settings chaos - change settings while game is active',

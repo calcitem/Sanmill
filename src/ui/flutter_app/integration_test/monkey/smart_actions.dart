@@ -65,6 +65,14 @@ class SmartActions {
       return _navigateBackToGame(tester);
     }
 
+    // Wait for the controller to be ready before game actions.
+    if (!GameController().isControllerReady) {
+      print('[SmartAction] Controller not ready, pumping...');
+      await tester.pump(const Duration(milliseconds: 300));
+      skippedActions++;
+      return ActionResult.skipped;
+    }
+
     // Decide: game action or UI action.
     if (_random.nextDouble() < gameActionProbability) {
       return _performGameAction(tester);
@@ -75,6 +83,11 @@ class SmartActions {
 
   /// Perform a game-relevant action based on the current phase and action.
   Future<ActionResult> _performGameAction(WidgetTester tester) async {
+    // In setup position mode, just tap random board positions.
+    if (GameStateReader.gameMode == GameMode.setupPosition) {
+      return _performSetupPositionAction(tester);
+    }
+
     if (GameStateReader.isGameOver) {
       return _handleGameOver(tester);
     }
@@ -98,6 +111,35 @@ class SmartActions {
   }
 
   // --------------------------------------------------------------------------
+  // Setup position mode
+  // --------------------------------------------------------------------------
+
+  /// In setup position mode, tap random board positions to place or remove
+  /// pieces freely.
+  Future<ActionResult> _performSetupPositionAction(
+    WidgetTester tester,
+  ) async {
+    final List<int> allSquares = BoardTapHelper.getAllSquares();
+    if (allSquares.isEmpty) {
+      skippedActions++;
+      return ActionResult.skipped;
+    }
+
+    final int target = allSquares[_random.nextInt(allSquares.length)];
+    print('[SmartAction] SetupPosition: tapping square '
+        '${squareToNotation(target)}');
+
+    final bool ok = await BoardTapHelper.tapSquare(tester, target);
+    await tester.pump(const Duration(milliseconds: 100));
+
+    if (ok) {
+      placingActions++;
+      return ActionResult.success;
+    }
+    return ActionResult.boardNotVisible;
+  }
+
+  // --------------------------------------------------------------------------
   // Placing phase
   // --------------------------------------------------------------------------
 
@@ -116,7 +158,7 @@ class SmartActions {
         'for ${GameStateReader.sideToMove}');
 
     final bool ok = await BoardTapHelper.tapSquare(tester, target);
-    await tester.pumpAndSettle(const Duration(milliseconds: 200));
+    await _safePumpAndSettle(tester);
 
     if (ok) {
       placingActions++;
@@ -176,12 +218,12 @@ class SmartActions {
     // Step 1: tap the piece to select it.
     bool ok = await BoardTapHelper.tapSquare(tester, piece);
     if (!ok) return ActionResult.boardNotVisible;
-    await tester.pumpAndSettle(const Duration(milliseconds: 150));
+    await tester.pump(const Duration(milliseconds: 150));
 
     // Step 2: tap the destination to move.
     ok = await BoardTapHelper.tapSquare(tester, dest);
     if (!ok) return ActionResult.boardNotVisible;
-    await tester.pumpAndSettle(const Duration(milliseconds: 200));
+    await _safePumpAndSettle(tester);
 
     movingActions++;
     return ActionResult.success;
@@ -207,7 +249,7 @@ class SmartActions {
         '${squareToNotation(target)} for ${GameStateReader.sideToMove}');
 
     final bool ok = await BoardTapHelper.tapSquare(tester, target);
-    await tester.pumpAndSettle(const Duration(milliseconds: 200));
+    await _safePumpAndSettle(tester);
 
     if (ok) {
       removingActions++;
@@ -404,11 +446,22 @@ class SmartActions {
 
   /// Try to navigate back to the game page.
   Future<ActionResult> _navigateBackToGame(WidgetTester tester) async {
-    // Try the back button.
+    // First dismiss any dialogs that might be open.
+    await _dismissDialogs(tester);
+
+    // Try a keyed back button.
     final Finder backButton = find.byKey(const Key('game_page_back_button'));
     if (backButton.evaluate().isNotEmpty) {
       await tester.tap(backButton.first);
-      await tester.pumpAndSettle();
+      await _safePumpAndSettle(tester);
+      return ActionResult.success;
+    }
+
+    // Try the AppBar back arrow by tooltip.
+    final Finder anyBackButton = find.byTooltip('Back');
+    if (anyBackButton.evaluate().isNotEmpty) {
+      await tester.tap(anyBackButton.first);
+      await _safePumpAndSettle(tester);
       return ActionResult.success;
     }
 
@@ -416,7 +469,7 @@ class SmartActions {
     final NavigatorState? nav = _findNavigator(tester);
     if (nav != null && nav.canPop()) {
       nav.pop();
-      await tester.pumpAndSettle();
+      await _safePumpAndSettle(tester);
       return ActionResult.success;
     }
 
@@ -424,20 +477,35 @@ class SmartActions {
     return ActionResult.skipped;
   }
 
-  /// Find the Navigator from the widget tree.
+  /// Find the root Navigator from the widget tree.
   NavigatorState? _findNavigator(WidgetTester tester) {
     try {
       final Finder navFinder = find.byType(Navigator);
       if (navFinder.evaluate().isNotEmpty) {
-        final NavigatorState state = tester.state<NavigatorState>(
-          navFinder.first,
-        );
-        return state;
+        return tester.state<NavigatorState>(navFinder.last);
       }
     } catch (_) {
       // Ignore.
     }
     return null;
+  }
+
+  /// Pump and settle with a timeout guard.
+  ///
+  /// Unlike [WidgetTester.pumpAndSettle] this will not throw if the
+  /// widget tree does not settle within [timeout]. It simply pumps for
+  /// the given duration and continues.
+  Future<void> _safePumpAndSettle(
+    WidgetTester tester, {
+    Duration timeout = const Duration(seconds: 3),
+  }) async {
+    try {
+      await tester.pumpAndSettle(timeout);
+    } on FlutterError {
+      // pumpAndSettle timed out — the tree may still be animating
+      // (e.g. AI thinking indicator). Pump once and move on.
+      await tester.pump(const Duration(milliseconds: 100));
+    }
   }
 
   /// Print a summary of all actions performed.
