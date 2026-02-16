@@ -267,6 +267,62 @@ class RecordingService {
     return file.path;
   }
 
+  /// Imports a recording session from a JSON file at [filePath].
+  ///
+  /// The file is parsed, validated, and copied into the recordings directory.
+  /// Returns the imported [RecordingSession] on success, `null` on failure.
+  Future<RecordingSession?> importSessionFromFile(String filePath) async {
+    try {
+      final File source = File(filePath);
+      if (!source.existsSync()) {
+        logger.e('$_logTag Import failed: file not found: $filePath');
+        return null;
+      }
+      final String content = await source.readAsString();
+      return importSessionFromJsonString(content);
+    } catch (e) {
+      logger.e('$_logTag Import from file failed: $e');
+      return null;
+    }
+  }
+
+  /// Imports a recording session from a raw JSON string.
+  ///
+  /// The JSON is parsed, validated, and saved into the recordings directory.
+  /// Returns the imported [RecordingSession] on success, `null` on failure.
+  Future<RecordingSession?> importSessionFromJsonString(String jsonStr) async {
+    try {
+      final dynamic decoded = jsonDecode(jsonStr);
+      if (decoded is! Map<String, dynamic>) {
+        logger.e('$_logTag Import failed: JSON root is not an object');
+        return null;
+      }
+
+      final RecordingSession session = RecordingSession.fromJson(decoded);
+
+      // Basic validation: session must have an id and at least one event.
+      if (session.id.isEmpty) {
+        logger.e('$_logTag Import failed: session has no id');
+        return null;
+      }
+
+      // Save to recordings directory (overwrites if same id exists).
+      await _saveSession(session);
+
+      // Enforce storage limits after import.
+      await _enforceStorageLimits();
+
+      logger.i(
+        '$_logTag Imported session: ${session.id} '
+        '(${session.events.length} events)',
+      );
+      return session;
+    } catch (e) {
+      logger.e('$_logTag Import from JSON failed: $e');
+      return null;
+    }
+  }
+
   // -----------------------------------------------------------------------
   // Private helpers
   // -----------------------------------------------------------------------
