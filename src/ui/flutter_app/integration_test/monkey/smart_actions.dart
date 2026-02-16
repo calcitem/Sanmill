@@ -310,7 +310,7 @@ class SmartActions {
     print('[SmartAction] UI: tap Info toolbar');
     try {
       await tapToolbarItem(tester, 'play_area_toolbar_item_info');
-      await tester.pumpAndSettle(const Duration(milliseconds: 300));
+      await _safePumpAndSettle(tester);
 
       // Dismiss the info dialog if it appeared.
       await _dismissDialogs(tester);
@@ -326,7 +326,7 @@ class SmartActions {
     print('[SmartAction] UI: tap Move toolbar');
     try {
       await tapToolbarItem(tester, 'play_area_toolbar_item_move');
-      await tester.pumpAndSettle(const Duration(milliseconds: 300));
+      await _safePumpAndSettle(tester);
 
       // If we navigated to MovesListPage, go back.
       if (find.byKey(const Key('game_page_scaffold')).evaluate().isEmpty) {
@@ -344,7 +344,7 @@ class SmartActions {
     print('[SmartAction] UI: tap Options toolbar');
     try {
       await tapToolbarItem(tester, 'play_area_toolbar_item_options');
-      await tester.pumpAndSettle(const Duration(milliseconds: 300));
+      await _safePumpAndSettle(tester);
 
       // Navigate back from settings page.
       if (find.byKey(const Key('game_page_scaffold')).evaluate().isEmpty) {
@@ -362,9 +362,9 @@ class SmartActions {
     print('[SmartAction] UI: open/close drawer');
     try {
       await openDrawer(tester);
-      await tester.pumpAndSettle(const Duration(milliseconds: 200));
+      await _safePumpAndSettle(tester);
       await closeDrawer(tester);
-      await tester.pumpAndSettle(const Duration(milliseconds: 200));
+      await _safePumpAndSettle(tester);
       uiActions++;
       return ActionResult.success;
     } catch (e) {
@@ -399,7 +399,7 @@ class SmartActions {
     }
     final int target = empty[_random.nextInt(empty.length)];
     final bool ok = await BoardTapHelper.tapSquare(tester, target);
-    await tester.pumpAndSettle(const Duration(milliseconds: 150));
+    await _safePumpAndSettle(tester);
     return ok ? ActionResult.success : ActionResult.boardNotVisible;
   }
 
@@ -407,7 +407,7 @@ class SmartActions {
   Future<ActionResult> _tapRandomBoardArea(WidgetTester tester) async {
     print('[SmartAction] UI: tap random board area');
     final bool ok = await BoardTapHelper.tapRandomBoardArea(tester);
-    await tester.pumpAndSettle(const Duration(milliseconds: 100));
+    await tester.pump(const Duration(milliseconds: 100));
     uiActions++;
     return ok ? ActionResult.success : ActionResult.boardNotVisible;
   }
@@ -428,7 +428,7 @@ class SmartActions {
       final Finder btn = find.byKey(Key(key));
       if (btn.evaluate().isNotEmpty) {
         await tester.tap(btn.first);
-        await tester.pumpAndSettle(const Duration(milliseconds: 200));
+        await _safePumpAndSettle(tester);
       }
     }
 
@@ -437,7 +437,7 @@ class SmartActions {
     if (okText.evaluate().isNotEmpty) {
       try {
         await tester.tap(okText.first);
-        await tester.pumpAndSettle(const Duration(milliseconds: 200));
+        await _safePumpAndSettle(tester);
       } catch (_) {
         // Ignore if not tappable.
       }
