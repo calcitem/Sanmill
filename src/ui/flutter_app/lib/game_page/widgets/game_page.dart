@@ -118,12 +118,14 @@ class _GamePageInnerState extends State<_GamePageInner> {
   }
 
   /// Starts experience recording automatically when the feature is enabled.
+  ///
+  /// Skips if recording is suppressed (e.g. during replay) or already active.
   void _maybeStartRecording() {
     if (DB().generalSettings.experienceRecordingEnabled &&
-        !RecordingService().isRecording) {
+        !RecordingService().isRecording &&
+        !RecordingService().isSuppressed) {
       RecordingService().startRecording(
-        gameMode:
-            widget.controller.gameInstance.gameMode.toString(),
+        gameMode: widget.controller.gameInstance.gameMode.toString(),
       );
     }
   }
