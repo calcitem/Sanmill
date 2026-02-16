@@ -64,6 +64,13 @@ class RecordingService {
 
   bool get isRecording => isRecordingNotifier.value;
 
+  /// When `true`, recording hooks are suppressed.
+  ///
+  /// Set by [ReplayService] during session replay to prevent the replay's
+  /// own actions (settings changes, board taps, resets) from being captured
+  /// as new events and causing a feedback loop.
+  bool isSuppressed = false;
+
   /// Notifier for the current event count (UI can show live counter).
   final ValueNotifier<int> eventCountNotifier = ValueNotifier<int>(0);
 
@@ -159,9 +166,10 @@ class RecordingService {
 
   /// Appends a new event to the current session.
   ///
-  /// No-op when recording is not active or when the feature is disabled.
+  /// No-op when recording is not active, suppressed (during replay), or
+  /// when the feature is disabled.
   void recordEvent(RecordingEventType type, Map<String, dynamic> data) {
-    if (!isRecording || _stopwatch == null) {
+    if (!isRecording || isSuppressed || _stopwatch == null) {
       return;
     }
 

@@ -13,6 +13,7 @@ import '../../rule_settings/models/rule_settings.dart';
 import '../../shared/database/database.dart';
 import '../../shared/services/logger.dart';
 import '../models/recording_models.dart';
+import 'recording_service.dart';
 
 /// Supported playback speed multipliers.
 enum ReplaySpeed {
@@ -107,6 +108,9 @@ class ReplayService {
     // Back up current settings.
     _backupGeneralSettings = DB().generalSettings;
     _backupRuleSettings = DB().ruleSettings;
+
+    // Suppress recording hooks during replay to prevent feedback loops.
+    RecordingService().isSuppressed = true;
 
     // Restore initial snapshot settings.
     _restoreSnapshot(session.initialSnapshot);
@@ -313,6 +317,9 @@ class ReplayService {
   // -----------------------------------------------------------------------
 
   void _cleanup() {
+    // Re-enable recording hooks.
+    RecordingService().isSuppressed = false;
+
     // Restore backed-up settings.
     if (_backupGeneralSettings != null) {
       DB().generalSettings = _backupGeneralSettings!;
