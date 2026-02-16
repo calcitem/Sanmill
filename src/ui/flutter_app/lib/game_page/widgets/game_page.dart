@@ -19,6 +19,9 @@ import 'package:marquee/marquee.dart';
 import '../../appearance_settings/models/display_settings.dart';
 import '../../appearance_settings/widgets/appearance_settings_page.dart';
 import '../../custom_drawer/custom_drawer.dart';
+import '../../experience_recording/services/recording_service.dart';
+import '../../experience_recording/widgets/recording_indicator.dart';
+import '../../experience_recording/widgets/replay_controls.dart';
 import '../../game_page/services/mill.dart';
 import '../../general_settings/models/general_settings.dart';
 import '../../generated/intl/l10n.dart';
@@ -38,9 +41,6 @@ import '../../shared/widgets/snackbars/scaffold_messenger.dart';
 import '../../statistics/model/stats_settings.dart';
 // Voice assistant functionality disabled
 // import '../../voice_assistant/widgets/voice_button.dart';
-import '../../experience_recording/services/recording_service.dart';
-import '../../experience_recording/widgets/recording_indicator.dart';
-import '../../experience_recording/widgets/replay_controls.dart';
 import '../pages/board_recognition_debug_page.dart';
 import '../services/analysis_mode.dart';
 import '../services/animation/animation_manager.dart';
@@ -195,15 +195,15 @@ class _GamePageInnerState extends State<_GamePageInner> {
                 child: SafeArea(child: _buildTopLeftButton(context)),
               ),
               // Experience recording indicator and replay controls.
-              Align(
-                key: const Key('game_page_recording_indicator_align'),
+              const Align(
+                key: Key('game_page_recording_indicator_align'),
                 alignment: Alignment.topCenter,
                 child: SafeArea(
                   child: Padding(
-                    padding: const EdgeInsets.only(top: 8),
+                    padding: EdgeInsets.only(top: 8),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
-                      children: const <Widget>[
+                      children: <Widget>[
                         RecordingIndicator(),
                         SizedBox(height: 4),
                         ReplayControls(),

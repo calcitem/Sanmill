@@ -108,12 +108,15 @@ class HistoryNavigator {
     }
 
     // Record history navigation event for experience recording.
+    final Map<String, dynamic> navData = <String, dynamic>{
+      'action': navMode.toString(),
+    };
+    if (number != null) {
+      navData['steps'] = number;
+    }
     RecordingService().recordEvent(
       RecordingEventType.historyNavigation,
-      <String, dynamic>{
-        'action': navMode.toString(),
-        if (number != null) 'steps': number,
-      },
+      navData,
     );
 
     // Replay moves to get the new board state

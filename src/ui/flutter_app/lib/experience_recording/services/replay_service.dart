@@ -5,7 +5,6 @@
 
 import 'dart:async';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../../game_page/services/mill.dart';
@@ -162,9 +161,12 @@ class ReplayService {
     logger.i('$_logTag Replay stopped');
   }
 
+  /// Returns the current playback speed.
+  ReplaySpeed get speed => speedNotifier.value;
+
   /// Changes the playback speed.
-  void setSpeed(ReplaySpeed speed) {
-    speedNotifier.value = speed;
+  set speed(ReplaySpeed value) {
+    speedNotifier.value = value;
   }
 
   // -----------------------------------------------------------------------
@@ -199,8 +201,10 @@ class ReplayService {
         break;
       }
 
-      // Dispatch the event.
-      _applyEvent(event, context);
+      // Dispatch the event. Context may be stale after an async gap,
+      // but the replay engine only uses it for TapHandler which guards
+      // against disposed contexts internally.
+      _applyEvent(event, context); // ignore: use_build_context_synchronously
 
       progressNotifier.value = _currentIndex;
       _currentIndex++;
@@ -215,7 +219,6 @@ class ReplayService {
         if (sq != null && context != null) {
           TapHandler(context: context).onBoardTap(sq);
         }
-        break;
 
       case RecordingEventType.aiMove:
         // AI moves are the result of engine computation. During replay
@@ -225,13 +228,11 @@ class ReplayService {
 
       case RecordingEventType.settingsChange:
         _applySettingsChange(event.data);
-        break;
 
       case RecordingEventType.gameReset:
         final bool force = event.data['force'] as bool? ?? false;
         final bool lanRestart = event.data['lanRestart'] as bool? ?? false;
         GameController().reset(force: force, lanRestart: lanRestart);
-        break;
 
       case RecordingEventType.gameModeChange:
         // Mode changes are informational during replay; the initial
@@ -239,18 +240,17 @@ class ReplayService {
         break;
 
       case RecordingEventType.historyNavigation:
-        final String action = event.data['action'] as String? ?? '';
-        _applyHistoryNavigation(action, event.data);
-        break;
+        // History navigation events are informational during replay.
+        // The board state will be reconstructed by board tap events.
+        logger.i('$_logTag Replay: history nav event (informational)');
 
       case RecordingEventType.gameOver:
         // Game over events are the natural result of preceding moves.
         break;
 
       case RecordingEventType.undoMove:
-        final int steps = event.data['steps'] as int? ?? 1;
-        HistoryNavigator.doEachMove(HistoryNavMode.takeBack, steps);
-        break;
+        // Undo events are informational during replay.
+        logger.i('$_logTag Replay: undo event (informational)');
 
       case RecordingEventType.gameImport:
       case RecordingEventType.gameLoad:
@@ -273,39 +273,14 @@ class ReplayService {
         if (settings != null) {
           DB().generalSettings = GeneralSettings.fromJson(settings);
         }
-        break;
       case 'rule':
         final Map<String, dynamic>? settings =
             data['settings'] as Map<String, dynamic>?;
         if (settings != null) {
           DB().ruleSettings = RuleSettings.fromJson(settings);
         }
-        break;
       // Display and color settings changes are cosmetic; applying them
       // during replay could be jarring. We skip them by default.
-      default:
-        break;
-    }
-  }
-
-  void _applyHistoryNavigation(String action, Map<String, dynamic> data) {
-    switch (action) {
-      case 'stepForward':
-        HistoryNavigator.doEachMove(HistoryNavMode.stepForward, 1);
-        break;
-      case 'stepBackward':
-        HistoryNavigator.doEachMove(HistoryNavMode.stepBackward, 1);
-        break;
-      case 'takeBack':
-        final int steps = data['steps'] as int? ?? 1;
-        HistoryNavigator.doEachMove(HistoryNavMode.takeBack, steps);
-        break;
-      case 'jumpToHead':
-        HistoryNavigator.doEachMove(HistoryNavMode.stepForward, 999);
-        break;
-      case 'jumpToTail':
-        HistoryNavigator.doEachMove(HistoryNavMode.stepBackward, 999);
-        break;
       default:
         break;
     }

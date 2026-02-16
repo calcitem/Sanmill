@@ -60,9 +60,12 @@ class _SessionListPageState extends State<SessionListPage> {
       final String path = await RecordingService().getSessionFilePath(
         session.id,
       );
-      await Share.shareXFiles(<XFile>[
-        XFile(path),
-      ], subject: 'Sanmill Recording ${session.id.substring(0, 8)}');
+      await SharePlus.instance.share(
+        ShareParams(
+          files: <XFile>[XFile(path)],
+          subject: 'Sanmill Recording ${session.id.substring(0, 8)}',
+        ),
+      );
     } catch (e) {
       logger.e('$_logTag Share failed: $e');
     }
@@ -109,7 +112,7 @@ class _SessionListPageState extends State<SessionListPage> {
       ),
     );
 
-    if (confirmed == true) {
+    if (confirmed ?? false) {
       await RecordingService().deleteSession(session.id);
       unawaited(_loadSessions());
     }
@@ -137,7 +140,7 @@ class _SessionListPageState extends State<SessionListPage> {
       ),
     );
 
-    if (confirmed == true) {
+    if (confirmed ?? false) {
       await RecordingService().deleteAllSessions();
       unawaited(_loadSessions());
     }
@@ -162,7 +165,7 @@ class _SessionListPageState extends State<SessionListPage> {
       ),
     );
 
-    if (confirmed == true) {
+    if (confirmed ?? false) {
       // Load the full session data.
       final RecordingSession? fullSession = await RecordingService()
           .loadSession(session.id);
@@ -211,7 +214,8 @@ class _SessionListPageState extends State<SessionListPage> {
               child: ListView.separated(
                 padding: const EdgeInsets.all(12),
                 itemCount: _sessions.length,
-                separatorBuilder: (_, __) => const SizedBox(height: 8),
+                separatorBuilder: (BuildContext _, int i) =>
+                    const SizedBox(height: 8),
                 itemBuilder: (BuildContext ctx, int index) =>
                     _buildSessionCard(ctx, _sessions[index]),
               ),
@@ -332,7 +336,10 @@ class _SessionListPageState extends State<SessionListPage> {
         const SizedBox(width: 4),
         Text(
           label,
-          style: TextStyle(fontSize: 12, color: AppTheme.listTileSubtitleColor),
+          style: const TextStyle(
+            fontSize: 12,
+            color: AppTheme.listTileSubtitleColor,
+          ),
         ),
       ],
     );
