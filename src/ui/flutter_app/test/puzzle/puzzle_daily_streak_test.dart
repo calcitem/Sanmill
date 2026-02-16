@@ -84,7 +84,7 @@ void main() {
   // -----------------------------------------------------------------------
 
   /// Normalize a date to midnight UTC (same as DailyPuzzleService).
-  DateTime _normalizeDate(DateTime date) {
+  DateTime normalizeDate(DateTime date) {
     return DateTime.utc(date.year, date.month, date.day);
   }
 
@@ -94,7 +94,7 @@ void main() {
       return 0;
     }
 
-    final String todayStr = _normalizeDate(today).toIso8601String();
+    final String todayStr = normalizeDate(today).toIso8601String();
     final bool completedToday = completedDates.contains(todayStr);
 
     DateTime checkDate = completedToday
@@ -104,7 +104,7 @@ void main() {
     int streak = 0;
 
     while (true) {
-      final String dateStr = _normalizeDate(checkDate).toIso8601String();
+      final String dateStr = normalizeDate(checkDate).toIso8601String();
       if (completedDates.contains(dateStr)) {
         streak++;
         checkDate = checkDate.subtract(const Duration(days: 1));
@@ -189,7 +189,7 @@ void main() {
     test('returns 0 when neither today nor yesterday is completed', () {
       final DateTime today = DateTime.utc(2026, 2, 13);
       // Only some old date that is not yesterday.
-      final DateTime oldDate = DateTime.utc(2026, 1, 1);
+      final DateTime oldDate = DateTime.utc(2026, 1);
 
       final List<String> dates = <String>[oldDate.toIso8601String()];
 
@@ -251,7 +251,7 @@ void main() {
       final List<String> dates = <String>[
         DateTime.utc(2026, 1, 30).toIso8601String(),
         DateTime.utc(2026, 1, 31).toIso8601String(),
-        DateTime.utc(2026, 2, 1).toIso8601String(),
+        DateTime.utc(2026, 2).toIso8601String(),
         DateTime.utc(2026, 2, 2).toIso8601String(),
       ];
 
@@ -265,7 +265,7 @@ void main() {
       final List<String> dates = <String>[
         DateTime.utc(2025, 12, 30).toIso8601String(),
         DateTime.utc(2025, 12, 31).toIso8601String(),
-        DateTime.utc(2026, 1, 1).toIso8601String(),
+        DateTime.utc(2026, 1).toIso8601String(),
         DateTime.utc(2026, 1, 2).toIso8601String(),
       ];
 

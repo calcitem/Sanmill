@@ -8,7 +8,7 @@ import 'package:sanmill/shared/models/chat_message.dart';
 
 void main() {
   group('ChatMessage', () {
-    final DateTime baseTime = DateTime(2026, 2, 14, 10, 0, 0);
+    final DateTime baseTime = DateTime(2026, 2, 14, 10, 0);
 
     group('constructor', () {
       test('should store all required fields', () {
@@ -96,7 +96,7 @@ void main() {
           isUser: true,
           timestamp: baseTime,
         );
-        final DateTime newTime = DateTime(2026, 3, 1);
+        final DateTime newTime = DateTime(2026, 3);
 
         final ChatMessage updated = original.copyWith(
           id: 'msg-2',

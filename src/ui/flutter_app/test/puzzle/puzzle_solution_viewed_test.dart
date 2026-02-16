@@ -36,7 +36,6 @@ void main() {
           optimalMoveCount: 5,
           difficulty: PuzzleDifficulty.easy,
           hintsUsed: false,
-          solutionViewed: false,
         );
 
         expect(stars, equals(3));
@@ -169,7 +168,6 @@ void main() {
         puzzleId: 'json_test',
         solutionViewed: true,
         completed: true,
-        stars: 0,
       );
 
       final Map<String, dynamic> json = original.toJson();
@@ -180,10 +178,7 @@ void main() {
     });
 
     test('JSON round-trip preserves solutionViewed = false', () {
-      final PuzzleProgress original = PuzzleProgress(
-        puzzleId: 'json_test2',
-        solutionViewed: false,
-      );
+      final PuzzleProgress original = PuzzleProgress(puzzleId: 'json_test2');
 
       final Map<String, dynamic> json = original.toJson();
       expect(json['solutionViewed'], isFalse);
@@ -280,7 +275,6 @@ void main() {
             moves: <PuzzleMove>[
               PuzzleMove(notation: 'a4', side: PieceColor.white),
             ],
-            isOptimal: true,
           ),
         ],
       );

@@ -70,7 +70,6 @@ void main() {
           PuzzleMove(notation: 'e4', side: PieceColor.black),
         ],
         description: 'test solution',
-        isOptimal: true,
       );
       final PuzzleSolution result = PuzzleTransformService.transformSolution(
         solution,
@@ -141,7 +140,6 @@ void main() {
               PuzzleMove(notation: 'd5', side: PieceColor.white),
               PuzzleMove(notation: 'e5', side: PieceColor.black),
             ],
-            isOptimal: true,
           ),
           PuzzleSolution(
             moves: <PuzzleMove>[

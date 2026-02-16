@@ -82,12 +82,13 @@ void main() {
   // ---------------------------------------------------------------------------
   group('PuzzleCollectionManager single variant', () {
     test('should group puzzles by variant', () {
-      final PuzzleCollectionManager manager =
-          PuzzleCollectionManager(<PuzzleInfo>[
-            _makePuzzle(id: '1', ruleVariantId: 'standard_9mm'),
-            _makePuzzle(id: '2', ruleVariantId: 'standard_9mm'),
-            _makePuzzle(id: '3', ruleVariantId: 'standard_9mm'),
-          ]);
+      final PuzzleCollectionManager manager = PuzzleCollectionManager(
+        <PuzzleInfo>[
+          _makePuzzle(id: '1'),
+          _makePuzzle(id: '2'),
+          _makePuzzle(id: '3'),
+        ],
+      );
 
       expect(manager.allCollections.length, 1);
       expect(manager.getCollection('standard_9mm'), isNotNull);
@@ -96,7 +97,7 @@ void main() {
 
     test('availableVariants should list the variant', () {
       final PuzzleCollectionManager manager = PuzzleCollectionManager(
-        <PuzzleInfo>[_makePuzzle(id: '1', ruleVariantId: 'standard_9mm')],
+        <PuzzleInfo>[_makePuzzle(id: '1')],
       );
 
       expect(manager.availableVariants.length, 1);
@@ -111,8 +112,8 @@ void main() {
     test('should create separate collections per variant', () {
       final PuzzleCollectionManager manager =
           PuzzleCollectionManager(<PuzzleInfo>[
-            _makePuzzle(id: '1', ruleVariantId: 'standard_9mm'),
-            _makePuzzle(id: '2', ruleVariantId: 'standard_9mm'),
+            _makePuzzle(id: '1'),
+            _makePuzzle(id: '2'),
             _makePuzzle(id: '3', ruleVariantId: 'twelve_mens_morris'),
             _makePuzzle(id: '4', ruleVariantId: 'twelve_mens_morris'),
             _makePuzzle(id: '5', ruleVariantId: 'twelve_mens_morris'),
@@ -126,7 +127,7 @@ void main() {
     test('availableVariants should list all variants', () {
       final PuzzleCollectionManager manager =
           PuzzleCollectionManager(<PuzzleInfo>[
-            _makePuzzle(id: '1', ruleVariantId: 'standard_9mm'),
+            _makePuzzle(id: '1'),
             _makePuzzle(id: '2', ruleVariantId: 'twelve_mens_morris'),
           ]);
 
@@ -153,11 +154,12 @@ void main() {
     });
 
     test('should keep known variants and ignore unknown', () {
-      final PuzzleCollectionManager manager =
-          PuzzleCollectionManager(<PuzzleInfo>[
-            _makePuzzle(id: '1', ruleVariantId: 'standard_9mm'),
-            _makePuzzle(id: '2', ruleVariantId: 'unknown_variant'),
-          ]);
+      final PuzzleCollectionManager manager = PuzzleCollectionManager(
+        <PuzzleInfo>[
+          _makePuzzle(id: '1'),
+          _makePuzzle(id: '2', ruleVariantId: 'unknown_variant'),
+        ],
+      );
 
       expect(manager.allCollections.length, 1);
       expect(manager.getCollection('standard_9mm')!.puzzles.length, 1);
@@ -170,15 +172,15 @@ void main() {
   group('PuzzleCollectionManager.refresh', () {
     test('should rebuild collections after refresh', () {
       final PuzzleCollectionManager manager = PuzzleCollectionManager(
-        <PuzzleInfo>[_makePuzzle(id: '1', ruleVariantId: 'standard_9mm')],
+        <PuzzleInfo>[_makePuzzle(id: '1')],
       );
 
       expect(manager.getCollection('standard_9mm')!.puzzles.length, 1);
 
       // Refresh with more puzzles
       manager.refresh(<PuzzleInfo>[
-        _makePuzzle(id: '1', ruleVariantId: 'standard_9mm'),
-        _makePuzzle(id: '2', ruleVariantId: 'standard_9mm'),
+        _makePuzzle(id: '1'),
+        _makePuzzle(id: '2'),
         _makePuzzle(id: '3', ruleVariantId: 'twelve_mens_morris'),
       ]);
 
@@ -188,7 +190,7 @@ void main() {
 
     test('refresh with empty list should clear collections', () {
       final PuzzleCollectionManager manager = PuzzleCollectionManager(
-        <PuzzleInfo>[_makePuzzle(id: '1', ruleVariantId: 'standard_9mm')],
+        <PuzzleInfo>[_makePuzzle(id: '1')],
       );
 
       manager.refresh(<PuzzleInfo>[]);

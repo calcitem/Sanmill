@@ -186,12 +186,12 @@ void main() {
       expect(game.moves.children.isNotEmpty, isTrue);
 
       // Check if variation was created
-      if (game.moves.children.length > 0) {
+      if (game.moves.children.isNotEmpty) {
         final PgnNode<PgnNodeData> firstChild = game.moves.children[0];
         // First child should have at least one child (the main continuation)
         // or the root should have multiple children (for the variation)
         expect(
-          game.moves.children.length >= 1 || firstChild.children.length >= 1,
+          game.moves.children.isNotEmpty || firstChild.children.isNotEmpty,
           isTrue,
         );
       }

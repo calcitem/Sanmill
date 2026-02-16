@@ -136,7 +136,7 @@ void main() {
         description: 'Desc',
         author: 'Author',
         version: '1.0',
-        createdDate: DateTime(2026, 1, 1),
+        createdDate: DateTime(2026, 1),
         tags: const <String>['tag1'],
       );
 

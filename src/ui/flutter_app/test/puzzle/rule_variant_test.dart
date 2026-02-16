@@ -12,7 +12,7 @@ void main() {
   // RuleVariant.fromRuleSettings
   // ---------------------------------------------------------------------------
   group('RuleVariant.fromRuleSettings', () {
-    test('should identify standard Nine Men\'s Morris', () {
+    test("should identify standard Nine Men's Morris", () {
       final RuleVariant variant = RuleVariant.fromRuleSettings(
         const RuleSettings(),
       );
@@ -22,7 +22,7 @@ void main() {
       expect(variant.ruleHash, isNotEmpty);
     });
 
-    test('should identify Twelve Men\'s Morris', () {
+    test("should identify Twelve Men's Morris", () {
       final RuleVariant variant = RuleVariant.fromRuleSettings(
         const TwelveMensMorrisRuleSettings(),
       );

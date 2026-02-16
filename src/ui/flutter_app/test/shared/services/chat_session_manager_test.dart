@@ -15,7 +15,7 @@ void main() {
     manager.clearSession();
   });
 
-  ChatMessage _makeMessage({
+  ChatMessage makeMessage({
     required String id,
     required String content,
     bool isUser = true,
@@ -41,14 +41,14 @@ void main() {
     });
 
     test('addMessage should increase message count', () {
-      manager.addMessage(_makeMessage(id: '1', content: 'Hello'));
+      manager.addMessage(makeMessage(id: '1', content: 'Hello'));
 
       expect(manager.messageCount, 1);
       expect(manager.isEmpty, isFalse);
     });
 
     test('addMessage should preserve message content', () {
-      final ChatMessage msg = _makeMessage(id: '1', content: 'Test content');
+      final ChatMessage msg = makeMessage(id: '1', content: 'Test content');
       manager.addMessage(msg);
 
       expect(manager.messages.first.content, 'Test content');
@@ -56,18 +56,18 @@ void main() {
     });
 
     test('messages should be unmodifiable', () {
-      manager.addMessage(_makeMessage(id: '1', content: 'Hello'));
+      manager.addMessage(makeMessage(id: '1', content: 'Hello'));
 
       // The returned list should be unmodifiable
       expect(
-        () => manager.messages.add(_makeMessage(id: '2', content: 'Injected')),
+        () => manager.messages.add(makeMessage(id: '2', content: 'Injected')),
         throwsUnsupportedError,
       );
     });
 
     test('clearSession should remove all messages', () {
-      manager.addMessage(_makeMessage(id: '1', content: 'Hello'));
-      manager.addMessage(_makeMessage(id: '2', content: 'World'));
+      manager.addMessage(makeMessage(id: '1', content: 'Hello'));
+      manager.addMessage(makeMessage(id: '2', content: 'World'));
 
       manager.clearSession();
 
@@ -82,10 +82,10 @@ void main() {
   // ---------------------------------------------------------------------------
   group('Update and remove messages', () {
     test('updateMessage should replace the correct message', () {
-      manager.addMessage(_makeMessage(id: '1', content: 'Original'));
-      manager.addMessage(_makeMessage(id: '2', content: 'Other'));
+      manager.addMessage(makeMessage(id: '1', content: 'Original'));
+      manager.addMessage(makeMessage(id: '2', content: 'Other'));
 
-      final ChatMessage updated = _makeMessage(id: '1', content: 'Updated');
+      final ChatMessage updated = makeMessage(id: '1', content: 'Updated');
       manager.updateMessage('1', updated);
 
       expect(manager.messages[0].content, 'Updated');
@@ -93,9 +93,9 @@ void main() {
     });
 
     test('updateMessage should be a no-op for non-existent ID', () {
-      manager.addMessage(_makeMessage(id: '1', content: 'Original'));
+      manager.addMessage(makeMessage(id: '1', content: 'Original'));
 
-      final ChatMessage updated = _makeMessage(
+      final ChatMessage updated = makeMessage(
         id: 'nonexistent',
         content: 'Updated',
       );
@@ -106,9 +106,9 @@ void main() {
     });
 
     test('removeMessage should remove the correct message', () {
-      manager.addMessage(_makeMessage(id: '1', content: 'First'));
-      manager.addMessage(_makeMessage(id: '2', content: 'Second'));
-      manager.addMessage(_makeMessage(id: '3', content: 'Third'));
+      manager.addMessage(makeMessage(id: '1', content: 'First'));
+      manager.addMessage(makeMessage(id: '2', content: 'Second'));
+      manager.addMessage(makeMessage(id: '3', content: 'Third'));
 
       manager.removeMessage('2');
 
@@ -118,7 +118,7 @@ void main() {
     });
 
     test('removeMessage should be a no-op for non-existent ID', () {
-      manager.addMessage(_makeMessage(id: '1', content: 'First'));
+      manager.addMessage(makeMessage(id: '1', content: 'First'));
 
       manager.removeMessage('nonexistent');
 
@@ -139,7 +139,7 @@ void main() {
 
     test('same game ID should not trigger reset', () {
       manager.checkAndResetIfGameChanged('game-1');
-      manager.addMessage(_makeMessage(id: '1', content: 'Hello'));
+      manager.addMessage(makeMessage(id: '1', content: 'Hello'));
 
       final bool reset = manager.checkAndResetIfGameChanged('game-1');
 
@@ -149,7 +149,7 @@ void main() {
 
     test('different game ID should trigger reset', () {
       manager.checkAndResetIfGameChanged('game-1');
-      manager.addMessage(_makeMessage(id: '1', content: 'Hello'));
+      manager.addMessage(makeMessage(id: '1', content: 'Hello'));
 
       final bool reset = manager.checkAndResetIfGameChanged('game-2');
 
@@ -160,7 +160,7 @@ void main() {
 
     test('null game ID should not trigger reset', () {
       manager.checkAndResetIfGameChanged('game-1');
-      manager.addMessage(_makeMessage(id: '1', content: 'Hello'));
+      manager.addMessage(makeMessage(id: '1', content: 'Hello'));
 
       final bool reset = manager.checkAndResetIfGameChanged(null);
 
@@ -176,7 +176,7 @@ void main() {
     test('should keep messages under limit', () {
       // Add more messages than the max context window
       for (int i = 0; i < 15; i++) {
-        manager.addMessage(_makeMessage(id: '$i', content: 'Message $i'));
+        manager.addMessage(makeMessage(id: '$i', content: 'Message $i'));
       }
 
       // Should be trimmed to max context messages or less
@@ -186,7 +186,7 @@ void main() {
     test('should preserve welcome message during trimming', () {
       // Add welcome message
       manager.addMessage(
-        _makeMessage(
+        makeMessage(
           id: 'welcome',
           content: 'Welcome to the game!',
           isUser: false,
@@ -195,7 +195,7 @@ void main() {
 
       // Add many subsequent messages
       for (int i = 0; i < 15; i++) {
-        manager.addMessage(_makeMessage(id: '$i', content: 'Chat message $i'));
+        manager.addMessage(makeMessage(id: '$i', content: 'Chat message $i'));
       }
 
       // Welcome message should still be first
@@ -205,13 +205,13 @@ void main() {
     test('token-based trimming with long messages', () {
       // Add a welcome message
       manager.addMessage(
-        _makeMessage(id: 'welcome', content: 'Hi', isUser: false),
+        makeMessage(id: 'welcome', content: 'Hi', isUser: false),
       );
 
       // Add very long messages to exceed token budget
       final String longContent = 'A' * 2000; // ~500 tokens each
       for (int i = 0; i < 10; i++) {
-        manager.addMessage(_makeMessage(id: '$i', content: longContent));
+        manager.addMessage(makeMessage(id: '$i', content: longContent));
       }
 
       // Should be trimmed based on token count
@@ -228,7 +228,7 @@ void main() {
     });
 
     test('short message should have reasonable token count', () {
-      manager.addMessage(_makeMessage(id: '1', content: 'Hello world'));
+      manager.addMessage(makeMessage(id: '1', content: 'Hello world'));
 
       // "Hello world" = 11 chars + 20 overhead = 31 chars / 4 ≈ 8 tokens
       expect(manager.estimatedTokenUsage, greaterThan(0));
@@ -236,10 +236,10 @@ void main() {
     });
 
     test('longer messages should have more tokens', () {
-      manager.addMessage(_makeMessage(id: '1', content: 'Short'));
+      manager.addMessage(makeMessage(id: '1', content: 'Short'));
       final int shortTokens = manager.estimatedTokenUsage;
 
-      manager.addMessage(_makeMessage(id: '2', content: 'A' * 400));
+      manager.addMessage(makeMessage(id: '2', content: 'A' * 400));
       final int withLongTokens = manager.estimatedTokenUsage;
 
       expect(withLongTokens, greaterThan(shortTokens));
@@ -248,7 +248,7 @@ void main() {
     test('tokenBudgetRemaining should decrease with messages', () {
       final int initial = manager.tokenBudgetRemaining;
 
-      manager.addMessage(_makeMessage(id: '1', content: 'Hello world'));
+      manager.addMessage(makeMessage(id: '1', content: 'Hello world'));
 
       expect(manager.tokenBudgetRemaining, lessThan(initial));
     });
@@ -268,7 +268,7 @@ void main() {
 
     test('single welcome message should return empty history', () {
       manager.addMessage(
-        _makeMessage(id: 'welcome', content: 'Welcome', isUser: false),
+        makeMessage(id: 'welcome', content: 'Welcome', isUser: false),
       );
 
       expect(manager.getConversationHistory(), '');
@@ -276,13 +276,13 @@ void main() {
 
     test('should format conversation correctly', () {
       manager.addMessage(
-        _makeMessage(id: 'welcome', content: 'Welcome', isUser: false),
+        makeMessage(id: 'welcome', content: 'Welcome', isUser: false),
       );
       manager.addMessage(
-        _makeMessage(id: '1', content: 'What is the best opening?'),
+        makeMessage(id: '1', content: 'What is the best opening?'),
       );
       manager.addMessage(
-        _makeMessage(id: '2', content: 'Consider d6 or f4.', isUser: false),
+        makeMessage(id: '2', content: 'Consider d6 or f4.', isUser: false),
       );
 
       final String history = manager.getConversationHistory();
@@ -294,11 +294,11 @@ void main() {
 
     test('should skip streaming messages in history', () {
       manager.addMessage(
-        _makeMessage(id: 'welcome', content: 'Hi', isUser: false),
+        makeMessage(id: 'welcome', content: 'Hi', isUser: false),
       );
-      manager.addMessage(_makeMessage(id: '1', content: 'Question'));
+      manager.addMessage(makeMessage(id: '1', content: 'Question'));
       manager.addMessage(
-        _makeMessage(
+        makeMessage(
           id: '2',
           content: 'Still typing...',
           isUser: false,
@@ -314,9 +314,9 @@ void main() {
 
     test('should truncate very long messages in history', () {
       manager.addMessage(
-        _makeMessage(id: 'welcome', content: 'Hi', isUser: false),
+        makeMessage(id: 'welcome', content: 'Hi', isUser: false),
       );
-      manager.addMessage(_makeMessage(id: '1', content: 'A' * 500));
+      manager.addMessage(makeMessage(id: '1', content: 'A' * 500));
 
       final String history = manager.getConversationHistory();
 
@@ -340,8 +340,8 @@ void main() {
 
     test('should reflect current session state', () {
       manager.checkAndResetIfGameChanged('game-42');
-      manager.addMessage(_makeMessage(id: '1', content: 'Hello'));
-      manager.addMessage(_makeMessage(id: '2', content: 'World'));
+      manager.addMessage(makeMessage(id: '1', content: 'Hello'));
+      manager.addMessage(makeMessage(id: '2', content: 'World'));
 
       final Map<String, dynamic> stats = manager.getSessionStats();
 

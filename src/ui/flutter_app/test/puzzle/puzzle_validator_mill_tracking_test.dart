@@ -81,7 +81,7 @@ void main() {
 
   /// Helper: create a formMill puzzle with the given initial position and
   /// solution moves.
-  PuzzleInfo _makeFormMillPuzzle({
+  PuzzleInfo makeFormMillPuzzle({
     required String initialPosition,
     required List<PuzzleMove> solutionMoves,
   }) {
@@ -98,7 +98,7 @@ void main() {
 
   group('PuzzleValidator mill formation tracking', () {
     test('validator starts with mill flag unset', () {
-      final PuzzleInfo puzzle = _makeFormMillPuzzle(
+      final PuzzleInfo puzzle = makeFormMillPuzzle(
         initialPosition:
             '********/********/******** w p p 0 9 0 9 0 0 0 0 0 0 0 0 1',
         solutionMoves: const <PuzzleMove>[
@@ -116,7 +116,7 @@ void main() {
     });
 
     test('validateSolution detects mill when Act.remove is pending', () {
-      final PuzzleInfo puzzle = _makeFormMillPuzzle(
+      final PuzzleInfo puzzle = makeFormMillPuzzle(
         initialPosition:
             '********/********/******** w p p 0 9 0 9 0 0 0 0 0 0 0 0 1',
         solutionMoves: const <PuzzleMove>[
@@ -148,7 +148,7 @@ void main() {
     });
 
     test('reset clears the mill formation flag', () {
-      final PuzzleInfo puzzle = _makeFormMillPuzzle(
+      final PuzzleInfo puzzle = makeFormMillPuzzle(
         initialPosition:
             '********/********/******** w p p 0 9 0 9 0 0 0 0 0 0 0 0 1',
         solutionMoves: const <PuzzleMove>[
@@ -179,7 +179,7 @@ void main() {
       // This verifies that the solution-matching path takes priority over
       // the objective check, so formMill puzzles can be solved correctly
       // even if Act.remove is never observed.
-      final PuzzleInfo puzzle = _makeFormMillPuzzle(
+      final PuzzleInfo puzzle = makeFormMillPuzzle(
         initialPosition:
             '********/********/******** w p p 0 9 0 9 0 0 0 0 0 0 0 0 1',
         solutionMoves: const <PuzzleMove>[
@@ -202,7 +202,7 @@ void main() {
     });
 
     test('non-matching moves with no mill show inProgress', () {
-      final PuzzleInfo puzzle = _makeFormMillPuzzle(
+      final PuzzleInfo puzzle = makeFormMillPuzzle(
         initialPosition:
             '********/********/******** w p p 0 9 0 9 0 0 0 0 0 0 0 0 1',
         solutionMoves: const <PuzzleMove>[

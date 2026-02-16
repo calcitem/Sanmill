@@ -13,7 +13,7 @@ void main() {
   // Default RuleSettings
   // ---------------------------------------------------------------------------
   group('RuleSettings defaults', () {
-    test('should have Nine Men\'s Morris standard defaults', () {
+    test("should have Nine Men's Morris standard defaults", () {
       const RuleSettings r = RuleSettings();
 
       expect(r.piecesCount, 9);
@@ -142,10 +142,7 @@ void main() {
     });
 
     test('custom settings with diagonal and custodian is not NineMens', () {
-      const RuleSettings r = RuleSettings(
-        piecesCount: 9,
-        enableCustodianCapture: true,
-      );
+      const RuleSettings r = RuleSettings(enableCustodianCapture: true);
       expect(r.isLikelyNineMensMorris(), isFalse);
     });
   });

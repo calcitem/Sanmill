@@ -104,7 +104,7 @@ void main() {
   // ---------------------------------------------------------------------------
   group('getFixedAiEloRating shuffling adjustment', () {
     test('disabling shuffling should decrease rating', () {
-      mockDB.generalSettings = const GeneralSettings(shufflingEnabled: true);
+      mockDB.generalSettings = const GeneralSettings();
       final int withShuffle = EloRatingService.getFixedAiEloRating(15);
 
       mockDB.generalSettings = const GeneralSettings(shufflingEnabled: false);
@@ -123,7 +123,7 @@ void main() {
   // ---------------------------------------------------------------------------
   group('getFixedAiEloRating aiIsLazy adjustment', () {
     test('lazy AI should have roughly halved rating', () {
-      mockDB.generalSettings = const GeneralSettings(aiIsLazy: false);
+      mockDB.generalSettings = const GeneralSettings();
       final int normal = EloRatingService.getFixedAiEloRating(15);
 
       mockDB.generalSettings = const GeneralSettings(aiIsLazy: true);
@@ -143,14 +143,12 @@ void main() {
       'MCTS without perfect DB should have significantly reduced rating',
       () {
         mockDB.generalSettings = const GeneralSettings(
-          searchAlgorithm: SearchAlgorithm.mtdf,
           usePerfectDatabase: false,
         );
         final int mtdf = EloRatingService.getFixedAiEloRating(15);
 
         mockDB.generalSettings = const GeneralSettings(
           searchAlgorithm: SearchAlgorithm.mcts,
-          usePerfectDatabase: false,
         );
         final int mcts = EloRatingService.getFixedAiEloRating(15);
 
@@ -170,7 +168,6 @@ void main() {
     test('random should have lowest possible rating', () {
       mockDB.generalSettings = const GeneralSettings(
         searchAlgorithm: SearchAlgorithm.random,
-        usePerfectDatabase: false,
       );
       final int rating = EloRatingService.getFixedAiEloRating(30);
 
@@ -183,7 +180,7 @@ void main() {
   // ---------------------------------------------------------------------------
   group('getFixedAiEloRating perfect database', () {
     test('perfect DB should increase rating', () {
-      mockDB.generalSettings = const GeneralSettings(usePerfectDatabase: false);
+      mockDB.generalSettings = const GeneralSettings();
       final int without = EloRatingService.getFixedAiEloRating(20);
 
       mockDB.generalSettings = const GeneralSettings(usePerfectDatabase: true);
@@ -202,7 +199,7 @@ void main() {
   // ---------------------------------------------------------------------------
   group('getFixedAiEloRating human move time', () {
     test('short human time limit should increase AI rating', () {
-      mockDB.generalSettings = const GeneralSettings(humanMoveTime: 0);
+      mockDB.generalSettings = const GeneralSettings();
       final int noLimit = EloRatingService.getFixedAiEloRating(15);
 
       mockDB.generalSettings = const GeneralSettings(humanMoveTime: 3);
@@ -228,7 +225,6 @@ void main() {
         focusOnBlockingPaths: true,
         aiIsLazy: true,
         searchAlgorithm: SearchAlgorithm.mcts,
-        usePerfectDatabase: false,
       );
 
       for (int level = 1; level <= 30; level++) {

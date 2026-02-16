@@ -74,19 +74,16 @@ void main() {
           _makePuzzle(
             id: '1',
             difficulty: PuzzleDifficulty.beginner,
-            category: PuzzleCategory.formMill,
             rating: 1200,
           ),
           _makePuzzle(
             id: '2',
-            difficulty: PuzzleDifficulty.easy,
             category: PuzzleCategory.capturePieces,
             rating: 1400,
           ),
           _makePuzzle(
             id: '3',
             difficulty: PuzzleDifficulty.medium,
-            category: PuzzleCategory.formMill,
             rating: 1600,
           ),
           _makePuzzle(
@@ -97,7 +94,6 @@ void main() {
           ),
           _makePuzzle(
             id: '5',
-            difficulty: PuzzleDifficulty.easy,
             category: PuzzleCategory.defend,
             rating: 1300,
             isCustom: true,
@@ -197,7 +193,7 @@ void main() {
 
         for (int i = 0; i < sorted.length - 1; i++) {
           expect(
-            sorted[i].rating!,
+            sorted[i].rating,
             lessThanOrEqualTo(sorted[i + 1].rating!),
             reason:
                 'Rating ${sorted[i].rating} should be <= '

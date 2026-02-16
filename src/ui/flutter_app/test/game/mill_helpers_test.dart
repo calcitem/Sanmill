@@ -62,13 +62,13 @@ void main() {
   // isRuleSupportingPerfectDatabase
   // ---------------------------------------------------------------------------
   group('isRuleSupportingPerfectDatabase', () {
-    test('default Nine Men\'s Morris should support perfect DB', () {
+    test("default Nine Men's Morris should support perfect DB", () {
       mockDB.ruleSettings = const RuleSettings();
 
       expect(isRuleSupportingPerfectDatabase(), isTrue);
     });
 
-    test('Twelve Men\'s Morris should support perfect DB', () {
+    test("Twelve Men's Morris should support perfect DB", () {
       mockDB.ruleSettings = const TwelveMensMorrisRuleSettings();
 
       expect(isRuleSupportingPerfectDatabase(), isTrue);
@@ -163,10 +163,7 @@ void main() {
     });
 
     test('9 pieces with diagonal should NOT support', () {
-      mockDB.ruleSettings = const RuleSettings(
-        piecesCount: 9,
-        hasDiagonalLines: true,
-      );
+      mockDB.ruleSettings = const RuleSettings(hasDiagonalLines: true);
 
       expect(isRuleSupportingPerfectDatabase(), isFalse);
     });

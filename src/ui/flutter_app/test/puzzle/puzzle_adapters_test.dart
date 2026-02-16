@@ -7,7 +7,6 @@
 
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sanmill/game_page/services/mill.dart';
 import 'package:sanmill/puzzle/models/puzzle_adapters.dart';
 import 'package:sanmill/puzzle/models/puzzle_models.dart';
 import 'package:sanmill/shared/database/database.dart';

@@ -315,7 +315,6 @@ void main() {
         bestMoveCount: 5,
         attempts: 2,
         hintsUsed: 1,
-        solutionViewed: false,
         lastAttemptDate: now,
         completionDate: now,
       );
@@ -381,8 +380,6 @@ void main() {
         stars: 3,
         bestMoveCount: 4,
         attempts: 1,
-        hintsUsed: 0,
-        solutionViewed: false,
         lastAttemptDate: now,
         completionDate: now,
       );
@@ -527,7 +524,7 @@ void main() {
     });
 
     test('fromJson should parse correctly', () {
-      final PuzzleMove move = PuzzleMove.fromJson(<String, dynamic>{
+      final PuzzleMove move = PuzzleMove.fromJson(const <String, dynamic>{
         'notation': 'b4',
         'side': 'white',
         'comment': 'Defense',

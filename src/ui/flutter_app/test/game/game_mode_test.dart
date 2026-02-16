@@ -62,7 +62,7 @@ void main() {
   // ---------------------------------------------------------------------------
   group('GameMode.whoIsAI', () {
     test('humanVsAi with aiMovesFirst=false: black is AI', () {
-      (DB.instance as MockDB).generalSettings = DB().generalSettings.copyWith(
+      (DB.instance! as MockDB).generalSettings = DB().generalSettings.copyWith(
         aiMovesFirst: false,
       );
 
@@ -72,7 +72,7 @@ void main() {
     });
 
     test('humanVsAi with aiMovesFirst=true: white is AI', () {
-      (DB.instance as MockDB).generalSettings = DB().generalSettings.copyWith(
+      (DB.instance! as MockDB).generalSettings = DB().generalSettings.copyWith(
         aiMovesFirst: true,
       );
 

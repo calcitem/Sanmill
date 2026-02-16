@@ -35,7 +35,7 @@ void main() {
 
     group('fromJson / toJson round-trip', () {
       test('should survive a full round-trip with all fields populated', () {
-        final DateTime now = DateTime(2026, 2, 14, 12, 0, 0);
+        final DateTime now = DateTime(2026, 2, 14, 12, 0);
         final PlayerStats original = PlayerStats(
           rating: 1800,
           gamesPlayed: 50,
@@ -167,7 +167,7 @@ void main() {
 
     group('toJson field mapping', () {
       test('should include all fields in JSON output', () {
-        final DateTime now = DateTime(2026, 1, 1);
+        final DateTime now = DateTime(2026, 1);
         final PlayerStats stats = PlayerStats(
           rating: 1500,
           gamesPlayed: 10,
@@ -225,15 +225,13 @@ void main() {
 
     group('fromJson / toJson round-trip', () {
       test('should survive a full round-trip', () {
-        final StatsSettings original = StatsSettings(
-          isStatsEnabled: true,
+        const StatsSettings original = StatsSettings(
           humanStats: const PlayerStats(rating: 1800, gamesPlayed: 42),
           aiDifficultyStatsMap: <int, PlayerStats>{
             1: const PlayerStats(rating: 300, gamesPlayed: 10, wins: 7),
             15: const PlayerStats(rating: 1900, gamesPlayed: 5),
           },
           shouldSuggestMctsSwitch: true,
-          shouldSuggestMtdfSwitch: false,
         );
 
         final Map<String, dynamic> json = original.toJson();

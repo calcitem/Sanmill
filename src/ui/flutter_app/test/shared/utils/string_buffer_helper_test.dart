@@ -85,7 +85,7 @@ void main() {
   group('CustomStringBuffer.writeComma (screenReaderSupport off)', () {
     setUp(() {
       mockDB.generalSettings = const GeneralSettings(
-        screenReaderSupport: false,
+
       );
     });
 
@@ -133,7 +133,7 @@ void main() {
   group('CustomStringBuffer.writePeriod (screenReaderSupport off)', () {
     setUp(() {
       mockDB.generalSettings = const GeneralSettings(
-        screenReaderSupport: false,
+
       );
     });
 

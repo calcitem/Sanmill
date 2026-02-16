@@ -13,7 +13,7 @@ void main() {
   // Square.parse
   // ---------------------------------------------------------------------------
   group('Square.parse', () {
-    test('should parse valid Nine Men\'s Morris squares', () {
+    test("should parse valid Nine Men's Morris squares", () {
       expect(Square.parse('a1'), isNotNull);
       expect(Square.parse('a1')!.name, 'a1');
 

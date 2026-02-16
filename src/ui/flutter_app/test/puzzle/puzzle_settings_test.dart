@@ -171,7 +171,7 @@ void main() {
         allPuzzles: <PuzzleInfo>[_makePuzzle('p1'), _makePuzzle('p2')],
         progressMap: <String, PuzzleProgress>{
           'p1': PuzzleProgress(puzzleId: 'p1', completed: true),
-          'p2': PuzzleProgress(puzzleId: 'p2', completed: false),
+          'p2': PuzzleProgress(puzzleId: 'p2'),
           'p3': PuzzleProgress(
             puzzleId: 'p3',
             completed: true,
@@ -218,7 +218,7 @@ void main() {
         allPuzzles: <PuzzleInfo>[_makePuzzle('p1'), _makePuzzle('p2')],
         progressMap: <String, PuzzleProgress>{
           'p1': PuzzleProgress(puzzleId: 'p1', completed: true),
-          'p2': PuzzleProgress(puzzleId: 'p2', completed: false),
+          'p2': PuzzleProgress(puzzleId: 'p2'),
         },
       );
 

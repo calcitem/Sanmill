@@ -14,7 +14,7 @@ void main() {
       });
 
       test('should contain role description', () {
-        expect(PromptDefaults.llmPromptHeader, contains('Nine Men\'s Morris'));
+        expect(PromptDefaults.llmPromptHeader, contains("Nine Men's Morris"));
       });
 
       test('should contain board reference information', () {

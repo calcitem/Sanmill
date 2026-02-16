@@ -87,9 +87,7 @@ void main() {
     });
 
     test('different settings should produce different hashes', () {
-      final String hash1 = calculator.calculateLatestHash(
-        const RuleSettings(piecesCount: 9),
-      );
+      final String hash1 = calculator.calculateLatestHash(const RuleSettings());
       final String hash2 = calculator.calculateLatestHash(
         const RuleSettings(piecesCount: 12),
       );
@@ -98,9 +96,7 @@ void main() {
     });
 
     test('diagonal lines difference should produce different hashes', () {
-      final String hash1 = calculator.calculateLatestHash(
-        const RuleSettings(hasDiagonalLines: false),
-      );
+      final String hash1 = calculator.calculateLatestHash(const RuleSettings());
       final String hash2 = calculator.calculateLatestHash(
         const RuleSettings(hasDiagonalLines: true),
       );
@@ -150,10 +146,7 @@ void main() {
       final String hashLatest = calculator.calculateLatestHash(
         const RuleSettings(),
       );
-      final String hashV1 = calculator.calculateHash(
-        const RuleSettings(),
-        version: RuleSchemaVersion.v1,
-      );
+      final String hashV1 = calculator.calculateHash(const RuleSettings());
 
       expect(hashLatest, hashV1);
     });

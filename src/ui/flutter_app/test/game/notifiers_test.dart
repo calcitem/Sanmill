@@ -68,7 +68,7 @@ void main() {
     test('showTip should set showSnackBar based on screenReaderSupport', () {
       // Default: screenReaderSupport = false
       final HeaderTipNotifier notifier = HeaderTipNotifier();
-      notifier.showTip('Test', snackBar: true);
+      notifier.showTip('Test');
 
       // screenReaderSupport is false by default in MockDB,
       // so showSnackBar should be false
