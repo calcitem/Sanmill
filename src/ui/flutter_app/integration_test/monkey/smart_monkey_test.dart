@@ -395,34 +395,45 @@ Future<void> _runActions(
 }
 
 /// Apply a pseudo-random settings change.
-void _randomSettingsChange(int seed) {
-  switch (seed % 5) {
+///
+/// Uses [index] (the action iteration counter) divided by the change
+/// interval to cycle through different settings, ensuring we actually
+/// exercise all the settings changes instead of always landing on case 0.
+void _randomSettingsChange(int index) {
+  // Divide by the change interval (5) to get which settings change to apply.
+  final int settingIndex = (index ~/ 5) % 5;
+  switch (settingIndex) {
     case 0:
+      final int level = (index % 10) + 1;
       DB().generalSettings = DB().generalSettings.copyWith(
-        skillLevel: (seed % 10) + 1,
+        skillLevel: level,
       );
-      print('[SettingsChaos] Set skillLevel=${(seed % 10) + 1}');
+      print('[SettingsChaos] Set skillLevel=$level');
     case 1:
+      final int time = index % 3;
       DB().generalSettings = DB().generalSettings.copyWith(
-        moveTime: seed % 3,
+        moveTime: time,
       );
-      print('[SettingsChaos] Set moveTime=${seed % 3}');
+      print('[SettingsChaos] Set moveTime=$time');
     case 2:
+      final bool enabled = index % 2 == 0;
       DB().generalSettings = DB().generalSettings.copyWith(
-        shufflingEnabled: seed % 2 == 0,
+        shufflingEnabled: enabled,
       );
-      print('[SettingsChaos] Set shuffling=${seed % 2 == 0}');
+      print('[SettingsChaos] Set shuffling=$enabled');
     case 3:
+      final bool enabled = index % 2 == 0;
       DB().generalSettings = DB().generalSettings.copyWith(
-        isAutoRestart: seed % 2 == 0,
+        isAutoRestart: enabled,
       );
-      print('[SettingsChaos] Set autoRestart=${seed % 2 == 0}');
+      print('[SettingsChaos] Set autoRestart=$enabled');
     case 4:
     default:
+      final bool enabled = index % 2 == 0;
       DB().generalSettings = DB().generalSettings.copyWith(
-        aiIsLazy: seed % 2 == 0,
+        aiIsLazy: enabled,
       );
-      print('[SettingsChaos] Set aiIsLazy=${seed % 2 == 0}');
+      print('[SettingsChaos] Set aiIsLazy=$enabled');
   }
 }
 
