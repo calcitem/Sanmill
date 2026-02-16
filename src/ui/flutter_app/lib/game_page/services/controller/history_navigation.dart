@@ -107,6 +107,15 @@ class HistoryNavigator {
       GameController().animationManager.allowAnimations = false;
     }
 
+    // Record history navigation event for experience recording.
+    RecordingService().recordEvent(
+      RecordingEventType.historyNavigation,
+      <String, dynamic>{
+        'action': navMode.toString(),
+        if (number != null) 'steps': number,
+      },
+    );
+
     // Replay moves to get the new board state
     final HistoryResponse resp = await doEachMove(navMode, number);
 

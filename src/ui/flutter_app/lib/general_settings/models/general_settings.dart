@@ -165,6 +165,7 @@ class GeneralSettings {
     this.backgroundMusicEnabled = false,
     this.backgroundMusicFilePath = '',
     this.lastPgnSaveDirectory = '',
+    this.experienceRecordingEnabled = false,
   });
 
   /// Encodes a Json style map into a [GeneralSettings] object
@@ -323,6 +324,10 @@ class GeneralSettings {
   // Last directory where PGN file was saved.
   @HiveField(44, defaultValue: "")
   final String lastPgnSaveDirectory;
+
+  // Enable experience recording for digital twin replay / bug reproduction.
+  @HiveField(45, defaultValue: false)
+  final bool experienceRecordingEnabled;
 
   /// Decodes a Json from a [GeneralSettings] object
   Map<String, dynamic> toJson() => _$GeneralSettingsToJson(this);

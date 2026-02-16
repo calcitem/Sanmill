@@ -38,6 +38,9 @@ import '../../shared/widgets/snackbars/scaffold_messenger.dart';
 import '../../statistics/model/stats_settings.dart';
 // Voice assistant functionality disabled
 // import '../../voice_assistant/widgets/voice_button.dart';
+import '../../experience_recording/services/recording_service.dart';
+import '../../experience_recording/widgets/recording_indicator.dart';
+import '../../experience_recording/widgets/replay_controls.dart';
 import '../pages/board_recognition_debug_page.dart';
 import '../services/analysis_mode.dart';
 import '../services/animation/animation_manager.dart';
@@ -109,6 +112,20 @@ class _GamePageInnerState extends State<_GamePageInner> {
 
     // Listen for analysis mode state changes
     AnalysisMode.stateNotifier.addListener(_updateAnalysisButton);
+
+    // Auto-start experience recording if enabled and not already recording.
+    _maybeStartRecording();
+  }
+
+  /// Starts experience recording automatically when the feature is enabled.
+  void _maybeStartRecording() {
+    if (DB().generalSettings.experienceRecordingEnabled &&
+        !RecordingService().isRecording) {
+      RecordingService().startRecording(
+        gameMode:
+            widget.controller.gameInstance.gameMode.toString(),
+      );
+    }
   }
 
   // Method to update only the analysis button when state changes
@@ -176,6 +193,24 @@ class _GamePageInnerState extends State<_GamePageInner> {
                 key: const Key('game_page_drawer_icon_align'),
                 alignment: AlignmentDirectional.topStart,
                 child: SafeArea(child: _buildTopLeftButton(context)),
+              ),
+              // Experience recording indicator and replay controls.
+              Align(
+                key: const Key('game_page_recording_indicator_align'),
+                alignment: Alignment.topCenter,
+                child: SafeArea(
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 8),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: const <Widget>[
+                        RecordingIndicator(),
+                        SizedBox(height: 4),
+                        ReplayControls(),
+                      ],
+                    ),
+                  ),
+                ),
               ),
               // Top-right corner buttons (analysis, AI chat, image recognition)
               if (GameController().gameInstance.gameMode ==

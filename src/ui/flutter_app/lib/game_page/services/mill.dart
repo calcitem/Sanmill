@@ -50,6 +50,8 @@ import 'engine/bitboard.dart';
 import "gif_share/gif_share.dart";
 import 'import_export/import_helpers.dart';
 import 'import_export/pgn.dart';
+import '../../experience_recording/models/recording_models.dart';
+import '../../experience_recording/services/recording_service.dart';
 import 'player_timer.dart';
 
 part 'controller/game_controller.dart';
