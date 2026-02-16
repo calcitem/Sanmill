@@ -22,6 +22,8 @@ import '../../rule_settings/models/rule_settings.dart';
 import '../../statistics/model/stats_settings.dart';
 // Voice assistant functionality disabled
 // import '../../voice_assistant/models/voice_assistant_settings.dart';
+import '../../experience_recording/models/recording_models.dart';
+import '../../experience_recording/services/recording_service.dart';
 import '../config/constants.dart';
 import '../services/logger.dart';
 import 'adapters/adapters.dart';
@@ -198,6 +200,15 @@ class Database {
     _engineOptionsDebounceTimer = Timer(_engineOptionsDebounceDuration, () {
       GameController().engine.setGeneralOptions();
     });
+
+    // Record settings change for experience recording.
+    RecordingService().recordEvent(
+      RecordingEventType.settingsChange,
+      <String, dynamic>{
+        'category': 'general',
+        'settings': generalSettings.toJson(),
+      },
+    );
   }
 
   /// Gets the given [GeneralSettings] from the settings Box
@@ -239,7 +250,18 @@ class Database {
   RuleSettings? get _ruleSettings => _ruleSettingsBox.get(ruleSettingsKey);
 
   /// Saves the given [ruleSettings] to the settings Box
-  set ruleSettings(RuleSettings ruleSettings) => _ruleSettings = ruleSettings;
+  set ruleSettings(RuleSettings ruleSettings) {
+    _ruleSettings = ruleSettings;
+
+    // Record settings change for experience recording.
+    RecordingService().recordEvent(
+      RecordingEventType.settingsChange,
+      <String, dynamic>{
+        'category': 'rule',
+        'settings': ruleSettings.toJson(),
+      },
+    );
+  }
 
   /// Gets the given [RuleSettings] from the settings Box
   ///
@@ -268,8 +290,18 @@ class Database {
       _displaySettingsBox.listenable(keys: <String>[displaySettingsKey]);
 
   /// Saves the given [displaySettings] to the settings Box
-  set displaySettings(DisplaySettings displaySettings) =>
-      _displaySettingsBox.put(displaySettingsKey, displaySettings);
+  set displaySettings(DisplaySettings displaySettings) {
+    _displaySettingsBox.put(displaySettingsKey, displaySettings);
+
+    // Record settings change for experience recording.
+    RecordingService().recordEvent(
+      RecordingEventType.settingsChange,
+      <String, dynamic>{
+        'category': 'display',
+        'settings': displaySettings.toJson(),
+      },
+    );
+  }
 
   /// Gets the given [DisplaySettings] from the settings Box
   DisplaySettings get displaySettings =>

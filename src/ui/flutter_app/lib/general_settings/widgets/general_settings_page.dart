@@ -16,6 +16,8 @@ import 'package:path_provider/path_provider.dart';
 
 import '../../appearance_settings/models/color_settings.dart';
 import '../../custom_drawer/custom_drawer.dart';
+import '../../experience_recording/pages/session_list_page.dart';
+import '../../experience_recording/services/recording_service.dart';
 import '../../game_page/services/gif_share/gif_share.dart';
 import '../../game_page/services/mill.dart';
 import '../../generated/intl/l10n.dart';
@@ -516,6 +518,32 @@ class GeneralSettingsPage extends StatelessWidget {
     }
   }
 
+  void _setExperienceRecordingEnabled(
+    BuildContext context,
+    GeneralSettings generalSettings,
+    bool value,
+  ) {
+    DB().generalSettings = generalSettings.copyWith(
+      experienceRecordingEnabled: value,
+    );
+
+    logger.t("$_logTag experienceRecordingEnabled: $value");
+
+    // Stop any active recording when feature is disabled.
+    if (!value) {
+      RecordingService().stopRecording();
+    }
+  }
+
+  void _openRecordingSessions(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute<void>(
+        builder: (BuildContext context) => const SessionListPage(),
+      ),
+    );
+  }
+
   void _setGameScreenRecorderDuration(
     BuildContext context,
     GeneralSettings generalSettings,
@@ -928,6 +956,47 @@ class GeneralSettingsPage extends StatelessWidget {
               ),
             ],
           ),
+        SettingsCard(
+          key: const Key(
+            'general_settings_page_settings_card_experience_recording',
+          ),
+          title: Text(
+            S.of(context).experienceRecording,
+            key: const Key(
+              'general_settings_page_settings_card_experience_recording_title',
+            ),
+          ),
+          children: <Widget>[
+            SettingsListTile.switchTile(
+              key: const Key(
+                'general_settings_page_experience_recording_enabled',
+              ),
+              value: generalSettings.experienceRecordingEnabled,
+              onChanged: (bool val) {
+                _setExperienceRecordingEnabled(
+                  context,
+                  generalSettings,
+                  val,
+                );
+                if (val == true) {
+                  SnackBarService.showRootSnackBar(
+                    S.of(context).experimental,
+                  );
+                }
+              },
+              titleString: S.of(context).experienceRecording,
+              subtitleString:
+                  S.of(context).experienceRecordingDescription,
+            ),
+            SettingsListTile(
+              key: const Key(
+                'general_settings_page_recording_sessions',
+              ),
+              titleString: S.of(context).recordingSessions,
+              onTap: () => _openRecordingSessions(context),
+            ),
+          ],
+        ),
         if (DB().ruleSettings.isLikelyNineMensMorris())
           SettingsCard(
             key: const Key('general_settings_page_settings_card_llm_prompts'),

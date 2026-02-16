@@ -49,6 +49,15 @@ class GameResultNotifier extends ChangeNotifier {
     // If a game result is newly detected, update ratings once
     if (_hasResult && !prevHasResult) {
       _updateRatings();
+
+      // Record game over event for experience recording.
+      RecordingService().recordEvent(
+        RecordingEventType.gameOver,
+        <String, dynamic>{
+          'winner': _winner?.string ?? '',
+          'reason': _reason?.toString() ?? '',
+        },
+      );
     }
 
     // Mark the result panel as visible only when a result actually exists

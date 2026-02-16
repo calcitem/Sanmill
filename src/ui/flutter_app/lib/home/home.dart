@@ -41,6 +41,8 @@ import '../shared/services/snackbar_service.dart';
 import '../shared/themes/app_theme.dart';
 import '../shared/utils/helpers/list_helpers/stack_list.dart';
 import '../shared/widgets/double_back_to_close_app.dart';
+import '../experience_recording/models/recording_models.dart';
+import '../experience_recording/services/recording_service.dart';
 import '../shared/widgets/snackbars/scaffold_messenger.dart';
 import '../statistics/widgets/stats_page.dart';
 import '../tutorial/widgets/tutorial_dialog.dart';
@@ -266,6 +268,12 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
       // SelectionChanged for these is `(_) {}` anyway.
       return;
     }
+
+    // Record game mode change for experience recording.
+    RecordingService().recordEvent(
+      RecordingEventType.gameModeChange,
+      <String, dynamic>{'mode': index.name},
+    );
 
     setState(() {
       assert(index != _DrawerIndex.feedback);

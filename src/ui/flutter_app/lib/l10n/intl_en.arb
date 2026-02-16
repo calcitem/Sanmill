@@ -4139,5 +4139,81 @@
     "puzzleTransformed": "Board transformed.",
     "@puzzleTransformed": {
         "description": "Snackbar message after a puzzle board transformation is applied"
+    },
+    "experienceRecording": "Experience Recording",
+    "@experienceRecording": {
+        "description": "Title for the experience recording feature toggle"
+    },
+    "experienceRecordingDescription": "Record user operations for bug reproduction replay",
+    "@experienceRecordingDescription": {
+        "description": "Subtitle for the experience recording feature toggle"
+    },
+    "recording": "Recording",
+    "@recording": {
+        "description": "Label shown when recording is active"
+    },
+    "startRecording": "Start Recording",
+    "@startRecording": {
+        "description": "Button label to start a recording session"
+    },
+    "stopRecording": "Stop Recording",
+    "@stopRecording": {
+        "description": "Button label to stop a recording session"
+    },
+    "recordingSessions": "Recording Sessions",
+    "@recordingSessions": {
+        "description": "Title for the recording sessions list page"
+    },
+    "noRecordingSessions": "No recording sessions",
+    "@noRecordingSessions": {
+        "description": "Empty state message when no recording sessions exist"
+    },
+    "exportSession": "Export",
+    "@exportSession": {
+        "description": "Button label to export a recording session"
+    },
+    "deleteSession": "Delete Session",
+    "@deleteSession": {
+        "description": "Button label to delete a recording session"
+    },
+    "deleteAllSessions": "Delete All Sessions",
+    "@deleteAllSessions": {
+        "description": "Button label to delete all recording sessions"
+    },
+    "confirmDeleteSession": "Are you sure you want to delete this recording session?",
+    "@confirmDeleteSession": {
+        "description": "Confirmation dialog text for deleting a session"
+    },
+    "confirmDeleteAllSessions": "Are you sure you want to delete all recording sessions?",
+    "@confirmDeleteAllSessions": {
+        "description": "Confirmation dialog text for deleting all sessions"
+    },
+    "sessionExported": "Session exported successfully",
+    "@sessionExported": {
+        "description": "Snackbar message after successful session export"
+    },
+    "replay": "Replay",
+    "@replay": {
+        "description": "Button label to replay a recording session"
+    },
+    "replaySpeed": "Replay Speed",
+    "@replaySpeed": {
+        "description": "Label for the replay speed selector"
+    },
+    "replayComplete": "Replay complete",
+    "@replayComplete": {
+        "description": "Message shown when a replay finishes"
+    },
+    "sessionDuration": "duration",
+    "@sessionDuration": {
+        "description": "Label for session duration stat"
+    },
+    "sessionEventCount": "events",
+    "@sessionEventCount": {
+        "description": "Label for session event count stat"
+    },
+    "replayInProgress": "Settings will be temporarily changed during replay. Continue?",
+    "@replayInProgress": {
+        "description": "Confirmation dialog text before starting a replay"
     }
 }

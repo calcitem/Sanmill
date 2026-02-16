@@ -405,6 +405,16 @@ class GameController {
     gameInstance.gameMode = gameModeBak;
     GifShare().captureView(first: true);
 
+    // Record game reset event for experience recording.
+    RecordingService().recordEvent(
+      RecordingEventType.gameReset,
+      <String, dynamic>{
+        'force': force,
+        'lanRestart': lanRestart,
+        'gameMode': gameModeBak.toString(),
+      },
+    );
+
     // Timer is no longer started here.
     // It will be started in tap_handler after the first human move.
   }

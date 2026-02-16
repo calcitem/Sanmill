@@ -723,6 +723,17 @@ class TapHandler {
         GameController().position._record != recordBeforeTap;
 
     if (didCommitMove) {
+      // Record the board tap event for experience recording.
+      RecordingService().recordEvent(
+        RecordingEventType.boardTap,
+        <String, dynamic>{
+          'sq': sq,
+          'action': GameController().position.action.toString(),
+          'sideToMove':
+              GameController().position.sideToMove.string,
+        },
+      );
+
       // TODO: Need Others?
       // Increment ply counters. In particular,
       // rule50 will be reset to zero later on
