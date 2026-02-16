@@ -117,7 +117,7 @@ void main() {
   group('RecordingSession', () {
     final DateTime testTime = DateTime(2026, 2, 16, 10, 30);
 
-    RecordingSession _makeSession({
+    RecordingSession makeSession({
       List<RecordingEvent> events = const <RecordingEvent>[],
       String? notes,
       String? gameMode,
@@ -139,7 +139,7 @@ void main() {
     }
 
     test('constructor stores all fields', () {
-      final RecordingSession session = _makeSession(
+      final RecordingSession session = makeSession(
         gameMode: 'humanVsAi',
         notes: 'Bug repro',
       );
@@ -157,7 +157,7 @@ void main() {
     });
 
     test('toJson produces valid JSON string', () {
-      final RecordingSession session = _makeSession(
+      final RecordingSession session = makeSession(
         events: const <RecordingEvent>[
           RecordingEvent(
             timestampMs: 0,
@@ -186,7 +186,7 @@ void main() {
     });
 
     test('fromJson round-trip preserves all fields', () {
-      final RecordingSession original = _makeSession(
+      final RecordingSession original = makeSession(
         events: const <RecordingEvent>[
           RecordingEvent(
             timestampMs: 100,
@@ -248,7 +248,7 @@ void main() {
     });
 
     test('copyWith replaces selected fields', () {
-      final RecordingSession original = _makeSession(notes: 'Original');
+      final RecordingSession original = makeSession(notes: 'Original');
       final RecordingSession copy = original.copyWith(
         notes: 'Updated',
         durationMs: 120000,
@@ -263,7 +263,7 @@ void main() {
     });
 
     test('copyWith without arguments returns equivalent session', () {
-      final RecordingSession original = _makeSession(
+      final RecordingSession original = makeSession(
         gameMode: 'aiVsAi',
         notes: 'Test',
       );
@@ -277,7 +277,7 @@ void main() {
     });
 
     test('duration getter converts milliseconds correctly', () {
-      final RecordingSession session = _makeSession();
+      final RecordingSession session = makeSession();
 
       expect(session.duration, const Duration(milliseconds: 60000));
       expect(session.duration.inSeconds, 60);
@@ -285,7 +285,7 @@ void main() {
     });
 
     test('toString includes id and event count', () {
-      final RecordingSession session = _makeSession(
+      final RecordingSession session = makeSession(
         events: const <RecordingEvent>[
           RecordingEvent(
             timestampMs: 0,
@@ -302,8 +302,8 @@ void main() {
     });
 
     test('gameMode is included in JSON only when non-null', () {
-      final RecordingSession withMode = _makeSession(gameMode: 'humanVsAi');
-      final RecordingSession withoutMode = _makeSession();
+      final RecordingSession withMode = makeSession(gameMode: 'humanVsAi');
+      final RecordingSession withoutMode = makeSession();
 
       final Map<String, dynamic> jsonWith = withMode.toJson();
       final Map<String, dynamic> jsonWithout = withoutMode.toJson();
@@ -313,8 +313,8 @@ void main() {
     });
 
     test('notes is included in JSON only when non-null', () {
-      final RecordingSession withNotes = _makeSession(notes: 'A note');
-      final RecordingSession withoutNotes = _makeSession();
+      final RecordingSession withNotes = makeSession(notes: 'A note');
+      final RecordingSession withoutNotes = makeSession();
 
       expect(withNotes.toJson().containsKey('notes'), isTrue);
       expect(withoutNotes.toJson().containsKey('notes'), isFalse);
@@ -330,7 +330,7 @@ void main() {
         ),
       );
 
-      final RecordingSession session = _makeSession(events: events);
+      final RecordingSession session = makeSession(events: events);
       final String jsonStr = jsonEncode(session.toJson());
       final RecordingSession restored = RecordingSession.fromJson(
         jsonDecode(jsonStr) as Map<String, dynamic>,
