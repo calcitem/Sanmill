@@ -3,6 +3,8 @@
 
 // recording_service_test.dart
 
+import 'dart:convert';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sanmill/experience_recording/models/recording_models.dart';
 import 'package:sanmill/experience_recording/services/recording_service.dart';
@@ -67,6 +69,49 @@ void main() {
 
     test('flushInterval is positive duration', () {
       expect(RecordingService.flushInterval.inMilliseconds, greaterThan(0));
+    });
+  });
+
+  group('RecordingService.importSessionFromJsonString', () {
+    test('returns null for empty string', () async {
+      final RecordingSession? result =
+          await RecordingService().importSessionFromJsonString('');
+      expect(result, isNull);
+    });
+
+    test('returns null for invalid JSON', () async {
+      final RecordingSession? result =
+          await RecordingService().importSessionFromJsonString('not json');
+      expect(result, isNull);
+    });
+
+    test('returns null for JSON array instead of object', () async {
+      final RecordingSession? result =
+          await RecordingService().importSessionFromJsonString('[1, 2, 3]');
+      expect(result, isNull);
+    });
+
+    test('returns null for session with empty id', () async {
+      final String json = jsonEncode(<String, dynamic>{
+        'id': '',
+        'appVersion': '1.0',
+        'deviceInfo': 'test',
+        'startTime': DateTime.now().toIso8601String(),
+        'durationMs': 100,
+        'initialSnapshot': <String, dynamic>{},
+        'events': <dynamic>[],
+      });
+      final RecordingSession? result =
+          await RecordingService().importSessionFromJsonString(json);
+      expect(result, isNull);
+    });
+  });
+
+  group('RecordingService.importSessionFromFile', () {
+    test('returns null for non-existent file', () async {
+      final RecordingSession? result = await RecordingService()
+          .importSessionFromFile('/non/existent/path.json');
+      expect(result, isNull);
     });
   });
 }

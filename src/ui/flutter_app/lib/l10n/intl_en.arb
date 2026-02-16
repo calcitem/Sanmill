@@ -4215,5 +4215,29 @@
     "replayInProgress": "Settings will be temporarily changed during replay. Continue?",
     "@replayInProgress": {
         "description": "Confirmation dialog text before starting a replay"
+    },
+    "importSession": "Import Session",
+    "@importSession": {
+        "description": "Button label to import a recording session"
+    },
+    "importFromFile": "Import from File",
+    "@importFromFile": {
+        "description": "Option to import a recording session from a JSON file"
+    },
+    "importFromClipboard": "Import from Clipboard",
+    "@importFromClipboard": {
+        "description": "Option to import a recording session from clipboard JSON text"
+    },
+    "importSessionSuccess": "Session imported successfully",
+    "@importSessionSuccess": {
+        "description": "Snackbar message after successful session import"
+    },
+    "importSessionFailed": "Failed to import session. Please check the file format.",
+    "@importSessionFailed": {
+        "description": "Snackbar message when session import fails"
+    },
+    "clipboardEmpty": "Clipboard is empty",
+    "@clipboardEmpty": {
+        "description": "Snackbar message when clipboard has no text for import"
     }
 }

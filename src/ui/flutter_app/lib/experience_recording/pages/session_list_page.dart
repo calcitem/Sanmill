@@ -4,7 +4,9 @@
 // session_list_page.dart
 
 import 'dart:async';
+import 'dart:convert';
 
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:share_plus/share_plus.dart';
@@ -77,8 +79,8 @@ class _SessionListPageState extends State<SessionListPage> {
         session.id,
       );
       if (full != null) {
-        final String json = full.toJson().toString(); // Compact representation.
-        await Clipboard.setData(ClipboardData(text: json));
+        final String jsonStr = jsonEncode(full.toJson());
+        await Clipboard.setData(ClipboardData(text: jsonStr));
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(S.of(context).sessionExported)),
@@ -180,6 +182,160 @@ class _SessionListPageState extends State<SessionListPage> {
     }
   }
 
+  /// Shows a bottom sheet with import options: pick file or paste from clipboard.
+  void _showImportOptions() {
+    showModalBottomSheet<void>(
+      context: context,
+      builder: (BuildContext ctx) {
+        return SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 16),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 24,
+                    vertical: 8,
+                  ),
+                  child: Text(
+                    S.of(context).importSession,
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                ),
+                const Divider(),
+                ListTile(
+                  leading: const Icon(Icons.file_open_outlined),
+                  title: Text(S.of(context).importFromFile),
+                  onTap: () {
+                    Navigator.pop(ctx);
+                    _importFromFile();
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Icons.content_paste),
+                  title: Text(S.of(context).importFromClipboard),
+                  onTap: () {
+                    Navigator.pop(ctx);
+                    _importFromClipboard();
+                  },
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  /// Imports a session from a file selected via the system file picker.
+  Future<void> _importFromFile() async {
+    try {
+      final FilePickerResult? result = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowedExtensions: <String>['json'],
+      );
+
+      if (result == null || result.files.isEmpty) {
+        return;
+      }
+
+      final String? filePath = result.files.single.path;
+      if (filePath == null) {
+        return;
+      }
+
+      final RecordingSession? session = await RecordingService()
+          .importSessionFromFile(filePath);
+
+      if (!mounted) {
+        return;
+      }
+
+      if (session != null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              '${S.of(context).importSessionSuccess} '
+              '(${session.events.length} ${S.of(context).sessionEventCount})',
+            ),
+          ),
+        );
+        unawaited(_loadSessions());
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(S.of(context).importSessionFailed)),
+        );
+      }
+    } catch (e) {
+      logger.e('$_logTag Import from file error: $e');
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(S.of(context).importSessionFailed)),
+        );
+      }
+    }
+  }
+
+  /// Imports a session from JSON text on the system clipboard.
+  Future<void> _importFromClipboard() async {
+    try {
+      final ClipboardData? clipData = await Clipboard.getData(
+        Clipboard.kTextPlain,
+      );
+
+      if (clipData == null || clipData.text == null || clipData.text!.isEmpty) {
+        if (mounted) {
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(S.of(context).clipboardEmpty)));
+        }
+        return;
+      }
+
+      // Quick sanity check: must look like JSON.
+      final String text = clipData.text!.trim();
+      if (!text.startsWith('{')) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(S.of(context).importSessionFailed)),
+          );
+        }
+        return;
+      }
+
+      final RecordingSession? session = await RecordingService()
+          .importSessionFromJsonString(text);
+
+      if (!mounted) {
+        return;
+      }
+
+      if (session != null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              '${S.of(context).importSessionSuccess} '
+              '(${session.events.length} ${S.of(context).sessionEventCount})',
+            ),
+          ),
+        );
+        unawaited(_loadSessions());
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(S.of(context).importSessionFailed)),
+        );
+      }
+    } catch (e) {
+      logger.e('$_logTag Import from clipboard error: $e');
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(S.of(context).importSessionFailed)),
+        );
+      }
+    }
+  }
+
   // -----------------------------------------------------------------------
   // Build
   // -----------------------------------------------------------------------
@@ -190,6 +346,11 @@ class _SessionListPageState extends State<SessionListPage> {
       appBar: AppBar(
         title: Text(S.of(context).recordingSessions),
         actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.file_download_outlined),
+            tooltip: S.of(context).importSession,
+            onPressed: _showImportOptions,
+          ),
           if (_sessions.isNotEmpty)
             IconButton(
               icon: const Icon(Icons.delete_sweep),
@@ -197,6 +358,11 @@ class _SessionListPageState extends State<SessionListPage> {
               onPressed: _deleteAllSessions,
             ),
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _showImportOptions,
+        tooltip: S.of(context).importSession,
+        child: const Icon(Icons.file_download),
       ),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
