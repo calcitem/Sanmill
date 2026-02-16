@@ -17,6 +17,8 @@ import 'package:path_provider/path_provider.dart';
 
 import '../appearance_settings/widgets/appearance_settings_page.dart';
 import '../custom_drawer/custom_drawer.dart';
+import '../experience_recording/models/recording_models.dart';
+import '../experience_recording/services/recording_service.dart';
 import '../game_page/services/gif_share/gif_share.dart';
 import '../game_page/services/gif_share/widgets_to_image.dart';
 import '../game_page/services/mill.dart';
@@ -41,8 +43,6 @@ import '../shared/services/snackbar_service.dart';
 import '../shared/themes/app_theme.dart';
 import '../shared/utils/helpers/list_helpers/stack_list.dart';
 import '../shared/widgets/double_back_to_close_app.dart';
-import '../experience_recording/models/recording_models.dart';
-import '../experience_recording/services/recording_service.dart';
 import '../shared/widgets/snackbars/scaffold_messenger.dart';
 import '../statistics/widgets/stats_page.dart';
 import '../tutorial/widgets/tutorial_dialog.dart';

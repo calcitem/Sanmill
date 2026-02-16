@@ -121,9 +121,9 @@ class _ReplayBar extends StatelessWidget {
         return GestureDetector(
           onTap: () {
             // Cycle through speeds.
-            final List<ReplaySpeed> speeds = ReplaySpeed.values;
+            const List<ReplaySpeed> speeds = ReplaySpeed.values;
             final int nextIdx = (speeds.indexOf(speed) + 1) % speeds.length;
-            service.setSpeed(speeds[nextIdx]);
+            service.speed = speeds[nextIdx];
           },
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
@@ -151,7 +151,7 @@ class _ReplayBar extends StatelessWidget {
       builder: (BuildContext context, int current, Widget? _) {
         return ValueListenableBuilder<int>(
           valueListenable: service.totalEventsNotifier,
-          builder: (BuildContext context, int total, Widget? __) {
+          builder: (BuildContext context, int total, Widget? child2) {
             final int display = (current + 1).clamp(0, total);
             return Text(
               '$display/$total',

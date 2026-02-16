@@ -15,6 +15,8 @@ import 'package:path_provider/path_provider.dart';
 
 import '../../appearance_settings/models/color_settings.dart';
 import '../../appearance_settings/models/display_settings.dart';
+import '../../experience_recording/models/recording_models.dart';
+import '../../experience_recording/services/recording_service.dart';
 import '../../game_page/services/mill.dart';
 import '../../general_settings/models/general_settings.dart';
 import '../../puzzle/models/puzzle_models.dart';
@@ -22,8 +24,6 @@ import '../../rule_settings/models/rule_settings.dart';
 import '../../statistics/model/stats_settings.dart';
 // Voice assistant functionality disabled
 // import '../../voice_assistant/models/voice_assistant_settings.dart';
-import '../../experience_recording/models/recording_models.dart';
-import '../../experience_recording/services/recording_service.dart';
 import '../config/constants.dart';
 import '../services/logger.dart';
 import 'adapters/adapters.dart';
