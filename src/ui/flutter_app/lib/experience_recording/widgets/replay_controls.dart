@@ -122,13 +122,11 @@ class _ReplayBar extends StatelessWidget {
           onTap: () {
             // Cycle through speeds.
             final List<ReplaySpeed> speeds = ReplaySpeed.values;
-            final int nextIdx =
-                (speeds.indexOf(speed) + 1) % speeds.length;
+            final int nextIdx = (speeds.indexOf(speed) + 1) % speeds.length;
             service.setSpeed(speeds[nextIdx]);
           },
           child: Container(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
             decoration: BoxDecoration(
               border: Border.all(color: Colors.white38),
               borderRadius: BorderRadius.circular(8),
@@ -157,10 +155,7 @@ class _ReplayBar extends StatelessWidget {
             final int display = (current + 1).clamp(0, total);
             return Text(
               '$display/$total',
-              style: const TextStyle(
-                color: Colors.white70,
-                fontSize: 11,
-              ),
+              style: const TextStyle(color: Colors.white70, fontSize: 11),
             );
           },
         );

@@ -148,9 +148,11 @@ class RecordingService {
     isRecordingNotifier.value = false;
     eventCountNotifier.value = 0;
 
-    logger.i('$_logTag Recording stopped: ${session.id} '
-        '(${session.events.length} events, '
-        '${session.duration.inSeconds}s)');
+    logger.i(
+      '$_logTag Recording stopped: ${session.id} '
+      '(${session.events.length} events, '
+      '${session.duration.inSeconds}s)',
+    );
 
     return session;
   }
@@ -187,13 +189,17 @@ class RecordingService {
       return const <RecordingSession>[];
     }
 
-    final List<FileSystemEntity> files = dir
-        .listSync()
-        .where((FileSystemEntity f) =>
-            f is File && f.path.endsWith('.json'))
-        .toList()
-      ..sort((FileSystemEntity a, FileSystemEntity b) =>
-          b.statSync().modified.compareTo(a.statSync().modified));
+    final List<FileSystemEntity> files =
+        dir
+            .listSync()
+            .where(
+              (FileSystemEntity f) => f is File && f.path.endsWith('.json'),
+            )
+            .toList()
+          ..sort(
+            (FileSystemEntity a, FileSystemEntity b) =>
+                b.statSync().modified.compareTo(a.statSync().modified),
+          );
 
     final List<RecordingSession> sessions = <RecordingSession>[];
     for (final FileSystemEntity entity in files) {
@@ -294,8 +300,9 @@ class RecordingService {
   /// Persists a [RecordingSession] as a JSON file.
   Future<void> _saveSession(RecordingSession session) async {
     final File file = await _sessionFile(session.id);
-    final String json =
-        const JsonEncoder.withIndent('  ').convert(session.toJson());
+    final String json = const JsonEncoder.withIndent(
+      '  ',
+    ).convert(session.toJson());
     await file.writeAsString(json);
   }
 
@@ -322,13 +329,16 @@ class RecordingService {
       return;
     }
 
-    final List<File> files = dir
-        .listSync()
-        .whereType<File>()
-        .where((File f) => f.path.endsWith('.json'))
-        .toList()
-      ..sort((File a, File b) =>
-          a.statSync().modified.compareTo(b.statSync().modified));
+    final List<File> files =
+        dir
+            .listSync()
+            .whereType<File>()
+            .where((File f) => f.path.endsWith('.json'))
+            .toList()
+          ..sort(
+            (File a, File b) =>
+                a.statSync().modified.compareTo(b.statSync().modified),
+          );
 
     // Remove excess files beyond the session count limit.
     while (files.length > maxSessionFiles) {
@@ -339,7 +349,9 @@ class RecordingService {
 
     // Remove oldest files until total size is under the cap.
     int totalBytes = files.fold<int>(
-        0, (int sum, File f) => sum + f.lengthSync());
+      0,
+      (int sum, File f) => sum + f.lengthSync(),
+    );
     while (totalBytes > maxTotalStorageBytes && files.isNotEmpty) {
       final File oldest = files.removeAt(0);
       totalBytes -= oldest.lengthSync();
@@ -391,8 +403,7 @@ class RecordingService {
         _cachedDeviceInfo = info.productName;
       } else if (Platform.isMacOS) {
         final MacOsDeviceInfo info = await plugin.macOsInfo;
-        _cachedDeviceInfo =
-            '${info.model} (macOS ${info.osRelease})';
+        _cachedDeviceInfo = '${info.model} (macOS ${info.osRelease})';
       } else {
         _cachedDeviceInfo = Platform.operatingSystem;
       }

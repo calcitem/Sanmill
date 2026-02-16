@@ -47,9 +47,10 @@ class _RecordingBadgeState extends State<_RecordingBadge>
       vsync: this,
       duration: const Duration(milliseconds: 800),
     )..repeat(reverse: true);
-    _opacity = Tween<double>(begin: 0.3, end: 1.0).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
-    );
+    _opacity = Tween<double>(
+      begin: 0.3,
+      end: 1.0,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
   }
 
   @override
@@ -74,10 +75,8 @@ class _RecordingBadgeState extends State<_RecordingBadge>
                     vertical: 8,
                   ),
                   child: ValueListenableBuilder<int>(
-                    valueListenable:
-                        RecordingService().eventCountNotifier,
-                    builder:
-                        (BuildContext context, int count, Widget? _) {
+                    valueListenable: RecordingService().eventCountNotifier,
+                    builder: (BuildContext context, int count, Widget? _) {
                       return Text(
                         '${S.of(context).recording} · '
                         '$count ${S.of(context).sessionEventCount}',
@@ -88,8 +87,10 @@ class _RecordingBadgeState extends State<_RecordingBadge>
                 ),
                 const Divider(),
                 ListTile(
-                  leading: const Icon(Icons.stop_circle_outlined,
-                      color: Colors.red),
+                  leading: const Icon(
+                    Icons.stop_circle_outlined,
+                    color: Colors.red,
+                  ),
                   title: Text(S.of(context).stopRecording),
                   onTap: () async {
                     Navigator.pop(ctx);
@@ -121,10 +122,7 @@ class _RecordingBadgeState extends State<_RecordingBadge>
             AnimatedBuilder(
               animation: _opacity,
               builder: (BuildContext context, Widget? child) {
-                return Opacity(
-                  opacity: _opacity.value,
-                  child: child,
-                );
+                return Opacity(opacity: _opacity.value, child: child);
               },
               child: Container(
                 width: 8,
@@ -152,10 +150,7 @@ class _RecordingBadgeState extends State<_RecordingBadge>
               builder: (BuildContext context, int count, Widget? _) {
                 return Text(
                   '($count)',
-                  style: const TextStyle(
-                    color: Colors.white70,
-                    fontSize: 10,
-                  ),
+                  style: const TextStyle(color: Colors.white70, fontSize: 10),
                 );
               },
             ),
