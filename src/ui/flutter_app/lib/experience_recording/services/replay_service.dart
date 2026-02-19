@@ -4,6 +4,7 @@
 // replay_service.dart
 
 import 'dart:async';
+import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 
@@ -237,8 +238,15 @@ class ReplayService {
     switch (event.type) {
       case RecordingEventType.boardTap:
         final int? sq = event.data['sq'] as int?;
-        if (sq != null && ctx != null) {
-          await TapHandler(context: ctx).onBoardTap(sq);
+        if (sq != null) {
+          await _waitForHumanTurn();
+          // Re-fetch context after the async wait to avoid stale-context
+          // issues (use_build_context_synchronously).
+          final BuildContext? freshCtx = currentNavigatorKey.currentContext;
+          if (!_stopRequested && freshCtx != null) {
+            // ignore: use_build_context_synchronously
+            await TapHandler(context: freshCtx).onBoardTap(sq);
+          }
         }
 
       case RecordingEventType.aiMove:
@@ -313,6 +321,42 @@ class ReplayService {
   // -----------------------------------------------------------------------
   // Event-type helpers
   // -----------------------------------------------------------------------
+
+  /// Polls until it is the human player's turn, then returns.
+  ///
+  /// After a [boardTap] triggers the AI engine, [isAiSideToMove] remains
+  /// `true` until the engine finishes computing its response.  If the next
+  /// [boardTap] event is dispatched before that happens the tap is silently
+  /// ignored by [TapHandler.onBoardTap].  Polling here ensures each tap is
+  /// delivered only when the game is ready to accept human input.
+  ///
+  /// The poll interval uses exponential back-off (50 ms → 500 ms) to avoid
+  /// busy-waiting while remaining responsive.  A hard timeout of 60 s
+  /// prevents an infinite loop if the engine hangs.
+  Future<void> _waitForHumanTurn() async {
+    const Duration maxWait = Duration(seconds: 60);
+    const int minPollMs = 50;
+    const int maxPollMs = 500;
+    int pollMs = minPollMs;
+    final Stopwatch sw = Stopwatch()..start();
+
+    while (!_stopRequested) {
+      final bool aiTurn = GameController().gameInstance.isAiSideToMove;
+      final bool engineRunning = GameController().isEngineRunning;
+      if (!aiTurn && !engineRunning) {
+        break;
+      }
+      if (sw.elapsed >= maxWait) {
+        logger.w(
+          '$_logTag _waitForHumanTurn: timed out after ${maxWait.inSeconds}s '
+          '(isAiSideToMove=$aiTurn, isEngineRunning=$engineRunning)',
+        );
+        break;
+      }
+      await Future<void>.delayed(Duration(milliseconds: pollMs));
+      pollMs = math.min(pollMs * 2, maxPollMs);
+    }
+  }
 
   /// Replays a history-navigation event by calling [HistoryNavigator.doEachMove]
   /// with the matching [HistoryNavMode].
