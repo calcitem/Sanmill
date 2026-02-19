@@ -49,6 +49,7 @@ const List<Offset> boardPoints = <Offset>[
 /// Helper class for tapping specific positions on the game board.
 class BoardTapHelper {
   const BoardTapHelper._();
+
   /// Finder for the game board gesture detector.
   static final Finder _boardFinder = find.byKey(
     const Key('gesture_detector_game_board'),

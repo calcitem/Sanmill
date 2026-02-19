@@ -339,6 +339,16 @@ class LoadService {
           if (!context.mounted) {
             return;
           }
+
+          // Record the load event BEFORE the history-navigation events so that
+          // the replay engine can restore the game recorder via
+          // ImportService.import before replaying the ensuing navigation events.
+          RecordingService()
+              .recordEvent(RecordingEventType.gameLoad, <String, dynamic>{
+                'pgnContent': fileContent,
+                'includeVariations': importResult.includedVariations,
+              });
+
           await handleHistoryNavigation(
             context,
             includedVariations: importResult.includedVariations,

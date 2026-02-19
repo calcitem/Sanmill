@@ -167,19 +167,31 @@ class _SessionListPageState extends State<SessionListPage> {
       ),
     );
 
-    if (confirmed ?? false) {
-      // Load the full session data.
-      final RecordingSession? fullSession = await RecordingService()
-          .loadSession(session.id);
-      if (fullSession == null || !mounted) {
-        return;
-      }
-
-      // Pop back to game page and start replay.
-      Navigator.pop(context);
-
-      unawaited(ReplayService().startReplay(fullSession, context: context));
+    if (!(confirmed ?? false)) {
+      return;
     }
+
+    // Load the full session data before closing this page.
+    final RecordingSession? fullSession = await RecordingService().loadSession(
+      session.id,
+    );
+    if (fullSession == null || !mounted) {
+      return;
+    }
+
+    // Pop the entire navigation stack back to the game page (the first/root
+    // route).  This ensures that currentNavigatorKey.currentContext resolves
+    // to a valid, mounted game-page context when the replay engine dispatches
+    // board-tap and history-navigation events.
+    Navigator.popUntil(context, (Route<dynamic> route) => route.isFirst);
+
+    // Wait one frame so Flutter can finish the navigation animation and rebuild
+    // the game-page widget tree before events start being dispatched.
+    await Future<void>.delayed(const Duration(milliseconds: 300));
+
+    // ReplayService uses currentNavigatorKey.currentContext internally, so no
+    // context argument is needed here.
+    unawaited(ReplayService().startReplay(fullSession));
   }
 
   /// Shows a bottom sheet with import options: pick file or paste from clipboard.

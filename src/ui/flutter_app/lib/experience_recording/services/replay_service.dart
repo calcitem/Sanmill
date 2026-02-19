@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import '../../game_page/services/mill.dart';
 import '../../general_settings/models/general_settings.dart';
 import '../../rule_settings/models/rule_settings.dart';
+import '../../shared/config/constants.dart';
 import '../../shared/database/database.dart';
 import '../../shared/services/logger.dart';
 import '../models/recording_models.dart';
@@ -32,12 +33,14 @@ enum ReplayState { idle, playing, paused, finished }
 
 /// Service that replays a previously recorded [RecordingSession].
 ///
-/// The replay engine restores the initial configuration snapshot, then
-/// sequentially dispatches recorded events with timing that respects the
-/// original inter-event delays (scaled by [speed]).
+/// Before dispatching events the service pops the navigation stack back to the
+/// root route (game page) so that [TapHandler] and all other UI code operate
+/// against a valid, mounted [BuildContext].  The live context is obtained from
+/// [currentNavigatorKey] on each event to avoid stale-context issues that arise
+/// when the caller's widget has already been disposed.
 ///
 /// Callers observe state changes through [stateNotifier], [progressNotifier],
-/// and [speedNotifier] so UI can update reactively.
+/// and [speedNotifier] so the UI can update reactively.
 class ReplayService {
   factory ReplayService() => _instance;
 
@@ -89,12 +92,14 @@ class ReplayService {
   /// Loads a session and starts playback.
   ///
   /// The method restores the session's initial settings snapshot, resets the
-  /// game, and begins dispatching events. Returns when replay completes or
-  /// is stopped.
-  Future<void> startReplay(
-    RecordingSession session, {
-    BuildContext? context,
-  }) async {
+  /// game, and begins dispatching events sequentially.  Returns when replay
+  /// completes or is stopped.
+  ///
+  /// The caller is responsible for navigating back to the game page BEFORE
+  /// invoking this method so that [currentNavigatorKey.currentContext] resolves
+  /// to a valid game-page context.  [SessionListPage._replaySession] handles
+  /// this by calling [Navigator.popUntil] with a short post-navigation delay.
+  Future<void> startReplay(RecordingSession session) async {
     assert(state == ReplayState.idle, 'Cannot start replay while active.');
 
     _session = session;
@@ -105,17 +110,17 @@ class ReplayService {
     progressNotifier.value = 0;
     stateNotifier.value = ReplayState.playing;
 
-    // Back up current settings.
+    // Back up current settings so they can be restored after replay.
     _backupGeneralSettings = DB().generalSettings;
     _backupRuleSettings = DB().ruleSettings;
 
     // Suppress recording hooks during replay to prevent feedback loops.
     RecordingService().isSuppressed = true;
 
-    // Restore initial snapshot settings.
+    // Restore the initial settings snapshot captured at recording time.
     _restoreSnapshot(session.initialSnapshot);
 
-    // Reset game to match initial state.
+    // Reset the game board to a clean initial state.
     GameController().reset(force: true);
 
     logger.i(
@@ -124,7 +129,7 @@ class ReplayService {
     );
 
     // Dispatch events sequentially.
-    await _dispatchEvents(context);
+    await _dispatchEvents();
 
     // Finalise.
     if (!_stopRequested) {
@@ -177,7 +182,7 @@ class ReplayService {
   // Event dispatch loop
   // -----------------------------------------------------------------------
 
-  Future<void> _dispatchEvents(BuildContext? context) async {
+  Future<void> _dispatchEvents() async {
     final List<RecordingEvent> events = _session!.events;
 
     while (_currentIndex < events.length && !_stopRequested) {
@@ -191,7 +196,7 @@ class ReplayService {
 
       final RecordingEvent event = events[_currentIndex];
 
-      // Compute delay to next event.
+      // Compute inter-event delay scaled by the current speed multiplier.
       if (_currentIndex > 0) {
         final int deltaMs =
             event.timestampMs - events[_currentIndex - 1].timestampMs;
@@ -205,10 +210,9 @@ class ReplayService {
         break;
       }
 
-      // Dispatch the event. Context may be stale after an async gap,
-      // but the replay engine only uses it for TapHandler which guards
-      // against disposed contexts internally.
-      _applyEvent(event, context); // ignore: use_build_context_synchronously
+      // Apply the event.  _applyEvent is async because history navigation and
+      // board taps require awaiting engine/state transitions.
+      await _applyEvent(event); // ignore: use_build_context_synchronously
 
       progressNotifier.value = _currentIndex;
       _currentIndex++;
@@ -216,18 +220,26 @@ class ReplayService {
   }
 
   /// Applies a single recorded event to the live game state.
-  void _applyEvent(RecordingEvent event, BuildContext? context) {
+  ///
+  /// Uses [currentNavigatorKey.currentContext] as the live BuildContext so
+  /// that the game-page context is always valid regardless of which widget
+  /// originally triggered the replay.
+  Future<void> _applyEvent(RecordingEvent event) async {
+    // Obtain a fresh live context on every event application.
+    // After [Navigator.popUntil] the root route is a game-page widget, so this
+    // context is always mounted and correct for TapHandler / engine calls.
+    final BuildContext? ctx = currentNavigatorKey.currentContext;
+
     switch (event.type) {
       case RecordingEventType.boardTap:
         final int? sq = event.data['sq'] as int?;
-        if (sq != null && context != null) {
-          TapHandler(context: context).onBoardTap(sq);
+        if (sq != null && ctx != null) {
+          await TapHandler(context: ctx).onBoardTap(sq);
         }
 
       case RecordingEventType.aiMove:
-        // AI moves are the result of engine computation. During replay
-        // the board tap that preceded the AI move will trigger the engine
-        // automatically, so we do not need to apply the AI move explicitly.
+        // AI moves are the natural consequence of the preceding board-tap
+        // event triggering the engine.  No explicit replay action needed.
         break;
 
       case RecordingEventType.settingsChange:
@@ -239,32 +251,109 @@ class ReplayService {
         GameController().reset(force: force, lanRestart: lanRestart);
 
       case RecordingEventType.gameModeChange:
-        // Mode changes are informational during replay; the initial
-        // snapshot already sets the correct mode.
+        // Mode changes are informational during replay; the initial snapshot
+        // already contains the correct mode.
         break;
 
       case RecordingEventType.historyNavigation:
-        // History navigation events are informational during replay.
-        // The board state will be reconstructed by board tap events.
-        logger.i('$_logTag Replay: history nav event (informational)');
+        // Replay the navigation so that take-back / step-forward sequences
+        // produce the same board state as during the original session.
+        await _applyHistoryNavigation(
+          event.data['action'] as String? ?? '',
+          event.data['steps'] as int?,
+        );
 
       case RecordingEventType.gameOver:
-        // Game over events are the natural result of preceding moves.
+        // Game-over events are the natural result of preceding moves.
         break;
 
       case RecordingEventType.undoMove:
-        // Undo events are informational during replay.
-        logger.i('$_logTag Replay: undo event (informational)');
+        // An undo is equivalent to a single take-back step.
+        await HistoryNavigator.doEachMove(HistoryNavMode.takeBack);
+        logger.i('$_logTag Replay: applied undoMove as takeBack');
 
       case RecordingEventType.gameImport:
+        // Restore the game recorder from the recorded PGN text.  The
+        // subsequent historyNavigation events (takeBackAll + stepForwardAll)
+        // will navigate the imported tree to the correct position.
+        await _applyGameImport(event.data);
+
       case RecordingEventType.gameLoad:
-        // Import/load events are informational; the move sequence
-        // that follows will reconstruct the state.
-        break;
+        // Same approach as gameImport: restore the recorder from the stored
+        // file content and let the following navigation events finish setup.
+        await _applyGameLoad(event.data);
 
       case RecordingEventType.custom:
         // Custom events are extension points; no default action.
         break;
+    }
+  }
+
+  // -----------------------------------------------------------------------
+  // Event-type helpers
+  // -----------------------------------------------------------------------
+
+  /// Replays a history-navigation event by calling [HistoryNavigator.doEachMove]
+  /// with the matching [HistoryNavMode].
+  ///
+  /// [actionStr] is the value stored in the event data, which is the result
+  /// of [HistoryNavMode.toString()] (e.g. "HistoryNavMode.takeBack").
+  Future<void> _applyHistoryNavigation(String actionStr, int? steps) async {
+    // Strip the enum class name prefix if present ("HistoryNavMode.takeBack"
+    // → "takeBack").
+    String name = actionStr;
+    final int dotIndex = actionStr.lastIndexOf('.');
+    if (dotIndex != -1) {
+      name = actionStr.substring(dotIndex + 1);
+    }
+
+    HistoryNavMode navMode;
+    try {
+      navMode = HistoryNavMode.values.firstWhere(
+        (HistoryNavMode m) => m.name == name,
+      );
+    } catch (_) {
+      logger.w(
+        '$_logTag Replay: unknown historyNavigation action: "$actionStr"',
+      );
+      return;
+    }
+
+    await HistoryNavigator.doEachMove(navMode, steps);
+    logger.i('$_logTag Replay: applied historyNavigation $name (steps=$steps)');
+  }
+
+  /// Restores the game recorder from a recorded PGN text payload so that the
+  /// subsequent [historyNavigation] events operate on the imported tree.
+  Future<void> _applyGameImport(Map<String, dynamic> data) async {
+    final String? pgnText = data['pgnText'] as String?;
+    final bool includeVariations = data['includeVariations'] as bool? ?? true;
+    if (pgnText == null || pgnText.isEmpty) {
+      logger.w('$_logTag Replay: gameImport event has no pgnText, skipping.');
+      return;
+    }
+    try {
+      ImportService.import(pgnText, includeVariations: includeVariations);
+      logger.i('$_logTag Replay: applied gameImport');
+    } catch (e) {
+      logger.w('$_logTag Replay: gameImport failed: $e');
+    }
+  }
+
+  /// Restores the game recorder from a recorded file-content payload so that
+  /// the subsequent [historyNavigation] events operate on the loaded tree.
+  Future<void> _applyGameLoad(Map<String, dynamic> data) async {
+    final String? pgnContent = data['pgnContent'] as String?;
+    final bool includeVariations = data['includeVariations'] as bool? ?? true;
+    if (pgnContent == null || pgnContent.isEmpty) {
+      logger.w('$_logTag Replay: gameLoad event has no pgnContent, skipping.');
+      return;
+    }
+    try {
+      ImportService.import(pgnContent, includeVariations: includeVariations);
+      logger.i('$_logTag Replay: applied gameLoad');
+    } catch (e) {
+      logger.w('$_logTag Replay: gameLoad failed: $e');
     }
   }
 
@@ -283,8 +372,8 @@ class ReplayService {
         if (settings != null) {
           DB().ruleSettings = RuleSettings.fromJson(settings);
         }
-      // Display and color settings changes are cosmetic; applying them
-      // during replay could be jarring. We skip them by default.
+      // Display and color settings changes are cosmetic; applying them during
+      // replay could be jarring, so they are intentionally skipped.
       default:
         break;
     }
@@ -320,7 +409,7 @@ class ReplayService {
     // Re-enable recording hooks.
     RecordingService().isSuppressed = false;
 
-    // Restore backed-up settings.
+    // Restore the settings that were active before replay started.
     if (_backupGeneralSettings != null) {
       DB().generalSettings = _backupGeneralSettings!;
       _backupGeneralSettings = null;

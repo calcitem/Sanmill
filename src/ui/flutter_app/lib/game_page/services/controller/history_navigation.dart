@@ -297,7 +297,9 @@ class HistoryNavigator {
   ///
   /// Returns a [HistoryResponse] when the moves and rules don't match
   /// or when the end of the move path has been reached.
-  @visibleForTesting
+  ///
+  /// Used by both tests and the production replay engine to reproduce
+  /// history-navigation events without going through the UI layer.
   static Future<HistoryResponse> doEachMove(
     HistoryNavMode navMode, [
     int? number,

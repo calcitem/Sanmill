@@ -94,6 +94,11 @@ class ImportService {
       return;
     }
 
+    // Record the import event BEFORE the history-navigation events so that
+    // the replay engine can reconstruct the game recorder via ImportService.import
+    // before replaying the ensuing takeBackAll / stepForwardAll events.
+    recordImportEvent(text, includeVariations: includeVariations);
+
     // Check context again before using it in navigation or showing tips
     if (!context.mounted) {
       return;
@@ -131,6 +136,23 @@ class ImportService {
     if (shouldPop) {
       navigator.pop();
     }
+  }
+
+  /// Records a [RecordingEventType.gameImport] event so the import can be
+  /// replayed exactly.  Must be called after a successful [import] and before
+  /// the subsequent history-navigation events so that the event sequence in the
+  /// recording matches the order expected by the replay engine.
+  static void recordImportEvent(
+    String pgnText, {
+    bool includeVariations = true,
+  }) {
+    RecordingService().recordEvent(
+      RecordingEventType.gameImport,
+      <String, dynamic>{
+        'pgnText': pgnText,
+        'includeVariations': includeVariations,
+      },
+    );
   }
 
   /// Checks if the PGN text contains variations (without fully importing).
