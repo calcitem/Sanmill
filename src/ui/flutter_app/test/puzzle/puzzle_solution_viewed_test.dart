@@ -147,7 +147,7 @@ void main() {
       // Case 2: local true, persisted false => true.
       const bool localFlag2 = true;
       final PuzzleProgress prior2 = PuzzleProgress(puzzleId: 'test');
-      final bool effective2 = localFlag2 || prior2.solutionViewed;
+      final bool effective2 = prior2.solutionViewed || localFlag2;
       expect(effective2, isTrue);
 
       // Case 3: both false => false.

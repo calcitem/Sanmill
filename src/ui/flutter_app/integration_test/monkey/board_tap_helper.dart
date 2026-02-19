@@ -48,6 +48,7 @@ const List<Offset> boardPoints = <Offset>[
 
 /// Helper class for tapping specific positions on the game board.
 class BoardTapHelper {
+  const BoardTapHelper._();
   /// Finder for the game board gesture detector.
   static final Finder _boardFinder = find.byKey(
     const Key('gesture_detector_game_board'),
@@ -78,10 +79,7 @@ class BoardTapHelper {
   /// Tap a board position identified by algebraic notation (e.g. 'a7', 'd5').
   ///
   /// Converts the notation to a square number and delegates to [tapSquare].
-  static Future<bool> tapNotation(
-    WidgetTester tester,
-    String notation,
-  ) async {
+  static Future<bool> tapNotation(WidgetTester tester, String notation) async {
     final int square = notationToSquare(notation);
     if (square < 0) {
       print('[BoardTap] Invalid notation: $notation');
@@ -134,10 +132,7 @@ class BoardTapHelper {
 
     // Convert grid point to screen offset, mirroring
     // offsetFromPointWithInnerSize() in board_utils.dart.
-    final Offset localOffset = _gridPointToLocalOffset(
-      gridPoint,
-      boardSize,
-    );
+    final Offset localOffset = _gridPointToLocalOffset(gridPoint, boardSize);
 
     return boardTopLeft + localOffset;
   }
@@ -155,8 +150,7 @@ class BoardTapHelper {
     final double unitDistance = (size.width - margin * 2) / 6;
 
     // Default (unscaled) position.
-    final Offset originalPos =
-        (point * unitDistance) + Offset(margin, margin);
+    final Offset originalPos = (point * unitDistance) + Offset(margin, margin);
     final Offset vectorFromCenter = originalPos - center;
 
     // Determine ring index (0=center, 1=inner, 2=middle, 3=outer).
@@ -210,8 +204,8 @@ class BoardTapHelper {
 
     // Tap somewhere inside the board bounds (random-ish but deterministic
     // for reproducibility in tests).
-    final Offset center = boardTopLeft +
-        Offset(boardSize.width / 2, boardSize.height / 2);
+    final Offset center =
+        boardTopLeft + Offset(boardSize.width / 2, boardSize.height / 2);
     await tester.tapAt(center);
     await tester.pump(const Duration(milliseconds: 50));
     return true;

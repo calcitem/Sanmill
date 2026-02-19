@@ -109,7 +109,7 @@ void main() {
       recorder.appendMove(ExtMove('d6', side: PieceColor.white));
       recorder.appendMove(ExtMove('f4', side: PieceColor.black));
 
-      final String full = recorder.moveHistoryText;
+      final String _ = recorder.moveHistoryText;
       final String mainOnly = recorder.moveHistoryTextWithoutVariations;
 
       // For a linear game, both should contain the same moves

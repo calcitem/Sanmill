@@ -4,7 +4,7 @@
 // logger_test.dart
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:logger/logger.dart';
+import 'package:logger/logger.dart' hide MemoryOutput;
 import 'package:sanmill/shared/services/logger.dart';
 
 void main() {
@@ -20,7 +20,9 @@ void main() {
     test('should store output events', () {
       final MemoryOutput output = MemoryOutput();
 
-      output.output(OutputEvent(Level.info, <String>['test message']));
+      output.output(
+        OutputEvent(LogEvent(Level.info, 'test'), <String>['test message']),
+      );
 
       expect(output.logs.length, 1);
       expect(output.logs.first.lines, contains('test message'));
@@ -30,7 +32,9 @@ void main() {
       final MemoryOutput output = MemoryOutput(bufferSize: 3);
 
       for (int i = 0; i < 5; i++) {
-        output.output(OutputEvent(Level.info, <String>['msg $i']));
+        output.output(
+          OutputEvent(LogEvent(Level.info, 'msg $i'), <String>['msg $i']),
+        );
       }
 
       // Buffer should have only the last 3 entries
@@ -42,8 +46,12 @@ void main() {
     test('clear should remove all logs', () {
       final MemoryOutput output = MemoryOutput();
 
-      output.output(OutputEvent(Level.info, <String>['msg 1']));
-      output.output(OutputEvent(Level.info, <String>['msg 2']));
+      output.output(
+        OutputEvent(LogEvent(Level.info, 'msg 1'), <String>['msg 1']),
+      );
+      output.output(
+        OutputEvent(LogEvent(Level.info, 'msg 2'), <String>['msg 2']),
+      );
 
       output.clear();
 
@@ -59,7 +67,9 @@ void main() {
       final MemoryOutput output = MemoryOutput(bufferSize: 100);
 
       for (int i = 0; i < 200; i++) {
-        output.output(OutputEvent(Level.debug, <String>['rapid $i']));
+        output.output(
+          OutputEvent(LogEvent(Level.debug, 'rapid $i'), <String>['rapid $i']),
+        );
       }
 
       expect(output.logs.length, 100);

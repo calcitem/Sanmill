@@ -973,25 +973,16 @@ class GeneralSettingsPage extends StatelessWidget {
               ),
               value: generalSettings.experienceRecordingEnabled,
               onChanged: (bool val) {
-                _setExperienceRecordingEnabled(
-                  context,
-                  generalSettings,
-                  val,
-                );
+                _setExperienceRecordingEnabled(context, generalSettings, val);
                 if (val == true) {
-                  SnackBarService.showRootSnackBar(
-                    S.of(context).experimental,
-                  );
+                  SnackBarService.showRootSnackBar(S.of(context).experimental);
                 }
               },
               titleString: S.of(context).experienceRecording,
-              subtitleString:
-                  S.of(context).experienceRecordingDescription,
+              subtitleString: S.of(context).experienceRecordingDescription,
             ),
             SettingsListTile(
-              key: const Key(
-                'general_settings_page_recording_sessions',
-              ),
+              key: const Key('general_settings_page_recording_sessions'),
               titleString: S.of(context).recordingSessions,
               onTap: () => _openRecordingSessions(context),
             ),

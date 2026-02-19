@@ -14,6 +14,7 @@ import 'package:sanmill/shared/database/database.dart';
 
 /// Read-only facade over the game engine state for test code.
 class GameStateReader {
+  const GameStateReader._();
   // -- Phase & Action -------------------------------------------------------
 
   /// Current game phase (ready, placing, moving, gameOver).
@@ -29,8 +30,7 @@ class GameStateReader {
   static PieceColor get winner => GameController().position.winner;
 
   /// Current game mode (humanVsAi, humanVsHuman, aiVsAi, …).
-  static GameMode get gameMode =>
-      GameController().gameInstance.gameMode;
+  static GameMode get gameMode => GameController().gameInstance.gameMode;
 
   /// True when the game has ended.
   static bool get isGameOver => phase == Phase.gameOver;
@@ -62,7 +62,9 @@ class GameStateReader {
 
   /// Whether the current side can fly (has few enough pieces).
   static bool get canCurrentSideFly {
-    if (!DB().ruleSettings.mayFly) return false;
+    if (!DB().ruleSettings.mayFly) {
+      return false;
+    }
     final int count = pieceOnBoardCount(sideToMove);
     return count <= flyPieceCount && count >= 3;
   }
@@ -76,7 +78,9 @@ class GameStateReader {
   /// number, so we convert via squareToIndex first.
   static PieceColor pieceAt(int square) {
     final int? gridIndex = squareToIndex[square];
-    if (gridIndex == null) return PieceColor.none;
+    if (gridIndex == null) {
+      return PieceColor.none;
+    }
     return GameController().position.pieceOnGrid(gridIndex);
   }
 
@@ -198,17 +202,17 @@ class GameStateReader {
 
   /// Get adjacent empty squares for the given square.
   static List<int> adjacentEmptySquaresOf(int square) {
-    return adjacentSquaresOf(square)
-        .where((int s) => pieceAt(s) == PieceColor.none)
-        .toList();
+    return adjacentSquaresOf(
+      square,
+    ).where((int s) => pieceAt(s) == PieceColor.none).toList();
   }
 
   /// Find pieces of the given color that have at least one adjacent empty
   /// square (i.e., pieces that can potentially move).
   static List<int> movablePieces(PieceColor color) {
-    return occupiedSquares(color)
-        .where((int sq) => adjacentEmptySquaresOf(sq).isNotEmpty)
-        .toList();
+    return occupiedSquares(
+      color,
+    ).where((int sq) => adjacentEmptySquaresOf(sq).isNotEmpty).toList();
   }
 
   // -- Move history ---------------------------------------------------------
@@ -225,13 +229,19 @@ class GameStateReader {
 
   /// Print a snapshot of the current game state for logging.
   static void printState() {
-    print('[GameState] phase=$phase action=$action '
-        'sideToMove=$sideToMove winner=$winner '
-        'mode=$gameMode');
-    print('[GameState] White: board=${pieceOnBoardCount(PieceColor.white)} '
-        'hand=${pieceInHandCount(PieceColor.white)}');
-    print('[GameState] Black: board=${pieceOnBoardCount(PieceColor.black)} '
-        'hand=${pieceInHandCount(PieceColor.black)}');
+    print(
+      '[GameState] phase=$phase action=$action '
+      'sideToMove=$sideToMove winner=$winner '
+      'mode=$gameMode',
+    );
+    print(
+      '[GameState] White: board=${pieceOnBoardCount(PieceColor.white)} '
+      'hand=${pieceInHandCount(PieceColor.white)}',
+    );
+    print(
+      '[GameState] Black: board=${pieceOnBoardCount(PieceColor.black)} '
+      'hand=${pieceInHandCount(PieceColor.black)}',
+    );
     print('[GameState] moves=$moveCount empty=${emptySquares.length}');
   }
 }

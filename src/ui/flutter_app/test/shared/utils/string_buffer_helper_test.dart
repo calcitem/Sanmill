@@ -84,9 +84,7 @@ void main() {
   // ---------------------------------------------------------------------------
   group('CustomStringBuffer.writeComma (screenReaderSupport off)', () {
     setUp(() {
-      mockDB.generalSettings = const GeneralSettings(
-
-      );
+      mockDB.generalSettings = const GeneralSettings();
     });
 
     test('should write content + newline without comma', () {
@@ -132,9 +130,7 @@ void main() {
   // ---------------------------------------------------------------------------
   group('CustomStringBuffer.writePeriod (screenReaderSupport off)', () {
     setUp(() {
-      mockDB.generalSettings = const GeneralSettings(
-
-      );
+      mockDB.generalSettings = const GeneralSettings();
     });
 
     test('should write content + newline without period', () {

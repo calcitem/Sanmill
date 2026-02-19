@@ -39,7 +39,7 @@ class CustomFeedbackLocalizationsDelegate
   const CustomFeedbackLocalizationsDelegate();
 
   /// Returns the default instance of a [CustomFeedbackLocalizationsDelegate].
-  static const LocalizationsDelegate<FeedbackLocalizations> delegate =
+  static const CustomFeedbackLocalizationsDelegate delegate =
       CustomFeedbackLocalizationsDelegate();
 
   /// Translation data for all supported languages

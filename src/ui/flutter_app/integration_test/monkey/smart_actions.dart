@@ -116,9 +116,7 @@ class SmartActions {
 
   /// In setup position mode, tap random board positions to place or remove
   /// pieces freely.
-  Future<ActionResult> _performSetupPositionAction(
-    WidgetTester tester,
-  ) async {
+  Future<ActionResult> _performSetupPositionAction(WidgetTester tester) async {
     final List<int> allSquares = BoardTapHelper.getAllSquares();
     if (allSquares.isEmpty) {
       skippedActions++;
@@ -126,8 +124,10 @@ class SmartActions {
     }
 
     final int target = allSquares[_random.nextInt(allSquares.length)];
-    print('[SmartAction] SetupPosition: tapping square '
-        '${squareToNotation(target)}');
+    print(
+      '[SmartAction] SetupPosition: tapping square '
+      '${squareToNotation(target)}',
+    );
 
     final bool ok = await BoardTapHelper.tapSquare(tester, target);
     await tester.pump(const Duration(milliseconds: 100));
@@ -153,9 +153,11 @@ class SmartActions {
     }
 
     final int target = empty[_random.nextInt(empty.length)];
-    print('[SmartAction] Place: tapping empty square $target '
-        '(${squareToNotation(target)}) '
-        'for ${GameStateReader.sideToMove}');
+    print(
+      '[SmartAction] Place: tapping empty square $target '
+      '(${squareToNotation(target)}) '
+      'for ${GameStateReader.sideToMove}',
+    );
 
     final bool ok = await BoardTapHelper.tapSquare(tester, target);
     await _safePumpAndSettle(tester);
@@ -211,18 +213,24 @@ class SmartActions {
 
     final int dest = destinations[_random.nextInt(destinations.length)];
 
-    print('[SmartAction] Move: select ${squareToNotation(piece)} '
-        '→ ${squareToNotation(dest)} for $side'
-        '${canFly ? " (flying)" : ""}');
+    print(
+      '[SmartAction] Move: select ${squareToNotation(piece)} '
+      '→ ${squareToNotation(dest)} for $side'
+      '${canFly ? " (flying)" : ""}',
+    );
 
     // Step 1: tap the piece to select it.
     bool ok = await BoardTapHelper.tapSquare(tester, piece);
-    if (!ok) return ActionResult.boardNotVisible;
+    if (!ok) {
+      return ActionResult.boardNotVisible;
+    }
     await tester.pump(const Duration(milliseconds: 150));
 
     // Step 2: tap the destination to move.
     ok = await BoardTapHelper.tapSquare(tester, dest);
-    if (!ok) return ActionResult.boardNotVisible;
+    if (!ok) {
+      return ActionResult.boardNotVisible;
+    }
     await _safePumpAndSettle(tester);
 
     movingActions++;
@@ -243,10 +251,11 @@ class SmartActions {
     }
 
     // Pick a random opponent piece to remove.
-    final int target =
-        opponentPieces[_random.nextInt(opponentPieces.length)];
-    print('[SmartAction] Remove: tapping opponent piece at '
-        '${squareToNotation(target)} for ${GameStateReader.sideToMove}');
+    final int target = opponentPieces[_random.nextInt(opponentPieces.length)];
+    print(
+      '[SmartAction] Remove: tapping opponent piece at '
+      '${squareToNotation(target)} for ${GameStateReader.sideToMove}',
+    );
 
     final bool ok = await BoardTapHelper.tapSquare(tester, target);
     await _safePumpAndSettle(tester);
@@ -264,8 +273,10 @@ class SmartActions {
 
   /// When the game is over, start a new one.
   Future<ActionResult> _handleGameOver(WidgetTester tester) async {
-    print('[SmartAction] Game over (winner=${GameStateReader.winner}), '
-        'starting new game');
+    print(
+      '[SmartAction] Game over (winner=${GameStateReader.winner}), '
+      'starting new game',
+    );
 
     // Dismiss any dialogs that may be showing (game result dialog).
     await _dismissDialogs(tester);

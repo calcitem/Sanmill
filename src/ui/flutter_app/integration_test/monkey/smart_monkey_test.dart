@@ -29,6 +29,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:sanmill/game_page/services/engine/bitboard.dart';
 import 'package:sanmill/game_page/services/mill.dart';
+import 'package:sanmill/general_settings/models/general_settings.dart';
 import 'package:sanmill/rule_settings/models/rule_settings.dart';
 import 'package:sanmill/shared/database/database.dart';
 
@@ -77,290 +78,272 @@ void main() {
     // This is the most important scenario because it exercises the moving
     // phase which random monkey testing cannot reach.
     // -----------------------------------------------------------------------
-    testWidgets(
-      'HvH - full game with placing, moving, and removing',
-      (WidgetTester tester) async {
-        await _setupFastGame(tester);
-        await navigateToDrawerItem(tester, 'drawer_item_human_vs_human');
-        await startNewGame(tester);
+    testWidgets('HvH - full game with placing, moving, and removing', (
+      WidgetTester tester,
+    ) async {
+      await _setupFastGame(tester);
+      await navigateToDrawerItem(tester, 'drawer_item_human_vs_human');
+      await startNewGame(tester);
 
-        final SmartActions actions = SmartActions(seed: 42);
-        int gamesCompleted = 0;
+      final SmartActions actions = SmartActions(seed: 42);
+      int gamesCompleted = 0;
 
-        for (int i = 0; i < kActionsPerHvHGame; i++) {
-          final ActionResult result = await actions.performAction(
-            tester,
-            gameActionProbability: 0.95,
+      for (int i = 0; i < kActionsPerHvHGame; i++) {
+        final ActionResult result = await actions.performAction(
+          tester,
+          gameActionProbability: 0.95,
+        );
+
+        if (result == ActionResult.gameOver || GameStateReader.isGameOver) {
+          gamesCompleted++;
+          print(
+            '[HvH] Game #$gamesCompleted completed at action $i '
+            '(winner=${GameStateReader.winner})',
           );
-
-          if (result == ActionResult.gameOver ||
-              GameStateReader.isGameOver) {
-            gamesCompleted++;
-            print('[HvH] Game #$gamesCompleted completed at action $i '
-                '(winner=${GameStateReader.winner})');
-          }
-
-          // Periodic state logging.
-          if (i % 20 == 0) {
-            print('[HvH] Action $i/$kActionsPerHvHGame');
-            GameStateReader.printState();
-          }
         }
 
-        actions.printSummary();
-        _printPhaseStats(actions, gamesCompleted);
+        // Periodic state logging.
+        if (i % 20 == 0) {
+          print('[HvH] Action $i/$kActionsPerHvHGame');
+          GameStateReader.printState();
+        }
+      }
 
-        // Verify that we actually exercised the moving phase.
-        expect(
-          actions.movingActions,
-          greaterThan(0),
-          reason: 'Smart monkey should have performed moving actions',
-        );
+      actions.printSummary();
+      _printPhaseStats(actions, gamesCompleted);
 
-        // Verify that we exercised placing.
-        expect(
-          actions.placingActions,
-          greaterThan(0),
-          reason: 'Smart monkey should have performed placing actions',
-        );
+      // Verify that we actually exercised the moving phase.
+      expect(
+        actions.movingActions,
+        greaterThan(0),
+        reason: 'Smart monkey should have performed moving actions',
+      );
 
-        verifyPageDisplayed(tester, 'game_page_scaffold');
-      },
-    );
+      // Verify that we exercised placing.
+      expect(
+        actions.placingActions,
+        greaterThan(0),
+        reason: 'Smart monkey should have performed placing actions',
+      );
+
+      verifyPageDisplayed(tester, 'game_page_scaffold');
+    });
 
     // -----------------------------------------------------------------------
     // Scenario 2: Human vs AI mixed interaction
     // -----------------------------------------------------------------------
-    testWidgets(
-      'HvAI - placing and moving with AI responses',
-      (WidgetTester tester) async {
-        await _setupFastGame(tester);
+    testWidgets('HvAI - placing and moving with AI responses', (
+      WidgetTester tester,
+    ) async {
+      await _setupFastGame(tester);
 
-        // Default mode is Human vs AI; just start a new game.
-        await startNewGame(tester);
+      // Default mode is Human vs AI; just start a new game.
+      await startNewGame(tester);
 
-        final SmartActions actions = SmartActions(seed: 123);
+      final SmartActions actions = SmartActions(seed: 123);
 
-        for (int i = 0; i < kActionsPerHvAIGame; i++) {
-          // Wait a bit for AI moves to complete.
-          await tester.pump(const Duration(milliseconds: 100));
+      for (int i = 0; i < kActionsPerHvAIGame; i++) {
+        // Wait a bit for AI moves to complete.
+        await tester.pump(const Duration(milliseconds: 100));
 
-          // Skip if AI is currently thinking.
-          if (GameController().isEngineRunning) {
-            await tester.pump(const Duration(milliseconds: 500));
-            continue;
-          }
-
-          await actions.performAction(tester, gameActionProbability: 0.80);
-
-          // After each action, let the AI respond.
-          // Use try-catch since pumpAndSettle may timeout during AI thinking.
-          try {
-            await tester.pumpAndSettle(const Duration(seconds: 3));
-          } on FlutterError {
-            await tester.pump(const Duration(milliseconds: 200));
-          }
-
-          if (i % 20 == 0) {
-            print('[HvAI] Action $i/$kActionsPerHvAIGame');
-            GameStateReader.printState();
-          }
+        // Skip if AI is currently thinking.
+        if (GameController().isEngineRunning) {
+          await tester.pump(const Duration(milliseconds: 500));
+          continue;
         }
 
-        actions.printSummary();
-        verifyPageDisplayed(tester, 'game_page_scaffold');
-      },
-    );
+        await actions.performAction(tester, gameActionProbability: 0.80);
+
+        // After each action, let the AI respond.
+        // Use try-catch since pumpAndSettle may timeout during AI thinking.
+        try {
+          await tester.pumpAndSettle(const Duration(seconds: 3));
+        } on FlutterError {
+          await tester.pump(const Duration(milliseconds: 200));
+        }
+
+        if (i % 20 == 0) {
+          print('[HvAI] Action $i/$kActionsPerHvAIGame');
+          GameStateReader.printState();
+        }
+      }
+
+      actions.printSummary();
+      verifyPageDisplayed(tester, 'game_page_scaffold');
+    });
 
     // -----------------------------------------------------------------------
     // Scenario 3: AI vs AI + UI stress
     // -----------------------------------------------------------------------
-    testWidgets(
-      'AiVsAi - observe game while performing UI interactions',
-      (WidgetTester tester) async {
-        await _setupFastGame(tester);
-        await navigateToDrawerItem(tester, 'drawer_item_ai_vs_ai');
+    testWidgets('AiVsAi - observe game while performing UI interactions', (
+      WidgetTester tester,
+    ) async {
+      await _setupFastGame(tester);
+      await navigateToDrawerItem(tester, 'drawer_item_ai_vs_ai');
 
-        // Let the AI play while we randomly interact with the UI.
-        final SmartActions actions = SmartActions(seed: 77);
+      // Let the AI play while we randomly interact with the UI.
+      final SmartActions actions = SmartActions(seed: 77);
 
-        for (int i = 0; i < kActionsPerAiVsAiGame; i++) {
-          // Only UI actions in AI vs AI mode (game actions are irrelevant).
-          await actions.performAction(
-            tester,
-            gameActionProbability: 0.0,
-          );
-          await tester.pump(const Duration(milliseconds: 200));
+      for (int i = 0; i < kActionsPerAiVsAiGame; i++) {
+        // Only UI actions in AI vs AI mode (game actions are irrelevant).
+        await actions.performAction(tester, gameActionProbability: 0.0);
+        await tester.pump(const Duration(milliseconds: 200));
 
-          if (i % 15 == 0) {
-            print('[AiVsAi] Action $i/$kActionsPerAiVsAiGame');
-          }
+        if (i % 15 == 0) {
+          print('[AiVsAi] Action $i/$kActionsPerAiVsAiGame');
         }
+      }
 
-        actions.printSummary();
-        verifyPageDisplayed(tester, 'game_page_scaffold');
-      },
-    );
+      actions.printSummary();
+      verifyPageDisplayed(tester, 'game_page_scaffold');
+    });
 
     // -----------------------------------------------------------------------
     // Scenario 4: Setup Position - random piece placement
     // -----------------------------------------------------------------------
-    testWidgets(
-      'SetupPosition - random piece placement and removal',
-      (WidgetTester tester) async {
-        await _setupFastGame(tester);
-        await navigateToDrawerItem(tester, 'drawer_item_setup_position');
+    testWidgets('SetupPosition - random piece placement and removal', (
+      WidgetTester tester,
+    ) async {
+      await _setupFastGame(tester);
+      await navigateToDrawerItem(tester, 'drawer_item_setup_position');
 
-        final SmartActions actions = SmartActions(seed: 500);
+      final SmartActions actions = SmartActions(seed: 500);
 
-        // Tap random board positions to place and remove pieces freely.
-        for (int i = 0; i < 60; i++) {
-          await actions.performAction(
-            tester,
-            gameActionProbability: 0.90,
-          );
-          await tester.pump(const Duration(milliseconds: 50));
+      // Tap random board positions to place and remove pieces freely.
+      for (int i = 0; i < 60; i++) {
+        await actions.performAction(tester, gameActionProbability: 0.90);
+        await tester.pump(const Duration(milliseconds: 50));
 
-          if (i % 20 == 0) {
-            print('[SetupPosition] Action $i/60');
-          }
+        if (i % 20 == 0) {
+          print('[SetupPosition] Action $i/60');
         }
+      }
 
-        actions.printSummary();
-        verifyPageDisplayed(tester, 'game_page_scaffold');
-      },
-    );
+      actions.printSummary();
+      verifyPageDisplayed(tester, 'game_page_scaffold');
+    });
 
     // -----------------------------------------------------------------------
     // Scenario 5: Multi-mode cycling
     // -----------------------------------------------------------------------
-    testWidgets(
-      'Multi-mode - cycle through game modes and play',
-      (WidgetTester tester) async {
-        await _setupFastGame(tester);
+    testWidgets('Multi-mode - cycle through game modes and play', (
+      WidgetTester tester,
+    ) async {
+      await _setupFastGame(tester);
 
-        final SmartActions actions = SmartActions(seed: 256);
-        final List<String> modes = <String>[
-          'drawer_item_human_vs_human',
-          'drawer_item_human_vs_ai',
-          'drawer_item_ai_vs_ai',
-          'drawer_item_setup_position',
-        ];
+      final SmartActions actions = SmartActions(seed: 256);
+      final List<String> modes = <String>[
+        'drawer_item_human_vs_human',
+        'drawer_item_human_vs_ai',
+        'drawer_item_ai_vs_ai',
+        'drawer_item_setup_position',
+      ];
 
-        int actionCount = 0;
-        for (int cycle = 0; cycle < 3; cycle++) {
-          for (final String mode in modes) {
-            print('[MultiMode] Switching to $mode (cycle $cycle)');
-            try {
-              await navigateToDrawerItem(tester, mode);
-              // Setup position does not have a "new game" toolbar action
-              // the same way, so only call startNewGame for play modes.
-              if (mode != 'drawer_item_setup_position') {
-                await startNewGame(tester);
-              }
-            } catch (e) {
-              print('[MultiMode] Navigation failed: $e');
-              continue;
+      int actionCount = 0;
+      for (int cycle = 0; cycle < 3; cycle++) {
+        for (final String mode in modes) {
+          print('[MultiMode] Switching to $mode (cycle $cycle)');
+          try {
+            await navigateToDrawerItem(tester, mode);
+            // Setup position does not have a "new game" toolbar action
+            // the same way, so only call startNewGame for play modes.
+            if (mode != 'drawer_item_setup_position') {
+              await startNewGame(tester);
             }
+          } catch (e) {
+            print('[MultiMode] Navigation failed: $e');
+            continue;
+          }
 
-            // Perform some actions in this mode.
-            final int actionsThisMode = kActionsPerMultiMode ~/ 12;
-            for (int i = 0; i < actionsThisMode; i++) {
-              if (mode == 'drawer_item_ai_vs_ai') {
-                await actions.performAction(
-                  tester,
-                  gameActionProbability: 0.0,
-                );
-              } else {
-                await actions.performAction(
-                  tester,
-                  gameActionProbability: 0.90,
-                );
-              }
-              await tester.pump(const Duration(milliseconds: 100));
-              actionCount++;
+          // Perform some actions in this mode.
+          const int actionsThisMode = kActionsPerMultiMode ~/ 12;
+          for (int i = 0; i < actionsThisMode; i++) {
+            if (mode == 'drawer_item_ai_vs_ai') {
+              await actions.performAction(tester, gameActionProbability: 0.0);
+            } else {
+              await actions.performAction(tester, gameActionProbability: 0.90);
             }
+            await tester.pump(const Duration(milliseconds: 100));
+            actionCount++;
           }
         }
+      }
 
-        print('[MultiMode] Completed $actionCount actions across modes');
-        actions.printSummary();
-        verifyPageDisplayed(tester, 'game_page_scaffold');
-      },
-    );
+      print('[MultiMode] Completed $actionCount actions across modes');
+      actions.printSummary();
+      verifyPageDisplayed(tester, 'game_page_scaffold');
+    });
 
     // -----------------------------------------------------------------------
     // Scenario 6: Rule variant testing
     // -----------------------------------------------------------------------
-    testWidgets(
-      'Rule variants - play with different rule sets',
-      (WidgetTester tester) async {
-        await _setupFastGame(tester);
+    testWidgets('Rule variants - play with different rule sets', (
+      WidgetTester tester,
+    ) async {
+      await _setupFastGame(tester);
 
-        final SmartActions actions = SmartActions(seed: 999);
+      final SmartActions actions = SmartActions(seed: 999);
 
-        // Test with Nine Men's Morris (default).
-        print('[RuleVariant] Testing Nine Men\'s Morris');
-        DB().ruleSettings = const RuleSettings().copyWith(piecesCount: 9);
-        await navigateToDrawerItem(tester, 'drawer_item_human_vs_human');
-        await startNewGame(tester);
-        await _runActions(tester, actions, kActionsPerRuleVariant ~/ 3);
+      // Test with Nine Men's Morris (default).
+      print("[RuleVariant] Testing Nine Men's Morris");
+      DB().ruleSettings = const RuleSettings().copyWith(piecesCount: 9);
+      await navigateToDrawerItem(tester, 'drawer_item_human_vs_human');
+      await startNewGame(tester);
+      await _runActions(tester, actions, kActionsPerRuleVariant ~/ 3);
 
-        // Test with Twelve Men's Morris.
-        print('[RuleVariant] Testing Twelve Men\'s Morris');
-        DB().ruleSettings = const RuleSettings().copyWith(
-          piecesCount: 12,
-          hasDiagonalLines: true,
-        );
-        GameController().reset(force: true);
-        await startNewGame(tester);
-        await _runActions(tester, actions, kActionsPerRuleVariant ~/ 3);
+      // Test with Twelve Men's Morris.
+      print("[RuleVariant] Testing Twelve Men's Morris");
+      DB().ruleSettings = const RuleSettings().copyWith(
+        piecesCount: 12,
+        hasDiagonalLines: true,
+      );
+      GameController().reset(force: true);
+      await startNewGame(tester);
+      await _runActions(tester, actions, kActionsPerRuleVariant ~/ 3);
 
-        // Test with Nine Men's Morris with flying disabled.
-        print('[RuleVariant] Testing Nine Men\'s Morris (no fly)');
-        DB().ruleSettings = const RuleSettings().copyWith(
-          piecesCount: 9,
-          mayFly: false,
-        );
-        GameController().reset(force: true);
-        await startNewGame(tester);
-        await _runActions(tester, actions, kActionsPerRuleVariant ~/ 3);
+      // Test with Nine Men's Morris with flying disabled.
+      print("[RuleVariant] Testing Nine Men's Morris (no fly)");
+      DB().ruleSettings = const RuleSettings().copyWith(
+        piecesCount: 9,
+        mayFly: false,
+      );
+      GameController().reset(force: true);
+      await startNewGame(tester);
+      await _runActions(tester, actions, kActionsPerRuleVariant ~/ 3);
 
-        actions.printSummary();
-        verifyPageDisplayed(tester, 'game_page_scaffold');
-      },
-    );
+      actions.printSummary();
+      verifyPageDisplayed(tester, 'game_page_scaffold');
+    });
 
     // -----------------------------------------------------------------------
     // Scenario 7: Settings chaos
     // -----------------------------------------------------------------------
-    testWidgets(
-      'Settings chaos - change settings while game is active',
-      (WidgetTester tester) async {
-        await _setupFastGame(tester);
-        await navigateToDrawerItem(tester, 'drawer_item_human_vs_human');
-        await startNewGame(tester);
+    testWidgets('Settings chaos - change settings while game is active', (
+      WidgetTester tester,
+    ) async {
+      await _setupFastGame(tester);
+      await navigateToDrawerItem(tester, 'drawer_item_human_vs_human');
+      await startNewGame(tester);
 
-        final SmartActions actions = SmartActions(seed: 314);
+      final SmartActions actions = SmartActions(seed: 314);
 
-        for (int i = 0; i < kActionsPerSettingsChaos; i++) {
-          // Alternate between game actions and settings changes.
-          if (i % 5 == 0) {
-            // Change a setting programmatically.
-            _randomSettingsChange(i);
-          }
-
-          await actions.performAction(tester, gameActionProbability: 0.70);
-
-          if (i % 20 == 0) {
-            print('[SettingsChaos] Action $i/$kActionsPerSettingsChaos');
-          }
+      for (int i = 0; i < kActionsPerSettingsChaos; i++) {
+        // Alternate between game actions and settings changes.
+        if (i % 5 == 0) {
+          // Change a setting programmatically.
+          _randomSettingsChange(i);
         }
 
-        actions.printSummary();
-        verifyPageDisplayed(tester, 'game_page_scaffold');
-      },
-    );
+        await actions.performAction(tester, gameActionProbability: 0.70);
+
+        if (i % 20 == 0) {
+          print('[SettingsChaos] Action $i/$kActionsPerSettingsChaos');
+        }
+      }
+
+      actions.printSummary();
+      verifyPageDisplayed(tester, 'game_page_scaffold');
+    });
   });
 }
 
@@ -405,34 +388,28 @@ void _randomSettingsChange(int index) {
   switch (settingIndex) {
     case 0:
       final int level = (index % 10) + 1;
-      DB().generalSettings = DB().generalSettings.copyWith(
-        skillLevel: level,
-      );
+      DB().generalSettings = DB().generalSettings.copyWith(skillLevel: level);
       print('[SettingsChaos] Set skillLevel=$level');
     case 1:
       final int time = index % 3;
-      DB().generalSettings = DB().generalSettings.copyWith(
-        moveTime: time,
-      );
+      DB().generalSettings = DB().generalSettings.copyWith(moveTime: time);
       print('[SettingsChaos] Set moveTime=$time');
     case 2:
-      final bool enabled = index % 2 == 0;
+      final bool enabled = index.isEven;
       DB().generalSettings = DB().generalSettings.copyWith(
         shufflingEnabled: enabled,
       );
       print('[SettingsChaos] Set shuffling=$enabled');
     case 3:
-      final bool enabled = index % 2 == 0;
+      final bool enabled = index.isEven;
       DB().generalSettings = DB().generalSettings.copyWith(
         isAutoRestart: enabled,
       );
       print('[SettingsChaos] Set autoRestart=$enabled');
     case 4:
     default:
-      final bool enabled = index % 2 == 0;
-      DB().generalSettings = DB().generalSettings.copyWith(
-        aiIsLazy: enabled,
-      );
+      final bool enabled = index.isEven;
+      DB().generalSettings = DB().generalSettings.copyWith(aiIsLazy: enabled);
       print('[SettingsChaos] Set aiIsLazy=$enabled');
   }
 }

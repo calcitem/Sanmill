@@ -16,7 +16,7 @@ void main() {
   group('PuzzleAttemptResult', () {
     group('constructor', () {
       test('should store all required fields', () {
-        final DateTime now = DateTime(2026, 2, 14, 12, 0);
+        final DateTime now = DateTime(2026, 2, 14, 12);
         final PuzzleAttemptResult result = PuzzleAttemptResult(
           puzzleId: 'puzzle-1',
           success: true,
@@ -44,7 +44,7 @@ void main() {
           timeSpent: const Duration(seconds: 30),
           hintsUsed: 0,
           movesPlayed: 3,
-          timestamp: DateTime(2026, 1),
+          timestamp: DateTime(2026),
           oldRating: 1500,
           newRating: 1520,
           ratingChange: 20,
@@ -58,7 +58,7 @@ void main() {
 
     group('toJson', () {
       test('should include all required fields', () {
-        final DateTime now = DateTime(2026, 2, 14, 12, 0);
+        final DateTime now = DateTime(2026, 2, 14, 12);
         final PuzzleAttemptResult result = PuzzleAttemptResult(
           puzzleId: 'puzzle-1',
           success: true,
@@ -85,7 +85,7 @@ void main() {
           timeSpent: const Duration(minutes: 2),
           hintsUsed: 0,
           movesPlayed: 10,
-          timestamp: DateTime(2026, 1),
+          timestamp: DateTime(2026),
           oldRating: 1500,
           newRating: 1480,
           ratingChange: -20,
@@ -105,7 +105,7 @@ void main() {
           timeSpent: Duration.zero,
           hintsUsed: 0,
           movesPlayed: 0,
-          timestamp: DateTime(2026, 1),
+          timestamp: DateTime(2026),
         );
 
         final Map<String, dynamic> json = result.toJson();
@@ -159,7 +159,7 @@ void main() {
 
     group('toJson / fromJson round-trip', () {
       test('should preserve all data through round-trip', () {
-        final DateTime now = DateTime(2026, 2, 14, 12, 0);
+        final DateTime now = DateTime(2026, 2, 14, 12);
         final PuzzleAttemptResult original = PuzzleAttemptResult(
           puzzleId: 'puzzle-99',
           success: false,

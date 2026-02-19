@@ -724,15 +724,12 @@ class TapHandler {
 
     if (didCommitMove) {
       // Record the board tap event for experience recording.
-      RecordingService().recordEvent(
-        RecordingEventType.boardTap,
-        <String, dynamic>{
-          'sq': sq,
-          'action': GameController().position.action.toString(),
-          'sideToMove':
-              GameController().position.sideToMove.string,
-        },
-      );
+      RecordingService()
+          .recordEvent(RecordingEventType.boardTap, <String, dynamic>{
+            'sq': sq,
+            'action': GameController().position.action.toString(),
+            'sideToMove': GameController().position.sideToMove.string,
+          });
 
       // TODO: Need Others?
       // Increment ply counters. In particular,

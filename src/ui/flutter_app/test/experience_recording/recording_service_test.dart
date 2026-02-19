@@ -74,20 +74,20 @@ void main() {
 
   group('RecordingService.importSessionFromJsonString', () {
     test('returns null for empty string', () async {
-      final RecordingSession? result =
-          await RecordingService().importSessionFromJsonString('');
+      final RecordingSession? result = await RecordingService()
+          .importSessionFromJsonString('');
       expect(result, isNull);
     });
 
     test('returns null for invalid JSON', () async {
-      final RecordingSession? result =
-          await RecordingService().importSessionFromJsonString('not json');
+      final RecordingSession? result = await RecordingService()
+          .importSessionFromJsonString('not json');
       expect(result, isNull);
     });
 
     test('returns null for JSON array instead of object', () async {
-      final RecordingSession? result =
-          await RecordingService().importSessionFromJsonString('[1, 2, 3]');
+      final RecordingSession? result = await RecordingService()
+          .importSessionFromJsonString('[1, 2, 3]');
       expect(result, isNull);
     });
 
@@ -101,8 +101,8 @@ void main() {
         'initialSnapshot': <String, dynamic>{},
         'events': <dynamic>[],
       });
-      final RecordingSession? result =
-          await RecordingService().importSessionFromJsonString(json);
+      final RecordingSession? result = await RecordingService()
+          .importSessionFromJsonString(json);
       expect(result, isNull);
     });
   });

@@ -8,7 +8,7 @@ import 'package:sanmill/shared/models/chat_message.dart';
 
 void main() {
   group('ChatMessage', () {
-    final DateTime baseTime = DateTime(2026, 2, 14, 10, 0);
+    final DateTime baseTime = DateTime(2026, 2, 14, 10);
 
     group('constructor', () {
       test('should store all required fields', () {

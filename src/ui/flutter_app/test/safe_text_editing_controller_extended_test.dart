@@ -45,11 +45,11 @@ void main() {
     });
 
     test('negative selection should be clamped to 0', () {
-      final SafeTextEditingController controller = SafeTextEditingController();
+      final SafeTextEditingController _ = SafeTextEditingController();
 
       // Use sanitize directly to test negative handling
       final TextEditingValue sanitized = SafeTextEditingController.sanitize(
-        const TextEditingValue(
+        TextEditingValue(
           text: 'abc',
           selection: TextSelection(baseOffset: -5, extentOffset: -3),
         ),

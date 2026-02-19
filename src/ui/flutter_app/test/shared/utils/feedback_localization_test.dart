@@ -35,7 +35,7 @@ void main() {
   // ---------------------------------------------------------------------------
   group('CustomFeedbackLocalizationsDelegate', () {
     const CustomFeedbackLocalizationsDelegate delegate =
-        CustomFeedbackLocalizationsDelegate();
+        CustomFeedbackLocalizationsDelegate.delegate;
 
     test('isSupported should return true for English', () {
       expect(delegate.isSupported(const Locale('en')), isTrue);
@@ -59,7 +59,7 @@ void main() {
 
     test('shouldReload should return false', () {
       expect(
-        delegate.shouldReload(const CustomFeedbackLocalizationsDelegate()),
+        delegate.shouldReload(CustomFeedbackLocalizationsDelegate.delegate),
         isFalse,
       );
     });

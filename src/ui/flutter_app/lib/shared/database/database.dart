@@ -256,10 +256,7 @@ class Database {
     // Record settings change for experience recording.
     RecordingService().recordEvent(
       RecordingEventType.settingsChange,
-      <String, dynamic>{
-        'category': 'rule',
-        'settings': ruleSettings.toJson(),
-      },
+      <String, dynamic>{'category': 'rule', 'settings': ruleSettings.toJson()},
     );
   }
 

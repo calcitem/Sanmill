@@ -54,7 +54,6 @@ void main() {
     });
 
     test('ratings should generally increase with level', () {
-      int prevRating = 0;
       // Not strictly monotonic due to adjustments, but generally increasing
       for (int level = 1; level <= 30; level++) {
         final int rating = EloRatingService.getFixedAiEloRating(level);
@@ -71,7 +70,6 @@ void main() {
             reason: 'Level $level should be < 2800',
           );
         }
-        prevRating = rating;
       }
       // Level 30 should be higher than level 1
       final int level1 = EloRatingService.getFixedAiEloRating(1);
@@ -142,9 +140,7 @@ void main() {
     test(
       'MCTS without perfect DB should have significantly reduced rating',
       () {
-        mockDB.generalSettings = const GeneralSettings(
-          usePerfectDatabase: false,
-        );
+        mockDB.generalSettings = const GeneralSettings();
         final int mtdf = EloRatingService.getFixedAiEloRating(15);
 
         mockDB.generalSettings = const GeneralSettings(

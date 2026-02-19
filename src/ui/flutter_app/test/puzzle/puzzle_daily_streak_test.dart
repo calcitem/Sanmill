@@ -14,7 +14,6 @@ import 'dart:io';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sanmill/puzzle/services/daily_puzzle_service.dart';
 import 'package:sanmill/shared/database/database.dart';
 import 'package:sanmill/shared/services/environment_config.dart';
 
@@ -189,7 +188,7 @@ void main() {
     test('returns 0 when neither today nor yesterday is completed', () {
       final DateTime today = DateTime.utc(2026, 2, 13);
       // Only some old date that is not yesterday.
-      final DateTime oldDate = DateTime.utc(2026, 1);
+      final DateTime oldDate = DateTime.utc(2026);
 
       final List<String> dates = <String>[oldDate.toIso8601String()];
 
@@ -265,7 +264,7 @@ void main() {
       final List<String> dates = <String>[
         DateTime.utc(2025, 12, 30).toIso8601String(),
         DateTime.utc(2025, 12, 31).toIso8601String(),
-        DateTime.utc(2026, 1).toIso8601String(),
+        DateTime.utc(2026).toIso8601String(),
         DateTime.utc(2026, 1, 2).toIso8601String(),
       ];
 

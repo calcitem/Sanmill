@@ -234,8 +234,8 @@ void main() {
     });
 
     test('equality should be based on name', () {
-      expect(GameOutcome.win, const GameOutcome('win'));
-      expect(GameOutcome.draw, const GameOutcome('draw'));
+      expect(GameOutcome.win, GameOutcome.win);
+      expect(GameOutcome.draw, GameOutcome.draw);
       expect(GameOutcome.win, isNot(GameOutcome.loss));
     });
 

@@ -35,6 +35,7 @@
 /// flutter test integration_test/ai_vs_ai_determinism_test.dart -d linux
 /// flutter test integration_test/ai_vs_ai_determinism_test.dart -d windows
 /// ```
+library;
 
 // ignore_for_file: avoid_print, always_specify_types
 
@@ -175,7 +176,7 @@ void main() {
       }
     });
 
-    testWidgets('Standard Nine Men\'s Morris self-play is deterministic '
+    testWidgets("Standard Nine Men's Morris self-play is deterministic "
         'at Level 1, 5, 10', (WidgetTester tester) async {
       // --------------------------------------------------
       // 1. Backup database (restored in tearDown)
@@ -548,7 +549,7 @@ void _printCalibrationCode(Map<int, _GameRunResult> results) {
     final _GameRunResult r = results[level]!;
 
     // Escape single quotes in the move sequence (unlikely but safe).
-    final String escaped = r.moveSequence.replaceAll("'", "\\'");
+    final String escaped = r.moveSequence.replaceAll("'", r"\'");
 
     print("  $level: _ExpectedResult(");
     print("    winner: '${r.winner}',");

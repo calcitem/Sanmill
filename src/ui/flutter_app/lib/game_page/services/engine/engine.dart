@@ -1647,13 +1647,17 @@ class MoveAnalysisResult {
     required this.move,
     required this.outcome,
     this.fromSquare,
-    required this.toSquare,
+    this.toSquare,
+    this.score,
   });
 
   final String move;
   final GameOutcome outcome;
   final pgn.Square? fromSquare;
-  final pgn.Square toSquare;
+  final pgn.Square? toSquare;
+
+  /// Numerical evaluation score (positive = winning, negative = losing).
+  final int? score;
 }
 
 /// Result of the position analysis

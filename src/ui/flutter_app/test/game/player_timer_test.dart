@@ -6,6 +6,7 @@
 // Tests for PlayerTimer state management (not actual timer ticking,
 // which requires a running game loop).
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sanmill/game_page/services/player_timer.dart';

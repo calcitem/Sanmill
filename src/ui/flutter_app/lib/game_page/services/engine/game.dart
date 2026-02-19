@@ -191,14 +191,12 @@ class Game {
     // Record AI move for experience recording when the move originated
     // from the engine (not a human tap, which is recorded separately).
     if (isAiSideToMove) {
-      RecordingService().recordEvent(
-        RecordingEventType.aiMove,
-        <String, dynamic>{
-          'move': finalMove.notation,
-          'side': finalMove.side.string,
-          'type': finalMove.type.toString(),
-        },
-      );
+      RecordingService()
+          .recordEvent(RecordingEventType.aiMove, <String, dynamic>{
+            'move': finalMove.notation,
+            'side': finalMove.side.string,
+            'type': finalMove.type.toString(),
+          });
     }
 
     _logStat();
