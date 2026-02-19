@@ -113,10 +113,16 @@ class _GameBoardState extends State<GameBoard>
     GameController().gameResultNotifier.addListener(_showResult);
 
     if (visitedRuleSettingsPage == true) {
-      GameController().reset();
       visitedRuleSettingsPage = false;
       // Reset dialog flag when game is reset
       _isDialogShowing = false;
+      // Defer reset to avoid triggering ValueNotifier updates during build,
+      // which would cause setState/markNeedsBuild during build errors.
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          GameController().reset();
+        }
+      });
     }
 
     GameController().engine.startup();
