@@ -85,6 +85,7 @@ class ReplayService {
   int _currentIndex = 0;
   Completer<void>? _pauseCompleter;
   bool _stopRequested = false;
+  bool _useRecordedAiMoves = false;
 
   // Settings backup for restoration after replay.
   GeneralSettings? _backupGeneralSettings;
@@ -107,12 +108,20 @@ class ReplayService {
   Future<void> startReplay(RecordingSession session) async {
     assert(state == ReplayState.idle, 'Cannot start replay while active.');
 
+    // Stop any ongoing recording to avoid confusing "REC" + replay UI overlap.
+    await RecordingService().stopRecording(
+      notes: 'Auto-stopped: replay started',
+    );
+
     _session = session;
     _currentIndex = 0;
     _stopRequested = false;
+    _useRecordedAiMoves = session.events.any(
+      (RecordingEvent e) => e.type == RecordingEventType.aiMove,
+    );
 
     totalEventsNotifier.value = session.events.length;
-    progressNotifier.value = 0;
+    progressNotifier.value = -1;
     stateNotifier.value = ReplayState.playing;
 
     // Back up current settings so they can be restored after replay.
@@ -121,12 +130,20 @@ class ReplayService {
 
     // Suppress recording hooks during replay to prevent feedback loops.
     RecordingService().isSuppressed = true;
+    // Suppress automatic engine searches when we have recorded AI moves.
+    GameController().isExperienceReplayActive = _useRecordedAiMoves;
 
     // Restore the initial settings snapshot captured at recording time.
     _restoreSnapshot(session.initialSnapshot);
 
     // Reset the game board to a clean initial state.
     GameController().reset(force: true);
+
+    await _waitForControllerReady();
+
+    // In legacy recordings without aiMove events, the engine is still needed
+    // to advance AI turns. Kick it once if the session starts with AI to move.
+    _kickLegacyAiIfNeeded();
 
     logger.i(
       '$_logTag Replay started: ${session.id} '
@@ -138,8 +155,15 @@ class ReplayService {
 
     // Finalise.
     if (!_stopRequested) {
-      stateNotifier.value = ReplayState.finished;
       logger.i('$_logTag Replay finished: ${session.id}');
+      stateNotifier.value = ReplayState.finished;
+
+      // Give the UI a moment to show "finished", then clean up automatically.
+      await Future<void>.delayed(const Duration(milliseconds: 800));
+      if (!_stopRequested && stateNotifier.value == ReplayState.finished) {
+        _cleanup();
+        _restartAutoRecordingIfEnabled();
+      }
     }
   }
 
@@ -165,13 +189,16 @@ class ReplayService {
   }
 
   /// Stops the replay and restores original settings.
-  void stop() {
+  void stop({bool restartRecording = true}) {
     _stopRequested = true;
     if (state == ReplayState.paused) {
       _pauseCompleter?.complete();
       _pauseCompleter = null;
     }
     _cleanup();
+    if (restartRecording) {
+      _restartAutoRecordingIfEnabled();
+    }
     logger.i('$_logTag Replay stopped');
   }
 
@@ -219,6 +246,10 @@ class ReplayService {
       // board taps require awaiting engine/state transitions.
       await _applyEvent(event); // ignore: use_build_context_synchronously
 
+      if (_stopRequested) {
+        break;
+      }
+
       progressNotifier.value = _currentIndex;
       _currentIndex++;
     }
@@ -239,7 +270,10 @@ class ReplayService {
       case RecordingEventType.boardTap:
         final int? sq = event.data['sq'] as int?;
         if (sq != null) {
-          await _waitForHumanTurn();
+          await _waitForControllerReady();
+          if (!_useRecordedAiMoves) {
+            await _waitForHumanTurn();
+          }
           // Re-fetch context after the async wait to avoid stale-context
           // issues (use_build_context_synchronously).
           final BuildContext? freshCtx = currentNavigatorKey.currentContext;
@@ -250,8 +284,9 @@ class ReplayService {
         }
 
       case RecordingEventType.aiMove:
-        // AI moves are the natural consequence of the preceding board-tap
-        // event triggering the engine.  No explicit replay action needed.
+        if (_useRecordedAiMoves) {
+          await _applyAiMove(event.data);
+        }
         break;
 
       case RecordingEventType.settingsChange:
@@ -356,6 +391,107 @@ class ReplayService {
       await Future<void>.delayed(Duration(milliseconds: pollMs));
       pollMs = math.min(pollMs * 2, maxPollMs);
     }
+  }
+
+  Future<void> _waitForControllerReady() async {
+    const Duration maxWait = Duration(seconds: 10);
+    const int minPollMs = 20;
+    const int maxPollMs = 250;
+    int pollMs = minPollMs;
+    final Stopwatch sw = Stopwatch()..start();
+
+    while (!_stopRequested) {
+      final bool ready = GameController().isControllerReady;
+      final BuildContext? ctx = currentNavigatorKey.currentContext;
+      if (ready && ctx != null) {
+        break;
+      }
+      if (sw.elapsed >= maxWait) {
+        logger.w(
+          '$_logTag _waitForControllerReady: timed out after '
+          '${maxWait.inSeconds}s (ready=$ready, ctx=${ctx != null})',
+        );
+        break;
+      }
+      await Future<void>.delayed(Duration(milliseconds: pollMs));
+      pollMs = math.min(pollMs * 2, maxPollMs);
+    }
+  }
+
+  void _kickLegacyAiIfNeeded() {
+    if (_useRecordedAiMoves) {
+      return;
+    }
+    if (GameController().gameInstance.gameMode != GameMode.humanVsAi) {
+      return;
+    }
+    if (!GameController().gameInstance.isAiSideToMove) {
+      return;
+    }
+
+    final BuildContext? ctx = currentNavigatorKey.currentContext;
+    if (ctx == null || !ctx.mounted) {
+      logger.w('$_logTag Legacy AI kick skipped: no mounted context.');
+      return;
+    }
+    unawaited(GameController().engineToGo(ctx, isMoveNow: false));
+  }
+
+  Future<void> _applyAiMove(Map<String, dynamic> data) async {
+    final String? rawMove = data['move'] as String?;
+    final String? rawSide = data['side'] as String?;
+
+    if (rawMove == null || rawMove.trim().isEmpty) {
+      logger.w('$_logTag Replay: aiMove has no move payload, skipping.');
+      return;
+    }
+
+    final PieceColor? side = _parsePieceColor(rawSide);
+    if (side == null) {
+      logger.w(
+        '$_logTag Replay: aiMove has unknown side "$rawSide", skipping.',
+      );
+      return;
+    }
+
+    final String move = rawMove.trim().toLowerCase();
+
+    try {
+      final ExtMove extMove = ExtMove(move, side: side);
+      final bool ok = GameController().applyMove(extMove);
+      assert(ok, 'Replay aiMove failed: $move (side=$side)');
+      if (!ok) {
+        logger.e('$_logTag Replay: aiMove failed: $move (side=$side)');
+        stop();
+      } else {
+        logger.i('$_logTag Replay: applied aiMove $move (side=$side)');
+      }
+    } catch (e) {
+      logger.e('$_logTag Replay: aiMove exception: $move (side=$side): $e');
+      stop();
+    }
+  }
+
+  PieceColor? _parsePieceColor(String? value) {
+    if (value == null) {
+      return null;
+    }
+
+    // Common encodings in recordings:
+    // - PieceColor.string => "O" / "@"
+    // - enum string => "PieceColor.white" / "PieceColor.black"
+    // - plain text => "white" / "black"
+    final String v = value.trim();
+    if (v == PieceColor.white.string || v.toLowerCase().contains('white')) {
+      return PieceColor.white;
+    }
+    if (v == PieceColor.black.string || v.toLowerCase().contains('black')) {
+      return PieceColor.black;
+    }
+    if (v == PieceColor.none.string || v.toLowerCase().contains('none')) {
+      return PieceColor.none;
+    }
+    return null;
   }
 
   /// Replays a history-navigation event by calling [HistoryNavigator.doEachMove]
@@ -670,6 +806,7 @@ class ReplayService {
   void _cleanup() {
     // Re-enable recording hooks.
     RecordingService().isSuppressed = false;
+    GameController().isExperienceReplayActive = false;
 
     // Restore the settings that were active before replay started.
     if (_backupGeneralSettings != null) {
@@ -684,9 +821,26 @@ class ReplayService {
     _session = null;
     _currentIndex = 0;
     _pauseCompleter = null;
-    _stopRequested = false;
+    _useRecordedAiMoves = false;
     stateNotifier.value = ReplayState.idle;
     progressNotifier.value = -1;
     totalEventsNotifier.value = 0;
+  }
+
+  void _restartAutoRecordingIfEnabled() {
+    if (RecordingService().isSuppressed) {
+      return;
+    }
+    if (!DB().generalSettings.experienceRecordingEnabled) {
+      return;
+    }
+    if (RecordingService().isRecording) {
+      return;
+    }
+    unawaited(
+      RecordingService().startRecording(
+        gameMode: GameController().gameInstance.gameMode.toString(),
+      ),
+    );
   }
 }

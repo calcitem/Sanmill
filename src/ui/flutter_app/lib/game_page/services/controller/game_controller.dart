@@ -24,6 +24,12 @@ class GameController {
 
   static const String _logTag = "[Controller]";
 
+  /// True while an experience replay session is actively driving the game.
+  ///
+  /// When enabled, UI-driven code should avoid automatically triggering
+  /// engine searches (AI moves are applied by the replay engine instead).
+  bool isExperienceReplayActive = false;
+
   NetworkService? networkService;
   bool isLanOpponentTurn = false; // Tracks whose turn it is in LAN mode
 

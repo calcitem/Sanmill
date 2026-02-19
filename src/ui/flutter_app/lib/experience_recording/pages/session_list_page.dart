@@ -11,7 +11,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:share_plus/share_plus.dart';
 
+import '../../game_page/services/mill.dart';
+import '../../game_page/widgets/game_page.dart';
 import '../../generated/intl/l10n.dart';
+import '../../shared/config/constants.dart';
 import '../../shared/services/logger.dart';
 import '../../shared/themes/app_theme.dart';
 import '../models/recording_models.dart';
@@ -34,6 +37,34 @@ class _SessionListPageState extends State<SessionListPage> {
 
   List<RecordingSession> _sessions = <RecordingSession>[];
   bool _isLoading = true;
+
+  GameMode _parseGameMode(String? raw) {
+    if (raw == null || raw.trim().isEmpty) {
+      return GameMode.humanVsAi;
+    }
+
+    final String v = raw.trim().toLowerCase();
+    if (v.contains('humanvsai')) {
+      return GameMode.humanVsAi;
+    }
+    if (v.contains('humanvshuman')) {
+      return GameMode.humanVsHuman;
+    }
+    if (v.contains('aivsai')) {
+      return GameMode.aiVsAi;
+    }
+    if (v.contains('humanvslan')) {
+      return GameMode.humanVsLAN;
+    }
+    if (v.contains('setupposition')) {
+      return GameMode.setupPosition;
+    }
+    if (v.contains('puzzle')) {
+      return GameMode.puzzle;
+    }
+
+    return GameMode.humanVsAi;
+  }
 
   @override
   void initState() {
@@ -179,11 +210,38 @@ class _SessionListPageState extends State<SessionListPage> {
       return;
     }
 
-    // Pop the entire navigation stack back to the game page (the first/root
-    // route).  This ensures that currentNavigatorKey.currentContext resolves
-    // to a valid, mounted game-page context when the replay engine dispatches
-    // board-tap and history-navigation events.
-    Navigator.popUntil(context, (Route<dynamic> route) => route.isFirst);
+    // Ensure any previous replay is fully stopped.
+    // Do not restart auto-recording here because we are about to start replay.
+    ReplayService().stop(restartRecording: false);
+
+    // Stop any ongoing recording before navigating to the replay board.
+    await RecordingService().stopRecording(
+      notes: 'Auto-stopped: replay started',
+    );
+
+    // Prevent GamePage from auto-starting a new recording while we are
+    // navigating to the board for replay.
+    RecordingService().isSuppressed = true;
+
+    final NavigatorState? rootNav = currentNavigatorKey.currentState;
+    if (rootNav == null) {
+      logger.e('$_logTag Cannot start replay: root navigator is null.');
+      RecordingService().isSuppressed = false;
+      return;
+    }
+
+    // Pop any pushed routes (DeveloperOptionsPage, SessionListPage, etc.).
+    rootNav.popUntil((Route<dynamic> route) => route.isFirst);
+
+    // Push a dedicated GamePage route so replay is visible even when the app
+    // is currently showing a non-game Home drawer screen (e.g. Settings).
+    final GameMode mode = _parseGameMode(fullSession.gameMode);
+    rootNav.push(
+      MaterialPageRoute<void>(
+        settings: const RouteSettings(name: '/gamePage'),
+        builder: (_) => GamePage(mode, key: const Key('replay_game_page')),
+      ),
+    );
 
     // Wait one frame so Flutter can finish the navigation animation and rebuild
     // the game-page widget tree before events start being dispatched.

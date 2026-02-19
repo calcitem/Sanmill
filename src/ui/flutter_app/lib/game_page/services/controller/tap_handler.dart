@@ -50,6 +50,16 @@ class TapHandler {
   }
 
   Future<EngineResponse> onBoardTap(int sq) async {
+    // Record every tap so replay can reproduce selection + move sequences.
+    RecordingService()
+        .recordEvent(RecordingEventType.boardTap, <String, dynamic>{
+          'sq': sq,
+          'phase': GameController().position.phase.toString(),
+          'action': GameController().position.action.toString(),
+          'sideToMove': GameController().position.sideToMove.string,
+          'gameMode': GameController().gameInstance.gameMode.toString(),
+        });
+
     // Prevent interaction when analysis is in progress
     if (AnalysisMode.isAnalyzing) {
       logger.i("$_logTag Analysis in progress, ignoring tap.");
@@ -140,6 +150,11 @@ class TapHandler {
           controller.gameInstance.gameMode != GameMode.puzzle) {
         logger.i("$_logTag AI is not thinking. AI is to move.");
 
+        if (GameController().isExperienceReplayActive) {
+          // During experience replay, AI moves are applied by ReplayService.
+          return const EngineResponseSkip();
+        }
+
         return GameController().engineToGo(context, isMoveNow: false);
       }
     }
@@ -160,6 +175,18 @@ class TapHandler {
 
     if (isAiSideToMove &&
         GameController().gameInstance.gameMode != GameMode.humanVsLAN) {
+      if (GameController().isExperienceReplayActive) {
+        logger.w(
+          "$_logTag [STATE_SNAPSHOT] Tap ignored: AI's turn (replay mode) | "
+          "isEngineRunning=${GameController().isEngineRunning} | "
+          "isControllerActive=${GameController().isControllerActive} | "
+          "gameMode=${GameController().gameInstance.gameMode} | "
+          "phase=${GameController().position.phase} | "
+          "sideToMove=${GameController().position.sideToMove} | "
+          "action=${GameController().position.action}",
+        );
+        return const EngineResponseSkip();
+      }
       // Check if engine is actually thinking
       final bool nativeThinking = await GameController().engine.isThinking();
       logger.w(
@@ -723,14 +750,6 @@ class TapHandler {
         GameController().position._record != recordBeforeTap;
 
     if (didCommitMove) {
-      // Record the board tap event for experience recording.
-      RecordingService()
-          .recordEvent(RecordingEventType.boardTap, <String, dynamic>{
-            'sq': sq,
-            'action': GameController().position.action.toString(),
-            'sideToMove': GameController().position.sideToMove.string,
-          });
-
       // TODO: Need Others?
       // Increment ply counters. In particular,
       // rule50 will be reset to zero later on
@@ -792,6 +811,10 @@ class TapHandler {
 
       // Check if the next player is AI and needs to start thinking
       if (_isGameRunning && GameController().gameInstance.isAiSideToMove) {
+        if (GameController().isExperienceReplayActive) {
+          // During experience replay, AI moves are applied by ReplayService.
+          return const EngineResponseHumanOK();
+        }
         if (GameController().gameInstance.gameMode == GameMode.puzzle) {
           // Puzzle mode: do not trigger native engine search here.
           // PuzzlePage will auto-play the opponent's forced responses from
