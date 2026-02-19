@@ -84,7 +84,13 @@ class _AnnotationToolbarState extends State<AnnotationToolbar> {
           FluentIcons.draw_image_24_regular,
           color: Colors.white,
         ),
-        onPressed: widget.onToggleAnnotationMode,
+        onPressed: () {
+          RecordingService().recordEvent(
+            RecordingEventType.annotationAction,
+            <String, dynamic>{'action': 'enter'},
+          );
+          widget.onToggleAnnotationMode();
+        },
       ),
     );
   }
@@ -120,6 +126,10 @@ class _AnnotationToolbarState extends State<AnnotationToolbar> {
           button: true,
           child: InkWell(
             onTap: () {
+              RecordingService().recordEvent(
+                RecordingEventType.annotationAction,
+                <String, dynamic>{'action': 'selectTool', 'tool': tool.name},
+              );
               setState(() => widget.annotationManager.currentTool = tool);
             },
             borderRadius: BorderRadius.circular(8.0),
@@ -231,6 +241,13 @@ class _AnnotationToolbarState extends State<AnnotationToolbar> {
             button: true,
             child: GestureDetector(
               onTap: () {
+                RecordingService().recordEvent(
+                  RecordingEventType.annotationAction,
+                  <String, dynamic>{
+                    'action': 'selectColor',
+                    'color': color.toARGB32(),
+                  },
+                );
                 setState(() {
                   if (selectedShape != null) {
                     widget.annotationManager.changeColor(selectedShape, color);
@@ -277,19 +294,37 @@ class _AnnotationToolbarState extends State<AnnotationToolbar> {
           context,
           tooltip: S.of(context).exitAnnotationMode,
           icon: FluentIcons.games_24_regular,
-          onTap: widget.onToggleAnnotationMode,
+          onTap: () {
+            RecordingService().recordEvent(
+              RecordingEventType.annotationAction,
+              <String, dynamic>{'action': 'exit'},
+            );
+            widget.onToggleAnnotationMode();
+          },
         ),
         _buildControlButton(
           context,
           tooltip: S.of(context).undo,
           icon: FluentIcons.arrow_undo_24_regular,
-          onTap: () => setState(() => widget.annotationManager.undo()),
+          onTap: () {
+            RecordingService().recordEvent(
+              RecordingEventType.annotationAction,
+              <String, dynamic>{'action': 'undo'},
+            );
+            setState(() => widget.annotationManager.undo());
+          },
         ),
         _buildControlButton(
           context,
           tooltip: S.of(context).redo,
           icon: FluentIcons.arrow_redo_24_regular,
-          onTap: () => setState(() => widget.annotationManager.redo()),
+          onTap: () {
+            RecordingService().recordEvent(
+              RecordingEventType.annotationAction,
+              <String, dynamic>{'action': 'redo'},
+            );
+            setState(() => widget.annotationManager.redo());
+          },
         ),
         _buildControlButton(
           context,
@@ -298,6 +333,10 @@ class _AnnotationToolbarState extends State<AnnotationToolbar> {
           onTap: () async {
             final bool? confirmed = await _showClearConfirmationDialog(context);
             if (confirmed != null && confirmed == true) {
+              RecordingService().recordEvent(
+                RecordingEventType.annotationAction,
+                <String, dynamic>{'action': 'clear'},
+              );
               setState(() => widget.annotationManager.clear());
             }
           },
@@ -306,7 +345,13 @@ class _AnnotationToolbarState extends State<AnnotationToolbar> {
           context,
           tooltip: S.of(context).takeScreenshot,
           icon: FluentIcons.camera_24_regular,
-          onTap: () => _takeScreenshot("gallery"),
+          onTap: () {
+            RecordingService().recordEvent(
+              RecordingEventType.annotationAction,
+              <String, dynamic>{'action': 'screenshot'},
+            );
+            _takeScreenshot("gallery");
+          },
         ),
       ],
     );

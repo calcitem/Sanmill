@@ -720,7 +720,13 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
     // Piece
     final ToolbarItem whitePieceButton = ToolbarItem.icon(
       key: const Key('white_piece_button'),
-      onPressed: () => setSetupPositionPiece(context, PieceColor.white),
+      onPressed: () {
+        RecordingService().recordEvent(
+          RecordingEventType.setupPositionAction,
+          <String, dynamic>{'action': 'selectPiece', 'value': 'white'},
+        );
+        setSetupPositionPiece(context, PieceColor.white);
+      },
       icon: Icon(
         FluentIcons.circle_24_filled,
         color:
@@ -738,7 +744,13 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
     );
     final ToolbarItem blackPieceButton = ToolbarItem.icon(
       key: const Key('black_piece_button'),
-      onPressed: () => setSetupPositionPiece(context, PieceColor.black),
+      onPressed: () {
+        RecordingService().recordEvent(
+          RecordingEventType.setupPositionAction,
+          <String, dynamic>{'action': 'selectPiece', 'value': 'black'},
+        );
+        setSetupPositionPiece(context, PieceColor.black);
+      },
       icon: Icon(
         FluentIcons.circle_24_filled,
         color: DB().colorSettings.blackPieceColor,
@@ -751,7 +763,13 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
     );
     final ToolbarItem markedPointButton = ToolbarItem.icon(
       key: const Key('marked_point_button'),
-      onPressed: () => setSetupPositionPiece(context, PieceColor.marked),
+      onPressed: () {
+        RecordingService().recordEvent(
+          RecordingEventType.setupPositionAction,
+          <String, dynamic>{'action': 'selectPiece', 'value': 'marked'},
+        );
+        setSetupPositionPiece(context, PieceColor.marked);
+      },
       icon: const Icon(FluentIcons.prohibited_24_regular),
       label: Text(
         S.of(context).marked,
@@ -761,7 +779,13 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
     );
     final ToolbarItem emptyPointButton = ToolbarItem.icon(
       key: const Key('empty_point_button'),
-      onPressed: () => setSetupPositionPiece(context, PieceColor.none),
+      onPressed: () {
+        RecordingService().recordEvent(
+          RecordingEventType.setupPositionAction,
+          <String, dynamic>{'action': 'selectPiece', 'value': 'none'},
+        );
+        setSetupPositionPiece(context, PieceColor.none);
+      },
       icon: const Icon(FluentIcons.add_24_regular),
       label: Text(
         S.of(context).empty,
@@ -773,8 +797,13 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
     // Rotate
     final ToolbarItem rotateButton = ToolbarItem.icon(
       key: const Key('rotate_button'),
-      onPressed: () =>
-          setSetupPositionTransform(context, TransformationType.rotate90),
+      onPressed: () {
+        RecordingService().recordEvent(
+          RecordingEventType.setupPositionAction,
+          <String, dynamic>{'action': 'transform', 'value': 'rotate90'},
+        );
+        setSetupPositionTransform(context, TransformationType.rotate90);
+      },
       icon: const Icon(FluentIcons.arrow_rotate_clockwise_24_regular),
       label: Text(
         S.of(context).rotate,
@@ -786,10 +815,13 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
     // Horizontal Flip
     final ToolbarItem horizontalFlipButton = ToolbarItem.icon(
       key: const Key('horizontal_flip_button'),
-      onPressed: () => setSetupPositionTransform(
-        context,
-        TransformationType.mirrorHorizontal,
-      ),
+      onPressed: () {
+        RecordingService().recordEvent(
+          RecordingEventType.setupPositionAction,
+          <String, dynamic>{'action': 'transform', 'value': 'mirrorHorizontal'},
+        );
+        setSetupPositionTransform(context, TransformationType.mirrorHorizontal);
+      },
       icon: const Icon(FluentIcons.flip_horizontal_24_regular),
       label: Text(
         S.of(context).horizontalFlip,
@@ -801,8 +833,13 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
     // Vertical Flip
     final ToolbarItem verticalFlipButton = ToolbarItem.icon(
       key: const Key('vertical_flip_button'),
-      onPressed: () =>
-          setSetupPositionTransform(context, TransformationType.mirrorVertical),
+      onPressed: () {
+        RecordingService().recordEvent(
+          RecordingEventType.setupPositionAction,
+          <String, dynamic>{'action': 'transform', 'value': 'mirrorVertical'},
+        );
+        setSetupPositionTransform(context, TransformationType.mirrorVertical);
+      },
       icon: const Icon(FluentIcons.flip_vertical_24_regular),
       label: Text(
         S.of(context).verticalFlip,
@@ -814,8 +851,13 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
     // Inner Outer Flip
     final ToolbarItem innerOuterFlipButton = ToolbarItem.icon(
       key: const Key('inner_outer_flip_button'),
-      onPressed: () =>
-          setSetupPositionTransform(context, TransformationType.swap),
+      onPressed: () {
+        RecordingService().recordEvent(
+          RecordingEventType.setupPositionAction,
+          <String, dynamic>{'action': 'transform', 'value': 'innerOuterFlip'},
+        );
+        setSetupPositionTransform(context, TransformationType.swap);
+      },
       icon: const Icon(FluentIcons.arrow_expand_24_regular),
       label: Text(
         S.of(context).innerOuterFlip,
@@ -828,6 +870,10 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
     final ToolbarItem clearButton = ToolbarItem.icon(
       key: const Key('clear_button'),
       onPressed: () {
+        RecordingService().recordEvent(
+          RecordingEventType.setupPositionAction,
+          <String, dynamic>{'action': 'clear'},
+        );
         GameController().position.reset();
         _updateSetupPositionIcons();
         GameController().headerTipNotifier.showTip(S.of(context).cleanedUp);
@@ -843,7 +889,13 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
     // Phase
     final ToolbarItem placingButton = ToolbarItem.icon(
       key: const Key('placing_button'),
-      onPressed: () => <void>{setSetupPositionPhase(context, Phase.placing)},
+      onPressed: () {
+        RecordingService().recordEvent(
+          RecordingEventType.setupPositionAction,
+          <String, dynamic>{'action': 'selectPhase', 'value': 'placing'},
+        );
+        setSetupPositionPhase(context, Phase.placing);
+      },
       icon: const Icon(FluentIcons.grid_dots_24_regular),
       label: Text(
         S.of(context).placing,
@@ -854,7 +906,13 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
 
     final ToolbarItem movingButton = ToolbarItem.icon(
       key: const Key('moving_button'),
-      onPressed: () => <void>{setSetupPositionPhase(context, Phase.moving)},
+      onPressed: () {
+        RecordingService().recordEvent(
+          RecordingEventType.setupPositionAction,
+          <String, dynamic>{'action': 'selectPhase', 'value': 'moving'},
+        );
+        setSetupPositionPhase(context, Phase.moving);
+      },
       icon: const Icon(FluentIcons.arrow_move_24_regular),
       label: Text(
         S.of(context).moving,
@@ -866,7 +924,13 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
     // Remove
     final ToolbarItem removeZeroButton = ToolbarItem.icon(
       key: const Key('remove_zero_button'),
-      onPressed: () => <void>{setSetupPositionNeedRemove(0, true)},
+      onPressed: () {
+        RecordingService().recordEvent(
+          RecordingEventType.setupPositionAction,
+          <String, dynamic>{'action': 'setNeedRemove', 'value': 0},
+        );
+        setSetupPositionNeedRemove(0, true);
+      },
       icon: const Icon(FluentIcons.circle_24_regular),
       label: Text(
         S.of(context).remove,
@@ -877,7 +941,13 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
 
     final ToolbarItem removeOneButton = ToolbarItem.icon(
       key: const Key('remove_one_button'),
-      onPressed: () => <void>{setSetupPositionNeedRemove(1, true)},
+      onPressed: () {
+        RecordingService().recordEvent(
+          RecordingEventType.setupPositionAction,
+          <String, dynamic>{'action': 'setNeedRemove', 'value': 1},
+        );
+        setSetupPositionNeedRemove(1, true);
+      },
       icon: const Icon(FluentIcons.number_circle_1_24_regular),
       label: Text(
         S.of(context).remove,
@@ -888,7 +958,13 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
 
     final ToolbarItem removeTwoButton = ToolbarItem.icon(
       key: const Key('remove_two_button'),
-      onPressed: () => <void>{setSetupPositionNeedRemove(2, true)},
+      onPressed: () {
+        RecordingService().recordEvent(
+          RecordingEventType.setupPositionAction,
+          <String, dynamic>{'action': 'setNeedRemove', 'value': 2},
+        );
+        setSetupPositionNeedRemove(2, true);
+      },
       icon: const Icon(FluentIcons.number_circle_2_24_regular),
       label: Text(
         S.of(context).remove,
@@ -899,7 +975,13 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
 
     final ToolbarItem removeThreeButton = ToolbarItem.icon(
       key: const Key('remove_three_button'),
-      onPressed: () => <void>{setSetupPositionNeedRemove(3, true)},
+      onPressed: () {
+        RecordingService().recordEvent(
+          RecordingEventType.setupPositionAction,
+          <String, dynamic>{'action': 'setNeedRemove', 'value': 3},
+        );
+        setSetupPositionNeedRemove(3, true);
+      },
       icon: const Icon(FluentIcons.number_circle_3_24_regular),
       label: Text(
         S.of(context).remove,
@@ -921,7 +1003,13 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
 
     final ToolbarItem copyButton = ToolbarItem.icon(
       key: const Key('copy_button'),
-      onPressed: () => <void>{setSetupPositionCopy(context)},
+      onPressed: () {
+        RecordingService().recordEvent(
+          RecordingEventType.setupPositionAction,
+          <String, dynamic>{'action': 'copy'},
+        );
+        setSetupPositionCopy(context);
+      },
       icon: const Icon(FluentIcons.copy_24_regular),
       label: Text(
         S.of(context).copy,
@@ -932,7 +1020,13 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
 
     final ToolbarItem pasteButton = ToolbarItem.icon(
       key: const Key('paste_button'),
-      onPressed: () => <void>{setSetupPositionPaste(context)},
+      onPressed: () {
+        RecordingService().recordEvent(
+          RecordingEventType.setupPositionAction,
+          <String, dynamic>{'action': 'paste'},
+        );
+        setSetupPositionPaste(context);
+      },
       icon: const Icon(FluentIcons.clipboard_paste_24_regular),
       label: Text(
         S.of(context).paste,
@@ -944,7 +1038,13 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
     // Cancel
     final ToolbarItem cancelButton = ToolbarItem.icon(
       key: const Key('cancel_button'),
-      onPressed: () => <void>{restoreContext()}, // TODO: setState();
+      onPressed: () {
+        RecordingService().recordEvent(
+          RecordingEventType.setupPositionAction,
+          <String, dynamic>{'action': 'cancel'},
+        );
+        restoreContext();
+      }, // TODO: setState();
       icon: const Icon(FluentIcons.dismiss_24_regular),
       label: Text(
         S.of(context).cancel,

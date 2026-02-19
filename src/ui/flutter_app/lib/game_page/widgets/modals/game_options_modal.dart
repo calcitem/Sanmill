@@ -8,6 +8,8 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+import '../../../experience_recording/models/recording_models.dart';
+import '../../../experience_recording/services/recording_service.dart';
 import '../../../generated/intl/l10n.dart';
 import '../../../shared/config/constants.dart';
 import '../../../shared/database/database.dart';
@@ -33,6 +35,14 @@ class GameOptionsModal extends StatelessWidget {
         SimpleDialogOption(
           key: const Key('new_game_option'),
           onPressed: () async {
+            RecordingService().recordEvent(
+              RecordingEventType.dialogAction,
+              <String, dynamic>{
+                'dialog': 'gameOptions',
+                'action': 'select',
+                'selection': 'newGame',
+              },
+            );
             //Navigator.pop(context);
 
             // TODO: If no dialog showing, When the AI is thinking,
@@ -97,7 +107,17 @@ class GameOptionsModal extends StatelessWidget {
                 GameController().isPositionSetup == true))
           SimpleDialogOption(
             key: const Key('save_game_option'),
-            onPressed: () => GameController.save(context),
+            onPressed: () {
+              RecordingService().recordEvent(
+                RecordingEventType.dialogAction,
+                <String, dynamic>{
+                  'dialog': 'gameOptions',
+                  'action': 'select',
+                  'selection': 'save',
+                },
+              );
+              GameController.save(context);
+            },
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 2.0),
               child: Text(S.of(context).saveGame),
@@ -111,9 +131,18 @@ class GameOptionsModal extends StatelessWidget {
           SimpleDialogOption(
             key: const Key('load_game_option'),
             onPressed: () {
+              RecordingService().recordEvent(
+                RecordingEventType.dialogAction,
+                <String, dynamic>{
+                  'dialog': 'gameOptions',
+                  'action': 'select',
+                  'selection': 'load',
+                },
+              );
               GameController().loadedGameFilenamePrefix = null;
               Navigator.of(context).push(
                 MaterialPageRoute<void>(
+                  settings: const RouteSettings(name: '/savedGames'),
                   builder: (BuildContext context) => const SavedGamesPage(),
                 ),
               );
@@ -128,6 +157,14 @@ class GameOptionsModal extends StatelessWidget {
           SimpleDialogOption(
             key: const Key('import_game_option'),
             onPressed: () {
+              RecordingService().recordEvent(
+                RecordingEventType.dialogAction,
+                <String, dynamic>{
+                  'dialog': 'gameOptions',
+                  'action': 'select',
+                  'selection': 'import',
+                },
+              );
               GameController().loadedGameFilenamePrefix = null;
               GameController.import(context);
             },
@@ -145,7 +182,17 @@ class GameOptionsModal extends StatelessWidget {
                 GameController().isPositionSetup == true))
           SimpleDialogOption(
             key: const Key('export_game_option'),
-            onPressed: () => GameController.export(context),
+            onPressed: () {
+              RecordingService().recordEvent(
+                RecordingEventType.dialogAction,
+                <String, dynamic>{
+                  'dialog': 'gameOptions',
+                  'action': 'select',
+                  'selection': 'export',
+                },
+              );
+              GameController.export(context);
+            },
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 2.0),
               child: Text(S.of(context).exportGame),
@@ -158,6 +205,14 @@ class GameOptionsModal extends StatelessWidget {
           SimpleDialogOption(
             key: const Key('share_gif_option'),
             onPressed: () {
+              RecordingService().recordEvent(
+                RecordingEventType.dialogAction,
+                <String, dynamic>{
+                  'dialog': 'gameOptions',
+                  'action': 'select',
+                  'selection': 'shareGif',
+                },
+              );
               GameController().gifShare(context);
               Navigator.pop(context);
             },
@@ -172,6 +227,14 @@ class GameOptionsModal extends StatelessWidget {
           SimpleDialogOption(
             key: const Key('save_image_option'),
             onPressed: () async {
+              RecordingService().recordEvent(
+                RecordingEventType.dialogAction,
+                <String, dynamic>{
+                  'dialog': 'gameOptions',
+                  'action': 'select',
+                  'selection': 'saveImage',
+                },
+              );
               Navigator.pop(context);
 
               // Adding a short delay to ensure the modal has time to close before capturing the screenshot

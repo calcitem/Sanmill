@@ -39,6 +39,21 @@ enum RecordingEventType {
   /// Undo / take-back action.
   undoMove,
 
+  /// Toolbar button press (Move Now, analysis toggle, etc.).
+  toolbarAction,
+
+  /// Dialog or modal interaction (open, select an option).
+  dialogAction,
+
+  /// Page navigation (push or pop a named route).
+  navigationAction,
+
+  /// Annotation toolbar action (tool select, color, undo, redo, clear).
+  annotationAction,
+
+  /// Setup-position toolbar action (piece select, phase, transform, etc.).
+  setupPositionAction,
+
   /// Extension point for future event categories.
   custom,
 }
@@ -47,11 +62,17 @@ enum RecordingEventType {
 ///
 /// The [timestampMs] field stores the number of milliseconds elapsed since
 /// the recording session started, enabling accurate replay timing.
+///
+/// The optional [page] field records the active route name at the time the
+/// event was captured (e.g. '/gamePage', '/generalSettings').  It is null for
+/// events recorded before route-tracking was introduced and is purely
+/// informational — replay does not require it to be present.
 class RecordingEvent {
   const RecordingEvent({
     required this.timestampMs,
     required this.type,
     required this.data,
+    this.page,
   });
 
   /// Deserializes a [RecordingEvent] from a JSON map.
@@ -61,6 +82,7 @@ class RecordingEvent {
       type: _eventTypeFromString(json['type'] as String? ?? 'custom'),
       data:
           (json['data'] as Map<String, dynamic>?) ?? const <String, dynamic>{},
+      page: json['page'] as String?,
     );
   }
 
@@ -79,17 +101,34 @@ class RecordingEvent {
   /// For [RecordingEventType.gameModeChange]: `{'mode': String}`
   /// For [RecordingEventType.historyNavigation]: `{'action': String}`
   /// For [RecordingEventType.gameOver]: `{'winner': String, 'reason': String}`
+  /// For [RecordingEventType.toolbarAction]:
+  ///   `{'toolbar': String, 'action': String}`
+  /// For [RecordingEventType.dialogAction]:
+  ///   `{'dialog': String, 'action': String, 'selection': String?}`
+  /// For [RecordingEventType.navigationAction]:
+  ///   `{'page': String, 'action': 'push'|'pop'}`
+  /// For [RecordingEventType.annotationAction]:
+  ///   `{'action': String, 'tool': String?, 'color': int?}`
+  /// For [RecordingEventType.setupPositionAction]:
+  ///   `{'action': String, 'value': dynamic}`
   final Map<String, dynamic> data;
+
+  /// Active route name when this event was recorded, e.g. '/gamePage'.
+  ///
+  /// Null for events captured before route-tracking was introduced.
+  final String? page;
 
   /// Serializes this event to a JSON-compatible map.
   Map<String, dynamic> toJson() => <String, dynamic>{
     'timestampMs': timestampMs,
     'type': type.name,
     'data': data,
+    if (page != null) 'page': page,
   };
 
   @override
-  String toString() => 'RecordingEvent(${type.name}, +${timestampMs}ms, $data)';
+  String toString() =>
+      'RecordingEvent(${type.name}, +${timestampMs}ms, page=$page, $data)';
 }
 
 /// A complete recording session capturing an initial configuration snapshot

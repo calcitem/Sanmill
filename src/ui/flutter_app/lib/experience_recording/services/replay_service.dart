@@ -7,8 +7,12 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
+import '../../game_page/services/analysis_mode.dart';
+import '../../game_page/services/annotation/annotation_manager.dart';
 import '../../game_page/services/mill.dart';
+import '../../game_page/services/transform/transform.dart';
 import '../../general_settings/models/general_settings.dart';
+import '../../general_settings/widgets/general_settings_page.dart';
 import '../../rule_settings/models/rule_settings.dart';
 import '../../shared/config/constants.dart';
 import '../../shared/database/database.dart';
@@ -283,6 +287,23 @@ class ReplayService {
         // file content and let the following navigation events finish setup.
         await _applyGameLoad(event.data);
 
+      case RecordingEventType.toolbarAction:
+        await _applyToolbarAction(event.data, ctx);
+
+      case RecordingEventType.dialogAction:
+        // Dialog selections are informational; their effects are captured by
+        // subsequent gameReset / gameImport / gameLoad / settingsChange events.
+        logger.i('$_logTag Replay: dialogAction ${event.data}');
+
+      case RecordingEventType.navigationAction:
+        await _applyNavigationAction(event.data, ctx);
+
+      case RecordingEventType.annotationAction:
+        _applyAnnotationAction(event.data);
+
+      case RecordingEventType.setupPositionAction:
+        _applySetupPositionAction(event.data, ctx);
+
       case RecordingEventType.custom:
         // Custom events are extension points; no default action.
         break;
@@ -355,6 +376,203 @@ class ReplayService {
     } catch (e) {
       logger.w('$_logTag Replay: gameLoad failed: $e');
     }
+  }
+
+  /// Replays a toolbar button action.
+  Future<void> _applyToolbarAction(
+    Map<String, dynamic> data,
+    BuildContext? ctx,
+  ) async {
+    final String action = data['action'] as String? ?? '';
+    switch (action) {
+      case 'moveNow':
+        if (ctx != null) {
+          await GameController().moveNow(ctx);
+        }
+        logger.i('$_logTag Replay: toolbarAction moveNow');
+
+      case 'analysisOn':
+        // Analysis mode is cosmetic; replay toggles it but skips the engine
+        // call to avoid blocking the event loop.
+        AnalysisMode.enable(<MoveAnalysisResult>[]);
+        logger.i('$_logTag Replay: toolbarAction analysisOn (no engine call)');
+
+      case 'analysisOff':
+        AnalysisMode.disable();
+        logger.i('$_logTag Replay: toolbarAction analysisOff');
+
+      default:
+        logger.w('$_logTag Replay: unknown toolbarAction: "$action"');
+    }
+  }
+
+  /// Replays a page navigation event.
+  ///
+  /// Waits 300 ms after each push to let the route animation settle before
+  /// the next event is dispatched.
+  Future<void> _applyNavigationAction(
+    Map<String, dynamic> data,
+    BuildContext? ctx,
+  ) async {
+    if (ctx == null) {
+      return;
+    }
+    final String page = data['page'] as String? ?? '';
+    final String action = data['action'] as String? ?? '';
+
+    if (action == 'push') {
+      switch (page) {
+        case '/generalSettings':
+          Navigator.push(
+            ctx,
+            MaterialPageRoute<void>(
+              settings: const RouteSettings(name: '/generalSettings'),
+              builder: (_) => const GeneralSettingsPage(),
+            ),
+          );
+
+        case '/movesList':
+          // MovesListPage is inside the game_page widget library; access via
+          // currentNavigatorKey to avoid a circular import.
+          logger.i(
+            '$_logTag Replay: skip push /movesList (read-only during replay)',
+          );
+
+        case '/savedGames':
+          logger.i(
+            '$_logTag Replay: skip push /savedGames (read-only during replay)',
+          );
+
+        default:
+          logger.w('$_logTag Replay: unknown push page: "$page"');
+      }
+      // Let the route animation complete before the next event.
+      await Future<void>.delayed(const Duration(milliseconds: 300));
+    } else if (action == 'pop') {
+      Navigator.maybePop(ctx);
+      await Future<void>.delayed(const Duration(milliseconds: 200));
+    }
+    logger.i('$_logTag Replay: navigationAction $action $page');
+  }
+
+  /// Replays an annotation toolbar action.
+  void _applyAnnotationAction(Map<String, dynamic> data) {
+    final String action = data['action'] as String? ?? '';
+    final AnnotationManager manager = GameController().annotationManager;
+
+    switch (action) {
+      case 'selectTool':
+        final String toolName = data['tool'] as String? ?? '';
+        try {
+          manager.currentTool = AnnotationTool.values.firstWhere(
+            (AnnotationTool t) => t.name == toolName,
+          );
+        } catch (_) {
+          logger.w('$_logTag Replay: unknown annotation tool: "$toolName"');
+        }
+
+      case 'selectColor':
+        final int? colorValue = data['color'] as int?;
+        if (colorValue != null) {
+          manager.currentColor = Color(colorValue);
+        }
+
+      case 'undo':
+        manager.undo();
+
+      case 'redo':
+        manager.redo();
+
+      case 'clear':
+        manager.clear();
+
+      case 'enter':
+      case 'exit':
+      case 'screenshot':
+        // Visual/IO actions; no state change needed during replay.
+        break;
+
+      default:
+        logger.w('$_logTag Replay: unknown annotationAction: "$action"');
+    }
+    logger.i('$_logTag Replay: annotationAction $action');
+  }
+
+  /// Replays a setup-position toolbar action.
+  ///
+  /// Piece selection and phase changes update [GameController.position]
+  /// directly so that subsequent [boardTap] events are interpreted correctly.
+  void _applySetupPositionAction(Map<String, dynamic> data, BuildContext? ctx) {
+    final String action = data['action'] as String? ?? '';
+    final Position position = GameController().position;
+
+    switch (action) {
+      case 'selectPiece':
+        final String value = data['value'] as String? ?? '';
+        switch (value) {
+          case 'white':
+            position.sideToSetup = PieceColor.white;
+            position.sideToMove = PieceColor.white;
+            position.action = Act.place;
+          case 'black':
+            position.sideToSetup = PieceColor.black;
+            position.sideToMove = PieceColor.black;
+            position.action = Act.place;
+          case 'marked':
+            position.sideToSetup = PieceColor.marked;
+            position.action = Act.place;
+          case 'none':
+            position.action = Act.remove;
+        }
+
+      case 'selectPhase':
+        final String value = data['value'] as String? ?? '';
+        if (value == 'placing') {
+          position.phase = Phase.placing;
+        } else if (value == 'moving') {
+          position.phase = Phase.moving;
+        }
+
+      case 'transform':
+        final String value = data['value'] as String? ?? '';
+        TransformationType? type;
+        switch (value) {
+          case 'rotate90':
+            type = TransformationType.rotate90;
+          case 'mirrorHorizontal':
+            type = TransformationType.mirrorHorizontal;
+          case 'mirrorVertical':
+            type = TransformationType.mirrorVertical;
+          case 'innerOuterFlip':
+            type = TransformationType.swap;
+        }
+        if (type != null) {
+          final String? fen = position.fen;
+          if (fen != null) {
+            transformSquareSquareAttributeList(type);
+            final String newFen = transformFEN(fen, type);
+            position.setFen(newFen);
+          }
+        }
+
+      case 'clear':
+        position.reset();
+
+      case 'setNeedRemove':
+        // The need-remove count is widget state in SetupPositionToolbarState.
+        // It does not directly affect GameController.position, so we skip it.
+        break;
+
+      case 'copy':
+      case 'paste':
+      case 'cancel':
+        // Clipboard and cancel operations cannot be meaningfully replayed.
+        break;
+
+      default:
+        logger.w('$_logTag Replay: unknown setupPositionAction: "$action"');
+    }
+    logger.i('$_logTag Replay: setupPositionAction $action');
   }
 
   void _applySettingsChange(Map<String, dynamic> data) {

@@ -7,6 +7,8 @@ import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:native_screenshot_widget/native_screenshot_widget.dart';
 
+import '../../experience_recording/models/recording_models.dart';
+import '../../experience_recording/services/recording_service.dart';
 import '../../general_settings/widgets/general_settings_page.dart';
 import '../../generated/intl/l10n.dart';
 import '../../shared/config/constants.dart';
@@ -127,6 +129,7 @@ class PlayAreaState extends State<PlayArea> {
     Navigator.push(
       context,
       MaterialPageRoute<GeneralSettingsPage>(
+        settings: const RouteSettings(name: '/generalSettings'),
         builder: (_) => const GeneralSettingsPage(),
       ),
     );
@@ -190,6 +193,7 @@ class PlayAreaState extends State<PlayArea> {
             Navigator.push(
               context,
               MaterialPageRoute<void>(
+                settings: const RouteSettings(name: '/movesList'),
                 builder: (BuildContext context) => const MovesListPage(),
               ),
             );
@@ -275,7 +279,13 @@ class PlayAreaState extends State<PlayArea> {
       if (!Constants.isSmallScreen(context))
         ToolbarItem(
           key: const Key('play_area_history_nav_move_now'),
-          onPressed: () => GameController().moveNow(context),
+          onPressed: () {
+            RecordingService().recordEvent(
+              RecordingEventType.toolbarAction,
+              <String, dynamic>{'toolbar': 'history', 'action': 'moveNow'},
+            );
+            GameController().moveNow(context);
+          },
           child: Icon(
             FluentIcons.play_24_regular,
             semanticLabel: S.of(context).moveNow,
@@ -325,9 +335,17 @@ class PlayAreaState extends State<PlayArea> {
   Future<void> _analyzePosition() async {
     // If analysis is already enabled, disable it and exit
     if (AnalysisMode.isEnabled) {
+      RecordingService().recordEvent(
+        RecordingEventType.toolbarAction,
+        <String, dynamic>{'toolbar': 'analysis', 'action': 'analysisOff'},
+      );
       AnalysisMode.disable();
       return;
     }
+    RecordingService().recordEvent(
+      RecordingEventType.toolbarAction,
+      <String, dynamic>{'toolbar': 'analysis', 'action': 'analysisOn'},
+    );
 
     // Check if rules support perfect database
     if (!isRuleSupportingPerfectDatabase()) {

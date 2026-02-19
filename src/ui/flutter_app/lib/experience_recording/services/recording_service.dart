@@ -16,6 +16,7 @@ import 'package:uuid/uuid.dart';
 import '../../shared/database/database.dart';
 import '../../shared/services/logger.dart';
 import '../models/recording_models.dart';
+import 'recording_navigator_observer.dart';
 
 /// Singleton service responsible for capturing user experience sessions.
 ///
@@ -184,6 +185,7 @@ class RecordingService {
       timestampMs: _stopwatch!.elapsedMilliseconds,
       type: type,
       data: data,
+      page: RecordingNavigatorObserver().currentRouteName,
     );
 
     _events.add(event);

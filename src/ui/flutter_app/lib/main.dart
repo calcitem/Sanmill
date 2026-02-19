@@ -20,6 +20,7 @@ import 'package:hive_ce_flutter/hive_flutter.dart' show Box;
 import 'package:path_provider/path_provider.dart';
 
 import 'appearance_settings/models/display_settings.dart';
+import 'experience_recording/services/recording_navigator_observer.dart';
 import 'game_page/services/engine/bitboard.dart';
 import 'game_page/services/mill.dart';
 import 'game_page/services/painters/painters.dart';
@@ -149,6 +150,7 @@ class SanmillAppState extends State<SanmillApp> {
 
       return MaterialApp(
         navigatorKey: navigatorStateKey,
+        navigatorObservers: <NavigatorObserver>[RecordingNavigatorObserver()],
         key: GlobalKey<ScaffoldState>(),
         scaffoldMessengerKey: rootScaffoldMessengerKey,
         localizationsDelegates: S.localizationsDelegates,
@@ -205,6 +207,7 @@ class SanmillAppState extends State<SanmillApp> {
       navigatorKey: (EnvironmentConfig.catcher && !kIsWeb && !Platform.isIOS)
           ? Catcher2.navigatorKey
           : navigatorStateKey,
+      navigatorObservers: <NavigatorObserver>[RecordingNavigatorObserver()],
       key: GlobalKey<ScaffoldState>(),
       scaffoldMessengerKey: rootScaffoldMessengerKey,
       localizationsDelegates: S.localizationsDelegates,
