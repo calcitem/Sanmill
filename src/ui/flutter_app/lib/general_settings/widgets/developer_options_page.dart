@@ -8,8 +8,11 @@ import 'package:hive_ce_flutter/hive_flutter.dart' show Box;
 
 import '../../appearance_settings/models/color_settings.dart';
 import '../../custom_drawer/custom_drawer.dart';
+import '../../experience_recording/pages/session_list_page.dart';
+import '../../experience_recording/services/recording_service.dart';
 import '../../generated/intl/l10n.dart';
 import '../../shared/database/database.dart';
+import '../../shared/services/snackbar_service.dart';
 import '../../shared/themes/app_theme.dart';
 import '../../shared/widgets/settings/settings.dart';
 import '../models/general_settings.dart';
@@ -24,6 +27,30 @@ class DeveloperOptionsPage extends StatelessWidget {
 
   void _setIsAutoRestart(GeneralSettings generalSettings, bool value) {
     DB().generalSettings = generalSettings.copyWith(isAutoRestart: value);
+  }
+
+  void _setExperienceRecordingEnabled(
+    BuildContext context,
+    GeneralSettings generalSettings,
+    bool value,
+  ) {
+    DB().generalSettings = generalSettings.copyWith(
+      experienceRecordingEnabled: value,
+    );
+
+    // Stop any active recording when feature is disabled.
+    if (!value) {
+      RecordingService().stopRecording();
+    }
+  }
+
+  void _openRecordingSessions(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute<void>(
+        builder: (BuildContext context) => const SessionListPage(),
+      ),
+    );
   }
 
   SettingsList _buildDeveloperOptionsList(
@@ -74,6 +101,38 @@ class DeveloperOptionsPage extends StatelessWidget {
                   builder: (BuildContext context) => const LogsPage(),
                 ),
               ),
+            ),
+          ],
+        ),
+        SettingsCard(
+          key: const Key(
+            'developer_options_page_settings_card_experience_recording',
+          ),
+          title: Text(
+            S.of(context).experienceRecording,
+            key: const Key(
+              'developer_options_page_settings_card_experience_recording_title',
+            ),
+          ),
+          children: <Widget>[
+            SettingsListTile.switchTile(
+              key: const Key(
+                'developer_options_page_experience_recording_enabled',
+              ),
+              value: generalSettings.experienceRecordingEnabled,
+              onChanged: (bool val) {
+                _setExperienceRecordingEnabled(context, generalSettings, val);
+                if (val == true) {
+                  SnackBarService.showRootSnackBar(S.of(context).experimental);
+                }
+              },
+              titleString: S.of(context).experienceRecording,
+              subtitleString: S.of(context).experienceRecordingDescription,
+            ),
+            SettingsListTile(
+              key: const Key('developer_options_page_recording_sessions'),
+              titleString: S.of(context).recordingSessions,
+              onTap: () => _openRecordingSessions(context),
             ),
           ],
         ),
