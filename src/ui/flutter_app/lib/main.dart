@@ -86,8 +86,32 @@ Future<void> main() async {
 
     await _initCatcher(catcher);
 
+    // Wrap FlutterError.onError to filter known benign rendering assertions
+    // BEFORE they reach Catcher 2. Flutter rendering pipeline errors
+    // (layout/paint assertions) go through FlutterError.onError, not
+    // PlatformDispatcher.instance.onError.
+    final FlutterExceptionHandler? catcherFlutterErrorHandler =
+        FlutterError.onError;
+    FlutterError.onError = (FlutterErrorDetails details) {
+      if (details.exception is AssertionError) {
+        final String msg = details.exception.toString();
+        // BetterFeedback's OverflowBox can trigger layout/paint of
+        // offstage routes whose children have no size yet.
+        if (msg.contains("'hasSize': RenderBox was not laid out") ||
+            msg.contains("'child!.hasSize': is not true")) {
+          logger.w(
+            'Suppressed known rendering assertion: '
+            '${details.exception}',
+          );
+          return;
+        }
+      }
+      catcherFlutterErrorHandler?.call(details);
+    };
+
     PlatformDispatcher.instance.onError = (Object error, StackTrace stack) {
       // Filter known Flutter framework bugs that should not crash the app
+      final String errorStr = error.toString();
       final String stackTrace = stack.toString();
 
       // Known bug: EditableText toolbar race condition
@@ -95,13 +119,29 @@ Future<void> main() async {
       // The _dataWhenToolbarShowScheduled field can be null when
       // addPostFrameCallback executes due to race condition
       if (error is TypeError &&
-          error.toString().contains(
-            'Null check operator used on a null value',
-          ) &&
+          errorStr.contains('Null check operator used on a null value') &&
           stackTrace.contains('EditableTextState._handleContextMenuOnScroll')) {
         logger.w('Caught known Flutter framework bug in EditableText: $error');
         logger.w('Stack trace: $stackTrace');
         return true; // Suppress this known framework bug
+      }
+
+      // Known issue: the BetterFeedback package wraps the entire MaterialApp
+      // in an OverflowBox (feedback_widget.dart). When this OverflowBox is
+      // marked dirty for relayout (e.g. due to MediaQuery changes), it
+      // triggers layout of the full Navigator subtree, including offstage
+      // routes. Widgets in those offstage routes may not yet have a size,
+      // causing these debug-only assertion failures. The app recovers
+      // automatically on the next frame.
+      if (error is AssertionError) {
+        if (errorStr.contains("'hasSize': RenderBox was not laid out") ||
+            errorStr.contains("'child!.hasSize': is not true")) {
+          logger.w(
+            'Suppressed known BetterFeedback rendering assertion: '
+            '$errorStr',
+          );
+          return true;
+        }
       }
 
       if (EnvironmentConfig.catcher == true) {

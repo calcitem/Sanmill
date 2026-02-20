@@ -29,6 +29,8 @@ import 'active_line_gutter_painter.dart';
 import 'branch_tree_painter.dart';
 import 'cat_fishing_game.dart';
 import 'mini_board.dart';
+import 'qr_code_dialog.dart';
+import 'qr_scanner_page.dart';
 import 'saved_games_page.dart';
 
 // Key for the LLM prompt dialog screen
@@ -409,6 +411,122 @@ class MovesListPageState extends State<MovesListPage> {
 
   void _exportGame() {
     GameController.export(context, shouldPop: false);
+  }
+
+  /// Generates a QR code image from the current move list and shows it
+  /// in a dialog with save / share actions.
+  Future<void> _exportQrCode() async {
+    final GameRecorder recorder = GameController().gameRecorder;
+    final String moveText = recorder.moveHistoryText;
+
+    if (moveText.isEmpty) {
+      rootScaffoldMessengerKey.currentState?.showSnackBarClear(
+        S.of(context).noMoveListToExport,
+      );
+      return;
+    }
+
+    // QR version 40 with error correction M holds ~2331 bytes.
+    if (moveText.length > 2331) {
+      rootScaffoldMessengerKey.currentState?.showSnackBarClear(
+        S.of(context).qrCodeDataTooLong,
+      );
+      return;
+    }
+
+    await showDialog<void>(
+      context: context,
+      builder: (BuildContext context) => QrCodeDialog(data: moveText),
+    );
+  }
+
+  /// Opens the camera-based QR scanner and imports the scanned move list.
+  Future<void> _scanQrCode() async {
+    if (!Platform.isAndroid && !Platform.isIOS) {
+      return;
+    }
+
+    final String? scannedData = await Navigator.of(context).push<String>(
+      MaterialPageRoute<String>(
+        builder: (BuildContext context) => const QrScannerPage(),
+      ),
+    );
+
+    if (scannedData == null || scannedData.isEmpty) {
+      if (mounted) {
+        rootScaffoldMessengerKey.currentState?.showSnackBarClear(
+          S.of(context).qrCodeScanNoData,
+        );
+      }
+      return;
+    }
+
+    if (!mounted) {
+      return;
+    }
+
+    try {
+      ImportService.import(scannedData);
+    } catch (e) {
+      if (!mounted) {
+        return;
+      }
+      final String reason = e.toString().trim();
+      rootScaffoldMessengerKey.currentState?.showSnackBarClear(
+        reason.isEmpty
+            ? S.of(context).cannotImport(scannedData)
+            : S.of(context).cannotImport(reason),
+      );
+      return;
+    }
+
+    if (!mounted) {
+      return;
+    }
+
+    try {
+      ImportService.recordImportEvent(scannedData);
+
+      await HistoryNavigator.takeBackAll(context, pop: false);
+
+      if (!mounted) {
+        return;
+      }
+
+      final HistoryResponse? historyResult =
+          await HistoryNavigator.stepForwardAll(context, pop: false);
+
+      if (!mounted) {
+        return;
+      }
+
+      if (historyResult == const HistoryOK()) {
+        rootScaffoldMessengerKey.currentState?.showSnackBarClear(
+          S.of(context).qrCodeScanSuccess,
+        );
+      } else {
+        final String failStr = HistoryNavigator.importFailedStr;
+        rootScaffoldMessengerKey.currentState?.showSnackBarClear(
+          failStr.isEmpty
+              ? S.of(context).cannotImport(scannedData)
+              : S.of(context).cannotImport(failStr),
+        );
+        HistoryNavigator.importFailedStr = "";
+      }
+    } catch (e) {
+      if (!mounted) {
+        return;
+      }
+      rootScaffoldMessengerKey.currentState?.showSnackBarClear(
+        S.of(context).cannotImport(e.toString()),
+      );
+      return;
+    }
+
+    await Future<void>.delayed(const Duration(milliseconds: 500));
+    if (mounted) {
+      setState(_refreshAllNodes);
+    }
   }
 
   /// Copies the moveListPrompt (a special format for LLM) into the clipboard.
@@ -2661,6 +2779,12 @@ class MovesListPageState extends State<MovesListPage> {
                 case 'copy_llm_prompt':
                   await _showLLMPromptDialog();
                   break;
+                case 'scan_qr':
+                  await _scanQrCode();
+                  break;
+                case 'export_qr':
+                  await _exportQrCode();
+                  break;
               }
             },
             itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
@@ -2775,6 +2899,36 @@ class MovesListPageState extends State<MovesListPage> {
                   ],
                 ),
               ),
+              if (Platform.isAndroid ||
+                  Platform.isIOS) ...<PopupMenuEntry<String>>[
+                const PopupMenuDivider(),
+                PopupMenuItem<String>(
+                  value: 'scan_qr',
+                  child: Row(
+                    children: <Widget>[
+                      const Icon(
+                        FluentIcons.qr_code_24_regular,
+                        color: Colors.black54,
+                      ),
+                      const SizedBox(width: 8),
+                      Text(S.of(context).scanQrCode),
+                    ],
+                  ),
+                ),
+                PopupMenuItem<String>(
+                  value: 'export_qr',
+                  child: Row(
+                    children: <Widget>[
+                      const Icon(
+                        FluentIcons.qr_code_24_regular,
+                        color: Colors.black54,
+                      ),
+                      const SizedBox(width: 8),
+                      Text(S.of(context).exportQrCode),
+                    ],
+                  ),
+                ),
+              ],
               const PopupMenuDivider(),
               PopupMenuItem<String>(
                 value: 'copy_llm_prompt',

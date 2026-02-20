@@ -14,7 +14,6 @@ class ImportFormatException extends FormatException {
 
   @override
   String toString() {
-    // Return only the specific error message without the "FormatException: " prefix
-    return message;
+    return message.isEmpty ? "Cannot import" : message;
   }
 }

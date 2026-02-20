@@ -4239,5 +4239,53 @@
     "clipboardEmpty": "Clipboard is empty",
     "@clipboardEmpty": {
         "description": "Snackbar message when clipboard has no text for import"
+    },
+    "scanQrCode": "Scan QR Code",
+    "@scanQrCode": {
+        "description": "Menu item to scan a QR code containing a move list"
+    },
+    "exportQrCode": "Export as QR Code",
+    "@exportQrCode": {
+        "description": "Menu item to export the current move list as a QR code image"
+    },
+    "qrCodeTitle": "Move List QR Code",
+    "@qrCodeTitle": {
+        "description": "Title of the QR code display dialog"
+    },
+    "qrCodeSaved": "QR code saved to gallery",
+    "@qrCodeSaved": {
+        "description": "Snackbar message after successfully saving QR code image"
+    },
+    "qrCodeSaveFailed": "Failed to save QR code",
+    "@qrCodeSaveFailed": {
+        "description": "Snackbar message when QR code image save fails"
+    },
+    "qrCodeDataTooLong": "Move list is too long for a QR code",
+    "@qrCodeDataTooLong": {
+        "description": "Error message when the move list exceeds QR code capacity"
+    },
+    "noMoveListToExport": "No move list to export",
+    "@noMoveListToExport": {
+        "description": "Error message when trying to export an empty move list as QR code"
+    },
+    "qrCodeScanSuccess": "QR code scanned successfully",
+    "@qrCodeScanSuccess": {
+        "description": "Snackbar message after successfully scanning a QR code"
+    },
+    "qrCodeScanNoData": "No data found in QR code",
+    "@qrCodeScanNoData": {
+        "description": "Error message when scanned QR code contains no data"
+    },
+    "cameraPermissionDenied": "Camera permission is required to scan QR codes",
+    "@cameraPermissionDenied": {
+        "description": "Error message when camera permission is denied"
+    },
+    "saveToGallery": "Save to Gallery",
+    "@saveToGallery": {
+        "description": "Button label to save QR code image to device gallery"
+    },
+    "shareQrCode": "Share",
+    "@shareQrCode": {
+        "description": "Button label to share QR code image"
     }
 }
