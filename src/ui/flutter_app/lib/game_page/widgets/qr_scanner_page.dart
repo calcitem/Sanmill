@@ -4,7 +4,7 @@
 // qr_scanner_page.dart
 
 import 'package:flutter/material.dart';
-import 'package:mobile_scanner/mobile_scanner.dart';
+import 'package:qr_code_dart_scan/qr_code_dart_scan.dart';
 
 import '../../generated/intl/l10n.dart';
 
@@ -19,30 +19,17 @@ class QrScannerPage extends StatefulWidget {
 }
 
 class _QrScannerPageState extends State<QrScannerPage> {
-  final MobileScannerController _controller = MobileScannerController(
-    formats: <BarcodeFormat>[BarcodeFormat.qrCode],
-  );
-
   bool _hasPopped = false;
 
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  void _onDetect(BarcodeCapture capture) {
+  void _onCapture(Result result) {
     if (_hasPopped) {
       return;
     }
 
-    for (final Barcode barcode in capture.barcodes) {
-      final String? rawValue = barcode.rawValue;
-      if (rawValue != null && rawValue.isNotEmpty) {
-        _hasPopped = true;
-        Navigator.of(context).pop(rawValue);
-        return;
-      }
+    final String text = result.text;
+    if (text != null && text.isNotEmpty) {
+      _hasPopped = true;
+      Navigator.of(context).pop(text);
     }
   }
 
@@ -52,7 +39,10 @@ class _QrScannerPageState extends State<QrScannerPage> {
 
     return Scaffold(
       appBar: AppBar(title: Text(s.scanQrCode)),
-      body: MobileScanner(controller: _controller, onDetect: _onDetect),
+      body: QRCodeDartScanView(
+        formats: const <BarcodeFormat>[BarcodeFormat.qrCode],
+        onCapture: _onCapture,
+      ),
     );
   }
 }
