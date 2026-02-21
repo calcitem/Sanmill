@@ -215,17 +215,9 @@ class PuzzleCard extends StatelessWidget {
                         Icons.check_circle,
                         color: Colors.green,
                         size: 32,
-                      )
-                    else
-                      const Icon(
-                        Icons.radio_button_unchecked,
-                        color: Colors.grey,
-                        size: 32,
                       ),
                     const SizedBox(height: 4),
-
-                    // Stars
-                    if (isCompleted) _buildStars(stars),
+                    _buildStars(stars),
                   ],
                 ),
             ],
