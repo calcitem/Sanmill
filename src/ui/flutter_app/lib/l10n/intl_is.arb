@@ -4177,5 +4177,7 @@
     "puzzleQrCodeTitle": "Þraut QR kóði",
     "@puzzleQrCodeTitle": {},
     "puzzleQrDataTooLong": "Valdar þrautar eru of stórar fyrir QR kóða, jafnvel eftir þjöppun. Vinsamlegast veldu færri þrautar.",
-    "@puzzleQrDataTooLong": {}
+    "@puzzleQrDataTooLong": {},
+    "noCameraAvailable": "Ekkert myndavél er tiltækt á þessu tæki. Þú getur í staðinn flutt inn QR-kóðamynd úr myndasafninu.",
+    "@noCameraAvailable": {}
 }

@@ -4177,5 +4177,7 @@
     "puzzleQrCodeTitle": "Հանելուկի QR կոդ",
     "@puzzleQrCodeTitle": {},
     "puzzleQrDataTooLong": "Ընտրված հանելուկները QR կոդի համար չափազանց մեծ են, նույնիսկ սեղմումից հետո: Ընտրեք ավելի քիչ հանելուկներ:",
-    "@puzzleQrDataTooLong": {}
+    "@puzzleQrDataTooLong": {},
+    "noCameraAvailable": "Այս սարքում տեսախցիկ հասանելի չէ։ Փոխարենը կարող եք պատկերասրահից ներմուծել QR կոդի պատկեր։",
+    "@noCameraAvailable": {}
 }

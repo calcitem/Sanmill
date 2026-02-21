@@ -178,7 +178,7 @@ packages:
     source: hosted
     version: "8.12.4"
   camera:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: camera
       sha256: "4142a19a38e388d3bab444227636610ba88982e36dff4552d5191a86f65dc437"

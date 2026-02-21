@@ -4177,5 +4177,7 @@
     "puzzleQrCodeTitle": "ಒಗಟು QR ಕೋಡ್",
     "@puzzleQrCodeTitle": {},
     "puzzleQrDataTooLong": "ಆಯ್ಕೆ ಮಾಡಿದ ಒಗಟುಗಳು ಸಂಕೋಚನದ ನಂತರವೂ QR ಕೋಡ್‌ಗೆ ತುಂಬಾ ದೊಡ್ಡದಾಗಿವೆ. ದಯವಿಟ್ಟು ಕಡಿಮೆ ಒಗಟುಗಳನ್ನು ಆಯ್ಕೆ ಮಾಡಿ.",
-    "@puzzleQrDataTooLong": {}
+    "@puzzleQrDataTooLong": {},
+    "noCameraAvailable": "ಈ ಸಾಧನದಲ್ಲಿ ಕ್ಯಾಮೆರಾ ಲಭ್ಯವಿಲ್ಲ. ಬದಲಾಗಿ ನೀವು ಗ್ಯಾಲರಿಯಿಂದ QR ಕೋಡ್ ಚಿತ್ರವನ್ನು ಆಮದು ಮಾಡಿಕೊಳ್ಳಬಹುದು.",
+    "@noCameraAvailable": {}
 }

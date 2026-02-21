@@ -4177,5 +4177,7 @@
     "puzzleQrCodeTitle": "Pussel QR-kod",
     "@puzzleQrCodeTitle": {},
     "puzzleQrDataTooLong": "De valda pusslen är för stora för en QR-kod även efter komprimering. Välj färre pussel.",
-    "@puzzleQrDataTooLong": {}
+    "@puzzleQrDataTooLong": {},
+    "noCameraAvailable": "Ingen kamera tillgänglig på den här enheten. Du kan istället importera en QR-kodbild från galleriet.",
+    "@noCameraAvailable": {}
 }

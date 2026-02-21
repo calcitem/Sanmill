@@ -4177,5 +4177,7 @@
     "puzzleQrCodeTitle": "รหัส QR ของปริศนา",
     "@puzzleQrCodeTitle": {},
     "puzzleQrDataTooLong": "ปริศนาที่เลือกมีขนาดใหญ่เกินไปสำหรับรหัส QR แม้หลังการบีบอัดแล้ว กรุณาเลือกปริศนาน้อยลง",
-    "@puzzleQrDataTooLong": {}
+    "@puzzleQrDataTooLong": {},
+    "noCameraAvailable": "ไม่มีกล้องบนอุปกรณ์นี้ คุณสามารถนำเข้ารูปภาพ QR โค้ดจากแกลเลอรีแทนได้",
+    "@noCameraAvailable": {}
 }

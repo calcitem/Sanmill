@@ -4177,5 +4177,7 @@
     "puzzleQrCodeTitle": "QR kód hádanky",
     "@puzzleQrCodeTitle": {},
     "puzzleQrDataTooLong": "Vybrané hádanky sú príliš veľké pre QR kód, aj po komprimácii. Vyberte prosím menej hádanok.",
-    "@puzzleQrDataTooLong": {}
+    "@puzzleQrDataTooLong": {},
+    "noCameraAvailable": "Na tomto zariadení nie je k dispozícii fotoaparát. Namiesto toho môžete importovať obrázok QR kódu z galérie.",
+    "@noCameraAvailable": {}
 }

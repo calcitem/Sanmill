@@ -3469,5 +3469,7 @@
     "puzzleQrCodeTitle": "Rätsel-QR-Code",
     "@puzzleQrCodeTitle": {},
     "puzzleQrDataTooLong": "Die ausgewählten Rätsel sind zu groß für einen QR-Code, auch nach der Komprimierung. Bitte wählen Sie weniger Rätsel aus.",
-    "@puzzleQrDataTooLong": {}
+    "@puzzleQrDataTooLong": {},
+    "noCameraAvailable": "Auf diesem Gerät ist keine Kamera verfügbar. Sie können stattdessen ein QR-Code-Bild aus der Galerie importieren.",
+    "@noCameraAvailable": {}
 }

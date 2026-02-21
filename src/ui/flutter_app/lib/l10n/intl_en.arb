@@ -4303,5 +4303,9 @@
     "puzzleQrDataTooLong": "Selected puzzles are too large for a QR code, even after compression. Please select fewer puzzles.",
     "@puzzleQrDataTooLong": {
         "description": "Error message when the puzzle data exceeds the QR code capacity even after gzip compression"
+    },
+    "noCameraAvailable": "No camera available on this device. You can import a QR code image from the gallery instead.",
+    "@noCameraAvailable": {
+        "description": "Message shown when the device has no camera hardware and the QR scanner cannot be used"
     }
 }

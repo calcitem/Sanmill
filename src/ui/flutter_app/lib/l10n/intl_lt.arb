@@ -4177,5 +4177,7 @@
     "puzzleQrCodeTitle": "Galvosūkio QR kodas",
     "@puzzleQrCodeTitle": {},
     "puzzleQrDataTooLong": "Pasirinkti galvosūkiai yra per dideli QR kodui net po suspaudimo. Pasirinkite mažiau galvosūkių.",
-    "@puzzleQrDataTooLong": {}
+    "@puzzleQrDataTooLong": {},
+    "noCameraAvailable": "Šiame įrenginyje nėra kameros. Vietoj to galite importuoti QR kodo vaizdą iš galerijos.",
+    "@noCameraAvailable": {}
 }

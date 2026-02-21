@@ -4177,5 +4177,7 @@
     "puzzleQrCodeTitle": "QR код на загатката",
     "@puzzleQrCodeTitle": {},
     "puzzleQrDataTooLong": "Избраните загатки се преголеми за QR-код, дури и по компресија. Изберете помалку загатки.",
-    "@puzzleQrDataTooLong": {}
+    "@puzzleQrDataTooLong": {},
+    "noCameraAvailable": "Нема достапна камера на овој уред. Наместо тоа можете да увезете слика со QR код од галеријата.",
+    "@noCameraAvailable": {}
 }

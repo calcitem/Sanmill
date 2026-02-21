@@ -4181,5 +4181,7 @@
     "puzzleQrCodeTitle": "Jumboq QR kodi",
     "@puzzleQrCodeTitle": {},
     "puzzleQrDataTooLong": "Tanlangan jumboqlar siqishdan keyin ham QR kod uchun juda katta. Iltimos, kamroq jumboq tanlang.",
-    "@puzzleQrDataTooLong": {}
+    "@puzzleQrDataTooLong": {},
+    "noCameraAvailable": "Bu qurilmada kamera mavjud emas. Buning o'rniga galereyadan QR kod rasmini import qilishingiz mumkin.",
+    "@noCameraAvailable": {}
 }

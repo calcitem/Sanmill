@@ -4177,5 +4177,7 @@
     "puzzleQrCodeTitle": "Kode QR Teka-teki",
     "@puzzleQrCodeTitle": {},
     "puzzleQrDataTooLong": "Teka-teki yang dipilih terlalu besar untuk kode QR, bahkan setelah kompresi. Silakan pilih lebih sedikit teka-teki.",
-    "@puzzleQrDataTooLong": {}
+    "@puzzleQrDataTooLong": {},
+    "noCameraAvailable": "Tidak ada kamera yang tersedia di perangkat ini. Anda dapat mengimpor gambar kode QR dari galeri sebagai gantinya.",
+    "@noCameraAvailable": {}
 }

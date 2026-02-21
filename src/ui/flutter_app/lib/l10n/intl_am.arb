@@ -4177,5 +4177,7 @@
     "puzzleQrCodeTitle": "እንቆቅልሽ QR ኮድ",
     "@puzzleQrCodeTitle": {},
     "puzzleQrDataTooLong": "የተመረጡት ጨዋታዎች ለQR ኮድ በጣም ትልቅ ናቸው፣ ከጭምቅ በኋላም ቢሆን። ጥቂት ጨዋታዎችን ይምረጡ።",
-    "@puzzleQrDataTooLong": {}
+    "@puzzleQrDataTooLong": {},
+    "noCameraAvailable": "በዚህ መሣሪያ ላይ ካሜራ አይገኝም። ከማዕከለ-ስዕላት ላይ የ QR ኮድ ምስል ማስገባት ይችላሉ።",
+    "@noCameraAvailable": {}
 }

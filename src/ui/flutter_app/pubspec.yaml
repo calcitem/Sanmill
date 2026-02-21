@@ -10,6 +10,7 @@ dependencies:
   animated_text_kit: 4.3.0
   archive: 4.0.7
   audioplayers: 6.5.1
+  camera: 0.11.4
   catcher_2: 2.1.5
   collection: 1.19.1
   confetti: 0.8.0

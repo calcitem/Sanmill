@@ -4177,5 +4177,7 @@
     "puzzleQrCodeTitle": "کد QR معما",
     "@puzzleQrCodeTitle": {},
     "puzzleQrDataTooLong": "معماهای انتخاب‌شده حتی پس از فشرده‌سازی برای کد QR بیش از حد بزرگ هستند. لطفاً تعداد کمتری معما انتخاب کنید.",
-    "@puzzleQrDataTooLong": {}
+    "@puzzleQrDataTooLong": {},
+    "noCameraAvailable": "دوربینی در این دستگاه موجود نیست. می‌توانید به جای آن یک تصویر کد QR را از گالری وارد کنید.",
+    "@noCameraAvailable": {}
 }

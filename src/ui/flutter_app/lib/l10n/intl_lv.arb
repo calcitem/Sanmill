@@ -4177,5 +4177,7 @@
     "puzzleQrCodeTitle": "Mīklas QR kods",
     "@puzzleQrCodeTitle": {},
     "puzzleQrDataTooLong": "Izvēlētās mīklas ir pārāk lielas QR kodam, pat pēc saspiešanas. Lūdzu, izvēlieties mazāk mīklu.",
-    "@puzzleQrDataTooLong": {}
+    "@puzzleQrDataTooLong": {},
+    "noCameraAvailable": "Šajā ierīcē nav pieejama kamera. Tā vietā varat importēt QR koda attēlu no galerijas.",
+    "@noCameraAvailable": {}
 }

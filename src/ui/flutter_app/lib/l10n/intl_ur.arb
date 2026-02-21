@@ -4181,5 +4181,7 @@
     "puzzleQrCodeTitle": "پہیلی QR کوڈ",
     "@puzzleQrCodeTitle": {},
     "puzzleQrDataTooLong": "منتخب کردہ پہیلیاں کمپریشن کے بعد بھی QR کوڈ کے لیے بہت بڑی ہیں۔ براہ کرم کم پہیلیاں منتخب کریں۔",
-    "@puzzleQrDataTooLong": {}
+    "@puzzleQrDataTooLong": {},
+    "noCameraAvailable": "اس آلے پر کوئی کیمرا دستیاب نہیں ہے۔ آپ اس کے بجائے گیلری سے QR کوڈ کی تصویر درآمد کر سکتے ہیں۔",
+    "@noCameraAvailable": {}
 }

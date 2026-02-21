@@ -14,10 +14,14 @@ import 'package:qr_code_dart_scan/qr_code_dart_scan.dart';
 import '../../generated/intl/l10n.dart';
 import '../../shared/themes/app_theme.dart';
 
+enum _CameraState { checking, available, unavailable }
+
 /// Full-screen camera view for scanning a QR code.
 ///
 /// Returns the decoded QR string via [Navigator.pop] on successful scan.
 /// Also supports picking a QR code image from the device gallery.
+/// Gracefully handles devices without camera hardware by showing a fallback UI
+/// that still allows importing QR codes from the gallery.
 class QrScannerPage extends StatefulWidget {
   const QrScannerPage({super.key});
 
@@ -30,10 +34,36 @@ class _QrScannerPageState extends State<QrScannerPage> {
 
   bool _isDecoding = false;
 
+  _CameraState _cameraState = _CameraState.checking;
+
   // When true the scanner widget is removed from the tree so the camera
   // package can tear down without racing against pending async operations
   // (lockCaptureOrientation, buildPreview, etc.).
-  bool get _scannerActive => !_isDecoding && !_hasPopped;
+  bool get _scannerActive =>
+      !_isDecoding && !_hasPopped && _cameraState == _CameraState.available;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkCameraAvailability();
+  }
+
+  Future<void> _checkCameraAvailability() async {
+    try {
+      final List<CameraDescription> cameras = await availableCameras();
+      if (mounted) {
+        setState(() {
+          _cameraState = cameras.isNotEmpty
+              ? _CameraState.available
+              : _CameraState.unavailable;
+        });
+      }
+    } on Exception {
+      if (mounted) {
+        setState(() => _cameraState = _CameraState.unavailable);
+      }
+    }
+  }
 
   void _onCapture(Result result) {
     if (_hasPopped) {
@@ -56,7 +86,9 @@ class _QrScannerPageState extends State<QrScannerPage> {
       return;
     }
     setState(() => _hasPopped = true);
-    await WidgetsBinding.instance.endOfFrame;
+    if (_cameraState == _CameraState.available) {
+      await WidgetsBinding.instance.endOfFrame;
+    }
     if (mounted) {
       Navigator.of(context).pop();
     }
@@ -124,9 +156,56 @@ class _QrScannerPageState extends State<QrScannerPage> {
     }
   }
 
+  Widget _buildNoCameraBody(S s) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 32.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Icon(
+              Icons.no_photography_outlined,
+              size: 64,
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
+            ),
+            const SizedBox(height: 16),
+            Text(
+              s.noCameraAvailable,
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.bodyLarge,
+            ),
+            const SizedBox(height: 24),
+            FilledButton.icon(
+              icon: const Icon(Icons.photo_library_outlined),
+              label: Text(s.qrCodeFromGallery),
+              onPressed: _pickFromGallery,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final S s = S.of(context);
+
+    final Widget body;
+    switch (_cameraState) {
+      case _CameraState.checking:
+        body = const Center(child: CircularProgressIndicator());
+      case _CameraState.unavailable:
+        body = _isDecoding
+            ? const Center(child: CircularProgressIndicator())
+            : _buildNoCameraBody(s);
+      case _CameraState.available:
+        body = _scannerActive
+            ? QRCodeDartScanView(
+                formats: const <BarcodeFormat>[BarcodeFormat.qrCode],
+                onCapture: _onCapture,
+              )
+            : const Center(child: CircularProgressIndicator());
+    }
 
     return PopScope(
       canPop: false,
@@ -152,7 +231,7 @@ class _QrScannerPageState extends State<QrScannerPage> {
                   child: CircularProgressIndicator(strokeWidth: 2),
                 ),
               )
-            else
+            else if (_cameraState == _CameraState.available)
               IconButton(
                 icon: const Icon(Icons.photo_library_outlined),
                 tooltip: s.qrCodeFromGallery,
@@ -160,12 +239,7 @@ class _QrScannerPageState extends State<QrScannerPage> {
               ),
           ],
         ),
-        body: _scannerActive
-            ? QRCodeDartScanView(
-                formats: const <BarcodeFormat>[BarcodeFormat.qrCode],
-                onCapture: _onCapture,
-              )
-            : const Center(child: CircularProgressIndicator()),
+        body: body,
       ),
     );
   }

@@ -4177,5 +4177,7 @@
     "puzzleQrCodeTitle": "Kod QR łamigłówki",
     "@puzzleQrCodeTitle": {},
     "puzzleQrDataTooLong": "Wybrane łamigłówki są zbyt duże dla kodu QR, nawet po kompresji. Wybierz mniej łamigłówek.",
-    "@puzzleQrDataTooLong": {}
+    "@puzzleQrDataTooLong": {},
+    "noCameraAvailable": "Na tym urządzeniu nie jest dostępny aparat. Zamiast tego możesz zaimportować obraz kodu QR z galerii.",
+    "@noCameraAvailable": {}
 }

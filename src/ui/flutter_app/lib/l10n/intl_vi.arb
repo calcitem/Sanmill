@@ -4181,5 +4181,7 @@
     "puzzleQrCodeTitle": "Mã QR câu đố",
     "@puzzleQrCodeTitle": {},
     "puzzleQrDataTooLong": "Các câu đố đã chọn quá lớn cho mã QR, ngay cả sau khi nén. Vui lòng chọn ít câu đố hơn.",
-    "@puzzleQrDataTooLong": {}
+    "@puzzleQrDataTooLong": {},
+    "noCameraAvailable": "Không có camera trên thiết bị này. Bạn có thể nhập ảnh mã QR từ thư viện ảnh để thay thế.",
+    "@noCameraAvailable": {}
 }

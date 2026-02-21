@@ -4177,5 +4177,7 @@
     "puzzleQrCodeTitle": "رمز QR للأحجية",
     "@puzzleQrCodeTitle": {},
     "puzzleQrDataTooLong": "الأحاجي المحددة كبيرة جداً لرمز QR، حتى بعد الضغط. الرجاء اختيار عدد أقل من الأحاجي.",
-    "@puzzleQrDataTooLong": {}
+    "@puzzleQrDataTooLong": {},
+    "noCameraAvailable": "لا تتوفر كاميرا على هذا الجهاز. يمكنك استيراد صورة رمز QR من المعرض بدلاً من ذلك.",
+    "@noCameraAvailable": {}
 }

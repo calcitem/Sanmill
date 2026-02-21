@@ -4177,5 +4177,7 @@
     "puzzleQrCodeTitle": "パズル QR コード",
     "@puzzleQrCodeTitle": {},
     "puzzleQrDataTooLong": "選択したパズルは圧縮後もQRコードには大きすぎます。パズルの数を減らしてください。",
-    "@puzzleQrDataTooLong": {}
+    "@puzzleQrDataTooLong": {},
+    "noCameraAvailable": "このデバイスではカメラが利用できません。代わりにギャラリーから QR コード画像をインポートできます。",
+    "@noCameraAvailable": {}
 }

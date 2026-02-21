@@ -4177,5 +4177,7 @@
     "puzzleQrCodeTitle": "Msimbo wa QR wa fumbo",
     "@puzzleQrCodeTitle": {},
     "puzzleQrDataTooLong": "Mafumbo yaliyochaguliwa ni makubwa mno kwa msimbo wa QR hata baada ya kubana. Chagua mafumbo machache zaidi.",
-    "@puzzleQrDataTooLong": {}
+    "@puzzleQrDataTooLong": {},
+    "noCameraAvailable": "Hakuna kamera inayopatikana kwenye kifaa hiki. Badala yake unaweza kuagiza picha ya msimbo wa QR kutoka kwenye galeria.",
+    "@noCameraAvailable": {}
 }

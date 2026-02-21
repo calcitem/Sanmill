@@ -4181,5 +4181,7 @@
     "puzzleQrCodeTitle": "Ikhodi ye-QR yamaphazili",
     "@puzzleQrCodeTitle": {},
     "puzzleQrDataTooLong": "Amaphazili akhethiwe makhulu kakhulu we-QR code, ngisho nangokucindezelwa. Sicela ukhethe amaphazili amancane.",
-    "@puzzleQrDataTooLong": {}
+    "@puzzleQrDataTooLong": {},
+    "noCameraAvailable": "Ayikho ikhamera etholakalayo kule divayisi. Esikhundleni salokho ungakwazi ukungenisa isithombe sekhodi ye-QR evela egelerini.",
+    "@noCameraAvailable": {}
 }

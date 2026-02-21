@@ -4177,5 +4177,7 @@
     "puzzleQrCodeTitle": "Puslespill QR-kode",
     "@puzzleQrCodeTitle": {},
     "puzzleQrDataTooLong": "De valgte puslespillene er for store for en QR-kode, selv etter komprimering. Velg færre puslespill.",
-    "@puzzleQrDataTooLong": {}
+    "@puzzleQrDataTooLong": {},
+    "noCameraAvailable": "Ingen kamera tilgjengelig på denne enheten. Du kan i stedet importere et QR-kodebilde fra galleriet.",
+    "@noCameraAvailable": {}
 }

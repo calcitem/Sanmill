@@ -4177,5 +4177,7 @@
     "puzzleQrCodeTitle": "Palapelin QR-koodi",
     "@puzzleQrCodeTitle": {},
     "puzzleQrDataTooLong": "Valitut palapelit ovat liian suuria QR-koodille, jopa pakkauksen jälkeen. Valitse vähemmän palapelejä.",
-    "@puzzleQrDataTooLong": {}
+    "@puzzleQrDataTooLong": {},
+    "noCameraAvailable": "Tässä laitteessa ei ole kameraa. Voit sen sijaan tuoda QR-koodikuvan galleriasta.",
+    "@noCameraAvailable": {}
 }

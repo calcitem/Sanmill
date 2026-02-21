@@ -4177,5 +4177,7 @@
     "puzzleQrCodeTitle": "পাজল QR কোড",
     "@puzzleQrCodeTitle": {},
     "puzzleQrDataTooLong": "নির্বাচিত পাজলগুলি সংকোচনের পরেও QR কোডের জন্য অনেক বড়। অনুগ্রহ করে কম পাজল নির্বাচন করুন।",
-    "@puzzleQrDataTooLong": {}
+    "@puzzleQrDataTooLong": {},
+    "noCameraAvailable": "এই ডিভাইসে কোনো ক্যামেরা উপলব্ধ নেই। আপনি পরিবর্তে গ্যালারি থেকে একটি QR কোড ছবি আমদানি করতে পারেন।",
+    "@noCameraAvailable": {}
 }

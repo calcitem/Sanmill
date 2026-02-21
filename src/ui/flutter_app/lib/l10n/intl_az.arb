@@ -4177,5 +4177,7 @@
     "puzzleQrCodeTitle": "Tapmaca QR Kodu",
     "@puzzleQrCodeTitle": {},
     "puzzleQrDataTooLong": "Seçilmiş tapmacalar sıxışdırmadan sonra belə QR kodu üçün çox böyükdür. Zəhmət olmasa daha az tapmaca seçin.",
-    "@puzzleQrDataTooLong": {}
+    "@puzzleQrDataTooLong": {},
+    "noCameraAvailable": "Bu cihazda kamera mövcud deyil. Əvəzinə qalereyadan QR kod şəklini idxal edə bilərsiniz.",
+    "@noCameraAvailable": {}
 }

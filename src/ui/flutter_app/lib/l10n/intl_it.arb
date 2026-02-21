@@ -4177,5 +4177,7 @@
     "puzzleQrCodeTitle": "Codice QR dell'enigma",
     "@puzzleQrCodeTitle": {},
     "puzzleQrDataTooLong": "Gli enigmi selezionati sono troppo grandi per un codice QR, anche dopo la compressione. Seleziona meno enigmi.",
-    "@puzzleQrDataTooLong": {}
+    "@puzzleQrDataTooLong": {},
+    "noCameraAvailable": "Nessuna fotocamera disponibile su questo dispositivo. È possibile importare un'immagine del codice QR dalla galleria.",
+    "@noCameraAvailable": {}
 }

@@ -4177,5 +4177,7 @@
     "puzzleQrCodeTitle": "Código QR del rompecabezas",
     "@puzzleQrCodeTitle": {},
     "puzzleQrDataTooLong": "Los rompecabezas seleccionados son demasiado grandes para un código QR, incluso después de la compresión. Por favor, seleccione menos rompecabezas.",
-    "@puzzleQrDataTooLong": {}
+    "@puzzleQrDataTooLong": {},
+    "noCameraAvailable": "No hay cámara disponible en este dispositivo. Puede importar una imagen de código QR desde la galería.",
+    "@noCameraAvailable": {}
 }

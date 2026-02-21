@@ -4177,5 +4177,7 @@
     "puzzleQrCodeTitle": "Legkaart QR-kode",
     "@puzzleQrCodeTitle": {},
     "puzzleQrDataTooLong": "Die geselekteerde legkaartstukke is te groot vir 'n QR-kode, selfs na kompressie. Kies asseblief minder legkaartstukke.",
-    "@puzzleQrDataTooLong": {}
+    "@puzzleQrDataTooLong": {},
+    "noCameraAvailable": "Geen kamera beskikbaar op hierdie toestel. U kan eerder 'n QR-kodebeeld uit die galery invoer.",
+    "@noCameraAvailable": {}
 }

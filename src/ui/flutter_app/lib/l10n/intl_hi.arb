@@ -4177,5 +4177,7 @@
     "puzzleQrCodeTitle": "पहेली QR कोड",
     "@puzzleQrCodeTitle": {},
     "puzzleQrDataTooLong": "चुनी हुई पहेलियाँ संपीड़न के बाद भी QR कोड के लिए बहुत बड़ी हैं। कृपया कम पहेलियाँ चुनें।",
-    "@puzzleQrDataTooLong": {}
+    "@puzzleQrDataTooLong": {},
+    "noCameraAvailable": "इस डिवाइस पर कोई कैमरा उपलब्ध नहीं है। आप इसके बजाय गैलरी से QR कोड छवि आयात कर सकते हैं।",
+    "@noCameraAvailable": {}
 }

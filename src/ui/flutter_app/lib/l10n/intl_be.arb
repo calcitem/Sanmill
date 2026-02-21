@@ -4177,5 +4177,7 @@
     "puzzleQrCodeTitle": "QR-код галаваломкі",
     "@puzzleQrCodeTitle": {},
     "puzzleQrDataTooLong": "Абраныя галаваломкі занадта вялікія для QR-кода, нават пасля сціску. Калі ласка, абярыце менш галаваломак.",
-    "@puzzleQrDataTooLong": {}
+    "@puzzleQrDataTooLong": {},
+    "noCameraAvailable": "На гэтай прыладзе няма даступнай камеры. Замест гэтага вы можаце імпартаваць выяву QR-коду з галерэі.",
+    "@noCameraAvailable": {}
 }

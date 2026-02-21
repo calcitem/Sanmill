@@ -4177,5 +4177,7 @@
     "puzzleQrCodeTitle": "QR κωδικός γρίφου",
     "@puzzleQrCodeTitle": {},
     "puzzleQrDataTooLong": "Τα επιλεγμένα παζλ είναι πολύ μεγάλα για κωδικό QR, ακόμα και μετά τη συμπίεση. Παρακαλώ επιλέξτε λιγότερα παζλ.",
-    "@puzzleQrDataTooLong": {}
+    "@puzzleQrDataTooLong": {},
+    "noCameraAvailable": "Δεν υπάρχει διαθέσιμη κάμερα σε αυτήν τη συσκευή. Μπορείτε αντ' αυτού να εισαγάγετε μια εικόνα κωδικού QR από τη συλλογή.",
+    "@noCameraAvailable": {}
 }

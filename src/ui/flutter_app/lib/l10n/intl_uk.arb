@@ -4177,5 +4177,7 @@
     "puzzleQrCodeTitle": "QR-код головоломки",
     "@puzzleQrCodeTitle": {},
     "puzzleQrDataTooLong": "Вибрані головоломки надто великі для QR-коду навіть після стиснення. Виберіть менше головоломок.",
-    "@puzzleQrDataTooLong": {}
+    "@puzzleQrDataTooLong": {},
+    "noCameraAvailable": "На цьому пристрої немає доступної камери. Натомість ви можете імпортувати зображення QR-коду з галереї.",
+    "@noCameraAvailable": {}
 }

@@ -4177,5 +4177,7 @@
     "puzzleQrCodeTitle": "Bulmaca QR Kodu",
     "@puzzleQrCodeTitle": {},
     "puzzleQrDataTooLong": "Seçilen bulmacalar sıkıştırma sonrasında bile QR kod için çok büyük. Daha az bulmaca seçin.",
-    "@puzzleQrDataTooLong": {}
+    "@puzzleQrDataTooLong": {},
+    "noCameraAvailable": "Bu cihazda kamera mevcut değil. Bunun yerine galeriden bir QR kod görüntüsü içe aktarabilirsiniz.",
+    "@noCameraAvailable": {}
 }

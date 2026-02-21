@@ -4177,5 +4177,7 @@
     "puzzleQrCodeTitle": "Cod QR puzzle",
     "@puzzleQrCodeTitle": {},
     "puzzleQrDataTooLong": "Puzzle-urile selectate sunt prea mari pentru un cod QR, chiar și după compresie. Vă rugăm să selectați mai puține puzzle-uri.",
-    "@puzzleQrDataTooLong": {}
+    "@puzzleQrDataTooLong": {},
+    "noCameraAvailable": "Nu este disponibilă nicio cameră pe acest dispozitiv. Puteți importa o imagine cu cod QR din galerie.",
+    "@noCameraAvailable": {}
 }
