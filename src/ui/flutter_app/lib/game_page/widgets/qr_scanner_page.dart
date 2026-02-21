@@ -6,6 +6,7 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:image/image.dart' as img;
 import 'package:image_picker/image_picker.dart';
 import 'package:qr_code_dart_decoder/qr_code_dart_decoder.dart';
 import 'package:qr_code_dart_scan/qr_code_dart_scan.dart';
@@ -61,9 +62,23 @@ class _QrScannerPageState extends State<QrScannerPage> {
 
     try {
       final Uint8List bytes = await file.readAsBytes();
+
+      // qr_code_dart_decoder's toLuminanceSourceFromBytes reads 4 bytes per
+      // pixel (j += 4, assuming RGBA). image v4 decodes JPEG as 3-channel RGB
+      // (3 bytes/pixel), causing byte-offset misalignment and wrong luminance
+      // values for every pixel. Convert to RGBA and re-encode as PNG so that
+      // decodeFile's internal decodeImage call always yields 4 channels.
+      final img.Image? decodedImg = img.decodeImage(bytes);
+      final Uint8List decodeInput =
+          (decodedImg != null && decodedImg.numChannels != 4)
+          ? Uint8List.fromList(
+              img.encodePng(decodedImg.convert(numChannels: 4)),
+            )
+          : bytes;
+
       final Result? result = await QrCodeDartDecoder(
         formats: <BarcodeFormat>[BarcodeFormat.qrCode],
-      ).decodeFile(bytes);
+      ).decodeFile(decodeInput);
 
       if (!mounted) {
         return;
