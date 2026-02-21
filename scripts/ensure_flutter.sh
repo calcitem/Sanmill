@@ -39,7 +39,13 @@ flutter__detect_system_flutter() {
     echo "Failed to get Flutter version information." >&2
     return 1
   fi
-  version_line="$(printf '%s' "${version_output}" | head -n 1)"
+  # Use grep to find the "Flutter X.Y.Z" line, skipping root-user warning
+  # lines that flutter prints before the actual version information.
+  version_line="$(printf '%s' "${version_output}" | grep -m1 '^Flutter '|| echo "")"
+  if [[ -z "${version_line}" ]]; then
+    echo "Could not parse Flutter version from output." >&2
+    return 1
+  fi
 
   # Expected format: "Flutter 3.38.7 • channel stable • ..."
   local version
@@ -170,6 +176,11 @@ flutter__download_sdk() {
   rm -rf "${target_dir}"
   mv "${tmp_dir}/flutter" "${target_dir}"
   FLUTTER_SDK_PATH="${target_dir}"
+
+  # When running as root (e.g. in Snapcraft CI), git considers the newly
+  # downloaded SDK directory as having "dubious ownership". Register it as
+  # safe so that Flutter's internal git calls succeed.
+  git config --global --add safe.directory "${target_dir}" 2>/dev/null || true
 
   rm -rf "${tmp_dir}"
   trap - RETURN

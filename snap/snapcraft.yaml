@@ -50,12 +50,11 @@ parts:
     stage-packages: [g++, libstdc++6, libasound2, gstreamer1.0-plugins-base, gstreamer1.0-plugins-good]
     override-build: |
       set -x
-      wget https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_3.38.7-stable.tar.xz
-      tar xf flutter_linux_3.38.7-stable.tar.xz
-      export PATH=$PATH:`pwd`/flutter/bin
-      git config --global --add safe.directory /root/parts/mill/build/flutter
-      flutter doctor -v
       ./flutter-init.sh
+      FLUTTER_SDK="$(./scripts/ensure_flutter.sh)"
+      export PATH="${FLUTTER_SDK}/bin:${PATH}"
+      git config --global --add safe.directory "${FLUTTER_SDK}"
+      flutter doctor -v
       flutter config --enable-linux-desktop
       cd src/ui/flutter_app
       flutter create --platforms=linux .
