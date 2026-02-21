@@ -12,6 +12,7 @@ import 'package:qr_code_dart_decoder/qr_code_dart_decoder.dart';
 import 'package:qr_code_dart_scan/qr_code_dart_scan.dart';
 
 import '../../generated/intl/l10n.dart';
+import '../../shared/themes/app_theme.dart';
 
 /// Full-screen camera view for scanning a QR code.
 ///
@@ -105,7 +106,10 @@ class _QrScannerPageState extends State<QrScannerPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(s.scanQrCode),
+        title: Text(
+          s.scanQrCode,
+          style: AppTheme.appBarTheme.titleTextStyle,
+        ),
         actions: <Widget>[
           if (_isDecoding)
             const Padding(
