@@ -4169,5 +4169,9 @@
     "saveToGallery": "Salvați în galerie",
     "@saveToGallery": {},
     "shareQrCode": "Distribuiți",
-    "@shareQrCode": {}
+    "@shareQrCode": {},
+    "qrCodeFromGallery": "Alege din galerie",
+    "@qrCodeFromGallery": {},
+    "qrCodeNotFoundInImage": "Nu s-a găsit niciun cod QR în imaginea selectată",
+    "@qrCodeNotFoundInImage": {}
 }

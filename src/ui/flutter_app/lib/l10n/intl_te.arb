@@ -4169,5 +4169,9 @@
     "saveToGallery": "గ్యాలరీకి సేవ్ చేయండి",
     "@saveToGallery": {},
     "shareQrCode": "షేర్ చేయండి",
-    "@shareQrCode": {}
+    "@shareQrCode": {},
+    "qrCodeFromGallery": "గ్యాలరీ నుండి ఎంచుకోండి",
+    "@qrCodeFromGallery": {},
+    "qrCodeNotFoundInImage": "ఎంచుకున్న చిత్రంలో QR కోడ్ కనుగొనబడలేదు",
+    "@qrCodeNotFoundInImage": {}
 }

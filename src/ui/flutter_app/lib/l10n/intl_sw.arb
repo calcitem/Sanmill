@@ -4169,5 +4169,9 @@
     "saveToGallery": "Hifadhi kwenye Matunzio",
     "@saveToGallery": {},
     "shareQrCode": "Shiriki",
-    "@shareQrCode": {}
+    "@shareQrCode": {},
+    "qrCodeFromGallery": "Chagua kutoka kwenye matunzio",
+    "@qrCodeFromGallery": {},
+    "qrCodeNotFoundInImage": "Hakuna msimbo wa QR uliopatikana kwenye picha iliyochaguliwa",
+    "@qrCodeNotFoundInImage": {}
 }

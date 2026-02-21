@@ -4169,5 +4169,9 @@
     "saveToGallery": "རི་མོའི་ཁང་དུ་ཉར།",
     "@saveToGallery": {},
     "shareQrCode": "མཉམ་སྤྱོད།",
-    "@shareQrCode": {}
+    "@shareQrCode": {},
+    "qrCodeFromGallery": "པར་མཛོད་ནས་འདེམས།",
+    "@qrCodeFromGallery": {},
+    "qrCodeNotFoundInImage": "གདམ་ངེས་བྱས་པའི་པར་ཟླུམ་ནང་QR་ཨང་རྟགས་རྙེད་མ་བྱུང་།",
+    "@qrCodeNotFoundInImage": {}
 }

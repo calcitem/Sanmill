@@ -4169,5 +4169,9 @@
     "saveToGallery": "ಗ್ಯಾಲರಿಗೆ ಉಳಿಸಿ",
     "@saveToGallery": {},
     "shareQrCode": "ಹಂಚಿಕೊಳ್ಳಿ",
-    "@shareQrCode": {}
+    "@shareQrCode": {},
+    "qrCodeFromGallery": "ಗ್ಯಾಲರಿಯಿಂದ ಆಯ್ಕೆಮಾಡಿ",
+    "@qrCodeFromGallery": {},
+    "qrCodeNotFoundInImage": "ಆಯ್ಕೆಮಾಡಿದ ಚಿತ್ರದಲ್ಲಿ QR ಕೋಡ್ ಕಂಡುಬಂದಿಲ್ಲ",
+    "@qrCodeNotFoundInImage": {}
 }

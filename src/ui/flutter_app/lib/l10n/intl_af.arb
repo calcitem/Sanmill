@@ -4169,5 +4169,9 @@
     "saveToGallery": "Stoor na galery",
     "@saveToGallery": {},
     "shareQrCode": "Deel",
-    "@shareQrCode": {}
+    "@shareQrCode": {},
+    "qrCodeFromGallery": "Kies uit galery",
+    "@qrCodeFromGallery": {},
+    "qrCodeNotFoundInImage": "Geen QR-kode gevind in die geselekteerde prent nie",
+    "@qrCodeNotFoundInImage": {}
 }

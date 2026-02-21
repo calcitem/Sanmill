@@ -4169,5 +4169,9 @@
     "saveToGallery": "Պահել պատկերասրահ",
     "@saveToGallery": {},
     "shareQrCode": "Կիսվել",
-    "@shareQrCode": {}
+    "@shareQrCode": {},
+    "qrCodeFromGallery": "Ընտրել պատկերասրահից",
+    "@qrCodeFromGallery": {},
+    "qrCodeNotFoundInImage": "Ընտրված պատկերում QR կոդ չի հայտնաբերվել",
+    "@qrCodeNotFoundInImage": {}
 }

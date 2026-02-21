@@ -1405,7 +1405,7 @@ packages:
     source: hosted
     version: "3.0.2"
   qr_code_dart_decoder:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: qr_code_dart_decoder
       sha256: "4044f13a071da6102f7e9bc44a6b1ce577604d7846bcbeb1be412a137b825017"

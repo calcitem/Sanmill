@@ -4169,5 +4169,9 @@
     "saveToGallery": "שמור לגלריה",
     "@saveToGallery": {},
     "shareQrCode": "שתף",
-    "@shareQrCode": {}
+    "@shareQrCode": {},
+    "qrCodeFromGallery": "בחר מהגלריה",
+    "@qrCodeFromGallery": {},
+    "qrCodeNotFoundInImage": "לא נמצא קוד QR בתמונה שנבחרה",
+    "@qrCodeNotFoundInImage": {}
 }

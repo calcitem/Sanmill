@@ -4169,5 +4169,9 @@
     "saveToGallery": "ဓာတ်ပုံပြခန်းသို့ သိမ်းဆည်းပါ",
     "@saveToGallery": {},
     "shareQrCode": "မျှဝေပါ",
-    "@shareQrCode": {}
+    "@shareQrCode": {},
+    "qrCodeFromGallery": "ဂယ်လရီမှ ရွေးချယ်ပါ",
+    "@qrCodeFromGallery": {},
+    "qrCodeNotFoundInImage": "ရွေးချယ်ထားသော ပုံတွင် QR ကုဒ် မတွေ့ပါ",
+    "@qrCodeNotFoundInImage": {}
 }

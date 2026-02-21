@@ -4169,5 +4169,9 @@
     "saveToGallery": "Qalereyaya saxla",
     "@saveToGallery": {},
     "shareQrCode": "Paylaş",
-    "@shareQrCode": {}
+    "@shareQrCode": {},
+    "qrCodeFromGallery": "Qalereyadan seçin",
+    "@qrCodeFromGallery": {},
+    "qrCodeNotFoundInImage": "Seçilmiş şəkildə QR kodu tapılmadı",
+    "@qrCodeNotFoundInImage": {}
 }

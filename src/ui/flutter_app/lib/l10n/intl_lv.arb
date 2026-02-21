@@ -4169,5 +4169,9 @@
     "saveToGallery": "Saglabāt galerijā",
     "@saveToGallery": {},
     "shareQrCode": "Kopīgot",
-    "@shareQrCode": {}
+    "@shareQrCode": {},
+    "qrCodeFromGallery": "Izvēlēties no galerijas",
+    "@qrCodeFromGallery": {},
+    "qrCodeNotFoundInImage": "Izvēlētajā attēlā QR kods nav atrasts",
+    "@qrCodeNotFoundInImage": {}
 }

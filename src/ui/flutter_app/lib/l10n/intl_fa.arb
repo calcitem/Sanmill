@@ -4169,5 +4169,9 @@
     "saveToGallery": "ذخیره در گالری",
     "@saveToGallery": {},
     "shareQrCode": "اشتراک‌گذاری",
-    "@shareQrCode": {}
+    "@shareQrCode": {},
+    "qrCodeFromGallery": "انتخاب از گالری",
+    "@qrCodeFromGallery": {},
+    "qrCodeNotFoundInImage": "کد QR در تصویر انتخاب‌شده یافت نشد",
+    "@qrCodeNotFoundInImage": {}
 }

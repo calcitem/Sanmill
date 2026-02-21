@@ -4209,5 +4209,9 @@
     "saveToGallery": "保存到相册",
     "@saveToGallery": {},
     "shareQrCode": "分享",
-    "@shareQrCode": {}
+    "@shareQrCode": {},
+    "qrCodeFromGallery": "从相册选取",
+    "@qrCodeFromGallery": {},
+    "qrCodeNotFoundInImage": "所选图片中未找到二维码",
+    "@qrCodeNotFoundInImage": {}
 }

@@ -4169,5 +4169,9 @@
     "saveToGallery": "Londoloza engcwecweni",
     "@saveToGallery": {},
     "shareQrCode": "Yabelana",
-    "@shareQrCode": {}
+    "@shareQrCode": {},
+    "qrCodeFromGallery": "Khetha esigcawini sezithombe",
+    "@qrCodeFromGallery": {},
+    "qrCodeNotFoundInImage": "Akukho ikhodi ye-QR etholiwe esithombeni esikhethiwe",
+    "@qrCodeNotFoundInImage": {}
 }

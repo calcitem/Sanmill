@@ -4169,5 +4169,9 @@
     "saveToGallery": "갤러리에 저장",
     "@saveToGallery": {},
     "shareQrCode": "공유",
-    "@shareQrCode": {}
+    "@shareQrCode": {},
+    "qrCodeFromGallery": "갤러리에서 선택",
+    "@qrCodeFromGallery": {},
+    "qrCodeNotFoundInImage": "선택한 이미지에서 QR 코드를 찾을 수 없습니다",
+    "@qrCodeNotFoundInImage": {}
 }

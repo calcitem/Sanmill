@@ -4169,5 +4169,9 @@
     "saveToGallery": "Lưu vào thư viện",
     "@saveToGallery": {},
     "shareQrCode": "Chia sẻ",
-    "@shareQrCode": {}
+    "@shareQrCode": {},
+    "qrCodeFromGallery": "Chọn từ thư viện ảnh",
+    "@qrCodeFromGallery": {},
+    "qrCodeNotFoundInImage": "Không tìm thấy mã QR trong ảnh đã chọn",
+    "@qrCodeNotFoundInImage": {}
 }

@@ -4185,5 +4185,9 @@
     "saveToGallery": "儲存到相簿",
     "@saveToGallery": {},
     "shareQrCode": "分享",
-    "@shareQrCode": {}
+    "@shareQrCode": {},
+    "qrCodeFromGallery": "從相簿選取",
+    "@qrCodeFromGallery": {},
+    "qrCodeNotFoundInImage": "所選圖片中未找到二維碼",
+    "@qrCodeNotFoundInImage": {}
 }

@@ -4169,5 +4169,9 @@
     "saveToGallery": "Simpan ke Galeri",
     "@saveToGallery": {},
     "shareQrCode": "Bagikan",
-    "@shareQrCode": {}
+    "@shareQrCode": {},
+    "qrCodeFromGallery": "Pilih dari galeri",
+    "@qrCodeFromGallery": {},
+    "qrCodeNotFoundInImage": "Tidak ditemukan kode QR pada gambar yang dipilih",
+    "@qrCodeNotFoundInImage": {}
 }

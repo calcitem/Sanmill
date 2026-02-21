@@ -3426,5 +3426,9 @@
     "saveToGallery": "Mentés a galériába",
     "@saveToGallery": {},
     "shareQrCode": "Megosztás",
-    "@shareQrCode": {}
+    "@shareQrCode": {},
+    "qrCodeFromGallery": "Válassz a galériából",
+    "@qrCodeFromGallery": {},
+    "qrCodeNotFoundInImage": "A kiválasztott képen nem található QR-kód",
+    "@qrCodeNotFoundInImage": {}
 }

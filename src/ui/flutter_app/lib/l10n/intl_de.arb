@@ -3461,5 +3461,9 @@
     "saveToGallery": "In Galerie speichern",
     "@saveToGallery": {},
     "shareQrCode": "Teilen",
-    "@shareQrCode": {}
+    "@shareQrCode": {},
+    "qrCodeFromGallery": "Aus Galerie wählen",
+    "@qrCodeFromGallery": {},
+    "qrCodeNotFoundInImage": "Kein QR-Code im ausgewählten Bild gefunden",
+    "@qrCodeNotFoundInImage": {}
 }

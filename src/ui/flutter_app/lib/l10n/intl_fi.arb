@@ -4169,5 +4169,9 @@
     "saveToGallery": "Tallenna galleriaan",
     "@saveToGallery": {},
     "shareQrCode": "Jaa",
-    "@shareQrCode": {}
+    "@shareQrCode": {},
+    "qrCodeFromGallery": "Valitse galleriasta",
+    "@qrCodeFromGallery": {},
+    "qrCodeNotFoundInImage": "Valitusta kuvasta ei löydetty QR-koodia",
+    "@qrCodeNotFoundInImage": {}
 }

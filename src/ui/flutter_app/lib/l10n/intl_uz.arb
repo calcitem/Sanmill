@@ -4169,5 +4169,9 @@
     "saveToGallery": "Galereyaga saqlash",
     "@saveToGallery": {},
     "shareQrCode": "Ulashish",
-    "@shareQrCode": {}
+    "@shareQrCode": {},
+    "qrCodeFromGallery": "Galereyadan tanlang",
+    "@qrCodeFromGallery": {},
+    "qrCodeNotFoundInImage": "Tanlangan rasmda QR kod topilmadi",
+    "@qrCodeNotFoundInImage": {}
 }

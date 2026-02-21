@@ -48,6 +48,7 @@ dependencies:
   logger: 2.6.2
   marquee: 2.3.0
   meta: 1.17.0
+  qr_code_dart_decoder: 0.1.2
   qr_code_dart_scan: 0.11.5
   native_screenshot_widget: 0.0.8
   network_info_plus: 7.0.0

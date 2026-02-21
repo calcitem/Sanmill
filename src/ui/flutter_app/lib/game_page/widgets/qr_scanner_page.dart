@@ -3,7 +3,11 @@
 
 // qr_scanner_page.dart
 
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:qr_code_dart_decoder/qr_code_dart_decoder.dart';
 import 'package:qr_code_dart_scan/qr_code_dart_scan.dart';
 
 import '../../generated/intl/l10n.dart';
@@ -11,6 +15,7 @@ import '../../generated/intl/l10n.dart';
 /// Full-screen camera view for scanning a QR code.
 ///
 /// Returns the decoded QR string via [Navigator.pop] on successful scan.
+/// Also supports picking a QR code image from the device gallery.
 class QrScannerPage extends StatefulWidget {
   const QrScannerPage({super.key});
 
@@ -21,15 +26,61 @@ class QrScannerPage extends StatefulWidget {
 class _QrScannerPageState extends State<QrScannerPage> {
   bool _hasPopped = false;
 
+  // True while an image picked from the gallery is being decoded.
+  bool _isDecoding = false;
+
+  // Called by the live camera scanner when a QR code is detected.
   void _onCapture(Result result) {
     if (_hasPopped) {
       return;
     }
 
     final String text = result.text;
-    if (text != null && text.isNotEmpty) {
+    if (text.isNotEmpty) {
       _hasPopped = true;
       Navigator.of(context).pop(text);
+    }
+  }
+
+  // Lets the user pick an image from the gallery and attempts to decode a QR
+  // code from it using the pure-Dart ZXing decoder.
+  Future<void> _pickFromGallery() async {
+    if (_isDecoding || _hasPopped) {
+      return;
+    }
+
+    final XFile? file = await ImagePicker().pickImage(
+      source: ImageSource.gallery,
+    );
+
+    if (file == null) {
+      return;
+    }
+
+    setState(() => _isDecoding = true);
+
+    try {
+      final Uint8List bytes = await file.readAsBytes();
+      final Result? result = await QrCodeDartDecoder(
+        formats: <BarcodeFormat>[BarcodeFormat.qrCode],
+      ).decodeFile(bytes);
+
+      if (!mounted) {
+        return;
+      }
+
+      if (result != null && result.text.isNotEmpty) {
+        _hasPopped = true;
+        Navigator.of(context).pop(result.text);
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(S.of(context).qrCodeNotFoundInImage)),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() => _isDecoding = false);
+      }
     }
   }
 
@@ -38,7 +89,26 @@ class _QrScannerPageState extends State<QrScannerPage> {
     final S s = S.of(context);
 
     return Scaffold(
-      appBar: AppBar(title: Text(s.scanQrCode)),
+      appBar: AppBar(
+        title: Text(s.scanQrCode),
+        actions: <Widget>[
+          if (_isDecoding)
+            const Padding(
+              padding: EdgeInsets.all(16.0),
+              child: SizedBox(
+                width: 20,
+                height: 20,
+                child: CircularProgressIndicator(strokeWidth: 2),
+              ),
+            )
+          else
+            IconButton(
+              icon: const Icon(Icons.photo_library_outlined),
+              tooltip: s.qrCodeFromGallery,
+              onPressed: _pickFromGallery,
+            ),
+        ],
+      ),
       body: QRCodeDartScanView(
         formats: const <BarcodeFormat>[BarcodeFormat.qrCode],
         onCapture: _onCapture,

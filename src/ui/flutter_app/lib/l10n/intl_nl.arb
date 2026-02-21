@@ -4169,5 +4169,9 @@
     "saveToGallery": "Opslaan in galerij",
     "@saveToGallery": {},
     "shareQrCode": "Delen",
-    "@shareQrCode": {}
+    "@shareQrCode": {},
+    "qrCodeFromGallery": "Kies uit galerij",
+    "@qrCodeFromGallery": {},
+    "qrCodeNotFoundInImage": "Geen QR-code gevonden in de geselecteerde afbeelding",
+    "@qrCodeNotFoundInImage": {}
 }

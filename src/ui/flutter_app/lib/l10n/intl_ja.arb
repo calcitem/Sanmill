@@ -4169,5 +4169,9 @@
     "saveToGallery": "ギャラリーに保存",
     "@saveToGallery": {},
     "shareQrCode": "共有",
-    "@shareQrCode": {}
+    "@shareQrCode": {},
+    "qrCodeFromGallery": "ギャラリーから選択",
+    "@qrCodeFromGallery": {},
+    "qrCodeNotFoundInImage": "選択した画像にQRコードが見つかりませんでした",
+    "@qrCodeNotFoundInImage": {}
 }

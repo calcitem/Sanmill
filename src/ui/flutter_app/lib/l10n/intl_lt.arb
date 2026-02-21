@@ -4169,5 +4169,9 @@
     "saveToGallery": "Išsaugoti galerijoje",
     "@saveToGallery": {},
     "shareQrCode": "Bendrinti",
-    "@shareQrCode": {}
+    "@shareQrCode": {},
+    "qrCodeFromGallery": "Pasirinkti iš galerijos",
+    "@qrCodeFromGallery": {},
+    "qrCodeNotFoundInImage": "Pasirinktame paveikslėlyje QR kodas nerastas",
+    "@qrCodeNotFoundInImage": {}
 }

@@ -4169,5 +4169,9 @@
     "saveToGallery": "Vista í myndasafn",
     "@saveToGallery": {},
     "shareQrCode": "Deila",
-    "@shareQrCode": {}
+    "@shareQrCode": {},
+    "qrCodeFromGallery": "Velja úr myndasafni",
+    "@qrCodeFromGallery": {},
+    "qrCodeNotFoundInImage": "Enginn QR kóði fannst á valinni mynd",
+    "@qrCodeNotFoundInImage": {}
 }

@@ -4287,5 +4287,13 @@
     "shareQrCode": "Share",
     "@shareQrCode": {
         "description": "Button label to share QR code image"
+    },
+    "qrCodeFromGallery": "Pick from Gallery",
+    "@qrCodeFromGallery": {
+        "description": "Tooltip for button to pick a QR code image from photo gallery"
+    },
+    "qrCodeNotFoundInImage": "No QR code found in the selected image",
+    "@qrCodeNotFoundInImage": {
+        "description": "Error message when no QR code is detected in the gallery image"
     }
 }

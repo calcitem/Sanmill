@@ -4169,5 +4169,9 @@
     "saveToGallery": "Spara i galleri",
     "@saveToGallery": {},
     "shareQrCode": "Dela",
-    "@shareQrCode": {}
+    "@shareQrCode": {},
+    "qrCodeFromGallery": "Välj från galleri",
+    "@qrCodeFromGallery": {},
+    "qrCodeNotFoundInImage": "Ingen QR-kod hittades i den valda bilden",
+    "@qrCodeNotFoundInImage": {}
 }

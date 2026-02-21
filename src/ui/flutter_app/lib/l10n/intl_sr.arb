@@ -4169,5 +4169,9 @@
     "saveToGallery": "Сачувај у галерију",
     "@saveToGallery": {},
     "shareQrCode": "Подели",
-    "@shareQrCode": {}
+    "@shareQrCode": {},
+    "qrCodeFromGallery": "Одабери из галерије",
+    "@qrCodeFromGallery": {},
+    "qrCodeNotFoundInImage": "QR код није пронађен на одабраној слици",
+    "@qrCodeNotFoundInImage": {}
 }

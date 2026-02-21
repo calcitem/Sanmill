@@ -4169,5 +4169,9 @@
     "saveToGallery": "Αποθήκευση στη συλλογή",
     "@saveToGallery": {},
     "shareQrCode": "Κοινοποίηση",
-    "@shareQrCode": {}
+    "@shareQrCode": {},
+    "qrCodeFromGallery": "Επιλογή από συλλογή",
+    "@qrCodeFromGallery": {},
+    "qrCodeNotFoundInImage": "Δεν βρέθηκε κωδικός QR στην επιλεγμένη εικόνα",
+    "@qrCodeNotFoundInImage": {}
 }

@@ -4169,5 +4169,9 @@
     "saveToGallery": "ወደ ጋለሪ አስቀምጥ",
     "@saveToGallery": {},
     "shareQrCode": "አጋራ",
-    "@shareQrCode": {}
+    "@shareQrCode": {},
+    "qrCodeFromGallery": "ከጋለሪ ምረጥ",
+    "@qrCodeFromGallery": {},
+    "qrCodeNotFoundInImage": "በተመረጠው ምስል ውስጥ QR ኮድ አልተገኘም",
+    "@qrCodeNotFoundInImage": {}
 }

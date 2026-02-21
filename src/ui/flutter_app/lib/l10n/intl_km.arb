@@ -4169,5 +4169,9 @@
     "saveToGallery": "រក្សាទុកទៅ Gallery",
     "@saveToGallery": {},
     "shareQrCode": "ចែករំលែក",
-    "@shareQrCode": {}
+    "@shareQrCode": {},
+    "qrCodeFromGallery": "ជ្រើសរើសពីគ្រឿងបញ្ជួន",
+    "@qrCodeFromGallery": {},
+    "qrCodeNotFoundInImage": "រកមិនឃើញ QR code នៅក្នុងរូបភាពដែលបានជ្រើសរើស",
+    "@qrCodeNotFoundInImage": {}
 }

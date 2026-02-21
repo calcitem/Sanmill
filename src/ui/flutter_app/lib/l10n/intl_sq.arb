@@ -4169,5 +4169,9 @@
     "saveToGallery": "Ruaj në galeri",
     "@saveToGallery": {},
     "shareQrCode": "Shpërndaj",
-    "@shareQrCode": {}
+    "@shareQrCode": {},
+    "qrCodeFromGallery": "Zgjidh nga galeria",
+    "@qrCodeFromGallery": {},
+    "qrCodeNotFoundInImage": "Nuk u gjet asnjë kod QR në imazhin e zgjedhur",
+    "@qrCodeNotFoundInImage": {}
 }

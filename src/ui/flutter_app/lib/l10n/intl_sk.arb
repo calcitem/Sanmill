@@ -4169,5 +4169,9 @@
     "saveToGallery": "Uložiť do galérie",
     "@saveToGallery": {},
     "shareQrCode": "Zdieľať",
-    "@shareQrCode": {}
+    "@shareQrCode": {},
+    "qrCodeFromGallery": "Vybrať z galérie",
+    "@qrCodeFromGallery": {},
+    "qrCodeNotFoundInImage": "Na vybranom obrázku sa nenašiel žiadny QR kód",
+    "@qrCodeNotFoundInImage": {}
 }
