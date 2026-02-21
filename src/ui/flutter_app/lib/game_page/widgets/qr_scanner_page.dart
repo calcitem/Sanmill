@@ -28,10 +28,13 @@ class QrScannerPage extends StatefulWidget {
 class _QrScannerPageState extends State<QrScannerPage> {
   bool _hasPopped = false;
 
-  // True while an image picked from the gallery is being decoded.
   bool _isDecoding = false;
 
-  // Called by the live camera scanner when a QR code is detected.
+  // When true the scanner widget is removed from the tree so the camera
+  // package can tear down without racing against pending async operations
+  // (lockCaptureOrientation, buildPreview, etc.).
+  bool get _scannerActive => !_isDecoding && !_hasPopped;
+
   void _onCapture(Result result) {
     if (_hasPopped) {
       return;
@@ -44,22 +47,43 @@ class _QrScannerPageState extends State<QrScannerPage> {
     }
   }
 
-  // Lets the user pick an image from the gallery and attempts to decode a QR
-  // code from it using the pure-Dart ZXing decoder.
+  // Remove the scanner from the widget tree first, wait one frame so the
+  // camera controller is fully disposed, then actually pop the route. This
+  // avoids CameraController-use-after-dispose crashes from in-flight async
+  // operations such as lockCaptureOrientation.
+  Future<void> _safePopPage() async {
+    if (_hasPopped) {
+      return;
+    }
+    setState(() => _hasPopped = true);
+    await WidgetsBinding.instance.endOfFrame;
+    if (mounted) {
+      Navigator.of(context).pop();
+    }
+  }
+
   Future<void> _pickFromGallery() async {
     if (_isDecoding || _hasPopped) {
       return;
     }
+
+    // Remove QRCodeDartScanView from the tree BEFORE opening the gallery
+    // picker. ImagePicker causes the app to go inactive, which makes the
+    // package dispose its CameraController. If the scanner widget is still
+    // mounted, CameraPreview's ValueListenableBuilder may try to call
+    // buildPreview() on the disposed controller during a pending frame.
+    setState(() => _isDecoding = true);
 
     final XFile? file = await ImagePicker().pickImage(
       source: ImageSource.gallery,
     );
 
     if (file == null) {
+      if (mounted) {
+        setState(() => _isDecoding = false);
+      }
       return;
     }
-
-    setState(() => _isDecoding = true);
 
     try {
       final Uint8List bytes = await file.readAsBytes();
@@ -104,30 +128,44 @@ class _QrScannerPageState extends State<QrScannerPage> {
   Widget build(BuildContext context) {
     final S s = S.of(context);
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(s.scanQrCode, style: AppTheme.appBarTheme.titleTextStyle),
-        actions: <Widget>[
-          if (_isDecoding)
-            const Padding(
-              padding: EdgeInsets.all(16.0),
-              child: SizedBox(
-                width: 20,
-                height: 20,
-                child: CircularProgressIndicator(strokeWidth: 2),
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (bool didPop, _) {
+        if (!didPop) {
+          _safePopPage();
+        }
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(s.scanQrCode, style: AppTheme.appBarTheme.titleTextStyle),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: _safePopPage,
+          ),
+          actions: <Widget>[
+            if (_isDecoding)
+              const Padding(
+                padding: EdgeInsets.all(16.0),
+                child: SizedBox(
+                  width: 20,
+                  height: 20,
+                  child: CircularProgressIndicator(strokeWidth: 2),
+                ),
+              )
+            else
+              IconButton(
+                icon: const Icon(Icons.photo_library_outlined),
+                tooltip: s.qrCodeFromGallery,
+                onPressed: _pickFromGallery,
               ),
-            )
-          else
-            IconButton(
-              icon: const Icon(Icons.photo_library_outlined),
-              tooltip: s.qrCodeFromGallery,
-              onPressed: _pickFromGallery,
-            ),
-        ],
-      ),
-      body: QRCodeDartScanView(
-        formats: const <BarcodeFormat>[BarcodeFormat.qrCode],
-        onCapture: _onCapture,
+          ],
+        ),
+        body: _scannerActive
+            ? QRCodeDartScanView(
+                formats: const <BarcodeFormat>[BarcodeFormat.qrCode],
+                onCapture: _onCapture,
+              )
+            : const Center(child: CircularProgressIndicator()),
       ),
     );
   }
