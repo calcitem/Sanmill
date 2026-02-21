@@ -106,10 +106,7 @@ class _QrScannerPageState extends State<QrScannerPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          s.scanQrCode,
-          style: AppTheme.appBarTheme.titleTextStyle,
-        ),
+        title: Text(s.scanQrCode, style: AppTheme.appBarTheme.titleTextStyle),
         actions: <Widget>[
           if (_isDecoding)
             const Padding(
