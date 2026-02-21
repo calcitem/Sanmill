@@ -4173,5 +4173,9 @@
     "qrCodeFromGallery": "Izvēlēties no galerijas",
     "@qrCodeFromGallery": {},
     "qrCodeNotFoundInImage": "Izvēlētajā attēlā QR kods nav atrasts",
-    "@qrCodeNotFoundInImage": {}
+    "@qrCodeNotFoundInImage": {},
+    "puzzleQrCodeTitle": "Mīklas QR kods",
+    "@puzzleQrCodeTitle": {},
+    "puzzleQrDataTooLong": "Izvēlētās mīklas ir pārāk lielas QR kodam, pat pēc saspiešanas. Lūdzu, izvēlieties mazāk mīklu.",
+    "@puzzleQrDataTooLong": {}
 }

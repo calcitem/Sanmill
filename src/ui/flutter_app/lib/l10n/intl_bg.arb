@@ -4173,5 +4173,9 @@
     "qrCodeFromGallery": "Избери от галерия",
     "@qrCodeFromGallery": {},
     "qrCodeNotFoundInImage": "В избраното изображение не е намерен QR код",
-    "@qrCodeNotFoundInImage": {}
+    "@qrCodeNotFoundInImage": {},
+    "puzzleQrCodeTitle": "QR код на пъзел",
+    "@puzzleQrCodeTitle": {},
+    "puzzleQrDataTooLong": "Избраните пъзели са твърде големи за QR код дори след компресия. Моля, изберете по-малко пъзели.",
+    "@puzzleQrDataTooLong": {}
 }

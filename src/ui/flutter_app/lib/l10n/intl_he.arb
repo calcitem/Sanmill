@@ -4173,5 +4173,9 @@
     "qrCodeFromGallery": "בחר מהגלריה",
     "@qrCodeFromGallery": {},
     "qrCodeNotFoundInImage": "לא נמצא קוד QR בתמונה שנבחרה",
-    "@qrCodeNotFoundInImage": {}
+    "@qrCodeNotFoundInImage": {},
+    "puzzleQrCodeTitle": "קוד QR של חידה",
+    "@puzzleQrCodeTitle": {},
+    "puzzleQrDataTooLong": "החידות שנבחרו גדולות מדי עבור קוד QR, גם לאחר דחיסה. אנא בחר פחות חידות.",
+    "@puzzleQrDataTooLong": {}
 }

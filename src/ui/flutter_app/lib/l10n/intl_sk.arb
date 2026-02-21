@@ -4173,5 +4173,9 @@
     "qrCodeFromGallery": "Vybrať z galérie",
     "@qrCodeFromGallery": {},
     "qrCodeNotFoundInImage": "Na vybranom obrázku sa nenašiel žiadny QR kód",
-    "@qrCodeNotFoundInImage": {}
+    "@qrCodeNotFoundInImage": {},
+    "puzzleQrCodeTitle": "QR kód hádanky",
+    "@puzzleQrCodeTitle": {},
+    "puzzleQrDataTooLong": "Vybrané hádanky sú príliš veľké pre QR kód, aj po komprimácii. Vyberte prosím menej hádanok.",
+    "@puzzleQrDataTooLong": {}
 }

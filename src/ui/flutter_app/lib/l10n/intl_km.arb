@@ -4173,5 +4173,9 @@
     "qrCodeFromGallery": "ជ្រើសរើសពីគ្រឿងបញ្ជួន",
     "@qrCodeFromGallery": {},
     "qrCodeNotFoundInImage": "រកមិនឃើញ QR code នៅក្នុងរូបភាពដែលបានជ្រើសរើស",
-    "@qrCodeNotFoundInImage": {}
+    "@qrCodeNotFoundInImage": {},
+    "puzzleQrCodeTitle": "កូដ QR ល្បែងផ្គុំរូប",
+    "@puzzleQrCodeTitle": {},
+    "puzzleQrDataTooLong": "ល្បែងផ្គុំរូបដែលបានជ្រើសរើសមានទំហំធំពេក សម្រាប់កូដ QR ទោះបីបន្ទាប់ពីការបង្ហាប់ក៏ដោយ។ សូមជ្រើសរើសល្បែងផ្គុំរូបតិចជាង។",
+    "@puzzleQrDataTooLong": {}
 }

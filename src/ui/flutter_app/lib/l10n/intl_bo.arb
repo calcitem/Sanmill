@@ -4173,5 +4173,9 @@
     "qrCodeFromGallery": "པར་མཛོད་ནས་འདེམས།",
     "@qrCodeFromGallery": {},
     "qrCodeNotFoundInImage": "གདམ་ངེས་བྱས་པའི་པར་ཟླུམ་ནང་QR་ཨང་རྟགས་རྙེད་མ་བྱུང་།",
-    "@qrCodeNotFoundInImage": {}
+    "@qrCodeNotFoundInImage": {},
+    "puzzleQrCodeTitle": "དེབ་ཐུངས་QR་ཨང་གྲངས།",
+    "@puzzleQrCodeTitle": {},
+    "puzzleQrDataTooLong": "གདམས་ཤོག་གི་དེབ་ཐུངས་ QR ཨང་གྲངས་ལ་སྦྲིལ་ཀྱང་ཆེ་བས། དེབ་ཐུངས་ཉུང་ཤས་གདམ་རོགས།",
+    "@puzzleQrDataTooLong": {}
 }

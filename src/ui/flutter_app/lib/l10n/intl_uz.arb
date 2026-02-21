@@ -4173,5 +4173,13 @@
     "qrCodeFromGallery": "Galereyadan tanlang",
     "@qrCodeFromGallery": {},
     "qrCodeNotFoundInImage": "Tanlangan rasmda QR kod topilmadi",
-    "@qrCodeNotFoundInImage": {}
+    "@qrCodeNotFoundInImage": {},
+    "puzzleQrCodeTitle": "Jumboq QR kodi",
+    "@puzzleQrCodeTitle": {},
+    "puzzleQrDataTooLong": "Tanlangan jumboqlar siqishdan keyin ham QR kod uchun juda katta. Kamroq jumboq tanlang.",
+    "@puzzleQrDataTooLong": {},
+    "puzzleQrCodeTitle": "Jumboq QR kodi",
+    "@puzzleQrCodeTitle": {},
+    "puzzleQrDataTooLong": "Tanlangan jumboqlar siqishdan keyin ham QR kod uchun juda katta. Iltimos, kamroq jumboq tanlang.",
+    "@puzzleQrDataTooLong": {}
 }

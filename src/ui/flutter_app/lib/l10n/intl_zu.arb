@@ -4173,5 +4173,13 @@
     "qrCodeFromGallery": "Khetha esigcawini sezithombe",
     "@qrCodeFromGallery": {},
     "qrCodeNotFoundInImage": "Akukho ikhodi ye-QR etholiwe esithombeni esikhethiwe",
-    "@qrCodeNotFoundInImage": {}
+    "@qrCodeNotFoundInImage": {},
+    "puzzleQrCodeTitle": "Ikhodi ye-QR yamaphazili",
+    "@puzzleQrCodeTitle": {},
+    "puzzleQrDataTooLong": "Amaphazili akhethiwe makhulu kakhulu we-QR code ngisho nangokucindezelwa. Sicela ukhethe amaphazili amancane.",
+    "@puzzleQrDataTooLong": {},
+    "puzzleQrCodeTitle": "Ikhodi ye-QR yamaphazili",
+    "@puzzleQrCodeTitle": {},
+    "puzzleQrDataTooLong": "Amaphazili akhethiwe makhulu kakhulu we-QR code, ngisho nangokucindezelwa. Sicela ukhethe amaphazili amancane.",
+    "@puzzleQrDataTooLong": {}
 }

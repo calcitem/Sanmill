@@ -4173,5 +4173,9 @@
     "qrCodeFromGallery": "Chagua kutoka kwenye matunzio",
     "@qrCodeFromGallery": {},
     "qrCodeNotFoundInImage": "Hakuna msimbo wa QR uliopatikana kwenye picha iliyochaguliwa",
-    "@qrCodeNotFoundInImage": {}
+    "@qrCodeNotFoundInImage": {},
+    "puzzleQrCodeTitle": "Msimbo wa QR wa fumbo",
+    "@puzzleQrCodeTitle": {},
+    "puzzleQrDataTooLong": "Mafumbo yaliyochaguliwa ni makubwa mno kwa msimbo wa QR hata baada ya kubana. Chagua mafumbo machache zaidi.",
+    "@puzzleQrDataTooLong": {}
 }

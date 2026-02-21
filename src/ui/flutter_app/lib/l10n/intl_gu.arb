@@ -4173,5 +4173,9 @@
     "qrCodeFromGallery": "ગૅલેરીમાંથી પસંદ કરો",
     "@qrCodeFromGallery": {},
     "qrCodeNotFoundInImage": "પસંદ કરેલ ઇમેજમાં QR કોડ મળ્યો નથી",
-    "@qrCodeNotFoundInImage": {}
+    "@qrCodeNotFoundInImage": {},
+    "puzzleQrCodeTitle": "પઝલ QR કોડ",
+    "@puzzleQrCodeTitle": {},
+    "puzzleQrDataTooLong": "પસંદ કરેલ પઝલ્સ સંકોચન પછી પણ QR કોડ માટે ખૂબ મોટી છે. કૃપા કરીને ઓછી પઝલ્સ પસંદ કરો.",
+    "@puzzleQrDataTooLong": {}
 }

@@ -4173,5 +4173,9 @@
     "qrCodeFromGallery": "Galeriden seç",
     "@qrCodeFromGallery": {},
     "qrCodeNotFoundInImage": "Seçilen görselde QR kodu bulunamadı",
-    "@qrCodeNotFoundInImage": {}
+    "@qrCodeNotFoundInImage": {},
+    "puzzleQrCodeTitle": "Bulmaca QR Kodu",
+    "@puzzleQrCodeTitle": {},
+    "puzzleQrDataTooLong": "Seçilen bulmacalar sıkıştırma sonrasında bile QR kod için çok büyük. Daha az bulmaca seçin.",
+    "@puzzleQrDataTooLong": {}
 }

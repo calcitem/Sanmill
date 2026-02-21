@@ -5,6 +5,7 @@
 
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:path_provider/path_provider.dart';
@@ -157,139 +158,7 @@ class PuzzleExportService {
       final Map<String, dynamic> data =
           jsonDecode(jsonString) as Map<String, dynamic>;
 
-      // Validate format
-      if (!data.containsKey('puzzles')) {
-        return ImportResult(
-          success: false,
-          errorKey: 'puzzleImportInvalidFormat',
-          errorMessage: 'Invalid file format: missing puzzles field',
-        );
-      }
-
-      // Check format version
-      final String? formatVersion = data['formatVersion'] as String?;
-      if (formatVersion != null && formatVersion != exportVersion) {
-        return ImportResult(
-          success: false,
-          errorKey: 'puzzleImportIncompatibleVersion',
-          errorMessage:
-              'Incompatible file format version: $formatVersion (expected $exportVersion)',
-          errorParams: <String, dynamic>{
-            'version': formatVersion,
-            'expected': exportVersion,
-          },
-        );
-      }
-
-      // Parse metadata if present
-      PuzzlePackMetadata? metadata;
-      if (data.containsKey('metadata')) {
-        try {
-          metadata = PuzzlePackMetadata.fromJson(
-            data['metadata'] as Map<String, dynamic>,
-          );
-        } catch (e) {
-          // Metadata parsing failed, but continue with puzzles
-          assert(false, 'Failed to parse metadata: $e');
-        }
-      }
-
-      // Parse puzzles
-      final List<dynamic> puzzlesJson = data['puzzles'] as List<dynamic>;
-      final List<PuzzleInfo> importedPuzzles = <PuzzleInfo>[];
-      final List<DetailedError> errors = <DetailedError>[];
-      final List<DetailedError> warnings = <DetailedError>[];
-
-      // Get current rule variant ID from settings
-      final RuleVariant currentVariant = RuleVariant.fromRuleSettings(
-        DB().ruleSettings,
-      );
-      final String currentVariantId = currentVariant.id;
-
-      for (int i = 0; i < puzzlesJson.length; i++) {
-        try {
-          final Map<String, dynamic> puzzleJson =
-              puzzlesJson[i] as Map<String, dynamic>;
-          final PuzzleInfo puzzle = PuzzleInfo.fromJson(puzzleJson);
-
-          // Validate FEN format
-          final Position tempPosition = Position();
-          if (!tempPosition.validateFen(puzzle.initialPosition)) {
-            errors.add(
-              DetailedError(
-                key: 'puzzleImportInvalidFen',
-                fallbackMessage:
-                    'Puzzle ${i + 1} ("${puzzle.title}") has invalid FEN format',
-                params: <String, dynamic>{
-                  'index': i + 1,
-                  'title': puzzle.title,
-                },
-              ),
-            );
-            continue;
-          }
-
-          // Check if rule variant matches current settings
-          if (puzzle.ruleVariantId != currentVariantId) {
-            warnings.add(
-              DetailedError(
-                key: 'puzzleImportRuleMismatchWarning',
-                fallbackMessage:
-                    'Puzzle ${i + 1} ("${puzzle.title}") uses different rules: '
-                    '${puzzle.ruleVariantId} (current: $currentVariantId). '
-                    'This puzzle may not work correctly with your current settings.',
-                params: <String, dynamic>{
-                  'index': i + 1,
-                  'title': puzzle.title,
-                  'puzzleRules': puzzle.ruleVariantId,
-                  'currentRules': currentVariantId,
-                },
-              ),
-            );
-          }
-
-          importedPuzzles.add(puzzle);
-        } catch (e) {
-          errors.add(
-            DetailedError(
-              key: 'puzzleImportParseFailed',
-              fallbackMessage: 'Failed to parse puzzle ${i + 1}: $e',
-              params: <String, dynamic>{'index': i + 1, 'error': e.toString()},
-            ),
-          );
-        }
-      }
-
-      // Build result message for backward compatibility
-      String? resultMessage;
-      if (errors.isNotEmpty || warnings.isNotEmpty) {
-        final StringBuffer buffer = StringBuffer();
-        if (errors.isNotEmpty) {
-          buffer.writeln('Errors:');
-          for (final DetailedError error in errors) {
-            buffer.writeln('  - ${error.fallbackMessage}');
-          }
-        }
-        if (warnings.isNotEmpty) {
-          if (errors.isNotEmpty) {
-            buffer.writeln();
-          }
-          buffer.writeln('Warnings:');
-          for (final DetailedError warning in warnings) {
-            buffer.writeln('  - ${warning.fallbackMessage}');
-          }
-        }
-        resultMessage = buffer.toString().trim();
-      }
-
-      return ImportResult(
-        success: true,
-        puzzles: importedPuzzles,
-        metadata: metadata,
-        errorMessage: resultMessage,
-        detailedErrors: errors,
-        detailedWarnings: warnings,
-      );
+      return _parseImportData(data);
     } catch (e) {
       return ImportResult(
         success: false,
@@ -298,6 +167,239 @@ class PuzzleExportService {
         errorParams: <String, dynamic>{'error': e.toString()},
       );
     }
+  }
+
+  // ==================== QR CODE FEATURES ====================
+
+  /// QR payload prefix for gzip-compressed puzzle data.
+  static const String _qrGzipPrefix = 'sm_pz_gz:';
+
+  /// Maximum QR payload byte length (QR version 40, error correction M).
+  static const int _qrMaxBytes = 2331;
+
+  /// Serialize [puzzles] to a compact QR-ready string.
+  ///
+  /// The method builds the minimal JSON envelope, then checks whether
+  /// gzip+base64 compression reduces the payload size.  The shorter of the
+  /// two representations is chosen.  Returns `null` if even the shorter form
+  /// exceeds [_qrMaxBytes].
+  static String? exportPuzzlesToQrString(List<PuzzleInfo> puzzles) {
+    final Map<String, dynamic> envelope = <String, dynamic>{
+      'formatVersion': exportVersion,
+      'puzzleCount': puzzles.length,
+      'puzzles': puzzles.map((PuzzleInfo p) => p.toJson()).toList(),
+    };
+
+    final String rawJson = jsonEncode(envelope);
+    final Uint8List rawBytes = utf8.encode(rawJson);
+
+    // Build compressed representation.
+    final List<int> compressed = gzip.encode(rawBytes);
+    final String compressedPayload =
+        '$_qrGzipPrefix${base64.encode(compressed)}';
+    final Uint8List compressedBytes = utf8.encode(compressedPayload);
+
+    // Choose the shorter representation.
+    final String candidate = compressedBytes.length < rawBytes.length
+        ? compressedPayload
+        : rawJson;
+    final int candidateLength = compressedBytes.length < rawBytes.length
+        ? compressedBytes.length
+        : rawBytes.length;
+
+    if (candidateLength > _qrMaxBytes) {
+      return null;
+    }
+
+    return candidate;
+  }
+
+  /// Deserialize puzzle data from a QR-scanned [qrData] string.
+  ///
+  /// Handles both raw-JSON and gzip-compressed (`sm_pz_gz:` prefix) payloads.
+  /// If decoding fails, returns an [ImportResult] with `success == false`
+  /// rather than throwing.
+  ///
+  /// A bare single-puzzle JSON object (no `puzzles` wrapper) is auto-wrapped
+  /// for convenience.
+  static ImportResult importPuzzlesFromJsonString(String qrData) {
+    try {
+      String jsonString;
+      if (qrData.startsWith(_qrGzipPrefix)) {
+        // Decode the compressed payload.
+        final String encoded = qrData.substring(_qrGzipPrefix.length);
+        final List<int> compressed = base64.decode(encoded);
+        final List<int> decompressed = gzip.decode(compressed);
+        jsonString = utf8.decode(decompressed);
+      } else {
+        jsonString = qrData;
+      }
+
+      final dynamic decoded = jsonDecode(jsonString);
+      if (decoded is! Map<String, dynamic>) {
+        return ImportResult(
+          success: false,
+          errorMessage: 'Invalid puzzle QR code data',
+        );
+      }
+
+      final Map<String, dynamic> data = decoded;
+
+      // Auto-wrap a bare single-puzzle object that has no 'puzzles' key.
+      if (!data.containsKey('puzzles') &&
+          data.containsKey('title') &&
+          data.containsKey('initialPosition')) {
+        final Map<String, dynamic> wrapped = <String, dynamic>{
+          'formatVersion': exportVersion,
+          'puzzleCount': 1,
+          'puzzles': <dynamic>[data],
+        };
+        return _parseImportData(wrapped);
+      }
+
+      return _parseImportData(data);
+    } catch (e) {
+      return ImportResult(
+        success: false,
+        errorMessage: 'Invalid puzzle QR code data: $e',
+      );
+    }
+  }
+
+  /// Shared validation and parsing logic for an already-decoded import map.
+  ///
+  /// Used by both [importPuzzlesFromFile] and [importPuzzlesFromJsonString].
+  static ImportResult _parseImportData(Map<String, dynamic> data) {
+    // Validate format
+    if (!data.containsKey('puzzles')) {
+      return ImportResult(
+        success: false,
+        errorKey: 'puzzleImportInvalidFormat',
+        errorMessage: 'Invalid file format: missing puzzles field',
+      );
+    }
+
+    // Check format version
+    final String? formatVersion = data['formatVersion'] as String?;
+    if (formatVersion != null && formatVersion != exportVersion) {
+      return ImportResult(
+        success: false,
+        errorKey: 'puzzleImportIncompatibleVersion',
+        errorMessage:
+            'Incompatible file format version: $formatVersion (expected $exportVersion)',
+        errorParams: <String, dynamic>{
+          'version': formatVersion,
+          'expected': exportVersion,
+        },
+      );
+    }
+
+    // Parse metadata if present
+    PuzzlePackMetadata? metadata;
+    if (data.containsKey('metadata')) {
+      try {
+        metadata = PuzzlePackMetadata.fromJson(
+          data['metadata'] as Map<String, dynamic>,
+        );
+      } catch (e) {
+        // Metadata parsing failed, but continue with puzzles
+        assert(false, 'Failed to parse metadata: $e');
+      }
+    }
+
+    // Parse puzzles
+    final List<dynamic> puzzlesJson = data['puzzles'] as List<dynamic>;
+    final List<PuzzleInfo> importedPuzzles = <PuzzleInfo>[];
+    final List<DetailedError> errors = <DetailedError>[];
+    final List<DetailedError> warnings = <DetailedError>[];
+
+    // Get current rule variant ID from settings
+    final RuleVariant currentVariant = RuleVariant.fromRuleSettings(
+      DB().ruleSettings,
+    );
+    final String currentVariantId = currentVariant.id;
+
+    for (int i = 0; i < puzzlesJson.length; i++) {
+      try {
+        final Map<String, dynamic> puzzleJson =
+            puzzlesJson[i] as Map<String, dynamic>;
+        final PuzzleInfo puzzle = PuzzleInfo.fromJson(puzzleJson);
+
+        // Validate FEN format
+        final Position tempPosition = Position();
+        if (!tempPosition.validateFen(puzzle.initialPosition)) {
+          errors.add(
+            DetailedError(
+              key: 'puzzleImportInvalidFen',
+              fallbackMessage:
+                  'Puzzle ${i + 1} ("${puzzle.title}") has invalid FEN format',
+              params: <String, dynamic>{'index': i + 1, 'title': puzzle.title},
+            ),
+          );
+          continue;
+        }
+
+        // Check if rule variant matches current settings
+        if (puzzle.ruleVariantId != currentVariantId) {
+          warnings.add(
+            DetailedError(
+              key: 'puzzleImportRuleMismatchWarning',
+              fallbackMessage:
+                  'Puzzle ${i + 1} ("${puzzle.title}") uses different rules: '
+                  '${puzzle.ruleVariantId} (current: $currentVariantId). '
+                  'This puzzle may not work correctly with your current settings.',
+              params: <String, dynamic>{
+                'index': i + 1,
+                'title': puzzle.title,
+                'puzzleRules': puzzle.ruleVariantId,
+                'currentRules': currentVariantId,
+              },
+            ),
+          );
+        }
+
+        importedPuzzles.add(puzzle);
+      } catch (e) {
+        errors.add(
+          DetailedError(
+            key: 'puzzleImportParseFailed',
+            fallbackMessage: 'Failed to parse puzzle ${i + 1}: $e',
+            params: <String, dynamic>{'index': i + 1, 'error': e.toString()},
+          ),
+        );
+      }
+    }
+
+    // Build result message for backward compatibility
+    String? resultMessage;
+    if (errors.isNotEmpty || warnings.isNotEmpty) {
+      final StringBuffer buffer = StringBuffer();
+      if (errors.isNotEmpty) {
+        buffer.writeln('Errors:');
+        for (final DetailedError error in errors) {
+          buffer.writeln('  - ${error.fallbackMessage}');
+        }
+      }
+      if (warnings.isNotEmpty) {
+        if (errors.isNotEmpty) {
+          buffer.writeln();
+        }
+        buffer.writeln('Warnings:');
+        for (final DetailedError warning in warnings) {
+          buffer.writeln('  - ${warning.fallbackMessage}');
+        }
+      }
+      resultMessage = buffer.toString().trim();
+    }
+
+    return ImportResult(
+      success: true,
+      puzzles: importedPuzzles,
+      metadata: metadata,
+      errorMessage: resultMessage,
+      detailedErrors: errors,
+      detailedWarnings: warnings,
+    );
   }
 
   /// Export a single puzzle to JSON string

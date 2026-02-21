@@ -4173,5 +4173,9 @@
     "qrCodeFromGallery": "ගැලරියෙන් තෝරන්න",
     "@qrCodeFromGallery": {},
     "qrCodeNotFoundInImage": "තෝරාගත් රූපයේ QR කේතයක් හමු නොවීය",
-    "@qrCodeNotFoundInImage": {}
+    "@qrCodeNotFoundInImage": {},
+    "puzzleQrCodeTitle": "ප්‍රහේලිකා QR කේතය",
+    "@puzzleQrCodeTitle": {},
+    "puzzleQrDataTooLong": "තෝරාගත් ප්‍රහේලිකා සම්පීඩනයෙන් පසුව පවා QR කේතය සඳහා ඉතා විශාලය. කරුණාකර අඩු ප්‍රහේලිකා තෝරන්න.",
+    "@puzzleQrDataTooLong": {}
 }

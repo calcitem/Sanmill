@@ -4173,5 +4173,9 @@
     "qrCodeFromGallery": "เลือกจากแกลเลอรี",
     "@qrCodeFromGallery": {},
     "qrCodeNotFoundInImage": "ไม่พบ QR code ในภาพที่เลือก",
-    "@qrCodeNotFoundInImage": {}
+    "@qrCodeNotFoundInImage": {},
+    "puzzleQrCodeTitle": "รหัส QR ของปริศนา",
+    "@puzzleQrCodeTitle": {},
+    "puzzleQrDataTooLong": "ปริศนาที่เลือกมีขนาดใหญ่เกินไปสำหรับรหัส QR แม้หลังการบีบอัดแล้ว กรุณาเลือกปริศนาน้อยลง",
+    "@puzzleQrDataTooLong": {}
 }

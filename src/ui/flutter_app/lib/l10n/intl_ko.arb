@@ -4173,5 +4173,9 @@
     "qrCodeFromGallery": "갤러리에서 선택",
     "@qrCodeFromGallery": {},
     "qrCodeNotFoundInImage": "선택한 이미지에서 QR 코드를 찾을 수 없습니다",
-    "@qrCodeNotFoundInImage": {}
+    "@qrCodeNotFoundInImage": {},
+    "puzzleQrCodeTitle": "퍼즐 QR 코드",
+    "@puzzleQrCodeTitle": {},
+    "puzzleQrDataTooLong": "선택한 퍼즐이 압축 후에도 QR 코드에 비해 너무 큽니다. 더 적은 퍼즐을 선택해 주세요.",
+    "@puzzleQrDataTooLong": {}
 }

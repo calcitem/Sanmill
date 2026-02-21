@@ -4173,5 +4173,9 @@
     "qrCodeFromGallery": "Избери од галерија",
     "@qrCodeFromGallery": {},
     "qrCodeNotFoundInImage": "Во избраната слика не е пронајден QR код",
-    "@qrCodeNotFoundInImage": {}
+    "@qrCodeNotFoundInImage": {},
+    "puzzleQrCodeTitle": "QR код на загатката",
+    "@puzzleQrCodeTitle": {},
+    "puzzleQrDataTooLong": "Избраните загатки се преголеми за QR-код, дури и по компресија. Изберете помалку загатки.",
+    "@puzzleQrDataTooLong": {}
 }

@@ -4173,5 +4173,9 @@
     "qrCodeFromGallery": "গ্যালারি থেকে বেছে নিন",
     "@qrCodeFromGallery": {},
     "qrCodeNotFoundInImage": "নির্বাচিত ছবিতে কোনো QR কোড পাওয়া যায়নি",
-    "@qrCodeNotFoundInImage": {}
+    "@qrCodeNotFoundInImage": {},
+    "puzzleQrCodeTitle": "পাজল QR কোড",
+    "@puzzleQrCodeTitle": {},
+    "puzzleQrDataTooLong": "নির্বাচিত পাজলগুলি সংকোচনের পরেও QR কোডের জন্য অনেক বড়। অনুগ্রহ করে কম পাজল নির্বাচন করুন।",
+    "@puzzleQrDataTooLong": {}
 }

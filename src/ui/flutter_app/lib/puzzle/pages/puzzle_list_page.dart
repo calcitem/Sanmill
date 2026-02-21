@@ -5,11 +5,15 @@
 //
 // Page displaying the list of available puzzles
 
+import 'dart:io';
+
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart' show Box;
 
 import '../../appearance_settings/models/color_settings.dart';
+import '../../game_page/widgets/qr_code_dialog.dart';
+import '../../game_page/widgets/qr_scanner_page.dart';
 import '../../generated/intl/l10n.dart';
 import '../../shared/database/database.dart';
 import '../../shared/themes/app_theme.dart';
@@ -148,7 +152,14 @@ class _PuzzleListPageState extends State<PuzzleListPage> {
                         onPressed: _selectAllPuzzles,
                         tooltip: s.puzzleSelectAll,
                       ),
-                      // Export selected
+                      // Export selected as QR code
+                      if (_selectedPuzzleIds.isNotEmpty)
+                        IconButton(
+                          icon: const Icon(FluentIcons.qr_code_24_regular),
+                          onPressed: _exportSelectedPuzzlesAsQr,
+                          tooltip: s.exportQrCode,
+                        ),
+                      // Export selected (file share)
                       if (_selectedPuzzleIds.isNotEmpty)
                         IconButton(
                           icon: const Icon(FluentIcons.share_24_regular),
@@ -164,6 +175,13 @@ class _PuzzleListPageState extends State<PuzzleListPage> {
                           tooltip: s.delete,
                         ),
                     ] else ...<Widget>[
+                      // Scan QR code to import puzzle (mobile only)
+                      if (Platform.isAndroid || Platform.isIOS)
+                        IconButton(
+                          icon: const Icon(FluentIcons.qr_code_24_regular),
+                          onPressed: _scanPuzzleQrCode,
+                          tooltip: s.scanQrCode,
+                        ),
                       // Import button (open file to import puzzles)
                       IconButton(
                         icon: const Icon(FluentIcons.folder_open_24_regular),
@@ -555,6 +573,97 @@ class _PuzzleListPageState extends State<PuzzleListPage> {
         _isMultiSelectMode = false;
         _selectedPuzzleIds.clear();
       });
+    }
+  }
+
+  /// Export selected puzzles as a QR code.
+  ///
+  /// Uses gzip+base64 compression when it reduces the payload size.
+  /// Shows an error snackbar if the data is still too large after compression.
+  Future<void> _exportSelectedPuzzlesAsQr() async {
+    if (_selectedPuzzleIds.isEmpty) {
+      return;
+    }
+
+    final List<PuzzleInfo> puzzlesToExport = _selectedPuzzleIds
+        .map((String id) => _puzzleManager.getPuzzleById(id))
+        .whereType<PuzzleInfo>()
+        .toList();
+
+    if (puzzlesToExport.isEmpty) {
+      return;
+    }
+
+    final String? qrString = PuzzleExportService.exportPuzzlesToQrString(
+      puzzlesToExport,
+    );
+
+    if (!mounted) {
+      return;
+    }
+
+    if (qrString == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(S.of(context).puzzleQrDataTooLong),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
+
+    await showDialog<void>(
+      context: context,
+      builder: (BuildContext context) =>
+          QrCodeDialog(data: qrString, title: S.of(context).puzzleQrCodeTitle),
+    );
+  }
+
+  /// Open the camera QR scanner and import puzzles from the scanned payload.
+  Future<void> _scanPuzzleQrCode() async {
+    final String? scannedData = await Navigator.of(context).push<String>(
+      MaterialPageRoute<String>(
+        builder: (BuildContext context) => const QrScannerPage(),
+      ),
+    );
+
+    if (!mounted) {
+      return;
+    }
+
+    if (scannedData == null || scannedData.isEmpty) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(S.of(context).qrCodeScanNoData)));
+      return;
+    }
+
+    final ImportResult result = await _puzzleManager
+        .importPuzzlesFromJsonString(scannedData);
+
+    if (!mounted) {
+      return;
+    }
+
+    if (result.success) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            S.of(context).puzzleImportSuccess(result.puzzles.length),
+          ),
+          backgroundColor: Colors.green,
+        ),
+      );
+      setState(() {});
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            result.errorMessage ?? S.of(context).puzzleImportFailed,
+          ),
+          backgroundColor: Colors.red,
+        ),
+      );
     }
   }
 

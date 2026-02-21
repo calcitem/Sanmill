@@ -4173,5 +4173,13 @@
     "qrCodeFromGallery": "گیلری سے منتخب کریں",
     "@qrCodeFromGallery": {},
     "qrCodeNotFoundInImage": "منتخب تصویر میں QR کوڈ نہیں ملا",
-    "@qrCodeNotFoundInImage": {}
+    "@qrCodeNotFoundInImage": {},
+    "puzzleQrCodeTitle": "پہیلی QR کوڈ",
+    "@puzzleQrCodeTitle": {},
+    "puzzleQrDataTooLong": "منتخب کردہ پہیلیاں کمپریشن کے بعد بھی QR کوڈ کے لیے بہت بڑی ہیں۔ کم پہیلیاں منتخب کریں۔",
+    "@puzzleQrDataTooLong": {},
+    "puzzleQrCodeTitle": "پہیلی QR کوڈ",
+    "@puzzleQrCodeTitle": {},
+    "puzzleQrDataTooLong": "منتخب کردہ پہیلیاں کمپریشن کے بعد بھی QR کوڈ کے لیے بہت بڑی ہیں۔ براہ کرم کم پہیلیاں منتخب کریں۔",
+    "@puzzleQrDataTooLong": {}
 }

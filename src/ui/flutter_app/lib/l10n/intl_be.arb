@@ -4173,5 +4173,9 @@
     "qrCodeFromGallery": "Выбраць з галерэі",
     "@qrCodeFromGallery": {},
     "qrCodeNotFoundInImage": "QR-код не знойдзены на абраным малюнку",
-    "@qrCodeNotFoundInImage": {}
+    "@qrCodeNotFoundInImage": {},
+    "puzzleQrCodeTitle": "QR-код галаваломкі",
+    "@puzzleQrCodeTitle": {},
+    "puzzleQrDataTooLong": "Абраныя галаваломкі занадта вялікія для QR-кода, нават пасля сціску. Калі ласка, абярыце менш галаваломак.",
+    "@puzzleQrDataTooLong": {}
 }

@@ -4173,5 +4173,9 @@
     "qrCodeFromGallery": "గ్యాలరీ నుండి ఎంచుకోండి",
     "@qrCodeFromGallery": {},
     "qrCodeNotFoundInImage": "ఎంచుకున్న చిత్రంలో QR కోడ్ కనుగొనబడలేదు",
-    "@qrCodeNotFoundInImage": {}
+    "@qrCodeNotFoundInImage": {},
+    "puzzleQrCodeTitle": "పజిల్ QR కోడ్",
+    "@puzzleQrCodeTitle": {},
+    "puzzleQrDataTooLong": "ఎంచుకున్న పజిళ్ళు కంప్రెషన్ తర్వాత కూడా QR కోడ్‌కి చాలా పెద్దవిగా ఉన్నాయి. తక్కువ పజిళ్ళను ఎంచుకోండి.",
+    "@puzzleQrDataTooLong": {}
 }

@@ -4173,5 +4173,9 @@
     "qrCodeFromGallery": "Kies uit galery",
     "@qrCodeFromGallery": {},
     "qrCodeNotFoundInImage": "Geen QR-kode gevind in die geselekteerde prent nie",
-    "@qrCodeNotFoundInImage": {}
+    "@qrCodeNotFoundInImage": {},
+    "puzzleQrCodeTitle": "Legkaart QR-kode",
+    "@puzzleQrCodeTitle": {},
+    "puzzleQrDataTooLong": "Die geselekteerde legkaartstukke is te groot vir 'n QR-kode, selfs na kompressie. Kies asseblief minder legkaartstukke.",
+    "@puzzleQrDataTooLong": {}
 }

@@ -4173,5 +4173,9 @@
     "qrCodeFromGallery": "Elegir de la galería",
     "@qrCodeFromGallery": {},
     "qrCodeNotFoundInImage": "No se encontró ningún código QR en la imagen seleccionada",
-    "@qrCodeNotFoundInImage": {}
+    "@qrCodeNotFoundInImage": {},
+    "puzzleQrCodeTitle": "Código QR del rompecabezas",
+    "@puzzleQrCodeTitle": {},
+    "puzzleQrDataTooLong": "Los rompecabezas seleccionados son demasiado grandes para un código QR, incluso después de la compresión. Por favor, seleccione menos rompecabezas.",
+    "@puzzleQrDataTooLong": {}
 }

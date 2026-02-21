@@ -4173,5 +4173,9 @@
     "qrCodeFromGallery": "Välj från galleri",
     "@qrCodeFromGallery": {},
     "qrCodeNotFoundInImage": "Ingen QR-kod hittades i den valda bilden",
-    "@qrCodeNotFoundInImage": {}
+    "@qrCodeNotFoundInImage": {},
+    "puzzleQrCodeTitle": "Pussel QR-kod",
+    "@puzzleQrCodeTitle": {},
+    "puzzleQrDataTooLong": "De valda pusslen är för stora för en QR-kod även efter komprimering. Välj färre pussel.",
+    "@puzzleQrDataTooLong": {}
 }

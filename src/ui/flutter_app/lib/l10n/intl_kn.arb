@@ -4173,5 +4173,9 @@
     "qrCodeFromGallery": "ಗ್ಯಾಲರಿಯಿಂದ ಆಯ್ಕೆಮಾಡಿ",
     "@qrCodeFromGallery": {},
     "qrCodeNotFoundInImage": "ಆಯ್ಕೆಮಾಡಿದ ಚಿತ್ರದಲ್ಲಿ QR ಕೋಡ್ ಕಂಡುಬಂದಿಲ್ಲ",
-    "@qrCodeNotFoundInImage": {}
+    "@qrCodeNotFoundInImage": {},
+    "puzzleQrCodeTitle": "ಒಗಟು QR ಕೋಡ್",
+    "@puzzleQrCodeTitle": {},
+    "puzzleQrDataTooLong": "ಆಯ್ಕೆ ಮಾಡಿದ ಒಗಟುಗಳು ಸಂಕೋಚನದ ನಂತರವೂ QR ಕೋಡ್‌ಗೆ ತುಂಬಾ ದೊಡ್ಡದಾಗಿವೆ. ದಯವಿಟ್ಟು ಕಡಿಮೆ ಒಗಟುಗಳನ್ನು ಆಯ್ಕೆ ಮಾಡಿ.",
+    "@puzzleQrDataTooLong": {}
 }

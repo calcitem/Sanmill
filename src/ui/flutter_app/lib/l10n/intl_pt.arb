@@ -4173,5 +4173,9 @@
     "qrCodeFromGallery": "Escolher da galeria",
     "@qrCodeFromGallery": {},
     "qrCodeNotFoundInImage": "Nenhum código QR encontrado na imagem selecionada",
-    "@qrCodeNotFoundInImage": {}
+    "@qrCodeNotFoundInImage": {},
+    "puzzleQrCodeTitle": "Código QR do enigma",
+    "@puzzleQrCodeTitle": {},
+    "puzzleQrDataTooLong": "Os enigmas selecionados são muito grandes para um código QR, mesmo após a compressão. Por favor, selecione menos enigmas.",
+    "@puzzleQrDataTooLong": {}
 }

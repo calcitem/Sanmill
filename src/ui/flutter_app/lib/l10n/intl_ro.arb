@@ -4173,5 +4173,9 @@
     "qrCodeFromGallery": "Alege din galerie",
     "@qrCodeFromGallery": {},
     "qrCodeNotFoundInImage": "Nu s-a găsit niciun cod QR în imaginea selectată",
-    "@qrCodeNotFoundInImage": {}
+    "@qrCodeNotFoundInImage": {},
+    "puzzleQrCodeTitle": "Cod QR puzzle",
+    "@puzzleQrCodeTitle": {},
+    "puzzleQrDataTooLong": "Puzzle-urile selectate sunt prea mari pentru un cod QR, chiar și după compresie. Vă rugăm să selectați mai puține puzzle-uri.",
+    "@puzzleQrDataTooLong": {}
 }

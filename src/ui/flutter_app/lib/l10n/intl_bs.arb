@@ -4173,5 +4173,9 @@
     "qrCodeFromGallery": "Odaberi iz galerije",
     "@qrCodeFromGallery": {},
     "qrCodeNotFoundInImage": "QR kod nije pronađen na odabranoj slici",
-    "@qrCodeNotFoundInImage": {}
+    "@qrCodeNotFoundInImage": {},
+    "puzzleQrCodeTitle": "QR kod zagonetke",
+    "@puzzleQrCodeTitle": {},
+    "puzzleQrDataTooLong": "Odabrane zagonetke su prevelike za QR kod, čak i nakon kompresije. Molimo odaberite manje zagonetki.",
+    "@puzzleQrDataTooLong": {}
 }

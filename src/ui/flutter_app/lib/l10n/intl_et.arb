@@ -4173,5 +4173,9 @@
     "qrCodeFromGallery": "Vali galeriist",
     "@qrCodeFromGallery": {},
     "qrCodeNotFoundInImage": "Valitud pildilt ei leitud QR-koodi",
-    "@qrCodeNotFoundInImage": {}
+    "@qrCodeNotFoundInImage": {},
+    "puzzleQrCodeTitle": "Mõistatuse QR-kood",
+    "@puzzleQrCodeTitle": {},
+    "puzzleQrDataTooLong": "Valitud mõistatused on QR-koodi jaoks liiga suured, isegi pärast tihendamist. Palun valige vähem mõistatusi.",
+    "@puzzleQrDataTooLong": {}
 }

@@ -4295,5 +4295,13 @@
     "qrCodeNotFoundInImage": "No QR code found in the selected image",
     "@qrCodeNotFoundInImage": {
         "description": "Error message when no QR code is detected in the gallery image"
+    },
+    "puzzleQrCodeTitle": "Puzzle QR Code",
+    "@puzzleQrCodeTitle": {
+        "description": "Title of the QR code dialog when exporting a puzzle"
+    },
+    "puzzleQrDataTooLong": "Selected puzzles are too large for a QR code, even after compression. Please select fewer puzzles.",
+    "@puzzleQrDataTooLong": {
+        "description": "Error message when the puzzle data exceeds the QR code capacity even after gzip compression"
     }
 }

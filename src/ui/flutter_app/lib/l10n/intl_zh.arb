@@ -4213,5 +4213,9 @@
     "qrCodeFromGallery": "从相册选取",
     "@qrCodeFromGallery": {},
     "qrCodeNotFoundInImage": "所选图片中未找到二维码",
-    "@qrCodeNotFoundInImage": {}
+    "@qrCodeNotFoundInImage": {},
+    "puzzleQrCodeTitle": "谜题二维码",
+    "@puzzleQrCodeTitle": {},
+    "puzzleQrDataTooLong": "所选谜题过多，即使压缩也无法生成二维码。请选择较少的谜题。",
+    "@puzzleQrDataTooLong": {}
 }

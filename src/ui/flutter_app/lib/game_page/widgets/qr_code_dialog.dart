@@ -20,10 +20,15 @@ import '../../shared/widgets/snackbars/scaffold_messenger.dart';
 
 /// Displays a QR code containing the given [data] with options to save or
 /// share the generated image.
+///
+/// An optional [title] can be provided to override the default dialog heading.
 class QrCodeDialog extends StatefulWidget {
-  const QrCodeDialog({required this.data, super.key});
+  const QrCodeDialog({required this.data, this.title, super.key});
 
   final String data;
+
+  /// Custom dialog title. Falls back to [S.qrCodeTitle] when null.
+  final String? title;
 
   @override
   State<QrCodeDialog> createState() => _QrCodeDialogState();
@@ -122,7 +127,7 @@ class _QrCodeDialogState extends State<QrCodeDialog> {
                   children: <Widget>[
                     Expanded(
                       child: Text(
-                        s.qrCodeTitle,
+                        widget.title ?? s.qrCodeTitle,
                         style: Theme.of(context).textTheme.titleLarge,
                       ),
                     ),

@@ -4173,5 +4173,9 @@
     "qrCodeFromGallery": "Wybierz z galerii",
     "@qrCodeFromGallery": {},
     "qrCodeNotFoundInImage": "Nie znaleziono kodu QR na wybranym obrazie",
-    "@qrCodeNotFoundInImage": {}
+    "@qrCodeNotFoundInImage": {},
+    "puzzleQrCodeTitle": "Kod QR łamigłówki",
+    "@puzzleQrCodeTitle": {},
+    "puzzleQrDataTooLong": "Wybrane łamigłówki są zbyt duże dla kodu QR, nawet po kompresji. Wybierz mniej łamigłówek.",
+    "@puzzleQrDataTooLong": {}
 }

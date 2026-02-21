@@ -4173,5 +4173,9 @@
     "qrCodeFromGallery": "Valitse galleriasta",
     "@qrCodeFromGallery": {},
     "qrCodeNotFoundInImage": "Valitusta kuvasta ei löydetty QR-koodia",
-    "@qrCodeNotFoundInImage": {}
+    "@qrCodeNotFoundInImage": {},
+    "puzzleQrCodeTitle": "Palapelin QR-koodi",
+    "@puzzleQrCodeTitle": {},
+    "puzzleQrDataTooLong": "Valitut palapelit ovat liian suuria QR-koodille, jopa pakkauksen jälkeen. Valitse vähemmän palapelejä.",
+    "@puzzleQrDataTooLong": {}
 }

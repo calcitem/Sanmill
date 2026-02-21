@@ -4173,5 +4173,9 @@
     "qrCodeFromGallery": "கேலரியிலிருந்து தேர்ந்தெடுக்கவும்",
     "@qrCodeFromGallery": {},
     "qrCodeNotFoundInImage": "தேர்ந்தெடுத்த படத்தில் QR குறியீடு கிடைக்கவில்லை",
-    "@qrCodeNotFoundInImage": {}
+    "@qrCodeNotFoundInImage": {},
+    "puzzleQrCodeTitle": "புதிர் QR குறியீடு",
+    "@puzzleQrCodeTitle": {},
+    "puzzleQrDataTooLong": "தேர்ந்தெடுக்கப்பட்ட புதிர்கள் சுருக்கத்திற்குப் பிறகும் QR குறியீட்டிற்கு மிகவும் பெரியவை. குறைவான புதிர்களைத் தேர்ந்தெடுக்கவும்.",
+    "@puzzleQrDataTooLong": {}
 }

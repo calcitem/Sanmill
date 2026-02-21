@@ -3465,5 +3465,9 @@
     "qrCodeFromGallery": "Aus Galerie wählen",
     "@qrCodeFromGallery": {},
     "qrCodeNotFoundInImage": "Kein QR-Code im ausgewählten Bild gefunden",
-    "@qrCodeNotFoundInImage": {}
+    "@qrCodeNotFoundInImage": {},
+    "puzzleQrCodeTitle": "Rätsel-QR-Code",
+    "@puzzleQrCodeTitle": {},
+    "puzzleQrDataTooLong": "Die ausgewählten Rätsel sind zu gross für einen QR-Code, auch nach der Komprimierung. Bitte wählen Sie weniger Rätsel aus.",
+    "@puzzleQrDataTooLong": {}
 }

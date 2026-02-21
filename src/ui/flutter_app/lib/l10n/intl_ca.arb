@@ -4173,5 +4173,9 @@
     "qrCodeFromGallery": "Tria de la galeria",
     "@qrCodeFromGallery": {},
     "qrCodeNotFoundInImage": "No s'ha trobat cap codi QR a la imatge seleccionada",
-    "@qrCodeNotFoundInImage": {}
+    "@qrCodeNotFoundInImage": {},
+    "puzzleQrCodeTitle": "Codi QR del trencaclosques",
+    "@puzzleQrCodeTitle": {},
+    "puzzleQrDataTooLong": "Els trencaclosques seleccionats són massa grans per a un codi QR, fins i tot després de la compressió. Seleccioneu menys trencaclosques.",
+    "@puzzleQrDataTooLong": {}
 }

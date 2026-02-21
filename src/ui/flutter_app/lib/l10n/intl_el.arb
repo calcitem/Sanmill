@@ -4173,5 +4173,9 @@
     "qrCodeFromGallery": "Επιλογή από συλλογή",
     "@qrCodeFromGallery": {},
     "qrCodeNotFoundInImage": "Δεν βρέθηκε κωδικός QR στην επιλεγμένη εικόνα",
-    "@qrCodeNotFoundInImage": {}
+    "@qrCodeNotFoundInImage": {},
+    "puzzleQrCodeTitle": "QR κωδικός γρίφου",
+    "@puzzleQrCodeTitle": {},
+    "puzzleQrDataTooLong": "Τα επιλεγμένα παζλ είναι πολύ μεγάλα για κωδικό QR, ακόμα και μετά τη συμπίεση. Παρακαλώ επιλέξτε λιγότερα παζλ.",
+    "@puzzleQrDataTooLong": {}
 }

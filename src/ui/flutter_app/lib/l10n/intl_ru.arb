@@ -4173,5 +4173,9 @@
     "qrCodeFromGallery": "Выбрать из галереи",
     "@qrCodeFromGallery": {},
     "qrCodeNotFoundInImage": "QR-код не найден на выбранном изображении",
-    "@qrCodeNotFoundInImage": {}
+    "@qrCodeNotFoundInImage": {},
+    "puzzleQrCodeTitle": "QR-код головоломки",
+    "@puzzleQrCodeTitle": {},
+    "puzzleQrDataTooLong": "Выбранные головоломки слишком велики для QR-кода даже после сжатия. Пожалуйста, выберите меньше головоломок.",
+    "@puzzleQrDataTooLong": {}
 }

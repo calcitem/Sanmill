@@ -4173,5 +4173,9 @@
     "qrCodeFromGallery": "Pasirinkti iš galerijos",
     "@qrCodeFromGallery": {},
     "qrCodeNotFoundInImage": "Pasirinktame paveikslėlyje QR kodas nerastas",
-    "@qrCodeNotFoundInImage": {}
+    "@qrCodeNotFoundInImage": {},
+    "puzzleQrCodeTitle": "Galvosūkio QR kodas",
+    "@puzzleQrCodeTitle": {},
+    "puzzleQrDataTooLong": "Pasirinkti galvosūkiai yra per dideli QR kodui net po suspaudimo. Pasirinkite mažiau galvosūkių.",
+    "@puzzleQrDataTooLong": {}
 }

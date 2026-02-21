@@ -4173,5 +4173,9 @@
     "qrCodeFromGallery": "اختر من المعرض",
     "@qrCodeFromGallery": {},
     "qrCodeNotFoundInImage": "لم يتم العثور على رمز QR في الصورة المحددة",
-    "@qrCodeNotFoundInImage": {}
+    "@qrCodeNotFoundInImage": {},
+    "puzzleQrCodeTitle": "رمز QR للأحجية",
+    "@puzzleQrCodeTitle": {},
+    "puzzleQrDataTooLong": "الأحاجي المحددة كبيرة جداً لرمز QR، حتى بعد الضغط. الرجاء اختيار عدد أقل من الأحاجي.",
+    "@puzzleQrDataTooLong": {}
 }

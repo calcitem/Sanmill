@@ -4173,5 +4173,9 @@
     "qrCodeFromGallery": "Izberi iz galerije",
     "@qrCodeFromGallery": {},
     "qrCodeNotFoundInImage": "V izbrani sliki ni bil najden noben QR kód",
-    "@qrCodeNotFoundInImage": {}
+    "@qrCodeNotFoundInImage": {},
+    "puzzleQrCodeTitle": "QR koda uganke",
+    "@puzzleQrCodeTitle": {},
+    "puzzleQrDataTooLong": "Izbrane uganke so prevelike za QR kodo, tudi po stiskanju. Izberite manj ugank.",
+    "@puzzleQrDataTooLong": {}
 }

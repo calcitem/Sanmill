@@ -3430,5 +3430,9 @@
     "qrCodeFromGallery": "Válassz a galériából",
     "@qrCodeFromGallery": {},
     "qrCodeNotFoundInImage": "A kiválasztott képen nem található QR-kód",
-    "@qrCodeNotFoundInImage": {}
+    "@qrCodeNotFoundInImage": {},
+    "puzzleQrCodeTitle": "Rejtvény QR-kód",
+    "@puzzleQrCodeTitle": {},
+    "puzzleQrDataTooLong": "A kiválasztott rejtvények tömörítés után is túl nagyok a QR-kódhoz. Kérjük, válasszon kevesebb rejtvényt.",
+    "@puzzleQrDataTooLong": {}
 }

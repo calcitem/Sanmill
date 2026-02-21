@@ -4173,5 +4173,9 @@
     "qrCodeFromGallery": "Zgjidh nga galeria",
     "@qrCodeFromGallery": {},
     "qrCodeNotFoundInImage": "Nuk u gjet asnjë kod QR në imazhin e zgjedhur",
-    "@qrCodeNotFoundInImage": {}
+    "@qrCodeNotFoundInImage": {},
+    "puzzleQrCodeTitle": "Kodi QR i enigmës",
+    "@puzzleQrCodeTitle": {},
+    "puzzleQrDataTooLong": "Enigmat e zgjedhura janë shumë të mëdha për një kod QR edhe pas kompresimit. Zgjidhni më pak enigma.",
+    "@puzzleQrDataTooLong": {}
 }

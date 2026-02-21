@@ -4173,5 +4173,9 @@
     "qrCodeFromGallery": "Velja úr myndasafni",
     "@qrCodeFromGallery": {},
     "qrCodeNotFoundInImage": "Enginn QR kóði fannst á valinni mynd",
-    "@qrCodeNotFoundInImage": {}
+    "@qrCodeNotFoundInImage": {},
+    "puzzleQrCodeTitle": "Þraut QR kóði",
+    "@puzzleQrCodeTitle": {},
+    "puzzleQrDataTooLong": "Valdar þrautar eru of stórar fyrir QR kóða, jafnvel eftir þjöppun. Vinsamlegast veldu færri þrautar.",
+    "@puzzleQrDataTooLong": {}
 }

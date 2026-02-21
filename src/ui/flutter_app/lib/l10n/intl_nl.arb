@@ -4173,5 +4173,9 @@
     "qrCodeFromGallery": "Kies uit galerij",
     "@qrCodeFromGallery": {},
     "qrCodeNotFoundInImage": "Geen QR-code gevonden in de geselecteerde afbeelding",
-    "@qrCodeNotFoundInImage": {}
+    "@qrCodeNotFoundInImage": {},
+    "puzzleQrCodeTitle": "Puzzel QR-code",
+    "@puzzleQrCodeTitle": {},
+    "puzzleQrDataTooLong": "De geselecteerde puzzels zijn te groot voor een QR-code, zelfs na compressie. Selecteer minder puzzels.",
+    "@puzzleQrDataTooLong": {}
 }

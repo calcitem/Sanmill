@@ -4173,5 +4173,9 @@
     "qrCodeFromGallery": "Pilih dari galeri",
     "@qrCodeFromGallery": {},
     "qrCodeNotFoundInImage": "Tidak ditemukan kode QR pada gambar yang dipilih",
-    "@qrCodeNotFoundInImage": {}
+    "@qrCodeNotFoundInImage": {},
+    "puzzleQrCodeTitle": "Kode QR Teka-teki",
+    "@puzzleQrCodeTitle": {},
+    "puzzleQrDataTooLong": "Teka-teki yang dipilih terlalu besar untuk kode QR, bahkan setelah kompresi. Silakan pilih lebih sedikit teka-teki.",
+    "@puzzleQrDataTooLong": {}
 }

@@ -4173,5 +4173,9 @@
     "qrCodeFromGallery": "Vælg fra galleri",
     "@qrCodeFromGallery": {},
     "qrCodeNotFoundInImage": "Ingen QR-kode fundet i det valgte billede",
-    "@qrCodeNotFoundInImage": {}
+    "@qrCodeNotFoundInImage": {},
+    "puzzleQrCodeTitle": "Puslespil QR-kode",
+    "@puzzleQrCodeTitle": {},
+    "puzzleQrDataTooLong": "De valgte puslespil er for store til en QR-kode, selv efter komprimering. Vælg venligst færre puslespil.",
+    "@puzzleQrDataTooLong": {}
 }

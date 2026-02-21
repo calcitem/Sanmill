@@ -4173,5 +4173,9 @@
     "qrCodeFromGallery": "ဂယ်လရီမှ ရွေးချယ်ပါ",
     "@qrCodeFromGallery": {},
     "qrCodeNotFoundInImage": "ရွေးချယ်ထားသော ပုံတွင် QR ကုဒ် မတွေ့ပါ",
-    "@qrCodeNotFoundInImage": {}
+    "@qrCodeNotFoundInImage": {},
+    "puzzleQrCodeTitle": "ပဟေဠိ QR ကုဒ်",
+    "@puzzleQrCodeTitle": {},
+    "puzzleQrDataTooLong": "ရွေးချယ်ထားသောပဟေဠိများသည် ချုံ့ပြီးနောက်ပင် QR ကုဒ်အတွက် အလွန်ကြီးမားသည်။ ပဟေဠိနည်းနည်းသာ ရွေးချယ်ပါ။",
+    "@puzzleQrDataTooLong": {}
 }

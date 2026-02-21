@@ -4173,5 +4173,9 @@
     "qrCodeFromGallery": "ギャラリーから選択",
     "@qrCodeFromGallery": {},
     "qrCodeNotFoundInImage": "選択した画像にQRコードが見つかりませんでした",
-    "@qrCodeNotFoundInImage": {}
+    "@qrCodeNotFoundInImage": {},
+    "puzzleQrCodeTitle": "パズル QR コード",
+    "@puzzleQrCodeTitle": {},
+    "puzzleQrDataTooLong": "選択したパズルは圧縮後もQRコードには大きすぎます。パズルの数を減らしてください。",
+    "@puzzleQrDataTooLong": {}
 }

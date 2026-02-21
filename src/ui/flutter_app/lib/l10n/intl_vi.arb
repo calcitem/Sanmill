@@ -4173,5 +4173,13 @@
     "qrCodeFromGallery": "Chọn từ thư viện ảnh",
     "@qrCodeFromGallery": {},
     "qrCodeNotFoundInImage": "Không tìm thấy mã QR trong ảnh đã chọn",
-    "@qrCodeNotFoundInImage": {}
+    "@qrCodeNotFoundInImage": {},
+    "puzzleQrCodeTitle": "Mã QR câu đố",
+    "@puzzleQrCodeTitle": {},
+    "puzzleQrDataTooLong": "Các câu đố đã chọn quá lớn cho mã QR ngay cả sau khi nén. Vui lòng chọn ít câu đố hơn.",
+    "@puzzleQrDataTooLong": {},
+    "puzzleQrCodeTitle": "Mã QR câu đố",
+    "@puzzleQrCodeTitle": {},
+    "puzzleQrDataTooLong": "Các câu đố đã chọn quá lớn cho mã QR, ngay cả sau khi nén. Vui lòng chọn ít câu đố hơn.",
+    "@puzzleQrDataTooLong": {}
 }

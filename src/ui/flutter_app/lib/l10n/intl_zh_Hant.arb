@@ -4189,5 +4189,13 @@
     "qrCodeFromGallery": "從相簿選取",
     "@qrCodeFromGallery": {},
     "qrCodeNotFoundInImage": "所選圖片中未找到二維碼",
-    "@qrCodeNotFoundInImage": {}
+    "@qrCodeNotFoundInImage": {},
+    "puzzleQrCodeTitle": "謎題二維碼",
+    "@puzzleQrCodeTitle": {},
+    "puzzleQrDataTooLong": "所選謎題過多，即使壓縮也無法生成二維碼。請選擇較少的謎題。",
+    "@puzzleQrDataTooLong": {},
+    "puzzleQrCodeTitle": "謎題二維碼",
+    "@puzzleQrCodeTitle": {},
+    "puzzleQrDataTooLong": "所選謎題過多，即使壓縮也無法生成二維碼。請選擇較少的謎題。",
+    "@puzzleQrDataTooLong": {}
 }

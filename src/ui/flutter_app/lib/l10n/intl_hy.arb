@@ -4173,5 +4173,9 @@
     "qrCodeFromGallery": "Ընտրել պատկերասրահից",
     "@qrCodeFromGallery": {},
     "qrCodeNotFoundInImage": "Ընտրված պատկերում QR կոդ չի հայտնաբերվել",
-    "@qrCodeNotFoundInImage": {}
+    "@qrCodeNotFoundInImage": {},
+    "puzzleQrCodeTitle": "Հանելուկի QR կոդ",
+    "@puzzleQrCodeTitle": {},
+    "puzzleQrDataTooLong": "Ընտրված հանելուկները QR կոդի համար չափազանց մեծ են, նույնիսկ սեղմումից հետո: Ընտրեք ավելի քիչ հանելուկներ:",
+    "@puzzleQrDataTooLong": {}
 }

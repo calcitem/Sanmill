@@ -434,6 +434,37 @@ class PuzzleManager {
     return result;
   }
 
+  /// Import puzzles from a QR-scanned string.
+  ///
+  /// Accepts both raw-JSON and gzip-compressed (`sm_pz_gz:` prefix) payloads.
+  /// Returns [ImportResult] with success status and the imported puzzles.
+  Future<ImportResult> importPuzzlesFromJsonString(String jsonString) async {
+    logger.i("$_tag Starting puzzle import from QR string");
+    final ImportResult result = PuzzleExportService.importPuzzlesFromJsonString(
+      jsonString,
+    );
+
+    if (result.success && result.puzzles.isNotEmpty) {
+      int addedCount = 0;
+      int skippedCount = 0;
+
+      for (final PuzzleInfo puzzle in result.puzzles) {
+        final PuzzleInfo customPuzzle = puzzle.copyWith(isCustom: true);
+        if (addCustomPuzzle(customPuzzle)) {
+          addedCount++;
+        } else {
+          skippedCount++;
+        }
+      }
+
+      logger.i(
+        "$_tag Imported $addedCount puzzles from QR, skipped $skippedCount duplicates",
+      );
+    }
+
+    return result;
+  }
+
   /// Update an existing puzzle
   /// Returns true if successful, false if puzzle doesn't exist or is built-in
   bool updatePuzzle(PuzzleInfo updatedPuzzle) {

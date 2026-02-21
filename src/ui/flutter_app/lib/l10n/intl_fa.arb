@@ -4173,5 +4173,9 @@
     "qrCodeFromGallery": "انتخاب از گالری",
     "@qrCodeFromGallery": {},
     "qrCodeNotFoundInImage": "کد QR در تصویر انتخاب‌شده یافت نشد",
-    "@qrCodeNotFoundInImage": {}
+    "@qrCodeNotFoundInImage": {},
+    "puzzleQrCodeTitle": "کد QR معما",
+    "@puzzleQrCodeTitle": {},
+    "puzzleQrDataTooLong": "معماهای انتخاب‌شده حتی پس از فشرده‌سازی برای کد QR بیش از حد بزرگ هستند. لطفاً تعداد کمتری معما انتخاب کنید.",
+    "@puzzleQrDataTooLong": {}
 }
