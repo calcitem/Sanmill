@@ -33,7 +33,6 @@ android/app/out/
 .pub-cache/
 .pub/
 /build/
-*.lock
 **/generated/
 
 # Web related
