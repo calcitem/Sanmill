@@ -465,6 +465,10 @@ class MovesListPageState extends State<MovesListPage> {
       return;
     }
 
+    // Clear any stale recorder from a prior import so that a silent parse
+    // failure cannot accidentally replay the old game's moves.
+    GameController().newGameRecorder = null;
+
     // Clear the board and move list before attempting to parse the scanned
     // data so that a parse failure leaves a clean initial position instead
     // of the previous game state, preventing the user from mistaking stale

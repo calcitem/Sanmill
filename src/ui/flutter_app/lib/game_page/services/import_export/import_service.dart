@@ -709,11 +709,12 @@ class ImportService {
     // Convert the entire PGN tree starting from the root
     convertPgnNodeToExtMove(game.moves, newHistory.pgnRoot, localPos);
 
-    if (newHistory.mainlineMoves.isNotEmpty ||
-        (fen != null && fen.isNotEmpty)) {
-      fillAllNodesBoardLayout(newHistory.pgnRoot, setupFen: fen);
-      GameController().newGameRecorder = newHistory;
+    if (newHistory.mainlineMoves.isEmpty && (fen == null || fen.isEmpty)) {
+      throw const ImportFormatException("No valid moves found in the notation");
     }
+
+    fillAllNodesBoardLayout(newHistory.pgnRoot, setupFen: fen);
+    GameController().newGameRecorder = newHistory;
 
     if (fen != null && fen.isNotEmpty) {
       GameController().gameRecorder.setupPosition = fen;
