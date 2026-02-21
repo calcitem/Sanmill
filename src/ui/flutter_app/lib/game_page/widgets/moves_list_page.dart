@@ -465,6 +465,16 @@ class MovesListPageState extends State<MovesListPage> {
       return;
     }
 
+    // Clear the board and move list before attempting to parse the scanned
+    // data so that a parse failure leaves a clean initial position instead
+    // of the previous game state, preventing the user from mistaking stale
+    // content for a successfully loaded game.
+    await HistoryNavigator.takeBackAll(context, pop: false);
+
+    if (!mounted) {
+      return;
+    }
+
     try {
       ImportService.import(scannedData);
     } catch (e) {
