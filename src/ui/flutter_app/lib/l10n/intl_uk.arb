@@ -4191,5 +4191,7 @@
     "qrImageOptionCustom": "Вибрати зображення…",
     "@qrImageOptionCustom": {},
     "qrImageOptionDataTooLong": "Дані занадто великі для вбудовування зображення",
-    "@qrImageOptionDataTooLong": {}
+    "@qrImageOptionDataTooLong": {},
+    "noValidMovesFound": "У нотації не знайдено допустимих ходів",
+    "@noValidMovesFound": {}
 }

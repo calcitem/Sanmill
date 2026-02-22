@@ -3483,5 +3483,7 @@
     "qrImageOptionCustom": "Bild auswählen…",
     "@qrImageOptionCustom": {},
     "qrImageOptionDataTooLong": "Daten zu gross für ein eingebettetes Bild",
-    "@qrImageOptionDataTooLong": {}
+    "@qrImageOptionDataTooLong": {},
+    "noValidMovesFound": "Keine gültigen Züge in der Notation gefunden",
+    "@noValidMovesFound": {}
 }

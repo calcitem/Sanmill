@@ -4191,5 +4191,7 @@
     "qrImageOptionCustom": "Pilih gambar…",
     "@qrImageOptionCustom": {},
     "qrImageOptionDataTooLong": "Data terlalu besar untuk membenamkan gambar",
-    "@qrImageOptionDataTooLong": {}
+    "@qrImageOptionDataTooLong": {},
+    "noValidMovesFound": "Tiada langkah yang sah ditemui dalam notasi",
+    "@noValidMovesFound": {}
 }

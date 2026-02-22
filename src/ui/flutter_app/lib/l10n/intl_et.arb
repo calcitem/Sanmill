@@ -4191,5 +4191,7 @@
     "qrImageOptionCustom": "Valige pilt…",
     "@qrImageOptionCustom": {},
     "qrImageOptionDataTooLong": "Andmed on pildi manustamiseks liiga suured",
-    "@qrImageOptionDataTooLong": {}
+    "@qrImageOptionDataTooLong": {},
+    "noValidMovesFound": "Notatsioonist ei leitud kehtivaid käike",
+    "@noValidMovesFound": {}
 }

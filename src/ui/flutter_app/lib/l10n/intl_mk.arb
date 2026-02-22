@@ -4191,5 +4191,7 @@
     "qrImageOptionCustom": "Изберете слика…",
     "@qrImageOptionCustom": {},
     "qrImageOptionDataTooLong": "Податоците се преголеми за вградување слика",
-    "@qrImageOptionDataTooLong": {}
+    "@qrImageOptionDataTooLong": {},
+    "noValidMovesFound": "Во нотацијата не се пронајдени валидни потези",
+    "@noValidMovesFound": {}
 }

@@ -4191,5 +4191,7 @@
     "qrImageOptionCustom": "Vælg billede…",
     "@qrImageOptionCustom": {},
     "qrImageOptionDataTooLong": "Data er for store til at indlejre et billede",
-    "@qrImageOptionDataTooLong": {}
+    "@qrImageOptionDataTooLong": {},
+    "noValidMovesFound": "Ingen gyldige træk fundet i notationen",
+    "@noValidMovesFound": {}
 }

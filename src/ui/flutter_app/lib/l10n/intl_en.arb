@@ -4331,5 +4331,21 @@
     "qrImageOptionDataTooLong": "Data too large to embed an image",
     "@qrImageOptionDataTooLong": {
         "description": "Hint shown when QR data exceeds the capacity for embedded images"
+    },
+    "qrCodeUnknownContent": "Unrecognized QR Code",
+    "@qrCodeUnknownContent": {
+        "description": "Title of the dialog shown when scanned QR code content is not valid game data"
+    },
+    "qrCodeOpenInBrowser": "Open in Browser",
+    "@qrCodeOpenInBrowser": {
+        "description": "Button label to open a URL from an unrecognized QR code in the system browser"
+    },
+    "importFailed": "Import Failed",
+    "@importFailed": {
+        "description": "Title of the dialog shown when clipboard content cannot be imported as a game"
+    },
+    "noValidMovesFound": "No valid moves found in the notation",
+    "@noValidMovesFound": {
+        "description": "Error message shown when an imported game notation contains no valid moves"
     }
 }

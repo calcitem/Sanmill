@@ -4191,5 +4191,7 @@
     "qrImageOptionCustom": "છાપો પસંદ કરો…",
     "@qrImageOptionCustom": {},
     "qrImageOptionDataTooLong": "છાપો એમ્બેડ કરવા માટે ડેટા ઘણો મોટો છે",
-    "@qrImageOptionDataTooLong": {}
+    "@qrImageOptionDataTooLong": {},
+    "noValidMovesFound": "નોટેશનમાં કોઈ માન્ય ચાલ મળી નથી",
+    "@noValidMovesFound": {}
 }

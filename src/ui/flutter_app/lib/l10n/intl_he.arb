@@ -4191,5 +4191,7 @@
     "qrImageOptionCustom": "בחירת תמונה…",
     "@qrImageOptionCustom": {},
     "qrImageOptionDataTooLong": "הנתונים גדולים מדי להטמעת תמונה",
-    "@qrImageOptionDataTooLong": {}
+    "@qrImageOptionDataTooLong": {},
+    "noValidMovesFound": "לא נמצאו מהלכים תקפים בסימון",
+    "@noValidMovesFound": {}
 }

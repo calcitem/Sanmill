@@ -34,6 +34,7 @@ import 'cat_fishing_game.dart';
 import 'mini_board.dart';
 import 'qr_code_dialog.dart';
 import 'qr_image_option_dialog.dart';
+import 'qr_scan_result_dialog.dart';
 import 'qr_scanner_page.dart';
 import 'saved_games_page.dart';
 
@@ -553,12 +554,9 @@ class MovesListPageState extends State<MovesListPage> {
       if (!mounted) {
         return;
       }
-      final String reason = e.toString().trim();
-      rootScaffoldMessengerKey.currentState?.showSnackBarClear(
-        reason.isEmpty
-            ? S.of(context).cannotImport(scannedData)
-            : S.of(context).cannotImport(reason),
-      );
+      // The scanned data is not valid game notation – show it to the user
+      // so they can read it and, if it is a URL, open it in a browser.
+      await showQrScanResultDialog(context, scannedData);
       return;
     }
 
@@ -1536,36 +1534,102 @@ class MovesListPageState extends State<MovesListPage> {
     required VoidCallback onTap,
   }) {
     return InkWell(
+      borderRadius: BorderRadius.circular(12),
       onTap: onTap,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          Icon(icon, size: 64, color: DB().colorSettings.messageColor),
-          const SizedBox(height: 8),
-          Text(label, style: TextStyle(color: DB().colorSettings.messageColor)),
-        ],
+      child: Padding(
+        padding: const EdgeInsets.all(12),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Icon(icon, size: 64, color: DB().colorSettings.messageColor),
+            const SizedBox(height: 8),
+            Text(
+              label,
+              style: TextStyle(color: DB().colorSettings.messageColor),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
       ),
     );
   }
 
-  /// Builds a simple empty-state page with two large icons: Load game and Import game.
+  /// Builds an empty-state page with large action icons.
+  ///
+  /// Shows three icons in landscape and adapts to portrait orientation.
+  /// The QR scan icon is only shown on Android and iOS where the camera
+  /// permission and scanning capability are available.
   Widget _buildEmptyState() {
+    final bool showQrScan = Platform.isAndroid || Platform.isIOS;
+
+    final Widget loadGameIcon = _emptyStateIcon(
+      icon: FluentIcons.folder_open_24_regular,
+      label: S.of(context).loadGame,
+      onTap: _loadGame,
+    );
+
+    final Widget importGameIcon = _emptyStateIcon(
+      icon: FluentIcons.clipboard_paste_24_regular,
+      label: S.of(context).importGame,
+      onTap: _importGame,
+    );
+
+    final Widget scanQrIcon = _emptyStateIcon(
+      icon: FluentIcons.scan_camera_24_regular,
+      label: S.of(context).scanQrCode,
+      onTap: _scanQrCode,
+    );
+
     return Center(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          _emptyStateIcon(
-            icon: FluentIcons.folder_open_24_regular,
-            label: S.of(context).loadGame,
-            onTap: _loadGame,
-          ),
-          const SizedBox(width: 40),
-          _emptyStateIcon(
-            icon: FluentIcons.clipboard_paste_24_regular,
-            label: S.of(context).importGame,
-            onTap: _importGame,
-          ),
-        ],
+      child: OrientationBuilder(
+        builder: (BuildContext context, Orientation orientation) {
+          if (orientation == Orientation.landscape) {
+            // Landscape: all icons laid out horizontally in a single row.
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                loadGameIcon,
+                const SizedBox(width: 32),
+                importGameIcon,
+                if (showQrScan) ...<Widget>[
+                  const SizedBox(width: 32),
+                  scanQrIcon,
+                ],
+              ],
+            );
+          }
+
+          // Portrait: two icons in the first row; QR scan icon centered below.
+          if (!showQrScan) {
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                loadGameIcon,
+                const SizedBox(width: 40),
+                importGameIcon,
+              ],
+            );
+          }
+
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  loadGameIcon,
+                  const SizedBox(width: 40),
+                  importGameIcon,
+                ],
+              ),
+              const SizedBox(height: 24),
+              scanQrIcon,
+            ],
+          );
+        },
       ),
     );
   }

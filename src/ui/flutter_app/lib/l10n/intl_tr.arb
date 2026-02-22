@@ -4191,5 +4191,7 @@
     "qrImageOptionCustom": "Resim seçin…",
     "@qrImageOptionCustom": {},
     "qrImageOptionDataTooLong": "Resim gömmek için veri çok büyük",
-    "@qrImageOptionDataTooLong": {}
+    "@qrImageOptionDataTooLong": {},
+    "noValidMovesFound": "Notasyonda geçerli hamle bulunamadı",
+    "@noValidMovesFound": {}
 }

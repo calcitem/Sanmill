@@ -4191,5 +4191,7 @@
     "qrImageOptionCustom": "Zgjidhni imazhin…",
     "@qrImageOptionCustom": {},
     "qrImageOptionDataTooLong": "Të dhënat janë shumë të mëdha për të ngulitur një imazh",
-    "@qrImageOptionDataTooLong": {}
+    "@qrImageOptionDataTooLong": {},
+    "noValidMovesFound": "Nuk u gjetën lëvizje të vlefshme në shënimin",
+    "@noValidMovesFound": {}
 }

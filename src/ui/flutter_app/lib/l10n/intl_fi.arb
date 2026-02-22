@@ -4191,5 +4191,7 @@
     "qrImageOptionCustom": "Valitse kuva…",
     "@qrImageOptionCustom": {},
     "qrImageOptionDataTooLong": "Tiedot ovat liian suuret kuvan upottamiseen",
-    "@qrImageOptionDataTooLong": {}
+    "@qrImageOptionDataTooLong": {},
+    "noValidMovesFound": "Notaatiossa ei löydetty kelvollisia siirtoja",
+    "@noValidMovesFound": {}
 }

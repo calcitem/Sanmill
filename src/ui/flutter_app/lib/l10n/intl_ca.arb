@@ -4191,5 +4191,7 @@
     "qrImageOptionCustom": "Trieu una imatge…",
     "@qrImageOptionCustom": {},
     "qrImageOptionDataTooLong": "Les dades són massa grans per incrustar una imatge",
-    "@qrImageOptionDataTooLong": {}
+    "@qrImageOptionDataTooLong": {},
+    "noValidMovesFound": "No s'han trobat moviments vàlids a la notació",
+    "@noValidMovesFound": {}
 }

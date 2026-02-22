@@ -4191,5 +4191,7 @@
     "qrImageOptionCustom": "Afbeelding kiezen…",
     "@qrImageOptionCustom": {},
     "qrImageOptionDataTooLong": "Gegevens te groot om een afbeelding in te sluiten",
-    "@qrImageOptionDataTooLong": {}
+    "@qrImageOptionDataTooLong": {},
+    "noValidMovesFound": "Geen geldige zetten gevonden in de notatie",
+    "@noValidMovesFound": {}
 }

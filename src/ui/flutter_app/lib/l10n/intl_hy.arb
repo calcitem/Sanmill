@@ -4191,5 +4191,7 @@
     "qrImageOptionCustom": "Ընտրել նկար…",
     "@qrImageOptionCustom": {},
     "qrImageOptionDataTooLong": "Տվյալները չափազանց մեծ են նկար ներառելու համար",
-    "@qrImageOptionDataTooLong": {}
+    "@qrImageOptionDataTooLong": {},
+    "noValidMovesFound": "Նշագրության մեջ վավեր քայլեր չեն հայտնաբերվել",
+    "@noValidMovesFound": {}
 }

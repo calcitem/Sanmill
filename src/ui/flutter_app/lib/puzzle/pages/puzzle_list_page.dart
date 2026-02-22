@@ -19,6 +19,7 @@ import '../../appearance_settings/models/color_settings.dart';
 import '../../game_page/services/mill.dart';
 import '../../game_page/widgets/qr_code_dialog.dart';
 import '../../game_page/widgets/qr_image_option_dialog.dart';
+import '../../game_page/widgets/qr_scan_result_dialog.dart';
 import '../../game_page/widgets/qr_scanner_page.dart';
 import '../../generated/intl/l10n.dart';
 import '../../shared/database/database.dart';
@@ -720,14 +721,9 @@ class _PuzzleListPageState extends State<PuzzleListPage> {
       );
       setState(() {});
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            result.errorMessage ?? S.of(context).puzzleImportFailed,
-          ),
-          backgroundColor: Colors.red,
-        ),
-      );
+      // The scanned data is not valid puzzle data – show the raw content so
+      // the user can read it and open it in a browser if it is a URL.
+      await showQrScanResultDialog(context, scannedData);
     }
   }
 

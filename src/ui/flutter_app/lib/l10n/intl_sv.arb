@@ -4191,5 +4191,7 @@
     "qrImageOptionCustom": "Välj bild…",
     "@qrImageOptionCustom": {},
     "qrImageOptionDataTooLong": "Data är för stor för att bädda in en bild",
-    "@qrImageOptionDataTooLong": {}
+    "@qrImageOptionDataTooLong": {},
+    "noValidMovesFound": "Inga giltiga drag hittades i notationen",
+    "@noValidMovesFound": {}
 }

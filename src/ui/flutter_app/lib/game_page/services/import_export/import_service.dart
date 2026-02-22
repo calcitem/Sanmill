@@ -80,17 +80,19 @@ class ImportService {
         return;
       }
 
-      // Include experimental warning in error message if variations were selected
-      final String errorMsg = s.cannotImport(exception.toString());
-      final String tip = (hasVariations && includeVariations)
-          ? '$errorMsg ${s.experimental}'
-          : errorMsg;
-      rootScaffoldMessengerKey.currentState?.showSnackBarClear(tip);
-      GameController().headerTipNotifier.showTip(tip);
-
+      // Pop any overlay (e.g. the action menu) before showing the dialog so
+      // that the dialog appears on top of the game page.
       if (shouldPop) {
         navigator.pop();
       }
+
+      if (!context.mounted) {
+        return;
+      }
+
+      // Show the clipboard content to the user so they can inspect it
+      // and, if it is a URL, open it in a browser.
+      await showQrScanResultDialog(context, text, title: s.importFailed);
       return;
     }
 
@@ -455,8 +457,8 @@ class ImportService {
 
     // Throw exception if no valid moves found
     if (!hasValidMoves) {
-      throw const ImportFormatException(
-        "Cannot import: No valid moves found in the notation",
+      throw const ImportFormatException.coded(
+        ImportErrorCode.noValidMovesFound,
       );
     }
   }
@@ -710,7 +712,9 @@ class ImportService {
     convertPgnNodeToExtMove(game.moves, newHistory.pgnRoot, localPos);
 
     if (newHistory.mainlineMoves.isEmpty && (fen == null || fen.isEmpty)) {
-      throw const ImportFormatException("No valid moves found in the notation");
+      throw const ImportFormatException.coded(
+        ImportErrorCode.noValidMovesFound,
+      );
     }
 
     fillAllNodesBoardLayout(newHistory.pgnRoot, setupFen: fen);

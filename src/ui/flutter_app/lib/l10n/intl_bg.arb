@@ -4191,5 +4191,7 @@
     "qrImageOptionCustom": "Изберете изображение…",
     "@qrImageOptionCustom": {},
     "qrImageOptionDataTooLong": "Данните са твърде големи за вграждане на изображение",
-    "@qrImageOptionDataTooLong": {}
+    "@qrImageOptionDataTooLong": {},
+    "noValidMovesFound": "В нотацията не са намерени валидни ходове",
+    "@noValidMovesFound": {}
 }

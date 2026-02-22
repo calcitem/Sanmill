@@ -4191,5 +4191,7 @@
     "qrImageOptionCustom": "Izvēlēties attēlu…",
     "@qrImageOptionCustom": {},
     "qrImageOptionDataTooLong": "Dati pārāk lieli, lai iegultu attēlu",
-    "@qrImageOptionDataTooLong": {}
+    "@qrImageOptionDataTooLong": {},
+    "noValidMovesFound": "Notācijā nav atrasti derīgi gājieni",
+    "@noValidMovesFound": {}
 }

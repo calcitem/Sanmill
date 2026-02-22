@@ -4191,5 +4191,7 @@
     "qrImageOptionCustom": "เลือกรูป…",
     "@qrImageOptionCustom": {},
     "qrImageOptionDataTooLong": "ข้อมูลใหญ่เกินไปสำหรับการฝังรูป",
-    "@qrImageOptionDataTooLong": {}
+    "@qrImageOptionDataTooLong": {},
+    "noValidMovesFound": "ไม่พบการเคลื่อนที่ที่ถูกต้องในสัญลักษณ์",
+    "@noValidMovesFound": {}
 }

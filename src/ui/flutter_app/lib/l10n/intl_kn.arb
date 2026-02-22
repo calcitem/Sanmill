@@ -4191,5 +4191,7 @@
     "qrImageOptionCustom": "ಚಿತ್ರ ಆಯ್ಕೆಮಾಡಿ…",
     "@qrImageOptionCustom": {},
     "qrImageOptionDataTooLong": "ಚಿತ್ರವನ್ನು ಎಂಬೆಡ್ ಮಾಡಲು ಡೇಟಾ ತುಂಬಾ ದೊಡ್ಡದು",
-    "@qrImageOptionDataTooLong": {}
+    "@qrImageOptionDataTooLong": {},
+    "noValidMovesFound": "ಸಂಕೇತದಲ್ಲಿ ಯಾವುದೇ ಮಾನ್ಯ ನಡೆಗಳು ಕಂಡುಬಂದಿಲ್ಲ",
+    "@noValidMovesFound": {}
 }

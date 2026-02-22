@@ -4191,5 +4191,7 @@
     "qrImageOptionCustom": "Velja mynd…",
     "@qrImageOptionCustom": {},
     "qrImageOptionDataTooLong": "Gögn of stór til að fella inn mynd",
-    "@qrImageOptionDataTooLong": {}
+    "@qrImageOptionDataTooLong": {},
+    "noValidMovesFound": "Engar gildar færslur fundust í táknmálinu",
+    "@noValidMovesFound": {}
 }

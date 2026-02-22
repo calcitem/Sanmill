@@ -4231,5 +4231,13 @@
     "qrImageOptionCustom": "选择图片…",
     "@qrImageOptionCustom": {},
     "qrImageOptionDataTooLong": "数据过大，无法嵌入图片",
-    "@qrImageOptionDataTooLong": {}
+    "@qrImageOptionDataTooLong": {},
+    "qrCodeUnknownContent": "无法识别的二维码",
+    "@qrCodeUnknownContent": {},
+    "qrCodeOpenInBrowser": "在浏览器中打开",
+    "@qrCodeOpenInBrowser": {},
+    "importFailed": "导入失败",
+    "@importFailed": {},
+    "noValidMovesFound": "棋谱中未找到有效着法",
+    "@noValidMovesFound": {}
 }

@@ -4191,5 +4191,7 @@
     "qrImageOptionCustom": "ပုံရွေးချယ်ပါ…",
     "@qrImageOptionCustom": {},
     "qrImageOptionDataTooLong": "ပုံထည့်ရန် ဒေတာအလွန်ကြီးလွန်းပါတယ်",
-    "@qrImageOptionDataTooLong": {}
+    "@qrImageOptionDataTooLong": {},
+    "noValidMovesFound": "သင်္ကေတအတွင်း မှန်ကန်သော ကစားချက်များ မတွေ့ရှိပါ",
+    "@noValidMovesFound": {}
 }

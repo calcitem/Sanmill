@@ -3448,5 +3448,7 @@
     "qrImageOptionCustom": "Kép kiválasztása…",
     "@qrImageOptionCustom": {},
     "qrImageOptionDataTooLong": "Az adatok túl nagyok kép beágyazásához",
-    "@qrImageOptionDataTooLong": {}
+    "@qrImageOptionDataTooLong": {},
+    "noValidMovesFound": "Nem találhatók érvényes lépések a jelölésben",
+    "@noValidMovesFound": {}
 }

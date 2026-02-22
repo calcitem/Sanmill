@@ -4191,5 +4191,7 @@
     "qrImageOptionCustom": "படம் தேர்வு…",
     "@qrImageOptionCustom": {},
     "qrImageOptionDataTooLong": "படம் உட்பொதிக்க தரவு மிகப் பெரியது",
-    "@qrImageOptionDataTooLong": {}
+    "@qrImageOptionDataTooLong": {},
+    "noValidMovesFound": "குறியீட்டில் செல்லுபடியான நகர்வுகள் எதுவும் கிடைக்கவில்லை",
+    "@noValidMovesFound": {}
 }

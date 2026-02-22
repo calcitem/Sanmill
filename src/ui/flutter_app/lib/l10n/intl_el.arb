@@ -4191,5 +4191,7 @@
     "qrImageOptionCustom": "Επιλογή εικόνας…",
     "@qrImageOptionCustom": {},
     "qrImageOptionDataTooLong": "Τα δεδομένα είναι πολύ μεγάλα για ενσωμάτωση εικόνας",
-    "@qrImageOptionDataTooLong": {}
+    "@qrImageOptionDataTooLong": {},
+    "noValidMovesFound": "Δεν βρέθηκαν έγκυρες κινήσεις στη σημειογραφία",
+    "@noValidMovesFound": {}
 }

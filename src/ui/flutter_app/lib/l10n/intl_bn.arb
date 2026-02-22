@@ -4191,5 +4191,7 @@
     "qrImageOptionCustom": "ছবি নির্বাচন করুন…",
     "@qrImageOptionCustom": {},
     "qrImageOptionDataTooLong": "ছবি যুক্ত করতে ডেটা অত্যন্ত বড়",
-    "@qrImageOptionDataTooLong": {}
+    "@qrImageOptionDataTooLong": {},
+    "noValidMovesFound": "নোটেশনে কোনো বৈধ চাল পাওয়া যায়নি",
+    "@noValidMovesFound": {}
 }

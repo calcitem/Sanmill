@@ -4191,5 +4191,7 @@
     "qrImageOptionCustom": "རི་མོ་འདེམས…",
     "@qrImageOptionCustom": {},
     "qrImageOptionDataTooLong": "གཞི་ཆ་རི་མོ་འཞག་པའི་ཆེད་དུ་ཆེ་དརག་པོ",
-    "@qrImageOptionDataTooLong": {}
+    "@qrImageOptionDataTooLong": {},
+    "noValidMovesFound": "བསྡུར་ཡིག་ནང་གནས་སོར་ཕབ་ལེགས་གྲུབ་ཅན་མ་རྙེད།",
+    "@noValidMovesFound": {}
 }

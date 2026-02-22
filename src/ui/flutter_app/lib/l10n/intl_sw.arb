@@ -4191,5 +4191,7 @@
     "qrImageOptionCustom": "Chagua picha…",
     "@qrImageOptionCustom": {},
     "qrImageOptionDataTooLong": "Data ni kubwa sana kuweka picha",
-    "@qrImageOptionDataTooLong": {}
+    "@qrImageOptionDataTooLong": {},
+    "noValidMovesFound": "Hakuna harakati halali zilizopatikana katika maandishi",
+    "@noValidMovesFound": {}
 }

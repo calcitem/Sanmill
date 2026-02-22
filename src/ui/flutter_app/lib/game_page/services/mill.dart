@@ -45,6 +45,7 @@ import '../../shared/utils/helpers/text_helpers/safe_text_editing_controller.dar
 import '../../shared/widgets/snackbars/scaffold_messenger.dart';
 import '../../statistics/services/stats_service.dart';
 import '../services/import_export/pgn.dart' as pgn;
+import '../widgets/qr_scan_result_dialog.dart';
 import 'analysis_mode.dart';
 import 'animation/animation_manager.dart';
 import 'annotation/annotation_manager.dart';

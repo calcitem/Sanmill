@@ -4195,5 +4195,7 @@
     "qrImageOptionCustom": "تصویر منتخب کریں…",
     "@qrImageOptionCustom": {},
     "qrImageOptionDataTooLong": "تصویر شامل کرنے کے لیے ڈیٹا بہت بڑا ہے",
-    "@qrImageOptionDataTooLong": {}
+    "@qrImageOptionDataTooLong": {},
+    "noValidMovesFound": "نوٹیشن میں کوئی درست حرکت نہیں ملی",
+    "@noValidMovesFound": {}
 }

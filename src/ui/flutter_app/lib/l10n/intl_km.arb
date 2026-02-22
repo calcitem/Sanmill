@@ -4191,5 +4191,7 @@
     "qrImageOptionCustom": "ជ្រើសរើសរូបភាព…",
     "@qrImageOptionCustom": {},
     "qrImageOptionDataTooLong": "ទិន្នន័យធំពេកមិនអាចបង្កប់រូបភាពបាន",
-    "@qrImageOptionDataTooLong": {}
+    "@qrImageOptionDataTooLong": {},
+    "noValidMovesFound": "រកមិនឃើញចលនាត្រឹមត្រូវក្នុងសំណាត់",
+    "@noValidMovesFound": {}
 }

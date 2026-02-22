@@ -4191,5 +4191,7 @@
     "qrImageOptionCustom": "Kies prent…",
     "@qrImageOptionCustom": {},
     "qrImageOptionDataTooLong": "Data te groot om ’n prent in te sluit",
-    "@qrImageOptionDataTooLong": {}
+    "@qrImageOptionDataTooLong": {},
+    "noValidMovesFound": "Geen geldige skuiwe gevind in die notasie",
+    "@noValidMovesFound": {}
 }

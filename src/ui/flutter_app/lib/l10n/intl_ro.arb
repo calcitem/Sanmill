@@ -4191,5 +4191,7 @@
     "qrImageOptionCustom": "Alegeți o imagine…",
     "@qrImageOptionCustom": {},
     "qrImageOptionDataTooLong": "Datele sunt prea mari pentru a încorpora o imagine",
-    "@qrImageOptionDataTooLong": {}
+    "@qrImageOptionDataTooLong": {},
+    "noValidMovesFound": "Nu s-au găsit mutări valide în notație",
+    "@noValidMovesFound": {}
 }

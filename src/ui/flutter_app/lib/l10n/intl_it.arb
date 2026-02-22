@@ -4191,5 +4191,7 @@
     "qrImageOptionCustom": "Scegli immagine…",
     "@qrImageOptionCustom": {},
     "qrImageOptionDataTooLong": "Dati troppo grandi per incorporare un'immagine",
-    "@qrImageOptionDataTooLong": {}
+    "@qrImageOptionDataTooLong": {},
+    "noValidMovesFound": "Nessuna mossa valida trovata nella notazione",
+    "@noValidMovesFound": {}
 }

@@ -4211,5 +4211,7 @@
     "qrImageOptionCustom": "選擇圖片…",
     "@qrImageOptionCustom": {},
     "qrImageOptionDataTooLong": "資料過大，無法嵌入圖片",
-    "@qrImageOptionDataTooLong": {}
+    "@qrImageOptionDataTooLong": {},
+    "noValidMovesFound": "棋譜中未找到有效著法",
+    "@noValidMovesFound": {}
 }

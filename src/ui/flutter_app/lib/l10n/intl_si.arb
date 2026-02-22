@@ -4191,5 +4191,7 @@
     "qrImageOptionCustom": "පිවුරු තෝරන්න…",
     "@qrImageOptionCustom": {},
     "qrImageOptionDataTooLong": "පිවුරු එඹැද්ද කිරීමට දත්ත විශාල වැඩිය",
-    "@qrImageOptionDataTooLong": {}
+    "@qrImageOptionDataTooLong": {},
+    "noValidMovesFound": "සටහනේ වලංගු ගමන් කිසිවක් හමු නොවීය",
+    "@noValidMovesFound": {}
 }

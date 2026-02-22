@@ -4191,5 +4191,7 @@
     "qrImageOptionCustom": "Izberite sliko…",
     "@qrImageOptionCustom": {},
     "qrImageOptionDataTooLong": "Podatki so preveliki za vdelavo slike",
-    "@qrImageOptionDataTooLong": {}
+    "@qrImageOptionDataTooLong": {},
+    "noValidMovesFound": "V notaciji ni bilo najdenih veljavnih potez",
+    "@noValidMovesFound": {}
 }

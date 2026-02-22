@@ -4191,5 +4191,7 @@
     "qrImageOptionCustom": "ምስል ይምረጡ…",
     "@qrImageOptionCustom": {},
     "qrImageOptionDataTooLong": "ምስል ለማካተት መረጃው በጥማም ተመጣጥ ነው",
-    "@qrImageOptionDataTooLong": {}
+    "@qrImageOptionDataTooLong": {},
+    "noValidMovesFound": "በምልክቱ ውስጥ ትክክለኛ እርምጃዎች አልተገኙም",
+    "@noValidMovesFound": {}
 }

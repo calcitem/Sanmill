@@ -4191,5 +4191,7 @@
     "qrImageOptionCustom": "Pasirinkite paveikslėlį…",
     "@qrImageOptionCustom": {},
     "qrImageOptionDataTooLong": "Duomenys per dideli paveikslėliui įterpti",
-    "@qrImageOptionDataTooLong": {}
+    "@qrImageOptionDataTooLong": {},
+    "noValidMovesFound": "Notacijoje nerasta galiojančių ėjimų",
+    "@noValidMovesFound": {}
 }

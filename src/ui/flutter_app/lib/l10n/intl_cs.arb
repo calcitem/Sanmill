@@ -4191,5 +4191,7 @@
     "qrImageOptionCustom": "Vybrat obrázek…",
     "@qrImageOptionCustom": {},
     "qrImageOptionDataTooLong": "Data jsou příliš velká pro vložení obrázku",
-    "@qrImageOptionDataTooLong": {}
+    "@qrImageOptionDataTooLong": {},
+    "noValidMovesFound": "V zápisu nebyly nalezeny žádné platné tahy",
+    "@noValidMovesFound": {}
 }

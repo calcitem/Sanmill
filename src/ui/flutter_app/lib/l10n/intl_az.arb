@@ -4191,5 +4191,7 @@
     "qrImageOptionCustom": "Rəsm seçin…",
     "@qrImageOptionCustom": {},
     "qrImageOptionDataTooLong": "Məlumat rəsm yerləşdirmək üçün çox böyükdür",
-    "@qrImageOptionDataTooLong": {}
+    "@qrImageOptionDataTooLong": {},
+    "noValidMovesFound": "Notasiyada etibarlı hərəkət tapılmadı",
+    "@noValidMovesFound": {}
 }

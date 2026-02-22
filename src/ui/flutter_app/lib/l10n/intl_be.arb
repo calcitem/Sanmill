@@ -4191,5 +4191,7 @@
     "qrImageOptionCustom": "Выбраць выяву…",
     "@qrImageOptionCustom": {},
     "qrImageOptionDataTooLong": "Дадзеныя занадта вялікія для ўстаўкі выявы",
-    "@qrImageOptionDataTooLong": {}
+    "@qrImageOptionDataTooLong": {},
+    "noValidMovesFound": "У натацыі не знойдзена сапраўдных ходаў",
+    "@noValidMovesFound": {}
 }

@@ -4191,5 +4191,7 @@
     "qrImageOptionCustom": "चित्र चुनें…",
     "@qrImageOptionCustom": {},
     "qrImageOptionDataTooLong": "चित्र शामिल करने के लिए डेटा बहुत बड़ा है",
-    "@qrImageOptionDataTooLong": {}
+    "@qrImageOptionDataTooLong": {},
+    "noValidMovesFound": "नोटेशन में कोई वैध चाल नहीं मिली",
+    "@noValidMovesFound": {}
 }

@@ -4195,5 +4195,7 @@
     "qrImageOptionCustom": "Khetha umfanekiso…",
     "@qrImageOptionCustom": {},
     "qrImageOptionDataTooLong": "Idatha inkulu kakhulu ukufaka umfanekiso",
-    "@qrImageOptionDataTooLong": {}
+    "@qrImageOptionDataTooLong": {},
+    "noValidMovesFound": "Azikho izinyakalo ezivumelekile ezitholiwe kwi-notation",
+    "@noValidMovesFound": {}
 }

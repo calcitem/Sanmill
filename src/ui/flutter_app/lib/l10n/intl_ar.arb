@@ -4191,5 +4191,7 @@
     "qrImageOptionCustom": "اختيار صورة…",
     "@qrImageOptionCustom": {},
     "qrImageOptionDataTooLong": "البيانات كبيرة جدًا لتضمين صورة",
-    "@qrImageOptionDataTooLong": {}
+    "@qrImageOptionDataTooLong": {},
+    "noValidMovesFound": "لم يتم العثور على حركات صالحة في التدوين",
+    "@noValidMovesFound": {}
 }
