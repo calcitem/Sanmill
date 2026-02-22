@@ -3,23 +3,20 @@
 
 // qr_scanner_page.dart
 
-import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_zxing/flutter_zxing.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../generated/intl/l10n.dart';
 import '../../shared/themes/app_theme.dart';
-import 'qr_selection_page.dart';
 
 enum _CameraState { checking, available, unavailable }
 
 /// Full-screen camera view for scanning QR codes using flutter_zxing.
 ///
 /// Returns the decoded QR string via [Navigator.pop] on successful scan.
-/// When multiple QR codes are detected simultaneously, navigates to
-/// [QrSelectionPage] so the user can choose which code to read.
+/// When multiple QR codes are detected simultaneously, shows a selection
+/// dialog so the user can choose which code to read.
 /// Also supports picking a QR code image from the device gallery.
 /// Gracefully handles devices without camera hardware by showing a fallback UI
 /// that still allows importing QR codes from the gallery.
@@ -33,23 +30,20 @@ class QrScannerPage extends StatefulWidget {
 class _QrScannerPageState extends State<QrScannerPage> {
   bool _hasPopped = false;
 
-  /// True while capturing a still image and navigating to the selection page.
-  bool _isCapturing = false;
-
   /// True while processing a gallery image.
   bool _isDecoding = false;
 
   _CameraState _cameraState = _CameraState.checking;
 
-  /// Camera controller provided by [ReaderWidget.onControllerCreated].
-  CameraController? _cameraController;
+  /// True while the multi-code selection dialog is showing.
+  bool _isShowingDialog = false;
 
-  bool get _isBusy => _isCapturing || _isDecoding || _hasPopped;
+  bool get _isBusy => _isShowingDialog || _isDecoding || _hasPopped;
 
   // ── Camera multi-scan callback ──────────────────────────────────────
 
   /// Called by [ReaderWidget] every time the camera frame is processed in
-  /// multi-scan mode.
+  /// multi-scan mode and at least one code is found.
   void _onMultiScan(Codes codes) {
     if (_isBusy) {
       return;
@@ -64,87 +58,93 @@ class _QrScannerPageState extends State<QrScannerPage> {
     }
 
     if (valid.length == 1) {
-      // Single QR code detected – return immediately (same as before).
       _hasPopped = true;
       Navigator.of(context).pop(valid.first.text);
       return;
     }
 
-    // Multiple QR codes detected – capture a still image and let the user
-    // choose which one to read.
-    _captureAndSelect();
+    _showMultiCodeDialog(valid);
   }
 
-  // ── Capture & select flow (camera) ──────────────────────────────────
+  // ── Multi-code selection dialog ────────────────────────────────────
 
-  /// Takes a picture from the camera, re-analyses it for QR codes (to get
-  /// accurate positions on the still image), and navigates to the selection
-  /// page when more than one code is found.
-  Future<void> _captureAndSelect() async {
-    if (_isCapturing || _hasPopped || _cameraController == null) {
+  /// Shows a bottom sheet listing all detected QR code texts so the user
+  /// can pick which one to import.
+  Future<void> _showMultiCodeDialog(List<Code> codes) async {
+    if (_isShowingDialog || _hasPopped) {
       return;
     }
 
-    setState(() => _isCapturing = true);
+    setState(() => _isShowingDialog = true);
 
-    try {
-      final XFile picture = await _cameraController!.takePicture();
-      final Uint8List imageBytes = await picture.readAsBytes();
+    final S s = S.of(context);
 
-      // Re-analyse the captured still to obtain accurate positions.
-      final Codes freshCodes = await zx.readBarcodesImagePath(
-        picture,
-        DecodeParams(
-          imageFormat: ImageFormat.rgb,
-          format: Format.qrCode,
-          isMultiScan: true,
-          tryHarder: true,
-        ),
-      );
+    final String? selected = await showModalBottomSheet<String>(
+      context: context,
+      isScrollControlled: true,
+      builder: (BuildContext ctx) {
+        return SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 16.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16.0,
+                    vertical: 8.0,
+                  ),
+                  child: Text(
+                    s.multipleQrCodesDetected,
+                    style: Theme.of(ctx).textTheme.titleMedium,
+                  ),
+                ),
+                const Divider(),
+                ...codes.asMap().entries.map((MapEntry<int, Code> entry) {
+                  final int index = entry.key;
+                  final String text = entry.value.text ?? '';
+                  final String preview = text.length > 80
+                      ? '${text.substring(0, 80)}...'
+                      : text;
+                  return ListTile(
+                    leading: CircleAvatar(
+                      backgroundColor: Theme.of(
+                        ctx,
+                      ).colorScheme.primaryContainer,
+                      child: Text('${index + 1}'),
+                    ),
+                    title: Text(
+                      preview,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    onTap: () => Navigator.of(ctx).pop(text),
+                  );
+                }),
+              ],
+            ),
+          ),
+        );
+      },
+    );
 
-      final List<Code> validFresh = freshCodes.codes
-          .where((Code c) => c.isValid && c.text != null && c.text!.isNotEmpty)
-          .toList();
+    if (!mounted) {
+      return;
+    }
 
-      if (!mounted) {
-        return;
-      }
+    setState(() => _isShowingDialog = false);
 
-      if (validFresh.isEmpty) {
-        // Edge case: the still captured between frames missed the codes.
-        return;
-      }
-
-      if (validFresh.length == 1) {
-        _hasPopped = true;
-        Navigator.of(context).pop(validFresh.first.text);
-        return;
-      }
-
-      // Navigate to the selection page.
-      final String? selected = await Navigator.of(context).push<String>(
-        MaterialPageRoute<String>(
-          builder: (BuildContext context) =>
-              QrSelectionPage(imageBytes: imageBytes, codes: validFresh),
-        ),
-      );
-
-      if (selected != null && selected.isNotEmpty && mounted) {
-        _hasPopped = true;
-        Navigator.of(context).pop(selected);
-      }
-    } finally {
-      if (mounted) {
-        setState(() => _isCapturing = false);
-      }
+    if (selected != null && selected.isNotEmpty) {
+      _hasPopped = true;
+      Navigator.of(context).pop(selected);
     }
   }
 
   // ── Gallery import ──────────────────────────────────────────────────
 
   /// Opens the gallery image picker, analyses the selected image for QR
-  /// codes, and either returns the single result or navigates to the
-  /// selection page when multiple codes are found.
+  /// codes, and either returns the single result or shows a selection
+  /// dialog when multiple codes are found.
   Future<void> _pickFromGallery() async {
     if (_isBusy) {
       return;
@@ -161,8 +161,6 @@ class _QrScannerPageState extends State<QrScannerPage> {
         return;
       }
 
-      final Uint8List imageBytes = await file.readAsBytes();
-
       final Codes codes = await zx.readBarcodesImagePath(
         file,
         DecodeParams(
@@ -170,12 +168,29 @@ class _QrScannerPageState extends State<QrScannerPage> {
           format: Format.qrCode,
           isMultiScan: true,
           tryHarder: true,
+          maxSize: 1920,
         ),
       );
 
-      final List<Code> valid = codes.codes
+      List<Code> valid = codes.codes
           .where((Code c) => c.isValid && c.text != null && c.text!.isNotEmpty)
           .toList();
+
+      // Fall back to single-scan if multi-scan found nothing.
+      if (valid.isEmpty) {
+        final Code single = await zx.readBarcodeImagePath(
+          file,
+          DecodeParams(
+            imageFormat: ImageFormat.rgb,
+            format: Format.qrCode,
+            tryHarder: true,
+            maxSize: 1920,
+          ),
+        );
+        if (single.isValid && single.text != null && single.text!.isNotEmpty) {
+          valid = <Code>[single];
+        }
+      }
 
       if (!mounted) {
         return;
@@ -194,18 +209,7 @@ class _QrScannerPageState extends State<QrScannerPage> {
         return;
       }
 
-      // Multiple codes – let the user choose.
-      final String? selected = await Navigator.of(context).push<String>(
-        MaterialPageRoute<String>(
-          builder: (BuildContext context) =>
-              QrSelectionPage(imageBytes: imageBytes, codes: valid),
-        ),
-      );
-
-      if (selected != null && selected.isNotEmpty && mounted) {
-        _hasPopped = true;
-        Navigator.of(context).pop(selected);
-      }
+      await _showMultiCodeDialog(valid);
     } finally {
       if (mounted) {
         setState(() => _isDecoding = false);
@@ -260,7 +264,6 @@ class _QrScannerPageState extends State<QrScannerPage> {
     tryHarder: true,
     scanDelay: const Duration(milliseconds: 500),
     onControllerCreated: (CameraController? controller, Exception? error) {
-      _cameraController = controller;
       if (mounted) {
         setState(() {
           _cameraState = (error != null || controller == null)
@@ -277,25 +280,16 @@ class _QrScannerPageState extends State<QrScannerPage> {
   Widget build(BuildContext context) {
     final S s = S.of(context);
 
-    // Build the camera/fallback body.
-    //
     // flutter_zxing's ReaderWidget has a known bug in _stopCamera(): the
     // isStreamingImages condition is inverted, so stopImageStream() is called
-    // even when the camera was never streaming.  Because stopImageStream() is
-    // declared `async`, the exception it throws becomes an unhandled Future
-    // rejection.  To work around this we keep the ReaderWidget in the widget
-    // tree via Offstage rather than removing it the moment the camera reports
-    // unavailability; this prevents the premature dispose() call that triggers
-    // the bug on the scanner page itself.
+    // even when the camera was never streaming.  To work around this we keep
+    // the ReaderWidget in the widget tree via Offstage rather than removing it
+    // when the camera reports unavailability.
     final Widget body;
 
     if (_hasPopped) {
-      // Camera is being torn down after a successful scan.
       body = const Center(child: CircularProgressIndicator());
     } else if (_cameraState == _CameraState.unavailable) {
-      // Camera unavailable: overlay the fallback UI on top of the ReaderWidget
-      // that is kept offstage.  Keeping it alive avoids disposing it while the
-      // camera controller is still in a partially-initialised state.
       body = Stack(
         children: <Widget>[
           Offstage(child: _readerWidget),
@@ -306,7 +300,6 @@ class _QrScannerPageState extends State<QrScannerPage> {
         ],
       );
     } else {
-      // checking or available – show the live scanner.
       body = _readerWidget;
     }
 
@@ -314,7 +307,7 @@ class _QrScannerPageState extends State<QrScannerPage> {
       appBar: AppBar(
         title: Text(s.scanQrCode, style: AppTheme.appBarTheme.titleTextStyle),
         actions: <Widget>[
-          if (_isDecoding || _isCapturing)
+          if (_isDecoding)
             const Padding(
               padding: EdgeInsets.all(16.0),
               child: SizedBox(
