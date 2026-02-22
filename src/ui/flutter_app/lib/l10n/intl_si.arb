@@ -4193,5 +4193,11 @@
     "qrImageOptionDataTooLong": "පිවුරු එඹැද්ද කිරීමට දත්ත විශාල වැඩිය",
     "@qrImageOptionDataTooLong": {},
     "noValidMovesFound": "සටහනේ වලංගු ගමන් කිසිවක් හමු නොවීය",
-    "@noValidMovesFound": {}
+    "@noValidMovesFound": {},
+    "qrCodeUnknownContent": "හඳුනා නොගත් QR කේතය",
+    "@qrCodeUnknownContent": {},
+    "qrCodeOpenInBrowser": "බ්‍රවුසරයෙන් විවෘත කරන්න",
+    "@qrCodeOpenInBrowser": {},
+    "importFailed": "ආයාතය අසාර්ථකයි",
+    "@importFailed": {}
 }

@@ -4193,5 +4193,11 @@
     "qrImageOptionDataTooLong": "Gögn of stór til að fella inn mynd",
     "@qrImageOptionDataTooLong": {},
     "noValidMovesFound": "Engar gildar færslur fundust í táknmálinu",
-    "@noValidMovesFound": {}
+    "@noValidMovesFound": {},
+    "qrCodeUnknownContent": "Óþekktur QR-kóði",
+    "@qrCodeUnknownContent": {},
+    "qrCodeOpenInBrowser": "Opna í vafra",
+    "@qrCodeOpenInBrowser": {},
+    "importFailed": "Innflutningur mistókst",
+    "@importFailed": {}
 }

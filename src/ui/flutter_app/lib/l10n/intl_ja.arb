@@ -4193,5 +4193,11 @@
     "qrImageOptionDataTooLong": "データが大きすぎて画像を埋め込めません",
     "@qrImageOptionDataTooLong": {},
     "noValidMovesFound": "記譜に有効な手が見つかりませんでした",
-    "@noValidMovesFound": {}
+    "@noValidMovesFound": {},
+    "qrCodeUnknownContent": "未認識の QR コード",
+    "@qrCodeUnknownContent": {},
+    "qrCodeOpenInBrowser": "ブラウザで開く",
+    "@qrCodeOpenInBrowser": {},
+    "importFailed": "インポート失敗",
+    "@importFailed": {}
 }

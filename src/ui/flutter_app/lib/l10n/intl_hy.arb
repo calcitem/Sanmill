@@ -4193,5 +4193,11 @@
     "qrImageOptionDataTooLong": "Տվյալները չափազանց մեծ են նկար ներառելու համար",
     "@qrImageOptionDataTooLong": {},
     "noValidMovesFound": "Նշագրության մեջ վավեր քայլեր չեն հայտնաբերվել",
-    "@noValidMovesFound": {}
+    "@noValidMovesFound": {},
+    "qrCodeUnknownContent": "Անհայտ QR կոդ",
+    "@qrCodeUnknownContent": {},
+    "qrCodeOpenInBrowser": "Բացել դիտարկիչում",
+    "@qrCodeOpenInBrowser": {},
+    "importFailed": "Ներմուծումը ձախողվեց",
+    "@importFailed": {}
 }

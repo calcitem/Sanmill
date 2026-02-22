@@ -4193,5 +4193,11 @@
     "qrImageOptionDataTooLong": "Τα δεδομένα είναι πολύ μεγάλα για ενσωμάτωση εικόνας",
     "@qrImageOptionDataTooLong": {},
     "noValidMovesFound": "Δεν βρέθηκαν έγκυρες κινήσεις στη σημειογραφία",
-    "@noValidMovesFound": {}
+    "@noValidMovesFound": {},
+    "qrCodeUnknownContent": "Άγνωστος κωδικός QR",
+    "@qrCodeUnknownContent": {},
+    "qrCodeOpenInBrowser": "Άνοιγμα στο πρόγραμμα περιήγησης",
+    "@qrCodeOpenInBrowser": {},
+    "importFailed": "Η εισαγωγή απέτυχε",
+    "@importFailed": {}
 }

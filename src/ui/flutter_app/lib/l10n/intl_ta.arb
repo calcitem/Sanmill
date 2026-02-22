@@ -4193,5 +4193,11 @@
     "qrImageOptionDataTooLong": "படம் உட்பொதிக்க தரவு மிகப் பெரியது",
     "@qrImageOptionDataTooLong": {},
     "noValidMovesFound": "குறியீட்டில் செல்லுபடியான நகர்வுகள் எதுவும் கிடைக்கவில்லை",
-    "@noValidMovesFound": {}
+    "@noValidMovesFound": {},
+    "qrCodeUnknownContent": "அறியப்படாத QR குறியீடு",
+    "@qrCodeUnknownContent": {},
+    "qrCodeOpenInBrowser": "உலாவியில் திறக்கவும்",
+    "@qrCodeOpenInBrowser": {},
+    "importFailed": "இறக்குமதி தோல்வி",
+    "@importFailed": {}
 }

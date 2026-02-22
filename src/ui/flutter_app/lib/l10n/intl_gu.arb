@@ -4193,5 +4193,11 @@
     "qrImageOptionDataTooLong": "છાપો એમ્બેડ કરવા માટે ડેટા ઘણો મોટો છે",
     "@qrImageOptionDataTooLong": {},
     "noValidMovesFound": "નોટેશનમાં કોઈ માન્ય ચાલ મળી નથી",
-    "@noValidMovesFound": {}
+    "@noValidMovesFound": {},
+    "qrCodeUnknownContent": "અજ્ઞાત QR કોડ",
+    "@qrCodeUnknownContent": {},
+    "qrCodeOpenInBrowser": "બ્રાઉઝરમાં ખોલો",
+    "@qrCodeOpenInBrowser": {},
+    "importFailed": "આયાત નિષ્ફળ",
+    "@importFailed": {}
 }

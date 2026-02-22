@@ -4193,5 +4193,11 @@
     "qrImageOptionDataTooLong": "చిత్రాన్ని పొందుపరచడానికి డేటా చాలా పెద్దది",
     "@qrImageOptionDataTooLong": {},
     "noValidMovesFound": "నొటేషన్‌లో చెల్లుబాటు అయ్యే కదలికలు ఏవీ కనుగొనబడలేదు",
-    "@noValidMovesFound": {}
+    "@noValidMovesFound": {},
+    "qrCodeUnknownContent": "గుర్తించబడని QR కోడ్",
+    "@qrCodeUnknownContent": {},
+    "qrCodeOpenInBrowser": "బ్రౌజర్‌లో తెరవండి",
+    "@qrCodeOpenInBrowser": {},
+    "importFailed": "దిగుమతి విఫలమైంది",
+    "@importFailed": {}
 }

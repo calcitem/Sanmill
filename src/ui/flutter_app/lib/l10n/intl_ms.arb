@@ -4193,5 +4193,11 @@
     "qrImageOptionDataTooLong": "Data terlalu besar untuk membenamkan gambar",
     "@qrImageOptionDataTooLong": {},
     "noValidMovesFound": "Tiada langkah yang sah ditemui dalam notasi",
-    "@noValidMovesFound": {}
+    "@noValidMovesFound": {},
+    "qrCodeUnknownContent": "Kod QR Tidak Dikenali",
+    "@qrCodeUnknownContent": {},
+    "qrCodeOpenInBrowser": "Buka dalam Pelayar",
+    "@qrCodeOpenInBrowser": {},
+    "importFailed": "Import Gagal",
+    "@importFailed": {}
 }

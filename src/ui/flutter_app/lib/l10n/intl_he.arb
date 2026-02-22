@@ -4193,5 +4193,11 @@
     "qrImageOptionDataTooLong": "הנתונים גדולים מדי להטמעת תמונה",
     "@qrImageOptionDataTooLong": {},
     "noValidMovesFound": "לא נמצאו מהלכים תקפים בסימון",
-    "@noValidMovesFound": {}
+    "@noValidMovesFound": {},
+    "qrCodeUnknownContent": "קוד QR לא מזוהה",
+    "@qrCodeUnknownContent": {},
+    "qrCodeOpenInBrowser": "פתח בדפדפן",
+    "@qrCodeOpenInBrowser": {},
+    "importFailed": "הייבוא נכשל",
+    "@importFailed": {}
 }

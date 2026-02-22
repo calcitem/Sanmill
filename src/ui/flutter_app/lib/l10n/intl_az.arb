@@ -4193,5 +4193,11 @@
     "qrImageOptionDataTooLong": "Məlumat rəsm yerləşdirmək üçün çox böyükdür",
     "@qrImageOptionDataTooLong": {},
     "noValidMovesFound": "Notasiyada etibarlı hərəkət tapılmadı",
-    "@noValidMovesFound": {}
+    "@noValidMovesFound": {},
+    "qrCodeUnknownContent": "Tanınmayan QR kodu",
+    "@qrCodeUnknownContent": {},
+    "qrCodeOpenInBrowser": "Brauzerdə aç",
+    "@qrCodeOpenInBrowser": {},
+    "importFailed": "İdxal uğursuz oldu",
+    "@importFailed": {}
 }

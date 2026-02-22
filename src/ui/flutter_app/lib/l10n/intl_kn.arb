@@ -4193,5 +4193,11 @@
     "qrImageOptionDataTooLong": "ಚಿತ್ರವನ್ನು ಎಂಬೆಡ್ ಮಾಡಲು ಡೇಟಾ ತುಂಬಾ ದೊಡ್ಡದು",
     "@qrImageOptionDataTooLong": {},
     "noValidMovesFound": "ಸಂಕೇತದಲ್ಲಿ ಯಾವುದೇ ಮಾನ್ಯ ನಡೆಗಳು ಕಂಡುಬಂದಿಲ್ಲ",
-    "@noValidMovesFound": {}
+    "@noValidMovesFound": {},
+    "qrCodeUnknownContent": "ಗುರುತಿಸಲಾಗದ QR ಕೋಡ್",
+    "@qrCodeUnknownContent": {},
+    "qrCodeOpenInBrowser": "ಬ್ರೌಸರ್‌ನಲ್ಲಿ ತೆರೆಯಿರಿ",
+    "@qrCodeOpenInBrowser": {},
+    "importFailed": "ಆಮದು ವಿಫಲವಾಗಿದೆ",
+    "@importFailed": {}
 }

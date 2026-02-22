@@ -4193,5 +4193,11 @@
     "qrImageOptionDataTooLong": "이미지를 삽입하기에 데이터가 너무 큽니다",
     "@qrImageOptionDataTooLong": {},
     "noValidMovesFound": "표기법에서 유효한 수를 찾을 수 없습니다",
-    "@noValidMovesFound": {}
+    "@noValidMovesFound": {},
+    "qrCodeUnknownContent": "인식할 수 없는 QR 코드",
+    "@qrCodeUnknownContent": {},
+    "qrCodeOpenInBrowser": "브라우저에서 열기",
+    "@qrCodeOpenInBrowser": {},
+    "importFailed": "가져오기 실패",
+    "@importFailed": {}
 }

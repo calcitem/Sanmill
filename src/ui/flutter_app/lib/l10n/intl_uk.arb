@@ -4193,5 +4193,11 @@
     "qrImageOptionDataTooLong": "Дані занадто великі для вбудовування зображення",
     "@qrImageOptionDataTooLong": {},
     "noValidMovesFound": "У нотації не знайдено допустимих ходів",
-    "@noValidMovesFound": {}
+    "@noValidMovesFound": {},
+    "qrCodeUnknownContent": "Нерозпізнаний QR-код",
+    "@qrCodeUnknownContent": {},
+    "qrCodeOpenInBrowser": "Відкрити у браузері",
+    "@qrCodeOpenInBrowser": {},
+    "importFailed": "Імпорт не вдався",
+    "@importFailed": {}
 }

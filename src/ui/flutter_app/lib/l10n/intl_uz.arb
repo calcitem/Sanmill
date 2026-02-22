@@ -4197,5 +4197,11 @@
     "qrImageOptionDataTooLong": "Rasm joylashtirish uchun ma’lumotlar juda katta",
     "@qrImageOptionDataTooLong": {},
     "noValidMovesFound": "Notatsiyada haqiqiy yurishlar topilmadi",
-    "@noValidMovesFound": {}
+    "@noValidMovesFound": {},
+    "qrCodeUnknownContent": "Noma'lum QR kod",
+    "@qrCodeUnknownContent": {},
+    "qrCodeOpenInBrowser": "Brauzerda ochish",
+    "@qrCodeOpenInBrowser": {},
+    "importFailed": "Import muvaffaqiyatsiz",
+    "@importFailed": {}
 }

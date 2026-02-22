@@ -4193,5 +4193,11 @@
     "qrImageOptionDataTooLong": "Podatki so preveliki za vdelavo slike",
     "@qrImageOptionDataTooLong": {},
     "noValidMovesFound": "V notaciji ni bilo najdenih veljavnih potez",
-    "@noValidMovesFound": {}
+    "@noValidMovesFound": {},
+    "qrCodeUnknownContent": "Neprepoznana koda QR",
+    "@qrCodeUnknownContent": {},
+    "qrCodeOpenInBrowser": "Odpri v brskalniku",
+    "@qrCodeOpenInBrowser": {},
+    "importFailed": "Uvoz ni uspel",
+    "@importFailed": {}
 }

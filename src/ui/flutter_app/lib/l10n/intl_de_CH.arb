@@ -3485,5 +3485,11 @@
     "qrImageOptionDataTooLong": "Daten zu gross für ein eingebettetes Bild",
     "@qrImageOptionDataTooLong": {},
     "noValidMovesFound": "Keine gültigen Züge in der Notation gefunden",
-    "@noValidMovesFound": {}
+    "@noValidMovesFound": {},
+    "qrCodeUnknownContent": "Unbekannter QR-Code",
+    "@qrCodeUnknownContent": {},
+    "qrCodeOpenInBrowser": "Im Browser öffnen",
+    "@qrCodeOpenInBrowser": {},
+    "importFailed": "Import fehlgeschlagen",
+    "@importFailed": {}
 }

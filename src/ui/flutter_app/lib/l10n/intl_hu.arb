@@ -3450,5 +3450,11 @@
     "qrImageOptionDataTooLong": "Az adatok túl nagyok kép beágyazásához",
     "@qrImageOptionDataTooLong": {},
     "noValidMovesFound": "Nem találhatók érvényes lépések a jelölésben",
-    "@noValidMovesFound": {}
+    "@noValidMovesFound": {},
+    "qrCodeUnknownContent": "Ismeretlen QR-kód",
+    "@qrCodeUnknownContent": {},
+    "qrCodeOpenInBrowser": "Megnyitás böngészőben",
+    "@qrCodeOpenInBrowser": {},
+    "importFailed": "Importálás sikertelen",
+    "@importFailed": {}
 }

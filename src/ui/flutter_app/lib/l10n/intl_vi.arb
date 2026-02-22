@@ -4197,5 +4197,11 @@
     "qrImageOptionDataTooLong": "Dữ liệu quá lớn để nhúng hình",
     "@qrImageOptionDataTooLong": {},
     "noValidMovesFound": "Không tìm thấy nước đi hợp lệ trong ký hiệu",
-    "@noValidMovesFound": {}
+    "@noValidMovesFound": {},
+    "qrCodeUnknownContent": "Mã QR không nhận dạng được",
+    "@qrCodeUnknownContent": {},
+    "qrCodeOpenInBrowser": "Mở trong Trình duyệt",
+    "@qrCodeOpenInBrowser": {},
+    "importFailed": "Nhập thất bại",
+    "@importFailed": {}
 }

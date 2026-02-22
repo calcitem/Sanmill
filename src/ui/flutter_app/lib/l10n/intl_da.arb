@@ -4193,5 +4193,11 @@
     "qrImageOptionDataTooLong": "Data er for store til at indlejre et billede",
     "@qrImageOptionDataTooLong": {},
     "noValidMovesFound": "Ingen gyldige træk fundet i notationen",
-    "@noValidMovesFound": {}
+    "@noValidMovesFound": {},
+    "qrCodeUnknownContent": "Ukendt QR-kode",
+    "@qrCodeUnknownContent": {},
+    "qrCodeOpenInBrowser": "Åbn i browser",
+    "@qrCodeOpenInBrowser": {},
+    "importFailed": "Import mislykkedes",
+    "@importFailed": {}
 }

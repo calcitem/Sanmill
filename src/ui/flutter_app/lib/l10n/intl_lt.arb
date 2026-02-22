@@ -4193,5 +4193,11 @@
     "qrImageOptionDataTooLong": "Duomenys per dideli paveikslėliui įterpti",
     "@qrImageOptionDataTooLong": {},
     "noValidMovesFound": "Notacijoje nerasta galiojančių ėjimų",
-    "@noValidMovesFound": {}
+    "@noValidMovesFound": {},
+    "qrCodeUnknownContent": "Neatpažintas QR kodas",
+    "@qrCodeUnknownContent": {},
+    "qrCodeOpenInBrowser": "Atidaryti naršyklėje",
+    "@qrCodeOpenInBrowser": {},
+    "importFailed": "Importavimas nepavyko",
+    "@importFailed": {}
 }

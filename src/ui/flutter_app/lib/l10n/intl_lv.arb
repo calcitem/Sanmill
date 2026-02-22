@@ -4193,5 +4193,11 @@
     "qrImageOptionDataTooLong": "Dati pārāk lieli, lai iegultu attēlu",
     "@qrImageOptionDataTooLong": {},
     "noValidMovesFound": "Notācijā nav atrasti derīgi gājieni",
-    "@noValidMovesFound": {}
+    "@noValidMovesFound": {},
+    "qrCodeUnknownContent": "Neatpazīts QR kods",
+    "@qrCodeUnknownContent": {},
+    "qrCodeOpenInBrowser": "Atvērt pārlūkprogrammā",
+    "@qrCodeOpenInBrowser": {},
+    "importFailed": "Importēšana neizdevās",
+    "@importFailed": {}
 }

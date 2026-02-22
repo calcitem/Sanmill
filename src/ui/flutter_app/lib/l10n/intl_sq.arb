@@ -4193,5 +4193,11 @@
     "qrImageOptionDataTooLong": "Të dhënat janë shumë të mëdha për të ngulitur një imazh",
     "@qrImageOptionDataTooLong": {},
     "noValidMovesFound": "Nuk u gjetën lëvizje të vlefshme në shënimin",
-    "@noValidMovesFound": {}
+    "@noValidMovesFound": {},
+    "qrCodeUnknownContent": "Kod QR i panjohur",
+    "@qrCodeUnknownContent": {},
+    "qrCodeOpenInBrowser": "Hap në shfletues",
+    "@qrCodeOpenInBrowser": {},
+    "importFailed": "Importimi dështoi",
+    "@importFailed": {}
 }

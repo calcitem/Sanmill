@@ -4193,5 +4193,11 @@
     "qrImageOptionDataTooLong": "Datele sunt prea mari pentru a încorpora o imagine",
     "@qrImageOptionDataTooLong": {},
     "noValidMovesFound": "Nu s-au găsit mutări valide în notație",
-    "@noValidMovesFound": {}
+    "@noValidMovesFound": {},
+    "qrCodeUnknownContent": "Cod QR nerecunoscut",
+    "@qrCodeUnknownContent": {},
+    "qrCodeOpenInBrowser": "Deschide în browser",
+    "@qrCodeOpenInBrowser": {},
+    "importFailed": "Importul a eșuat",
+    "@importFailed": {}
 }

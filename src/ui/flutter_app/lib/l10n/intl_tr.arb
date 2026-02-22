@@ -4193,5 +4193,11 @@
     "qrImageOptionDataTooLong": "Resim gömmek için veri çok büyük",
     "@qrImageOptionDataTooLong": {},
     "noValidMovesFound": "Notasyonda geçerli hamle bulunamadı",
-    "@noValidMovesFound": {}
+    "@noValidMovesFound": {},
+    "qrCodeUnknownContent": "Tanınmayan QR Kodu",
+    "@qrCodeUnknownContent": {},
+    "qrCodeOpenInBrowser": "Tarayıcıda Aç",
+    "@qrCodeOpenInBrowser": {},
+    "importFailed": "İçe Aktarma Başarısız",
+    "@importFailed": {}
 }

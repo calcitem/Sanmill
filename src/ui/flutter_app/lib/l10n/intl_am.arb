@@ -4193,5 +4193,11 @@
     "qrImageOptionDataTooLong": "ምስል ለማካተት መረጃው በጥማም ተመጣጥ ነው",
     "@qrImageOptionDataTooLong": {},
     "noValidMovesFound": "በምልክቱ ውስጥ ትክክለኛ እርምጃዎች አልተገኙም",
-    "@noValidMovesFound": {}
+    "@noValidMovesFound": {},
+    "qrCodeUnknownContent": "ያልታወቀ QR ኮድ",
+    "@qrCodeUnknownContent": {},
+    "qrCodeOpenInBrowser": "በአሳሽ ክፈት",
+    "@qrCodeOpenInBrowser": {},
+    "importFailed": "ማምጣት አልተሳካም",
+    "@importFailed": {}
 }

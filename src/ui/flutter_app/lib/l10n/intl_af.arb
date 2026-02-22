@@ -4193,5 +4193,11 @@
     "qrImageOptionDataTooLong": "Data te groot om ’n prent in te sluit",
     "@qrImageOptionDataTooLong": {},
     "noValidMovesFound": "Geen geldige skuiwe gevind in die notasie",
-    "@noValidMovesFound": {}
+    "@noValidMovesFound": {},
+    "qrCodeUnknownContent": "Onbekende QR-kode",
+    "@qrCodeUnknownContent": {},
+    "qrCodeOpenInBrowser": "Maak in blaaier oop",
+    "@qrCodeOpenInBrowser": {},
+    "importFailed": "Invoer misluk",
+    "@importFailed": {}
 }

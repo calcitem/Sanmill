@@ -4193,5 +4193,11 @@
     "qrImageOptionDataTooLong": "Andmed on pildi manustamiseks liiga suured",
     "@qrImageOptionDataTooLong": {},
     "noValidMovesFound": "Notatsioonist ei leitud kehtivaid käike",
-    "@noValidMovesFound": {}
+    "@noValidMovesFound": {},
+    "qrCodeUnknownContent": "Tundmatu QR-kood",
+    "@qrCodeUnknownContent": {},
+    "qrCodeOpenInBrowser": "Ava brauseris",
+    "@qrCodeOpenInBrowser": {},
+    "importFailed": "Importimine ebaõnnestus",
+    "@importFailed": {}
 }

@@ -4193,5 +4193,11 @@
     "qrImageOptionDataTooLong": "གཞི་ཆ་རི་མོ་འཞག་པའི་ཆེད་དུ་ཆེ་དརག་པོ",
     "@qrImageOptionDataTooLong": {},
     "noValidMovesFound": "བསྡུར་ཡིག་ནང་གནས་སོར་ཕབ་ལེགས་གྲུབ་ཅན་མ་རྙེད།",
-    "@noValidMovesFound": {}
+    "@noValidMovesFound": {},
+    "qrCodeUnknownContent": "ངོ་མ་ཤེས་པའི་QR ཨང་གྲངས།",
+    "@qrCodeUnknownContent": {},
+    "qrCodeOpenInBrowser": "དྲ་ཁྲིད་ནང་ཁ་ཕྱེ།",
+    "@qrCodeOpenInBrowser": {},
+    "importFailed": "འདྲེན་འཇུག་ཕམ་སོང་།",
+    "@importFailed": {}
 }

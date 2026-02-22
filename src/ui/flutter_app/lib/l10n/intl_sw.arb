@@ -4193,5 +4193,11 @@
     "qrImageOptionDataTooLong": "Data ni kubwa sana kuweka picha",
     "@qrImageOptionDataTooLong": {},
     "noValidMovesFound": "Hakuna harakati halali zilizopatikana katika maandishi",
-    "@noValidMovesFound": {}
+    "@noValidMovesFound": {},
+    "qrCodeUnknownContent": "Msimbo wa QR Usiojulikana",
+    "@qrCodeUnknownContent": {},
+    "qrCodeOpenInBrowser": "Fungua kwenye Kivinjari",
+    "@qrCodeOpenInBrowser": {},
+    "importFailed": "Uingizaji Umeshindwa",
+    "@importFailed": {}
 }

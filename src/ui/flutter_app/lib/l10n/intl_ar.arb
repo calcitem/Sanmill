@@ -4193,5 +4193,11 @@
     "qrImageOptionDataTooLong": "البيانات كبيرة جدًا لتضمين صورة",
     "@qrImageOptionDataTooLong": {},
     "noValidMovesFound": "لم يتم العثور على حركات صالحة في التدوين",
-    "@noValidMovesFound": {}
+    "@noValidMovesFound": {},
+    "qrCodeUnknownContent": "رمز QR غير معروف",
+    "@qrCodeUnknownContent": {},
+    "qrCodeOpenInBrowser": "فتح في المتصفح",
+    "@qrCodeOpenInBrowser": {},
+    "importFailed": "فشل الاستيراد",
+    "@importFailed": {}
 }

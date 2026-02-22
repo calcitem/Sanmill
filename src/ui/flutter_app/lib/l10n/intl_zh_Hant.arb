@@ -4213,5 +4213,11 @@
     "qrImageOptionDataTooLong": "資料過大，無法嵌入圖片",
     "@qrImageOptionDataTooLong": {},
     "noValidMovesFound": "棋譜中未找到有效著法",
-    "@noValidMovesFound": {}
+    "@noValidMovesFound": {},
+    "qrCodeUnknownContent": "無法識別的 QR 碼",
+    "@qrCodeUnknownContent": {},
+    "qrCodeOpenInBrowser": "在瀏覽器中開啟",
+    "@qrCodeOpenInBrowser": {},
+    "importFailed": "匯入失敗",
+    "@importFailed": {}
 }

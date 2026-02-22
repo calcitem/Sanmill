@@ -4193,5 +4193,11 @@
     "qrImageOptionDataTooLong": "Data är för stor för att bädda in en bild",
     "@qrImageOptionDataTooLong": {},
     "noValidMovesFound": "Inga giltiga drag hittades i notationen",
-    "@noValidMovesFound": {}
+    "@noValidMovesFound": {},
+    "qrCodeUnknownContent": "Okänd QR-kod",
+    "@qrCodeUnknownContent": {},
+    "qrCodeOpenInBrowser": "Öppna i webbläsaren",
+    "@qrCodeOpenInBrowser": {},
+    "importFailed": "Importen misslyckades",
+    "@importFailed": {}
 }

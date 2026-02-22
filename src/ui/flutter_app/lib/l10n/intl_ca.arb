@@ -4193,5 +4193,11 @@
     "qrImageOptionDataTooLong": "Les dades són massa grans per incrustar una imatge",
     "@qrImageOptionDataTooLong": {},
     "noValidMovesFound": "No s'han trobat moviments vàlids a la notació",
-    "@noValidMovesFound": {}
+    "@noValidMovesFound": {},
+    "qrCodeUnknownContent": "Codi QR no reconegut",
+    "@qrCodeUnknownContent": {},
+    "qrCodeOpenInBrowser": "Obre al navegador",
+    "@qrCodeOpenInBrowser": {},
+    "importFailed": "Ha fallat la importació",
+    "@importFailed": {}
 }

@@ -4197,5 +4197,11 @@
     "qrImageOptionDataTooLong": "Idatha inkulu kakhulu ukufaka umfanekiso",
     "@qrImageOptionDataTooLong": {},
     "noValidMovesFound": "Azikho izinyakalo ezivumelekile ezitholiwe kwi-notation",
-    "@noValidMovesFound": {}
+    "@noValidMovesFound": {},
+    "qrCodeUnknownContent": "Ikhodi le-QR engaziwa",
+    "@qrCodeUnknownContent": {},
+    "qrCodeOpenInBrowser": "Vula ku-Browser",
+    "@qrCodeOpenInBrowser": {},
+    "importFailed": "Ukufakwa Kwehlulekile",
+    "@importFailed": {}
 }

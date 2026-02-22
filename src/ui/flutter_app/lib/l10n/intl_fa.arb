@@ -4193,5 +4193,11 @@
     "qrImageOptionDataTooLong": "داده‌ها برای جایگذاری تصویر بسیار بزرگ هستند",
     "@qrImageOptionDataTooLong": {},
     "noValidMovesFound": "هیچ حرکت معتبری در یادداشت‌نویسی یافت نشد",
-    "@noValidMovesFound": {}
+    "@noValidMovesFound": {},
+    "qrCodeUnknownContent": "کد QR ناشناخته",
+    "@qrCodeUnknownContent": {},
+    "qrCodeOpenInBrowser": "باز کردن در مرورگر",
+    "@qrCodeOpenInBrowser": {},
+    "importFailed": "وارد کردن ناموفق بود",
+    "@importFailed": {}
 }

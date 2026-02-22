@@ -4193,5 +4193,11 @@
     "qrImageOptionDataTooLong": "ပုံထည့်ရန် ဒေတာအလွန်ကြီးလွန်းပါတယ်",
     "@qrImageOptionDataTooLong": {},
     "noValidMovesFound": "သင်္ကေတအတွင်း မှန်ကန်သော ကစားချက်များ မတွေ့ရှိပါ",
-    "@noValidMovesFound": {}
+    "@noValidMovesFound": {},
+    "qrCodeUnknownContent": "မသိသော QR ကုဒ်",
+    "@qrCodeUnknownContent": {},
+    "qrCodeOpenInBrowser": "ဘရောက်ဆာတွင် ဖွင့်ပါ",
+    "@qrCodeOpenInBrowser": {},
+    "importFailed": "တင်သွင်းမှု မအောင်မြင်ပါ",
+    "@importFailed": {}
 }

@@ -4193,5 +4193,11 @@
     "qrImageOptionDataTooLong": "ছবি যুক্ত করতে ডেটা অত্যন্ত বড়",
     "@qrImageOptionDataTooLong": {},
     "noValidMovesFound": "নোটেশনে কোনো বৈধ চাল পাওয়া যায়নি",
-    "@noValidMovesFound": {}
+    "@noValidMovesFound": {},
+    "qrCodeUnknownContent": "অজানা QR কোড",
+    "@qrCodeUnknownContent": {},
+    "qrCodeOpenInBrowser": "ব্রাউজারে খুলুন",
+    "@qrCodeOpenInBrowser": {},
+    "importFailed": "আমদানি ব্যর্থ হয়েছে",
+    "@importFailed": {}
 }

@@ -4193,5 +4193,11 @@
     "qrImageOptionDataTooLong": "ข้อมูลใหญ่เกินไปสำหรับการฝังรูป",
     "@qrImageOptionDataTooLong": {},
     "noValidMovesFound": "ไม่พบการเคลื่อนที่ที่ถูกต้องในสัญลักษณ์",
-    "@noValidMovesFound": {}
+    "@noValidMovesFound": {},
+    "qrCodeUnknownContent": "QR Code ที่ไม่รู้จัก",
+    "@qrCodeUnknownContent": {},
+    "qrCodeOpenInBrowser": "เปิดในเบราว์เซอร์",
+    "@qrCodeOpenInBrowser": {},
+    "importFailed": "นำเข้าล้มเหลว",
+    "@importFailed": {}
 }

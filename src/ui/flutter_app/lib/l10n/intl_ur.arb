@@ -4197,5 +4197,11 @@
     "qrImageOptionDataTooLong": "تصویر شامل کرنے کے لیے ڈیٹا بہت بڑا ہے",
     "@qrImageOptionDataTooLong": {},
     "noValidMovesFound": "نوٹیشن میں کوئی درست حرکت نہیں ملی",
-    "@noValidMovesFound": {}
+    "@noValidMovesFound": {},
+    "qrCodeUnknownContent": "نامعلوم QR کوڈ",
+    "@qrCodeUnknownContent": {},
+    "qrCodeOpenInBrowser": "براؤزر میں کھولیں",
+    "@qrCodeOpenInBrowser": {},
+    "importFailed": "درآمد ناکام",
+    "@importFailed": {}
 }

@@ -4193,5 +4193,11 @@
     "qrImageOptionDataTooLong": "Tiedot ovat liian suuret kuvan upottamiseen",
     "@qrImageOptionDataTooLong": {},
     "noValidMovesFound": "Notaatiossa ei löydetty kelvollisia siirtoja",
-    "@noValidMovesFound": {}
+    "@noValidMovesFound": {},
+    "qrCodeUnknownContent": "Tuntematon QR-koodi",
+    "@qrCodeUnknownContent": {},
+    "qrCodeOpenInBrowser": "Avaa selaimessa",
+    "@qrCodeOpenInBrowser": {},
+    "importFailed": "Tuonti epäonnistui",
+    "@importFailed": {}
 }

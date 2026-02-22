@@ -4193,5 +4193,11 @@
     "qrImageOptionDataTooLong": "Data jsou příliš velká pro vložení obrázku",
     "@qrImageOptionDataTooLong": {},
     "noValidMovesFound": "V zápisu nebyly nalezeny žádné platné tahy",
-    "@noValidMovesFound": {}
+    "@noValidMovesFound": {},
+    "qrCodeUnknownContent": "Nerozpoznaný QR kód",
+    "@qrCodeUnknownContent": {},
+    "qrCodeOpenInBrowser": "Otevřít v prohlížeči",
+    "@qrCodeOpenInBrowser": {},
+    "importFailed": "Import selhal",
+    "@importFailed": {}
 }

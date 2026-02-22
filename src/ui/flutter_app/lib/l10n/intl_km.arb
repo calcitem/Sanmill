@@ -4193,5 +4193,11 @@
     "qrImageOptionDataTooLong": "ទិន្នន័យធំពេកមិនអាចបង្កប់រូបភាពបាន",
     "@qrImageOptionDataTooLong": {},
     "noValidMovesFound": "រកមិនឃើញចលនាត្រឹមត្រូវក្នុងសំណាត់",
-    "@noValidMovesFound": {}
+    "@noValidMovesFound": {},
+    "qrCodeUnknownContent": "លេខកូដ QR មិនស្គាល់",
+    "@qrCodeUnknownContent": {},
+    "qrCodeOpenInBrowser": "បើកក្នុងកម្មវិធីរុករក",
+    "@qrCodeOpenInBrowser": {},
+    "importFailed": "នាំចូលបានបរាជ័យ",
+    "@importFailed": {}
 }
