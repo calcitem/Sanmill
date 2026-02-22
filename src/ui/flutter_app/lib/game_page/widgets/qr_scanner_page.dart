@@ -56,8 +56,7 @@ class _QrScannerPageState extends State<QrScannerPage> {
     }
 
     final List<Code> valid = codes.codes
-        .where(
-            (Code c) => c.isValid && c.text != null && c.text!.isNotEmpty)
+        .where((Code c) => c.isValid && c.text != null && c.text!.isNotEmpty)
         .toList();
 
     if (valid.isEmpty) {
@@ -96,6 +95,7 @@ class _QrScannerPageState extends State<QrScannerPage> {
       final Codes freshCodes = await zx.readBarcodesImagePath(
         picture,
         DecodeParams(
+          imageFormat: ImageFormat.rgb,
           format: Format.qrCode,
           isMultiScan: true,
           tryHarder: true,
@@ -103,8 +103,7 @@ class _QrScannerPageState extends State<QrScannerPage> {
       );
 
       final List<Code> validFresh = freshCodes.codes
-          .where(
-              (Code c) => c.isValid && c.text != null && c.text!.isNotEmpty)
+          .where((Code c) => c.isValid && c.text != null && c.text!.isNotEmpty)
           .toList();
 
       if (!mounted) {
@@ -125,10 +124,8 @@ class _QrScannerPageState extends State<QrScannerPage> {
       // Navigate to the selection page.
       final String? selected = await Navigator.of(context).push<String>(
         MaterialPageRoute<String>(
-          builder: (BuildContext context) => QrSelectionPage(
-            imageBytes: imageBytes,
-            codes: validFresh,
-          ),
+          builder: (BuildContext context) =>
+              QrSelectionPage(imageBytes: imageBytes, codes: validFresh),
         ),
       );
 
@@ -169,6 +166,7 @@ class _QrScannerPageState extends State<QrScannerPage> {
       final Codes codes = await zx.readBarcodesImagePath(
         file,
         DecodeParams(
+          imageFormat: ImageFormat.rgb,
           format: Format.qrCode,
           isMultiScan: true,
           tryHarder: true,
@@ -176,8 +174,7 @@ class _QrScannerPageState extends State<QrScannerPage> {
       );
 
       final List<Code> valid = codes.codes
-          .where(
-              (Code c) => c.isValid && c.text != null && c.text!.isNotEmpty)
+          .where((Code c) => c.isValid && c.text != null && c.text!.isNotEmpty)
           .toList();
 
       if (!mounted) {
@@ -200,10 +197,8 @@ class _QrScannerPageState extends State<QrScannerPage> {
       // Multiple codes – let the user choose.
       final String? selected = await Navigator.of(context).push<String>(
         MaterialPageRoute<String>(
-          builder: (BuildContext context) => QrSelectionPage(
-            imageBytes: imageBytes,
-            codes: valid,
-          ),
+          builder: (BuildContext context) =>
+              QrSelectionPage(imageBytes: imageBytes, codes: valid),
         ),
       );
 
@@ -252,49 +247,66 @@ class _QrScannerPageState extends State<QrScannerPage> {
 
   // ── Build ───────────────────────────────────────────────────────────
 
+  /// The [ReaderWidget] instance is kept as a field so that it is never
+  /// re-created on rebuild. This prevents Flutter from treating a new widget
+  /// instance as a different widget and discarding (disposing) the old one
+  /// unnecessarily.
+  late final Widget _readerWidget = ReaderWidget(
+    codeFormat: Format.qrCode,
+    isMultiScan: true,
+    showScannerOverlay: false,
+    showGallery: false,
+    showToggleCamera: false,
+    tryHarder: true,
+    scanDelay: const Duration(milliseconds: 500),
+    onControllerCreated: (CameraController? controller, Exception? error) {
+      _cameraController = controller;
+      if (mounted) {
+        setState(() {
+          _cameraState = (error != null || controller == null)
+              ? _CameraState.unavailable
+              : _CameraState.available;
+        });
+      }
+    },
+    onMultiScan: _onMultiScan,
+    onMultiScanFailure: (_) {},
+  );
+
   @override
   Widget build(BuildContext context) {
     final S s = S.of(context);
 
+    // Build the camera/fallback body.
+    //
+    // flutter_zxing's ReaderWidget has a known bug in _stopCamera(): the
+    // isStreamingImages condition is inverted, so stopImageStream() is called
+    // even when the camera was never streaming.  Because stopImageStream() is
+    // declared `async`, the exception it throws becomes an unhandled Future
+    // rejection.  To work around this we keep the ReaderWidget in the widget
+    // tree via Offstage rather than removing it the moment the camera reports
+    // unavailability; this prevents the premature dispose() call that triggers
+    // the bug on the scanner page itself.
     final Widget body;
-    switch (_cameraState) {
-      case _CameraState.unavailable:
-        body = _isDecoding
-            ? const Center(child: CircularProgressIndicator())
-            : _buildNoCameraBody(s);
-      case _CameraState.checking:
-      case _CameraState.available:
-        if (_hasPopped) {
-          // Camera is being torn down – show a loading indicator instead of
-          // the scanner widget to prevent controller-use-after-dispose errors.
-          body = const Center(child: CircularProgressIndicator());
-        } else {
-          // Show the ReaderWidget in both 'checking' and 'available' states.
-          // During 'checking', the widget initializes the camera internally
-          // and fires onControllerCreated once ready (or on failure).
-          body = ReaderWidget(
-            codeFormat: Format.qrCode,
-            isMultiScan: true,
-            showScannerOverlay: false,
-            showGallery: false,
-            showToggleCamera: false,
-            tryHarder: true,
-            scanDelay: const Duration(milliseconds: 500),
-            onControllerCreated:
-                (CameraController? controller, Exception? error) {
-              _cameraController = controller;
-              if (mounted) {
-                setState(() {
-                  _cameraState = (error != null || controller == null)
-                      ? _CameraState.unavailable
-                      : _CameraState.available;
-                });
-              }
-            },
-            onMultiScan: _onMultiScan,
-            onMultiScanFailure: (_) {},
-          );
-        }
+
+    if (_hasPopped) {
+      // Camera is being torn down after a successful scan.
+      body = const Center(child: CircularProgressIndicator());
+    } else if (_cameraState == _CameraState.unavailable) {
+      // Camera unavailable: overlay the fallback UI on top of the ReaderWidget
+      // that is kept offstage.  Keeping it alive avoids disposing it while the
+      // camera controller is still in a partially-initialised state.
+      body = Stack(
+        children: <Widget>[
+          Offstage(child: _readerWidget),
+          _isDecoding
+              ? const Center(child: CircularProgressIndicator())
+              : _buildNoCameraBody(s),
+        ],
+      );
+    } else {
+      // checking or available – show the live scanner.
+      body = _readerWidget;
     }
 
     return Scaffold(

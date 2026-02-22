@@ -144,6 +144,25 @@ Future<void> main() async {
         }
       }
 
+      // Known flutter_zxing library bug: _stopCamera() has an inverted
+      // isStreamingImages condition (uses `== false` instead of `== true`),
+      // causing stopImageStream() to be called when the camera is NOT
+      // streaming or not yet initialised. Because stopImageStream() is
+      // declared `async`, the synchronous throw inside it becomes a rejected
+      // Future that is not awaited by _stopCamera(), so it surfaces here as
+      // an unhandled error rather than being caught by the try/catch block.
+      // Suppress these two specific messages to avoid spurious Catcher 2
+      // reports and email dialogs that block the QR scanner UI.
+      if (errorStr.contains(
+            'stopImageStream() was called on an uninitialized CameraController',
+          ) ||
+          errorStr.contains(
+            'stopImageStream was called when no camera is streaming images',
+          )) {
+        logger.w('Suppressed known flutter_zxing _stopCamera bug: $errorStr');
+        return true;
+      }
+
       if (EnvironmentConfig.catcher == true) {
         Catcher2.reportCheckedError(error, stack);
       }
