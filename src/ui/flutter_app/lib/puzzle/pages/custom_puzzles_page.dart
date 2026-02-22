@@ -507,8 +507,7 @@ class _CustomPuzzlesPageState extends State<CustomPuzzlesPage> {
       return;
     }
 
-    final ui.Image? embeddedImage =
-        await _resolveEmbeddedImage(option);
+    final ui.Image? embeddedImage = await _resolveEmbeddedImage(option);
 
     if (!mounted) {
       embeddedImage?.dispose();
@@ -539,8 +538,7 @@ class _CustomPuzzlesPageState extends State<CustomPuzzlesPage> {
       case QrImageOption.none:
         return null;
       case QrImageOption.board:
-        final String layout = GameController()
-            .position
+        final String layout = GameController().position
             .generateBoardLayoutAfterThisMove();
         return QrCodeDialog.renderBoardImage(layout, 200);
       case QrImageOption.custom:

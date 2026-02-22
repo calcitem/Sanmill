@@ -458,8 +458,7 @@ class MovesListPageState extends State<MovesListPage> {
     }
 
     // Resolve the selected image (if any).
-    final ui.Image? embeddedImage =
-        await _resolveEmbeddedImage(option);
+    final ui.Image? embeddedImage = await _resolveEmbeddedImage(option);
 
     if (!mounted) {
       embeddedImage?.dispose();
@@ -474,10 +473,8 @@ class MovesListPageState extends State<MovesListPage> {
     try {
       await showDialog<void>(
         context: context,
-        builder: (BuildContext context) => QrCodeDialog(
-          data: moveText,
-          embeddedImage: embeddedImage,
-        ),
+        builder: (BuildContext context) =>
+            QrCodeDialog(data: moveText, embeddedImage: embeddedImage),
       );
     } finally {
       embeddedImage?.dispose();
@@ -490,8 +487,8 @@ class MovesListPageState extends State<MovesListPage> {
       case QrImageOption.none:
         return null;
       case QrImageOption.board:
-        final String layout =
-            GameController().position.generateBoardLayoutAfterThisMove();
+        final String layout = GameController().position
+            .generateBoardLayoutAfterThisMove();
         return QrCodeDialog.renderBoardImage(layout, 200);
       case QrImageOption.custom:
         final XFile? file = await ImagePicker().pickImage(

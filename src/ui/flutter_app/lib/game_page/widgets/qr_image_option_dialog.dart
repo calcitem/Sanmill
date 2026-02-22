@@ -81,8 +81,10 @@ class QrImageOptionDialog extends StatelessWidget {
         // Hint when embedding is disabled
         if (!canEmbed)
           Padding(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 24.0, vertical: 8.0),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 24.0,
+              vertical: 8.0,
+            ),
             child: Text(
               s.qrImageOptionDataTooLong,
               style: theme.textTheme.bodySmall?.copyWith(
@@ -121,12 +123,7 @@ class _OptionTile extends StatelessWidget {
           children: <Widget>[
             Icon(icon, size: 28, color: theme.colorScheme.onSurface),
             const SizedBox(width: 16),
-            Expanded(
-              child: Text(
-                label,
-                style: theme.textTheme.titleMedium,
-              ),
-            ),
+            Expanded(child: Text(label, style: theme.textTheme.titleMedium)),
           ],
         ),
       ),

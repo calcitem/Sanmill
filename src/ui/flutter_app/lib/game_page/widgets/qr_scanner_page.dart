@@ -299,9 +299,10 @@ class _QrScannerPageState extends State<QrScannerPage> {
       body = Stack(
         children: <Widget>[
           Offstage(child: _readerWidget),
-          _isDecoding
-              ? const Center(child: CircularProgressIndicator())
-              : _buildNoCameraBody(s),
+          if (_isDecoding)
+            const Center(child: CircularProgressIndicator())
+          else
+            _buildNoCameraBody(s),
         ],
       );
     } else {

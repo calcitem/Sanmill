@@ -630,8 +630,7 @@ class _PuzzleListPageState extends State<PuzzleListPage> {
       return;
     }
 
-    final ui.Image? embeddedImage =
-        await _resolveEmbeddedImage(option);
+    final ui.Image? embeddedImage = await _resolveEmbeddedImage(option);
 
     if (!mounted) {
       embeddedImage?.dispose();
@@ -663,8 +662,7 @@ class _PuzzleListPageState extends State<PuzzleListPage> {
         return null;
       case QrImageOption.board:
         // For puzzle export, use the current game position if available.
-        final String layout = GameController()
-            .position
+        final String layout = GameController().position
             .generateBoardLayoutAfterThisMove();
         return QrCodeDialog.renderBoardImage(layout, 200);
       case QrImageOption.custom:

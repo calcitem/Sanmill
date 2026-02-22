@@ -75,7 +75,8 @@ class _QrSelectionPageState extends State<QrSelectionPage> {
     // Convert the image's top-left corner to coordinates relative to the
     // Stack, not the screen. This accounts for the AppBar and instruction
     // banner that sit above the Stack.
-    final Offset imageInStack = imageBox.localToGlobal(Offset.zero) -
+    final Offset imageInStack =
+        imageBox.localToGlobal(Offset.zero) -
         stackBox.localToGlobal(Offset.zero);
 
     if (mounted) {
@@ -92,11 +93,11 @@ class _QrSelectionPageState extends State<QrSelectionPage> {
 
   /// Compute the center point of a QR code in image coordinates.
   Offset _qrCenter(Position pos) {
-    final double cx = (pos.topLeftX + pos.topRightX + pos.bottomLeftX +
-            pos.bottomRightX) /
+    final double cx =
+        (pos.topLeftX + pos.topRightX + pos.bottomLeftX + pos.bottomRightX) /
         4.0;
-    final double cy = (pos.topLeftY + pos.topRightY + pos.bottomLeftY +
-            pos.bottomRightY) /
+    final double cy =
+        (pos.topLeftY + pos.topRightY + pos.bottomLeftY + pos.bottomRightY) /
         4.0;
     return Offset(cx, cy);
   }
@@ -113,12 +114,19 @@ class _QrSelectionPageState extends State<QrSelectionPage> {
 
     // Compute the actual painted rect inside _imageRect when using
     // BoxFit.contain, then scale from image to display coordinates.
-    final Size intrinsic =
-        Size(pos.imageWidth.toDouble(), pos.imageHeight.toDouble());
-    final FittedSizes fitted =
-        applyBoxFit(BoxFit.contain, intrinsic, _imageRect!.size);
-    final Rect paintRect =
-        Alignment.center.inscribe(fitted.destination, _imageRect!);
+    final Size intrinsic = Size(
+      pos.imageWidth.toDouble(),
+      pos.imageHeight.toDouble(),
+    );
+    final FittedSizes fitted = applyBoxFit(
+      BoxFit.contain,
+      intrinsic,
+      _imageRect!.size,
+    );
+    final Rect paintRect = Alignment.center.inscribe(
+      fitted.destination,
+      _imageRect!,
+    );
 
     final double scaleX = paintRect.width / pos.imageWidth;
     final double scaleY = paintRect.height / pos.imageHeight;
@@ -152,11 +160,7 @@ class _QrSelectionPageState extends State<QrSelectionPage> {
               ),
             ],
           ),
-          child: const Icon(
-            Icons.arrow_forward,
-            color: Colors.white,
-            size: 28,
-          ),
+          child: const Icon(Icons.arrow_forward, color: Colors.white, size: 28),
         ),
       ),
     );
@@ -168,16 +172,17 @@ class _QrSelectionPageState extends State<QrSelectionPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title:
-            Text(s.selectQrCode, style: AppTheme.appBarTheme.titleTextStyle),
+        title: Text(s.selectQrCode, style: AppTheme.appBarTheme.titleTextStyle),
       ),
       body: Column(
         children: <Widget>[
           // Instruction banner
           Container(
             width: double.infinity,
-            padding:
-                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 16.0,
+              vertical: 12.0,
+            ),
             color: Theme.of(context).colorScheme.primaryContainer,
             child: Text(
               s.multipleQrCodesDetected,
@@ -201,8 +206,7 @@ class _QrSelectionPageState extends State<QrSelectionPage> {
                   ),
                 ),
                 // Green circle indicators for each detected QR code
-                if (_imageRect != null)
-                  ...widget.codes.map(_buildIndicator),
+                if (_imageRect != null) ...widget.codes.map(_buildIndicator),
               ],
             ),
           ),

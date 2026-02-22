@@ -69,9 +69,7 @@ class QrCodeDialog extends StatefulWidget {
     canvas.translate(inset, inset);
 
     final double boardSize = size - 2 * inset;
-    final MiniBoardPainter painter = MiniBoardPainter(
-      boardLayout: boardLayout,
-    );
+    final MiniBoardPainter painter = MiniBoardPainter(boardLayout: boardLayout);
     painter.paint(canvas, Size(boardSize, boardSize));
 
     canvas.restore();
@@ -159,8 +157,9 @@ class _QrCodeDialogState extends State<QrCodeDialog> {
     // Use error correction H when an image is embedded so the scanner can
     // still read the QR code despite the obscured center area.
     final bool hasEmbeddedImage = widget.embeddedImage != null;
-    final int errorCorrectionLevel =
-        hasEmbeddedImage ? QrErrorCorrectLevel.H : QrErrorCorrectLevel.M;
+    final int errorCorrectionLevel = hasEmbeddedImage
+        ? QrErrorCorrectLevel.H
+        : QrErrorCorrectLevel.M;
 
     final QrPainter painter = QrPainter(
       data: widget.data,
@@ -169,9 +168,7 @@ class _QrCodeDialogState extends State<QrCodeDialog> {
       gapless: true,
       embeddedImage: widget.embeddedImage,
       embeddedImageStyle: hasEmbeddedImage
-          ? QrEmbeddedImageStyle(
-              size: Size(qrSize * 0.22, qrSize * 0.22),
-            )
+          ? QrEmbeddedImageStyle(size: Size(qrSize * 0.22, qrSize * 0.22))
           : null,
     );
 
