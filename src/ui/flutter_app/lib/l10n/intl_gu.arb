@@ -4179,5 +4179,9 @@
     "puzzleQrDataTooLong": "પસંદ કરેલ પઝલ્સ સંકોચન પછી પણ QR કોડ માટે ખૂબ મોટી છે. કૃપા કરીને ઓછી પઝલ્સ પસંદ કરો.",
     "@puzzleQrDataTooLong": {},
     "noCameraAvailable": "આ ઉપકરણ પર કોઈ કૅમેરા ઉપલબ્ધ નથી. તમે તેના બદલે ગૅલેરીમાંથી QR કોડ છબી આયાત કરી શકો છો.",
-    "@noCameraAvailable": {}
+    "@noCameraAvailable": {},
+    "multipleQrCodesDetected": "બહુવિધ QR કોડ મળ્યા. એક પસંદ કરવા માટે ટેપ કરો.",
+    "@multipleQrCodesDetected": {},
+    "selectQrCode": "QR કોડ પસંદ કરો",
+    "@selectQrCode": {}
 }

@@ -4179,5 +4179,9 @@
     "puzzleQrDataTooLong": "Mafumbo yaliyochaguliwa ni makubwa mno kwa msimbo wa QR hata baada ya kubana. Chagua mafumbo machache zaidi.",
     "@puzzleQrDataTooLong": {},
     "noCameraAvailable": "Hakuna kamera inayopatikana kwenye kifaa hiki. Badala yake unaweza kuagiza picha ya msimbo wa QR kutoka kwenye galeria.",
-    "@noCameraAvailable": {}
+    "@noCameraAvailable": {},
+    "multipleQrCodesDetected": "Misimbo mingi ya QR imegunduliwa. Gusa moja ili kuchagua.",
+    "@multipleQrCodesDetected": {},
+    "selectQrCode": "Chagua msimbo wa QR",
+    "@selectQrCode": {}
 }

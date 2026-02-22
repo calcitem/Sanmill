@@ -4179,5 +4179,9 @@
     "puzzleQrDataTooLong": "De geselecteerde puzzels zijn te groot voor een QR-code, zelfs na compressie. Selecteer minder puzzels.",
     "@puzzleQrDataTooLong": {},
     "noCameraAvailable": "Geen camera beschikbaar op dit apparaat. U kunt in plaats daarvan een QR-codeafbeelding uit de galerij importeren.",
-    "@noCameraAvailable": {}
+    "@noCameraAvailable": {},
+    "multipleQrCodesDetected": "Meerdere QR-codes gedetecteerd. Tik op een om te selecteren.",
+    "@multipleQrCodesDetected": {},
+    "selectQrCode": "Selecteer QR-code",
+    "@selectQrCode": {}
 }

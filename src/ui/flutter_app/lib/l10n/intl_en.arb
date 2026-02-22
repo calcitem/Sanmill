@@ -4307,5 +4307,13 @@
     "noCameraAvailable": "No camera available on this device. You can import a QR code image from the gallery instead.",
     "@noCameraAvailable": {
         "description": "Message shown when the device has no camera hardware and the QR scanner cannot be used"
+    },
+    "multipleQrCodesDetected": "Multiple QR codes detected. Tap one to select.",
+    "@multipleQrCodesDetected": {
+        "description": "Instruction shown when multiple QR codes are found in camera or image"
+    },
+    "selectQrCode": "Select QR Code",
+    "@selectQrCode": {
+        "description": "Title for the QR code selection page when multiple codes are detected"
     }
 }

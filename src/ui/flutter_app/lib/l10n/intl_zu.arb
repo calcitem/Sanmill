@@ -4183,5 +4183,9 @@
     "puzzleQrDataTooLong": "Amaphazili akhethiwe makhulu kakhulu we-QR code, ngisho nangokucindezelwa. Sicela ukhethe amaphazili amancane.",
     "@puzzleQrDataTooLong": {},
     "noCameraAvailable": "Ayikho ikhamera etholakalayo kule divayisi. Esikhundleni salokho ungakwazi ukungenisa isithombe sekhodi ye-QR evela egelerini.",
-    "@noCameraAvailable": {}
+    "@noCameraAvailable": {},
+    "multipleQrCodesDetected": "Kuhlonzwe amakhodi amaningi e-QR. Thepha eyodwa ukukhetha.",
+    "@multipleQrCodesDetected": {},
+    "selectQrCode": "Khetha ikhodi ye-QR",
+    "@selectQrCode": {}
 }

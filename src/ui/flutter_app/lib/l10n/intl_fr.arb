@@ -4179,5 +4179,9 @@
     "puzzleQrDataTooLong": "Les puzzles sélectionnés sont trop volumineux pour un code QR, même après compression. Veuillez sélectionner moins de puzzles.",
     "@puzzleQrDataTooLong": {},
     "noCameraAvailable": "Aucune caméra disponible sur cet appareil. Vous pouvez importer une image de code QR depuis la galerie.",
-    "@noCameraAvailable": {}
+    "@noCameraAvailable": {},
+    "multipleQrCodesDetected": "Plusieurs codes QR détectés. Appuyez sur l’un d’eux pour le sélectionner.",
+    "@multipleQrCodesDetected": {},
+    "selectQrCode": "Sélectionner un code QR",
+    "@selectQrCode": {}
 }

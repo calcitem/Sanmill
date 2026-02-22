@@ -4179,5 +4179,9 @@
     "puzzleQrDataTooLong": "ปริศนาที่เลือกมีขนาดใหญ่เกินไปสำหรับรหัส QR แม้หลังการบีบอัดแล้ว กรุณาเลือกปริศนาน้อยลง",
     "@puzzleQrDataTooLong": {},
     "noCameraAvailable": "ไม่มีกล้องบนอุปกรณ์นี้ คุณสามารถนำเข้ารูปภาพ QR โค้ดจากแกลเลอรีแทนได้",
-    "@noCameraAvailable": {}
+    "@noCameraAvailable": {},
+    "multipleQrCodesDetected": "ตรวจพบ QR โค้ดหลายรายการ แตะเพื่อเลือกหนึ่งรายการ",
+    "@multipleQrCodesDetected": {},
+    "selectQrCode": "เลือก QR โค้ด",
+    "@selectQrCode": {}
 }

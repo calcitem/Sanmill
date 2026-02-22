@@ -4179,5 +4179,9 @@
     "puzzleQrDataTooLong": "Выбранные головоломки слишком велики для QR-кода даже после сжатия. Пожалуйста, выберите меньше головоломок.",
     "@puzzleQrDataTooLong": {},
     "noCameraAvailable": "На этом устройстве нет доступной камеры. Вместо этого вы можете импортировать изображение QR-кода из галереи.",
-    "@noCameraAvailable": {}
+    "@noCameraAvailable": {},
+    "multipleQrCodesDetected": "Обнаружено несколько QR-кодов. Нажмите на один, чтобы выбрать.",
+    "@multipleQrCodesDetected": {},
+    "selectQrCode": "Выбрать QR-код",
+    "@selectQrCode": {}
 }

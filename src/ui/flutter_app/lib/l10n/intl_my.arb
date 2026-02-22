@@ -4179,5 +4179,9 @@
     "puzzleQrDataTooLong": "ရွေးချယ်ထားသောပဟေဠိများသည် ချုံ့ပြီးနောက်ပင် QR ကုဒ်အတွက် အလွန်ကြီးမားသည်။ ပဟေဠိနည်းနည်းသာ ရွေးချယ်ပါ။",
     "@puzzleQrDataTooLong": {},
     "noCameraAvailable": "ဤစက်ပစ္စည်းတွင် ကင်မရာမရှိပါ။ ယင်းအစား ဓာတ်ပုံပြခန်းမှ QR ကုဒ်ပုံကို တင်သွင်းနိုင်ပါသည်။",
-    "@noCameraAvailable": {}
+    "@noCameraAvailable": {},
+    "multipleQrCodesDetected": "အများအပြား QR ကုဒ်များ တွေ့ရှိပြီး တစ်ခု ရွေးချယ်ရန် နှိပ်ပါ။",
+    "@multipleQrCodesDetected": {},
+    "selectQrCode": "QR ကုဒ် ရွေးချယ်ပါ",
+    "@selectQrCode": {}
 }

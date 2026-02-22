@@ -4179,5 +4179,9 @@
     "puzzleQrDataTooLong": "Enigmat e zgjedhura janë shumë të mëdha për një kod QR edhe pas kompresimit. Zgjidhni më pak enigma.",
     "@puzzleQrDataTooLong": {},
     "noCameraAvailable": "Asnjë kamerë e disponueshme në këtë pajisje. Në vend të kësaj mund të importoni një imazh të kodit QR nga galeria.",
-    "@noCameraAvailable": {}
+    "@noCameraAvailable": {},
+    "multipleQrCodesDetected": "U zbuluan disa kode QR. Prekni njërën për ta zgjedhur.",
+    "@multipleQrCodesDetected": {},
+    "selectQrCode": "Zgjidhni kodin QR",
+    "@selectQrCode": {}
 }

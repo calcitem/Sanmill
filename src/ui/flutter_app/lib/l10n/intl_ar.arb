@@ -4179,5 +4179,9 @@
     "puzzleQrDataTooLong": "الأحاجي المحددة كبيرة جداً لرمز QR، حتى بعد الضغط. الرجاء اختيار عدد أقل من الأحاجي.",
     "@puzzleQrDataTooLong": {},
     "noCameraAvailable": "لا تتوفر كاميرا على هذا الجهاز. يمكنك استيراد صورة رمز QR من المعرض بدلاً من ذلك.",
-    "@noCameraAvailable": {}
+    "@noCameraAvailable": {},
+    "multipleQrCodesDetected": "تم اكتشاف عدة رموز QR. انقر على أحدها للاختيار.",
+    "@multipleQrCodesDetected": {},
+    "selectQrCode": "اختيار رمز QR",
+    "@selectQrCode": {}
 }

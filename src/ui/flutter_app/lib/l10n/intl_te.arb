@@ -4179,5 +4179,9 @@
     "puzzleQrDataTooLong": "ఎంచుకున్న పజిళ్ళు కంప్రెషన్ తర్వాత కూడా QR కోడ్‌కి చాలా పెద్దవిగా ఉన్నాయి. తక్కువ పజిళ్ళను ఎంచుకోండి.",
     "@puzzleQrDataTooLong": {},
     "noCameraAvailable": "ఈ పరికరంలో కెమెరా అందుబాటులో లేదు. బదులుగా మీరు గ్యాలరీ నుండి QR కోడ్ చిత్రాన్ని దిగుమతి చేసుకోవచ్చు.",
-    "@noCameraAvailable": {}
+    "@noCameraAvailable": {},
+    "multipleQrCodesDetected": "బహుళ QR కోడ్‌లు గుర్తించబడ్డాయి. ఎంచుకోవడానికి ఒకదాన్ని ట్యాప్ చేయండి.",
+    "@multipleQrCodesDetected": {},
+    "selectQrCode": "QR కోడ్ ఎంచుకోండి",
+    "@selectQrCode": {}
 }

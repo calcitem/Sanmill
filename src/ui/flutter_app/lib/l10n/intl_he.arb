@@ -4179,5 +4179,9 @@
     "puzzleQrDataTooLong": "החידות שנבחרו גדולות מדי עבור קוד QR, גם לאחר דחיסה. אנא בחר פחות חידות.",
     "@puzzleQrDataTooLong": {},
     "noCameraAvailable": "אין מצלמה זמינה במכשיר זה. באפשרותך לייבא תמונת קוד QR מהגלריה במקום זאת.",
-    "@noCameraAvailable": {}
+    "@noCameraAvailable": {},
+    "multipleQrCodesDetected": "זוהו מספר קודי QR. הקש על אחד כדי לבחור.",
+    "@multipleQrCodesDetected": {},
+    "selectQrCode": "בחירת קוד QR",
+    "@selectQrCode": {}
 }

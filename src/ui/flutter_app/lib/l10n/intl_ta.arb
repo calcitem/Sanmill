@@ -4179,5 +4179,9 @@
     "puzzleQrDataTooLong": "தேர்ந்தெடுக்கப்பட்ட புதிர்கள் சுருக்கத்திற்குப் பிறகும் QR குறியீட்டிற்கு மிகவும் பெரியவை. குறைவான புதிர்களைத் தேர்ந்தெடுக்கவும்.",
     "@puzzleQrDataTooLong": {},
     "noCameraAvailable": "இந்தச் சாதனத்தில் கேமரா கிடைக்கவில்லை. அதற்குப் பதிலாக கேலரியிலிருந்து QR குறியீட்டுப் படத்தை இறக்குமதி செய்யலாம்.",
-    "@noCameraAvailable": {}
+    "@noCameraAvailable": {},
+    "multipleQrCodesDetected": "பல QR குறியீடுகள் கண்டறியப்பட்டன. ஒன்றைத் தேர்ந்தெடுக்க தட்டவும்.",
+    "@multipleQrCodesDetected": {},
+    "selectQrCode": "QR குறியீட்டைத் தேர்ந்தெடுக்கவும்",
+    "@selectQrCode": {}
 }

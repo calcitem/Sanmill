@@ -4179,5 +4179,9 @@
     "puzzleQrDataTooLong": "নির্বাচিত পাজলগুলি সংকোচনের পরেও QR কোডের জন্য অনেক বড়। অনুগ্রহ করে কম পাজল নির্বাচন করুন।",
     "@puzzleQrDataTooLong": {},
     "noCameraAvailable": "এই ডিভাইসে কোনো ক্যামেরা উপলব্ধ নেই। আপনি পরিবর্তে গ্যালারি থেকে একটি QR কোড ছবি আমদানি করতে পারেন।",
-    "@noCameraAvailable": {}
+    "@noCameraAvailable": {},
+    "multipleQrCodesDetected": "একাধিক QR কোড সনাক্ত হয়েছে। একটি নির্বাচন করতে ট্যাপ করুন।",
+    "@multipleQrCodesDetected": {},
+    "selectQrCode": "QR কোড নির্বাচন করুন",
+    "@selectQrCode": {}
 }

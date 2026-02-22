@@ -4179,5 +4179,9 @@
     "puzzleQrDataTooLong": "Избраните пъзели са твърде големи за QR код дори след компресия. Моля, изберете по-малко пъзели.",
     "@puzzleQrDataTooLong": {},
     "noCameraAvailable": "На това устройство няма налична камера. Можете вместо това да импортирате изображение с QR код от галерията.",
-    "@noCameraAvailable": {}
+    "@noCameraAvailable": {},
+    "multipleQrCodesDetected": "Открити са няколко QR кода. Докоснете един, за да изберете.",
+    "@multipleQrCodesDetected": {},
+    "selectQrCode": "Избор на QR код",
+    "@selectQrCode": {}
 }

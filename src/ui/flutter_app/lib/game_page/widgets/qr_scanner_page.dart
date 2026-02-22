@@ -6,19 +6,20 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:image/image.dart' as img;
+import 'package:flutter_zxing/flutter_zxing.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:qr_code_dart_decoder/qr_code_dart_decoder.dart';
-import 'package:qr_code_dart_scan/qr_code_dart_scan.dart';
 
 import '../../generated/intl/l10n.dart';
 import '../../shared/themes/app_theme.dart';
+import 'qr_selection_page.dart';
 
 enum _CameraState { checking, available, unavailable }
 
-/// Full-screen camera view for scanning a QR code.
+/// Full-screen camera view for scanning QR codes using flutter_zxing.
 ///
 /// Returns the decoded QR string via [Navigator.pop] on successful scan.
+/// When multiple QR codes are detected simultaneously, navigates to
+/// [QrSelectionPage] so the user can choose which code to read.
 /// Also supports picking a QR code image from the device gallery.
 /// Gracefully handles devices without camera hardware by showing a fallback UI
 /// that still allows importing QR codes from the gallery.
@@ -32,122 +33,183 @@ class QrScannerPage extends StatefulWidget {
 class _QrScannerPageState extends State<QrScannerPage> {
   bool _hasPopped = false;
 
+  /// True while capturing a still image and navigating to the selection page.
+  bool _isCapturing = false;
+
+  /// True while processing a gallery image.
   bool _isDecoding = false;
 
   _CameraState _cameraState = _CameraState.checking;
 
-  // When true the scanner widget is removed from the tree so the camera
-  // package can tear down without racing against pending async operations
-  // (lockCaptureOrientation, buildPreview, etc.).
-  bool get _scannerActive =>
-      !_isDecoding && !_hasPopped && _cameraState == _CameraState.available;
+  /// Camera controller provided by [ReaderWidget.onControllerCreated].
+  CameraController? _cameraController;
 
-  @override
-  void initState() {
-    super.initState();
-    _checkCameraAvailability();
-  }
+  bool get _isBusy => _isCapturing || _isDecoding || _hasPopped;
 
-  Future<void> _checkCameraAvailability() async {
-    try {
-      final List<CameraDescription> cameras = await availableCameras();
-      if (mounted) {
-        setState(() {
-          _cameraState = cameras.isNotEmpty
-              ? _CameraState.available
-              : _CameraState.unavailable;
-        });
-      }
-    } on Exception {
-      if (mounted) {
-        setState(() => _cameraState = _CameraState.unavailable);
-      }
-    }
-  }
+  // ── Camera multi-scan callback ──────────────────────────────────────
 
-  void _onCapture(Result result) {
-    if (_hasPopped) {
+  /// Called by [ReaderWidget] every time the camera frame is processed in
+  /// multi-scan mode.
+  void _onMultiScan(Codes codes) {
+    if (_isBusy) {
       return;
     }
 
-    final String text = result.text;
-    if (text.isNotEmpty) {
+    final List<Code> valid = codes.codes
+        .where(
+            (Code c) => c.isValid && c.text != null && c.text!.isNotEmpty)
+        .toList();
+
+    if (valid.isEmpty) {
+      return;
+    }
+
+    if (valid.length == 1) {
+      // Single QR code detected – return immediately (same as before).
       _hasPopped = true;
-      Navigator.of(context).pop(text);
+      Navigator.of(context).pop(valid.first.text);
+      return;
     }
+
+    // Multiple QR codes detected – capture a still image and let the user
+    // choose which one to read.
+    _captureAndSelect();
   }
 
-  // Remove the scanner from the widget tree first, wait one frame so the
-  // camera controller is fully disposed, then actually pop the route. This
-  // avoids CameraController-use-after-dispose crashes from in-flight async
-  // operations such as lockCaptureOrientation.
-  Future<void> _safePopPage() async {
-    if (_hasPopped) {
-      return;
-    }
-    setState(() => _hasPopped = true);
-    if (_cameraState == _CameraState.available) {
-      await WidgetsBinding.instance.endOfFrame;
-    }
-    if (mounted) {
-      Navigator.of(context).pop();
-    }
-  }
+  // ── Capture & select flow (camera) ──────────────────────────────────
 
-  Future<void> _pickFromGallery() async {
-    if (_isDecoding || _hasPopped) {
+  /// Takes a picture from the camera, re-analyses it for QR codes (to get
+  /// accurate positions on the still image), and navigates to the selection
+  /// page when more than one code is found.
+  Future<void> _captureAndSelect() async {
+    if (_isCapturing || _hasPopped || _cameraController == null) {
       return;
     }
 
-    // Remove QRCodeDartScanView from the tree BEFORE opening the gallery
-    // picker. ImagePicker causes the app to go inactive, which makes the
-    // package dispose its CameraController. If the scanner widget is still
-    // mounted, CameraPreview's ValueListenableBuilder may try to call
-    // buildPreview() on the disposed controller during a pending frame.
-    setState(() => _isDecoding = true);
-
-    final XFile? file = await ImagePicker().pickImage(
-      source: ImageSource.gallery,
-    );
-
-    if (file == null) {
-      if (mounted) {
-        setState(() => _isDecoding = false);
-      }
-      return;
-    }
+    setState(() => _isCapturing = true);
 
     try {
-      final Uint8List bytes = await file.readAsBytes();
+      final XFile picture = await _cameraController!.takePicture();
+      final Uint8List imageBytes = await picture.readAsBytes();
 
-      // qr_code_dart_decoder's toLuminanceSourceFromBytes reads 4 bytes per
-      // pixel (j += 4, assuming RGBA). image v4 decodes JPEG as 3-channel RGB
-      // (3 bytes/pixel), causing byte-offset misalignment and wrong luminance
-      // values for every pixel. Convert to RGBA and re-encode as PNG so that
-      // decodeFile's internal decodeImage call always yields 4 channels.
-      final img.Image? decodedImg = img.decodeImage(bytes);
-      final Uint8List decodeInput =
-          (decodedImg != null && decodedImg.numChannels != 4)
-          ? Uint8List.fromList(
-              img.encodePng(decodedImg.convert(numChannels: 4)),
-            )
-          : bytes;
+      // Re-analyse the captured still to obtain accurate positions.
+      final Codes freshCodes = await zx.readBarcodesImagePath(
+        picture,
+        DecodeParams(
+          format: Format.qrCode,
+          isMultiScan: true,
+          tryHarder: true,
+        ),
+      );
 
-      final Result? result = await QrCodeDartDecoder(
-        formats: <BarcodeFormat>[BarcodeFormat.qrCode],
-      ).decodeFile(decodeInput);
+      final List<Code> validFresh = freshCodes.codes
+          .where(
+              (Code c) => c.isValid && c.text != null && c.text!.isNotEmpty)
+          .toList();
 
       if (!mounted) {
         return;
       }
 
-      if (result != null && result.text.isNotEmpty) {
+      if (validFresh.isEmpty) {
+        // Edge case: the still captured between frames missed the codes.
+        return;
+      }
+
+      if (validFresh.length == 1) {
         _hasPopped = true;
-        Navigator.of(context).pop(result.text);
-      } else {
+        Navigator.of(context).pop(validFresh.first.text);
+        return;
+      }
+
+      // Navigate to the selection page.
+      final String? selected = await Navigator.of(context).push<String>(
+        MaterialPageRoute<String>(
+          builder: (BuildContext context) => QrSelectionPage(
+            imageBytes: imageBytes,
+            codes: validFresh,
+          ),
+        ),
+      );
+
+      if (selected != null && selected.isNotEmpty && mounted) {
+        _hasPopped = true;
+        Navigator.of(context).pop(selected);
+      }
+    } finally {
+      if (mounted) {
+        setState(() => _isCapturing = false);
+      }
+    }
+  }
+
+  // ── Gallery import ──────────────────────────────────────────────────
+
+  /// Opens the gallery image picker, analyses the selected image for QR
+  /// codes, and either returns the single result or navigates to the
+  /// selection page when multiple codes are found.
+  Future<void> _pickFromGallery() async {
+    if (_isBusy) {
+      return;
+    }
+
+    setState(() => _isDecoding = true);
+
+    try {
+      final XFile? file = await ImagePicker().pickImage(
+        source: ImageSource.gallery,
+      );
+
+      if (file == null) {
+        return;
+      }
+
+      final Uint8List imageBytes = await file.readAsBytes();
+
+      final Codes codes = await zx.readBarcodesImagePath(
+        file,
+        DecodeParams(
+          format: Format.qrCode,
+          isMultiScan: true,
+          tryHarder: true,
+        ),
+      );
+
+      final List<Code> valid = codes.codes
+          .where(
+              (Code c) => c.isValid && c.text != null && c.text!.isNotEmpty)
+          .toList();
+
+      if (!mounted) {
+        return;
+      }
+
+      if (valid.isEmpty) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(S.of(context).qrCodeNotFoundInImage)),
         );
+        return;
+      }
+
+      if (valid.length == 1) {
+        _hasPopped = true;
+        Navigator.of(context).pop(valid.first.text);
+        return;
+      }
+
+      // Multiple codes – let the user choose.
+      final String? selected = await Navigator.of(context).push<String>(
+        MaterialPageRoute<String>(
+          builder: (BuildContext context) => QrSelectionPage(
+            imageBytes: imageBytes,
+            codes: valid,
+          ),
+        ),
+      );
+
+      if (selected != null && selected.isNotEmpty && mounted) {
+        _hasPopped = true;
+        Navigator.of(context).pop(selected);
       }
     } finally {
       if (mounted) {
@@ -155,6 +217,8 @@ class _QrScannerPageState extends State<QrScannerPage> {
       }
     }
   }
+
+  // ── No-camera fallback UI ───────────────────────────────────────────
 
   Widget _buildNoCameraBody(S s) {
     return Center(
@@ -186,6 +250,8 @@ class _QrScannerPageState extends State<QrScannerPage> {
     );
   }
 
+  // ── Build ───────────────────────────────────────────────────────────
+
   @override
   Widget build(BuildContext context) {
     final S s = S.of(context);
@@ -199,48 +265,60 @@ class _QrScannerPageState extends State<QrScannerPage> {
             ? const Center(child: CircularProgressIndicator())
             : _buildNoCameraBody(s);
       case _CameraState.available:
-        body = _scannerActive
-            ? QRCodeDartScanView(
-                formats: const <BarcodeFormat>[BarcodeFormat.qrCode],
-                onCapture: _onCapture,
-              )
-            : const Center(child: CircularProgressIndicator());
+        if (_hasPopped) {
+          // Camera is being torn down – show a loading indicator instead of
+          // the scanner widget to prevent controller-use-after-dispose errors.
+          body = const Center(child: CircularProgressIndicator());
+        } else {
+          body = ReaderWidget(
+            codeFormat: Format.qrCode,
+            isMultiScan: true,
+            showScannerOverlay: false,
+            showGallery: false,
+            showFlashlight: true,
+            showToggleCamera: false,
+            tryHarder: true,
+            scanDelay: const Duration(milliseconds: 500),
+            scanDelaySuccess: const Duration(milliseconds: 1000),
+            onControllerCreated:
+                (CameraController? controller, Exception? error) {
+              _cameraController = controller;
+              if (mounted) {
+                setState(() {
+                  _cameraState = (error != null || controller == null)
+                      ? _CameraState.unavailable
+                      : _CameraState.available;
+                });
+              }
+            },
+            onMultiScan: _onMultiScan,
+            onMultiScanFailure: (_) {},
+          );
+        }
     }
 
-    return PopScope(
-      canPop: false,
-      onPopInvokedWithResult: (bool didPop, _) {
-        if (!didPop) {
-          _safePopPage();
-        }
-      },
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(s.scanQrCode, style: AppTheme.appBarTheme.titleTextStyle),
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: _safePopPage,
-          ),
-          actions: <Widget>[
-            if (_isDecoding)
-              const Padding(
-                padding: EdgeInsets.all(16.0),
-                child: SizedBox(
-                  width: 20,
-                  height: 20,
-                  child: CircularProgressIndicator(strokeWidth: 2),
-                ),
-              )
-            else if (_cameraState == _CameraState.available)
-              IconButton(
-                icon: const Icon(Icons.photo_library_outlined),
-                tooltip: s.qrCodeFromGallery,
-                onPressed: _pickFromGallery,
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(s.scanQrCode, style: AppTheme.appBarTheme.titleTextStyle),
+        actions: <Widget>[
+          if (_isDecoding || _isCapturing)
+            const Padding(
+              padding: EdgeInsets.all(16.0),
+              child: SizedBox(
+                width: 20,
+                height: 20,
+                child: CircularProgressIndicator(strokeWidth: 2),
               ),
-          ],
-        ),
-        body: body,
+            )
+          else if (_cameraState != _CameraState.checking)
+            IconButton(
+              icon: const Icon(Icons.photo_library_outlined),
+              tooltip: s.qrCodeFromGallery,
+              onPressed: _pickFromGallery,
+            ),
+        ],
       ),
+      body: body,
     );
   }
 }

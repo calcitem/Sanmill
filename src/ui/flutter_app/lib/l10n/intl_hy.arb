@@ -4179,5 +4179,9 @@
     "puzzleQrDataTooLong": "Ընտրված հանելուկները QR կոդի համար չափազանց մեծ են, նույնիսկ սեղմումից հետո: Ընտրեք ավելի քիչ հանելուկներ:",
     "@puzzleQrDataTooLong": {},
     "noCameraAvailable": "Այս սարքում տեսախցիկ հասանելի չէ։ Փոխարենը կարող եք պատկերասրահից ներմուծել QR կոդի պատկեր։",
-    "@noCameraAvailable": {}
+    "@noCameraAvailable": {},
+    "multipleQrCodesDetected": "Հայտնաբերվել է մի քանի QR կոդ. Ընտրելու համար հպեք մեկին.",
+    "@multipleQrCodesDetected": {},
+    "selectQrCode": "Ընտրել QR կոդ",
+    "@selectQrCode": {}
 }

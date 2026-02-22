@@ -4179,5 +4179,9 @@
     "puzzleQrDataTooLong": "Gli enigmi selezionati sono troppo grandi per un codice QR, anche dopo la compressione. Seleziona meno enigmi.",
     "@puzzleQrDataTooLong": {},
     "noCameraAvailable": "Nessuna fotocamera disponibile su questo dispositivo. È possibile importare un'immagine del codice QR dalla galleria.",
-    "@noCameraAvailable": {}
+    "@noCameraAvailable": {},
+    "multipleQrCodesDetected": "Rilevati più codici QR. Tocca uno per selezionarlo.",
+    "@multipleQrCodesDetected": {},
+    "selectQrCode": "Seleziona codice QR",
+    "@selectQrCode": {}
 }
