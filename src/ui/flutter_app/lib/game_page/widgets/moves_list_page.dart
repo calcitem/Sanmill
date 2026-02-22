@@ -2989,7 +2989,7 @@ class MovesListPageState extends State<MovesListPage> {
                   child: Row(
                     children: <Widget>[
                       const Icon(
-                        FluentIcons.qr_code_24_regular,
+                        FluentIcons.scan_camera_24_regular,
                         color: Colors.black54,
                       ),
                       const SizedBox(width: 8),

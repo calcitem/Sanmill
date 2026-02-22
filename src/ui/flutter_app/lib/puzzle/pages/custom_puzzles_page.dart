@@ -135,7 +135,7 @@ class _CustomPuzzlesPageState extends State<CustomPuzzlesPage> {
                       // Scan QR code to import puzzle (mobile only)
                       if (Platform.isAndroid || Platform.isIOS)
                         IconButton(
-                          icon: const Icon(FluentIcons.qr_code_24_regular),
+                          icon: const Icon(FluentIcons.scan_camera_24_regular),
                           onPressed: _scanPuzzleQrCode,
                           tooltip: s.scanQrCode,
                         ),
@@ -267,7 +267,7 @@ class _CustomPuzzlesPageState extends State<CustomPuzzlesPage> {
                 if (Platform.isAndroid || Platform.isIOS)
                   OutlinedButton.icon(
                     onPressed: _scanPuzzleQrCode,
-                    icon: const Icon(FluentIcons.qr_code_24_regular),
+                    icon: const Icon(FluentIcons.scan_camera_24_regular),
                     label: Text(s.scanQrCode),
                   ),
               ],
