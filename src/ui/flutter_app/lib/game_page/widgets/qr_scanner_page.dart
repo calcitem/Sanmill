@@ -277,11 +277,9 @@ class _QrScannerPageState extends State<QrScannerPage> {
             isMultiScan: true,
             showScannerOverlay: false,
             showGallery: false,
-            showFlashlight: true,
             showToggleCamera: false,
             tryHarder: true,
             scanDelay: const Duration(milliseconds: 500),
-            scanDelaySuccess: const Duration(milliseconds: 1000),
             onControllerCreated:
                 (CameraController? controller, Exception? error) {
               _cameraController = controller;

@@ -10,6 +10,7 @@ import 'dart:ui' as ui;
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../appearance_settings/models/display_settings.dart';
 import '../../general_settings/widgets/dialogs/llm_config_dialog.dart';
@@ -30,8 +31,6 @@ import 'active_line_gutter_painter.dart';
 import 'branch_tree_painter.dart';
 import 'cat_fishing_game.dart';
 import 'mini_board.dart';
-import 'package:image_picker/image_picker.dart';
-
 import 'qr_code_dialog.dart';
 import 'qr_image_option_dialog.dart';
 import 'qr_scanner_page.dart';
