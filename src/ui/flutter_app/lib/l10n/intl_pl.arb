@@ -4179,5 +4179,9 @@
     "puzzleQrDataTooLong": "Wybrane łamigłówki są zbyt duże dla kodu QR, nawet po kompresji. Wybierz mniej łamigłówek.",
     "@puzzleQrDataTooLong": {},
     "noCameraAvailable": "Na tym urządzeniu nie jest dostępny aparat. Zamiast tego możesz zaimportować obraz kodu QR z galerii.",
-    "@noCameraAvailable": {}
+    "@noCameraAvailable": {},
+    "multipleQrCodesDetected": "Wykryto wiele kodów QR. Dotnij jednego, aby wybrać.",
+    "@multipleQrCodesDetected": {},
+    "selectQrCode": "Wybierz kod QR",
+    "@selectQrCode": {}
 }

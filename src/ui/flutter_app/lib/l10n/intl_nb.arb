@@ -4179,5 +4179,9 @@
     "puzzleQrDataTooLong": "De valgte puslespillene er for store for en QR-kode, selv etter komprimering. Velg færre puslespill.",
     "@puzzleQrDataTooLong": {},
     "noCameraAvailable": "Ingen kamera tilgjengelig på denne enheten. Du kan i stedet importere et QR-kodebilde fra galleriet.",
-    "@noCameraAvailable": {}
+    "@noCameraAvailable": {},
+    "multipleQrCodesDetected": "Flere QR-koder oppdaget. Trykk på en for å velge.",
+    "@multipleQrCodesDetected": {},
+    "selectQrCode": "Velg QR-kode",
+    "@selectQrCode": {}
 }

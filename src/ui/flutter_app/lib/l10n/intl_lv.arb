@@ -4179,5 +4179,9 @@
     "puzzleQrDataTooLong": "Izvēlētās mīklas ir pārāk lielas QR kodam, pat pēc saspiešanas. Lūdzu, izvēlieties mazāk mīklu.",
     "@puzzleQrDataTooLong": {},
     "noCameraAvailable": "Šajā ierīcē nav pieejama kamera. Tā vietā varat importēt QR koda attēlu no galerijas.",
-    "@noCameraAvailable": {}
+    "@noCameraAvailable": {},
+    "multipleQrCodesDetected": "Atklāti vairāki QR kodi. Pieskarieties vienam, lai atlasītu.",
+    "@multipleQrCodesDetected": {},
+    "selectQrCode": "Atlasiet QR kodu",
+    "@selectQrCode": {}
 }

@@ -4179,5 +4179,9 @@
     "puzzleQrDataTooLong": "Die geselekteerde legkaartstukke is te groot vir 'n QR-kode, selfs na kompressie. Kies asseblief minder legkaartstukke.",
     "@puzzleQrDataTooLong": {},
     "noCameraAvailable": "Geen kamera beskikbaar op hierdie toestel. U kan eerder 'n QR-kodebeeld uit die galery invoer.",
-    "@noCameraAvailable": {}
+    "@noCameraAvailable": {},
+    "multipleQrCodesDetected": "Verskeie QR-kodes bespeur. Tik op een om te kies.",
+    "@multipleQrCodesDetected": {},
+    "selectQrCode": "Kies QR-kode",
+    "@selectQrCode": {}
 }

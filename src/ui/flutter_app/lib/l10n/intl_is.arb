@@ -4179,5 +4179,9 @@
     "puzzleQrDataTooLong": "Valdar þrautar eru of stórar fyrir QR kóða, jafnvel eftir þjöppun. Vinsamlegast veldu færri þrautar.",
     "@puzzleQrDataTooLong": {},
     "noCameraAvailable": "Ekkert myndavél er tiltækt á þessu tæki. Þú getur í staðinn flutt inn QR-kóðamynd úr myndasafninu.",
-    "@noCameraAvailable": {}
+    "@noCameraAvailable": {},
+    "multipleQrCodesDetected": "Margir QR-kóðar fundust. Yfildráttu á einn til að velja.",
+    "@multipleQrCodesDetected": {},
+    "selectQrCode": "Veldu QR-kóða",
+    "@selectQrCode": {}
 }

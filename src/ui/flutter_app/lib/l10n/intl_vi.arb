@@ -4183,5 +4183,9 @@
     "puzzleQrDataTooLong": "Các câu đố đã chọn quá lớn cho mã QR, ngay cả sau khi nén. Vui lòng chọn ít câu đố hơn.",
     "@puzzleQrDataTooLong": {},
     "noCameraAvailable": "Không có camera trên thiết bị này. Bạn có thể nhập ảnh mã QR từ thư viện ảnh để thay thế.",
-    "@noCameraAvailable": {}
+    "@noCameraAvailable": {},
+    "multipleQrCodesDetected": "Phát hiện nhiều mã QR. Nhấn vào một mã để chọn.",
+    "@multipleQrCodesDetected": {},
+    "selectQrCode": "Chọn mã QR",
+    "@selectQrCode": {}
 }

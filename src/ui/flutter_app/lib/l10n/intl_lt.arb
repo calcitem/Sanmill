@@ -4179,5 +4179,9 @@
     "puzzleQrDataTooLong": "Pasirinkti galvosūkiai yra per dideli QR kodui net po suspaudimo. Pasirinkite mažiau galvosūkių.",
     "@puzzleQrDataTooLong": {},
     "noCameraAvailable": "Šiame įrenginyje nėra kameros. Vietoj to galite importuoti QR kodo vaizdą iš galerijos.",
-    "@noCameraAvailable": {}
+    "@noCameraAvailable": {},
+    "multipleQrCodesDetected": "Aptikti keli QR kodai. Palieskite vieną, kad pasirinktumėte.",
+    "@multipleQrCodesDetected": {},
+    "selectQrCode": "Pasirinkite QR kodą",
+    "@selectQrCode": {}
 }

@@ -3471,5 +3471,9 @@
     "puzzleQrDataTooLong": "Die ausgewählten Rätsel sind zu groß für einen QR-Code, auch nach der Komprimierung. Bitte wählen Sie weniger Rätsel aus.",
     "@puzzleQrDataTooLong": {},
     "noCameraAvailable": "Auf diesem Gerät ist keine Kamera verfügbar. Sie können stattdessen ein QR-Code-Bild aus der Galerie importieren.",
-    "@noCameraAvailable": {}
+    "@noCameraAvailable": {},
+    "multipleQrCodesDetected": "Mehrere QR-Codes erkannt. Tippen Sie auf einen, um ihn auszuwählen.",
+    "@multipleQrCodesDetected": {},
+    "selectQrCode": "QR-Code auswählen",
+    "@selectQrCode": {}
 }

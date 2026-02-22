@@ -4179,5 +4179,9 @@
     "puzzleQrDataTooLong": "De valda pusslen är för stora för en QR-kod även efter komprimering. Välj färre pussel.",
     "@puzzleQrDataTooLong": {},
     "noCameraAvailable": "Ingen kamera tillgänglig på den här enheten. Du kan istället importera en QR-kodbild från galleriet.",
-    "@noCameraAvailable": {}
+    "@noCameraAvailable": {},
+    "multipleQrCodesDetected": "Flera QR-koder hittades. Tryck på en för att välja.",
+    "@multipleQrCodesDetected": {},
+    "selectQrCode": "Välj QR-kod",
+    "@selectQrCode": {}
 }

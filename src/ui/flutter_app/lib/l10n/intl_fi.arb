@@ -4179,5 +4179,9 @@
     "puzzleQrDataTooLong": "Valitut palapelit ovat liian suuria QR-koodille, jopa pakkauksen jälkeen. Valitse vähemmän palapelejä.",
     "@puzzleQrDataTooLong": {},
     "noCameraAvailable": "Tässä laitteessa ei ole kameraa. Voit sen sijaan tuoda QR-koodikuvan galleriasta.",
-    "@noCameraAvailable": {}
+    "@noCameraAvailable": {},
+    "multipleQrCodesDetected": "Useita QR-koodeja havaittu. Valitse napauttamalla yhtä.",
+    "@multipleQrCodesDetected": {},
+    "selectQrCode": "Valitse QR-koodi",
+    "@selectQrCode": {}
 }

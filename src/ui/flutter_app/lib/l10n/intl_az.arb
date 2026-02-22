@@ -4179,5 +4179,9 @@
     "puzzleQrDataTooLong": "Seçilmiş tapmacalar sıxışdırmadan sonra belə QR kodu üçün çox böyükdür. Zəhmət olmasa daha az tapmaca seçin.",
     "@puzzleQrDataTooLong": {},
     "noCameraAvailable": "Bu cihazda kamera mövcud deyil. Əvəzinə qalereyadan QR kod şəklini idxal edə bilərsiniz.",
-    "@noCameraAvailable": {}
+    "@noCameraAvailable": {},
+    "multipleQrCodesDetected": "Birdən çox QR kod aşkarlandı. Birini seçmək üçün toxunun.",
+    "@multipleQrCodesDetected": {},
+    "selectQrCode": "QR kodu seçin",
+    "@selectQrCode": {}
 }

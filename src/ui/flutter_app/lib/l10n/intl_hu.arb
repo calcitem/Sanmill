@@ -3436,5 +3436,9 @@
     "puzzleQrDataTooLong": "A kiválasztott rejtvények tömörítés után is túl nagyok a QR-kódhoz. Kérjük, válasszon kevesebb rejtvényt.",
     "@puzzleQrDataTooLong": {},
     "noCameraAvailable": "Ezen az eszközön nem érhető el kamera. Ehelyett importálhat egy QR-kód képet a galériából.",
-    "@noCameraAvailable": {}
+    "@noCameraAvailable": {},
+    "multipleQrCodesDetected": "Több QR-kód észlelve. Koppintson egyre a kiválasztáshoz.",
+    "@multipleQrCodesDetected": {},
+    "selectQrCode": "QR-kód kiválasztása",
+    "@selectQrCode": {}
 }

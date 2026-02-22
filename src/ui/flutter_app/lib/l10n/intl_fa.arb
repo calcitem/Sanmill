@@ -4179,5 +4179,9 @@
     "puzzleQrDataTooLong": "معماهای انتخاب‌شده حتی پس از فشرده‌سازی برای کد QR بیش از حد بزرگ هستند. لطفاً تعداد کمتری معما انتخاب کنید.",
     "@puzzleQrDataTooLong": {},
     "noCameraAvailable": "دوربینی در این دستگاه موجود نیست. می‌توانید به جای آن یک تصویر کد QR را از گالری وارد کنید.",
-    "@noCameraAvailable": {}
+    "@noCameraAvailable": {},
+    "multipleQrCodesDetected": "چندین کد QR شناسایی شد. برای انتخاب روی یکی ضربه بزنید.",
+    "@multipleQrCodesDetected": {},
+    "selectQrCode": "انتخاب کد QR",
+    "@selectQrCode": {}
 }

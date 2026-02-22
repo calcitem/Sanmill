@@ -4179,5 +4179,9 @@
     "puzzleQrDataTooLong": "Valitud mõistatused on QR-koodi jaoks liiga suured, isegi pärast tihendamist. Palun valige vähem mõistatusi.",
     "@puzzleQrDataTooLong": {},
     "noCameraAvailable": "Selles seadmes pole kaamerat saadaval. Selle asemel saate galeriist QR-koodi pildi importida.",
-    "@noCameraAvailable": {}
+    "@noCameraAvailable": {},
+    "multipleQrCodesDetected": "Leiti mitu QR-koodi. Valimiseks puudutage ühte.",
+    "@multipleQrCodesDetected": {},
+    "selectQrCode": "Valige QR-kood",
+    "@selectQrCode": {}
 }

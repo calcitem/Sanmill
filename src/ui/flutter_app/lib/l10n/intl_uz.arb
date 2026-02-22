@@ -4183,5 +4183,9 @@
     "puzzleQrDataTooLong": "Tanlangan jumboqlar siqishdan keyin ham QR kod uchun juda katta. Iltimos, kamroq jumboq tanlang.",
     "@puzzleQrDataTooLong": {},
     "noCameraAvailable": "Bu qurilmada kamera mavjud emas. Buning o'rniga galereyadan QR kod rasmini import qilishingiz mumkin.",
-    "@noCameraAvailable": {}
+    "@noCameraAvailable": {},
+    "multipleQrCodesDetected": "Bir nechta QR kod aniqlandi. Tanlash uchun biriga bosing.",
+    "@multipleQrCodesDetected": {},
+    "selectQrCode": "QR kodni tanlang",
+    "@selectQrCode": {}
 }

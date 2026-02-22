@@ -4219,5 +4219,9 @@
     "puzzleQrDataTooLong": "所选谜题过多，即使压缩也无法生成二维码。请选择较少的谜题。",
     "@puzzleQrDataTooLong": {},
     "noCameraAvailable": "此设备没有可用的相机，您可以从相册导入二维码图片。",
-    "@noCameraAvailable": {}
+    "@noCameraAvailable": {},
+    "multipleQrCodesDetected": "检测到多个二维码，请点击选择一个。",
+    "@multipleQrCodesDetected": {},
+    "selectQrCode": "选择二维码",
+    "@selectQrCode": {}
 }

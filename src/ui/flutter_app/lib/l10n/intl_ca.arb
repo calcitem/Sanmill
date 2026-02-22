@@ -4179,5 +4179,9 @@
     "puzzleQrDataTooLong": "Els trencaclosques seleccionats són massa grans per a un codi QR, fins i tot després de la compressió. Seleccioneu menys trencaclosques.",
     "@puzzleQrDataTooLong": {},
     "noCameraAvailable": "No hi ha cap càmera disponible en aquest dispositiu. Podeu importar una imatge de codi QR des de la galeria.",
-    "@noCameraAvailable": {}
+    "@noCameraAvailable": {},
+    "multipleQrCodesDetected": "S'han detectat diversos codis QR. Toqueu-ne un per seleccionar-lo.",
+    "@multipleQrCodesDetected": {},
+    "selectQrCode": "Seleccioneu un codi QR",
+    "@selectQrCode": {}
 }

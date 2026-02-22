@@ -4179,5 +4179,9 @@
     "puzzleQrDataTooLong": "Teka-teki yang dipilih terlalu besar untuk kode QR, bahkan setelah kompresi. Silakan pilih lebih sedikit teka-teki.",
     "@puzzleQrDataTooLong": {},
     "noCameraAvailable": "Tidak ada kamera yang tersedia di perangkat ini. Anda dapat mengimpor gambar kode QR dari galeri sebagai gantinya.",
-    "@noCameraAvailable": {}
+    "@noCameraAvailable": {},
+    "multipleQrCodesDetected": "Beberapa kode QR terdeteksi. Ketuk salah satu untuk memilih.",
+    "@multipleQrCodesDetected": {},
+    "selectQrCode": "Pilih kode QR",
+    "@selectQrCode": {}
 }

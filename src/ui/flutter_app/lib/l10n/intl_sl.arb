@@ -4179,5 +4179,9 @@
     "puzzleQrDataTooLong": "Izbrane uganke so prevelike za QR kodo, tudi po stiskanju. Izberite manj ugank.",
     "@puzzleQrDataTooLong": {},
     "noCameraAvailable": "Na tej napravi ni na voljo nobena kamera. Namesto tega lahko uvozite sliko QR-kode iz galerije.",
-    "@noCameraAvailable": {}
+    "@noCameraAvailable": {},
+    "multipleQrCodesDetected": "Zaznanih je več QR kod. Tapnite eno za izbiro.",
+    "@multipleQrCodesDetected": {},
+    "selectQrCode": "Izberite QR kodo",
+    "@selectQrCode": {}
 }

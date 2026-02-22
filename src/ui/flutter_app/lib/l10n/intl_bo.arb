@@ -4179,5 +4179,9 @@
     "puzzleQrDataTooLong": "གདམས་ཤོག་གི་དེབ་ཐུངས་ QR ཨང་གྲངས་ལ་སྦྲིལ་ཀྱང་ཆེ་བས། དེབ་ཐུངས་ཉུང་ཤས་གདམ་རོགས།",
     "@puzzleQrDataTooLong": {},
     "noCameraAvailable": "སྒྲིག་ཆས་འདིར་པར་ཆས་མེད། ཁྱེད་ཀྱིས་པར་མཛོད་ནས་QR ཨང་རྟགས་ཀྱི་པར་རིས་ནང་འདྲེན་བྱེད་ཆོག",
-    "@noCameraAvailable": {}
+    "@noCameraAvailable": {},
+    "multipleQrCodesDetected": "QR ཨང་རྟགས་མང་པོ་ཞིག་རྙེད་སོང་། གཅིག་འདེམས་པར་མནན་རོགས་།",
+    "@multipleQrCodesDetected": {},
+    "selectQrCode": "QR ཨང་རྟགས་འདེམས་།",
+    "@selectQrCode": {}
 }

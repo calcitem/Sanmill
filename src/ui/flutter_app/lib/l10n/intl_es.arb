@@ -4179,5 +4179,9 @@
     "puzzleQrDataTooLong": "Los rompecabezas seleccionados son demasiado grandes para un código QR, incluso después de la compresión. Por favor, seleccione menos rompecabezas.",
     "@puzzleQrDataTooLong": {},
     "noCameraAvailable": "No hay cámara disponible en este dispositivo. Puede importar una imagen de código QR desde la galería.",
-    "@noCameraAvailable": {}
+    "@noCameraAvailable": {},
+    "multipleQrCodesDetected": "Se detectaron varios códigos QR. Toque uno para seleccionar.",
+    "@multipleQrCodesDetected": {},
+    "selectQrCode": "Seleccionar código QR",
+    "@selectQrCode": {}
 }

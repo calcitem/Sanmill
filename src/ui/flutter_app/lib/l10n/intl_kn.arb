@@ -4179,5 +4179,9 @@
     "puzzleQrDataTooLong": "ಆಯ್ಕೆ ಮಾಡಿದ ಒಗಟುಗಳು ಸಂಕೋಚನದ ನಂತರವೂ QR ಕೋಡ್‌ಗೆ ತುಂಬಾ ದೊಡ್ಡದಾಗಿವೆ. ದಯವಿಟ್ಟು ಕಡಿಮೆ ಒಗಟುಗಳನ್ನು ಆಯ್ಕೆ ಮಾಡಿ.",
     "@puzzleQrDataTooLong": {},
     "noCameraAvailable": "ಈ ಸಾಧನದಲ್ಲಿ ಕ್ಯಾಮೆರಾ ಲಭ್ಯವಿಲ್ಲ. ಬದಲಾಗಿ ನೀವು ಗ್ಯಾಲರಿಯಿಂದ QR ಕೋಡ್ ಚಿತ್ರವನ್ನು ಆಮದು ಮಾಡಿಕೊಳ್ಳಬಹುದು.",
-    "@noCameraAvailable": {}
+    "@noCameraAvailable": {},
+    "multipleQrCodesDetected": "ಹಲವು QR ಕೋಡ್‌ಗಳು ಪತ್ತೆಯಾಗಿವೆ. ಆಯ್ಕೆ ಮಾಡಲು ಒಂದನ್ನು ಟ್ಯಾಪ್ ಮಾಡಿ.",
+    "@multipleQrCodesDetected": {},
+    "selectQrCode": "QR ಕೋಡ್ ಆಯ್ಕೆಮಾಡಿ",
+    "@selectQrCode": {}
 }

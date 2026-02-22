@@ -4179,5 +4179,9 @@
     "puzzleQrDataTooLong": "Seçilen bulmacalar sıkıştırma sonrasında bile QR kod için çok büyük. Daha az bulmaca seçin.",
     "@puzzleQrDataTooLong": {},
     "noCameraAvailable": "Bu cihazda kamera mevcut değil. Bunun yerine galeriden bir QR kod görüntüsü içe aktarabilirsiniz.",
-    "@noCameraAvailable": {}
+    "@noCameraAvailable": {},
+    "multipleQrCodesDetected": "Birden fazla QR kod algılandı. Seçmek için birine dokunun.",
+    "@multipleQrCodesDetected": {},
+    "selectQrCode": "QR kodu seçin",
+    "@selectQrCode": {}
 }

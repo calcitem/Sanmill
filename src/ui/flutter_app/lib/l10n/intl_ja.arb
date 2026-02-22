@@ -4179,5 +4179,9 @@
     "puzzleQrDataTooLong": "選択したパズルは圧縮後もQRコードには大きすぎます。パズルの数を減らしてください。",
     "@puzzleQrDataTooLong": {},
     "noCameraAvailable": "このデバイスではカメラが利用できません。代わりにギャラリーから QR コード画像をインポートできます。",
-    "@noCameraAvailable": {}
+    "@noCameraAvailable": {},
+    "multipleQrCodesDetected": "複数のQRコードが検出されました。いずれかをタップして選択してください。",
+    "@multipleQrCodesDetected": {},
+    "selectQrCode": "QRコードを選択",
+    "@selectQrCode": {}
 }

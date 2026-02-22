@@ -4199,5 +4199,9 @@
     "puzzleQrDataTooLong": "所選謎題過多，即使壓縮也無法生成二維碼。請選擇較少的謎題。",
     "@puzzleQrDataTooLong": {},
     "noCameraAvailable": "此裝置沒有可用的相機，您可以從相簿匯入 QR 碼圖片。",
-    "@noCameraAvailable": {}
+    "@noCameraAvailable": {},
+    "multipleQrCodesDetected": "偵測到多個 QR 碼，請點擊選擇一個。",
+    "@multipleQrCodesDetected": {},
+    "selectQrCode": "選擇 QR 碼",
+    "@selectQrCode": {}
 }

@@ -4183,5 +4183,9 @@
     "puzzleQrDataTooLong": "منتخب کردہ پہیلیاں کمپریشن کے بعد بھی QR کوڈ کے لیے بہت بڑی ہیں۔ براہ کرم کم پہیلیاں منتخب کریں۔",
     "@puzzleQrDataTooLong": {},
     "noCameraAvailable": "اس آلے پر کوئی کیمرا دستیاب نہیں ہے۔ آپ اس کے بجائے گیلری سے QR کوڈ کی تصویر درآمد کر سکتے ہیں۔",
-    "@noCameraAvailable": {}
+    "@noCameraAvailable": {},
+    "multipleQrCodesDetected": "متعدد QR کوڈز کا پتا چلا۔ منتخب کرنے کے لیے ایک پر ٹیپ کریں۔",
+    "@multipleQrCodesDetected": {},
+    "selectQrCode": "QR کوڈ منتخب کریں",
+    "@selectQrCode": {}
 }

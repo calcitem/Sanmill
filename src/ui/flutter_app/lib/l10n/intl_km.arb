@@ -4179,5 +4179,9 @@
     "puzzleQrDataTooLong": "ល្បែងផ្គុំរូបដែលបានជ្រើសរើសមានទំហំធំពេក សម្រាប់កូដ QR ទោះបីបន្ទាប់ពីការបង្ហាប់ក៏ដោយ។ សូមជ្រើសរើសល្បែងផ្គុំរូបតិចជាង។",
     "@puzzleQrDataTooLong": {},
     "noCameraAvailable": "មិនមានកាមេរ៉ានៅលើឧបករណ៍នេះទេ។ អ្នកអាចនាំចូលរូបភាព QR កូដពីវិចិត្រសាលជំនួសវិញ។",
-    "@noCameraAvailable": {}
+    "@noCameraAvailable": {},
+    "multipleQrCodesDetected": "រកឃើញកូដ QR ច្រើន។ ចុចមួយដើម្បីជ្រើសរើស។",
+    "@multipleQrCodesDetected": {},
+    "selectQrCode": "ជ្រើសរើសកូដ QR",
+    "@selectQrCode": {}
 }

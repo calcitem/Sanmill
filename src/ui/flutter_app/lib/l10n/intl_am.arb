@@ -4179,5 +4179,9 @@
     "puzzleQrDataTooLong": "የተመረጡት ጨዋታዎች ለQR ኮድ በጣም ትልቅ ናቸው፣ ከጭምቅ በኋላም ቢሆን። ጥቂት ጨዋታዎችን ይምረጡ።",
     "@puzzleQrDataTooLong": {},
     "noCameraAvailable": "በዚህ መሣሪያ ላይ ካሜራ አይገኝም። ከማዕከለ-ስዕላት ላይ የ QR ኮድ ምስል ማስገባት ይችላሉ።",
-    "@noCameraAvailable": {}
+    "@noCameraAvailable": {},
+    "multipleQrCodesDetected": "በርካታ የQR ኮዶች ተገኝተዋል። አንዱን ለመምረጥ ይንኩ።",
+    "@multipleQrCodesDetected": {},
+    "selectQrCode": "QR ኮድ ይምረጡ",
+    "@selectQrCode": {}
 }

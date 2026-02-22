@@ -4179,5 +4179,9 @@
     "puzzleQrDataTooLong": "Изабране загонетке су превелике за QR код чак и после компресије. Изаберите мање загонетки.",
     "@puzzleQrDataTooLong": {},
     "noCameraAvailable": "На овом уређају нема доступне камере. Уместо тога можете увести слику QR кода из галерије.",
-    "@noCameraAvailable": {}
+    "@noCameraAvailable": {},
+    "multipleQrCodesDetected": "Откривено је више QR кодова. Додирните један за избор.",
+    "@multipleQrCodesDetected": {},
+    "selectQrCode": "Изаберите QR код",
+    "@selectQrCode": {}
 }
