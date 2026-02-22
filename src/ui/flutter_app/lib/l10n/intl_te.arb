@@ -4183,5 +4183,13 @@
     "multipleQrCodesDetected": "బహుళ QR కోడ్‌లు గుర్తించబడ్డాయి. ఎంచుకోవడానికి ఒకదాన్ని ట్యాప్ చేయండి.",
     "@multipleQrCodesDetected": {},
     "selectQrCode": "QR కోడ్ ఎంచుకోండి",
-    "@selectQrCode": {}
+    "@selectQrCode": {},
+    "qrImageOptionNone": "చిత్రం లేదు",
+    "@qrImageOptionNone": {},
+    "qrImageOptionBoard": "ప్రస్తుత బోర్డ్",
+    "@qrImageOptionBoard": {},
+    "qrImageOptionCustom": "చిత్రం ఎంచుకోండి…",
+    "@qrImageOptionCustom": {},
+    "qrImageOptionDataTooLong": "చిత్రాన్ని పొందుపరచడానికి డేటా చాలా పెద్దది",
+    "@qrImageOptionDataTooLong": {}
 }

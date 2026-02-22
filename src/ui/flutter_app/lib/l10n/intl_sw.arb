@@ -4183,5 +4183,13 @@
     "multipleQrCodesDetected": "Misimbo mingi ya QR imegunduliwa. Gusa moja ili kuchagua.",
     "@multipleQrCodesDetected": {},
     "selectQrCode": "Chagua msimbo wa QR",
-    "@selectQrCode": {}
+    "@selectQrCode": {},
+    "qrImageOptionNone": "Bila picha",
+    "@qrImageOptionNone": {},
+    "qrImageOptionBoard": "Ubao wa sasa",
+    "@qrImageOptionBoard": {},
+    "qrImageOptionCustom": "Chagua picha…",
+    "@qrImageOptionCustom": {},
+    "qrImageOptionDataTooLong": "Data ni kubwa sana kuweka picha",
+    "@qrImageOptionDataTooLong": {}
 }

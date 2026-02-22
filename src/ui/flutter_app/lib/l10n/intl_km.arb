@@ -4183,5 +4183,13 @@
     "multipleQrCodesDetected": "រកឃើញកូដ QR ច្រើន។ ចុចមួយដើម្បីជ្រើសរើស។",
     "@multipleQrCodesDetected": {},
     "selectQrCode": "ជ្រើសរើសកូដ QR",
-    "@selectQrCode": {}
+    "@selectQrCode": {},
+    "qrImageOptionNone": "គ្មានរូបភាព",
+    "@qrImageOptionNone": {},
+    "qrImageOptionBoard": "ក្តារបច្ចុប្បន្ន",
+    "@qrImageOptionBoard": {},
+    "qrImageOptionCustom": "ជ្រើសរើសរូបភាព…",
+    "@qrImageOptionCustom": {},
+    "qrImageOptionDataTooLong": "ទិន្នន័យធំពេកមិនអាចបង្កប់រូបភាពបាន",
+    "@qrImageOptionDataTooLong": {}
 }

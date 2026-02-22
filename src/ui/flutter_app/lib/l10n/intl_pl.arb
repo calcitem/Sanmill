@@ -4183,5 +4183,13 @@
     "multipleQrCodesDetected": "Wykryto wiele kodów QR. Dotnij jednego, aby wybrać.",
     "@multipleQrCodesDetected": {},
     "selectQrCode": "Wybierz kod QR",
-    "@selectQrCode": {}
+    "@selectQrCode": {},
+    "qrImageOptionNone": "Bez obrazu",
+    "@qrImageOptionNone": {},
+    "qrImageOptionBoard": "Aktualna plansza",
+    "@qrImageOptionBoard": {},
+    "qrImageOptionCustom": "Wybierz obraz…",
+    "@qrImageOptionCustom": {},
+    "qrImageOptionDataTooLong": "Dane są zbyt duże, aby osadzić obraz",
+    "@qrImageOptionDataTooLong": {}
 }

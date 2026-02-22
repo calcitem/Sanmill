@@ -4183,5 +4183,13 @@
     "multipleQrCodesDetected": "U zbuluan disa kode QR. Prekni njërën për ta zgjedhur.",
     "@multipleQrCodesDetected": {},
     "selectQrCode": "Zgjidhni kodin QR",
-    "@selectQrCode": {}
+    "@selectQrCode": {},
+    "qrImageOptionNone": "Pa imazh",
+    "@qrImageOptionNone": {},
+    "qrImageOptionBoard": "Tabela aktuale",
+    "@qrImageOptionBoard": {},
+    "qrImageOptionCustom": "Zgjidhni imazhin…",
+    "@qrImageOptionCustom": {},
+    "qrImageOptionDataTooLong": "Të dhënat janë shumë të mëdha për të ngulitur një imazh",
+    "@qrImageOptionDataTooLong": {}
 }

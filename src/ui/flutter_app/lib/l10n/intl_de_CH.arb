@@ -3475,5 +3475,13 @@
     "multipleQrCodesDetected": "Mehrere QR-Codes erkannt. Tippen Sie auf einen, um ihn auszuwählen.",
     "@multipleQrCodesDetected": {},
     "selectQrCode": "QR-Code auswählen",
-    "@selectQrCode": {}
+    "@selectQrCode": {},
+    "qrImageOptionNone": "Kein Bild",
+    "@qrImageOptionNone": {},
+    "qrImageOptionBoard": "Aktuelles Spielbrett",
+    "@qrImageOptionBoard": {},
+    "qrImageOptionCustom": "Bild auswählen…",
+    "@qrImageOptionCustom": {},
+    "qrImageOptionDataTooLong": "Daten zu gross für ein eingebettetes Bild",
+    "@qrImageOptionDataTooLong": {}
 }

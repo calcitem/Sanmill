@@ -4203,5 +4203,13 @@
     "multipleQrCodesDetected": "偵測到多個 QR 碼，請點擊選擇一個。",
     "@multipleQrCodesDetected": {},
     "selectQrCode": "選擇 QR 碼",
-    "@selectQrCode": {}
+    "@selectQrCode": {},
+    "qrImageOptionNone": "無圖片",
+    "@qrImageOptionNone": {},
+    "qrImageOptionBoard": "當前棋盤",
+    "@qrImageOptionBoard": {},
+    "qrImageOptionCustom": "選擇圖片…",
+    "@qrImageOptionCustom": {},
+    "qrImageOptionDataTooLong": "資料過大，無法嵌入圖片",
+    "@qrImageOptionDataTooLong": {}
 }

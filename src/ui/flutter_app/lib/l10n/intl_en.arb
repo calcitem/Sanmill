@@ -4315,5 +4315,21 @@
     "selectQrCode": "Select QR Code",
     "@selectQrCode": {
         "description": "Title for the QR code selection page when multiple codes are detected"
+    },
+    "qrImageOptionNone": "No image",
+    "@qrImageOptionNone": {
+        "description": "Option to export QR code without any embedded image"
+    },
+    "qrImageOptionBoard": "Current board",
+    "@qrImageOptionBoard": {
+        "description": "Option to embed the current board position in the QR code"
+    },
+    "qrImageOptionCustom": "Choose image...",
+    "@qrImageOptionCustom": {
+        "description": "Option to pick a custom image from gallery to embed in the QR code"
+    },
+    "qrImageOptionDataTooLong": "Data too large to embed an image",
+    "@qrImageOptionDataTooLong": {
+        "description": "Hint shown when QR data exceeds the capacity for embedded images"
     }
 }

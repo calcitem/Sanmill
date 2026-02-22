@@ -4183,5 +4183,13 @@
     "multipleQrCodesDetected": "Leiti mitu QR-koodi. Valimiseks puudutage ühte.",
     "@multipleQrCodesDetected": {},
     "selectQrCode": "Valige QR-kood",
-    "@selectQrCode": {}
+    "@selectQrCode": {},
+    "qrImageOptionNone": "Ilma pildita",
+    "@qrImageOptionNone": {},
+    "qrImageOptionBoard": "Praegune laud",
+    "@qrImageOptionBoard": {},
+    "qrImageOptionCustom": "Valige pilt…",
+    "@qrImageOptionCustom": {},
+    "qrImageOptionDataTooLong": "Andmed on pildi manustamiseks liiga suured",
+    "@qrImageOptionDataTooLong": {}
 }

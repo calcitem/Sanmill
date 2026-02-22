@@ -4183,5 +4183,13 @@
     "multipleQrCodesDetected": "זוהו מספר קודי QR. הקש על אחד כדי לבחור.",
     "@multipleQrCodesDetected": {},
     "selectQrCode": "בחירת קוד QR",
-    "@selectQrCode": {}
+    "@selectQrCode": {},
+    "qrImageOptionNone": "ללא תמונה",
+    "@qrImageOptionNone": {},
+    "qrImageOptionBoard": "לוח נוכחי",
+    "@qrImageOptionBoard": {},
+    "qrImageOptionCustom": "בחירת תמונה…",
+    "@qrImageOptionCustom": {},
+    "qrImageOptionDataTooLong": "הנתונים גדולים מדי להטמעת תמונה",
+    "@qrImageOptionDataTooLong": {}
 }

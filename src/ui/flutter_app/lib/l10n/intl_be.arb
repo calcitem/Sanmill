@@ -4183,5 +4183,13 @@
     "multipleQrCodesDetected": "Выяўлена некалькі QR-кодаў. Дакраніцеся, каб выбраць.",
     "@multipleQrCodesDetected": {},
     "selectQrCode": "Выбраць QR-код",
-    "@selectQrCode": {}
+    "@selectQrCode": {},
+    "qrImageOptionNone": "Без выявы",
+    "@qrImageOptionNone": {},
+    "qrImageOptionBoard": "Паточная дошка",
+    "@qrImageOptionBoard": {},
+    "qrImageOptionCustom": "Выбраць выяву…",
+    "@qrImageOptionCustom": {},
+    "qrImageOptionDataTooLong": "Дадзеныя занадта вялікія для ўстаўкі выявы",
+    "@qrImageOptionDataTooLong": {}
 }

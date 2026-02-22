@@ -4183,5 +4183,13 @@
     "multipleQrCodesDetected": "QR ཨང་རྟགས་མང་པོ་ཞིག་རྙེད་སོང་། གཅིག་འདེམས་པར་མནན་རོགས་།",
     "@multipleQrCodesDetected": {},
     "selectQrCode": "QR ཨང་རྟགས་འདེམས་།",
-    "@selectQrCode": {}
+    "@selectQrCode": {},
+    "qrImageOptionNone": "རི་མོ་མེད",
+    "@qrImageOptionNone": {},
+    "qrImageOptionBoard": "ད་ལྟའི་ངོས་པང",
+    "@qrImageOptionBoard": {},
+    "qrImageOptionCustom": "རི་མོ་འདེམས…",
+    "@qrImageOptionCustom": {},
+    "qrImageOptionDataTooLong": "གཞི་ཆ་རི་མོ་འཞག་པའི་ཆེད་དུ་ཆེ་དརག་པོ",
+    "@qrImageOptionDataTooLong": {}
 }

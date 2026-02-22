@@ -4183,5 +4183,13 @@
     "multipleQrCodesDetected": "အများအပြား QR ကုဒ်များ တွေ့ရှိပြီး တစ်ခု ရွေးချယ်ရန် နှိပ်ပါ။",
     "@multipleQrCodesDetected": {},
     "selectQrCode": "QR ကုဒ် ရွေးချယ်ပါ",
-    "@selectQrCode": {}
+    "@selectQrCode": {},
+    "qrImageOptionNone": "ပုံမပါ",
+    "@qrImageOptionNone": {},
+    "qrImageOptionBoard": "လက်ရှိစားပွဲ",
+    "@qrImageOptionBoard": {},
+    "qrImageOptionCustom": "ပုံရွေးချယ်ပါ…",
+    "@qrImageOptionCustom": {},
+    "qrImageOptionDataTooLong": "ပုံထည့်ရန် ဒေတာအလွန်ကြီးလွန်းပါတယ်",
+    "@qrImageOptionDataTooLong": {}
 }

@@ -4183,5 +4183,13 @@
     "multipleQrCodesDetected": "একাধিক QR কোড সনাক্ত হয়েছে। একটি নির্বাচন করতে ট্যাপ করুন।",
     "@multipleQrCodesDetected": {},
     "selectQrCode": "QR কোড নির্বাচন করুন",
-    "@selectQrCode": {}
+    "@selectQrCode": {},
+    "qrImageOptionNone": "ছবি ছাড়া",
+    "@qrImageOptionNone": {},
+    "qrImageOptionBoard": "বর্তমান বোর্ড",
+    "@qrImageOptionBoard": {},
+    "qrImageOptionCustom": "ছবি নির্বাচন করুন…",
+    "@qrImageOptionCustom": {},
+    "qrImageOptionDataTooLong": "ছবি যুক্ত করতে ডেটা অত্যন্ত বড়",
+    "@qrImageOptionDataTooLong": {}
 }

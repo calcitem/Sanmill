@@ -4183,5 +4183,13 @@
     "multipleQrCodesDetected": "S'han detectat diversos codis QR. Toqueu-ne un per seleccionar-lo.",
     "@multipleQrCodesDetected": {},
     "selectQrCode": "Seleccioneu un codi QR",
-    "@selectQrCode": {}
+    "@selectQrCode": {},
+    "qrImageOptionNone": "Sense imatge",
+    "@qrImageOptionNone": {},
+    "qrImageOptionBoard": "Tauler actual",
+    "@qrImageOptionBoard": {},
+    "qrImageOptionCustom": "Trieu una imatge…",
+    "@qrImageOptionCustom": {},
+    "qrImageOptionDataTooLong": "Les dades són massa grans per incrustar una imatge",
+    "@qrImageOptionDataTooLong": {}
 }

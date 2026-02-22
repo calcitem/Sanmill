@@ -4183,5 +4183,13 @@
     "multipleQrCodesDetected": "Useita QR-koodeja havaittu. Valitse napauttamalla yhtä.",
     "@multipleQrCodesDetected": {},
     "selectQrCode": "Valitse QR-koodi",
-    "@selectQrCode": {}
+    "@selectQrCode": {},
+    "qrImageOptionNone": "Ei kuvaa",
+    "@qrImageOptionNone": {},
+    "qrImageOptionBoard": "Nykyinen lauta",
+    "@qrImageOptionBoard": {},
+    "qrImageOptionCustom": "Valitse kuva…",
+    "@qrImageOptionCustom": {},
+    "qrImageOptionDataTooLong": "Tiedot ovat liian suuret kuvan upottamiseen",
+    "@qrImageOptionDataTooLong": {}
 }

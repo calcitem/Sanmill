@@ -4187,5 +4187,13 @@
     "multipleQrCodesDetected": "متعدد QR کوڈز کا پتا چلا۔ منتخب کرنے کے لیے ایک پر ٹیپ کریں۔",
     "@multipleQrCodesDetected": {},
     "selectQrCode": "QR کوڈ منتخب کریں",
-    "@selectQrCode": {}
+    "@selectQrCode": {},
+    "qrImageOptionNone": "تصویر کے بغیر",
+    "@qrImageOptionNone": {},
+    "qrImageOptionBoard": "موجودہ بورڈ",
+    "@qrImageOptionBoard": {},
+    "qrImageOptionCustom": "تصویر منتخب کریں…",
+    "@qrImageOptionCustom": {},
+    "qrImageOptionDataTooLong": "تصویر شامل کرنے کے لیے ڈیٹا بہت بڑا ہے",
+    "@qrImageOptionDataTooLong": {}
 }

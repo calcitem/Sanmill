@@ -4183,5 +4183,13 @@
     "multipleQrCodesDetected": "በርካታ የQR ኮዶች ተገኝተዋል። አንዱን ለመምረጥ ይንኩ።",
     "@multipleQrCodesDetected": {},
     "selectQrCode": "QR ኮድ ይምረጡ",
-    "@selectQrCode": {}
+    "@selectQrCode": {},
+    "qrImageOptionNone": "ብይ ምስል የለም",
+    "@qrImageOptionNone": {},
+    "qrImageOptionBoard": "የአሁኑ ሰሄን",
+    "@qrImageOptionBoard": {},
+    "qrImageOptionCustom": "ምስል ይምረጡ…",
+    "@qrImageOptionCustom": {},
+    "qrImageOptionDataTooLong": "ምስል ለማካተት መረጃው በጥማም ተመጣጥ ነው",
+    "@qrImageOptionDataTooLong": {}
 }

@@ -4183,5 +4183,13 @@
     "multipleQrCodesDetected": "Откривено је више QR кодова. Додирните један за избор.",
     "@multipleQrCodesDetected": {},
     "selectQrCode": "Изаберите QR код",
-    "@selectQrCode": {}
+    "@selectQrCode": {},
+    "qrImageOptionNone": "Без слике",
+    "@qrImageOptionNone": {},
+    "qrImageOptionBoard": "Тренутна табла",
+    "@qrImageOptionBoard": {},
+    "qrImageOptionCustom": "Изаберите слику…",
+    "@qrImageOptionCustom": {},
+    "qrImageOptionDataTooLong": "Подаци су превелики за уградњу слике",
+    "@qrImageOptionDataTooLong": {}
 }

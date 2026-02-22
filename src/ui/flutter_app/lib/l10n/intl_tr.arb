@@ -4183,5 +4183,13 @@
     "multipleQrCodesDetected": "Birden fazla QR kod algılandı. Seçmek için birine dokunun.",
     "@multipleQrCodesDetected": {},
     "selectQrCode": "QR kodu seçin",
-    "@selectQrCode": {}
+    "@selectQrCode": {},
+    "qrImageOptionNone": "Resim yok",
+    "@qrImageOptionNone": {},
+    "qrImageOptionBoard": "Mevcut tahta",
+    "@qrImageOptionBoard": {},
+    "qrImageOptionCustom": "Resim seçin…",
+    "@qrImageOptionCustom": {},
+    "qrImageOptionDataTooLong": "Resim gömmek için veri çok büyük",
+    "@qrImageOptionDataTooLong": {}
 }

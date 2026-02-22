@@ -4183,5 +4183,13 @@
     "multipleQrCodesDetected": "Bylo nalezeno více QR kódů. Klepnutím vyberte jeden.",
     "@multipleQrCodesDetected": {},
     "selectQrCode": "Vybrat QR kód",
-    "@selectQrCode": {}
+    "@selectQrCode": {},
+    "qrImageOptionNone": "Bez obrázku",
+    "@qrImageOptionNone": {},
+    "qrImageOptionBoard": "Aktuální deska",
+    "@qrImageOptionBoard": {},
+    "qrImageOptionCustom": "Vybrat obrázek…",
+    "@qrImageOptionCustom": {},
+    "qrImageOptionDataTooLong": "Data jsou příliš velká pro vložení obrázku",
+    "@qrImageOptionDataTooLong": {}
 }

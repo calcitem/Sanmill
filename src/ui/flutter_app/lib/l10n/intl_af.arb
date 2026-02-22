@@ -4183,5 +4183,13 @@
     "multipleQrCodesDetected": "Verskeie QR-kodes bespeur. Tik op een om te kies.",
     "@multipleQrCodesDetected": {},
     "selectQrCode": "Kies QR-kode",
-    "@selectQrCode": {}
+    "@selectQrCode": {},
+    "qrImageOptionNone": "Geen prent",
+    "@qrImageOptionNone": {},
+    "qrImageOptionBoard": "Huidige bord",
+    "@qrImageOptionBoard": {},
+    "qrImageOptionCustom": "Kies prent…",
+    "@qrImageOptionCustom": {},
+    "qrImageOptionDataTooLong": "Data te groot om ’n prent in te sluit",
+    "@qrImageOptionDataTooLong": {}
 }

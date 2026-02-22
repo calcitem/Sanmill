@@ -4183,5 +4183,13 @@
     "multipleQrCodesDetected": "Εντοπίστηκαν πολλαπλοί κωδικοί QR. Πατήστε έναν για επιλογή.",
     "@multipleQrCodesDetected": {},
     "selectQrCode": "Επιλογή κωδικού QR",
-    "@selectQrCode": {}
+    "@selectQrCode": {},
+    "qrImageOptionNone": "Χωρίς εικόνα",
+    "@qrImageOptionNone": {},
+    "qrImageOptionBoard": "Τρέχον ταμπλό",
+    "@qrImageOptionBoard": {},
+    "qrImageOptionCustom": "Επιλογή εικόνας…",
+    "@qrImageOptionCustom": {},
+    "qrImageOptionDataTooLong": "Τα δεδομένα είναι πολύ μεγάλα για ενσωμάτωση εικόνας",
+    "@qrImageOptionDataTooLong": {}
 }

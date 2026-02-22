@@ -4183,5 +4183,13 @@
     "multipleQrCodesDetected": "Հայտնաբերվել է մի քանի QR կոդ. Ընտրելու համար հպեք մեկին.",
     "@multipleQrCodesDetected": {},
     "selectQrCode": "Ընտրել QR կոդ",
-    "@selectQrCode": {}
+    "@selectQrCode": {},
+    "qrImageOptionNone": "Առանց նկարի",
+    "@qrImageOptionNone": {},
+    "qrImageOptionBoard": "Ընթացիկ տախտակ",
+    "@qrImageOptionBoard": {},
+    "qrImageOptionCustom": "Ընտրել նկար…",
+    "@qrImageOptionCustom": {},
+    "qrImageOptionDataTooLong": "Տվյալները չափազանց մեծ են նկար ներառելու համար",
+    "@qrImageOptionDataTooLong": {}
 }

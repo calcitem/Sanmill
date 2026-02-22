@@ -4183,5 +4183,13 @@
     "multipleQrCodesDetected": "ตรวจพบ QR โค้ดหลายรายการ แตะเพื่อเลือกหนึ่งรายการ",
     "@multipleQrCodesDetected": {},
     "selectQrCode": "เลือก QR โค้ด",
-    "@selectQrCode": {}
+    "@selectQrCode": {},
+    "qrImageOptionNone": "ไม่มีรูป",
+    "@qrImageOptionNone": {},
+    "qrImageOptionBoard": "กระดานปัจจุบัน",
+    "@qrImageOptionBoard": {},
+    "qrImageOptionCustom": "เลือกรูป…",
+    "@qrImageOptionCustom": {},
+    "qrImageOptionDataTooLong": "ข้อมูลใหญ่เกินไปสำหรับการฝังรูป",
+    "@qrImageOptionDataTooLong": {}
 }

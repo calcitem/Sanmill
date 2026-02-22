@@ -4183,5 +4183,13 @@
     "multipleQrCodesDetected": "Виявлено кілька QR-кодів. Торкніться одного, щоб вибрати.",
     "@multipleQrCodesDetected": {},
     "selectQrCode": "Вибрати QR-код",
-    "@selectQrCode": {}
+    "@selectQrCode": {},
+    "qrImageOptionNone": "Без зображення",
+    "@qrImageOptionNone": {},
+    "qrImageOptionBoard": "Поточна дошка",
+    "@qrImageOptionBoard": {},
+    "qrImageOptionCustom": "Вибрати зображення…",
+    "@qrImageOptionCustom": {},
+    "qrImageOptionDataTooLong": "Дані занадто великі для вбудовування зображення",
+    "@qrImageOptionDataTooLong": {}
 }

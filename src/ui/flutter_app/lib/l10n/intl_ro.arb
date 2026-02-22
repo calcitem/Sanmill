@@ -4183,5 +4183,13 @@
     "multipleQrCodesDetected": "Au fost detectate mai multe coduri QR. Atingeți unul pentru a selecta.",
     "@multipleQrCodesDetected": {},
     "selectQrCode": "Selectați codul QR",
-    "@selectQrCode": {}
+    "@selectQrCode": {},
+    "qrImageOptionNone": "Fără imagine",
+    "@qrImageOptionNone": {},
+    "qrImageOptionBoard": "Tabla curentă",
+    "@qrImageOptionBoard": {},
+    "qrImageOptionCustom": "Alegeți o imagine…",
+    "@qrImageOptionCustom": {},
+    "qrImageOptionDataTooLong": "Datele sunt prea mari pentru a încorpora o imagine",
+    "@qrImageOptionDataTooLong": {}
 }

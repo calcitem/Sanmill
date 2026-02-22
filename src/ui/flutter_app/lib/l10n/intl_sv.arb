@@ -4183,5 +4183,13 @@
     "multipleQrCodesDetected": "Flera QR-koder hittades. Tryck på en för att välja.",
     "@multipleQrCodesDetected": {},
     "selectQrCode": "Välj QR-kod",
-    "@selectQrCode": {}
+    "@selectQrCode": {},
+    "qrImageOptionNone": "Ingen bild",
+    "@qrImageOptionNone": {},
+    "qrImageOptionBoard": "Aktuellt bräde",
+    "@qrImageOptionBoard": {},
+    "qrImageOptionCustom": "Välj bild…",
+    "@qrImageOptionCustom": {},
+    "qrImageOptionDataTooLong": "Data är för stor för att bädda in en bild",
+    "@qrImageOptionDataTooLong": {}
 }

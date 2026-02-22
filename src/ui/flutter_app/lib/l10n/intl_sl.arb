@@ -4183,5 +4183,13 @@
     "multipleQrCodesDetected": "Zaznanih je več QR kod. Tapnite eno za izbiro.",
     "@multipleQrCodesDetected": {},
     "selectQrCode": "Izberite QR kodo",
-    "@selectQrCode": {}
+    "@selectQrCode": {},
+    "qrImageOptionNone": "Brez slike",
+    "@qrImageOptionNone": {},
+    "qrImageOptionBoard": "Trenutna plošča",
+    "@qrImageOptionBoard": {},
+    "qrImageOptionCustom": "Izberite sliko…",
+    "@qrImageOptionCustom": {},
+    "qrImageOptionDataTooLong": "Podatki so preveliki za vdelavo slike",
+    "@qrImageOptionDataTooLong": {}
 }
