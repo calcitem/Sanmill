@@ -258,18 +258,20 @@ class _QrScannerPageState extends State<QrScannerPage> {
 
     final Widget body;
     switch (_cameraState) {
-      case _CameraState.checking:
-        body = const Center(child: CircularProgressIndicator());
       case _CameraState.unavailable:
         body = _isDecoding
             ? const Center(child: CircularProgressIndicator())
             : _buildNoCameraBody(s);
+      case _CameraState.checking:
       case _CameraState.available:
         if (_hasPopped) {
           // Camera is being torn down – show a loading indicator instead of
           // the scanner widget to prevent controller-use-after-dispose errors.
           body = const Center(child: CircularProgressIndicator());
         } else {
+          // Show the ReaderWidget in both 'checking' and 'available' states.
+          // During 'checking', the widget initializes the camera internally
+          // and fires onControllerCreated once ready (or on failure).
           body = ReaderWidget(
             codeFormat: Format.qrCode,
             isMultiScan: true,
