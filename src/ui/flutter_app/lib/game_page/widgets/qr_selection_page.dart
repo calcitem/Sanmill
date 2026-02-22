@@ -40,7 +40,11 @@ class _QrSelectionPageState extends State<QrSelectionPage> {
   /// Key used to measure the actual rendered size of the image widget.
   final GlobalKey _imageKey = GlobalKey();
 
-  /// Rendered image area dimensions and offset within the layout, computed
+  /// Key used to measure the Stack that hosts the Positioned indicators,
+  /// so that indicator offsets are computed relative to the correct parent.
+  final GlobalKey _stackKey = GlobalKey();
+
+  /// Rendered image area dimensions and offset within the Stack, computed
   /// after the first frame.
   Rect? _imageRect;
 
@@ -51,27 +55,34 @@ class _QrSelectionPageState extends State<QrSelectionPage> {
     WidgetsBinding.instance.addPostFrameCallback((_) => _measureImage());
   }
 
-  /// Measure the rendered image widget to determine display coordinates.
+  /// Measure the rendered image widget to determine display coordinates
+  /// relative to the overlay [Stack].
   void _measureImage() {
-    final RenderBox? box =
+    final RenderBox? imageBox =
         _imageKey.currentContext?.findRenderObject() as RenderBox?;
-    if (box == null || !box.hasSize) {
+    if (imageBox == null || !imageBox.hasSize) {
       return;
     }
 
-    final Size imageSize = box.size;
-    final Offset imageOffset = box.localToGlobal(Offset.zero);
+    final RenderBox? stackBox =
+        _stackKey.currentContext?.findRenderObject() as RenderBox?;
+    if (stackBox == null || !stackBox.hasSize) {
+      return;
+    }
 
-    // Find the Stack's RenderBox to compute relative offset.
-    final RenderBox? stackBox = context.findRenderObject() as RenderBox?;
-    final Offset stackOffset =
-        stackBox?.localToGlobal(Offset.zero) ?? Offset.zero;
+    final Size imageSize = imageBox.size;
+
+    // Convert the image's top-left corner to coordinates relative to the
+    // Stack, not the screen. This accounts for the AppBar and instruction
+    // banner that sit above the Stack.
+    final Offset imageInStack = imageBox.localToGlobal(Offset.zero) -
+        stackBox.localToGlobal(Offset.zero);
 
     if (mounted) {
       setState(() {
         _imageRect = Rect.fromLTWH(
-          imageOffset.dx - stackOffset.dx,
-          imageOffset.dy - stackOffset.dy,
+          imageInStack.dx,
+          imageInStack.dy,
           imageSize.width,
           imageSize.height,
         );
@@ -171,6 +182,7 @@ class _QrSelectionPageState extends State<QrSelectionPage> {
           // Image with overlaid QR code indicators
           Expanded(
             child: Stack(
+              key: _stackKey,
               children: <Widget>[
                 // The captured / picked image
                 Center(
