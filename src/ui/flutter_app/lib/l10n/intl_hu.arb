@@ -3440,5 +3440,13 @@
     "multipleQrCodesDetected": "Több QR-kód észlelve. Koppintson egyre a kiválasztáshoz.",
     "@multipleQrCodesDetected": {},
     "selectQrCode": "QR-kód kiválasztása",
-    "@selectQrCode": {}
+    "@selectQrCode": {},
+    "qrImageOptionNone": "Kép nélkül",
+    "@qrImageOptionNone": {},
+    "qrImageOptionBoard": "Aktuális tábla",
+    "@qrImageOptionBoard": {},
+    "qrImageOptionCustom": "Kép kiválasztása…",
+    "@qrImageOptionCustom": {},
+    "qrImageOptionDataTooLong": "Az adatok túl nagyok kép beágyazásához",
+    "@qrImageOptionDataTooLong": {}
 }

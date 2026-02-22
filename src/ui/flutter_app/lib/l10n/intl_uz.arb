@@ -4187,5 +4187,13 @@
     "multipleQrCodesDetected": "Bir nechta QR kod aniqlandi. Tanlash uchun biriga bosing.",
     "@multipleQrCodesDetected": {},
     "selectQrCode": "QR kodni tanlang",
-    "@selectQrCode": {}
+    "@selectQrCode": {},
+    "qrImageOptionNone": "Rasmsiz",
+    "@qrImageOptionNone": {},
+    "qrImageOptionBoard": "Joriy taxta",
+    "@qrImageOptionBoard": {},
+    "qrImageOptionCustom": "Rasm tanlang…",
+    "@qrImageOptionCustom": {},
+    "qrImageOptionDataTooLong": "Rasm joylashtirish uchun ma’lumotlar juda katta",
+    "@qrImageOptionDataTooLong": {}
 }

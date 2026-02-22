@@ -4183,5 +4183,13 @@
     "multipleQrCodesDetected": "تم اكتشاف عدة رموز QR. انقر على أحدها للاختيار.",
     "@multipleQrCodesDetected": {},
     "selectQrCode": "اختيار رمز QR",
-    "@selectQrCode": {}
+    "@selectQrCode": {},
+    "qrImageOptionNone": "بدون صورة",
+    "@qrImageOptionNone": {},
+    "qrImageOptionBoard": "الرقعة الحالية",
+    "@qrImageOptionBoard": {},
+    "qrImageOptionCustom": "اختيار صورة…",
+    "@qrImageOptionCustom": {},
+    "qrImageOptionDataTooLong": "البيانات كبيرة جدًا لتضمين صورة",
+    "@qrImageOptionDataTooLong": {}
 }

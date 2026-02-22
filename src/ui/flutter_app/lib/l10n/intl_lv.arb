@@ -4183,5 +4183,13 @@
     "multipleQrCodesDetected": "Atklāti vairāki QR kodi. Pieskarieties vienam, lai atlasītu.",
     "@multipleQrCodesDetected": {},
     "selectQrCode": "Atlasiet QR kodu",
-    "@selectQrCode": {}
+    "@selectQrCode": {},
+    "qrImageOptionNone": "Bez attēla",
+    "@qrImageOptionNone": {},
+    "qrImageOptionBoard": "Pašreizējais dēlis",
+    "@qrImageOptionBoard": {},
+    "qrImageOptionCustom": "Izvēlēties attēlu…",
+    "@qrImageOptionCustom": {},
+    "qrImageOptionDataTooLong": "Dati pārāk lieli, lai iegultu attēlu",
+    "@qrImageOptionDataTooLong": {}
 }

@@ -4183,5 +4183,13 @@
     "multipleQrCodesDetected": "Beberapa kode QR terdeteksi. Ketuk salah satu untuk memilih.",
     "@multipleQrCodesDetected": {},
     "selectQrCode": "Pilih kode QR",
-    "@selectQrCode": {}
+    "@selectQrCode": {},
+    "qrImageOptionNone": "Tanpa gambar",
+    "@qrImageOptionNone": {},
+    "qrImageOptionBoard": "Papan saat ini",
+    "@qrImageOptionBoard": {},
+    "qrImageOptionCustom": "Pilih gambar…",
+    "@qrImageOptionCustom": {},
+    "qrImageOptionDataTooLong": "Data terlalu besar untuk menyematkan gambar",
+    "@qrImageOptionDataTooLong": {}
 }

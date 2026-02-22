@@ -4183,5 +4183,13 @@
     "multipleQrCodesDetected": "چندین کد QR شناسایی شد. برای انتخاب روی یکی ضربه بزنید.",
     "@multipleQrCodesDetected": {},
     "selectQrCode": "انتخاب کد QR",
-    "@selectQrCode": {}
+    "@selectQrCode": {},
+    "qrImageOptionNone": "بدون تصویر",
+    "@qrImageOptionNone": {},
+    "qrImageOptionBoard": "صفحه فعلی",
+    "@qrImageOptionBoard": {},
+    "qrImageOptionCustom": "انتخاب تصویر…",
+    "@qrImageOptionCustom": {},
+    "qrImageOptionDataTooLong": "داده‌ها برای جایگذاری تصویر بسیار بزرگ هستند",
+    "@qrImageOptionDataTooLong": {}
 }

@@ -5,6 +5,7 @@
 
 import 'dart:async';
 import 'dart:io';
+import 'dart:ui' as ui;
 
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
@@ -29,7 +30,10 @@ import 'active_line_gutter_painter.dart';
 import 'branch_tree_painter.dart';
 import 'cat_fishing_game.dart';
 import 'mini_board.dart';
+import 'package:image_picker/image_picker.dart';
+
 import 'qr_code_dialog.dart';
+import 'qr_image_option_dialog.dart';
 import 'qr_scanner_page.dart';
 import 'saved_games_page.dart';
 
@@ -415,6 +419,9 @@ class MovesListPageState extends State<MovesListPage> {
 
   /// Generates a QR code image from the current move list and shows it
   /// in a dialog with save / share actions.
+  ///
+  /// Before generating the QR code, shows an option dialog letting the user
+  /// choose whether to embed an image (current board, custom photo, or none).
   Future<void> _exportQrCode() async {
     final GameRecorder recorder = GameController().gameRecorder;
     final String moveText = recorder.moveHistoryText;
@@ -434,10 +441,65 @@ class MovesListPageState extends State<MovesListPage> {
       return;
     }
 
+    if (!mounted) {
+      return;
+    }
+
+    // Ask the user whether to embed an image in the QR code.
+    final bool canEmbed = moveText.length <= kQrEmbedCapacity;
+    final QrImageOption? option = await showDialog<QrImageOption>(
+      context: context,
+      builder: (BuildContext context) =>
+          QrImageOptionDialog(canEmbed: canEmbed),
+    );
+
+    if (option == null || !mounted) {
+      return;
+    }
+
+    // Resolve the selected image (if any).
+    final ui.Image? embeddedImage =
+        await _resolveEmbeddedImage(option);
+
+    if (!mounted) {
+      return;
+    }
+
+    // When the user chose an image but the picker was cancelled, abort.
+    if (option == QrImageOption.custom && embeddedImage == null) {
+      return;
+    }
+
     await showDialog<void>(
       context: context,
-      builder: (BuildContext context) => QrCodeDialog(data: moveText),
+      builder: (BuildContext context) => QrCodeDialog(
+        data: moveText,
+        embeddedImage: embeddedImage,
+      ),
     );
+  }
+
+  /// Resolve the embedded image for the QR code based on the user's choice.
+  Future<ui.Image?> _resolveEmbeddedImage(QrImageOption option) async {
+    switch (option) {
+      case QrImageOption.none:
+        return null;
+      case QrImageOption.board:
+        final String layout =
+            GameController().position.generateBoardLayoutAfterThisMove();
+        return QrCodeDialog.renderBoardImage(layout, 200);
+      case QrImageOption.custom:
+        final XFile? file = await ImagePicker().pickImage(
+          source: ImageSource.gallery,
+        );
+        if (file == null) {
+          return null;
+        }
+        final Uint8List bytes = await file.readAsBytes();
+        final ui.Codec codec = await ui.instantiateImageCodec(bytes);
+        final ui.FrameInfo frame = await codec.getNextFrame();
+        return frame.image;
+    }
   }
 
   /// Opens the camera-based QR scanner and imports the scanned move list.

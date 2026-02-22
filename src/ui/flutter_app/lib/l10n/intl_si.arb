@@ -4183,5 +4183,13 @@
     "multipleQrCodesDetected": "බහුවිධ QR කේත හමු විය. තෝරා ගැනීමට එකක් ටැප් කරන්න.",
     "@multipleQrCodesDetected": {},
     "selectQrCode": "QR කේතය තෝරන්න",
-    "@selectQrCode": {}
+    "@selectQrCode": {},
+    "qrImageOptionNone": "පිවුරු නැත",
+    "@qrImageOptionNone": {},
+    "qrImageOptionBoard": "වර්තමාන බෝඩය",
+    "@qrImageOptionBoard": {},
+    "qrImageOptionCustom": "පිවුරු තෝරන්න…",
+    "@qrImageOptionCustom": {},
+    "qrImageOptionDataTooLong": "පිවුරු එඹැද්ද කිරීමට දත්ත විශාල වැඩිය",
+    "@qrImageOptionDataTooLong": {}
 }

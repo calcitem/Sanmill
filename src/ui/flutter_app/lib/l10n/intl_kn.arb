@@ -4183,5 +4183,13 @@
     "multipleQrCodesDetected": "ಹಲವು QR ಕೋಡ್‌ಗಳು ಪತ್ತೆಯಾಗಿವೆ. ಆಯ್ಕೆ ಮಾಡಲು ಒಂದನ್ನು ಟ್ಯಾಪ್ ಮಾಡಿ.",
     "@multipleQrCodesDetected": {},
     "selectQrCode": "QR ಕೋಡ್ ಆಯ್ಕೆಮಾಡಿ",
-    "@selectQrCode": {}
+    "@selectQrCode": {},
+    "qrImageOptionNone": "ಚಿತ್ರವಿಲ್ಲದೆ",
+    "@qrImageOptionNone": {},
+    "qrImageOptionBoard": "ಪ್ರಸ್ತುತ ಬೋರ್ಡ್",
+    "@qrImageOptionBoard": {},
+    "qrImageOptionCustom": "ಚಿತ್ರ ಆಯ್ಕೆಮಾಡಿ…",
+    "@qrImageOptionCustom": {},
+    "qrImageOptionDataTooLong": "ಚಿತ್ರವನ್ನು ಎಂಬೆಡ್ ಮಾಡಲು ಡೇಟಾ ತುಂಬಾ ದೊಡ್ಡದು",
+    "@qrImageOptionDataTooLong": {}
 }

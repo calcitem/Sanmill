@@ -6,13 +6,18 @@
 // Page for managing user-created custom puzzles
 
 import 'dart:io';
+import 'dart:ui' as ui;
 
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart' show Box;
+import 'package:image_picker/image_picker.dart';
 
 import '../../appearance_settings/models/color_settings.dart';
+import '../../game_page/services/mill.dart';
 import '../../game_page/widgets/qr_code_dialog.dart';
+import '../../game_page/widgets/qr_image_option_dialog.dart';
 import '../../game_page/widgets/qr_scanner_page.dart';
 import '../../generated/intl/l10n.dart';
 import '../../shared/database/database.dart';
@@ -489,11 +494,61 @@ class _CustomPuzzlesPageState extends State<CustomPuzzlesPage> {
       return;
     }
 
-    await showDialog<void>(
+    // Ask the user whether to embed an image in the QR code.
+    final bool canEmbed = qrString.length <= kQrEmbedCapacity;
+    final QrImageOption? option = await showDialog<QrImageOption>(
       context: context,
       builder: (BuildContext context) =>
-          QrCodeDialog(data: qrString, title: S.of(context).puzzleQrCodeTitle),
+          QrImageOptionDialog(canEmbed: canEmbed),
     );
+
+    if (option == null || !mounted) {
+      return;
+    }
+
+    final ui.Image? embeddedImage =
+        await _resolveEmbeddedImage(option);
+
+    if (!mounted) {
+      return;
+    }
+
+    if (option == QrImageOption.custom && embeddedImage == null) {
+      return;
+    }
+
+    await showDialog<void>(
+      context: context,
+      builder: (BuildContext context) => QrCodeDialog(
+        data: qrString,
+        title: S.of(context).puzzleQrCodeTitle,
+        embeddedImage: embeddedImage,
+      ),
+    );
+  }
+
+  /// Resolve the embedded image for the QR code based on the user's choice.
+  Future<ui.Image?> _resolveEmbeddedImage(QrImageOption option) async {
+    switch (option) {
+      case QrImageOption.none:
+        return null;
+      case QrImageOption.board:
+        final String layout = GameController()
+            .position
+            .generateBoardLayoutAfterThisMove();
+        return QrCodeDialog.renderBoardImage(layout, 200);
+      case QrImageOption.custom:
+        final XFile? file = await ImagePicker().pickImage(
+          source: ImageSource.gallery,
+        );
+        if (file == null) {
+          return null;
+        }
+        final Uint8List bytes = await file.readAsBytes();
+        final ui.Codec codec = await ui.instantiateImageCodec(bytes);
+        final ui.FrameInfo frame = await codec.getNextFrame();
+        return frame.image;
+    }
   }
 
   /// Open the camera QR scanner and import puzzles from the scanned payload.

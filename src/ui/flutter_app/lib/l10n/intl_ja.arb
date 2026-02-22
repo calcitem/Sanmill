@@ -4183,5 +4183,13 @@
     "multipleQrCodesDetected": "複数のQRコードが検出されました。いずれかをタップして選択してください。",
     "@multipleQrCodesDetected": {},
     "selectQrCode": "QRコードを選択",
-    "@selectQrCode": {}
+    "@selectQrCode": {},
+    "qrImageOptionNone": "画像なし",
+    "@qrImageOptionNone": {},
+    "qrImageOptionBoard": "現在の盤面",
+    "@qrImageOptionBoard": {},
+    "qrImageOptionCustom": "画像を選択…",
+    "@qrImageOptionCustom": {},
+    "qrImageOptionDataTooLong": "データが大きすぎて画像を埋め込めません",
+    "@qrImageOptionDataTooLong": {}
 }

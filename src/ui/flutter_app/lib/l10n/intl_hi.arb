@@ -4183,5 +4183,13 @@
     "multipleQrCodesDetected": "एक से अधिक QR कोड पाए गए। चुनने के लिए एक पर टैप करें।",
     "@multipleQrCodesDetected": {},
     "selectQrCode": "QR कोड चुनें",
-    "@selectQrCode": {}
+    "@selectQrCode": {},
+    "qrImageOptionNone": "बिना चित्र",
+    "@qrImageOptionNone": {},
+    "qrImageOptionBoard": "वर्तमान बोर्ड",
+    "@qrImageOptionBoard": {},
+    "qrImageOptionCustom": "चित्र चुनें…",
+    "@qrImageOptionCustom": {},
+    "qrImageOptionDataTooLong": "चित्र शामिल करने के लिए डेटा बहुत बड़ा है",
+    "@qrImageOptionDataTooLong": {}
 }

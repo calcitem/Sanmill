@@ -4183,5 +4183,13 @@
     "multipleQrCodesDetected": "Flere QR-koder oppdaget. Trykk på en for å velge.",
     "@multipleQrCodesDetected": {},
     "selectQrCode": "Velg QR-kode",
-    "@selectQrCode": {}
+    "@selectQrCode": {},
+    "qrImageOptionNone": "Uten bilde",
+    "@qrImageOptionNone": {},
+    "qrImageOptionBoard": "Nåværende brett",
+    "@qrImageOptionBoard": {},
+    "qrImageOptionCustom": "Velg bilde…",
+    "@qrImageOptionCustom": {},
+    "qrImageOptionDataTooLong": "Data er for store til å bygge inn et bilde",
+    "@qrImageOptionDataTooLong": {}
 }

@@ -4183,5 +4183,13 @@
     "multipleQrCodesDetected": "બહુવિધ QR કોડ મળ્યા. એક પસંદ કરવા માટે ટેપ કરો.",
     "@multipleQrCodesDetected": {},
     "selectQrCode": "QR કોડ પસંદ કરો",
-    "@selectQrCode": {}
+    "@selectQrCode": {},
+    "qrImageOptionNone": "છાપો વગર",
+    "@qrImageOptionNone": {},
+    "qrImageOptionBoard": "વર્તમાન બોર્ડ",
+    "@qrImageOptionBoard": {},
+    "qrImageOptionCustom": "છાપો પસંદ કરો…",
+    "@qrImageOptionCustom": {},
+    "qrImageOptionDataTooLong": "છાપો એમ્બેડ કરવા માટે ડેટા ઘણો મોટો છે",
+    "@qrImageOptionDataTooLong": {}
 }

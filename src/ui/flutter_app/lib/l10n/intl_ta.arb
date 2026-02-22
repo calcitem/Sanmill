@@ -4183,5 +4183,13 @@
     "multipleQrCodesDetected": "பல QR குறியீடுகள் கண்டறியப்பட்டன. ஒன்றைத் தேர்ந்தெடுக்க தட்டவும்.",
     "@multipleQrCodesDetected": {},
     "selectQrCode": "QR குறியீட்டைத் தேர்ந்தெடுக்கவும்",
-    "@selectQrCode": {}
+    "@selectQrCode": {},
+    "qrImageOptionNone": "படம் இல்லாமல்",
+    "@qrImageOptionNone": {},
+    "qrImageOptionBoard": "நடப்பு பலகை",
+    "@qrImageOptionBoard": {},
+    "qrImageOptionCustom": "படம் தேர்வு…",
+    "@qrImageOptionCustom": {},
+    "qrImageOptionDataTooLong": "படம் உட்பொதிக்க தரவு மிகப் பெரியது",
+    "@qrImageOptionDataTooLong": {}
 }

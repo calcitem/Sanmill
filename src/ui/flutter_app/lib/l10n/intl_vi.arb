@@ -4187,5 +4187,13 @@
     "multipleQrCodesDetected": "Phát hiện nhiều mã QR. Nhấn vào một mã để chọn.",
     "@multipleQrCodesDetected": {},
     "selectQrCode": "Chọn mã QR",
-    "@selectQrCode": {}
+    "@selectQrCode": {},
+    "qrImageOptionNone": "Không có hình",
+    "@qrImageOptionNone": {},
+    "qrImageOptionBoard": "Bàn cờ hiện tại",
+    "@qrImageOptionBoard": {},
+    "qrImageOptionCustom": "Chọn hình…",
+    "@qrImageOptionCustom": {},
+    "qrImageOptionDataTooLong": "Dữ liệu quá lớn để nhúng hình",
+    "@qrImageOptionDataTooLong": {}
 }

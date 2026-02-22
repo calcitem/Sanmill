@@ -4183,5 +4183,13 @@
     "multipleQrCodesDetected": "Margir QR-kóðar fundust. Yfildráttu á einn til að velja.",
     "@multipleQrCodesDetected": {},
     "selectQrCode": "Veldu QR-kóða",
-    "@selectQrCode": {}
+    "@selectQrCode": {},
+    "qrImageOptionNone": "Engin mynd",
+    "@qrImageOptionNone": {},
+    "qrImageOptionBoard": "Núv. borð",
+    "@qrImageOptionBoard": {},
+    "qrImageOptionCustom": "Velja mynd…",
+    "@qrImageOptionCustom": {},
+    "qrImageOptionDataTooLong": "Gögn of stór til að fella inn mynd",
+    "@qrImageOptionDataTooLong": {}
 }

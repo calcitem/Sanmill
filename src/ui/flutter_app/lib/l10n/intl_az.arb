@@ -4183,5 +4183,13 @@
     "multipleQrCodesDetected": "Birdən çox QR kod aşkarlandı. Birini seçmək üçün toxunun.",
     "@multipleQrCodesDetected": {},
     "selectQrCode": "QR kodu seçin",
-    "@selectQrCode": {}
+    "@selectQrCode": {},
+    "qrImageOptionNone": "Rəsmsiz",
+    "@qrImageOptionNone": {},
+    "qrImageOptionBoard": "Cari lövhə",
+    "@qrImageOptionBoard": {},
+    "qrImageOptionCustom": "Rəsm seçin…",
+    "@qrImageOptionCustom": {},
+    "qrImageOptionDataTooLong": "Məlumat rəsm yerləşdirmək üçün çox böyükdür",
+    "@qrImageOptionDataTooLong": {}
 }

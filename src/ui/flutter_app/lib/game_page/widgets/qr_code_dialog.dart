@@ -17,18 +17,68 @@ import 'package:share_plus/share_plus.dart';
 
 import '../../generated/intl/l10n.dart';
 import '../../shared/widgets/snackbars/scaffold_messenger.dart';
+import 'mini_board.dart';
+
+/// Maximum byte length of QR data that allows error correction level H,
+/// which is required for embedding images. Version 40, EC level H.
+const int kQrEmbedCapacity = 1273;
 
 /// Displays a QR code containing the given [data] with options to save or
 /// share the generated image.
 ///
 /// An optional [title] can be provided to override the default dialog heading.
+///
+/// When [embeddedImage] is provided, the image is placed at the center of the
+/// QR code and error correction level H is used to ensure scannability despite
+/// the obscured area. When null, error correction level M is used (default).
 class QrCodeDialog extends StatefulWidget {
-  const QrCodeDialog({required this.data, this.title, super.key});
+  const QrCodeDialog({
+    required this.data,
+    this.title,
+    this.embeddedImage,
+    super.key,
+  });
 
   final String data;
 
   /// Custom dialog title. Falls back to [S.qrCodeTitle] when null.
   final String? title;
+
+  /// Optional image to embed in the center of the QR code.
+  /// When non-null, error correction level H is used automatically.
+  final ui.Image? embeddedImage;
+
+  /// Render a [MiniBoardPainter] to a [ui.Image] suitable for embedding
+  /// in a QR code. The image is drawn inside a white circle background
+  /// with a slight inset margin.
+  static Future<ui.Image> renderBoardImage(
+    String boardLayout,
+    double size,
+  ) async {
+    final ui.PictureRecorder recorder = ui.PictureRecorder();
+    final Canvas canvas = Canvas(recorder);
+
+    // White circle background so the board has a clean border against
+    // the dark QR modules.
+    final Paint bgPaint = Paint()..color = Colors.white;
+    canvas.drawCircle(Offset(size / 2, size / 2), size / 2, bgPaint);
+
+    // Inset slightly to leave a white margin around the board.
+    final double inset = size * 0.1;
+    canvas.save();
+    canvas.translate(inset, inset);
+
+    final double boardSize = size - 2 * inset;
+    final MiniBoardPainter painter = MiniBoardPainter(
+      boardLayout: boardLayout,
+    );
+    painter.paint(canvas, Size(boardSize, boardSize));
+
+    canvas.restore();
+
+    final ui.Picture picture = recorder.endRecording();
+    return picture.toImage(size.toInt(), size.toInt());
+  }
 
   @override
   State<QrCodeDialog> createState() => _QrCodeDialogState();
@@ -106,11 +156,23 @@ class _QrCodeDialogState extends State<QrCodeDialog> {
         ? 120.0
         : (qrSizeUnclamped > 280.0 ? 280.0 : qrSizeUnclamped);
 
+    // Use error correction H when an image is embedded so the scanner can
+    // still read the QR code despite the obscured center area.
+    final bool hasEmbeddedImage = widget.embeddedImage != null;
+    final int errorCorrectionLevel =
+        hasEmbeddedImage ? QrErrorCorrectLevel.H : QrErrorCorrectLevel.M;
+
     final QrPainter painter = QrPainter(
       data: widget.data,
       version: QrVersions.auto,
-      errorCorrectionLevel: QrErrorCorrectLevel.M,
+      errorCorrectionLevel: errorCorrectionLevel,
       gapless: true,
+      embeddedImage: widget.embeddedImage,
+      embeddedImageStyle: hasEmbeddedImage
+          ? QrEmbeddedImageStyle(
+              size: Size(qrSize * 0.22, qrSize * 0.22),
+            )
+          : null,
     );
 
     return Dialog(

@@ -4223,5 +4223,13 @@
     "multipleQrCodesDetected": "检测到多个二维码，请点击选择一个。",
     "@multipleQrCodesDetected": {},
     "selectQrCode": "选择二维码",
-    "@selectQrCode": {}
+    "@selectQrCode": {},
+    "qrImageOptionNone": "不含图片",
+    "@qrImageOptionNone": {},
+    "qrImageOptionBoard": "当前棋盘",
+    "@qrImageOptionBoard": {},
+    "qrImageOptionCustom": "选择图片…",
+    "@qrImageOptionCustom": {},
+    "qrImageOptionDataTooLong": "数据过大，无法嵌入图片",
+    "@qrImageOptionDataTooLong": {}
 }

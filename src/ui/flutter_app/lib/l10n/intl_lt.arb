@@ -4183,5 +4183,13 @@
     "multipleQrCodesDetected": "Aptikti keli QR kodai. Palieskite vieną, kad pasirinktumėte.",
     "@multipleQrCodesDetected": {},
     "selectQrCode": "Pasirinkite QR kodą",
-    "@selectQrCode": {}
+    "@selectQrCode": {},
+    "qrImageOptionNone": "Be paveikslėlio",
+    "@qrImageOptionNone": {},
+    "qrImageOptionBoard": "Dabartinis lentas",
+    "@qrImageOptionBoard": {},
+    "qrImageOptionCustom": "Pasirinkite paveikslėlį…",
+    "@qrImageOptionCustom": {},
+    "qrImageOptionDataTooLong": "Duomenys per dideli paveikslėliui įterpti",
+    "@qrImageOptionDataTooLong": {}
 }

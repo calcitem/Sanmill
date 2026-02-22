@@ -4187,5 +4187,13 @@
     "multipleQrCodesDetected": "Kuhlonzwe amakhodi amaningi e-QR. Thepha eyodwa ukukhetha.",
     "@multipleQrCodesDetected": {},
     "selectQrCode": "Khetha ikhodi ye-QR",
-    "@selectQrCode": {}
+    "@selectQrCode": {},
+    "qrImageOptionNone": "Ngaphandle komfanekiso",
+    "@qrImageOptionNone": {},
+    "qrImageOptionBoard": "Ibhodi yamanje",
+    "@qrImageOptionBoard": {},
+    "qrImageOptionCustom": "Khetha umfanekiso…",
+    "@qrImageOptionCustom": {},
+    "qrImageOptionDataTooLong": "Idatha inkulu kakhulu ukufaka umfanekiso",
+    "@qrImageOptionDataTooLong": {}
 }

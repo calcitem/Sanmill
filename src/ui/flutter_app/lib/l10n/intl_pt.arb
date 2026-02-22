@@ -4183,5 +4183,13 @@
     "multipleQrCodesDetected": "Vários códigos QR detetados. Toque num para selecionar.",
     "@multipleQrCodesDetected": {},
     "selectQrCode": "Selecionar código QR",
-    "@selectQrCode": {}
+    "@selectQrCode": {},
+    "qrImageOptionNone": "Sem imagem",
+    "@qrImageOptionNone": {},
+    "qrImageOptionBoard": "Tabuleiro atual",
+    "@qrImageOptionBoard": {},
+    "qrImageOptionCustom": "Escolher imagem…",
+    "@qrImageOptionCustom": {},
+    "qrImageOptionDataTooLong": "Dados demasiado grandes para incorporar uma imagem",
+    "@qrImageOptionDataTooLong": {}
 }

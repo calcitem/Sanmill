@@ -4183,5 +4183,13 @@
     "multipleQrCodesDetected": "Обнаружено несколько QR-кодов. Нажмите на один, чтобы выбрать.",
     "@multipleQrCodesDetected": {},
     "selectQrCode": "Выбрать QR-код",
-    "@selectQrCode": {}
+    "@selectQrCode": {},
+    "qrImageOptionNone": "Без изображения",
+    "@qrImageOptionNone": {},
+    "qrImageOptionBoard": "Текущая доска",
+    "@qrImageOptionBoard": {},
+    "qrImageOptionCustom": "Выбрать изображение…",
+    "@qrImageOptionCustom": {},
+    "qrImageOptionDataTooLong": "Данные слишком велики для встраивания изображения",
+    "@qrImageOptionDataTooLong": {}
 }
