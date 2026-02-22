@@ -385,7 +385,7 @@
     "@moveTime": {
         "description": "AI thinking time"
     },
-    "difficulty": "Složenost",
+    "difficulty": "Teškoća",
     "@difficulty": {
         "description": "Difficulty"
     },
@@ -1091,7 +1091,7 @@
     "@helpImproveTranslate": {
         "description": "Help improve translate"
     },
-    "tutorial": "Vježbe",
+    "tutorial": "Vodič",
     "@tutorial": {
         "description": "Tutorial"
     },
@@ -2223,6 +2223,11 @@
     "@noPuzzlesAvailable": {
         "description": "Message when no puzzles are available"
     },
+    "filter": "Filter",
+    "@voiceAssistantSettingsDescription": {}
+}
+    "voiceAssistantSettingsDescription": "Konfiguriraj model, jezik i ponašanje",
+    "@voiceAssistantSettingsDescription": {},
     "filter": "Filtar",
     "@filter": {
         "description": "Filter"
@@ -2743,6 +2748,7 @@
         "description": "Puzzle category field"
     },
     "puzzleDifficulty": "Poteškoće",
+    "puzzleDifficulty": "Teškoća",
     "@puzzleDifficulty": {
         "description": "Puzzle difficulty field"
     },
@@ -2755,6 +2761,15 @@
         "description": "Puzzle tags field"
     },
     "puzzleTagsHint": "Odvojeno zarezom",
+    "hintDialogTitle": "Savjet",
+    "@hintDialogTitle": {
+        "description": "Title for hint dialog"
+    },
+    "puzzleTags": "Oznake",
+    "@puzzleTags": {
+        "description": "Puzzle tags field"
+    },
+    "puzzleTagsHint": "Odvojene zarezima",
     "@puzzleTagsHint": {
         "description": "Hint for tags input"
     },
@@ -2827,6 +2842,43 @@
         "description": "Daily puzzle description"
     },
     "dailyPuzzleNumber": "Dan #{dayNumber}",
+    "puzzleTitleRequired": "Naslov se mora zadati",
+    "@puzzleTitleRequired": {
+        "description": "Title required error"
+    },
+    "puzzleDescriptionRequired": "Opis se mora zadati",
+    "@puzzleDescriptionRequired": {
+        "description": "Description required error"
+    },
+    "puzzlePositionRequired": "Pozicija se mora zadati",
+    "@puzzlePositionRequired": {
+        "description": "Position required error"
+    },
+    "puzzleSolutionRequired": "Rješenje se mora zadati",
+    "@puzzleSolutionRequired": {
+        "description": "Solution required error"
+    },
+    "optional": "opcionalno",
+    "@optional": {
+        "description": "Optional field indicator"
+    },
+    "yourProgress": "Tvoj napredak",
+    "@yourProgress": {
+        "description": "Your progress header"
+    },
+    "quit": "Zatvori",
+    "@quit": {
+        "description": "Quit button"
+    },
+    "all": "Sve",
+    "@all": {
+        "description": "All option in filters"
+    },
+    "comingSoon": "Uskoro stiže",
+    "@comingSoon": {
+        "description": "Coming soon message"
+    },
+    "dailyPuzzleNumber": "Broj dana {dayNumber}",
     "@dailyPuzzleNumber": {
         "description": "Daily puzzle day number",
         "placeholders": {
@@ -2844,6 +2896,7 @@
         "description": "Day streak suffix"
     },
     "dailyPuzzleDays": "dana",
+    "dailyPuzzleDays": "dani",
     "@dailyPuzzleDays": {
         "description": "Days label"
     },
@@ -2899,6 +2952,10 @@
     "puzzleRushTagline": "Riješite što više zagonetki u 5 minuta!",
     "@puzzleRushTagline": {
         "description": "Puzzle rush tagline"
+    },
+    "dailyPuzzleTotalCompleted": "Ukupno dovršeno",
+    "@dailyPuzzleTotalCompleted": {
+        "description": "Total completed puzzles label"
     },
     "puzzleRushRules": "Pravila",
     "@puzzleRushRules": {
@@ -3134,6 +3191,27 @@
         "description": "Success rate label"
     },
     "puzzleStatsAvgTime": "Prosj.Vrijeme",
+    "puzzleRushRule1": "⏱️ 5 minuta na satu",
+    "@puzzleRushRule1": {
+        "description": "Puzzle rush rule 1"
+    },
+    "puzzleRushRule2": "❤️ 3 života – 1 izgubljen po progrešci",
+    "@puzzleRushRule2": {
+        "description": "Puzzle rush rule 2"
+    },
+    "puzzleRushRule3": "🏆 Maksimiraj svoj rezultat!",
+    "@puzzleRushRule3": {
+        "description": "Puzzle rush rule 3"
+    },
+    "puzzleStatsRecentActivity": "Nedavna aktivnost",
+    "@puzzleStatsRecentActivity": {
+        "description": "Recent activity header"
+    },
+    "puzzleStatsNoActivity": "Nema nedavne aktivnosti",
+    "@puzzleStatsNoActivity": {
+        "description": "No activity message"
+    },
+    "puzzleStatsAvgTime": "Prosj. vrijeme",
     "@puzzleStatsAvgTime": {
         "description": "Average time label"
     },
@@ -3148,6 +3226,50 @@
     "puzzleStatsByDifficulty": "Uspjeh prema poteškoćama",
     "@puzzleStatsByDifficulty": {
         "description": "Success by difficulty header"
+    },
+    "puzzleRushSolved": "Riješeno",
+    "@puzzleRushSolved": {
+        "description": "Puzzles solved label"
+    },
+    "puzzleStatsFailed": "Neuspjelo",
+    "@puzzleStatsFailed": {
+        "description": "Failed count label"
+    },
+    "puzzleStatsByDifficulty": "Uspjeh po težini",
+    "@puzzleStatsByDifficulty": {
+        "description": "Success by difficulty header"
+    },
+    "puzzleRushTimeUp": "Vrijeme je isteklo!",
+    "@puzzleRushTimeUp": {
+        "description": "Time up message"
+    },
+    "puzzleRushOutOfLives": "Više nemaš života",
+    "@puzzleRushOutOfLives": {
+        "description": "Out of lives message"
+    },
+    "puzzleRushFailed": "Neuspjelo",
+    "@puzzleRushFailed": {
+        "description": "Puzzles failed label"
+    },
+    "puzzleRushAccuracy": "Točnost",
+    "@puzzleRushAccuracy": {
+        "description": "Accuracy label"
+    },
+    "puzzleRushPlayAgain": "Igraj ponovo",
+    "@puzzleRushPlayAgain": {
+        "description": "Play again button"
+    },
+    "puzzleBattleDesc": "Natjecaj se s drugim igračima",
+    "@puzzleBattleDesc": {
+        "description": "Puzzle battle mode description"
+    },
+    "puzzleBattleComingSoon": "Uskoro izlazi!",
+    "@puzzleBattleComingSoon": {
+        "description": "Puzzle battle coming soon message"
+    },
+    "puzzleBattleStayTuned": "Ova se funkcija trenutačno nalazi u razvoju. Navrati uskoro!",
+    "@puzzleBattleStayTuned": {
+        "description": "Puzzle battle stay tuned message"
     },
     "puzzleStatsByCategory": "Uspjeh po kategoriji",
     "@puzzleStatsByCategory": {
@@ -3514,6 +3636,46 @@
     "keepTrying": "Nastavi pokušavati!",
     "@keepTrying": {
         "description": "Encouragement message to continue attempting puzzle"
+    "save": "Spremi",
+    "@save": {
+        "description": "Save button"
+    },
+    "puzzleImportErrors": "Greške:",
+    "@puzzleImportErrors": {
+        "description": "Label for error list"
+    },
+    "puzzleImportWarnings": "Upozorenja:",
+    "@puzzleImportWarnings": {
+        "description": "Label for warning list"
+    },
+    "puzzleImportErrorReading": "Greška pri čitanju datoteke: {error}",
+    "@puzzleImportErrorReading": {
+        "description": "Error when reading file fails",
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleValidationTitleTooShort": "Naslov je prekratak (main. 5 znakova)",
+    "@puzzleValidationTitleTooShort": {
+        "description": "Validation error: title too short"
+    },
+    "puzzleValidationTitleTooLong": "Naslov je predugačak (maks. 100 znakova)",
+    "@puzzleValidationTitleTooLong": {
+        "description": "Validation error: title too long"
+    },
+    "puzzleValidationDescriptionTooShort": "Opis je prekratak (min. 10 znakova)",
+    "@puzzleValidationDescriptionTooShort": {
+        "description": "Validation error: description too short"
+    },
+    "puzzleValidationDescriptionTooLong": "Naslov je predugačak (maks. 500 znakova)",
+    "@puzzleValidationDescriptionTooLong": {
+        "description": "Validation error: description too long"
+    },
+    "puzzleValidationAuthorRequired": "Dodaj svoje ime kao autora prije doprinošenja",
+    "@puzzleValidationAuthorRequired": {
+        "description": "Validation error: author required for contribution"
     },
     "examples": "Primjeri",
     "@examples": {
