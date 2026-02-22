@@ -4,6 +4,7 @@
 // moves_list_page.dart
 
 import 'dart:async';
+import 'dart:convert' show utf8;
 import 'dart:io';
 import 'dart:ui' as ui;
 
@@ -445,7 +446,7 @@ class MovesListPageState extends State<MovesListPage> {
     }
 
     // Ask the user whether to embed an image in the QR code.
-    final bool canEmbed = moveText.length <= kQrEmbedCapacity;
+    final bool canEmbed = utf8.encode(moveText).length <= kQrEmbedCapacity;
     final QrImageOption? option = await showDialog<QrImageOption>(
       context: context,
       builder: (BuildContext context) =>
@@ -461,6 +462,7 @@ class MovesListPageState extends State<MovesListPage> {
         await _resolveEmbeddedImage(option);
 
     if (!mounted) {
+      embeddedImage?.dispose();
       return;
     }
 
@@ -469,13 +471,17 @@ class MovesListPageState extends State<MovesListPage> {
       return;
     }
 
-    await showDialog<void>(
-      context: context,
-      builder: (BuildContext context) => QrCodeDialog(
-        data: moveText,
-        embeddedImage: embeddedImage,
-      ),
-    );
+    try {
+      await showDialog<void>(
+        context: context,
+        builder: (BuildContext context) => QrCodeDialog(
+          data: moveText,
+          embeddedImage: embeddedImage,
+        ),
+      );
+    } finally {
+      embeddedImage?.dispose();
+    }
   }
 
   /// Resolve the embedded image for the QR code based on the user's choice.
@@ -496,8 +502,12 @@ class MovesListPageState extends State<MovesListPage> {
         }
         final Uint8List bytes = await file.readAsBytes();
         final ui.Codec codec = await ui.instantiateImageCodec(bytes);
-        final ui.FrameInfo frame = await codec.getNextFrame();
-        return frame.image;
+        try {
+          final ui.FrameInfo frame = await codec.getNextFrame();
+          return frame.image;
+        } finally {
+          codec.dispose();
+        }
     }
   }
 

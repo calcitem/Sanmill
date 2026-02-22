@@ -233,14 +233,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.4.0"
-  charset:
-    dependency: transitive
-    description:
-      name: charset
-      sha256: "27802032a581e01ac565904ece8c8962564b1070690794f0072f6865958ce8b9"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.0.1"
   checked_yaml:
     dependency: transitive
     description:
@@ -433,14 +425,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.1"
-  equatable:
-    dependency: transitive
-    description:
-      name: equatable
-      sha256: "3e0141505477fd8ad55d6eb4e7776d3fe8430be8e497ccb1521370c3f21a3e2b"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.0.8"
   extended_sliver:
     dependency: "direct main"
     description:
@@ -674,6 +658,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_zxing:
+    dependency: "direct main"
+    description:
+      name: flutter_zxing
+      sha256: dbcd89da2c9aa84f48d7d7e1ba436825f8656a69b142abb7bcdb7c2d9c22d48c
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.2.1"
   fluttertoast:
     dependency: transitive
     description:
@@ -1404,22 +1396,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.2"
-  qr_code_dart_decoder:
-    dependency: "direct main"
-    description:
-      name: qr_code_dart_decoder
-      sha256: "4044f13a071da6102f7e9bc44a6b1ce577604d7846bcbeb1be412a137b825017"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.1.2"
-  qr_code_dart_scan:
-    dependency: "direct main"
-    description:
-      name: qr_code_dart_scan
-      sha256: "81443d940f8f27baaa4b9aeaa8d3d2155ad2c0b9842a9bacb03dab85c111e2f6"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.11.5"
   qr_flutter:
     dependency: "direct main"
     description:
@@ -1817,14 +1793,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.0"
-  zxing_lib:
-    dependency: transitive
-    description:
-      name: zxing_lib
-      sha256: f9170470b6bc947d21a6783486f88ef48aad66fc1380c8acd02b118418ec0ce0
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.1.4"
 sdks:
   dart: ">=3.10.3 <4.0.0"
   flutter: ">=3.38.4"

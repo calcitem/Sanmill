@@ -111,14 +111,22 @@ class _QrSelectionPageState extends State<QrSelectionPage> {
 
     final Offset center = _qrCenter(pos);
 
-    // Scale from image coordinates to display coordinates.
-    final double scaleX = _imageRect!.width / pos.imageWidth;
-    final double scaleY = _imageRect!.height / pos.imageHeight;
+    // Compute the actual painted rect inside _imageRect when using
+    // BoxFit.contain, then scale from image to display coordinates.
+    final Size intrinsic =
+        Size(pos.imageWidth.toDouble(), pos.imageHeight.toDouble());
+    final FittedSizes fitted =
+        applyBoxFit(BoxFit.contain, intrinsic, _imageRect!.size);
+    final Rect paintRect =
+        Alignment.center.inscribe(fitted.destination, _imageRect!);
+
+    final double scaleX = paintRect.width / pos.imageWidth;
+    final double scaleY = paintRect.height / pos.imageHeight;
 
     final double displayX =
-        _imageRect!.left + center.dx * scaleX - _kIndicatorSize / 2;
+        paintRect.left + center.dx * scaleX - _kIndicatorSize / 2;
     final double displayY =
-        _imageRect!.top + center.dy * scaleY - _kIndicatorSize / 2;
+        paintRect.top + center.dy * scaleY - _kIndicatorSize / 2;
 
     return Positioned(
       left: displayX,

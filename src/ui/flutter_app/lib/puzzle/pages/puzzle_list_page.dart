@@ -5,6 +5,7 @@
 //
 // Page displaying the list of available puzzles
 
+import 'dart:convert' show utf8;
 import 'dart:io';
 import 'dart:ui' as ui;
 
@@ -618,7 +619,7 @@ class _PuzzleListPageState extends State<PuzzleListPage> {
     }
 
     // Ask the user whether to embed an image in the QR code.
-    final bool canEmbed = qrString.length <= kQrEmbedCapacity;
+    final bool canEmbed = utf8.encode(qrString).length <= kQrEmbedCapacity;
     final QrImageOption? option = await showDialog<QrImageOption>(
       context: context,
       builder: (BuildContext context) =>
@@ -633,6 +634,7 @@ class _PuzzleListPageState extends State<PuzzleListPage> {
         await _resolveEmbeddedImage(option);
 
     if (!mounted) {
+      embeddedImage?.dispose();
       return;
     }
 
@@ -640,14 +642,18 @@ class _PuzzleListPageState extends State<PuzzleListPage> {
       return;
     }
 
-    await showDialog<void>(
-      context: context,
-      builder: (BuildContext context) => QrCodeDialog(
-        data: qrString,
-        title: S.of(context).puzzleQrCodeTitle,
-        embeddedImage: embeddedImage,
-      ),
-    );
+    try {
+      await showDialog<void>(
+        context: context,
+        builder: (BuildContext context) => QrCodeDialog(
+          data: qrString,
+          title: S.of(context).puzzleQrCodeTitle,
+          embeddedImage: embeddedImage,
+        ),
+      );
+    } finally {
+      embeddedImage?.dispose();
+    }
   }
 
   /// Resolve the embedded image for the QR code based on the user's choice.
@@ -670,8 +676,12 @@ class _PuzzleListPageState extends State<PuzzleListPage> {
         }
         final Uint8List bytes = await file.readAsBytes();
         final ui.Codec codec = await ui.instantiateImageCodec(bytes);
-        final ui.FrameInfo frame = await codec.getNextFrame();
-        return frame.image;
+        try {
+          final ui.FrameInfo frame = await codec.getNextFrame();
+          return frame.image;
+        } finally {
+          codec.dispose();
+        }
     }
   }
 
