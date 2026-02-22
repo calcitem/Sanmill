@@ -30,18 +30,36 @@ subprojects {
                 }
             }
 
-            // Force all plugins to use official NDK r29 version
+            // Force all plugins to use official NDK r28b version
             String pluginNdkVersion = project.android.ndkVersion
-            if (pluginNdkVersion != null && pluginNdkVersion != "29.0.14206865") {
+            if (pluginNdkVersion != null && pluginNdkVersion != "28.2.13676358") {
                 project.logger.warn(
                         "Warning: Overriding ndkVersion in Flutter plugin: "
                                 + project.name
                                 + " from "
                                 + pluginNdkVersion
-                                + " to 29.0.14206865 (official NDK r29)."
+                                + " to 28.2.13676358 (official NDK r28b)."
                 )
                 project.android {
-                    ndkVersion "29.0.14206865"
+                    ndkVersion "28.2.13676358"
+                }
+            }
+
+            // Workaround: flutter_zxing 2.2.1 bundles zxing-cpp which uses
+            // std::basic_string_view<unsigned char>, a non-standard usage that
+            // fails with the libc++ shipped in NDK r28+. Compiling with C++20
+            // resolves the issue via char8_t support.
+            // See: https://github.com/zxing-cpp/zxing-cpp/issues/822
+            // TODO: Remove once flutter_zxing integrates zxing-cpp PR #836.
+            if (project.name == "flutter_zxing") {
+                project.android {
+                    defaultConfig {
+                        externalNativeBuild {
+                            cmake {
+                                arguments "-DCMAKE_CXX_STANDARD=20"
+                            }
+                        }
+                    }
                 }
             }
 
