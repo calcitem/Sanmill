@@ -38,10 +38,13 @@ void SearchEngine::emitCommand()
     std::ostringstream ss;
     std::string aiMoveTypeStr;
 
-    // Adjust bestvalue if black
-    if (rootPos && rootPos->side_to_move() == BLACK) {
-        bestvalue = -bestvalue;
-    }
+    // Convert bestvalue to WHITE's perspective for UCI output only.
+    // Keep the member variable in side-to-move perspective so that
+    // subsequent logic (e.g., aiIsLazy depth reduction) works correctly
+    // regardless of which side the AI plays.
+    const Value outputValue = (rootPos && rootPos->side_to_move() == BLACK) ?
+                                  -bestvalue :
+                                  bestvalue;
 
     // Build up the AI move type string
     switch (aiMoveType) {
@@ -58,7 +61,7 @@ void SearchEngine::emitCommand()
         break;
     }
 
-    ss << "info score " << static_cast<int>(bestvalue) << aiMoveTypeStr
+    ss << "info score " << static_cast<int>(outputValue) << aiMoveTypeStr
        << " bestmove " << bestMoveString;
 
 #ifdef QT_GUI_LIB
