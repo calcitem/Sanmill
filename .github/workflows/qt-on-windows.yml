@@ -31,7 +31,7 @@ jobs:
 
       - name: Install aqt
         run: |
-          python -m pip install aqtinstall==3.3.*
+          python -m pip install aqtinstall==3.1.*
 
       - name: List available Qt modules
         run: |
@@ -55,7 +55,7 @@ jobs:
           set-env: 'true'
           tools: 'tools_cmake'
           tools-only: 'false'
-          aqtversion: '==3.3.*'
+          aqtversion: '==3.1.*'
           py7zrversion: '==1.0.*'
           extra: '--external 7z'
 
