@@ -595,8 +595,14 @@ next:
         } else if (gameOptions.getAlgorithm() == 4 /* Random */) {
             value = Search::random_search(rootPos, bestMove);
         } else {
-            value = Search::search(*this, rootPos, ss, d, originDepth, alpha,
-                                   beta, bestMove);
+            // Use originDepth as both the search depth and the originDepth
+            // to ensure bestMove is set at the root node (depth ==
+            // originDepth). Using d here would cause bestMove to be set at an
+            // inner node when d > originDepth (Lazy Mode), which can be in
+            // remove phase, corrupting the root's bestMove with an illegal
+            // move (e.g., removing own pieces).
+            value = Search::search(*this, rootPos, ss, originDepth, originDepth,
+                                   alpha, beta, bestMove);
         }
 
         bestMoveSoFar = bestMove;
