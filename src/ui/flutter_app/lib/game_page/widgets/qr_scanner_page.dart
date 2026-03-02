@@ -3,6 +3,7 @@
 
 // qr_scanner_page.dart
 
+import 'dart:async';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
@@ -31,7 +32,8 @@ class QrScannerPage extends StatefulWidget {
   State<QrScannerPage> createState() => _QrScannerPageState();
 }
 
-class _QrScannerPageState extends State<QrScannerPage> {
+class _QrScannerPageState extends State<QrScannerPage>
+    with WidgetsBindingObserver {
   bool _hasPopped = false;
 
   /// True while capturing a still frame and navigating to the selection page.
@@ -47,10 +49,109 @@ class _QrScannerPageState extends State<QrScannerPage> {
 
   bool get _isBusy => _isCapturing || _isDecoding || _hasPopped;
 
+  /// Incremented to force-recreate the [ReaderWidget] when the camera becomes
+  /// unresponsive.  Changing the key causes Flutter to discard the old widget
+  /// state (disposing the broken camera) and create a fresh one.
+  int _readerKey = 0;
+
+  /// True while the camera is being torn down and rebuilt.  During this window
+  /// the [ReaderWidget] is removed from the tree entirely so the old
+  /// [CameraController] can finish its asynchronous disposal before a new one
+  /// is created.
+  bool _isReinitializing = false;
+
+  /// Tracks whether at least one scan callback has been received, so the
+  /// watchdog does not trigger during initial camera warm-up.
+  bool _hasReceivedFirstCallback = false;
+
+  /// Timestamp of the most recent scan callback (success or failure).
+  DateTime _lastScanActivity = DateTime.now();
+
+  Timer? _watchdogTimer;
+
+  static const Duration _watchdogInterval = Duration(seconds: 2);
+  static const Duration _watchdogThreshold = Duration(seconds: 5);
+
+  /// Time to wait for the old [CameraController] to finish async disposal
+  /// before creating a new [ReaderWidget].
+  static const Duration _cameraReleaseDelay = Duration(milliseconds: 1500);
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    _startWatchdog();
+  }
+
+  @override
+  void dispose() {
+    _watchdogTimer?.cancel();
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed && !_hasPopped &&
+        !_isReinitializing) {
+      _reinitializeCamera();
+    }
+  }
+
+  // ── Camera health / watchdog ───────────────────────────────────────
+
+  void _onScanActivity() {
+    _hasReceivedFirstCallback = true;
+    _lastScanActivity = DateTime.now();
+  }
+
+  void _startWatchdog() {
+    _watchdogTimer = Timer.periodic(_watchdogInterval, (_) {
+      if (_hasPopped || _isBusy || !_hasReceivedFirstCallback ||
+          _cameraState != _CameraState.available || _isReinitializing) {
+        return;
+      }
+      if (DateTime.now().difference(_lastScanActivity) > _watchdogThreshold) {
+        _reinitializeCamera();
+      }
+    });
+  }
+
+  /// Tears down the current [ReaderWidget] (removing it from the tree so the
+  /// [CameraController] is fully disposed), waits for the camera hardware to
+  /// be released, then creates a fresh [ReaderWidget].
+  Future<void> _reinitializeCamera() async {
+    if (_isReinitializing || _hasPopped) {
+      return;
+    }
+
+    _hasReceivedFirstCallback = false;
+    _lastScanActivity = DateTime.now();
+
+    // Step 1: pull the ReaderWidget out of the tree → triggers dispose() on
+    // the old _ReaderWidgetState which asynchronously releases the camera.
+    setState(() {
+      _isReinitializing = true;
+    });
+
+    // Step 2: give the platform camera enough time to finish releasing.
+    await Future<void>.delayed(_cameraReleaseDelay);
+
+    // Step 3: put a brand-new ReaderWidget back into the tree.
+    if (mounted && !_hasPopped) {
+      setState(() {
+        _cameraState = _CameraState.checking;
+        _readerKey++;
+        _isReinitializing = false;
+      });
+    }
+  }
+
   // ── Camera multi-scan callback ──────────────────────────────────────
 
   /// Called by [ReaderWidget] every frame where at least one code is found.
   void _onMultiScan(Codes codes) {
+    _onScanActivity();
     if (_isBusy) {
       return;
     }
@@ -69,7 +170,6 @@ class _QrScannerPageState extends State<QrScannerPage> {
       return;
     }
 
-    // Multiple codes detected – capture a still image and let the user choose.
     _captureAndSelect();
   }
 
@@ -99,8 +199,7 @@ class _QrScannerPageState extends State<QrScannerPage> {
       late final XFile picture;
       try {
         picture = await _cameraController!.takePicture();
-      } catch (e) {
-        // takePicture failed – fall back to nothing.
+      } catch (_) {
         return;
       }
 
@@ -277,31 +376,33 @@ class _QrScannerPageState extends State<QrScannerPage> {
 
   // ── Build ───────────────────────────────────────────────────────────
 
-  /// The [ReaderWidget] instance is kept as a field so that it is never
-  /// re-created on rebuild.  This prevents Flutter from treating a new widget
-  /// instance as a different widget and discarding (disposing) the old one
-  /// unnecessarily.
-  late final Widget _readerWidget = ReaderWidget(
-    codeFormat: Format.qrCode,
-    isMultiScan: true,
-    showScannerOverlay: false,
-    showGallery: false,
-    showToggleCamera: false,
-    tryHarder: true,
-    scanDelay: const Duration(milliseconds: 500),
-    onControllerCreated: (CameraController? controller, Exception? error) {
-      _cameraController = controller;
-      if (mounted) {
-        setState(() {
-          _cameraState = (error != null || controller == null)
-              ? _CameraState.unavailable
-              : _CameraState.available;
-        });
-      }
-    },
-    onMultiScan: _onMultiScan,
-    onMultiScanFailure: (_) {},
-  );
+  /// Builds a fresh [ReaderWidget] keyed by [_readerKey].  When the key
+  /// changes Flutter discards the old widget state (which disposes the
+  /// broken camera) and creates a new one that reinitialises the hardware.
+  Widget _buildReaderWidget() {
+    return ReaderWidget(
+      key: ValueKey<int>(_readerKey),
+      codeFormat: Format.qrCode,
+      isMultiScan: true,
+      showScannerOverlay: false,
+      showGallery: false,
+      showToggleCamera: false,
+      tryHarder: true,
+      scanDelay: const Duration(milliseconds: 500),
+      onControllerCreated: (CameraController? controller, Exception? error) {
+        _cameraController = controller;
+        if (mounted) {
+          setState(() {
+            _cameraState = (error != null || controller == null)
+                ? _CameraState.unavailable
+                : _CameraState.available;
+          });
+        }
+      },
+      onMultiScan: _onMultiScan,
+      onMultiScanFailure: (_) => _onScanActivity(),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -314,21 +415,24 @@ class _QrScannerPageState extends State<QrScannerPage> {
     // when the camera reports unavailability.
     final Widget body;
 
-    if (_hasPopped) {
-      // Keep the ReaderWidget alive via Offstage so the CameraController is
-      // not disposed while a pending layout pass may still call
-      // buildPreview().  This mirrors the workaround used below for
-      // _CameraState.unavailable.
+    if (_isReinitializing) {
+      // During reinit the ReaderWidget is intentionally removed from the tree
+      // so the old CameraController can finish its async disposal before a new
+      // one is created.
+      body = const Center(child: CircularProgressIndicator());
+    } else if (_hasPopped) {
+      final Widget readerWidget = _buildReaderWidget();
       body = Stack(
         children: <Widget>[
-          Offstage(child: _readerWidget),
+          Offstage(child: readerWidget),
           const Center(child: CircularProgressIndicator()),
         ],
       );
     } else if (_cameraState == _CameraState.unavailable) {
+      final Widget readerWidget = _buildReaderWidget();
       body = Stack(
         children: <Widget>[
-          Offstage(child: _readerWidget),
+          Offstage(child: readerWidget),
           if (_isDecoding)
             const Center(child: CircularProgressIndicator())
           else
@@ -336,7 +440,7 @@ class _QrScannerPageState extends State<QrScannerPage> {
         ],
       );
     } else {
-      body = _readerWidget;
+      body = _buildReaderWidget();
     }
 
     return Scaffold(
@@ -352,7 +456,8 @@ class _QrScannerPageState extends State<QrScannerPage> {
                 child: CircularProgressIndicator(strokeWidth: 2),
               ),
             )
-          else if (_cameraState != _CameraState.checking)
+          else if (_cameraState != _CameraState.checking &&
+                   !_isReinitializing)
             IconButton(
               icon: const Icon(Icons.photo_library_outlined),
               tooltip: s.qrCodeFromGallery,
