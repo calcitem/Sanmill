@@ -315,7 +315,16 @@ class _QrScannerPageState extends State<QrScannerPage> {
     final Widget body;
 
     if (_hasPopped) {
-      body = const Center(child: CircularProgressIndicator());
+      // Keep the ReaderWidget alive via Offstage so the CameraController is
+      // not disposed while a pending layout pass may still call
+      // buildPreview().  This mirrors the workaround used below for
+      // _CameraState.unavailable.
+      body = Stack(
+        children: <Widget>[
+          Offstage(child: _readerWidget),
+          const Center(child: CircularProgressIndicator()),
+        ],
+      );
     } else if (_cameraState == _CameraState.unavailable) {
       body = Stack(
         children: <Widget>[
