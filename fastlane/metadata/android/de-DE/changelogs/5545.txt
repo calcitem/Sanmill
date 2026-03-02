@@ -1,0 +1,3 @@
+v7.3.8
+
+Dieses Update umfasst verschiedene Verbesserungen und Fehlerbehebungen, um die App für dich zu verbessern.
