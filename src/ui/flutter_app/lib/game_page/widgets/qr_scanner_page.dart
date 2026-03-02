@@ -92,7 +92,8 @@ class _QrScannerPageState extends State<QrScannerPage>
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state == AppLifecycleState.resumed && !_hasPopped &&
+    if (state == AppLifecycleState.resumed &&
+        !_hasPopped &&
         !_isReinitializing) {
       _reinitializeCamera();
     }
@@ -107,8 +108,11 @@ class _QrScannerPageState extends State<QrScannerPage>
 
   void _startWatchdog() {
     _watchdogTimer = Timer.periodic(_watchdogInterval, (_) {
-      if (_hasPopped || _isBusy || !_hasReceivedFirstCallback ||
-          _cameraState != _CameraState.available || _isReinitializing) {
+      if (_hasPopped ||
+          _isBusy ||
+          !_hasReceivedFirstCallback ||
+          _cameraState != _CameraState.available ||
+          _isReinitializing) {
         return;
       }
       if (DateTime.now().difference(_lastScanActivity) > _watchdogThreshold) {
@@ -276,16 +280,27 @@ class _QrScannerPageState extends State<QrScannerPage>
 
       final Uint8List imageBytes = await file.readAsBytes();
 
-      final Codes codes = await zx.readBarcodesImagePath(
-        file,
-        DecodeParams(
-          imageFormat: ImageFormat.rgb,
-          format: Format.qrCode,
-          isMultiScan: true,
-          tryHarder: true,
-          maxSize: 1920,
-        ),
-      );
+      late final Codes codes;
+      try {
+        codes = await zx.readBarcodesImagePath(
+          file,
+          DecodeParams(
+            imageFormat: ImageFormat.rgb,
+            format: Format.qrCode,
+            isMultiScan: true,
+            tryHarder: true,
+            maxSize: 1920,
+          ),
+        );
+      } catch (_) {
+        if (!mounted) {
+          return;
+        }
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(S.of(context).qrCodeNotFoundInImage)),
+        );
+        return;
+      }
 
       List<Code> valid = codes.codes
           .where((Code c) => c.isValid && c.text != null && c.text!.isNotEmpty)
@@ -293,17 +308,23 @@ class _QrScannerPageState extends State<QrScannerPage>
 
       // Fall back to single-scan if multi-scan found nothing.
       if (valid.isEmpty) {
-        final Code single = await zx.readBarcodeImagePath(
-          file,
-          DecodeParams(
-            imageFormat: ImageFormat.rgb,
-            format: Format.qrCode,
-            tryHarder: true,
-            maxSize: 1920,
-          ),
-        );
-        if (single.isValid && single.text != null && single.text!.isNotEmpty) {
-          valid = <Code>[single];
+        try {
+          final Code single = await zx.readBarcodeImagePath(
+            file,
+            DecodeParams(
+              imageFormat: ImageFormat.rgb,
+              format: Format.qrCode,
+              tryHarder: true,
+              maxSize: 1920,
+            ),
+          );
+          if (single.isValid &&
+              single.text != null &&
+              single.text!.isNotEmpty) {
+            valid = <Code>[single];
+          }
+        } catch (_) {
+          // Image could not be decoded; fall through to "not found" handling.
         }
       }
 
@@ -456,8 +477,7 @@ class _QrScannerPageState extends State<QrScannerPage>
                 child: CircularProgressIndicator(strokeWidth: 2),
               ),
             )
-          else if (_cameraState != _CameraState.checking &&
-                   !_isReinitializing)
+          else if (_cameraState != _CameraState.checking && !_isReinitializing)
             IconButton(
               icon: const Icon(Icons.photo_library_outlined),
               tooltip: s.qrCodeFromGallery,
