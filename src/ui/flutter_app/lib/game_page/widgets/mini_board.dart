@@ -109,10 +109,14 @@ class MiniBoardState extends State<MiniBoard>
   }
 
   /// Navigate directly to the PGN node associated with this MiniBoard.
-  void _handleNavigationIconTap() {
+  Future<void> _handleNavigationIconTap() async {
     final PgnNode<ExtMove>? targetNode = widget.node;
     if (targetNode != null) {
-      HistoryNavigator.gotoNode(context, targetNode, pop: false);
+      await HistoryNavigator.gotoNode(context, targetNode, pop: false);
+    }
+
+    if (!mounted) {
+      return;
     }
 
     setState(() {
