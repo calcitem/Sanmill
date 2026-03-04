@@ -7,8 +7,8 @@ import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 
 import '../../shared/database/database.dart';
+import '../services/import_export/pgn.dart';
 import '../services/mill.dart';
-import 'game_page.dart';
 
 /// MiniBoard widget displays a small Nine Men's Morris board given a board layout string.
 /// When the board is tapped, an overlay navigation icon (FluentIcons.arrow_undo_48_regular)
@@ -19,14 +19,17 @@ class MiniBoard extends StatefulWidget {
     super.key,
     required this.boardLayout,
     this.extMove,
-    this.onNavigateMove, // Callback when navigation icon is tapped.
+    this.node,
+    this.onNavigateMove,
   });
 
   final String boardLayout;
   final ExtMove? extMove;
 
-  /// Optional callback invoked after navigating the move (if you still want it).
-  /// If not needed, you can remove or refactor.
+  /// The PGN node associated with this board, used for direct node navigation.
+  final PgnNode<ExtMove>? node;
+
+  /// Optional callback invoked after navigating the move.
   final VoidCallback? onNavigateMove;
 
   @override
@@ -105,61 +108,19 @@ class MiniBoardState extends State<MiniBoard>
     });
   }
 
-  /// When navigation icon is tapped, import partial moves up to this extMove's index,
-  /// then jump to that position on the main line.
-  ///
-  /// Implementation references move_list_dialog.dart's _importGame logic:
-  ///  - Build PGN substring up to clickedIndex
-  ///  - Call ImportService.import(...)
-  ///  - Then HistoryNavigator.takeBackAll(...), stepForwardAll(...).
+  /// Navigate directly to the PGN node associated with this MiniBoard.
   void _handleNavigationIconTap() {
-    final ExtMove? em = widget.extMove;
-    if (em != null && em.moveIndex != null && em.moveIndex! >= 0) {
-      final int clickedIndex = em.moveIndex!;
-
-      // 1) Collect mergedMoves from the current GameController
-      final GameController controller = GameController();
-      List<String> mergedMoves = getMergedMoves(controller);
-
-      // 2) Detect if there's a leading fen block
-      String? fen;
-      if (mergedMoves.isNotEmpty && mergedMoves[0].startsWith('[')) {
-        fen = mergedMoves[0];
-        mergedMoves = mergedMoves.sublist(1);
-      }
-
-      // 3) Partial PGN up to (clickedIndex + 1)
-      String ml = mergedMoves.sublist(0, clickedIndex + 1).join(' ');
-      if (fen != null) {
-        ml = '$fen $ml';
-      }
-
-      // 4) Import the PGN
-      try {
-        ImportService.import(ml);
-      } catch (exception) {
-        // If import fails, you can show a tip or revert
-        // For example:
-        final String tip = "Cannot import partial moves: $ml";
-        GameController().headerTipNotifier.showTip(tip);
-        // Then optionally return
-        return;
-      }
-
-      // 5) Rebuild from scratch:
-      HistoryNavigator.takeBackAll(context, pop: false);
-      HistoryNavigator.stepForwardAll(context, pop: false);
+    final PgnNode<ExtMove>? targetNode = widget.node;
+    if (targetNode != null) {
+      HistoryNavigator.gotoNode(context, targetNode, pop: false);
     }
 
-    // Hide the icon after navigating if desired
     setState(() {
       _showNavigationIcon = false;
     });
 
-    // If your parent still wants to handle callback
     widget.onNavigateMove?.call();
 
-    // Close the page
     Navigator.pop(context);
   }
 
