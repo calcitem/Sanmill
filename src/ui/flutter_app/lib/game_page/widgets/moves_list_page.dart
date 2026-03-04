@@ -2001,6 +2001,7 @@ class MovesListPageState extends State<MovesListPage> {
                       child: MiniBoard(
                         boardLayout: boardLayout,
                         extMove: variationNode.data,
+                        node: variationNode,
                       ),
                     ),
                   )
@@ -3424,6 +3425,7 @@ class MoveListItemState extends State<MoveListItem> {
                         child: MiniBoard(
                           boardLayout: boardLayout,
                           extMove: widget.node.data,
+                          node: widget.node,
                         ),
                       ),
                     const SizedBox(height: 8),
@@ -3697,6 +3699,7 @@ class MoveListItemState extends State<MoveListItem> {
                       ? MiniBoard(
                           boardLayout: boardLayout,
                           extMove: widget.node.data,
+                          node: widget.node,
                         )
                       : const SizedBox.shrink(),
                 ),
@@ -3760,6 +3763,7 @@ class MoveListItemState extends State<MoveListItem> {
                     child: MiniBoard(
                       boardLayout: boardLayout,
                       extMove: widget.node.data,
+                      node: widget.node,
                     ),
                   ),
                 )
