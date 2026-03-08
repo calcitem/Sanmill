@@ -4,11 +4,16 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Sanmill Study Pages</title>
+  <meta
+    name="description"
+    content="Official study pages linked from the Sanmill app."
+    data-i18n-attr="content:meta.description"
+  >
   <style>
     :root {
       color-scheme: light dark;
       --bg: #0f172a;
-      --panel: #111827;
+      --panel: rgba(17, 24, 39, 0.9);
       --text: #e5e7eb;
       --muted: #94a3b8;
       --accent: #f59e0b;
@@ -33,12 +38,21 @@
     }
 
     main {
-      width: min(760px, 100%);
-      background: rgba(17, 24, 39, 0.9);
+      width: min(780px, 100%);
+      background: var(--panel);
       border: 1px solid var(--line);
-      border-radius: 20px;
+      border-radius: 22px;
       padding: 32px;
       box-shadow: 0 24px 60px rgba(0, 0, 0, 0.32);
+    }
+
+    .topline {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 18px;
     }
 
     .eyebrow {
@@ -46,11 +60,31 @@
       font-size: 0.82rem;
       letter-spacing: 0.14em;
       text-transform: uppercase;
-      margin: 0 0 12px;
+      margin: 0;
+    }
+
+    .language-picker {
+      display: grid;
+      gap: 6px;
+      min-width: min(100%, 220px);
+    }
+
+    .language-picker span {
+      color: var(--muted);
+      font-size: 0.86rem;
+    }
+
+    .language-picker select {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: rgba(15, 23, 42, 0.9);
+      color: var(--text);
+      padding: 10px 12px;
+      font: inherit;
     }
 
     h1 {
-      margin: 0 0 12px;
+      margin: 0 0 14px;
       font-size: clamp(2rem, 4vw, 3rem);
       line-height: 1.05;
     }
@@ -59,7 +93,7 @@
       color: var(--muted);
       font-size: 1.02rem;
       line-height: 1.7;
-      margin: 0 0 18px;
+      margin: 0 0 16px;
     }
 
     .actions {
@@ -95,21 +129,51 @@
       color: #111827;
       border-color: transparent;
     }
+
+    @media (max-width: 640px) {
+      main {
+        padding: 24px;
+      }
+
+      .topline {
+        flex-direction: column;
+      }
+
+      .language-picker {
+        width: 100%;
+      }
+    }
   </style>
 </head>
 <body>
   <main>
-    <p class="eyebrow">Sanmill</p>
-    <h1>Study pages for Morris players</h1>
-    <p>
-      This site hosts official learning pages linked from the Sanmill app.
-      The current study page focuses on Nine Men's Morris fundamentals for
-      players who want practical ideas they can use right away.
+    <div class="topline">
+      <p class="eyebrow" data-i18n="hero.eyebrow">Sanmill</p>
+      <label class="language-picker">
+        <span data-i18n="common.language">Language</span>
+        <select data-locale-switcher aria-label="Language selector"></select>
+      </label>
+    </div>
+    <h1 data-i18n="hero.title">Study pages for Morris players</h1>
+    <p data-i18n="hero.lead">
+      This site hosts official study pages linked from the Sanmill app.
+    </p>
+    <p data-i18n="hero.sublead">
+      Open the Nine Men's Morris page for quick strategy notes, short drills,
+      and practical next steps.
     </p>
     <div class="actions">
-      <a class="button primary" href="nmm-strategy/">Open the NMM study page</a>
-      <a class="button" href="https://github.com/calcitem/Sanmill">View the Sanmill project</a>
+      <a class="button primary" href="nmm-strategy/" data-i18n="actions.study">
+        Open the NMM study page
+      </a>
+      <a class="button" href="https://github.com/calcitem/Sanmill" data-i18n="actions.project">
+        View the Sanmill project
+      </a>
     </div>
   </main>
+  <script type="module">
+    import { initLocalizedPage } from "./assets/localized-pages.js";
+    initLocalizedPage("home");
+  </script>
 </body>
 </html>
