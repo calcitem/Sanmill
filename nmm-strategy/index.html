@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sanmill | Nine Men's Morris Study Page</title>
+  <meta
+    name="description"
+    content="A practical Nine Men's Morris study page from Sanmill, with quick ideas, common mistakes, and further reading."
+  >
+  <style>
+    :root {
+      color-scheme: light dark;
+      --bg: #08111f;
+      --panel: rgba(15, 23, 42, 0.84);
+      --panel-strong: #0f172a;
+      --text: #e2e8f0;
+      --muted: #94a3b8;
+      --accent: #f59e0b;
+      --accent-soft: rgba(245, 158, 11, 0.14);
+      --line: rgba(148, 163, 184, 0.22);
+      --good: #34d399;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Arial, sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(245, 158, 11, 0.18), transparent 28%),
+        radial-gradient(circle at top right, rgba(52, 211, 153, 0.12), transparent 24%),
+        var(--bg);
+      color: var(--text);
+    }
+
+    a {
+      color: inherit;
+    }
+
+    .wrap {
+      width: min(1120px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    header {
+      padding: 28px 0 18px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .brand {
+      text-decoration: none;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-size: 0.82rem;
+    }
+
+    nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .hero {
+      padding: 34px 0 20px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.6fr) minmax(280px, 0.9fr);
+      gap: 24px;
+      align-items: stretch;
+    }
+
+    .hero-card,
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.24);
+      backdrop-filter: blur(12px);
+    }
+
+    .hero-card {
+      padding: 34px;
+    }
+
+    .eyebrow {
+      margin: 0 0 14px;
+      color: var(--accent);
+      font-size: 0.84rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    h1 {
+      margin: 0 0 16px;
+      font-size: clamp(2.3rem, 5vw, 4.3rem);
+      line-height: 0.96;
+      letter-spacing: -0.04em;
+    }
+
+    .hero p,
+    section p {
+      color: var(--muted);
+      line-height: 1.72;
+      font-size: 1.03rem;
+    }
+
+    .hero p {
+      margin: 0 0 18px;
+      max-width: 58ch;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 46px;
+      padding: 0 18px;
+      border-radius: 999px;
+      text-decoration: none;
+      font-weight: 700;
+      border: 1px solid var(--line);
+      transition: transform 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+    }
+
+    .button:hover {
+      transform: translateY(-1px);
+      border-color: var(--accent);
+    }
+
+    .button.primary {
+      background: var(--accent);
+      color: #111827;
+      border-color: transparent;
+    }
+
+    .hero-side {
+      padding: 28px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .metric {
+      padding: 16px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .metric:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .metric-label {
+      margin: 0 0 8px;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--muted);
+    }
+
+    .metric strong {
+      display: block;
+      font-size: 1.15rem;
+      line-height: 1.4;
+    }
+
+    main {
+      padding: 18px 0 56px;
+    }
+
+    section {
+      margin-top: 22px;
+    }
+
+    .section-heading {
+      margin: 0 0 12px;
+      font-size: clamp(1.4rem, 2.5vw, 2rem);
+      line-height: 1.1;
+    }
+
+    .grid {
+      display: grid;
+      gap: 18px;
+    }
+
+    .grid.three {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .grid.two {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .panel {
+      padding: 24px;
+    }
+
+    .panel h3 {
+      margin: 0 0 12px;
+      font-size: 1.1rem;
+    }
+
+    .panel ul,
+    .panel ol {
+      margin: 0;
+      padding-left: 20px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .panel li + li {
+      margin-top: 10px;
+    }
+
+    .callout {
+      border-left: 4px solid var(--accent);
+      background: var(--accent-soft);
+    }
+
+    .callout strong {
+      color: var(--text);
+    }
+
+    .checklist li::marker {
+      color: var(--good);
+    }
+
+    footer {
+      padding: 0 0 48px;
+    }
+
+    .footer-card {
+      padding: 24px;
+      background: rgba(15, 23, 42, 0.72);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+    }
+
+    .footer-card p {
+      margin: 0 0 12px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .footer-card p:last-child {
+      margin-bottom: 0;
+    }
+
+    @media (max-width: 880px) {
+      .hero,
+      .grid.two,
+      .grid.three {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-card,
+      .hero-side,
+      .panel,
+      .footer-card {
+        padding: 22px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="wrap">
+    <div class="topbar">
+      <a class="brand" href="../">Sanmill Study Pages</a>
+      <nav>
+        <a href="#start">Start here</a>
+        <a href="#mistakes">Common mistakes</a>
+        <a href="#practice">Practice next</a>
+        <a href="#reading">Further reading</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="hero" id="top">
+      <div class="hero-card">
+        <p class="eyebrow">Nine Men's Morris</p>
+        <h1>Study ideas for players who want steadier results</h1>
+        <p>
+          If you keep getting squeezed by the AI, you usually do not need a
+          secret trick. You need a few reliable habits: protect mobility,
+          build threats in pairs, and stop giving away tempo for a single mill.
+        </p>
+        <p>
+          This page is meant to be practical. Read the quick advice first, try
+          one or two ideas in your next games, then come back for the deeper
+          study notes and external references.
+        </p>
+        <div class="actions">
+          <a class="button primary" href="#start">Read the quick advice</a>
+          <a class="button" href="#reading">Open further reading</a>
+        </div>
+      </div>
+
+      <aside class="hero-side hero-card">
+        <div class="metric">
+          <p class="metric-label">First target</p>
+          <strong>Do not chase every mill if it costs your mobility.</strong>
+        </div>
+        <div class="metric">
+          <p class="metric-label">Second target</p>
+          <strong>Look for two threats at once, not one obvious threat.</strong>
+        </div>
+        <div class="metric">
+          <p class="metric-label">Third target</p>
+          <strong>In the late game, count legal moves before you count mills.</strong>
+        </div>
+      </aside>
+    </section>
+
+    <section id="start">
+      <h2 class="section-heading">Start here: three ideas that pay off quickly</h2>
+      <div class="grid three">
+        <article class="panel">
+          <h3>1. Value flexible points</h3>
+          <p>
+            Central intersections and connectors often matter more than the
+            first mill you can see. They keep your pieces active and help you
+            pivot from defense to attack.
+          </p>
+        </article>
+        <article class="panel">
+          <h3>2. Build paired threats</h3>
+          <p>
+            A single threat is easy to answer. A position that can form a mill
+            in two different ways forces the opponent to choose which danger to
+            stop.
+          </p>
+        </article>
+        <article class="panel">
+          <h3>3. Count moves in the endgame</h3>
+          <p>
+            Many lost positions come from missing a coming block. Before you
+            move, ask: how many legal moves will I have after this, and how
+            many will the opponent have?
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <section id="mistakes">
+      <h2 class="section-heading">Common reasons players lose to the AI</h2>
+      <div class="grid two">
+        <article class="panel">
+          <h3>Breaking structure for one capture</h3>
+          <ul>
+            <li>Winning a piece is good, but not if your own position collapses.</li>
+            <li>Do not open strong lines unless you know what replaces them.</li>
+            <li>Ask whether the capture improves your next two moves, not just this move.</li>
+          </ul>
+        </article>
+        <article class="panel">
+          <h3>Ignoring mobility pressure</h3>
+          <ul>
+            <li>The AI often wins by slowly shrinking your legal options.</li>
+            <li>If you keep defending one point at a time, your position gets tied down.</li>
+            <li>Sometimes the right move is the one that keeps three future moves alive.</li>
+          </ul>
+        </article>
+        <article class="panel">
+          <h3>Playing too locally</h3>
+          <ul>
+            <li>Players often focus on the last threat they saw.</li>
+            <li>Good Morris play looks across the whole board for linked points.</li>
+            <li>Try to notice what your move changes on the opposite side as well.</li>
+          </ul>
+        </article>
+        <article class="panel">
+          <h3>Missing tempo swings</h3>
+          <ul>
+            <li>Repeatedly reopening and closing a mill can be strong - or wasteful.</li>
+            <li>If the cycle helps the opponent improve shape, it is not real pressure.</li>
+            <li>Track who benefits if the same pattern repeats two more times.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section id="practice">
+      <h2 class="section-heading">What to practice next</h2>
+      <div class="grid two">
+        <article class="panel">
+          <h3>Short training plan</h3>
+          <ol class="checklist">
+            <li>Play three games with one goal only: keep your connectors active.</li>
+            <li>Play three more games focusing on creating two threats at once.</li>
+            <li>Review one lost game and write down the first move where your mobility dropped.</li>
+            <li>Repeat the same AI level until your losses become explainable, not mysterious.</li>
+          </ol>
+        </article>
+        <article class="panel callout">
+          <h3>Practical reminder</h3>
+          <p>
+            Improvement in Morris often looks slow at first. That is normal.
+            Stronger results usually come after you stop making the same two or
+            three structural mistakes, not after you memorize a huge number of
+            opening lines.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <section id="reading">
+      <h2 class="section-heading">Further reading</h2>
+      <div class="grid two">
+        <article class="panel">
+          <h3>External strategy reference</h3>
+          <p>
+            For deeper study, you can visit the external
+            <a href="https://nmmstrategy.start.page/">NMM Strategy page</a>.
+            It collects background material, contact links, and pointers to a
+            longer strategy resource.
+          </p>
+          <div class="actions">
+            <a class="button primary" href="https://nmmstrategy.start.page/">Open NMM Strategy</a>
+          </div>
+        </article>
+        <article class="panel">
+          <h3>Stay close to the project</h3>
+          <p>
+            Sanmill is open source, so the app, issue tracker, and project
+            discussions are also useful places to learn from stronger players
+            and follow future improvements.
+          </p>
+          <div class="actions">
+            <a class="button" href="https://github.com/calcitem/Sanmill">Open the Sanmill repository</a>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="wrap">
+    <div class="footer-card">
+      <p>
+        This page is an official Sanmill study page. Its job is to help players
+        recover their footing after a rough run, not to interrupt play with a
+        sales pitch.
+      </p>
+      <p>
+        If you reached this page from the app, try one small idea from the
+        "Start here" section in your next game. The best study plan is the one
+        you can test immediately.
+      </p>
+    </div>
+  </footer>
+</body>
+</html>
