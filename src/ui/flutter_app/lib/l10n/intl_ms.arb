@@ -4202,7 +4202,7 @@
     "@importFailed": {},
     "strategySuggestionTitle": "Petua Strategi",
     "@strategySuggestionTitle": {},
-    "nmmStrategySuggestion": "Nampaknya Nine Men's Morris agak mencabar bagi anda. Panduan strategi yang merangkumi pembukaan, taktik dan teknik permainan akhir tersedia — ia mungkin memberi anda kelebihan yang diperlukan.",
+    "nmmStrategySuggestion": "Nampaknya {gameName} agak mencabar bagi anda. Panduan strategi yang merangkumi pembukaan, taktik dan teknik permainan akhir tersedia — ia mungkin memberi anda kelebihan yang diperlukan.",
     "@nmmStrategySuggestion": {},
     "learnMore": "Ketahui Lebih Lanjut",
     "@learnMore": {},

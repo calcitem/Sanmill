@@ -4350,8 +4350,16 @@
     },
     "strategySuggestionTitle": "Strategy Tip",
     "@strategySuggestionTitle": {},
-    "nmmStrategySuggestion": "It seems Nine Men's Morris is proving challenging. A strategy guide covering openings, tactics, and endgame techniques is available — it might give you the edge you need.",
-    "@nmmStrategySuggestion": {},
+    "nmmStrategySuggestion": "It seems {gameName} is proving challenging. A strategy guide covering openings, tactics, and endgame techniques is available — it might give you the edge you need.",
+    "@nmmStrategySuggestion": {
+        "description": "Strategy guide suggestion shown after poor NMM performance",
+        "placeholders": {
+            "gameName": {
+                "description": "The localized name of the Nine Men's Morris game variant",
+                "type": "String"
+            }
+        }
+    },
     "learnMore": "Learn More",
     "@learnMore": {},
     "notNow": "Not Now",

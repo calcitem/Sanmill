@@ -4202,7 +4202,7 @@
     "@importFailed": {},
     "strategySuggestionTitle": "Strateji İpucu",
     "@strategySuggestionTitle": {},
-    "nmmStrategySuggestion": "Nine Men's Morris sizin için zorlu görünüyor. Açılışları, taktikleri ve oyun sonu tekniklerini kapsayan bir strateji kılavuzu mevcut — ihtiyacınız olan avantajı verebilir.",
+    "nmmStrategySuggestion": "{gameName} sizin için zorlu görünüyor. Açılışları, taktikleri ve oyun sonu tekniklerini kapsayan bir strateji kılavuzu mevcut — ihtiyacınız olan avantajı verebilir.",
     "@nmmStrategySuggestion": {},
     "learnMore": "Daha Fazla Öğren",
     "@learnMore": {},

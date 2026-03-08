@@ -4202,7 +4202,7 @@
     "@importFailed": {},
     "strategySuggestionTitle": "Stratēģijas Padoms",
     "@strategySuggestionTitle": {},
-    "nmmStrategySuggestion": "Šķiet, ka Deviņu vīru Moriss ir izaicinājums jums. Pieejams stratēģijas ceļvedis, kas aptver atvērumus, taktikas un spēles beigu tehniku — tas var sniegt jums vajadzīgo priekšrocību.",
+    "nmmStrategySuggestion": "Šķiet, ka {gameName} ir izaicinājums jums. Pieejams stratēģijas ceļvedis, kas aptver atvērumus, taktikas un spēles beigu tehniku — tas var sniegt jums vajadzīgo priekšrocību.",
     "@nmmStrategySuggestion": {},
     "learnMore": "Uzzināt Vairāk",
     "@learnMore": {},

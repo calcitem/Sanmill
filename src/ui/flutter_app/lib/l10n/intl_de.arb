@@ -3494,7 +3494,7 @@
     "@importFailed": {},
     "strategySuggestionTitle": "Strategie-Tipp",
     "@strategySuggestionTitle": {},
-    "nmmStrategySuggestion": "Es scheint, dass Neun Männer Morris eine Herausforderung für Sie ist. Ein Strategieleitfaden mit Eröffnungen, Taktiken und Endspielechniken ist verfügbar — er könnte Ihnen den entscheidenden Vorteil verschaffen.",
+    "nmmStrategySuggestion": "Es scheint, dass {gameName} eine Herausforderung für Sie ist. Ein Strategieleitfaden mit Eröffnungen, Taktiken und Endspielechniken ist verfügbar — er könnte Ihnen den entscheidenden Vorteil verschaffen.",
     "@nmmStrategySuggestion": {},
     "learnMore": "Mehr Erfahren",
     "@learnMore": {},

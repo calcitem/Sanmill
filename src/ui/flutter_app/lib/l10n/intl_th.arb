@@ -4202,7 +4202,7 @@
     "@importFailed": {},
     "strategySuggestionTitle": "เคล็ดลับกลยุทธ์",
     "@strategySuggestionTitle": {},
-    "nmmStrategySuggestion": "ดูเหมือนว่า Nine Men's Morris เป็นความท้าทายสำหรับคุณ มีคู่มือกลยุทธ์ที่ครอบคลุมการเปิดเกม ยุทธวิธี และเทคนิคปลายเกม — อาจให้ความได้เปรียบที่คุณต้องการ",
+    "nmmStrategySuggestion": "ดูเหมือนว่า {gameName} เป็นความท้าทายสำหรับคุณ มีคู่มือกลยุทธ์ที่ครอบคลุมการเปิดเกม ยุทธวิธี และเทคนิคปลายเกม — อาจให้ความได้เปรียบที่คุณต้องการ",
     "@nmmStrategySuggestion": {},
     "learnMore": "เรียนรู้เพิ่มเติม",
     "@learnMore": {},

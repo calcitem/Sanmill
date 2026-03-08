@@ -4202,7 +4202,7 @@
     "@importFailed": {},
     "strategySuggestionTitle": "전략 팁",
     "@strategySuggestionTitle": {},
-    "nmmStrategySuggestion": "나인 멘스 모리스가 어렵게 느껴지시나요? 오프닝, 전술, 엔드게임 기술을 다루는 전략 가이드가 있습니다 — 필요한 우위를 제공할 수 있습니다.",
+    "nmmStrategySuggestion": "{gameName}가 어렵게 느껴지시나요? 오프닝, 전술, 엔드게임 기술을 다루는 전략 가이드가 있습니다 — 필요한 우위를 제공할 수 있습니다.",
     "@nmmStrategySuggestion": {},
     "learnMore": "더 알아보기",
     "@learnMore": {},

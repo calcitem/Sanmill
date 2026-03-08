@@ -4202,7 +4202,7 @@
     "@importFailed": {},
     "strategySuggestionTitle": "نصيحة استراتيجية",
     "@strategySuggestionTitle": {},
-    "nmmStrategySuggestion": "يبدو أن لعبة تسعة رجال موريس تمثل تحديًا لك. يتوفر دليل استراتيجي يغطي الافتتاحيات والتكتيكات وتقنيات نهاية اللعبة — قد يمنحك الميزة التي تحتاجها.",
+    "nmmStrategySuggestion": "يبدو أن لعبة {gameName} تمثل تحديًا لك. يتوفر دليل استراتيجي يغطي الافتتاحيات والتكتيكات وتقنيات نهاية اللعبة — قد يمنحك الميزة التي تحتاجها.",
     "@nmmStrategySuggestion": {},
     "learnMore": "اعرف المزيد",
     "@learnMore": {},

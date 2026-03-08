@@ -4202,7 +4202,7 @@
     "@importFailed": {},
     "strategySuggestionTitle": "Strateški Savjet",
     "@strategySuggestionTitle": {},
-    "nmmStrategySuggestion": "Čini se da je Devet muškaraca Morris izazov za vas. Dostupan je strateški vodič koji pokriva otvaranja, taktike i tehnike završnice — može vam dati prednost koja vam je potrebna.",
+    "nmmStrategySuggestion": "Čini se da je {gameName} izazov za vas. Dostupan je strateški vodič koji pokriva otvaranja, taktike i tehnike završnice — može vam dati prednost koja vam je potrebna.",
     "@nmmStrategySuggestion": {},
     "learnMore": "Saznaj Više",
     "@learnMore": {},

@@ -4202,7 +4202,7 @@
     "@importFailed": {},
     "strategySuggestionTitle": "વ્યૂહ સૂચન",
     "@strategySuggestionTitle": {},
-    "nmmStrategySuggestion": "એવું લાગે છે કે Nine Men's Morris તમારા માટે પડકારજનક છે. ઓપનિંગ, ટેક્ટિક્સ અને એન્ડગેમ ટેકનિક આવરી લેતી એક વ્યૂહ માર્ગદર્શિકા ઉપલબ્ધ છે — તે તમને જરૂરી ફાયદો આપી શકે છે.",
+    "nmmStrategySuggestion": "એવું લાગે છે કે {gameName} તમારા માટે પડકારજનક છે. ઓપનિંગ, ટેક્ટિક્સ અને એન્ડગેમ ટેકનિક આવરી લેતી એક વ્યૂહ માર્ગદર્શિકા ઉપલબ્ધ છે — તે તમને જરૂરી ફાયદો આપી શકે છે.",
     "@nmmStrategySuggestion": {},
     "learnMore": "વધુ જાણો",
     "@learnMore": {},

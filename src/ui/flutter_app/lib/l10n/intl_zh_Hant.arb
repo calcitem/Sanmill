@@ -4222,7 +4222,7 @@
     "@importFailed": {},
     "strategySuggestionTitle": "策略提示",
     "@strategySuggestionTitle": {},
-    "nmmStrategySuggestion": "看起來九子棋對您頗具挑戰性。有一份涵蓋開局、戰術與殘局技巧的策略指南，或許能幫您找到突破口。",
+    "nmmStrategySuggestion": "看起來{gameName}對您頗具挑戰性。有一份涵蓋開局、戰術與殘局技巧的策略指南，或許能幫您找到突破口。",
     "@nmmStrategySuggestion": {},
     "learnMore": "了解更多",
     "@learnMore": {},

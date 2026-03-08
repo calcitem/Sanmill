@@ -4202,7 +4202,7 @@
     "@importFailed": {},
     "strategySuggestionTitle": "Consell d'Estratègia",
     "@strategySuggestionTitle": {},
-    "nmmStrategySuggestion": "Sembla que el Nou en ratlla és tot un repte per a tu. Hi ha disponible una guia d'estratègia que cobreix obertures, tàctiques i tècniques de final de partida — potser et donarà l'avantatge que necessites.",
+    "nmmStrategySuggestion": "Sembla que el {gameName} és tot un repte per a tu. Hi ha disponible una guia d'estratègia que cobreix obertures, tàctiques i tècniques de final de partida — potser et donarà l'avantatge que necessites.",
     "@nmmStrategySuggestion": {},
     "learnMore": "Aprendre Més",
     "@learnMore": {},

@@ -20,7 +20,7 @@ class StrategySuggestionDialog extends StatelessWidget {
         style: AppTheme.dialogTitleTextStyle,
       ),
       content: Text(
-        S.of(context).nmmStrategySuggestion,
+        S.of(context).nmmStrategySuggestion(S.of(context).nineMensMorris),
         key: const Key('strategy_suggestion_dialog_content'),
         style: TextStyle(
           fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize),

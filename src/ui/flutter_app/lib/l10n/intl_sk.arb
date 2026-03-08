@@ -4202,7 +4202,7 @@
     "@importFailed": {},
     "strategySuggestionTitle": "Strategický Tip",
     "@strategySuggestionTitle": {},
-    "nmmStrategySuggestion": "Zdá sa, že Deväť mužov Morris je pre vás náročná hra. K dispozícii je strategická príručka pokrývajúca zahájenie, taktiku a techniky záverečnej hry — môže vám poskytnúť výhodu, ktorú potrebujete.",
+    "nmmStrategySuggestion": "Zdá sa, že {gameName} je pre vás náročná hra. K dispozícii je strategická príručka pokrývajúca zahájenie, taktiku a techniky záverečnej hry — môže vám poskytnúť výhodu, ktorú potrebujete.",
     "@nmmStrategySuggestion": {},
     "learnMore": "Zistiť Viac",
     "@learnMore": {},

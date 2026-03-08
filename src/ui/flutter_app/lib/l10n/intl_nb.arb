@@ -4202,7 +4202,7 @@
     "@importFailed": {},
     "strategySuggestionTitle": "Strategitips",
     "@strategySuggestionTitle": {},
-    "nmmStrategySuggestion": "Det ser ut til at Nine Men's Morris er en utfordring for deg. En strategiguide som dekker åpninger, taktikker og sluttspillteknikker er tilgjengelig — den kan gi deg fordelen du trenger.",
+    "nmmStrategySuggestion": "Det ser ut til at {gameName} er en utfordring for deg. En strategiguide som dekker åpninger, taktikker og sluttspillteknikker er tilgjengelig — den kan gi deg fordelen du trenger.",
     "@nmmStrategySuggestion": {},
     "learnMore": "Lær Mer",
     "@learnMore": {},

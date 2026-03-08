@@ -4202,7 +4202,7 @@
     "@importFailed": {},
     "strategySuggestionTitle": "Stefnutipp",
     "@strategySuggestionTitle": {},
-    "nmmStrategySuggestion": "Það lítur út fyrir að Nine Men's Morris sé áskorun fyrir þig. Til er stefnuleiðbeiningar sem fjallar um opnur, brellur og endaspilstækni — hún gæti gefið þér þann forskot sem þú þarft.",
+    "nmmStrategySuggestion": "Það lítur út fyrir að {gameName} sé áskorun fyrir þig. Til er stefnuleiðbeiningar sem fjallar um opnur, brellur og endaspilstækni — hún gæti gefið þér þann forskot sem þú þarft.",
     "@nmmStrategySuggestion": {},
     "learnMore": "Fræðast Meira",
     "@learnMore": {},

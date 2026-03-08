@@ -4202,7 +4202,7 @@
     "@importFailed": {},
     "strategySuggestionTitle": "Këshillë Strategjike",
     "@strategySuggestionTitle": {},
-    "nmmStrategySuggestion": "Duket se Nine Men's Morris është sfidues për ju. Është i disponueshëm një udhëzues strategjik që mbulon hapjet, taktikat dhe teknikat e fundit të lojës — mund t'ju japë avantazhin që ju nevojitet.",
+    "nmmStrategySuggestion": "Duket se {gameName} është sfidues për ju. Është i disponueshëm një udhëzues strategjik që mbulon hapjet, taktikat dhe teknikat e fundit të lojës — mund t'ju japë avantazhin që ju nevojitet.",
     "@nmmStrategySuggestion": {},
     "learnMore": "Mëso Më Shumë",
     "@learnMore": {},

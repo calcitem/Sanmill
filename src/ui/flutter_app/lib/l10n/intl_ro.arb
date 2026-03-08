@@ -4202,7 +4202,7 @@
     "@importFailed": {},
     "strategySuggestionTitle": "Sfat de Strategie",
     "@strategySuggestionTitle": {},
-    "nmmStrategySuggestion": "Se pare că Nine Men's Morris este o provocare pentru tine. Este disponibil un ghid strategic care acoperă deschiderile, tacticile și tehnicile de final de joc — ar putea să îți ofere avantajul de care ai nevoie.",
+    "nmmStrategySuggestion": "Se pare că {gameName} este o provocare pentru tine. Este disponibil un ghid strategic care acoperă deschiderile, tacticile și tehnicile de final de joc — ar putea să îți ofere avantajul de care ai nevoie.",
     "@nmmStrategySuggestion": {},
     "learnMore": "Află Mai Mult",
     "@learnMore": {},

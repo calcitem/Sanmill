@@ -4202,7 +4202,7 @@
     "@importFailed": {},
     "strategySuggestionTitle": "Strateški Nasvet",
     "@strategySuggestionTitle": {},
-    "nmmStrategySuggestion": "Zdi se, da je Nine Men's Morris izziv za vas. Na voljo je strateški vodnik, ki pokriva odprtja, taktike in tehnike končnice — morda vam bo dal prednost, ki jo potrebujete.",
+    "nmmStrategySuggestion": "Zdi se, da je {gameName} izziv za vas. Na voljo je strateški vodnik, ki pokriva odprtja, taktike in tehnike končnice — morda vam bo dal prednost, ki jo potrebujete.",
     "@nmmStrategySuggestion": {},
     "learnMore": "Izvedi Več",
     "@learnMore": {},

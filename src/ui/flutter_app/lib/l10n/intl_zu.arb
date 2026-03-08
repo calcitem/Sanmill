@@ -4206,7 +4206,7 @@
     "@importFailed": {},
     "strategySuggestionTitle": "Iseluleko Sezindlela",
     "@strategySuggestionTitle": {},
-    "nmmStrategySuggestion": "Kubukeka sengathi i-Nine Men's Morris iyinselelo kuwe. Kukhona umhlahlandlela wamaqhinga okhuluma ngezindlela zokuqala, izindlela nemithelela yokuphela komdlalo — ungakunika inzuzo oyidingayo.",
+    "nmmStrategySuggestion": "Kubukeka sengathi i-{gameName} iyinselelo kuwe. Kukhona umhlahlandlela wamaqhinga okhuluma ngezindlela zokuqala, izindlela nemithelela yokuphela komdlalo — ungakunika inzuzo oyidingayo.",
     "@nmmStrategySuggestion": {},
     "learnMore": "Funda Okwengeziwe",
     "@learnMore": {},

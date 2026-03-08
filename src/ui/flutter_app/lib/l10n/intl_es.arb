@@ -4202,7 +4202,7 @@
     "@importFailed": {},
     "strategySuggestionTitle": "Consejo de Estrategia",
     "@strategySuggestionTitle": {},
-    "nmmStrategySuggestion": "Parece que Nueve hombres en Morris es todo un desafío. Hay una guía de estrategia disponible que cubre aperturas, tácticas y técnicas de final de partida — puede darte la ventaja que necesitas.",
+    "nmmStrategySuggestion": "Parece que {gameName} es todo un desafío. Hay una guía de estrategia disponible que cubre aperturas, tácticas y técnicas de final de partida — puede darte la ventaja que necesitas.",
     "@nmmStrategySuggestion": {},
     "learnMore": "Aprender Más",
     "@learnMore": {},

@@ -4202,7 +4202,7 @@
     "@importFailed": {},
     "strategySuggestionTitle": "Kidokezo cha Mkakati",
     "@strategySuggestionTitle": {},
-    "nmmStrategySuggestion": "Inaonekana Nine Men's Morris ni changamoto kwako. Kipo mwongozo wa mkakati unaoshughulikia mwanzo wa mchezo, mbinu, na mbinu za mwisho wa mchezo — unaweza kukupa faida unayohitaji.",
+    "nmmStrategySuggestion": "Inaonekana {gameName} ni changamoto kwako. Kipo mwongozo wa mkakati unaoshughulikia mwanzo wa mchezo, mbinu, na mbinu za mwisho wa mchezo — unaweza kukupa faida unayohitaji.",
     "@nmmStrategySuggestion": {},
     "learnMore": "Jifunza Zaidi",
     "@learnMore": {},

@@ -4202,7 +4202,7 @@
     "@importFailed": {},
     "strategySuggestionTitle": "טיפ אסטרטגי",
     "@strategySuggestionTitle": {},
-    "nmmStrategySuggestion": "נראה שתשעת האנשים מוריס מהווה אתגר עבורך. מדריך אסטרטגי המכסה פתיחות, טקטיקות וטכניקות סיום משחק זמין — הוא עשוי לתת לך את היתרון שאתה צריך.",
+    "nmmStrategySuggestion": "נראה ש{gameName} מהווה אתגר עבורך. מדריך אסטרטגי המכסה פתיחות, טקטיקות וטכניקות סיום משחק זמין — הוא עשוי לתת לך את היתרון שאתה צריך.",
     "@nmmStrategySuggestion": {},
     "learnMore": "למד עוד",
     "@learnMore": {},

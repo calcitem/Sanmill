@@ -4202,7 +4202,7 @@
     "@importFailed": {},
     "strategySuggestionTitle": "戦略のヒント",
     "@strategySuggestionTitle": {},
-    "nmmStrategySuggestion": "ナインメンズモリスが難しいようですね。序盤・中盤・終盤の戦術を網羅した戦略ガイドがあります — きっと役に立つはずです。",
+    "nmmStrategySuggestion": "{gameName}が難しいようですね。序盤・中盤・終盤の戦術を網羅した戦略ガイドがあります — きっと役に立つはずです。",
     "@nmmStrategySuggestion": {},
     "learnMore": "詳しく見る",
     "@learnMore": {},

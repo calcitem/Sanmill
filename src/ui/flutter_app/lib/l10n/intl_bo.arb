@@ -4202,7 +4202,7 @@
     "@importFailed": {},
     "strategySuggestionTitle": "རྒྱུས་མངའ་ལམ་སྟོན།",
     "@strategySuggestionTitle": {},
-    "nmmStrategySuggestion": "Nine Men's Morris རྩེད་མོ་ཁྱེད་ལ་དཀའ་ངལ་ཅན་དུ་འདུག Nine Men's Morris རྒྱུས་མངའ་ལྡན་པའི་དཔེ་དེབ་ཅིག་ཡོད་པ་རེད།",
+    "nmmStrategySuggestion": "{gameName} རྩེད་མོ་ཁྱེད་ལ་དཀའ་ངལ་ཅན་དུ་འདུག {gameName} རྒྱུས་མངའ་ལྡན་པའི་དཔེ་དེབ་ཅིག་ཡོད་པ་རེད།",
     "@nmmStrategySuggestion": {},
     "learnMore": "མང་གིས་ཤེས།",
     "@learnMore": {},

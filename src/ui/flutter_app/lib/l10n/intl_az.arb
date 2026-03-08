@@ -4202,7 +4202,7 @@
     "@importFailed": {},
     "strategySuggestionTitle": "Strategiya Məsləhəti",
     "@strategySuggestionTitle": {},
-    "nmmStrategySuggestion": "Görünür Doqquz Kişi Morris sizin üçün çətin olmağa davam edir. Açılışları, taktikalar və oyun sonu texnikalarını əhatə edən strategiya bələdçisi mövcuddur — sizə lazım olan üstünlüyü verə bilər.",
+    "nmmStrategySuggestion": "Görünür {gameName} sizin üçün çətin olmağa davam edir. Açılışları, taktikalar və oyun sonu texnikalarını əhatə edən strategiya bələdçisi mövcuddur — sizə lazım olan üstünlüyü verə bilər.",
     "@nmmStrategySuggestion": {},
     "learnMore": "Daha Çox Öyrən",
     "@learnMore": {},

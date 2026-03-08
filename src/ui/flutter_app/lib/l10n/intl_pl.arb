@@ -4202,7 +4202,7 @@
     "@importFailed": {},
     "strategySuggestionTitle": "Porada Strategiczna",
     "@strategySuggestionTitle": {},
-    "nmmStrategySuggestion": "Wygląda na to, że Dziewięć mężczyzn Morris jest dla ciebie wyzwaniem. Dostępny jest przewodnik strategiczny obejmujący otwarcia, taktyki i techniki końcówki — może dać ci przewagę, której potrzebujesz.",
+    "nmmStrategySuggestion": "Wygląda na to, że {gameName} jest dla ciebie wyzwaniem. Dostępny jest przewodnik strategiczny obejmujący otwarcia, taktyki i techniki końcówki — może dać ci przewagę, której potrzebujesz.",
     "@nmmStrategySuggestion": {},
     "learnMore": "Dowiedz Się Więcej",
     "@learnMore": {},

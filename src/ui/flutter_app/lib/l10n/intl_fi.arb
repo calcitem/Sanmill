@@ -4202,7 +4202,7 @@
     "@importFailed": {},
     "strategySuggestionTitle": "Strategiavinkki",
     "@strategySuggestionTitle": {},
-    "nmmStrategySuggestion": "Näyttää siltä, että Nine Men's Morris on sinulle haastava. Saatavilla on strategiaopas, joka kattaa avauspelityylit, taktiikat ja loppupelin tekniikat — se saattaa antaa sinulle tarvitsemasi edun.",
+    "nmmStrategySuggestion": "Näyttää siltä, että {gameName} on sinulle haastava. Saatavilla on strategiaopas, joka kattaa avauspelityylit, taktiikat ja loppupelin tekniikat — se saattaa antaa sinulle tarvitsemasi edun.",
     "@nmmStrategySuggestion": {},
     "learnMore": "Lue Lisää",
     "@learnMore": {},
