@@ -49,7 +49,7 @@ echo ""
 flutter test \
     integration_test/monkey/smart_monkey_test.dart \
     -d "$DEVICE" \
-    --timeout 600
+    --timeout 600s
 
 echo ""
 echo "============================================="
