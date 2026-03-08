@@ -3,10 +3,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Sanmill | Nine Men's Morris Study Page</title>
+  <title>Sanmill | Nine Men's Morris Coach Notes</title>
   <meta
     name="description"
-    content="A practical Nine Men's Morris study page from Sanmill, with quick ideas, common mistakes, and further reading."
+    content="Direct coach notes for Nine Men's Morris players who keep losing to the AI. Pick one thing to fix tonight."
   >
   <style>
     :root {
@@ -17,41 +17,35 @@
       --text: #e2e8f0;
       --muted: #94a3b8;
       --accent: #f59e0b;
-      --accent-soft: rgba(245, 158, 11, 0.14);
+      --accent-soft: rgba(245, 158, 11, 0.13);
       --line: rgba(148, 163, 184, 0.22);
       --good: #34d399;
+      --bad: #f87171;
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
-    html {
-      scroll-behavior: smooth;
-    }
+    html { scroll-behavior: smooth; }
 
     body {
       margin: 0;
       font-family: "Segoe UI", Arial, sans-serif;
       background:
-        radial-gradient(circle at top left, rgba(245, 158, 11, 0.18), transparent 28%),
-        radial-gradient(circle at top right, rgba(52, 211, 153, 0.12), transparent 24%),
+        radial-gradient(circle at top left,  rgba(245,158,11,0.18), transparent 28%),
+        radial-gradient(circle at top right, rgba(52,211,153,0.11), transparent 24%),
         var(--bg);
       color: var(--text);
     }
 
-    a {
-      color: inherit;
-    }
+    a { color: inherit; }
 
     .wrap {
-      width: min(1120px, calc(100% - 32px));
+      width: min(1080px, calc(100% - 32px));
       margin: 0 auto;
     }
 
-    header {
-      padding: 28px 0 18px;
-    }
+    /* ---- top bar ---- */
+    header { padding: 26px 0 16px; }
 
     .topbar {
       display: flex;
@@ -70,91 +64,77 @@
       font-size: 0.82rem;
     }
 
-    nav {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 14px;
-    }
+    nav { display: flex; flex-wrap: wrap; gap: 14px; }
 
     nav a {
       text-decoration: none;
       color: var(--muted);
-      font-size: 0.95rem;
+      font-size: 0.92rem;
     }
 
-    .hero {
-      padding: 34px 0 20px;
-      display: grid;
-      grid-template-columns: minmax(0, 1.6fr) minmax(280px, 0.9fr);
-      gap: 24px;
-      align-items: stretch;
-    }
+    nav a:hover { color: var(--accent); }
 
-    .hero-card,
+    /* ---- shared panel ---- */
     .panel {
       background: var(--panel);
       border: 1px solid var(--line);
-      border-radius: 24px;
-      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.24);
-      backdrop-filter: blur(12px);
+      border-radius: 22px;
+      padding: 24px;
+      box-shadow: 0 16px 44px rgba(0,0,0,0.22);
+      backdrop-filter: blur(10px);
     }
 
-    .hero-card {
-      padding: 34px;
+    /* ---- hero ---- */
+    .hero {
+      padding: 32px 0 20px;
+      display: grid;
+      grid-template-columns: minmax(0,1.55fr) minmax(260px,0.9fr);
+      gap: 20px;
+      align-items: stretch;
     }
+
+    .hero-main { padding: 32px; }
 
     .eyebrow {
-      margin: 0 0 14px;
+      margin: 0 0 12px;
       color: var(--accent);
-      font-size: 0.84rem;
+      font-size: 0.82rem;
       letter-spacing: 0.14em;
       text-transform: uppercase;
       font-weight: 700;
     }
 
     h1 {
-      margin: 0 0 16px;
-      font-size: clamp(2.3rem, 5vw, 4.3rem);
-      line-height: 0.96;
+      margin: 0 0 14px;
+      font-size: clamp(2.1rem, 4.8vw, 4rem);
+      line-height: 0.97;
       letter-spacing: -0.04em;
     }
 
-    .hero p,
-    section p {
+    .hero-main > p {
       color: var(--muted);
-      line-height: 1.72;
-      font-size: 1.03rem;
+      line-height: 1.7;
+      font-size: 1.02rem;
+      margin: 0 0 16px;
+      max-width: 52ch;
     }
 
-    .hero p {
-      margin: 0 0 18px;
-      max-width: 58ch;
-    }
-
-    .actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-top: 24px;
-    }
+    .actions { display: flex; flex-wrap: wrap; gap: 11px; margin-top: 22px; }
 
     .button {
       display: inline-flex;
       align-items: center;
-      justify-content: center;
-      min-height: 46px;
+      min-height: 44px;
       padding: 0 18px;
       border-radius: 999px;
       text-decoration: none;
       font-weight: 700;
       border: 1px solid var(--line);
-      transition: transform 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+      transition: transform 0.13s, border-color 0.13s;
+      font-size: 0.93rem;
     }
 
-    .button:hover {
-      transform: translateY(-1px);
-      border-color: var(--accent);
-    }
+    .button:hover { transform: translateY(-1px); border-color: var(--accent); }
 
     .button.primary {
       background: var(--accent);
@@ -162,319 +142,386 @@
       border-color: transparent;
     }
 
+    /* ---- hero side card ---- */
     .hero-side {
-      padding: 28px;
-      display: grid;
-      gap: 14px;
+      padding: 26px;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
     }
 
-    .metric {
-      padding: 16px 0;
+    .directive {
+      padding: 14px 0;
       border-bottom: 1px solid var(--line);
     }
 
-    .metric:last-child {
-      border-bottom: none;
-      padding-bottom: 0;
-    }
+    .directive:last-child { border-bottom: none; padding-bottom: 0; }
 
-    .metric-label {
-      margin: 0 0 8px;
-      font-size: 0.78rem;
+    .directive-label {
+      margin: 0 0 6px;
+      font-size: 0.75rem;
       text-transform: uppercase;
       letter-spacing: 0.14em;
-      color: var(--muted);
+      color: var(--accent);
+      font-weight: 700;
     }
 
-    .metric strong {
+    .directive strong {
       display: block;
-      font-size: 1.15rem;
-      line-height: 1.4;
+      font-size: 1.02rem;
+      line-height: 1.42;
     }
 
-    main {
-      padding: 18px 0 56px;
+    /* ---- section layout ---- */
+    main { padding: 16px 0 52px; }
+
+    section { margin-top: 40px; }
+
+    h2 {
+      margin: 0 0 16px;
+      font-size: clamp(1.4rem, 2.8vw, 2rem);
+      line-height: 1.08;
     }
 
-    section {
-      margin-top: 22px;
+    .grid { display: grid; gap: 16px; }
+    .three { grid-template-columns: repeat(3, minmax(0,1fr)); }
+    .two   { grid-template-columns: repeat(2, minmax(0,1fr)); }
+
+    .panel h3 { margin: 0 0 10px; font-size: 1.06rem; }
+
+    .panel p,
+    .panel li {
+      color: var(--muted);
+      line-height: 1.68;
+      font-size: 0.97rem;
     }
 
-    .section-heading {
-      margin: 0 0 12px;
-      font-size: clamp(1.4rem, 2.5vw, 2rem);
-      line-height: 1.1;
-    }
-
-    .grid {
-      display: grid;
-      gap: 18px;
-    }
-
-    .grid.three {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
-
-    .grid.two {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    .panel {
-      padding: 24px;
-    }
-
-    .panel h3 {
-      margin: 0 0 12px;
-      font-size: 1.1rem;
-    }
+    .panel p { margin: 0 0 10px; }
+    .panel p:last-child { margin-bottom: 0; }
 
     .panel ul,
     .panel ol {
       margin: 0;
       padding-left: 20px;
-      color: var(--muted);
-      line-height: 1.7;
     }
 
-    .panel li + li {
-      margin-top: 10px;
-    }
+    .panel li + li { margin-top: 9px; }
 
+    /* ---- accent variants ---- */
     .callout {
       border-left: 4px solid var(--accent);
       background: var(--accent-soft);
     }
 
-    .callout strong {
-      color: var(--text);
+    .callout strong { color: var(--text); }
+
+    .ok li::marker  { color: var(--good); }
+    .bad li::marker { color: var(--bad); }
+
+    /* ---- drill counter ---- */
+    .drill-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
     }
 
-    .checklist li::marker {
-      color: var(--good);
+    .drill-box {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 20px 16px;
+      text-align: center;
     }
 
-    footer {
-      padding: 0 0 48px;
+    .drill-num {
+      font-size: 2.8rem;
+      font-weight: 800;
+      line-height: 1;
+      color: var(--accent);
+      display: block;
+      margin-bottom: 8px;
     }
+
+    .drill-box p {
+      color: var(--muted);
+      font-size: 0.87rem;
+      line-height: 1.5;
+      margin: 0;
+    }
+
+    /* ---- footer ---- */
+    footer { padding: 0 0 48px; }
 
     .footer-card {
-      padding: 24px;
-      background: rgba(15, 23, 42, 0.72);
+      background: rgba(15,23,42,0.7);
       border: 1px solid var(--line);
       border-radius: 22px;
+      padding: 22px 26px;
     }
 
     .footer-card p {
-      margin: 0 0 12px;
       color: var(--muted);
+      font-size: 0.94rem;
       line-height: 1.7;
+      margin: 0 0 10px;
     }
 
-    .footer-card p:last-child {
-      margin-bottom: 0;
-    }
+    .footer-card p:last-child { margin-bottom: 0; }
 
-    @media (max-width: 880px) {
+    @media (max-width: 860px) {
       .hero,
-      .grid.two,
-      .grid.three {
-        grid-template-columns: 1fr;
-      }
+      .three,
+      .two,
+      .drill-grid { grid-template-columns: 1fr; }
 
-      .hero-card,
+      .hero-main,
       .hero-side,
       .panel,
-      .footer-card {
-        padding: 22px;
-      }
+      .footer-card { padding: 20px; }
     }
   </style>
 </head>
 <body>
+
   <header class="wrap">
     <div class="topbar">
       <a class="brand" href="../">Sanmill Study Pages</a>
       <nav>
-        <a href="#start">Start here</a>
-        <a href="#mistakes">Common mistakes</a>
-        <a href="#practice">Practice next</a>
+        <a href="#pick-one">Pick one fix</a>
+        <a href="#drills">Drills</a>
+        <a href="#mistakes">What's going wrong</a>
         <a href="#reading">Further reading</a>
       </nav>
     </div>
   </header>
 
   <main class="wrap">
+
+    <!-- HERO -->
     <section class="hero" id="top">
-      <div class="hero-card">
-        <p class="eyebrow">Nine Men's Morris</p>
-        <h1>Study ideas for players who want steadier results</h1>
+      <div class="panel hero-main">
+        <p class="eyebrow">Nine Men's Morris — Coach Notes</p>
+        <h1>Pick one thing.<br>Fix it tonight.</h1>
         <p>
-          If you keep getting squeezed by the AI, you usually do not need a
-          secret trick. You need a few reliable habits: protect mobility,
-          build threats in pairs, and stop giving away tempo for a single mill.
+          You are not losing because Nine Men's Morris is hard.
+          You are losing because you keep making the same two or three
+          moves that feel safe but are not. This page does not give you
+          a reading list. It gives you something to change in your next game.
         </p>
         <p>
-          This page is meant to be practical. Read the quick advice first, try
-          one or two ideas in your next games, then come back for the deeper
-          study notes and external references.
+          Scroll to "Pick one fix." Choose the one that sounds familiar.
+          Ignore the rest for now. One thing at a time is enough.
         </p>
         <div class="actions">
-          <a class="button primary" href="#start">Read the quick advice</a>
-          <a class="button" href="#reading">Open further reading</a>
+          <a class="button primary" href="#pick-one">Show me what to fix</a>
+          <a class="button" href="#reading">Further reading</a>
         </div>
       </div>
 
-      <aside class="hero-side hero-card">
-        <div class="metric">
-          <p class="metric-label">First target</p>
-          <strong>Do not chase every mill if it costs your mobility.</strong>
+      <aside class="panel hero-side">
+        <div class="directive">
+          <p class="directive-label">Right now</p>
+          <strong>Stop letting the AI shrink your legal moves one by one.</strong>
         </div>
-        <div class="metric">
-          <p class="metric-label">Second target</p>
-          <strong>Look for two threats at once, not one obvious threat.</strong>
+        <div class="directive">
+          <p class="directive-label">Before each move</p>
+          <strong>Ask: does this open a second threat, or just close one?</strong>
         </div>
-        <div class="metric">
-          <p class="metric-label">Third target</p>
-          <strong>In the late game, count legal moves before you count mills.</strong>
+        <div class="directive">
+          <p class="directive-label">In the endgame</p>
+          <strong>Count your legal moves first. Then count mills.</strong>
         </div>
       </aside>
     </section>
 
-    <section id="start">
-      <h2 class="section-heading">Start here: three ideas that pay off quickly</h2>
+    <!-- PICK ONE FIX -->
+    <section id="pick-one">
+      <h2>Pick one fix — read only the one that sounds like you</h2>
       <div class="grid three">
+
         <article class="panel">
-          <h3>1. Value flexible points</h3>
+          <h3>Fix A: You keep running out of moves</h3>
           <p>
-            Central intersections and connectors often matter more than the
-            first mill you can see. They keep your pieces active and help you
-            pivot from defense to attack.
+            This is a mobility problem.
+            You are winning material or mills but ending up boxed in.
+          </p>
+          <p><strong>What to do:</strong><br>
+            Before you move, count how many squares your own pieces
+            can reach. If that number is going down every turn,
+            stop and find a move that keeps it stable.
+            A cramped position that still has six legal moves
+            beats a "good" position with three.
           </p>
         </article>
+
         <article class="panel">
-          <h3>2. Build paired threats</h3>
+          <h3>Fix B: You can't create any real threats</h3>
           <p>
-            A single threat is easy to answer. A position that can form a mill
-            in two different ways forces the opponent to choose which danger to
-            stop.
+            This is a structure problem.
+            Your pieces are scattered or all on one side.
+          </p>
+          <p><strong>What to do:</strong><br>
+            In the placing phase, put your first few pieces on connector
+            points — squares that touch more than two lines.
+            Do not fill a ring completely on one side.
+            Spread across rings so you have two independent threat directions.
           </p>
         </article>
+
         <article class="panel">
-          <h3>3. Count moves in the endgame</h3>
+          <h3>Fix C: You form a mill and still lose</h3>
           <p>
-            Many lost positions come from missing a coming block. Before you
-            move, ask: how many legal moves will I have after this, and how
-            many will the opponent have?
+            This is a tempo problem.
+            You are spending moves to open and close the same mill
+            while the opponent improves position.
+          </p>
+          <p><strong>What to do:</strong><br>
+            Before you rock a mill open again, ask whether the piece
+            you will capture matters. If the opponent can replace the
+            captured piece with something better placed,
+            the mill is costing you more than it is earning.
           </p>
         </article>
+
       </div>
     </section>
 
+    <!-- DRILLS -->
+    <section id="drills">
+      <h2>Four short drills</h2>
+      <p style="color:var(--muted);margin:0 0 20px;font-size:1rem;">
+        Each drill targets one mistake. Do them in order across four sessions, not all at once.
+      </p>
+      <div class="drill-grid">
+        <div class="drill-box">
+          <span class="drill-num">1</span>
+          <p>Play three games. Your only goal: at the end of every turn your pieces have at least as many legal moves as they did before.</p>
+        </div>
+        <div class="drill-box">
+          <span class="drill-num">2</span>
+          <p>Play three games. Only form a mill if you can also threaten a second mill on the same turn.</p>
+        </div>
+        <div class="drill-box">
+          <span class="drill-num">3</span>
+          <p>Play three games focusing on the pieces you place, not the mills you might form. Place on connectors and cross-ring points first.</p>
+        </div>
+        <div class="drill-box">
+          <span class="drill-num">4</span>
+          <p>After any loss, find the exact turn when your piece count of legal moves first dropped below your opponent's. That is where the game was decided.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- WHAT'S GOING WRONG -->
     <section id="mistakes">
-      <h2 class="section-heading">Common reasons players lose to the AI</h2>
+      <h2>What's going wrong — quick diagnosis</h2>
       <div class="grid two">
-        <article class="panel">
-          <h3>Breaking structure for one capture</h3>
-          <ul>
-            <li>Winning a piece is good, but not if your own position collapses.</li>
-            <li>Do not open strong lines unless you know what replaces them.</li>
-            <li>Ask whether the capture improves your next two moves, not just this move.</li>
-          </ul>
-        </article>
-        <article class="panel">
-          <h3>Ignoring mobility pressure</h3>
-          <ul>
-            <li>The AI often wins by slowly shrinking your legal options.</li>
-            <li>If you keep defending one point at a time, your position gets tied down.</li>
-            <li>Sometimes the right move is the one that keeps three future moves alive.</li>
-          </ul>
-        </article>
-        <article class="panel">
-          <h3>Playing too locally</h3>
-          <ul>
-            <li>Players often focus on the last threat they saw.</li>
-            <li>Good Morris play looks across the whole board for linked points.</li>
-            <li>Try to notice what your move changes on the opposite side as well.</li>
-          </ul>
-        </article>
-        <article class="panel">
-          <h3>Missing tempo swings</h3>
-          <ul>
-            <li>Repeatedly reopening and closing a mill can be strong - or wasteful.</li>
-            <li>If the cycle helps the opponent improve shape, it is not real pressure.</li>
-            <li>Track who benefits if the same pattern repeats two more times.</li>
-          </ul>
-        </article>
-      </div>
-    </section>
 
-    <section id="practice">
-      <h2 class="section-heading">What to practice next</h2>
-      <div class="grid two">
         <article class="panel">
-          <h3>Short training plan</h3>
-          <ol class="checklist">
-            <li>Play three games with one goal only: keep your connectors active.</li>
-            <li>Play three more games focusing on creating two threats at once.</li>
-            <li>Review one lost game and write down the first move where your mobility dropped.</li>
-            <li>Repeat the same AI level until your losses become explainable, not mysterious.</li>
-          </ol>
+          <h3>Moves that feel smart but are not</h3>
+          <ul class="bad">
+            <li>Capturing any piece just because you can — not all captures help.</li>
+            <li>Defending the last attacked point reactively every turn.</li>
+            <li>Breaking a strong structure to get one mill and then finding yourself with nothing.</li>
+            <li>Placing pieces without thinking about what ring they connect to.</li>
+          </ul>
         </article>
+
+        <article class="panel">
+          <h3>Habits that actually change results</h3>
+          <ul class="ok">
+            <li>Asking "what does this move do to the whole board" not just the nearby squares.</li>
+            <li>Prioritising captures that reduce opponent mobility, not just piece count.</li>
+            <li>Keeping at least two independent threat directions alive at once.</li>
+            <li>Treating a blocked position as the real loss — piece count is secondary.</li>
+          </ul>
+        </article>
+
         <article class="panel callout">
-          <h3>Practical reminder</h3>
+          <h3>One sentence to remember</h3>
           <p>
-            Improvement in Morris often looks slow at first. That is normal.
-            Stronger results usually come after you stop making the same two or
-            three structural mistakes, not after you memorize a huge number of
-            opening lines.
+            <strong>The opponent does not need to capture all your pieces —
+            they only need to take away your last legal move.</strong>
+          </p>
+          <p>
+            Everything else in this page is a consequence of that fact.
+            If you understand why blocking wins, the rest follows.
           </p>
         </article>
+
+        <article class="panel">
+          <h3>When the AI feels "impossible"</h3>
+          <p>
+            It is usually not the AI's tactics that beat you.
+            It is the quiet pressure: pieces slowly herded into corners,
+            options gradually removed.
+          </p>
+          <p>
+            Run drill 4 once. Find the exact turn. Most players discover
+            the game was decided three or four moves earlier than they thought —
+            and the losing move looked perfectly fine at the time.
+          </p>
+        </article>
+
       </div>
     </section>
 
+    <!-- FURTHER READING -->
     <section id="reading">
-      <h2 class="section-heading">Further reading</h2>
+      <h2>Further reading — when these notes are not enough</h2>
       <div class="grid two">
+
         <article class="panel">
           <h3>External strategy reference</h3>
           <p>
-            For deeper study, you can visit the external
-            <a href="https://nmmstrategy.start.page/">NMM Strategy page</a>.
-            It collects background material, contact links, and pointers to a
-            longer strategy resource.
+            If you have worked through the drills and want to go deeper,
+            the <a href="https://nmmstrategy.start.page/">NMM Strategy page</a>
+            has background material and pointers to a more comprehensive
+            strategy resource that covers openings and advanced endgame technique.
           </p>
           <div class="actions">
             <a class="button primary" href="https://nmmstrategy.start.page/">Open NMM Strategy</a>
           </div>
         </article>
+
         <article class="panel">
-          <h3>Stay close to the project</h3>
+          <h3>Keep playing — the app is the best trainer</h3>
           <p>
-            Sanmill is open source, so the app, issue tracker, and project
-            discussions are also useful places to learn from stronger players
-            and follow future improvements.
+            The Sanmill AI at Level 1 is already a useful sparring partner.
+            Controlled, repeatable games against a predictable opponent
+            are the fastest way to test whether a fix is actually working.
+          </p>
+          <p>
+            The source code, issue tracker, and discussions are all open
+            at the Sanmill repository if you want to follow development
+            or ask questions.
           </p>
           <div class="actions">
             <a class="button" href="https://github.com/calcitem/Sanmill">Open the Sanmill repository</a>
           </div>
         </article>
+
       </div>
     </section>
+
   </main>
 
   <footer class="wrap">
     <div class="footer-card">
       <p>
-        This page is an official Sanmill study page. Its job is to help players
-        recover their footing after a rough run, not to interrupt play with a
-        sales pitch.
+        You were linked here from Sanmill because the app noticed you were
+        struggling. These notes are not a reading assignment. Pick one drill,
+        try it, and come back only if you want more.
       </p>
       <p>
-        If you reached this page from the app, try one small idea from the
-        "Start here" section in your next game. The best study plan is the one
-        you can test immediately.
+        The external link in "Further reading" goes to a third-party strategy
+        page maintained independently from this project.
+        Sanmill does not endorse or receive anything from it —
+        it is listed here because it is a relevant resource for players who
+        want deeper material.
       </p>
     </div>
   </footer>
+
 </body>
 </html>
