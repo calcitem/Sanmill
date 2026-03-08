@@ -4199,5 +4199,15 @@
     "qrCodeOpenInBrowser": "Deschide în browser",
     "@qrCodeOpenInBrowser": {},
     "importFailed": "Importul a eșuat",
-    "@importFailed": {}
+    "@importFailed": {},
+    "strategySuggestionTitle": "Sfat de Strategie",
+    "@strategySuggestionTitle": {},
+    "nmmStrategySuggestion": "Se pare că Nine Men's Morris este o provocare pentru tine. Este disponibil un ghid strategic care acoperă deschiderile, tacticile și tehnicile de final de joc — ar putea să îți ofere avantajul de care ai nevoie.",
+    "@nmmStrategySuggestion": {},
+    "learnMore": "Află Mai Mult",
+    "@learnMore": {},
+    "notNow": "Nu Acum",
+    "@notNow": {},
+    "dontShowAgain": "Nu Mai Afișa",
+    "@dontShowAgain": {}
 }

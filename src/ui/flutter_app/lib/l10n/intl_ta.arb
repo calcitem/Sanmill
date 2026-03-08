@@ -4199,5 +4199,15 @@
     "qrCodeOpenInBrowser": "உலாவியில் திறக்கவும்",
     "@qrCodeOpenInBrowser": {},
     "importFailed": "இறக்குமதி தோல்வி",
-    "@importFailed": {}
+    "@importFailed": {},
+    "strategySuggestionTitle": "உத்தி குறிப்பு",
+    "@strategySuggestionTitle": {},
+    "nmmStrategySuggestion": "நைன் மென்ஸ் மோரிஸ் உங்களுக்கு சவாலாக இருப்பதாகத் தெரிகிறது. தொடக்கங்கள், தந்திரங்கள் மற்றும் கடைசி நிலை நுட்பங்களை உள்ளடக்கிய ஒரு உத்தி வழிகாட்டி கிடைக்கிறது — இது உங்களுக்கு தேவையான நன்மையை வழங்கலாம்.",
+    "@nmmStrategySuggestion": {},
+    "learnMore": "மேலும் அறியுங்கள்",
+    "@learnMore": {},
+    "notNow": "இப்போது வேண்டாம்",
+    "@notNow": {},
+    "dontShowAgain": "மீண்டும் காட்டாதே",
+    "@dontShowAgain": {}
 }

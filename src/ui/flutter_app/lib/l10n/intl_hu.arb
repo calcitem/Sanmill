@@ -3456,5 +3456,15 @@
     "qrCodeOpenInBrowser": "Megnyitás böngészőben",
     "@qrCodeOpenInBrowser": {},
     "importFailed": "Importálás sikertelen",
-    "@importFailed": {}
+    "@importFailed": {},
+    "strategySuggestionTitle": "Stratégiai Tipp",
+    "@strategySuggestionTitle": {},
+    "nmmStrategySuggestion": "Úgy tűnik, hogy a Kilenc ember Morris kihívást jelent számodra. Elérhető egy stratégiai útmutató, amely lefedi a megnyitókat, taktikákat és végjátéktechnikákat — talán megadja a szükséges előnyt.",
+    "@nmmStrategySuggestion": {},
+    "learnMore": "Tudj Meg Többet",
+    "@learnMore": {},
+    "notNow": "Most Nem",
+    "@notNow": {},
+    "dontShowAgain": "Ne Mutasd Többet",
+    "@dontShowAgain": {}
 }

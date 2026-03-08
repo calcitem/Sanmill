@@ -4199,5 +4199,15 @@
     "qrCodeOpenInBrowser": "Открыть в браузере",
     "@qrCodeOpenInBrowser": {},
     "importFailed": "Импорт не удался",
-    "@importFailed": {}
+    "@importFailed": {},
+    "strategySuggestionTitle": "Стратегический Совет",
+    "@strategySuggestionTitle": {},
+    "nmmStrategySuggestion": "Похоже, что Девять мужчин Моррис оказывается для вас сложной игрой. Доступно стратегическое руководство, охватывающее дебюты, тактики и техники эндшпиля — оно может дать вам необходимое преимущество.",
+    "@nmmStrategySuggestion": {},
+    "learnMore": "Узнать Больше",
+    "@learnMore": {},
+    "notNow": "Не Сейчас",
+    "@notNow": {},
+    "dontShowAgain": "Больше Не Показывать",
+    "@dontShowAgain": {}
 }

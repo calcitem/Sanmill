@@ -4199,5 +4199,15 @@
     "qrCodeOpenInBrowser": "Hap në shfletues",
     "@qrCodeOpenInBrowser": {},
     "importFailed": "Importimi dështoi",
-    "@importFailed": {}
+    "@importFailed": {},
+    "strategySuggestionTitle": "Këshillë Strategjike",
+    "@strategySuggestionTitle": {},
+    "nmmStrategySuggestion": "Duket se Nine Men's Morris është sfidues për ju. Është i disponueshëm një udhëzues strategjik që mbulon hapjet, taktikat dhe teknikat e fundit të lojës — mund t'ju japë avantazhin që ju nevojitet.",
+    "@nmmStrategySuggestion": {},
+    "learnMore": "Mëso Më Shumë",
+    "@learnMore": {},
+    "notNow": "Jo Tani",
+    "@notNow": {},
+    "dontShowAgain": "Mos Shfaq Sërish",
+    "@dontShowAgain": {}
 }

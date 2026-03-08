@@ -675,6 +675,13 @@ class _GameBoardState extends State<GameBoard>
             ),
           );
         }
+        // Show NMM strategy guide suggestion if needed
+        else if (statsSettings.shouldSuggestNmmStrategy) {
+          showDialog(
+            context: context,
+            builder: (_) => const StrategySuggestionDialog(),
+          );
+        }
       });
     }
   }

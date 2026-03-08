@@ -4199,5 +4199,15 @@
     "qrCodeOpenInBrowser": "פתח בדפדפן",
     "@qrCodeOpenInBrowser": {},
     "importFailed": "הייבוא נכשל",
-    "@importFailed": {}
+    "@importFailed": {},
+    "strategySuggestionTitle": "טיפ אסטרטגי",
+    "@strategySuggestionTitle": {},
+    "nmmStrategySuggestion": "נראה שתשעת האנשים מוריס מהווה אתגר עבורך. מדריך אסטרטגי המכסה פתיחות, טקטיקות וטכניקות סיום משחק זמין — הוא עשוי לתת לך את היתרון שאתה צריך.",
+    "@nmmStrategySuggestion": {},
+    "learnMore": "למד עוד",
+    "@learnMore": {},
+    "notNow": "לא עכשיו",
+    "@notNow": {},
+    "dontShowAgain": "אל תציג שוב",
+    "@dontShowAgain": {}
 }

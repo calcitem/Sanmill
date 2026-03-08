@@ -4199,5 +4199,15 @@
     "qrCodeOpenInBrowser": "Apri nel browser",
     "@qrCodeOpenInBrowser": {},
     "importFailed": "Importazione fallita",
-    "@importFailed": {}
+    "@importFailed": {},
+    "strategySuggestionTitle": "Consiglio Strategico",
+    "@strategySuggestionTitle": {},
+    "nmmStrategySuggestion": "Sembra che il Nove uomini Morris sia una sfida per te. È disponibile una guida strategica che copre aperture, tattiche e tecniche di finale — potrebbe darti il vantaggio di cui hai bisogno.",
+    "@nmmStrategySuggestion": {},
+    "learnMore": "Scopri Di Più",
+    "@learnMore": {},
+    "notNow": "Non Ora",
+    "@notNow": {},
+    "dontShowAgain": "Non Mostrare Più",
+    "@dontShowAgain": {}
 }

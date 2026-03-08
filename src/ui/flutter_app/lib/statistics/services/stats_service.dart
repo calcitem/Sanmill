@@ -374,6 +374,38 @@ class EloRatingService {
       );
     }
 
+    // Track consecutive losses under Nine Men's Morris rules (any level/algo)
+    // to suggest visiting the NMM strategy guide
+    int newConsecutiveLossesInNmm = humanStats.consecutiveLossesInNmm;
+    if (DB().ruleSettings.isLikelyNineMensMorris()) {
+      if (outcome == HumanOutcome.opponentWin) {
+        newConsecutiveLossesInNmm++;
+        logger.i("$_logTag NMM consecutive losses: $newConsecutiveLossesInNmm");
+      } else {
+        newConsecutiveLossesInNmm = 0;
+      }
+    } else {
+      newConsecutiveLossesInNmm = 0;
+    }
+
+    // Suggest NMM strategy guide when player struggles under NMM rules and
+    // has not permanently dismissed the suggestion
+    bool shouldSuggestNmmStrategy = false;
+    if (DB().ruleSettings.isLikelyNineMensMorris() &&
+        !settings.nmmStrategySuggestionDismissed &&
+        outcome == HumanOutcome.opponentWin) {
+      final bool consecutiveLossTrigger = newConsecutiveLossesInNmm >= 3;
+      final bool eloTrigger =
+          newHumanRating < 900 && (humanStats.gamesPlayed + 1) >= 5;
+      if (consecutiveLossTrigger || eloTrigger) {
+        shouldSuggestNmmStrategy = true;
+        logger.i(
+          "$_logTag Suggesting NMM strategy guide "
+          "(consecutiveLosses=$newConsecutiveLossesInNmm, elo=$newHumanRating)",
+        );
+      }
+    }
+
     // Update color-specific stats based on who played which color
     if (isAiWhite) {
       // AI played as white, human played as black
@@ -436,6 +468,7 @@ class EloRatingService {
       blackLosses: humanBlackLosses,
       blackDraws: humanBlackDraws,
       consecutiveLossesAtLevel1NonMcts: newConsecutiveLossesAtLevel1NonMcts,
+      consecutiveLossesInNmm: newConsecutiveLossesInNmm,
     );
 
     // Update AI statistics (rating remains fixed)
@@ -469,6 +502,7 @@ class EloRatingService {
       humanStats: newHumanStatsObject,
       shouldSuggestMctsSwitch: shouldSuggestMcts,
       shouldSuggestMtdfSwitch: shouldSuggestMtdf,
+      shouldSuggestNmmStrategy: shouldSuggestNmmStrategy,
     );
 
     // Update AI stats in the settings

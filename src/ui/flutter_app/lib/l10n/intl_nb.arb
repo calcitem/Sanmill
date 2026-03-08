@@ -4199,5 +4199,15 @@
     "qrCodeOpenInBrowser": "Åpne i nettleser",
     "@qrCodeOpenInBrowser": {},
     "importFailed": "Import mislyktes",
-    "@importFailed": {}
+    "@importFailed": {},
+    "strategySuggestionTitle": "Strategitips",
+    "@strategySuggestionTitle": {},
+    "nmmStrategySuggestion": "Det ser ut til at Nine Men's Morris er en utfordring for deg. En strategiguide som dekker åpninger, taktikker og sluttspillteknikker er tilgjengelig — den kan gi deg fordelen du trenger.",
+    "@nmmStrategySuggestion": {},
+    "learnMore": "Lær Mer",
+    "@learnMore": {},
+    "notNow": "Ikke Nå",
+    "@notNow": {},
+    "dontShowAgain": "Ikke Vis Igjen",
+    "@dontShowAgain": {}
 }

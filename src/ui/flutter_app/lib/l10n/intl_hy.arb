@@ -4199,5 +4199,15 @@
     "qrCodeOpenInBrowser": "Բացել դիտարկիչում",
     "@qrCodeOpenInBrowser": {},
     "importFailed": "Ներմուծումը ձախողվեց",
-    "@importFailed": {}
+    "@importFailed": {},
+    "strategySuggestionTitle": "Ռազմավարական Խորհուրդ",
+    "@strategySuggestionTitle": {},
+    "nmmStrategySuggestion": "Թվում է, որ Ինն հոգու Մորրիսը մարտահրավեր է ձեզ համար: Հասանելի է ռազմավարական ուղեցույց, որը ընդգրկում է բացումներ, մարտավարություններ և վերջաբանի տեխնիկաներ — այն կարող է ձեզ անհրաժեշտ առավելությունը տալ:",
+    "@nmmStrategySuggestion": {},
+    "learnMore": "Ավելին Իմանալ",
+    "@learnMore": {},
+    "notNow": "Ոչ Հիմա",
+    "@notNow": {},
+    "dontShowAgain": "Չցուցադրել Կրկին",
+    "@dontShowAgain": {}
 }

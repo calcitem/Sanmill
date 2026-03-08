@@ -4203,5 +4203,15 @@
     "qrCodeOpenInBrowser": "Mở trong Trình duyệt",
     "@qrCodeOpenInBrowser": {},
     "importFailed": "Nhập thất bại",
-    "@importFailed": {}
+    "@importFailed": {},
+    "strategySuggestionTitle": "Mẹo Chiến Lược",
+    "@strategySuggestionTitle": {},
+    "nmmStrategySuggestion": "Có vẻ như Nine Men's Morris là thách thức đối với bạn. Có sẵn một hướng dẫn chiến lược bao gồm khai cuộc, chiến thuật và kỹ thuật tàn cuộc — có thể mang lại cho bạn lợi thế cần thiết.",
+    "@nmmStrategySuggestion": {},
+    "learnMore": "Tìm Hiểu Thêm",
+    "@learnMore": {},
+    "notNow": "Chưa",
+    "@notNow": {},
+    "dontShowAgain": "Không Hiển Thị Nữa",
+    "@dontShowAgain": {}
 }

@@ -4199,5 +4199,15 @@
     "qrCodeOpenInBrowser": "Відкрити у браузері",
     "@qrCodeOpenInBrowser": {},
     "importFailed": "Імпорт не вдався",
-    "@importFailed": {}
+    "@importFailed": {},
+    "strategySuggestionTitle": "Стратегічна Порада",
+    "@strategySuggestionTitle": {},
+    "nmmStrategySuggestion": "Схоже, що Дев'ять чоловіків Морріс є для вас складною грою. Доступний стратегічний посібник, що охоплює дебюти, тактики та техніки ендшпілю — він може надати вам необхідну перевагу.",
+    "@nmmStrategySuggestion": {},
+    "learnMore": "Дізнатися Більше",
+    "@learnMore": {},
+    "notNow": "Не Зараз",
+    "@notNow": {},
+    "dontShowAgain": "Більше Не Показувати",
+    "@dontShowAgain": {}
 }

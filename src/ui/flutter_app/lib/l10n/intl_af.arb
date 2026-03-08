@@ -4199,5 +4199,15 @@
     "qrCodeOpenInBrowser": "Maak in blaaier oop",
     "@qrCodeOpenInBrowser": {},
     "importFailed": "Invoer misluk",
-    "@importFailed": {}
+    "@importFailed": {},
+    "strategySuggestionTitle": "Strategie Wenk",
+    "@strategySuggestionTitle": {},
+    "nmmStrategySuggestion": "Dit lyk asof Nege Mans Morris vir jou uitdagend is. 'n Strategiegids wat opstellings, taktiek en eindspeltegnieke dek, is beskikbaar — dit kan jou die voorsprong gee wat jy nodig het.",
+    "@nmmStrategySuggestion": {},
+    "learnMore": "Meer Leer",
+    "@learnMore": {},
+    "notNow": "Nie Nou Nie",
+    "@notNow": {},
+    "dontShowAgain": "Moenie Weer Wys Nie",
+    "@dontShowAgain": {}
 }

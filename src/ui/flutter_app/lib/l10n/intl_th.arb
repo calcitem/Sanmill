@@ -4199,5 +4199,15 @@
     "qrCodeOpenInBrowser": "เปิดในเบราว์เซอร์",
     "@qrCodeOpenInBrowser": {},
     "importFailed": "นำเข้าล้มเหลว",
-    "@importFailed": {}
+    "@importFailed": {},
+    "strategySuggestionTitle": "เคล็ดลับกลยุทธ์",
+    "@strategySuggestionTitle": {},
+    "nmmStrategySuggestion": "ดูเหมือนว่า Nine Men's Morris เป็นความท้าทายสำหรับคุณ มีคู่มือกลยุทธ์ที่ครอบคลุมการเปิดเกม ยุทธวิธี และเทคนิคปลายเกม — อาจให้ความได้เปรียบที่คุณต้องการ",
+    "@nmmStrategySuggestion": {},
+    "learnMore": "เรียนรู้เพิ่มเติม",
+    "@learnMore": {},
+    "notNow": "ไม่ใช่ตอนนี้",
+    "@notNow": {},
+    "dontShowAgain": "ไม่แสดงอีก",
+    "@dontShowAgain": {}
 }

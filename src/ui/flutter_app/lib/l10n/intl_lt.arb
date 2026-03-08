@@ -4199,5 +4199,15 @@
     "qrCodeOpenInBrowser": "Atidaryti naršyklėje",
     "@qrCodeOpenInBrowser": {},
     "importFailed": "Importavimas nepavyko",
-    "@importFailed": {}
+    "@importFailed": {},
+    "strategySuggestionTitle": "Strategijos Patarimas",
+    "@strategySuggestionTitle": {},
+    "nmmStrategySuggestion": "Atrodo, kad Devynių vyrų Morisas yra jums iššūkis. Prieinamas strateginis vadovas, apimantis atidarymą, taktikas ir finalo technikas — jis gali suteikti jums reikiamą pranašumą.",
+    "@nmmStrategySuggestion": {},
+    "learnMore": "Sužinoti Daugiau",
+    "@learnMore": {},
+    "notNow": "Ne Dabar",
+    "@notNow": {},
+    "dontShowAgain": "Nerodyti Daugiau",
+    "@dontShowAgain": {}
 }

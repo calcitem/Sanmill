@@ -4199,5 +4199,15 @@
     "qrCodeOpenInBrowser": "Отвори во прелистувач",
     "@qrCodeOpenInBrowser": {},
     "importFailed": "Увозот не успеа",
-    "@importFailed": {}
+    "@importFailed": {},
+    "strategySuggestionTitle": "Стратешки Совет",
+    "@strategySuggestionTitle": {},
+    "nmmStrategySuggestion": "Изгледа дека Девет мажи Морис е предизвик за вас. Достапен е стратешки водич кој ги опфаќа отварањата, тактиките и техниките на крајот на играта — може да ви даде потребната предност.",
+    "@nmmStrategySuggestion": {},
+    "learnMore": "Дознај Повеќе",
+    "@learnMore": {},
+    "notNow": "Не Сега",
+    "@notNow": {},
+    "dontShowAgain": "Не Прикажувај Повторно",
+    "@dontShowAgain": {}
 }

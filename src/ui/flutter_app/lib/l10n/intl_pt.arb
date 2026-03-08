@@ -4199,5 +4199,15 @@
     "qrCodeOpenInBrowser": "Abrir no navegador",
     "@qrCodeOpenInBrowser": {},
     "importFailed": "Importação falhou",
-    "@importFailed": {}
+    "@importFailed": {},
+    "strategySuggestionTitle": "Dica de Estratégia",
+    "@strategySuggestionTitle": {},
+    "nmmStrategySuggestion": "Parece que o Jogo do Moinho está sendo um desafio para você. Um guia estratégico cobrindo aberturas, táticas e técnicas de final de jogo está disponível — pode lhe dar a vantagem que você precisa.",
+    "@nmmStrategySuggestion": {},
+    "learnMore": "Saiba Mais",
+    "@learnMore": {},
+    "notNow": "Agora Não",
+    "@notNow": {},
+    "dontShowAgain": "Não Mostrar Mais",
+    "@dontShowAgain": {}
 }

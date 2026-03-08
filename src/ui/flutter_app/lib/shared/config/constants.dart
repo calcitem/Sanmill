@@ -91,6 +91,11 @@ class Constants {
     "Perfect-Database-(Chinese)",
   );
 
+  static const UrlHelper nmmStrategyUrl = UrlHelper(
+    base: "https://calcitem.github.io/Sanmill/nmm-strategy/",
+    baseChinese: "https://calcitem.github.io/Sanmill/nmm-strategy/",
+  );
+
   static double _getWindowHeight(BuildContext context) {
     final ui.FlutterView view = View.of(context);
     final double devicePixelRatio = view.devicePixelRatio;

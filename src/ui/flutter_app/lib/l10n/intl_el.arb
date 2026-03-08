@@ -4199,5 +4199,15 @@
     "qrCodeOpenInBrowser": "Άνοιγμα στο πρόγραμμα περιήγησης",
     "@qrCodeOpenInBrowser": {},
     "importFailed": "Η εισαγωγή απέτυχε",
-    "@importFailed": {}
+    "@importFailed": {},
+    "strategySuggestionTitle": "Στρατηγική Συμβουλή",
+    "@strategySuggestionTitle": {},
+    "nmmStrategySuggestion": "Φαίνεται ότι το Nine Men's Morris είναι πρόκληση για εσάς. Διατίθεται ένας οδηγός στρατηγικής που καλύπτει ανοίγματα, τακτικές και τεχνικές τελικής φάσης — μπορεί να σας δώσει το πλεονέκτημα που χρειάζεστε.",
+    "@nmmStrategySuggestion": {},
+    "learnMore": "Μάθε Περισσότερα",
+    "@learnMore": {},
+    "notNow": "Όχι Τώρα",
+    "@notNow": {},
+    "dontShowAgain": "Να Μη Δείξει Ξανά",
+    "@dontShowAgain": {}
 }

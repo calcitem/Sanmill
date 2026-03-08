@@ -4199,5 +4199,15 @@
     "qrCodeOpenInBrowser": "Atvērt pārlūkprogrammā",
     "@qrCodeOpenInBrowser": {},
     "importFailed": "Importēšana neizdevās",
-    "@importFailed": {}
+    "@importFailed": {},
+    "strategySuggestionTitle": "Stratēģijas Padoms",
+    "@strategySuggestionTitle": {},
+    "nmmStrategySuggestion": "Šķiet, ka Deviņu vīru Moriss ir izaicinājums jums. Pieejams stratēģijas ceļvedis, kas aptver atvērumus, taktikas un spēles beigu tehniku — tas var sniegt jums vajadzīgo priekšrocību.",
+    "@nmmStrategySuggestion": {},
+    "learnMore": "Uzzināt Vairāk",
+    "@learnMore": {},
+    "notNow": "Ne Tagad",
+    "@notNow": {},
+    "dontShowAgain": "Vairs Nerādīt",
+    "@dontShowAgain": {}
 }

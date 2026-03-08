@@ -4199,5 +4199,15 @@
     "qrCodeOpenInBrowser": "Otvori u pregledaču",
     "@qrCodeOpenInBrowser": {},
     "importFailed": "Uvoz nije uspio",
-    "@importFailed": {}
+    "@importFailed": {},
+    "strategySuggestionTitle": "Strateški Savjet",
+    "@strategySuggestionTitle": {},
+    "nmmStrategySuggestion": "Čini se da je Devet muškaraca Morris izazov za vas. Dostupan je strateški vodič koji pokriva otvaranja, taktike i tehnike završnice — može vam dati prednost koja vam je potrebna.",
+    "@nmmStrategySuggestion": {},
+    "learnMore": "Saznaj Više",
+    "@learnMore": {},
+    "notNow": "Ne Sada",
+    "@notNow": {},
+    "dontShowAgain": "Ne Pokazuj Ponovo",
+    "@dontShowAgain": {}
 }

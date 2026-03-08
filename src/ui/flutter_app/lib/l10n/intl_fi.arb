@@ -4199,5 +4199,15 @@
     "qrCodeOpenInBrowser": "Avaa selaimessa",
     "@qrCodeOpenInBrowser": {},
     "importFailed": "Tuonti epäonnistui",
-    "@importFailed": {}
+    "@importFailed": {},
+    "strategySuggestionTitle": "Strategiavinkki",
+    "@strategySuggestionTitle": {},
+    "nmmStrategySuggestion": "Näyttää siltä, että Nine Men's Morris on sinulle haastava. Saatavilla on strategiaopas, joka kattaa avauspelityylit, taktiikat ja loppupelin tekniikat — se saattaa antaa sinulle tarvitsemasi edun.",
+    "@nmmStrategySuggestion": {},
+    "learnMore": "Lue Lisää",
+    "@learnMore": {},
+    "notNow": "Ei Nyt",
+    "@notNow": {},
+    "dontShowAgain": "Älä Näytä Uudelleen",
+    "@dontShowAgain": {}
 }

@@ -4199,5 +4199,15 @@
     "qrCodeOpenInBrowser": "Obre al navegador",
     "@qrCodeOpenInBrowser": {},
     "importFailed": "Ha fallat la importació",
-    "@importFailed": {}
+    "@importFailed": {},
+    "strategySuggestionTitle": "Consell d'Estratègia",
+    "@strategySuggestionTitle": {},
+    "nmmStrategySuggestion": "Sembla que el Nou en ratlla és tot un repte per a tu. Hi ha disponible una guia d'estratègia que cobreix obertures, tàctiques i tècniques de final de partida — potser et donarà l'avantatge que necessites.",
+    "@nmmStrategySuggestion": {},
+    "learnMore": "Aprendre Més",
+    "@learnMore": {},
+    "notNow": "Ara No",
+    "@notNow": {},
+    "dontShowAgain": "No Mostrar Més",
+    "@dontShowAgain": {}
 }

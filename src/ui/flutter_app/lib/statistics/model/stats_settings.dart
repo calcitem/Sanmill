@@ -42,6 +42,7 @@ class PlayerStats {
     this.blackDraws = 0,
     // Algorithm difficulty tracking
     this.consecutiveLossesAtLevel1NonMcts = 0,
+    this.consecutiveLossesInNmm = 0,
   });
 
   factory PlayerStats.fromJson(Map<String, dynamic> json) {
@@ -64,6 +65,7 @@ class PlayerStats {
       blackDraws: json['blackDraws'] as int? ?? 0,
       consecutiveLossesAtLevel1NonMcts:
           json['consecutiveLossesAtLevel1NonMcts'] as int? ?? 0,
+      consecutiveLossesInNmm: json['consecutiveLossesInNmm'] as int? ?? 0,
     );
   }
 
@@ -85,6 +87,7 @@ class PlayerStats {
       'blackLosses': blackLosses,
       'blackDraws': blackDraws,
       'consecutiveLossesAtLevel1NonMcts': consecutiveLossesAtLevel1NonMcts,
+      'consecutiveLossesInNmm': consecutiveLossesInNmm,
     };
   }
 
@@ -110,6 +113,10 @@ class PlayerStats {
   // to suggest switching to easier MCTS algorithm
   final int consecutiveLossesAtLevel1NonMcts;
 
+  // Track consecutive losses under Nine Men's Morris rules (any level/algo)
+  // to suggest visiting the NMM strategy guide
+  final int consecutiveLossesInNmm;
+
   PlayerStats copyWith({
     int? rating,
     int? gamesPlayed,
@@ -126,6 +133,7 @@ class PlayerStats {
     int? blackLosses,
     int? blackDraws,
     int? consecutiveLossesAtLevel1NonMcts,
+    int? consecutiveLossesInNmm,
   }) {
     return PlayerStats(
       rating: rating ?? this.rating,
@@ -145,6 +153,8 @@ class PlayerStats {
       consecutiveLossesAtLevel1NonMcts:
           consecutiveLossesAtLevel1NonMcts ??
           this.consecutiveLossesAtLevel1NonMcts,
+      consecutiveLossesInNmm:
+          consecutiveLossesInNmm ?? this.consecutiveLossesInNmm,
     );
   }
 }
@@ -158,6 +168,8 @@ class StatsSettings {
     Map<int, PlayerStats>? aiDifficultyStatsMap,
     this.shouldSuggestMctsSwitch = false,
     this.shouldSuggestMtdfSwitch = false,
+    this.shouldSuggestNmmStrategy = false,
+    this.nmmStrategySuggestionDismissed = false,
   }) : aiDifficultyStatsMap =
            aiDifficultyStatsMap ?? const <int, PlayerStats>{};
 
@@ -185,6 +197,10 @@ class StatsSettings {
           json['shouldSuggestMctsSwitch'] as bool? ?? false,
       shouldSuggestMtdfSwitch:
           json['shouldSuggestMtdfSwitch'] as bool? ?? false,
+      shouldSuggestNmmStrategy:
+          json['shouldSuggestNmmStrategy'] as bool? ?? false,
+      nmmStrategySuggestionDismissed:
+          json['nmmStrategySuggestionDismissed'] as bool? ?? false,
     );
   }
 
@@ -200,6 +216,8 @@ class StatsSettings {
       'aiDifficultyStatsMap': jsonMap,
       'shouldSuggestMctsSwitch': shouldSuggestMctsSwitch,
       'shouldSuggestMtdfSwitch': shouldSuggestMtdfSwitch,
+      'shouldSuggestNmmStrategy': shouldSuggestNmmStrategy,
+      'nmmStrategySuggestionDismissed': nmmStrategySuggestionDismissed,
     };
   }
 
@@ -217,6 +235,12 @@ class StatsSettings {
 
   /// Flag to suggest switching to MTD(f) algorithm after winning at MCTS Level 30
   final bool shouldSuggestMtdfSwitch;
+
+  /// Flag to suggest visiting the NMM strategy guide after poor performance
+  final bool shouldSuggestNmmStrategy;
+
+  /// Whether the user has permanently dismissed the NMM strategy suggestion
+  final bool nmmStrategySuggestionDismissed;
 
   /// Get statistics for a specific AI difficulty level.
   ///
@@ -243,6 +267,8 @@ class StatsSettings {
     Map<int, PlayerStats>? aiDifficultyStatsMap,
     bool? shouldSuggestMctsSwitch,
     bool? shouldSuggestMtdfSwitch,
+    bool? shouldSuggestNmmStrategy,
+    bool? nmmStrategySuggestionDismissed,
   }) {
     return StatsSettings(
       isStatsEnabled: isStatsEnabled ?? this.isStatsEnabled,
@@ -252,6 +278,10 @@ class StatsSettings {
           shouldSuggestMctsSwitch ?? this.shouldSuggestMctsSwitch,
       shouldSuggestMtdfSwitch:
           shouldSuggestMtdfSwitch ?? this.shouldSuggestMtdfSwitch,
+      shouldSuggestNmmStrategy:
+          shouldSuggestNmmStrategy ?? this.shouldSuggestNmmStrategy,
+      nmmStrategySuggestionDismissed:
+          nmmStrategySuggestionDismissed ?? this.nmmStrategySuggestionDismissed,
     );
   }
 }

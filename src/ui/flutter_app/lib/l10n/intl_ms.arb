@@ -4199,5 +4199,15 @@
     "qrCodeOpenInBrowser": "Buka dalam Pelayar",
     "@qrCodeOpenInBrowser": {},
     "importFailed": "Import Gagal",
-    "@importFailed": {}
+    "@importFailed": {},
+    "strategySuggestionTitle": "Petua Strategi",
+    "@strategySuggestionTitle": {},
+    "nmmStrategySuggestion": "Nampaknya Nine Men's Morris agak mencabar bagi anda. Panduan strategi yang merangkumi pembukaan, taktik dan teknik permainan akhir tersedia — ia mungkin memberi anda kelebihan yang diperlukan.",
+    "@nmmStrategySuggestion": {},
+    "learnMore": "Ketahui Lebih Lanjut",
+    "@learnMore": {},
+    "notNow": "Bukan Sekarang",
+    "@notNow": {},
+    "dontShowAgain": "Jangan Tunjukkan Lagi",
+    "@dontShowAgain": {}
 }

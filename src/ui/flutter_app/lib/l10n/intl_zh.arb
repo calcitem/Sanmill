@@ -4239,5 +4239,15 @@
     "qrCodeOpenInBrowser": "在浏览器中打开",
     "@qrCodeOpenInBrowser": {},
     "importFailed": "导入失败",
-    "@importFailed": {}
+    "@importFailed": {},
+    "strategySuggestionTitle": "策略提示",
+    "@strategySuggestionTitle": {},
+    "nmmStrategySuggestion": "看起来九子棋对你来说颇具挑战。这里有一份涵盖开局、战术与残局技巧的策略指南，或许能帮你找到突破口。",
+    "@nmmStrategySuggestion": {},
+    "learnMore": "了解更多",
+    "@learnMore": {},
+    "notNow": "以后再说",
+    "@notNow": {},
+    "dontShowAgain": "不再提示",
+    "@dontShowAgain": {}
 }

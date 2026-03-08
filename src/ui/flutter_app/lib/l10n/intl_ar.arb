@@ -4199,5 +4199,15 @@
     "qrCodeOpenInBrowser": "فتح في المتصفح",
     "@qrCodeOpenInBrowser": {},
     "importFailed": "فشل الاستيراد",
-    "@importFailed": {}
+    "@importFailed": {},
+    "strategySuggestionTitle": "نصيحة استراتيجية",
+    "@strategySuggestionTitle": {},
+    "nmmStrategySuggestion": "يبدو أن لعبة تسعة رجال موريس تمثل تحديًا لك. يتوفر دليل استراتيجي يغطي الافتتاحيات والتكتيكات وتقنيات نهاية اللعبة — قد يمنحك الميزة التي تحتاجها.",
+    "@nmmStrategySuggestion": {},
+    "learnMore": "اعرف المزيد",
+    "@learnMore": {},
+    "notNow": "ليس الآن",
+    "@notNow": {},
+    "dontShowAgain": "لا تُظهر مرة أخرى",
+    "@dontShowAgain": {}
 }

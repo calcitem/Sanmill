@@ -4199,5 +4199,15 @@
     "qrCodeOpenInBrowser": "باز کردن در مرورگر",
     "@qrCodeOpenInBrowser": {},
     "importFailed": "وارد کردن ناموفق بود",
-    "@importFailed": {}
+    "@importFailed": {},
+    "strategySuggestionTitle": "نکته استراتژیک",
+    "@strategySuggestionTitle": {},
+    "nmmStrategySuggestion": "به نظر می‌رسد نه‌مرد موریس برای شما چالش‌برانگیز است. یک راهنمای استراتژی موجود است که شروع بازی، تاکتیک‌ها و تکنیک‌های پایان بازی را پوشش می‌دهد — شاید مزیتی که نیاز دارید را به شما بدهد.",
+    "@nmmStrategySuggestion": {},
+    "learnMore": "بیشتر بدانید",
+    "@learnMore": {},
+    "notNow": "نه الان",
+    "@notNow": {},
+    "dontShowAgain": "دیگر نشان نده",
+    "@dontShowAgain": {}
 }

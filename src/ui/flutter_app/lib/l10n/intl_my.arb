@@ -4199,5 +4199,15 @@
     "qrCodeOpenInBrowser": "ဘရောက်ဆာတွင် ဖွင့်ပါ",
     "@qrCodeOpenInBrowser": {},
     "importFailed": "တင်သွင်းမှု မအောင်မြင်ပါ",
-    "@importFailed": {}
+    "@importFailed": {},
+    "strategySuggestionTitle": "မဟာဗျူဟာ အကြံပြုချက်",
+    "@strategySuggestionTitle": {},
+    "nmmStrategySuggestion": "Nine Men's Morris သည် သင့်အတွက် စိန်ခေါ်မှုဖြစ်နေပုံရသည်။ ဖွင့်ချက်များ၊ နည်းဗျူဟာများနှင့် နောက်ဆုံးကစားနည်းပညာများကို ခြုံငုံသော မဟာဗျူဟာလမ်းညွှန်တစ်ခု ရနိုင်သည် — ၎င်းသည် သင်လိုအပ်သော အားသာချက်ကို ပေးနိုင်သည်။",
+    "@nmmStrategySuggestion": {},
+    "learnMore": "ပိုမိုသိရှိပါ",
+    "@learnMore": {},
+    "notNow": "ယခုမဟုတ်",
+    "@notNow": {},
+    "dontShowAgain": "နောက်ထပ်မပြပါနှင့်",
+    "@dontShowAgain": {}
 }

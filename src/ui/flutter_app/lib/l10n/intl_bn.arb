@@ -4199,5 +4199,15 @@
     "qrCodeOpenInBrowser": "ব্রাউজারে খুলুন",
     "@qrCodeOpenInBrowser": {},
     "importFailed": "আমদানি ব্যর্থ হয়েছে",
-    "@importFailed": {}
+    "@importFailed": {},
+    "strategySuggestionTitle": "কৌশল পরামর্শ",
+    "@strategySuggestionTitle": {},
+    "nmmStrategySuggestion": "মনে হচ্ছে নাইন মেন'স মরিস আপনার জন্য চ্যালেঞ্জিং হয়ে উঠছে। উদ্বোধন, কৌশল এবং এন্ডগেম কৌশল সম্বলিত একটি স্ট্র্যাটেজি গাইড পাওয়া যাচ্ছে — এটি আপনাকে প্রয়োজনীয় সুবিধা দিতে পারে।",
+    "@nmmStrategySuggestion": {},
+    "learnMore": "আরও জানুন",
+    "@learnMore": {},
+    "notNow": "এখন নয়",
+    "@notNow": {},
+    "dontShowAgain": "আর দেখাবেন না",
+    "@dontShowAgain": {}
 }

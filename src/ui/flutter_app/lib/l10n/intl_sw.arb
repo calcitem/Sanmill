@@ -4199,5 +4199,15 @@
     "qrCodeOpenInBrowser": "Fungua kwenye Kivinjari",
     "@qrCodeOpenInBrowser": {},
     "importFailed": "Uingizaji Umeshindwa",
-    "@importFailed": {}
+    "@importFailed": {},
+    "strategySuggestionTitle": "Kidokezo cha Mkakati",
+    "@strategySuggestionTitle": {},
+    "nmmStrategySuggestion": "Inaonekana Nine Men's Morris ni changamoto kwako. Kipo mwongozo wa mkakati unaoshughulikia mwanzo wa mchezo, mbinu, na mbinu za mwisho wa mchezo — unaweza kukupa faida unayohitaji.",
+    "@nmmStrategySuggestion": {},
+    "learnMore": "Jifunza Zaidi",
+    "@learnMore": {},
+    "notNow": "Si Sasa",
+    "@notNow": {},
+    "dontShowAgain": "Usionyeshe Tena",
+    "@dontShowAgain": {}
 }

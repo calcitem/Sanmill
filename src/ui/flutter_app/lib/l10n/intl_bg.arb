@@ -4199,5 +4199,15 @@
     "qrCodeOpenInBrowser": "Отвори в браузъра",
     "@qrCodeOpenInBrowser": {},
     "importFailed": "Импортирането неуспешно",
-    "@importFailed": {}
+    "@importFailed": {},
+    "strategySuggestionTitle": "Стратегически Съвет",
+    "@strategySuggestionTitle": {},
+    "nmmStrategySuggestion": "Изглежда, че Деветима мъже Морис се оказва предизвикателство за вас. Налично е стратегическо ръководство, обхващащо дебюти, тактики и техники за края на играта — може да ви даде нужното предимство.",
+    "@nmmStrategySuggestion": {},
+    "learnMore": "Научи Повече",
+    "@learnMore": {},
+    "notNow": "Не Сега",
+    "@notNow": {},
+    "dontShowAgain": "Не Показвай Отново",
+    "@dontShowAgain": {}
 }

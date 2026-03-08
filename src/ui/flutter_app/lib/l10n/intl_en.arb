@@ -4347,5 +4347,15 @@
     "importFailed": "Import Failed",
     "@importFailed": {
         "description": "Title of the dialog shown when clipboard content cannot be imported as a game"
-    }
+    },
+    "strategySuggestionTitle": "Strategy Tip",
+    "@strategySuggestionTitle": {},
+    "nmmStrategySuggestion": "It seems Nine Men's Morris is proving challenging. A strategy guide covering openings, tactics, and endgame techniques is available — it might give you the edge you need.",
+    "@nmmStrategySuggestion": {},
+    "learnMore": "Learn More",
+    "@learnMore": {},
+    "notNow": "Not Now",
+    "@notNow": {},
+    "dontShowAgain": "Don't Show Again",
+    "@dontShowAgain": {}
 }

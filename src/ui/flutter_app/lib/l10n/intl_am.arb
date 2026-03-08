@@ -4199,5 +4199,15 @@
     "qrCodeOpenInBrowser": "በአሳሽ ክፈት",
     "@qrCodeOpenInBrowser": {},
     "importFailed": "ማምጣት አልተሳካም",
-    "@importFailed": {}
+    "@importFailed": {},
+    "strategySuggestionTitle": "የስትራቴጂ ምክር",
+    "@strategySuggestionTitle": {},
+    "nmmStrategySuggestion": "ዘጠኝ ሰዎች ሞሪስ ለእርስዎ ፈታኝ እየሆነ ይመስላል። ክፍት ቦታዎችን፣ ዘዴዎችን እና የመጨረሻ ጨዋታ ቴክኒኮችን የሚሸፍን የስትራቴጂ መመሪያ አለ — የሚፈልጉትን ጥቅም ሊሰጥዎ ይችላል።",
+    "@nmmStrategySuggestion": {},
+    "learnMore": "ተጨማሪ ይወቁ",
+    "@learnMore": {},
+    "notNow": "አሁን አይደለም",
+    "@notNow": {},
+    "dontShowAgain": "እንደገና አታሳይ",
+    "@dontShowAgain": {}
 }

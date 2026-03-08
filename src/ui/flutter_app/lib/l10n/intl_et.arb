@@ -4199,5 +4199,15 @@
     "qrCodeOpenInBrowser": "Ava brauseris",
     "@qrCodeOpenInBrowser": {},
     "importFailed": "Importimine ebaõnnestus",
-    "@importFailed": {}
+    "@importFailed": {},
+    "strategySuggestionTitle": "Strateegia Näpunäide",
+    "@strategySuggestionTitle": {},
+    "nmmStrategySuggestion": "Tundub, et Nine Men's Morris on teie jaoks keeruline. Saadaval on strateegiajuhend, mis käsitleb avanguid, taktikaid ja lõpumängu tehnikaid — see võib anda teile vajaliku eelise.",
+    "@nmmStrategySuggestion": {},
+    "learnMore": "Lisateave",
+    "@learnMore": {},
+    "notNow": "Mitte Praegu",
+    "@notNow": {},
+    "dontShowAgain": "Ära Näita Enam",
+    "@dontShowAgain": {}
 }

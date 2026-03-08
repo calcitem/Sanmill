@@ -4203,5 +4203,15 @@
     "qrCodeOpenInBrowser": "براؤزر میں کھولیں",
     "@qrCodeOpenInBrowser": {},
     "importFailed": "درآمد ناکام",
-    "@importFailed": {}
+    "@importFailed": {},
+    "strategySuggestionTitle": "حکمت عملی کا مشورہ",
+    "@strategySuggestionTitle": {},
+    "nmmStrategySuggestion": "ایسا لگتا ہے کہ نائن مینز مورس آپ کے لیے چیلنجنگ ہے۔ ایک حکمت عملی گائیڈ دستیاب ہے جو اوپننگ، حکمت عملیوں اور اینڈ گیم تکنیکوں کا احاطہ کرتا ہے — یہ آپ کو وہ فائدہ دے سکتا ہے جس کی آپ کو ضرورت ہے۔",
+    "@nmmStrategySuggestion": {},
+    "learnMore": "مزید جانیں",
+    "@learnMore": {},
+    "notNow": "ابھی نہیں",
+    "@notNow": {},
+    "dontShowAgain": "دوبارہ نہ دکھائیں",
+    "@dontShowAgain": {}
 }

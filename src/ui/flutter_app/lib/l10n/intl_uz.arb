@@ -4203,5 +4203,15 @@
     "qrCodeOpenInBrowser": "Brauzerda ochish",
     "@qrCodeOpenInBrowser": {},
     "importFailed": "Import muvaffaqiyatsiz",
-    "@importFailed": {}
+    "@importFailed": {},
+    "strategySuggestionTitle": "Strategiya Maslahati",
+    "@strategySuggestionTitle": {},
+    "nmmStrategySuggestion": "Nine Men's Morris siz uchun qiyin bo'lib tuyulmoqda. Ochilishlar, taktikalar va o'yin oxiri texnikalarini qamrab oluvchi strategiya qo'llanmasi mavjud — bu sizga kerakli ustunlikni berishi mumkin.",
+    "@nmmStrategySuggestion": {},
+    "learnMore": "Ko'proq Bilib Oling",
+    "@learnMore": {},
+    "notNow": "Hozir Emas",
+    "@notNow": {},
+    "dontShowAgain": "Yana Ko'rsatma",
+    "@dontShowAgain": {}
 }

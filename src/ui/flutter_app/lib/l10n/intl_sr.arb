@@ -4199,5 +4199,15 @@
     "qrCodeOpenInBrowser": "Отвори у претраживачу",
     "@qrCodeOpenInBrowser": {},
     "importFailed": "Увоз није успео",
-    "@importFailed": {}
+    "@importFailed": {},
+    "strategySuggestionTitle": "Стратешки Савет",
+    "@strategySuggestionTitle": {},
+    "nmmStrategySuggestion": "Чини се да је Девет мушкараца Морис изазов за вас. Доступан је стратешки водич који покрива отварања, тактике и технике завршнице — може вам дати предност која вам је потребна.",
+    "@nmmStrategySuggestion": {},
+    "learnMore": "Сазнај Више",
+    "@learnMore": {},
+    "notNow": "Не Сада",
+    "@notNow": {},
+    "dontShowAgain": "Не Приказуј Поново",
+    "@dontShowAgain": {}
 }
