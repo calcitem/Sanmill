@@ -3137,6 +3137,11 @@ bool Position::is_star_square(Square s)
     return s == 16 || s == 18 || s == 20 || s == 22;
 }
 
+bool Position::is_center_cardinal_square(Square s) noexcept
+{
+    return s == SQ_16 || s == SQ_18 || s == SQ_20 || s == SQ_22;
+}
+
 void Position::print_board()
 {
     if (rule.hasDiagonalLines) {

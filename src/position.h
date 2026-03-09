@@ -175,6 +175,10 @@ public:
 
     bool is_three_endgame() const;
 
+    // The four orthogonal crossing points of the middle ring (d6, f4, d2, b4).
+    // They stay the "center cardinal" squares even in diagonal variants.
+    static bool is_center_cardinal_square(Square s) noexcept;
+
     static bool is_star_square(Square s);
 
     static bool bitboard_is_ok();

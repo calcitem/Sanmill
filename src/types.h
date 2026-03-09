@@ -222,10 +222,10 @@ enum Rating : int8_t {
     RATING_REMOVE_THEIR_TWO_MILLS = -RATING_REMOVE_TWO_MILLS,
     RATING_REMOVE_THEIR_THREE_MILLS = -RATING_REMOVE_THREE_MILLS,
 
-    // Cardinal-point bonus: center-ring crossing squares (SQ_16/18/20/22 or
-    // SQ_17/19/21/23 when diagonal) connect two lines and are harder for the
-    // opponent to replace — worth a small bonus both when placing/moving there
-    // and when removing the opponent's piece from there.
+    // Cardinal-point bonus: the center-ring orthogonal crossings
+    // (SQ_16/SQ_18/SQ_20/SQ_22) connect two lines and are harder for the
+    // opponent to replace. They are worth a small bonus both when
+    // placing/moving there and when removing the opponent's piece from there.
     RATING_CARDINAL_SQUARE = 3,
 
     // Double-mill bonus: moving/placing to a square that creates >= 2

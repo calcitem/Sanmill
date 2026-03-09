@@ -116,6 +116,7 @@ protected:
         rule.stalemateAction = StalemateAction::endWithStalemateLoss;
         rule.mayFly = false;
         rule.hasDiagonalLines = false;
+        rule.oneTimeUseMill = false;
 
         gameOptions.setConsiderMobility(false);
         gameOptions.setFocusOnBlockingPaths(false);
@@ -482,4 +483,128 @@ TEST_F(EvaluateTest, LiveMillCandidateFavoursWhite)
     // Expected total at minimum: piece bonus alone = 10, so > 0.
     EXPECT_GT(valWithBonus, 0) << "White with a potential mill should be "
                                   "evaluated positively.";
+}
+
+// 14) Exact cardinal delta in the standard board: moving one White piece from
+//     a non-cardinal middle-ring corner (f6) to a cardinal point (d6) should
+//     change the evaluation by exactly +1 when all other terms are identical.
+TEST_F(EvaluateTest, CardinalBonusDeltaIsExactOnStandardBoard)
+{
+    Position cardinalPos;
+    cardinalPos.reset();
+    cardinalPos.phase = Phase::moving;
+    cardinalPos.sideToMove = WHITE;
+    cardinalPos.action = Action::select;
+    cardinalPos.pieceInHandCount[WHITE] = 0;
+    cardinalPos.pieceInHandCount[BLACK] = 0;
+    std::memset(cardinalPos.board, NO_PIECE, sizeof(cardinalPos.board));
+    cardinalPos.board[SQ_16] = W_PIECE; // d6: center cardinal
+    cardinalPos.pieceOnBoardCount[WHITE] = 1;
+    cardinalPos.pieceOnBoardCount[BLACK] = 0;
+    cardinalPos.reset_bb();
+
+    Position nonCardinalPos = cardinalPos;
+    std::memset(nonCardinalPos.board, NO_PIECE, sizeof(nonCardinalPos.board));
+    nonCardinalPos.board[SQ_17] = W_PIECE; // f6: middle-ring corner
+    nonCardinalPos.reset_bb();
+
+    const Value cardinalVal = Eval::evaluate(cardinalPos);
+    const Value nonCardinalVal = Eval::evaluate(nonCardinalPos);
+    EXPECT_EQ(cardinalVal - nonCardinalVal, 1)
+        << "The standard-board cardinal bonus should contribute exactly +1.";
+}
+
+// 15) Exact cardinal delta in the diagonal board: the orthogonal crossings
+//     stay the cardinal points. d6 (SQ_16) should still outrank f6 (SQ_17).
+TEST_F(EvaluateTest, CardinalBonusUsesOrthogonalCrossingsInDiagonalVariant)
+{
+    rule.hasDiagonalLines = true;
+
+    Position cardinalPos;
+    cardinalPos.reset();
+    cardinalPos.phase = Phase::moving;
+    cardinalPos.sideToMove = WHITE;
+    cardinalPos.action = Action::select;
+    cardinalPos.pieceInHandCount[WHITE] = 0;
+    cardinalPos.pieceInHandCount[BLACK] = 0;
+    std::memset(cardinalPos.board, NO_PIECE, sizeof(cardinalPos.board));
+    cardinalPos.board[SQ_16] = W_PIECE; // d6: still a cardinal point
+    cardinalPos.pieceOnBoardCount[WHITE] = 1;
+    cardinalPos.pieceOnBoardCount[BLACK] = 0;
+    cardinalPos.reset_bb();
+
+    Position starCornerPos = cardinalPos;
+    std::memset(starCornerPos.board, NO_PIECE, sizeof(starCornerPos.board));
+    starCornerPos.board[SQ_17] = W_PIECE; // f6: star-square / corner on diagonal
+    starCornerPos.reset_bb();
+
+    const Value cardinalVal = Eval::evaluate(cardinalPos);
+    const Value starCornerVal = Eval::evaluate(starCornerPos);
+    EXPECT_EQ(cardinalVal - starCornerVal, 1)
+        << "Diagonal variants should still treat SQ_16/18/20/22 as the "
+           "center cardinal squares.";
+}
+
+// 16) Exact live-mill delta: two equal-material positions differ only in
+//     whether White has a single 1-step mill candidate. The evaluator should
+//     differ by exactly +1.
+TEST_F(EvaluateTest, LiveMillCandidateDeltaIsExact)
+{
+    Position liveCandidatePos;
+    liveCandidatePos.reset();
+    liveCandidatePos.phase = Phase::moving;
+    liveCandidatePos.sideToMove = WHITE;
+    liveCandidatePos.action = Action::select;
+    liveCandidatePos.pieceInHandCount[WHITE] = 0;
+    liveCandidatePos.pieceInHandCount[BLACK] = 0;
+    std::memset(liveCandidatePos.board, NO_PIECE, sizeof(liveCandidatePos.board));
+    liveCandidatePos.board[SQ_31] = W_PIECE;
+    liveCandidatePos.board[SQ_24] = W_PIECE; // top line 31-24-25 => one live candidate
+    liveCandidatePos.pieceOnBoardCount[WHITE] = 2;
+    liveCandidatePos.pieceOnBoardCount[BLACK] = 0;
+    liveCandidatePos.reset_bb();
+
+    Position noCandidatePos = liveCandidatePos;
+    std::memset(noCandidatePos.board, NO_PIECE, sizeof(noCandidatePos.board));
+    noCandidatePos.board[SQ_31] = W_PIECE;
+    noCandidatePos.board[SQ_26] = W_PIECE; // no 2-of-3 line
+    noCandidatePos.reset_bb();
+
+    const Value liveVal = Eval::evaluate(liveCandidatePos);
+    const Value noCandidateVal = Eval::evaluate(noCandidatePos);
+    EXPECT_EQ(liveVal - noCandidateVal, 1)
+        << "A single additional live-mill candidate should contribute exactly +1.";
+}
+
+// 17) One-time-use mills must suppress already-consumed lines from the live
+//     candidate count. The same board should evaluate 1 point lower once the
+//     old line is marked as already used.
+TEST_F(EvaluateTest, OneTimeUseMillSuppressesUsedLiveCandidate)
+{
+    rule.oneTimeUseMill = true;
+
+    Position freshPos;
+    freshPos.reset();
+    freshPos.phase = Phase::moving;
+    freshPos.sideToMove = WHITE;
+    freshPos.action = Action::select;
+    freshPos.pieceInHandCount[WHITE] = 0;
+    freshPos.pieceInHandCount[BLACK] = 0;
+    std::memset(freshPos.board, NO_PIECE, sizeof(freshPos.board));
+    freshPos.board[SQ_31] = W_PIECE;
+    freshPos.board[SQ_24] = W_PIECE;
+    freshPos.pieceOnBoardCount[WHITE] = 2;
+    freshPos.pieceOnBoardCount[BLACK] = 0;
+    freshPos.reset_bb();
+    freshPos.formedMillsBB[WHITE] = 0;
+
+    Position consumedPos = freshPos;
+    consumedPos.formedMillsBB[WHITE] =
+        square_bb(SQ_31) | square_bb(SQ_24) | square_bb(SQ_25);
+
+    const Value freshVal = Eval::evaluate(freshPos);
+    const Value consumedVal = Eval::evaluate(consumedPos);
+    EXPECT_EQ(freshVal - consumedVal, 1)
+        << "An already-consumed one-time-use mill line must not count as a "
+           "live candidate.";
 }

@@ -29,7 +29,7 @@ private:
 
     // Count the number of "center cardinal" squares (middle-ring crossing
     // points) occupied by the given side.  Cardinal squares are the most
-    // valuable positional assets per the strategy guide — they connect two
+    // valuable positional assets per the strategy guide - they connect two
     // mill lines and are hardest to replace.  O(1), pure bit-lookup.
     int cardinal_count(Color c) const noexcept;
 
@@ -42,17 +42,14 @@ private:
 int Evaluation::cardinal_count(Color c) const noexcept
 {
     int n = 0;
-    if (!rule.hasDiagonalLines) {
-        if (pos.color_on(SQ_16) == c) ++n;
-        if (pos.color_on(SQ_18) == c) ++n;
-        if (pos.color_on(SQ_20) == c) ++n;
-        if (pos.color_on(SQ_22) == c) ++n;
-    } else {
-        if (pos.color_on(SQ_17) == c) ++n;
-        if (pos.color_on(SQ_19) == c) ++n;
-        if (pos.color_on(SQ_21) == c) ++n;
-        if (pos.color_on(SQ_23) == c) ++n;
-    }
+    if (pos.color_on(SQ_16) == c)
+        ++n;
+    if (pos.color_on(SQ_18) == c)
+        ++n;
+    if (pos.color_on(SQ_20) == c)
+        ++n;
+    if (pos.color_on(SQ_22) == c)
+        ++n;
     return n;
 }
 
@@ -67,7 +64,7 @@ int Evaluation::live_mill_candidates(Color c) const
     //
     // Implementation: for each square s that is occupied by c, count the mills
     // that would be formed by a hypothetical piece at s (which is already
-    // there) — this equals the number of lines containing s where the other
+    // there) - this equals the number of lines containing s where the other
     // two squares are also occupied by c (i.e. already a mill) OR where
     // exactly one of the other two squares is empty and one is c. To keep
     // things simple and consistent with the rest of the codebase we count
@@ -92,12 +89,19 @@ int Evaluation::live_mill_candidates(Color c) const
             if (!line)
                 continue;
             // Among the other two squares in this line, one is c's piece
-            // and one is empty → together with s that gives 2-of-3 filled,
+            // and one is empty -> together with s that gives 2-of-3 filled,
             // i.e. a live mill candidate (one step from completion).
             Bitboard lineC = bc & line;
             Bitboard lineEmpty = empty & line;
             if (popcount(lineC) == 1 && popcount(lineEmpty) == 1) {
-                ++n;
+                // Respect one-time-use mill rules: if the completed line has
+                // already been consumed by this side, it is no longer a live
+                // candidate and should not be counted by the evaluator.
+                const Bitboard completedLine = square_bb(s) | line;
+                if (!rule.oneTimeUseMill ||
+                    (completedLine & pos.formedMillsBB[c]) != completedLine) {
+                    ++n;
+                }
             }
         }
     }
@@ -154,13 +158,15 @@ Value Evaluation::value() const
 
             // Cardinal-point control: each center-ring crossing square
             // controlled by us vs. them contributes a fractional positional
-            // bonus (strategy guide §9.4, §14.7).  Scale is 1 per square to
+            // bonus (strategy guide sections 9.4 and 14.7). Scale is 1 per
+            // square to
             // stay well below a full piece value (5).
             value += cardinal_count(WHITE) - cardinal_count(BLACK);
 
             // Live-mill candidate difference: having more "1-step-to-mill"
             // lines than the opponent is a positional advantage (strategy
-            // guide §8.2, §12.3).  Weight = 1 to stay below a single piece
+            // guide sections 8.2 and 12.3). Weight = 1 to stay below a single
+            // piece
             // value; the deeper search will amplify the effect.
             value += live_mill_candidates(WHITE) - live_mill_candidates(BLACK);
         }

@@ -106,17 +106,11 @@ void MovePicker::score()
             // cur->value += markedCount;  // placing phrase, place nearby
             // marked point
 
-            // Cardinal-point bonus: center-ring crossing squares (even squares
-            // in standard mode) connect two mill lines and are hard for the
-            // opponent to replace, so occupying them deserves a small boost.
-            if (!rule.hasDiagonalLines) {
-                if (to == SQ_16 || to == SQ_18 || to == SQ_20 || to == SQ_22) {
-                    cur->value += RATING_CARDINAL_SQUARE;
-                }
-            } else {
-                if (to == SQ_17 || to == SQ_19 || to == SQ_21 || to == SQ_23) {
-                    cur->value += RATING_CARDINAL_SQUARE;
-                }
+            // Cardinal-point bonus: the four orthogonal crossing points on the
+            // middle ring (d6, f4, d2, b4) stay strategically valuable in all
+            // variants, because they link two independent mill directions.
+            if (Position::is_center_cardinal_square(to)) {
+                cur->value += RATING_CARDINAL_SQUARE;
             }
 
             // If has Diagonal Lines, black 2nd move place star point is as
@@ -164,9 +158,9 @@ void MovePicker::score()
             }
 
             // Feeder-piece bonus: prefer removing the opponent's piece that
-            // participates in multiple potential mills (the "common piece"
-            // connecting dual threats). This implements the strategy-guide
-            // advice on "which piece to take" — prioritise the piece most
+            // currently belongs to two or more of their mills (the "common
+            // piece" linking dual threats). This implements the strategy-guide
+            // advice on "which piece to take" - prioritise the piece most
             // inconvenient for the opponent to lose.
             if (theirMillsCount >= 2) {
                 cur->value += RATING_REMOVE_FEEDER;
@@ -174,12 +168,7 @@ void MovePicker::score()
 
             // Cardinal-point removal bonus: opponent's cardinal-point pieces
             // are harder to replace; removing them is preferred.
-            const bool isTheirCardinal =
-                !rule.hasDiagonalLines ?
-                    (to == SQ_16 || to == SQ_18 || to == SQ_20 ||
-                     to == SQ_22) :
-                    (to == SQ_17 || to == SQ_19 || to == SQ_21 || to == SQ_23);
-            if (isTheirCardinal) {
+            if (Position::is_center_cardinal_square(to)) {
                 cur->value += RATING_CARDINAL_SQUARE;
             }
 
@@ -189,9 +178,17 @@ void MovePicker::score()
 #endif // !SORT_MOVE_WITHOUT_HUMAN_KNOWLEDGE
     }
 
-    if (!pos.shouldFocusOnBlockingPaths()) {
-        cur->value = -cur->value;
-    }
+    // Historical note: commit 81cc73f1a (2024-07-03) added
+    //   if (!shouldFocusOnBlockingPaths()) { cur->value = -cur->value; }
+    // here, intending to gate the scoring direction on that flag.  However,
+    // the loop was then using a MOVE_NONE sentinel, so at this point cur
+    // pointed to the sentinel entry, not any real move. The write therefore
+    // always affected only the sentinel and had zero effect on sort order.
+    // When the loop was later converted to the range-based [moves, endMoves)
+    // form, cur became endMoves (one-past-the-end), turning the write into
+    // undefined behaviour.  The line is removed: the scoring direction is
+    // already handled correctly by the positive/negative accounting inside
+    // the loop body.
 }
 
 /// MovePicker::next_move() is the most important method of the MovePicker

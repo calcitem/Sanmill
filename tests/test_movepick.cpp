@@ -27,6 +27,8 @@ protected:
     void SetUp() override
     {
         set_rule(DEFAULT_RULE_NUMBER);
+        rule.mayRemoveFromMillsAlways = false;
+        rule.oneTimeUseMill = false;
         Mills::adjacent_squares_init();
         Mills::mill_table_init();
         Position::create_mill_table();
@@ -54,12 +56,15 @@ TEST_F(MovePickTest, CardinalPlacementBonus)
     rule.hasDiagonalLines = false;
 
     Position pos;
-    std::memset(&pos, 0, sizeof(pos));
+    pos.reset();
     std::memset(pos.board, NO_PIECE, sizeof(pos.board));
     pos.phase = Phase::placing;
     pos.sideToMove = WHITE;
+    pos.action = Action::place;
     pos.pieceInHandCount[WHITE] = 5;
     pos.pieceInHandCount[BLACK] = 5;
+    pos.pieceOnBoardCount[WHITE] = 0;
+    pos.pieceOnBoardCount[BLACK] = 0;
     pos.reset_bb();
 
     MovePicker mp(pos, MOVE_NONE);
@@ -73,8 +78,9 @@ TEST_F(MovePickTest, CardinalPlacementBonus)
 
     EXPECT_NE(cardinalScore, INT_MIN) << "SQ_16 should be among legal moves.";
     EXPECT_NE(cornerScore, INT_MIN) << "SQ_25 should be among legal moves.";
-    EXPECT_GT(cardinalScore, cornerScore)
-        << "Cardinal-square placement should score higher than a corner.";
+    EXPECT_EQ(cardinalScore - cornerScore, RATING_CARDINAL_SQUARE)
+        << "Cardinal-square placement should add exactly the configured "
+           "cardinal bonus on an otherwise empty board.";
 }
 
 // 2) Double-mill bonus: if placing at a square creates >= 2 potential mills
@@ -84,7 +90,7 @@ TEST_F(MovePickTest, DoubleMillBonus)
     rule.hasDiagonalLines = false;
 
     Position pos;
-    std::memset(&pos, 0, sizeof(pos));
+    pos.reset();
     std::memset(pos.board, NO_PIECE, sizeof(pos.board));
 
     // Outer ring top line: SQ_31-SQ_24-SQ_25.  Put White on SQ_31 and SQ_25.
@@ -107,11 +113,14 @@ TEST_F(MovePickTest, DoubleMillBonus)
     pos.board[SQ_25] = W_PIECE;
     pos.board[SQ_16] = W_PIECE;
     pos.board[SQ_8] = W_PIECE;
-    pos.pieceOnBoardCount[WHITE] = 4;
+    pos.board[SQ_30] = W_PIECE; // makes SQ_29 a clean single-mill target
+    pos.pieceOnBoardCount[WHITE] = 5;
+    pos.pieceOnBoardCount[BLACK] = 0;
     pos.pieceInHandCount[WHITE] = 3;
     pos.pieceInHandCount[BLACK] = 5;
     pos.phase = Phase::placing;
     pos.sideToMove = WHITE;
+    pos.action = Action::place;
     pos.reset_bb();
 
     MovePicker mp(pos, MOVE_NONE);
@@ -120,15 +129,15 @@ TEST_F(MovePickTest, DoubleMillBonus)
     // SQ_24 should close 2 mills simultaneously
     const int doubleMill = find_move_score(mp, static_cast<Move>(SQ_24));
 
-    // SQ_9 is adjacent to SQ_8 but only participates in 1 mill at most
-    // (inner ring: SQ_8-SQ_9-...).  Let's pick an empty square with 0 mills.
-    const int noMill = find_move_score(mp, static_cast<Move>(SQ_27));
+    // SQ_29 closes exactly one mill via 31-30-29.
+    const int singleMill = find_move_score(mp, static_cast<Move>(SQ_29));
 
     EXPECT_NE(doubleMill, INT_MIN);
-    EXPECT_NE(noMill, INT_MIN);
-    EXPECT_GT(doubleMill, noMill)
-        << "A double-mill square should score strictly higher than a square "
-           "with no mill potential.";
+    EXPECT_NE(singleMill, INT_MIN);
+    EXPECT_EQ(doubleMill - singleMill,
+              RATING_ONE_MILL + RATING_DOUBLE_MILL)
+        << "A double-mill target should beat a single-mill target by one extra "
+           "mill plus the configured double-mill bonus.";
 }
 
 // 3) Cardinal removal bonus: when removing an opponent's piece, a piece on
@@ -138,12 +147,16 @@ TEST_F(MovePickTest, CardinalRemovalBonus)
     rule.hasDiagonalLines = false;
 
     Position pos;
-    std::memset(&pos, 0, sizeof(pos));
+    pos.reset();
     std::memset(pos.board, NO_PIECE, sizeof(pos.board));
 
-    // Set up a position where White is in the remove action
+    // Set up a position where White is in the remove action.
+    // Use MARKED pieces to equalise empty-neighbour counts so that the score
+    // delta comes from the cardinal bonus itself, not from mobility noise.
     pos.board[SQ_16] = B_PIECE; // cardinal
     pos.board[SQ_25] = B_PIECE; // corner
+    pos.board[SQ_8] = MARKED_PIECE;
+    pos.board[SQ_23] = MARKED_PIECE;
     pos.pieceOnBoardCount[BLACK] = 2;
 
     // White has enough pieces and a remove action
@@ -155,6 +168,8 @@ TEST_F(MovePickTest, CardinalRemovalBonus)
     pos.phase = Phase::moving;
     pos.sideToMove = WHITE;
     pos.action = Action::remove;
+    pos.pieceInHandCount[WHITE] = 0;
+    pos.pieceInHandCount[BLACK] = 0;
     pos.pieceToRemoveCount[WHITE] = 1;
 
     pos.reset_bb();
@@ -169,12 +184,63 @@ TEST_F(MovePickTest, CardinalRemovalBonus)
     const int scoreCardinal = find_move_score(mp, removeCardinal);
     const int scoreCorner = find_move_score(mp, removeCorner);
 
-    // At least one of them should be a legal removal
-    if (scoreCardinal != INT_MIN && scoreCorner != INT_MIN) {
-        EXPECT_GT(scoreCardinal, scoreCorner)
-            << "Removing an opponent's cardinal-point piece should be "
-               "preferred.";
-    }
+    EXPECT_NE(scoreCardinal, INT_MIN);
+    EXPECT_NE(scoreCorner, INT_MIN);
+    EXPECT_EQ(scoreCardinal - scoreCorner, RATING_CARDINAL_SQUARE)
+        << "After equalising neighbourhood counts, removing a cardinal-point "
+           "piece should differ only by the configured cardinal bonus.";
+}
+
+// 4) Feeder-piece removal bonus: when removal-from-mills is allowed, the piece
+//    common to two mills should outrank a piece that belongs to only one mill,
+//    all else being equal.
+TEST_F(MovePickTest, FeederRemovalBonus)
+{
+    rule.hasDiagonalLines = false;
+    rule.mayRemoveFromMillsAlways = true;
+
+    Position pos;
+    pos.reset();
+    std::memset(pos.board, NO_PIECE, sizeof(pos.board));
+    pos.phase = Phase::moving;
+    pos.sideToMove = WHITE;
+    pos.action = Action::remove;
+    pos.pieceInHandCount[WHITE] = 0;
+    pos.pieceInHandCount[BLACK] = 0;
+    pos.pieceToRemoveCount[WHITE] = 1;
+
+    // Black piece at SQ_24 belongs to two mills:
+    //   31-24-25 and 24-16-8
+    pos.board[SQ_24] = B_PIECE;
+    pos.board[SQ_31] = B_PIECE;
+    pos.board[SQ_25] = B_PIECE;
+    pos.board[SQ_16] = B_PIECE;
+    pos.board[SQ_8] = B_PIECE;
+
+    // Black piece at SQ_30 belongs to one mill only:
+    //   31-30-29
+    pos.board[SQ_30] = B_PIECE;
+    pos.board[SQ_29] = B_PIECE;
+    pos.board[SQ_22] = B_PIECE; // equalise adjacent piece count around SQ_30
+
+    pos.pieceOnBoardCount[BLACK] = 8;
+    pos.pieceOnBoardCount[WHITE] = 0;
+    pos.reset_bb();
+
+    MovePicker mp(pos, MOVE_NONE);
+    mp.next_move<REMOVE>();
+
+    const Move removeFeeder = static_cast<Move>(-static_cast<int>(SQ_24));
+    const Move removeSingleMill = static_cast<Move>(-static_cast<int>(SQ_30));
+
+    const int feederScore = find_move_score(mp, removeFeeder);
+    const int singleMillScore = find_move_score(mp, removeSingleMill);
+
+    EXPECT_NE(feederScore, INT_MIN);
+    EXPECT_NE(singleMillScore, INT_MIN);
+    EXPECT_EQ(feederScore - singleMillScore, RATING_REMOVE_FEEDER)
+        << "The piece shared by two mills should receive exactly the feeder "
+           "removal bonus when other local factors are equalised.";
 }
 
 } // namespace
