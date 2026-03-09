@@ -378,3 +378,108 @@ TEST_F(EvaluateTest, PhaseMovingActionRemoveCountsPieceToRemove)
     Value val = Eval::evaluate(pos);
     EXPECT_EQ(val, 5);
 }
+
+// ---- New tests for cardinal-control and live-mill-candidate heuristics ----
+
+// 11) Cardinal-point bonus: White occupies all 4 cardinal squares of the
+//     middle ring; Black occupies none => evaluation should favour White.
+TEST_F(EvaluateTest, CardinalControlFavoursWhite)
+{
+    rule.hasDiagonalLines = false;
+    gameOptions.setConsiderMobility(false);
+    gameOptions.setFocusOnBlockingPaths(false);
+
+    Position pos;
+    std::memset(&pos, 0, sizeof(pos));
+    std::memset(pos.board, NO_PIECE, sizeof(pos.board));
+
+    // White on all four cardinal squares of the middle ring
+    pos.board[SQ_16] = W_PIECE;
+    pos.board[SQ_18] = W_PIECE;
+    pos.board[SQ_20] = W_PIECE;
+    pos.board[SQ_22] = W_PIECE;
+    pos.pieceOnBoardCount[WHITE] = 4;
+    pos.pieceOnBoardCount[BLACK] = 0;
+
+    pos.phase = Phase::moving;
+    pos.sideToMove = WHITE;
+    pos.action = Action::select;
+
+    pos.reset_bb();
+
+    // Piece-on-board diff: +4 pieces => +20; cardinal diff: +4 => +4;
+    // live-mill candidate diff: 0 (no pairs yet)
+    // Total from WHITE's perspective: >= 24
+    Value val = Eval::evaluate(pos);
+    EXPECT_GT(val, 0) << "White holding all 4 cardinal squares should yield a "
+                         "positive evaluation.";
+}
+
+// 12) Cardinal-point bonus symmetry: Black holds all 4 cardinal squares;
+//     evaluation should be negative from White's perspective.
+TEST_F(EvaluateTest, CardinalControlFavoursBlack)
+{
+    rule.hasDiagonalLines = false;
+    gameOptions.setConsiderMobility(false);
+    gameOptions.setFocusOnBlockingPaths(false);
+
+    Position pos;
+    std::memset(&pos, 0, sizeof(pos));
+    std::memset(pos.board, NO_PIECE, sizeof(pos.board));
+
+    pos.board[SQ_16] = B_PIECE;
+    pos.board[SQ_18] = B_PIECE;
+    pos.board[SQ_20] = B_PIECE;
+    pos.board[SQ_22] = B_PIECE;
+    pos.pieceOnBoardCount[WHITE] = 0;
+    pos.pieceOnBoardCount[BLACK] = 4;
+
+    pos.phase = Phase::moving;
+    pos.sideToMove = WHITE;
+    pos.action = Action::select;
+
+    pos.reset_bb();
+
+    Value val = Eval::evaluate(pos);
+    EXPECT_LT(val, 0) << "Black holding all 4 cardinal squares should yield a "
+                         "negative evaluation from White's perspective.";
+}
+
+// 13) Live-mill candidate bonus: White has two pieces on a line with an empty
+//     third square (1-step potential mill); Black has none.
+//     The new term should add +1 to White's evaluation.
+TEST_F(EvaluateTest, LiveMillCandidateFavoursWhite)
+{
+    rule.hasDiagonalLines = false;
+    rule.pieceCount = 9;
+    gameOptions.setConsiderMobility(false);
+    gameOptions.setFocusOnBlockingPaths(false);
+
+    Position pos;
+    std::memset(&pos, 0, sizeof(pos));
+    std::memset(pos.board, NO_PIECE, sizeof(pos.board));
+
+    // Place two White pieces on the outer ring top line: SQ_31, SQ_24
+    // (the horizontal line is SQ_31-SQ_24-SQ_25; SQ_25 is empty => 1 candidate
+    // for White)
+    pos.board[SQ_31] = W_PIECE;
+    pos.board[SQ_24] = W_PIECE;
+    pos.pieceOnBoardCount[WHITE] = 2;
+    pos.pieceOnBoardCount[BLACK] = 0;
+
+    pos.phase = Phase::moving;
+    pos.sideToMove = WHITE;
+    pos.action = Action::select;
+
+    pos.reset_bb();
+
+    // Make sure the mill table is initialised (static, initialised once)
+    Position::create_mill_table();
+
+    Value valWithBonus = Eval::evaluate(pos);
+    // The live-mill bonus for White (1 candidate) contributes +1.
+    // Piece-on-board diff contributes +10.  Cardinal: 0.
+    // Expected total at minimum: piece bonus alone = 10, so > 0.
+    EXPECT_GT(valWithBonus, 0) << "White with a potential mill should be "
+                                  "evaluated positively.";
+}

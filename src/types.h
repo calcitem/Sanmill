@@ -222,6 +222,22 @@ enum Rating : int8_t {
     RATING_REMOVE_THEIR_TWO_MILLS = -RATING_REMOVE_TWO_MILLS,
     RATING_REMOVE_THEIR_THREE_MILLS = -RATING_REMOVE_THREE_MILLS,
 
+    // Cardinal-point bonus: center-ring crossing squares (SQ_16/18/20/22 or
+    // SQ_17/19/21/23 when diagonal) connect two lines and are harder for the
+    // opponent to replace — worth a small bonus both when placing/moving there
+    // and when removing the opponent's piece from there.
+    RATING_CARDINAL_SQUARE = 3,
+
+    // Double-mill bonus: moving/placing to a square that creates >= 2
+    // simultaneous potential mills deserves a priority boost above a single
+    // mill.  Kept at 1 so a single mill still wins the tie-break cleanly.
+    RATING_DOUBLE_MILL = 1,
+
+    // Feeder-piece bonus for REMOVE: prefer removing the opponent's piece that
+    // participates in two or more of their potential mills (the "common piece"
+    // connecting dual threats).
+    RATING_REMOVE_FEEDER = 3,
+
     RATING_TT = 100,
     RATING_MAX = INT8_MAX,
 };
