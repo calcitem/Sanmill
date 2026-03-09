@@ -91,10 +91,12 @@ int Evaluation::live_mill_candidates(Color c) const
             Bitboard line = mt[d];
             if (!line)
                 continue;
-            // Line has exactly 2 of c's pieces and one empty square
+            // Among the other two squares in this line, one is c's piece
+            // and one is empty → together with s that gives 2-of-3 filled,
+            // i.e. a live mill candidate (one step from completion).
             Bitboard lineC = bc & line;
             Bitboard lineEmpty = empty & line;
-            if (popcount(lineC) == 2 && popcount(lineEmpty) == 1) {
+            if (popcount(lineC) == 1 && popcount(lineEmpty) == 1) {
                 ++n;
             }
         }
