@@ -29,6 +29,8 @@ architectures:
 
 apps:
   mill:
+    command-chain:
+      - snap/local/launch-mill.sh
     command: usr/local/bin/mill
     extensions: [gnome]
     plugs: [home, alsa, pulseaudio, desktop, desktop-legacy, audio-playback]
@@ -61,7 +63,9 @@ parts:
       flutter clean
       flutter build linux --release -v
       mkdir -p ${SNAPCRAFT_PART_INSTALL}/usr/local/bin
+      mkdir -p ${SNAPCRAFT_PART_INSTALL}/snap/local
       cp -r build/linux/x64/release/bundle/* ${SNAPCRAFT_PART_INSTALL}/usr/local/bin/
+      install -m755 ../../../snap/local/launch-mill.sh ${SNAPCRAFT_PART_INSTALL}/snap/local/launch-mill.sh
     after:
       - alsa
 
