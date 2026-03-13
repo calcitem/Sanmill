@@ -69,4 +69,11 @@ sanitize_gtk_path() {
 sanitize_gtk_modules
 sanitize_gtk_path
 
+# Snapped Flutter apps can fail to create an OpenGL context on some
+# Pop!_OS/NVIDIA PRIME setups. Default to software rendering for the
+# snap and allow advanced users to override it explicitly.
+if [ -z "${FLUTTER_LINUX_RENDERER:-}" ]; then
+  export FLUTTER_LINUX_RENDERER=software
+fi
+
 exec "$@"
