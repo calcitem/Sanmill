@@ -29,6 +29,7 @@ import 'home/home.dart';
 import 'puzzle/services/puzzle_manager.dart';
 import 'shared/config/constants.dart';
 import 'shared/database/database.dart';
+import 'shared/services/email_handler.dart';
 import 'shared/services/environment_config.dart';
 import 'shared/services/logger.dart';
 import 'shared/services/screenshot_service.dart';
@@ -37,6 +38,7 @@ import 'shared/themes/app_theme.dart';
 import 'shared/utils/localizations/feedback_localization.dart';
 import 'shared/widgets/snackbars/scaffold_messenger.dart';
 import 'statistics/services/stats_service.dart';
+
 // Voice assistant functionality disabled
 // import 'voice_assistant/services/voice_assistant_service.dart';
 

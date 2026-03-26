@@ -38,7 +38,7 @@ Future<void> _initCatcher(Catcher2 catcher) async {
     <ReportHandler>[
       ConsoleHandler(),
       FileHandler(File(path), printLogs: true),
-      EmailManualHandler(Constants.recipientEmails, printLogs: true),
+      SanmillEmailHandler(Constants.recipientEmails, printLogs: true),
     ],
     customParameters: customParameters,
   );
@@ -52,7 +52,7 @@ Future<void> _initCatcher(Catcher2 catcher) async {
         : PageReportMode(),
     <ReportHandler>[
       FileHandler(File(path), printLogs: true),
-      EmailManualHandler(Constants.recipientEmails, printLogs: true),
+      SanmillEmailHandler(Constants.recipientEmails, printLogs: true),
     ],
     customParameters: customParameters,
   );
@@ -61,7 +61,7 @@ Future<void> _initCatcher(Catcher2 catcher) async {
       Catcher2Options(PageReportMode(), <ReportHandler>[
         ConsoleHandler(),
         FileHandler(File(path), printLogs: true),
-        EmailManualHandler(Constants.recipientEmails, printLogs: true),
+        SanmillEmailHandler(Constants.recipientEmails, printLogs: true),
       ], customParameters: customParameters);
 
   /// Pass root widget (MyApp) along with Catcher configuration:

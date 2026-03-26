@@ -26,6 +26,7 @@ import '../game_page/services/painters/painters.dart';
 import '../game_page/widgets/dialogs/lan_config_dialog.dart';
 import '../game_page/widgets/game_page.dart';
 import '../general_settings/models/general_settings.dart';
+import '../general_settings/services/config_import_export_service.dart';
 import '../general_settings/widgets/general_settings_page.dart';
 import '../generated/intl/l10n.dart';
 import '../main.dart';
@@ -710,6 +711,9 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
       optionsContent,
     );
 
+    final String? configFilePath =
+        await ConfigImportExportService.exportConfig();
+
     final PackageInfo packageInfo = await PackageInfo.fromPlatform();
     final String version =
         "${packageInfo.version} (${packageInfo.buildNumber})";
@@ -721,7 +725,11 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
           version +
           Constants.feedbackSubjectSuffix,
       recipients: Constants.recipientEmails,
-      attachmentPaths: <String>[screenshotFilePath, optionsFilePath],
+      attachmentPaths: <String>[
+        screenshotFilePath,
+        optionsFilePath,
+        ?configFilePath,
+      ],
     );
 
     await FlutterEmailSender.send(email);
