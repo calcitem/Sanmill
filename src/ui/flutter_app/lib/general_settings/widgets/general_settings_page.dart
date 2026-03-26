@@ -82,7 +82,13 @@ class GeneralSettingsPage extends StatelessWidget {
   Future<void> _importSettings(BuildContext context) async {
     FilePickerResult? pickResult;
     try {
-      pickResult = await FilePicker.platform.pickFiles();
+      pickResult = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowedExtensions: <String>[
+          ConfigImportExportService.fileExtension,
+          'json',
+        ],
+      );
     } catch (e, st) {
       logger.e('$_logTag Import file pick failed: $e\n$st');
       if (context.mounted) {

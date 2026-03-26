@@ -174,6 +174,66 @@ class ConfigImportExportService {
     }
   }
 
+  /// Exports settings as an uncompressed JSON file without any media.
+  /// Strips sensitive and device-local fields and clears custom media
+  /// paths so no private files leave the device.
+  /// Returns the temporary file path on success, `null` on failure.
+  static Future<String?> exportSettingsJsonOnly() async {
+    try {
+      final Map<String, dynamic> generalJson = DB().generalSettings.toJson();
+      final Map<String, dynamic> ruleJson = DB().ruleSettings.toJson();
+      final Map<String, dynamic> displayJson = DB().displaySettings.toJson();
+      final Map<String, dynamic> colorJson = DB().colorSettings.toJson();
+
+      // Strip sensitive / device-local fields.
+      generalJson.remove('LlmApiKey');
+      generalJson.remove('LastPgnSaveDirectory');
+
+      // Remove custom media paths (always device-local).
+      displayJson.remove(_kCustomBg);
+      displayJson.remove(_kCustomBoard);
+      displayJson.remove(_kCustomWhite);
+      displayJson.remove(_kCustomBlack);
+      generalJson.remove(_kBgMusic);
+
+      // Clear active media paths that point to device-local files
+      // (i.e. not built-in asset paths starting with 'assets/').
+      for (final String key in <String>[
+        _kActiveBg,
+        _kActiveBoard,
+        _kActiveWhite,
+        _kActiveBlack,
+      ]) {
+        final dynamic v = displayJson[key];
+        if (v is String && v.isNotEmpty && !v.startsWith('assets/')) {
+          displayJson[key] = '';
+        }
+      }
+
+      final Map<String, dynamic> exportData = <String, dynamic>{
+        'formatVersion': formatVersion,
+        'exportDate': DateTime.now().toIso8601String(),
+        'generalSettings': generalJson,
+        'ruleSettings': ruleJson,
+        'displaySettings': displayJson,
+        'colorSettings': colorJson,
+      };
+
+      final String jsonStr = const JsonEncoder.withIndent(
+        '  ',
+      ).convert(exportData);
+      final Directory tempDir = await getTemporaryDirectory();
+      final File jsonFile = File(p.join(tempDir.path, _settingsFileName));
+      await jsonFile.writeAsString(jsonStr, flush: true);
+
+      logger.i('$_logTag Exported settings JSON to ${jsonFile.path}');
+      return jsonFile.path;
+    } catch (e) {
+      logger.e('$_logTag Settings JSON export failed: $e');
+      return null;
+    }
+  }
+
   // ────────────────────────────── Import ──────────────────────────────
 
   /// Let the user pick a `.sanmill_config` file and import it.
@@ -198,57 +258,44 @@ class ConfigImportExportService {
   }
 
   /// Import from a known file path (e.g. share-intent or testing).
+  /// Accepts both `.sanmill_config` ZIP archives and plain JSON files.
   static Future<ConfigImportResult> importConfigFromPath(
     String filePath,
   ) async {
     try {
-      final File zipFile = File(filePath);
-      if (!zipFile.existsSync()) {
+      final File file = File(filePath);
+      if (!file.existsSync()) {
         return const ConfigImportResult(
           success: false,
           errorKind: ConfigImportErrorKind.fileNotFound,
         );
       }
 
-      final Uint8List zipBytes = await zipFile.readAsBytes();
-      final Archive archive = ZipDecoder().decodeBytes(zipBytes);
+      // Try ZIP archive first (the primary .sanmill_config format).
+      // Fall through to plain-JSON parsing when ZIP decoding fails.
+      try {
+        final Uint8List zipBytes = await file.readAsBytes();
+        final Archive archive = ZipDecoder().decodeBytes(zipBytes);
 
-      // Locate settings.json inside the archive.
-      ArchiveFile? settingsFile;
-      for (final ArchiveFile f in archive) {
-        if (f.name == _settingsFileName && f.isFile) {
-          settingsFile = f;
-          break;
+        ArchiveFile? settingsFile;
+        for (final ArchiveFile f in archive) {
+          if (f.name == _settingsFileName && f.isFile) {
+            settingsFile = f;
+            break;
+          }
         }
+
+        if (settingsFile != null) {
+          final String jsonStr = utf8.decode(settingsFile.content as List<int>);
+          return await _importFromJsonString(jsonStr, archive: archive);
+        }
+      } catch (_) {
+        // Not a valid ZIP archive; fall through to plain-JSON parsing.
       }
 
-      if (settingsFile == null) {
-        return const ConfigImportResult(
-          success: false,
-          errorKind: ConfigImportErrorKind.invalidFile,
-        );
-      }
-
-      final String jsonStr = utf8.decode(settingsFile.content as List<int>);
-      final Map<String, dynamic> data =
-          jsonDecode(jsonStr) as Map<String, dynamic>;
-
-      if (data['formatVersion'] == null) {
-        return const ConfigImportResult(
-          success: false,
-          errorKind: ConfigImportErrorKind.invalidFile,
-        );
-      }
-
-      // Extract bundled media, rewriting archive-relative paths to local
-      // absolute paths in the JSON maps.
-      final int mediaCount = await _unpackMedia(data, archive);
-
-      // Apply all settings to the database.
-      _applySettings(data);
-
-      logger.i('$_logTag Config imported ($mediaCount media files)');
-      return ConfigImportResult(success: true, mediaCount: mediaCount);
+      // Try as plain JSON (e.g. a settings.json exported without media).
+      final String jsonStr = await file.readAsString();
+      return await _importFromJsonString(jsonStr);
     } catch (e) {
       logger.e('$_logTag Import failed: $e');
       return const ConfigImportResult(
@@ -458,6 +505,42 @@ class ConfigImportExportService {
     }
 
     return count;
+  }
+
+  // ──────────────── JSON parsing & result assembly ──────────────────
+
+  /// Parse [jsonStr] as a settings payload and optionally extract media.
+  /// Pass [archive] when parsing from a ZIP bundle to unpack media files.
+  static Future<ConfigImportResult> _importFromJsonString(
+    String jsonStr, {
+    Archive? archive,
+  }) async {
+    final Map<String, dynamic> data;
+    try {
+      data = jsonDecode(jsonStr) as Map<String, dynamic>;
+    } catch (_) {
+      return const ConfigImportResult(
+        success: false,
+        errorKind: ConfigImportErrorKind.invalidFile,
+      );
+    }
+
+    if (data['formatVersion'] == null) {
+      return const ConfigImportResult(
+        success: false,
+        errorKind: ConfigImportErrorKind.invalidFile,
+      );
+    }
+
+    int mediaCount = 0;
+    if (archive != null) {
+      mediaCount = await _unpackMedia(data, archive);
+    }
+
+    _applySettings(data);
+
+    logger.i('$_logTag Config imported ($mediaCount media files)');
+    return ConfigImportResult(success: true, mediaCount: mediaCount);
   }
 
   // ─────────────────── Settings application ───────────────────

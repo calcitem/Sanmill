@@ -41,7 +41,8 @@ class SanmillEmailHandler extends BaseEmailHandler {
   @override
   Future<bool> handle(Report report, BuildContext? context) async {
     try {
-      final String? configPath = await ConfigImportExportService.exportConfig();
+      final String? configPath =
+          await ConfigImportExportService.exportSettingsJsonOnly();
 
       final List<String> attachments = <String>[
         if (report.screenshot?.path.isNotEmpty ?? false)

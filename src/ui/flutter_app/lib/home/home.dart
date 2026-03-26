@@ -712,7 +712,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
     );
 
     final String? configFilePath =
-        await ConfigImportExportService.exportConfig();
+        await ConfigImportExportService.exportSettingsJsonOnly();
 
     final PackageInfo packageInfo = await PackageInfo.fromPlatform();
     final String version =
