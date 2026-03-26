@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Snapcraft Build and Publish
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Build snap
         id: snapcraft
