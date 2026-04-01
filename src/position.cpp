@@ -1066,7 +1066,7 @@ bool Position::put_piece(Square s, bool updateRecord)
         currentSquare[us] == lastMillToSquare[us] &&
         currentSquare[us] != SQ_NONE && s == lastMillFromSquare[us]) {
         if (potential_mills_count(s, us, currentSquare[us]) > 0 &&
-            mills_count(currentSquare[us]) > 0) {
+            potential_mills_count(currentSquare[us], us) > 0) {
             return false;
         }
     }
@@ -2881,12 +2881,26 @@ bool Position::checkLeapCapture(Square sq, Color us,
             continue;
         }
 
-        // Check if piece can be removed according to mill rules
-        if (!rule.mayRemoveFromMillsAlways &&
-            const_cast<Position *>(this)->mills_count(target) > 0 &&
-            color_of(board[target]) != NOBODY &&
-            !const_cast<Position *>(this)->is_all_in_mills(~us)) {
-            continue;
+        // Check if piece can be removed according to mill rules.
+        // Geometric mill check (no formedMillsBB), aligned with
+        // generate<REMOVE>, custodian, and intervention capture paths.
+        if (!rule.mayRemoveFromMillsAlways) {
+            const Color targetColor = color_of(board[target]);
+            if (targetColor != NOBODY) {
+                const Bitboard bc = byColorBB[targetColor];
+                const Bitboard *mt = millTableBB[target];
+                bool inMill = false;
+                for (int i = 0; i < LD_NB; ++i) {
+                    if ((bc & mt[i]) == mt[i]) {
+                        inMill = true;
+                        break;
+                    }
+                }
+                if (inMill &&
+                    !const_cast<Position *>(this)->is_all_in_mills(~us)) {
+                    continue;
+                }
+            }
         }
 
         validTargets |= mask;
@@ -3111,18 +3125,179 @@ bool Position::is_all_surrounded(Color c) const
     if (pieceOnBoardCount[WHITE] + pieceOnBoardCount[BLACK] >= SQUARE_NB)
         return true;
 
-    // Can fly
+    // restrictRepeatedMillsFormation only restricts the single piece at
+    // lastMillToSquare from returning to the single square
+    // lastMillFromSquare. The remaining (flyPieceCount - 1) pieces are
+    // unrestricted and can fly to any empty square, so the player always
+    // has at least one legal move when flying is available.
     if (pieceOnBoardCount[c] <= rule.flyPieceCount && rule.mayFly) {
         return false;
     }
 
-    Bitboard bb = byTypeBB[ALL_PIECES];
+    const Bitboard bb = byTypeBB[ALL_PIECES];
+
+    // Returns true when from->to is forbidden by the repeat-mill rule.
+    // Pure bitboard arithmetic, safe to call from a const context.
+    auto isMoveRestricted = [&](Square from, Square to) -> bool {
+        if (!rule.restrictRepeatedMillsFormation ||
+            from != lastMillToSquare[c] || lastMillFromSquare[c] == SQ_NONE ||
+            to != lastMillFromSquare[c])
+            return false;
+
+        const Bitboard bc = byColorBB[c];
+        const Bitboard *mtFrom = millTableBB[from];
+        bool fromInMill = false;
+        for (int i = 0; i < LD_NB; ++i) {
+            if ((bc & mtFrom[i]) == mtFrom[i]) {
+                if (rule.oneTimeUseMill) {
+                    const Bitboard line = square_bb(from) | mtFrom[i];
+                    if ((line & formedMillsBB[c]) == line)
+                        continue;
+                }
+                fromInMill = true;
+                break;
+            }
+        }
+        if (!fromInMill)
+            return false;
+
+        const Bitboard bcVirtual = bc & ~square_bb(from);
+        const Bitboard *mtTo = millTableBB[to];
+        if (rule.oneTimeUseMill) {
+            for (int i = 0; i < LD_NB; ++i) {
+                if ((bcVirtual & mtTo[i]) == mtTo[i]) {
+                    const Bitboard line = square_bb(to) | mtTo[i];
+                    if ((line & formedMillsBB[c]) != line)
+                        return true;
+                }
+            }
+        } else {
+            for (int i = 0; i < LD_NB; ++i) {
+                if ((bcVirtual & mtTo[i]) == mtTo[i])
+                    return true;
+            }
+        }
+        return false;
+    };
+
+    const bool leapEnabled = rule.leapCapture.enabled &&
+                             ((phase == Phase::moving &&
+                               rule.leapCapture.inMovingPhase) ||
+                              (phase == Phase::placing &&
+                               rule.mayMoveInPlacingPhase &&
+                               rule.leapCapture.inPlacingPhase)) &&
+                             pieceInHandCount[c] == 0;
+
+    auto hasLeapMove = [&](Square from) -> bool {
+        if (!leapEnabled)
+            return false;
+
+        auto checkLine = [&](Square a, Square mid, Square b) -> bool {
+            if (!a || !mid || !b)
+                return false;
+            if (a == from && !board[b] && (board[mid] & make_piece(~c))) {
+                if (isMoveRestricted(from, b))
+                    return false;
+                std::vector<Square> captured;
+                return checkLeapCapture(b, c, captured, from);
+            }
+            if (b == from && !board[a] && (board[mid] & make_piece(~c))) {
+                if (isMoveRestricted(from, a))
+                    return false;
+                std::vector<Square> captured;
+                return checkLeapCapture(a, c, captured, from);
+            }
+            return false;
+        };
+
+        for (const auto &line : kThreePointSquareEdgeLines)
+            if (checkLine(line[0], line[1], line[2]))
+                return true;
+        for (const auto &line : kThreePointCrossLines)
+            if (checkLine(line[0], line[1], line[2]))
+                return true;
+        if (rule.hasDiagonalLines && rule.leapCapture.onDiagonalLines)
+            for (const auto &line : kThreePointDiagonalLines)
+                if (checkLine(line[0], line[1], line[2]))
+                    return true;
+        return false;
+    };
 
     for (Square s = SQ_BEGIN; s < SQ_END; ++s) {
-        if ((c & color_on(s)) && (bb & MoveList<LEGAL>::adjacentSquaresBB[s]) !=
-                                     MoveList<LEGAL>::adjacentSquaresBB[s]) {
-            return false;
+        if (!(c & color_on(s)))
+            continue;
+
+        const Bitboard adjacentBB = MoveList<LEGAL>::adjacentSquaresBB[s];
+
+        if ((bb & adjacentBB) == adjacentBB) {
+            if (hasLeapMove(s))
+                return false;
+            continue;
         }
+
+        // This piece has at least one empty adjacent square. Check whether
+        // restrictRepeatedMillsFormation blocks every available move.
+        if (rule.restrictRepeatedMillsFormation && s == lastMillToSquare[c] &&
+            lastMillFromSquare[c] != SQ_NONE) {
+            const Bitboard emptyAdjacentBB = adjacentBB & ~bb;
+
+            // The restriction only forbids returning to lastMillFromSquare.
+            // If any other empty adjacent square exists, the piece can move.
+            if (emptyAdjacentBB == square_bb(lastMillFromSquare[c])) {
+                // The sole empty neighbour is the restricted square.
+                // Verify the mill conditions that trigger the restriction.
+                const Bitboard bc = byColorBB[c];
+                const Bitboard *mtFrom = millTableBB[s];
+                bool fromInMill = false;
+                for (int i = 0; i < LD_NB; ++i) {
+                    if ((bc & mtFrom[i]) == mtFrom[i]) {
+                        if (rule.oneTimeUseMill) {
+                            const Bitboard line = square_bb(s) | mtFrom[i];
+                            if ((line & formedMillsBB[c]) == line)
+                                continue;
+                        }
+                        fromInMill = true;
+                        break;
+                    }
+                }
+
+                if (fromInMill) {
+                    // Would moving to lastMillFromSquare form a mill?
+                    // (virtually remove the piece from s first)
+                    const Bitboard bcVirtual = bc & ~square_bb(s);
+                    const Bitboard *mtTo = millTableBB[lastMillFromSquare[c]];
+                    bool wouldFormMill = false;
+
+                    if (rule.oneTimeUseMill) {
+                        for (int i = 0; i < LD_NB; ++i) {
+                            if ((bcVirtual & mtTo[i]) == mtTo[i]) {
+                                const Bitboard line =
+                                    square_bb(lastMillFromSquare[c]) | mtTo[i];
+                                if ((line & formedMillsBB[c]) != line) {
+                                    wouldFormMill = true;
+                                    break;
+                                }
+                            }
+                        }
+                    } else {
+                        for (int i = 0; i < LD_NB; ++i) {
+                            if ((bcVirtual & mtTo[i]) == mtTo[i]) {
+                                wouldFormMill = true;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (wouldFormMill) {
+                        if (hasLeapMove(s))
+                            return false;
+                        continue;
+                    }
+                }
+            }
+        }
+
+        return false;
     }
 
     return true;

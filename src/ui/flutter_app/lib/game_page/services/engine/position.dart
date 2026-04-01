@@ -1022,7 +1022,7 @@ class Position {
         _currentSquare[us] != 0 &&
         s == _lastMillFromSquare[us]) {
       if (_potentialMillsCount(s, us, from: _currentSquare[us]!) > 0 &&
-          _millsCount(_currentSquare[us]!) > 0) {
+          _potentialMillsCount(_currentSquare[us]!, us) > 0) {
         // TODO: Show text
         rootScaffoldMessengerKey.currentState!.showSnackBarClear("3->3 X");
         return false;
@@ -3647,7 +3647,10 @@ class Position {
       return true;
     }
 
-    // Can fly
+    // restrictRepeatedMillsFormation only restricts the single piece at
+    // lastMillToSquare from returning to lastMillFromSquare. The remaining
+    // (flyPieceCount - 1) pieces are unrestricted and can fly to any empty
+    // square, so the player always has at least one legal move when flying.
     if (pieceOnBoardCount[c]! <= DB().ruleSettings.flyPieceCount &&
         DB().ruleSettings.mayFly) {
       return false;
@@ -3658,15 +3661,191 @@ class Position {
         continue;
       }
 
+      bool pieceCanMove = false;
+
       for (int d = moveDirectionBegin; d < moveDirectionNumber; d++) {
         final int moveSquare = _adjacentSquares[s][d];
-        if (moveSquare != 0 && _board[moveSquare] == PieceColor.none) {
-          return false;
+        if (moveSquare == 0 || _board[moveSquare] != PieceColor.none) {
+          continue;
         }
+
+        // Found an empty adjacent square. Check whether
+        // restrictRepeatedMillsFormation blocks this move.
+        if (DB().ruleSettings.restrictRepeatedMillsFormation &&
+            s == _lastMillToSquare[c] &&
+            _lastMillFromSquare[c] != 0 &&
+            moveSquare == _lastMillFromSquare[c]) {
+          bool sInMill = false;
+          for (int ld = 0; ld < lineDirectionNumber; ld++) {
+            if (c == _board[_millTable[s][ld][0]] &&
+                c == _board[_millTable[s][ld][1]]) {
+              if (DB().ruleSettings.oneTimeUseMill) {
+                final int line =
+                    squareBb(s) |
+                    squareBb(_millTable[s][ld][0]) |
+                    squareBb(_millTable[s][ld][1]);
+                if (line & _formedMillsBB[c]! == line) {
+                  continue;
+                }
+              }
+              sInMill = true;
+              break;
+            }
+          }
+
+          if (sInMill) {
+            bool wouldFormMill = false;
+            for (int ld = 0; ld < lineDirectionNumber; ld++) {
+              final int sq1 = _millTable[moveSquare][ld][0];
+              final int sq2 = _millTable[moveSquare][ld][1];
+              final PieceColor c1 = (sq1 == s) ? PieceColor.none : _board[sq1];
+              final PieceColor c2 = (sq2 == s) ? PieceColor.none : _board[sq2];
+
+              if (c1 == c && c2 == c) {
+                if (DB().ruleSettings.oneTimeUseMill) {
+                  final int millBB =
+                      squareBb(moveSquare) | squareBb(sq1) | squareBb(sq2);
+                  if (millBB & _formedMillsBB[c]! != millBB) {
+                    wouldFormMill = true;
+                    break;
+                  }
+                } else {
+                  wouldFormMill = true;
+                  break;
+                }
+              }
+            }
+
+            if (wouldFormMill) {
+              continue;
+            }
+          }
+        }
+
+        pieceCanMove = true;
+        break;
+      }
+
+      if (!pieceCanMove) {
+        pieceCanMove = _hasLeapMove(s, c);
+      }
+
+      if (pieceCanMove) {
+        return false;
       }
     }
 
     return true;
+  }
+
+  bool _isMoveRestricted(int from, int to, PieceColor c) {
+    final RuleSettings rs = DB().ruleSettings;
+    if (!rs.restrictRepeatedMillsFormation ||
+        from != _lastMillToSquare[c] ||
+        _lastMillFromSquare[c] == 0 ||
+        to != _lastMillFromSquare[c]) {
+      return false;
+    }
+
+    bool fromInMill = false;
+    for (int ld = 0; ld < lineDirectionNumber; ld++) {
+      if (c == _board[_millTable[from][ld][0]] &&
+          c == _board[_millTable[from][ld][1]]) {
+        if (rs.oneTimeUseMill) {
+          final int line =
+              squareBb(from) |
+              squareBb(_millTable[from][ld][0]) |
+              squareBb(_millTable[from][ld][1]);
+          if (line & _formedMillsBB[c]! == line) {
+            continue;
+          }
+        }
+        fromInMill = true;
+        break;
+      }
+    }
+    if (!fromInMill) {
+      return false;
+    }
+
+    for (int ld = 0; ld < lineDirectionNumber; ld++) {
+      final int sq1 = _millTable[to][ld][0];
+      final int sq2 = _millTable[to][ld][1];
+      final PieceColor c1 = (sq1 == from) ? PieceColor.none : _board[sq1];
+      final PieceColor c2 = (sq2 == from) ? PieceColor.none : _board[sq2];
+      if (c1 == c && c2 == c) {
+        if (rs.oneTimeUseMill) {
+          final int millBB = squareBb(to) | squareBb(sq1) | squareBb(sq2);
+          if (millBB & _formedMillsBB[c]! != millBB) {
+            return true;
+          }
+        } else {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  bool _hasLeapMove(int from, PieceColor c) {
+    final RuleSettings rs = DB().ruleSettings;
+    if (!rs.enableLeapCapture) {
+      return false;
+    }
+    final bool leapEnabled =
+        (phase == Phase.moving && rs.leapCaptureInMovingPhase) ||
+        (phase == Phase.placing &&
+            rs.mayMoveInPlacingPhase &&
+            rs.leapCaptureInPlacingPhase);
+    if (!leapEnabled || pieceInHandCount[c]! > 0) {
+      return false;
+    }
+
+    bool checkLine(List<int> line) {
+      final int a = line[0], mid = line[1], b = line[2];
+      if (a == from &&
+          _board[b] == PieceColor.none &&
+          _board[mid] == c.opponent) {
+        if (_isMoveRestricted(from, b, c)) {
+          return false;
+        }
+        final List<int> captured = <int>[];
+        if (_checkLeapCapture(b, c, captured, from)) {
+          return true;
+        }
+      }
+      if (b == from &&
+          _board[a] == PieceColor.none &&
+          _board[mid] == c.opponent) {
+        if (_isMoveRestricted(from, a, c)) {
+          return false;
+        }
+        final List<int> captured = <int>[];
+        if (_checkLeapCapture(a, c, captured, from)) {
+          return true;
+        }
+      }
+      return false;
+    }
+
+    for (final List<int> line in _threePointSquareEdgeLines) {
+      if (checkLine(line)) {
+        return true;
+      }
+    }
+    for (final List<int> line in _threePointCrossLines) {
+      if (checkLine(line)) {
+        return true;
+      }
+    }
+    if (rs.hasDiagonalLines && rs.leapCaptureOnDiagonalLines) {
+      for (final List<int> line in _threePointDiagonalLines) {
+        if (checkLine(line)) {
+          return true;
+        }
+      }
+    }
+    return false;
   }
 
   void setFormedMillsBB(int millsBitmask) {

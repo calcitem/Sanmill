@@ -40,6 +40,15 @@ ExtMove *generate<MOVE>(Position &pos, ExtMove *moveList)
             pos.pieceInHandCount[pos.side_to_move()] == 0) {
             for (Square to = SQ_BEGIN; to < SQ_END; ++to) {
                 if (!board[to]) {
+                    if (restrictRepeatedMillsFormation &&
+                        to == pos.lastMillFromSquare[pos.sideToMove]) {
+                        if (pos.potential_mills_count(to, pos.side_to_move(),
+                                                      from) > 0 &&
+                            pos.potential_mills_count(from,
+                                                      pos.side_to_move()) > 0) {
+                            continue;
+                        }
+                    }
                     assert(cur < moveList + MAX_MOVES);
                     *cur++ = make_move(from, to);
                 }
@@ -50,11 +59,12 @@ ExtMove *generate<MOVE>(Position &pos, ExtMove *moveList)
                 const Square to =
                     MoveList<LEGAL>::adjacentSquares[from][direction];
                 if (to && !board[to]) {
-                    if (restrictRepeatedMillsFormation) {
-                        // Check if form a mill
+                    if (restrictRepeatedMillsFormation &&
+                        to == pos.lastMillFromSquare[pos.sideToMove]) {
                         if (pos.potential_mills_count(to, pos.side_to_move(),
                                                       from) > 0 &&
-                            pos.mills_count(from) > 0) {
+                            pos.potential_mills_count(from,
+                                                      pos.side_to_move()) > 0) {
                             continue;
                         }
                     }
@@ -84,6 +94,14 @@ ExtMove *generate<MOVE>(Position &pos, ExtMove *moveList)
                         return;
                     if (a == from && !board[b] &&
                         board[mid] & make_piece(~pos.side_to_move())) {
+                        if (restrictRepeatedMillsFormation &&
+                            b == pos.lastMillFromSquare[pos.sideToMove] &&
+                            pos.potential_mills_count(b, pos.side_to_move(),
+                                                      from) > 0 &&
+                            pos.potential_mills_count(from,
+                                                      pos.side_to_move()) > 0) {
+                            return;
+                        }
                         std::vector<Square> captured;
                         if (pos.checkLeapCapture(b, pos.side_to_move(),
                                                  captured, from)) {
@@ -92,6 +110,14 @@ ExtMove *generate<MOVE>(Position &pos, ExtMove *moveList)
                         }
                     } else if (b == from && !board[a] &&
                                board[mid] & make_piece(~pos.side_to_move())) {
+                        if (restrictRepeatedMillsFormation &&
+                            a == pos.lastMillFromSquare[pos.sideToMove] &&
+                            pos.potential_mills_count(a, pos.side_to_move(),
+                                                      from) > 0 &&
+                            pos.potential_mills_count(from,
+                                                      pos.side_to_move()) > 0) {
+                            return;
+                        }
                         std::vector<Square> captured;
                         if (pos.checkLeapCapture(a, pos.side_to_move(),
                                                  captured, from)) {
