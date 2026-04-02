@@ -4235,5 +4235,11 @@
     "engineTimeoutPerformanceWarningTitle": "Suorituskykyvaroitus",
     "@engineTimeoutPerformanceWarningTitle": {},
     "engineTimeoutPerformanceWarningContent": "Tekoälymoottori aikakatkaistiin. Laitteesi suorituskyky voi olla riittämätön. Kokeile vähentää tekoälyn ajatteluaikaa asetuksissa. Jos ongelma jatkuu, lähetä palautetta.",
-    "@engineTimeoutPerformanceWarningContent": {}
+    "@engineTimeoutPerformanceWarningContent": {},
+    "engineFailureTitle": "Moottorivirhe",
+    "@engineFailureTitle": {},
+    "engineFailureContent": "AI-moottori ei tuottanut siirtoa. Tämä on odottamaton sisäinen virhe. Haluatko lähettää diagnostiikkaraportin tutkimusta varten?",
+    "@engineFailureContent": {},
+    "sendReport": "Lähetä raportti",
+    "@sendReport": {}
 }

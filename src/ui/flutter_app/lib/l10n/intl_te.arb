@@ -4235,5 +4235,11 @@
     "engineTimeoutPerformanceWarningTitle": "ప్రదర్శన హెచ్చరిక",
     "@engineTimeoutPerformanceWarningTitle": {},
     "engineTimeoutPerformanceWarningContent": "AI ఇంజిన్ సమయం ముగిసింది. మీ పరికర ప్రదర్శన తగినంత లేకపోవచ్చు. సెట్టింగ్‌లలో AI ఆలోచన సమయాన్ని తగ్గించండి. సమస్య కొనసాగితే అభిప్రాయం పంపండి.",
-    "@engineTimeoutPerformanceWarningContent": {}
+    "@engineTimeoutPerformanceWarningContent": {},
+    "engineFailureTitle": "ఇంజిన్ లోపం",
+    "@engineFailureTitle": {},
+    "engineFailureContent": "AI ఇంజిన్ కదలికను ఉత్పత్తి చేయలేకపోయింది. ఇది అనుకోని అంతర్గత లోపం. దర్యాప్తులో సహాయం కోసం విశ్లేషణ నివేదిక పంపాలా?",
+    "@engineFailureContent": {},
+    "sendReport": "నివేదిక పంపు",
+    "@sendReport": {}
 }

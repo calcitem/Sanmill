@@ -54,6 +54,7 @@ import '../services/player_timer.dart';
 import '../widgets/board_recognition_debug_view.dart';
 import 'ai_chat_dialog.dart';
 import 'challenge_confetti.dart';
+import 'dialogs/engine_failure_dialog.dart';
 import 'dialogs/performance_warning_dialog.dart';
 import 'moves_list_page.dart';
 import 'play_area.dart';

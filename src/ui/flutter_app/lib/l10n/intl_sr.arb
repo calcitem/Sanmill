@@ -4235,5 +4235,11 @@
     "engineTimeoutPerformanceWarningTitle": "Упозорење о перформансама",
     "@engineTimeoutPerformanceWarningTitle": {},
     "engineTimeoutPerformanceWarningContent": "АИ мотор је истекао. Уређај можда нема довољне перформансе. Покушајте да смањите време размишљања АИ-ја у Подешавањима. Ако се проблем настави, пошаљите повратне информације.",
-    "@engineTimeoutPerformanceWarningContent": {}
+    "@engineTimeoutPerformanceWarningContent": {},
+    "engineFailureTitle": "Грешка мотора",
+    "@engineFailureTitle": {},
+    "engineFailureContent": "AI мотор није могао да да потез. Ово је неочекивана унутрашња грешка. Да ли желите да пошаљете дијагностички извештај ради истраге?",
+    "@engineFailureContent": {},
+    "sendReport": "Пошаљи извештај",
+    "@sendReport": {}
 }

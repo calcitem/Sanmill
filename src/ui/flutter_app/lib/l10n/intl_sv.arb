@@ -4235,5 +4235,11 @@
     "engineTimeoutPerformanceWarningTitle": "Prestandavarning",
     "@engineTimeoutPerformanceWarningTitle": {},
     "engineTimeoutPerformanceWarningContent": "AI-motorn fick timeout. Din enhet kan ha otillräcklig prestanda. Försök minska AI-tänketid under Inställningar. Om problemet kvarstår, skicka gärna feedback.",
-    "@engineTimeoutPerformanceWarningContent": {}
+    "@engineTimeoutPerformanceWarningContent": {},
+    "engineFailureTitle": "Motorfel",
+    "@engineFailureTitle": {},
+    "engineFailureContent": "AI-motorn kunde inte ge ett drag. Detta är ett oväntat internt fel. Vill du skicka en diagnostisk rapport så att vi kan undersöka?",
+    "@engineFailureContent": {},
+    "sendReport": "Skicka rapport",
+    "@sendReport": {}
 }

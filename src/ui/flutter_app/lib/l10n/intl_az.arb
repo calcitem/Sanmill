@@ -4235,5 +4235,11 @@
     "engineTimeoutPerformanceWarningTitle": "Performans xəbərdarlığı",
     "@engineTimeoutPerformanceWarningTitle": {},
     "engineTimeoutPerformanceWarningContent": "Süni intellekt mühərriki vaxtı bitdi. Cihazınızın performansı kifayət etməyə bilər. Parametrlərdə süni intellekt düşünmə vaxtını azaltmağı sınayın. Problem davam edərsə, əks əlaqə göndərin.",
-    "@engineTimeoutPerformanceWarningContent": {}
+    "@engineTimeoutPerformanceWarningContent": {},
+    "engineFailureTitle": "Mühərrik xətası",
+    "@engineFailureTitle": {},
+    "engineFailureContent": "Süni intellekt mühərriki gediş verə bilmədi. Bu gözlənilməz daxili xətadır. Araşdırma üçün diaqnostik hesabat göndərmək istəyirsiniz?",
+    "@engineFailureContent": {},
+    "sendReport": "Hesabat göndər",
+    "@sendReport": {}
 }

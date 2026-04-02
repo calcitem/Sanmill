@@ -4235,5 +4235,11 @@
     "engineTimeoutPerformanceWarningTitle": "성능 경고",
     "@engineTimeoutPerformanceWarningTitle": {},
     "engineTimeoutPerformanceWarningContent": "AI 엔진이 시간 초과되었습니다. 기기 성능이 부족할 수 있습니다. 설정에서 AI 생각 시간을 줄여 보세요. 문제가 계속되면 피드백을 보내 주세요.",
-    "@engineTimeoutPerformanceWarningContent": {}
+    "@engineTimeoutPerformanceWarningContent": {},
+    "engineFailureTitle": "엔진 오류",
+    "@engineFailureTitle": {},
+    "engineFailureContent": "AI 엔진이 수를 두지 못했습니다. 예기치 않은 내부 오류입니다. 조사를 위해 진단 보고서를 보내시겠습니까?",
+    "@engineFailureContent": {},
+    "sendReport": "보고서 보내기",
+    "@sendReport": {}
 }

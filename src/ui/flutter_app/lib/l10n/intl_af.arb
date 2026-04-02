@@ -4235,5 +4235,11 @@
     "engineTimeoutPerformanceWarningTitle": "Prestasie-waarskuwing",
     "@engineTimeoutPerformanceWarningTitle": {},
     "engineTimeoutPerformanceWarningContent": "Die KI-enjin het uitgetel. U toestel het dalk onvoldoende vermoë. Probeer die KI-denktyd in Instellings te verminder. As die probleem voortduur, dien asseblief terugvoer in.",
-    "@engineTimeoutPerformanceWarningContent": {}
+    "@engineTimeoutPerformanceWarningContent": {},
+    "engineFailureTitle": "Enjinfout",
+    "@engineFailureTitle": {},
+    "engineFailureContent": "Die KI-enjin kon nie 'n skuif lewer nie. Dit is 'n onverwagte interne fout. Wil u 'n diagnostiese verslag stuur om ons te help ondersoek?",
+    "@engineFailureContent": {},
+    "sendReport": "Stuur verslag",
+    "@sendReport": {}
 }

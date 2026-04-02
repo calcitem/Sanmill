@@ -1006,7 +1006,6 @@ class GameController {
     }
 
     final String strTimeout = S.of(context).timeout;
-    final String strNoBestMoveErr = S.of(context).error(S.of(context).noMove);
 
     GameController().disableStats = true;
 
@@ -1035,13 +1034,20 @@ class GameController {
         }
         break;
       case EngineNoBestMove():
-        headerTipNotifier.showTip(strNoBestMoveErr);
+        final List<ExtMove> moves = gameRecorder.mainlineMoves;
+        await EngineFailureDialog.show(
+          context,
+          diagnosticContext: EngineFailureDialog.buildDiagnosticContext(
+            fen: position.fen,
+            phase: position.phase.name,
+            sideToMove: position.sideToMove.playerName(context),
+            lastMove: moves.isNotEmpty ? moves.last.notation : null,
+          ),
+        );
         break;
       case EngineCancelled():
-        // Cancelled by navigation/reset/app lifecycle; do not show a user tip.
         break;
       case EngineResponseSkip():
-        // Skipped due to in-progress engine or non-AI turn; keep silent.
         break;
       default:
         logger.e("$tag Unknown engine response type.");

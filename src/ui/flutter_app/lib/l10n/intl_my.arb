@@ -4235,5 +4235,11 @@
     "engineTimeoutPerformanceWarningTitle": "စွမ်းဆောင်ရည်သတိပေးချက်",
     "@engineTimeoutPerformanceWarningTitle": {},
     "engineTimeoutPerformanceWarningContent": "AI အင်ဂျင်အချိန်ကုန်သွားပါပြီ။ သင့်စက်သည် စွမ်းဆောင်ရည် မလုံလောက်နိုင်ပါ။ ဆက်တင်များတွင် AI စဉ်းစားချိန်ကို လျှော့ချကြည့်ပါ။ ပြဿနာဆက်ရှိလျှင် တုံ့ပြန်ချက်ပေးပါ။",
-    "@engineTimeoutPerformanceWarningContent": {}
+    "@engineTimeoutPerformanceWarningContent": {},
+    "engineFailureTitle": "အင်ဂျင်အမှား",
+    "@engineFailureTitle": {},
+    "engineFailureContent": "AI အင်ဂျင်က လှုပ်ရှားမှု မထုတ်နိုင်ပါ။ ဤသည်မှာ မမျှော်လင့်ထားသော အတွင်းအမှားဖြစ်သည်။ စုံစမ်းရေးအတွက် ရောဂါရှာဖွေမှတ်တမ်းပို့လိုပါသလား?",
+    "@engineFailureContent": {},
+    "sendReport": "မှတ်တမ်းပို့ရန်",
+    "@sendReport": {}
 }

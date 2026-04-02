@@ -4235,5 +4235,11 @@
     "engineTimeoutPerformanceWarningTitle": "කාර්ය සාධන අනතුරු ඇඟවීම",
     "@engineTimeoutPerformanceWarningTitle": {},
     "engineTimeoutPerformanceWarningContent": "AI එන්ජිම කාලය ඉකුත් විය. ඔබගේ උපාංගයේ කාර්ය සාධනය ප්‍රමාණවත් නොවිය හැක. සැකසුම් තුළ AI සිතීමේ කාලය අඩු කරන්න. ගැටලුව දිගටම තිබේ නම් ප්‍රතිපෝෂණය යොමු කරන්න.",
-    "@engineTimeoutPerformanceWarningContent": {}
+    "@engineTimeoutPerformanceWarningContent": {},
+    "engineFailureTitle": "එන්ජින් දෝෂය",
+    "@engineFailureTitle": {},
+    "engineFailureContent": "AI එන්ජිනය චලනයක් ජනනය කිරීමට අසමත් විය. මෙය අනපේක්ෂිත අභ්‍යන්තර දෝෂයකි. විමර්ශනයට උපකාරී වීමට විනිශ්චය වාර්තාවක් යැවීමට කැමතිද?",
+    "@engineFailureContent": {},
+    "sendReport": "වාර්තාව යවන්න",
+    "@sendReport": {}
 }

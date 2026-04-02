@@ -4235,5 +4235,11 @@
     "engineTimeoutPerformanceWarningTitle": "Avertissement de performances",
     "@engineTimeoutPerformanceWarningTitle": {},
     "engineTimeoutPerformanceWarningContent": "Le moteur d'IA a expiré. Les performances de votre appareil peuvent être insuffisantes. Essayez de réduire le temps de réflexion de l'IA dans les Paramètres. Si le problème persiste, envoyez des commentaires.",
-    "@engineTimeoutPerformanceWarningContent": {}
+    "@engineTimeoutPerformanceWarningContent": {},
+    "engineFailureTitle": "Erreur du moteur",
+    "@engineFailureTitle": {},
+    "engineFailureContent": "Le moteur d'IA n'a pas pu produire de coup. Il s'agit d'une erreur interne inattendue. Souhaitez-vous envoyer un rapport de diagnostic pour nous aider à enquêter ?",
+    "@engineFailureContent": {},
+    "sendReport": "Envoyer le rapport",
+    "@sendReport": {}
 }

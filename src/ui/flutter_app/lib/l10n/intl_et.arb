@@ -4235,5 +4235,11 @@
     "engineTimeoutPerformanceWarningTitle": "Jõudluse hoiatus",
     "@engineTimeoutPerformanceWarningTitle": {},
     "engineTimeoutPerformanceWarningContent": "Tehisintellekti mootor aegus. Teie seadmel võib olla ebapiisav jõudlus. Proovige vähendada tehisintellekti mõtlemisaega seadetes. Kui probleem püsib, saatke tagasisidet.",
-    "@engineTimeoutPerformanceWarningContent": {}
+    "@engineTimeoutPerformanceWarningContent": {},
+    "engineFailureTitle": "Mootori viga",
+    "@engineFailureTitle": {},
+    "engineFailureContent": "AI-mootor ei suutnud käiku anda. See on ootamatu sisemine viga. Kas soovite saata diagnostikaaruande, et aidata meil uurida?",
+    "@engineFailureContent": {},
+    "sendReport": "Saada aruanne",
+    "@sendReport": {}
 }

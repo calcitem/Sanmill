@@ -4235,5 +4235,11 @@
     "engineTimeoutPerformanceWarningTitle": "Ostrzeżenie o wydajności",
     "@engineTimeoutPerformanceWarningTitle": {},
     "engineTimeoutPerformanceWarningContent": "Silnik AI przekroczył limit czasu. Urządzenie może mieć niewystarczającą wydajność. Spróbuj zmniejszyć czas myślenia AI w Ustawieniach. Jeśli problem się utrzymuje, prześlij opinię.",
-    "@engineTimeoutPerformanceWarningContent": {}
+    "@engineTimeoutPerformanceWarningContent": {},
+    "engineFailureTitle": "Błąd silnika",
+    "@engineFailureTitle": {},
+    "engineFailureContent": "Silnik AI nie mógł wygenerować ruchu. To nieoczekiwany błąd wewnętrzny. Czy chcesz wysłać raport diagnostyczny, aby pomóc nam zbadać problem?",
+    "@engineFailureContent": {},
+    "sendReport": "Wyślij raport",
+    "@sendReport": {}
 }

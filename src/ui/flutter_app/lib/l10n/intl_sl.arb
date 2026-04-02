@@ -4235,5 +4235,11 @@
     "engineTimeoutPerformanceWarningTitle": "Opozorilo o zmogljivosti",
     "@engineTimeoutPerformanceWarningTitle": {},
     "engineTimeoutPerformanceWarningContent": "Pogon UI je potekel. Vaša naprava morda nima zadostne zmogljivosti. Poskusite zmanjšati čas razmišljanja UI v Nastavitvah. Če težava traja, pošljite povratne informacije.",
-    "@engineTimeoutPerformanceWarningContent": {}
+    "@engineTimeoutPerformanceWarningContent": {},
+    "engineFailureTitle": "Napaka motorja",
+    "@engineFailureTitle": {},
+    "engineFailureContent": "AI motor ni mogel vrniti poteza. To je nepričakovana notranja napaka. Ali želite poslati diagnostično poročilo za preiskavo?",
+    "@engineFailureContent": {},
+    "sendReport": "Pošlji poročilo",
+    "@sendReport": {}
 }

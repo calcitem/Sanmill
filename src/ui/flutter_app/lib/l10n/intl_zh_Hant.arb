@@ -4259,5 +4259,11 @@
     "engineTimeoutPerformanceWarningContent": "AI 引擎逾時，您的裝置效能可能不足。建議在設定中降低 AI 思考時間。若問題持續，請透過回饋功能告知我們。",
     "@engineTimeoutPerformanceWarningContent": {
         "description": "Content of dialog shown when AI engine times out due to insufficient performance"
-    }
+    },
+    "engineFailureTitle": "引擎錯誤",
+    "@engineFailureTitle": {},
+    "engineFailureContent": "AI 引擎無法產生著法，這是非預期的內部錯誤。是否傳送診斷報告以協助我們調查？",
+    "@engineFailureContent": {},
+    "sendReport": "傳送報告",
+    "@sendReport": {}
 }

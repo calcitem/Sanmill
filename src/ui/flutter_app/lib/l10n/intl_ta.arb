@@ -4235,5 +4235,11 @@
     "engineTimeoutPerformanceWarningTitle": "செயல்திறன் எச்சரிக்கை",
     "@engineTimeoutPerformanceWarningTitle": {},
     "engineTimeoutPerformanceWarningContent": "AI இயந்திரம் நேரம் முடிந்தது. உங்கள் சாதனத்தின் செயல்திறன் போதுமானதாக இல்லாமல் இருக்கலாம். அமைப்புகளில் AI சிந்தனை நேரத்தை குறைக்க முயற்சிக்கவும். சிக்கல் தொடர்ந்தால் கருத்தை அனுப்பவும்.",
-    "@engineTimeoutPerformanceWarningContent": {}
+    "@engineTimeoutPerformanceWarningContent": {},
+    "engineFailureTitle": "இயந்திரப் பிழை",
+    "@engineFailureTitle": {},
+    "engineFailureContent": "AI இயந்திரம் நகர்வை உருவாக்க முடியவில்லை. இது எதிர்பாராத உள் பிழை. விசாரணைக்கு உதவ நோயறித் அறிக்கையை அனுப்ப விரும்புகிறீர்களா?",
+    "@engineFailureContent": {},
+    "sendReport": "அறிக்கையை அனுப்பு",
+    "@sendReport": {}
 }

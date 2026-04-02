@@ -4235,5 +4235,11 @@
     "engineTimeoutPerformanceWarningTitle": "Paralajmërim për performancën",
     "@engineTimeoutPerformanceWarningTitle": {},
     "engineTimeoutPerformanceWarningContent": "Motori i IA-së kaloi afatin. Pajisja juaj mund të ketë performancë të pamjaftueshme. Provoni të ulët kohën e mendimit të IA-së te Cilësimet. Nëse problemi vazhdon, dërgoni komente.",
-    "@engineTimeoutPerformanceWarningContent": {}
+    "@engineTimeoutPerformanceWarningContent": {},
+    "engineFailureTitle": "Gabim motori",
+    "@engineFailureTitle": {},
+    "engineFailureContent": "Motori IA nuk arriti të prodhojë një lëvizje. Ky është një gabim i brendshëm i papritur. Dëshironi të dërgoni një raport diagnostik për të na ndihmuar të hetojmë?",
+    "@engineFailureContent": {},
+    "sendReport": "Dërgo raportin",
+    "@sendReport": {}
 }

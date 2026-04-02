@@ -4239,5 +4239,11 @@
     "engineTimeoutPerformanceWarningTitle": "کارکردگی کی تنبیہ",
     "@engineTimeoutPerformanceWarningTitle": {},
     "engineTimeoutPerformanceWarningContent": "AI انجن کی مدت ختم ہو گئی۔ آپ کے آلہ کی کارکردگی ناکافی ہو سکتی ہے۔ ترتیبات میں AI سوچنے کا وقت کم کریں۔ مسئلہ برقرار رہے تو رائے بھیجیں۔",
-    "@engineTimeoutPerformanceWarningContent": {}
+    "@engineTimeoutPerformanceWarningContent": {},
+    "engineFailureTitle": "انجن کی خرابی",
+    "@engineFailureTitle": {},
+    "engineFailureContent": "AI انجن حرکت پیدا نہیں کر سکا۔ یہ ایک غیر متوقع اندرونی خرابی ہے۔ کیا آپ تفتیش میں مدد کے لیے تشخیصی رپورٹ بھیجنا چاہتے ہیں؟",
+    "@engineFailureContent": {},
+    "sendReport": "رپورٹ بھیجیں",
+    "@sendReport": {}
 }

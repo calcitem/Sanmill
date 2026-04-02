@@ -4235,5 +4235,11 @@
     "engineTimeoutPerformanceWarningTitle": "אזהרת ביצועים",
     "@engineTimeoutPerformanceWarningTitle": {},
     "engineTimeoutPerformanceWarningContent": "מנוע הבינה המלאכותית חרג מזמן ההמתנה. ייתכן שביצועי המכשיר שלך אינם מספיק. נסה להקטין את זמן החשיבה של הבינה המלאכותית בהגדרות. אם הבעיה נמשכת, שלח משוב.",
-    "@engineTimeoutPerformanceWarningContent": {}
+    "@engineTimeoutPerformanceWarningContent": {},
+    "engineFailureTitle": "שגיאת מנוע",
+    "@engineFailureTitle": {},
+    "engineFailureContent": "מנוע הבינה המלאכותית לא הצליח לייצר מהלך. זו שגיאה פנימית בלתי צפויה. לשלוח דוח אבחון כדי לעזור לנו לחקור?",
+    "@engineFailureContent": {},
+    "sendReport": "שלח דוח",
+    "@sendReport": {}
 }

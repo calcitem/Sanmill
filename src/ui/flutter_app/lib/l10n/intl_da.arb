@@ -4235,5 +4235,11 @@
     "engineTimeoutPerformanceWarningTitle": "Ydelsesadvarsel",
     "@engineTimeoutPerformanceWarningTitle": {},
     "engineTimeoutPerformanceWarningContent": "AI-motoren fik timeout. Din enhed har muligvis utilstrækkelig ydelse. Prøv at reducere AI-tænketid under Indstillinger. Hvis problemet fortsætter, send venligst feedback.",
-    "@engineTimeoutPerformanceWarningContent": {}
+    "@engineTimeoutPerformanceWarningContent": {},
+    "engineFailureTitle": "Motorfejl",
+    "@engineFailureTitle": {},
+    "engineFailureContent": "AI-motoren kunne ikke producere et træk. Dette er en uventet intern fejl. Vil du sende en diagnostisk rapport, så vi kan undersøge det?",
+    "@engineFailureContent": {},
+    "sendReport": "Send rapport",
+    "@sendReport": {}
 }

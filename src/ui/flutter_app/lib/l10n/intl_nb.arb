@@ -4235,5 +4235,11 @@
     "engineTimeoutPerformanceWarningTitle": "Ytelsesadvarsel",
     "@engineTimeoutPerformanceWarningTitle": {},
     "engineTimeoutPerformanceWarningContent": "AI-motoren fikk tidsavbrudd. Enheten din kan ha utilstrekkelig ytelse. Prøv å redusere AI-tenketid i Innstillinger. Hvis problemet vedvarer, send tilbakemelding.",
-    "@engineTimeoutPerformanceWarningContent": {}
+    "@engineTimeoutPerformanceWarningContent": {},
+    "engineFailureTitle": "Motorfeil",
+    "@engineFailureTitle": {},
+    "engineFailureContent": "AI-motoren klarte ikke å gi et trekk. Dette er en uventet intern feil. Vil du sende en diagnostisk rapport slik at vi kan undersøke?",
+    "@engineFailureContent": {},
+    "sendReport": "Send rapport",
+    "@sendReport": {}
 }

@@ -4395,5 +4395,17 @@
     "engineTimeoutPerformanceWarningContent": "The AI engine timed out. Your device may have insufficient performance. Try reducing the AI thinking time in Settings. If the issue persists, please submit Feedback.",
     "@engineTimeoutPerformanceWarningContent": {
         "description": "Content of dialog shown when AI engine times out due to insufficient performance"
+    },
+    "engineFailureTitle": "Engine Error",
+    "@engineFailureTitle": {
+        "description": "Title of dialog shown when AI engine fails to find a move"
+    },
+    "engineFailureContent": "The AI engine failed to produce a move. This is an unexpected internal error. Would you like to send a diagnostic report to help us investigate?",
+    "@engineFailureContent": {
+        "description": "Content of dialog shown when AI engine fails to find a move"
+    },
+    "sendReport": "Send Report",
+    "@sendReport": {
+        "description": "Button label for sending a diagnostic report"
     }
 }

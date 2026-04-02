@@ -4235,5 +4235,11 @@
     "engineTimeoutPerformanceWarningTitle": "คำเตือนประสิทธิภาพ",
     "@engineTimeoutPerformanceWarningTitle": {},
     "engineTimeoutPerformanceWarningContent": "เอนจิน AI หมดเวลา อุปกรณ์ของคุณอาจมีประสิทธิภาพไม่เพียงพอ ลดเวลาคิดของ AI ในการตั้งค่า หากปัญหายังอยู่ โปรดส่งข้อเสนอแนะ",
-    "@engineTimeoutPerformanceWarningContent": {}
+    "@engineTimeoutPerformanceWarningContent": {},
+    "engineFailureTitle": "ข้อผิดพลาดของเอนจิน",
+    "@engineFailureTitle": {},
+    "engineFailureContent": "เอนจิน AI ไม่สามารถสร้างการเคลื่อนที่ได้ นี่เป็นข้อผิดพลาดภายในที่ไม่คาดคิด คุณต้องการส่งรายงานวินิจฉัยเพื่อช่วยเราตรวจสอบหรือไม่?",
+    "@engineFailureContent": {},
+    "sendReport": "ส่งรายงาน",
+    "@sendReport": {}
 }

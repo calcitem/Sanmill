@@ -4235,5 +4235,11 @@
     "engineTimeoutPerformanceWarningTitle": "Предупреждение за производителност",
     "@engineTimeoutPerformanceWarningTitle": {},
     "engineTimeoutPerformanceWarningContent": "Двигателят на ИИ превиши времето за изчакване. Устройството ви може да е с недостатъчна производителност. Опитайте да намалите времето за мислене на ИИ в Настройки. Ако проблемът продължи, изпратете обратна връзка.",
-    "@engineTimeoutPerformanceWarningContent": {}
+    "@engineTimeoutPerformanceWarningContent": {},
+    "engineFailureTitle": "Грешка в двигателя",
+    "@engineFailureTitle": {},
+    "engineFailureContent": "AI двигателят не върна ход. Това е неочаквана вътрешна грешка. Искате ли да изпратите диагностичен доклад за разследване?",
+    "@engineFailureContent": {},
+    "sendReport": "Изпрати доклад",
+    "@sendReport": {}
 }

@@ -4235,5 +4235,11 @@
     "engineTimeoutPerformanceWarningTitle": "Advertencia de rendimiento",
     "@engineTimeoutPerformanceWarningTitle": {},
     "engineTimeoutPerformanceWarningContent": "El motor de IA agotó el tiempo de espera. Es posible que su dispositivo tenga un rendimiento insuficiente. Intente reducir el tiempo de reflexión de la IA en Ajustes. Si el problema continúa, envíe comentarios.",
-    "@engineTimeoutPerformanceWarningContent": {}
+    "@engineTimeoutPerformanceWarningContent": {},
+    "engineFailureTitle": "Error del motor",
+    "@engineFailureTitle": {},
+    "engineFailureContent": "El motor de IA no pudo producir una jugada. Es un error interno inesperado. ¿Desea enviar un informe de diagnóstico para ayudarnos a investigar?",
+    "@engineFailureContent": {},
+    "sendReport": "Enviar informe",
+    "@sendReport": {}
 }

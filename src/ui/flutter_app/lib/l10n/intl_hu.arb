@@ -3492,5 +3492,11 @@
     "engineTimeoutPerformanceWarningTitle": "Teljesítményfigyelmeztetés",
     "@engineTimeoutPerformanceWarningTitle": {},
     "engineTimeoutPerformanceWarningContent": "Az MI-motor időtúllépést jelzett. Az eszköz teljesítménye elégtelen lehet. Próbálja csökkenteni az MI gondolkodási idejét a Beállításokban. Ha a probléma továbbra is fennáll, küldjön visszajelzést.",
-    "@engineTimeoutPerformanceWarningContent": {}
+    "@engineTimeoutPerformanceWarningContent": {},
+    "engineFailureTitle": "Motorhiba",
+    "@engineFailureTitle": {},
+    "engineFailureContent": "Az AI-motor nem tudott lépést adni. Ez váratlan belső hiba. Szeretne diagnosztikai jelentést küldeni a vizsgálathoz?",
+    "@engineFailureContent": {},
+    "sendReport": "Jelentés küldése",
+    "@sendReport": {}
 }

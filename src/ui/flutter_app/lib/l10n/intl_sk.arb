@@ -4235,5 +4235,11 @@
     "engineTimeoutPerformanceWarningTitle": "Varovanie o výkone",
     "@engineTimeoutPerformanceWarningTitle": {},
     "engineTimeoutPerformanceWarningContent": "Vypršal časový limit motora AI. Vaše zariadenie môže mať nedostatočný výkon. Skúste v Nastaveniach znížiť čas premýšľania AI. Ak problém pretrváva, odošlite spätnú väzbu.",
-    "@engineTimeoutPerformanceWarningContent": {}
+    "@engineTimeoutPerformanceWarningContent": {},
+    "engineFailureTitle": "Chyba enginu",
+    "@engineFailureTitle": {},
+    "engineFailureContent": "AI engine nevrátil ťah. Ide o neočakávanú internú chybu. Chcete odoslať diagnostickú správu, aby sme mohli problém preskúmať?",
+    "@engineFailureContent": {},
+    "sendReport": "Odoslať správu",
+    "@sendReport": {}
 }

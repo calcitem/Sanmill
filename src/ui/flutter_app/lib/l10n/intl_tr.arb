@@ -4235,5 +4235,11 @@
     "engineTimeoutPerformanceWarningTitle": "Performans uyarısı",
     "@engineTimeoutPerformanceWarningTitle": {},
     "engineTimeoutPerformanceWarningContent": "Yapay zeka motoru zaman aşımına uğradı. Cihazınızın performansı yetersiz olabilir. Ayarlarda yapay zeka düşünme süresini azaltmayı deneyin. Sorun devam ederse geri bildirim gönderin.",
-    "@engineTimeoutPerformanceWarningContent": {}
+    "@engineTimeoutPerformanceWarningContent": {},
+    "engineFailureTitle": "Motor hatası",
+    "@engineFailureTitle": {},
+    "engineFailureContent": "Yapay zeka motoru hamle üretemedi. Bu beklenmeyen bir iç hatadır. İncelememize yardımcı olmak için tanı raporu göndermek ister misiniz?",
+    "@engineFailureContent": {},
+    "sendReport": "Rapor gönder",
+    "@sendReport": {}
 }

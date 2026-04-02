@@ -4235,5 +4235,11 @@
     "engineTimeoutPerformanceWarningTitle": "Prestatiewaarschuwing",
     "@engineTimeoutPerformanceWarningTitle": {},
     "engineTimeoutPerformanceWarningContent": "De AI-engine heeft een time-out. Uw apparaat heeft mogelijk onvoldoende prestaties. Probeer de AI-denktijd in Instellingen te verminderen. Blijft het probleem bestaan, stuur dan feedback.",
-    "@engineTimeoutPerformanceWarningContent": {}
+    "@engineTimeoutPerformanceWarningContent": {},
+    "engineFailureTitle": "Motorfout",
+    "@engineFailureTitle": {},
+    "engineFailureContent": "De AI-motor kon geen zet produceren. Dit is een onverwachte interne fout. Wilt u een diagnostisch rapport versturen zodat wij dit kunnen onderzoeken?",
+    "@engineFailureContent": {},
+    "sendReport": "Rapport verzenden",
+    "@sendReport": {}
 }

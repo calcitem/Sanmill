@@ -4235,5 +4235,11 @@
     "engineTimeoutPerformanceWarningTitle": "प्रदर्शन चेतावनी",
     "@engineTimeoutPerformanceWarningTitle": {},
     "engineTimeoutPerformanceWarningContent": "AI इंजिन का समय समाप्त हो गया। आपके डिवाइस का प्रदर्शन अपर्याप्त हो सकता है। सेटिंग्स में AI सोचने का समय कम करें। यदि समस्या बनी रहे तो प्रतिक्रिया भेजें।",
-    "@engineTimeoutPerformanceWarningContent": {}
+    "@engineTimeoutPerformanceWarningContent": {},
+    "engineFailureTitle": "इंजन त्रुटि",
+    "@engineFailureTitle": {},
+    "engineFailureContent": "AI इंजन चाल उत्पन्न नहीं कर सका। यह एक अप्रत्याशित आंतरिक त्रुटि है। क्या आप जांच में मदद के लिए नैदानिक रिपोर्ट भेजना चाहते हैं?",
+    "@engineFailureContent": {},
+    "sendReport": "रिपोर्ट भेजें",
+    "@sendReport": {}
 }

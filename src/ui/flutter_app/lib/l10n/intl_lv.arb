@@ -4235,5 +4235,11 @@
     "engineTimeoutPerformanceWarningTitle": "Veiktspējas brīdinājums",
     "@engineTimeoutPerformanceWarningTitle": {},
     "engineTimeoutPerformanceWarningContent": "MI dzinējam beidzās laiks. Ierīces veiktspēja var būt nepietiekama. Mēģiniet samazināt MI domāšanas laiku iestatījumos. Ja problēma saglabājas, nosūtiet atsauksmi.",
-    "@engineTimeoutPerformanceWarningContent": {}
+    "@engineTimeoutPerformanceWarningContent": {},
+    "engineFailureTitle": "Dzinēja kļūda",
+    "@engineFailureTitle": {},
+    "engineFailureContent": "AI dzinējs nevarēja dot gājienu. Šī ir neparedzēta iekšēja kļūda. Vai vēlaties nosūtīt diagnostikas ziņojumu, lai palīdzētu izmeklēt?",
+    "@engineFailureContent": {},
+    "sendReport": "Sūtīt ziņojumu",
+    "@sendReport": {}
 }

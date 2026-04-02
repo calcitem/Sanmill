@@ -4235,5 +4235,11 @@
     "engineTimeoutPerformanceWarningTitle": "Предупреждение о производительности",
     "@engineTimeoutPerformanceWarningTitle": {},
     "engineTimeoutPerformanceWarningContent": "Истёк таймаут движка ИИ. Производительность устройства может быть недостаточной. Попробуйте уменьшить время размышления ИИ в Настройках. Если проблема сохранится, отправьте отзыв.",
-    "@engineTimeoutPerformanceWarningContent": {}
+    "@engineTimeoutPerformanceWarningContent": {},
+    "engineFailureTitle": "Ошибка движка",
+    "@engineFailureTitle": {},
+    "engineFailureContent": "ИИ-движок не смог выдать ход. Это неожиданная внутренняя ошибка. Отправить диагностический отчёт, чтобы помочь нам разобраться?",
+    "@engineFailureContent": {},
+    "sendReport": "Отправить отчёт",
+    "@sendReport": {}
 }

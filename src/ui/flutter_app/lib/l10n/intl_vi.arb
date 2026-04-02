@@ -4239,5 +4239,11 @@
     "engineTimeoutPerformanceWarningTitle": "Cảnh báo hiệu năng",
     "@engineTimeoutPerformanceWarningTitle": {},
     "engineTimeoutPerformanceWarningContent": "Động cơ AI đã hết thời gian chờ. Thiết bị của bạn có thể không đủ hiệu năng. Hãy thử giảm thời gian suy nghĩ của AI trong Cài đặt. Nếu vấn đề vẫn còn, vui lòng gửi phản hồi.",
-    "@engineTimeoutPerformanceWarningContent": {}
+    "@engineTimeoutPerformanceWarningContent": {},
+    "engineFailureTitle": "Lỗi engine",
+    "@engineFailureTitle": {},
+    "engineFailureContent": "Engine AI không thể tạo nước đi. Đây là lỗi nội bộ không mong đợi. Bạn có muốn gửi báo cáo chẩn đoán để chúng tôi điều tra không?",
+    "@engineFailureContent": {},
+    "sendReport": "Gửi báo cáo",
+    "@sendReport": {}
 }

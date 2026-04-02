@@ -4235,5 +4235,11 @@
     "engineTimeoutPerformanceWarningTitle": "কার্যক্ষমতা সতর্কতা",
     "@engineTimeoutPerformanceWarningTitle": {},
     "engineTimeoutPerformanceWarningContent": "এআই ইঞ্জিনের সময় শেষ হয়ে গেছে। আপনার ডিভাইসের কার্যক্ষমতা অপর্যাপ্ত হতে পারে। সেটিংসে এআই চিন্তার সময় কমিয়ে দেখুন। সমস্যা থাকলে প্রতিক্রিয়া জমা দিন।",
-    "@engineTimeoutPerformanceWarningContent": {}
+    "@engineTimeoutPerformanceWarningContent": {},
+    "engineFailureTitle": "ইঞ্জিন ত্রুটি",
+    "@engineFailureTitle": {},
+    "engineFailureContent": "AI ইঞ্জিন চাল তৈরি করতে ব্যর্থ। এটি একটি অপ্রত্যাশিত অভ্যন্তরীণ ত্রুটি। তদন্তে সাহায্যের জন্য ডায়াগনস্টিক রিপোর্ট পাঠাবেন?",
+    "@engineFailureContent": {},
+    "sendReport": "রিপোর্ট পাঠান",
+    "@sendReport": {}
 }

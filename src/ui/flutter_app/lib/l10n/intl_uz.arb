@@ -4239,5 +4239,11 @@
     "engineTimeoutPerformanceWarningTitle": "Unumdorlik ogohlantiruvchisi",
     "@engineTimeoutPerformanceWarningTitle": {},
     "engineTimeoutPerformanceWarningContent": "Sun'iy intellekt mexanizmi vaqti tugadi. Qurilmangizning unumdorligi yetarli bo'lmasligi mumkin. Sozlamalarda sun'iy intellekt o'ylash vaqtini kamaytiring. Muammo davom etsa, fikr-mulohaza yuboring.",
-    "@engineTimeoutPerformanceWarningContent": {}
+    "@engineTimeoutPerformanceWarningContent": {},
+    "engineFailureTitle": "Motor xatosi",
+    "@engineFailureTitle": {},
+    "engineFailureContent": "AI motori yurish bera olmadi. Bu kutilmagan ichki xato. Tekshiruv uchun diagnostika hisoboti yuborilsinmi?",
+    "@engineFailureContent": {},
+    "sendReport": "Hisobot yuborish",
+    "@sendReport": {}
 }

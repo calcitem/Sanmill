@@ -4235,5 +4235,11 @@
     "engineTimeoutPerformanceWarningTitle": "Արտադրողականության նախազգուշացում",
     "@engineTimeoutPerformanceWarningTitle": {},
     "engineTimeoutPerformanceWarningContent": "ՏՏ շարժիչը ժամանակը լրացրեց։ Ձեր սարքի արտադրողականությունը կարող է անբավարար լինել։ Փորձեք կրճատել ՏՏ մտածելու ժամանակը Կարգավորումներում։ Եթե խնդիրը շարունակվի, ուղարկեք արձագանք։",
-    "@engineTimeoutPerformanceWarningContent": {}
+    "@engineTimeoutPerformanceWarningContent": {},
+    "engineFailureTitle": "Շարժիչի սխալ",
+    "@engineFailureTitle": {},
+    "engineFailureContent": "AI շարժիչը չկարողացավ քայլ առաջարկել: Սա անսպասելի ներքին սխալ է: Ուղարկե՞լ ախտորոշման հաշվետվություն հետաքննության համար:",
+    "@engineFailureContent": {},
+    "sendReport": "Ուղարկել հաշվետվությունը",
+    "@sendReport": {}
 }

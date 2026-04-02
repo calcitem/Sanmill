@@ -4235,5 +4235,11 @@
     "engineTimeoutPerformanceWarningTitle": "Upozorenje o učinkovitosti",
     "@engineTimeoutPerformanceWarningTitle": {},
     "engineTimeoutPerformanceWarningContent": "AI motor je istekao. Vaš uređaj možda nema dovoljno performansi. Pokušajte smanjiti vrijeme razmišljanja AI-a u Postavkama. Ako se problem nastavi, pošaljite povratne informacije.",
-    "@engineTimeoutPerformanceWarningContent": {}
+    "@engineTimeoutPerformanceWarningContent": {},
+    "engineFailureTitle": "Greška motora",
+    "@engineFailureTitle": {},
+    "engineFailureContent": "AI motor nije mogao dati potez. Ovo je neočekivana interna greška. Želite li poslati dijagnostičko izvješće radi istrage?",
+    "@engineFailureContent": {},
+    "sendReport": "Pošalji izvješće",
+    "@sendReport": {}
 }

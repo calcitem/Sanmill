@@ -4235,5 +4235,11 @@
     "engineTimeoutPerformanceWarningTitle": "Avís de rendiment",
     "@engineTimeoutPerformanceWarningTitle": {},
     "engineTimeoutPerformanceWarningContent": "El motor d'IA ha esgotat el temps. El vostre dispositiu pot tenir un rendiment insuficient. Proveu de reduir el temps de reflexió de la IA a Configuració. Si el problema persisteix, envieu comentaris.",
-    "@engineTimeoutPerformanceWarningContent": {}
+    "@engineTimeoutPerformanceWarningContent": {},
+    "engineFailureTitle": "Error del motor",
+    "@engineFailureTitle": {},
+    "engineFailureContent": "El motor d'IA no ha pogut produir una jugada. Això és un error intern inesperat. Voleu enviar un informe de diagnòstic per ajudar-nos a investigar?",
+    "@engineFailureContent": {},
+    "sendReport": "Enviar informe",
+    "@sendReport": {}
 }

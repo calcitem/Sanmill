@@ -4279,5 +4279,17 @@
     "engineTimeoutPerformanceWarningContent": "AI 引擎超时，您的设备可能性能不足。建议在设置中降低 AI 思考时间。如问题持续，请通过反馈功能告知我们。",
     "@engineTimeoutPerformanceWarningContent": {
         "description": "Content of dialog shown when AI engine times out due to insufficient performance"
+    },
+    "engineFailureTitle": "引擎错误",
+    "@engineFailureTitle": {
+        "description": "Title of dialog shown when AI engine fails to find a move"
+    },
+    "engineFailureContent": "AI 引擎未能产生着法，这是一个非预期的内部错误。是否发送诊断报告以协助我们调查？",
+    "@engineFailureContent": {
+        "description": "Content of dialog shown when AI engine fails to find a move"
+    },
+    "sendReport": "发送报告",
+    "@sendReport": {
+        "description": "Button label for sending a diagnostic report"
     }
 }

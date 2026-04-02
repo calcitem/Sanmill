@@ -4235,5 +4235,11 @@
     "engineTimeoutPerformanceWarningTitle": "ಕಾರ್ಯಕ್ಷಮತೆ ಎಚ್ಚರಿಕೆ",
     "@engineTimeoutPerformanceWarningTitle": {},
     "engineTimeoutPerformanceWarningContent": "AI ಎಂಜಿನ್ ಸಮಯ ಮೀರಿದೆ. ನಿಮ್ಮ ಸಾಧನದ ಕಾರ್ಯಕ್ಷಮತೆ ಅಪರ್ಯಾಪ್ತವಾಗಿರಬಹುದು. ಸೆಟ್ಟಿಂಗ್‌ಗಳಲ್ಲಿ AI ಚಿಂತನೆಯ ಸಮಯವನ್ನು ಕಡಿಮೆ ಮಾಡಿ. ಸಮಸ್ಯೆ ಮುಂದುವರಿದರೆ ಪ್ರತಿಕ್ರಿಯೆ ಸಲ್ಲಿಸಿ.",
-    "@engineTimeoutPerformanceWarningContent": {}
+    "@engineTimeoutPerformanceWarningContent": {},
+    "engineFailureTitle": "ಎಂಜಿನ್ ದೋಷ",
+    "@engineFailureTitle": {},
+    "engineFailureContent": "AI ಎಂಜಿನ್ ಚಲನೆಯನ್ನು ಉತ್ಪಾದಿಸಲು ವಿಫಲವಾಗಿದೆ. ಇದು ಅನಿರೀಕ್ಷಿತ ಆಂತರಿಕ ದೋಷ. ತನಿಖೆಗೆ ಸಹಾಯವಾಗಿ ರೋಗನಿರ್ಣಯ ವರದಿಯನ್ನು ಕಳುಹಿಸಲು ಬಯಸುವಿರಾ?",
+    "@engineFailureContent": {},
+    "sendReport": "ವರದಿ ಕಳುಹಿಸಿ",
+    "@sendReport": {}
 }

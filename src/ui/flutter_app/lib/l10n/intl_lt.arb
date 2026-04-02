@@ -4235,5 +4235,11 @@
     "engineTimeoutPerformanceWarningTitle": "Našumo įspėjimas",
     "@engineTimeoutPerformanceWarningTitle": {},
     "engineTimeoutPerformanceWarningContent": "DI variklis viršijo laukimo laiką. Įrenginio našumas gali būti nepakankamas. Bandykite sumažinti DI mąstymo laiką nustatymuose. Jei problema išlieka, atsiųskite atsiliepimą.",
-    "@engineTimeoutPerformanceWarningContent": {}
+    "@engineTimeoutPerformanceWarningContent": {},
+    "engineFailureTitle": "Variklio klaida",
+    "@engineFailureTitle": {},
+    "engineFailureContent": "AI variklis negalėjo pateikti ėjimo. Tai netikėta vidinė klaida. Ar norite siųsti diagnostikos ataskaitą, kad padėtumėte tirti?",
+    "@engineFailureContent": {},
+    "sendReport": "Siųsti ataskaitą",
+    "@sendReport": {}
 }

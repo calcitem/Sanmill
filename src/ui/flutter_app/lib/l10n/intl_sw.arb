@@ -4235,5 +4235,11 @@
     "engineTimeoutPerformanceWarningTitle": "Onyo la utendaji",
     "@engineTimeoutPerformanceWarningTitle": {},
     "engineTimeoutPerformanceWarningContent": "Injini ya AI imeisha muda. Kifaa chako kinaweza kuwa na utendaji hafifu. Jaribu kupunguza muda wa kufikiri kwa AI katika Mipangilio. Tatizo likiendelea, tuma maoni.",
-    "@engineTimeoutPerformanceWarningContent": {}
+    "@engineTimeoutPerformanceWarningContent": {},
+    "engineFailureTitle": "Hitilafu ya injini",
+    "@engineFailureTitle": {},
+    "engineFailureContent": "Injini ya AI haikuweza kutoa hatua. Hii ni hitilafu ya ndani isiyotarajiwa. Ungependa kutuma ripoti ya uchunguzi ili kutusaidia kuchunguza?",
+    "@engineFailureContent": {},
+    "sendReport": "Tuma ripoti",
+    "@sendReport": {}
 }

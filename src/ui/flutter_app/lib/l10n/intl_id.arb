@@ -4235,5 +4235,11 @@
     "engineTimeoutPerformanceWarningTitle": "Peringatan kinerja",
     "@engineTimeoutPerformanceWarningTitle": {},
     "engineTimeoutPerformanceWarningContent": "Mesin AI habis waktu. Perangkat Anda mungkin kurang bertenaga. Coba kurangi waktu berpikir AI di Pengaturan. Jika masalah berlanjut, kirimkan umpan balik.",
-    "@engineTimeoutPerformanceWarningContent": {}
+    "@engineTimeoutPerformanceWarningContent": {},
+    "engineFailureTitle": "Kesalahan mesin",
+    "@engineFailureTitle": {},
+    "engineFailureContent": "Mesin AI gagal menghasilkan langkah. Ini adalah kesalahan internal yang tidak terduga. Kirim laporan diagnostik untuk membantu kami menyelidiki?",
+    "@engineFailureContent": {},
+    "sendReport": "Kirim laporan",
+    "@sendReport": {}
 }

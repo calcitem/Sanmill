@@ -4235,5 +4235,11 @@
     "engineTimeoutPerformanceWarningTitle": "Avertisment de performanță",
     "@engineTimeoutPerformanceWarningTitle": {},
     "engineTimeoutPerformanceWarningContent": "Motorul IA a expirat. Dispozitivul dvs. poate avea performanță insuficientă. Încercați să reduceți timpul de gândire al IA în Setări. Dacă problema persistă, trimiteți feedback.",
-    "@engineTimeoutPerformanceWarningContent": {}
+    "@engineTimeoutPerformanceWarningContent": {},
+    "engineFailureTitle": "Eroare motor",
+    "@engineFailureTitle": {},
+    "engineFailureContent": "Motorul AI nu a putut produce o mutare. Este o eroare internă neașteptată. Doriți să trimiteți un raport de diagnostic pentru a ne ajuta să investigăm?",
+    "@engineFailureContent": {},
+    "sendReport": "Trimite raportul",
+    "@sendReport": {}
 }

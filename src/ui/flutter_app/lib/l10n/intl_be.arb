@@ -4235,5 +4235,11 @@
     "engineTimeoutPerformanceWarningTitle": "Папярэджанне аб прадукцыйнасці",
     "@engineTimeoutPerformanceWarningTitle": {},
     "engineTimeoutPerformanceWarningContent": "Рухавік ШІ перавысіў час чакання. Магчыма, прылада недастаткова прадукцыйная. Паспрабуйце зменшыць час разважання ШІ ў наладах. Калі праблема застанецца, дашліце водгук.",
-    "@engineTimeoutPerformanceWarningContent": {}
+    "@engineTimeoutPerformanceWarningContent": {},
+    "engineFailureTitle": "Памылка рухавіка",
+    "@engineFailureTitle": {},
+    "engineFailureContent": "AI-рухавік не змог выдаць ход. Гэта нечаканая ўнутраная памылка. Адправіць дыягнастычную справаздачу для расследавання?",
+    "@engineFailureContent": {},
+    "sendReport": "Адправіць справаздачу",
+    "@sendReport": {}
 }

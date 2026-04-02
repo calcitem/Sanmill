@@ -4235,5 +4235,11 @@
     "engineTimeoutPerformanceWarningTitle": "የአፈጻጸም ማስጠንቀቂያ",
     "@engineTimeoutPerformanceWarningTitle": {},
     "engineTimeoutPerformanceWarningContent": "የ AI ሞተር ጊዜው አልፏል። መሳሪያዎ በቂ አፈጻጸም ላይሆን ይችላል። በ ቅንብሮች ውስጥ የ AI አስተዋይ ጊዜን ይቀንሱ። ችግሩ ካለፈለጠ እባክዎ ግብረ መልስ ያስገቡ።",
-    "@engineTimeoutPerformanceWarningContent": {}
+    "@engineTimeoutPerformanceWarningContent": {},
+    "engineFailureTitle": "የሞተር ስህተት",
+    "@engineFailureTitle": {},
+    "engineFailureContent": "የ AI ሞተር እንቅስቃሴ ማመንጨት አልቻለም። ይህ ያልተጠበቀ የውስጥ ስህተት ነው። ለመመርመር የምርመራ ሪፖርት መላክ ይፈልጋሉ?",
+    "@engineFailureContent": {},
+    "sendReport": "ሪፖርት ላክ",
+    "@sendReport": {}
 }

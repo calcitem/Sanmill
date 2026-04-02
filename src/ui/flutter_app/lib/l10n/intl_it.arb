@@ -4235,5 +4235,11 @@
     "engineTimeoutPerformanceWarningTitle": "Avviso sulle prestazioni",
     "@engineTimeoutPerformanceWarningTitle": {},
     "engineTimeoutPerformanceWarningContent": "Il motore IA ha superato il tempo limite. Il dispositivo potrebbe avere prestazioni insufficienti. Prova a ridurre il tempo di riflessione dell'IA nelle Impostazioni. Se il problema persiste, invia un feedback.",
-    "@engineTimeoutPerformanceWarningContent": {}
+    "@engineTimeoutPerformanceWarningContent": {},
+    "engineFailureTitle": "Errore del motore",
+    "@engineFailureTitle": {},
+    "engineFailureContent": "Il motore IA non è riuscito a produrre una mossa. Si tratta di un errore interno imprevisto. Vuoi inviare un rapporto diagnostico per aiutarci a indagare?",
+    "@engineFailureContent": {},
+    "sendReport": "Invia rapporto",
+    "@sendReport": {}
 }

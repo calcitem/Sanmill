@@ -4235,5 +4235,11 @@
     "engineTimeoutPerformanceWarningTitle": "Προειδοποίηση απόδοσης",
     "@engineTimeoutPerformanceWarningTitle": {},
     "engineTimeoutPerformanceWarningContent": "Η μηχανή ΤΈ έληξε χρονικά. Η συσκευή σας μπορεί να έχει ανεπαρκή απόδοση. Δοκιμάστε να μειώσετε τον χρόνο σκέψης της ΤΈ στις Ρυθμίσεις. Αν το πρόβλημα συνεχίζεται, υποβάλετε σχόλια.",
-    "@engineTimeoutPerformanceWarningContent": {}
+    "@engineTimeoutPerformanceWarningContent": {},
+    "engineFailureTitle": "Σφάλμα μηχανής",
+    "@engineFailureTitle": {},
+    "engineFailureContent": "Η μηχανή AI απέτυχε να παράγει κίνηση. Πρόκειται για απρόσμενο εσωτερικό σφάλμα. Θέλετε να στείλετε αναφορά διάγνωσης για να μας βοηθήσετε;",
+    "@engineFailureContent": {},
+    "sendReport": "Αποστολή αναφοράς",
+    "@sendReport": {}
 }

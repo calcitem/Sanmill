@@ -4235,5 +4235,11 @@
     "engineTimeoutPerformanceWarningTitle": "ནུས་པའི་ཉེན་བརྡ།",
     "@engineTimeoutPerformanceWarningTitle": {},
     "engineTimeoutPerformanceWarningContent": "AI གློག་ཀླད་ཀྱི་དུས་ཚོད་ཟིན་སོང་། ཁྱེད་ཀྱི་ཐབས་འཕྲུལ་གྱི་ནུས་པ་མི་འདང་བ་ཡིན་སྲིད། སྒྲིག་འགོད་ནས AI བསམ་བློའི་དུས་ཚོད་ཉུང་དུ་གཏོང་རོགས། གནད་དོན་རྒྱུན་མཐུད་ན་འབྲེལ་ཡོད་ལན་སྤྲོད་རོགས།",
-    "@engineTimeoutPerformanceWarningContent": {}
+    "@engineTimeoutPerformanceWarningContent": {},
+    "engineFailureTitle": "འཕྲུལ་ཆས་ནོར་འཁྲུལ།",
+    "@engineFailureTitle": {},
+    "engineFailureContent": "AI འཕྲུལ་ཆས་ཀྱིས་སྤོ་འགུལ་བཟོ་མ་ཐུབ། འདི་ནི་བསམ་ཡུལ་ལས་འདས་པའི་ནང་ཁུལ་གྱི་ནོར་འཁྲུལ་ཡིན། བརྟག་དཔྱད་ར་སྤྲོད་ཡི་གེ་བསྐུར་ནས་བརྟག་དཔྱད་ལ་རོགས་རམ་བྱེད་དམ།",
+    "@engineFailureContent": {},
+    "sendReport": "ར་སྤྲོད་ཡི་གེ་བསྐུར།",
+    "@sendReport": {}
 }

@@ -4235,5 +4235,11 @@
     "engineTimeoutPerformanceWarningTitle": "Попередження про продуктивність",
     "@engineTimeoutPerformanceWarningTitle": {},
     "engineTimeoutPerformanceWarningContent": "Рушій ШІ перевищив час очікування. Продуктивність пристрою може бути недостатньою. Спробуйте зменшити час роздумів ШІ в Налаштуваннях. Якщо проблема залишається, надішліть відгук.",
-    "@engineTimeoutPerformanceWarningContent": {}
+    "@engineTimeoutPerformanceWarningContent": {},
+    "engineFailureTitle": "Помилка рушія",
+    "@engineFailureTitle": {},
+    "engineFailureContent": "ШІ-рушій не зміг видати хід. Це несподівана внутрішня помилка. Надіслати діагностичний звіт, щоб допомогти нам розібратися?",
+    "@engineFailureContent": {},
+    "sendReport": "Надіслати звіт",
+    "@sendReport": {}
 }

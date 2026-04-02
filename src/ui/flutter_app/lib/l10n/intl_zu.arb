@@ -4239,5 +4239,11 @@
     "engineTimeoutPerformanceWarningTitle": "Isexwayiso semisebenzi",
     "@engineTimeoutPerformanceWarningTitle": {},
     "engineTimeoutPerformanceWarningContent": "Imishini ye-AI iphelelwe yisikhathi. Idivayisi yakho ingase ibe nomsebenzi onganele. Zama ukunciphisa isikhathi sokucabanga kwe-AI ezilungiselelweni. Uma inkinga iqhubeka, thumela impendulo.",
-    "@engineTimeoutPerformanceWarningContent": {}
+    "@engineTimeoutPerformanceWarningContent": {},
+    "engineFailureTitle": "Iphutha lemishini",
+    "@engineFailureTitle": {},
+    "engineFailureContent": "Umshini we-AI awukwazanga ukukhiqiza ukunyakaza. Lokhu kuyiphutha yangaphakathi engalindelekile. Uyathanda ukuthumela umbiko wokuhlola ukusisiza ekuphenyni?",
+    "@engineFailureContent": {},
+    "sendReport": "Thumela umbiko",
+    "@sendReport": {}
 }

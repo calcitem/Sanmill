@@ -509,15 +509,11 @@ class _GameBoardState extends State<GameBoard>
                 key: const Key('gesture_detector_game_board'),
                 child: customPaint,
                 onTapUp: (TapUpDetails d) async {
-                  // Cache localized strings at the start to avoid BuildContext usage across async gaps
                   final String strNotYourTurn = S.of(context).notYourTurn;
                   final String strNoLanConnection = S
                       .of(context)
                       .noLanConnection;
                   final String strTimeout = S.of(context).timeout;
-                  final String strNoBestMoveErr = S
-                      .of(context)
-                      .error(S.of(context).noMove);
 
                   final int? square = squareFromPoint(
                     pointFromOffset(d.localPosition, dimension),
@@ -552,7 +548,6 @@ class _GameBoardState extends State<GameBoard>
                     square,
                   );
 
-                  // Process engine response for displaying tips, etc.
                   switch (response) {
                     case EngineResponseOK():
                       GameController().gameResultNotifier.showResult(
@@ -571,9 +566,25 @@ class _GameBoardState extends State<GameBoard>
                       }
                       break;
                     case EngineNoBestMove():
-                      GameController().headerTipNotifier.showTip(
-                        strNoBestMoveErr,
-                      );
+                      if (context.mounted) {
+                        final List<ExtMove> moves =
+                            GameController().gameRecorder.mainlineMoves;
+                        await EngineFailureDialog.show(
+                          context,
+                          diagnosticContext:
+                              EngineFailureDialog.buildDiagnosticContext(
+                            fen: GameController().position.fen,
+                            phase: GameController().position.phase.name,
+                            sideToMove: GameController()
+                                .position
+                                .sideToMove
+                                .playerName(context),
+                            lastMove: moves.isNotEmpty
+                                ? moves.last.notation
+                                : null,
+                          ),
+                        );
+                      }
                       break;
                     case EngineGameIsOver():
                       GameController().gameResultNotifier.showResult(

@@ -4235,5 +4235,11 @@
     "engineTimeoutPerformanceWarningTitle": "パフォーマンスの警告",
     "@engineTimeoutPerformanceWarningTitle": {},
     "engineTimeoutPerformanceWarningContent": "AI エンジンがタイムアウトしました。端末の性能が不足している可能性があります。設定で AI の思考時間を短くしてみてください。問題が続く場合はフィードバックを送信してください。",
-    "@engineTimeoutPerformanceWarningContent": {}
+    "@engineTimeoutPerformanceWarningContent": {},
+    "engineFailureTitle": "エンジンエラー",
+    "@engineFailureTitle": {},
+    "engineFailureContent": "AI エンジンが着手を生成できませんでした。これは予期しない内部エラーです。調査のため診断レポートを送信しますか？",
+    "@engineFailureContent": {},
+    "sendReport": "レポートを送信",
+    "@sendReport": {}
 }

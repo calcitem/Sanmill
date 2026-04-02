@@ -4235,5 +4235,11 @@
     "engineTimeoutPerformanceWarningTitle": "ការព្រមានអំពីការអនុវត្ត",
     "@engineTimeoutPerformanceWarningTitle": {},
     "engineTimeoutPerformanceWarningContent": "ម៉ាស៊ីន AI អស់ពេល។ ឧបករណ៍របស់អ្នកអាចមានការអនុវត្តមិនគ្រប់គ្រាន់។ សាកល្បងកាត់បន្ថយពេលវិភាគរបស់ AI ក្នុងការកំណត់។ បើបញ្ហានៅតែមាន សូមផ្ញើមតិកែលម្អ។",
-    "@engineTimeoutPerformanceWarningContent": {}
+    "@engineTimeoutPerformanceWarningContent": {},
+    "engineFailureTitle": "កំហុសម៉ាស៊ីន",
+    "@engineFailureTitle": {},
+    "engineFailureContent": "ម៉ាស៊ីន AI មិនអាចបង្កើតចលនាបានទេ។ នេះជាកំហុសខាងក្នុងដែលមិនបានរំពឹងទុក។ ផ្ញើរបាយការណ៍រោគវិនិច្ឆយដើម្បីជួយស៊ើបអង្កេត?",
+    "@engineFailureContent": {},
+    "sendReport": "ផ្ញើរបាយការណ៍",
+    "@sendReport": {}
 }
