@@ -4235,5 +4235,9 @@
     "configImportErrorInvalidFile": "Bu fayl yaroqli sozlamalar zaxirasi emas.",
     "@configImportErrorInvalidFile": {},
     "configImportErrorReadFailed": "Ushbu sozlamalar faylini o‘qib bo‘lmadi.",
-    "@configImportErrorReadFailed": {}
+    "@configImportErrorReadFailed": {},
+    "engineTimeoutPerformanceWarningTitle": "Unumdorlik ogohlantiruvchisi",
+    "@engineTimeoutPerformanceWarningTitle": {},
+    "engineTimeoutPerformanceWarningContent": "Sun'iy intellekt mexanizmi vaqti tugadi. Qurilmangizning unumdorligi yetarli bo'lmasligi mumkin. Sozlamalarda sun'iy intellekt o'ylash vaqtini kamaytiring. Muammo davom etsa, fikr-mulohaza yuboring.",
+    "@engineTimeoutPerformanceWarningContent": {}
 }

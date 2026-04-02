@@ -4231,5 +4231,9 @@
     "configImportErrorInvalidFile": "این فایل پشتیبان معتبر تنظیمات نیست.",
     "@configImportErrorInvalidFile": {},
     "configImportErrorReadFailed": "خواندن این فایل تنظیمات ممکن نشد.",
-    "@configImportErrorReadFailed": {}
+    "@configImportErrorReadFailed": {},
+    "engineTimeoutPerformanceWarningTitle": "هشدار عملکرد",
+    "@engineTimeoutPerformanceWarningTitle": {},
+    "engineTimeoutPerformanceWarningContent": "موتور هوش مصنوعی به پایان زمان رسید. ممکن است عملکرد دستگاه شما کافی نباشد. زمان تفکر هوش مصنوعی را در تنظیمات کاهش دهید. اگر مشکل ادامه داشت، بازخورد ارسال کنید.",
+    "@engineTimeoutPerformanceWarningContent": {}
 }

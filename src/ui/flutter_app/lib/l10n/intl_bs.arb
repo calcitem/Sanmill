@@ -4231,5 +4231,9 @@
     "configImportErrorInvalidFile": "Ova datoteka nije valjana sigurnosna kopija postavki.",
     "@configImportErrorInvalidFile": {},
     "configImportErrorReadFailed": "Nije moguće pročitati ovu datoteku postavki.",
-    "@configImportErrorReadFailed": {}
+    "@configImportErrorReadFailed": {},
+    "engineTimeoutPerformanceWarningTitle": "Upozorenje o performansama",
+    "@engineTimeoutPerformanceWarningTitle": {},
+    "engineTimeoutPerformanceWarningContent": "AI motor je istekao. Vaš uređaj možda nema dovoljno performansi. Pokušajte smanjiti vrijeme razmišljanja AI-a u Postavkama. Ako se problem nastavi, pošaljite povratne informacije.",
+    "@engineTimeoutPerformanceWarningContent": {}
 }

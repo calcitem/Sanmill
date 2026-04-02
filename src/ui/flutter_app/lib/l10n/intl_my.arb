@@ -4231,5 +4231,9 @@
     "configImportErrorInvalidFile": "ဤဖိုင်သည် မှန်ကန်သော ဆက်တင် အရန်သိမ်းမှု မဟုတ်ပါ။",
     "@configImportErrorInvalidFile": {},
     "configImportErrorReadFailed": "ဤ ဆက်တင် ဖိုင်ကို ဖတ်မရပါ။",
-    "@configImportErrorReadFailed": {}
+    "@configImportErrorReadFailed": {},
+    "engineTimeoutPerformanceWarningTitle": "စွမ်းဆောင်ရည်သတိပေးချက်",
+    "@engineTimeoutPerformanceWarningTitle": {},
+    "engineTimeoutPerformanceWarningContent": "AI အင်ဂျင်အချိန်ကုန်သွားပါပြီ။ သင့်စက်သည် စွမ်းဆောင်ရည် မလုံလောက်နိုင်ပါ။ ဆက်တင်များတွင် AI စဉ်းစားချိန်ကို လျှော့ချကြည့်ပါ။ ပြဿနာဆက်ရှိလျှင် တုံ့ပြန်ချက်ပေးပါ။",
+    "@engineTimeoutPerformanceWarningContent": {}
 }

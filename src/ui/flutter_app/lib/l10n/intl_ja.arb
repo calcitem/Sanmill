@@ -4231,5 +4231,9 @@
     "configImportErrorInvalidFile": "このファイルは有効な設定バックアップではありません。",
     "@configImportErrorInvalidFile": {},
     "configImportErrorReadFailed": "この設定ファイルを読み取れませんでした。",
-    "@configImportErrorReadFailed": {}
+    "@configImportErrorReadFailed": {},
+    "engineTimeoutPerformanceWarningTitle": "パフォーマンスの警告",
+    "@engineTimeoutPerformanceWarningTitle": {},
+    "engineTimeoutPerformanceWarningContent": "AI エンジンがタイムアウトしました。端末の性能が不足している可能性があります。設定で AI の思考時間を短くしてみてください。問題が続く場合はフィードバックを送信してください。",
+    "@engineTimeoutPerformanceWarningContent": {}
 }

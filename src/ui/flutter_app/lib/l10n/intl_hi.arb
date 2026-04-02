@@ -4231,5 +4231,9 @@
     "configImportErrorInvalidFile": "यह फ़ाइल मान्य सेटिंग्स बैकअप नहीं है।",
     "@configImportErrorInvalidFile": {},
     "configImportErrorReadFailed": "इस सेटिंग्स फ़ाइल को नहीं पढ़ा जा सका।",
-    "@configImportErrorReadFailed": {}
+    "@configImportErrorReadFailed": {},
+    "engineTimeoutPerformanceWarningTitle": "प्रदर्शन चेतावनी",
+    "@engineTimeoutPerformanceWarningTitle": {},
+    "engineTimeoutPerformanceWarningContent": "AI इंजिन का समय समाप्त हो गया। आपके डिवाइस का प्रदर्शन अपर्याप्त हो सकता है। सेटिंग्स में AI सोचने का समय कम करें। यदि समस्या बनी रहे तो प्रतिक्रिया भेजें।",
+    "@engineTimeoutPerformanceWarningContent": {}
 }

@@ -3488,5 +3488,9 @@
     "configImportErrorInvalidFile": "Ez a fájl nem érvényes beállításmentés.",
     "@configImportErrorInvalidFile": {},
     "configImportErrorReadFailed": "Ezt a beállításfájlt nem sikerült beolvasni.",
-    "@configImportErrorReadFailed": {}
+    "@configImportErrorReadFailed": {},
+    "engineTimeoutPerformanceWarningTitle": "Teljesítményfigyelmeztetés",
+    "@engineTimeoutPerformanceWarningTitle": {},
+    "engineTimeoutPerformanceWarningContent": "Az MI-motor időtúllépést jelzett. Az eszköz teljesítménye elégtelen lehet. Próbálja csökkenteni az MI gondolkodási idejét a Beállításokban. Ha a probléma továbbra is fennáll, küldjön visszajelzést.",
+    "@engineTimeoutPerformanceWarningContent": {}
 }

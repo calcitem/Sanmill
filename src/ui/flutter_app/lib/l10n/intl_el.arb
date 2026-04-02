@@ -4231,5 +4231,9 @@
     "configImportErrorInvalidFile": "Αυτό το αρχείο δεν είναι έγκυρο αντίγραφο ασφαλείας ρυθμίσεων.",
     "@configImportErrorInvalidFile": {},
     "configImportErrorReadFailed": "Δεν ήταν δυνατή η ανάγνωση αυτού του αρχείου ρυθμίσεων.",
-    "@configImportErrorReadFailed": {}
+    "@configImportErrorReadFailed": {},
+    "engineTimeoutPerformanceWarningTitle": "Προειδοποίηση απόδοσης",
+    "@engineTimeoutPerformanceWarningTitle": {},
+    "engineTimeoutPerformanceWarningContent": "Η μηχανή ΤΈ έληξε χρονικά. Η συσκευή σας μπορεί να έχει ανεπαρκή απόδοση. Δοκιμάστε να μειώσετε τον χρόνο σκέψης της ΤΈ στις Ρυθμίσεις. Αν το πρόβλημα συνεχίζεται, υποβάλετε σχόλια.",
+    "@engineTimeoutPerformanceWarningContent": {}
 }

@@ -4231,5 +4231,9 @@
     "configImportErrorInvalidFile": "Fail ini bukan sandaran tetapan yang sah.",
     "@configImportErrorInvalidFile": {},
     "configImportErrorReadFailed": "Tidak dapat membaca fail tetapan ini.",
-    "@configImportErrorReadFailed": {}
+    "@configImportErrorReadFailed": {},
+    "engineTimeoutPerformanceWarningTitle": "Amaran prestasi",
+    "@engineTimeoutPerformanceWarningTitle": {},
+    "engineTimeoutPerformanceWarningContent": "Enjin AI tamat masa. Peranti anda mungkin berprestasi rendah. Cuba kurangkan masa berfikir AI dalam Tetapan. Jika masalah berterusan, hantar maklum balas.",
+    "@engineTimeoutPerformanceWarningContent": {}
 }

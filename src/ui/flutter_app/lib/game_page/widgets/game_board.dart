@@ -564,6 +564,11 @@ class _GameBoardState extends State<GameBoard>
                       break;
                     case EngineTimeOut():
                       GameController().headerTipNotifier.showTip(strTimeout);
+                      if (GameController().gameInstance.gameMode !=
+                              GameMode.aiVsAi &&
+                          context.mounted) {
+                        await PerformanceWarningDialog.showIfNeeded(context);
+                      }
                       break;
                     case EngineNoBestMove():
                       GameController().headerTipNotifier.showTip(

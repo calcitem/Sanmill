@@ -4231,5 +4231,9 @@
     "configImportErrorInvalidFile": "இந்த கோப்பு செல்லுபடியான அமைப்புகள் காப்புப்பிரதி அல்ல.",
     "@configImportErrorInvalidFile": {},
     "configImportErrorReadFailed": "இந்த அமைப்புகள் கோப்பைப் படிக்க முடியவில்லை.",
-    "@configImportErrorReadFailed": {}
+    "@configImportErrorReadFailed": {},
+    "engineTimeoutPerformanceWarningTitle": "செயல்திறன் எச்சரிக்கை",
+    "@engineTimeoutPerformanceWarningTitle": {},
+    "engineTimeoutPerformanceWarningContent": "AI இயந்திரம் நேரம் முடிந்தது. உங்கள் சாதனத்தின் செயல்திறன் போதுமானதாக இல்லாமல் இருக்கலாம். அமைப்புகளில் AI சிந்தனை நேரத்தை குறைக்க முயற்சிக்கவும். சிக்கல் தொடர்ந்தால் கருத்தை அனுப்பவும்.",
+    "@engineTimeoutPerformanceWarningContent": {}
 }

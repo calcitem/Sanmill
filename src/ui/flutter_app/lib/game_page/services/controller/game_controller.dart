@@ -1010,7 +1010,17 @@ class GameController {
 
     GameController().disableStats = true;
 
-    switch (await engineToGo(context, isMoveNow: isEngineRunning)) {
+    final EngineResponse engineResponse =
+        await engineToGo(context, isMoveNow: isEngineRunning);
+
+    if (!context.mounted) {
+      if (reversed) {
+        gameInstance.reverseWhoIsAi();
+      }
+      return;
+    }
+
+    switch (engineResponse) {
       case EngineResponseOK():
       case EngineGameIsOver():
         gameResultNotifier.showResult(force: true);
@@ -1020,6 +1030,9 @@ class GameController {
         break;
       case EngineTimeOut():
         headerTipNotifier.showTip(strTimeout);
+        if (gameInstance.gameMode != GameMode.aiVsAi) {
+          await PerformanceWarningDialog.showIfNeeded(context);
+        }
         break;
       case EngineNoBestMove():
         headerTipNotifier.showTip(strNoBestMoveErr);

@@ -4231,5 +4231,9 @@
     "configImportErrorInvalidFile": "Ky skedar nuk është një kopje rezervë e vlefshme e cilësimeve.",
     "@configImportErrorInvalidFile": {},
     "configImportErrorReadFailed": "Nuk mund të lexohet ky skedar cilësimesh.",
-    "@configImportErrorReadFailed": {}
+    "@configImportErrorReadFailed": {},
+    "engineTimeoutPerformanceWarningTitle": "Paralajmërim për performancën",
+    "@engineTimeoutPerformanceWarningTitle": {},
+    "engineTimeoutPerformanceWarningContent": "Motori i IA-së kaloi afatin. Pajisja juaj mund të ketë performancë të pamjaftueshme. Provoni të ulët kohën e mendimit të IA-së te Cilësimet. Nëse problemi vazhdon, dërgoni komente.",
+    "@engineTimeoutPerformanceWarningContent": {}
 }

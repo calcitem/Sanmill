@@ -4231,5 +4231,9 @@
     "configImportErrorInvalidFile": "קובץ זה אינו גיבוי הגדרות תקף.",
     "@configImportErrorInvalidFile": {},
     "configImportErrorReadFailed": "לא ניתן לקרוא את קובץ ההגדרות הזה.",
-    "@configImportErrorReadFailed": {}
+    "@configImportErrorReadFailed": {},
+    "engineTimeoutPerformanceWarningTitle": "אזהרת ביצועים",
+    "@engineTimeoutPerformanceWarningTitle": {},
+    "engineTimeoutPerformanceWarningContent": "מנוע הבינה המלאכותית חרג מזמן ההמתנה. ייתכן שביצועי המכשיר שלך אינם מספיק. נסה להקטין את זמן החשיבה של הבינה המלאכותית בהגדרות. אם הבעיה נמשכת, שלח משוב.",
+    "@engineTimeoutPerformanceWarningContent": {}
 }

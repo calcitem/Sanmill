@@ -4231,5 +4231,9 @@
     "configImportErrorInvalidFile": "Цей файл не є дійсною резервною копією налаштувань.",
     "@configImportErrorInvalidFile": {},
     "configImportErrorReadFailed": "Не вдалося прочитати цей файл налаштувань.",
-    "@configImportErrorReadFailed": {}
+    "@configImportErrorReadFailed": {},
+    "engineTimeoutPerformanceWarningTitle": "Попередження про продуктивність",
+    "@engineTimeoutPerformanceWarningTitle": {},
+    "engineTimeoutPerformanceWarningContent": "Рушій ШІ перевищив час очікування. Продуктивність пристрою може бути недостатньою. Спробуйте зменшити час роздумів ШІ в Налаштуваннях. Якщо проблема залишається, надішліть відгук.",
+    "@engineTimeoutPerformanceWarningContent": {}
 }

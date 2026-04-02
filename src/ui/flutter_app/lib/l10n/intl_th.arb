@@ -4231,5 +4231,9 @@
     "configImportErrorInvalidFile": "ไฟล์นี้ไม่ใช่สำรองการตั้งค่าที่ถูกต้อง",
     "@configImportErrorInvalidFile": {},
     "configImportErrorReadFailed": "อ่านไฟล์การตั้งค่านี้ไม่ได้",
-    "@configImportErrorReadFailed": {}
+    "@configImportErrorReadFailed": {},
+    "engineTimeoutPerformanceWarningTitle": "คำเตือนประสิทธิภาพ",
+    "@engineTimeoutPerformanceWarningTitle": {},
+    "engineTimeoutPerformanceWarningContent": "เอนจิน AI หมดเวลา อุปกรณ์ของคุณอาจมีประสิทธิภาพไม่เพียงพอ ลดเวลาคิดของ AI ในการตั้งค่า หากปัญหายังอยู่ โปรดส่งข้อเสนอแนะ",
+    "@engineTimeoutPerformanceWarningContent": {}
 }

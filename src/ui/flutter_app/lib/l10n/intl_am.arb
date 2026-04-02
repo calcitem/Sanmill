@@ -4231,5 +4231,9 @@
     "configImportErrorInvalidFile": "ይህ ፋይል ትክክለኛ የቅንብር ምትክ አይደለም።",
     "@configImportErrorInvalidFile": {},
     "configImportErrorReadFailed": "ይህን የቅንብር ፋይል ማንበብ አልተቻለም።",
-    "@configImportErrorReadFailed": {}
+    "@configImportErrorReadFailed": {},
+    "engineTimeoutPerformanceWarningTitle": "የአፈጻጸም ማስጠንቀቂያ",
+    "@engineTimeoutPerformanceWarningTitle": {},
+    "engineTimeoutPerformanceWarningContent": "የ AI ሞተር ጊዜው አልፏል። መሳሪያዎ በቂ አፈጻጸም ላይሆን ይችላል። በ ቅንብሮች ውስጥ የ AI አስተዋይ ጊዜን ይቀንሱ። ችግሩ ካለፈለጠ እባክዎ ግብረ መልስ ያስገቡ።",
+    "@engineTimeoutPerformanceWarningContent": {}
 }

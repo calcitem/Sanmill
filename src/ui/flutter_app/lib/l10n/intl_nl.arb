@@ -4231,5 +4231,9 @@
     "configImportErrorInvalidFile": "Dit bestand is geen geldige back-up van instellingen.",
     "@configImportErrorInvalidFile": {},
     "configImportErrorReadFailed": "Dit instellingenbestand kon niet worden gelezen.",
-    "@configImportErrorReadFailed": {}
+    "@configImportErrorReadFailed": {},
+    "engineTimeoutPerformanceWarningTitle": "Prestatiewaarschuwing",
+    "@engineTimeoutPerformanceWarningTitle": {},
+    "engineTimeoutPerformanceWarningContent": "De AI-engine heeft een time-out. Uw apparaat heeft mogelijk onvoldoende prestaties. Probeer de AI-denktijd in Instellingen te verminderen. Blijft het probleem bestaan, stuur dan feedback.",
+    "@engineTimeoutPerformanceWarningContent": {}
 }

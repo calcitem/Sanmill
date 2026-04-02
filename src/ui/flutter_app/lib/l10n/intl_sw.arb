@@ -4231,5 +4231,9 @@
     "configImportErrorInvalidFile": "Faili hili si nakala salama halali ya mipangilio.",
     "@configImportErrorInvalidFile": {},
     "configImportErrorReadFailed": "Haikuwezeka kusoma faili hili la mipangilio.",
-    "@configImportErrorReadFailed": {}
+    "@configImportErrorReadFailed": {},
+    "engineTimeoutPerformanceWarningTitle": "Onyo la utendaji",
+    "@engineTimeoutPerformanceWarningTitle": {},
+    "engineTimeoutPerformanceWarningContent": "Injini ya AI imeisha muda. Kifaa chako kinaweza kuwa na utendaji hafifu. Jaribu kupunguza muda wa kufikiri kwa AI katika Mipangilio. Tatizo likiendelea, tuma maoni.",
+    "@engineTimeoutPerformanceWarningContent": {}
 }

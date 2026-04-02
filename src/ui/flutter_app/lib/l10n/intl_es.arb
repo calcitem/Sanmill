@@ -4231,5 +4231,9 @@
     "configImportErrorInvalidFile": "Este archivo no es una copia de seguridad de ajustes válida.",
     "@configImportErrorInvalidFile": {},
     "configImportErrorReadFailed": "No se pudo leer este archivo de ajustes.",
-    "@configImportErrorReadFailed": {}
+    "@configImportErrorReadFailed": {},
+    "engineTimeoutPerformanceWarningTitle": "Advertencia de rendimiento",
+    "@engineTimeoutPerformanceWarningTitle": {},
+    "engineTimeoutPerformanceWarningContent": "El motor de IA agotó el tiempo de espera. Es posible que su dispositivo tenga un rendimiento insuficiente. Intente reducir el tiempo de reflexión de la IA en Ajustes. Si el problema continúa, envíe comentarios.",
+    "@engineTimeoutPerformanceWarningContent": {}
 }

@@ -4231,5 +4231,9 @@
     "configImportErrorInvalidFile": "Denne fil er ikke en gyldig sikkerhedskopi af indstillinger.",
     "@configImportErrorInvalidFile": {},
     "configImportErrorReadFailed": "Kunne ikke læse denne indstillingsfil.",
-    "@configImportErrorReadFailed": {}
+    "@configImportErrorReadFailed": {},
+    "engineTimeoutPerformanceWarningTitle": "Ydelsesadvarsel",
+    "@engineTimeoutPerformanceWarningTitle": {},
+    "engineTimeoutPerformanceWarningContent": "AI-motoren fik timeout. Din enhed har muligvis utilstrækkelig ydelse. Prøv at reducere AI-tænketid under Indstillinger. Hvis problemet fortsætter, send venligst feedback.",
+    "@engineTimeoutPerformanceWarningContent": {}
 }

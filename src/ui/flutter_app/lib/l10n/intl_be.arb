@@ -4231,5 +4231,9 @@
     "configImportErrorInvalidFile": "Гэты файл не з’яўляецца сапраўднай рэзервовай копіяй налад.",
     "@configImportErrorInvalidFile": {},
     "configImportErrorReadFailed": "Не ўдалося прачытаць гэты файл налад.",
-    "@configImportErrorReadFailed": {}
+    "@configImportErrorReadFailed": {},
+    "engineTimeoutPerformanceWarningTitle": "Папярэджанне аб прадукцыйнасці",
+    "@engineTimeoutPerformanceWarningTitle": {},
+    "engineTimeoutPerformanceWarningContent": "Рухавік ШІ перавысіў час чакання. Магчыма, прылада недастаткова прадукцыйная. Паспрабуйце зменшыць час разважання ШІ ў наладах. Калі праблема застанецца, дашліце водгук.",
+    "@engineTimeoutPerformanceWarningContent": {}
 }

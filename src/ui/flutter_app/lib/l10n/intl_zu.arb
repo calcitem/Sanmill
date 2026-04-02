@@ -4235,5 +4235,9 @@
     "configImportErrorInvalidFile": "Leli fayela aliyona ikhophi yokuphepha yezilungiselelo evumelekile.",
     "@configImportErrorInvalidFile": {},
     "configImportErrorReadFailed": "Ayikwazanga ukufunda leli fayela lezilungiselelo.",
-    "@configImportErrorReadFailed": {}
+    "@configImportErrorReadFailed": {},
+    "engineTimeoutPerformanceWarningTitle": "Isexwayiso semisebenzi",
+    "@engineTimeoutPerformanceWarningTitle": {},
+    "engineTimeoutPerformanceWarningContent": "Imishini ye-AI iphelelwe yisikhathi. Idivayisi yakho ingase ibe nomsebenzi onganele. Zama ukunciphisa isikhathi sokucabanga kwe-AI ezilungiselelweni. Uma inkinga iqhubeka, thumela impendulo.",
+    "@engineTimeoutPerformanceWarningContent": {}
 }

@@ -4231,5 +4231,9 @@
     "configImportErrorInvalidFile": "Ова датотека није исправна резервна копија подешавања.",
     "@configImportErrorInvalidFile": {},
     "configImportErrorReadFailed": "Није могуће прочитати ову датотеку подешавања.",
-    "@configImportErrorReadFailed": {}
+    "@configImportErrorReadFailed": {},
+    "engineTimeoutPerformanceWarningTitle": "Упозорење о перформансама",
+    "@engineTimeoutPerformanceWarningTitle": {},
+    "engineTimeoutPerformanceWarningContent": "АИ мотор је истекао. Уређај можда нема довољне перформансе. Покушајте да смањите време размишљања АИ-ја у Подешавањима. Ако се проблем настави, пошаљите повратне информације.",
+    "@engineTimeoutPerformanceWarningContent": {}
 }

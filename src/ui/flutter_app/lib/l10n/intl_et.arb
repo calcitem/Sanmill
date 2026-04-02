@@ -4231,5 +4231,9 @@
     "configImportErrorInvalidFile": "See fail ei ole kehtiv seadete varukoopia.",
     "@configImportErrorInvalidFile": {},
     "configImportErrorReadFailed": "Seda seadete faili ei saanud lugeda.",
-    "@configImportErrorReadFailed": {}
+    "@configImportErrorReadFailed": {},
+    "engineTimeoutPerformanceWarningTitle": "Jõudluse hoiatus",
+    "@engineTimeoutPerformanceWarningTitle": {},
+    "engineTimeoutPerformanceWarningContent": "Tehisintellekti mootor aegus. Teie seadmel võib olla ebapiisav jõudlus. Proovige vähendada tehisintellekti mõtlemisaega seadetes. Kui probleem püsib, saatke tagasisidet.",
+    "@engineTimeoutPerformanceWarningContent": {}
 }

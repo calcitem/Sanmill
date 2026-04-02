@@ -4231,5 +4231,9 @@
     "configImportErrorInvalidFile": "Aquest fitxer no és una còpia de seguretat de configuració vàlida.",
     "@configImportErrorInvalidFile": {},
     "configImportErrorReadFailed": "No s’ha pogut llegir aquest fitxer de configuració.",
-    "@configImportErrorReadFailed": {}
+    "@configImportErrorReadFailed": {},
+    "engineTimeoutPerformanceWarningTitle": "Avís de rendiment",
+    "@engineTimeoutPerformanceWarningTitle": {},
+    "engineTimeoutPerformanceWarningContent": "El motor d'IA ha esgotat el temps. El vostre dispositiu pot tenir un rendiment insuficient. Proveu de reduir el temps de reflexió de la IA a Configuració. Si el problema persisteix, envieu comentaris.",
+    "@engineTimeoutPerformanceWarningContent": {}
 }

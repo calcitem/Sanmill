@@ -4231,5 +4231,9 @@
     "configImportErrorInvalidFile": "ಈ ಫೈಲ್ ಮಾನ್ಯ ಸೆಟ್ಟಿಂಗ್‌ಗಳ ಬ್ಯಾಕಪ್ ಅಲ್ಲ.",
     "@configImportErrorInvalidFile": {},
     "configImportErrorReadFailed": "ಈ ಸೆಟ್ಟಿಂಗ್‌ಗಳ ಫೈಲ್ ಅನ್ನು ಓದಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ.",
-    "@configImportErrorReadFailed": {}
+    "@configImportErrorReadFailed": {},
+    "engineTimeoutPerformanceWarningTitle": "ಕಾರ್ಯಕ್ಷಮತೆ ಎಚ್ಚರಿಕೆ",
+    "@engineTimeoutPerformanceWarningTitle": {},
+    "engineTimeoutPerformanceWarningContent": "AI ಎಂಜಿನ್ ಸಮಯ ಮೀರಿದೆ. ನಿಮ್ಮ ಸಾಧನದ ಕಾರ್ಯಕ್ಷಮತೆ ಅಪರ್ಯಾಪ್ತವಾಗಿರಬಹುದು. ಸೆಟ್ಟಿಂಗ್‌ಗಳಲ್ಲಿ AI ಚಿಂತನೆಯ ಸಮಯವನ್ನು ಕಡಿಮೆ ಮಾಡಿ. ಸಮಸ್ಯೆ ಮುಂದುವರಿದರೆ ಪ್ರತಿಕ್ರಿಯೆ ಸಲ್ಲಿಸಿ.",
+    "@engineTimeoutPerformanceWarningContent": {}
 }

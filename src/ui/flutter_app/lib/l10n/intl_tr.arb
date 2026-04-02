@@ -4231,5 +4231,9 @@
     "configImportErrorInvalidFile": "Bu dosya geçerli bir ayar yedeği değil.",
     "@configImportErrorInvalidFile": {},
     "configImportErrorReadFailed": "Bu ayar dosyası okunamadı.",
-    "@configImportErrorReadFailed": {}
+    "@configImportErrorReadFailed": {},
+    "engineTimeoutPerformanceWarningTitle": "Performans uyarısı",
+    "@engineTimeoutPerformanceWarningTitle": {},
+    "engineTimeoutPerformanceWarningContent": "Yapay zeka motoru zaman aşımına uğradı. Cihazınızın performansı yetersiz olabilir. Ayarlarda yapay zeka düşünme süresini azaltmayı deneyin. Sorun devam ederse geri bildirim gönderin.",
+    "@engineTimeoutPerformanceWarningContent": {}
 }

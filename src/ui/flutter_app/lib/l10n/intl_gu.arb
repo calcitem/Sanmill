@@ -4231,5 +4231,9 @@
     "configImportErrorInvalidFile": "આ ફાઇલ માન્ય સેટિંગ્સ બેકઅપ નથી.",
     "@configImportErrorInvalidFile": {},
     "configImportErrorReadFailed": "આ સેટિંગ્સ ફાઇલ વાંચી શકાઈ નહીં.",
-    "@configImportErrorReadFailed": {}
+    "@configImportErrorReadFailed": {},
+    "engineTimeoutPerformanceWarningTitle": "પ્રદર્શન ચેતવણી",
+    "@engineTimeoutPerformanceWarningTitle": {},
+    "engineTimeoutPerformanceWarningContent": "AI એંજિન સમય સમાપ્ત થયું. તમારા ઉપકરણનું પ્રદર્શન અપૂરતું હોઈ શકે છે. સેટિંગ્સમાં AI વિચાર સમય ઘટાડવાનો પ્રયાસ કરો. સમસ્યા ચાલુ રહે તો પ્રતિસાદ મોકલો.",
+    "@engineTimeoutPerformanceWarningContent": {}
 }

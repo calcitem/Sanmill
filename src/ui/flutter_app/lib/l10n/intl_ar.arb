@@ -4231,5 +4231,9 @@
     "configImportErrorInvalidFile": "هذا الملف ليس نسخة احتياطية صالحة للإعدادات.",
     "@configImportErrorInvalidFile": {},
     "configImportErrorReadFailed": "تعذّر قراءة ملف الإعدادات هذا.",
-    "@configImportErrorReadFailed": {}
+    "@configImportErrorReadFailed": {},
+    "engineTimeoutPerformanceWarningTitle": "تحذير الأداء",
+    "@engineTimeoutPerformanceWarningTitle": {},
+    "engineTimeoutPerformanceWarningContent": "انتهت مهلة محرك الذكاء الاصطناعي. قد يكون أداء جهازك غير كافٍ. جرّب تقليل وقت تفكير الذكاء الاصطناعي في الإعدادات. إذا استمرت المشكلة، يُرجى إرسال ملاحظات.",
+    "@engineTimeoutPerformanceWarningContent": {}
 }

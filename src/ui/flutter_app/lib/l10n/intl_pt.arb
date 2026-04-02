@@ -4231,5 +4231,9 @@
     "configImportErrorInvalidFile": "Este ficheiro não é uma cópia de segurança de definições válida.",
     "@configImportErrorInvalidFile": {},
     "configImportErrorReadFailed": "Não foi possível ler este ficheiro de definições.",
-    "@configImportErrorReadFailed": {}
+    "@configImportErrorReadFailed": {},
+    "engineTimeoutPerformanceWarningTitle": "Aviso de desempenho",
+    "@engineTimeoutPerformanceWarningTitle": {},
+    "engineTimeoutPerformanceWarningContent": "O motor de IA excedeu o tempo limite. O seu dispositivo pode ter desempenho insuficiente. Tente reduzir o tempo de reflexão da IA em Definições. Se o problema persistir, envie comentários.",
+    "@engineTimeoutPerformanceWarningContent": {}
 }

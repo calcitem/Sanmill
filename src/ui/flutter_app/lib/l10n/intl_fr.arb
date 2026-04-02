@@ -4231,5 +4231,9 @@
     "configImportErrorInvalidFile": "Ce fichier n’est pas une sauvegarde de paramètres valide.",
     "@configImportErrorInvalidFile": {},
     "configImportErrorReadFailed": "Impossible de lire ce fichier de paramètres.",
-    "@configImportErrorReadFailed": {}
+    "@configImportErrorReadFailed": {},
+    "engineTimeoutPerformanceWarningTitle": "Avertissement de performances",
+    "@engineTimeoutPerformanceWarningTitle": {},
+    "engineTimeoutPerformanceWarningContent": "Le moteur d'IA a expiré. Les performances de votre appareil peuvent être insuffisantes. Essayez de réduire le temps de réflexion de l'IA dans les Paramètres. Si le problème persiste, envoyez des commentaires.",
+    "@engineTimeoutPerformanceWarningContent": {}
 }

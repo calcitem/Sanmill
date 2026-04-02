@@ -4231,5 +4231,9 @@
     "configImportErrorInvalidFile": "Bu fayl etibarlı parametrlər ehtiyat nüsxəsi deyil.",
     "@configImportErrorInvalidFile": {},
     "configImportErrorReadFailed": "Bu parametrlər faylını oxumaq mümkün olmadı.",
-    "@configImportErrorReadFailed": {}
+    "@configImportErrorReadFailed": {},
+    "engineTimeoutPerformanceWarningTitle": "Performans xəbərdarlığı",
+    "@engineTimeoutPerformanceWarningTitle": {},
+    "engineTimeoutPerformanceWarningContent": "Süni intellekt mühərriki vaxtı bitdi. Cihazınızın performansı kifayət etməyə bilər. Parametrlərdə süni intellekt düşünmə vaxtını azaltmağı sınayın. Problem davam edərsə, əks əlaqə göndərin.",
+    "@engineTimeoutPerformanceWarningContent": {}
 }

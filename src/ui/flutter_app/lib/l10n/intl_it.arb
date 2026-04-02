@@ -4231,5 +4231,9 @@
     "configImportErrorInvalidFile": "Questo file non è un backup di impostazioni valido.",
     "@configImportErrorInvalidFile": {},
     "configImportErrorReadFailed": "Impossibile leggere questo file di impostazioni.",
-    "@configImportErrorReadFailed": {}
+    "@configImportErrorReadFailed": {},
+    "engineTimeoutPerformanceWarningTitle": "Avviso sulle prestazioni",
+    "@engineTimeoutPerformanceWarningTitle": {},
+    "engineTimeoutPerformanceWarningContent": "Il motore IA ha superato il tempo limite. Il dispositivo potrebbe avere prestazioni insufficienti. Prova a ridurre il tempo di riflessione dell'IA nelle Impostazioni. Se il problema persiste, invia un feedback.",
+    "@engineTimeoutPerformanceWarningContent": {}
 }

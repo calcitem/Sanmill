@@ -4271,5 +4271,13 @@
     "configImportErrorInvalidFile": "该文件不是有效的设置备份。",
     "@configImportErrorInvalidFile": {},
     "configImportErrorReadFailed": "无法读取该设置文件。",
-    "@configImportErrorReadFailed": {}
+    "@configImportErrorReadFailed": {},
+    "engineTimeoutPerformanceWarningTitle": "性能警告",
+    "@engineTimeoutPerformanceWarningTitle": {
+        "description": "Title of dialog shown when AI engine times out due to insufficient performance"
+    },
+    "engineTimeoutPerformanceWarningContent": "AI 引擎超时，您的设备可能性能不足。建议在设置中降低 AI 思考时间。如问题持续，请通过反馈功能告知我们。",
+    "@engineTimeoutPerformanceWarningContent": {
+        "description": "Content of dialog shown when AI engine times out due to insufficient performance"
+    }
 }

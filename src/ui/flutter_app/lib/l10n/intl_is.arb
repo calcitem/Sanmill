@@ -4231,5 +4231,9 @@
     "configImportErrorInvalidFile": "Þessi skrá er ekki gild öryggisafrit af stillingum.",
     "@configImportErrorInvalidFile": {},
     "configImportErrorReadFailed": "Ekki tókst að lesa þessa stillingaskrá.",
-    "@configImportErrorReadFailed": {}
+    "@configImportErrorReadFailed": {},
+    "engineTimeoutPerformanceWarningTitle": "Afköst viðvörun",
+    "@engineTimeoutPerformanceWarningTitle": {},
+    "engineTimeoutPerformanceWarningContent": "Gervigreindarvélin rann út af tíma. Tækið þitt kann að hafa ófullnægjandi afköst. Reyndu að minnka hugsunartíma gervigreindar í Stillingum. Ef vandamálið heldur áfram, sendu endurgjöf.",
+    "@engineTimeoutPerformanceWarningContent": {}
 }

@@ -4231,5 +4231,9 @@
     "configImportErrorInvalidFile": "මෙම ගොනුව වලංගු සැකසුම් උපස්ථයක් නොවේ.",
     "@configImportErrorInvalidFile": {},
     "configImportErrorReadFailed": "මෙම සැකසුම් ගොනුව කියවිය නොහැකි විය.",
-    "@configImportErrorReadFailed": {}
+    "@configImportErrorReadFailed": {},
+    "engineTimeoutPerformanceWarningTitle": "කාර්ය සාධන අනතුරු ඇඟවීම",
+    "@engineTimeoutPerformanceWarningTitle": {},
+    "engineTimeoutPerformanceWarningContent": "AI එන්ජිම කාලය ඉකුත් විය. ඔබගේ උපාංගයේ කාර්ය සාධනය ප්‍රමාණවත් නොවිය හැක. සැකසුම් තුළ AI සිතීමේ කාලය අඩු කරන්න. ගැටලුව දිගටම තිබේ නම් ප්‍රතිපෝෂණය යොමු කරන්න.",
+    "@engineTimeoutPerformanceWarningContent": {}
 }

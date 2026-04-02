@@ -4231,5 +4231,9 @@
     "configImportErrorInvalidFile": "Оваа датотека не е валидна резервна копија на поставки.",
     "@configImportErrorInvalidFile": {},
     "configImportErrorReadFailed": "Не можеше да се прочита оваа датотека со поставки.",
-    "@configImportErrorReadFailed": {}
+    "@configImportErrorReadFailed": {},
+    "engineTimeoutPerformanceWarningTitle": "Предупредување за перформанси",
+    "@engineTimeoutPerformanceWarningTitle": {},
+    "engineTimeoutPerformanceWarningContent": "AI моторот истече. Вашиот уред може да има недоволни перформанси. Обидете се да го намалите времето за размислување на AI во Поставки. Ако проблемот продолжи, испратете повратни информации.",
+    "@engineTimeoutPerformanceWarningContent": {}
 }

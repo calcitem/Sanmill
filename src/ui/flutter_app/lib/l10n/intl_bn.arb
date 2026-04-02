@@ -4231,5 +4231,9 @@
     "configImportErrorInvalidFile": "এই ফাইলটি কোনো বৈধ সেটিংস ব্যাকআপ নয়।",
     "@configImportErrorInvalidFile": {},
     "configImportErrorReadFailed": "এই সেটিংস ফাইলটি পড়া যায়নি।",
-    "@configImportErrorReadFailed": {}
+    "@configImportErrorReadFailed": {},
+    "engineTimeoutPerformanceWarningTitle": "কার্যক্ষমতা সতর্কতা",
+    "@engineTimeoutPerformanceWarningTitle": {},
+    "engineTimeoutPerformanceWarningContent": "এআই ইঞ্জিনের সময় শেষ হয়ে গেছে। আপনার ডিভাইসের কার্যক্ষমতা অপর্যাপ্ত হতে পারে। সেটিংসে এআই চিন্তার সময় কমিয়ে দেখুন। সমস্যা থাকলে প্রতিক্রিয়া জমা দিন।",
+    "@engineTimeoutPerformanceWarningContent": {}
 }

@@ -4231,5 +4231,9 @@
     "configImportErrorInvalidFile": "이 파일은 유효한 설정 백업이 아닙니다.",
     "@configImportErrorInvalidFile": {},
     "configImportErrorReadFailed": "이 설정 파일을 읽을 수 없습니다.",
-    "@configImportErrorReadFailed": {}
+    "@configImportErrorReadFailed": {},
+    "engineTimeoutPerformanceWarningTitle": "성능 경고",
+    "@engineTimeoutPerformanceWarningTitle": {},
+    "engineTimeoutPerformanceWarningContent": "AI 엔진이 시간 초과되었습니다. 기기 성능이 부족할 수 있습니다. 설정에서 AI 생각 시간을 줄여 보세요. 문제가 계속되면 피드백을 보내 주세요.",
+    "@engineTimeoutPerformanceWarningContent": {}
 }

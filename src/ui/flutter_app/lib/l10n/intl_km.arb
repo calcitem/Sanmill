@@ -4231,5 +4231,9 @@
     "configImportErrorInvalidFile": "ឯកសារនេះមិនមែនជាការបម្រុងការកំណត់ត្រឹមត្រូវទេ។",
     "@configImportErrorInvalidFile": {},
     "configImportErrorReadFailed": "មិនអាចអានឯកសារការកំណត់នេះបានទេ។",
-    "@configImportErrorReadFailed": {}
+    "@configImportErrorReadFailed": {},
+    "engineTimeoutPerformanceWarningTitle": "ការព្រមានអំពីការអនុវត្ត",
+    "@engineTimeoutPerformanceWarningTitle": {},
+    "engineTimeoutPerformanceWarningContent": "ម៉ាស៊ីន AI អស់ពេល។ ឧបករណ៍របស់អ្នកអាចមានការអនុវត្តមិនគ្រប់គ្រាន់។ សាកល្បងកាត់បន្ថយពេលវិភាគរបស់ AI ក្នុងការកំណត់។ បើបញ្ហានៅតែមាន សូមផ្ញើមតិកែលម្អ។",
+    "@engineTimeoutPerformanceWarningContent": {}
 }

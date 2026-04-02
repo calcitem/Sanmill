@@ -4387,5 +4387,13 @@
     "configImportErrorInvalidFile": "This file is not a valid settings backup.",
     "@configImportErrorInvalidFile": {},
     "configImportErrorReadFailed": "Could not read this settings file.",
-    "@configImportErrorReadFailed": {}
+    "@configImportErrorReadFailed": {},
+    "engineTimeoutPerformanceWarningTitle": "Performance Warning",
+    "@engineTimeoutPerformanceWarningTitle": {
+        "description": "Title of dialog shown when AI engine times out due to insufficient performance"
+    },
+    "engineTimeoutPerformanceWarningContent": "The AI engine timed out. Your device may have insufficient performance. Try reducing the AI thinking time in Settings. If the issue persists, please submit Feedback.",
+    "@engineTimeoutPerformanceWarningContent": {
+        "description": "Content of dialog shown when AI engine times out due to insufficient performance"
+    }
 }

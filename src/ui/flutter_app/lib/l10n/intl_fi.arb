@@ -4231,5 +4231,9 @@
     "configImportErrorInvalidFile": "Tämä tiedosto ei ole kelvollinen asetusten varmuuskopio.",
     "@configImportErrorInvalidFile": {},
     "configImportErrorReadFailed": "Tätä asetustiedostoa ei voitu lukea.",
-    "@configImportErrorReadFailed": {}
+    "@configImportErrorReadFailed": {},
+    "engineTimeoutPerformanceWarningTitle": "Suorituskykyvaroitus",
+    "@engineTimeoutPerformanceWarningTitle": {},
+    "engineTimeoutPerformanceWarningContent": "Tekoälymoottori aikakatkaistiin. Laitteesi suorituskyky voi olla riittämätön. Kokeile vähentää tekoälyn ajatteluaikaa asetuksissa. Jos ongelma jatkuu, lähetä palautetta.",
+    "@engineTimeoutPerformanceWarningContent": {}
 }

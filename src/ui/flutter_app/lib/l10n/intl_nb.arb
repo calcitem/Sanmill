@@ -4231,5 +4231,9 @@
     "configImportErrorInvalidFile": "Denne filen er ikke en gyldig sikkerhetskopi av innstillinger.",
     "@configImportErrorInvalidFile": {},
     "configImportErrorReadFailed": "Kunne ikke lese denne innstillingsfilen.",
-    "@configImportErrorReadFailed": {}
+    "@configImportErrorReadFailed": {},
+    "engineTimeoutPerformanceWarningTitle": "Ytelsesadvarsel",
+    "@engineTimeoutPerformanceWarningTitle": {},
+    "engineTimeoutPerformanceWarningContent": "AI-motoren fikk tidsavbrudd. Enheten din kan ha utilstrekkelig ytelse. Prøv å redusere AI-tenketid i Innstillinger. Hvis problemet vedvarer, send tilbakemelding.",
+    "@engineTimeoutPerformanceWarningContent": {}
 }

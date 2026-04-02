@@ -4231,5 +4231,9 @@
     "configImportErrorInvalidFile": "File ini bukan cadangan pengaturan yang valid.",
     "@configImportErrorInvalidFile": {},
     "configImportErrorReadFailed": "Tidak dapat membaca file pengaturan ini.",
-    "@configImportErrorReadFailed": {}
+    "@configImportErrorReadFailed": {},
+    "engineTimeoutPerformanceWarningTitle": "Peringatan kinerja",
+    "@engineTimeoutPerformanceWarningTitle": {},
+    "engineTimeoutPerformanceWarningContent": "Mesin AI habis waktu. Perangkat Anda mungkin kurang bertenaga. Coba kurangi waktu berpikir AI di Pengaturan. Jika masalah berlanjut, kirimkan umpan balik.",
+    "@engineTimeoutPerformanceWarningContent": {}
 }

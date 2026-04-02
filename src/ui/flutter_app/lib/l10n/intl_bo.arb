@@ -4231,5 +4231,9 @@
     "configImportErrorInvalidFile": "ཡིག་ཆ་འདི་སྒྲིག་བཀོད་གསོག་འཇོག་ནུས་ལྡན་ཞིག་མིན།",
     "@configImportErrorInvalidFile": {},
     "configImportErrorReadFailed": "སྒྲིག་བཀོད་ཡིག་ཆ་འདི་ཀློག་ཐབས་བྲལ།",
-    "@configImportErrorReadFailed": {}
+    "@configImportErrorReadFailed": {},
+    "engineTimeoutPerformanceWarningTitle": "ནུས་པའི་ཉེན་བརྡ།",
+    "@engineTimeoutPerformanceWarningTitle": {},
+    "engineTimeoutPerformanceWarningContent": "AI གློག་ཀླད་ཀྱི་དུས་ཚོད་ཟིན་སོང་། ཁྱེད་ཀྱི་ཐབས་འཕྲུལ་གྱི་ནུས་པ་མི་འདང་བ་ཡིན་སྲིད། སྒྲིག་འགོད་ནས AI བསམ་བློའི་དུས་ཚོད་ཉུང་དུ་གཏོང་རོགས། གནད་དོན་རྒྱུན་མཐུད་ན་འབྲེལ་ཡོད་ལན་སྤྲོད་རོགས།",
+    "@engineTimeoutPerformanceWarningContent": {}
 }

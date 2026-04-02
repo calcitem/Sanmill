@@ -4231,5 +4231,9 @@
     "configImportErrorInvalidFile": "Այս ֆայլը վավեր կարգավորումների պատճեն չէ։",
     "@configImportErrorInvalidFile": {},
     "configImportErrorReadFailed": "Հնարավոր չեղավ կարդալ այս կարգավորումների ֆայլը։",
-    "@configImportErrorReadFailed": {}
+    "@configImportErrorReadFailed": {},
+    "engineTimeoutPerformanceWarningTitle": "Արտադրողականության նախազգուշացում",
+    "@engineTimeoutPerformanceWarningTitle": {},
+    "engineTimeoutPerformanceWarningContent": "ՏՏ շարժիչը ժամանակը լրացրեց։ Ձեր սարքի արտադրողականությունը կարող է անբավարար լինել։ Փորձեք կրճատել ՏՏ մտածելու ժամանակը Կարգավորումներում։ Եթե խնդիրը շարունակվի, ուղարկեք արձագանք։",
+    "@engineTimeoutPerformanceWarningContent": {}
 }

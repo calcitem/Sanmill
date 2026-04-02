@@ -4231,5 +4231,9 @@
     "configImportErrorInvalidFile": "Šis failas nėra tinkama nustatymų atsarginė kopija.",
     "@configImportErrorInvalidFile": {},
     "configImportErrorReadFailed": "Nepavyko perskaityti šio nustatymų failo.",
-    "@configImportErrorReadFailed": {}
+    "@configImportErrorReadFailed": {},
+    "engineTimeoutPerformanceWarningTitle": "Našumo įspėjimas",
+    "@engineTimeoutPerformanceWarningTitle": {},
+    "engineTimeoutPerformanceWarningContent": "DI variklis viršijo laukimo laiką. Įrenginio našumas gali būti nepakankamas. Bandykite sumažinti DI mąstymo laiką nustatymuose. Jei problema išlieka, atsiųskite atsiliepimą.",
+    "@engineTimeoutPerformanceWarningContent": {}
 }

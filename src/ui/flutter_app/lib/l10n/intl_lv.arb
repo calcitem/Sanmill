@@ -4231,5 +4231,9 @@
     "configImportErrorInvalidFile": "Šis fails nav derīgs iestatījumu dublējums.",
     "@configImportErrorInvalidFile": {},
     "configImportErrorReadFailed": "Neizdevās nolasīt šo iestatījumu failu.",
-    "@configImportErrorReadFailed": {}
+    "@configImportErrorReadFailed": {},
+    "engineTimeoutPerformanceWarningTitle": "Veiktspējas brīdinājums",
+    "@engineTimeoutPerformanceWarningTitle": {},
+    "engineTimeoutPerformanceWarningContent": "MI dzinējam beidzās laiks. Ierīces veiktspēja var būt nepietiekama. Mēģiniet samazināt MI domāšanas laiku iestatījumos. Ja problēma saglabājas, nosūtiet atsauksmi.",
+    "@engineTimeoutPerformanceWarningContent": {}
 }

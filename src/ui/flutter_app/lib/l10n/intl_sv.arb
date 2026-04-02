@@ -4231,5 +4231,9 @@
     "configImportErrorInvalidFile": "Den här filen är inte en giltig säkerhetskopia av inställningar.",
     "@configImportErrorInvalidFile": {},
     "configImportErrorReadFailed": "Det gick inte att läsa den här inställningsfilen.",
-    "@configImportErrorReadFailed": {}
+    "@configImportErrorReadFailed": {},
+    "engineTimeoutPerformanceWarningTitle": "Prestandavarning",
+    "@engineTimeoutPerformanceWarningTitle": {},
+    "engineTimeoutPerformanceWarningContent": "AI-motorn fick timeout. Din enhet kan ha otillräcklig prestanda. Försök minska AI-tänketid under Inställningar. Om problemet kvarstår, skicka gärna feedback.",
+    "@engineTimeoutPerformanceWarningContent": {}
 }

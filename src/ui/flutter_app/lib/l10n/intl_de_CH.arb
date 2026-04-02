@@ -3523,5 +3523,9 @@
     "configImportErrorInvalidFile": "Diese Datei ist keine gültige Einstellungssicherung.",
     "@configImportErrorInvalidFile": {},
     "configImportErrorReadFailed": "Diese Einstellungsdatei konnte nicht gelesen werden.",
-    "@configImportErrorReadFailed": {}
+    "@configImportErrorReadFailed": {},
+    "engineTimeoutPerformanceWarningTitle": "Leistungswarnung",
+    "@engineTimeoutPerformanceWarningTitle": {},
+    "engineTimeoutPerformanceWarningContent": "Die KI-Engine hat ein Zeitlimit überschritten. Ihr Gerät ist möglicherweise leistungsschwach. Verringern Sie die KI-Denkzeit in den Einstellungen. Wenn das Problem weiterhin besteht, senden Sie bitte Feedback.",
+    "@engineTimeoutPerformanceWarningContent": {}
 }

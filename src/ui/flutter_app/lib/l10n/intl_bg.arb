@@ -4231,5 +4231,9 @@
     "configImportErrorInvalidFile": "Този файл не е валиден архив с настройки.",
     "@configImportErrorInvalidFile": {},
     "configImportErrorReadFailed": "Този файл с настройки не можа да бъде прочетен.",
-    "@configImportErrorReadFailed": {}
+    "@configImportErrorReadFailed": {},
+    "engineTimeoutPerformanceWarningTitle": "Предупреждение за производителност",
+    "@engineTimeoutPerformanceWarningTitle": {},
+    "engineTimeoutPerformanceWarningContent": "Двигателят на ИИ превиши времето за изчакване. Устройството ви може да е с недостатъчна производителност. Опитайте да намалите времето за мислене на ИИ в Настройки. Ако проблемът продължи, изпратете обратна връзка.",
+    "@engineTimeoutPerformanceWarningContent": {}
 }

@@ -4231,5 +4231,9 @@
     "configImportErrorInvalidFile": "Tento soubor není platná záloha nastavení.",
     "@configImportErrorInvalidFile": {},
     "configImportErrorReadFailed": "Tento soubor nastavení nelze přečíst.",
-    "@configImportErrorReadFailed": {}
+    "@configImportErrorReadFailed": {},
+    "engineTimeoutPerformanceWarningTitle": "Varování výkonu",
+    "@engineTimeoutPerformanceWarningTitle": {},
+    "engineTimeoutPerformanceWarningContent": "Vypršel časový limit motoru AI. Vaše zařízení může mít nedostatečný výkon. Zkuste v Nastavení snížit čas přemýšlení AI. Pokud problém přetrvává, odešlete zpětnou vazbu.",
+    "@engineTimeoutPerformanceWarningContent": {}
 }

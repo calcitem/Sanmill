@@ -4235,5 +4235,9 @@
     "configImportErrorInvalidFile": "یہ فائل درست ترتیبات کا بیک اپ نہیں ہے۔",
     "@configImportErrorInvalidFile": {},
     "configImportErrorReadFailed": "اس ترتیبات کی فائل کو نہیں پڑھا جا سکا۔",
-    "@configImportErrorReadFailed": {}
+    "@configImportErrorReadFailed": {},
+    "engineTimeoutPerformanceWarningTitle": "کارکردگی کی تنبیہ",
+    "@engineTimeoutPerformanceWarningTitle": {},
+    "engineTimeoutPerformanceWarningContent": "AI انجن کی مدت ختم ہو گئی۔ آپ کے آلہ کی کارکردگی ناکافی ہو سکتی ہے۔ ترتیبات میں AI سوچنے کا وقت کم کریں۔ مسئلہ برقرار رہے تو رائے بھیجیں۔",
+    "@engineTimeoutPerformanceWarningContent": {}
 }

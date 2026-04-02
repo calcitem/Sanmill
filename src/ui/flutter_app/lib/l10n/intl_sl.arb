@@ -4231,5 +4231,9 @@
     "configImportErrorInvalidFile": "Ta datoteka ni veljavna varnostna kopija nastavitev.",
     "@configImportErrorInvalidFile": {},
     "configImportErrorReadFailed": "Te datoteke z nastavitvami ni bilo mogoče prebrati.",
-    "@configImportErrorReadFailed": {}
+    "@configImportErrorReadFailed": {},
+    "engineTimeoutPerformanceWarningTitle": "Opozorilo o zmogljivosti",
+    "@engineTimeoutPerformanceWarningTitle": {},
+    "engineTimeoutPerformanceWarningContent": "Pogon UI je potekel. Vaša naprava morda nima zadostne zmogljivosti. Poskusite zmanjšati čas razmišljanja UI v Nastavitvah. Če težava traja, pošljite povratne informacije.",
+    "@engineTimeoutPerformanceWarningContent": {}
 }

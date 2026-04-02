@@ -4231,5 +4231,9 @@
     "configImportErrorInvalidFile": "Hierdie lêer is nie ’n geldige instellingsrugsteun nie.",
     "@configImportErrorInvalidFile": {},
     "configImportErrorReadFailed": "Kon nie hierdie instellingslêer lees nie.",
-    "@configImportErrorReadFailed": {}
+    "@configImportErrorReadFailed": {},
+    "engineTimeoutPerformanceWarningTitle": "Prestasie-waarskuwing",
+    "@engineTimeoutPerformanceWarningTitle": {},
+    "engineTimeoutPerformanceWarningContent": "Die KI-enjin het uitgetel. U toestel het dalk onvoldoende vermoë. Probeer die KI-denktyd in Instellings te verminder. As die probleem voortduur, dien asseblief terugvoer in.",
+    "@engineTimeoutPerformanceWarningContent": {}
 }

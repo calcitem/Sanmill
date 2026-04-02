@@ -4231,5 +4231,9 @@
     "configImportErrorInvalidFile": "Acest fișier nu este o copie de rezervă validă a setărilor.",
     "@configImportErrorInvalidFile": {},
     "configImportErrorReadFailed": "Nu s-a putut citi acest fișier de setări.",
-    "@configImportErrorReadFailed": {}
+    "@configImportErrorReadFailed": {},
+    "engineTimeoutPerformanceWarningTitle": "Avertisment de performanță",
+    "@engineTimeoutPerformanceWarningTitle": {},
+    "engineTimeoutPerformanceWarningContent": "Motorul IA a expirat. Dispozitivul dvs. poate avea performanță insuficientă. Încercați să reduceți timpul de gândire al IA în Setări. Dacă problema persistă, trimiteți feedback.",
+    "@engineTimeoutPerformanceWarningContent": {}
 }

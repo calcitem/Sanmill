@@ -4231,5 +4231,9 @@
     "configImportErrorInvalidFile": "ఈ ఫైల్ చెల్లుబాటు అయ్యే సెట్టింగ్‌ల బ్యాకప్ కాదు.",
     "@configImportErrorInvalidFile": {},
     "configImportErrorReadFailed": "ఈ సెట్టింగ్‌ల ఫైల్‌ను చదవలేకపోయాము.",
-    "@configImportErrorReadFailed": {}
+    "@configImportErrorReadFailed": {},
+    "engineTimeoutPerformanceWarningTitle": "ప్రదర్శన హెచ్చరిక",
+    "@engineTimeoutPerformanceWarningTitle": {},
+    "engineTimeoutPerformanceWarningContent": "AI ఇంజిన్ సమయం ముగిసింది. మీ పరికర ప్రదర్శన తగినంత లేకపోవచ్చు. సెట్టింగ్‌లలో AI ఆలోచన సమయాన్ని తగ్గించండి. సమస్య కొనసాగితే అభిప్రాయం పంపండి.",
+    "@engineTimeoutPerformanceWarningContent": {}
 }
