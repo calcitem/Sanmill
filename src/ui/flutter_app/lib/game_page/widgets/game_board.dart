@@ -145,20 +145,25 @@ class _GameBoardState extends State<GameBoard>
       case AppLifecycleState.paused:
       case AppLifecycleState.inactive:
       case AppLifecycleState.hidden:
-        // App is going to background or becoming inactive
+        // On desktop platforms (Windows/Linux/macOS), losing window focus
+        // triggers inactive/hidden but the app is still fully visible and
+        // usable.  Stopping the engine here would cancel long searches
+        // (e.g. MoveTime=60s) every time the user Alt-Tabs, creating a
+        // cycle where the engine never finishes thinking.
+        if (!kIsWeb &&
+            (Platform.isWindows || Platform.isLinux || Platform.isMacOS)) {
+          break;
+        }
+
+        // Mobile: stop engine and mark inactive to save battery.
         if (!_isAppInBackground) {
           _isAppInBackground = true;
           logger.i("$_logTag App going to background, stopping engine search");
 
-          // Complete all ongoing animations immediately to ensure pieces are in
-          // their final positions when the user returns to the board
           animationManager.completeAllAnimations();
 
-          // Stop any ongoing search to prevent hanging
-          // This will increment the search epoch and set cancellation flag
           GameController().engine.stopSearching();
 
-          // Mark controller as inactive to prevent new searches
           GameController().isControllerActive = false;
         }
         break;
