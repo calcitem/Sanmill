@@ -271,10 +271,12 @@ class Engine {
       // a hard stop to start a fresh search.
       await stopSearching();
       _isSearchCancelled = false;
+      await _drainStaleResponses();
     } else if (moveNow) {
       // Move Now when engine is idle: start a fresh timed search.
       await stopSearching();
       _isSearchCancelled = false;
+      await _drainStaleResponses();
       final String? fen = _getPositionFen();
       if (fen == null) {
         throw const EngineNoBestMove();
@@ -611,6 +613,35 @@ class Engine {
     _isSearchCancelled = true;
 
     await _send("stop");
+  }
+
+  /// Drain any stale responses remaining in the native response queue.
+  ///
+  /// After [stopSearching] cancels a search, the native engine may still
+  /// have produced a response (e.g. "bestmove ...") that sits unread in
+  /// the response ring-buffer.  If left in the queue, the *next* search
+  /// will read it via [_read] and treat it as its own result, causing
+  /// the wrong move to be applied and eventually [EngineNoBestMove].
+  ///
+  /// Call this after [stopSearching] and before sending a new search.
+  Future<void> _drainStaleResponses() async {
+    // Brief delay so the native engine can process "stop" and flush output.
+    await Future<void>.delayed(const Duration(milliseconds: 20));
+
+    int drainedCount = 0;
+    while (true) {
+      final String? stale = await _read();
+      if (stale == null || stale.isEmpty) {
+        break;
+      }
+      drainedCount++;
+      logger.w("$_logTag Drained stale response: $stale");
+    }
+    if (drainedCount > 0) {
+      logger.w(
+        "$_logTag Drained $drainedCount stale response(s) from previous search",
+      );
+    }
   }
 
   /// Soft stop: ask the engine to stop as soon as possible without
