@@ -55,8 +55,7 @@ class EngineFailureDialog extends StatelessWidget {
 
     final bool? shouldReport = await showDialog<bool>(
       context: context,
-      builder: (_) =>
-          EngineFailureDialog(diagnosticContext: diagnosticContext),
+      builder: (_) => EngineFailureDialog(diagnosticContext: diagnosticContext),
     );
 
     if (shouldReport == true) {
@@ -93,8 +92,7 @@ class EngineFailureDialog extends StatelessWidget {
               S.of(context).engineFailureContent,
               key: const Key('engine_failure_dialog_content'),
               style: TextStyle(
-                fontSize:
-                    AppTheme.textScaler.scale(AppTheme.defaultFontSize),
+                fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize),
               ),
             ),
             if (diagnosticContext.isNotEmpty) ...<Widget>[
@@ -103,17 +101,16 @@ class EngineFailureDialog extends StatelessWidget {
                 width: double.infinity,
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: Theme.of(context)
-                      .colorScheme
-                      .surfaceContainerHighest,
+                  color: Theme.of(context).colorScheme.surfaceContainerHighest,
                   borderRadius: BorderRadius.circular(4),
                 ),
                 child: SelectableText(
                   diagnosticContext,
                   style: TextStyle(
                     fontFamily: 'monospace',
-                    fontSize: AppTheme.textScaler
-                        .scale(AppTheme.defaultFontSize - 2),
+                    fontSize: AppTheme.textScaler.scale(
+                      AppTheme.defaultFontSize - 2,
+                    ),
                   ),
                 ),
               ),
@@ -127,8 +124,7 @@ class EngineFailureDialog extends StatelessWidget {
           child: Text(
             S.of(context).sendReport,
             style: TextStyle(
-              fontSize:
-                  AppTheme.textScaler.scale(AppTheme.defaultFontSize),
+              fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize),
             ),
           ),
           onPressed: () => Navigator.pop(context, true),
@@ -138,8 +134,7 @@ class EngineFailureDialog extends StatelessWidget {
           child: Text(
             S.of(context).ok,
             style: TextStyle(
-              fontSize:
-                  AppTheme.textScaler.scale(AppTheme.defaultFontSize),
+              fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize),
             ),
           ),
           onPressed: () => Navigator.pop(context, false),

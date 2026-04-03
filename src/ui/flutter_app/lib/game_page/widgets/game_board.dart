@@ -578,16 +578,14 @@ class _GameBoardState extends State<GameBoard>
                           context,
                           diagnosticContext:
                               EngineFailureDialog.buildDiagnosticContext(
-                            fen: GameController().position.fen,
-                            phase: GameController().position.phase.name,
-                            sideToMove: GameController()
-                                .position
-                                .sideToMove
-                                .playerName(context),
-                            lastMove: moves.isNotEmpty
-                                ? moves.last.notation
-                                : null,
-                          ),
+                                fen: GameController().position.fen,
+                                phase: GameController().position.phase.name,
+                                sideToMove: GameController().position.sideToMove
+                                    .playerName(context),
+                                lastMove: moves.isNotEmpty
+                                    ? moves.last.notation
+                                    : null,
+                              ),
                         );
                       }
                       break;

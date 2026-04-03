@@ -1009,8 +1009,10 @@ class GameController {
 
     GameController().disableStats = true;
 
-    final EngineResponse engineResponse =
-        await engineToGo(context, isMoveNow: isEngineRunning);
+    final EngineResponse engineResponse = await engineToGo(
+      context,
+      isMoveNow: isEngineRunning,
+    );
 
     if (!context.mounted) {
       if (reversed) {
