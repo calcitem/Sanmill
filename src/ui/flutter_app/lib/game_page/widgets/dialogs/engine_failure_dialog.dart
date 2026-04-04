@@ -58,7 +58,7 @@ class EngineFailureDialog extends StatelessWidget {
       builder: (_) => EngineFailureDialog(diagnosticContext: diagnosticContext),
     );
 
-    if (shouldReport == true) {
+    if (shouldReport ?? false) {
       _reportError(diagnosticContext);
     }
   }

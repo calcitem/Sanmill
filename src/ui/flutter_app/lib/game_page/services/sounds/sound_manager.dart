@@ -70,6 +70,10 @@ class SoundManager {
 
   bool _allSoundsLoaded = false;
 
+  /// Serializes [loadSounds] so concurrent callers cannot leave a half-built
+  /// player map or flip [_allSoundsLoaded] to false after a successful load.
+  Future<void> _loadSoundsSerial = Future<void>.value();
+
   static const String _logTag = "[audio]";
 
   Future<void> _ensureGlobalAudioContextConfigured() async {
@@ -87,6 +91,16 @@ class SoundManager {
   }
 
   Future<void> loadSounds() async {
+    await (_loadSoundsSerial = _loadSoundsSerial.then((_) async {
+      try {
+        await _loadSoundsBody();
+      } catch (e, s) {
+        logger.e("$_logTag loadSounds: $e\n$s");
+      }
+    }));
+  }
+
+  Future<void> _loadSoundsBody() async {
     await _ensureGlobalAudioContextConfigured();
     soundThemeName = DB().generalSettings.soundTheme?.name ?? 'ball';
 
@@ -96,6 +110,7 @@ class SoundManager {
       return;
     }
 
+    final Map<Sound, SoundPlayer> newPlayers = <Sound, SoundPlayer>{};
     try {
       for (final Sound sound in sounds.keys) {
         // Adjust the file path by replacing 'assets/' with ''.
@@ -103,13 +118,23 @@ class SoundManager {
         final AudioPlayer player = AudioPlayer();
         await player.setAudioContext(_mixWithOthersAudioContext);
         await player.setReleaseMode(ReleaseMode.stop);
-        // No need to set the source here; we'll set it and play immediately in playTone.
-        _players[sound] = SoundPlayer(player, fileName);
+        newPlayers[sound] = SoundPlayer(player, fileName);
       }
+      for (final SoundPlayer soundPlayer in _players.values) {
+        await soundPlayer.player.dispose();
+      }
+      _players
+        ..clear()
+        ..addAll(newPlayers);
       _allSoundsLoaded = true;
     } catch (e) {
+      for (final SoundPlayer soundPlayer in newPlayers.values) {
+        await soundPlayer.player.dispose();
+      }
       logger.e("Failed to load sound: $e");
-      _allSoundsLoaded = false;
+      if (_players.isEmpty) {
+        _allSoundsLoaded = false;
+      }
     }
   }
 
@@ -199,7 +224,9 @@ class SoundManager {
       return;
     }
     try {
-      // Set the source and play immediately to avoid delays on Linux.
+      // Stop first so rapid repeats on the same player still emit audio on
+      // platforms where play() is a no-op while the clip is playing.
+      await soundPlayer.player.stop();
       await soundPlayer.player.play(AssetSource(soundPlayer.fileName));
     } catch (e) {
       logger.e("$_logTag Error playing sound: $e");
@@ -252,6 +279,7 @@ class SoundManager {
         }
       });
 
+      await soundPlayer.player.stop();
       await soundPlayer.player.play(AssetSource(soundPlayer.fileName));
       await done.future.timeout(
         timeout,
