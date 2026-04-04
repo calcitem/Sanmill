@@ -4241,5 +4241,17 @@
     "engineFailureContent": "AI շարժիչը չկարողացավ քայլ առաջարկել: Սա անսպասելի ներքին սխալ է: Ուղարկե՞լ ախտորոշման հաշվետվություն հետաքննության համար:",
     "@engineFailureContent": {},
     "sendReport": "Ուղարկել հաշվետվությունը",
-    "@sendReport": {}
+    "@sendReport": {},
+    "qrCodeScannerDesktopHint": "Այս համակարգչում չի օգտագործվում տեսախցիկի ուղիղ նախադիտումը։ Ընտրեք QR կոդ պարունակող պատկերի ֆայլ։",
+    "@qrCodeScannerDesktopHint": {},
+    "qrCodeScannerWindowsScreenCaptureHint": "Կարող եք նաև օգտագործել ստորև գտնվող կոճակները էկրանը գրավելու համար՝ տարածք կամ ամբողջ հիմնական էկրան։",
+    "@qrCodeScannerWindowsScreenCaptureHint": {},
+    "qrCodePickImageFile": "Ընտրել պատկերի ֆայլ",
+    "@qrCodePickImageFile": {},
+    "qrCodeSnipScreenRegion": "Կտրել էկրանի տարածք",
+    "@qrCodeSnipScreenRegion": {},
+    "qrCodeCaptureFullScreen": "Գրավել ամբողջ էկրանը",
+    "@qrCodeCaptureFullScreen": {},
+    "qrCodeScreenCaptureFailed": "Էկրանի գրավումը ձախողվեց",
+    "@qrCodeScreenCaptureFailed": {}
 }

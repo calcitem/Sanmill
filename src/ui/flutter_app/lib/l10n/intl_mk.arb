@@ -4241,5 +4241,17 @@
     "engineFailureContent": "AI моторот не можеше да даде потег. Ова е неочеквана внатрешна грешка. Дали сакате да испратите дијагностички извештај за истрага?",
     "@engineFailureContent": {},
     "sendReport": "Испрати извештај",
-    "@sendReport": {}
+    "@sendReport": {},
+    "qrCodeScannerDesktopHint": "На овој компјутер не се користи преглед во живо од камерата. Изберете датотека со слика што содржи QR-код.",
+    "@qrCodeScannerDesktopHint": {},
+    "qrCodeScannerWindowsScreenCaptureHint": "Можете и да ги користите копчињата подолу за фаќање на екранот: регион или целиот примарен дисплеј.",
+    "@qrCodeScannerWindowsScreenCaptureHint": {},
+    "qrCodePickImageFile": "Избери датотека со слика",
+    "@qrCodePickImageFile": {},
+    "qrCodeSnipScreenRegion": "Исечи регион на екранот",
+    "@qrCodeSnipScreenRegion": {},
+    "qrCodeCaptureFullScreen": "Фати цел екран",
+    "@qrCodeCaptureFullScreen": {},
+    "qrCodeScreenCaptureFailed": "Фаќањето на екранот не успеа",
+    "@qrCodeScreenCaptureFailed": {}
 }

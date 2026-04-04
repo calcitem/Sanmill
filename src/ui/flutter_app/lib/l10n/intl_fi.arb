@@ -4241,5 +4241,17 @@
     "engineFailureContent": "AI-moottori ei tuottanut siirtoa. Tämä on odottamaton sisäinen virhe. Haluatko lähettää diagnostiikkaraportin tutkimusta varten?",
     "@engineFailureContent": {},
     "sendReport": "Lähetä raportti",
-    "@sendReport": {}
+    "@sendReport": {},
+    "qrCodeScannerDesktopHint": "Tällä tietokoneella ei käytetä kameran live-esikatselua. Valitse kuvatiedosto, jossa on QR-koodi.",
+    "@qrCodeScannerDesktopHint": {},
+    "qrCodeScannerWindowsScreenCaptureHint": "Voit myös käyttää alla olevia painikkeita näytön kaappaamiseen: alue tai koko päänäyttö.",
+    "@qrCodeScannerWindowsScreenCaptureHint": {},
+    "qrCodePickImageFile": "Valitse kuvatiedosto",
+    "@qrCodePickImageFile": {},
+    "qrCodeSnipScreenRegion": "Rajaa näytön alue",
+    "@qrCodeSnipScreenRegion": {},
+    "qrCodeCaptureFullScreen": "Kaappaa koko näyttö",
+    "@qrCodeCaptureFullScreen": {},
+    "qrCodeScreenCaptureFailed": "Näytön kaappaus epäonnistui",
+    "@qrCodeScreenCaptureFailed": {}
 }

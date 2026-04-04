@@ -4241,5 +4241,17 @@
     "engineFailureContent": "AI එන්ජිනය චලනයක් ජනනය කිරීමට අසමත් විය. මෙය අනපේක්ෂිත අභ්‍යන්තර දෝෂයකි. විමර්ශනයට උපකාරී වීමට විනිශ්චය වාර්තාවක් යැවීමට කැමතිද?",
     "@engineFailureContent": {},
     "sendReport": "වාර්තාව යවන්න",
-    "@sendReport": {}
+    "@sendReport": {},
+    "qrCodeScannerDesktopHint": "මෙම පරිගණකයේ සජීවී කැමරා පෙරදසුන භාවිත නොකරයි. QR කේතයක් ඇති රූප ගොනුවක් තෝරන්න.",
+    "@qrCodeScannerDesktopHint": {},
+    "qrCodeScannerWindowsScreenCaptureHint": "තිරය ග්‍රහණයට පහත බොත්තම් ද භාවිත කළ හැක: ප්‍රදේශයක් හෝ සම්පූර්ණ ප්‍රාථමික සංදර්ශකය.",
+    "@qrCodeScannerWindowsScreenCaptureHint": {},
+    "qrCodePickImageFile": "රූප ගොනුව තෝරන්න",
+    "@qrCodePickImageFile": {},
+    "qrCodeSnipScreenRegion": "තිර ප්‍රදේශය කපන්න",
+    "@qrCodeSnipScreenRegion": {},
+    "qrCodeCaptureFullScreen": "සම්පූර්ණ තිරය ග්‍රහණය",
+    "@qrCodeCaptureFullScreen": {},
+    "qrCodeScreenCaptureFailed": "තිර ග්‍රහණය අසාර්ථක විය",
+    "@qrCodeScreenCaptureFailed": {}
 }

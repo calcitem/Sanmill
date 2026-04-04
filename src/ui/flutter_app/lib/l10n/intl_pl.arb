@@ -4241,5 +4241,17 @@
     "engineFailureContent": "Silnik AI nie mógł wygenerować ruchu. To nieoczekiwany błąd wewnętrzny. Czy chcesz wysłać raport diagnostyczny, aby pomóc nam zbadać problem?",
     "@engineFailureContent": {},
     "sendReport": "Wyślij raport",
-    "@sendReport": {}
+    "@sendReport": {},
+    "qrCodeScannerDesktopHint": "Na tym komputerze nie używa się podglądu na żywo z aparatu. Wybierz plik obrazu z kodem QR.",
+    "@qrCodeScannerDesktopHint": {},
+    "qrCodeScannerWindowsScreenCaptureHint": "Możesz też użyć przycisków poniżej, aby przechwycić ekran: region lub cały główny wyświetlacz.",
+    "@qrCodeScannerWindowsScreenCaptureHint": {},
+    "qrCodePickImageFile": "Wybierz plik obrazu",
+    "@qrCodePickImageFile": {},
+    "qrCodeSnipScreenRegion": "Wycinanie obszaru ekranu",
+    "@qrCodeSnipScreenRegion": {},
+    "qrCodeCaptureFullScreen": "Przechwytuj cały ekran",
+    "@qrCodeCaptureFullScreen": {},
+    "qrCodeScreenCaptureFailed": "Przechwycenie ekranu nie powiodło się",
+    "@qrCodeScreenCaptureFailed": {}
 }

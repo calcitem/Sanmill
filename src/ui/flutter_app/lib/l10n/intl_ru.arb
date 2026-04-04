@@ -4241,5 +4241,17 @@
     "engineFailureContent": "ИИ-движок не смог выдать ход. Это неожиданная внутренняя ошибка. Отправить диагностический отчёт, чтобы помочь нам разобраться?",
     "@engineFailureContent": {},
     "sendReport": "Отправить отчёт",
-    "@sendReport": {}
+    "@sendReport": {},
+    "qrCodeScannerDesktopHint": "На этом компьютере не используется предпросмотр с камеры в реальном времени. Выберите файл изображения с QR-кодом.",
+    "@qrCodeScannerDesktopHint": {},
+    "qrCodeScannerWindowsScreenCaptureHint": "Также можно использовать кнопки ниже для захвата экрана: область или весь основной дисплей.",
+    "@qrCodeScannerWindowsScreenCaptureHint": {},
+    "qrCodePickImageFile": "Выбрать файл изображения",
+    "@qrCodePickImageFile": {},
+    "qrCodeSnipScreenRegion": "Выделить область экрана",
+    "@qrCodeSnipScreenRegion": {},
+    "qrCodeCaptureFullScreen": "Захватить весь экран",
+    "@qrCodeCaptureFullScreen": {},
+    "qrCodeScreenCaptureFailed": "Не удалось выполнить захват экрана",
+    "@qrCodeScreenCaptureFailed": {}
 }

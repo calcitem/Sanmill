@@ -4241,5 +4241,17 @@
     "engineFailureContent": "Mesin AI gagal menghasilkan langkah. Ini adalah kesalahan internal yang tidak terduga. Kirim laporan diagnostik untuk membantu kami menyelidiki?",
     "@engineFailureContent": {},
     "sendReport": "Kirim laporan",
-    "@sendReport": {}
+    "@sendReport": {},
+    "qrCodeScannerDesktopHint": "Pratinjau kamera langsung tidak digunakan di komputer ini. Pilih file gambar yang berisi kode QR.",
+    "@qrCodeScannerDesktopHint": {},
+    "qrCodeScannerWindowsScreenCaptureHint": "Anda juga dapat menggunakan tombol di bawah untuk menangkap layar: area atau seluruh tampilan utama.",
+    "@qrCodeScannerWindowsScreenCaptureHint": {},
+    "qrCodePickImageFile": "Pilih file gambar",
+    "@qrCodePickImageFile": {},
+    "qrCodeSnipScreenRegion": "Potong area layar",
+    "@qrCodeSnipScreenRegion": {},
+    "qrCodeCaptureFullScreen": "Tangkap layar penuh",
+    "@qrCodeCaptureFullScreen": {},
+    "qrCodeScreenCaptureFailed": "Gagal menangkap layar",
+    "@qrCodeScreenCaptureFailed": {}
 }

@@ -4241,5 +4241,17 @@
     "engineFailureContent": "AI-motoren kunne ikke producere et træk. Dette er en uventet intern fejl. Vil du sende en diagnostisk rapport, så vi kan undersøge det?",
     "@engineFailureContent": {},
     "sendReport": "Send rapport",
-    "@sendReport": {}
+    "@sendReport": {},
+    "qrCodeScannerDesktopHint": "Live kameraforhåndsvisning bruges ikke på denne computer. Vælg en billedfil med en QR-kode.",
+    "@qrCodeScannerDesktopHint": {},
+    "qrCodeScannerWindowsScreenCaptureHint": "Du kan også bruge knapperne nedenfor til at tage skærmbillede: et område eller hele den primære skærm.",
+    "@qrCodeScannerWindowsScreenCaptureHint": {},
+    "qrCodePickImageFile": "Vælg billedfil",
+    "@qrCodePickImageFile": {},
+    "qrCodeSnipScreenRegion": "Klip skærmområde",
+    "@qrCodeSnipScreenRegion": {},
+    "qrCodeCaptureFullScreen": "Tag fuld skærm",
+    "@qrCodeCaptureFullScreen": {},
+    "qrCodeScreenCaptureFailed": "Skærmbillede mislykkedes",
+    "@qrCodeScreenCaptureFailed": {}
 }

@@ -4241,5 +4241,17 @@
     "engineFailureContent": "Yapay zeka motoru hamle üretemedi. Bu beklenmeyen bir iç hatadır. İncelememize yardımcı olmak için tanı raporu göndermek ister misiniz?",
     "@engineFailureContent": {},
     "sendReport": "Rapor gönder",
-    "@sendReport": {}
+    "@sendReport": {},
+    "qrCodeScannerDesktopHint": "Bu bilgisayarda canlı kamera önizlemesi kullanılmaz. QR kod içeren bir görüntü dosyası seçin.",
+    "@qrCodeScannerDesktopHint": {},
+    "qrCodeScannerWindowsScreenCaptureHint": "Ekranı yakalamak için aşağıdaki düğmeleri de kullanabilirsiniz: bir bölge veya tüm birincil ekran.",
+    "@qrCodeScannerWindowsScreenCaptureHint": {},
+    "qrCodePickImageFile": "Görüntü dosyası seç",
+    "@qrCodePickImageFile": {},
+    "qrCodeSnipScreenRegion": "Ekran bölgesini kırp",
+    "@qrCodeSnipScreenRegion": {},
+    "qrCodeCaptureFullScreen": "Tam ekranı yakala",
+    "@qrCodeCaptureFullScreen": {},
+    "qrCodeScreenCaptureFailed": "Ekran yakalama başarısız",
+    "@qrCodeScreenCaptureFailed": {}
 }

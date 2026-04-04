@@ -4241,5 +4241,17 @@
     "engineFailureContent": "AI इंजन चाल उत्पन्न नहीं कर सका। यह एक अप्रत्याशित आंतरिक त्रुटि है। क्या आप जांच में मदद के लिए नैदानिक रिपोर्ट भेजना चाहते हैं?",
     "@engineFailureContent": {},
     "sendReport": "रिपोर्ट भेजें",
-    "@sendReport": {}
+    "@sendReport": {},
+    "qrCodeScannerDesktopHint": "इस कंप्यूटर पर लाइव कैमरा पूर्वावलोकन उपयोग नहीं होता। QR कोड वाली छवि फ़ाइल चुनें।",
+    "@qrCodeScannerDesktopHint": {},
+    "qrCodeScannerWindowsScreenCaptureHint": "स्क्रीन कैप्चर के लिए नीचे दिए बटन भी उपयोग कर सकते हैं: क्षेत्र या पूर्ण प्राथमिक डिस्प्ले।",
+    "@qrCodeScannerWindowsScreenCaptureHint": {},
+    "qrCodePickImageFile": "छवि फ़ाइल चुनें",
+    "@qrCodePickImageFile": {},
+    "qrCodeSnipScreenRegion": "स्क्रीन क्षेत्र काटें",
+    "@qrCodeSnipScreenRegion": {},
+    "qrCodeCaptureFullScreen": "पूर्ण स्क्रीन कैप्चर",
+    "@qrCodeCaptureFullScreen": {},
+    "qrCodeScreenCaptureFailed": "स्क्रीन कैप्चर विफल",
+    "@qrCodeScreenCaptureFailed": {}
 }

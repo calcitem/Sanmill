@@ -4241,5 +4241,17 @@
     "engineFailureContent": "Motori IA nuk arriti të prodhojë një lëvizje. Ky është një gabim i brendshëm i papritur. Dëshironi të dërgoni një raport diagnostik për të na ndihmuar të hetojmë?",
     "@engineFailureContent": {},
     "sendReport": "Dërgo raportin",
-    "@sendReport": {}
+    "@sendReport": {},
+    "qrCodeScannerDesktopHint": "Në këtë kompjuter nuk përditet parapamja e drejtpërdrejtë e kamerës. Zgjidhni një skedar figure me kod QR.",
+    "@qrCodeScannerDesktopHint": {},
+    "qrCodeScannerWindowsScreenCaptureHint": "Mund të përdorni edhe butonat më poshtë për të kapur ekranin: një rajon ose ekranin kryesor të plotë.",
+    "@qrCodeScannerWindowsScreenCaptureHint": {},
+    "qrCodePickImageFile": "Zgjidh skedar figure",
+    "@qrCodePickImageFile": {},
+    "qrCodeSnipScreenRegion": "Prej rajonin e ekranit",
+    "@qrCodeSnipScreenRegion": {},
+    "qrCodeCaptureFullScreen": "Kap ekranin e plotë",
+    "@qrCodeCaptureFullScreen": {},
+    "qrCodeScreenCaptureFailed": "Kapja e ekranit dështoi",
+    "@qrCodeScreenCaptureFailed": {}
 }

@@ -4241,5 +4241,17 @@
     "engineFailureContent": "فشل محرك الذكاء الاصطناعي في إنتاج حركة. هذا خطأ داخلي غير متوقع. هل تريد إرسال تقرير تشخيصي لمساعدتنا في التحقيق؟",
     "@engineFailureContent": {},
     "sendReport": "إرسال التقرير",
-    "@sendReport": {}
+    "@sendReport": {},
+    "qrCodeScannerDesktopHint": "لا يُستخدم معاينة الكاميرا المباشرة على هذا الحاسوب. اختر ملف صورة يحتوي على رمز QR.",
+    "@qrCodeScannerDesktopHint": {},
+    "qrCodeScannerWindowsScreenCaptureHint": "يمكنك أيضًا استخدام الأزرار أدناه لالتقاط الشاشة: قص منطقة أو الشاشة الرئيسية بأكملها.",
+    "@qrCodeScannerWindowsScreenCaptureHint": {},
+    "qrCodePickImageFile": "اختر ملف صورة",
+    "@qrCodePickImageFile": {},
+    "qrCodeSnipScreenRegion": "قص منطقة الشاشة",
+    "@qrCodeSnipScreenRegion": {},
+    "qrCodeCaptureFullScreen": "التقاط الشاشة بالكامل",
+    "@qrCodeCaptureFullScreen": {},
+    "qrCodeScreenCaptureFailed": "فشل التقاط الشاشة",
+    "@qrCodeScreenCaptureFailed": {}
 }

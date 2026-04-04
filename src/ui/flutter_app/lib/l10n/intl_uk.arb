@@ -4241,5 +4241,17 @@
     "engineFailureContent": "ШІ-рушій не зміг видати хід. Це несподівана внутрішня помилка. Надіслати діагностичний звіт, щоб допомогти нам розібратися?",
     "@engineFailureContent": {},
     "sendReport": "Надіслати звіт",
-    "@sendReport": {}
+    "@sendReport": {},
+    "qrCodeScannerDesktopHint": "На цьому комп’ютері не використовується попередній перегляд з камери в реальному часі. Виберіть файл зображення з QR-кодом.",
+    "@qrCodeScannerDesktopHint": {},
+    "qrCodeScannerWindowsScreenCaptureHint": "Також можна скористатися кнопками нижче для захоплення екрана: область або весь основний дисплей.",
+    "@qrCodeScannerWindowsScreenCaptureHint": {},
+    "qrCodePickImageFile": "Вибрати файл зображення",
+    "@qrCodePickImageFile": {},
+    "qrCodeSnipScreenRegion": "Вирізати область екрана",
+    "@qrCodeSnipScreenRegion": {},
+    "qrCodeCaptureFullScreen": "Захопити весь екран",
+    "@qrCodeCaptureFullScreen": {},
+    "qrCodeScreenCaptureFailed": "Не вдалося захопити екран",
+    "@qrCodeScreenCaptureFailed": {}
 }

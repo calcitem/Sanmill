@@ -4241,5 +4241,17 @@
     "engineFailureContent": "የ AI ሞተር እንቅስቃሴ ማመንጨት አልቻለም። ይህ ያልተጠበቀ የውስጥ ስህተት ነው። ለመመርመር የምርመራ ሪፖርት መላክ ይፈልጋሉ?",
     "@engineFailureContent": {},
     "sendReport": "ሪፖርት ላክ",
-    "@sendReport": {}
+    "@sendReport": {},
+    "qrCodeScannerDesktopHint": "በዚህ ኮምፒዩተር ላይ የካሜራ ቅድመ እይታ አይጠቀምም። የ QR ኮድ ያለበትን የምስል ፋይል ይምረጡ።",
+    "@qrCodeScannerDesktopHint": {},
+    "qrCodeScannerWindowsScreenCaptureHint": "ስክሪኑን ለመያዝ ከታች ያሉትን ቁልፎች መጠቀም ይችላሉ፦ ክፍል ወይም ሙሉ ዋና ማሳያ።",
+    "@qrCodeScannerWindowsScreenCaptureHint": {},
+    "qrCodePickImageFile": "የምስል ፋይል ይምረጡ",
+    "@qrCodePickImageFile": {},
+    "qrCodeSnipScreenRegion": "የስክሪን ክፍል ይቁረጡ",
+    "@qrCodeSnipScreenRegion": {},
+    "qrCodeCaptureFullScreen": "ሙሉ ስክሪን ይያዙ",
+    "@qrCodeCaptureFullScreen": {},
+    "qrCodeScreenCaptureFailed": "የስክሪን መያዝ አልተሳካም",
+    "@qrCodeScreenCaptureFailed": {}
 }

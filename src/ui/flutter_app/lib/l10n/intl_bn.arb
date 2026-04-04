@@ -4241,5 +4241,17 @@
     "engineFailureContent": "AI ইঞ্জিন চাল তৈরি করতে ব্যর্থ। এটি একটি অপ্রত্যাশিত অভ্যন্তরীণ ত্রুটি। তদন্তে সাহায্যের জন্য ডায়াগনস্টিক রিপোর্ট পাঠাবেন?",
     "@engineFailureContent": {},
     "sendReport": "রিপোর্ট পাঠান",
-    "@sendReport": {}
+    "@sendReport": {},
+    "qrCodeScannerDesktopHint": "এই কম্পিউটারে লাইভ ক্যামেরা প্রিভিউ ব্যবহার করা হয় না। একটি QR কোডসহ ছবির ফাইল বেছে নিন।",
+    "@qrCodeScannerDesktopHint": {},
+    "qrCodeScannerWindowsScreenCaptureHint": "স্ক্রিন ক্যাপচার করতে নিচের বোতামগুলোও ব্যবহার করতে পারেন: একটি অঞ্চল বা সম্পূর্ণ প্রাথমিক ডিসপ্লে।",
+    "@qrCodeScannerWindowsScreenCaptureHint": {},
+    "qrCodePickImageFile": "ছবির ফাইল বেছে নিন",
+    "@qrCodePickImageFile": {},
+    "qrCodeSnipScreenRegion": "স্ক্রিন অঞ্চল কাটুন",
+    "@qrCodeSnipScreenRegion": {},
+    "qrCodeCaptureFullScreen": "সম্পূর্ণ স্ক্রিন ক্যাপচার",
+    "@qrCodeCaptureFullScreen": {},
+    "qrCodeScreenCaptureFailed": "স্ক্রিন ক্যাপচার ব্যর্থ",
+    "@qrCodeScreenCaptureFailed": {}
 }

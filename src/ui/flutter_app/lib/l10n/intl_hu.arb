@@ -3498,5 +3498,17 @@
     "engineFailureContent": "Az AI-motor nem tudott lépést adni. Ez váratlan belső hiba. Szeretne diagnosztikai jelentést küldeni a vizsgálathoz?",
     "@engineFailureContent": {},
     "sendReport": "Jelentés küldése",
-    "@sendReport": {}
+    "@sendReport": {},
+    "qrCodeScannerDesktopHint": "Ezen a számítógépen nem használunk élő kamera-előnézetet. Válasszon QR-kódot tartalmazó képfájlt.",
+    "@qrCodeScannerDesktopHint": {},
+    "qrCodeScannerWindowsScreenCaptureHint": "A képernyő rögzítéséhez az alábbi gombokat is használhatja: terület vagy a teljes elsődleges kijelző.",
+    "@qrCodeScannerWindowsScreenCaptureHint": {},
+    "qrCodePickImageFile": "Képfájl választása",
+    "@qrCodePickImageFile": {},
+    "qrCodeSnipScreenRegion": "Képernyőterület kijelölése",
+    "@qrCodeSnipScreenRegion": {},
+    "qrCodeCaptureFullScreen": "Teljes képernyő rögzítése",
+    "@qrCodeCaptureFullScreen": {},
+    "qrCodeScreenCaptureFailed": "A képernyőfelvétel sikertelen",
+    "@qrCodeScreenCaptureFailed": {}
 }

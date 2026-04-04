@@ -4245,5 +4245,17 @@
     "engineFailureContent": "Umshini we-AI awukwazanga ukukhiqiza ukunyakaza. Lokhu kuyiphutha yangaphakathi engalindelekile. Uyathanda ukuthumela umbiko wokuhlola ukusisiza ekuphenyni?",
     "@engineFailureContent": {},
     "sendReport": "Thumela umbiko",
-    "@sendReport": {}
+    "@sendReport": {},
+    "qrCodeScannerDesktopHint": "Kule khompyutha akusetshenziswa ukubuka kamera bukhoma. Khetha ifayela lesithombe elinekhodi ye-QR.",
+    "@qrCodeScannerDesktopHint": {},
+    "qrCodeScannerWindowsScreenCaptureHint": "Ungasebenzisa namathini angezansi ukuqoqa isikrini: indawo noma isikrini esiphelele esiyinhloko.",
+    "@qrCodeScannerWindowsScreenCaptureHint": {},
+    "qrCodePickImageFile": "Khetha ifayela lesithombe",
+    "@qrCodePickImageFile": {},
+    "qrCodeSnipScreenRegion": "Sika indawo yesikrini",
+    "@qrCodeSnipScreenRegion": {},
+    "qrCodeCaptureFullScreen": "Thatha isikrini esiphelele",
+    "@qrCodeCaptureFullScreen": {},
+    "qrCodeScreenCaptureFailed": "Ukuqoqa isikrini kuhlulekile",
+    "@qrCodeScreenCaptureFailed": {}
 }

@@ -4241,5 +4241,17 @@
     "engineFailureContent": "AI 엔진이 수를 두지 못했습니다. 예기치 않은 내부 오류입니다. 조사를 위해 진단 보고서를 보내시겠습니까?",
     "@engineFailureContent": {},
     "sendReport": "보고서 보내기",
-    "@sendReport": {}
+    "@sendReport": {},
+    "qrCodeScannerDesktopHint": "이 컴퓨터에서는 카메라 실시간 미리보기를 사용하지 않습니다. QR 코드가 있는 이미지 파일을 선택하세요.",
+    "@qrCodeScannerDesktopHint": {},
+    "qrCodeScannerWindowsScreenCaptureHint": "아래 버튼으로 화면을 캡처할 수도 있습니다. 영역을 지정하거나 기본 디스플레이 전체를 캡처합니다.",
+    "@qrCodeScannerWindowsScreenCaptureHint": {},
+    "qrCodePickImageFile": "이미지 파일 선택",
+    "@qrCodePickImageFile": {},
+    "qrCodeSnipScreenRegion": "화면 영역 자르기",
+    "@qrCodeSnipScreenRegion": {},
+    "qrCodeCaptureFullScreen": "전체 화면 캡처",
+    "@qrCodeCaptureFullScreen": {},
+    "qrCodeScreenCaptureFailed": "화면 캡처 실패",
+    "@qrCodeScreenCaptureFailed": {}
 }

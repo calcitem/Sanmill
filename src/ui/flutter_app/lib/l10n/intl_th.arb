@@ -4241,5 +4241,17 @@
     "engineFailureContent": "เอนจิน AI ไม่สามารถสร้างการเคลื่อนที่ได้ นี่เป็นข้อผิดพลาดภายในที่ไม่คาดคิด คุณต้องการส่งรายงานวินิจฉัยเพื่อช่วยเราตรวจสอบหรือไม่?",
     "@engineFailureContent": {},
     "sendReport": "ส่งรายงาน",
-    "@sendReport": {}
+    "@sendReport": {},
+    "qrCodeScannerDesktopHint": "บนคอมพิวเตอร์เครื่องนี้ไม่ใช้ตัวอย่างภาพจากกล้องแบบสด เลือกไฟล์รูปภาพที่มีคิวอาร์โค้ด",
+    "@qrCodeScannerDesktopHint": {},
+    "qrCodeScannerWindowsScreenCaptureHint": "คุณยังใช้ปุ่มด้านล่างเพื่อจับภาพหน้าจอได้: เลือกพื้นที่หรือจอหลักทั้งจอ",
+    "@qrCodeScannerWindowsScreenCaptureHint": {},
+    "qrCodePickImageFile": "เลือกไฟล์รูปภาพ",
+    "@qrCodePickImageFile": {},
+    "qrCodeSnipScreenRegion": "ตัดพื้นที่หน้าจอ",
+    "@qrCodeSnipScreenRegion": {},
+    "qrCodeCaptureFullScreen": "จับภาพทั้งหน้าจอ",
+    "@qrCodeCaptureFullScreen": {},
+    "qrCodeScreenCaptureFailed": "จับภาพหน้าจอล้มเหลว",
+    "@qrCodeScreenCaptureFailed": {}
 }

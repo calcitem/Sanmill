@@ -4241,5 +4241,17 @@
     "engineFailureContent": "Le moteur d'IA n'a pas pu produire de coup. Il s'agit d'une erreur interne inattendue. Souhaitez-vous envoyer un rapport de diagnostic pour nous aider à enquêter ?",
     "@engineFailureContent": {},
     "sendReport": "Envoyer le rapport",
-    "@sendReport": {}
+    "@sendReport": {},
+    "qrCodeScannerDesktopHint": "L'aperçu en direct de la caméra n'est pas utilisé sur cet ordinateur. Choisissez un fichier image contenant un code QR.",
+    "@qrCodeScannerDesktopHint": {},
+    "qrCodeScannerWindowsScreenCaptureHint": "Vous pouvez aussi utiliser les boutons ci-dessous pour capturer l'écran : une zone ou l'écran principal entier.",
+    "@qrCodeScannerWindowsScreenCaptureHint": {},
+    "qrCodePickImageFile": "Choisir un fichier image",
+    "@qrCodePickImageFile": {},
+    "qrCodeSnipScreenRegion": "Découper une zone d'écran",
+    "@qrCodeSnipScreenRegion": {},
+    "qrCodeCaptureFullScreen": "Capturer tout l'écran",
+    "@qrCodeCaptureFullScreen": {},
+    "qrCodeScreenCaptureFailed": "Échec de la capture d'écran",
+    "@qrCodeScreenCaptureFailed": {}
 }

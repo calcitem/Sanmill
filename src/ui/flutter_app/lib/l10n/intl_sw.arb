@@ -4241,5 +4241,17 @@
     "engineFailureContent": "Injini ya AI haikuweza kutoa hatua. Hii ni hitilafu ya ndani isiyotarajiwa. Ungependa kutuma ripoti ya uchunguzi ili kutusaidia kuchunguza?",
     "@engineFailureContent": {},
     "sendReport": "Tuma ripoti",
-    "@sendReport": {}
+    "@sendReport": {},
+    "qrCodeScannerDesktopHint": "Kwenye kompyuta hii hakutumiwi onyesho la moja kwa moja la kamera. Chagua faili ya picha inayo na msimbo wa QR.",
+    "@qrCodeScannerDesktopHint": {},
+    "qrCodeScannerWindowsScreenCaptureHint": "Unaweza pia kutumia vitufe hapa chini kupiga picha ya skrini: eneo au skrini kuu nzima.",
+    "@qrCodeScannerWindowsScreenCaptureHint": {},
+    "qrCodePickImageFile": "Chagua faili ya picha",
+    "@qrCodePickImageFile": {},
+    "qrCodeSnipScreenRegion": "Kata eneo la skrini",
+    "@qrCodeSnipScreenRegion": {},
+    "qrCodeCaptureFullScreen": "Piga skrini nzima",
+    "@qrCodeCaptureFullScreen": {},
+    "qrCodeScreenCaptureFailed": "Kupiga skrini kumeshindwa",
+    "@qrCodeScreenCaptureFailed": {}
 }

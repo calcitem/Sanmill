@@ -4241,5 +4241,17 @@
     "engineFailureContent": "O motor de IA não conseguiu produzir uma jogada. Isto é um erro interno inesperado. Deseja enviar um relatório de diagnóstico para nos ajudar a investigar?",
     "@engineFailureContent": {},
     "sendReport": "Enviar relatório",
-    "@sendReport": {}
+    "@sendReport": {},
+    "qrCodeScannerDesktopHint": "Neste computador não se usa a pré-visualização em direto da câmara. Escolha um ficheiro de imagem com um código QR.",
+    "@qrCodeScannerDesktopHint": {},
+    "qrCodeScannerWindowsScreenCaptureHint": "Também pode usar os botões abaixo para capturar o ecrã: uma região ou o ecrã principal completo.",
+    "@qrCodeScannerWindowsScreenCaptureHint": {},
+    "qrCodePickImageFile": "Escolher ficheiro de imagem",
+    "@qrCodePickImageFile": {},
+    "qrCodeSnipScreenRegion": "Recortar região do ecrã",
+    "@qrCodeSnipScreenRegion": {},
+    "qrCodeCaptureFullScreen": "Capturar ecrã completo",
+    "@qrCodeCaptureFullScreen": {},
+    "qrCodeScreenCaptureFailed": "Falha ao capturar o ecrã",
+    "@qrCodeScreenCaptureFailed": {}
 }

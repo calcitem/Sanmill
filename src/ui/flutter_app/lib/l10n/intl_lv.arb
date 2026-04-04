@@ -4241,5 +4241,17 @@
     "engineFailureContent": "AI dzinējs nevarēja dot gājienu. Šī ir neparedzēta iekšēja kļūda. Vai vēlaties nosūtīt diagnostikas ziņojumu, lai palīdzētu izmeklēt?",
     "@engineFailureContent": {},
     "sendReport": "Sūtīt ziņojumu",
-    "@sendReport": {}
+    "@sendReport": {},
+    "qrCodeScannerDesktopHint": "Šajā datorā netiek izmantota kameras tiešraides priekšskatījums. Izvēlieties attēla failu ar QR kodu.",
+    "@qrCodeScannerDesktopHint": {},
+    "qrCodeScannerWindowsScreenCaptureHint": "Varat arī izmantot pogas zemāk, lai tvertu ekrānu: apgabalu vai visu primāro displeju.",
+    "@qrCodeScannerWindowsScreenCaptureHint": {},
+    "qrCodePickImageFile": "Izvēlēties attēla failu",
+    "@qrCodePickImageFile": {},
+    "qrCodeSnipScreenRegion": "Izgriezt ekrāna apgabalu",
+    "@qrCodeSnipScreenRegion": {},
+    "qrCodeCaptureFullScreen": "Tvert visu ekrānu",
+    "@qrCodeCaptureFullScreen": {},
+    "qrCodeScreenCaptureFailed": "Ekrāna tveršana neizdevās",
+    "@qrCodeScreenCaptureFailed": {}
 }

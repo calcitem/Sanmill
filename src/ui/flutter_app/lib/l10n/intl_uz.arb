@@ -4245,5 +4245,17 @@
     "engineFailureContent": "AI motori yurish bera olmadi. Bu kutilmagan ichki xato. Tekshiruv uchun diagnostika hisoboti yuborilsinmi?",
     "@engineFailureContent": {},
     "sendReport": "Hisobot yuborish",
-    "@sendReport": {}
+    "@sendReport": {},
+    "qrCodeScannerDesktopHint": "Bu kompyuterda jonli kamera oldindan ko‘rinishi ishlatilmaydi. QR kodli rasm faylini tanlang.",
+    "@qrCodeScannerDesktopHint": {},
+    "qrCodeScannerWindowsScreenCaptureHint": "Ekranni ushlash uchun quyidagi tugmalardan ham foydalanishingiz mumkin: soha yoki butun asosiy displey.",
+    "@qrCodeScannerWindowsScreenCaptureHint": {},
+    "qrCodePickImageFile": "Rasm faylini tanlash",
+    "@qrCodePickImageFile": {},
+    "qrCodeSnipScreenRegion": "Ekran sohasini kesish",
+    "@qrCodeSnipScreenRegion": {},
+    "qrCodeCaptureFullScreen": "Butun ekranni ushlash",
+    "@qrCodeCaptureFullScreen": {},
+    "qrCodeScreenCaptureFailed": "Ekranni ushlab bo‘lmadi",
+    "@qrCodeScreenCaptureFailed": {}
 }

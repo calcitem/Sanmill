@@ -4241,5 +4241,17 @@
     "engineFailureContent": "AI એંજિન ચાલ ઉત્પન્ન કરી શક્યું નહીં. આ અનપેક્ષિત આંતરિક ભૂલ છે. તપાસમાં મદદ માટે નિદાન અહેવાલ મોકલવા માંગો છો?",
     "@engineFailureContent": {},
     "sendReport": "અહેવાલ મોકલો",
-    "@sendReport": {}
+    "@sendReport": {},
+    "qrCodeScannerDesktopHint": "આ કમ્પ્યુટર પર લાઇવ કેમેરા પૂર્વાવલોકન વપરાતું નથી. QR કોડ ધરાવતી ઇમેજ ફાઇલ પસંદ કરો.",
+    "@qrCodeScannerDesktopHint": {},
+    "qrCodeScannerWindowsScreenCaptureHint": "સ્ક્રીન કૅપ્ચર કરવા નીચેના બટનો પણ વાપરી શકો છો: પ્રદેશ અથવા સંપૂર્ણ પ્રાથમિક ડિસ્પ્લે.",
+    "@qrCodeScannerWindowsScreenCaptureHint": {},
+    "qrCodePickImageFile": "ઇમેજ ફાઇલ પસંદ કરો",
+    "@qrCodePickImageFile": {},
+    "qrCodeSnipScreenRegion": "સ્ક્રીન પ્રદેશ કાપો",
+    "@qrCodeSnipScreenRegion": {},
+    "qrCodeCaptureFullScreen": "સંપૂર્ણ સ્ક્રીન કૅપ્ચર",
+    "@qrCodeCaptureFullScreen": {},
+    "qrCodeScreenCaptureFailed": "સ્ક્રીન કૅપ્ચર નિષ્ફળ",
+    "@qrCodeScreenCaptureFailed": {}
 }

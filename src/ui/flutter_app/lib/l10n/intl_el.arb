@@ -4241,5 +4241,17 @@
     "engineFailureContent": "Η μηχανή AI απέτυχε να παράγει κίνηση. Πρόκειται για απρόσμενο εσωτερικό σφάλμα. Θέλετε να στείλετε αναφορά διάγνωσης για να μας βοηθήσετε;",
     "@engineFailureContent": {},
     "sendReport": "Αποστολή αναφοράς",
-    "@sendReport": {}
+    "@sendReport": {},
+    "qrCodeScannerDesktopHint": "Σε αυτόν τον υπολογιστή δεν χρησιμοποιείται ζωντανή προεπισκόπηση κάμερας. Επιλέξτε αρχείο εικόνας με κωδικό QR.",
+    "@qrCodeScannerDesktopHint": {},
+    "qrCodeScannerWindowsScreenCaptureHint": "Μπορείτε επίσης να χρησιμοποιήσετε τα κουμπιά παρακάτω για λήψη οθόνης: περιοχή ή ολόκληρη η κύρια οθόνη.",
+    "@qrCodeScannerWindowsScreenCaptureHint": {},
+    "qrCodePickImageFile": "Επιλογή αρχείου εικόνας",
+    "@qrCodePickImageFile": {},
+    "qrCodeSnipScreenRegion": "Αποκοπή περιοχής οθόνης",
+    "@qrCodeSnipScreenRegion": {},
+    "qrCodeCaptureFullScreen": "Λήψη ολόκληρης οθόνης",
+    "@qrCodeCaptureFullScreen": {},
+    "qrCodeScreenCaptureFailed": "Η λήψη οθόνης απέτυχε",
+    "@qrCodeScreenCaptureFailed": {}
 }

@@ -4241,5 +4241,17 @@
     "engineFailureContent": "AI-motoren klarte ikke å gi et trekk. Dette er en uventet intern feil. Vil du sende en diagnostisk rapport slik at vi kan undersøke?",
     "@engineFailureContent": {},
     "sendReport": "Send rapport",
-    "@sendReport": {}
+    "@sendReport": {},
+    "qrCodeScannerDesktopHint": "Live kameravisning brukes ikke på denne datamaskinen. Velg en bildefil med en QR-kode.",
+    "@qrCodeScannerDesktopHint": {},
+    "qrCodeScannerWindowsScreenCaptureHint": "Du kan også bruke knappene nedenfor for å ta skjermbilde: et område eller hele hovedskjermen.",
+    "@qrCodeScannerWindowsScreenCaptureHint": {},
+    "qrCodePickImageFile": "Velg bildefil",
+    "@qrCodePickImageFile": {},
+    "qrCodeSnipScreenRegion": "Klipp skjermområde",
+    "@qrCodeSnipScreenRegion": {},
+    "qrCodeCaptureFullScreen": "Ta full skjerm",
+    "@qrCodeCaptureFullScreen": {},
+    "qrCodeScreenCaptureFailed": "Skjermbilde mislyktes",
+    "@qrCodeScreenCaptureFailed": {}
 }

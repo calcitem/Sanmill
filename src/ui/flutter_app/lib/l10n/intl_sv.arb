@@ -4241,5 +4241,17 @@
     "engineFailureContent": "AI-motorn kunde inte ge ett drag. Detta är ett oväntat internt fel. Vill du skicka en diagnostisk rapport så att vi kan undersöka?",
     "@engineFailureContent": {},
     "sendReport": "Skicka rapport",
-    "@sendReport": {}
+    "@sendReport": {},
+    "qrCodeScannerDesktopHint": "Livekameraförhandsvisning används inte på den här datorn. Välj en bildfil med en QR-kod.",
+    "@qrCodeScannerDesktopHint": {},
+    "qrCodeScannerWindowsScreenCaptureHint": "Du kan också använda knapparna nedan för att ta skärmbild: ett område eller hela primärskärmen.",
+    "@qrCodeScannerWindowsScreenCaptureHint": {},
+    "qrCodePickImageFile": "Välj bildfil",
+    "@qrCodePickImageFile": {},
+    "qrCodeSnipScreenRegion": "Klipp skärområde",
+    "@qrCodeSnipScreenRegion": {},
+    "qrCodeCaptureFullScreen": "Ta hela skärmen",
+    "@qrCodeCaptureFullScreen": {},
+    "qrCodeScreenCaptureFailed": "Skärmbild misslyckades",
+    "@qrCodeScreenCaptureFailed": {}
 }

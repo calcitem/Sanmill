@@ -4241,5 +4241,17 @@
     "engineFailureContent": "AI အင်ဂျင်က လှုပ်ရှားမှု မထုတ်နိုင်ပါ။ ဤသည်မှာ မမျှော်လင့်ထားသော အတွင်းအမှားဖြစ်သည်။ စုံစမ်းရေးအတွက် ရောဂါရှာဖွေမှတ်တမ်းပို့လိုပါသလား?",
     "@engineFailureContent": {},
     "sendReport": "မှတ်တမ်းပို့ရန်",
-    "@sendReport": {}
+    "@sendReport": {},
+    "qrCodeScannerDesktopHint": "ဤကွန်ပျူတာတွင် ကင်မရာ အသက်ဝင်ကြည့်ရှုခြင်း မသုံးပါ။ QR ကုဒ်ပါသော ပုံဖိုင်ကို ရွေးပါ။",
+    "@qrCodeScannerDesktopHint": {},
+    "qrCodeScannerWindowsScreenCaptureHint": "မျက်နှာပြင်ကို ဖမ်းရန် အောက်ပါ ခလုတ်များကိုလည်း သုံးနိုင်သည်။ ဧရိယာ သို့မဟုတ် အဓိကမှုအပြည့်အစုံ။",
+    "@qrCodeScannerWindowsScreenCaptureHint": {},
+    "qrCodePickImageFile": "ပုံဖိုင် ရွေးပါ",
+    "@qrCodePickImageFile": {},
+    "qrCodeSnipScreenRegion": "မျက်နှာပြင် ဧရိယာ ဖြတ်ပါ",
+    "@qrCodeSnipScreenRegion": {},
+    "qrCodeCaptureFullScreen": "မျက်နှာပြည် အပြည့်ဖမ်း",
+    "@qrCodeCaptureFullScreen": {},
+    "qrCodeScreenCaptureFailed": "မျက်နှာပြင် ဖမ်းခြင်း မအောင်မြင်ပါ",
+    "@qrCodeScreenCaptureFailed": {}
 }

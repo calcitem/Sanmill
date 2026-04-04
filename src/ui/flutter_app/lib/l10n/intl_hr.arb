@@ -4241,5 +4241,17 @@
     "engineFailureContent": "AI motor nije mogao dati potez. Ovo je neočekivana interna greška. Želite li poslati dijagnostičko izvješće radi istrage?",
     "@engineFailureContent": {},
     "sendReport": "Pošalji izvješće",
-    "@sendReport": {}
+    "@sendReport": {},
+    "qrCodeScannerDesktopHint": "Na ovom računalu ne koristi se pregled uživo kamere. Odaberite slikovnu datoteku s QR kodom.",
+    "@qrCodeScannerDesktopHint": {},
+    "qrCodeScannerWindowsScreenCaptureHint": "Možete koristiti i gumbe u nastavku za snimanje zaslona: područje ili cijeli primarni zaslon.",
+    "@qrCodeScannerWindowsScreenCaptureHint": {},
+    "qrCodePickImageFile": "Odaberi slikovnu datoteku",
+    "@qrCodePickImageFile": {},
+    "qrCodeSnipScreenRegion": "Izreži područje zaslona",
+    "@qrCodeSnipScreenRegion": {},
+    "qrCodeCaptureFullScreen": "Snimi cijeli zaslon",
+    "@qrCodeCaptureFullScreen": {},
+    "qrCodeScreenCaptureFailed": "Snimanje zaslona nije uspjelo",
+    "@qrCodeScreenCaptureFailed": {}
 }

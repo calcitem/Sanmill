@@ -4241,5 +4241,17 @@
     "engineFailureContent": "Die KI-enjin kon nie 'n skuif lewer nie. Dit is 'n onverwagte interne fout. Wil u 'n diagnostiese verslag stuur om ons te help ondersoek?",
     "@engineFailureContent": {},
     "sendReport": "Stuur verslag",
-    "@sendReport": {}
+    "@sendReport": {},
+    "qrCodeScannerDesktopHint": "Die regte kameravoorskou word nie op hierdie rekenaar gebruik nie. Kies 'n beeldlêer met 'n QR-kode.",
+    "@qrCodeScannerDesktopHint": {},
+    "qrCodeScannerWindowsScreenCaptureHint": "Jy kan ook die skermskou hieronder vasvang: 'n gebied of die hele primêre skerm.",
+    "@qrCodeScannerWindowsScreenCaptureHint": {},
+    "qrCodePickImageFile": "Kies beeldlêer",
+    "@qrCodePickImageFile": {},
+    "qrCodeSnipScreenRegion": "Knip skermgebied",
+    "@qrCodeSnipScreenRegion": {},
+    "qrCodeCaptureFullScreen": "Vang hele skerm",
+    "@qrCodeCaptureFullScreen": {},
+    "qrCodeScreenCaptureFailed": "Skermvaslegging het misluk",
+    "@qrCodeScreenCaptureFailed": {}
 }

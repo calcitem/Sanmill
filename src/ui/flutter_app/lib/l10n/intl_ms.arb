@@ -4241,5 +4241,17 @@
     "engineFailureContent": "Enjin AI gagal menghasilkan langkah. Ini ialah ralat dalaman yang tidak dijangka. Hantar laporan diagnostik untuk membantu kami menyiasat?",
     "@engineFailureContent": {},
     "sendReport": "Hantar laporan",
-    "@sendReport": {}
+    "@sendReport": {},
+    "qrCodeScannerDesktopHint": "Pratonton kamera langsung tidak digunakan pada komputer ini. Pilih fail imej yang mengandungi kod QR.",
+    "@qrCodeScannerDesktopHint": {},
+    "qrCodeScannerWindowsScreenCaptureHint": "Anda juga boleh menggunakan butang di bawah untuk menangkap skrin: kawasan atau keseluruhan paparan utama.",
+    "@qrCodeScannerWindowsScreenCaptureHint": {},
+    "qrCodePickImageFile": "Pilih fail imej",
+    "@qrCodePickImageFile": {},
+    "qrCodeSnipScreenRegion": "Klip kawasan skrin",
+    "@qrCodeSnipScreenRegion": {},
+    "qrCodeCaptureFullScreen": "Tangkap skrin penuh",
+    "@qrCodeCaptureFullScreen": {},
+    "qrCodeScreenCaptureFailed": "Tangkapan skrin gagal",
+    "@qrCodeScreenCaptureFailed": {}
 }

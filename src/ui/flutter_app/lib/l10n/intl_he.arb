@@ -4241,5 +4241,17 @@
     "engineFailureContent": "מנוע הבינה המלאכותית לא הצליח לייצר מהלך. זו שגיאה פנימית בלתי צפויה. לשלוח דוח אבחון כדי לעזור לנו לחקור?",
     "@engineFailureContent": {},
     "sendReport": "שלח דוח",
-    "@sendReport": {}
+    "@sendReport": {},
+    "qrCodeScannerDesktopHint": "במחשב זה לא משתמשים בתצוגה מקדימה חיה של המצלמה. בחר קובץ תמונה המכיל קוד QR.",
+    "@qrCodeScannerDesktopHint": {},
+    "qrCodeScannerWindowsScreenCaptureHint": "ניתן גם להשתמש בכפתורים למטה לצילום המסך: אזור או כל המסך הראשי.",
+    "@qrCodeScannerWindowsScreenCaptureHint": {},
+    "qrCodePickImageFile": "בחר קובץ תמונה",
+    "@qrCodePickImageFile": {},
+    "qrCodeSnipScreenRegion": "חתוך אזור מסך",
+    "@qrCodeSnipScreenRegion": {},
+    "qrCodeCaptureFullScreen": "צלם מסך מלא",
+    "@qrCodeCaptureFullScreen": {},
+    "qrCodeScreenCaptureFailed": "צילום המסך נכשל",
+    "@qrCodeScreenCaptureFailed": {}
 }

@@ -4241,5 +4241,17 @@
     "engineFailureContent": "AI-mootor ei suutnud käiku anda. See on ootamatu sisemine viga. Kas soovite saata diagnostikaaruande, et aidata meil uurida?",
     "@engineFailureContent": {},
     "sendReport": "Saada aruanne",
-    "@sendReport": {}
+    "@sendReport": {},
+    "qrCodeScannerDesktopHint": "Sellel arvutis ei kasutata kaamera eelvaadet. Valige QR-koodi sisaldav pildifail.",
+    "@qrCodeScannerDesktopHint": {},
+    "qrCodeScannerWindowsScreenCaptureHint": "Ekraani jäädvustamiseks võite kasutada ka allolevaid nuppe: piirkond või kogu põhiekraan.",
+    "@qrCodeScannerWindowsScreenCaptureHint": {},
+    "qrCodePickImageFile": "Vali pildifail",
+    "@qrCodePickImageFile": {},
+    "qrCodeSnipScreenRegion": "Lõika ekraanipiirkond",
+    "@qrCodeSnipScreenRegion": {},
+    "qrCodeCaptureFullScreen": "Jäädvusta kogu ekraan",
+    "@qrCodeCaptureFullScreen": {},
+    "qrCodeScreenCaptureFailed": "Ekraanipilt ebaõnnestus",
+    "@qrCodeScreenCaptureFailed": {}
 }

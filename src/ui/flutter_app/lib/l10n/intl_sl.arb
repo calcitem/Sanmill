@@ -4241,5 +4241,17 @@
     "engineFailureContent": "AI motor ni mogel vrniti poteza. To je nepričakovana notranja napaka. Ali želite poslati diagnostično poročilo za preiskavo?",
     "@engineFailureContent": {},
     "sendReport": "Pošlji poročilo",
-    "@sendReport": {}
+    "@sendReport": {},
+    "qrCodeScannerDesktopHint": "Na tem računalniku ni predogleda kamere v živo. Izberite slikovno datoteko s kodo QR.",
+    "@qrCodeScannerDesktopHint": {},
+    "qrCodeScannerWindowsScreenCaptureHint": "Za zajem zaslona lahko uporabite tudi spodnje gumbe: območje ali celoten primarni zaslon.",
+    "@qrCodeScannerWindowsScreenCaptureHint": {},
+    "qrCodePickImageFile": "Izberi slikovno datoteko",
+    "@qrCodePickImageFile": {},
+    "qrCodeSnipScreenRegion": "Izreži območje zaslona",
+    "@qrCodeSnipScreenRegion": {},
+    "qrCodeCaptureFullScreen": "Zajemi celoten zaslon",
+    "@qrCodeCaptureFullScreen": {},
+    "qrCodeScreenCaptureFailed": "Zajem zaslona ni uspel",
+    "@qrCodeScreenCaptureFailed": {}
 }

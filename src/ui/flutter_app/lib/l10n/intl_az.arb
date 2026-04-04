@@ -4241,5 +4241,17 @@
     "engineFailureContent": "Süni intellekt mühərriki gediş verə bilmədi. Bu gözlənilməz daxili xətadır. Araşdırma üçün diaqnostik hesabat göndərmək istəyirsiniz?",
     "@engineFailureContent": {},
     "sendReport": "Hesabat göndər",
-    "@sendReport": {}
+    "@sendReport": {},
+    "qrCodeScannerDesktopHint": "Bu kompüterdə canlı kamera önizləməsi istifadə olunmur. QR kodu olan şəkil faylı seçin.",
+    "@qrCodeScannerDesktopHint": {},
+    "qrCodeScannerWindowsScreenCaptureHint": "Ekranı çəkmək üçün aşağıdakı düymələrdən də istifadə edə bilərsiniz: sahə və ya bütün əsas ekran.",
+    "@qrCodeScannerWindowsScreenCaptureHint": {},
+    "qrCodePickImageFile": "Şəkil faylı seçin",
+    "@qrCodePickImageFile": {},
+    "qrCodeSnipScreenRegion": "Ekran sahəsini kəsin",
+    "@qrCodeSnipScreenRegion": {},
+    "qrCodeCaptureFullScreen": "Tam ekranı çəkin",
+    "@qrCodeCaptureFullScreen": {},
+    "qrCodeScreenCaptureFailed": "Ekran çəkmə uğursuz oldu",
+    "@qrCodeScreenCaptureFailed": {}
 }

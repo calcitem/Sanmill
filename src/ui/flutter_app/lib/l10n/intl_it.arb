@@ -4241,5 +4241,17 @@
     "engineFailureContent": "Il motore IA non è riuscito a produrre una mossa. Si tratta di un errore interno imprevisto. Vuoi inviare un rapporto diagnostico per aiutarci a indagare?",
     "@engineFailureContent": {},
     "sendReport": "Invia rapporto",
-    "@sendReport": {}
+    "@sendReport": {},
+    "qrCodeScannerDesktopHint": "Su questo computer non viene usata l'anteprima live della fotocamera. Scegli un file immagine che contenga un codice QR.",
+    "@qrCodeScannerDesktopHint": {},
+    "qrCodeScannerWindowsScreenCaptureHint": "Puoi anche usare i pulsanti sotto per acquisire lo schermo: un'area o l'intero schermo principale.",
+    "@qrCodeScannerWindowsScreenCaptureHint": {},
+    "qrCodePickImageFile": "Scegli file immagine",
+    "@qrCodePickImageFile": {},
+    "qrCodeSnipScreenRegion": "Ritaglia area schermo",
+    "@qrCodeSnipScreenRegion": {},
+    "qrCodeCaptureFullScreen": "Acquisisci schermo intero",
+    "@qrCodeCaptureFullScreen": {},
+    "qrCodeScreenCaptureFailed": "Acquisizione schermo non riuscita",
+    "@qrCodeScreenCaptureFailed": {}
 }

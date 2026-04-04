@@ -4241,5 +4241,17 @@
     "engineFailureContent": "AI འཕྲུལ་ཆས་ཀྱིས་སྤོ་འགུལ་བཟོ་མ་ཐུབ། འདི་ནི་བསམ་ཡུལ་ལས་འདས་པའི་ནང་ཁུལ་གྱི་ནོར་འཁྲུལ་ཡིན། བརྟག་དཔྱད་ར་སྤྲོད་ཡི་གེ་བསྐུར་ནས་བརྟག་དཔྱད་ལ་རོགས་རམ་བྱེད་དམ།",
     "@engineFailureContent": {},
     "sendReport": "ར་སྤྲོད་ཡི་གེ་བསྐུར།",
-    "@sendReport": {}
+    "@sendReport": {},
+    "qrCodeScannerDesktopHint": "རྩིས་འཁོར་འདིའི་སྟེང་དུ་སྐད་འཕྲིན་གཟུགས་བརྙན་མི་བེད་སྤྱོད། QR་རྟགས་ཡོད་པའི་པར་ཡིག་ཞིག་འདེམས།",
+    "@qrCodeScannerDesktopHint": {},
+    "qrCodeScannerWindowsScreenCaptureHint": "འོག་གི་མཐེབ་གནོན་སྤྱད་དེ་བརྙན་ཡོལ་འཛིན་ཆོག ས་ཁོངས་སམ་གཙོ་བརྙན་ཡོལ་ཡོངས།",
+    "@qrCodeScannerWindowsScreenCaptureHint": {},
+    "qrCodePickImageFile": "པར་ཡིག་འདེམས།",
+    "@qrCodePickImageFile": {},
+    "qrCodeSnipScreenRegion": "བརྙན་ཡོལ་ས་ཁོངས་ཆུང་ངུ།",
+    "@qrCodeSnipScreenRegion": {},
+    "qrCodeCaptureFullScreen": "བརྙན་ཡོལ་ཡོངས་འཛིན།",
+    "@qrCodeCaptureFullScreen": {},
+    "qrCodeScreenCaptureFailed": "བརྙན་ཡོལ་འཛིན་མ་ཐུབ།",
+    "@qrCodeScreenCaptureFailed": {}
 }

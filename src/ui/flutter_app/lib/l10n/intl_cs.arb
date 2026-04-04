@@ -4241,5 +4241,17 @@
     "engineFailureContent": "AI engine nevrátil tah. Jedná se o neočekávanou interní chybu. Chcete odeslat diagnostickou zprávu, abychom mohli problém prošetřit?",
     "@engineFailureContent": {},
     "sendReport": "Odeslat zprávu",
-    "@sendReport": {}
+    "@sendReport": {},
+    "qrCodeScannerDesktopHint": "Na tomto počítači se nepoužívá živý náhled z kamery. Vyberte soubor obrázku s QR kódem.",
+    "@qrCodeScannerDesktopHint": {},
+    "qrCodeScannerWindowsScreenCaptureHint": "Můžete také použít tlačítka níže pro zachycení obrazovky: výřez oblasti nebo celý primární displej.",
+    "@qrCodeScannerWindowsScreenCaptureHint": {},
+    "qrCodePickImageFile": "Vybrat soubor obrázku",
+    "@qrCodePickImageFile": {},
+    "qrCodeSnipScreenRegion": "Výřez obrazovky",
+    "@qrCodeSnipScreenRegion": {},
+    "qrCodeCaptureFullScreen": "Zachytit celou obrazovku",
+    "@qrCodeCaptureFullScreen": {},
+    "qrCodeScreenCaptureFailed": "Zachycení obrazovky selhalo",
+    "@qrCodeScreenCaptureFailed": {}
 }

@@ -4241,5 +4241,17 @@
     "engineFailureContent": "Gervigreindarvélin gat ekki gefið leik. Þetta er óvænt innri villa. Viltu senda greiningarskýrslu til að hjálpa okkur að rannsaka?",
     "@engineFailureContent": {},
     "sendReport": "Senda skýrslu",
-    "@sendReport": {}
+    "@sendReport": {},
+    "qrCodeScannerDesktopHint": "Lífmyndavélaryfirlit er ekki notað á þessari tölvu. Veldu myndskrá með QR-kóða.",
+    "@qrCodeScannerDesktopHint": {},
+    "qrCodeScannerWindowsScreenCaptureHint": "Þú getur líka notað hnappana hér að neðan til að taka skjámynd: svæði eða allan aðal skjáinn.",
+    "@qrCodeScannerWindowsScreenCaptureHint": {},
+    "qrCodePickImageFile": "Velja myndskrá",
+    "@qrCodePickImageFile": {},
+    "qrCodeSnipScreenRegion": "Klippa skjásvæði",
+    "@qrCodeSnipScreenRegion": {},
+    "qrCodeCaptureFullScreen": "Taka alla skjáinn",
+    "@qrCodeCaptureFullScreen": {},
+    "qrCodeScreenCaptureFailed": "Skjámyndataka mistókst",
+    "@qrCodeScreenCaptureFailed": {}
 }

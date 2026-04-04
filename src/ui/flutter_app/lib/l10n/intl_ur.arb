@@ -4245,5 +4245,17 @@
     "engineFailureContent": "AI انجن حرکت پیدا نہیں کر سکا۔ یہ ایک غیر متوقع اندرونی خرابی ہے۔ کیا آپ تفتیش میں مدد کے لیے تشخیصی رپورٹ بھیجنا چاہتے ہیں؟",
     "@engineFailureContent": {},
     "sendReport": "رپورٹ بھیجیں",
-    "@sendReport": {}
+    "@sendReport": {},
+    "qrCodeScannerDesktopHint": "اس کمپیوٹر پر لائیو کیمرہ پیش نظارہ استعمال نہیں ہوتا۔ QR کوڈ والی تصویر فائل منتخب کریں۔",
+    "@qrCodeScannerDesktopHint": {},
+    "qrCodeScannerWindowsScreenCaptureHint": "اسکرین کیپچر کے لیے نیچے والے بٹن بھی استعمال کر سکتے ہیں: علاقہ یا مکمل مرکزی ڈسپلے۔",
+    "@qrCodeScannerWindowsScreenCaptureHint": {},
+    "qrCodePickImageFile": "تصویر فائل منتخب کریں",
+    "@qrCodePickImageFile": {},
+    "qrCodeSnipScreenRegion": "اسکرین کا علاقہ کاٹیں",
+    "@qrCodeSnipScreenRegion": {},
+    "qrCodeCaptureFullScreen": "مکمل اسکرین کیپچر",
+    "@qrCodeCaptureFullScreen": {},
+    "qrCodeScreenCaptureFailed": "اسکرین کیپچر ناکام",
+    "@qrCodeScreenCaptureFailed": {}
 }

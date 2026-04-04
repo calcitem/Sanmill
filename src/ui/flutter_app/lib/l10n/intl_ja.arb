@@ -4241,5 +4241,17 @@
     "engineFailureContent": "AI エンジンが着手を生成できませんでした。これは予期しない内部エラーです。調査のため診断レポートを送信しますか？",
     "@engineFailureContent": {},
     "sendReport": "レポートを送信",
-    "@sendReport": {}
+    "@sendReport": {},
+    "qrCodeScannerDesktopHint": "このコンピューターではカメラのライブプレビューは使われません。QRコードの入った画像ファイルを選んでください。",
+    "@qrCodeScannerDesktopHint": {},
+    "qrCodeScannerWindowsScreenCaptureHint": "画面をキャプチャするには、下のボタンで領域を切り取るか、主ディスプレイ全体を取得できます。",
+    "@qrCodeScannerWindowsScreenCaptureHint": {},
+    "qrCodePickImageFile": "画像ファイルを選ぶ",
+    "@qrCodePickImageFile": {},
+    "qrCodeSnipScreenRegion": "画面の領域を切り取る",
+    "@qrCodeSnipScreenRegion": {},
+    "qrCodeCaptureFullScreen": "画面全体をキャプチャ",
+    "@qrCodeCaptureFullScreen": {},
+    "qrCodeScreenCaptureFailed": "画面キャプチャに失敗しました",
+    "@qrCodeScreenCaptureFailed": {}
 }

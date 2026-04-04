@@ -4245,5 +4245,17 @@
     "engineFailureContent": "Engine AI không thể tạo nước đi. Đây là lỗi nội bộ không mong đợi. Bạn có muốn gửi báo cáo chẩn đoán để chúng tôi điều tra không?",
     "@engineFailureContent": {},
     "sendReport": "Gửi báo cáo",
-    "@sendReport": {}
+    "@sendReport": {},
+    "qrCodeScannerDesktopHint": "Trên máy tính này không dùng xem trước camera trực tiếp. Hãy chọn tệp hình ảnh chứa mã QR.",
+    "@qrCodeScannerDesktopHint": {},
+    "qrCodeScannerWindowsScreenCaptureHint": "Bạn cũng có thể dùng các nút bên dưới để chụp màn hình: một vùng hoặc toàn bộ màn hình chính.",
+    "@qrCodeScannerWindowsScreenCaptureHint": {},
+    "qrCodePickImageFile": "Chọn tệp hình ảnh",
+    "@qrCodePickImageFile": {},
+    "qrCodeSnipScreenRegion": "Cắt vùng màn hình",
+    "@qrCodeSnipScreenRegion": {},
+    "qrCodeCaptureFullScreen": "Chụp toàn màn hình",
+    "@qrCodeCaptureFullScreen": {},
+    "qrCodeScreenCaptureFailed": "Chụp màn hình thất bại",
+    "@qrCodeScreenCaptureFailed": {}
 }

@@ -4241,5 +4241,17 @@
     "engineFailureContent": "AI ಎಂಜಿನ್ ಚಲನೆಯನ್ನು ಉತ್ಪಾದಿಸಲು ವಿಫಲವಾಗಿದೆ. ಇದು ಅನಿರೀಕ್ಷಿತ ಆಂತರಿಕ ದೋಷ. ತನಿಖೆಗೆ ಸಹಾಯವಾಗಿ ರೋಗನಿರ್ಣಯ ವರದಿಯನ್ನು ಕಳುಹಿಸಲು ಬಯಸುವಿರಾ?",
     "@engineFailureContent": {},
     "sendReport": "ವರದಿ ಕಳುಹಿಸಿ",
-    "@sendReport": {}
+    "@sendReport": {},
+    "qrCodeScannerDesktopHint": "ಈ ಕಂಪ್ಯೂಟರ್‌ನಲ್ಲಿ ಲೈವ್ ಕ್ಯಾಮೆರಾ ಪೂರ್ವವೀಕ್ಷಣೆ ಬಳಸಲಾಗುವುದಿಲ್ಲ. QR ಕೋಡ್ ಹೊಂದಿರುವ ಚಿತ್ರ ಫೈಲ್ ಆಯ್ಕೆಮಾಡಿ.",
+    "@qrCodeScannerDesktopHint": {},
+    "qrCodeScannerWindowsScreenCaptureHint": "ಸ್ಕ್ರೀನ್ ಕ್ಯಾಪ್ಚರ್ ಮಾಡಲು ಕೆಳಗಿನ ಬಟನ್‌ಗಳನ್ನು ಬಳಸಬಹುದು: ಪ್ರದೇಶ ಅಥವಾ ಸಂಪೂರ್ಣ ಪ್ರಾಥಮಿಕ ಡಿಸ್ಪ್ಲೇ.",
+    "@qrCodeScannerWindowsScreenCaptureHint": {},
+    "qrCodePickImageFile": "ಚಿತ್ರ ಫೈಲ್ ಆಯ್ಕೆಮಾಡಿ",
+    "@qrCodePickImageFile": {},
+    "qrCodeSnipScreenRegion": "ಸ್ಕ್ರೀನ್ ಪ್ರದೇಶ ಕತ್ತರಿಸಿ",
+    "@qrCodeSnipScreenRegion": {},
+    "qrCodeCaptureFullScreen": "ಸಂಪೂರ್ಣ ಸ್ಕ್ರೀನ್ ಕ್ಯಾಪ್ಚರ್",
+    "@qrCodeCaptureFullScreen": {},
+    "qrCodeScreenCaptureFailed": "ಸ್ಕ್ರೀನ್ ಕ್ಯಾಪ್ಚರ್ ವಿಫಲವಾಗಿದೆ",
+    "@qrCodeScreenCaptureFailed": {}
 }

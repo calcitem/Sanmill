@@ -4241,5 +4241,17 @@
     "engineFailureContent": "AI variklis negalėjo pateikti ėjimo. Tai netikėta vidinė klaida. Ar norite siųsti diagnostikos ataskaitą, kad padėtumėte tirti?",
     "@engineFailureContent": {},
     "sendReport": "Siųsti ataskaitą",
-    "@sendReport": {}
+    "@sendReport": {},
+    "qrCodeScannerDesktopHint": "Šiame kompiuteryje neįjungtas tiesioginis kameros peržiūros vaizdas. Pasirinkite paveikslėlio failą su QR kodu.",
+    "@qrCodeScannerDesktopHint": {},
+    "qrCodeScannerWindowsScreenCaptureHint": "Ekrano fiksavimui taip pat galite naudoti žemiau esančius mygtukus: sritį ar visą pagrindinį ekraną.",
+    "@qrCodeScannerWindowsScreenCaptureHint": {},
+    "qrCodePickImageFile": "Pasirinkti paveikslėlio failą",
+    "@qrCodePickImageFile": {},
+    "qrCodeSnipScreenRegion": "Iškirpti ekrano sritį",
+    "@qrCodeSnipScreenRegion": {},
+    "qrCodeCaptureFullScreen": "Fiksuoti visą ekraną",
+    "@qrCodeCaptureFullScreen": {},
+    "qrCodeScreenCaptureFailed": "Ekrano fiksavimas nepavyko",
+    "@qrCodeScreenCaptureFailed": {}
 }

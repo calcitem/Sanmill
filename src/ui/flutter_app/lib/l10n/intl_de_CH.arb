@@ -3533,5 +3533,17 @@
     "engineFailureContent": "Die KI-Engine konnte keinen Zug liefern. Dies ist ein unerwarteter interner Fehler. Möchten Sie einen Diagnosebericht senden, damit wir das untersuchen können?",
     "@engineFailureContent": {},
     "sendReport": "Bericht senden",
-    "@sendReport": {}
+    "@sendReport": {},
+    "qrCodeScannerDesktopHint": "Auf diesem Computer wird keine Live-Kameravorschau verwendet. Wählen Sie eine Bilddatei mit einem QR-Code.",
+    "@qrCodeScannerDesktopHint": {},
+    "qrCodeScannerWindowsScreenCaptureHint": "Sie können auch die Schaltflächen unten verwenden, um den Bildschirm aufzunehmen: einen Ausschnitt oder den gesamten primären Bildschirm.",
+    "@qrCodeScannerWindowsScreenCaptureHint": {},
+    "qrCodePickImageFile": "Bilddatei wählen",
+    "@qrCodePickImageFile": {},
+    "qrCodeSnipScreenRegion": "Bildschirmbereich auswählen",
+    "@qrCodeSnipScreenRegion": {},
+    "qrCodeCaptureFullScreen": "Gesamten Bildschirm erfassen",
+    "@qrCodeCaptureFullScreen": {},
+    "qrCodeScreenCaptureFailed": "Bildschirmaufnahme fehlgeschlagen",
+    "@qrCodeScreenCaptureFailed": {}
 }

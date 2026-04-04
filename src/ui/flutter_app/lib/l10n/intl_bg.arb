@@ -4241,5 +4241,17 @@
     "engineFailureContent": "AI двигателят не върна ход. Това е неочаквана вътрешна грешка. Искате ли да изпратите диагностичен доклад за разследване?",
     "@engineFailureContent": {},
     "sendReport": "Изпрати доклад",
-    "@sendReport": {}
+    "@sendReport": {},
+    "qrCodeScannerDesktopHint": "На този компютър не се използва преглед на живо от камерата. Изберете файл с изображение, съдържащ QR код.",
+    "@qrCodeScannerDesktopHint": {},
+    "qrCodeScannerWindowsScreenCaptureHint": "Можете също да използвате бутоните по-долу за заснемане на екрана: изрязване на област или целия основен дисплей.",
+    "@qrCodeScannerWindowsScreenCaptureHint": {},
+    "qrCodePickImageFile": "Избор на файл с изображение",
+    "@qrCodePickImageFile": {},
+    "qrCodeSnipScreenRegion": "Изрязване на област от екрана",
+    "@qrCodeSnipScreenRegion": {},
+    "qrCodeCaptureFullScreen": "Заснемане на целия екран",
+    "@qrCodeCaptureFullScreen": {},
+    "qrCodeScreenCaptureFailed": "Заснемането на екрана не бе успешно",
+    "@qrCodeScreenCaptureFailed": {}
 }

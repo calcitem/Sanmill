@@ -4241,5 +4241,17 @@
     "engineFailureContent": "AI-рухавік не змог выдаць ход. Гэта нечаканая ўнутраная памылка. Адправіць дыягнастычную справаздачу для расследавання?",
     "@engineFailureContent": {},
     "sendReport": "Адправіць справаздачу",
-    "@sendReport": {}
+    "@sendReport": {},
+    "qrCodeScannerDesktopHint": "На гэтым камп'ютары не выкарыстоўваецца прагляд з камеры. Абярыце файл выявы з QR-кодам.",
+    "@qrCodeScannerDesktopHint": {},
+    "qrCodeScannerWindowsScreenCaptureHint": "Таксама можаце скарыстацца кнопкамі ніжэй, каб захапіць экран: вобласць або ўвесь асноўны дысплей.",
+    "@qrCodeScannerWindowsScreenCaptureHint": {},
+    "qrCodePickImageFile": "Абраць файл выявы",
+    "@qrCodePickImageFile": {},
+    "qrCodeSnipScreenRegion": "Вылучыць вобласць экрана",
+    "@qrCodeSnipScreenRegion": {},
+    "qrCodeCaptureFullScreen": "Захапіць увесь экран",
+    "@qrCodeCaptureFullScreen": {},
+    "qrCodeScreenCaptureFailed": "Не ўдалося захапіць экран",
+    "@qrCodeScreenCaptureFailed": {}
 }

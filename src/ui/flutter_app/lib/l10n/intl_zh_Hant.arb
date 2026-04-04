@@ -4265,5 +4265,17 @@
     "engineFailureContent": "AI 引擎無法產生著法，這是非預期的內部錯誤。是否傳送診斷報告以協助我們調查？",
     "@engineFailureContent": {},
     "sendReport": "傳送報告",
-    "@sendReport": {}
+    "@sendReport": {},
+    "qrCodeScannerDesktopHint": "此電腦不使用即時相機預覽。請選擇包含 QR 碼的圖片檔案。",
+    "@qrCodeScannerDesktopHint": {},
+    "qrCodeScannerWindowsScreenCaptureHint": "您也可以使用下方按鈕截取螢幕：框選區域或截取主螢幕全畫面。",
+    "@qrCodeScannerWindowsScreenCaptureHint": {},
+    "qrCodePickImageFile": "選擇圖片檔案",
+    "@qrCodePickImageFile": {},
+    "qrCodeSnipScreenRegion": "截取螢幕區域",
+    "@qrCodeSnipScreenRegion": {},
+    "qrCodeCaptureFullScreen": "截取全螢幕",
+    "@qrCodeCaptureFullScreen": {},
+    "qrCodeScreenCaptureFailed": "螢幕截取失敗",
+    "@qrCodeScreenCaptureFailed": {}
 }

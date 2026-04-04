@@ -4241,5 +4241,17 @@
     "engineFailureContent": "El motor d'IA no ha pogut produir una jugada. Això és un error intern inesperat. Voleu enviar un informe de diagnòstic per ajudar-nos a investigar?",
     "@engineFailureContent": {},
     "sendReport": "Enviar informe",
-    "@sendReport": {}
+    "@sendReport": {},
+    "qrCodeScannerDesktopHint": "En aquest ordinador no s'utilitza la previsualització en viu de la càmera. Trieu un fitxer d'imatge que contingui un codi QR.",
+    "@qrCodeScannerDesktopHint": {},
+    "qrCodeScannerWindowsScreenCaptureHint": "També podeu utilitzar els botons següents per capturar la pantalla: retallar una regió o la pantalla principal sencera.",
+    "@qrCodeScannerWindowsScreenCaptureHint": {},
+    "qrCodePickImageFile": "Trieu fitxer d'imatge",
+    "@qrCodePickImageFile": {},
+    "qrCodeSnipScreenRegion": "Retalla regió de pantalla",
+    "@qrCodeSnipScreenRegion": {},
+    "qrCodeCaptureFullScreen": "Captura pantalla sencera",
+    "@qrCodeCaptureFullScreen": {},
+    "qrCodeScreenCaptureFailed": "Ha fallat la captura de pantalla",
+    "@qrCodeScreenCaptureFailed": {}
 }

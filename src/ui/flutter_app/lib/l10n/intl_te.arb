@@ -4241,5 +4241,17 @@
     "engineFailureContent": "AI ఇంజిన్ కదలికను ఉత్పత్తి చేయలేకపోయింది. ఇది అనుకోని అంతర్గత లోపం. దర్యాప్తులో సహాయం కోసం విశ్లేషణ నివేదిక పంపాలా?",
     "@engineFailureContent": {},
     "sendReport": "నివేదిక పంపు",
-    "@sendReport": {}
+    "@sendReport": {},
+    "qrCodeScannerDesktopHint": "ఈ కంప్యూటర్‌లో లైవ్ కెమెరా ప్రివ్యూ ఉపయోగించబడదు. QR కోడ్ ఉన్న చిత్ర ఫైల్‌ను ఎంచుకోండి.",
+    "@qrCodeScannerDesktopHint": {},
+    "qrCodeScannerWindowsScreenCaptureHint": "స్క్రీన్‌ను క్యాప్చర్ చేయడానికి క్రింది బటన్‌లను కూడా ఉపయోగించవచ్చు: ప్రాంతం లేదా పూర్తి ప్రాథమిక డిస్‌ప్లే.",
+    "@qrCodeScannerWindowsScreenCaptureHint": {},
+    "qrCodePickImageFile": "చిత్ర ఫైల్ ఎంచుకోండి",
+    "@qrCodePickImageFile": {},
+    "qrCodeSnipScreenRegion": "స్క్రీన్ ప్రాంతం కత్తిరించు",
+    "@qrCodeSnipScreenRegion": {},
+    "qrCodeCaptureFullScreen": "పూర్తి స్క్రీన్ క్యాప్చర్",
+    "@qrCodeCaptureFullScreen": {},
+    "qrCodeScreenCaptureFailed": "స్క్రీన్ క్యాప్చర్ విఫలమైంది",
+    "@qrCodeScreenCaptureFailed": {}
 }

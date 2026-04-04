@@ -4241,5 +4241,17 @@
     "engineFailureContent": "Motorul AI nu a putut produce o mutare. Este o eroare internă neașteptată. Doriți să trimiteți un raport de diagnostic pentru a ne ajuta să investigăm?",
     "@engineFailureContent": {},
     "sendReport": "Trimite raportul",
-    "@sendReport": {}
+    "@sendReport": {},
+    "qrCodeScannerDesktopHint": "Pe acest computer nu se folosește previzualizarea live a camerei. Alegeți un fișier imagine care conține un cod QR.",
+    "@qrCodeScannerDesktopHint": {},
+    "qrCodeScannerWindowsScreenCaptureHint": "Puteți folosi și butoanele de mai jos pentru a captura ecranul: o regiune sau întregul ecran principal.",
+    "@qrCodeScannerWindowsScreenCaptureHint": {},
+    "qrCodePickImageFile": "Alege fișier imagine",
+    "@qrCodePickImageFile": {},
+    "qrCodeSnipScreenRegion": "Decupează regiune ecran",
+    "@qrCodeSnipScreenRegion": {},
+    "qrCodeCaptureFullScreen": "Capturează ecran complet",
+    "@qrCodeCaptureFullScreen": {},
+    "qrCodeScreenCaptureFailed": "Capturarea ecranului a eșuat",
+    "@qrCodeScreenCaptureFailed": {}
 }

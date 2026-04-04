@@ -4241,5 +4241,17 @@
     "engineFailureContent": "AI இயந்திரம் நகர்வை உருவாக்க முடியவில்லை. இது எதிர்பாராத உள் பிழை. விசாரணைக்கு உதவ நோயறித் அறிக்கையை அனுப்ப விரும்புகிறீர்களா?",
     "@engineFailureContent": {},
     "sendReport": "அறிக்கையை அனுப்பு",
-    "@sendReport": {}
+    "@sendReport": {},
+    "qrCodeScannerDesktopHint": "இந்த கணினியில் நேரடி கேமரா முன்னோட்டம் பயன்படுத்தப்படவில்லை. QR குறியீடு உள்ள படக் கோப்பைத் தேர்ந்தெடுக்கவும்.",
+    "@qrCodeScannerDesktopHint": {},
+    "qrCodeScannerWindowsScreenCaptureHint": "திரையைப் பிடிக்க கீழுள்ள பொத்தான்களையும் பயன்படுத்தலாம்: பகுதி அல்லது முழு முதன்மை காட்சி.",
+    "@qrCodeScannerWindowsScreenCaptureHint": {},
+    "qrCodePickImageFile": "படக் கோப்பைத் தேர்ந்தெடு",
+    "@qrCodePickImageFile": {},
+    "qrCodeSnipScreenRegion": "திரைப் பகுதியை வெட்டு",
+    "@qrCodeSnipScreenRegion": {},
+    "qrCodeCaptureFullScreen": "முழுத் திரையைப் பிடி",
+    "@qrCodeCaptureFullScreen": {},
+    "qrCodeScreenCaptureFailed": "திரைப் பிடிப்பு தோல்வி",
+    "@qrCodeScreenCaptureFailed": {}
 }

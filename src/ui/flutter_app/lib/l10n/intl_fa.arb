@@ -4241,5 +4241,17 @@
     "engineFailureContent": "موتور هوش مصنوعی نتوانست حرکتی تولید کند. این یک خطای داخلی غیرمنتظره است. آیا می‌خواهید گزارش تشخیصی ارسال کنید تا بررسی کنیم؟",
     "@engineFailureContent": {},
     "sendReport": "ارسال گزارش",
-    "@sendReport": {}
+    "@sendReport": {},
+    "qrCodeScannerDesktopHint": "پیش‌نمایش زنده دوربین روی این رایانه استفاده نمی‌شود. فایل تصویری حاوی کد QR انتخاب کنید.",
+    "@qrCodeScannerDesktopHint": {},
+    "qrCodeScannerWindowsScreenCaptureHint": "همچنین می‌توانید از دکمه‌های زیر برای گرفتن اسکرین‌شات استفاده کنید: ناحیه یا کل نمایشگر اصلی.",
+    "@qrCodeScannerWindowsScreenCaptureHint": {},
+    "qrCodePickImageFile": "انتخاب فایل تصویر",
+    "@qrCodePickImageFile": {},
+    "qrCodeSnipScreenRegion": "برش ناحیه صفحه",
+    "@qrCodeSnipScreenRegion": {},
+    "qrCodeCaptureFullScreen": "گرفتن تمام صفحه",
+    "@qrCodeCaptureFullScreen": {},
+    "qrCodeScreenCaptureFailed": "گرفتن اسکرین‌شات ناموفق بود",
+    "@qrCodeScreenCaptureFailed": {}
 }
