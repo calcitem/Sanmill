@@ -61,6 +61,10 @@ dependencies:
   vibration: 3.1.5
   url_launcher: 6.3.2
   uuid: 4.5.2
+  # Vendored: pub 0.1.0 CMake target is screenshot_plugin; Flutter expects
+  # just_screenshot_plugin. See third_party/just_screenshot/PATCHES.md.
+  just_screenshot:
+    path: third_party/just_screenshot
   # Voice assistant plugins removed - voice assistant functionality disabled
   # whisper_ggml: 1.7.0
   # record: 6.1.2

@@ -6,7 +6,6 @@
 // Page for managing user-created custom puzzles
 
 import 'dart:convert' show utf8;
-import 'dart:io';
 import 'dart:ui' as ui;
 
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
@@ -133,13 +132,11 @@ class _CustomPuzzlesPageState extends State<CustomPuzzlesPage> {
                           tooltip: s.delete,
                         ),
                     ] else ...<Widget>[
-                      // Scan QR code to import puzzle (mobile only)
-                      if (Platform.isAndroid || Platform.isIOS)
-                        IconButton(
-                          icon: const Icon(FluentIcons.scan_camera_24_regular),
-                          onPressed: _scanPuzzleQrCode,
-                          tooltip: s.scanQrCode,
-                        ),
+                      IconButton(
+                        icon: const Icon(FluentIcons.scan_camera_24_regular),
+                        onPressed: _scanPuzzleQrCode,
+                        tooltip: s.scanQrCode,
+                      ),
                       // Import button (open file to import puzzles)
                       IconButton(
                         icon: const Icon(FluentIcons.folder_open_24_regular),
@@ -265,12 +262,11 @@ class _CustomPuzzlesPageState extends State<CustomPuzzlesPage> {
                   icon: const Icon(FluentIcons.folder_open_24_regular),
                   label: Text(s.puzzleImport),
                 ),
-                if (Platform.isAndroid || Platform.isIOS)
-                  OutlinedButton.icon(
-                    onPressed: _scanPuzzleQrCode,
-                    icon: const Icon(FluentIcons.scan_camera_24_regular),
-                    label: Text(s.scanQrCode),
-                  ),
+                OutlinedButton.icon(
+                  onPressed: _scanPuzzleQrCode,
+                  icon: const Icon(FluentIcons.scan_camera_24_regular),
+                  label: Text(s.scanQrCode),
+                ),
               ],
             ),
           ],

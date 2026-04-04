@@ -509,12 +509,9 @@ class MovesListPageState extends State<MovesListPage> {
     }
   }
 
-  /// Opens the camera-based QR scanner and imports the scanned move list.
+  /// Opens the QR scanner (camera when available, otherwise file / gallery
+  /// picker) and imports the scanned move list.
   Future<void> _scanQrCode() async {
-    if (!Platform.isAndroid && !Platform.isIOS) {
-      return;
-    }
-
     final String? scannedData = await Navigator.of(context).push<String>(
       MaterialPageRoute<String>(
         builder: (BuildContext context) => const QrScannerPage(),
@@ -1557,11 +1554,9 @@ class MovesListPageState extends State<MovesListPage> {
   /// Builds an empty-state page with large action icons.
   ///
   /// Shows three icons in landscape and adapts to portrait orientation.
-  /// The QR scan icon is only shown on Android and iOS where the camera
-  /// permission and scanning capability are available.
+  /// Shows the QR scan action on all native platforms (desktop uses camera
+  /// when available, otherwise pick-from-file flow in [QrScannerPage]).
   Widget _buildEmptyState() {
-    final bool showQrScan = Platform.isAndroid || Platform.isIOS;
-
     final Widget loadGameIcon = _emptyStateIcon(
       icon: FluentIcons.folder_open_24_regular,
       label: S.of(context).loadGame,
@@ -1592,27 +1587,13 @@ class MovesListPageState extends State<MovesListPage> {
                 loadGameIcon,
                 const SizedBox(width: 32),
                 importGameIcon,
-                if (showQrScan) ...<Widget>[
-                  const SizedBox(width: 32),
-                  scanQrIcon,
-                ],
+                const SizedBox(width: 32),
+                scanQrIcon,
               ],
             );
           }
 
           // Portrait: two icons in the first row; QR scan icon centered below.
-          if (!showQrScan) {
-            return Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                loadGameIcon,
-                const SizedBox(width: 40),
-                importGameIcon,
-              ],
-            );
-          }
-
           return Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
@@ -3046,36 +3027,33 @@ class MovesListPageState extends State<MovesListPage> {
                   ],
                 ),
               ),
-              if (Platform.isAndroid ||
-                  Platform.isIOS) ...<PopupMenuEntry<String>>[
-                const PopupMenuDivider(),
-                PopupMenuItem<String>(
-                  value: 'scan_qr',
-                  child: Row(
-                    children: <Widget>[
-                      const Icon(
-                        FluentIcons.scan_camera_24_regular,
-                        color: Colors.black54,
-                      ),
-                      const SizedBox(width: 8),
-                      Text(S.of(context).scanQrCode),
-                    ],
-                  ),
+              const PopupMenuDivider(),
+              PopupMenuItem<String>(
+                value: 'scan_qr',
+                child: Row(
+                  children: <Widget>[
+                    const Icon(
+                      FluentIcons.scan_camera_24_regular,
+                      color: Colors.black54,
+                    ),
+                    const SizedBox(width: 8),
+                    Text(S.of(context).scanQrCode),
+                  ],
                 ),
-                PopupMenuItem<String>(
-                  value: 'export_qr',
-                  child: Row(
-                    children: <Widget>[
-                      const Icon(
-                        FluentIcons.qr_code_24_regular,
-                        color: Colors.black54,
-                      ),
-                      const SizedBox(width: 8),
-                      Text(S.of(context).exportQrCode),
-                    ],
-                  ),
+              ),
+              PopupMenuItem<String>(
+                value: 'export_qr',
+                child: Row(
+                  children: <Widget>[
+                    const Icon(
+                      FluentIcons.qr_code_24_regular,
+                      color: Colors.black54,
+                    ),
+                    const SizedBox(width: 8),
+                    Text(S.of(context).exportQrCode),
+                  ],
                 ),
-              ],
+              ),
               const PopupMenuDivider(),
               PopupMenuItem<String>(
                 value: 'copy_llm_prompt',

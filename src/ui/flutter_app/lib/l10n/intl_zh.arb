@@ -4291,5 +4291,29 @@
     "sendReport": "发送报告",
     "@sendReport": {
         "description": "Button label for sending a diagnostic report"
+    },
+    "qrCodeScannerDesktopHint": "当前环境不使用实时摄像头预览。请选择包含二维码的图片文件。",
+    "@qrCodeScannerDesktopHint": {
+        "description": "Explains QR scan UI on desktop without the camera plugin (all desktop OS)"
+    },
+    "qrCodeScannerWindowsScreenCaptureHint": "也可使用下方按钮截取屏幕：框选区域或截取主显示器全屏。",
+    "@qrCodeScannerWindowsScreenCaptureHint": {
+        "description": "Extra hint shown only on Windows where screen capture is available"
+    },
+    "qrCodePickImageFile": "选择图片文件",
+    "@qrCodePickImageFile": {
+        "description": "Button to pick a QR code image from disk on desktop"
+    },
+    "qrCodeSnipScreenRegion": "截取屏幕区域",
+    "@qrCodeSnipScreenRegion": {
+        "description": "Button to capture a rectangular region of the screen (Windows)"
+    },
+    "qrCodeCaptureFullScreen": "截取全屏",
+    "@qrCodeCaptureFullScreen": {
+        "description": "Button to capture the primary display (Windows)"
+    },
+    "qrCodeScreenCaptureFailed": "屏幕截取失败",
+    "@qrCodeScreenCaptureFailed": {
+        "description": "Prefix or short message when native screenshot capture errors"
     }
 }

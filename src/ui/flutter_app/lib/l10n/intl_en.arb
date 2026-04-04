@@ -4407,5 +4407,29 @@
     "sendReport": "Send Report",
     "@sendReport": {
         "description": "Button label for sending a diagnostic report"
+    },
+    "qrCodeScannerDesktopHint": "The live camera preview is not used on this computer. Choose an image file that contains a QR code.",
+    "@qrCodeScannerDesktopHint": {
+        "description": "Explains QR scan UI on desktop without the camera plugin (all desktop OS)"
+    },
+    "qrCodeScannerWindowsScreenCaptureHint": "You can also use the buttons below to capture the screen: snip a region or the entire primary display.",
+    "@qrCodeScannerWindowsScreenCaptureHint": {
+        "description": "Extra hint shown only on Windows where screen capture is available"
+    },
+    "qrCodePickImageFile": "Choose image file",
+    "@qrCodePickImageFile": {
+        "description": "Button to pick a QR code image from disk on desktop"
+    },
+    "qrCodeSnipScreenRegion": "Snip screen region",
+    "@qrCodeSnipScreenRegion": {
+        "description": "Button to capture a rectangular region of the screen (Windows)"
+    },
+    "qrCodeCaptureFullScreen": "Capture full screen",
+    "@qrCodeCaptureFullScreen": {
+        "description": "Button to capture the primary display (Windows)"
+    },
+    "qrCodeScreenCaptureFailed": "Screen capture failed",
+    "@qrCodeScreenCaptureFailed": {
+        "description": "Prefix or short message when native screenshot capture errors"
     }
 }

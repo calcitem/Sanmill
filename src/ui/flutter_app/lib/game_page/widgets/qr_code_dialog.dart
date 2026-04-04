@@ -5,9 +5,9 @@
 
 import 'dart:io';
 import 'dart:math' as math;
+import 'dart:typed_data';
 import 'dart:ui' as ui;
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:image_gallery_saver_plus/image_gallery_saver_plus.dart';
@@ -102,25 +102,45 @@ class _QrCodeDialogState extends State<QrCodeDialog> {
 
   Future<void> _saveToGallery() async {
     final Uint8List? pngBytes = await _captureQrImage();
-    if (pngBytes == null) {
+    if (pngBytes == null || !mounted) {
       return;
     }
 
-    final dynamic result = await ImageGallerySaverPlus.saveImage(
-      pngBytes,
-      quality: 100,
-      name: 'sanmill_qr_${DateTime.now().millisecondsSinceEpoch}',
-    );
+    final S s = S.of(context);
+
+    if (Platform.isAndroid || Platform.isIOS) {
+      final dynamic result = await ImageGallerySaverPlus.saveImage(
+        pngBytes,
+        quality: 100,
+        name: 'sanmill_qr_${DateTime.now().millisecondsSinceEpoch}',
+      );
+
+      if (!mounted) {
+        return;
+      }
+
+      final bool isSuccess = result is Map && result['isSuccess'] == true;
+      final String message = isSuccess ? s.qrCodeSaved : s.qrCodeSaveFailed;
+      rootScaffoldMessengerKey.currentState?.showSnackBarClear(message);
+      return;
+    }
+
+    // Desktop: write to Downloads (or documents) — gallery saver is mobile.
+    final Directory dir =
+        (await getDownloadsDirectory()) ??
+        (await getApplicationDocumentsDirectory());
+    final String filePath =
+        '${dir.path}/sanmill_qr_${DateTime.now().millisecondsSinceEpoch}.png';
+    final File file = File(filePath);
+    await file.writeAsBytes(pngBytes);
 
     if (!mounted) {
       return;
     }
 
-    final bool isSuccess = result is Map && result['isSuccess'] == true;
-    final String message = isSuccess
-        ? S.of(context).qrCodeSaved
-        : S.of(context).qrCodeSaveFailed;
-    rootScaffoldMessengerKey.currentState?.showSnackBarClear(message);
+    rootScaffoldMessengerKey.currentState?.showSnackBarClear(
+      s.downloadSuccess(filePath),
+    );
   }
 
   Future<void> _shareQrCode() async {
@@ -220,7 +240,11 @@ class _QrCodeDialogState extends State<QrCodeDialog> {
                     TextButton.icon(
                       onPressed: _saveToGallery,
                       icon: const Icon(Icons.save_alt),
-                      label: Text(s.saveToGallery),
+                      label: Text(
+                        (Platform.isAndroid || Platform.isIOS)
+                            ? s.saveToGallery
+                            : s.saveImage,
+                      ),
                     ),
                     TextButton.icon(
                       onPressed: _shareQrCode,
