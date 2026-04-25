@@ -2,51 +2,94 @@
 // Copyright (C) 2019-2026 The Sanmill developers (see AUTHORS file)
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:sanmill/appearance_settings/models/display_settings.dart';
+import 'package:sanmill/experience_recording/models/recording_models.dart';
+import 'package:sanmill/general_settings/models/general_settings.dart';
+import 'package:sanmill/rule_settings/models/rule_settings.dart';
+import 'package:sanmill/shared/database/settings_side_effect_coordinator.dart';
 
-/// Test to verify debouncing behavior when settings are changed rapidly
 void main() {
-  group('Database Debouncing Tests', () {
-    test('Rapid settings changes should be debounced', () async {
-      // Simulate rapid settings changes like in Monkey test
-      // Each change schedules an engine update, but only the last one should execute
+  group('SettingsSideEffectCoordinator', () {
+    late int generalEngineUpdates;
+    late int ruleEngineUpdates;
+    late List<Map<String, dynamic>> recordedData;
+    late SettingsSideEffectCoordinator coordinator;
 
-      const int _ = 0;
+    setUp(() {
+      generalEngineUpdates = 0;
+      ruleEngineUpdates = 0;
+      recordedData = <Map<String, dynamic>>[];
+      coordinator = SettingsSideEffectCoordinator(
+        engineOptionsDebounceDuration: const Duration(milliseconds: 10),
+        updateGeneralEngineOptions: () {
+          generalEngineUpdates++;
+        },
+        updateRuleEngineOptions: () {
+          ruleEngineUpdates++;
+        },
+        recordEvent: (RecordingEventType type, Map<String, dynamic> data) {
+          recordedData.add(<String, dynamic>{'type': type, 'data': data});
+        },
+      );
+    });
 
-      // Mock the engine.setGeneralOptions() call
-      // In real scenario, this would be called after debounce period
+    tearDown(() {
+      coordinator.dispose();
+    });
 
-      // Simulate 10 rapid setting changes within 100ms
+    test('debounces rapid general settings engine updates', () async {
       for (int i = 0; i < 10; i++) {
-        // This would normally trigger DB().generalSettings setter
-        // which schedules engine.setGeneralOptions() after 300ms debounce
-
-        // In the old code, this would trigger 10 engine updates
-        // In the new code with debounce, only 1 update after the last change
+        coordinator.onGeneralSettingsSaved(const GeneralSettings());
       }
 
-      // Wait for debounce period (300ms) + some margin
-      await Future<void>.delayed(const Duration(milliseconds: 400));
+      expect(generalEngineUpdates, 0);
 
-      // With debounce: engineUpdateCount should be 1 (not 10)
-      // Without debounce: engineUpdateCount would be 10
+      await Future<void>.delayed(const Duration(milliseconds: 30));
 
-      // This test demonstrates the concept but can't directly test
-      // the actual implementation without mocking GameController
+      expect(generalEngineUpdates, 1);
+      expect(ruleEngineUpdates, 0);
     });
 
     test(
-      'Settings changes separated by debounce period should execute',
+      'debounces rapid rule settings engine updates independently',
       () async {
-        // If settings changes are separated by more than the debounce period,
-        // each should trigger an engine update
+        for (int i = 0; i < 10; i++) {
+          coordinator.onRuleSettingsPersisted();
+        }
 
-        // Change 1
-        // ... wait 400ms ...
-        // Change 2
-        // ... wait 400ms ...
+        expect(ruleEngineUpdates, 0);
 
-        // Expected: 2 engine updates (one for each change)
+        await Future<void>.delayed(const Duration(milliseconds: 30));
+
+        expect(ruleEngineUpdates, 1);
+        expect(generalEngineUpdates, 0);
       },
     );
+
+    test('records compatible settings change payloads', () {
+      coordinator.onGeneralSettingsSaved(const GeneralSettings(aiIsLazy: true));
+      coordinator.recordRuleSettingsChange(const RuleSettings(piecesCount: 12));
+      coordinator.onDisplaySettingsSaved(const DisplaySettings(fontScale: 1.2));
+
+      expect(recordedData, hasLength(3));
+      expect(
+        recordedData.map(
+          (Map<String, dynamic> event) =>
+              (event['data'] as Map<String, dynamic>)['category'],
+        ),
+        <String>['general', 'rule', 'display'],
+      );
+      expect(
+        recordedData.map((Map<String, dynamic> event) => event['type']),
+        everyElement(RecordingEventType.settingsChange),
+      );
+      expect(
+        recordedData.map(
+          (Map<String, dynamic> event) =>
+              (event['data'] as Map<String, dynamic>)['settings'],
+        ),
+        everyElement(isA<Map<String, dynamic>>()),
+      );
+    });
   });
 }
