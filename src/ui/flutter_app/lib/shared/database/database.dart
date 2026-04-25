@@ -3,7 +3,6 @@
 
 // database.dart
 
-import 'dart:async' show Timer;
 import 'dart:convert' show jsonDecode;
 import 'dart:io' show Directory, File;
 
@@ -15,9 +14,6 @@ import 'package:path_provider/path_provider.dart';
 
 import '../../appearance_settings/models/color_settings.dart';
 import '../../appearance_settings/models/display_settings.dart';
-import '../../experience_recording/models/recording_models.dart';
-import '../../experience_recording/services/recording_service.dart';
-import '../../game_page/services/mill.dart';
 import '../../general_settings/models/general_settings.dart';
 import '../../puzzle/models/puzzle_models.dart';
 import '../../rule_settings/models/rule_settings.dart';
@@ -27,6 +23,7 @@ import '../../statistics/model/stats_settings.dart';
 import '../config/constants.dart';
 import '../services/logger.dart';
 import 'adapters/adapters.dart';
+import 'settings_change_dispatcher.dart';
 
 part 'database_migration.dart';
 
@@ -52,15 +49,6 @@ class Database {
 
   /// [GeneralSettings] Box reference
   static late final Box<GeneralSettings> _generalSettingsBox;
-
-  // Debounce engine option updates triggered by rapid settings changes.
-  // This is important for stress tests (e.g. Monkey) where sliders/toggles may
-  // fire in bursts and would otherwise spam `setoption` calls.
-  static const Duration _engineOptionsDebounceDuration = Duration(
-    milliseconds: 300,
-  );
-  static Timer? _engineOptionsDebounceTimer;
-  static Timer? _engineRuleOptionsDebounceTimer;
 
   /// Key at which the [GeneralSettings] will be saved in the [_generalSettingsBox]
   static const String generalSettingsKey = "settings";
@@ -196,19 +184,7 @@ class Database {
   /// Saves the given [generalSettings] to the settings Box
   set generalSettings(GeneralSettings generalSettings) {
     saveGeneralSettingsOnly(generalSettings);
-    _engineOptionsDebounceTimer?.cancel();
-    _engineOptionsDebounceTimer = Timer(_engineOptionsDebounceDuration, () {
-      GameController().engine.setGeneralOptions();
-    });
-
-    // Record settings change for experience recording.
-    RecordingService().recordEvent(
-      RecordingEventType.settingsChange,
-      <String, dynamic>{
-        'category': 'general',
-        'settings': generalSettings.toJson(),
-      },
-    );
+    SettingsChangeDispatcher.instance.onGeneralSettingsSaved(generalSettings);
   }
 
   /// Gets the given [GeneralSettings] from the settings Box
@@ -236,13 +212,7 @@ class Database {
   set _ruleSettings(RuleSettings? ruleSettings) {
     if (ruleSettings != null) {
       _ruleSettingsBox.put(ruleSettingsKey, ruleSettings);
-      _engineRuleOptionsDebounceTimer?.cancel();
-      _engineRuleOptionsDebounceTimer = Timer(
-        _engineOptionsDebounceDuration,
-        () {
-          GameController().engine.setRuleOptions();
-        },
-      );
+      SettingsChangeDispatcher.instance.onRuleSettingsPersisted();
     }
   }
 
@@ -252,12 +222,7 @@ class Database {
   /// Saves the given [ruleSettings] to the settings Box
   set ruleSettings(RuleSettings ruleSettings) {
     _ruleSettings = ruleSettings;
-
-    // Record settings change for experience recording.
-    RecordingService().recordEvent(
-      RecordingEventType.settingsChange,
-      <String, dynamic>{'category': 'rule', 'settings': ruleSettings.toJson()},
-    );
+    SettingsChangeDispatcher.instance.recordRuleSettingsChange(ruleSettings);
   }
 
   /// Gets the given [RuleSettings] from the settings Box
@@ -289,15 +254,7 @@ class Database {
   /// Saves the given [displaySettings] to the settings Box
   set displaySettings(DisplaySettings displaySettings) {
     _displaySettingsBox.put(displaySettingsKey, displaySettings);
-
-    // Record settings change for experience recording.
-    RecordingService().recordEvent(
-      RecordingEventType.settingsChange,
-      <String, dynamic>{
-        'category': 'display',
-        'settings': displaySettings.toJson(),
-      },
-    );
+    SettingsChangeDispatcher.instance.onDisplaySettingsSaved(displaySettings);
   }
 
   /// Gets the given [DisplaySettings] from the settings Box
@@ -434,7 +391,7 @@ class Database {
   /// Initializes the [PuzzleSettings] reference
   static Future<void> _initPuzzleSettings() async {
     if (!Hive.isAdapterRegistered(pieceColorTypeId)) {
-      Hive.registerAdapter<PieceColor>(PieceColorAdapter());
+      Hive.registerAdapter(PieceColorAdapter());
     }
     if (!Hive.isAdapterRegistered(puzzleDifficultyTypeId)) {
       Hive.registerAdapter<PuzzleDifficulty>(PuzzleDifficultyAdapter());

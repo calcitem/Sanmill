@@ -28,6 +28,7 @@ import 'home/home.dart';
 import 'puzzle/services/puzzle_manager.dart';
 import 'shared/config/constants.dart';
 import 'shared/database/database.dart';
+import 'shared/database/settings_repositories.dart';
 import 'shared/services/catcher_service.dart';
 import 'shared/services/environment_config.dart';
 import 'shared/services/logger.dart';
@@ -58,6 +59,7 @@ Future<void> main() async {
   GameRegistry.instance
     ..register(MillGameModule())
     ..register(DemoProbeGameModule());
+  SettingsRepositories.instance.init();
 
   // Initialize ELO service
   EloRatingService();

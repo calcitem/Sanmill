@@ -1,18 +1,10 @@
-import 'dart:typed_data';
+import 'package:flutter/foundation.dart';
 
 /// Represents captured screenshot data with dimensions and pixel bytes.
 ///
 /// This class is immutable and follows type safety principles.
+@immutable
 class CapturedData {
-  /// Create [CapturedData] from method channel response map.
-  factory CapturedData.fromMap(Map<Object?, Object?> map) {
-    final int width = map['width'] as int;
-    final int height = map['height'] as int;
-    final Uint8List bytes = map['bytes'] as Uint8List;
-
-    return CapturedData(width: width, height: height, bytes: bytes);
-  }
-
   /// Creates a [CapturedData] instance.
   ///
   /// Validates that width and height are positive and bytes is non-empty.
@@ -23,6 +15,15 @@ class CapturedData {
   }) : assert(width > 0, 'Width must be positive'),
        assert(height > 0, 'Height must be positive'),
        assert(bytes.length > 0, 'Bytes must not be empty');
+
+  /// Create [CapturedData] from method channel response map.
+  factory CapturedData.fromMap(Map<Object?, Object?> map) {
+    final int width = map['width']! as int;
+    final int height = map['height']! as int;
+    final Uint8List bytes = map['bytes']! as Uint8List;
+
+    return CapturedData(width: width, height: height, bytes: bytes);
+  }
 
   /// Width of the captured image in pixels.
   final int width;
@@ -40,7 +41,9 @@ class CapturedData {
 
   @override
   bool operator ==(Object other) {
-    if (identical(this, other)) return true;
+    if (identical(this, other)) {
+      return true;
+    }
 
     return other is CapturedData &&
         other.width == width &&
@@ -61,10 +64,16 @@ class CapturedData {
   }
 
   bool _listEquals<T>(List<T>? a, List<T>? b) {
-    if (a == null) return b == null;
-    if (b == null || a.length != b.length) return false;
+    if (a == null) {
+      return b == null;
+    }
+    if (b == null || a.length != b.length) {
+      return false;
+    }
     for (int index = 0; index < a.length; index += 1) {
-      if (a[index] != b[index]) return false;
+      if (a[index] != b[index]) {
+        return false;
+      }
     }
     return true;
   }

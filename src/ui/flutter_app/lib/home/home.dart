@@ -38,6 +38,8 @@ import '../rule_settings/models/rule_settings.dart';
 import '../rule_settings/widgets/rule_settings_page.dart';
 import '../shared/config/constants.dart';
 import '../shared/database/database.dart';
+import '../shared/database/settings_repositories.dart';
+import '../shared/database/settings_repository.dart';
 import '../shared/dialogs/privacy_policy_dialog.dart';
 import '../shared/services/catcher_service.dart';
 import '../shared/services/environment_config.dart';
@@ -149,6 +151,9 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
       ? _DrawerIndex.humanVsHuman
       : _DrawerIndex.humanVsAi;
   final StackList<_DrawerIndex> _routes = StackList<_DrawerIndex>();
+
+  SettingsRepository get _settingsRepository =>
+      SettingsRepositories.instance.current.repository;
 
   /// Callback from drawer for replace screen
   /// as user need with passing DrawerIndex (Enum index)
@@ -366,8 +371,9 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
 
   // Function to handle first time run
   void firstRun(BuildContext context) {
-    if (DB().generalSettings.firstRun == true) {
-      DB().generalSettings = DB().generalSettings.copyWith(firstRun: false);
+    if (_settingsRepository.generalSettings.firstRun == true) {
+      _settingsRepository.generalSettings = _settingsRepository.generalSettings
+          .copyWith(firstRun: false);
 
       final Locale locale = Localizations.localeOf(context);
       final String languageCode = locale.languageCode;
@@ -375,29 +381,27 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
       switch (languageCode) {
         case "af": // South Africa
         case "zu": // South Africa
-          DB().ruleSettings = DB().ruleSettings.copyWith(
-            piecesCount: 12,
-            hasDiagonalLines: true,
-            boardFullAction: BoardFullAction.agreeToDraw,
-            endgameNMoveRule: 10,
-            restrictRepeatedMillsFormation: true,
-          );
+          _settingsRepository.ruleSettings = _settingsRepository.ruleSettings
+              .copyWith(
+                piecesCount: 12,
+                hasDiagonalLines: true,
+                boardFullAction: BoardFullAction.agreeToDraw,
+                endgameNMoveRule: 10,
+                restrictRepeatedMillsFormation: true,
+              );
           break;
         case "fa": // Iran
         case "si": // Sri Lanka
-          DB().ruleSettings = DB().ruleSettings.copyWith(
-            piecesCount: 12,
-            hasDiagonalLines: true,
-          );
+          _settingsRepository.ruleSettings = _settingsRepository.ruleSettings
+              .copyWith(piecesCount: 12, hasDiagonalLines: true);
           break;
         case "ru": // Russia
-          DB().ruleSettings = DB().ruleSettings.copyWith(
-            oneTimeUseMill: true,
-            mayRemoveFromMillsAlways: true,
-          );
+          _settingsRepository.ruleSettings = _settingsRepository.ruleSettings
+              .copyWith(oneTimeUseMill: true, mayRemoveFromMillsAlways: true);
           break;
         case "ko": // Korea
-          DB().ruleSettings = DB().ruleSettings.copyWith(
+          _settingsRepository
+              .ruleSettings = _settingsRepository.ruleSettings.copyWith(
             piecesCount: 12,
             hasDiagonalLines: true,
             mayFly: false,

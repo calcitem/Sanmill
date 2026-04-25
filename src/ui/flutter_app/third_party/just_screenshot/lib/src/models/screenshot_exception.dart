@@ -1,7 +1,17 @@
+import 'package:flutter/foundation.dart';
+
 /// Exception thrown when screenshot capture fails.
 ///
 /// This class is immutable and follows type safety principles.
+@immutable
 class ScreenshotException implements Exception {
+  /// Creates a [ScreenshotException] instance.
+  const ScreenshotException({
+    required this.code,
+    required this.message,
+    this.details,
+  });
+
   /// Create [ScreenshotException] from method channel error.
   factory ScreenshotException.fromPlatformException({
     required String code,
@@ -14,13 +24,6 @@ class ScreenshotException implements Exception {
       details: details,
     );
   }
-
-  /// Creates a [ScreenshotException] instance.
-  const ScreenshotException({
-    required this.code,
-    required this.message,
-    this.details,
-  });
 
   /// Error code identifying the type of error.
   ///
@@ -50,7 +53,9 @@ class ScreenshotException implements Exception {
 
   @override
   bool operator ==(Object other) {
-    if (identical(this, other)) return true;
+    if (identical(this, other)) {
+      return true;
+    }
 
     return other is ScreenshotException &&
         other.code == code &&

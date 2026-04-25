@@ -21,6 +21,8 @@ import '../../game_page/services/mill.dart';
 import '../../generated/intl/l10n.dart';
 import '../../shared/config/constants.dart';
 import '../../shared/database/database.dart';
+import '../../shared/database/settings_repositories.dart';
+import '../../shared/database/settings_repository.dart';
 import '../../shared/services/environment_config.dart';
 import '../../shared/services/logger.dart';
 import '../../shared/services/perfect_database_service.dart';
@@ -51,6 +53,9 @@ class GeneralSettingsPage extends StatelessWidget {
 
   // Debounce timer for database copy operations
   static Timer? _databaseCopyDebounce;
+
+  SettingsRepository get _settingsRepository =>
+      SettingsRepositories.instance.current.repository;
 
   // Restore
   void _restoreFactoryDefaultSettings(BuildContext context) => showDialog(
@@ -192,7 +197,9 @@ class GeneralSettingsPage extends StatelessWidget {
     GeneralSettings generalSettings,
     bool value,
   ) {
-    DB().generalSettings = generalSettings.copyWith(aiChatEnabled: value);
+    _settingsRepository.generalSettings = generalSettings.copyWith(
+      aiChatEnabled: value,
+    );
 
     // Show experimental feature warning when enabling
     if (value) {
@@ -203,7 +210,9 @@ class GeneralSettingsPage extends StatelessWidget {
   }
 
   void _setWhoMovesFirst(GeneralSettings generalSettings, bool value) {
-    DB().generalSettings = generalSettings.copyWith(aiMovesFirst: value);
+    _settingsRepository.generalSettings = generalSettings.copyWith(
+      aiMovesFirst: value,
+    );
 
     if (GameController().position.isEmpty()) {
       GameController().position.changeSideToMove();
@@ -216,14 +225,16 @@ class GeneralSettingsPage extends StatelessWidget {
   }
 
   void _setAiIsLazy(GeneralSettings generalSettings, bool value) {
-    DB().generalSettings = generalSettings.copyWith(aiIsLazy: value);
+    _settingsRepository.generalSettings = generalSettings.copyWith(
+      aiIsLazy: value,
+    );
 
     logger.t("$_logTag aiIsLazy: $value");
   }
 
   void _setAlgorithm(BuildContext context, GeneralSettings generalSettings) {
     void callback(SearchAlgorithm? searchAlgorithm) {
-      DB().generalSettings = generalSettings.copyWith(
+      _settingsRepository.generalSettings = generalSettings.copyWith(
         searchAlgorithm: searchAlgorithm,
       );
 
@@ -263,13 +274,17 @@ class GeneralSettingsPage extends StatelessWidget {
   }
 
   void _setUseOpeningBook(GeneralSettings generalSettings, bool value) {
-    DB().generalSettings = generalSettings.copyWith(useOpeningBook: value);
+    _settingsRepository.generalSettings = generalSettings.copyWith(
+      useOpeningBook: value,
+    );
 
     logger.t("$_logTag useOpeningBook: $value");
   }
 
   void _setUsePerfectDatabase(GeneralSettings generalSettings, bool value) {
-    DB().generalSettings = generalSettings.copyWith(usePerfectDatabase: value);
+    _settingsRepository.generalSettings = generalSettings.copyWith(
+      usePerfectDatabase: value,
+    );
 
     logger.t("$_logTag usePerfectDatabase: $value");
 
@@ -298,7 +313,9 @@ class GeneralSettingsPage extends StatelessWidget {
 
   void _setTrapAwareness(GeneralSettings generalSettings, bool value) {
     // Enable or disable trap awareness
-    DB().generalSettings = generalSettings.copyWith(trapAwareness: value);
+    _settingsRepository.generalSettings = generalSettings.copyWith(
+      trapAwareness: value,
+    );
 
     logger.t("$_logTag trapAwareness: $value");
   }
@@ -309,7 +326,7 @@ class GeneralSettingsPage extends StatelessWidget {
   );
 
   void _setDrawOnHumanExperience(GeneralSettings generalSettings, bool value) {
-    DB().generalSettings = generalSettings.copyWith(
+    _settingsRepository.generalSettings = generalSettings.copyWith(
       drawOnHumanExperience: value,
     );
 
@@ -317,13 +334,15 @@ class GeneralSettingsPage extends StatelessWidget {
   }
 
   void _setConsiderMobility(GeneralSettings generalSettings, bool value) {
-    DB().generalSettings = generalSettings.copyWith(considerMobility: value);
+    _settingsRepository.generalSettings = generalSettings.copyWith(
+      considerMobility: value,
+    );
 
     logger.t("$_logTag considerMobility: $value");
   }
 
   void _setFocusOnBlockingPaths(GeneralSettings generalSettings, bool value) {
-    DB().generalSettings = generalSettings.copyWith(
+    _settingsRepository.generalSettings = generalSettings.copyWith(
       focusOnBlockingPaths: value,
     );
 
@@ -331,13 +350,17 @@ class GeneralSettingsPage extends StatelessWidget {
   }
 
   void _setShufflingEnabled(GeneralSettings generalSettings, bool value) {
-    DB().generalSettings = generalSettings.copyWith(shufflingEnabled: value);
+    _settingsRepository.generalSettings = generalSettings.copyWith(
+      shufflingEnabled: value,
+    );
 
     logger.t("$_logTag shufflingEnabled: $value");
   }
 
   void _setTone(GeneralSettings generalSettings, bool value) {
-    DB().generalSettings = generalSettings.copyWith(toneEnabled: value);
+    _settingsRepository.generalSettings = generalSettings.copyWith(
+      toneEnabled: value,
+    );
 
     logger.t("$_logTag toneEnabled: $value");
 
@@ -349,7 +372,7 @@ class GeneralSettingsPage extends StatelessWidget {
   }
 
   void _setBackgroundMusicEnabled(GeneralSettings generalSettings, bool value) {
-    DB().generalSettings = generalSettings.copyWith(
+    _settingsRepository.generalSettings = generalSettings.copyWith(
       backgroundMusicEnabled: value,
     );
     logger.t("$_logTag backgroundMusicEnabled: $value");
@@ -506,7 +529,7 @@ class GeneralSettingsPage extends StatelessWidget {
       return;
     }
 
-    DB().generalSettings = generalSettings.copyWith(
+    _settingsRepository.generalSettings = generalSettings.copyWith(
       backgroundMusicEnabled: true,
       backgroundMusicFilePath: newPath,
     );
@@ -552,7 +575,7 @@ class GeneralSettingsPage extends StatelessWidget {
       generalSettings.backgroundMusicFilePath,
     );
 
-    DB().generalSettings = generalSettings.copyWith(
+    _settingsRepository.generalSettings = generalSettings.copyWith(
       backgroundMusicEnabled: false,
       backgroundMusicFilePath: '',
     );
@@ -561,7 +584,7 @@ class GeneralSettingsPage extends StatelessWidget {
   }
 
   void _setKeepMuteWhenTakingBack(GeneralSettings generalSettings, bool value) {
-    DB().generalSettings = generalSettings.copyWith(
+    _settingsRepository.generalSettings = generalSettings.copyWith(
       keepMuteWhenTakingBack: value,
     );
 
@@ -570,7 +593,9 @@ class GeneralSettingsPage extends StatelessWidget {
 
   void _setSoundTheme(BuildContext context, GeneralSettings generalSettings) {
     void callback(SoundTheme? soundTheme) {
-      DB().generalSettings = generalSettings.copyWith(soundTheme: soundTheme);
+      _settingsRepository.generalSettings = generalSettings.copyWith(
+        soundTheme: soundTheme,
+      );
 
       logger.t("$_logTag soundTheme = $soundTheme");
 
@@ -594,13 +619,17 @@ class GeneralSettingsPage extends StatelessWidget {
   }
 
   void _setVibration(GeneralSettings generalSettings, bool value) {
-    DB().generalSettings = generalSettings.copyWith(vibrationEnabled: value);
+    _settingsRepository.generalSettings = generalSettings.copyWith(
+      vibrationEnabled: value,
+    );
 
     logger.t("$_logTag vibrationEnabled: $value");
   }
 
   void _setScreenReaderSupport(GeneralSettings generalSettings, bool value) {
-    DB().generalSettings = generalSettings.copyWith(screenReaderSupport: value);
+    _settingsRepository.generalSettings = generalSettings.copyWith(
+      screenReaderSupport: value,
+    );
 
     logger.t("$_logTag screenReaderSupport: $value");
   }
@@ -609,7 +638,7 @@ class GeneralSettingsPage extends StatelessWidget {
     GeneralSettings generalSettings,
     bool value,
   ) {
-    DB().generalSettings = generalSettings.copyWith(
+    _settingsRepository.generalSettings = generalSettings.copyWith(
       gameScreenRecorderSupport: value,
     );
 
@@ -628,7 +657,7 @@ class GeneralSettingsPage extends StatelessWidget {
     void callback(int? duration) {
       Navigator.pop(context);
 
-      DB().generalSettings = generalSettings.copyWith(
+      _settingsRepository.generalSettings = generalSettings.copyWith(
         gameScreenRecorderDuration: duration ?? 2,
       );
 
@@ -653,7 +682,7 @@ class GeneralSettingsPage extends StatelessWidget {
 
       Navigator.pop(context);
 
-      DB().generalSettings = generalSettings.copyWith(
+      _settingsRepository.generalSettings = generalSettings.copyWith(
         gameScreenRecorderPixelRatio: ratio ?? 50,
       );
 

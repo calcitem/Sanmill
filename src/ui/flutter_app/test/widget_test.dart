@@ -14,6 +14,7 @@ import 'package:sanmill/home/home.dart';
 import 'package:sanmill/main.dart';
 import 'package:sanmill/shared/database/database.dart';
 import 'package:sanmill/shared/services/environment_config.dart';
+import 'package:sanmill/shared/services/system_ui_service.dart';
 
 void main() {
   // Ensure the binding is initialized before tests run

@@ -1,25 +1,28 @@
+import 'package:flutter/foundation.dart';
+
 import 'screenshot_mode.dart';
 
 /// Internal model for capture request parameters.
 ///
 /// Used internally to pass parameters from public API to platform implementation.
 /// This class is immutable and follows type safety principles.
+@immutable
 class CaptureRequest {
-  /// Create [CaptureRequest] from map.
-  factory CaptureRequest.fromMap(Map<Object?, Object?> map) {
-    return CaptureRequest(
-      mode: ScreenshotModeExtension.fromValue(map['mode'] as String),
-      includeCursor: map['includeCursor'] as bool? ?? false,
-      displayId: map['displayId'] as int?,
-    );
-  }
-
   /// Creates a [CaptureRequest] instance.
   const CaptureRequest({
     required this.mode,
     this.includeCursor = false,
     this.displayId,
   });
+
+  /// Create [CaptureRequest] from map.
+  factory CaptureRequest.fromMap(Map<Object?, Object?> map) {
+    return CaptureRequest(
+      mode: ScreenshotModeExtension.fromValue(map['mode']! as String),
+      includeCursor: map['includeCursor'] as bool? ?? false,
+      displayId: map['displayId'] as int?,
+    );
+  }
 
   /// Screenshot capture mode (screen or region).
   final ScreenshotMode mode;
@@ -41,7 +44,9 @@ class CaptureRequest {
 
   @override
   bool operator ==(Object other) {
-    if (identical(this, other)) return true;
+    if (identical(this, other)) {
+      return true;
+    }
 
     return other is CaptureRequest &&
         other.mode == mode &&
