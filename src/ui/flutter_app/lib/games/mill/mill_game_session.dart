@@ -5,34 +5,129 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 
-import '../../game_page/services/mill.dart' show GameController;
+import '../../game_page/services/mill.dart' as mill;
 import '../../game_platform/game_id.dart';
 import '../../game_platform/game_session.dart';
 import '../../game_platform/game_session_handle.dart';
 
 /// Transitional session wrapper around the legacy process-wide Mill controller.
 class MillGameSession implements GameSessionHandle {
-  MillGameSession({GameController? controller})
-    : controller = controller ?? GameController(),
-      _state = ValueNotifier<GameStateSnapshot>(
-        const GameStateSnapshot(
-          gameId: GameId.mill,
-          activeSeat: PlayerSeat.first,
-          outcome: GameOutcome.ongoing(),
-          phase: 'legacy',
-        ),
-      );
+  MillGameSession({mill.GameController? controller})
+    : controller = controller ?? mill.GameController(),
+      _state = ValueNotifier<GameStateSnapshot>(_initialSnapshot()) {
+    _syncFromController(emitEvent: false);
+    this.controller.boardSemanticsNotifier.addListener(_onControllerChanged);
+    this.controller.gameResultNotifier.addListener(_onControllerChanged);
+    this.controller.headerTipNotifier.addListener(_onControllerChanged);
+    this.controller.headerIconsNotifier.addListener(_onControllerChanged);
+    this.controller.setupPositionNotifier.addListener(_onControllerChanged);
+  }
 
-  final GameController controller;
+  final mill.GameController controller;
   final ValueNotifier<GameStateSnapshot> _state;
   final StreamController<GameSessionEvent> _events =
       StreamController<GameSessionEvent>.broadcast();
+
+  static GameStateSnapshot _initialSnapshot() {
+    return const GameStateSnapshot(
+      gameId: GameId.mill,
+      activeSeat: PlayerSeat.first,
+      outcome: GameOutcome.ongoing(),
+      phase: 'legacy',
+    );
+  }
+
+  static String _pieceColorName(mill.PieceColor c) =>
+      c.toString().split('.').last;
+
+  void _onControllerChanged() => _syncFromController(emitEvent: true);
+
+  void _syncFromController({required bool emitEvent}) {
+    if (_events.isClosed) {
+      return;
+    }
+
+    final GameStateSnapshot next = _snapshotFromController();
+    final GameStateSnapshot prev = _state.value;
+    if (prev == next) {
+      return;
+    }
+    _state.value = next;
+    if (emitEvent) {
+      _events.add(
+        GameSessionEvent(
+          'millStateChanged',
+          payload: <String, Object?>{
+            'phase': next.phase,
+            'activeSeat': next.activeSeat.name,
+            'outcome': next.outcome.kind.name,
+          },
+        ),
+      );
+    }
+  }
+
+  GameStateSnapshot _snapshotFromController() {
+    final mill.PieceColor sideToMove = controller.position.sideToMove;
+    final PlayerSeat activeSeat = switch (sideToMove) {
+      mill.PieceColor.white => PlayerSeat.first,
+      mill.PieceColor.black => PlayerSeat.second,
+      _ => PlayerSeat.none,
+    };
+
+    final mill.PieceColor winner = controller.position.winner;
+    final GameOutcome outcome = switch (winner) {
+      mill.PieceColor.nobody ||
+      mill.PieceColor.none => const GameOutcome.ongoing(),
+      mill.PieceColor.draw => const GameOutcome.draw(),
+      mill.PieceColor.white => const GameOutcome.win(PlayerSeat.first),
+      mill.PieceColor.black => const GameOutcome.win(PlayerSeat.second),
+      _ => const GameOutcome.ongoing(),
+    };
+
+    final mill.Phase phase = controller.position.phase;
+    final mill.Act action = controller.position.action;
+
+    return GameStateSnapshot(
+      gameId: GameId.mill,
+      activeSeat: activeSeat,
+      outcome: outcome,
+      phase: phase.name,
+      lastAction: _state.value.lastAction,
+      payload: <String, Object?>{
+        'fen': controller.position.fen,
+        'action': action.name,
+        'winner': _pieceColorName(winner),
+        'isLan': controller.gameInstance.gameMode == mill.GameMode.humanVsLAN,
+        'disableStats': controller.disableStats,
+      },
+    );
+  }
 
   @override
   Stream<GameSessionEvent> get events => _events.stream;
 
   @override
-  List<GameAction> get legalActions => const <GameAction>[];
+  List<GameAction> get legalActions {
+    if (outcome.isTerminal) {
+      return const <GameAction>[];
+    }
+    final mill.Act action = controller.position.action;
+    final String type = switch (action) {
+      mill.Act.place => 'mill.place',
+      mill.Act.select => 'mill.select',
+      mill.Act.remove => 'mill.remove',
+    };
+    return <GameAction>[
+      GameAction(
+        type: type,
+        payload: <String, Object?>{
+          'phase': controller.position.phase.name,
+          'fen': controller.position.fen,
+        },
+      ),
+    ];
+  }
 
   @override
   GameOutcome get outcome => _state.value.outcome;
@@ -43,11 +138,34 @@ class MillGameSession implements GameSessionHandle {
   @override
   Future<void> apply(GameAction action) async {
     assert(action.type.isNotEmpty, 'GameAction.type must not be empty.');
-    _events.add(GameSessionEvent('millLegacyAction', payload: action.payload));
+    if (action.payload['move'] case final String move) {
+      final bool ok = controller.applyMove(
+        mill.ExtMove(move, side: controller.position.sideToMove),
+      );
+      _events.add(
+        GameSessionEvent(
+          ok ? 'millMoveApplied' : 'millMoveRejected',
+          payload: <String, Object?>{'move': move, 'type': action.type},
+        ),
+      );
+      _syncFromController(emitEvent: true);
+      return;
+    }
+    _events.add(
+      GameSessionEvent(
+        'millActionIgnored',
+        payload: <String, Object?>{'type': action.type, ...action.payload},
+      ),
+    );
   }
 
   @override
   void dispose() {
+    controller.boardSemanticsNotifier.removeListener(_onControllerChanged);
+    controller.gameResultNotifier.removeListener(_onControllerChanged);
+    controller.headerTipNotifier.removeListener(_onControllerChanged);
+    controller.headerIconsNotifier.removeListener(_onControllerChanged);
+    controller.setupPositionNotifier.removeListener(_onControllerChanged);
     _state.dispose();
     _events.close();
   }
