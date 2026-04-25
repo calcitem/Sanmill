@@ -15,34 +15,33 @@ import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path_provider/path_provider.dart';
 
-import '../appearance_settings/widgets/appearance_settings_page.dart';
 import '../custom_drawer/custom_drawer.dart';
 import '../experience_recording/models/recording_models.dart';
 import '../experience_recording/services/recording_service.dart';
 import '../game_page/services/gif_share/gif_share.dart';
 import '../game_page/services/gif_share/widgets_to_image.dart';
-import '../game_page/services/mill.dart';
+import '../game_page/services/mill.dart' show GameController;
 import '../game_page/services/painters/painters.dart';
 import '../game_page/widgets/dialogs/lan_config_dialog.dart';
-import '../game_page/widgets/game_page.dart';
 import '../game_platform/game_id.dart';
+import '../game_platform/game_menu.dart';
+import '../game_platform/game_module.dart';
 import '../game_platform/game_registry.dart';
+import '../game_platform/game_session.dart';
+import '../game_platform/game_session_handle.dart';
+import '../game_shell/game_session_scope.dart';
 import '../game_shell/game_surface_host.dart';
+import '../game_shell/shell_route_ids.dart';
 import '../general_settings/models/general_settings.dart';
 import '../general_settings/services/config_import_export_service.dart';
-import '../general_settings/widgets/general_settings_page.dart';
 import '../generated/intl/l10n.dart';
-import '../misc/about_page.dart';
-import '../misc/how_to_play_screen.dart';
-import '../puzzle/pages/puzzles_home_page.dart';
 import '../rule_settings/models/rule_settings.dart';
-import '../rule_settings/widgets/rule_settings_page.dart';
 import '../shared/config/constants.dart';
 import '../shared/database/database.dart';
 import '../shared/database/settings_repositories.dart';
 import '../shared/database/settings_repository.dart';
 import '../shared/dialogs/privacy_policy_dialog.dart';
-import '../shared/services/catcher_service.dart';
+import '../shared/services/catcher_service.dart' show generateOptionsContent;
 import '../shared/services/environment_config.dart';
 import '../shared/services/logger.dart';
 import '../shared/services/snackbar_service.dart';
@@ -50,89 +49,15 @@ import '../shared/themes/app_theme.dart';
 import '../shared/utils/helpers/list_helpers/stack_list.dart';
 import '../shared/widgets/double_back_to_close_app.dart';
 import '../shared/widgets/snackbars/scaffold_messenger.dart';
-import '../statistics/widgets/stats_page.dart';
 import '../tutorial/widgets/tutorial_dialog.dart';
-
-// Define the possible states of the drawer
-enum _DrawerIndex {
-  humanVsAi,
-  humanVsHuman,
-  aiVsAi,
-  humanVsLAN,
-  setupPosition,
-  puzzles,
-  statistics,
-  settingsGroup,
-  generalSettings,
-  ruleSettings,
-  appearance,
-  helpGroup,
-  howToPlay,
-  feedback,
-  about,
-  exit,
-
-  /// Debug-only: opens the minimal second-game probe (see [GameRegistry]).
-  platformProbe,
-}
-
-// Extension to handle widget selection based on drawer state
-extension _DrawerScreen on _DrawerIndex {
-  Widget? get screen {
-    switch (this) {
-      case _DrawerIndex.humanVsAi:
-        return GamePage(GameMode.humanVsAi, key: const Key("human_ai"));
-      case _DrawerIndex.humanVsHuman:
-        GameController().disableStats = true;
-        return GamePage(GameMode.humanVsHuman, key: const Key("human_human"));
-      case _DrawerIndex.aiVsAi:
-        GameController().disableStats = true;
-        return GamePage(GameMode.aiVsAi, key: const Key("ai_ai"));
-      case _DrawerIndex.humanVsLAN:
-        return GamePage(GameMode.humanVsLAN, key: const Key("human_lan"));
-      case _DrawerIndex.setupPosition:
-        return GamePage(
-          GameMode.setupPosition,
-          key: const Key("setup_position"),
-        );
-      case _DrawerIndex.puzzles:
-        return const PuzzlesHomePage();
-      case _DrawerIndex.statistics:
-        return const StatisticsPage();
-      case _DrawerIndex.generalSettings:
-        return const GeneralSettingsPage();
-      case _DrawerIndex.ruleSettings:
-        return const RuleSettingsPage();
-      case _DrawerIndex.appearance:
-        return const AppearanceSettingsPage();
-      case _DrawerIndex.howToPlay:
-        return const HowToPlayScreen();
-      case _DrawerIndex.feedback:
-        throw StateError(
-          "Feedback screen is not a widget and should be called separately",
-        );
-      case _DrawerIndex.about:
-        return const AboutPage();
-      case _DrawerIndex.exit:
-        if (EnvironmentConfig.test == false) {
-          SystemChannels.platform.invokeMethod<void>('SystemNavigator.pop');
-        }
-        return null;
-      // Parent groups do not have screens
-      case _DrawerIndex.settingsGroup:
-      case _DrawerIndex.helpGroup:
-        return null;
-      case _DrawerIndex.platformProbe:
-        throw StateError(
-          'platformProbe is only handled in _changeIndex, not a screen',
-        );
-    }
-  }
-}
+import 'mill_route_screens.dart';
 
 /// Home View
 ///
-/// This widget implements the home view of our app.
+/// Hosts the shared multi-game shell. Drawer entries are sourced from the
+/// active [GameModule]'s [GameModule.playModes] and
+/// [GameModule.drawerContributions] together with app-level routes (settings,
+/// help, exit) defined by [ShellRouteIds].
 class Home extends StatefulWidget {
   const Home({super.key});
 
@@ -145,296 +70,268 @@ class Home extends StatefulWidget {
 class HomeState extends State<Home> with TickerProviderStateMixin {
   final CustomDrawerController _controller = CustomDrawerController();
 
-  Widget _screenView = kIsWeb
-      ? _DrawerIndex.humanVsHuman.screen!
-      : _DrawerIndex.humanVsAi.screen!;
-  _DrawerIndex _drawerIndex = kIsWeb
-      ? _DrawerIndex.humanVsHuman
-      : _DrawerIndex.humanVsAi;
-  final StackList<_DrawerIndex> _routes = StackList<_DrawerIndex>();
+  late String _routeId;
+  Widget? _screenView;
+  final StackList<String> _routes = StackList<String>();
+  bool _initialized = false;
+
+  /// Active session for the current [GameId]. Owned by [Home].
+  GameSessionHandle? _activeSession;
+  GameId? _activeSessionGameId;
 
   SettingsRepository get _settingsRepository =>
       SettingsRepositories.instance.current.repository;
 
-  /// Callback from drawer for replace screen
-  /// as user need with passing DrawerIndex (Enum index)
-  Future<void> _changeIndex(_DrawerIndex index) async {
-    _controller.hideDrawer();
-
-    if (index == _DrawerIndex.platformProbe) {
-      logger.i('Switching to platform probe (tic-tac-toe)');
-      GameRegistry.instance.select(GameId.demoProbe);
-      return;
-    }
-
-    // Print the name of the screen being switched to (in English)
-    switch (index) {
-      case _DrawerIndex.humanVsAi:
-        logger.i('Switching to Human vs AI');
-        break;
-      case _DrawerIndex.humanVsHuman:
-        logger.i('Switching to Human vs Human');
-        break;
-      case _DrawerIndex.aiVsAi:
-        logger.i('Switching to AI vs AI');
-        break;
-      case _DrawerIndex.humanVsLAN:
-        logger.i('Switching to Human vs LAN');
-        break;
-      case _DrawerIndex.setupPosition:
-        logger.i('Switching to Setup Position');
-        break;
-      case _DrawerIndex.puzzles:
-        logger.i('Switching to Puzzles');
-        break;
-      case _DrawerIndex.statistics:
-        logger.i('Switching to Statistics');
-        break;
-      // Logging for group items is not strictly necessary as they don't switch screens
-      case _DrawerIndex.settingsGroup:
-        logger.i('Toggling Settings group'); // Or simply remove logging
-        break;
-      case _DrawerIndex.generalSettings:
-        logger.i('Switching to General Settings');
-        break;
-      case _DrawerIndex.ruleSettings:
-        logger.i('Switching to Rule Settings');
-        break;
-      case _DrawerIndex.appearance:
-        logger.i('Switching to Appearance');
-        break;
-      case _DrawerIndex.helpGroup:
-        logger.i('Toggling Help group'); // Or simply remove logging
-        break;
-      case _DrawerIndex.howToPlay:
-        logger.i('Switching to How To Play');
-        break;
-      case _DrawerIndex.feedback:
-        logger.i('Switching to Feedback');
-        break;
-      case _DrawerIndex.about:
-        logger.i('Switching to About');
-        break;
-      case _DrawerIndex.exit:
-        logger.i('Exiting...');
-        break;
-      case _DrawerIndex.platformProbe:
-        // Unreachable: handled at the start of this method.
-        return;
-    }
-
-    // ---------------------------------------------------------------------
-    // If leaving LAN mode, disconnect and reset the game.
-    // ---------------------------------------------------------------------
-    if (_drawerIndex == _DrawerIndex.humanVsLAN &&
-        index != _DrawerIndex.humanVsLAN) {
-      logger.i("Leaving LAN mode: disposing network and resetting the board.");
-      // Dispose any existing LAN connection
-      GameController().networkService?.dispose();
-      GameController().networkService = null; // optional
-
-      // Force a fresh game state so the board is cleared
-      GameController().reset(force: true);
-    }
-
-    // If no real change in index (and it's not the special "feedback" case,
-    // or a group item that doesn't change screen), just return.
-    if (_drawerIndex == index &&
-        _drawerIndex != _DrawerIndex.feedback &&
-        index != _DrawerIndex.settingsGroup && // Add group checks
-        index != _DrawerIndex.helpGroup) {
-      return;
-    }
-
-    // Handle the LAN-setup dialog, feedback, etc. as before...
-    if (index == _DrawerIndex.humanVsLAN) {
-      // Show experimental feature notification
-      SnackBarService.showRootSnackBar(S.of(context).experimental);
-
-      // Show LAN config dialog and await result
-      final bool? result = await showDialog<bool>(
-        context: context,
-        builder: (BuildContext context) => const LanConfigDialog(),
-      );
-
-      if (result ?? false) {
-        setState(() {
-          _pushRoute(_DrawerIndex.humanVsLAN);
-          _drawerIndex = _DrawerIndex.humanVsLAN;
-          _screenView = GamePage(
-            GameMode.humanVsLAN,
-            key: const Key("human_lan"),
-          );
-        });
-      }
-      return;
-    }
-
-    if ((index == _DrawerIndex.howToPlay ||
-            index == _DrawerIndex.about ||
-            index == _DrawerIndex.feedback) &&
-        EnvironmentConfig.test == true) {
-      return logger.w("Do not test HowToPlay/Feedback/About page.");
-    }
-
-    if (index == _DrawerIndex.feedback) {
-      if (Platform.isAndroid) {
-        return BetterFeedback.of(context).show(_launchFeedback);
-      } else {
-        return logger.w("flutter_email_sender does not support this platform.");
-      }
-    }
-
-    // Do not attempt to set screen for group items
-    if (index == _DrawerIndex.settingsGroup ||
-        index == _DrawerIndex.helpGroup) {
-      // Parent items are handled by CustomDrawer's expansion logic,
-      // no screen change or route push needed here for the parent itself.
-      // SelectionChanged for these is `(_) {}` anyway.
-      return;
-    }
-
-    // Record game mode change for experience recording.
-    RecordingService().recordEvent(
-      RecordingEventType.gameModeChange,
-      <String, dynamic>{'mode': index.name},
-    );
-
-    setState(() {
-      assert(index != _DrawerIndex.feedback);
-      assert(index != _DrawerIndex.settingsGroup);
-      assert(index != _DrawerIndex.helpGroup);
-      _pushRoute(index);
-      _drawerIndex = index;
-      if (index.screen != null) {
-        _screenView = index.screen!;
-      }
-    });
+  String _initialMillRoute() {
+    return kIsWeb
+        ? ShellRouteIds.millHumanVsHuman
+        : ShellRouteIds.millHumanVsAi;
   }
 
-  // Function to check if the current drawer state corresponds to a game
-  bool _isGame(_DrawerIndex index) {
-    switch (index) {
-      case _DrawerIndex.humanVsAi:
-      case _DrawerIndex.humanVsHuman:
-      case _DrawerIndex.aiVsAi:
-      case _DrawerIndex.humanVsLAN:
-      case _DrawerIndex.setupPosition:
-        return true;
-      case _DrawerIndex.puzzles:
-      case _DrawerIndex.statistics:
-      case _DrawerIndex.settingsGroup:
-      case _DrawerIndex.generalSettings:
-      case _DrawerIndex.ruleSettings:
-      case _DrawerIndex.appearance:
-      case _DrawerIndex.helpGroup:
-      case _DrawerIndex.howToPlay:
-      case _DrawerIndex.feedback:
-      case _DrawerIndex.about:
-      case _DrawerIndex.exit:
-        return false;
-      case _DrawerIndex.platformProbe:
-        return false;
+  void _ensureSessionForCurrentGame() {
+    final GameId currentId = GameRegistry.instance.currentId;
+    if (_activeSessionGameId == currentId && _activeSession != null) {
+      return;
     }
+    _activeSession?.dispose();
+    final GameModule? module = GameRegistry.instance.getModule(currentId);
+    _activeSession = module?.startSession();
+    _activeSessionGameId = currentId;
   }
 
-  // Function to handle route changes
-  void _pushRoute(_DrawerIndex index) {
-    final bool curIsGame = _isGame(_drawerIndex);
-    final bool nextIsGame = _isGame(index);
-    if (curIsGame && !nextIsGame) {
-      _routes.push(index);
-    } else if (!curIsGame && nextIsGame) {
+  void _onRegistryChanged() {
+    if (!mounted) {
+      return;
+    }
+    _ensureSessionForCurrentGame();
+    final GameId currentId = GameRegistry.instance.currentId;
+    if (currentId == GameId.mill) {
+      // Returning to Mill: reset to a sane default route.
       _routes.clear();
-      _routes.push(index);
-    } else {
-      _routes.pop();
-      _routes.push(index);
+      _routeId = _initialMillRoute();
+      _routes.push(_routeId);
+      _screenView = buildMillModuleScreen(
+        context,
+        _routeId,
+        session: _activeSession,
+      );
     }
     setState(() {});
-  }
-
-  bool _canPopRoute() {
-    if (_routes.length > 1) {
-      _routes.pop();
-      setState(() {
-        _drawerIndex = _routes.top();
-        if (_drawerIndex.screen != null) {
-          _screenView = _drawerIndex.screen!;
-        }
-        logger.t('_drawerIndex: $_drawerIndex');
-      });
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  // Function to handle first time run
-  void firstRun(BuildContext context) {
-    if (_settingsRepository.generalSettings.firstRun == true) {
-      _settingsRepository.generalSettings = _settingsRepository.generalSettings
-          .copyWith(firstRun: false);
-
-      final Locale locale = Localizations.localeOf(context);
-      final String languageCode = locale.languageCode;
-
-      switch (languageCode) {
-        case "af": // South Africa
-        case "zu": // South Africa
-          _settingsRepository.ruleSettings = _settingsRepository.ruleSettings
-              .copyWith(
-                piecesCount: 12,
-                hasDiagonalLines: true,
-                boardFullAction: BoardFullAction.agreeToDraw,
-                endgameNMoveRule: 10,
-                restrictRepeatedMillsFormation: true,
-              );
-          break;
-        case "fa": // Iran
-        case "si": // Sri Lanka
-          _settingsRepository.ruleSettings = _settingsRepository.ruleSettings
-              .copyWith(piecesCount: 12, hasDiagonalLines: true);
-          break;
-        case "ru": // Russia
-          _settingsRepository.ruleSettings = _settingsRepository.ruleSettings
-              .copyWith(oneTimeUseMill: true, mayRemoveFromMillsAlways: true);
-          break;
-        case "ko": // Korea
-          _settingsRepository
-              .ruleSettings = _settingsRepository.ruleSettings.copyWith(
-            piecesCount: 12,
-            hasDiagonalLines: true,
-            mayFly: false,
-            millFormationActionInPlacingPhase:
-                MillFormationActionInPlacingPhase.markAndDelayRemovingPieces,
-            mayRemoveFromMillsAlways: true,
-          );
-          break;
-        default:
-          break;
-      }
-    }
   }
 
   @override
   void initState() {
     super.initState();
+    _routeId = _initialMillRoute();
+    GameRegistry.instance.addListener(_onRegistryChanged);
     WidgetsBinding.instance.addPostFrameCallback((_) => _showPrivacyDialog());
-    _routes.push(_drawerIndex);
+    _routes.push(_routeId);
   }
 
   @override
   void didChangeDependencies() {
-    firstRun(context);
-
     super.didChangeDependencies();
+    if (!_initialized) {
+      _initialized = true;
+      _ensureSessionForCurrentGame();
+      _screenView ??= buildMillModuleScreen(
+        context,
+        _routeId,
+        session: _activeSession,
+      );
+      firstRun(context);
+    }
   }
 
   @override
   void dispose() {
+    GameRegistry.instance.removeListener(_onRegistryChanged);
+    _activeSession?.dispose();
+    _activeSession = null;
     _controller.dispose();
     super.dispose();
+  }
+
+  Future<void> _selectRoute(String routeId) async {
+    _controller.hideDrawer();
+
+    if (routeId == ShellRouteIds.appSettingsGroup ||
+        routeId == ShellRouteIds.appHelpGroup) {
+      // Group expand/collapse is handled by [CustomDrawerItem] internally.
+      return;
+    }
+
+    if (routeId == ShellRouteIds.debugPlatformProbe) {
+      logger.i('Switching to platform probe (tic-tac-toe demo).');
+      GameRegistry.instance.select(GameId.demoProbe);
+      return;
+    }
+
+    if (routeId == ShellRouteIds.appExit) {
+      logger.i('Exiting...');
+      if (EnvironmentConfig.test == false && !kIsWeb) {
+        SystemChannels.platform.invokeMethod<void>('SystemNavigator.pop');
+      }
+      return;
+    }
+
+    if ((routeId == ShellRouteIds.appHowToPlay ||
+            routeId == ShellRouteIds.appAbout ||
+            routeId == ShellRouteIds.appFeedback) &&
+        EnvironmentConfig.test == true) {
+      logger.w('Do not test HowToPlay/Feedback/About page.');
+      return;
+    }
+
+    if (routeId == ShellRouteIds.appFeedback) {
+      logger.i('Switching to Feedback');
+      if (Platform.isAndroid) {
+        BetterFeedback.of(context).show(_launchFeedback);
+      } else {
+        logger.w('flutter_email_sender does not support this platform.');
+      }
+      return;
+    }
+
+    if (routeId == ShellRouteIds.millHumanVsLan &&
+        _routeId != ShellRouteIds.millHumanVsLan) {
+      SnackBarService.showRootSnackBar(S.of(context).experimental);
+      final bool? confirmed = await showDialog<bool>(
+        context: context,
+        builder: (BuildContext _) => const LanConfigDialog(),
+      );
+      if (confirmed != true) {
+        return;
+      }
+    }
+
+    if (_routeId == ShellRouteIds.millHumanVsLan &&
+        routeId != ShellRouteIds.millHumanVsLan) {
+      logger.i('Leaving LAN mode: disposing network and resetting the board.');
+      // ignore: deprecated_member_use_from_same_package
+      GameController().networkService?.dispose();
+      // ignore: deprecated_member_use_from_same_package
+      GameController().networkService = null;
+      // ignore: deprecated_member_use_from_same_package
+      GameController().reset(force: true);
+    }
+
+    if (!mounted) {
+      return;
+    }
+    final Widget? screen =
+        buildMillModuleScreen(context, routeId, session: _activeSession) ??
+        buildAppShellScreen(context, routeId);
+    if (screen == null) {
+      logger.w('No screen for route $routeId.');
+      return;
+    }
+
+    if (_routeId == routeId) {
+      // Same route — nothing to push onto the stack.
+      return;
+    }
+
+    RecordingService().recordEvent(
+      RecordingEventType.gameModeChange,
+      <String, dynamic>{'mode': routeId},
+    );
+
+    setState(() {
+      _pushRoute(routeId);
+      _routeId = routeId;
+      _screenView = screen;
+    });
+  }
+
+  bool _routeIsGame(String routeId) {
+    return isMillPlayRoute(routeId);
+  }
+
+  void _pushRoute(String routeId) {
+    final bool curIsGame = _routeIsGame(_routeId);
+    final bool nextIsGame = _routeIsGame(routeId);
+    if (curIsGame && !nextIsGame) {
+      _routes.push(routeId);
+    } else if (!curIsGame && nextIsGame) {
+      _routes.clear();
+      _routes.push(routeId);
+    } else {
+      if (_routes.isNotEmpty) {
+        _routes.pop();
+      }
+      _routes.push(routeId);
+    }
+  }
+
+  bool _canPopRoute() {
+    if (_routes.length > 1) {
+      _routes.pop();
+      final String previous = _routes.top();
+      final Widget? screen =
+          buildMillModuleScreen(context, previous, session: _activeSession) ??
+          buildAppShellScreen(context, previous);
+      setState(() {
+        _routeId = previous;
+        if (screen != null) {
+          _screenView = screen;
+        }
+        logger.t('_routeId: $_routeId');
+      });
+      return true;
+    }
+    return false;
+  }
+
+  void firstRun(BuildContext context) {
+    if (_settingsRepository.generalSettings.firstRun != true) {
+      return;
+    }
+    _settingsRepository.generalSettings = _settingsRepository.generalSettings
+        .copyWith(firstRun: false);
+
+    if (GameRegistry.instance.currentId != GameId.mill) {
+      // Locale-driven Mill rule presets are Mill-specific.
+      return;
+    }
+    final Locale locale = Localizations.localeOf(context);
+    final String languageCode = locale.languageCode;
+
+    switch (languageCode) {
+      case 'af': // South Africa
+      case 'zu': // South Africa
+        _settingsRepository.ruleSettings = _settingsRepository.ruleSettings
+            .copyWith(
+              piecesCount: 12,
+              hasDiagonalLines: true,
+              boardFullAction: BoardFullAction.agreeToDraw,
+              endgameNMoveRule: 10,
+              restrictRepeatedMillsFormation: true,
+            );
+        break;
+      case 'fa': // Iran
+      case 'si': // Sri Lanka
+        _settingsRepository.ruleSettings = _settingsRepository.ruleSettings
+            .copyWith(piecesCount: 12, hasDiagonalLines: true);
+        break;
+      case 'ru': // Russia
+        _settingsRepository.ruleSettings = _settingsRepository.ruleSettings
+            .copyWith(oneTimeUseMill: true, mayRemoveFromMillsAlways: true);
+        break;
+      case 'ko': // Korea
+        _settingsRepository.ruleSettings = _settingsRepository.ruleSettings
+            .copyWith(
+              piecesCount: 12,
+              hasDiagonalLines: true,
+              mayFly: false,
+              millFormationActionInPlacingPhase:
+                  MillFormationActionInPlacingPhase.markAndDelayRemovingPieces,
+              mayRemoveFromMillsAlways: true,
+            );
+        break;
+      default:
+        break;
+    }
   }
 
   @override
@@ -442,15 +339,150 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
     return ListenableBuilder(
       listenable: GameRegistry.instance,
       builder: (BuildContext context, Widget? _) {
+        _ensureSessionForCurrentGame();
         final GameId currentId = GameRegistry.instance.currentId;
-        if (currentId != GameId.mill) {
-          return GameSurfaceHost(
+        final GameSession? session = _activeSession;
+        Widget body;
+        if (currentId == GameId.mill) {
+          body = _buildMillAppHome(context);
+        } else {
+          body = GameSurfaceHost(
             gameId: currentId,
+            externalSession: session,
             onClose: () => GameRegistry.instance.select(GameId.mill),
           );
         }
-        return _buildMillAppHome(context);
+        if (session != null) {
+          return GameSessionScope(session: session, child: body);
+        }
+        return body;
       },
+    );
+  }
+
+  // --- Drawer item construction --------------------------------------------
+
+  /// Maps a [ShellRouteIds] route to a stable drawer-item key. Keeping these
+  /// keys preserves existing integration tests.
+  Key? _drawerItemKey(String routeId) {
+    switch (routeId) {
+      case ShellRouteIds.millHumanVsAi:
+        return const Key('drawer_item_human_vs_ai');
+      case ShellRouteIds.millHumanVsHuman:
+        return const Key('drawer_item_human_vs_human');
+      case ShellRouteIds.millAiVsAi:
+        return const Key('drawer_item_ai_vs_ai');
+      case ShellRouteIds.millHumanVsLan:
+        return const Key('drawer_item_human_vs_lan');
+      case ShellRouteIds.millSetupPosition:
+        return const Key('drawer_item_setup_position');
+      case ShellRouteIds.millPuzzles:
+        return const Key('drawer_item_puzzles');
+      case ShellRouteIds.millStatistics:
+        return const Key('drawer_item_statistics');
+      case ShellRouteIds.appSettingsGroup:
+        return const Key('drawer_item_settings_group');
+      case ShellRouteIds.appGeneralSettings:
+        return const Key('drawer_item_general_settings_child');
+      case ShellRouteIds.appRuleSettings:
+        return const Key('drawer_item_rule_settings_child');
+      case ShellRouteIds.appAppearance:
+        return const Key('drawer_item_appearance_child');
+      case ShellRouteIds.appHelpGroup:
+        return const Key('drawer_item_help_group');
+      case ShellRouteIds.appHowToPlay:
+        return const Key('drawer_item_how_to_play_child');
+      case ShellRouteIds.appFeedback:
+        return const Key('drawer_item_feedback_child');
+      case ShellRouteIds.appAbout:
+        return const Key('drawer_item_about_child');
+      case ShellRouteIds.appExit:
+        return const Key('drawer_item_exit');
+      case ShellRouteIds.debugPlatformProbe:
+        return const Key('drawer_item_platform_probe');
+      default:
+        return null;
+    }
+  }
+
+  /// Default fluent icon for built-in routes.
+  Icon _iconFor(String routeId) {
+    switch (routeId) {
+      case ShellRouteIds.millHumanVsAi:
+        return const Icon(FluentIcons.person_24_regular);
+      case ShellRouteIds.millHumanVsHuman:
+        return const Icon(FluentIcons.people_24_regular);
+      case ShellRouteIds.millAiVsAi:
+        return const Icon(FluentIcons.bot_24_regular);
+      case ShellRouteIds.millHumanVsLan:
+        return const Icon(FluentIcons.wifi_1_24_regular);
+      case ShellRouteIds.millSetupPosition:
+        return const Icon(FluentIcons.drafts_24_regular);
+      case ShellRouteIds.millPuzzles:
+        return const Icon(FluentIcons.puzzle_piece_24_regular);
+      case ShellRouteIds.millStatistics:
+        return const Icon(FluentIcons.calculator_24_regular);
+      case ShellRouteIds.appSettingsGroup:
+        return const Icon(FluentIcons.settings_24_regular);
+      case ShellRouteIds.appGeneralSettings:
+        return const Icon(FluentIcons.options_24_regular);
+      case ShellRouteIds.appRuleSettings:
+        return const Icon(FluentIcons.task_list_ltr_24_regular);
+      case ShellRouteIds.appAppearance:
+        return const Icon(FluentIcons.design_ideas_24_regular);
+      case ShellRouteIds.appHelpGroup:
+        return const Icon(FluentIcons.question_circle_24_regular);
+      case ShellRouteIds.appHowToPlay:
+        return const Icon(FluentIcons.question_circle_24_regular);
+      case ShellRouteIds.appFeedback:
+        return const Icon(FluentIcons.comment_24_regular);
+      case ShellRouteIds.appAbout:
+        return const Icon(FluentIcons.info_24_regular);
+      case ShellRouteIds.appExit:
+        return const Icon(FluentIcons.power_24_regular);
+      case ShellRouteIds.debugPlatformProbe:
+        return const Icon(Icons.science_outlined);
+      default:
+        return const Icon(FluentIcons.apps_24_regular);
+    }
+  }
+
+  CustomDrawerItem<String> _modeItem(GameModeEntry mode) {
+    return CustomDrawerItem<String>(
+      key: _drawerItemKey(mode.id),
+      itemValue: mode.id,
+      itemTitle: mode.label,
+      itemIcon: _iconFor(mode.id),
+      currentSelectedValue: _routeId,
+      onSelectionChanged: _selectRoute,
+    );
+  }
+
+  CustomDrawerItem<String> _contributionItem(GameMenuContribution c) {
+    return CustomDrawerItem<String>(
+      key: _drawerItemKey(c.id),
+      itemValue: c.id,
+      itemTitle: c.label,
+      itemIcon: _iconFor(c.id),
+      currentSelectedValue: _routeId,
+      onSelectionChanged: _selectRoute,
+    );
+  }
+
+  CustomDrawerItem<String> _appItem(
+    String routeId,
+    String label, {
+    List<CustomDrawerItem<String>>? children,
+    Function(String)? onTap,
+  }) {
+    return CustomDrawerItem<String>(
+      key: _drawerItemKey(routeId),
+      itemValue: routeId,
+      itemTitle: label,
+      itemIcon: _iconFor(routeId),
+      currentSelectedValue: _routeId,
+      onSelectionChanged: onTap ?? _selectRoute,
+      children: children,
     );
   }
 
@@ -462,182 +494,56 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
             2 +
         4;
 
-    final List<CustomDrawerItem<_DrawerIndex>>
-    drawerItems = <CustomDrawerItem<_DrawerIndex>>[
-      if (!kIsWeb)
-        CustomDrawerItem<_DrawerIndex>(
-          key: const Key('drawer_item_human_vs_ai'),
-          itemValue: _DrawerIndex.humanVsAi,
-          itemTitle: S.of(context).humanVsAi,
-          itemIcon: const Icon(FluentIcons.person_24_regular),
-          currentSelectedValue: _drawerIndex,
-          onSelectionChanged: _changeIndex,
-        ),
-      CustomDrawerItem<_DrawerIndex>(
-        key: const Key('drawer_item_human_vs_human'),
-        itemValue: _DrawerIndex.humanVsHuman,
-        itemTitle: S.of(context).humanVsHuman,
-        itemIcon: const Icon(FluentIcons.people_24_regular),
-        currentSelectedValue: _drawerIndex,
-        onSelectionChanged: _changeIndex,
-      ),
-      if (!kIsWeb)
-        CustomDrawerItem<_DrawerIndex>(
-          key: const Key('drawer_item_ai_vs_ai'),
-          itemValue: _DrawerIndex.aiVsAi,
-          itemTitle: S.of(context).aiVsAi,
-          itemIcon: const Icon(FluentIcons.bot_24_regular),
-          currentSelectedValue: _drawerIndex,
-          onSelectionChanged: _changeIndex,
-        ),
-      CustomDrawerItem<_DrawerIndex>(
-        key: const Key('drawer_item_human_vs_lan'),
-        itemValue: _DrawerIndex.humanVsLAN,
-        itemTitle: S.of(context).humanVsLAN,
-        itemIcon: const Icon(FluentIcons.wifi_1_24_regular),
-        currentSelectedValue: _drawerIndex,
-        onSelectionChanged: _changeIndex,
-      ),
-      // Setup position does not yet model pieces in hand, so we hide it when
-      // the current rule removes stones from a player's reserve.
-      // TODO: Support removeOpponentsPieceFromHand
-      if (DB().ruleSettings.millFormationActionInPlacingPhase !=
-              MillFormationActionInPlacingPhase
-                  .removeOpponentsPieceFromHandThenYourTurn &&
-          DB().ruleSettings.millFormationActionInPlacingPhase !=
-              MillFormationActionInPlacingPhase
-                  .removeOpponentsPieceFromHandThenOpponentsTurn)
-        CustomDrawerItem<_DrawerIndex>(
-          key: const Key('drawer_item_setup_position'),
-          itemValue: _DrawerIndex.setupPosition,
-          itemTitle: S.of(context).setupPosition,
-          itemIcon: const Icon(FluentIcons.drafts_24_regular),
-          currentSelectedValue: _drawerIndex,
-          onSelectionChanged: _changeIndex,
-        ),
-      // Puzzle item
-      CustomDrawerItem<_DrawerIndex>(
-        key: const Key('drawer_item_puzzles'),
-        itemValue: _DrawerIndex.puzzles,
-        itemTitle: S.of(context).puzzles,
-        itemIcon: const Icon(FluentIcons.puzzle_piece_24_regular),
-        currentSelectedValue: _drawerIndex,
-        onSelectionChanged: _changeIndex,
-      ),
-      // Statistics item
-      CustomDrawerItem<_DrawerIndex>(
-        key: const Key('drawer_item_statistics'),
-        itemValue: _DrawerIndex.statistics,
-        itemTitle: S.of(context).statistics,
-        itemIcon: const Icon(FluentIcons.calculator_24_regular),
-        currentSelectedValue: _drawerIndex,
-        onSelectionChanged: _changeIndex,
-      ),
-      // Settings group item
-      CustomDrawerItem<_DrawerIndex>(
-        key: const Key('drawer_item_settings_group'), // Changed key
-        itemValue: _DrawerIndex.settingsGroup, // New itemValue for the group
-        itemTitle: S.of(context).settings,
-        itemIcon: const Icon(FluentIcons.settings_24_regular),
-        currentSelectedValue: _drawerIndex,
-        onSelectionChanged: (_) {}, // Parent item tap is handled for expansion
-        // Children are now part of the CustomDrawerItem's children list
-        children: <CustomDrawerItem<_DrawerIndex>>[
-          CustomDrawerItem<_DrawerIndex>(
-            key: const Key(
-              'drawer_item_general_settings_child',
-            ), // Key for child
-            itemValue: _DrawerIndex.generalSettings,
-            itemTitle: S.of(context).generalSettings,
-            itemIcon: const Icon(
-              FluentIcons.options_24_regular,
-            ), // Original icon
-            currentSelectedValue: _drawerIndex,
-            onSelectionChanged: _changeIndex,
-            // No manual indentation needed
+    final S s = S.of(context);
+    final GameModule millModule = GameRegistry.instance.current;
+
+    final List<GameModeEntry> playModes = millModule
+        .playModes(context)
+        .where((GameModeEntry m) => m.availableIn(context))
+        .toList();
+    final List<GameMenuContribution> contributions = millModule
+        .drawerContributions(context)
+        .where((GameMenuContribution c) => c.availableIn(context))
+        .toList();
+
+    final List<CustomDrawerItem<String>> drawerItems =
+        <CustomDrawerItem<String>>[
+          ...playModes.map(_modeItem),
+          ...contributions
+              .where(
+                (GameMenuContribution c) => c.section == GameMenuSection.game,
+              )
+              .map(_contributionItem),
+          _appItem(
+            ShellRouteIds.appSettingsGroup,
+            s.settings,
+            onTap: (_) {},
+            children: <CustomDrawerItem<String>>[
+              _appItem(ShellRouteIds.appGeneralSettings, s.generalSettings),
+              _appItem(ShellRouteIds.appRuleSettings, s.ruleSettings),
+              _appItem(ShellRouteIds.appAppearance, s.appearance),
+            ],
           ),
-          CustomDrawerItem<_DrawerIndex>(
-            key: const Key('drawer_item_rule_settings_child'), // Key for child
-            itemValue: _DrawerIndex.ruleSettings,
-            itemTitle: S.of(context).ruleSettings,
-            itemIcon: const Icon(
-              FluentIcons.task_list_ltr_24_regular,
-            ), // Original icon
-            currentSelectedValue: _drawerIndex,
-            onSelectionChanged: _changeIndex,
-            // No manual indentation needed
-          ),
-          CustomDrawerItem<_DrawerIndex>(
-            key: const Key('drawer_item_appearance_child'), // Key for child
-            itemValue: _DrawerIndex.appearance,
-            itemTitle: S.of(context).appearance,
-            itemIcon: const Icon(
-              FluentIcons.design_ideas_24_regular,
-            ), // Original icon
-            currentSelectedValue: _drawerIndex,
-            onSelectionChanged: _changeIndex,
-            // No manual indentation needed
-          ),
-        ],
-      ),
-      // New "Help" group
-      CustomDrawerItem<_DrawerIndex>(
-        key: const Key('drawer_item_help_group'),
-        itemValue: _DrawerIndex.helpGroup, // Use specific group itemValue
-        itemTitle: S.of(context).help,
-        itemIcon: const Icon(FluentIcons.question_circle_24_regular),
-        currentSelectedValue: _drawerIndex,
-        onSelectionChanged: (_) {}, // Parent item tap is handled for expansion
-        children: <CustomDrawerItem<_DrawerIndex>>[
-          CustomDrawerItem<_DrawerIndex>(
-            key: const Key('drawer_item_how_to_play_child'),
-            itemValue: _DrawerIndex.howToPlay,
-            itemTitle: S.of(context).howToPlay,
-            itemIcon: const Icon(FluentIcons.question_circle_24_regular),
-            currentSelectedValue: _drawerIndex,
-            onSelectionChanged: _changeIndex,
+          _appItem(
+            ShellRouteIds.appHelpGroup,
+            s.help,
+            onTap: (_) {},
+            children: <CustomDrawerItem<String>>[
+              _appItem(ShellRouteIds.appHowToPlay, s.howToPlay),
+              if (!kIsWeb && Platform.isAndroid)
+                _appItem(ShellRouteIds.appFeedback, s.feedback),
+              _appItem(ShellRouteIds.appAbout, s.about),
+            ],
           ),
           if (!kIsWeb && Platform.isAndroid)
-            CustomDrawerItem<_DrawerIndex>(
-              key: const Key('drawer_item_feedback_child'),
-              itemValue: _DrawerIndex.feedback,
-              itemTitle: S.of(context).feedback,
-              itemIcon: const Icon(FluentIcons.comment_24_regular),
-              currentSelectedValue: _drawerIndex,
-              onSelectionChanged: _changeIndex,
-            ),
-          CustomDrawerItem<_DrawerIndex>(
-            key: const Key('drawer_item_about_child'),
-            itemValue: _DrawerIndex.about,
-            itemTitle: S.of(context).about,
-            itemIcon: const Icon(FluentIcons.info_24_regular),
-            currentSelectedValue: _drawerIndex,
-            onSelectionChanged: _changeIndex,
-          ),
-        ],
-      ),
-      if (!kIsWeb && Platform.isAndroid)
-        CustomDrawerItem<_DrawerIndex>(
-          key: const Key('drawer_item_exit'),
-          itemValue: _DrawerIndex.exit,
-          itemTitle: S.of(context).exit,
-          itemIcon: const Icon(FluentIcons.power_24_regular),
-          currentSelectedValue: _drawerIndex,
-          onSelectionChanged: _changeIndex,
-        ),
-      if (kDebugMode)
-        CustomDrawerItem<_DrawerIndex>(
-          key: const Key('drawer_item_platform_probe'),
-          itemValue: _DrawerIndex.platformProbe,
-          itemTitle: 'Platform probe',
-          itemIcon: const Icon(Icons.science_outlined),
-          currentSelectedValue: _drawerIndex,
-          onSelectionChanged: _changeIndex,
-        ),
-    ];
+            _appItem(ShellRouteIds.appExit, s.exit),
+          if (kDebugMode &&
+              GameRegistry.instance.getModule(GameId.demoProbe) != null)
+            _appItem(ShellRouteIds.debugPlatformProbe, 'Tic-Tac-Toe (sample)'),
+        ];
 
     return DoubleBackToCloseApp(
-      snackBar: CustomSnackBar(S.of(context).tapBackAgainToLeave),
+      snackBar: CustomSnackBar(s.tapBackAgainToLeave),
       willBack: () {
         return !_canPopRoute();
       },
@@ -649,8 +555,8 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
             key: CustomDrawer.drawerMainKey,
             controller: _controller,
             drawerHeader: CustomDrawerHeader(
-              headerTitle: S.of(context).appName,
-              key: const Key("custom_drawer_header"),
+              headerTitle: s.appName,
+              key: const Key('custom_drawer_header'),
             ),
             drawerItems: drawerItems,
             disabledGestures:
@@ -660,10 +566,10 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
                         Platform.isWindows ||
                         Platform.isLinux ||
                         Platform.isMacOS) &&
-                    _isGame(_drawerIndex) &&
+                    _routeIsGame(_routeId) &&
                     !value.isDrawerVisible),
             orientation: MediaQuery.of(context).orientation,
-            mainScreenWidget: _screenView,
+            mainScreenWidget: _screenView ?? const SizedBox.shrink(),
           ),
         ),
       ),
@@ -675,9 +581,9 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
       return;
     }
 
-    if (!kDebugMode && // Add kDebugMode check here
+    if (!kDebugMode &&
         !DB().generalSettings.isPrivacyPolicyAccepted &&
-        Localizations.localeOf(context).languageCode.startsWith("zh") &&
+        Localizations.localeOf(context).languageCode.startsWith('zh') &&
         (!kIsWeb && Platform.isAndroid)) {
       showDialog(
         context: context,
@@ -691,7 +597,6 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
   }
 
   Future<void> _showTutorialDialog() async {
-    // Skip tutorial dialog in debug mode
     if (!kDebugMode && DB().generalSettings.showTutorial) {
       await Navigator.of(context).push(
         MaterialPageRoute<dynamic>(
@@ -699,18 +604,14 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
           fullscreenDialog: true,
         ),
       );
-
-      // Show rule settings onboarding dialog for Russian and Persian locales
       _showRuleSettingsOnboarding();
     }
   }
 
-  /// Show rule settings onboarding dialog for specific locales
   void _showRuleSettingsOnboarding() {
     final Locale locale = Localizations.localeOf(context);
     final String languageCode = locale.languageCode;
 
-    // Only show for Russian (ru) and Persian (fa) locales
     if (languageCode == 'af' ||
         languageCode == 'fa' ||
         languageCode == 'fr' ||
@@ -730,14 +631,12 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
             actions: <Widget>[
               TextButton(
                 onPressed: () {
-                  // User chose not to configure rules, just close the dialog
                   Navigator.of(context).pop(false);
                 },
                 child: Text(S.of(context).no),
               ),
               TextButton(
                 onPressed: () {
-                  // User chose to configure rules
                   Navigator.of(context).pop(true);
                 },
                 child: Text(S.of(context).yes),
@@ -746,17 +645,13 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
           );
         },
       ).then((bool? result) {
-        // Use if-null operator to handle nullable bool conversion
         if (result ?? false) {
-          // Navigate to Rule Settings page
-          _changeIndex(_DrawerIndex.ruleSettings);
+          _selectRoute(ShellRouteIds.appRuleSettings);
         }
-        // If result is false or null, do nothing (no prompt on exit)
       });
     }
   }
 
-  /// Drafts an email and sends it to the developer
   static Future<void> _launchFeedback(UserFeedback feedback) async {
     final String screenshotFilePath = await _saveFeedbackImage(
       feedback.screenshot,
@@ -772,7 +667,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
 
     final PackageInfo packageInfo = await PackageInfo.fromPlatform();
     final String version =
-        "${packageInfo.version} (${packageInfo.buildNumber})";
+        '${packageInfo.version} (${packageInfo.buildNumber})';
 
     final Email email = Email(
       body: feedback.text,
@@ -794,28 +689,20 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
   static Future<String> _saveOptionsContentToFile(String content) async {
     final Directory output = await getTemporaryDirectory();
     final File file = File('${output.path}/sanmill-options.txt');
-
-    // Delete the file synchronously if it exists to avoid slow async IO operations
     if (file.existsSync()) {
       file.deleteSync();
     }
-
-    // Write content to the file asynchronously
     await file.writeAsString(content);
     return file.path;
   }
 
   static Future<String> _saveFeedbackImage(Uint8List screenshot) async {
     final Directory output = await getTemporaryDirectory();
-    final String screenshotFilePath = "${output.path}/sanmill-feedback.png";
+    final String screenshotFilePath = '${output.path}/sanmill-feedback.png';
     final File screenshotFile = File(screenshotFilePath);
-
-    // Delete the screenshot file synchronously if it exists
     if (screenshotFile.existsSync()) {
       screenshotFile.deleteSync();
     }
-
-    // Write bytes to the screenshot file asynchronously
     await screenshotFile.writeAsBytes(screenshot);
     return screenshotFilePath;
   }

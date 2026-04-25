@@ -23,4 +23,12 @@ class ScopedSettingsRepository {
   GameId get gameId => scope.gameId;
 
   String get keyPrefix => scopePrefixFor(gameId) ?? '';
+
+  /// Computes the box prefix for a category in this scope.
+  ///
+  /// `app`-category returns `'app.'` (cross-game), `game`-category returns
+  /// `'game.<id>.'`.
+  String? prefixFor(PersistenceScopeCategory category) {
+    return scopePrefixFromCategory(category, gameId);
+  }
 }

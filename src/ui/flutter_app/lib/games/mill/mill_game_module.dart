@@ -1,20 +1,32 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // Copyright (C) 2019-2026 The Sanmill developers (see AUTHORS file)
 
-import 'package:flutter/foundation.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/widgets.dart';
 
-import '../../game_page/services/mill.dart' show GameMode;
+import '../../game_page/services/mill.dart' show GameController, GameMode;
 import '../../game_page/widgets/game_page.dart' show GamePage;
 import '../../game_platform/board_geometry.dart';
 import '../../game_platform/game_feature_flags.dart';
 import '../../game_platform/game_id.dart';
+import '../../game_platform/game_menu.dart';
 import '../../game_platform/game_module.dart';
 import '../../game_platform/game_module_metadata.dart';
 import '../../game_platform/game_persistence_scope.dart';
+import '../../game_platform/game_session.dart';
 import '../../game_platform/game_session_handle.dart';
+import '../../game_platform/notation_port.dart';
+import '../../game_platform/rules_port.dart';
+import '../../game_shell/shell_route_ids.dart';
+import '../../generated/intl/l10n.dart';
+import '../../puzzle/pages/puzzles_home_page.dart';
+import '../../rule_settings/models/rule_settings.dart';
+import '../../shared/database/database.dart';
+import '../../statistics/widgets/stats_page.dart';
 import 'mill_board_geometry.dart';
 import 'mill_game_session.dart';
+import 'mill_notation_port.dart';
+import 'mill_rules_adapter.dart';
 
 class MillGameModule extends GameModule {
   MillGameModule();
@@ -53,10 +65,112 @@ class MillGameModule extends GameModule {
   GameSessionHandle startSession() => MillGameSession();
 
   @override
-  Widget buildGameSurface(BuildContext context, {Key? key}) {
+  RulesPort? get rulesPort => MillRulesAdapter();
+
+  @override
+  NotationPort? get notationPort => const MillNotationPort();
+
+  @override
+  List<GameModeEntry> playModes(BuildContext context) {
+    final S s = S.of(context);
+    return <GameModeEntry>[
+      if (!kIsWeb)
+        GameModeEntry(
+          id: ShellRouteIds.millHumanVsAi,
+          label: s.humanVsAi,
+          contentKey: const Key('human_ai'),
+          isAvailable: (_) => !kIsWeb,
+          builder: (BuildContext context, {Key? key, GameSession? session}) =>
+              GamePage(GameMode.humanVsAi, key: key),
+        ),
+      GameModeEntry(
+        id: ShellRouteIds.millHumanVsHuman,
+        label: s.humanVsHuman,
+        contentKey: const Key('human_human'),
+        builder: (BuildContext context, {Key? key, GameSession? session}) =>
+            GamePage(GameMode.humanVsHuman, key: key),
+      ),
+      if (!kIsWeb)
+        GameModeEntry(
+          id: ShellRouteIds.millAiVsAi,
+          label: s.aiVsAi,
+          contentKey: const Key('ai_ai'),
+          isAvailable: (_) => !kIsWeb,
+          builder: (BuildContext context, {Key? key, GameSession? session}) =>
+              GamePage(GameMode.aiVsAi, key: key),
+        ),
+      GameModeEntry(
+        id: ShellRouteIds.millHumanVsLan,
+        label: s.humanVsLAN,
+        contentKey: const Key('human_lan'),
+        builder: (BuildContext context, {Key? key, GameSession? session}) =>
+            GamePage(GameMode.humanVsLAN, key: key),
+      ),
+      GameModeEntry(
+        id: ShellRouteIds.millSetupPosition,
+        label: s.setupPosition,
+        contentKey: const Key('setup_position'),
+        isAvailable: (BuildContext context) {
+          return DB().ruleSettings.millFormationActionInPlacingPhase !=
+                  MillFormationActionInPlacingPhase
+                      .removeOpponentsPieceFromHandThenYourTurn &&
+              DB().ruleSettings.millFormationActionInPlacingPhase !=
+                  MillFormationActionInPlacingPhase
+                      .removeOpponentsPieceFromHandThenOpponentsTurn;
+        },
+        builder: (BuildContext context, {Key? key, GameSession? session}) =>
+            GamePage(GameMode.setupPosition, key: key),
+      ),
+    ];
+  }
+
+  @override
+  List<GameMenuContribution> drawerContributions(BuildContext context) {
+    if (!features.supportsPuzzles && !features.supportsStatistics) {
+      return const <GameMenuContribution>[];
+    }
+    final S s = S.of(context);
+    return <GameMenuContribution>[
+      if (features.supportsPuzzles)
+        GameMenuContribution(
+          id: ShellRouteIds.millPuzzles,
+          label: s.puzzles,
+          contentKey: const Key('puzzles'),
+          isAvailable: (_) => features.supportsPuzzles,
+          builder: (BuildContext context, {Key? key, GameSession? session}) {
+            return PuzzlesHomePage(key: key);
+          },
+        ),
+      if (features.supportsStatistics)
+        GameMenuContribution(
+          id: ShellRouteIds.millStatistics,
+          label: s.statistics,
+          contentKey: const Key('statistics'),
+          isAvailable: (_) => features.supportsStatistics,
+          builder: (BuildContext context, {Key? key, GameSession? session}) {
+            return StatisticsPage(key: key);
+          },
+        ),
+    ];
+  }
+
+  @override
+  Widget buildGameSurface(
+    BuildContext context, {
+    Key? key,
+    GameSession? session,
+  }) {
     return GamePage(
       kIsWeb ? GameMode.humanVsHuman : GameMode.humanVsAi,
       key: key,
     );
+  }
+}
+
+/// Called by [Home] when opening a Mill play mode that tweaks stats behaviour.
+void applyMillGameControllerFlagsForPlayRoute(String routeId) {
+  if (routeId == ShellRouteIds.millHumanVsHuman ||
+      routeId == ShellRouteIds.millAiVsAi) {
+    GameController().disableStats = true;
   }
 }

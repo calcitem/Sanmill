@@ -7,6 +7,8 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sanmill/game_platform/game_platform.dart';
 import 'package:sanmill/games/demo_probe/demo_probe_game_module.dart';
+import 'package:sanmill/games/demo_probe/demo_probe_notation_port.dart';
+import 'package:sanmill/games/demo_probe/demo_probe_rules_port.dart';
 
 void main() {
   test('GameFeatureFlags supports legacy booleans and capabilities', () {
@@ -67,9 +69,38 @@ void main() {
     final GameSessionHandle session = module.startSession();
 
     expect(session.state.value.gameId, GameId.demoProbe);
-    expect(session.state.value.phase, 'probe');
+    expect(session.state.value.phase, 'play');
 
     session.dispose();
+  });
+
+  test('DemoProbeRulesPort detects tic-tac-toe wins', () {
+    final DemoProbeRulesPort rules = DemoProbeRulesPort();
+
+    rules
+      ..apply(const GameAction(type: 'place', to: BoardCoordinate(0)))
+      ..apply(const GameAction(type: 'place', to: BoardCoordinate(3)))
+      ..apply(const GameAction(type: 'place', to: BoardCoordinate(1)))
+      ..apply(const GameAction(type: 'place', to: BoardCoordinate(4)))
+      ..apply(const GameAction(type: 'place', to: BoardCoordinate(2)));
+
+    expect(rules.snapshot.outcome.kind, GameOutcomeKind.win);
+    expect(rules.snapshot.outcome.winner, PlayerSeat.first);
+    expect(rules.legalActions, isEmpty);
+  });
+
+  test('DemoProbeNotationPort encodes and decodes moves', () {
+    const DemoProbeNotationPort notation = DemoProbeNotationPort();
+    const List<GameAction> actions = <GameAction>[
+      GameAction(type: 'place', to: BoardCoordinate(0)),
+      GameAction(type: 'place', to: BoardCoordinate(8)),
+    ];
+
+    final String encoded = notation.encodeMoveList(actions);
+    final List<GameAction> decoded = notation.decodeMoveList(encoded);
+
+    expect(encoded, '0 8');
+    expect(decoded.map((GameAction action) => action.to!.value), <int>[0, 8]);
   });
 }
 
@@ -99,7 +130,11 @@ class _FakeModule extends GameModule {
   );
 
   @override
-  Widget buildGameSurface(BuildContext context, {Key? key}) {
+  Widget buildGameSurface(
+    BuildContext context, {
+    Key? key,
+    GameSession? session,
+  }) {
     return SizedBox(key: key);
   }
 

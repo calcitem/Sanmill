@@ -20,6 +20,7 @@ void main() {
     setUp(() {
       mockDB = MockDB();
       DB.instance = mockDB;
+      GameRegistry.instance.resetForTesting();
       GameRegistry.instance
         ..register(MillGameModule())
         ..register(DemoProbeGameModule());
@@ -31,7 +32,7 @@ void main() {
 
     tearDown(() {
       SettingsRepositories.instance.resetForTesting();
-      GameRegistry.instance.select(GameId.mill);
+      GameRegistry.instance.resetForTesting();
       DB.instance = null;
     });
 

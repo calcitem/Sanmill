@@ -1,0 +1,49 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2019-2026 The Sanmill developers (see AUTHORS file)
+
+import 'dart:io' show IOException;
+
+import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter/services.dart' show SystemNavigator;
+import 'package:flutter/widgets.dart';
+
+import '../appearance_settings/widgets/appearance_settings_page.dart';
+import '../game_shell/shell_route_ids.dart';
+import '../general_settings/widgets/general_settings_page.dart';
+import '../misc/about_page.dart';
+import '../misc/how_to_play_screen.dart';
+import '../rule_settings/widgets/rule_settings_page.dart';
+import '../shared/services/environment_config.dart';
+
+/// Resolves [ShellRouteIds] for app-level (`app.*`) routes.
+Widget? buildAppRouteScreen(BuildContext context, String routeId) {
+  switch (routeId) {
+    case ShellRouteIds.appGeneralSettings:
+      return const GeneralSettingsPage();
+    case ShellRouteIds.appRuleSettings:
+      return const RuleSettingsPage();
+    case ShellRouteIds.appAppearance:
+      return const AppearanceSettingsPage();
+    case ShellRouteIds.appHowToPlay:
+      return const HowToPlayScreen();
+    case ShellRouteIds.appAbout:
+      return const AboutPage();
+    case ShellRouteIds.appExit:
+      if (EnvironmentConfig.test == false) {
+        if (!kIsWeb) {
+          try {
+            // ignore: avoid_slow_async
+            SystemNavigator.pop();
+          } on Object catch (e) {
+            // Windows/web may not support SystemNavigator; ignore in tests
+            if (e is! IOException) {
+              rethrow;
+            }
+          }
+        }
+      }
+      return null;
+    default:
+      return null;
+  }
+}

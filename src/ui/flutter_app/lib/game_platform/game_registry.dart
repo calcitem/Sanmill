@@ -50,6 +50,15 @@ class GameRegistry extends ChangeNotifier {
   /// Games that should appear in a picker UI (e.g. debug or future menu).
   Iterable<GameModule> get registeredModules => _modules.values;
 
+  /// Test-only escape hatch: clears all modules and resets the active id back
+  /// to [GameId.mill]. Listeners are not notified (use a fresh listener after
+  /// reset).
+  @visibleForTesting
+  void resetForTesting() {
+    _modules.clear();
+    _currentId = GameId.mill;
+  }
+
   void _assertPersistenceScopeDoesNotOverlap(GameModule module) {
     assert(() {
       final int? min = module.persistenceScope.hiveTypeIdMin;
@@ -62,6 +71,10 @@ class GameRegistry extends ChangeNotifier {
         'Invalid Hive typeId range for ${module.metadata.id}.',
       );
       for (final GameModule registered in _modules.values) {
+        if (registered.metadata.id == module.metadata.id) {
+          // Re-registration of the same id is a replacement, not a conflict.
+          continue;
+        }
         final int? otherMin = registered.persistenceScope.hiveTypeIdMin;
         final int? otherMax = registered.persistenceScope.hiveTypeIdMax;
         if (otherMin == null || otherMax == null) {

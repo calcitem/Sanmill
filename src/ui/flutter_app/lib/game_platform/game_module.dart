@@ -8,7 +8,10 @@ import 'game_feature_flags.dart';
 import 'game_menu.dart';
 import 'game_module_metadata.dart';
 import 'game_persistence_scope.dart';
+import 'game_session.dart';
 import 'game_session_handle.dart';
+import 'notation_port.dart';
+import 'rules_port.dart';
 
 /// One installable game (Mill, probe, …). The app shell loads modules from a
 /// [GameRegistry] and does not import game-specific code except through this API.
@@ -30,7 +33,8 @@ abstract class GameModule {
     GameModeEntry(
       id: metadata.id.value,
       label: metadata.shortLabel,
-      builder: buildGameSurface,
+      builder: (BuildContext context, {Key? key, GameSession? session}) =>
+          buildGameSurface(context, key: key, session: session),
     ),
   ];
 
@@ -38,8 +42,21 @@ abstract class GameModule {
   List<GameMenuContribution> drawerContributions(BuildContext context) =>
       const <GameMenuContribution>[];
 
+  /// Optional rules engine port (for import/export, tests, future UI).
+  RulesPort? get rulesPort => null;
+
+  /// Optional notation port (PGN-like or custom text formats per game).
+  NotationPort? get notationPort => null;
+
   /// Primary in-app play surface. For Mill, [GamePage] with the given
   /// [GameMode] is returned by the adapter. For the probe, a self-contained
   /// toy board.
-  Widget buildGameSurface(BuildContext context, {Key? key});
+  ///
+  /// [session] is the active [GameSession] when the shell created it; modules
+  /// that do not use it may ignore it.
+  Widget buildGameSurface(
+    BuildContext context, {
+    Key? key,
+    GameSession? session,
+  });
 }

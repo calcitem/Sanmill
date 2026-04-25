@@ -3,11 +3,13 @@
 
 import 'package:flutter/widgets.dart';
 
+import 'game_session.dart';
+
 /// Where a game module wants its action to appear in the app shell.
 enum GameMenuSection { play, game, settings, help, debug }
 
 typedef GameMenuWidgetBuilder =
-    Widget Function(BuildContext context, {Key? key});
+    Widget Function(BuildContext context, {Key? key, GameSession? session});
 typedef GameMenuAvailability = bool Function(BuildContext context);
 
 /// A mode or route contributed by a [GameModule] to the shared shell.
@@ -20,6 +22,7 @@ class GameMenuContribution {
     this.section = GameMenuSection.game,
     this.icon,
     this.isAvailable,
+    this.contentKey,
   });
 
   final String id;
@@ -27,6 +30,7 @@ class GameMenuContribution {
   final IconData? icon;
   final GameMenuSection section;
   final GameMenuWidgetBuilder builder;
+  final Key? contentKey;
   final GameMenuAvailability? isAvailable;
 
   bool availableIn(BuildContext context) => isAvailable?.call(context) ?? true;
@@ -41,12 +45,14 @@ class GameModeEntry {
     required this.builder,
     this.icon,
     this.isAvailable,
+    this.contentKey,
   });
 
   final String id;
   final String label;
   final IconData? icon;
   final GameMenuWidgetBuilder builder;
+  final Key? contentKey;
   final GameMenuAvailability? isAvailable;
 
   bool availableIn(BuildContext context) => isAvailable?.call(context) ?? true;

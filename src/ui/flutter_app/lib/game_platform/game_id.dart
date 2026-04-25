@@ -11,7 +11,9 @@ class GameId {
   /// Sanmill (Nine / Twelve / Morabaraba-style Mill family).
   static const GameId mill = GameId('mill');
 
-  /// Minimal second game used to validate platform abstractions.
+  /// Bundled sample game (Tic-Tac-Toe) used to validate the multi-game
+  /// architecture end-to-end. Self-contained: own session, rules, notation
+  /// and persistence scope, does not depend on Mill internals.
   static const GameId demoProbe = GameId('demo_probe');
 
   final String value;
