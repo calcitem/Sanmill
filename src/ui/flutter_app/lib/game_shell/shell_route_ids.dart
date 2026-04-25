@@ -18,6 +18,9 @@ abstract final class ShellRouteIds {
   static const String millStatistics = 'mill.game.statistics';
 
   // App-level shell (not tied to a single [GameId])
+  /// Switches [GameRegistry] back to [GameId.mill] from another module.
+  static const String appBackToMainGame = 'app.switch.mainGame';
+
   static const String appSettingsGroup = 'app.group.settings';
   static const String appHelpGroup = 'app.group.help';
   static const String appGeneralSettings = 'app.settings.general';

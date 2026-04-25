@@ -8,8 +8,6 @@ import '../game_platform/game_menu.dart';
 import '../game_platform/game_module.dart';
 import '../game_platform/game_registry.dart';
 import '../game_platform/game_session.dart';
-import '../games/mill/mill_game_module.dart'
-    show applyMillGameControllerFlagsForPlayRoute;
 import 'shell_app_routes.dart';
 
 /// Resolves a [GameModule] surface for [routeId], or `null` if the route is
@@ -29,9 +27,6 @@ Widget? buildModuleScreenForGame(
     if (mode.id == routeId) {
       if (!mode.availableIn(context)) {
         return null;
-      }
-      if (gameId == GameId.mill) {
-        applyMillGameControllerFlagsForPlayRoute(routeId);
       }
       return mode.builder(context, key: mode.contentKey, session: session);
     }

@@ -2,9 +2,11 @@
 // Copyright (C) 2019-2026 The Sanmill developers (see AUTHORS file)
 
 import 'package:flutter/foundation.dart' show kIsWeb;
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 
 import '../../game_page/services/mill.dart' show GameController, GameMode;
+import '../../game_page/services/painters/painters.dart' show deviceWidth;
+import '../../game_page/widgets/dialogs/lan_config_dialog.dart';
 import '../../game_page/widgets/game_page.dart' show GamePage;
 import '../../game_platform/board_geometry.dart';
 import '../../game_platform/game_feature_flags.dart';
@@ -17,11 +19,15 @@ import '../../game_platform/game_session.dart';
 import '../../game_platform/game_session_handle.dart';
 import '../../game_platform/notation_port.dart';
 import '../../game_platform/rules_port.dart';
+import '../../game_platform/shell_route_navigation_source.dart';
 import '../../game_shell/shell_route_ids.dart';
 import '../../generated/intl/l10n.dart';
 import '../../puzzle/pages/puzzles_home_page.dart';
 import '../../rule_settings/models/rule_settings.dart';
 import '../../shared/database/database.dart';
+import '../../shared/services/logger.dart';
+import '../../shared/services/snackbar_service.dart';
+import '../../shared/themes/app_theme.dart';
 import '../../statistics/widgets/stats_page.dart';
 import 'mill_board_geometry.dart';
 import 'mill_game_session.dart';
@@ -69,6 +75,94 @@ class MillGameModule extends GameModule {
 
   @override
   NotationPort? get notationPort => const MillNotationPort();
+
+  @override
+  String defaultShellRoute(BuildContext context) {
+    return kIsWeb
+        ? ShellRouteIds.millHumanVsHuman
+        : ShellRouteIds.millHumanVsAi;
+  }
+
+  @override
+  void applyShellLayoutHints(BuildContext context) {
+    AppTheme.boardPadding =
+        ((deviceWidth(context) - AppTheme.boardMargin * 2) *
+                DB().displaySettings.pieceWidth /
+                7) /
+            2 +
+        4;
+  }
+
+  @override
+  void onShellInactive(
+    BuildContext context, {
+    required String lastShellRouteId,
+  }) {
+    if (lastShellRouteId == ShellRouteIds.millHumanVsLan) {
+      logger.i(
+        'Game switch: leaving LAN mode, disposing network and resetting board.',
+      );
+      // ignore: deprecated_member_use_from_same_package
+      GameController().networkService?.dispose();
+      // ignore: deprecated_member_use_from_same_package
+      GameController().networkService = null;
+      // ignore: deprecated_member_use_from_same_package
+      GameController().reset(force: true);
+    }
+  }
+
+  @override
+  Future<bool> willNavigateToShellRoute(
+    BuildContext context, {
+    required String? previousRouteId,
+    required String nextRouteId,
+    ShellRouteNavigationSource source = ShellRouteNavigationSource.drawer,
+  }) async {
+    if (source != ShellRouteNavigationSource.drawer) {
+      return true;
+    }
+    if (nextRouteId != ShellRouteIds.millHumanVsLan ||
+        previousRouteId == ShellRouteIds.millHumanVsLan) {
+      return true;
+    }
+    final S s = S.of(context);
+    SnackBarService.showRootSnackBar(s.experimental);
+    final bool? confirmed = await showDialog<bool>(
+      context: context,
+      builder: (BuildContext _) => const LanConfigDialog(),
+    );
+    return confirmed ?? false;
+  }
+
+  @override
+  void didNavigateShellRoute(
+    BuildContext context, {
+    required String? previousRouteId,
+    required String nextRouteId,
+  }) {
+    if (previousRouteId == ShellRouteIds.millHumanVsLan &&
+        nextRouteId != ShellRouteIds.millHumanVsLan) {
+      logger.i('Leaving LAN mode: disposing network and resetting the board.');
+      // ignore: deprecated_member_use_from_same_package
+      GameController().networkService?.dispose();
+      // ignore: deprecated_member_use_from_same_package
+      GameController().networkService = null;
+      // ignore: deprecated_member_use_from_same_package
+      GameController().reset(force: true);
+    }
+    if (isPlayModeRoute(nextRouteId, context)) {
+      _syncMillStatsForPlayModeRoute(nextRouteId);
+    }
+  }
+
+  void _syncMillStatsForPlayModeRoute(String playRouteId) {
+    if (playRouteId == ShellRouteIds.millHumanVsHuman ||
+        playRouteId == ShellRouteIds.millAiVsAi) {
+      GameController().disableStats = true;
+    } else {
+      GameController().disableStats = false;
+    }
+  }
 
   @override
   List<GameModeEntry> playModes(BuildContext context) {
@@ -164,13 +258,5 @@ class MillGameModule extends GameModule {
       kIsWeb ? GameMode.humanVsHuman : GameMode.humanVsAi,
       key: key,
     );
-  }
-}
-
-/// Called by [Home] when opening a Mill play mode that tweaks stats behaviour.
-void applyMillGameControllerFlagsForPlayRoute(String routeId) {
-  if (routeId == ShellRouteIds.millHumanVsHuman ||
-      routeId == ShellRouteIds.millAiVsAi) {
-    GameController().disableStats = true;
   }
 }

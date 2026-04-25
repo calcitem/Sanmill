@@ -923,6 +923,10 @@
     "@atEnd": {
         "description": "At the end of the move list."
     },
+    "shellBackToMainGame": "Back to main game",
+    "@shellBackToMainGame": {
+        "description": "Drawer item to return from a secondary game module to the primary Sanmill (Mill) experience"
+    },
     "tapBackAgainToLeave": "Tap Back again to exit.",
     "@tapBackAgainToLeave": {
         "description": "Tap Back again to exit."

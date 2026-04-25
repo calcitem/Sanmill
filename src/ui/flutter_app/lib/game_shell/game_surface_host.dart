@@ -10,7 +10,8 @@ import '../game_platform/game_registry.dart';
 import '../game_platform/game_session.dart';
 import 'game_session_scope.dart';
 
-/// Generic shell for a single game's primary surface.
+/// Optional compact scaffold for embedding a [GameId] (e.g. game picker, tests).
+/// The main app uses [Home] with [SharedGameShell] and [GameModule] hooks.
 ///
 /// Two ownership modes:
 ///

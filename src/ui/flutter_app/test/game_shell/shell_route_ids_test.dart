@@ -23,6 +23,7 @@ void main() {
 
     test('app-level route ids share the "app." prefix', () {
       const List<String> appRoutes = <String>[
+        ShellRouteIds.appBackToMainGame,
         ShellRouteIds.appSettingsGroup,
         ShellRouteIds.appHelpGroup,
         ShellRouteIds.appGeneralSettings,

@@ -18,11 +18,6 @@ import 'package:path_provider/path_provider.dart';
 import '../custom_drawer/custom_drawer.dart';
 import '../experience_recording/models/recording_models.dart';
 import '../experience_recording/services/recording_service.dart';
-import '../game_page/services/gif_share/gif_share.dart';
-import '../game_page/services/gif_share/widgets_to_image.dart';
-import '../game_page/services/mill.dart' show GameController;
-import '../game_page/services/painters/painters.dart';
-import '../game_page/widgets/dialogs/lan_config_dialog.dart';
 import '../game_platform/game_id.dart';
 import '../game_platform/game_menu.dart';
 import '../game_platform/game_module.dart';
@@ -30,7 +25,7 @@ import '../game_platform/game_registry.dart';
 import '../game_platform/game_session.dart';
 import '../game_platform/game_session_handle.dart';
 import '../game_shell/game_session_scope.dart';
-import '../game_shell/game_surface_host.dart';
+import '../game_shell/shared_game_shell.dart';
 import '../game_shell/shell_route_ids.dart';
 import '../general_settings/models/general_settings.dart';
 import '../general_settings/services/config_import_export_service.dart';
@@ -44,10 +39,7 @@ import '../shared/dialogs/privacy_policy_dialog.dart';
 import '../shared/services/catcher_service.dart' show generateOptionsContent;
 import '../shared/services/environment_config.dart';
 import '../shared/services/logger.dart';
-import '../shared/services/snackbar_service.dart';
-import '../shared/themes/app_theme.dart';
 import '../shared/utils/helpers/list_helpers/stack_list.dart';
-import '../shared/widgets/double_back_to_close_app.dart';
 import '../shared/widgets/snackbars/scaffold_messenger.dart';
 import '../tutorial/widgets/tutorial_dialog.dart';
 import 'module_route_screens.dart';
@@ -82,12 +74,6 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
   SettingsRepository get _settingsRepository =>
       SettingsRepositories.instance.current.repository;
 
-  String _initialMillRoute() {
-    return kIsWeb
-        ? ShellRouteIds.millHumanVsHuman
-        : ShellRouteIds.millHumanVsAi;
-  }
-
   void _ensureSessionForCurrentGame() {
     final GameId currentId = GameRegistry.instance.currentId;
     if (_activeSessionGameId == currentId && _activeSession != null) {
@@ -103,30 +89,36 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
     if (!mounted) {
       return;
     }
-    _ensureSessionForCurrentGame();
-    final GameId currentId = GameRegistry.instance.currentId;
-    if (currentId == GameId.mill) {
-      // Returning to Mill: reset to a sane default route.
-      _routes.clear();
-      _routeId = _initialMillRoute();
-      _routes.push(_routeId);
-      _screenView = buildModuleScreenForGame(
-        context,
-        GameId.mill,
-        _routeId,
-        session: _activeSession,
-      );
+    final GameId newId = GameRegistry.instance.currentId;
+    if (_activeSessionGameId != null && _activeSessionGameId != newId) {
+      final GameId oldId = _activeSessionGameId!;
+      final GameModule? oldModule = GameRegistry.instance.getModule(oldId);
+      oldModule?.onShellInactive(context, lastShellRouteId: _routeId);
     }
+    _ensureSessionForCurrentGame();
+    _routes.clear();
+    final GameModule m = GameRegistry.instance.current;
+    _routeId = m.defaultShellRoute(context);
+    _routes.push(_routeId);
+    _screenView = buildModuleScreenForGame(
+      context,
+      newId,
+      _routeId,
+      session: _activeSession,
+    );
+    m.didNavigateShellRoute(
+      context,
+      previousRouteId: null,
+      nextRouteId: _routeId,
+    );
     setState(() {});
   }
 
   @override
   void initState() {
     super.initState();
-    _routeId = _initialMillRoute();
     GameRegistry.instance.addListener(_onRegistryChanged);
     WidgetsBinding.instance.addPostFrameCallback((_) => _showPrivacyDialog());
-    _routes.push(_routeId);
   }
 
   @override
@@ -135,11 +127,19 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
     if (!_initialized) {
       _initialized = true;
       _ensureSessionForCurrentGame();
-      _screenView ??= buildModuleScreenForGame(
+      final GameModule m = GameRegistry.instance.current;
+      _routeId = m.defaultShellRoute(context);
+      _routes.push(_routeId);
+      _screenView = buildModuleScreenForGame(
         context,
-        GameId.mill,
+        m.metadata.id,
         _routeId,
         session: _activeSession,
+      );
+      m.didNavigateShellRoute(
+        context,
+        previousRouteId: null,
+        nextRouteId: _routeId,
       );
       firstRun(context);
     }
@@ -160,6 +160,11 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
     if (routeId == ShellRouteIds.appSettingsGroup ||
         routeId == ShellRouteIds.appHelpGroup) {
       // Group expand/collapse is handled by [CustomDrawerItem] internally.
+      return;
+    }
+
+    if (routeId == ShellRouteIds.appBackToMainGame) {
+      GameRegistry.instance.select(GameId.mill);
       return;
     }
 
@@ -195,32 +200,32 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
       return;
     }
 
-    if (routeId == ShellRouteIds.millHumanVsLan &&
-        _routeId != ShellRouteIds.millHumanVsLan) {
-      SnackBarService.showRootSnackBar(S.of(context).experimental);
-      final bool? confirmed = await showDialog<bool>(
-        context: context,
-        builder: (BuildContext _) => const LanConfigDialog(),
-      );
-      if (confirmed != true) {
-        return;
-      }
-    }
-
-    if (_routeId == ShellRouteIds.millHumanVsLan &&
-        routeId != ShellRouteIds.millHumanVsLan) {
-      logger.i('Leaving LAN mode: disposing network and resetting the board.');
-      // ignore: deprecated_member_use_from_same_package
-      GameController().networkService?.dispose();
-      // ignore: deprecated_member_use_from_same_package
-      GameController().networkService = null;
-      // ignore: deprecated_member_use_from_same_package
-      GameController().reset(force: true);
-    }
-
     if (!mounted) {
       return;
     }
+
+    if (_routeId == routeId) {
+      return;
+    }
+
+    final GameModule module = GameRegistry.instance.current;
+    if (!await module.willNavigateToShellRoute(
+      context,
+      previousRouteId: _routeId,
+      nextRouteId: routeId,
+    )) {
+      return;
+    }
+    if (!mounted) {
+      return;
+    }
+
+    module.didNavigateShellRoute(
+      context,
+      previousRouteId: _routeId,
+      nextRouteId: routeId,
+    );
+
     final Widget? screen =
         buildModuleScreenForGame(
           context,
@@ -234,8 +239,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
       return;
     }
 
-    if (_routeId == routeId) {
-      // Same route — nothing to push onto the stack.
+    if (!mounted) {
       return;
     }
 
@@ -274,27 +278,34 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
   }
 
   bool _canPopRoute() {
-    if (_routes.length > 1) {
-      _routes.pop();
-      final String previous = _routes.top();
-      final Widget? screen =
-          buildModuleScreenForGame(
-            context,
-            GameRegistry.instance.currentId,
-            previous,
-            session: _activeSession,
-          ) ??
-          buildAppShellScreen(context, previous);
-      setState(() {
-        _routeId = previous;
-        if (screen != null) {
-          _screenView = screen;
-        }
-        logger.t('_routeId: $_routeId');
-      });
-      return true;
+    if (_routes.length <= 1) {
+      return false;
     }
-    return false;
+    final String fromRoute = _routeId;
+    _routes.pop();
+    final String toRoute = _routes.top();
+    GameRegistry.instance.current.didNavigateShellRoute(
+      context,
+      previousRouteId: fromRoute,
+      nextRouteId: toRoute,
+    );
+    final Widget? screen =
+        buildModuleScreenForGame(
+          context,
+          GameRegistry.instance.currentId,
+          toRoute,
+          session: _activeSession,
+        ) ??
+        buildAppShellScreen(context, toRoute);
+    if (screen == null) {
+      return false;
+    }
+    setState(() {
+      _routeId = toRoute;
+      _screenView = screen;
+      logger.t('_routeId: $_routeId');
+    });
+    return true;
   }
 
   void firstRun(BuildContext context) {
@@ -354,18 +365,8 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
       listenable: GameRegistry.instance,
       builder: (BuildContext context, Widget? _) {
         _ensureSessionForCurrentGame();
-        final GameId currentId = GameRegistry.instance.currentId;
         final GameSession? session = _activeSession;
-        Widget body;
-        if (currentId == GameId.mill) {
-          body = _buildMillAppHome(context);
-        } else {
-          body = GameSurfaceHost(
-            gameId: currentId,
-            externalSession: session,
-            onClose: () => GameRegistry.instance.select(GameId.mill),
-          );
-        }
+        final Widget body = _buildGameShellHome(context);
         if (session != null) {
           return GameSessionScope(session: session, child: body);
         }
@@ -412,6 +413,8 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
         return const Key('drawer_item_about_child');
       case ShellRouteIds.appExit:
         return const Key('drawer_item_exit');
+      case ShellRouteIds.appBackToMainGame:
+        return const Key('drawer_item_back_to_main_game');
       case ShellRouteIds.debugPlatformProbe:
         return const Key('drawer_item_platform_probe');
       default:
@@ -454,6 +457,8 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
         return const Icon(FluentIcons.info_24_regular);
       case ShellRouteIds.appExit:
         return const Icon(FluentIcons.power_24_regular);
+      case ShellRouteIds.appBackToMainGame:
+        return const Icon(FluentIcons.home_24_regular);
       case ShellRouteIds.debugPlatformProbe:
         return const Icon(Icons.science_outlined);
       default:
@@ -500,28 +505,25 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
     );
   }
 
-  Widget _buildMillAppHome(BuildContext context) {
-    AppTheme.boardPadding =
-        ((deviceWidth(context) - AppTheme.boardMargin * 2) *
-                DB().displaySettings.pieceWidth /
-                7) /
-            2 +
-        4;
+  Widget _buildGameShellHome(BuildContext context) {
+    final GameModule gameModule = GameRegistry.instance.current;
+    gameModule.applyShellLayoutHints(context);
 
     final S s = S.of(context);
-    final GameModule millModule = GameRegistry.instance.current;
 
-    final List<GameModeEntry> playModes = millModule
+    final List<GameModeEntry> playModes = gameModule
         .playModes(context)
         .where((GameModeEntry m) => m.availableIn(context))
         .toList();
-    final List<GameMenuContribution> contributions = millModule
+    final List<GameMenuContribution> contributions = gameModule
         .drawerContributions(context)
         .where((GameMenuContribution c) => c.availableIn(context))
         .toList();
 
     final List<CustomDrawerItem<String>> drawerItems =
         <CustomDrawerItem<String>>[
+          if (GameRegistry.instance.currentId != GameId.mill)
+            _appItem(ShellRouteIds.appBackToMainGame, s.shellBackToMainGame),
           ...playModes.map(_modeItem),
           ...contributions
               .where(
@@ -552,41 +554,30 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
           if (!kIsWeb && Platform.isAndroid)
             _appItem(ShellRouteIds.appExit, s.exit),
           if (kDebugMode &&
+              GameRegistry.instance.currentId == GameId.mill &&
               GameRegistry.instance.getModule(GameId.demoProbe) != null)
             _appItem(ShellRouteIds.debugPlatformProbe, 'Tic-Tac-Toe (sample)'),
         ];
 
-    return DoubleBackToCloseApp(
-      snackBar: CustomSnackBar(s.tapBackAgainToLeave),
-      willBack: () {
+    return SharedGameShell(
+      drawerController: _controller,
+      drawerHeaderTitle: s.appName,
+      drawerItems: drawerItems,
+      mainScreen: _screenView ?? const SizedBox.shrink(),
+      onWillPopStackEntry: () {
         return !_canPopRoute();
       },
-      child: WidgetsToImage(
-        controller: GifShare().controller,
-        child: ValueListenableBuilder<CustomDrawerValue>(
-          valueListenable: _controller,
-          builder: (_, CustomDrawerValue value, Widget? child) => CustomDrawer(
-            key: CustomDrawer.drawerMainKey,
-            controller: _controller,
-            drawerHeader: CustomDrawerHeader(
-              headerTitle: s.appName,
-              key: const Key('custom_drawer_header'),
-            ),
-            drawerItems: drawerItems,
-            disabledGestures:
-                (!DB().displaySettings.swipeToRevealTheDrawer &&
-                    !value.isDrawerVisible) ||
-                ((kIsWeb ||
-                        Platform.isWindows ||
-                        Platform.isLinux ||
-                        Platform.isMacOS) &&
-                    _routeIsPlayModeSurface(context, _routeId) &&
-                    !value.isDrawerVisible),
-            orientation: MediaQuery.of(context).orientation,
-            mainScreenWidget: _screenView ?? const SizedBox.shrink(),
-          ),
-        ),
-      ),
+      isDrawerGestureDisabled: (BuildContext ctx, CustomDrawerValue value) {
+        return (!DB().displaySettings.swipeToRevealTheDrawer &&
+                !value.isDrawerVisible) ||
+            ((kIsWeb ||
+                    Platform.isWindows ||
+                    Platform.isLinux ||
+                    Platform.isMacOS) &&
+                _routeIsPlayModeSurface(ctx, _routeId) &&
+                !value.isDrawerVisible);
+      },
+      doubleBackSnackBar: CustomSnackBar(s.tapBackAgainToLeave),
     );
   }
 

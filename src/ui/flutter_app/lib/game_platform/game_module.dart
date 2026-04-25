@@ -12,6 +12,7 @@ import 'game_session.dart';
 import 'game_session_handle.dart';
 import 'notation_port.dart';
 import 'rules_port.dart';
+import 'shell_route_navigation_source.dart';
 
 /// One installable game (Mill, probe, …). The app shell loads modules from a
 /// [GameRegistry] and does not import game-specific code except through this API.
@@ -47,6 +48,42 @@ abstract class GameModule {
 
   /// Optional notation port (PGN-like or custom text formats per game).
   NotationPort? get notationPort => null;
+
+  /// First shell route when this game becomes active (startup or game switch).
+  String defaultShellRoute(BuildContext context) {
+    final List<GameModeEntry> modes = playModes(context);
+    if (modes.isEmpty) {
+      return metadata.id.value;
+    }
+    return modes.first.id;
+  }
+
+  /// Called when this module is no longer the active game (e.g. user picked
+  /// another [GameId]). [lastShellRouteId] is the route that was showing.
+  void onShellInactive(
+    BuildContext context, {
+    required String lastShellRouteId,
+  }) {}
+
+  /// Optional board / padding adjustments for the shared shell (Mill only today).
+  void applyShellLayoutHints(BuildContext context) {}
+
+  /// Return false to cancel navigation. [source] is [drawer] for drawer picks
+  /// and [backStack] for internal stack pops (skips Mill LAN entry confirm).
+  Future<bool> willNavigateToShellRoute(
+    BuildContext context, {
+    required String? previousRouteId,
+    required String nextRouteId,
+    ShellRouteNavigationSource source = ShellRouteNavigationSource.drawer,
+  }) async => true;
+
+  /// Invoked after [willNavigateToShellRoute] succeeds and before the new
+  /// route widget is built.
+  void didNavigateShellRoute(
+    BuildContext context, {
+    required String? previousRouteId,
+    required String nextRouteId,
+  }) {}
 
   /// True if [routeId] is a [playModes] entry for this module (a primary
   /// play surface), as opposed to a [drawerContributions] screen or an app
