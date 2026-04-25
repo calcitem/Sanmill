@@ -5,10 +5,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:sanmill/generated/intl/l10n.dart';
+import 'package:sanmill/shared/utils/localizations/sanmill_localizations.dart';
 
 Widget makeTestableWidget(Widget child, [Locale locale = const Locale("en")]) {
   return MaterialApp(
-    localizationsDelegates: S.localizationsDelegates,
+    localizationsDelegates: sanmillLocalizationsDelegates,
     supportedLocales: S.supportedLocales,
     locale: locale,
     home: Scaffold(body: child),

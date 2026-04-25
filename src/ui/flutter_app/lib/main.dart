@@ -17,6 +17,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_sharing_intent/flutter_sharing_intent.dart';
 import 'package:flutter_sharing_intent/model/sharing_file.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart' show Box;
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path_provider/path_provider.dart';
 
 import 'appearance_settings/models/display_settings.dart';
@@ -36,6 +37,7 @@ import 'shared/services/screenshot_service.dart';
 import 'shared/services/snackbar_service.dart';
 import 'shared/themes/app_theme.dart';
 import 'shared/utils/localizations/feedback_localization.dart';
+import 'shared/utils/localizations/sanmill_localizations.dart';
 import 'shared/widgets/snackbars/scaffold_messenger.dart';
 import 'statistics/services/stats_service.dart';
 
@@ -95,6 +97,7 @@ Future<void> main() async {
     final FlutterExceptionHandler? catcherFlutterErrorHandler =
         FlutterError.onError;
     FlutterError.onError = (FlutterErrorDetails details) {
+      _updateCrashReportLocaleContext();
       if (details.exception is AssertionError) {
         final String msg = details.exception.toString();
         // BetterFeedback's OverflowBox can trigger layout/paint of
@@ -175,6 +178,7 @@ Future<void> main() async {
       }
 
       if (EnvironmentConfig.catcher == true) {
+        _updateCrashReportLocaleContext();
         Catcher2.reportCheckedError(error, stack);
       }
       return true;
@@ -223,7 +227,7 @@ class SanmillAppState extends State<SanmillApp> {
         navigatorObservers: <NavigatorObserver>[RecordingNavigatorObserver()],
         key: GlobalKey<ScaffoldState>(),
         scaffoldMessengerKey: rootScaffoldMessengerKey,
-        localizationsDelegates: S.localizationsDelegates,
+        localizationsDelegates: sanmillLocalizationsDelegates,
         supportedLocales: S.supportedLocales,
         locale: locale,
         theme: AppTheme.lightThemeData,
@@ -280,7 +284,7 @@ class SanmillAppState extends State<SanmillApp> {
       navigatorObservers: <NavigatorObserver>[RecordingNavigatorObserver()],
       key: GlobalKey<ScaffoldState>(),
       scaffoldMessengerKey: rootScaffoldMessengerKey,
-      localizationsDelegates: S.localizationsDelegates,
+      localizationsDelegates: sanmillLocalizationsDelegates,
       supportedLocales: S.supportedLocales,
       locale: locale,
       theme: AppTheme.lightThemeData,
@@ -304,7 +308,7 @@ class SanmillAppState extends State<SanmillApp> {
     } else if (Platform.isAndroid || Platform.isIOS) {
       return BetterFeedback(
         localizationsDelegates: const <LocalizationsDelegate<dynamic>>[
-          ...S.localizationsDelegates,
+          ...sanmillLocalizationsDelegates,
           CustomFeedbackLocalizationsDelegate.delegate,
         ],
         localeOverride: displaySettings.locale,

@@ -45,6 +45,7 @@ import 'package:sanmill/shared/database/database.dart';
 import 'package:sanmill/shared/services/environment_config.dart';
 import 'package:sanmill/shared/services/storage_permission_service.dart';
 import 'package:sanmill/shared/themes/app_theme.dart';
+import 'package:sanmill/shared/utils/localizations/sanmill_localizations.dart';
 
 Catcher2? mockCatcher;
 late Catcher2 catcher;
@@ -439,7 +440,7 @@ Future<int> _captureSettingsPages(
           '${locale.languageCode}_${locale.countryCode}_${ScreenshotPage.generalSettings.fileNamePart}',
       'widget': MaterialApp(
         locale: locale,
-        localizationsDelegates: S.localizationsDelegates,
+        localizationsDelegates: sanmillLocalizationsDelegates,
         supportedLocales: S.supportedLocales,
         theme: AppTheme.lightThemeData,
         darkTheme: AppTheme.darkThemeData,
@@ -453,7 +454,7 @@ Future<int> _captureSettingsPages(
           '${locale.languageCode}_${locale.countryCode}_${ScreenshotPage.ruleSettings.fileNamePart}',
       'widget': MaterialApp(
         locale: locale,
-        localizationsDelegates: S.localizationsDelegates,
+        localizationsDelegates: sanmillLocalizationsDelegates,
         supportedLocales: S.supportedLocales,
         theme: AppTheme.lightThemeData,
         darkTheme: AppTheme.darkThemeData,
@@ -472,7 +473,7 @@ Future<int> _captureSettingsPages(
           '${locale.languageCode}_${locale.countryCode}_${ScreenshotPage.appearanceSettings.fileNamePart}',
       'widget': MaterialApp(
         locale: locale,
-        localizationsDelegates: S.localizationsDelegates,
+        localizationsDelegates: sanmillLocalizationsDelegates,
         supportedLocales: S.supportedLocales,
         theme: AppTheme.lightThemeData,
         darkTheme: AppTheme.darkThemeData,

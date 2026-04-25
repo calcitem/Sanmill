@@ -14,6 +14,7 @@ import 'package:sanmill/puzzle/models/puzzle_models.dart';
 import 'package:sanmill/puzzle/pages/puzzle_page.dart';
 import 'package:sanmill/shared/database/database.dart';
 import 'package:sanmill/shared/services/environment_config.dart';
+import 'package:sanmill/shared/utils/localizations/sanmill_localizations.dart';
 import 'package:sanmill/shared/widgets/snackbars/scaffold_messenger.dart';
 
 import '../helpers/mocks/mock_animation_manager.dart';
@@ -171,7 +172,7 @@ void main() {
     await tester.pumpWidget(
       MaterialApp(
         scaffoldMessengerKey: rootScaffoldMessengerKey,
-        localizationsDelegates: S.localizationsDelegates,
+        localizationsDelegates: sanmillLocalizationsDelegates,
         supportedLocales: S.supportedLocales,
         home: PuzzlePage(puzzle: puzzle),
       ),
