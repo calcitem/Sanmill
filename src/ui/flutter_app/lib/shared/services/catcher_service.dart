@@ -175,7 +175,11 @@ Future<Map<String, String>> _buildDeviceParameters() async {
   return <String, String>{"OS": Platform.operatingSystem};
 }
 
-void _updateCrashReportLocaleContext() {
+/// Refreshes locale-related crash report parameters.
+///
+/// This is safe to call repeatedly. On platforms where Catcher 2 is disabled,
+/// it becomes a no-op.
+void updateCrashReportLocaleContext() {
   if (!EnvironmentConfig.catcher || kIsWeb || Platform.isIOS) {
     return;
   }

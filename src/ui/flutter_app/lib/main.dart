@@ -106,7 +106,7 @@ Future<void> main() async {
     final FlutterExceptionHandler? catcherFlutterErrorHandler =
         FlutterError.onError;
     FlutterError.onError = (FlutterErrorDetails details) {
-      _updateCrashReportLocaleContext();
+      updateCrashReportLocaleContext();
       if (details.exception is AssertionError) {
         final String msg = details.exception.toString();
         // BetterFeedback's OverflowBox can trigger layout/paint of
@@ -187,7 +187,7 @@ Future<void> main() async {
       }
 
       if (EnvironmentConfig.catcher == true) {
-        _updateCrashReportLocaleContext();
+        updateCrashReportLocaleContext();
         Catcher2.reportCheckedError(error, stack);
       }
       return true;

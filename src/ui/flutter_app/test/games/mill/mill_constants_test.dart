@@ -52,9 +52,9 @@ void main() {
 
   group('MillActionCodec.moveStringFrom', () {
     test('returns move string when payload carries move key', () {
-      final GameAction action = GameAction(
+      const GameAction action = GameAction(
         type: MillActionTypes.place,
-        payload: const <String, Object?>{'move': 'd6'},
+        payload: <String, Object?>{'move': 'd6'},
       );
       // Access moveStringFrom via the re-export from mill_action_codec.dart.
       // Because mill_action_codec.dart imports mill.dart, this group is kept
@@ -66,10 +66,7 @@ void main() {
     });
 
     test('GameAction without move payload has null move field', () {
-      const GameAction action = GameAction(
-        type: 'mill.place',
-        payload: <String, Object?>{},
-      );
+      const GameAction action = GameAction(type: 'mill.place');
       expect(action.payload['move'], isNull);
     });
   });
