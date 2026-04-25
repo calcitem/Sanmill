@@ -3,6 +3,7 @@
 
 import 'package:flutter/widgets.dart';
 
+import 'game_route_id.dart';
 import 'game_session.dart';
 
 /// Where a game module wants its action to appear in the app shell.
@@ -25,7 +26,7 @@ class GameMenuContribution {
     this.contentKey,
   });
 
-  final String id;
+  final GameRouteId id;
   final String label;
   final IconData? icon;
   final GameMenuSection section;
@@ -48,7 +49,7 @@ class GameModeEntry {
     this.contentKey,
   });
 
-  final String id;
+  final GameRouteId id;
   final String label;
   final IconData? icon;
   final GameMenuWidgetBuilder builder;

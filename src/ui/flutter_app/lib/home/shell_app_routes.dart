@@ -17,33 +17,36 @@ import '../shared/services/environment_config.dart';
 
 /// Resolves [ShellRouteIds] for app-level (`app.*`) routes.
 Widget? buildAppRouteScreen(BuildContext context, String routeId) {
-  switch (routeId) {
-    case ShellRouteIds.appGeneralSettings:
-      return const GeneralSettingsPage();
-    case ShellRouteIds.appRuleSettings:
-      return GameRegistry.instance.current.buildRuleSettingsScreen(context);
-    case ShellRouteIds.appAppearance:
-      return const AppearanceSettingsPage();
-    case ShellRouteIds.appHowToPlay:
-      return const HowToPlayScreen();
-    case ShellRouteIds.appAbout:
-      return const AboutPage();
-    case ShellRouteIds.appExit:
-      if (EnvironmentConfig.test == false) {
-        if (!kIsWeb) {
-          try {
-            // ignore: avoid_slow_async
-            SystemNavigator.pop();
-          } on Object catch (e) {
-            // Windows/web may not support SystemNavigator; ignore in tests
-            if (e is! IOException) {
-              rethrow;
-            }
+  if (routeId == ShellRouteIds.appGeneralSettings.value) {
+    return const GeneralSettingsPage();
+  }
+  if (routeId == ShellRouteIds.appRuleSettings.value) {
+    return GameRegistry.instance.current.buildRuleSettingsScreen(context);
+  }
+  if (routeId == ShellRouteIds.appAppearance.value) {
+    return const AppearanceSettingsPage();
+  }
+  if (routeId == ShellRouteIds.appHowToPlay.value) {
+    return const HowToPlayScreen();
+  }
+  if (routeId == ShellRouteIds.appAbout.value) {
+    return const AboutPage();
+  }
+  if (routeId == ShellRouteIds.appExit.value) {
+    if (EnvironmentConfig.test == false) {
+      if (!kIsWeb) {
+        try {
+          // ignore: avoid_slow_async
+          SystemNavigator.pop();
+        } on Object catch (e) {
+          // Windows/web may not support SystemNavigator; ignore in tests
+          if (e is! IOException) {
+            rethrow;
           }
         }
       }
-      return null;
-    default:
-      return null;
+    }
+    return null;
   }
+  return null;
 }

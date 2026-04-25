@@ -35,15 +35,24 @@ void main() {
       );
 
       final GameModule module = GameRegistry.instance.getModule(GameId.mill)!;
-      expect(module.isPlayModeRoute(MillRouteIds.humanVsAi, context), isTrue);
       expect(
-        module.isPlayModeRoute(MillRouteIds.humanVsHuman, context),
+        module.isPlayModeRoute(MillRouteIds.humanVsAi.value, context),
         isTrue,
       );
-      expect(module.isPlayModeRoute(MillRouteIds.aiVsAi, context), isTrue);
-      expect(module.isPlayModeRoute(MillRouteIds.humanVsLan, context), isTrue);
       expect(
-        module.isPlayModeRoute(MillRouteIds.setupPosition, context),
+        module.isPlayModeRoute(MillRouteIds.humanVsHuman.value, context),
+        isTrue,
+      );
+      expect(
+        module.isPlayModeRoute(MillRouteIds.aiVsAi.value, context),
+        isTrue,
+      );
+      expect(
+        module.isPlayModeRoute(MillRouteIds.humanVsLan.value, context),
+        isTrue,
+      );
+      expect(
+        module.isPlayModeRoute(MillRouteIds.setupPosition.value, context),
         isTrue,
       );
     });
@@ -64,10 +73,16 @@ void main() {
       );
 
       final GameModule module = GameRegistry.instance.getModule(GameId.mill)!;
-      expect(module.isPlayModeRoute(MillRouteIds.puzzles, context), isFalse);
-      expect(module.isPlayModeRoute(MillRouteIds.statistics, context), isFalse);
       expect(
-        module.isPlayModeRoute(ShellRouteIds.appGeneralSettings, context),
+        module.isPlayModeRoute(MillRouteIds.puzzles.value, context),
+        isFalse,
+      );
+      expect(
+        module.isPlayModeRoute(MillRouteIds.statistics.value, context),
+        isFalse,
+      );
+      expect(
+        module.isPlayModeRoute(ShellRouteIds.appGeneralSettings.value, context),
         isFalse,
       );
     });

@@ -11,12 +11,8 @@ import 'game_session.dart';
 /// each module decides what action history to expose for export.
 @immutable
 class GameExportData {
-  const GameExportData({
-    required this.snapshot,
-    required this.actions,
-  });
+  const GameExportData({required this.snapshot, required this.actions});
 
   final GameStateSnapshot snapshot;
   final List<GameAction> actions;
 }
-

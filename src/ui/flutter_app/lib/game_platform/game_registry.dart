@@ -68,6 +68,7 @@ class GameRegistry extends ChangeNotifier {
   void resetForTesting() {
     _modules.clear();
     _currentId = GameId.mill;
+    // ignore: invalid_use_of_visible_for_testing_member
     _engineRouter.resetForTesting();
   }
 

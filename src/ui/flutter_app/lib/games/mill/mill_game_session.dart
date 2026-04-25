@@ -9,6 +9,7 @@ import '../../game_page/services/mill.dart' as mill;
 import '../../game_platform/game_id.dart';
 import '../../game_platform/game_session.dart';
 import '../../game_platform/game_session_handle.dart';
+import 'mill_action_codec.dart';
 
 /// Transitional session wrapper around the legacy process-wide Mill controller.
 class MillGameSession implements GameSessionHandle {
@@ -114,9 +115,9 @@ class MillGameSession implements GameSessionHandle {
     }
     final mill.Act action = controller.position.action;
     final String type = switch (action) {
-      mill.Act.place => 'mill.place',
-      mill.Act.select => 'mill.select',
-      mill.Act.remove => 'mill.remove',
+      mill.Act.place => MillActionTypes.place,
+      mill.Act.select => MillActionTypes.select,
+      mill.Act.remove => MillActionTypes.remove,
     };
     return <GameAction>[
       GameAction(
@@ -138,14 +139,15 @@ class MillGameSession implements GameSessionHandle {
   @override
   Future<void> apply(GameAction action) async {
     assert(action.type.isNotEmpty, 'GameAction.type must not be empty.');
-    if (action.payload['move'] case final String move) {
+    final String? moveStr = MillActionCodec.moveStringFrom(action);
+    if (moveStr != null) {
       final bool ok = controller.applyMove(
-        mill.ExtMove(move, side: controller.position.sideToMove),
+        mill.ExtMove(moveStr, side: controller.position.sideToMove),
       );
       _events.add(
         GameSessionEvent(
           ok ? 'millMoveApplied' : 'millMoveRejected',
-          payload: <String, Object?>{'move': move, 'type': action.type},
+          payload: <String, Object?>{'move': moveStr, 'type': action.type},
         ),
       );
       _syncFromController(emitEvent: true);

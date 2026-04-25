@@ -24,7 +24,7 @@ Widget? buildModuleScreenForGame(
   }
 
   for (final GameModeEntry mode in module.playModes(context)) {
-    if (mode.id == routeId) {
+    if (mode.id.value == routeId) {
       if (!mode.availableIn(context)) {
         return null;
       }
@@ -32,7 +32,7 @@ Widget? buildModuleScreenForGame(
     }
   }
   for (final GameMenuContribution c in module.drawerContributions(context)) {
-    if (c.id == routeId) {
+    if (c.id.value == routeId) {
       if (!c.availableIn(context)) {
         return null;
       }

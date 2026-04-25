@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // Copyright (C) 2019-2026 The Sanmill developers (see AUTHORS file)
 
+// ignore_for_file: avoid_classes_with_only_static_members
+
 import 'package:flutter/widgets.dart';
 
 import 'game_export.dart';

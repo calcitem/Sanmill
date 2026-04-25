@@ -10,6 +10,7 @@ import 'package:sanmill/game_platform/game_feature_flags.dart';
 import 'package:sanmill/game_platform/game_id.dart';
 import 'package:sanmill/game_platform/game_module.dart';
 import 'package:sanmill/game_platform/game_module_metadata.dart';
+import 'package:sanmill/game_platform/game_persistence_scope.dart';
 import 'package:sanmill/game_platform/game_registry.dart';
 import 'package:sanmill/game_platform/game_session.dart';
 import 'package:sanmill/game_platform/game_session_handle.dart';
@@ -83,7 +84,11 @@ class _TestModule extends GameModule {
   Never get boardGeometry => throw UnimplementedError();
 
   @override
-  Never get persistenceScope => throw UnimplementedError();
+  GamePersistenceScope get persistenceScope => const GamePersistenceScope(
+    gameId: GameId('test'),
+    hiveTypeIdMin: 999,
+    hiveTypeIdMax: 999,
+  );
 
   @override
   GameSessionHandle startSession() => _TestSession(

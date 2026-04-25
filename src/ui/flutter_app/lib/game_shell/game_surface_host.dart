@@ -21,6 +21,16 @@ import 'game_session_scope.dart';
 /// * Otherwise, [GameSurfaceHost] creates the session via
 ///   [GameModule.startSession], owns its lifecycle, and disposes it on
 ///   widget teardown or [gameId]/[routeId] change.
+///
+/// ## Architecture note
+///
+/// [GameSurfaceHost] intentionally stays separate from the main [Home] /
+/// [SharedGameShell] path. It is designed for isolated embedding (tests,
+/// pickers, future mini-game overlays) where a full drawer shell is not
+/// appropriate. Merging it into the main shell would only be worthwhile when
+/// both paths need to share identical session-lifecycle or routing behaviour.
+/// Until then, prefer calling [GameModule.buildExportData] and
+/// [GameSessionScope] through [Home] for production use.
 class GameSurfaceHost extends StatefulWidget {
   const GameSurfaceHost({
     required this.gameId,
@@ -116,7 +126,7 @@ class _GameSurfaceHostState extends State<GameSurfaceHost> {
       return modes.isEmpty ? null : modes.first;
     }
     for (final GameModeEntry mode in modes) {
-      if (mode.id == widget.routeId) {
+      if (mode.id.value == widget.routeId) {
         return mode;
       }
     }

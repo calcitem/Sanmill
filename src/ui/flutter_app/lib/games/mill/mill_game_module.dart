@@ -20,6 +20,7 @@ import '../../game_platform/game_persistence_scope.dart';
 import '../../game_platform/game_session.dart';
 import '../../game_platform/game_session_handle.dart';
 import '../../game_platform/notation_port.dart';
+import '../../game_platform/rule_settings_port.dart';
 import '../../game_platform/rules_port.dart';
 import '../../game_platform/shell_route_navigation_source.dart';
 import '../../generated/intl/l10n.dart';
@@ -27,6 +28,7 @@ import '../../puzzle/pages/puzzles_home_page.dart';
 import '../../rule_settings/models/rule_settings.dart';
 import '../../rule_settings/widgets/rule_settings_page.dart';
 import '../../shared/database/database.dart';
+import '../../shared/database/settings_repositories.dart';
 import '../../shared/services/logger.dart';
 import '../../shared/services/snackbar_service.dart';
 import '../../shared/themes/app_theme.dart';
@@ -37,6 +39,7 @@ import 'mill_engine_port.dart';
 import 'mill_game_session.dart';
 import 'mill_notation_port.dart';
 import 'mill_route_ids.dart';
+import 'mill_rule_settings_port.dart';
 import 'mill_rules_adapter.dart';
 
 class MillGameModule extends GameModule {
@@ -82,6 +85,11 @@ class MillGameModule extends GameModule {
   NotationPort? get notationPort => const MillNotationPort();
 
   @override
+  RuleSettingsPort<Object>? get ruleSettingsPort =>
+      MillRuleSettingsPort(SettingsRepositories.instance.repository)
+          as RuleSettingsPort<Object>;
+
+  @override
   GameExportData? buildExportData(
     BuildContext context, {
     required GameSession session,
@@ -101,7 +109,9 @@ class MillGameModule extends GameModule {
 
   @override
   String defaultShellRoute(BuildContext context) {
-    return kIsWeb ? MillRouteIds.humanVsHuman : MillRouteIds.humanVsAi;
+    return kIsWeb
+        ? MillRouteIds.humanVsHuman.value
+        : MillRouteIds.humanVsAi.value;
   }
 
   @override
@@ -119,7 +129,7 @@ class MillGameModule extends GameModule {
     BuildContext context, {
     required String lastShellRouteId,
   }) {
-    if (lastShellRouteId == MillRouteIds.humanVsLan) {
+    if (lastShellRouteId == MillRouteIds.humanVsLan.value) {
       logger.i(
         'Game switch: leaving LAN mode, disposing network and resetting board.',
       );
@@ -142,8 +152,8 @@ class MillGameModule extends GameModule {
     if (source != ShellRouteNavigationSource.drawer) {
       return true;
     }
-    if (nextRouteId != MillRouteIds.humanVsLan ||
-        previousRouteId == MillRouteIds.humanVsLan) {
+    if (nextRouteId != MillRouteIds.humanVsLan.value ||
+        previousRouteId == MillRouteIds.humanVsLan.value) {
       return true;
     }
     final S s = S.of(context);
@@ -161,8 +171,8 @@ class MillGameModule extends GameModule {
     required String? previousRouteId,
     required String nextRouteId,
   }) {
-    if (previousRouteId == MillRouteIds.humanVsLan &&
-        nextRouteId != MillRouteIds.humanVsLan) {
+    if (previousRouteId == MillRouteIds.humanVsLan.value &&
+        nextRouteId != MillRouteIds.humanVsLan.value) {
       logger.i('Leaving LAN mode: disposing network and resetting the board.');
       // ignore: deprecated_member_use_from_same_package
       GameController().networkService?.dispose();
@@ -177,8 +187,8 @@ class MillGameModule extends GameModule {
   }
 
   void _syncMillStatsForPlayModeRoute(String playRouteId) {
-    if (playRouteId == MillRouteIds.humanVsHuman ||
-        playRouteId == MillRouteIds.aiVsAi) {
+    if (playRouteId == MillRouteIds.humanVsHuman.value ||
+        playRouteId == MillRouteIds.aiVsAi.value) {
       GameController().disableStats = true;
     } else {
       GameController().disableStats = false;

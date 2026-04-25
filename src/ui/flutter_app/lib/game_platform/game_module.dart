@@ -10,9 +10,11 @@ import 'game_feature_flags.dart';
 import 'game_menu.dart';
 import 'game_module_metadata.dart';
 import 'game_persistence_scope.dart';
+import 'game_route_id.dart';
 import 'game_session.dart';
 import 'game_session_handle.dart';
 import 'notation_port.dart';
+import 'rule_settings_port.dart';
 import 'rules_port.dart';
 import 'shell_route_navigation_source.dart';
 
@@ -34,7 +36,7 @@ abstract class GameModule {
   /// Primary play modes contributed to the shared shell.
   List<GameModeEntry> playModes(BuildContext context) => <GameModeEntry>[
     GameModeEntry(
-      id: metadata.id.value,
+      id: GameRouteId(metadata.id.value),
       label: metadata.shortLabel,
       builder: (BuildContext context, {Key? key, GameSession? session}) =>
           buildGameSurface(context, key: key, session: session),
@@ -50,6 +52,12 @@ abstract class GameModule {
 
   /// Optional notation port (PGN-like or custom text formats per game).
   NotationPort? get notationPort => null;
+
+  /// Optional rule settings port for reading and writing game rules.
+  ///
+  /// Modules that expose configurable rules should return an implementation.
+  /// When null, the shared shell should hide the rule settings entry.
+  RuleSettingsPort<Object>? get ruleSettingsPort => null;
 
   /// Optional export data (snapshot + actions) for [notationPort].
   ///
@@ -73,7 +81,7 @@ abstract class GameModule {
     if (modes.isEmpty) {
       return metadata.id.value;
     }
-    return modes.first.id;
+    return modes.first.id.value;
   }
 
   /// Called when this module is no longer the active game (e.g. user picked
@@ -108,7 +116,7 @@ abstract class GameModule {
   /// shell route. Used by the shared shell for back-stack and gesture policy.
   bool isPlayModeRoute(String routeId, BuildContext context) {
     for (final GameModeEntry mode in playModes(context)) {
-      if (mode.id == routeId) {
+      if (mode.id.value == routeId) {
         return true;
       }
     }

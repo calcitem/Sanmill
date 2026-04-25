@@ -22,6 +22,7 @@ import '../game_platform/game_id.dart';
 import '../game_platform/game_menu.dart';
 import '../game_platform/game_module.dart';
 import '../game_platform/game_registry.dart';
+import '../game_platform/game_route_id.dart';
 import '../game_platform/game_session.dart';
 import '../game_platform/game_session_handle.dart';
 import '../game_shell/debug_route_ids.dart';
@@ -159,24 +160,24 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
   Future<void> _selectRoute(String routeId) async {
     _controller.hideDrawer();
 
-    if (routeId == ShellRouteIds.appSettingsGroup ||
-        routeId == ShellRouteIds.appHelpGroup) {
+    if (routeId == ShellRouteIds.appSettingsGroup.value ||
+        routeId == ShellRouteIds.appHelpGroup.value) {
       // Group expand/collapse is handled by [CustomDrawerItem] internally.
       return;
     }
 
-    if (routeId == ShellRouteIds.appBackToMainGame) {
+    if (routeId == ShellRouteIds.appBackToMainGame.value) {
       GameRegistry.instance.select(GameId.mill);
       return;
     }
 
-    if (routeId == DebugRouteIds.platformProbe) {
+    if (routeId == DebugRouteIds.platformProbe.value) {
       logger.i('Switching to platform probe (tic-tac-toe demo).');
       GameRegistry.instance.select(GameId.demoProbe);
       return;
     }
 
-    if (routeId == ShellRouteIds.appExit) {
+    if (routeId == ShellRouteIds.appExit.value) {
       logger.i('Exiting...');
       if (EnvironmentConfig.test == false && !kIsWeb) {
         SystemChannels.platform.invokeMethod<void>('SystemNavigator.pop');
@@ -184,15 +185,15 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
       return;
     }
 
-    if ((routeId == ShellRouteIds.appHowToPlay ||
-            routeId == ShellRouteIds.appAbout ||
-            routeId == ShellRouteIds.appFeedback) &&
+    if ((routeId == ShellRouteIds.appHowToPlay.value ||
+            routeId == ShellRouteIds.appAbout.value ||
+            routeId == ShellRouteIds.appFeedback.value) &&
         EnvironmentConfig.test == true) {
       logger.w('Do not test HowToPlay/Feedback/About page.');
       return;
     }
 
-    if (routeId == ShellRouteIds.appFeedback) {
+    if (routeId == ShellRouteIds.appFeedback.value) {
       logger.i('Switching to Feedback');
       if (Platform.isAndroid) {
         BetterFeedback.of(context).show(_launchFeedback);
@@ -382,98 +383,128 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
   /// Maps a [ShellRouteIds] route to a stable drawer-item key. Keeping these
   /// keys preserves existing integration tests.
   Key? _drawerItemKey(String routeId) {
-    switch (routeId) {
-      case MillRouteIds.humanVsAi:
-        return const Key('drawer_item_human_vs_ai');
-      case MillRouteIds.humanVsHuman:
-        return const Key('drawer_item_human_vs_human');
-      case MillRouteIds.aiVsAi:
-        return const Key('drawer_item_ai_vs_ai');
-      case MillRouteIds.humanVsLan:
-        return const Key('drawer_item_human_vs_lan');
-      case MillRouteIds.setupPosition:
-        return const Key('drawer_item_setup_position');
-      case MillRouteIds.puzzles:
-        return const Key('drawer_item_puzzles');
-      case MillRouteIds.statistics:
-        return const Key('drawer_item_statistics');
-      case ShellRouteIds.appSettingsGroup:
-        return const Key('drawer_item_settings_group');
-      case ShellRouteIds.appGeneralSettings:
-        return const Key('drawer_item_general_settings_child');
-      case ShellRouteIds.appRuleSettings:
-        return const Key('drawer_item_rule_settings_child');
-      case ShellRouteIds.appAppearance:
-        return const Key('drawer_item_appearance_child');
-      case ShellRouteIds.appHelpGroup:
-        return const Key('drawer_item_help_group');
-      case ShellRouteIds.appHowToPlay:
-        return const Key('drawer_item_how_to_play_child');
-      case ShellRouteIds.appFeedback:
-        return const Key('drawer_item_feedback_child');
-      case ShellRouteIds.appAbout:
-        return const Key('drawer_item_about_child');
-      case ShellRouteIds.appExit:
-        return const Key('drawer_item_exit');
-      case ShellRouteIds.appBackToMainGame:
-        return const Key('drawer_item_back_to_main_game');
-      case DebugRouteIds.platformProbe:
-        return const Key('drawer_item_platform_probe');
-      default:
-        return null;
+    if (routeId == MillRouteIds.humanVsAi.value) {
+      return const Key('drawer_item_human_vs_ai');
     }
+    if (routeId == MillRouteIds.humanVsHuman.value) {
+      return const Key('drawer_item_human_vs_human');
+    }
+    if (routeId == MillRouteIds.aiVsAi.value) {
+      return const Key('drawer_item_ai_vs_ai');
+    }
+    if (routeId == MillRouteIds.humanVsLan.value) {
+      return const Key('drawer_item_human_vs_lan');
+    }
+    if (routeId == MillRouteIds.setupPosition.value) {
+      return const Key('drawer_item_setup_position');
+    }
+    if (routeId == MillRouteIds.puzzles.value) {
+      return const Key('drawer_item_puzzles');
+    }
+    if (routeId == MillRouteIds.statistics.value) {
+      return const Key('drawer_item_statistics');
+    }
+    if (routeId == ShellRouteIds.appSettingsGroup.value) {
+      return const Key('drawer_item_settings_group');
+    }
+    if (routeId == ShellRouteIds.appGeneralSettings.value) {
+      return const Key('drawer_item_general_settings_child');
+    }
+    if (routeId == ShellRouteIds.appRuleSettings.value) {
+      return const Key('drawer_item_rule_settings_child');
+    }
+    if (routeId == ShellRouteIds.appAppearance.value) {
+      return const Key('drawer_item_appearance_child');
+    }
+    if (routeId == ShellRouteIds.appHelpGroup.value) {
+      return const Key('drawer_item_help_group');
+    }
+    if (routeId == ShellRouteIds.appHowToPlay.value) {
+      return const Key('drawer_item_how_to_play_child');
+    }
+    if (routeId == ShellRouteIds.appFeedback.value) {
+      return const Key('drawer_item_feedback_child');
+    }
+    if (routeId == ShellRouteIds.appAbout.value) {
+      return const Key('drawer_item_about_child');
+    }
+    if (routeId == ShellRouteIds.appExit.value) {
+      return const Key('drawer_item_exit');
+    }
+    if (routeId == ShellRouteIds.appBackToMainGame.value) {
+      return const Key('drawer_item_back_to_main_game');
+    }
+    if (routeId == DebugRouteIds.platformProbe.value) {
+      return const Key('drawer_item_platform_probe');
+    }
+    return null;
   }
 
   /// Default fluent icon for built-in routes.
   Icon _iconFor(String routeId) {
-    switch (routeId) {
-      case MillRouteIds.humanVsAi:
-        return const Icon(FluentIcons.person_24_regular);
-      case MillRouteIds.humanVsHuman:
-        return const Icon(FluentIcons.people_24_regular);
-      case MillRouteIds.aiVsAi:
-        return const Icon(FluentIcons.bot_24_regular);
-      case MillRouteIds.humanVsLan:
-        return const Icon(FluentIcons.wifi_1_24_regular);
-      case MillRouteIds.setupPosition:
-        return const Icon(FluentIcons.drafts_24_regular);
-      case MillRouteIds.puzzles:
-        return const Icon(FluentIcons.puzzle_piece_24_regular);
-      case MillRouteIds.statistics:
-        return const Icon(FluentIcons.calculator_24_regular);
-      case ShellRouteIds.appSettingsGroup:
-        return const Icon(FluentIcons.settings_24_regular);
-      case ShellRouteIds.appGeneralSettings:
-        return const Icon(FluentIcons.options_24_regular);
-      case ShellRouteIds.appRuleSettings:
-        return const Icon(FluentIcons.task_list_ltr_24_regular);
-      case ShellRouteIds.appAppearance:
-        return const Icon(FluentIcons.design_ideas_24_regular);
-      case ShellRouteIds.appHelpGroup:
-        return const Icon(FluentIcons.question_circle_24_regular);
-      case ShellRouteIds.appHowToPlay:
-        return const Icon(FluentIcons.question_circle_24_regular);
-      case ShellRouteIds.appFeedback:
-        return const Icon(FluentIcons.comment_24_regular);
-      case ShellRouteIds.appAbout:
-        return const Icon(FluentIcons.info_24_regular);
-      case ShellRouteIds.appExit:
-        return const Icon(FluentIcons.power_24_regular);
-      case ShellRouteIds.appBackToMainGame:
-        return const Icon(FluentIcons.home_24_regular);
-      case DebugRouteIds.platformProbe:
-        return const Icon(Icons.science_outlined);
-      default:
-        return const Icon(FluentIcons.apps_24_regular);
+    if (routeId == MillRouteIds.humanVsAi.value) {
+      return const Icon(FluentIcons.person_24_regular);
     }
+    if (routeId == MillRouteIds.humanVsHuman.value) {
+      return const Icon(FluentIcons.people_24_regular);
+    }
+    if (routeId == MillRouteIds.aiVsAi.value) {
+      return const Icon(FluentIcons.bot_24_regular);
+    }
+    if (routeId == MillRouteIds.humanVsLan.value) {
+      return const Icon(FluentIcons.wifi_1_24_regular);
+    }
+    if (routeId == MillRouteIds.setupPosition.value) {
+      return const Icon(FluentIcons.drafts_24_regular);
+    }
+    if (routeId == MillRouteIds.puzzles.value) {
+      return const Icon(FluentIcons.puzzle_piece_24_regular);
+    }
+    if (routeId == MillRouteIds.statistics.value) {
+      return const Icon(FluentIcons.calculator_24_regular);
+    }
+    if (routeId == ShellRouteIds.appSettingsGroup.value) {
+      return const Icon(FluentIcons.settings_24_regular);
+    }
+    if (routeId == ShellRouteIds.appGeneralSettings.value) {
+      return const Icon(FluentIcons.options_24_regular);
+    }
+    if (routeId == ShellRouteIds.appRuleSettings.value) {
+      return const Icon(FluentIcons.task_list_ltr_24_regular);
+    }
+    if (routeId == ShellRouteIds.appAppearance.value) {
+      return const Icon(FluentIcons.design_ideas_24_regular);
+    }
+    if (routeId == ShellRouteIds.appHelpGroup.value) {
+      return const Icon(FluentIcons.question_circle_24_regular);
+    }
+    if (routeId == ShellRouteIds.appHowToPlay.value) {
+      return const Icon(FluentIcons.question_circle_24_regular);
+    }
+    if (routeId == ShellRouteIds.appFeedback.value) {
+      return const Icon(FluentIcons.comment_24_regular);
+    }
+    if (routeId == ShellRouteIds.appAbout.value) {
+      return const Icon(FluentIcons.info_24_regular);
+    }
+    if (routeId == ShellRouteIds.appExit.value) {
+      return const Icon(FluentIcons.power_24_regular);
+    }
+    if (routeId == ShellRouteIds.appBackToMainGame.value) {
+      return const Icon(FluentIcons.home_24_regular);
+    }
+    if (routeId == DebugRouteIds.platformProbe.value) {
+      return const Icon(Icons.science_outlined);
+    }
+    return const Icon(FluentIcons.apps_24_regular);
   }
 
   CustomDrawerItem<String> _modeItem(GameModeEntry mode) {
     return CustomDrawerItem<String>(
-      key: _drawerItemKey(mode.id),
-      itemValue: mode.id,
+      key: _drawerItemKey(mode.id.value),
+      itemValue: mode.id.value,
       itemTitle: mode.label,
-      itemIcon: _iconFor(mode.id),
+      itemIcon: _iconFor(mode.id.value),
       currentSelectedValue: _routeId,
       onSelectionChanged: _selectRoute,
     );
@@ -481,26 +512,26 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
 
   CustomDrawerItem<String> _contributionItem(GameMenuContribution c) {
     return CustomDrawerItem<String>(
-      key: _drawerItemKey(c.id),
-      itemValue: c.id,
+      key: _drawerItemKey(c.id.value),
+      itemValue: c.id.value,
       itemTitle: c.label,
-      itemIcon: _iconFor(c.id),
+      itemIcon: _iconFor(c.id.value),
       currentSelectedValue: _routeId,
       onSelectionChanged: _selectRoute,
     );
   }
 
   CustomDrawerItem<String> _appItem(
-    String routeId,
+    GameRouteId routeId,
     String label, {
     List<CustomDrawerItem<String>>? children,
     Function(String)? onTap,
   }) {
     return CustomDrawerItem<String>(
-      key: _drawerItemKey(routeId),
-      itemValue: routeId,
+      key: _drawerItemKey(routeId.value),
+      itemValue: routeId.value,
       itemTitle: label,
-      itemIcon: _iconFor(routeId),
+      itemIcon: _iconFor(routeId.value),
       currentSelectedValue: _routeId,
       onSelectionChanged: onTap ?? _selectRoute,
       children: children,
@@ -654,7 +685,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
         },
       ).then((bool? result) {
         if (result ?? false) {
-          _selectRoute(ShellRouteIds.appRuleSettings);
+          _selectRoute(ShellRouteIds.appRuleSettings.value);
         }
       });
     }
