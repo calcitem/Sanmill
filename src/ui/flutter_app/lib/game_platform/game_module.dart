@@ -4,6 +4,7 @@
 import 'package:flutter/widgets.dart';
 
 import 'board_geometry.dart';
+import 'engine/engine_port.dart';
 import 'game_feature_flags.dart';
 import 'game_menu.dart';
 import 'game_module_metadata.dart';
@@ -48,6 +49,9 @@ abstract class GameModule {
 
   /// Optional notation port (PGN-like or custom text formats per game).
   NotationPort? get notationPort => null;
+
+  /// Optional engine port (AI / analysis / search).
+  EnginePort? get enginePort => null;
 
   /// First shell route when this game becomes active (startup or game switch).
   String defaultShellRoute(BuildContext context) {

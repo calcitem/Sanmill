@@ -3,6 +3,8 @@
 
 import 'package:flutter/foundation.dart';
 
+import 'engine/engine_port.dart';
+import 'engine/native_engine_router.dart';
 import 'game_id.dart';
 import 'game_module.dart';
 
@@ -15,12 +17,17 @@ class GameRegistry extends ChangeNotifier {
   static final GameRegistry instance = GameRegistry._();
 
   final Map<GameId, GameModule> _modules = <GameId, GameModule>{};
+  final NativeEngineRouter _engineRouter = NativeEngineRouter();
 
   GameId _currentId = GameId.mill;
 
   void register(GameModule module) {
     _assertPersistenceScopeDoesNotOverlap(module);
     _modules[module.metadata.id] = module;
+    final EnginePort? enginePort = module.enginePort;
+    if (enginePort != null) {
+      _engineRouter.register(module.metadata.id, enginePort);
+    }
   }
 
   GameModule? getModule(GameId id) => _modules[id];
@@ -49,6 +56,10 @@ class GameRegistry extends ChangeNotifier {
 
   /// Games that should appear in a picker UI (e.g. debug or future menu).
   Iterable<GameModule> get registeredModules => _modules.values;
+
+  /// Global strongly typed engine router. Modules register their [EnginePort]
+  /// automatically when added via [register].
+  NativeEngineRouter get engineRouter => _engineRouter;
 
   /// Test-only escape hatch: clears all modules and resets the active id back
   /// to [GameId.mill]. Listeners are not notified (use a fresh listener after

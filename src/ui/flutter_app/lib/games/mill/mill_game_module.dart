@@ -9,6 +9,7 @@ import '../../game_page/services/painters/painters.dart' show deviceWidth;
 import '../../game_page/widgets/dialogs/lan_config_dialog.dart';
 import '../../game_page/widgets/game_page.dart' show GamePage;
 import '../../game_platform/board_geometry.dart';
+import '../../game_platform/engine/engine_port.dart';
 import '../../game_platform/game_feature_flags.dart';
 import '../../game_platform/game_id.dart';
 import '../../game_platform/game_menu.dart';
@@ -29,6 +30,7 @@ import '../../shared/services/snackbar_service.dart';
 import '../../shared/themes/app_theme.dart';
 import '../../statistics/widgets/stats_page.dart';
 import 'mill_board_geometry.dart';
+import 'mill_engine_port.dart';
 import 'mill_game_session.dart';
 import 'mill_notation_port.dart';
 import 'mill_route_ids.dart';
@@ -75,6 +77,9 @@ class MillGameModule extends GameModule {
 
   @override
   NotationPort? get notationPort => const MillNotationPort();
+
+  @override
+  EnginePort? get enginePort => MillEnginePortAdapter();
 
   @override
   String defaultShellRoute(BuildContext context) {
