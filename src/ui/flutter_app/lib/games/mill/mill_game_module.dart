@@ -10,6 +10,7 @@ import '../../game_page/widgets/dialogs/lan_config_dialog.dart';
 import '../../game_page/widgets/game_page.dart' show GamePage;
 import '../../game_platform/board_geometry.dart';
 import '../../game_platform/engine/engine_port.dart';
+import '../../game_platform/game_export.dart';
 import '../../game_platform/game_feature_flags.dart';
 import '../../game_platform/game_id.dart';
 import '../../game_platform/game_menu.dart';
@@ -24,12 +25,13 @@ import '../../game_platform/shell_route_navigation_source.dart';
 import '../../generated/intl/l10n.dart';
 import '../../puzzle/pages/puzzles_home_page.dart';
 import '../../rule_settings/models/rule_settings.dart';
+import '../../rule_settings/widgets/rule_settings_page.dart';
 import '../../shared/database/database.dart';
 import '../../shared/services/logger.dart';
 import '../../shared/services/snackbar_service.dart';
 import '../../shared/themes/app_theme.dart';
 import '../../statistics/widgets/stats_page.dart';
-import '../../rule_settings/widgets/rule_settings_page.dart';
+import 'mill_action_codec.dart';
 import 'mill_board_geometry.dart';
 import 'mill_engine_port.dart';
 import 'mill_game_session.dart';
@@ -78,6 +80,17 @@ class MillGameModule extends GameModule {
 
   @override
   NotationPort? get notationPort => const MillNotationPort();
+
+  @override
+  GameExportData? buildExportData(
+    BuildContext context, {
+    required GameSession session,
+  }) {
+    final List<GameAction> actions = GameController().gameRecorder.mainlineMoves
+        .map(MillActionCodec.fromExtMove)
+        .toList(growable: false);
+    return GameExportData(snapshot: session.state.value, actions: actions);
+  }
 
   @override
   EnginePort? get enginePort => MillEnginePortAdapter();

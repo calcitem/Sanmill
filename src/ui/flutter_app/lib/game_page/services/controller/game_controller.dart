@@ -1090,6 +1090,26 @@ class GameController {
     BuildContext context, {
     bool shouldPop = true,
   }) async {
+    final GameSession? session = GameSessionScope.sessionOf(context);
+    if (session != null) {
+      final String? exportText = GameExportService.buildCurrentExportText(
+        context,
+        session: session,
+      );
+      if (exportText != null && exportText.trim().isNotEmpty) {
+        await Clipboard.setData(ClipboardData(text: exportText));
+        if (!context.mounted) {
+          return;
+        }
+        rootScaffoldMessengerKey.currentState!.showSnackBarClear(
+          S.of(context).moveHistoryCopied,
+        );
+        if (shouldPop) {
+          Navigator.pop(context);
+        }
+        return;
+      }
+    }
     return ExportService.exportGame(context, shouldPop: shouldPop);
   }
 

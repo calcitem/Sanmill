@@ -22,6 +22,9 @@ class MillNotationPort implements NotationPort {
   @override
   String describeMove(GameAction action) {
     assert(action.type.isNotEmpty, 'GameAction.type must not be empty.');
+    if (action.payload['move'] case final String move) {
+      return move;
+    }
     return action.payload['notation']?.toString() ?? action.type;
   }
 

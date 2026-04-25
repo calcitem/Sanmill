@@ -5,6 +5,7 @@ import 'package:flutter/widgets.dart';
 
 import 'board_geometry.dart';
 import 'engine/engine_port.dart';
+import 'game_export.dart';
 import 'game_feature_flags.dart';
 import 'game_menu.dart';
 import 'game_module_metadata.dart';
@@ -49,6 +50,15 @@ abstract class GameModule {
 
   /// Optional notation port (PGN-like or custom text formats per game).
   NotationPort? get notationPort => null;
+
+  /// Optional export data (snapshot + actions) for [notationPort].
+  ///
+  /// Modules may return `null` to indicate they are not ready to export via the
+  /// shared coordinator. The shell can still fall back to legacy export flows.
+  GameExportData? buildExportData(
+    BuildContext context, {
+    required GameSession session,
+  }) => null;
 
   /// Optional engine port (AI / analysis / search).
   EnginePort? get enginePort => null;
