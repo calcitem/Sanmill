@@ -8,7 +8,7 @@ import '../game_platform/game_route_id.dart';
 /// `app.*` is cross-game UI (settings, help, exit, game switch).
 abstract final class ShellRouteIds {
   // App-level shell (not tied to a single [GameId])
-  /// Switches [GameRegistry] back to [GameId.mill] from another module.
+  /// Switches [GameRegistry] back to its primary game from another module.
   static const GameRouteId appBackToMainGame = GameRouteId(
     'app.switch.mainGame',
   );

@@ -126,6 +126,75 @@ class MillGameModule extends GameModule {
   }
 
   @override
+  void applyFirstRunDefaults(BuildContext context) {
+    final Locale locale = Localizations.localeOf(context);
+    final String languageCode = locale.languageCode;
+    final SettingsRepositories repositories = SettingsRepositories.instance;
+
+    switch (languageCode) {
+      case 'af': // South Africa
+      case 'zu': // South Africa
+        repositories.repository.ruleSettings = repositories
+            .repository
+            .ruleSettings
+            .copyWith(
+              piecesCount: 12,
+              hasDiagonalLines: true,
+              boardFullAction: BoardFullAction.agreeToDraw,
+              endgameNMoveRule: 10,
+              restrictRepeatedMillsFormation: true,
+            );
+        break;
+      case 'fa': // Iran
+      case 'si': // Sri Lanka
+        repositories.repository.ruleSettings = repositories
+            .repository
+            .ruleSettings
+            .copyWith(piecesCount: 12, hasDiagonalLines: true);
+        break;
+      case 'ru': // Russia
+        repositories.repository.ruleSettings = repositories
+            .repository
+            .ruleSettings
+            .copyWith(oneTimeUseMill: true, mayRemoveFromMillsAlways: true);
+        break;
+      case 'ko': // Korea
+        repositories.repository.ruleSettings = repositories
+            .repository
+            .ruleSettings
+            .copyWith(
+              piecesCount: 12,
+              hasDiagonalLines: true,
+              mayFly: false,
+              millFormationActionInPlacingPhase:
+                  MillFormationActionInPlacingPhase.markAndDelayRemovingPieces,
+              mayRemoveFromMillsAlways: true,
+            );
+        break;
+      default:
+        break;
+    }
+  }
+
+  @override
+  bool shouldShowRuleSettingsOnboarding(Locale locale) {
+    switch (locale.languageCode) {
+      case 'af':
+      case 'fa':
+      case 'fr':
+      case 'nb':
+      case 'nl':
+      case 'ru':
+      case 'tr':
+      case 'uk':
+      case 'zh':
+        return true;
+      default:
+        return false;
+    }
+  }
+
+  @override
   void onShellInactive(
     BuildContext context, {
     required String lastShellRouteId,

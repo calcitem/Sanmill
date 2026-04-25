@@ -5,7 +5,9 @@ import 'dart:async';
 
 import '../../game_page/services/mill.dart' show GameController;
 import '../../game_platform/engine/engine_port.dart';
+import '../../game_platform/engine/native_engine_client.dart';
 import '../../game_platform/game_id.dart';
+import '../../game_platform/game_session.dart';
 
 /// Bridges the Mill native engine to [EnginePort]. Event streaming is not yet
 /// exposed from the legacy [Engine] implementation; [eventLines] is a stub.
@@ -53,6 +55,58 @@ class MillEnginePortAdapter implements EnginePort {
       request.position.snapshot.gameId == GameId.mill,
       'Expected Mill analyze request.',
     );
+  }
+
+  @override
+  Future<NativeEngineResponse> executeNativeRequest(
+    NativeEngineRequest request,
+  ) async {
+    assert(request.gameId == GameId.mill, 'Expected Mill native request.');
+    switch (request.command) {
+      case NativeEngineCommandType.raw:
+        final Object? command = request.payload['command'];
+        assert(command is String, 'Mill raw native request needs command.');
+        sendRawCommand(command! as String);
+        return NativeEngineResponse(
+          requestId: request.requestId,
+          gameId: request.gameId,
+          status: NativeEngineResponseStatus.ok,
+        );
+      case NativeEngineCommandType.stop:
+        await stop();
+        return NativeEngineResponse(
+          requestId: request.requestId,
+          gameId: request.gameId,
+          status: NativeEngineResponseStatus.ok,
+        );
+      case NativeEngineCommandType.setPosition:
+        final GameStateSnapshot? snapshot = request.snapshot;
+        assert(snapshot != null, 'Mill setPosition request needs a snapshot.');
+        await setPosition(
+          EnginePosition(
+            snapshot: snapshot!,
+            notation: request.payload['notation'] as String?,
+          ),
+        );
+        return NativeEngineResponse(
+          requestId: request.requestId,
+          gameId: request.gameId,
+          status: NativeEngineResponseStatus.ok,
+        );
+      case NativeEngineCommandType.search:
+      case NativeEngineCommandType.analyze:
+      case NativeEngineCommandType.newGame:
+      case NativeEngineCommandType.legalActions:
+      case NativeEngineCommandType.applyAction:
+      case NativeEngineCommandType.undo:
+      case NativeEngineCommandType.redo:
+      case NativeEngineCommandType.state:
+        return NativeEngineResponse.unsupported(
+          request,
+          reason:
+              'Mill legacy engine has not migrated ${request.command.name}.',
+        );
+    }
   }
 
   @override

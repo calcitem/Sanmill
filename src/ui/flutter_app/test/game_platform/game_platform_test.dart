@@ -62,6 +62,106 @@ void main() {
 
     expect(port.startedWith, config);
     expect(router.eventsFor(id), isA<Stream<EngineEvent>>());
+
+    final NativeEngineResponse response = await router.execute(
+      const NativeEngineRequest(
+        requestId: 'request-1',
+        gameId: id,
+        command: NativeEngineCommandType.state,
+      ),
+    );
+    expect(response.status, NativeEngineResponseStatus.unsupported);
+    expect(response.requestId, 'request-1');
+  });
+
+  test('NativeEngineResponse carries game-neutral envelope fields', () {
+    const GameId id = GameId('native_envelope_test');
+    const NativeEngineRequest request = NativeEngineRequest(
+      requestId: 'native-1',
+      gameId: id,
+      command: NativeEngineCommandType.legalActions,
+    );
+
+    final NativeEngineResponse response = NativeEngineResponse.unsupported(
+      request,
+      reason: 'not wired yet',
+    );
+
+    expect(response.gameId, id);
+    expect(response.requestId, 'native-1');
+    expect(response.isOk, isFalse);
+    expect(response.diagnostics, contains('not wired yet'));
+  });
+
+  test('BoardGeometry can describe non-graph zones for future games', () {
+    const BoardGeometry geometry = BoardGeometry(
+      kind: BoardLayoutKind.region,
+      points: <BoardPoint>[
+        BoardPoint(id: 0, x: 0, y: 0),
+        BoardPoint(id: 1, x: 1, y: 1),
+      ],
+      edges: <BoardEdge>[],
+      zones: <BoardZone>[
+        BoardZone(id: 'home', pointIds: <int>[0]),
+        BoardZone(id: 'target', pointIds: <int>[1]),
+      ],
+    );
+
+    expect(geometry.kind, BoardLayoutKind.region);
+    expect(geometry.zones.map((BoardZone zone) => zone.id), <String>[
+      'home',
+      'target',
+    ]);
+  });
+
+  test('BoardDisplaySnapshot projects engine state for UI only', () {
+    const GameStateSnapshot state = GameStateSnapshot(
+      gameId: GameId('display_test'),
+      activeSeat: PlayerSeat.first,
+      outcome: GameOutcome.ongoing(),
+    );
+    const BoardDisplaySnapshot display = BoardDisplaySnapshot(
+      gameState: state,
+      pieces: <BoardPieceView>[
+        BoardPieceView(coordinate: BoardCoordinate(0), owner: PlayerSeat.first),
+      ],
+      highlights: <BoardHighlight>[
+        BoardHighlight(
+          coordinate: BoardCoordinate(1),
+          kind: BoardHighlightKind.legalTarget,
+        ),
+      ],
+    );
+
+    expect(display.gameState, state);
+    expect(display.pieces.single.owner, PlayerSeat.first);
+    expect(display.highlights.single.kind, BoardHighlightKind.legalTarget);
+  });
+
+  test('GamePersistenceScope owns only its assigned Hive range', () {
+    const GamePersistenceScope scope = GamePersistenceScope(
+      gameId: GameId('persistence_test'),
+      hiveTypeIdMin: 700,
+      hiveTypeIdMax: 710,
+    );
+
+    expect(scope.ownsHiveTypeId(700), isTrue);
+    expect(scope.ownsHiveTypeId(705), isTrue);
+    expect(scope.ownsHiveTypeId(711), isFalse);
+  });
+
+  test('GameRegistry rejects persistence scope mismatches in debug mode', () {
+    final GameRegistry registry = GameRegistry.instance;
+
+    expect(
+      () => registry.register(
+        _MismatchedPersistenceModule(
+          const GameId('module_id'),
+          const GameId('scope_id'),
+        ),
+      ),
+      throwsA(isA<AssertionError>()),
+    );
   });
 
   test('DemoProbeGameModule provides a real session handle', () {
@@ -153,6 +253,19 @@ class _FakeModule extends GameModule {
   GameSessionHandle startSession() => _FakeSession(_id);
 }
 
+class _MismatchedPersistenceModule extends _FakeModule {
+  _MismatchedPersistenceModule(GameId id, this._scopeId) : super(id, 800, 810);
+
+  final GameId _scopeId;
+
+  @override
+  GamePersistenceScope get persistenceScope => GamePersistenceScope(
+    gameId: _scopeId,
+    hiveTypeIdMin: 800,
+    hiveTypeIdMax: 810,
+  );
+}
+
 class _FakeSession extends StaticGameSession implements GameSessionHandle {
   _FakeSession(GameId id)
     : super(
@@ -183,6 +296,13 @@ class _FakeEnginePort implements EnginePort {
 
   @override
   Stream<EngineEvent> get events => _events.stream;
+
+  @override
+  Future<NativeEngineResponse> executeNativeRequest(
+    NativeEngineRequest request,
+  ) async {
+    return NativeEngineResponse.unsupported(request);
+  }
 
   @override
   Future<void> search(EngineSearchRequest request) async {}

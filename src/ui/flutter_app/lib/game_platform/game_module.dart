@@ -105,6 +105,16 @@ abstract class GameModule {
   /// Optional board / padding adjustments for the shared shell (Mill only today).
   void applyShellLayoutHints(BuildContext context) {}
 
+  /// Applies one-time defaults when the app runs for the first time.
+  ///
+  /// Keep game-specific presets inside the owning module so the shared shell
+  /// does not need to know about concrete rule models.
+  void applyFirstRunDefaults(BuildContext context) {}
+
+  /// Whether the app should prompt the user to review this module's rules after
+  /// the tutorial. Modules without rule settings keep the default false.
+  bool shouldShowRuleSettingsOnboarding(Locale locale) => false;
+
   /// Return false to cancel navigation. [source] is [drawer] for drawer picks
   /// and [backStack] for internal stack pops (skips Mill LAN entry confirm).
   Future<bool> willNavigateToShellRoute(

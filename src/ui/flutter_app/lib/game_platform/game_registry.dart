@@ -13,15 +13,19 @@ import 'game_module.dart';
 class GameRegistry extends ChangeNotifier {
   GameRegistry._();
 
+  static const GameId defaultPrimaryId = GameId.mill;
+
   /// App-wide registry.
   static final GameRegistry instance = GameRegistry._();
 
   final Map<GameId, GameModule> _modules = <GameId, GameModule>{};
   final NativeEngineRouter _engineRouter = NativeEngineRouter();
 
-  GameId _currentId = GameId.mill;
+  final GameId _primaryId = defaultPrimaryId;
+  GameId _currentId = defaultPrimaryId;
 
   void register(GameModule module) {
+    _assertPersistenceScopeMatchesModule(module);
     _assertPersistenceScopeDoesNotOverlap(module);
     _modules[module.metadata.id] = module;
     final EnginePort? enginePort = module.enginePort;
@@ -33,6 +37,10 @@ class GameRegistry extends ChangeNotifier {
   GameModule? getModule(GameId id) => _modules[id];
 
   GameId get currentId => _currentId;
+
+  GameId get primaryId => _primaryId;
+
+  bool get isPrimarySelected => _currentId == _primaryId;
 
   GameModule get current {
     final GameModule? m = _modules[_currentId];
@@ -54,6 +62,10 @@ class GameRegistry extends ChangeNotifier {
     notifyListeners();
   }
 
+  void selectPrimary() {
+    select(_primaryId);
+  }
+
   /// Games that should appear in a picker UI (e.g. debug or future menu).
   Iterable<GameModule> get registeredModules => _modules.values;
 
@@ -62,14 +74,22 @@ class GameRegistry extends ChangeNotifier {
   NativeEngineRouter get engineRouter => _engineRouter;
 
   /// Test-only escape hatch: clears all modules and resets the active id back
-  /// to [GameId.mill]. Listeners are not notified (use a fresh listener after
+  /// to [primaryId]. Listeners are not notified (use a fresh listener after
   /// reset).
   @visibleForTesting
   void resetForTesting() {
     _modules.clear();
-    _currentId = GameId.mill;
+    _currentId = _primaryId;
     // ignore: invalid_use_of_visible_for_testing_member
     _engineRouter.resetForTesting();
+  }
+
+  void _assertPersistenceScopeMatchesModule(GameModule module) {
+    assert(
+      module.persistenceScope.gameId == module.metadata.id,
+      'Persistence scope ${module.persistenceScope.gameId} must match '
+      'module id ${module.metadata.id}.',
+    );
   }
 
   void _assertPersistenceScopeDoesNotOverlap(GameModule module) {

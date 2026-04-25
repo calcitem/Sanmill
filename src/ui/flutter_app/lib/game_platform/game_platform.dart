@@ -1,10 +1,12 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // Copyright (C) 2019-2026 The Sanmill developers (see AUTHORS file)
 
+export 'board_display.dart';
 // Barrel export for the minimal multi-game platform kernel.
 export 'board_geometry.dart';
 export 'board_hit_test.dart';
 export 'engine/engine_port.dart';
+export 'engine/native_engine_client.dart';
 export 'engine/native_engine_router.dart';
 export 'game_feature_flags.dart';
 export 'game_id.dart';

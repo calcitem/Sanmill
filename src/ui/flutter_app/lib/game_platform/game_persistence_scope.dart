@@ -21,4 +21,13 @@ class GamePersistenceScope {
   final int? hiveTypeIdMin;
   final int? hiveTypeIdMax;
   final int migrationVersion;
+
+  bool ownsHiveTypeId(int typeId) {
+    final int? min = hiveTypeIdMin;
+    final int? max = hiveTypeIdMax;
+    if (min == null || max == null) {
+      return false;
+    }
+    return min <= typeId && typeId <= max;
+  }
 }

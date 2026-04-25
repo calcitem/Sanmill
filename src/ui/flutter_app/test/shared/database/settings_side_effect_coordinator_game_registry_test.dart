@@ -144,6 +144,13 @@ class _CountingEnginePort implements EnginePort {
   Stream<String> get eventLines => const Stream<String>.empty();
 
   @override
+  Future<NativeEngineResponse> executeNativeRequest(
+    NativeEngineRequest request,
+  ) async {
+    return NativeEngineResponse.unsupported(request);
+  }
+
+  @override
   Future<void> search(EngineSearchRequest request) async {}
 
   @override

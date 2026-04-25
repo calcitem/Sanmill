@@ -32,7 +32,6 @@ import '../game_shell/shell_route_ids.dart';
 import '../general_settings/models/general_settings.dart';
 import '../general_settings/services/config_import_export_service.dart';
 import '../generated/intl/l10n.dart';
-import '../rule_settings/models/rule_settings.dart';
 import '../shared/config/constants.dart';
 import '../shared/database/database.dart';
 import '../shared/database/settings_repositories.dart';
@@ -166,7 +165,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
     }
 
     if (routeId == ShellRouteIds.appBackToMainGame.value) {
-      GameRegistry.instance.select(GameId.mill);
+      GameRegistry.instance.selectPrimary();
       return;
     }
 
@@ -317,48 +316,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
     _settingsRepository.generalSettings = _settingsRepository.generalSettings
         .copyWith(firstRun: false);
 
-    if (GameRegistry.instance.currentId != GameId.mill) {
-      // Locale-driven Mill rule presets are Mill-specific.
-      return;
-    }
-    final Locale locale = Localizations.localeOf(context);
-    final String languageCode = locale.languageCode;
-
-    switch (languageCode) {
-      case 'af': // South Africa
-      case 'zu': // South Africa
-        _settingsRepository.ruleSettings = _settingsRepository.ruleSettings
-            .copyWith(
-              piecesCount: 12,
-              hasDiagonalLines: true,
-              boardFullAction: BoardFullAction.agreeToDraw,
-              endgameNMoveRule: 10,
-              restrictRepeatedMillsFormation: true,
-            );
-        break;
-      case 'fa': // Iran
-      case 'si': // Sri Lanka
-        _settingsRepository.ruleSettings = _settingsRepository.ruleSettings
-            .copyWith(piecesCount: 12, hasDiagonalLines: true);
-        break;
-      case 'ru': // Russia
-        _settingsRepository.ruleSettings = _settingsRepository.ruleSettings
-            .copyWith(oneTimeUseMill: true, mayRemoveFromMillsAlways: true);
-        break;
-      case 'ko': // Korea
-        _settingsRepository.ruleSettings = _settingsRepository.ruleSettings
-            .copyWith(
-              piecesCount: 12,
-              hasDiagonalLines: true,
-              mayFly: false,
-              millFormationActionInPlacingPhase:
-                  MillFormationActionInPlacingPhase.markAndDelayRemovingPieces,
-              mayRemoveFromMillsAlways: true,
-            );
-        break;
-      default:
-        break;
-    }
+    GameRegistry.instance.current.applyFirstRunDefaults(context);
   }
 
   @override
@@ -503,7 +461,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
 
     final List<CustomDrawerItem<String>> drawerItems =
         <CustomDrawerItem<String>>[
-          if (GameRegistry.instance.currentId != GameId.mill)
+          if (!GameRegistry.instance.isPrimarySelected)
             _appItem(ShellRouteIds.appBackToMainGame, s.shellBackToMainGame),
           ...playModes.map(_modeItem),
           ...contributions
@@ -536,7 +494,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
           if (!kIsWeb && Platform.isAndroid)
             _appItem(ShellRouteIds.appExit, s.exit),
           if (kDebugMode &&
-              GameRegistry.instance.currentId == GameId.mill &&
+              GameRegistry.instance.isPrimarySelected &&
               GameRegistry.instance.getModule(GameId.demoProbe) != null)
             _appItem(DebugRouteIds.platformProbe, 'Tic-Tac-Toe (sample)'),
         ];
@@ -596,18 +554,10 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
   }
 
   void _showRuleSettingsOnboarding() {
-    final Locale locale = Localizations.localeOf(context);
-    final String languageCode = locale.languageCode;
-
-    if (languageCode == 'af' ||
-        languageCode == 'fa' ||
-        languageCode == 'fr' ||
-        languageCode == 'nb' ||
-        languageCode == 'nl' ||
-        languageCode == 'ru' ||
-        languageCode == 'tr' ||
-        languageCode == 'uk' ||
-        languageCode == 'zh') {
+    final GameModule module = GameRegistry.instance.current;
+    if (module.shouldShowRuleSettingsOnboarding(
+      Localizations.localeOf(context),
+    )) {
       showDialog<bool>(
         context: context,
         barrierDismissible: false,

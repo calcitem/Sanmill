@@ -21,8 +21,7 @@ import 'experience_recording/services/recording_navigator_observer.dart';
 import 'game_page/services/engine/bitboard.dart';
 import 'game_page/services/mill.dart' show LoadService;
 import 'game_platform/game_registry.dart';
-import 'games/demo_probe/demo_probe_game_module.dart';
-import 'games/mill/mill_game_module.dart';
+import 'games/built_in_game_modules.dart';
 import 'generated/intl/l10n.dart';
 import 'home/home.dart';
 import 'puzzle/services/puzzle_manager.dart';
@@ -57,9 +56,7 @@ Future<void> main() async {
 
   await DB.init();
 
-  GameRegistry.instance
-    ..register(MillGameModule())
-    ..register(DemoProbeGameModule());
+  registerBuiltInGameModules(GameRegistry.instance);
   SettingsRepositories.instance.init();
 
   // Wire engine callbacks through the active module so settings changes do not

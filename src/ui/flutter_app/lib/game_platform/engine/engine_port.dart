@@ -5,6 +5,7 @@ import 'dart:async';
 
 import '../game_id.dart';
 import '../game_session.dart';
+import 'native_engine_client.dart';
 
 class GameEngineConfig {
   const GameEngineConfig({
@@ -72,6 +73,20 @@ abstract class EnginePort {
   Future<void> search(EngineSearchRequest request) async {}
 
   Future<void> analyze(EngineSearchRequest request) async {}
+
+  /// Executes a game-neutral native request.
+  ///
+  /// Existing modules may keep the default unsupported response while they
+  /// migrate from legacy engine APIs. Future games should use this path instead
+  /// of duplicating rule or AI logic in Dart.
+  Future<NativeEngineResponse> executeNativeRequest(
+    NativeEngineRequest request,
+  ) async {
+    return NativeEngineResponse.unsupported(
+      request,
+      reason: 'EnginePort does not implement ${request.command.name}.',
+    );
+  }
 
   /// Apply app-wide engine options after general settings are persisted.
   ///

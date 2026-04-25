@@ -7,6 +7,7 @@ import 'package:flutter/foundation.dart';
 
 import '../game_id.dart';
 import 'engine_port.dart';
+import 'native_engine_client.dart';
 
 /// Routes strongly typed engine requests to a game-specific [EnginePort].
 class NativeEngineRouter {
@@ -35,6 +36,10 @@ class NativeEngineRouter {
   }
 
   Stream<EngineEvent> eventsFor(GameId gameId) => portFor(gameId).events;
+
+  Future<NativeEngineResponse> execute(NativeEngineRequest request) {
+    return portFor(request.gameId).executeNativeRequest(request);
+  }
 
   @visibleForTesting
   void resetForTesting() {

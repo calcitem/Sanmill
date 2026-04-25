@@ -22,6 +22,20 @@ class BoardEdge {
   final int b;
 }
 
+enum BoardLayoutKind { graph, grid, region }
+
+/// A named set of board points, such as a starting camp, target area, hand, or
+/// scoring zone. Rendering remains module-owned; the platform only carries the
+/// stable ids.
+@immutable
+class BoardZone {
+  const BoardZone({required this.id, required this.pointIds, this.label});
+
+  final String id;
+  final List<int> pointIds;
+  final String? label;
+}
+
 /// Board topology for hit-testing, painting, and a11y.
 ///
 /// Every board-game module should expose its own geometry so shared shell code
@@ -29,8 +43,15 @@ class BoardEdge {
 /// uses 24+ vertices; [demoProbe] uses a tiny toy graph.
 @immutable
 class BoardGeometry {
-  const BoardGeometry({required this.points, required this.edges});
+  const BoardGeometry({
+    required this.points,
+    required this.edges,
+    this.kind = BoardLayoutKind.graph,
+    this.zones = const <BoardZone>[],
+  });
 
   final List<BoardPoint> points;
   final List<BoardEdge> edges;
+  final BoardLayoutKind kind;
+  final List<BoardZone> zones;
 }
