@@ -18,8 +18,19 @@ import 'rule_settings_port.dart';
 import 'rules_port.dart';
 import 'shell_route_navigation_source.dart';
 
-/// One installable game (Mill, probe, …). The app shell loads modules from a
-/// [GameRegistry] and does not import game-specific code except through this API.
+/// One installable board game (Mill, probe, ...). The app shell loads modules
+/// from a [GameRegistry] and does not import game-specific code except through
+/// this API.
+///
+/// New board-game modules should keep all game-specific UI, rules, notation,
+/// persistence models, and engine adapters under `lib/games/<game_id>/`.
+/// Production modules must provide a real [GameSession], [BoardGeometry],
+/// [RulesPort], and [NotationPort]. [EnginePort] and rule settings are optional
+/// and should be exposed only when the module supports those features.
+///
+/// Legacy Mill code still bridges through [GameController] internally, but new
+/// modules must not import `game_page/services/mill.dart` or access that
+/// singleton.
 abstract class GameModule {
   GameModuleMetadata get metadata;
   GameFeatureFlags get features;

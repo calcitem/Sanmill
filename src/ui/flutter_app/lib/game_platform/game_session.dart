@@ -86,7 +86,12 @@ class GameSessionEvent {
   final Map<String, Object?> payload;
 }
 
-/// Long-lived state holder for one playable game instance.
+/// Long-lived state holder for one playable board-game instance.
+///
+/// New game modules should make this the single source of truth for UI state:
+/// [legalActions] comes from the module's rules implementation, [apply] is the
+/// only path that mutates the position, and [events] reports state changes to
+/// shell services such as recording, export, and future analysis widgets.
 abstract class GameSession {
   ValueListenable<GameStateSnapshot> get state;
   List<GameAction> get legalActions;

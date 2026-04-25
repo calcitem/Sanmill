@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // Copyright (C) 2019-2026 The Sanmill developers (see AUTHORS file)
 
+import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 
@@ -203,14 +204,18 @@ class MillGameModule extends GameModule {
         GameModeEntry(
           id: MillRouteIds.humanVsAi,
           label: s.humanVsAi,
+          icon: FluentIcons.person_24_regular,
+          drawerKey: const Key('drawer_item_human_vs_ai'),
           contentKey: const Key('human_ai'),
-          isAvailable: (_) => !kIsWeb,
+          isAvailable: (_) => features.supports(GameCapability.ai) && !kIsWeb,
           builder: (BuildContext context, {Key? key, GameSession? session}) =>
               GamePage(GameMode.humanVsAi, key: key),
         ),
       GameModeEntry(
         id: MillRouteIds.humanVsHuman,
         label: s.humanVsHuman,
+        icon: FluentIcons.people_24_regular,
+        drawerKey: const Key('drawer_item_human_vs_human'),
         contentKey: const Key('human_human'),
         builder: (BuildContext context, {Key? key, GameSession? session}) =>
             GamePage(GameMode.humanVsHuman, key: key),
@@ -219,24 +224,32 @@ class MillGameModule extends GameModule {
         GameModeEntry(
           id: MillRouteIds.aiVsAi,
           label: s.aiVsAi,
+          icon: FluentIcons.bot_24_regular,
+          drawerKey: const Key('drawer_item_ai_vs_ai'),
           contentKey: const Key('ai_ai'),
-          isAvailable: (_) => !kIsWeb,
+          isAvailable: (_) => features.supports(GameCapability.ai) && !kIsWeb,
           builder: (BuildContext context, {Key? key, GameSession? session}) =>
               GamePage(GameMode.aiVsAi, key: key),
         ),
       GameModeEntry(
         id: MillRouteIds.humanVsLan,
         label: s.humanVsLAN,
+        icon: FluentIcons.wifi_1_24_regular,
+        drawerKey: const Key('drawer_item_human_vs_lan'),
         contentKey: const Key('human_lan'),
+        isAvailable: (_) => features.supports(GameCapability.lan),
         builder: (BuildContext context, {Key? key, GameSession? session}) =>
             GamePage(GameMode.humanVsLAN, key: key),
       ),
       GameModeEntry(
         id: MillRouteIds.setupPosition,
         label: s.setupPosition,
+        icon: FluentIcons.drafts_24_regular,
+        drawerKey: const Key('drawer_item_setup_position'),
         contentKey: const Key('setup_position'),
         isAvailable: (BuildContext context) {
-          return DB().ruleSettings.millFormationActionInPlacingPhase !=
+          return features.supports(GameCapability.setupPosition) &&
+              DB().ruleSettings.millFormationActionInPlacingPhase !=
                   MillFormationActionInPlacingPhase
                       .removeOpponentsPieceFromHandThenYourTurn &&
               DB().ruleSettings.millFormationActionInPlacingPhase !=
@@ -251,27 +264,32 @@ class MillGameModule extends GameModule {
 
   @override
   List<GameMenuContribution> drawerContributions(BuildContext context) {
-    if (!features.supportsPuzzles && !features.supportsStatistics) {
+    if (!features.supports(GameCapability.puzzles) &&
+        !features.supports(GameCapability.statistics)) {
       return const <GameMenuContribution>[];
     }
     final S s = S.of(context);
     return <GameMenuContribution>[
-      if (features.supportsPuzzles)
+      if (features.supports(GameCapability.puzzles))
         GameMenuContribution(
           id: MillRouteIds.puzzles,
           label: s.puzzles,
+          icon: FluentIcons.puzzle_piece_24_regular,
+          drawerKey: const Key('drawer_item_puzzles'),
           contentKey: const Key('puzzles'),
-          isAvailable: (_) => features.supportsPuzzles,
+          isAvailable: (_) => features.supports(GameCapability.puzzles),
           builder: (BuildContext context, {Key? key, GameSession? session}) {
             return PuzzlesHomePage(key: key);
           },
         ),
-      if (features.supportsStatistics)
+      if (features.supports(GameCapability.statistics))
         GameMenuContribution(
           id: MillRouteIds.statistics,
           label: s.statistics,
+          icon: FluentIcons.calculator_24_regular,
+          drawerKey: const Key('drawer_item_statistics'),
           contentKey: const Key('statistics'),
-          isAvailable: (_) => features.supportsStatistics,
+          isAvailable: (_) => features.supports(GameCapability.statistics),
           builder: (BuildContext context, {Key? key, GameSession? session}) {
             return StatisticsPage(key: key);
           },

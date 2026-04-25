@@ -19,7 +19,7 @@ import 'package:hive_ce_flutter/hive_flutter.dart' show Box;
 import 'appearance_settings/models/display_settings.dart';
 import 'experience_recording/services/recording_navigator_observer.dart';
 import 'game_page/services/engine/bitboard.dart';
-import 'game_page/services/mill.dart';
+import 'game_page/services/mill.dart' show LoadService;
 import 'game_platform/game_registry.dart';
 import 'games/demo_probe/demo_probe_game_module.dart';
 import 'games/mill/mill_game_module.dart';
@@ -62,12 +62,13 @@ Future<void> main() async {
     ..register(DemoProbeGameModule());
   SettingsRepositories.instance.init();
 
-  // Wire Mill engine callbacks into the settings coordinator now that the
-  // Mill module (and its GameController) is registered and available.
+  // Wire engine callbacks through the active module so settings changes do not
+  // depend on a specific game implementation.
   SettingsSideEffectCoordinator.instance = SettingsSideEffectCoordinator(
-    updateGeneralEngineOptions:
-        () => GameController().engine.setGeneralOptions(),
-    updateRuleEngineOptions: () => GameController().engine.setRuleOptions(),
+    updateGeneralEngineOptions: () =>
+        GameRegistry.instance.current.enginePort?.updateGeneralOptions(),
+    updateRuleEngineOptions: () =>
+        GameRegistry.instance.current.enginePort?.updateRuleOptions(),
   );
 
   // Initialize ELO service

@@ -3,7 +3,12 @@
 
 import 'game_session.dart';
 
-/// Generic rules boundary implemented by each game module.
+/// Pure rules boundary implemented by each board-game module.
+///
+/// UI widgets should ask this port or the active [GameSession] for legality
+/// instead of embedding game rules in gesture handlers. Implementations should
+/// assert on malformed actions and return deterministic snapshots for valid
+/// actions.
 abstract class RulesPort {
   GameStateSnapshot get snapshot;
   List<GameAction> get legalActions;

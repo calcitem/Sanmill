@@ -56,6 +56,16 @@ class MillEnginePortAdapter implements EnginePort {
   }
 
   @override
+  Future<void> updateGeneralOptions() async {
+    GameController().engine.setGeneralOptions();
+  }
+
+  @override
+  Future<void> updateRuleOptions() async {
+    GameController().engine.setRuleOptions();
+  }
+
+  @override
   void sendRawCommand(String command) {
     // Mill uses specialized methods; raw UCI string routing can be added here.
     assert(command.isNotEmpty, 'sendRawCommand: empty command');

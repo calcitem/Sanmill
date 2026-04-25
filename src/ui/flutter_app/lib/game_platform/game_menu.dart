@@ -23,6 +23,7 @@ class GameMenuContribution {
     this.section = GameMenuSection.game,
     this.icon,
     this.isAvailable,
+    this.drawerKey,
     this.contentKey,
   });
 
@@ -31,6 +32,12 @@ class GameMenuContribution {
   final IconData? icon;
   final GameMenuSection section;
   final GameMenuWidgetBuilder builder;
+
+  /// Stable key for the drawer item. Modules should provide this when tests or
+  /// persisted UI automation depend on a specific drawer entry.
+  final Key? drawerKey;
+
+  /// Key passed to the content widget built for this route.
   final Key? contentKey;
   final GameMenuAvailability? isAvailable;
 
@@ -46,6 +53,7 @@ class GameModeEntry {
     required this.builder,
     this.icon,
     this.isAvailable,
+    this.drawerKey,
     this.contentKey,
   });
 
@@ -53,6 +61,11 @@ class GameModeEntry {
   final String label;
   final IconData? icon;
   final GameMenuWidgetBuilder builder;
+
+  /// Stable key for the drawer item. Keep old values stable across refactors.
+  final Key? drawerKey;
+
+  /// Key passed to the game surface built for this play mode.
   final Key? contentKey;
   final GameMenuAvailability? isAvailable;
 

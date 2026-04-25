@@ -29,7 +29,6 @@ import '../game_shell/debug_route_ids.dart';
 import '../game_shell/game_session_scope.dart';
 import '../game_shell/shared_game_shell.dart';
 import '../game_shell/shell_route_ids.dart';
-import '../games/mill/mill_route_ids.dart';
 import '../general_settings/models/general_settings.dart';
 import '../general_settings/services/config_import_export_service.dart';
 import '../generated/intl/l10n.dart';
@@ -384,13 +383,6 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
   ///
   /// Keeping these keys stable preserves existing integration tests.
   static final Map<String, Key> _routeToDrawerKey = <String, Key>{
-    MillRouteIds.humanVsAi.value: const Key('drawer_item_human_vs_ai'),
-    MillRouteIds.humanVsHuman.value: const Key('drawer_item_human_vs_human'),
-    MillRouteIds.aiVsAi.value: const Key('drawer_item_ai_vs_ai'),
-    MillRouteIds.humanVsLan.value: const Key('drawer_item_human_vs_lan'),
-    MillRouteIds.setupPosition.value: const Key('drawer_item_setup_position'),
-    MillRouteIds.puzzles.value: const Key('drawer_item_puzzles'),
-    MillRouteIds.statistics.value: const Key('drawer_item_statistics'),
     ShellRouteIds.appSettingsGroup.value: const Key(
       'drawer_item_settings_group',
     ),
@@ -418,21 +410,6 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
 
   /// Maps a route id string to the fluent icon shown in the drawer.
   static final Map<String, Icon> _routeToIcon = <String, Icon>{
-    MillRouteIds.humanVsAi.value: const Icon(FluentIcons.person_24_regular),
-    MillRouteIds.humanVsHuman.value: const Icon(
-      FluentIcons.people_24_regular,
-    ),
-    MillRouteIds.aiVsAi.value: const Icon(FluentIcons.bot_24_regular),
-    MillRouteIds.humanVsLan.value: const Icon(FluentIcons.wifi_1_24_regular),
-    MillRouteIds.setupPosition.value: const Icon(
-      FluentIcons.drafts_24_regular,
-    ),
-    MillRouteIds.puzzles.value: const Icon(
-      FluentIcons.puzzle_piece_24_regular,
-    ),
-    MillRouteIds.statistics.value: const Icon(
-      FluentIcons.calculator_24_regular,
-    ),
     ShellRouteIds.appSettingsGroup.value: const Icon(
       FluentIcons.settings_24_regular,
     ),
@@ -461,19 +438,21 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
   };
 
   /// Returns the stable drawer-item [Key] for [routeId], or `null` if unknown.
-  Key? _drawerItemKey(String routeId) => _routeToDrawerKey[routeId];
+  Key? _drawerItemKey(String routeId, {Key? moduleKey}) =>
+      moduleKey ?? _routeToDrawerKey[routeId];
 
-  /// Returns the fluent icon for [routeId], falling back to a generic apps
-  /// icon for routes contributed by game modules that are not listed above.
-  Icon _iconFor(String routeId) =>
-      _routeToIcon[routeId] ?? const Icon(FluentIcons.apps_24_regular);
+  /// Returns the icon for [routeId], falling back to a generic apps icon for
+  /// routes contributed by game modules that do not provide metadata yet.
+  Icon _iconFor(String routeId, {IconData? moduleIcon}) => moduleIcon == null
+      ? _routeToIcon[routeId] ?? const Icon(FluentIcons.apps_24_regular)
+      : Icon(moduleIcon);
 
   CustomDrawerItem<String> _modeItem(GameModeEntry mode) {
     return CustomDrawerItem<String>(
-      key: _drawerItemKey(mode.id.value),
+      key: _drawerItemKey(mode.id.value, moduleKey: mode.drawerKey),
       itemValue: mode.id.value,
       itemTitle: mode.label,
-      itemIcon: _iconFor(mode.id.value),
+      itemIcon: _iconFor(mode.id.value, moduleIcon: mode.icon),
       currentSelectedValue: _routeId,
       onSelectionChanged: _selectRoute,
     );
@@ -481,10 +460,10 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
 
   CustomDrawerItem<String> _contributionItem(GameMenuContribution c) {
     return CustomDrawerItem<String>(
-      key: _drawerItemKey(c.id.value),
+      key: _drawerItemKey(c.id.value, moduleKey: c.drawerKey),
       itemValue: c.id.value,
       itemTitle: c.label,
-      itemIcon: _iconFor(c.id.value),
+      itemIcon: _iconFor(c.id.value, moduleIcon: c.icon),
       currentSelectedValue: _routeId,
       onSelectionChanged: _selectRoute,
     );

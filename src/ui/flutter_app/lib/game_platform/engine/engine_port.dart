@@ -72,4 +72,16 @@ abstract class EnginePort {
   Future<void> search(EngineSearchRequest request) async {}
 
   Future<void> analyze(EngineSearchRequest request) async {}
+
+  /// Apply app-wide engine options after general settings are persisted.
+  ///
+  /// Modules without an engine can keep the default no-op implementation.
+  Future<void> updateGeneralOptions() async {}
+
+  /// Apply rule-specific engine options after the active game's rule settings
+  /// are persisted.
+  ///
+  /// Modules without an engine or configurable rules can keep the default no-op
+  /// implementation.
+  Future<void> updateRuleOptions() async {}
 }

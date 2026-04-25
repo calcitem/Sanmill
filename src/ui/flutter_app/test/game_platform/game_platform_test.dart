@@ -74,6 +74,17 @@ void main() {
     session.dispose();
   });
 
+  test('DemoProbeGameModule is the board-game module template', () {
+    final DemoProbeGameModule module = DemoProbeGameModule();
+
+    expect(module.boardGeometry.points, isNotEmpty);
+    expect(module.boardGeometry.edges, isNotEmpty);
+    expect(module.rulesPort, isA<DemoProbeRulesPort>());
+    expect(module.notationPort, isA<DemoProbeNotationPort>());
+    expect(module.enginePort, isNull);
+    expect(module.persistenceScope.gameId, GameId.demoProbe);
+  });
+
   test('DemoProbeRulesPort detects tic-tac-toe wins', () {
     final DemoProbeRulesPort rules = DemoProbeRulesPort();
 
@@ -191,4 +202,10 @@ class _FakeEnginePort implements EnginePort {
 
   @override
   Future<void> stop() async {}
+
+  @override
+  Future<void> updateGeneralOptions() async {}
+
+  @override
+  Future<void> updateRuleOptions() async {}
 }

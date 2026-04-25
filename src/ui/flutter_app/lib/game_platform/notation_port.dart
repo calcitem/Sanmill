@@ -4,6 +4,9 @@
 import 'game_session.dart';
 
 /// Converts game-specific moves and positions to portable text formats.
+///
+/// Each module owns its notation grammar and file text. Shared import/export
+/// code should call this port rather than assuming PGN or Mill move syntax.
 abstract class NotationPort {
   String encodeMoveList(Iterable<GameAction> actions);
   List<GameAction> decodeMoveList(String notation);

@@ -22,8 +22,11 @@ class BoardEdge {
   final int b;
 }
 
-/// Board topology for hit-testing, painting, and a11y. Mill uses 24+ vertices;
-/// [demoProbe] can use a tiny toy graph.
+/// Board topology for hit-testing, painting, and a11y.
+///
+/// Every board-game module should expose its own geometry so shared shell code
+/// can reason about points without importing the game's position model. Mill
+/// uses 24+ vertices; [demoProbe] uses a tiny toy graph.
 @immutable
 class BoardGeometry {
   const BoardGeometry({required this.points, required this.edges});
