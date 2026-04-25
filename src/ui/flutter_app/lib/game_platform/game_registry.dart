@@ -68,6 +68,7 @@ class GameRegistry extends ChangeNotifier {
   void resetForTesting() {
     _modules.clear();
     _currentId = GameId.mill;
+    _engineRouter.resetForTesting();
   }
 
   void _assertPersistenceScopeDoesNotOverlap(GameModule module) {

@@ -29,6 +29,7 @@ import '../../shared/services/logger.dart';
 import '../../shared/services/snackbar_service.dart';
 import '../../shared/themes/app_theme.dart';
 import '../../statistics/widgets/stats_page.dart';
+import '../../rule_settings/widgets/rule_settings_page.dart';
 import 'mill_board_geometry.dart';
 import 'mill_engine_port.dart';
 import 'mill_game_session.dart';
@@ -80,6 +81,10 @@ class MillGameModule extends GameModule {
 
   @override
   EnginePort? get enginePort => MillEnginePortAdapter();
+
+  @override
+  Widget? buildRuleSettingsScreen(BuildContext context) =>
+      const RuleSettingsPage();
 
   @override
   String defaultShellRoute(BuildContext context) {

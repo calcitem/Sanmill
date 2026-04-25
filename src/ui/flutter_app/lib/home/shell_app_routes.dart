@@ -8,11 +8,11 @@ import 'package:flutter/services.dart' show SystemNavigator;
 import 'package:flutter/widgets.dart';
 
 import '../appearance_settings/widgets/appearance_settings_page.dart';
+import '../game_platform/game_registry.dart';
 import '../game_shell/shell_route_ids.dart';
 import '../general_settings/widgets/general_settings_page.dart';
 import '../misc/about_page.dart';
 import '../misc/how_to_play_screen.dart';
-import '../rule_settings/widgets/rule_settings_page.dart';
 import '../shared/services/environment_config.dart';
 
 /// Resolves [ShellRouteIds] for app-level (`app.*`) routes.
@@ -21,7 +21,7 @@ Widget? buildAppRouteScreen(BuildContext context, String routeId) {
     case ShellRouteIds.appGeneralSettings:
       return const GeneralSettingsPage();
     case ShellRouteIds.appRuleSettings:
-      return const RuleSettingsPage();
+      return GameRegistry.instance.current.buildRuleSettingsScreen(context);
     case ShellRouteIds.appAppearance:
       return const AppearanceSettingsPage();
     case ShellRouteIds.appHowToPlay:

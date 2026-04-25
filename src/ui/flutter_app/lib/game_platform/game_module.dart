@@ -53,6 +53,10 @@ abstract class GameModule {
   /// Optional engine port (AI / analysis / search).
   EnginePort? get enginePort => null;
 
+  /// Optional module-owned rule settings screen. When null, the shared shell
+  /// should hide the rule settings entry for this game.
+  Widget? buildRuleSettingsScreen(BuildContext context) => null;
+
   /// First shell route when this game becomes active (startup or game switch).
   String defaultShellRoute(BuildContext context) {
     final List<GameModeEntry> modes = playModes(context);

@@ -3,6 +3,8 @@
 
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
+
 import '../game_id.dart';
 import 'engine_port.dart';
 
@@ -33,4 +35,9 @@ class NativeEngineRouter {
   }
 
   Stream<EngineEvent> eventsFor(GameId gameId) => portFor(gameId).events;
+
+  @visibleForTesting
+  void resetForTesting() {
+    _ports.clear();
+  }
 }

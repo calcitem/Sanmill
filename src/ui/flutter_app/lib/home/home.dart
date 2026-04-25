@@ -538,7 +538,8 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
             onTap: (_) {},
             children: <CustomDrawerItem<String>>[
               _appItem(ShellRouteIds.appGeneralSettings, s.generalSettings),
-              _appItem(ShellRouteIds.appRuleSettings, s.ruleSettings),
+              if (gameModule.buildRuleSettingsScreen(context) != null)
+                _appItem(ShellRouteIds.appRuleSettings, s.ruleSettings),
               _appItem(ShellRouteIds.appAppearance, s.appearance),
             ],
           ),
