@@ -6,7 +6,6 @@ import 'dart:async' show FutureOr, Timer, unawaited;
 import '../../appearance_settings/models/display_settings.dart';
 import '../../experience_recording/models/recording_models.dart';
 import '../../experience_recording/services/recording_service.dart';
-import '../../game_page/services/mill.dart';
 import '../../general_settings/models/general_settings.dart';
 import '../../rule_settings/models/rule_settings.dart';
 
@@ -17,6 +16,11 @@ typedef SettingsDebounceTimer =
     Timer Function(Duration duration, void Function() callback);
 
 /// Coordinates side effects that must happen after settings are persisted.
+///
+/// Engine-option callbacks ([updateGeneralEngineOptions],
+/// [updateRuleEngineOptions]) default to no-ops so that this class carries no
+/// direct dependency on any game module. The production wiring is injected by
+/// the app bootstrap (see `main.dart`) after the Mill module is available.
 class SettingsSideEffectCoordinator {
   SettingsSideEffectCoordinator({
     Duration engineOptionsDebounceDuration = _defaultDebounceDuration,
@@ -26,11 +30,9 @@ class SettingsSideEffectCoordinator {
     SettingsDebounceTimer createTimer = Timer.new,
   }) : _engineOptionsDebounceDuration = engineOptionsDebounceDuration,
        _updateGeneralEngineOptions =
-           updateGeneralEngineOptions ??
-           (() => GameController().engine.setGeneralOptions()),
+           updateGeneralEngineOptions ?? _engineOptionsNoOp,
        _updateRuleEngineOptions =
-           updateRuleEngineOptions ??
-           (() => GameController().engine.setRuleOptions()),
+           updateRuleEngineOptions ?? _engineOptionsNoOp,
        _recordEvent =
            recordEvent ??
            ((RecordingEventType type, Map<String, dynamic> data) {
@@ -38,7 +40,14 @@ class SettingsSideEffectCoordinator {
            }),
        _createTimer = createTimer;
 
-  static final SettingsSideEffectCoordinator instance =
+  static FutureOr<void> _engineOptionsNoOp() {}
+
+  /// Mutable so that the app bootstrap can replace the default no-op instance
+  /// with a fully-wired coordinator before any settings page is shown.
+  ///
+  /// Callers that need the engine to respond to settings changes must ensure
+  /// the instance is configured with real callbacks (see `main.dart`).
+  static SettingsSideEffectCoordinator instance =
       SettingsSideEffectCoordinator();
 
   static const Duration _defaultDebounceDuration = Duration(milliseconds: 300);

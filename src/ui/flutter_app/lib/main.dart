@@ -29,6 +29,7 @@ import 'puzzle/services/puzzle_manager.dart';
 import 'shared/config/constants.dart';
 import 'shared/database/database.dart';
 import 'shared/database/settings_repositories.dart';
+import 'shared/database/settings_side_effect_coordinator.dart';
 import 'shared/services/catcher_service.dart';
 import 'shared/services/environment_config.dart';
 import 'shared/services/logger.dart';
@@ -60,6 +61,14 @@ Future<void> main() async {
     ..register(MillGameModule())
     ..register(DemoProbeGameModule());
   SettingsRepositories.instance.init();
+
+  // Wire Mill engine callbacks into the settings coordinator now that the
+  // Mill module (and its GameController) is registered and available.
+  SettingsSideEffectCoordinator.instance = SettingsSideEffectCoordinator(
+    updateGeneralEngineOptions:
+        () => GameController().engine.setGeneralOptions(),
+    updateRuleEngineOptions: () => GameController().engine.setRuleOptions(),
+  );
 
   // Initialize ELO service
   EloRatingService();

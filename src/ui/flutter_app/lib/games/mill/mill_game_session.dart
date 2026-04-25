@@ -34,7 +34,7 @@ class MillGameSession implements GameSessionHandle {
       gameId: GameId.mill,
       activeSeat: PlayerSeat.first,
       outcome: GameOutcome.ongoing(),
-      phase: 'legacy',
+      phase: MillPhases.legacy,
     );
   }
 
@@ -57,7 +57,7 @@ class MillGameSession implements GameSessionHandle {
     if (emitEvent) {
       _events.add(
         GameSessionEvent(
-          'millStateChanged',
+          MillEventTypes.stateChanged,
           payload: <String, Object?>{
             'phase': next.phase,
             'activeSeat': next.activeSeat.name,
@@ -146,7 +146,7 @@ class MillGameSession implements GameSessionHandle {
       );
       _events.add(
         GameSessionEvent(
-          ok ? 'millMoveApplied' : 'millMoveRejected',
+          ok ? MillEventTypes.moveApplied : MillEventTypes.moveRejected,
           payload: <String, Object?>{'move': moveStr, 'type': action.type},
         ),
       );
@@ -155,7 +155,7 @@ class MillGameSession implements GameSessionHandle {
     }
     _events.add(
       GameSessionEvent(
-        'millActionIgnored',
+        MillEventTypes.actionIgnored,
         payload: <String, Object?>{'type': action.type, ...action.payload},
       ),
     );

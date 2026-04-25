@@ -380,124 +380,93 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
 
   // --- Drawer item construction --------------------------------------------
 
-  /// Maps a [ShellRouteIds] route to a stable drawer-item key. Keeping these
-  /// keys preserves existing integration tests.
-  Key? _drawerItemKey(String routeId) {
-    if (routeId == MillRouteIds.humanVsAi.value) {
-      return const Key('drawer_item_human_vs_ai');
-    }
-    if (routeId == MillRouteIds.humanVsHuman.value) {
-      return const Key('drawer_item_human_vs_human');
-    }
-    if (routeId == MillRouteIds.aiVsAi.value) {
-      return const Key('drawer_item_ai_vs_ai');
-    }
-    if (routeId == MillRouteIds.humanVsLan.value) {
-      return const Key('drawer_item_human_vs_lan');
-    }
-    if (routeId == MillRouteIds.setupPosition.value) {
-      return const Key('drawer_item_setup_position');
-    }
-    if (routeId == MillRouteIds.puzzles.value) {
-      return const Key('drawer_item_puzzles');
-    }
-    if (routeId == MillRouteIds.statistics.value) {
-      return const Key('drawer_item_statistics');
-    }
-    if (routeId == ShellRouteIds.appSettingsGroup.value) {
-      return const Key('drawer_item_settings_group');
-    }
-    if (routeId == ShellRouteIds.appGeneralSettings.value) {
-      return const Key('drawer_item_general_settings_child');
-    }
-    if (routeId == ShellRouteIds.appRuleSettings.value) {
-      return const Key('drawer_item_rule_settings_child');
-    }
-    if (routeId == ShellRouteIds.appAppearance.value) {
-      return const Key('drawer_item_appearance_child');
-    }
-    if (routeId == ShellRouteIds.appHelpGroup.value) {
-      return const Key('drawer_item_help_group');
-    }
-    if (routeId == ShellRouteIds.appHowToPlay.value) {
-      return const Key('drawer_item_how_to_play_child');
-    }
-    if (routeId == ShellRouteIds.appFeedback.value) {
-      return const Key('drawer_item_feedback_child');
-    }
-    if (routeId == ShellRouteIds.appAbout.value) {
-      return const Key('drawer_item_about_child');
-    }
-    if (routeId == ShellRouteIds.appExit.value) {
-      return const Key('drawer_item_exit');
-    }
-    if (routeId == ShellRouteIds.appBackToMainGame.value) {
-      return const Key('drawer_item_back_to_main_game');
-    }
-    if (routeId == DebugRouteIds.platformProbe.value) {
-      return const Key('drawer_item_platform_probe');
-    }
-    return null;
-  }
+  /// Maps a route id string to a stable drawer-item [Key].
+  ///
+  /// Keeping these keys stable preserves existing integration tests.
+  static final Map<String, Key> _routeToDrawerKey = <String, Key>{
+    MillRouteIds.humanVsAi.value: const Key('drawer_item_human_vs_ai'),
+    MillRouteIds.humanVsHuman.value: const Key('drawer_item_human_vs_human'),
+    MillRouteIds.aiVsAi.value: const Key('drawer_item_ai_vs_ai'),
+    MillRouteIds.humanVsLan.value: const Key('drawer_item_human_vs_lan'),
+    MillRouteIds.setupPosition.value: const Key('drawer_item_setup_position'),
+    MillRouteIds.puzzles.value: const Key('drawer_item_puzzles'),
+    MillRouteIds.statistics.value: const Key('drawer_item_statistics'),
+    ShellRouteIds.appSettingsGroup.value: const Key(
+      'drawer_item_settings_group',
+    ),
+    ShellRouteIds.appGeneralSettings.value: const Key(
+      'drawer_item_general_settings_child',
+    ),
+    ShellRouteIds.appRuleSettings.value: const Key(
+      'drawer_item_rule_settings_child',
+    ),
+    ShellRouteIds.appAppearance.value: const Key(
+      'drawer_item_appearance_child',
+    ),
+    ShellRouteIds.appHelpGroup.value: const Key('drawer_item_help_group'),
+    ShellRouteIds.appHowToPlay.value: const Key(
+      'drawer_item_how_to_play_child',
+    ),
+    ShellRouteIds.appFeedback.value: const Key('drawer_item_feedback_child'),
+    ShellRouteIds.appAbout.value: const Key('drawer_item_about_child'),
+    ShellRouteIds.appExit.value: const Key('drawer_item_exit'),
+    ShellRouteIds.appBackToMainGame.value: const Key(
+      'drawer_item_back_to_main_game',
+    ),
+    DebugRouteIds.platformProbe.value: const Key('drawer_item_platform_probe'),
+  };
 
-  /// Default fluent icon for built-in routes.
-  Icon _iconFor(String routeId) {
-    if (routeId == MillRouteIds.humanVsAi.value) {
-      return const Icon(FluentIcons.person_24_regular);
-    }
-    if (routeId == MillRouteIds.humanVsHuman.value) {
-      return const Icon(FluentIcons.people_24_regular);
-    }
-    if (routeId == MillRouteIds.aiVsAi.value) {
-      return const Icon(FluentIcons.bot_24_regular);
-    }
-    if (routeId == MillRouteIds.humanVsLan.value) {
-      return const Icon(FluentIcons.wifi_1_24_regular);
-    }
-    if (routeId == MillRouteIds.setupPosition.value) {
-      return const Icon(FluentIcons.drafts_24_regular);
-    }
-    if (routeId == MillRouteIds.puzzles.value) {
-      return const Icon(FluentIcons.puzzle_piece_24_regular);
-    }
-    if (routeId == MillRouteIds.statistics.value) {
-      return const Icon(FluentIcons.calculator_24_regular);
-    }
-    if (routeId == ShellRouteIds.appSettingsGroup.value) {
-      return const Icon(FluentIcons.settings_24_regular);
-    }
-    if (routeId == ShellRouteIds.appGeneralSettings.value) {
-      return const Icon(FluentIcons.options_24_regular);
-    }
-    if (routeId == ShellRouteIds.appRuleSettings.value) {
-      return const Icon(FluentIcons.task_list_ltr_24_regular);
-    }
-    if (routeId == ShellRouteIds.appAppearance.value) {
-      return const Icon(FluentIcons.design_ideas_24_regular);
-    }
-    if (routeId == ShellRouteIds.appHelpGroup.value) {
-      return const Icon(FluentIcons.question_circle_24_regular);
-    }
-    if (routeId == ShellRouteIds.appHowToPlay.value) {
-      return const Icon(FluentIcons.question_circle_24_regular);
-    }
-    if (routeId == ShellRouteIds.appFeedback.value) {
-      return const Icon(FluentIcons.comment_24_regular);
-    }
-    if (routeId == ShellRouteIds.appAbout.value) {
-      return const Icon(FluentIcons.info_24_regular);
-    }
-    if (routeId == ShellRouteIds.appExit.value) {
-      return const Icon(FluentIcons.power_24_regular);
-    }
-    if (routeId == ShellRouteIds.appBackToMainGame.value) {
-      return const Icon(FluentIcons.home_24_regular);
-    }
-    if (routeId == DebugRouteIds.platformProbe.value) {
-      return const Icon(Icons.science_outlined);
-    }
-    return const Icon(FluentIcons.apps_24_regular);
-  }
+  /// Maps a route id string to the fluent icon shown in the drawer.
+  static final Map<String, Icon> _routeToIcon = <String, Icon>{
+    MillRouteIds.humanVsAi.value: const Icon(FluentIcons.person_24_regular),
+    MillRouteIds.humanVsHuman.value: const Icon(
+      FluentIcons.people_24_regular,
+    ),
+    MillRouteIds.aiVsAi.value: const Icon(FluentIcons.bot_24_regular),
+    MillRouteIds.humanVsLan.value: const Icon(FluentIcons.wifi_1_24_regular),
+    MillRouteIds.setupPosition.value: const Icon(
+      FluentIcons.drafts_24_regular,
+    ),
+    MillRouteIds.puzzles.value: const Icon(
+      FluentIcons.puzzle_piece_24_regular,
+    ),
+    MillRouteIds.statistics.value: const Icon(
+      FluentIcons.calculator_24_regular,
+    ),
+    ShellRouteIds.appSettingsGroup.value: const Icon(
+      FluentIcons.settings_24_regular,
+    ),
+    ShellRouteIds.appGeneralSettings.value: const Icon(
+      FluentIcons.options_24_regular,
+    ),
+    ShellRouteIds.appRuleSettings.value: const Icon(
+      FluentIcons.task_list_ltr_24_regular,
+    ),
+    ShellRouteIds.appAppearance.value: const Icon(
+      FluentIcons.design_ideas_24_regular,
+    ),
+    ShellRouteIds.appHelpGroup.value: const Icon(
+      FluentIcons.question_circle_24_regular,
+    ),
+    ShellRouteIds.appHowToPlay.value: const Icon(
+      FluentIcons.question_circle_24_regular,
+    ),
+    ShellRouteIds.appFeedback.value: const Icon(FluentIcons.comment_24_regular),
+    ShellRouteIds.appAbout.value: const Icon(FluentIcons.info_24_regular),
+    ShellRouteIds.appExit.value: const Icon(FluentIcons.power_24_regular),
+    ShellRouteIds.appBackToMainGame.value: const Icon(
+      FluentIcons.home_24_regular,
+    ),
+    DebugRouteIds.platformProbe.value: const Icon(Icons.science_outlined),
+  };
+
+  /// Returns the stable drawer-item [Key] for [routeId], or `null` if unknown.
+  Key? _drawerItemKey(String routeId) => _routeToDrawerKey[routeId];
+
+  /// Returns the fluent icon for [routeId], falling back to a generic apps
+  /// icon for routes contributed by game modules that are not listed above.
+  Icon _iconFor(String routeId) =>
+      _routeToIcon[routeId] ?? const Icon(FluentIcons.apps_24_regular);
 
   CustomDrawerItem<String> _modeItem(GameModeEntry mode) {
     return CustomDrawerItem<String>(
