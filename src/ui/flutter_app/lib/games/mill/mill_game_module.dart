@@ -14,14 +14,7 @@ import '../../game_platform/game_module_metadata.dart';
 import '../../game_platform/game_persistence_scope.dart';
 import '../../game_platform/game_session_handle.dart';
 import 'mill_board_geometry.dart';
-
-class MillSessionHandle implements GameSessionHandle {
-  @override
-  void dispose() {
-    // [GameController] is still a process-wide singleton; session lifecycle is
-    // a later migration step.
-  }
-}
+import 'mill_game_session.dart';
 
 class MillGameModule extends GameModule {
   MillGameModule();
@@ -38,6 +31,11 @@ class MillGameModule extends GameModule {
     supportsSetupPosition: true,
     supportsStatistics: true,
     supportsTimer: true,
+    capabilities: <GameCapability>{
+      GameCapability.analysis,
+      GameCapability.importExport,
+      GameCapability.recording,
+    },
   );
 
   @override
@@ -52,7 +50,7 @@ class MillGameModule extends GameModule {
   );
 
   @override
-  GameSessionHandle startSession() => MillSessionHandle();
+  GameSessionHandle startSession() => MillGameSession();
 
   @override
   Widget buildGameSurface(BuildContext context, {Key? key}) {

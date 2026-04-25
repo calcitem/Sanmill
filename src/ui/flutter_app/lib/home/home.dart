@@ -27,6 +27,7 @@ import '../game_page/widgets/dialogs/lan_config_dialog.dart';
 import '../game_page/widgets/game_page.dart';
 import '../game_platform/game_id.dart';
 import '../game_platform/game_registry.dart';
+import '../game_shell/game_surface_host.dart';
 import '../general_settings/models/general_settings.dart';
 import '../general_settings/services/config_import_export_service.dart';
 import '../general_settings/widgets/general_settings_page.dart';
@@ -441,18 +442,11 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
     return ListenableBuilder(
       listenable: GameRegistry.instance,
       builder: (BuildContext context, Widget? _) {
-        if (GameRegistry.instance.currentId == GameId.demoProbe) {
-          return Scaffold(
-            appBar: AppBar(
-              title: Text(GameRegistry.instance.current.metadata.shortLabel),
-              leading: IconButton(
-                icon: const Icon(Icons.close),
-                onPressed: () {
-                  GameRegistry.instance.select(GameId.mill);
-                },
-              ),
-            ),
-            body: GameRegistry.instance.current.buildGameSurface(context),
+        final GameId currentId = GameRegistry.instance.currentId;
+        if (currentId != GameId.mill) {
+          return GameSurfaceHost(
+            gameId: currentId,
+            onClose: () => GameRegistry.instance.select(GameId.mill),
           );
         }
         return _buildMillAppHome(context);

@@ -12,11 +12,7 @@ import '../../game_platform/game_persistence_scope.dart';
 import '../../game_platform/game_session_handle.dart';
 import 'demo_probe_board_geometry.dart';
 import 'demo_probe_page.dart';
-
-class DemoProbeSessionHandle implements GameSessionHandle {
-  @override
-  void dispose() {}
-}
+import 'demo_probe_session.dart';
 
 class DemoProbeGameModule extends GameModule {
   @override
@@ -38,7 +34,7 @@ class DemoProbeGameModule extends GameModule {
   );
 
   @override
-  GameSessionHandle startSession() => DemoProbeSessionHandle();
+  GameSessionHandle startSession() => DemoProbeSession();
 
   @override
   Widget buildGameSurface(BuildContext context, {Key? key}) {

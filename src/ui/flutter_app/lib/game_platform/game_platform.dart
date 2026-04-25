@@ -3,14 +3,20 @@
 
 // Barrel export for the minimal multi-game platform kernel.
 export 'board_geometry.dart';
+export 'board_hit_test.dart';
 export 'engine/engine_port.dart';
+export 'engine/native_engine_router.dart';
 export 'game_feature_flags.dart';
 export 'game_id.dart';
+export 'game_menu.dart';
 export 'game_module.dart';
 export 'game_module_metadata.dart';
 export 'game_persistence_scope.dart';
 export 'game_registry.dart';
+export 'game_session.dart';
 export 'game_session_handle.dart';
+export 'notation_port.dart';
 export 'painting/graph_board_painter.dart';
 export 'persistence/game_persistence_naming.dart';
 export 'persistence/settings_repository_port.dart';
+export 'rules_port.dart';

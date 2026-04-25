@@ -6,6 +6,7 @@ import '../../game_platform/game_module.dart';
 import '../../game_platform/game_registry.dart';
 import '../../game_platform/persistence/settings_repository_port.dart';
 import 'database.dart';
+import 'scoped_settings_repository.dart';
 import 'settings_repository.dart';
 
 /// App-wide access point for settings repositories.
@@ -43,6 +44,13 @@ class SettingsRepositories {
         repository,
         persistenceScope: module.persistenceScope,
       ),
+    );
+  }
+
+  ScopedSettingsRepository scoped(GameModule module) {
+    return ScopedSettingsRepository(
+      repository: repository,
+      scope: module.persistenceScope,
     );
   }
 

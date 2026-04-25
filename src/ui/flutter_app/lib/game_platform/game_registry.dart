@@ -19,6 +19,7 @@ class GameRegistry extends ChangeNotifier {
   GameId _currentId = GameId.mill;
 
   void register(GameModule module) {
+    _assertPersistenceScopeDoesNotOverlap(module);
     _modules[module.metadata.id] = module;
   }
 
@@ -48,4 +49,32 @@ class GameRegistry extends ChangeNotifier {
 
   /// Games that should appear in a picker UI (e.g. debug or future menu).
   Iterable<GameModule> get registeredModules => _modules.values;
+
+  void _assertPersistenceScopeDoesNotOverlap(GameModule module) {
+    assert(() {
+      final int? min = module.persistenceScope.hiveTypeIdMin;
+      final int? max = module.persistenceScope.hiveTypeIdMax;
+      if (min == null || max == null) {
+        return true;
+      }
+      assert(
+        min <= max,
+        'Invalid Hive typeId range for ${module.metadata.id}.',
+      );
+      for (final GameModule registered in _modules.values) {
+        final int? otherMin = registered.persistenceScope.hiveTypeIdMin;
+        final int? otherMax = registered.persistenceScope.hiveTypeIdMax;
+        if (otherMin == null || otherMax == null) {
+          continue;
+        }
+        final bool overlaps = min <= otherMax && otherMin <= max;
+        assert(
+          !overlaps,
+          'Hive typeId range $min-$max for ${module.metadata.id} overlaps '
+          'with $otherMin-$otherMax for ${registered.metadata.id}.',
+        );
+      }
+      return true;
+    }());
+  }
 }

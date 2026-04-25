@@ -16,6 +16,7 @@ part of '../mill.dart';
 /// * The game instance [Game]
 /// * The recorder [GameRecorder]
 class GameController {
+  @Deprecated('Use MillGameSession from games/mill/mill_game_session.dart.')
   factory GameController() => instance;
 
   GameController._() {
