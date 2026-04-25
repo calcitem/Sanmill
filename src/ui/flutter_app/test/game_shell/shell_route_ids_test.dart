@@ -6,21 +6,6 @@ import 'package:sanmill/game_shell/shell_route_ids.dart';
 
 void main() {
   group('ShellRouteIds', () {
-    test('mill route ids share the "mill." prefix', () {
-      const List<String> millRoutes = <String>[
-        ShellRouteIds.millHumanVsAi,
-        ShellRouteIds.millHumanVsHuman,
-        ShellRouteIds.millAiVsAi,
-        ShellRouteIds.millHumanVsLan,
-        ShellRouteIds.millSetupPosition,
-        ShellRouteIds.millPuzzles,
-        ShellRouteIds.millStatistics,
-      ];
-      for (final String routeId in millRoutes) {
-        expect(routeId, startsWith('mill.'));
-      }
-    });
-
     test('app-level route ids share the "app." prefix', () {
       const List<String> appRoutes = <String>[
         ShellRouteIds.appBackToMainGame,
@@ -37,10 +22,6 @@ void main() {
       for (final String routeId in appRoutes) {
         expect(routeId, startsWith('app.'));
       }
-    });
-
-    test('debug route ids share the "debug." prefix', () {
-      expect(ShellRouteIds.debugPlatformProbe, startsWith('debug.'));
     });
   });
 }

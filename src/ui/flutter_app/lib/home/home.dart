@@ -24,9 +24,11 @@ import '../game_platform/game_module.dart';
 import '../game_platform/game_registry.dart';
 import '../game_platform/game_session.dart';
 import '../game_platform/game_session_handle.dart';
+import '../game_shell/debug_route_ids.dart';
 import '../game_shell/game_session_scope.dart';
 import '../game_shell/shared_game_shell.dart';
 import '../game_shell/shell_route_ids.dart';
+import '../games/mill/mill_route_ids.dart';
 import '../general_settings/models/general_settings.dart';
 import '../general_settings/services/config_import_export_service.dart';
 import '../generated/intl/l10n.dart';
@@ -168,7 +170,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
       return;
     }
 
-    if (routeId == ShellRouteIds.debugPlatformProbe) {
+    if (routeId == DebugRouteIds.platformProbe) {
       logger.i('Switching to platform probe (tic-tac-toe demo).');
       GameRegistry.instance.select(GameId.demoProbe);
       return;
@@ -381,19 +383,19 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
   /// keys preserves existing integration tests.
   Key? _drawerItemKey(String routeId) {
     switch (routeId) {
-      case ShellRouteIds.millHumanVsAi:
+      case MillRouteIds.humanVsAi:
         return const Key('drawer_item_human_vs_ai');
-      case ShellRouteIds.millHumanVsHuman:
+      case MillRouteIds.humanVsHuman:
         return const Key('drawer_item_human_vs_human');
-      case ShellRouteIds.millAiVsAi:
+      case MillRouteIds.aiVsAi:
         return const Key('drawer_item_ai_vs_ai');
-      case ShellRouteIds.millHumanVsLan:
+      case MillRouteIds.humanVsLan:
         return const Key('drawer_item_human_vs_lan');
-      case ShellRouteIds.millSetupPosition:
+      case MillRouteIds.setupPosition:
         return const Key('drawer_item_setup_position');
-      case ShellRouteIds.millPuzzles:
+      case MillRouteIds.puzzles:
         return const Key('drawer_item_puzzles');
-      case ShellRouteIds.millStatistics:
+      case MillRouteIds.statistics:
         return const Key('drawer_item_statistics');
       case ShellRouteIds.appSettingsGroup:
         return const Key('drawer_item_settings_group');
@@ -415,7 +417,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
         return const Key('drawer_item_exit');
       case ShellRouteIds.appBackToMainGame:
         return const Key('drawer_item_back_to_main_game');
-      case ShellRouteIds.debugPlatformProbe:
+      case DebugRouteIds.platformProbe:
         return const Key('drawer_item_platform_probe');
       default:
         return null;
@@ -425,19 +427,19 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
   /// Default fluent icon for built-in routes.
   Icon _iconFor(String routeId) {
     switch (routeId) {
-      case ShellRouteIds.millHumanVsAi:
+      case MillRouteIds.humanVsAi:
         return const Icon(FluentIcons.person_24_regular);
-      case ShellRouteIds.millHumanVsHuman:
+      case MillRouteIds.humanVsHuman:
         return const Icon(FluentIcons.people_24_regular);
-      case ShellRouteIds.millAiVsAi:
+      case MillRouteIds.aiVsAi:
         return const Icon(FluentIcons.bot_24_regular);
-      case ShellRouteIds.millHumanVsLan:
+      case MillRouteIds.humanVsLan:
         return const Icon(FluentIcons.wifi_1_24_regular);
-      case ShellRouteIds.millSetupPosition:
+      case MillRouteIds.setupPosition:
         return const Icon(FluentIcons.drafts_24_regular);
-      case ShellRouteIds.millPuzzles:
+      case MillRouteIds.puzzles:
         return const Icon(FluentIcons.puzzle_piece_24_regular);
-      case ShellRouteIds.millStatistics:
+      case MillRouteIds.statistics:
         return const Icon(FluentIcons.calculator_24_regular);
       case ShellRouteIds.appSettingsGroup:
         return const Icon(FluentIcons.settings_24_regular);
@@ -459,7 +461,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
         return const Icon(FluentIcons.power_24_regular);
       case ShellRouteIds.appBackToMainGame:
         return const Icon(FluentIcons.home_24_regular);
-      case ShellRouteIds.debugPlatformProbe:
+      case DebugRouteIds.platformProbe:
         return const Icon(Icons.science_outlined);
       default:
         return const Icon(FluentIcons.apps_24_regular);
@@ -556,7 +558,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
           if (kDebugMode &&
               GameRegistry.instance.currentId == GameId.mill &&
               GameRegistry.instance.getModule(GameId.demoProbe) != null)
-            _appItem(ShellRouteIds.debugPlatformProbe, 'Tic-Tac-Toe (sample)'),
+            _appItem(DebugRouteIds.platformProbe, 'Tic-Tac-Toe (sample)'),
         ];
 
     return SharedGameShell(

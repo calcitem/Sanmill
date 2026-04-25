@@ -8,6 +8,7 @@ import 'package:sanmill/game_platform/game_module.dart';
 import 'package:sanmill/game_platform/game_registry.dart';
 import 'package:sanmill/game_shell/shell_route_ids.dart';
 import 'package:sanmill/games/mill/mill_game_module.dart';
+import 'package:sanmill/games/mill/mill_route_ids.dart';
 
 import '../helpers/locale_helper.dart';
 
@@ -34,21 +35,15 @@ void main() {
       );
 
       final GameModule module = GameRegistry.instance.getModule(GameId.mill)!;
+      expect(module.isPlayModeRoute(MillRouteIds.humanVsAi, context), isTrue);
       expect(
-        module.isPlayModeRoute(ShellRouteIds.millHumanVsAi, context),
+        module.isPlayModeRoute(MillRouteIds.humanVsHuman, context),
         isTrue,
       );
+      expect(module.isPlayModeRoute(MillRouteIds.aiVsAi, context), isTrue);
+      expect(module.isPlayModeRoute(MillRouteIds.humanVsLan, context), isTrue);
       expect(
-        module.isPlayModeRoute(ShellRouteIds.millHumanVsHuman, context),
-        isTrue,
-      );
-      expect(module.isPlayModeRoute(ShellRouteIds.millAiVsAi, context), isTrue);
-      expect(
-        module.isPlayModeRoute(ShellRouteIds.millHumanVsLan, context),
-        isTrue,
-      );
-      expect(
-        module.isPlayModeRoute(ShellRouteIds.millSetupPosition, context),
+        module.isPlayModeRoute(MillRouteIds.setupPosition, context),
         isTrue,
       );
     });
@@ -69,14 +64,8 @@ void main() {
       );
 
       final GameModule module = GameRegistry.instance.getModule(GameId.mill)!;
-      expect(
-        module.isPlayModeRoute(ShellRouteIds.millPuzzles, context),
-        isFalse,
-      );
-      expect(
-        module.isPlayModeRoute(ShellRouteIds.millStatistics, context),
-        isFalse,
-      );
+      expect(module.isPlayModeRoute(MillRouteIds.puzzles, context), isFalse);
+      expect(module.isPlayModeRoute(MillRouteIds.statistics, context), isFalse);
       expect(
         module.isPlayModeRoute(ShellRouteIds.appGeneralSettings, context),
         isFalse,

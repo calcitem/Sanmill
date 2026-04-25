@@ -20,7 +20,6 @@ import '../../game_platform/game_session_handle.dart';
 import '../../game_platform/notation_port.dart';
 import '../../game_platform/rules_port.dart';
 import '../../game_platform/shell_route_navigation_source.dart';
-import '../../game_shell/shell_route_ids.dart';
 import '../../generated/intl/l10n.dart';
 import '../../puzzle/pages/puzzles_home_page.dart';
 import '../../rule_settings/models/rule_settings.dart';
@@ -32,6 +31,7 @@ import '../../statistics/widgets/stats_page.dart';
 import 'mill_board_geometry.dart';
 import 'mill_game_session.dart';
 import 'mill_notation_port.dart';
+import 'mill_route_ids.dart';
 import 'mill_rules_adapter.dart';
 
 class MillGameModule extends GameModule {
@@ -78,9 +78,7 @@ class MillGameModule extends GameModule {
 
   @override
   String defaultShellRoute(BuildContext context) {
-    return kIsWeb
-        ? ShellRouteIds.millHumanVsHuman
-        : ShellRouteIds.millHumanVsAi;
+    return kIsWeb ? MillRouteIds.humanVsHuman : MillRouteIds.humanVsAi;
   }
 
   @override
@@ -98,7 +96,7 @@ class MillGameModule extends GameModule {
     BuildContext context, {
     required String lastShellRouteId,
   }) {
-    if (lastShellRouteId == ShellRouteIds.millHumanVsLan) {
+    if (lastShellRouteId == MillRouteIds.humanVsLan) {
       logger.i(
         'Game switch: leaving LAN mode, disposing network and resetting board.',
       );
@@ -121,8 +119,8 @@ class MillGameModule extends GameModule {
     if (source != ShellRouteNavigationSource.drawer) {
       return true;
     }
-    if (nextRouteId != ShellRouteIds.millHumanVsLan ||
-        previousRouteId == ShellRouteIds.millHumanVsLan) {
+    if (nextRouteId != MillRouteIds.humanVsLan ||
+        previousRouteId == MillRouteIds.humanVsLan) {
       return true;
     }
     final S s = S.of(context);
@@ -140,8 +138,8 @@ class MillGameModule extends GameModule {
     required String? previousRouteId,
     required String nextRouteId,
   }) {
-    if (previousRouteId == ShellRouteIds.millHumanVsLan &&
-        nextRouteId != ShellRouteIds.millHumanVsLan) {
+    if (previousRouteId == MillRouteIds.humanVsLan &&
+        nextRouteId != MillRouteIds.humanVsLan) {
       logger.i('Leaving LAN mode: disposing network and resetting the board.');
       // ignore: deprecated_member_use_from_same_package
       GameController().networkService?.dispose();
@@ -156,8 +154,8 @@ class MillGameModule extends GameModule {
   }
 
   void _syncMillStatsForPlayModeRoute(String playRouteId) {
-    if (playRouteId == ShellRouteIds.millHumanVsHuman ||
-        playRouteId == ShellRouteIds.millAiVsAi) {
+    if (playRouteId == MillRouteIds.humanVsHuman ||
+        playRouteId == MillRouteIds.aiVsAi) {
       GameController().disableStats = true;
     } else {
       GameController().disableStats = false;
@@ -170,7 +168,7 @@ class MillGameModule extends GameModule {
     return <GameModeEntry>[
       if (!kIsWeb)
         GameModeEntry(
-          id: ShellRouteIds.millHumanVsAi,
+          id: MillRouteIds.humanVsAi,
           label: s.humanVsAi,
           contentKey: const Key('human_ai'),
           isAvailable: (_) => !kIsWeb,
@@ -178,7 +176,7 @@ class MillGameModule extends GameModule {
               GamePage(GameMode.humanVsAi, key: key),
         ),
       GameModeEntry(
-        id: ShellRouteIds.millHumanVsHuman,
+        id: MillRouteIds.humanVsHuman,
         label: s.humanVsHuman,
         contentKey: const Key('human_human'),
         builder: (BuildContext context, {Key? key, GameSession? session}) =>
@@ -186,7 +184,7 @@ class MillGameModule extends GameModule {
       ),
       if (!kIsWeb)
         GameModeEntry(
-          id: ShellRouteIds.millAiVsAi,
+          id: MillRouteIds.aiVsAi,
           label: s.aiVsAi,
           contentKey: const Key('ai_ai'),
           isAvailable: (_) => !kIsWeb,
@@ -194,14 +192,14 @@ class MillGameModule extends GameModule {
               GamePage(GameMode.aiVsAi, key: key),
         ),
       GameModeEntry(
-        id: ShellRouteIds.millHumanVsLan,
+        id: MillRouteIds.humanVsLan,
         label: s.humanVsLAN,
         contentKey: const Key('human_lan'),
         builder: (BuildContext context, {Key? key, GameSession? session}) =>
             GamePage(GameMode.humanVsLAN, key: key),
       ),
       GameModeEntry(
-        id: ShellRouteIds.millSetupPosition,
+        id: MillRouteIds.setupPosition,
         label: s.setupPosition,
         contentKey: const Key('setup_position'),
         isAvailable: (BuildContext context) {
@@ -227,7 +225,7 @@ class MillGameModule extends GameModule {
     return <GameMenuContribution>[
       if (features.supportsPuzzles)
         GameMenuContribution(
-          id: ShellRouteIds.millPuzzles,
+          id: MillRouteIds.puzzles,
           label: s.puzzles,
           contentKey: const Key('puzzles'),
           isAvailable: (_) => features.supportsPuzzles,
@@ -237,7 +235,7 @@ class MillGameModule extends GameModule {
         ),
       if (features.supportsStatistics)
         GameMenuContribution(
-          id: ShellRouteIds.millStatistics,
+          id: MillRouteIds.statistics,
           label: s.statistics,
           contentKey: const Key('statistics'),
           isAvailable: (_) => features.supportsStatistics,
