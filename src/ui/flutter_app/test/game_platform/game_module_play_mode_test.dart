@@ -4,6 +4,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sanmill/game_platform/game_id.dart';
+import 'package:sanmill/game_platform/game_module.dart';
 import 'package:sanmill/game_platform/game_registry.dart';
 import 'package:sanmill/game_shell/shell_route_ids.dart';
 import 'package:sanmill/games/mill/mill_game_module.dart';
@@ -32,7 +33,7 @@ void main() {
         ),
       );
 
-      final module = GameRegistry.instance.getModule(GameId.mill)!;
+      final GameModule module = GameRegistry.instance.getModule(GameId.mill)!;
       expect(
         module.isPlayModeRoute(ShellRouteIds.millHumanVsAi, context),
         isTrue,
@@ -67,7 +68,7 @@ void main() {
         ),
       );
 
-      final module = GameRegistry.instance.getModule(GameId.mill)!;
+      final GameModule module = GameRegistry.instance.getModule(GameId.mill)!;
       expect(
         module.isPlayModeRoute(ShellRouteIds.millPuzzles, context),
         isFalse,
