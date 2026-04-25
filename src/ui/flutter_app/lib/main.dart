@@ -8,33 +8,32 @@ import 'dart:io';
 import 'dart:ui';
 
 import 'package:catcher_2/catcher_2.dart';
-import 'package:device_info_plus/device_info_plus.dart';
 import 'package:feedback/feedback.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 // ignore: depend_on_referenced_packages
 import 'package:flutter_sharing_intent/flutter_sharing_intent.dart';
 import 'package:flutter_sharing_intent/model/sharing_file.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart' show Box;
-import 'package:package_info_plus/package_info_plus.dart';
-import 'package:path_provider/path_provider.dart';
 
 import 'appearance_settings/models/display_settings.dart';
 import 'experience_recording/services/recording_navigator_observer.dart';
 import 'game_page/services/engine/bitboard.dart';
 import 'game_page/services/mill.dart';
-import 'game_page/services/painters/painters.dart';
+import 'game_platform/game_registry.dart';
+import 'games/demo_probe/demo_probe_game_module.dart';
+import 'games/mill/mill_game_module.dart';
 import 'generated/intl/l10n.dart';
 import 'home/home.dart';
 import 'puzzle/services/puzzle_manager.dart';
 import 'shared/config/constants.dart';
 import 'shared/database/database.dart';
-import 'shared/services/email_handler.dart';
+import 'shared/services/catcher_service.dart';
 import 'shared/services/environment_config.dart';
 import 'shared/services/logger.dart';
 import 'shared/services/screenshot_service.dart';
 import 'shared/services/snackbar_service.dart';
+import 'shared/services/system_ui_service.dart';
 import 'shared/themes/app_theme.dart';
 import 'shared/utils/localizations/feedback_localization.dart';
 import 'shared/utils/localizations/sanmill_localizations.dart';
@@ -43,11 +42,6 @@ import 'statistics/services/stats_service.dart';
 
 // Voice assistant functionality disabled
 // import 'voice_assistant/services/voice_assistant_service.dart';
-
-part 'package:sanmill/shared/services/catcher_service.dart';
-part 'package:sanmill/shared/services/system_ui_service.dart';
-
-// Log tag for main
 
 Future<void> main() async {
   logger.i('Environment [catcher]: ${EnvironmentConfig.catcher}');
@@ -60,6 +54,10 @@ Future<void> main() async {
   // }
 
   await DB.init();
+
+  GameRegistry.instance
+    ..register(MillGameModule())
+    ..register(DemoProbeGameModule());
 
   // Initialize ELO service
   EloRatingService();
@@ -81,14 +79,14 @@ Future<void> main() async {
   //   await VoiceAssistantService().initialize();
   // }
 
-  _initUI();
+  await initAppSystemUi(isFullScreen: DB().displaySettings.isFullScreen);
 
   initBitboards();
 
   if (EnvironmentConfig.catcher && !kIsWeb && !Platform.isIOS) {
     catcher = Catcher2(rootWidget: const SanmillApp(), ensureInitialized: true);
 
-    await _initCatcher(catcher);
+    await initCatcher(catcher);
 
     // Wrap FlutterError.onError to filter known benign rendering assertions
     // BEFORE they reach Catcher 2. Flutter rendering pipeline errors
@@ -234,7 +232,7 @@ class SanmillAppState extends State<SanmillApp> {
         darkTheme: AppTheme.darkThemeData,
         debugShowCheckedModeBanner: EnvironmentConfig.devMode,
         builder: (BuildContext context, Widget? child) {
-          _initializeScreenOrientation(context);
+          initializeScreenOrientation(context);
           setWindowTitle(S.of(context).appName);
           return MediaQuery(
             data: MediaQuery.of(context).copyWith(),
@@ -291,7 +289,7 @@ class SanmillAppState extends State<SanmillApp> {
       darkTheme: AppTheme.darkThemeData,
       debugShowCheckedModeBanner: EnvironmentConfig.devMode,
       builder: (BuildContext context, Widget? child) {
-        _initializeScreenOrientation(context);
+        initializeScreenOrientation(context);
         setWindowTitle(S.of(context).appName);
         return MediaQuery(
           data: MediaQuery.of(

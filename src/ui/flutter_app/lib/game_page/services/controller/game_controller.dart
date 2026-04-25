@@ -155,46 +155,17 @@ class GameController {
   /// Shows a confirmation dialog; if accepted, sends "restart:accepted" and resets game;
   /// otherwise, sends "restart:rejected".
   void handleRestartRequest() {
-    // Use a global context (e.g. rootScaffoldMessengerKey.currentContext) to show the dialog.
-    final BuildContext? context = rootScaffoldMessengerKey.currentContext;
-    if (context == null) {
-      return;
-    }
-    showDialog<bool>(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext dialogContext) {
-        return AlertDialog(
-          title: Text(S.of(dialogContext).restartRequest),
-          content: Text(
-            S.of(dialogContext).opponentRequestedToRestartTheGameDoYouAccept,
-          ),
-          actions: <Widget>[
-            TextButton(
-              // If accepted, send accepted message and reset game (LAN socket remains open)
-              onPressed: () {
-                Navigator.of(dialogContext).pop(true);
-                networkService?.sendMove("restart:accepted");
-                // Call reset with lanRestart flag true (do not dispose networkService)
-                reset(lanRestart: true);
-              },
-              child: Text(S.of(dialogContext).yes),
-            ),
-            TextButton(
-              // If rejected, send rejected message and do nothing
-              onPressed: () {
-                // Cache the localized string before dismissing the dialog.
-                final String rejectedMessage = S
-                    .of(dialogContext)
-                    .restartRequestRejected;
-                Navigator.of(dialogContext).pop(false);
-                networkService?.sendMove("restart:rejected");
-                headerTipNotifier.showTip(rejectedMessage);
-              },
-              child: Text(S.of(dialogContext).no),
-            ),
-          ],
-        );
+    showLanRestartRequestDialog(
+      onAccept: (BuildContext dialogContext) {
+        networkService?.sendMove("restart:accepted");
+        reset(lanRestart: true);
+      },
+      onReject: (BuildContext dialogContext) {
+        final String rejectedMessage = S
+            .of(dialogContext)
+            .restartRequestRejected;
+        networkService?.sendMove("restart:rejected");
+        headerTipNotifier.showTip(rejectedMessage);
       },
     );
   }

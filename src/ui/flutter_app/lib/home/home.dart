@@ -8,7 +8,7 @@ import 'dart:io';
 
 import 'package:feedback/feedback.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
-import 'package:flutter/foundation.dart';
+import 'package:flutter/foundation.dart' show kDebugMode, kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
@@ -25,11 +25,12 @@ import '../game_page/services/mill.dart';
 import '../game_page/services/painters/painters.dart';
 import '../game_page/widgets/dialogs/lan_config_dialog.dart';
 import '../game_page/widgets/game_page.dart';
+import '../game_platform/game_id.dart';
+import '../game_platform/game_registry.dart';
 import '../general_settings/models/general_settings.dart';
 import '../general_settings/services/config_import_export_service.dart';
 import '../general_settings/widgets/general_settings_page.dart';
 import '../generated/intl/l10n.dart';
-import '../main.dart';
 import '../misc/about_page.dart';
 import '../misc/how_to_play_screen.dart';
 import '../puzzle/pages/puzzles_home_page.dart';
@@ -38,6 +39,7 @@ import '../rule_settings/widgets/rule_settings_page.dart';
 import '../shared/config/constants.dart';
 import '../shared/database/database.dart';
 import '../shared/dialogs/privacy_policy_dialog.dart';
+import '../shared/services/catcher_service.dart';
 import '../shared/services/environment_config.dart';
 import '../shared/services/logger.dart';
 import '../shared/services/snackbar_service.dart';
@@ -66,6 +68,9 @@ enum _DrawerIndex {
   feedback,
   about,
   exit,
+
+  /// Debug-only: opens the minimal second-game probe (see [GameRegistry]).
+  platformProbe,
 }
 
 // Extension to handle widget selection based on drawer state
@@ -114,6 +119,10 @@ extension _DrawerScreen on _DrawerIndex {
       case _DrawerIndex.settingsGroup:
       case _DrawerIndex.helpGroup:
         return null;
+      case _DrawerIndex.platformProbe:
+        throw StateError(
+          'platformProbe is only handled in _changeIndex, not a screen',
+        );
     }
   }
 }
@@ -145,6 +154,12 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
   /// as user need with passing DrawerIndex (Enum index)
   Future<void> _changeIndex(_DrawerIndex index) async {
     _controller.hideDrawer();
+
+    if (index == _DrawerIndex.platformProbe) {
+      logger.i('Switching to platform probe (tic-tac-toe)');
+      GameRegistry.instance.select(GameId.demoProbe);
+      return;
+    }
 
     // Print the name of the screen being switched to (in English)
     switch (index) {
@@ -197,6 +212,9 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
       case _DrawerIndex.exit:
         logger.i('Exiting...');
         break;
+      case _DrawerIndex.platformProbe:
+        // Unreachable: handled at the start of this method.
+        return;
     }
 
     // ---------------------------------------------------------------------
@@ -309,6 +327,8 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
       case _DrawerIndex.about:
       case _DrawerIndex.exit:
         return false;
+      case _DrawerIndex.platformProbe:
+        return false;
     }
   }
 
@@ -407,7 +427,36 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
   }
 
   @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    return ListenableBuilder(
+      listenable: GameRegistry.instance,
+      builder: (BuildContext context, Widget? _) {
+        if (GameRegistry.instance.currentId == GameId.demoProbe) {
+          return Scaffold(
+            appBar: AppBar(
+              title: Text(GameRegistry.instance.current.metadata.shortLabel),
+              leading: IconButton(
+                icon: const Icon(Icons.close),
+                onPressed: () {
+                  GameRegistry.instance.select(GameId.mill);
+                },
+              ),
+            ),
+            body: GameRegistry.instance.current.buildGameSurface(context),
+          );
+        }
+        return _buildMillAppHome(context);
+      },
+    );
+  }
+
+  Widget _buildMillAppHome(BuildContext context) {
     AppTheme.boardPadding =
         ((deviceWidth(context) - AppTheme.boardMargin * 2) *
                 DB().displaySettings.pieceWidth /
@@ -575,6 +624,15 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
           itemValue: _DrawerIndex.exit,
           itemTitle: S.of(context).exit,
           itemIcon: const Icon(FluentIcons.power_24_regular),
+          currentSelectedValue: _drawerIndex,
+          onSelectionChanged: _changeIndex,
+        ),
+      if (kDebugMode)
+        CustomDrawerItem<_DrawerIndex>(
+          key: const Key('drawer_item_platform_probe'),
+          itemValue: _DrawerIndex.platformProbe,
+          itemTitle: 'Platform probe',
+          itemIcon: const Icon(Icons.science_outlined),
           currentSelectedValue: _drawerIndex,
           onSelectionChanged: _changeIndex,
         ),

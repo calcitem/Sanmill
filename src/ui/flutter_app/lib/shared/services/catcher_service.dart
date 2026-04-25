@@ -2,13 +2,29 @@
 // Copyright (C) 2019-2026 The Sanmill developers (see AUTHORS file)
 
 // catcher_service.dart
+//
+// Error reporting (Catcher 2) configuration. Kept out of `main.dart` to avoid
+// `mill.dart` and other code importing the application entrypoint.
 
-part of 'package:sanmill/main.dart';
+import 'dart:io';
+import 'dart:ui';
+
+import 'package:catcher_2/catcher_2.dart';
+import 'package:device_info_plus/device_info_plus.dart';
+import 'package:flutter/foundation.dart';
+import 'package:package_info_plus/package_info_plus.dart';
+import 'package:path_provider/path_provider.dart';
+
+import '../config/constants.dart';
+import '../database/database.dart';
+import 'email_handler.dart';
+import 'environment_config.dart';
+import 'logger.dart';
 
 late Catcher2 catcher;
 
-/// Initializes the given [catcher]
-Future<void> _initCatcher(Catcher2 catcher) async {
+/// Initializes the given [catcher] (Catcher 2) with Sanmill report handlers.
+Future<void> initCatcher(Catcher2 c) async {
   final Map<String, String> customParameters =
       await _buildCrashReportParameters();
   late final String externalDirStr;
@@ -23,7 +39,7 @@ Future<void> _initCatcher(Catcher2 catcher) async {
     try {
       final Directory? externalDir = await getExternalStorageDirectory();
       externalDirStr = externalDir != null ? externalDir.path : ".";
-    } catch (e) {
+    } on Object catch (e) {
       logger.e(e.toString());
       externalDirStr = ".";
     }
@@ -45,8 +61,6 @@ Future<void> _initCatcher(Catcher2 catcher) async {
   );
 
   /// Release configuration.
-  /// Same as above, but once user accepts dialog,
-  /// user will be prompted to send email with crash to support.
   final Catcher2Options releaseOptions = Catcher2Options(
     kIsWeb || Platform.isLinux || Platform.isWindows || Platform.isMacOS
         ? SilentReportMode()
@@ -65,8 +79,7 @@ Future<void> _initCatcher(Catcher2 catcher) async {
         SanmillEmailHandler(Constants.recipientEmails, printLogs: true),
       ], customParameters: customParameters);
 
-  /// Pass root widget (MyApp) along with Catcher configuration:
-  catcher.updateConfig(
+  c.updateConfig(
     debugConfig: debugOptions,
     releaseConfig: releaseOptions,
     profileConfig: profileOptions,
@@ -202,12 +215,14 @@ String _platformName() {
   return Platform.operatingSystem;
 }
 
-/// Generates content for the options.
+/// Generates text listing current Catcher [setoption] custom parameters.
 String generateOptionsContent() {
-  String content = "";
-
   if (EnvironmentConfig.catcher && !kIsWeb && !Platform.isIOS) {
-    final Catcher2Options options = catcher.getCurrentConfig()!;
+    String content = "";
+    final Catcher2Options? options = catcher.getCurrentConfig();
+    if (options == null) {
+      return content;
+    }
     for (final dynamic value in options.customParameters.values) {
       final String str = value
           .toString()
@@ -215,7 +230,7 @@ String generateOptionsContent() {
           .replaceAll("value", "=");
       content += "$str\n";
     }
+    return content;
   }
-
-  return content;
+  return "";
 }

@@ -5,6 +5,15 @@ import 'screenshot_mode.dart';
 /// Used internally to pass parameters from public API to platform implementation.
 /// This class is immutable and follows type safety principles.
 class CaptureRequest {
+  /// Create [CaptureRequest] from map.
+  factory CaptureRequest.fromMap(Map<Object?, Object?> map) {
+    return CaptureRequest(
+      mode: ScreenshotModeExtension.fromValue(map['mode'] as String),
+      includeCursor: map['includeCursor'] as bool? ?? false,
+      displayId: map['displayId'] as int?,
+    );
+  }
+
   /// Creates a [CaptureRequest] instance.
   const CaptureRequest({
     required this.mode,
@@ -28,15 +37,6 @@ class CaptureRequest {
       'includeCursor': includeCursor,
       if (displayId != null) 'displayId': displayId,
     };
-  }
-
-  /// Create [CaptureRequest] from map.
-  factory CaptureRequest.fromMap(Map<Object?, Object?> map) {
-    return CaptureRequest(
-      mode: ScreenshotModeExtension.fromValue(map['mode'] as String),
-      includeCursor: map['includeCursor'] as bool? ?? false,
-      displayId: map['displayId'] as int?,
-    );
   }
 
   @override

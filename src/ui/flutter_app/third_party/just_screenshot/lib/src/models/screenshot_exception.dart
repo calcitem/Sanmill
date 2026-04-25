@@ -2,6 +2,19 @@
 ///
 /// This class is immutable and follows type safety principles.
 class ScreenshotException implements Exception {
+  /// Create [ScreenshotException] from method channel error.
+  factory ScreenshotException.fromPlatformException({
+    required String code,
+    required String? message,
+    dynamic details,
+  }) {
+    return ScreenshotException(
+      code: code,
+      message: message ?? 'Unknown error',
+      details: details,
+    );
+  }
+
   /// Creates a [ScreenshotException] instance.
   const ScreenshotException({
     required this.code,
@@ -23,19 +36,6 @@ class ScreenshotException implements Exception {
 
   /// Optional additional error details.
   final dynamic details;
-
-  /// Create [ScreenshotException] from method channel error.
-  factory ScreenshotException.fromPlatformException({
-    required String code,
-    required String? message,
-    dynamic details,
-  }) {
-    return ScreenshotException(
-      code: code,
-      message: message ?? 'Unknown error',
-      details: details,
-    );
-  }
 
   @override
   String toString() {

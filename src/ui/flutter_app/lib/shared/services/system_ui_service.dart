@@ -2,14 +2,25 @@
 // Copyright (C) 2019-2026 The Sanmill developers (see AUTHORS file)
 
 // system_ui_service.dart
+//
+// System UI, window title, and orientation helpers. Extracted from `main.dart`
+// to keep the app shell separate from `mill.dart` and other features.
 
-part of 'package:sanmill/main.dart';
+import 'dart:io';
 
-/// Initializes the given [SystemChrome] ui
+import 'package:device_info_plus/device_info_plus.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
+import '../config/constants.dart';
+import '../themes/app_theme.dart';
+import 'logger.dart';
+
+/// Initializes the given [SystemChrome] UI (fullscreen vs overlay).
 Future<void> initializeUI(bool isFullScreen) async {
-  // TODO: [Leptopoda] Use layoutBuilder to add adaptiveness
   if (isFullScreen) {
-    SystemChrome.setEnabledSystemUIMode(
+    await SystemChrome.setEnabledSystemUIMode(
       SystemUiMode.manual,
       overlays: <SystemUiOverlay>[],
     );
@@ -28,13 +39,22 @@ Future<void> initializeUI(bool isFullScreen) async {
   Constants.isAndroid10Plus = await isAndroidAtLeastVersion10();
 }
 
-Future<void> _initUI() async {
-  final bool isFullScreen = DB().displaySettings.isFullScreen;
+/// Runs once at startup from [main] after [DB.init]. [isFullScreen] comes from
+/// display settings; passed in to avoid importing [Database] here (which would
+/// create an import cycle with `mill.dart`).
+Future<void> initAppSystemUi({required bool isFullScreen}) async {
   await initializeUI(isFullScreen);
 }
 
-void _initializeScreenOrientation(BuildContext context) {
-  if (!isTablet(context)) {
+bool _isWideLayout(BuildContext context) {
+  final double w = MediaQuery.of(context).orientation == Orientation.portrait
+      ? MediaQuery.of(context).size.width
+      : MediaQuery.of(context).size.height;
+  return w >= 600;
+}
+
+void initializeScreenOrientation(BuildContext context) {
+  if (!_isWideLayout(context)) {
     SystemChrome.setPreferredOrientations(<DeviceOrientation>[
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
@@ -46,7 +66,6 @@ const MethodChannel uiMethodChannel = MethodChannel('com.calcitem.sanmill/ui');
 
 Future<void> setWindowTitle(String title) async {
   if (kIsWeb || !(Platform.isMacOS || Platform.isWindows)) {
-    // Only macOS and Windows expose the window title channel today.
     return;
   }
 
@@ -73,7 +92,6 @@ TextStyle getMonospaceTitleTextStyle(BuildContext context) {
         break;
       case TargetPlatform.windows:
         fontFamily = 'Consolas';
-        break;
     }
   }
 
@@ -97,9 +115,6 @@ double calculateNCharWidth(BuildContext context, int width) {
   return textPainter.size.width;
 }
 
-// This function should only be used when necessary,
-// as it has been found that unexpected results may occur
-// when calling InfoDialog.
 void safePop() {
   if (currentNavigatorKey.currentState?.canPop() ?? false) {
     currentNavigatorKey.currentState?.pop();
@@ -122,7 +137,7 @@ Future<int?> getAndroidSDKVersion() async {
 Future<bool> isAndroidAtLeastVersion10() async {
   final int? sdkInt = await getAndroidSDKVersion();
   if (sdkInt != null && sdkInt > 28) {
-    return true; // Android 10 corresponds to SDK version 29
+    return true;
   }
   return false;
 }

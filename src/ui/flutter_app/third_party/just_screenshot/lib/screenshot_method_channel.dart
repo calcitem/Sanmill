@@ -2,8 +2,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
 import 'screenshot_platform_interface.dart';
-import 'src/models/captured_data.dart';
 import 'src/models/capture_request.dart';
+import 'src/models/captured_data.dart';
 import 'src/models/screenshot_exception.dart';
 import 'src/models/screenshot_mode.dart';
 

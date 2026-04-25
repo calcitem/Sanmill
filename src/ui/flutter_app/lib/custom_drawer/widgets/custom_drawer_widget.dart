@@ -51,7 +51,10 @@ class CustomDrawer extends StatefulWidget {
 
 class CustomDrawerState extends State<CustomDrawer>
     with SingleTickerProviderStateMixin {
+  /// When [CustomDrawer] creates its own controller, it must dispose it here.
+  /// If [CustomDrawer.controller] is non-null, the owner disposes that instance.
   late final CustomDrawerController _drawerController;
+  late final bool _ownsDrawerController;
   late final AnimationController _drawerAnimationController;
   late Animation<Offset> _mainScreenSlideAnimation;
   late final Animation<Offset> _drawerOverlaySlideAnimation;
@@ -76,6 +79,7 @@ class CustomDrawerState extends State<CustomDrawer>
   void initState() {
     super.initState();
 
+    _ownsDrawerController = widget.controller == null;
     _drawerController = widget.controller ?? CustomDrawerController();
     _drawerController.addListener(_handleControllerChanged);
 
@@ -417,7 +421,9 @@ class CustomDrawerState extends State<CustomDrawer>
     _drawerController.removeListener(_handleControllerChanged);
     _drawerAnimationController.dispose();
 
-    _drawerController.dispose();
+    if (_ownsDrawerController) {
+      _drawerController.dispose();
+    }
 
     super.dispose();
   }

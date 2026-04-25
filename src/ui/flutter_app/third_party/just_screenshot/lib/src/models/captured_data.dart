@@ -4,6 +4,15 @@ import 'dart:typed_data';
 ///
 /// This class is immutable and follows type safety principles.
 class CapturedData {
+  /// Create [CapturedData] from method channel response map.
+  factory CapturedData.fromMap(Map<Object?, Object?> map) {
+    final int width = map['width'] as int;
+    final int height = map['height'] as int;
+    final Uint8List bytes = map['bytes'] as Uint8List;
+
+    return CapturedData(width: width, height: height, bytes: bytes);
+  }
+
   /// Creates a [CapturedData] instance.
   ///
   /// Validates that width and height are positive and bytes is non-empty.
@@ -23,15 +32,6 @@ class CapturedData {
 
   /// PNG-encoded image data as bytes.
   final Uint8List bytes;
-
-  /// Create [CapturedData] from method channel response map.
-  factory CapturedData.fromMap(Map<Object?, Object?> map) {
-    final int width = map['width'] as int;
-    final int height = map['height'] as int;
-    final Uint8List bytes = map['bytes'] as Uint8List;
-
-    return CapturedData(width: width, height: height, bytes: bytes);
-  }
 
   /// Convert [CapturedData] to map for method channel.
   Map<String, dynamic> toMap() {
