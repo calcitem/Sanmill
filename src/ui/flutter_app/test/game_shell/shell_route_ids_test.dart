@@ -6,23 +6,6 @@ import 'package:sanmill/game_shell/shell_route_ids.dart';
 
 void main() {
   group('ShellRouteIds', () {
-    test('mill play routes are recognized as game surfaces', () {
-      expect(isMillPlayRoute(ShellRouteIds.millHumanVsAi), isTrue);
-      expect(isMillPlayRoute(ShellRouteIds.millHumanVsHuman), isTrue);
-      expect(isMillPlayRoute(ShellRouteIds.millAiVsAi), isTrue);
-      expect(isMillPlayRoute(ShellRouteIds.millHumanVsLan), isTrue);
-      expect(isMillPlayRoute(ShellRouteIds.millSetupPosition), isTrue);
-    });
-
-    test('non-play routes are not game surfaces', () {
-      expect(isMillPlayRoute(ShellRouteIds.millPuzzles), isFalse);
-      expect(isMillPlayRoute(ShellRouteIds.millStatistics), isFalse);
-      expect(isMillPlayRoute(ShellRouteIds.appGeneralSettings), isFalse);
-      expect(isMillPlayRoute(ShellRouteIds.appAbout), isFalse);
-      expect(isMillPlayRoute(ShellRouteIds.appExit), isFalse);
-      expect(isMillPlayRoute(ShellRouteIds.debugPlatformProbe), isFalse);
-    });
-
     test('mill route ids share the "mill." prefix', () {
       const List<String> millRoutes = <String>[
         ShellRouteIds.millHumanVsAi,

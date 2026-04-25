@@ -31,12 +31,3 @@ abstract final class ShellRouteIds {
   // Debug: switch [GameRegistry] to another [GameId]
   static const String debugPlatformProbe = 'debug.platformProbe';
 }
-
-/// Routes that count as a “play surface” for back-stack behaviour (Mill).
-bool isMillPlayRoute(String routeId) {
-  return routeId == ShellRouteIds.millHumanVsAi ||
-      routeId == ShellRouteIds.millHumanVsHuman ||
-      routeId == ShellRouteIds.millAiVsAi ||
-      routeId == ShellRouteIds.millHumanVsLan ||
-      routeId == ShellRouteIds.millSetupPosition;
-}

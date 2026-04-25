@@ -8,22 +8,19 @@ import '../game_platform/game_menu.dart';
 import '../game_platform/game_module.dart';
 import '../game_platform/game_registry.dart';
 import '../game_platform/game_session.dart';
-import '../game_shell/shell_route_ids.dart';
 import '../games/mill/mill_game_module.dart'
     show applyMillGameControllerFlagsForPlayRoute;
 import 'shell_app_routes.dart';
 
-/// Resolves a Mill module surface for [routeId], or `null` if [routeId] is not
-/// a Mill play mode or Mill drawer contribution.
-Widget? buildMillModuleScreen(
+/// Resolves a [GameModule] surface for [routeId], or `null` if the route is
+/// not a play mode or drawer contribution of [gameId].
+Widget? buildModuleScreenForGame(
   BuildContext context,
+  GameId gameId,
   String routeId, {
   GameSession? session,
 }) {
-  if (!routeId.startsWith('mill.')) {
-    return null;
-  }
-  final GameModule? module = GameRegistry.instance.getModule(GameId.mill);
+  final GameModule? module = GameRegistry.instance.getModule(gameId);
   if (module == null) {
     return null;
   }
@@ -33,7 +30,7 @@ Widget? buildMillModuleScreen(
       if (!mode.availableIn(context)) {
         return null;
       }
-      if (isMillPlayRoute(routeId)) {
+      if (gameId == GameId.mill) {
         applyMillGameControllerFlagsForPlayRoute(routeId);
       }
       return mode.builder(context, key: mode.contentKey, session: session);
@@ -48,6 +45,22 @@ Widget? buildMillModuleScreen(
     }
   }
   return null;
+}
+
+/// Resolves a surface for [routeId] using the currently selected game module
+/// in [GameRegistry]. Falls back to `null` when the route is not owned by the
+/// active module.
+Widget? buildModuleScreen(
+  BuildContext context,
+  String routeId, {
+  GameSession? session,
+}) {
+  return buildModuleScreenForGame(
+    context,
+    GameRegistry.instance.currentId,
+    routeId,
+    session: session,
+  );
 }
 
 /// App-wide screens (settings, help, exit) that are not owned by a [GameModule].

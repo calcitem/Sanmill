@@ -48,6 +48,18 @@ abstract class GameModule {
   /// Optional notation port (PGN-like or custom text formats per game).
   NotationPort? get notationPort => null;
 
+  /// True if [routeId] is a [playModes] entry for this module (a primary
+  /// play surface), as opposed to a [drawerContributions] screen or an app
+  /// shell route. Used by the shared shell for back-stack and gesture policy.
+  bool isPlayModeRoute(String routeId, BuildContext context) {
+    for (final GameModeEntry mode in playModes(context)) {
+      if (mode.id == routeId) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   /// Primary in-app play surface. For Mill, [GamePage] with the given
   /// [GameMode] is returned by the adapter. For the probe, a self-contained
   /// toy board.

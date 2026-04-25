@@ -50,7 +50,7 @@ import '../shared/utils/helpers/list_helpers/stack_list.dart';
 import '../shared/widgets/double_back_to_close_app.dart';
 import '../shared/widgets/snackbars/scaffold_messenger.dart';
 import '../tutorial/widgets/tutorial_dialog.dart';
-import 'mill_route_screens.dart';
+import 'module_route_screens.dart';
 
 /// Home View
 ///
@@ -110,8 +110,9 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
       _routes.clear();
       _routeId = _initialMillRoute();
       _routes.push(_routeId);
-      _screenView = buildMillModuleScreen(
+      _screenView = buildModuleScreenForGame(
         context,
+        GameId.mill,
         _routeId,
         session: _activeSession,
       );
@@ -134,8 +135,9 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
     if (!_initialized) {
       _initialized = true;
       _ensureSessionForCurrentGame();
-      _screenView ??= buildMillModuleScreen(
+      _screenView ??= buildModuleScreenForGame(
         context,
+        GameId.mill,
         _routeId,
         session: _activeSession,
       );
@@ -220,7 +222,12 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
       return;
     }
     final Widget? screen =
-        buildMillModuleScreen(context, routeId, session: _activeSession) ??
+        buildModuleScreenForGame(
+          context,
+          GameRegistry.instance.currentId,
+          routeId,
+          session: _activeSession,
+        ) ??
         buildAppShellScreen(context, routeId);
     if (screen == null) {
       logger.w('No screen for route $routeId.');
@@ -244,13 +251,15 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
     });
   }
 
-  bool _routeIsGame(String routeId) {
-    return isMillPlayRoute(routeId);
+  /// Primary play mode routes (per [GameModule.playModes]) vs settings/help.
+  bool _routeIsPlayModeSurface(BuildContext context, String routeId) {
+    final GameModule module = GameRegistry.instance.current;
+    return module.isPlayModeRoute(routeId, context);
   }
 
   void _pushRoute(String routeId) {
-    final bool curIsGame = _routeIsGame(_routeId);
-    final bool nextIsGame = _routeIsGame(routeId);
+    final bool curIsGame = _routeIsPlayModeSurface(context, _routeId);
+    final bool nextIsGame = _routeIsPlayModeSurface(context, routeId);
     if (curIsGame && !nextIsGame) {
       _routes.push(routeId);
     } else if (!curIsGame && nextIsGame) {
@@ -269,7 +278,12 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
       _routes.pop();
       final String previous = _routes.top();
       final Widget? screen =
-          buildMillModuleScreen(context, previous, session: _activeSession) ??
+          buildModuleScreenForGame(
+            context,
+            GameRegistry.instance.currentId,
+            previous,
+            session: _activeSession,
+          ) ??
           buildAppShellScreen(context, previous);
       setState(() {
         _routeId = previous;
@@ -566,7 +580,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
                         Platform.isWindows ||
                         Platform.isLinux ||
                         Platform.isMacOS) &&
-                    _routeIsGame(_routeId) &&
+                    _routeIsPlayModeSurface(context, _routeId) &&
                     !value.isDrawerVisible),
             orientation: MediaQuery.of(context).orientation,
             mainScreenWidget: _screenView ?? const SizedBox.shrink(),
