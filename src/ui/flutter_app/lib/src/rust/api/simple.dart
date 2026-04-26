@@ -110,6 +110,12 @@ bool nativeMillSearchZeroTimeLimitAborts() =>
 Stream<EngineEvent> nativeMillSearchEvents({required int depth}) =>
     RustLib.instance.api.crateApiSimpleNativeMillSearchEvents(depth: depth);
 
+/// Request that the currently running native Rust search stops.
+///
+/// Returns false when no native search worker is active.
+bool nativeMillSearchStop() =>
+    RustLib.instance.api.crateApiSimpleNativeMillSearchStop();
+
 class EngineEvent {
   final String kind;
   final int depth;

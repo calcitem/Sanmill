@@ -98,5 +98,6 @@ void main() {
       'stopped',
     ]);
     expect(events[2].toNode, inInclusiveRange(0, 23));
+    expect(nativeMillSearchStop(), isFalse);
   });
 }

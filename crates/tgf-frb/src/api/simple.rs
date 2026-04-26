@@ -17,9 +17,11 @@ use tgf_mill::{
     default_mill_topology, MillActionKind, MillGame, MillRules,
     MillVariantOptions as NativeMillVariantOptions,
 };
-use tgf_search::{Searcher, SearchOptions};
+use tgf_search::{SearchAbortHandle, Searcher, SearchOptions};
 
 static LEGACY_KERNEL: Lazy<Mutex<Option<LegacyKernel>>> =
+    Lazy::new(|| Mutex::new(None));
+static ACTIVE_SEARCH: Lazy<Mutex<Option<SearchAbortHandle>>> =
     Lazy::new(|| Mutex::new(None));
 
 /// FRB required initialisation.  Called once at Flutter app startup before
@@ -414,6 +416,12 @@ pub fn native_mill_search_events(depth: i32, sink: StreamSink<EngineEvent>) {
         let snap = rules.initial_state(&[]);
         let mut wb = game.build_workbench(&snap);
         let mut searcher = Searcher::<MillGame>::new();
+        {
+            let mut active = ACTIVE_SEARCH
+                .lock()
+                .expect("active search mutex poisoned");
+            *active = Some(searcher.abort_handle());
+        }
 
         let result = searcher.search_pvs(&mut wb, depth.max(1));
         let _ = sink.add(EngineEvent::info(depth.max(1), result.score, result.nodes));
@@ -422,7 +430,27 @@ pub fn native_mill_search_events(depth: i32, sink: StreamSink<EngineEvent>) {
             result.score,
         ));
         let _ = sink.add(EngineEvent::stopped());
+        let mut active = ACTIVE_SEARCH
+            .lock()
+            .expect("active search mutex poisoned");
+        *active = None;
     });
+}
+
+/// Request that the currently running native Rust search stops.
+///
+/// Returns false when no native search worker is active.
+#[flutter_rust_bridge::frb(sync)]
+pub fn native_mill_search_stop() -> bool {
+    let active = ACTIVE_SEARCH
+        .lock()
+        .expect("active search mutex poisoned");
+    if let Some(handle) = active.as_ref() {
+        handle.request_abort();
+        true
+    } else {
+        false
+    }
 }
 
 #[cfg(test)]
