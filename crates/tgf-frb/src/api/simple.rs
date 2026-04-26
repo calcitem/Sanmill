@@ -235,3 +235,31 @@ pub fn native_mill_moving_mill_remove_count() -> u32 {
 pub fn native_mill_removal_below_three_winner() -> i32 {
     MillRules::removal_below_three_winner_smoke()
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn native_and_legacy_initial_legal_count_match() {
+        let legacy = LegacyKernel::new(0);
+        assert_eq!(legacy.legal_actions().len(), native_mill_initial_legal_count() as usize);
+        assert_eq!(native_mill_initial_legal_count(), 24);
+    }
+
+    #[test]
+    fn native_and_legacy_mill_sequence_remove_count_match() {
+        let mut legacy = LegacyKernel::new(0);
+        for mv in ["d7", "a1", "g7", "d1", "a7"] {
+            assert!(legacy.apply_uci(mv), "legacy C++ move should be legal: {mv}");
+        }
+        let remove_count = legacy
+            .legal_actions()
+            .iter()
+            .filter(|mv| mv.starts_with('x'))
+            .count();
+        assert_eq!(remove_count, 2);
+        assert_eq!(native_mill_mill_sequence_remove_count(), 2);
+        assert_eq!(remove_count, native_mill_mill_sequence_remove_count() as usize);
+    }
+}
