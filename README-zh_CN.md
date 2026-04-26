@@ -159,6 +159,31 @@ flutter run --dart-define catcher=false dev_mode=true
 
 为了便于使用，可以使用一些 Android Studio 或 Visual Studio Code 的启动配置。只需在“运行和调试”或“运行/调试配置”选项卡中选择所需要一个。
 
+### Rust / TGF 引擎工作区
+
+Sanmill 正在逐步迁移到 TGF (TabletopGameFramework)。TGF 是基于 Rust + FRB 的通用桌面棋牌框架，可被 Mill 以及未来的 tabletop / card game 复用。Rust 工作区位于 `crates/`：
+
+```shell
+cargo test --workspace
+cargo clippy --workspace --all-targets --all-features -- -D warnings
+```
+
+Flutter 与 Rust 之间的桥接由 flutter_rust_bridge (FRB) 生成。若系统中存在 `cargo` 与 `flutter_rust_bridge_codegen`，`./flutter-init.sh` 会自动构建 Rust 工作区并运行 FRB 代码生成。也可以手动运行：
+
+```shell
+cd src/ui/flutter_app
+flutter_rust_bridge_codegen generate
+```
+
+Rust 性能 smoke 结果使用与 `tests/perf_baseline.toml` 相同的 TOML 结构：
+
+```shell
+python scripts/record_rust_perf_baseline.py --output target/tgf_perf_result.toml
+python scripts/check_perf_baseline.py   --baseline tests/perf_baseline.toml   --result target/tgf_perf_result.toml
+```
+
+框架 API 契约请参阅 `docs/FRAMEWORK_API.md`。
+
 ### Qt 应用程序
 
 如果您已经开始使用 Ubuntu 或任何基于 Ubuntu 的 GNU/Linux 发行版，则必须通过以 root 身份运行以下命令来安装 Qt：
