@@ -130,8 +130,42 @@ jobs:
         if: steps.rust_check.outputs.exists == 'true'
         run: cargo fmt --all -- --check
 
+
   # -------------------------------------------------------------------------
-  # Gate 4: Rust performance baseline smoke check
+  # Gate 4: Rust tests
+  # Runs the full Rust workspace test suite.  This catches behavioral issues
+  # that clippy/fmt cannot see, including Rust-vs-C++ differential tests.
+  # -------------------------------------------------------------------------
+  cargo-test:
+    name: cargo test (workspace)
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Check if Rust workspace exists
+        id: rust_check
+        run: |
+          if [ -f "Cargo.toml" ]; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Set up Rust toolchain
+        if: steps.rust_check.outputs.exists == 'true'
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Cache Rust build artifacts
+        if: steps.rust_check.outputs.exists == 'true'
+        uses: Swatinem/rust-cache@v2
+
+      - name: Run cargo test --workspace
+        if: steps.rust_check.outputs.exists == 'true'
+        run: cargo test --workspace --all-features
+
+  # -------------------------------------------------------------------------
+  # Gate 5: Rust performance baseline smoke check
   # Runs the Rust TGF benchmark, writes TOML, and compares it with
   # tests/perf_baseline.toml using the same threshold script used for C++.
   # Empty/zero baseline fields are skipped until the baseline is populated.
