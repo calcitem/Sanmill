@@ -44,6 +44,21 @@ impl Default for SearchPolicy {
     }
 }
 
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub struct SearchOptions {
+    pub depth_extension: bool,
+    pub node_limit: Option<u64>,
+}
+
+impl Default for SearchOptions {
+    fn default() -> Self {
+        Self {
+            depth_extension: false,
+            node_limit: None,
+        }
+    }
+}
+
 pub struct Searcher<G: Game> {
     nodes: u64,
     rng_state: u64,
@@ -51,6 +66,8 @@ pub struct Searcher<G: Game> {
     killers: HashMap<i32, Action>,
     history: HashMap<Action, i32>,
     policy: SearchPolicy,
+    options: SearchOptions,
+    aborted: bool,
     _phantom: PhantomData<G>,
 }
 
@@ -63,6 +80,8 @@ impl<G: Game> Default for Searcher<G> {
             killers: HashMap::new(),
             history: HashMap::new(),
             policy: SearchPolicy::default(),
+            options: SearchOptions::default(),
+            aborted: false,
             _phantom: PhantomData,
         }
     }
@@ -99,8 +118,17 @@ impl<G: Game> Searcher<G> {
         self.policy = policy;
     }
 
+    pub fn set_options(&mut self, options: SearchOptions) {
+        self.options = options;
+    }
+
+    pub fn was_aborted(&self) -> bool {
+        self.aborted
+    }
+
     pub fn search(&mut self, wb: &mut G::Workbench, depth: i32) -> SearchResult {
         self.nodes = 0;
+        self.aborted = false;
         let mut moves = ActionList::<256>::new();
         G::generate_legal(wb, &mut moves);
         self.order_moves(wb.key(), depth, &mut moves);
@@ -115,6 +143,9 @@ impl<G: Game> Searcher<G> {
         let mut best_action = moves[0];
         let mut best_score = i32::MIN + 1;
         for action in moves {
+            if self.should_abort() {
+                break;
+            }
             let before = wb.side_to_move();
             wb.do_move(action);
             let after = wb.side_to_move();
@@ -146,6 +177,7 @@ impl<G: Game> Searcher<G> {
     /// shape of `Search::pvs` in the mature C++ engine.
     pub fn search_pvs(&mut self, wb: &mut G::Workbench, depth: i32) -> SearchResult {
         self.nodes = 0;
+        self.aborted = false;
         let mut moves = ActionList::<256>::new();
         G::generate_legal(wb, &mut moves);
         self.order_moves(wb.key(), depth, &mut moves);
@@ -162,6 +194,9 @@ impl<G: Game> Searcher<G> {
         let beta = i32::MAX - 1;
 
         for (i, action) in moves.into_iter().enumerate() {
+            if self.should_abort() {
+                break;
+            }
             let before = wb.side_to_move();
             wb.do_move(action);
             let after = wb.side_to_move();
@@ -257,6 +292,9 @@ impl<G: Game> Searcher<G> {
         beta: i32,
     ) -> i32 {
         self.nodes += 1;
+        if self.should_abort() {
+            return G::Evaluator::score(wb);
+        }
         if depth <= 0 || wb.is_terminal() {
             return self.qsearch(wb, alpha, beta);
         }
@@ -276,11 +314,20 @@ impl<G: Game> Searcher<G> {
 
         let mut best_value = i32::MIN + 1;
         let mut best_action = Action::NONE;
+        let depth_extension = if self.options.depth_extension && moves.len() == 1 {
+            1
+        } else {
+            0
+        };
         for action in moves {
+            if self.should_abort() {
+                return best_value.max(alpha);
+            }
             let before = wb.side_to_move();
             wb.do_move(action);
             let after = wb.side_to_move();
-            let score = self.search_after_move(wb, depth - 1, alpha, beta, before, after);
+            let score =
+                self.search_after_move(wb, depth - 1 + depth_extension, alpha, beta, before, after);
             wb.undo_move();
             if score > best_value {
                 best_value = score;
@@ -304,11 +351,24 @@ impl<G: Game> Searcher<G> {
         alpha
     }
 
+    #[inline]
+    fn should_abort(&mut self) -> bool {
+        if let Some(limit) = self.options.node_limit {
+            if self.nodes >= limit {
+                self.aborted = true;
+            }
+        }
+        self.aborted
+    }
+
     /// Quiescence search scaffold matching the C++ shape: evaluate the current
     /// position, then extend only remove/capture actions when the game policy
     /// tells us which action kind represents a removal.
     pub fn qsearch(&mut self, wb: &mut G::Workbench, mut alpha: i32, beta: i32) -> i32 {
         self.nodes += 1;
+        if self.should_abort() {
+            return G::Evaluator::score(wb);
+        }
         let stand_pat = G::Evaluator::score(wb);
         if stand_pat >= beta {
             return beta;
@@ -755,5 +815,37 @@ mod tests {
         let score = searcher.qsearch(&mut wb, i32::MIN + 1, i32::MAX - 1);
         assert!(score > i32::MIN + 1);
         assert!(score < i32::MAX - 1);
+    }
+
+    #[test]
+    fn node_limit_marks_search_as_aborted() {
+        let rules = MillRules::default();
+        let game = MillGame::default();
+        let snap = rules.initial_state(&[]);
+        let mut wb = game.build_workbench(&snap);
+        let mut searcher = Searcher::<MillGame>::new();
+        searcher.set_options(SearchOptions {
+            depth_extension: false,
+            node_limit: Some(1),
+        });
+
+        let _ = searcher.search(&mut wb, 3);
+        assert!(searcher.was_aborted());
+    }
+
+    #[test]
+    fn depth_extension_option_is_accepted() {
+        let rules = MillRules::default();
+        let game = MillGame::default();
+        let snap = rules.initial_state(&[]);
+        let mut wb = game.build_workbench(&snap);
+        let mut searcher = Searcher::<MillGame>::new();
+        searcher.set_options(SearchOptions {
+            depth_extension: true,
+            node_limit: None,
+        });
+
+        let result = searcher.search(&mut wb, 1);
+        assert!(!result.best_action.is_none());
     }
 }
