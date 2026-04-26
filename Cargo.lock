@@ -1092,6 +1092,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "tgf-othello"
+version = "0.1.0"
+dependencies = [
+ "tgf-core",
+ "tgf-search",
+]
+
+[[package]]
 name = "tgf-search"
 version = "0.1.0"
 dependencies = [

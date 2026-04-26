@@ -11,7 +11,7 @@ pub mod game_state;
 
 // Convenience re-exports for downstream crates.
 pub use action::{Action, ActionList};
-pub use board_topology::BoardTopology;
+pub use board_topology::{BoardTopology, Decoration, Edge, UnitPoint, Zone};
 pub use game::{Evaluator, Game, GameRules, Workbench};
 pub use game_state::{GameStateSnapshot, Outcome, OutcomeKind};
 

@@ -1,0 +1,12 @@
+[package]
+name        = "tgf-othello"
+version     = "0.1.0"
+edition     = "2021"
+description = "TGF – Othello/Reversi pressure-test game implementation"
+license     = "GPL-3.0-or-later"
+
+[dependencies]
+tgf-core = { path = "../tgf-core" }
+
+[dev-dependencies]
+tgf-search = { path = "../tgf-search" }

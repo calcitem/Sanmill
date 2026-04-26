@@ -3,6 +3,7 @@ resolver = "2"
 members = [
     "crates/tgf-core",
     "crates/tgf-mill",
+    "crates/tgf-othello",
     "crates/tgf-search",
     "crates/tgf-frb",
     "crates/tgf-cli",
