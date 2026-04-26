@@ -739,6 +739,78 @@ mod tests {
         assert_eq!(legacy.perft(2), perft::<MillGame>(&mut wb, 2));
     }
 
+
+    #[test]
+    fn native_and_legacy_after_non_mill_move_legal_action_sets_match() {
+        let _guard = LEGACY_TEST_MUTEX.lock().expect("legacy test mutex poisoned");
+        let legacy_seq = [
+            "d7", "g7", "g4", "a7", "a4", "g1", "f6", "d6", "b6",
+            "d2", "f2", "a1", "e5", "c5", "c4", "d5", "e3", "c3",
+        ];
+        let native_seq = [
+            1_i16, 2, 3, 0, 7, 4, 10, 9, 8, 13, 12, 6, 18, 16, 23, 17, 20, 22,
+        ];
+
+        let mut legacy = LegacyKernel::new(0);
+        for mv in legacy_seq {
+            assert!(legacy.apply_uci(mv), "legacy C++ move should be legal: {mv}");
+        }
+        assert!(legacy.apply_uci("e5-e4"));
+
+        let rules = MillRules::default();
+        let mut native = apply_native_sequence(&native_seq);
+        native = rules.apply(
+            &native,
+            Action {
+                kind_tag: MillActionKind::Move as i16,
+                from_node: 18, // e5
+                to_node: 19,   // e4
+                aux: -1,
+                payload_bits: 0,
+            },
+        );
+
+        assert_eq!(legacy_legal_uci_set(&legacy), native_legal_uci_set(&native));
+    }
+
+    #[test]
+    fn native_and_legacy_after_non_mill_move_perft_match() {
+        let _guard = LEGACY_TEST_MUTEX.lock().expect("legacy test mutex poisoned");
+        let legacy_seq = [
+            "d7", "g7", "g4", "a7", "a4", "g1", "f6", "d6", "b6",
+            "d2", "f2", "a1", "e5", "c5", "c4", "d5", "e3", "c3",
+        ];
+        let native_seq = [
+            1_i16, 2, 3, 0, 7, 4, 10, 9, 8, 13, 12, 6, 18, 16, 23, 17, 20, 22,
+        ];
+
+        let mut legacy = LegacyKernel::new(0);
+        for mv in legacy_seq {
+            assert!(legacy.apply_uci(mv), "legacy C++ move should be legal: {mv}");
+        }
+        assert!(legacy.apply_uci("e5-e4"));
+
+        let rules = MillRules::default();
+        let game = MillGame::default();
+        let mut native = apply_native_sequence(&native_seq);
+        native = rules.apply(
+            &native,
+            Action {
+                kind_tag: MillActionKind::Move as i16,
+                from_node: 18,
+                to_node: 19,
+                aux: -1,
+                payload_bits: 0,
+            },
+        );
+
+        let mut wb = game.build_workbench(&native);
+        assert_eq!(legacy.perft(1), perft::<MillGame>(&mut wb, 1));
+
+        let mut wb = game.build_workbench(&native);
+        assert_eq!(legacy.perft(2), perft::<MillGame>(&mut wb, 2));
+    }
+
     #[test]
     fn native_and_legacy_pending_remove_legal_action_sets_match() {
         let _guard = LEGACY_TEST_MUTEX.lock().expect("legacy test mutex poisoned");
