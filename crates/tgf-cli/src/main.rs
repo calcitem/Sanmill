@@ -6,7 +6,7 @@ use std::time::{Duration, Instant};
 
 use tgf_core::{Action, ActionList, BoardTopology, Game, GameRules, GameStateSnapshot};
 use tgf_mill::{default_mill_topology, MillActionKind, MillGame, MillRules};
-use tgf_search::{perft, Searcher};
+use tgf_search::{perft, SearchOptions, Searcher};
 
 fn main() {
     let mut args = std::env::args().skip(1);
@@ -44,15 +44,26 @@ fn run_uci_loop() {
         } else if line.starts_with("position") {
             state = parse_position_command(&rules, line);
         } else if line.starts_with("go") {
-            let depth = parse_depth(line).unwrap_or(1);
+            let go = parse_go_options(line);
             let game = MillGame::default();
             let mut wb = game.build_workbench(&state);
             let mut searcher = Searcher::<MillGame>::new();
-            let result = searcher.search_pvs(&mut wb, depth);
+            searcher.set_options(SearchOptions {
+                depth_extension: false,
+                node_limit: None,
+                time_limit_ms: go.movetime_ms,
+            });
+            let result = searcher.search_pvs(&mut wb, go.depth);
+            println!(
+                "info depth {} score cp {} nodes {}",
+                go.depth, result.score, result.nodes
+            );
             println!(
                 "bestmove {}",
                 action_to_uci(result.best_action).unwrap_or_else(|| "(none)".to_owned())
             );
+        } else if line == "stop" {
+            println!("bestmove (none)");
         } else if line == "quit" {
             break;
         } else {
@@ -81,12 +92,25 @@ fn parse_position_command(rules: &MillRules, line: &str) -> GameStateSnapshot {
     state
 }
 
-fn parse_depth(line: &str) -> Option<i32> {
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+struct GoOptions {
+    depth: i32,
+    movetime_ms: Option<u64>,
+}
+
+fn parse_go_options(line: &str) -> GoOptions {
     let tokens = line.split_whitespace().collect::<Vec<_>>();
-    tokens
+    let depth = tokens
         .windows(2)
         .find(|w| w[0] == "depth")
         .and_then(|w| w[1].parse::<i32>().ok())
+        .unwrap_or(1)
+        .max(1);
+    let movetime_ms = tokens
+        .windows(2)
+        .find(|w| w[0] == "movetime")
+        .and_then(|w| w[1].parse::<u64>().ok());
+    GoOptions { depth, movetime_ms }
 }
 
 fn action_from_uci(rules: &MillRules, state: &GameStateSnapshot, move_uci: &str) -> Option<Action> {
