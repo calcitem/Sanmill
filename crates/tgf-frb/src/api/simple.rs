@@ -17,7 +17,7 @@ use tgf_mill::{
     default_mill_topology, MillActionKind, MillGame, MillRules,
     MillVariantOptions as NativeMillVariantOptions,
 };
-use tgf_search::{SearchAbortHandle, Searcher, SearchOptions};
+use tgf_search::{MctsSearcher, SearchAbortHandle, Searcher, SearchOptions};
 #[cfg(test)]
 use tgf_search::perft;
 
@@ -383,6 +383,20 @@ pub fn native_mill_random_best_to_node(seed: u64) -> i32 {
     let mut searcher = Searcher::<MillGame>::new();
     searcher.set_random_seed(seed);
     searcher.random_search(&mut wb).best_action.to_node as i32
+}
+
+/// Run the Rust generic MCTS scaffold and return the selected destination node.
+#[flutter_rust_bridge::frb(sync)]
+pub fn native_mill_mcts_best_to_node(seed: u64, iterations_per_move: u32) -> i32 {
+    let rules = MillRules::default();
+    let game = MillGame::default();
+    let snap = rules.initial_state(&[]);
+    let mut wb = game.build_workbench(&snap);
+    let mut mcts = MctsSearcher::<MillGame>::new();
+    mcts.set_random_seed(seed);
+    mcts.search(&mut wb, iterations_per_move.max(1), 2)
+        .best_action
+        .to_node as i32
 }
 
 /// Differential perft check: returns true when the Rust-native MillRules and

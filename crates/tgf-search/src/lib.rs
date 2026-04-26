@@ -659,6 +659,118 @@ impl<G: Game> Searcher<G> {
     }
 }
 
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub struct MctsResult {
+    pub best_action: Action,
+    pub visits: u32,
+    pub wins: u32,
+}
+
+pub struct MctsSearcher<G: Game> {
+    rng_state: u64,
+    _phantom: PhantomData<G>,
+}
+
+impl<G: Game> Default for MctsSearcher<G> {
+    fn default() -> Self {
+        Self {
+            rng_state: 0xD1B5_4A32_D192_ED03,
+            _phantom: PhantomData,
+        }
+    }
+}
+
+impl<G: Game> MctsSearcher<G> {
+    pub fn new() -> Self {
+        Self::default()
+    }
+
+    pub fn set_random_seed(&mut self, seed: u64) {
+        self.rng_state = if seed == 0 { 0xD1B5_4A32_D192_ED03 } else { seed };
+    }
+
+    /// Lightweight MCTS scaffold: evaluate every root move with deterministic
+    /// random playouts and pick the move with the highest win count.
+    ///
+    /// This is not the final C++-equivalent UCT tree. It establishes the
+    /// generic MCTS surface over `G: Game` and the simulation/backprop data
+    /// shape, so later work can replace the root-only statistics with a full
+    /// tree without changing callers.
+    pub fn search(
+        &mut self,
+        wb: &mut G::Workbench,
+        iterations_per_move: u32,
+        playout_depth: i32,
+    ) -> MctsResult {
+        let mut moves = ActionList::<256>::new();
+        G::generate_legal(wb, &mut moves);
+        if moves.is_empty() {
+            return MctsResult {
+                best_action: Action::NONE,
+                visits: 0,
+                wins: 0,
+            };
+        }
+
+        let mut best_action = moves[0];
+        let mut best_visits = 0_u32;
+        let mut best_wins = 0_u32;
+
+        for action in moves {
+            let mut wins = 0_u32;
+            let mut visits = 0_u32;
+            for _ in 0..iterations_per_move.max(1) {
+                wb.do_move(action);
+                let win = self.simulate(wb, playout_depth);
+                wb.undo_move();
+                visits += 1;
+                if win {
+                    wins += 1;
+                }
+            }
+            if wins > best_wins || (wins == best_wins && visits > best_visits) {
+                best_action = action;
+                best_wins = wins;
+                best_visits = visits;
+            }
+        }
+
+        MctsResult {
+            best_action,
+            visits: best_visits,
+            wins: best_wins,
+        }
+    }
+
+    fn simulate(&mut self, wb: &mut G::Workbench, depth: i32) -> bool {
+        if depth <= 0 || wb.is_terminal() {
+            return G::Evaluator::score(wb) > 0;
+        }
+        let mut moves = ActionList::<256>::new();
+        G::generate_legal(wb, &mut moves);
+        if moves.is_empty() {
+            return G::Evaluator::score(wb) > 0;
+        }
+        let idx = self.next_random_index(moves.len());
+        wb.do_move(moves[idx]);
+        let win = !self.simulate(wb, depth - 1);
+        wb.undo_move();
+        win
+    }
+
+    fn next_random_index(&mut self, len: usize) -> usize {
+        debug_assert!(len > 0);
+        let mut x = self.rng_state;
+        x ^= x >> 12;
+        x ^= x << 25;
+        x ^= x >> 27;
+        self.rng_state = x;
+        let value = x.wrapping_mul(0x2545_F491_4F6C_DD1D);
+        (value as usize) % len
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -1003,5 +1115,20 @@ mod tests {
         assert!(!searcher.was_aborted());
         handle.request_abort();
         assert!(handle.is_aborted());
+    }
+
+    #[test]
+    fn mill_mcts_returns_a_legal_opening_action() {
+        let rules = MillRules::default();
+        let game = MillGame::default();
+        let snap = rules.initial_state(&[]);
+        let mut wb = game.build_workbench(&snap);
+        let mut mcts = MctsSearcher::<MillGame>::new();
+        mcts.set_random_seed(2026);
+
+        let result = mcts.search(&mut wb, 2, 2);
+        assert!(!result.best_action.is_none());
+        assert_eq!(result.best_action.kind_tag, MillActionKind::Place as i16);
+        assert!(result.visits > 0);
     }
 }

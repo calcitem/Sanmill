@@ -98,6 +98,15 @@ int nativeMillPvsDepthOneBestToNode() =>
 int nativeMillRandomBestToNode({required BigInt seed}) =>
     RustLib.instance.api.crateApiSimpleNativeMillRandomBestToNode(seed: seed);
 
+/// Run the Rust generic MCTS scaffold and return the selected destination node.
+int nativeMillMctsBestToNode({
+  required BigInt seed,
+  required int iterationsPerMove,
+}) => RustLib.instance.api.crateApiSimpleNativeMillMctsBestToNode(
+  seed: seed,
+  iterationsPerMove: iterationsPerMove,
+);
+
 /// Differential perft check: returns true when the Rust-native MillRules and
 /// the legacy C++ engine produce identical perft counts at the given depth.
 bool nativeAndLegacyPerftMatch({required int depth}) =>
