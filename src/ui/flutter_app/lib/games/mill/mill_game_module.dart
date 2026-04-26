@@ -11,6 +11,7 @@ import '../../game_page/widgets/dialogs/lan_config_dialog.dart';
 import '../../game_page/widgets/game_page.dart' show GamePage;
 import '../../game_platform/board_geometry.dart';
 import '../../game_platform/engine/engine_port.dart';
+import '../../game_platform/engine/native_topology.dart';
 import '../../game_platform/game_export.dart';
 import '../../game_platform/game_feature_flags.dart';
 import '../../game_platform/game_id.dart';
@@ -35,7 +36,6 @@ import '../../shared/services/snackbar_service.dart';
 import '../../shared/themes/app_theme.dart';
 import '../../statistics/widgets/stats_page.dart';
 import 'mill_action_codec.dart';
-import 'mill_board_geometry.dart';
 import 'mill_engine_port.dart';
 import 'mill_game_session.dart';
 import 'mill_notation_port.dart';
@@ -66,7 +66,8 @@ class MillGameModule extends GameModule {
   );
 
   @override
-  BoardGeometry get boardGeometry => millDefaultBoardGeometry;
+  BoardGeometry get boardGeometry =>
+      const NativeTopologyFactory().millBoardGeometry();
 
   /// Mill legacy [Hive] models use scattered low typeId values (0–~38) — frozen.
   @override

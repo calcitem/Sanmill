@@ -14,8 +14,8 @@ class NativeTopologyFactory {
   /// Fetch the standard Mill topology from Rust and convert it to BoardGeometry.
   ///
   /// The returned geometry intentionally keeps the same dense node ids (0..23)
-  /// as the pre-existing Dart mill_board_geometry.dart file, so current Flutter
-  /// painters and hit testing can migrate without coordinate changes.
+  /// used by the legacy Mill UI, so current Flutter painters and hit testing
+  /// can migrate without coordinate changes.
   BoardGeometry millBoardGeometry() {
     final tgf.TopologyBlob blob = tgf.kernelTopology();
 
