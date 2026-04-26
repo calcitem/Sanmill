@@ -1,0 +1,25 @@
+[workspace]
+resolver = "2"
+members = [
+    "crates/tgf-core",
+    "crates/tgf-mill",
+    "crates/tgf-search",
+    "crates/tgf-frb",
+    "crates/tgf-cli",
+    "crates/tgf-legacy-cxx",
+]
+
+[profile.release]
+# Zero-cost: strip symbols, enable LTO, single codegen unit for maximum
+# inlining across crate boundaries (critical for Searcher<G> hot path).
+lto            = "fat"
+codegen-units  = 1
+panic          = "abort"  # removes unwind tables, equivalent to C++ -fno-exceptions
+opt-level      = 3
+strip          = "symbols"
+
+[profile.release.build-override]
+opt-level = 3
+
+[profile.dev]
+panic = "abort"

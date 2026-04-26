@@ -1,0 +1,18 @@
+[package]
+name        = "tgf-frb"
+version     = "0.1.0"
+edition     = "2021"
+description = "TGF – flutter_rust_bridge v2 public API surface; compiled as a cdylib for each Flutter target platform"
+license     = "GPL-3.0-or-later"
+
+# cdylib  → platform dynamic library loaded by Flutter via dart:ffi.
+# staticlib → for iOS (linked into the Runner app binary via Xcode).
+# rlib    → for Rust unit tests.
+[lib]
+crate-type = ["cdylib", "staticlib", "rlib"]
+
+[dependencies]
+tgf-core  = { path = "../tgf-core" }
+tgf-mill  = { path = "../tgf-mill" }
+tgf-search = { path = "../tgf-search" }
+flutter_rust_bridge = "=2.12.0"

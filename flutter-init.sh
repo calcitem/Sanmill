@@ -74,3 +74,27 @@ sed -i.bak -e ':a' -e 'N' -e '$!ba' -e 's/}\([[:space:]]*\)$/};\1/' "${FLUTTER_V
 
 ( cd "${APP_DIR}" && dart run build_runner build --delete-conflicting-outputs )
 ( cd "${APP_DIR}" && flutter gen-l10n )
+
+# ---------------------------------------------------------------------------
+# Phase 1+: Rust workspace build and FRB code generation.
+# These steps are skipped silently when the Rust toolchain or
+# flutter_rust_bridge_codegen is not installed; the Flutter app falls back
+# to the C++ MethodChannel engine in that case.
+# ---------------------------------------------------------------------------
+RUST_CRATE_DIR="${SCRIPT_DIR}/crates/tgf-frb"
+if command -v cargo &>/dev/null; then
+  echo "[flutter-init] Building Rust workspace (cargo build --workspace)..."
+  ( cd "${SCRIPT_DIR}" && cargo build --workspace ) || \
+    echo "[flutter-init] WARN: Rust workspace build failed (see above); app will use C++ engine."
+else
+  echo "[flutter-init] SKIP: cargo not found; Rust workspace not built."
+fi
+
+if command -v flutter_rust_bridge_codegen &>/dev/null; then
+  echo "[flutter-init] Running FRB codegen (flutter_rust_bridge_codegen generate)..."
+  ( cd "${APP_DIR}" && flutter_rust_bridge_codegen generate ) || \
+    echo "[flutter-init] WARN: FRB codegen failed (see above)."
+else
+  echo "[flutter-init] SKIP: flutter_rust_bridge_codegen not found; using committed generated files."
+fi
+

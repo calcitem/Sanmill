@@ -39,6 +39,7 @@ import 'shared/themes/app_theme.dart';
 import 'shared/utils/localizations/feedback_localization.dart';
 import 'shared/utils/localizations/sanmill_localizations.dart';
 import 'shared/widgets/snackbars/scaffold_messenger.dart';
+import 'src/rust/frb_generated.dart';
 import 'statistics/services/stats_service.dart';
 
 // Voice assistant functionality disabled
@@ -53,6 +54,11 @@ Future<void> main() async {
   // if (EnvironmentConfig.test) {
   //   enableFlutterDriverExtension();
   // }
+
+  // Initialise the Rust/FRB bridge before any other app services.
+  // This loads the platform native library (tgf_frb.so / .dylib / .dll)
+  // and sets up the async task dispatcher.
+  await RustLib.init();
 
   await DB.init();
 

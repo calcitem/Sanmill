@@ -1,0 +1,10 @@
+[package]
+name        = "tgf-core"
+version     = "0.1.0"
+edition     = "2021"
+description = "TGF – core traits and POD types (Game, Workbench, Evaluator, BoardTopology, Action, GameStateSnapshot)"
+license     = "GPL-3.0-or-later"
+
+[dependencies]
+arrayvec = "0.7"
+thiserror = "1"

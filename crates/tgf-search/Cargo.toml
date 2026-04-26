@@ -1,0 +1,16 @@
+[package]
+name        = "tgf-search"
+version     = "0.1.0"
+edition     = "2021"
+description = "TGF – generic game-tree searcher (αβ / MTD(f) / MCTS), monomorphised via Searcher<G: Game>"
+license     = "GPL-3.0-or-later"
+
+[dependencies]
+tgf-core = { path = "../tgf-core" }
+
+[dev-dependencies]
+criterion = { version = "0.5", features = ["html_reports"] }
+
+[[bench]]
+name    = "searcher"
+harness = false

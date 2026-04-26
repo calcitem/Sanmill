@@ -1,0 +1,14 @@
+[toolchain]
+# Pin the Rust toolchain so CI and contributors always get the same compiler
+# version, preventing silent ABI/behaviour differences across releases.
+channel = "1.95.0"
+components = ["rustfmt", "clippy"]
+targets = [
+    # Android: four ABIs (matches what cargo-ndk builds by default)
+    "aarch64-linux-android",
+    "armv7-linux-androideabi",
+    "i686-linux-android",
+    "x86_64-linux-android",
+    # Windows host (current dev environment)
+    "x86_64-pc-windows-msvc",
+]

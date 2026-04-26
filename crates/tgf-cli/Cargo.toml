@@ -1,0 +1,15 @@
+[package]
+name        = "tgf-cli"
+version     = "0.1.0"
+edition     = "2021"
+description = "TGF – UCI command-line interface for headless engine operation and benchmarking"
+license     = "GPL-3.0-or-later"
+
+[[bin]]
+name = "tgf"
+path = "src/main.rs"
+
+[dependencies]
+tgf-core   = { path = "../tgf-core" }
+tgf-mill   = { path = "../tgf-mill" }
+tgf-search = { path = "../tgf-search" }

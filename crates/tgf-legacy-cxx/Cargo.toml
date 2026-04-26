@@ -1,0 +1,9 @@
+[package]
+name        = "tgf-legacy-cxx"
+version     = "0.1.0"
+edition     = "2021"
+description = "TGF – transitional cxx::bridge wrapping the legacy C++ engine (Phases 2-5 only)"
+license     = "GPL-3.0-or-later"
+
+[dependencies]
+tgf-core = { path = "../tgf-core" }
