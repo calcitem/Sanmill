@@ -927,6 +927,18 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "dc897dd8d9e8bd1ed8cdad82b5966c3e0ecae09fb1907d58efaa013543185d0a"
 
 [[package]]
+name = "rust_lib_sanmill"
+version = "0.1.0"
+dependencies = [
+ "flutter_rust_bridge",
+ "once_cell",
+ "tgf-core",
+ "tgf-legacy-cxx",
+ "tgf-mill",
+ "tgf-search",
+]
+
+[[package]]
 name = "rustc-demangle"
 version = "0.1.27"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1061,18 +1073,6 @@ version = "0.1.0"
 dependencies = [
  "arrayvec",
  "thiserror",
-]
-
-[[package]]
-name = "tgf-frb"
-version = "0.1.0"
-dependencies = [
- "flutter_rust_bridge",
- "once_cell",
- "tgf-core",
- "tgf-legacy-cxx",
- "tgf-mill",
- "tgf-search",
 ]
 
 [[package]]

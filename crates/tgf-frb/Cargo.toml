@@ -1,5 +1,5 @@
 [package]
-name        = "tgf-frb"
+name        = "rust_lib_sanmill"
 version     = "0.1.0"
 edition     = "2021"
 description = "TGF – flutter_rust_bridge v2 public API surface; compiled as a cdylib for each Flutter target platform"
@@ -9,6 +9,7 @@ license     = "GPL-3.0-or-later"
 # staticlib → for iOS (linked into the Runner app binary via Xcode).
 # rlib    → for Rust unit tests.
 [lib]
+name = "rust_lib_sanmill"
 crate-type = ["cdylib", "staticlib", "rlib"]
 
 [dependencies]
