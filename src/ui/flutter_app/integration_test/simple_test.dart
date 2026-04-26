@@ -83,4 +83,20 @@ void main() {
     );
     expect(nativeMillSearchZeroTimeLimitAborts(), isTrue);
   });
+
+  testWidgets('Rust-native search emits event stream', (
+    WidgetTester tester,
+  ) async {
+    final List<EngineEvent> events = await nativeMillSearchEvents(
+      depth: 1,
+    ).take(4).toList();
+
+    expect(events.map((EngineEvent e) => e.kind), <String>[
+      'ready',
+      'info',
+      'bestMove',
+      'stopped',
+    ]);
+    expect(events[2].toNode, inInclusiveRange(0, 23));
+  });
 }

@@ -8,6 +8,9 @@
 
 use once_cell::sync::Lazy;
 use std::sync::Mutex;
+use std::thread;
+
+use crate::frb_generated::StreamSink;
 use tgf_core::{Action, ActionList, BoardTopology, Game, GameRules};
 use tgf_legacy_cxx::LegacyKernel;
 use tgf_mill::{
@@ -169,6 +172,59 @@ pub struct TopologyBlob {
     pub points: Vec<TopologyPoint>,
     pub edges: Vec<TopologyEdge>,
     pub line_groups: Vec<Vec<u16>>,
+}
+
+#[derive(Clone, Debug)]
+pub struct EngineEvent {
+    pub kind: String,
+    pub depth: i32,
+    pub score: i32,
+    pub nodes: u64,
+    pub to_node: i32,
+    pub reason: String,
+}
+
+impl EngineEvent {
+    fn ready() -> Self {
+        Self::new("ready")
+    }
+
+    fn stopped() -> Self {
+        Self::new("stopped")
+    }
+
+    fn info(depth: i32, score: i32, nodes: u64) -> Self {
+        Self {
+            kind: "info".to_owned(),
+            depth,
+            score,
+            nodes,
+            to_node: -1,
+            reason: String::new(),
+        }
+    }
+
+    fn best_move(to_node: i32, score: i32) -> Self {
+        Self {
+            kind: "bestMove".to_owned(),
+            depth: 0,
+            score,
+            nodes: 0,
+            to_node,
+            reason: String::new(),
+        }
+    }
+
+    fn new(kind: &str) -> Self {
+        Self {
+            kind: kind.to_owned(),
+            depth: 0,
+            score: 0,
+            nodes: 0,
+            to_node: -1,
+            reason: String::new(),
+        }
+    }
 }
 
 /// Return the Rust-native standard 24-point Mill topology.
@@ -340,6 +396,33 @@ pub fn native_mill_search_zero_time_limit_aborts() -> bool {
     });
     let _ = searcher.search(&mut wb, 3);
     searcher.was_aborted()
+}
+
+/// Phase 5 async search event stream.
+///
+/// This is intentionally minimal: it spawns a worker thread, runs the native
+/// Rust Searcher<MillGame>, and emits Ready / Info / BestMove / Stopped.
+/// Later work replaces this with a cancellable long-lived search worker.
+pub fn native_mill_search_events(depth: i32, sink: StreamSink<EngineEvent>) {
+    thread::spawn(move || {
+        if sink.add(EngineEvent::ready()).is_err() {
+            return;
+        }
+
+        let rules = MillRules::default();
+        let game = MillGame::default();
+        let snap = rules.initial_state(&[]);
+        let mut wb = game.build_workbench(&snap);
+        let mut searcher = Searcher::<MillGame>::new();
+
+        let result = searcher.search_pvs(&mut wb, depth.max(1));
+        let _ = sink.add(EngineEvent::info(depth.max(1), result.score, result.nodes));
+        let _ = sink.add(EngineEvent::best_move(
+            result.best_action.to_node as i32,
+            result.score,
+        ));
+        let _ = sink.add(EngineEvent::stopped());
+    });
 }
 
 #[cfg(test)]

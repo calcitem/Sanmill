@@ -66,7 +66,7 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
   String get codegenVersion => '2.12.0';
 
   @override
-  int get rustContentHash => 1283939073;
+  int get rustContentHash => 1820015275;
 
   static const kDefaultExternalLibraryLoaderConfig =
       ExternalLibraryLoaderConfig(
@@ -115,6 +115,10 @@ abstract class RustLibApi extends BaseApi {
   int crateApiSimpleNativeMillRemovalBelowThreeWinner();
 
   int crateApiSimpleNativeMillSearchDepthOneBestToNode();
+
+  Stream<EngineEvent> crateApiSimpleNativeMillSearchEvents({
+    required int depth,
+  });
 
   bool crateApiSimpleNativeMillSearchZeroTimeLimitAborts();
 
@@ -585,12 +589,50 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
+  Stream<EngineEvent> crateApiSimpleNativeMillSearchEvents({
+    required int depth,
+  }) {
+    final sink = RustStreamSink<EngineEvent>();
+    unawaited(
+      handler.executeNormal(
+        NormalTask(
+          callFfi: (port_) {
+            final serializer = SseSerializer(generalizedFrbRustBinding);
+            sse_encode_i_32(depth, serializer);
+            sse_encode_StreamSink_engine_event_Sse(sink, serializer);
+            pdeCallFfi(
+              generalizedFrbRustBinding,
+              serializer,
+              funcId: 19,
+              port: port_,
+            );
+          },
+          codec: SseCodec(
+            decodeSuccessData: sse_decode_unit,
+            decodeErrorData: null,
+          ),
+          constMeta: kCrateApiSimpleNativeMillSearchEventsConstMeta,
+          argValues: [depth, sink],
+          apiImpl: this,
+        ),
+      ),
+    );
+    return sink.stream;
+  }
+
+  TaskConstMeta get kCrateApiSimpleNativeMillSearchEventsConstMeta =>
+      const TaskConstMeta(
+        debugName: "native_mill_search_events",
+        argNames: ["depth", "sink"],
+      );
+
+  @override
   bool crateApiSimpleNativeMillSearchZeroTimeLimitAborts() {
     return handler.executeSync(
       SyncTask(
         callFfi: () {
           final serializer = SseSerializer(generalizedFrbRustBinding);
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 19)!;
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 20)!;
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_bool,
@@ -616,7 +658,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       SyncTask(
         callFfi: () {
           final serializer = SseSerializer(generalizedFrbRustBinding);
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 20)!;
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 21)!;
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_String,
@@ -638,7 +680,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       SyncTask(
         callFfi: () {
           final serializer = SseSerializer(generalizedFrbRustBinding);
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 21)!;
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 22)!;
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_String,
@@ -653,6 +695,20 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   TaskConstMeta get kCrateApiSimpleTgfVersionConstMeta =>
       const TaskConstMeta(debugName: "tgf_version", argNames: []);
+
+  @protected
+  AnyhowException dco_decode_AnyhowException(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return AnyhowException(raw as String);
+  }
+
+  @protected
+  RustStreamSink<EngineEvent> dco_decode_StreamSink_engine_event_Sse(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    throw UnimplementedError();
+  }
 
   @protected
   String dco_decode_String(dynamic raw) {
@@ -670,6 +726,22 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   MillVariantOptions dco_decode_box_autoadd_mill_variant_options(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return dco_decode_mill_variant_options(raw);
+  }
+
+  @protected
+  EngineEvent dco_decode_engine_event(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 6)
+      throw Exception('unexpected arr length: expect 6 but see ${arr.length}');
+    return EngineEvent(
+      kind: dco_decode_String(arr[0]),
+      depth: dco_decode_i_32(arr[1]),
+      score: dco_decode_i_32(arr[2]),
+      nodes: dco_decode_u_64(arr[3]),
+      toNode: dco_decode_i_32(arr[4]),
+      reason: dco_decode_String(arr[5]),
+    );
   }
 
   @protected
@@ -806,6 +878,21 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  AnyhowException sse_decode_AnyhowException(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var inner = sse_decode_String(deserializer);
+    return AnyhowException(inner);
+  }
+
+  @protected
+  RustStreamSink<EngineEvent> sse_decode_StreamSink_engine_event_Sse(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    throw UnimplementedError('Unreachable ()');
+  }
+
+  @protected
   String sse_decode_String(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var inner = sse_decode_list_prim_u_8_strict(deserializer);
@@ -824,6 +911,25 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return (sse_decode_mill_variant_options(deserializer));
+  }
+
+  @protected
+  EngineEvent sse_decode_engine_event(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_kind = sse_decode_String(deserializer);
+    var var_depth = sse_decode_i_32(deserializer);
+    var var_score = sse_decode_i_32(deserializer);
+    var var_nodes = sse_decode_u_64(deserializer);
+    var var_toNode = sse_decode_i_32(deserializer);
+    var var_reason = sse_decode_String(deserializer);
+    return EngineEvent(
+      kind: var_kind,
+      depth: var_depth,
+      score: var_score,
+      nodes: var_nodes,
+      toNode: var_toNode,
+      reason: var_reason,
+    );
   }
 
   @protected
@@ -995,6 +1101,32 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_AnyhowException(
+    AnyhowException self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_String(self.message, serializer);
+  }
+
+  @protected
+  void sse_encode_StreamSink_engine_event_Sse(
+    RustStreamSink<EngineEvent> self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_String(
+      self.setupAndSerialize(
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_engine_event,
+          decodeErrorData: sse_decode_AnyhowException,
+        ),
+      ),
+      serializer,
+    );
+  }
+
+  @protected
   void sse_encode_String(String self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_list_prim_u_8_strict(utf8.encoder.convert(self), serializer);
@@ -1013,6 +1145,17 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_mill_variant_options(self, serializer);
+  }
+
+  @protected
+  void sse_encode_engine_event(EngineEvent self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_String(self.kind, serializer);
+    sse_encode_i_32(self.depth, serializer);
+    sse_encode_i_32(self.score, serializer);
+    sse_encode_u_64(self.nodes, serializer);
+    sse_encode_i_32(self.toNode, serializer);
+    sse_encode_String(self.reason, serializer);
   }
 
   @protected

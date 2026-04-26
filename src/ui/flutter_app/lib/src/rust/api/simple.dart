@@ -6,7 +6,8 @@
 import '../frb_generated.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
-// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `clone`, `clone`, `clone`, `fmt`, `fmt`, `fmt`, `fmt`, `from`
+// These functions are ignored because they are not marked as `pub`: `best_move`, `info`, `new`, `ready`, `stopped`
+// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `clone`, `clone`, `clone`, `clone`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `from`
 
 /// Returns a greeting string confirming that the Rust → Dart bridge works.
 /// Called from Dart as `tgfHelloWorld()` after `await RustLib.init()`.
@@ -100,6 +101,53 @@ int nativeMillRandomBestToNode({required BigInt seed}) =>
 /// Smoke-check that the Rust searcher honours a zero-millisecond time limit.
 bool nativeMillSearchZeroTimeLimitAborts() =>
     RustLib.instance.api.crateApiSimpleNativeMillSearchZeroTimeLimitAborts();
+
+/// Phase 5 async search event stream.
+///
+/// This is intentionally minimal: it spawns a worker thread, runs the native
+/// Rust Searcher<MillGame>, and emits Ready / Info / BestMove / Stopped.
+/// Later work replaces this with a cancellable long-lived search worker.
+Stream<EngineEvent> nativeMillSearchEvents({required int depth}) =>
+    RustLib.instance.api.crateApiSimpleNativeMillSearchEvents(depth: depth);
+
+class EngineEvent {
+  final String kind;
+  final int depth;
+  final int score;
+  final BigInt nodes;
+  final int toNode;
+  final String reason;
+
+  const EngineEvent({
+    required this.kind,
+    required this.depth,
+    required this.score,
+    required this.nodes,
+    required this.toNode,
+    required this.reason,
+  });
+
+  @override
+  int get hashCode =>
+      kind.hashCode ^
+      depth.hashCode ^
+      score.hashCode ^
+      nodes.hashCode ^
+      toNode.hashCode ^
+      reason.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is EngineEvent &&
+          runtimeType == other.runtimeType &&
+          kind == other.kind &&
+          depth == other.depth &&
+          score == other.score &&
+          nodes == other.nodes &&
+          toNode == other.toNode &&
+          reason == other.reason;
+}
 
 /// Public FRB DTO for the subset of Mill variant options already supported by
 /// the Rust-native rules scaffold.  It intentionally mirrors the field names
