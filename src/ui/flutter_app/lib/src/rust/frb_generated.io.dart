@@ -3,6 +3,7 @@
 
 // ignore_for_file: unused_import, unused_element, unnecessary_import, duplicate_ignore, invalid_use_of_internal_member, annotate_overrides, non_constant_identifier_names, curly_braces_in_flow_control_structures, prefer_const_literals_to_create_immutables, unused_field
 
+import 'api/kernel.dart';
 import 'api/simple.dart';
 import 'dart:async';
 import 'dart:convert';
@@ -36,6 +37,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   MillVariantOptions dco_decode_box_autoadd_mill_variant_options(dynamic raw);
 
   @protected
+  TgfAction dco_decode_box_autoadd_tgf_action(dynamic raw);
+
+  @protected
   EngineEvent dco_decode_engine_event(dynamic raw);
 
   @protected
@@ -57,6 +61,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   Uint8List dco_decode_list_prim_u_8_strict(dynamic raw);
 
   @protected
+  List<TgfAction> dco_decode_list_tgf_action(dynamic raw);
+
+  @protected
   List<TopologyEdge> dco_decode_list_topology_edge(dynamic raw);
 
   @protected
@@ -64,6 +71,15 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   MillVariantOptions dco_decode_mill_variant_options(dynamic raw);
+
+  @protected
+  TgfAction dco_decode_tgf_action(dynamic raw);
+
+  @protected
+  TgfOutcome dco_decode_tgf_outcome(dynamic raw);
+
+  @protected
+  TgfSnapshot dco_decode_tgf_snapshot(dynamic raw);
 
   @protected
   TopologyBlob dco_decode_topology_blob(dynamic raw);
@@ -109,6 +125,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   );
 
   @protected
+  TgfAction sse_decode_box_autoadd_tgf_action(SseDeserializer deserializer);
+
+  @protected
   EngineEvent sse_decode_engine_event(SseDeserializer deserializer);
 
   @protected
@@ -132,6 +151,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   Uint8List sse_decode_list_prim_u_8_strict(SseDeserializer deserializer);
 
   @protected
+  List<TgfAction> sse_decode_list_tgf_action(SseDeserializer deserializer);
+
+  @protected
   List<TopologyEdge> sse_decode_list_topology_edge(
     SseDeserializer deserializer,
   );
@@ -145,6 +167,15 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   MillVariantOptions sse_decode_mill_variant_options(
     SseDeserializer deserializer,
   );
+
+  @protected
+  TgfAction sse_decode_tgf_action(SseDeserializer deserializer);
+
+  @protected
+  TgfOutcome sse_decode_tgf_outcome(SseDeserializer deserializer);
+
+  @protected
+  TgfSnapshot sse_decode_tgf_snapshot(SseDeserializer deserializer);
 
   @protected
   TopologyBlob sse_decode_topology_blob(SseDeserializer deserializer);
@@ -195,6 +226,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   );
 
   @protected
+  void sse_encode_box_autoadd_tgf_action(
+    TgfAction self,
+    SseSerializer serializer,
+  );
+
+  @protected
   void sse_encode_engine_event(EngineEvent self, SseSerializer serializer);
 
   @protected
@@ -225,6 +262,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   );
 
   @protected
+  void sse_encode_list_tgf_action(
+    List<TgfAction> self,
+    SseSerializer serializer,
+  );
+
+  @protected
   void sse_encode_list_topology_edge(
     List<TopologyEdge> self,
     SseSerializer serializer,
@@ -241,6 +284,15 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
     MillVariantOptions self,
     SseSerializer serializer,
   );
+
+  @protected
+  void sse_encode_tgf_action(TgfAction self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_tgf_outcome(TgfOutcome self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_tgf_snapshot(TgfSnapshot self, SseSerializer serializer);
 
   @protected
   void sse_encode_topology_blob(TopologyBlob self, SseSerializer serializer);

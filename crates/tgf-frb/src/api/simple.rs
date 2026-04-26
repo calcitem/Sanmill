@@ -54,7 +54,8 @@ pub fn tgf_version() -> String {
 
 /// Public FRB DTO for the subset of Mill variant options already supported by
 /// the Rust-native rules scaffold.  It intentionally mirrors the field names
-/// that will later replace the C++ Rule struct.
+/// that will later replace the C++ Rule struct; new rule flags are added
+/// here whenever `crates/tgf-mill::MillVariantOptions` grows them.
 #[derive(Clone, Debug)]
 pub struct MillVariantOptions {
     pub piece_count: u8,
@@ -62,6 +63,9 @@ pub struct MillVariantOptions {
     pub pieces_at_least_count: u8,
     pub may_fly: bool,
     pub has_diagonal_lines: bool,
+    pub may_remove_from_mills_always: bool,
+    pub may_remove_multiple: bool,
+    pub n_move_rule: u32,
 }
 
 impl From<MillVariantOptions> for NativeMillVariantOptions {
@@ -72,6 +76,9 @@ impl From<MillVariantOptions> for NativeMillVariantOptions {
             pieces_at_least_count: value.pieces_at_least_count,
             may_fly: value.may_fly,
             has_diagonal_lines: value.has_diagonal_lines,
+            may_remove_from_mills_always: value.may_remove_from_mills_always,
+            may_remove_multiple: value.may_remove_multiple,
+            n_move_rule: value.n_move_rule,
         }
     }
 }
@@ -86,6 +93,9 @@ pub fn native_mill_default_variant_options() -> MillVariantOptions {
         pieces_at_least_count: defaults.pieces_at_least_count,
         may_fly: defaults.may_fly,
         has_diagonal_lines: defaults.has_diagonal_lines,
+        may_remove_from_mills_always: defaults.may_remove_from_mills_always,
+        may_remove_multiple: defaults.may_remove_multiple,
+        n_move_rule: defaults.n_move_rule,
     }
 }
 
@@ -596,6 +606,7 @@ mod tests {
     use std::{collections::BTreeSet, sync::Mutex};
 
     use super::*;
+    use tgf_mill::MillPhase;
 
     static LEGACY_TEST_MUTEX: Mutex<()> = Mutex::new(());
 
@@ -647,6 +658,47 @@ mod tests {
             }
             _ => panic!("unsupported native action kind {}", action.kind_tag),
         }
+    }
+
+    /// Find the native [`Action`] whose UCI string equals `uci` in the legal
+    /// set of `snap`.  Used by the random-walk differential test to apply the
+    /// same UCI move to both engines.
+    fn native_action_from_uci(snap: &tgf_core::GameStateSnapshot, uci: &str) -> Option<Action> {
+        let rules = MillRules::default();
+        let mut actions = ActionList::<256>::new();
+        rules.legal_actions(snap, &mut actions);
+        actions.into_iter().find(|a| native_action_to_uci(a) == uci)
+    }
+
+    /// Translate `MillPhase` (Ready=0, Placing=1, Moving=2, GameOver=3)
+    /// to the legacy C++ `Phase` tag (none=0, ready=1, placing=2,
+    /// moving=3, gameOver=4).  Both engines should report the same phase
+    /// after every legal move; any mismatch indicates a rule divergence.
+    fn map_native_phase_to_legacy(native_phase_tag: i16) -> i32 {
+        i32::from(native_phase_tag) + 1
+    }
+
+    /// Translate native side-to-move (0=white, 1=black, -1=nobody) to the
+    /// legacy C++ `Color` tag (WHITE=1, BLACK=2, NOBODY=0).
+    fn map_native_side_to_legacy(native_side: i8) -> i32 {
+        match native_side {
+            0 => 1,
+            1 => 2,
+            _ => 0,
+        }
+    }
+
+    /// Tiny deterministic xorshift64* PRNG.  Seeded from a fixed constant so
+    /// the random-walk test produces the same sequence on every machine.
+    fn next_random_index(state: &mut u64, len: usize) -> usize {
+        debug_assert!(len > 0);
+        let mut x = *state;
+        x ^= x >> 12;
+        x ^= x << 25;
+        x ^= x >> 27;
+        *state = x;
+        let scrambled = x.wrapping_mul(0x2545_F491_4F6C_DD1D);
+        (scrambled as usize) % len
     }
 
     #[test]
@@ -939,5 +991,110 @@ mod tests {
 
         let mut wb = game.build_workbench(&snap);
         assert_eq!(legacy.perft(2), perft::<MillGame>(&mut wb, 2));
+    }
+
+    /// Random-walk differential: play many seeded random legal sequences
+    /// and assert that the native Rust MillRules agree with the mature C++
+    /// engine on the legal action set, the phase tag, and the side to
+    /// move at every single ply.
+    ///
+    /// We pick a deliberately conservative initial scope (200 games × up
+    /// to 80 plies) so the test stays fast in CI; the harness can be
+    /// scaled up to the plan's 1,000,000-position target by bumping
+    /// `NUM_GAMES`.  The seed is fixed so any failure reproduces locally
+    /// with the same `(game, ply)` index.
+    #[test]
+    fn random_walk_native_and_legacy_agree() {
+        let _guard = LEGACY_TEST_MUTEX
+            .lock()
+            .expect("legacy test mutex poisoned");
+
+        // Default scope balances coverage vs CI runtime: roughly 64,000
+        // random plies at 1 ms each.  Override with the env var
+        // TGF_RANDOM_WALK_GAMES (cheap unit test) or run in --release.
+        const DEFAULT_NUM_GAMES: usize = 800;
+        const MAX_PLIES: usize = 80;
+        let num_games = std::env::var("TGF_RANDOM_WALK_GAMES")
+            .ok()
+            .and_then(|v| v.parse::<usize>().ok())
+            .unwrap_or(DEFAULT_NUM_GAMES);
+        let mut rng_state: u64 = std::env::var("TGF_RANDOM_WALK_SEED")
+            .ok()
+            .and_then(|v| v.parse::<u64>().ok())
+            .unwrap_or(0xDEAD_BEEF_C0FF_EE42);
+
+        for game_idx in 0..num_games {
+            let rules = MillRules::default();
+            let mut legacy = LegacyKernel::new(0);
+            let mut snap = rules.initial_state(&[]);
+
+            for ply in 0..MAX_PLIES {
+                let native_set = native_legal_uci_set(&snap);
+                let legacy_set = legacy_legal_uci_set(&legacy);
+                if native_set != legacy_set {
+                    panic!(
+                        "[game #{game_idx} ply {ply}] legal set divergence;\n  \
+                         native_only={:?}\n  legacy_only={:?}\n  \
+                         native side={} phase={} payload[28..30]={:?}\n  \
+                         legacy fen={}",
+                        native_set.difference(&legacy_set).collect::<Vec<_>>(),
+                        legacy_set.difference(&native_set).collect::<Vec<_>>(),
+                        snap.side_to_move,
+                        snap.phase_tag,
+                        &snap.opaque_payload[28..30],
+                        legacy.fen(),
+                    );
+                }
+
+                let native_phase = snap.phase_tag;
+                let legacy_phase = legacy.phase_tag();
+                assert_eq!(
+                    map_native_phase_to_legacy(native_phase),
+                    legacy_phase,
+                    "[game #{game_idx} ply {ply}] phase tag mismatch (native={native_phase}, legacy={legacy_phase}; legacy fen={})",
+                    legacy.fen(),
+                );
+
+                // The mature C++ engine retains its previous `sideToMove`
+                // after `Phase::gameOver`, while the Rust scaffold sets it
+                // to -1 (no active player).  Both are internally consistent
+                // and irrelevant to gameplay because the legal action set
+                // is already empty in this state, so we skip the side-tag
+                // comparison once the game is over.
+                if native_phase != MillPhase::GameOver as i16 {
+                    assert_eq!(
+                        map_native_side_to_legacy(snap.side_to_move),
+                        legacy.side_to_move(),
+                        "[game #{game_idx} ply {ply}] side mismatch (native={}, legacy={})",
+                        snap.side_to_move,
+                        legacy.side_to_move(),
+                    );
+                }
+
+                if native_set.is_empty() {
+                    break;
+                }
+
+                let mut sorted = native_set.into_iter().collect::<Vec<_>>();
+                sorted.sort();
+                let pick = next_random_index(&mut rng_state, sorted.len());
+                let mv = sorted[pick].clone();
+
+                let native_action = native_action_from_uci(&snap, &mv).unwrap_or_else(|| {
+                    panic!(
+                        "[game #{game_idx} ply {ply}] native rules cannot \
+                         decode UCI {mv}"
+                    )
+                });
+                snap = rules.apply(&snap, native_action);
+                let ok = legacy.apply_uci(&mv);
+                assert!(
+                    ok,
+                    "[game #{game_idx} ply {ply}] legacy C++ rejected legal \
+                     UCI move {mv}; legacy fen={}",
+                    legacy.fen()
+                );
+            }
+        }
     }
 }

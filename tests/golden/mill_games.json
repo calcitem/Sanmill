@@ -1,6 +1,158 @@
 {
-  "version": 1,
-  "_note": "PLACEHOLDER — run 'cd src && make generate_baselines' to populate.",
-  "_description": "Golden FEN baseline for the TGF refactoring safety-net (Phase 0). Contains 30 representative Nine Men's Morris game records. Each record includes a move sequence and the FEN snapshot after every move. Any stage of the Rust migration that changes these FENs is forbidden to merge.",
-  "games": []
+  "version": 2,
+  "rule_index": 0,
+  "_description": "Golden Mill replay fixtures shared between the C++ test suite (tests/test_golden_games.cpp) and Rust differential tests (crates/tgf-frb).  Each game lists a UCI move sequence and the expected final state; both the C++ engine and the native Rust MillRules must reach an identical final state after replaying the same moves.",
+  "_schema": {
+    "moves": "Sequence of UCI strings: \"d7\" (place), \"d7-g7\" (move), \"xa1\" (remove).",
+    "final": "Asserted state AFTER applying every move.  Counts are post-capture.  side: 'white'|'black'|'none'.  winner: 'none'|'white'|'black'|'draw'."
+  },
+  "games": [
+    {
+      "id": "G01_outer_top",
+      "category": "placing_mill_white",
+      "description": "White forms outer-top mill a7-d7-g7 on move 5 and removes B@a1",
+      "moves": ["d7", "a1", "g7", "d1", "a7", "xa1"],
+      "final": {
+        "phase": "placing", "action": "place", "side": "black",
+        "w_on": 3, "b_on": 1, "w_hand": 6, "b_hand": 7, "winner": "none"
+      }
+    },
+    {
+      "id": "G02_outer_right",
+      "category": "placing_mill_white",
+      "description": "White forms outer-right mill g7-g4-g1 and removes B@a7",
+      "moves": ["g7", "a7", "g4", "a4", "g1", "xa7"],
+      "final": {
+        "phase": "placing", "action": "place", "side": "black",
+        "w_on": 3, "b_on": 1, "w_hand": 6, "b_hand": 7, "winner": "none"
+      }
+    },
+    {
+      "id": "G03_outer_bottom_black",
+      "category": "placing_mill_black",
+      "description": "Black forms outer-bottom mill g1-d1-a1 and removes W@d7",
+      "moves": ["d7", "g1", "d6", "d1", "f6", "a1", "xd7"],
+      "final": {
+        "phase": "placing", "action": "place", "side": "white",
+        "w_on": 2, "b_on": 3, "w_hand": 6, "b_hand": 6, "winner": "none"
+      }
+    },
+    {
+      "id": "G04_outer_left",
+      "category": "placing_mill_white",
+      "description": "White forms outer-left mill a1-a4-a7 and removes B@g7",
+      "moves": ["a4", "g7", "a7", "g4", "a1", "xg7"],
+      "final": {
+        "phase": "placing", "action": "place", "side": "black",
+        "w_on": 3, "b_on": 1, "w_hand": 6, "b_hand": 7, "winner": "none"
+      }
+    },
+    {
+      "id": "G05_middle_top",
+      "category": "placing_mill_white",
+      "description": "White forms middle-top mill b6-d6-f6 and removes B@a1",
+      "moves": ["b6", "a1", "d6", "g1", "f6", "xa1"],
+      "final": {
+        "phase": "placing", "action": "place", "side": "black",
+        "w_on": 3, "b_on": 1, "w_hand": 6, "b_hand": 7, "winner": "none"
+      }
+    },
+    {
+      "id": "G06_middle_bottom",
+      "category": "placing_mill_white",
+      "description": "White forms middle-bottom mill b2-d2-f2 and removes B@a7",
+      "moves": ["b2", "a7", "d2", "g7", "f2", "xa7"],
+      "final": {
+        "phase": "placing", "action": "place", "side": "black",
+        "w_on": 3, "b_on": 1, "w_hand": 6, "b_hand": 7, "winner": "none"
+      }
+    },
+    {
+      "id": "G07_inner_top",
+      "category": "placing_mill_white",
+      "description": "White forms inner-top mill c5-d5-e5 and removes B@a1",
+      "moves": ["c5", "a1", "d5", "g1", "e5", "xa1"],
+      "final": {
+        "phase": "placing", "action": "place", "side": "black",
+        "w_on": 3, "b_on": 1, "w_hand": 6, "b_hand": 7, "winner": "none"
+      }
+    },
+    {
+      "id": "G08_inner_bottom_black",
+      "category": "placing_mill_black",
+      "description": "Black forms inner-bottom mill c3-d3-e3 and removes W@g7",
+      "moves": ["g7", "c3", "f6", "d3", "g4", "e3", "xg7"],
+      "final": {
+        "phase": "placing", "action": "place", "side": "white",
+        "w_on": 2, "b_on": 3, "w_hand": 6, "b_hand": 6, "winner": "none"
+      }
+    },
+    {
+      "id": "G09_spoke_top",
+      "category": "placing_mill_white",
+      "description": "White forms spoke-top mill d5-d6-d7 and removes B@a1",
+      "moves": ["d7", "a1", "d6", "g1", "d5", "xa1"],
+      "final": {
+        "phase": "placing", "action": "place", "side": "black",
+        "w_on": 3, "b_on": 1, "w_hand": 6, "b_hand": 7, "winner": "none"
+      }
+    },
+    {
+      "id": "G10_spoke_right",
+      "category": "placing_mill_white",
+      "description": "White forms spoke-right mill e4-f4-g4 and removes B@a1",
+      "moves": ["g4", "a1", "f4", "g1", "e4", "xa1"],
+      "final": {
+        "phase": "placing", "action": "place", "side": "black",
+        "w_on": 3, "b_on": 1, "w_hand": 6, "b_hand": 7, "winner": "none"
+      }
+    },
+    {
+      "id": "G11_spoke_bottom",
+      "category": "placing_mill_white",
+      "description": "White forms spoke-bottom mill d1-d2-d3 and removes B@a7",
+      "moves": ["d1", "a7", "d2", "g7", "d3", "xa7"],
+      "final": {
+        "phase": "placing", "action": "place", "side": "black",
+        "w_on": 3, "b_on": 1, "w_hand": 6, "b_hand": 7, "winner": "none"
+      }
+    },
+    {
+      "id": "G12_spoke_left",
+      "category": "placing_mill_white",
+      "description": "White forms spoke-left mill a4-b4-c4 and removes B@g7",
+      "moves": ["a4", "g7", "b4", "g4", "c4", "xg7"],
+      "final": {
+        "phase": "placing", "action": "place", "side": "black",
+        "w_on": 3, "b_on": 1, "w_hand": 6, "b_hand": 7, "winner": "none"
+      }
+    },
+    {
+      "id": "G13_moving_phase_mill",
+      "category": "moving_phase",
+      "description": "18 placements without mills, then W g4-f4 forms f6-f4-f2 and removes B@a1",
+      "moves": [
+        "d7", "g7", "g4", "a7", "a4", "g1", "f6", "d6", "b6",
+        "d2", "f2", "a1", "e5", "c5", "c4", "d5", "e3", "c3",
+        "g4-f4", "xa1"
+      ],
+      "final": {
+        "phase": "moving", "action": "select", "side": "black",
+        "w_on": 9, "b_on": 8, "w_hand": 0, "b_hand": 0, "winner": "none"
+      }
+    },
+    {
+      "id": "G14_double_mill_capture",
+      "category": "double_mill",
+      "description": "Two W mills (a7-d7-g7 then a1-a4-a7), B reduced to 2 pieces",
+      "moves": [
+        "d7", "a1", "g7", "d1", "a7", "xa1",
+        "g1", "a4", "b6", "a1", "xg1"
+      ],
+      "final": {
+        "phase": "placing", "action": "place", "side": "black",
+        "w_on": 5, "b_on": 2, "w_hand": 4, "b_hand": 5, "winner": "none"
+      }
+    }
+  ]
 }

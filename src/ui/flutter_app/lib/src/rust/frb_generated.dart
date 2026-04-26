@@ -3,6 +3,7 @@
 
 // ignore_for_file: unused_import, unused_element, unnecessary_import, duplicate_ignore, invalid_use_of_internal_member, annotate_overrides, non_constant_identifier_names, curly_braces_in_flow_control_structures, prefer_const_literals_to_create_immutables, unused_field
 
+import 'api/kernel.dart';
 import 'api/simple.dart';
 import 'dart:async';
 import 'dart:convert';
@@ -66,7 +67,7 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
   String get codegenVersion => '2.12.0';
 
   @override
-  int get rustContentHash => -798849941;
+  int get rustContentHash => 2060581321;
 
   static const kDefaultExternalLibraryLoaderConfig =
       ExternalLibraryLoaderConfig(
@@ -144,6 +145,35 @@ abstract class RustLibApi extends BaseApi {
   int crateApiSimpleNativeOthelloSearchDepthOneBestToNode();
 
   String crateApiSimpleTgfHelloWorld();
+
+  TgfSnapshot crateApiKernelTgfKernelApply({
+    required int handle,
+    required TgfAction action,
+  });
+
+  int crateApiKernelTgfKernelCreate({required String gameId});
+
+  int crateApiKernelTgfKernelCreateMill({required MillVariantOptions variant});
+
+  void crateApiKernelTgfKernelDispose({required int handle});
+
+  String crateApiKernelTgfKernelGameId({required int handle});
+
+  bool crateApiKernelTgfKernelIsTerminal({required int handle});
+
+  List<TgfAction> crateApiKernelTgfKernelLegalActions({required int handle});
+
+  TgfOutcome crateApiKernelTgfKernelOutcome({required int handle});
+
+  TgfSnapshot crateApiKernelTgfKernelRedo({required int handle});
+
+  int crateApiKernelTgfKernelRedoDepth({required int handle});
+
+  TgfSnapshot crateApiKernelTgfKernelSnapshot({required int handle});
+
+  TgfSnapshot crateApiKernelTgfKernelUndo({required int handle});
+
+  int crateApiKernelTgfKernelUndoDepth({required int handle});
 
   String crateApiSimpleTgfVersion();
 }
@@ -911,12 +941,345 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       const TaskConstMeta(debugName: "tgf_hello_world", argNames: []);
 
   @override
+  TgfSnapshot crateApiKernelTgfKernelApply({
+    required int handle,
+    required TgfAction action,
+  }) {
+    return handler.executeSync(
+      SyncTask(
+        callFfi: () {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_u_32(handle, serializer);
+          sse_encode_box_autoadd_tgf_action(action, serializer);
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 30)!;
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_tgf_snapshot,
+          decodeErrorData: sse_decode_String,
+        ),
+        constMeta: kCrateApiKernelTgfKernelApplyConstMeta,
+        argValues: [handle, action],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kCrateApiKernelTgfKernelApplyConstMeta =>
+      const TaskConstMeta(
+        debugName: "tgf_kernel_apply",
+        argNames: ["handle", "action"],
+      );
+
+  @override
+  int crateApiKernelTgfKernelCreate({required String gameId}) {
+    return handler.executeSync(
+      SyncTask(
+        callFfi: () {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_String(gameId, serializer);
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 31)!;
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_u_32,
+          decodeErrorData: sse_decode_String,
+        ),
+        constMeta: kCrateApiKernelTgfKernelCreateConstMeta,
+        argValues: [gameId],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kCrateApiKernelTgfKernelCreateConstMeta =>
+      const TaskConstMeta(debugName: "tgf_kernel_create", argNames: ["gameId"]);
+
+  @override
+  int crateApiKernelTgfKernelCreateMill({required MillVariantOptions variant}) {
+    return handler.executeSync(
+      SyncTask(
+        callFfi: () {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_box_autoadd_mill_variant_options(variant, serializer);
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 32)!;
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_u_32,
+          decodeErrorData: sse_decode_String,
+        ),
+        constMeta: kCrateApiKernelTgfKernelCreateMillConstMeta,
+        argValues: [variant],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kCrateApiKernelTgfKernelCreateMillConstMeta =>
+      const TaskConstMeta(
+        debugName: "tgf_kernel_create_mill",
+        argNames: ["variant"],
+      );
+
+  @override
+  void crateApiKernelTgfKernelDispose({required int handle}) {
+    return handler.executeSync(
+      SyncTask(
+        callFfi: () {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_u_32(handle, serializer);
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 33)!;
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_unit,
+          decodeErrorData: null,
+        ),
+        constMeta: kCrateApiKernelTgfKernelDisposeConstMeta,
+        argValues: [handle],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kCrateApiKernelTgfKernelDisposeConstMeta =>
+      const TaskConstMeta(
+        debugName: "tgf_kernel_dispose",
+        argNames: ["handle"],
+      );
+
+  @override
+  String crateApiKernelTgfKernelGameId({required int handle}) {
+    return handler.executeSync(
+      SyncTask(
+        callFfi: () {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_u_32(handle, serializer);
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 34)!;
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_String,
+          decodeErrorData: sse_decode_String,
+        ),
+        constMeta: kCrateApiKernelTgfKernelGameIdConstMeta,
+        argValues: [handle],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kCrateApiKernelTgfKernelGameIdConstMeta =>
+      const TaskConstMeta(
+        debugName: "tgf_kernel_game_id",
+        argNames: ["handle"],
+      );
+
+  @override
+  bool crateApiKernelTgfKernelIsTerminal({required int handle}) {
+    return handler.executeSync(
+      SyncTask(
+        callFfi: () {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_u_32(handle, serializer);
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 35)!;
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_bool,
+          decodeErrorData: sse_decode_String,
+        ),
+        constMeta: kCrateApiKernelTgfKernelIsTerminalConstMeta,
+        argValues: [handle],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kCrateApiKernelTgfKernelIsTerminalConstMeta =>
+      const TaskConstMeta(
+        debugName: "tgf_kernel_is_terminal",
+        argNames: ["handle"],
+      );
+
+  @override
+  List<TgfAction> crateApiKernelTgfKernelLegalActions({required int handle}) {
+    return handler.executeSync(
+      SyncTask(
+        callFfi: () {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_u_32(handle, serializer);
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 36)!;
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_list_tgf_action,
+          decodeErrorData: sse_decode_String,
+        ),
+        constMeta: kCrateApiKernelTgfKernelLegalActionsConstMeta,
+        argValues: [handle],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kCrateApiKernelTgfKernelLegalActionsConstMeta =>
+      const TaskConstMeta(
+        debugName: "tgf_kernel_legal_actions",
+        argNames: ["handle"],
+      );
+
+  @override
+  TgfOutcome crateApiKernelTgfKernelOutcome({required int handle}) {
+    return handler.executeSync(
+      SyncTask(
+        callFfi: () {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_u_32(handle, serializer);
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 37)!;
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_tgf_outcome,
+          decodeErrorData: sse_decode_String,
+        ),
+        constMeta: kCrateApiKernelTgfKernelOutcomeConstMeta,
+        argValues: [handle],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kCrateApiKernelTgfKernelOutcomeConstMeta =>
+      const TaskConstMeta(
+        debugName: "tgf_kernel_outcome",
+        argNames: ["handle"],
+      );
+
+  @override
+  TgfSnapshot crateApiKernelTgfKernelRedo({required int handle}) {
+    return handler.executeSync(
+      SyncTask(
+        callFfi: () {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_u_32(handle, serializer);
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 38)!;
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_tgf_snapshot,
+          decodeErrorData: sse_decode_String,
+        ),
+        constMeta: kCrateApiKernelTgfKernelRedoConstMeta,
+        argValues: [handle],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kCrateApiKernelTgfKernelRedoConstMeta =>
+      const TaskConstMeta(debugName: "tgf_kernel_redo", argNames: ["handle"]);
+
+  @override
+  int crateApiKernelTgfKernelRedoDepth({required int handle}) {
+    return handler.executeSync(
+      SyncTask(
+        callFfi: () {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_u_32(handle, serializer);
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 39)!;
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_u_32,
+          decodeErrorData: sse_decode_String,
+        ),
+        constMeta: kCrateApiKernelTgfKernelRedoDepthConstMeta,
+        argValues: [handle],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kCrateApiKernelTgfKernelRedoDepthConstMeta =>
+      const TaskConstMeta(
+        debugName: "tgf_kernel_redo_depth",
+        argNames: ["handle"],
+      );
+
+  @override
+  TgfSnapshot crateApiKernelTgfKernelSnapshot({required int handle}) {
+    return handler.executeSync(
+      SyncTask(
+        callFfi: () {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_u_32(handle, serializer);
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 40)!;
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_tgf_snapshot,
+          decodeErrorData: sse_decode_String,
+        ),
+        constMeta: kCrateApiKernelTgfKernelSnapshotConstMeta,
+        argValues: [handle],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kCrateApiKernelTgfKernelSnapshotConstMeta =>
+      const TaskConstMeta(
+        debugName: "tgf_kernel_snapshot",
+        argNames: ["handle"],
+      );
+
+  @override
+  TgfSnapshot crateApiKernelTgfKernelUndo({required int handle}) {
+    return handler.executeSync(
+      SyncTask(
+        callFfi: () {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_u_32(handle, serializer);
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 41)!;
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_tgf_snapshot,
+          decodeErrorData: sse_decode_String,
+        ),
+        constMeta: kCrateApiKernelTgfKernelUndoConstMeta,
+        argValues: [handle],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kCrateApiKernelTgfKernelUndoConstMeta =>
+      const TaskConstMeta(debugName: "tgf_kernel_undo", argNames: ["handle"]);
+
+  @override
+  int crateApiKernelTgfKernelUndoDepth({required int handle}) {
+    return handler.executeSync(
+      SyncTask(
+        callFfi: () {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_u_32(handle, serializer);
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 42)!;
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_u_32,
+          decodeErrorData: sse_decode_String,
+        ),
+        constMeta: kCrateApiKernelTgfKernelUndoDepthConstMeta,
+        argValues: [handle],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kCrateApiKernelTgfKernelUndoDepthConstMeta =>
+      const TaskConstMeta(
+        debugName: "tgf_kernel_undo_depth",
+        argNames: ["handle"],
+      );
+
+  @override
   String crateApiSimpleTgfVersion() {
     return handler.executeSync(
       SyncTask(
         callFfi: () {
           final serializer = SseSerializer(generalizedFrbRustBinding);
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 30)!;
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 43)!;
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_String,
@@ -962,6 +1325,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   MillVariantOptions dco_decode_box_autoadd_mill_variant_options(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return dco_decode_mill_variant_options(raw);
+  }
+
+  @protected
+  TgfAction dco_decode_box_autoadd_tgf_action(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return dco_decode_tgf_action(raw);
   }
 
   @protected
@@ -1019,6 +1388,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  List<TgfAction> dco_decode_list_tgf_action(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return (raw as List<dynamic>).map(dco_decode_tgf_action).toList();
+  }
+
+  @protected
   List<TopologyEdge> dco_decode_list_topology_edge(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return (raw as List<dynamic>).map(dco_decode_topology_edge).toList();
@@ -1034,14 +1409,60 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   MillVariantOptions dco_decode_mill_variant_options(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     final arr = raw as List<dynamic>;
-    if (arr.length != 5)
-      throw Exception('unexpected arr length: expect 5 but see ${arr.length}');
+    if (arr.length != 8)
+      throw Exception('unexpected arr length: expect 8 but see ${arr.length}');
     return MillVariantOptions(
       pieceCount: dco_decode_u_8(arr[0]),
       flyPieceCount: dco_decode_u_8(arr[1]),
       piecesAtLeastCount: dco_decode_u_8(arr[2]),
       mayFly: dco_decode_bool(arr[3]),
       hasDiagonalLines: dco_decode_bool(arr[4]),
+      mayRemoveFromMillsAlways: dco_decode_bool(arr[5]),
+      mayRemoveMultiple: dco_decode_bool(arr[6]),
+      nMoveRule: dco_decode_u_32(arr[7]),
+    );
+  }
+
+  @protected
+  TgfAction dco_decode_tgf_action(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 5)
+      throw Exception('unexpected arr length: expect 5 but see ${arr.length}');
+    return TgfAction(
+      kindTag: dco_decode_i_32(arr[0]),
+      fromNode: dco_decode_i_32(arr[1]),
+      toNode: dco_decode_i_32(arr[2]),
+      aux: dco_decode_i_32(arr[3]),
+      payloadBits: dco_decode_u_64(arr[4]),
+    );
+  }
+
+  @protected
+  TgfOutcome dco_decode_tgf_outcome(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 3)
+      throw Exception('unexpected arr length: expect 3 but see ${arr.length}');
+    return TgfOutcome(
+      kind: dco_decode_String(arr[0]),
+      winner: dco_decode_i_32(arr[1]),
+      reason: dco_decode_String(arr[2]),
+    );
+  }
+
+  @protected
+  TgfSnapshot dco_decode_tgf_snapshot(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 5)
+      throw Exception('unexpected arr length: expect 5 but see ${arr.length}');
+    return TgfSnapshot(
+      sideToMove: dco_decode_i_32(arr[0]),
+      phaseTag: dco_decode_i_32(arr[1]),
+      moveNumber: dco_decode_i_32(arr[2]),
+      zobristKey: dco_decode_u_64(arr[3]),
+      opaquePayload: dco_decode_list_prim_u_8_strict(arr[4]),
     );
   }
 
@@ -1150,6 +1571,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  TgfAction sse_decode_box_autoadd_tgf_action(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return (sse_decode_tgf_action(deserializer));
+  }
+
+  @protected
   EngineEvent sse_decode_engine_event(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var var_kind = sse_decode_String(deserializer);
@@ -1221,6 +1648,18 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  List<TgfAction> sse_decode_list_tgf_action(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var len_ = sse_decode_i_32(deserializer);
+    var ans_ = <TgfAction>[];
+    for (var idx_ = 0; idx_ < len_; ++idx_) {
+      ans_.add(sse_decode_tgf_action(deserializer));
+    }
+    return ans_;
+  }
+
+  @protected
   List<TopologyEdge> sse_decode_list_topology_edge(
     SseDeserializer deserializer,
   ) {
@@ -1258,12 +1697,61 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     var var_piecesAtLeastCount = sse_decode_u_8(deserializer);
     var var_mayFly = sse_decode_bool(deserializer);
     var var_hasDiagonalLines = sse_decode_bool(deserializer);
+    var var_mayRemoveFromMillsAlways = sse_decode_bool(deserializer);
+    var var_mayRemoveMultiple = sse_decode_bool(deserializer);
+    var var_nMoveRule = sse_decode_u_32(deserializer);
     return MillVariantOptions(
       pieceCount: var_pieceCount,
       flyPieceCount: var_flyPieceCount,
       piecesAtLeastCount: var_piecesAtLeastCount,
       mayFly: var_mayFly,
       hasDiagonalLines: var_hasDiagonalLines,
+      mayRemoveFromMillsAlways: var_mayRemoveFromMillsAlways,
+      mayRemoveMultiple: var_mayRemoveMultiple,
+      nMoveRule: var_nMoveRule,
+    );
+  }
+
+  @protected
+  TgfAction sse_decode_tgf_action(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_kindTag = sse_decode_i_32(deserializer);
+    var var_fromNode = sse_decode_i_32(deserializer);
+    var var_toNode = sse_decode_i_32(deserializer);
+    var var_aux = sse_decode_i_32(deserializer);
+    var var_payloadBits = sse_decode_u_64(deserializer);
+    return TgfAction(
+      kindTag: var_kindTag,
+      fromNode: var_fromNode,
+      toNode: var_toNode,
+      aux: var_aux,
+      payloadBits: var_payloadBits,
+    );
+  }
+
+  @protected
+  TgfOutcome sse_decode_tgf_outcome(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_kind = sse_decode_String(deserializer);
+    var var_winner = sse_decode_i_32(deserializer);
+    var var_reason = sse_decode_String(deserializer);
+    return TgfOutcome(kind: var_kind, winner: var_winner, reason: var_reason);
+  }
+
+  @protected
+  TgfSnapshot sse_decode_tgf_snapshot(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_sideToMove = sse_decode_i_32(deserializer);
+    var var_phaseTag = sse_decode_i_32(deserializer);
+    var var_moveNumber = sse_decode_i_32(deserializer);
+    var var_zobristKey = sse_decode_u_64(deserializer);
+    var var_opaquePayload = sse_decode_list_prim_u_8_strict(deserializer);
+    return TgfSnapshot(
+      sideToMove: var_sideToMove,
+      phaseTag: var_phaseTag,
+      moveNumber: var_moveNumber,
+      zobristKey: var_zobristKey,
+      opaquePayload: var_opaquePayload,
     );
   }
 
@@ -1384,6 +1872,15 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_box_autoadd_tgf_action(
+    TgfAction self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_tgf_action(self, serializer);
+  }
+
+  @protected
   void sse_encode_engine_event(EngineEvent self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_String(self.kind, serializer);
@@ -1448,6 +1945,18 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_list_tgf_action(
+    List<TgfAction> self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.length, serializer);
+    for (final item in self) {
+      sse_encode_tgf_action(item, serializer);
+    }
+  }
+
+  @protected
   void sse_encode_list_topology_edge(
     List<TopologyEdge> self,
     SseSerializer serializer,
@@ -1482,6 +1991,37 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_u_8(self.piecesAtLeastCount, serializer);
     sse_encode_bool(self.mayFly, serializer);
     sse_encode_bool(self.hasDiagonalLines, serializer);
+    sse_encode_bool(self.mayRemoveFromMillsAlways, serializer);
+    sse_encode_bool(self.mayRemoveMultiple, serializer);
+    sse_encode_u_32(self.nMoveRule, serializer);
+  }
+
+  @protected
+  void sse_encode_tgf_action(TgfAction self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.kindTag, serializer);
+    sse_encode_i_32(self.fromNode, serializer);
+    sse_encode_i_32(self.toNode, serializer);
+    sse_encode_i_32(self.aux, serializer);
+    sse_encode_u_64(self.payloadBits, serializer);
+  }
+
+  @protected
+  void sse_encode_tgf_outcome(TgfOutcome self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_String(self.kind, serializer);
+    sse_encode_i_32(self.winner, serializer);
+    sse_encode_String(self.reason, serializer);
+  }
+
+  @protected
+  void sse_encode_tgf_snapshot(TgfSnapshot self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.sideToMove, serializer);
+    sse_encode_i_32(self.phaseTag, serializer);
+    sse_encode_i_32(self.moveNumber, serializer);
+    sse_encode_u_64(self.zobristKey, serializer);
+    sse_encode_list_prim_u_8_strict(self.opaquePayload, serializer);
   }
 
   @protected

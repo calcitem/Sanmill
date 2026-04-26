@@ -2,6 +2,31 @@
 // Copyright (C) 2019-2026 The Sanmill developers (see AUTHORS file)
 
 // position.dart
+//
+// MIGRATION STATUS (Phase 6/7 dart-dedup):
+//   This file is the legacy Dart copy of the Mill rule machine — phase
+//   transitions, mill detection, capture obligations, fly-piece rules and
+//   threefold repetition.  The migration target is the Rust-native
+//   `crates/tgf-mill::MillRules`, surfaced to Dart through
+//   `lib/game_platform/engine/tgf_kernel.dart` and consumed via
+//   `lib/games/mill/mill_rules_port.dart`.
+//
+//   Methods such as `_putPiece`, `_removePiece`, `handleMovingPhaseForPutPiece`
+//   and `_isThreefoldRepetition` have direct Rust equivalents in
+//   `crates/tgf-mill/src/rules.rs::MillRules::apply` /
+//   `MillRules::legal_actions` / `MillRules::outcome`.  They are kept here
+//   because the Rust DTO `MillVariantOptions` currently covers only the
+//   most common 9MM defaults (piece_count, fly_piece_count,
+//   may_remove_from_mills_always, may_remove_multiple, n_move_rule, …).
+//   Variants that exercise custodian / intervention / leap capture,
+//   `mayMoveInPlacingPhase`, `restrictRepeatedMillsFormation`, or 12MM
+//   diagonal lines still rely on this file.
+//
+//   When extending the Rust ruleset, mirror the change in
+//   `MillVariantOptionsMapper.toTgfMillVariantOptions`, drop the
+//   corresponding branch here, and update the differential test in
+//   `crates/tgf-frb/src/api/simple.rs::random_walk_native_and_legacy_agree`
+//   so the new option is exercised at the boundary.
 
 part of '../mill.dart';
 

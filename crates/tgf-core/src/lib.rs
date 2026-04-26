@@ -8,12 +8,14 @@ pub mod action;
 pub mod board_topology;
 pub mod game;
 pub mod game_state;
+pub mod kernel;
 
 // Convenience re-exports for downstream crates.
 pub use action::{Action, ActionList};
 pub use board_topology::{BoardTopology, Decoration, Edge, UnitPoint, Zone};
 pub use game::{Evaluator, Game, GameRules, Workbench};
 pub use game_state::{GameStateSnapshot, Outcome, OutcomeKind};
+pub use kernel::{GameKernel, KernelError};
 
 /// Phase 1 smoke-check: ensures the crate compiles.
 #[cfg(test)]

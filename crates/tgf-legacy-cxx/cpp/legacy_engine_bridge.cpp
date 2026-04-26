@@ -76,6 +76,13 @@ void legacy_position_set_fen(LegacyPosition &pos, rust::Str fen)
 
 rust::String legacy_position_legal_actions(const LegacyPosition &pos)
 {
+    // Once the game is over the C++ MoveList<LEGAL> still generates the
+    // moves that *would* have been legal at the previous ply.  The Rust
+    // facade promises an empty set for terminal positions, so short-
+    // circuit here to keep the two engines in lock-step.
+    if (pos.pos.get_phase() == Phase::gameOver) {
+        return rust::String("");
+    }
     std::ostringstream out;
     Position &mutablePos = const_cast<Position &>(pos.pos);
     for (const auto &m : MoveList<LEGAL>(mutablePos)) {

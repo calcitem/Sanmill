@@ -11,7 +11,7 @@ implement and that Flutter modules should consume.
 
 ```text
 crates/
-├── tgf-core        # Game-neutral traits and POD types
+├── tgf-core        # Game-neutral traits and POD types + GameKernel
 ├── tgf-search      # Generic monomorphised searchers
 ├── tgf-mill        # Mill game implementation
 ├── tgf-othello     # Othello pressure-test implementation
@@ -19,6 +19,10 @@ crates/
 ├── tgf-frb         # FRB API surface compiled as rust_lib_sanmill
 └── tgf-cli         # Rust CLI / benchmark helper
 ```
+
+`tgf-core` exposes a runtime-polymorphic `GameKernel` that the FRB layer
+consumes for typed Dart sessions; the search hot path stays generic via
+`Searcher<G: Game>` to keep `dyn` calls out of the inner loop.
 
 `tgf-core` and `tgf-search` must stay game-neutral.  Concrete games live in
 separate crates such as `tgf-mill` and `tgf-othello`.
@@ -184,11 +188,37 @@ Current scaffolds already include:
 - FRB search event stream
 - single-threaded UCT-style MCTS tree
 
-Still incomplete compared with mature C++:
+### Benchmarks and gating
+
+`crates/tgf-search/benches/searcher.rs` covers:
+
+- `mill_search_depth_1` / `mill_search_depth_2`
+- `mill_pvs_depth_3`
+- `mill_perft_depth_2` / `mill_perft_mid_depth_3`
+- `mill_iterative_deepening_depth_3`
+
+`cargo run --release -p tgf-cli -- bench` emits a TOML block compatible with
+`tests/perf_baseline.toml`.  The deterministic perft fields
+(`baseline.perft.start_d1`, `start_d2`, `mid_d3`) are HARD-GATED by
+`scripts/check_perf_baseline.py --require-perft`; runtime metrics
+(`nps`, `depth10_ms`, `tt.hit_rate_pct`, `startup.first_move_ms`) are skipped
+with an explicit `[SKIP-baseline-not-populated]` until canonical hardware
+locks them in.
+
+### Differential testing
+
+`crates/tgf-frb/src/api/simple.rs::random_walk_native_and_legacy_agree`
+plays seeded random Mill games (default 800 × 80 plies, override via
+`TGF_RANDOM_WALK_GAMES`/`TGF_RANDOM_WALK_SEED`) and asserts that the
+native Rust `MillRules` and the legacy C++ engine return identical legal
+action sets, phase tags, and side-to-move at every ply.  Plus the
+existing fixed-position `native_and_legacy_*` perft tests.
+
+### Still incomplete compared with mature C++
 
 - exact C++ MovePicker ordering weights
 - C++ TT compact value/depth truncation semantics
-- rule50 and repetition
+- rule50 and full repetition handling (only `n_move_rule` field exists)
 - full qsearch parity
 - MCTS alpha-beta assisted simulation
 - multi-threaded MCTS shared visits
@@ -200,17 +230,37 @@ The Flutter-facing Rust library is the `tgf-frb` crate, whose Cargo package and
 library target are named `rust_lib_sanmill` to match the generated Flutter FFI
 plugin.
 
-Stable current FRB surfaces include:
+### Typed kernel session API (preferred)
+
+Backed by `tgf_core::GameKernel` (see `crates/tgf-core/src/kernel.rs`), the
+Dart side gets a long-lived session keyed by an `int` handle:
+
+- `tgfKernelCreate({String gameId})` — `mill` or `othello`, default options.
+- `tgfKernelCreateMill({MillVariantOptions variant})` — explicit Mill variant.
+- `tgfKernelDispose({int handle})` — drop the Rust session.
+- `tgfKernelSnapshot / Outcome / GameId / IsTerminal / UndoDepth / RedoDepth`
+- `tgfKernelLegalActions / Apply / Undo / Redo`
+
+The Dart wrapper that hides FFI details is
+`lib/game_platform/engine/tgf_kernel.dart::TgfKernel`.  It also produces
+framework-level `GameStateSnapshot` / `GameOutcome` values directly.
+
+`OthelloGameSession` is the first non-Mill session driven entirely by this
+typed API; future games should follow the same pattern.
+
+### Legacy / smoke surfaces
+
+These remain available during the transition:
 
 - `kernelTopology()` for Mill geometry
-- `legacyKernel*` functions for transitional C++ bridge access
-- `nativeMill*` smoke/differential/search APIs
-- `nativeOthello*` pressure-test APIs
+- `legacyKernel*` functions for the transitional C++ bridge
+- `nativeMill*` / `nativeOthello*` smoke and differential helpers
 - `nativeMillSearchEvents(depth)` stream
 - `nativeMillSearchStop()` cancellation request
 
 Generated Dart files under `lib/src/rust/frb_generated*.dart` are committed and
-must be regenerated after every FRB API change.
+must be regenerated after every FRB API change (`flutter_rust_bridge_codegen
+generate`).
 
 ## Flutter module contract
 
@@ -255,11 +305,38 @@ To add a deterministic perfect-information game:
 3. Implement `GameRules` for runtime boundary use.
 4. Implement `Game`, `Workbench`, and `Evaluator` for search.
 5. Add Rust tests for `legal_actions`, `apply`, `perft`, and search smoke.
-6. Add a Flutter module under `lib/games/<id>`.
-7. Do not modify `tgf-core`, `tgf-search`, or `game_platform` unless the new
+6. Register the game id in
+   `crates/tgf-frb/src/api/kernel.rs::build_rules_default` so the typed
+   `tgf_kernel_create("<game_id>")` factory can route to it.
+7. Add a Flutter module under `lib/games/<id>`; for the session class,
+   subclass `OthelloGameSession`'s pattern (own a `TgfKernel`, translate
+   actions through a small codec) — see
+   `lib/games/othello/othello_game_session.dart`.
+8. Do not modify `tgf-core`, `tgf-search`, or `game_platform` unless the new
    game exposes a real framework gap.
 
 For stochastic tabletop games, add an opt-in `ChanceGame` extension trait later
 instead of changing `Game`.  For hidden-information card games, add an opt-in
 `PartialInformationGame` extension trait later instead of weakening current
 perfect-information invariants.
+
+## Mill rule coverage
+
+`crates/tgf-mill::MillVariantOptions` currently supports:
+
+- `piece_count`, `fly_piece_count`, `pieces_at_least_count`
+- `may_fly`, `has_diagonal_lines`
+- `may_remove_from_mills_always`
+- `may_remove_multiple`
+- `n_move_rule`
+
+The remaining `Rule` fields (`millFormationActionInPlacingPhase`,
+`boardFullAction`, `stalemateAction`, custodian/intervention/leap captures,
+`mayMoveInPlacingPhase`, `restrictRepeatedMillsFormation`, full repetition
+detection, …) are not yet honoured by the Rust path; the Flutter app routes
+them through the legacy C++ engine until the gap closes.  Each new field
+follows the same pattern: extend `MillVariantOptions`, update
+`MillRules::apply` / `legal_actions`, mirror it in
+`crates/tgf-frb/src/api/simple.rs::MillVariantOptions`, then in
+`lib/games/mill/mill_variant_options_mapper.dart`, then re-run
+`flutter_rust_bridge_codegen generate`.

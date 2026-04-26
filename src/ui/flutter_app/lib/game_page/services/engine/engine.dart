@@ -2,6 +2,20 @@
 // Copyright (C) 2019-2026 The Sanmill developers (see AUTHORS file)
 
 // engine.dart
+//
+// MIGRATION STATUS (Phase 4 flutter-ipc):
+//   The body of this class still talks to the mature C++ engine through
+//   `MethodChannel("com.calcitem.sanmill/engine")` and the UCI text
+//   protocol.  The migration target is the Rust-native
+//   `crates/tgf-search::Searcher<MillGame>` wrapped behind
+//   `tgf_kernel_search_*` FRB calls (see
+//   `lib/game_platform/engine/tgf_kernel.dart` for the typed Dart
+//   surface).  A second piece of code, `setRuleOptions()` below, hand-
+//   rolls one `setoption` text command per `RuleSettings` field; the
+//   replacement is `RuleSettings.toTgfMillVariantOptions()` plus
+//   `tgfKernelCreateMill`.  Once `crates/tgf-mill::MillVariantOptions`
+//   covers every rule flag listed in `position.dart`'s migration note,
+//   this class can shrink to a thin adapter on top of `TgfKernel`.
 
 part of '../mill.dart';
 

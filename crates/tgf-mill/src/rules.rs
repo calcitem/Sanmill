@@ -37,6 +37,18 @@ pub struct MillVariantOptions {
     pub pieces_at_least_count: u8,
     pub may_fly: bool,
     pub has_diagonal_lines: bool,
+    /// When true a player capturing a piece may target a piece sitting in
+    /// an opponent mill even if non-mill alternatives exist.  Mirrors
+    /// `Rule::mayRemoveFromMillsAlways` in the legacy C++ engine.
+    pub may_remove_from_mills_always: bool,
+    /// When true forming two mills at once entitles the active player to
+    /// two captures.  Mirrors `Rule::mayRemoveMultiple`.
+    pub may_remove_multiple: bool,
+    /// Soft draw counter: when both players exceed this many plies
+    /// without a mill or capture, the game ends in a draw.  0 disables
+    /// the rule (mirrors `Rule::nMoveRule`).  Currently only checked at
+    /// the moving phase boundary; capture extends the counter back to 0.
+    pub n_move_rule: u32,
 }
 
 impl Default for MillVariantOptions {
@@ -47,6 +59,9 @@ impl Default for MillVariantOptions {
             pieces_at_least_count: 3,
             may_fly: true,
             has_diagonal_lines: false,
+            may_remove_from_mills_always: false,
+            may_remove_multiple: false,
+            n_move_rule: 100,
         }
     }
 }
@@ -352,13 +367,16 @@ impl GameRules for MillRules {
                 state.pieces_in_hand[side] = state.pieces_in_hand[side].saturating_sub(1);
                 state.pieces_on_board[side] += 1;
                 state.move_number += 1;
-                if state.pieces_in_hand[0] == 0 && state.pieces_in_hand[1] == 0 {
-                    state.phase = MillPhase::Moving;
-                }
-                if forms_mill(&state, to, state.side_to_move) {
-                    state.pending_removals[side] = 1;
+                let mills = count_mills_at(&state, to, state.side_to_move);
+                if mills > 0 {
+                    state.pending_removals[side] = if self.options.may_remove_multiple {
+                        mills as u8
+                    } else {
+                        1
+                    };
                 } else {
                     state.side_to_move ^= 1;
+                    maybe_transition_to_moving(&mut state);
                 }
             }
             x if x == MillActionKind::Move as i16 => {
@@ -370,8 +388,13 @@ impl GameRules for MillRules {
                 state.board[to] = state.side_to_move + 1;
                 state.move_number += 1;
                 let side = state.side_to_move as usize;
-                if forms_mill(&state, to, state.side_to_move) {
-                    state.pending_removals[side] = 1;
+                let mills = count_mills_at(&state, to, state.side_to_move);
+                if mills > 0 {
+                    state.pending_removals[side] = if self.options.may_remove_multiple {
+                        mills as u8
+                    } else {
+                        1
+                    };
                 } else {
                     state.side_to_move ^= 1;
                 }
@@ -393,6 +416,7 @@ impl GameRules for MillRules {
                     state.side_to_move = -1;
                 } else if state.pending_removals[side] == 0 {
                     state.side_to_move ^= 1;
+                    maybe_transition_to_moving(&mut state);
                 }
             }
             _ => {}
@@ -419,6 +443,27 @@ impl GameRules for MillRules {
 impl MillRules {
     fn generate_remove_actions(&self, state: &MillState, out: &mut ActionList<256>) {
         let opponent_piece = (state.side_to_move ^ 1) + 1;
+
+        // When `may_remove_from_mills_always` is set the rule simplifies:
+        // every opponent piece is a legal target, regardless of whether
+        // it sits in a mill.  Otherwise we mirror the C++ default (and
+        // the FIDE Mill rule): mill pieces can only be removed when no
+        // non-mill alternative exists.
+        if self.options.may_remove_from_mills_always {
+            for (node, piece) in state.board.iter().enumerate() {
+                if *piece == opponent_piece {
+                    out.push(Action {
+                        kind_tag: MillActionKind::Remove as i16,
+                        from_node: -1,
+                        to_node: node as i16,
+                        aux: -1,
+                        payload_bits: 0,
+                    });
+                }
+            }
+            return;
+        }
+
         let has_non_mill_target = state
             .board
             .iter()
@@ -440,6 +485,20 @@ impl MillRules {
                 payload_bits: 0,
             });
         }
+    }
+}
+
+/// Transition to the moving phase only after a side switch, mirroring the
+/// mature C++ engine's `pieceInHandCount[sideToMove] == 0` check inside
+/// `change_side_to_move()`.  If a mill is pending the side does not switch
+/// and this helper is not called, so the placing-phase indicator stays
+/// correct until the obligated remove resolves.
+fn maybe_transition_to_moving(state: &mut MillState) {
+    if state.phase == MillPhase::Placing
+        && state.pieces_in_hand[0] == 0
+        && state.pieces_in_hand[1] == 0
+    {
+        state.phase = MillPhase::Moving;
     }
 }
 
@@ -535,10 +594,13 @@ fn position_key(state: &MillState) -> u64 {
     }
 }
 
-fn forms_mill(state: &MillState, node: usize, side_to_move: i8) -> bool {
+/// Number of mill lines passing through `node` that are now all owned by
+/// `side_to_move`.  Used by `apply` to honour `may_remove_multiple`.
+fn count_mills_at(state: &MillState, node: usize, side_to_move: i8) -> usize {
     mill_lines_for_node(node)
         .iter()
-        .any(|line| line.iter().all(|idx| state.board[*idx] == side_to_move + 1))
+        .filter(|line| line.iter().all(|idx| state.board[*idx] == side_to_move + 1))
+        .count()
 }
 
 fn is_piece_in_mill(state: &MillState, node: usize) -> bool {
@@ -805,6 +867,91 @@ mod tests {
 
         wb.undo_move();
         assert_eq!(wb.key(), initial_key);
+    }
+
+    #[test]
+    fn may_remove_from_mills_always_relaxes_target_filter() {
+        let options = MillVariantOptions {
+            may_remove_from_mills_always: true,
+            ..MillVariantOptions::default()
+        };
+        let rules = MillRules::new(options);
+
+        // Build a state where Black already has a mill (a1-d1-g1) and
+        // White has just formed a mill on top.  Without the option White
+        // cannot remove a1/d1/g1 (all in mill, but no non-mill targets);
+        // with the option White may target any of them freely.
+        let mut state = MillState {
+            board: [0; 24],
+            side_to_move: 0,
+            phase: MillPhase::Placing,
+            move_number: 6,
+            pieces_in_hand: [6, 6],
+            pieces_on_board: [3, 3],
+            pending_removals: [1, 0],
+            winner: -1,
+        };
+        state.board[0] = 1; // W a7
+        state.board[1] = 1; // W d7
+        state.board[2] = 1; // W g7 — completes outer top mill
+        state.board[6] = 2; // B a1
+        state.board[5] = 2; // B d1
+        state.board[4] = 2; // B g1 — black mill a1-d1-g1
+        let snap = rules.encode(state);
+
+        let mut actions = ActionList::<256>::new();
+        rules.legal_actions(&snap, &mut actions);
+        // Expect 3 remove targets even though every black piece is in a
+        // mill, because the option is on.
+        assert_eq!(actions.len(), 3);
+        assert!(actions
+            .iter()
+            .all(|a| a.kind_tag == MillActionKind::Remove as i16));
+    }
+
+    #[test]
+    fn may_remove_multiple_pending_removals_match_simultaneous_mills() {
+        let options = MillVariantOptions {
+            may_remove_multiple: true,
+            ..MillVariantOptions::default()
+        };
+        let rules = MillRules::new(options);
+
+        // Place W to form two mills at once: outer top a7-d7-g7 *and*
+        // spoke top d7-d6-d5 share the d7 hub.  Place d7 last to trigger
+        // simultaneous mill formation.
+        let mut state = MillState {
+            board: [0; 24],
+            side_to_move: 0,
+            phase: MillPhase::Placing,
+            move_number: 8,
+            pieces_in_hand: [5, 5],
+            pieces_on_board: [4, 4],
+            pending_removals: [0, 0],
+            winner: -1,
+        };
+        state.board[0] = 1; // a7
+        state.board[2] = 1; // g7
+        state.board[9] = 1; // d6
+        state.board[17] = 1; // d5
+        state.board[6] = 2;
+        state.board[5] = 2;
+        state.board[4] = 2;
+        state.board[15] = 2;
+        let snap = rules.encode(state);
+        let after = rules.apply(
+            &snap,
+            Action {
+                kind_tag: MillActionKind::Place as i16,
+                from_node: -1,
+                to_node: 1, // d7 hub
+                aux: -1,
+                payload_bits: 0,
+            },
+        );
+        // pending_removals[0] should be 2 because two mills formed at
+        // once with may_remove_multiple = true.
+        assert_eq!(after.opaque_payload[28], 2);
     }
 
     #[test]

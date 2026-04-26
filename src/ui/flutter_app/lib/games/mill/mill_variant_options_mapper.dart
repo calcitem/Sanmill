@@ -19,6 +19,9 @@ extension MillVariantOptionsMapper on RuleSettings {
       piecesAtLeastCount: piecesAtLeastCount,
       mayFly: mayFly,
       hasDiagonalLines: hasDiagonalLines,
+      mayRemoveFromMillsAlways: mayRemoveFromMillsAlways,
+      mayRemoveMultiple: mayRemoveMultiple,
+      nMoveRule: nMoveRule,
     );
   }
 }

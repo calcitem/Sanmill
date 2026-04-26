@@ -199,13 +199,17 @@ class EngineEvent {
 
 /// Public FRB DTO for the subset of Mill variant options already supported by
 /// the Rust-native rules scaffold.  It intentionally mirrors the field names
-/// that will later replace the C++ Rule struct.
+/// that will later replace the C++ Rule struct; new rule flags are added
+/// here whenever `crates/tgf-mill::MillVariantOptions` grows them.
 class MillVariantOptions {
   final int pieceCount;
   final int flyPieceCount;
   final int piecesAtLeastCount;
   final bool mayFly;
   final bool hasDiagonalLines;
+  final bool mayRemoveFromMillsAlways;
+  final bool mayRemoveMultiple;
+  final int nMoveRule;
 
   const MillVariantOptions({
     required this.pieceCount,
@@ -213,6 +217,9 @@ class MillVariantOptions {
     required this.piecesAtLeastCount,
     required this.mayFly,
     required this.hasDiagonalLines,
+    required this.mayRemoveFromMillsAlways,
+    required this.mayRemoveMultiple,
+    required this.nMoveRule,
   });
 
   @override
@@ -221,7 +228,10 @@ class MillVariantOptions {
       flyPieceCount.hashCode ^
       piecesAtLeastCount.hashCode ^
       mayFly.hashCode ^
-      hasDiagonalLines.hashCode;
+      hasDiagonalLines.hashCode ^
+      mayRemoveFromMillsAlways.hashCode ^
+      mayRemoveMultiple.hashCode ^
+      nMoveRule.hashCode;
 
   @override
   bool operator ==(Object other) =>
@@ -232,7 +242,10 @@ class MillVariantOptions {
           flyPieceCount == other.flyPieceCount &&
           piecesAtLeastCount == other.piecesAtLeastCount &&
           mayFly == other.mayFly &&
-          hasDiagonalLines == other.hasDiagonalLines;
+          hasDiagonalLines == other.hasDiagonalLines &&
+          mayRemoveFromMillsAlways == other.mayRemoveFromMillsAlways &&
+          mayRemoveMultiple == other.mayRemoveMultiple &&
+          nMoveRule == other.nMoveRule;
 }
 
 class TopologyBlob {

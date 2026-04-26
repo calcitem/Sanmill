@@ -8,11 +8,14 @@ import 'package:sanmill/game_page/services/mill.dart' show ExtMove, PieceColor;
 import 'package:sanmill/game_platform/board_geometry.dart';
 import 'package:sanmill/game_platform/engine/legacy_tgf_kernel.dart';
 import 'package:sanmill/game_platform/engine/native_topology.dart';
+import 'package:sanmill/game_platform/engine/tgf_kernel.dart';
 import 'package:sanmill/game_platform/game_session.dart';
 import 'package:sanmill/games/mill/mill_game_session.dart';
 import 'package:sanmill/games/mill/mill_rules_port.dart';
 import 'package:sanmill/games/mill/mill_variant_options_mapper.dart';
+import 'package:sanmill/games/othello/othello_game_session.dart';
 import 'package:sanmill/rule_settings/models/rule_settings.dart';
+import 'package:sanmill/src/rust/api/kernel.dart' as tgf_kernel_api;
 import 'package:sanmill/src/rust/api/simple.dart';
 import 'package:sanmill/src/rust/frb_generated.dart';
 
@@ -166,5 +169,41 @@ void main() {
     expect(nativeAndLegacyPendingRemovePerftMatch(depth: 2), isTrue);
     expect(nativeAndLegacyMovingPhasePerftMatch(depth: 1), isTrue);
     expect(nativeAndLegacyMovingPhasePerftMatch(depth: 2), isTrue);
+  });
+
+  testWidgets('Typed FRB kernel API exposes a Mill session', (
+    WidgetTester tester,
+  ) async {
+    final TgfKernel kernel = TgfKernel.create('mill');
+    addTearDown(kernel.dispose);
+
+    expect(kernel.gameId, 'mill');
+    expect(kernel.rawLegalActions(), hasLength(24));
+    expect(kernel.isTerminal, isFalse);
+    expect(kernel.undoDepth, 0);
+
+    final tgf_kernel_api.TgfAction firstAction = kernel.rawLegalActions().first;
+    final GameStateSnapshot after = kernel.applyTypedAction(firstAction);
+    expect(after.activeSeat, isNot(PlayerSeat.first));
+    expect(kernel.undoDepth, 1);
+
+    final GameStateSnapshot undone = kernel.undoTyped();
+    expect(undone.activeSeat, PlayerSeat.first);
+    expect(kernel.redoDepth, 1);
+  });
+
+  testWidgets('OthelloGameSession runs entirely on the typed Rust kernel', (
+    WidgetTester tester,
+  ) async {
+    final OthelloGameSession session = OthelloGameSession();
+    addTearDown(session.dispose);
+
+    expect(session.legalActions, hasLength(4));
+    final GameAction first = session.legalActions.first;
+    await session.apply(first);
+    expect(session.outcome.isTerminal, isFalse);
+
+    await session.undo();
+    expect(session.legalActions, hasLength(4));
   });
 }
