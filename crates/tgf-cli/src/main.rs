@@ -1,20 +1,18 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // tgf-cli – command-line utilities for the Rust TGF engine.
-//
-// Phase 5: provide a small benchmark command that emits the same TOML schema as
-// tests/perf_baseline.toml, so scripts/check_perf_baseline.py can compare Rust
-// and C++ baselines without a separate parser.
 
+use std::io::{self, BufRead};
 use std::time::{Duration, Instant};
 
-use tgf_core::{Game, GameRules};
-use tgf_mill::{MillGame, MillRules};
+use tgf_core::{Action, ActionList, BoardTopology, Game, GameRules, GameStateSnapshot};
+use tgf_mill::{default_mill_topology, MillActionKind, MillGame, MillRules};
 use tgf_search::{perft, Searcher};
 
 fn main() {
     let mut args = std::env::args().skip(1);
     match args.next().as_deref() {
         Some("bench") => print_benchmark_toml(),
+        Some("uci") => run_uci_loop(),
         Some("--help") | Some("-h") => print_help(),
         _ => print_help(),
     }
@@ -23,6 +21,98 @@ fn main() {
 fn print_help() {
     eprintln!("Usage:");
     eprintln!("  tgf bench    # emit perf_baseline-compatible TOML");
+    eprintln!("  tgf uci      # run minimal UCI-like loop backed by Rust Mill");
+}
+
+fn run_uci_loop() {
+    let rules = MillRules::default();
+    let mut state = rules.initial_state(&[]);
+    let stdin = io::stdin();
+    for line in stdin.lock().lines().map_while(Result::ok) {
+        let line = line.trim();
+        if line.is_empty() {
+            continue;
+        }
+        if line == "uci" {
+            println!("id name TGF Mill Rust");
+            println!("id author The Sanmill developers");
+            println!("uciok");
+        } else if line == "isready" {
+            println!("readyok");
+        } else if line == "ucinewgame" {
+            state = rules.initial_state(&[]);
+        } else if line.starts_with("position") {
+            state = parse_position_command(&rules, line);
+        } else if line.starts_with("go") {
+            let depth = parse_depth(line).unwrap_or(1);
+            let game = MillGame::default();
+            let mut wb = game.build_workbench(&state);
+            let mut searcher = Searcher::<MillGame>::new();
+            let result = searcher.search_pvs(&mut wb, depth);
+            println!(
+                "bestmove {}",
+                action_to_uci(result.best_action).unwrap_or_else(|| "(none)".to_owned())
+            );
+        } else if line == "quit" {
+            break;
+        } else {
+            println!("info string unknown command: {line}");
+        }
+    }
+}
+
+fn parse_position_command(rules: &MillRules, line: &str) -> GameStateSnapshot {
+    let mut state = rules.initial_state(&[]);
+    let tokens = line.split_whitespace().collect::<Vec<_>>();
+    if tokens.get(1).copied() != Some("startpos") {
+        return state;
+    }
+    let Some(moves_idx) = tokens.iter().position(|t| *t == "moves") else {
+        return state;
+    };
+    for mv in tokens.iter().skip(moves_idx + 1) {
+        if let Some(action) = action_from_uci(rules, &state, mv) {
+            state = rules.apply(&state, action);
+        } else {
+            println!("info string illegal move ignored: {mv}");
+            break;
+        }
+    }
+    state
+}
+
+fn parse_depth(line: &str) -> Option<i32> {
+    let tokens = line.split_whitespace().collect::<Vec<_>>();
+    tokens
+        .windows(2)
+        .find(|w| w[0] == "depth")
+        .and_then(|w| w[1].parse::<i32>().ok())
+}
+
+fn action_from_uci(rules: &MillRules, state: &GameStateSnapshot, move_uci: &str) -> Option<Action> {
+    let mut actions = ActionList::<256>::new();
+    rules.legal_actions(state, &mut actions);
+    actions
+        .into_iter()
+        .find(|a| action_to_uci(*a).as_deref() == Some(move_uci))
+}
+
+fn action_to_uci(action: Action) -> Option<String> {
+    let topo = default_mill_topology();
+    match action.kind_tag {
+        x if x == MillActionKind::Place as i16 => {
+            Some(topo.label_of(action.to_node as u16).to_owned())
+        }
+        x if x == MillActionKind::Move as i16 => Some(format!(
+            "{}-{}",
+            topo.label_of(action.from_node as u16),
+            topo.label_of(action.to_node as u16)
+        )),
+        x if x == MillActionKind::Remove as i16 => {
+            Some(format!("x{}", topo.label_of(action.to_node as u16)))
+        }
+        _ => None,
+    }
 }
 
 fn print_benchmark_toml() {
@@ -41,15 +131,10 @@ fn print_benchmark_toml() {
     let mut wb = game.build_workbench(&mid_snap);
     let mid_d3 = perft::<MillGame>(&mut wb, 3);
 
-    // Keep the current benchmark light enough to run on developer machines.
-    // Depth 4 gives a stable enough node count with the current scaffold while
-    // avoiding long runtimes before the full rules/search engine is complete.
     let mut wb = game.build_workbench(&snap);
     let mut searcher = Searcher::<MillGame>::new();
     let start = Instant::now();
     let result = searcher.search(&mut wb, 4);
-    // Search once more to exercise the TT probe path and collect a real hit
-    // rate.  The second search reuses the table populated by the first search.
     let _ = searcher.search(&mut wb, 4);
     let elapsed = start.elapsed().max(Duration::from_micros(1));
     let depth_ms = elapsed.as_millis() as u64;
