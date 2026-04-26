@@ -13,3 +13,30 @@ String tgfHelloWorld() => RustLib.instance.api.crateApiSimpleTgfHelloWorld();
 
 /// Returns the TGF Rust crate version string.
 String tgfVersion() => RustLib.instance.api.crateApiSimpleTgfVersion();
+
+/// Create/reset a global legacy C++ kernel.
+///
+/// This is intentionally a temporary singleton for Phase 2.  Phase 3+ replaces
+/// it with real per-session handles once the Rust GameKernel is introduced.
+String legacyKernelReset({required int ruleIdx}) =>
+    RustLib.instance.api.crateApiSimpleLegacyKernelReset(ruleIdx: ruleIdx);
+
+/// Current legacy C++ FEN string.
+String legacyKernelFen() =>
+    RustLib.instance.api.crateApiSimpleLegacyKernelFen();
+
+/// Current legal actions in UCI notation.
+List<String> legacyKernelLegalActions() =>
+    RustLib.instance.api.crateApiSimpleLegacyKernelLegalActions();
+
+/// Apply one UCI action (`d7`, `d7-g7`, `xa1`, ...).
+bool legacyKernelApplyUci({required String moveUci}) =>
+    RustLib.instance.api.crateApiSimpleLegacyKernelApplyUci(moveUci: moveUci);
+
+/// Raw C++ Phase enum tag.
+int legacyKernelPhaseTag() =>
+    RustLib.instance.api.crateApiSimpleLegacyKernelPhaseTag();
+
+/// Raw C++ Color enum tag for side to move.
+int legacyKernelSideToMove() =>
+    RustLib.instance.api.crateApiSimpleLegacyKernelSideToMove();

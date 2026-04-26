@@ -6,6 +6,13 @@
 //     Dart side (no Future wrapping); use only for cheap, non-blocking calls.
 //   - All public functions in this module are auto-exported to Dart by codegen.
 
+use once_cell::sync::Lazy;
+use std::sync::Mutex;
+use tgf_legacy_cxx::LegacyKernel;
+
+static LEGACY_KERNEL: Lazy<Mutex<Option<LegacyKernel>>> =
+    Lazy::new(|| Mutex::new(None));
+
 /// FRB required initialisation.  Called once at Flutter app startup before
 /// any other TGF function.  Do not remove.
 #[flutter_rust_bridge::frb(init)]
@@ -34,5 +41,62 @@ pub fn tgf_version() -> String {
 }
 
 // ---------------------------------------------------------------------------
-// Phase 2+ API stubs (kernel_create, kernel_apply, …) will be added here.
+// Phase 2 temporary kernel API: Rust → cxx → mature C++ engine.
 // ---------------------------------------------------------------------------
+
+/// Create/reset a global legacy C++ kernel.
+///
+/// This is intentionally a temporary singleton for Phase 2.  Phase 3+ replaces
+/// it with real per-session handles once the Rust GameKernel is introduced.
+#[flutter_rust_bridge::frb(sync)]
+pub fn legacy_kernel_reset(rule_idx: i32) -> String {
+    let mut guard = LEGACY_KERNEL.lock().expect("legacy kernel mutex poisoned");
+    let kernel = LegacyKernel::new(rule_idx);
+    let fen = kernel.fen();
+    *guard = Some(kernel);
+    fen
+}
+
+/// Current legacy C++ FEN string.
+#[flutter_rust_bridge::frb(sync)]
+pub fn legacy_kernel_fen() -> String {
+    let guard = LEGACY_KERNEL.lock().expect("legacy kernel mutex poisoned");
+    guard.as_ref().map(LegacyKernel::fen).unwrap_or_default()
+}
+
+/// Current legal actions in UCI notation.
+#[flutter_rust_bridge::frb(sync)]
+pub fn legacy_kernel_legal_actions() -> Vec<String> {
+    let guard = LEGACY_KERNEL.lock().expect("legacy kernel mutex poisoned");
+    guard
+        .as_ref()
+        .map(LegacyKernel::legal_actions)
+        .unwrap_or_default()
+}
+
+/// Apply one UCI action (`d7`, `d7-g7`, `xa1`, ...).
+#[flutter_rust_bridge::frb(sync)]
+pub fn legacy_kernel_apply_uci(move_uci: String) -> bool {
+    let mut guard = LEGACY_KERNEL.lock().expect("legacy kernel mutex poisoned");
+    match guard.as_mut() {
+        Some(kernel) => kernel.apply_uci(&move_uci),
+        None => false,
+    }
+}
+
+/// Raw C++ Phase enum tag.
+#[flutter_rust_bridge::frb(sync)]
+pub fn legacy_kernel_phase_tag() -> i32 {
+    let guard = LEGACY_KERNEL.lock().expect("legacy kernel mutex poisoned");
+    guard.as_ref().map(LegacyKernel::phase_tag).unwrap_or_default()
+}
+
+/// Raw C++ Color enum tag for side to move.
+#[flutter_rust_bridge::frb(sync)]
+pub fn legacy_kernel_side_to_move() -> i32 {
+    let guard = LEGACY_KERNEL.lock().expect("legacy kernel mutex poisoned");
+    guard
+        .as_ref()
+        .map(LegacyKernel::side_to_move)
+        .unwrap_or_default()
+}

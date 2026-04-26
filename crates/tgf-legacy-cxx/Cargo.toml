@@ -6,4 +6,8 @@ description = "TGF – transitional cxx::bridge wrapping the legacy C++ engine (
 license     = "GPL-3.0-or-later"
 
 [dependencies]
+cxx = "1"
 tgf-core = { path = "../tgf-core" }
+
+[build-dependencies]
+cxx-build = "1"
