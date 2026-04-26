@@ -243,53 +243,11 @@ class ExtMove extends PgnNodeData {
   }
 
   static int _standardNotationToSquare(String notation) {
-    final Map<String, int> standardToSquare = <String, int>{
-      // Inner ring
-      "d5": 8, "e5": 9, "e4": 10, "e3": 11,
-      "d3": 12, "c3": 13, "c4": 14, "c5": 15,
-      // Middle ring
-      "d6": 16, "f6": 17, "f4": 18, "f2": 19,
-      "d2": 20, "b2": 21, "b4": 22, "b6": 23,
-      // Outer ring
-      "d7": 24, "g7": 25, "g4": 26, "g1": 27,
-      "d1": 28, "a1": 29, "a4": 30, "a7": 31,
-    };
-
-    return standardToSquare[notation.toLowerCase()] ?? -1;
+    return _MillNotationMaps.standardToSquare[notation.toLowerCase()] ?? -1;
   }
 
-  static final Map<int, String> _squareToWmdNotation = <int, String>{
-    -1: "(none)", // TODO: Can parse it?
-    0: "draw", // TODO: Can parse it?
-    8: "d5",
-    9: "e5",
-    10: "e4",
-    11: "e3",
-    12: "d3",
-    13: "c3",
-    14: "c4",
-    15: "c5",
-    16: "d6",
-    17: "f6",
-    18: "f4",
-    19: "f2",
-    20: "d2",
-    21: "b2",
-    22: "b4",
-    23: "b6",
-    24: "d7",
-    25: "g7",
-    26: "g4",
-    27: "g1",
-    28: "d1",
-    29: "a1",
-    30: "a4",
-    31: "a7",
-  };
-
   static String sqToNotation(int sq) {
-    final String? ret = _squareToWmdNotation[sq];
-    return ret ?? "";
+    return _MillNotationMaps.squareToNotation[sq] ?? "";
   }
 
   /// Validate the move string format.
@@ -329,8 +287,8 @@ class ExtMove extends PgnNodeData {
   String get notation {
     final bool useUpperCase = DB().generalSettings.screenReaderSupport;
     final int f = from;
-    final String? fromStr = _squareToWmdNotation[f];
-    final String? toStr = _squareToWmdNotation[to];
+    final String? fromStr = _MillNotationMaps.squareToNotation[f];
+    final String? toStr = _MillNotationMaps.squareToNotation[to];
     switch (type) {
       case MoveType.remove:
         return useUpperCase ? "x${toStr?.toUpperCase()}" : "x$toStr";
@@ -344,6 +302,38 @@ class ExtMove extends PgnNodeData {
       case MoveType.none:
         return useUpperCase ? toStr?.toUpperCase() ?? "" : toStr ?? "";
     }
+  }
+}
+
+class _MillNotationMaps {
+  const _MillNotationMaps._();
+
+  static Map<String, int>? _standardToSquareCache;
+  static Map<int, String>? _squareToNotationCache;
+
+  static Map<String, int> get standardToSquare {
+    return _standardToSquareCache ??= _buildStandardToSquare();
+  }
+
+  static Map<int, String> get squareToNotation {
+    return _squareToNotationCache ??= _buildSquareToNotation();
+  }
+
+  static Map<String, int> _buildStandardToSquare() {
+    final tgf.TopologyBlob topology = tgf.kernelTopology();
+    return <String, int>{
+      for (final tgf.TopologyPoint p in topology.points)
+        p.label.toLowerCase(): p.square,
+    };
+  }
+
+  static Map<int, String> _buildSquareToNotation() {
+    final tgf.TopologyBlob topology = tgf.kernelTopology();
+    return <int, String>{
+      -1: "(none)",
+      0: "draw",
+      for (final tgf.TopologyPoint p in topology.points) p.square: p.label,
+    };
   }
 }
 

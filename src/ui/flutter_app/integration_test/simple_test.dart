@@ -4,6 +4,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 
+import 'package:sanmill/game_page/services/mill.dart' show ExtMove, PieceColor;
 import 'package:sanmill/game_platform/board_geometry.dart';
 import 'package:sanmill/game_platform/engine/legacy_tgf_kernel.dart';
 import 'package:sanmill/game_platform/engine/native_topology.dart';
@@ -102,6 +103,15 @@ void main() {
       session.legalActions.map((GameAction a) => a.payload['move']),
       contains('d7'),
     );
+  });
+
+  testWidgets('ExtMove notation uses Rust topology mapping', (
+    WidgetTester tester,
+  ) async {
+    expect(ExtMove.sqToNotation(8), 'd5');
+    final ExtMove move = ExtMove('d7', side: PieceColor.white);
+    expect(move.to, 24);
+    expect(move.notation, 'd7');
   });
 
   testWidgets('FRB-backed MillRulesPort enumerates and applies moves', (
