@@ -7,6 +7,8 @@ import 'package:integration_test/integration_test.dart';
 import 'package:sanmill/game_platform/board_geometry.dart';
 import 'package:sanmill/game_platform/engine/legacy_tgf_kernel.dart';
 import 'package:sanmill/game_platform/engine/native_topology.dart';
+import 'package:sanmill/game_platform/game_session.dart';
+import 'package:sanmill/games/mill/mill_rules_port.dart';
 import 'package:sanmill/src/rust/api/simple.dart';
 import 'package:sanmill/src/rust/frb_generated.dart';
 
@@ -86,6 +88,19 @@ void main() {
       inInclusiveRange(0, 23),
     );
     expect(nativeMillSearchZeroTimeLimitAborts(), isTrue);
+  });
+
+  testWidgets('FRB-backed MillRulesPort enumerates and applies moves', (
+    WidgetTester tester,
+  ) async {
+    final MillRulesPort rules = MillRulesPort();
+    expect(rules.legalActions, hasLength(24));
+    expect(rules.snapshot.phase, 'placing');
+
+    final GameAction first = rules.legalActions.first;
+    final GameStateSnapshot after = rules.apply(first);
+    expect(after.lastAction, first);
+    expect(after.activeSeat, isNot(PlayerSeat.first));
   });
 
   testWidgets('Rust-native search emits event stream', (

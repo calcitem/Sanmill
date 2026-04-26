@@ -41,7 +41,7 @@ import 'mill_game_session.dart';
 import 'mill_notation_port.dart';
 import 'mill_route_ids.dart';
 import 'mill_rule_settings_port.dart';
-import 'mill_rules_platform_stub.dart';
+import 'mill_rules_port.dart';
 
 class MillGameModule extends GameModule {
   MillGameModule();
@@ -80,7 +80,7 @@ class MillGameModule extends GameModule {
   GameSessionHandle startSession() => MillGameSession();
 
   @override
-  RulesPort? get rulesPort => MillRulesPlatformStub();
+  RulesPort? get rulesPort => MillRulesPort();
 
   @override
   NotationPort? get notationPort => const MillNotationPort();
