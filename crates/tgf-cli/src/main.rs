@@ -5,7 +5,7 @@ use std::io::{self, BufRead};
 use std::time::{Duration, Instant};
 
 use tgf_core::{Action, ActionList, BoardTopology, Game, GameRules, GameStateSnapshot};
-use tgf_mill::{default_mill_topology, MillActionKind, MillGame, MillRules};
+use tgf_mill::{default_mill_topology, MillActionKind, MillGame, MillRules, MillVariantOptions};
 use tgf_search::{perft, SearchOptions, Searcher};
 
 fn main() {
@@ -25,7 +25,8 @@ fn print_help() {
 }
 
 fn run_uci_loop() {
-    let rules = MillRules::default();
+    let mut options = MillVariantOptions::default();
+    let mut rules = MillRules::new(options.clone());
     let mut state = rules.initial_state(&[]);
     let stdin = io::stdin();
     for line in stdin.lock().lines().map_while(Result::ok) {
@@ -36,16 +37,24 @@ fn run_uci_loop() {
         if line == "uci" {
             println!("id name TGF Mill Rust");
             println!("id author The Sanmill developers");
+            print_uci_options();
             println!("uciok");
         } else if line == "isready" {
             println!("readyok");
         } else if line == "ucinewgame" {
             state = rules.initial_state(&[]);
+        } else if line.starts_with("setoption") {
+            if apply_setoption(line, &mut options) {
+                rules = MillRules::new(options.clone());
+                state = rules.initial_state(&[]);
+            } else {
+                println!("info string unsupported setoption: {line}");
+            }
         } else if line.starts_with("position") {
             state = parse_position_command(&rules, line);
         } else if line.starts_with("go") {
             let go = parse_go_options(line);
-            let game = MillGame::default();
+            let game = MillGame::new(options.clone());
             let mut wb = game.build_workbench(&state);
             let mut searcher = Searcher::<MillGame>::new();
             searcher.set_options(SearchOptions {
@@ -69,6 +78,68 @@ fn run_uci_loop() {
         } else {
             println!("info string unknown command: {line}");
         }
+    }
+}
+
+fn print_uci_options() {
+    println!("option name PieceCount type spin default 9 min 3 max 12");
+    println!("option name FlyPieceCount type spin default 3 min 3 max 3");
+    println!("option name PiecesAtLeastCount type spin default 3 min 2 max 3");
+    println!("option name MayFly type check default true");
+    println!("option name HasDiagonalLines type check default false");
+}
+
+fn apply_setoption(line: &str, options: &mut MillVariantOptions) -> bool {
+    let tokens = line.split_whitespace().collect::<Vec<_>>();
+    let Some(name_pos) = tokens.iter().position(|t| *t == "name") else {
+        return false;
+    };
+    let Some(value_pos) = tokens.iter().position(|t| *t == "value") else {
+        return false;
+    };
+    if value_pos <= name_pos + 1 || value_pos + 1 >= tokens.len() {
+        return false;
+    }
+    let name = tokens[name_pos + 1..value_pos]
+        .join(" ")
+        .to_ascii_lowercase();
+    let value = tokens[value_pos + 1];
+    match name.as_str() {
+        "piececount" | "piece count" => value
+            .parse::<u8>()
+            .ok()
+            .filter(|v| (3..=12).contains(v))
+            .is_some_and(|v| {
+                options.piece_count = v;
+                true
+            }),
+        "flypiececount" | "fly piece count" => value.parse::<u8>().ok().is_some_and(|v| {
+            options.fly_piece_count = v;
+            true
+        }),
+        "piecesatleastcount" | "pieces at least count" => {
+            value.parse::<u8>().ok().is_some_and(|v| {
+                options.pieces_at_least_count = v;
+                true
+            })
+        }
+        "mayfly" | "may fly" => parse_bool(value).is_some_and(|v| {
+            options.may_fly = v;
+            true
+        }),
+        "hasdiagonallines" | "has diagonal lines" => parse_bool(value).is_some_and(|v| {
+            options.has_diagonal_lines = v;
+            true
+        }),
+        _ => false,
+    }
+}
+
+fn parse_bool(value: &str) -> Option<bool> {
+    match value.to_ascii_lowercase().as_str() {
+        "true" | "1" | "yes" | "on" => Some(true),
+        "false" | "0" | "no" | "off" => Some(false),
+        _ => None,
     }
 }
 
