@@ -667,8 +667,51 @@ pub struct MctsResult {
     pub wins: u32,
 }
 
+#[derive(Clone, Debug)]
+struct MctsNode {
+    action: Action,
+    children: Vec<usize>,
+    untried: Vec<Action>,
+    visits: u32,
+    wins: u32,
+    move_index: usize,
+}
+
+impl MctsNode {
+    fn root(untried: Vec<Action>) -> Self {
+        Self {
+            action: Action::NONE,
+            children: Vec::new(),
+            untried,
+            visits: 0,
+            wins: 0,
+            move_index: 0,
+        }
+    }
+
+    fn child(_parent: usize, action: Action, untried: Vec<Action>, move_index: usize) -> Self {
+        Self {
+            action,
+            children: Vec::new(),
+            untried,
+            visits: 0,
+            wins: 0,
+            move_index,
+        }
+    }
+
+    fn win_score(&self) -> f64 {
+        if self.visits == 0 {
+            0.0
+        } else {
+            self.wins as f64 / self.visits as f64
+        }
+    }
+}
+
 pub struct MctsSearcher<G: Game> {
     rng_state: u64,
+    exploration: f64,
     _phantom: PhantomData<G>,
 }
 
@@ -676,6 +719,7 @@ impl<G: Game> Default for MctsSearcher<G> {
     fn default() -> Self {
         Self {
             rng_state: 0xD1B5_4A32_D192_ED03,
+            exploration: 0.5,
             _phantom: PhantomData,
         }
     }
@@ -690,22 +734,23 @@ impl<G: Game> MctsSearcher<G> {
         self.rng_state = if seed == 0 { 0xD1B5_4A32_D192_ED03 } else { seed };
     }
 
-    /// Lightweight MCTS scaffold: evaluate every root move with deterministic
-    /// random playouts and pick the move with the highest win count.
-    ///
-    /// This is not the final C++-equivalent UCT tree. It establishes the
-    /// generic MCTS surface over `G: Game` and the simulation/backprop data
-    /// shape, so later work can replace the root-only statistics with a full
-    /// tree without changing callers.
+    pub fn set_exploration(&mut self, exploration: f64) {
+        self.exploration = exploration.max(0.0);
+    }
+
+    /// Monte-Carlo Tree Search scaffold using UCT selection, expansion,
+    /// random playout, and backpropagation.  This is still single-threaded and
+    /// does not yet include the optional C++ alpha-beta assisted simulation, but
+    /// unlike the first scaffold it maintains a real tree of node statistics.
     pub fn search(
         &mut self,
         wb: &mut G::Workbench,
         iterations_per_move: u32,
         playout_depth: i32,
     ) -> MctsResult {
-        let mut moves = ActionList::<256>::new();
-        G::generate_legal(wb, &mut moves);
-        if moves.is_empty() {
+        let mut root_moves = ActionList::<256>::new();
+        G::generate_legal(wb, &mut root_moves);
+        if root_moves.is_empty() {
             return MctsResult {
                 best_action: Action::NONE,
                 visits: 0,
@@ -713,34 +758,106 @@ impl<G: Game> MctsSearcher<G> {
             };
         }
 
-        let mut best_action = moves[0];
-        let mut best_visits = 0_u32;
-        let mut best_wins = 0_u32;
+        let root_untried = root_moves.into_iter().collect::<Vec<_>>();
+        let total_iterations = iterations_per_move.max(1) as usize * root_untried.len().max(1);
+        let mut nodes = vec![MctsNode::root(root_untried)];
 
-        for action in moves {
-            let mut wins = 0_u32;
-            let mut visits = 0_u32;
-            for _ in 0..iterations_per_move.max(1) {
+        for _ in 0..total_iterations {
+            let mut node_idx = 0_usize;
+            let mut path = vec![0_usize];
+            let mut applied_moves = 0_usize;
+
+            // Selection: descend by UCT while fully expanded.
+            while nodes[node_idx].untried.is_empty() && !nodes[node_idx].children.is_empty() {
+                let child_idx = self.best_uct_child(&nodes, node_idx);
+                let action = nodes[child_idx].action;
                 wb.do_move(action);
-                let win = self.simulate(wb, playout_depth);
-                wb.undo_move();
-                visits += 1;
-                if win {
-                    wins += 1;
-                }
+                applied_moves += 1;
+                node_idx = child_idx;
+                path.push(node_idx);
             }
-            if wins > best_wins || (wins == best_wins && visits > best_visits) {
-                best_action = action;
-                best_wins = wins;
-                best_visits = visits;
+
+            // Expansion: pick one untried action and create a child.
+            if !nodes[node_idx].untried.is_empty() {
+                let pick = self.next_random_index(nodes[node_idx].untried.len());
+                let action = nodes[node_idx].untried.swap_remove(pick);
+                wb.do_move(action);
+                applied_moves += 1;
+
+                let mut child_moves = ActionList::<256>::new();
+                G::generate_legal(wb, &mut child_moves);
+                let move_index = nodes[node_idx].children.len();
+                let child_idx = nodes.len();
+                nodes.push(MctsNode::child(
+                    node_idx,
+                    action,
+                    child_moves.into_iter().collect(),
+                    move_index,
+                ));
+                nodes[node_idx].children.push(child_idx);
+                node_idx = child_idx;
+                path.push(node_idx);
+            }
+
+            let mut win = self.simulate(wb, playout_depth);
+
+            for _ in 0..applied_moves {
+                wb.undo_move();
+            }
+
+            // Backpropagate.  Alternate win perspective at each parent, matching
+            // the mature C++ implementation.
+            for idx in path.into_iter().rev() {
+                nodes[idx].visits += 1;
+                if win {
+                    nodes[idx].wins += 1;
+                }
+                win = !win;
             }
         }
+
+        let Some(best_child) = nodes[0]
+            .children
+            .iter()
+            .copied()
+            .max_by_key(|idx| nodes[*idx].visits)
+        else {
+            return MctsResult {
+                best_action: Action::NONE,
+                visits: 0,
+                wins: 0,
+            };
+        };
 
         MctsResult {
-            best_action,
-            visits: best_visits,
-            wins: best_wins,
+            best_action: nodes[best_child].action,
+            visits: nodes[best_child].visits,
+            wins: nodes[best_child].wins,
         }
+    }
+
+    fn best_uct_child(&self, nodes: &[MctsNode], node_idx: usize) -> usize {
+        let parent_visits = nodes[node_idx].visits.max(1) as f64;
+        *nodes[node_idx]
+            .children
+            .iter()
+            .max_by(|a, b| {
+                let av = self.uct_value(&nodes[**a], parent_visits);
+                let bv = self.uct_value(&nodes[**b], parent_visits);
+                av.partial_cmp(&bv).unwrap_or(std::cmp::Ordering::Equal)
+            })
+            .expect("node has children")
+    }
+
+    fn uct_value(&self, node: &MctsNode, parent_visits: f64) -> f64 {
+        if node.visits == 0 {
+            return f64::INFINITY;
+        }
+        let mean = node.win_score();
+        let exploration = self.exploration * (2.0 * parent_visits.ln() / node.visits as f64).sqrt();
+        let variance = ((mean * (1.0 - mean)) / node.visits as f64).sqrt();
+        let bias = 0.05 * (256.0 - node.move_index as f64);
+        mean + exploration + variance + bias
     }
 
     fn simulate(&mut self, wb: &mut G::Workbench, depth: i32) -> bool {
@@ -770,6 +887,7 @@ impl<G: Game> MctsSearcher<G> {
         (value as usize) % len
     }
 }
+
 
 #[cfg(test)]
 mod tests {
