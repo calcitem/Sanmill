@@ -45,9 +45,13 @@ fn print_benchmark_toml() {
     let mut searcher = Searcher::<MillGame>::new();
     let start = Instant::now();
     let result = searcher.search(&mut wb, 4);
+    // Search once more to exercise the TT probe path and collect a real hit
+    // rate.  The second search reuses the table populated by the first search.
+    let _ = searcher.search(&mut wb, 4);
     let elapsed = start.elapsed().max(Duration::from_micros(1));
     let depth_ms = elapsed.as_millis() as u64;
     let nps = (result.nodes as f64 / elapsed.as_secs_f64()).round() as u64;
+    let tt_hit_rate_pct = searcher.tt_hit_rate_pct();
 
     let cold_start_begin = Instant::now();
     let mut wb = game.build_workbench(&snap);
@@ -71,9 +75,7 @@ fn print_benchmark_toml() {
     println!("mid_d3 = 0");
     println!();
     println!("[baseline.tt]");
-    // TT hit-rate instrumentation is not implemented yet; keep the field at 0
-    // so check_perf_baseline.py will skip this threshold until populated.
-    println!("hit_rate_pct = 0.0");
+    println!("hit_rate_pct = {:.3}", tt_hit_rate_pct);
     println!();
     println!("[baseline.startup]");
     println!("first_move_ms = {}", first_move_ms);

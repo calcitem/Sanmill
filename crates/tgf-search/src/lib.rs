@@ -109,6 +109,8 @@ impl Default for SearchOptions {
 
 pub struct Searcher<G: Game> {
     nodes: u64,
+    tt_hits: u64,
+    tt_misses: u64,
     rng_state: u64,
     tt: HashMap<u64, TtEntry>,
     killers: HashMap<i32, Action>,
@@ -125,6 +127,8 @@ impl<G: Game> Default for Searcher<G> {
     fn default() -> Self {
         Self {
             nodes: 0,
+            tt_hits: 0,
+            tt_misses: 0,
             rng_state: 0x9E37_79B9_7F4A_7C15,
             tt: HashMap::new(),
             killers: HashMap::new(),
@@ -146,6 +150,23 @@ impl<G: Game> Searcher<G> {
 
     pub fn nodes(&self) -> u64 {
         self.nodes
+    }
+
+    pub fn tt_hits(&self) -> u64 {
+        self.tt_hits
+    }
+
+    pub fn tt_misses(&self) -> u64 {
+        self.tt_misses
+    }
+
+    pub fn tt_hit_rate_pct(&self) -> f64 {
+        let total = self.tt_hits + self.tt_misses;
+        if total == 0 {
+            0.0
+        } else {
+            self.tt_hits as f64 * 100.0 / total as f64
+        }
     }
 
     pub fn clear_tt(&mut self) {
@@ -362,7 +383,11 @@ impl<G: Game> Searcher<G> {
         let old_alpha = alpha;
         let key = wb.key();
         if let Some(value) = self.probe_tt(key, depth, &mut alpha, beta) {
+            self.tt_hits += 1;
             return value;
+        }
+        if key != 0 {
+            self.tt_misses += 1;
         }
 
         let mut moves = ActionList::<256>::new();
@@ -434,6 +459,8 @@ impl<G: Game> Searcher<G> {
     #[inline]
     fn begin_root_search(&mut self) {
         self.nodes = 0;
+        self.tt_hits = 0;
+        self.tt_misses = 0;
         self.aborted = false;
         self.abort_flag.store(false, Ordering::Relaxed);
         self.search_started_at = Some(Instant::now());
@@ -850,6 +877,8 @@ mod tests {
         let second = searcher.search(&mut wb, 2);
         assert_eq!(first.best_action, second.best_action);
         assert!(searcher.nodes() <= before.max(1));
+        assert!(searcher.tt_hits() > 0);
+        assert!(searcher.tt_hit_rate_pct() > 0.0);
     }
 
     #[test]
