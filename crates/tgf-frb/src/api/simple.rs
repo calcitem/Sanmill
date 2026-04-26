@@ -522,11 +522,44 @@ pub fn native_mill_search_stop() -> bool {
 
 #[cfg(test)]
 mod tests {
-    use std::sync::Mutex;
+    use std::{collections::BTreeSet, sync::Mutex};
 
     use super::*;
 
     static LEGACY_TEST_MUTEX: Mutex<()> = Mutex::new(());
+
+    fn native_legal_uci_set(snapshot: &tgf_core::GameStateSnapshot) -> BTreeSet<String> {
+        let rules = MillRules::default();
+        let mut actions = ActionList::<256>::new();
+        rules.legal_actions(snapshot, &mut actions);
+        actions
+            .iter()
+            .map(native_action_to_uci)
+            .collect::<BTreeSet<_>>()
+    }
+
+    fn legacy_legal_uci_set(legacy: &LegacyKernel) -> BTreeSet<String> {
+        legacy.legal_actions().into_iter().collect()
+    }
+
+    fn native_action_to_uci(action: &Action) -> String {
+        let topo = default_mill_topology();
+        match action.kind_tag {
+            x if x == MillActionKind::Place as i16 => {
+                topo.label_of(action.to_node as u16).to_owned()
+            }
+            x if x == MillActionKind::Move as i16 => format!(
+                "{}-{}",
+                topo.label_of(action.from_node as u16),
+                topo.label_of(action.to_node as u16)
+            ),
+            x if x == MillActionKind::Remove as i16 => {
+                format!("x{}", topo.label_of(action.to_node as u16))
+            }
+            _ => panic!("unsupported native action kind {}", action.kind_tag),
+        }
+    }
+
 
     #[test]
     fn native_and_legacy_initial_legal_count_match() {
@@ -534,6 +567,17 @@ mod tests {
         let legacy = LegacyKernel::new(0);
         assert_eq!(legacy.legal_actions().len(), native_mill_initial_legal_count() as usize);
         assert_eq!(native_mill_initial_legal_count(), 24);
+    }
+
+
+    #[test]
+    fn native_and_legacy_initial_legal_action_sets_match() {
+        let _guard = LEGACY_TEST_MUTEX.lock().expect("legacy test mutex poisoned");
+        let legacy = LegacyKernel::new(0);
+        let rules = MillRules::default();
+        let snap = rules.initial_state(&[]);
+
+        assert_eq!(legacy_legal_uci_set(&legacy), native_legal_uci_set(&snap));
     }
 
     #[test]
@@ -586,6 +630,33 @@ mod tests {
         assert_eq!(remove_count, 2);
         assert_eq!(native_mill_mill_sequence_remove_count(), 2);
         assert_eq!(remove_count, native_mill_mill_sequence_remove_count() as usize);
+    }
+
+
+    #[test]
+    fn native_and_legacy_pending_remove_legal_action_sets_match() {
+        let _guard = LEGACY_TEST_MUTEX.lock().expect("legacy test mutex poisoned");
+        let mut legacy = LegacyKernel::new(0);
+        for mv in ["d7", "a1", "g7", "d1", "a7"] {
+            assert!(legacy.apply_uci(mv), "legacy C++ move should be legal: {mv}");
+        }
+
+        let rules = MillRules::default();
+        let mut snap = rules.initial_state(&[]);
+        for node in [1_i16, 6, 2, 5, 0] {
+            snap = rules.apply(
+                &snap,
+                Action {
+                    kind_tag: MillActionKind::Place as i16,
+                    from_node: -1,
+                    to_node: node,
+                    aux: -1,
+                    payload_bits: 0,
+                },
+            );
+        }
+
+        assert_eq!(legacy_legal_uci_set(&legacy), native_legal_uci_set(&snap));
     }
 
     #[test]
