@@ -64,5 +64,6 @@ void main() {
   ) async {
     expect(nativeMillInitialLegalCount(), 24);
     expect(nativeMillApplyFirstPlaceSideToMove(), 1);
+    expect(nativeMillMillSequenceRemoveCount(), 2);
   });
 }

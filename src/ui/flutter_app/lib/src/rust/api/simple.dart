@@ -60,6 +60,11 @@ int nativeMillInitialLegalCount() =>
 int nativeMillApplyFirstPlaceSideToMove() =>
     RustLib.instance.api.crateApiSimpleNativeMillApplyFirstPlaceSideToMove();
 
+/// Play the canonical a7-d7-g7 mill formation sequence and return how many
+/// native Rust remove actions are generated.
+int nativeMillMillSequenceRemoveCount() =>
+    RustLib.instance.api.crateApiSimpleNativeMillMillSequenceRemoveCount();
+
 class TopologyBlob {
   const TopologyBlob({
     required this.name,

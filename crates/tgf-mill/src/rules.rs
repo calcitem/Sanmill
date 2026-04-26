@@ -101,6 +101,7 @@ impl GameRules for MillRules {
             move_number: 0,
             pieces_in_hand: [self.options.piece_count, self.options.piece_count],
             pieces_on_board: [0, 0],
+            pending_removals: [0, 0],
         };
         self.encode(state)
     }
@@ -109,6 +110,10 @@ impl GameRules for MillRules {
         let state = Self::decode(snap);
         match state.phase {
             MillPhase::Placing => {
+                if state.pending_removals[state.side_to_move as usize] > 0 {
+                    self.generate_remove_actions(&state, out);
+                    return;
+                }
                 if state.pieces_in_hand[state.side_to_move as usize] == 0 {
                     return;
                 }
@@ -125,6 +130,10 @@ impl GameRules for MillRules {
                 }
             }
             MillPhase::Moving => {
+                if state.pending_removals[state.side_to_move as usize] > 0 {
+                    self.generate_remove_actions(&state, out);
+                    return;
+                }
                 let side = state.side_to_move as usize;
                 let can_fly = self.options.may_fly
                     && state.pieces_on_board[side] <= self.options.fly_piece_count;
@@ -165,7 +174,11 @@ impl GameRules for MillRules {
                 if state.pieces_in_hand[0] == 0 && state.pieces_in_hand[1] == 0 {
                     state.phase = MillPhase::Moving;
                 }
-                state.side_to_move ^= 1;
+                if forms_mill(&state, to, state.side_to_move) {
+                    state.pending_removals[side] = 1;
+                } else {
+                    state.side_to_move ^= 1;
+                }
             }
             x if x == MillActionKind::Move as i16 => {
                 let from = action.from_node as usize;
@@ -175,7 +188,27 @@ impl GameRules for MillRules {
                 state.board[from] = 0;
                 state.board[to] = state.side_to_move + 1;
                 state.move_number += 1;
-                state.side_to_move ^= 1;
+                let side = state.side_to_move as usize;
+                if forms_mill(&state, to, state.side_to_move) {
+                    state.pending_removals[side] = 1;
+                } else {
+                    state.side_to_move ^= 1;
+                }
+            }
+            x if x == MillActionKind::Remove as i16 => {
+                let to = action.to_node as usize;
+                let side = state.side_to_move as usize;
+                let opponent = (state.side_to_move ^ 1) as usize;
+                debug_assert_eq!(state.board[to], opponent as i8 + 1);
+                debug_assert!(state.pending_removals[side] > 0);
+                state.board[to] = 0;
+                state.pieces_on_board[opponent] =
+                    state.pieces_on_board[opponent].saturating_sub(1);
+                state.pending_removals[side] =
+                    state.pending_removals[side].saturating_sub(1);
+                if state.pending_removals[side] == 0 {
+                    state.side_to_move ^= 1;
+                }
             }
             _ => {}
         }
@@ -198,6 +231,33 @@ impl GameRules for MillRules {
     }
 }
 
+impl MillRules {
+    fn generate_remove_actions(&self, state: &MillState, out: &mut ActionList<256>) {
+        let opponent_piece = (state.side_to_move ^ 1) + 1;
+        let has_non_mill_target = state
+            .board
+            .iter()
+            .enumerate()
+            .any(|(idx, piece)| *piece == opponent_piece && !is_piece_in_mill(state, idx));
+
+        for (node, piece) in state.board.iter().enumerate() {
+            if *piece != opponent_piece {
+                continue;
+            }
+            if has_non_mill_target && is_piece_in_mill(state, node) {
+                continue;
+            }
+            out.push(Action {
+                kind_tag: MillActionKind::Remove as i16,
+                from_node: -1,
+                to_node: node as i16,
+                aux: -1,
+                payload_bits: 0,
+            });
+        }
+    }
+}
+
 fn move_action(from: usize, to: usize) -> Action {
     Action {
         kind_tag: MillActionKind::Move as i16,
@@ -216,6 +276,7 @@ struct MillState {
     move_number: i16,
     pieces_in_hand: [u8; 2],
     pieces_on_board: [u8; 2],
+    pending_removals: [u8; 2],
 }
 
 impl MillState {
@@ -228,6 +289,8 @@ impl MillState {
         payload[25] = self.pieces_in_hand[1];
         payload[26] = self.pieces_on_board[0];
         payload[27] = self.pieces_on_board[1];
+        payload[28] = self.pending_removals[0];
+        payload[29] = self.pending_removals[1];
         payload
     }
 
@@ -249,9 +312,53 @@ impl MillState {
             move_number: snapshot.move_number,
             pieces_in_hand: [payload[24], payload[25]],
             pieces_on_board: [payload[26], payload[27]],
+            pending_removals: [payload[28], payload[29]],
         }
     }
 }
+
+fn forms_mill(state: &MillState, node: usize, side_to_move: i8) -> bool {
+    mill_lines_for_node(node)
+        .iter()
+        .any(|line| line.iter().all(|idx| state.board[*idx] == side_to_move + 1))
+}
+
+fn is_piece_in_mill(state: &MillState, node: usize) -> bool {
+    let piece = state.board[node];
+    if piece == 0 {
+        return false;
+    }
+    mill_lines_for_node(node)
+        .iter()
+        .any(|line| line.iter().all(|idx| state.board[*idx] == piece))
+}
+
+fn mill_lines_for_node(node: usize) -> Vec<[usize; 3]> {
+    STANDARD_MILL_LINES
+        .iter()
+        .copied()
+        .filter(|line| line.contains(&node))
+        .collect()
+}
+
+const STANDARD_MILL_LINES: &[[usize; 3]] = &[
+    [0, 1, 2],
+    [2, 3, 4],
+    [4, 5, 6],
+    [6, 7, 0],
+    [8, 9, 10],
+    [10, 11, 12],
+    [12, 13, 14],
+    [14, 15, 8],
+    [16, 17, 18],
+    [18, 19, 20],
+    [20, 21, 22],
+    [22, 23, 16],
+    [1, 9, 17],
+    [3, 11, 19],
+    [5, 13, 21],
+    [7, 15, 23],
+];
 
 #[cfg(test)]
 mod tests {
@@ -286,5 +393,54 @@ mod tests {
         assert_eq!(state.side_to_move, 1);
         assert_eq!(state.pieces_in_hand[0], 8);
         assert_eq!(state.pieces_on_board[0], 1);
+    }
+
+    #[test]
+    fn mill_formation_generates_remove_actions_and_keeps_turn() {
+        let rules = MillRules::default();
+        let mut snap = rules.initial_state(&[]);
+
+        // Equivalent to the C++ golden scenario:
+        // W: d7(1), B: a1(6), W: g7(2), B: d1(5), W: a7(0)
+        // White completes a7-d7-g7 and must remove one black piece.
+        for node in [1, 6, 2, 5, 0] {
+            snap = rules.apply(
+                &snap,
+                Action {
+                    kind_tag: MillActionKind::Place as i16,
+                    from_node: -1,
+                    to_node: node,
+                    aux: -1,
+                    payload_bits: 0,
+                },
+            );
+        }
+
+        let state = MillRules::decode(&snap);
+        assert_eq!(state.side_to_move, 0, "White keeps turn until removal");
+        assert_eq!(state.pending_removals[0], 1);
+
+        let mut actions = ActionList::<256>::new();
+        rules.legal_actions(&snap, &mut actions);
+        assert_eq!(actions.len(), 2);
+        assert!(actions.iter().all(|a| a.kind_tag == MillActionKind::Remove as i16));
+        assert!(actions.iter().any(|a| a.to_node == 6)); // a1
+        assert!(actions.iter().any(|a| a.to_node == 5)); // d1
+
+        let after_remove = rules.apply(
+            &snap,
+            Action {
+                kind_tag: MillActionKind::Remove as i16,
+                from_node: -1,
+                to_node: 6,
+                aux: -1,
+                payload_bits: 0,
+            },
+        );
+        let state = MillRules::decode(&after_remove);
+        assert_eq!(state.board[6], 0);
+        assert_eq!(state.side_to_move, 1, "Turn passes to black after removal");
+        assert_eq!(state.pending_removals[0], 0);
+        assert_eq!(state.pieces_on_board[1], 1);
     }
 }

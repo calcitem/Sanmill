@@ -197,3 +197,29 @@ pub fn native_mill_apply_first_place_side_to_move() -> i32 {
     );
     next.side_to_move as i32
 }
+
+/// Play the canonical a7-d7-g7 mill formation sequence and return how many
+/// native Rust remove actions are generated.
+#[flutter_rust_bridge::frb(sync)]
+pub fn native_mill_mill_sequence_remove_count() -> u32 {
+    let rules = MillRules::default();
+    let mut snap = rules.initial_state(&[]);
+    for node in [1_i16, 6, 2, 5, 0] {
+        snap = rules.apply(
+            &snap,
+            Action {
+                kind_tag: MillActionKind::Place as i16,
+                from_node: -1,
+                to_node: node,
+                aux: -1,
+                payload_bits: 0,
+            },
+        );
+    }
+    let mut actions = ActionList::<256>::new();
+    rules.legal_actions(&snap, &mut actions);
+    actions
+        .iter()
+        .filter(|a| a.kind_tag == MillActionKind::Remove as i16)
+        .count() as u32
+}
