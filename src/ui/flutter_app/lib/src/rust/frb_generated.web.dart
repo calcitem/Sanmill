@@ -72,6 +72,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   List<TopologyPoint> dco_decode_list_topology_point(dynamic raw);
 
   @protected
+  MillBoardFullAction dco_decode_mill_board_full_action(dynamic raw);
+
+  @protected
   MillVariantOptions dco_decode_mill_variant_options(dynamic raw);
 
   @protected
@@ -162,6 +165,11 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   List<TopologyPoint> sse_decode_list_topology_point(
+    SseDeserializer deserializer,
+  );
+
+  @protected
+  MillBoardFullAction sse_decode_mill_board_full_action(
     SseDeserializer deserializer,
   );
 
@@ -278,6 +286,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   void sse_encode_list_topology_point(
     List<TopologyPoint> self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void sse_encode_mill_board_full_action(
+    MillBoardFullAction self,
     SseSerializer serializer,
   );
 

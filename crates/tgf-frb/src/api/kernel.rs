@@ -275,6 +275,7 @@ pub fn tgf_kernel_redo_depth(handle: u32) -> Result<u32, String> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::api::simple::MillBoardFullAction;
 
     #[test]
     fn mill_kernel_session_round_trip() {
@@ -341,6 +342,12 @@ mod tests {
             may_remove_from_mills_always: false,
             may_remove_multiple: false,
             n_move_rule: 100,
+            endgame_n_move_rule: 100,
+            may_move_in_placing_phase: false,
+            restrict_repeated_mills_formation: false,
+            one_time_use_mill: false,
+            stop_placing_when_two_empty_squares: false,
+            board_full_action: MillBoardFullAction::FirstPlayerLose,
         };
         let handle = tgf_kernel_create_mill(variant).unwrap();
         assert_eq!(tgf_kernel_legal_actions(handle).unwrap().len(), 24);

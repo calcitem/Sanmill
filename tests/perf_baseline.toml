@@ -13,6 +13,10 @@
 #     hardware.  When set to 0, `scripts/check_perf_baseline.py` reports a
 #     skip with [SKIP-baseline-not-populated] so reviewers see we are not
 #     gating on a meaningful number yet.
+#   * CI also passes `--sanity-floor`, so even when the machine-dependent
+#     baseline is 0 it still rejects obvious failures (NPS < 100,000,
+#     depth10_ms > 10,000 ms, TT hit rate < 1%).  Once canonical hardware
+#     records real numbers here, the relative thresholds below take over.
 #
 # REGENERATION:
 #   1. Run  `cargo run --release -p tgf-cli -- bench`  to print a TOML

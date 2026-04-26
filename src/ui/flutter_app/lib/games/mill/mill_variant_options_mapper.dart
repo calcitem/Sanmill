@@ -22,6 +22,25 @@ extension MillVariantOptionsMapper on RuleSettings {
       mayRemoveFromMillsAlways: mayRemoveFromMillsAlways,
       mayRemoveMultiple: mayRemoveMultiple,
       nMoveRule: nMoveRule,
+      endgameNMoveRule: endgameNMoveRule,
+      mayMoveInPlacingPhase: mayMoveInPlacingPhase,
+      restrictRepeatedMillsFormation: restrictRepeatedMillsFormation,
+      oneTimeUseMill: oneTimeUseMill,
+      stopPlacingWhenTwoEmptySquares: stopPlacingWhenTwoEmptySquares,
+      boardFullAction: _toTgfBoardFullAction(boardFullAction),
     );
+  }
+
+  static tgf.MillBoardFullAction _toTgfBoardFullAction(BoardFullAction? value) {
+    return switch (value ?? BoardFullAction.firstPlayerLose) {
+      BoardFullAction.firstPlayerLose => tgf.MillBoardFullAction.firstPlayerLose,
+      BoardFullAction.firstAndSecondPlayerRemovePiece =>
+        tgf.MillBoardFullAction.firstAndSecondPlayerRemovePiece,
+      BoardFullAction.secondAndFirstPlayerRemovePiece =>
+        tgf.MillBoardFullAction.secondAndFirstPlayerRemovePiece,
+      BoardFullAction.sideToMoveRemovePiece =>
+        tgf.MillBoardFullAction.sideToMoveRemovePiece,
+      BoardFullAction.agreeToDraw => tgf.MillBoardFullAction.agreeToDraw,
+    };
   }
 }

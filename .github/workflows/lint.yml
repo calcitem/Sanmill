@@ -222,7 +222,7 @@ jobs:
 
       - name: Compare Rust perf result with baseline
         if: steps.rust_check.outputs.exists == 'true'
-        run: python3 scripts/check_perf_baseline.py --baseline tests/perf_baseline.toml --result target/tgf_perf_result.toml
+        run: python3 scripts/check_perf_baseline.py --sanity-floor --baseline tests/perf_baseline.toml --result target/tgf_perf_result.toml
 
       - name: Upload Rust perf result
         if: always() && steps.rust_check.outputs.exists == 'true'

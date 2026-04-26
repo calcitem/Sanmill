@@ -208,8 +208,9 @@ locks them in.
 ### Differential testing
 
 `crates/tgf-frb/src/api/simple.rs::random_walk_native_and_legacy_agree`
-plays seeded random Mill games (default 800 × 80 plies, override via
-`TGF_RANDOM_WALK_GAMES`/`TGF_RANDOM_WALK_SEED`) and asserts that the
+plays seeded random Mill games (default 5,000 × 80 plies, override via
+`TGF_RANDOM_WALK_GAMES`/`TGF_RANDOM_WALK_SEED`; use 12,500 games for roughly
+1,000,000 visited positions) and asserts that the
 native Rust `MillRules` and the legacy C++ engine return identical legal
 action sets, phase tags, and side-to-move at every ply.  Plus the
 existing fixed-position `native_and_legacy_*` perft tests.
@@ -329,14 +330,23 @@ perfect-information invariants.
 - `may_remove_from_mills_always`
 - `may_remove_multiple`
 - `n_move_rule`
+- `endgame_n_move_rule`
+- `may_move_in_placing_phase`
+- `restrict_repeated_mills_formation`
+- `one_time_use_mill`
+- `stop_placing_when_two_empty_squares`
+- `board_full_action` for `FirstPlayerLose` and `AgreeToDraw`
 
 The remaining `Rule` fields (`millFormationActionInPlacingPhase`,
-`boardFullAction`, `stalemateAction`, custodian/intervention/leap captures,
-`mayMoveInPlacingPhase`, `restrictRepeatedMillsFormation`, full repetition
-detection, …) are not yet honoured by the Rust path; the Flutter app routes
-them through the legacy C++ engine until the gap closes.  Each new field
-follows the same pattern: extend `MillVariantOptions`, update
-`MillRules::apply` / `legal_actions`, mirror it in
+`stalemateAction`, custodian/intervention/leap captures,
+`isDefenderMoveFirst`, full threefold repetition, diagonal 12MM topology, and
+the non-default `boardFullAction` removal variants) are not yet honoured by the
+Rust path; the Flutter app routes them through the legacy C++ engine until the
+gap closes.  Perfect DB and opening book intentionally remain behind the cxx
+bridge and should not be converted to Rust.
+
+Each new field follows the same pattern: extend `MillVariantOptions`, update
+`MillRules::apply` / `legal_actions` / `outcome`, mirror it in
 `crates/tgf-frb/src/api/simple.rs::MillVariantOptions`, then in
 `lib/games/mill/mill_variant_options_mapper.dart`, then re-run
 `flutter_rust_bridge_codegen generate`.

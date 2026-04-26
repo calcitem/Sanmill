@@ -1406,11 +1406,17 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  MillBoardFullAction dco_decode_mill_board_full_action(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return MillBoardFullAction.values[raw as int];
+  }
+
+  @protected
   MillVariantOptions dco_decode_mill_variant_options(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     final arr = raw as List<dynamic>;
-    if (arr.length != 8)
-      throw Exception('unexpected arr length: expect 8 but see ${arr.length}');
+    if (arr.length != 14)
+      throw Exception('unexpected arr length: expect 14 but see ${arr.length}');
     return MillVariantOptions(
       pieceCount: dco_decode_u_8(arr[0]),
       flyPieceCount: dco_decode_u_8(arr[1]),
@@ -1420,6 +1426,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       mayRemoveFromMillsAlways: dco_decode_bool(arr[5]),
       mayRemoveMultiple: dco_decode_bool(arr[6]),
       nMoveRule: dco_decode_u_32(arr[7]),
+      endgameNMoveRule: dco_decode_u_32(arr[8]),
+      mayMoveInPlacingPhase: dco_decode_bool(arr[9]),
+      restrictRepeatedMillsFormation: dco_decode_bool(arr[10]),
+      oneTimeUseMill: dco_decode_bool(arr[11]),
+      stopPlacingWhenTwoEmptySquares: dco_decode_bool(arr[12]),
+      boardFullAction: dco_decode_mill_board_full_action(arr[13]),
     );
   }
 
@@ -1688,6 +1700,15 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  MillBoardFullAction sse_decode_mill_board_full_action(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var inner = sse_decode_i_32(deserializer);
+    return MillBoardFullAction.values[inner];
+  }
+
+  @protected
   MillVariantOptions sse_decode_mill_variant_options(
     SseDeserializer deserializer,
   ) {
@@ -1700,6 +1721,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     var var_mayRemoveFromMillsAlways = sse_decode_bool(deserializer);
     var var_mayRemoveMultiple = sse_decode_bool(deserializer);
     var var_nMoveRule = sse_decode_u_32(deserializer);
+    var var_endgameNMoveRule = sse_decode_u_32(deserializer);
+    var var_mayMoveInPlacingPhase = sse_decode_bool(deserializer);
+    var var_restrictRepeatedMillsFormation = sse_decode_bool(deserializer);
+    var var_oneTimeUseMill = sse_decode_bool(deserializer);
+    var var_stopPlacingWhenTwoEmptySquares = sse_decode_bool(deserializer);
+    var var_boardFullAction = sse_decode_mill_board_full_action(deserializer);
     return MillVariantOptions(
       pieceCount: var_pieceCount,
       flyPieceCount: var_flyPieceCount,
@@ -1709,6 +1736,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       mayRemoveFromMillsAlways: var_mayRemoveFromMillsAlways,
       mayRemoveMultiple: var_mayRemoveMultiple,
       nMoveRule: var_nMoveRule,
+      endgameNMoveRule: var_endgameNMoveRule,
+      mayMoveInPlacingPhase: var_mayMoveInPlacingPhase,
+      restrictRepeatedMillsFormation: var_restrictRepeatedMillsFormation,
+      oneTimeUseMill: var_oneTimeUseMill,
+      stopPlacingWhenTwoEmptySquares: var_stopPlacingWhenTwoEmptySquares,
+      boardFullAction: var_boardFullAction,
     );
   }
 
@@ -1981,6 +2014,15 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_mill_board_full_action(
+    MillBoardFullAction self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.index, serializer);
+  }
+
+  @protected
   void sse_encode_mill_variant_options(
     MillVariantOptions self,
     SseSerializer serializer,
@@ -1994,6 +2036,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_bool(self.mayRemoveFromMillsAlways, serializer);
     sse_encode_bool(self.mayRemoveMultiple, serializer);
     sse_encode_u_32(self.nMoveRule, serializer);
+    sse_encode_u_32(self.endgameNMoveRule, serializer);
+    sse_encode_bool(self.mayMoveInPlacingPhase, serializer);
+    sse_encode_bool(self.restrictRepeatedMillsFormation, serializer);
+    sse_encode_bool(self.oneTimeUseMill, serializer);
+    sse_encode_bool(self.stopPlacingWhenTwoEmptySquares, serializer);
+    sse_encode_mill_board_full_action(self.boardFullAction, serializer);
   }
 
   @protected

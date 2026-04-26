@@ -31,10 +31,10 @@ import argparse
 import sys
 
 try:
-    import tomllib  # Python 3.11+
+    import tomllib as _tomllib  # Python 3.11+
 except ImportError:
     try:
-        import tomli as tomllib  # pip install tomli
+        import tomli as _tomllib  # pip install tomli
     except ImportError:
         print(
             "[check_perf_baseline] ERROR: install tomllib or tomli",
@@ -67,6 +67,12 @@ THRESHOLDS = {
         "max_regress_pct": 10.0,
         "direction": "higher_is_bad",
     },
+}
+
+SANITY_FLOORS = {
+    "nps": {"min": 100_000},
+    "depth10_ms": {"max": 10_000},
+    "tt_hit_rate": {"min": 1.0},
 }
 
 # Perft node counts are deterministic.  Any populated baseline value must
@@ -107,12 +113,20 @@ def main():
         action="store_false",
         help="Allow unpopulated perft baselines to pass with a SKIP message.",
     )
+    ap.add_argument(
+        "--sanity-floor",
+        action="store_true",
+        help=(
+            "When a runtime baseline is 0/missing, still fail obvious "
+            "regressions (NPS < 100k, depth10_ms > 10s, TT hit rate < 1%)."
+        ),
+    )
     args = ap.parse_args()
 
     with open(args.baseline, "rb") as f:
-        baseline = tomllib.load(f)
+        baseline = _tomllib.load(f)
     with open(args.result, "rb") as f:
-        result = tomllib.load(f)
+        result = _tomllib.load(f)
 
     failed = False
 
@@ -156,6 +170,31 @@ def main():
         bval = get_nested(baseline, spec["field"])
         rval = get_nested(result, spec["field"])
         if bval is None or bval == 0:
+            if args.sanity_floor and name in SANITY_FLOORS:
+                if rval is None:
+                    print(f"[FAIL-sanity-missing] {name} not in result")
+                    failed = True
+                    continue
+                floor = SANITY_FLOORS[name]
+                if "min" in floor and rval < floor["min"]:
+                    print(
+                        f"[FAIL-sanity-floor] {name}: result={rval} "
+                        f"minimum={floor['min']}"
+                    )
+                    failed = True
+                    continue
+                if "max" in floor and rval > floor["max"]:
+                    print(
+                        f"[FAIL-sanity-floor] {name}: result={rval} "
+                        f"maximum={floor['max']}"
+                    )
+                    failed = True
+                    continue
+                print(
+                    f"[PASS-sanity-floor] {name}: result={rval} "
+                    "baseline not populated"
+                )
+                continue
             print(
                 f"[SKIP-baseline-not-populated] {name}: baseline is 0; "
                 "machine-dependent metric, will be locked from CI artifact "

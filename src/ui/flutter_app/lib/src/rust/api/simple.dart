@@ -7,7 +7,7 @@ import '../frb_generated.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
 // These functions are ignored because they are not marked as `pub`: `best_move`, `info`, `new`, `ready`, `stopped`
-// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `clone`, `clone`, `clone`, `clone`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `from`
+// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `from`, `from`, `from`
 
 /// Returns a greeting string confirming that the Rust → Dart bridge works.
 /// Called from Dart as `tgfHelloWorld()` after `await RustLib.init()`.
@@ -197,6 +197,14 @@ class EngineEvent {
           reason == other.reason;
 }
 
+enum MillBoardFullAction {
+  firstPlayerLose,
+  firstAndSecondPlayerRemovePiece,
+  secondAndFirstPlayerRemovePiece,
+  sideToMoveRemovePiece,
+  agreeToDraw,
+}
+
 /// Public FRB DTO for the subset of Mill variant options already supported by
 /// the Rust-native rules scaffold.  It intentionally mirrors the field names
 /// that will later replace the C++ Rule struct; new rule flags are added
@@ -210,6 +218,12 @@ class MillVariantOptions {
   final bool mayRemoveFromMillsAlways;
   final bool mayRemoveMultiple;
   final int nMoveRule;
+  final int endgameNMoveRule;
+  final bool mayMoveInPlacingPhase;
+  final bool restrictRepeatedMillsFormation;
+  final bool oneTimeUseMill;
+  final bool stopPlacingWhenTwoEmptySquares;
+  final MillBoardFullAction boardFullAction;
 
   const MillVariantOptions({
     required this.pieceCount,
@@ -220,6 +234,12 @@ class MillVariantOptions {
     required this.mayRemoveFromMillsAlways,
     required this.mayRemoveMultiple,
     required this.nMoveRule,
+    required this.endgameNMoveRule,
+    required this.mayMoveInPlacingPhase,
+    required this.restrictRepeatedMillsFormation,
+    required this.oneTimeUseMill,
+    required this.stopPlacingWhenTwoEmptySquares,
+    required this.boardFullAction,
   });
 
   @override
@@ -231,7 +251,13 @@ class MillVariantOptions {
       hasDiagonalLines.hashCode ^
       mayRemoveFromMillsAlways.hashCode ^
       mayRemoveMultiple.hashCode ^
-      nMoveRule.hashCode;
+      nMoveRule.hashCode ^
+      endgameNMoveRule.hashCode ^
+      mayMoveInPlacingPhase.hashCode ^
+      restrictRepeatedMillsFormation.hashCode ^
+      oneTimeUseMill.hashCode ^
+      stopPlacingWhenTwoEmptySquares.hashCode ^
+      boardFullAction.hashCode;
 
   @override
   bool operator ==(Object other) =>
@@ -245,7 +271,15 @@ class MillVariantOptions {
           hasDiagonalLines == other.hasDiagonalLines &&
           mayRemoveFromMillsAlways == other.mayRemoveFromMillsAlways &&
           mayRemoveMultiple == other.mayRemoveMultiple &&
-          nMoveRule == other.nMoveRule;
+          nMoveRule == other.nMoveRule &&
+          endgameNMoveRule == other.endgameNMoveRule &&
+          mayMoveInPlacingPhase == other.mayMoveInPlacingPhase &&
+          restrictRepeatedMillsFormation ==
+              other.restrictRepeatedMillsFormation &&
+          oneTimeUseMill == other.oneTimeUseMill &&
+          stopPlacingWhenTwoEmptySquares ==
+              other.stopPlacingWhenTwoEmptySquares &&
+          boardFullAction == other.boardFullAction;
 }
 
 class TopologyBlob {

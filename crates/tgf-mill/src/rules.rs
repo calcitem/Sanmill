@@ -1,10 +1,20 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // Rust-native Mill rules scaffold.
 //
-// This is intentionally conservative: Phase 4 starts with a small, tested core
-// (initial state, placing, adjacent movement, phase transition).  Full mill
-// detection, removal obligations, capture variants, repetition, and evaluation
-// are added incrementally and checked against the mature C++ engine.
+// Iteration 2 rule coverage:
+//   Implemented: piece_count, fly_piece_count, pieces_at_least_count, may_fly,
+//   has_diagonal_lines (DTO only; diagonal topology remains future work),
+//   may_remove_from_mills_always, may_remove_multiple, n_move_rule,
+//   endgame_n_move_rule, may_move_in_placing_phase,
+//   restrict_repeated_mills_formation, one_time_use_mill,
+//   stop_placing_when_two_empty_squares, and board_full_action
+//   (FirstPlayerLose / AgreeToDraw).
+//
+//   Still owned by the legacy C++ path: diagonal 12MM topology,
+//   mill_formation_action_in_placing_phase variants, stalemate_action
+//   variants, full threefold repetition, is_defender_move_first, and the
+//   custodian/intervention/leap capture rule families.  Perfect DB and
+//   opening book intentionally remain behind the cxx bridge.
 
 use tgf_core::{
     Action, ActionList, BoardTopology, Evaluator, Game, GameRules, GameStateSnapshot, Outcome,
@@ -30,6 +40,16 @@ pub enum MillPhase {
     GameOver = 3,
 }
 
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[repr(i16)]
+pub enum MillBoardFullAction {
+    FirstPlayerLose = 0,
+    FirstAndSecondPlayerRemovePiece = 1,
+    SecondAndFirstPlayerRemovePiece = 2,
+    SideToMoveRemovePiece = 3,
+    AgreeToDraw = 4,
+}
+
 #[derive(Clone, Debug)]
 pub struct MillVariantOptions {
     pub piece_count: u8,
@@ -49,6 +69,12 @@ pub struct MillVariantOptions {
     /// the rule (mirrors `Rule::nMoveRule`).  Currently only checked at
     /// the moving phase boundary; capture extends the counter back to 0.
     pub n_move_rule: u32,
+    pub endgame_n_move_rule: u32,
+    pub may_move_in_placing_phase: bool,
+    pub restrict_repeated_mills_formation: bool,
+    pub one_time_use_mill: bool,
+    pub stop_placing_when_two_empty_squares: bool,
+    pub board_full_action: MillBoardFullAction,
 }
 
 impl Default for MillVariantOptions {
@@ -62,6 +88,12 @@ impl Default for MillVariantOptions {
             may_remove_from_mills_always: false,
             may_remove_multiple: false,
             n_move_rule: 100,
+            endgame_n_move_rule: 100,
+            may_move_in_placing_phase: false,
+            restrict_repeated_mills_formation: false,
+            one_time_use_mill: false,
+            stop_placing_when_two_empty_squares: false,
+            board_full_action: MillBoardFullAction::FirstPlayerLose,
         }
     }
 }
@@ -128,6 +160,11 @@ impl MillRules {
             pieces_on_board: [3, 3],
             pending_removals: [0, 0],
             winner: -1,
+            outcome_reason: MillOutcomeReason::Ongoing,
+            ply_since_capture: 0,
+            last_mill_from: -1,
+            last_mill_to: -1,
+            used_mill_lines: 0,
         };
         let after_move = rules.apply(
             &rules.encode(state),
@@ -190,6 +227,11 @@ impl MillRules {
             pieces_on_board: [3, 2],
             pending_removals: [1, 0],
             winner: -1,
+            outcome_reason: MillOutcomeReason::Ongoing,
+            ply_since_capture: 0,
+            last_mill_from: -1,
+            last_mill_to: -1,
+            used_mill_lines: 0,
         };
         let after_remove = rules.apply(
             &rules.encode(state),
@@ -298,6 +340,11 @@ impl GameRules for MillRules {
             pieces_on_board: [0, 0],
             pending_removals: [0, 0],
             winner: -1,
+            outcome_reason: MillOutcomeReason::Ongoing,
+            ply_since_capture: 0,
+            last_mill_from: -1,
+            last_mill_to: -1,
+            used_mill_lines: 0,
         };
         self.encode(state)
     }
@@ -310,19 +357,21 @@ impl GameRules for MillRules {
                     self.generate_remove_actions(&state, out);
                     return;
                 }
-                if state.pieces_in_hand[state.side_to_move as usize] == 0 {
-                    return;
-                }
-                for (node, piece) in state.board.iter().enumerate() {
-                    if *piece == 0 {
-                        out.push(Action {
-                            kind_tag: MillActionKind::Place as i16,
-                            from_node: -1,
-                            to_node: node as i16,
-                            aux: -1,
-                            payload_bits: 0,
-                        });
+                if state.pieces_in_hand[state.side_to_move as usize] > 0 {
+                    for (node, piece) in state.board.iter().enumerate() {
+                        if *piece == 0 {
+                            out.push(Action {
+                                kind_tag: MillActionKind::Place as i16,
+                                from_node: -1,
+                                to_node: node as i16,
+                                aux: -1,
+                                payload_bits: 0,
+                            });
+                        }
                     }
+                }
+                if self.options.may_move_in_placing_phase {
+                    self.generate_move_actions(&state, out, false);
                 }
             }
             MillPhase::Moving => {
@@ -330,27 +379,7 @@ impl GameRules for MillRules {
                     self.generate_remove_actions(&state, out);
                     return;
                 }
-                let side = state.side_to_move as usize;
-                let can_fly = self.options.may_fly
-                    && state.pieces_on_board[side] <= self.options.fly_piece_count;
-                for (from, piece) in state.board.iter().enumerate() {
-                    if *piece != state.side_to_move + 1 {
-                        continue;
-                    }
-                    if can_fly {
-                        for (to, target) in state.board.iter().enumerate() {
-                            if *target == 0 {
-                                out.push(move_action(from, to));
-                            }
-                        }
-                    } else {
-                        for &to in self.topology.neighbors(from as u16) {
-                            if state.board[to as usize] == 0 {
-                                out.push(move_action(from, to as usize));
-                            }
-                        }
-                    }
-                }
+                self.generate_move_actions(&state, out, true);
             }
             MillPhase::Ready | MillPhase::GameOver => {}
         }
@@ -367,16 +396,17 @@ impl GameRules for MillRules {
                 state.pieces_in_hand[side] = state.pieces_in_hand[side].saturating_sub(1);
                 state.pieces_on_board[side] += 1;
                 state.move_number += 1;
-                let mills = count_mills_at(&state, to, state.side_to_move);
-                if mills > 0 {
-                    state.pending_removals[side] = if self.options.may_remove_multiple {
-                        mills as u8
-                    } else {
-                        1
-                    };
+                maybe_stop_placing_when_two_empty(&mut state, &self.options);
+                let mill_bits = formed_mill_bits_at(&state, to, state.side_to_move);
+                let usable_bits = usable_mill_bits(&state, &self.options, mill_bits);
+                if usable_bits != 0 {
+                    state.pending_removals[side] =
+                        removal_count_for_bits(usable_bits, &self.options);
+                    note_mill_formation(&mut state, -1, to as i8, usable_bits);
                 } else {
                     state.side_to_move ^= 1;
-                    maybe_transition_to_moving(&mut state);
+                    maybe_transition_to_moving(&mut state, &self.options);
+                    maybe_finish_full_board(&mut state, &self.options);
                 }
             }
             x if x == MillActionKind::Move as i16 => {
@@ -388,15 +418,16 @@ impl GameRules for MillRules {
                 state.board[to] = state.side_to_move + 1;
                 state.move_number += 1;
                 let side = state.side_to_move as usize;
-                let mills = count_mills_at(&state, to, state.side_to_move);
-                if mills > 0 {
-                    state.pending_removals[side] = if self.options.may_remove_multiple {
-                        mills as u8
-                    } else {
-                        1
-                    };
+                bump_ply_since_capture(&mut state);
+                let mill_bits = formed_mill_bits_at(&state, to, state.side_to_move);
+                let usable_bits = usable_mill_bits(&state, &self.options, mill_bits);
+                if usable_bits != 0 {
+                    state.pending_removals[side] =
+                        removal_count_for_bits(usable_bits, &self.options);
+                    note_mill_formation(&mut state, from as i8, to as i8, usable_bits);
                 } else {
                     state.side_to_move ^= 1;
+                    maybe_draw_by_n_move_rule(&mut state, &self.options);
                 }
             }
             x if x == MillActionKind::Remove as i16 => {
@@ -408,15 +439,18 @@ impl GameRules for MillRules {
                 state.board[to] = 0;
                 state.pieces_on_board[opponent] = state.pieces_on_board[opponent].saturating_sub(1);
                 state.pending_removals[side] = state.pending_removals[side].saturating_sub(1);
+                state.ply_since_capture = 0;
                 if state.phase == MillPhase::Moving
                     && state.pieces_on_board[opponent] < self.options.pieces_at_least_count
                 {
                     state.phase = MillPhase::GameOver;
                     state.winner = state.side_to_move;
+                    state.outcome_reason = MillOutcomeReason::LoseFewerThanThree;
                     state.side_to_move = -1;
                 } else if state.pending_removals[side] == 0 {
                     state.side_to_move ^= 1;
-                    maybe_transition_to_moving(&mut state);
+                    maybe_transition_to_moving(&mut state, &self.options);
+                    maybe_finish_full_board(&mut state, &self.options);
                 }
             }
             _ => {}
@@ -427,9 +461,25 @@ impl GameRules for MillRules {
     fn outcome(&self, snap: &GameStateSnapshot) -> Outcome {
         let state = Self::decode(snap);
         if state.phase == MillPhase::GameOver {
+            if state.winner == 2 {
+                return Outcome {
+                    kind: OutcomeKind::Draw,
+                    reason: match state.outcome_reason {
+                        MillOutcomeReason::DrawFullBoard => "drawFullBoard",
+                        MillOutcomeReason::DrawNMoveRule => "drawNMoveRule",
+                        _ => "draw",
+                    }
+                    .to_owned(),
+                };
+            }
             Outcome {
                 kind: OutcomeKind::Win(state.winner),
-                reason: "loseFewerThanThree".to_owned(),
+                reason: match state.outcome_reason {
+                    MillOutcomeReason::LoseFullBoard => "loseFullBoard",
+                    MillOutcomeReason::LoseFewerThanThree => "loseFewerThanThree",
+                    _ => "loseFewerThanThree",
+                }
+                .to_owned(),
             }
         } else {
             Outcome {
@@ -441,6 +491,48 @@ impl GameRules for MillRules {
 }
 
 impl MillRules {
+    fn generate_move_actions(&self, state: &MillState, out: &mut ActionList<256>, allow_fly: bool) {
+        let side = state.side_to_move as usize;
+        let can_fly = allow_fly
+            && self.options.may_fly
+            && state.pieces_on_board[side] <= self.options.fly_piece_count;
+        for (from, piece) in state.board.iter().enumerate() {
+            if *piece != state.side_to_move + 1 {
+                continue;
+            }
+            if can_fly {
+                for (to, target) in state.board.iter().enumerate() {
+                    if *target == 0 && !self.is_restricted_repeated_mill(state, from, to) {
+                        out.push(move_action(from, to));
+                    }
+                }
+            } else {
+                for &to in self.topology.neighbors(from as u16) {
+                    let to = to as usize;
+                    if state.board[to] == 0 && !self.is_restricted_repeated_mill(state, from, to) {
+                        out.push(move_action(from, to));
+                    }
+                }
+            }
+        }
+    }
+
+    fn is_restricted_repeated_mill(&self, state: &MillState, from: usize, to: usize) -> bool {
+        if !self.options.restrict_repeated_mills_formation {
+            return false;
+        }
+        if state.last_mill_from < 0 || state.last_mill_to < 0 {
+            return false;
+        }
+        if from != state.last_mill_to as usize || to != state.last_mill_from as usize {
+            return false;
+        }
+        let mut candidate = *state;
+        candidate.board[from] = 0;
+        candidate.board[to] = state.side_to_move + 1;
+        count_mills_at(&candidate, to, state.side_to_move) > 0
+    }
+
     fn generate_remove_actions(&self, state: &MillState, out: &mut ActionList<256>) {
         let opponent_piece = (state.side_to_move ^ 1) + 1;
 
@@ -493,13 +585,106 @@ impl MillRules {
 /// `change_side_to_move()`.  If a mill is pending the side does not switch
 /// and this helper is not called, so the placing-phase indicator stays
 /// correct until the obligated remove resolves.
-fn maybe_transition_to_moving(state: &mut MillState) {
+fn maybe_transition_to_moving(state: &mut MillState, options: &MillVariantOptions) {
     if state.phase == MillPhase::Placing
         && state.pieces_in_hand[0] == 0
         && state.pieces_in_hand[1] == 0
     {
         state.phase = MillPhase::Moving;
     }
+    if options.stop_placing_when_two_empty_squares
+        && state.phase == MillPhase::Placing
+        && empty_square_count(state) <= 2
+    {
+        state.pieces_in_hand = [0, 0];
+        state.phase = MillPhase::Moving;
+    }
+}
+
+fn maybe_stop_placing_when_two_empty(state: &mut MillState, options: &MillVariantOptions) {
+    if options.stop_placing_when_two_empty_squares && empty_square_count(state) <= 2 {
+        state.pieces_in_hand = [0, 0];
+    }
+}
+
+fn empty_square_count(state: &MillState) -> usize {
+    state.board.iter().filter(|piece| **piece == 0).count()
+}
+
+fn maybe_finish_full_board(state: &mut MillState, options: &MillVariantOptions) {
+    if state.phase != MillPhase::Moving || empty_square_count(state) != 0 {
+        return;
+    }
+    match options.board_full_action {
+        MillBoardFullAction::FirstPlayerLose => {
+            state.phase = MillPhase::GameOver;
+            state.winner = 1;
+            state.outcome_reason = MillOutcomeReason::LoseFullBoard;
+            state.side_to_move = -1;
+        }
+        MillBoardFullAction::AgreeToDraw => {
+            state.phase = MillPhase::GameOver;
+            state.winner = 2;
+            state.outcome_reason = MillOutcomeReason::DrawFullBoard;
+            state.side_to_move = -1;
+        }
+        MillBoardFullAction::FirstAndSecondPlayerRemovePiece
+        | MillBoardFullAction::SecondAndFirstPlayerRemovePiece
+        | MillBoardFullAction::SideToMoveRemovePiece => {
+            debug_assert!(
+                false,
+                "board_full_action removal variants are not implemented in Rust MillRules yet"
+            );
+        }
+    }
+}
+
+fn bump_ply_since_capture(state: &mut MillState) {
+    if state.phase == MillPhase::Moving {
+        state.ply_since_capture = state.ply_since_capture.saturating_add(1);
+    }
+}
+
+fn maybe_draw_by_n_move_rule(state: &mut MillState, options: &MillVariantOptions) {
+    if state.phase != MillPhase::Moving {
+        return;
+    }
+    let threshold = if options.endgame_n_move_rule > 0
+        && options.endgame_n_move_rule < options.n_move_rule
+        && state.pieces_on_board.iter().any(|count| *count <= 3)
+    {
+        options.endgame_n_move_rule
+    } else {
+        options.n_move_rule
+    };
+    if threshold > 0 && u32::from(state.ply_since_capture) >= threshold {
+        state.phase = MillPhase::GameOver;
+        state.winner = 2;
+        state.outcome_reason = MillOutcomeReason::DrawNMoveRule;
+        state.side_to_move = -1;
+    }
+}
+
+fn removal_count_for_bits(bits: u16, options: &MillVariantOptions) -> u8 {
+    if options.may_remove_multiple {
+        bits.count_ones().max(1) as u8
+    } else {
+        1
+    }
+}
+
+fn usable_mill_bits(state: &MillState, options: &MillVariantOptions, bits: u16) -> u16 {
+    if options.one_time_use_mill {
+        bits & !state.used_mill_lines
+    } else {
+        bits
+    }
+}
+
+fn note_mill_formation(state: &mut MillState, from: i8, to: i8, bits: u16) {
+    state.last_mill_from = from;
+    state.last_mill_to = to;
+    state.used_mill_lines |= bits;
 }
 
 fn move_action(from: usize, to: usize) -> Action {
@@ -522,6 +707,21 @@ struct MillState {
     pieces_on_board: [u8; 2],
     pending_removals: [u8; 2],
     winner: i8,
+    outcome_reason: MillOutcomeReason,
+    ply_since_capture: u16,
+    last_mill_from: i8,
+    last_mill_to: i8,
+    used_mill_lines: u16,
+}
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[repr(u8)]
+enum MillOutcomeReason {
+    Ongoing = 0,
+    LoseFewerThanThree = 1,
+    DrawNMoveRule = 2,
+    DrawFullBoard = 3,
+    LoseFullBoard = 4,
 }
 
 impl MillState {
@@ -537,6 +737,13 @@ impl MillState {
         payload[28] = self.pending_removals[0];
         payload[29] = self.pending_removals[1];
         payload[30] = self.winner as u8;
+        payload[31] = (self.ply_since_capture & 0xff) as u8;
+        payload[32] = (self.ply_since_capture >> 8) as u8;
+        payload[33] = self.last_mill_from as u8;
+        payload[34] = self.last_mill_to as u8;
+        payload[35] = (self.used_mill_lines & 0xff) as u8;
+        payload[36] = (self.used_mill_lines >> 8) as u8;
+        payload[37] = self.outcome_reason as u8;
         payload
     }
 
@@ -560,6 +767,25 @@ impl MillState {
             pieces_on_board: [payload[26], payload[27]],
             pending_removals: [payload[28], payload[29]],
             winner: payload[30] as i8,
+            ply_since_capture: u16::from(payload[31]) | (u16::from(payload[32]) << 8),
+            last_mill_from: payload[33] as i8,
+            last_mill_to: payload[34] as i8,
+            used_mill_lines: u16::from(payload[35]) | (u16::from(payload[36]) << 8),
+            outcome_reason: match payload[37] {
+                x if x == MillOutcomeReason::LoseFewerThanThree as u8 => {
+                    MillOutcomeReason::LoseFewerThanThree
+                }
+                x if x == MillOutcomeReason::DrawNMoveRule as u8 => {
+                    MillOutcomeReason::DrawNMoveRule
+                }
+                x if x == MillOutcomeReason::DrawFullBoard as u8 => {
+                    MillOutcomeReason::DrawFullBoard
+                }
+                x if x == MillOutcomeReason::LoseFullBoard as u8 => {
+                    MillOutcomeReason::LoseFullBoard
+                }
+                _ => MillOutcomeReason::Ongoing,
+            },
         }
     }
 }
@@ -587,6 +813,13 @@ fn position_key(state: &MillState) -> u64 {
     mix(state.pending_removals[0]);
     mix(state.pending_removals[1]);
     mix(state.winner as u8);
+    mix(state.outcome_reason as u8);
+    mix((state.ply_since_capture & 0xff) as u8);
+    mix((state.ply_since_capture >> 8) as u8);
+    mix(state.last_mill_from as u8);
+    mix(state.last_mill_to as u8);
+    mix((state.used_mill_lines & 0xff) as u8);
+    mix((state.used_mill_lines >> 8) as u8);
     if key == 0 {
         1
     } else {
@@ -597,10 +830,17 @@ fn position_key(state: &MillState) -> u64 {
 /// Number of mill lines passing through `node` that are now all owned by
 /// `side_to_move`.  Used by `apply` to honour `may_remove_multiple`.
 fn count_mills_at(state: &MillState, node: usize, side_to_move: i8) -> usize {
-    mill_lines_for_node(node)
-        .iter()
-        .filter(|line| line.iter().all(|idx| state.board[*idx] == side_to_move + 1))
-        .count()
+    formed_mill_bits_at(state, node, side_to_move).count_ones() as usize
+}
+
+fn formed_mill_bits_at(state: &MillState, node: usize, side_to_move: i8) -> u16 {
+    let mut bits = 0_u16;
+    for (line_idx, line) in STANDARD_MILL_LINES.iter().enumerate() {
+        if line.contains(&node) && line.iter().all(|idx| state.board[*idx] == side_to_move + 1) {
+            bits |= 1_u16 << line_idx;
+        }
+    }
+    bits
 }
 
 fn is_piece_in_mill(state: &MillState, node: usize) -> bool {
@@ -752,6 +992,11 @@ mod tests {
             pieces_on_board: [3, 3],
             pending_removals: [0, 0],
             winner: -1,
+            outcome_reason: MillOutcomeReason::Ongoing,
+            ply_since_capture: 0,
+            last_mill_from: -1,
+            last_mill_to: -1,
+            used_mill_lines: 0,
         };
         let snap = rules.encode(state);
         let after_move = rules.apply(
@@ -797,6 +1042,11 @@ mod tests {
             pieces_on_board: [3, 2],
             pending_removals: [1, 0],
             winner: -1,
+            outcome_reason: MillOutcomeReason::Ongoing,
+            ply_since_capture: 0,
+            last_mill_from: -1,
+            last_mill_to: -1,
+            used_mill_lines: 0,
         };
         let snap = rules.encode(state);
         let after_remove = rules.apply(
@@ -890,6 +1140,11 @@ mod tests {
             pieces_on_board: [3, 3],
             pending_removals: [1, 0],
             winner: -1,
+            outcome_reason: MillOutcomeReason::Ongoing,
+            ply_since_capture: 0,
+            last_mill_from: -1,
+            last_mill_to: -1,
+            used_mill_lines: 0,
         };
         state.board[0] = 1; // W a7
         state.board[1] = 1; // W d7
@@ -929,6 +1184,11 @@ mod tests {
             pieces_on_board: [4, 4],
             pending_removals: [0, 0],
             winner: -1,
+            outcome_reason: MillOutcomeReason::Ongoing,
+            ply_since_capture: 0,
+            last_mill_from: -1,
+            last_mill_to: -1,
+            used_mill_lines: 0,
         };
         state.board[0] = 1; // a7
         state.board[2] = 1; // g7
@@ -952,6 +1212,284 @@ mod tests {
         // pending_removals[0] should be 2 because two mills formed at
         // once with may_remove_multiple = true.
         assert_eq!(after.opaque_payload[28], 2);
+    }
+
+    #[test]
+    fn n_move_rule_draws_after_threshold_without_capture() {
+        let options = MillVariantOptions {
+            n_move_rule: 2,
+            ..MillVariantOptions::default()
+        };
+        let rules = MillRules::new(options);
+        let mut snap = rules.no_mill_moving_phase_snapshot();
+        let mut state = MillRules::decode(&snap);
+        state.ply_since_capture = 1;
+        snap = rules.encode(state);
+
+        let after = rules.apply(
+            &snap,
+            Action {
+                kind_tag: MillActionKind::Move as i16,
+                from_node: 18, // e5
+                to_node: 19,   // e4, known non-mill move in the fixture
+                aux: -1,
+                payload_bits: 0,
+            },
+        );
+        let state = MillRules::decode(&after);
+        assert_eq!(state.phase, MillPhase::GameOver);
+        assert_eq!(state.winner, 2);
+        assert_eq!(rules.outcome(&after).kind, OutcomeKind::Draw);
+    }
+
+    #[test]
+    fn endgame_n_move_rule_uses_lower_threshold() {
+        let options = MillVariantOptions {
+            n_move_rule: 100,
+            endgame_n_move_rule: 1,
+            ..MillVariantOptions::default()
+        };
+        let rules = MillRules::new(options);
+        let state = MillState {
+            board: {
+                let mut board = [0_i8; 24];
+                board[1] = 1;
+                board[17] = 1;
+                board[3] = 1;
+                board[6] = 2;
+                board[5] = 2;
+                board[10] = 2;
+                board
+            },
+            side_to_move: 0,
+            phase: MillPhase::Moving,
+            move_number: 30,
+            pieces_in_hand: [0, 0],
+            pieces_on_board: [3, 3],
+            pending_removals: [0, 0],
+            winner: -1,
+            outcome_reason: MillOutcomeReason::Ongoing,
+            ply_since_capture: 0,
+            last_mill_from: -1,
+            last_mill_to: -1,
+            used_mill_lines: 0,
+        };
+        let after = rules.apply(
+            &rules.encode(state),
+            Action {
+                kind_tag: MillActionKind::Move as i16,
+                from_node: 3,
+                to_node: 4,
+                aux: -1,
+                payload_bits: 0,
+            },
+        );
+        assert_eq!(rules.outcome(&after).kind, OutcomeKind::Draw);
+    }
+
+    #[test]
+    fn may_move_in_placing_phase_adds_move_actions() {
+        let options = MillVariantOptions {
+            may_move_in_placing_phase: true,
+            ..MillVariantOptions::default()
+        };
+        let rules = MillRules::new(options);
+        let state = MillState {
+            board: {
+                let mut board = [0_i8; 24];
+                board[0] = 1;
+                board
+            },
+            side_to_move: 0,
+            phase: MillPhase::Placing,
+            move_number: 1,
+            pieces_in_hand: [8, 9],
+            pieces_on_board: [1, 0],
+            pending_removals: [0, 0],
+            winner: -1,
+            outcome_reason: MillOutcomeReason::Ongoing,
+            ply_since_capture: 0,
+            last_mill_from: -1,
+            last_mill_to: -1,
+            used_mill_lines: 0,
+        };
+        let mut actions = ActionList::<256>::new();
+        rules.legal_actions(&rules.encode(state), &mut actions);
+        assert_eq!(
+            actions
+                .iter()
+                .filter(|a| a.kind_tag == MillActionKind::Move as i16)
+                .count(),
+            2
+        );
+    }
+
+    #[test]
+    fn restrict_repeated_mills_filters_reverse_reform_move() {
+        let options = MillVariantOptions {
+            restrict_repeated_mills_formation: true,
+            ..MillVariantOptions::default()
+        };
+        let rules = MillRules::new(options);
+        let state = MillState {
+            board: {
+                let mut board = [0_i8; 24];
+                board[8] = 1;
+                board[1] = 1;
+                board[17] = 1;
+                board[14] = 1;
+                board[15] = 1;
+                board[6] = 2;
+                board[5] = 2;
+                board[10] = 2;
+                board
+            },
+            side_to_move: 0,
+            phase: MillPhase::Moving,
+            move_number: 20,
+            pieces_in_hand: [0, 0],
+            pieces_on_board: [5, 3],
+            pending_removals: [0, 0],
+            winner: -1,
+            outcome_reason: MillOutcomeReason::Ongoing,
+            ply_since_capture: 0,
+            last_mill_from: 9,
+            last_mill_to: 8,
+            used_mill_lines: 0,
+        };
+        let mut actions = ActionList::<256>::new();
+        rules.legal_actions(&rules.encode(state), &mut actions);
+        assert!(!actions.iter().any(|a| a.from_node == 8 && a.to_node == 9));
+    }
+
+    #[test]
+    fn one_time_use_mill_suppresses_second_capture() {
+        let options = MillVariantOptions {
+            one_time_use_mill: true,
+            ..MillVariantOptions::default()
+        };
+        let rules = MillRules::new(options);
+        let state = MillState {
+            board: {
+                let mut board = [0_i8; 24];
+                board[1] = 1;
+                board[2] = 1;
+                board[6] = 2;
+                board[5] = 2;
+                board
+            },
+            side_to_move: 0,
+            phase: MillPhase::Placing,
+            move_number: 4,
+            pieces_in_hand: [7, 7],
+            pieces_on_board: [2, 2],
+            pending_removals: [0, 0],
+            winner: -1,
+            outcome_reason: MillOutcomeReason::Ongoing,
+            ply_since_capture: 0,
+            last_mill_from: -1,
+            last_mill_to: -1,
+            used_mill_lines: 1, // outer-top [0,1,2] already consumed
+        };
+        let after = rules.apply(
+            &rules.encode(state),
+            Action {
+                kind_tag: MillActionKind::Place as i16,
+                from_node: -1,
+                to_node: 0,
+                aux: -1,
+                payload_bits: 0,
+            },
+        );
+        let state = MillRules::decode(&after);
+        assert_eq!(state.pending_removals[0], 0);
+        assert_eq!(state.side_to_move, 1);
+    }
+
+    #[test]
+    fn stop_placing_when_two_empty_squares_enters_moving_phase() {
+        let options = MillVariantOptions {
+            stop_placing_when_two_empty_squares: true,
+            ..MillVariantOptions::default()
+        };
+        let rules = MillRules::new(options);
+        let mut board = [2_i8; 24];
+        board[21] = 0;
+        board[22] = 0;
+        board[23] = 0;
+        board[20] = 2;
+        board[13] = 2;
+        board[5] = 2;
+        let state = MillState {
+            board,
+            side_to_move: 0,
+            phase: MillPhase::Placing,
+            move_number: 21,
+            pieces_in_hand: [3, 0],
+            pieces_on_board: [0, 21],
+            pending_removals: [0, 0],
+            winner: -1,
+            outcome_reason: MillOutcomeReason::Ongoing,
+            ply_since_capture: 0,
+            last_mill_from: -1,
+            last_mill_to: -1,
+            used_mill_lines: 0,
+        };
+        let after = rules.apply(
+            &rules.encode(state),
+            Action {
+                kind_tag: MillActionKind::Place as i16,
+                from_node: -1,
+                to_node: 21,
+                aux: -1,
+                payload_bits: 0,
+            },
+        );
+        let state = MillRules::decode(&after);
+        assert_eq!(state.pieces_in_hand, [0, 0]);
+        assert_eq!(state.phase, MillPhase::Moving);
+    }
+
+    #[test]
+    fn agree_to_draw_on_full_board_returns_draw_outcome() {
+        let options = MillVariantOptions {
+            piece_count: 12,
+            board_full_action: MillBoardFullAction::AgreeToDraw,
+            ..MillVariantOptions::default()
+        };
+        let rules = MillRules::new(options);
+        let mut board = [2_i8; 24];
+        board[21] = 0;
+        board[20] = 2;
+        board[22] = 2;
+        board[13] = 2;
+        board[5] = 2;
+        let state = MillState {
+            board,
+            side_to_move: 0,
+            phase: MillPhase::Placing,
+            move_number: 23,
+            pieces_in_hand: [1, 0],
+            pieces_on_board: [0, 23],
+            pending_removals: [0, 0],
+            winner: -1,
+            outcome_reason: MillOutcomeReason::Ongoing,
+            ply_since_capture: 0,
+            last_mill_from: -1,
+            last_mill_to: -1,
+            used_mill_lines: 0,
+        };
+        let after = rules.apply(
+            &rules.encode(state),
+            Action {
+                kind_tag: MillActionKind::Place as i16,
+                from_node: -1,
+                to_node: 21,
+                aux: -1,
+                payload_bits: 0,
+            },
+        );
+        assert_eq!(rules.outcome(&after).kind, OutcomeKind::Draw);
     }
 
     #[test]
