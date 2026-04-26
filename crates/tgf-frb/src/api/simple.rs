@@ -18,6 +18,8 @@ use tgf_mill::{
     MillVariantOptions as NativeMillVariantOptions,
 };
 use tgf_search::{SearchAbortHandle, Searcher, SearchOptions};
+#[cfg(test)]
+use tgf_search::perft;
 
 static LEGACY_KERNEL: Lazy<Mutex<Option<LegacyKernel>>> =
     Lazy::new(|| Mutex::new(None));
@@ -462,6 +464,21 @@ mod tests {
         let legacy = LegacyKernel::new(0);
         assert_eq!(legacy.legal_actions().len(), native_mill_initial_legal_count() as usize);
         assert_eq!(native_mill_initial_legal_count(), 24);
+    }
+
+    #[test]
+    fn native_and_legacy_perft_depth_one_match() {
+        let legacy = LegacyKernel::new(0);
+        let legacy_count = legacy.legal_actions().len() as u64;
+
+        let rules = MillRules::default();
+        let game = MillGame::default();
+        let snap = rules.initial_state(&[]);
+        let mut wb = game.build_workbench(&snap);
+        let native_perft = perft::<MillGame>(&mut wb, 1);
+
+        assert_eq!(legacy_count, native_perft);
+        assert_eq!(native_perft, 24);
     }
 
     #[test]
