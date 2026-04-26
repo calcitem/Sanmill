@@ -23,6 +23,9 @@ class LegacyTgfKernel {
   /// Current C++ FEN string.
   String fen() => tgf.legacyKernelFen();
 
+  /// Replace the current legacy C++ position with [fen].
+  void setFen(String fen) => tgf.legacyKernelSetFen(fen: fen);
+
   /// Current legal actions in UCI notation.
   List<String> legalActions() => tgf.legacyKernelLegalActions();
 

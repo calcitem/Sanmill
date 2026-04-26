@@ -121,6 +121,8 @@ void main() {
     expect(rules.legalActions, hasLength(24));
     expect(rules.snapshot.phase, 'placing');
     expect(rules.fen, contains(' w p p '));
+    rules.setFen('********/********/******** w p p 0 9 0 9 0 0 0 0 0 0 0 0 1');
+    expect(rules.fen, contains(' w p p '));
     expect(rules.reset(), isA<GameStateSnapshot>());
     expect(rules.legalActions, hasLength(24));
 

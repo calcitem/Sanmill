@@ -16,6 +16,7 @@ mod ffi {
         fn legacy_new_position(rule_idx: i32) -> UniquePtr<LegacyPosition>;
         fn legacy_position_fen(pos: &LegacyPosition) -> String;
         fn legacy_position_apply_uci(pos: Pin<&mut LegacyPosition>, move_uci: &str) -> bool;
+        fn legacy_position_set_fen(pos: Pin<&mut LegacyPosition>, fen: &str);
         fn legacy_position_legal_actions(pos: &LegacyPosition) -> String;
         fn legacy_position_phase(pos: &LegacyPosition) -> i32;
         fn legacy_position_side_to_move(pos: &LegacyPosition) -> i32;
@@ -50,6 +51,11 @@ impl LegacyKernel {
     /// Apply a UCI-style move (`d7`, `d7-g7`, `xa1`, ...).
     pub fn apply_uci(&mut self, move_uci: &str) -> bool {
         ffi::legacy_position_apply_uci(self.inner.pin_mut(), move_uci)
+    }
+
+    /// Replace the current C++ position with a FEN snapshot.
+    pub fn set_fen(&mut self, fen: &str) {
+        ffi::legacy_position_set_fen(self.inner.pin_mut(), fen);
     }
 
     /// Legal actions in UCI notation, one per line.

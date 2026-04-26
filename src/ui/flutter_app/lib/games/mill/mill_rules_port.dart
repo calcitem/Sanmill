@@ -33,6 +33,13 @@ class MillRulesPort implements RulesPort {
     return _snapshot;
   }
 
+  /// Synchronise this rules port with an existing legacy FEN snapshot.
+  GameStateSnapshot setFen(String fen) {
+    _kernel.setFen(fen);
+    _snapshot = _snapshotFromFen(_kernel.fen());
+    return _snapshot;
+  }
+
   @override
   GameStateSnapshot get snapshot => _snapshot;
 

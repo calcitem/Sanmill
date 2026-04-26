@@ -114,6 +114,18 @@ pub fn legacy_kernel_fen() -> String {
     guard.as_ref().map(LegacyKernel::fen).unwrap_or_default()
 }
 
+/// Replace current legacy C++ position with a FEN snapshot.
+#[flutter_rust_bridge::frb(sync)]
+pub fn legacy_kernel_set_fen(fen: String) {
+    let mut guard = LEGACY_KERNEL.lock().expect("legacy kernel mutex poisoned");
+    if guard.is_none() {
+        *guard = Some(LegacyKernel::new(0));
+    }
+    if let Some(kernel) = guard.as_mut() {
+        kernel.set_fen(&fen);
+    }
+}
+
 /// Current legal actions in UCI notation.
 #[flutter_rust_bridge::frb(sync)]
 pub fn legacy_kernel_legal_actions() -> Vec<String> {

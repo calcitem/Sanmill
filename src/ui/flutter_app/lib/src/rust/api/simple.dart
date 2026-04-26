@@ -31,6 +31,10 @@ String legacyKernelReset({required int ruleIdx}) =>
 String legacyKernelFen() =>
     RustLib.instance.api.crateApiSimpleLegacyKernelFen();
 
+/// Replace current legacy C++ position with a FEN snapshot.
+void legacyKernelSetFen({required String fen}) =>
+    RustLib.instance.api.crateApiSimpleLegacyKernelSetFen(fen: fen);
+
 /// Current legal actions in UCI notation.
 List<String> legacyKernelLegalActions() =>
     RustLib.instance.api.crateApiSimpleLegacyKernelLegalActions();

@@ -51,6 +51,11 @@ class MillGameSession implements GameSessionHandle {
       return;
     }
 
+    final String controllerFen = controller.position.fen ?? '';
+    if (controllerFen.isNotEmpty && controllerFen != rulesPort.fen) {
+      rulesPort.setFen(controllerFen);
+    }
+
     final GameStateSnapshot next = _snapshotFromController();
     final GameStateSnapshot prev = _state.value;
     if (prev == next) {

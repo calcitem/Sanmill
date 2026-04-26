@@ -68,6 +68,12 @@ bool legacy_position_apply_uci(LegacyPosition &pos, rust::Str move_uci)
     return pos.pos.command(move.c_str());
 }
 
+void legacy_position_set_fen(LegacyPosition &pos, rust::Str fen)
+{
+    const std::string fenStr = to_string(fen);
+    pos.pos.set(fenStr);
+}
+
 rust::String legacy_position_legal_actions(const LegacyPosition &pos)
 {
     std::ostringstream out;
