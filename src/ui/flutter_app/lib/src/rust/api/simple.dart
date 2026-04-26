@@ -50,6 +50,16 @@ int legacyKernelSideToMove() =>
 TopologyBlob kernelTopology() =>
     RustLib.instance.api.crateApiSimpleKernelTopology();
 
+/// Number of legal actions from a fresh Rust-native Mill initial position.
+/// This should match the mature C++ engine at depth 1: 24 placing moves.
+int nativeMillInitialLegalCount() =>
+    RustLib.instance.api.crateApiSimpleNativeMillInitialLegalCount();
+
+/// Apply the first Rust-native place action and return the side-to-move tag.
+/// This is a small typed smoke-check for the native MillRules scaffold.
+int nativeMillApplyFirstPlaceSideToMove() =>
+    RustLib.instance.api.crateApiSimpleNativeMillApplyFirstPlaceSideToMove();
+
 class TopologyBlob {
   const TopologyBlob({
     required this.name,

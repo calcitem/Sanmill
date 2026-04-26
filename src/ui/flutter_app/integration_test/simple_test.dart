@@ -58,4 +58,11 @@ void main() {
     expect(geometry.points.last.x, 0.3);
     expect(geometry.points.last.y, 0.5);
   });
+
+  testWidgets('Rust-native Mill rules scaffold matches opening count', (
+    WidgetTester tester,
+  ) async {
+    expect(nativeMillInitialLegalCount(), 24);
+    expect(nativeMillApplyFirstPlaceSideToMove(), 1);
+  });
 }

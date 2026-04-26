@@ -8,9 +8,9 @@
 
 use once_cell::sync::Lazy;
 use std::sync::Mutex;
-use tgf_core::BoardTopology;
+use tgf_core::{Action, ActionList, BoardTopology, GameRules};
 use tgf_legacy_cxx::LegacyKernel;
-use tgf_mill::default_mill_topology;
+use tgf_mill::{default_mill_topology, MillActionKind, MillRules};
 
 static LEGACY_KERNEL: Lazy<Mutex<Option<LegacyKernel>>> =
     Lazy::new(|| Mutex::new(None));
@@ -162,4 +162,38 @@ pub fn kernel_topology() -> TopologyBlob {
         edges,
         line_groups: topo.line_groups().to_vec(),
     }
+}
+
+// ---------------------------------------------------------------------------
+// Phase 4 native Rust Mill rules scaffold API.
+// ---------------------------------------------------------------------------
+
+/// Number of legal actions from a fresh Rust-native Mill initial position.
+/// This should match the mature C++ engine at depth 1: 24 placing moves.
+#[flutter_rust_bridge::frb(sync)]
+pub fn native_mill_initial_legal_count() -> u32 {
+    let rules = MillRules::default();
+    let snap = rules.initial_state(&[]);
+    let mut actions = ActionList::<256>::new();
+    rules.legal_actions(&snap, &mut actions);
+    actions.len() as u32
+}
+
+/// Apply the first Rust-native place action and return the side-to-move tag.
+/// This is a small typed smoke-check for the native MillRules scaffold.
+#[flutter_rust_bridge::frb(sync)]
+pub fn native_mill_apply_first_place_side_to_move() -> i32 {
+    let rules = MillRules::default();
+    let snap = rules.initial_state(&[]);
+    let next = rules.apply(
+        &snap,
+        Action {
+            kind_tag: MillActionKind::Place as i16,
+            from_node: -1,
+            to_node: 0,
+            aux: -1,
+            payload_bits: 0,
+        },
+    );
+    next.side_to_move as i32
 }
