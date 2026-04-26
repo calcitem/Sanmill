@@ -98,6 +98,11 @@ int nativeMillPvsDepthOneBestToNode() =>
 int nativeMillRandomBestToNode({required BigInt seed}) =>
     RustLib.instance.api.crateApiSimpleNativeMillRandomBestToNode(seed: seed);
 
+/// Differential perft check: returns true when the Rust-native MillRules and
+/// the legacy C++ engine produce identical perft counts at the given depth.
+bool nativeAndLegacyPerftMatch({required int depth}) =>
+    RustLib.instance.api.crateApiSimpleNativeAndLegacyPerftMatch(depth: depth);
+
 /// Smoke-check that the Rust searcher honours a zero-millisecond time limit.
 bool nativeMillSearchZeroTimeLimitAborts() =>
     RustLib.instance.api.crateApiSimpleNativeMillSearchZeroTimeLimitAborts();

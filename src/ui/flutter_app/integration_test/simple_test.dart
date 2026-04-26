@@ -99,5 +99,7 @@ void main() {
     ]);
     expect(events[2].toNode, inInclusiveRange(0, 23));
     expect(nativeMillSearchStop(), isFalse);
+    expect(nativeAndLegacyPerftMatch(depth: 1), isTrue);
+    expect(nativeAndLegacyPerftMatch(depth: 2), isTrue);
   });
 }

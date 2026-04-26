@@ -19,6 +19,7 @@ mod ffi {
         fn legacy_position_legal_actions(pos: &LegacyPosition) -> String;
         fn legacy_position_phase(pos: &LegacyPosition) -> i32;
         fn legacy_position_side_to_move(pos: &LegacyPosition) -> i32;
+        fn legacy_position_perft(pos: &LegacyPosition, depth: i32) -> u64;
     }
 }
 
@@ -68,6 +69,12 @@ impl LegacyKernel {
     /// Raw C++ Color enum value.
     pub fn side_to_move(&self) -> i32 {
         ffi::legacy_position_side_to_move(&self.inner)
+    }
+
+    /// Game-neutral perft over the legacy C++ engine.  See the matching
+    /// header for the precise semantics.
+    pub fn perft(&self, depth: i32) -> u64 {
+        ffi::legacy_position_perft(&self.inner, depth)
     }
 }
 

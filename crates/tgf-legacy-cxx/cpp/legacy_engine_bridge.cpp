@@ -14,6 +14,7 @@
 #include "option.h"
 #include "rule.h"
 #include "search.h"
+#include "stack.h"
 #include "uci.h"
 
 namespace {
@@ -85,4 +86,34 @@ int32_t legacy_position_phase(const LegacyPosition &pos)
 int32_t legacy_position_side_to_move(const LegacyPosition &pos)
 {
     return static_cast<int32_t>(pos.pos.side_to_move());
+}
+
+namespace {
+
+uint64_t legacy_perft_impl(Position &pos, int32_t depth)
+{
+    if (depth <= 0 || pos.get_phase() == Phase::gameOver) {
+        return 1;
+    }
+    MoveList<LEGAL> ml(pos);
+    if (ml.size() == 0) {
+        return 1;
+    }
+    uint64_t nodes = 0;
+    Sanmill::Stack<Position> ss;
+    for (const auto &m : ml) {
+        ss.push(pos);
+        pos.do_move(m);
+        nodes += legacy_perft_impl(pos, depth - 1);
+        pos.undo_move(ss);
+    }
+    return nodes;
+}
+
+} // namespace
+
+uint64_t legacy_position_perft(const LegacyPosition &pos, int32_t depth)
+{
+    Position copy = pos.pos;
+    return legacy_perft_impl(copy, depth);
 }

@@ -385,6 +385,19 @@ pub fn native_mill_random_best_to_node(seed: u64) -> i32 {
     searcher.random_search(&mut wb).best_action.to_node as i32
 }
 
+/// Differential perft check: returns true when the Rust-native MillRules and
+/// the legacy C++ engine produce identical perft counts at the given depth.
+#[flutter_rust_bridge::frb(sync)]
+pub fn native_and_legacy_perft_match(depth: i32) -> bool {
+    let legacy = LegacyKernel::new(0);
+    let rules = MillRules::default();
+    let game = MillGame::default();
+    let snap = rules.initial_state(&[]);
+    let mut wb = game.build_workbench(&snap);
+    let native = tgf_search::perft::<MillGame>(&mut wb, depth);
+    legacy.perft(depth) == native
+}
+
 /// Smoke-check that the Rust searcher honours a zero-millisecond time limit.
 #[flutter_rust_bridge::frb(sync)]
 pub fn native_mill_search_zero_time_limit_aborts() -> bool {
@@ -470,6 +483,7 @@ mod tests {
     fn native_and_legacy_perft_depth_one_match() {
         let legacy = LegacyKernel::new(0);
         let legacy_count = legacy.legal_actions().len() as u64;
+        let legacy_perft = legacy.perft(1);
 
         let rules = MillRules::default();
         let game = MillGame::default();
@@ -478,7 +492,24 @@ mod tests {
         let native_perft = perft::<MillGame>(&mut wb, 1);
 
         assert_eq!(legacy_count, native_perft);
+        assert_eq!(legacy_perft, native_perft);
         assert_eq!(native_perft, 24);
+    }
+
+    #[test]
+    fn native_and_legacy_perft_depth_two_match() {
+        let legacy = LegacyKernel::new(0);
+        let legacy_perft = legacy.perft(2);
+
+        let rules = MillRules::default();
+        let game = MillGame::default();
+        let snap = rules.initial_state(&[]);
+        let mut wb = game.build_workbench(&snap);
+        let native_perft = perft::<MillGame>(&mut wb, 2);
+
+        // 24 * 23 = 552 from 9MM opening (no mills possible after 2 plies).
+        assert_eq!(native_perft, 24 * 23);
+        assert_eq!(legacy_perft, native_perft);
     }
 
     #[test]

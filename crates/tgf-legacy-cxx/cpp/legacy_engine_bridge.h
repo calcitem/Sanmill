@@ -24,3 +24,9 @@ bool legacy_position_apply_uci(LegacyPosition &pos, rust::Str move_uci);
 rust::String legacy_position_legal_actions(const LegacyPosition &pos);
 int32_t legacy_position_phase(const LegacyPosition &pos);
 int32_t legacy_position_side_to_move(const LegacyPosition &pos);
+
+/// Game-neutral perft over the legacy C++ engine.  Counts the number of
+/// leaves of the legal-action tree at the given depth: depth 0 returns 1,
+/// depth 1 returns the number of immediately legal actions, and deeper
+/// levels follow the standard chess perft contract.
+uint64_t legacy_position_perft(const LegacyPosition &pos, int32_t depth);
