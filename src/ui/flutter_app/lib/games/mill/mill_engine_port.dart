@@ -8,8 +8,10 @@ import '../../game_platform/engine/engine_port.dart';
 import '../../game_platform/engine/native_engine_client.dart';
 import '../../game_platform/game_id.dart';
 import '../../game_platform/game_session.dart';
+import '../../shared/database/database.dart';
 import '../../src/rust/api/simple.dart' as tgf;
 import 'mill_constants.dart';
+import 'mill_variant_options_mapper.dart';
 
 /// Bridges the Mill native engine to [EnginePort]. Event streaming is not yet
 /// exposed from the legacy [Engine] implementation; [eventLines] is a stub.
@@ -161,6 +163,17 @@ class MillEnginePortAdapter implements EnginePort {
   @override
   Future<void> updateRuleOptions() async {
     GameController().engine.setRuleOptions();
+
+    // Phase 6 typed Rust path: validate the subset of rule settings that
+    // Rust-native MillRules already supports.  The legacy C++ engine remains
+    // authoritative for unsupported rule fields until those are implemented in
+    // Rust, but this keeps the typed FRB option path exercised.
+    final tgf.MillVariantOptions variant = DB().ruleSettings
+        .toTgfMillVariantOptions();
+    final int openingCount = tgf.nativeMillInitialLegalCountForVariant(
+      variant: variant,
+    );
+    assert(openingCount > 0, 'Rust Mill variant produced no opening actions.');
   }
 
   @override
