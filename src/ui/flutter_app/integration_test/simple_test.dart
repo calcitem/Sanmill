@@ -75,5 +75,6 @@ void main() {
     expect(defaults.mayFly, isTrue);
     expect(defaults.hasDiagonalLines, isFalse);
     expect(nativeMillInitialLegalCountForVariant(variant: defaults), 24);
+    expect(nativeMillSearchDepthOneBestToNode(), inInclusiveRange(0, 23));
   });
 }

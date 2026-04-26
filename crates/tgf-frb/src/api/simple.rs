@@ -8,12 +8,13 @@
 
 use once_cell::sync::Lazy;
 use std::sync::Mutex;
-use tgf_core::{Action, ActionList, BoardTopology, GameRules};
+use tgf_core::{Action, ActionList, BoardTopology, Game, GameRules};
 use tgf_legacy_cxx::LegacyKernel;
 use tgf_mill::{
-    default_mill_topology, MillActionKind, MillRules,
+    default_mill_topology, MillActionKind, MillGame, MillRules,
     MillVariantOptions as NativeMillVariantOptions,
 };
+use tgf_search::Searcher;
 
 static LEGACY_KERNEL: Lazy<Mutex<Option<LegacyKernel>>> =
     Lazy::new(|| Mutex::new(None));
@@ -286,6 +287,19 @@ pub fn native_mill_moving_mill_remove_count() -> u32 {
 #[flutter_rust_bridge::frb(sync)]
 pub fn native_mill_removal_below_three_winner() -> i32 {
     MillRules::removal_below_three_winner_smoke()
+}
+
+/// Run the Rust generic Searcher<MillGame> for one ply and return the best
+/// destination node.  This is a Phase 5 smoke-check for the monomorphised
+/// search path.
+#[flutter_rust_bridge::frb(sync)]
+pub fn native_mill_search_depth_one_best_to_node() -> i32 {
+    let rules = MillRules::default();
+    let game = MillGame::default();
+    let snap = rules.initial_state(&[]);
+    let mut wb = game.build_workbench(&snap);
+    let mut searcher = Searcher::<MillGame>::new();
+    searcher.search(&mut wb, 1).best_action.to_node as i32
 }
 
 #[cfg(test)]

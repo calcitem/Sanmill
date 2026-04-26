@@ -83,6 +83,12 @@ int nativeMillMovingMillRemoveCount() =>
 int nativeMillRemovalBelowThreeWinner() =>
     RustLib.instance.api.crateApiSimpleNativeMillRemovalBelowThreeWinner();
 
+/// Run the Rust generic Searcher<MillGame> for one ply and return the best
+/// destination node.  This is a Phase 5 smoke-check for the monomorphised
+/// search path.
+int nativeMillSearchDepthOneBestToNode() =>
+    RustLib.instance.api.crateApiSimpleNativeMillSearchDepthOneBestToNode();
+
 /// Public FRB DTO for the subset of Mill variant options already supported by
 /// the Rust-native rules scaffold.  It intentionally mirrors the field names
 /// that will later replace the C++ Rule struct.
