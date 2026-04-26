@@ -8,15 +8,19 @@ import '../../game_platform/engine/engine_port.dart';
 import '../../game_platform/engine/native_engine_client.dart';
 import '../../game_platform/game_id.dart';
 import '../../game_platform/game_session.dart';
+import '../../src/rust/api/simple.dart' as tgf;
+import 'mill_constants.dart';
 
 /// Bridges the Mill native engine to [EnginePort]. Event streaming is not yet
 /// exposed from the legacy [Engine] implementation; [eventLines] is a stub.
 class MillEnginePortAdapter implements EnginePort {
   final StreamController<EngineEvent> _events =
       StreamController<EngineEvent>.broadcast();
+  StreamSubscription<tgf.EngineEvent>? _nativeSearchSub;
 
   @override
   Future<void> dispose() async {
+    await _nativeSearchSub?.cancel();
     await GameController().engine.shutdown();
     await _events.close();
   }
@@ -47,6 +51,7 @@ class MillEnginePortAdapter implements EnginePort {
       request.position.snapshot.gameId == GameId.mill,
       'Expected Mill search request.',
     );
+    await _startNativeSearch(depth: request.depth ?? 1);
   }
 
   @override
@@ -55,6 +60,7 @@ class MillEnginePortAdapter implements EnginePort {
       request.position.snapshot.gameId == GameId.mill,
       'Expected Mill analyze request.',
     );
+    await _startNativeSearch(depth: request.depth ?? 1);
   }
 
   @override
@@ -94,7 +100,45 @@ class MillEnginePortAdapter implements EnginePort {
           status: NativeEngineResponseStatus.ok,
         );
       case NativeEngineCommandType.search:
+        await search(
+          EngineSearchRequest(
+            position: EnginePosition(
+              snapshot:
+                  request.snapshot ??
+                  GameStateSnapshot(
+                    gameId: request.gameId,
+                    activeSeat: PlayerSeat.first,
+                    outcome: const GameOutcome.ongoing(),
+                  ),
+            ),
+            depth: request.payload['depth'] as int?,
+          ),
+        );
+        return NativeEngineResponse(
+          requestId: request.requestId,
+          gameId: request.gameId,
+          status: NativeEngineResponseStatus.ok,
+        );
       case NativeEngineCommandType.analyze:
+        await analyze(
+          EngineSearchRequest(
+            position: EnginePosition(
+              snapshot:
+                  request.snapshot ??
+                  GameStateSnapshot(
+                    gameId: request.gameId,
+                    activeSeat: PlayerSeat.first,
+                    outcome: const GameOutcome.ongoing(),
+                  ),
+            ),
+            depth: request.payload['depth'] as int?,
+          ),
+        );
+        return NativeEngineResponse(
+          requestId: request.requestId,
+          gameId: request.gameId,
+          status: NativeEngineResponseStatus.ok,
+        );
       case NativeEngineCommandType.newGame:
       case NativeEngineCommandType.legalActions:
       case NativeEngineCommandType.applyAction:
@@ -126,5 +170,79 @@ class MillEnginePortAdapter implements EnginePort {
   }
 
   @override
-  Future<void> stop() => GameController().engine.stopSearching();
+  Future<void> stop() async {
+    tgf.nativeMillSearchStop();
+    await _nativeSearchSub?.cancel();
+    _nativeSearchSub = null;
+    await GameController().engine.stopSearching();
+  }
+
+  Future<void> _startNativeSearch({required int depth}) async {
+    await _nativeSearchSub?.cancel();
+    _nativeSearchSub = tgf
+        .nativeMillSearchEvents(depth: depth)
+        .listen(
+          (tgf.EngineEvent event) {
+            if (_events.isClosed) {
+              return;
+            }
+            _events.add(_mapNativeEvent(event));
+          },
+          onError: (Object error, StackTrace stackTrace) {
+            if (!_events.isClosed) {
+              _events.add(
+                EngineEvent(
+                  kind: EngineEventKind.error,
+                  line: error.toString(),
+                  payload: <String, Object?>{'error': error.toString()},
+                ),
+              );
+            }
+          },
+          onDone: () => _nativeSearchSub = null,
+        );
+  }
+
+  EngineEvent _mapNativeEvent(tgf.EngineEvent event) {
+    final EngineEventKind kind = switch (event.kind) {
+      'ready' => EngineEventKind.ready,
+      'info' => EngineEventKind.info,
+      'bestMove' => EngineEventKind.bestMove,
+      'stopped' => EngineEventKind.stopped,
+      _ => EngineEventKind.error,
+    };
+    return EngineEvent(
+      kind: kind,
+      line: event.kind,
+      action: _actionFromNativeBestMove(event),
+      payload: <String, Object?>{
+        'depth': event.depth,
+        'score': event.score,
+        'nodes': event.nodes,
+        'toNode': event.toNode,
+        'reason': event.reason,
+      },
+    );
+  }
+
+  GameAction? _actionFromNativeBestMove(tgf.EngineEvent event) {
+    if (event.kind != 'bestMove' || event.toNode < 0) {
+      return null;
+    }
+    final String move = _labelForNode(event.toNode);
+    return GameAction(
+      type: MillActionTypes.place,
+      payload: <String, Object?>{'move': move, 'toNode': event.toNode},
+    );
+  }
+
+  String _labelForNode(int node) {
+    final tgf.TopologyBlob topology = tgf.kernelTopology();
+    for (final tgf.TopologyPoint point in topology.points) {
+      if (point.id == node) {
+        return point.label;
+      }
+    }
+    return '';
+  }
 }
