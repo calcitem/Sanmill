@@ -8,6 +8,7 @@ import 'package:sanmill/game_platform/board_geometry.dart';
 import 'package:sanmill/game_platform/engine/legacy_tgf_kernel.dart';
 import 'package:sanmill/game_platform/engine/native_topology.dart';
 import 'package:sanmill/game_platform/game_session.dart';
+import 'package:sanmill/games/mill/mill_game_session.dart';
 import 'package:sanmill/games/mill/mill_rules_port.dart';
 import 'package:sanmill/src/rust/api/simple.dart';
 import 'package:sanmill/src/rust/frb_generated.dart';
@@ -88,6 +89,19 @@ void main() {
       inInclusiveRange(0, 23),
     );
     expect(nativeMillSearchZeroTimeLimitAborts(), isTrue);
+  });
+
+  testWidgets('MillGameSession legalActions comes from RulesPort', (
+    WidgetTester tester,
+  ) async {
+    final MillGameSession session = MillGameSession();
+    addTearDown(session.dispose);
+
+    expect(session.legalActions, hasLength(24));
+    expect(
+      session.legalActions.map((GameAction a) => a.payload['move']),
+      contains('d7'),
+    );
   });
 
   testWidgets('FRB-backed MillRulesPort enumerates and applies moves', (
