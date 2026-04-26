@@ -4,5 +4,8 @@
 pub mod topology;
 pub mod rules;
 
-pub use rules::{MillActionKind, MillPhase, MillRules, MillVariantOptions};
+pub use rules::{
+    MillActionKind, MillEvaluator, MillGame, MillPhase, MillRules,
+    MillVariantOptions, MillWorkbench,
+};
 pub use topology::{default_mill_topology, MillTopology};

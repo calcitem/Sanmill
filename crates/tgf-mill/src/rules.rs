@@ -7,8 +7,8 @@
 // are added incrementally and checked against the mature C++ engine.
 
 use tgf_core::{
-    Action, ActionList, BoardTopology, GameRules, GameStateSnapshot, Outcome,
-    OutcomeKind,
+    Action, ActionList, BoardTopology, Evaluator, Game, GameRules,
+    GameStateSnapshot, Outcome, OutcomeKind, Workbench,
 };
 
 use crate::topology::{default_mill_topology, MillTopology};
@@ -51,11 +51,25 @@ impl Default for MillVariantOptions {
     }
 }
 
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 pub struct MillRules {
     options: MillVariantOptions,
     topology: MillTopology,
 }
+
+#[derive(Clone, Debug, Default)]
+pub struct MillGame {
+    options: MillVariantOptions,
+}
+
+#[derive(Clone, Debug)]
+pub struct MillWorkbench {
+    rules: MillRules,
+    state: MillState,
+    undo_stack: Vec<MillState>,
+}
+
+pub struct MillEvaluator;
 
 impl MillRules {
     pub fn new(options: MillVariantOptions) -> Self {
@@ -155,6 +169,77 @@ impl MillRules {
 impl Default for MillRules {
     fn default() -> Self {
         Self::new(MillVariantOptions::default())
+    }
+}
+
+impl MillGame {
+    pub fn new(options: MillVariantOptions) -> Self {
+        Self { options }
+    }
+}
+
+impl Workbench for MillWorkbench {
+    fn snapshot(&self) -> GameStateSnapshot {
+        self.rules.encode(self.state)
+    }
+
+    fn key(&self) -> u64 {
+        // Native Zobrist comes later; keep deterministic zero key in Phase 4.
+        0
+    }
+
+    fn side_to_move(&self) -> i8 {
+        self.state.side_to_move
+    }
+
+    fn is_terminal(&self) -> bool {
+        self.state.phase == MillPhase::GameOver
+    }
+
+    fn do_move(&mut self, a: Action) {
+        self.undo_stack.push(self.state);
+        let next = self.rules.apply(&self.snapshot(), a);
+        self.state = MillRules::decode(&next);
+    }
+
+    fn undo_move(&mut self) {
+        if let Some(prev) = self.undo_stack.pop() {
+            self.state = prev;
+        }
+    }
+}
+
+impl Evaluator<MillWorkbench> for MillEvaluator {
+    fn score(wb: &MillWorkbench) -> i32 {
+        let white = wb.state.pieces_on_board[0] as i32
+            + wb.state.pieces_in_hand[0] as i32;
+        let black = wb.state.pieces_on_board[1] as i32
+            + wb.state.pieces_in_hand[1] as i32;
+        let score = (white - black) * 100;
+        if wb.state.side_to_move == 0 {
+            score
+        } else {
+            -score
+        }
+    }
+}
+
+impl Game for MillGame {
+    type Workbench = MillWorkbench;
+    type Evaluator = MillEvaluator;
+
+    fn build_workbench(&self, snap: &GameStateSnapshot) -> Self::Workbench {
+        let rules = MillRules::new(self.options.clone());
+        let state = MillRules::decode(snap);
+        MillWorkbench {
+            rules,
+            state,
+            undo_stack: Vec::new(),
+        }
+    }
+
+    fn generate_legal(wb: &Self::Workbench, out: &mut ActionList<256>) {
+        wb.rules.legal_actions(&wb.snapshot(), out);
     }
 }
 
@@ -615,5 +700,48 @@ mod tests {
         let outcome = rules.outcome(&after_remove);
         assert_eq!(outcome.kind, OutcomeKind::Win(0));
         assert_eq!(outcome.reason, "loseFewerThanThree");
+    }
+
+    #[test]
+    fn mill_game_workbench_do_and_undo_move() {
+        let rules = MillRules::default();
+        let game = MillGame::default();
+        let snap = rules.initial_state(&[]);
+        let mut wb = game.build_workbench(&snap);
+
+        let mut actions = ActionList::<256>::new();
+        MillGame::generate_legal(&wb, &mut actions);
+        assert_eq!(actions.len(), 24);
+
+        wb.do_move(actions[0]);
+        assert_eq!(wb.side_to_move(), 1);
+        assert_eq!(wb.state.pieces_in_hand[0], 8);
+        assert_eq!(wb.state.pieces_on_board[0], 1);
+
+        wb.undo_move();
+        assert_eq!(wb.side_to_move(), 0);
+        assert_eq!(wb.state.pieces_in_hand[0], 9);
+        assert_eq!(wb.state.pieces_on_board[0], 0);
+    }
+
+    #[test]
+    fn mill_evaluator_scores_piece_material_from_side_to_move() {
+        let rules = MillRules::default();
+        let game = MillGame::default();
+        let mut snap = rules.initial_state(&[]);
+        snap = rules.apply(
+            &snap,
+            Action {
+                kind_tag: MillActionKind::Place as i16,
+                from_node: -1,
+                to_node: 0,
+                aux: -1,
+                payload_bits: 0,
+            },
+        );
+        let wb = game.build_workbench(&snap);
+        // Material is equal (white has 8 in hand + 1 on board, black has 9 in
+        // hand), so score is zero from black-to-move perspective.
+        assert_eq!(MillEvaluator::score(&wb), 0);
     }
 }

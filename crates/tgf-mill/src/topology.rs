@@ -18,7 +18,7 @@ pub struct MillNode {
     pub point: UnitPoint,
 }
 
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 pub struct MillTopology {
     nodes: Vec<MillNode>,
     edges: Vec<Edge>,
