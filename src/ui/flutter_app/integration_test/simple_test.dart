@@ -81,5 +81,6 @@ void main() {
       nativeMillRandomBestToNode(seed: BigInt.from(1234)),
       nativeMillRandomBestToNode(seed: BigInt.from(1234)),
     );
+    expect(nativeMillSearchZeroTimeLimitAborts(), isTrue);
   });
 }

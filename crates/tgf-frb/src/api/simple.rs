@@ -14,7 +14,7 @@ use tgf_mill::{
     default_mill_topology, MillActionKind, MillGame, MillRules,
     MillVariantOptions as NativeMillVariantOptions,
 };
-use tgf_search::Searcher;
+use tgf_search::{Searcher, SearchOptions};
 
 static LEGACY_KERNEL: Lazy<Mutex<Option<LegacyKernel>>> =
     Lazy::new(|| Mutex::new(None));
@@ -323,6 +323,23 @@ pub fn native_mill_random_best_to_node(seed: u64) -> i32 {
     let mut searcher = Searcher::<MillGame>::new();
     searcher.set_random_seed(seed);
     searcher.random_search(&mut wb).best_action.to_node as i32
+}
+
+/// Smoke-check that the Rust searcher honours a zero-millisecond time limit.
+#[flutter_rust_bridge::frb(sync)]
+pub fn native_mill_search_zero_time_limit_aborts() -> bool {
+    let rules = MillRules::default();
+    let game = MillGame::default();
+    let snap = rules.initial_state(&[]);
+    let mut wb = game.build_workbench(&snap);
+    let mut searcher = Searcher::<MillGame>::new();
+    searcher.set_options(SearchOptions {
+        depth_extension: false,
+        node_limit: None,
+        time_limit_ms: Some(0),
+    });
+    let _ = searcher.search(&mut wb, 3);
+    searcher.was_aborted()
 }
 
 #[cfg(test)]

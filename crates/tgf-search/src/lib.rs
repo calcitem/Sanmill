@@ -5,7 +5,11 @@
 // `dyn Workbench`.  This mirrors the C++ CRTP design in the migration plan and
 // keeps do/undo/evaluate calls statically dispatchable.
 
-use std::{collections::HashMap, marker::PhantomData};
+use std::{
+    collections::HashMap,
+    marker::PhantomData,
+    time::{Duration, Instant},
+};
 
 use tgf_core::{Action, ActionList, Evaluator, Game, Workbench};
 
@@ -48,6 +52,7 @@ impl Default for SearchPolicy {
 pub struct SearchOptions {
     pub depth_extension: bool,
     pub node_limit: Option<u64>,
+    pub time_limit_ms: Option<u64>,
 }
 
 impl Default for SearchOptions {
@@ -55,6 +60,7 @@ impl Default for SearchOptions {
         Self {
             depth_extension: false,
             node_limit: None,
+            time_limit_ms: None,
         }
     }
 }
@@ -67,6 +73,7 @@ pub struct Searcher<G: Game> {
     history: HashMap<Action, i32>,
     policy: SearchPolicy,
     options: SearchOptions,
+    search_started_at: Option<Instant>,
     aborted: bool,
     _phantom: PhantomData<G>,
 }
@@ -81,6 +88,7 @@ impl<G: Game> Default for Searcher<G> {
             history: HashMap::new(),
             policy: SearchPolicy::default(),
             options: SearchOptions::default(),
+            search_started_at: None,
             aborted: false,
             _phantom: PhantomData,
         }
@@ -127,8 +135,7 @@ impl<G: Game> Searcher<G> {
     }
 
     pub fn search(&mut self, wb: &mut G::Workbench, depth: i32) -> SearchResult {
-        self.nodes = 0;
-        self.aborted = false;
+        self.begin_root_search();
         let mut moves = ActionList::<256>::new();
         G::generate_legal(wb, &mut moves);
         self.order_moves(wb.key(), depth, &mut moves);
@@ -176,8 +183,7 @@ impl<G: Game> Searcher<G> {
     /// fail-high inside the original alpha/beta window.  This mirrors the
     /// shape of `Search::pvs` in the mature C++ engine.
     pub fn search_pvs(&mut self, wb: &mut G::Workbench, depth: i32) -> SearchResult {
-        self.nodes = 0;
-        self.aborted = false;
+        self.begin_root_search();
         let mut moves = ActionList::<256>::new();
         G::generate_legal(wb, &mut moves);
         self.order_moves(wb.key(), depth, &mut moves);
@@ -358,7 +364,21 @@ impl<G: Game> Searcher<G> {
                 self.aborted = true;
             }
         }
+        if let (Some(start), Some(limit_ms)) =
+            (self.search_started_at, self.options.time_limit_ms)
+        {
+            if start.elapsed() >= Duration::from_millis(limit_ms) {
+                self.aborted = true;
+            }
+        }
         self.aborted
+    }
+
+    #[inline]
+    fn begin_root_search(&mut self) {
+        self.nodes = 0;
+        self.aborted = false;
+        self.search_started_at = Some(Instant::now());
     }
 
     /// Quiescence search scaffold matching the C++ shape: evaluate the current
@@ -827,6 +847,7 @@ mod tests {
         searcher.set_options(SearchOptions {
             depth_extension: false,
             node_limit: Some(1),
+            time_limit_ms: None,
         });
 
         let _ = searcher.search(&mut wb, 3);
@@ -843,9 +864,27 @@ mod tests {
         searcher.set_options(SearchOptions {
             depth_extension: true,
             node_limit: None,
+            time_limit_ms: None,
         });
 
         let result = searcher.search(&mut wb, 1);
         assert!(!result.best_action.is_none());
+    }
+
+    #[test]
+    fn wall_clock_time_limit_marks_search_as_aborted() {
+        let rules = MillRules::default();
+        let game = MillGame::default();
+        let snap = rules.initial_state(&[]);
+        let mut wb = game.build_workbench(&snap);
+        let mut searcher = Searcher::<MillGame>::new();
+        searcher.set_options(SearchOptions {
+            depth_extension: false,
+            node_limit: None,
+            time_limit_ms: Some(0),
+        });
+
+        let _ = searcher.search(&mut wb, 3);
+        assert!(searcher.was_aborted());
     }
 }

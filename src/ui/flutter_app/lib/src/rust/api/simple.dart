@@ -97,6 +97,10 @@ int nativeMillPvsDepthOneBestToNode() =>
 int nativeMillRandomBestToNode({required BigInt seed}) =>
     RustLib.instance.api.crateApiSimpleNativeMillRandomBestToNode(seed: seed);
 
+/// Smoke-check that the Rust searcher honours a zero-millisecond time limit.
+bool nativeMillSearchZeroTimeLimitAborts() =>
+    RustLib.instance.api.crateApiSimpleNativeMillSearchZeroTimeLimitAborts();
+
 /// Public FRB DTO for the subset of Mill variant options already supported by
 /// the Rust-native rules scaffold.  It intentionally mirrors the field names
 /// that will later replace the C++ Rule struct.
