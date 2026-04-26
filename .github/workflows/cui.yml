@@ -6,11 +6,13 @@ on:
     paths:
       - 'src/**/*.cpp'
       - 'src/**/*.h'
+      - 'tests/**/*.cpp'
   pull_request:
     types: [review_requested, ready_for_review]
     paths:
       - 'src/**/*.cpp'
       - 'src/**/*.h'
+      - 'tests/**/*.cpp'
 
 jobs:
   cygwin-gcc:
@@ -51,9 +53,24 @@ jobs:
       - name: Create version
         run: git fetch --tags; git tag; git log -n1; bash -x ./version.sh
 
-      # Build
+      # Build engine + test suite
       - name: Build with linux-g++
         run: cd src; make -j build ARCH=x86-64
+
+      - name: Build test suite
+        run: cd src; make -j test ARCH=x86-64
+
+      # Run golden + unit tests (Phase 0 safety-net)
+      - name: Run unit and golden tests
+        run: cd src; ./test_sanmill --gtest_output=xml:../test-results/gtest.xml
+        continue-on-error: false
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gtest-results-linux
+          path: test-results/
 
       # Archive
       - name: Archive
@@ -61,6 +78,37 @@ jobs:
         with:
           name: sanmill_linux-g++
           path: src/sanmill
+
+  linux-gcc-clang-tidy:
+    runs-on: ubuntu-latest
+    # Static analysis gate: enforces code-quality baseline for the TGF
+    # refactoring.  Failures are non-blocking warnings until the Rust
+    # migration is complete (set continue-on-error: false once baseline
+    # is clean).
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Install clang-tidy
+        run: sudo apt-get install -y clang-tidy
+
+      - name: Run clang-tidy on changed files
+        run: |
+          cd src
+          # Generate a compile_commands.json so clang-tidy can resolve includes.
+          # We rely on bear or compile_commands_gen here; fall back to a
+          # simple header-only check if bear is unavailable.
+          if command -v bear &>/dev/null; then
+            bear -- make -j build ARCH=x86-64 2>/dev/null || true
+          else
+            echo "bear not found; skipping compile_commands.json generation"
+          fi
+          find . -maxdepth 1 -name '*.cpp' ! -name 'main.cpp' | \
+            xargs --no-run-if-empty clang-tidy \
+              --checks='-*,clang-analyzer-*,cppcoreguidelines-*,modernize-*' \
+              --warnings-as-errors='' \
+              -- -std=c++17 -I. 2>&1 | tee /tmp/clang-tidy.txt || true
+          echo "clang-tidy done (informational)"
+        continue-on-error: true
 
   darwin-gcc:
     runs-on: macos-latest
@@ -84,3 +132,4 @@ jobs:
         with:
           name: sanmill_darwin-g++
           path: src/sanmill
+

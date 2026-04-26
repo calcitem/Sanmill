@@ -975,6 +975,23 @@ $(TEST_EXE): $(TEST_OBJS) $(LIB_OBJS_TEST)
 	@echo "Compiling $< for tests..."
 	$(CXX) $(CXXFLAGS_TEST) $(GTEST_CFLAGS) -c $< -o $@
 
+### Phase 0: generate FEN baselines for golden regression tests
+### Run once after a clean build to populate tests/golden/mill_games.json.
+GENERATE_BASELINES_EXE = generate_baselines
+GENERATE_BASELINES_SRC = ../tests/golden/generate_baselines.cpp
+GENERATE_BASELINES_OBJ = ../tests/golden/generate_baselines.o
+
+$(GENERATE_BASELINES_OBJ): $(GENERATE_BASELINES_SRC)
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+$(GENERATE_BASELINES_EXE): $(GENERATE_BASELINES_OBJ) $(LIB_OBJS_TEST)
+	$(CXX) -o $@ $(GENERATE_BASELINES_OBJ) $(LIB_OBJS_TEST) $(LDFLAGS)
+
+generate_baselines: $(GENERATE_BASELINES_EXE)
+	@echo "Generating FEN baselines → tests/golden/mill_games.json"
+	./$(GENERATE_BASELINES_EXE) ../tests/golden/mill_games.json
+	@echo "Done. Commit tests/golden/mill_games.json to lock the baseline."
+
 ### ==========================================================================
 ### Section 7. Coverage Support
 ### ==========================================================================

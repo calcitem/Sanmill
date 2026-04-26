@@ -1,0 +1,131 @@
+name: Lint & Static Analysis
+
+# Phase 0 safety-net: runs on every PR to enforce code-quality gates for
+# the TGF refactoring.  Three gates:
+#   1. dart analyze — Dart/Flutter strict analysis
+#   2. cargo clippy — Rust lints (once crates/ workspace is added in Phase 1)
+#   3. clang-tidy   — C++ static analysis (informational until Rust migration)
+
+on:
+  push:
+    branches: [release]
+    paths:
+      - 'src/ui/flutter_app/**/*.dart'
+      - 'crates/**/*.rs'
+      - 'src/**/*.cpp'
+      - 'src/**/*.h'
+  pull_request:
+    types: [review_requested, ready_for_review]
+    paths:
+      - 'src/ui/flutter_app/**/*.dart'
+      - 'crates/**/*.rs'
+      - 'src/**/*.cpp'
+      - 'src/**/*.h'
+
+jobs:
+  # -------------------------------------------------------------------------
+  # Gate 1: Dart/Flutter strict analysis
+  # -------------------------------------------------------------------------
+  dart-analyze:
+    name: dart analyze (strict)
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+
+      - name: Install Flutter dependencies
+        working-directory: src/ui/flutter_app
+        run: flutter pub get
+
+      - name: Run dart analyze (strict)
+        working-directory: src/ui/flutter_app
+        run: |
+          dart analyze --fatal-infos --fatal-warnings . 2>&1 | tee /tmp/dart_analyze.txt
+          exit ${PIPESTATUS[0]}
+
+      - name: Upload analysis results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: dart-analyze-results
+          path: /tmp/dart_analyze.txt
+
+  # -------------------------------------------------------------------------
+  # Gate 2: Rust cargo clippy
+  # Only runs when crates/ directory exists (Phase 1+).
+  # -------------------------------------------------------------------------
+  cargo-clippy:
+    name: cargo clippy (deny warnings)
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Check if Rust workspace exists
+        id: rust_check
+        run: |
+          if [ -f "Cargo.toml" ]; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+            echo "Rust workspace not yet created (Phase 1); skipping."
+          fi
+
+      - name: Set up Rust toolchain
+        if: steps.rust_check.outputs.exists == 'true'
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          components: clippy
+
+      - name: Cache Rust build artifacts
+        if: steps.rust_check.outputs.exists == 'true'
+        uses: Swatinem/rust-cache@v2
+
+      - name: Run cargo clippy --deny warnings
+        if: steps.rust_check.outputs.exists == 'true'
+        run: |
+          cargo clippy --workspace --all-targets --all-features \
+            -- -D warnings 2>&1 | tee /tmp/clippy.txt
+          exit ${PIPESTATUS[0]}
+
+      - name: Upload clippy results
+        if: always() && steps.rust_check.outputs.exists == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: clippy-results
+          path: /tmp/clippy.txt
+
+  # -------------------------------------------------------------------------
+  # Gate 3: cargo fmt check
+  # Only runs when crates/ directory exists (Phase 1+).
+  # -------------------------------------------------------------------------
+  cargo-fmt:
+    name: cargo fmt (check)
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Check if Rust workspace exists
+        id: rust_check
+        run: |
+          if [ -f "Cargo.toml" ]; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Set up Rust toolchain
+        if: steps.rust_check.outputs.exists == 'true'
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt
+
+      - name: Check formatting
+        if: steps.rust_check.outputs.exists == 'true'
+        run: cargo fmt --all -- --check

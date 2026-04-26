@@ -9,3 +9,4 @@
 *.pl
 !ensure_flutter.sh
 !search-commit-message.py
+!check_perf_baseline.py

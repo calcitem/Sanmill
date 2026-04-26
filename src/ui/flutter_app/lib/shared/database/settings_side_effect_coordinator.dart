@@ -31,8 +31,7 @@ class SettingsSideEffectCoordinator {
   }) : _engineOptionsDebounceDuration = engineOptionsDebounceDuration,
        _updateGeneralEngineOptions =
            updateGeneralEngineOptions ?? _engineOptionsNoOp,
-       _updateRuleEngineOptions =
-           updateRuleEngineOptions ?? _engineOptionsNoOp,
+       _updateRuleEngineOptions = updateRuleEngineOptions ?? _engineOptionsNoOp,
        _recordEvent =
            recordEvent ??
            ((RecordingEventType type, Map<String, dynamic> data) {

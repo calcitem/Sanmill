@@ -1,0 +1,73 @@
+# tests/perf_baseline.toml
+#
+# Performance baseline for the TGF refactoring safety-net (Phase 0).
+#
+# HOW TO POPULATE:
+#   1. Build the C++ engine in release mode:
+#        cd src && make build ARCH=x86-64 optimize=yes
+#   2. Run the benchmark and capture output:
+#        ./sanmill bench 2>&1 | tee /tmp/bench.txt
+#   3. Read the NPS / move-count values from /tmp/bench.txt and fill in
+#      this file.
+#   4. Commit the updated file to lock the baseline.
+#
+# HOW TO USE IN CI:
+#   After each refactoring stage, re-run the benchmark and compare against
+#   the locked values below.  Regression thresholds:
+#     NPS:              <= 5 % drop allowed
+#     depth_N_ms:       <= 5 % increase allowed
+#     perft_nodes:      exactly 0 change allowed (gold standard)
+#     tt_hit_rate_pp:   <= 1 percentage-point drop allowed
+#     cold_start_ms:    <= 10 % increase allowed
+#
+# The CI script scripts/check_perf_baseline.py reads this file and the
+# latest benchmark output and fails the job if any threshold is exceeded.
+
+[meta]
+# Populated automatically by scripts/record_perf_baseline.sh
+locked_at   = ""         # ISO-8601 timestamp, e.g. "2026-04-26T10:00:00Z"
+git_commit  = ""         # short SHA of the commit that generated this baseline
+platform    = ""         # e.g. "linux-x86_64-gcc-13"
+build_flags = ""         # e.g. "optimize=yes ARCH=x86-64 lto=yes"
+
+[baseline]
+# --------------------------------------------------------------------------
+# Nodes Per Second during a fixed-depth search benchmark.
+# Populate with: ./sanmill bench | grep "NPS"
+# --------------------------------------------------------------------------
+nps = 0                  # e.g. 1_500_000
+
+# --------------------------------------------------------------------------
+# Wall-clock time (ms) for a typical mid-game search at depth D.
+# Populate with: time ./sanmill go depth 10 < mid_game.fen
+# --------------------------------------------------------------------------
+depth10_ms = 0           # e.g. 850
+
+# --------------------------------------------------------------------------
+# perft node counts for known positions.
+# These must remain EXACTLY equal across all refactoring stages.
+# Populate with: ./sanmill perft <depth> < start.fen
+# --------------------------------------------------------------------------
+[baseline.perft]
+# start_position_depth_1 = exact legal moves from start (should be 24 for 9MM)
+start_d1 = 0             # fill with exact node count
+
+# start_position_depth_2 = W plays, B responds
+start_d2 = 0
+
+# A mid-game position (FEN stored in tests/golden/mid_game.fen)
+mid_d3 = 0
+
+# --------------------------------------------------------------------------
+# Transposition-table hit rate (percentage points, 0-100) during the depth
+# benchmark above.  A 1 pp drop is the maximum allowed regression.
+# --------------------------------------------------------------------------
+[baseline.tt]
+hit_rate_pct = 0.0       # e.g. 42.3
+
+# --------------------------------------------------------------------------
+# Cold-start time: time from process launch to first legal-move response.
+# Measured by: time echo "position startpos\ngo depth 1" | ./sanmill
+# --------------------------------------------------------------------------
+[baseline.startup]
+first_move_ms = 0        # e.g. 120

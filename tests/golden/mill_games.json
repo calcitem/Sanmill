@@ -1,0 +1,6 @@
+{
+  "version": 1,
+  "_note": "PLACEHOLDER — run 'cd src && make generate_baselines' to populate.",
+  "_description": "Golden FEN baseline for the TGF refactoring safety-net (Phase 0). Contains 30 representative Nine Men's Morris game records. Each record includes a move sequence and the FEN snapshot after every move. Any stage of the Rust migration that changes these FENs is forbidden to merge.",
+  "games": []
+}
