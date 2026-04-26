@@ -3,21 +3,20 @@
 
 // ignore_for_file: unused_import, unused_element, unnecessary_import, duplicate_ignore, invalid_use_of_internal_member, annotate_overrides, non_constant_identifier_names, curly_braces_in_flow_control_structures, prefer_const_literals_to_create_immutables, unused_field
 
+import 'api/simple.dart';
 import 'dart:async';
 import 'dart:convert';
-
-import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
-
-import 'api/simple.dart';
 import 'frb_generated.dart';
 import 'frb_generated.io.dart'
     if (dart.library.js_interop) 'frb_generated.web.dart';
+import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
 /// Main entrypoint of the Rust API
 class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
-  RustLib._();
   @internal
-  static final RustLib instance = RustLib._();
+  static final instance = RustLib._();
+
+  RustLib._();
 
   /// Initialize flutter_rust_bridge
   static Future<void> init({
@@ -67,13 +66,14 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
   String get codegenVersion => '2.12.0';
 
   @override
-  int get rustContentHash => -1060238596;
+  int get rustContentHash => 1366612774;
 
-  static const ExternalLibraryLoaderConfig kDefaultExternalLibraryLoaderConfig =
+  static const kDefaultExternalLibraryLoaderConfig =
       ExternalLibraryLoaderConfig(
         stem: 'rust_lib_sanmill',
         ioDirectory: '../../../crates/tgf-frb/target/release/',
         webPrefix: 'pkg/',
+        wasmBindgenName: 'wasm_bindgen',
       );
 }
 
@@ -96,7 +96,13 @@ abstract class RustLibApi extends BaseApi {
 
   int crateApiSimpleNativeMillApplyFirstPlaceSideToMove();
 
+  MillVariantOptions crateApiSimpleNativeMillDefaultVariantOptions();
+
   int crateApiSimpleNativeMillInitialLegalCount();
+
+  int crateApiSimpleNativeMillInitialLegalCountForVariant({
+    required MillVariantOptions variant,
+  });
 
   int crateApiSimpleNativeMillMillSequenceRemoveCount();
 
@@ -121,10 +127,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   Future<void> crateApiSimpleInitApp() {
     return handler.executeNormal(
       NormalTask(
-        callFfi: (NativePortType port_) {
-          final SseSerializer serializer = SseSerializer(
-            generalizedFrbRustBinding,
-          );
+        callFfi: (port_) {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
@@ -137,23 +141,21 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           decodeErrorData: null,
         ),
         constMeta: kCrateApiSimpleInitAppConstMeta,
-        argValues: <dynamic>[],
+        argValues: [],
         apiImpl: this,
       ),
     );
   }
 
   TaskConstMeta get kCrateApiSimpleInitAppConstMeta =>
-      const TaskConstMeta(debugName: "init_app", argNames: <String>[]);
+      const TaskConstMeta(debugName: "init_app", argNames: []);
 
   @override
   TopologyBlob crateApiSimpleKernelTopology() {
     return handler.executeSync(
       SyncTask(
         callFfi: () {
-          final SseSerializer serializer = SseSerializer(
-            generalizedFrbRustBinding,
-          );
+          final serializer = SseSerializer(generalizedFrbRustBinding);
           return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 2)!;
         },
         codec: SseCodec(
@@ -161,23 +163,21 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           decodeErrorData: null,
         ),
         constMeta: kCrateApiSimpleKernelTopologyConstMeta,
-        argValues: <dynamic>[],
+        argValues: [],
         apiImpl: this,
       ),
     );
   }
 
   TaskConstMeta get kCrateApiSimpleKernelTopologyConstMeta =>
-      const TaskConstMeta(debugName: "kernel_topology", argNames: <String>[]);
+      const TaskConstMeta(debugName: "kernel_topology", argNames: []);
 
   @override
   bool crateApiSimpleLegacyKernelApplyUci({required String moveUci}) {
     return handler.executeSync(
       SyncTask(
         callFfi: () {
-          final SseSerializer serializer = SseSerializer(
-            generalizedFrbRustBinding,
-          );
+          final serializer = SseSerializer(generalizedFrbRustBinding);
           sse_encode_String(moveUci, serializer);
           return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 3)!;
         },
@@ -186,7 +186,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           decodeErrorData: null,
         ),
         constMeta: kCrateApiSimpleLegacyKernelApplyUciConstMeta,
-        argValues: <dynamic>[moveUci],
+        argValues: [moveUci],
         apiImpl: this,
       ),
     );
@@ -195,7 +195,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   TaskConstMeta get kCrateApiSimpleLegacyKernelApplyUciConstMeta =>
       const TaskConstMeta(
         debugName: "legacy_kernel_apply_uci",
-        argNames: <String>["moveUci"],
+        argNames: ["moveUci"],
       );
 
   @override
@@ -203,9 +203,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     return handler.executeSync(
       SyncTask(
         callFfi: () {
-          final SseSerializer serializer = SseSerializer(
-            generalizedFrbRustBinding,
-          );
+          final serializer = SseSerializer(generalizedFrbRustBinding);
           return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 4)!;
         },
         codec: SseCodec(
@@ -213,23 +211,21 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           decodeErrorData: null,
         ),
         constMeta: kCrateApiSimpleLegacyKernelFenConstMeta,
-        argValues: <dynamic>[],
+        argValues: [],
         apiImpl: this,
       ),
     );
   }
 
   TaskConstMeta get kCrateApiSimpleLegacyKernelFenConstMeta =>
-      const TaskConstMeta(debugName: "legacy_kernel_fen", argNames: <String>[]);
+      const TaskConstMeta(debugName: "legacy_kernel_fen", argNames: []);
 
   @override
   List<String> crateApiSimpleLegacyKernelLegalActions() {
     return handler.executeSync(
       SyncTask(
         callFfi: () {
-          final SseSerializer serializer = SseSerializer(
-            generalizedFrbRustBinding,
-          );
+          final serializer = SseSerializer(generalizedFrbRustBinding);
           return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 5)!;
         },
         codec: SseCodec(
@@ -237,7 +233,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           decodeErrorData: null,
         ),
         constMeta: kCrateApiSimpleLegacyKernelLegalActionsConstMeta,
-        argValues: <dynamic>[],
+        argValues: [],
         apiImpl: this,
       ),
     );
@@ -246,7 +242,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   TaskConstMeta get kCrateApiSimpleLegacyKernelLegalActionsConstMeta =>
       const TaskConstMeta(
         debugName: "legacy_kernel_legal_actions",
-        argNames: <String>[],
+        argNames: [],
       );
 
   @override
@@ -254,9 +250,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     return handler.executeSync(
       SyncTask(
         callFfi: () {
-          final SseSerializer serializer = SseSerializer(
-            generalizedFrbRustBinding,
-          );
+          final serializer = SseSerializer(generalizedFrbRustBinding);
           return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 6)!;
         },
         codec: SseCodec(
@@ -264,26 +258,21 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           decodeErrorData: null,
         ),
         constMeta: kCrateApiSimpleLegacyKernelPhaseTagConstMeta,
-        argValues: <dynamic>[],
+        argValues: [],
         apiImpl: this,
       ),
     );
   }
 
   TaskConstMeta get kCrateApiSimpleLegacyKernelPhaseTagConstMeta =>
-      const TaskConstMeta(
-        debugName: "legacy_kernel_phase_tag",
-        argNames: <String>[],
-      );
+      const TaskConstMeta(debugName: "legacy_kernel_phase_tag", argNames: []);
 
   @override
   String crateApiSimpleLegacyKernelReset({required int ruleIdx}) {
     return handler.executeSync(
       SyncTask(
         callFfi: () {
-          final SseSerializer serializer = SseSerializer(
-            generalizedFrbRustBinding,
-          );
+          final serializer = SseSerializer(generalizedFrbRustBinding);
           sse_encode_i_32(ruleIdx, serializer);
           return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 7)!;
         },
@@ -292,7 +281,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           decodeErrorData: null,
         ),
         constMeta: kCrateApiSimpleLegacyKernelResetConstMeta,
-        argValues: <dynamic>[ruleIdx],
+        argValues: [ruleIdx],
         apiImpl: this,
       ),
     );
@@ -301,7 +290,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   TaskConstMeta get kCrateApiSimpleLegacyKernelResetConstMeta =>
       const TaskConstMeta(
         debugName: "legacy_kernel_reset",
-        argNames: <String>["ruleIdx"],
+        argNames: ["ruleIdx"],
       );
 
   @override
@@ -309,9 +298,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     return handler.executeSync(
       SyncTask(
         callFfi: () {
-          final SseSerializer serializer = SseSerializer(
-            generalizedFrbRustBinding,
-          );
+          final serializer = SseSerializer(generalizedFrbRustBinding);
           return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 8)!;
         },
         codec: SseCodec(
@@ -319,7 +306,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           decodeErrorData: null,
         ),
         constMeta: kCrateApiSimpleLegacyKernelSideToMoveConstMeta,
-        argValues: <dynamic>[],
+        argValues: [],
         apiImpl: this,
       ),
     );
@@ -328,7 +315,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   TaskConstMeta get kCrateApiSimpleLegacyKernelSideToMoveConstMeta =>
       const TaskConstMeta(
         debugName: "legacy_kernel_side_to_move",
-        argNames: <String>[],
+        argNames: [],
       );
 
   @override
@@ -336,9 +323,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     return handler.executeSync(
       SyncTask(
         callFfi: () {
-          final SseSerializer serializer = SseSerializer(
-            generalizedFrbRustBinding,
-          );
+          final serializer = SseSerializer(generalizedFrbRustBinding);
           return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 9)!;
         },
         codec: SseCodec(
@@ -346,7 +331,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           decodeErrorData: null,
         ),
         constMeta: kCrateApiSimpleNativeMillApplyFirstPlaceSideToMoveConstMeta,
-        argValues: <dynamic>[],
+        argValues: [],
         apiImpl: this,
       ),
     );
@@ -356,7 +341,32 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   get kCrateApiSimpleNativeMillApplyFirstPlaceSideToMoveConstMeta =>
       const TaskConstMeta(
         debugName: "native_mill_apply_first_place_side_to_move",
-        argNames: <String>[],
+        argNames: [],
+      );
+
+  @override
+  MillVariantOptions crateApiSimpleNativeMillDefaultVariantOptions() {
+    return handler.executeSync(
+      SyncTask(
+        callFfi: () {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 10)!;
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_mill_variant_options,
+          decodeErrorData: null,
+        ),
+        constMeta: kCrateApiSimpleNativeMillDefaultVariantOptionsConstMeta,
+        argValues: [],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kCrateApiSimpleNativeMillDefaultVariantOptionsConstMeta =>
+      const TaskConstMeta(
+        debugName: "native_mill_default_variant_options",
+        argNames: [],
       );
 
   @override
@@ -364,17 +374,15 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     return handler.executeSync(
       SyncTask(
         callFfi: () {
-          final SseSerializer serializer = SseSerializer(
-            generalizedFrbRustBinding,
-          );
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 10)!;
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 11)!;
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_u_32,
           decodeErrorData: null,
         ),
         constMeta: kCrateApiSimpleNativeMillInitialLegalCountConstMeta,
-        argValues: <dynamic>[],
+        argValues: [],
         apiImpl: this,
       ),
     );
@@ -383,7 +391,37 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   TaskConstMeta get kCrateApiSimpleNativeMillInitialLegalCountConstMeta =>
       const TaskConstMeta(
         debugName: "native_mill_initial_legal_count",
-        argNames: <String>[],
+        argNames: [],
+      );
+
+  @override
+  int crateApiSimpleNativeMillInitialLegalCountForVariant({
+    required MillVariantOptions variant,
+  }) {
+    return handler.executeSync(
+      SyncTask(
+        callFfi: () {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_box_autoadd_mill_variant_options(variant, serializer);
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 12)!;
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_u_32,
+          decodeErrorData: null,
+        ),
+        constMeta:
+            kCrateApiSimpleNativeMillInitialLegalCountForVariantConstMeta,
+        argValues: [variant],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta
+  get kCrateApiSimpleNativeMillInitialLegalCountForVariantConstMeta =>
+      const TaskConstMeta(
+        debugName: "native_mill_initial_legal_count_for_variant",
+        argNames: ["variant"],
       );
 
   @override
@@ -391,17 +429,15 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     return handler.executeSync(
       SyncTask(
         callFfi: () {
-          final SseSerializer serializer = SseSerializer(
-            generalizedFrbRustBinding,
-          );
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 11)!;
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 13)!;
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_u_32,
           decodeErrorData: null,
         ),
         constMeta: kCrateApiSimpleNativeMillMillSequenceRemoveCountConstMeta,
-        argValues: <dynamic>[],
+        argValues: [],
         apiImpl: this,
       ),
     );
@@ -410,7 +446,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   TaskConstMeta get kCrateApiSimpleNativeMillMillSequenceRemoveCountConstMeta =>
       const TaskConstMeta(
         debugName: "native_mill_mill_sequence_remove_count",
-        argNames: <String>[],
+        argNames: [],
       );
 
   @override
@@ -418,17 +454,15 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     return handler.executeSync(
       SyncTask(
         callFfi: () {
-          final SseSerializer serializer = SseSerializer(
-            generalizedFrbRustBinding,
-          );
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 12)!;
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 14)!;
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_u_32,
           decodeErrorData: null,
         ),
         constMeta: kCrateApiSimpleNativeMillMovingMillRemoveCountConstMeta,
-        argValues: <dynamic>[],
+        argValues: [],
         apiImpl: this,
       ),
     );
@@ -437,7 +471,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   TaskConstMeta get kCrateApiSimpleNativeMillMovingMillRemoveCountConstMeta =>
       const TaskConstMeta(
         debugName: "native_mill_moving_mill_remove_count",
-        argNames: <String>[],
+        argNames: [],
       );
 
   @override
@@ -445,17 +479,15 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     return handler.executeSync(
       SyncTask(
         callFfi: () {
-          final SseSerializer serializer = SseSerializer(
-            generalizedFrbRustBinding,
-          );
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 13)!;
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 15)!;
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_i_32,
           decodeErrorData: null,
         ),
         constMeta: kCrateApiSimpleNativeMillRemovalBelowThreeWinnerConstMeta,
-        argValues: <dynamic>[],
+        argValues: [],
         apiImpl: this,
       ),
     );
@@ -464,7 +496,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   TaskConstMeta get kCrateApiSimpleNativeMillRemovalBelowThreeWinnerConstMeta =>
       const TaskConstMeta(
         debugName: "native_mill_removal_below_three_winner",
-        argNames: <String>[],
+        argNames: [],
       );
 
   @override
@@ -472,48 +504,44 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     return handler.executeSync(
       SyncTask(
         callFfi: () {
-          final SseSerializer serializer = SseSerializer(
-            generalizedFrbRustBinding,
-          );
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 14)!;
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 16)!;
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_String,
           decodeErrorData: null,
         ),
         constMeta: kCrateApiSimpleTgfHelloWorldConstMeta,
-        argValues: <dynamic>[],
+        argValues: [],
         apiImpl: this,
       ),
     );
   }
 
   TaskConstMeta get kCrateApiSimpleTgfHelloWorldConstMeta =>
-      const TaskConstMeta(debugName: "tgf_hello_world", argNames: <String>[]);
+      const TaskConstMeta(debugName: "tgf_hello_world", argNames: []);
 
   @override
   String crateApiSimpleTgfVersion() {
     return handler.executeSync(
       SyncTask(
         callFfi: () {
-          final SseSerializer serializer = SseSerializer(
-            generalizedFrbRustBinding,
-          );
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 15)!;
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 17)!;
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_String,
           decodeErrorData: null,
         ),
         constMeta: kCrateApiSimpleTgfVersionConstMeta,
-        argValues: <dynamic>[],
+        argValues: [],
         apiImpl: this,
       ),
     );
   }
 
   TaskConstMeta get kCrateApiSimpleTgfVersionConstMeta =>
-      const TaskConstMeta(debugName: "tgf_version", argNames: <String>[]);
+      const TaskConstMeta(debugName: "tgf_version", argNames: []);
 
   @protected
   String dco_decode_String(dynamic raw) {
@@ -525,6 +553,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   bool dco_decode_bool(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw as bool;
+  }
+
+  @protected
+  MillVariantOptions dco_decode_box_autoadd_mill_variant_options(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return dco_decode_mill_variant_options(raw);
   }
 
   @protected
@@ -578,9 +612,24 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  MillVariantOptions dco_decode_mill_variant_options(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 5)
+      throw Exception('unexpected arr length: expect 5 but see ${arr.length}');
+    return MillVariantOptions(
+      pieceCount: dco_decode_u_8(arr[0]),
+      flyPieceCount: dco_decode_u_8(arr[1]),
+      piecesAtLeastCount: dco_decode_u_8(arr[2]),
+      mayFly: dco_decode_bool(arr[3]),
+      hasDiagonalLines: dco_decode_bool(arr[4]),
+    );
+  }
+
+  @protected
   TopologyBlob dco_decode_topology_blob(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
-    final List<dynamic> arr = raw as List<dynamic>;
+    final arr = raw as List<dynamic>;
     if (arr.length != 4)
       throw Exception('unexpected arr length: expect 4 but see ${arr.length}');
     return TopologyBlob(
@@ -594,7 +643,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   @protected
   TopologyEdge dco_decode_topology_edge(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
-    final List<dynamic> arr = raw as List<dynamic>;
+    final arr = raw as List<dynamic>;
     if (arr.length != 2)
       throw Exception('unexpected arr length: expect 2 but see ${arr.length}');
     return TopologyEdge(a: dco_decode_u_16(arr[0]), b: dco_decode_u_16(arr[1]));
@@ -603,7 +652,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   @protected
   TopologyPoint dco_decode_topology_point(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
-    final List<dynamic> arr = raw as List<dynamic>;
+    final arr = raw as List<dynamic>;
     if (arr.length != 5)
       throw Exception('unexpected arr length: expect 5 but see ${arr.length}');
     return TopologyPoint(
@@ -642,7 +691,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   @protected
   String sse_decode_String(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    final Uint8List inner = sse_decode_list_prim_u_8_strict(deserializer);
+    var inner = sse_decode_list_prim_u_8_strict(deserializer);
     return utf8.decoder.convert(inner);
   }
 
@@ -650,6 +699,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   bool sse_decode_bool(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return deserializer.buffer.getUint8() != 0;
+  }
+
+  @protected
+  MillVariantOptions sse_decode_box_autoadd_mill_variant_options(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return (sse_decode_mill_variant_options(deserializer));
   }
 
   @protected
@@ -668,9 +725,9 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   List<String> sse_decode_list_String(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
 
-    final int len_ = sse_decode_i_32(deserializer);
-    final List<String> ans_ = <String>[];
-    for (int idx_ = 0; idx_ < len_; ++idx_) {
+    var len_ = sse_decode_i_32(deserializer);
+    var ans_ = <String>[];
+    for (var idx_ = 0; idx_ < len_; ++idx_) {
       ans_.add(sse_decode_String(deserializer));
     }
     return ans_;
@@ -682,9 +739,9 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
 
-    final int len_ = sse_decode_i_32(deserializer);
-    final List<Uint16List> ans_ = <Uint16List>[];
-    for (int idx_ = 0; idx_ < len_; ++idx_) {
+    var len_ = sse_decode_i_32(deserializer);
+    var ans_ = <Uint16List>[];
+    for (var idx_ = 0; idx_ < len_; ++idx_) {
       ans_.add(sse_decode_list_prim_u_16_strict(deserializer));
     }
     return ans_;
@@ -693,14 +750,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   @protected
   Uint16List sse_decode_list_prim_u_16_strict(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    final int len_ = sse_decode_i_32(deserializer);
+    var len_ = sse_decode_i_32(deserializer);
     return deserializer.buffer.getUint16List(len_);
   }
 
   @protected
   Uint8List sse_decode_list_prim_u_8_strict(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    final int len_ = sse_decode_i_32(deserializer);
+    var len_ = sse_decode_i_32(deserializer);
     return deserializer.buffer.getUint8List(len_);
   }
 
@@ -710,9 +767,9 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
 
-    final int len_ = sse_decode_i_32(deserializer);
-    final List<TopologyEdge> ans_ = <TopologyEdge>[];
-    for (int idx_ = 0; idx_ < len_; ++idx_) {
+    var len_ = sse_decode_i_32(deserializer);
+    var ans_ = <TopologyEdge>[];
+    for (var idx_ = 0; idx_ < len_; ++idx_) {
       ans_.add(sse_decode_topology_edge(deserializer));
     }
     return ans_;
@@ -724,26 +781,40 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
 
-    final int len_ = sse_decode_i_32(deserializer);
-    final List<TopologyPoint> ans_ = <TopologyPoint>[];
-    for (int idx_ = 0; idx_ < len_; ++idx_) {
+    var len_ = sse_decode_i_32(deserializer);
+    var ans_ = <TopologyPoint>[];
+    for (var idx_ = 0; idx_ < len_; ++idx_) {
       ans_.add(sse_decode_topology_point(deserializer));
     }
     return ans_;
   }
 
   @protected
+  MillVariantOptions sse_decode_mill_variant_options(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_pieceCount = sse_decode_u_8(deserializer);
+    var var_flyPieceCount = sse_decode_u_8(deserializer);
+    var var_piecesAtLeastCount = sse_decode_u_8(deserializer);
+    var var_mayFly = sse_decode_bool(deserializer);
+    var var_hasDiagonalLines = sse_decode_bool(deserializer);
+    return MillVariantOptions(
+      pieceCount: var_pieceCount,
+      flyPieceCount: var_flyPieceCount,
+      piecesAtLeastCount: var_piecesAtLeastCount,
+      mayFly: var_mayFly,
+      hasDiagonalLines: var_hasDiagonalLines,
+    );
+  }
+
+  @protected
   TopologyBlob sse_decode_topology_blob(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    final String var_name = sse_decode_String(deserializer);
-    final List<TopologyPoint> var_points = sse_decode_list_topology_point(
-      deserializer,
-    );
-    final List<TopologyEdge> var_edges = sse_decode_list_topology_edge(
-      deserializer,
-    );
-    final List<Uint16List> var_lineGroups =
-        sse_decode_list_list_prim_u_16_strict(deserializer);
+    var var_name = sse_decode_String(deserializer);
+    var var_points = sse_decode_list_topology_point(deserializer);
+    var var_edges = sse_decode_list_topology_edge(deserializer);
+    var var_lineGroups = sse_decode_list_list_prim_u_16_strict(deserializer);
     return TopologyBlob(
       name: var_name,
       points: var_points,
@@ -755,19 +826,19 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   @protected
   TopologyEdge sse_decode_topology_edge(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    final int var_a = sse_decode_u_16(deserializer);
-    final int var_b = sse_decode_u_16(deserializer);
+    var var_a = sse_decode_u_16(deserializer);
+    var var_b = sse_decode_u_16(deserializer);
     return TopologyEdge(a: var_a, b: var_b);
   }
 
   @protected
   TopologyPoint sse_decode_topology_point(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    final int var_id = sse_decode_u_16(deserializer);
-    final int var_square = sse_decode_u_16(deserializer);
-    final String var_label = sse_decode_String(deserializer);
-    final double var_x = sse_decode_f_32(deserializer);
-    final double var_y = sse_decode_f_32(deserializer);
+    var var_id = sse_decode_u_16(deserializer);
+    var var_square = sse_decode_u_16(deserializer);
+    var var_label = sse_decode_String(deserializer);
+    var var_x = sse_decode_f_32(deserializer);
+    var var_y = sse_decode_f_32(deserializer);
     return TopologyPoint(
       id: var_id,
       square: var_square,
@@ -813,6 +884,15 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_box_autoadd_mill_variant_options(
+    MillVariantOptions self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_mill_variant_options(self, serializer);
+  }
+
+  @protected
   void sse_encode_f_32(double self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     serializer.buffer.putFloat32(self);
@@ -828,7 +908,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   void sse_encode_list_String(List<String> self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_i_32(self.length, serializer);
-    for (final String item in self) {
+    for (final item in self) {
       sse_encode_String(item, serializer);
     }
   }
@@ -840,7 +920,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_i_32(self.length, serializer);
-    for (final Uint16List item in self) {
+    for (final item in self) {
       sse_encode_list_prim_u_16_strict(item, serializer);
     }
   }
@@ -872,7 +952,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_i_32(self.length, serializer);
-    for (final TopologyEdge item in self) {
+    for (final item in self) {
       sse_encode_topology_edge(item, serializer);
     }
   }
@@ -884,9 +964,22 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   ) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_i_32(self.length, serializer);
-    for (final TopologyPoint item in self) {
+    for (final item in self) {
       sse_encode_topology_point(item, serializer);
     }
+  }
+
+  @protected
+  void sse_encode_mill_variant_options(
+    MillVariantOptions self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_u_8(self.pieceCount, serializer);
+    sse_encode_u_8(self.flyPieceCount, serializer);
+    sse_encode_u_8(self.piecesAtLeastCount, serializer);
+    sse_encode_bool(self.mayFly, serializer);
+    sse_encode_bool(self.hasDiagonalLines, serializer);
   }
 
   @protected

@@ -67,5 +67,13 @@ void main() {
     expect(nativeMillMillSequenceRemoveCount(), 2);
     expect(nativeMillMovingMillRemoveCount(), 3);
     expect(nativeMillRemovalBelowThreeWinner(), 0);
+
+    final MillVariantOptions defaults = nativeMillDefaultVariantOptions();
+    expect(defaults.pieceCount, 9);
+    expect(defaults.flyPieceCount, 3);
+    expect(defaults.piecesAtLeastCount, 3);
+    expect(defaults.mayFly, isTrue);
+    expect(defaults.hasDiagonalLines, isFalse);
+    expect(nativeMillInitialLegalCountForVariant(variant: defaults), 24);
   });
 }

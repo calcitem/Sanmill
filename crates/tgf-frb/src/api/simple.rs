@@ -10,7 +10,10 @@ use once_cell::sync::Lazy;
 use std::sync::Mutex;
 use tgf_core::{Action, ActionList, BoardTopology, GameRules};
 use tgf_legacy_cxx::LegacyKernel;
-use tgf_mill::{default_mill_topology, MillActionKind, MillRules};
+use tgf_mill::{
+    default_mill_topology, MillActionKind, MillRules,
+    MillVariantOptions as NativeMillVariantOptions,
+};
 
 static LEGACY_KERNEL: Lazy<Mutex<Option<LegacyKernel>>> =
     Lazy::new(|| Mutex::new(None));
@@ -40,6 +43,43 @@ pub fn tgf_hello_world() -> String {
 #[flutter_rust_bridge::frb(sync)]
 pub fn tgf_version() -> String {
     env!("CARGO_PKG_VERSION").to_owned()
+}
+
+/// Public FRB DTO for the subset of Mill variant options already supported by
+/// the Rust-native rules scaffold.  It intentionally mirrors the field names
+/// that will later replace the C++ Rule struct.
+#[derive(Clone, Debug)]
+pub struct MillVariantOptions {
+    pub piece_count: u8,
+    pub fly_piece_count: u8,
+    pub pieces_at_least_count: u8,
+    pub may_fly: bool,
+    pub has_diagonal_lines: bool,
+}
+
+impl From<MillVariantOptions> for NativeMillVariantOptions {
+    fn from(value: MillVariantOptions) -> Self {
+        Self {
+            piece_count: value.piece_count,
+            fly_piece_count: value.fly_piece_count,
+            pieces_at_least_count: value.pieces_at_least_count,
+            may_fly: value.may_fly,
+            has_diagonal_lines: value.has_diagonal_lines,
+        }
+    }
+}
+
+/// Default Nine Men's Morris variant options.
+#[flutter_rust_bridge::frb(sync)]
+pub fn native_mill_default_variant_options() -> MillVariantOptions {
+    let defaults = NativeMillVariantOptions::default();
+    MillVariantOptions {
+        piece_count: defaults.piece_count,
+        fly_piece_count: defaults.fly_piece_count,
+        pieces_at_least_count: defaults.pieces_at_least_count,
+        may_fly: defaults.may_fly,
+        has_diagonal_lines: defaults.has_diagonal_lines,
+    }
 }
 
 // ---------------------------------------------------------------------------
@@ -173,6 +213,18 @@ pub fn kernel_topology() -> TopologyBlob {
 #[flutter_rust_bridge::frb(sync)]
 pub fn native_mill_initial_legal_count() -> u32 {
     let rules = MillRules::default();
+    let snap = rules.initial_state(&[]);
+    let mut actions = ActionList::<256>::new();
+    rules.legal_actions(&snap, &mut actions);
+    actions.len() as u32
+}
+
+/// Opening legal action count for an explicit variant option set.
+#[flutter_rust_bridge::frb(sync)]
+pub fn native_mill_initial_legal_count_for_variant(
+    variant: MillVariantOptions,
+) -> u32 {
+    let rules = MillRules::new(variant.into());
     let snap = rules.initial_state(&[]);
     let mut actions = ActionList::<256>::new();
     rules.legal_actions(&snap, &mut actions);

@@ -3,11 +3,10 @@
 
 // ignore_for_file: invalid_use_of_internal_member, unused_import, unnecessary_import
 
+import '../frb_generated.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
-import '../frb_generated.dart';
-
-// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `clone`, `clone`, `fmt`, `fmt`, `fmt`
+// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `clone`, `clone`, `clone`, `fmt`, `fmt`, `fmt`, `fmt`, `from`
 
 /// Returns a greeting string confirming that the Rust → Dart bridge works.
 /// Called from Dart as `tgfHelloWorld()` after `await RustLib.init()`.
@@ -15,6 +14,10 @@ String tgfHelloWorld() => RustLib.instance.api.crateApiSimpleTgfHelloWorld();
 
 /// Returns the TGF Rust crate version string.
 String tgfVersion() => RustLib.instance.api.crateApiSimpleTgfVersion();
+
+/// Default Nine Men's Morris variant options.
+MillVariantOptions nativeMillDefaultVariantOptions() =>
+    RustLib.instance.api.crateApiSimpleNativeMillDefaultVariantOptions();
 
 /// Create/reset a global legacy C++ kernel.
 ///
@@ -55,6 +58,13 @@ TopologyBlob kernelTopology() =>
 int nativeMillInitialLegalCount() =>
     RustLib.instance.api.crateApiSimpleNativeMillInitialLegalCount();
 
+/// Opening legal action count for an explicit variant option set.
+int nativeMillInitialLegalCountForVariant({
+  required MillVariantOptions variant,
+}) => RustLib.instance.api.crateApiSimpleNativeMillInitialLegalCountForVariant(
+  variant: variant,
+);
+
 /// Apply the first Rust-native place action and return the side-to-move tag.
 /// This is a small typed smoke-check for the native MillRules scaffold.
 int nativeMillApplyFirstPlaceSideToMove() =>
@@ -73,17 +83,56 @@ int nativeMillMovingMillRemoveCount() =>
 int nativeMillRemovalBelowThreeWinner() =>
     RustLib.instance.api.crateApiSimpleNativeMillRemovalBelowThreeWinner();
 
+/// Public FRB DTO for the subset of Mill variant options already supported by
+/// the Rust-native rules scaffold.  It intentionally mirrors the field names
+/// that will later replace the C++ Rule struct.
+class MillVariantOptions {
+  final int pieceCount;
+  final int flyPieceCount;
+  final int piecesAtLeastCount;
+  final bool mayFly;
+  final bool hasDiagonalLines;
+
+  const MillVariantOptions({
+    required this.pieceCount,
+    required this.flyPieceCount,
+    required this.piecesAtLeastCount,
+    required this.mayFly,
+    required this.hasDiagonalLines,
+  });
+
+  @override
+  int get hashCode =>
+      pieceCount.hashCode ^
+      flyPieceCount.hashCode ^
+      piecesAtLeastCount.hashCode ^
+      mayFly.hashCode ^
+      hasDiagonalLines.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is MillVariantOptions &&
+          runtimeType == other.runtimeType &&
+          pieceCount == other.pieceCount &&
+          flyPieceCount == other.flyPieceCount &&
+          piecesAtLeastCount == other.piecesAtLeastCount &&
+          mayFly == other.mayFly &&
+          hasDiagonalLines == other.hasDiagonalLines;
+}
+
 class TopologyBlob {
+  final String name;
+  final List<TopologyPoint> points;
+  final List<TopologyEdge> edges;
+  final List<Uint16List> lineGroups;
+
   const TopologyBlob({
     required this.name,
     required this.points,
     required this.edges,
     required this.lineGroups,
   });
-  final String name;
-  final List<TopologyPoint> points;
-  final List<TopologyEdge> edges;
-  final List<Uint16List> lineGroups;
 
   @override
   int get hashCode =>
@@ -101,9 +150,10 @@ class TopologyBlob {
 }
 
 class TopologyEdge {
-  const TopologyEdge({required this.a, required this.b});
   final int a;
   final int b;
+
+  const TopologyEdge({required this.a, required this.b});
 
   @override
   int get hashCode => a.hashCode ^ b.hashCode;
@@ -118,6 +168,12 @@ class TopologyEdge {
 }
 
 class TopologyPoint {
+  final int id;
+  final int square;
+  final String label;
+  final double x;
+  final double y;
+
   const TopologyPoint({
     required this.id,
     required this.square,
@@ -125,11 +181,6 @@ class TopologyPoint {
     required this.x,
     required this.y,
   });
-  final int id;
-  final int square;
-  final String label;
-  final double x;
-  final double y;
 
   @override
   int get hashCode =>

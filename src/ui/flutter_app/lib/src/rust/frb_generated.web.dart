@@ -6,13 +6,11 @@
 // Static analysis wrongly picks the IO variant, thus ignore this
 // ignore_for_file: argument_type_not_assignable
 
+import 'api/simple.dart';
 import 'dart:async';
 import 'dart:convert';
-
-import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated_web.dart';
-
-import 'api/simple.dart';
 import 'frb_generated.dart';
+import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated_web.dart';
 
 abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   RustLibApiImplPlatform({
@@ -27,6 +25,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   bool dco_decode_bool(dynamic raw);
+
+  @protected
+  MillVariantOptions dco_decode_box_autoadd_mill_variant_options(dynamic raw);
 
   @protected
   double dco_decode_f_32(dynamic raw);
@@ -51,6 +52,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   List<TopologyPoint> dco_decode_list_topology_point(dynamic raw);
+
+  @protected
+  MillVariantOptions dco_decode_mill_variant_options(dynamic raw);
 
   @protected
   TopologyBlob dco_decode_topology_blob(dynamic raw);
@@ -78,6 +82,11 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   bool sse_decode_bool(SseDeserializer deserializer);
+
+  @protected
+  MillVariantOptions sse_decode_box_autoadd_mill_variant_options(
+    SseDeserializer deserializer,
+  );
 
   @protected
   double sse_decode_f_32(SseDeserializer deserializer);
@@ -110,6 +119,11 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   );
 
   @protected
+  MillVariantOptions sse_decode_mill_variant_options(
+    SseDeserializer deserializer,
+  );
+
+  @protected
   TopologyBlob sse_decode_topology_blob(SseDeserializer deserializer);
 
   @protected
@@ -135,6 +149,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void sse_encode_bool(bool self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_mill_variant_options(
+    MillVariantOptions self,
+    SseSerializer serializer,
+  );
 
   @protected
   void sse_encode_f_32(double self, SseSerializer serializer);
@@ -176,6 +196,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   );
 
   @protected
+  void sse_encode_mill_variant_options(
+    MillVariantOptions self,
+    SseSerializer serializer,
+  );
+
+  @protected
   void sse_encode_topology_blob(TopologyBlob self, SseSerializer serializer);
 
   @protected
@@ -200,7 +226,7 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 // Section: wire_class
 
 class RustLibWire implements BaseWire {
-  RustLibWire.fromExternalLibrary();
+  RustLibWire.fromExternalLibrary(ExternalLibrary lib);
 }
 
 @JS('wasm_bindgen')
