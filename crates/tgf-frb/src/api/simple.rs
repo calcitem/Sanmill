@@ -450,6 +450,46 @@ pub fn native_and_legacy_pending_remove_perft_match(depth: i32) -> bool {
     legacy.perft(depth) == tgf_search::perft::<MillGame>(&mut wb, depth)
 }
 
+
+/// Differential perft check from a fully placed moving-phase state with no
+/// pending removals.  The state is the no-mill 18-placement sequence used by
+/// the C++ golden tests.
+#[flutter_rust_bridge::frb(sync)]
+pub fn native_and_legacy_moving_phase_perft_match(depth: i32) -> bool {
+    let legacy_seq = [
+        "d7", "g7", "g4", "a7", "a4", "g1", "f6", "d6", "b6",
+        "d2", "f2", "a1", "e5", "c5", "c4", "d5", "e3", "c3",
+    ];
+    let native_seq = [
+        1_i16, 2, 3, 0, 7, 4, 10, 9, 8, 13, 12, 6, 18, 16, 23, 17, 20, 22,
+    ];
+
+    let mut legacy = LegacyKernel::new(0);
+    for mv in legacy_seq {
+        if !legacy.apply_uci(mv) {
+            return false;
+        }
+    }
+
+    let rules = MillRules::default();
+    let game = MillGame::default();
+    let mut snap = rules.initial_state(&[]);
+    for node in native_seq {
+        snap = rules.apply(
+            &snap,
+            Action {
+                kind_tag: MillActionKind::Place as i16,
+                from_node: -1,
+                to_node: node,
+                aux: -1,
+                payload_bits: 0,
+            },
+        );
+    }
+    let mut wb = game.build_workbench(&snap);
+    legacy.perft(depth) == tgf_search::perft::<MillGame>(&mut wb, depth)
+}
+
 /// Smoke-check that the Rust searcher honours a zero-millisecond time limit.
 #[flutter_rust_bridge::frb(sync)]
 pub fn native_mill_search_zero_time_limit_aborts() -> bool {
@@ -542,6 +582,25 @@ mod tests {
         legacy.legal_actions().into_iter().collect()
     }
 
+
+    fn apply_native_sequence(seq: &[i16]) -> tgf_core::GameStateSnapshot {
+        let rules = MillRules::default();
+        let mut snap = rules.initial_state(&[]);
+        for &node in seq {
+            snap = rules.apply(
+                &snap,
+                Action {
+                    kind_tag: MillActionKind::Place as i16,
+                    from_node: -1,
+                    to_node: node,
+                    aux: -1,
+                    payload_bits: 0,
+                },
+            );
+        }
+        snap
+    }
+
     fn native_action_to_uci(action: &Action) -> String {
         let topo = default_mill_topology();
         match action.kind_tag {
@@ -632,6 +691,53 @@ mod tests {
         assert_eq!(remove_count, native_mill_mill_sequence_remove_count() as usize);
     }
 
+
+
+    #[test]
+    fn native_and_legacy_moving_phase_legal_action_sets_match() {
+        let _guard = LEGACY_TEST_MUTEX.lock().expect("legacy test mutex poisoned");
+        let legacy_seq = [
+            "d7", "g7", "g4", "a7", "a4", "g1", "f6", "d6", "b6",
+            "d2", "f2", "a1", "e5", "c5", "c4", "d5", "e3", "c3",
+        ];
+        let native_seq = [
+            1_i16, 2, 3, 0, 7, 4, 10, 9, 8, 13, 12, 6, 18, 16, 23, 17, 20, 22,
+        ];
+
+        let mut legacy = LegacyKernel::new(0);
+        for mv in legacy_seq {
+            assert!(legacy.apply_uci(mv), "legacy C++ move should be legal: {mv}");
+        }
+        let native = apply_native_sequence(&native_seq);
+
+        assert_eq!(legacy_legal_uci_set(&legacy), native_legal_uci_set(&native));
+    }
+
+
+    #[test]
+    fn native_and_legacy_moving_phase_perft_match() {
+        let _guard = LEGACY_TEST_MUTEX.lock().expect("legacy test mutex poisoned");
+        let legacy_seq = [
+            "d7", "g7", "g4", "a7", "a4", "g1", "f6", "d6", "b6",
+            "d2", "f2", "a1", "e5", "c5", "c4", "d5", "e3", "c3",
+        ];
+        let native_seq = [
+            1_i16, 2, 3, 0, 7, 4, 10, 9, 8, 13, 12, 6, 18, 16, 23, 17, 20, 22,
+        ];
+
+        let mut legacy = LegacyKernel::new(0);
+        for mv in legacy_seq {
+            assert!(legacy.apply_uci(mv), "legacy C++ move should be legal: {mv}");
+        }
+        let native = apply_native_sequence(&native_seq);
+        let game = MillGame::default();
+
+        let mut wb = game.build_workbench(&native);
+        assert_eq!(legacy.perft(1), perft::<MillGame>(&mut wb, 1));
+
+        let mut wb = game.build_workbench(&native);
+        assert_eq!(legacy.perft(2), perft::<MillGame>(&mut wb, 2));
+    }
 
     #[test]
     fn native_and_legacy_pending_remove_legal_action_sets_match() {

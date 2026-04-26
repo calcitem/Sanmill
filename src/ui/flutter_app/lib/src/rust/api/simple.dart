@@ -119,6 +119,14 @@ bool nativeAndLegacyPendingRemovePerftMatch({required int depth}) => RustLib
     .api
     .crateApiSimpleNativeAndLegacyPendingRemovePerftMatch(depth: depth);
 
+/// Differential perft check from a fully placed moving-phase state with no
+/// pending removals.  The state is the no-mill 18-placement sequence used by
+/// the C++ golden tests.
+bool nativeAndLegacyMovingPhasePerftMatch({required int depth}) => RustLib
+    .instance
+    .api
+    .crateApiSimpleNativeAndLegacyMovingPhasePerftMatch(depth: depth);
+
 /// Smoke-check that the Rust searcher honours a zero-millisecond time limit.
 bool nativeMillSearchZeroTimeLimitAborts() =>
     RustLib.instance.api.crateApiSimpleNativeMillSearchZeroTimeLimitAborts();

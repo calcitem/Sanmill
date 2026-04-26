@@ -107,5 +107,7 @@ void main() {
     expect(nativeAndLegacyPerftMatch(depth: 2), isTrue);
     expect(nativeAndLegacyPendingRemovePerftMatch(depth: 1), isTrue);
     expect(nativeAndLegacyPendingRemovePerftMatch(depth: 2), isTrue);
+    expect(nativeAndLegacyMovingPhasePerftMatch(depth: 1), isTrue);
+    expect(nativeAndLegacyMovingPhasePerftMatch(depth: 2), isTrue);
   });
 }

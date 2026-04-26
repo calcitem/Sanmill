@@ -198,30 +198,30 @@ const SQUARE_TO_NODE: &[(u16, u16)] = &[
     (13, 22), (14, 23),
 ];
 
-const N0: &[u16] = &[1, 7, 8];
-const N1: &[u16] = &[0, 2, 9];
-const N2: &[u16] = &[1, 3, 10];
-const N3: &[u16] = &[2, 4, 11];
-const N4: &[u16] = &[3, 5, 12];
-const N5: &[u16] = &[4, 6, 13];
-const N6: &[u16] = &[5, 7, 14];
-const N7: &[u16] = &[6, 0, 15];
-const N8: &[u16] = &[9, 15, 0, 16];
-const N9: &[u16] = &[8, 10, 1, 17];
-const N10: &[u16] = &[9, 11, 2, 18];
-const N11: &[u16] = &[10, 12, 3, 19];
-const N12: &[u16] = &[11, 13, 4, 20];
-const N13: &[u16] = &[12, 14, 5, 21];
-const N14: &[u16] = &[13, 15, 6, 22];
-const N15: &[u16] = &[14, 8, 7, 23];
-const N16: &[u16] = &[17, 23, 8];
-const N17: &[u16] = &[16, 18, 9];
-const N18: &[u16] = &[17, 19, 10];
-const N19: &[u16] = &[18, 20, 11];
-const N20: &[u16] = &[19, 21, 12];
-const N21: &[u16] = &[20, 22, 13];
-const N22: &[u16] = &[21, 23, 14];
-const N23: &[u16] = &[22, 16, 15];
+const N0: &[u16] = &[1, 7];
+const N1: &[u16] = &[9, 2, 0];
+const N2: &[u16] = &[3, 1];
+const N3: &[u16] = &[11, 4, 2];
+const N4: &[u16] = &[5, 3];
+const N5: &[u16] = &[13, 6, 4];
+const N6: &[u16] = &[7, 5];
+const N7: &[u16] = &[15, 0, 6];
+const N8: &[u16] = &[9, 15];
+const N9: &[u16] = &[17, 1, 10, 8];
+const N10: &[u16] = &[11, 9];
+const N11: &[u16] = &[19, 3, 12, 10];
+const N12: &[u16] = &[13, 11];
+const N13: &[u16] = &[21, 5, 14, 12];
+const N14: &[u16] = &[15, 13];
+const N15: &[u16] = &[23, 7, 8, 14];
+const N16: &[u16] = &[17, 23];
+const N17: &[u16] = &[9, 18, 16];
+const N18: &[u16] = &[19, 17];
+const N19: &[u16] = &[11, 20, 18];
+const N20: &[u16] = &[21, 19];
+const N21: &[u16] = &[13, 22, 20];
+const N22: &[u16] = &[23, 21];
+const N23: &[u16] = &[15, 16, 22];
 
 const NEIGHBORS: [&[u16]; 24] = [
     N0, N1, N2, N3, N4, N5, N6, N7, N8, N9, N10, N11, N12, N13, N14, N15, N16,
@@ -250,5 +250,14 @@ mod tests {
         assert_eq!(topo.line_groups().len(), 16);
         assert_eq!(topo.coordinate_of(0), UnitPoint { x: 0.1, y: 0.1 });
         assert_eq!(topo.coordinate_of(23), UnitPoint { x: 0.3, y: 0.5 });
+    }
+
+    #[test]
+    fn standard_neighbors_match_cxx_no_diagonal_rules() {
+        let topo = default_mill_topology();
+        assert_eq!(topo.neighbors(0), &[1, 7]);
+        assert_eq!(topo.neighbors(1), &[9, 2, 0]);
+        assert_eq!(topo.neighbors(9), &[17, 1, 10, 8]);
+        assert_eq!(topo.neighbors(17), &[9, 18, 16]);
     }
 }
