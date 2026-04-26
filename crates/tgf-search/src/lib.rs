@@ -70,6 +70,53 @@ impl<G: Game> Searcher<G> {
         }
     }
 
+    /// Simple iterative deepening scaffold.  It re-searches from depth 1 to
+    /// `max_depth` and returns the deepest result.
+    ///
+    /// Later Phase 5 work will add time control, aspiration windows, TT reuse,
+    /// and principal-variation tracking.  The important architectural point is
+    /// that every iteration still stays generic over `G: Game` and does not
+    /// cross a trait-object boundary.
+    pub fn iterative_deepening(
+        &mut self,
+        wb: &mut G::Workbench,
+        max_depth: i32,
+    ) -> SearchResult {
+        let max_depth = max_depth.max(1);
+        let mut result = self.search(wb, 1);
+        for depth in 2..=max_depth {
+            result = self.search(wb, depth);
+        }
+        result
+    }
+
+    /// Minimal MTD(f) scaffold implemented over alpha-beta zero-window calls.
+    ///
+    /// This intentionally omits TT integration for now; without a TT, MTD(f)
+    /// is not efficient.  The function exists so Phase 5 can grow the exact
+    /// algorithmic surface area while keeping current behavior testable.
+    pub fn mtdf(
+        &mut self,
+        wb: &mut G::Workbench,
+        first_guess: i32,
+        depth: i32,
+    ) -> i32 {
+        let mut g = first_guess;
+        let mut upper_bound = i32::MAX - 1;
+        let mut lower_bound = i32::MIN + 1;
+
+        while lower_bound < upper_bound {
+            let beta = if g == lower_bound { g + 1 } else { g };
+            g = self.alpha_beta(wb, depth, beta - 1, beta);
+            if g < beta {
+                upper_bound = g;
+            } else {
+                lower_bound = g;
+            }
+        }
+        g
+    }
+
     #[inline]
     pub fn alpha_beta(
         &mut self,
@@ -122,5 +169,32 @@ mod tests {
         assert!(!result.best_action.is_none());
         assert_eq!(result.best_action.kind_tag, MillActionKind::Place as i16);
         assert!(result.nodes > 0);
+    }
+
+    #[test]
+    fn mill_iterative_deepening_returns_deepest_result() {
+        let rules = MillRules::default();
+        let game = MillGame::default();
+        let snap = rules.initial_state(&[]);
+        let mut wb = game.build_workbench(&snap);
+        let mut searcher = Searcher::<MillGame>::new();
+
+        let result = searcher.iterative_deepening(&mut wb, 2);
+        assert!(!result.best_action.is_none());
+        assert_eq!(result.best_action.kind_tag, MillActionKind::Place as i16);
+        assert!(result.nodes > 0);
+    }
+
+    #[test]
+    fn mill_mtdf_returns_a_finite_score() {
+        let rules = MillRules::default();
+        let game = MillGame::default();
+        let snap = rules.initial_state(&[]);
+        let mut wb = game.build_workbench(&snap);
+        let mut searcher = Searcher::<MillGame>::new();
+
+        let score = searcher.mtdf(&mut wb, 0, 1);
+        assert!(score > i32::MIN + 1);
+        assert!(score < i32::MAX - 1);
     }
 }
