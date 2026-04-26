@@ -101,5 +101,7 @@ void main() {
     expect(nativeMillSearchStop(), isFalse);
     expect(nativeAndLegacyPerftMatch(depth: 1), isTrue);
     expect(nativeAndLegacyPerftMatch(depth: 2), isTrue);
+    expect(nativeAndLegacyPendingRemovePerftMatch(depth: 1), isTrue);
+    expect(nativeAndLegacyPendingRemovePerftMatch(depth: 2), isTrue);
   });
 }

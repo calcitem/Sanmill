@@ -103,6 +103,13 @@ int nativeMillRandomBestToNode({required BigInt seed}) =>
 bool nativeAndLegacyPerftMatch({required int depth}) =>
     RustLib.instance.api.crateApiSimpleNativeAndLegacyPerftMatch(depth: depth);
 
+/// Differential perft check from the canonical pending-remove state after
+/// W d7, B a1, W g7, B d1, W a7.
+bool nativeAndLegacyPendingRemovePerftMatch({required int depth}) => RustLib
+    .instance
+    .api
+    .crateApiSimpleNativeAndLegacyPendingRemovePerftMatch(depth: depth);
+
 /// Smoke-check that the Rust searcher honours a zero-millisecond time limit.
 bool nativeMillSearchZeroTimeLimitAborts() =>
     RustLib.instance.api.crateApiSimpleNativeMillSearchZeroTimeLimitAborts();

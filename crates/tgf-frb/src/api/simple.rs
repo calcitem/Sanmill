@@ -398,6 +398,36 @@ pub fn native_and_legacy_perft_match(depth: i32) -> bool {
     legacy.perft(depth) == native
 }
 
+/// Differential perft check from the canonical pending-remove state after
+/// W d7, B a1, W g7, B d1, W a7.
+#[flutter_rust_bridge::frb(sync)]
+pub fn native_and_legacy_pending_remove_perft_match(depth: i32) -> bool {
+    let mut legacy = LegacyKernel::new(0);
+    for mv in ["d7", "a1", "g7", "d1", "a7"] {
+        if !legacy.apply_uci(mv) {
+            return false;
+        }
+    }
+
+    let rules = MillRules::default();
+    let game = MillGame::default();
+    let mut snap = rules.initial_state(&[]);
+    for node in [1_i16, 6, 2, 5, 0] {
+        snap = rules.apply(
+            &snap,
+            Action {
+                kind_tag: MillActionKind::Place as i16,
+                from_node: -1,
+                to_node: node,
+                aux: -1,
+                payload_bits: 0,
+            },
+        );
+    }
+    let mut wb = game.build_workbench(&snap);
+    legacy.perft(depth) == tgf_search::perft::<MillGame>(&mut wb, depth)
+}
+
 /// Smoke-check that the Rust searcher honours a zero-millisecond time limit.
 #[flutter_rust_bridge::frb(sync)]
 pub fn native_mill_search_zero_time_limit_aborts() -> bool {
@@ -526,5 +556,35 @@ mod tests {
         assert_eq!(remove_count, 2);
         assert_eq!(native_mill_mill_sequence_remove_count(), 2);
         assert_eq!(remove_count, native_mill_mill_sequence_remove_count() as usize);
+    }
+
+    #[test]
+    fn native_and_legacy_pending_remove_perft_match() {
+        let mut legacy = LegacyKernel::new(0);
+        for mv in ["d7", "a1", "g7", "d1", "a7"] {
+            assert!(legacy.apply_uci(mv), "legacy C++ move should be legal: {mv}");
+        }
+
+        let rules = MillRules::default();
+        let game = MillGame::default();
+        let mut snap = rules.initial_state(&[]);
+        for node in [1_i16, 6, 2, 5, 0] {
+            snap = rules.apply(
+                &snap,
+                Action {
+                    kind_tag: MillActionKind::Place as i16,
+                    from_node: -1,
+                    to_node: node,
+                    aux: -1,
+                    payload_bits: 0,
+                },
+            );
+        }
+        let mut wb = game.build_workbench(&snap);
+
+        assert_eq!(legacy.perft(1), perft::<MillGame>(&mut wb, 1));
+
+        let mut wb = game.build_workbench(&snap);
+        assert_eq!(legacy.perft(2), perft::<MillGame>(&mut wb, 2));
     }
 }
