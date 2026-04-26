@@ -4,6 +4,8 @@
 import '../../game_platform/rule_settings_port.dart';
 import '../../rule_settings/models/rule_settings.dart';
 import '../../shared/database/settings_repository.dart';
+import '../../src/rust/api/simple.dart' as tgf;
+import 'mill_variant_options_mapper.dart';
 
 /// Mill-specific [RuleSettingsPort] backed by the existing
 /// [SettingsRepository].
@@ -21,4 +23,9 @@ class MillRuleSettingsPort implements RuleSettingsPort<RuleSettings> {
 
   @override
   set ruleSettings(RuleSettings value) => _repository.ruleSettings = value;
+
+  /// Typed Rust/FRB variant options for the currently supported subset of
+  /// Mill rule settings.
+  tgf.MillVariantOptions get tgfVariantOptions =>
+      ruleSettings.toTgfMillVariantOptions();
 }

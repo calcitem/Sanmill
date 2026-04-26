@@ -11,6 +11,8 @@ import 'package:sanmill/game_platform/engine/native_topology.dart';
 import 'package:sanmill/game_platform/game_session.dart';
 import 'package:sanmill/games/mill/mill_game_session.dart';
 import 'package:sanmill/games/mill/mill_rules_port.dart';
+import 'package:sanmill/games/mill/mill_variant_options_mapper.dart';
+import 'package:sanmill/rule_settings/models/rule_settings.dart';
 import 'package:sanmill/src/rust/api/simple.dart';
 import 'package:sanmill/src/rust/frb_generated.dart';
 
@@ -79,6 +81,10 @@ void main() {
     expect(defaults.mayFly, isTrue);
     expect(defaults.hasDiagonalLines, isFalse);
     expect(nativeMillInitialLegalCountForVariant(variant: defaults), 24);
+
+    final MillVariantOptions mapped = const RuleSettings()
+        .toTgfMillVariantOptions();
+    expect(mapped, defaults);
     expect(nativeMillSearchDepthOneBestToNode(), inInclusiveRange(0, 23));
     expect(nativeMillPvsDepthOneBestToNode(), inInclusiveRange(0, 23));
     expect(
