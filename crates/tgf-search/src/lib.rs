@@ -667,6 +667,25 @@ pub struct MctsResult {
     pub wins: u32,
 }
 
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub struct MctsOptions {
+    pub iterations: u32,
+    pub playout_depth: i32,
+    pub time_limit_ms: Option<u64>,
+    pub exploration: f64,
+}
+
+impl Default for MctsOptions {
+    fn default() -> Self {
+        Self {
+            iterations: 2048,
+            playout_depth: 6,
+            time_limit_ms: None,
+            exploration: 0.5,
+        }
+    }
+}
+
 #[derive(Clone, Debug)]
 struct MctsNode {
     action: Action,
@@ -748,6 +767,20 @@ impl<G: Game> MctsSearcher<G> {
         iterations_per_move: u32,
         playout_depth: i32,
     ) -> MctsResult {
+        self.search_with_options(
+            wb,
+            MctsOptions {
+                iterations: iterations_per_move.max(1),
+                playout_depth,
+                time_limit_ms: None,
+                exploration: self.exploration,
+            },
+        )
+    }
+
+    pub fn search_with_options(&mut self, wb: &mut G::Workbench, options: MctsOptions) -> MctsResult {
+        self.set_exploration(options.exploration);
+        let started_at = Instant::now();
         let mut root_moves = ActionList::<256>::new();
         G::generate_legal(wb, &mut root_moves);
         if root_moves.is_empty() {
@@ -759,10 +792,15 @@ impl<G: Game> MctsSearcher<G> {
         }
 
         let root_untried = root_moves.into_iter().collect::<Vec<_>>();
-        let total_iterations = iterations_per_move.max(1) as usize * root_untried.len().max(1);
+        let total_iterations = options.iterations.max(1) as usize * root_untried.len().max(1);
         let mut nodes = vec![MctsNode::root(root_untried)];
 
-        for _ in 0..total_iterations {
+        for i in 0..total_iterations {
+            if let Some(limit_ms) = options.time_limit_ms {
+                if i > 0 && started_at.elapsed() >= Duration::from_millis(limit_ms) {
+                    break;
+                }
+            }
             let mut node_idx = 0_usize;
             let mut path = vec![0_usize];
             let mut applied_moves = 0_usize;
@@ -799,7 +837,7 @@ impl<G: Game> MctsSearcher<G> {
                 path.push(node_idx);
             }
 
-            let mut win = self.simulate(wb, playout_depth);
+            let mut win = self.simulate(wb, options.playout_depth);
 
             for _ in 0..applied_moves {
                 wb.undo_move();
@@ -1248,5 +1286,26 @@ mod tests {
         assert!(!result.best_action.is_none());
         assert_eq!(result.best_action.kind_tag, MillActionKind::Place as i16);
         assert!(result.visits > 0);
+    }
+
+    #[test]
+    fn mill_mcts_options_accept_time_limit() {
+        let rules = MillRules::default();
+        let game = MillGame::default();
+        let snap = rules.initial_state(&[]);
+        let mut wb = game.build_workbench(&snap);
+        let mut mcts = MctsSearcher::<MillGame>::new();
+        mcts.set_random_seed(2026);
+
+        let result = mcts.search_with_options(
+            &mut wb,
+            MctsOptions {
+                iterations: 16,
+                playout_depth: 2,
+                time_limit_ms: Some(0),
+                exploration: 0.5,
+            },
+        );
+        assert!(!result.best_action.is_none());
     }
 }

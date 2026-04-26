@@ -17,7 +17,7 @@ use tgf_mill::{
     default_mill_topology, MillActionKind, MillGame, MillRules,
     MillVariantOptions as NativeMillVariantOptions,
 };
-use tgf_search::{MctsSearcher, SearchAbortHandle, Searcher, SearchOptions};
+use tgf_search::{MctsOptions, MctsSearcher, SearchAbortHandle, Searcher, SearchOptions};
 #[cfg(test)]
 use tgf_search::perft;
 
@@ -394,9 +394,17 @@ pub fn native_mill_mcts_best_to_node(seed: u64, iterations_per_move: u32) -> i32
     let mut wb = game.build_workbench(&snap);
     let mut mcts = MctsSearcher::<MillGame>::new();
     mcts.set_random_seed(seed);
-    mcts.search(&mut wb, iterations_per_move.max(1), 2)
-        .best_action
-        .to_node as i32
+    mcts.search_with_options(
+        &mut wb,
+        MctsOptions {
+            iterations: iterations_per_move.max(1),
+            playout_depth: 2,
+            time_limit_ms: None,
+            exploration: 0.5,
+        },
+    )
+    .best_action
+    .to_node as i32
 }
 
 /// Differential perft check: returns true when the Rust-native MillRules and
@@ -514,10 +522,15 @@ pub fn native_mill_search_stop() -> bool {
 
 #[cfg(test)]
 mod tests {
+    use std::sync::Mutex;
+
     use super::*;
+
+    static LEGACY_TEST_MUTEX: Mutex<()> = Mutex::new(());
 
     #[test]
     fn native_and_legacy_initial_legal_count_match() {
+        let _guard = LEGACY_TEST_MUTEX.lock().expect("legacy test mutex poisoned");
         let legacy = LegacyKernel::new(0);
         assert_eq!(legacy.legal_actions().len(), native_mill_initial_legal_count() as usize);
         assert_eq!(native_mill_initial_legal_count(), 24);
@@ -525,6 +538,7 @@ mod tests {
 
     #[test]
     fn native_and_legacy_perft_depth_one_match() {
+        let _guard = LEGACY_TEST_MUTEX.lock().expect("legacy test mutex poisoned");
         let legacy = LegacyKernel::new(0);
         let legacy_count = legacy.legal_actions().len() as u64;
         let legacy_perft = legacy.perft(1);
@@ -542,6 +556,7 @@ mod tests {
 
     #[test]
     fn native_and_legacy_perft_depth_two_match() {
+        let _guard = LEGACY_TEST_MUTEX.lock().expect("legacy test mutex poisoned");
         let legacy = LegacyKernel::new(0);
         let legacy_perft = legacy.perft(2);
 
@@ -558,6 +573,7 @@ mod tests {
 
     #[test]
     fn native_and_legacy_mill_sequence_remove_count_match() {
+        let _guard = LEGACY_TEST_MUTEX.lock().expect("legacy test mutex poisoned");
         let mut legacy = LegacyKernel::new(0);
         for mv in ["d7", "a1", "g7", "d1", "a7"] {
             assert!(legacy.apply_uci(mv), "legacy C++ move should be legal: {mv}");
@@ -574,6 +590,7 @@ mod tests {
 
     #[test]
     fn native_and_legacy_pending_remove_perft_match() {
+        let _guard = LEGACY_TEST_MUTEX.lock().expect("legacy test mutex poisoned");
         let mut legacy = LegacyKernel::new(0);
         for mv in ["d7", "a1", "g7", "d1", "a7"] {
             assert!(legacy.apply_uci(mv), "legacy C++ move should be legal: {mv}");
