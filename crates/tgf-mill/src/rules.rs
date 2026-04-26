@@ -88,7 +88,7 @@ impl MillRules {
             side_to_move: state.side_to_move,
             phase_tag: state.phase as i16,
             move_number: state.move_number,
-            zobrist_key: 0,
+            zobrist_key: position_key(&state),
             opaque_payload: state.encode(),
         }
     }
@@ -184,8 +184,7 @@ impl Workbench for MillWorkbench {
     }
 
     fn key(&self) -> u64 {
-        // Native Zobrist comes later; keep deterministic zero key in Phase 4.
-        0
+        position_key(&self.state)
     }
 
     fn side_to_move(&self) -> i8 {
@@ -486,6 +485,32 @@ impl MillState {
     }
 }
 
+fn position_key(state: &MillState) -> u64 {
+    // Stable FNV-1a style position key.  This is not the final incremental
+    // Zobrist implementation, but unlike the Phase 4 zero key it gives the
+    // Rust transposition table distinct keys for distinct Mill positions.
+    let mut key = 0xcbf2_9ce4_8422_2325_u64;
+    let mut mix = |byte: u8| {
+        key ^= u64::from(byte);
+        key = key.wrapping_mul(0x1000_0000_01b3);
+    };
+    for piece in state.board {
+        mix(piece as u8);
+    }
+    mix(state.side_to_move as u8);
+    mix(state.phase as u8);
+    mix((state.move_number & 0xff) as u8);
+    mix(((state.move_number >> 8) & 0xff) as u8);
+    mix(state.pieces_in_hand[0]);
+    mix(state.pieces_in_hand[1]);
+    mix(state.pieces_on_board[0]);
+    mix(state.pieces_on_board[1]);
+    mix(state.pending_removals[0]);
+    mix(state.pending_removals[1]);
+    mix(state.winner as u8);
+    if key == 0 { 1 } else { key }
+}
+
 fn forms_mill(state: &MillState, node: usize, side_to_move: i8) -> bool {
     mill_lines_for_node(node)
         .iter()
@@ -722,6 +747,23 @@ mod tests {
         assert_eq!(wb.side_to_move(), 0);
         assert_eq!(wb.state.pieces_in_hand[0], 9);
         assert_eq!(wb.state.pieces_on_board[0], 0);
+    }
+
+    #[test]
+    fn position_key_changes_after_move_and_restores_after_undo() {
+        let rules = MillRules::default();
+        let game = MillGame::default();
+        let snap = rules.initial_state(&[]);
+        let mut wb = game.build_workbench(&snap);
+        let initial_key = wb.key();
+
+        let mut actions = ActionList::<256>::new();
+        MillGame::generate_legal(&wb, &mut actions);
+        wb.do_move(actions[0]);
+        assert_ne!(wb.key(), initial_key);
+
+        wb.undo_move();
+        assert_eq!(wb.key(), initial_key);
     }
 
     #[test]
