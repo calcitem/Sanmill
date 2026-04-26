@@ -10,11 +10,13 @@ import '../../game_platform/game_id.dart';
 import '../../game_platform/game_session.dart';
 import '../../game_platform/game_session_handle.dart';
 import 'mill_action_codec.dart';
+import 'mill_rules_port.dart';
 
 /// Transitional session wrapper around the legacy process-wide Mill controller.
 class MillGameSession implements GameSessionHandle {
-  MillGameSession({mill.GameController? controller})
+  MillGameSession({mill.GameController? controller, MillRulesPort? rulesPort})
     : controller = controller ?? mill.GameController(),
+      rulesPort = rulesPort ?? MillRulesPort(),
       _state = ValueNotifier<GameStateSnapshot>(_initialSnapshot()) {
     _syncFromController(emitEvent: false);
     this.controller.boardSemanticsNotifier.addListener(_onControllerChanged);
@@ -25,6 +27,7 @@ class MillGameSession implements GameSessionHandle {
   }
 
   final mill.GameController controller;
+  final MillRulesPort rulesPort;
   final ValueNotifier<GameStateSnapshot> _state;
   final StreamController<GameSessionEvent> _events =
       StreamController<GameSessionEvent>.broadcast();
@@ -113,21 +116,7 @@ class MillGameSession implements GameSessionHandle {
     if (outcome.isTerminal) {
       return const <GameAction>[];
     }
-    final mill.Act action = controller.position.action;
-    final String type = switch (action) {
-      mill.Act.place => MillActionTypes.place,
-      mill.Act.select => MillActionTypes.select,
-      mill.Act.remove => MillActionTypes.remove,
-    };
-    return <GameAction>[
-      GameAction(
-        type: type,
-        payload: <String, Object?>{
-          'phase': controller.position.phase.name,
-          'fen': controller.position.fen,
-        },
-      ),
-    ];
+    return rulesPort.legalActions;
   }
 
   @override
@@ -144,6 +133,9 @@ class MillGameSession implements GameSessionHandle {
       final bool ok = controller.applyMove(
         mill.ExtMove(moveStr, side: controller.position.sideToMove),
       );
+      if (ok && rulesPort.isLegal(action)) {
+        rulesPort.apply(action);
+      }
       _events.add(
         GameSessionEvent(
           ok ? MillEventTypes.moveApplied : MillEventTypes.moveRejected,
