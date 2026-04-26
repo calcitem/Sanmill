@@ -129,3 +129,48 @@ jobs:
       - name: Check formatting
         if: steps.rust_check.outputs.exists == 'true'
         run: cargo fmt --all -- --check
+
+  # -------------------------------------------------------------------------
+  # Gate 4: Rust performance baseline smoke check
+  # Runs the Rust TGF benchmark, writes TOML, and compares it with
+  # tests/perf_baseline.toml using the same threshold script used for C++.
+  # Empty/zero baseline fields are skipped until the baseline is populated.
+  # -------------------------------------------------------------------------
+  rust-perf-baseline:
+    name: rust perf baseline (smoke)
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Check if Rust workspace exists
+        id: rust_check
+        run: |
+          if [ -f "Cargo.toml" ]; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Set up Rust toolchain
+        if: steps.rust_check.outputs.exists == 'true'
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Cache Rust build artifacts
+        if: steps.rust_check.outputs.exists == 'true'
+        uses: Swatinem/rust-cache@v2
+
+      - name: Record Rust perf result
+        if: steps.rust_check.outputs.exists == 'true'
+        run: python3 scripts/record_rust_perf_baseline.py --release --output target/tgf_perf_result.toml
+
+      - name: Compare Rust perf result with baseline
+        if: steps.rust_check.outputs.exists == 'true'
+        run: python3 scripts/check_perf_baseline.py --baseline tests/perf_baseline.toml --result target/tgf_perf_result.toml
+
+      - name: Upload Rust perf result
+        if: always() && steps.rust_check.outputs.exists == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: rust-perf-result
+          path: target/tgf_perf_result.toml
