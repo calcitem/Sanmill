@@ -4,7 +4,9 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 
+import 'package:sanmill/game_platform/board_geometry.dart';
 import 'package:sanmill/game_platform/engine/legacy_tgf_kernel.dart';
+import 'package:sanmill/game_platform/engine/native_topology.dart';
 import 'package:sanmill/src/rust/api/simple.dart';
 import 'package:sanmill/src/rust/frb_generated.dart';
 
@@ -41,5 +43,19 @@ void main() {
 
     expect(kernel.applyUci('d7'), isTrue);
     expect(kernel.fen(), contains(' b p p '));
+  });
+
+  testWidgets('Rust topology matches Mill board shape', (
+    WidgetTester tester,
+  ) async {
+    const NativeTopologyFactory factory = NativeTopologyFactory();
+    final BoardGeometry geometry = factory.millBoardGeometry();
+
+    expect(geometry.points, hasLength(24));
+    expect(geometry.edges, hasLength(40));
+    expect(geometry.points.first.x, 0.1);
+    expect(geometry.points.first.y, 0.1);
+    expect(geometry.points.last.x, 0.3);
+    expect(geometry.points.last.y, 0.5);
   });
 }

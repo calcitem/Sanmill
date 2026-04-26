@@ -7,6 +7,8 @@ import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
 import '../frb_generated.dart';
 
+// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `clone`, `clone`, `fmt`, `fmt`, `fmt`
+
 /// Returns a greeting string confirming that the Rust → Dart bridge works.
 /// Called from Dart as `tgfHelloWorld()` after `await RustLib.init()`.
 String tgfHelloWorld() => RustLib.instance.api.crateApiSimpleTgfHelloWorld();
@@ -40,3 +42,84 @@ int legacyKernelPhaseTag() =>
 /// Raw C++ Color enum tag for side to move.
 int legacyKernelSideToMove() =>
     RustLib.instance.api.crateApiSimpleLegacyKernelSideToMove();
+
+/// Return the Rust-native standard 24-point Mill topology.
+///
+/// This is the Phase 3 single source of truth for board geometry.  The Dart
+/// shell converts this blob into its existing BoardGeometry value object.
+TopologyBlob kernelTopology() =>
+    RustLib.instance.api.crateApiSimpleKernelTopology();
+
+class TopologyBlob {
+  const TopologyBlob({
+    required this.name,
+    required this.points,
+    required this.edges,
+    required this.lineGroups,
+  });
+  final String name;
+  final List<TopologyPoint> points;
+  final List<TopologyEdge> edges;
+  final List<Uint16List> lineGroups;
+
+  @override
+  int get hashCode =>
+      name.hashCode ^ points.hashCode ^ edges.hashCode ^ lineGroups.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is TopologyBlob &&
+          runtimeType == other.runtimeType &&
+          name == other.name &&
+          points == other.points &&
+          edges == other.edges &&
+          lineGroups == other.lineGroups;
+}
+
+class TopologyEdge {
+  const TopologyEdge({required this.a, required this.b});
+  final int a;
+  final int b;
+
+  @override
+  int get hashCode => a.hashCode ^ b.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is TopologyEdge &&
+          runtimeType == other.runtimeType &&
+          a == other.a &&
+          b == other.b;
+}
+
+class TopologyPoint {
+  const TopologyPoint({
+    required this.id,
+    required this.square,
+    required this.label,
+    required this.x,
+    required this.y,
+  });
+  final int id;
+  final int square;
+  final String label;
+  final double x;
+  final double y;
+
+  @override
+  int get hashCode =>
+      id.hashCode ^ square.hashCode ^ label.hashCode ^ x.hashCode ^ y.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is TopologyPoint &&
+          runtimeType == other.runtimeType &&
+          id == other.id &&
+          square == other.square &&
+          label == other.label &&
+          x == other.x &&
+          y == other.y;
+}

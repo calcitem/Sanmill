@@ -18,3 +18,8 @@ tgf-search = { path = "../tgf-search" }
 tgf-legacy-cxx = { path = "../tgf-legacy-cxx" }
 flutter_rust_bridge = "=2.12.0"
 once_cell = "1"
+
+[lints.rust]
+# FRB's proc macro currently emits `cfg(frb_expand)`, which rustc 1.95 reports
+# as an unexpected cfg.  This is generated-code noise, not a project warning.
+unexpected_cfgs = "allow"
