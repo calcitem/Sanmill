@@ -10,15 +10,37 @@ on:
   push:
     branches: [release]
     paths:
+      - '.github/workflows/lint.yml'
+      - 'Cargo.toml'
+      - 'Cargo.lock'
+      - 'rust-toolchain.toml'
+      - 'crates/**'
+      - 'scripts/check_perf_baseline.py'
+      - 'scripts/record_rust_perf_baseline.py'
+      - 'tests/perf_baseline.toml'
       - 'src/ui/flutter_app/**/*.dart'
-      - 'crates/**/*.rs'
+      - 'src/ui/flutter_app/pubspec.yaml'
+      - 'src/ui/flutter_app/pubspec.lock'
+      - 'src/ui/flutter_app/flutter_rust_bridge.yaml'
+      - 'src/ui/flutter_app/rust_builder/**'
       - 'src/**/*.cpp'
       - 'src/**/*.h'
   pull_request:
     types: [review_requested, ready_for_review]
     paths:
+      - '.github/workflows/lint.yml'
+      - 'Cargo.toml'
+      - 'Cargo.lock'
+      - 'rust-toolchain.toml'
+      - 'crates/**'
+      - 'scripts/check_perf_baseline.py'
+      - 'scripts/record_rust_perf_baseline.py'
+      - 'tests/perf_baseline.toml'
       - 'src/ui/flutter_app/**/*.dart'
-      - 'crates/**/*.rs'
+      - 'src/ui/flutter_app/pubspec.yaml'
+      - 'src/ui/flutter_app/pubspec.lock'
+      - 'src/ui/flutter_app/flutter_rust_bridge.yaml'
+      - 'src/ui/flutter_app/rust_builder/**'
       - 'src/**/*.cpp'
       - 'src/**/*.h'
 

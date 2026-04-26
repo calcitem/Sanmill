@@ -4,15 +4,23 @@ on:
   push:
     branches: [release]
     paths:
+      - '.github/workflows/cui.yml'
+      - 'CMakeLists.txt'
       - 'src/**/*.cpp'
       - 'src/**/*.h'
       - 'tests/**/*.cpp'
+      - 'tests/golden/**'
+      - 'tests/perf_baseline.toml'
   pull_request:
     types: [review_requested, ready_for_review]
     paths:
+      - '.github/workflows/cui.yml'
+      - 'CMakeLists.txt'
       - 'src/**/*.cpp'
       - 'src/**/*.h'
       - 'tests/**/*.cpp'
+      - 'tests/golden/**'
+      - 'tests/perf_baseline.toml'
 
 jobs:
   cygwin-gcc:
