@@ -7,8 +7,8 @@
 // are added incrementally and checked against the mature C++ engine.
 
 use tgf_core::{
-    Action, ActionList, BoardTopology, Evaluator, Game, GameRules,
-    GameStateSnapshot, Outcome, OutcomeKind, Workbench,
+    Action, ActionList, BoardTopology, Evaluator, Game, GameRules, GameStateSnapshot, Outcome,
+    OutcomeKind, Workbench,
 };
 
 use crate::topology::{default_mill_topology, MillTopology};
@@ -132,7 +132,6 @@ impl MillRules {
             .count() as u32
     }
 
-
     /// Build the no-mill 18-placement moving-phase fixture used by the C++
     /// golden tests.  This is a shared midgame benchmark / differential-test
     /// position: both players have placed all nine pieces, no remove
@@ -235,10 +234,8 @@ impl Workbench for MillWorkbench {
 
 impl Evaluator<MillWorkbench> for MillEvaluator {
     fn score(wb: &MillWorkbench) -> i32 {
-        let white = wb.state.pieces_on_board[0] as i32
-            + wb.state.pieces_in_hand[0] as i32;
-        let black = wb.state.pieces_on_board[1] as i32
-            + wb.state.pieces_in_hand[1] as i32;
+        let white = wb.state.pieces_on_board[0] as i32 + wb.state.pieces_in_hand[0] as i32;
+        let black = wb.state.pieces_on_board[1] as i32 + wb.state.pieces_in_hand[1] as i32;
         let score = (white - black) * 100;
         if wb.state.side_to_move == 0 {
             score
@@ -386,10 +383,8 @@ impl GameRules for MillRules {
                 debug_assert_eq!(state.board[to], opponent as i8 + 1);
                 debug_assert!(state.pending_removals[side] > 0);
                 state.board[to] = 0;
-                state.pieces_on_board[opponent] =
-                    state.pieces_on_board[opponent].saturating_sub(1);
-                state.pending_removals[side] =
-                    state.pending_removals[side].saturating_sub(1);
+                state.pieces_on_board[opponent] = state.pieces_on_board[opponent].saturating_sub(1);
+                state.pending_removals[side] = state.pending_removals[side].saturating_sub(1);
                 if state.phase == MillPhase::Moving
                     && state.pieces_on_board[opponent] < self.options.pieces_at_least_count
                 {
@@ -533,7 +528,11 @@ fn position_key(state: &MillState) -> u64 {
     mix(state.pending_removals[0]);
     mix(state.pending_removals[1]);
     mix(state.winner as u8);
-    if key == 0 { 1 } else { key }
+    if key == 0 {
+        1
+    } else {
+        key
+    }
 }
 
 fn forms_mill(state: &MillState, node: usize, side_to_move: i8) -> bool {
@@ -590,7 +589,9 @@ mod tests {
         let mut actions = ActionList::<256>::new();
         rules.legal_actions(&snap, &mut actions);
         assert_eq!(actions.len(), 24);
-        assert!(actions.iter().all(|a| a.kind_tag == MillActionKind::Place as i16));
+        assert!(actions
+            .iter()
+            .all(|a| a.kind_tag == MillActionKind::Place as i16));
     }
 
     #[test]
@@ -642,7 +643,9 @@ mod tests {
         let mut actions = ActionList::<256>::new();
         rules.legal_actions(&snap, &mut actions);
         assert_eq!(actions.len(), 2);
-        assert!(actions.iter().all(|a| a.kind_tag == MillActionKind::Remove as i16));
+        assert!(actions
+            .iter()
+            .all(|a| a.kind_tag == MillActionKind::Remove as i16));
         assert!(actions.iter().any(|a| a.to_node == 6)); // a1
         assert!(actions.iter().any(|a| a.to_node == 5)); // d1
 
@@ -706,7 +709,9 @@ mod tests {
 
         let mut actions = ActionList::<256>::new();
         rules.legal_actions(&after_move, &mut actions);
-        assert!(actions.iter().all(|a| a.kind_tag == MillActionKind::Remove as i16));
+        assert!(actions
+            .iter()
+            .all(|a| a.kind_tag == MillActionKind::Remove as i16));
         assert_eq!(actions.len(), 3);
     }
 

@@ -2,8 +2,8 @@
 // Othello/Reversi pressure-test implementation for TGF.
 
 use tgf_core::{
-    Action, ActionList, BoardTopology, Edge, Evaluator, Game, GameRules,
-    GameStateSnapshot, Outcome, OutcomeKind, UnitPoint, Workbench, Zone,
+    Action, ActionList, BoardTopology, Edge, Evaluator, Game, GameRules, GameStateSnapshot,
+    Outcome, OutcomeKind, UnitPoint, Workbench, Zone,
 };
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]

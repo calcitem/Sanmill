@@ -22,7 +22,7 @@ pub struct Edge {
 #[derive(Clone, Debug)]
 pub struct Zone {
     /// Stable identifier, e.g. "hand_white", "capture_pile".
-    pub id:       String,
+    pub id: String,
     pub node_ids: Vec<u16>,
 }
 
@@ -30,15 +30,15 @@ pub struct Zone {
 #[derive(Clone, Debug)]
 pub enum DecorationKind {
     Polyline { points: Vec<UnitPoint> },
-    Polygon  { points: Vec<UnitPoint> },
-    Circle   { center: UnitPoint, radius: f32 },
-    Text     { center: UnitPoint, text: String },
+    Polygon { points: Vec<UnitPoint> },
+    Circle { center: UnitPoint, radius: f32 },
+    Text { center: UnitPoint, text: String },
 }
 
 /// A visual element the Flutter shell draws before placing pieces.
 #[derive(Clone, Debug)]
 pub struct Decoration {
-    pub kind:  DecorationKind,
+    pub kind: DecorationKind,
     /// Stable token the shell maps to its active theme, e.g. "outer_ring".
     pub style: String,
 }

@@ -17,31 +17,35 @@ fn main() {
 
     build
         .file("cpp/legacy_engine_bridge.cpp")
-        .files([
-            "benchmark.cpp",
-            "bitboard.cpp",
-            "endgame.cpp",
-            "engine_commands.cpp",
-            "engine_controller.cpp",
-            "evaluate.cpp",
-            "mcts.cpp",
-            "mills.cpp",
-            "misc.cpp",
-            "movegen.cpp",
-            "movepick.cpp",
-            "opening_book.cpp",
-            "option.cpp",
-            "position.cpp",
-            "rule.cpp",
-            "search.cpp",
-            "search_engine.cpp",
-            "self_play.cpp",
-            "thread.cpp",
-            "thread_pool.cpp",
-            "tt.cpp",
-            "uci.cpp",
-            "ucioption.cpp",
-        ].into_iter().map(|f| src.join(f)))
+        .files(
+            [
+                "benchmark.cpp",
+                "bitboard.cpp",
+                "endgame.cpp",
+                "engine_commands.cpp",
+                "engine_controller.cpp",
+                "evaluate.cpp",
+                "mcts.cpp",
+                "mills.cpp",
+                "misc.cpp",
+                "movegen.cpp",
+                "movepick.cpp",
+                "opening_book.cpp",
+                "option.cpp",
+                "position.cpp",
+                "rule.cpp",
+                "search.cpp",
+                "search_engine.cpp",
+                "self_play.cpp",
+                "thread.cpp",
+                "thread_pool.cpp",
+                "tt.cpp",
+                "uci.cpp",
+                "ucioption.cpp",
+            ]
+            .into_iter()
+            .map(|f| src.join(f)),
+        )
         .include(&include)
         .include(&src)
         .include(&perfect)

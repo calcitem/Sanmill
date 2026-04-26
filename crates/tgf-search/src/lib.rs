@@ -77,34 +77,16 @@ struct TtEntry {
     best_action: Action,
 }
 
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
 pub struct SearchPolicy {
     pub remove_kind_tag: Option<i16>,
 }
 
-impl Default for SearchPolicy {
-    fn default() -> Self {
-        Self {
-            remove_kind_tag: None,
-        }
-    }
-}
-
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
 pub struct SearchOptions {
     pub depth_extension: bool,
     pub node_limit: Option<u64>,
     pub time_limit_ms: Option<u64>,
-}
-
-impl Default for SearchOptions {
-    fn default() -> Self {
-        Self {
-            depth_extension: false,
-            node_limit: None,
-            time_limit_ms: None,
-        }
-    }
 }
 
 pub struct Searcher<G: Game> {
@@ -231,14 +213,8 @@ impl<G: Game> Searcher<G> {
             let before = wb.side_to_move();
             wb.do_move(action);
             let after = wb.side_to_move();
-            let score = self.search_after_move(
-                wb,
-                depth - 1,
-                i32::MIN + 1,
-                i32::MAX - 1,
-                before,
-                after,
-            );
+            let score =
+                self.search_after_move(wb, depth - 1, i32::MIN + 1, i32::MAX - 1, before, after);
             wb.undo_move();
             if score > best_score {
                 best_score = score;
@@ -324,11 +300,7 @@ impl<G: Game> Searcher<G> {
     /// and principal-variation tracking.  The important architectural point is
     /// that every iteration still stays generic over `G: Game` and does not
     /// cross a trait-object boundary.
-    pub fn iterative_deepening(
-        &mut self,
-        wb: &mut G::Workbench,
-        max_depth: i32,
-    ) -> SearchResult {
+    pub fn iterative_deepening(&mut self, wb: &mut G::Workbench, max_depth: i32) -> SearchResult {
         let max_depth = max_depth.max(1);
         let mut result = self.search(wb, 1);
         for depth in 2..=max_depth {
@@ -342,12 +314,7 @@ impl<G: Game> Searcher<G> {
     /// This intentionally omits TT integration for now; without a TT, MTD(f)
     /// is not efficient.  The function exists so Phase 5 can grow the exact
     /// algorithmic surface area while keeping current behavior testable.
-    pub fn mtdf(
-        &mut self,
-        wb: &mut G::Workbench,
-        first_guess: i32,
-        depth: i32,
-    ) -> i32 {
+    pub fn mtdf(&mut self, wb: &mut G::Workbench, first_guess: i32, depth: i32) -> i32 {
         let mut g = first_guess;
         let mut upper_bound = i32::MAX - 1;
         let mut lower_bound = i32::MIN + 1;
@@ -443,8 +410,7 @@ impl<G: Game> Searcher<G> {
                 self.aborted = true;
             }
         }
-        if let (Some(start), Some(limit_ms)) =
-            (self.search_started_at, self.options.time_limit_ms)
+        if let (Some(start), Some(limit_ms)) = (self.search_started_at, self.options.time_limit_ms)
         {
             if start.elapsed() >= Duration::from_millis(limit_ms) {
                 self.aborted = true;
@@ -556,7 +522,9 @@ impl<G: Game> Searcher<G> {
 
     #[inline]
     fn order_moves(&self, key: u64, depth: i32, moves: &mut ActionList<256>) {
-        moves.as_mut_slice().sort_by_key(|m| -self.move_score(key, depth, *m));
+        moves
+            .as_mut_slice()
+            .sort_by_key(|m| -self.move_score(key, depth, *m));
     }
 
     #[inline]
@@ -616,6 +584,7 @@ impl<G: Game> Searcher<G> {
         }
     }
 
+    #[allow(clippy::too_many_arguments)]
     #[inline]
     fn pvs_after_move(
         &mut self,
@@ -658,7 +627,6 @@ impl<G: Game> Searcher<G> {
         (value as usize) % len
     }
 }
-
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct MctsResult {
@@ -750,7 +718,11 @@ impl<G: Game> MctsSearcher<G> {
     }
 
     pub fn set_random_seed(&mut self, seed: u64) {
-        self.rng_state = if seed == 0 { 0xD1B5_4A32_D192_ED03 } else { seed };
+        self.rng_state = if seed == 0 {
+            0xD1B5_4A32_D192_ED03
+        } else {
+            seed
+        };
     }
 
     pub fn set_exploration(&mut self, exploration: f64) {
@@ -778,7 +750,11 @@ impl<G: Game> MctsSearcher<G> {
         )
     }
 
-    pub fn search_with_options(&mut self, wb: &mut G::Workbench, options: MctsOptions) -> MctsResult {
+    pub fn search_with_options(
+        &mut self,
+        wb: &mut G::Workbench,
+        options: MctsOptions,
+    ) -> MctsResult {
         self.set_exploration(options.exploration);
         let started_at = Instant::now();
         let mut root_moves = ActionList::<256>::new();
@@ -926,7 +902,6 @@ impl<G: Game> MctsSearcher<G> {
     }
 }
 
-
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -1019,7 +994,11 @@ mod tests {
 
     impl Evaluator<SameSideWorkbench> for SameSideEvaluator {
         fn score(wb: &SameSideWorkbench) -> i32 {
-            if wb.moved { 42 } else { 0 }
+            if wb.moved {
+                42
+            } else {
+                0
+            }
         }
     }
 
@@ -1030,7 +1009,10 @@ mod tests {
         type Evaluator = SameSideEvaluator;
 
         fn build_workbench(&self, _snap: &GameStateSnapshot) -> Self::Workbench {
-            SameSideWorkbench { moved: false, side: 0 }
+            SameSideWorkbench {
+                moved: false,
+                side: 0,
+            }
         }
 
         fn generate_legal(wb: &Self::Workbench, out: &mut ActionList<256>) {

@@ -8,24 +8,24 @@
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub struct GameStateSnapshot {
     /// 0 = first player, 1 = second, -1 = none (game over).
-    pub side_to_move:    i8,
+    pub side_to_move: i8,
     /// Per-game phase tag; 0 = default "only" phase.
-    pub phase_tag:       i16,
+    pub phase_tag: i16,
     /// Plies played from the initial position.
-    pub move_number:     i16,
+    pub move_number: i16,
     /// Zobrist key; 0 when the game does not use a transposition table.
-    pub zobrist_key:     u64,
+    pub zobrist_key: u64,
     /// Game-defined snapshot data (board bitmaps, piece counts, …).
-    pub opaque_payload:  [u8; 256],
+    pub opaque_payload: [u8; 256],
 }
 
 impl Default for GameStateSnapshot {
     fn default() -> Self {
         Self {
-            side_to_move:   0,
-            phase_tag:      0,
-            move_number:    0,
-            zobrist_key:    0,
+            side_to_move: 0,
+            phase_tag: 0,
+            move_number: 0,
+            zobrist_key: 0,
             opaque_payload: [0; 256],
         }
     }
@@ -35,7 +35,7 @@ impl Default for GameStateSnapshot {
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub enum OutcomeKind {
     Ongoing,
-    Win(i8),   // winning player index
+    Win(i8), // winning player index
     Draw,
     Abandoned,
 }
@@ -43,7 +43,7 @@ pub enum OutcomeKind {
 /// Full outcome including a stable reason token the shell maps to l10n text.
 #[derive(Clone, Debug)]
 pub struct Outcome {
-    pub kind:   OutcomeKind,
+    pub kind: OutcomeKind,
     /// Stable English token, e.g. "loseFewerThanThree", "stalemate".
     /// Never a user-facing literal.
     pub reason: String,

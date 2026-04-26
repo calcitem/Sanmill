@@ -18,14 +18,12 @@ use tgf_mill::{
     MillVariantOptions as NativeMillVariantOptions,
 };
 use tgf_othello::{OthelloGame, OthelloRules};
-use tgf_search::{MctsOptions, MctsSearcher, SearchAbortHandle, Searcher, SearchOptions};
 #[cfg(test)]
 use tgf_search::perft;
+use tgf_search::{MctsOptions, MctsSearcher, SearchAbortHandle, SearchOptions, Searcher};
 
-static LEGACY_KERNEL: Lazy<Mutex<Option<LegacyKernel>>> =
-    Lazy::new(|| Mutex::new(None));
-static ACTIVE_SEARCH: Lazy<Mutex<Option<SearchAbortHandle>>> =
-    Lazy::new(|| Mutex::new(None));
+static LEGACY_KERNEL: Lazy<Mutex<Option<LegacyKernel>>> = Lazy::new(|| Mutex::new(None));
+static ACTIVE_SEARCH: Lazy<Mutex<Option<SearchAbortHandle>>> = Lazy::new(|| Mutex::new(None));
 
 /// FRB required initialisation.  Called once at Flutter app startup before
 /// any other TGF function.  Do not remove.
@@ -90,7 +88,6 @@ pub fn native_mill_default_variant_options() -> MillVariantOptions {
         has_diagonal_lines: defaults.has_diagonal_lines,
     }
 }
-
 
 // ---------------------------------------------------------------------------
 // Phase 7 Othello pressure-test APIs.
@@ -178,7 +175,10 @@ pub fn legacy_kernel_apply_uci(move_uci: String) -> bool {
 #[flutter_rust_bridge::frb(sync)]
 pub fn legacy_kernel_phase_tag() -> i32 {
     let guard = LEGACY_KERNEL.lock().expect("legacy kernel mutex poisoned");
-    guard.as_ref().map(LegacyKernel::phase_tag).unwrap_or_default()
+    guard
+        .as_ref()
+        .map(LegacyKernel::phase_tag)
+        .unwrap_or_default()
 }
 
 /// Raw C++ Color enum tag for side to move.
@@ -322,9 +322,7 @@ pub fn native_mill_initial_legal_count() -> u32 {
 
 /// Opening legal action count for an explicit variant option set.
 #[flutter_rust_bridge::frb(sync)]
-pub fn native_mill_initial_legal_count_for_variant(
-    variant: MillVariantOptions,
-) -> u32 {
+pub fn native_mill_initial_legal_count_for_variant(variant: MillVariantOptions) -> u32 {
     let rules = MillRules::new(variant.into());
     let snap = rules.initial_state(&[]);
     let mut actions = ActionList::<256>::new();
@@ -490,15 +488,14 @@ pub fn native_and_legacy_pending_remove_perft_match(depth: i32) -> bool {
     legacy.perft(depth) == tgf_search::perft::<MillGame>(&mut wb, depth)
 }
 
-
 /// Differential perft check from a fully placed moving-phase state with no
 /// pending removals.  The state is the no-mill 18-placement sequence used by
 /// the C++ golden tests.
 #[flutter_rust_bridge::frb(sync)]
 pub fn native_and_legacy_moving_phase_perft_match(depth: i32) -> bool {
     let legacy_seq = [
-        "d7", "g7", "g4", "a7", "a4", "g1", "f6", "d6", "b6",
-        "d2", "f2", "a1", "e5", "c5", "c4", "d5", "e3", "c3",
+        "d7", "g7", "g4", "a7", "a4", "g1", "f6", "d6", "b6", "d2", "f2", "a1", "e5", "c5", "c4",
+        "d5", "e3", "c3",
     ];
     let native_seq = [
         1_i16, 2, 3, 0, 7, 4, 10, 9, 8, 13, 12, 6, 18, 16, 23, 17, 20, 22,
@@ -564,9 +561,7 @@ pub fn native_mill_search_events(depth: i32, sink: StreamSink<EngineEvent>) {
         let mut wb = game.build_workbench(&snap);
         let mut searcher = Searcher::<MillGame>::new();
         {
-            let mut active = ACTIVE_SEARCH
-                .lock()
-                .expect("active search mutex poisoned");
+            let mut active = ACTIVE_SEARCH.lock().expect("active search mutex poisoned");
             *active = Some(searcher.abort_handle());
         }
 
@@ -577,9 +572,7 @@ pub fn native_mill_search_events(depth: i32, sink: StreamSink<EngineEvent>) {
             result.score,
         ));
         let _ = sink.add(EngineEvent::stopped());
-        let mut active = ACTIVE_SEARCH
-            .lock()
-            .expect("active search mutex poisoned");
+        let mut active = ACTIVE_SEARCH.lock().expect("active search mutex poisoned");
         *active = None;
     });
 }
@@ -589,9 +582,7 @@ pub fn native_mill_search_events(depth: i32, sink: StreamSink<EngineEvent>) {
 /// Returns false when no native search worker is active.
 #[flutter_rust_bridge::frb(sync)]
 pub fn native_mill_search_stop() -> bool {
-    let active = ACTIVE_SEARCH
-        .lock()
-        .expect("active search mutex poisoned");
+    let active = ACTIVE_SEARCH.lock().expect("active search mutex poisoned");
     if let Some(handle) = active.as_ref() {
         handle.request_abort();
         true
@@ -621,7 +612,6 @@ mod tests {
     fn legacy_legal_uci_set(legacy: &LegacyKernel) -> BTreeSet<String> {
         legacy.legal_actions().into_iter().collect()
     }
-
 
     fn apply_native_sequence(seq: &[i16]) -> tgf_core::GameStateSnapshot {
         let rules = MillRules::default();
@@ -659,19 +649,24 @@ mod tests {
         }
     }
 
-
     #[test]
     fn native_and_legacy_initial_legal_count_match() {
-        let _guard = LEGACY_TEST_MUTEX.lock().expect("legacy test mutex poisoned");
+        let _guard = LEGACY_TEST_MUTEX
+            .lock()
+            .expect("legacy test mutex poisoned");
         let legacy = LegacyKernel::new(0);
-        assert_eq!(legacy.legal_actions().len(), native_mill_initial_legal_count() as usize);
+        assert_eq!(
+            legacy.legal_actions().len(),
+            native_mill_initial_legal_count() as usize
+        );
         assert_eq!(native_mill_initial_legal_count(), 24);
     }
 
-
     #[test]
     fn native_and_legacy_initial_legal_action_sets_match() {
-        let _guard = LEGACY_TEST_MUTEX.lock().expect("legacy test mutex poisoned");
+        let _guard = LEGACY_TEST_MUTEX
+            .lock()
+            .expect("legacy test mutex poisoned");
         let legacy = LegacyKernel::new(0);
         let rules = MillRules::default();
         let snap = rules.initial_state(&[]);
@@ -681,7 +676,9 @@ mod tests {
 
     #[test]
     fn native_and_legacy_perft_depth_one_match() {
-        let _guard = LEGACY_TEST_MUTEX.lock().expect("legacy test mutex poisoned");
+        let _guard = LEGACY_TEST_MUTEX
+            .lock()
+            .expect("legacy test mutex poisoned");
         let legacy = LegacyKernel::new(0);
         let legacy_count = legacy.legal_actions().len() as u64;
         let legacy_perft = legacy.perft(1);
@@ -699,7 +696,9 @@ mod tests {
 
     #[test]
     fn native_and_legacy_perft_depth_two_match() {
-        let _guard = LEGACY_TEST_MUTEX.lock().expect("legacy test mutex poisoned");
+        let _guard = LEGACY_TEST_MUTEX
+            .lock()
+            .expect("legacy test mutex poisoned");
         let legacy = LegacyKernel::new(0);
         let legacy_perft = legacy.perft(2);
 
@@ -716,10 +715,15 @@ mod tests {
 
     #[test]
     fn native_and_legacy_mill_sequence_remove_count_match() {
-        let _guard = LEGACY_TEST_MUTEX.lock().expect("legacy test mutex poisoned");
+        let _guard = LEGACY_TEST_MUTEX
+            .lock()
+            .expect("legacy test mutex poisoned");
         let mut legacy = LegacyKernel::new(0);
         for mv in ["d7", "a1", "g7", "d1", "a7"] {
-            assert!(legacy.apply_uci(mv), "legacy C++ move should be legal: {mv}");
+            assert!(
+                legacy.apply_uci(mv),
+                "legacy C++ move should be legal: {mv}"
+            );
         }
         let remove_count = legacy
             .legal_actions()
@@ -728,17 +732,20 @@ mod tests {
             .count();
         assert_eq!(remove_count, 2);
         assert_eq!(native_mill_mill_sequence_remove_count(), 2);
-        assert_eq!(remove_count, native_mill_mill_sequence_remove_count() as usize);
+        assert_eq!(
+            remove_count,
+            native_mill_mill_sequence_remove_count() as usize
+        );
     }
-
-
 
     #[test]
     fn native_and_legacy_moving_phase_legal_action_sets_match() {
-        let _guard = LEGACY_TEST_MUTEX.lock().expect("legacy test mutex poisoned");
+        let _guard = LEGACY_TEST_MUTEX
+            .lock()
+            .expect("legacy test mutex poisoned");
         let legacy_seq = [
-            "d7", "g7", "g4", "a7", "a4", "g1", "f6", "d6", "b6",
-            "d2", "f2", "a1", "e5", "c5", "c4", "d5", "e3", "c3",
+            "d7", "g7", "g4", "a7", "a4", "g1", "f6", "d6", "b6", "d2", "f2", "a1", "e5", "c5",
+            "c4", "d5", "e3", "c3",
         ];
         let native_seq = [
             1_i16, 2, 3, 0, 7, 4, 10, 9, 8, 13, 12, 6, 18, 16, 23, 17, 20, 22,
@@ -746,20 +753,24 @@ mod tests {
 
         let mut legacy = LegacyKernel::new(0);
         for mv in legacy_seq {
-            assert!(legacy.apply_uci(mv), "legacy C++ move should be legal: {mv}");
+            assert!(
+                legacy.apply_uci(mv),
+                "legacy C++ move should be legal: {mv}"
+            );
         }
         let native = apply_native_sequence(&native_seq);
 
         assert_eq!(legacy_legal_uci_set(&legacy), native_legal_uci_set(&native));
     }
 
-
     #[test]
     fn native_and_legacy_moving_phase_perft_match() {
-        let _guard = LEGACY_TEST_MUTEX.lock().expect("legacy test mutex poisoned");
+        let _guard = LEGACY_TEST_MUTEX
+            .lock()
+            .expect("legacy test mutex poisoned");
         let legacy_seq = [
-            "d7", "g7", "g4", "a7", "a4", "g1", "f6", "d6", "b6",
-            "d2", "f2", "a1", "e5", "c5", "c4", "d5", "e3", "c3",
+            "d7", "g7", "g4", "a7", "a4", "g1", "f6", "d6", "b6", "d2", "f2", "a1", "e5", "c5",
+            "c4", "d5", "e3", "c3",
         ];
         let native_seq = [
             1_i16, 2, 3, 0, 7, 4, 10, 9, 8, 13, 12, 6, 18, 16, 23, 17, 20, 22,
@@ -767,7 +778,10 @@ mod tests {
 
         let mut legacy = LegacyKernel::new(0);
         for mv in legacy_seq {
-            assert!(legacy.apply_uci(mv), "legacy C++ move should be legal: {mv}");
+            assert!(
+                legacy.apply_uci(mv),
+                "legacy C++ move should be legal: {mv}"
+            );
         }
         let native = apply_native_sequence(&native_seq);
         let game = MillGame::default();
@@ -779,13 +793,14 @@ mod tests {
         assert_eq!(legacy.perft(2), perft::<MillGame>(&mut wb, 2));
     }
 
-
     #[test]
     fn native_and_legacy_after_non_mill_move_legal_action_sets_match() {
-        let _guard = LEGACY_TEST_MUTEX.lock().expect("legacy test mutex poisoned");
+        let _guard = LEGACY_TEST_MUTEX
+            .lock()
+            .expect("legacy test mutex poisoned");
         let legacy_seq = [
-            "d7", "g7", "g4", "a7", "a4", "g1", "f6", "d6", "b6",
-            "d2", "f2", "a1", "e5", "c5", "c4", "d5", "e3", "c3",
+            "d7", "g7", "g4", "a7", "a4", "g1", "f6", "d6", "b6", "d2", "f2", "a1", "e5", "c5",
+            "c4", "d5", "e3", "c3",
         ];
         let native_seq = [
             1_i16, 2, 3, 0, 7, 4, 10, 9, 8, 13, 12, 6, 18, 16, 23, 17, 20, 22,
@@ -793,7 +808,10 @@ mod tests {
 
         let mut legacy = LegacyKernel::new(0);
         for mv in legacy_seq {
-            assert!(legacy.apply_uci(mv), "legacy C++ move should be legal: {mv}");
+            assert!(
+                legacy.apply_uci(mv),
+                "legacy C++ move should be legal: {mv}"
+            );
         }
         assert!(legacy.apply_uci("e5-e4"));
 
@@ -815,10 +833,12 @@ mod tests {
 
     #[test]
     fn native_and_legacy_after_non_mill_move_perft_match() {
-        let _guard = LEGACY_TEST_MUTEX.lock().expect("legacy test mutex poisoned");
+        let _guard = LEGACY_TEST_MUTEX
+            .lock()
+            .expect("legacy test mutex poisoned");
         let legacy_seq = [
-            "d7", "g7", "g4", "a7", "a4", "g1", "f6", "d6", "b6",
-            "d2", "f2", "a1", "e5", "c5", "c4", "d5", "e3", "c3",
+            "d7", "g7", "g4", "a7", "a4", "g1", "f6", "d6", "b6", "d2", "f2", "a1", "e5", "c5",
+            "c4", "d5", "e3", "c3",
         ];
         let native_seq = [
             1_i16, 2, 3, 0, 7, 4, 10, 9, 8, 13, 12, 6, 18, 16, 23, 17, 20, 22,
@@ -826,7 +846,10 @@ mod tests {
 
         let mut legacy = LegacyKernel::new(0);
         for mv in legacy_seq {
-            assert!(legacy.apply_uci(mv), "legacy C++ move should be legal: {mv}");
+            assert!(
+                legacy.apply_uci(mv),
+                "legacy C++ move should be legal: {mv}"
+            );
         }
         assert!(legacy.apply_uci("e5-e4"));
 
@@ -853,10 +876,15 @@ mod tests {
 
     #[test]
     fn native_and_legacy_pending_remove_legal_action_sets_match() {
-        let _guard = LEGACY_TEST_MUTEX.lock().expect("legacy test mutex poisoned");
+        let _guard = LEGACY_TEST_MUTEX
+            .lock()
+            .expect("legacy test mutex poisoned");
         let mut legacy = LegacyKernel::new(0);
         for mv in ["d7", "a1", "g7", "d1", "a7"] {
-            assert!(legacy.apply_uci(mv), "legacy C++ move should be legal: {mv}");
+            assert!(
+                legacy.apply_uci(mv),
+                "legacy C++ move should be legal: {mv}"
+            );
         }
 
         let rules = MillRules::default();
@@ -879,10 +907,15 @@ mod tests {
 
     #[test]
     fn native_and_legacy_pending_remove_perft_match() {
-        let _guard = LEGACY_TEST_MUTEX.lock().expect("legacy test mutex poisoned");
+        let _guard = LEGACY_TEST_MUTEX
+            .lock()
+            .expect("legacy test mutex poisoned");
         let mut legacy = LegacyKernel::new(0);
         for mv in ["d7", "a1", "g7", "d1", "a7"] {
-            assert!(legacy.apply_uci(mv), "legacy C++ move should be legal: {mv}");
+            assert!(
+                legacy.apply_uci(mv),
+                "legacy C++ move should be legal: {mv}"
+            );
         }
 
         let rules = MillRules::default();

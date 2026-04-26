@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 
 clang-format -i src/*.h
 clang-format -i src/*.cpp
@@ -19,8 +20,12 @@ clang-format -i tests/*.cpp
 
 dart format .
 
-if [ "$1" != "s" ]; then
+if [ -f Cargo.toml ]; then
+    cargo fmt --all
+    cargo clippy --workspace --all-targets --all-features -- -D warnings
+fi
+
+if [ "${1:-}" != "s" ]; then
     git add .
     git commit -m "Format"
 fi
-

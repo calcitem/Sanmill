@@ -6,9 +6,7 @@
 // can switch over without repaint changes.  The `square` field maps back to the
 // mature C++ engine's SQ_8..SQ_31 ids and `label` matches UCI::square().
 
-use tgf_core::board_topology::{
-    BoardTopology, Decoration, Edge, UnitPoint, Zone,
-};
+use tgf_core::board_topology::{BoardTopology, Decoration, Edge, UnitPoint, Zone};
 
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct MillNode {
@@ -192,10 +190,30 @@ fn standard_line_groups() -> Vec<Vec<u16>> {
 }
 
 const SQUARE_TO_NODE: &[(u16, u16)] = &[
-    (31, 0), (24, 1), (25, 2), (26, 3), (27, 4), (28, 5), (29, 6), (30, 7),
-    (23, 8), (16, 9), (17, 10), (18, 11), (19, 12), (20, 13), (21, 14),
-    (22, 15), (15, 16), (8, 17), (9, 18), (10, 19), (11, 20), (12, 21),
-    (13, 22), (14, 23),
+    (31, 0),
+    (24, 1),
+    (25, 2),
+    (26, 3),
+    (27, 4),
+    (28, 5),
+    (29, 6),
+    (30, 7),
+    (23, 8),
+    (16, 9),
+    (17, 10),
+    (18, 11),
+    (19, 12),
+    (20, 13),
+    (21, 14),
+    (22, 15),
+    (15, 16),
+    (8, 17),
+    (9, 18),
+    (10, 19),
+    (11, 20),
+    (12, 21),
+    (13, 22),
+    (14, 23),
 ];
 
 const N0: &[u16] = &[1, 7];
@@ -224,8 +242,8 @@ const N22: &[u16] = &[23, 21];
 const N23: &[u16] = &[15, 16, 22];
 
 const NEIGHBORS: [&[u16]; 24] = [
-    N0, N1, N2, N3, N4, N5, N6, N7, N8, N9, N10, N11, N12, N13, N14, N15, N16,
-    N17, N18, N19, N20, N21, N22, N23,
+    N0, N1, N2, N3, N4, N5, N6, N7, N8, N9, N10, N11, N12, N13, N14, N15, N16, N17, N18, N19, N20,
+    N21, N22, N23,
 ];
 
 #[cfg(test)]

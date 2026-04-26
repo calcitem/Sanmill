@@ -14,12 +14,12 @@ use crate::{
 /// Mutable, search-only working position.  Lives on the searcher's thread.
 /// Hot-path methods MUST be `#[inline]` in concrete implementations.
 pub trait Workbench: Sized {
-    fn snapshot(&self)      -> GameStateSnapshot;
-    fn key(&self)           -> u64;
-    fn side_to_move(&self)  -> i8;
-    fn is_terminal(&self)   -> bool;
+    fn snapshot(&self) -> GameStateSnapshot;
+    fn key(&self) -> u64;
+    fn side_to_move(&self) -> i8;
+    fn is_terminal(&self) -> bool;
 
-    fn do_move(&mut self,  a: Action);
+    fn do_move(&mut self, a: Action);
     fn undo_move(&mut self);
 }
 
@@ -49,8 +49,8 @@ pub trait GameRules: Send + Sync {
 /// Compile-time game contract for the search hot path.  NOT object-safe.
 /// `Searcher<G: Game>` is monomorphised per game, matching C++ CRTP.
 pub trait Game: 'static + Send + Sync {
-    type Workbench:  Workbench;
-    type Evaluator:  Evaluator<Self::Workbench>;
+    type Workbench: Workbench;
+    type Evaluator: Evaluator<Self::Workbench>;
 
     fn build_workbench(&self, snap: &GameStateSnapshot) -> Self::Workbench;
 
