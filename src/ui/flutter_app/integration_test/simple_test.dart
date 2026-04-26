@@ -76,5 +76,10 @@ void main() {
     expect(defaults.hasDiagonalLines, isFalse);
     expect(nativeMillInitialLegalCountForVariant(variant: defaults), 24);
     expect(nativeMillSearchDepthOneBestToNode(), inInclusiveRange(0, 23));
+    expect(nativeMillPvsDepthOneBestToNode(), inInclusiveRange(0, 23));
+    expect(
+      nativeMillRandomBestToNode(seed: BigInt.from(1234)),
+      nativeMillRandomBestToNode(seed: BigInt.from(1234)),
+    );
   });
 }

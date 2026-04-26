@@ -302,6 +302,29 @@ pub fn native_mill_search_depth_one_best_to_node() -> i32 {
     searcher.search(&mut wb, 1).best_action.to_node as i32
 }
 
+/// Run the Rust generic PVS path for one ply and return the best destination.
+#[flutter_rust_bridge::frb(sync)]
+pub fn native_mill_pvs_depth_one_best_to_node() -> i32 {
+    let rules = MillRules::default();
+    let game = MillGame::default();
+    let snap = rules.initial_state(&[]);
+    let mut wb = game.build_workbench(&snap);
+    let mut searcher = Searcher::<MillGame>::new();
+    searcher.search_pvs(&mut wb, 1).best_action.to_node as i32
+}
+
+/// Run deterministic random-search with a caller-supplied seed.
+#[flutter_rust_bridge::frb(sync)]
+pub fn native_mill_random_best_to_node(seed: u64) -> i32 {
+    let rules = MillRules::default();
+    let game = MillGame::default();
+    let snap = rules.initial_state(&[]);
+    let mut wb = game.build_workbench(&snap);
+    let mut searcher = Searcher::<MillGame>::new();
+    searcher.set_random_seed(seed);
+    searcher.random_search(&mut wb).best_action.to_node as i32
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

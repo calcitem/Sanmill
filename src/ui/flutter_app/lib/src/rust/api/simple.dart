@@ -89,6 +89,14 @@ int nativeMillRemovalBelowThreeWinner() =>
 int nativeMillSearchDepthOneBestToNode() =>
     RustLib.instance.api.crateApiSimpleNativeMillSearchDepthOneBestToNode();
 
+/// Run the Rust generic PVS path for one ply and return the best destination.
+int nativeMillPvsDepthOneBestToNode() =>
+    RustLib.instance.api.crateApiSimpleNativeMillPvsDepthOneBestToNode();
+
+/// Run deterministic random-search with a caller-supplied seed.
+int nativeMillRandomBestToNode({required BigInt seed}) =>
+    RustLib.instance.api.crateApiSimpleNativeMillRandomBestToNode(seed: seed);
+
 /// Public FRB DTO for the subset of Mill variant options already supported by
 /// the Rust-native rules scaffold.  It intentionally mirrors the field names
 /// that will later replace the C++ Rule struct.
