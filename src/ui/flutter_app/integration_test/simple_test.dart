@@ -110,6 +110,9 @@ void main() {
     final MillRulesPort rules = MillRulesPort();
     expect(rules.legalActions, hasLength(24));
     expect(rules.snapshot.phase, 'placing');
+    expect(rules.fen, contains(' w p p '));
+    expect(rules.reset(), isA<GameStateSnapshot>());
+    expect(rules.legalActions, hasLength(24));
 
     final GameAction first = rules.legalActions.first;
     final GameStateSnapshot after = rules.apply(first);

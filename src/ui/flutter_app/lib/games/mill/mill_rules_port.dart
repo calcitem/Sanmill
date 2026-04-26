@@ -17,12 +17,21 @@ import 'mill_constants.dart';
 class MillRulesPort implements RulesPort {
   MillRulesPort({LegacyTgfKernel kernel = const LegacyTgfKernel()})
     : _kernel = kernel {
-    final String fen = _kernel.reset();
-    _snapshot = _snapshotFromFen(fen);
+    reset();
   }
 
   final LegacyTgfKernel _kernel;
   late GameStateSnapshot _snapshot;
+
+  /// Current legacy-kernel FEN mirrored by this rules port.
+  String get fen => _snapshot.payload['fen']! as String;
+
+  /// Reset this rules port to a fresh game and return the new snapshot.
+  GameStateSnapshot reset({int ruleIndex = 0}) {
+    final String fen = _kernel.reset(ruleIndex: ruleIndex);
+    _snapshot = _snapshotFromFen(fen);
+    return _snapshot;
+  }
 
   @override
   GameStateSnapshot get snapshot => _snapshot;
