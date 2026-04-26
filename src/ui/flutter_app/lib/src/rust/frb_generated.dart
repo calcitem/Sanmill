@@ -66,7 +66,7 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
   String get codegenVersion => '2.12.0';
 
   @override
-  int get rustContentHash => -1087933103;
+  int get rustContentHash => -798849941;
 
   static const kDefaultExternalLibraryLoaderConfig =
       ExternalLibraryLoaderConfig(
@@ -138,6 +138,10 @@ abstract class RustLibApi extends BaseApi {
   bool crateApiSimpleNativeMillSearchStop();
 
   bool crateApiSimpleNativeMillSearchZeroTimeLimitAborts();
+
+  int crateApiSimpleNativeOthelloInitialLegalCount();
+
+  int crateApiSimpleNativeOthelloSearchDepthOneBestToNode();
 
   String crateApiSimpleTgfHelloWorld();
 
@@ -833,12 +837,64 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
-  String crateApiSimpleTgfHelloWorld() {
+  int crateApiSimpleNativeOthelloInitialLegalCount() {
     return handler.executeSync(
       SyncTask(
         callFfi: () {
           final serializer = SseSerializer(generalizedFrbRustBinding);
           return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 27)!;
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_u_32,
+          decodeErrorData: null,
+        ),
+        constMeta: kCrateApiSimpleNativeOthelloInitialLegalCountConstMeta,
+        argValues: [],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kCrateApiSimpleNativeOthelloInitialLegalCountConstMeta =>
+      const TaskConstMeta(
+        debugName: "native_othello_initial_legal_count",
+        argNames: [],
+      );
+
+  @override
+  int crateApiSimpleNativeOthelloSearchDepthOneBestToNode() {
+    return handler.executeSync(
+      SyncTask(
+        callFfi: () {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 28)!;
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_i_32,
+          decodeErrorData: null,
+        ),
+        constMeta:
+            kCrateApiSimpleNativeOthelloSearchDepthOneBestToNodeConstMeta,
+        argValues: [],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta
+  get kCrateApiSimpleNativeOthelloSearchDepthOneBestToNodeConstMeta =>
+      const TaskConstMeta(
+        debugName: "native_othello_search_depth_one_best_to_node",
+        argNames: [],
+      );
+
+  @override
+  String crateApiSimpleTgfHelloWorld() {
+    return handler.executeSync(
+      SyncTask(
+        callFfi: () {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 29)!;
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_String,
@@ -860,7 +916,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       SyncTask(
         callFfi: () {
           final serializer = SseSerializer(generalizedFrbRustBinding);
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 28)!;
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 30)!;
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_String,

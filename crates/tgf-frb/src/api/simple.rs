@@ -17,6 +17,7 @@ use tgf_mill::{
     default_mill_topology, MillActionKind, MillGame, MillRules,
     MillVariantOptions as NativeMillVariantOptions,
 };
+use tgf_othello::{OthelloGame, OthelloRules};
 use tgf_search::{MctsOptions, MctsSearcher, SearchAbortHandle, Searcher, SearchOptions};
 #[cfg(test)]
 use tgf_search::perft;
@@ -88,6 +89,33 @@ pub fn native_mill_default_variant_options() -> MillVariantOptions {
         may_fly: defaults.may_fly,
         has_diagonal_lines: defaults.has_diagonal_lines,
     }
+}
+
+
+// ---------------------------------------------------------------------------
+// Phase 7 Othello pressure-test APIs.
+// ---------------------------------------------------------------------------
+
+/// Number of legal actions from the Rust-native Othello initial position.
+#[flutter_rust_bridge::frb(sync)]
+pub fn native_othello_initial_legal_count() -> u32 {
+    let rules = OthelloRules::default();
+    let snap = rules.initial_state(&[]);
+    let mut actions = ActionList::<256>::new();
+    rules.legal_actions(&snap, &mut actions);
+    actions.len() as u32
+}
+
+/// Run the generic Rust Searcher<OthelloGame> for one ply and return the
+/// selected destination node.
+#[flutter_rust_bridge::frb(sync)]
+pub fn native_othello_search_depth_one_best_to_node() -> i32 {
+    let rules = OthelloRules::default();
+    let game = OthelloGame;
+    let snap = rules.initial_state(&[]);
+    let mut wb = game.build_workbench(&snap);
+    let mut searcher = Searcher::<OthelloGame>::new();
+    searcher.search(&mut wb, 1).best_action.to_node as i32
 }
 
 // ---------------------------------------------------------------------------

@@ -20,6 +20,15 @@ String tgfVersion() => RustLib.instance.api.crateApiSimpleTgfVersion();
 MillVariantOptions nativeMillDefaultVariantOptions() =>
     RustLib.instance.api.crateApiSimpleNativeMillDefaultVariantOptions();
 
+/// Number of legal actions from the Rust-native Othello initial position.
+int nativeOthelloInitialLegalCount() =>
+    RustLib.instance.api.crateApiSimpleNativeOthelloInitialLegalCount();
+
+/// Run the generic Rust Searcher<OthelloGame> for one ply and return the
+/// selected destination node.
+int nativeOthelloSearchDepthOneBestToNode() =>
+    RustLib.instance.api.crateApiSimpleNativeOthelloSearchDepthOneBestToNode();
+
 /// Create/reset a global legacy C++ kernel.
 ///
 /// This is intentionally a temporary singleton for Phase 2.  Phase 3+ replaces

@@ -935,6 +935,7 @@ dependencies = [
  "tgf-core",
  "tgf-legacy-cxx",
  "tgf-mill",
+ "tgf-othello",
  "tgf-search",
 ]
 

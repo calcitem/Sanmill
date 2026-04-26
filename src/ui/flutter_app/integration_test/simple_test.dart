@@ -98,6 +98,13 @@ void main() {
     expect(nativeMillSearchZeroTimeLimitAborts(), isTrue);
   });
 
+  testWidgets('Rust-native Othello APIs are available', (
+    WidgetTester tester,
+  ) async {
+    expect(nativeOthelloInitialLegalCount(), 4);
+    expect(nativeOthelloSearchDepthOneBestToNode(), inInclusiveRange(0, 63));
+  });
+
   testWidgets('MillGameSession legalActions comes from RulesPort', (
     WidgetTester tester,
   ) async {
