@@ -37,6 +37,9 @@ fn print_benchmark_toml() {
     let start_d1 = perft::<MillGame>(&mut wb, 1);
     let mut wb = game.build_workbench(&snap);
     let start_d2 = perft::<MillGame>(&mut wb, 2);
+    let mid_snap = rules.no_mill_moving_phase_snapshot();
+    let mut wb = game.build_workbench(&mid_snap);
+    let mid_d3 = perft::<MillGame>(&mut wb, 3);
 
     // Keep the current benchmark light enough to run on developer machines.
     // Depth 4 gives a stable enough node count with the current scaffold while
@@ -72,7 +75,7 @@ fn print_benchmark_toml() {
     println!("[baseline.perft]");
     println!("start_d1 = {}", start_d1);
     println!("start_d2 = {}", start_d2);
-    println!("mid_d3 = 0");
+    println!("mid_d3 = {}", mid_d3);
     println!();
     println!("[baseline.tt]");
     println!("hit_rate_pct = {:.3}", tt_hit_rate_pct);

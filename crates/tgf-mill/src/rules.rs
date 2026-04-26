@@ -132,6 +132,31 @@ impl MillRules {
             .count() as u32
     }
 
+
+    /// Build the no-mill 18-placement moving-phase fixture used by the C++
+    /// golden tests.  This is a shared midgame benchmark / differential-test
+    /// position: both players have placed all nine pieces, no remove
+    /// obligation is pending, and White is to move in the moving phase.
+    pub fn no_mill_moving_phase_snapshot(&self) -> GameStateSnapshot {
+        const SEQ: [i16; 18] = [
+            1, 2, 3, 0, 7, 4, 10, 9, 8, 13, 12, 6, 18, 16, 23, 17, 20, 22,
+        ];
+        let mut snap = self.initial_state(&[]);
+        for node in SEQ {
+            snap = self.apply(
+                &snap,
+                Action {
+                    kind_tag: MillActionKind::Place as i16,
+                    from_node: -1,
+                    to_node: node,
+                    aux: -1,
+                    payload_bits: 0,
+                },
+            );
+        }
+        snap
+    }
+
     pub fn removal_below_three_winner_smoke() -> i32 {
         let rules = MillRules::default();
         let state = MillState {
@@ -747,6 +772,17 @@ mod tests {
         assert_eq!(wb.side_to_move(), 0);
         assert_eq!(wb.state.pieces_in_hand[0], 9);
         assert_eq!(wb.state.pieces_on_board[0], 0);
+    }
+
+    #[test]
+    fn no_mill_moving_phase_fixture_reaches_moving_phase() {
+        let rules = MillRules::default();
+        let snap = rules.no_mill_moving_phase_snapshot();
+        let state = MillRules::decode(&snap);
+        assert_eq!(state.phase, MillPhase::Moving);
+        assert_eq!(state.pieces_in_hand, [0, 0]);
+        assert_eq!(state.pieces_on_board, [9, 9]);
+        assert_eq!(state.pending_removals, [0, 0]);
     }
 
     #[test]
