@@ -67,7 +67,7 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
   String get codegenVersion => '2.12.0';
 
   @override
-  int get rustContentHash => -819536247;
+  int get rustContentHash => -1060238596;
 
   static const ExternalLibraryLoaderConfig kDefaultExternalLibraryLoaderConfig =
       ExternalLibraryLoaderConfig(
@@ -99,6 +99,10 @@ abstract class RustLibApi extends BaseApi {
   int crateApiSimpleNativeMillInitialLegalCount();
 
   int crateApiSimpleNativeMillMillSequenceRemoveCount();
+
+  int crateApiSimpleNativeMillMovingMillRemoveCount();
+
+  int crateApiSimpleNativeMillRemovalBelowThreeWinner();
 
   String crateApiSimpleTgfHelloWorld();
 
@@ -410,7 +414,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
-  String crateApiSimpleTgfHelloWorld() {
+  int crateApiSimpleNativeMillMovingMillRemoveCount() {
     return handler.executeSync(
       SyncTask(
         callFfi: () {
@@ -418,6 +422,60 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             generalizedFrbRustBinding,
           );
           return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 12)!;
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_u_32,
+          decodeErrorData: null,
+        ),
+        constMeta: kCrateApiSimpleNativeMillMovingMillRemoveCountConstMeta,
+        argValues: <dynamic>[],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kCrateApiSimpleNativeMillMovingMillRemoveCountConstMeta =>
+      const TaskConstMeta(
+        debugName: "native_mill_moving_mill_remove_count",
+        argNames: <String>[],
+      );
+
+  @override
+  int crateApiSimpleNativeMillRemovalBelowThreeWinner() {
+    return handler.executeSync(
+      SyncTask(
+        callFfi: () {
+          final SseSerializer serializer = SseSerializer(
+            generalizedFrbRustBinding,
+          );
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 13)!;
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_i_32,
+          decodeErrorData: null,
+        ),
+        constMeta: kCrateApiSimpleNativeMillRemovalBelowThreeWinnerConstMeta,
+        argValues: <dynamic>[],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kCrateApiSimpleNativeMillRemovalBelowThreeWinnerConstMeta =>
+      const TaskConstMeta(
+        debugName: "native_mill_removal_below_three_winner",
+        argNames: <String>[],
+      );
+
+  @override
+  String crateApiSimpleTgfHelloWorld() {
+    return handler.executeSync(
+      SyncTask(
+        callFfi: () {
+          final SseSerializer serializer = SseSerializer(
+            generalizedFrbRustBinding,
+          );
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 14)!;
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_String,
@@ -441,7 +499,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           final SseSerializer serializer = SseSerializer(
             generalizedFrbRustBinding,
           );
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 13)!;
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 15)!;
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_String,

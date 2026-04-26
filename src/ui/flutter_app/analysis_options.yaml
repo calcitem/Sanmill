@@ -31,6 +31,7 @@ analyzer:
   exclude:
     # generated code
     - lib/generated/**
+    - lib/src/rust/**
     - lib/**/**.g.dart
 
 linter:

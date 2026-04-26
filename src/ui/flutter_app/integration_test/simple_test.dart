@@ -65,5 +65,7 @@ void main() {
     expect(nativeMillInitialLegalCount(), 24);
     expect(nativeMillApplyFirstPlaceSideToMove(), 1);
     expect(nativeMillMillSequenceRemoveCount(), 2);
+    expect(nativeMillMovingMillRemoveCount(), 3);
+    expect(nativeMillRemovalBelowThreeWinner(), 0);
   });
 }

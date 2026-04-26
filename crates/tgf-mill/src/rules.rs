@@ -34,6 +34,7 @@ pub enum MillPhase {
 pub struct MillVariantOptions {
     pub piece_count: u8,
     pub fly_piece_count: u8,
+    pub pieces_at_least_count: u8,
     pub may_fly: bool,
     pub has_diagonal_lines: bool,
 }
@@ -43,6 +44,7 @@ impl Default for MillVariantOptions {
         Self {
             piece_count: 9,
             fly_piece_count: 3,
+            pieces_at_least_count: 3,
             may_fly: true,
             has_diagonal_lines: false,
         }
@@ -76,6 +78,78 @@ impl MillRules {
             opaque_payload: state.encode(),
         }
     }
+
+    pub fn moving_mill_remove_count_smoke() -> u32 {
+        let rules = MillRules::default();
+        let state = MillState {
+            board: {
+                let mut board = [0_i8; 24];
+                board[1] = 1;
+                board[2] = 1;
+                board[3] = 1;
+                board[6] = 2;
+                board[5] = 2;
+                board[10] = 2;
+                board
+            },
+            side_to_move: 0,
+            phase: MillPhase::Moving,
+            move_number: 18,
+            pieces_in_hand: [0, 0],
+            pieces_on_board: [3, 3],
+            pending_removals: [0, 0],
+            winner: -1,
+        };
+        let after_move = rules.apply(
+            &rules.encode(state),
+            Action {
+                kind_tag: MillActionKind::Move as i16,
+                from_node: 3,
+                to_node: 0,
+                aux: -1,
+                payload_bits: 0,
+            },
+        );
+        let mut actions = ActionList::<256>::new();
+        rules.legal_actions(&after_move, &mut actions);
+        actions
+            .iter()
+            .filter(|a| a.kind_tag == MillActionKind::Remove as i16)
+            .count() as u32
+    }
+
+    pub fn removal_below_three_winner_smoke() -> i32 {
+        let rules = MillRules::default();
+        let state = MillState {
+            board: {
+                let mut board = [0_i8; 24];
+                board[0] = 1;
+                board[1] = 1;
+                board[2] = 1;
+                board[6] = 2;
+                board[5] = 2;
+                board
+            },
+            side_to_move: 0,
+            phase: MillPhase::Moving,
+            move_number: 20,
+            pieces_in_hand: [0, 0],
+            pieces_on_board: [3, 2],
+            pending_removals: [1, 0],
+            winner: -1,
+        };
+        let after_remove = rules.apply(
+            &rules.encode(state),
+            Action {
+                kind_tag: MillActionKind::Remove as i16,
+                from_node: -1,
+                to_node: 6,
+                aux: -1,
+                payload_bits: 0,
+            },
+        );
+        MillRules::decode(&after_remove).winner as i32
+    }
 }
 
 impl Default for MillRules {
@@ -102,6 +176,7 @@ impl GameRules for MillRules {
             pieces_in_hand: [self.options.piece_count, self.options.piece_count],
             pieces_on_board: [0, 0],
             pending_removals: [0, 0],
+            winner: -1,
         };
         self.encode(state)
     }
@@ -206,7 +281,13 @@ impl GameRules for MillRules {
                     state.pieces_on_board[opponent].saturating_sub(1);
                 state.pending_removals[side] =
                     state.pending_removals[side].saturating_sub(1);
-                if state.pending_removals[side] == 0 {
+                if state.phase == MillPhase::Moving
+                    && state.pieces_on_board[opponent] < self.options.pieces_at_least_count
+                {
+                    state.phase = MillPhase::GameOver;
+                    state.winner = state.side_to_move;
+                    state.side_to_move = -1;
+                } else if state.pending_removals[side] == 0 {
                     state.side_to_move ^= 1;
                 }
             }
@@ -219,8 +300,8 @@ impl GameRules for MillRules {
         let state = Self::decode(snap);
         if state.phase == MillPhase::GameOver {
             Outcome {
-                kind: OutcomeKind::Abandoned,
-                reason: "gameOver".to_owned(),
+                kind: OutcomeKind::Win(state.winner),
+                reason: "loseFewerThanThree".to_owned(),
             }
         } else {
             Outcome {
@@ -277,6 +358,7 @@ struct MillState {
     pieces_in_hand: [u8; 2],
     pieces_on_board: [u8; 2],
     pending_removals: [u8; 2],
+    winner: i8,
 }
 
 impl MillState {
@@ -291,6 +373,7 @@ impl MillState {
         payload[27] = self.pieces_on_board[1];
         payload[28] = self.pending_removals[0];
         payload[29] = self.pending_removals[1];
+        payload[30] = self.winner as u8;
         payload
     }
 
@@ -313,6 +396,7 @@ impl MillState {
             pieces_in_hand: [payload[24], payload[25]],
             pieces_on_board: [payload[26], payload[27]],
             pending_removals: [payload[28], payload[29]],
+            winner: payload[30] as i8,
         }
     }
 }
@@ -442,5 +526,94 @@ mod tests {
         assert_eq!(state.side_to_move, 1, "Turn passes to black after removal");
         assert_eq!(state.pending_removals[0], 0);
         assert_eq!(state.pieces_on_board[1], 1);
+    }
+
+    #[test]
+    fn moving_phase_mill_generates_remove_obligation() {
+        let rules = MillRules::default();
+        let state = MillState {
+            // White can move node 1 -> node 0 to complete outer-top mill
+            // [0, 1, 2].  Black has enough material that removal is not
+            // terminal.
+            board: {
+                let mut board = [0_i8; 24];
+                board[1] = 1; // W d7
+                board[2] = 1; // W g7
+                board[3] = 1; // W g4 (moving piece)
+                board[6] = 2; // B a1
+                board[5] = 2; // B d1
+                board[10] = 2; // B f6
+                board
+            },
+            side_to_move: 0,
+            phase: MillPhase::Moving,
+            move_number: 18,
+            pieces_in_hand: [0, 0],
+            pieces_on_board: [3, 3],
+            pending_removals: [0, 0],
+            winner: -1,
+        };
+        let snap = rules.encode(state);
+        let after_move = rules.apply(
+            &snap,
+            Action {
+                kind_tag: MillActionKind::Move as i16,
+                from_node: 3,
+                to_node: 0,
+                aux: -1,
+                payload_bits: 0,
+            },
+        );
+
+        let state = MillRules::decode(&after_move);
+        assert_eq!(state.side_to_move, 0, "White keeps turn after forming mill");
+        assert_eq!(state.pending_removals[0], 1);
+
+        let mut actions = ActionList::<256>::new();
+        rules.legal_actions(&after_move, &mut actions);
+        assert!(actions.iter().all(|a| a.kind_tag == MillActionKind::Remove as i16));
+        assert_eq!(actions.len(), 3);
+    }
+
+    #[test]
+    fn moving_phase_removal_below_three_ends_game() {
+        let rules = MillRules::default();
+        let state = MillState {
+            board: {
+                let mut board = [0_i8; 24];
+                board[0] = 1;
+                board[1] = 1;
+                board[2] = 1;
+                board[6] = 2;
+                board[5] = 2;
+                board
+            },
+            side_to_move: 0,
+            phase: MillPhase::Moving,
+            move_number: 20,
+            pieces_in_hand: [0, 0],
+            pieces_on_board: [3, 2],
+            pending_removals: [1, 0],
+            winner: -1,
+        };
+        let snap = rules.encode(state);
+        let after_remove = rules.apply(
+            &snap,
+            Action {
+                kind_tag: MillActionKind::Remove as i16,
+                from_node: -1,
+                to_node: 6,
+                aux: -1,
+                payload_bits: 0,
+            },
+        );
+
+        let state = MillRules::decode(&after_remove);
+        assert_eq!(state.phase, MillPhase::GameOver);
+        assert_eq!(state.winner, 0);
+        assert_eq!(state.side_to_move, -1);
+        let outcome = rules.outcome(&after_remove);
+        assert_eq!(outcome.kind, OutcomeKind::Win(0));
+        assert_eq!(outcome.reason, "loseFewerThanThree");
     }
 }

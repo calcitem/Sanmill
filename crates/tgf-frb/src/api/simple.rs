@@ -223,3 +223,15 @@ pub fn native_mill_mill_sequence_remove_count() -> u32 {
         .filter(|a| a.kind_tag == MillActionKind::Remove as i16)
         .count() as u32
 }
+
+/// Smoke-check: moving-phase move that forms a mill generates remove actions.
+#[flutter_rust_bridge::frb(sync)]
+pub fn native_mill_moving_mill_remove_count() -> u32 {
+    MillRules::moving_mill_remove_count_smoke()
+}
+
+/// Smoke-check: removing below three pieces ends the game with White as winner.
+#[flutter_rust_bridge::frb(sync)]
+pub fn native_mill_removal_below_three_winner() -> i32 {
+    MillRules::removal_below_three_winner_smoke()
+}

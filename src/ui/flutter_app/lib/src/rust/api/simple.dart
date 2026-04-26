@@ -65,6 +65,14 @@ int nativeMillApplyFirstPlaceSideToMove() =>
 int nativeMillMillSequenceRemoveCount() =>
     RustLib.instance.api.crateApiSimpleNativeMillMillSequenceRemoveCount();
 
+/// Smoke-check: moving-phase move that forms a mill generates remove actions.
+int nativeMillMovingMillRemoveCount() =>
+    RustLib.instance.api.crateApiSimpleNativeMillMovingMillRemoveCount();
+
+/// Smoke-check: removing below three pieces ends the game with White as winner.
+int nativeMillRemovalBelowThreeWinner() =>
+    RustLib.instance.api.crateApiSimpleNativeMillRemovalBelowThreeWinner();
+
 class TopologyBlob {
   const TopologyBlob({
     required this.name,
