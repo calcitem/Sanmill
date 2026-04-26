@@ -1097,6 +1097,7 @@ version = "0.1.0"
 dependencies = [
  "criterion",
  "tgf-core",
+ "tgf-mill",
 ]
 
 [[package]]
