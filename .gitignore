@@ -470,3 +470,6 @@ diff-files*.md
 *.pth
 *.npz
 *_report.json
+
+# Cursor plans
+.cursor/plans/*.plan.md

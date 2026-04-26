@@ -160,9 +160,9 @@ static Position init_engine(int rule_idx = 0)
     set_rule(rule_idx);
     Mills::adjacent_squares_init();
     Mills::mill_table_init();
-    init_start_fen();
+    EngineCommands::init_start_fen();
     Position pos;
-    pos.set(StartFEN);
+    pos.set(EngineCommands::StartFEN);
     pos.start();
     return pos;
 }

@@ -142,49 +142,69 @@ TEST(MoveGenTest, MoveGeneration_PhaseMoving_MayFly)
 
 TEST(MoveGenTest, MoveGeneration_PhaseMoving_Slide)
 {
-    // If sideToMove has more than the flyPieceCount, we only generate adjacency
-    // moves.
+    // If sideToMove has more than flyPieceCount pieces it cannot fly; only
+    // adjacent (sliding) moves are generated.
 
-    // Setup rule: mayFly = true, but sideToMove has 4 pieces => no flying
+    // Re-initialise to the default rule so state left by previous test
+    // fixtures does not affect the adjacency / mill tables.
+    set_rule(0); // Nine Men's Morris, no diagonal lines
+    Mills::adjacent_squares_init();
+    Mills::mill_table_init();
+
     rule.mayFly = true;
     rule.flyPieceCount = 3;
 
     Position pos;
-    pos.phase = Phase::moving;
-    pos.set_side_to_move(WHITE);
+    // Clear pieceInHandCount BEFORE calling set_side_to_move, because the
+    // inline set_side_to_move() reads pieceInHandCount[sideToMove] and
+    // overwrites phase: 0 → Phase::moving, >0 → Phase::placing.
+    pos.pieceInHandCount[WHITE] = 0;
+    pos.pieceInHandCount[BLACK] = 0;
+    pos.set_side_to_move(WHITE); // now correctly derives Phase::moving
 
-    // Suppose white has 4 pieces, so not allowed to fly
+    // White has 4 pieces on the board so flying is NOT allowed.
     pos.pieceOnBoardCount[WHITE] = 4;
-    // Place them so we can test adjacency. We only show 2 for demonstration:
-    pos.put_piece(W_PIECE, SQ_8);
-    pos.put_piece(W_PIECE, SQ_9);
-    // Make a few squares around them empty.
-    // Possibly place some black pieces somewhere else if relevant.
+    // Place pieces via direct field access (consistent with CaptureTest) to
+    // avoid triggering the overloaded complex put_piece(Square, bool) path,
+    // which would run game-state logic and alter pos.phase.
+    pos.board[SQ_8] = W_PIECE;
+    pos.byTypeBB[ALL_PIECES] |= square_bb(SQ_8);
+    pos.byColorBB[WHITE] |= square_bb(SQ_8); // d5
 
+    pos.board[SQ_9] = W_PIECE;
+    pos.byTypeBB[ALL_PIECES] |= square_bb(SQ_9);
+    pos.byColorBB[WHITE] |= square_bb(SQ_9); // e5 – adjacent to SQ_8
+
+    // Sanity checks: verify the board and adjacency table are as expected.
+    ASSERT_EQ(pos.board[SQ_8], W_PIECE) << "W_PIECE must be at SQ_8";
+    ASSERT_EQ(pos.board[SQ_9], W_PIECE) << "W_PIECE must be at SQ_9";
+    ASSERT_EQ(pos.side_to_move(), WHITE) << "Side to move must be WHITE";
+    ASSERT_EQ(pos.get_phase(), Phase::moving) << "Phase must be moving";
+    ASSERT_EQ(MoveList<LEGAL>::adjacentSquares[SQ_8][0], static_cast<Square>(16))
+        << "SQ_8 adj[0] should be 16 (d6)";
+    ASSERT_EQ(MoveList<LEGAL>::adjacentSquares[SQ_8][1], static_cast<Square>(9))
+        << "SQ_8 adj[1] should be 9 (e5)";
+    ASSERT_EQ(MoveList<LEGAL>::adjacentSquares[SQ_8][2], static_cast<Square>(15))
+        << "SQ_8 adj[2] should be 15 (c5)";
+
+    // Adjacency for default (no-diagonal) rule:
+    //   SQ_8 (d5): {16, 9, 15}  → 9 is occupied by White → moves to {16, 15}
+    //   SQ_9 (e5): {10, 8}      → 8 is occupied by White → move  to {10}
+    //   Total: 3 adjacency moves.
     ExtMove moveList[MAX_MOVES];
     auto *end = generate<MOVE>(pos, moveList);
     const int count = static_cast<int>(end - moveList);
 
-    // For standard adjacency, we rely on MoveList<LEGAL>::adjacentSquares.
-    // For SQ_8 in the default no-diagonal rule, adjacency is {16, 9, 15}.
-    // However, SQ_9 is occupied by white, so from SQ_8 we have potential moves
-    // to 16, 15 if they're empty. Similarly, from SQ_9 adjacency is {10, 8};
-    // but 8 is occupied by white. So effectively, if 15 and 16 are empty, from
-    // SQ_8 => 2 moves. From SQ_9 => possibly 1 move if SQ_10 is free.
+    EXPECT_EQ(count, 3) << "With adjacency only, expect 3 moves: "
+                           "8->16, 8->15, 9->10";
 
-    // For demonstration, let's assume all are empty except where we put white:
-    // => from SQ_8 => moves to {16,15}
-    // => from SQ_9 => moves to {10}
-    // => total 3 adjacency moves.
-
-    EXPECT_EQ(count, 3) << "With adjacency only, we expect 3 moves from "
-                           "squares (8->16, 8->15, 9->10).";
-
-    // Confirm certain moves are included
     auto movesSet = MovesToSet(moveList, end);
-    EXPECT_TRUE(movesSet.find(make_move(SQ_8, SQ_16)) != movesSet.end());
-    EXPECT_TRUE(movesSet.find(make_move(SQ_8, SQ_15)) != movesSet.end());
-    EXPECT_TRUE(movesSet.find(make_move(SQ_9, SQ_10)) != movesSet.end());
+    EXPECT_TRUE(movesSet.find(make_move(SQ_8, SQ_16)) != movesSet.end())
+        << "SQ_8 -> SQ_16 (d5->d6) should be legal";
+    EXPECT_TRUE(movesSet.find(make_move(SQ_8, SQ_15)) != movesSet.end())
+        << "SQ_8 -> SQ_15 (d5->c5) should be legal";
+    EXPECT_TRUE(movesSet.find(make_move(SQ_9, SQ_10)) != movesSet.end())
+        << "SQ_9 -> SQ_10 (e5->e4) should be legal";
 }
 
 TEST(MoveGenTest, DISABLED_RemoveGeneration_AllOpponentPiecesInMills)
