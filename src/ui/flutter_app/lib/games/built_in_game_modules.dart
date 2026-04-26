@@ -4,9 +4,11 @@
 import '../game_platform/game_registry.dart';
 import 'demo_probe/demo_probe_game_module.dart';
 import 'mill/mill_game_module.dart';
+import 'othello/othello_game_module.dart';
 
 void registerBuiltInGameModules(GameRegistry registry) {
   registry
     ..register(MillGameModule())
-    ..register(DemoProbeGameModule());
+    ..register(DemoProbeGameModule())
+    ..register(OthelloGameModule());
 }

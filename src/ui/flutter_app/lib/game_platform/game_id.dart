@@ -16,6 +16,9 @@ class GameId {
   /// and persistence scope, does not depend on Mill internals.
   static const GameId demoProbe = GameId('demo_probe');
 
+  /// Othello/Reversi pressure-test module backed by the Rust tgf-othello crate.
+  static const GameId othello = GameId('othello');
+
   final String value;
 
   @override
