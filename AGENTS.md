@@ -11,14 +11,14 @@ consistent, high-quality contributions.
 * Provide consistent guidance for AI Agents (code assistants, automation
   bots).
 * Cover planning, execution, safety, testing, and collaboration practices.
-* Maintain code quality across C++, Flutter/Dart, and build tooling.
+* Maintain code quality across Rust/TGF, C++, Flutter/Dart, and build tooling.
 
 ---
 
 ## 2) Project Context
 
 * **Project Name:** Sanmill
-* **Description:** A free, powerful Mill (N Men's Morris) game with CUI (C++), Flutter GUI, and Qt GUI.
+* **Description:** A free, powerful Mill (N Men's Morris) game with CUI (legacy C++), Flutter GUI, Qt GUI, and an in-progress Rust/TGF framework.
 * **License:** GNU General Public License version 3 (GPL v3)
 * **Primary Goals:**
   - Deliver a high-quality, cross-platform Mill game
@@ -27,15 +27,24 @@ consistent, high-quality contributions.
 * **Key Constraints:**
   - GPL v3 compliance for all code contributions
   - Cross-platform compatibility required
-  - Performance-critical AI engine (C++)
+  - Performance-critical AI/search paths (legacy C++ plus Rust/TGF migration)
   - Mobile-first UI/UX design (Flutter)
 
 ### Technology Stack
 
-**Core Engine (C++):**
-- UCI-like protocol implementation
-- Search algorithms (MTD(f), Alpha-Beta, MCTS ect.)
+**Rust / TGF Framework (in progress):**
+- `crates/tgf-core`: game-neutral traits and POD types
+- `crates/tgf-search`: generic monomorphised searchers
+- `crates/tgf-mill`: Mill rules/topology migration
+- `crates/tgf-othello`: second-game pressure test
+- `crates/tgf-frb`: Flutter Rust Bridge API surface (`rust_lib_sanmill`)
+- See `docs/FRAMEWORK_API.md` for the current API contract
+
+**Legacy Core Engine (C++):**
+- Mature UCI-like protocol implementation
+- Search algorithms (MTD(f), Alpha-Beta, MCTS, perfect DB integration)
 - Bitboard representation
+- Still authoritative for unsupported Mill rule variants during migration
 
 **Frontend (Flutter/Dart):**
 - Cross-platform UI (Android, iOS, Windows, macOS, Linux)
@@ -55,13 +64,20 @@ consistent, high-quality contributions.
 **Build & Automation:**
 - Shell scripts for initialization and deployment
 - CI/CD: GitHub Actions
-- Code formatting: clang-format (C++), dart format (Dart)
+- Code formatting: clang-format (C++), dart format (Dart), cargo fmt/clippy (Rust)
 
 ### Project Structure
 
 ```
 /
-├── src/                       # C++ engine source
+├── crates/                    # Rust/TGF workspace
+│   ├── tgf-core/              # Game-neutral traits and POD types
+│   ├── tgf-search/            # Generic searchers
+│   ├── tgf-mill/              # Mill implementation
+│   ├── tgf-othello/           # Second-game pressure test
+│   ├── tgf-frb/               # FRB API surface
+│   └── tgf-legacy-cxx/        # Transitional C++ bridge
+├── src/                       # Legacy C++ engine source
 │   ├── *.cpp, *.h            # Core game logic, AI, UCI
 │   ├── Makefile              # Build configuration for CLI
 │   ├── perfect/              # Perfect play databases
@@ -116,6 +132,8 @@ consistent, high-quality contributions.
 **Never skip the formatting step.** The script runs:
 - `clang-format` on all C++ source files
 - `dart format` on all Dart/Flutter code
+- `cargo fmt --all` on Rust code
+- `cargo clippy --workspace --all-targets --all-features -- -D warnings`
 
 ---
 
@@ -182,6 +200,25 @@ Refs #789
 **Style:**
 * Follow existing code style (enforced by clang-format)
 
+### Rust/TGF Specific Rules
+
+**Architecture:**
+* Keep `tgf-core` and `tgf-search` game-neutral.
+* Concrete games belong in `crates/tgf-<game_id>/`.
+* Search hot paths must use `Searcher<G: Game>`, not `dyn GameRules`.
+* Do not widen `tgf-legacy-cxx` unless it directly supports a migration step or
+  a differential test against mature C++ behavior.
+
+**Performance:**
+* Preserve monomorphised `Game / Workbench / Evaluator` call paths.
+* Avoid heap allocation in move generation hot paths unless justified by tests
+  or benchmarks.
+* Keep differential tests against legacy C++ for behavior that is being moved.
+
+**Style:**
+* Follow `cargo fmt` and pass `cargo clippy --workspace --all-targets
+  --all-features -- -D warnings`.
+
 ### Dart/Flutter Specific Rules
 
 **Style:**
@@ -214,10 +251,18 @@ make test              # Run unit tests
 ./sanmill # Run sanmill
 ```
 
+**Rust / TGF:**
+```bash
+cargo test --workspace
+cargo clippy --workspace --all-targets --all-features -- -D warnings
+cargo run -p tgf-cli -- bench
+```
+
 **Flutter App:**
 ```bash
-./flutter-init.sh      # Set up Flutter
+./flutter-init.sh      # Set up Flutter + Rust/FRB when tools exist
 cd src/ui/flutter_app
+flutter_rust_bridge_codegen generate
 flutter build linux --debug -v      # Linux
 flutter run
 flutter test
@@ -234,6 +279,12 @@ is critical to avoid common mistakes.
   - They exist only in local development environments
   - Never manually create or edit `.g.dart` files
   - Always run `./flutter-init.sh` after cloning or when dependencies change
+
+* **FRB Generated Files (`lib/src/rust/frb_generated*.dart`):**
+  - These files are auto-generated by `flutter_rust_bridge_codegen generate`
+  - They are intentionally committed, because Flutter builds need the loader
+    with the correct native library stem (`rust_lib_sanmill`)
+  - Do not edit them manually; regenerate after Rust FRB API changes
 
 * **Hive Type Adapters:**
   - Use `@HiveType(typeId: N)` and `@HiveField(N)` annotations on models
@@ -359,7 +410,7 @@ Before submitting changes:
 ### Essential Commands
 
 ```bash
-# Format code (ALWAYS before commit)
+# Format/check code (ALWAYS before commit)
 ./format.sh s
 
 # Build C++ engine
@@ -370,8 +421,12 @@ make build all
 cd src
 make test
 
-# Initialize Flutter (includes code generation)
+# Initialize Flutter + Rust/FRB (includes code generation)
 ./flutter-init.sh
+
+# Rust/TGF validation
+cargo test --workspace
+cargo clippy --workspace --all-targets --all-features -- -D warnings
 
 # Regenerate code (after model changes)
 cd src/ui/flutter_app
@@ -392,6 +447,7 @@ flutter test
 * `src/ui/flutter_app/pubspec.yaml` - Flutter dependencies
 * `src/ui/flutter_app/lib/` - Flutter source code
 * `src/ui/flutter_app/l10n.yaml` - Localization configuration
-* `format.sh` - Code formatting script
+* `format.sh` - Code formatting/check script (C++, Dart, Rust fmt/clippy)
 * `AGENTS.md` - This file
+* `docs/FRAMEWORK_API.md` - Rust/TGF framework API contract
 * `README.md` - User-facing documentation
