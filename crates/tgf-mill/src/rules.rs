@@ -11,7 +11,7 @@
 //   * restrict_repeated_mills_formation
 //   * one_time_use_mill
 //   * stop_placing_when_two_empty_squares
-//   * board_full_action (FirstPlayerLose / AgreeToDraw)
+//   * board_full_action (all variants)
 //   * threefold_repetition_rule (state-side, history kept in
 //     `MillState.opaque_payload[38..230]`, drawn at apply time)
 //   * custodian / intervention / leap capture on square-edge and cross
@@ -816,13 +816,19 @@ fn maybe_finish_full_board(state: &mut MillState, options: &MillVariantOptions) 
             state.outcome_reason = MillOutcomeReason::DrawFullBoard;
             state.side_to_move = -1;
         }
-        MillBoardFullAction::FirstAndSecondPlayerRemovePiece
-        | MillBoardFullAction::SecondAndFirstPlayerRemovePiece
-        | MillBoardFullAction::SideToMoveRemovePiece => {
-            debug_assert!(
-                false,
-                "board_full_action removal variants are not implemented in Rust MillRules yet"
-            );
+        MillBoardFullAction::FirstAndSecondPlayerRemovePiece => {
+            state.pending_removals = [1, 1];
+            state.side_to_move = 0;
+        }
+        MillBoardFullAction::SecondAndFirstPlayerRemovePiece => {
+            state.pending_removals = [1, 1];
+            state.side_to_move = 1;
+        }
+        MillBoardFullAction::SideToMoveRemovePiece => {
+            state.pending_removals = [0, 0];
+            let remover = if options.is_defender_move_first { 1 } else { 0 };
+            state.side_to_move = remover;
+            state.pending_removals[remover as usize] = 1;
         }
     }
 }
@@ -2022,6 +2028,109 @@ mod tests {
             },
         );
         assert_eq!(rules.outcome(&after).kind, OutcomeKind::Draw);
+    }
+
+    fn board_full_one_empty_state() -> MillState {
+        let mut board = [2_i8; 24];
+        for node in [1_usize, 3, 5, 7, 9, 11, 14, 15, 17, 19, 20] {
+            board[node] = 1;
+        }
+        board[21] = 0;
+        MillState {
+            board,
+            side_to_move: 0,
+            phase: MillPhase::Placing,
+            move_number: 23,
+            pieces_in_hand: [1, 0],
+            pieces_on_board: [11, 12],
+            pending_removals: [0, 0],
+            winner: -1,
+            ..MillState::default()
+        }
+    }
+
+    fn fill_last_square(rules: &MillRules, state: MillState) -> GameStateSnapshot {
+        rules.apply(
+            &rules.encode(state),
+            Action {
+                kind_tag: MillActionKind::Place as i16,
+                from_node: -1,
+                to_node: 21,
+                aux: -1,
+                payload_bits: 0,
+            },
+        )
+    }
+
+    #[test]
+    fn board_full_first_and_second_remove_in_order() {
+        let rules = MillRules::new(MillVariantOptions {
+            piece_count: 12,
+            board_full_action: MillBoardFullAction::FirstAndSecondPlayerRemovePiece,
+            ..MillVariantOptions::default()
+        });
+        let after_fill = fill_last_square(&rules, board_full_one_empty_state());
+        let state = MillRules::decode(&after_fill);
+        assert_eq!(state.phase, MillPhase::Moving);
+        assert_eq!(state.side_to_move, 0, "first player removes first");
+        assert_eq!(state.pending_removals, [1, 1]);
+
+        let after_white_remove = rules.apply(
+            &after_fill,
+            Action {
+                kind_tag: MillActionKind::Remove as i16,
+                from_node: -1,
+                to_node: 0,
+                aux: -1,
+                payload_bits: 0,
+            },
+        );
+        let state = MillRules::decode(&after_white_remove);
+        assert_eq!(state.pending_removals, [0, 1]);
+        assert_eq!(state.side_to_move, 1, "second player removes next");
+    }
+
+    #[test]
+    fn board_full_second_and_first_remove_in_order() {
+        let rules = MillRules::new(MillVariantOptions {
+            piece_count: 12,
+            board_full_action: MillBoardFullAction::SecondAndFirstPlayerRemovePiece,
+            ..MillVariantOptions::default()
+        });
+        let after_fill = fill_last_square(&rules, board_full_one_empty_state());
+        let state = MillRules::decode(&after_fill);
+        assert_eq!(state.phase, MillPhase::Moving);
+        assert_eq!(state.side_to_move, 1, "second player removes first");
+        assert_eq!(state.pending_removals, [1, 1]);
+
+        let after_black_remove = rules.apply(
+            &after_fill,
+            Action {
+                kind_tag: MillActionKind::Remove as i16,
+                from_node: -1,
+                to_node: 21,
+                aux: -1,
+                payload_bits: 0,
+            },
+        );
+        let state = MillRules::decode(&after_black_remove);
+        assert_eq!(state.pending_removals, [1, 0]);
+        assert_eq!(state.side_to_move, 0, "first player removes next");
+    }
+
+    #[test]
+    fn board_full_side_to_move_remove_respects_defender_setting() {
+        let rules = MillRules::new(MillVariantOptions {
+            piece_count: 12,
+            is_defender_move_first: true,
+            board_full_action: MillBoardFullAction::SideToMoveRemovePiece,
+            ..MillVariantOptions::default()
+        });
+        let after_fill = fill_last_square(&rules, board_full_one_empty_state());
+        let state = MillRules::decode(&after_fill);
+        assert_eq!(state.phase, MillPhase::Moving);
+        assert_eq!(state.side_to_move, 1);
+        assert_eq!(state.pending_removals, [0, 1]);
     }
 
     /// Helper: build a small moving-phase state where W just moved
