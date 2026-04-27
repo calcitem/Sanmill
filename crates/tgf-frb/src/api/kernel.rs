@@ -275,7 +275,7 @@ pub fn tgf_kernel_redo_depth(handle: u32) -> Result<u32, String> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::api::simple::MillBoardFullAction;
+    use crate::api::simple::{CaptureRuleConfig, MillBoardFullAction};
 
     #[test]
     fn mill_kernel_session_round_trip() {
@@ -349,6 +349,33 @@ mod tests {
             stop_placing_when_two_empty_squares: false,
             board_full_action: MillBoardFullAction::FirstPlayerLose,
             threefold_repetition_rule: true,
+            custodian_capture: CaptureRuleConfig {
+                enabled: false,
+                on_square_edges: true,
+                on_cross_lines: true,
+                on_diagonal_lines: true,
+                in_placing_phase: true,
+                in_moving_phase: true,
+                only_available_when_own_pieces_leq3: false,
+            },
+            intervention_capture: CaptureRuleConfig {
+                enabled: false,
+                on_square_edges: true,
+                on_cross_lines: true,
+                on_diagonal_lines: true,
+                in_placing_phase: true,
+                in_moving_phase: true,
+                only_available_when_own_pieces_leq3: false,
+            },
+            leap_capture: CaptureRuleConfig {
+                enabled: false,
+                on_square_edges: true,
+                on_cross_lines: true,
+                on_diagonal_lines: true,
+                in_placing_phase: true,
+                in_moving_phase: true,
+                only_available_when_own_pieces_leq3: false,
+            },
         };
         let handle = tgf_kernel_create_mill(variant).unwrap();
         assert_eq!(tgf_kernel_legal_actions(handle).unwrap().len(), 24);

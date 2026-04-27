@@ -42,6 +42,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   TgfAction dco_decode_box_autoadd_tgf_action(dynamic raw);
 
   @protected
+  CaptureRuleConfig dco_decode_capture_rule_config(dynamic raw);
+
+  @protected
   EngineEvent dco_decode_engine_event(dynamic raw);
 
   @protected
@@ -131,6 +134,11 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   TgfAction sse_decode_box_autoadd_tgf_action(SseDeserializer deserializer);
+
+  @protected
+  CaptureRuleConfig sse_decode_capture_rule_config(
+    SseDeserializer deserializer,
+  );
 
   @protected
   EngineEvent sse_decode_engine_event(SseDeserializer deserializer);
@@ -238,6 +246,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   void sse_encode_box_autoadd_tgf_action(
     TgfAction self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void sse_encode_capture_rule_config(
+    CaptureRuleConfig self,
     SseSerializer serializer,
   );
 

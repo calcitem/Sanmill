@@ -29,6 +29,34 @@ extension MillVariantOptionsMapper on RuleSettings {
       stopPlacingWhenTwoEmptySquares: stopPlacingWhenTwoEmptySquares,
       boardFullAction: _toTgfBoardFullAction(boardFullAction),
       threefoldRepetitionRule: threefoldRepetitionRule,
+      custodianCapture: tgf.CaptureRuleConfig(
+        enabled: enableCustodianCapture,
+        onSquareEdges: custodianCaptureOnSquareEdges,
+        onCrossLines: custodianCaptureOnCrossLines,
+        onDiagonalLines: custodianCaptureOnDiagonalLines,
+        inPlacingPhase: custodianCaptureInPlacingPhase,
+        inMovingPhase: custodianCaptureInMovingPhase,
+        onlyAvailableWhenOwnPiecesLeq3: custodianCaptureOnlyWhenOwnPiecesLeq3,
+      ),
+      interventionCapture: tgf.CaptureRuleConfig(
+        enabled: enableInterventionCapture,
+        onSquareEdges: interventionCaptureOnSquareEdges,
+        onCrossLines: interventionCaptureOnCrossLines,
+        onDiagonalLines: interventionCaptureOnDiagonalLines,
+        inPlacingPhase: interventionCaptureInPlacingPhase,
+        inMovingPhase: interventionCaptureInMovingPhase,
+        onlyAvailableWhenOwnPiecesLeq3:
+            interventionCaptureOnlyWhenOwnPiecesLeq3,
+      ),
+      leapCapture: tgf.CaptureRuleConfig(
+        enabled: enableLeapCapture,
+        onSquareEdges: leapCaptureOnSquareEdges,
+        onCrossLines: leapCaptureOnCrossLines,
+        onDiagonalLines: leapCaptureOnDiagonalLines,
+        inPlacingPhase: leapCaptureInPlacingPhase,
+        inMovingPhase: leapCaptureInMovingPhase,
+        onlyAvailableWhenOwnPiecesLeq3: leapCaptureOnlyWhenOwnPiecesLeq3,
+      ),
     );
   }
 

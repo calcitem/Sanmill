@@ -14,8 +14,9 @@ use crate::frb_generated::StreamSink;
 use tgf_core::{Action, ActionList, BoardTopology, Game, GameRules};
 use tgf_legacy_cxx::LegacyKernel;
 use tgf_mill::{
-    default_mill_topology, MillActionKind, MillBoardFullAction as NativeMillBoardFullAction,
-    MillGame, MillRules, MillVariantOptions as NativeMillVariantOptions,
+    default_mill_topology, CaptureRuleConfig as NativeCaptureRuleConfig, MillActionKind,
+    MillBoardFullAction as NativeMillBoardFullAction, MillGame, MillRules,
+    MillVariantOptions as NativeMillVariantOptions,
 };
 use tgf_othello::{OthelloGame, OthelloRules};
 #[cfg(test)]
@@ -73,6 +74,48 @@ pub struct MillVariantOptions {
     pub stop_placing_when_two_empty_squares: bool,
     pub board_full_action: MillBoardFullAction,
     pub threefold_repetition_rule: bool,
+    pub custodian_capture: CaptureRuleConfig,
+    pub intervention_capture: CaptureRuleConfig,
+    pub leap_capture: CaptureRuleConfig,
+}
+
+#[derive(Clone, Debug)]
+pub struct CaptureRuleConfig {
+    pub enabled: bool,
+    pub on_square_edges: bool,
+    pub on_cross_lines: bool,
+    pub on_diagonal_lines: bool,
+    pub in_placing_phase: bool,
+    pub in_moving_phase: bool,
+    pub only_available_when_own_pieces_leq3: bool,
+}
+
+impl From<CaptureRuleConfig> for NativeCaptureRuleConfig {
+    fn from(value: CaptureRuleConfig) -> Self {
+        Self {
+            enabled: value.enabled,
+            on_square_edges: value.on_square_edges,
+            on_cross_lines: value.on_cross_lines,
+            on_diagonal_lines: value.on_diagonal_lines,
+            in_placing_phase: value.in_placing_phase,
+            in_moving_phase: value.in_moving_phase,
+            only_available_when_own_pieces_leq3: value.only_available_when_own_pieces_leq3,
+        }
+    }
+}
+
+impl From<NativeCaptureRuleConfig> for CaptureRuleConfig {
+    fn from(value: NativeCaptureRuleConfig) -> Self {
+        Self {
+            enabled: value.enabled,
+            on_square_edges: value.on_square_edges,
+            on_cross_lines: value.on_cross_lines,
+            on_diagonal_lines: value.on_diagonal_lines,
+            in_placing_phase: value.in_placing_phase,
+            in_moving_phase: value.in_moving_phase,
+            only_available_when_own_pieces_leq3: value.only_available_when_own_pieces_leq3,
+        }
+    }
 }
 
 #[derive(Clone, Debug)]
@@ -138,6 +181,9 @@ impl From<MillVariantOptions> for NativeMillVariantOptions {
             stop_placing_when_two_empty_squares: value.stop_placing_when_two_empty_squares,
             board_full_action: value.board_full_action.into(),
             threefold_repetition_rule: value.threefold_repetition_rule,
+            custodian_capture: value.custodian_capture.into(),
+            intervention_capture: value.intervention_capture.into(),
+            leap_capture: value.leap_capture.into(),
         }
     }
 }
@@ -162,6 +208,9 @@ pub fn native_mill_default_variant_options() -> MillVariantOptions {
         stop_placing_when_two_empty_squares: defaults.stop_placing_when_two_empty_squares,
         board_full_action: defaults.board_full_action.into(),
         threefold_repetition_rule: defaults.threefold_repetition_rule,
+        custodian_capture: defaults.custodian_capture.into(),
+        intervention_capture: defaults.intervention_capture.into(),
+        leap_capture: defaults.leap_capture.into(),
     }
 }
 
@@ -1077,6 +1126,33 @@ mod tests {
             stop_placing_when_two_empty_squares: true,
             board_full_action: MillBoardFullAction::AgreeToDraw,
             threefold_repetition_rule: false,
+            custodian_capture: CaptureRuleConfig {
+                enabled: true,
+                on_square_edges: true,
+                on_cross_lines: true,
+                on_diagonal_lines: true,
+                in_placing_phase: true,
+                in_moving_phase: true,
+                only_available_when_own_pieces_leq3: false,
+            },
+            intervention_capture: CaptureRuleConfig {
+                enabled: true,
+                on_square_edges: true,
+                on_cross_lines: true,
+                on_diagonal_lines: true,
+                in_placing_phase: true,
+                in_moving_phase: true,
+                only_available_when_own_pieces_leq3: false,
+            },
+            leap_capture: CaptureRuleConfig {
+                enabled: true,
+                on_square_edges: true,
+                on_cross_lines: true,
+                on_diagonal_lines: true,
+                in_placing_phase: true,
+                in_moving_phase: true,
+                only_available_when_own_pieces_leq3: false,
+            },
         };
         let native: NativeMillVariantOptions = variant.into();
         assert!(native.may_remove_from_mills_always);
@@ -1092,6 +1168,9 @@ mod tests {
             NativeMillBoardFullAction::AgreeToDraw
         ));
         assert!(!native.threefold_repetition_rule);
+        assert!(native.custodian_capture.enabled);
+        assert!(native.intervention_capture.enabled);
+        assert!(native.leap_capture.enabled);
     }
 
     /// Body of the random-walk differential.  Both the default

@@ -1334,6 +1334,23 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  CaptureRuleConfig dco_decode_capture_rule_config(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 7)
+      throw Exception('unexpected arr length: expect 7 but see ${arr.length}');
+    return CaptureRuleConfig(
+      enabled: dco_decode_bool(arr[0]),
+      onSquareEdges: dco_decode_bool(arr[1]),
+      onCrossLines: dco_decode_bool(arr[2]),
+      onDiagonalLines: dco_decode_bool(arr[3]),
+      inPlacingPhase: dco_decode_bool(arr[4]),
+      inMovingPhase: dco_decode_bool(arr[5]),
+      onlyAvailableWhenOwnPiecesLeq3: dco_decode_bool(arr[6]),
+    );
+  }
+
+  @protected
   EngineEvent dco_decode_engine_event(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     final arr = raw as List<dynamic>;
@@ -1415,8 +1432,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   MillVariantOptions dco_decode_mill_variant_options(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     final arr = raw as List<dynamic>;
-    if (arr.length != 15)
-      throw Exception('unexpected arr length: expect 15 but see ${arr.length}');
+    if (arr.length != 18)
+      throw Exception('unexpected arr length: expect 18 but see ${arr.length}');
     return MillVariantOptions(
       pieceCount: dco_decode_u_8(arr[0]),
       flyPieceCount: dco_decode_u_8(arr[1]),
@@ -1433,6 +1450,9 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       stopPlacingWhenTwoEmptySquares: dco_decode_bool(arr[12]),
       boardFullAction: dco_decode_mill_board_full_action(arr[13]),
       threefoldRepetitionRule: dco_decode_bool(arr[14]),
+      custodianCapture: dco_decode_capture_rule_config(arr[15]),
+      interventionCapture: dco_decode_capture_rule_config(arr[16]),
+      leapCapture: dco_decode_capture_rule_config(arr[17]),
     );
   }
 
@@ -1590,6 +1610,29 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  CaptureRuleConfig sse_decode_capture_rule_config(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_enabled = sse_decode_bool(deserializer);
+    var var_onSquareEdges = sse_decode_bool(deserializer);
+    var var_onCrossLines = sse_decode_bool(deserializer);
+    var var_onDiagonalLines = sse_decode_bool(deserializer);
+    var var_inPlacingPhase = sse_decode_bool(deserializer);
+    var var_inMovingPhase = sse_decode_bool(deserializer);
+    var var_onlyAvailableWhenOwnPiecesLeq3 = sse_decode_bool(deserializer);
+    return CaptureRuleConfig(
+      enabled: var_enabled,
+      onSquareEdges: var_onSquareEdges,
+      onCrossLines: var_onCrossLines,
+      onDiagonalLines: var_onDiagonalLines,
+      inPlacingPhase: var_inPlacingPhase,
+      inMovingPhase: var_inMovingPhase,
+      onlyAvailableWhenOwnPiecesLeq3: var_onlyAvailableWhenOwnPiecesLeq3,
+    );
+  }
+
+  @protected
   EngineEvent sse_decode_engine_event(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var var_kind = sse_decode_String(deserializer);
@@ -1729,6 +1772,9 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     var var_stopPlacingWhenTwoEmptySquares = sse_decode_bool(deserializer);
     var var_boardFullAction = sse_decode_mill_board_full_action(deserializer);
     var var_threefoldRepetitionRule = sse_decode_bool(deserializer);
+    var var_custodianCapture = sse_decode_capture_rule_config(deserializer);
+    var var_interventionCapture = sse_decode_capture_rule_config(deserializer);
+    var var_leapCapture = sse_decode_capture_rule_config(deserializer);
     return MillVariantOptions(
       pieceCount: var_pieceCount,
       flyPieceCount: var_flyPieceCount,
@@ -1745,6 +1791,9 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       stopPlacingWhenTwoEmptySquares: var_stopPlacingWhenTwoEmptySquares,
       boardFullAction: var_boardFullAction,
       threefoldRepetitionRule: var_threefoldRepetitionRule,
+      custodianCapture: var_custodianCapture,
+      interventionCapture: var_interventionCapture,
+      leapCapture: var_leapCapture,
     );
   }
 
@@ -1917,6 +1966,21 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_capture_rule_config(
+    CaptureRuleConfig self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_bool(self.enabled, serializer);
+    sse_encode_bool(self.onSquareEdges, serializer);
+    sse_encode_bool(self.onCrossLines, serializer);
+    sse_encode_bool(self.onDiagonalLines, serializer);
+    sse_encode_bool(self.inPlacingPhase, serializer);
+    sse_encode_bool(self.inMovingPhase, serializer);
+    sse_encode_bool(self.onlyAvailableWhenOwnPiecesLeq3, serializer);
+  }
+
+  @protected
   void sse_encode_engine_event(EngineEvent self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_String(self.kind, serializer);
@@ -2046,6 +2110,9 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_bool(self.stopPlacingWhenTwoEmptySquares, serializer);
     sse_encode_mill_board_full_action(self.boardFullAction, serializer);
     sse_encode_bool(self.threefoldRepetitionRule, serializer);
+    sse_encode_capture_rule_config(self.custodianCapture, serializer);
+    sse_encode_capture_rule_config(self.interventionCapture, serializer);
+    sse_encode_capture_rule_config(self.leapCapture, serializer);
   }
 
   @protected

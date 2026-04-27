@@ -353,14 +353,19 @@ perfect-information invariants.
 - `board_full_action` for `FirstPlayerLose` and `AgreeToDraw`
 - `threefold_repetition_rule` (state-side detection at apply time;
   rolling 24-entry signature buffer in `MillState.opaque_payload`)
+- `custodian_capture`, `intervention_capture`, and `leap_capture` on square-edge
+  and cross lines.  The Rust path mirrors the C++ stacking semantics:
+  no-mill capture counts add together; leap capture takes precedence over mill
+  in moving phase; mill + custodian/intervention only accumulate when
+  `may_remove_multiple` is enabled.  Diagonal capture flags are accepted in the
+  DTO but remain inactive until diagonal 12MM topology lands.
 
 The remaining `Rule` fields (`millFormationActionInPlacingPhase`,
-`stalemateAction`, custodian/intervention/leap captures,
-`isDefenderMoveFirst`, diagonal 12MM topology, and the non-default
-`boardFullAction` removal variants) are not yet honoured by the Rust
-path; the Flutter app routes them through the legacy C++ engine until
-the gap closes.  Perfect DB and opening book intentionally remain
-behind the cxx bridge and should not be converted to Rust.
+`stalemateAction`, `isDefenderMoveFirst`, diagonal 12MM topology, and the
+non-default `boardFullAction` removal variants) are not yet honoured by the
+Rust path; the Flutter app routes them through the legacy C++ engine until the
+gap closes.  Perfect DB and opening book intentionally remain behind the cxx
+bridge and should not be converted to Rust.
 
 Each new field follows the same pattern: extend `MillVariantOptions`, update
 `MillRules::apply` / `legal_actions` / `outcome`, mirror it in

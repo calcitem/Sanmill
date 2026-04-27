@@ -7,7 +7,7 @@ import '../frb_generated.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
 // These functions are ignored because they are not marked as `pub`: `best_move`, `info`, `new`, `ready`, `stopped`
-// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `from`, `from`, `from`
+// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `from`, `from`, `from`, `from`, `from`
 
 /// Returns a greeting string confirming that the Rust → Dart bridge works.
 /// Called from Dart as `tgfHelloWorld()` after `await RustLib.init()`.
@@ -158,6 +158,50 @@ Stream<EngineEvent> nativeMillSearchEvents({required int depth}) =>
 bool nativeMillSearchStop() =>
     RustLib.instance.api.crateApiSimpleNativeMillSearchStop();
 
+class CaptureRuleConfig {
+  final bool enabled;
+  final bool onSquareEdges;
+  final bool onCrossLines;
+  final bool onDiagonalLines;
+  final bool inPlacingPhase;
+  final bool inMovingPhase;
+  final bool onlyAvailableWhenOwnPiecesLeq3;
+
+  const CaptureRuleConfig({
+    required this.enabled,
+    required this.onSquareEdges,
+    required this.onCrossLines,
+    required this.onDiagonalLines,
+    required this.inPlacingPhase,
+    required this.inMovingPhase,
+    required this.onlyAvailableWhenOwnPiecesLeq3,
+  });
+
+  @override
+  int get hashCode =>
+      enabled.hashCode ^
+      onSquareEdges.hashCode ^
+      onCrossLines.hashCode ^
+      onDiagonalLines.hashCode ^
+      inPlacingPhase.hashCode ^
+      inMovingPhase.hashCode ^
+      onlyAvailableWhenOwnPiecesLeq3.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is CaptureRuleConfig &&
+          runtimeType == other.runtimeType &&
+          enabled == other.enabled &&
+          onSquareEdges == other.onSquareEdges &&
+          onCrossLines == other.onCrossLines &&
+          onDiagonalLines == other.onDiagonalLines &&
+          inPlacingPhase == other.inPlacingPhase &&
+          inMovingPhase == other.inMovingPhase &&
+          onlyAvailableWhenOwnPiecesLeq3 ==
+              other.onlyAvailableWhenOwnPiecesLeq3;
+}
+
 class EngineEvent {
   final String kind;
   final int depth;
@@ -225,6 +269,9 @@ class MillVariantOptions {
   final bool stopPlacingWhenTwoEmptySquares;
   final MillBoardFullAction boardFullAction;
   final bool threefoldRepetitionRule;
+  final CaptureRuleConfig custodianCapture;
+  final CaptureRuleConfig interventionCapture;
+  final CaptureRuleConfig leapCapture;
 
   const MillVariantOptions({
     required this.pieceCount,
@@ -242,6 +289,9 @@ class MillVariantOptions {
     required this.stopPlacingWhenTwoEmptySquares,
     required this.boardFullAction,
     required this.threefoldRepetitionRule,
+    required this.custodianCapture,
+    required this.interventionCapture,
+    required this.leapCapture,
   });
 
   @override
@@ -260,7 +310,10 @@ class MillVariantOptions {
       oneTimeUseMill.hashCode ^
       stopPlacingWhenTwoEmptySquares.hashCode ^
       boardFullAction.hashCode ^
-      threefoldRepetitionRule.hashCode;
+      threefoldRepetitionRule.hashCode ^
+      custodianCapture.hashCode ^
+      interventionCapture.hashCode ^
+      leapCapture.hashCode;
 
   @override
   bool operator ==(Object other) =>
@@ -283,7 +336,10 @@ class MillVariantOptions {
           stopPlacingWhenTwoEmptySquares ==
               other.stopPlacingWhenTwoEmptySquares &&
           boardFullAction == other.boardFullAction &&
-          threefoldRepetitionRule == other.threefoldRepetitionRule;
+          threefoldRepetitionRule == other.threefoldRepetitionRule &&
+          custodianCapture == other.custodianCapture &&
+          interventionCapture == other.interventionCapture &&
+          leapCapture == other.leapCapture;
 }
 
 class TopologyBlob {

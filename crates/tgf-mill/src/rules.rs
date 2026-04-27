@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // Rust-native Mill rules scaffold.
 //
-// Implemented (Iterations 2-3):
+// Implemented (Iterations 2-4):
 //   * piece_count, fly_piece_count, pieces_at_least_count, may_fly
 //   * has_diagonal_lines (DTO only; diagonal topology remains future work)
 //   * may_remove_from_mills_always, may_remove_multiple
@@ -13,13 +13,16 @@
 //   * board_full_action (FirstPlayerLose / AgreeToDraw)
 //   * threefold_repetition_rule (state-side, history kept in
 //     `MillState.opaque_payload[38..230]`, drawn at apply time)
+//   * custodian / intervention / leap capture on square-edge and cross
+//     lines, including C++-compatible stacking and leap-vs-mill priority
+//     semantics.  Diagonal capture flags are accepted in the DTO but
+//     remain inactive until diagonal 12MM topology lands.
 //
 // Still owned by the legacy C++ path:
 //   * diagonal 12MM topology
 //   * mill_formation_action_in_placing_phase non-default variants
 //   * stalemate_action non-default variants
 //   * is_defender_move_first
-//   * custodian / intervention / leap capture rule families
 //
 // Perfect DB and opening book intentionally remain behind the cxx
 // bridge — see `crates/tgf-legacy-cxx/`.
@@ -59,6 +62,35 @@ pub enum MillBoardFullAction {
 }
 
 #[derive(Clone, Debug)]
+pub struct CaptureRuleConfig {
+    pub enabled: bool,
+    pub on_square_edges: bool,
+    pub on_cross_lines: bool,
+    /// Kept for rule-setting parity with C++/Dart.  Diagonal capture
+    /// lines depend on the 12MM diagonal topology, which is intentionally
+    /// out of scope for this iteration; this flag is accepted but ignored
+    /// until that topology lands.
+    pub on_diagonal_lines: bool,
+    pub in_placing_phase: bool,
+    pub in_moving_phase: bool,
+    pub only_available_when_own_pieces_leq3: bool,
+}
+
+impl Default for CaptureRuleConfig {
+    fn default() -> Self {
+        Self {
+            enabled: false,
+            on_square_edges: true,
+            on_cross_lines: true,
+            on_diagonal_lines: true,
+            in_placing_phase: true,
+            in_moving_phase: true,
+            only_available_when_own_pieces_leq3: false,
+        }
+    }
+}
+
+#[derive(Clone, Debug)]
 pub struct MillVariantOptions {
     pub piece_count: u8,
     pub fly_piece_count: u8,
@@ -88,6 +120,9 @@ pub struct MillVariantOptions {
     /// `phase=GameOver` and `outcome=Draw{drawThreefold}`.  Default is
     /// `true`, matching the C++ engine's `rule.threefoldRepetitionRule`.
     pub threefold_repetition_rule: bool,
+    pub custodian_capture: CaptureRuleConfig,
+    pub intervention_capture: CaptureRuleConfig,
+    pub leap_capture: CaptureRuleConfig,
 }
 
 impl Default for MillVariantOptions {
@@ -108,6 +143,9 @@ impl Default for MillVariantOptions {
             stop_placing_when_two_empty_squares: false,
             board_full_action: MillBoardFullAction::FirstPlayerLose,
             threefold_repetition_rule: true,
+            custodian_capture: CaptureRuleConfig::default(),
+            intervention_capture: CaptureRuleConfig::default(),
+            leap_capture: CaptureRuleConfig::default(),
         }
     }
 }
@@ -403,13 +441,26 @@ impl GameRules for MillRules {
                 // becomes irrelevant.
                 clear_key_history(&mut state);
                 maybe_stop_placing_when_two_empty(&mut state, &self.options);
+                let custodian = detect_custodian_targets(&state, &self.options, to);
+                let intervention = detect_intervention_targets(&state, &self.options, to);
                 let mill_bits = formed_mill_bits_at(&state, to, state.side_to_move);
                 let usable_bits = usable_mill_bits(&state, &self.options, mill_bits);
                 if usable_bits != 0 {
                     state.pending_removals[side] =
                         removal_count_for_bits(usable_bits, &self.options);
+                    state.mill_available_at_removal = true;
+                    activate_capture_state(&mut state, custodian, intervention, 0);
+                    if self.options.may_remove_multiple {
+                        state.pending_removals[side] =
+                            state.pending_removals[side].saturating_add(capture_total(&state));
+                    }
                     note_mill_formation(&mut state, -1, to as i8, usable_bits);
+                } else if custodian != 0 || intervention != 0 {
+                    activate_capture_state(&mut state, custodian, intervention, 0);
+                    state.pending_removals[side] = capture_total(&state);
+                    state.mill_available_at_removal = false;
                 } else {
+                    clear_capture_state(&mut state);
                     state.side_to_move ^= 1;
                     maybe_transition_to_moving(&mut state, &self.options);
                     maybe_finish_full_board(&mut state, &self.options);
@@ -425,13 +476,31 @@ impl GameRules for MillRules {
                 state.move_number += 1;
                 let side = state.side_to_move as usize;
                 bump_ply_since_capture(&mut state);
+                let custodian = detect_custodian_targets(&state, &self.options, to);
+                let intervention = detect_intervention_targets(&state, &self.options, to);
+                let leap = detect_leap_targets(&state, &self.options, from, to);
                 let mill_bits = formed_mill_bits_at(&state, to, state.side_to_move);
                 let usable_bits = usable_mill_bits(&state, &self.options, mill_bits);
-                if usable_bits != 0 {
+                if leap != 0 {
+                    activate_capture_state(&mut state, 0, 0, leap);
+                    state.pending_removals[side] = 1;
+                    state.mill_available_at_removal = false;
+                } else if usable_bits != 0 {
                     state.pending_removals[side] =
                         removal_count_for_bits(usable_bits, &self.options);
+                    state.mill_available_at_removal = true;
+                    activate_capture_state(&mut state, custodian, intervention, 0);
+                    if self.options.may_remove_multiple {
+                        state.pending_removals[side] =
+                            state.pending_removals[side].saturating_add(capture_total(&state));
+                    }
                     note_mill_formation(&mut state, from as i8, to as i8, usable_bits);
+                } else if custodian != 0 || intervention != 0 {
+                    activate_capture_state(&mut state, custodian, intervention, 0);
+                    state.pending_removals[side] = capture_total(&state);
+                    state.mill_available_at_removal = false;
                 } else {
+                    clear_capture_state(&mut state);
                     state.side_to_move ^= 1;
                     // Record this side-changing reversible move into the
                     // repetition history *before* deciding whether the
@@ -448,9 +517,76 @@ impl GameRules for MillRules {
                 let opponent = (state.side_to_move ^ 1) as usize;
                 debug_assert_eq!(state.board[to], opponent as i8 + 1);
                 debug_assert!(state.pending_removals[side] > 0);
+                let mask = node_bit(to);
+                let is_custodian =
+                    (state.custodian_targets & mask) != 0 && state.custodian_count > 0;
+                let is_intervention =
+                    (state.intervention_targets & mask) != 0 && state.intervention_count > 0;
+                let is_leap = (state.leap_targets & mask) != 0 && state.leap_count > 0;
+                let cap_total = capture_total(&state);
+                let remaining_before = state.pending_removals[side];
+
+                if is_intervention {
+                    state.mill_available_at_removal = false;
+                    state.custodian_targets = 0;
+                    state.custodian_count = 0;
+                    state.leap_targets = 0;
+                    state.leap_count = 0;
+                    state.pending_removals[side] = state.intervention_count;
+                } else if is_custodian {
+                    state.mill_available_at_removal = false;
+                    state.intervention_targets = 0;
+                    state.intervention_count = 0;
+                    state.leap_targets = 0;
+                    state.leap_count = 0;
+                    state.pending_removals[side] = 1;
+                } else if is_leap {
+                    state.mill_available_at_removal = false;
+                    state.custodian_targets = 0;
+                    state.custodian_count = 0;
+                    state.intervention_targets = 0;
+                    state.intervention_count = 0;
+                    state.pending_removals[side] = 1;
+                } else if state.mill_available_at_removal && cap_total > 0 {
+                    if self.options.may_remove_multiple && remaining_before > cap_total {
+                        state.pending_removals[side] = remaining_before.saturating_sub(cap_total);
+                    }
+                    clear_capture_state(&mut state);
+                    state.mill_available_at_removal = true;
+                } else {
+                    debug_assert!(
+                        cap_total == 0 || state.mill_available_at_removal,
+                        "capture obligation must remove a capture target"
+                    );
+                }
+
                 state.board[to] = 0;
                 state.pieces_on_board[opponent] = state.pieces_on_board[opponent].saturating_sub(1);
                 state.pending_removals[side] = state.pending_removals[side].saturating_sub(1);
+                if is_custodian {
+                    state.custodian_targets &= !mask;
+                    state.custodian_count = state.custodian_count.saturating_sub(1);
+                    if state.custodian_count == 0 {
+                        state.custodian_targets = 0;
+                    }
+                }
+                if is_intervention {
+                    state.intervention_targets &= !mask;
+                    state.intervention_count = state.intervention_count.saturating_sub(1);
+                    if state.intervention_count == 0 {
+                        state.intervention_targets = 0;
+                    } else {
+                        state.intervention_targets =
+                            find_paired_intervention_target(to, state.intervention_targets | mask);
+                    }
+                }
+                if is_leap {
+                    state.leap_targets &= !mask;
+                    state.leap_count = state.leap_count.saturating_sub(1);
+                    if state.leap_count == 0 {
+                        state.leap_targets = 0;
+                    }
+                }
                 state.ply_since_capture = 0;
                 // Capturing changes material — restart the rolling
                 // repetition window.
@@ -463,6 +599,7 @@ impl GameRules for MillRules {
                     state.outcome_reason = MillOutcomeReason::LoseFewerThanThree;
                     state.side_to_move = -1;
                 } else if state.pending_removals[side] == 0 {
+                    clear_capture_state(&mut state);
                     state.side_to_move ^= 1;
                     maybe_transition_to_moving(&mut state, &self.options);
                     maybe_finish_full_board(&mut state, &self.options);
@@ -550,6 +687,17 @@ impl MillRules {
     }
 
     fn generate_remove_actions(&self, state: &MillState, out: &mut ActionList<256>) {
+        let capture_targets =
+            state.custodian_targets | state.intervention_targets | state.leap_targets;
+        if capture_targets != 0 && !state.mill_available_at_removal {
+            self.generate_capture_remove_actions(state, out, capture_targets);
+            return;
+        }
+
+        if capture_targets != 0 {
+            self.generate_capture_remove_actions(state, out, capture_targets);
+        }
+
         let opponent_piece = (state.side_to_move ^ 1) + 1;
 
         // When `may_remove_from_mills_always` is set the rule simplifies:
@@ -583,6 +731,27 @@ impl MillRules {
                 continue;
             }
             if has_non_mill_target && is_piece_in_mill(state, node) {
+                continue;
+            }
+            out.push(Action {
+                kind_tag: MillActionKind::Remove as i16,
+                from_node: -1,
+                to_node: node as i16,
+                aux: -1,
+                payload_bits: 0,
+            });
+        }
+    }
+
+    fn generate_capture_remove_actions(
+        &self,
+        state: &MillState,
+        out: &mut ActionList<256>,
+        targets: u32,
+    ) {
+        let opponent_piece = (state.side_to_move ^ 1) + 1;
+        for node in 0..24_usize {
+            if (targets & node_bit(node)) == 0 || state.board[node] != opponent_piece {
                 continue;
             }
             out.push(Action {
@@ -790,6 +959,13 @@ struct MillState {
     last_mill_from: i8,
     last_mill_to: i8,
     used_mill_lines: u16,
+    custodian_targets: u32,
+    intervention_targets: u32,
+    leap_targets: u32,
+    custodian_count: u8,
+    intervention_count: u8,
+    leap_count: u8,
+    mill_available_at_removal: bool,
     /// Ring buffer of repetition-only Zobrist signatures (board + side +
     /// phase + pending removals) collected at moving-phase ply boundaries.
     /// Cleared on Place / Remove so only reversible Move events count.
@@ -813,6 +989,13 @@ impl Default for MillState {
             last_mill_from: -1,
             last_mill_to: -1,
             used_mill_lines: 0,
+            custodian_targets: 0,
+            intervention_targets: 0,
+            leap_targets: 0,
+            custodian_count: 0,
+            intervention_count: 0,
+            leap_count: 0,
+            mill_available_at_removal: false,
             key_history: [0_u64; 24],
             key_history_len: 0,
         }
@@ -858,6 +1041,13 @@ impl MillState {
         }
         // 230: key_history_len (clamped to 24, fits in a single byte).
         payload[230] = self.key_history_len.min(24);
+        payload[231..235].copy_from_slice(&self.custodian_targets.to_le_bytes());
+        payload[235..239].copy_from_slice(&self.intervention_targets.to_le_bytes());
+        payload[239..243].copy_from_slice(&self.leap_targets.to_le_bytes());
+        payload[243] = self.custodian_count;
+        payload[244] = self.intervention_count;
+        payload[245] = self.leap_count;
+        payload[246] = u8::from(self.mill_available_at_removal);
         payload
     }
 
@@ -874,6 +1064,11 @@ impl MillState {
             bytes.copy_from_slice(&payload[base..base + 8]);
             *key = u64::from_le_bytes(bytes);
         }
+        let read_u32 = |offset: usize| {
+            let mut bytes = [0_u8; 4];
+            bytes.copy_from_slice(&payload[offset..offset + 4]);
+            u32::from_le_bytes(bytes)
+        };
         Self {
             board,
             side_to_move: snapshot.side_to_move,
@@ -912,6 +1107,13 @@ impl MillState {
             },
             key_history,
             key_history_len: payload[230].min(24),
+            custodian_targets: read_u32(231),
+            intervention_targets: read_u32(235),
+            leap_targets: read_u32(239),
+            custodian_count: payload[243],
+            intervention_count: payload[244],
+            leap_count: payload[245],
+            mill_available_at_removal: payload[246] != 0,
         }
     }
 }
@@ -946,6 +1148,19 @@ fn position_key(state: &MillState) -> u64 {
     mix(state.last_mill_to as u8);
     mix((state.used_mill_lines & 0xff) as u8);
     mix((state.used_mill_lines >> 8) as u8);
+    for byte in state.custodian_targets.to_le_bytes() {
+        mix(byte);
+    }
+    for byte in state.intervention_targets.to_le_bytes() {
+        mix(byte);
+    }
+    for byte in state.leap_targets.to_le_bytes() {
+        mix(byte);
+    }
+    mix(state.custodian_count);
+    mix(state.intervention_count);
+    mix(state.leap_count);
+    mix(u8::from(state.mill_available_at_removal));
     if key == 0 {
         1
     } else {
@@ -987,6 +1202,170 @@ fn mill_lines_for_node(node: usize) -> Vec<[usize; 3]> {
         .collect()
 }
 
+fn node_bit(node: usize) -> u32 {
+    1_u32 << node
+}
+
+fn active_capture_lines(config: &CaptureRuleConfig) -> Vec<[usize; 3]> {
+    let mut lines = Vec::new();
+    if config.on_cross_lines {
+        lines.extend_from_slice(CAPTURE_CROSS_LINES);
+    }
+    if config.on_square_edges {
+        lines.extend_from_slice(CAPTURE_SQUARE_EDGE_LINES);
+    }
+    lines
+}
+
+fn capture_phase_allowed(config: &CaptureRuleConfig, phase: MillPhase) -> bool {
+    config.enabled
+        && match phase {
+            MillPhase::Placing => config.in_placing_phase,
+            MillPhase::Moving => config.in_moving_phase,
+            MillPhase::Ready | MillPhase::GameOver => false,
+        }
+}
+
+fn capture_piece_count_allowed(config: &CaptureRuleConfig, state: &MillState) -> bool {
+    if !config.only_available_when_own_pieces_leq3 || state.phase != MillPhase::Moving {
+        return true;
+    }
+    let side = state.side_to_move as usize;
+    let us = state.pieces_on_board[side];
+    us <= 3
+}
+
+fn is_all_in_mills(state: &MillState, piece: i8) -> bool {
+    state
+        .board
+        .iter()
+        .enumerate()
+        .filter(|(_, p)| **p == piece)
+        .all(|(idx, _)| is_piece_in_mill(state, idx))
+}
+
+fn filter_capture_targets(state: &MillState, options: &MillVariantOptions, targets: u32) -> u32 {
+    let opponent_piece = (state.side_to_move ^ 1) + 1;
+    let mut filtered = 0_u32;
+    let all_in_mills = is_all_in_mills(state, opponent_piece);
+    for node in 0..24_usize {
+        if (targets & node_bit(node)) == 0 || state.board[node] != opponent_piece {
+            continue;
+        }
+        if !options.may_remove_from_mills_always && is_piece_in_mill(state, node) && !all_in_mills {
+            continue;
+        }
+        filtered |= node_bit(node);
+    }
+    filtered
+}
+
+fn detect_custodian_targets(state: &MillState, options: &MillVariantOptions, to: usize) -> u32 {
+    let config = &options.custodian_capture;
+    if !capture_phase_allowed(config, state.phase) || !capture_piece_count_allowed(config, state) {
+        return 0;
+    }
+    let us = state.side_to_move + 1;
+    let them = state.side_to_move ^ 1;
+    let opponent = them + 1;
+    let mut targets = 0_u32;
+    for line in active_capture_lines(config) {
+        let brackets_middle = (to == line[0] && state.board[line[2]] == us)
+            || (to == line[2] && state.board[line[0]] == us);
+        if brackets_middle && state.board[line[1]] == opponent {
+            targets |= node_bit(line[1]);
+        }
+    }
+    filter_capture_targets(state, options, targets)
+}
+
+fn detect_intervention_targets(state: &MillState, options: &MillVariantOptions, to: usize) -> u32 {
+    let config = &options.intervention_capture;
+    if !capture_phase_allowed(config, state.phase) || !capture_piece_count_allowed(config, state) {
+        return 0;
+    }
+    let opponent = (state.side_to_move ^ 1) + 1;
+    for line in active_capture_lines(config) {
+        if to == line[1] && state.board[line[0]] == opponent && state.board[line[2]] == opponent {
+            let targets = node_bit(line[0]) | node_bit(line[2]);
+            let filtered = filter_capture_targets(state, options, targets);
+            if filtered != 0 {
+                return filtered;
+            }
+        }
+    }
+    0
+}
+
+fn detect_leap_targets(
+    state: &MillState,
+    options: &MillVariantOptions,
+    from: usize,
+    to: usize,
+) -> u32 {
+    let config = &options.leap_capture;
+    if !capture_phase_allowed(config, state.phase) || !capture_piece_count_allowed(config, state) {
+        return 0;
+    }
+    let opponent = (state.side_to_move ^ 1) + 1;
+    let mut targets = 0_u32;
+    for line in active_capture_lines(config) {
+        let jumps_over_middle =
+            (to == line[2] && from == line[0]) || (to == line[0] && from == line[2]);
+        if jumps_over_middle && state.board[line[1]] == opponent {
+            targets |= node_bit(line[1]);
+        }
+    }
+    filter_capture_targets(state, options, targets)
+}
+
+fn bit_count(mask: u32) -> u8 {
+    mask.count_ones().min(u8::MAX as u32) as u8
+}
+
+fn clear_capture_state(state: &mut MillState) {
+    state.custodian_targets = 0;
+    state.intervention_targets = 0;
+    state.leap_targets = 0;
+    state.custodian_count = 0;
+    state.intervention_count = 0;
+    state.leap_count = 0;
+    state.mill_available_at_removal = false;
+}
+
+fn activate_capture_state(state: &mut MillState, custodian: u32, intervention: u32, leap: u32) {
+    state.custodian_targets = custodian;
+    state.intervention_targets = intervention;
+    state.leap_targets = leap;
+    state.custodian_count = bit_count(custodian);
+    state.intervention_count = bit_count(intervention);
+    state.leap_count = bit_count(leap);
+}
+
+fn capture_total(state: &MillState) -> u8 {
+    state
+        .custodian_count
+        .saturating_add(state.intervention_count)
+        .saturating_add(state.leap_count)
+}
+
+fn find_paired_intervention_target(removed: usize, targets: u32) -> u32 {
+    for line in CAPTURE_CROSS_LINES
+        .iter()
+        .chain(CAPTURE_SQUARE_EDGE_LINES.iter())
+    {
+        let a = line[0];
+        let b = line[2];
+        if removed == a && (targets & node_bit(b)) != 0 {
+            return node_bit(b);
+        }
+        if removed == b && (targets & node_bit(a)) != 0 {
+            return node_bit(a);
+        }
+    }
+    targets & !node_bit(removed)
+}
+
 const STANDARD_MILL_LINES: &[[usize; 3]] = &[
     [0, 1, 2],
     [2, 3, 4],
@@ -1005,6 +1384,23 @@ const STANDARD_MILL_LINES: &[[usize; 3]] = &[
     [5, 13, 21],
     [7, 15, 23],
 ];
+
+const CAPTURE_SQUARE_EDGE_LINES: &[[usize; 3]] = &[
+    [0, 1, 2],
+    [8, 9, 10],
+    [16, 17, 18],
+    [22, 21, 20],
+    [14, 13, 12],
+    [6, 5, 4],
+    [0, 7, 6],
+    [8, 15, 14],
+    [16, 23, 22],
+    [18, 19, 20],
+    [10, 11, 12],
+    [2, 3, 4],
+];
+
+const CAPTURE_CROSS_LINES: &[[usize; 3]] = &[[7, 15, 23], [19, 11, 3], [1, 9, 17], [21, 13, 5]];
 
 #[cfg(test)]
 mod tests {
@@ -1756,6 +2152,227 @@ mod tests {
         // but we explicitly skip both push and check when off).
         assert_eq!(final_state.key_history_len, 2);
         assert_eq!(rules.outcome(&after).kind, OutcomeKind::Ongoing);
+    }
+
+    #[test]
+    fn custodian_capture_places_single_remove_obligation() {
+        let options = MillVariantOptions {
+            custodian_capture: CaptureRuleConfig {
+                enabled: true,
+                ..CaptureRuleConfig::default()
+            },
+            ..MillVariantOptions::default()
+        };
+        let rules = MillRules::new(options);
+        let state = MillState {
+            board: {
+                let mut board = [0_i8; 24];
+                board[1] = 2; // B d7 trapped between W a7 and W g7
+                board[2] = 1; // W g7
+                board
+            },
+            side_to_move: 0,
+            phase: MillPhase::Placing,
+            move_number: 2,
+            pieces_in_hand: [8, 8],
+            pieces_on_board: [1, 1],
+            ..MillState::default()
+        };
+        let after = rules.apply(
+            &rules.encode(state),
+            Action {
+                kind_tag: MillActionKind::Place as i16,
+                from_node: -1,
+                to_node: 0, // W a7
+                aux: -1,
+                payload_bits: 0,
+            },
+        );
+        let state = MillRules::decode(&after);
+        assert_eq!(state.pending_removals[0], 1);
+        assert_eq!(state.custodian_targets, node_bit(1));
+        assert!(!state.mill_available_at_removal);
+        let mut actions = ActionList::<256>::new();
+        rules.legal_actions(&after, &mut actions);
+        assert_eq!(
+            actions.iter().map(|a| a.to_node).collect::<Vec<_>>(),
+            vec![1]
+        );
+    }
+
+    #[test]
+    fn intervention_capture_uses_one_line_of_two_targets() {
+        let options = MillVariantOptions {
+            intervention_capture: CaptureRuleConfig {
+                enabled: true,
+                ..CaptureRuleConfig::default()
+            },
+            ..MillVariantOptions::default()
+        };
+        let rules = MillRules::new(options);
+        let state = MillState {
+            board: {
+                let mut board = [0_i8; 24];
+                board[0] = 2; // B a7
+                board[2] = 2; // B g7
+                board
+            },
+            side_to_move: 0,
+            phase: MillPhase::Placing,
+            move_number: 2,
+            pieces_in_hand: [9, 7],
+            pieces_on_board: [0, 2],
+            ..MillState::default()
+        };
+        let after = rules.apply(
+            &rules.encode(state),
+            Action {
+                kind_tag: MillActionKind::Place as i16,
+                from_node: -1,
+                to_node: 1, // W intervenes at d7
+                aux: -1,
+                payload_bits: 0,
+            },
+        );
+        let state = MillRules::decode(&after);
+        assert_eq!(state.pending_removals[0], 2);
+        assert_eq!(state.intervention_targets, node_bit(0) | node_bit(2));
+        let mut actions = ActionList::<256>::new();
+        rules.legal_actions(&after, &mut actions);
+        assert_eq!(actions.len(), 2);
+        assert!(actions.iter().any(|a| a.to_node == 0));
+        assert!(actions.iter().any(|a| a.to_node == 2));
+    }
+
+    #[test]
+    fn leap_capture_takes_precedence_over_mill() {
+        let options = MillVariantOptions {
+            leap_capture: CaptureRuleConfig {
+                enabled: true,
+                ..CaptureRuleConfig::default()
+            },
+            ..MillVariantOptions::default()
+        };
+        let rules = MillRules::new(options);
+        let state = MillState {
+            board: {
+                let mut board = [0_i8; 24];
+                board[0] = 1; // W a7 jumps to g7
+                board[1] = 2; // B d7 jumped
+                board[3] = 1; // W g4
+                board[4] = 1; // W g1, so landing at g7 also forms a mill
+                board[6] = 2;
+                board[5] = 2;
+                board
+            },
+            side_to_move: 0,
+            phase: MillPhase::Moving,
+            move_number: 20,
+            pieces_in_hand: [0, 0],
+            pieces_on_board: [3, 3],
+            ..MillState::default()
+        };
+        let after = rules.apply(
+            &rules.encode(state),
+            Action {
+                kind_tag: MillActionKind::Move as i16,
+                from_node: 0,
+                to_node: 2,
+                aux: -1,
+                payload_bits: 0,
+            },
+        );
+        let state = MillRules::decode(&after);
+        assert_eq!(state.pending_removals[0], 1);
+        assert_eq!(state.leap_targets, node_bit(1));
+        assert!(!state.mill_available_at_removal);
+    }
+
+    #[test]
+    fn mill_plus_custodian_accumulates_only_when_may_remove_multiple() {
+        let options = MillVariantOptions {
+            may_remove_multiple: true,
+            custodian_capture: CaptureRuleConfig {
+                enabled: true,
+                ..CaptureRuleConfig::default()
+            },
+            ..MillVariantOptions::default()
+        };
+        let rules = MillRules::new(options);
+        let state = MillState {
+            board: {
+                let mut board = [0_i8; 24];
+                board[7] = 1; // W a4
+                board[6] = 1; // W a1 -> placing at a7 forms left mill
+                board[1] = 2; // B d7 trapped by W a7 / W g7
+                board[2] = 1; // W g7
+                board[5] = 2;
+                board
+            },
+            side_to_move: 0,
+            phase: MillPhase::Placing,
+            move_number: 5,
+            pieces_in_hand: [6, 7],
+            pieces_on_board: [3, 2],
+            ..MillState::default()
+        };
+        let after = rules.apply(
+            &rules.encode(state),
+            Action {
+                kind_tag: MillActionKind::Place as i16,
+                from_node: -1,
+                to_node: 0,
+                aux: -1,
+                payload_bits: 0,
+            },
+        );
+        let state = MillRules::decode(&after);
+        assert_eq!(state.pending_removals[0], 2);
+        assert!(state.mill_available_at_removal);
+        assert_eq!(state.custodian_targets, node_bit(1));
+    }
+
+    #[test]
+    fn mill_plus_custodian_does_not_accumulate_without_may_remove_multiple() {
+        let options = MillVariantOptions {
+            custodian_capture: CaptureRuleConfig {
+                enabled: true,
+                ..CaptureRuleConfig::default()
+            },
+            ..MillVariantOptions::default()
+        };
+        let rules = MillRules::new(options);
+        let state = MillState {
+            board: {
+                let mut board = [0_i8; 24];
+                board[7] = 1;
+                board[6] = 1;
+                board[1] = 2;
+                board[2] = 1;
+                board[5] = 2;
+                board
+            },
+            side_to_move: 0,
+            phase: MillPhase::Placing,
+            move_number: 5,
+            pieces_in_hand: [6, 7],
+            pieces_on_board: [3, 2],
+            ..MillState::default()
+        };
+        let after = rules.apply(
+            &rules.encode(state),
+            Action {
+                kind_tag: MillActionKind::Place as i16,
+                from_node: -1,
+                to_node: 0,
+                aux: -1,
+                payload_bits: 0,
+            },
+        );
+        let state = MillRules::decode(&after);
+        assert_eq!(state.pending_removals[0], 1);
+        assert!(state.mill_available_at_removal);
+        assert_eq!(state.custodian_targets, node_bit(1));
     }
 
     #[test]
