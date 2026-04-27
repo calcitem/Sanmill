@@ -341,12 +341,15 @@ perfect-information invariants.
 `crates/tgf-mill::MillVariantOptions` currently supports:
 
 - `piece_count`, `fly_piece_count`, `pieces_at_least_count`
-- `may_fly`, `has_diagonal_lines`
+- `may_fly`
+- `has_diagonal_lines` (diagonal adjacency + 4 diagonal mill lines:
+  `a7-b6-c5`, `e5-f6-g7`, `a1-b2-c3`, `e3-f2-g1`)
 - `may_remove_from_mills_always`
 - `may_remove_multiple`
 - `n_move_rule`
 - `endgame_n_move_rule`
 - `may_move_in_placing_phase`
+- `is_defender_move_first`
 - `restrict_repeated_mills_formation`
 - `one_time_use_mill`
 - `stop_placing_when_two_empty_squares`
@@ -361,11 +364,10 @@ perfect-information invariants.
   DTO but remain inactive until diagonal 12MM topology lands.
 
 The remaining `Rule` fields (`millFormationActionInPlacingPhase`,
-`stalemateAction`, `isDefenderMoveFirst`, diagonal 12MM topology, and the
-non-default `boardFullAction` removal variants) are not yet honoured by the
-Rust path; the Flutter app routes them through the legacy C++ engine until the
-gap closes.  Perfect DB and opening book intentionally remain behind the cxx
-bridge and should not be converted to Rust.
+`stalemateAction`, and the non-default `boardFullAction` removal variants)
+are not yet honoured by the Rust path; the Flutter app routes them through the
+legacy C++ engine until the gap closes.  Perfect DB and opening book
+intentionally remain behind the cxx bridge and should not be converted to Rust.
 
 Each new field follows the same pattern: extend `MillVariantOptions`, update
 `MillRules::apply` / `legal_actions` / `outcome`, mirror it in

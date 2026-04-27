@@ -24,6 +24,7 @@ extension MillVariantOptionsMapper on RuleSettings {
       nMoveRule: nMoveRule,
       endgameNMoveRule: endgameNMoveRule,
       mayMoveInPlacingPhase: mayMoveInPlacingPhase,
+      isDefenderMoveFirst: isDefenderMoveFirst,
       restrictRepeatedMillsFormation: restrictRepeatedMillsFormation,
       oneTimeUseMill: oneTimeUseMill,
       stopPlacingWhenTwoEmptySquares: stopPlacingWhenTwoEmptySquares,

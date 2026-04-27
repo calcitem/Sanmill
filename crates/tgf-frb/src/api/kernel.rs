@@ -344,6 +344,7 @@ mod tests {
             n_move_rule: 100,
             endgame_n_move_rule: 100,
             may_move_in_placing_phase: false,
+            is_defender_move_first: false,
             restrict_repeated_mills_formation: false,
             one_time_use_mill: false,
             stop_placing_when_two_empty_squares: false,

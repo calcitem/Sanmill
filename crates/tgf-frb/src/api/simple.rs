@@ -69,6 +69,7 @@ pub struct MillVariantOptions {
     pub n_move_rule: u32,
     pub endgame_n_move_rule: u32,
     pub may_move_in_placing_phase: bool,
+    pub is_defender_move_first: bool,
     pub restrict_repeated_mills_formation: bool,
     pub one_time_use_mill: bool,
     pub stop_placing_when_two_empty_squares: bool,
@@ -176,6 +177,7 @@ impl From<MillVariantOptions> for NativeMillVariantOptions {
             n_move_rule: value.n_move_rule,
             endgame_n_move_rule: value.endgame_n_move_rule,
             may_move_in_placing_phase: value.may_move_in_placing_phase,
+            is_defender_move_first: value.is_defender_move_first,
             restrict_repeated_mills_formation: value.restrict_repeated_mills_formation,
             one_time_use_mill: value.one_time_use_mill,
             stop_placing_when_two_empty_squares: value.stop_placing_when_two_empty_squares,
@@ -203,6 +205,7 @@ pub fn native_mill_default_variant_options() -> MillVariantOptions {
         n_move_rule: defaults.n_move_rule,
         endgame_n_move_rule: defaults.endgame_n_move_rule,
         may_move_in_placing_phase: defaults.may_move_in_placing_phase,
+        is_defender_move_first: defaults.is_defender_move_first,
         restrict_repeated_mills_formation: defaults.restrict_repeated_mills_formation,
         one_time_use_mill: defaults.one_time_use_mill,
         stop_placing_when_two_empty_squares: defaults.stop_placing_when_two_empty_squares,
@@ -1121,6 +1124,7 @@ mod tests {
             n_move_rule: 2,
             endgame_n_move_rule: 1,
             may_move_in_placing_phase: true,
+            is_defender_move_first: true,
             restrict_repeated_mills_formation: true,
             one_time_use_mill: true,
             stop_placing_when_two_empty_squares: true,
@@ -1160,6 +1164,7 @@ mod tests {
         assert_eq!(native.n_move_rule, 2);
         assert_eq!(native.endgame_n_move_rule, 1);
         assert!(native.may_move_in_placing_phase);
+        assert!(native.is_defender_move_first);
         assert!(native.restrict_repeated_mills_formation);
         assert!(native.one_time_use_mill);
         assert!(native.stop_placing_when_two_empty_squares);

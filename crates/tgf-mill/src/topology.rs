@@ -23,19 +23,29 @@ pub struct MillTopology {
     line_groups: Vec<Vec<u16>>,
     zones: Vec<Zone>,
     decorations: Vec<Decoration>,
+    has_diagonal_lines: bool,
 }
 
 impl MillTopology {
     pub fn standard() -> Self {
+        Self::new(false)
+    }
+
+    pub fn with_diagonals() -> Self {
+        Self::new(true)
+    }
+
+    pub fn new(has_diagonal_lines: bool) -> Self {
         let nodes = standard_nodes();
-        let edges = standard_edges();
-        let line_groups = standard_line_groups();
+        let edges = standard_edges(has_diagonal_lines);
+        let line_groups = standard_line_groups(has_diagonal_lines);
         Self {
             nodes,
             edges,
             line_groups,
             zones: Vec::new(),
             decorations: Vec::new(),
+            has_diagonal_lines,
         }
     }
 
@@ -58,7 +68,11 @@ impl Default for MillTopology {
 
 impl BoardTopology for MillTopology {
     fn name(&self) -> &str {
-        "mill.24.standard"
+        if self.has_diagonal_lines {
+            "mill.24.diagonal"
+        } else {
+            "mill.24.standard"
+        }
     }
 
     fn node_count(&self) -> u16 {
@@ -80,7 +94,11 @@ impl BoardTopology for MillTopology {
     }
 
     fn neighbors(&self, node: u16) -> &[u16] {
-        NEIGHBORS[node as usize]
+        if self.has_diagonal_lines {
+            NEIGHBORS_DIAGONAL[node as usize]
+        } else {
+            NEIGHBORS[node as usize]
+        }
     }
 
     fn edges(&self) -> &[Edge] {
@@ -146,8 +164,8 @@ fn node(id: u16, square: u16, label: &'static str, x: f32, y: f32) -> MillNode {
     }
 }
 
-fn standard_edges() -> Vec<Edge> {
-    let mut edges = Vec::with_capacity(32);
+fn standard_edges(has_diagonal_lines: bool) -> Vec<Edge> {
+    let mut edges = Vec::with_capacity(if has_diagonal_lines { 48 } else { 40 });
     for start in [0_u16, 8, 16] {
         for i in 0..8_u16 {
             edges.push(Edge {
@@ -163,11 +181,23 @@ fn standard_edges() -> Vec<Edge> {
             b: 16 + i,
         });
     }
+    if has_diagonal_lines {
+        for line in diagonal_line_groups() {
+            edges.push(Edge {
+                a: line[0],
+                b: line[1],
+            });
+            edges.push(Edge {
+                a: line[1],
+                b: line[2],
+            });
+        }
+    }
     edges
 }
 
-fn standard_line_groups() -> Vec<Vec<u16>> {
-    vec![
+fn standard_line_groups(has_diagonal_lines: bool) -> Vec<Vec<u16>> {
+    let mut lines = vec![
         // ring sides
         vec![0, 1, 2],
         vec![2, 3, 4],
@@ -186,6 +216,19 @@ fn standard_line_groups() -> Vec<Vec<u16>> {
         vec![3, 11, 19],
         vec![5, 13, 21],
         vec![7, 15, 23],
+    ];
+    if has_diagonal_lines {
+        lines.extend(diagonal_line_groups().into_iter().map(Vec::from));
+    }
+    lines
+}
+
+fn diagonal_line_groups() -> [[u16; 3]; 4] {
+    [
+        [0, 8, 16],  // a7-b6-c5
+        [18, 10, 2], // e5-f6-g7
+        [6, 14, 22], // a1-b2-c3
+        [20, 12, 4], // e3-f2-g1
     ]
 }
 
@@ -246,6 +289,36 @@ const NEIGHBORS: [&[u16]; 24] = [
     N21, N22, N23,
 ];
 
+const D0: &[u16] = &[8, 1, 7];
+const D1: &[u16] = &[9, 2, 0];
+const D2: &[u16] = &[10, 1, 3];
+const D3: &[u16] = &[11, 4, 2];
+const D4: &[u16] = &[12, 3, 5];
+const D5: &[u16] = &[13, 6, 4];
+const D6: &[u16] = &[14, 5, 7];
+const D7: &[u16] = &[15, 0, 6];
+const D8: &[u16] = &[16, 0, 9, 15];
+const D9: &[u16] = &[17, 1, 10, 8];
+const D10: &[u16] = &[18, 2, 9, 11];
+const D11: &[u16] = &[19, 3, 12, 10];
+const D12: &[u16] = &[20, 4, 11, 13];
+const D13: &[u16] = &[21, 5, 14, 12];
+const D14: &[u16] = &[22, 6, 13, 15];
+const D15: &[u16] = &[23, 7, 8, 14];
+const D16: &[u16] = &[17, 23, 8, 0];
+const D17: &[u16] = &[18, 16, 9, 1];
+const D18: &[u16] = &[19, 17, 10, 2];
+const D19: &[u16] = &[20, 18, 11, 3];
+const D20: &[u16] = &[21, 19, 12, 4];
+const D21: &[u16] = &[22, 20, 13, 5];
+const D22: &[u16] = &[23, 21, 14, 6];
+const D23: &[u16] = &[16, 22, 15, 7];
+
+const NEIGHBORS_DIAGONAL: [&[u16]; 24] = [
+    D0, D1, D2, D3, D4, D5, D6, D7, D8, D9, D10, D11, D12, D13, D14, D15, D16, D17, D18, D19, D20,
+    D21, D22, D23,
+];
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -277,5 +350,19 @@ mod tests {
         assert_eq!(topo.neighbors(1), &[9, 2, 0]);
         assert_eq!(topo.neighbors(9), &[17, 1, 10, 8]);
         assert_eq!(topo.neighbors(17), &[9, 18, 16]);
+    }
+
+    #[test]
+    fn diagonal_topology_matches_cxx_diagonal_rules() {
+        let topo = MillTopology::with_diagonals();
+        assert_eq!(topo.name(), "mill.24.diagonal");
+        assert_eq!(topo.edges().len(), 48);
+        assert_eq!(topo.line_groups().len(), 20);
+        assert_eq!(topo.neighbors(0), &[8, 1, 7]);
+        assert_eq!(topo.neighbors(2), &[10, 1, 3]);
+        assert!(topo.line_groups().contains(&vec![0, 8, 16]));
+        assert!(topo.line_groups().contains(&vec![18, 10, 2]));
+        assert!(topo.line_groups().contains(&vec![6, 14, 22]));
+        assert!(topo.line_groups().contains(&vec![20, 12, 4]));
     }
 }

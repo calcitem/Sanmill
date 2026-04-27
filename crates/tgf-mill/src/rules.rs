@@ -3,10 +3,11 @@
 //
 // Implemented (Iterations 2-4):
 //   * piece_count, fly_piece_count, pieces_at_least_count, may_fly
-//   * has_diagonal_lines (DTO only; diagonal topology remains future work)
+//   * has_diagonal_lines (diagonal topology, adjacency, and mill lines)
 //   * may_remove_from_mills_always, may_remove_multiple
 //   * n_move_rule, endgame_n_move_rule
 //   * may_move_in_placing_phase
+//   * is_defender_move_first
 //   * restrict_repeated_mills_formation
 //   * one_time_use_mill
 //   * stop_placing_when_two_empty_squares
@@ -16,13 +17,11 @@
 //   * custodian / intervention / leap capture on square-edge and cross
 //     lines, including C++-compatible stacking and leap-vs-mill priority
 //     semantics.  Diagonal capture flags are accepted in the DTO but
-//     remain inactive until diagonal 12MM topology lands.
+//     remain inactive until capture-on-diagonal semantics are validated.
 //
 // Still owned by the legacy C++ path:
-//   * diagonal 12MM topology
 //   * mill_formation_action_in_placing_phase non-default variants
 //   * stalemate_action non-default variants
-//   * is_defender_move_first
 //
 // Perfect DB and opening book intentionally remain behind the cxx
 // bridge — see `crates/tgf-legacy-cxx/`.
@@ -32,7 +31,7 @@ use tgf_core::{
     OutcomeKind, Workbench,
 };
 
-use crate::topology::{default_mill_topology, MillTopology};
+use crate::topology::MillTopology;
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 #[repr(i16)]
@@ -111,6 +110,7 @@ pub struct MillVariantOptions {
     pub n_move_rule: u32,
     pub endgame_n_move_rule: u32,
     pub may_move_in_placing_phase: bool,
+    pub is_defender_move_first: bool,
     pub restrict_repeated_mills_formation: bool,
     pub one_time_use_mill: bool,
     pub stop_placing_when_two_empty_squares: bool,
@@ -138,6 +138,7 @@ impl Default for MillVariantOptions {
             n_move_rule: 100,
             endgame_n_move_rule: 100,
             may_move_in_placing_phase: false,
+            is_defender_move_first: false,
             restrict_repeated_mills_formation: false,
             one_time_use_mill: false,
             stop_placing_when_two_empty_squares: false,
@@ -172,10 +173,8 @@ pub struct MillEvaluator;
 
 impl MillRules {
     pub fn new(options: MillVariantOptions) -> Self {
-        Self {
-            options,
-            topology: default_mill_topology(),
-        }
+        let topology = MillTopology::new(options.has_diagonal_lines);
+        Self { options, topology }
     }
 
     fn decode(snapshot: &GameStateSnapshot) -> MillState {
@@ -443,7 +442,7 @@ impl GameRules for MillRules {
                 maybe_stop_placing_when_two_empty(&mut state, &self.options);
                 let custodian = detect_custodian_targets(&state, &self.options, to);
                 let intervention = detect_intervention_targets(&state, &self.options, to);
-                let mill_bits = formed_mill_bits_at(&state, to, state.side_to_move);
+                let mill_bits = formed_mill_bits_at(&state, &self.options, to, state.side_to_move);
                 let usable_bits = usable_mill_bits(&state, &self.options, mill_bits);
                 if usable_bits != 0 {
                     state.pending_removals[side] =
@@ -479,7 +478,7 @@ impl GameRules for MillRules {
                 let custodian = detect_custodian_targets(&state, &self.options, to);
                 let intervention = detect_intervention_targets(&state, &self.options, to);
                 let leap = detect_leap_targets(&state, &self.options, from, to);
-                let mill_bits = formed_mill_bits_at(&state, to, state.side_to_move);
+                let mill_bits = formed_mill_bits_at(&state, &self.options, to, state.side_to_move);
                 let usable_bits = usable_mill_bits(&state, &self.options, mill_bits);
                 if leap != 0 {
                     activate_capture_state(&mut state, 0, 0, leap);
@@ -683,7 +682,7 @@ impl MillRules {
         let mut candidate = *state;
         candidate.board[from] = 0;
         candidate.board[to] = state.side_to_move + 1;
-        count_mills_at(&candidate, to, state.side_to_move) > 0
+        count_mills_at(&candidate, &self.options, to, state.side_to_move) > 0
     }
 
     fn generate_remove_actions(&self, state: &MillState, out: &mut ActionList<256>) {
@@ -720,17 +719,15 @@ impl MillRules {
             return;
         }
 
-        let has_non_mill_target = state
-            .board
-            .iter()
-            .enumerate()
-            .any(|(idx, piece)| *piece == opponent_piece && !is_piece_in_mill(state, idx));
+        let has_non_mill_target = state.board.iter().enumerate().any(|(idx, piece)| {
+            *piece == opponent_piece && !is_piece_in_mill(state, &self.options, idx)
+        });
 
         for (node, piece) in state.board.iter().enumerate() {
             if *piece != opponent_piece {
                 continue;
             }
-            if has_non_mill_target && is_piece_in_mill(state, node) {
+            if has_non_mill_target && is_piece_in_mill(state, &self.options, node) {
                 continue;
             }
             out.push(Action {
@@ -776,6 +773,9 @@ fn maybe_transition_to_moving(state: &mut MillState, options: &MillVariantOption
         && state.pieces_in_hand[1] == 0
     {
         state.phase = MillPhase::Moving;
+        if options.is_defender_move_first {
+            state.side_to_move = 1;
+        }
     }
     if options.stop_placing_when_two_empty_squares
         && state.phase == MillPhase::Placing
@@ -783,6 +783,9 @@ fn maybe_transition_to_moving(state: &mut MillState, options: &MillVariantOption
     {
         state.pieces_in_hand = [0, 0];
         state.phase = MillPhase::Moving;
+        if options.is_defender_move_first {
+            state.side_to_move = 1;
+        }
     }
 }
 
@@ -850,7 +853,7 @@ fn maybe_draw_by_n_move_rule(state: &mut MillState, options: &MillVariantOptions
     }
 }
 
-fn removal_count_for_bits(bits: u16, options: &MillVariantOptions) -> u8 {
+fn removal_count_for_bits(bits: u32, options: &MillVariantOptions) -> u8 {
     if options.may_remove_multiple {
         bits.count_ones().max(1) as u8
     } else {
@@ -858,7 +861,7 @@ fn removal_count_for_bits(bits: u16, options: &MillVariantOptions) -> u8 {
     }
 }
 
-fn usable_mill_bits(state: &MillState, options: &MillVariantOptions, bits: u16) -> u16 {
+fn usable_mill_bits(state: &MillState, options: &MillVariantOptions, bits: u32) -> u32 {
     if options.one_time_use_mill {
         bits & !state.used_mill_lines
     } else {
@@ -866,7 +869,7 @@ fn usable_mill_bits(state: &MillState, options: &MillVariantOptions, bits: u16) 
     }
 }
 
-fn note_mill_formation(state: &mut MillState, from: i8, to: i8, bits: u16) {
+fn note_mill_formation(state: &mut MillState, from: i8, to: i8, bits: u32) {
     state.last_mill_from = from;
     state.last_mill_to = to;
     state.used_mill_lines |= bits;
@@ -958,7 +961,7 @@ struct MillState {
     ply_since_capture: u16,
     last_mill_from: i8,
     last_mill_to: i8,
-    used_mill_lines: u16,
+    used_mill_lines: u32,
     custodian_targets: u32,
     intervention_targets: u32,
     leap_targets: u32,
@@ -1031,23 +1034,22 @@ impl MillState {
         payload[32] = (self.ply_since_capture >> 8) as u8;
         payload[33] = self.last_mill_from as u8;
         payload[34] = self.last_mill_to as u8;
-        payload[35] = (self.used_mill_lines & 0xff) as u8;
-        payload[36] = (self.used_mill_lines >> 8) as u8;
-        payload[37] = self.outcome_reason as u8;
-        // 38..=229: key_history (24 × 8 bytes, little-endian).
+        payload[35..39].copy_from_slice(&self.used_mill_lines.to_le_bytes());
+        payload[39] = self.outcome_reason as u8;
+        // 40..=231: key_history (24 × 8 bytes, little-endian).
         for (slot_idx, key) in self.key_history.iter().enumerate() {
-            let base = 38 + slot_idx * 8;
+            let base = 40 + slot_idx * 8;
             payload[base..base + 8].copy_from_slice(&key.to_le_bytes());
         }
-        // 230: key_history_len (clamped to 24, fits in a single byte).
-        payload[230] = self.key_history_len.min(24);
-        payload[231..235].copy_from_slice(&self.custodian_targets.to_le_bytes());
-        payload[235..239].copy_from_slice(&self.intervention_targets.to_le_bytes());
-        payload[239..243].copy_from_slice(&self.leap_targets.to_le_bytes());
-        payload[243] = self.custodian_count;
-        payload[244] = self.intervention_count;
-        payload[245] = self.leap_count;
-        payload[246] = u8::from(self.mill_available_at_removal);
+        // 232: key_history_len (clamped to 24, fits in a single byte).
+        payload[232] = self.key_history_len.min(24);
+        payload[233..237].copy_from_slice(&self.custodian_targets.to_le_bytes());
+        payload[237..241].copy_from_slice(&self.intervention_targets.to_le_bytes());
+        payload[241..245].copy_from_slice(&self.leap_targets.to_le_bytes());
+        payload[245] = self.custodian_count;
+        payload[246] = self.intervention_count;
+        payload[247] = self.leap_count;
+        payload[248] = u8::from(self.mill_available_at_removal);
         payload
     }
 
@@ -1059,7 +1061,7 @@ impl MillState {
         }
         let mut key_history = [0_u64; 24];
         for (slot_idx, key) in key_history.iter_mut().enumerate() {
-            let base = 38 + slot_idx * 8;
+            let base = 40 + slot_idx * 8;
             let mut bytes = [0_u8; 8];
             bytes.copy_from_slice(&payload[base..base + 8]);
             *key = u64::from_le_bytes(bytes);
@@ -1086,8 +1088,8 @@ impl MillState {
             ply_since_capture: u16::from(payload[31]) | (u16::from(payload[32]) << 8),
             last_mill_from: payload[33] as i8,
             last_mill_to: payload[34] as i8,
-            used_mill_lines: u16::from(payload[35]) | (u16::from(payload[36]) << 8),
-            outcome_reason: match payload[37] {
+            used_mill_lines: read_u32(35),
+            outcome_reason: match payload[39] {
                 x if x == MillOutcomeReason::LoseFewerThanThree as u8 => {
                     MillOutcomeReason::LoseFewerThanThree
                 }
@@ -1106,14 +1108,14 @@ impl MillState {
                 _ => MillOutcomeReason::Ongoing,
             },
             key_history,
-            key_history_len: payload[230].min(24),
-            custodian_targets: read_u32(231),
-            intervention_targets: read_u32(235),
-            leap_targets: read_u32(239),
-            custodian_count: payload[243],
-            intervention_count: payload[244],
-            leap_count: payload[245],
-            mill_available_at_removal: payload[246] != 0,
+            key_history_len: payload[232].min(24),
+            custodian_targets: read_u32(233),
+            intervention_targets: read_u32(237),
+            leap_targets: read_u32(241),
+            custodian_count: payload[245],
+            intervention_count: payload[246],
+            leap_count: payload[247],
+            mill_available_at_removal: payload[248] != 0,
         }
     }
 }
@@ -1146,8 +1148,9 @@ fn position_key(state: &MillState) -> u64 {
     mix((state.ply_since_capture >> 8) as u8);
     mix(state.last_mill_from as u8);
     mix(state.last_mill_to as u8);
-    mix((state.used_mill_lines & 0xff) as u8);
-    mix((state.used_mill_lines >> 8) as u8);
+    for byte in state.used_mill_lines.to_le_bytes() {
+        mix(byte);
+    }
     for byte in state.custodian_targets.to_le_bytes() {
         mix(byte);
     }
@@ -1170,36 +1173,54 @@ fn position_key(state: &MillState) -> u64 {
 
 /// Number of mill lines passing through `node` that are now all owned by
 /// `side_to_move`.  Used by `apply` to honour `may_remove_multiple`.
-fn count_mills_at(state: &MillState, node: usize, side_to_move: i8) -> usize {
-    formed_mill_bits_at(state, node, side_to_move).count_ones() as usize
+fn count_mills_at(
+    state: &MillState,
+    options: &MillVariantOptions,
+    node: usize,
+    side_to_move: i8,
+) -> usize {
+    formed_mill_bits_at(state, options, node, side_to_move).count_ones() as usize
 }
 
-fn formed_mill_bits_at(state: &MillState, node: usize, side_to_move: i8) -> u16 {
-    let mut bits = 0_u16;
-    for (line_idx, line) in STANDARD_MILL_LINES.iter().enumerate() {
+fn formed_mill_bits_at(
+    state: &MillState,
+    options: &MillVariantOptions,
+    node: usize,
+    side_to_move: i8,
+) -> u32 {
+    let mut bits = 0_u32;
+    for (line_idx, line) in mill_lines(options).iter().enumerate() {
         if line.contains(&node) && line.iter().all(|idx| state.board[*idx] == side_to_move + 1) {
-            bits |= 1_u16 << line_idx;
+            bits |= 1_u32 << line_idx;
         }
     }
     bits
 }
 
-fn is_piece_in_mill(state: &MillState, node: usize) -> bool {
+fn is_piece_in_mill(state: &MillState, options: &MillVariantOptions, node: usize) -> bool {
     let piece = state.board[node];
     if piece == 0 {
         return false;
     }
-    mill_lines_for_node(node)
+    mill_lines_for_node(options, node)
         .iter()
         .any(|line| line.iter().all(|idx| state.board[*idx] == piece))
 }
 
-fn mill_lines_for_node(node: usize) -> Vec<[usize; 3]> {
-    STANDARD_MILL_LINES
+fn mill_lines_for_node(options: &MillVariantOptions, node: usize) -> Vec<[usize; 3]> {
+    mill_lines(options)
         .iter()
         .copied()
         .filter(|line| line.contains(&node))
         .collect()
+}
+
+fn mill_lines(options: &MillVariantOptions) -> &'static [[usize; 3]] {
+    if options.has_diagonal_lines {
+        DIAGONAL_MILL_LINES
+    } else {
+        STANDARD_MILL_LINES
+    }
 }
 
 fn node_bit(node: usize) -> u32 {
@@ -1235,24 +1256,27 @@ fn capture_piece_count_allowed(config: &CaptureRuleConfig, state: &MillState) ->
     us <= 3
 }
 
-fn is_all_in_mills(state: &MillState, piece: i8) -> bool {
+fn is_all_in_mills(state: &MillState, options: &MillVariantOptions, piece: i8) -> bool {
     state
         .board
         .iter()
         .enumerate()
         .filter(|(_, p)| **p == piece)
-        .all(|(idx, _)| is_piece_in_mill(state, idx))
+        .all(|(idx, _)| is_piece_in_mill(state, options, idx))
 }
 
 fn filter_capture_targets(state: &MillState, options: &MillVariantOptions, targets: u32) -> u32 {
     let opponent_piece = (state.side_to_move ^ 1) + 1;
     let mut filtered = 0_u32;
-    let all_in_mills = is_all_in_mills(state, opponent_piece);
+    let all_in_mills = is_all_in_mills(state, options, opponent_piece);
     for node in 0..24_usize {
         if (targets & node_bit(node)) == 0 || state.board[node] != opponent_piece {
             continue;
         }
-        if !options.may_remove_from_mills_always && is_piece_in_mill(state, node) && !all_in_mills {
+        if !options.may_remove_from_mills_always
+            && is_piece_in_mill(state, options, node)
+            && !all_in_mills
+        {
             continue;
         }
         filtered |= node_bit(node);
@@ -1383,6 +1407,29 @@ const STANDARD_MILL_LINES: &[[usize; 3]] = &[
     [3, 11, 19],
     [5, 13, 21],
     [7, 15, 23],
+];
+
+const DIAGONAL_MILL_LINES: &[[usize; 3]] = &[
+    [0, 1, 2],
+    [2, 3, 4],
+    [4, 5, 6],
+    [6, 7, 0],
+    [8, 9, 10],
+    [10, 11, 12],
+    [12, 13, 14],
+    [14, 15, 8],
+    [16, 17, 18],
+    [18, 19, 20],
+    [20, 21, 22],
+    [22, 23, 16],
+    [1, 9, 17],
+    [3, 11, 19],
+    [5, 13, 21],
+    [7, 15, 23],
+    [0, 8, 16],
+    [18, 10, 2],
+    [6, 14, 22],
+    [20, 12, 4],
 ];
 
 const CAPTURE_SQUARE_EDGE_LINES: &[[usize; 3]] = &[
@@ -2373,6 +2420,101 @@ mod tests {
         assert_eq!(state.pending_removals[0], 1);
         assert!(state.mill_available_at_removal);
         assert_eq!(state.custodian_targets, node_bit(1));
+    }
+
+    #[test]
+    fn diagonal_lines_form_extra_mills_when_enabled() {
+        let options = MillVariantOptions {
+            has_diagonal_lines: true,
+            ..MillVariantOptions::default()
+        };
+        let rules = MillRules::new(options);
+        let mut state = MillState {
+            side_to_move: 0,
+            phase: MillPhase::Placing,
+            move_number: 4,
+            pieces_in_hand: [7, 7],
+            pieces_on_board: [2, 2],
+            ..MillState::default()
+        };
+        state.board[0] = 1; // a7
+        state.board[8] = 1; // b6
+        state.board[6] = 2;
+        state.board[5] = 2;
+        let after = rules.apply(
+            &rules.encode(state),
+            Action {
+                kind_tag: MillActionKind::Place as i16,
+                from_node: -1,
+                to_node: 16, // c5 completes a7-b6-c5 diagonal
+                aux: -1,
+                payload_bits: 0,
+            },
+        );
+        let state = MillRules::decode(&after);
+        assert_eq!(state.pending_removals[0], 1);
+        assert_eq!(state.side_to_move, 0, "turn stays while removing");
+    }
+
+    #[test]
+    fn diagonal_lines_do_not_form_when_disabled() {
+        let rules = MillRules::default();
+        let mut state = MillState {
+            side_to_move: 0,
+            phase: MillPhase::Placing,
+            move_number: 4,
+            pieces_in_hand: [7, 7],
+            pieces_on_board: [2, 2],
+            ..MillState::default()
+        };
+        state.board[0] = 1;
+        state.board[8] = 1;
+        state.board[6] = 2;
+        state.board[5] = 2;
+        let after = rules.apply(
+            &rules.encode(state),
+            Action {
+                kind_tag: MillActionKind::Place as i16,
+                from_node: -1,
+                to_node: 16,
+                aux: -1,
+                payload_bits: 0,
+            },
+        );
+        let state = MillRules::decode(&after);
+        assert_eq!(state.pending_removals[0], 0);
+        assert_eq!(state.side_to_move, 1);
+    }
+
+    #[test]
+    fn defender_moves_first_when_placing_phase_ends() {
+        let options = MillVariantOptions {
+            is_defender_move_first: true,
+            ..MillVariantOptions::default()
+        };
+        let rules = MillRules::new(options);
+        let mut snap = rules.initial_state(&[]);
+        // Same no-mill 18-placement fixture used by C++ golden tests.
+        for node in [
+            1, 2, 3, 0, 7, 4, 10, 9, 8, 13, 12, 6, 18, 16, 23, 17, 20, 22,
+        ] {
+            snap = rules.apply(
+                &snap,
+                Action {
+                    kind_tag: MillActionKind::Place as i16,
+                    from_node: -1,
+                    to_node: node,
+                    aux: -1,
+                    payload_bits: 0,
+                },
+            );
+        }
+        let state = MillRules::decode(&snap);
+        assert_eq!(state.phase, MillPhase::Moving);
+        assert_eq!(
+            state.side_to_move, 1,
+            "defender (black) starts moving phase"
+        );
     }
 
     #[test]

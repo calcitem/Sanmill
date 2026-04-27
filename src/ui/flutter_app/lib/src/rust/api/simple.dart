@@ -264,6 +264,7 @@ class MillVariantOptions {
   final int nMoveRule;
   final int endgameNMoveRule;
   final bool mayMoveInPlacingPhase;
+  final bool isDefenderMoveFirst;
   final bool restrictRepeatedMillsFormation;
   final bool oneTimeUseMill;
   final bool stopPlacingWhenTwoEmptySquares;
@@ -284,6 +285,7 @@ class MillVariantOptions {
     required this.nMoveRule,
     required this.endgameNMoveRule,
     required this.mayMoveInPlacingPhase,
+    required this.isDefenderMoveFirst,
     required this.restrictRepeatedMillsFormation,
     required this.oneTimeUseMill,
     required this.stopPlacingWhenTwoEmptySquares,
@@ -306,6 +308,7 @@ class MillVariantOptions {
       nMoveRule.hashCode ^
       endgameNMoveRule.hashCode ^
       mayMoveInPlacingPhase.hashCode ^
+      isDefenderMoveFirst.hashCode ^
       restrictRepeatedMillsFormation.hashCode ^
       oneTimeUseMill.hashCode ^
       stopPlacingWhenTwoEmptySquares.hashCode ^
@@ -330,6 +333,7 @@ class MillVariantOptions {
           nMoveRule == other.nMoveRule &&
           endgameNMoveRule == other.endgameNMoveRule &&
           mayMoveInPlacingPhase == other.mayMoveInPlacingPhase &&
+          isDefenderMoveFirst == other.isDefenderMoveFirst &&
           restrictRepeatedMillsFormation ==
               other.restrictRepeatedMillsFormation &&
           oneTimeUseMill == other.oneTimeUseMill &&

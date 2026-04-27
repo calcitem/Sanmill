@@ -1432,8 +1432,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   MillVariantOptions dco_decode_mill_variant_options(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     final arr = raw as List<dynamic>;
-    if (arr.length != 18)
-      throw Exception('unexpected arr length: expect 18 but see ${arr.length}');
+    if (arr.length != 19)
+      throw Exception('unexpected arr length: expect 19 but see ${arr.length}');
     return MillVariantOptions(
       pieceCount: dco_decode_u_8(arr[0]),
       flyPieceCount: dco_decode_u_8(arr[1]),
@@ -1445,14 +1445,15 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       nMoveRule: dco_decode_u_32(arr[7]),
       endgameNMoveRule: dco_decode_u_32(arr[8]),
       mayMoveInPlacingPhase: dco_decode_bool(arr[9]),
-      restrictRepeatedMillsFormation: dco_decode_bool(arr[10]),
-      oneTimeUseMill: dco_decode_bool(arr[11]),
-      stopPlacingWhenTwoEmptySquares: dco_decode_bool(arr[12]),
-      boardFullAction: dco_decode_mill_board_full_action(arr[13]),
-      threefoldRepetitionRule: dco_decode_bool(arr[14]),
-      custodianCapture: dco_decode_capture_rule_config(arr[15]),
-      interventionCapture: dco_decode_capture_rule_config(arr[16]),
-      leapCapture: dco_decode_capture_rule_config(arr[17]),
+      isDefenderMoveFirst: dco_decode_bool(arr[10]),
+      restrictRepeatedMillsFormation: dco_decode_bool(arr[11]),
+      oneTimeUseMill: dco_decode_bool(arr[12]),
+      stopPlacingWhenTwoEmptySquares: dco_decode_bool(arr[13]),
+      boardFullAction: dco_decode_mill_board_full_action(arr[14]),
+      threefoldRepetitionRule: dco_decode_bool(arr[15]),
+      custodianCapture: dco_decode_capture_rule_config(arr[16]),
+      interventionCapture: dco_decode_capture_rule_config(arr[17]),
+      leapCapture: dco_decode_capture_rule_config(arr[18]),
     );
   }
 
@@ -1767,6 +1768,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     var var_nMoveRule = sse_decode_u_32(deserializer);
     var var_endgameNMoveRule = sse_decode_u_32(deserializer);
     var var_mayMoveInPlacingPhase = sse_decode_bool(deserializer);
+    var var_isDefenderMoveFirst = sse_decode_bool(deserializer);
     var var_restrictRepeatedMillsFormation = sse_decode_bool(deserializer);
     var var_oneTimeUseMill = sse_decode_bool(deserializer);
     var var_stopPlacingWhenTwoEmptySquares = sse_decode_bool(deserializer);
@@ -1786,6 +1788,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       nMoveRule: var_nMoveRule,
       endgameNMoveRule: var_endgameNMoveRule,
       mayMoveInPlacingPhase: var_mayMoveInPlacingPhase,
+      isDefenderMoveFirst: var_isDefenderMoveFirst,
       restrictRepeatedMillsFormation: var_restrictRepeatedMillsFormation,
       oneTimeUseMill: var_oneTimeUseMill,
       stopPlacingWhenTwoEmptySquares: var_stopPlacingWhenTwoEmptySquares,
@@ -2105,6 +2108,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_u_32(self.nMoveRule, serializer);
     sse_encode_u_32(self.endgameNMoveRule, serializer);
     sse_encode_bool(self.mayMoveInPlacingPhase, serializer);
+    sse_encode_bool(self.isDefenderMoveFirst, serializer);
     sse_encode_bool(self.restrictRepeatedMillsFormation, serializer);
     sse_encode_bool(self.oneTimeUseMill, serializer);
     sse_encode_bool(self.stopPlacingWhenTwoEmptySquares, serializer);
