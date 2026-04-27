@@ -1415,8 +1415,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   MillVariantOptions dco_decode_mill_variant_options(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     final arr = raw as List<dynamic>;
-    if (arr.length != 14)
-      throw Exception('unexpected arr length: expect 14 but see ${arr.length}');
+    if (arr.length != 15)
+      throw Exception('unexpected arr length: expect 15 but see ${arr.length}');
     return MillVariantOptions(
       pieceCount: dco_decode_u_8(arr[0]),
       flyPieceCount: dco_decode_u_8(arr[1]),
@@ -1432,6 +1432,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       oneTimeUseMill: dco_decode_bool(arr[11]),
       stopPlacingWhenTwoEmptySquares: dco_decode_bool(arr[12]),
       boardFullAction: dco_decode_mill_board_full_action(arr[13]),
+      threefoldRepetitionRule: dco_decode_bool(arr[14]),
     );
   }
 
@@ -1727,6 +1728,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     var var_oneTimeUseMill = sse_decode_bool(deserializer);
     var var_stopPlacingWhenTwoEmptySquares = sse_decode_bool(deserializer);
     var var_boardFullAction = sse_decode_mill_board_full_action(deserializer);
+    var var_threefoldRepetitionRule = sse_decode_bool(deserializer);
     return MillVariantOptions(
       pieceCount: var_pieceCount,
       flyPieceCount: var_flyPieceCount,
@@ -1742,6 +1744,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       oneTimeUseMill: var_oneTimeUseMill,
       stopPlacingWhenTwoEmptySquares: var_stopPlacingWhenTwoEmptySquares,
       boardFullAction: var_boardFullAction,
+      threefoldRepetitionRule: var_threefoldRepetitionRule,
     );
   }
 
@@ -2042,6 +2045,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_bool(self.oneTimeUseMill, serializer);
     sse_encode_bool(self.stopPlacingWhenTwoEmptySquares, serializer);
     sse_encode_mill_board_full_action(self.boardFullAction, serializer);
+    sse_encode_bool(self.threefoldRepetitionRule, serializer);
   }
 
   @protected

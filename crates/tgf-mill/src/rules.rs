@@ -1,20 +1,28 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // Rust-native Mill rules scaffold.
 //
-// Iteration 2 rule coverage:
-//   Implemented: piece_count, fly_piece_count, pieces_at_least_count, may_fly,
-//   has_diagonal_lines (DTO only; diagonal topology remains future work),
-//   may_remove_from_mills_always, may_remove_multiple, n_move_rule,
-//   endgame_n_move_rule, may_move_in_placing_phase,
-//   restrict_repeated_mills_formation, one_time_use_mill,
-//   stop_placing_when_two_empty_squares, and board_full_action
-//   (FirstPlayerLose / AgreeToDraw).
+// Implemented (Iterations 2-3):
+//   * piece_count, fly_piece_count, pieces_at_least_count, may_fly
+//   * has_diagonal_lines (DTO only; diagonal topology remains future work)
+//   * may_remove_from_mills_always, may_remove_multiple
+//   * n_move_rule, endgame_n_move_rule
+//   * may_move_in_placing_phase
+//   * restrict_repeated_mills_formation
+//   * one_time_use_mill
+//   * stop_placing_when_two_empty_squares
+//   * board_full_action (FirstPlayerLose / AgreeToDraw)
+//   * threefold_repetition_rule (state-side, history kept in
+//     `MillState.opaque_payload[38..230]`, drawn at apply time)
 //
-//   Still owned by the legacy C++ path: diagonal 12MM topology,
-//   mill_formation_action_in_placing_phase variants, stalemate_action
-//   variants, full threefold repetition, is_defender_move_first, and the
-//   custodian/intervention/leap capture rule families.  Perfect DB and
-//   opening book intentionally remain behind the cxx bridge.
+// Still owned by the legacy C++ path:
+//   * diagonal 12MM topology
+//   * mill_formation_action_in_placing_phase non-default variants
+//   * stalemate_action non-default variants
+//   * is_defender_move_first
+//   * custodian / intervention / leap capture rule families
+//
+// Perfect DB and opening book intentionally remain behind the cxx
+// bridge — see `crates/tgf-legacy-cxx/`.
 
 use tgf_core::{
     Action, ActionList, BoardTopology, Evaluator, Game, GameRules, GameStateSnapshot, Outcome,
@@ -75,6 +83,11 @@ pub struct MillVariantOptions {
     pub one_time_use_mill: bool,
     pub stop_placing_when_two_empty_squares: bool,
     pub board_full_action: MillBoardFullAction,
+    /// Enable the FIDE-style threefold-repetition draw rule: when the
+    /// same moving-phase position recurs three times the engine sets
+    /// `phase=GameOver` and `outcome=Draw{drawThreefold}`.  Default is
+    /// `true`, matching the C++ engine's `rule.threefoldRepetitionRule`.
+    pub threefold_repetition_rule: bool,
 }
 
 impl Default for MillVariantOptions {
@@ -94,6 +107,7 @@ impl Default for MillVariantOptions {
             one_time_use_mill: false,
             stop_placing_when_two_empty_squares: false,
             board_full_action: MillBoardFullAction::FirstPlayerLose,
+            threefold_repetition_rule: true,
         }
     }
 }
@@ -160,11 +174,7 @@ impl MillRules {
             pieces_on_board: [3, 3],
             pending_removals: [0, 0],
             winner: -1,
-            outcome_reason: MillOutcomeReason::Ongoing,
-            ply_since_capture: 0,
-            last_mill_from: -1,
-            last_mill_to: -1,
-            used_mill_lines: 0,
+            ..MillState::default()
         };
         let after_move = rules.apply(
             &rules.encode(state),
@@ -227,11 +237,7 @@ impl MillRules {
             pieces_on_board: [3, 2],
             pending_removals: [1, 0],
             winner: -1,
-            outcome_reason: MillOutcomeReason::Ongoing,
-            ply_since_capture: 0,
-            last_mill_from: -1,
-            last_mill_to: -1,
-            used_mill_lines: 0,
+            ..MillState::default()
         };
         let after_remove = rules.apply(
             &rules.encode(state),
@@ -340,11 +346,7 @@ impl GameRules for MillRules {
             pieces_on_board: [0, 0],
             pending_removals: [0, 0],
             winner: -1,
-            outcome_reason: MillOutcomeReason::Ongoing,
-            ply_since_capture: 0,
-            last_mill_from: -1,
-            last_mill_to: -1,
-            used_mill_lines: 0,
+            ..MillState::default()
         };
         self.encode(state)
     }
@@ -396,6 +398,10 @@ impl GameRules for MillRules {
                 state.pieces_in_hand[side] = state.pieces_in_hand[side].saturating_sub(1);
                 state.pieces_on_board[side] += 1;
                 state.move_number += 1;
+                // Placing a new piece is irreversible: any rolling
+                // repetition history accumulated in the moving phase
+                // becomes irrelevant.
+                clear_key_history(&mut state);
                 maybe_stop_placing_when_two_empty(&mut state, &self.options);
                 let mill_bits = formed_mill_bits_at(&state, to, state.side_to_move);
                 let usable_bits = usable_mill_bits(&state, &self.options, mill_bits);
@@ -427,6 +433,12 @@ impl GameRules for MillRules {
                     note_mill_formation(&mut state, from as i8, to as i8, usable_bits);
                 } else {
                     state.side_to_move ^= 1;
+                    // Record this side-changing reversible move into the
+                    // repetition history *before* deciding whether the
+                    // n-move rule fires; threefold takes precedence and
+                    // sets GameOver itself, after which the n-move check
+                    // becomes a no-op (it inspects `state.phase`).
+                    push_key_and_check_threefold(&mut state, &self.options);
                     maybe_draw_by_n_move_rule(&mut state, &self.options);
                 }
             }
@@ -440,6 +452,9 @@ impl GameRules for MillRules {
                 state.pieces_on_board[opponent] = state.pieces_on_board[opponent].saturating_sub(1);
                 state.pending_removals[side] = state.pending_removals[side].saturating_sub(1);
                 state.ply_since_capture = 0;
+                // Capturing changes material — restart the rolling
+                // repetition window.
+                clear_key_history(&mut state);
                 if state.phase == MillPhase::Moving
                     && state.pieces_on_board[opponent] < self.options.pieces_at_least_count
                 {
@@ -467,6 +482,7 @@ impl GameRules for MillRules {
                     reason: match state.outcome_reason {
                         MillOutcomeReason::DrawFullBoard => "drawFullBoard",
                         MillOutcomeReason::DrawNMoveRule => "drawNMoveRule",
+                        MillOutcomeReason::DrawThreefold => "drawThreefold",
                         _ => "draw",
                     }
                     .to_owned(),
@@ -687,6 +703,68 @@ fn note_mill_formation(state: &mut MillState, from: i8, to: i8, bits: u16) {
     state.used_mill_lines |= bits;
 }
 
+/// Hash the parts of a `MillState` that participate in threefold
+/// repetition: board layout, side to move, phase, pending-removals.
+/// Excludes counters that change each ply (`move_number`,
+/// `ply_since_capture`, etc.) so a repeated board genuinely hashes the
+/// same on every visit.
+fn repetition_signature(state: &MillState) -> u64 {
+    let mut key = 0xcbf2_9ce4_8422_2325_u64;
+    let mut mix = |byte: u8| {
+        key ^= u64::from(byte);
+        key = key.wrapping_mul(0x1000_0000_01b3);
+    };
+    for piece in state.board {
+        mix(piece as u8);
+    }
+    mix(state.side_to_move as u8);
+    mix(state.phase as u8);
+    mix(state.pending_removals[0]);
+    mix(state.pending_removals[1]);
+    if key == 0 {
+        1
+    } else {
+        key
+    }
+}
+
+/// Empty the rolling repetition history.  Called on irreversible events
+/// (a Place into hand drains, a Remove that captures a piece) so cycles
+/// only span pure Move sequences.
+fn clear_key_history(state: &mut MillState) {
+    state.key_history = [0_u64; 24];
+    state.key_history_len = 0;
+}
+
+/// Append the current state's repetition signature to the rolling
+/// buffer (FIFO, max 24 entries) and end the game in a draw when the
+/// same signature has occurred three times.  No-op when
+/// `threefold_repetition_rule` is disabled.
+fn push_key_and_check_threefold(state: &mut MillState, options: &MillVariantOptions) {
+    if !options.threefold_repetition_rule {
+        return;
+    }
+    let key = repetition_signature(state);
+    if state.key_history_len < 24 {
+        state.key_history[state.key_history_len as usize] = key;
+        state.key_history_len += 1;
+    } else {
+        state.key_history.copy_within(1..24, 0);
+        state.key_history[23] = key;
+    }
+    let len = state.key_history_len as usize;
+    let count = state.key_history[..len]
+        .iter()
+        .filter(|k| **k == key)
+        .count();
+    if count >= 3 {
+        state.phase = MillPhase::GameOver;
+        state.winner = 2;
+        state.outcome_reason = MillOutcomeReason::DrawThreefold;
+        state.side_to_move = -1;
+    }
+}
+
 fn move_action(from: usize, to: usize) -> Action {
     Action {
         kind_tag: MillActionKind::Move as i16,
@@ -712,16 +790,45 @@ struct MillState {
     last_mill_from: i8,
     last_mill_to: i8,
     used_mill_lines: u16,
+    /// Ring buffer of repetition-only Zobrist signatures (board + side +
+    /// phase + pending removals) collected at moving-phase ply boundaries.
+    /// Cleared on Place / Remove so only reversible Move events count.
+    key_history: [u64; 24],
+    key_history_len: u8,
 }
 
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+impl Default for MillState {
+    fn default() -> Self {
+        Self {
+            board: [0_i8; 24],
+            side_to_move: 0,
+            phase: MillPhase::Placing,
+            move_number: 0,
+            pieces_in_hand: [0, 0],
+            pieces_on_board: [0, 0],
+            pending_removals: [0, 0],
+            winner: -1,
+            outcome_reason: MillOutcomeReason::Ongoing,
+            ply_since_capture: 0,
+            last_mill_from: -1,
+            last_mill_to: -1,
+            used_mill_lines: 0,
+            key_history: [0_u64; 24],
+            key_history_len: 0,
+        }
+    }
+}
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Default)]
 #[repr(u8)]
 enum MillOutcomeReason {
+    #[default]
     Ongoing = 0,
     LoseFewerThanThree = 1,
     DrawNMoveRule = 2,
     DrawFullBoard = 3,
     LoseFullBoard = 4,
+    DrawThreefold = 5,
 }
 
 impl MillState {
@@ -744,6 +851,13 @@ impl MillState {
         payload[35] = (self.used_mill_lines & 0xff) as u8;
         payload[36] = (self.used_mill_lines >> 8) as u8;
         payload[37] = self.outcome_reason as u8;
+        // 38..=229: key_history (24 × 8 bytes, little-endian).
+        for (slot_idx, key) in self.key_history.iter().enumerate() {
+            let base = 38 + slot_idx * 8;
+            payload[base..base + 8].copy_from_slice(&key.to_le_bytes());
+        }
+        // 230: key_history_len (clamped to 24, fits in a single byte).
+        payload[230] = self.key_history_len.min(24);
         payload
     }
 
@@ -752,6 +866,13 @@ impl MillState {
         let mut board = [0_i8; 24];
         for (i, slot) in board.iter_mut().enumerate() {
             *slot = payload[i] as i8;
+        }
+        let mut key_history = [0_u64; 24];
+        for (slot_idx, key) in key_history.iter_mut().enumerate() {
+            let base = 38 + slot_idx * 8;
+            let mut bytes = [0_u8; 8];
+            bytes.copy_from_slice(&payload[base..base + 8]);
+            *key = u64::from_le_bytes(bytes);
         }
         Self {
             board,
@@ -784,8 +905,13 @@ impl MillState {
                 x if x == MillOutcomeReason::LoseFullBoard as u8 => {
                     MillOutcomeReason::LoseFullBoard
                 }
+                x if x == MillOutcomeReason::DrawThreefold as u8 => {
+                    MillOutcomeReason::DrawThreefold
+                }
                 _ => MillOutcomeReason::Ongoing,
             },
+            key_history,
+            key_history_len: payload[230].min(24),
         }
     }
 }
@@ -992,11 +1118,7 @@ mod tests {
             pieces_on_board: [3, 3],
             pending_removals: [0, 0],
             winner: -1,
-            outcome_reason: MillOutcomeReason::Ongoing,
-            ply_since_capture: 0,
-            last_mill_from: -1,
-            last_mill_to: -1,
-            used_mill_lines: 0,
+            ..MillState::default()
         };
         let snap = rules.encode(state);
         let after_move = rules.apply(
@@ -1042,11 +1164,7 @@ mod tests {
             pieces_on_board: [3, 2],
             pending_removals: [1, 0],
             winner: -1,
-            outcome_reason: MillOutcomeReason::Ongoing,
-            ply_since_capture: 0,
-            last_mill_from: -1,
-            last_mill_to: -1,
-            used_mill_lines: 0,
+            ..MillState::default()
         };
         let snap = rules.encode(state);
         let after_remove = rules.apply(
@@ -1140,11 +1258,7 @@ mod tests {
             pieces_on_board: [3, 3],
             pending_removals: [1, 0],
             winner: -1,
-            outcome_reason: MillOutcomeReason::Ongoing,
-            ply_since_capture: 0,
-            last_mill_from: -1,
-            last_mill_to: -1,
-            used_mill_lines: 0,
+            ..MillState::default()
         };
         state.board[0] = 1; // W a7
         state.board[1] = 1; // W d7
@@ -1184,11 +1298,7 @@ mod tests {
             pieces_on_board: [4, 4],
             pending_removals: [0, 0],
             winner: -1,
-            outcome_reason: MillOutcomeReason::Ongoing,
-            ply_since_capture: 0,
-            last_mill_from: -1,
-            last_mill_to: -1,
-            used_mill_lines: 0,
+            ..MillState::default()
         };
         state.board[0] = 1; // a7
         state.board[2] = 1; // g7
@@ -1268,11 +1378,7 @@ mod tests {
             pieces_on_board: [3, 3],
             pending_removals: [0, 0],
             winner: -1,
-            outcome_reason: MillOutcomeReason::Ongoing,
-            ply_since_capture: 0,
-            last_mill_from: -1,
-            last_mill_to: -1,
-            used_mill_lines: 0,
+            ..MillState::default()
         };
         let after = rules.apply(
             &rules.encode(state),
@@ -1307,11 +1413,7 @@ mod tests {
             pieces_on_board: [1, 0],
             pending_removals: [0, 0],
             winner: -1,
-            outcome_reason: MillOutcomeReason::Ongoing,
-            ply_since_capture: 0,
-            last_mill_from: -1,
-            last_mill_to: -1,
-            used_mill_lines: 0,
+            ..MillState::default()
         };
         let mut actions = ActionList::<256>::new();
         rules.legal_actions(&rules.encode(state), &mut actions);
@@ -1351,11 +1453,9 @@ mod tests {
             pieces_on_board: [5, 3],
             pending_removals: [0, 0],
             winner: -1,
-            outcome_reason: MillOutcomeReason::Ongoing,
-            ply_since_capture: 0,
             last_mill_from: 9,
             last_mill_to: 8,
-            used_mill_lines: 0,
+            ..MillState::default()
         };
         let mut actions = ActionList::<256>::new();
         rules.legal_actions(&rules.encode(state), &mut actions);
@@ -1385,11 +1485,8 @@ mod tests {
             pieces_on_board: [2, 2],
             pending_removals: [0, 0],
             winner: -1,
-            outcome_reason: MillOutcomeReason::Ongoing,
-            ply_since_capture: 0,
-            last_mill_from: -1,
-            last_mill_to: -1,
             used_mill_lines: 1, // outer-top [0,1,2] already consumed
+            ..MillState::default()
         };
         let after = rules.apply(
             &rules.encode(state),
@@ -1429,11 +1526,7 @@ mod tests {
             pieces_on_board: [0, 21],
             pending_removals: [0, 0],
             winner: -1,
-            outcome_reason: MillOutcomeReason::Ongoing,
-            ply_since_capture: 0,
-            last_mill_from: -1,
-            last_mill_to: -1,
-            used_mill_lines: 0,
+            ..MillState::default()
         };
         let after = rules.apply(
             &rules.encode(state),
@@ -1473,11 +1566,7 @@ mod tests {
             pieces_on_board: [0, 23],
             pending_removals: [0, 0],
             winner: -1,
-            outcome_reason: MillOutcomeReason::Ongoing,
-            ply_since_capture: 0,
-            last_mill_from: -1,
-            last_mill_to: -1,
-            used_mill_lines: 0,
+            ..MillState::default()
         };
         let after = rules.apply(
             &rules.encode(state),
@@ -1490,6 +1579,183 @@ mod tests {
             },
         );
         assert_eq!(rules.outcome(&after).kind, OutcomeKind::Draw);
+    }
+
+    /// Helper: build a small moving-phase state where W just moved
+    /// d6→d7 (`9→1`) and the new state has a known repetition signature.
+    /// We pre-populate the rolling history so the next call to `apply`
+    /// will be the 3rd instance of that signature, triggering the rule.
+    fn moving_phase_swap_state(side_to_move: i8) -> MillState {
+        let mut state = MillState {
+            side_to_move,
+            phase: MillPhase::Moving,
+            move_number: 30,
+            pieces_in_hand: [0, 0],
+            pieces_on_board: [3, 3],
+            pending_removals: [0, 0],
+            winner: -1,
+            ..MillState::default()
+        };
+        // Three white pieces (a7, d6, c4) and three black pieces
+        // (g7, g4, c5) — pure non-mill geometry so any move is reversible.
+        state.board[0] = 1; // a7
+        state.board[9] = 1; // d6
+        state.board[23] = 1; // c4
+        state.board[2] = 2; // g7
+        state.board[3] = 2; // g4
+        state.board[16] = 2; // c5
+        state
+    }
+
+    #[test]
+    fn threefold_triggers_after_three_repetitions() {
+        let rules = MillRules::default();
+        let mut state = moving_phase_swap_state(0);
+        // Pre-populate history with the *post-move* signature twice.
+        let mut after_move = state;
+        after_move.board[9] = 0;
+        after_move.board[1] = 1;
+        after_move.side_to_move = 1;
+        let target_key = repetition_signature(&after_move);
+        state.key_history[0] = target_key;
+        state.key_history[1] = target_key;
+        state.key_history_len = 2;
+
+        let after = rules.apply(
+            &rules.encode(state),
+            Action {
+                kind_tag: MillActionKind::Move as i16,
+                from_node: 9,
+                to_node: 1,
+                aux: -1,
+                payload_bits: 0,
+            },
+        );
+        let final_state = MillRules::decode(&after);
+        assert_eq!(final_state.phase, MillPhase::GameOver);
+        assert_eq!(final_state.winner, 2, "draw winner sentinel");
+        assert_eq!(rules.outcome(&after).kind, OutcomeKind::Draw);
+        assert_eq!(rules.outcome(&after).reason, "drawThreefold");
+    }
+
+    #[test]
+    fn threefold_does_not_trigger_after_two_repetitions() {
+        let rules = MillRules::default();
+        let mut state = moving_phase_swap_state(0);
+        let mut after_move = state;
+        after_move.board[9] = 0;
+        after_move.board[1] = 1;
+        after_move.side_to_move = 1;
+        let target_key = repetition_signature(&after_move);
+        // Only one prior occurrence: the new push will make count == 2.
+        state.key_history[0] = target_key;
+        state.key_history_len = 1;
+
+        let after = rules.apply(
+            &rules.encode(state),
+            Action {
+                kind_tag: MillActionKind::Move as i16,
+                from_node: 9,
+                to_node: 1,
+                aux: -1,
+                payload_bits: 0,
+            },
+        );
+        let final_state = MillRules::decode(&after);
+        assert_eq!(final_state.phase, MillPhase::Moving);
+        assert_eq!(final_state.key_history_len, 2);
+        assert_eq!(rules.outcome(&after).kind, OutcomeKind::Ongoing);
+    }
+
+    #[test]
+    fn capture_clears_threefold_history() {
+        let rules = MillRules::default();
+        // Build a state where W has just formed a mill and must remove a
+        // black piece; pre-load history with two prior occurrences of
+        // the post-capture signature.  The Remove must clear history so
+        // the post-state's signature count drops to 1, NOT 3.
+        let mut state = MillState {
+            side_to_move: 0,
+            phase: MillPhase::Moving,
+            move_number: 30,
+            pieces_in_hand: [0, 0],
+            pieces_on_board: [3, 4],
+            pending_removals: [1, 0],
+            winner: -1,
+            ..MillState::default()
+        };
+        state.board[0] = 1;
+        state.board[1] = 1;
+        state.board[2] = 1; // W mill outer top
+        state.board[6] = 2; // a1
+        state.board[5] = 2; // d1
+        state.board[10] = 2; // f6 (non-mill, capturable)
+        state.board[15] = 2; // b4 (extra, avoid lose-by-<3 after removal)
+
+        let mut bogus_state = state;
+        bogus_state.pending_removals = [0, 0];
+        bogus_state.board[10] = 0;
+        bogus_state.pieces_on_board = [3, 3];
+        bogus_state.side_to_move = 1;
+        let target_key = repetition_signature(&bogus_state);
+        state.key_history[0] = target_key;
+        state.key_history[1] = target_key;
+        state.key_history_len = 2;
+
+        let after = rules.apply(
+            &rules.encode(state),
+            Action {
+                kind_tag: MillActionKind::Remove as i16,
+                from_node: -1,
+                to_node: 10,
+                aux: -1,
+                payload_bits: 0,
+            },
+        );
+        let final_state = MillRules::decode(&after);
+        assert_eq!(final_state.phase, MillPhase::Moving);
+        assert_eq!(
+            final_state.key_history_len, 0,
+            "Remove must wipe rolling history"
+        );
+        assert_eq!(rules.outcome(&after).kind, OutcomeKind::Ongoing);
+    }
+
+    #[test]
+    fn disabling_threefold_keeps_game_ongoing() {
+        let options = MillVariantOptions {
+            threefold_repetition_rule: false,
+            ..MillVariantOptions::default()
+        };
+        let rules = MillRules::new(options);
+        let mut state = moving_phase_swap_state(0);
+        // Same setup that would trigger when the rule is on: 2 prior
+        // occurrences in history, the move would make it 3.
+        let mut after_move = state;
+        after_move.board[9] = 0;
+        after_move.board[1] = 1;
+        after_move.side_to_move = 1;
+        let target_key = repetition_signature(&after_move);
+        state.key_history[0] = target_key;
+        state.key_history[1] = target_key;
+        state.key_history_len = 2;
+
+        let after = rules.apply(
+            &rules.encode(state),
+            Action {
+                kind_tag: MillActionKind::Move as i16,
+                from_node: 9,
+                to_node: 1,
+                aux: -1,
+                payload_bits: 0,
+            },
+        );
+        let final_state = MillRules::decode(&after);
+        assert_eq!(final_state.phase, MillPhase::Moving);
+        // History still grew (the disable check happens inside the helper,
+        // but we explicitly skip both push and check when off).
+        assert_eq!(final_state.key_history_len, 2);
+        assert_eq!(rules.outcome(&after).kind, OutcomeKind::Ongoing);
     }
 
     #[test]

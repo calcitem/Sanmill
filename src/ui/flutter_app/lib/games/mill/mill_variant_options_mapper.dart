@@ -28,6 +28,7 @@ extension MillVariantOptionsMapper on RuleSettings {
       oneTimeUseMill: oneTimeUseMill,
       stopPlacingWhenTwoEmptySquares: stopPlacingWhenTwoEmptySquares,
       boardFullAction: _toTgfBoardFullAction(boardFullAction),
+      threefoldRepetitionRule: threefoldRepetitionRule,
     );
   }
 

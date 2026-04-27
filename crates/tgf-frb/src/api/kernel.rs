@@ -348,6 +348,7 @@ mod tests {
             one_time_use_mill: false,
             stop_placing_when_two_empty_squares: false,
             board_full_action: MillBoardFullAction::FirstPlayerLose,
+            threefold_repetition_rule: true,
         };
         let handle = tgf_kernel_create_mill(variant).unwrap();
         assert_eq!(tgf_kernel_legal_actions(handle).unwrap().len(), 24);

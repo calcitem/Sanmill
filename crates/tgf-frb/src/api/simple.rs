@@ -72,6 +72,7 @@ pub struct MillVariantOptions {
     pub one_time_use_mill: bool,
     pub stop_placing_when_two_empty_squares: bool,
     pub board_full_action: MillBoardFullAction,
+    pub threefold_repetition_rule: bool,
 }
 
 #[derive(Clone, Debug)]
@@ -136,6 +137,7 @@ impl From<MillVariantOptions> for NativeMillVariantOptions {
             one_time_use_mill: value.one_time_use_mill,
             stop_placing_when_two_empty_squares: value.stop_placing_when_two_empty_squares,
             board_full_action: value.board_full_action.into(),
+            threefold_repetition_rule: value.threefold_repetition_rule,
         }
     }
 }
@@ -159,6 +161,7 @@ pub fn native_mill_default_variant_options() -> MillVariantOptions {
         one_time_use_mill: defaults.one_time_use_mill,
         stop_placing_when_two_empty_squares: defaults.stop_placing_when_two_empty_squares,
         board_full_action: defaults.board_full_action.into(),
+        threefold_repetition_rule: defaults.threefold_repetition_rule,
     }
 }
 
@@ -1073,6 +1076,7 @@ mod tests {
             one_time_use_mill: true,
             stop_placing_when_two_empty_squares: true,
             board_full_action: MillBoardFullAction::AgreeToDraw,
+            threefold_repetition_rule: false,
         };
         let native: NativeMillVariantOptions = variant.into();
         assert!(native.may_remove_from_mills_always);
@@ -1087,36 +1091,27 @@ mod tests {
             native.board_full_action,
             NativeMillBoardFullAction::AgreeToDraw
         ));
+        assert!(!native.threefold_repetition_rule);
     }
 
-    /// Random-walk differential: play many seeded random legal sequences
-    /// and assert that the native Rust MillRules agree with the mature C++
-    /// engine on the legal action set, the phase tag, and the side to
-    /// move at every single ply.
-    ///
-    /// Default scope is 5,000 games × up to 80 plies (roughly 400k
-    /// visited positions before early terminal breaks).  The harness can
-    /// be scaled up to the plan's 1,000,000-position target by exporting
-    /// `TGF_RANDOM_WALK_GAMES=12500`.  The seed is fixed so any failure
-    /// reproduces locally with the same `(game, ply)` index.
-    #[test]
-    fn random_walk_native_and_legacy_agree() {
+    /// Body of the random-walk differential.  Both the default
+    /// `random_walk_native_and_legacy_agree` test and the nightly
+    /// `random_walk_extended` test call this with their own scope so the
+    /// assertion logic stays in a single place.
+    fn run_random_walk(num_games: usize, default_seed: u64) {
         let _guard = LEGACY_TEST_MUTEX
             .lock()
             .expect("legacy test mutex poisoned");
 
-        // Default scope balances coverage vs CI runtime.  Override with
-        // TGF_RANDOM_WALK_GAMES for nightlies or local stress runs.
-        const DEFAULT_NUM_GAMES: usize = 5_000;
         const MAX_PLIES: usize = 80;
         let num_games = std::env::var("TGF_RANDOM_WALK_GAMES")
             .ok()
             .and_then(|v| v.parse::<usize>().ok())
-            .unwrap_or(DEFAULT_NUM_GAMES);
+            .unwrap_or(num_games);
         let mut rng_state: u64 = std::env::var("TGF_RANDOM_WALK_SEED")
             .ok()
             .and_then(|v| v.parse::<u64>().ok())
-            .unwrap_or(0xDEAD_BEEF_C0FF_EE42);
+            .unwrap_or(default_seed);
 
         for game_idx in 0..num_games {
             let rules = MillRules::default();
@@ -1124,6 +1119,17 @@ mod tests {
             let mut snap = rules.initial_state(&[]);
 
             for ply in 0..MAX_PLIES {
+                // Rust state-machine rules can end the game (threefold,
+                // n_move_rule draw) before the legacy C++ shell does —
+                // C++ only commits those draws when the player issues a
+                // "draw" command.  When the Rust kernel signals
+                // GameOver, stop the random walk; the legacy bridge is
+                // still a generator of legal moves and would diverge
+                // post-threefold.
+                if snap.phase_tag == MillPhase::GameOver as i16 {
+                    break;
+                }
+
                 let native_set = native_legal_uci_set(&snap);
                 let legacy_set = legacy_legal_uci_set(&legacy);
                 if native_set != legacy_set {
@@ -1201,5 +1207,37 @@ mod tests {
                 );
             }
         }
+    }
+
+    /// Random-walk differential: play many seeded random legal sequences
+    /// and assert that the native Rust MillRules agree with the mature C++
+    /// engine on the legal action set, the phase tag, and the side to
+    /// move at every single ply.
+    ///
+    /// Default scope is 5,000 games × up to 80 plies (roughly 400k
+    /// visited positions before early terminal breaks).  Override with
+    /// `TGF_RANDOM_WALK_GAMES=N` / `TGF_RANDOM_WALK_SEED=N`.  The seed is
+    /// fixed so any failure reproduces locally with the same
+    /// `(game, ply)` index.
+    #[test]
+    fn random_walk_native_and_legacy_agree() {
+        run_random_walk(5_000, 0xDEAD_BEEF_C0FF_EE42);
+    }
+
+    /// Nightly extended differential: 12,500 games × up to 80 plies =
+    /// roughly 1 million visited positions, matching the
+    /// `1,000,000-random-position` target in the migration plan.
+    /// Marked `#[ignore]` so the default `cargo test` run stays fast;
+    /// invoke explicitly with:
+    ///
+    ///     cargo test --release -p rust_lib_sanmill --lib -- \
+    ///         --ignored random_walk_extended
+    ///
+    /// Override `TGF_RANDOM_WALK_GAMES` / `TGF_RANDOM_WALK_SEED` to
+    /// scale further or reproduce a specific failure.
+    #[test]
+    #[ignore = "nightly: 12.5k games × 80 plies, ~60 s in release"]
+    fn random_walk_extended() {
+        run_random_walk(12_500, 0xCAFE_BABE_5EED_F00D);
     }
 }

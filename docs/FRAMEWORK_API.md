@@ -200,20 +200,35 @@ Current scaffolds already include:
 `cargo run --release -p tgf-cli -- bench` emits a TOML block compatible with
 `tests/perf_baseline.toml`.  The deterministic perft fields
 (`baseline.perft.start_d1`, `start_d2`, `mid_d3`) are HARD-GATED by
-`scripts/check_perf_baseline.py --require-perft`; runtime metrics
-(`nps`, `depth10_ms`, `tt.hit_rate_pct`, `startup.first_move_ms`) are skipped
-with an explicit `[SKIP-baseline-not-populated]` until canonical hardware
-locks them in.
+`scripts/check_perf_baseline.py --require-perft`.  Runtime metrics
+(`nps`, `depth10_ms`, `tt.hit_rate_pct`, `startup.first_move_ms`) are locked
+at conservative absolute floors (`nps >= 500_000`, `depth10_ms <= 100`,
+`tt.hit_rate_pct >= 50`, `first_move_ms <= 200`) so the relative regression
+thresholds (5 % / 5 % / 1 pp / 10 %) become active.  CI also passes
+`--sanity-floor` to keep an absolute lower bound (`nps >= 100_000`,
+`depth10_ms <= 10_000`, `tt_hit_rate >= 1`) in place — these two layers are
+complementary.  Tighten the runtime baselines toward ~70 % of the canonical
+CI run once a stable reference hardware target is selected.
 
 ### Differential testing
 
 `crates/tgf-frb/src/api/simple.rs::random_walk_native_and_legacy_agree`
 plays seeded random Mill games (default 5,000 × 80 plies, override via
-`TGF_RANDOM_WALK_GAMES`/`TGF_RANDOM_WALK_SEED`; use 12,500 games for roughly
-1,000,000 visited positions) and asserts that the
-native Rust `MillRules` and the legacy C++ engine return identical legal
-action sets, phase tags, and side-to-move at every ply.  Plus the
-existing fixed-position `native_and_legacy_*` perft tests.
+`TGF_RANDOM_WALK_GAMES` / `TGF_RANDOM_WALK_SEED`) and asserts that the native
+Rust `MillRules` and the legacy C++ engine return identical legal action
+sets, phase tags, and side-to-move at every ply.
+
+For the migration plan's 1,000,000-position target, the
+`#[ignore]`-marked nightly variant
+`crates/tgf-frb/src/api/simple.rs::random_walk_extended` runs 12,500
+games × 80 plies (~60 s in release).  Run it explicitly with:
+
+```bash
+cargo test --release -p rust_lib_sanmill --lib -- \
+    --ignored random_walk_extended
+```
+
+Plus the existing fixed-position `native_and_legacy_*` perft tests.
 
 ### Still incomplete compared with mature C++
 
@@ -336,14 +351,16 @@ perfect-information invariants.
 - `one_time_use_mill`
 - `stop_placing_when_two_empty_squares`
 - `board_full_action` for `FirstPlayerLose` and `AgreeToDraw`
+- `threefold_repetition_rule` (state-side detection at apply time;
+  rolling 24-entry signature buffer in `MillState.opaque_payload`)
 
 The remaining `Rule` fields (`millFormationActionInPlacingPhase`,
 `stalemateAction`, custodian/intervention/leap captures,
-`isDefenderMoveFirst`, full threefold repetition, diagonal 12MM topology, and
-the non-default `boardFullAction` removal variants) are not yet honoured by the
-Rust path; the Flutter app routes them through the legacy C++ engine until the
-gap closes.  Perfect DB and opening book intentionally remain behind the cxx
-bridge and should not be converted to Rust.
+`isDefenderMoveFirst`, diagonal 12MM topology, and the non-default
+`boardFullAction` removal variants) are not yet honoured by the Rust
+path; the Flutter app routes them through the legacy C++ engine until
+the gap closes.  Perfect DB and opening book intentionally remain
+behind the cxx bridge and should not be converted to Rust.
 
 Each new field follows the same pattern: extend `MillVariantOptions`, update
 `MillRules::apply` / `legal_actions` / `outcome`, mirror it in

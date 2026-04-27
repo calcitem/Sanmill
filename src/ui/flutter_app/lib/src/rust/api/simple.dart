@@ -224,6 +224,7 @@ class MillVariantOptions {
   final bool oneTimeUseMill;
   final bool stopPlacingWhenTwoEmptySquares;
   final MillBoardFullAction boardFullAction;
+  final bool threefoldRepetitionRule;
 
   const MillVariantOptions({
     required this.pieceCount,
@@ -240,6 +241,7 @@ class MillVariantOptions {
     required this.oneTimeUseMill,
     required this.stopPlacingWhenTwoEmptySquares,
     required this.boardFullAction,
+    required this.threefoldRepetitionRule,
   });
 
   @override
@@ -257,7 +259,8 @@ class MillVariantOptions {
       restrictRepeatedMillsFormation.hashCode ^
       oneTimeUseMill.hashCode ^
       stopPlacingWhenTwoEmptySquares.hashCode ^
-      boardFullAction.hashCode;
+      boardFullAction.hashCode ^
+      threefoldRepetitionRule.hashCode;
 
   @override
   bool operator ==(Object other) =>
@@ -279,7 +282,8 @@ class MillVariantOptions {
           oneTimeUseMill == other.oneTimeUseMill &&
           stopPlacingWhenTwoEmptySquares ==
               other.stopPlacingWhenTwoEmptySquares &&
-          boardFullAction == other.boardFullAction;
+          boardFullAction == other.boardFullAction &&
+          threefoldRepetitionRule == other.threefoldRepetitionRule;
 }
 
 class TopologyBlob {
