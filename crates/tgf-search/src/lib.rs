@@ -708,8 +708,22 @@ impl<G: Game> Searcher<G> {
         self.tt_hits = 0;
         self.tt_misses = 0;
         self.aborted = false;
-        self.abort_flag.store(false, Ordering::Relaxed);
+        // Intentionally do NOT clear `abort_flag` here.  External callers
+        // hold a clone of the Arc and may have already requested an abort
+        // (especially when search is spawned on another thread): clearing
+        // the flag here would race with the request and silently lose it.
+        // To rerun an aborted Searcher, call [`Self::clear_abort`].
         self.search_started_at = Some(Instant::now());
+    }
+
+    /// Reset the shared abort flag so a Searcher can be reused after a
+    /// previous abort.  External callers spawning a fresh search via
+    /// [`Self::abort_handle`] should NOT call this between
+    /// `abort_handle()` and search start, otherwise pending stop requests
+    /// would be lost.
+    pub fn clear_abort(&mut self) {
+        self.aborted = false;
+        self.abort_flag.store(false, Ordering::Relaxed);
     }
 
     /// Quiescence search entry point preserved for external callers.  Equivalent
@@ -852,13 +866,15 @@ impl<G: Game> Searcher<G> {
         {
             score += 100_000;
         }
-        score + self.history.get(&action).copied().unwrap_or_default()
+        score.saturating_add(self.history.get(&action).copied().unwrap_or_default())
     }
 
     #[inline]
     fn record_cutoff(&mut self, depth: i32, action: Action) {
         self.killers.insert(depth, action);
-        *self.history.entry(action).or_insert(0) += depth.max(1) * depth.max(1);
+        let bonus = depth.max(1).saturating_mul(depth.max(1));
+        let entry = self.history.entry(action).or_insert(0);
+        *entry = entry.saturating_add(bonus);
     }
 
     #[allow(dead_code)]
@@ -1656,10 +1672,11 @@ mod tests {
         handle.request_abort();
 
         let _ = searcher.search(&mut wb, 3);
-        // Root search clears the abort flag at start, so request_abort before
-        // starting is intentionally ignored.  Request it during a search in
-        // production via the shared handle; here verify the handle API itself.
-        assert!(!searcher.was_aborted());
+        // Root search no longer clears the shared abort flag, so a stop
+        // requested through the handle before the search even starts is
+        // honoured immediately on the first abort poll.  This matches how
+        // a UCI `stop` racing with `go infinite` should behave.
+        assert!(searcher.was_aborted());
         handle.request_abort();
         assert!(handle.is_aborted());
     }

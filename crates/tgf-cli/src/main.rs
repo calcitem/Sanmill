@@ -2,11 +2,13 @@
 // tgf-cli – command-line utilities for the Rust TGF engine.
 
 use std::io::{self, BufRead};
+use std::sync::mpsc;
+use std::thread::{self, JoinHandle};
 use std::time::{Duration, Instant};
 
 use tgf_core::{Action, ActionList, BoardTopology, Game, GameRules, GameStateSnapshot};
 use tgf_mill::{default_mill_topology, MillActionKind, MillGame, MillRules, MillVariantOptions};
-use tgf_search::{perft, SearchOptions, SearchPolicy, Searcher};
+use tgf_search::{perft, SearchAbortHandle, SearchOptions, SearchPolicy, SearchResult, Searcher};
 
 /// `TGF_TT_CLUSTER_BITS` (10–18) selects `2^(bits+1)` TT slots; see
 /// `tgf_search::Searcher::new_with_tt_cluster_bits`.
@@ -46,6 +48,7 @@ fn run_uci_loop() {
     let mut options = MillVariantOptions::default();
     let mut rules = MillRules::new(options.clone());
     let mut state = rules.initial_state(&[]);
+    let mut active_search: Option<ActiveSearch> = None;
     let stdin = io::stdin();
     for line in stdin.lock().lines().map_while(Result::ok) {
         let line = line.trim();
@@ -60,8 +63,10 @@ fn run_uci_loop() {
         } else if line == "isready" {
             println!("readyok");
         } else if line == "ucinewgame" {
+            finish_active_search(&mut active_search);
             state = rules.initial_state(&[]);
         } else if line.starts_with("setoption") {
+            finish_active_search(&mut active_search);
             if apply_setoption(line, &mut options) {
                 rules = MillRules::new(options.clone());
                 state = rules.initial_state(&[]);
@@ -69,33 +74,139 @@ fn run_uci_loop() {
                 println!("info string unsupported setoption: {line}");
             }
         } else if line.starts_with("position") {
+            finish_active_search(&mut active_search);
             state = parse_position_command(&rules, line);
+        } else if line == "d" {
+            print_board_ascii(&state);
         } else if line.starts_with("go") {
+            finish_active_search(&mut active_search);
             let go = parse_go_options(line);
-            let game = MillGame::new(options.clone());
-            let mut wb = game.build_workbench(&state);
-            let mut searcher = mill_searcher();
-            searcher.set_options(SearchOptions {
-                depth_extension: false,
-                node_limit: None,
-                time_limit_ms: go.movetime_ms,
-            });
-            let result = searcher.search_pvs(&mut wb, go.depth);
-            println!(
-                "info depth {} score cp {} nodes {}",
-                go.depth, result.score, result.nodes
-            );
-            println!(
-                "bestmove {}",
-                action_to_uci(result.best_action).unwrap_or_else(|| "(none)".to_owned())
-            );
+            active_search = Some(spawn_search(options.clone(), state, go));
         } else if line == "stop" {
-            println!("bestmove (none)");
+            if let Some(active) = active_search.take() {
+                active.abort_handle.request_abort();
+                join_and_print(active);
+            } else {
+                println!("bestmove (none)");
+            }
         } else if line == "quit" {
+            finish_active_search(&mut active_search);
             break;
         } else {
             println!("info string unknown command: {line}");
         }
+    }
+    // Drain on EOF: join any in-flight search and emit its bestmove instead
+    // of orphaning the spawned thread or losing the result entirely.
+    finish_active_search(&mut active_search);
+}
+
+struct ActiveSearch {
+    handle: JoinHandle<()>,
+    abort_handle: SearchAbortHandle,
+    receiver: mpsc::Receiver<SpawnResult>,
+}
+
+struct SpawnResult {
+    depth: i32,
+    result: SearchResult,
+}
+
+fn spawn_search(
+    options: MillVariantOptions,
+    state: GameStateSnapshot,
+    go: GoOptions,
+) -> ActiveSearch {
+    let mut searcher = mill_searcher();
+    searcher.set_options(SearchOptions {
+        depth_extension: false,
+        node_limit: go.node_limit,
+        time_limit_ms: go.movetime_ms,
+    });
+    let abort_handle = searcher.abort_handle();
+    let (tx, rx) = mpsc::channel();
+    let depth = go.depth;
+    let handle = thread::spawn(move || {
+        let game = MillGame::new(options);
+        let mut wb = game.build_workbench(&state);
+        let result = searcher.search_pvs(&mut wb, depth);
+        let _ = tx.send(SpawnResult { depth, result });
+    });
+    ActiveSearch {
+        handle,
+        abort_handle,
+        receiver: rx,
+    }
+}
+
+fn finish_active_search(slot: &mut Option<ActiveSearch>) {
+    if let Some(active) = slot.take() {
+        join_and_print(active);
+    }
+}
+
+fn join_and_print(active: ActiveSearch) {
+    let _ = active.handle.join();
+    if let Ok(spawn) = active.receiver.recv() {
+        println!(
+            "info depth {} score cp {} nodes {}",
+            spawn.depth, spawn.result.score, spawn.result.nodes
+        );
+        println!(
+            "bestmove {}",
+            action_to_uci(spawn.result.best_action).unwrap_or_else(|| "(none)".to_owned())
+        );
+    } else {
+        println!("bestmove (none)");
+    }
+}
+
+/// ASCII board reproduction matching the layout of `Position::print_board`
+/// (no diagonal lines).  Letters mirror the legacy notation: uppercase for
+/// White (side 0), lowercase for Black (side 1), `.` for empty.
+fn print_board_ascii(state: &GameStateSnapshot) {
+    let board: [u8; 24] = {
+        let mut b = [0_u8; 24];
+        b.copy_from_slice(&state.opaque_payload[..24]);
+        b
+    };
+    let glyph = |node: usize| -> char {
+        match board[node] {
+            1 => 'W',
+            2 => 'B',
+            _ => '.',
+        }
+    };
+    let g = |n: usize| glyph(n);
+    println!("{} ----- {} ----- {}", g(0), g(1), g(2));
+    println!("|       |       |");
+    println!("|  {} -- {} -- {}  |", g(8), g(9), g(10));
+    println!("|  |     |     |  |");
+    println!("|  |  {} {} {}  |  |", g(16), g(17), g(18));
+    println!(
+        "{} {} {}       {} {} {}",
+        g(7),
+        g(15),
+        g(23),
+        g(19),
+        g(11),
+        g(3)
+    );
+    println!("|  |  {} {} {}  |  |", g(22), g(21), g(20));
+    println!("|  |     |     |  |");
+    println!("|  {} -- {} -- {}  |", g(14), g(13), g(12));
+    println!("|       |       |");
+    println!("{} ----- {} ----- {}", g(6), g(5), g(4));
+    println!("side: {}", side_label(state.side_to_move));
+    println!("phase_tag: {}", state.phase_tag);
+    println!("move_number: {}", state.move_number);
+}
+
+fn side_label(side: i8) -> &'static str {
+    match side {
+        0 => "white",
+        1 => "black",
+        _ => "none",
     }
 }
 
@@ -185,8 +296,14 @@ fn parse_position_command(rules: &MillRules, line: &str) -> GameStateSnapshot {
 struct GoOptions {
     depth: i32,
     movetime_ms: Option<u64>,
+    node_limit: Option<u64>,
 }
 
+/// Parse a `go [depth N] [movetime MS] [nodes N] [infinite]` invocation.
+///
+/// `infinite` selects the largest representable depth and clears any time /
+/// node limits, so the caller is expected to send `stop` to terminate the
+/// search via the abort handle exposed on [`Searcher`].
 fn parse_go_options(line: &str) -> GoOptions {
     let tokens = line.split_whitespace().collect::<Vec<_>>();
     let depth = tokens
@@ -199,7 +316,25 @@ fn parse_go_options(line: &str) -> GoOptions {
         .windows(2)
         .find(|w| w[0] == "movetime")
         .and_then(|w| w[1].parse::<u64>().ok());
-    GoOptions { depth, movetime_ms }
+    let node_limit = tokens
+        .windows(2)
+        .find(|w| w[0] == "nodes")
+        .and_then(|w| w[1].parse::<u64>().ok());
+    if tokens.contains(&"infinite") {
+        // Cap "infinite" at a depth far beyond any practical Mill search so
+        // recursion stays bounded; cancellation comes from the `stop` command
+        // through the abort handle rather than reaching the depth limit.
+        return GoOptions {
+            depth: 64,
+            movetime_ms: None,
+            node_limit: None,
+        };
+    }
+    GoOptions {
+        depth,
+        movetime_ms,
+        node_limit,
+    }
 }
 
 fn action_from_uci(rules: &MillRules, state: &GameStateSnapshot, move_uci: &str) -> Option<Action> {
