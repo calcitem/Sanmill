@@ -19,7 +19,7 @@
 use criterion::{criterion_group, criterion_main, Criterion};
 use tgf_core::{Game, GameRules};
 use tgf_mill::{MillGame, MillRules};
-use tgf_search::{perft, Searcher};
+use tgf_search::{lazy_smp_search, perft, LazySmpWorker, SearchOptions, Searcher, SharedTt};
 
 fn bench_mill_search_depth_1(c: &mut Criterion) {
     c.bench_function("mill_search_depth_1", |b| {
@@ -103,6 +103,30 @@ fn bench_mill_iterative_deepening_depth_3(c: &mut Criterion) {
     });
 }
 
+fn bench_mill_lazy_smp_2_workers_depth_2(c: &mut Criterion) {
+    c.bench_function("mill_lazy_smp_2_workers_depth_2", |b| {
+        let rules = MillRules::default();
+        let game = MillGame::default();
+        let snap = rules.initial_state(&[]);
+
+        b.iter(|| {
+            let shared_tt = SharedTt::new(12);
+            lazy_smp_search::<MillGame>(
+                game.clone(),
+                snap,
+                2,
+                &[
+                    LazySmpWorker { extra_depth: 0 },
+                    LazySmpWorker { extra_depth: 1 },
+                ],
+                SearchOptions::default(),
+                shared_tt,
+                None,
+            )
+        });
+    });
+}
+
 criterion_group!(
     benches,
     bench_mill_search_depth_1,
@@ -111,5 +135,6 @@ criterion_group!(
     bench_mill_perft_depth_2,
     bench_mill_perft_mid_depth_3,
     bench_mill_iterative_deepening_depth_3,
+    bench_mill_lazy_smp_2_workers_depth_2,
 );
 criterion_main!(benches);

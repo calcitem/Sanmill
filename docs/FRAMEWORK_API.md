@@ -199,6 +199,7 @@ Current scaffolds already include:
 - `mill_pvs_depth_3`
 - `mill_perft_depth_2` / `mill_perft_mid_depth_3`
 - `mill_iterative_deepening_depth_3`
+- `mill_lazy_smp_2_workers_depth_2` (two workers, shared TT)
 
 `cargo run --release -p tgf-cli -- bench` emits a TOML block compatible with
 `tests/perf_baseline.toml`.  The deterministic perft fields
