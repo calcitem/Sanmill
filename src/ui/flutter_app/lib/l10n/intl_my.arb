@@ -4253,5 +4253,9 @@
     "qrCodeCaptureFullScreen": "မျက်နှာပြည် အပြည့်ဖမ်း",
     "@qrCodeCaptureFullScreen": {},
     "qrCodeScreenCaptureFailed": "မျက်နှာပြင် ဖမ်းခြင်း မအောင်မြင်ပါ",
-    "@qrCodeScreenCaptureFailed": {}
+    "@qrCodeScreenCaptureFailed": {},
+    "nativeMillSessionDeveloperOption": "Rust / TGF Mill session",
+    "@nativeMillSessionDeveloperOption": {},
+    "nativeMillSessionDeveloperDescription": "New Mill games use the Rust rules engine. Start a new game for it to take effect.",
+    "@nativeMillSessionDeveloperDescription": {}
 }

@@ -4253,5 +4253,9 @@
     "qrCodeCaptureFullScreen": "සම්පූර්ණ තිරය ග්‍රහණය",
     "@qrCodeCaptureFullScreen": {},
     "qrCodeScreenCaptureFailed": "තිර ග්‍රහණය අසාර්ථක විය",
-    "@qrCodeScreenCaptureFailed": {}
+    "@qrCodeScreenCaptureFailed": {},
+    "nativeMillSessionDeveloperOption": "Rust / TGF Mill session",
+    "@nativeMillSessionDeveloperOption": {},
+    "nativeMillSessionDeveloperDescription": "New Mill games use the Rust rules engine. Start a new game for it to take effect.",
+    "@nativeMillSessionDeveloperDescription": {}
 }

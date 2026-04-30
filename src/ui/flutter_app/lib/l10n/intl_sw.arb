@@ -4253,5 +4253,9 @@
     "qrCodeCaptureFullScreen": "Piga skrini nzima",
     "@qrCodeCaptureFullScreen": {},
     "qrCodeScreenCaptureFailed": "Kupiga skrini kumeshindwa",
-    "@qrCodeScreenCaptureFailed": {}
+    "@qrCodeScreenCaptureFailed": {},
+    "nativeMillSessionDeveloperOption": "Rust / TGF Mill session",
+    "@nativeMillSessionDeveloperOption": {},
+    "nativeMillSessionDeveloperDescription": "New Mill games use the Rust rules engine. Start a new game for it to take effect.",
+    "@nativeMillSessionDeveloperDescription": {}
 }

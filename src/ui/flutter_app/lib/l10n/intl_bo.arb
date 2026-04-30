@@ -4253,5 +4253,9 @@
     "qrCodeCaptureFullScreen": "བརྙན་ཡོལ་ཡོངས་འཛིན།",
     "@qrCodeCaptureFullScreen": {},
     "qrCodeScreenCaptureFailed": "བརྙན་ཡོལ་འཛིན་མ་ཐུབ།",
-    "@qrCodeScreenCaptureFailed": {}
+    "@qrCodeScreenCaptureFailed": {},
+    "nativeMillSessionDeveloperOption": "Rust / TGF Mill session",
+    "@nativeMillSessionDeveloperOption": {},
+    "nativeMillSessionDeveloperDescription": "New Mill games use the Rust rules engine. Start a new game for it to take effect.",
+    "@nativeMillSessionDeveloperDescription": {}
 }
