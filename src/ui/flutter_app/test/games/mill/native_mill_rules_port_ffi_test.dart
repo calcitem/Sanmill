@@ -9,9 +9,11 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:sanmill/game_platform/game_id.dart';
 import 'package:sanmill/game_platform/game_session.dart';
 import 'package:sanmill/games/mill/mill_constants.dart';
+import 'package:sanmill/games/mill/native_mill_ai_turn_controller.dart';
 import 'package:sanmill/games/mill/native_mill_game_session.dart';
 import 'package:sanmill/games/mill/native_mill_rules_port.dart';
 import 'package:sanmill/games/mill/native_mill_snapshot_board_view.dart';
+import 'package:sanmill/general_settings/models/general_settings.dart';
 import 'package:sanmill/src/rust/api/simple.dart' as tgf;
 import 'package:sanmill/src/rust/frb_generated.dart';
 
@@ -172,6 +174,43 @@ void main() {
           )!.pieceAtNode(action.payload['toNode']! as int),
           PlayerSeat.first,
         );
+      },
+      skip: _nativeLibrarySkipReason,
+    );
+
+    test(
+      'NativeMillAiTurnController plays only on the configured AI seat',
+      () async {
+        final NativeMillGameSession session = NativeMillGameSession();
+        addTearDown(session.dispose);
+
+        const NativeMillAiTurnController blackAi = NativeMillAiTurnController();
+        expect(blackAi.aiSeat, PlayerSeat.second);
+        expect(blackAi.isAiTurn(session), isFalse);
+        expect(await blackAi.playIfAiTurn(session), isNull);
+        expect(session.state.value.activeSeat, PlayerSeat.first);
+
+        final GameAction firstPlace = session.legalActions.first;
+        await session.apply(firstPlace);
+        expect(session.state.value.activeSeat, PlayerSeat.second);
+        expect(blackAi.isAiTurn(session), isTrue);
+
+        final GameAction? blackMove = await blackAi.playIfAiTurn(session);
+        expect(blackMove, isNotNull);
+        expect(blackMove!.type, MillActionTypes.place);
+        expect(session.state.value.activeSeat, PlayerSeat.first);
+
+        final NativeMillGameSession firstAiSession = NativeMillGameSession();
+        addTearDown(firstAiSession.dispose);
+        const NativeMillAiTurnController whiteAi = NativeMillAiTurnController(
+          generalSettings: GeneralSettings(aiMovesFirst: true),
+        );
+        expect(whiteAi.isAiTurn(firstAiSession), isTrue);
+        final GameAction? whiteMove = await whiteAi.playIfAiTurn(
+          firstAiSession,
+        );
+        expect(whiteMove, isNotNull);
+        expect(firstAiSession.state.value.activeSeat, PlayerSeat.second);
       },
       skip: _nativeLibrarySkipReason,
     );
