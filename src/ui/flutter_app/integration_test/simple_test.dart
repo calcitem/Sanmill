@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // Phase 1 integration smoke-test: verifies that the Rust/FRB bridge loads
 // correctly and that tgfHelloWorld() returns the expected prefix.
+import 'dart:async';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 
@@ -13,6 +15,7 @@ import 'package:sanmill/game_platform/game_session.dart';
 import 'package:sanmill/games/mill/mill_game_session.dart';
 import 'package:sanmill/games/mill/mill_rules_port.dart';
 import 'package:sanmill/games/mill/mill_variant_options_mapper.dart';
+import 'package:sanmill/games/mill/native_mill_game_session.dart';
 import 'package:sanmill/games/mill/native_mill_rules_port.dart';
 import 'package:sanmill/games/othello/othello_game_session.dart';
 import 'package:sanmill/rule_settings/models/rule_settings.dart';
@@ -172,6 +175,38 @@ void main() {
     expect(undone.activeSeat, PlayerSeat.first);
     expect(rules.legalActions, hasLength(24));
   });
+
+  testWidgets(
+    'NativeMillGameSession applies, undoes, redoes, and emits events',
+    (WidgetTester tester) async {
+      final NativeMillGameSession session = NativeMillGameSession();
+      addTearDown(session.dispose);
+
+      final List<GameSessionEvent> events = <GameSessionEvent>[];
+      final StreamSubscription<GameSessionEvent> sub = session.events.listen(
+        events.add,
+      );
+      addTearDown(sub.cancel);
+
+      expect(session.state.value.phase, 'placing');
+      expect(session.legalActions, hasLength(24));
+
+      final GameAction first = session.legalActions.first;
+      await session.apply(first);
+      expect(session.state.value.activeSeat, isNot(PlayerSeat.first));
+      expect(
+        events.map((GameSessionEvent e) => e.type),
+        contains('millMoveApplied'),
+      );
+
+      await session.undo();
+      expect(session.state.value.activeSeat, PlayerSeat.first);
+      expect(session.legalActions, hasLength(24));
+
+      await session.redo();
+      expect(session.state.value.activeSeat, isNot(PlayerSeat.first));
+    },
+  );
 
   testWidgets('Rust-native search emits event stream', (
     WidgetTester tester,
