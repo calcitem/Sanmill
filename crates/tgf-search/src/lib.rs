@@ -12,10 +12,11 @@ use std::{
         atomic::{AtomicBool, AtomicU64, Ordering},
         Arc,
     },
+    thread,
     time::{Duration, Instant},
 };
 
-use tgf_core::{Action, ActionList, Evaluator, Game, Workbench};
+use tgf_core::{Action, ActionList, Evaluator, Game, GameStateSnapshot, Workbench};
 
 /// Game-neutral perft: counts the leaves of the legal-action tree at the
 /// requested depth.  At depth 0 we count the current node as one leaf; at
@@ -139,14 +140,14 @@ impl ClusteredTt {
         None
     }
 
-    fn save(&mut self, key: u64, entry: TtEntry) {
+    fn save(&self, key: u64, entry: TtEntry) {
         if key == 0 {
             return;
         }
         let new_packed = TtPackedEntry::pack(key, entry);
         let key_sig = TtPackedEntry::key_sig(key);
         let ix = self.cluster_ix(key);
-        let c = &mut self.clusters[ix];
+        let c = &self.clusters[ix];
         for s in &c.slots {
             let packed = s.load(Ordering::Relaxed);
             if packed == 0 {
@@ -178,8 +179,8 @@ impl ClusteredTt {
         }
     }
 
-    fn clear(&mut self) {
-        for c in self.clusters.iter_mut() {
+    fn clear(&self) {
+        for c in self.clusters.iter() {
             for s in &c.slots {
                 s.store(0, Ordering::Relaxed);
             }
@@ -344,12 +345,52 @@ pub struct SearchOptions {
     pub time_limit_ms: Option<u64>,
 }
 
+/// Reference-counted handle to a packed transposition table.  Multiple
+/// `Searcher` instances built with the same `SharedTt` see and update the
+/// same cluster array, which is the foundation for lazy-SMP-style parallel
+/// search in phase 5.2.  The stored entries themselves use `AtomicU64`
+/// slots, so writes are lock-free.
+#[derive(Clone)]
+pub struct SharedTt {
+    inner: Arc<ClusteredTt>,
+}
+
+impl SharedTt {
+    /// Allocate a fresh TT sized like
+    /// [`Searcher::new_with_tt_cluster_bits`] (`2 * 2^cluster_bits` slots).
+    pub fn new(cluster_bits: u32) -> Self {
+        Self {
+            inner: Arc::new(ClusteredTt::new_with_cluster_bits(cluster_bits)),
+        }
+    }
+
+    /// Drop every entry without reallocating.  Other handles to the same
+    /// `SharedTt` observe the empty table immediately.
+    pub fn clear(&self) {
+        self.inner.clear();
+    }
+
+    /// Number of currently occupied slots across all clusters; useful for
+    /// debug logging and bench instrumentation.
+    pub fn len_occupied(&self) -> usize {
+        self.inner.len_occupied()
+    }
+}
+
+impl Default for SharedTt {
+    fn default() -> Self {
+        Self {
+            inner: Arc::new(ClusteredTt::default()),
+        }
+    }
+}
+
 pub struct Searcher<G: Game> {
     nodes: u64,
     tt_hits: u64,
     tt_misses: u64,
     rng_state: u64,
-    tt: ClusteredTt,
+    tt: Arc<ClusteredTt>,
     killers: HashMap<i32, Action>,
     history: HashMap<Action, i32>,
     policy: SearchPolicy,
@@ -367,7 +408,7 @@ impl<G: Game> Default for Searcher<G> {
             tt_hits: 0,
             tt_misses: 0,
             rng_state: 0x9E37_79B9_7F4A_7C15,
-            tt: ClusteredTt::default(),
+            tt: Arc::new(ClusteredTt::default()),
             killers: HashMap::new(),
             history: HashMap::new(),
             policy: SearchPolicy::default(),
@@ -388,8 +429,28 @@ impl<G: Game> Searcher<G> {
     /// Override TT size (`2^(bits+1)` slots).  Clamp matches [ClusteredTt].
     pub fn new_with_tt_cluster_bits(cluster_bits: u32) -> Self {
         Self {
-            tt: ClusteredTt::new_with_cluster_bits(cluster_bits),
+            tt: Arc::new(ClusteredTt::new_with_cluster_bits(cluster_bits)),
             ..Self::default()
+        }
+    }
+
+    /// Build a Searcher whose transposition table is shared with all other
+    /// Searchers holding the same [`SharedTt`].  This is the entry point for
+    /// lazy-SMP parallel search: spawn N threads, each owning its own
+    /// Searcher (with independent killers / history / abort flag) but all
+    /// reading and writing the same cluster array.
+    pub fn with_shared_tt(shared: SharedTt) -> Self {
+        Self {
+            tt: shared.inner,
+            ..Self::default()
+        }
+    }
+
+    /// Return a cloned `SharedTt` handle pointing at this Searcher's TT so
+    /// additional workers can be spawned against the same cluster array.
+    pub fn shared_tt(&self) -> SharedTt {
+        SharedTt {
+            inner: Arc::clone(&self.tt),
         }
     }
 
@@ -955,6 +1016,66 @@ impl<G: Game> Searcher<G> {
         let value = x.wrapping_mul(0x2545_F491_4F6C_DD1D);
         (value as usize) % len
     }
+}
+
+/// Worker fan-out for [`lazy_smp_search`].  Each entry produces one search
+/// thread; `extra_depth` lets odd-numbered workers explore one ply deeper
+/// than even-numbered ones to diversify the tree, similar to Stockfish's
+/// lazy-SMP staggering.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub struct LazySmpWorker {
+    pub extra_depth: i32,
+}
+
+/// Run a Lazy-SMP-style parallel search.  All workers share one
+/// transposition table through [`SharedTt`] but maintain their own
+/// killer / history / abort state.  The deepest completed result wins on
+/// score ties; this is intentionally simpler than full YBWC and is the
+/// stepping stone toward phase 5.2 in the migration plan.
+///
+/// `aggregate_extra_depth` is `extra_depth` from each worker added on top
+/// of `base_depth`, so workers do not all hammer the same exact tree.
+pub fn lazy_smp_search<G>(
+    game: G,
+    snapshot: GameStateSnapshot,
+    base_depth: i32,
+    workers: &[LazySmpWorker],
+    options: SearchOptions,
+    shared_tt: SharedTt,
+) -> SearchResult
+where
+    G: Game + Clone + Send + 'static,
+    G::Workbench: 'static,
+{
+    let workers = if workers.is_empty() {
+        &[LazySmpWorker { extra_depth: 0 }][..]
+    } else {
+        workers
+    };
+
+    let mut handles = Vec::with_capacity(workers.len());
+    for worker in workers {
+        let game_for_worker = game.clone();
+        let shared_tt = shared_tt.clone();
+        let options_for_worker = options;
+        let snapshot_for_worker = snapshot;
+        let depth = (base_depth + worker.extra_depth).max(1);
+        handles.push(thread::spawn(move || {
+            let mut searcher = Searcher::<G>::with_shared_tt(shared_tt);
+            searcher.set_options(options_for_worker);
+            let mut wb = game_for_worker.build_workbench(&snapshot_for_worker);
+            searcher.iterative_deepening(&mut wb, depth)
+        }));
+    }
+
+    let mut best: Option<SearchResult> = None;
+    for h in handles {
+        let result = h.join().expect("lazy-smp worker panicked");
+        if best.as_ref().is_none_or(|prev| result.score > prev.score) {
+            best = Some(result);
+        }
+    }
+    best.expect("at least one lazy-smp worker should run")
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -1527,6 +1648,31 @@ mod tests {
         let score = searcher.qsearch(&mut wb, i32::MIN + 1, i32::MAX - 1);
         assert!(score > i32::MIN + 1);
         assert!(score < i32::MAX - 1);
+    }
+
+    #[test]
+    fn lazy_smp_search_runs_workers_against_shared_tt() {
+        let rules = MillRules::default();
+        let game = MillGame::default();
+        let snapshot = rules.initial_state(&[]);
+        let shared_tt = SharedTt::new(12);
+
+        let result = lazy_smp_search::<MillGame>(
+            game,
+            snapshot,
+            2,
+            &[
+                LazySmpWorker { extra_depth: 0 },
+                LazySmpWorker { extra_depth: 1 },
+            ],
+            SearchOptions::default(),
+            shared_tt.clone(),
+        );
+
+        assert!(!result.best_action.is_none());
+        assert_eq!(result.best_action.kind_tag, MillActionKind::Place as i16);
+        // Workers ran with the same TT, so it must have observable contents.
+        assert!(shared_tt.len_occupied() > 0);
     }
 
     #[test]

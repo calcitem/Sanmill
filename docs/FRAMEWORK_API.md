@@ -182,7 +182,8 @@ Current scaffolds already include:
 - side-aware score polarity
 - TT exact/lower/upper bound handling
 - TT best-move ordering
-- packed two-slot TT clusters (`AtomicU64` slots)
+- packed two-slot TT clusters (`AtomicU64` slots) sharable across threads
+  via `SharedTt` and the `lazy_smp_search` scaffold
 - killer/history move ordering
 - game-specific terminal scoring for rule draws / wins
 - node and wall-clock abort checks
