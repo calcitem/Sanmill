@@ -237,7 +237,8 @@ Work in progress (see migration plan phase 5):
 - exact C++ MovePicker ordering weights
 - C++ TT compact value/depth truncation semantics
 - rule50 and full repetition handling (only `n_move_rule` field exists)
-- full qsearch parity
+- full qsearch parity with `src/search.cpp` (Mill FRB / `tgf-cli` now enable the
+  generic remove-move extension in qsearch via `SearchPolicy::remove_kind_tag`)
 - MCTS alpha-beta assisted simulation
 - multi-threaded MCTS shared visits
 

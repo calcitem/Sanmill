@@ -23,10 +23,21 @@ use tgf_mill::{
 use tgf_othello::{OthelloGame, OthelloRules};
 #[cfg(test)]
 use tgf_search::perft;
-use tgf_search::{MctsOptions, MctsSearcher, SearchAbortHandle, SearchOptions, Searcher};
+use tgf_search::{
+    MctsOptions, MctsSearcher, SearchAbortHandle, SearchOptions, SearchPolicy, Searcher,
+};
 
 static LEGACY_KERNEL: Lazy<Mutex<Option<LegacyKernel>>> = Lazy::new(|| Mutex::new(None));
 static ACTIVE_SEARCH: Lazy<Mutex<Option<SearchAbortHandle>>> = Lazy::new(|| Mutex::new(None));
+
+/// Mill uses Remove actions in qsearch when [SearchPolicy::remove_kind_tag] is set.
+fn mill_searcher_default() -> Searcher<MillGame> {
+    let mut s = Searcher::new();
+    s.set_policy(SearchPolicy {
+        remove_kind_tag: Some(MillActionKind::Remove as i16),
+    });
+    s
+}
 
 /// FRB required initialisation.  Called once at Flutter app startup before
 /// any other TGF function.  Do not remove.
@@ -655,7 +666,7 @@ pub fn native_mill_search_depth_one_best_to_node() -> i32 {
     let game = MillGame::default();
     let snap = rules.initial_state(&[]);
     let mut wb = game.build_workbench(&snap);
-    let mut searcher = Searcher::<MillGame>::new();
+    let mut searcher = mill_searcher_default();
     searcher.search(&mut wb, 1).best_action.to_node as i32
 }
 
@@ -666,7 +677,7 @@ pub fn native_mill_pvs_depth_one_best_to_node() -> i32 {
     let game = MillGame::default();
     let snap = rules.initial_state(&[]);
     let mut wb = game.build_workbench(&snap);
-    let mut searcher = Searcher::<MillGame>::new();
+    let mut searcher = mill_searcher_default();
     searcher.search_pvs(&mut wb, 1).best_action.to_node as i32
 }
 
@@ -677,7 +688,7 @@ pub fn native_mill_random_best_to_node(seed: u64) -> i32 {
     let game = MillGame::default();
     let snap = rules.initial_state(&[]);
     let mut wb = game.build_workbench(&snap);
-    let mut searcher = Searcher::<MillGame>::new();
+    let mut searcher = mill_searcher_default();
     searcher.set_random_seed(seed);
     searcher.random_search(&mut wb).best_action.to_node as i32
 }
@@ -793,7 +804,7 @@ pub fn native_mill_search_zero_time_limit_aborts() -> bool {
     let game = MillGame::default();
     let snap = rules.initial_state(&[]);
     let mut wb = game.build_workbench(&snap);
-    let mut searcher = Searcher::<MillGame>::new();
+    let mut searcher = mill_searcher_default();
     searcher.set_options(SearchOptions {
         depth_extension: false,
         node_limit: None,
@@ -820,7 +831,7 @@ pub(crate) fn spawn_mill_pvs_event_stream(
 
         let game = MillGame::new(options);
         let mut wb = game.build_workbench(&snapshot);
-        let mut searcher = Searcher::<MillGame>::new();
+        let mut searcher = mill_searcher_default();
         {
             let mut active = ACTIVE_SEARCH.lock().expect("active search mutex poisoned");
             *active = Some(searcher.abort_handle());

@@ -6,7 +6,15 @@ use std::time::{Duration, Instant};
 
 use tgf_core::{Action, ActionList, BoardTopology, Game, GameRules, GameStateSnapshot};
 use tgf_mill::{default_mill_topology, MillActionKind, MillGame, MillRules, MillVariantOptions};
-use tgf_search::{perft, SearchOptions, Searcher};
+use tgf_search::{perft, SearchOptions, SearchPolicy, Searcher};
+
+fn mill_searcher() -> Searcher<MillGame> {
+    let mut s = Searcher::new();
+    s.set_policy(SearchPolicy {
+        remove_kind_tag: Some(MillActionKind::Remove as i16),
+    });
+    s
+}
 
 fn main() {
     let mut args = std::env::args().skip(1);
@@ -56,7 +64,7 @@ fn run_uci_loop() {
             let go = parse_go_options(line);
             let game = MillGame::new(options.clone());
             let mut wb = game.build_workbench(&state);
-            let mut searcher = Searcher::<MillGame>::new();
+            let mut searcher = mill_searcher();
             searcher.set_options(SearchOptions {
                 depth_extension: false,
                 node_limit: None,
@@ -227,7 +235,7 @@ fn print_benchmark_toml() {
     let mid_d3 = perft::<MillGame>(&mut wb, 3);
 
     let mut wb = game.build_workbench(&snap);
-    let mut searcher = Searcher::<MillGame>::new();
+    let mut searcher = mill_searcher();
     let start = Instant::now();
     let result = searcher.search(&mut wb, 4);
     let _ = searcher.search(&mut wb, 4);
@@ -238,7 +246,7 @@ fn print_benchmark_toml() {
 
     let cold_start_begin = Instant::now();
     let mut wb = game.build_workbench(&snap);
-    let mut searcher = Searcher::<MillGame>::new();
+    let mut searcher = mill_searcher();
     let _ = searcher.search(&mut wb, 1);
     let first_move_ms = cold_start_begin.elapsed().as_millis() as u64;
 
