@@ -758,6 +758,11 @@ class GameController {
       return const EngineResponseHumanOK();
     }
 
+    if (DB().generalSettings.useNativeMillSession &&
+        gameInstance.gameMode == GameMode.humanVsAi) {
+      return _nativeSessionEngineToGo(context, isMoveNow: isMoveNow);
+    }
+
     late EngineRet engineRet;
 
     bool searched = false;
@@ -941,6 +946,50 @@ class GameController {
     }
 
     return searched ? const EngineResponseOK() : const EngineResponseHumanOK();
+  }
+
+  Future<EngineResponse> _nativeSessionEngineToGo(
+    BuildContext context, {
+    required bool isMoveNow,
+  }) async {
+    const String tag = "[engineToGo][native]";
+    final GameSession? scopedSession = GameSessionScope.sessionOf(context);
+    if (scopedSession is! NativeMillGameSession) {
+      logger.w(
+        "$tag Native flag is enabled but session is ${scopedSession.runtimeType}.",
+      );
+      return const EngineResponseSkip();
+    }
+
+    final NativeMillAiTurnController aiTurnController =
+        NativeMillAiTurnController(generalSettings: DB().generalSettings);
+    if (isMoveNow && !aiTurnController.isAiTurn(scopedSession)) {
+      return const EngineResponseSkip();
+    }
+    if (!aiTurnController.isAiTurn(scopedSession)) {
+      return const EngineResponseHumanOK();
+    }
+
+    final String thinkingStr = S.of(context).thinking;
+    isEngineRunning = true;
+    isControllerActive = true;
+    headerTipNotifier.showTip(thinkingStr, snackBar: false);
+    headerIconsNotifier.showIcons();
+    boardSemanticsNotifier.updateSemantics();
+
+    try {
+      final GameAction? action = await aiTurnController.playIfAiTurn(
+        scopedSession,
+      );
+      if (action == null) {
+        return const EngineNoBestMove();
+      }
+      logger.i("$tag Applied native AI move ${action.payload['move']}");
+      return const EngineResponseOK();
+    } finally {
+      isEngineRunning = false;
+      boardSemanticsNotifier.updateSemantics();
+    }
   }
 
   Future<void> moveNow(BuildContext context) async {
