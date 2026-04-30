@@ -29,6 +29,7 @@ import '../game_shell/debug_route_ids.dart';
 import '../game_shell/game_session_scope.dart';
 import '../game_shell/shared_game_shell.dart';
 import '../game_shell/shell_route_ids.dart';
+import '../games/mill/mill_session_recorder_bridge.dart';
 import '../general_settings/models/general_settings.dart';
 import '../general_settings/services/config_import_export_service.dart';
 import '../generated/intl/l10n.dart';
@@ -71,6 +72,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
   /// Active session for the current [GameId]. Owned by [Home].
   GameSessionHandle? _activeSession;
   GameId? _activeSessionGameId;
+  MillSessionRecorderBridge? _activeMillRecorderBridge;
 
   SettingsRepository get _settingsRepository =>
       SettingsRepositories.instance.current.repository;
@@ -80,10 +82,17 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
     if (_activeSessionGameId == currentId && _activeSession != null) {
       return;
     }
+    _disposeActiveMillRecorderBridge();
     _activeSession?.dispose();
     final GameModule? module = GameRegistry.instance.getModule(currentId);
     _activeSession = module?.startSession();
     _activeSessionGameId = currentId;
+    final GameSessionHandle? session = _activeSession;
+    if (currentId == GameId.mill && session != null) {
+      _activeMillRecorderBridge = MillSessionRecorderBridge.forGameController(
+        session: session,
+      );
+    }
   }
 
   void _onRegistryChanged() {
@@ -149,10 +158,20 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
   @override
   void dispose() {
     GameRegistry.instance.removeListener(_onRegistryChanged);
+    _disposeActiveMillRecorderBridge();
     _activeSession?.dispose();
     _activeSession = null;
     _controller.dispose();
     super.dispose();
+  }
+
+  void _disposeActiveMillRecorderBridge() {
+    final MillSessionRecorderBridge? bridge = _activeMillRecorderBridge;
+    if (bridge == null) {
+      return;
+    }
+    _activeMillRecorderBridge = null;
+    unawaited(bridge.dispose());
   }
 
   Future<void> _selectRoute(String routeId) async {

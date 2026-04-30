@@ -21,6 +21,9 @@ class MillSessionRecorderBridge {
     _subscription = session.events.listen(_onEvent);
   }
 
+  MillSessionRecorderBridge.forGameController({required GameSession session})
+    : this(session: session, recorder: mill.GameController().gameRecorder);
+
   final mill.GameRecorder _recorder;
   late final StreamSubscription<GameSessionEvent> _subscription;
 
