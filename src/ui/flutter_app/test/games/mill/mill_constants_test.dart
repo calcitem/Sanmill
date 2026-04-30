@@ -30,6 +30,8 @@ void main() {
       expect(MillEventTypes.stateChanged, startsWith('mill'));
       expect(MillEventTypes.moveApplied, startsWith('mill'));
       expect(MillEventTypes.moveRejected, startsWith('mill'));
+      expect(MillEventTypes.undoApplied, startsWith('mill'));
+      expect(MillEventTypes.redoApplied, startsWith('mill'));
       expect(MillEventTypes.actionIgnored, startsWith('mill'));
     });
 
@@ -38,6 +40,8 @@ void main() {
         MillEventTypes.stateChanged,
         MillEventTypes.moveApplied,
         MillEventTypes.moveRejected,
+        MillEventTypes.undoApplied,
+        MillEventTypes.redoApplied,
         MillEventTypes.actionIgnored,
       ];
       expect(values.toSet().length, values.length);

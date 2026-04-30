@@ -86,6 +86,7 @@ class NativeMillGameSession implements GameSessionHandle {
     }
     try {
       _setState(rulesPort.undo());
+      _emit(MillEventTypes.undoApplied, const <String, Object?>{});
     } on Object catch (e) {
       _emit(MillEventTypes.actionIgnored, <String, Object?>{'reason': '$e'});
     }
@@ -98,6 +99,7 @@ class NativeMillGameSession implements GameSessionHandle {
     }
     try {
       _setState(rulesPort.redo());
+      _emit(MillEventTypes.redoApplied, const <String, Object?>{});
     } on Object catch (e) {
       _emit(MillEventTypes.actionIgnored, <String, Object?>{'reason': '$e'});
     }

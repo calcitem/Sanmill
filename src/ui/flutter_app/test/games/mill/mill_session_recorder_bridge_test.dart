@@ -138,6 +138,40 @@ void main() {
       },
       skip: _nativeLibrarySkipReason,
     );
+
+    test(
+      'undo and redo events move the recorder active node',
+      () async {
+        final _EventOnlySession session = _EventOnlySession();
+        final mill.GameRecorder recorder = mill.GameRecorder();
+        final MillSessionRecorderBridge bridge = MillSessionRecorderBridge(
+          session: session,
+          recorder: recorder,
+        );
+        addTearDown(bridge.dispose);
+
+        recorder.appendMove(mill.ExtMove('a7', side: mill.PieceColor.white));
+        recorder.appendMove(mill.ExtMove('d7', side: mill.PieceColor.black));
+        expect(recorder.currentPath.map((mill.ExtMove m) => m.move), <String>[
+          'a7',
+          'd7',
+        ]);
+
+        session.emit(const GameSessionEvent(MillEventTypes.undoApplied));
+        await Future<void>.delayed(Duration.zero);
+        expect(recorder.currentPath.map((mill.ExtMove m) => m.move), <String>[
+          'a7',
+        ]);
+
+        session.emit(const GameSessionEvent(MillEventTypes.redoApplied));
+        await Future<void>.delayed(Duration.zero);
+        expect(recorder.currentPath.map((mill.ExtMove m) => m.move), <String>[
+          'a7',
+          'd7',
+        ]);
+      },
+      skip: _nativeLibrarySkipReason,
+    );
   });
 }
 

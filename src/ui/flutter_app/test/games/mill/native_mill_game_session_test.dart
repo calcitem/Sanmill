@@ -77,15 +77,30 @@ void main() {
         rulesPort: rulesPort,
       );
       addTearDown(session.dispose);
+      final List<GameSessionEvent> events = <GameSessionEvent>[];
+      final StreamSubscription<GameSessionEvent> sub = session.events.listen(
+        events.add,
+      );
+      addTearDown(sub.cancel);
 
       await session.apply(rulesPort.placeA7);
       await session.undo();
+      await Future<void>.delayed(Duration.zero);
       expect(rulesPort.undoCount, 1);
       expect(session.state.value.activeSeat, PlayerSeat.first);
+      expect(
+        events.map((GameSessionEvent e) => e.type),
+        contains(MillEventTypes.undoApplied),
+      );
 
       await session.redo();
+      await Future<void>.delayed(Duration.zero);
       expect(rulesPort.redoCount, 1);
       expect(session.state.value.activeSeat, PlayerSeat.second);
+      expect(
+        events.map((GameSessionEvent e) => e.type),
+        contains(MillEventTypes.redoApplied),
+      );
     });
 
     test('terminal outcomes expose no legal actions', () {

@@ -32,6 +32,8 @@ abstract final class MillEventTypes {
   static const String stateChanged = 'millStateChanged';
   static const String moveApplied = 'millMoveApplied';
   static const String moveRejected = 'millMoveRejected';
+  static const String undoApplied = 'millUndoApplied';
+  static const String redoApplied = 'millRedoApplied';
   static const String actionIgnored = 'millActionIgnored';
 }
 

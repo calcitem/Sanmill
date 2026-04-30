@@ -3,6 +3,7 @@
 
 import 'dart:async';
 
+import '../../game_page/services/import_export/pgn.dart';
 import '../../game_page/services/mill.dart' as mill;
 import '../../game_platform/game_session.dart';
 import 'mill_constants.dart';
@@ -31,6 +32,11 @@ class MillSessionRecorderBridge {
 
   void _onEvent(GameSessionEvent event) {
     if (event.type != MillEventTypes.moveApplied) {
+      if (event.type == MillEventTypes.undoApplied) {
+        _moveRecorderBack();
+      } else if (event.type == MillEventTypes.redoApplied) {
+        _moveRecorderForward();
+      }
       return;
     }
     final mill.ExtMove? move = extMoveFromEvent(event);
@@ -38,6 +44,25 @@ class MillSessionRecorderBridge {
       return;
     }
     _recorder.appendMoveIfDifferent(move);
+  }
+
+  void _moveRecorderBack() {
+    final PgnNode<mill.ExtMove>? current = _recorder.activeNode;
+    final PgnNode<mill.ExtMove>? parent = current?.parent;
+    if (parent == null) {
+      return;
+    }
+    _recorder.activeNode = parent;
+    _recorder.moveCountNotifier.value = _recorder.currentPath.length;
+  }
+
+  void _moveRecorderForward() {
+    final List<PgnNode<mill.ExtMove>> next = _recorder.getNextMoveOptions();
+    if (next.isEmpty) {
+      return;
+    }
+    _recorder.activeNode = next.first;
+    _recorder.moveCountNotifier.value = _recorder.currentPath.length;
   }
 
   static mill.ExtMove? extMoveFromEvent(GameSessionEvent event) {
