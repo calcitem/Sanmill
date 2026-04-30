@@ -37,9 +37,11 @@ class TapHandler {
       return null;
     }
     // The Rust-native session path is currently dogfooded for local
-    // human-vs-human input only.  AI, LAN, setup-position, replay, and puzzle
-    // modes still depend on legacy GameController/Position side effects.
-    if (controller.gameInstance.gameMode != GameMode.humanVsHuman) {
+    // human-vs-human and human-vs-AI input only.  LAN, setup-position, replay,
+    // and puzzle modes still depend on legacy GameController/Position side
+    // effects.
+    final GameMode mode = controller.gameInstance.gameMode;
+    if (mode != GameMode.humanVsHuman && mode != GameMode.humanVsAi) {
       _nativeSessionTapController.clearSelection();
       return null;
     }
@@ -47,6 +49,24 @@ class TapHandler {
     if (session == null) {
       logger.w("$_logTag Native Mill session flag is on but no GameSession.");
       return const EngineResponseSkip();
+    }
+    if (session is! NativeMillGameSession) {
+      logger.w(
+        "$_logTag Native Mill flag is on but session is ${session.runtimeType}.",
+      );
+      return const EngineResponseSkip();
+    }
+
+    final NativeMillAiTurnController aiTurnController =
+        NativeMillAiTurnController(generalSettings: DB().generalSettings);
+    if (mode == GameMode.humanVsAi && aiTurnController.isAiTurn(session)) {
+      final GameAction? aiAction = await aiTurnController.playIfAiTurn(session);
+      logger.i(
+        "$_logTag Native Mill AI pre-tap action: ${aiAction?.payload['move'] ?? '(none)'}",
+      );
+      return aiAction == null
+          ? const EngineNoBestMove()
+          : const EngineResponseOK();
     }
 
     final String tappedLabel = ExtMove.sqToNotation(sq);
@@ -69,6 +89,17 @@ class TapHandler {
         );
         PlayerTimer().stop();
         GameController().boardSemanticsNotifier.updateSemantics();
+        if (mode == GameMode.humanVsAi && aiTurnController.isAiTurn(session)) {
+          final GameAction? aiAction = await aiTurnController.playIfAiTurn(
+            session,
+          );
+          logger.i(
+            "$_logTag Native Mill AI response: ${aiAction?.payload['move'] ?? '(none)'}",
+          );
+          return aiAction == null
+              ? const EngineNoBestMove()
+              : const EngineResponseOK();
+        }
         return const EngineResponseHumanOK();
       case MillSessionTapStatus.ignored:
         logger.t("$_logTag Native Mill ignored tap <$tappedLabel>.");
