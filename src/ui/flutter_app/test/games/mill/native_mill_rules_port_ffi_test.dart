@@ -11,6 +11,7 @@ import 'package:sanmill/game_platform/game_session.dart';
 import 'package:sanmill/games/mill/mill_constants.dart';
 import 'package:sanmill/games/mill/native_mill_game_session.dart';
 import 'package:sanmill/games/mill/native_mill_rules_port.dart';
+import 'package:sanmill/games/mill/native_mill_snapshot_board_view.dart';
 import 'package:sanmill/src/rust/frb_generated.dart';
 
 final File _nativeLibrary = File('../../../target/debug/rust_lib_sanmill.dll');
@@ -72,11 +73,21 @@ void main() {
         expect(afterApply.lastAction, firstPlace);
         expect(afterApply.activeSeat, PlayerSeat.second);
         expect(port.snapshot, afterApply);
+        final NativeMillSnapshotBoardView boardAfterApply =
+            NativeMillSnapshotBoardView.fromSnapshot(afterApply)!;
+        expect(
+          boardAfterApply.pieceAtNode(firstPlace.payload['toNode']! as int),
+          PlayerSeat.first,
+        );
 
         final GameStateSnapshot afterUndo = port.undo();
         expect(afterUndo.activeSeat, PlayerSeat.first);
         expect(afterUndo.lastAction, isNull);
         expect(port.snapshot, afterUndo);
+        expect(
+          NativeMillSnapshotBoardView.fromSnapshot(afterUndo)!.occupiedNodes(),
+          isEmpty,
+        );
 
         final GameStateSnapshot afterRedo = port.redo();
         expect(afterRedo.activeSeat, PlayerSeat.second);
