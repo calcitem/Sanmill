@@ -235,7 +235,9 @@ Plus the existing fixed-position `native_and_legacy_*` perft tests.
 Work in progress (see migration plan phase 5):
 
 - exact C++ MovePicker ordering weights
-- C++ TT compact value/depth truncation semantics
+- C++ TT compact value/depth truncation semantics (`tgf-search` now uses a
+  fixed-size **two-slot-per-cluster** table instead of a grow-only `HashMap`;
+  further work can pack entries into `u64` pairs like `src/tt.h`)
 - rule50 and full repetition handling (only `n_move_rule` field exists)
 - full qsearch parity with `src/search.cpp` (Mill FRB / `tgf-cli` now enable the
   generic remove-move extension in qsearch via `SearchPolicy::remove_kind_tag`)

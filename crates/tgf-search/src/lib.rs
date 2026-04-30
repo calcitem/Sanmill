@@ -77,6 +77,137 @@ struct TtEntry {
     best_action: Action,
 }
 
+// ---------------------------------------------------------------------------
+// Clustered TT: fixed `2 * 2^cluster_bits` slots, two entries per cluster.
+// Collisions replace the shallowest stored entry when the new depth is not
+// weaker (same-key updates still prefer the deeper stored entry).
+// ---------------------------------------------------------------------------
+
+#[derive(Clone, Copy)]
+struct TtCluster {
+    slots: [ClusterSlot; 2],
+}
+
+#[derive(Clone, Copy)]
+struct ClusterSlot {
+    key: u64,
+    entry: TtEntry,
+}
+
+impl ClusterSlot {
+    const EMPTY: Self = Self {
+        key: 0,
+        entry: TtEntry {
+            value: 0,
+            depth: 0,
+            bound: Bound::Exact,
+            best_action: Action::NONE,
+        },
+    };
+
+    #[inline]
+    fn is_empty(self) -> bool {
+        self.key == 0
+    }
+}
+
+struct ClusteredTt {
+    clusters: Box<[TtCluster]>,
+    cluster_mask: usize,
+}
+
+impl ClusteredTt {
+    /// 14 → 16 Ki clusters, 32 Ki slots (~1 MiB with padding).
+    const DEFAULT_CLUSTER_BITS: u32 = 14;
+
+    fn new_with_cluster_bits(bits: u32) -> Self {
+        let bits = bits.clamp(10, 18);
+        let n = 1usize << bits;
+        let mask = n - 1;
+        let empty = TtCluster {
+            slots: [ClusterSlot::EMPTY; 2],
+        };
+        Self {
+            clusters: vec![empty; n].into_boxed_slice(),
+            cluster_mask: mask,
+        }
+    }
+
+    #[inline]
+    fn cluster_ix(&self, key: u64) -> usize {
+        let mixed = key ^ (key >> 32);
+        (mixed as usize) & self.cluster_mask
+    }
+
+    fn get(&self, key: u64) -> Option<&TtEntry> {
+        if key == 0 {
+            return None;
+        }
+        let c = &self.clusters[self.cluster_ix(key)];
+        for s in &c.slots {
+            if s.key == key {
+                return Some(&s.entry);
+            }
+        }
+        None
+    }
+
+    fn save(&mut self, key: u64, entry: TtEntry) {
+        if key == 0 {
+            return;
+        }
+        let ix = self.cluster_ix(key);
+        let c = &mut self.clusters[ix];
+        for s in &mut c.slots {
+            if s.key == key {
+                if entry.depth < s.entry.depth {
+                    return;
+                }
+                *s = ClusterSlot { key, entry };
+                return;
+            }
+        }
+        for s in &mut c.slots {
+            if s.is_empty() {
+                *s = ClusterSlot { key, entry };
+                return;
+            }
+        }
+        let mut wi = 0_usize;
+        let mut wd = c.slots[0].entry.depth;
+        if c.slots[1].entry.depth < wd {
+            wi = 1;
+            wd = c.slots[1].entry.depth;
+        }
+        if entry.depth >= wd {
+            c.slots[wi] = ClusterSlot { key, entry };
+        }
+    }
+
+    fn clear(&mut self) {
+        let empty = TtCluster {
+            slots: [ClusterSlot::EMPTY; 2],
+        };
+        for c in self.clusters.iter_mut() {
+            *c = empty;
+        }
+    }
+
+    fn len_occupied(&self) -> usize {
+        self.clusters
+            .iter()
+            .flat_map(|c| c.slots.iter())
+            .filter(|s| !s.is_empty())
+            .count()
+    }
+}
+
+impl Default for ClusteredTt {
+    fn default() -> Self {
+        Self::new_with_cluster_bits(Self::DEFAULT_CLUSTER_BITS)
+    }
+}
+
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
 pub struct SearchPolicy {
     pub remove_kind_tag: Option<i16>,
@@ -94,7 +225,7 @@ pub struct Searcher<G: Game> {
     tt_hits: u64,
     tt_misses: u64,
     rng_state: u64,
-    tt: HashMap<u64, TtEntry>,
+    tt: ClusteredTt,
     killers: HashMap<i32, Action>,
     history: HashMap<Action, i32>,
     policy: SearchPolicy,
@@ -112,7 +243,7 @@ impl<G: Game> Default for Searcher<G> {
             tt_hits: 0,
             tt_misses: 0,
             rng_state: 0x9E37_79B9_7F4A_7C15,
-            tt: HashMap::new(),
+            tt: ClusteredTt::default(),
             killers: HashMap::new(),
             history: HashMap::new(),
             policy: SearchPolicy::default(),
@@ -158,7 +289,7 @@ impl<G: Game> Searcher<G> {
     }
 
     pub fn tt_len(&self) -> usize {
-        self.tt.len()
+        self.tt.len_occupied()
     }
 
     pub fn set_random_seed(&mut self, seed: u64) {
@@ -482,7 +613,7 @@ impl<G: Game> Searcher<G> {
         if key == 0 {
             return None;
         }
-        let entry = self.tt.get(&key)?;
+        let entry = self.tt.get(key)?;
         if entry.depth < depth {
             return None;
         }
@@ -501,15 +632,7 @@ impl<G: Game> Searcher<G> {
 
     #[inline]
     fn save_tt(&mut self, key: u64, depth: i32, value: i32, bound: Bound, best_action: Action) {
-        if key == 0 {
-            return;
-        }
-        if let Some(old) = self.tt.get(&key) {
-            if old.depth > depth {
-                return;
-            }
-        }
-        self.tt.insert(
+        self.tt.save(
             key,
             TtEntry {
                 value,
@@ -533,7 +656,7 @@ impl<G: Game> Searcher<G> {
         if key != 0
             && self
                 .tt
-                .get(&key)
+                .get(key)
                 .is_some_and(|entry| entry.best_action == action)
         {
             score += 1_000_000;
@@ -559,7 +682,7 @@ impl<G: Game> Searcher<G> {
         if key == 0 {
             return;
         }
-        let Some(entry) = self.tt.get(&key) else {
+        let Some(entry) = self.tt.get(key) else {
             return;
         };
         if let Some(index) = moves.iter().position(|m| *m == entry.best_action) {
