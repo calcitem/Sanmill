@@ -247,6 +247,16 @@ Work in progress (see migration plan phase 5):
 **Intentionally staying on the cxx bridge (not “incomplete” bugs):** perfect DB
 and opening book remain in C++ by policy; see §Legacy C++ bridge policy.
 
+## Search tuning (Rust `tgf-search` / `tgf-cli`)
+
+- **TT size:** `tgf_cli`’s `bench` and UCI `go` path use
+  `Searcher::new_with_tt_cluster_bits` driven by the environment variable
+  `TGF_TT_CLUSTER_BITS` (clamped 10–18, default 14).  The TOML block printed by
+  `cargo run -p tgf-cli -- bench` includes the effective value under `[meta]`.
+- **Move order:** `Game::move_order_bias` (default `0`) is added to the
+  internal move score.  Mill implements the C++ `RATING_STAR_SQUARE` / star-node
+  heuristic from `src/movepick.cpp` for early Black placing positions.
+
 ## FRB API boundary
 
 The Flutter-facing Rust library is the `tgf-frb` crate, whose Cargo package and

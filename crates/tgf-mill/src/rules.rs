@@ -390,6 +390,36 @@ impl Game for MillGame {
     fn generate_legal(wb: &Self::Workbench, out: &mut ActionList<256>) {
         wb.rules.legal_actions(&wb.snapshot(), out);
     }
+
+    /// Star-square opening bonus (`RATING_STAR_SQUARE` in `src/types.h`), gated
+    /// like `Position::is_star_square` + `movepick.cpp` (Black early placing).
+    #[inline]
+    fn move_order_bias(wb: &Self::Workbench, action: Action) -> i32 {
+        if action.kind_tag != MillActionKind::Place as i16 {
+            return 0;
+        }
+        if wb.state.phase != MillPhase::Placing {
+            return 0;
+        }
+        if wb.state.side_to_move != 1 {
+            return 0;
+        }
+        let black_on_board = wb.state.board.iter().filter(|&&p| p == 2).count();
+        if black_on_board >= 2 {
+            return 0;
+        }
+        let to = action.to_node as usize;
+        if to >= 24 {
+            return 0;
+        }
+        let diag = wb.rules.options.has_diagonal_lines;
+        let star = if diag {
+            matches!(to, 17 | 19 | 21 | 23)
+        } else {
+            matches!(to, 16 | 18 | 20 | 22)
+        };
+        i32::from(star) * 11
+    }
 }
 
 impl GameRules for MillRules {
@@ -1750,6 +1780,45 @@ mod tests {
         assert_eq!(state.side_to_move, 1);
         assert_eq!(state.pieces_in_hand[0], 8);
         assert_eq!(state.pieces_on_board[0], 1);
+    }
+
+    #[test]
+    fn move_order_bias_star_square_matches_movepick_rating() {
+        use tgf_core::Game;
+
+        let rules = MillRules::default();
+        let game = MillGame::default();
+        let mut snap = rules.initial_state(&[]);
+        for n in [0_i16, 1, 2] {
+            snap = rules.apply(
+                &snap,
+                Action {
+                    kind_tag: MillActionKind::Place as i16,
+                    from_node: -1,
+                    to_node: n,
+                    aux: -1,
+                    payload_bits: 0,
+                },
+            );
+        }
+        let wb = game.build_workbench(&snap);
+        assert_eq!(wb.state.side_to_move, 1);
+        let star_place = Action {
+            kind_tag: MillActionKind::Place as i16,
+            from_node: -1,
+            to_node: 16,
+            aux: -1,
+            payload_bits: 0,
+        };
+        assert_eq!(<MillGame as Game>::move_order_bias(&wb, star_place), 11);
+        let non_star = Action {
+            kind_tag: MillActionKind::Place as i16,
+            from_node: -1,
+            to_node: 3,
+            aux: -1,
+            payload_bits: 0,
+        };
+        assert_eq!(<MillGame as Game>::move_order_bias(&wb, non_star), 0);
     }
 
     #[test]

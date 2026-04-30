@@ -8,8 +8,18 @@ use tgf_core::{Action, ActionList, BoardTopology, Game, GameRules, GameStateSnap
 use tgf_mill::{default_mill_topology, MillActionKind, MillGame, MillRules, MillVariantOptions};
 use tgf_search::{perft, SearchOptions, SearchPolicy, Searcher};
 
+/// `TGF_TT_CLUSTER_BITS` (10–18) selects `2^(bits+1)` TT slots; see
+/// `tgf_search::Searcher::new_with_tt_cluster_bits`.
+fn tt_cluster_bits_from_env() -> u32 {
+    std::env::var("TGF_TT_CLUSTER_BITS")
+        .ok()
+        .and_then(|s| s.parse().ok())
+        .unwrap_or(14)
+        .clamp(10, 18)
+}
+
 fn mill_searcher() -> Searcher<MillGame> {
-    let mut s = Searcher::new();
+    let mut s = Searcher::new_with_tt_cluster_bits(tt_cluster_bits_from_env());
     s.set_policy(SearchPolicy {
         remove_kind_tag: Some(MillActionKind::Remove as i16),
     });
@@ -254,6 +264,10 @@ fn print_benchmark_toml() {
     println!("locked_at   = \"\"");
     println!("git_commit  = \"{}\"", git_commit);
     println!("platform    = \"{}\"", platform);
+    println!(
+        "tt_cluster_bits = {}  # set TGF_TT_CLUSTER_BITS to override",
+        tt_cluster_bits_from_env()
+    );
     println!("build_flags = \"cargo bench scaffold\"");
     println!();
     println!("[baseline]");

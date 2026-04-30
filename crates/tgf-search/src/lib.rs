@@ -261,6 +261,14 @@ impl<G: Game> Searcher<G> {
         Self::default()
     }
 
+    /// Override TT size (`2^(bits+1)` slots).  Clamp matches [ClusteredTt].
+    pub fn new_with_tt_cluster_bits(cluster_bits: u32) -> Self {
+        Self {
+            tt: ClusteredTt::new_with_cluster_bits(cluster_bits),
+            ..Self::default()
+        }
+    }
+
     pub fn nodes(&self) -> u64 {
         self.nodes
     }
@@ -326,7 +334,7 @@ impl<G: Game> Searcher<G> {
         self.begin_root_search();
         let mut moves = ActionList::<256>::new();
         G::generate_legal(wb, &mut moves);
-        self.order_moves(wb.key(), depth, &mut moves);
+        self.order_moves(wb, wb.key(), depth, &mut moves);
         if moves.is_empty() {
             return SearchResult {
                 best_action: Action::NONE,
@@ -368,7 +376,7 @@ impl<G: Game> Searcher<G> {
         self.begin_root_search();
         let mut moves = ActionList::<256>::new();
         G::generate_legal(wb, &mut moves);
-        self.order_moves(wb.key(), depth, &mut moves);
+        self.order_moves(wb, wb.key(), depth, &mut moves);
         if moves.is_empty() {
             return SearchResult {
                 best_action: Action::NONE,
@@ -490,7 +498,7 @@ impl<G: Game> Searcher<G> {
 
         let mut moves = ActionList::<256>::new();
         G::generate_legal(wb, &mut moves);
-        self.order_moves(key, depth, &mut moves);
+        self.order_moves(wb, key, depth, &mut moves);
         if moves.is_empty() {
             return G::Evaluator::score(wb);
         }
@@ -644,15 +652,15 @@ impl<G: Game> Searcher<G> {
     }
 
     #[inline]
-    fn order_moves(&self, key: u64, depth: i32, moves: &mut ActionList<256>) {
+    fn order_moves(&self, wb: &G::Workbench, key: u64, depth: i32, moves: &mut ActionList<256>) {
         moves
             .as_mut_slice()
-            .sort_by_key(|m| -self.move_score(key, depth, *m));
+            .sort_by_key(|m| -self.move_score(wb, key, depth, *m));
     }
 
     #[inline]
-    fn move_score(&self, key: u64, depth: i32, action: Action) -> i32 {
-        let mut score = 0;
+    fn move_score(&self, wb: &G::Workbench, key: u64, depth: i32, action: Action) -> i32 {
+        let mut score = G::move_order_bias(wb, action);
         if key != 0
             && self
                 .tt

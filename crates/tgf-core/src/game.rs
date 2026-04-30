@@ -56,4 +56,11 @@ pub trait Game: 'static + Send + Sync {
 
     /// MUST be `#[inline]` in every concrete implementation.
     fn generate_legal(wb: &Self::Workbench, out: &mut ActionList<256>);
+
+    /// Optional static move-ordering bonus (e.g. Mill star squares).  Hot path:
+    /// keep this `#[inline]` and allocation-free in concrete games.
+    #[inline]
+    fn move_order_bias(_wb: &Self::Workbench, _action: Action) -> i32 {
+        0
+    }
 }
