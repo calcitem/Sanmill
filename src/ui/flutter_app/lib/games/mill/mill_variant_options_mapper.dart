@@ -19,6 +19,9 @@ extension MillVariantOptionsMapper on RuleSettings {
       piecesAtLeastCount: piecesAtLeastCount,
       mayFly: mayFly,
       hasDiagonalLines: hasDiagonalLines,
+      millFormationActionInPlacingPhase: _toTgfMillFormationAction(
+        millFormationActionInPlacingPhase,
+      ),
       mayRemoveFromMillsAlways: mayRemoveFromMillsAlways,
       mayRemoveMultiple: mayRemoveMultiple,
       nMoveRule: nMoveRule,
@@ -58,6 +61,7 @@ extension MillVariantOptionsMapper on RuleSettings {
         inMovingPhase: leapCaptureInMovingPhase,
         onlyAvailableWhenOwnPiecesLeq3: leapCaptureOnlyWhenOwnPiecesLeq3,
       ),
+      stalemateAction: _toTgfStalemateAction(stalemateAction),
     );
   }
 
@@ -71,6 +75,47 @@ extension MillVariantOptionsMapper on RuleSettings {
       BoardFullAction.sideToMoveRemovePiece =>
         tgf.MillBoardFullAction.sideToMoveRemovePiece,
       BoardFullAction.agreeToDraw => tgf.MillBoardFullAction.agreeToDraw,
+    };
+  }
+
+  static tgf.MillFormationActionInPlacingPhase _toTgfMillFormationAction(
+    MillFormationActionInPlacingPhase? value,
+  ) {
+    return switch (value ??
+        MillFormationActionInPlacingPhase.removeOpponentsPieceFromBoard) {
+      MillFormationActionInPlacingPhase.removeOpponentsPieceFromBoard =>
+        tgf.MillFormationActionInPlacingPhase.removeOpponentsPieceFromBoard,
+      MillFormationActionInPlacingPhase
+            .removeOpponentsPieceFromHandThenOpponentsTurn =>
+        tgf.MillFormationActionInPlacingPhase
+            .removeOpponentsPieceFromHandThenOpponentsTurn,
+      MillFormationActionInPlacingPhase
+            .removeOpponentsPieceFromHandThenYourTurn =>
+        tgf.MillFormationActionInPlacingPhase
+            .removeOpponentsPieceFromHandThenYourTurn,
+      MillFormationActionInPlacingPhase.opponentRemovesOwnPiece =>
+        tgf.MillFormationActionInPlacingPhase.opponentRemovesOwnPiece,
+      MillFormationActionInPlacingPhase.markAndDelayRemovingPieces =>
+        tgf.MillFormationActionInPlacingPhase.markAndDelayRemovingPieces,
+      MillFormationActionInPlacingPhase.removalBasedOnMillCounts =>
+        tgf.MillFormationActionInPlacingPhase.removalBasedOnMillCounts,
+    };
+  }
+
+  static tgf.StalemateAction _toTgfStalemateAction(StalemateAction? value) {
+    return switch (value ?? StalemateAction.endWithStalemateLoss) {
+      StalemateAction.endWithStalemateLoss =>
+        tgf.StalemateAction.endWithStalemateLoss,
+      StalemateAction.changeSideToMove =>
+        tgf.StalemateAction.changeSideToMove,
+      StalemateAction.removeOpponentsPieceAndMakeNextMove =>
+        tgf.StalemateAction.removeOpponentsPieceAndMakeNextMove,
+      StalemateAction.removeOpponentsPieceAndChangeSideToMove =>
+        tgf.StalemateAction.removeOpponentsPieceAndChangeSideToMove,
+      StalemateAction.endWithStalemateDraw =>
+        tgf.StalemateAction.endWithStalemateDraw,
+      StalemateAction.bothPlayersRemoveOpponentsPiece =>
+        tgf.StalemateAction.bothPlayersRemoveOpponentsPiece,
     };
   }
 }

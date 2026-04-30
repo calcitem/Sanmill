@@ -1429,32 +1429,48 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  MillFormationActionInPlacingPhase
+  dco_decode_mill_formation_action_in_placing_phase(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return MillFormationActionInPlacingPhase.values[raw as int];
+  }
+
+  @protected
   MillVariantOptions dco_decode_mill_variant_options(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     final arr = raw as List<dynamic>;
-    if (arr.length != 19)
-      throw Exception('unexpected arr length: expect 19 but see ${arr.length}');
+    if (arr.length != 21)
+      throw Exception('unexpected arr length: expect 21 but see ${arr.length}');
     return MillVariantOptions(
       pieceCount: dco_decode_u_8(arr[0]),
       flyPieceCount: dco_decode_u_8(arr[1]),
       piecesAtLeastCount: dco_decode_u_8(arr[2]),
       mayFly: dco_decode_bool(arr[3]),
       hasDiagonalLines: dco_decode_bool(arr[4]),
-      mayRemoveFromMillsAlways: dco_decode_bool(arr[5]),
-      mayRemoveMultiple: dco_decode_bool(arr[6]),
-      nMoveRule: dco_decode_u_32(arr[7]),
-      endgameNMoveRule: dco_decode_u_32(arr[8]),
-      mayMoveInPlacingPhase: dco_decode_bool(arr[9]),
-      isDefenderMoveFirst: dco_decode_bool(arr[10]),
-      restrictRepeatedMillsFormation: dco_decode_bool(arr[11]),
-      oneTimeUseMill: dco_decode_bool(arr[12]),
-      stopPlacingWhenTwoEmptySquares: dco_decode_bool(arr[13]),
-      boardFullAction: dco_decode_mill_board_full_action(arr[14]),
-      threefoldRepetitionRule: dco_decode_bool(arr[15]),
-      custodianCapture: dco_decode_capture_rule_config(arr[16]),
-      interventionCapture: dco_decode_capture_rule_config(arr[17]),
-      leapCapture: dco_decode_capture_rule_config(arr[18]),
+      millFormationActionInPlacingPhase:
+          dco_decode_mill_formation_action_in_placing_phase(arr[5]),
+      mayRemoveFromMillsAlways: dco_decode_bool(arr[6]),
+      mayRemoveMultiple: dco_decode_bool(arr[7]),
+      nMoveRule: dco_decode_u_32(arr[8]),
+      endgameNMoveRule: dco_decode_u_32(arr[9]),
+      mayMoveInPlacingPhase: dco_decode_bool(arr[10]),
+      isDefenderMoveFirst: dco_decode_bool(arr[11]),
+      restrictRepeatedMillsFormation: dco_decode_bool(arr[12]),
+      oneTimeUseMill: dco_decode_bool(arr[13]),
+      stopPlacingWhenTwoEmptySquares: dco_decode_bool(arr[14]),
+      boardFullAction: dco_decode_mill_board_full_action(arr[15]),
+      threefoldRepetitionRule: dco_decode_bool(arr[16]),
+      custodianCapture: dco_decode_capture_rule_config(arr[17]),
+      interventionCapture: dco_decode_capture_rule_config(arr[18]),
+      leapCapture: dco_decode_capture_rule_config(arr[19]),
+      stalemateAction: dco_decode_stalemate_action(arr[20]),
     );
+  }
+
+  @protected
+  StalemateAction dco_decode_stalemate_action(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return StalemateAction.values[raw as int];
   }
 
   @protected
@@ -1754,6 +1770,16 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  MillFormationActionInPlacingPhase
+  sse_decode_mill_formation_action_in_placing_phase(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var inner = sse_decode_i_32(deserializer);
+    return MillFormationActionInPlacingPhase.values[inner];
+  }
+
+  @protected
   MillVariantOptions sse_decode_mill_variant_options(
     SseDeserializer deserializer,
   ) {
@@ -1763,6 +1789,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     var var_piecesAtLeastCount = sse_decode_u_8(deserializer);
     var var_mayFly = sse_decode_bool(deserializer);
     var var_hasDiagonalLines = sse_decode_bool(deserializer);
+    var var_millFormationActionInPlacingPhase =
+        sse_decode_mill_formation_action_in_placing_phase(deserializer);
     var var_mayRemoveFromMillsAlways = sse_decode_bool(deserializer);
     var var_mayRemoveMultiple = sse_decode_bool(deserializer);
     var var_nMoveRule = sse_decode_u_32(deserializer);
@@ -1777,12 +1805,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     var var_custodianCapture = sse_decode_capture_rule_config(deserializer);
     var var_interventionCapture = sse_decode_capture_rule_config(deserializer);
     var var_leapCapture = sse_decode_capture_rule_config(deserializer);
+    var var_stalemateAction = sse_decode_stalemate_action(deserializer);
     return MillVariantOptions(
       pieceCount: var_pieceCount,
       flyPieceCount: var_flyPieceCount,
       piecesAtLeastCount: var_piecesAtLeastCount,
       mayFly: var_mayFly,
       hasDiagonalLines: var_hasDiagonalLines,
+      millFormationActionInPlacingPhase: var_millFormationActionInPlacingPhase,
       mayRemoveFromMillsAlways: var_mayRemoveFromMillsAlways,
       mayRemoveMultiple: var_mayRemoveMultiple,
       nMoveRule: var_nMoveRule,
@@ -1797,7 +1827,15 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       custodianCapture: var_custodianCapture,
       interventionCapture: var_interventionCapture,
       leapCapture: var_leapCapture,
+      stalemateAction: var_stalemateAction,
     );
+  }
+
+  @protected
+  StalemateAction sse_decode_stalemate_action(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var inner = sse_decode_i_32(deserializer);
+    return StalemateAction.values[inner];
   }
 
   @protected
@@ -2093,6 +2131,15 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_mill_formation_action_in_placing_phase(
+    MillFormationActionInPlacingPhase self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.index, serializer);
+  }
+
+  @protected
   void sse_encode_mill_variant_options(
     MillVariantOptions self,
     SseSerializer serializer,
@@ -2103,6 +2150,10 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_u_8(self.piecesAtLeastCount, serializer);
     sse_encode_bool(self.mayFly, serializer);
     sse_encode_bool(self.hasDiagonalLines, serializer);
+    sse_encode_mill_formation_action_in_placing_phase(
+      self.millFormationActionInPlacingPhase,
+      serializer,
+    );
     sse_encode_bool(self.mayRemoveFromMillsAlways, serializer);
     sse_encode_bool(self.mayRemoveMultiple, serializer);
     sse_encode_u_32(self.nMoveRule, serializer);
@@ -2117,6 +2168,16 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_capture_rule_config(self.custodianCapture, serializer);
     sse_encode_capture_rule_config(self.interventionCapture, serializer);
     sse_encode_capture_rule_config(self.leapCapture, serializer);
+    sse_encode_stalemate_action(self.stalemateAction, serializer);
+  }
+
+  @protected
+  void sse_encode_stalemate_action(
+    StalemateAction self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.index, serializer);
   }
 
   @protected

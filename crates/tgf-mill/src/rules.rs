@@ -12,6 +12,10 @@
 //   * one_time_use_mill
 //   * stop_placing_when_two_empty_squares
 //   * board_full_action (all variants)
+//   * mill_formation_action_in_placing_phase (all variants at the state
+//     machine level; mark-and-delay records delayed line bits without a
+//     third on-board MARKED_PIECE value)
+//   * stalemate_action (all variants)
 //   * threefold_repetition_rule (state-side, history kept in
 //     `MillState.opaque_payload[38..230]`, drawn at apply time)
 //   * custodian / intervention / leap capture on square-edge and cross
@@ -20,8 +24,7 @@
 //     remain inactive until capture-on-diagonal semantics are validated.
 //
 // Still owned by the legacy C++ path:
-//   * mill_formation_action_in_placing_phase non-default variants
-//   * stalemate_action non-default variants
+//   * Flutter/Qt rendering for marked pieces and legacy notation side-effects
 //
 // Perfect DB and opening book intentionally remain behind the cxx
 // bridge — see `crates/tgf-legacy-cxx/`.
@@ -60,6 +63,28 @@ pub enum MillBoardFullAction {
     AgreeToDraw = 4,
 }
 
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[repr(i16)]
+pub enum MillFormationActionInPlacingPhase {
+    RemoveOpponentsPieceFromBoard = 0,
+    RemoveOpponentsPieceFromHandThenOpponentsTurn = 1,
+    RemoveOpponentsPieceFromHandThenYourTurn = 2,
+    OpponentRemovesOwnPiece = 3,
+    MarkAndDelayRemovingPieces = 4,
+    RemovalBasedOnMillCounts = 5,
+}
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[repr(i16)]
+pub enum StalemateAction {
+    EndWithStalemateLoss = 0,
+    ChangeSideToMove = 1,
+    RemoveOpponentsPieceAndMakeNextMove = 2,
+    RemoveOpponentsPieceAndChangeSideToMove = 3,
+    EndWithStalemateDraw = 4,
+    BothPlayersRemoveOpponentsPiece = 5,
+}
+
 #[derive(Clone, Debug)]
 pub struct CaptureRuleConfig {
     pub enabled: bool,
@@ -96,6 +121,7 @@ pub struct MillVariantOptions {
     pub pieces_at_least_count: u8,
     pub may_fly: bool,
     pub has_diagonal_lines: bool,
+    pub mill_formation_action_in_placing_phase: MillFormationActionInPlacingPhase,
     /// When true a player capturing a piece may target a piece sitting in
     /// an opponent mill even if non-mill alternatives exist.  Mirrors
     /// `Rule::mayRemoveFromMillsAlways` in the legacy C++ engine.
@@ -123,6 +149,7 @@ pub struct MillVariantOptions {
     pub custodian_capture: CaptureRuleConfig,
     pub intervention_capture: CaptureRuleConfig,
     pub leap_capture: CaptureRuleConfig,
+    pub stalemate_action: StalemateAction,
 }
 
 impl Default for MillVariantOptions {
@@ -133,6 +160,8 @@ impl Default for MillVariantOptions {
             pieces_at_least_count: 3,
             may_fly: true,
             has_diagonal_lines: false,
+            mill_formation_action_in_placing_phase:
+                MillFormationActionInPlacingPhase::RemoveOpponentsPieceFromBoard,
             may_remove_from_mills_always: false,
             may_remove_multiple: false,
             n_move_rule: 100,
@@ -147,6 +176,7 @@ impl Default for MillVariantOptions {
             custodian_capture: CaptureRuleConfig::default(),
             intervention_capture: CaptureRuleConfig::default(),
             leap_capture: CaptureRuleConfig::default(),
+            stalemate_action: StalemateAction::EndWithStalemateLoss,
         }
     }
 }
@@ -445,13 +475,64 @@ impl GameRules for MillRules {
                 let mill_bits = formed_mill_bits_at(&state, &self.options, to, state.side_to_move);
                 let usable_bits = usable_mill_bits(&state, &self.options, mill_bits);
                 if usable_bits != 0 {
-                    state.pending_removals[side] =
-                        removal_count_for_bits(usable_bits, &self.options);
-                    state.mill_available_at_removal = true;
-                    activate_capture_state(&mut state, custodian, intervention, 0);
-                    if self.options.may_remove_multiple {
-                        state.pending_removals[side] =
-                            state.pending_removals[side].saturating_add(capture_total(&state));
+                    let removals = removal_count_for_bits(usable_bits, &self.options);
+                    match self.options.mill_formation_action_in_placing_phase {
+                        MillFormationActionInPlacingPhase::RemoveOpponentsPieceFromHandThenOpponentsTurn
+                        | MillFormationActionInPlacingPhase::RemoveOpponentsPieceFromHandThenYourTurn => {
+                            let opponent = side ^ 1;
+                            let hand_removed = removals.min(state.pieces_in_hand[opponent]);
+                            state.pieces_in_hand[opponent] -= hand_removed;
+                            let remaining = removals - hand_removed;
+                            if remaining > 0 {
+                                state.pending_removals[side] = remaining;
+                                state.mill_available_at_removal = true;
+                            } else {
+                                state.side_to_move = if matches!(
+                                    self.options.mill_formation_action_in_placing_phase,
+                                    MillFormationActionInPlacingPhase::RemoveOpponentsPieceFromHandThenOpponentsTurn
+                                ) {
+                                    (side ^ 1) as i8
+                                } else {
+                                    side as i8
+                                };
+                                maybe_transition_to_moving(&mut state, &self.options);
+                                maybe_finish_full_board(&mut state, &self.options);
+                            }
+                            clear_capture_state(&mut state);
+                        }
+                        MillFormationActionInPlacingPhase::OpponentRemovesOwnPiece => {
+                            let opponent = side ^ 1;
+                            state.side_to_move = opponent as i8;
+                            state.pending_removals[opponent] = removals;
+                            state.mill_available_at_removal = false;
+                            clear_capture_state(&mut state);
+                        }
+                        MillFormationActionInPlacingPhase::MarkAndDelayRemovingPieces => {
+                            state.delayed_marked_pieces |= usable_bits;
+                            state.side_to_move ^= 1;
+                            clear_capture_state(&mut state);
+                            maybe_transition_to_moving(&mut state, &self.options);
+                            maybe_finish_full_board(&mut state, &self.options);
+                        }
+                        MillFormationActionInPlacingPhase::RemovalBasedOnMillCounts => {
+                            clear_capture_state(&mut state);
+                            if state.pieces_in_hand[0] == 0 && state.pieces_in_hand[1] == 0 {
+                                apply_removal_based_on_mill_counts(&mut state, &self.options);
+                            } else {
+                                state.side_to_move ^= 1;
+                            }
+                            maybe_transition_to_moving(&mut state, &self.options);
+                            maybe_finish_full_board(&mut state, &self.options);
+                        }
+                        MillFormationActionInPlacingPhase::RemoveOpponentsPieceFromBoard => {
+                            state.pending_removals[side] = removals;
+                            state.mill_available_at_removal = true;
+                            activate_capture_state(&mut state, custodian, intervention, 0);
+                            if self.options.may_remove_multiple {
+                                state.pending_removals[side] =
+                                    state.pending_removals[side].saturating_add(capture_total(&state));
+                            }
+                        }
                     }
                     note_mill_formation(&mut state, -1, to as i8, usable_bits);
                 } else if custodian != 0 || intervention != 0 {
@@ -599,13 +680,21 @@ impl GameRules for MillRules {
                     state.side_to_move = -1;
                 } else if state.pending_removals[side] == 0 {
                     clear_capture_state(&mut state);
-                    state.side_to_move ^= 1;
+                    if state.stalemate_removing {
+                        state.stalemate_removing = false;
+                    } else {
+                        state.side_to_move ^= 1;
+                    }
+                    if state.both_stalemate_removing && state.pending_removals == [0, 0] {
+                        state.both_stalemate_removing = false;
+                    }
                     maybe_transition_to_moving(&mut state, &self.options);
                     maybe_finish_full_board(&mut state, &self.options);
                 }
             }
             _ => {}
         }
+        self.maybe_handle_stalemate(&mut state);
         self.encode(state)
     }
 
@@ -619,6 +708,7 @@ impl GameRules for MillRules {
                         MillOutcomeReason::DrawFullBoard => "drawFullBoard",
                         MillOutcomeReason::DrawNMoveRule => "drawNMoveRule",
                         MillOutcomeReason::DrawThreefold => "drawThreefold",
+                        MillOutcomeReason::DrawStalemate => "drawStalemate",
                         _ => "draw",
                     }
                     .to_owned(),
@@ -629,6 +719,7 @@ impl GameRules for MillRules {
                 reason: match state.outcome_reason {
                     MillOutcomeReason::LoseFullBoard => "loseFullBoard",
                     MillOutcomeReason::LoseFewerThanThree => "loseFewerThanThree",
+                    MillOutcomeReason::LoseNoLegalMoves => "loseNoLegalMoves",
                     _ => "loseFewerThanThree",
                 }
                 .to_owned(),
@@ -643,6 +734,64 @@ impl GameRules for MillRules {
 }
 
 impl MillRules {
+    fn has_legal_move(&self, state: &MillState) -> bool {
+        if state.phase != MillPhase::Moving {
+            return true;
+        }
+        let mut actions = ActionList::<256>::new();
+        self.generate_move_actions(state, &mut actions, true);
+        !actions.is_empty()
+    }
+
+    fn maybe_handle_stalemate(&self, state: &mut MillState) {
+        if state.phase != MillPhase::Moving
+            || state.side_to_move < 0
+            || state.pending_removals[state.side_to_move as usize] != 0
+            || self.has_legal_move(state)
+        {
+            return;
+        }
+
+        match self.options.stalemate_action {
+            StalemateAction::EndWithStalemateLoss => {
+                state.phase = MillPhase::GameOver;
+                state.winner = state.side_to_move ^ 1;
+                state.outcome_reason = MillOutcomeReason::LoseNoLegalMoves;
+                state.side_to_move = -1;
+            }
+            StalemateAction::ChangeSideToMove => {
+                state.side_to_move ^= 1;
+            }
+            StalemateAction::RemoveOpponentsPieceAndMakeNextMove => {
+                let side = state.side_to_move as usize;
+                state.pending_removals[side] = 1;
+                state.stalemate_removing = true;
+                state.mill_available_at_removal = false;
+                clear_capture_state(state);
+            }
+            StalemateAction::RemoveOpponentsPieceAndChangeSideToMove => {
+                let side = state.side_to_move as usize;
+                state.pending_removals[side] = 1;
+                state.mill_available_at_removal = false;
+                clear_capture_state(state);
+            }
+            StalemateAction::EndWithStalemateDraw => {
+                state.phase = MillPhase::GameOver;
+                state.winner = 2;
+                state.outcome_reason = MillOutcomeReason::DrawStalemate;
+                state.side_to_move = -1;
+            }
+            StalemateAction::BothPlayersRemoveOpponentsPiece => {
+                let side = state.side_to_move as usize;
+                state.pending_removals[side] = 1;
+                state.pending_removals[side ^ 1] = 1;
+                state.both_stalemate_removing = true;
+                state.mill_available_at_removal = false;
+                clear_capture_state(state);
+            }
+        }
+    }
+
     fn generate_move_actions(&self, state: &MillState, out: &mut ActionList<256>, allow_fly: bool) {
         let side = state.side_to_move as usize;
         let can_fly = allow_fly
@@ -707,6 +856,11 @@ impl MillRules {
         if self.options.may_remove_from_mills_always {
             for (node, piece) in state.board.iter().enumerate() {
                 if *piece == opponent_piece {
+                    if self.is_stalemate_removal_context(state)
+                        && !is_adjacent_to_side_piece(state, &self.topology, node)
+                    {
+                        continue;
+                    }
                     out.push(Action {
                         kind_tag: MillActionKind::Remove as i16,
                         from_node: -1,
@@ -725,6 +879,11 @@ impl MillRules {
 
         for (node, piece) in state.board.iter().enumerate() {
             if *piece != opponent_piece {
+                continue;
+            }
+            if self.is_stalemate_removal_context(state)
+                && !is_adjacent_to_side_piece(state, &self.topology, node)
+            {
                 continue;
             }
             if has_non_mill_target && is_piece_in_mill(state, &self.options, node) {
@@ -760,6 +919,21 @@ impl MillRules {
             });
         }
     }
+
+    fn is_stalemate_removal_context(&self, state: &MillState) -> bool {
+        if state.stalemate_removing || state.both_stalemate_removing {
+            return true;
+        }
+        matches!(
+            self.options.stalemate_action,
+            StalemateAction::RemoveOpponentsPieceAndMakeNextMove
+                | StalemateAction::RemoveOpponentsPieceAndChangeSideToMove
+                | StalemateAction::BothPlayersRemoveOpponentsPiece
+        ) && state.phase == MillPhase::Moving
+            && state.side_to_move >= 0
+            && state.pending_removals[state.side_to_move as usize] > 0
+            && !self.has_legal_move(state)
+    }
 }
 
 /// Transition to the moving phase only after a side switch, mirroring the
@@ -772,20 +946,25 @@ fn maybe_transition_to_moving(state: &mut MillState, options: &MillVariantOption
         && state.pieces_in_hand[0] == 0
         && state.pieces_in_hand[1] == 0
     {
-        state.phase = MillPhase::Moving;
-        if options.is_defender_move_first {
-            state.side_to_move = 1;
-        }
+        enter_moving_phase(state, options);
     }
     if options.stop_placing_when_two_empty_squares
         && state.phase == MillPhase::Placing
         && empty_square_count(state) <= 2
     {
         state.pieces_in_hand = [0, 0];
-        state.phase = MillPhase::Moving;
-        if options.is_defender_move_first {
-            state.side_to_move = 1;
-        }
+        enter_moving_phase(state, options);
+    }
+}
+
+fn enter_moving_phase(state: &mut MillState, options: &MillVariantOptions) {
+    state.phase = MillPhase::Moving;
+    state.side_to_move = if options.is_defender_move_first { 1 } else { 0 };
+    if matches!(
+        options.mill_formation_action_in_placing_phase,
+        MillFormationActionInPlacingPhase::RemovalBasedOnMillCounts
+    ) {
+        apply_removal_based_on_mill_counts(state, options);
     }
 }
 
@@ -801,6 +980,9 @@ fn empty_square_count(state: &MillState) -> usize {
 
 fn maybe_finish_full_board(state: &mut MillState, options: &MillVariantOptions) {
     if state.phase != MillPhase::Moving || empty_square_count(state) != 0 {
+        return;
+    }
+    if state.pending_removals.iter().any(|count| *count > 0) {
         return;
     }
     match options.board_full_action {
@@ -831,6 +1013,38 @@ fn maybe_finish_full_board(state: &mut MillState, options: &MillVariantOptions) 
             state.pending_removals[remover as usize] = 1;
         }
     }
+}
+
+fn total_mills_count(state: &MillState, options: &MillVariantOptions, side: i8) -> u8 {
+    mill_lines(options)
+        .iter()
+        .filter(|line| line.iter().all(|idx| state.board[*idx] == side + 1))
+        .count() as u8
+}
+
+fn apply_removal_based_on_mill_counts(state: &mut MillState, options: &MillVariantOptions) {
+    let white_mills = total_mills_count(state, options, 0);
+    let black_mills = total_mills_count(state, options, 1);
+    let (white_remove, black_remove) = if white_mills == 0 && black_mills == 0 {
+        (0, 0)
+    } else if white_mills > 0 && black_mills == 0 {
+        (2, 1)
+    } else if black_mills > 0 && white_mills == 0 {
+        (1, 2)
+    } else if white_mills == black_mills {
+        (white_mills, black_mills)
+    } else if white_mills > black_mills {
+        let black = black_mills;
+        (black + 1, black)
+    } else {
+        let white = white_mills;
+        (white, white + 1)
+    };
+    state.pending_removals = [white_remove, black_remove];
+    if state.pending_removals[state.side_to_move as usize] == 0 {
+        state.side_to_move ^= 1;
+    }
+    state.mill_available_at_removal = state.pending_removals.iter().any(|count| *count > 0);
 }
 
 fn bump_ply_since_capture(state: &mut MillState) {
@@ -968,6 +1182,7 @@ struct MillState {
     last_mill_from: i8,
     last_mill_to: i8,
     used_mill_lines: u32,
+    delayed_marked_pieces: u32,
     custodian_targets: u32,
     intervention_targets: u32,
     leap_targets: u32,
@@ -975,6 +1190,8 @@ struct MillState {
     intervention_count: u8,
     leap_count: u8,
     mill_available_at_removal: bool,
+    stalemate_removing: bool,
+    both_stalemate_removing: bool,
     /// Ring buffer of repetition-only Zobrist signatures (board + side +
     /// phase + pending removals) collected at moving-phase ply boundaries.
     /// Cleared on Place / Remove so only reversible Move events count.
@@ -998,6 +1215,7 @@ impl Default for MillState {
             last_mill_from: -1,
             last_mill_to: -1,
             used_mill_lines: 0,
+            delayed_marked_pieces: 0,
             custodian_targets: 0,
             intervention_targets: 0,
             leap_targets: 0,
@@ -1005,6 +1223,8 @@ impl Default for MillState {
             intervention_count: 0,
             leap_count: 0,
             mill_available_at_removal: false,
+            stalemate_removing: false,
+            both_stalemate_removing: false,
             key_history: [0_u64; 24],
             key_history_len: 0,
         }
@@ -1021,6 +1241,8 @@ enum MillOutcomeReason {
     DrawFullBoard = 3,
     LoseFullBoard = 4,
     DrawThreefold = 5,
+    LoseNoLegalMoves = 6,
+    DrawStalemate = 7,
 }
 
 impl MillState {
@@ -1041,21 +1263,24 @@ impl MillState {
         payload[33] = self.last_mill_from as u8;
         payload[34] = self.last_mill_to as u8;
         payload[35..39].copy_from_slice(&self.used_mill_lines.to_le_bytes());
-        payload[39] = self.outcome_reason as u8;
-        // 40..=231: key_history (24 × 8 bytes, little-endian).
+        payload[39..43].copy_from_slice(&self.delayed_marked_pieces.to_le_bytes());
+        payload[43] = self.outcome_reason as u8;
+        // 44..=235: key_history (24 × 8 bytes, little-endian).
         for (slot_idx, key) in self.key_history.iter().enumerate() {
-            let base = 40 + slot_idx * 8;
+            let base = 44 + slot_idx * 8;
             payload[base..base + 8].copy_from_slice(&key.to_le_bytes());
         }
-        // 232: key_history_len (clamped to 24, fits in a single byte).
-        payload[232] = self.key_history_len.min(24);
-        payload[233..237].copy_from_slice(&self.custodian_targets.to_le_bytes());
-        payload[237..241].copy_from_slice(&self.intervention_targets.to_le_bytes());
-        payload[241..245].copy_from_slice(&self.leap_targets.to_le_bytes());
-        payload[245] = self.custodian_count;
-        payload[246] = self.intervention_count;
-        payload[247] = self.leap_count;
-        payload[248] = u8::from(self.mill_available_at_removal);
+        // 236: key_history_len (clamped to 24, fits in a single byte).
+        payload[236] = self.key_history_len.min(24);
+        payload[237..241].copy_from_slice(&self.custodian_targets.to_le_bytes());
+        payload[241..245].copy_from_slice(&self.intervention_targets.to_le_bytes());
+        payload[245..249].copy_from_slice(&self.leap_targets.to_le_bytes());
+        payload[249] = self.custodian_count;
+        payload[250] = self.intervention_count;
+        payload[251] = self.leap_count;
+        payload[252] = u8::from(self.mill_available_at_removal);
+        payload[253] = u8::from(self.stalemate_removing);
+        payload[254] = u8::from(self.both_stalemate_removing);
         payload
     }
 
@@ -1067,7 +1292,7 @@ impl MillState {
         }
         let mut key_history = [0_u64; 24];
         for (slot_idx, key) in key_history.iter_mut().enumerate() {
-            let base = 40 + slot_idx * 8;
+            let base = 44 + slot_idx * 8;
             let mut bytes = [0_u8; 8];
             bytes.copy_from_slice(&payload[base..base + 8]);
             *key = u64::from_le_bytes(bytes);
@@ -1095,7 +1320,8 @@ impl MillState {
             last_mill_from: payload[33] as i8,
             last_mill_to: payload[34] as i8,
             used_mill_lines: read_u32(35),
-            outcome_reason: match payload[39] {
+            delayed_marked_pieces: read_u32(39),
+            outcome_reason: match payload[43] {
                 x if x == MillOutcomeReason::LoseFewerThanThree as u8 => {
                     MillOutcomeReason::LoseFewerThanThree
                 }
@@ -1111,17 +1337,25 @@ impl MillState {
                 x if x == MillOutcomeReason::DrawThreefold as u8 => {
                     MillOutcomeReason::DrawThreefold
                 }
+                x if x == MillOutcomeReason::LoseNoLegalMoves as u8 => {
+                    MillOutcomeReason::LoseNoLegalMoves
+                }
+                x if x == MillOutcomeReason::DrawStalemate as u8 => {
+                    MillOutcomeReason::DrawStalemate
+                }
                 _ => MillOutcomeReason::Ongoing,
             },
             key_history,
-            key_history_len: payload[232].min(24),
-            custodian_targets: read_u32(233),
-            intervention_targets: read_u32(237),
-            leap_targets: read_u32(241),
-            custodian_count: payload[245],
-            intervention_count: payload[246],
-            leap_count: payload[247],
-            mill_available_at_removal: payload[248] != 0,
+            key_history_len: payload[236].min(24),
+            custodian_targets: read_u32(237),
+            intervention_targets: read_u32(241),
+            leap_targets: read_u32(245),
+            custodian_count: payload[249],
+            intervention_count: payload[250],
+            leap_count: payload[251],
+            mill_available_at_removal: payload[252] != 0,
+            stalemate_removing: payload[253] != 0,
+            both_stalemate_removing: payload[254] != 0,
         }
     }
 }
@@ -1155,6 +1389,9 @@ fn position_key(state: &MillState) -> u64 {
     mix(state.last_mill_from as u8);
     mix(state.last_mill_to as u8);
     for byte in state.used_mill_lines.to_le_bytes() {
+        mix(byte);
+    }
+    for byte in state.delayed_marked_pieces.to_le_bytes() {
         mix(byte);
     }
     for byte in state.custodian_targets.to_le_bytes() {
@@ -1269,6 +1506,17 @@ fn is_all_in_mills(state: &MillState, options: &MillVariantOptions, piece: i8) -
         .enumerate()
         .filter(|(_, p)| **p == piece)
         .all(|(idx, _)| is_piece_in_mill(state, options, idx))
+}
+
+fn is_adjacent_to_side_piece(state: &MillState, topology: &MillTopology, node: usize) -> bool {
+    if state.side_to_move < 0 {
+        return false;
+    }
+    let own_piece = state.side_to_move + 1;
+    topology
+        .neighbors(node as u16)
+        .iter()
+        .any(|neighbor| state.board[*neighbor as usize] == own_piece)
 }
 
 fn filter_capture_targets(state: &MillState, options: &MillVariantOptions, targets: u32) -> u32 {
@@ -1541,6 +1789,292 @@ mod tests {
         assert_eq!(state.side_to_move, 1, "Turn passes to black after removal");
         assert_eq!(state.pending_removals[0], 0);
         assert_eq!(state.pieces_on_board[1], 1);
+    }
+
+    fn placing_mill_fixture_for_action(
+        action: MillFormationActionInPlacingPhase,
+    ) -> (MillRules, GameStateSnapshot) {
+        let rules = MillRules::new(MillVariantOptions {
+            mill_formation_action_in_placing_phase: action,
+            ..MillVariantOptions::default()
+        });
+        let mut snap = rules.initial_state(&[]);
+        for node in [1, 6, 2, 5, 0] {
+            snap = rules.apply(
+                &snap,
+                Action {
+                    kind_tag: MillActionKind::Place as i16,
+                    from_node: -1,
+                    to_node: node,
+                    aux: -1,
+                    payload_bits: 0,
+                },
+            );
+        }
+        (rules, snap)
+    }
+
+    #[test]
+    fn mill_action_remove_from_hand_then_opponent_turn() {
+        let (_rules, snap) = placing_mill_fixture_for_action(
+            MillFormationActionInPlacingPhase::RemoveOpponentsPieceFromHandThenOpponentsTurn,
+        );
+        let state = MillRules::decode(&snap);
+        assert_eq!(state.pieces_in_hand[1], 6, "black lost one piece from hand");
+        assert_eq!(state.pending_removals[0], 0);
+        assert_eq!(state.side_to_move, 1, "turn passes to opponent");
+    }
+
+    #[test]
+    fn mill_action_remove_from_hand_then_your_turn() {
+        let (_rules, snap) = placing_mill_fixture_for_action(
+            MillFormationActionInPlacingPhase::RemoveOpponentsPieceFromHandThenYourTurn,
+        );
+        let state = MillRules::decode(&snap);
+        assert_eq!(state.pieces_in_hand[1], 6, "black lost one piece from hand");
+        assert_eq!(state.pending_removals[0], 0);
+        assert_eq!(state.side_to_move, 0, "active player keeps the turn");
+    }
+
+    #[test]
+    fn mill_action_opponent_removes_own_piece() {
+        let (rules, snap) = placing_mill_fixture_for_action(
+            MillFormationActionInPlacingPhase::OpponentRemovesOwnPiece,
+        );
+        let state = MillRules::decode(&snap);
+        assert_eq!(state.side_to_move, 1);
+        assert_eq!(state.pending_removals[1], 1);
+        let mut actions = ActionList::<256>::new();
+        rules.legal_actions(&snap, &mut actions);
+        // Opponent removes one of White's pieces; at least the just formed
+        // mill pieces are legal targets.
+        assert!(actions
+            .iter()
+            .all(|a| a.kind_tag == MillActionKind::Remove as i16));
+        assert!(actions.iter().any(|a| a.to_node == 0));
+        assert!(actions.iter().any(|a| a.to_node == 1));
+        assert!(actions.iter().any(|a| a.to_node == 2));
+    }
+
+    #[test]
+    fn mill_action_removal_based_on_mill_counts_waits_until_placing_end() {
+        let (_rules, snap) = placing_mill_fixture_for_action(
+            MillFormationActionInPlacingPhase::RemovalBasedOnMillCounts,
+        );
+        let state = MillRules::decode(&snap);
+        assert_eq!(state.pending_removals, [0, 0]);
+        assert_eq!(
+            state.side_to_move, 1,
+            "no removal until all pieces are placed"
+        );
+    }
+
+    #[test]
+    fn mill_action_removal_based_on_mill_counts_assigns_at_placing_end() {
+        let rules = MillRules::new(MillVariantOptions {
+            mill_formation_action_in_placing_phase:
+                MillFormationActionInPlacingPhase::RemovalBasedOnMillCounts,
+            ..MillVariantOptions::default()
+        });
+        let mut state = MillState {
+            board: {
+                let mut board = [0_i8; 24];
+                // White has one mill a7-d7-g7; black has no mills.
+                board[0] = 1;
+                board[1] = 1;
+                board[2] = 1;
+                board[6] = 2;
+                board[11] = 2;
+                board[14] = 2;
+                board
+            },
+            side_to_move: 0,
+            phase: MillPhase::Placing,
+            move_number: 17,
+            pieces_in_hand: [1, 0],
+            pieces_on_board: [3, 3],
+            pending_removals: [0, 0],
+            winner: -1,
+            ..MillState::default()
+        };
+        // Add a harmless final white piece that does not create another mill.
+        state.board[8] = 0;
+        let after = rules.apply(
+            &rules.encode(state),
+            Action {
+                kind_tag: MillActionKind::Place as i16,
+                from_node: -1,
+                to_node: 8,
+                aux: -1,
+                payload_bits: 0,
+            },
+        );
+        let state = MillRules::decode(&after);
+        assert_eq!(state.phase, MillPhase::Moving);
+        assert_eq!(
+            state.pending_removals,
+            [2, 1],
+            "white has mills while black has none, matching C++ removalBasedOnMillCounts"
+        );
+    }
+
+    #[test]
+    fn mill_action_mark_and_delay_records_mill_bits_without_immediate_removal() {
+        let (_rules, snap) = placing_mill_fixture_for_action(
+            MillFormationActionInPlacingPhase::MarkAndDelayRemovingPieces,
+        );
+        let state = MillRules::decode(&snap);
+        assert_eq!(state.pending_removals, [0, 0]);
+        assert_ne!(state.delayed_marked_pieces, 0);
+        assert_eq!(state.side_to_move, 1);
+    }
+
+    fn stalemate_fixture() -> MillState {
+        let mut state = MillState {
+            side_to_move: 0,
+            phase: MillPhase::Moving,
+            move_number: 30,
+            pieces_in_hand: [0, 0],
+            pieces_on_board: [4, 4],
+            pending_removals: [0, 0],
+            winner: -1,
+            ..MillState::default()
+        };
+        // White corners are fully blocked by black side-middle pieces.
+        for node in [0_usize, 2, 4, 6] {
+            state.board[node] = 1;
+        }
+        for node in [1_usize, 3, 5, 7] {
+            state.board[node] = 2;
+        }
+        state
+    }
+
+    #[test]
+    fn stalemate_default_action_loses_for_side_to_move() {
+        let rules = MillRules::default();
+        let mut state = stalemate_fixture();
+        rules.maybe_handle_stalemate(&mut state);
+        assert_eq!(state.phase, MillPhase::GameOver);
+        assert_eq!(state.winner, 1);
+        let outcome = rules.outcome(&rules.encode(state));
+        assert_eq!(outcome.kind, OutcomeKind::Win(1));
+        assert_eq!(outcome.reason, "loseNoLegalMoves");
+    }
+
+    #[test]
+    fn stalemate_draw_action_draws() {
+        let rules = MillRules::new(MillVariantOptions {
+            stalemate_action: StalemateAction::EndWithStalemateDraw,
+            ..MillVariantOptions::default()
+        });
+        let mut state = stalemate_fixture();
+        rules.maybe_handle_stalemate(&mut state);
+        assert_eq!(state.phase, MillPhase::GameOver);
+        assert_eq!(state.winner, 2);
+        assert_eq!(rules.outcome(&rules.encode(state)).reason, "drawStalemate");
+    }
+
+    #[test]
+    fn stalemate_change_side_to_move_only_switches_turn() {
+        let rules = MillRules::new(MillVariantOptions {
+            stalemate_action: StalemateAction::ChangeSideToMove,
+            ..MillVariantOptions::default()
+        });
+        let mut state = stalemate_fixture();
+        rules.maybe_handle_stalemate(&mut state);
+        assert_eq!(state.phase, MillPhase::Moving);
+        assert_eq!(state.side_to_move, 1);
+        assert_eq!(state.pending_removals, [0, 0]);
+    }
+
+    #[test]
+    fn stalemate_remove_and_make_next_move_keeps_turn_after_remove() {
+        let rules = MillRules::new(MillVariantOptions {
+            stalemate_action: StalemateAction::RemoveOpponentsPieceAndMakeNextMove,
+            ..MillVariantOptions::default()
+        });
+        let mut state = stalemate_fixture();
+        rules.maybe_handle_stalemate(&mut state);
+        assert_eq!(state.pending_removals, [1, 0]);
+        assert!(state.stalemate_removing);
+        let after = rules.apply(
+            &rules.encode(state),
+            Action {
+                kind_tag: MillActionKind::Remove as i16,
+                from_node: -1,
+                to_node: 1,
+                aux: -1,
+                payload_bits: 0,
+            },
+        );
+        let state = MillRules::decode(&after);
+        assert_eq!(state.side_to_move, 0);
+        assert_eq!(state.pending_removals, [0, 0]);
+        assert!(!state.stalemate_removing);
+    }
+
+    #[test]
+    fn stalemate_remove_and_change_side_switches_turn_after_remove() {
+        let rules = MillRules::new(MillVariantOptions {
+            stalemate_action: StalemateAction::RemoveOpponentsPieceAndChangeSideToMove,
+            ..MillVariantOptions::default()
+        });
+        let mut state = stalemate_fixture();
+        rules.maybe_handle_stalemate(&mut state);
+        assert_eq!(state.pending_removals, [1, 0]);
+        let after = rules.apply(
+            &rules.encode(state),
+            Action {
+                kind_tag: MillActionKind::Remove as i16,
+                from_node: -1,
+                to_node: 1,
+                aux: -1,
+                payload_bits: 0,
+            },
+        );
+        let state = MillRules::decode(&after);
+        assert_eq!(state.side_to_move, 1);
+        assert_eq!(state.pending_removals, [0, 0]);
+    }
+
+    #[test]
+    fn stalemate_both_players_remove_in_order() {
+        let rules = MillRules::new(MillVariantOptions {
+            stalemate_action: StalemateAction::BothPlayersRemoveOpponentsPiece,
+            ..MillVariantOptions::default()
+        });
+        let mut state = stalemate_fixture();
+        rules.maybe_handle_stalemate(&mut state);
+        assert_eq!(state.pending_removals, [1, 1]);
+        assert!(state.both_stalemate_removing);
+        let after_first = rules.apply(
+            &rules.encode(state),
+            Action {
+                kind_tag: MillActionKind::Remove as i16,
+                from_node: -1,
+                to_node: 1,
+                aux: -1,
+                payload_bits: 0,
+            },
+        );
+        let state = MillRules::decode(&after_first);
+        assert_eq!(state.side_to_move, 1);
+        assert_eq!(state.pending_removals, [0, 1]);
+        let after_second = rules.apply(
+            &after_first,
+            Action {
+                kind_tag: MillActionKind::Remove as i16,
+                from_node: -1,
+                to_node: 0,
+                aux: -1,
+                payload_bits: 0,
+            },
+        );
+        let state = MillRules::decode(&after_second);
+        assert_eq!(state.side_to_move, 0);
+        assert_eq!(state.pending_removals, [0, 0]);
+        assert!(!state.both_stalemate_removing);
     }
 
     #[test]

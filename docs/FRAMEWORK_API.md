@@ -354,6 +354,14 @@ perfect-information invariants.
 - `one_time_use_mill`
 - `stop_placing_when_two_empty_squares`
 - `board_full_action` for all variants
+- `mill_formation_action_in_placing_phase` for all variants at the state-machine
+  level.  `markAndDelayRemovingPieces` records the delayed mill-line bitmask
+  without introducing a third on-board `MARKED_PIECE` value in Rust yet; this is
+  sufficient for FRB state parity but the Flutter legacy renderer still owns
+  marked-piece visuals.
+- `stalemate_action` for all variants: loss, draw, side-change, stalemated side
+  removes and keeps the move, stalemated side removes and changes side, and both
+  players remove adjacent opponent pieces in order.
 - `threefold_repetition_rule` (state-side detection at apply time;
   rolling 24-entry signature buffer in `MillState.opaque_payload`)
 - `custodian_capture`, `intervention_capture`, and `leap_capture` on square-edge
@@ -363,11 +371,10 @@ perfect-information invariants.
   `may_remove_multiple` is enabled.  Diagonal capture flags are accepted in the
   DTO but remain inactive until diagonal 12MM topology lands.
 
-The remaining `Rule` fields (`millFormationActionInPlacingPhase` and
-`stalemateAction`) are not yet honoured by the Rust path; the Flutter app
-routes them through the legacy C++ engine until the gap closes.  Perfect DB and
-opening book intentionally remain behind the cxx bridge and should not be
-converted to Rust.
+All `Rule` fields that affect core Mill move legality and terminal state are
+now represented in the Rust path, except legacy renderer side-effects such as
+displaying marked pieces.  Perfect DB and opening book intentionally remain
+behind the cxx bridge and should not be converted to Rust.
 
 Each new field follows the same pattern: extend `MillVariantOptions`, update
 `MillRules::apply` / `legal_actions` / `outcome`, mirror it in

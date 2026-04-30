@@ -7,7 +7,7 @@ import '../frb_generated.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
 // These functions are ignored because they are not marked as `pub`: `best_move`, `info`, `new`, `ready`, `stopped`
-// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `from`, `from`, `from`, `from`, `from`
+// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`
 
 /// Returns a greeting string confirming that the Rust → Dart bridge works.
 /// Called from Dart as `tgfHelloWorld()` after `await RustLib.init()`.
@@ -249,6 +249,15 @@ enum MillBoardFullAction {
   agreeToDraw,
 }
 
+enum MillFormationActionInPlacingPhase {
+  removeOpponentsPieceFromBoard,
+  removeOpponentsPieceFromHandThenOpponentsTurn,
+  removeOpponentsPieceFromHandThenYourTurn,
+  opponentRemovesOwnPiece,
+  markAndDelayRemovingPieces,
+  removalBasedOnMillCounts,
+}
+
 /// Public FRB DTO for the subset of Mill variant options already supported by
 /// the Rust-native rules scaffold.  It intentionally mirrors the field names
 /// that will later replace the C++ Rule struct; new rule flags are added
@@ -259,6 +268,7 @@ class MillVariantOptions {
   final int piecesAtLeastCount;
   final bool mayFly;
   final bool hasDiagonalLines;
+  final MillFormationActionInPlacingPhase millFormationActionInPlacingPhase;
   final bool mayRemoveFromMillsAlways;
   final bool mayRemoveMultiple;
   final int nMoveRule;
@@ -273,6 +283,7 @@ class MillVariantOptions {
   final CaptureRuleConfig custodianCapture;
   final CaptureRuleConfig interventionCapture;
   final CaptureRuleConfig leapCapture;
+  final StalemateAction stalemateAction;
 
   const MillVariantOptions({
     required this.pieceCount,
@@ -280,6 +291,7 @@ class MillVariantOptions {
     required this.piecesAtLeastCount,
     required this.mayFly,
     required this.hasDiagonalLines,
+    required this.millFormationActionInPlacingPhase,
     required this.mayRemoveFromMillsAlways,
     required this.mayRemoveMultiple,
     required this.nMoveRule,
@@ -294,6 +306,7 @@ class MillVariantOptions {
     required this.custodianCapture,
     required this.interventionCapture,
     required this.leapCapture,
+    required this.stalemateAction,
   });
 
   @override
@@ -303,6 +316,7 @@ class MillVariantOptions {
       piecesAtLeastCount.hashCode ^
       mayFly.hashCode ^
       hasDiagonalLines.hashCode ^
+      millFormationActionInPlacingPhase.hashCode ^
       mayRemoveFromMillsAlways.hashCode ^
       mayRemoveMultiple.hashCode ^
       nMoveRule.hashCode ^
@@ -316,7 +330,8 @@ class MillVariantOptions {
       threefoldRepetitionRule.hashCode ^
       custodianCapture.hashCode ^
       interventionCapture.hashCode ^
-      leapCapture.hashCode;
+      leapCapture.hashCode ^
+      stalemateAction.hashCode;
 
   @override
   bool operator ==(Object other) =>
@@ -328,6 +343,8 @@ class MillVariantOptions {
           piecesAtLeastCount == other.piecesAtLeastCount &&
           mayFly == other.mayFly &&
           hasDiagonalLines == other.hasDiagonalLines &&
+          millFormationActionInPlacingPhase ==
+              other.millFormationActionInPlacingPhase &&
           mayRemoveFromMillsAlways == other.mayRemoveFromMillsAlways &&
           mayRemoveMultiple == other.mayRemoveMultiple &&
           nMoveRule == other.nMoveRule &&
@@ -343,7 +360,17 @@ class MillVariantOptions {
           threefoldRepetitionRule == other.threefoldRepetitionRule &&
           custodianCapture == other.custodianCapture &&
           interventionCapture == other.interventionCapture &&
-          leapCapture == other.leapCapture;
+          leapCapture == other.leapCapture &&
+          stalemateAction == other.stalemateAction;
+}
+
+enum StalemateAction {
+  endWithStalemateLoss,
+  changeSideToMove,
+  removeOpponentsPieceAndMakeNextMove,
+  removeOpponentsPieceAndChangeSideToMove,
+  endWithStalemateDraw,
+  bothPlayersRemoveOpponentsPiece,
 }
 
 class TopologyBlob {

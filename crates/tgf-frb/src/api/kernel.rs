@@ -275,7 +275,9 @@ pub fn tgf_kernel_redo_depth(handle: u32) -> Result<u32, String> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::api::simple::{CaptureRuleConfig, MillBoardFullAction};
+    use crate::api::simple::{
+        CaptureRuleConfig, MillBoardFullAction, MillFormationActionInPlacingPhase, StalemateAction,
+    };
 
     #[test]
     fn mill_kernel_session_round_trip() {
@@ -339,6 +341,8 @@ mod tests {
             pieces_at_least_count: 3,
             may_fly: true,
             has_diagonal_lines: false,
+            mill_formation_action_in_placing_phase:
+                MillFormationActionInPlacingPhase::RemoveOpponentsPieceFromBoard,
             may_remove_from_mills_always: false,
             may_remove_multiple: false,
             n_move_rule: 100,
@@ -377,6 +381,7 @@ mod tests {
                 in_moving_phase: true,
                 only_available_when_own_pieces_leq3: false,
             },
+            stalemate_action: StalemateAction::EndWithStalemateLoss,
         };
         let handle = tgf_kernel_create_mill(variant).unwrap();
         assert_eq!(tgf_kernel_legal_actions(handle).unwrap().len(), 24);

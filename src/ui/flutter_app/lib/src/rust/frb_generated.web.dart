@@ -78,7 +78,14 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   MillBoardFullAction dco_decode_mill_board_full_action(dynamic raw);
 
   @protected
+  MillFormationActionInPlacingPhase
+  dco_decode_mill_formation_action_in_placing_phase(dynamic raw);
+
+  @protected
   MillVariantOptions dco_decode_mill_variant_options(dynamic raw);
+
+  @protected
+  StalemateAction dco_decode_stalemate_action(dynamic raw);
 
   @protected
   TgfAction dco_decode_tgf_action(dynamic raw);
@@ -182,9 +189,18 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   );
 
   @protected
+  MillFormationActionInPlacingPhase
+  sse_decode_mill_formation_action_in_placing_phase(
+    SseDeserializer deserializer,
+  );
+
+  @protected
   MillVariantOptions sse_decode_mill_variant_options(
     SseDeserializer deserializer,
   );
+
+  @protected
+  StalemateAction sse_decode_stalemate_action(SseDeserializer deserializer);
 
   @protected
   TgfAction sse_decode_tgf_action(SseDeserializer deserializer);
@@ -310,8 +326,20 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   );
 
   @protected
+  void sse_encode_mill_formation_action_in_placing_phase(
+    MillFormationActionInPlacingPhase self,
+    SseSerializer serializer,
+  );
+
+  @protected
   void sse_encode_mill_variant_options(
     MillVariantOptions self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void sse_encode_stalemate_action(
+    StalemateAction self,
     SseSerializer serializer,
   );
 

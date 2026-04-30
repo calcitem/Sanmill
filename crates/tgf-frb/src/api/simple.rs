@@ -15,8 +15,10 @@ use tgf_core::{Action, ActionList, BoardTopology, Game, GameRules};
 use tgf_legacy_cxx::LegacyKernel;
 use tgf_mill::{
     default_mill_topology, CaptureRuleConfig as NativeCaptureRuleConfig, MillActionKind,
-    MillBoardFullAction as NativeMillBoardFullAction, MillGame, MillRules,
-    MillVariantOptions as NativeMillVariantOptions,
+    MillBoardFullAction as NativeMillBoardFullAction,
+    MillFormationActionInPlacingPhase as NativeMillFormationActionInPlacingPhase, MillGame,
+    MillRules, MillVariantOptions as NativeMillVariantOptions,
+    StalemateAction as NativeStalemateAction,
 };
 use tgf_othello::{OthelloGame, OthelloRules};
 #[cfg(test)]
@@ -64,6 +66,7 @@ pub struct MillVariantOptions {
     pub pieces_at_least_count: u8,
     pub may_fly: bool,
     pub has_diagonal_lines: bool,
+    pub mill_formation_action_in_placing_phase: MillFormationActionInPlacingPhase,
     pub may_remove_from_mills_always: bool,
     pub may_remove_multiple: bool,
     pub n_move_rule: u32,
@@ -78,6 +81,115 @@ pub struct MillVariantOptions {
     pub custodian_capture: CaptureRuleConfig,
     pub intervention_capture: CaptureRuleConfig,
     pub leap_capture: CaptureRuleConfig,
+    pub stalemate_action: StalemateAction,
+}
+
+#[derive(Clone, Debug)]
+pub enum StalemateAction {
+    EndWithStalemateLoss,
+    ChangeSideToMove,
+    RemoveOpponentsPieceAndMakeNextMove,
+    RemoveOpponentsPieceAndChangeSideToMove,
+    EndWithStalemateDraw,
+    BothPlayersRemoveOpponentsPiece,
+}
+
+impl From<StalemateAction> for NativeStalemateAction {
+    fn from(value: StalemateAction) -> Self {
+        match value {
+            StalemateAction::EndWithStalemateLoss => NativeStalemateAction::EndWithStalemateLoss,
+            StalemateAction::ChangeSideToMove => NativeStalemateAction::ChangeSideToMove,
+            StalemateAction::RemoveOpponentsPieceAndMakeNextMove => {
+                NativeStalemateAction::RemoveOpponentsPieceAndMakeNextMove
+            }
+            StalemateAction::RemoveOpponentsPieceAndChangeSideToMove => {
+                NativeStalemateAction::RemoveOpponentsPieceAndChangeSideToMove
+            }
+            StalemateAction::EndWithStalemateDraw => NativeStalemateAction::EndWithStalemateDraw,
+            StalemateAction::BothPlayersRemoveOpponentsPiece => {
+                NativeStalemateAction::BothPlayersRemoveOpponentsPiece
+            }
+        }
+    }
+}
+
+impl From<NativeStalemateAction> for StalemateAction {
+    fn from(value: NativeStalemateAction) -> Self {
+        match value {
+            NativeStalemateAction::EndWithStalemateLoss => StalemateAction::EndWithStalemateLoss,
+            NativeStalemateAction::ChangeSideToMove => StalemateAction::ChangeSideToMove,
+            NativeStalemateAction::RemoveOpponentsPieceAndMakeNextMove => {
+                StalemateAction::RemoveOpponentsPieceAndMakeNextMove
+            }
+            NativeStalemateAction::RemoveOpponentsPieceAndChangeSideToMove => {
+                StalemateAction::RemoveOpponentsPieceAndChangeSideToMove
+            }
+            NativeStalemateAction::EndWithStalemateDraw => StalemateAction::EndWithStalemateDraw,
+            NativeStalemateAction::BothPlayersRemoveOpponentsPiece => {
+                StalemateAction::BothPlayersRemoveOpponentsPiece
+            }
+        }
+    }
+}
+
+#[derive(Clone, Debug)]
+pub enum MillFormationActionInPlacingPhase {
+    RemoveOpponentsPieceFromBoard,
+    RemoveOpponentsPieceFromHandThenOpponentsTurn,
+    RemoveOpponentsPieceFromHandThenYourTurn,
+    OpponentRemovesOwnPiece,
+    MarkAndDelayRemovingPieces,
+    RemovalBasedOnMillCounts,
+}
+
+impl From<MillFormationActionInPlacingPhase> for NativeMillFormationActionInPlacingPhase {
+    fn from(value: MillFormationActionInPlacingPhase) -> Self {
+        match value {
+            MillFormationActionInPlacingPhase::RemoveOpponentsPieceFromBoard => {
+                NativeMillFormationActionInPlacingPhase::RemoveOpponentsPieceFromBoard
+            }
+            MillFormationActionInPlacingPhase::RemoveOpponentsPieceFromHandThenOpponentsTurn => {
+                NativeMillFormationActionInPlacingPhase::RemoveOpponentsPieceFromHandThenOpponentsTurn
+            }
+            MillFormationActionInPlacingPhase::RemoveOpponentsPieceFromHandThenYourTurn => {
+                NativeMillFormationActionInPlacingPhase::RemoveOpponentsPieceFromHandThenYourTurn
+            }
+            MillFormationActionInPlacingPhase::OpponentRemovesOwnPiece => {
+                NativeMillFormationActionInPlacingPhase::OpponentRemovesOwnPiece
+            }
+            MillFormationActionInPlacingPhase::MarkAndDelayRemovingPieces => {
+                NativeMillFormationActionInPlacingPhase::MarkAndDelayRemovingPieces
+            }
+            MillFormationActionInPlacingPhase::RemovalBasedOnMillCounts => {
+                NativeMillFormationActionInPlacingPhase::RemovalBasedOnMillCounts
+            }
+        }
+    }
+}
+
+impl From<NativeMillFormationActionInPlacingPhase> for MillFormationActionInPlacingPhase {
+    fn from(value: NativeMillFormationActionInPlacingPhase) -> Self {
+        match value {
+            NativeMillFormationActionInPlacingPhase::RemoveOpponentsPieceFromBoard => {
+                MillFormationActionInPlacingPhase::RemoveOpponentsPieceFromBoard
+            }
+            NativeMillFormationActionInPlacingPhase::RemoveOpponentsPieceFromHandThenOpponentsTurn => {
+                MillFormationActionInPlacingPhase::RemoveOpponentsPieceFromHandThenOpponentsTurn
+            }
+            NativeMillFormationActionInPlacingPhase::RemoveOpponentsPieceFromHandThenYourTurn => {
+                MillFormationActionInPlacingPhase::RemoveOpponentsPieceFromHandThenYourTurn
+            }
+            NativeMillFormationActionInPlacingPhase::OpponentRemovesOwnPiece => {
+                MillFormationActionInPlacingPhase::OpponentRemovesOwnPiece
+            }
+            NativeMillFormationActionInPlacingPhase::MarkAndDelayRemovingPieces => {
+                MillFormationActionInPlacingPhase::MarkAndDelayRemovingPieces
+            }
+            NativeMillFormationActionInPlacingPhase::RemovalBasedOnMillCounts => {
+                MillFormationActionInPlacingPhase::RemovalBasedOnMillCounts
+            }
+        }
+    }
 }
 
 #[derive(Clone, Debug)]
@@ -172,6 +284,9 @@ impl From<MillVariantOptions> for NativeMillVariantOptions {
             pieces_at_least_count: value.pieces_at_least_count,
             may_fly: value.may_fly,
             has_diagonal_lines: value.has_diagonal_lines,
+            mill_formation_action_in_placing_phase: value
+                .mill_formation_action_in_placing_phase
+                .into(),
             may_remove_from_mills_always: value.may_remove_from_mills_always,
             may_remove_multiple: value.may_remove_multiple,
             n_move_rule: value.n_move_rule,
@@ -186,6 +301,7 @@ impl From<MillVariantOptions> for NativeMillVariantOptions {
             custodian_capture: value.custodian_capture.into(),
             intervention_capture: value.intervention_capture.into(),
             leap_capture: value.leap_capture.into(),
+            stalemate_action: value.stalemate_action.into(),
         }
     }
 }
@@ -200,6 +316,9 @@ pub fn native_mill_default_variant_options() -> MillVariantOptions {
         pieces_at_least_count: defaults.pieces_at_least_count,
         may_fly: defaults.may_fly,
         has_diagonal_lines: defaults.has_diagonal_lines,
+        mill_formation_action_in_placing_phase: defaults
+            .mill_formation_action_in_placing_phase
+            .into(),
         may_remove_from_mills_always: defaults.may_remove_from_mills_always,
         may_remove_multiple: defaults.may_remove_multiple,
         n_move_rule: defaults.n_move_rule,
@@ -214,6 +333,7 @@ pub fn native_mill_default_variant_options() -> MillVariantOptions {
         custodian_capture: defaults.custodian_capture.into(),
         intervention_capture: defaults.intervention_capture.into(),
         leap_capture: defaults.leap_capture.into(),
+        stalemate_action: defaults.stalemate_action.into(),
     }
 }
 
@@ -1119,6 +1239,8 @@ mod tests {
             pieces_at_least_count: 3,
             may_fly: true,
             has_diagonal_lines: false,
+            mill_formation_action_in_placing_phase:
+                MillFormationActionInPlacingPhase::RemoveOpponentsPieceFromHandThenYourTurn,
             may_remove_from_mills_always: true,
             may_remove_multiple: true,
             n_move_rule: 2,
@@ -1157,6 +1279,7 @@ mod tests {
                 in_moving_phase: true,
                 only_available_when_own_pieces_leq3: false,
             },
+            stalemate_action: StalemateAction::BothPlayersRemoveOpponentsPiece,
         };
         let native: NativeMillVariantOptions = variant.into();
         assert!(native.may_remove_from_mills_always);
@@ -1165,6 +1288,10 @@ mod tests {
         assert_eq!(native.endgame_n_move_rule, 1);
         assert!(native.may_move_in_placing_phase);
         assert!(native.is_defender_move_first);
+        assert!(matches!(
+            native.mill_formation_action_in_placing_phase,
+            NativeMillFormationActionInPlacingPhase::RemoveOpponentsPieceFromHandThenYourTurn
+        ));
         assert!(native.restrict_repeated_mills_formation);
         assert!(native.one_time_use_mill);
         assert!(native.stop_placing_when_two_empty_squares);
@@ -1176,6 +1303,10 @@ mod tests {
         assert!(native.custodian_capture.enabled);
         assert!(native.intervention_capture.enabled);
         assert!(native.leap_capture.enabled);
+        assert!(matches!(
+            native.stalemate_action,
+            NativeStalemateAction::BothPlayersRemoveOpponentsPiece
+        ));
     }
 
     /// Body of the random-walk differential.  Both the default
