@@ -40,6 +40,8 @@ void main() {
           MillEventTypes.moveApplied,
         ]),
       );
+      expect(events.last.payload['mover'], PlayerSeat.first.name);
+      expect(events.last.payload['move'], 'a7');
     });
 
     test('rejects illegal actions without mutating state', () async {

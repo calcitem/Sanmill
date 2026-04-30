@@ -69,10 +69,12 @@ class NativeMillGameSession implements GameSessionHandle {
       });
       return;
     }
+    final PlayerSeat mover = _state.value.activeSeat;
     final GameStateSnapshot next = rulesPort.apply(action);
     _setState(next);
     _emit(MillEventTypes.moveApplied, <String, Object?>{
       'type': action.type,
+      'mover': mover.name,
       ...action.payload,
     });
   }
