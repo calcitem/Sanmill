@@ -9,6 +9,7 @@ import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart'
 import 'package:sanmill/game_platform/game_id.dart';
 import 'package:sanmill/game_platform/game_session.dart';
 import 'package:sanmill/games/mill/mill_constants.dart';
+import 'package:sanmill/games/mill/native_mill_game_session.dart';
 import 'package:sanmill/games/mill/native_mill_rules_port.dart';
 import 'package:sanmill/src/rust/frb_generated.dart';
 
@@ -80,6 +81,28 @@ void main() {
         final GameStateSnapshot afterRedo = port.redo();
         expect(afterRedo.activeSeat, PlayerSeat.second);
         expect(port.snapshot, afterRedo);
+      },
+      skip: _nativeLibrarySkipReason,
+    );
+
+    test(
+      'NativeMillGameSession applies through the real rules port',
+      () async {
+        final NativeMillGameSession session = NativeMillGameSession();
+        addTearDown(session.dispose);
+
+        expect(session.legalActions, hasLength(24));
+        final GameAction firstPlace = session.legalActions.first;
+
+        await session.apply(firstPlace);
+        expect(session.state.value.lastAction, firstPlace);
+        expect(session.state.value.activeSeat, PlayerSeat.second);
+
+        await session.undo();
+        expect(session.state.value.activeSeat, PlayerSeat.first);
+
+        await session.redo();
+        expect(session.state.value.activeSeat, PlayerSeat.second);
       },
       skip: _nativeLibrarySkipReason,
     );
