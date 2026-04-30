@@ -466,6 +466,25 @@ fn print_benchmark_toml() {
     let _ = searcher.search(&mut wb, 1);
     let first_move_ms = cold_start_begin.elapsed().as_millis() as u64;
 
+    let smp_workers = vec![
+        LazySmpWorker { extra_depth: 0 },
+        LazySmpWorker { extra_depth: 1 },
+    ];
+    let smp_shared_tt = SharedTt::new(tt_cluster_bits_from_env());
+    let smp_start = Instant::now();
+    let smp_result = lazy_smp_search::<MillGame>(
+        game.clone(),
+        snap,
+        4,
+        &smp_workers,
+        SearchOptions::default(),
+        smp_shared_tt,
+        None,
+    );
+    let smp_elapsed = smp_start.elapsed().max(Duration::from_micros(1));
+    let smp_ms = smp_elapsed.as_millis() as u64;
+    let smp_nps = (smp_result.nodes as f64 / smp_elapsed.as_secs_f64()).round() as u64;
+
     println!("[meta]");
     println!("locked_at   = \"\"");
     println!("git_commit  = \"{}\"", git_commit);
@@ -490,4 +509,10 @@ fn print_benchmark_toml() {
     println!();
     println!("[baseline.startup]");
     println!("first_move_ms = {}", first_move_ms);
+    println!();
+    println!("[baseline.smp]");
+    println!("workers = {}", smp_workers.len());
+    println!("base_depth = 4");
+    println!("nps = {}", smp_nps);
+    println!("depth_ms = {}", smp_ms);
 }
