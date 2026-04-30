@@ -624,7 +624,7 @@ impl<G: Game> Searcher<G> {
             return score;
         }
         if depth <= 0 {
-            return self.qsearch(wb, alpha, beta);
+            return self.qsearch_with_depth(wb, depth, alpha, beta);
         }
 
         let old_alpha = alpha;
@@ -712,18 +712,40 @@ impl<G: Game> Searcher<G> {
         self.search_started_at = Some(Instant::now());
     }
 
-    /// Quiescence search scaffold matching the C++ shape: evaluate the current
-    /// position, then extend only remove/capture actions when the game policy
-    /// tells us which action kind represents a removal.
-    pub fn qsearch(&mut self, wb: &mut G::Workbench, mut alpha: i32, beta: i32) -> i32 {
+    /// Quiescence search entry point preserved for external callers.  Equivalent
+    /// to invoking [`Self::qsearch_with_depth`] at depth 0; alpha-beta callers
+    /// should prefer the depth-aware variant so the stand-pat mate-distance
+    /// decay matches `src/search.cpp::qsearch`.
+    pub fn qsearch(&mut self, wb: &mut G::Workbench, alpha: i32, beta: i32) -> i32 {
+        self.qsearch_with_depth(wb, 0, alpha, beta)
+    }
+
+    /// Depth-aware quiescence search mirroring `Search::qsearch` in
+    /// `src/search.cpp`.  Adjusts the static stand-pat by `depth` (which is
+    /// always non-positive at this entry) so deeper extensions prefer faster
+    /// wins / slower losses, then extends only the action kind that the game
+    /// policy identifies as a removal.  Removal candidates are ordered
+    /// through the same MovePicker-style scoring used in the main search.
+    pub fn qsearch_with_depth(
+        &mut self,
+        wb: &mut G::Workbench,
+        depth: i32,
+        mut alpha: i32,
+        beta: i32,
+    ) -> i32 {
         self.nodes += 1;
         if self.should_abort() {
             return G::Evaluator::score(wb);
         }
-        if let Some(score) = G::terminal_score(wb, wb.side_to_move(), 0) {
+        if let Some(score) = G::terminal_score(wb, wb.side_to_move(), depth) {
             return score;
         }
-        let stand_pat = G::Evaluator::score(wb);
+        let mut stand_pat = G::Evaluator::score(wb);
+        if stand_pat > 0 {
+            stand_pat = stand_pat.saturating_add(depth);
+        } else {
+            stand_pat = stand_pat.saturating_sub(depth);
+        }
         if stand_pat >= beta {
             return beta;
         }
@@ -740,14 +762,24 @@ impl<G: Game> Searcher<G> {
 
         let mut moves = ActionList::<256>::new();
         G::generate_legal(wb, &mut moves);
-        for action in moves.into_iter().filter(|a| a.kind_tag == remove_kind_tag) {
+        moves.retain(|a| a.kind_tag == remove_kind_tag);
+        if moves.is_empty() {
+            return alpha;
+        }
+        let key = wb.key();
+        self.order_moves(wb, key, depth, &mut moves);
+
+        for action in moves {
+            if self.should_abort() {
+                return alpha;
+            }
             let before = wb.side_to_move();
             wb.do_move(action);
             let after = wb.side_to_move();
             let value = if after != before {
-                -self.qsearch(wb, -beta, -alpha)
+                -self.qsearch_with_depth(wb, depth - 1, -beta, -alpha)
             } else {
-                self.qsearch(wb, alpha, beta)
+                self.qsearch_with_depth(wb, depth - 1, alpha, beta)
             };
             wb.undo_move();
             if value > alpha {
@@ -1479,6 +1511,59 @@ mod tests {
         let score = searcher.qsearch(&mut wb, i32::MIN + 1, i32::MAX - 1);
         assert!(score > i32::MIN + 1);
         assert!(score < i32::MAX - 1);
+    }
+
+    #[test]
+    fn qsearch_with_depth_decays_stand_pat_for_mate_distance() {
+        // Mirrors the C++ `if (stand_pat > 0) stand_pat += depth;` block in
+        // `src/search.cpp::qsearch`: deeper recursions pull positive scores
+        // toward zero so mate-in-N is preferred over mate-in-N+1.  The
+        // synthetic game keeps the evaluator constant so the only difference
+        // between depth 0 and depth -3 is the decay term itself.
+        struct StaticEvalGame;
+        struct StaticEvalEvaluator;
+        struct StaticEvalWorkbench;
+        const STATIC_SCORE: i32 = 100;
+
+        impl Workbench for StaticEvalWorkbench {
+            fn snapshot(&self) -> GameStateSnapshot {
+                GameStateSnapshot::default()
+            }
+            fn key(&self) -> u64 {
+                0
+            }
+            fn side_to_move(&self) -> i8 {
+                0
+            }
+            fn is_terminal(&self) -> bool {
+                false
+            }
+            fn do_move(&mut self, _: Action) {}
+            fn undo_move(&mut self) {}
+        }
+
+        impl Evaluator<StaticEvalWorkbench> for StaticEvalEvaluator {
+            fn score(_: &StaticEvalWorkbench) -> i32 {
+                STATIC_SCORE
+            }
+        }
+
+        impl tgf_core::Game for StaticEvalGame {
+            type Workbench = StaticEvalWorkbench;
+            type Evaluator = StaticEvalEvaluator;
+            fn build_workbench(&self, _: &GameStateSnapshot) -> Self::Workbench {
+                StaticEvalWorkbench
+            }
+            fn generate_legal(_: &Self::Workbench, _: &mut ActionList<256>) {}
+        }
+
+        let mut wb = StaticEvalWorkbench;
+        let mut searcher = Searcher::<StaticEvalGame>::new();
+
+        let at_zero = searcher.qsearch_with_depth(&mut wb, 0, i32::MIN + 1, i32::MAX - 1);
+        let at_minus_three = searcher.qsearch_with_depth(&mut wb, -3, i32::MIN + 1, i32::MAX - 1);
+        assert_eq!(at_zero, STATIC_SCORE);
+        assert_eq!(at_zero - at_minus_three, 3);
     }
 
     #[test]

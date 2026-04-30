@@ -236,10 +236,13 @@ Plus the existing fixed-position `native_and_legacy_*` perft tests.
 
 Work in progress (see migration plan phase 5):
 
-- exact C++ MovePicker ordering weights
 - remaining TT parity knobs such as C++ fake-clean age semantics, if retained
-- full qsearch parity with `src/search.cpp` (Mill FRB / `tgf-cli` now enable the
-  generic remove-move extension in qsearch via `SearchPolicy::remove_kind_tag`)
+- C++ qsearch is currently a depth-0 stand-pat with the recursive remove
+  branch gated behind `MAX_QUIESCENCE_DEPTH = 0`; `tgf-search`'s
+  `qsearch_with_depth` already runs the full remove extension (sorted via the
+  same MovePicker-style scoring) and applies the
+  `if (stand_pat > 0) stand_pat += depth;` mate-distance decay.  Future work
+  is to lift that depth gate in C++ and verify the deeper qsearch agrees.
 - MCTS alpha-beta assisted simulation
 - multi-threaded MCTS shared visits
 
