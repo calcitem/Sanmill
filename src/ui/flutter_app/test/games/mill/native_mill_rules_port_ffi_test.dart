@@ -6,9 +6,11 @@ import 'dart:io';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart'
     show ExternalLibrary;
 import 'package:flutter_test/flutter_test.dart';
+import 'package:sanmill/game_page/services/mill.dart' as mill;
 import 'package:sanmill/game_platform/game_id.dart';
 import 'package:sanmill/game_platform/game_session.dart';
 import 'package:sanmill/games/mill/mill_constants.dart';
+import 'package:sanmill/games/mill/mill_session_recorder_bridge.dart';
 import 'package:sanmill/games/mill/native_mill_ai_turn_controller.dart';
 import 'package:sanmill/games/mill/native_mill_game_session.dart';
 import 'package:sanmill/games/mill/native_mill_rules_port.dart';
@@ -211,6 +213,53 @@ void main() {
         );
         expect(whiteMove, isNotNull);
         expect(firstAiSession.state.value.activeSeat, PlayerSeat.second);
+      },
+      skip: _nativeLibrarySkipReason,
+    );
+
+    test(
+      'recorder bridge follows real session apply undo redo events',
+      () async {
+        final NativeMillGameSession session = NativeMillGameSession();
+        addTearDown(session.dispose);
+        final mill.GameRecorder recorder = mill.GameRecorder();
+        final MillSessionRecorderBridge bridge = MillSessionRecorderBridge(
+          session: session,
+          recorder: recorder,
+        );
+        addTearDown(bridge.dispose);
+
+        final GameAction firstPlace = session.legalActions.first;
+        await session.apply(firstPlace);
+        await Future<void>.delayed(Duration.zero);
+        expect(recorder.currentPath.map((mill.ExtMove m) => m.move), <String>[
+          firstPlace.payload['move']! as String,
+        ]);
+        expect(recorder.currentPath.single.side, mill.PieceColor.white);
+
+        final GameAction? secondPlace = await session
+            .searchAndApplyBestAction();
+        await Future<void>.delayed(Duration.zero);
+        expect(secondPlace, isNotNull);
+        final GameAction second = secondPlace!;
+        expect(recorder.currentPath.map((mill.ExtMove m) => m.move), <String>[
+          firstPlace.payload['move']! as String,
+          second.payload['move']! as String,
+        ]);
+        expect(recorder.currentPath.last.side, mill.PieceColor.black);
+
+        await session.undo();
+        await Future<void>.delayed(Duration.zero);
+        expect(recorder.currentPath.map((mill.ExtMove m) => m.move), <String>[
+          firstPlace.payload['move']! as String,
+        ]);
+
+        await session.redo();
+        await Future<void>.delayed(Duration.zero);
+        expect(recorder.currentPath.map((mill.ExtMove m) => m.move), <String>[
+          firstPlace.payload['move']! as String,
+          second.payload['move']! as String,
+        ]);
       },
       skip: _nativeLibrarySkipReason,
     );
