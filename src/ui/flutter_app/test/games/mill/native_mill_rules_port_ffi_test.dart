@@ -3,15 +3,16 @@
 
 import 'dart:io';
 
-import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart'
     show ExternalLibrary;
+import 'package:flutter_test/flutter_test.dart';
 import 'package:sanmill/game_platform/game_id.dart';
 import 'package:sanmill/game_platform/game_session.dart';
 import 'package:sanmill/games/mill/mill_constants.dart';
 import 'package:sanmill/games/mill/native_mill_game_session.dart';
 import 'package:sanmill/games/mill/native_mill_rules_port.dart';
 import 'package:sanmill/games/mill/native_mill_snapshot_board_view.dart';
+import 'package:sanmill/src/rust/api/simple.dart' as tgf;
 import 'package:sanmill/src/rust/frb_generated.dart';
 
 final File _nativeLibrary = File('../../../target/debug/rust_lib_sanmill.dll');
@@ -114,6 +115,40 @@ void main() {
 
         await session.redo();
         expect(session.state.value.activeSeat, PlayerSeat.second);
+      },
+      skip: _nativeLibrarySkipReason,
+    );
+
+    test(
+      'search events run from the session kernel state',
+      () async {
+        final NativeMillGameSession session = NativeMillGameSession();
+        addTearDown(session.dispose);
+
+        // Advance away from the initial position so the search proves it is
+        // tied to this session's kernel handle, not the global simple API.
+        final GameAction firstPlace = session.legalActions.first;
+        await session.apply(firstPlace);
+
+        final List<String> kinds = <String>[];
+        GameAction? bestAction;
+        await for (final tgf.EngineEvent event in session.millSearchEvents(
+          depth: 1,
+        )) {
+          kinds.add(event.kind);
+          if (event.kind == 'bestMove' && event.toNode >= 0) {
+            bestAction = session.legalActions.firstWhere(
+              (GameAction action) => action.payload['toNode'] == event.toNode,
+            );
+          }
+        }
+
+        expect(
+          kinds,
+          containsAllInOrder(<String>['ready', 'info', 'bestMove']),
+        );
+        expect(bestAction, isNotNull);
+        expect(bestAction!.type, MillActionTypes.place);
       },
       skip: _nativeLibrarySkipReason,
     );

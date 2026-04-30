@@ -16,6 +16,7 @@ import 'package:flutter/foundation.dart';
 import '../../game_platform/game_session.dart';
 import '../../game_platform/game_session_handle.dart';
 import '../../rule_settings/models/rule_settings.dart';
+import '../../src/rust/api/simple.dart' as tgf;
 import 'mill_constants.dart';
 import 'native_mill_rules_port.dart';
 
@@ -98,6 +99,13 @@ class NativeMillGameSession implements GameSessionHandle {
     } on Object catch (e) {
       _emit(MillEventTypes.actionIgnored, <String, Object?>{'reason': '$e'});
     }
+  }
+
+  /// Search from the current Rust kernel state backing this session.  Exposed
+  /// as a concrete method (not on [GameSession]) while phase 6 moves
+  /// `engine.dart` toward EngineEvent streams.
+  Stream<tgf.EngineEvent> millSearchEvents({required int depth}) {
+    return rulesPort.millSearchEvents(depth: depth);
   }
 
   @override

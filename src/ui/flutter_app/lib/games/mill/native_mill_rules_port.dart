@@ -17,6 +17,7 @@ import '../../game_platform/mill_marked_pieces_codec.dart';
 import '../../game_platform/rules_port.dart';
 import '../../rule_settings/models/rule_settings.dart';
 import '../../src/rust/api/kernel.dart' as tgf;
+import '../../src/rust/api/simple.dart' as tgf_simple;
 import 'mill_action_codec.dart';
 import 'mill_variant_options_mapper.dart';
 
@@ -78,6 +79,13 @@ class NativeMillRulesPort implements RulesPort {
   }
 
   void dispose() => _kernel.dispose();
+
+  /// Stream Rust-native Mill search events from this port's current kernel
+  /// state.  This keeps the future engine path tied to the same session
+  /// snapshot that legalActions/apply/undo/redo mutate.
+  Stream<tgf_simple.EngineEvent> millSearchEvents({required int depth}) {
+    return _kernel.millSearchEvents(depth: depth);
+  }
 
   GameStateSnapshot _snapshotFromKernel({GameAction? lastAction}) {
     final tgf.TgfSnapshot raw = _kernel.rawSnapshot();

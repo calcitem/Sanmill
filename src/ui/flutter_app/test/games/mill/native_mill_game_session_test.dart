@@ -1,12 +1,15 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // Copyright (C) 2019-2026 The Sanmill developers (see AUTHORS file)
 
+import 'dart:async';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sanmill/game_platform/game_id.dart';
 import 'package:sanmill/game_platform/game_session.dart';
 import 'package:sanmill/games/mill/mill_constants.dart';
 import 'package:sanmill/games/mill/native_mill_game_session.dart';
 import 'package:sanmill/games/mill/native_mill_rules_port.dart';
+import 'package:sanmill/src/rust/api/simple.dart' as tgf;
 
 void main() {
   group('NativeMillGameSession', () {
@@ -18,7 +21,9 @@ void main() {
       addTearDown(session.dispose);
 
       final List<GameSessionEvent> events = <GameSessionEvent>[];
-      final sub = session.events.listen(events.add);
+      final StreamSubscription<GameSessionEvent> sub = session.events.listen(
+        events.add,
+      );
       addTearDown(sub.cancel);
 
       final GameAction action = rulesPort.placeA7;
@@ -45,7 +50,9 @@ void main() {
       addTearDown(session.dispose);
 
       final List<GameSessionEvent> events = <GameSessionEvent>[];
-      final sub = session.events.listen(events.add);
+      final StreamSubscription<GameSessionEvent> sub = session.events.listen(
+        events.add,
+      );
       addTearDown(sub.cancel);
 
       final GameStateSnapshot before = session.state.value;
@@ -170,5 +177,10 @@ class _FakeNativeMillRulesPort implements NativeMillRulesPort {
   @override
   void dispose() {
     disposed = true;
+  }
+
+  @override
+  Stream<tgf.EngineEvent> millSearchEvents({required int depth}) {
+    return const Stream<tgf.EngineEvent>.empty();
   }
 }
