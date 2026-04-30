@@ -319,6 +319,17 @@ const NEIGHBORS_DIAGONAL: [&[u16]; 24] = [
     D21, D22, D23,
 ];
 
+/// Crate-internal lookup mirroring `MillTopology::neighbors` so rules-side
+/// heuristics can avoid building a `MillTopology` instance per call.
+#[inline]
+pub(crate) fn neighbors_for(node: usize, has_diagonal_lines: bool) -> &'static [u16] {
+    if has_diagonal_lines {
+        NEIGHBORS_DIAGONAL[node]
+    } else {
+        NEIGHBORS[node]
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

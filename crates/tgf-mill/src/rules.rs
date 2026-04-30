@@ -393,34 +393,70 @@ impl Game for MillGame {
         wb.rules.legal_actions(&wb.snapshot(), out);
     }
 
-    /// Star-square opening bonus (`RATING_STAR_SQUARE` in `src/types.h`), gated
-    /// like `Position::is_star_square` + `movepick.cpp` (Black early placing).
+    /// MovePicker-style move ordering bonus translated from
+    /// `src/movepick.cpp::score()`.  Combines mill formation, mill blocking,
+    /// star-square opening preference, and capture-target preference.  The
+    /// numeric weights match `RATING_*` constants in `src/types.h`; killer /
+    /// history / TT bonuses are still applied in `Searcher::move_score`.
     #[inline]
     fn move_order_bias(wb: &Self::Workbench, action: Action) -> i32 {
-        if action.kind_tag != MillActionKind::Place as i16 {
-            return 0;
-        }
-        if wb.state.phase != MillPhase::Placing {
-            return 0;
-        }
-        if wb.state.side_to_move != 1 {
-            return 0;
-        }
-        let black_on_board = wb.state.board.iter().filter(|&&p| p == 2).count();
-        if black_on_board >= 2 {
-            return 0;
-        }
         let to = action.to_node as usize;
         if to >= 24 {
             return 0;
         }
-        let diag = wb.rules.options.has_diagonal_lines;
-        let star = if diag {
-            matches!(to, 17 | 19 | 21 | 23)
+        let state = &wb.state;
+        let options = &wb.rules.options;
+        let kind = action.kind_tag;
+
+        if kind == MillActionKind::Remove as i16 {
+            return remove_move_score(state, options, to);
+        }
+
+        if kind != MillActionKind::Place as i16 && kind != MillActionKind::Move as i16 {
+            return 0;
+        }
+
+        let side = state.side_to_move;
+        let opponent = side ^ 1;
+        let from = if kind == MillActionKind::Move as i16 {
+            Some(action.from_node as usize)
         } else {
-            matches!(to, 16 | 18 | 20 | 22)
+            None
         };
-        i32::from(star) * 11
+
+        let our_mills = potential_mills_count_at(state, options, to, side, from) as i32;
+        let mut score = 0_i32;
+        if our_mills > 0 {
+            score += RATING_ONE_MILL * our_mills;
+        } else if state.phase == MillPhase::Placing && !options.may_move_in_placing_phase {
+            let their_mills = potential_mills_count_at(state, options, to, opponent, from) as i32;
+            score += RATING_BLOCK_ONE_MILL * their_mills;
+        } else if state.phase == MillPhase::Moving
+            || (state.phase == MillPhase::Placing && options.may_move_in_placing_phase)
+        {
+            let their_mills = potential_mills_count_at(state, options, to, opponent, from) as i32;
+            if their_mills > 0 {
+                let (_, theirs, _) = surrounded_pieces_count(state, options, to);
+                let parity_match = if to.is_multiple_of(2) {
+                    theirs == 3
+                } else {
+                    theirs == 2
+                };
+                if parity_match {
+                    score += RATING_BLOCK_ONE_MILL * their_mills;
+                }
+            }
+        }
+
+        if state.phase == MillPhase::Placing
+            && side == 1
+            && state.board.iter().filter(|&&p| p == 2).count() < 2
+            && is_star_square(options, to)
+        {
+            score += RATING_STAR_SQUARE;
+        }
+
+        score
     }
 
     #[inline]
@@ -1489,6 +1525,108 @@ fn formed_mill_bits_at(
     bits
 }
 
+/// Mirrors `Position::potential_mills_count` from `src/position.cpp`: counts
+/// lines through `to` whose other two squares already hold `side`'s pieces,
+/// optionally pretending the square at `from` (the source for a Move) is
+/// empty.  Used by MovePicker-style ordering heuristics.
+fn potential_mills_count_at(
+    state: &MillState,
+    options: &MillVariantOptions,
+    to: usize,
+    side: i8,
+    from: Option<usize>,
+) -> u32 {
+    let target = side + 1;
+    let mut count = 0_u32;
+    for line in mill_lines(options) {
+        if !line.contains(&to) {
+            continue;
+        }
+        let mut all_color = true;
+        for &idx in line {
+            if idx == to {
+                continue;
+            }
+            if from == Some(idx) {
+                all_color = false;
+                break;
+            }
+            if state.board[idx] != target {
+                all_color = false;
+                break;
+            }
+        }
+        if all_color {
+            count += 1;
+        }
+    }
+    count
+}
+
+/// Mirrors `Position::surrounded_pieces_count`: counts adjacent pieces around
+/// `s` separated by side-to-move ownership.  Marked-piece bookkeeping is
+/// intentionally omitted because the C++ MovePicker discards it as well.
+fn surrounded_pieces_count(
+    state: &MillState,
+    options: &MillVariantOptions,
+    s: usize,
+) -> (i32, i32, i32) {
+    let neighbors = crate::topology::neighbors_for(s, options.has_diagonal_lines);
+    let our_piece = state.side_to_move + 1;
+    let their_piece = (state.side_to_move ^ 1) + 1;
+    let mut our = 0_i32;
+    let mut theirs = 0_i32;
+    let mut empty = 0_i32;
+    for &n in neighbors {
+        match state.board[n as usize] {
+            0 => empty += 1,
+            p if p == our_piece => our += 1,
+            p if p == their_piece => theirs += 1,
+            _ => {}
+        }
+    }
+    (our, theirs, empty)
+}
+
+const RATING_BLOCK_ONE_MILL: i32 = 10;
+const RATING_ONE_MILL: i32 = 11;
+const RATING_STAR_SQUARE: i32 = 11;
+
+fn is_star_square(options: &MillVariantOptions, node: usize) -> bool {
+    if options.has_diagonal_lines {
+        matches!(node, 17 | 19 | 21 | 23)
+    } else {
+        matches!(node, 16 | 18 | 20 | 22)
+    }
+}
+
+/// Mirrors the Remove branch in `src/movepick.cpp::score()`.  Combines the
+/// "remove inside our mill" preference with mobility (empty neighbour count)
+/// and the discouragement against capturing inside an opponent mill that is
+/// already heavily defended.
+fn remove_move_score(state: &MillState, options: &MillVariantOptions, to: usize) -> i32 {
+    let side = state.side_to_move;
+    let opponent = side ^ 1;
+    let our_mills = potential_mills_count_at(state, options, to, side, None) as i32;
+    let their_mills = potential_mills_count_at(state, options, to, opponent, None) as i32;
+    let (our_count, their_count, empty_count) = surrounded_pieces_count(state, options, to);
+
+    let mut score = 0_i32;
+    if our_mills > 0 && their_count == 0 {
+        score += 1;
+        if our_count > 0 {
+            score += our_count;
+        }
+    }
+    if their_mills > 0 && their_count >= 2 {
+        score -= their_count;
+        if our_count == 0 {
+            score -= 1;
+        }
+    }
+    score + empty_count
+}
+
 fn is_piece_in_mill(state: &MillState, options: &MillVariantOptions, node: usize) -> bool {
     let piece = state.board[node];
     if piece == 0 {
@@ -1837,6 +1975,108 @@ mod tests {
             payload_bits: 0,
         };
         assert_eq!(<MillGame as Game>::move_order_bias(&wb, non_star), 0);
+    }
+
+    #[test]
+    fn move_order_bias_prefers_completing_own_mill_and_blocking_opponent() {
+        use tgf_core::Game;
+
+        let rules = MillRules::default();
+        let game = MillGame::default();
+        // White already owns 0 and 2: placing on 1 closes the a7-b7-c7 mill,
+        // matching the `RATING_ONE_MILL` weight (=11) in `movepick.cpp`.
+        // Black already owns 4 and 6: placing on 5 instead would only block
+        // black's mill, which scores `RATING_BLOCK_ONE_MILL` (=10).
+        let mut board = [0_i8; 24];
+        board[0] = 1;
+        board[2] = 1;
+        board[4] = 2;
+        board[6] = 2;
+        let state = MillState {
+            board,
+            side_to_move: 0,
+            phase: MillPhase::Placing,
+            pieces_in_hand: [9, 9],
+            ..MillState::default()
+        };
+        let snap = rules.encode(state);
+        let wb = game.build_workbench(&snap);
+
+        let close_own_mill = Action {
+            kind_tag: MillActionKind::Place as i16,
+            from_node: -1,
+            to_node: 1,
+            aux: -1,
+            payload_bits: 0,
+        };
+        let block_opponent_mill = Action {
+            kind_tag: MillActionKind::Place as i16,
+            from_node: -1,
+            to_node: 5,
+            aux: -1,
+            payload_bits: 0,
+        };
+
+        assert_eq!(
+            <MillGame as Game>::move_order_bias(&wb, close_own_mill),
+            RATING_ONE_MILL
+        );
+        assert_eq!(
+            <MillGame as Game>::move_order_bias(&wb, block_opponent_mill),
+            RATING_BLOCK_ONE_MILL
+        );
+    }
+
+    #[test]
+    fn move_order_bias_remove_prefers_high_mobility_targets() {
+        use tgf_core::Game;
+
+        let rules = MillRules::default();
+        let game = MillGame::default();
+        // Black piece at d7 (1) has both adjacent ring nodes empty, so
+        // empty_count (mobility) = 3 making it a high-value remove target.
+        // Black piece at c5 (16) sits between two filled black neighbours
+        // (17 and 23 are also black) so empty_count = 0 and the
+        // RATING_BLOCK_ONE_MILL-block heuristic does not fire.
+        let mut board = [0_i8; 24];
+        board[1] = 2;
+        board[16] = 2;
+        board[17] = 2;
+        board[23] = 2;
+        let state = MillState {
+            board,
+            side_to_move: 0,
+            phase: MillPhase::Moving,
+            pending_removals: [1, 0],
+            mill_available_at_removal: true,
+            pieces_on_board: [3, 4],
+            ..MillState::default()
+        };
+        let snap = rules.encode(state);
+        let wb = game.build_workbench(&snap);
+
+        let mobile_target = Action {
+            kind_tag: MillActionKind::Remove as i16,
+            from_node: -1,
+            to_node: 1,
+            aux: -1,
+            payload_bits: 0,
+        };
+        let surrounded_target = Action {
+            kind_tag: MillActionKind::Remove as i16,
+            from_node: -1,
+            to_node: 16,
+            aux: -1,
+            payload_bits: 0,
+        };
+
+        let mobile_score = <MillGame as Game>::move_order_bias(&wb, mobile_target);
+        let surrounded_score = <MillGame as Game>::move_order_bias(&wb, surrounded_target);
+        assert!(
+            mobile_score > surrounded_score,
+            "high-mobility remove target should out-score a surrounded one (mobile={}, surrounded={})",
+            mobile_score, surrounded_score,
+        );
     }
 
     #[test]
