@@ -31,6 +31,11 @@ class NativeMillSnapshotBoardView {
   final Uint8List _payload;
   final Set<int> markedNodes;
 
+  PlayerSeat? pieceAtLegacySquare(int square) {
+    final int? node = _legacySquareToNode[square];
+    return node == null ? null : pieceAtNode(node);
+  }
+
   PlayerSeat? pieceAtNode(int node) {
     if (node < 0 || node >= nodeCount) {
       return null;
@@ -40,6 +45,11 @@ class NativeMillSnapshotBoardView {
       2 => PlayerSeat.second,
       _ => null,
     };
+  }
+
+  bool isMarkedLegacySquare(int square) {
+    final int? node = _legacySquareToNode[square];
+    return node != null && markedNodes.contains(node);
   }
 
   Map<int, PlayerSeat> occupiedNodes() {
@@ -52,4 +62,31 @@ class NativeMillSnapshotBoardView {
     }
     return out;
   }
+
+  static const Map<int, int> _legacySquareToNode = <int, int>{
+    31: 0,
+    24: 1,
+    25: 2,
+    26: 3,
+    27: 4,
+    28: 5,
+    29: 6,
+    30: 7,
+    23: 8,
+    16: 9,
+    17: 10,
+    18: 11,
+    19: 12,
+    20: 13,
+    21: 14,
+    22: 15,
+    15: 16,
+    8: 17,
+    9: 18,
+    10: 19,
+    11: 20,
+    12: 21,
+    13: 22,
+    14: 23,
+  };
 }

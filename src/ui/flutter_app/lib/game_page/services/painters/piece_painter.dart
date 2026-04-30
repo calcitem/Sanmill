@@ -20,6 +20,7 @@ class PiecePainter extends CustomPainter {
     required this.pieceImages,
     required this.placeEffectAnimation,
     required this.removeEffectAnimation,
+    this.nativeBoardView,
   });
 
   final double placeAnimationValue;
@@ -30,10 +31,29 @@ class PiecePainter extends CustomPainter {
   final bool isPutDownAnimating;
 
   final Map<PieceColor, ui.Image?>? pieceImages;
+  final NativeMillSnapshotBoardView? nativeBoardView;
 
   // Animation instances for place and remove effects.
   final PieceEffectAnimation placeEffectAnimation;
   final PieceEffectAnimation removeEffectAnimation;
+
+  PieceColor _pieceColorAtGridIndex(int index) {
+    final NativeMillSnapshotBoardView? native = nativeBoardView;
+    if (native != null) {
+      final int? square = indexToSquare[index];
+      if (square != null) {
+        if (native.isMarkedLegacySquare(square)) {
+          return PieceColor.marked;
+        }
+        return switch (native.pieceAtLegacySquare(square)) {
+          PlayerSeat.first => PieceColor.white,
+          PlayerSeat.second => PieceColor.black,
+          PlayerSeat.none || null => PieceColor.none,
+        };
+      }
+    }
+    return GameController().position.pieceOnGrid(index);
+  }
 
   /// Calculate the scale and shadow properties for a piece based on animation state
   /// Returns a map with 'scale', 'shadowBlur' and 'lift' keys
@@ -179,9 +199,7 @@ class PiecePainter extends CustomPainter {
       for (int col = 0; col < 7; col++) {
         final int index = row * 7 + col;
 
-        final PieceColor pieceColor = GameController().position.pieceOnGrid(
-          index,
-        );
+        final PieceColor pieceColor = _pieceColorAtGridIndex(index);
 
         Offset pos;
 

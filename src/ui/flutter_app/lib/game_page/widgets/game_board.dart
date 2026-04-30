@@ -393,6 +393,9 @@ class _GameBoardState extends State<GameBoard>
   @override
   Widget build(BuildContext context) {
     final TapHandler tapHandler = TapHandler(context: context);
+    final GameSession? scopedSession = DB().generalSettings.useNativeMillSession
+        ? GameSessionScope.sessionOf(context)
+        : null;
 
     // This ValueListenableBuilder ensures the GameBoard and its painters
     // are rebuilt whenever display settings change.
@@ -420,14 +423,21 @@ class _GameBoardState extends State<GameBoard>
 
         final AnimatedBuilder customPaint = AnimatedBuilder(
           key: const Key('animated_builder_custom_paint'),
-          animation: Listenable.merge(<Animation<double>>[
+          animation: Listenable.merge(<Listenable>[
             animationManager.placeAnimationController,
             animationManager.moveAnimationController,
             animationManager.removeAnimationController,
             animationManager.pickUpAnimationController,
             animationManager.putDownAnimationController,
+            if (scopedSession != null) scopedSession.state,
           ]),
           builder: (_, Widget? child) {
+            final NativeMillSnapshotBoardView? nativeBoardView =
+                scopedSession == null
+                ? null
+                : NativeMillSnapshotBoardView.fromSnapshot(
+                    scopedSession.state.value,
+                  );
             return FutureBuilder<GameImages>(
               key: const Key('future_builder_game_images'),
               future: gameImagesFuture,
@@ -476,6 +486,7 @@ class _GameBoardState extends State<GameBoard>
                             },
                             placeEffectAnimation: placeEffectAnimation,
                             removeEffectAnimation: removeEffectAnimation,
+                            nativeBoardView: nativeBoardView,
                           ),
                           child: DB().generalSettings.screenReaderSupport
                               ? const _BoardSemantics()

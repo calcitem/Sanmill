@@ -36,6 +36,9 @@ void main() {
 
       expect(view.pieceAtNode(0), PlayerSeat.first);
       expect(view.pieceAtNode(23), PlayerSeat.second);
+      expect(view.pieceAtLegacySquare(31), PlayerSeat.first);
+      expect(view.pieceAtLegacySquare(14), PlayerSeat.second);
+      expect(view.pieceAtLegacySquare(0), isNull);
       expect(view.pieceAtNode(8), isNull);
       expect(view.pieceAtNode(-1), isNull);
       expect(view.pieceAtNode(24), isNull);
@@ -61,6 +64,9 @@ void main() {
           )!;
 
       expect(view.markedNodes, <int>{2, 7});
+      expect(view.isMarkedLegacySquare(25), isTrue);
+      expect(view.isMarkedLegacySquare(30), isTrue);
+      expect(view.isMarkedLegacySquare(31), isFalse);
     });
   });
 }
