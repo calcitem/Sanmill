@@ -9,7 +9,7 @@ use std::{
     collections::HashMap,
     marker::PhantomData,
     sync::{
-        atomic::{AtomicBool, Ordering},
+        atomic::{AtomicBool, AtomicU64, Ordering},
         Arc,
     },
     time::{Duration, Instant},
@@ -78,36 +78,19 @@ struct TtEntry {
 }
 
 // ---------------------------------------------------------------------------
-// Clustered TT: fixed `2 * 2^cluster_bits` slots, two entries per cluster.
-// Collisions replace the shallowest stored entry when the new depth is not
-// weaker (same-key updates still prefer the deeper stored entry).
+// Clustered TT: fixed `2 * 2^cluster_bits` packed atomic slots.
 // ---------------------------------------------------------------------------
 
-#[derive(Clone, Copy)]
 struct TtCluster {
-    slots: [ClusterSlot; 2],
+    slots: [AtomicU64; 2],
 }
 
-#[derive(Clone, Copy)]
-struct ClusterSlot {
-    key: u64,
-    entry: TtEntry,
-}
-
-impl ClusterSlot {
-    const EMPTY: Self = Self {
-        key: 0,
-        entry: TtEntry {
-            value: 0,
-            depth: 0,
-            bound: Bound::Exact,
-            best_action: Action::NONE,
-        },
-    };
-
+impl TtCluster {
     #[inline]
-    fn is_empty(self) -> bool {
-        self.key == 0
+    fn empty() -> Self {
+        Self {
+            slots: [AtomicU64::new(0), AtomicU64::new(0)],
+        }
     }
 }
 
@@ -124,11 +107,10 @@ impl ClusteredTt {
         let bits = bits.clamp(10, 18);
         let n = 1usize << bits;
         let mask = n - 1;
-        let empty = TtCluster {
-            slots: [ClusterSlot::EMPTY; 2],
-        };
+        let mut clusters = Vec::with_capacity(n);
+        clusters.resize_with(n, TtCluster::empty);
         Self {
-            clusters: vec![empty; n].into_boxed_slice(),
+            clusters: clusters.into_boxed_slice(),
             cluster_mask: mask,
         }
     }
@@ -139,14 +121,19 @@ impl ClusteredTt {
         (mixed as usize) & self.cluster_mask
     }
 
-    fn get(&self, key: u64) -> Option<&TtEntry> {
+    fn get(&self, key: u64) -> Option<TtEntry> {
         if key == 0 {
             return None;
         }
+        let key_sig = TtPackedEntry::key_sig(key);
         let c = &self.clusters[self.cluster_ix(key)];
         for s in &c.slots {
-            if s.key == key {
-                return Some(&s.entry);
+            let packed = s.load(Ordering::Relaxed);
+            if packed == 0 {
+                continue;
+            }
+            if TtPackedEntry::packed_key_sig(packed) == key_sig {
+                return Some(TtPackedEntry::unpack_entry(packed));
             }
         }
         None
@@ -156,40 +143,46 @@ impl ClusteredTt {
         if key == 0 {
             return;
         }
+        let new_packed = TtPackedEntry::pack(key, entry);
+        let key_sig = TtPackedEntry::key_sig(key);
         let ix = self.cluster_ix(key);
         let c = &mut self.clusters[ix];
-        for s in &mut c.slots {
-            if s.key == key {
-                if entry.depth < s.entry.depth {
+        for s in &c.slots {
+            let packed = s.load(Ordering::Relaxed);
+            if packed == 0 {
+                continue;
+            }
+            if TtPackedEntry::packed_key_sig(packed) == key_sig {
+                if entry.depth < TtPackedEntry::unpack_depth(packed) {
                     return;
                 }
-                *s = ClusterSlot { key, entry };
+                s.store(new_packed, Ordering::Relaxed);
                 return;
             }
         }
-        for s in &mut c.slots {
-            if s.is_empty() {
-                *s = ClusterSlot { key, entry };
+        for s in &c.slots {
+            if s.load(Ordering::Relaxed) == 0 {
+                s.store(new_packed, Ordering::Relaxed);
                 return;
             }
         }
         let mut wi = 0_usize;
-        let mut wd = c.slots[0].entry.depth;
-        if c.slots[1].entry.depth < wd {
+        let mut wd = TtPackedEntry::unpack_depth(c.slots[0].load(Ordering::Relaxed));
+        let depth1 = TtPackedEntry::unpack_depth(c.slots[1].load(Ordering::Relaxed));
+        if depth1 < wd {
             wi = 1;
-            wd = c.slots[1].entry.depth;
+            wd = depth1;
         }
         if entry.depth >= wd {
-            c.slots[wi] = ClusterSlot { key, entry };
+            c.slots[wi].store(new_packed, Ordering::Relaxed);
         }
     }
 
     fn clear(&mut self) {
-        let empty = TtCluster {
-            slots: [ClusterSlot::EMPTY; 2],
-        };
         for c in self.clusters.iter_mut() {
-            *c = empty;
+            for s in &c.slots {
+                s.store(0, Ordering::Relaxed);
+            }
         }
     }
 
@@ -197,8 +190,139 @@ impl ClusteredTt {
         self.clusters
             .iter()
             .flat_map(|c| c.slots.iter())
-            .filter(|s| !s.is_empty())
+            .filter(|s| s.load(Ordering::Relaxed) != 0)
             .count()
+    }
+}
+
+struct TtPackedEntry;
+
+impl TtPackedEntry {
+    const KEY_SIG_BITS: u32 = 16;
+    const VALUE_SHIFT: u32 = 16;
+    const DEPTH_SHIFT: u32 = 32;
+    const BOUND_SHIFT: u32 = 40;
+    const ACTION_SHIFT: u32 = 42;
+
+    const KEY_SIG_MASK: u64 = (1_u64 << Self::KEY_SIG_BITS) - 1;
+    const VALUE_MASK: u64 = 0xffff;
+    const DEPTH_MASK: u64 = 0xff;
+    const BOUND_MASK: u64 = 0x03;
+    const ACTION_MASK: u64 = (1_u64 << 22) - 1;
+
+    #[inline]
+    fn key_sig(key: u64) -> u16 {
+        let sig = ((key >> 48) ^ (key >> 32) ^ (key >> 16) ^ key) as u16;
+        sig.max(1)
+    }
+
+    #[inline]
+    fn packed_key_sig(packed: u64) -> u16 {
+        (packed & Self::KEY_SIG_MASK) as u16
+    }
+
+    #[inline]
+    fn pack(key: u64, entry: TtEntry) -> u64 {
+        u64::from(Self::key_sig(key))
+            | (u64::from(Self::compact_value(entry.value)) << Self::VALUE_SHIFT)
+            | (u64::from(Self::compact_depth(entry.depth)) << Self::DEPTH_SHIFT)
+            | (u64::from(Self::pack_bound(entry.bound)) << Self::BOUND_SHIFT)
+            | (u64::from(Self::pack_action(entry.best_action)) << Self::ACTION_SHIFT)
+    }
+
+    #[inline]
+    fn unpack_entry(packed: u64) -> TtEntry {
+        TtEntry {
+            value: Self::unpack_value(packed),
+            depth: Self::unpack_depth(packed),
+            bound: Self::unpack_bound(packed),
+            best_action: Self::unpack_action(packed),
+        }
+    }
+
+    #[inline]
+    fn compact_value(value: i32) -> u16 {
+        value.clamp(i16::MIN as i32, i16::MAX as i32) as i16 as u16
+    }
+
+    #[inline]
+    fn unpack_value(packed: u64) -> i32 {
+        (((packed >> Self::VALUE_SHIFT) & Self::VALUE_MASK) as u16 as i16) as i32
+    }
+
+    #[inline]
+    fn compact_depth(depth: i32) -> u8 {
+        depth.clamp(i8::MIN as i32, i8::MAX as i32) as i8 as u8
+    }
+
+    #[inline]
+    fn unpack_depth(packed: u64) -> i32 {
+        (((packed >> Self::DEPTH_SHIFT) & Self::DEPTH_MASK) as u8 as i8) as i32
+    }
+
+    #[inline]
+    fn pack_bound(bound: Bound) -> u8 {
+        match bound {
+            Bound::Exact => 0,
+            Bound::Lower => 1,
+            Bound::Upper => 2,
+        }
+    }
+
+    #[inline]
+    fn unpack_bound(packed: u64) -> Bound {
+        match ((packed >> Self::BOUND_SHIFT) & Self::BOUND_MASK) as u8 {
+            0 => Bound::Exact,
+            1 => Bound::Lower,
+            2 => Bound::Upper,
+            _ => Bound::Exact,
+        }
+    }
+
+    #[inline]
+    fn pack_action(action: Action) -> u32 {
+        let Some(kind) = Self::pack_action_field(action.kind_tag, 4) else {
+            return 0;
+        };
+        let Some(from) = Self::pack_action_field(action.from_node, 7) else {
+            return 0;
+        };
+        let Some(to) = Self::pack_action_field(action.to_node, 7) else {
+            return 0;
+        };
+        let Some(aux) = Self::pack_action_field(action.aux, 4) else {
+            return 0;
+        };
+        u32::from(kind) | (u32::from(from) << 4) | (u32::from(to) << 11) | (u32::from(aux) << 18)
+    }
+
+    #[inline]
+    fn unpack_action(packed: u64) -> Action {
+        let bits = ((packed >> Self::ACTION_SHIFT) & Self::ACTION_MASK) as u32;
+        if bits == 0 {
+            return Action::NONE;
+        }
+        Action {
+            kind_tag: Self::unpack_action_field((bits & 0x0f) as u8),
+            from_node: Self::unpack_action_field(((bits >> 4) & 0x7f) as u8),
+            to_node: Self::unpack_action_field(((bits >> 11) & 0x7f) as u8),
+            aux: Self::unpack_action_field(((bits >> 18) & 0x0f) as u8),
+            payload_bits: 0,
+        }
+    }
+
+    #[inline]
+    fn pack_action_field(value: i16, bits: u32) -> Option<u8> {
+        let encoded = value.checked_add(1)?;
+        if encoded < 0 || encoded >= (1_i16 << bits) {
+            return None;
+        }
+        Some(encoded as u8)
+    }
+
+    #[inline]
+    fn unpack_action_field(value: u8) -> i16 {
+        i16::from(value) - 1
     }
 }
 
@@ -332,6 +456,13 @@ impl<G: Game> Searcher<G> {
 
     pub fn search(&mut self, wb: &mut G::Workbench, depth: i32) -> SearchResult {
         self.begin_root_search();
+        if let Some(score) = G::terminal_score(wb, wb.side_to_move(), depth) {
+            return SearchResult {
+                best_action: Action::NONE,
+                score,
+                nodes: self.nodes,
+            };
+        }
         let mut moves = ActionList::<256>::new();
         G::generate_legal(wb, &mut moves);
         self.order_moves(wb, wb.key(), depth, &mut moves);
@@ -374,6 +505,13 @@ impl<G: Game> Searcher<G> {
     /// shape of `Search::pvs` in the mature C++ engine.
     pub fn search_pvs(&mut self, wb: &mut G::Workbench, depth: i32) -> SearchResult {
         self.begin_root_search();
+        if let Some(score) = G::terminal_score(wb, wb.side_to_move(), depth) {
+            return SearchResult {
+                best_action: Action::NONE,
+                score,
+                nodes: self.nodes,
+            };
+        }
         let mut moves = ActionList::<256>::new();
         G::generate_legal(wb, &mut moves);
         self.order_moves(wb, wb.key(), depth, &mut moves);
@@ -482,7 +620,10 @@ impl<G: Game> Searcher<G> {
         if self.should_abort() {
             return G::Evaluator::score(wb);
         }
-        if depth <= 0 || wb.is_terminal() {
+        if let Some(score) = G::terminal_score(wb, wb.side_to_move(), depth) {
+            return score;
+        }
+        if depth <= 0 {
             return self.qsearch(wb, alpha, beta);
         }
 
@@ -578,6 +719,9 @@ impl<G: Game> Searcher<G> {
         self.nodes += 1;
         if self.should_abort() {
             return G::Evaluator::score(wb);
+        }
+        if let Some(score) = G::terminal_score(wb, wb.side_to_move(), 0) {
+            return score;
         }
         let stand_pat = G::Evaluator::score(wb);
         if stand_pat >= beta {
@@ -708,6 +852,9 @@ impl<G: Game> Searcher<G> {
         before: i8,
         after: i8,
     ) -> i32 {
+        if let Some(score) = G::terminal_score(wb, before, depth) {
+            return score;
+        }
         if after != before {
             -self.alpha_beta(wb, depth, -beta, -alpha)
         } else {
@@ -727,6 +874,9 @@ impl<G: Game> Searcher<G> {
         before: i8,
         after: i8,
     ) -> i32 {
+        if let Some(score) = G::terminal_score(wb, before, depth) {
+            return score;
+        }
         if move_index == 0 {
             return self.search_after_move(wb, depth, alpha, beta, before, after);
         }
@@ -1037,7 +1187,7 @@ impl<G: Game> MctsSearcher<G> {
 mod tests {
     use super::*;
     use tgf_core::{Evaluator, GameRules, GameStateSnapshot, Workbench};
-    use tgf_mill::{MillActionKind, MillGame, MillRules};
+    use tgf_mill::{MillActionKind, MillGame, MillRules, MillVariantOptions};
 
     #[test]
     fn mill_searcher_finds_a_legal_opening_action() {
@@ -1263,6 +1413,32 @@ mod tests {
     }
 
     #[test]
+    fn packed_tt_entry_round_trips_compact_fields() {
+        let action = Action {
+            kind_tag: 2,
+            from_node: 23,
+            to_node: 17,
+            aux: -1,
+            payload_bits: 0,
+        };
+        let entry = TtEntry {
+            value: 900,
+            depth: 12,
+            bound: Bound::Lower,
+            best_action: action,
+        };
+
+        let packed = TtPackedEntry::pack(0x1234_5678_9abc_def0, entry);
+        let unpacked = TtPackedEntry::unpack_entry(packed);
+
+        assert_eq!(unpacked.value, entry.value);
+        assert_eq!(unpacked.depth, entry.depth);
+        assert_eq!(unpacked.bound, entry.bound);
+        assert_eq!(unpacked.best_action, entry.best_action);
+        assert_ne!(packed, 0);
+    }
+
+    #[test]
     fn mill_iterative_deepening_returns_deepest_result() {
         let rules = MillRules::default();
         let game = MillGame::default();
@@ -1303,6 +1479,23 @@ mod tests {
         let score = searcher.qsearch(&mut wb, i32::MIN + 1, i32::MAX - 1);
         assert!(score > i32::MIN + 1);
         assert!(score < i32::MAX - 1);
+    }
+
+    #[test]
+    fn mill_search_scores_n_move_rule_draw_as_zero() {
+        let options = MillVariantOptions {
+            n_move_rule: 1,
+            ..MillVariantOptions::default()
+        };
+        let rules = MillRules::new(options.clone());
+        let game = MillGame::new(options);
+        let snap = rules.no_mill_moving_phase_snapshot();
+        let mut wb = game.build_workbench(&snap);
+        let mut searcher = Searcher::<MillGame>::new();
+
+        let result = searcher.search(&mut wb, 1);
+
+        assert_eq!(result.score, 0);
     }
 
     #[test]

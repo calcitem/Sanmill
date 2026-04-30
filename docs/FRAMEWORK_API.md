@@ -182,7 +182,9 @@ Current scaffolds already include:
 - side-aware score polarity
 - TT exact/lower/upper bound handling
 - TT best-move ordering
+- packed two-slot TT clusters (`AtomicU64` slots)
 - killer/history move ordering
+- game-specific terminal scoring for rule draws / wins
 - node and wall-clock abort checks
 - deterministic random search seed
 - FRB search event stream
@@ -235,10 +237,7 @@ Plus the existing fixed-position `native_and_legacy_*` perft tests.
 Work in progress (see migration plan phase 5):
 
 - exact C++ MovePicker ordering weights
-- C++ TT compact value/depth truncation semantics (`tgf-search` now uses a
-  fixed-size **two-slot-per-cluster** table instead of a grow-only `HashMap`;
-  further work can pack entries into `u64` pairs like `src/tt.h`)
-- rule50 and full repetition handling (only `n_move_rule` field exists)
+- remaining TT parity knobs such as C++ fake-clean age semantics, if retained
 - full qsearch parity with `src/search.cpp` (Mill FRB / `tgf-cli` now enable the
   generic remove-move extension in qsearch via `SearchPolicy::remove_kind_tag`)
 - MCTS alpha-beta assisted simulation

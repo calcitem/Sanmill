@@ -199,6 +199,8 @@ pub struct MillWorkbench {
 
 pub struct MillEvaluator;
 
+const MILL_TERMINAL_WIN_SCORE: i32 = 30_000;
+
 impl MillRules {
     pub fn new(options: MillVariantOptions) -> Self {
         let topology = MillTopology::new(options.has_diagonal_lines);
@@ -419,6 +421,22 @@ impl Game for MillGame {
             matches!(to, 16 | 18 | 20 | 22)
         };
         i32::from(star) * 11
+    }
+
+    #[inline]
+    fn terminal_score(wb: &Self::Workbench, perspective: i8, depth: i32) -> Option<i32> {
+        if wb.state.phase != MillPhase::GameOver {
+            return None;
+        }
+        if wb.state.winner == 2 {
+            return Some(0);
+        }
+        let distance = depth.max(0);
+        if wb.state.winner == perspective {
+            Some(MILL_TERMINAL_WIN_SCORE + distance)
+        } else {
+            Some(-MILL_TERMINAL_WIN_SCORE - distance)
+        }
     }
 }
 

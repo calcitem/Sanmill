@@ -63,4 +63,13 @@ pub trait Game: 'static + Send + Sync {
     fn move_order_bias(_wb: &Self::Workbench, _action: Action) -> i32 {
         0
     }
+
+    /// Optional terminal-node score from `perspective` player's point of view.
+    ///
+    /// Games with explicit draw/win metadata should override this so search
+    /// does not fall back to a heuristic evaluator for rule draws or mates.
+    #[inline]
+    fn terminal_score(wb: &Self::Workbench, _perspective: i8, _depth: i32) -> Option<i32> {
+        wb.is_terminal().then(|| Self::Evaluator::score(wb))
+    }
 }
