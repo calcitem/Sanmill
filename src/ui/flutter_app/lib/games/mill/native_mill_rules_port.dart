@@ -8,9 +8,12 @@
 // It gives tests and future sessions a direct RulesPort backed by
 // `crates/tgf-mill::MillRules` through the typed FRB `TgfKernel` surface.
 
+import 'dart:typed_data';
+
 import '../../game_platform/engine/tgf_kernel.dart';
 import '../../game_platform/game_id.dart';
 import '../../game_platform/game_session.dart';
+import '../../game_platform/mill_marked_pieces_codec.dart';
 import '../../game_platform/rules_port.dart';
 import '../../rule_settings/models/rule_settings.dart';
 import '../../src/rust/api/kernel.dart' as tgf;
@@ -79,6 +82,7 @@ class NativeMillRulesPort implements RulesPort {
   GameStateSnapshot _snapshotFromKernel({GameAction? lastAction}) {
     final tgf.TgfSnapshot raw = _kernel.rawSnapshot();
     final tgf.TgfOutcome outcome = _kernel.rawOutcome();
+    final Uint8List opaque = Uint8List.fromList(raw.opaquePayload);
     return GameStateSnapshot(
       gameId: GameId.mill,
       activeSeat: _seatFromSide(raw.sideToMove),
@@ -90,6 +94,10 @@ class NativeMillRulesPort implements RulesPort {
         'tgfMoveNumber': raw.moveNumber,
         'tgfZobrist': raw.zobristKey,
         'tgfOutcomeReason': outcome.reason,
+        'tgfPayload': opaque,
+        'millMarkedNodes': MillMarkedPiecesCodec.markedNodesFromOpaquePayload(
+          opaque,
+        ),
       },
     );
   }

@@ -67,7 +67,8 @@ extension MillVariantOptionsMapper on RuleSettings {
 
   static tgf.MillBoardFullAction _toTgfBoardFullAction(BoardFullAction? value) {
     return switch (value ?? BoardFullAction.firstPlayerLose) {
-      BoardFullAction.firstPlayerLose => tgf.MillBoardFullAction.firstPlayerLose,
+      BoardFullAction.firstPlayerLose =>
+        tgf.MillBoardFullAction.firstPlayerLose,
       BoardFullAction.firstAndSecondPlayerRemovePiece =>
         tgf.MillBoardFullAction.firstAndSecondPlayerRemovePiece,
       BoardFullAction.secondAndFirstPlayerRemovePiece =>
@@ -86,12 +87,14 @@ extension MillVariantOptionsMapper on RuleSettings {
       MillFormationActionInPlacingPhase.removeOpponentsPieceFromBoard =>
         tgf.MillFormationActionInPlacingPhase.removeOpponentsPieceFromBoard,
       MillFormationActionInPlacingPhase
-            .removeOpponentsPieceFromHandThenOpponentsTurn =>
-        tgf.MillFormationActionInPlacingPhase
+          .removeOpponentsPieceFromHandThenOpponentsTurn =>
+        tgf
+            .MillFormationActionInPlacingPhase
             .removeOpponentsPieceFromHandThenOpponentsTurn,
       MillFormationActionInPlacingPhase
-            .removeOpponentsPieceFromHandThenYourTurn =>
-        tgf.MillFormationActionInPlacingPhase
+          .removeOpponentsPieceFromHandThenYourTurn =>
+        tgf
+            .MillFormationActionInPlacingPhase
             .removeOpponentsPieceFromHandThenYourTurn,
       MillFormationActionInPlacingPhase.opponentRemovesOwnPiece =>
         tgf.MillFormationActionInPlacingPhase.opponentRemovesOwnPiece,
@@ -106,8 +109,7 @@ extension MillVariantOptionsMapper on RuleSettings {
     return switch (value ?? StalemateAction.endWithStalemateLoss) {
       StalemateAction.endWithStalemateLoss =>
         tgf.StalemateAction.endWithStalemateLoss,
-      StalemateAction.changeSideToMove =>
-        tgf.StalemateAction.changeSideToMove,
+      StalemateAction.changeSideToMove => tgf.StalemateAction.changeSideToMove,
       StalemateAction.removeOpponentsPieceAndMakeNextMove =>
         tgf.StalemateAction.removeOpponentsPieceAndMakeNextMove,
       StalemateAction.removeOpponentsPieceAndChangeSideToMove =>

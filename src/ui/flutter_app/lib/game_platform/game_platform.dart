@@ -17,6 +17,7 @@ export 'game_persistence_scope.dart';
 export 'game_registry.dart';
 export 'game_session.dart';
 export 'game_session_handle.dart';
+export 'game_state_snapshot_mill_ext.dart';
 export 'notation_port.dart';
 export 'painting/graph_board_painter.dart';
 export 'persistence/game_persistence_naming.dart';

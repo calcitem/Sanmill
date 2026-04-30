@@ -26,7 +26,10 @@ use tgf_core::{
 use tgf_mill::{MillRules, MillVariantOptions as NativeMillVariantOptions};
 use tgf_othello::OthelloRules;
 
-use super::simple::MillVariantOptions;
+use super::simple::{
+    spawn_kernel_search_error, spawn_mill_pvs_event_stream, EngineEvent, MillVariantOptions,
+};
+use crate::frb_generated::StreamSink;
 
 // ---------------------------------------------------------------------------
 // Session registry
@@ -34,6 +37,33 @@ use super::simple::MillVariantOptions;
 
 static KERNELS: Lazy<Mutex<HashMap<u32, GameKernel>>> = Lazy::new(|| Mutex::new(HashMap::new()));
 static NEXT_KERNEL_ID: AtomicU32 = AtomicU32::new(1);
+
+/// Per-handle Mill rule options (only kernels created as Mill).
+static MILL_VARIANT_BY_HANDLE: Lazy<Mutex<HashMap<u32, NativeMillVariantOptions>>> =
+    Lazy::new(|| Mutex::new(HashMap::new()));
+
+fn register_mill_variant(handle: u32, options: NativeMillVariantOptions) {
+    MILL_VARIANT_BY_HANDLE
+        .lock()
+        .expect("mill variant map poisoned")
+        .insert(handle, options);
+}
+
+fn unregister_mill_variant(handle: u32) {
+    MILL_VARIANT_BY_HANDLE
+        .lock()
+        .expect("mill variant map poisoned")
+        .remove(&handle);
+}
+
+fn mill_variant_for_handle(handle: u32) -> NativeMillVariantOptions {
+    MILL_VARIANT_BY_HANDLE
+        .lock()
+        .expect("mill variant map poisoned")
+        .get(&handle)
+        .cloned()
+        .unwrap_or_default()
+}
 
 fn insert_kernel(kernel: GameKernel) -> u32 {
     let id = NEXT_KERNEL_ID.fetch_add(1, Ordering::SeqCst);
@@ -172,7 +202,11 @@ fn build_rules_default(game_id: &str) -> Result<Arc<dyn GameRules>, String> {
 pub fn tgf_kernel_create(game_id: String) -> Result<u32, String> {
     let rules = build_rules_default(&game_id)?;
     let kernel = GameKernel::new(rules, &[]);
-    Ok(insert_kernel(kernel))
+    let id = insert_kernel(kernel);
+    if game_id == "mill" {
+        register_mill_variant(id, NativeMillVariantOptions::default());
+    }
+    Ok(id)
 }
 
 /// Create a Mill kernel with explicit variant options.  Use this once
@@ -181,15 +215,18 @@ pub fn tgf_kernel_create(game_id: String) -> Result<u32, String> {
 #[flutter_rust_bridge::frb(sync)]
 pub fn tgf_kernel_create_mill(variant: MillVariantOptions) -> Result<u32, String> {
     let native: NativeMillVariantOptions = variant.into();
-    let rules: Arc<dyn GameRules> = Arc::new(MillRules::new(native));
+    let rules: Arc<dyn GameRules> = Arc::new(MillRules::new(native.clone()));
     let kernel = GameKernel::new(rules, &[]);
-    Ok(insert_kernel(kernel))
+    let id = insert_kernel(kernel);
+    register_mill_variant(id, native);
+    Ok(id)
 }
 
 /// Drop the session associated with `handle`.  Idempotent: invoking
 /// twice is a no-op.
 #[flutter_rust_bridge::frb(sync)]
 pub fn tgf_kernel_dispose(handle: u32) {
+    unregister_mill_variant(handle);
     KERNELS
         .lock()
         .expect("kernel registry poisoned")
@@ -270,6 +307,35 @@ pub fn tgf_kernel_undo_depth(handle: u32) -> Result<u32, String> {
 #[flutter_rust_bridge::frb(sync)]
 pub fn tgf_kernel_redo_depth(handle: u32) -> Result<u32, String> {
     with_kernel(handle, |k| k.redo_depth() as u32)
+}
+
+/// PVS search over the kernel's **current** Mill position, using the same
+/// variant options as [tgf_kernel_create_mill].
+///
+/// Streams the same [EngineEvent] sequence as [crate::api::simple::native_mill_search_events].
+pub fn tgf_kernel_mill_search_events(handle: u32, depth: i32, sink: StreamSink<EngineEvent>) {
+    let game_id = match with_kernel(handle, |k| k.game_id().to_owned()) {
+        Ok(id) => id,
+        Err(e) => {
+            spawn_kernel_search_error(e, sink);
+            return;
+        }
+    };
+    if game_id != "mill" {
+        spawn_kernel_search_error(format!("kernel game_id is {game_id}, expected mill"), sink);
+        return;
+    }
+
+    let snapshot = match with_kernel(handle, |k| k.snapshot()) {
+        Ok(s) => s,
+        Err(e) => {
+            spawn_kernel_search_error(e, sink);
+            return;
+        }
+    };
+
+    let options = mill_variant_for_handle(handle);
+    spawn_mill_pvs_event_stream(snapshot, options, depth, sink);
 }
 
 #[cfg(test)]

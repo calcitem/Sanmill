@@ -232,13 +232,17 @@ Plus the existing fixed-position `native_and_legacy_*` perft tests.
 
 ### Still incomplete compared with mature C++
 
+Work in progress (see migration plan phase 5):
+
 - exact C++ MovePicker ordering weights
 - C++ TT compact value/depth truncation semantics
 - rule50 and full repetition handling (only `n_move_rule` field exists)
 - full qsearch parity
 - MCTS alpha-beta assisted simulation
 - multi-threaded MCTS shared visits
-- perfect DB / endgame learning
+
+**Intentionally staying on the cxx bridge (not “incomplete” bugs):** perfect DB
+and opening book remain in C++ by policy; see §Legacy C++ bridge policy.
 
 ## FRB API boundary
 
@@ -256,6 +260,9 @@ Dart side gets a long-lived session keyed by an `int` handle:
 - `tgfKernelDispose({int handle})` — drop the Rust session.
 - `tgfKernelSnapshot / Outcome / GameId / IsTerminal / UndoDepth / RedoDepth`
 - `tgfKernelLegalActions / Apply / Undo / Redo`
+- `tgfKernelMillSearchEvents({handle, depth})` — Mill-only PVS stream over the
+  kernel’s **current** snapshot; uses the same `MillVariantOptions` stored when
+  creating the session (`tgf_kernel_create_mill` / default nine-piece factory).
 
 The Dart wrapper that hides FFI details is
 `lib/game_platform/engine/tgf_kernel.dart::TgfKernel`.  It also produces
@@ -271,7 +278,8 @@ These remain available during the transition:
 - `kernelTopology()` for Mill geometry
 - `legacyKernel*` functions for the transitional C++ bridge
 - `nativeMill*` / `nativeOthello*` smoke and differential helpers
-- `nativeMillSearchEvents(depth)` stream
+- `nativeMillSearchEvents(depth)` stream (start-position smoke; prefer
+  `tgfKernelMillSearchEvents` when a typed Mill kernel handle exists)
 - `nativeMillSearchStop()` cancellation request
 
 Generated Dart files under `lib/src/rust/frb_generated*.dart` are committed and
@@ -364,17 +372,20 @@ perfect-information invariants.
   players remove adjacent opponent pieces in order.
 - `threefold_repetition_rule` (state-side detection at apply time;
   rolling 24-entry signature buffer in `MillState.opaque_payload`)
-- `custodian_capture`, `intervention_capture`, and `leap_capture` on square-edge
-  and cross lines.  The Rust path mirrors the C++ stacking semantics:
-  no-mill capture counts add together; leap capture takes precedence over mill
-  in moving phase; mill + custodian/intervention only accumulate when
-  `may_remove_multiple` is enabled.  Diagonal capture flags are accepted in the
-  DTO but remain inactive until diagonal 12MM topology lands.
+- `custodian_capture`, `intervention_capture`, and `leap_capture` on square-edge,
+  cross, and diagonal lines when `has_diagonal_lines` is true and each capture
+  config has `on_diagonal_lines: true`.  The Rust path mirrors the C++ stacking
+  semantics: no-mill capture counts add together; leap capture takes precedence
+  over mill in moving phase; mill + custodian/intervention only accumulate when
+  `may_remove_multiple` is enabled.
 
 All `Rule` fields that affect core Mill move legality and terminal state are
-now represented in the Rust path, except legacy renderer side-effects such as
-displaying marked pieces.  Perfect DB and opening book intentionally remain
-behind the cxx bridge and should not be converted to Rust.
+now represented in the Rust path.  Delayed marked-mill bits are encoded in
+`MillState.opaque_payload` at bytes 39..43 (`delayed_marked_pieces`, LE u32);
+Flutter reads them via `MillMarkedPiecesCodec.markedNodesFromOpaquePayload` in
+`lib/game_platform/mill_marked_pieces_codec.dart` (payload key `millMarkedNodes`
+on `GameStateSnapshot`).  Perfect DB and opening book intentionally remain behind
+the cxx bridge and should not be converted to Rust.
 
 Each new field follows the same pattern: extend `MillVariantOptions`, update
 `MillRules::apply` / `legal_actions` / `outcome`, mirror it in

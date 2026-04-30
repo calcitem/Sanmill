@@ -18,10 +18,9 @@
 //   * stalemate_action (all variants)
 //   * threefold_repetition_rule (state-side, history kept in
 //     `MillState.opaque_payload[38..230]`, drawn at apply time)
-//   * custodian / intervention / leap capture on square-edge and cross
-//     lines, including C++-compatible stacking and leap-vs-mill priority
-//     semantics.  Diagonal capture flags are accepted in the DTO but
-//     remain inactive until capture-on-diagonal semantics are validated.
+//   * custodian / intervention / leap capture on square-edge, cross, and
+//     diagonal lines when `has_diagonal_lines` and `on_diagonal_lines` are
+//     both enabled (12MM diagonal topology).
 //
 // Still owned by the legacy C++ path:
 //   * Flutter/Qt rendering for marked pieces and legacy notation side-effects
@@ -90,10 +89,9 @@ pub struct CaptureRuleConfig {
     pub enabled: bool,
     pub on_square_edges: bool,
     pub on_cross_lines: bool,
-    /// Kept for rule-setting parity with C++/Dart.  Diagonal capture
-    /// lines depend on the 12MM diagonal topology, which is intentionally
-    /// out of scope for this iteration; this flag is accepted but ignored
-    /// until that topology lands.
+    /// When true with `MillVariantOptions.has_diagonal_lines`, diagonal
+    /// three-point lines participate in custodian / intervention / leap
+    /// detection (same geometry as `MillTopology::with_diagonals`).
     pub on_diagonal_lines: bool,
     pub in_placing_phase: bool,
     pub in_moving_phase: bool,
@@ -656,8 +654,11 @@ impl GameRules for MillRules {
                     if state.intervention_count == 0 {
                         state.intervention_targets = 0;
                     } else {
-                        state.intervention_targets =
-                            find_paired_intervention_target(to, state.intervention_targets | mask);
+                        state.intervention_targets = find_paired_intervention_target(
+                            to,
+                            state.intervention_targets | mask,
+                            &self.options,
+                        );
                     }
                 }
                 if is_leap {
@@ -1470,13 +1471,19 @@ fn node_bit(node: usize) -> u32 {
     1_u32 << node
 }
 
-fn active_capture_lines(config: &CaptureRuleConfig) -> Vec<[usize; 3]> {
+fn active_capture_lines(
+    config: &CaptureRuleConfig,
+    options: &MillVariantOptions,
+) -> Vec<[usize; 3]> {
     let mut lines = Vec::new();
     if config.on_cross_lines {
         lines.extend_from_slice(CAPTURE_CROSS_LINES);
     }
     if config.on_square_edges {
         lines.extend_from_slice(CAPTURE_SQUARE_EDGE_LINES);
+    }
+    if config.on_diagonal_lines && options.has_diagonal_lines {
+        lines.extend_from_slice(CAPTURE_DIAGONAL_LINES);
     }
     lines
 }
@@ -1547,7 +1554,7 @@ fn detect_custodian_targets(state: &MillState, options: &MillVariantOptions, to:
     let them = state.side_to_move ^ 1;
     let opponent = them + 1;
     let mut targets = 0_u32;
-    for line in active_capture_lines(config) {
+    for line in active_capture_lines(config, options) {
         let brackets_middle = (to == line[0] && state.board[line[2]] == us)
             || (to == line[2] && state.board[line[0]] == us);
         if brackets_middle && state.board[line[1]] == opponent {
@@ -1563,7 +1570,7 @@ fn detect_intervention_targets(state: &MillState, options: &MillVariantOptions, 
         return 0;
     }
     let opponent = (state.side_to_move ^ 1) + 1;
-    for line in active_capture_lines(config) {
+    for line in active_capture_lines(config, options) {
         if to == line[1] && state.board[line[0]] == opponent && state.board[line[2]] == opponent {
             let targets = node_bit(line[0]) | node_bit(line[2]);
             let filtered = filter_capture_targets(state, options, targets);
@@ -1587,7 +1594,7 @@ fn detect_leap_targets(
     }
     let opponent = (state.side_to_move ^ 1) + 1;
     let mut targets = 0_u32;
-    for line in active_capture_lines(config) {
+    for line in active_capture_lines(config, options) {
         let jumps_over_middle =
             (to == line[2] && from == line[0]) || (to == line[0] && from == line[2]);
         if jumps_over_middle && state.board[line[1]] == opponent {
@@ -1627,11 +1634,12 @@ fn capture_total(state: &MillState) -> u8 {
         .saturating_add(state.leap_count)
 }
 
-fn find_paired_intervention_target(removed: usize, targets: u32) -> u32 {
-    for line in CAPTURE_CROSS_LINES
-        .iter()
-        .chain(CAPTURE_SQUARE_EDGE_LINES.iter())
-    {
+fn find_paired_intervention_target(
+    removed: usize,
+    targets: u32,
+    options: &MillVariantOptions,
+) -> u32 {
+    for line in active_capture_lines(&options.intervention_capture, options) {
         let a = line[0];
         let b = line[2];
         if removed == a && (targets & node_bit(b)) != 0 {
@@ -1702,6 +1710,10 @@ const CAPTURE_SQUARE_EDGE_LINES: &[[usize; 3]] = &[
 ];
 
 const CAPTURE_CROSS_LINES: &[[usize; 3]] = &[[7, 15, 23], [19, 11, 3], [1, 9, 17], [21, 13, 5]];
+
+/// Diagonal three-point lines (middle index [1]) matching
+/// `MillTopology::diagonal_line_groups` / C++ 12MM diagonal rules.
+const CAPTURE_DIAGONAL_LINES: &[[usize; 3]] = &[[0, 8, 16], [18, 10, 2], [6, 14, 22], [20, 12, 4]];
 
 #[cfg(test)]
 mod tests {
@@ -3127,6 +3139,46 @@ mod tests {
         let state = MillRules::decode(&after);
         assert_eq!(state.pending_removals[0], 0);
         assert_eq!(state.side_to_move, 1);
+    }
+
+    #[test]
+    fn diagonal_custodian_sandwiches_opponent_on_diagonal_line() {
+        let options = MillVariantOptions {
+            has_diagonal_lines: true,
+            piece_count: 12,
+            custodian_capture: CaptureRuleConfig {
+                enabled: true,
+                on_diagonal_lines: true,
+                ..CaptureRuleConfig::default()
+            },
+            ..MillVariantOptions::default()
+        };
+        let rules = MillRules::new(options);
+        // Line [0, 8, 16]: own at 16, opponent at 8, place at 0 -> capture 8.
+        let mut state = MillState {
+            side_to_move: 0,
+            phase: MillPhase::Placing,
+            move_number: 5,
+            pieces_in_hand: [7, 7],
+            pieces_on_board: [2, 2],
+            ..MillState::default()
+        };
+        state.board[16] = 1;
+        state.board[8] = 2;
+        let after = rules.apply(
+            &rules.encode(state),
+            Action {
+                kind_tag: MillActionKind::Place as i16,
+                from_node: -1,
+                to_node: 0,
+                aux: -1,
+                payload_bits: 0,
+            },
+        );
+        let st = MillRules::decode(&after);
+        assert_eq!(st.custodian_targets, node_bit(8));
+        assert_eq!(st.pending_removals[0], 1);
+        assert!(!st.mill_available_at_removal);
     }
 
     #[test]

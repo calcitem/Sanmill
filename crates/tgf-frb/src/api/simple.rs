@@ -485,6 +485,17 @@ impl EngineEvent {
         Self::new("stopped")
     }
 
+    fn error(reason: &str) -> Self {
+        Self {
+            kind: "error".to_owned(),
+            depth: 0,
+            score: 0,
+            nodes: 0,
+            to_node: -1,
+            reason: reason.to_owned(),
+        }
+    }
+
     fn info(depth: i32, score: i32, nodes: u64) -> Self {
         Self {
             kind: "info".to_owned(),
@@ -792,21 +803,23 @@ pub fn native_mill_search_zero_time_limit_aborts() -> bool {
     searcher.was_aborted()
 }
 
-/// Phase 5 async search event stream.
+/// Runs PVS on the given Mill snapshot and streams engine events.
 ///
-/// This is intentionally minimal: it spawns a worker thread, runs the native
-/// Rust Searcher<MillGame>, and emits Ready / Info / BestMove / Stopped.
-/// Later work replaces this with a cancellable long-lived search worker.
-pub fn native_mill_search_events(depth: i32, sink: StreamSink<EngineEvent>) {
+/// Used by [crate::api::kernel::tgf_kernel_mill_search_events] and the
+/// parameterless smoke entry point below.
+pub(crate) fn spawn_mill_pvs_event_stream(
+    snapshot: tgf_core::GameStateSnapshot,
+    options: NativeMillVariantOptions,
+    depth: i32,
+    sink: StreamSink<EngineEvent>,
+) {
     thread::spawn(move || {
         if sink.add(EngineEvent::ready()).is_err() {
             return;
         }
 
-        let rules = MillRules::default();
-        let game = MillGame::default();
-        let snap = rules.initial_state(&[]);
-        let mut wb = game.build_workbench(&snap);
+        let game = MillGame::new(options);
+        let mut wb = game.build_workbench(&snapshot);
         let mut searcher = Searcher::<MillGame>::new();
         {
             let mut active = ACTIVE_SEARCH.lock().expect("active search mutex poisoned");
@@ -823,6 +836,24 @@ pub fn native_mill_search_events(depth: i32, sink: StreamSink<EngineEvent>) {
         let mut active = ACTIVE_SEARCH.lock().expect("active search mutex poisoned");
         *active = None;
     });
+}
+
+pub(crate) fn spawn_kernel_search_error(message: String, sink: StreamSink<EngineEvent>) {
+    thread::spawn(move || {
+        let _ = sink.add(EngineEvent::error(&message));
+        let _ = sink.add(EngineEvent::stopped());
+    });
+}
+
+/// Phase 5 async search event stream.
+///
+/// This is intentionally minimal: it spawns a worker thread, runs the native
+/// Rust Searcher<MillGame>, and emits Ready / Info / BestMove / Stopped.
+/// Later work replaces this with a cancellable long-lived search worker.
+pub fn native_mill_search_events(depth: i32, sink: StreamSink<EngineEvent>) {
+    let rules = MillRules::default();
+    let snap = rules.initial_state(&[]);
+    spawn_mill_pvs_event_stream(snap, NativeMillVariantOptions::default(), depth, sink);
 }
 
 /// Request that the currently running native Rust search stops.
@@ -848,8 +879,10 @@ mod tests {
 
     static LEGACY_TEST_MUTEX: Mutex<()> = Mutex::new(());
 
-    fn native_legal_uci_set(snapshot: &tgf_core::GameStateSnapshot) -> BTreeSet<String> {
-        let rules = MillRules::default();
+    fn native_legal_uci_set(
+        snapshot: &tgf_core::GameStateSnapshot,
+        rules: &MillRules,
+    ) -> BTreeSet<String> {
         let mut actions = ActionList::<256>::new();
         rules.legal_actions(snapshot, &mut actions);
         actions
@@ -901,8 +934,11 @@ mod tests {
     /// Find the native [`Action`] whose UCI string equals `uci` in the legal
     /// set of `snap`.  Used by the random-walk differential test to apply the
     /// same UCI move to both engines.
-    fn native_action_from_uci(snap: &tgf_core::GameStateSnapshot, uci: &str) -> Option<Action> {
-        let rules = MillRules::default();
+    fn native_action_from_uci(
+        snap: &tgf_core::GameStateSnapshot,
+        uci: &str,
+        rules: &MillRules,
+    ) -> Option<Action> {
         let mut actions = ActionList::<256>::new();
         rules.legal_actions(snap, &mut actions);
         actions.into_iter().find(|a| native_action_to_uci(a) == uci)
@@ -961,7 +997,10 @@ mod tests {
         let rules = MillRules::default();
         let snap = rules.initial_state(&[]);
 
-        assert_eq!(legacy_legal_uci_set(&legacy), native_legal_uci_set(&snap));
+        assert_eq!(
+            legacy_legal_uci_set(&legacy),
+            native_legal_uci_set(&snap, &rules)
+        );
     }
 
     #[test]
@@ -1049,8 +1088,12 @@ mod tests {
             );
         }
         let native = apply_native_sequence(&native_seq);
+        let rules = MillRules::default();
 
-        assert_eq!(legacy_legal_uci_set(&legacy), native_legal_uci_set(&native));
+        assert_eq!(
+            legacy_legal_uci_set(&legacy),
+            native_legal_uci_set(&native, &rules)
+        );
     }
 
     #[test]
@@ -1118,7 +1161,10 @@ mod tests {
             },
         );
 
-        assert_eq!(legacy_legal_uci_set(&legacy), native_legal_uci_set(&native));
+        assert_eq!(
+            legacy_legal_uci_set(&legacy),
+            native_legal_uci_set(&native, &rules)
+        );
     }
 
     #[test]
@@ -1192,7 +1238,10 @@ mod tests {
             );
         }
 
-        assert_eq!(legacy_legal_uci_set(&legacy), native_legal_uci_set(&snap));
+        assert_eq!(
+            legacy_legal_uci_set(&legacy),
+            native_legal_uci_set(&snap, &rules)
+        );
     }
 
     #[test]
@@ -1313,7 +1362,12 @@ mod tests {
     /// `random_walk_native_and_legacy_agree` test and the nightly
     /// `random_walk_extended` test call this with their own scope so the
     /// assertion logic stays in a single place.
-    fn run_random_walk(num_games: usize, default_seed: u64) {
+    fn run_random_walk(
+        num_games: usize,
+        default_seed: u64,
+        rules: &MillRules,
+        legacy_rule_idx: i32,
+    ) {
         let _guard = LEGACY_TEST_MUTEX
             .lock()
             .expect("legacy test mutex poisoned");
@@ -1329,8 +1383,7 @@ mod tests {
             .unwrap_or(default_seed);
 
         for game_idx in 0..num_games {
-            let rules = MillRules::default();
-            let mut legacy = LegacyKernel::new(0);
+            let mut legacy = LegacyKernel::new(legacy_rule_idx);
             let mut snap = rules.initial_state(&[]);
 
             for ply in 0..MAX_PLIES {
@@ -1345,7 +1398,7 @@ mod tests {
                     break;
                 }
 
-                let native_set = native_legal_uci_set(&snap);
+                let native_set = native_legal_uci_set(&snap, rules);
                 let legacy_set = legacy_legal_uci_set(&legacy);
                 if native_set != legacy_set {
                     panic!(
@@ -1406,12 +1459,13 @@ mod tests {
                 let pick = next_random_index(&mut rng_state, sorted.len());
                 let mv = sorted[pick].clone();
 
-                let native_action = native_action_from_uci(&snap, &mv).unwrap_or_else(|| {
-                    panic!(
-                        "[game #{game_idx} ply {ply}] native rules cannot \
+                let native_action =
+                    native_action_from_uci(&snap, &mv, rules).unwrap_or_else(|| {
+                        panic!(
+                            "[game #{game_idx} ply {ply}] native rules cannot \
                          decode UCI {mv}"
-                    )
-                });
+                        )
+                    });
                 snap = rules.apply(&snap, native_action);
                 let ok = legacy.apply_uci(&mv);
                 assert!(
@@ -1436,7 +1490,21 @@ mod tests {
     /// `(game, ply)` index.
     #[test]
     fn random_walk_native_and_legacy_agree() {
-        run_random_walk(5_000, 0xDEAD_BEEF_C0FF_EE42);
+        let rules = MillRules::default();
+        run_random_walk(5_000, 0xDEAD_BEEF_C0FF_EE42, &rules, 0);
+    }
+
+    /// Differential on Twelve Men's Morris with diagonal lines (C++ `RULES[1]`),
+    /// covering diagonal mill lines and the extended neighbor graph.
+    #[test]
+    fn random_walk_native_and_legacy_agree_twelve_men_diagonal() {
+        let opts = NativeMillVariantOptions {
+            piece_count: 12,
+            has_diagonal_lines: true,
+            ..Default::default()
+        };
+        let rules = MillRules::new(opts);
+        run_random_walk(1_000, 0x120E_D1A6_0000_0001, &rules, 1);
     }
 
     /// Nightly extended differential: 12,500 games × up to 80 plies =
@@ -1453,6 +1521,7 @@ mod tests {
     #[test]
     #[ignore = "nightly: 12.5k games × 80 plies, ~60 s in release"]
     fn random_walk_extended() {
-        run_random_walk(12_500, 0xCAFE_BABE_5EED_F00D);
+        let rules = MillRules::default();
+        run_random_walk(12_500, 0xCAFE_BABE_5EED_F00D, &rules, 0);
     }
 }

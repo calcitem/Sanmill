@@ -116,10 +116,32 @@ impl GameRules for OthelloRules {
         self.encode(state)
     }
 
-    fn outcome(&self, _snap: &GameStateSnapshot) -> Outcome {
-        Outcome {
-            kind: OutcomeKind::Ongoing,
-            reason: "ongoing".to_owned(),
+    fn outcome(&self, snap: &GameStateSnapshot) -> Outcome {
+        let state = Self::decode(snap);
+        let empty = state.board.iter().filter(|p| **p == 0).count();
+        if empty > 0 {
+            return Outcome {
+                kind: OutcomeKind::Ongoing,
+                reason: "ongoing".to_owned(),
+            };
+        }
+        let p1 = state.board.iter().filter(|p| **p == 1).count();
+        let p2 = state.board.iter().filter(|p| **p == 2).count();
+        if p1 > p2 {
+            Outcome {
+                kind: OutcomeKind::Win(0),
+                reason: "othelloDiskCount".to_owned(),
+            }
+        } else if p2 > p1 {
+            Outcome {
+                kind: OutcomeKind::Win(1),
+                reason: "othelloDiskCount".to_owned(),
+            }
+        } else {
+            Outcome {
+                kind: OutcomeKind::Draw,
+                reason: "othelloDraw".to_owned(),
+            }
         }
     }
 }
@@ -187,6 +209,10 @@ pub struct OthelloTopology {
     points: Vec<UnitPoint>,
     edges: Vec<Edge>,
     zones: Vec<Zone>,
+    labels: [&'static str; 64],
+    neighbors: Vec<Vec<u16>>,
+    /// Rank/file lines (8 + 8) for generic topology consumers (debugging, tooling).
+    line_groups: Vec<Vec<u16>>,
 }
 
 impl Default for OthelloTopology {
@@ -214,12 +240,56 @@ impl Default for OthelloTopology {
                 }
             }
         }
+        let mut labels: [&'static str; 64] = [""; 64];
+        for r in 0..8 {
+            for c in 0..8 {
+                let i = idx(c, r);
+                let file = (b'a' + c as u8) as char;
+                let rank = 8 - r;
+                labels[i] = leak_label(format!("{file}{rank}"));
+            }
+        }
+        let mut neighbors = vec![Vec::new(); 64];
+        for r in 0..8 {
+            for c in 0..8 {
+                let i = idx(c, r);
+                let mut nbr = Vec::new();
+                for dy in -1..=1 {
+                    for dx in -1..=1 {
+                        if dx == 0 && dy == 0 {
+                            continue;
+                        }
+                        let nc = c as i32 + dx;
+                        let nr = r as i32 + dy;
+                        if in_bounds(nc, nr) {
+                            nbr.push(idx(nc as usize, nr as usize) as u16);
+                        }
+                    }
+                }
+                nbr.sort_unstable();
+                neighbors[i] = nbr;
+            }
+        }
+        let mut line_groups: Vec<Vec<u16>> = Vec::new();
+        for r in 0..8 {
+            line_groups.push((0..8).map(|c| idx(c, r) as u16).collect());
+        }
+        for c in 0..8 {
+            line_groups.push((0..8).map(|r| idx(c, r) as u16).collect());
+        }
         Self {
             points,
             edges,
             zones: Vec::new(),
+            labels,
+            neighbors,
+            line_groups,
         }
     }
+}
+
+fn leak_label(s: String) -> &'static str {
+    Box::leak(s.into_boxed_str())
 }
 
 impl BoardTopology for OthelloTopology {
@@ -235,16 +305,30 @@ impl BoardTopology for OthelloTopology {
         self.points[node as usize]
     }
 
-    fn label_of(&self, _node: u16) -> &str {
-        ""
+    fn label_of(&self, node: u16) -> &str {
+        self.labels.get(node as usize).copied().unwrap_or("")
     }
 
-    fn node_from_label(&self, _label: &str) -> Option<u16> {
-        None
+    fn node_from_label(&self, label: &str) -> Option<u16> {
+        let b = label.as_bytes();
+        if b.len() != 2 {
+            return None;
+        }
+        let file = b[0].to_ascii_lowercase();
+        let rank = b[1];
+        if !(b'a'..=b'h').contains(&file) || !(b'1'..=b'8').contains(&rank) {
+            return None;
+        }
+        let c = usize::from(file - b'a');
+        let r = 8 - usize::from(rank - b'0');
+        Some(idx(c, r) as u16)
     }
 
-    fn neighbors(&self, _node: u16) -> &[u16] {
-        &[]
+    fn neighbors(&self, node: u16) -> &[u16] {
+        self.neighbors
+            .get(node as usize)
+            .map(|v| v.as_slice())
+            .unwrap_or(&[])
     }
 
     fn edges(&self) -> &[Edge] {
@@ -252,7 +336,7 @@ impl BoardTopology for OthelloTopology {
     }
 
     fn line_groups(&self) -> &[Vec<u16>] {
-        &[]
+        &self.line_groups
     }
 
     fn zones(&self) -> &[Zone] {
@@ -388,5 +472,17 @@ mod tests {
         let mut searcher = Searcher::<OthelloGame>::new();
         let result = searcher.search(&mut wb, 1);
         assert!(!result.best_action.is_none());
+    }
+
+    #[test]
+    fn topology_chess_labels_round_trip() {
+        let t = OthelloTopology::default();
+        assert_eq!(t.label_of(0), "a8");
+        assert_eq!(t.node_from_label("a8"), Some(0));
+        assert_eq!(t.node_from_label("e4"), Some(36));
+        assert_eq!(t.label_of(36), "e4");
+        assert_eq!(t.neighbors(0).len(), 3);
+        assert_eq!(t.line_groups().len(), 16);
+        assert_eq!(t.line_groups()[0].len(), 8);
     }
 }

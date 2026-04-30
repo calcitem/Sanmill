@@ -7,7 +7,7 @@ import '../frb_generated.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 import 'simple.dart';
 
-// These functions are ignored because they are not marked as `pub`: `build_rules_default`, `from_action`, `from_outcome`, `from_snap`, `insert_kernel`, `into_action`, `map_kernel_error`, `with_kernel`
+// These functions are ignored because they are not marked as `pub`: `build_rules_default`, `from_action`, `from_outcome`, `from_snap`, `insert_kernel`, `into_action`, `map_kernel_error`, `mill_variant_for_handle`, `register_mill_variant`, `unregister_mill_variant`, `with_kernel`
 // These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `clone`, `clone`, `fmt`, `fmt`, `fmt`
 
 /// Create a kernel for one of the built-in games using its default
@@ -59,6 +59,18 @@ int tgfKernelUndoDepth({required int handle}) =>
 
 int tgfKernelRedoDepth({required int handle}) =>
     RustLib.instance.api.crateApiKernelTgfKernelRedoDepth(handle: handle);
+
+/// PVS search over the kernel's **current** Mill position, using the same
+/// variant options as [tgf_kernel_create_mill].
+///
+/// Streams the same [EngineEvent] sequence as [crate::api::simple::native_mill_search_events].
+Stream<EngineEvent> tgfKernelMillSearchEvents({
+  required int handle,
+  required int depth,
+}) => RustLib.instance.api.crateApiKernelTgfKernelMillSearchEvents(
+  handle: handle,
+  depth: depth,
+);
 
 /// Mirror of `tgf_core::Action` with i32 fields so FRB can ship it as
 /// trivial dart `int` types.  Conversion is `From`-symmetric.

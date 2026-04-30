@@ -27,6 +27,7 @@ import '../../src/rust/api/kernel.dart' as tgf;
 import '../../src/rust/api/simple.dart' as tgf_simple;
 import '../game_id.dart';
 import '../game_session.dart';
+import '../mill_marked_pieces_codec.dart';
 
 /// Surfaced when the underlying Rust kernel returns a [Result::Err].  The
 /// inner [reason] is the stable English token from `tgf_core::KernelError`
@@ -128,6 +129,13 @@ class TgfKernel {
     return tgf.tgfKernelRedoDepth(handle: _handle);
   }
 
+  /// PVS search event stream for Mill kernels only — uses the session snapshot
+  /// and the variant registered at [TgfKernel.createMill].
+  Stream<tgf_simple.EngineEvent> millSearchEvents({required int depth}) {
+    _checkAlive();
+    return tgf.tgfKernelMillSearchEvents(handle: _handle, depth: depth);
+  }
+
   // --------------------------------------------------------------- mappings
 
   /// Project the typed Rust snapshot into the framework-level
@@ -141,6 +149,7 @@ class TgfKernel {
     final PlayerSeat seat = _mapSide(raw.sideToMove);
     final tgf.TgfOutcome outcomeRaw = rawOutcome();
     final GameOutcome outcome = _mapOutcome(outcomeRaw);
+    final Uint8List opaque = Uint8List.fromList(raw.opaquePayload);
     return GameStateSnapshot(
       gameId: _mapGameId(),
       activeSeat: seat,
@@ -152,7 +161,10 @@ class TgfKernel {
         'tgfPhaseTag': raw.phaseTag,
         'tgfMoveNumber': raw.moveNumber,
         'tgfZobrist': raw.zobristKey,
-        'tgfPayload': Uint8List.fromList(raw.opaquePayload),
+        'tgfPayload': opaque,
+        'millMarkedNodes': MillMarkedPiecesCodec.markedNodesFromOpaquePayload(
+          opaque,
+        ),
       },
     );
   }
@@ -194,8 +206,10 @@ class TgfKernel {
 
   /// Apply [action] using the Rust kernel and return the framework-level
   /// snapshot.  Throws [KernelException] on illegal moves.
-  GameStateSnapshot applyTypedAction(tgf.TgfAction action,
-      {GameAction? lastAction}) {
+  GameStateSnapshot applyTypedAction(
+    tgf.TgfAction action, {
+    GameAction? lastAction,
+  }) {
     final tgf.TgfSnapshot next = rawApply(action);
     return _mapSnapshot(next, lastAction);
   }

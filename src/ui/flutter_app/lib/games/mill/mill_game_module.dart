@@ -29,7 +29,7 @@ import '../../generated/intl/l10n.dart';
 import '../../puzzle/pages/puzzles_home_page.dart';
 import '../../rule_settings/models/rule_settings.dart';
 import '../../rule_settings/widgets/rule_settings_page.dart';
-import '../../shared/database/database.dart';
+import '../../shared/database/database.dart' show DB, Database;
 import '../../shared/database/settings_repositories.dart';
 import '../../shared/services/logger.dart';
 import '../../shared/services/snackbar_service.dart';
@@ -80,7 +80,13 @@ class MillGameModule extends GameModule {
   );
 
   @override
-  GameSessionHandle startSession() => MillGameSession();
+  GameSessionHandle startSession() {
+    final Database? db = Database.instance;
+    if (db != null && db.generalSettings.useNativeMillSession) {
+      return NativeMillGameSession();
+    }
+    return MillGameSession();
+  }
 
   /// Creates a Rust-native Mill session without changing the production
   /// default returned by [startSession].

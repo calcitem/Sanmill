@@ -163,6 +163,8 @@ flutter run --dart-define catcher=false dev_mode=true
 
 Sanmill 正在逐步迁移到 TGF (TabletopGameFramework)。TGF 是基于 Rust + FRB 的通用桌面棋牌框架，可被 Mill 以及未来的 tabletop / card game 复用。Rust 工作区位于 `crates/`：
 
+Mill 规则与搜索在 Rust 实现（`crates/tgf-mill`、`crates/tgf-search`）。历史遗留的 **完美库（perfect DB）** 与 **开局库（opening book）** 仍保留在 C++，通过过渡 crate `crates/tgf-legacy-cxx` 链接（按设计不迁到 Rust）。
+
 ```shell
 cargo test --workspace
 cargo clippy --workspace --all-targets --all-features -- -D warnings

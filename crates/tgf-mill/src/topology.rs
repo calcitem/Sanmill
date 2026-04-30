@@ -165,7 +165,9 @@ fn node(id: u16, square: u16, label: &'static str, x: f32, y: f32) -> MillNode {
 }
 
 fn standard_edges(has_diagonal_lines: bool) -> Vec<Edge> {
-    let mut edges = Vec::with_capacity(if has_diagonal_lines { 48 } else { 40 });
+    // Base 40 ring + spoke edges; diagonal adjacency matches `src/mills.cpp`
+    // `adjacentSquares_diagonal` and adds 40 unique diagonal edges.
+    let mut edges = Vec::with_capacity(if has_diagonal_lines { 80 } else { 40 });
     for start in [0_u16, 8, 16] {
         for i in 0..8_u16 {
             edges.push(Edge {
@@ -182,15 +184,12 @@ fn standard_edges(has_diagonal_lines: bool) -> Vec<Edge> {
         });
     }
     if has_diagonal_lines {
-        for line in diagonal_line_groups() {
-            edges.push(Edge {
-                a: line[0],
-                b: line[1],
-            });
-            edges.push(Edge {
-                a: line[1],
-                b: line[2],
-            });
+        for a in 0_u16..24 {
+            for &b in NEIGHBORS_DIAGONAL[a as usize] {
+                if a < b {
+                    edges.push(Edge { a, b });
+                }
+            }
         }
     }
     edges
@@ -289,30 +288,31 @@ const NEIGHBORS: [&[u16]; 24] = [
     N21, N22, N23,
 ];
 
-const D0: &[u16] = &[8, 1, 7];
-const D1: &[u16] = &[9, 2, 0];
-const D2: &[u16] = &[10, 1, 3];
-const D3: &[u16] = &[11, 4, 2];
-const D4: &[u16] = &[12, 3, 5];
-const D5: &[u16] = &[13, 6, 4];
-const D6: &[u16] = &[14, 5, 7];
-const D7: &[u16] = &[15, 0, 6];
-const D8: &[u16] = &[16, 0, 9, 15];
-const D9: &[u16] = &[17, 1, 10, 8];
-const D10: &[u16] = &[18, 2, 9, 11];
-const D11: &[u16] = &[19, 3, 12, 10];
-const D12: &[u16] = &[20, 4, 11, 13];
-const D13: &[u16] = &[21, 5, 14, 12];
-const D14: &[u16] = &[22, 6, 13, 15];
-const D15: &[u16] = &[23, 7, 8, 14];
-const D16: &[u16] = &[17, 23, 8, 0];
-const D17: &[u16] = &[18, 16, 9, 1];
-const D18: &[u16] = &[19, 17, 10, 2];
-const D19: &[u16] = &[20, 18, 11, 3];
-const D20: &[u16] = &[21, 19, 12, 4];
-const D21: &[u16] = &[22, 20, 13, 5];
-const D22: &[u16] = &[23, 21, 14, 6];
-const D23: &[u16] = &[16, 22, 15, 7];
+// Translated from `src/mills.cpp` `adjacentSquares_diagonal` (dense node ids 0..23).
+const D0: &[u16] = &[1, 7, 8];
+const D1: &[u16] = &[0, 2, 9];
+const D2: &[u16] = &[1, 3, 10];
+const D3: &[u16] = &[2, 4, 11];
+const D4: &[u16] = &[3, 5, 12];
+const D5: &[u16] = &[4, 6, 13];
+const D6: &[u16] = &[5, 7, 14];
+const D7: &[u16] = &[0, 6, 15];
+const D8: &[u16] = &[0, 9, 15, 16];
+const D9: &[u16] = &[1, 8, 10, 17];
+const D10: &[u16] = &[2, 9, 11, 18];
+const D11: &[u16] = &[3, 10, 12, 19];
+const D12: &[u16] = &[4, 11, 13, 20];
+const D13: &[u16] = &[5, 12, 14, 21];
+const D14: &[u16] = &[6, 13, 15, 22];
+const D15: &[u16] = &[7, 8, 14, 23];
+const D16: &[u16] = &[8, 17, 23];
+const D17: &[u16] = &[9, 16, 18];
+const D18: &[u16] = &[10, 17, 19];
+const D19: &[u16] = &[11, 18, 20];
+const D20: &[u16] = &[12, 19, 21];
+const D21: &[u16] = &[13, 20, 22];
+const D22: &[u16] = &[14, 21, 23];
+const D23: &[u16] = &[15, 16, 22];
 
 const NEIGHBORS_DIAGONAL: [&[u16]; 24] = [
     D0, D1, D2, D3, D4, D5, D6, D7, D8, D9, D10, D11, D12, D13, D14, D15, D16, D17, D18, D19, D20,
@@ -356,10 +356,10 @@ mod tests {
     fn diagonal_topology_matches_cxx_diagonal_rules() {
         let topo = MillTopology::with_diagonals();
         assert_eq!(topo.name(), "mill.24.diagonal");
-        assert_eq!(topo.edges().len(), 48);
+        assert_eq!(topo.edges().len(), 80);
         assert_eq!(topo.line_groups().len(), 20);
-        assert_eq!(topo.neighbors(0), &[8, 1, 7]);
-        assert_eq!(topo.neighbors(2), &[10, 1, 3]);
+        assert_eq!(topo.neighbors(0), &[1, 7, 8]);
+        assert_eq!(topo.neighbors(2), &[1, 3, 10]);
         assert!(topo.line_groups().contains(&vec![0, 8, 16]));
         assert!(topo.line_groups().contains(&vec![18, 10, 2]));
         assert!(topo.line_groups().contains(&vec![6, 14, 22]));

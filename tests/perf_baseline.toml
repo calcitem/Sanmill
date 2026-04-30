@@ -35,6 +35,13 @@
 #      hardware is fixed).
 #   3. Commit the updated file with the new values.
 
+# --------------------------------------------------------------------------
+# Differential testing (Rust native vs legacy C++), see docs/FRAMEWORK_API.md
+# --------------------------------------------------------------------------
+[differential]
+# Target: ~1M positions via extended random walk (see crates/tgf-frb).
+random_walk_target_games = 1_000_000
+
 [meta]
 # Stamped manually when freezing a new baseline.
 locked_at   = "2026-04-27T07:30:00Z"

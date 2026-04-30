@@ -46,5 +46,10 @@ Future<void> initTestEnvironment() async {
     DB().generalSettings = DB().generalSettings.copyWith(firstRun: false);
   }
 
+  // TGF migration: exercise the Rust kernel-backed session in integration tests.
+  DB().generalSettings = DB().generalSettings.copyWith(
+    useNativeMillSession: true,
+  );
+
   _initialized = true;
 }

@@ -451,73 +451,164 @@ static const std::vector<GoldenGame> kGoldenGames = {
     {"G01_outer_top",
      "White forms outer-top mill a7-d7-g7 on move 5 and removes B@a1",
      {"d7", "a1", "g7", "d1", "a7", "xa1"},
-     Phase::placing, Action::place, BLACK, 3, 1, 6, 7, NOBODY},
+     Phase::placing,
+     Action::place,
+     BLACK,
+     3,
+     1,
+     6,
+     7,
+     NOBODY},
 
     {"G02_outer_right",
      "White forms outer-right mill g7-g4-g1 and removes B@a7",
      {"g7", "a7", "g4", "a4", "g1", "xa7"},
-     Phase::placing, Action::place, BLACK, 3, 1, 6, 7, NOBODY},
+     Phase::placing,
+     Action::place,
+     BLACK,
+     3,
+     1,
+     6,
+     7,
+     NOBODY},
 
     {"G03_outer_bottom_black",
      "Black forms outer-bottom mill g1-d1-a1 and removes W@d7",
      {"d7", "g1", "d6", "d1", "f6", "a1", "xd7"},
-     Phase::placing, Action::place, WHITE, 2, 3, 6, 6, NOBODY},
+     Phase::placing,
+     Action::place,
+     WHITE,
+     2,
+     3,
+     6,
+     6,
+     NOBODY},
 
     {"G04_outer_left",
      "White forms outer-left mill a1-a4-a7 and removes B@g7",
      {"a4", "g7", "a7", "g4", "a1", "xg7"},
-     Phase::placing, Action::place, BLACK, 3, 1, 6, 7, NOBODY},
+     Phase::placing,
+     Action::place,
+     BLACK,
+     3,
+     1,
+     6,
+     7,
+     NOBODY},
 
     // ---------------------------------------------------------- middle ring
     {"G05_middle_top",
      "White forms middle-top mill b6-d6-f6 and removes B@a1",
      {"b6", "a1", "d6", "g1", "f6", "xa1"},
-     Phase::placing, Action::place, BLACK, 3, 1, 6, 7, NOBODY},
+     Phase::placing,
+     Action::place,
+     BLACK,
+     3,
+     1,
+     6,
+     7,
+     NOBODY},
 
     {"G06_middle_bottom",
      "White forms middle-bottom mill b2-d2-f2 and removes B@a7",
      {"b2", "a7", "d2", "g7", "f2", "xa7"},
-     Phase::placing, Action::place, BLACK, 3, 1, 6, 7, NOBODY},
+     Phase::placing,
+     Action::place,
+     BLACK,
+     3,
+     1,
+     6,
+     7,
+     NOBODY},
 
     // ----------------------------------------------------------- inner ring
     {"G07_inner_top",
      "White forms inner-top mill c5-d5-e5 and removes B@a1",
      {"c5", "a1", "d5", "g1", "e5", "xa1"},
-     Phase::placing, Action::place, BLACK, 3, 1, 6, 7, NOBODY},
+     Phase::placing,
+     Action::place,
+     BLACK,
+     3,
+     1,
+     6,
+     7,
+     NOBODY},
 
     {"G08_inner_bottom_black",
      "Black forms inner-bottom mill c3-d3-e3 and removes W@g7",
      {"g7", "c3", "f6", "d3", "g4", "e3", "xg7"},
-     Phase::placing, Action::place, WHITE, 2, 3, 6, 6, NOBODY},
+     Phase::placing,
+     Action::place,
+     WHITE,
+     2,
+     3,
+     6,
+     6,
+     NOBODY},
 
     // --------------------------------------------------------------- spokes
     {"G09_spoke_top",
      "White forms spoke-top mill d5-d6-d7 and removes B@a1",
      {"d7", "a1", "d6", "g1", "d5", "xa1"},
-     Phase::placing, Action::place, BLACK, 3, 1, 6, 7, NOBODY},
+     Phase::placing,
+     Action::place,
+     BLACK,
+     3,
+     1,
+     6,
+     7,
+     NOBODY},
 
     {"G10_spoke_right",
      "White forms spoke-right mill e4-f4-g4 and removes B@a1",
      {"g4", "a1", "f4", "g1", "e4", "xa1"},
-     Phase::placing, Action::place, BLACK, 3, 1, 6, 7, NOBODY},
+     Phase::placing,
+     Action::place,
+     BLACK,
+     3,
+     1,
+     6,
+     7,
+     NOBODY},
 
     {"G11_spoke_bottom",
      "White forms spoke-bottom mill d1-d2-d3 and removes B@a7",
      {"d1", "a7", "d2", "g7", "d3", "xa7"},
-     Phase::placing, Action::place, BLACK, 3, 1, 6, 7, NOBODY},
+     Phase::placing,
+     Action::place,
+     BLACK,
+     3,
+     1,
+     6,
+     7,
+     NOBODY},
 
     {"G12_spoke_left",
      "White forms spoke-left mill a4-b4-c4 and removes B@g7",
      {"a4", "g7", "b4", "g4", "c4", "xg7"},
-     Phase::placing, Action::place, BLACK, 3, 1, 6, 7, NOBODY},
+     Phase::placing,
+     Action::place,
+     BLACK,
+     3,
+     1,
+     6,
+     7,
+     NOBODY},
 
     // ---------------------------------------------------- moving-phase mill
     {"G13_moving_phase_mill",
      "After 18 placements without mills, W g4-f4 forms f6-f4-f2 and "
      "removes B@a1",
-     {"d7", "g7", "g4", "a7", "a4", "g1", "f6", "d6", "b6", "d2", "f2", "a1",
-      "e5", "c5", "c4", "d5", "e3", "c3", "g4-f4", "xa1"},
-     Phase::moving, Action::select, BLACK, 9, 8, 0, 0, NOBODY},
+     {"d7", "g7", "g4", "a7", "a4", "g1", "f6", "d6", "b6",    "d2",
+      "f2", "a1", "e5", "c5", "c4", "d5", "e3", "c3", "g4-f4", "xa1"},
+     Phase::moving,
+     Action::select,
+     BLACK,
+     9,
+     8,
+     0,
+     0,
+     NOBODY},
 
     // ---------------------------------------------------- double-mill
     //
@@ -529,12 +620,18 @@ static const std::vector<GoldenGame> kGoldenGames = {
     {"G14_double_mill_capture",
      "Two W mills (a7-d7-g7 then a1-a4-a7), B reduced to 2 pieces",
      {"d7", "a1", "g7", "d1", "a7", "xa1", "g1", "a4", "b6", "a1", "xg1"},
-     Phase::placing, Action::place, BLACK, 5, 2, 4, 5, NOBODY},
+     Phase::placing,
+     Action::place,
+     BLACK,
+     5,
+     2,
+     4,
+     5,
+     NOBODY},
 };
 
 class GoldenGamesParam : public ::testing::TestWithParam<GoldenGame>
-{
-};
+{ };
 
 TEST_P(GoldenGamesParam, ReplayAndAssertFinalState)
 {
@@ -576,11 +673,11 @@ TEST_P(GoldenGamesParam, ReplayAndAssertFinalState)
     EXPECT_EQ(pos.get_winner(), g.winner) << "[" << g.id << "] winner";
 }
 
-INSTANTIATE_TEST_SUITE_P(
-    GoldenGames, GoldenGamesParam, ::testing::ValuesIn(kGoldenGames),
-    [](const ::testing::TestParamInfo<GoldenGame> &info) {
-        return std::string(info.param.id);
-    });
+INSTANTIATE_TEST_SUITE_P(GoldenGames, GoldenGamesParam,
+                         ::testing::ValuesIn(kGoldenGames),
+                         [](const ::testing::TestParamInfo<GoldenGame> &info) {
+                             return std::string(info.param.id);
+                         });
 
 // ===========================================================================
 // SCENARIO 31 — JSON fixture file is populated and parseable.
@@ -618,10 +715,11 @@ TEST(GoldenJsonFixtures, IsPopulated)
     }
 
     ASSERT_FALSE(contents.empty()) << "mill_games.json is empty";
-    EXPECT_NE(contents.find("\"version\""), std::string::npos)
-        << "JSON missing version key";
-    EXPECT_NE(contents.find("\"games\""), std::string::npos)
-        << "JSON missing games key";
+    EXPECT_NE(contents.find("\"version\""), std::string::npos) << "JSON "
+                                                                  "missing "
+                                                                  "version key";
+    EXPECT_NE(contents.find("\"games\""), std::string::npos) << "JSON missing "
+                                                                "games key";
     EXPECT_EQ(contents.find("\"_note\""), std::string::npos)
         << "JSON still carries the placeholder _note field; replace with real "
            "fixtures.";

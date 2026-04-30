@@ -1,0 +1,21 @@
+# Nightly TGF differential + extended random walk (Rust).
+name: TGF nightly
+
+on:
+  schedule:
+    - cron: "0 2 * * *"
+  workflow_dispatch:
+
+jobs:
+  random-walk-extended:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Run ignored random_walk_extended (release)
+        run: |
+          cargo test --release -p rust_lib_sanmill --lib -- \
+            --ignored random_walk_extended

@@ -12,6 +12,7 @@ import 'package:sanmill/game_platform/engine/legacy_tgf_kernel.dart';
 import 'package:sanmill/game_platform/engine/native_topology.dart';
 import 'package:sanmill/game_platform/engine/tgf_kernel.dart';
 import 'package:sanmill/game_platform/game_session.dart';
+import 'package:sanmill/game_platform/game_session_handle.dart';
 import 'package:sanmill/game_platform/rules_port.dart';
 import 'package:sanmill/games/mill/mill_game_module.dart';
 import 'package:sanmill/games/mill/mill_game_session.dart';
@@ -21,6 +22,7 @@ import 'package:sanmill/games/mill/native_mill_game_session.dart';
 import 'package:sanmill/games/mill/native_mill_rules_port.dart';
 import 'package:sanmill/games/othello/othello_game_session.dart';
 import 'package:sanmill/rule_settings/models/rule_settings.dart';
+import 'package:sanmill/shared/database/database.dart' show Database;
 import 'package:sanmill/src/rust/api/kernel.dart' as tgf_kernel_api;
 import 'package:sanmill/src/rust/api/simple.dart';
 import 'package:sanmill/src/rust/frb_generated.dart';
@@ -211,13 +213,18 @@ void main() {
   );
 
   testWidgets(
-    'MillGameModule keeps legacy default and exposes native factory',
+    'MillGameModule startSession respects useNativeMillSession; exposes native factory',
     (WidgetTester tester) async {
       final MillGameModule module = MillGameModule();
 
-      final MillGameSession session = module.startSession() as MillGameSession;
-      expect(session, isA<MillGameSession>());
-      session.dispose();
+      final GameSessionHandle started = module.startSession();
+      addTearDown(started.dispose);
+      final Database? db = Database.instance;
+      if (db != null && db.generalSettings.useNativeMillSession) {
+        expect(started, isA<NativeMillGameSession>());
+      } else {
+        expect(started, isA<MillGameSession>());
+      }
 
       final NativeMillGameSession nativeSession =
           module.startNativeSession() as NativeMillGameSession;

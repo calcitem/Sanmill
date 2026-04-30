@@ -166,6 +166,10 @@ class GeneralSettings {
     this.backgroundMusicFilePath = '',
     this.lastPgnSaveDirectory = '',
     this.experienceRecordingEnabled = false,
+
+    /// When true, [MillGameModule.startSession] uses [NativeMillGameSession] (Rust
+    /// `tgf-mill` / FRB) instead of the legacy [MillGameSession] path.
+    this.useNativeMillSession = false,
   });
 
   /// Encodes a Json style map into a [GeneralSettings] object
@@ -328,6 +332,10 @@ class GeneralSettings {
   // Enable experience recording for digital twin replay / bug reproduction.
   @HiveField(45, defaultValue: false)
   final bool experienceRecordingEnabled;
+
+  /// Use Rust-native Mill session (TGF) instead of legacy GameController path.
+  @HiveField(46, defaultValue: false)
+  final bool useNativeMillSession;
 
   /// Decodes a Json from a [GeneralSettings] object
   Map<String, dynamic> toJson() => _$GeneralSettingsToJson(this);
