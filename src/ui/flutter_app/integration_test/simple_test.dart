@@ -13,6 +13,7 @@ import 'package:sanmill/game_platform/game_session.dart';
 import 'package:sanmill/games/mill/mill_game_session.dart';
 import 'package:sanmill/games/mill/mill_rules_port.dart';
 import 'package:sanmill/games/mill/mill_variant_options_mapper.dart';
+import 'package:sanmill/games/mill/native_mill_rules_port.dart';
 import 'package:sanmill/games/othello/othello_game_session.dart';
 import 'package:sanmill/rule_settings/models/rule_settings.dart';
 import 'package:sanmill/src/rust/api/kernel.dart' as tgf_kernel_api;
@@ -146,6 +147,30 @@ void main() {
     final GameStateSnapshot after = rules.apply(first);
     expect(after.lastAction, first);
     expect(after.activeSeat, isNot(PlayerSeat.first));
+  });
+
+  testWidgets('NativeMillRulesPort uses typed Rust Mill rules directly', (
+    WidgetTester tester,
+  ) async {
+    final NativeMillRulesPort rules = NativeMillRulesPort();
+    addTearDown(rules.dispose);
+
+    expect(rules.snapshot.phase, 'placing');
+    expect(rules.legalActions, hasLength(24));
+    expect(
+      rules.legalActions.map((GameAction a) => a.payload['move']),
+      contains('d7'),
+    );
+
+    final GameAction first = rules.legalActions.first;
+    final GameStateSnapshot after = rules.apply(first);
+    expect(after.lastAction, first);
+    expect(after.activeSeat, isNot(PlayerSeat.first));
+    expect(rules.legalActions, hasLength(23));
+
+    final GameStateSnapshot undone = rules.undo();
+    expect(undone.activeSeat, PlayerSeat.first);
+    expect(rules.legalActions, hasLength(24));
   });
 
   testWidgets('Rust-native search emits event stream', (
