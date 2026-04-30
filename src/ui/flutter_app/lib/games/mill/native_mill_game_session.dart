@@ -5,9 +5,9 @@
 //
 // This is a parallel session implementation backed by `NativeMillRulesPort`
 // and therefore by `crates/tgf-mill` through the typed FRB `TgfKernel`.
-// It is intentionally NOT wired into `MillGameModule.startSession()` yet:
-// the legacy `MillGameSession` remains the production path until UI
-// widgets stop depending on `GameController` / `Position` internals.
+// `MillGameModule.startSession()` can select it behind the
+// `GeneralSettings.useNativeMillSession` dogfood flag while the legacy
+// `MillGameSession` remains the default rollback path.
 
 import 'dart:async';
 

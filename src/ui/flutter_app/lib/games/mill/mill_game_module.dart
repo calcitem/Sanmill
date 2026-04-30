@@ -45,8 +45,18 @@ import 'mill_rules_port.dart';
 import 'native_mill_game_session.dart';
 import 'native_mill_rules_port.dart';
 
+typedef NativeMillSessionFactory =
+    GameSessionHandle Function({required RuleSettings ruleSettings});
+
 class MillGameModule extends GameModule {
-  MillGameModule();
+  MillGameModule({NativeMillSessionFactory? nativeSessionFactory})
+    : _nativeSessionFactory =
+          nativeSessionFactory ??
+          (({required RuleSettings ruleSettings}) {
+            return NativeMillGameSession(rules: ruleSettings);
+          });
+
+  final NativeMillSessionFactory _nativeSessionFactory;
 
   @override
   GameModuleMetadata get metadata =>
@@ -83,7 +93,7 @@ class MillGameModule extends GameModule {
   GameSessionHandle startSession() {
     final Database? db = Database.instance;
     if (db != null && db.generalSettings.useNativeMillSession) {
-      return NativeMillGameSession();
+      return _nativeSessionFactory(ruleSettings: db.ruleSettings);
     }
     return MillGameSession();
   }
@@ -98,7 +108,7 @@ class MillGameModule extends GameModule {
   GameSessionHandle startNativeSession({
     RuleSettings ruleSettings = const RuleSettings(),
   }) {
-    return NativeMillGameSession(rules: ruleSettings);
+    return _nativeSessionFactory(ruleSettings: ruleSettings);
   }
 
   @override
