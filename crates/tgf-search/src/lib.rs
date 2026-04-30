@@ -54,6 +54,14 @@ pub struct SearchAbortHandle {
 }
 
 impl SearchAbortHandle {
+    /// Wrap an existing shared abort flag.  Use this when the caller owns
+    /// the `Arc<AtomicBool>` (for example to share one stop signal across
+    /// the UCI main thread, a `lazy_smp_search` fan-out, and any future
+    /// timer thread) and just needs an opaque handle to expose.
+    pub fn from_arc(flag: Arc<AtomicBool>) -> Self {
+        Self { flag }
+    }
+
     pub fn request_abort(&self) {
         self.flag.store(true, Ordering::Relaxed);
     }
@@ -444,6 +452,14 @@ impl<G: Game> Searcher<G> {
             tt: shared.inner,
             ..Self::default()
         }
+    }
+
+    /// Replace this Searcher's abort flag with an externally-owned one,
+    /// typically the shared flag used by `lazy_smp_search` so that one
+    /// `stop` aborts every worker.  Existing handles obtained from
+    /// [`Self::abort_handle`] BEFORE this call become disconnected.
+    pub fn set_abort_flag(&mut self, flag: Arc<AtomicBool>) {
+        self.abort_flag = flag;
     }
 
     /// Return a cloned `SharedTt` handle pointing at this Searcher's TT so
@@ -1028,13 +1044,16 @@ pub struct LazySmpWorker {
 }
 
 /// Run a Lazy-SMP-style parallel search.  All workers share one
-/// transposition table through [`SharedTt`] but maintain their own
-/// killer / history / abort state.  The deepest completed result wins on
-/// score ties; this is intentionally simpler than full YBWC and is the
-/// stepping stone toward phase 5.2 in the migration plan.
+/// transposition table through [`SharedTt`] AND a single abort flag, so
+/// requesting an abort through [`SearchAbortHandle`] once stops every
+/// worker.  Each worker still has its own killer / history bookkeeping
+/// because those are inherently thread-local.
 ///
-/// `aggregate_extra_depth` is `extra_depth` from each worker added on top
-/// of `base_depth`, so workers do not all hammer the same exact tree.
+/// The deepest completed result wins on score; this is intentionally
+/// simpler than full YBWC and is the stepping stone toward phase 5.2 in
+/// the migration plan.  When `abort_flag` is `None` a fresh shared flag
+/// is allocated; pass `Some(...)` to participate in an existing
+/// cancellation chain (e.g. UCI `stop` from the main thread).
 pub fn lazy_smp_search<G>(
     game: G,
     snapshot: GameStateSnapshot,
@@ -1042,6 +1061,7 @@ pub fn lazy_smp_search<G>(
     workers: &[LazySmpWorker],
     options: SearchOptions,
     shared_tt: SharedTt,
+    abort_flag: Option<Arc<AtomicBool>>,
 ) -> SearchResult
 where
     G: Game + Clone + Send + 'static,
@@ -1052,6 +1072,7 @@ where
     } else {
         workers
     };
+    let abort = abort_flag.unwrap_or_else(|| Arc::new(AtomicBool::new(false)));
 
     let mut handles = Vec::with_capacity(workers.len());
     for worker in workers {
@@ -1059,9 +1080,11 @@ where
         let shared_tt = shared_tt.clone();
         let options_for_worker = options;
         let snapshot_for_worker = snapshot;
+        let abort = Arc::clone(&abort);
         let depth = (base_depth + worker.extra_depth).max(1);
         handles.push(thread::spawn(move || {
             let mut searcher = Searcher::<G>::with_shared_tt(shared_tt);
+            searcher.set_abort_flag(abort);
             searcher.set_options(options_for_worker);
             let mut wb = game_for_worker.build_workbench(&snapshot_for_worker);
             searcher.iterative_deepening(&mut wb, depth)
@@ -1667,6 +1690,7 @@ mod tests {
             ],
             SearchOptions::default(),
             shared_tt.clone(),
+            None,
         );
 
         assert!(!result.best_action.is_none());

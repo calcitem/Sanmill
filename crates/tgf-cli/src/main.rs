@@ -2,13 +2,17 @@
 // tgf-cli – command-line utilities for the Rust TGF engine.
 
 use std::io::{self, BufRead};
-use std::sync::mpsc;
+use std::sync::atomic::AtomicBool;
+use std::sync::{mpsc, Arc};
 use std::thread::{self, JoinHandle};
 use std::time::{Duration, Instant};
 
 use tgf_core::{Action, ActionList, BoardTopology, Game, GameRules, GameStateSnapshot};
 use tgf_mill::{default_mill_topology, MillActionKind, MillGame, MillRules, MillVariantOptions};
-use tgf_search::{perft, SearchAbortHandle, SearchOptions, SearchPolicy, SearchResult, Searcher};
+use tgf_search::{
+    lazy_smp_search, perft, LazySmpWorker, SearchAbortHandle, SearchOptions, SearchPolicy,
+    SearchResult, Searcher, SharedTt,
+};
 
 /// `TGF_TT_CLUSTER_BITS` (10–18) selects `2^(bits+1)` TT slots; see
 /// `tgf_search::Searcher::new_with_tt_cluster_bits`.
@@ -48,6 +52,7 @@ fn run_uci_loop() {
     let mut options = MillVariantOptions::default();
     let mut rules = MillRules::new(options.clone());
     let mut state = rules.initial_state(&[]);
+    let mut threads: usize = 1;
     let mut active_search: Option<ActiveSearch> = None;
     let stdin = io::stdin();
     for line in stdin.lock().lines().map_while(Result::ok) {
@@ -67,11 +72,15 @@ fn run_uci_loop() {
             state = rules.initial_state(&[]);
         } else if line.starts_with("setoption") {
             finish_active_search(&mut active_search);
-            if apply_setoption(line, &mut options) {
-                rules = MillRules::new(options.clone());
-                state = rules.initial_state(&[]);
-            } else {
-                println!("info string unsupported setoption: {line}");
+            match apply_setoption(line, &mut options, &mut threads) {
+                SetoptionResult::Variant => {
+                    rules = MillRules::new(options.clone());
+                    state = rules.initial_state(&[]);
+                }
+                SetoptionResult::Threads => {}
+                SetoptionResult::Unknown => {
+                    println!("info string unsupported setoption: {line}");
+                }
             }
         } else if line.starts_with("position") {
             finish_active_search(&mut active_search);
@@ -81,7 +90,7 @@ fn run_uci_loop() {
         } else if line.starts_with("go") {
             finish_active_search(&mut active_search);
             let go = parse_go_options(line);
-            active_search = Some(spawn_search(options.clone(), state, go));
+            active_search = Some(spawn_search(options.clone(), state, go, threads));
         } else if line == "stop" {
             if let Some(active) = active_search.take() {
                 active.abort_handle.request_abort();
@@ -116,22 +125,52 @@ fn spawn_search(
     options: MillVariantOptions,
     state: GameStateSnapshot,
     go: GoOptions,
+    threads: usize,
 ) -> ActiveSearch {
-    let mut searcher = mill_searcher();
-    searcher.set_options(SearchOptions {
+    let search_options = SearchOptions {
         depth_extension: false,
         node_limit: go.node_limit,
         time_limit_ms: go.movetime_ms,
-    });
-    let abort_handle = searcher.abort_handle();
-    let (tx, rx) = mpsc::channel();
+    };
     let depth = go.depth;
-    let handle = thread::spawn(move || {
-        let game = MillGame::new(options);
-        let mut wb = game.build_workbench(&state);
-        let result = searcher.search_pvs(&mut wb, depth);
-        let _ = tx.send(SpawnResult { depth, result });
-    });
+    let (tx, rx) = mpsc::channel();
+    let abort = Arc::new(AtomicBool::new(false));
+    let abort_handle = SearchAbortHandle::from_arc(Arc::clone(&abort));
+
+    let handle = if threads <= 1 {
+        let abort_for_worker = Arc::clone(&abort);
+        thread::spawn(move || {
+            let mut searcher = mill_searcher();
+            searcher.set_abort_flag(abort_for_worker);
+            searcher.set_options(search_options);
+            let game = MillGame::new(options);
+            let mut wb = game.build_workbench(&state);
+            let result = searcher.search_pvs(&mut wb, depth);
+            let _ = tx.send(SpawnResult { depth, result });
+        })
+    } else {
+        let abort_for_workers = Arc::clone(&abort);
+        thread::spawn(move || {
+            let workers: Vec<LazySmpWorker> = (0..threads)
+                .map(|i| LazySmpWorker {
+                    extra_depth: (i % 2) as i32,
+                })
+                .collect();
+            let shared_tt = SharedTt::new(tt_cluster_bits_from_env());
+            let game = MillGame::new(options);
+            let result = lazy_smp_search::<MillGame>(
+                game,
+                state,
+                depth,
+                &workers,
+                search_options,
+                shared_tt,
+                Some(abort_for_workers),
+            );
+            let _ = tx.send(SpawnResult { depth, result });
+        })
+    };
+
     ActiveSearch {
         handle,
         abort_handle,
@@ -216,51 +255,83 @@ fn print_uci_options() {
     println!("option name PiecesAtLeastCount type spin default 3 min 2 max 3");
     println!("option name MayFly type check default true");
     println!("option name HasDiagonalLines type check default false");
+    println!("option name Threads type spin default 1 min 1 max 64");
 }
 
-fn apply_setoption(line: &str, options: &mut MillVariantOptions) -> bool {
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+enum SetoptionResult {
+    Variant,
+    Threads,
+    Unknown,
+}
+
+fn apply_setoption(
+    line: &str,
+    options: &mut MillVariantOptions,
+    threads: &mut usize,
+) -> SetoptionResult {
     let tokens = line.split_whitespace().collect::<Vec<_>>();
     let Some(name_pos) = tokens.iter().position(|t| *t == "name") else {
-        return false;
+        return SetoptionResult::Unknown;
     };
     let Some(value_pos) = tokens.iter().position(|t| *t == "value") else {
-        return false;
+        return SetoptionResult::Unknown;
     };
     if value_pos <= name_pos + 1 || value_pos + 1 >= tokens.len() {
-        return false;
+        return SetoptionResult::Unknown;
     }
     let name = tokens[name_pos + 1..value_pos]
         .join(" ")
         .to_ascii_lowercase();
     let value = tokens[value_pos + 1];
+
     match name.as_str() {
+        "threads" => {
+            if let Some(n) = value.parse::<usize>().ok().filter(|n| (1..=64).contains(n)) {
+                *threads = n;
+                SetoptionResult::Threads
+            } else {
+                SetoptionResult::Unknown
+            }
+        }
         "piececount" | "piece count" => value
             .parse::<u8>()
             .ok()
             .filter(|v| (3..=12).contains(v))
-            .is_some_and(|v| {
+            .map(|v| {
                 options.piece_count = v;
-                true
-            }),
-        "flypiececount" | "fly piece count" => value.parse::<u8>().ok().is_some_and(|v| {
-            options.fly_piece_count = v;
-            true
-        }),
-        "piecesatleastcount" | "pieces at least count" => {
-            value.parse::<u8>().ok().is_some_and(|v| {
-                options.pieces_at_least_count = v;
-                true
+                SetoptionResult::Variant
             })
-        }
-        "mayfly" | "may fly" => parse_bool(value).is_some_and(|v| {
-            options.may_fly = v;
-            true
-        }),
-        "hasdiagonallines" | "has diagonal lines" => parse_bool(value).is_some_and(|v| {
-            options.has_diagonal_lines = v;
-            true
-        }),
-        _ => false,
+            .unwrap_or(SetoptionResult::Unknown),
+        "flypiececount" | "fly piece count" => value
+            .parse::<u8>()
+            .ok()
+            .map(|v| {
+                options.fly_piece_count = v;
+                SetoptionResult::Variant
+            })
+            .unwrap_or(SetoptionResult::Unknown),
+        "piecesatleastcount" | "pieces at least count" => value
+            .parse::<u8>()
+            .ok()
+            .map(|v| {
+                options.pieces_at_least_count = v;
+                SetoptionResult::Variant
+            })
+            .unwrap_or(SetoptionResult::Unknown),
+        "mayfly" | "may fly" => parse_bool(value)
+            .map(|v| {
+                options.may_fly = v;
+                SetoptionResult::Variant
+            })
+            .unwrap_or(SetoptionResult::Unknown),
+        "hasdiagonallines" | "has diagonal lines" => parse_bool(value)
+            .map(|v| {
+                options.has_diagonal_lines = v;
+                SetoptionResult::Variant
+            })
+            .unwrap_or(SetoptionResult::Unknown),
+        _ => SetoptionResult::Unknown,
     }
 }
 
