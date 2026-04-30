@@ -152,5 +152,28 @@ void main() {
       },
       skip: _nativeLibrarySkipReason,
     );
+
+    test(
+      'searchAndApplyBestAction applies the searched move',
+      () async {
+        final NativeMillGameSession session = NativeMillGameSession();
+        addTearDown(session.dispose);
+
+        expect(session.state.value.activeSeat, PlayerSeat.first);
+        final GameAction? action = await session.searchAndApplyBestAction();
+
+        expect(action, isNotNull);
+        expect(action!.type, MillActionTypes.place);
+        expect(session.state.value.lastAction, same(action));
+        expect(session.state.value.activeSeat, PlayerSeat.second);
+        expect(
+          NativeMillSnapshotBoardView.fromSnapshot(
+            session.state.value,
+          )!.pieceAtNode(action.payload['toNode']! as int),
+          PlayerSeat.first,
+        );
+      },
+      skip: _nativeLibrarySkipReason,
+    );
   });
 }

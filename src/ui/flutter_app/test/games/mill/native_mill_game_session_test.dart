@@ -103,6 +103,21 @@ void main() {
       expect(session.outcome.isTerminal, isTrue);
       expect(session.legalActions, isEmpty);
     });
+
+    test(
+      'searchBestAction returns null when no search bestMove is emitted',
+      () async {
+        final _FakeNativeMillRulesPort rulesPort = _FakeNativeMillRulesPort();
+        final NativeMillGameSession session = NativeMillGameSession(
+          rulesPort: rulesPort,
+        );
+        addTearDown(session.dispose);
+
+        expect(await session.searchBestAction(), isNull);
+        expect(await session.searchAndApplyBestAction(), isNull);
+        expect(rulesPort.applyCount, 0);
+      },
+    );
   });
 }
 

@@ -108,6 +108,37 @@ class NativeMillGameSession implements GameSessionHandle {
     return rulesPort.millSearchEvents(depth: depth);
   }
 
+  /// Search the current kernel state and map the final bestMove event back to
+  /// one of this session's current legal actions.  The current Rust event only
+  /// exposes `toNode`, which is unambiguous for placing-phase dogfood; extend
+  /// the event payload before using this for moving/removal searches.
+  Future<GameAction?> searchBestAction({int depth = 1}) async {
+    if (_disposed || outcome.isTerminal) {
+      return null;
+    }
+
+    GameAction? bestAction;
+    await for (final tgf.EngineEvent event in millSearchEvents(depth: depth)) {
+      if (event.kind != 'bestMove' || event.toNode < 0) {
+        continue;
+      }
+      bestAction = _legalActionForBestMoveToNode(event.toNode);
+    }
+    return bestAction;
+  }
+
+  /// Convenience dogfood hook used by the future engine.dart replacement: run
+  /// Rust search from the current session, apply the best action if available,
+  /// and return it to the caller for recording / UI feedback.
+  Future<GameAction?> searchAndApplyBestAction({int depth = 1}) async {
+    final GameAction? action = await searchBestAction(depth: depth);
+    if (action == null) {
+      return null;
+    }
+    await apply(action);
+    return action;
+  }
+
   @override
   void dispose() {
     if (_disposed) {
@@ -132,5 +163,14 @@ class NativeMillGameSession implements GameSessionHandle {
     if (!_events.isClosed) {
       _events.add(GameSessionEvent(type, payload: payload));
     }
+  }
+
+  GameAction? _legalActionForBestMoveToNode(int toNode) {
+    for (final GameAction action in legalActions) {
+      if (action.payload['toNode'] == toNode) {
+        return action;
+      }
+    }
+    return null;
   }
 }
