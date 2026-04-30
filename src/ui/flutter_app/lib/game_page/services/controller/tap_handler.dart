@@ -11,6 +11,8 @@ class TapHandler {
   //final position = GameController().position;
 
   static const String _logTag = "[Tap Handler]";
+  static final MillSessionTapController _nativeSessionTapController =
+      MillSessionTapController();
 
   final BuildContext context;
 
@@ -28,6 +30,51 @@ class TapHandler {
   bool get _isBoardEmpty =>
       GameController().position.pieceOnBoardCount[PieceColor.white] == 0 &&
       GameController().position.pieceOnBoardCount[PieceColor.black] == 0;
+
+  Future<EngineResponse?> _tryNativeSessionTap(int sq) async {
+    if (!DB().generalSettings.useNativeMillSession) {
+      _nativeSessionTapController.clearSelection();
+      return null;
+    }
+    // The Rust-native session path is currently dogfooded for local
+    // human-vs-human input only.  AI, LAN, setup-position, replay, and puzzle
+    // modes still depend on legacy GameController/Position side effects.
+    if (controller.gameInstance.gameMode != GameMode.humanVsHuman) {
+      _nativeSessionTapController.clearSelection();
+      return null;
+    }
+    final GameSession? session = GameSessionScope.sessionOf(context);
+    if (session == null) {
+      logger.w("$_logTag Native Mill session flag is on but no GameSession.");
+      return const EngineResponseSkip();
+    }
+
+    final String tappedLabel = ExtMove.sqToNotation(sq);
+    final String tipMove = S.of(context).tipMove;
+    final MillSessionTapResult result = await _nativeSessionTapController.tap(
+      session: session,
+      tappedLabel: tappedLabel,
+    );
+
+    switch (result.status) {
+      case MillSessionTapStatus.selectedSource:
+        logger.t(
+          "$_logTag Native Mill selected ${result.selectedFrom}; waiting for destination.",
+        );
+        showTip(tipMove, snackBar: false);
+        return const EngineResponseSkip();
+      case MillSessionTapStatus.applied:
+        logger.i(
+          "$_logTag Native Mill applied ${result.action?.payload['move'] ?? tappedLabel}",
+        );
+        PlayerTimer().stop();
+        GameController().boardSemanticsNotifier.updateSemantics();
+        return const EngineResponseHumanOK();
+      case MillSessionTapStatus.ignored:
+        logger.t("$_logTag Native Mill ignored tap <$tappedLabel>.");
+        return const EngineResponseSkip();
+    }
+  }
 
   Future<EngineResponse> setupPosition(int sq) async {
     if (GameController().position.action == Act.place ||
@@ -109,6 +156,13 @@ class TapHandler {
     if (GameController().gameInstance.gameMode == GameMode.testViaLAN) {
       logger.t("$_logTag Engine type is no human, ignore tapping.");
       return const EngineResponseSkip();
+    }
+
+    final EngineResponse? nativeSessionResponse = await _tryNativeSessionTap(
+      sq,
+    );
+    if (nativeSessionResponse != null) {
+      return nativeSessionResponse;
     }
 
     if (GameController().position.phase == Phase.gameOver) {

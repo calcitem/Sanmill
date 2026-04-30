@@ -30,6 +30,7 @@ import '../../experience_recording/services/recording_service.dart';
 import '../../game_platform/game_export_service.dart';
 import '../../game_platform/game_session.dart';
 import '../../game_shell/game_session_scope.dart';
+import '../../games/mill/mill_session_tap_controller.dart';
 import '../../general_settings/models/general_settings.dart';
 import '../../generated/assets/assets.gen.dart';
 import '../../generated/intl/l10n.dart';
