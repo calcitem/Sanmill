@@ -29,7 +29,7 @@ import '../../generated/intl/l10n.dart';
 import '../../puzzle/pages/puzzles_home_page.dart';
 import '../../rule_settings/models/rule_settings.dart';
 import '../../rule_settings/widgets/rule_settings_page.dart';
-import '../../shared/database/database.dart' show DB, Database;
+import '../../shared/database/database.dart' show DB;
 import '../../shared/database/settings_repositories.dart';
 import '../../shared/services/logger.dart';
 import '../../shared/services/snackbar_service.dart';
@@ -91,8 +91,8 @@ class MillGameModule extends GameModule {
 
   @override
   GameSessionHandle startSession() {
-    final Database? db = Database.instance;
-    if (db != null && db.generalSettings.useNativeMillSession) {
+    final DB db = DB();
+    if (db.generalSettings.useNativeMillSession) {
       return _nativeSessionFactory(ruleSettings: db.ruleSettings);
     }
     return MillGameSession();
