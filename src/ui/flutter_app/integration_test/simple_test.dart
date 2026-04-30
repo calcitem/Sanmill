@@ -12,6 +12,8 @@ import 'package:sanmill/game_platform/engine/legacy_tgf_kernel.dart';
 import 'package:sanmill/game_platform/engine/native_topology.dart';
 import 'package:sanmill/game_platform/engine/tgf_kernel.dart';
 import 'package:sanmill/game_platform/game_session.dart';
+import 'package:sanmill/game_platform/rules_port.dart';
+import 'package:sanmill/games/mill/mill_game_module.dart';
 import 'package:sanmill/games/mill/mill_game_session.dart';
 import 'package:sanmill/games/mill/mill_rules_port.dart';
 import 'package:sanmill/games/mill/mill_variant_options_mapper.dart';
@@ -205,6 +207,28 @@ void main() {
 
       await session.redo();
       expect(session.state.value.activeSeat, isNot(PlayerSeat.first));
+    },
+  );
+
+  testWidgets(
+    'MillGameModule keeps legacy default and exposes native factory',
+    (WidgetTester tester) async {
+      final MillGameModule module = MillGameModule();
+
+      final MillGameSession session = module.startSession() as MillGameSession;
+      expect(session, isA<MillGameSession>());
+      session.dispose();
+
+      final NativeMillGameSession nativeSession =
+          module.startNativeSession() as NativeMillGameSession;
+      expect(nativeSession, isA<NativeMillGameSession>());
+      expect(nativeSession.legalActions, hasLength(24));
+      nativeSession.dispose();
+
+      final RulesPort nativeRules = module.nativeRulesPort();
+      expect(nativeRules, isA<NativeMillRulesPort>());
+      expect(nativeRules.legalActions, hasLength(24));
+      (nativeRules as NativeMillRulesPort).dispose();
     },
   );
 

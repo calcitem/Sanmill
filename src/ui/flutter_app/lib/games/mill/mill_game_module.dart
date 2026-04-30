@@ -42,6 +42,8 @@ import 'mill_notation_port.dart';
 import 'mill_route_ids.dart';
 import 'mill_rule_settings_port.dart';
 import 'mill_rules_port.dart';
+import 'native_mill_game_session.dart';
+import 'native_mill_rules_port.dart';
 
 class MillGameModule extends GameModule {
   MillGameModule();
@@ -80,8 +82,29 @@ class MillGameModule extends GameModule {
   @override
   GameSessionHandle startSession() => MillGameSession();
 
+  /// Creates a Rust-native Mill session without changing the production
+  /// default returned by [startSession].
+  ///
+  /// This is the migration entry point for tests and future routes that
+  /// want to exercise `crates/tgf-mill` through typed FRB while the
+  /// legacy `GameController`-backed [MillGameSession] remains the main UI
+  /// path.
+  GameSessionHandle startNativeSession({
+    RuleSettings ruleSettings = const RuleSettings(),
+  }) {
+    return NativeMillGameSession(rules: ruleSettings);
+  }
+
   @override
   RulesPort? get rulesPort => MillRulesPort();
+
+  /// Rust-native rules port factory, kept explicit so callers opt in to
+  /// the new path intentionally.
+  RulesPort nativeRulesPort({
+    RuleSettings ruleSettings = const RuleSettings(),
+  }) {
+    return NativeMillRulesPort(ruleSettings: ruleSettings);
+  }
 
   @override
   NotationPort? get notationPort => const MillNotationPort();
