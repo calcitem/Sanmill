@@ -627,8 +627,12 @@ class _GameBoardState extends State<GameBoard>
     setState(() {});
 
     final GameMode gameMode = GameController().gameInstance.gameMode;
-    final PieceColor winner = GameController().position.winner;
-    final GameOverReason? reason = GameController().position.reason;
+    final PieceColor winner =
+        _winnerFromActiveSession() ?? GameController().position.winner;
+    final GameOverReason? reason =
+        (GameController().activeSessionSnapshot?.outcome.isTerminal ?? false)
+        ? null
+        : GameController().position.reason;
     final bool force = GameController().gameResultNotifier.force;
 
     // Header tip shows simple win/lose message
@@ -714,6 +718,24 @@ class _GameBoardState extends State<GameBoard>
         }
       });
     }
+  }
+
+  PieceColor? _winnerFromActiveSession() {
+    final platform.GameOutcome? outcome =
+        GameController().activeSessionSnapshot?.outcome;
+    if (outcome == null || !outcome.isTerminal) {
+      return null;
+    }
+    return switch (outcome.kind) {
+      GameOutcomeKind.win => switch (outcome.winner) {
+        PlayerSeat.first => PieceColor.white,
+        PlayerSeat.second => PieceColor.black,
+        _ => PieceColor.nobody,
+      },
+      GameOutcomeKind.draw => PieceColor.draw,
+      GameOutcomeKind.abandoned => PieceColor.nobody,
+      GameOutcomeKind.ongoing => PieceColor.nobody,
+    };
   }
 
   @override
