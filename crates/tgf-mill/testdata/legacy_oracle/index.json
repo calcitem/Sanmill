@@ -1,0 +1,50 @@
+{
+  "version": 1,
+  "generator_git_sha": "3b7b52390",
+  "rules": [
+    [
+      0,
+      "Nine Men's Morris"
+    ],
+    [
+      1,
+      "Twelve Men's Morris"
+    ],
+    [
+      2,
+      "Dooz"
+    ],
+    [
+      3,
+      "Morabaraba"
+    ],
+    [
+      4,
+      "Russian Mill"
+    ],
+    [
+      5,
+      "Lasker Morris"
+    ],
+    [
+      6,
+      "Cheng San Qi"
+    ],
+    [
+      7,
+      "Da San Qi"
+    ],
+    [
+      8,
+      "Zhi Qi"
+    ],
+    [
+      9,
+      "El Filja"
+    ],
+    [
+      10,
+      "Experimental"
+    ]
+  ]
+}

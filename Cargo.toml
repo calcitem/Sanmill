@@ -8,6 +8,7 @@ members = [
     "crates/tgf-frb",
     "crates/tgf-cli",
     "crates/tgf-legacy-cxx",
+    "crates/xtask-legacy-oracle",
 ]
 
 [profile.release]

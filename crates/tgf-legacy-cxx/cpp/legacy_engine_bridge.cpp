@@ -194,3 +194,8 @@ uint64_t legacy_position_perft(const LegacyPosition &pos, int32_t depth)
     Position copy = pos.pos;
     return legacy_perft_impl(copy, depth);
 }
+
+bool legacy_get_shuffling_enabled()
+{
+    return gameOptions.getShufflingEnabled();
+}

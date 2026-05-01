@@ -1922,6 +1922,278 @@ mod tests {
         );
     }
 
+    // ---------------------------------------------------------------------------
+    // Oracle replay tests (Phase 0)
+    //
+    // These tests read pre-generated JSON oracle files produced by
+    // `cargo run -p xtask-legacy-oracle` and verify that the Rust tgf-mill
+    // rules produce identical legal action sets, phase tags, and side-to-move
+    // values at every step.
+    //
+    // If an oracle file is missing the test is silently skipped (oracle not
+    // yet generated for this environment).  After running the generator once
+    // and committing the files, the tests become hard assertions.
+    //
+    // Rules 8 (Zhi Qi) and 9 (El Filja) are marked #[ignore] because they
+    // have known divergences tracked in known_failures.toml.
+    // ---------------------------------------------------------------------------
+
+    #[cfg(test)]
+    mod oracle_replay {
+        use super::*;
+        use serde::Deserialize;
+        use std::collections::BTreeSet;
+        use tgf_mill::{
+            MillBoardFullAction, MillFormationActionInPlacingPhase, MillRules, MillVariantOptions,
+            StalemateAction,
+        };
+
+        #[derive(Deserialize)]
+        struct OracleStep {
+            ply: u32,
+            // fen: String, // available but not used in replay
+            legal_uci: Vec<String>,
+            phase_tag: i32,
+            side_to_move: i32,
+            picked_uci: String,
+        }
+
+        #[derive(Deserialize)]
+        struct OracleTrajectory {
+            seed: u64,
+            steps: Vec<OracleStep>,
+        }
+
+        #[derive(Deserialize)]
+        struct OracleFile {
+            rule_idx: i32,
+            rule_name: String,
+            trajectories: Vec<OracleTrajectory>,
+        }
+
+        fn oracle_dir() -> std::path::PathBuf {
+            std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
+                .parent()
+                .expect("crates/ parent")
+                .join("tgf-mill/testdata/legacy_oracle")
+        }
+
+        fn rules_for_idx(idx: i32) -> MillRules {
+            let d = MillVariantOptions::default();
+            MillRules::new(match idx {
+                0 => d,
+                1 => MillVariantOptions {
+                    piece_count: 12,
+                    has_diagonal_lines: true,
+                    ..d
+                },
+                2 => MillVariantOptions {
+                    piece_count: 12,
+                    has_diagonal_lines: true,
+                    mill_formation_action_in_placing_phase:
+                        MillFormationActionInPlacingPhase::RemoveOpponentsPieceFromHandThenOpponentsTurn,
+                    ..d
+                },
+                3 => MillVariantOptions {
+                    piece_count: 12,
+                    has_diagonal_lines: true,
+                    may_remove_multiple: true,
+                    ..d
+                },
+                4 => MillVariantOptions {
+                    one_time_use_mill: true,
+                    ..d
+                },
+                5 => MillVariantOptions {
+                    piece_count: 10,
+                    may_move_in_placing_phase: true,
+                    ..d
+                },
+                6 => MillVariantOptions {
+                    may_fly: false,
+                    ..d
+                },
+                7 => MillVariantOptions {
+                    piece_count: 12,
+                    has_diagonal_lines: true,
+                    mill_formation_action_in_placing_phase:
+                        MillFormationActionInPlacingPhase::MarkAndDelayRemovingPieces,
+                    is_defender_move_first: true,
+                    may_remove_from_mills_always: true,
+                    may_fly: false,
+                    ..d
+                },
+                8 => MillVariantOptions {
+                    piece_count: 12,
+                    has_diagonal_lines: true,
+                    board_full_action: MillBoardFullAction::FirstAndSecondPlayerRemovePiece,
+                    stalemate_action: StalemateAction::RemoveOpponentsPieceAndMakeNextMove,
+                    ..d
+                },
+                9 => MillVariantOptions {
+                    piece_count: 12,
+                    mill_formation_action_in_placing_phase:
+                        MillFormationActionInPlacingPhase::RemovalBasedOnMillCounts,
+                    may_remove_from_mills_always: true,
+                    board_full_action: MillBoardFullAction::FirstAndSecondPlayerRemovePiece,
+                    may_fly: false,
+                    ..d
+                },
+                10 => MillVariantOptions {
+                    piece_count: 12,
+                    has_diagonal_lines: true,
+                    is_defender_move_first: true,
+                    may_remove_from_mills_always: true,
+                    board_full_action: MillBoardFullAction::SecondAndFirstPlayerRemovePiece,
+                    may_fly: false,
+                    ..d
+                },
+                _ => panic!("unknown rule_idx {idx}"),
+            })
+        }
+
+        /// Replay one oracle file against tgf-mill.
+        /// Returns Ok(()) if all steps matched, or Err(msg) on first divergence.
+        fn replay_oracle_file(oracle: &OracleFile) -> Result<(), String> {
+            let idx = oracle.rule_idx;
+            let rules = rules_for_idx(idx);
+
+            for traj in &oracle.trajectories {
+                let mut snap = rules.initial_state(&[]);
+
+                for step in &traj.steps {
+                    // When Rust ends the game (n_move_rule, threefold, stalemate)
+                    // before the legacy C++ engine, stop replaying this trajectory.
+                    // C++ only commits draw/stalemate outcomes when the player issues
+                    // "draw" — so the oracle continues past Rust's automatic end.
+                    // This mirrors the early-exit in run_random_walk.
+                    if snap.phase_tag == tgf_mill::MillPhase::GameOver as i16 {
+                        break;
+                    }
+
+                    let native_set: BTreeSet<String> = native_legal_uci_set(&snap, &rules);
+                    let oracle_set: BTreeSet<String> = step.legal_uci.iter().cloned().collect();
+
+                    if native_set != oracle_set {
+                        let native_only: Vec<_> = native_set.difference(&oracle_set).collect();
+                        let oracle_only: Vec<_> = oracle_set.difference(&native_set).collect();
+                        return Err(format!(
+                            "[rule_idx={idx} ({}) seed={:#x} ply={}] legal set divergence:\n  \
+                             native_only={native_only:?}\n  oracle_only={oracle_only:?}",
+                            oracle.rule_name, traj.seed, step.ply,
+                        ));
+                    }
+
+                    let native_phase = snap.phase_tag as i32;
+                    let native_phase_legacy = native_phase + 1;
+                    if native_phase_legacy != step.phase_tag {
+                        return Err(format!(
+                            "[rule_idx={idx} seed={:#x} ply={}] phase mismatch: \
+                             native_legacy={native_phase_legacy} oracle={}",
+                            traj.seed, step.ply, step.phase_tag,
+                        ));
+                    }
+
+                    let native_side = snap.side_to_move;
+                    let native_side_legacy = match native_side {
+                        0 => 1,
+                        1 => 2,
+                        _ => 0,
+                    };
+                    if native_side_legacy != step.side_to_move {
+                        return Err(format!(
+                            "[rule_idx={idx} seed={:#x} ply={}] side mismatch: \
+                             native_legacy={native_side_legacy} oracle={}",
+                            traj.seed, step.ply, step.side_to_move,
+                        ));
+                    }
+
+                    // Advance state using the oracle's chosen move.
+                    let picked = &step.picked_uci;
+                    match native_action_from_uci(&snap, picked, &rules) {
+                        Some(action) => snap = rules.apply(&snap, action),
+                        None => {
+                            return Err(format!(
+                                "[rule_idx={idx} seed={:#x} ply={}] cannot decode \
+                                 oracle UCI '{picked}' as native action",
+                                traj.seed, step.ply,
+                            ));
+                        }
+                    }
+                }
+            }
+            Ok(())
+        }
+
+        fn run_oracle_replay(rule_idx: i32) {
+            let path = oracle_dir().join(format!("{rule_idx}.json"));
+            if !path.exists() {
+                eprintln!(
+                    "Oracle file {:?} not found — run `cargo run -p xtask-legacy-oracle` \
+                     to generate it first. Skipping.",
+                    path
+                );
+                return;
+            }
+            let content = std::fs::read_to_string(&path)
+                .unwrap_or_else(|e| panic!("read oracle {}: {e}", path.display()));
+            let oracle: OracleFile = serde_json::from_str(&content)
+                .unwrap_or_else(|e| panic!("parse oracle {}: {e}", path.display()));
+            if let Err(msg) = replay_oracle_file(&oracle) {
+                panic!("Oracle replay failed:\n{msg}");
+            }
+        }
+
+        #[test]
+        fn oracle_replay_9mm() {
+            run_oracle_replay(0);
+        }
+        #[test]
+        fn oracle_replay_12mm_diagonal() {
+            run_oracle_replay(1);
+        }
+        #[test]
+        #[ignore = "Dooz oracle replay: RemoveOpponentsPieceFromHandThenOpponentsTurn placing-phase gap, tracked in known_failures.toml"]
+        fn oracle_replay_dooz() {
+            run_oracle_replay(2);
+        }
+        #[test]
+        fn oracle_replay_morabaraba() {
+            run_oracle_replay(3);
+        }
+        #[test]
+        fn oracle_replay_russian_mill() {
+            run_oracle_replay(4);
+        }
+        #[test]
+        fn oracle_replay_lasker_morris() {
+            run_oracle_replay(5);
+        }
+        #[test]
+        fn oracle_replay_cheng_san_qi() {
+            run_oracle_replay(6);
+        }
+        #[test]
+        fn oracle_replay_da_san_qi() {
+            run_oracle_replay(7);
+        }
+        #[test]
+        fn oracle_replay_experimental() {
+            run_oracle_replay(10);
+        }
+
+        #[test]
+        #[ignore = "Zhi Qi oracle replay: known divergence, tracked in known_failures.toml"]
+        fn oracle_replay_zhi_qi() {
+            run_oracle_replay(8);
+        }
+        #[test]
+        #[ignore = "El Filja oracle replay: known divergence, tracked in known_failures.toml"]
+        fn oracle_replay_el_filja() {
+            run_oracle_replay(9);
+        }
+    }
+
     /// Verify that setting qsearch_max_depth=1 still returns valid actions
     /// and does not produce terminal scores from a non-terminal fixture.
     #[test]

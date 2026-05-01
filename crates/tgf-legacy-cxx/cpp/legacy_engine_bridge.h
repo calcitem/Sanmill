@@ -31,3 +31,8 @@ int32_t legacy_position_side_to_move(const LegacyPosition &pos);
 /// depth 1 returns the number of immediately legal actions, and deeper
 /// levels follow the standard chess perft contract.
 uint64_t legacy_position_perft(const LegacyPosition &pos, int32_t depth);
+
+/// Returns the current value of gameOptions.shufflingEnabled.
+/// Used by the oracle generator to assert the invariant that shuffling
+/// is disabled before any oracle data is collected.
+bool legacy_get_shuffling_enabled();

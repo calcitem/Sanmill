@@ -21,6 +21,10 @@ mod ffi {
         fn legacy_position_phase(pos: &LegacyPosition) -> i32;
         fn legacy_position_side_to_move(pos: &LegacyPosition) -> i32;
         fn legacy_position_perft(pos: &LegacyPosition, depth: i32) -> u64;
+
+        /// Returns the current value of gameOptions.shufflingEnabled.
+        /// Used by the oracle generator to assert the determinism invariant.
+        fn legacy_get_shuffling_enabled() -> bool;
     }
 }
 
@@ -82,6 +86,13 @@ impl LegacyKernel {
     pub fn perft(&self, depth: i32) -> u64 {
         ffi::legacy_position_perft(&self.inner, depth)
     }
+}
+
+/// Returns whether the C++ global gameOptions has shuffling enabled.
+/// The oracle generator calls this immediately after initialization to
+/// assert that shuffling is disabled (the determinism invariant).
+pub fn shuffling_enabled() -> bool {
+    ffi::legacy_get_shuffling_enabled()
 }
 
 impl Default for LegacyKernel {

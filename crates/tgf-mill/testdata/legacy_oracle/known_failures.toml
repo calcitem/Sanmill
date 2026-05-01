@@ -1,0 +1,32 @@
+# Oracle replay known failures.
+#
+# Each entry in [[failures]] marks a rule_idx for which the oracle replay
+# test is expected to diverge from the LegacyKernel reference.
+# Remove entries as Phase X1 rule-correctness fixes are applied.
+#
+# Fields:
+#   rule_idx   - integer 0-10
+#   reason     - human-readable explanation
+#   phase      - "all" or "placing"/"moving" to narrow scope
+#
+# Phase 0 initial state: rules 8 and 9 have known divergences that are
+# tracked for Phase X1 investigation.
+
+[[failures]]
+rule_idx = 2
+reason   = "Dooz: RemoveOpponentsPieceFromHandThenOpponentsTurn causes \
+premature phase transition or missing legal moves during placing phase \
+(Rust implementation gap, fix tracked in Phase X1)."
+
+[[failures]]
+rule_idx = 8
+reason   = "Zhi Qi: placing-remove generation diverges from the documented \
+contract (master-side may_remove_from_mills_always + boardFullAction \
+firstAndSecondPlayerRemovePiece interaction; same root cause as \
+the pre-existing #[ignore] annotation in simple.rs)."
+
+[[failures]]
+rule_idx = 9
+reason   = "El Filja: placing-remove + boardFullAction interaction diverges \
+(removalBasedOnMillCounts mid-placing interaction; same root cause as \
+the pre-existing #[ignore] annotation in simple.rs)."
