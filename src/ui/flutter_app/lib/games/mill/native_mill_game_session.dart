@@ -18,6 +18,7 @@ import '../../game_platform/game_session_handle.dart';
 import '../../rule_settings/models/rule_settings.dart';
 import '../../src/rust/api/simple.dart' as tgf;
 import 'lan_session_meta.dart';
+import 'mill_action_codec.dart';
 import 'mill_constants.dart';
 import 'native_mill_rules_port.dart';
 
@@ -188,6 +189,32 @@ class NativeMillGameSession implements GameSessionHandle {
     }
     await apply(action);
     return action;
+  }
+
+  /// Undo back to the root, then replay [moves] through this native session.
+  ///
+  /// Returns false if any replayed move is illegal in the Rust session.  The
+  /// caller remains responsible for keeping any external PGN active-node
+  /// pointer in sync with its chosen target node.
+  Future<bool> replayMainline(Iterable<ExtMove> moves) async {
+    while (undoDepth > 0) {
+      await undo();
+    }
+    for (final ExtMove move in moves) {
+      final String moveString = move.move;
+      GameAction? action;
+      for (final GameAction legal in legalActions) {
+        if (MillActionCodec.moveStringFrom(legal) == moveString) {
+          action = legal;
+          break;
+        }
+      }
+      if (action == null) {
+        return false;
+      }
+      await apply(action);
+    }
+    return true;
   }
 
   @override

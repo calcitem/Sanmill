@@ -381,6 +381,14 @@ class HistoryNavigator {
     HistoryNavMode navMode, [
     int? number,
   ]) async {
+    final NativeMillGameSession? nativeSession = DB().generalSettings
+        .useNativeMillSession
+        ? _activeNativeSession()
+        : null;
+    if (nativeSession != null) {
+      return _nativeDoEachMove(nativeSession, navMode, number);
+    }
+
     // 1) Adjust the active node according to navMode
     switch (navMode) {
       case HistoryNavMode.takeBack:
@@ -469,6 +477,30 @@ class HistoryNavigator {
       cur = cur.parent;
     }
 
+    final NativeMillGameSession? nativeSession = DB().generalSettings
+        .useNativeMillSession
+        ? _activeNativeSession(context)
+        : null;
+    if (nativeSession != null) {
+      final List<ExtMove> moves = <ExtMove>[
+        for (final PgnNode<ExtMove> node in path)
+          if (node.data != null) node.data!,
+      ];
+      final bool success = await nativeSession.replayMainline(moves);
+      if (!success) {
+        importFailedStr = moves.isEmpty ? '' : moves.last.notation;
+      }
+      GameController().gameRecorder.activeNode = targetNode;
+      GameController().gameRecorder.moveCountNotifier.value =
+          GameController().gameRecorder.currentPath.length;
+      GameController().isControllerActive = true;
+      SoundManager().unMute();
+      if (pop && context.mounted) {
+        Navigator.pop(context);
+      }
+      return success ? const HistoryOK() : const HistoryRule();
+    }
+
     // Save the original game mode
     final GameMode backupMode = GameController().gameInstance.gameMode;
     // Force into humanVsHuman so we can freely replay moves
@@ -526,6 +558,77 @@ class HistoryNavigator {
       Navigator.pop(context);
     }
 
+    return success ? const HistoryOK() : const HistoryRule();
+  }
+
+  static GameSession? _scopedSession([BuildContext? context]) {
+    final BuildContext? scopedContext =
+        context ?? rootScaffoldMessengerKey.currentContext;
+    return scopedContext == null
+        ? null
+        : GameSessionScope.sessionOf(scopedContext);
+  }
+
+  static NativeMillGameSession? _activeNativeSession([BuildContext? context]) {
+    final GameSession? session = _scopedSession(context);
+    return session is NativeMillGameSession ? session : null;
+  }
+
+  static Future<HistoryResponse> _nativeDoEachMove(
+    NativeMillGameSession session,
+    HistoryNavMode navMode,
+    int? number,
+  ) async {
+    switch (navMode) {
+      case HistoryNavMode.takeBack:
+        _takeBack(1);
+        break;
+      case HistoryNavMode.takeBackN:
+        if (number == null) {
+          return const HistoryRange();
+        }
+        _takeBack(number);
+        break;
+      case HistoryNavMode.takeBackAll:
+        _takeBackAll();
+        break;
+      case HistoryNavMode.stepForward:
+        _stepForward(1);
+        break;
+      case HistoryNavMode.stepForwardAll:
+        _stepForwardAll();
+        break;
+    }
+
+    final List<ExtMove> pathMoves = _collectPathMoves(
+      GameController().gameRecorder,
+    );
+    final bool success = await session.replayMainline(pathMoves);
+    if (!success && pathMoves.isNotEmpty) {
+      importFailedStr = pathMoves.last.notation;
+    }
+    GameController().gameRecorder.activeNode =
+        GameController().gameRecorder.pgnRoot;
+    for (final ExtMove move in pathMoves) {
+      final PgnNode<ExtMove>? next = GameController()
+          .gameRecorder
+          .activeNode
+          ?.children
+          .cast<PgnNode<ExtMove>?>()
+          .firstWhere(
+            (PgnNode<ExtMove>? node) => node?.data?.move == move.move,
+            orElse: () => null,
+          );
+      if (next == null) {
+        break;
+      }
+      GameController().gameRecorder.activeNode = next;
+    }
+    GameController().gameRecorder.moveCountNotifier.value =
+        GameController().gameRecorder.currentPath.length;
+    GameController().disableStats = true;
+    GameController().headerIconsNotifier.showIcons();
+    GameController().boardSemanticsNotifier.updateSemantics();
     return success ? const HistoryOK() : const HistoryRule();
   }
 
