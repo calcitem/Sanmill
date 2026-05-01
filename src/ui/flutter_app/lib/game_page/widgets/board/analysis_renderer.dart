@@ -9,7 +9,9 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
+import '../../../game_platform/game_session.dart' as platform;
 import '../../../games/mill/mill_board_coordinate_maps.dart';
+import '../../../games/mill/native_mill_snapshot_board_view.dart';
 import '../../../shared/database/database.dart';
 import '../../../shared/services/environment_config.dart';
 import '../../../shared/services/logger.dart';
@@ -830,6 +832,19 @@ class AnalysisRenderer {
   /// Check if we should filter to only show the best moves
   /// This happens when the player is in "flying" mode
   static bool _shouldFilterToOnlyBestMoves() {
+    final NativeMillSnapshotBoardView? nativeBoardView =
+        GameController().activeNativeMillBoardView;
+    final platform.PlayerSeat? activeSeat =
+        GameController().activeSessionSnapshot?.activeSeat;
+    if (nativeBoardView != null &&
+        activeSeat != null &&
+        activeSeat != platform.PlayerSeat.none) {
+      return DB().ruleSettings.mayFly &&
+          GameController().activeSessionSnapshot?.phase == 'moving' &&
+          nativeBoardView.pieceCount(activeSeat) <=
+              DB().ruleSettings.flyPieceCount;
+    }
+
     // Check if flying is enabled in rules and the current player has few enough pieces
     return DB().ruleSettings.mayFly &&
         GameController().position.phase == Phase.moving &&
