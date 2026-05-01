@@ -587,16 +587,12 @@ class _GameBoardState extends State<GameBoard>
                             GameController().gameRecorder.mainlineMoves;
                         await EngineFailureDialog.show(
                           context,
-                          diagnosticContext:
-                              EngineFailureDialog.buildDiagnosticContext(
-                                fen: GameController().position.fen,
-                                phase: GameController().position.phase.name,
-                                sideToMove: GameController().position.sideToMove
-                                    .playerName(context),
-                                lastMove: moves.isNotEmpty
-                                    ? moves.last.notation
-                                    : null,
-                              ),
+                          diagnosticContext: _engineFailureDiagnosticContext(
+                            context,
+                            lastMove: moves.isNotEmpty
+                                ? moves.last.notation
+                                : null,
+                          ),
                         );
                       }
                       break;
@@ -616,6 +612,27 @@ class _GameBoardState extends State<GameBoard>
           },
         );
       },
+    );
+  }
+
+  String _engineFailureDiagnosticContext(
+    BuildContext context, {
+    String? lastMove,
+  }) {
+    final GameStateSnapshot? snapshot = GameController().activeSessionSnapshot;
+    if (snapshot != null) {
+      return EngineFailureDialog.buildDiagnosticContext(
+        phase: snapshot.phase,
+        sideToMove: snapshot.activeSeat.name,
+        zobrist: snapshot.payload['tgfZobrist']?.toString(),
+        lastMove: lastMove,
+      );
+    }
+    return EngineFailureDialog.buildDiagnosticContext(
+      fen: GameController().position.fen,
+      phase: GameController().position.phase.name,
+      sideToMove: GameController().position.sideToMove.playerName(context),
+      lastMove: lastMove,
     );
   }
 

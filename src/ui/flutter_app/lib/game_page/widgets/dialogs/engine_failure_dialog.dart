@@ -25,6 +25,7 @@ class EngineFailureDialog extends StatelessWidget {
     String? fen,
     String? phase,
     String? sideToMove,
+    String? zobrist,
     String? lastMove,
   }) {
     final StringBuffer buf = StringBuffer();
@@ -36,6 +37,9 @@ class EngineFailureDialog extends StatelessWidget {
     }
     if (sideToMove != null) {
       buf.writeln('Side to move: $sideToMove');
+    }
+    if (zobrist != null) {
+      buf.writeln('Zobrist: $zobrist');
     }
     if (lastMove != null) {
       buf.writeln('Last move: $lastMove');
