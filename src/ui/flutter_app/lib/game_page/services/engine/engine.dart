@@ -793,6 +793,15 @@ class Engine {
 
   Future<void> setRuleOptions() async {
     return _queueOptionsUpdate(() async {
+      if (DB().generalSettings.useNativeMillSession) {
+        // NativeMillRulesPort owns rule configuration through
+        // RuleSettings.toTgfMillVariantOptions() and TgfKernel.createMill().
+        // Do not mirror those options into the legacy C++ MethodChannel path
+        // while the native session dogfood flag is enabled.
+        _lastRuleOptions = null;
+        return;
+      }
+
       final RuleSettings ruleSettings = DB().ruleSettings;
 
       final _RuleEngineOptions nextOptions = _RuleEngineOptions(
