@@ -5,6 +5,7 @@ import 'dart:typed_data';
 
 import '../../game_platform/game_session.dart';
 import '../../game_platform/mill_marked_pieces_codec.dart';
+import 'mill_board_coordinate_maps.dart';
 
 /// Read-only board view over the Rust-native Mill opaque payload.
 ///
@@ -38,7 +39,7 @@ class NativeMillSnapshotBoardView {
   }
 
   PlayerSeat? pieceAtLegacyGridIndex(int gridIndex) {
-    final int? square = _legacyGridIndexToSquare[gridIndex];
+    final int? square = MillBoardCoordinateMaps.gridIndexToSquare[gridIndex];
     return square == null ? null : pieceAtLegacySquare(square);
   }
 
@@ -59,7 +60,7 @@ class NativeMillSnapshotBoardView {
   }
 
   bool isMarkedLegacyGridIndex(int gridIndex) {
-    final int? square = _legacyGridIndexToSquare[gridIndex];
+    final int? square = MillBoardCoordinateMaps.gridIndexToSquare[gridIndex];
     return square != null && isMarkedLegacySquare(square);
   }
 
@@ -163,33 +164,6 @@ class NativeMillSnapshotBoardView {
     21: 12,
     22: 13,
     23: 14,
-  };
-
-  static const Map<int, int> _legacyGridIndexToSquare = <int, int>{
-    0: 31,
-    3: 24,
-    6: 25,
-    8: 23,
-    10: 16,
-    12: 17,
-    16: 15,
-    17: 8,
-    18: 9,
-    21: 30,
-    22: 22,
-    23: 14,
-    25: 10,
-    26: 18,
-    27: 26,
-    30: 13,
-    31: 12,
-    32: 11,
-    36: 21,
-    38: 20,
-    40: 19,
-    42: 29,
-    45: 28,
-    48: 27,
   };
 
   static const List<List<int>> _standardMillLines = <List<int>>[
