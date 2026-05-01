@@ -140,4 +140,18 @@ void main() {
       );
     });
   });
+
+  group('History Navigation native session assertions', () {
+    testWidgets('useNativeMillSession is enabled by initTestEnvironment', (
+      WidgetTester tester,
+    ) async {
+      // Confirm that initTestEnvironment forces the native session flag so
+      // all history-navigation toolbar interactions exercise the native path.
+      expect(
+        DB().generalSettings.useNativeMillSession,
+        isTrue,
+        reason: 'initTestEnvironment must enable native session for all tests',
+      );
+    });
+  });
 }

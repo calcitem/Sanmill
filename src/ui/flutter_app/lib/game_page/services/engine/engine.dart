@@ -1186,8 +1186,22 @@ class Engine {
   Future<PositionAnalysisResult> analyzePosition() async {
     await ensureReady();
 
-    final String? fen = GameController().position.fen;
-    if (fen == null) {
+    // Prefer the native session's FEN when the native flag is on;
+    // fall back to the legacy position.fen otherwise.
+    final String? fen;
+    if (DB().generalSettings.useNativeMillSession) {
+      final BuildContext? ctx = rootScaffoldMessengerKey.currentContext;
+      final GameSession? session = ctx != null
+          ? GameSessionScope.sessionOf(ctx)
+          : null;
+      final String nativeFen = session is NativeMillGameSession
+          ? session.getFen()
+          : '';
+      fen = nativeFen.isNotEmpty ? nativeFen : GameController().position.fen;
+    } else {
+      fen = GameController().position.fen;
+    }
+    if (fen == null || fen.isEmpty) {
       return PositionAnalysisResult.error("Invalid board position");
     }
 

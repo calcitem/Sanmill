@@ -81,6 +81,21 @@ class HistoryNavigator {
     }
 
     final String atEnd = S.of(context).atEnd;
+
+    // Record the history navigation event before dispatching to either the
+    // native or legacy path, so replay sessions receive the event regardless
+    // of which path handles it.
+    final Map<String, dynamic> navData = <String, dynamic>{
+      'action': navMode.toString(),
+    };
+    if (number != null) {
+      navData['steps'] = number;
+    }
+    RecordingService().recordEvent(
+      RecordingEventType.historyNavigation,
+      navData,
+    );
+
     if (DB().generalSettings.useNativeMillSession) {
       final HistoryResponse? nativeResp = await _nativeSessionHistory(
         context,
@@ -121,18 +136,6 @@ class HistoryNavigator {
         navMode == HistoryNavMode.takeBack) {
       GameController().animationManager.allowAnimations = false;
     }
-
-    // Record history navigation event for experience recording.
-    final Map<String, dynamic> navData = <String, dynamic>{
-      'action': navMode.toString(),
-    };
-    if (number != null) {
-      navData['steps'] = number;
-    }
-    RecordingService().recordEvent(
-      RecordingEventType.historyNavigation,
-      navData,
-    );
 
     // Replay moves to get the new board state. Always clear temporary mute and
     // the in-progress flag: if the route is popped while this awaits, the old
