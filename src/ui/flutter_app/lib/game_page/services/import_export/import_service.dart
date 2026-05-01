@@ -722,7 +722,7 @@ class ImportService {
     }
     final GameSession? session = GameSessionScope.sessionOf(context);
     if (session is NativeMillGameSession) {
-      final bool loaded = PuzzleMillSession.loadFen(session, fen);
+      final bool loaded = session.loadFen(fen);
       assert(loaded, 'Native import FEN must be validated before loading.');
     }
   }
@@ -739,10 +739,7 @@ class ImportService {
     return session is NativeMillGameSession ? session : null;
   }
 
-  static bool _validateNativeMove(
-    NativeMillGameSession session,
-    String move,
-  ) {
+  static bool _validateNativeMove(NativeMillGameSession session, String move) {
     for (final GameAction action in session.legalActions) {
       if (MillActionCodec.moveStringFrom(action) == move) {
         session.apply(action);

@@ -18,6 +18,7 @@ import '../../games/mill/mill_board_coordinate_maps.dart';
 import '../../games/mill/mill_session_tap_controller.dart';
 import '../../games/mill/native_mill_ai_turn_controller.dart';
 import '../../games/mill/native_mill_game_session.dart';
+import '../../games/mill/native_mill_snapshot_board_view.dart';
 import '../../general_settings/models/general_settings.dart';
 import '../../general_settings/widgets/general_settings_page.dart';
 import '../../rule_settings/models/rule_settings.dart';
@@ -60,8 +61,6 @@ class ReplayService {
   static final ReplayService _instance = ReplayService._internal();
 
   static const String _logTag = '[ReplayService]';
-  static final MillSessionTapController _nativeTapController =
-      MillSessionTapController();
 
   // -----------------------------------------------------------------------
   // Observable state
@@ -328,7 +327,10 @@ class ReplayService {
       case RecordingEventType.undoMove:
         // An undo is equivalent to a single take-back step.
         if (DB().generalSettings.useNativeMillSession &&
-            await _applyNativeHistoryNavigation(HistoryNavMode.takeBack, null)) {
+            await _applyNativeHistoryNavigation(
+              HistoryNavMode.takeBack,
+              null,
+            )) {
           break;
         }
         await HistoryNavigator.doEachMove(HistoryNavMode.takeBack);
@@ -810,8 +812,9 @@ class ReplayService {
   void _applySetupPositionAction(Map<String, dynamic> data, BuildContext? ctx) {
     final String action = data['action'] as String? ?? '';
     final Position position = GameController().position;
-    final GameSession? session =
-        ctx == null ? null : GameSessionScope.sessionOf(ctx);
+    final GameSession? session = ctx == null
+        ? null
+        : GameSessionScope.sessionOf(ctx);
     final NativeMillGameSession? nativeSession =
         DB().generalSettings.useNativeMillSession &&
             session is NativeMillGameSession

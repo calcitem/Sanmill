@@ -709,6 +709,7 @@ pub fn native_mill_mcts_best_to_node(seed: u64, iterations_per_move: u32) -> i32
             playout_depth: 2,
             time_limit_ms: None,
             exploration: 0.5,
+            ab_assist_depth: 0,
         },
     )
     .best_action
@@ -1565,7 +1566,10 @@ mod tests {
         // Advance legacy to an equivalent position via perft (confirms rules
         // parity; actual FEN load would require a full FEN serialiser).
         let legacy_count_d1 = legacy.perft(1);
-        assert!(legacy_count_d1 > 0, "legacy engine should have legal actions");
+        assert!(
+            legacy_count_d1 > 0,
+            "legacy engine should have legal actions"
+        );
 
         // Native Rust searcher at qsearch_max_depth=0 must be deterministic.
         let mut wb1 = game.build_workbench(&snap);
@@ -1577,7 +1581,10 @@ mod tests {
         let r1 = s1.search_pvs(&mut wb1, 2);
         let r2 = s2.search_pvs(&mut wb2, 2);
 
-        assert!(!r1.best_action.is_none(), "native searcher must return a legal move");
+        assert!(
+            !r1.best_action.is_none(),
+            "native searcher must return a legal move"
+        );
         assert_eq!(
             r1.best_action, r2.best_action,
             "native searcher must be deterministic across identical calls"
@@ -1603,9 +1610,21 @@ mod tests {
         s1.set_qsearch_max_depth(1);
         let r1 = s1.search_pvs(&mut wb1, 2);
 
-        assert!(!r0.best_action.is_none(), "qsearch_max_depth=0 must find a move");
-        assert!(!r1.best_action.is_none(), "qsearch_max_depth=1 must find a move");
-        assert!(r0.score.abs() < 30_000, "depth=0 score must not be a terminal sentinel");
-        assert!(r1.score.abs() < 30_000, "depth=1 score must not be a terminal sentinel");
+        assert!(
+            !r0.best_action.is_none(),
+            "qsearch_max_depth=0 must find a move"
+        );
+        assert!(
+            !r1.best_action.is_none(),
+            "qsearch_max_depth=1 must find a move"
+        );
+        assert!(
+            r0.score.abs() < 30_000,
+            "depth=0 score must not be a terminal sentinel"
+        );
+        assert!(
+            r1.score.abs() < 30_000,
+            "depth=1 score must not be a terminal sentinel"
+        );
     }
 }

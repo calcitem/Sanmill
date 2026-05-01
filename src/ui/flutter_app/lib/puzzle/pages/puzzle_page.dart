@@ -16,12 +16,15 @@ import '../../appearance_settings/models/color_settings.dart';
 import '../../game_page/services/import_export/pgn.dart';
 import '../../game_page/services/mill.dart';
 import '../../game_page/services/transform/transform.dart';
+import '../../game_shell/game_session_scope.dart';
+import '../../games/mill/native_mill_game_session.dart';
 import '../../games/mill/puzzle_mill_session.dart';
 import '../../generated/intl/l10n.dart';
 import '../../rule_settings/models/rule_settings.dart';
 import '../../shared/database/database.dart';
 import '../../shared/services/logger.dart';
 import '../../shared/themes/app_theme.dart';
+import '../../shared/widgets/snackbars/scaffold_messenger.dart';
 import '../models/puzzle_models.dart';
 import '../services/puzzle_auto_player.dart';
 import '../services/puzzle_hint_service.dart';
@@ -265,11 +268,19 @@ class _PuzzlePageState extends State<PuzzlePage> {
     }
 
     // Load the transformed initial position from FEN.
-    final bool loaded = DB().generalSettings.useNativeMillSession
-        ? PuzzleMillSession.loadFenIntoActiveSession(
-            _transformedPuzzle.initialPosition,
-          )
-        : controller.position.setFen(_transformedPuzzle.initialPosition);
+    final bool loaded;
+    if (DB().generalSettings.useNativeMillSession) {
+      final BuildContext? ctx = rootScaffoldMessengerKey.currentContext;
+      final Object? session = ctx != null
+          ? GameSessionScope.sessionOf(ctx)
+          : null;
+      final NativeMillGameSession? nativeSession =
+          session is NativeMillGameSession ? session : null;
+      loaded =
+          nativeSession?.loadFen(_transformedPuzzle.initialPosition) ?? false;
+    } else {
+      loaded = controller.position.setFen(_transformedPuzzle.initialPosition);
+    }
     if (!loaded) {
       logger.e(
         '[PuzzlePage] Failed to load puzzle position: '
@@ -910,9 +921,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
   }
 
   PuzzleSolution? _findMatchingPuzzleSolutionFromRecorder() {
-    final List<String> moves = GameController()
-        .gameRecorder
-        .mainlineMoves
+    final List<String> moves = GameController().gameRecorder.mainlineMoves
         .map((ExtMove m) => PuzzleAutoPlayer.normalizeMove(m.move))
         .toList(growable: false);
     for (final PuzzleSolution solution in _transformedPuzzle.solutions) {
@@ -1092,7 +1101,8 @@ class _PuzzlePageState extends State<PuzzlePage> {
 
     final PuzzleMillSession? nativePuzzleSession =
         controller.activePuzzleMillSession;
-    final bool useNativePuzzle = DB().generalSettings.useNativeMillSession &&
+    final bool useNativePuzzle =
+        DB().generalSettings.useNativeMillSession &&
         nativePuzzleSession != null;
 
     if (useNativePuzzle
@@ -1104,7 +1114,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
     // Only auto-play when it's the opponent's turn.
     if (useNativePuzzle
         ? nativePuzzleSession.state.value.activeSeat ==
-            nativePuzzleSession.humanSeat
+              nativePuzzleSession.humanSeat
         : controller.position.sideToMove == humanColor) {
       return;
     }
@@ -1558,7 +1568,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
     while (controller.gameRecorder.mainlineMoves.isNotEmpty &&
         undone < maxSteps) {
       final ExtMove lastMove = controller.gameRecorder.mainlineMoves.last;
-      final bool ok = controller.undoNativeMove();
+      final bool ok = await controller.undoNativeMove();
       assert(ok, 'Native puzzle undo failed with a non-empty move history.');
       if (!ok) {
         return;

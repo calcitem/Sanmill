@@ -32,6 +32,7 @@ import '../../game_platform/game_session.dart';
 import '../../game_platform/game_session.dart' as platform;
 import '../../game_shell/game_session_scope.dart';
 import '../../games/mill/lan_session_meta.dart';
+import '../../games/mill/mill_action_codec.dart';
 import '../../games/mill/mill_board_coordinate_maps.dart';
 import '../../games/mill/mill_session_tap_controller.dart';
 import '../../games/mill/native_mill_ai_turn_controller.dart';

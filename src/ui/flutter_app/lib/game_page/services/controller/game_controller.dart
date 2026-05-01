@@ -205,7 +205,11 @@ class GameController {
   PieceColor getLocalColor() {
     final LanSessionMeta? meta = activeNativeLanMeta;
     if (meta != null) {
-      return meta.localPieceColor;
+      return switch (meta.localSeat) {
+        PlayerSeat.first => PieceColor.white,
+        PlayerSeat.second => PieceColor.black,
+        PlayerSeat.none => PieceColor.nobody,
+      };
     }
     final bool amIHost = networkService?.isHost ?? false;
     final bool hostPlaysWhite = lanHostPlaysWhite ?? true;
@@ -229,6 +233,36 @@ class GameController {
     }
     final GameSession? session = GameSessionScope.sessionOf(context);
     return session is NativeMillGameSession ? session.lanMeta : null;
+  }
+
+  /// Returns the active [PuzzleMillSession] when puzzle mode is active under
+  /// the native-session flag, or null otherwise.
+  PuzzleMillSession? get activePuzzleMillSession {
+    if (!DB().generalSettings.useNativeMillSession) {
+      return null;
+    }
+    final BuildContext? context = rootScaffoldMessengerKey.currentContext;
+    if (context == null) {
+      return null;
+    }
+    final GameSession? session = GameSessionScope.sessionOf(context);
+    return session is PuzzleMillSession ? session : null;
+  }
+
+  /// Undo the last move through the active [NativeMillGameSession].
+  ///
+  /// Returns true if a session was available and undo was triggered.
+  Future<bool> undoNativeMove() async {
+    final BuildContext? context = rootScaffoldMessengerKey.currentContext;
+    if (context == null) {
+      return false;
+    }
+    final GameSession? session = GameSessionScope.sessionOf(context);
+    if (session is! NativeMillGameSession) {
+      return false;
+    }
+    await session.undo();
+    return true;
   }
 
   bool isNativeLanOpponentTurn(NativeMillGameSession session) {

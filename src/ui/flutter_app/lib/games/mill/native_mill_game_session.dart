@@ -13,13 +13,14 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 
+import '../../game_page/services/mill.dart' show ExtMove, PieceColor, Position;
 import '../../game_platform/game_session.dart';
 import '../../game_platform/game_session_handle.dart';
 import '../../rule_settings/models/rule_settings.dart';
 import '../../src/rust/api/simple.dart' as tgf;
 import 'lan_session_meta.dart';
 import 'mill_action_codec.dart';
-import 'mill_constants.dart';
+import 'mill_board_coordinate_maps.dart';
 import 'native_mill_rules_port.dart';
 
 class NativeMillGameSession implements GameSessionHandle {
@@ -31,12 +32,13 @@ class NativeMillGameSession implements GameSessionHandle {
     final NativeMillRulesPort port =
         rulesPort ??
         NativeMillRulesPort(ruleSettings: rules ?? const RuleSettings());
-    return NativeMillGameSession._(port, lanMeta: lanMeta);
+    return NativeMillGameSession.fromPort(port, lanMeta: lanMeta);
   }
 
-  NativeMillGameSession._(this.rulesPort, {LanSessionMeta? lanMeta})
-    : lanMeta = lanMeta,
-      _state = ValueNotifier<GameStateSnapshot>(rulesPort.snapshot);
+  // Named constructor for subclasses; callers outside this class should use
+  // the factory constructor or this named form when subclassing.
+  NativeMillGameSession.fromPort(this.rulesPort, {this.lanMeta})
+    : _state = ValueNotifier<GameStateSnapshot>(rulesPort.snapshot);
 
   final NativeMillRulesPort rulesPort;
   LanSessionMeta? lanMeta;
@@ -100,6 +102,37 @@ class NativeMillGameSession implements GameSessionHandle {
     }
     final GameStateSnapshot next = rulesPort.setupFinish();
     _setState(next);
+  }
+
+  /// Load a board position from a Mill FEN string.
+  ///
+  /// Uses [Position] as a parser/validator until the Rust kernel exposes a
+  /// full FEN parser.  Returns true if the FEN was valid and loaded.
+  bool loadFen(String fen) {
+    if (_disposed) {
+      return false;
+    }
+    final Position parsed = Position();
+    final bool loaded = parsed.setFen(fen);
+    if (!loaded) {
+      return false;
+    }
+    setupClear();
+    for (final MapEntry<int, int> entry
+        in MillBoardCoordinateMaps.nodeToLegacySquare.entries) {
+      final PieceColor piece = parsed.pieceOnGrid(entry.value);
+      final int owner = switch (piece) {
+        PieceColor.white => 1,
+        PieceColor.black => 2,
+        _ => 0,
+      };
+      if (owner != 0) {
+        setupSetPiece(entry.key, owner);
+      }
+    }
+    setupSetSide(parsed.sideToMove == PieceColor.black ? 1 : 0);
+    setupFinish();
+    return true;
   }
 
   @override

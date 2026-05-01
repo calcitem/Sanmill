@@ -1,12 +1,13 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // Copyright (C) 2019-2026 The Sanmill developers (see AUTHORS file)
 
-import '../../game_page/services/mill.dart' show PieceColor, Position;
+import '../../game_page/services/mill.dart'
+    show ExtMove, GameController, PieceColor;
 import '../../game_platform/game_session.dart';
 import '../../rule_settings/models/rule_settings.dart';
 import 'mill_action_codec.dart';
-import 'mill_board_coordinate_maps.dart';
 import 'native_mill_game_session.dart';
+import 'native_mill_rules_port.dart';
 import 'native_mill_snapshot_board_view.dart';
 
 /// Native Mill session specialized for puzzle mode.
@@ -18,7 +19,7 @@ class PuzzleMillSession extends NativeMillGameSession {
   PuzzleMillSession({
     required String initialFen,
     RuleSettings rules = const RuleSettings(),
-  }) : super(rules: rules) {
+  }) : super.fromPort(NativeMillRulesPort(ruleSettings: rules)) {
     _loadInitialFen(initialFen);
   }
 
@@ -49,7 +50,10 @@ class PuzzleMillSession extends NativeMillGameSession {
 
   ExtMove extMoveForAction(GameAction action, {required PieceColor side}) {
     final String? move = MillActionCodec.moveStringFrom(action);
-    assert(move != null && move.isNotEmpty, 'Native puzzle action has no move.');
+    assert(
+      move != null && move.isNotEmpty,
+      'Native puzzle action has no move.',
+    );
     return ExtMove(move!, side: side);
   }
 
@@ -60,31 +64,12 @@ class PuzzleMillSession extends NativeMillGameSession {
   }
 
   void _loadInitialFen(String initialFen) {
-    final Position parsed = Position();
-    final bool loaded = parsed.setFen(initialFen);
+    final bool loaded = loadFen(initialFen);
     assert(loaded, 'Puzzle FEN must be validated before native loading.');
-    if (!loaded) {
-      return;
-    }
-
-    setupClear();
-    for (final MapEntry<int, int> entry
-        in MillBoardCoordinateMaps.nodeToLegacySquare.entries) {
-      final PieceColor piece = parsed.pieceOnGrid(entry.value);
-      final int owner = switch (piece) {
-        PieceColor.white => 1,
-        PieceColor.black => 2,
-        _ => 0,
-      };
-      if (owner != 0) {
-        setupSetPiece(entry.key, owner);
-      }
-    }
-
-    final int side = parsed.sideToMove == PieceColor.black ? 1 : 0;
-    setupSetSide(side);
-    humanSeat = side == 1 ? PlayerSeat.second : PlayerSeat.first;
-    setupFinish();
+    // Derive humanSeat from the side-to-move in the loaded snapshot.
+    humanSeat = state.value.activeSeat == PlayerSeat.second
+        ? PlayerSeat.second
+        : PlayerSeat.first;
   }
 
   void _appendExtMove(String move, PieceColor mover) {

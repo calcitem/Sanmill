@@ -1265,12 +1265,12 @@ fn move_action(from: usize, to: usize) -> Action {
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
-struct MillState {
+pub struct MillState {
     board: [i8; 24],
     side_to_move: i8,
     phase: MillPhase,
     move_number: i16,
-    pieces_in_hand: [u8; 2],
+    pub pieces_in_hand: [u8; 2],
     pieces_on_board: [u8; 2],
     pending_removals: [u8; 2],
     winner: i8,
@@ -1467,7 +1467,7 @@ impl MillState {
     /// `pieces_in_hand` is initialised from `options.piece_count` (matching
     /// the freshly-constructed placing-phase state), so `recompute_aux` is
     /// not needed after `empty()` alone — only after piece edits.
-    pub(crate) fn empty(options: &MillVariantOptions) -> Self {
+    pub fn empty(options: &MillVariantOptions) -> Self {
         Self {
             pieces_in_hand: [options.piece_count, options.piece_count],
             ..Self::default()
@@ -1479,21 +1479,21 @@ impl MillState {
     /// `owner`: `1` = first player (White), `2` = second player (Black),
     /// anything else = clear.  Callers must follow up with `recompute_aux`
     /// before encoding the snapshot.
-    pub(crate) fn set_piece(&mut self, node: u16, owner: i8) {
+    pub fn set_piece(&mut self, node: u16, owner: i8) {
         if let Some(slot) = self.board.get_mut(node as usize) {
             *slot = if owner == 1 || owner == 2 { owner } else { 0 };
         }
     }
 
-    pub(crate) fn set_side_to_move(&mut self, side: i8) {
+    pub fn set_side_to_move(&mut self, side: i8) {
         self.side_to_move = if side == 0 || side == 1 { side } else { 0 };
     }
 
-    pub(crate) fn set_phase(&mut self, phase: MillPhase) {
+    pub fn set_phase(&mut self, phase: MillPhase) {
         self.phase = phase;
     }
 
-    pub(crate) fn set_pending_removal(&mut self, side_idx: usize, count: u8) {
+    pub fn set_pending_removal(&mut self, side_idx: usize, count: u8) {
         if side_idx < 2 {
             self.pending_removals[side_idx] = count;
         }
@@ -1505,7 +1505,7 @@ impl MillState {
     /// Updates: `pieces_on_board`, `pieces_in_hand` (clamped to piece_count),
     /// `winner` (reset to -1), `outcome_reason`, `key_history`, and clears
     /// all capture-target bitmasks.
-    pub(crate) fn recompute_aux(&mut self, options: &MillVariantOptions) {
+    pub fn recompute_aux(&mut self, options: &MillVariantOptions) {
         let mut on_board = [0u8; 2];
         for &piece in &self.board {
             if piece == 1 {
@@ -3683,8 +3683,14 @@ mod tests {
 
         // Start from initial state, clear to empty board.
         let mut state = rules.setup_empty();
-        assert!(state.board.iter().all(|&p| p == 0), "empty board must have no pieces");
-        assert_eq!(state.pieces_in_hand[0], 9, "pieces_in_hand initialised from piece_count");
+        assert!(
+            state.board.iter().all(|&p| p == 0),
+            "empty board must have no pieces"
+        );
+        assert_eq!(
+            state.pieces_in_hand[0], 9,
+            "pieces_in_hand initialised from piece_count"
+        );
 
         // Place White on node 0, Black on node 6.
         state.set_piece(0, 1);
