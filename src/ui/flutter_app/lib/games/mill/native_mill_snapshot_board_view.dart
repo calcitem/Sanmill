@@ -105,8 +105,8 @@ class NativeMillSnapshotBoardView {
         (_payload[o + 2] << 16) |
         (_payload[o + 3] << 24);
     final List<List<int>> lines = hasDiagonalLines
-        ? _diagonalMillLines
-        : _standardMillLines;
+        ? MillBoardCoordinateMaps.diagonalMillNodeLines
+        : MillBoardCoordinateMaps.standardMillNodeLines;
     for (int i = 0; i < lines.length; i++) {
       if ((bits & (1 << i)) == 0) {
         continue;
@@ -125,31 +125,4 @@ class NativeMillSnapshotBoardView {
     }
     return out;
   }
-
-  static const List<List<int>> _standardMillLines = <List<int>>[
-    <int>[0, 1, 2],
-    <int>[2, 3, 4],
-    <int>[4, 5, 6],
-    <int>[6, 7, 0],
-    <int>[8, 9, 10],
-    <int>[10, 11, 12],
-    <int>[12, 13, 14],
-    <int>[14, 15, 8],
-    <int>[16, 17, 18],
-    <int>[18, 19, 20],
-    <int>[20, 21, 22],
-    <int>[22, 23, 16],
-    <int>[1, 9, 17],
-    <int>[3, 11, 19],
-    <int>[5, 13, 21],
-    <int>[7, 15, 23],
-  ];
-
-  static const List<List<int>> _diagonalMillLines = <List<int>>[
-    ..._standardMillLines,
-    <int>[0, 8, 16],
-    <int>[18, 10, 2],
-    <int>[6, 14, 22],
-    <int>[20, 12, 4],
-  ];
 }
