@@ -666,12 +666,21 @@ impl GameRules for MillRules {
                             clear_capture_state(&mut state);
                         }
                         MillFormationActionInPlacingPhase::MarkAndDelayRemovingPieces => {
-                            state.delayed_marked_pieces |= usable_bits;
-                            state.side_to_move ^= 1;
-                            clear_capture_state(&mut state);
-                            maybe_transition_to_moving(&mut state, &self.options);
-                            sync_phase_for_may_move_in_placing(&mut state, &self.options);
-                            maybe_finish_full_board(&mut state, &self.options);
+                            // Same shape as the standard "remove opponent's
+                            // piece from board" branch: pending_removals is
+                            // armed and the opponent waits until the active
+                            // side picks a target.  The Remove handler then
+                            // diverts to marking instead of physical removal,
+                            // and `maybe_transition_to_moving` sweeps every
+                            // marked square at the placing-to-moving boundary
+                            // (mirrors Position::remove_marked_pieces).
+                            state.pending_removals[side] = removals;
+                            state.mill_available_at_removal = true;
+                            activate_capture_state(&mut state, custodian, intervention, 0);
+                            if self.options.may_remove_multiple {
+                                state.pending_removals[side] = state.pending_removals[side]
+                                    .saturating_add(capture_total(&state));
+                            }
                         }
                         MillFormationActionInPlacingPhase::RemovalBasedOnMillCounts => {
                             clear_capture_state(&mut state);
@@ -806,7 +815,21 @@ impl GameRules for MillRules {
                     );
                 }
 
-                state.board[to] = 0;
+                let mark_pending = matches!(
+                    self.options.mill_formation_action_in_placing_phase,
+                    MillFormationActionInPlacingPhase::MarkAndDelayRemovingPieces
+                ) && state.phase == MillPhase::Placing
+                    && !removing_own;
+                if mark_pending {
+                    // Preserve the original colour in `state.board` so that
+                    // the UI can render the X overlay; flag the square in
+                    // `delayed_marked_pieces` so every rule predicate
+                    // (`live_piece`, `is_marked`) treats the cell as empty
+                    // until the placing-to-moving sweep clears it.
+                    state.delayed_marked_pieces |= mask;
+                } else {
+                    state.board[to] = 0;
+                }
                 state.pieces_on_board[target_color_index] =
                     state.pieces_on_board[target_color_index].saturating_sub(1);
                 state.pending_removals[side] = state.pending_removals[side].saturating_sub(1);
@@ -1200,6 +1223,18 @@ fn sync_phase_for_may_move_in_placing(state: &mut MillState, options: &MillVaria
 fn enter_moving_phase(state: &mut MillState, options: &MillVariantOptions) {
     state.phase = MillPhase::Moving;
     state.side_to_move = if options.is_defender_move_first { 1 } else { 0 };
+    // Mirrors Position::remove_marked_pieces in legacy position.cpp: at
+    // the placing-to-moving boundary every "X"-marked square sweeps to
+    // empty.  Only meaningful for MarkAndDelayRemovingPieces but cheap
+    // enough to run unconditionally — the bitset is already 0 elsewhere.
+    if state.delayed_marked_pieces != 0 {
+        for node in 0_usize..24 {
+            if (state.delayed_marked_pieces & node_bit(node)) != 0 {
+                state.board[node] = 0;
+            }
+        }
+        state.delayed_marked_pieces = 0;
+    }
     if matches!(
         options.mill_formation_action_in_placing_phase,
         MillFormationActionInPlacingPhase::RemovalBasedOnMillCounts
@@ -1258,10 +1293,30 @@ fn maybe_finish_full_board(state: &mut MillState, options: &MillVariantOptions) 
     }
 }
 
+/// True when `node` currently holds a piece that has been visually
+/// preserved as a "marked" piece by `MarkAndDelayRemovingPieces`: the
+/// piece colour is intact in `state.board` (so the UI can render an X),
+/// but rule logic must treat the square as empty / inert until the
+/// placing-to-moving transition sweeps it via `remove_marked_pieces`.
+#[inline]
+fn is_marked(state: &MillState, node: usize) -> bool {
+    (state.delayed_marked_pieces & node_bit(node)) != 0
+}
+
+/// Live (non-marked) piece colour at `node`: 0 = empty, 1 = white, 2 = black.
+#[inline]
+fn live_piece(state: &MillState, node: usize) -> i8 {
+    if is_marked(state, node) {
+        0
+    } else {
+        state.board[node]
+    }
+}
+
 fn total_mills_count(state: &MillState, options: &MillVariantOptions, side: i8) -> u8 {
     mill_lines(options)
         .iter()
-        .filter(|line| line.iter().all(|idx| state.board[*idx] == side + 1))
+        .filter(|line| line.iter().all(|idx| live_piece(state, *idx) == side + 1))
         .count() as u8
 }
 
@@ -1409,13 +1464,12 @@ fn mobility_diff(state: &MillState, options: &MillVariantOptions) -> i32 {
     let mut white = 0_i32;
     let mut black = 0_i32;
     for s in 0_usize..24 {
-        let piece = state.board[s];
-        if piece != 0 && (state.delayed_marked_pieces & node_bit(s)) == 0 {
+        if live_piece(state, s) != 0 {
             // Occupied by a real (non-marked) piece — skip.
             continue;
         }
         for &neigh in crate::topology::neighbors_for(s, options.has_diagonal_lines) {
-            match state.board[neigh as usize] {
+            match live_piece(state, neigh as usize) {
                 1 => white += 1,
                 2 => black += 1,
                 _ => {}
@@ -2135,7 +2189,11 @@ fn formed_mill_bits_at(
 ) -> u32 {
     let mut bits = 0_u32;
     for (line_idx, line) in mill_lines(options).iter().enumerate() {
-        if line.contains(&node) && line.iter().all(|idx| state.board[*idx] == side_to_move + 1) {
+        if line.contains(&node)
+            && line
+                .iter()
+                .all(|idx| live_piece(state, *idx) == side_to_move + 1)
+        {
             bits |= 1_u32 << line_idx;
         }
     }
@@ -2250,13 +2308,13 @@ fn remove_move_score(state: &MillState, options: &MillVariantOptions, to: usize)
 }
 
 fn is_piece_in_mill(state: &MillState, options: &MillVariantOptions, node: usize) -> bool {
-    let piece = state.board[node];
+    let piece = live_piece(state, node);
     if piece == 0 {
         return false;
     }
     mill_lines_for_node(options, node)
         .iter()
-        .any(|line| line.iter().all(|idx| state.board[*idx] == piece))
+        .any(|line| line.iter().all(|idx| live_piece(state, *idx) == piece))
 }
 
 fn mill_lines_for_node(options: &MillVariantOptions, node: usize) -> Vec<[usize; 3]> {
@@ -2926,15 +2984,71 @@ mod tests {
         );
     }
 
+    /// `MarkAndDelayRemovingPieces` mirrors C++ position.cpp: mill formation
+    /// arms a regular remove obligation, and the chosen target is *marked*
+    /// (kept on the board with its colour) instead of physically removed.
+    /// Marked pieces stay until the placing-to-moving boundary, where
+    /// `enter_moving_phase` calls the equivalent of `remove_marked_pieces`
+    /// to sweep them.
     #[test]
-    fn mill_action_mark_and_delay_records_mill_bits_without_immediate_removal() {
-        let (_rules, snap) = placing_mill_fixture_for_action(
+    fn mill_action_mark_and_delay_arms_remove_then_marks_target() {
+        let (rules, snap) = placing_mill_fixture_for_action(
             MillFormationActionInPlacingPhase::MarkAndDelayRemovingPieces,
         );
         let state = MillRules::decode(&snap);
-        assert_eq!(state.pending_removals, [0, 0]);
-        assert_ne!(state.delayed_marked_pieces, 0);
-        assert_eq!(state.side_to_move, 1);
+        // Active side now owes a removal obligation against the opponent.
+        assert_eq!(state.pending_removals[0], 1);
+        assert_eq!(state.side_to_move, 0);
+        assert!(state.mill_available_at_removal);
+
+        // Pick any opponent piece to "mark".
+        let mut actions = ActionList::<256>::new();
+        rules.legal_actions(&snap, &mut actions);
+        let target = actions
+            .iter()
+            .copied()
+            .find(|a| a.kind_tag == MillActionKind::Remove as i16)
+            .expect("at least one remove target");
+        let after = rules.apply(&snap, target);
+        let state = MillRules::decode(&after);
+        // Target square keeps its colour but is now flagged as marked.
+        assert_eq!(state.board[target.to_node as usize], 2, "still owns colour");
+        assert!(
+            (state.delayed_marked_pieces & (1u32 << target.to_node)) != 0,
+            "square must be flagged as marked"
+        );
+        // Live mill / mobility helpers must treat the marked cell as empty.
+        assert_eq!(live_piece(&state, target.to_node as usize), 0);
+    }
+
+    /// On the placing-to-moving boundary every marked piece must clear,
+    /// matching `Position::remove_marked_pieces`.
+    #[test]
+    fn mark_and_delay_marked_pieces_sweep_on_phase_transition() {
+        let options = MillVariantOptions {
+            mill_formation_action_in_placing_phase:
+                MillFormationActionInPlacingPhase::MarkAndDelayRemovingPieces,
+            ..MillVariantOptions::default()
+        };
+        // Build a placing-end snapshot with a single marked piece.
+        let mut state = MillState {
+            side_to_move: 0,
+            phase: MillPhase::Placing,
+            move_number: 17,
+            pieces_in_hand: [0, 0],
+            pieces_on_board: [9, 8],
+            pending_removals: [0, 0],
+            ..MillState::default()
+        };
+        state.board[0] = 2;
+        state.delayed_marked_pieces = 1u32 << 0;
+        enter_moving_phase(&mut state, &options);
+        assert_eq!(state.phase, MillPhase::Moving);
+        assert_eq!(
+            state.board[0], 0,
+            "marked square must be cleared on entering moving phase"
+        );
+        assert_eq!(state.delayed_marked_pieces, 0);
     }
 
     /// `RemovalBasedOnMillCounts` reaches the placing-to-moving boundary
