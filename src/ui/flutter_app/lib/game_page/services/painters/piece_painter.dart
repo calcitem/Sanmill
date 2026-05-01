@@ -695,6 +695,7 @@ class PiecePainter extends CustomPainter {
 
     // Draw capturable pieces highlight if enabled
     if (DB().displaySettings.isCapturablePiecesHighlightShown &&
+        nativeBoardView == null &&
         GameController().gameInstance.gameMode != GameMode.setupPosition &&
         GameController().position.action == Act.remove) {
       final List<int> capturablePieces = GameController().position
