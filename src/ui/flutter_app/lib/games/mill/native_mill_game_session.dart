@@ -54,6 +54,10 @@ class NativeMillGameSession implements GameSessionHandle {
   @override
   GameOutcome get outcome => _state.value.outcome;
 
+  int get undoDepth => rulesPort.undoDepth;
+
+  int get redoDepth => rulesPort.redoDepth;
+
   @override
   ValueListenable<GameStateSnapshot> get state => _state;
 

@@ -78,6 +78,10 @@ class NativeMillRulesPort implements RulesPort {
     return _snapshot;
   }
 
+  int get undoDepth => _kernel.undoDepth;
+
+  int get redoDepth => _kernel.redoDepth;
+
   void dispose() => _kernel.dispose();
 
   /// Stream Rust-native Mill search events from this port's current kernel

@@ -161,6 +161,12 @@ class _FakeNativeMillRulesPort implements NativeMillRulesPort {
   bool disposed = false;
 
   @override
+  int get undoDepth => applyCount - undoCount + redoCount;
+
+  @override
+  int get redoDepth => undoCount - redoCount;
+
+  @override
   GameStateSnapshot get snapshot => _snapshot;
 
   @override

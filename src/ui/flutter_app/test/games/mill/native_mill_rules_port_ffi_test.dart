@@ -75,6 +75,8 @@ void main() {
         final GameAction firstPlace = port.legalActions.first;
         final GameStateSnapshot afterApply = port.apply(firstPlace);
 
+        expect(port.undoDepth, 1);
+        expect(port.redoDepth, 0);
         expect(afterApply.lastAction, firstPlace);
         expect(afterApply.activeSeat, PlayerSeat.second);
         expect(port.snapshot, afterApply);
@@ -86,6 +88,8 @@ void main() {
         );
 
         final GameStateSnapshot afterUndo = port.undo();
+        expect(port.undoDepth, 0);
+        expect(port.redoDepth, 1);
         expect(afterUndo.activeSeat, PlayerSeat.first);
         expect(afterUndo.lastAction, isNull);
         expect(port.snapshot, afterUndo);
@@ -95,6 +99,8 @@ void main() {
         );
 
         final GameStateSnapshot afterRedo = port.redo();
+        expect(port.undoDepth, 1);
+        expect(port.redoDepth, 0);
         expect(afterRedo.activeSeat, PlayerSeat.second);
         expect(port.snapshot, afterRedo);
       },

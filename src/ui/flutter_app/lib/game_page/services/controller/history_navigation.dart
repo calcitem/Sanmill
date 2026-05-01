@@ -80,19 +80,34 @@ class HistoryNavigator {
       return const HistoryOK();
     }
 
+    final String atEnd = S.of(context).atEnd;
+    if (DB().generalSettings.useNativeMillSession) {
+      final HistoryResponse? nativeResp = await _nativeSessionHistory(
+        context,
+        navMode,
+        number,
+      );
+      if (nativeResp != null) {
+        if (pop && context.mounted) {
+          Navigator.pop(context);
+        }
+        return nativeResp;
+      }
+    }
+
     GameController().isControllerActive = false;
     GameController().engine.stopSearching();
 
     final GameController controller = GameController();
 
     // TODO: Move to the end of this function. Or change to S.of(context).waiting?
-    GameController().headerTipNotifier.showTip(S.of(context).atEnd);
+    GameController().headerTipNotifier.showTip(atEnd);
     GameController().headerIconsNotifier.showIcons();
     GameController().boardSemanticsNotifier.updateSemantics();
 
     if (_isGoingToHistory) {
       logger.i("$_logTag Is going to history, ignore repeated request.");
-      if (pop) {
+      if (pop && context.mounted) {
         Navigator.pop(context);
       }
       return const HistoryOK();
@@ -171,6 +186,65 @@ class HistoryNavigator {
       SoundManager().unMute();
       _isGoingToHistory = false;
     }
+  }
+
+  static Future<HistoryResponse?> _nativeSessionHistory(
+    BuildContext context,
+    HistoryNavMode navMode,
+    int? number,
+  ) async {
+    final GameSession? session = GameSessionScope.sessionOf(context);
+    if (session is! NativeMillGameSession) {
+      return null;
+    }
+
+    int steps;
+    bool undo;
+    switch (navMode) {
+      case HistoryNavMode.takeBack:
+        steps = 1;
+        undo = true;
+        break;
+      case HistoryNavMode.takeBackN:
+        if (number == null) {
+          return const HistoryRange();
+        }
+        steps = number;
+        undo = true;
+        break;
+      case HistoryNavMode.takeBackAll:
+        steps = session.undoDepth;
+        undo = true;
+        break;
+      case HistoryNavMode.stepForward:
+        steps = 1;
+        undo = false;
+        break;
+      case HistoryNavMode.stepForwardAll:
+        steps = session.redoDepth;
+        undo = false;
+        break;
+    }
+
+    if (steps <= 0 ||
+        (undo && session.undoDepth <= 0) ||
+        (!undo && session.redoDepth <= 0)) {
+      return const HistoryRange();
+    }
+
+    final int available = undo ? session.undoDepth : session.redoDepth;
+    final int actual = steps.clamp(0, available);
+    for (int i = 0; i < actual; i++) {
+      if (undo) {
+        await session.undo();
+      } else {
+        await session.redo();
+      }
+    }
+    GameController().disableStats = true;
+    GameController().headerIconsNotifier.showIcons();
+    GameController().boardSemanticsNotifier.updateSemantics();
+    return const HistoryOK();
   }
 
   /// Requests a 1-step LAN take back, returns true if accepted, false if rejected or error.
