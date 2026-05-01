@@ -867,6 +867,9 @@ class ReplayService {
             transformSquareSquareAttributeList(type);
             final String newFen = transformFEN(fen, type);
             position.setFen(newFen);
+            // Mirror the transformation in the native session so both stay
+            // in sync during setup-position replay.
+            nativeSession?.loadFen(newFen);
           }
         }
 
