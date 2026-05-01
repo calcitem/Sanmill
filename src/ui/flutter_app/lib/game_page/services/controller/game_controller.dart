@@ -847,10 +847,27 @@ class GameController {
     try {
       final String outbound = moveNotation;
       networkService?.sendMove(outbound);
-      // After sending, toggle turn based on local color
-      final PieceColor localColor = getLocalColor();
-      final PieceColor sideToMove = position.sideToMove;
-      isLanOpponentTurn = (sideToMove != localColor);
+      // After sending, toggle turn based on local color.
+      // Prefer the native session's active seat when available to avoid
+      // relying on the legacy position side-to-move.
+      if (DB().generalSettings.useNativeMillSession) {
+        final BuildContext? ctx = rootScaffoldMessengerKey.currentContext;
+        final GameSession? session = ctx != null
+            ? GameSessionScope.sessionOf(ctx)
+            : null;
+        if (session is NativeMillGameSession) {
+          final LanSessionMeta? meta = session.lanMeta ?? activeNativeLanMeta;
+          if (meta != null) {
+            isLanOpponentTurn = meta.isOpponentTurn(
+              session.state.value.activeSeat,
+            );
+          }
+        }
+      } else {
+        final PieceColor localColor = getLocalColor();
+        final PieceColor sideToMove = position.sideToMove;
+        isLanOpponentTurn = (sideToMove != localColor);
+      }
       logger.i("$_logTag Sent move to LAN opponent: $outbound");
       final BuildContext? context = rootScaffoldMessengerKey.currentContext;
       final String ot = context != null
