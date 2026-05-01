@@ -221,4 +221,16 @@ class _FakeNativeMillRulesPort implements NativeMillRulesPort {
   Stream<tgf.EngineEvent> millSearchEvents({required int depth}) {
     return const Stream<tgf.EngineEvent>.empty();
   }
+
+  @override
+  GameStateSnapshot setupClear() => _snapshot;
+
+  @override
+  GameStateSnapshot setupSetPiece(int node, int owner) => _snapshot;
+
+  @override
+  GameStateSnapshot setupSetSide(int side) => _snapshot;
+
+  @override
+  GameStateSnapshot setupFinish() => _snapshot;
 }

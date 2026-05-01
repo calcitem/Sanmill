@@ -216,6 +216,13 @@ impl MillRules {
         MillState::decode(snapshot)
     }
 
+    /// Decode an opaque `GameStateSnapshot` back to a mutable `MillState`
+    /// for setup-position editing.  Exposed publicly so the FRB setup API
+    /// can decode, mutate, and re-encode without going through `GameRules`.
+    pub fn decode_snapshot(snap: GameStateSnapshot) -> MillState {
+        MillState::decode(&snap)
+    }
+
     fn encode(&self, state: MillState) -> GameStateSnapshot {
         GameStateSnapshot {
             side_to_move: state.side_to_move,
@@ -1447,6 +1454,106 @@ impl MillState {
             stalemate_removing: payload[253] != 0,
             both_stalemate_removing: payload[254] != 0,
         }
+    }
+}
+
+// ---------------------------------------------------------------------------
+// Setup-position editing API
+// ---------------------------------------------------------------------------
+
+impl MillState {
+    /// Build an empty board ready for setup-position editing.
+    ///
+    /// `pieces_in_hand` is initialised from `options.piece_count` (matching
+    /// the freshly-constructed placing-phase state), so `recompute_aux` is
+    /// not needed after `empty()` alone — only after piece edits.
+    pub(crate) fn empty(options: &MillVariantOptions) -> Self {
+        Self {
+            pieces_in_hand: [options.piece_count, options.piece_count],
+            ..Self::default()
+        }
+    }
+
+    /// Place or clear one piece at `node`.
+    ///
+    /// `owner`: `1` = first player (White), `2` = second player (Black),
+    /// anything else = clear.  Callers must follow up with `recompute_aux`
+    /// before encoding the snapshot.
+    pub(crate) fn set_piece(&mut self, node: u16, owner: i8) {
+        if let Some(slot) = self.board.get_mut(node as usize) {
+            *slot = if owner == 1 || owner == 2 { owner } else { 0 };
+        }
+    }
+
+    pub(crate) fn set_side_to_move(&mut self, side: i8) {
+        self.side_to_move = if side == 0 || side == 1 { side } else { 0 };
+    }
+
+    pub(crate) fn set_phase(&mut self, phase: MillPhase) {
+        self.phase = phase;
+    }
+
+    pub(crate) fn set_pending_removal(&mut self, side_idx: usize, count: u8) {
+        if side_idx < 2 {
+            self.pending_removals[side_idx] = count;
+        }
+    }
+
+    /// Recompute auxiliary fields from the board array so the snapshot is
+    /// self-consistent after a series of `set_piece` calls.
+    ///
+    /// Updates: `pieces_on_board`, `pieces_in_hand` (clamped to piece_count),
+    /// `winner` (reset to -1), `outcome_reason`, `key_history`, and clears
+    /// all capture-target bitmasks.
+    pub(crate) fn recompute_aux(&mut self, options: &MillVariantOptions) {
+        let mut on_board = [0u8; 2];
+        for &piece in &self.board {
+            if piece == 1 {
+                on_board[0] += 1;
+            } else if piece == 2 {
+                on_board[1] += 1;
+            }
+        }
+        self.pieces_on_board = on_board;
+        self.pieces_in_hand = [
+            options.piece_count.saturating_sub(on_board[0]),
+            options.piece_count.saturating_sub(on_board[1]),
+        ];
+        self.winner = -1;
+        self.outcome_reason = MillOutcomeReason::Ongoing;
+        self.ply_since_capture = 0;
+        self.last_mill_from = -1;
+        self.last_mill_to = -1;
+        self.used_mill_lines = 0;
+        self.delayed_marked_pieces = 0;
+        self.custodian_targets = 0;
+        self.intervention_targets = 0;
+        self.leap_targets = 0;
+        self.custodian_count = 0;
+        self.intervention_count = 0;
+        self.leap_count = 0;
+        self.mill_available_at_removal = false;
+        self.stalemate_removing = false;
+        self.both_stalemate_removing = false;
+        self.key_history = [0_u64; 24];
+        self.key_history_len = 0;
+    }
+}
+
+// ---------------------------------------------------------------------------
+// MillRules setup-position helpers (used by the FRB kernel API)
+// ---------------------------------------------------------------------------
+
+impl MillRules {
+    /// Return a fresh setup-editing state backed by this rule set's options.
+    pub fn setup_empty(&self) -> MillState {
+        MillState::empty(&self.options)
+    }
+
+    /// Encode an externally-edited `MillState` into a `GameStateSnapshot`
+    /// suitable for `GameKernel::replace_state`.
+    pub fn encode_state(&self, state: MillState) -> GameStateSnapshot {
+        self.encode(state)
     }
 }
 
@@ -3563,5 +3670,71 @@ mod tests {
         // Material is equal (white has 8 in hand + 1 on board, black has 9 in
         // hand), so score is zero from black-to-move perspective.
         assert_eq!(MillEvaluator::score(&wb), 0);
+    }
+
+    // ---------------------------------------------------------------------------
+    // Phase 6.A.1: setup-position editing tests
+    // ---------------------------------------------------------------------------
+
+    #[test]
+    fn setup_clear_then_set_piece_round_trips() {
+        let rules = MillRules::default();
+        let options = MillVariantOptions::default();
+
+        // Start from initial state, clear to empty board.
+        let mut state = rules.setup_empty();
+        assert!(state.board.iter().all(|&p| p == 0), "empty board must have no pieces");
+        assert_eq!(state.pieces_in_hand[0], 9, "pieces_in_hand initialised from piece_count");
+
+        // Place White on node 0, Black on node 6.
+        state.set_piece(0, 1);
+        state.set_piece(6, 2);
+        state.recompute_aux(&options);
+
+        assert_eq!(state.board[0], 1);
+        assert_eq!(state.board[6], 2);
+        assert_eq!(state.pieces_on_board[0], 1);
+        assert_eq!(state.pieces_on_board[1], 1);
+        assert_eq!(state.pieces_in_hand[0], 8, "9 - 1 on board");
+        assert_eq!(state.pieces_in_hand[1], 8);
+
+        // Encoding and decoding must round-trip.
+        let snap = rules.encode_state(state);
+        let decoded = MillRules::decode_snapshot(snap);
+        assert_eq!(decoded.board[0], 1);
+        assert_eq!(decoded.board[6], 2);
+    }
+
+    #[test]
+    fn setup_recompute_zobrist_differs_from_initial() {
+        let rules = MillRules::default();
+        let options = MillVariantOptions::default();
+
+        let initial_snap = rules.initial_state(&[]);
+
+        let mut state = rules.setup_empty();
+        state.set_piece(0, 1); // add White on node 0
+        state.recompute_aux(&options);
+        let edited_snap = rules.encode_state(state);
+
+        // With a piece on the board the zobrist key must differ from initial.
+        assert_ne!(
+            initial_snap.zobrist_key, edited_snap.zobrist_key,
+            "placing a piece should change the Zobrist key"
+        );
+    }
+
+    #[test]
+    fn setup_clear_piece_owner_zero_empties_square() {
+        let rules = MillRules::default();
+        let options = MillVariantOptions::default();
+
+        let mut state = rules.setup_empty();
+        state.set_piece(5, 1); // White on node 5
+        state.set_piece(5, 0); // clear node 5
+        state.recompute_aux(&options);
+
+        assert_eq!(state.board[5], 0, "clearing owner=0 must empty the square");
+        assert_eq!(state.pieces_on_board[0], 0);
     }
 }

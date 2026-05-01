@@ -23,7 +23,7 @@ use std::sync::Mutex;
 use tgf_core::{
     Action, ActionList, GameKernel, GameRules, GameStateSnapshot, KernelError, OutcomeKind,
 };
-use tgf_mill::{MillRules, MillVariantOptions as NativeMillVariantOptions};
+use tgf_mill::{MillPhase, MillRules, MillVariantOptions as NativeMillVariantOptions};
 use tgf_othello::OthelloRules;
 
 use super::simple::{
@@ -336,6 +336,116 @@ pub fn tgf_kernel_mill_search_events(handle: u32, depth: i32, sink: StreamSink<E
 
     let options = mill_variant_for_handle(handle);
     spawn_mill_pvs_event_stream(snapshot, options, depth, sink);
+}
+
+// ---------------------------------------------------------------------------
+// Setup-position editing API (Phase 6.A.1)
+// ---------------------------------------------------------------------------
+
+/// Clear the board associated with a Mill kernel handle and reset all pieces,
+/// returning the fresh empty snapshot.  History and redo stacks are cleared.
+///
+/// This is the entry point for the Flutter setup-position flow: call
+/// `tgf_kernel_setup_clear` first, then `tgf_kernel_setup_set_piece` for each
+/// piece, then `tgf_kernel_setup_finish` to transition to a playable state.
+#[flutter_rust_bridge::frb(sync)]
+pub fn tgf_kernel_setup_clear(handle: u32) -> Result<TgfSnapshot, String> {
+    let mut guard = KERNELS.lock().expect("kernel registry poisoned");
+    let kernel = guard
+        .get_mut(&handle)
+        .ok_or_else(|| format!("invalid kernel handle: {handle}"))?;
+    if kernel.game_id() != "mill" {
+        return Err(format!("setup is only supported for Mill kernels"));
+    }
+    let options = mill_variant_for_handle(handle);
+    let rules = MillRules::new(options.clone());
+    let empty_state = rules.setup_empty();
+    let snapshot = rules.encode_state(empty_state);
+    kernel.replace_state(snapshot);
+    Ok(TgfSnapshot::from_snap(kernel.snapshot()))
+}
+
+/// Set or clear a single piece at `node` for a Mill kernel in setup mode.
+///
+/// `owner`: `1` = first player (White), `2` = second player (Black),
+/// any other value = clear the square.
+///
+/// Call `tgf_kernel_setup_clear` before the first `set_piece` to start with
+/// a blank board, then `tgf_kernel_setup_finish` when editing is complete.
+#[flutter_rust_bridge::frb(sync)]
+pub fn tgf_kernel_setup_set_piece(
+    handle: u32,
+    node: i32,
+    owner: i32,
+) -> Result<TgfSnapshot, String> {
+    let mut guard = KERNELS.lock().expect("kernel registry poisoned");
+    let kernel = guard
+        .get_mut(&handle)
+        .ok_or_else(|| format!("invalid kernel handle: {handle}"))?;
+    if kernel.game_id() != "mill" {
+        return Err("setup is only supported for Mill kernels".to_owned());
+    }
+    let options = mill_variant_for_handle(handle);
+    let rules = MillRules::new(options.clone());
+    let mut state = tgf_mill::MillRules::decode_snapshot(kernel.snapshot());
+    state.set_piece(node.clamp(0, 23) as u16, owner as i8);
+    state.recompute_aux(&options);
+    let new_snap = rules.encode_state(state);
+    kernel.replace_state(new_snap);
+    Ok(TgfSnapshot::from_snap(new_snap))
+}
+
+/// Set the side to move for a Mill kernel in setup mode.
+///
+/// `side`: `0` = first player (White), `1` = second player (Black).
+#[flutter_rust_bridge::frb(sync)]
+pub fn tgf_kernel_setup_set_side(handle: u32, side: i32) -> Result<TgfSnapshot, String> {
+    let mut guard = KERNELS.lock().expect("kernel registry poisoned");
+    let kernel = guard
+        .get_mut(&handle)
+        .ok_or_else(|| format!("invalid kernel handle: {handle}"))?;
+    if kernel.game_id() != "mill" {
+        return Err("setup is only supported for Mill kernels".to_owned());
+    }
+    let options = mill_variant_for_handle(handle);
+    let rules = MillRules::new(options.clone());
+    let mut state = tgf_mill::MillRules::decode_snapshot(kernel.snapshot());
+    state.set_side_to_move(side.clamp(0, 1) as i8);
+    let new_snap = rules.encode_state(state);
+    kernel.replace_state(new_snap);
+    Ok(TgfSnapshot::from_snap(new_snap))
+}
+
+/// Finish the setup-position editing flow.
+///
+/// Determines whether the resulting board is in placing or moving phase
+/// based on whether any pieces remain in hand, recomputes auxiliary fields,
+/// and replaces the kernel state.  After this call the kernel can be used
+/// for normal play (legal actions, apply, search).
+#[flutter_rust_bridge::frb(sync)]
+pub fn tgf_kernel_setup_finish(handle: u32) -> Result<TgfSnapshot, String> {
+    let mut guard = KERNELS.lock().expect("kernel registry poisoned");
+    let kernel = guard
+        .get_mut(&handle)
+        .ok_or_else(|| format!("invalid kernel handle: {handle}"))?;
+    if kernel.game_id() != "mill" {
+        return Err("setup is only supported for Mill kernels".to_owned());
+    }
+    let options = mill_variant_for_handle(handle);
+    let rules = MillRules::new(options.clone());
+    let mut state = tgf_mill::MillRules::decode_snapshot(kernel.snapshot());
+    state.recompute_aux(&options);
+    // Determine phase: placing if either side still has pieces in hand,
+    // otherwise moving (or gameOver if fewer than 3 pieces per side).
+    let phase = if state.pieces_in_hand[0] > 0 || state.pieces_in_hand[1] > 0 {
+        MillPhase::Placing
+    } else {
+        MillPhase::Moving
+    };
+    state.set_phase(phase);
+    let new_snap = rules.encode_state(state);
+    kernel.replace_state(new_snap);
+    Ok(TgfSnapshot::from_snap(new_snap))
 }
 
 #[cfg(test)]

@@ -84,6 +84,59 @@ class NativeMillRulesPort implements RulesPort {
 
   void dispose() => _kernel.dispose();
 
+  // -------------------------------------------------------- setup-position API
+
+  /// Clear the board for setup-position editing.
+  /// Returns the new snapshot with all squares empty.
+  GameStateSnapshot setupClear() {
+    final tgf.TgfSnapshot raw = _kernel.rawSetupClear();
+    _snapshot = _snapshotFromRaw(raw);
+    return _snapshot;
+  }
+
+  /// Place or clear a single piece at [node] during setup editing.
+  /// [owner]: 1 = first player, 2 = second player, other = clear.
+  GameStateSnapshot setupSetPiece(int node, int owner) {
+    final tgf.TgfSnapshot raw = _kernel.rawSetupSetPiece(node, owner);
+    _snapshot = _snapshotFromRaw(raw);
+    return _snapshot;
+  }
+
+  /// Set the side to move during setup editing. [side]: 0 or 1.
+  GameStateSnapshot setupSetSide(int side) {
+    final tgf.TgfSnapshot raw = _kernel.rawSetupSetSide(side);
+    _snapshot = _snapshotFromRaw(raw);
+    return _snapshot;
+  }
+
+  /// Finish setup-position editing and transition to a playable game state.
+  GameStateSnapshot setupFinish() {
+    final tgf.TgfSnapshot raw = _kernel.rawSetupFinish();
+    _snapshot = _snapshotFromRaw(raw);
+    return _snapshot;
+  }
+
+  GameStateSnapshot _snapshotFromRaw(tgf.TgfSnapshot raw) {
+    final tgf.TgfOutcome outcome = _kernel.rawOutcome();
+    final Uint8List opaque = Uint8List.fromList(raw.opaquePayload);
+    return GameStateSnapshot(
+      gameId: GameId.mill,
+      activeSeat: _seatFromSide(raw.sideToMove),
+      outcome: _outcomeFromTgf(outcome),
+      phase: _phaseName(raw.phaseTag),
+      payload: <String, Object?>{
+        'tgfPhaseTag': raw.phaseTag,
+        'tgfMoveNumber': raw.moveNumber,
+        'tgfZobrist': raw.zobristKey,
+        'tgfOutcomeReason': outcome.reason,
+        'tgfPayload': opaque,
+        'millMarkedNodes': MillMarkedPiecesCodec.markedNodesFromOpaquePayload(
+          opaque,
+        ),
+      },
+    );
+  }
+
   /// Stream Rust-native Mill search events from this port's current kernel
   /// state.  This keeps the future engine path tied to the same session
   /// snapshot that legalActions/apply/undo/redo mutate.

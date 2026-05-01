@@ -58,6 +58,45 @@ class NativeMillGameSession implements GameSessionHandle {
 
   int get redoDepth => rulesPort.redoDepth;
 
+  // -------------------------------------------------------- setup-position API
+
+  /// Clear the board for setup-position editing.
+  void setupClear() {
+    if (_disposed) {
+      return;
+    }
+    final GameStateSnapshot next = rulesPort.setupClear();
+    _setState(next);
+  }
+
+  /// Place or clear one piece at [node] during setup editing.
+  /// [owner]: 1 = first player, 2 = second player, other = clear.
+  void setupSetPiece(int node, int owner) {
+    if (_disposed) {
+      return;
+    }
+    final GameStateSnapshot next = rulesPort.setupSetPiece(node, owner);
+    _setState(next);
+  }
+
+  /// Set the side to move during setup editing. [side]: 0 or 1.
+  void setupSetSide(int side) {
+    if (_disposed) {
+      return;
+    }
+    final GameStateSnapshot next = rulesPort.setupSetSide(side);
+    _setState(next);
+  }
+
+  /// Finish setup editing and transition to a playable game state.
+  void setupFinish() {
+    if (_disposed) {
+      return;
+    }
+    final GameStateSnapshot next = rulesPort.setupFinish();
+    _setState(next);
+  }
+
   @override
   ValueListenable<GameStateSnapshot> get state => _state;
 

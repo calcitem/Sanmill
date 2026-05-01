@@ -3,7 +3,6 @@
 
 import '../../game_platform/game_session.dart';
 import 'mill_action_codec.dart';
-import 'mill_constants.dart';
 
 /// Result of translating one board tap into either a complete action or a
 /// selected source square for a later Move action.

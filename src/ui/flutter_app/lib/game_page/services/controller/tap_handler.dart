@@ -65,12 +65,14 @@ class TapHandler {
       _nativeSessionTapController.clearSelection();
       return null;
     }
-    // The Rust-native session path is currently dogfooded for local
-    // human-vs-human and human-vs-AI input only.  LAN, setup-position, replay,
-    // and puzzle modes still depend on legacy GameController/Position side
-    // effects.
+    // The Rust-native session path is now supported for:
+    //   - humanVsHuman, humanVsAi (placing / moving / removing)
+    //   - setupPosition (direct board editing via setupSetPiece)
+    // LAN, replay, and puzzle modes still depend on legacy side effects.
     final GameMode mode = controller.gameInstance.gameMode;
-    if (mode != GameMode.humanVsHuman && mode != GameMode.humanVsAi) {
+    if (mode != GameMode.humanVsHuman &&
+        mode != GameMode.humanVsAi &&
+        mode != GameMode.setupPosition) {
       _nativeSessionTapController.clearSelection();
       return null;
     }
@@ -137,6 +139,34 @@ class TapHandler {
   }
 
   Future<EngineResponse> setupPosition(int sq) async {
+    if (DB().generalSettings.useNativeMillSession) {
+      final GameSession? session = GameSessionScope.sessionOf(context);
+      if (session is NativeMillGameSession) {
+        final int? node = MillBoardCoordinateMaps.legacySquareToNode[sq];
+        if (node != null) {
+          // Determine owner: cycle through empty → first → second based on
+          // the current piece at the node in the native board view.
+          final NativeMillSnapshotBoardView? boardView =
+              GameController().activeNativeMillBoardView;
+          final PlayerSeat? current = boardView?.pieceAtNode(node);
+          final int nextOwner = switch (current) {
+            null => 1,
+            PlayerSeat.none => 1,
+            PlayerSeat.first => 2,
+            PlayerSeat.second => 0,
+          };
+          session.setupSetPiece(node, nextOwner);
+          GameController().boardSemanticsNotifier.updateSemantics();
+          GameController().headerTipNotifier.showTip(
+            ExtMove.sqToNotation(sq),
+            snackBar: false,
+          );
+          return const EngineResponseHumanOK();
+        }
+      }
+    }
+
+    // Legacy path.
     if (GameController().position.action == Act.place ||
         GameController().position.action == Act.select) {
       GameController().position.putPieceForSetupPosition(sq);
@@ -151,9 +181,9 @@ class TapHandler {
     GameController().headerTipNotifier.showTip(
       ExtMove.sqToNotation(sq),
       snackBar: false,
-    ); // TODO: snackBar is false?
+    );
 
-    return const EngineResponseHumanOK(); // TODO: Right?
+    return const EngineResponseHumanOK();
   }
 
   Future<EngineResponse> onBoardTap(int sq) async {

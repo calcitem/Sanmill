@@ -146,6 +146,20 @@ impl GameKernel {
     pub fn is_terminal(&self) -> bool {
         !matches!(self.outcome().kind, OutcomeKind::Ongoing)
     }
+
+    /// Replace the current state with an externally-constructed snapshot,
+    /// clearing both undo and redo stacks.
+    ///
+    /// This is the setup-position escape hatch: the FRB layer builds a new
+    /// `MillState` via `MillState::set_piece` / `recompute_aux` / `encode`,
+    /// then calls this to make the kernel reflect the edited board without
+    /// going through legal-action verification.  Only call this from setup
+    /// flows where legality is enforced by the UI, not by the engine.
+    pub fn replace_state(&mut self, new_state: GameStateSnapshot) {
+        self.state = new_state;
+        self.history.clear();
+        self.redo_stack.clear();
+    }
 }
 
 #[cfg(test)]

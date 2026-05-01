@@ -20,7 +20,7 @@ abstract final class MillMarkedPiecesCodec {
     if (payload.length < markedPiecesBitfieldByteOffset + 4) {
       return <int>{};
     }
-    final int o = markedPiecesBitfieldByteOffset;
+    const int o = markedPiecesBitfieldByteOffset;
     final int bits =
         payload[o] |
         (payload[o + 1] << 8) |

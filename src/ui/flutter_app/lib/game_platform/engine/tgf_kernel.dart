@@ -129,6 +129,34 @@ class TgfKernel {
     return tgf.tgfKernelRedoDepth(handle: _handle);
   }
 
+  // -------------------------------------------------------- setup-position API
+
+  /// Clear the board and reset all pieces for setup-position editing.
+  /// Returns the empty-board snapshot.  History is cleared.
+  tgf.TgfSnapshot rawSetupClear() {
+    _checkAlive();
+    return tgf.tgfKernelSetupClear(handle: _handle);
+  }
+
+  /// Place or clear a single piece during setup editing.
+  /// [owner]: 1 = first player, 2 = second player, other = clear.
+  tgf.TgfSnapshot rawSetupSetPiece(int node, int owner) {
+    _checkAlive();
+    return tgf.tgfKernelSetupSetPiece(handle: _handle, node: node, owner: owner);
+  }
+
+  /// Set the side to move during setup editing. [side]: 0 or 1.
+  tgf.TgfSnapshot rawSetupSetSide(int side) {
+    _checkAlive();
+    return tgf.tgfKernelSetupSetSide(handle: _handle, side: side);
+  }
+
+  /// Finish setup editing and transition to a playable game state.
+  tgf.TgfSnapshot rawSetupFinish() {
+    _checkAlive();
+    return tgf.tgfKernelSetupFinish(handle: _handle);
+  }
+
   /// PVS search event stream for Mill kernels only — uses the session snapshot
   /// and the variant registered at [TgfKernel.createMill].
   Stream<tgf_simple.EngineEvent> millSearchEvents({required int depth}) {

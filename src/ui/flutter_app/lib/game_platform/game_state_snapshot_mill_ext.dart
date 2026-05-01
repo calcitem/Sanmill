@@ -17,7 +17,7 @@ extension GameStateSnapshotMillExt on GameStateSnapshot {
       return raw;
     }
     if (raw is Set) {
-      return raw.map((Object e) => e as int).toSet();
+      return raw.cast<int>().toSet();
     }
     return <int>{};
   }

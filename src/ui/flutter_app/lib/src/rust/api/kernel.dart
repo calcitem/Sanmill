@@ -72,6 +72,36 @@ Stream<EngineEvent> tgfKernelMillSearchEvents({
   depth: depth,
 );
 
+/// Clear the board for setup-position editing.  Returns the empty snapshot.
+/// Requires the handle to reference a Mill kernel.
+TgfSnapshot tgfKernelSetupClear({required int handle}) =>
+    RustLib.instance.api.crateApiKernelTgfKernelSetupClear(handle: handle);
+
+/// Set or clear a piece during setup-position editing.
+/// [owner]: 1 = first player, 2 = second player, other = clear.
+TgfSnapshot tgfKernelSetupSetPiece({
+  required int handle,
+  required int node,
+  required int owner,
+}) =>
+    RustLib.instance.api.crateApiKernelTgfKernelSetupSetPiece(
+      handle: handle,
+      node: node,
+      owner: owner,
+    );
+
+/// Set the side to move during setup-position editing.
+/// [side]: 0 = first player, 1 = second player.
+TgfSnapshot tgfKernelSetupSetSide({required int handle, required int side}) =>
+    RustLib.instance.api.crateApiKernelTgfKernelSetupSetSide(
+      handle: handle,
+      side: side,
+    );
+
+/// Finish setup-position editing and transition to a playable game state.
+TgfSnapshot tgfKernelSetupFinish({required int handle}) =>
+    RustLib.instance.api.crateApiKernelTgfKernelSetupFinish(handle: handle);
+
 /// Mirror of `tgf_core::Action` with i32 fields so FRB can ship it as
 /// trivial dart `int` types.  Conversion is `From`-symmetric.
 class TgfAction {
