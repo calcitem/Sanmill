@@ -3,7 +3,7 @@
 
 use tgf_core::{
     Action, ActionList, BoardTopology, Edge, Evaluator, Game, GameRules, GameStateSnapshot,
-    Outcome, OutcomeKind, UnitPoint, Workbench, Zone,
+    Outcome, OutcomeKind, UnitPoint, Workbench, Zone, OPAQUE_PAYLOAD_LEN,
 };
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -53,7 +53,7 @@ impl Default for OthelloState {
 
 impl OthelloRules {
     fn encode(&self, state: OthelloState) -> GameStateSnapshot {
-        let mut payload = [0_u8; 256];
+        let mut payload = [0_u8; OPAQUE_PAYLOAD_LEN];
         for (i, piece) in state.board.iter().enumerate() {
             payload[i] = *piece as u8;
         }

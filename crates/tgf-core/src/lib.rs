@@ -14,7 +14,7 @@ pub mod kernel;
 pub use action::{Action, ActionList};
 pub use board_topology::{BoardTopology, Decoration, Edge, UnitPoint, Zone};
 pub use game::{Evaluator, Game, GameRules, Workbench};
-pub use game_state::{GameStateSnapshot, Outcome, OutcomeKind};
+pub use game_state::{GameStateSnapshot, Outcome, OutcomeKind, OPAQUE_PAYLOAD_LEN};
 pub use kernel::{GameKernel, KernelError};
 
 /// Phase 1 smoke-check: ensures the crate compiles.

@@ -103,9 +103,8 @@ fn run_uci_loop() {
                 active.abort_handle.request_abort();
                 join_and_print(active);
             } else {
-                // Match legacy Position::move() / UCI::move() output:
-                // MOVE_NONE serializes as "none" without parentheses.
-                println!("bestmove none");
+                // Match legacy single-line SearchEngine::print_bestmove output.
+                println!("info score 0 bestmove none");
             }
         } else if line == "ponderhit" {
             // In ponder mode the engine switches from pondering to searching;
@@ -201,16 +200,19 @@ fn finish_active_search(slot: &mut Option<ActiveSearch>) {
 fn join_and_print(active: ActiveSearch) {
     let _ = active.handle.join();
     if let Ok(spawn) = active.receiver.recv() {
+        // Match legacy SearchEngine::print_bestmove() in master:
+        //   "info score <score> bestmove <uci>"
+        // is emitted on a single line.  Rust additionally surfaces depth
+        // and nodes alongside `score cp` so standard UCI clients still
+        // see them as valid info fields (master tools tolerate the
+        // extras and key only on `score` / `bestmove`).
+        let uci = action_to_uci(spawn.result.best_action).unwrap_or_else(|| "none".to_owned());
         println!(
-            "info depth {} score cp {} nodes {}",
-            spawn.depth, spawn.result.score, spawn.result.nodes
-        );
-        println!(
-            "bestmove {}",
-            action_to_uci(spawn.result.best_action).unwrap_or_else(|| "none".to_owned())
+            "info depth {} score cp {} nodes {} bestmove {}",
+            spawn.depth, spawn.result.score, spawn.result.nodes, uci
         );
     } else {
-        println!("bestmove none");
+        println!("info score 0 bestmove none");
     }
 }
 

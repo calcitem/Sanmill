@@ -30,7 +30,7 @@
 
 use tgf_core::{
     Action, ActionList, BoardTopology, Evaluator, Game, GameRules, GameStateSnapshot, Outcome,
-    OutcomeKind, Workbench,
+    OutcomeKind, Workbench, OPAQUE_PAYLOAD_LEN,
 };
 
 use crate::topology::MillTopology;
@@ -703,7 +703,7 @@ impl GameRules for MillRules {
                             }
                         }
                     }
-                    note_mill_formation(&mut state, side, -1, to as i8, usable_bits);
+                    note_mill_formation(&mut state, side, -1, to as i8, usable_bits, &self.options);
                 } else if custodian != 0 || intervention != 0 {
                     activate_capture_state(&mut state, custodian, intervention, 0);
                     state.pending_removals[side] = capture_total(&state);
@@ -744,7 +744,14 @@ impl GameRules for MillRules {
                         state.pending_removals[side] =
                             state.pending_removals[side].saturating_add(capture_total(&state));
                     }
-                    note_mill_formation(&mut state, side, from as i8, to as i8, usable_bits);
+                    note_mill_formation(
+                        &mut state,
+                        side,
+                        from as i8,
+                        to as i8,
+                        usable_bits,
+                        &self.options,
+                    );
                 } else if custodian != 0 || intervention != 0 {
                     activate_capture_state(&mut state, custodian, intervention, 0);
                     state.pending_removals[side] = capture_total(&state);
@@ -1429,30 +1436,13 @@ fn should_focus_on_blocking_paths(state: &MillState, options: &MillVariantOption
     }
 }
 
-/// Translation of `Position::mills_pieces_count_difference()`: the
-/// difference between the count of distinct mill *lines* currently
-/// occupied by White and Black at full strength.  Used when
-/// `MillFormationActionInPlacingPhase::RemovalBasedOnMillCounts` is
-/// active and the active player just placed a piece.
-fn mills_pieces_count_difference(state: &MillState, options: &MillVariantOptions) -> i32 {
-    let lines: &[[usize; 3]] = if options.has_diagonal_lines {
-        DIAGONAL_MILL_LINES
-    } else {
-        STANDARD_MILL_LINES
-    };
-    let mut white = 0_i32;
-    let mut black = 0_i32;
-    for line in lines {
-        let a = state.board[line[0]];
-        let b = state.board[line[1]];
-        let c = state.board[line[2]];
-        if a == 1 && b == 1 && c == 1 {
-            white += 1;
-        } else if a == 2 && b == 2 && c == 2 {
-            black += 1;
-        }
-    }
-    white - black
+/// Translation of `Position::mills_pieces_count_difference()`:
+/// `popcount(formedMillsBB[WHITE]) - popcount(formedMillsBB[BLACK])`.
+/// Counts every square recorded in any historically-formed mill, so a
+/// single piece sitting on a 2-mill intersection contributes twice.
+/// Driven by `note_mill_formation` (oneTimeUseMill semantics in master).
+fn mills_pieces_count_difference(state: &MillState, _options: &MillVariantOptions) -> i32 {
+    state.formed_mills_bb[0].count_ones() as i32 - state.formed_mills_bb[1].count_ones() as i32
 }
 
 /// Translation of `Position::calculate_mobility_diff`: every empty (or
@@ -1542,11 +1532,31 @@ fn gameover_value(state: &MillState, options: &MillVariantOptions, mate: i32, dr
     0
 }
 
-fn note_mill_formation(state: &mut MillState, side: usize, from: i8, to: i8, bits: u32) {
+fn note_mill_formation(
+    state: &mut MillState,
+    side: usize,
+    from: i8,
+    to: i8,
+    bits: u32,
+    options: &MillVariantOptions,
+) {
     debug_assert!(side < 2);
     state.last_mill_from[side] = from;
     state.last_mill_to[side] = to;
     state.used_mill_lines |= bits;
+    // Mirror Position::potential_mills_count (`oneTimeUseMill` branch):
+    // every square of every newly-formed mill line gets recorded into the
+    // per-side `formedMillsBB[c]` bitmap.  `formed_mills_bb` is therefore
+    // a *historical* record (no clear on capture) that the static
+    // evaluator's mills_pieces_count_difference reads via popcount.
+    let lines = mill_lines(options);
+    for (line_idx, line) in lines.iter().enumerate() {
+        if (bits & (1u32 << line_idx)) != 0 {
+            for &sq in line.iter() {
+                state.formed_mills_bb[side] |= node_bit(sq);
+            }
+        }
+    }
 }
 
 /// Hash the parts of a `MillState` that participate in threefold
@@ -1651,12 +1661,28 @@ pub struct MillState {
     last_mill_to: [i8; 2],
     used_mill_lines: u32,
     delayed_marked_pieces: u32,
+    /// Per-side mirror of legacy `Position::formedMillsBB[c]`: 24-bit
+    /// square bitmap recording every square that has been part of a
+    /// completed mill for `c`.  Populated under `oneTimeUseMill` to
+    /// match master semantics — `popcount(formed_mills_bb[c])` then
+    /// gives the per-side "mill piece count" consumed by
+    /// [`MillEvaluator`] for the `RemovalBasedOnMillCounts` action.
+    formed_mills_bb: [u32; 2],
+    /// Active capture-state mirrors of `Position::custodianCaptureTargets[c]`
+    /// etc.  Only the side currently owing the removal carries non-zero
+    /// data; the legacy engine zeroes the inactive side via
+    /// `setCustodianCaptureState(~us, 0, 0)` so a single bitmap suffices.
     custodian_targets: u32,
     intervention_targets: u32,
     leap_targets: u32,
     custodian_count: u8,
     intervention_count: u8,
     leap_count: u8,
+    /// UI hint, mirrors `Position::preferredRemoveTarget`.  Holds the
+    /// Rust dense node id (0..23) of a square that the engine has
+    /// suggested as the "best" target for the next removal, or `-1`
+    /// when no preference is set.
+    preferred_remove_target: i8,
     mill_available_at_removal: bool,
     stalemate_removing: bool,
     both_stalemate_removing: bool,
@@ -1685,12 +1711,14 @@ impl Default for MillState {
             last_mill_to: [-1, -1],
             used_mill_lines: 0,
             delayed_marked_pieces: 0,
+            formed_mills_bb: [0, 0],
             custodian_targets: 0,
             intervention_targets: 0,
             leap_targets: 0,
             custodian_count: 0,
             intervention_count: 0,
             leap_count: 0,
+            preferred_remove_target: -1,
             mill_available_at_removal: false,
             stalemate_removing: false,
             both_stalemate_removing: false,
@@ -1715,8 +1743,8 @@ enum MillOutcomeReason {
 }
 
 impl MillState {
-    fn encode(self) -> [u8; 256] {
-        let mut payload = [0_u8; 256];
+    fn encode(self) -> [u8; OPAQUE_PAYLOAD_LEN] {
+        let mut payload = [0_u8; OPAQUE_PAYLOAD_LEN];
         for (i, piece) in self.board.iter().enumerate() {
             payload[i] = *piece as u8;
         }
@@ -1731,11 +1759,6 @@ impl MillState {
         payload[32] = (self.ply_since_capture >> 8) as u8;
         payload[33] = self.last_mill_from[0] as u8;
         payload[34] = self.last_mill_to[0] as u8;
-        // bytes 253/254 store the per-side last_mill_* for Black.  Bytes
-        // 252/253/254 used to hold three loose bool flags which we now
-        // pack into byte 252 to free 253 and 254 for this per-side data.
-        payload[253] = self.last_mill_from[1] as u8;
-        payload[254] = self.last_mill_to[1] as u8;
         payload[35..39].copy_from_slice(&self.used_mill_lines.to_le_bytes());
         payload[39..43].copy_from_slice(&self.delayed_marked_pieces.to_le_bytes());
         payload[43] = self.outcome_reason as u8;
@@ -1752,16 +1775,22 @@ impl MillState {
         payload[249] = self.custodian_count;
         payload[250] = self.intervention_count;
         payload[251] = self.leap_count;
-        // Pack five loose bool flags into a single byte (bits 0-4) so
-        // that byte 253 and 254 stay available for per-side
-        // last_mill_from/to[1].  bits 3 and 4 carry remove_own_piece[c]
-        // (mirrors negative pieceToRemoveCount in the legacy C++ engine).
+        // Pack five loose bool flags into a single byte (bits 0-4).
         let flags: u8 = u8::from(self.mill_available_at_removal)
             | (u8::from(self.stalemate_removing) << 1)
             | (u8::from(self.both_stalemate_removing) << 2)
             | (u8::from(self.remove_own_piece[0]) << 3)
             | (u8::from(self.remove_own_piece[1]) << 4);
         payload[252] = flags;
+        payload[253] = self.last_mill_from[1] as u8;
+        payload[254] = self.last_mill_to[1] as u8;
+        payload[255] = self.preferred_remove_target as u8;
+        // 256..263: per-side `formed_mills_bb` (matches legacy
+        // Position::formedMillsBB[c]).  Each side stores a 24-bit
+        // little-endian square bitmap.  Aligned so byte 256/260 starts
+        // a fresh 4-byte slot in the extended 320-byte payload.
+        payload[256..260].copy_from_slice(&self.formed_mills_bb[0].to_le_bytes());
+        payload[260..264].copy_from_slice(&self.formed_mills_bb[1].to_le_bytes());
         payload
     }
 
@@ -1838,6 +1867,8 @@ impl MillState {
             stalemate_removing: (payload[252] & 0x02) != 0,
             both_stalemate_removing: (payload[252] & 0x04) != 0,
             remove_own_piece: [(payload[252] & 0x08) != 0, (payload[252] & 0x10) != 0],
+            preferred_remove_target: payload[255] as i8,
+            formed_mills_bb: [read_u32(256), read_u32(260)],
         }
     }
 }
@@ -1911,12 +1942,14 @@ impl MillState {
         self.last_mill_to = [-1, -1];
         self.used_mill_lines = 0;
         self.delayed_marked_pieces = 0;
+        self.formed_mills_bb = [0, 0];
         self.custodian_targets = 0;
         self.intervention_targets = 0;
         self.leap_targets = 0;
         self.custodian_count = 0;
         self.intervention_count = 0;
         self.leap_count = 0;
+        self.preferred_remove_target = -1;
         self.mill_available_at_removal = false;
         self.stalemate_removing = false;
         self.both_stalemate_removing = false;
@@ -2069,10 +2102,19 @@ impl MillRules {
         ];
 
         // Field 14: 64-bit formedMillsBB with per-side per-square mill
-        // bitmaps.  Rust currently only tracks a per-line bitmap
-        // (`used_mill_lines`) and cannot losslessly round-trip the C++
-        // square-bitmap; ignore it for now (output 0 in export_fen).
-        let _formed_mills_bb_skipped = fields[14];
+        // bitmaps.  Layout matches Position::fen():
+        //   ((white_bb_24bits) << 32) | black_bb_24bits
+        // The legacy engine uses 32-bit Bitboard slots even though only
+        // bits 8..32 are populated (legacy Square ids).  Translate each
+        // side's square bitmap from legacy ids into Rust dense node ids
+        // before storing.
+        let formed_mills_bb_raw = fields[14].parse::<u64>().unwrap_or(0);
+        let formed_white_legacy_bb = ((formed_mills_bb_raw >> 32) & 0xFFFF_FFFF) as u32;
+        let formed_black_legacy_bb = (formed_mills_bb_raw & 0xFFFF_FFFF) as u32;
+        let formed_mills_bb = [
+            legacy_square_bb_to_node_bb(formed_white_legacy_bb),
+            legacy_square_bb_to_node_bb(formed_black_legacy_bb),
+        ];
 
         let rule50 = parse_u16(fields[15])?;
         let full_move: i32 = fields[16].parse::<i32>().unwrap_or(1).max(1);
@@ -2092,6 +2134,7 @@ impl MillRules {
         let mut leap_count = 0_u8;
         let mut stalemate_removing = false;
         let mut both_stalemate_removing = false;
+        let mut preferred_remove_target: i8 = -1;
         for token in &extension_tokens {
             if token.len() < 2 || token.as_bytes()[1] != b':' {
                 continue;
@@ -2104,10 +2147,14 @@ impl MillRules {
                 }
                 b'l' => parse_capture_field(value, &mut leap_targets, &mut leap_count),
                 b'p' => {
-                    // preferredRemoveTarget is purely a UI hint in the
-                    // legacy engine; Rust does not model it on MillState
-                    // yet so the field is parsed-and-dropped.
-                    let _ = value.parse::<i32>();
+                    // Mirror Position::set_fen: parse `p:NN` (legacy
+                    // Square id) into preferred_remove_target as a Rust
+                    // dense node id (or -1 for SQ_NONE / out of range).
+                    if let Ok(legacy_sq) = value.parse::<i32>() {
+                        if (8..32).contains(&legacy_sq) {
+                            preferred_remove_target = legacy_square_to_node_signed(legacy_sq as u8);
+                        }
+                    }
                 }
                 b's' => {
                     if let Ok(flag) = value.parse::<i32>() {
@@ -2142,6 +2189,8 @@ impl MillRules {
             both_stalemate_removing,
             mill_available_at_removal: (remove_w > 0 || remove_b > 0)
                 && !(custodian_count > 0 || intervention_count > 0 || leap_count > 0),
+            formed_mills_bb,
+            preferred_remove_target,
             winner: -1,
             ..MillState::default()
         })
@@ -2221,8 +2270,16 @@ impl MillRules {
             }
         };
 
+        // Field 14: legacy formedMillsBB packed as
+        //   ((white_legacy_bb_24bit) << 32) | black_legacy_bb_24bit
+        // Translate per-side dense node bitmaps back to legacy square
+        // bitmaps so master-style Position::set_fen can re-load them.
+        let formed_white_legacy = u64::from(node_bb_to_legacy_square_bb(state.formed_mills_bb[0]));
+        let formed_black_legacy = u64::from(node_bb_to_legacy_square_bb(state.formed_mills_bb[1]));
+        let formed_mills_field = (formed_white_legacy << 32) | formed_black_legacy;
+
         let mut out = format!(
-            "{} {} {} {} {} {} {} {} {} {} {} {} {} {} 0 {} {}",
+            "{} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {}",
             board_str,
             side,
             phase,
@@ -2237,14 +2294,16 @@ impl MillRules {
             node_to_legacy_square(state.last_mill_to[0]),
             node_to_legacy_square(state.last_mill_from[1]),
             node_to_legacy_square(state.last_mill_to[1]),
+            formed_mills_field,
             state.ply_since_capture,
             full_move,
         );
 
-        // Trailing extension fields.  Rust keeps per-state (rather than
-        // per-side) bitmaps for capture targets, so we attribute every
-        // active target to the side currently holding pending_removals.
-        let attribute_to_white = state.pending_removals[0] > 0;
+        // Trailing extension fields.  Rust keeps single (active-side)
+        // capture-state bitmaps because the legacy engine only ever
+        // populates the side currently owing the removal; attribute the
+        // payload to whichever colour is to move.
+        let attribute_to_white = state.side_to_move == 0;
         append_capture_field(
             &mut out,
             'c',
@@ -2266,6 +2325,12 @@ impl MillRules {
             state.leap_count,
             attribute_to_white,
         );
+        if state.preferred_remove_target >= 0 {
+            out.push_str(&format!(
+                " p:{}",
+                node_to_legacy_square(state.preferred_remove_target)
+            ));
+        }
         if state.stalemate_removing {
             out.push_str(" s:1");
         } else if state.both_stalemate_removing {
@@ -2298,6 +2363,36 @@ fn node_to_legacy_square(node: i8) -> u8 {
         23, 16, 17, 18, 19, 20, 21, 22, 15, 8, 9, 10, 11, 12, 13, 14, 7, 0, 1, 2, 3, 4, 5, 6,
     ];
     (NODE_TO_FEN_POS[node as usize] + 8) as u8
+}
+
+/// Translate a square bitmap expressed in legacy C++ Square ids (bits
+/// 8..32 set, bits 0..8 unused) into the equivalent Rust dense node id
+/// bitmap.  Used by `set_from_fen` to re-import the FEN field-14 mills
+/// bitmask.
+fn legacy_square_bb_to_node_bb(legacy_bb: u32) -> u32 {
+    let mut node_bb = 0_u32;
+    for legacy_sq in 8_u8..32 {
+        if (legacy_bb & (1u32 << legacy_sq)) != 0 {
+            let node = legacy_square_to_node_signed(legacy_sq);
+            if (0..24).contains(&node) {
+                node_bb |= 1u32 << (node as u8);
+            }
+        }
+    }
+    node_bb
+}
+
+/// Inverse of [`legacy_square_bb_to_node_bb`].  Used by `export_fen` to
+/// emit the FEN field-14 mills bitmask in the legacy bit layout.
+fn node_bb_to_legacy_square_bb(node_bb: u32) -> u32 {
+    let mut legacy_bb = 0_u32;
+    for node in 0_u8..24 {
+        if (node_bb & (1u32 << node)) != 0 {
+            let legacy_sq = node_to_legacy_square(node as i8);
+            legacy_bb |= 1u32 << legacy_sq;
+        }
+    }
+    legacy_bb
 }
 
 /// Parse a single capture-field segment shaped like
@@ -2438,6 +2533,12 @@ fn position_key(state: &MillState) -> u64 {
     mix(state.intervention_count);
     mix(state.leap_count);
     mix(u8::from(state.mill_available_at_removal));
+    for byte in state.formed_mills_bb[0].to_le_bytes() {
+        mix(byte);
+    }
+    for byte in state.formed_mills_bb[1].to_le_bytes() {
+        mix(byte);
+    }
     if key == 0 {
         1
     } else {
@@ -5025,11 +5126,13 @@ mod tests {
         assert!(parsed.stalemate_removing);
     }
 
-    /// Master format `s:2` flips `both_stalemate_removing` and `p:NN` is
-    /// silently consumed.  Tolerant parser must accept extra whitespace.
+    /// Master format `s:2` flips `both_stalemate_removing`.  `p:NN`
+    /// preserves the preferredRemoveTarget hint as a Rust dense node id.
     #[test]
     fn set_from_fen_extensions_supports_both_stalemate_and_preferred_remove() {
         let rules = MillRules::default();
+        // Legacy Square id 21 == "b2"; the FEN_TO_NODE permutation maps
+        // it to Rust dense node 14.
         let fen = concat!(
             "********/********/******** w p p 0 9 0 9 0 0 0 0 0 0 0 0 1",
             " p:21 s:2"
@@ -5037,6 +5140,71 @@ mod tests {
         let state = rules.set_from_fen(fen).expect("valid trailing tokens");
         assert!(!state.stalemate_removing);
         assert!(state.both_stalemate_removing);
+        assert_eq!(
+            state.preferred_remove_target, 14,
+            "p:21 (legacy Square 21 = b2) must map to Rust node 14"
+        );
+        // Round-trip: export must emit `p:21` again.
+        let exported = rules.export_fen(&state);
+        assert!(
+            exported.contains("p:21"),
+            "round-trip preferred-remove: {exported}"
+        );
+    }
+
+    /// `formed_mills_bb` is FEN field 14, encoded as
+    /// `((white_legacy_bb) << 32) | black_legacy_bb`.  Per-side bits set
+    /// by `note_mill_formation` (oneTimeUseMill semantics).  Test the
+    /// full round-trip and that the bitmask field becomes non-zero after
+    /// a real mill formation under one_time_use_mill.
+    #[test]
+    fn export_fen_carries_formed_mills_bb_round_trip() {
+        let rules = MillRules::new(MillVariantOptions {
+            one_time_use_mill: true,
+            ..MillVariantOptions::default()
+        });
+        // White just placed at node 2 closing the mill 0/1/2.  `apply`
+        // takes the place action; under one_time_use_mill,
+        // note_mill_formation populates formed_mills_bb[0].
+        let mut state = MillState {
+            side_to_move: 0,
+            phase: MillPhase::Placing,
+            move_number: 0,
+            pieces_in_hand: [9, 9],
+            pieces_on_board: [0, 0],
+            ..MillState::default()
+        };
+        state.board[0] = 1;
+        state.board[1] = 1;
+        let after = rules.apply(
+            &rules.encode_state(state),
+            Action {
+                kind_tag: MillActionKind::Place as i16,
+                from_node: -1,
+                to_node: 2,
+                aux: -1,
+                payload_bits: 0,
+            },
+        );
+        let after_state = MillRules::decode(&after);
+        assert_ne!(
+            after_state.formed_mills_bb[0], 0,
+            "mill formation must populate formed_mills_bb[white]"
+        );
+        let expected_white_bb = (1u32 << 0) | (1u32 << 1) | (1u32 << 2);
+        assert_eq!(after_state.formed_mills_bb[0], expected_white_bb);
+        assert_eq!(after_state.formed_mills_bb[1], 0);
+
+        // Now FEN export must contain a non-zero field 14 and round-trip
+        // through set_from_fen back to the same per-side bitmaps.
+        let exported = rules.export_fen(&after_state);
+        let fields: Vec<&str> = exported.split_whitespace().collect();
+        let formed_field: u64 = fields[14].parse().expect("field 14 must be a u64");
+        assert_ne!(formed_field, 0, "FEN field 14 must be non-zero");
+        let parsed = rules
+            .set_from_fen(&exported)
+            .expect("export must round-trip");
+        assert_eq!(parsed.formed_mills_bb, after_state.formed_mills_bb);
     }
 
     /// Field 3 must mirror legacy `Position::fen()` action token:
