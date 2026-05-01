@@ -31,6 +31,26 @@ class TapHandler {
       GameController().position.pieceOnBoardCount[PieceColor.white] == 0 &&
       GameController().position.pieceOnBoardCount[PieceColor.black] == 0;
 
+  void _recordBoardTap(int sq) {
+    final GameStateSnapshot? snapshot = GameController().activeSessionSnapshot;
+    final bool useNativeSnapshot =
+        DB().generalSettings.useNativeMillSession && snapshot != null;
+    RecordingService()
+        .recordEvent(RecordingEventType.boardTap, <String, dynamic>{
+          'sq': sq,
+          'phase': useNativeSnapshot
+              ? snapshot.phase
+              : GameController().position.phase.toString(),
+          'action': useNativeSnapshot
+              ? snapshot.payload['action']?.toString()
+              : GameController().position.action.toString(),
+          'sideToMove': useNativeSnapshot
+              ? snapshot.activeSeat.name
+              : GameController().position.sideToMove.string,
+          'gameMode': GameController().gameInstance.gameMode.toString(),
+        });
+  }
+
   Future<EngineResponse?> _tryNativeSessionTap(int sq) async {
     if (!DB().generalSettings.useNativeMillSession) {
       _nativeSessionTapController.clearSelection();
@@ -129,14 +149,7 @@ class TapHandler {
 
   Future<EngineResponse> onBoardTap(int sq) async {
     // Record every tap so replay can reproduce selection + move sequences.
-    RecordingService()
-        .recordEvent(RecordingEventType.boardTap, <String, dynamic>{
-          'sq': sq,
-          'phase': GameController().position.phase.toString(),
-          'action': GameController().position.action.toString(),
-          'sideToMove': GameController().position.sideToMove.string,
-          'gameMode': GameController().gameInstance.gameMode.toString(),
-        });
+    _recordBoardTap(sq);
 
     // Prevent interaction when analysis is in progress
     if (AnalysisMode.isAnalyzing) {
