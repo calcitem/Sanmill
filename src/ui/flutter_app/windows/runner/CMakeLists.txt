@@ -94,7 +94,12 @@ target_compile_definitions(${BINARY_NAME} PRIVATE "NOMINMAX")
 # source files in parallel.
 if(MSVC)
   target_compile_options(${BINARY_NAME} PRIVATE /MP)
-  
+
+  # Force UTF-8 source and execution character sets so that C++ source files
+  # with non-ASCII (UTF-8) content compile correctly on systems whose active
+  # code page is not UTF-8 (e.g. GBK on Chinese Windows).
+  target_compile_options(${BINARY_NAME} PRIVATE /utf-8)
+
   # Enable full debug info for Debug builds.
   # /DEBUG:FULL embeds all debug info into the PDB file.
   target_link_options(${BINARY_NAME} PRIVATE "$<$<CONFIG:Debug>:/DEBUG:FULL>")

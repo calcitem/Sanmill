@@ -10,7 +10,15 @@
 #include "base.h"
 #include "command_channel.h"
 
-extern int eng_main(int argc, char *argv[]);
+/// Stub for the legacy C++ engine entry-point that was defined in
+/// src/main.cpp (removed in Phase 8.2).  The Flutter app now drives game
+/// logic exclusively through the Rust/FRB NativeMillGameSession path;
+/// this stub satisfies the linker while leaving the legacy MethodChannel
+/// thread alive for backward-compatibility during the transition.
+static int eng_main(int /*argc*/, char ** /*argv*/)
+{
+    return 0;
+}
 
 void println(const char *str, ...)
 {
