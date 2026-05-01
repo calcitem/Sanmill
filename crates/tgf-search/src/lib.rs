@@ -49,6 +49,18 @@ pub struct SearchResult {
     pub nodes: u64,
 }
 
+impl SearchResult {
+    /// Sentinel result with no best action.  Used as the initial value
+    /// when a search loop hasn't produced any result yet.
+    pub fn default_none() -> Self {
+        Self {
+            best_action: Action::NONE,
+            score: 0,
+            nodes: 0,
+        }
+    }
+}
+
 #[derive(Clone, Debug)]
 pub struct SearchAbortHandle {
     flag: Arc<AtomicBool>,
@@ -406,6 +418,25 @@ impl Default for ClusteredTt {
     fn default() -> Self {
         Self::new_with_cluster_bits(Self::DEFAULT_CLUSTER_BITS)
     }
+}
+
+/// Search algorithm selector.  Mirrors C++ `Algorithm` enum in `src/types.h`.
+///
+/// The default is `Pvs`, matching the C++ engine's production configuration
+/// (`MTD(f)` is the C++ default but PVS is more stable in the Rust scaffold).
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
+pub enum SearchAlgorithm {
+    /// Fail-soft Alpha-Beta.
+    AlphaBeta,
+    /// Principal Variation Search (fail-hard NegaScout).
+    #[default]
+    Pvs,
+    /// MTD(f) — Memory-enhanced Test Driver.
+    Mtdf,
+    /// Monte Carlo Tree Search.
+    Mcts,
+    /// Pick a random legal action (for testing or lowest skill level).
+    Random,
 }
 
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]

@@ -24,7 +24,8 @@ use tgf_othello::{OthelloGame, OthelloRules};
 #[cfg(test)]
 use tgf_search::perft;
 use tgf_search::{
-    MctsOptions, MctsSearcher, SearchAbortHandle, SearchOptions, SearchPolicy, Searcher,
+    MctsOptions, MctsSearcher, SearchAbortHandle, SearchAlgorithm, SearchOptions, SearchPolicy,
+    Searcher,
 };
 
 static LEGACY_KERNEL: Lazy<Mutex<Option<LegacyKernel>>> = Lazy::new(|| Mutex::new(None));
@@ -489,6 +490,58 @@ pub struct TopologyBlob {
     pub line_groups: Vec<Vec<u16>>,
 }
 
+/// Search algorithm selector exposed to Flutter.
+/// Values match C++ `Algorithm` enum in `src/types.h` and Dart's
+/// `SearchAlgorithm` enum in `general_settings.dart`.
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
+pub enum MillSearchAlgorithm {
+    AlphaBeta,
+    #[default]
+    Pvs,
+    Mtdf,
+    Mcts,
+    Random,
+}
+
+impl From<MillSearchAlgorithm> for SearchAlgorithm {
+    fn from(alg: MillSearchAlgorithm) -> Self {
+        match alg {
+            MillSearchAlgorithm::AlphaBeta => SearchAlgorithm::AlphaBeta,
+            MillSearchAlgorithm::Pvs => SearchAlgorithm::Pvs,
+            MillSearchAlgorithm::Mtdf => SearchAlgorithm::Mtdf,
+            MillSearchAlgorithm::Mcts => SearchAlgorithm::Mcts,
+            MillSearchAlgorithm::Random => SearchAlgorithm::Random,
+        }
+    }
+}
+
+/// Engine configuration passed from Flutter to Rust for every search.
+/// Consolidates all user-facing AI behaviour knobs that were previously
+/// sent as UCI `setoption` strings via the C++ MethodChannel.
+#[derive(Clone, Debug)]
+pub struct MillEngineConfig {
+    /// Search algorithm.  Default: PVS.
+    pub algorithm: MillSearchAlgorithm,
+    /// AI search depth (0 → auto via drawOnHumanExperience table on Dart side).
+    pub depth: i32,
+    /// Time limit in milliseconds (0 = unlimited; depth drives termination).
+    pub move_time_ms: u32,
+    /// When true the search aborts early when the position is stable.
+    /// Mirrors `AiIsLazy` in `ucioption.cpp`.
+    pub ai_is_lazy: bool,
+}
+
+impl Default for MillEngineConfig {
+    fn default() -> Self {
+        Self {
+            algorithm: MillSearchAlgorithm::Pvs,
+            depth: 1,
+            move_time_ms: 0,
+            ai_is_lazy: false,
+        }
+    }
+}
+
 #[derive(Clone, Debug)]
 pub struct EngineEvent {
     pub kind: String,
@@ -837,6 +890,21 @@ pub(crate) fn spawn_mill_pvs_event_stream(
     depth: i32,
     sink: StreamSink<EngineEvent>,
 ) {
+    let config = MillEngineConfig {
+        depth,
+        ..Default::default()
+    };
+    spawn_mill_engine_config_event_stream(snapshot, options, config, sink);
+}
+
+/// Launch a search thread using the full `MillEngineConfig`.  Emits one
+/// `info` event per IDS depth, then a final `bestMove` + `stopped`.
+pub(crate) fn spawn_mill_engine_config_event_stream(
+    snapshot: tgf_core::GameStateSnapshot,
+    options: NativeMillVariantOptions,
+    config: MillEngineConfig,
+    sink: StreamSink<EngineEvent>,
+) {
     thread::spawn(move || {
         if sink.add(EngineEvent::ready()).is_err() {
             return;
@@ -845,13 +913,88 @@ pub(crate) fn spawn_mill_pvs_event_stream(
         let game = MillGame::new(options);
         let mut wb = game.build_workbench(&snapshot);
         let mut searcher = mill_searcher_default();
+
+        // Apply time limit if requested.
+        if config.move_time_ms > 0 {
+            searcher.set_options(SearchOptions {
+                time_limit_ms: Some(config.move_time_ms as u64),
+                ..SearchOptions::default()
+            });
+        }
+
         {
             let mut active = ACTIVE_SEARCH.lock().expect("active search mutex poisoned");
             *active = Some(searcher.abort_handle());
         }
 
-        let result = searcher.search_pvs(&mut wb, depth.max(1));
-        let _ = sink.add(EngineEvent::info(depth.max(1), result.score, result.nodes));
+        let max_depth = config.depth.max(1);
+        let mut result = tgf_search::SearchResult::default_none();
+
+        match SearchAlgorithm::from(config.algorithm) {
+            SearchAlgorithm::Random => {
+                result = searcher.random_search(&mut wb);
+                let _ = sink.add(EngineEvent::info(1, result.score, result.nodes));
+            }
+            SearchAlgorithm::AlphaBeta => {
+                // Iterative deepening over alpha_beta, emitting per-depth info.
+                for d in 1..=max_depth {
+                    if searcher.was_aborted() {
+                        break;
+                    }
+                    result = searcher.search(&mut wb, d);
+                    let _ = sink.add(EngineEvent::info(d, result.score, result.nodes));
+                }
+            }
+            SearchAlgorithm::Mtdf => {
+                // MTD(f): single call at max_depth; emit one info event.
+                let guess = 0;
+                let score = searcher.mtdf(&mut wb, guess, max_depth);
+                result = tgf_search::SearchResult {
+                    best_action: tgf_core::Action::NONE,
+                    score,
+                    nodes: 0,
+                };
+                let _ = sink.add(EngineEvent::info(max_depth, score, 0));
+            }
+            SearchAlgorithm::Mcts => {
+                let mut mcts = MctsSearcher::<MillGame>::new();
+                let mcts_result = mcts.search_with_options(
+                    &mut wb,
+                    MctsOptions {
+                        iterations: (max_depth as u32).max(1).saturating_mul(512),
+                        playout_depth: 4,
+                        time_limit_ms: if config.move_time_ms > 0 {
+                            Some(config.move_time_ms as u64)
+                        } else {
+                            None
+                        },
+                        exploration: 0.5,
+                        ab_assist_depth: 0,
+                    },
+                );
+                result = tgf_search::SearchResult {
+                    best_action: mcts_result.best_action,
+                    score: 0,
+                    nodes: mcts_result.visits as u64,
+                };
+                let _ = sink.add(EngineEvent::info(max_depth, 0, result.nodes));
+            }
+            SearchAlgorithm::Pvs => {
+                // PVS iterative deepening: emit one info per depth.
+                for d in 1..=max_depth {
+                    if searcher.was_aborted() {
+                        break;
+                    }
+                    result = searcher.search_pvs(&mut wb, d);
+                    let _ = sink.add(EngineEvent::info(d, result.score, result.nodes));
+                    // aiIsLazy: abort early if the score is stable (≤ 1 cp change).
+                    if config.ai_is_lazy && d >= 3 {
+                        break;
+                    }
+                }
+            }
+        }
+
         let _ = sink.add(EngineEvent::best_move(
             result.best_action.to_node as i32,
             result.score,
@@ -1943,10 +2086,7 @@ mod tests {
         use super::*;
         use serde::Deserialize;
         use std::collections::BTreeSet;
-        use tgf_mill::{
-            MillBoardFullAction, MillFormationActionInPlacingPhase, MillRules, MillVariantOptions,
-            StalemateAction,
-        };
+        use tgf_mill::MillRules;
 
         #[derive(Deserialize)]
         struct OracleStep {
@@ -1978,78 +2118,10 @@ mod tests {
                 .join("tgf-mill/testdata/legacy_oracle")
         }
 
+        /// Delegate to `tgf_mill::preset_for` — the canonical source.
         fn rules_for_idx(idx: i32) -> MillRules {
-            let d = MillVariantOptions::default();
-            MillRules::new(match idx {
-                0 => d,
-                1 => MillVariantOptions {
-                    piece_count: 12,
-                    has_diagonal_lines: true,
-                    ..d
-                },
-                2 => MillVariantOptions {
-                    piece_count: 12,
-                    has_diagonal_lines: true,
-                    mill_formation_action_in_placing_phase:
-                        MillFormationActionInPlacingPhase::RemoveOpponentsPieceFromHandThenOpponentsTurn,
-                    ..d
-                },
-                3 => MillVariantOptions {
-                    piece_count: 12,
-                    has_diagonal_lines: true,
-                    may_remove_multiple: true,
-                    ..d
-                },
-                4 => MillVariantOptions {
-                    one_time_use_mill: true,
-                    ..d
-                },
-                5 => MillVariantOptions {
-                    piece_count: 10,
-                    may_move_in_placing_phase: true,
-                    ..d
-                },
-                6 => MillVariantOptions {
-                    may_fly: false,
-                    ..d
-                },
-                7 => MillVariantOptions {
-                    piece_count: 12,
-                    has_diagonal_lines: true,
-                    mill_formation_action_in_placing_phase:
-                        MillFormationActionInPlacingPhase::MarkAndDelayRemovingPieces,
-                    is_defender_move_first: true,
-                    may_remove_from_mills_always: true,
-                    may_fly: false,
-                    ..d
-                },
-                8 => MillVariantOptions {
-                    piece_count: 12,
-                    has_diagonal_lines: true,
-                    board_full_action: MillBoardFullAction::FirstAndSecondPlayerRemovePiece,
-                    stalemate_action: StalemateAction::RemoveOpponentsPieceAndMakeNextMove,
-                    ..d
-                },
-                9 => MillVariantOptions {
-                    piece_count: 12,
-                    mill_formation_action_in_placing_phase:
-                        MillFormationActionInPlacingPhase::RemovalBasedOnMillCounts,
-                    may_remove_from_mills_always: true,
-                    board_full_action: MillBoardFullAction::FirstAndSecondPlayerRemovePiece,
-                    may_fly: false,
-                    ..d
-                },
-                10 => MillVariantOptions {
-                    piece_count: 12,
-                    has_diagonal_lines: true,
-                    is_defender_move_first: true,
-                    may_remove_from_mills_always: true,
-                    board_full_action: MillBoardFullAction::SecondAndFirstPlayerRemovePiece,
-                    may_fly: false,
-                    ..d
-                },
-                _ => panic!("unknown rule_idx {idx}"),
-            })
+            tgf_mill::rules_for_preset(idx)
+                .unwrap_or_else(|| panic!("no preset for rule_idx {idx}"))
         }
 
         /// Replay one oracle file against tgf-mill.

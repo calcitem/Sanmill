@@ -27,7 +27,8 @@ use tgf_mill::{MillPhase, MillRules, MillVariantOptions as NativeMillVariantOpti
 use tgf_othello::OthelloRules;
 
 use super::simple::{
-    spawn_kernel_search_error, spawn_mill_pvs_event_stream, EngineEvent, MillVariantOptions,
+    spawn_kernel_search_error, spawn_mill_engine_config_event_stream, spawn_mill_pvs_event_stream,
+    EngineEvent, MillEngineConfig, MillVariantOptions,
 };
 use crate::frb_generated::StreamSink;
 
@@ -312,7 +313,8 @@ pub fn tgf_kernel_redo_depth(handle: u32) -> Result<u32, String> {
 /// PVS search over the kernel's **current** Mill position, using the same
 /// variant options as [tgf_kernel_create_mill].
 ///
-/// Streams the same [EngineEvent] sequence as [crate::api::simple::native_mill_search_events].
+/// Streams the same [EngineEvent] sequence as [crate::api::simple::native_mill_search_events]:
+/// one `info` event per IDS depth, then `bestMove` + `stopped`.
 pub fn tgf_kernel_mill_search_events(handle: u32, depth: i32, sink: StreamSink<EngineEvent>) {
     let game_id = match with_kernel(handle, |k| k.game_id().to_owned()) {
         Ok(id) => id,
@@ -336,6 +338,38 @@ pub fn tgf_kernel_mill_search_events(handle: u32, depth: i32, sink: StreamSink<E
 
     let options = mill_variant_for_handle(handle);
     spawn_mill_pvs_event_stream(snapshot, options, depth, sink);
+}
+
+/// Full-config search over the kernel's **current** Mill position.
+///
+/// Accepts a [`MillEngineConfig`] that controls algorithm, depth, time limit
+/// and lazy-search behaviour.  Preferred over [tgf_kernel_mill_search_events]
+/// for production use once the Flutter side has migrated to the typed config.
+pub fn tgf_kernel_mill_search_events_with_config(
+    handle: u32,
+    config: MillEngineConfig,
+    sink: StreamSink<EngineEvent>,
+) {
+    let game_id = match with_kernel(handle, |k| k.game_id().to_owned()) {
+        Ok(id) => id,
+        Err(e) => {
+            spawn_kernel_search_error(e, sink);
+            return;
+        }
+    };
+    if game_id != "mill" {
+        spawn_kernel_search_error(format!("kernel game_id is {game_id}, expected mill"), sink);
+        return;
+    }
+    let snapshot = match with_kernel(handle, |k| k.snapshot()) {
+        Ok(s) => s,
+        Err(e) => {
+            spawn_kernel_search_error(e, sink);
+            return;
+        }
+    };
+    let options = mill_variant_for_handle(handle);
+    spawn_mill_engine_config_event_stream(snapshot, options, config, sink);
 }
 
 // ---------------------------------------------------------------------------

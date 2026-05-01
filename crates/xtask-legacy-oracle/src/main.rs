@@ -15,9 +15,7 @@
 use serde::{Deserialize, Serialize};
 use std::path::Path;
 use tgf_legacy_cxx::{shuffling_enabled, LegacyKernel};
-use tgf_mill::{
-    MillBoardFullAction, MillFormationActionInPlacingPhase, MillVariantOptions, StalemateAction,
-};
+use tgf_mill::preset_for;
 
 // ---------------------------------------------------------------------------
 // Oracle data structures (serialized to JSON)
@@ -79,108 +77,10 @@ fn xorshift64(state: &mut u64, len: usize) -> usize {
 // Must mirror RULES[] in src/rule.cpp exactly.
 // ---------------------------------------------------------------------------
 
-fn rule_for_idx(idx: i32) -> (&'static str, MillVariantOptions) {
-    let d = MillVariantOptions::default();
-    match idx {
-        0 => ("Nine Men's Morris", d),
-        1 => (
-            "Twelve Men's Morris",
-            MillVariantOptions {
-                piece_count: 12,
-                has_diagonal_lines: true,
-                ..d
-            },
-        ),
-        2 => (
-            "Dooz",
-            MillVariantOptions {
-                piece_count: 12,
-                has_diagonal_lines: true,
-                mill_formation_action_in_placing_phase:
-                    MillFormationActionInPlacingPhase::RemoveOpponentsPieceFromHandThenOpponentsTurn,
-                ..d
-            },
-        ),
-        3 => (
-            "Morabaraba",
-            MillVariantOptions {
-                piece_count: 12,
-                has_diagonal_lines: true,
-                may_remove_multiple: true,
-                ..d
-            },
-        ),
-        4 => (
-            "Russian Mill",
-            MillVariantOptions {
-                one_time_use_mill: true,
-                ..d
-            },
-        ),
-        5 => (
-            "Lasker Morris",
-            MillVariantOptions {
-                piece_count: 10,
-                may_move_in_placing_phase: true,
-                ..d
-            },
-        ),
-        6 => (
-            "Cheng San Qi",
-            MillVariantOptions {
-                may_fly: false,
-                ..d
-            },
-        ),
-        7 => (
-            "Da San Qi",
-            MillVariantOptions {
-                piece_count: 12,
-                has_diagonal_lines: true,
-                mill_formation_action_in_placing_phase:
-                    MillFormationActionInPlacingPhase::MarkAndDelayRemovingPieces,
-                is_defender_move_first: true,
-                may_remove_from_mills_always: true,
-                may_fly: false,
-                ..d
-            },
-        ),
-        8 => (
-            "Zhi Qi",
-            MillVariantOptions {
-                piece_count: 12,
-                has_diagonal_lines: true,
-                board_full_action: MillBoardFullAction::FirstAndSecondPlayerRemovePiece,
-                stalemate_action: StalemateAction::RemoveOpponentsPieceAndMakeNextMove,
-                ..d
-            },
-        ),
-        9 => (
-            "El Filja",
-            MillVariantOptions {
-                piece_count: 12,
-                mill_formation_action_in_placing_phase:
-                    MillFormationActionInPlacingPhase::RemovalBasedOnMillCounts,
-                may_remove_from_mills_always: true,
-                board_full_action: MillBoardFullAction::FirstAndSecondPlayerRemovePiece,
-                may_fly: false,
-                ..d
-            },
-        ),
-        10 => (
-            "Experimental",
-            MillVariantOptions {
-                piece_count: 12,
-                has_diagonal_lines: true,
-                is_defender_move_first: true,
-                may_remove_from_mills_always: true,
-                board_full_action: MillBoardFullAction::SecondAndFirstPlayerRemovePiece,
-                may_fly: false,
-                ..d
-            },
-        ),
-        _ => panic!("unknown rule_idx {idx}"),
-    }
+/// Delegate to `tgf_mill::preset_for` — the canonical source of rule_idx mappings.
+fn rule_for_idx(idx: i32) -> (&'static str, tgf_mill::MillVariantOptions) {
+    let preset = preset_for(idx).unwrap_or_else(|| panic!("unknown rule_idx {idx}"));
+    (preset.name, preset.options)
 }
 
 /// Maximum perft depth per rule_idx (conservative to keep run time fast).
