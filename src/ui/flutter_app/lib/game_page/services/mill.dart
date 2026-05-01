@@ -33,6 +33,7 @@ import '../../game_shell/game_session_scope.dart';
 import '../../games/mill/mill_session_tap_controller.dart';
 import '../../games/mill/native_mill_ai_turn_controller.dart';
 import '../../games/mill/native_mill_game_session.dart';
+import '../../games/mill/native_mill_snapshot_board_view.dart';
 import '../../general_settings/models/general_settings.dart';
 import '../../generated/assets/assets.gen.dart';
 import '../../generated/intl/l10n.dart';

@@ -65,6 +65,14 @@ class GameController {
   GameStateSnapshot? get activeSessionSnapshot =>
       activeSessionSnapshotNotifier.value;
 
+  NativeMillSnapshotBoardView? get activeNativeMillBoardView {
+    final GameStateSnapshot? snapshot = activeSessionSnapshot;
+    if (snapshot == null) {
+      return null;
+    }
+    return NativeMillSnapshotBoardView.fromSnapshot(snapshot);
+  }
+
   set activeSessionSnapshot(GameStateSnapshot? snapshot) {
     activeSessionSnapshotNotifier.value = snapshot;
   }
