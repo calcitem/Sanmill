@@ -27,6 +27,13 @@ class GameOptionsModal extends StatelessWidget {
 
   static const String _logTag = "[GameOptionsModal]";
 
+  String _sideToMoveName(BuildContext context) {
+    final PieceColor side =
+        GameController().activeSessionSideToMove ??
+        GameController().position.sideToMove;
+    return side.playerName(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     return GamePageDialog(
@@ -72,8 +79,7 @@ class GameOptionsModal extends StatelessWidget {
 
                   GameController().engineToGo(context, isMoveNow: false);
 
-                  final String side = GameController().position.sideToMove
-                      .playerName(context);
+                  final String side = _sideToMoveName(context);
 
                   if (DB().ruleSettings.mayMoveInPlacingPhase) {
                     GameController().headerTipNotifier.showTip(
@@ -283,9 +289,7 @@ class GameOptionsModal extends StatelessWidget {
 
             GameController().engineToGo(context, isMoveNow: false);
 
-            final String side = GameController().position.sideToMove.playerName(
-              context,
-            );
+            final String side = _sideToMoveName(context);
 
             if (DB().ruleSettings.mayMoveInPlacingPhase) {
               GameController().headerTipNotifier.showTip(
