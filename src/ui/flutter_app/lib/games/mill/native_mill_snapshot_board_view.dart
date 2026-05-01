@@ -75,6 +75,19 @@ class NativeMillSnapshotBoardView {
     return out;
   }
 
+  int pieceCount(PlayerSeat seat) {
+    if (seat == PlayerSeat.none) {
+      return 0;
+    }
+    int count = 0;
+    for (int node = 0; node < nodeCount; node++) {
+      if (pieceAtNode(node) == seat) {
+        count++;
+      }
+    }
+    return count;
+  }
+
   Map<PlayerSeat, List<List<int>>> usedMillLinesAsLegacySquares({
     required bool hasDiagonalLines,
   }) {

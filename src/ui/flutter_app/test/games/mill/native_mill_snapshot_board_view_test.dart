@@ -41,6 +41,9 @@ void main() {
       expect(view.pieceAtLegacyGridIndex(0), PlayerSeat.first);
       expect(view.pieceAtLegacyGridIndex(23), PlayerSeat.second);
       expect(view.pieceAtLegacyGridIndex(24), isNull);
+      expect(view.pieceCount(PlayerSeat.first), 1);
+      expect(view.pieceCount(PlayerSeat.second), 1);
+      expect(view.pieceCount(PlayerSeat.none), 0);
       expect(view.pieceAtLegacySquare(0), isNull);
       expect(view.pieceAtNode(8), isNull);
       expect(view.pieceAtNode(-1), isNull);
