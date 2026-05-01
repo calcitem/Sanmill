@@ -52,6 +52,10 @@ class MillSessionRecorderBridge {
     if (parent == null) {
       return;
     }
+    final int childIndex = parent.children.indexOf(current!);
+    if (childIndex >= 0) {
+      _recorder.setPreferredChild(parent, childIndex);
+    }
     _recorder.activeNode = parent;
     _recorder.moveCountNotifier.value = _recorder.currentPath.length;
   }
@@ -61,7 +65,12 @@ class MillSessionRecorderBridge {
     if (next.isEmpty) {
       return;
     }
-    _recorder.activeNode = next.first;
+    final PgnNode<mill.ExtMove> current =
+        _recorder.activeNode ?? _recorder.pgnRoot;
+    final int childIndex = _recorder
+        .getPreferredChildIndex(current)
+        .clamp(0, next.length - 1);
+    _recorder.activeNode = next[childIndex];
     _recorder.moveCountNotifier.value = _recorder.currentPath.length;
   }
 

@@ -8,6 +8,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart'
     show ExternalLibrary;
 import 'package:flutter_test/flutter_test.dart';
+import 'package:sanmill/game_page/services/import_export/pgn.dart';
 import 'package:sanmill/game_page/services/mill.dart' as mill;
 import 'package:sanmill/game_platform/game_id.dart';
 import 'package:sanmill/game_platform/game_session.dart';
@@ -168,6 +169,43 @@ void main() {
         expect(recorder.currentPath.map((mill.ExtMove m) => m.move), <String>[
           'a7',
           'd7',
+        ]);
+      },
+      skip: _nativeLibrarySkipReason,
+    );
+
+    test(
+      'redo resumes the variation selected before undo',
+      () async {
+        final _EventOnlySession session = _EventOnlySession();
+        final mill.GameRecorder recorder = mill.GameRecorder();
+        final MillSessionRecorderBridge bridge = MillSessionRecorderBridge(
+          session: session,
+          recorder: recorder,
+        );
+        addTearDown(bridge.dispose);
+
+        recorder.appendMove(mill.ExtMove('a7', side: mill.PieceColor.white));
+        recorder.appendMove(mill.ExtMove('d7', side: mill.PieceColor.black));
+        final PgnNode<mill.ExtMove> afterA7 = recorder.activeNode!.parent!;
+        recorder.activeNode = afterA7;
+        recorder.appendMove(mill.ExtMove('g7', side: mill.PieceColor.black));
+        expect(recorder.currentPath.map((mill.ExtMove m) => m.move), <String>[
+          'a7',
+          'g7',
+        ]);
+
+        session.emit(const GameSessionEvent(MillEventTypes.undoApplied));
+        await Future<void>.delayed(Duration.zero);
+        expect(recorder.currentPath.map((mill.ExtMove m) => m.move), <String>[
+          'a7',
+        ]);
+
+        session.emit(const GameSessionEvent(MillEventTypes.redoApplied));
+        await Future<void>.delayed(Duration.zero);
+        expect(recorder.currentPath.map((mill.ExtMove m) => m.move), <String>[
+          'a7',
+          'g7',
         ]);
       },
       skip: _nativeLibrarySkipReason,
