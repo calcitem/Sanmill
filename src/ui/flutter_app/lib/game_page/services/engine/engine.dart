@@ -78,74 +78,22 @@ class Engine {
     await startup();
   }
 
+  /// Stub: the C++ UCI engine (engine_main.cpp) is a no-op stub as of
+  /// Phase 8.2.  All AI is handled by the Rust/FRB NativeMillGameSession
+  /// path.  This method is retained for callers that have not yet been
+  /// migrated but it no longer initialises a MethodChannel thread.
   Future<void> startup() async {
-    if (!_isPlatformChannelAvailable) {
+    if (_started) {
       return;
     }
-
-    final Future<void>? pending = _startupInProgress;
-    if (pending != null) {
-      await pending;
-      return;
-    }
-
-    final Stopwatch sw = Stopwatch()..start();
-
-    final Future<void> task = () async {
-      // If engine already started, only refresh options and ensure readiness
-      if (_started) {
-        await setOptions();
-        _isSearchCancelled = false;
-        await _send("isready");
-        await _waitResponse(
-          <String>["readyok"],
-          expectedEpoch: _searchEpoch,
-          isStartup: true,
-        );
-        return;
-      }
-
-      // First startup: bring up native engine, wait for uciok, then send options
-      await _platform.invokeMethod("startup");
-      _isSearchCancelled = false;
-      final int currentEpoch = _searchEpoch;
-      await _waitResponse(
-        <String>["uciok"],
-        expectedEpoch: currentEpoch,
-        isStartup: true,
-      );
-
-      _lastGeneralOptions = null;
-      _lastRuleOptions = null;
-      await setOptions();
-      _started = true;
-    }();
-
-    _startupInProgress = task;
-
-    try {
-      await task;
-    } finally {
-      sw.stop();
-      final int droppedCount = await getResponseDroppedCount();
-      logger.i(
-        "$_logTag startup finished in ${sw.elapsedMilliseconds}ms, "
-        "response queue dropped count: $droppedCount",
-      );
-      // Only clear if we're still pointing at the same in-flight future.
-      if (identical(_startupInProgress, task)) {
-        _startupInProgress = null;
-      }
-    }
+    _started = true;
+    _isSearchCancelled = false;
+    logger.i("$_logTag startup: legacy C++ engine is a stub; Rust FRB path is active");
   }
 
+  /// Stub: no-op since the C++ UCI engine thread is no longer started.
   Future<void> _send(String command) async {
-    if (!_isPlatformChannelAvailable) {
-      return;
-    }
-
-    logger.i("$_logTag send: $command");
-    await _platform.invokeMethod("send", command);
+    logger.i("$_logTag send (stub, not delivered): $command");
   }
 
   Future<void> _sendOptions(String name, dynamic option) async {
@@ -182,20 +130,15 @@ class Engine {
     await _sendOptions(name, value);
   }
 
+  /// Stub: always returns null since no C++ UCI engine is running.
   Future<String?> _read() async {
-    if (!_isPlatformChannelAvailable) {
-      return "";
-    }
-
-    return _platform.invokeMethod("read");
+    return null;
   }
 
+  /// Stub: no C++ UCI engine thread to shut down.
   Future<void> shutdown() async {
-    if (!_isPlatformChannelAvailable) {
-      return;
-    }
-
-    await _platform.invokeMethod("shutdown");
+    _started = false;
+    logger.i("$_logTag shutdown (stub)");
   }
 
   /*
@@ -206,21 +149,8 @@ class Engine {
   }
   */
 
-  FutureOr<bool> isThinking() async {
-    if (!_isPlatformChannelAvailable) {
-      return false;
-    }
-
-    final bool? isThinking = await _platform.invokeMethod<bool>("isThinking");
-
-    if (isThinking is bool) {
-      return isThinking;
-    } else {
-      throw StateError(
-        "Invalid platform response. Expected a value of type bool",
-      );
-    }
-  }
+  /// Stub: the C++ engine is not thinking since it is a no-op stub.
+  FutureOr<bool> isThinking() async => false;
 
   Future<int> getResponseDroppedCount() async {
     if (!_isPlatformChannelAvailable) {

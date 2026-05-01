@@ -214,16 +214,6 @@ class GeneralSettingsPage extends StatelessWidget {
       aiMovesFirst: value,
     );
 
-    if (!generalSettings.useNativeMillSession &&
-        GameController().position.isEmpty()) {
-      GameController().position.changeSideToMove();
-      GameController().reset(force: true);
-    }
-
-    if (!generalSettings.useNativeMillSession) {
-      Position.resetScore();
-    }
-
     logger.t("$_logTag aiMovesFirst: $value");
   }
 
