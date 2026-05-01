@@ -347,26 +347,6 @@ class PlayAreaState extends State<PlayArea> {
       <String, dynamic>{'toolbar': 'analysis', 'action': 'analysisOn'},
     );
 
-    // Check if rules support perfect database
-    if (!isRuleSupportingPerfectDatabase()) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text(
-            "Current rules do not support perfect database analysis",
-          ),
-        ),
-      );
-      return;
-    }
-
-    // Check if perfect database is enabled
-    if (!DB().generalSettings.usePerfectDatabase) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(S.of(context).perfectDatabaseNotEnabled)),
-      );
-      return;
-    }
-
     // Set analyzing flag to true
     AnalysisMode.setAnalyzing(true);
 

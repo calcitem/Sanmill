@@ -83,7 +83,6 @@ part 'engine/engine.dart';
 part 'engine/ext_move.dart';
 part 'engine/game.dart';
 part 'engine/board_view.dart';
-part 'engine/opening_book.dart';
 part 'engine/position.dart';
 part 'engine/types.dart';
 part 'import_export/export_service.dart';
@@ -107,35 +106,4 @@ enum MoveQuality {
   majorGoodMove, // Excellent move (!!)
   minorBadMove, // Dubious move (?)
   majorBadMove, // Blunder (??)
-}
-
-bool isRuleSupportingPerfectDatabase() {
-  final RuleSettings ruleSettings = DB().ruleSettings;
-
-  if (((ruleSettings.piecesCount == 9 &&
-              !ruleSettings.hasDiagonalLines &&
-              ruleSettings.mayMoveInPlacingPhase == false) ||
-          (ruleSettings.piecesCount == 10 &&
-              !ruleSettings.hasDiagonalLines &&
-              ruleSettings.mayMoveInPlacingPhase == true) ||
-          (ruleSettings.piecesCount == 12 &&
-              ruleSettings.hasDiagonalLines &&
-              ruleSettings.mayMoveInPlacingPhase == false)) &&
-      ruleSettings.flyPieceCount == 3 &&
-      ruleSettings.piecesAtLeastCount == 3 &&
-      ruleSettings.millFormationActionInPlacingPhase ==
-          MillFormationActionInPlacingPhase.removeOpponentsPieceFromBoard &&
-      ruleSettings.boardFullAction == BoardFullAction.firstPlayerLose &&
-      ruleSettings.restrictRepeatedMillsFormation == false &&
-      ruleSettings.stalemateAction == StalemateAction.endWithStalemateLoss &&
-      ruleSettings.mayFly == true &&
-      ruleSettings.mayRemoveFromMillsAlways == false &&
-      ruleSettings.mayRemoveMultiple == false &&
-      ruleSettings.enableCustodianCapture == false &&
-      ruleSettings.enableInterventionCapture == false &&
-      ruleSettings.oneTimeUseMill == false) {
-    return true;
-  } else {
-    return false;
-  }
 }

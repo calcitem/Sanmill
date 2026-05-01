@@ -547,9 +547,6 @@ class _GamePageInnerState extends State<_GamePageInner> {
       return;
     }
 
-    // Capture localizations before async gap to avoid using BuildContext after await
-    final S l10n = S.of(context);
-
     // Run analysis and display results
     final PositionAnalysisResult result = await GameController().engine
         .analyzePosition();
@@ -565,18 +562,6 @@ class _GamePageInnerState extends State<_GamePageInner> {
 
     // Enable analysis mode with the results and trap moves
     AnalysisMode.enable(result.possibleMoves, trapMoves: result.trapMoves);
-
-    // Show trap awareness snackbar if trap moves exist
-    if (result.trapMoves.isNotEmpty &&
-        DB().generalSettings.usePerfectDatabase &&
-        isRuleSupportingPerfectDatabase() &&
-        DB().generalSettings.trapAwareness) {
-      final String trapMovesStr = result.trapMoves.join(', ');
-      final String message = l10n.trapExists(trapMovesStr);
-      rootScaffoldMessengerKey.currentState!.showSnackBar(
-        CustomSnackBar(message),
-      );
-    }
 
     // setState is still called here to ensure board is repainted
     // when user explicitly clicks the analysis button

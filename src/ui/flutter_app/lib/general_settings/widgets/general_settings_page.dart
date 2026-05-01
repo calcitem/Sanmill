@@ -25,9 +25,7 @@ import '../../shared/database/settings_repositories.dart';
 import '../../shared/database/settings_repository.dart';
 import '../../shared/services/environment_config.dart';
 import '../../shared/services/logger.dart';
-import '../../shared/services/perfect_database_service.dart';
 import '../../shared/services/snackbar_service.dart';
-import '../../shared/services/url.dart';
 import '../../shared/themes/app_theme.dart';
 import '../../shared/widgets/settings/settings.dart';
 import '../../shared/widgets/snackbars/scaffold_messenger.dart';
@@ -38,7 +36,6 @@ import 'dialogs/llm_config_dialog.dart';
 import 'dialogs/llm_prompt_dialog.dart';
 
 part 'dialogs/reset_settings_alert_dialog.dart';
-part 'dialogs/use_perfect_database_dialog.dart';
 part 'modals/algorithm_modal.dart';
 part 'modals/duration_modal.dart';
 part 'modals/ratio_modal.dart';
@@ -50,9 +47,6 @@ class GeneralSettingsPage extends StatelessWidget {
   const GeneralSettingsPage({super.key});
 
   static const String _logTag = "[general_settings_page]";
-
-  // Debounce timer for database copy operations
-  static Timer? _databaseCopyDebounce;
 
   SettingsRepository get _settingsRepository =>
       SettingsRepositories.instance.current.repository;
@@ -265,58 +259,6 @@ class GeneralSettingsPage extends StatelessWidget {
       ),
     );
   }
-
-  void _setUseOpeningBook(GeneralSettings generalSettings, bool value) {
-    _settingsRepository.generalSettings = generalSettings.copyWith(
-      useOpeningBook: value,
-    );
-
-    logger.t("$_logTag useOpeningBook: $value");
-  }
-
-  void _setUsePerfectDatabase(GeneralSettings generalSettings, bool value) {
-    _settingsRepository.generalSettings = generalSettings.copyWith(
-      usePerfectDatabase: value,
-    );
-
-    logger.t("$_logTag usePerfectDatabase: $value");
-
-    if (value == true) {
-      // Cancel any pending debounce timer
-      _databaseCopyDebounce?.cancel();
-
-      // Debounce the file copy operation with 1 second delay
-      _databaseCopyDebounce = Timer(const Duration(seconds: 1), () {
-        // Execute file copy in background to avoid blocking main thread
-        copyPerfectDatabaseFiles()
-            .then((bool success) {
-              if (!success) {
-                logger.w('$_logTag Failed to copy perfect database files');
-              }
-            })
-            .catchError((Object error) {
-              logger.e('$_logTag Error copying perfect database files: $error');
-            });
-      });
-    } else {
-      // Cancel debounce if switching back to false
-      _databaseCopyDebounce?.cancel();
-    }
-  }
-
-  void _setTrapAwareness(GeneralSettings generalSettings, bool value) {
-    // Enable or disable trap awareness
-    _settingsRepository.generalSettings = generalSettings.copyWith(
-      trapAwareness: value,
-    );
-
-    logger.t("$_logTag trapAwareness: $value");
-  }
-
-  void _showUsePerfectDatabaseDialog(BuildContext context) => showDialog(
-    context: context,
-    builder: (_) => const _UsePerfectDatabaseDialog(),
-  );
 
   void _setDrawOnHumanExperience(GeneralSettings generalSettings, bool value) {
     _settingsRepository.generalSettings = generalSettings.copyWith(
@@ -701,17 +643,6 @@ class GeneralSettingsPage extends StatelessWidget {
       defaultValue: const GeneralSettings(),
     )!;
 
-    final String perfectDatabaseDescription = S
-        .of(context)
-        .perfectDatabaseDescription;
-    final String perfectDatabaseDescriptionFistLine =
-        perfectDatabaseDescription.contains('\n')
-        ? perfectDatabaseDescription.substring(
-            0,
-            perfectDatabaseDescription.indexOf('\n'),
-          )
-        : perfectDatabaseDescription;
-
     return SettingsList(
       key: const Key('general_settings_page_settings_list'),
       children: <Widget>[
@@ -800,56 +731,6 @@ class GeneralSettingsPage extends StatelessWidget {
               trailingString: generalSettings.searchAlgorithm!.name,
               onTap: () => _setAlgorithm(context, generalSettings),
             ),
-            if (DB().ruleSettings.isLikelyNineMensMorris() ||
-                DB().ruleSettings.isLikelyElFilja())
-              SettingsListTile.switchTile(
-                key: const Key(
-                  'general_settings_page_settings_card_ais_play_style_use_opening_book',
-                ),
-                value: generalSettings.useOpeningBook,
-                onChanged: (bool val) {
-                  if (val == true) {
-                    _setUseOpeningBook(generalSettings, true);
-                  } else {
-                    _setUseOpeningBook(generalSettings, false);
-                  }
-                },
-                titleString: S.of(context).useOpeningBook,
-                subtitleString: S.of(context).useOpeningBook_Detail,
-              ),
-            if (!kIsWeb)
-              SettingsListTile.switchTile(
-                key: const Key(
-                  'general_settings_page_settings_card_ais_play_style_use_perfect_database',
-                ),
-                value: generalSettings.usePerfectDatabase,
-                onChanged: (bool val) {
-                  if (val == true) {
-                    _showUsePerfectDatabaseDialog(context);
-                    if (isRuleSupportingPerfectDatabase() == true) {
-                      _setUsePerfectDatabase(generalSettings, true);
-                    }
-                  } else {
-                    _setUsePerfectDatabase(generalSettings, false);
-                  }
-                },
-                titleString: S.of(context).usePerfectDatabase,
-                subtitleString: perfectDatabaseDescriptionFistLine,
-              ),
-            if (!kIsWeb &&
-                DB().generalSettings.usePerfectDatabase &&
-                isRuleSupportingPerfectDatabase())
-              SettingsListTile.switchTile(
-                key: const Key(
-                  'general_settings_page_settings_card_ais_play_style_trap_awareness',
-                ),
-                value: generalSettings.trapAwareness,
-                onChanged: (bool val) {
-                  _setTrapAwareness(generalSettings, val);
-                },
-                titleString: S.of(context).trapAwareness,
-                subtitleString: S.of(context).trapAwarenessDescription,
-              ),
             SettingsListTile.switchTile(
               key: const Key(
                 'general_settings_page_settings_card_ais_play_style_draw_on_human_experience',

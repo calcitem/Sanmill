@@ -749,18 +749,6 @@ class AnalysisRenderer {
       );
     }
 
-    // Check if we have step count information from perfect database
-    if (outcome.stepCount != null && outcome.stepCount! > 0) {
-      // Debug log in dev mode
-      if (EnvironmentConfig.devMode) {
-        logger.i(
-          "Displaying step count ${outcome.stepCount} for outcome ${outcome.name}",
-        );
-      }
-      // Return step count for perfect database results
-      return outcome.stepCount!.toString();
-    }
-
     // Check if we have a valid value string to display
     if (outcome.valueStr != null && outcome.valueStr!.isNotEmpty) {
       // Debug log in dev mode
@@ -854,19 +842,8 @@ class AnalysisRenderer {
             DB().ruleSettings.flyPieceCount;
   }
 
-  /// Get display text for analysis result including step count information
+  /// Get display text for analysis result
   static String getAnalysisDisplayText(MoveAnalysisResult result) {
-    if (result.outcome.stepCount != null) {
-      // Use the new displayString that includes step information
-      return "${result.move}: ${result.outcome.displayString}";
-    } else {
-      // Fallback to traditional display
-      return "${result.move}: ${result.outcome.name}${result.outcome.valueStr != null ? " (${result.outcome.valueStr})" : ""}";
-    }
-  }
-
-  /// Check if analysis result has perfect database step information
-  static bool hasPerfectDatabaseInfo(MoveAnalysisResult result) {
-    return result.outcome.stepCount != null && result.outcome.stepCount! > 0;
+    return "${result.move}: ${result.outcome.name}${result.outcome.valueStr != null ? " (${result.outcome.valueStr})" : ""}";
   }
 }

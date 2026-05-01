@@ -134,6 +134,7 @@ class GeneralSettings {
     )
     this.algorithm = 2,
     this.searchAlgorithm = SearchAlgorithm.mtdf,
+    @Deprecated('Removed; field retained for Hive backward compatibility.')
     this.usePerfectDatabase = false,
     this.drawOnHumanExperience = true,
     this.considerMobility = true,
@@ -152,6 +153,7 @@ class GeneralSettings {
     this.remindedOpponentMayFly = false,
     this.vibrationEnabled = false,
     this.soundTheme = SoundTheme.ball,
+    @Deprecated('Removed; field retained for Hive backward compatibility.')
     this.useOpeningBook = false,
     this.llmPromptHeader = '',
     this.llmPromptFooter = '',
@@ -161,6 +163,7 @@ class GeneralSettings {
     this.llmBaseUrl = '',
     this.llmTemperature = 0.7,
     this.aiChatEnabled = false,
+    @Deprecated('Removed; field retained for Hive backward compatibility.')
     this.trapAwareness = false,
     this.backgroundMusicEnabled = false,
     this.backgroundMusicFilePath = '',
@@ -273,6 +276,7 @@ class GeneralSettings {
   final bool remindedOpponentMayFly;
 
   @HiveField(27, defaultValue: false)
+  @Deprecated('Removed; field retained for Hive backward compatibility.')
   final bool usePerfectDatabase;
 
   @HiveField(28, defaultValue: false)
@@ -285,6 +289,7 @@ class GeneralSettings {
   final SoundTheme? soundTheme;
 
   @HiveField(31, defaultValue: false)
+  @Deprecated('Removed; field retained for Hive backward compatibility.')
   final bool useOpeningBook;
 
   @HiveField(32, defaultValue: 0)
@@ -319,6 +324,7 @@ class GeneralSettings {
 
   // Enable trap awareness analysis when using Perfect DB
   @HiveField(40, defaultValue: false)
+  @Deprecated('Removed; field retained for Hive backward compatibility.')
   final bool trapAwareness;
 
   // Background music playback toggle (local file only).

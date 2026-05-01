@@ -86,11 +86,6 @@ class Constants {
     "zen/$projectNameLower/flutter",
   );
   static final UrlHelper thanksURL = wikiURL.fromSubPath("thanks");
-  static final UrlHelper perfectDatabaseUrl = wikiURL.fromSubPath(
-    "Perfect-Database",
-    "Perfect-Database-(Chinese)",
-  );
-
   static const UrlHelper nmmStrategyUrl = UrlHelper(
     base: "https://calcitem.github.io/Sanmill/nmm-strategy/",
     baseChinese: "https://calcitem.github.io/Sanmill/nmm-strategy/",

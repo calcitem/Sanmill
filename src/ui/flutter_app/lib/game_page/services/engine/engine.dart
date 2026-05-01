@@ -88,7 +88,9 @@ class Engine {
     }
     _started = true;
     _isSearchCancelled = false;
-    logger.i("$_logTag startup: legacy C++ engine is a stub; Rust FRB path is active");
+    logger.i(
+      "$_logTag startup: legacy C++ engine is a stub; Rust FRB path is active",
+    );
   }
 
   /// Stub: no-op since the C++ UCI engine thread is no longer started.
@@ -163,28 +165,6 @@ class Engine {
     return count ?? 0;
   }
 
-  /// Saves the given FEN string to a local file named 'fen.txt'.
-  /// If the file already exists, the FEN is appended with a newline.
-  Future<void> _saveFenToFile(String fen) async {
-    try {
-      // Get the application documents directory.
-      final Directory directory = await getApplicationDocumentsDirectory();
-
-      // Define the path to 'fen.txt'.
-      final String path = '${directory.path}/fen.txt';
-
-      final File file = File(path);
-
-      // Append the FEN string with a newline. If the file doesn't exist, it will be created.
-      await file.writeAsString('$fen\n', mode: FileMode.append);
-
-      logger.i("Successfully saved FEN to $path");
-    } catch (e) {
-      logger.e("Failed to save FEN to file: $e");
-      // Handle the error as needed, possibly rethrow or notify the user.
-    }
-  }
-
   Future<EngineRet> search({bool moveNow = false}) async {
     await ensureReady();
 
@@ -195,7 +175,6 @@ class Engine {
     _isSearchCancelled = false;
 
     String? fen;
-    final String normalizedFen;
 
     bool softWait = false;
     final bool currentlyThinking = await isThinking();
@@ -233,82 +212,13 @@ class Engine {
     final int currentEpoch = _searchEpoch;
 
     if (!moveNow) {
-      fen = GameController().activeFen;
+      fen = _getPositionFen();
       if (fen == null) {
         throw const EngineNoBestMove();
       }
-
-      final List<String> fenFields = fen.split(' ');
-      if (fenFields.length < 2) {
-        normalizedFen = fen;
-      } else {
-        // Replace the second last field with '0'
-        fenFields[fenFields.length - 2] = '0';
-        // Replace the third last field with '0'
-        fenFields[fenFields.length - 3] = '0';
-        normalizedFen = fenFields.join(' ');
-      }
-
-      logger.i("FEN = $normalizedFen");
-
-      // Check if the normalized FEN exists in the fenToBestMoves map
-      if (isRuleSupportingOpeningBook() &&
-          DB().generalSettings.useOpeningBook &&
-          (nineMensMorrisFenToBestMoves.containsKey(normalizedFen) ||
-              elFiljaFenToBestMoves.containsKey(normalizedFen))) {
-        final List<String> bestMoves;
-
-        if (DB().ruleSettings.isLikelyNineMensMorris()) {
-          bestMoves = nineMensMorrisFenToBestMoves[normalizedFen]!;
-        } else if (DB().ruleSettings.isLikelyElFilja()) {
-          bestMoves = elFiljaFenToBestMoves[normalizedFen]!;
-        } else {
-          bestMoves = nineMensMorrisFenToBestMoves[normalizedFen]!;
-        }
-
-        // Retrieve the shufflingEnabled setting
-        final bool shufflingEnabled = DB().generalSettings.shufflingEnabled;
-
-        String selectedMove;
-
-        if (shufflingEnabled) {
-          // Shuffle is enabled: select a random move from the list
-          final int seed = DateTime.now().millisecondsSinceEpoch;
-          final Random random = Random(seed);
-          selectedMove = bestMoves[random.nextInt(bestMoves.length)];
-        } else {
-          // Shuffle is disabled: select the first move
-          selectedMove = bestMoves.first;
-        }
-
-        // Check if the first character of selectedMove is 'x'
-        if (selectedMove.startsWith('x')) {
-          await Future<void>.delayed(const Duration(milliseconds: 100));
-          // Use standard notation directly
-          return EngineRet(
-            "0", // Default score
-            AiMoveType.openingBook,
-            ExtMove(selectedMove, side: GameController().position.sideToMove),
-          );
-        } else {
-          await Future<void>.delayed(const Duration(milliseconds: 100));
-          // Use standard notation directly
-          return EngineRet(
-            "0", // Default score
-            AiMoveType.openingBook,
-            ExtMove(selectedMove, side: GameController().position.sideToMove),
-          );
-        }
-      } else {
-        // FEN not found in predefined map: proceed with engine search
-        fen = _getPositionFen();
-        if (fen == null) {
-          throw const EngineNoBestMove();
-        }
-        await _send(fen);
-        await _send("go");
-        logger.i("$_logTag Sent 'go' command to engine.");
-      }
+      await _send(fen);
+      await _send("go");
+      logger.i("$_logTag Sent 'go' command to engine.");
     } else {
       logger.t("$_logTag Move now");
     }
@@ -388,24 +298,10 @@ class Engine {
         throw const EngineNoBestMove();
       }
 
-      if (aiMoveTypeStr == "" || aiMoveTypeStr == "traditional") {
+      if (aiMoveTypeStr == "" ||
+          aiMoveTypeStr == "traditional" ||
+          aiMoveTypeStr == "perfect") {
         aiMoveType = AiMoveType.traditional;
-      } else if (aiMoveTypeStr == "perfect") {
-        aiMoveType = AiMoveType.perfect;
-        if (EnvironmentConfig.devMode == true) {
-          final String? saveFen = GameController().activeFen;
-
-          // Save saveFen to local file if it does not contain " m ".
-          if (saveFen != null) {
-            if (!saveFen.contains(" m ")) {
-              await _saveFenToFile(saveFen);
-            } else {
-              logger.w("$_logTag saveFen contains ' m ', not saving to file.");
-            }
-          } else {
-            logger.w("$_logTag saveFen is null, cannot save to file.");
-          }
-        }
       } else if (aiMoveTypeStr == "consensus") {
         aiMoveType = AiMoveType.consensus;
       }
@@ -612,39 +508,17 @@ class Engine {
       // First Move
       // No need to tell engine.
 
-      bool usePerfectDatabase = false;
-
-      if (isRuleSupportingPerfectDatabase()) {
-        usePerfectDatabase = generalSettings.usePerfectDatabase;
-      } else {
-        usePerfectDatabase = false;
-        if (generalSettings.usePerfectDatabase) {
-          // Use direct save method to avoid triggering options update loops.
-          DB().saveGeneralSettingsOnly(
-            generalSettings.copyWith(usePerfectDatabase: false),
-          );
-        }
-      }
-
-      final Directory? dir = (!kIsWeb && Platform.isAndroid)
-          ? await getExternalStorageDirectory()
-          : await getApplicationDocumentsDirectory();
-      final String perfectDatabasePath = '${dir?.path ?? ""}/strong';
-
       final _GeneralEngineOptions nextOptions = _GeneralEngineOptions(
         skillLevel: generalSettings.skillLevel,
         moveTime: generalSettings.moveTime,
         algorithmIndex:
             generalSettings.searchAlgorithm?.index ??
             SearchAlgorithm.mtdf.index,
-        usePerfectDatabase: usePerfectDatabase,
-        perfectDatabasePath: perfectDatabasePath,
         drawOnHumanExperience: generalSettings.drawOnHumanExperience,
         considerMobility: generalSettings.considerMobility,
         focusOnBlockingPaths: generalSettings.focusOnBlockingPaths,
         aiIsLazy: generalSettings.aiIsLazy,
         shufflingEnabled: generalSettings.shufflingEnabled,
-        trapAwareness: generalSettings.trapAwareness,
         developerMode: EnvironmentConfig.devMode,
       );
 
@@ -670,16 +544,6 @@ class Engine {
       ); // TODO: enum
 
       await _sendOptionIfChanged(
-        "UsePerfectDatabase",
-        nextOptions.usePerfectDatabase,
-        previous?.usePerfectDatabase,
-      );
-      await _sendOptionIfChanged(
-        "PerfectDatabasePath",
-        nextOptions.perfectDatabasePath,
-        previous?.perfectDatabasePath,
-      );
-      await _sendOptionIfChanged(
         "DrawOnHumanExperience",
         nextOptions.drawOnHumanExperience,
         previous?.drawOnHumanExperience,
@@ -703,11 +567,6 @@ class Engine {
         "Shuffling",
         nextOptions.shufflingEnabled,
         previous?.shufflingEnabled,
-      );
-      await _sendOptionIfChanged(
-        "TrapAwareness",
-        nextOptions.trapAwareness,
-        previous?.trapAwareness,
       );
 
       // Control via environment configuration
@@ -1016,17 +875,6 @@ class Engine {
 
     await setGeneralOptions();
     await setRuleOptions();
-  }
-
-  static bool isRuleSupportingOpeningBook() {
-    final RuleSettings ruleSettings = DB().ruleSettings;
-
-    if (ruleSettings.isLikelyNineMensMorris() ||
-        ruleSettings.isLikelyElFilja()) {
-      return true;
-    } else {
-      return false;
-    }
   }
 
   String? _getPositionFen() {
@@ -1391,28 +1239,22 @@ class _GeneralEngineOptions {
     required this.skillLevel,
     required this.moveTime,
     required this.algorithmIndex,
-    required this.usePerfectDatabase,
-    required this.perfectDatabasePath,
     required this.drawOnHumanExperience,
     required this.considerMobility,
     required this.focusOnBlockingPaths,
     required this.aiIsLazy,
     required this.shufflingEnabled,
-    required this.trapAwareness,
     required this.developerMode,
   });
 
   final int skillLevel;
   final int moveTime;
   final int algorithmIndex;
-  final bool usePerfectDatabase;
-  final String perfectDatabasePath;
   final bool drawOnHumanExperience;
   final bool considerMobility;
   final bool focusOnBlockingPaths;
   final bool aiIsLazy;
   final bool shufflingEnabled;
-  final bool trapAwareness;
   final bool developerMode;
 }
 
@@ -1513,9 +1355,7 @@ enum GameMode {
 
 Map<AiMoveType, IconData> aiMoveTypeIcons = <AiMoveType, IconData>{
   AiMoveType.traditional: FluentIcons.bot_24_filled,
-  AiMoveType.perfect: FluentIcons.database_24_filled,
   AiMoveType.consensus: FluentIcons.bot_add_24_filled,
-  AiMoveType.openingBook: FluentIcons.book_24_filled,
   AiMoveType.unknown: FluentIcons.bot_24_filled,
 };
 

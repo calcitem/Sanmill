@@ -109,13 +109,6 @@ class EloRatingService {
       ret -= 100; // Decrease rating as AI focuses on less optimal strategy
     }
 
-    // Perfect database enabled; the shipped builds already bundle the
-    // reference tables, so we grant the strength bonus immediately.
-    if (DB().generalSettings.usePerfectDatabase) {
-      ret +=
-          100; // Increase rating as AI has access to perfect endgame knowledge
-    }
-
     // Human move time adjustments
     if (DB().generalSettings.humanMoveTime != 0) {
       final int humanMoveTime = DB().generalSettings.humanMoveTime;
@@ -135,16 +128,13 @@ class EloRatingService {
       ret = ret ~/ 2; // Halve the rating as AI deliberately plays suboptimally
     }
 
-    // MCTS algorithm with no perfect database
-    if (DB().generalSettings.searchAlgorithm == SearchAlgorithm.mcts &&
-        !DB().generalSettings.usePerfectDatabase) {
-      ret = (ret * 0.2)
-          .round(); // Significant reduction for MCTS without perfect DB
+    // MCTS algorithm
+    if (DB().generalSettings.searchAlgorithm == SearchAlgorithm.mcts) {
+      ret = (ret * 0.2).round(); // Significant reduction for MCTS
     }
 
-    // Random algorithm with no perfect database
-    if (DB().generalSettings.searchAlgorithm == SearchAlgorithm.random &&
-        !DB().generalSettings.usePerfectDatabase) {
+    // Random algorithm
+    if (DB().generalSettings.searchAlgorithm == SearchAlgorithm.random) {
       ret = 100; // Lowest possible rating for random play
     }
 

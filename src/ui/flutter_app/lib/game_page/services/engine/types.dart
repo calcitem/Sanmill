@@ -232,7 +232,7 @@ extension PieceColorExtension on PieceColor {
   Color get blurPositionColor => mainColor.withValues(alpha: 0.1);
 }
 
-enum AiMoveType { unknown, traditional, perfect, consensus, openingBook }
+enum AiMoveType { unknown, traditional, consensus }
 
 enum Phase { ready, placing, moving, gameOver }
 

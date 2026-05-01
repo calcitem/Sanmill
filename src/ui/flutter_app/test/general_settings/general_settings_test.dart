@@ -29,7 +29,6 @@ void main() {
       expect(s.shufflingEnabled, isTrue);
       expect(s.learnEndgame, isFalse);
       expect(s.searchAlgorithm, SearchAlgorithm.mtdf);
-      expect(s.usePerfectDatabase, isFalse);
       expect(s.drawOnHumanExperience, isTrue);
       expect(s.considerMobility, isTrue);
       expect(s.focusOnBlockingPaths, isFalse);
@@ -41,11 +40,9 @@ void main() {
       expect(s.remindedOpponentMayFly, isFalse);
       expect(s.vibrationEnabled, isFalse);
       expect(s.soundTheme, SoundTheme.ball);
-      expect(s.useOpeningBook, isFalse);
       expect(s.llmProvider, LlmProvider.openai);
       expect(s.llmTemperature, 0.7);
       expect(s.aiChatEnabled, isFalse);
-      expect(s.trapAwareness, isFalse);
       expect(s.backgroundMusicEnabled, isFalse);
       expect(s.backgroundMusicFilePath, '');
       expect(s.lastPgnSaveDirectory, '');

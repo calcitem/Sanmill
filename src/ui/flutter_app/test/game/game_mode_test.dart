@@ -205,9 +205,7 @@ void main() {
         containsAll(<AiMoveType>[
           AiMoveType.unknown,
           AiMoveType.traditional,
-          AiMoveType.perfect,
           AiMoveType.consensus,
-          AiMoveType.openingBook,
         ]),
       );
     });

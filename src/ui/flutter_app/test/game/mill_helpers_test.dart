@@ -8,7 +8,6 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sanmill/game_page/services/mill.dart';
-import 'package:sanmill/rule_settings/models/rule_settings.dart';
 import 'package:sanmill/shared/database/database.dart';
 
 import '../helpers/mocks/mock_database.dart';
@@ -56,129 +55,6 @@ void main() {
         ]),
       );
     });
-  });
-
-  // ---------------------------------------------------------------------------
-  // isRuleSupportingPerfectDatabase
-  // ---------------------------------------------------------------------------
-  group('isRuleSupportingPerfectDatabase', () {
-    test("default Nine Men's Morris should support perfect DB", () {
-      mockDB.ruleSettings = const RuleSettings();
-
-      expect(isRuleSupportingPerfectDatabase(), isTrue);
-    });
-
-    test("Twelve Men's Morris should support perfect DB", () {
-      mockDB.ruleSettings = const TwelveMensMorrisRuleSettings();
-
-      expect(isRuleSupportingPerfectDatabase(), isTrue);
-    });
-
-    test('Lasker Morris (10 pieces, move in placing) should support', () {
-      mockDB.ruleSettings = const LaskerMorrisSettings();
-
-      expect(isRuleSupportingPerfectDatabase(), isTrue);
-    });
-
-    test(
-      'Morabaraba should NOT support (boardFullAction != firstPlayerLose)',
-      () {
-        mockDB.ruleSettings = const MorabarabaRuleSettings();
-
-        expect(isRuleSupportingPerfectDatabase(), isFalse);
-      },
-    );
-
-    test('One-time mill should NOT support (oneTimeUseMill = true)', () {
-      mockDB.ruleSettings = const OneTimeMillRuleSettings();
-
-      expect(isRuleSupportingPerfectDatabase(), isFalse);
-    });
-
-    test('ChamGonu should NOT support (mayFly = false, markAndDelay)', () {
-      mockDB.ruleSettings = const ChamGonuRuleSettings();
-
-      expect(isRuleSupportingPerfectDatabase(), isFalse);
-    });
-
-    test('ZhiQi should NOT support (boardFullAction mismatch)', () {
-      mockDB.ruleSettings = const ZhiQiRuleSettings();
-
-      expect(isRuleSupportingPerfectDatabase(), isFalse);
-    });
-
-    test('DaSanQi should NOT support (mayRemoveMultiple = true)', () {
-      mockDB.ruleSettings = const DaSanQiRuleSettings();
-
-      expect(isRuleSupportingPerfectDatabase(), isFalse);
-    });
-
-    test('custom with custodian capture should NOT support', () {
-      mockDB.ruleSettings = const RuleSettings(enableCustodianCapture: true);
-
-      expect(isRuleSupportingPerfectDatabase(), isFalse);
-    });
-
-    test('custom with intervention capture should NOT support', () {
-      mockDB.ruleSettings = const RuleSettings(enableInterventionCapture: true);
-
-      expect(isRuleSupportingPerfectDatabase(), isFalse);
-    });
-
-    test('custom with mayRemoveFromMillsAlways should NOT support', () {
-      mockDB.ruleSettings = const RuleSettings(mayRemoveFromMillsAlways: true);
-
-      expect(isRuleSupportingPerfectDatabase(), isFalse);
-    });
-
-    test(
-      'custom with stalemateAction = changeSideToMove should NOT support',
-      () {
-        mockDB.ruleSettings = const RuleSettings(
-          stalemateAction: StalemateAction.changeSideToMove,
-        );
-
-        expect(isRuleSupportingPerfectDatabase(), isFalse);
-      },
-    );
-
-    test('custom with flyPieceCount != 3 should NOT support', () {
-      mockDB.ruleSettings = const RuleSettings(flyPieceCount: 4);
-
-      expect(isRuleSupportingPerfectDatabase(), isFalse);
-    });
-
-    test('custom with piecesAtLeastCount != 3 should NOT support', () {
-      mockDB.ruleSettings = const RuleSettings(piecesAtLeastCount: 2);
-
-      expect(isRuleSupportingPerfectDatabase(), isFalse);
-    });
-
-    test('custom with restrictRepeatedMillsFormation should NOT support', () {
-      mockDB.ruleSettings = const RuleSettings(
-        restrictRepeatedMillsFormation: true,
-      );
-
-      expect(isRuleSupportingPerfectDatabase(), isFalse);
-    });
-
-    test('9 pieces with diagonal should NOT support', () {
-      mockDB.ruleSettings = const RuleSettings(hasDiagonalLines: true);
-
-      expect(isRuleSupportingPerfectDatabase(), isFalse);
-    });
-
-    test(
-      'custom with non-standard mill formation action should NOT support',
-      () {
-        mockDB.ruleSettings = const RuleSettings(
-          millFormationActionInPlacingPhase:
-              MillFormationActionInPlacingPhase.markAndDelayRemovingPieces,
-        );
-
-        expect(isRuleSupportingPerfectDatabase(), isFalse);
-      },
-    );
   });
 
   // ---------------------------------------------------------------------------

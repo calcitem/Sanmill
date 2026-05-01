@@ -515,31 +515,6 @@ void main() {
       );
     });
 
-    testWidgets('Toggle use perfect database switch', (
-      WidgetTester tester,
-    ) async {
-      await initApp(tester);
-      await navigateToGroupChild(
-        tester,
-        'drawer_item_settings_group',
-        'drawer_item_general_settings_child',
-      );
-
-      final bool initialValue = DB().generalSettings.usePerfectDatabase;
-
-      await scrollToAndTap(
-        tester,
-        targetKey:
-            'general_settings_page_settings_card_ais_play_style_use_perfect_database',
-      );
-
-      expect(
-        DB().generalSettings.usePerfectDatabase,
-        isNot(equals(initialValue)),
-        reason: 'Use perfect database should have toggled',
-      );
-    });
-
     testWidgets('LLM prompts card is accessible', (WidgetTester tester) async {
       await initApp(tester);
       await navigateToGroupChild(
