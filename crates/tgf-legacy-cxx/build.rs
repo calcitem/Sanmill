@@ -19,7 +19,6 @@ fn main() {
         .file("cpp/legacy_engine_bridge.cpp")
         .files(
             [
-                "benchmark.cpp",
                 "bitboard.cpp",
                 "mills.cpp",
                 "misc.cpp",
@@ -39,9 +38,9 @@ fn main() {
         .std("c++17")
         .define("_CRT_SECURE_NO_WARNINGS", None);
 
-    // The legacy config enables GABOR_MALOM_PERFECT_AI by default, so search
-    // links against the perfect/ implementation.  Compile every perfect/*.cpp
-    // here to match the mature C++ build.
+    // Perfect database support intentionally remains cxx-bridged.  Compile
+    // every perfect/*.cpp here even after the C++ search stack is removed from
+    // this transitional bridge.
     let perfect_sources = std::fs::read_dir(&perfect)
         .expect("read src/perfect")
         .filter_map(|entry| {
