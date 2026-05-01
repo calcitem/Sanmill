@@ -16,6 +16,7 @@ import '../../appearance_settings/models/color_settings.dart';
 import '../../game_page/services/import_export/pgn.dart';
 import '../../game_page/services/mill.dart';
 import '../../game_page/services/transform/transform.dart';
+import '../../games/mill/puzzle_mill_session.dart';
 import '../../generated/intl/l10n.dart';
 import '../../rule_settings/models/rule_settings.dart';
 import '../../shared/database/database.dart';
@@ -263,10 +264,12 @@ class _PuzzlePageState extends State<PuzzlePage> {
       return;
     }
 
-    // Load the transformed initial position from FEN
-    final bool loaded = controller.position.setFen(
-      _transformedPuzzle.initialPosition,
-    );
+    // Load the transformed initial position from FEN.
+    final bool loaded = DB().generalSettings.useNativeMillSession
+        ? PuzzleMillSession.loadFenIntoActiveSession(
+            _transformedPuzzle.initialPosition,
+          )
+        : controller.position.setFen(_transformedPuzzle.initialPosition);
     if (!loaded) {
       logger.e(
         '[PuzzlePage] Failed to load puzzle position: '
@@ -857,6 +860,31 @@ class _PuzzlePageState extends State<PuzzlePage> {
   ValidationFeedback _checkSolution({bool autoCheck = false}) {
     final S s = S.of(context);
     final GameController controller = GameController();
+    if (DB().generalSettings.useNativeMillSession) {
+      final PuzzleSolution? matchedSolution =
+          _findMatchingPuzzleSolutionFromRecorder();
+      if (matchedSolution != null) {
+        final ValidationFeedback feedback = ValidationFeedback(
+          result: ValidationResult.correct,
+          isOptimal: matchedSolution.isOptimal,
+          moveCount: controller.gameRecorder.mainlineMoves.length,
+        );
+        _onPuzzleSolved(feedback);
+        return feedback;
+      }
+      if (!autoCheck) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(s.keepGoingObjectiveNotAchieved),
+            duration: const Duration(seconds: 2),
+          ),
+        );
+      }
+      return ValidationFeedback(
+        result: ValidationResult.inProgress,
+        moveCount: controller.gameRecorder.mainlineMoves.length,
+      );
+    }
     final ValidationFeedback feedback = _validator.validateSolution(
       controller.position,
     );
@@ -879,6 +907,33 @@ class _PuzzlePageState extends State<PuzzlePage> {
       );
     }
     return feedback;
+  }
+
+  PuzzleSolution? _findMatchingPuzzleSolutionFromRecorder() {
+    final List<String> moves = GameController()
+        .gameRecorder
+        .mainlineMoves
+        .map((ExtMove m) => PuzzleAutoPlayer.normalizeMove(m.move))
+        .toList(growable: false);
+    for (final PuzzleSolution solution in _transformedPuzzle.solutions) {
+      final List<String> expected = solution.moves
+          .map((PuzzleMove m) => PuzzleAutoPlayer.normalizeMove(m.notation))
+          .toList(growable: false);
+      if (expected.length != moves.length) {
+        continue;
+      }
+      bool matches = true;
+      for (int i = 0; i < expected.length; i++) {
+        if (expected[i] != moves[i]) {
+          matches = false;
+          break;
+        }
+      }
+      if (matches) {
+        return solution;
+      }
+    }
+    return null;
   }
 
   /// Show dialog when user makes a wrong move
@@ -985,10 +1040,16 @@ class _PuzzlePageState extends State<PuzzlePage> {
         break;
       }
 
-      // Try to make the move
-      final bool success = controller.applyMove(
-        ExtMove(move.notation, side: controller.position.sideToMove),
-      );
+      // Try to make the move.
+      final PuzzleMillSession? nativePuzzleSession =
+          controller.activePuzzleMillSession;
+      final bool success =
+          DB().generalSettings.useNativeMillSession &&
+              nativePuzzleSession != null
+          ? nativePuzzleSession.applyMoveString(move.notation)
+          : controller.applyMove(
+              ExtMove(move.notation, side: controller.position.sideToMove),
+            );
       if (!success) {
         logger.e('[PuzzlePage] Failed to play solution move: ${move.notation}');
         break;
@@ -1029,12 +1090,22 @@ class _PuzzlePageState extends State<PuzzlePage> {
       return;
     }
 
-    if (controller.position.phase == Phase.gameOver) {
+    final PuzzleMillSession? nativePuzzleSession =
+        controller.activePuzzleMillSession;
+    final bool useNativePuzzle = DB().generalSettings.useNativeMillSession &&
+        nativePuzzleSession != null;
+
+    if (useNativePuzzle
+        ? nativePuzzleSession.outcome.isTerminal
+        : controller.position.phase == Phase.gameOver) {
       return;
     }
 
     // Only auto-play when it's the opponent's turn.
-    if (controller.position.sideToMove == humanColor) {
+    if (useNativePuzzle
+        ? nativePuzzleSession.state.value.activeSeat ==
+            nativePuzzleSession.humanSeat
+        : controller.position.sideToMove == humanColor) {
       return;
     }
 
@@ -1059,15 +1130,22 @@ class _PuzzlePageState extends State<PuzzlePage> {
           solutions: legacySolutions,
           humanColor: humanColor,
           isGameOver: () =>
-              !mounted || controller.position.phase == Phase.gameOver,
-          sideToMove: () => controller.position.sideToMove,
+              !mounted ||
+              (useNativePuzzle
+                  ? nativePuzzleSession.outcome.isTerminal
+                  : controller.position.phase == Phase.gameOver),
+          sideToMove: () => useNativePuzzle
+              ? nativePuzzleSession.sideToMove
+              : controller.position.sideToMove,
           movesSoFar: () => controller.gameRecorder.mainlineMoves
               .map((ExtMove m) => m.move)
               .toList(growable: false),
           applyMove: (String move) {
-            final bool ok = controller.applyMove(
-              ExtMove(move, side: controller.position.sideToMove),
-            );
+            final bool ok = useNativePuzzle
+                ? nativePuzzleSession.applyMoveString(move)
+                : controller.applyMove(
+                    ExtMove(move, side: controller.position.sideToMove),
+                  );
             if (!ok) {
               logger.e('[PuzzlePage] Failed to auto-play move: $move');
             }
@@ -1421,12 +1499,18 @@ class _PuzzlePageState extends State<PuzzlePage> {
       return;
     }
 
-    // In puzzle mode, a single user decision is typically followed by an
+    // In Puzzle mode, a single user decision is typically followed by an
     // auto-played opponent response. Undo should bring the user back to a
     // position where it's the human side to move again, otherwise input would
     // be locked to prevent playing for the opponent.
     final PieceColor? humanColor =
         _puzzleHumanColor ?? controller.puzzleHumanColor;
+
+    if (DB().generalSettings.useNativeMillSession) {
+      await _undoNativePuzzleMove(controller, humanColor);
+      return;
+    }
+
     final int maxSteps = controller.gameRecorder.mainlineMoves.length;
     int undone = 0;
 
@@ -1459,6 +1543,38 @@ class _PuzzlePageState extends State<PuzzlePage> {
       _validator.undoLastMove();
 
       if (humanColor == null || controller.position.sideToMove == humanColor) {
+        break;
+      }
+    }
+  }
+
+  Future<void> _undoNativePuzzleMove(
+    GameController controller,
+    PieceColor? humanColor,
+  ) async {
+    final int maxSteps = controller.gameRecorder.mainlineMoves.length;
+    int undone = 0;
+
+    while (controller.gameRecorder.mainlineMoves.isNotEmpty &&
+        undone < maxSteps) {
+      final ExtMove lastMove = controller.gameRecorder.mainlineMoves.last;
+      final bool ok = controller.undoNativeMove();
+      assert(ok, 'Native puzzle undo failed with a non-empty move history.');
+      if (!ok) {
+        return;
+      }
+      undone++;
+
+      if (humanColor == null || lastMove.side == humanColor) {
+        if (_moveCountNotifier.value > 0) {
+          _moveCountNotifier.value--;
+        }
+      }
+      _lastRecordedMoveIndex--;
+      _validator.undoLastMove();
+
+      if (humanColor == null ||
+          controller.activeSessionSideToMove == humanColor) {
         break;
       }
     }
