@@ -1009,6 +1009,21 @@ impl MillRules {
         let can_fly = allow_fly
             && self.options.may_fly
             && state.pieces_on_board[side] <= self.options.fly_piece_count;
+        let opponent_color = (state.side_to_move ^ 1) + 1;
+        // Leap moves are emitted *in addition to* regular adjacency moves
+        // (mirrors master generate<MOVE>'s `tryAddLeap` superset).  They
+        // require leap_capture.enabled, the active phase to be allowed,
+        // and — when in placing — that may_move_in_placing_phase opens
+        // movement.  In fly state, every empty square is already
+        // reachable so the leap superset is redundant.
+        let leap_enabled = !can_fly
+            && self.options.leap_capture.enabled
+            && capture_phase_allowed(&self.options.leap_capture, state.phase)
+            && capture_piece_count_allowed(&self.options.leap_capture, state)
+            && (state.phase == MillPhase::Moving
+                || (state.phase == MillPhase::Placing
+                    && self.options.may_move_in_placing_phase
+                    && self.options.leap_capture.in_placing_phase));
         for (from, piece) in state.board.iter().enumerate() {
             if *piece != state.side_to_move + 1 {
                 continue;
@@ -1019,11 +1034,33 @@ impl MillRules {
                         out.push(move_action(from, to));
                     }
                 }
-            } else {
-                for &to in self.topology.neighbors(from as u16) {
-                    let to = to as usize;
-                    if state.board[to] == 0 && !self.is_restricted_repeated_mill(state, from, to) {
-                        out.push(move_action(from, to));
+                continue;
+            }
+            for &to in self.topology.neighbors(from as u16) {
+                let to = to as usize;
+                if state.board[to] == 0 && !self.is_restricted_repeated_mill(state, from, to) {
+                    out.push(move_action(from, to));
+                }
+            }
+            if leap_enabled {
+                // For every three-point line with `from` at one end, jumping
+                // over an opponent in the middle to the empty far end is a
+                // legal leap move.  master generate<MOVE> emits the same
+                // `make_move(from, b)` shape, deferring capture to the
+                // subsequent Remove resolution that matches our
+                // detect_leap_targets path.
+                for line in active_capture_lines(&self.options.leap_capture, &self.options) {
+                    let (a, mid, b) = (line[0], line[1], line[2]);
+                    let jumps_from_a =
+                        from == a && state.board[b] == 0 && state.board[mid] == opponent_color;
+                    let jumps_from_b =
+                        from == b && state.board[a] == 0 && state.board[mid] == opponent_color;
+                    if jumps_from_a {
+                        if !self.is_restricted_repeated_mill(state, from, b) {
+                            out.push(move_action(from, b));
+                        }
+                    } else if jumps_from_b && !self.is_restricted_repeated_mill(state, from, a) {
+                        out.push(move_action(from, a));
                     }
                 }
             }
@@ -1046,6 +1083,15 @@ impl MillRules {
             return false;
         }
         if from != last_to as usize || to != last_from as usize {
+            return false;
+        }
+        // Match master movegen: restrict only when `from` *currently*
+        // sits in a completed mill (`potential_mills_count(from, side) > 0`)
+        // AND moving the piece to `to` would (re-)form one
+        // (`potential_mills_count(to, side, from) > 0`).  The first
+        // predicate guards against false positives when the original
+        // mill has already been dismantled by some unrelated capture.
+        if !is_piece_in_mill(state, &self.options, from) {
             return false;
         }
         let mut candidate = *state;

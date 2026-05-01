@@ -1730,6 +1730,25 @@ mod tests {
         run_native_self_play(300, 0x14E5_E4E4_104E_CA14, &rules);
     }
 
+    /// Rust-only self-play with `leap_capture.enabled = true`.  Now that
+    /// generate_move_actions emits the leap superset (master
+    /// generate<MOVE>'s tryAddLeap shape) the legal-action set is
+    /// strictly larger than the no-capture baseline, so the random walk
+    /// also implicitly exercises the new code path through both placing
+    /// (via may_move_in_placing_phase) and moving phases.
+    #[test]
+    fn native_self_play_leap_capture_no_panic() {
+        let opts = NativeMillVariantOptions {
+            leap_capture: NativeCaptureRuleConfig {
+                enabled: true,
+                ..Default::default()
+            },
+            ..Default::default()
+        };
+        let rules = MillRules::new(opts);
+        run_native_self_play(300, 0xCEAA_C057_0D1A_4E42, &rules);
+    }
+
     /// Rust-only self-play with `restrict_repeated_mills_formation = true`.
     ///
     /// No C++ legacy rule exercises this flag.  Verifies that the Rust
