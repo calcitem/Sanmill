@@ -79,7 +79,7 @@ consistent, high-quality contributions.
 │   └── tgf-legacy-cxx/        # Transitional C++ bridge
 ├── src/                       # Legacy C++ engine source
 │   ├── *.cpp, *.h            # Core game logic, AI, UCI
-│   ├── Makefile              # Build configuration for CLI
+│   ├── Makefile              # DELETED in Phase 8.2; use cargo build
 │   ├── perfect/              # Perfect play databases
 │   └── ui/
 │       ├── flutter_app/      # Flutter frontend (PRIMARY)
@@ -243,15 +243,7 @@ Refs #789
 
 ### Build Tools
 
-**C++ Engine:**
-```bash
-cd src
-make all
-make test              # Run unit tests
-./sanmill # Run sanmill
-```
-
-**Rust / TGF:**
+**Rust / TGF engine (replaces legacy C++ engine):**
 ```bash
 cargo test --workspace
 cargo clippy --workspace --all-targets --all-features -- -D warnings
@@ -325,11 +317,10 @@ is critical to avoid common mistakes.
 
 ### Testing
 
-**C++ Unit Tests:**
+**Rust unit tests (replaces legacy C++ gtest):**
 ```bash
-cd tests
-# Use existing test infrastructure (gtest)
-# Add new test files as test_<component>.cpp
+cargo test --workspace
+cargo test -p rust_lib_sanmill --lib -- --ignored random_walk_extended
 ```
 
 **Flutter Tests:**
@@ -347,9 +338,9 @@ flutter test integration_test/  # Integration tests
 
 For every code change:
 
-* **C++ engine changes:**
-  - Add or update unit tests in `tests/test_<component>.cpp`
-  - Ensure all existing tests pass: `make test`
+* **Rust engine changes:**
+  - Add or update unit tests in `crates/tgf-*/src/`
+  - Ensure all existing tests pass: `cargo test --workspace`
 * **Flutter UI changes:**
   - Add widget tests for new UI components
   - Verify accessibility (screen readers, keyboard navigation)
@@ -413,20 +404,15 @@ Before submitting changes:
 # Format/check code (ALWAYS before commit)
 ./format.sh s
 
-# Build C++ engine
-cd src
-make build all
+# Build Rust engine (replaces legacy C++ engine)
+cargo build --workspace --release
 
-# Run C++ tests
-cd src
-make test
+# Run Rust/TGF tests + benchmarks
+cargo test --workspace
+cargo clippy --workspace --all-targets --all-features -- -D warnings
 
 # Initialize Flutter + Rust/FRB (includes code generation)
 ./flutter-init.sh
-
-# Rust/TGF validation
-cargo test --workspace
-cargo clippy --workspace --all-targets --all-features -- -D warnings
 
 # Regenerate code (after model changes)
 cd src/ui/flutter_app
@@ -443,7 +429,6 @@ flutter test
 
 ### Key Files
 
-* `src/Makefile` - C++ build configuration
 * `src/ui/flutter_app/pubspec.yaml` - Flutter dependencies
 * `src/ui/flutter_app/lib/` - Flutter source code
 * `src/ui/flutter_app/l10n.yaml` - Localization configuration
