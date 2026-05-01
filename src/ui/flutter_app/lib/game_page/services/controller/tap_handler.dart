@@ -28,8 +28,8 @@ class TapHandler {
   bool get isAiSideToMove => controller.gameInstance.isAiSideToMove;
 
   bool get _isBoardEmpty {
-    final NativeMillSnapshotBoardView? nativeBoardView = GameController()
-        .activeNativeMillBoardView;
+    final NativeMillSnapshotBoardView? nativeBoardView =
+        GameController().activeNativeMillBoardView;
     if (nativeBoardView != null) {
       return nativeBoardView.pieceCount(PlayerSeat.first) == 0 &&
           nativeBoardView.pieceCount(PlayerSeat.second) == 0;

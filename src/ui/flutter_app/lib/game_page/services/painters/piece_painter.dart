@@ -60,6 +60,12 @@ class PiecePainter extends CustomPainter {
     return square == null ? null : GameController().position.sqAttrList[square];
   }
 
+  bool get _isNativeMovingPhase =>
+      GameController().activeSessionSnapshot?.phase == 'moving';
+
+  bool get _isNativePlacingPhase =>
+      GameController().activeSessionSnapshot?.phase == 'placing';
+
   /// Calculate the scale and shadow properties for a piece based on animation state
   /// Returns a map with 'scale', 'shadowBlur' and 'lift' keys
   Map<String, double> _calculatePieceEffects(
@@ -72,9 +78,12 @@ class PiecePainter extends CustomPainter {
     double shadowBlur = 2.0;
     double lift = 0.0;
 
-    final bool isMovingPhase = GameController().position.phase == Phase.moving;
-    final bool isPlacingPhase =
-        GameController().position.phase == Phase.placing;
+    final bool isMovingPhase = nativeBoardView == null
+        ? GameController().position.phase == Phase.moving
+        : _isNativeMovingPhase;
+    final bool isPlacingPhase = nativeBoardView == null
+        ? GameController().position.phase == Phase.placing
+        : _isNativePlacingPhase;
     final bool isAnimationEnabled =
         DB().displaySettings.isPiecePickUpAnimationEnabled;
 
