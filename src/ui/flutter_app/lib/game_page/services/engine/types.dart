@@ -131,6 +131,23 @@ extension PieceColorExtension on PieceColor {
   }
 
   IconData get icon {
+    final platform.GameOutcome? outcome =
+        GameController().activeSessionSnapshot?.outcome;
+    if (outcome != null) {
+      if (!outcome.isTerminal) {
+        return _chevron;
+      }
+      return switch (outcome.kind) {
+        platform.GameOutcomeKind.win => switch (outcome.winner) {
+          platform.PlayerSeat.first => PieceColor.white._arrow,
+          platform.PlayerSeat.second => PieceColor.black._arrow,
+          _ => PieceColor.nobody._arrow,
+        },
+        platform.GameOutcomeKind.draw => PieceColor.draw._arrow,
+        platform.GameOutcomeKind.abandoned ||
+        platform.GameOutcomeKind.ongoing => PieceColor.nobody._arrow,
+      };
+    }
     return GameController().position.phase == Phase.gameOver
         ? _arrow
         : _chevron;
