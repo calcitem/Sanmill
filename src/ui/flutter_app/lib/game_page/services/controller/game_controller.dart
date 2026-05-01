@@ -73,6 +73,14 @@ class GameController {
     return NativeMillSnapshotBoardView.fromSnapshot(snapshot);
   }
 
+  PieceColor? get activeSessionSideToMove {
+    return switch (activeSessionSnapshot?.activeSeat) {
+      PlayerSeat.first => PieceColor.white,
+      PlayerSeat.second => PieceColor.black,
+      PlayerSeat.none || null => null,
+    };
+  }
+
   set activeSessionSnapshot(GameStateSnapshot? snapshot) {
     activeSessionSnapshotNotifier.value = snapshot;
   }

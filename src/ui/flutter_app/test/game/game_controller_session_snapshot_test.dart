@@ -29,6 +29,7 @@ void main() {
 
     expect(controller.activeSessionSnapshot, same(snapshot));
     expect(controller.activeSessionSnapshotNotifier.value, same(snapshot));
+    expect(controller.activeSessionSideToMove, PieceColor.white);
   });
 
   test('GameController exposes active native Mill board view', () {

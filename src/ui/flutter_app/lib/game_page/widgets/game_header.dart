@@ -466,7 +466,9 @@ class HeaderStateIcons extends State<HeaderIcons> {
     // Determine which player is active based on the current side to move
     final GameController controller = GameController();
     final bool isPlayer1Turn =
-        controller.position.sideToMove == PieceColor.white;
+        (controller.activeSessionSideToMove ??
+            controller.position.sideToMove) ==
+        PieceColor.white;
 
     // Skip timer update if this is the first move of the game
     if (_isFirstMove && controller.gameRecorder.mainlineMoves.isEmpty) {
@@ -500,7 +502,10 @@ class HeaderStateIcons extends State<HeaderIcons> {
   }
 
   void _updateIcons() {
-    _iconDataNotifier.value = GameController().position.sideToMove.icon;
+    final GameController controller = GameController();
+    _iconDataNotifier.value =
+        (controller.activeSessionSideToMove ?? controller.position.sideToMove)
+            .icon;
     _refreshLanHostPlaysWhite();
 
     // Update first move flag when moves are made
