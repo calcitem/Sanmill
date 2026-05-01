@@ -23,7 +23,9 @@ class TapHandler {
       GameController().headerTipNotifier.showTip;
 
   bool get _isGameRunning =>
-      GameController().position.winner == PieceColor.nobody;
+      GameController().activeSessionSnapshot?.outcome.isTerminal == false ||
+      (GameController().activeSessionSnapshot == null &&
+          GameController().position.winner == PieceColor.nobody);
 
   bool get isAiSideToMove => controller.gameInstance.isAiSideToMove;
 
