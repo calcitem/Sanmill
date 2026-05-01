@@ -9,6 +9,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
+import '../../../games/mill/mill_board_coordinate_maps.dart';
 import '../../../shared/database/database.dart';
 import '../../../shared/services/environment_config.dart';
 import '../../../shared/services/logger.dart';
@@ -818,8 +819,9 @@ class AnalysisRenderer {
       logger.w("Invalid standard notation: $squareNotation");
       return size.center(Offset.zero);
     }
-    // Convert to square using existing functions
-    final int square = notationToSquare(squareNotation);
+    final int square = MillBoardCoordinateMaps.notationToLegacySquare(
+      squareNotation,
+    );
 
     // Use pointFromSquare to get the actual position
     return pointFromSquare(square, size);
