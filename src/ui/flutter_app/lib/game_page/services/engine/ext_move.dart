@@ -9,11 +9,11 @@ enum MoveType { place, move, remove, draw, none }
 
 class MoveParser {
   MoveType parseMoveType(String move) {
-    if (move.startsWith("x") && move.length == 3) {
+    if (RegExp(r'^x[a-g][1-7]$').hasMatch(move)) {
       return MoveType.remove;
-    } else if (move.contains("-") && move.length == 5) {
+    } else if (RegExp(r'^[a-g][1-7]-[a-g][1-7]$').hasMatch(move)) {
       return MoveType.move;
-    } else if (RegExp(r'^[a-g][1-8]$').hasMatch(move) && move.length == 2) {
+    } else if (RegExp(r'^[a-g][1-7]$').hasMatch(move)) {
       return MoveType.place;
     } else if (move == "draw") {
       logger.i("[TODO] Computer request draw");
@@ -243,11 +243,17 @@ class ExtMove extends PgnNodeData {
   }
 
   static int _standardNotationToSquare(String notation) {
-    return _MillNotationMaps.standardToSquare[notation.toLowerCase()] ?? -1;
+    return MillBoardCoordinateMaps.notationToLegacySquare(notation);
   }
 
   static String sqToNotation(int sq) {
-    return _MillNotationMaps.squareToNotation[sq] ?? "";
+    if (sq == -1) {
+      return "(none)";
+    }
+    if (sq == 0) {
+      return "draw";
+    }
+    return MillBoardCoordinateMaps.legacySquareToNotation(sq);
   }
 
   /// Validate the move string format.
@@ -287,53 +293,21 @@ class ExtMove extends PgnNodeData {
   String get notation {
     final bool useUpperCase = DB().generalSettings.screenReaderSupport;
     final int f = from;
-    final String? fromStr = _MillNotationMaps.squareToNotation[f];
-    final String? toStr = _MillNotationMaps.squareToNotation[to];
+    final String fromStr = sqToNotation(f);
+    final String toStr = sqToNotation(to);
     switch (type) {
       case MoveType.remove:
-        return useUpperCase ? "x${toStr?.toUpperCase()}" : "x$toStr";
+        return useUpperCase ? "x${toStr.toUpperCase()}" : "x$toStr";
       case MoveType.move:
         final String sep = useUpperCase ? "-" : "-";
         return useUpperCase
-            ? "${fromStr?.toUpperCase()}$sep${toStr?.toUpperCase()}"
+            ? "${fromStr.toUpperCase()}$sep${toStr.toUpperCase()}"
             : "$fromStr$sep$toStr";
       case MoveType.place:
       case MoveType.draw:
       case MoveType.none:
-        return useUpperCase ? toStr?.toUpperCase() ?? "" : toStr ?? "";
+        return useUpperCase ? toStr.toUpperCase() : toStr;
     }
-  }
-}
-
-class _MillNotationMaps {
-  const _MillNotationMaps._();
-
-  static Map<String, int>? _standardToSquareCache;
-  static Map<int, String>? _squareToNotationCache;
-
-  static Map<String, int> get standardToSquare {
-    return _standardToSquareCache ??= _buildStandardToSquare();
-  }
-
-  static Map<int, String> get squareToNotation {
-    return _squareToNotationCache ??= _buildSquareToNotation();
-  }
-
-  static Map<String, int> _buildStandardToSquare() {
-    final tgf.TopologyBlob topology = tgf.kernelTopology();
-    return <String, int>{
-      for (final tgf.TopologyPoint p in topology.points)
-        p.label.toLowerCase(): p.square,
-    };
-  }
-
-  static Map<int, String> _buildSquareToNotation() {
-    final tgf.TopologyBlob topology = tgf.kernelTopology();
-    return <int, String>{
-      -1: "(none)",
-      0: "draw",
-      for (final tgf.TopologyPoint p in topology.points) p.square: p.label,
-    };
   }
 }
 

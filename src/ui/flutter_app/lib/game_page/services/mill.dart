@@ -53,7 +53,6 @@ import '../../shared/utils/helpers/string_helpers/string_buffer_helper.dart';
 import '../../shared/utils/helpers/string_helpers/string_helper.dart';
 import '../../shared/utils/helpers/text_helpers/safe_text_editing_controller.dart';
 import '../../shared/widgets/snackbars/scaffold_messenger.dart';
-import '../../src/rust/api/simple.dart' as tgf;
 import '../../statistics/services/stats_service.dart';
 import '../services/import_export/pgn.dart' as pgn;
 import '../widgets/dialogs/engine_failure_dialog.dart';
