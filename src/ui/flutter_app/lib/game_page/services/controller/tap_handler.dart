@@ -945,7 +945,7 @@ class TapHandler {
         );
         if (GameController().position._record!.type == MoveType.remove) {
           controller.gameRecorder.lastPositionWithRemove =
-              GameController().position.fen;
+              GameController().activeFen;
         }
 
         // Send move to LAN opponent if applicable

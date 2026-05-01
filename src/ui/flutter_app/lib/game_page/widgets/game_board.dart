@@ -629,7 +629,7 @@ class _GameBoardState extends State<GameBoard>
       );
     }
     return EngineFailureDialog.buildDiagnosticContext(
-      fen: GameController().position.fen,
+      fen: GameController().activeFen,
       phase: GameController().position.phase.name,
       sideToMove: GameController().position.sideToMove.playerName(context),
       lastMove: lastMove,

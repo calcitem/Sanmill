@@ -313,7 +313,7 @@ class GameRecorder {
       if (setupPosition != null) {
         return '[FEN "$setupPosition"]\r\n[SetUp "1"]\r\n\r\n';
       }
-      return '[FEN "${GameController().position.fen}"]\r\n[SetUp "1"]\r\n\r\n';
+      return '[FEN "${GameController().activeFen}"]\r\n[SetUp "1"]\r\n\r\n';
     }
 
     // Obtain mainline nodes (not just moves) for richer comment merging.
@@ -1489,7 +1489,7 @@ class GameRecorder {
       if (setupPosition != null) {
         return '[FEN "$setupPosition"]\r\n[SetUp "1"]\r\n\r\n';
       }
-      return '[FEN "${GameController().position.fen}"]\r\n[SetUp "1"]\r\n\r\n';
+      return '[FEN "${GameController().activeFen}"]\r\n[SetUp "1"]\r\n\r\n';
     }
 
     final List<ExtMove> path = currentPath;
@@ -1606,7 +1606,7 @@ class GameRecorder {
       if (setupPosition != null) {
         return '[FEN "$setupPosition"]\r\n[SetUp "1"]\r\n\r\n';
       }
-      return '[FEN "${GameController().position.fen}"]\r\n[SetUp "1"]\r\n\r\n';
+      return '[FEN "${GameController().activeFen}"]\r\n[SetUp "1"]\r\n\r\n';
     }
 
     final List<PgnNode<ExtMove>> nodes = mainlineNodes;

@@ -73,6 +73,42 @@ class GameController {
     return NativeMillSnapshotBoardView.fromSnapshot(snapshot);
   }
 
+  /// Returns a read-only [MillBoardView] for the current game state.
+  ///
+  /// When the native session is active the view is derived from the
+  /// session snapshot (and therefore stays in sync with the Rust kernel).
+  /// Otherwise the legacy [Position] is used as the data source.
+  MillBoardView get activeBoardView {
+    if (DB().generalSettings.useNativeMillSession) {
+      final GameStateSnapshot? snapshot = activeSessionSnapshot;
+      if (snapshot != null) {
+        final BuildContext? ctx = rootScaffoldMessengerKey.currentContext;
+        final Object? sess = ctx != null
+            ? GameSessionScope.sessionOf(ctx)
+            : null;
+        final String? exportedFen = sess is NativeMillGameSession
+            ? sess.getFen()
+            : null;
+        final MillBoardView? view = MillBoardView.fromNativeSnapshot(
+          snapshot,
+          exportedFen,
+        );
+        if (view != null) {
+          return view;
+        }
+      }
+    }
+    return MillBoardView.fromPosition(position);
+  }
+
+  /// Convenience FEN accessor.
+  ///
+  /// Reads from the native session when available; falls back to the
+  /// legacy [Position.fen] getter otherwise.  Callers in the rendering
+  /// and recording layers should prefer this over `position.fen` so that
+  /// eventually [position.dart] can be deleted.
+  String? get activeFen => activeBoardView.fen;
+
   PieceColor? get activeSessionSideToMove {
     return switch (activeSessionSnapshot?.activeSeat) {
       PlayerSeat.first => PieceColor.white,
@@ -571,6 +607,16 @@ class GameController {
       gameRecorder.setupPosition = fen;
       gameRecorder.lastPositionWithRemove = fen;
       position.setFen(fen);
+      // Also load FEN into the native session when active.
+      if (DB().generalSettings.useNativeMillSession) {
+        final BuildContext? ctx = rootScaffoldMessengerKey.currentContext;
+        final Object? sess = ctx != null
+            ? GameSessionScope.sessionOf(ctx)
+            : null;
+        if (sess is NativeMillGameSession) {
+          sess.loadFen(fen);
+        }
+      }
     }
 
     gameInstance.gameMode = gameModeBak;
@@ -610,7 +656,7 @@ class GameController {
     position = Position();
     position.reset();
     gameInstance = Game(gameMode: mode);
-    gameRecorder = GameRecorder(lastPositionWithRemove: position.fen);
+    gameRecorder = GameRecorder(lastPositionWithRemove: activeFen);
 
     _startGame();
 
@@ -1310,9 +1356,9 @@ class GameController {
         await EngineFailureDialog.show(
           context,
           diagnosticContext: EngineFailureDialog.buildDiagnosticContext(
-            fen: position.fen,
-            phase: position.phase.name,
-            sideToMove: position.sideToMove.playerName(context),
+            fen: activeFen,
+            phase: activeBoardView.phase.name,
+            sideToMove: activeBoardView.sideToMove.playerName(context),
             lastMove: moves.isNotEmpty ? moves.last.notation : null,
           ),
         );

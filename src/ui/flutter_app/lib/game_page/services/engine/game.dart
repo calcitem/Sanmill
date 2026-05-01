@@ -163,7 +163,7 @@ class Game {
     // regardless of whether the move came from UI tapping or from the engine.
     if (finalMove.type == MoveType.remove) {
       GameController().gameRecorder.lastPositionWithRemove =
-          GameController().position.fen;
+          GameController().activeFen;
     }
 
     // 3) If the game is still running, check for results

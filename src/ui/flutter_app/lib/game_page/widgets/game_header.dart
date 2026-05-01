@@ -43,7 +43,7 @@ class _GameHeaderState extends State<GameHeader> {
     if (GameController().activeSessionSnapshot != null) {
       return;
     }
-    final String? fen = GameController().position.fen;
+    final String? fen = GameController().activeFen;
     if (fen == null || !GameController().position.validateFen(fen)) {
       GameController().headerTipNotifier.showTip(S.of(context).invalidPosition);
     }

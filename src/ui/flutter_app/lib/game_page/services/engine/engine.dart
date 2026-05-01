@@ -303,7 +303,7 @@ class Engine {
     final int currentEpoch = _searchEpoch;
 
     if (!moveNow) {
-      fen = GameController().position.fen;
+      fen = GameController().activeFen;
       if (fen == null) {
         throw const EngineNoBestMove();
       }
@@ -463,7 +463,7 @@ class Engine {
       } else if (aiMoveTypeStr == "perfect") {
         aiMoveType = AiMoveType.perfect;
         if (EnvironmentConfig.devMode == true) {
-          final String? saveFen = GameController().position.fen;
+          final String? saveFen = GameController().activeFen;
 
           // Save saveFen to local file if it does not contain " m ".
           if (saveFen != null) {
@@ -1100,8 +1100,8 @@ class Engine {
 
   String? _getPositionFen() {
     // If current action is remove, use current position to preserve custodian capture state
-    if (GameController().position.action == Act.remove) {
-      final String? currentFen = GameController().position.fen;
+    if (GameController().activeBoardView.action == Act.remove) {
+      final String? currentFen = GameController().activeFen;
       if (currentFen == null ||
           GameController().position.validateFen(currentFen) == false) {
         logger.e("Invalid current FEN: $currentFen");
@@ -1155,7 +1155,7 @@ class Engine {
         logger.w(
           "[engine] Skipping corrupted moves, using current FEN directly",
         );
-        final String? currentFen = GameController().position.fen;
+        final String? currentFen = GameController().activeFen;
         if (currentFen != null) {
           return "position fen $currentFen";
         }
