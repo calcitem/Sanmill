@@ -1075,7 +1075,8 @@ where
     };
     let abort = abort_flag.unwrap_or_else(|| Arc::new(AtomicBool::new(false)));
 
-    let mut handles = Vec::with_capacity(workers.len());
+    let pool = SearchThreadPool::new(workers.len());
+    let mut receivers = Vec::with_capacity(workers.len());
     for worker in workers {
         let game_for_worker = game.clone();
         let shared_tt = shared_tt.clone();
@@ -1083,7 +1084,7 @@ where
         let snapshot_for_worker = snapshot;
         let abort = Arc::clone(&abort);
         let depth = (base_depth + worker.extra_depth).max(1);
-        handles.push(thread::spawn(move || {
+        receivers.push(pool.submit(move || {
             let mut searcher = Searcher::<G>::with_shared_tt(shared_tt);
             searcher.set_abort_flag(abort);
             searcher.set_options(options_for_worker);
@@ -1093,8 +1094,10 @@ where
     }
 
     let mut best: Option<SearchResult> = None;
-    for h in handles {
-        let result = h.join().expect("lazy-smp worker panicked");
+    for rx in receivers {
+        let result = rx
+            .recv()
+            .expect("lazy-smp worker should return a SearchResult");
         if best.as_ref().is_none_or(|prev| result.score > prev.score) {
             best = Some(result);
         }
