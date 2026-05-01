@@ -81,6 +81,37 @@ class GameController {
     };
   }
 
+  Phase? get activeSessionPhase {
+    final GameStateSnapshot? snapshot = activeSessionSnapshot;
+    if (snapshot == null) {
+      return null;
+    }
+    if (snapshot.outcome.isTerminal) {
+      return Phase.gameOver;
+    }
+    return switch (snapshot.phase) {
+      'ready' => Phase.ready,
+      'placing' => Phase.placing,
+      'moving' => Phase.moving,
+      'gameOver' => Phase.gameOver,
+      _ => null,
+    };
+  }
+
+  PieceColor? get activeSessionWinner {
+    final platform.GameOutcome? outcome = activeSessionSnapshot?.outcome;
+    return switch (outcome?.kind) {
+      platform.GameOutcomeKind.win => switch (outcome?.winner) {
+        platform.PlayerSeat.first => PieceColor.white,
+        platform.PlayerSeat.second => PieceColor.black,
+        _ => PieceColor.nobody,
+      },
+      platform.GameOutcomeKind.draw => PieceColor.draw,
+      platform.GameOutcomeKind.abandoned => PieceColor.nobody,
+      platform.GameOutcomeKind.ongoing || null => null,
+    };
+  }
+
   IconData get activeSideToMoveIcon {
     final PieceColor side = activeSessionSideToMove ?? position.sideToMove;
     final platform.GameOutcome? outcome = activeSessionSnapshot?.outcome;

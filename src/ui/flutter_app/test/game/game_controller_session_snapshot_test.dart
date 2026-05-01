@@ -31,6 +31,8 @@ void main() {
     expect(controller.activeSessionSnapshot, same(snapshot));
     expect(controller.activeSessionSnapshotNotifier.value, same(snapshot));
     expect(controller.activeSessionSideToMove, PieceColor.white);
+    expect(controller.activeSessionPhase, Phase.placing);
+    expect(controller.activeSessionWinner, isNull);
     expect(controller.activeSideToMoveIcon, isA<IconData>());
   });
 
@@ -49,7 +51,28 @@ void main() {
 
     controller.activeSessionSnapshot = snapshot;
 
+    expect(controller.activeSessionPhase, Phase.gameOver);
+    expect(controller.activeSessionWinner, PieceColor.black);
     expect(controller.activeSideToMoveIcon, isA<IconData>());
+  });
+
+  test('GameController maps draw session outcome to legacy winner', () {
+    DB.instance = MockDB();
+    addTearDown(() => DB.instance = null);
+    final GameController controller = GameController.instance;
+    addTearDown(() => controller.activeSessionSnapshot = null);
+
+    const platform.GameStateSnapshot snapshot = platform.GameStateSnapshot(
+      gameId: GameId.mill,
+      activeSeat: platform.PlayerSeat.none,
+      outcome: platform.GameOutcome.draw(),
+      phase: 'moving',
+    );
+
+    controller.activeSessionSnapshot = snapshot;
+
+    expect(controller.activeSessionPhase, Phase.gameOver);
+    expect(controller.activeSessionWinner, PieceColor.draw);
   });
 
   test('GameController exposes active native Mill board view', () {

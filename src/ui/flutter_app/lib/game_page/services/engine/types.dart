@@ -95,7 +95,9 @@ extension PieceColorExtension on PieceColor {
       case PieceColor.draw:
         return S.of(context).isDraw;
       case PieceColor.nobody:
-        return GameController().position.phase.getTip(context);
+        return (GameController().activeSessionPhase ??
+                GameController().position.phase)
+            .getTip(context);
       case PieceColor.none:
       case PieceColor.marked:
         return null;
@@ -148,7 +150,9 @@ extension PieceColorExtension on PieceColor {
         platform.GameOutcomeKind.ongoing => PieceColor.nobody._arrow,
       };
     }
-    return GameController().position.phase == Phase.gameOver
+    return (GameController().activeSessionPhase ??
+                GameController().position.phase) ==
+            Phase.gameOver
         ? _arrow
         : _chevron;
   }
@@ -168,7 +172,8 @@ extension PieceColorExtension on PieceColor {
   }
 
   IconData get _arrow {
-    switch (GameController().position.winner) {
+    switch (GameController().activeSessionWinner ??
+        GameController().position.winner) {
       case PieceColor.white:
         return FluentIcons.toggle_left_24_regular;
       case PieceColor.black:
