@@ -53,6 +53,7 @@ fn run_uci_loop() {
     let mut rules = MillRules::new(options.clone());
     let mut state = rules.initial_state(&[]);
     let mut threads: usize = 1;
+    let mut qsearch_max_depth: i32 = 0;
     let mut active_search: Option<ActiveSearch> = None;
     let stdin = io::stdin();
     for line in stdin.lock().lines().map_while(Result::ok) {
@@ -72,12 +73,12 @@ fn run_uci_loop() {
             state = rules.initial_state(&[]);
         } else if line.starts_with("setoption") {
             finish_active_search(&mut active_search);
-            match apply_setoption(line, &mut options, &mut threads) {
+            match apply_setoption(line, &mut options, &mut threads, &mut qsearch_max_depth) {
                 SetoptionResult::Variant => {
                     rules = MillRules::new(options.clone());
                     state = rules.initial_state(&[]);
                 }
-                SetoptionResult::Threads => {}
+                SetoptionResult::Threads | SetoptionResult::SearchConfig => {}
                 SetoptionResult::Unknown => {
                     println!("info string unsupported setoption: {line}");
                 }
@@ -90,7 +91,13 @@ fn run_uci_loop() {
         } else if line.starts_with("go") {
             finish_active_search(&mut active_search);
             let go = parse_go_options(line);
-            active_search = Some(spawn_search(options.clone(), state, go, threads));
+            active_search = Some(spawn_search(
+                options.clone(),
+                state,
+                go,
+                threads,
+                qsearch_max_depth,
+            ));
         } else if line == "stop" {
             if let Some(active) = active_search.take() {
                 active.abort_handle.request_abort();
@@ -126,6 +133,7 @@ fn spawn_search(
     state: GameStateSnapshot,
     go: GoOptions,
     threads: usize,
+    qsearch_max_depth: i32,
 ) -> ActiveSearch {
     let search_options = SearchOptions {
         depth_extension: false,
@@ -143,6 +151,7 @@ fn spawn_search(
             let mut searcher = mill_searcher();
             searcher.set_abort_flag(abort_for_worker);
             searcher.set_options(search_options);
+            searcher.set_qsearch_max_depth(qsearch_max_depth);
             let game = MillGame::new(options);
             let mut wb = game.build_workbench(&state);
             let result = searcher.search_pvs(&mut wb, depth);
@@ -255,6 +264,7 @@ fn print_uci_options() {
     println!("option name PiecesAtLeastCount type spin default 3 min 2 max 3");
     println!("option name MayFly type check default true");
     println!("option name HasDiagonalLines type check default false");
+    println!("option name MaxQuiescenceDepth type spin default 0 min 0 max 4");
     println!("option name Threads type spin default 1 min 1 max 64");
 }
 
@@ -262,6 +272,8 @@ fn print_uci_options() {
 enum SetoptionResult {
     Variant,
     Threads,
+    /// A non-variant search parameter changed (e.g. MaxQuiescenceDepth).
+    SearchConfig,
     Unknown,
 }
 
@@ -269,6 +281,7 @@ fn apply_setoption(
     line: &str,
     options: &mut MillVariantOptions,
     threads: &mut usize,
+    qsearch_max_depth: &mut i32,
 ) -> SetoptionResult {
     let tokens = line.split_whitespace().collect::<Vec<_>>();
     let Some(name_pos) = tokens.iter().position(|t| *t == "name") else {
@@ -294,6 +307,15 @@ fn apply_setoption(
                 SetoptionResult::Unknown
             }
         }
+        "maxquiescencedepth" | "max quiescence depth" => value
+            .parse::<i32>()
+            .ok()
+            .filter(|v| (0..=4).contains(v))
+            .map(|v| {
+                *qsearch_max_depth = v;
+                SetoptionResult::SearchConfig
+            })
+            .unwrap_or(SetoptionResult::Unknown),
         "piececount" | "piece count" => value
             .parse::<u8>()
             .ok()

@@ -266,6 +266,19 @@ public:
     void setTrapAwareness(bool enabled) noexcept { trapAwareness = enabled; }
     bool getTrapAwareness() const noexcept { return trapAwareness; }
 
+    // MaxQuiescenceDepth — clamped to [0,4]; default 0 preserves the
+    // historic stand-pat-only behaviour.  Set to 1+ to enable the
+    // recursive remove extension in qsearch (mirrors src/search.cpp).
+    void setMaxQuiescenceDepth(int val) noexcept
+    {
+        if (val < 0)
+            val = 0;
+        if (val > 4)
+            val = 4;
+        maxQuiescenceDepth = val;
+    }
+    int getMaxQuiescenceDepth() const noexcept { return maxQuiescenceDepth; }
+
 private:
     int skillLevel {1};
     int moveTime {1};
@@ -289,6 +302,7 @@ private:
     bool focusOnBlockingPaths {false};
     bool developerMode {false};
     bool trapAwareness {false};
+    int maxQuiescenceDepth {0};
 
     // TODO: Set this to the correct path
 #ifdef _DEBUG

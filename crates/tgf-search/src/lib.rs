@@ -484,6 +484,11 @@ pub struct Searcher<G: Game> {
     history: HashMap<Action, i32>,
     policy: SearchPolicy,
     options: SearchOptions,
+    /// Maximum quiescence depth extension beyond `depth == 0`.  Mirrors the
+    /// C++ `MaxQuiescenceDepth` setoption.  At 0 (default) the qsearch is a
+    /// stand-pat-only evaluation; setting it to N lets the remove extension
+    /// recurse N plies deeper than the main search horizon.
+    qsearch_max_depth: i32,
     search_started_at: Option<Instant>,
     abort_flag: Arc<AtomicBool>,
     aborted: bool,
@@ -503,6 +508,7 @@ impl<G: Game> Default for Searcher<G> {
             history: HashMap::new(),
             policy: SearchPolicy::default(),
             options: SearchOptions::default(),
+            qsearch_max_depth: 0,
             search_started_at: None,
             abort_flag: Arc::new(AtomicBool::new(false)),
             aborted: false,
@@ -613,6 +619,17 @@ impl<G: Game> Searcher<G> {
 
     pub fn set_options(&mut self, options: SearchOptions) {
         self.options = options;
+    }
+
+    /// Set the maximum quiescence depth extension (default 0 = stand-pat only).
+    /// Matches the C++ `MaxQuiescenceDepth` setoption.  Values are clamped to
+    /// [0, 4] to prevent excessive recursion.
+    pub fn set_qsearch_max_depth(&mut self, depth: i32) {
+        self.qsearch_max_depth = depth.clamp(0, 4);
+    }
+
+    pub fn qsearch_max_depth(&self) -> i32 {
+        self.qsearch_max_depth
     }
 
     pub fn abort_handle(&self) -> SearchAbortHandle {
@@ -801,6 +818,9 @@ impl<G: Game> Searcher<G> {
         if let Some(score) = G::terminal_score(wb, wb.side_to_move(), depth) {
             return score;
         }
+        // Transition to qsearch when depth falls to or below the qsearch
+        // horizon.  With qsearch_max_depth == 0 this matches the C++ stand-
+        // pat-only behaviour; positive values extend the remove branch.
         if depth <= 0 {
             return self.qsearch_with_depth(wb, depth, alpha, beta);
         }
@@ -951,6 +971,13 @@ impl<G: Game> Searcher<G> {
         let Some(remove_kind_tag) = self.policy.remove_kind_tag else {
             return alpha;
         };
+
+        // Enforce the MaxQuiescenceDepth gate: do not recurse deeper than
+        // `qsearch_max_depth` plies past the main search horizon (depth == 0).
+        // `depth` is <= 0 here; -depth is how many plies we have extended.
+        if -depth >= self.qsearch_max_depth {
+            return alpha;
+        }
 
         let mut moves = ActionList::<256>::new();
         G::generate_legal(wb, &mut moves);

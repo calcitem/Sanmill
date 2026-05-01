@@ -128,6 +128,11 @@ static void on_trapAwareness(const Option &o)
     gameOptions.setTrapAwareness(o);
 }
 
+static void on_maxQuiescenceDepth(const Option &o)
+{
+    gameOptions.setMaxQuiescenceDepth(static_cast<int>(o));
+}
+
 // Rules
 
 static void on_piecesCount(const Option &o)
@@ -376,6 +381,7 @@ void init(OptionsMap &o)
     o["FocusOnBlockingPaths"] << Option(true, on_focusOnBlockingPaths);
     o["DeveloperMode"] << Option(true, on_developerMode);
     o["TrapAwareness"] << Option(false, on_trapAwareness);
+    o["MaxQuiescenceDepth"] << Option(0, 0, 4, on_maxQuiescenceDepth);
 
     // Rules
     o["PiecesCount"] << Option(9, 9, 12, on_piecesCount);

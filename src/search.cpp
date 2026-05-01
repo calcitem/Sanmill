@@ -63,9 +63,11 @@ Value Search::qsearch(SearchEngine &searchEngine, Position *pos,
         stand_pat -= depth;
     }
 
-    // If depth limit reached, return stand_pat
-    const int MAX_QUIESCENCE_DEPTH = 0; // TODO: Set to 1 or more
-    if (depth <= -MAX_QUIESCENCE_DEPTH) {
+    // If depth limit reached, return stand_pat.
+    // MaxQuiescenceDepth defaults to 0 (stand-pat only); set via
+    // "setoption name MaxQuiescenceDepth value N" to enable the
+    // recursive remove extension at qsearch depth N.
+    if (depth <= -gameOptions.getMaxQuiescenceDepth()) {
         return stand_pat;
     }
 

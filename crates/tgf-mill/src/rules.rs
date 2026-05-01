@@ -207,6 +207,11 @@ impl MillRules {
         Self { options, topology }
     }
 
+    /// Borrow the variant options used when this `MillRules` was constructed.
+    pub fn options(&self) -> &MillVariantOptions {
+        &self.options
+    }
+
     fn decode(snapshot: &GameStateSnapshot) -> MillState {
         MillState::decode(snapshot)
     }
