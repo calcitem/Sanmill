@@ -94,7 +94,8 @@ class RecordingEvent {
 
   /// Type-specific payload containing event details.
   ///
-  /// For [RecordingEventType.boardTap]: `{'sq': int}`
+  /// For [RecordingEventType.boardTap]:
+  ///   `{'sq': int, 'selectedFrom': String?}`
   /// For [RecordingEventType.aiMove]: `{'move': String, 'value': String?}`
   /// For [RecordingEventType.settingsChange]: `{'category': String, ...}`
   /// For [RecordingEventType.gameReset]: `{'force': bool, 'lanRestart': bool}`

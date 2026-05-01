@@ -12,6 +12,12 @@ import '../../game_page/services/analysis_mode.dart';
 import '../../game_page/services/annotation/annotation_manager.dart';
 import '../../game_page/services/mill.dart';
 import '../../game_page/services/transform/transform.dart';
+import '../../game_platform/game_session.dart';
+import '../../game_shell/game_session_scope.dart';
+import '../../games/mill/mill_board_coordinate_maps.dart';
+import '../../games/mill/mill_session_tap_controller.dart';
+import '../../games/mill/native_mill_ai_turn_controller.dart';
+import '../../games/mill/native_mill_game_session.dart';
 import '../../general_settings/models/general_settings.dart';
 import '../../general_settings/widgets/general_settings_page.dart';
 import '../../rule_settings/models/rule_settings.dart';
@@ -54,6 +60,8 @@ class ReplayService {
   static final ReplayService _instance = ReplayService._internal();
 
   static const String _logTag = '[ReplayService]';
+  static final MillSessionTapController _nativeTapController =
+      MillSessionTapController();
 
   // -----------------------------------------------------------------------
   // Observable state
@@ -278,7 +286,10 @@ class ReplayService {
           // issues (use_build_context_synchronously).
           final BuildContext? freshCtx = currentNavigatorKey.currentContext;
           if (!_stopRequested && freshCtx != null) {
-            // ignore: use_build_context_synchronously
+            if (DB().generalSettings.useNativeMillSession &&
+                await _applyNativeBoardTap(sq, freshCtx)) {
+              break;
+            }
             await TapHandler(context: freshCtx).onBoardTap(sq);
           }
         }
@@ -316,6 +327,10 @@ class ReplayService {
 
       case RecordingEventType.undoMove:
         // An undo is equivalent to a single take-back step.
+        if (DB().generalSettings.useNativeMillSession &&
+            await _applyNativeHistoryNavigation(HistoryNavMode.takeBack, null)) {
+          break;
+        }
         await HistoryNavigator.doEachMove(HistoryNavMode.takeBack);
         logger.i('$_logTag Replay: applied undoMove as takeBack');
 
@@ -418,6 +433,42 @@ class ReplayService {
     }
   }
 
+  Future<bool> _applyNativeBoardTap(int sq, BuildContext context) async {
+    final GameSession? session = GameSessionScope.sessionOf(context);
+    if (session is! NativeMillGameSession) {
+      return false;
+    }
+    final GameMode mode = GameController().gameInstance.gameMode;
+    if (mode == GameMode.setupPosition) {
+      final int? setupNode = MillBoardCoordinateMaps.legacySquareToNode[sq];
+      if (setupNode == null) {
+        return false;
+      }
+      final NativeMillSnapshotBoardView? board =
+          NativeMillSnapshotBoardView.fromSnapshot(session.state.value);
+      final PlayerSeat? current = board?.pieceAtNode(setupNode);
+      final int nextOwner = switch (current) {
+        null => 1,
+        PlayerSeat.none => 1,
+        PlayerSeat.first => 2,
+        PlayerSeat.second => 0,
+      };
+      session.setupSetPiece(setupNode, nextOwner);
+      return true;
+    }
+    final int? node = MillBoardCoordinateMaps.legacySquareToNode[sq];
+    if (node == null) {
+      return false;
+    }
+    final String label = MillBoardCoordinateMaps.nodeToNotation(node);
+    final MillSessionTapController tapController = MillSessionTapController();
+    final MillSessionTapResult result = await tapController.tap(
+      session: session,
+      tappedLabel: label,
+    );
+    return result.status != MillSessionTapStatus.ignored;
+  }
+
   void _kickLegacyAiIfNeeded() {
     if (_useRecordedAiMoves) {
       return;
@@ -457,6 +508,38 @@ class ReplayService {
     final String move = rawMove.trim().toLowerCase();
 
     try {
+      if (DB().generalSettings.useNativeMillSession) {
+        final BuildContext? context = currentNavigatorKey.currentContext;
+        final GameSession? session = context == null
+            ? null
+            : GameSessionScope.sessionOf(context);
+        if (session is NativeMillGameSession) {
+          final NativeMillAiTurnController aiTurnController =
+              NativeMillAiTurnController(generalSettings: DB().generalSettings);
+          GameAction? action;
+          for (final GameAction legal in session.legalActions) {
+            if (legal.payload['move'] == move) {
+              action = legal;
+              break;
+            }
+          }
+          if (action != null) {
+            await session.apply(action);
+            logger.i('$_logTag Replay: applied native aiMove $move');
+            return;
+          }
+          final GameAction? searched = await aiTurnController.playIfAiTurn(
+            session,
+          );
+          if (searched != null) {
+            logger.i(
+              '$_logTag Replay: applied searched native aiMove '
+              '${searched.payload['move']}',
+            );
+            return;
+          }
+        }
+      }
       final ExtMove extMove = ExtMove(move, side: side);
       final bool ok = GameController().applyMove(extMove);
       assert(ok, 'Replay aiMove failed: $move (side=$side)');
@@ -520,8 +603,50 @@ class ReplayService {
       return;
     }
 
+    if (DB().generalSettings.useNativeMillSession &&
+        await _applyNativeHistoryNavigation(navMode, steps)) {
+      logger.i(
+        '$_logTag Replay: applied native historyNavigation $name (steps=$steps)',
+      );
+      return;
+    }
+
     await HistoryNavigator.doEachMove(navMode, steps);
     logger.i('$_logTag Replay: applied historyNavigation $name (steps=$steps)');
+  }
+
+  Future<bool> _applyNativeHistoryNavigation(
+    HistoryNavMode navMode,
+    int? steps,
+  ) async {
+    final BuildContext? context = currentNavigatorKey.currentContext;
+    final GameSession? session = context == null
+        ? null
+        : GameSessionScope.sessionOf(context);
+    if (session is! NativeMillGameSession) {
+      return false;
+    }
+
+    switch (navMode) {
+      case HistoryNavMode.takeBack:
+        await session.undo();
+      case HistoryNavMode.takeBackN:
+        final int count = steps ?? 0;
+        for (int i = 0; i < count; i++) {
+          await session.undo();
+        }
+      case HistoryNavMode.takeBackAll:
+        while (session.undoDepth > 0) {
+          await session.undo();
+        }
+      case HistoryNavMode.stepForward:
+        await session.redo();
+      case HistoryNavMode.stepForwardAll:
+        while (session.redoDepth > 0) {
+          await session.redo();
+        }
+    }
+    return true;
   }
 
   /// Restores the game recorder from a recorded PGN text payload so that the
@@ -685,6 +810,13 @@ class ReplayService {
   void _applySetupPositionAction(Map<String, dynamic> data, BuildContext? ctx) {
     final String action = data['action'] as String? ?? '';
     final Position position = GameController().position;
+    final GameSession? session =
+        ctx == null ? null : GameSessionScope.sessionOf(ctx);
+    final NativeMillGameSession? nativeSession =
+        DB().generalSettings.useNativeMillSession &&
+            session is NativeMillGameSession
+        ? session
+        : null;
 
     switch (action) {
       case 'selectPiece':
@@ -736,6 +868,7 @@ class ReplayService {
         }
 
       case 'clear':
+        nativeSession?.setupClear();
         position.reset();
 
       case 'setNeedRemove':

@@ -56,6 +56,8 @@ class TapHandler {
           'sideToMove': useNativeSnapshot
               ? snapshot.activeSeat.name
               : GameController().position.sideToMove.string,
+          if (useNativeSnapshot)
+            'selectedFrom': _nativeSessionTapController.selectedFrom,
           'gameMode': GameController().gameInstance.gameMode.toString(),
         });
   }
