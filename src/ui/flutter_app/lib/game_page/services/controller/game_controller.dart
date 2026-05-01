@@ -81,6 +81,27 @@ class GameController {
     };
   }
 
+  IconData get activeSideToMoveIcon {
+    final PieceColor side = activeSessionSideToMove ?? position.sideToMove;
+    final platform.GameOutcome? outcome = activeSessionSnapshot?.outcome;
+    if (outcome == null) {
+      return side.icon;
+    }
+    if (!outcome.isTerminal) {
+      return side._chevron;
+    }
+    return switch (outcome.kind) {
+      platform.GameOutcomeKind.win => switch (outcome.winner) {
+        platform.PlayerSeat.first => PieceColor.white._arrow,
+        platform.PlayerSeat.second => PieceColor.black._arrow,
+        _ => PieceColor.nobody._arrow,
+      },
+      platform.GameOutcomeKind.draw => PieceColor.draw._arrow,
+      platform.GameOutcomeKind.abandoned ||
+      platform.GameOutcomeKind.ongoing => PieceColor.nobody._arrow,
+    };
+  }
+
   set activeSessionSnapshot(GameStateSnapshot? snapshot) {
     activeSessionSnapshotNotifier.value = snapshot;
   }

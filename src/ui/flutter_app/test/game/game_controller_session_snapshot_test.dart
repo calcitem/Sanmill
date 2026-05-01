@@ -3,6 +3,7 @@
 
 import 'dart:typed_data';
 
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sanmill/game_page/services/mill.dart';
 import 'package:sanmill/game_platform/game_id.dart';
@@ -30,6 +31,25 @@ void main() {
     expect(controller.activeSessionSnapshot, same(snapshot));
     expect(controller.activeSessionSnapshotNotifier.value, same(snapshot));
     expect(controller.activeSessionSideToMove, PieceColor.white);
+    expect(controller.activeSideToMoveIcon, isA<IconData>());
+  });
+
+  test('GameController side icon uses terminal session outcome', () {
+    DB.instance = MockDB();
+    addTearDown(() => DB.instance = null);
+    final GameController controller = GameController.instance;
+    addTearDown(() => controller.activeSessionSnapshot = null);
+
+    const platform.GameStateSnapshot snapshot = platform.GameStateSnapshot(
+      gameId: GameId.mill,
+      activeSeat: platform.PlayerSeat.none,
+      outcome: platform.GameOutcome.win(platform.PlayerSeat.second),
+      phase: 'gameOver',
+    );
+
+    controller.activeSessionSnapshot = snapshot;
+
+    expect(controller.activeSideToMoveIcon, isA<IconData>());
   });
 
   test('GameController exposes active native Mill board view', () {

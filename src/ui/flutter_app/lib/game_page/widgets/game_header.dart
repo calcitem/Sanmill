@@ -431,7 +431,7 @@ class HeaderIcons extends StatefulWidget {
 
 class HeaderStateIcons extends State<HeaderIcons> {
   final ValueNotifier<IconData> _iconDataNotifier = ValueNotifier<IconData>(
-    GameController().position.sideToMove.icon,
+    GameController().activeSideToMoveIcon,
   );
 
   // Add ValueNotifier for lanHostPlaysWhite
@@ -506,9 +506,7 @@ class HeaderStateIcons extends State<HeaderIcons> {
 
   void _updateIcons() {
     final GameController controller = GameController();
-    _iconDataNotifier.value =
-        (controller.activeSessionSideToMove ?? controller.position.sideToMove)
-            .icon;
+    _iconDataNotifier.value = controller.activeSideToMoveIcon;
     _refreshLanHostPlaysWhite();
 
     // Update first move flag when moves are made
