@@ -1053,7 +1053,8 @@ fn maybe_transition_to_moving(state: &mut MillState, options: &MillVariantOption
     {
         enter_moving_phase(state, options);
     }
-    if options.stop_placing_when_two_empty_squares
+    if options.piece_count == 12
+        && options.stop_placing_when_two_empty_squares
         && state.phase == MillPhase::Placing
         && empty_square_count(state) <= 2
     {
@@ -1101,7 +1102,10 @@ fn enter_moving_phase(state: &mut MillState, options: &MillVariantOptions) {
 }
 
 fn maybe_stop_placing_when_two_empty(state: &mut MillState, options: &MillVariantOptions) {
-    if options.stop_placing_when_two_empty_squares && empty_square_count(state) <= 2 {
+    if options.piece_count == 12
+        && options.stop_placing_when_two_empty_squares
+        && empty_square_count(state) <= 2
+    {
         state.pieces_in_hand = [0, 0];
     }
 }
@@ -3177,6 +3181,7 @@ mod tests {
     #[test]
     fn stop_placing_when_two_empty_squares_enters_moving_phase() {
         let options = MillVariantOptions {
+            piece_count: 12,
             stop_placing_when_two_empty_squares: true,
             ..MillVariantOptions::default()
         };
@@ -3212,6 +3217,51 @@ mod tests {
         let state = MillRules::decode(&after);
         assert_eq!(state.pieces_in_hand, [0, 0]);
         assert_eq!(state.phase, MillPhase::Moving);
+    }
+
+    #[test]
+    fn stop_placing_when_two_empty_squares_is_twelve_men_only() {
+        let options = MillVariantOptions {
+            piece_count: 9,
+            stop_placing_when_two_empty_squares: true,
+            ..MillVariantOptions::default()
+        };
+        let rules = MillRules::new(options);
+        let mut board = [2_i8; 24];
+        board[21] = 0;
+        board[22] = 0;
+        board[23] = 0;
+        board[20] = 2;
+        board[13] = 2;
+        board[5] = 2;
+        let state = MillState {
+            board,
+            side_to_move: 0,
+            phase: MillPhase::Placing,
+            move_number: 21,
+            pieces_in_hand: [3, 0],
+            pieces_on_board: [0, 21],
+            pending_removals: [0, 0],
+            winner: -1,
+            ..MillState::default()
+        };
+
+        let after = rules.apply(
+            &rules.encode(state),
+            Action {
+                kind_tag: MillActionKind::Place as i16,
+                from_node: -1,
+                to_node: 21,
+                aux: -1,
+                payload_bits: 0,
+            },
+        );
+        let state = MillRules::decode(&after);
+        assert_eq!(
+            state.phase,
+            MillPhase::Placing,
+            "C++ only applies this shortcut for 12-piece games"
+        );
     }
 
     #[test]
