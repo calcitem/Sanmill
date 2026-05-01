@@ -1016,6 +1016,40 @@ mod tests {
     }
 
     #[test]
+    fn native_search_replies_to_human_star_with_star_square() {
+        let rules = MillRules::default();
+        let game = MillGame::default();
+        let mut snap = rules.initial_state(&[]);
+
+        // Human first move on legacy SQ_16 / Rust node 9 ("d6"), one of the
+        // non-diagonal master-branch star-priority squares.
+        snap = rules.apply(
+            &snap,
+            Action {
+                kind_tag: MillActionKind::Place as i16,
+                from_node: -1,
+                to_node: 9,
+                aux: -1,
+                payload_bits: 0,
+            },
+        );
+        assert_eq!(snap.side_to_move, 1, "black should reply");
+
+        let mut wb = game.build_workbench(&snap);
+        let mut searcher = mill_searcher_default();
+        let best = searcher.search_pvs(&mut wb, 1).best_action;
+
+        // Remaining non-diagonal star squares are SQ_18/SQ_20/SQ_22 =
+        // Rust nodes 11/13/15.  This guards against confusing legacy square
+        // ids (16/18/20/22) with dense Rust node ids.
+        assert!(
+            matches!(best.to_node, 11 | 13 | 15),
+            "expected a star-square reply, got to_node={}",
+            best.to_node
+        );
+    }
+
+    #[test]
     fn native_and_legacy_perft_depth_one_match() {
         let _guard = LEGACY_TEST_MUTEX
             .lock()

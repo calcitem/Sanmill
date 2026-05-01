@@ -1624,9 +1624,10 @@ impl MillRules {
             return Err(format!("FEN needs >= 17 fields, got {}", fields.len()));
         }
 
-        // FEN board position index → Rust board node index.
-        // Derived from legacySquareToNode: FEN pos i = legacy sq (i+8),
-        // and legacySquareToNode maps sq 8..31 to nodes 17..0 respectively.
+        // FEN board position index -> Rust board node index.
+        // FEN position i corresponds to legacy square (i + 8), then uses
+        // the same fixed legacySquareToNode permutation as Flutter's
+        // MillBoardCoordinateMaps.  This is not a simple reversed range.
         const FEN_TO_NODE: [usize; 24] = [
             17, 18, 19, 20, 21, 22, 23, 16, 9, 10, 11, 12, 13, 14, 15, 8, 1, 2, 3, 4, 5, 6, 7, 0,
         ];
@@ -1911,9 +1912,14 @@ const RATING_STAR_SQUARE: i32 = 11;
 
 fn is_star_square(options: &MillVariantOptions, node: usize) -> bool {
     if options.has_diagonal_lines {
-        matches!(node, 17 | 19 | 21 | 23)
+        // C++ `Mills::move_priority_list_shuffle` uses legacy squares
+        // SQ_17/SQ_19/SQ_21/SQ_23 for diagonal-rule star priority.
+        // Those map to dense Rust nodes 10/12/14/8 respectively.
+        matches!(node, 8 | 10 | 12 | 14)
     } else {
-        matches!(node, 16 | 18 | 20 | 22)
+        // C++ non-diagonal star squares are legacy SQ_16/SQ_18/SQ_20/SQ_22.
+        // Dense Rust node ids for those squares are 9/11/13/15.
+        matches!(node, 9 | 11 | 13 | 15)
     }
 }
 
@@ -2279,7 +2285,9 @@ mod tests {
         let star_place = Action {
             kind_tag: MillActionKind::Place as i16,
             from_node: -1,
-            to_node: 16,
+            // Legacy SQ_16 ("d6") is a C++ star-priority square.
+            // In Rust's dense node numbering it is node 9.
+            to_node: 9,
             aux: -1,
             payload_bits: 0,
         };
@@ -2292,6 +2300,30 @@ mod tests {
             payload_bits: 0,
         };
         assert_eq!(<MillGame as Game>::move_order_bias(&wb, non_star), 0);
+    }
+
+    #[test]
+    fn star_square_mapping_matches_legacy_move_priority() {
+        // Matches C++ `Mills::move_priority_list_shuffle`:
+        //   standard: SQ_16, SQ_18, SQ_20, SQ_22
+        //   diagonal: SQ_17, SQ_19, SQ_21, SQ_23
+        // converted through `MillTopology::square_to_node`.
+        let standard = MillVariantOptions::default();
+        assert!(is_star_square(&standard, 9)); // SQ_16 / d6
+        assert!(is_star_square(&standard, 11)); // SQ_18 / f4
+        assert!(is_star_square(&standard, 13)); // SQ_20 / d2
+        assert!(is_star_square(&standard, 15)); // SQ_22 / b4
+        assert!(!is_star_square(&standard, 16)); // SQ_15 / c5
+
+        let diagonal = MillVariantOptions {
+            has_diagonal_lines: true,
+            ..Default::default()
+        };
+        assert!(is_star_square(&diagonal, 10)); // SQ_17 / f6
+        assert!(is_star_square(&diagonal, 12)); // SQ_19 / f2
+        assert!(is_star_square(&diagonal, 14)); // SQ_21 / b2
+        assert!(is_star_square(&diagonal, 8)); // SQ_23 / b6
+        assert!(!is_star_square(&diagonal, 17)); // SQ_8 / d5
     }
 
     #[test]
