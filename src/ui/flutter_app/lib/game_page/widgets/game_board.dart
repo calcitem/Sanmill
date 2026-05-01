@@ -393,9 +393,7 @@ class _GameBoardState extends State<GameBoard>
   @override
   Widget build(BuildContext context) {
     final TapHandler tapHandler = TapHandler(context: context);
-    final GameSession? scopedSession = DB().generalSettings.useNativeMillSession
-        ? GameSessionScope.sessionOf(context)
-        : null;
+    final GameSession? scopedSession = GameSessionScope.sessionOf(context);
 
     // This ValueListenableBuilder ensures the GameBoard and its painters
     // are rebuilt whenever display settings change.

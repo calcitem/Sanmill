@@ -13,7 +13,6 @@ import 'package:flutter/scheduler.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart' show Box;
 
 import '../../appearance_settings/models/color_settings.dart';
-import '../../game_page/services/import_export/pgn.dart';
 import '../../game_page/services/mill.dart';
 import '../../game_page/services/transform/transform.dart';
 import '../../game_shell/game_session_scope.dart';
@@ -269,7 +268,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
 
     // Load the transformed initial position from FEN.
     final bool loaded;
-    if (DB().generalSettings.useNativeMillSession) {
+    if (true) {
       final BuildContext? ctx = rootScaffoldMessengerKey.currentContext;
       final Object? session = ctx != null
           ? GameSessionScope.sessionOf(ctx)
@@ -278,8 +277,6 @@ class _PuzzlePageState extends State<PuzzlePage> {
           session is NativeMillGameSession ? session : null;
       loaded =
           nativeSession?.loadFen(_transformedPuzzle.initialPosition) ?? false;
-    } else {
-      loaded = controller.position.setFen(_transformedPuzzle.initialPosition);
     }
     if (!loaded) {
       logger.e(
@@ -871,7 +868,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
   ValidationFeedback _checkSolution({bool autoCheck = false}) {
     final S s = S.of(context);
     final GameController controller = GameController();
-    if (DB().generalSettings.useNativeMillSession) {
+    {
       final PuzzleSolution? matchedSolution =
           _findMatchingPuzzleSolutionFromRecorder();
       if (matchedSolution != null) {
@@ -896,28 +893,6 @@ class _PuzzlePageState extends State<PuzzlePage> {
         moveCount: controller.gameRecorder.mainlineMoves.length,
       );
     }
-    final ValidationFeedback feedback = _validator.validateSolution(
-      controller.position,
-    );
-
-    if (feedback.result == ValidationResult.correct) {
-      _onPuzzleSolved(feedback);
-      return feedback;
-    } else if (feedback.result == ValidationResult.wrong) {
-      // Wrong solution - notify parent and show error message
-      widget.onFailed?.call();
-      if (!autoCheck && mounted) {
-        _showWrongMoveDialog();
-      }
-    } else if (!autoCheck) {
-      final String message = feedback.result == ValidationResult.inProgress
-          ? s.keepGoingObjectiveNotAchieved
-          : s.keepTrying;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(message), duration: const Duration(seconds: 2)),
-      );
-    }
-    return feedback;
   }
 
   PuzzleSolution? _findMatchingPuzzleSolutionFromRecorder() {
@@ -945,7 +920,8 @@ class _PuzzlePageState extends State<PuzzlePage> {
     return null;
   }
 
-  /// Show dialog when user makes a wrong move
+  /// Show dialog when user makes a wrong move.
+  // ignore: unused_element
   void _showWrongMoveDialog() {
     final S s = S.of(context);
     showDialog<void>(
@@ -1052,9 +1028,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
       // Try to make the move.
       final PuzzleMillSession? nativePuzzleSession =
           controller.activePuzzleMillSession;
-      final bool success =
-          DB().generalSettings.useNativeMillSession &&
-              nativePuzzleSession != null
+      final bool success = true && nativePuzzleSession != null
           ? nativePuzzleSession.applyMoveString(move.notation)
           : controller.applyMove(
               ExtMove(move.notation, side: controller.position.sideToMove),
@@ -1101,9 +1075,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
 
     final PuzzleMillSession? nativePuzzleSession =
         controller.activePuzzleMillSession;
-    final bool useNativePuzzle =
-        DB().generalSettings.useNativeMillSession &&
-        nativePuzzleSession != null;
+    final bool useNativePuzzle = true && nativePuzzleSession != null;
 
     if (useNativePuzzle
         ? nativePuzzleSession.outcome.isTerminal
@@ -1516,46 +1488,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
     final PieceColor? humanColor =
         _puzzleHumanColor ?? controller.puzzleHumanColor;
 
-    if (DB().generalSettings.useNativeMillSession) {
-      await _undoNativePuzzleMove(controller, humanColor);
-      return;
-    }
-
-    final int maxSteps = controller.gameRecorder.mainlineMoves.length;
-    int undone = 0;
-
-    while (controller.gameRecorder.mainlineMoves.isNotEmpty &&
-        undone < maxSteps) {
-      final ExtMove lastMove = controller.gameRecorder.mainlineMoves.last;
-      await HistoryNavigator.takeBack(context, pop: false);
-      undone++;
-
-      // In Puzzle mode, we need to delete the move node from the PGN tree (not just
-      // move the pointer). Otherwise, mainlineMoves will still include the old node,
-      // causing the next appendMove to create a branch instead of extending the
-      // mainline.
-      final PgnNode<ExtMove>? currentNode = controller.gameRecorder.activeNode;
-      if (currentNode != null && currentNode.children.isNotEmpty) {
-        currentNode.children.clear();
-        // Sync the moveCountNotifier with the new mainline length after clearing children.
-        controller.gameRecorder.moveCountNotifier.value =
-            controller.gameRecorder.mainlineMoves.length;
-      }
-
-      // Update state without rebuilding entire widget tree.
-      // Only decrement when we undo a *player* move.
-      if (humanColor == null || lastMove.side == humanColor) {
-        if (_moveCountNotifier.value > 0) {
-          _moveCountNotifier.value--;
-        }
-      }
-      _lastRecordedMoveIndex--;
-      _validator.undoLastMove();
-
-      if (humanColor == null || controller.position.sideToMove == humanColor) {
-        break;
-      }
-    }
+    await _undoNativePuzzleMove(controller, humanColor);
   }
 
   Future<void> _undoNativePuzzleMove(

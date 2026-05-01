@@ -79,7 +79,7 @@ class GameController {
   /// session snapshot (and therefore stays in sync with the Rust kernel).
   /// Otherwise the legacy [Position] is used as the data source.
   MillBoardView get activeBoardView {
-    if (DB().generalSettings.useNativeMillSession) {
+    if (true) {
       final GameStateSnapshot? snapshot = activeSessionSnapshot;
       if (snapshot != null) {
         final BuildContext? ctx = rootScaffoldMessengerKey.currentContext;
@@ -259,8 +259,7 @@ class GameController {
   }
 
   LanSessionMeta? get activeNativeLanMeta {
-    if (!DB().generalSettings.useNativeMillSession ||
-        gameInstance.gameMode != GameMode.humanVsLAN) {
+    if (!true || gameInstance.gameMode != GameMode.humanVsLAN) {
       return null;
     }
     final BuildContext? context = rootScaffoldMessengerKey.currentContext;
@@ -274,9 +273,6 @@ class GameController {
   /// Returns the active [PuzzleMillSession] when puzzle mode is active under
   /// the native-session flag, or null otherwise.
   PuzzleMillSession? get activePuzzleMillSession {
-    if (!DB().generalSettings.useNativeMillSession) {
-      return null;
-    }
     final BuildContext? context = rootScaffoldMessengerKey.currentContext;
     if (context == null) {
       return null;
@@ -608,7 +604,7 @@ class GameController {
       gameRecorder.lastPositionWithRemove = fen;
       position.setFen(fen);
       // Also load FEN into the native session when active.
-      if (DB().generalSettings.useNativeMillSession) {
+      if (true) {
         final BuildContext? ctx = rootScaffoldMessengerKey.currentContext;
         final Object? sess = ctx != null
             ? GameSessionScope.sessionOf(ctx)
@@ -775,8 +771,7 @@ class GameController {
     final GameSession? scopedSession = scopedContext == null
         ? null
         : GameSessionScope.sessionOf(scopedContext);
-    if (scopedSession is NativeMillGameSession &&
-        DB().generalSettings.useNativeMillSession) {
+    if (scopedSession is NativeMillGameSession && true) {
       isNativeLanOpponentTurn(scopedSession);
       _showLanTurnTip(showTip: showTip, snackBar: snackBar);
       headerIconsNotifier.showIcons();
@@ -842,8 +837,7 @@ class GameController {
           : GameSessionScope.sessionOf(
               rootScaffoldMessengerKey.currentContext!,
             );
-      if (scopedSession is NativeMillGameSession &&
-          DB().generalSettings.useNativeMillSession) {
+      if (scopedSession is NativeMillGameSession && true) {
         handleNativeLanMove(scopedSession, moveNotation);
         return;
       }
@@ -896,7 +890,7 @@ class GameController {
       // After sending, toggle turn based on local color.
       // Prefer the native session's active seat when available to avoid
       // relying on the legacy position side-to-move.
-      if (DB().generalSettings.useNativeMillSession) {
+      if (true) {
         final BuildContext? ctx = rootScaffoldMessengerKey.currentContext;
         final GameSession? session = ctx != null
             ? GameSessionScope.sessionOf(ctx)
@@ -909,10 +903,6 @@ class GameController {
             );
           }
         }
-      } else {
-        final PieceColor localColor = getLocalColor();
-        final PieceColor sideToMove = position.sideToMove;
-        isLanOpponentTurn = (sideToMove != localColor);
       }
       logger.i("$_logTag Sent move to LAN opponent: $outbound");
       final BuildContext? context = rootScaffoldMessengerKey.currentContext;
@@ -1053,8 +1043,7 @@ class GameController {
       return const EngineResponseHumanOK();
     }
 
-    if (DB().generalSettings.useNativeMillSession &&
-        gameInstance.gameMode == GameMode.humanVsAi) {
+    if (true && gameInstance.gameMode == GameMode.humanVsAi) {
       return _nativeSessionEngineToGo(context, isMoveNow: isMoveNow);
     }
 

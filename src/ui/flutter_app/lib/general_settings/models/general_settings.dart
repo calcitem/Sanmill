@@ -167,8 +167,12 @@ class GeneralSettings {
     this.lastPgnSaveDirectory = '',
     this.experienceRecordingEnabled = false,
 
-    /// When true, [MillGameModule.startSession] uses [NativeMillGameSession] (Rust
-    /// `tgf-mill` / FRB) instead of the legacy [MillGameSession] path.
+    /// Deprecated: always true as of Phase 6.B.1.  Retained to preserve the
+    /// Hive `@HiveField(46)` slot for existing saved data.  The field will be
+    /// removed in a future major version once all stored boxes have migrated.
+    @Deprecated(
+      'useNativeMillSession is always true; field retained for Hive compatibility.',
+    )
     this.useNativeMillSession = true,
   });
 
@@ -333,8 +337,14 @@ class GeneralSettings {
   @HiveField(45, defaultValue: false)
   final bool experienceRecordingEnabled;
 
-  /// Use Rust-native Mill session (TGF) instead of legacy GameController path.
+  /// Deprecated field retained for Hive backward compatibility.
+  ///
+  /// Always true.  Will be removed once all stored Hive boxes have migrated
+  /// to a new schema version.  Do not use in new code.
   @HiveField(46, defaultValue: true)
+  @Deprecated(
+    'useNativeMillSession is always true; field retained for Hive compatibility.',
+  )
   final bool useNativeMillSession;
 
   /// Decodes a Json from a [GeneralSettings] object

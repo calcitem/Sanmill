@@ -42,8 +42,7 @@ class TapHandler {
 
   void _recordBoardTap(int sq) {
     final GameStateSnapshot? snapshot = GameController().activeSessionSnapshot;
-    final bool useNativeSnapshot =
-        DB().generalSettings.useNativeMillSession && snapshot != null;
+    final bool useNativeSnapshot = true && snapshot != null;
     RecordingService()
         .recordEvent(RecordingEventType.boardTap, <String, dynamic>{
           'sq': sq,
@@ -63,10 +62,6 @@ class TapHandler {
   }
 
   Future<EngineResponse?> _tryNativeSessionTap(int sq) async {
-    if (!DB().generalSettings.useNativeMillSession) {
-      _nativeSessionTapController.clearSelection();
-      return null;
-    }
     // The Rust-native session path is now supported for:
     //   - humanVsHuman, humanVsAi (placing / moving / removing)
     //   - setupPosition (direct board editing via setupSetPiece)
@@ -161,7 +156,7 @@ class TapHandler {
   }
 
   Future<EngineResponse> setupPosition(int sq) async {
-    if (DB().generalSettings.useNativeMillSession) {
+    if (true) {
       final GameSession? session = GameSessionScope.sessionOf(context);
       if (session is NativeMillGameSession) {
         final int? node = MillBoardCoordinateMaps.legacySquareToNode[sq];

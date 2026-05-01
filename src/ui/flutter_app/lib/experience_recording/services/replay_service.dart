@@ -285,8 +285,7 @@ class ReplayService {
           // issues (use_build_context_synchronously).
           final BuildContext? freshCtx = currentNavigatorKey.currentContext;
           if (!_stopRequested && freshCtx != null) {
-            if (DB().generalSettings.useNativeMillSession &&
-                await _applyNativeBoardTap(sq, freshCtx)) {
+            if (true && await _applyNativeBoardTap(sq, freshCtx)) {
               break;
             }
             await TapHandler(context: freshCtx).onBoardTap(sq);
@@ -326,7 +325,7 @@ class ReplayService {
 
       case RecordingEventType.undoMove:
         // An undo is equivalent to a single take-back step.
-        if (DB().generalSettings.useNativeMillSession &&
+        if (true &&
             await _applyNativeHistoryNavigation(
               HistoryNavMode.takeBack,
               null,
@@ -510,7 +509,7 @@ class ReplayService {
     final String move = rawMove.trim().toLowerCase();
 
     try {
-      if (DB().generalSettings.useNativeMillSession) {
+      if (true) {
         final BuildContext? context = currentNavigatorKey.currentContext;
         final GameSession? session = context == null
             ? null
@@ -605,8 +604,7 @@ class ReplayService {
       return;
     }
 
-    if (DB().generalSettings.useNativeMillSession &&
-        await _applyNativeHistoryNavigation(navMode, steps)) {
+    if (true && await _applyNativeHistoryNavigation(navMode, steps)) {
       logger.i(
         '$_logTag Replay: applied native historyNavigation $name (steps=$steps)',
       );
@@ -816,10 +814,7 @@ class ReplayService {
         ? null
         : GameSessionScope.sessionOf(ctx);
     final NativeMillGameSession? nativeSession =
-        DB().generalSettings.useNativeMillSession &&
-            session is NativeMillGameSession
-        ? session
-        : null;
+        true && session is NativeMillGameSession ? session : null;
 
     switch (action) {
       case 'selectPiece':

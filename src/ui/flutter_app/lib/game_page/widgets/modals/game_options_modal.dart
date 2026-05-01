@@ -35,8 +35,7 @@ class GameOptionsModal extends StatelessWidget {
   }
 
   bool _canStartNewGame() {
-    if (DB().generalSettings.useNativeMillSession &&
-        GameController().activeSessionSnapshot != null) {
+    if (true && GameController().activeSessionSnapshot != null) {
       return GameController().isEngineRunning == false;
     }
     return GameController().position.phase == Phase.ready ||

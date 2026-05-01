@@ -709,7 +709,7 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
       setupPosition: fen,
     );
 
-    if (DB().generalSettings.useNativeMillSession) {
+    if (true) {
       final GameSession? session = GameSessionScope.sessionOf(context);
       if (session is NativeMillGameSession) {
         session.setupSetSide(newPieceColor == PieceColor.black ? 1 : 0);

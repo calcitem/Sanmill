@@ -29,12 +29,6 @@ class DeveloperOptionsPage extends StatelessWidget {
     DB().generalSettings = generalSettings.copyWith(isAutoRestart: value);
   }
 
-  void _setUseNativeMillSession(GeneralSettings generalSettings, bool value) {
-    DB().generalSettings = generalSettings.copyWith(
-      useNativeMillSession: value,
-    );
-  }
-
   void _setExperienceRecordingEnabled(
     BuildContext context,
     GeneralSettings generalSettings,
@@ -88,17 +82,6 @@ class DeveloperOptionsPage extends StatelessWidget {
               value: generalSettings.isAutoRestart,
               onChanged: (bool val) => _setIsAutoRestart(generalSettings, val),
               titleString: S.of(context).isAutoRestart,
-            ),
-            SettingsListTile.switchTile(
-              key: const Key('developer_options_page_native_mill_session'),
-              value: generalSettings.useNativeMillSession,
-              onChanged: (bool val) {
-                _setUseNativeMillSession(generalSettings, val);
-              },
-              titleString: S.of(context).nativeMillSessionDeveloperOption,
-              subtitleString: S
-                  .of(context)
-                  .nativeMillSessionDeveloperDescription,
             ),
             SettingsListTile(
               key: const Key(

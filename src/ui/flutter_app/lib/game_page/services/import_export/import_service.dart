@@ -502,9 +502,6 @@ class ImportService {
     // Supplement boardLayout with native FEN for the mainline when the
     // native session is active.  Variations keep the legacy layout string
     // since NativeMillRulesPort (synchronous) cannot DFS-backtrack branches.
-    if (!DB().generalSettings.useNativeMillSession) {
-      return;
-    }
     final NativeMillRulesPort port = NativeMillRulesPort();
     if (setupFen != null && setupFen.isNotEmpty) {
       port.setFromFen(setupFen);
@@ -752,9 +749,7 @@ class ImportService {
   }
 
   static void _loadActiveNativeSessionFromFenIfNeeded(String? fen) {
-    if (!DB().generalSettings.useNativeMillSession ||
-        fen == null ||
-        fen.isEmpty) {
+    if (!true || fen == null || fen.isEmpty) {
       return;
     }
     final BuildContext? context = rootScaffoldMessengerKey.currentContext;
@@ -769,9 +764,6 @@ class ImportService {
   }
 
   static NativeMillGameSession? _nativeImportSession() {
-    if (!DB().generalSettings.useNativeMillSession) {
-      return null;
-    }
     final BuildContext? context = rootScaffoldMessengerKey.currentContext;
     if (context == null) {
       return null;

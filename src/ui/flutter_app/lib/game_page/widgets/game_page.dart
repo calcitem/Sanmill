@@ -79,12 +79,7 @@ part 'modals/move_options_modal.dart';
 /// Main GamePage widget that initializes the game controller and passes it
 /// to a stateful inner widget managing annotation mode.
 class GamePage extends StatelessWidget {
-  GamePage(this.gameMode, {super.key}) {
-    // Reset game score when creating a new game page.
-    if (!DB().generalSettings.useNativeMillSession) {
-      Position.resetScore();
-    }
-  }
+  GamePage(this.gameMode, {super.key});
 
   final GameMode gameMode;
 

@@ -793,17 +793,17 @@ class Engine {
 
   Future<void> setRuleOptions() async {
     return _queueOptionsUpdate(() async {
-      if (DB().generalSettings.useNativeMillSession) {
-        // NativeMillRulesPort owns rule configuration through
-        // RuleSettings.toTgfMillVariantOptions() and TgfKernel.createMill().
-        // Do not mirror those options into the legacy C++ MethodChannel path
-        // while the native session dogfood flag is enabled.
-        _lastRuleOptions = null;
-        return;
-      }
+      // NativeMillRulesPort owns rule configuration through
+      // RuleSettings.toTgfMillVariantOptions() and TgfKernel.createMill().
+      // The legacy C++ MethodChannel path is no longer used.
+      _lastRuleOptions = null;
+    });
+  }
 
+  // ignore: unused_element
+  Future<void> _setRuleOptionsLegacy_deletedInPhase8() async {
+    return _queueOptionsUpdate(() async {
       final RuleSettings ruleSettings = DB().ruleSettings;
-
       final _RuleEngineOptions nextOptions = _RuleEngineOptions(
         piecesCount: ruleSettings.piecesCount,
         hasDiagonalLines: ruleSettings.hasDiagonalLines,
@@ -1079,6 +1079,7 @@ class Engine {
       _lastRuleOptions = nextOptions;
     });
   }
+  // End of _setRuleOptionsLegacy_deletedInPhase8
 
   Future<void> setOptions() async {
     logger.i("$_logTag reloaded engine options");
@@ -1186,21 +1187,17 @@ class Engine {
   Future<PositionAnalysisResult> analyzePosition() async {
     await ensureReady();
 
-    // Prefer the native session's FEN when the native flag is on;
-    // fall back to the legacy position.fen otherwise.
-    final String? fen;
-    if (DB().generalSettings.useNativeMillSession) {
-      final BuildContext? ctx = rootScaffoldMessengerKey.currentContext;
-      final GameSession? session = ctx != null
-          ? GameSessionScope.sessionOf(ctx)
-          : null;
-      final String nativeFen = session is NativeMillGameSession
-          ? session.getFen()
-          : '';
-      fen = nativeFen.isNotEmpty ? nativeFen : GameController().position.fen;
-    } else {
-      fen = GameController().position.fen;
-    }
+    // Prefer the native session's FEN; fall back to legacy position.fen.
+    final BuildContext? _analyzeCtx = rootScaffoldMessengerKey.currentContext;
+    final GameSession? _analyzeSession = _analyzeCtx != null
+        ? GameSessionScope.sessionOf(_analyzeCtx)
+        : null;
+    final String _nativeFen = _analyzeSession is NativeMillGameSession
+        ? _analyzeSession.getFen()
+        : '';
+    final String? fen = _nativeFen.isNotEmpty
+        ? _nativeFen
+        : GameController().position.fen;
     if (fen == null || fen.isEmpty) {
       return PositionAnalysisResult.error("Invalid board position");
     }

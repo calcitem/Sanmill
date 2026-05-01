@@ -96,7 +96,7 @@ class HistoryNavigator {
       navData,
     );
 
-    if (DB().generalSettings.useNativeMillSession) {
+    if (true) {
       final HistoryResponse? nativeResp = await _nativeSessionHistory(
         context,
         navMode,
@@ -384,10 +384,7 @@ class HistoryNavigator {
     HistoryNavMode navMode, [
     int? number,
   ]) async {
-    final NativeMillGameSession? nativeSession =
-        DB().generalSettings.useNativeMillSession
-        ? _activeNativeSession()
-        : null;
+    final NativeMillGameSession? nativeSession = _activeNativeSession();
     if (nativeSession != null) {
       return _nativeDoEachMove(nativeSession, navMode, number);
     }
@@ -480,10 +477,7 @@ class HistoryNavigator {
       cur = cur.parent;
     }
 
-    final NativeMillGameSession? nativeSession =
-        DB().generalSettings.useNativeMillSession
-        ? _activeNativeSession(context)
-        : null;
+    final NativeMillGameSession? nativeSession = _activeNativeSession(context);
     if (nativeSession != null) {
       final List<ExtMove> moves = <ExtMove>[
         for (final PgnNode<ExtMove> node in path)
