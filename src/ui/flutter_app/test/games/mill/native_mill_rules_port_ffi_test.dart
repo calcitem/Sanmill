@@ -130,6 +130,40 @@ void main() {
     );
 
     test(
+      'setup APIs clear, place, set side, and finish natively',
+      () {
+        final NativeMillGameSession session = NativeMillGameSession();
+        addTearDown(session.dispose);
+
+        session.setupClear();
+        expect(
+          NativeMillSnapshotBoardView.fromSnapshot(
+            session.state.value,
+          )!.occupiedNodes(),
+          isEmpty,
+        );
+
+        session.setupSetPiece(0, 1);
+        session.setupSetPiece(6, 2);
+        session.setupSetSide(1);
+
+        final NativeMillSnapshotBoardView editedBoard =
+            NativeMillSnapshotBoardView.fromSnapshot(session.state.value)!;
+        expect(editedBoard.pieceAtNode(0), PlayerSeat.first);
+        expect(editedBoard.pieceAtNode(6), PlayerSeat.second);
+        expect(session.state.value.activeSeat, PlayerSeat.second);
+
+        session.setupFinish();
+        expect(session.state.value.phase, 'placing');
+        expect(session.state.value.activeSeat, PlayerSeat.second);
+        expect(session.undoDepth, 0);
+        expect(session.redoDepth, 0);
+        expect(session.legalActions, isNotEmpty);
+      },
+      skip: _nativeLibrarySkipReason,
+    );
+
+    test(
       'search events run from the session kernel state',
       () async {
         final NativeMillGameSession session = NativeMillGameSession();
