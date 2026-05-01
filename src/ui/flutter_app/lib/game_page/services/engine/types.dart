@@ -442,74 +442,13 @@ Map<int, int> squareToIndex = <int, int>{
 };
 
 int notationToSquare(String notation) {
-  const Map<String, int> notationToSquare = <String, int>{
-    // inner ring (8-15)
-    'd5': 8,
-    'e5': 9,
-    'e4': 10,
-    'e3': 11,
-    'd3': 12,
-    'c3': 13,
-    'c4': 14,
-    'c5': 15,
-    // middle ring (16-23)
-    'd6': 16,
-    'f6': 17,
-    'f4': 18,
-    'f2': 19,
-    'd2': 20,
-    'b2': 21,
-    'b4': 22,
-    'b6': 23,
-    // outer ring (24-31)
-    'd7': 24,
-    'g7': 25,
-    'g4': 26,
-    'g1': 27,
-    'd1': 28,
-    'a1': 29,
-    'a4': 30,
-    'a7': 31,
-  };
-
-  final String key = notation.trim().toLowerCase();
-  return notationToSquare[key] ?? -1;
+  return MillBoardCoordinateMaps.notationToLegacySquare(notation);
 }
 
 /// Convert square index to standard notation
 /// This is the reverse mapping of notationToSquare
 String squareToNotation(int square) {
-  const Map<int, String> squareToNotation = <int, String>{
-    // inner ring (8-15)
-    8: 'd5',
-    9: 'e5',
-    10: 'e4',
-    11: 'e3',
-    12: 'd3',
-    13: 'c3',
-    14: 'c4',
-    15: 'c5',
-    // middle ring (16-23)
-    16: 'd6',
-    17: 'f6',
-    18: 'f4',
-    19: 'f2',
-    20: 'd2',
-    21: 'b2',
-    22: 'b4',
-    23: 'b6',
-    // outer ring (24-31)
-    24: 'd7',
-    25: 'g7',
-    26: 'g4',
-    27: 'g1',
-    28: 'd1',
-    29: 'a1',
-    30: 'a4',
-    31: 'a7',
-  };
-
-  return squareToNotation[square] ?? '';
+  return MillBoardCoordinateMaps.legacySquareToNotation(square);
 }
 
 Map<int, int> indexToSquare = squareToIndex.map(
