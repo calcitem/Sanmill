@@ -3730,6 +3730,44 @@ mod tests {
         );
     }
 
+    /// Two setup sequences that produce identical board states must hash to the
+    /// same Zobrist key after `recompute_aux`.  Different boards must differ.
+    #[test]
+    fn setup_recompute_zobrist_matches_apply() {
+        let rules = MillRules::default();
+        let options = MillVariantOptions::default();
+
+        // Build board A: White on 0, Black on 6, in either set_piece order.
+        let mut state_a = rules.setup_empty();
+        state_a.set_piece(0, 1);
+        state_a.set_piece(6, 2);
+        state_a.recompute_aux(&options);
+        let snap_a = rules.encode_state(state_a);
+
+        // Build the same layout again in reverse set_piece order.
+        let mut state_b = rules.setup_empty();
+        state_b.set_piece(6, 2);
+        state_b.set_piece(0, 1);
+        state_b.recompute_aux(&options);
+        let snap_b = rules.encode_state(state_b);
+
+        assert_eq!(
+            snap_a.zobrist_key, snap_b.zobrist_key,
+            "identical board set up in different call order must hash equally"
+        );
+
+        // A board with one fewer piece must produce a different key.
+        let mut state_c = rules.setup_empty();
+        state_c.set_piece(0, 1); // only White, Black removed
+        state_c.recompute_aux(&options);
+        let snap_c = rules.encode_state(state_c);
+
+        assert_ne!(
+            snap_a.zobrist_key, snap_c.zobrist_key,
+            "different board layouts must produce distinct Zobrist keys"
+        );
+    }
+
     #[test]
     fn setup_clear_piece_owner_zero_empties_square() {
         let rules = MillRules::default();
