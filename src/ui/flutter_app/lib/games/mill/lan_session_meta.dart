@@ -9,13 +9,20 @@ import '../../game_platform/game_session.dart';
 /// know which seat belongs to this device so it can block opponent taps and
 /// compute the local/remote turn state without consulting legacy `Position`.
 class LanSessionMeta {
-  const LanSessionMeta({
-    required this.localSeat,
-    required this.hostPlaysWhite,
-  });
+  const LanSessionMeta({required this.localSeat, required this.hostPlaysWhite});
 
   final PlayerSeat localSeat;
   final bool hostPlaysWhite;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is LanSessionMeta &&
+          other.localSeat == localSeat &&
+          other.hostPlaysWhite == hostPlaysWhite;
+
+  @override
+  int get hashCode => Object.hash(localSeat, hostPlaysWhite);
 
   bool get localIsHost => hostPlaysWhite
       ? localSeat == PlayerSeat.first

@@ -513,7 +513,7 @@ class LanConfigDialogState extends State<LanConfigDialog>
   void _attachNativeLanMeta({required bool isHost}) {
     final GameSession? session = GameSessionScope.sessionOf(context);
     if (session is NativeMillGameSession) {
-      session.lanMeta = LanSessionMeta.forEndpoint(
+      session.lanMeta = LanSessionMeta.fromHost(
         isHost: isHost,
         hostPlaysWhite: _hostPlaysWhite,
       );

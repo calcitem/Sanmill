@@ -9,28 +9,25 @@ void main() {
   group('LanSessionMeta', () {
     test('maps host and client seats from host color', () {
       expect(
-        LanSessionMeta.forEndpoint(isHost: true, hostPlaysWhite: true),
-        const LanSessionMeta(
-          localSeat: PlayerSeat.first,
-          hostPlaysWhite: true,
-        ),
+        LanSessionMeta.fromHost(isHost: true, hostPlaysWhite: true),
+        const LanSessionMeta(localSeat: PlayerSeat.first, hostPlaysWhite: true),
       );
       expect(
-        LanSessionMeta.forEndpoint(isHost: false, hostPlaysWhite: true),
+        LanSessionMeta.fromHost(isHost: false, hostPlaysWhite: true),
         const LanSessionMeta(
           localSeat: PlayerSeat.second,
           hostPlaysWhite: true,
         ),
       );
       expect(
-        LanSessionMeta.forEndpoint(isHost: true, hostPlaysWhite: false),
+        LanSessionMeta.fromHost(isHost: true, hostPlaysWhite: false),
         const LanSessionMeta(
           localSeat: PlayerSeat.second,
           hostPlaysWhite: false,
         ),
       );
       expect(
-        LanSessionMeta.forEndpoint(isHost: false, hostPlaysWhite: false),
+        LanSessionMeta.fromHost(isHost: false, hostPlaysWhite: false),
         const LanSessionMeta(
           localSeat: PlayerSeat.first,
           hostPlaysWhite: false,
@@ -44,7 +41,7 @@ void main() {
         hostPlaysWhite: true,
       );
 
-      expect(meta.localPieceColor.name, 'black');
+      expect(meta.localPieceColorName, 'black');
       expect(meta.isOpponentTurn(PlayerSeat.first), isTrue);
       expect(meta.isOpponentTurn(PlayerSeat.second), isFalse);
       expect(meta.isOpponentTurn(PlayerSeat.none), isFalse);
