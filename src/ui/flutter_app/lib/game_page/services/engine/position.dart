@@ -1571,6 +1571,11 @@ class Position {
     return fen;
   }
 
+  @Deprecated(
+    'Phase 6.C.2.c: use NativeMillGameSession.loadFen / GameController.activeFen. '
+    'Delete once all callers (board_recognition_debug_page, puzzle_creation_page, '
+    'setup_position_toolbar, game_page, replay_service, ai_chat_service) are migrated.',
+  )
   bool setFen(String fen) {
     const bool ret = true;
     final String trimmedFen = fen.trim();
@@ -1979,6 +1984,10 @@ class Position {
   }
 
   @visibleForTesting
+  @Deprecated(
+    'Phase 6.C.2.c: use NativeMillGameSession.apply. '
+    'Delete once import_service and game.dart legacy paths are removed.',
+  )
   bool doMove(String move) {
     // TODO: Resign is not implemented
     if (move.length > "Player".length &&
