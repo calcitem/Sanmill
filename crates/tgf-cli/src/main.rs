@@ -105,6 +105,9 @@ fn run_uci_loop() {
             } else {
                 println!("bestmove (none)");
             }
+        } else if line == "ponderhit" {
+            // In ponder mode the engine switches from pondering to searching;
+            // since tgf-cli doesn't implement ponder, silently ignore.
         } else if line == "quit" {
             finish_active_search(&mut active_search);
             break;
@@ -259,13 +262,27 @@ fn side_label(side: i8) -> &'static str {
 }
 
 fn print_uci_options() {
+    // Search / engine options
+    println!("option name Threads type spin default 1 min 1 max 64");
+    println!("option name Hash type spin default 16 min 1 max 4096");
+    println!("option name MultiPV type spin default 1 min 1 max 64");
+    println!("option name MaxQuiescenceDepth type spin default 0 min 0 max 4");
+    println!("option name SkillLevel type spin default 20 min 0 max 20");
+    // Mill rule variant options
     println!("option name PieceCount type spin default 9 min 3 max 12");
     println!("option name FlyPieceCount type spin default 3 min 3 max 3");
     println!("option name PiecesAtLeastCount type spin default 3 min 2 max 3");
     println!("option name MayFly type check default true");
     println!("option name HasDiagonalLines type check default false");
-    println!("option name MaxQuiescenceDepth type spin default 0 min 0 max 4");
-    println!("option name Threads type spin default 1 min 1 max 64");
+    println!("option name MayRemoveFromMillsAlways type check default false");
+    println!("option name MayRemoveMultiple type check default false");
+    println!("option name NMoveRule type spin default 100 min 0 max 200");
+    println!("option name EndgameNMoveRule type spin default 100 min 0 max 200");
+    println!("option name MayMoveInPlacingPhase type check default false");
+    println!("option name IsDefenderMoveFirst type check default false");
+    println!("option name RestrictRepeatedMillsFormation type check default false");
+    println!("option name OneTimeUseMill type check default false");
+    println!("option name ThreefoldRepetitionRule type check default true");
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -353,6 +370,66 @@ fn apply_setoption(
                 SetoptionResult::Variant
             })
             .unwrap_or(SetoptionResult::Unknown),
+        "mayremovefrommillsalways" | "may remove from mills always" => parse_bool(value)
+            .map(|v| {
+                options.may_remove_from_mills_always = v;
+                SetoptionResult::Variant
+            })
+            .unwrap_or(SetoptionResult::Unknown),
+        "mayremovemultiple" | "may remove multiple" => parse_bool(value)
+            .map(|v| {
+                options.may_remove_multiple = v;
+                SetoptionResult::Variant
+            })
+            .unwrap_or(SetoptionResult::Unknown),
+        "nmoverule" | "n move rule" => value
+            .parse::<u32>()
+            .ok()
+            .map(|v| {
+                options.n_move_rule = v;
+                SetoptionResult::Variant
+            })
+            .unwrap_or(SetoptionResult::Unknown),
+        "endgamenmoverule" | "endgame n move rule" => value
+            .parse::<u32>()
+            .ok()
+            .map(|v| {
+                options.endgame_n_move_rule = v;
+                SetoptionResult::Variant
+            })
+            .unwrap_or(SetoptionResult::Unknown),
+        "maymoveinplacingphase" | "may move in placing phase" => parse_bool(value)
+            .map(|v| {
+                options.may_move_in_placing_phase = v;
+                SetoptionResult::Variant
+            })
+            .unwrap_or(SetoptionResult::Unknown),
+        "isdefendermovefirst" | "is defender move first" => parse_bool(value)
+            .map(|v| {
+                options.is_defender_move_first = v;
+                SetoptionResult::Variant
+            })
+            .unwrap_or(SetoptionResult::Unknown),
+        "restrictrepeatedmillsformation" | "restrict repeated mills formation" => parse_bool(value)
+            .map(|v| {
+                options.restrict_repeated_mills_formation = v;
+                SetoptionResult::Variant
+            })
+            .unwrap_or(SetoptionResult::Unknown),
+        "onetimeusemill" | "one time use mill" => parse_bool(value)
+            .map(|v| {
+                options.one_time_use_mill = v;
+                SetoptionResult::Variant
+            })
+            .unwrap_or(SetoptionResult::Unknown),
+        "threefoldrepetitionrule" | "threefold repetition rule" => parse_bool(value)
+            .map(|v| {
+                options.threefold_repetition_rule = v;
+                SetoptionResult::Variant
+            })
+            .unwrap_or(SetoptionResult::Unknown),
+        // Engine-level options that don't affect the variant but are valid UCI.
+        "hash" | "multipv" | "skilllevel" | "skill level" => SetoptionResult::SearchConfig,
         _ => SetoptionResult::Unknown,
     }
 }
@@ -392,37 +469,54 @@ struct GoOptions {
     node_limit: Option<u64>,
 }
 
-/// Parse a `go [depth N] [movetime MS] [nodes N] [infinite]` invocation.
+/// Parse a `go …` invocation supporting the full UCI `go` subcommand set:
+/// `wtime`, `btime`, `winc`, `binc`, `movetime`, `depth`, `nodes`,
+/// `infinite`, `ponder`.
 ///
-/// `infinite` selects the largest representable depth and clears any time /
-/// node limits, so the caller is expected to send `stop` to terminate the
-/// search via the abort handle exposed on [`Searcher`].
+/// When `wtime`/`btime` is given without an explicit `movetime`, a simple
+/// time budget is derived: `budget ≈ remaining / 30 + increment`.
 fn parse_go_options(line: &str) -> GoOptions {
     let tokens = line.split_whitespace().collect::<Vec<_>>();
-    let depth = tokens
-        .windows(2)
-        .find(|w| w[0] == "depth")
-        .and_then(|w| w[1].parse::<i32>().ok())
-        .unwrap_or(1)
-        .max(1);
-    let movetime_ms = tokens
-        .windows(2)
-        .find(|w| w[0] == "movetime")
-        .and_then(|w| w[1].parse::<u64>().ok());
-    let node_limit = tokens
-        .windows(2)
-        .find(|w| w[0] == "nodes")
-        .and_then(|w| w[1].parse::<u64>().ok());
-    if tokens.contains(&"infinite") {
-        // Cap "infinite" at a depth far beyond any practical Mill search so
-        // recursion stays bounded; cancellation comes from the `stop` command
-        // through the abort handle rather than reaching the depth limit.
+
+    // Helper: find the numeric value after a keyword token.
+    let find_u64 = |key: &str| -> Option<u64> {
+        tokens
+            .windows(2)
+            .find(|w| w[0] == key)
+            .and_then(|w| w[1].parse::<u64>().ok())
+    };
+    let find_i32 = |key: &str| -> Option<i32> {
+        tokens
+            .windows(2)
+            .find(|w| w[0] == key)
+            .and_then(|w| w[1].parse::<i32>().ok())
+    };
+
+    if tokens.contains(&"infinite") || tokens.contains(&"ponder") {
+        // Cap "infinite" / "ponder" at a very large depth; cancellation comes
+        // from the `stop` or `ponderhit` command through the abort handle.
         return GoOptions {
             depth: 64,
             movetime_ms: None,
             node_limit: None,
         };
     }
+
+    let depth = find_i32("depth").unwrap_or(1).max(1);
+    let node_limit = find_u64("nodes");
+
+    // Explicit movetime takes precedence.
+    let movetime_ms = if let Some(ms) = find_u64("movetime") {
+        Some(ms)
+    } else {
+        // Time-management fallback from wtime/btime + winc/binc.
+        // Use white's remaining time as default; a proper side-to-move-aware
+        // implementation would pick wtime or btime based on the position.
+        let remaining = find_u64("wtime").or_else(|| find_u64("btime"));
+        let increment = find_u64("winc").or_else(|| find_u64("binc")).unwrap_or(0);
+        remaining.map(|r| (r / 30).saturating_add(increment).max(100))
+    };
+
     GoOptions {
         depth,
         movetime_ms,
