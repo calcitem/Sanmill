@@ -55,6 +55,14 @@ class PiecePainter extends CustomPainter {
     return GameController().position.pieceOnGrid(index);
   }
 
+  SquareAttribute? _squareAttributeAtGridIndex(int index) {
+    if (nativeBoardView != null) {
+      return null;
+    }
+    final int? square = indexToSquare[index];
+    return square == null ? null : GameController().position.sqAttrList[square];
+  }
+
   /// Calculate the scale and shadow properties for a piece based on animation state
   /// Returns a map with 'scale', 'shadowBlur' and 'lift' keys
   Map<String, double> _calculatePieceEffects(
@@ -384,9 +392,9 @@ class PiecePainter extends CustomPainter {
           continue;
         }
 
-        final int sq = indexToSquare[index]!;
-        final SquareAttribute squareAttribute =
-            GameController().position.sqAttrList[sq];
+        final SquareAttribute? squareAttribute = _squareAttributeAtGridIndex(
+          index,
+        );
 
         final ui.Image? image = pieceImages == null
             ? null
