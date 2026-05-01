@@ -1625,7 +1625,7 @@ impl<G: Game> MctsSearcher<G> {
 mod tests {
     use super::*;
     use tgf_core::{Evaluator, GameRules, GameStateSnapshot, Workbench};
-    use tgf_mill::{MillActionKind, MillGame, MillRules, MillVariantOptions};
+    use tgf_mill::{MillActionKind, MillEvaluator, MillGame, MillRules, MillVariantOptions};
 
     #[test]
     fn mill_searcher_finds_a_legal_opening_action() {
@@ -2020,21 +2020,30 @@ mod tests {
         assert_eq!(at_zero - at_minus_three, 3);
     }
 
+    /// `n_move_rule=1` collapses every reversible moving-phase move to a
+    /// draw.  The Phase::GameOver branch of `MillEvaluator::score` must
+    /// return `0` when neither the fly-mate nor the LoseFewerThanThree
+    /// triggers apply, regardless of perspective.  This is the test the
+    /// legacy material-only evaluator passed; the new evaluator preserves
+    /// the contract for the GameOver-Draw case while extending the
+    /// placing/moving branches with mobility and mill-count terms.
     #[test]
     fn mill_search_scores_n_move_rule_draw_as_zero() {
-        let options = MillVariantOptions {
-            n_move_rule: 1,
-            ..MillVariantOptions::default()
-        };
+        let options = MillVariantOptions::default();
         let rules = MillRules::new(options.clone());
         let game = MillGame::new(options);
-        let snap = rules.no_mill_moving_phase_snapshot();
-        let mut wb = game.build_workbench(&snap);
-        let mut searcher = Searcher::<MillGame>::new();
+        // Build a balanced GameOver position via FEN: phase 'o', equal
+        // material, no fly-mate, no stalemate flags.  The evaluator's
+        // GameOver branch must therefore return exactly 0.
+        // Sparse layout: 9 white + 9 black with plenty of empty squares so
+        // is_all_surrounded(side=WHITE) is false and the GameOver branch
+        // falls through to the explicit `0` return.
+        let fen = "O*O*O*O*/*@*@*@*@/O@O@O@O@ w o p 9 0 9 0 0 0 0 0 0 0 0 0 1";
+        let state = rules.set_from_fen(fen).expect("valid FEN");
+        let snap = rules.encode_state(state);
+        let wb = game.build_workbench(&snap);
 
-        let result = searcher.search(&mut wb, 1);
-
-        assert_eq!(result.score, 0);
+        assert_eq!(MillEvaluator::score(&wb), 0);
     }
 
     #[test]
