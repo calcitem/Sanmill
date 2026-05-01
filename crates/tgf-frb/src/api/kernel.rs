@@ -448,6 +448,43 @@ pub fn tgf_kernel_setup_finish(handle: u32) -> Result<TgfSnapshot, String> {
     Ok(TgfSnapshot::from_snap(new_snap))
 }
 
+/// Load a Mill board position from a FEN string (Phase 6.A.3.B).
+///
+/// The FEN must follow the legacy Dart/C++ engine format.  Returns the
+/// new snapshot on success, or an error string on parse failure.
+#[flutter_rust_bridge::frb(sync)]
+pub fn tgf_kernel_set_from_fen(handle: u32, fen: String) -> Result<TgfSnapshot, String> {
+    let mut guard = KERNELS.lock().expect("kernel registry poisoned");
+    let kernel = guard
+        .get_mut(&handle)
+        .ok_or_else(|| format!("invalid kernel handle: {handle}"))?;
+    if kernel.game_id() != "mill" {
+        return Err("set_from_fen is only supported for Mill kernels".to_owned());
+    }
+    let options = mill_variant_for_handle(handle);
+    let rules = MillRules::new(options);
+    let state = rules.set_from_fen(&fen)?;
+    let new_snap = rules.encode_state(state);
+    kernel.replace_state(new_snap);
+    Ok(TgfSnapshot::from_snap(new_snap))
+}
+
+/// Export the current Mill kernel state as a FEN string (Phase 6.A.3.B).
+#[flutter_rust_bridge::frb(sync)]
+pub fn tgf_kernel_export_fen(handle: u32) -> Result<String, String> {
+    let guard = KERNELS.lock().expect("kernel registry poisoned");
+    let kernel = guard
+        .get(&handle)
+        .ok_or_else(|| format!("invalid kernel handle: {handle}"))?;
+    if kernel.game_id() != "mill" {
+        return Err("export_fen is only supported for Mill kernels".to_owned());
+    }
+    let options = mill_variant_for_handle(handle);
+    let rules = MillRules::new(options);
+    let state = tgf_mill::MillRules::decode_snapshot(kernel.snapshot());
+    Ok(rules.export_fen(&state))
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

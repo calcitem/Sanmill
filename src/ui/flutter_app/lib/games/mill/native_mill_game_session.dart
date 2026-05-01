@@ -104,17 +104,31 @@ class NativeMillGameSession implements GameSessionHandle {
     _setState(next);
   }
 
-  /// Load a board position from a Mill FEN string.
+  /// Load a board position from a Mill FEN string via the native Rust kernel.
   ///
-  /// Uses [Position] as a parser/validator until the Rust kernel exposes a
-  /// full FEN parser.  Returns true if the FEN was valid and loaded.
+  /// Returns true if the FEN was valid and loaded; false otherwise.
   bool loadFen(String fen) {
     if (_disposed) {
       return false;
     }
+    try {
+      final GameStateSnapshot next = rulesPort.setFromFen(fen);
+      _setState(next);
+      return true;
+    } on Object {
+      return false;
+    }
+  }
+
+  /// Reload using the legacy [Position] FEN parser as a fallback when the
+  /// Rust parser rejects the FEN (e.g. extended custodian/intervention FENs
+  /// not yet handled natively).
+  bool loadFenLegacyFallback(String fen) {
+    if (_disposed) {
+      return false;
+    }
     final Position parsed = Position();
-    final bool loaded = parsed.setFen(fen);
-    if (!loaded) {
+    if (!parsed.setFen(fen)) {
       return false;
     }
     setupClear();
@@ -133,6 +147,14 @@ class NativeMillGameSession implements GameSessionHandle {
     setupSetSide(parsed.sideToMove == PieceColor.black ? 1 : 0);
     setupFinish();
     return true;
+  }
+
+  /// Export the current kernel state as a Mill FEN string.
+  String getFen() {
+    if (_disposed) {
+      return '';
+    }
+    return rulesPort.exportFen();
   }
 
   @override

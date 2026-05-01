@@ -6,7 +6,7 @@
 import '../frb_generated.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
-// These functions are ignored because they are not marked as `pub`: `best_move`, `error`, `info`, `new`, `ready`, `spawn_kernel_search_error`, `spawn_mill_pvs_event_stream`, `stopped`
+// These functions are ignored because they are not marked as `pub`: `best_move`, `error`, `info`, `mill_searcher_default`, `new`, `ready`, `spawn_kernel_search_error`, `spawn_mill_pvs_event_stream`, `stopped`
 // These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`
 
 /// Returns a greeting string confirming that the Rust → Dart bridge works.

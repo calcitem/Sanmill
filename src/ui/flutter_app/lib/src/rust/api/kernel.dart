@@ -72,13 +72,22 @@ Stream<EngineEvent> tgfKernelMillSearchEvents({
   depth: depth,
 );
 
-/// Clear the board for setup-position editing.  Returns the empty snapshot.
-/// Requires the handle to reference a Mill kernel.
+/// Clear the board associated with a Mill kernel handle and reset all pieces,
+/// returning the fresh empty snapshot.  History and redo stacks are cleared.
+///
+/// This is the entry point for the Flutter setup-position flow: call
+/// `tgf_kernel_setup_clear` first, then `tgf_kernel_setup_set_piece` for each
+/// piece, then `tgf_kernel_setup_finish` to transition to a playable state.
 TgfSnapshot tgfKernelSetupClear({required int handle}) =>
     RustLib.instance.api.crateApiKernelTgfKernelSetupClear(handle: handle);
 
-/// Set or clear a piece during setup-position editing.
-/// [owner]: 1 = first player, 2 = second player, other = clear.
+/// Set or clear a single piece at `node` for a Mill kernel in setup mode.
+///
+/// `owner`: `1` = first player (White), `2` = second player (Black),
+/// any other value = clear the square.
+///
+/// Call `tgf_kernel_setup_clear` before the first `set_piece` to start with
+/// a blank board, then `tgf_kernel_setup_finish` when editing is complete.
 TgfSnapshot tgfKernelSetupSetPiece({
   required int handle,
   required int node,
@@ -89,17 +98,37 @@ TgfSnapshot tgfKernelSetupSetPiece({
   owner: owner,
 );
 
-/// Set the side to move during setup-position editing.
-/// [side]: 0 = first player, 1 = second player.
+/// Set the side to move for a Mill kernel in setup mode.
+///
+/// `side`: `0` = first player (White), `1` = second player (Black).
 TgfSnapshot tgfKernelSetupSetSide({required int handle, required int side}) =>
     RustLib.instance.api.crateApiKernelTgfKernelSetupSetSide(
       handle: handle,
       side: side,
     );
 
-/// Finish setup-position editing and transition to a playable game state.
+/// Finish the setup-position editing flow.
+///
+/// Determines whether the resulting board is in placing or moving phase
+/// based on whether any pieces remain in hand, recomputes auxiliary fields,
+/// and replaces the kernel state.  After this call the kernel can be used
+/// for normal play (legal actions, apply, search).
 TgfSnapshot tgfKernelSetupFinish({required int handle}) =>
     RustLib.instance.api.crateApiKernelTgfKernelSetupFinish(handle: handle);
+
+/// Load a Mill board position from a FEN string (Phase 6.A.3.B).
+///
+/// The FEN must follow the legacy Dart/C++ engine format.  Returns the
+/// new snapshot on success, or an error string on parse failure.
+TgfSnapshot tgfKernelSetFromFen({required int handle, required String fen}) =>
+    RustLib.instance.api.crateApiKernelTgfKernelSetFromFen(
+      handle: handle,
+      fen: fen,
+    );
+
+/// Export the current Mill kernel state as a FEN string (Phase 6.A.3.B).
+String tgfKernelExportFen({required int handle}) =>
+    RustLib.instance.api.crateApiKernelTgfKernelExportFen(handle: handle);
 
 /// Mirror of `tgf_core::Action` with i32 fields so FRB can ship it as
 /// trivial dart `int` types.  Conversion is `From`-symmetric.

@@ -116,6 +116,16 @@ class NativeMillRulesPort implements RulesPort {
     return _snapshot;
   }
 
+  /// Load a board position from a Mill FEN string (Phase 6.A.3.B).
+  GameStateSnapshot setFromFen(String fen) {
+    final tgf.TgfSnapshot raw = _kernel.rawSetFromFen(fen);
+    _snapshot = _snapshotFromRaw(raw);
+    return _snapshot;
+  }
+
+  /// Export the current kernel state as a Mill FEN string (Phase 6.A.3.B).
+  String exportFen() => _kernel.rawExportFen();
+
   GameStateSnapshot _snapshotFromRaw(tgf.TgfSnapshot raw) {
     final tgf.TgfOutcome outcome = _kernel.rawOutcome();
     final Uint8List opaque = Uint8List.fromList(raw.opaquePayload);

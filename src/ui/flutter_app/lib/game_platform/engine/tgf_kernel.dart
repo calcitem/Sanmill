@@ -161,6 +161,18 @@ class TgfKernel {
     return tgf.tgfKernelSetupFinish(handle: _handle);
   }
 
+  /// Load a position from a Mill FEN string (Phase 6.A.3.B).
+  tgf.TgfSnapshot rawSetFromFen(String fen) {
+    _checkAlive();
+    return tgf.tgfKernelSetFromFen(handle: _handle, fen: fen);
+  }
+
+  /// Export the current kernel state as a Mill FEN string (Phase 6.A.3.B).
+  String rawExportFen() {
+    _checkAlive();
+    return tgf.tgfKernelExportFen(handle: _handle);
+  }
+
   /// PVS search event stream for Mill kernels only — uses the session snapshot
   /// and the variant registered at [TgfKernel.createMill].
   Stream<tgf_simple.EngineEvent> millSearchEvents({required int depth}) {

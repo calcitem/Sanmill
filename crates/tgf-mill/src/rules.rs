@@ -1555,6 +1555,176 @@ impl MillRules {
     pub fn encode_state(&self, state: MillState) -> GameStateSnapshot {
         self.encode(state)
     }
+
+    /// Parse a Mill FEN string (compatible with the legacy Dart/C++ engine)
+    /// and return the resulting `MillState`.
+    ///
+    /// FEN format (17+ whitespace-separated fields):
+    /// `<board> <side> <phase> <act> <w_on> <w_hand> <b_on> <b_hand>
+    ///  <w_remove> <b_remove> <w_from> <w_to> <b_from> <b_to>
+    ///  <mills_mask> <rule50> <fullmove>`
+    ///
+    /// `board` = `inner8/middle8/outer8`; pieces: `O`=white, `@`=black, `*`=empty.
+    ///
+    /// Mills-bitmask and last-mill-from/to fields are parsed but ignored; the
+    /// returned state has those auxiliary fields at their defaults so that
+    /// `encode_state` + `decode_snapshot` round-trips cleanly.
+    pub fn set_from_fen(&self, fen: &str) -> Result<MillState, String> {
+        // Strip optional custodian/intervention/etc. suffixes that begin with
+        // ` c:`, ` i:`, ` l:`, ` p:`, ` s:`.
+        let core = if let Some(pos) = fen.find(['c', 'i', 'l']).and_then(|p| {
+            if p > 0 && &fen[p - 1..p] == " " {
+                Some(p - 1)
+            } else {
+                None
+            }
+        }) {
+            fen[..pos].trim()
+        } else {
+            fen.trim()
+        };
+
+        let fields: Vec<&str> = core.split_whitespace().collect();
+        if fields.len() < 17 {
+            return Err(format!("FEN needs >= 17 fields, got {}", fields.len()));
+        }
+
+        // FEN board position index → Rust board node index.
+        // Derived from legacySquareToNode: FEN pos i = legacy sq (i+8),
+        // and legacySquareToNode maps sq 8..31 to nodes 17..0 respectively.
+        const FEN_TO_NODE: [usize; 24] = [
+            17, 18, 19, 20, 21, 22, 23, 16, 9, 10, 11, 12, 13, 14, 15, 8, 1, 2, 3, 4, 5, 6, 7, 0,
+        ];
+
+        let board_str = fields[0];
+        let ranks: Vec<&str> = board_str.split('/').collect();
+        if ranks.len() != 3 || ranks.iter().any(|r| r.len() != 8) {
+            return Err("FEN board must be three 8-character ranks separated by '/'".to_owned());
+        }
+        let all_chars: String = ranks.join("");
+        let mut board = [0_i8; 24];
+        for (i, c) in all_chars.chars().enumerate() {
+            board[FEN_TO_NODE[i]] = if c == 'O' {
+                1
+            } else if c == '@' {
+                2
+            } else if c == '*' || c == 'X' {
+                0
+            } else {
+                return Err(format!("unexpected piece character '{c}' in FEN"));
+            };
+        }
+
+        let side_to_move: i8 = match fields[1] {
+            "w" => 0,
+            "b" => 1,
+            s => return Err(format!("invalid side '{s}' in FEN")),
+        };
+
+        let phase = match fields[2] {
+            "r" | "p" => MillPhase::Placing,
+            "m" => MillPhase::Moving,
+            "o" => MillPhase::GameOver,
+            s => return Err(format!("invalid phase '{s}' in FEN")),
+        };
+
+        let parse_u8 = |s: &str| -> Result<u8, String> {
+            s.parse::<u8>()
+                .map_err(|_| format!("cannot parse '{s}' as u8"))
+        };
+        let parse_u16 = |s: &str| -> Result<u16, String> {
+            s.parse::<u16>()
+                .map_err(|_| format!("cannot parse '{s}' as u16"))
+        };
+
+        let on_board_w = parse_u8(fields[4])?;
+        let in_hand_w = parse_u8(fields[5])?;
+        let on_board_b = parse_u8(fields[6])?;
+        let in_hand_b = parse_u8(fields[7])?;
+        let remove_w = parse_u8(fields[8])?;
+        let remove_b = parse_u8(fields[9])?;
+        // Fields 10-14 (last-mill positions, mills bitmask) are ignored;
+        // defaults (0 / no-mills) are used for the returned state.
+        let rule50 = parse_u16(fields[15])?;
+        let full_move: i32 = fields[16].parse::<i32>().unwrap_or(1).max(1);
+
+        // Reconstruct game ply (move_number) from full-move counter, matching
+        // the Dart Position.setFen formula:
+        //   gamePly = max(2*(fullMove-1), 0) + (side==black ? 1 : 0)
+        let side_is_black = i16::from(side_to_move == 1);
+        let move_number = (2_i32 * (full_move - 1)).max(0) as i16 + side_is_black;
+
+        Ok(MillState {
+            board,
+            side_to_move,
+            phase,
+            move_number,
+            pieces_on_board: [on_board_w, on_board_b],
+            pieces_in_hand: [in_hand_w, in_hand_b],
+            pending_removals: [remove_w, remove_b],
+            ply_since_capture: rule50,
+            winner: -1,
+            ..MillState::default()
+        })
+    }
+
+    /// Serialize a `MillState` into a Mill FEN string compatible with the
+    /// legacy Dart/C++ engine.
+    ///
+    /// The mills-bitmask and last-mill-from/to fields are always output as
+    /// `0`; the round-trip guarantee is that `set_from_fen(export_fen(s))`
+    /// produces a state with the same board, side, phase, and piece counts.
+    pub fn export_fen(&self, state: &MillState) -> String {
+        // Rust board node index → FEN board position index (inverse of FEN_TO_NODE).
+        const NODE_TO_FEN_POS: [usize; 24] = [
+            23, 16, 17, 18, 19, 20, 21, 22, 15, 8, 9, 10, 11, 12, 13, 14, 7, 0, 1, 2, 3, 4, 5, 6,
+        ];
+
+        // Build the 24-character board section (split into 3×8 with '/').
+        let mut fenchars = [b'*'; 26];
+        fenchars[8] = b'/';
+        fenchars[17] = b'/';
+        for (node, &pos) in NODE_TO_FEN_POS.iter().enumerate() {
+            let slot = if pos < 8 {
+                pos
+            } else if pos < 16 {
+                pos + 1
+            } else {
+                pos + 2
+            };
+            fenchars[slot] = match state.board[node] {
+                1 => b'O',
+                2 => b'@',
+                _ => b'*',
+            };
+        }
+        let board_str = std::str::from_utf8(&fenchars).unwrap_or("????????/????????/????????");
+
+        let side = if state.side_to_move == 1 { 'b' } else { 'w' };
+        let phase = match state.phase {
+            MillPhase::Placing => 'p',
+            MillPhase::Moving => 'm',
+            MillPhase::GameOver => 'o',
+            MillPhase::Ready => 'r',
+        };
+        let side_is_black = i32::from(state.side_to_move == 1);
+        let full_move = (1 + (i32::from(state.move_number) - side_is_black) / 2).max(1);
+
+        format!(
+            "{} {} {} p {} {} {} {} {} {} 0 0 0 0 0 {} {}",
+            board_str,
+            side,
+            phase,
+            state.pieces_on_board[0],
+            state.pieces_in_hand[0],
+            state.pieces_on_board[1],
+            state.pieces_in_hand[1],
+            state.pending_removals[0],
+            state.pending_removals[1],
+            state.ply_since_capture,
+            full_move,
+        )
+    }
 }
 
 fn position_key(state: &MillState) -> u64 {
@@ -3765,6 +3935,69 @@ mod tests {
         assert_ne!(
             snap_a.zobrist_key, snap_c.zobrist_key,
             "different board layouts must produce distinct Zobrist keys"
+        );
+    }
+
+    #[test]
+    fn set_from_fen_then_export_round_trip() {
+        let rules = MillRules::default();
+
+        // A minimal placing-phase FEN with one white and one black piece.
+        let fen = "O@******/********/******** w p p 1 8 1 8 0 0 0 0 0 0 0 0 1";
+        let state = rules.set_from_fen(fen).expect("valid FEN must parse");
+
+        // White on FEN pos 0 (sq 8) → node 17; Black on FEN pos 1 (sq 9) → node 18.
+        assert_eq!(state.board[17], 1, "node 17 should be White");
+        assert_eq!(state.board[18], 2, "node 18 should be Black");
+        assert_eq!(state.side_to_move, 0, "White to move");
+        assert_eq!(state.phase, MillPhase::Placing);
+        assert_eq!(state.pieces_in_hand[0], 8);
+        assert_eq!(state.pieces_in_hand[1], 8);
+
+        // Export and re-import; key board fields must survive the round-trip.
+        let exported = rules.export_fen(&state);
+        let state2 = rules
+            .set_from_fen(&exported)
+            .expect("exported FEN must re-parse");
+        assert_eq!(state2.board, state.board, "board round-trips");
+        assert_eq!(state2.side_to_move, state.side_to_move, "side round-trips");
+        assert_eq!(state2.phase, state.phase, "phase round-trips");
+        assert_eq!(
+            state2.pieces_in_hand, state.pieces_in_hand,
+            "hand counts round-trip"
+        );
+    }
+
+    #[test]
+    fn set_from_fen_matches_apply_sequence_zobrist() {
+        let rules = MillRules::default();
+
+        // Load the no-mill moving-phase fixture via both paths:
+        //   (a) apply the canonical placing sequence, then export + re-import.
+        //   (b) export directly and compare the board bytes.
+        let snap_applied = rules.no_mill_moving_phase_snapshot();
+        let state_applied = MillRules::decode_snapshot(snap_applied);
+
+        let fen_from_apply = rules.export_fen(&state_applied);
+        let state_loaded = rules
+            .set_from_fen(&fen_from_apply)
+            .expect("FEN exported from applied state must be parseable");
+
+        // The board layout must be identical; auxiliary fields (last-mill,
+        // mills-bitmask) may differ because export_fen outputs defaults.
+        assert_eq!(
+            state_loaded.board, state_applied.board,
+            "set_from_fen must reproduce the same board as apply sequence"
+        );
+        assert_eq!(state_loaded.side_to_move, state_applied.side_to_move);
+        assert_eq!(state_loaded.phase, state_applied.phase);
+
+        // Zobrist keys must match (board + side + phase + pieces_in_hand are
+        // identical, and move_number is reconstructed from fullmove counter).
+        let snap_loaded = rules.encode_state(state_loaded);
+        assert_eq!(
+            snap_applied.zobrist_key, snap_loaded.zobrist_key,
+            "Zobrist key must match after FEN export+import round-trip"
         );
     }
 
