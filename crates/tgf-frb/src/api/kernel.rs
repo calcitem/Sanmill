@@ -394,7 +394,12 @@ pub fn tgf_kernel_setup_set_piece(
     let options = mill_variant_for_handle(handle);
     let rules = MillRules::new(options.clone());
     let mut state = tgf_mill::MillRules::decode_snapshot(kernel.snapshot());
-    state.set_piece(node.clamp(0, 23) as u16, owner as i8);
+    if !(0..24).contains(&node) {
+        return Err(format!(
+            "setup_set_piece node out of range: {node}; expected Rust node 0..23"
+        ));
+    }
+    state.set_piece(node as u16, owner as i8);
     state.recompute_aux(&options);
     let new_snap = rules.encode_state(state);
     kernel.replace_state(new_snap);
@@ -549,6 +554,22 @@ mod tests {
         };
         let err = tgf_kernel_apply(handle, bogus).unwrap_err();
         assert!(err.contains("illegal"));
+        tgf_kernel_dispose(handle);
+    }
+
+    #[test]
+    fn setup_set_piece_rejects_out_of_range_node() {
+        let handle = tgf_kernel_create("mill".to_owned()).unwrap();
+
+        let err = tgf_kernel_setup_set_piece(handle, 31, 1).unwrap_err();
+        assert!(
+            err.contains("node out of range"),
+            "legacy square ids must not be silently clamped: {err}"
+        );
+
+        let err = tgf_kernel_setup_set_piece(handle, -1, 1).unwrap_err();
+        assert!(err.contains("node out of range"));
+
         tgf_kernel_dispose(handle);
     }
 
