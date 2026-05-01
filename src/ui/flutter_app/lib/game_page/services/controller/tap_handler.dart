@@ -27,9 +27,16 @@ class TapHandler {
 
   bool get isAiSideToMove => controller.gameInstance.isAiSideToMove;
 
-  bool get _isBoardEmpty =>
-      GameController().position.pieceOnBoardCount[PieceColor.white] == 0 &&
-      GameController().position.pieceOnBoardCount[PieceColor.black] == 0;
+  bool get _isBoardEmpty {
+    final NativeMillSnapshotBoardView? nativeBoardView = GameController()
+        .activeNativeMillBoardView;
+    if (nativeBoardView != null) {
+      return nativeBoardView.pieceCount(PlayerSeat.first) == 0 &&
+          nativeBoardView.pieceCount(PlayerSeat.second) == 0;
+    }
+    return GameController().position.pieceOnBoardCount[PieceColor.white] == 0 &&
+        GameController().position.pieceOnBoardCount[PieceColor.black] == 0;
+  }
 
   void _recordBoardTap(int sq) {
     final GameStateSnapshot? snapshot = GameController().activeSessionSnapshot;
