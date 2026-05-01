@@ -340,6 +340,12 @@ pub fn tgf_kernel_mill_search_events(handle: u32, depth: i32, sink: StreamSink<E
 
 // ---------------------------------------------------------------------------
 // Setup-position editing API (Phase 6.A.1)
+//
+// Design note: the legacy C++/Dart Position::action tri-state (place / select
+// / remove) is intentionally absent here.  The native board editor cycles the
+// owner value on each tap via setup_set_piece(node, owner) — one call covers
+// all edit intents.  A tgf_kernel_setup_set_action function is not needed and
+// is not planned (see docs/FRAMEWORK_API.md §"Setup-position editing API").
 // ---------------------------------------------------------------------------
 
 /// Clear the board associated with a Mill kernel handle and reset all pieces,

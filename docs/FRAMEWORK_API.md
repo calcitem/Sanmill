@@ -283,6 +283,33 @@ Dart side gets a long-lived session keyed by an `int` handle:
   kernel’s **current** snapshot; uses the same `MillVariantOptions` stored when
   creating the session (`tgf_kernel_create_mill` / default nine-piece factory).
 
+#### Setup-position editing API (Phase 6.A.1)
+
+The kernel exposes a direct board-editing flow for the setup-position game mode:
+
+- `tgfKernelSetupClear({handle})` — reset board to empty placing-phase state.
+- `tgfKernelSetupSetPiece({handle, node, owner})` — place or clear one piece
+  (`owner`: 1 = White, 2 = Black, other = clear).
+- `tgfKernelSetupSetSide({handle, side})` — set the side to move (`0` = White).
+- `tgfKernelSetupFinish({handle})` — commit the edited board and transition to a
+  playable state (Placing or Moving based on `pieces_in_hand`).
+
+**Design note — no Action tri-state:** The legacy C++/Dart `Action` enum
+(`place / select / remove`) is intentionally **absent** from the native setup
+API.  In the legacy UI, the user selected which piece-type to drag and the
+`Action` field tracked that selection.  In the native session, the board editor
+cycles the owner value on each tap via `setup_set_piece(node, owner)` — one
+call covers all edit intents.  There is no `tgfKernelSetupSetAction` function
+and none is planned.
+
+#### FEN import / export API (Phase 6.A.3.B)
+
+- `tgfKernelSetFromFen({handle, fen})` — load a Mill FEN string compatible with
+  the legacy Dart/C++ engine format; returns updated snapshot.
+- `tgfKernelExportFen({handle})` — serialize current kernel state as a Mill FEN
+  string.  Round-trip guarantee: `setFromFen(exportFen(s))` reproduces the same
+  board, side, phase, and piece counts (mills-bitmask output as 0).
+
 The Dart wrapper that hides FFI details is
 `lib/game_platform/engine/tgf_kernel.dart::TgfKernel`.  It also produces
 framework-level `GameStateSnapshot` / `GameOutcome` values directly.
