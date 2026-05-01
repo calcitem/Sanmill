@@ -184,12 +184,15 @@ Current scaffolds already include:
 - TT best-move ordering
 - packed two-slot TT clusters (`AtomicU64` slots) sharable across threads
   via `SharedTt` and the `lazy_smp_search` scaffold
+- `SearchThreadPool` (`std::thread` workers + `crossbeam_channel` dispatch)
+  used by lazy SMP worker fan-out
 - killer/history move ordering
 - game-specific terminal scoring for rule draws / wins
 - node and wall-clock abort checks
 - deterministic random search seed
 - FRB search event stream
-- single-threaded UCT-style MCTS tree
+- UCT-style MCTS tree with atomic visit / win counters (`AtomicU32` /
+  `AtomicI64`) ready for shared-visits workers
 
 ### Benchmarks and gating
 
@@ -246,7 +249,6 @@ Work in progress (see migration plan phase 5):
   `if (stand_pat > 0) stand_pat += depth;` mate-distance decay.  Future work
   is to lift that depth gate in C++ and verify the deeper qsearch agrees.
 - MCTS alpha-beta assisted simulation
-- multi-threaded MCTS shared visits
 
 **Intentionally staying on the cxx bridge (not “incomplete” bugs):** perfect DB
 and opening book remain in C++ by policy; see §Legacy C++ bridge policy.
