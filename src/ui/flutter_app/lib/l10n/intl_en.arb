@@ -4436,11 +4436,11 @@
     "@qrCodeScreenCaptureFailed": {
         "description": "Prefix or short message when native screenshot capture errors"
     },
-    "nativeMillSessionDeveloperOption": "Rust / TGF Mill session",
+    "nativeMillSessionDeveloperOption": "Rust / TGF Mill session (default on)",
     "@nativeMillSessionDeveloperOption": {
         "description": "Developer options toggle: use NativeMillGameSession (FRB) instead of legacy controller path"
     },
-    "nativeMillSessionDeveloperDescription": "New Mill games use the Rust rules engine. Start a new game for it to take effect.",
+    "nativeMillSessionDeveloperDescription": "Enabled by default. Toggle off to revert to the legacy session; a new game is required.",
     "@nativeMillSessionDeveloperDescription": {
         "description": "Subtitle for the native Mill session developer toggle"
     }

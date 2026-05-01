@@ -4316,11 +4316,11 @@
     "@qrCodeScreenCaptureFailed": {
         "description": "Prefix or short message when native screenshot capture errors"
     },
-    "nativeMillSessionDeveloperOption": "Rust / TGF Mill 对局会话",
+    "nativeMillSessionDeveloperOption": "Rust / TGF Mill 对局会话（默认开启）",
     "@nativeMillSessionDeveloperOption": {
         "description": "Developer options toggle: use NativeMillGameSession (FRB) instead of legacy controller path"
     },
-    "nativeMillSessionDeveloperDescription": "新开对局将使用 Rust 规则引擎；已开始的对局需新开一局后生效。",
+    "nativeMillSessionDeveloperDescription": "默认开启。关闭可回滚到旧版对话栈；需新开一局后生效。",
     "@nativeMillSessionDeveloperDescription": {
         "description": "Subtitle for the native Mill session developer toggle"
     }

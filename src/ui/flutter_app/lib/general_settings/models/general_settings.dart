@@ -169,7 +169,7 @@ class GeneralSettings {
 
     /// When true, [MillGameModule.startSession] uses [NativeMillGameSession] (Rust
     /// `tgf-mill` / FRB) instead of the legacy [MillGameSession] path.
-    this.useNativeMillSession = false,
+    this.useNativeMillSession = true,
   });
 
   /// Encodes a Json style map into a [GeneralSettings] object
@@ -334,7 +334,7 @@ class GeneralSettings {
   final bool experienceRecordingEnabled;
 
   /// Use Rust-native Mill session (TGF) instead of legacy GameController path.
-  @HiveField(46, defaultValue: false)
+  @HiveField(46, defaultValue: true)
   final bool useNativeMillSession;
 
   /// Decodes a Json from a [GeneralSettings] object
