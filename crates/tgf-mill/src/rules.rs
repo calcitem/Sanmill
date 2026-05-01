@@ -1120,8 +1120,8 @@ impl MillRules {
         let us = state.side_to_move as usize;
         if us < 2 && state.remove_own_piece[us] {
             let own_piece = state.side_to_move + 1;
-            for (node, piece) in state.board.iter().enumerate() {
-                if *piece == own_piece {
+            for node in 0_usize..24 {
+                if live_piece(state, node) == own_piece {
                     out.push(Action {
                         kind_tag: MillActionKind::Remove as i16,
                         from_node: -1,
@@ -1143,9 +1143,12 @@ impl MillRules {
         // non-mill alternative exists.  Capture targets already emitted
         // above are skipped to avoid duplicate Remove actions, mirroring
         // master generate<REMOVE>'s `if (combinedTargets & square_bb(s)) continue;`.
+        // Marked pieces are filtered out via `live_piece` to mirror
+        // legacy `removeColorPiece` matching against `byColorBB[c]`,
+        // which excludes MARKED_PIECE squares.
         if self.options.may_remove_from_mills_always {
-            for (node, piece) in state.board.iter().enumerate() {
-                if *piece == opponent_piece {
+            for node in 0_usize..24 {
+                if live_piece(state, node) == opponent_piece {
                     if (capture_targets & node_bit(node)) != 0 {
                         continue;
                     }
@@ -1166,12 +1169,12 @@ impl MillRules {
             return;
         }
 
-        let has_non_mill_target = state.board.iter().enumerate().any(|(idx, piece)| {
-            *piece == opponent_piece && !is_piece_in_mill(state, &self.options, idx)
+        let has_non_mill_target = (0_usize..24).any(|idx| {
+            live_piece(state, idx) == opponent_piece && !is_piece_in_mill(state, &self.options, idx)
         });
 
-        for (node, piece) in state.board.iter().enumerate() {
-            if *piece != opponent_piece {
+        for node in 0_usize..24 {
+            if live_piece(state, node) != opponent_piece {
                 continue;
             }
             if (capture_targets & node_bit(node)) != 0 {
@@ -1511,11 +1514,32 @@ fn removal_count_for_bits(bits: u32, options: &MillVariantOptions) -> u8 {
 }
 
 fn usable_mill_bits(state: &MillState, options: &MillVariantOptions, bits: u32) -> u32 {
-    if options.one_time_use_mill {
-        bits & !state.used_mill_lines
-    } else {
-        bits
+    if !options.one_time_use_mill {
+        return bits;
     }
+    // Mirror master Position::potential_mills_count's oneTimeUseMill
+    // branch: a line is "already used" *for this side* only when all
+    // three of its squares are recorded in formed_mills_bb[side].
+    // `used_mill_lines` is a global union and would over-restrict —
+    // a line first formed by Black should still trigger a removal
+    // when White reaches the same configuration.
+    let side = state.side_to_move as usize;
+    if side >= 2 {
+        return bits;
+    }
+    let formed = state.formed_mills_bb[side];
+    let mut usable = bits;
+    let lines = mill_lines(options);
+    for (line_idx, line) in lines.iter().enumerate() {
+        if (bits & (1u32 << line_idx)) == 0 {
+            continue;
+        }
+        let line_bb = node_bit(line[0]) | node_bit(line[1]) | node_bit(line[2]);
+        if (line_bb & formed) == line_bb {
+            usable &= !(1u32 << line_idx);
+        }
+    }
+    usable
 }
 
 /// Mirror of `Position::shouldConsiderMobility()` in option.h: enabled
@@ -4204,6 +4228,12 @@ mod tests {
             ..MillVariantOptions::default()
         };
         let rules = MillRules::new(options);
+        // Pre-populate formed_mills_bb[white] with the outer-top line
+        // [0, 1, 2] (mirrors a previous mill White already consumed).
+        // usable_mill_bits now consults formed_mills_bb per side rather
+        // than the global used_mill_lines, so the test setup populates
+        // the right state.
+        let formed_top_line = node_bit(0) | node_bit(1) | node_bit(2);
         let state = MillState {
             board: {
                 let mut board = [0_i8; 24];
@@ -4220,7 +4250,8 @@ mod tests {
             pieces_on_board: [2, 2],
             pending_removals: [0, 0],
             winner: -1,
-            used_mill_lines: 1, // outer-top [0,1,2] already consumed
+            used_mill_lines: 1,
+            formed_mills_bb: [formed_top_line, 0],
             ..MillState::default()
         };
         let after = rules.apply(
