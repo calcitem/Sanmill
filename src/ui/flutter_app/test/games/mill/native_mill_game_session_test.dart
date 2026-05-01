@@ -250,4 +250,11 @@ class _FakeNativeMillRulesPort implements NativeMillRulesPort {
 
   @override
   GameStateSnapshot setupFinish() => _snapshot;
+
+  @override
+  GameStateSnapshot setFromFen(String fen) => _snapshot;
+
+  @override
+  String exportFen() =>
+      '********/********/******** w p p 0 9 0 9 0 0 0 0 0 0 0 0 1';
 }
