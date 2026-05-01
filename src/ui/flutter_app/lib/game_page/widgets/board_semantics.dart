@@ -189,9 +189,9 @@ class _BoardSemanticsState extends State<_BoardSemantics> {
       if (checkPoints[i] == 0) {
         pieceDesc.add(S.of(context).noPoint);
       } else {
-        final PieceColor piece =
-            nativeBoardView?.pieceColorAtLegacyGridIndex(i) ??
-            GameController().position.pieceOnGrid(i);
+        final PieceColor piece = nativeBoardView == null
+            ? GameController().position.pieceOnGrid(i)
+            : _pieceColorFromNativeBoardView(nativeBoardView, i);
         pieceDesc.add(piece.pieceName(context));
       }
     }
@@ -208,6 +208,20 @@ class _BoardSemanticsState extends State<_BoardSemantics> {
     }
 
     return squareDesc;
+  }
+
+  PieceColor _pieceColorFromNativeBoardView(
+    NativeMillSnapshotBoardView nativeBoardView,
+    int gridIndex,
+  ) {
+    if (nativeBoardView.isMarkedLegacyGridIndex(gridIndex)) {
+      return PieceColor.marked;
+    }
+    return switch (nativeBoardView.pieceAtLegacyGridIndex(gridIndex)) {
+      PlayerSeat.first => PieceColor.white,
+      PlayerSeat.second => PieceColor.black,
+      PlayerSeat.none || null => PieceColor.none,
+    };
   }
 
   @override

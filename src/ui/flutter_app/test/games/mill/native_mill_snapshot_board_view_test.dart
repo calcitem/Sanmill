@@ -38,9 +38,9 @@ void main() {
       expect(view.pieceAtNode(23), PlayerSeat.second);
       expect(view.pieceAtLegacySquare(31), PlayerSeat.first);
       expect(view.pieceAtLegacySquare(14), PlayerSeat.second);
-      expect(view.pieceColorAtLegacyGridIndex(0).name, 'white');
-      expect(view.pieceColorAtLegacyGridIndex(23).name, 'black');
-      expect(view.pieceColorAtLegacyGridIndex(24).name, 'none');
+      expect(view.pieceAtLegacyGridIndex(0), PlayerSeat.first);
+      expect(view.pieceAtLegacyGridIndex(23), PlayerSeat.second);
+      expect(view.pieceAtLegacyGridIndex(24), isNull);
       expect(view.pieceAtLegacySquare(0), isNull);
       expect(view.pieceAtNode(8), isNull);
       expect(view.pieceAtNode(-1), isNull);
@@ -70,6 +70,9 @@ void main() {
       expect(view.isMarkedLegacySquare(25), isTrue);
       expect(view.isMarkedLegacySquare(30), isTrue);
       expect(view.isMarkedLegacySquare(31), isFalse);
+      expect(view.isMarkedLegacyGridIndex(6), isTrue);
+      expect(view.isMarkedLegacyGridIndex(21), isTrue);
+      expect(view.isMarkedLegacyGridIndex(0), isFalse);
     });
   });
 }

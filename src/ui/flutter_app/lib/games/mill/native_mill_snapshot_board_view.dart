@@ -3,7 +3,6 @@
 
 import 'dart:typed_data';
 
-import '../../game_page/services/mill.dart' as mill;
 import '../../game_platform/game_session.dart';
 import '../../game_platform/mill_marked_pieces_codec.dart';
 
@@ -37,19 +36,9 @@ class NativeMillSnapshotBoardView {
     return node == null ? null : pieceAtNode(node);
   }
 
-  mill.PieceColor pieceColorAtLegacyGridIndex(int gridIndex) {
+  PlayerSeat? pieceAtLegacyGridIndex(int gridIndex) {
     final int? square = _legacyGridIndexToSquare[gridIndex];
-    if (square == null) {
-      return mill.PieceColor.none;
-    }
-    if (isMarkedLegacySquare(square)) {
-      return mill.PieceColor.marked;
-    }
-    return switch (pieceAtLegacySquare(square)) {
-      PlayerSeat.first => mill.PieceColor.white,
-      PlayerSeat.second => mill.PieceColor.black,
-      PlayerSeat.none || null => mill.PieceColor.none,
-    };
+    return square == null ? null : pieceAtLegacySquare(square);
   }
 
   PlayerSeat? pieceAtNode(int node) {
@@ -66,6 +55,11 @@ class NativeMillSnapshotBoardView {
   bool isMarkedLegacySquare(int square) {
     final int? node = _legacySquareToNode[square];
     return node != null && markedNodes.contains(node);
+  }
+
+  bool isMarkedLegacyGridIndex(int gridIndex) {
+    final int? square = _legacyGridIndexToSquare[gridIndex];
+    return square != null && isMarkedLegacySquare(square);
   }
 
   Map<int, PlayerSeat> occupiedNodes() {
