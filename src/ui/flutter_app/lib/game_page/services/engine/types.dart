@@ -414,32 +414,7 @@ int makeMove(int from, int to) {
   return (from << 8) + to;
 }
 
-Map<int, int> squareToIndex = <int, int>{
-  8: 17,
-  9: 18,
-  10: 25,
-  11: 32,
-  12: 31,
-  13: 30,
-  14: 23,
-  15: 16,
-  16: 10,
-  17: 12,
-  18: 26,
-  19: 40,
-  20: 38,
-  21: 36,
-  22: 22,
-  23: 8,
-  24: 3,
-  25: 6,
-  26: 27,
-  27: 48,
-  28: 45,
-  29: 42,
-  30: 21,
-  31: 0,
-};
+Map<int, int> squareToIndex = MillBoardCoordinateMaps.squareToGridIndex;
 
 int notationToSquare(String notation) {
   return MillBoardCoordinateMaps.notationToLegacySquare(notation);
@@ -451,9 +426,7 @@ String squareToNotation(int square) {
   return MillBoardCoordinateMaps.legacySquareToNotation(square);
 }
 
-Map<int, int> indexToSquare = squareToIndex.map(
-  (int k, int v) => MapEntry<int, int>(v, k),
-);
+Map<int, int> indexToSquare = MillBoardCoordinateMaps.gridIndexToSquare;
 
 /*
           a b c d e f g
