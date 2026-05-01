@@ -15,13 +15,16 @@ fn main() {
 
     let mut build = cxx_build::bridge("src/lib.rs");
 
+    // Phase 8.1: misc.cpp was removed (pure utility helpers, no bridge dependency).
+    // Remaining removal target: position.cpp, mills.cpp, movegen.cpp, option.cpp,
+    // rule.cpp — blocked on rewriting legacy_engine_bridge.cpp to no longer reference
+    // them (tracked in Phase 8.2).
     build
         .file("cpp/legacy_engine_bridge.cpp")
         .files(
             [
                 "bitboard.cpp",
                 "mills.cpp",
-                "misc.cpp",
                 "movegen.cpp",
                 "opening_book.cpp",
                 "option.cpp",

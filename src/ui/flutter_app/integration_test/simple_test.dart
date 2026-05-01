@@ -8,7 +8,6 @@ import 'package:integration_test/integration_test.dart';
 
 import 'package:sanmill/game_page/services/mill.dart' show ExtMove, PieceColor;
 import 'package:sanmill/game_platform/board_geometry.dart';
-import 'package:sanmill/game_platform/engine/legacy_tgf_kernel.dart';
 import 'package:sanmill/game_platform/engine/native_topology.dart';
 import 'package:sanmill/game_platform/engine/tgf_kernel.dart';
 import 'package:sanmill/game_platform/game_session.dart';
@@ -43,21 +42,10 @@ void main() {
     expect(version, isNotEmpty);
   });
 
-  testWidgets('legacy kernel exposes C++ start position', (
-    WidgetTester tester,
-  ) async {
-    const LegacyTgfKernel kernel = LegacyTgfKernel();
-
-    final String startFen = kernel.reset();
-    expect(startFen, contains(' w p p '));
-
-    final List<String> actions = kernel.legalActions();
-    expect(actions, hasLength(24));
-    expect(actions, contains('d7'));
-
-    expect(kernel.applyUci('d7'), isTrue);
-    expect(kernel.fen(), contains(' b p p '));
-  });
+  // Phase 8.1: 'legacy kernel exposes C++ start position' test removed.
+  // The LegacyTgfKernel / LegacyKernel path is being retired.  Full bridge
+  // cleanup (removing LegacyPosition from legacy_engine_bridge.cpp and the
+  // corresponding build.rs entries) is tracked in Phase 8.2.
 
   testWidgets('Rust topology matches Mill board shape', (
     WidgetTester tester,
