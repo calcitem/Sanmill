@@ -5,6 +5,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sanmill/game_page/services/import_export/pgn.dart';
 import 'package:sanmill/game_page/services/mill.dart';
+import 'package:sanmill/game_platform/game_id.dart';
+import 'package:sanmill/game_platform/game_session.dart' as platform;
 import 'package:sanmill/shared/database/database.dart';
 
 import '../helpers/mocks/mock_animation_manager.dart';
@@ -116,6 +118,26 @@ void main() {
       expect(path[0].move, 'd6');
       expect(path[1].move, 'f4');
       expect(path[2].move, 'd7');
+    });
+
+    test('gameResultPgn uses terminal active session outcome first', () {
+      final GameController controller = GameController();
+      addTearDown(() => controller.activeSessionSnapshot = null);
+      final GameRecorder recorder = controller.gameRecorder;
+
+      controller.activeSessionSnapshot = const platform.GameStateSnapshot(
+        gameId: GameId.mill,
+        activeSeat: platform.PlayerSeat.none,
+        outcome: platform.GameOutcome.win(platform.PlayerSeat.second),
+      );
+      expect(recorder.gameResultPgn, '0-1');
+
+      controller.activeSessionSnapshot = const platform.GameStateSnapshot(
+        gameId: GameId.mill,
+        activeSeat: platform.PlayerSeat.none,
+        outcome: platform.GameOutcome.draw(),
+      );
+      expect(recorder.gameResultPgn, '1/2-1/2');
     });
 
     test('GameRecorder detects variations at active node', () {
