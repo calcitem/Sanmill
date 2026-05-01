@@ -274,6 +274,7 @@ class PiecePainter extends CustomPainter {
           final GameMode mode = GameController().gameInstance.gameMode;
           final PieceColor capturerColor =
               GameController().gameInstance.removeByColor ??
+              GameController().activeSessionSideToMove ??
               GameController().position.sideToMove;
 
           if (mode == GameMode.humanVsAi) {
