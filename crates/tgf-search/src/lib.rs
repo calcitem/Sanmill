@@ -9,7 +9,7 @@ use std::{
     collections::HashMap,
     marker::PhantomData,
     sync::{
-        atomic::{AtomicBool, AtomicU64, Ordering},
+        atomic::{AtomicBool, AtomicI64, AtomicU32, AtomicU64, Ordering},
         Arc,
     },
     thread,
@@ -1127,13 +1127,13 @@ impl Default for MctsOptions {
     }
 }
 
-#[derive(Clone, Debug)]
+#[derive(Debug)]
 struct MctsNode {
     action: Action,
     children: Vec<usize>,
     untried: Vec<Action>,
-    visits: u32,
-    wins: u32,
+    visits: AtomicU32,
+    wins: AtomicI64,
     move_index: usize,
 }
 
@@ -1143,8 +1143,8 @@ impl MctsNode {
             action: Action::NONE,
             children: Vec::new(),
             untried,
-            visits: 0,
-            wins: 0,
+            visits: AtomicU32::new(0),
+            wins: AtomicI64::new(0),
             move_index: 0,
         }
     }
@@ -1154,17 +1154,33 @@ impl MctsNode {
             action,
             children: Vec::new(),
             untried,
-            visits: 0,
-            wins: 0,
+            visits: AtomicU32::new(0),
+            wins: AtomicI64::new(0),
             move_index,
         }
     }
 
+    fn visits(&self) -> u32 {
+        self.visits.load(Ordering::Relaxed)
+    }
+
+    fn wins(&self) -> i64 {
+        self.wins.load(Ordering::Relaxed)
+    }
+
+    fn record_simulation(&self, win: bool) {
+        self.visits.fetch_add(1, Ordering::Relaxed);
+        if win {
+            self.wins.fetch_add(1, Ordering::Relaxed);
+        }
+    }
+
     fn win_score(&self) -> f64 {
-        if self.visits == 0 {
+        let visits = self.visits();
+        if visits == 0 {
             0.0
         } else {
-            self.wins as f64 / self.visits as f64
+            self.wins() as f64 / visits as f64
         }
     }
 }
@@ -1295,10 +1311,7 @@ impl<G: Game> MctsSearcher<G> {
             // Backpropagate.  Alternate win perspective at each parent, matching
             // the mature C++ implementation.
             for idx in path.into_iter().rev() {
-                nodes[idx].visits += 1;
-                if win {
-                    nodes[idx].wins += 1;
-                }
+                nodes[idx].record_simulation(win);
                 win = !win;
             }
         }
@@ -1307,7 +1320,7 @@ impl<G: Game> MctsSearcher<G> {
             .children
             .iter()
             .copied()
-            .max_by_key(|idx| nodes[*idx].visits)
+            .max_by_key(|idx| nodes[*idx].visits())
         else {
             return MctsResult {
                 best_action: Action::NONE,
@@ -1318,13 +1331,13 @@ impl<G: Game> MctsSearcher<G> {
 
         MctsResult {
             best_action: nodes[best_child].action,
-            visits: nodes[best_child].visits,
-            wins: nodes[best_child].wins,
+            visits: nodes[best_child].visits(),
+            wins: nodes[best_child].wins().max(0) as u32,
         }
     }
 
     fn best_uct_child(&self, nodes: &[MctsNode], node_idx: usize) -> usize {
-        let parent_visits = nodes[node_idx].visits.max(1) as f64;
+        let parent_visits = nodes[node_idx].visits().max(1) as f64;
         *nodes[node_idx]
             .children
             .iter()
@@ -1337,12 +1350,13 @@ impl<G: Game> MctsSearcher<G> {
     }
 
     fn uct_value(&self, node: &MctsNode, parent_visits: f64) -> f64 {
-        if node.visits == 0 {
+        let visits = node.visits();
+        if visits == 0 {
             return f64::INFINITY;
         }
         let mean = node.win_score();
-        let exploration = self.exploration * (2.0 * parent_visits.ln() / node.visits as f64).sqrt();
-        let variance = ((mean * (1.0 - mean)) / node.visits as f64).sqrt();
+        let exploration = self.exploration * (2.0 * parent_visits.ln() / visits as f64).sqrt();
+        let variance = ((mean * (1.0 - mean)) / visits as f64).sqrt();
         let bias = 0.05 * (256.0 - node.move_index as f64);
         mean + exploration + variance + bias
     }
