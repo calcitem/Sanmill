@@ -38,6 +38,9 @@ void main() {
       expect(view.pieceAtNode(23), PlayerSeat.second);
       expect(view.pieceAtLegacySquare(31), PlayerSeat.first);
       expect(view.pieceAtLegacySquare(14), PlayerSeat.second);
+      expect(view.pieceColorAtLegacyGridIndex(0).name, 'white');
+      expect(view.pieceColorAtLegacyGridIndex(23).name, 'black');
+      expect(view.pieceColorAtLegacyGridIndex(24).name, 'none');
       expect(view.pieceAtLegacySquare(0), isNull);
       expect(view.pieceAtNode(8), isNull);
       expect(view.pieceAtNode(-1), isNull);

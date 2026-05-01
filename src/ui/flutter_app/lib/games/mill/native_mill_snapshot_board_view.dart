@@ -3,6 +3,7 @@
 
 import 'dart:typed_data';
 
+import '../../game_page/services/mill.dart' as mill;
 import '../../game_platform/game_session.dart';
 import '../../game_platform/mill_marked_pieces_codec.dart';
 
@@ -34,6 +35,21 @@ class NativeMillSnapshotBoardView {
   PlayerSeat? pieceAtLegacySquare(int square) {
     final int? node = _legacySquareToNode[square];
     return node == null ? null : pieceAtNode(node);
+  }
+
+  mill.PieceColor pieceColorAtLegacyGridIndex(int gridIndex) {
+    final int? square = _legacyGridIndexToSquare[gridIndex];
+    if (square == null) {
+      return mill.PieceColor.none;
+    }
+    if (isMarkedLegacySquare(square)) {
+      return mill.PieceColor.marked;
+    }
+    return switch (pieceAtLegacySquare(square)) {
+      PlayerSeat.first => mill.PieceColor.white,
+      PlayerSeat.second => mill.PieceColor.black,
+      PlayerSeat.none || null => mill.PieceColor.none,
+    };
   }
 
   PlayerSeat? pieceAtNode(int node) {
@@ -88,5 +104,32 @@ class NativeMillSnapshotBoardView {
     12: 21,
     13: 22,
     14: 23,
+  };
+
+  static const Map<int, int> _legacyGridIndexToSquare = <int, int>{
+    0: 31,
+    3: 24,
+    6: 25,
+    8: 23,
+    10: 16,
+    12: 17,
+    16: 15,
+    17: 8,
+    18: 9,
+    21: 30,
+    22: 22,
+    23: 14,
+    25: 10,
+    26: 18,
+    27: 26,
+    30: 13,
+    31: 12,
+    32: 11,
+    36: 21,
+    38: 20,
+    40: 19,
+    42: 29,
+    45: 28,
+    48: 27,
   };
 }

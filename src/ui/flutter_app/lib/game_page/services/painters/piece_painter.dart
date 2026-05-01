@@ -40,17 +40,7 @@ class PiecePainter extends CustomPainter {
   PieceColor _pieceColorAtGridIndex(int index) {
     final NativeMillSnapshotBoardView? native = nativeBoardView;
     if (native != null) {
-      final int? square = indexToSquare[index];
-      if (square != null) {
-        if (native.isMarkedLegacySquare(square)) {
-          return PieceColor.marked;
-        }
-        return switch (native.pieceAtLegacySquare(square)) {
-          PlayerSeat.first => PieceColor.white,
-          PlayerSeat.second => PieceColor.black,
-          PlayerSeat.none || null => PieceColor.none,
-        };
-      }
+      return native.pieceColorAtLegacyGridIndex(index);
     }
     return GameController().position.pieceOnGrid(index);
   }
