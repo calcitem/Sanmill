@@ -13,12 +13,17 @@ import 'native_mill_game_session.dart';
 /// chain)."  `engineToGo` can layer UI side effects on top later.
 class NativeMillAiTurnController {
   const NativeMillAiTurnController({
-    this.depth = 1,
+    this.depth,
     this.generalSettings = const GeneralSettings(),
     this.maxStepsPerTurn = 8,
   });
 
-  final int depth;
+  /// Optional fixed depth override used by tests and targeted dogfood paths.
+  ///
+  /// When null, the depth is derived from [generalSettings.skillLevel] and the
+  /// current session snapshot to preserve the legacy "draw on human
+  /// experience" placing-phase depth table.
+  final int? depth;
   final GeneralSettings generalSettings;
 
   /// Safety cap on how many native search-and-apply iterations are performed
@@ -32,6 +37,47 @@ class NativeMillAiTurnController {
   bool isAiTurn(NativeMillGameSession session) {
     return !session.outcome.isTerminal &&
         session.state.value.activeSeat == aiSeat;
+  }
+
+  int searchDepthForSession(NativeMillGameSession session) {
+    return depth ?? searchDepthForSnapshot(session.state.value);
+  }
+
+  int searchDepthForSnapshot(GameStateSnapshot snapshot) {
+    if (depth != null) {
+      return depth!.clamp(1, 64).toInt();
+    }
+    final int level = generalSettings.skillLevel.clamp(1, 30).toInt();
+    if (!generalSettings.drawOnHumanExperience || snapshot.phase != 'placing') {
+      return level;
+    }
+
+    final Object? rawPayload = snapshot.payload['tgfPayload'];
+    if (rawPayload is! List<int> || rawPayload.length < 28) {
+      return level;
+    }
+
+    final int whiteInHand = rawPayload[24];
+    final int blackInHand = rawPayload[25];
+    final int whiteOnBoard = rawPayload[26];
+    final int blackOnBoard = rawPayload[27];
+    final int whiteTotal = whiteInHand + whiteOnBoard;
+    final int blackTotal = blackInHand + blackOnBoard;
+    final int pieceCount = (whiteTotal > blackTotal ? whiteTotal : blackTotal)
+        .clamp(0, 12)
+        .toInt();
+    final int index = (pieceCount * 2 - whiteInHand - blackInHand)
+        .clamp(0, 24)
+        .toInt();
+
+    final List<int> table = pieceCount == 12
+        ? _placingDepthTable12
+        : _placingDepthTable9;
+    final int tableDepth = table[index];
+    if (tableDepth <= 0) {
+      return level;
+    }
+    return level > tableDepth ? tableDepth : level;
   }
 
   /// Run native search-and-apply until the active seat changes away from the
@@ -52,7 +98,7 @@ class NativeMillAiTurnController {
         break;
       }
       final GameAction? applied = await session.searchAndApplyBestAction(
-        depth: depth,
+        depth: searchDepthForSession(session),
       );
       if (applied == null) {
         break;
@@ -62,3 +108,25 @@ class NativeMillAiTurnController {
     return lastApplied;
   }
 }
+
+// Matches legacy `Mills::get_search_depth` for non-developer placing phase
+// when "DrawOnHumanExperience" is enabled.
+const List<int> _placingDepthTable9 = <int>[
+  1, 1, 1, 1, // 0 ~ 3
+  3, 3, 3, 15, // 4 ~ 7
+  15, 5, 18, 0, // 8 ~ 11
+  0, 0, 0, 0, // 12 ~ 15
+  0, 0, 0, 0, // 16 ~ 19
+  0, 0, 0, 0, // 20 ~ 23
+  0, // 24
+];
+
+const List<int> _placingDepthTable12 = <int>[
+  1, 2, 2, 4, // 0 ~ 3
+  4, 12, 12, 18, // 4 ~ 7
+  12, 0, 0, 0, // 8 ~ 11
+  0, 0, 0, 0, // 12 ~ 15
+  0, 0, 0, 0, // 16 ~ 19
+  0, 0, 0, 0, // 20 ~ 23
+  0, // 24
+];
