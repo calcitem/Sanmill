@@ -478,29 +478,5 @@ a4(10)-b4(11)-c4(12) e4(13)-f4(14)-g4(15)
 // PlayOK notation to standard notation mapping
 // PlayOK uses numbers 1-24 to represent board positions
 // Numbering is from left to right, top to bottom
-const Map<String, String> playOkNotationToStandardNotation = <String, String>{
-  "1": "a7", // outer ring, top left
-  "2": "d7", // outer ring, top center
-  "3": "g7", // outer ring, top right
-  "4": "b6", // middle ring, top left
-  "5": "d6", // middle ring, top center
-  "6": "f6", // middle ring, top right
-  "7": "c5", // inner ring, top left
-  "8": "d5", // inner ring, top center
-  "9": "e5", // inner ring, top right
-  "10": "a4", // left side, middle
-  "11": "b4", // middle left
-  "12": "c4", // inner left
-  "13": "e4", // inner right
-  "14": "f4", // middle right
-  "15": "g4", // right side, middle
-  "16": "c3", // inner ring, bottom left
-  "17": "d3", // inner ring, bottom center
-  "18": "e3", // inner ring, bottom right
-  "19": "b2", // middle ring, bottom left
-  "20": "d2", // middle ring, bottom center
-  "21": "f2", // middle ring, bottom right
-  "22": "a1", // outer ring, bottom left
-  "23": "d1", // outer ring, bottom center
-  "24": "g1", // outer ring, bottom right
-};
+const Map<String, String> playOkNotationToStandardNotation =
+    MillBoardCoordinateMaps.playOkToStandardNotation;

@@ -172,6 +172,33 @@ abstract final class MillBoardCoordinateMaps {
     'a7': 31,
   };
 
+  static const Map<String, String> playOkToStandardNotation = <String, String>{
+    '1': 'a7',
+    '2': 'd7',
+    '3': 'g7',
+    '4': 'b6',
+    '5': 'd6',
+    '6': 'f6',
+    '7': 'c5',
+    '8': 'd5',
+    '9': 'e5',
+    '10': 'a4',
+    '11': 'b4',
+    '12': 'c4',
+    '13': 'e4',
+    '14': 'f4',
+    '15': 'g4',
+    '16': 'c3',
+    '17': 'd3',
+    '18': 'e3',
+    '19': 'b2',
+    '20': 'd2',
+    '21': 'f2',
+    '22': 'a1',
+    '23': 'd1',
+    '24': 'g1',
+  };
+
   static int notationToLegacySquare(String notation) {
     return notationToSquare[notation.trim().toLowerCase()] ?? -1;
   }

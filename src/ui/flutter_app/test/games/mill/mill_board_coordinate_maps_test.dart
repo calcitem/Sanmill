@@ -68,5 +68,18 @@ void main() {
         4,
       ]);
     });
+
+    test('PlayOK numeric notation maps to standard notation', () {
+      expect(MillBoardCoordinateMaps.playOkToStandardNotation, hasLength(24));
+      expect(MillBoardCoordinateMaps.playOkToStandardNotation['1'], 'a7');
+      expect(MillBoardCoordinateMaps.playOkToStandardNotation['24'], 'g1');
+      for (final String notation
+          in MillBoardCoordinateMaps.playOkToStandardNotation.values) {
+        expect(
+          MillBoardCoordinateMaps.notationToLegacySquare(notation),
+          isNot(-1),
+        );
+      }
+    });
   });
 }
