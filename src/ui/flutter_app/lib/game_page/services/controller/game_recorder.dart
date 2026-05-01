@@ -59,21 +59,8 @@ class GameRecorder {
   /// This ensures the movetext termination marker is consistent with the
   /// `[Result]` header written by [ImportService.addTagPairs].
   String get gameResultPgn {
-    final platform.GameOutcome? outcome =
-        GameController().activeSessionSnapshot?.outcome;
-    if (outcome != null && outcome.isTerminal) {
-      return switch (outcome.kind) {
-        platform.GameOutcomeKind.win => switch (outcome.winner) {
-          platform.PlayerSeat.first => '1-0',
-          platform.PlayerSeat.second => '0-1',
-          _ => '*',
-        },
-        platform.GameOutcomeKind.draw => '1/2-1/2',
-        platform.GameOutcomeKind.abandoned ||
-        platform.GameOutcomeKind.ongoing => '*',
-      };
-    }
-    switch (GameController().position.winner) {
+    switch (GameController().activeSessionWinner ??
+        GameController().position.winner) {
       case PieceColor.white:
         return '1-0';
       case PieceColor.black:
