@@ -211,10 +211,57 @@ pub struct MillWorkbench {
 
 pub struct MillEvaluator;
 
-const MILL_TERMINAL_WIN_SCORE: i32 = 30_000;
+/// Terminal win/loss score.  Must match `VALUE_MATE = 80` from `src/types.h`
+/// so that the searcher's alpha/beta windows, TT mate-distance encoding, and
+/// UCI `score mate <N>` output are all numerically consistent with the legacy
+/// C++ engine.  Scores in [MILL_TERMINAL_WIN_SCORE, MILL_TERMINAL_WIN_SCORE + MAX_DEPTH]
+/// indicate "win in N plies"; scores in the symmetric negative range indicate
+/// losses.  The static evaluator's max is ~75 (within VALUE_KNOWN_WIN = 25
+/// range for material imbalance), giving a safe gap from 80.
+const MILL_TERMINAL_WIN_SCORE: i32 = 80; // == VALUE_MATE
+
+impl MillVariantOptions {
+    /// Assert that the option values are in the C++-compatible ranges.
+    /// Matches the setoption range definitions in `src/ucioption.cpp`.
+    /// Panics on invalid configuration so errors surface immediately
+    /// rather than being masked by silent clamping.
+    pub fn assert_valid(&self) {
+        assert!(
+            (9..=12).contains(&self.piece_count),
+            "piece_count {} out of range 9..=12",
+            self.piece_count
+        );
+        assert!(
+            self.pieces_at_least_count >= 3 && self.pieces_at_least_count <= self.piece_count,
+            "pieces_at_least_count {} must be in 3..=piece_count ({})",
+            self.pieces_at_least_count,
+            self.piece_count
+        );
+        if self.n_move_rule > 0 {
+            assert!(
+                (10..=200).contains(&self.n_move_rule),
+                "n_move_rule {} out of range 10..=200",
+                self.n_move_rule
+            );
+        }
+        if self.endgame_n_move_rule > 0 {
+            assert!(
+                (5..=200).contains(&self.endgame_n_move_rule),
+                "endgame_n_move_rule {} out of range 5..=200",
+                self.endgame_n_move_rule
+            );
+        }
+        assert!(
+            !self.may_fly || self.fly_piece_count >= 3,
+            "fly_piece_count {} must be >= 3 when may_fly is enabled",
+            self.fly_piece_count
+        );
+    }
+}
 
 impl MillRules {
     pub fn new(options: MillVariantOptions) -> Self {
+        options.assert_valid();
         let topology = MillTopology::new(options.has_diagonal_lines);
         Self { options, topology }
     }
@@ -4128,14 +4175,16 @@ mod tests {
 
     #[test]
     fn n_move_rule_draws_after_threshold_without_capture() {
+        // Use minimum valid n_move_rule (10) and pre-load ply_since_capture
+        // to one less than the threshold so a single non-capture move fires.
         let options = MillVariantOptions {
-            n_move_rule: 2,
+            n_move_rule: 10,
             ..MillVariantOptions::default()
         };
         let rules = MillRules::new(options);
         let mut snap = rules.no_mill_moving_phase_snapshot();
         let mut state = MillRules::decode(&snap);
-        state.ply_since_capture = 1;
+        state.ply_since_capture = 9; // one below threshold
         snap = rules.encode(state);
 
         let after = rules.apply(
@@ -4156,9 +4205,11 @@ mod tests {
 
     #[test]
     fn endgame_n_move_rule_uses_lower_threshold() {
+        // Use minimum valid endgame_n_move_rule (5) and pre-load
+        // ply_since_capture to one less than the endgame threshold.
         let options = MillVariantOptions {
             n_move_rule: 100,
-            endgame_n_move_rule: 1,
+            endgame_n_move_rule: 5,
             ..MillVariantOptions::default()
         };
         let rules = MillRules::new(options);
@@ -4177,9 +4228,12 @@ mod tests {
             phase: MillPhase::Moving,
             move_number: 30,
             pieces_in_hand: [0, 0],
+            // Exactly fly_piece_count (3) pieces per side → is_endgame = true
             pieces_on_board: [3, 3],
             pending_removals: [0, 0],
             winner: -1,
+            // Pre-load so one more Move triggers the endgame threshold
+            ply_since_capture: 4,
             ..MillState::default()
         };
         let after = rules.apply(

@@ -492,6 +492,13 @@ pub struct Searcher<G: Game> {
     search_started_at: Option<Instant>,
     abort_flag: Arc<AtomicBool>,
     aborted: bool,
+    /// Zobrist keys of positions on the search path from root to the current
+    /// node.  Used to detect in-search repetitions and return draw score
+    /// immediately rather than searching deeper into a cycle.  Mirrors C++
+    /// `Search::hasRepeated / posKeyHistory` within the search stack.
+    /// Independent of the game-state-side key_history (which only collects
+    /// moving-phase reversible moves).
+    repetition_stack: Vec<u64>,
     _phantom: PhantomData<G>,
 }
 
@@ -512,6 +519,7 @@ impl<G: Game> Default for Searcher<G> {
             search_started_at: None,
             abort_flag: Arc::new(AtomicBool::new(false)),
             aborted: false,
+            repetition_stack: Vec::new(),
             _phantom: PhantomData,
         }
     }
@@ -668,16 +676,23 @@ impl<G: Game> Searcher<G> {
 
         let mut best_action = moves[0];
         let mut best_score = i32::MIN + 1;
+        let root_key = wb.key();
         for action in moves {
             if self.should_abort() {
                 break;
             }
             let before = wb.side_to_move();
+            if root_key != 0 {
+                self.repetition_stack.push(root_key);
+            }
             wb.do_move(action);
             let after = wb.side_to_move();
             let score =
                 self.search_after_move(wb, depth - 1, i32::MIN + 1, i32::MAX - 1, before, after);
             wb.undo_move();
+            if root_key != 0 {
+                self.repetition_stack.pop();
+            }
             if score > best_score {
                 best_score = score;
                 best_action = action;
@@ -719,15 +734,22 @@ impl<G: Game> Searcher<G> {
         let mut alpha = i32::MIN + 1;
         let beta = i32::MAX - 1;
 
+        let root_key = wb.key();
         for (i, action) in moves.into_iter().enumerate() {
             if self.should_abort() {
                 break;
             }
             let before = wb.side_to_move();
+            if root_key != 0 {
+                self.repetition_stack.push(root_key);
+            }
             wb.do_move(action);
             let after = wb.side_to_move();
             let value = self.pvs_after_move(wb, depth - 1, alpha, beta, i, before, after);
             wb.undo_move();
+            if root_key != 0 {
+                self.repetition_stack.pop();
+            }
 
             if value > alpha {
                 alpha = value;
@@ -818,6 +840,16 @@ impl<G: Game> Searcher<G> {
         if let Some(score) = G::terminal_score(wb, wb.side_to_move(), depth) {
             return score;
         }
+
+        // Detect in-search repetition: if the current Zobrist key has
+        // appeared on the search path from root to here, the game would cycle
+        // indefinitely → treat as draw (score 0).  Mirrors C++ search's
+        // `has_repeated` / `posKeyHistory` within the search stack.
+        let key = wb.key();
+        if key != 0 && self.repetition_stack.contains(&key) {
+            return 0;
+        }
+
         // Transition to qsearch when depth falls to or below the qsearch
         // horizon.  With qsearch_max_depth == 0 this matches the C++ stand-
         // pat-only behaviour; positive values extend the remove branch.
@@ -826,7 +858,6 @@ impl<G: Game> Searcher<G> {
         }
 
         let old_alpha = alpha;
-        let key = wb.key();
         if let Some(value) = self.probe_tt(key, depth, &mut alpha, beta) {
             self.tt_hits += 1;
             return value;
@@ -854,11 +885,17 @@ impl<G: Game> Searcher<G> {
                 return best_value.max(alpha);
             }
             let before = wb.side_to_move();
+            if key != 0 {
+                self.repetition_stack.push(key);
+            }
             wb.do_move(action);
             let after = wb.side_to_move();
             let score =
                 self.search_after_move(wb, depth - 1 + depth_extension, alpha, beta, before, after);
             wb.undo_move();
+            if key != 0 {
+                self.repetition_stack.pop();
+            }
             if score > best_value {
                 best_value = score;
                 best_action = action;
@@ -906,6 +943,7 @@ impl<G: Game> Searcher<G> {
         self.tt_hits = 0;
         self.tt_misses = 0;
         self.aborted = false;
+        self.repetition_stack.clear();
         // Intentionally do NOT clear `abort_flag` here.  External callers
         // hold a clone of the Arc and may have already requested an abort
         // (especially when search is spawned on another thread): clearing
