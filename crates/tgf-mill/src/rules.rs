@@ -632,7 +632,7 @@ impl GameRules for MillRules {
                             }
                         }
                     }
-                    note_mill_formation(&mut state, -1, to as i8, usable_bits);
+                    note_mill_formation(&mut state, side, -1, to as i8, usable_bits);
                 } else if custodian != 0 || intervention != 0 {
                     activate_capture_state(&mut state, custodian, intervention, 0);
                     state.pending_removals[side] = capture_total(&state);
@@ -673,7 +673,7 @@ impl GameRules for MillRules {
                         state.pending_removals[side] =
                             state.pending_removals[side].saturating_add(capture_total(&state));
                     }
-                    note_mill_formation(&mut state, from as i8, to as i8, usable_bits);
+                    note_mill_formation(&mut state, side, from as i8, to as i8, usable_bits);
                 } else if custodian != 0 || intervention != 0 {
                     activate_capture_state(&mut state, custodian, intervention, 0);
                     state.pending_removals[side] = capture_total(&state);
@@ -928,10 +928,18 @@ impl MillRules {
         if !self.options.restrict_repeated_mills_formation {
             return false;
         }
-        if state.last_mill_from < 0 || state.last_mill_to < 0 {
+        // Per-side last-mill tracking, matching C++ position.cpp
+        // `lastMillFromSquare[c]` / `lastMillToSquare[c]`.
+        let side = state.side_to_move as usize;
+        if side >= 2 {
             return false;
         }
-        if from != state.last_mill_to as usize || to != state.last_mill_from as usize {
+        let last_from = state.last_mill_from[side];
+        let last_to = state.last_mill_to[side];
+        if last_from < 0 || last_to < 0 {
+            return false;
+        }
+        if from != last_to as usize || to != last_from as usize {
             return false;
         }
         let mut candidate = *state;
@@ -1226,9 +1234,10 @@ fn usable_mill_bits(state: &MillState, options: &MillVariantOptions, bits: u32) 
     }
 }
 
-fn note_mill_formation(state: &mut MillState, from: i8, to: i8, bits: u32) {
-    state.last_mill_from = from;
-    state.last_mill_to = to;
+fn note_mill_formation(state: &mut MillState, side: usize, from: i8, to: i8, bits: u32) {
+    debug_assert!(side < 2);
+    state.last_mill_from[side] = from;
+    state.last_mill_to[side] = to;
     state.used_mill_lines |= bits;
 }
 
@@ -1316,8 +1325,13 @@ pub struct MillState {
     winner: i8,
     outcome_reason: MillOutcomeReason,
     ply_since_capture: u16,
-    last_mill_from: i8,
-    last_mill_to: i8,
+    /// Per-side `lastMillFromSquare[c]` / `lastMillToSquare[c]` from
+    /// legacy `position.cpp`: index 0 = first player (White), 1 = second
+    /// player (Black).  Recorded by `note_mill_formation` and consulted by
+    /// `is_restricted_repeated_mill`.  `-1` when the side has not formed
+    /// a mill yet (or when restrict_repeated_mills_formation is disabled).
+    last_mill_from: [i8; 2],
+    last_mill_to: [i8; 2],
     used_mill_lines: u32,
     delayed_marked_pieces: u32,
     custodian_targets: u32,
@@ -1349,8 +1363,8 @@ impl Default for MillState {
             winner: -1,
             outcome_reason: MillOutcomeReason::Ongoing,
             ply_since_capture: 0,
-            last_mill_from: -1,
-            last_mill_to: -1,
+            last_mill_from: [-1, -1],
+            last_mill_to: [-1, -1],
             used_mill_lines: 0,
             delayed_marked_pieces: 0,
             custodian_targets: 0,
@@ -1397,8 +1411,13 @@ impl MillState {
         payload[30] = self.winner as u8;
         payload[31] = (self.ply_since_capture & 0xff) as u8;
         payload[32] = (self.ply_since_capture >> 8) as u8;
-        payload[33] = self.last_mill_from as u8;
-        payload[34] = self.last_mill_to as u8;
+        payload[33] = self.last_mill_from[0] as u8;
+        payload[34] = self.last_mill_to[0] as u8;
+        // bytes 253/254 store the per-side last_mill_* for Black.  Bytes
+        // 252/253/254 used to hold three loose bool flags which we now
+        // pack into byte 252 to free 253 and 254 for this per-side data.
+        payload[253] = self.last_mill_from[1] as u8;
+        payload[254] = self.last_mill_to[1] as u8;
         payload[35..39].copy_from_slice(&self.used_mill_lines.to_le_bytes());
         payload[39..43].copy_from_slice(&self.delayed_marked_pieces.to_le_bytes());
         payload[43] = self.outcome_reason as u8;
@@ -1415,9 +1434,12 @@ impl MillState {
         payload[249] = self.custodian_count;
         payload[250] = self.intervention_count;
         payload[251] = self.leap_count;
-        payload[252] = u8::from(self.mill_available_at_removal);
-        payload[253] = u8::from(self.stalemate_removing);
-        payload[254] = u8::from(self.both_stalemate_removing);
+        // Pack three loose bool flags into a single byte to free up
+        // byte 253 and 254 for per-side last_mill_from/to[1].
+        let flags: u8 = u8::from(self.mill_available_at_removal)
+            | (u8::from(self.stalemate_removing) << 1)
+            | (u8::from(self.both_stalemate_removing) << 2);
+        payload[252] = flags;
         payload
     }
 
@@ -1454,8 +1476,8 @@ impl MillState {
             pending_removals: [payload[28], payload[29]],
             winner: payload[30] as i8,
             ply_since_capture: u16::from(payload[31]) | (u16::from(payload[32]) << 8),
-            last_mill_from: payload[33] as i8,
-            last_mill_to: payload[34] as i8,
+            last_mill_from: [payload[33] as i8, payload[253] as i8],
+            last_mill_to: [payload[34] as i8, payload[254] as i8],
             used_mill_lines: read_u32(35),
             delayed_marked_pieces: read_u32(39),
             outcome_reason: match payload[43] {
@@ -1490,9 +1512,9 @@ impl MillState {
             custodian_count: payload[249],
             intervention_count: payload[250],
             leap_count: payload[251],
-            mill_available_at_removal: payload[252] != 0,
-            stalemate_removing: payload[253] != 0,
-            both_stalemate_removing: payload[254] != 0,
+            mill_available_at_removal: (payload[252] & 0x01) != 0,
+            stalemate_removing: (payload[252] & 0x02) != 0,
+            both_stalemate_removing: (payload[252] & 0x04) != 0,
         }
     }
 }
@@ -1562,8 +1584,8 @@ impl MillState {
         self.winner = -1;
         self.outcome_reason = MillOutcomeReason::Ongoing;
         self.ply_since_capture = 0;
-        self.last_mill_from = -1;
-        self.last_mill_to = -1;
+        self.last_mill_from = [-1, -1];
+        self.last_mill_to = [-1, -1];
         self.used_mill_lines = 0;
         self.delayed_marked_pieces = 0;
         self.custodian_targets = 0;
@@ -1794,8 +1816,10 @@ fn position_key(state: &MillState) -> u64 {
     mix(state.outcome_reason as u8);
     mix((state.ply_since_capture & 0xff) as u8);
     mix((state.ply_since_capture >> 8) as u8);
-    mix(state.last_mill_from as u8);
-    mix(state.last_mill_to as u8);
+    mix(state.last_mill_from[0] as u8);
+    mix(state.last_mill_to[0] as u8);
+    mix(state.last_mill_from[1] as u8);
+    mix(state.last_mill_to[1] as u8);
     for byte in state.used_mill_lines.to_le_bytes() {
         mix(byte);
     }
@@ -3123,6 +3147,42 @@ mod tests {
         );
     }
 
+    /// `restrict_repeated_mills_formation` must track the last formed mill
+    /// **per side**, mirroring `lastMillFromSquare[c]` /
+    /// `lastMillToSquare[c]` in legacy `position.cpp`.  Without per-side
+    /// tracking, a mill formed by White would silently forbid Black from
+    /// re-forming a mill it just broke (and vice versa), even though only
+    /// the same player should be barred.
+    #[test]
+    fn restrict_repeated_mills_is_per_side() {
+        let options = MillVariantOptions {
+            restrict_repeated_mills_formation: true,
+            ..MillVariantOptions::default()
+        };
+        let rules = MillRules::new(options);
+        // White last formed a mill via 9 -> 8.  In a state where it is now
+        // Black's turn, that record must NOT block Black from any move.
+        let state = MillState {
+            board: {
+                let mut board = [0_i8; 24];
+                board[0] = 2; // black piece at node 0
+                board
+            },
+            side_to_move: 1,
+            phase: MillPhase::Moving,
+            pieces_in_hand: [0, 0],
+            pieces_on_board: [0, 1],
+            last_mill_from: [9, -1],
+            last_mill_to: [8, -1],
+            ..MillState::default()
+        };
+        let mut actions = ActionList::<256>::new();
+        rules.legal_actions(&rules.encode(state), &mut actions);
+        // Black should be allowed to move freely; the white record above
+        // must be ignored when computing Black's legal actions.
+        assert!(!actions.is_empty(), "Black must still have legal moves");
+    }
+
     #[test]
     fn restrict_repeated_mills_filters_reverse_reform_move() {
         let options = MillVariantOptions {
@@ -3150,8 +3210,8 @@ mod tests {
             pieces_on_board: [5, 3],
             pending_removals: [0, 0],
             winner: -1,
-            last_mill_from: 9,
-            last_mill_to: 8,
+            last_mill_from: [9, -1],
+            last_mill_to: [8, -1],
             ..MillState::default()
         };
         let mut actions = ActionList::<256>::new();
