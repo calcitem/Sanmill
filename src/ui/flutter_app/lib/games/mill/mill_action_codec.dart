@@ -6,7 +6,7 @@
 import '../../game_page/services/mill.dart' show ExtMove, MoveType;
 import '../../game_platform/game_session.dart';
 import '../../src/rust/api/kernel.dart' as tgf_kernel;
-import '../../src/rust/api/simple.dart' as tgf_simple;
+import 'mill_board_coordinate_maps.dart';
 import 'mill_constants.dart';
 
 export 'mill_constants.dart';
@@ -90,21 +90,21 @@ abstract final class MillActionCodec {
   }
 
   static String moveStringFromTgfAction(tgf_kernel.TgfAction action) {
-    final Map<int, String> labels = _nodeLabels();
     return switch (action.kindTag) {
-      _kindPlace => labels[action.toNode] ?? '',
+      _kindPlace => MillBoardCoordinateMaps.nodeToNotation(action.toNode),
       _kindMove =>
-        '${labels[action.fromNode] ?? ''}-${labels[action.toNode] ?? ''}',
-      _kindRemove => 'x${labels[action.toNode] ?? ''}',
+        '${MillBoardCoordinateMaps.nodeToNotation(action.fromNode)}-'
+            '${MillBoardCoordinateMaps.nodeToNotation(action.toNode)}',
+      _kindRemove =>
+        'x${MillBoardCoordinateMaps.nodeToNotation(action.toNode)}',
       _ => '',
     };
   }
 
   static tgf_kernel.TgfAction? tgfActionFromMoveString(String move) {
-    final Map<String, int> nodes = _labelToNode();
     if (move.startsWith('x')) {
-      final int? to = nodes[move.substring(1).toLowerCase()];
-      if (to == null) {
+      final int to = MillBoardCoordinateMaps.notationToNode(move.substring(1));
+      if (to < 0) {
         return null;
       }
       return _action(kindTag: _kindRemove, fromNode: -1, toNode: to);
@@ -114,15 +114,15 @@ abstract final class MillActionCodec {
       if (parts.length != 2) {
         return null;
       }
-      final int? from = nodes[parts[0].toLowerCase()];
-      final int? to = nodes[parts[1].toLowerCase()];
-      if (from == null || to == null) {
+      final int from = MillBoardCoordinateMaps.notationToNode(parts[0]);
+      final int to = MillBoardCoordinateMaps.notationToNode(parts[1]);
+      if (from < 0 || to < 0) {
         return null;
       }
       return _action(kindTag: _kindMove, fromNode: from, toNode: to);
     }
-    final int? to = nodes[move.toLowerCase()];
-    if (to == null) {
+    final int to = MillBoardCoordinateMaps.notationToNode(move);
+    if (to < 0) {
       return null;
     }
     return _action(kindTag: _kindPlace, fromNode: -1, toNode: to);
@@ -140,23 +140,5 @@ abstract final class MillActionCodec {
       aux: -1,
       payloadBits: BigInt.zero,
     );
-  }
-
-  static Map<int, String>? _nodeLabelsCache;
-  static Map<String, int>? _labelToNodeCache;
-
-  static Map<int, String> _nodeLabels() {
-    return _nodeLabelsCache ??= <int, String>{
-      for (final tgf_simple.TopologyPoint p
-          in tgf_simple.kernelTopology().points)
-        p.id: p.label,
-    };
-  }
-
-  static Map<String, int> _labelToNode() {
-    return _labelToNodeCache ??= <String, int>{
-      for (final MapEntry<int, String> e in _nodeLabels().entries)
-        e.value.toLowerCase(): e.key,
-    };
   }
 }

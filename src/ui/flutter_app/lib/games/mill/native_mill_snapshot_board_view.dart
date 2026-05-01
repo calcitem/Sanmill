@@ -34,7 +34,7 @@ class NativeMillSnapshotBoardView {
   final Set<int> markedNodes;
 
   PlayerSeat? pieceAtLegacySquare(int square) {
-    final int? node = _legacySquareToNode[square];
+    final int? node = MillBoardCoordinateMaps.legacySquareToNode[square];
     return node == null ? null : pieceAtNode(node);
   }
 
@@ -55,7 +55,7 @@ class NativeMillSnapshotBoardView {
   }
 
   bool isMarkedLegacySquare(int square) {
-    final int? node = _legacySquareToNode[square];
+    final int? node = MillBoardCoordinateMaps.legacySquareToNode[square];
     return node != null && markedNodes.contains(node);
   }
 
@@ -106,65 +106,12 @@ class NativeMillSnapshotBoardView {
         continue;
       }
       out[owner]!.add(<int>[
-        for (final int node in line) _legacyNodeToSquare[node]!,
+        for (final int node in line)
+          MillBoardCoordinateMaps.nodeToLegacySquare[node]!,
       ]);
     }
     return out;
   }
-
-  static const Map<int, int> _legacySquareToNode = <int, int>{
-    31: 0,
-    24: 1,
-    25: 2,
-    26: 3,
-    27: 4,
-    28: 5,
-    29: 6,
-    30: 7,
-    23: 8,
-    16: 9,
-    17: 10,
-    18: 11,
-    19: 12,
-    20: 13,
-    21: 14,
-    22: 15,
-    15: 16,
-    8: 17,
-    9: 18,
-    10: 19,
-    11: 20,
-    12: 21,
-    13: 22,
-    14: 23,
-  };
-
-  static const Map<int, int> _legacyNodeToSquare = <int, int>{
-    0: 31,
-    1: 24,
-    2: 25,
-    3: 26,
-    4: 27,
-    5: 28,
-    6: 29,
-    7: 30,
-    8: 23,
-    9: 16,
-    10: 17,
-    11: 18,
-    12: 19,
-    13: 20,
-    14: 21,
-    15: 22,
-    16: 15,
-    17: 8,
-    18: 9,
-    19: 10,
-    20: 11,
-    21: 12,
-    22: 13,
-    23: 14,
-  };
 
   static const List<List<int>> _standardMillLines = <List<int>>[
     <int>[0, 1, 2],

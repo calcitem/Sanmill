@@ -64,6 +64,60 @@ abstract final class MillBoardCoordinateMaps {
     0: 31,
   };
 
+  static const Map<int, int> nodeToLegacySquare = <int, int>{
+    0: 31,
+    1: 24,
+    2: 25,
+    3: 26,
+    4: 27,
+    5: 28,
+    6: 29,
+    7: 30,
+    8: 23,
+    9: 16,
+    10: 17,
+    11: 18,
+    12: 19,
+    13: 20,
+    14: 21,
+    15: 22,
+    16: 15,
+    17: 8,
+    18: 9,
+    19: 10,
+    20: 11,
+    21: 12,
+    22: 13,
+    23: 14,
+  };
+
+  static const Map<int, int> legacySquareToNode = <int, int>{
+    31: 0,
+    24: 1,
+    25: 2,
+    26: 3,
+    27: 4,
+    28: 5,
+    29: 6,
+    30: 7,
+    23: 8,
+    16: 9,
+    17: 10,
+    18: 11,
+    19: 12,
+    20: 13,
+    21: 14,
+    22: 15,
+    15: 16,
+    8: 17,
+    9: 18,
+    10: 19,
+    11: 20,
+    12: 21,
+    13: 22,
+    14: 23,
+  };
+
   static const Map<int, String> squareToNotation = <int, String>{
     8: 'd5',
     9: 'e5',
@@ -124,5 +178,15 @@ abstract final class MillBoardCoordinateMaps {
 
   static String legacySquareToNotation(int square) {
     return squareToNotation[square] ?? '';
+  }
+
+  static String nodeToNotation(int node) {
+    final int? square = nodeToLegacySquare[node];
+    return square == null ? '' : legacySquareToNotation(square);
+  }
+
+  static int notationToNode(String notation) {
+    final int square = notationToLegacySquare(notation);
+    return legacySquareToNode[square] ?? -1;
   }
 }

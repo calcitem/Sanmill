@@ -35,5 +35,23 @@ void main() {
         );
       }
     });
+
+    test('node/square/notation maps agree for all 24 points', () {
+      expect(MillBoardCoordinateMaps.nodeToLegacySquare, hasLength(24));
+      expect(MillBoardCoordinateMaps.legacySquareToNode, hasLength(24));
+
+      for (final MapEntry<int, int> entry
+          in MillBoardCoordinateMaps.nodeToLegacySquare.entries) {
+        final String notation = MillBoardCoordinateMaps.nodeToNotation(
+          entry.key,
+        );
+        expect(notation, isNotEmpty);
+        expect(
+          MillBoardCoordinateMaps.legacySquareToNode[entry.value],
+          entry.key,
+        );
+        expect(MillBoardCoordinateMaps.notationToNode(notation), entry.key);
+      }
+    });
   });
 }
