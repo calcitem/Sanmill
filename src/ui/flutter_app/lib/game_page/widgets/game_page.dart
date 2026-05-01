@@ -1062,7 +1062,9 @@ class _GamePageInnerState extends State<_GamePageInner> {
           blackCount,
         );
         final String next =
-            GameController().position.sideToMove == PieceColor.white
+            (GameController().activeSessionSideToMove ??
+                    GameController().position.sideToMove) ==
+                PieceColor.white
             ? strings.whiteSMove
             : strings.blackSMove;
         final String fenCopiedMsg = strings.fenCopiedToClipboard;
