@@ -3,19 +3,69 @@
 
 #include "tgf-legacy-cxx/cpp/legacy_engine_bridge.h"
 
+#include <cassert>
 #include <mutex>
 #include <sstream>
 #include <string>
+#include <vector>
 
 #include "bitboard.h"
-#include "engine_commands.h"
 #include "mills.h"
 #include "movegen.h"
 #include "option.h"
 #include "rule.h"
-#include "search.h"
 #include "stack.h"
 #include "uci.h"
+
+std::vector<Key> posKeyHistory;
+
+namespace UCI {
+
+std::string square(Square s)
+{
+    static const char *squareToStandard[SQUARE_EXT_NB] = {
+        "",   "",   "",   "",   "",   "",   "",   "",
+        "d5", "e5", "e4", "e3", "d3", "c3", "c4", "c5",
+        "d6", "f6", "f4", "f2", "d2", "b2", "b4", "b6",
+        "d7", "g7", "g4", "g1", "d1", "a1", "a4", "a7",
+        "",   "",   "",   "",   "",   "",   "",   ""};
+    return squareToStandard[s];
+}
+
+std::string move(Move m)
+{
+    if (m == MOVE_NONE) {
+        return "none";
+    }
+
+    if (m == MOVE_NULL) {
+        return "0000";
+    }
+
+    const Square to = to_sq(m);
+    const std::string toStr = square(to);
+
+    if (m < 0) {
+        return "x" + toStr;
+    }
+    if (m & 0x7f00) {
+        const Square from = from_sq(m);
+        return square(from) + "-" + toStr;
+    }
+    return toStr;
+}
+
+Move to_move(Position *pos, const std::string &str)
+{
+    for (const auto &m : MoveList<LEGAL>(*pos)) {
+        if (str == move(m)) {
+            return m;
+        }
+    }
+    return MOVE_NONE;
+}
+
+} // namespace UCI
 
 namespace {
 
@@ -26,13 +76,29 @@ std::string to_string(rust::Str s)
     return std::string(s.data(), s.size());
 }
 
+const char *start_fen_for_piece_count()
+{
+    switch (rule.pieceCount) {
+    case 9:
+        return "********/********/******** w p p 0 9 0 9 0 0 0 0 0 0 0 0 1";
+    case 10:
+        return "********/********/******** w p p 0 10 0 10 0 0 0 0 0 0 0 0 1";
+    case 11:
+        return "********/********/******** w p p 0 11 0 11 0 0 0 0 0 0 0 0 1";
+    case 12:
+        return "********/********/******** w p p 0 12 0 12 0 0 0 0 0 0 0 0 1";
+    default:
+        assert(false && "unsupported Mill piece count");
+        return "";
+    }
+}
+
 void initialise_position(Position &pos, int32_t ruleIdx)
 {
     set_rule(ruleIdx);
     Mills::adjacent_squares_init();
     Mills::mill_table_init();
-    EngineCommands::init_start_fen();
-    pos.set(EngineCommands::StartFEN);
+    pos.set(start_fen_for_piece_count());
     pos.start();
 }
 
@@ -41,11 +107,9 @@ void initialise_position(Position &pos, int32_t ruleIdx)
 void legacy_initialize_once()
 {
     std::call_once(g_initOnce, [] {
-        UCI::init(Options);
         Bitboards::init();
         Position::init();
         gameOptions.setShufflingEnabled(false);
-        Search::clear();
     });
 }
 
