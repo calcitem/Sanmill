@@ -18,6 +18,7 @@ import 'package:path_provider/path_provider.dart';
 import '../custom_drawer/custom_drawer.dart';
 import '../experience_recording/models/recording_models.dart';
 import '../experience_recording/services/recording_service.dart';
+import '../game_page/services/mill.dart' show GameController;
 import '../game_platform/game_id.dart';
 import '../game_platform/game_menu.dart';
 import '../game_platform/game_module.dart';
@@ -73,6 +74,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
   GameSessionHandle? _activeSession;
   GameId? _activeSessionGameId;
   MillSessionRecorderBridge? _activeMillRecorderBridge;
+  VoidCallback? _activeSessionSnapshotListener;
 
   SettingsRepository get _settingsRepository =>
       SettingsRepositories.instance.current.repository;
@@ -82,12 +84,15 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
     if (_activeSessionGameId == currentId && _activeSession != null) {
       return;
     }
-    _disposeActiveMillRecorderBridge();
+    _disposeActiveSessionBindings();
     _activeSession?.dispose();
     final GameModule? module = GameRegistry.instance.getModule(currentId);
     _activeSession = module?.startSession();
     _activeSessionGameId = currentId;
     final GameSessionHandle? session = _activeSession;
+    if (session != null) {
+      _bindActiveSessionSnapshot(session);
+    }
     if (currentId == GameId.mill && session != null) {
       _activeMillRecorderBridge = MillSessionRecorderBridge.forGameController(
         session: session,
@@ -158,11 +163,32 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
   @override
   void dispose() {
     GameRegistry.instance.removeListener(_onRegistryChanged);
-    _disposeActiveMillRecorderBridge();
+    _disposeActiveSessionBindings();
     _activeSession?.dispose();
     _activeSession = null;
     _controller.dispose();
     super.dispose();
+  }
+
+  void _bindActiveSessionSnapshot(GameSession session) {
+    GameController().activeSessionSnapshot = session.state.value;
+    void listener() {
+      GameController().activeSessionSnapshot = session.state.value;
+    }
+
+    session.state.addListener(listener);
+    _activeSessionSnapshotListener = listener;
+  }
+
+  void _disposeActiveSessionBindings() {
+    final GameSessionHandle? session = _activeSession;
+    final VoidCallback? listener = _activeSessionSnapshotListener;
+    if (session != null && listener != null) {
+      session.state.removeListener(listener);
+    }
+    _activeSessionSnapshotListener = null;
+    GameController().activeSessionSnapshot = null;
+    _disposeActiveMillRecorderBridge();
   }
 
   void _disposeActiveMillRecorderBridge() {

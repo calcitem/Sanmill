@@ -59,6 +59,15 @@ class GameController {
   late Position position;
   late Position setupPosition;
   final Engine engine = Engine();
+  final ValueNotifier<GameStateSnapshot?> activeSessionSnapshotNotifier =
+      ValueNotifier<GameStateSnapshot?>(null);
+
+  GameStateSnapshot? get activeSessionSnapshot =>
+      activeSessionSnapshotNotifier.value;
+
+  set activeSessionSnapshot(GameStateSnapshot? snapshot) {
+    activeSessionSnapshotNotifier.value = snapshot;
+  }
 
   /// Remembers whether the host chose White; used for header icon arrangement.
   bool? lanHostPlaysWhite;
