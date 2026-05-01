@@ -16,6 +16,7 @@ use std::{
     time::{Duration, Instant},
 };
 
+use crossbeam_channel::{Receiver, Sender};
 use tgf_core::{Action, ActionList, Evaluator, Game, GameStateSnapshot, Workbench};
 
 /// Game-neutral perft: counts the leaves of the legal-action tree at the
@@ -1101,6 +1102,80 @@ where
     best.expect("at least one lazy-smp worker should run")
 }
 
+enum ThreadPoolMessage {
+    Run(Box<dyn FnOnce() + Send + 'static>),
+    Stop,
+}
+
+/// Minimal fixed-size worker pool for search tasks.
+///
+/// The mature C++ engine has a dedicated `ThreadPool`; phase 5.2 recreates
+/// that shape in Rust with `std::thread` workers and `crossbeam_channel`
+/// dispatch.  This pool intentionally does not know about games or searchers:
+/// callers submit closures, which keeps it reusable for lazy SMP, future YBWC,
+/// and MCTS shared-visit experiments.
+pub struct SearchThreadPool {
+    sender: Sender<ThreadPoolMessage>,
+    workers: Vec<thread::JoinHandle<()>>,
+}
+
+impl SearchThreadPool {
+    pub fn new(worker_count: usize) -> Self {
+        let worker_count = worker_count.max(1);
+        let (sender, receiver) = crossbeam_channel::unbounded::<ThreadPoolMessage>();
+        let mut workers = Vec::with_capacity(worker_count);
+        for _ in 0..worker_count {
+            let receiver = receiver.clone();
+            workers.push(thread::spawn(move || {
+                while let Ok(message) = receiver.recv() {
+                    match message {
+                        ThreadPoolMessage::Run(job) => job(),
+                        ThreadPoolMessage::Stop => break,
+                    }
+                }
+            }));
+        }
+        Self { sender, workers }
+    }
+
+    pub fn worker_count(&self) -> usize {
+        self.workers.len()
+    }
+
+    pub fn execute<F>(&self, job: F)
+    where
+        F: FnOnce() + Send + 'static,
+    {
+        self.sender
+            .send(ThreadPoolMessage::Run(Box::new(job)))
+            .expect("search thread pool workers stopped unexpectedly");
+    }
+
+    pub fn submit<F, R>(&self, job: F) -> Receiver<R>
+    where
+        F: FnOnce() -> R + Send + 'static,
+        R: Send + 'static,
+    {
+        let (tx, rx) = crossbeam_channel::bounded(1);
+        self.execute(move || {
+            let result = job();
+            let _ = tx.send(result);
+        });
+        rx
+    }
+}
+
+impl Drop for SearchThreadPool {
+    fn drop(&mut self) {
+        for _ in &self.workers {
+            let _ = self.sender.send(ThreadPoolMessage::Stop);
+        }
+        for worker in self.workers.drain(..) {
+            worker.join().expect("search thread pool worker panicked");
+        }
+    }
+}
+
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct MctsResult {
     pub best_action: Action,
@@ -1642,6 +1717,27 @@ mod tests {
         assert_eq!(unpacked.bound, entry.bound);
         assert_eq!(unpacked.best_action, entry.best_action);
         assert_ne!(packed, 0);
+    }
+
+    #[test]
+    fn search_thread_pool_runs_jobs_and_returns_results() {
+        let pool = SearchThreadPool::new(2);
+        assert_eq!(pool.worker_count(), 2);
+
+        let a = pool.submit(|| 21 + 21);
+        let b = pool.submit(|| "mill".to_owned());
+
+        assert_eq!(a.recv().expect("worker should return result"), 42);
+        assert_eq!(b.recv().expect("worker should return result"), "mill");
+    }
+
+    #[test]
+    fn search_thread_pool_clamps_to_one_worker() {
+        let pool = SearchThreadPool::new(0);
+        assert_eq!(pool.worker_count(), 1);
+
+        let result = pool.submit(|| 7);
+        assert_eq!(result.recv().expect("worker should return result"), 7);
     }
 
     #[test]

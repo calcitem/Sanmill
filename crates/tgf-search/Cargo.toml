@@ -6,6 +6,7 @@ description = "TGF – generic game-tree searcher (αβ / MTD(f) / MCTS), monomo
 license     = "GPL-3.0-or-later"
 
 [dependencies]
+crossbeam-channel = "0.5.15"
 tgf-core = { path = "../tgf-core" }
 
 [dev-dependencies]
