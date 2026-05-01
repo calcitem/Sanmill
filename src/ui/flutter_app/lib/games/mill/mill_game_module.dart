@@ -25,6 +25,7 @@ import '../../game_platform/notation_port.dart';
 import '../../game_platform/rule_settings_port.dart';
 import '../../game_platform/rules_port.dart';
 import '../../game_platform/shell_route_navigation_source.dart';
+import '../../general_settings/models/general_settings.dart';
 import '../../generated/intl/l10n.dart';
 import '../../puzzle/pages/puzzles_home_page.dart';
 import '../../rule_settings/models/rule_settings.dart';
@@ -44,14 +45,23 @@ import 'native_mill_game_session.dart';
 import 'native_mill_rules_port.dart';
 
 typedef NativeMillSessionFactory =
-    GameSessionHandle Function({required RuleSettings ruleSettings});
+    GameSessionHandle Function({
+      required RuleSettings ruleSettings,
+      GeneralSettings? generalSettings,
+    });
 
 class MillGameModule extends GameModule {
   MillGameModule({NativeMillSessionFactory? nativeSessionFactory})
     : _nativeSessionFactory =
           nativeSessionFactory ??
-          (({required RuleSettings ruleSettings}) {
-            return NativeMillGameSession(rules: ruleSettings);
+          (({
+            required RuleSettings ruleSettings,
+            GeneralSettings? generalSettings,
+          }) {
+            return NativeMillGameSession(
+              rules: ruleSettings,
+              generalSettings: generalSettings,
+            );
           });
 
   final NativeMillSessionFactory _nativeSessionFactory;
@@ -89,19 +99,27 @@ class MillGameModule extends GameModule {
 
   @override
   GameSessionHandle startSession() {
-    return _nativeSessionFactory(ruleSettings: DB().ruleSettings);
+    return _nativeSessionFactory(
+      ruleSettings: DB().ruleSettings,
+      generalSettings: DB().generalSettings,
+    );
   }
 
   /// Creates a Rust-native Mill session.  Alias for [startSession] kept for
   /// call-site clarity in tests.
   GameSessionHandle startNativeSession({
     RuleSettings ruleSettings = const RuleSettings(),
+    GeneralSettings? generalSettings,
   }) {
-    return _nativeSessionFactory(ruleSettings: ruleSettings);
+    return _nativeSessionFactory(
+      ruleSettings: ruleSettings,
+      generalSettings: generalSettings,
+    );
   }
 
   @override
-  RulesPort? get rulesPort => NativeMillRulesPort();
+  RulesPort? get rulesPort =>
+      NativeMillRulesPort(generalSettings: DB().generalSettings);
 
   /// Alias for [rulesPort]; provided for explicit opt-in at call sites.
   RulesPort nativeRulesPort({

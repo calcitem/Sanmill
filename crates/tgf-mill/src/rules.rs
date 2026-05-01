@@ -148,6 +148,16 @@ pub struct MillVariantOptions {
     pub intervention_capture: CaptureRuleConfig,
     pub leap_capture: CaptureRuleConfig,
     pub stalemate_action: StalemateAction,
+    /// Mirror of `gameOptions.getConsiderMobility()` from the legacy C++
+    /// engine.  When true [`MillEvaluator`] adds a mobility-difference
+    /// term in the placing/moving phases.  Default `true` matches
+    /// `gameOptions` initialisation in `option.h`.
+    pub consider_mobility: bool,
+    /// Mirror of `gameOptions.getFocusOnBlockingPaths()` from the legacy
+    /// C++ engine.  When true the static evaluator drops the material
+    /// difference from the score so the search prioritises mobility-only
+    /// blocking lines (only meaningful in the moving phase / fly endgame).
+    pub focus_on_blocking_paths: bool,
 }
 
 impl Default for MillVariantOptions {
@@ -175,6 +185,8 @@ impl Default for MillVariantOptions {
             intervention_capture: CaptureRuleConfig::default(),
             leap_capture: CaptureRuleConfig::default(),
             stalemate_action: StalemateAction::EndWithStalemateLoss,
+            consider_mobility: true,
+            focus_on_blocking_paths: false,
         }
     }
 }
@@ -375,15 +387,65 @@ impl Workbench for MillWorkbench {
 }
 
 impl Evaluator<MillWorkbench> for MillEvaluator {
+    /// Static evaluator translated from `src/evaluate.cpp::Evaluation::value`
+    /// in the legacy C++ engine.
+    ///
+    /// The constants are scaled to the same units as `VALUE_EACH_PIECE`
+    /// (`PieceValue = 5`) and `VALUE_MATE = 80`, so search scores stay
+    /// numerically compatible with the legacy `MTDF` aspiration windows.
+    /// A perspective swap at the end mirrors C++ "value from the side to
+    /// move" convention.
     fn score(wb: &MillWorkbench) -> i32 {
-        let white = wb.state.pieces_on_board[0] as i32 + wb.state.pieces_in_hand[0] as i32;
-        let black = wb.state.pieces_on_board[1] as i32 + wb.state.pieces_in_hand[1] as i32;
-        let score = (white - black) * 100;
-        if wb.state.side_to_move == 0 {
-            score
-        } else {
-            -score
+        const VALUE_EACH_PIECE: i32 = 5;
+        const VALUE_MATE: i32 = 80;
+        const VALUE_DRAW: i32 = 0;
+
+        let state = &wb.state;
+        let options = &wb.rules.options;
+        let mut value: i32 = 0;
+
+        let removals_diff =
+            i32::from(state.pending_removals[0]) - i32::from(state.pending_removals[1]);
+        let in_hand_diff = i32::from(state.pieces_in_hand[0]) - i32::from(state.pieces_in_hand[1]);
+        let on_board_diff =
+            i32::from(state.pieces_on_board[0]) - i32::from(state.pieces_on_board[1]);
+        let action_is_remove = state.pending_removals[0] > 0 || state.pending_removals[1] > 0;
+
+        match state.phase {
+            MillPhase::Ready => {}
+            MillPhase::Placing
+                if matches!(
+                    options.mill_formation_action_in_placing_phase,
+                    MillFormationActionInPlacingPhase::RemovalBasedOnMillCounts
+                ) =>
+            {
+                if action_is_remove {
+                    value += VALUE_EACH_PIECE * removals_diff;
+                } else {
+                    value += mills_pieces_count_difference(state, options);
+                }
+            }
+            MillPhase::Placing | MillPhase::Moving => {
+                if should_consider_mobility(options) {
+                    value += mobility_diff(state, options);
+                }
+                if !should_focus_on_blocking_paths(state, options) {
+                    value += VALUE_EACH_PIECE * in_hand_diff;
+                    value += VALUE_EACH_PIECE * on_board_diff;
+                    if action_is_remove {
+                        value += VALUE_EACH_PIECE * removals_diff;
+                    }
+                }
+            }
+            MillPhase::GameOver => {
+                value = gameover_value(state, options, VALUE_MATE, VALUE_DRAW);
+            }
         }
+
+        if state.side_to_move == 1 {
+            value = -value;
+        }
+        value
     }
 }
 
@@ -1232,6 +1294,155 @@ fn usable_mill_bits(state: &MillState, options: &MillVariantOptions, bits: u32) 
     } else {
         bits
     }
+}
+
+/// Mirror of `Position::shouldConsiderMobility()` in option.h: enabled
+/// when the user requested mobility scoring or when blocking-path focus
+/// requires the mobility delta to drive the search.
+fn should_consider_mobility(options: &MillVariantOptions) -> bool {
+    options.consider_mobility || options.focus_on_blocking_paths
+}
+
+/// Mirror of `Position::shouldFocusOnBlockingPaths()`: in placing it is
+/// just the user toggle; in moving it additionally requires that flying
+/// is enabled, the opponent is one move away from the fly threshold, and
+/// the active side has at most two captured pieces left.
+fn should_focus_on_blocking_paths(state: &MillState, options: &MillVariantOptions) -> bool {
+    if !options.focus_on_blocking_paths {
+        return false;
+    }
+    match state.phase {
+        MillPhase::Placing => true,
+        MillPhase::Moving => {
+            if !options.may_fly {
+                return false;
+            }
+            let side = state.side_to_move as usize;
+            if side >= 2 {
+                return false;
+            }
+            let opp = side ^ 1;
+            let opp_threshold = options.pieces_at_least_count.saturating_add(1);
+            let our_min_pieces = options.piece_count.saturating_sub(2);
+            state.pieces_on_board[opp] == opp_threshold
+                && state.pieces_on_board[side] >= our_min_pieces
+        }
+        _ => false,
+    }
+}
+
+/// Translation of `Position::mills_pieces_count_difference()`: the
+/// difference between the count of distinct mill *lines* currently
+/// occupied by White and Black at full strength.  Used when
+/// `MillFormationActionInPlacingPhase::RemovalBasedOnMillCounts` is
+/// active and the active player just placed a piece.
+fn mills_pieces_count_difference(state: &MillState, options: &MillVariantOptions) -> i32 {
+    let lines: &[[usize; 3]] = if options.has_diagonal_lines {
+        DIAGONAL_MILL_LINES
+    } else {
+        STANDARD_MILL_LINES
+    };
+    let mut white = 0_i32;
+    let mut black = 0_i32;
+    for line in lines {
+        let a = state.board[line[0]];
+        let b = state.board[line[1]];
+        let c = state.board[line[2]];
+        if a == 1 && b == 1 && c == 1 {
+            white += 1;
+        } else if a == 2 && b == 2 && c == 2 {
+            black += 1;
+        }
+    }
+    white - black
+}
+
+/// Translation of `Position::calculate_mobility_diff`: every empty (or
+/// `MARKED_PIECE`) square contributes the count of its White / Black
+/// neighbours.  The C++ engine maintains this incrementally; the Rust
+/// evaluator currently computes it on demand because `MillState` does
+/// not yet store a running mobility difference.
+fn mobility_diff(state: &MillState, options: &MillVariantOptions) -> i32 {
+    let mut white = 0_i32;
+    let mut black = 0_i32;
+    for s in 0_usize..24 {
+        let piece = state.board[s];
+        if piece != 0 && (state.delayed_marked_pieces & node_bit(s)) == 0 {
+            // Occupied by a real (non-marked) piece — skip.
+            continue;
+        }
+        for &neigh in crate::topology::neighbors_for(s, options.has_diagonal_lines) {
+            match state.board[neigh as usize] {
+                1 => white += 1,
+                2 => black += 1,
+                _ => {}
+            }
+        }
+    }
+    white - black
+}
+
+/// Detect whether the side has any legal move (placing or fly excluded:
+/// matches `Position::is_all_surrounded`).  Only used for the static
+/// evaluator's gameover branch where C++ checks
+/// `phase == moving && action == select && is_all_surrounded(side)`.
+fn is_all_surrounded(state: &MillState, options: &MillVariantOptions, side: i8) -> bool {
+    if (side & 1) != side {
+        return false;
+    }
+    let s = side as usize;
+    if state.pieces_on_board[0] + state.pieces_on_board[1] >= 24 {
+        return true;
+    }
+    if options.may_fly && state.pieces_on_board[s] <= options.fly_piece_count {
+        // Fly endgame: never surrounded as long as an empty square exists.
+        return state.pieces_on_board[0] + state.pieces_on_board[1] >= 24;
+    }
+    for from in 0_usize..24 {
+        if state.board[from] != side + 1 {
+            continue;
+        }
+        for &to in crate::topology::neighbors_for(from, options.has_diagonal_lines) {
+            if state.board[to as usize] == 0 {
+                return false;
+            }
+        }
+    }
+    true
+}
+
+/// Translation of `Phase::gameOver` branch of `Evaluation::value`.
+fn gameover_value(state: &MillState, options: &MillVariantOptions, mate: i32, draw: i32) -> i32 {
+    let on_board_total = i32::from(state.pieces_on_board[0]) + i32::from(state.pieces_on_board[1]);
+    if options.piece_count == 12 && on_board_total >= 24 {
+        return match options.board_full_action {
+            MillBoardFullAction::FirstPlayerLose => -mate,
+            MillBoardFullAction::AgreeToDraw => draw,
+            // Other board-full variants resolve via remove-action elsewhere
+            // and should never reach the static evaluator with phase=GameOver.
+            _ => 0,
+        };
+    }
+    let stalemate_loss = matches!(
+        options.stalemate_action,
+        StalemateAction::EndWithStalemateLoss
+    );
+    if stalemate_loss
+        && state.phase == MillPhase::GameOver
+        && state.pending_removals[0] == 0
+        && state.pending_removals[1] == 0
+        && (state.side_to_move == 0 || state.side_to_move == 1)
+        && is_all_surrounded(state, options, state.side_to_move)
+    {
+        return if state.side_to_move == 0 { -mate } else { mate };
+    }
+    if i32::from(state.pieces_on_board[0]) < i32::from(options.pieces_at_least_count) {
+        return -mate;
+    }
+    if i32::from(state.pieces_on_board[1]) < i32::from(options.pieces_at_least_count) {
+        return mate;
+    }
+    0
 }
 
 fn note_mill_formation(state: &mut MillState, side: usize, from: i8, to: i8, bits: u32) {
@@ -4020,8 +4231,14 @@ mod tests {
         );
     }
 
+    /// After the opening Place on a corner, total material is even (each
+    /// side has 9 pieces between hand and board) but mobility is asymmetric
+    /// because White's lone piece on node 0 only contributes neighbours to
+    /// itself.  Match the legacy `evaluate.cpp` formula:
+    ///   value = mobility_diff + 5*(in_hand_diff + on_board_diff)
+    /// then negate for Black-to-move.
     #[test]
-    fn mill_evaluator_scores_piece_material_from_side_to_move() {
+    fn mill_evaluator_after_opening_place_matches_legacy_formula() {
         let rules = MillRules::default();
         let game = MillGame::default();
         let mut snap = rules.initial_state(&[]);
@@ -4036,9 +4253,66 @@ mod tests {
             },
         );
         let wb = game.build_workbench(&snap);
-        // Material is equal (white has 8 in hand + 1 on board, black has 9 in
-        // hand), so score is zero from black-to-move perspective.
-        assert_eq!(MillEvaluator::score(&wb), 0);
+        let state = MillRules::decode(&snap);
+        let opts = MillVariantOptions::default();
+        let mobility = mobility_diff(&state, &opts);
+        let in_hand_diff = i32::from(state.pieces_in_hand[0]) - i32::from(state.pieces_in_hand[1]);
+        let on_board_diff =
+            i32::from(state.pieces_on_board[0]) - i32::from(state.pieces_on_board[1]);
+        let expected = -(mobility + 5 * (in_hand_diff + on_board_diff));
+        assert_eq!(MillEvaluator::score(&wb), expected);
+    }
+
+    /// `focus_on_blocking_paths` should drop the material term entirely
+    /// in the placing phase and leave only the mobility delta.
+    #[test]
+    fn mill_evaluator_focus_on_blocking_paths_drops_material_term() {
+        let opts = MillVariantOptions {
+            focus_on_blocking_paths: true,
+            consider_mobility: false,
+            ..MillVariantOptions::default()
+        };
+        let rules = MillRules::new(opts.clone());
+        let game = MillGame::new(opts.clone());
+        let mut snap = rules.initial_state(&[]);
+        snap = rules.apply(
+            &snap,
+            Action {
+                kind_tag: MillActionKind::Place as i16,
+                from_node: -1,
+                to_node: 0,
+                aux: -1,
+                payload_bits: 0,
+            },
+        );
+        let wb = game.build_workbench(&snap);
+        let state = MillRules::decode(&snap);
+        let mobility = mobility_diff(&state, &opts);
+        // Black to move; flip sign.  No material term (focus on blocking),
+        // no mobility (consider_mobility=false but focus path still adds it
+        // because should_consider_mobility is OR with focus).
+        assert_eq!(MillEvaluator::score(&wb), -mobility);
+    }
+
+    /// Game-over with one side below `pieces_at_least_count` resolves to
+    /// the master VALUE_MATE constant (=80) before perspective flip.
+    #[test]
+    fn mill_evaluator_gameover_loss_under_three_pieces() {
+        let rules = MillRules::default();
+        let game = MillGame::default();
+        let state = MillState {
+            phase: MillPhase::GameOver,
+            pieces_on_board: [9, 2], // black under three pieces
+            side_to_move: 1,
+            winner: 0,
+            ..MillState::default()
+        };
+        let snap = rules.encode(state);
+        let wb = game.build_workbench(&snap);
+        // C++ produces +VALUE_MATE for "BLACK has fewer than the minimum"
+        // (favourable to white).  side_to_move=BLACK then flips perspective,
+        // yielding -VALUE_MATE from Black's POV.
+        assert_eq!(MillEvaluator::score(&wb), -80);
     }
 
     // ---------------------------------------------------------------------------

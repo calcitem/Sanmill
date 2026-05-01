@@ -285,6 +285,16 @@ class MillVariantOptions {
   final CaptureRuleConfig leapCapture;
   final StalemateAction stalemateAction;
 
+  /// Mirror of `gameOptions.getConsiderMobility()` from the legacy C++
+  /// engine.  Drives [`MillEvaluator`] mobility scoring.  Default
+  /// `true` matches the C++ side.
+  final bool considerMobility;
+
+  /// Mirror of `gameOptions.getFocusOnBlockingPaths()`: when set, the
+  /// static evaluator drops the material term so the search prioritises
+  /// blocking lines.  Default `false`.
+  final bool focusOnBlockingPaths;
+
   const MillVariantOptions({
     required this.pieceCount,
     required this.flyPieceCount,
@@ -307,6 +317,8 @@ class MillVariantOptions {
     required this.interventionCapture,
     required this.leapCapture,
     required this.stalemateAction,
+    required this.considerMobility,
+    required this.focusOnBlockingPaths,
   });
 
   @override
@@ -331,7 +343,9 @@ class MillVariantOptions {
       custodianCapture.hashCode ^
       interventionCapture.hashCode ^
       leapCapture.hashCode ^
-      stalemateAction.hashCode;
+      stalemateAction.hashCode ^
+      considerMobility.hashCode ^
+      focusOnBlockingPaths.hashCode;
 
   @override
   bool operator ==(Object other) =>
@@ -361,7 +375,9 @@ class MillVariantOptions {
           custodianCapture == other.custodianCapture &&
           interventionCapture == other.interventionCapture &&
           leapCapture == other.leapCapture &&
-          stalemateAction == other.stalemateAction;
+          stalemateAction == other.stalemateAction &&
+          considerMobility == other.considerMobility &&
+          focusOnBlockingPaths == other.focusOnBlockingPaths;
 }
 
 enum StalemateAction {

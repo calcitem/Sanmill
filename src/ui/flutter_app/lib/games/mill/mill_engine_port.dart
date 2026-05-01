@@ -169,7 +169,7 @@ class MillEnginePortAdapter implements EnginePort {
     // authoritative for unsupported rule fields until those are implemented in
     // Rust, but this keeps the typed FRB option path exercised.
     final tgf.MillVariantOptions variant = DB().ruleSettings
-        .toTgfMillVariantOptions();
+        .toTgfMillVariantOptions(generalSettings: DB().generalSettings);
     final int openingCount = tgf.nativeMillInitialLegalCountForVariant(
       variant: variant,
     );

@@ -5,6 +5,7 @@
 // options.  This is the migration path away from the legacy UCI `setoption`
 // string fan-out in engine.dart.
 
+import '../../general_settings/models/general_settings.dart';
 import '../../rule_settings/models/rule_settings.dart';
 import '../../src/rust/api/simple.dart' as tgf;
 
@@ -12,7 +13,15 @@ extension MillVariantOptionsMapper on RuleSettings {
   /// Convert the subset of settings currently supported by Rust-native
   /// MillRules into the FRB DTO.  Unsupported fields remain on the legacy
   /// C++ path until the corresponding Rust rule is implemented.
-  tgf.MillVariantOptions toTgfMillVariantOptions() {
+  ///
+  /// `generalSettings` carries the engine-behavior toggles (mobility,
+  /// blocking paths) that the legacy C++ engine read from the global
+  /// `gameOptions` singleton.  When omitted the FRB defaults
+  /// (`consider_mobility=true`, `focus_on_blocking_paths=false`) apply,
+  /// matching the C++ initialisation in option.h.
+  tgf.MillVariantOptions toTgfMillVariantOptions({
+    GeneralSettings? generalSettings,
+  }) {
     return tgf.MillVariantOptions(
       pieceCount: piecesCount,
       flyPieceCount: flyPieceCount,
@@ -62,6 +71,8 @@ extension MillVariantOptionsMapper on RuleSettings {
         onlyAvailableWhenOwnPiecesLeq3: leapCaptureOnlyWhenOwnPiecesLeq3,
       ),
       stalemateAction: _toTgfStalemateAction(stalemateAction),
+      considerMobility: generalSettings?.considerMobility ?? true,
+      focusOnBlockingPaths: generalSettings?.focusOnBlockingPaths ?? false,
     );
   }
 

@@ -4,6 +4,7 @@
 import '../../game_page/services/mill.dart'
     show ExtMove, GameController, PieceColor;
 import '../../game_platform/game_session.dart';
+import '../../general_settings/models/general_settings.dart';
 import '../../rule_settings/models/rule_settings.dart';
 import 'mill_action_codec.dart';
 import 'native_mill_game_session.dart';
@@ -19,7 +20,13 @@ class PuzzleMillSession extends NativeMillGameSession {
   PuzzleMillSession({
     required String initialFen,
     RuleSettings rules = const RuleSettings(),
-  }) : super.fromPort(NativeMillRulesPort(ruleSettings: rules)) {
+    GeneralSettings? generalSettings,
+  }) : super.fromPort(
+         NativeMillRulesPort(
+           ruleSettings: rules,
+           generalSettings: generalSettings,
+         ),
+       ) {
     _loadInitialFen(initialFen);
   }
 

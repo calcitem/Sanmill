@@ -1676,8 +1676,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   MillVariantOptions dco_decode_mill_variant_options(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     final arr = raw as List<dynamic>;
-    if (arr.length != 21)
-      throw Exception('unexpected arr length: expect 21 but see ${arr.length}');
+    if (arr.length != 23)
+      throw Exception('unexpected arr length: expect 23 but see ${arr.length}');
     return MillVariantOptions(
       pieceCount: dco_decode_u_8(arr[0]),
       flyPieceCount: dco_decode_u_8(arr[1]),
@@ -1701,6 +1701,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       interventionCapture: dco_decode_capture_rule_config(arr[18]),
       leapCapture: dco_decode_capture_rule_config(arr[19]),
       stalemateAction: dco_decode_stalemate_action(arr[20]),
+      considerMobility: dco_decode_bool(arr[21]),
+      focusOnBlockingPaths: dco_decode_bool(arr[22]),
     );
   }
 
@@ -2043,6 +2045,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     var var_interventionCapture = sse_decode_capture_rule_config(deserializer);
     var var_leapCapture = sse_decode_capture_rule_config(deserializer);
     var var_stalemateAction = sse_decode_stalemate_action(deserializer);
+    var var_considerMobility = sse_decode_bool(deserializer);
+    var var_focusOnBlockingPaths = sse_decode_bool(deserializer);
     return MillVariantOptions(
       pieceCount: var_pieceCount,
       flyPieceCount: var_flyPieceCount,
@@ -2065,6 +2069,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       interventionCapture: var_interventionCapture,
       leapCapture: var_leapCapture,
       stalemateAction: var_stalemateAction,
+      considerMobility: var_considerMobility,
+      focusOnBlockingPaths: var_focusOnBlockingPaths,
     );
   }
 
@@ -2406,6 +2412,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_capture_rule_config(self.interventionCapture, serializer);
     sse_encode_capture_rule_config(self.leapCapture, serializer);
     sse_encode_stalemate_action(self.stalemateAction, serializer);
+    sse_encode_bool(self.considerMobility, serializer);
+    sse_encode_bool(self.focusOnBlockingPaths, serializer);
   }
 
   @protected

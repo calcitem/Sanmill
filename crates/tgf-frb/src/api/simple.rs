@@ -93,6 +93,14 @@ pub struct MillVariantOptions {
     pub intervention_capture: CaptureRuleConfig,
     pub leap_capture: CaptureRuleConfig,
     pub stalemate_action: StalemateAction,
+    /// Mirror of `gameOptions.getConsiderMobility()` from the legacy C++
+    /// engine.  Drives [`MillEvaluator`] mobility scoring.  Default
+    /// `true` matches the C++ side.
+    pub consider_mobility: bool,
+    /// Mirror of `gameOptions.getFocusOnBlockingPaths()`: when set, the
+    /// static evaluator drops the material term so the search prioritises
+    /// blocking lines.  Default `false`.
+    pub focus_on_blocking_paths: bool,
 }
 
 #[derive(Clone, Debug)]
@@ -313,6 +321,8 @@ impl From<MillVariantOptions> for NativeMillVariantOptions {
             intervention_capture: value.intervention_capture.into(),
             leap_capture: value.leap_capture.into(),
             stalemate_action: value.stalemate_action.into(),
+            consider_mobility: value.consider_mobility,
+            focus_on_blocking_paths: value.focus_on_blocking_paths,
         }
     }
 }
@@ -345,6 +355,8 @@ pub fn native_mill_default_variant_options() -> MillVariantOptions {
         intervention_capture: defaults.intervention_capture.into(),
         leap_capture: defaults.leap_capture.into(),
         stalemate_action: defaults.stalemate_action.into(),
+        consider_mobility: defaults.consider_mobility,
+        focus_on_blocking_paths: defaults.focus_on_blocking_paths,
     }
 }
 
@@ -1444,6 +1456,8 @@ mod tests {
                 only_available_when_own_pieces_leq3: false,
             },
             stalemate_action: StalemateAction::BothPlayersRemoveOpponentsPiece,
+            consider_mobility: true,
+            focus_on_blocking_paths: false,
         };
         let native: NativeMillVariantOptions = variant.into();
         assert!(native.may_remove_from_mills_always);

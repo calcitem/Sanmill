@@ -32,10 +32,14 @@ void main() {
         RuleSettings? forwardedRules;
         final _RecordingSession nativeSession = _RecordingSession();
         final MillGameModule module = MillGameModule(
-          nativeSessionFactory: ({required RuleSettings ruleSettings}) {
-            forwardedRules = ruleSettings;
-            return nativeSession;
-          },
+          nativeSessionFactory:
+              ({
+                required RuleSettings ruleSettings,
+                GeneralSettings? generalSettings,
+              }) {
+                forwardedRules = ruleSettings;
+                return nativeSession;
+              },
         );
         mockDb.generalSettings = const GeneralSettings(
           useNativeMillSession: true,
@@ -53,10 +57,14 @@ void main() {
       RuleSettings? forwardedRules;
       final _RecordingSession nativeSession = _RecordingSession();
       final MillGameModule module = MillGameModule(
-        nativeSessionFactory: ({required RuleSettings ruleSettings}) {
-          forwardedRules = ruleSettings;
-          return nativeSession;
-        },
+        nativeSessionFactory:
+            ({
+              required RuleSettings ruleSettings,
+              GeneralSettings? generalSettings,
+            }) {
+              forwardedRules = ruleSettings;
+              return nativeSession;
+            },
       );
       const RuleSettings rules = RuleSettings(piecesCount: 12);
 

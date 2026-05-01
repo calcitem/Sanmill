@@ -15,6 +15,7 @@ import '../../game_platform/game_id.dart';
 import '../../game_platform/game_session.dart';
 import '../../game_platform/mill_marked_pieces_codec.dart';
 import '../../game_platform/rules_port.dart';
+import '../../general_settings/models/general_settings.dart';
 import '../../rule_settings/models/rule_settings.dart';
 import '../../src/rust/api/kernel.dart' as tgf;
 import '../../src/rust/api/simple.dart' as tgf_simple;
@@ -25,9 +26,14 @@ class NativeMillRulesPort implements RulesPort {
   NativeMillRulesPort({
     TgfKernel? kernel,
     RuleSettings ruleSettings = const RuleSettings(),
+    GeneralSettings? generalSettings,
   }) : _kernel =
            kernel ??
-           TgfKernel.createMill(ruleSettings.toTgfMillVariantOptions()) {
+           TgfKernel.createMill(
+             ruleSettings.toTgfMillVariantOptions(
+               generalSettings: generalSettings,
+             ),
+           ) {
     _snapshot = _snapshotFromKernel();
   }
 

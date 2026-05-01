@@ -16,6 +16,7 @@ import 'package:flutter/foundation.dart';
 import '../../game_page/services/mill.dart' show ExtMove, PieceColor, Position;
 import '../../game_platform/game_session.dart';
 import '../../game_platform/game_session_handle.dart';
+import '../../general_settings/models/general_settings.dart';
 import '../../rule_settings/models/rule_settings.dart';
 import '../../src/rust/api/simple.dart' as tgf;
 import 'lan_session_meta.dart';
@@ -27,11 +28,15 @@ class NativeMillGameSession implements GameSessionHandle {
   factory NativeMillGameSession({
     NativeMillRulesPort? rulesPort,
     RuleSettings? rules,
+    GeneralSettings? generalSettings,
     LanSessionMeta? lanMeta,
   }) {
     final NativeMillRulesPort port =
         rulesPort ??
-        NativeMillRulesPort(ruleSettings: rules ?? const RuleSettings());
+        NativeMillRulesPort(
+          ruleSettings: rules ?? const RuleSettings(),
+          generalSettings: generalSettings,
+        );
     return NativeMillGameSession.fromPort(port, lanMeta: lanMeta);
   }
 

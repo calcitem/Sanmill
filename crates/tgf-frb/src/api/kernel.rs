@@ -622,6 +622,8 @@ mod tests {
                 only_available_when_own_pieces_leq3: false,
             },
             stalemate_action: StalemateAction::EndWithStalemateLoss,
+            consider_mobility: true,
+            focus_on_blocking_paths: false,
         };
         let handle = tgf_kernel_create_mill(variant).unwrap();
         assert_eq!(tgf_kernel_legal_actions(handle).unwrap().len(), 24);

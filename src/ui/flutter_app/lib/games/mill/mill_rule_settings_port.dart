@@ -25,7 +25,8 @@ class MillRuleSettingsPort implements RuleSettingsPort<RuleSettings> {
   set ruleSettings(RuleSettings value) => _repository.ruleSettings = value;
 
   /// Typed Rust/FRB variant options for the currently supported subset of
-  /// Mill rule settings.
-  tgf.MillVariantOptions get tgfVariantOptions =>
-      ruleSettings.toTgfMillVariantOptions();
+  /// Mill rule settings, including the engine-behavior toggles (mobility,
+  /// blocking-paths) carried by `GeneralSettings`.
+  tgf.MillVariantOptions get tgfVariantOptions => ruleSettings
+      .toTgfMillVariantOptions(generalSettings: _repository.generalSettings);
 }
