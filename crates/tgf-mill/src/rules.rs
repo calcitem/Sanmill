@@ -1140,10 +1140,15 @@ impl MillRules {
         // every opponent piece is a legal target, regardless of whether
         // it sits in a mill.  Otherwise we mirror the C++ default (and
         // the FIDE Mill rule): mill pieces can only be removed when no
-        // non-mill alternative exists.
+        // non-mill alternative exists.  Capture targets already emitted
+        // above are skipped to avoid duplicate Remove actions, mirroring
+        // master generate<REMOVE>'s `if (combinedTargets & square_bb(s)) continue;`.
         if self.options.may_remove_from_mills_always {
             for (node, piece) in state.board.iter().enumerate() {
                 if *piece == opponent_piece {
+                    if (capture_targets & node_bit(node)) != 0 {
+                        continue;
+                    }
                     if self.is_stalemate_removal_context(state)
                         && !is_adjacent_to_side_piece(state, &self.topology, node)
                     {
@@ -1167,6 +1172,9 @@ impl MillRules {
 
         for (node, piece) in state.board.iter().enumerate() {
             if *piece != opponent_piece {
+                continue;
+            }
+            if (capture_targets & node_bit(node)) != 0 {
                 continue;
             }
             if self.is_stalemate_removal_context(state)
@@ -2689,6 +2697,11 @@ fn formed_mill_bits_at(
 /// lines through `to` whose other two squares already hold `side`'s pieces,
 /// optionally pretending the square at `from` (the source for a Move) is
 /// empty.  Used by MovePicker-style ordering heuristics.
+///
+/// Honours `oneTimeUseMill`: when set, master `potential_mills_count` skips
+/// every mill line whose three squares already sit in the per-side
+/// `formedMillsBB[c]` (i.e. the line has already been activated for a
+/// removal previously, so it is no longer counted as a potential mill).
 fn potential_mills_count_at(
     state: &MillState,
     options: &MillVariantOptions,
@@ -2697,6 +2710,12 @@ fn potential_mills_count_at(
     from: Option<usize>,
 ) -> u32 {
     let target = side + 1;
+    let one_time_use = options.one_time_use_mill;
+    let formed_bb = if (0..2).contains(&side) {
+        state.formed_mills_bb[side as usize]
+    } else {
+        0
+    };
     let mut count = 0_u32;
     for line in mill_lines(options) {
         if !line.contains(&to) {
@@ -2716,9 +2735,18 @@ fn potential_mills_count_at(
                 break;
             }
         }
-        if all_color {
-            count += 1;
+        if !all_color {
+            continue;
         }
+        if one_time_use {
+            // Skip lines whose three squares are already recorded as a
+            // historically-formed mill for this side.
+            let line_bb = node_bit(line[0]) | node_bit(line[1]) | node_bit(line[2]);
+            if (line_bb & formed_bb) == line_bb {
+                continue;
+            }
+        }
+        count += 1;
     }
     count
 }
