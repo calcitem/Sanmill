@@ -559,6 +559,7 @@ impl GameRules for MillRules {
                 state.pieces_in_hand[side] = state.pieces_in_hand[side].saturating_sub(1);
                 state.pieces_on_board[side] += 1;
                 state.move_number += 1;
+                state.ply_since_capture = 0;
                 // Placing a new piece is irreversible: any rolling
                 // repetition history accumulated in the moving phase
                 // becomes irrelevant.
@@ -2263,6 +2264,27 @@ mod tests {
         assert_eq!(state.side_to_move, 1);
         assert_eq!(state.pieces_in_hand[0], 8);
         assert_eq!(state.pieces_on_board[0], 1);
+    }
+
+    #[test]
+    fn place_action_resets_ply_since_capture_counter() {
+        let rules = MillRules::default();
+        let mut state = MillRules::decode(&rules.initial_state(&[]));
+        state.ply_since_capture = 42;
+
+        let after = rules.apply(
+            &rules.encode(state),
+            Action {
+                kind_tag: MillActionKind::Place as i16,
+                from_node: -1,
+                to_node: 0,
+                aux: -1,
+                payload_bits: 0,
+            },
+        );
+
+        let state = MillRules::decode(&after);
+        assert_eq!(state.ply_since_capture, 0);
     }
 
     #[test]
