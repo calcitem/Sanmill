@@ -182,13 +182,17 @@ class _BoardSemanticsState extends State<_BoardSemantics> {
       }
     }
 
+    final NativeMillSnapshotBoardView? nativeBoardView =
+        GameController().activeNativeMillBoardView;
+
     for (int i = 0; i < 7 * 7; i++) {
       if (checkPoints[i] == 0) {
         pieceDesc.add(S.of(context).noPoint);
       } else {
-        pieceDesc.add(
-          GameController().position.pieceOnGrid(i).pieceName(context),
-        );
+        final PieceColor piece = nativeBoardView == null
+            ? GameController().position.pieceOnGrid(i)
+            : _nativePieceColorAtGridIndex(nativeBoardView, i);
+        pieceDesc.add(piece.pieceName(context));
       }
     }
 
@@ -204,6 +208,24 @@ class _BoardSemanticsState extends State<_BoardSemantics> {
     }
 
     return squareDesc;
+  }
+
+  PieceColor _nativePieceColorAtGridIndex(
+    NativeMillSnapshotBoardView nativeBoardView,
+    int gridIndex,
+  ) {
+    final int? square = indexToSquare[gridIndex];
+    if (square == null) {
+      return PieceColor.none;
+    }
+    if (nativeBoardView.isMarkedLegacySquare(square)) {
+      return PieceColor.marked;
+    }
+    return switch (nativeBoardView.pieceAtLegacySquare(square)) {
+      PlayerSeat.first => PieceColor.white,
+      PlayerSeat.second => PieceColor.black,
+      PlayerSeat.none || null => PieceColor.none,
+    };
   }
 
   @override
