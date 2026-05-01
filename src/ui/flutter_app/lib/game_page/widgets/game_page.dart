@@ -82,7 +82,9 @@ part 'modals/move_options_modal.dart';
 class GamePage extends StatelessWidget {
   GamePage(this.gameMode, {super.key}) {
     // Reset game score when creating a new game page.
-    Position.resetScore();
+    if (!DB().generalSettings.useNativeMillSession) {
+      Position.resetScore();
+    }
   }
 
   final GameMode gameMode;
