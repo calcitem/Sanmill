@@ -1956,24 +1956,17 @@ impl MillRules {
     /// returned state has those auxiliary fields at their defaults so that
     /// `encode_state` + `decode_snapshot` round-trips cleanly.
     pub fn set_from_fen(&self, fen: &str) -> Result<MillState, String> {
-        // Strip optional custodian/intervention/etc. suffixes that begin with
-        // ` c:`, ` i:`, ` l:`, ` p:`, ` s:`.
-        let core = if let Some(pos) = fen.find(['c', 'i', 'l']).and_then(|p| {
-            if p > 0 && &fen[p - 1..p] == " " {
-                Some(p - 1)
-            } else {
-                None
-            }
-        }) {
-            fen[..pos].trim()
-        } else {
-            fen.trim()
-        };
-
-        let fields: Vec<&str> = core.split_whitespace().collect();
-        if fields.len() < 17 {
-            return Err(format!("FEN needs >= 17 fields, got {}", fields.len()));
+        let trimmed = fen.trim();
+        // Split FEN into the 17 mandatory whitespace-separated fields plus
+        // an optional trailing extension block that holds c:/i:/l:/p:/s:
+        // tokens introduced for custodian/intervention/leap captures and
+        // the preferred-remove / stalemate flags.
+        let mut all_fields: Vec<&str> = trimmed.split_whitespace().collect();
+        if all_fields.len() < 17 {
+            return Err(format!("FEN needs >= 17 fields, got {}", all_fields.len()));
         }
+        let extension_tokens: Vec<&str> = all_fields.split_off(17);
+        let fields = all_fields;
 
         // FEN board position index -> Rust board node index.
         // FEN position i corresponds to legacy square (i + 8), then uses
@@ -1990,12 +1983,20 @@ impl MillRules {
         }
         let all_chars: String = ranks.join("");
         let mut board = [0_i8; 24];
+        let mut delayed_marked_pieces = 0_u32;
         for (i, c) in all_chars.chars().enumerate() {
-            board[FEN_TO_NODE[i]] = if c == 'O' {
+            let node = FEN_TO_NODE[i];
+            board[node] = if c == 'O' {
                 1
             } else if c == '@' {
                 2
-            } else if c == '*' || c == 'X' {
+            } else if c == '*' {
+                0
+            } else if c == 'X' {
+                // MARKED_PIECE in the legacy engine: keep it on the board
+                // visually but flag the square so live_piece treats it as
+                // empty (matches Position::set_fen handling).
+                delayed_marked_pieces |= node_bit(node);
                 0
             } else {
                 return Err(format!("unexpected piece character '{c}' in FEN"));
@@ -2019,6 +2020,10 @@ impl MillRules {
             s.parse::<u8>()
                 .map_err(|_| format!("cannot parse '{s}' as u8"))
         };
+        let parse_i8 = |s: &str| -> Result<i8, String> {
+            s.parse::<i8>()
+                .map_err(|_| format!("cannot parse '{s}' as i8"))
+        };
         let parse_u16 = |s: &str| -> Result<u16, String> {
             s.parse::<u16>()
                 .map_err(|_| format!("cannot parse '{s}' as u16"))
@@ -2028,10 +2033,37 @@ impl MillRules {
         let in_hand_w = parse_u8(fields[5])?;
         let on_board_b = parse_u8(fields[6])?;
         let in_hand_b = parse_u8(fields[7])?;
-        let remove_w = parse_u8(fields[8])?;
-        let remove_b = parse_u8(fields[9])?;
-        // Fields 10-14 (last-mill positions, mills bitmask) are ignored;
-        // defaults (0 / no-mills) are used for the returned state.
+        // pieceToRemoveCount[c] is signed in the legacy engine: a negative
+        // value flags "remove your own piece" (RemovalBasedOnMillCounts
+        // double-zero branch).  Rust models the sign via remove_own_piece
+        // and stores the absolute count.
+        let signed_remove_w = parse_i8(fields[8])?;
+        let signed_remove_b = parse_i8(fields[9])?;
+        let remove_w = signed_remove_w.unsigned_abs();
+        let remove_b = signed_remove_b.unsigned_abs();
+        let remove_own = [signed_remove_w < 0, signed_remove_b < 0];
+
+        // Fields 10..14: last-mill from/to per side.  Master stores them as
+        // legacy Square ids; 0 means "none".
+        let last_w_from_sq = parse_u8(fields[10])?;
+        let last_w_to_sq = parse_u8(fields[11])?;
+        let last_b_from_sq = parse_u8(fields[12])?;
+        let last_b_to_sq = parse_u8(fields[13])?;
+        let last_mill_from = [
+            legacy_square_to_node_signed(last_w_from_sq),
+            legacy_square_to_node_signed(last_b_from_sq),
+        ];
+        let last_mill_to = [
+            legacy_square_to_node_signed(last_w_to_sq),
+            legacy_square_to_node_signed(last_b_to_sq),
+        ];
+
+        // Field 14: 64-bit formedMillsBB with per-side per-square mill
+        // bitmaps.  Rust currently only tracks a per-line bitmap
+        // (`used_mill_lines`) and cannot losslessly round-trip the C++
+        // square-bitmap; ignore it for now (output 0 in export_fen).
+        let _formed_mills_bb_skipped = fields[14];
+
         let rule50 = parse_u16(fields[15])?;
         let full_move: i32 = fields[16].parse::<i32>().unwrap_or(1).max(1);
 
@@ -2041,6 +2073,42 @@ impl MillRules {
         let side_is_black = i16::from(side_to_move == 1);
         let move_number = (2_i32 * (full_move - 1)).max(0) as i16 + side_is_black;
 
+        // Trailing extension tokens: c:/i:/l:/p:/s:.
+        let mut custodian_targets = 0_u32;
+        let mut custodian_count = 0_u8;
+        let mut intervention_targets = 0_u32;
+        let mut intervention_count = 0_u8;
+        let mut leap_targets = 0_u32;
+        let mut leap_count = 0_u8;
+        let mut stalemate_removing = false;
+        let mut both_stalemate_removing = false;
+        for token in &extension_tokens {
+            if token.len() < 2 || token.as_bytes()[1] != b':' {
+                continue;
+            }
+            let value = &token[2..];
+            match token.as_bytes()[0] {
+                b'c' => parse_capture_field(value, &mut custodian_targets, &mut custodian_count),
+                b'i' => {
+                    parse_capture_field(value, &mut intervention_targets, &mut intervention_count)
+                }
+                b'l' => parse_capture_field(value, &mut leap_targets, &mut leap_count),
+                b'p' => {
+                    // preferredRemoveTarget is purely a UI hint in the
+                    // legacy engine; Rust does not model it on MillState
+                    // yet so the field is parsed-and-dropped.
+                    let _ = value.parse::<i32>();
+                }
+                b's' => {
+                    if let Ok(flag) = value.parse::<i32>() {
+                        stalemate_removing = flag == 1;
+                        both_stalemate_removing = flag == 2;
+                    }
+                }
+                _ => {}
+            }
+        }
+
         Ok(MillState {
             board,
             side_to_move,
@@ -2049,7 +2117,21 @@ impl MillRules {
             pieces_on_board: [on_board_w, on_board_b],
             pieces_in_hand: [in_hand_w, in_hand_b],
             pending_removals: [remove_w, remove_b],
+            remove_own_piece: remove_own,
             ply_since_capture: rule50,
+            last_mill_from,
+            last_mill_to,
+            delayed_marked_pieces,
+            custodian_targets,
+            custodian_count,
+            intervention_targets,
+            intervention_count,
+            leap_targets,
+            leap_count,
+            stalemate_removing,
+            both_stalemate_removing,
+            mill_available_at_removal: (remove_w > 0 || remove_b > 0)
+                && !(custodian_count > 0 || intervention_count > 0 || leap_count > 0),
             winner: -1,
             ..MillState::default()
         })
@@ -2058,16 +2140,19 @@ impl MillRules {
     /// Serialize a `MillState` into a Mill FEN string compatible with the
     /// legacy Dart/C++ engine.
     ///
-    /// The mills-bitmask and last-mill-from/to fields are always output as
-    /// `0`; the round-trip guarantee is that `set_from_fen(export_fen(s))`
-    /// produces a state with the same board, side, phase, and piece counts.
+    /// Output covers every parsed field: board layout (with 'X' for
+    /// marked pieces), side-to-move, phase ('r/p/m/o'), action ('p'),
+    /// piece-on-board / piece-in-hand / piece-to-remove counts (negative
+    /// when `remove_own_piece` is set), per-side last-mill from/to, the
+    /// mills bitmask placeholder (always `0` because Rust tracks
+    /// per-line use rather than per-square), rule50, full-move number,
+    /// and the trailing `c:/i:/l:/p:/s:` extension block when active.
     pub fn export_fen(&self, state: &MillState) -> String {
         // Rust board node index → FEN board position index (inverse of FEN_TO_NODE).
         const NODE_TO_FEN_POS: [usize; 24] = [
             23, 16, 17, 18, 19, 20, 21, 22, 15, 8, 9, 10, 11, 12, 13, 14, 7, 0, 1, 2, 3, 4, 5, 6,
         ];
 
-        // Build the 24-character board section (split into 3×8 with '/').
         let mut fenchars = [b'*'; 26];
         fenchars[8] = b'/';
         fenchars[17] = b'/';
@@ -2079,10 +2164,14 @@ impl MillRules {
             } else {
                 pos + 2
             };
-            fenchars[slot] = match state.board[node] {
-                1 => b'O',
-                2 => b'@',
-                _ => b'*',
+            fenchars[slot] = if is_marked(state, node) {
+                b'X'
+            } else {
+                match state.board[node] {
+                    1 => b'O',
+                    2 => b'@',
+                    _ => b'*',
+                }
             };
         }
         let board_str = std::str::from_utf8(&fenchars).unwrap_or("????????/????????/????????");
@@ -2097,8 +2186,18 @@ impl MillRules {
         let side_is_black = i32::from(state.side_to_move == 1);
         let full_move = (1 + (i32::from(state.move_number) - side_is_black) / 2).max(1);
 
-        format!(
-            "{} {} {} p {} {} {} {} {} {} 0 0 0 0 0 {} {}",
+        // Encode signed pieceToRemoveCount mirroring legacy semantics.
+        let signed_remove = |idx: usize| -> i32 {
+            let abs = i32::from(state.pending_removals[idx]);
+            if state.remove_own_piece[idx] {
+                -abs
+            } else {
+                abs
+            }
+        };
+
+        let mut out = format!(
+            "{} {} {} p {} {} {} {} {} {} {} {} {} {} 0 {} {}",
             board_str,
             side,
             phase,
@@ -2106,12 +2205,162 @@ impl MillRules {
             state.pieces_in_hand[0],
             state.pieces_on_board[1],
             state.pieces_in_hand[1],
-            state.pending_removals[0],
-            state.pending_removals[1],
+            signed_remove(0),
+            signed_remove(1),
+            node_to_legacy_square(state.last_mill_from[0]),
+            node_to_legacy_square(state.last_mill_to[0]),
+            node_to_legacy_square(state.last_mill_from[1]),
+            node_to_legacy_square(state.last_mill_to[1]),
             state.ply_since_capture,
             full_move,
-        )
+        );
+
+        // Trailing extension fields.  Rust keeps per-state (rather than
+        // per-side) bitmaps for capture targets, so we attribute every
+        // active target to the side currently holding pending_removals.
+        let attribute_to_white = state.pending_removals[0] > 0;
+        append_capture_field(
+            &mut out,
+            'c',
+            state.custodian_targets,
+            state.custodian_count,
+            attribute_to_white,
+        );
+        append_capture_field(
+            &mut out,
+            'i',
+            state.intervention_targets,
+            state.intervention_count,
+            attribute_to_white,
+        );
+        append_capture_field(
+            &mut out,
+            'l',
+            state.leap_targets,
+            state.leap_count,
+            attribute_to_white,
+        );
+        if state.stalemate_removing {
+            out.push_str(" s:1");
+        } else if state.both_stalemate_removing {
+            out.push_str(" s:2");
+        }
+        out
     }
+}
+
+/// Convert a legacy C++ `Square` enum value (8..32) to a Rust dense node
+/// id (0..24).  Returns `-1` when the legacy id is `0` (i.e. SQ_NONE) so
+/// the result lines up with `MillState::last_mill_from/to` semantics.
+fn legacy_square_to_node_signed(legacy: u8) -> i8 {
+    if legacy == 0 || !(8..32).contains(&legacy) {
+        return -1;
+    }
+    const FEN_TO_NODE: [usize; 24] = [
+        17, 18, 19, 20, 21, 22, 23, 16, 9, 10, 11, 12, 13, 14, 15, 8, 1, 2, 3, 4, 5, 6, 7, 0,
+    ];
+    FEN_TO_NODE[(legacy - 8) as usize] as i8
+}
+
+/// Inverse of [`legacy_square_to_node_signed`].  `-1` (no last mill) is
+/// emitted as `0` to round-trip C++ FEN, which uses `0` for "none".
+fn node_to_legacy_square(node: i8) -> u8 {
+    if !(0..24).contains(&node) {
+        return 0;
+    }
+    const NODE_TO_FEN_POS: [usize; 24] = [
+        23, 16, 17, 18, 19, 20, 21, 22, 15, 8, 9, 10, 11, 12, 13, 14, 7, 0, 1, 2, 3, 4, 5, 6,
+    ];
+    (NODE_TO_FEN_POS[node as usize] + 8) as u8
+}
+
+/// Parse a single capture-field segment shaped like
+/// `w-N-sq.sq.sq|b-N-sq.sq.sq` into a per-state `targets` bitmap on Rust
+/// dense node ids and an aggregated `count`.  The legacy engine tracks
+/// these per side; the Rust kernel only stores a single bitmap so we sum
+/// the counts and merge the bitmaps.  Invalid segments are ignored, in
+/// line with `Position::set_fen`'s tolerant parser.
+fn parse_capture_field(value: &str, targets_out: &mut u32, count_out: &mut u8) {
+    let mut targets = *targets_out;
+    let mut count: u32 = u32::from(*count_out);
+    for segment in value.split('|') {
+        let segment = segment.trim();
+        if segment.is_empty() || segment.len() < 3 || segment.as_bytes()[1] != b'-' {
+            continue;
+        }
+        let color_byte = segment.as_bytes()[0];
+        if color_byte != b'w' && color_byte != b'b' {
+            continue;
+        }
+        let after_color = &segment[2..];
+        let dash = match after_color.find('-') {
+            Some(d) => d,
+            None => continue,
+        };
+        let count_str = after_color[..dash].trim();
+        let parsed_count = match count_str.parse::<i32>() {
+            Ok(v) => v,
+            Err(_) => continue,
+        };
+        let list_str = &after_color[dash + 1..];
+        for square_token in list_str.split('.') {
+            let token = square_token.trim();
+            if token.is_empty() {
+                continue;
+            }
+            if let Ok(square_value) = token.parse::<i32>() {
+                if (8..32).contains(&square_value) {
+                    let node = legacy_square_to_node_signed(square_value as u8);
+                    if (0..24).contains(&node) {
+                        targets |= 1_u32 << (node as u8);
+                    }
+                }
+            }
+        }
+        count = count.saturating_add(parsed_count.unsigned_abs());
+    }
+    *targets_out = targets;
+    *count_out = count.min(u8::MAX as u32) as u8;
+}
+
+/// Append a `c:`/`i:`/`l:` capture field to `out` when at least one
+/// target / count is active on the supplied state-wide aggregate.
+/// `attribute_to_white` decides whether the merged data is attributed
+/// to the white or black colour-tag — Rust does not track per-side
+/// capture state so we pick the side currently owing the removal.
+fn append_capture_field(
+    out: &mut String,
+    label: char,
+    targets: u32,
+    count: u8,
+    attribute_to_white: bool,
+) {
+    if targets == 0 && count == 0 {
+        return;
+    }
+    out.push(' ');
+    out.push(label);
+    out.push(':');
+    let prefix = if attribute_to_white { 'w' } else { 'b' };
+    let other = if attribute_to_white { 'b' } else { 'w' };
+    out.push(prefix);
+    out.push('-');
+    out.push_str(&count.to_string());
+    out.push('-');
+    let mut first = true;
+    for node in 0_usize..24 {
+        if (targets & (1u32 << node)) == 0 {
+            continue;
+        }
+        if !first {
+            out.push('.');
+        }
+        first = false;
+        out.push_str(&node_to_legacy_square(node as i8).to_string());
+    }
+    out.push('|');
+    out.push(other);
+    out.push_str("-0-");
 }
 
 fn position_key(state: &MillState) -> u64 {
@@ -4693,6 +4942,75 @@ mod tests {
             state2.pieces_in_hand, state.pieces_in_hand,
             "hand counts round-trip"
         );
+    }
+
+    /// FEN trailing-extension parity: the trailing `c:/i:/l:/p:/s:` block
+    /// must round-trip through `set_from_fen` -> `export_fen`, marked
+    /// pieces ('X') must survive, and the signed pieceToRemoveCount must
+    /// flip the new `remove_own_piece` flag.
+    #[test]
+    fn set_from_fen_extensions_round_trip() {
+        let rules = MillRules::default();
+        let original = MillState {
+            board: {
+                let mut board = [0_i8; 24];
+                board[17] = 1;
+                board[18] = 2;
+                board[0] = 1; // will be flagged as marked below
+                board
+            },
+            side_to_move: 0,
+            phase: MillPhase::Placing,
+            move_number: 1,
+            pieces_in_hand: [7, 8],
+            pieces_on_board: [2, 1],
+            pending_removals: [1, 1],
+            remove_own_piece: [true, true],
+            last_mill_from: [9, 17],
+            last_mill_to: [11, 18],
+            delayed_marked_pieces: 1u32 << 0,
+            custodian_targets: 1u32 << 5,
+            custodian_count: 1,
+            stalemate_removing: true,
+            ..MillState::default()
+        };
+        let exported = rules.export_fen(&original);
+        // The signed pieceToRemoveCount fields must be `-1`, the marked
+        // square must render as `X`, and the trailing extension tokens
+        // (`c:` and `s:1`) must be present.
+        assert!(
+            exported.contains("-1 -1"),
+            "signed remove counts: {exported}"
+        );
+        assert!(exported.contains('X'), "marked piece: {exported}");
+        assert!(exported.contains("c:"), "custodian extension: {exported}");
+        assert!(exported.contains("s:1"), "stalemate flag: {exported}");
+
+        let parsed = rules
+            .set_from_fen(&exported)
+            .expect("export must round-trip");
+        assert_eq!(parsed.pending_removals, original.pending_removals);
+        assert_eq!(parsed.remove_own_piece, original.remove_own_piece);
+        assert_eq!(parsed.last_mill_from, original.last_mill_from);
+        assert_eq!(parsed.last_mill_to, original.last_mill_to);
+        assert_eq!(parsed.delayed_marked_pieces, original.delayed_marked_pieces);
+        assert_eq!(parsed.custodian_targets, original.custodian_targets);
+        assert_eq!(parsed.custodian_count, original.custodian_count);
+        assert!(parsed.stalemate_removing);
+    }
+
+    /// Master format `s:2` flips `both_stalemate_removing` and `p:NN` is
+    /// silently consumed.  Tolerant parser must accept extra whitespace.
+    #[test]
+    fn set_from_fen_extensions_supports_both_stalemate_and_preferred_remove() {
+        let rules = MillRules::default();
+        let fen = concat!(
+            "********/********/******** w p p 0 9 0 9 0 0 0 0 0 0 0 0 1",
+            " p:21 s:2"
+        );
+        let state = rules.set_from_fen(fen).expect("valid trailing tokens");
+        assert!(!state.stalemate_removing);
+        assert!(state.both_stalemate_removing);
     }
 
     #[test]
