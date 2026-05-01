@@ -459,6 +459,8 @@ fn print_benchmark_toml() {
     let depth_ms = elapsed.as_millis() as u64;
     let nps = (result.nodes as f64 / elapsed.as_secs_f64()).round() as u64;
     let tt_hit_rate_pct = searcher.tt_hit_rate_pct();
+    let tt_age_bumps = searcher.tt_age_bumps();
+    let tt_current_age = searcher.tt_current_age();
 
     let cold_start_begin = Instant::now();
     let mut wb = game.build_workbench(&snap);
@@ -494,6 +496,8 @@ fn print_benchmark_toml() {
         tt_cluster_bits_from_env()
     );
     println!("build_flags = \"cargo bench scaffold\"");
+    println!("tt_age_bumps   = {}", tt_age_bumps);
+    println!("tt_current_age = {}", tt_current_age);
     println!();
     println!("[baseline]");
     println!("nps = {}", nps);
@@ -506,6 +510,8 @@ fn print_benchmark_toml() {
     println!();
     println!("[baseline.tt]");
     println!("hit_rate_pct = {:.3}", tt_hit_rate_pct);
+    println!("age_bumps = {}", tt_age_bumps);
+    println!("current_age = {}", tt_current_age);
     println!();
     println!("[baseline.startup]");
     println!("first_move_ms = {}", first_move_ms);

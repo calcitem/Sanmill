@@ -9,7 +9,7 @@ use std::{
     collections::HashMap,
     marker::PhantomData,
     sync::{
-        atomic::{AtomicBool, AtomicI64, AtomicU32, AtomicU64, Ordering},
+        atomic::{AtomicBool, AtomicI64, AtomicU32, AtomicU64, AtomicU8, Ordering},
         Arc,
     },
     thread,
@@ -107,6 +107,10 @@ impl TtCluster {
 struct ClusteredTt {
     clusters: Box<[TtCluster]>,
     cluster_mask: usize,
+    /// Global generation counter used for soft "fake-clean" clear semantics,
+    /// matching C++ `transpositionTableAge` in `src/tt.cpp`.  Incrementing
+    /// this bumps all non-Exact cached entries to stale without zeroing memory.
+    current_age: AtomicU8,
 }
 
 impl ClusteredTt {
@@ -122,6 +126,7 @@ impl ClusteredTt {
         Self {
             clusters: clusters.into_boxed_slice(),
             cluster_mask: mask,
+            current_age: AtomicU8::new(0),
         }
     }
 
@@ -135,6 +140,7 @@ impl ClusteredTt {
         if key == 0 {
             return None;
         }
+        let cur_age = self.current_age.load(Ordering::Relaxed);
         let key_sig = TtPackedEntry::key_sig(key);
         let c = &self.clusters[self.cluster_ix(key)];
         for s in &c.slots {
@@ -143,6 +149,12 @@ impl ClusteredTt {
                 continue;
             }
             if TtPackedEntry::packed_key_sig(packed) == key_sig {
+                // Fake-clean: treat non-Exact old-generation entries as misses,
+                // matching C++ TRANSPOSITION_TABLE_FAKE_CLEAN semantics.
+                let entry_age = TtPackedEntry::packed_age(packed);
+                if entry_age != cur_age && TtPackedEntry::unpack_bound(packed) != Bound::Exact {
+                    continue;
+                }
                 return Some(TtPackedEntry::unpack_entry(packed));
             }
         }
@@ -153,29 +165,42 @@ impl ClusteredTt {
         if key == 0 {
             return;
         }
-        let new_packed = TtPackedEntry::pack(key, entry);
+        let cur_age = self.current_age.load(Ordering::Relaxed);
+        let new_packed = TtPackedEntry::pack(key, entry, cur_age);
         let key_sig = TtPackedEntry::key_sig(key);
         let ix = self.cluster_ix(key);
         let c = &self.clusters[ix];
+        // 1. Update an existing same-key entry (depth-gated for same generation).
         for s in &c.slots {
             let packed = s.load(Ordering::Relaxed);
             if packed == 0 {
                 continue;
             }
             if TtPackedEntry::packed_key_sig(packed) == key_sig {
-                if entry.depth < TtPackedEntry::unpack_depth(packed) {
+                let same_gen = TtPackedEntry::packed_age(packed) == cur_age;
+                if same_gen && entry.depth < TtPackedEntry::unpack_depth(packed) {
                     return;
                 }
                 s.store(new_packed, Ordering::Relaxed);
                 return;
             }
         }
+        // 2. Fill an empty slot.
         for s in &c.slots {
             if s.load(Ordering::Relaxed) == 0 {
                 s.store(new_packed, Ordering::Relaxed);
                 return;
             }
         }
+        // 3. Prefer evicting old-generation slots (they are effectively stale).
+        for s in &c.slots {
+            let packed = s.load(Ordering::Relaxed);
+            if TtPackedEntry::packed_age(packed) != cur_age {
+                s.store(new_packed, Ordering::Relaxed);
+                return;
+            }
+        }
+        // 4. Fallback: evict minimum-depth current-generation slot.
         let mut wi = 0_usize;
         let mut wd = TtPackedEntry::unpack_depth(c.slots[0].load(Ordering::Relaxed));
         let depth1 = TtPackedEntry::unpack_depth(c.slots[1].load(Ordering::Relaxed));
@@ -188,12 +213,37 @@ impl ClusteredTt {
         }
     }
 
+    /// Physical clear: zeros all slots and resets the generation counter.
+    /// Use [`bump_age`] for the cheaper soft-clear that leaves memory intact
+    /// but marks all non-Exact existing entries as stale.
     fn clear(&self) {
         for c in self.clusters.iter() {
             for s in &c.slots {
                 s.store(0, Ordering::Relaxed);
             }
         }
+        self.current_age.store(0, Ordering::Relaxed);
+    }
+
+    /// Soft "fake-clean" clear: increment the generation counter so all
+    /// non-Exact entries are treated as stale on the next probe.  Cheaper
+    /// than zeroing the whole table.  Wraps at 255 → performs a full
+    /// physical clear to avoid generation-0 aliasing with stale slots.
+    fn bump_age(&self) {
+        let prev = self.current_age.fetch_add(1, Ordering::Relaxed);
+        if prev == u8::MAX {
+            // Wrap: physically zero the table and start from generation 1.
+            for c in self.clusters.iter() {
+                for s in &c.slots {
+                    s.store(0, Ordering::Relaxed);
+                }
+            }
+            self.current_age.store(1, Ordering::Relaxed);
+        }
+    }
+
+    fn current_age(&self) -> u8 {
+        self.current_age.load(Ordering::Relaxed)
     }
 
     fn len_occupied(&self) -> usize {
@@ -208,13 +258,22 @@ impl ClusteredTt {
 struct TtPackedEntry;
 
 impl TtPackedEntry {
-    const KEY_SIG_BITS: u32 = 16;
+    // Bit layout (64 bits total):
+    //   [0:7]   key_sig  (8 bits)  — halved from 16 to make room for age
+    //   [8:15]  age      (8 bits)  — generation counter (fake-clean semantics)
+    //   [16:31] value    (16 bits)
+    //   [32:39] depth    (8 bits)
+    //   [40:41] bound    (2 bits)
+    //   [42:63] action   (22 bits)
+    const KEY_SIG_BITS: u32 = 8;
+    const AGE_SHIFT: u32 = 8;
     const VALUE_SHIFT: u32 = 16;
     const DEPTH_SHIFT: u32 = 32;
     const BOUND_SHIFT: u32 = 40;
     const ACTION_SHIFT: u32 = 42;
 
-    const KEY_SIG_MASK: u64 = (1_u64 << Self::KEY_SIG_BITS) - 1;
+    const KEY_SIG_MASK: u64 = (1_u64 << Self::KEY_SIG_BITS) - 1; // 0xff
+    const AGE_MASK: u64 = 0xff;
     const VALUE_MASK: u64 = 0xffff;
     const DEPTH_MASK: u64 = 0xff;
     const BOUND_MASK: u64 = 0x03;
@@ -222,8 +281,9 @@ impl TtPackedEntry {
 
     #[inline]
     fn key_sig(key: u64) -> u16 {
-        let sig = ((key >> 48) ^ (key >> 32) ^ (key >> 16) ^ key) as u16;
-        sig.max(1)
+        // 8-bit signature; returned as u16 for comparison with `packed_key_sig`.
+        let sig = ((key >> 48) ^ (key >> 32) ^ (key >> 16) ^ key) as u8;
+        u16::from(sig.max(1))
     }
 
     #[inline]
@@ -232,8 +292,14 @@ impl TtPackedEntry {
     }
 
     #[inline]
-    fn pack(key: u64, entry: TtEntry) -> u64 {
+    fn packed_age(packed: u64) -> u8 {
+        ((packed >> Self::AGE_SHIFT) & Self::AGE_MASK) as u8
+    }
+
+    #[inline]
+    fn pack(key: u64, entry: TtEntry, age: u8) -> u64 {
         u64::from(Self::key_sig(key))
+            | (u64::from(age) << Self::AGE_SHIFT)
             | (u64::from(Self::compact_value(entry.value)) << Self::VALUE_SHIFT)
             | (u64::from(Self::compact_depth(entry.depth)) << Self::DEPTH_SHIFT)
             | (u64::from(Self::pack_bound(entry.bound)) << Self::BOUND_SHIFT)
@@ -373,10 +439,23 @@ impl SharedTt {
         }
     }
 
-    /// Drop every entry without reallocating.  Other handles to the same
-    /// `SharedTt` observe the empty table immediately.
+    /// Physical clear: zeros every slot and resets the generation counter.
+    /// Prefer [`bump_age`] for the cheaper soft clear that avoids zeroing
+    /// all memory.
     pub fn clear(&self) {
         self.inner.clear();
+    }
+
+    /// Soft clear: increment the generation counter so non-Exact cached
+    /// entries are treated as stale on the next probe.  Matches the
+    /// C++ `TranspositionTable::clear()` fake-clean path.
+    pub fn bump_age(&self) {
+        self.inner.bump_age();
+    }
+
+    /// Current generation counter value.  Useful for bench instrumentation.
+    pub fn current_age(&self) -> u8 {
+        self.inner.current_age()
     }
 
     /// Number of currently occupied slots across all clusters; useful for
@@ -398,6 +477,7 @@ pub struct Searcher<G: Game> {
     nodes: u64,
     tt_hits: u64,
     tt_misses: u64,
+    tt_age_bumps: u64,
     rng_state: u64,
     tt: Arc<ClusteredTt>,
     killers: HashMap<i32, Action>,
@@ -416,6 +496,7 @@ impl<G: Game> Default for Searcher<G> {
             nodes: 0,
             tt_hits: 0,
             tt_misses: 0,
+            tt_age_bumps: 0,
             rng_state: 0x9E37_79B9_7F4A_7C15,
             tt: Arc::new(ClusteredTt::default()),
             killers: HashMap::new(),
@@ -492,10 +573,26 @@ impl<G: Game> Searcher<G> {
         }
     }
 
+    /// Soft-clear the transposition table by bumping its generation counter.
+    /// Non-Exact entries stored in the previous generation are treated as
+    /// stale on the next probe, matching the C++ fake-clean semantics.
+    /// Also clears killer and history tables (these are always position-local).
     pub fn clear_tt(&mut self) {
-        self.tt.clear();
+        self.tt.bump_age();
+        self.tt_age_bumps += 1;
         self.killers.clear();
         self.history.clear();
+    }
+
+    /// Total number of TT age bumps since this Searcher was created.
+    /// Useful for bench instrumentation (`[meta] tt_age_bumps`).
+    pub fn tt_age_bumps(&self) -> u64 {
+        self.tt_age_bumps
+    }
+
+    /// Current TT generation counter (same as `SharedTt::current_age`).
+    pub fn tt_current_age(&self) -> u8 {
+        self.tt.current_age()
     }
 
     pub fn tt_len(&self) -> usize {
@@ -651,14 +748,17 @@ impl<G: Game> Searcher<G> {
     /// Simple iterative deepening scaffold.  It re-searches from depth 1 to
     /// `max_depth` and returns the deepest result.
     ///
-    /// Later Phase 5 work will add time control, aspiration windows, TT reuse,
-    /// and principal-variation tracking.  The important architectural point is
-    /// that every iteration still stays generic over `G: Game` and does not
-    /// cross a trait-object boundary.
+    /// The TT generation counter is bumped between iterations so the next
+    /// iteration's probe treats the previous iteration's non-Exact entries as
+    /// stale (matching C++ `Search::clear` semantics from `src/search.cpp`).
+    /// Exact entries survive — this preserves aspiration-window pruning
+    /// opportunities across iterations when depth grows incrementally.
     pub fn iterative_deepening(&mut self, wb: &mut G::Workbench, max_depth: i32) -> SearchResult {
         let max_depth = max_depth.max(1);
         let mut result = self.search(wb, 1);
         for depth in 2..=max_depth {
+            self.tt.bump_age();
+            self.tt_age_bumps += 1;
             result = self.search(wb, depth);
         }
         result
@@ -1712,13 +1812,14 @@ mod tests {
             best_action: action,
         };
 
-        let packed = TtPackedEntry::pack(0x1234_5678_9abc_def0, entry);
+        let packed = TtPackedEntry::pack(0x1234_5678_9abc_def0, entry, 3);
         let unpacked = TtPackedEntry::unpack_entry(packed);
 
         assert_eq!(unpacked.value, entry.value);
         assert_eq!(unpacked.depth, entry.depth);
         assert_eq!(unpacked.bound, entry.bound);
         assert_eq!(unpacked.best_action, entry.best_action);
+        assert_eq!(TtPackedEntry::packed_age(packed), 3);
         assert_ne!(packed, 0);
     }
 
@@ -1996,6 +2097,109 @@ mod tests {
                 time_limit_ms: Some(0),
                 exploration: 0.5,
             },
+        );
+        assert!(!result.best_action.is_none());
+    }
+
+    // ---------------------------------------------------------------------------
+    // Phase 5.1: TT generation aging tests
+    // ---------------------------------------------------------------------------
+
+    #[test]
+    fn tt_non_exact_entry_is_skipped_after_age_bump() {
+        let tt = ClusteredTt::new_with_cluster_bits(10);
+        let key = 0x1234_5678_9abc_def0_u64;
+        let entry = TtEntry {
+            value: 42,
+            depth: 5,
+            bound: Bound::Lower, // non-Exact
+            best_action: Action::NONE,
+        };
+        // Written at age 0.
+        tt.save(key, entry);
+        assert!(
+            tt.get(key).is_some(),
+            "entry should be visible in same generation"
+        );
+
+        // Bump to generation 1.
+        tt.bump_age();
+        // Non-Exact entry from generation 0 is now treated as stale.
+        assert!(
+            tt.get(key).is_none(),
+            "non-Exact entry should be invisible after age bump"
+        );
+    }
+
+    #[test]
+    fn tt_exact_entry_survives_age_bump() {
+        let tt = ClusteredTt::new_with_cluster_bits(10);
+        let key = 0x1234_5678_9abc_def0_u64;
+        let entry = TtEntry {
+            value: 42,
+            depth: 5,
+            bound: Bound::Exact, // Exact always survives
+            best_action: Action::NONE,
+        };
+        tt.save(key, entry);
+        tt.bump_age();
+        assert!(
+            tt.get(key).is_some(),
+            "Exact entry should survive a generation bump"
+        );
+    }
+
+    #[test]
+    fn tt_clear_resets_age_and_removes_entries() {
+        let tt = ClusteredTt::new_with_cluster_bits(10);
+        let key = 0x1234_5678_9abc_def0_u64;
+        let entry = TtEntry {
+            value: 42,
+            depth: 5,
+            bound: Bound::Exact,
+            best_action: Action::NONE,
+        };
+        tt.save(key, entry);
+        tt.bump_age();
+        assert_eq!(tt.current_age(), 1);
+
+        // Physical clear resets age to 0 and empties all slots.
+        tt.clear();
+        assert_eq!(tt.current_age(), 0);
+        assert!(tt.get(key).is_none(), "physical clear must empty all slots");
+    }
+
+    #[test]
+    fn searcher_clear_tt_uses_bump_age_not_physical_clear() {
+        let rules = MillRules::default();
+        let game = MillGame::default();
+        let snap = rules.initial_state(&[]);
+        let mut wb = game.build_workbench(&snap);
+        let mut searcher = Searcher::<MillGame>::new();
+
+        searcher.search(&mut wb, 1);
+        assert_eq!(searcher.tt_age_bumps(), 0);
+        assert_eq!(searcher.tt_current_age(), 0);
+
+        searcher.clear_tt();
+        assert_eq!(searcher.tt_age_bumps(), 1);
+        assert_eq!(searcher.tt_current_age(), 1);
+    }
+
+    #[test]
+    fn iterative_deepening_bumps_age_between_depths() {
+        let rules = MillRules::default();
+        let game = MillGame::default();
+        let snap = rules.initial_state(&[]);
+        let mut wb = game.build_workbench(&snap);
+        let mut searcher = Searcher::<MillGame>::new();
+
+        let result = searcher.iterative_deepening(&mut wb, 3);
+        // Depth 1→2 and 2→3 each bump once, so 2 bumps for max_depth=3.
+        assert_eq!(
+            searcher.tt_age_bumps(),
+            2,
+            "age bumped once per iteration boundary (max_depth - 1)"
         );
         assert!(!result.best_action.is_none());
     }
