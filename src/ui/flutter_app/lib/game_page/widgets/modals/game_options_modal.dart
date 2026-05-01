@@ -34,6 +34,17 @@ class GameOptionsModal extends StatelessWidget {
     return side.playerName(context);
   }
 
+  bool _canStartNewGame() {
+    if (DB().generalSettings.useNativeMillSession &&
+        GameController().activeSessionSnapshot != null) {
+      return GameController().isEngineRunning == false;
+    }
+    return GameController().position.phase == Phase.ready ||
+        (GameController().position.phase == Phase.placing &&
+            GameController().gameRecorder.mainlineMoves.length <= 3) ||
+        GameController().position.phase == Phase.gameOver;
+  }
+
   @override
   Widget build(BuildContext context) {
     return GamePageDialog(
@@ -60,11 +71,7 @@ class GameOptionsModal extends StatelessWidget {
 
             GameController().engine.stopSearching();
 
-            if (GameController().position.phase == Phase.ready ||
-                (GameController().position.phase == Phase.placing &&
-                    (GameController().gameRecorder.mainlineMoves.length <=
-                        3)) ||
-                GameController().position.phase == Phase.gameOver) {
+            if (_canStartNewGame()) {
               // TODO: Called stopSearching(); so isEngineGoing is always false?
               if (GameController().isEngineRunning == false) {
                 GameController().reset(force: true);
