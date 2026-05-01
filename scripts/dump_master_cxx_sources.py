@@ -10,7 +10,9 @@ Excludes (from the master tree, not the working copy):
 
   * ``src/perfect/`` (the Perfect Database is intentionally out of
     scope for the Rust port);
-  * ``src/ui/`` (Qt/Flutter front-end, not engine logic);
+  * ``src/ui/`` (Qt and Flutter front-ends, not engine logic);
+  * ``src/test/`` (a Qt-only ``QDialog``-based shared-memory test
+    harness — depends on ``QObject``/``QDialog`` like ``src/ui/qt``);
   * non-C++ files (Makefile, .gitignore, etc.) — we only collect
     ``.cpp / .h / .hpp / .cc / .cxx`` extensions.
 
@@ -29,7 +31,9 @@ ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "master_cxx_combined.txt"
 
 # Subdirectory names anywhere in the path that disqualify a file.
-EXCLUDE_DIR_PARTS = {"perfect", "ui"}
+# `ui` covers both `src/ui/qt` and `src/ui/flutter_app`; `test` covers
+# the legacy Qt dialog harness under `src/test`.
+EXCLUDE_DIR_PARTS = {"perfect", "ui", "test"}
 
 INCLUDE_EXT = {".cpp", ".h", ".hpp", ".cc", ".cxx", ".hh"}
 
