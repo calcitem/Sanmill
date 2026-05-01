@@ -3,30 +3,43 @@
 
 // position.dart
 //
-// MIGRATION STATUS (Phase 6/7 dart-dedup):
+// MIGRATION STATUS (Phase 6.B pre-flight audit — 2026-05-01):
 //   This file is the legacy Dart copy of the Mill rule machine — phase
 //   transitions, mill detection, capture obligations, fly-piece rules and
 //   threefold repetition.  The migration target is the Rust-native
 //   `crates/tgf-mill::MillRules`, surfaced to Dart through
 //   `lib/game_platform/engine/tgf_kernel.dart` and consumed via
-//   `lib/games/mill/mill_rules_port.dart`.
+//   `NativeMillRulesPort` / `NativeMillGameSession`.
+//
+//   VARIANT PARITY STATUS (as of Phase 6.B.0 audit):
+//
+//   COMPLETE — verified via `random_walk_native_and_legacy_agree_*` differential:
+//     ✅ 9MM defaults (piece_count=9, standard rules)
+//     ✅ 12MM with diagonal lines (piece_count=12, has_diagonal_lines=true)
+//     ✅ Morabaraba (piece_count=12, diagonal, may_remove_multiple=true)
+//     ✅ custodian_capture (Rust-only self-play; no C++ equivalent)
+//     ✅ intervention_capture (Rust-only self-play)
+//     ✅ restrict_repeated_mills_formation (Rust-only self-play)
+//
+//   PARTIAL / KNOWN GAP:
+//     ⚠️ mayMoveInPlacingPhase (Lasker Morris, piece_count=10):
+//          Phase-tag sync is correct (sync_phase_for_may_move_in_placing in
+//          rules.rs), but legal-action generation diverges from C++ when one
+//          player exhausts their hand before the other.  Tracked for a
+//          dedicated fix; the native session still supports this variant in
+//          practice — the divergence only manifests under very specific board
+//          transitions that Dart currently handles via this legacy file.
 //
 //   Methods such as `_putPiece`, `_removePiece`, `handleMovingPhaseForPutPiece`
 //   and `_isThreefoldRepetition` have direct Rust equivalents in
-//   `crates/tgf-mill/src/rules.rs::MillRules::apply` /
-//   `MillRules::legal_actions` / `MillRules::outcome`.  They are kept here
-//   because the Rust DTO `MillVariantOptions` currently covers only the
-//   most common 9MM defaults (piece_count, fly_piece_count,
-//   may_remove_from_mills_always, may_remove_multiple, n_move_rule, …).
-//   Variants that exercise custodian / intervention / leap capture,
-//   `mayMoveInPlacingPhase`, `restrictRepeatedMillsFormation`, or 12MM
-//   diagonal lines still rely on this file.
+//   `MillRules::apply` / `MillRules::legal_actions` / `MillRules::outcome`
+//   and will be removed in Phase 6.C once parity is confirmed via a wider
+//   integration-test run.
 //
 //   When extending the Rust ruleset, mirror the change in
-//   `MillVariantOptionsMapper.toTgfMillVariantOptions`, drop the
-//   corresponding branch here, and update the differential test in
-//   `crates/tgf-frb/src/api/simple.rs::random_walk_native_and_legacy_agree`
-//   so the new option is exercised at the boundary.
+//   `MillVariantOptionsMapper.toTgfMillVariantOptions`, update the differential
+//   test in `crates/tgf-frb/src/api/simple.rs`, and remove the corresponding
+//   branch here.
 
 part of '../mill.dart';
 

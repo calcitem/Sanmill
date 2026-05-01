@@ -590,6 +590,7 @@ impl GameRules for MillRules {
                                     side as i8
                                 };
                                 maybe_transition_to_moving(&mut state, &self.options);
+                                sync_phase_for_may_move_in_placing(&mut state, &self.options);
                                 maybe_finish_full_board(&mut state, &self.options);
                             }
                             clear_capture_state(&mut state);
@@ -606,6 +607,7 @@ impl GameRules for MillRules {
                             state.side_to_move ^= 1;
                             clear_capture_state(&mut state);
                             maybe_transition_to_moving(&mut state, &self.options);
+                            sync_phase_for_may_move_in_placing(&mut state, &self.options);
                             maybe_finish_full_board(&mut state, &self.options);
                         }
                         MillFormationActionInPlacingPhase::RemovalBasedOnMillCounts => {
@@ -616,6 +618,7 @@ impl GameRules for MillRules {
                                 state.side_to_move ^= 1;
                             }
                             maybe_transition_to_moving(&mut state, &self.options);
+                            sync_phase_for_may_move_in_placing(&mut state, &self.options);
                             maybe_finish_full_board(&mut state, &self.options);
                         }
                         MillFormationActionInPlacingPhase::RemoveOpponentsPieceFromBoard => {
@@ -637,6 +640,7 @@ impl GameRules for MillRules {
                     clear_capture_state(&mut state);
                     state.side_to_move ^= 1;
                     maybe_transition_to_moving(&mut state, &self.options);
+                    sync_phase_for_may_move_in_placing(&mut state, &self.options);
                     maybe_finish_full_board(&mut state, &self.options);
                 }
             }
@@ -683,6 +687,9 @@ impl GameRules for MillRules {
                     // becomes a no-op (it inspects `state.phase`).
                     push_key_and_check_threefold(&mut state, &self.options);
                     maybe_draw_by_n_move_rule(&mut state, &self.options);
+                    // Mirror C++ set_side_to_move phase sync for
+                    // may_move_in_placing_phase variant.
+                    sync_phase_for_may_move_in_placing(&mut state, &self.options);
                 }
             }
             x if x == MillActionKind::Remove as i16 => {
@@ -786,6 +793,7 @@ impl GameRules for MillRules {
                         state.both_stalemate_removing = false;
                     }
                     maybe_transition_to_moving(&mut state, &self.options);
+                    sync_phase_for_may_move_in_placing(&mut state, &self.options);
                     maybe_finish_full_board(&mut state, &self.options);
                 }
             }
@@ -1051,6 +1059,33 @@ fn maybe_transition_to_moving(state: &mut MillState, options: &MillVariantOption
     {
         state.pieces_in_hand = [0, 0];
         enter_moving_phase(state, options);
+    }
+}
+
+/// When `may_move_in_placing_phase` is enabled the C++ engine determines
+/// the effective phase from the **active player's** hand count on every
+/// side switch (see `Position::set_side_to_move` in position.cpp).  This
+/// means a player who has placed all their pieces enters "moving" phase
+/// even while the opponent still holds pieces in hand.
+///
+/// Call this after every `state.side_to_move ^= 1` in `apply()` to mirror
+/// that behaviour.  The function is a no-op for all other variants so it
+/// is safe to call unconditionally after every side change.
+fn sync_phase_for_may_move_in_placing(state: &mut MillState, options: &MillVariantOptions) {
+    if !options.may_move_in_placing_phase {
+        return;
+    }
+    // Only adjust when the game is still in progress (placing or moving).
+    if state.phase != MillPhase::Placing && state.phase != MillPhase::Moving {
+        return;
+    }
+    let active = state.side_to_move as usize;
+    if active <= 1 {
+        state.phase = if state.pieces_in_hand[active] == 0 {
+            MillPhase::Moving
+        } else {
+            MillPhase::Placing
+        };
     }
 }
 
