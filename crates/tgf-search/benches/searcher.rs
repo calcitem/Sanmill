@@ -18,8 +18,11 @@
 
 use criterion::{criterion_group, criterion_main, Criterion};
 use tgf_core::{Game, GameRules};
-use tgf_mill::{MillGame, MillRules};
-use tgf_search::{lazy_smp_search, perft, LazySmpWorker, SearchOptions, Searcher, SharedTt};
+use tgf_mill::{MillActionKind, MillGame, MillRules};
+use tgf_search::{
+    lazy_smp_search, perft, LazySmpWorker, MctsOptions, MctsSearcher, SearchOptions, SearchPolicy,
+    Searcher, SharedTt,
+};
 
 fn bench_mill_search_depth_1(c: &mut Criterion) {
     c.bench_function("mill_search_depth_1", |b| {
@@ -127,6 +130,57 @@ fn bench_mill_lazy_smp_2_workers_depth_2(c: &mut Criterion) {
     });
 }
 
+fn bench_mill_mcts_default(c: &mut Criterion) {
+    c.bench_function("mill_mcts_default", |b| {
+        let rules = MillRules::default();
+        let game = MillGame::default();
+        let snap = rules.initial_state(&[]);
+
+        b.iter(|| {
+            let mut wb = game.build_workbench(&snap);
+            let mut mcts = MctsSearcher::<MillGame>::new();
+            mcts.set_random_seed(0xCAFE_BABE);
+            mcts.search_with_options(
+                &mut wb,
+                MctsOptions {
+                    iterations: 64,
+                    playout_depth: 4,
+                    time_limit_ms: None,
+                    exploration: 0.5,
+                    ab_assist_depth: 0,
+                },
+            )
+        });
+    });
+}
+
+fn bench_mill_mcts_assist_depth_1(c: &mut Criterion) {
+    c.bench_function("mill_mcts_assist_depth_1", |b| {
+        let rules = MillRules::default();
+        let game = MillGame::default();
+        let snap = rules.initial_state(&[]);
+
+        b.iter(|| {
+            let mut wb = game.build_workbench(&snap);
+            let mut mcts = MctsSearcher::<MillGame>::new();
+            mcts.set_random_seed(0xCAFE_BABE);
+            mcts.set_policy(SearchPolicy {
+                remove_kind_tag: Some(MillActionKind::Remove as i16),
+            });
+            mcts.search_with_options(
+                &mut wb,
+                MctsOptions {
+                    iterations: 64,
+                    playout_depth: 4,
+                    time_limit_ms: None,
+                    exploration: 0.5,
+                    ab_assist_depth: 1,
+                },
+            )
+        });
+    });
+}
+
 criterion_group!(
     benches,
     bench_mill_search_depth_1,
@@ -136,5 +190,7 @@ criterion_group!(
     bench_mill_perft_mid_depth_3,
     bench_mill_iterative_deepening_depth_3,
     bench_mill_lazy_smp_2_workers_depth_2,
+    bench_mill_mcts_default,
+    bench_mill_mcts_assist_depth_1,
 );
 criterion_main!(benches);

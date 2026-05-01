@@ -1319,6 +1319,10 @@ pub struct MctsOptions {
     pub playout_depth: i32,
     pub time_limit_ms: Option<u64>,
     pub exploration: f64,
+    /// When > 0, the simulation phase uses a shallow α-β search instead of
+    /// random rollout.  The value is the depth passed to `Searcher::search`.
+    /// Default 0 = random rollout (original behaviour).
+    pub ab_assist_depth: i32,
 }
 
 impl Default for MctsOptions {
@@ -1328,6 +1332,7 @@ impl Default for MctsOptions {
             playout_depth: 6,
             time_limit_ms: None,
             exploration: 0.5,
+            ab_assist_depth: 0,
         }
     }
 }
@@ -1393,6 +1398,7 @@ impl MctsNode {
 pub struct MctsSearcher<G: Game> {
     rng_state: u64,
     exploration: f64,
+    policy: SearchPolicy,
     _phantom: PhantomData<G>,
 }
 
@@ -1401,6 +1407,7 @@ impl<G: Game> Default for MctsSearcher<G> {
         Self {
             rng_state: 0xD1B5_4A32_D192_ED03,
             exploration: 0.5,
+            policy: SearchPolicy::default(),
             _phantom: PhantomData,
         }
     }
@@ -1423,6 +1430,13 @@ impl<G: Game> MctsSearcher<G> {
         self.exploration = exploration.max(0.0);
     }
 
+    /// Set the search policy forwarded to the α-β sub-searcher used during
+    /// the simulation phase when `MctsOptions::ab_assist_depth > 0`.
+    /// For Mill, pass `SearchPolicy { remove_kind_tag: Some(MillActionKind::Remove as i16) }`.
+    pub fn set_policy(&mut self, policy: SearchPolicy) {
+        self.policy = policy;
+    }
+
     /// Monte-Carlo Tree Search scaffold using UCT selection, expansion,
     /// random playout, and backpropagation.  This is still single-threaded and
     /// does not yet include the optional C++ alpha-beta assisted simulation, but
@@ -1440,6 +1454,7 @@ impl<G: Game> MctsSearcher<G> {
                 playout_depth,
                 time_limit_ms: None,
                 exploration: self.exploration,
+                ab_assist_depth: 0,
             },
         )
     }
@@ -1507,7 +1522,7 @@ impl<G: Game> MctsSearcher<G> {
                 path.push(node_idx);
             }
 
-            let mut win = self.simulate(wb, options.playout_depth);
+            let mut win = self.simulate(wb, options.playout_depth, &options);
 
             for _ in 0..applied_moves {
                 wb.undo_move();
@@ -1566,7 +1581,19 @@ impl<G: Game> MctsSearcher<G> {
         mean + exploration + variance + bias
     }
 
-    fn simulate(&mut self, wb: &mut G::Workbench, depth: i32) -> bool {
+    fn simulate(&mut self, wb: &mut G::Workbench, depth: i32, options: &MctsOptions) -> bool {
+        // α-β assisted simulation: when ab_assist_depth > 0 use a shallow
+        // α-β search instead of random rollout so the Monte-Carlo signal is
+        // higher quality.  A fresh Searcher is constructed per simulation to
+        // keep MCTS state independent; this is intentionally simple —
+        // production callers can share TTs if they need higher throughput.
+        if options.ab_assist_depth > 0 && !wb.is_terminal() {
+            let mut sub = Searcher::<G>::new();
+            sub.set_policy(self.policy);
+            let result = sub.search(wb, options.ab_assist_depth);
+            return result.score > 0;
+        }
+
         if depth <= 0 || wb.is_terminal() {
             return G::Evaluator::score(wb) > 0;
         }
@@ -1577,7 +1604,7 @@ impl<G: Game> MctsSearcher<G> {
         }
         let idx = self.next_random_index(moves.len());
         wb.do_move(moves[idx]);
-        let win = !self.simulate(wb, depth - 1);
+        let win = !self.simulate(wb, depth - 1, options);
         wb.undo_move();
         win
     }
@@ -2108,6 +2135,100 @@ mod tests {
     }
 
     #[test]
+    fn mcts_with_ab_assist_picks_immediate_mill() {
+        // White has two pieces on a3/c3 and can form the mill a3-b3-c3 by
+        // placing on b3.  With ab_assist_depth=1 the MCTS simulation
+        // correctly sees this as a high-value move and should prefer it.
+        use tgf_mill::MillActionKind;
+
+        let rules = MillRules::default();
+
+        // Build a position where White is to place and has an immediate mill.
+        // Nodes: 0=a7, 1=d7, 2=g7 (top mill line for default 9MM).
+        // White places two pieces on nodes 0 and 2, then it is White's turn
+        // to place.  Placing on node 1 (d7) forms a mill.
+        let snap = {
+            let mut s = rules.initial_state(&[]);
+            // Place White on node 0.
+            s = rules.apply(
+                &s,
+                tgf_core::Action {
+                    kind_tag: MillActionKind::Place as i16,
+                    from_node: -1,
+                    to_node: 0,
+                    aux: -1,
+                    payload_bits: 0,
+                },
+            );
+            // Place Black somewhere neutral (node 6).
+            s = rules.apply(
+                &s,
+                tgf_core::Action {
+                    kind_tag: MillActionKind::Place as i16,
+                    from_node: -1,
+                    to_node: 6,
+                    aux: -1,
+                    payload_bits: 0,
+                },
+            );
+            // Place White on node 2.
+            s = rules.apply(
+                &s,
+                tgf_core::Action {
+                    kind_tag: MillActionKind::Place as i16,
+                    from_node: -1,
+                    to_node: 2,
+                    aux: -1,
+                    payload_bits: 0,
+                },
+            );
+            // Place Black somewhere neutral (node 5).
+            s = rules.apply(
+                &s,
+                tgf_core::Action {
+                    kind_tag: MillActionKind::Place as i16,
+                    from_node: -1,
+                    to_node: 5,
+                    aux: -1,
+                    payload_bits: 0,
+                },
+            );
+            s // White to move: placing on node 1 forms mill 0-1-2.
+        };
+
+        let game = MillGame::default();
+        let mut wb = game.build_workbench(&snap);
+
+        let mut mcts = MctsSearcher::<MillGame>::new();
+        mcts.set_random_seed(42);
+        mcts.set_policy(SearchPolicy {
+            remove_kind_tag: Some(MillActionKind::Remove as i16),
+        });
+
+        let result = mcts.search_with_options(
+            &mut wb,
+            MctsOptions {
+                iterations: 64,
+                playout_depth: 4,
+                time_limit_ms: None,
+                exploration: 0.5,
+                ab_assist_depth: 1,
+            },
+        );
+
+        assert!(
+            !result.best_action.is_none(),
+            "MCTS with ab_assist must return a legal action"
+        );
+        // The immediate mill-forming move is to_node=1.  With ab_assist_depth=1
+        // the searcher should strongly prefer it.
+        assert_eq!(
+            result.best_action.to_node, 1,
+            "MCTS+AB should select the mill-forming move at node 1"
+        );
+    }
+
+    #[test]
     fn mill_mcts_options_accept_time_limit() {
         let rules = MillRules::default();
         let game = MillGame::default();
@@ -2123,6 +2244,7 @@ mod tests {
                 playout_depth: 2,
                 time_limit_ms: Some(0),
                 exploration: 0.5,
+                ab_assist_depth: 0,
             },
         );
         assert!(!result.best_action.is_none());

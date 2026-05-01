@@ -10,8 +10,8 @@ use std::time::{Duration, Instant};
 use tgf_core::{Action, ActionList, BoardTopology, Game, GameRules, GameStateSnapshot};
 use tgf_mill::{default_mill_topology, MillActionKind, MillGame, MillRules, MillVariantOptions};
 use tgf_search::{
-    lazy_smp_search, perft, LazySmpWorker, SearchAbortHandle, SearchOptions, SearchPolicy,
-    SearchResult, Searcher, SharedTt,
+    lazy_smp_search, perft, LazySmpWorker, MctsOptions, MctsSearcher, SearchAbortHandle,
+    SearchOptions, SearchPolicy, SearchResult, Searcher, SharedTt,
 };
 
 /// `TGF_TT_CLUSTER_BITS` (10–18) selects `2^(bits+1)` TT slots; see
@@ -543,4 +543,65 @@ fn print_benchmark_toml() {
     println!("base_depth = 4");
     println!("nps = {}", smp_nps);
     println!("depth_ms = {}", smp_ms);
+
+    // MCTS baseline: 50 self-play games, fixed seed, compare random rollout
+    // vs α-β-assisted simulation at depth 1.
+    const MCTS_GAMES: u32 = 50;
+    const MCTS_SEED: u64 = 0xBEEF_CAFE_0123_4567;
+    let mcts_ab0_wins = run_mcts_self_play(MCTS_GAMES, MCTS_SEED, 0);
+    let mcts_ab1_wins = run_mcts_self_play(MCTS_GAMES, MCTS_SEED, 1);
+    println!();
+    println!("[baseline.mcts]");
+    println!("games = {}", MCTS_GAMES);
+    println!("iterations_per_move = 32");
+    println!("ab_assist_depth_0_wins = {}", mcts_ab0_wins);
+    println!("ab_assist_depth_1_wins = {}", mcts_ab1_wins);
+}
+
+/// Play `games` self-play games using MCTS where both sides use
+/// `ab_assist_depth`.  Returns the number of wins for side 0 (White).
+/// Both sides share the same options; the AB-assist advantage is symmetric
+/// so the win-rate measures absolute quality vs random rollout (ab_depth=0).
+fn run_mcts_self_play(games: u32, seed: u64, ab_assist_depth: i32) -> u32 {
+    let rules = MillRules::default();
+    let game = MillGame::default();
+    let policy = SearchPolicy {
+        remove_kind_tag: Some(MillActionKind::Remove as i16),
+    };
+    let mut wins = 0u32;
+    for g in 0..games {
+        let mut snap = rules.initial_state(&[]);
+        let mut mcts = MctsSearcher::<MillGame>::new();
+        mcts.set_random_seed(seed.wrapping_add(u64::from(g)));
+        mcts.set_policy(policy);
+        let options = MctsOptions {
+            iterations: 32,
+            playout_depth: 4,
+            time_limit_ms: None,
+            exploration: 0.5,
+            ab_assist_depth,
+        };
+        for _ in 0..120 {
+            use tgf_core::GameRules;
+            let outcome = rules.outcome(&snap);
+            if matches!(
+                outcome.kind,
+                tgf_core::OutcomeKind::Win(_) | tgf_core::OutcomeKind::Draw
+            ) {
+                if let tgf_core::OutcomeKind::Win(w) = outcome.kind {
+                    if w == 0 {
+                        wins += 1;
+                    }
+                }
+                break;
+            }
+            let mut wb = game.build_workbench(&snap);
+            let result = mcts.search_with_options(&mut wb, options);
+            if result.best_action.is_none() {
+                break;
+            }
+            snap = rules.apply(&snap, result.best_action);
+        }
+    }
+    wins
 }
