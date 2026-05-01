@@ -1639,17 +1639,11 @@ mod tests {
     /// Differential on Lasker Morris (C++ `RULES[5]`): `piece_count = 10`,
     /// `may_move_in_placing_phase = true`.  Verifies that the native Rust
     /// implementation correctly generates placing-phase moves for both
-    /// players even while pieces are still in hand.
-    ///
-    /// **Known parity gap (Phase 6.B.0 audit):** The phase-tag sync is now
-    /// correct (`sync_phase_for_may_move_in_placing`), but legal-action
-    /// generation diverges after the transition from Placing to Moving when
-    /// one player has exhausted their hand while the other has not.  The
-    /// root cause is that the Rust engine generates moves for pieces on the
-    /// board while C++ may still be in a different effective phase for those
-    /// pieces.  Tracked for a separate fix; test is #[ignore] until resolved.
+    /// players even while pieces are still in hand.  After the
+    /// `enter_moving_phase` invariant fix (mirroring master's
+    /// `handle_placing_phase_end()` short-circuit when the active side
+    /// is the chosen first mover post-Lasker), the differential agrees.
     #[test]
-    #[ignore = "known parity gap: Lasker Morris legal-action divergence after phase transition (tracked)"]
     fn random_walk_native_and_legacy_agree_lasker_morris() {
         let opts = NativeMillVariantOptions {
             piece_count: 10,

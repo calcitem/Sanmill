@@ -1166,6 +1166,28 @@ impl MillRules {
         if state.stalemate_removing || state.both_stalemate_removing {
             return true;
         }
+        // Mirror Position::is_stalemate_removal() second branch: at the
+        // placing-to-moving transition of a 12-piece variant with a
+        // board-full action that issues a removal, the remover gets the
+        // *stalemate-removal* target set (adjacent-only), not the regular
+        // mill-aware target set.  This branch fires on the very first
+        // Remove action emitted after `maybe_finish_full_board` armed the
+        // pending_removals: phase is now Moving, no piece has been
+        // removed yet (board still full), and at least one side owes a
+        // removal.
+        if self.options.piece_count == 12
+            && state.phase == MillPhase::Moving
+            && empty_square_count(state) == 0
+            && state.pending_removals.iter().any(|c| *c > 0)
+            && matches!(
+                self.options.board_full_action,
+                MillBoardFullAction::FirstAndSecondPlayerRemovePiece
+                    | MillBoardFullAction::SecondAndFirstPlayerRemovePiece
+                    | MillBoardFullAction::SideToMoveRemovePiece
+            )
+        {
+            return true;
+        }
         matches!(
             self.options.stalemate_action,
             StalemateAction::RemoveOpponentsPieceAndMakeNextMove
@@ -1229,7 +1251,6 @@ fn sync_phase_for_may_move_in_placing(state: &mut MillState, options: &MillVaria
 
 fn enter_moving_phase(state: &mut MillState, options: &MillVariantOptions) {
     state.phase = MillPhase::Moving;
-    state.side_to_move = if options.is_defender_move_first { 1 } else { 0 };
     // Mirrors Position::remove_marked_pieces in legacy position.cpp: at
     // the placing-to-moving boundary every "X"-marked square sweeps to
     // empty.  Only meaningful for MarkAndDelayRemovingPieces but cheap
@@ -1241,6 +1262,41 @@ fn enter_moving_phase(state: &mut MillState, options: &MillVariantOptions) {
             }
         }
         state.delayed_marked_pieces = 0;
+    }
+    // Mirror handle_placing_phase_end side-to-move logic from master
+    // position.cpp.  The "invariant" branch (lasker / your-turn-with-
+    // multiple / opponents-turn) keeps the active side intact unless
+    // isDefenderMoveFirst forces it to BLACK; every other path
+    // unconditionally hands control to the rule-defined first mover.
+    let invariant = matches!(
+        options.mill_formation_action_in_placing_phase,
+        MillFormationActionInPlacingPhase::RemoveOpponentsPieceFromHandThenOpponentsTurn
+    ) || (matches!(
+        options.mill_formation_action_in_placing_phase,
+        MillFormationActionInPlacingPhase::RemoveOpponentsPieceFromHandThenYourTurn
+    ) && options.may_remove_multiple)
+        || options.may_move_in_placing_phase;
+    let mark_and_delay = matches!(
+        options.mill_formation_action_in_placing_phase,
+        MillFormationActionInPlacingPhase::MarkAndDelayRemovingPieces
+    );
+    let removal_mill_counts = matches!(
+        options.mill_formation_action_in_placing_phase,
+        MillFormationActionInPlacingPhase::RemovalBasedOnMillCounts
+    );
+    if invariant && !mark_and_delay && !removal_mill_counts {
+        // Master returns early after `if (isDefenderMoveFirst) set_side_to_move(BLACK)`,
+        // leaving the caller to skip the default change_side_to_move when
+        // !isDefenderMoveFirst.  We have already toggled side_to_move in
+        // the apply() prelude, so leaving it untouched preserves the
+        // caller's "no further change" intent.
+        if options.is_defender_move_first {
+            state.side_to_move = 1;
+        }
+    } else {
+        // Default branch + markAndDelay + removalBasedOnMillCounts all
+        // funnel through master `set_side_to_move(defender ? BLACK : WHITE)`.
+        state.side_to_move = if options.is_defender_move_first { 1 } else { 0 };
     }
     if matches!(
         options.mill_formation_action_in_placing_phase,
@@ -1264,6 +1320,13 @@ fn empty_square_count(state: &MillState) -> usize {
 }
 
 fn maybe_finish_full_board(state: &mut MillState, options: &MillVariantOptions) {
+    // Mirror Position::handle_placing_phase_end / is_board_full_removal_at_placing_phase_end:
+    // the boardFullAction switch only fires for the 12-piece variant.  In
+    // 9-piece games 9+9=18<24 means the board cannot fill, and the 24-cell
+    // 12-piece variant is the only one master Position checks.
+    if options.piece_count != 12 {
+        return;
+    }
     if state.phase != MillPhase::Moving || empty_square_count(state) != 0 {
         return;
     }
@@ -4255,6 +4318,49 @@ mod tests {
                 payload_bits: 0,
             },
         )
+    }
+
+    /// Mirror Position::is_stalemate_removal at board-full removal: the
+    /// white remover may only target black pieces that are *adjacent to
+    /// at least one white piece*.  Pick a black piece deep inside the
+    /// black cluster (no white neighbours) and verify that target is
+    /// excluded from legal_actions.
+    #[test]
+    fn board_full_remove_uses_stalemate_adjacency_filter() {
+        let rules = MillRules::new(MillVariantOptions {
+            piece_count: 12,
+            board_full_action: MillBoardFullAction::FirstAndSecondPlayerRemovePiece,
+            ..MillVariantOptions::default()
+        });
+        let after_fill = fill_last_square(&rules, board_full_one_empty_state());
+        let state = MillRules::decode(&after_fill);
+        assert_eq!(state.phase, MillPhase::Moving);
+        assert_eq!(state.side_to_move, 0);
+
+        let mut actions = ActionList::<256>::new();
+        rules.legal_actions(&after_fill, &mut actions);
+        assert!(
+            !actions.is_empty(),
+            "white must have at least one legal target"
+        );
+
+        // Every legal Remove must point to a black square that is
+        // adjacent to a white piece (master Position::is_adjacent_to(s, us)).
+        for a in actions
+            .iter()
+            .filter(|a| a.kind_tag == MillActionKind::Remove as i16)
+        {
+            let target = a.to_node as usize;
+            let topo = crate::default_mill_topology();
+            let touched_white = topo
+                .neighbors(target as u16)
+                .iter()
+                .any(|&n| state.board[n as usize] == 1);
+            assert!(
+                touched_white,
+                "node {target} is not adjacent to any white piece"
+            );
+        }
     }
 
     #[test]
