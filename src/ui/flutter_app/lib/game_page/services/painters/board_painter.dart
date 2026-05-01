@@ -189,7 +189,7 @@ class BoardPainter extends CustomPainter {
     }
 
     final Map<PieceColor, List<List<int>>> formedMills =
-        GameController().position.formedMills;
+        _formedMillsForHighlight();
 
     final Color mixedColor = Color.lerp(
       DB().colorSettings.whitePieceColor,
@@ -251,6 +251,22 @@ class BoardPainter extends CustomPainter {
       formedMills[PieceColor.black]!,
       DB().colorSettings.blackPieceColor,
     );
+  }
+
+  Map<PieceColor, List<List<int>>> _formedMillsForHighlight() {
+    final NativeMillSnapshotBoardView? native =
+        GameController().activeNativeMillBoardView;
+    if (native == null) {
+      return GameController().position.formedMills;
+    }
+    final Map<PlayerSeat, List<List<int>>> nativeMills = native
+        .usedMillLinesAsLegacySquares(
+          hasDiagonalLines: DB().ruleSettings.hasDiagonalLines,
+        );
+    return <PieceColor, List<List<int>>>{
+      PieceColor.white: nativeMills[PlayerSeat.first] ?? <List<int>>[],
+      PieceColor.black: nativeMills[PlayerSeat.second] ?? <List<int>>[],
+    };
   }
 
   static void _drawPoints(List<Offset> points, Canvas canvas, Paint paint) {

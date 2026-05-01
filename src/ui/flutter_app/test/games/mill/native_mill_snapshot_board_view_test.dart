@@ -74,5 +74,33 @@ void main() {
       expect(view.isMarkedLegacyGridIndex(21), isTrue);
       expect(view.isMarkedLegacyGridIndex(0), isFalse);
     });
+
+    test('decodes used mill lines as legacy squares with owner', () {
+      final Uint8List payload = Uint8List(256);
+      payload[0] = 1;
+      payload[1] = 1;
+      payload[2] = 1;
+      payload[35] = 1; // line 0: nodes [0,1,2]
+
+      final NativeMillSnapshotBoardView view =
+          NativeMillSnapshotBoardView.fromSnapshot(
+            GameStateSnapshot(
+              gameId: GameId.mill,
+              activeSeat: PlayerSeat.first,
+              outcome: const GameOutcome.ongoing(),
+              payload: <String, Object?>{'tgfPayload': payload},
+            ),
+          )!;
+
+      expect(
+        view.usedMillLinesAsLegacySquares(hasDiagonalLines: false),
+        <PlayerSeat, List<List<int>>>{
+          PlayerSeat.first: <List<int>>[
+            <int>[31, 24, 25],
+          ],
+          PlayerSeat.second: <List<int>>[],
+        },
+      );
+    });
   });
 }

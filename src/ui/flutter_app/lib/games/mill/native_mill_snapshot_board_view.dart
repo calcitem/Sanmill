@@ -27,6 +27,7 @@ class NativeMillSnapshotBoardView {
   }
 
   static const int nodeCount = 24;
+  static const int usedMillLinesByteOffset = 35;
 
   final Uint8List _payload;
   final Set<int> markedNodes;
@@ -73,6 +74,43 @@ class NativeMillSnapshotBoardView {
     return out;
   }
 
+  Map<PlayerSeat, List<List<int>>> usedMillLinesAsLegacySquares({
+    required bool hasDiagonalLines,
+  }) {
+    final Map<PlayerSeat, List<List<int>>> out = <PlayerSeat, List<List<int>>>{
+      PlayerSeat.first: <List<int>>[],
+      PlayerSeat.second: <List<int>>[],
+    };
+    if (_payload.length < usedMillLinesByteOffset + 4) {
+      return out;
+    }
+    const int o = usedMillLinesByteOffset;
+    final int bits =
+        _payload[o] |
+        (_payload[o + 1] << 8) |
+        (_payload[o + 2] << 16) |
+        (_payload[o + 3] << 24);
+    final List<List<int>> lines = hasDiagonalLines
+        ? _diagonalMillLines
+        : _standardMillLines;
+    for (int i = 0; i < lines.length; i++) {
+      if ((bits & (1 << i)) == 0) {
+        continue;
+      }
+      final List<int> line = lines[i];
+      final PlayerSeat? owner = pieceAtNode(line[0]);
+      if (owner == null ||
+          owner == PlayerSeat.none ||
+          line.any((int node) => pieceAtNode(node) != owner)) {
+        continue;
+      }
+      out[owner]!.add(<int>[
+        for (final int node in line) _legacyNodeToSquare[node]!,
+      ]);
+    }
+    return out;
+  }
+
   static const Map<int, int> _legacySquareToNode = <int, int>{
     31: 0,
     24: 1,
@@ -98,6 +136,33 @@ class NativeMillSnapshotBoardView {
     12: 21,
     13: 22,
     14: 23,
+  };
+
+  static const Map<int, int> _legacyNodeToSquare = <int, int>{
+    0: 31,
+    1: 24,
+    2: 25,
+    3: 26,
+    4: 27,
+    5: 28,
+    6: 29,
+    7: 30,
+    8: 23,
+    9: 16,
+    10: 17,
+    11: 18,
+    12: 19,
+    13: 20,
+    14: 21,
+    15: 22,
+    16: 15,
+    17: 8,
+    18: 9,
+    19: 10,
+    20: 11,
+    21: 12,
+    22: 13,
+    23: 14,
   };
 
   static const Map<int, int> _legacyGridIndexToSquare = <int, int>{
@@ -126,4 +191,31 @@ class NativeMillSnapshotBoardView {
     45: 28,
     48: 27,
   };
+
+  static const List<List<int>> _standardMillLines = <List<int>>[
+    <int>[0, 1, 2],
+    <int>[2, 3, 4],
+    <int>[4, 5, 6],
+    <int>[6, 7, 0],
+    <int>[8, 9, 10],
+    <int>[10, 11, 12],
+    <int>[12, 13, 14],
+    <int>[14, 15, 8],
+    <int>[16, 17, 18],
+    <int>[18, 19, 20],
+    <int>[20, 21, 22],
+    <int>[22, 23, 16],
+    <int>[1, 9, 17],
+    <int>[3, 11, 19],
+    <int>[5, 13, 21],
+    <int>[7, 15, 23],
+  ];
+
+  static const List<List<int>> _diagonalMillLines = <List<int>>[
+    ..._standardMillLines,
+    <int>[0, 8, 16],
+    <int>[18, 10, 2],
+    <int>[6, 14, 22],
+    <int>[20, 12, 4],
+  ];
 }
