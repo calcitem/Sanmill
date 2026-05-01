@@ -5,6 +5,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sanmill/game_page/services/import_export/pgn.dart';
 import 'package:sanmill/game_page/services/mill.dart';
+import 'package:sanmill/game_platform/game_id.dart';
+import 'package:sanmill/game_platform/game_session.dart' as platform;
 import 'package:sanmill/shared/database/database.dart';
 
 import '../helpers/mocks/mock_animation_manager.dart';
@@ -537,6 +539,20 @@ white win
       controller.position.winner = PieceColor.nobody;
       withTags = ImportService.addTagPairs('1. d6 f4');
       expect(withTags, contains('[Result "*"]'));
+    });
+
+    test('addTagPairs uses active session result when present', () {
+      final GameController controller = GameController.instance;
+      addTearDown(() => controller.activeSessionSnapshot = null);
+      controller.activeSessionSnapshot = const platform.GameStateSnapshot(
+        gameId: GameId.mill,
+        activeSeat: platform.PlayerSeat.none,
+        outcome: platform.GameOutcome.win(platform.PlayerSeat.second),
+      );
+
+      final String withTags = ImportService.addTagPairs('1. d6 f4');
+
+      expect(withTags, contains('[Result "0-1"]'));
     });
 
     test('addTagPairs preserves FEN tag from move list', () {

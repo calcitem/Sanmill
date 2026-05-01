@@ -246,22 +246,7 @@ class ImportService {
       black = "Human";
     }
 
-    switch (GameController().position.winner) {
-      case PieceColor.white:
-        result = "1-0";
-        break;
-      case PieceColor.black:
-        result = "0-1";
-        break;
-      case PieceColor.draw:
-        result = "1/2-1/2";
-        break;
-      case PieceColor.marked:
-      case PieceColor.none:
-      case PieceColor.nobody:
-        result = "*";
-        break;
-    }
+    result = GameController().gameRecorder.gameResultPgn;
 
     String variantTag;
     if (DB().ruleSettings.isLikelyNineMensMorris()) {
