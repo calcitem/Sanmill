@@ -377,6 +377,7 @@ class ImportService {
 
     final Position localPos = Position();
     localPos.reset();
+    final NativeMillGameSession? nativeSession = _nativeImportSession();
 
     final GameRecorder newHistory = GameRecorder(
       lastPositionWithRemove: GameController().position.fen,
@@ -396,23 +397,29 @@ class ImportService {
         continue;
       }
 
+      void appendAndApply(String move, String originalToken) {
+        final ExtMove extMove = ExtMove(move, side: localPos.sideToMove);
+        newHistory.appendMove(extMove);
+        final bool ok = nativeSession == null
+            ? localPos.doMove(move)
+            : _validateNativeMove(nativeSession, move);
+        if (!ok) {
+          throw ImportFormatException(" $originalToken → $move");
+        }
+        if (nativeSession != null) {
+          localPos.doMove(move);
+        }
+      }
+
       // If the move starts with "x", it means it is a capture move (e.g. "xd3"), and is directly processed as a single move
       if (token.startsWith("x")) {
         final String move = _playOkNotationToMoveString(token);
-        newHistory.appendMove(ExtMove(move, side: localPos.sideToMove));
-        final bool ok = localPos.doMove(move);
-        if (!ok) {
-          throw ImportFormatException(" $token → $move");
-        }
+        appendAndApply(move, token);
       }
       // If there is no "x" in the move, proceed normally
       else if (!token.contains("x")) {
         final String move = _playOkNotationToMoveString(token);
-        newHistory.appendMove(ExtMove(move, side: localPos.sideToMove));
-        final bool ok = localPos.doMove(move);
-        if (!ok) {
-          throw ImportFormatException("$token → $move");
-        }
+        appendAndApply(move, token);
       }
       // If the move contains "x" and is not at the beginning, for example "b6xd3"
       else {
@@ -420,18 +427,10 @@ class ImportService {
         final String preMove = token.substring(0, idx);
         final String captureMove = token.substring(idx); // contains 'x'
         final String m1 = _playOkNotationToMoveString(preMove);
-        newHistory.appendMove(ExtMove(m1, side: localPos.sideToMove));
-        final bool ok1 = localPos.doMove(m1);
-        if (!ok1) {
-          throw ImportFormatException(" $preMove → $m1");
-        }
+        appendAndApply(m1, preMove);
 
         final String m2 = _playOkNotationToMoveString(captureMove);
-        newHistory.appendMove(ExtMove(m2, side: localPos.sideToMove));
-        final bool ok2 = localPos.doMove(m2);
-        if (!ok2) {
-          throw ImportFormatException(" $captureMove → $m2");
-        }
+        appendAndApply(m2, captureMove);
       }
     }
 
@@ -536,6 +535,7 @@ class ImportService {
     } else {
       localPos.reset();
     }
+    _loadActiveNativeSessionFromFenIfNeeded(fen);
 
     final GameRecorder newHistory = GameRecorder(
       lastPositionWithRemove: fen ?? GameController().position.fen,
@@ -708,5 +708,47 @@ class ImportService {
     if (fen != null && fen.isNotEmpty) {
       GameController().gameRecorder.setupPosition = fen;
     }
+  }
+
+  static void _loadActiveNativeSessionFromFenIfNeeded(String? fen) {
+    if (!DB().generalSettings.useNativeMillSession ||
+        fen == null ||
+        fen.isEmpty) {
+      return;
+    }
+    final BuildContext? context = rootScaffoldMessengerKey.currentContext;
+    if (context == null) {
+      return;
+    }
+    final GameSession? session = GameSessionScope.sessionOf(context);
+    if (session is NativeMillGameSession) {
+      final bool loaded = PuzzleMillSession.loadFen(session, fen);
+      assert(loaded, 'Native import FEN must be validated before loading.');
+    }
+  }
+
+  static NativeMillGameSession? _nativeImportSession() {
+    if (!DB().generalSettings.useNativeMillSession) {
+      return null;
+    }
+    final BuildContext? context = rootScaffoldMessengerKey.currentContext;
+    if (context == null) {
+      return null;
+    }
+    final GameSession? session = GameSessionScope.sessionOf(context);
+    return session is NativeMillGameSession ? session : null;
+  }
+
+  static bool _validateNativeMove(
+    NativeMillGameSession session,
+    String move,
+  ) {
+    for (final GameAction action in session.legalActions) {
+      if (MillActionCodec.moveStringFrom(action) == move) {
+        session.apply(action);
+        return true;
+      }
+    }
+    return false;
   }
 }
