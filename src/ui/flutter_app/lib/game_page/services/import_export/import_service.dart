@@ -498,6 +498,47 @@ class ImportService {
 
     // Start a depth-first traversal from the root.
     dfs(root, pos);
+
+    // Supplement boardLayout with native FEN for the mainline when the
+    // native session is active.  Variations keep the legacy layout string
+    // since NativeMillRulesPort (synchronous) cannot DFS-backtrack branches.
+    if (!DB().generalSettings.useNativeMillSession) {
+      return;
+    }
+    final NativeMillRulesPort port = NativeMillRulesPort();
+    if (setupFen != null && setupFen.isNotEmpty) {
+      port.setFromFen(setupFen);
+    }
+    PgnNode<ExtMove> cursor = root;
+    while (cursor.children.isNotEmpty) {
+      final PgnNode<ExtMove> child = cursor.children.first;
+      if (child.data == null) {
+        break;
+      }
+      final ExtMove move = child.data!;
+      GameAction? action;
+      for (final GameAction a in port.legalActions) {
+        if (MillActionCodec.moveStringFrom(a) == move.move) {
+          action = a;
+          break;
+        }
+      }
+      if (action == null) {
+        break;
+      }
+      port.apply(action);
+      final String fen = port.exportFen();
+      // Board section is the part before the first space.
+      final int spaceIdx = fen.indexOf(' ');
+      if (spaceIdx > 0) {
+        final String nativeBoard = fen.substring(0, spaceIdx);
+        if (nativeBoard.length == 26) {
+          move.boardLayout = nativeBoard;
+        }
+      }
+      cursor = child;
+    }
+    port.dispose();
   }
 
   /// For standard PGN strings containing headers and moves, parse them

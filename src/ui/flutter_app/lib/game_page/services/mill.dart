@@ -37,6 +37,7 @@ import '../../games/mill/mill_board_coordinate_maps.dart';
 import '../../games/mill/mill_session_tap_controller.dart';
 import '../../games/mill/native_mill_ai_turn_controller.dart';
 import '../../games/mill/native_mill_game_session.dart';
+import '../../games/mill/native_mill_rules_port.dart';
 import '../../games/mill/native_mill_snapshot_board_view.dart';
 import '../../games/mill/puzzle_mill_session.dart';
 import '../../general_settings/models/general_settings.dart';

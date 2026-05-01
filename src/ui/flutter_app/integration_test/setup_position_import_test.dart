@@ -2,17 +2,24 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:sanmill/game_page/services/mill.dart';
+import 'package:sanmill/games/mill/native_mill_game_session.dart';
 import 'package:sanmill/main.dart' as app;
+import 'package:sanmill/shared/database/database.dart';
+import 'package:sanmill/src/rust/frb_generated.dart';
 
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
+
+  setUpAll(() async => RustLib.init());
 
   tearDown(() {
     // This is a workaround to ensure the app is fully closed between tests.
     GameController.instance.engine.shutdown();
   });
 
-  testWidgets('Setup Position FEN Import Test', (WidgetTester tester) async {
+  testWidgets('Setup Position FEN Import Test (legacy)', (
+    WidgetTester tester,
+  ) async {
     app.main();
     await tester.pumpAndSettle();
 
@@ -33,5 +40,33 @@ void main() {
     final String? exportedFen = controller.position.fen;
     debugPrint('FEN after import: $exportedFen');
     expect(exportedFen, contains('i:w-0-|b-2-10.14'));
+  });
+
+  testWidgets('Setup Position FEN Import Test (native session)', (
+    WidgetTester tester,
+  ) async {
+    // Standard start FEN (all pieces in hand, placing phase).
+    const String startFen =
+        '********/********/******** w p p 0 9 0 9 0 0 0 0 0 0 0 0 1';
+
+    final NativeMillGameSession session = NativeMillGameSession();
+    addTearDown(session.dispose);
+
+    final bool loaded = session.loadFen(startFen);
+    debugPrint(
+      'Native FEN import: $loaded, '
+      'session.useNativeMillSession=${DB().generalSettings.useNativeMillSession}',
+    );
+
+    expect(loaded, isTrue);
+    expect(session.state.value.phase, 'placing');
+    expect(session.legalActions, hasLength(24));
+
+    // Export and verify.
+    final String exportedFen = session.getFen();
+    debugPrint('Native exported FEN: $exportedFen');
+    expect(exportedFen, isNotEmpty);
+    expect(exportedFen, contains(' w '));
+    expect(exportedFen, contains(' p '));
   });
 }
