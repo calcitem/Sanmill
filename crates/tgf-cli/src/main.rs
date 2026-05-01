@@ -268,9 +268,12 @@ fn print_uci_options() {
     println!("option name MultiPV type spin default 1 min 1 max 64");
     println!("option name MaxQuiescenceDepth type spin default 0 min 0 max 4");
     println!("option name SkillLevel type spin default 20 min 0 max 20");
-    // Mill rule variant options
+    // Mill rule variant options.  Prefer legacy-compatible names from
+    // src/ucioption.cpp; keep older tgf-cli aliases too.
+    println!("option name PiecesCount type spin default 9 min 3 max 12");
+    println!("option name flyPieceCount type spin default 3 min 3 max 4");
     println!("option name PieceCount type spin default 9 min 3 max 12");
-    println!("option name FlyPieceCount type spin default 3 min 3 max 3");
+    println!("option name FlyPieceCount type spin default 3 min 3 max 4");
     println!("option name PiecesAtLeastCount type spin default 3 min 2 max 3");
     println!("option name MayFly type check default true");
     println!("option name HasDiagonalLines type check default false");
@@ -333,7 +336,7 @@ fn apply_setoption(
                 SetoptionResult::SearchConfig
             })
             .unwrap_or(SetoptionResult::Unknown),
-        "piececount" | "piece count" => value
+        "piecescount" | "pieces count" | "piececount" | "piece count" => value
             .parse::<u8>()
             .ok()
             .filter(|v| (3..=12).contains(v))
@@ -345,6 +348,7 @@ fn apply_setoption(
         "flypiececount" | "fly piece count" => value
             .parse::<u8>()
             .ok()
+            .filter(|v| (3..=4).contains(v))
             .map(|v| {
                 options.fly_piece_count = v;
                 SetoptionResult::Variant
@@ -742,5 +746,34 @@ mod tests {
 
         assert_eq!(state.opaque_payload[1], 1); // d7 / node 1
         assert_eq!(state.side_to_move, 1);
+    }
+
+    #[test]
+    fn setoption_accepts_legacy_piece_count_names() {
+        let mut options = MillVariantOptions::default();
+        let mut threads = 1;
+        let mut qsearch = 0;
+
+        assert!(matches!(
+            apply_setoption(
+                "setoption name PiecesCount value 12",
+                &mut options,
+                &mut threads,
+                &mut qsearch,
+            ),
+            SetoptionResult::Variant
+        ));
+        assert_eq!(options.piece_count, 12);
+
+        assert!(matches!(
+            apply_setoption(
+                "setoption name flyPieceCount value 4",
+                &mut options,
+                &mut threads,
+                &mut qsearch,
+            ),
+            SetoptionResult::Variant
+        ));
+        assert_eq!(options.fly_piece_count, 4);
     }
 }
