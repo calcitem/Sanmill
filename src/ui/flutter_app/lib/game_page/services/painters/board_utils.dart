@@ -215,5 +215,5 @@ int? coordinatesToIndex(int x, int y) {
   final int square = makeSquare(x, y);
 
   // Then convert from square to board index
-  return squareToIndex[square];
+  return MillBoardCoordinateMaps.squareToGridIndex[square];
 }
