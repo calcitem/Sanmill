@@ -1049,6 +1049,75 @@ mod tests {
         );
     }
 
+    /// Regression for "AI forms a mill but does not remove the human's
+    /// piece": after a Place action that completes a mill, the rules
+    /// engine must keep `side_to_move` on the mover and set
+    /// `pending_removals[mover] > 0`, and the next search-and-apply pass
+    /// must produce a Remove action.
+    #[test]
+    fn native_search_after_mill_keeps_turn_and_chains_remove() {
+        let rules = MillRules::default();
+        let game = MillGame::default();
+        let options = NativeMillVariantOptions::default();
+
+        // Build a placing-phase position via the public setup API where it
+        // is White's turn and White can complete the a7-d7-g7 mill (nodes
+        // 0/1/2) by placing on node 1.  Black has two pieces on nodes 3
+        // and 5 to provide remove targets after the mill is formed.
+        let mut state = rules.setup_empty();
+        state.set_piece(0, 1); // White on node 0 (a7)
+        state.set_piece(2, 1); // White on node 2 (g7)
+        state.set_piece(3, 2); // Black on node 3 (g4)
+        state.set_piece(5, 2); // Black on node 5 (d1)
+        state.set_side_to_move(0);
+        state.recompute_aux(&options);
+        let snap = rules.encode_state(state);
+
+        // 1) The first search must place on node 1 to form the mill.
+        let mut wb = game.build_workbench(&snap);
+        let mut searcher = mill_searcher_default();
+        let mill_move = searcher.search_pvs(&mut wb, 2).best_action;
+        assert_eq!(
+            mill_move.kind_tag,
+            MillActionKind::Place as i16,
+            "expected a Place action that completes the mill"
+        );
+        assert_eq!(mill_move.to_node, 1);
+
+        // 2) Apply it.  Side-to-move must stay on White and pending_removal
+        //    must become 1, exactly as the C++ legacy engine does after a
+        //    mill is formed.  The opaque payload encodes pending_removals
+        //    at offsets 28..30 (see `MillState::encode` in tgf-mill).
+        let after_mill = rules.apply(&snap, mill_move);
+        assert_eq!(
+            after_mill.side_to_move, 0,
+            "after forming a mill side-to-move must remain on the mover"
+        );
+        assert_eq!(
+            after_mill.opaque_payload[28], 1,
+            "mill formation must set pending_removals[mover] = 1"
+        );
+
+        // 3) The next search must produce a Remove action.  Without the
+        //    fix in NativeMillAiTurnController.playIfAiTurn this would
+        //    happen on the *next* tap; the regression test is that the
+        //    engine itself can still produce the remove from the same
+        //    side_to_move when asked.
+        let mut wb2 = game.build_workbench(&after_mill);
+        let remove_move = searcher.search_pvs(&mut wb2, 1).best_action;
+        assert_eq!(
+            remove_move.kind_tag,
+            MillActionKind::Remove as i16,
+            "after a mill the next AI action must be Remove, got kind={}",
+            remove_move.kind_tag,
+        );
+        assert!(
+            matches!(remove_move.to_node, 3 | 5),
+            "remove target must be one of Black's pieces (node 3 or 5), got {}",
+            remove_move.to_node
+        );
+    }
+
     #[test]
     fn native_and_legacy_perft_depth_one_match() {
         let _guard = LEGACY_TEST_MUTEX
