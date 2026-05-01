@@ -8,6 +8,10 @@ import 'dart:async';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 
+import '../../../game_platform/game_session.dart';
+import '../../../game_shell/game_session_scope.dart';
+import '../../../games/mill/lan_session_meta.dart';
+import '../../../games/mill/native_mill_game_session.dart';
 import '../../../generated/intl/l10n.dart';
 import '../../../shared/database/database.dart';
 import '../../../shared/services/logger.dart';
@@ -285,6 +289,7 @@ class LanConfigDialogState extends State<LanConfigDialog>
     // Assign this instance to global
     GameController().networkService = _networkService;
     GameController().lanHostPlaysWhite = _hostPlaysWhite;
+    _attachNativeLanMeta(isHost: true);
 
     setState(() {
       _serverRunning = true;
@@ -469,6 +474,7 @@ class LanConfigDialogState extends State<LanConfigDialog>
         await _networkService.connectToHost(_ipController.text, port);
         connected = true;
         GameController().networkService = _networkService;
+        _attachNativeLanMeta(isHost: false);
 
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -501,6 +507,16 @@ class LanConfigDialogState extends State<LanConfigDialog>
       setState(() {
         _isConnecting = false;
       });
+    }
+  }
+
+  void _attachNativeLanMeta({required bool isHost}) {
+    final GameSession? session = GameSessionScope.sessionOf(context);
+    if (session is NativeMillGameSession) {
+      session.lanMeta = LanSessionMeta.forEndpoint(
+        isHost: isHost,
+        hostPlaysWhite: _hostPlaysWhite,
+      );
     }
   }
 

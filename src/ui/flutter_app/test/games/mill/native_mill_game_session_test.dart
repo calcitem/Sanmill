@@ -6,6 +6,7 @@ import 'dart:async';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sanmill/game_platform/game_id.dart';
 import 'package:sanmill/game_platform/game_session.dart';
+import 'package:sanmill/games/mill/lan_session_meta.dart';
 import 'package:sanmill/games/mill/mill_constants.dart';
 import 'package:sanmill/games/mill/native_mill_game_session.dart';
 import 'package:sanmill/games/mill/native_mill_rules_port.dart';
@@ -135,6 +136,22 @@ void main() {
         expect(rulesPort.applyCount, 0);
       },
     );
+
+    test('stores LAN metadata for native LAN turn checks', () {
+      final _FakeNativeMillRulesPort rulesPort = _FakeNativeMillRulesPort();
+      final NativeMillGameSession session = NativeMillGameSession(
+        rulesPort: rulesPort,
+      );
+      addTearDown(session.dispose);
+
+      const LanSessionMeta meta = LanSessionMeta(
+        localSeat: PlayerSeat.second,
+        hostPlaysWhite: false,
+      );
+      session.lanMeta = meta;
+
+      expect(session.lanMeta, meta);
+    });
   });
 }
 

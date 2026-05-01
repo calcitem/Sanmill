@@ -68,10 +68,11 @@ class TapHandler {
     // The Rust-native session path is now supported for:
     //   - humanVsHuman, humanVsAi (placing / moving / removing)
     //   - setupPosition (direct board editing via setupSetPiece)
-    // LAN, replay, and puzzle modes still depend on legacy side effects.
+    // Replay and puzzle modes still depend on legacy side effects.
     final GameMode mode = controller.gameInstance.gameMode;
     if (mode != GameMode.humanVsHuman &&
         mode != GameMode.humanVsAi &&
+        mode != GameMode.humanVsLAN &&
         mode != GameMode.setupPosition) {
       _nativeSessionTapController.clearSelection();
       return null;
@@ -86,6 +87,21 @@ class TapHandler {
         "$_logTag Native Mill flag is on but session is ${session.runtimeType}.",
       );
       return const EngineResponseSkip();
+    }
+
+    if (mode == GameMode.humanVsLAN) {
+      if (controller.isNativeLanOpponentTurn(session)) {
+        rootScaffoldMessengerKey.currentState!.showSnackBarClear(
+          S.of(context).notYourTurn,
+        );
+        return const EngineResponseSkip();
+      }
+      if (GameController().networkService == null ||
+          !GameController().networkService!.isConnected) {
+        logger.w("$_logTag No active LAN connection");
+        showTip(S.of(context).noLanConnection, snackBar: true);
+        return const EngineResponseSkip();
+      }
     }
 
     final NativeMillAiTurnController aiTurnController =
@@ -120,6 +136,10 @@ class TapHandler {
         );
         PlayerTimer().stop();
         GameController().boardSemanticsNotifier.updateSemantics();
+        if (mode == GameMode.humanVsLAN) {
+          final String? appliedMove = result.action?.payload['move'] as String?;
+          GameController().sendLanMove(appliedMove ?? tappedLabel);
+        }
         if (mode == GameMode.humanVsAi && aiTurnController.isAiTurn(session)) {
           final GameAction? aiAction = await aiTurnController.playIfAiTurn(
             session,

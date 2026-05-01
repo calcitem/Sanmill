@@ -203,6 +203,10 @@ class GameController {
 
   /// Determines the local player's color based on whether they are Host or Client
   PieceColor getLocalColor() {
+    final LanSessionMeta? meta = activeNativeLanMeta;
+    if (meta != null) {
+      return meta.localPieceColor;
+    }
     final bool amIHost = networkService?.isHost ?? false;
     final bool hostPlaysWhite = lanHostPlaysWhite ?? true;
     if (amIHost) {
@@ -212,6 +216,84 @@ class GameController {
       // Client: Opposite of host's choice
       return hostPlaysWhite ? PieceColor.black : PieceColor.white;
     }
+  }
+
+  LanSessionMeta? get activeNativeLanMeta {
+    if (!DB().generalSettings.useNativeMillSession ||
+        gameInstance.gameMode != GameMode.humanVsLAN) {
+      return null;
+    }
+    final BuildContext? context = rootScaffoldMessengerKey.currentContext;
+    if (context == null) {
+      return null;
+    }
+    final GameSession? session = GameSessionScope.sessionOf(context);
+    return session is NativeMillGameSession ? session.lanMeta : null;
+  }
+
+  bool isNativeLanOpponentTurn(NativeMillGameSession session) {
+    final LanSessionMeta? meta = session.lanMeta ?? activeNativeLanMeta;
+    final PlayerSeat localSeat = meta?.localSeat ?? _fallbackLocalSeat();
+    final bool opponentTurn = session.state.value.activeSeat != localSeat;
+    isLanOpponentTurn = opponentTurn;
+    return opponentTurn;
+  }
+
+  Future<bool> handleNativeLanMove(
+    NativeMillGameSession session,
+    String moveNotation,
+  ) async {
+    if (gameInstance.gameMode != GameMode.humanVsLAN) {
+      logger.w("$_logTag Ignoring native LAN move: wrong mode");
+      return false;
+    }
+
+    final GameAction? action = _nativeSessionActionForMove(
+      session,
+      moveNotation,
+    );
+    if (action == null) {
+      logger.e("$_logTag Invalid native LAN move received: $moveNotation");
+      headerTipNotifier.showTip("Opponent sent an invalid move");
+      return false;
+    }
+
+    await session.apply(action);
+    refreshLanTurn(showTip: true);
+    if (session.outcome.isTerminal) {
+      gameResultNotifier.showResult(force: true);
+    }
+    logger.i("$_logTag Successfully processed native LAN move: $moveNotation");
+    return true;
+  }
+
+  GameAction? _nativeSessionActionForMove(
+    NativeMillGameSession session,
+    String moveNotation,
+  ) {
+    for (final GameAction action in session.legalActions) {
+      if (action.payload['move'] == moveNotation) {
+        return action;
+      }
+    }
+    return null;
+  }
+
+  static PlayerSeat _seatFromPieceColor(PieceColor color) {
+    return switch (color) {
+      PieceColor.white => PlayerSeat.first,
+      PieceColor.black => PlayerSeat.second,
+      _ => PlayerSeat.none,
+    };
+  }
+
+  PlayerSeat _fallbackLocalSeat() {
+    final bool amIHost = networkService?.isHost ?? false;
+    final bool hostPlaysWhite = lanHostPlaysWhite ?? true;
+    final PieceColor localColor = amIHost
+        ? (hostPlaysWhite ? PieceColor.white : PieceColor.black)
+        : (hostPlaysWhite ? PieceColor.black : PieceColor.white);
+    return _seatFromPieceColor(localColor);
   }
 
   /// Sends a restart request to the LAN opponent.
@@ -603,19 +685,32 @@ class GameController {
   }
 
   /// This method must be called right after any state change that may alter
-  /// `position.sideToMove` (local move, remote move, take-back, restart, etc).
-  /// It ensures `isLanOpponentTurn` and the header tip stay consistent on both
-  /// peers by using the single source of truth:
-  ///   isLanOpponentTurn = (position.sideToMove != localColor)
+  /// the side to move (local move, remote move, take-back, restart, etc).
+  /// It keeps `isLanOpponentTurn` and the header tip consistent on both peers.
   void refreshLanTurn({bool showTip = true, bool snackBar = false}) {
     if (gameInstance.gameMode != GameMode.humanVsLAN) {
       return;
     }
+    final BuildContext? scopedContext = rootScaffoldMessengerKey.currentContext;
+    final GameSession? scopedSession = scopedContext == null
+        ? null
+        : GameSessionScope.sessionOf(scopedContext);
+    if (scopedSession is NativeMillGameSession &&
+        DB().generalSettings.useNativeMillSession) {
+      isNativeLanOpponentTurn(scopedSession);
+      _showLanTurnTip(showTip: showTip, snackBar: snackBar);
+      headerIconsNotifier.showIcons();
+      boardSemanticsNotifier.updateSemantics();
+      return;
+    }
+    final GameStateSnapshot? nativeSnapshot = activeSessionSnapshot;
     final PieceColor localColor = getLocalColor();
+    final PieceColor sideToMove = position.sideToMove;
     final bool wasOpponentTurn = isLanOpponentTurn;
-    isLanOpponentTurn = (position.sideToMove != localColor);
+    isLanOpponentTurn = (sideToMove != localColor);
     logger.i(
-      "$_logTag [LAN] refreshLanTurn: local=$localColor, sideToMove=${position.sideToMove}, "
+      "$_logTag [LAN] refreshLanTurn: local=$localColor, sideToMove=$sideToMove, "
+      "native=${nativeSnapshot != null}, "
       "isOpponentTurn: $wasOpponentTurn -> $isLanOpponentTurn",
     );
     if (showTip) {
@@ -633,6 +728,18 @@ class GameController {
     boardSemanticsNotifier.updateSemantics();
   }
 
+  void _showLanTurnTip({required bool showTip, required bool snackBar}) {
+    if (!showTip) {
+      return;
+    }
+    final BuildContext? context = rootScaffoldMessengerKey.currentContext;
+    final String ot = context != null
+        ? S.of(context).opponentSTurn
+        : "Opponent's turn";
+    final String yt = context != null ? S.of(context).yourTurn : "Your turn";
+    headerTipNotifier.showTip(isLanOpponentTurn ? ot : yt, snackBar: snackBar);
+  }
+
   /// Handles a move received from the LAN opponent
   void handleLanMove(String moveNotation) {
     if (gameInstance.gameMode != GameMode.humanVsLAN) {
@@ -646,6 +753,18 @@ class GameController {
         final bool aiMovesFirst = DB().generalSettings.aiMovesFirst;
         networkService?.sendMove("response:aiMovesFirst:$aiMovesFirst");
         logger.i("$_logTag Sent aiMovesFirst: $aiMovesFirst to Client");
+        return;
+      }
+
+      final GameSession? scopedSession =
+          rootScaffoldMessengerKey.currentContext == null
+          ? null
+          : GameSessionScope.sessionOf(
+              rootScaffoldMessengerKey.currentContext!,
+            );
+      if (scopedSession is NativeMillGameSession &&
+          DB().generalSettings.useNativeMillSession) {
+        handleNativeLanMove(scopedSession, moveNotation);
         return;
       }
 
@@ -692,11 +811,13 @@ class GameController {
     }
 
     try {
-      networkService?.sendMove(moveNotation);
+      final String outbound = moveNotation;
+      networkService?.sendMove(outbound);
       // After sending, toggle turn based on local color
       final PieceColor localColor = getLocalColor();
-      isLanOpponentTurn = (position.sideToMove != localColor);
-      logger.i("$_logTag Sent move to LAN opponent: $moveNotation");
+      final PieceColor sideToMove = position.sideToMove;
+      isLanOpponentTurn = (sideToMove != localColor);
+      logger.i("$_logTag Sent move to LAN opponent: $outbound");
       final BuildContext? context = rootScaffoldMessengerKey.currentContext;
       final String ot = context != null
           ? S.of(context).opponentSTurn

@@ -17,6 +17,7 @@ import '../../game_platform/game_session.dart';
 import '../../game_platform/game_session_handle.dart';
 import '../../rule_settings/models/rule_settings.dart';
 import '../../src/rust/api/simple.dart' as tgf;
+import 'lan_session_meta.dart';
 import 'mill_constants.dart';
 import 'native_mill_rules_port.dart';
 
@@ -24,17 +25,20 @@ class NativeMillGameSession implements GameSessionHandle {
   factory NativeMillGameSession({
     NativeMillRulesPort? rulesPort,
     RuleSettings? rules,
+    LanSessionMeta? lanMeta,
   }) {
     final NativeMillRulesPort port =
         rulesPort ??
         NativeMillRulesPort(ruleSettings: rules ?? const RuleSettings());
-    return NativeMillGameSession._(port);
+    return NativeMillGameSession._(port, lanMeta: lanMeta);
   }
 
-  NativeMillGameSession._(this.rulesPort)
-    : _state = ValueNotifier<GameStateSnapshot>(rulesPort.snapshot);
+  NativeMillGameSession._(this.rulesPort, {LanSessionMeta? lanMeta})
+    : lanMeta = lanMeta,
+      _state = ValueNotifier<GameStateSnapshot>(rulesPort.snapshot);
 
   final NativeMillRulesPort rulesPort;
+  LanSessionMeta? lanMeta;
   final ValueNotifier<GameStateSnapshot> _state;
   final StreamController<GameSessionEvent> _events =
       StreamController<GameSessionEvent>.broadcast();
