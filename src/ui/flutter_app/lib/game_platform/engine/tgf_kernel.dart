@@ -142,7 +142,11 @@ class TgfKernel {
   /// [owner]: 1 = first player, 2 = second player, other = clear.
   tgf.TgfSnapshot rawSetupSetPiece(int node, int owner) {
     _checkAlive();
-    return tgf.tgfKernelSetupSetPiece(handle: _handle, node: node, owner: owner);
+    return tgf.tgfKernelSetupSetPiece(
+      handle: _handle,
+      node: node,
+      owner: owner,
+    );
   }
 
   /// Set the side to move during setup editing. [side]: 0 or 1.

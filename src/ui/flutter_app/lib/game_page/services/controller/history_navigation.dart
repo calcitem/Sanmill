@@ -381,8 +381,8 @@ class HistoryNavigator {
     HistoryNavMode navMode, [
     int? number,
   ]) async {
-    final NativeMillGameSession? nativeSession = DB().generalSettings
-        .useNativeMillSession
+    final NativeMillGameSession? nativeSession =
+        DB().generalSettings.useNativeMillSession
         ? _activeNativeSession()
         : null;
     if (nativeSession != null) {
@@ -477,8 +477,8 @@ class HistoryNavigator {
       cur = cur.parent;
     }
 
-    final NativeMillGameSession? nativeSession = DB().generalSettings
-        .useNativeMillSession
+    final NativeMillGameSession? nativeSession =
+        DB().generalSettings.useNativeMillSession
         ? _activeNativeSession(context)
         : null;
     if (nativeSession != null) {

@@ -83,12 +83,11 @@ TgfSnapshot tgfKernelSetupSetPiece({
   required int handle,
   required int node,
   required int owner,
-}) =>
-    RustLib.instance.api.crateApiKernelTgfKernelSetupSetPiece(
-      handle: handle,
-      node: node,
-      owner: owner,
-    );
+}) => RustLib.instance.api.crateApiKernelTgfKernelSetupSetPiece(
+  handle: handle,
+  node: node,
+  owner: owner,
+);
 
 /// Set the side to move during setup-position editing.
 /// [side]: 0 = first player, 1 = second player.

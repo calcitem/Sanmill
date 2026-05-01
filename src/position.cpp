@@ -233,10 +233,9 @@ void Position::nnueWriteTrainingData()
     file.open(filename, std::ios::out);
 
     for
-        each(string var in nnueTrainingDataStringStream)
-        {
-            file << var + " " + nnueGetCurSideGameResult(lastSide, var) + "\n";
-        }
+        each (string var in nnueTrainingDataStringStream) {
+        file << var + " " + nnueGetCurSideGameResult(lastSide, var) + "\n";
+    }
 
     file.close();
 
@@ -530,9 +529,9 @@ Position &Position::set(const string &fenStr)
             }
 
             const char colorChar = segment[0];
-            const Color color = colorChar == 'w' ?
-                                    WHITE :
-                                    colorChar == 'b' ? BLACK : NOBODY;
+            const Color color = colorChar == 'w' ? WHITE :
+                                colorChar == 'b' ? BLACK :
+                                                   NOBODY;
 
             if (color != WHITE && color != BLACK) {
                 continue;
