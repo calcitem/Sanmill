@@ -447,13 +447,22 @@ pub fn tgf_kernel_setup_finish(handle: u32) -> Result<TgfSnapshot, String> {
     let mut state = tgf_mill::MillRules::decode_snapshot(kernel.snapshot());
     state.recompute_aux(&options);
     // Determine phase: placing if either side still has pieces in hand,
-    // otherwise moving (or gameOver if fewer than 3 pieces per side).
-    let phase = if state.pieces_in_hand[0] > 0 || state.pieces_in_hand[1] > 0 {
-        MillPhase::Placing
+    // moving otherwise — but check for an immediate GameOver when either
+    // side would have fewer than pieces_at_least_count pieces on board
+    // (mirrors C++ `check_if_game_is_over` at position-setup boundaries).
+    if state.pieces_in_hand[0] > 0 || state.pieces_in_hand[1] > 0 {
+        state.set_phase(MillPhase::Placing);
     } else {
-        MillPhase::Moving
-    };
-    state.set_phase(phase);
+        // Both hands empty: determine if the resulting moving-phase position
+        // is already terminal (either side below pieces_at_least_count).
+        if let Some(winner) = state.check_pieces_at_least(&options) {
+            state.set_phase(MillPhase::GameOver);
+            state.set_winner(winner);
+            state.set_outcome_reason_fewer_than_threshold();
+        } else {
+            state.set_phase(MillPhase::Moving);
+        }
+    }
     let new_snap = rules.encode_state(state);
     kernel.replace_state(new_snap);
     Ok(TgfSnapshot::from_snap(new_snap))

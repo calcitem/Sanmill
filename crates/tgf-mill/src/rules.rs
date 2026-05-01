@@ -141,7 +141,7 @@ pub struct MillVariantOptions {
     pub board_full_action: MillBoardFullAction,
     /// Enable the FIDE-style threefold-repetition draw rule: when the
     /// same moving-phase position recurs three times the engine sets
-    /// `phase=GameOver` and `outcome=Draw{drawThreefold}`.  Default is
+    /// `phase=GameOver` and `outcome=Draw{drawThreefoldRepetition}`.  Default is
     /// `true`, matching the C++ engine's `rule.threefoldRepetitionRule`.
     pub threefold_repetition_rule: bool,
     pub custodian_capture: CaptureRuleConfig,
@@ -758,6 +758,15 @@ impl GameRules for MillRules {
                     state.mill_available_at_removal = false;
                 } else {
                     clear_capture_state(&mut state);
+                    // Clear the per-side last-mill record when no mill was
+                    // formed.  Mirrors C++ position.cpp's
+                    // `lastMillFromSquare[c] = SQ_NONE` / `lastMillToSquare[c] = SQ_NONE`
+                    // in the non-mill branch of do_move().  Without this clear,
+                    // `restrict_repeated_mills_formation` incorrectly blocks a
+                    // later re-formation of the same mill even after the mover
+                    // has made an intermediate non-mill move.
+                    state.last_mill_from[side] = -1;
+                    state.last_mill_to[side] = -1;
                     state.side_to_move ^= 1;
                     // Record this side-changing reversible move into the
                     // repetition history *before* deciding whether the
@@ -918,9 +927,12 @@ impl GameRules for MillRules {
                     kind: OutcomeKind::Draw,
                     reason: match state.outcome_reason {
                         MillOutcomeReason::DrawFullBoard => "drawFullBoard",
-                        MillOutcomeReason::DrawNMoveRule => "drawNMoveRule",
-                        MillOutcomeReason::DrawThreefold => "drawThreefold",
-                        MillOutcomeReason::DrawStalemate => "drawStalemate",
+                        // Legacy value kept for deserialized snapshots.
+                        MillOutcomeReason::DrawNMoveRule => "drawFiftyMove",
+                        MillOutcomeReason::DrawFiftyMove => "drawFiftyMove",
+                        MillOutcomeReason::DrawEndgameFiftyMove => "drawEndgameFiftyMove",
+                        MillOutcomeReason::DrawThreefold => "drawThreefoldRepetition",
+                        MillOutcomeReason::DrawStalemate => "drawStalemateCondition",
                         _ => "draw",
                     }
                     .to_owned(),
@@ -1024,8 +1036,11 @@ impl MillRules {
                 || (state.phase == MillPhase::Placing
                     && self.options.may_move_in_placing_phase
                     && self.options.leap_capture.in_placing_phase));
-        for (from, piece) in state.board.iter().enumerate() {
-            if *piece != state.side_to_move + 1 {
+        for (from, _piece) in state.board.iter().enumerate() {
+            // Use live_piece() rather than the raw board value so that
+            // mark-and-delay MARKED_PIECE squares are treated as empty
+            // (not movable) — mirrors C++ generate<MOVE>'s byColorBB filter.
+            if live_piece(state, from) != state.side_to_move + 1 {
                 continue;
             }
             if can_fly {
@@ -1489,10 +1504,14 @@ fn maybe_draw_by_n_move_rule(state: &mut MillState, options: &MillVariantOptions
     if state.phase != MillPhase::Moving {
         return;
     }
-    let threshold = if options.endgame_n_move_rule > 0
+    // Mirror C++ `Position::is_three_endgame()`: endgame threshold applies when
+    // EITHER side has EXACTLY fly_piece_count pieces on board.  Using `== fly_piece_count`
+    // (rather than `<= fly_piece_count`) matches C++ semantics; counts below
+    // fly_piece_count would already have triggered LoseFewerThanThree.
+    let is_endgame = options.endgame_n_move_rule > 0
         && options.endgame_n_move_rule < options.n_move_rule
-        && state.pieces_on_board.iter().any(|count| *count <= 3)
-    {
+        && state.pieces_on_board.contains(&options.fly_piece_count);
+    let threshold = if is_endgame {
         options.endgame_n_move_rule
     } else {
         options.n_move_rule
@@ -1500,7 +1519,11 @@ fn maybe_draw_by_n_move_rule(state: &mut MillState, options: &MillVariantOptions
     if threshold > 0 && u32::from(state.ply_since_capture) >= threshold {
         state.phase = MillPhase::GameOver;
         state.winner = 2;
-        state.outcome_reason = MillOutcomeReason::DrawNMoveRule;
+        state.outcome_reason = if is_endgame {
+            MillOutcomeReason::DrawEndgameFiftyMove
+        } else {
+            MillOutcomeReason::DrawFiftyMove
+        };
         state.side_to_move = -1;
     }
 }
@@ -1686,15 +1709,17 @@ fn note_mill_formation(
     state.last_mill_to[side] = to;
     state.used_mill_lines |= bits;
     // Mirror Position::potential_mills_count (`oneTimeUseMill` branch):
-    // every square of every newly-formed mill line gets recorded into the
-    // per-side `formedMillsBB[c]` bitmap.  `formed_mills_bb` is therefore
-    // a *historical* record (no clear on capture) that the static
-    // evaluator's mills_pieces_count_difference reads via popcount.
-    let lines = mill_lines(options);
-    for (line_idx, line) in lines.iter().enumerate() {
-        if (bits & (1u32 << line_idx)) != 0 {
-            for &sq in line.iter() {
-                state.formed_mills_bb[side] |= node_bit(sq);
+    // Only record into `formedMillsBB[c]` when oneTimeUseMill is enabled.
+    // C++ only maintains this bitmap in the `oneTimeUseMill` code path;
+    // unconditionally accumulating it (as previously) caused the evaluator's
+    // mills_pieces_count_difference to diverge for non-Russian-Mill rules.
+    if options.one_time_use_mill {
+        let lines = mill_lines(options);
+        for (line_idx, line) in lines.iter().enumerate() {
+            if (bits & (1u32 << line_idx)) != 0 {
+                for &sq in line.iter() {
+                    state.formed_mills_bb[side] |= node_bit(sq);
+                }
             }
         }
     }
@@ -1875,12 +1900,20 @@ enum MillOutcomeReason {
     #[default]
     Ongoing = 0,
     LoseFewerThanThree = 1,
+    /// Retained for backward-compatibility with serialised snapshots; new
+    /// code uses `DrawFiftyMove` or `DrawEndgameFiftyMove`.
     DrawNMoveRule = 2,
     DrawFullBoard = 3,
     LoseFullBoard = 4,
+    /// Threefold-repetition draw (string: "drawThreefoldRepetition").
     DrawThreefold = 5,
     LoseNoLegalMoves = 6,
+    /// Stalemate draw (string: "drawStalemateCondition").
     DrawStalemate = 7,
+    /// Regular n_move_rule draw (string: "drawFiftyMove").
+    DrawFiftyMove = 8,
+    /// Endgame-specific endgame_n_move_rule draw (string: "drawEndgameFiftyMove").
+    DrawEndgameFiftyMove = 9,
 }
 
 impl MillState {
@@ -1994,6 +2027,12 @@ impl MillState {
                 x if x == MillOutcomeReason::DrawStalemate as u8 => {
                     MillOutcomeReason::DrawStalemate
                 }
+                x if x == MillOutcomeReason::DrawFiftyMove as u8 => {
+                    MillOutcomeReason::DrawFiftyMove
+                }
+                x if x == MillOutcomeReason::DrawEndgameFiftyMove as u8 => {
+                    MillOutcomeReason::DrawEndgameFiftyMove
+                }
                 _ => MillOutcomeReason::Ongoing,
             },
             key_history,
@@ -2048,6 +2087,43 @@ impl MillState {
 
     pub fn set_phase(&mut self, phase: MillPhase) {
         self.phase = phase;
+    }
+
+    /// Set the winner field directly.  Used by setup-position tools that
+    /// need to mark an immediate-GameOver position (e.g. fewer than
+    /// pieces_at_least_count pieces after `setup_finish`).
+    pub fn set_winner(&mut self, winner: i8) {
+        self.winner = winner;
+        self.side_to_move = -1;
+    }
+
+    /// Mark the position as lost due to too few pieces (mirrors C++
+    /// `GameOverReason::loseFewerThanThree`).  Only valid to call after
+    /// `set_phase(GameOver)`.
+    pub fn set_outcome_reason_fewer_than_threshold(&mut self) {
+        self.outcome_reason = MillOutcomeReason::LoseFewerThanThree;
+    }
+
+    /// Check whether either side has fewer than `options.pieces_at_least_count`
+    /// pieces on board (only meaningful after both hands are empty).  Returns
+    /// `Some(winner)` where winner is the side that still has enough pieces,
+    /// or `None` if neither side is below the threshold.  When BOTH sides are
+    /// short the side with more pieces on board wins; in a tie, black (1) wins.
+    /// Used by `setup_finish` to detect immediate-GameOver positions.
+    pub fn check_pieces_at_least(&self, options: &MillVariantOptions) -> Option<i8> {
+        let min = options.pieces_at_least_count;
+        let w_short = self.pieces_on_board[0] < min;
+        let b_short = self.pieces_on_board[1] < min;
+        if !w_short && !b_short {
+            return None;
+        }
+        // The side with more pieces wins; if equal, black (1) wins by convention.
+        let winner = if self.pieces_on_board[0] >= self.pieces_on_board[1] {
+            0_i8 // white wins
+        } else {
+            1_i8 // black wins
+        };
+        Some(winner)
     }
 
     pub fn set_pending_removal(&mut self, side_idx: usize, count: u8) {
@@ -3712,7 +3788,10 @@ mod tests {
         rules.maybe_handle_stalemate(&mut state);
         assert_eq!(state.phase, MillPhase::GameOver);
         assert_eq!(state.winner, 2);
-        assert_eq!(rules.outcome(&rules.encode(state)).reason, "drawStalemate");
+        assert_eq!(
+            rules.outcome(&rules.encode(state)).reason,
+            "drawStalemateCondition"
+        );
     }
 
     #[test]
@@ -4593,7 +4672,7 @@ mod tests {
         assert_eq!(final_state.phase, MillPhase::GameOver);
         assert_eq!(final_state.winner, 2, "draw winner sentinel");
         assert_eq!(rules.outcome(&after).kind, OutcomeKind::Draw);
-        assert_eq!(rules.outcome(&after).reason, "drawThreefold");
+        assert_eq!(rules.outcome(&after).reason, "drawThreefoldRepetition");
     }
 
     #[test]
