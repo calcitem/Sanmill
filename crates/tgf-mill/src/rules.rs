@@ -2009,12 +2009,22 @@ impl MillRules {
             s => return Err(format!("invalid side '{s}' in FEN")),
         };
 
+        // Accept every phase token Position::fen emits.  Both 'r' (ready)
+        // and 'n' (none) share the placing-phase semantics in Rust because
+        // MillPhase has no separate Ready/None variants.
         let phase = match fields[2] {
-            "r" | "p" => MillPhase::Placing,
+            "r" | "p" | "n" => MillPhase::Placing,
             "m" => MillPhase::Moving,
             "o" => MillPhase::GameOver,
             s => return Err(format!("invalid phase '{s}' in FEN")),
         };
+        // Field 3 is the C++ Action token ('p'/'s'/'r'/'?').  Rust does
+        // not maintain a separate Action enum — pending_removals already
+        // tells us when the next Action is "remove" — so we tolerate any
+        // single-character token without enforcement.
+        if fields[3].len() != 1 {
+            return Err(format!("invalid action token '{}' in FEN", fields[3]));
+        }
 
         let parse_u8 = |s: &str| -> Result<u8, String> {
             s.parse::<u8>()
@@ -2141,9 +2151,10 @@ impl MillRules {
     /// legacy Dart/C++ engine.
     ///
     /// Output covers every parsed field: board layout (with 'X' for
-    /// marked pieces), side-to-move, phase ('r/p/m/o'), action ('p'),
-    /// piece-on-board / piece-in-hand / piece-to-remove counts (negative
-    /// when `remove_own_piece` is set), per-side last-mill from/to, the
+    /// marked pieces), side-to-move, phase ('r/p/m/o'), action token
+    /// (`p`/`s`/`r`/`?` matching `Position::fen`), piece-on-board /
+    /// piece-in-hand / piece-to-remove counts (negative when
+    /// `remove_own_piece` is set), per-side last-mill from/to, the
     /// mills bitmask placeholder (always `0` because Rust tracks
     /// per-line use rather than per-square), rule50, full-move number,
     /// and the trailing `c:/i:/l:/p:/s:` extension block when active.
@@ -2186,6 +2197,20 @@ impl MillRules {
         let side_is_black = i32::from(state.side_to_move == 1);
         let full_move = (1 + (i32::from(state.move_number) - side_is_black) / 2).max(1);
 
+        // Mirror Position::fen action token (legacy uci.cpp): 'r' on a
+        // pending removal, 'p' while still placing, 's' for the moving
+        // phase select-square step, '?' for none / game over.
+        let action_idx = (state.side_to_move as usize).min(1);
+        let action_token = if state.pending_removals[action_idx] > 0 {
+            'r'
+        } else {
+            match state.phase {
+                MillPhase::Placing | MillPhase::Ready => 'p',
+                MillPhase::Moving => 's',
+                MillPhase::GameOver => '?',
+            }
+        };
+
         // Encode signed pieceToRemoveCount mirroring legacy semantics.
         let signed_remove = |idx: usize| -> i32 {
             let abs = i32::from(state.pending_removals[idx]);
@@ -2197,10 +2222,11 @@ impl MillRules {
         };
 
         let mut out = format!(
-            "{} {} {} p {} {} {} {} {} {} {} {} {} {} 0 {} {}",
+            "{} {} {} {} {} {} {} {} {} {} {} {} {} {} 0 {} {}",
             board_str,
             side,
             phase,
+            action_token,
             state.pieces_on_board[0],
             state.pieces_in_hand[0],
             state.pieces_on_board[1],
@@ -5011,6 +5037,41 @@ mod tests {
         let state = rules.set_from_fen(fen).expect("valid trailing tokens");
         assert!(!state.stalemate_removing);
         assert!(state.both_stalemate_removing);
+    }
+
+    /// Field 3 must mirror legacy `Position::fen()` action token:
+    ///   - `'r'` iff a removal is pending,
+    ///   - `'p'` while still placing (or in Ready phase),
+    ///   - `'s'` for the moving-phase select-square step,
+    ///   - `'?'` on game over.
+    ///
+    /// The parser must round-trip every valid token.
+    #[test]
+    fn export_fen_action_token_matches_legacy_position_fen() {
+        let rules = MillRules::default();
+
+        // Initial position: white-to-move, placing, no pending removal.
+        let initial = rules.encode_state(
+            rules
+                .set_from_fen("********/********/******** w p p 0 9 0 9 0 0 0 0 0 0 0 0 1")
+                .unwrap(),
+        );
+        let state = MillRules::decode_snapshot(initial);
+        let fen = rules.export_fen(&state);
+        let action_field = fen.split_whitespace().nth(3).unwrap();
+        assert_eq!(action_field, "p", "placing/no-remove must be 'p'");
+
+        // Moving phase, no pending removal: action should be 's'.
+        let moving = rules.no_mill_moving_phase_snapshot();
+        let state = MillRules::decode_snapshot(moving);
+        let fen = rules.export_fen(&state);
+        let action_field = fen.split_whitespace().nth(3).unwrap();
+        assert_eq!(action_field, "s", "moving phase must be 's'");
+
+        // Re-parsing the action token must succeed without error.
+        rules
+            .set_from_fen(&fen)
+            .expect("'s' action token must parse");
     }
 
     #[test]

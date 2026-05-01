@@ -103,7 +103,9 @@ fn run_uci_loop() {
                 active.abort_handle.request_abort();
                 join_and_print(active);
             } else {
-                println!("bestmove (none)");
+                // Match legacy Position::move() / UCI::move() output:
+                // MOVE_NONE serializes as "none" without parentheses.
+                println!("bestmove none");
             }
         } else if line == "ponderhit" {
             // In ponder mode the engine switches from pondering to searching;
@@ -205,10 +207,10 @@ fn join_and_print(active: ActiveSearch) {
         );
         println!(
             "bestmove {}",
-            action_to_uci(spawn.result.best_action).unwrap_or_else(|| "(none)".to_owned())
+            action_to_uci(spawn.result.best_action).unwrap_or_else(|| "none".to_owned())
         );
     } else {
-        println!("bestmove (none)");
+        println!("bestmove none");
     }
 }
 
