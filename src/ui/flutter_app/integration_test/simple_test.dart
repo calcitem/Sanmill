@@ -15,14 +15,11 @@ import 'package:sanmill/game_platform/game_session.dart';
 import 'package:sanmill/game_platform/game_session_handle.dart';
 import 'package:sanmill/game_platform/rules_port.dart';
 import 'package:sanmill/games/mill/mill_game_module.dart';
-import 'package:sanmill/games/mill/mill_game_session.dart';
-import 'package:sanmill/games/mill/mill_rules_port.dart';
 import 'package:sanmill/games/mill/mill_variant_options_mapper.dart';
 import 'package:sanmill/games/mill/native_mill_game_session.dart';
 import 'package:sanmill/games/mill/native_mill_rules_port.dart';
 import 'package:sanmill/games/othello/othello_game_session.dart';
 import 'package:sanmill/rule_settings/models/rule_settings.dart';
-import 'package:sanmill/shared/database/database.dart' show Database;
 import 'package:sanmill/src/rust/api/kernel.dart' as tgf_kernel_api;
 import 'package:sanmill/src/rust/api/simple.dart';
 import 'package:sanmill/src/rust/frb_generated.dart';
@@ -116,18 +113,19 @@ void main() {
     expect(nativeOthelloSearchDepthOneBestToNode(), inInclusiveRange(0, 63));
   });
 
-  testWidgets('MillGameSession legalActions comes from RulesPort', (
-    WidgetTester tester,
-  ) async {
-    final MillGameSession session = MillGameSession();
-    addTearDown(session.dispose);
+  testWidgets(
+    'NativeMillGameSession legalActions comes from native Rust port',
+    (WidgetTester tester) async {
+      final NativeMillGameSession session = NativeMillGameSession();
+      addTearDown(session.dispose);
 
-    expect(session.legalActions, hasLength(24));
-    expect(
-      session.legalActions.map((GameAction a) => a.payload['move']),
-      contains('d7'),
-    );
-  });
+      expect(session.legalActions, hasLength(24));
+      expect(
+        session.legalActions.map((GameAction a) => a.payload['move']),
+        contains('d7'),
+      );
+    },
+  );
 
   testWidgets('ExtMove notation uses Rust topology mapping', (
     WidgetTester tester,
@@ -138,23 +136,21 @@ void main() {
     expect(move.notation, 'd7');
   });
 
-  testWidgets('FRB-backed MillRulesPort enumerates and applies moves', (
-    WidgetTester tester,
-  ) async {
-    final MillRulesPort rules = MillRulesPort();
-    expect(rules.legalActions, hasLength(24));
-    expect(rules.snapshot.phase, 'placing');
-    expect(rules.fen, contains(' w p p '));
-    rules.setFen('********/********/******** w p p 0 9 0 9 0 0 0 0 0 0 0 0 1');
-    expect(rules.fen, contains(' w p p '));
-    expect(rules.reset(), isA<GameStateSnapshot>());
-    expect(rules.legalActions, hasLength(24));
+  testWidgets(
+    'NativeMillRulesPort enumerates, applies, and resets (replaces legacy MillRulesPort)',
+    (WidgetTester tester) async {
+      final NativeMillRulesPort rules = NativeMillRulesPort();
+      addTearDown(rules.dispose);
+      expect(rules.legalActions, hasLength(24));
+      expect(rules.snapshot.phase, 'placing');
 
-    final GameAction first = rules.legalActions.first;
-    final GameStateSnapshot after = rules.apply(first);
-    expect(after.lastAction, first);
-    expect(after.activeSeat, isNot(PlayerSeat.first));
-  });
+      final GameAction first = rules.legalActions.first;
+      final GameStateSnapshot after = rules.apply(first);
+      expect(after.lastAction, first);
+      expect(after.activeSeat, isNot(PlayerSeat.first));
+      expect(rules.legalActions, hasLength(23));
+    },
+  );
 
   testWidgets('NativeMillRulesPort uses typed Rust Mill rules directly', (
     WidgetTester tester,
@@ -219,12 +215,8 @@ void main() {
 
       final GameSessionHandle started = module.startSession();
       addTearDown(started.dispose);
-      final Database? db = Database.instance;
-      if (db != null && db.generalSettings.useNativeMillSession) {
-        expect(started, isA<NativeMillGameSession>());
-      } else {
-        expect(started, isA<MillGameSession>());
-      }
+      // startSession() always returns NativeMillGameSession now.
+      expect(started, isA<NativeMillGameSession>());
 
       final NativeMillGameSession nativeSession =
           module.startNativeSession() as NativeMillGameSession;

@@ -37,11 +37,9 @@ import '../../shared/themes/app_theme.dart';
 import '../../statistics/widgets/stats_page.dart';
 import 'mill_action_codec.dart';
 import 'mill_engine_port.dart';
-import 'mill_game_session.dart';
 import 'mill_notation_port.dart';
 import 'mill_route_ids.dart';
 import 'mill_rule_settings_port.dart';
-import 'mill_rules_port.dart';
 import 'native_mill_game_session.dart';
 import 'native_mill_rules_port.dart';
 
@@ -91,20 +89,11 @@ class MillGameModule extends GameModule {
 
   @override
   GameSessionHandle startSession() {
-    final DB db = DB();
-    if (db.generalSettings.useNativeMillSession) {
-      return _nativeSessionFactory(ruleSettings: db.ruleSettings);
-    }
-    return MillGameSession();
+    return _nativeSessionFactory(ruleSettings: DB().ruleSettings);
   }
 
-  /// Creates a Rust-native Mill session without changing the production
-  /// default returned by [startSession].
-  ///
-  /// This is the migration entry point for tests and future routes that
-  /// want to exercise `crates/tgf-mill` through typed FRB while the
-  /// legacy `GameController`-backed [MillGameSession] remains the main UI
-  /// path.
+  /// Creates a Rust-native Mill session.  Alias for [startSession] kept for
+  /// call-site clarity in tests.
   GameSessionHandle startNativeSession({
     RuleSettings ruleSettings = const RuleSettings(),
   }) {
@@ -112,10 +101,9 @@ class MillGameModule extends GameModule {
   }
 
   @override
-  RulesPort? get rulesPort => MillRulesPort();
+  RulesPort? get rulesPort => NativeMillRulesPort();
 
-  /// Rust-native rules port factory, kept explicit so callers opt in to
-  /// the new path intentionally.
+  /// Alias for [rulesPort]; provided for explicit opt-in at call sites.
   RulesPort nativeRulesPort({
     RuleSettings ruleSettings = const RuleSettings(),
   }) {
