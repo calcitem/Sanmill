@@ -56,7 +56,7 @@ class PiecePainter extends CustomPainter {
     if (nativeBoardView != null) {
       return null;
     }
-    final int? square = indexToSquare[index];
+    final int? square = MillBoardCoordinateMaps.gridIndexToSquare[index];
     return square == null ? null : GameController().position.sqAttrList[square];
   }
 
@@ -696,7 +696,7 @@ class PiecePainter extends CustomPainter {
       paint.strokeWidth = 3;
 
       for (final int sq in capturablePieces) {
-        final int? index = squareToIndex[sq];
+        final int? index = MillBoardCoordinateMaps.squareToGridIndex[sq];
         if (index != null) {
           final Offset pos = pointFromIndex(index, size);
           canvas.drawCircle(pos, pieceWidth / 2, paint);

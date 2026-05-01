@@ -327,8 +327,8 @@ class TapHandler {
             if (currentSquareBeforePut != null && currentSquareBeforePut != 0) {
               // Moving: piece was moved from currentSquare to sq
               // Set blurIndex for animation (focusIndex already set by handleMovingPhaseForPutPiece)
-              GameController().gameInstance.blurIndex =
-                  squareToIndex[currentSquareBeforePut];
+              GameController().gameInstance.blurIndex = MillBoardCoordinateMaps
+                  .squareToGridIndex[currentSquareBeforePut];
               GameController().animationManager.animateMove();
             } else {
               // Placing: new piece from hand
@@ -536,7 +536,9 @@ class TapHandler {
         switch (selectRet) {
           case GameResponseOK():
             SoundManager().playTone(Sound.select);
-            controller.gameInstance._select(squareToIndex[sq]!);
+            controller.gameInstance._select(
+              MillBoardCoordinateMaps.squareToGridIndex[sq]!,
+            );
             ret = true;
             logger.i("$_logTag selectPiece: [$sq]");
 
@@ -670,7 +672,8 @@ class TapHandler {
             // (Line ~746: appendMoveIfDifferent)
 
             // Trigger remove animation for human moves (AI moves trigger via doMove)
-            GameController().gameInstance.removeIndex = squareToIndex[sq];
+            GameController().gameInstance.removeIndex =
+                MillBoardCoordinateMaps.squareToGridIndex[sq];
             GameController().gameInstance.blurIndex = null;
             GameController().gameInstance.focusIndex = null;
             GameController().animationManager.animateRemove();
