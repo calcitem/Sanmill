@@ -443,12 +443,26 @@ fn parse_bool(value: &str) -> Option<bool> {
 }
 
 fn parse_position_command(rules: &MillRules, line: &str) -> GameStateSnapshot {
-    let mut state = rules.initial_state(&[]);
     let tokens = line.split_whitespace().collect::<Vec<_>>();
-    if tokens.get(1).copied() != Some("startpos") {
-        return state;
-    }
-    let Some(moves_idx) = tokens.iter().position(|t| *t == "moves") else {
+
+    let moves_idx = tokens.iter().position(|t| *t == "moves");
+    let mut state = match tokens.get(1).copied() {
+        Some("startpos") => rules.initial_state(&[]),
+        Some("fen") => {
+            let fen_end = moves_idx.unwrap_or(tokens.len());
+            let fen = tokens[2..fen_end].join(" ");
+            match rules.set_from_fen(&fen) {
+                Ok(state) => rules.encode_state(state),
+                Err(e) => {
+                    println!("info string invalid fen ignored: {e}");
+                    rules.initial_state(&[])
+                }
+            }
+        }
+        _ => rules.initial_state(&[]),
+    };
+
+    let Some(moves_idx) = moves_idx else {
         return state;
     };
     for mv in tokens.iter().skip(moves_idx + 1) {
@@ -698,4 +712,35 @@ fn run_mcts_self_play(games: u32, seed: u64, ab_assist_depth: i32) -> u32 {
         }
     }
     wins
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn parse_position_fen_loads_board() {
+        let rules = MillRules::default();
+        let state = parse_position_command(
+            &rules,
+            "position fen O@******/********/******** w p p 1 8 1 8 0 0 0 0 0 0 0 0 1",
+        );
+
+        // FEN position 0/1 are legacy sq 8/9, which map to dense nodes 17/18.
+        assert_eq!(state.opaque_payload[17], 1);
+        assert_eq!(state.opaque_payload[18], 2);
+        assert_eq!(state.side_to_move, 0);
+    }
+
+    #[test]
+    fn parse_position_fen_with_moves_applies_tail_moves() {
+        let rules = MillRules::default();
+        let state = parse_position_command(
+            &rules,
+            "position fen ********/********/******** w p p 0 9 0 9 0 0 0 0 0 0 0 0 1 moves d7",
+        );
+
+        assert_eq!(state.opaque_payload[1], 1); // d7 / node 1
+        assert_eq!(state.side_to_move, 1);
+    }
 }
