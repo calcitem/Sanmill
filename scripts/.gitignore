@@ -11,3 +11,5 @@
 !search-commit-message.py
 !check_perf_baseline.py
 !record_rust_perf_baseline.py
+!dump_rust_sources.py
+!dump_master_cxx_sources.py
