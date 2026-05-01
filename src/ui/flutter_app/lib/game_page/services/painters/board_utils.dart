@@ -44,11 +44,14 @@ int indexFromPoint(Offset point) {
 
 /// Calculates the square of the given point
 int? squareFromPoint(Offset point) {
-  return indexToSquare[indexFromPoint(point)];
+  return MillBoardCoordinateMaps.gridIndexToSquare[indexFromPoint(point)];
 }
 
 Offset pointFromSquare(int square, Size size) {
-  return pointFromIndex(squareToIndex[square]!, size);
+  return pointFromIndex(
+    MillBoardCoordinateMaps.squareToGridIndex[square]!,
+    size,
+  );
 }
 
 /// Calculates the pressed point
