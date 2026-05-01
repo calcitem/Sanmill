@@ -81,5 +81,27 @@ void main() {
         );
       }
     });
+
+    test('legacy square arithmetic preserves engine encoding', () {
+      expect(MillBoardCoordinateMaps.legacySquareBegin, 8);
+      expect(MillBoardCoordinateMaps.legacySquareEnd, 32);
+      expect(MillBoardCoordinateMaps.legacySquareStorageSize, 40);
+      expect(MillBoardCoordinateMaps.makeLegacySquare(0, 0), 0);
+      expect(MillBoardCoordinateMaps.makeLegacySquare(-1, -1), -1);
+      expect(MillBoardCoordinateMaps.makeLegacySquare(1, 1), 8);
+      expect(MillBoardCoordinateMaps.makeLegacySquare(3, 8), 31);
+
+      for (int file = 1; file <= MillBoardCoordinateMaps.fileNumber; file++) {
+        for (int rank = 1; rank <= MillBoardCoordinateMaps.rankNumber; rank++) {
+          final int square = MillBoardCoordinateMaps.makeLegacySquare(
+            file,
+            rank,
+          );
+          expect(MillBoardCoordinateMaps.isLegacySquareOk(square), isTrue);
+          expect(MillBoardCoordinateMaps.fileOfLegacySquare(square), file);
+          expect(MillBoardCoordinateMaps.rankOfLegacySquare(square), rank);
+        }
+      }
+    });
   });
 }

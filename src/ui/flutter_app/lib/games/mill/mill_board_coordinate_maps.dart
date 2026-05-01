@@ -10,6 +10,13 @@
 /// `types.dart`.  Native snapshot views and future board-rendering code use
 /// this as the compatibility layer until the legacy grid disappears.
 abstract final class MillBoardCoordinateMaps {
+  static const int legacySquareBegin = 8;
+  static const int legacySquareEnd = 32;
+  static const int legacySquareStorageSize = 40;
+  static const int fileNumber = 3;
+  static const int fileExNumber = fileNumber + 2;
+  static const int rankNumber = 8;
+
   static const Map<int, int> squareToGridIndex = <int, int>{
     8: 17,
     9: 18,
@@ -201,6 +208,30 @@ abstract final class MillBoardCoordinateMaps {
 
   static int notationToLegacySquare(String notation) {
     return notationToSquare[notation.trim().toLowerCase()] ?? -1;
+  }
+
+  static int makeLegacySquare(int file, int rank) {
+    assert(file != -2 && rank != -2);
+    if (file == 0 && rank == 0) {
+      return 0;
+    }
+    if (file == -1 && rank == -1) {
+      return -1;
+    }
+    return (file << 3) + rank - 1;
+  }
+
+  static bool isLegacySquareOk(int square) {
+    return square == 0 ||
+        (square >= legacySquareBegin && square < legacySquareEnd);
+  }
+
+  static int fileOfLegacySquare(int square) {
+    return square >> 3;
+  }
+
+  static int rankOfLegacySquare(int square) {
+    return (square & 0x07) + 1;
   }
 
   static String legacySquareToNotation(int square) {

@@ -373,36 +373,26 @@ extension GameResultExtension on GameResult {
 const int valueUnique = 100;
 const int valueEachPiece = 5;
 
-const int sqBegin = 8;
-const int sqEnd = 32;
-const int sqNumber = 40;
+const int sqBegin = MillBoardCoordinateMaps.legacySquareBegin;
+const int sqEnd = MillBoardCoordinateMaps.legacySquareEnd;
+const int sqNumber = MillBoardCoordinateMaps.legacySquareStorageSize;
 
 const int moveDirectionBegin = 0;
 const int moveDirectionNumber = 4;
 
 const int lineDirectionNumber = 3;
 
-const int fileNumber = 3;
+const int fileNumber = MillBoardCoordinateMaps.fileNumber;
 const int fileExNumber = fileNumber + 2;
 
-const int rankNumber = 8;
+const int rankNumber = MillBoardCoordinateMaps.rankNumber;
 
 int makeSquare(int file, int rank) {
-  // TODO: -2
-  assert(file != -2 && rank != -2);
-
-  if (file == 0 && rank == 0) {
-    return 0;
-  }
-  if (file == -1 && rank == -1) {
-    return -1;
-  }
-
-  return (file << 3) + rank - 1;
+  return MillBoardCoordinateMaps.makeLegacySquare(file, rank);
 }
 
 bool isOk(int sq) {
-  final bool ret = sq == 0 || (sq >= sqBegin && sq < sqEnd);
+  final bool ret = MillBoardCoordinateMaps.isLegacySquareOk(sq);
 
   if (!ret) {
     logger.w("[types] $sq is not OK");
@@ -412,11 +402,11 @@ bool isOk(int sq) {
 }
 
 int fileOf(int sq) {
-  return sq >> 3;
+  return MillBoardCoordinateMaps.fileOfLegacySquare(sq);
 }
 
 int rankOf(int sq) {
-  return (sq & 0x07) + 1;
+  return MillBoardCoordinateMaps.rankOfLegacySquare(sq);
 }
 
 int fromSq(int move) {
