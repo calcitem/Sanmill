@@ -759,7 +759,9 @@ impl GameRules for MillRules {
                 let to = action.to_node as usize;
                 let side = state.side_to_move as usize;
                 let opponent = (state.side_to_move ^ 1) as usize;
-                debug_assert_eq!(state.board[to], opponent as i8 + 1);
+                let removing_own = side < 2 && state.remove_own_piece[side];
+                let target_color_index = if removing_own { side } else { opponent };
+                debug_assert_eq!(state.board[to], target_color_index as i8 + 1);
                 debug_assert!(state.pending_removals[side] > 0);
                 let mask = node_bit(to);
                 let is_custodian =
@@ -805,7 +807,8 @@ impl GameRules for MillRules {
                 }
 
                 state.board[to] = 0;
-                state.pieces_on_board[opponent] = state.pieces_on_board[opponent].saturating_sub(1);
+                state.pieces_on_board[target_color_index] =
+                    state.pieces_on_board[target_color_index].saturating_sub(1);
                 state.pending_removals[side] = state.pending_removals[side].saturating_sub(1);
                 if is_custodian {
                     state.custodian_targets &= !mask;
@@ -839,14 +842,25 @@ impl GameRules for MillRules {
                 // repetition window.
                 clear_key_history(&mut state);
                 if state.phase == MillPhase::Moving
-                    && state.pieces_on_board[opponent] < self.options.pieces_at_least_count
+                    && state.pieces_on_board[target_color_index]
+                        < self.options.pieces_at_least_count
                 {
                     state.phase = MillPhase::GameOver;
-                    state.winner = state.side_to_move;
+                    state.winner = if removing_own {
+                        opponent as i8
+                    } else {
+                        state.side_to_move
+                    };
                     state.outcome_reason = MillOutcomeReason::LoseFewerThanThree;
                     state.side_to_move = -1;
                 } else if state.pending_removals[side] == 0 {
                     clear_capture_state(&mut state);
+                    if removing_own {
+                        // Negative pieceToRemoveCount cleared its quota; flip
+                        // the flag so the next removal (if scheduled) reverts
+                        // to opponent-targeting semantics.
+                        state.remove_own_piece[side] = false;
+                    }
                     if state.stalemate_removing {
                         state.stalemate_removing = false;
                     } else {
@@ -1020,6 +1034,28 @@ impl MillRules {
 
         if capture_targets != 0 {
             self.generate_capture_remove_actions(state, out, capture_targets);
+        }
+
+        // When `remove_own_piece[us]` is set the active side must remove a
+        // piece of its *own* colour (mirrors negative pieceToRemoveCount in
+        // the legacy C++ engine).  In this branch the mill-protection,
+        // adjacency and stalemate-removal guards are all skipped: a player
+        // may always reach into the open board and discard their own piece.
+        let us = state.side_to_move as usize;
+        if us < 2 && state.remove_own_piece[us] {
+            let own_piece = state.side_to_move + 1;
+            for (node, piece) in state.board.iter().enumerate() {
+                if *piece == own_piece {
+                    out.push(Action {
+                        kind_tag: MillActionKind::Remove as i16,
+                        from_node: -1,
+                        to_node: node as i16,
+                        aux: -1,
+                        payload_bits: 0,
+                    });
+                }
+            }
+            return;
         }
 
         let opponent_piece = (state.side_to_move ^ 1) + 1;
@@ -1232,8 +1268,15 @@ fn total_mills_count(state: &MillState, options: &MillVariantOptions, side: i8) 
 fn apply_removal_based_on_mill_counts(state: &mut MillState, options: &MillVariantOptions) {
     let white_mills = total_mills_count(state, options, 0);
     let black_mills = total_mills_count(state, options, 1);
+    // Mirror Position::calculate_removal_based_on_mill_counts.  In C++ the
+    // double-zero branch sets pieceToRemoveCount[c] = -1 for both sides:
+    // the negative sign tells movegen to enumerate the *own* colour for
+    // removal.  We model the sign with `remove_own_piece[c]` while
+    // `pending_removals[c]` keeps the absolute count.
+    state.remove_own_piece = [false, false];
     let (white_remove, black_remove) = if white_mills == 0 && black_mills == 0 {
-        (0, 0)
+        state.remove_own_piece = [true, true];
+        (1_u8, 1_u8)
     } else if white_mills > 0 && black_mills == 0 {
         (2, 1)
     } else if black_mills > 0 && white_mills == 0 {
@@ -1470,6 +1513,8 @@ fn repetition_signature(state: &MillState) -> u64 {
     mix(state.phase as u8);
     mix(state.pending_removals[0]);
     mix(state.pending_removals[1]);
+    mix(u8::from(state.remove_own_piece[0]));
+    mix(u8::from(state.remove_own_piece[1]));
     if key == 0 {
         1
     } else {
@@ -1533,6 +1578,13 @@ pub struct MillState {
     pub pieces_in_hand: [u8; 2],
     pieces_on_board: [u8; 2],
     pending_removals: [u8; 2],
+    /// Per-side flag matching the legacy C++ engine's negative
+    /// `pieceToRemoveCount[c]`: when `true`, the side with `pending_removals[c] > 0`
+    /// must remove a piece of *its own* colour rather than the opponent's.
+    /// Currently driven by `RemovalBasedOnMillCounts` when both sides have
+    /// zero mills at the placing-to-moving boundary (whiteRemove =
+    /// blackRemove = -1 in C++).
+    remove_own_piece: [bool; 2],
     winner: i8,
     outcome_reason: MillOutcomeReason,
     ply_since_capture: u16,
@@ -1571,6 +1623,7 @@ impl Default for MillState {
             pieces_in_hand: [0, 0],
             pieces_on_board: [0, 0],
             pending_removals: [0, 0],
+            remove_own_piece: [false, false],
             winner: -1,
             outcome_reason: MillOutcomeReason::Ongoing,
             ply_since_capture: 0,
@@ -1645,11 +1698,15 @@ impl MillState {
         payload[249] = self.custodian_count;
         payload[250] = self.intervention_count;
         payload[251] = self.leap_count;
-        // Pack three loose bool flags into a single byte to free up
-        // byte 253 and 254 for per-side last_mill_from/to[1].
+        // Pack five loose bool flags into a single byte (bits 0-4) so
+        // that byte 253 and 254 stay available for per-side
+        // last_mill_from/to[1].  bits 3 and 4 carry remove_own_piece[c]
+        // (mirrors negative pieceToRemoveCount in the legacy C++ engine).
         let flags: u8 = u8::from(self.mill_available_at_removal)
             | (u8::from(self.stalemate_removing) << 1)
-            | (u8::from(self.both_stalemate_removing) << 2);
+            | (u8::from(self.both_stalemate_removing) << 2)
+            | (u8::from(self.remove_own_piece[0]) << 3)
+            | (u8::from(self.remove_own_piece[1]) << 4);
         payload[252] = flags;
         payload
     }
@@ -1726,6 +1783,7 @@ impl MillState {
             mill_available_at_removal: (payload[252] & 0x01) != 0,
             stalemate_removing: (payload[252] & 0x02) != 0,
             both_stalemate_removing: (payload[252] & 0x04) != 0,
+            remove_own_piece: [(payload[252] & 0x08) != 0, (payload[252] & 0x10) != 0],
         }
     }
 }
@@ -1808,6 +1866,7 @@ impl MillState {
         self.mill_available_at_removal = false;
         self.stalemate_removing = false;
         self.both_stalemate_removing = false;
+        self.remove_own_piece = [false, false];
         self.key_history = [0_u64; 24];
         self.key_history_len = 0;
     }
@@ -2876,6 +2935,87 @@ mod tests {
         assert_eq!(state.pending_removals, [0, 0]);
         assert_ne!(state.delayed_marked_pieces, 0);
         assert_eq!(state.side_to_move, 1);
+    }
+
+    /// `RemovalBasedOnMillCounts` reaches the placing-to-moving boundary
+    /// with neither side having formed a mill.  Master `position.cpp`
+    /// signals "remove your own piece" by setting
+    /// `pieceToRemoveCount[c] = -1` for both sides; the Rust port models
+    /// this with `remove_own_piece[c]=true` plus `pending_removals[c]=1`.
+    /// The legal-action set after the final placement must enumerate own
+    /// pieces, not opponent pieces.
+    #[test]
+    fn mill_action_removal_based_on_mill_counts_double_zero_removes_own_piece() {
+        let rules = MillRules::new(MillVariantOptions {
+            mill_formation_action_in_placing_phase:
+                MillFormationActionInPlacingPhase::RemovalBasedOnMillCounts,
+            ..MillVariantOptions::default()
+        });
+        // Build a placing-end position where neither side has a mill.  Each
+        // side has placed 8 pieces; white is about to place its last.
+        let mut state = MillState {
+            side_to_move: 0,
+            phase: MillPhase::Placing,
+            move_number: 17,
+            pieces_in_hand: [1, 0],
+            pieces_on_board: [8, 9],
+            pending_removals: [0, 0],
+            winner: -1,
+            ..MillState::default()
+        };
+        // White on nodes 0,3,6,9,12,15,18,21 (no mill thanks to gaps).
+        for &n in &[0_usize, 3, 6, 9, 12, 15, 18, 21] {
+            state.board[n] = 1;
+        }
+        // Black on nodes 2,5,8,11,14,17,20,23 + one extra on 4 (no mill).
+        for &n in &[2_usize, 5, 8, 11, 14, 17, 20, 23, 4] {
+            state.board[n] = 2;
+        }
+        // White places at node 1 — still no mills for either side.
+        let after = rules.apply(
+            &rules.encode(state),
+            Action {
+                kind_tag: MillActionKind::Place as i16,
+                from_node: -1,
+                to_node: 1,
+                aux: -1,
+                payload_bits: 0,
+            },
+        );
+        let state = MillRules::decode(&after);
+        assert_eq!(state.phase, MillPhase::Moving);
+        assert_eq!(
+            state.pending_removals,
+            [1, 1],
+            "double-zero mills schedules one removal per side"
+        );
+        assert_eq!(
+            state.remove_own_piece,
+            [true, true],
+            "negative pieceToRemoveCount semantics: each side removes own"
+        );
+
+        let mut actions = ActionList::<256>::new();
+        rules.legal_actions(&after, &mut actions);
+        assert!(!actions.is_empty(), "must offer at least one legal removal");
+        let active = state.side_to_move;
+        let own_color = active + 1;
+        for action in actions.iter() {
+            assert_eq!(action.kind_tag, MillActionKind::Remove as i16);
+            assert_eq!(
+                state.board[action.to_node as usize], own_color,
+                "removal must target the active side's own piece, not opponent"
+            );
+        }
+
+        // Apply one of the own-piece removals and confirm the flag clears.
+        let pick = actions.iter().next().copied().unwrap();
+        let after = rules.apply(&after, pick);
+        let state = MillRules::decode(&after);
+        assert!(
+            !state.remove_own_piece[active as usize],
+            "remove_own_piece flag must clear once quota reaches zero"
+        );
     }
 
     fn stalemate_fixture() -> MillState {
