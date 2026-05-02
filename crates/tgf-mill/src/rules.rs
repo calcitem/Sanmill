@@ -850,39 +850,39 @@ impl GameRules for MillRules {
                 debug_assert!(state.pending_removals[side] > 0);
                 let mask = node_bit(to);
                 let is_custodian =
-                    (state.custodian_targets & mask) != 0 && state.custodian_count > 0;
-                let is_intervention =
-                    (state.intervention_targets & mask) != 0 && state.intervention_count > 0;
-                let is_leap = (state.leap_targets & mask) != 0 && state.leap_count > 0;
+                    (state.custodian_targets[side] & mask) != 0 && state.custodian_count[side] > 0;
+                let is_intervention = (state.intervention_targets[side] & mask) != 0
+                    && state.intervention_count[side] > 0;
+                let is_leap = (state.leap_targets[side] & mask) != 0 && state.leap_count[side] > 0;
                 let cap_total = capture_total(&state);
                 let remaining_before = state.pending_removals[side];
 
                 if is_intervention {
                     state.mill_available_at_removal = false;
-                    state.custodian_targets = 0;
-                    state.custodian_count = 0;
-                    state.leap_targets = 0;
-                    state.leap_count = 0;
-                    state.pending_removals[side] = state.intervention_count;
+                    state.custodian_targets[side] = 0;
+                    state.custodian_count[side] = 0;
+                    state.leap_targets[side] = 0;
+                    state.leap_count[side] = 0;
+                    state.pending_removals[side] = state.intervention_count[side];
                 } else if is_custodian {
                     state.mill_available_at_removal = false;
-                    state.intervention_targets = 0;
-                    state.intervention_count = 0;
-                    state.leap_targets = 0;
-                    state.leap_count = 0;
+                    state.intervention_targets[side] = 0;
+                    state.intervention_count[side] = 0;
+                    state.leap_targets[side] = 0;
+                    state.leap_count[side] = 0;
                     state.pending_removals[side] = 1;
                 } else if is_leap {
                     state.mill_available_at_removal = false;
-                    state.custodian_targets = 0;
-                    state.custodian_count = 0;
-                    state.intervention_targets = 0;
-                    state.intervention_count = 0;
+                    state.custodian_targets[side] = 0;
+                    state.custodian_count[side] = 0;
+                    state.intervention_targets[side] = 0;
+                    state.intervention_count[side] = 0;
                     state.pending_removals[side] = 1;
                 } else if state.mill_available_at_removal && cap_total > 0 {
                     if self.options.may_remove_multiple && remaining_before > cap_total {
                         state.pending_removals[side] = remaining_before.saturating_sub(cap_total);
                     }
-                    clear_capture_state(&mut state);
+                    clear_capture_state_for_side(&mut state, side);
                     state.mill_available_at_removal = true;
                 } else {
                     debug_assert!(
@@ -910,30 +910,31 @@ impl GameRules for MillRules {
                     state.pieces_on_board[target_color_index].saturating_sub(1);
                 state.pending_removals[side] = state.pending_removals[side].saturating_sub(1);
                 if is_custodian {
-                    state.custodian_targets &= !mask;
-                    state.custodian_count = state.custodian_count.saturating_sub(1);
-                    if state.custodian_count == 0 {
-                        state.custodian_targets = 0;
+                    state.custodian_targets[side] &= !mask;
+                    state.custodian_count[side] = state.custodian_count[side].saturating_sub(1);
+                    if state.custodian_count[side] == 0 {
+                        state.custodian_targets[side] = 0;
                     }
                 }
                 if is_intervention {
-                    state.intervention_targets &= !mask;
-                    state.intervention_count = state.intervention_count.saturating_sub(1);
-                    if state.intervention_count == 0 {
-                        state.intervention_targets = 0;
+                    state.intervention_targets[side] &= !mask;
+                    state.intervention_count[side] =
+                        state.intervention_count[side].saturating_sub(1);
+                    if state.intervention_count[side] == 0 {
+                        state.intervention_targets[side] = 0;
                     } else {
-                        state.intervention_targets = find_paired_intervention_target(
+                        state.intervention_targets[side] = find_paired_intervention_target(
                             to,
-                            state.intervention_targets | mask,
+                            state.intervention_targets[side] | mask,
                             &self.options,
                         );
                     }
                 }
                 if is_leap {
-                    state.leap_targets &= !mask;
-                    state.leap_count = state.leap_count.saturating_sub(1);
-                    if state.leap_count == 0 {
-                        state.leap_targets = 0;
+                    state.leap_targets[side] &= !mask;
+                    state.leap_count[side] = state.leap_count[side].saturating_sub(1);
+                    if state.leap_count[side] == 0 {
+                        state.leap_targets[side] = 0;
                     }
                 }
                 state.ply_since_capture = 0;
@@ -958,7 +959,7 @@ impl GameRules for MillRules {
                     state.outcome_reason = MillOutcomeReason::LoseFewerThanThree;
                     state.side_to_move = -1;
                 } else if state.pending_removals[side] == 0 {
-                    clear_capture_state(&mut state);
+                    clear_capture_state_for_side(&mut state, side);
                     if removing_own {
                         // Negative pieceToRemoveCount cleared its quota; flip
                         // the flag so the next removal (if scheduled) reverts
@@ -1228,14 +1229,17 @@ impl MillRules {
     }
 
     fn generate_remove_actions(&self, state: &MillState, out: &mut ActionList<256>) {
-        let capture_targets =
-            state.custodian_targets | state.intervention_targets | state.leap_targets;
+        let us = state.side_to_move as usize;
+        let capture_targets = if us < 2 {
+            state.custodian_targets[us] | state.intervention_targets[us] | state.leap_targets[us]
+        } else {
+            0
+        };
         if capture_targets != 0 {
             self.generate_capture_remove_actions(state, out, capture_targets);
             // Mirror master generate<REMOVE>'s `totalRemovals <= captureCount`
             // cutoff (P0-A.1): when pending removals are fully covered by
             // capture obligations, only capture targets are legal this turn.
-            let us = state.side_to_move as usize;
             if us >= 2 || state.pending_removals[us] <= capture_total(state) {
                 return;
             }
@@ -1245,7 +1249,6 @@ impl MillRules {
             // already emitted above).
         }
 
-        let us = state.side_to_move as usize;
         if us < 2 && state.remove_own_piece[us] {
             // Mirror master src/position.cpp:1773 remove_piece:
             // negative pieceToRemoveCount switches the target colour to the
@@ -1932,16 +1935,15 @@ pub struct MillState {
     /// gives the per-side "mill piece count" consumed by
     /// [`MillEvaluator`] for the `RemovalBasedOnMillCounts` action.
     formed_mills_bb: [u32; 2],
-    /// Active capture-state mirrors of `Position::custodianCaptureTargets[c]`
-    /// etc.  Only the side currently owing the removal carries non-zero
-    /// data; the legacy engine zeroes the inactive side via
-    /// `setCustodianCaptureState(~us, 0, 0)` so a single bitmap suffices.
-    custodian_targets: u32,
-    intervention_targets: u32,
-    leap_targets: u32,
-    custodian_count: u8,
-    intervention_count: u8,
-    leap_count: u8,
+    /// Per-side active capture-state mirrors of legacy
+    /// `Position::custodianCaptureTargets[c]` and friends.
+    /// Index 0 = White / first player, 1 = Black / second player.
+    custodian_targets: [u32; 2],
+    intervention_targets: [u32; 2],
+    leap_targets: [u32; 2],
+    custodian_count: [u8; 2],
+    intervention_count: [u8; 2],
+    leap_count: [u8; 2],
     /// UI hint, mirrors `Position::preferredRemoveTarget`.  Holds the
     /// Rust dense node id (0..23) of a square that the engine has
     /// suggested as the "best" target for the next removal, or `-1`
@@ -1986,12 +1988,12 @@ impl Default for MillState {
             used_mill_lines: 0,
             delayed_marked_pieces: 0,
             formed_mills_bb: [0, 0],
-            custodian_targets: 0,
-            intervention_targets: 0,
-            leap_targets: 0,
-            custodian_count: 0,
-            intervention_count: 0,
-            leap_count: 0,
+            custodian_targets: [0, 0],
+            intervention_targets: [0, 0],
+            leap_targets: [0, 0],
+            custodian_count: [0, 0],
+            intervention_count: [0, 0],
+            leap_count: [0, 0],
             preferred_remove_target: -1,
             mill_available_at_removal: false,
             stalemate_removing: false,
@@ -2052,12 +2054,12 @@ impl MillState {
         }
         // 236: key_history_len (clamped to 24, fits in a single byte).
         payload[236] = self.key_history_len.min(24);
-        payload[237..241].copy_from_slice(&self.custodian_targets.to_le_bytes());
-        payload[241..245].copy_from_slice(&self.intervention_targets.to_le_bytes());
-        payload[245..249].copy_from_slice(&self.leap_targets.to_le_bytes());
-        payload[249] = self.custodian_count;
-        payload[250] = self.intervention_count;
-        payload[251] = self.leap_count;
+        payload[237..241].copy_from_slice(&self.custodian_targets[0].to_le_bytes());
+        payload[241..245].copy_from_slice(&self.intervention_targets[0].to_le_bytes());
+        payload[245..249].copy_from_slice(&self.leap_targets[0].to_le_bytes());
+        payload[249] = self.custodian_count[0];
+        payload[250] = self.intervention_count[0];
+        payload[251] = self.leap_count[0];
         // Pack loose bool flags into a single byte (bits 0-5).
         let flags: u8 = u8::from(self.mill_available_at_removal)
             | (u8::from(self.stalemate_removing) << 1)
@@ -2075,6 +2077,12 @@ impl MillState {
         // a fresh 4-byte slot in the extended 320-byte payload.
         payload[256..260].copy_from_slice(&self.formed_mills_bb[0].to_le_bytes());
         payload[260..264].copy_from_slice(&self.formed_mills_bb[1].to_le_bytes());
+        payload[264..268].copy_from_slice(&self.custodian_targets[1].to_le_bytes());
+        payload[268..272].copy_from_slice(&self.intervention_targets[1].to_le_bytes());
+        payload[272..276].copy_from_slice(&self.leap_targets[1].to_le_bytes());
+        payload[276] = self.custodian_count[1];
+        payload[277] = self.intervention_count[1];
+        payload[278] = self.leap_count[1];
         payload
     }
 
@@ -2147,12 +2155,12 @@ impl MillState {
             },
             key_history,
             key_history_len: payload[236].min(24),
-            custodian_targets: read_u32(237),
-            intervention_targets: read_u32(241),
-            leap_targets: read_u32(245),
-            custodian_count: payload[249],
-            intervention_count: payload[250],
-            leap_count: payload[251],
+            custodian_targets: [read_u32(237), read_u32(264)],
+            intervention_targets: [read_u32(241), read_u32(268)],
+            leap_targets: [read_u32(245), read_u32(272)],
+            custodian_count: [payload[249], payload[276]],
+            intervention_count: [payload[250], payload[277]],
+            leap_count: [payload[251], payload[278]],
             mill_available_at_removal: (payload[252] & 0x01) != 0,
             stalemate_removing: (payload[252] & 0x02) != 0,
             both_stalemate_removing: (payload[252] & 0x04) != 0,
@@ -2279,12 +2287,12 @@ impl MillState {
         self.used_mill_lines = 0;
         self.delayed_marked_pieces = 0;
         self.formed_mills_bb = [0, 0];
-        self.custodian_targets = 0;
-        self.intervention_targets = 0;
-        self.leap_targets = 0;
-        self.custodian_count = 0;
-        self.intervention_count = 0;
-        self.leap_count = 0;
+        self.custodian_targets = [0, 0];
+        self.intervention_targets = [0, 0];
+        self.leap_targets = [0, 0];
+        self.custodian_count = [0, 0];
+        self.intervention_count = [0, 0];
+        self.leap_count = [0, 0];
         self.preferred_remove_target = -1;
         self.mill_available_at_removal = false;
         self.stalemate_removing = false;
@@ -2464,12 +2472,12 @@ impl MillRules {
         let move_number = (2_i32 * (full_move - 1)).max(0) as i16 + side_is_black;
 
         // Trailing extension tokens: c:/i:/l:/p:/s:.
-        let mut custodian_targets = 0_u32;
-        let mut custodian_count = 0_u8;
-        let mut intervention_targets = 0_u32;
-        let mut intervention_count = 0_u8;
-        let mut leap_targets = 0_u32;
-        let mut leap_count = 0_u8;
+        let mut custodian_targets = [0_u32; 2];
+        let mut custodian_count = [0_u8; 2];
+        let mut intervention_targets = [0_u32; 2];
+        let mut intervention_count = [0_u8; 2];
+        let mut leap_targets = [0_u32; 2];
+        let mut leap_count = [0_u8; 2];
         let mut stalemate_removing = false;
         let mut both_stalemate_removing = false;
         let mut preferred_remove_target: i8 = -1;
@@ -2512,9 +2520,9 @@ impl MillRules {
         let (final_remove_w, final_remove_b) = if action_is_remove
             && remove_w == 0
             && remove_b == 0
-            && custodian_count == 0
-            && intervention_count == 0
-            && leap_count == 0
+            && custodian_count[side_usize] == 0
+            && intervention_count[side_usize] == 0
+            && leap_count[side_usize] == 0
         {
             if side_usize == 0 {
                 (1_u8, 0_u8)
@@ -2547,7 +2555,9 @@ impl MillRules {
             stalemate_removing,
             both_stalemate_removing,
             mill_available_at_removal: (final_remove_w > 0 || final_remove_b > 0)
-                && !(custodian_count > 0 || intervention_count > 0 || leap_count > 0),
+                && !(custodian_count[side_usize] > 0
+                    || intervention_count[side_usize] > 0
+                    || leap_count[side_usize] > 0),
             formed_mills_bb,
             preferred_remove_target,
             winner: -1,
@@ -2670,28 +2680,19 @@ impl MillRules {
         // capture-state bitmaps because the legacy engine only ever
         // populates the side currently owing the removal; attribute the
         // payload to whichever colour is to move.
-        let attribute_to_white = state.side_to_move == 0;
         append_capture_field(
             &mut out,
             'c',
             state.custodian_targets,
             state.custodian_count,
-            attribute_to_white,
         );
         append_capture_field(
             &mut out,
             'i',
             state.intervention_targets,
             state.intervention_count,
-            attribute_to_white,
         );
-        append_capture_field(
-            &mut out,
-            'l',
-            state.leap_targets,
-            state.leap_count,
-            attribute_to_white,
-        );
+        append_capture_field(&mut out, 'l', state.leap_targets, state.leap_count);
         if state.preferred_remove_target >= 0 {
             out.push_str(&format!(
                 " p:{}",
@@ -2762,24 +2763,19 @@ fn node_bb_to_legacy_square_bb(node_bb: u32) -> u32 {
     legacy_bb
 }
 
-/// Parse a single capture-field segment shaped like
-/// `w-N-sq.sq.sq|b-N-sq.sq.sq` into a per-state `targets` bitmap on Rust
-/// dense node ids and an aggregated `count`.  The legacy engine tracks
-/// these per side; the Rust kernel only stores a single bitmap so we sum
-/// the counts and merge the bitmaps.  Invalid segments are ignored, in
-/// line with `Position::set_fen`'s tolerant parser.
-fn parse_capture_field(value: &str, targets_out: &mut u32, count_out: &mut u8) {
-    let mut targets = *targets_out;
-    let mut count: u32 = u32::from(*count_out);
+/// Parse a capture field shaped like `w-N-sq.sq|b-N-sq.sq` into per-side
+/// target bitmaps and counts, mirroring master Position::set_fen.
+fn parse_capture_field(value: &str, targets_out: &mut [u32; 2], count_out: &mut [u8; 2]) {
     for segment in value.split('|') {
         let segment = segment.trim();
         if segment.is_empty() || segment.len() < 3 || segment.as_bytes()[1] != b'-' {
             continue;
         }
-        let color_byte = segment.as_bytes()[0];
-        if color_byte != b'w' && color_byte != b'b' {
-            continue;
-        }
+        let side = match segment.as_bytes()[0] {
+            b'w' => 0_usize,
+            b'b' => 1_usize,
+            _ => continue,
+        };
         let after_color = &segment[2..];
         let dash = match after_color.find('-') {
             Some(d) => d,
@@ -2800,55 +2796,44 @@ fn parse_capture_field(value: &str, targets_out: &mut u32, count_out: &mut u8) {
                 if (8..32).contains(&square_value) {
                     let node = legacy_square_to_node_signed(square_value as u8);
                     if (0..24).contains(&node) {
-                        targets |= 1_u32 << (node as u8);
+                        targets_out[side] |= 1_u32 << (node as u8);
                     }
                 }
             }
         }
-        count = count.saturating_add(parsed_count.unsigned_abs());
+        let next = u32::from(count_out[side]).saturating_add(parsed_count.unsigned_abs());
+        count_out[side] = next.min(u8::MAX as u32) as u8;
     }
-    *targets_out = targets;
-    *count_out = count.min(u8::MAX as u32) as u8;
 }
 
-/// Append a `c:`/`i:`/`l:` capture field to `out` when at least one
-/// target / count is active on the supplied state-wide aggregate.
-/// `attribute_to_white` decides whether the merged data is attributed
-/// to the white or black colour-tag — Rust does not track per-side
-/// capture state so we pick the side currently owing the removal.
-fn append_capture_field(
-    out: &mut String,
-    label: char,
-    targets: u32,
-    count: u8,
-    attribute_to_white: bool,
-) {
-    if targets == 0 && count == 0 {
+/// Append a `c:`/`i:`/`l:` capture field with both side slots.
+fn append_capture_field(out: &mut String, label: char, targets: [u32; 2], count: [u8; 2]) {
+    if targets == [0, 0] && count == [0, 0] {
         return;
     }
     out.push(' ');
     out.push(label);
     out.push(':');
-    let prefix = if attribute_to_white { 'w' } else { 'b' };
-    let other = if attribute_to_white { 'b' } else { 'w' };
-    out.push(prefix);
-    out.push('-');
-    out.push_str(&count.to_string());
-    out.push('-');
-    let mut first = true;
-    for node in 0_usize..24 {
-        if (targets & (1u32 << node)) == 0 {
-            continue;
+    for side in 0..2 {
+        if side == 1 {
+            out.push('|');
         }
-        if !first {
-            out.push('.');
+        out.push(if side == 0 { 'w' } else { 'b' });
+        out.push('-');
+        out.push_str(&count[side].to_string());
+        out.push('-');
+        let mut first = true;
+        for node in 0_usize..24 {
+            if (targets[side] & (1u32 << node)) == 0 {
+                continue;
+            }
+            if !first {
+                out.push('.');
+            }
+            first = false;
+            out.push_str(&node_to_legacy_square(node as i8).to_string());
         }
-        first = false;
-        out.push_str(&node_to_legacy_square(node as i8).to_string());
     }
-    out.push('|');
-    out.push(other);
-    out.push_str("-0-");
 }
 
 fn position_key(state: &MillState) -> u64 {
@@ -2877,18 +2862,20 @@ fn position_key(state: &MillState) -> u64 {
     let us = (state.side_to_move as usize) & 1;
     mix(state.pending_removals[us]);
     // Capture-misc: target bitmaps and counts for all three capture types.
-    for byte in state.custodian_targets.to_le_bytes() {
-        mix(byte);
+    for side in 0..2 {
+        for byte in state.custodian_targets[side].to_le_bytes() {
+            mix(byte);
+        }
+        for byte in state.intervention_targets[side].to_le_bytes() {
+            mix(byte);
+        }
+        for byte in state.leap_targets[side].to_le_bytes() {
+            mix(byte);
+        }
+        mix(state.custodian_count[side]);
+        mix(state.intervention_count[side]);
+        mix(state.leap_count[side]);
     }
-    for byte in state.intervention_targets.to_le_bytes() {
-        mix(byte);
-    }
-    for byte in state.leap_targets.to_le_bytes() {
-        mix(byte);
-    }
-    mix(state.custodian_count);
-    mix(state.intervention_count);
-    mix(state.leap_count);
     if key == 0 {
         1
     } else {
@@ -3273,29 +3260,47 @@ fn bit_count(mask: u32) -> u8 {
 }
 
 fn clear_capture_state(state: &mut MillState) {
-    state.custodian_targets = 0;
-    state.intervention_targets = 0;
-    state.leap_targets = 0;
-    state.custodian_count = 0;
-    state.intervention_count = 0;
-    state.leap_count = 0;
+    state.custodian_targets = [0, 0];
+    state.intervention_targets = [0, 0];
+    state.leap_targets = [0, 0];
+    state.custodian_count = [0, 0];
+    state.intervention_count = [0, 0];
+    state.leap_count = [0, 0];
+    state.mill_available_at_removal = false;
+}
+
+fn clear_capture_state_for_side(state: &mut MillState, side: usize) {
+    debug_assert!(side < 2);
+    state.custodian_targets[side] = 0;
+    state.intervention_targets[side] = 0;
+    state.leap_targets[side] = 0;
+    state.custodian_count[side] = 0;
+    state.intervention_count[side] = 0;
+    state.leap_count[side] = 0;
     state.mill_available_at_removal = false;
 }
 
 fn activate_capture_state(state: &mut MillState, custodian: u32, intervention: u32, leap: u32) {
-    state.custodian_targets = custodian;
-    state.intervention_targets = intervention;
-    state.leap_targets = leap;
-    state.custodian_count = bit_count(custodian);
-    state.intervention_count = bit_count(intervention);
-    state.leap_count = bit_count(leap);
+    let side = state.side_to_move as usize;
+    if side >= 2 {
+        return;
+    }
+    state.custodian_targets[side] = custodian;
+    state.intervention_targets[side] = intervention;
+    state.leap_targets[side] = leap;
+    state.custodian_count[side] = bit_count(custodian);
+    state.intervention_count[side] = bit_count(intervention);
+    state.leap_count[side] = bit_count(leap);
 }
 
 fn capture_total(state: &MillState) -> u8 {
-    state
-        .custodian_count
-        .saturating_add(state.intervention_count)
-        .saturating_add(state.leap_count)
+    let side = state.side_to_move as usize;
+    if side >= 2 {
+        return 0;
+    }
+    state.custodian_count[side]
+        .saturating_add(state.intervention_count[side])
+        .saturating_add(state.leap_count[side])
 }
 
 fn find_paired_intervention_target(
@@ -5356,7 +5361,7 @@ mod tests {
         );
         let state = MillRules::decode(&after);
         assert_eq!(state.pending_removals[0], 1);
-        assert_eq!(state.custodian_targets, node_bit(1));
+        assert_eq!(state.custodian_targets[0], node_bit(1));
         assert!(!state.mill_available_at_removal);
         let mut actions = ActionList::<256>::new();
         rules.legal_actions(&after, &mut actions);
@@ -5402,7 +5407,7 @@ mod tests {
         );
         let state = MillRules::decode(&after);
         assert_eq!(state.pending_removals[0], 2);
-        assert_eq!(state.intervention_targets, node_bit(0) | node_bit(2));
+        assert_eq!(state.intervention_targets[0], node_bit(0) | node_bit(2));
         let mut actions = ActionList::<256>::new();
         rules.legal_actions(&after, &mut actions);
         assert_eq!(actions.len(), 2);
@@ -5457,8 +5462,8 @@ mod tests {
         assert!(is_piece_in_mill(&state, &rules.options, 0));
         assert!(is_piece_in_mill(&state, &rules.options, 2));
         assert!(!is_all_in_mills(&state, &rules.options, 2));
-        assert_eq!(state.intervention_targets, 0);
-        assert_eq!(state.intervention_count, 0);
+        assert_eq!(state.intervention_targets[0], 0);
+        assert_eq!(state.intervention_count[0], 0);
         assert_eq!(
             state.pending_removals[0], 0,
             "filtered selected intervention line must cancel the capture"
@@ -5505,7 +5510,7 @@ mod tests {
         );
         let state = MillRules::decode(&after);
         assert_eq!(state.pending_removals[0], 1);
-        assert_eq!(state.leap_targets, node_bit(1));
+        assert_eq!(state.leap_targets[0], node_bit(1));
         assert!(!state.mill_available_at_removal);
     }
 
@@ -5550,7 +5555,7 @@ mod tests {
         let state = MillRules::decode(&after);
         assert_eq!(state.pending_removals[0], 2);
         assert!(state.mill_available_at_removal);
-        assert_eq!(state.custodian_targets, node_bit(1));
+        assert_eq!(state.custodian_targets[0], node_bit(1));
     }
 
     #[test]
@@ -5593,7 +5598,7 @@ mod tests {
         let state = MillRules::decode(&after);
         assert_eq!(state.pending_removals[0], 1);
         assert!(state.mill_available_at_removal);
-        assert_eq!(state.custodian_targets, node_bit(1));
+        assert_eq!(state.custodian_targets[0], node_bit(1));
     }
 
     #[test]
@@ -5695,7 +5700,7 @@ mod tests {
             },
         );
         let st = MillRules::decode(&after);
-        assert_eq!(st.custodian_targets, node_bit(8));
+        assert_eq!(st.custodian_targets[0], node_bit(8));
         assert_eq!(st.pending_removals[0], 1);
         assert!(!st.mill_available_at_removal);
     }
@@ -5990,8 +5995,8 @@ mod tests {
             last_mill_from: [9, 17],
             last_mill_to: [11, 18],
             delayed_marked_pieces: 1u32 << 0,
-            custodian_targets: 1u32 << 5,
-            custodian_count: 1,
+            custodian_targets: [1u32 << 5, 0],
+            custodian_count: [1, 0],
             stalemate_removing: true,
             ..MillState::default()
         };
@@ -6044,6 +6049,31 @@ mod tests {
             exported.contains("p:21"),
             "round-trip preferred-remove: {exported}"
         );
+    }
+
+    #[test]
+    fn set_from_fen_capture_extensions_keep_per_side_state() {
+        let rules = MillRules::default();
+        let fen = concat!(
+            "********/********/******** b m r 0 0 0 0 0 0 0 0 0 0 0 0 1",
+            " c:w-1-8|b-1-31 i:w-2-9.10|b-1-30 l:w-1-11|b-1-29"
+        );
+        let state = rules.set_from_fen(fen).expect("valid capture tokens");
+
+        assert_eq!(state.custodian_targets[0], node_bit(17));
+        assert_eq!(state.custodian_targets[1], node_bit(0));
+        assert_eq!(state.custodian_count, [1, 1]);
+        assert_eq!(state.intervention_targets[0], node_bit(18) | node_bit(19));
+        assert_eq!(state.intervention_targets[1], node_bit(7));
+        assert_eq!(state.intervention_count, [2, 1]);
+        assert_eq!(state.leap_targets[0], node_bit(20));
+        assert_eq!(state.leap_targets[1], node_bit(6));
+        assert_eq!(state.leap_count, [1, 1]);
+
+        let exported = rules.export_fen(&state);
+        assert!(exported.contains("c:w-1-8|b-1-31"), "{exported}");
+        assert!(exported.contains("i:w-2-9.10|b-1-30"), "{exported}");
+        assert!(exported.contains("l:w-1-11|b-1-29"), "{exported}");
     }
 
     /// `formed_mills_bb` is FEN field 14, encoded as
