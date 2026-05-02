@@ -95,13 +95,6 @@ add_definitions(-DAPPLICATION_ID="${APPLICATION_ID}")
 
 add_definitions(-D FLUTTER_UI)
 
-INCLUDE_DIRECTORIES(
-  ../../../
-  ../../../perfect
-  ../../../../include
-  ../command
-)
-
 # Define the application target. To change its name, change BINARY_NAME above,
 # not the value here, or `flutter run` will no longer work.
 #
@@ -109,51 +102,6 @@ INCLUDE_DIRECTORIES(
 add_executable(${BINARY_NAME}
   "main.cc"
   "my_application.cc"
-  "../command/mill_engine.cpp"
-  "../command/command_channel.cpp"
-  "../command/command_queue.cpp"
-  "../command/engine_main.cpp"
-  "../../../bitboard.cpp"
-  "../../../endgame.cpp"
-  "../../../evaluate.cpp"
-  "../../../main.cpp"
-  "../../../mcts.cpp"
-  "../../../mills.cpp"
-  "../../../misc.cpp"
-  "../../../movegen.cpp"
-  "../../../movepick.cpp"
-  "../../../option.cpp"
-  "../../../position.cpp"
-  "../../../rule.cpp"
-  "../../../search.cpp"
-  "../../../thread.cpp"
-  "../../../tt.cpp"
-  "../../../uci.cpp"
-  "../../../ucioption.cpp"
-  "../../../engine_controller.cpp"
-  "../../../engine_commands.cpp"
-  "../../../opening_book.cpp"
-  "../../../search_engine.cpp"
-  "../../../thread_pool.cpp"
-  "../../../perfect/perfect_adaptor.cpp"
-  "../../../perfect/perfect_api.cpp"
-  "../../../perfect/perfect_common.cpp"
-  "../../../perfect/perfect_debug.cpp"
-  "../../../perfect/perfect_errors.cpp"
-  "../../../perfect/perfect_eval_elem.cpp"
-  "../../../perfect/perfect_game.cpp"
-  "../../../perfect/perfect_game_state.cpp"
-  "../../../perfect/perfect_hash.cpp"
-  "../../../perfect/perfect_log.cpp"
-  "../../../perfect/perfect_move.cpp"
-  "../../../perfect/perfect_player.cpp"
-  "../../../perfect/perfect_rules.cpp"
-  "../../../perfect/perfect_sec_val.cpp"
-  "../../../perfect/perfect_sector.cpp"
-  "../../../perfect/perfect_sector_graph.cpp"
-  "../../../perfect/perfect_symmetries.cpp"
-  "../../../perfect/perfect_symmetries_slow.cpp"
-  "../../../perfect/perfect_wrappers.cpp"
   "${FLUTTER_MANAGED_DIR}/generated_plugin_registrant.cc"
 )
 

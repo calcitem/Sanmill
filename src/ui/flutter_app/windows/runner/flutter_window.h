@@ -16,8 +16,6 @@
 #include "run_loop.h"
 #include "win32_window.h"
 
-#include "mill_engine.h"
-
 // A window that does nothing but host a Flutter view.
 class FlutterWindow : public Win32Window
 {
@@ -44,13 +42,6 @@ private:
 
     // The Flutter instance hosted by this window.
     std::unique_ptr<flutter::FlutterViewController> flutter_controller_;
-
-    // Mill Engine
-    MillEngine *engine {nullptr};
-
-    // Called when a method is called on plugin channel;
-    void HandleMethodCall(const flutter::MethodCall<> &method_call,
-                          std::unique_ptr<flutter::MethodResult<>> result);
 
     // Initializes the method channels for this window.
     void InitializeMethodChannels();

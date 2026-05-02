@@ -10,9 +10,6 @@
 #include <sstream>
 #include <string>
 
-// TODO
-#include "perfect_adaptor.h"
-
 #include "flutter/generated_plugin_registrant.h"
 
 static std::wstring Utf8ToUtf16(const std::string &utf8Str)
@@ -35,14 +32,7 @@ FlutterWindow::FlutterWindow(RunLoop *run_loop,
     , project_(project)
 { }
 
-FlutterWindow::~FlutterWindow()
-{
-    if (engine != nullptr) {
-        engine->shutdown();
-        delete engine;
-        engine = nullptr;
-    }
-}
+FlutterWindow::~FlutterWindow() { }
 
 bool FlutterWindow::OnCreate()
 {
@@ -70,40 +60,12 @@ bool FlutterWindow::OnCreate()
     return true;
 }
 
-void FlutterWindow::HandleMethodCall(
-    const flutter::MethodCall<> &method_call,
-    std::unique_ptr<flutter::MethodResult<>> result)
-{
-    const std::string &method = method_call.method_name();
-
-    if (method.compare("startup") == 0) {
-        result->Success(engine->startup());
-    } else if (method_call.method_name().compare("send") == 0) {
-        const auto &args = std::get<std::string>(*method_call.arguments());
-        result->Success(engine->send(args.c_str()));
-    } else if (method.compare("read") == 0) {
-        result->Success(engine->read());
-    } else if (method.compare("shutdown") == 0) {
-        result->Success(engine->shutdown());
-    } else if (method.compare("isReady") == 0) {
-        result->Success(engine->isReady());
-    } else if (method.compare("isThinking") == 0) {
-        result->Success(engine->isThinking());
-    } else if (method.compare("getResponseDroppedCount") == 0) {
-        result->Success(static_cast<int64_t>(engine->getResponseDroppedCount()));
-    } else {
-        result->NotImplemented();
-    }
-};
-
 void FlutterWindow::OnDestroy()
 {
     if (flutter_controller_) {
         run_loop_->UnregisterFlutterInstance(flutter_controller_->engine());
         flutter_controller_ = nullptr;
     }
-
-    perfect_exit();  // TODO
 
     Win32Window::OnDestroy();
 }
@@ -133,21 +95,6 @@ FlutterWindow::MessageHandler(HWND hwnd, UINT const message,
 
 void FlutterWindow::InitializeMethodChannels()
 {
-    // Set up a method channel for the engine.
-    if (engine == nullptr) {
-        engine = new MillEngine();
-
-        auto channel = std::make_unique<flutter::MethodChannel<>>(
-            flutter_controller_->engine()->messenger(),
-            "com.calcitem.sanmill/engine",
-            &flutter::StandardMethodCodec::GetInstance());
-
-        channel->SetMethodCallHandler([this](const auto &call, auto result) {
-            HandleMethodCall(call, std::move(result));
-        });
-    }
-
-    // Set up a method channel for the UI.
     auto binary_messenger = flutter_controller_->engine()->messenger();
 
     auto ui_channel =
