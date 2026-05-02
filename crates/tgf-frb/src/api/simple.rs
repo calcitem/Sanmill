@@ -13,8 +13,8 @@ use std::thread;
 use crate::frb_generated::StreamSink;
 use tgf_core::{Action, ActionList, BoardTopology, Game, GameRules};
 use tgf_mill::{
-    default_mill_topology, CaptureRuleConfig as NativeCaptureRuleConfig, MillActionKind,
-    MillBoardFullAction as NativeMillBoardFullAction,
+    default_mill_topology, recommended_search_depth, CaptureRuleConfig as NativeCaptureRuleConfig,
+    EngineRuntimeOptions, MillActionKind, MillBoardFullAction as NativeMillBoardFullAction,
     MillFormationActionInPlacingPhase as NativeMillFormationActionInPlacingPhase, MillGame,
     MillRules, MillVariantOptions as NativeMillVariantOptions,
     StalemateAction as NativeStalemateAction,
@@ -795,6 +795,19 @@ pub(crate) fn spawn_mill_engine_config_event_stream(
             *active = Some(searcher.abort_handle());
         }
 
+        let requested_depth = if config.depth > 0 {
+            config.depth
+        } else {
+            let rules = MillRules::new(options.clone());
+            let state = MillRules::decode_snapshot(snapshot);
+            let runtime = EngineRuntimeOptions {
+                skill_level: config.skill_level,
+                draw_on_human_experience: true,
+                developer_mode: true,
+            };
+            recommended_search_depth(&state, rules.options(), &runtime).max(1)
+        };
+
         // P2-G: AiIsLazy depth adjustment mirroring master executeSearch.
         // np = lastBestValue / VALUE_EACH_PIECE (5); if np > 1 the position
         // is "clearly won/lost", so cap origin_depth to 1 or 4.
@@ -802,16 +815,16 @@ pub(crate) fn spawn_mill_engine_config_event_stream(
         let origin_depth = if config.ai_is_lazy {
             let np = config.last_best_value.abs() / VALUE_EACH_PIECE;
             if np > 1 {
-                if config.depth < 4 {
+                if requested_depth < 4 {
                     1
                 } else {
                     4
                 }
             } else {
-                config.depth.max(1)
+                requested_depth.max(1)
             }
         } else {
-            config.depth.max(1)
+            requested_depth.max(1)
         };
         let max_depth = origin_depth;
         let mut result = SearchResult::default_none();

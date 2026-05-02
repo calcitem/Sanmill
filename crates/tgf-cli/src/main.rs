@@ -8,7 +8,10 @@ use std::thread::{self, JoinHandle};
 use std::time::{Duration, Instant};
 
 use tgf_core::{Action, ActionList, BoardTopology, Game, GameRules, GameStateSnapshot};
-use tgf_mill::{default_mill_topology, MillActionKind, MillGame, MillRules, MillVariantOptions};
+use tgf_mill::{
+    default_mill_topology, recommended_search_depth, EngineRuntimeOptions, MillActionKind,
+    MillGame, MillRules, MillVariantOptions,
+};
 use tgf_search::{
     lazy_smp_search, perft, LazySmpWorker, MctsOptions, MctsSearcher, SearchAbortHandle,
     SearchOptions, SearchPolicy, SearchResult, Searcher, SharedTt,
@@ -202,9 +205,10 @@ fn spawn_search(
         node_limit: go.node_limit,
         time_limit_ms: go.movetime_ms,
         allow_null_move: false,
+        shuffle_root: cfg.shuffling,
         ..Default::default()
     };
-    let depth = go.depth;
+    let depth = effective_search_depth(&options, &state, go.depth, &cfg);
     let root_side_to_move = state.side_to_move;
     let (tx, rx) = mpsc::channel();
     let abort = Arc::new(AtomicBool::new(false));
@@ -298,6 +302,24 @@ fn run_configured_search(
         4 => searcher.random_search(&mut wb),
         _ => searcher.search_pvs(&mut wb, depth),
     }
+}
+
+fn effective_search_depth(
+    options: &MillVariantOptions,
+    state: &GameStateSnapshot,
+    requested_depth: i32,
+    cfg: &EngineConfig,
+) -> i32 {
+    if requested_depth > 0 {
+        return requested_depth;
+    }
+    let mill_state = MillRules::decode_snapshot(*state);
+    let runtime = EngineRuntimeOptions {
+        skill_level: cfg.skill_level,
+        draw_on_human_experience: cfg.draw_on_human_experience,
+        developer_mode: cfg.developer_mode,
+    };
+    recommended_search_depth(&mill_state, options, &runtime).max(1)
 }
 
 fn finish_active_search(slot: &mut Option<ActiveSearch>) {
@@ -1049,7 +1071,7 @@ fn parse_go_options(line: &str, root_side_to_move: i8, engine_cfg: &EngineConfig
         };
     }
 
-    let depth = find_i32("depth").unwrap_or(1).max(1);
+    let depth = find_i32("depth").unwrap_or(0).max(0);
     let node_limit = find_u64("nodes");
 
     // Explicit go movetime takes highest priority.
@@ -1339,6 +1361,24 @@ mod tests {
             "random algorithm path must still return a best move"
         );
         assert_eq!(result.score, 0, "random path returns a neutral score");
+    }
+
+    #[test]
+    fn default_go_depth_uses_recommended_depth() {
+        let options = MillVariantOptions::default();
+        let rules = MillRules::new(options.clone());
+        let snap = rules.initial_state(&[]);
+        let cfg = EngineConfig {
+            skill_level: 5,
+            draw_on_human_experience: false,
+            developer_mode: false,
+            ..EngineConfig::default()
+        };
+
+        let go = parse_go_options("go", snap.side_to_move, &cfg);
+        assert_eq!(go.depth, 0, "missing depth is represented as auto");
+        let depth = effective_search_depth(&options, &snap, go.depth, &cfg);
+        assert_eq!(depth, 5);
     }
 
     #[test]
