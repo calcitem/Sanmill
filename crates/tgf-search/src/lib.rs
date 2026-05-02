@@ -885,6 +885,10 @@ impl<G: Game> Searcher<G> {
                 nodes: 0,
             };
         }
+        // Mirror master src/movegen.cpp:348 MoveList<LEGAL>::shuffle and
+        // src/search_engine.cpp random path: shuffle the legal move list first,
+        // then choose a random index from the shuffled list.
+        self.shuffle_moves(&mut moves);
         let index = self.next_random_index(moves.len());
         SearchResult {
             best_action: moves[index],
@@ -1977,6 +1981,20 @@ mod tests {
         assert_eq!(
             a.random_search(&mut wb1).best_action,
             b.random_search(&mut wb2).best_action
+        );
+
+        let mut shuffled_pick = Searcher::<MillGame>::new();
+        let mut direct_pick = Searcher::<MillGame>::new();
+        shuffled_pick.set_random_seed(2026);
+        direct_pick.set_random_seed(2026);
+        let mut wb3 = game.build_workbench(&snap);
+        let shuffled = shuffled_pick.random_search(&mut wb3).best_action;
+        let mut direct_moves = ActionList::<256>::new();
+        MillGame::generate_legal(&wb3, &mut direct_moves);
+        let direct = direct_moves[direct_pick.next_random_index(direct_moves.len())];
+        assert_ne!(
+            shuffled, direct,
+            "random search must shuffle before selecting the final index"
         );
     }
 
