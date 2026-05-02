@@ -1202,14 +1202,8 @@ impl MillRules {
             // Mirror master generate<REMOVE>'s `totalRemovals <= captureCount`
             // cutoff (P0-A.1): when pending removals are fully covered by
             // capture obligations, only capture targets are legal this turn.
-            // When remove_own_piece is set the "totalRemovals" equivalent is
-            // negative which is always <= any positive captureCount, so we
-            // return early in that case too (matching master's behaviour).
             let us = state.side_to_move as usize;
-            if us >= 2
-                || state.remove_own_piece[us]
-                || state.pending_removals[us] <= capture_total(state)
-            {
+            if us >= 2 || state.pending_removals[us] <= capture_total(state) {
                 return;
             }
             // pending_removals[us] > capture_total: the current player formed
@@ -1218,32 +1212,29 @@ impl MillRules {
             // already emitted above).
         }
 
-        // When `remove_own_piece[us]` is set the active side must remove a
-        // piece of its *own* colour (mirrors negative pieceToRemoveCount in
-        // the legacy C++ engine).  In this branch the mill-protection,
-        // adjacency and stalemate-removal guards are all skipped: a player
-        // may always reach into the open board and discard their own piece.
         let us = state.side_to_move as usize;
         if us < 2 && state.remove_own_piece[us] {
-            let own_piece = state.side_to_move + 1;
-            for node in 0_usize..24 {
-                if live_piece(state, node) == own_piece {
-                    out.push(Action {
-                        kind_tag: MillActionKind::Remove as i16,
-                        from_node: -1,
-                        to_node: node as i16,
-                        aux: -1,
-                        payload_bits: 0,
-                    });
-                }
-            }
+            // Mirror master src/position.cpp:1773 remove_piece:
+            // negative pieceToRemoveCount switches the target colour to the
+            // mover's own pieces, then the common stalemate and mill
+            // protection filters at lines 1793-1801 still run.
+            self.generate_regular_remove_actions_for_piece(state, out, state.side_to_move + 1, 0);
             return;
         }
 
         let opponent_piece = (state.side_to_move ^ 1) + 1;
+        self.generate_regular_remove_actions_for_piece(state, out, opponent_piece, capture_targets);
+    }
 
+    fn generate_regular_remove_actions_for_piece(
+        &self,
+        state: &MillState,
+        out: &mut ActionList<256>,
+        target_piece: i8,
+        excluded_targets: u32,
+    ) {
         // When `may_remove_from_mills_always` is set the rule simplifies:
-        // every opponent piece is a legal target, regardless of whether
+        // every target-colour piece is legal, regardless of whether
         // it sits in a mill.  Otherwise we mirror the C++ default (and
         // the FIDE Mill rule): mill pieces can only be removed when no
         // non-mill alternative exists.  Capture targets already emitted
@@ -1254,8 +1245,8 @@ impl MillRules {
         // which excludes MARKED_PIECE squares.
         if self.options.may_remove_from_mills_always {
             for node in 0_usize..24 {
-                if live_piece(state, node) == opponent_piece {
-                    if (capture_targets & node_bit(node)) != 0 {
+                if live_piece(state, node) == target_piece {
+                    if (excluded_targets & node_bit(node)) != 0 {
                         continue;
                     }
                     if self.is_stalemate_removal_context(state)
@@ -1276,14 +1267,14 @@ impl MillRules {
         }
 
         let has_non_mill_target = (0_usize..24).any(|idx| {
-            live_piece(state, idx) == opponent_piece && !is_piece_in_mill(state, &self.options, idx)
+            live_piece(state, idx) == target_piece && !is_piece_in_mill(state, &self.options, idx)
         });
 
         for node in 0_usize..24 {
-            if live_piece(state, node) != opponent_piece {
+            if live_piece(state, node) != target_piece {
                 continue;
             }
-            if (capture_targets & node_bit(node)) != 0 {
+            if (excluded_targets & node_bit(node)) != 0 {
                 continue;
             }
             if self.is_stalemate_removal_context(state)
@@ -3990,6 +3981,42 @@ mod tests {
         assert!(
             !state.remove_own_piece[active as usize],
             "remove_own_piece flag must clear once quota reaches zero"
+        );
+    }
+
+    #[test]
+    fn remove_own_piece_respects_mill_protection() {
+        let rules = MillRules::default();
+        let state = MillState {
+            board: {
+                let mut board = [0_i8; 24];
+                for node in [0_usize, 1, 2, 6] {
+                    board[node] = 1;
+                }
+                for node in [8_usize, 11, 14] {
+                    board[node] = 2;
+                }
+                board
+            },
+            side_to_move: 0,
+            phase: MillPhase::Moving,
+            move_number: 30,
+            pieces_in_hand: [0, 0],
+            pieces_on_board: [4, 3],
+            pending_removals: [1, 0],
+            remove_own_piece: [true, false],
+            winner: -1,
+            ..MillState::default()
+        };
+
+        let mut actions = ActionList::<256>::new();
+        rules.legal_actions(&rules.encode(state), &mut actions);
+
+        assert_eq!(actions.len(), 1);
+        assert_eq!(
+            actions.iter().next().unwrap().to_node,
+            6,
+            "own pieces in a mill stay protected while a non-mill target exists"
         );
     }
 
