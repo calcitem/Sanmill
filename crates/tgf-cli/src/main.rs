@@ -246,7 +246,7 @@ fn spawn_search(
                     extra_depth: (i % 2) as i32,
                 })
                 .collect();
-            let shared_tt = SharedTt::new(tt_cluster_bits_from_env());
+            let shared_tt = SharedTt::with_capacity_mb(hash_mb, tt_cluster_bits_from_env());
             let game = MillGame::new(options);
             let result = lazy_smp_search::<MillGame>(
                 game,

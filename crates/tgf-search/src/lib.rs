@@ -489,6 +489,22 @@ impl SharedTt {
         }
     }
 
+    /// Allocate a shared TT sized from the UCI `Hash` megabyte option.
+    ///
+    /// Mirrors master `Hash` handling by making the option authoritative
+    /// instead of relying solely on an environment variable.  The result is
+    /// rounded down to a power-of-two cluster count and never below
+    /// `cluster_bits_floor`.
+    pub fn with_capacity_mb(mb: u32, cluster_bits_floor: u32) -> Self {
+        let bytes = (mb.max(1) as usize).saturating_mul(1024 * 1024);
+        let cluster_size = std::mem::size_of::<TtCluster>().max(1);
+        let clusters = (bytes / cluster_size).max(1);
+        let bits = (usize::BITS - 1 - clusters.leading_zeros())
+            .max(cluster_bits_floor)
+            .clamp(10, 26);
+        Self::new(bits)
+    }
+
     /// Physical clear: zeros every slot and resets the generation counter.
     /// Prefer [`bump_age`] for the cheaper soft clear that avoids zeroing
     /// all memory.
@@ -2625,6 +2641,18 @@ mod tests {
         tt.clear();
         assert_eq!(tt.current_age(), 0);
         assert!(tt.get(key).is_none(), "physical clear must empty all slots");
+    }
+
+    #[test]
+    fn shared_tt_with_capacity_mb_respects_requested_floor() {
+        let small = SharedTt::with_capacity_mb(1, 14);
+        let large = SharedTt::with_capacity_mb(64, 14);
+
+        assert!(small.inner.clusters.len() >= (1usize << 14));
+        assert!(
+            large.inner.clusters.len() >= small.inner.clusters.len(),
+            "larger Hash option must not allocate fewer clusters"
+        );
     }
 
     #[test]
