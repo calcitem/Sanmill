@@ -680,7 +680,6 @@ impl GameRules for MillRules {
                 // repetition history accumulated in the moving phase
                 // becomes irrelevant.
                 clear_key_history(&mut state);
-                maybe_stop_placing_when_two_empty(&mut state, &self.options);
                 let custodian = detect_custodian_targets(&state, &self.options, to);
                 let intervention = detect_intervention_targets(&state, &self.options, to);
                 let mill_bits = formed_mill_bits_at(&state, &self.options, to, state.side_to_move);
@@ -764,6 +763,7 @@ impl GameRules for MillRules {
                     state.mill_available_at_removal = false;
                 } else {
                     clear_capture_state(&mut state);
+                    maybe_stop_placing_when_two_empty(&mut state, &self.options);
                     state.side_to_move ^= 1;
                     maybe_transition_to_moving(&mut state, &self.options);
                     sync_phase_for_may_move_in_placing(&mut state, &self.options);
@@ -1362,14 +1362,6 @@ fn maybe_transition_to_moving(state: &mut MillState, options: &MillVariantOption
     {
         enter_moving_phase(state, options);
     }
-    if options.piece_count == 12
-        && options.stop_placing_when_two_empty_squares
-        && state.phase == MillPhase::Placing
-        && empty_square_count(state) <= 2
-    {
-        state.pieces_in_hand = [0, 0];
-        enter_moving_phase(state, options);
-    }
 }
 
 /// When `may_move_in_placing_phase` is enabled the C++ engine determines
@@ -1457,6 +1449,9 @@ fn enter_moving_phase(state: &mut MillState, options: &MillVariantOptions) {
 }
 
 fn maybe_stop_placing_when_two_empty(state: &mut MillState, options: &MillVariantOptions) {
+    // Mirror master src/position.cpp:1217 stopPlacingWhenTwoEmptySquares:
+    // this helper is invoked only from the no-mill/no-capture placing tail,
+    // after pending mill or capture obligations have had a chance to return.
     if options.piece_count == 12
         && options.stop_placing_when_two_empty_squares
         && empty_square_count(state) <= 2
@@ -3423,6 +3418,52 @@ mod tests {
 
         let state = MillRules::decode(&after);
         assert_eq!(state.ply_since_capture, 0);
+    }
+
+    #[test]
+    fn twelve_men_two_empty_mill_keeps_hand_until_removal() {
+        let rules = MillRules::new(MillVariantOptions {
+            piece_count: 12,
+            has_diagonal_lines: true,
+            stop_placing_when_two_empty_squares: true,
+            ..MillVariantOptions::default()
+        });
+        let mut state = MillState {
+            board: [0_i8; 24],
+            side_to_move: 0,
+            phase: MillPhase::Placing,
+            move_number: 21,
+            pieces_in_hand: [3, 4],
+            pieces_on_board: [11, 10],
+            pending_removals: [0, 0],
+            winner: -1,
+            ..MillState::default()
+        };
+
+        for node in [0_usize, 1, 3, 5, 7, 9, 11, 13, 15, 17, 19] {
+            state.board[node] = 1;
+        }
+        for node in [4_usize, 6, 8, 10, 12, 14, 16, 18, 20, 21] {
+            state.board[node] = 2;
+        }
+
+        let after = rules.apply(
+            &rules.encode(state),
+            Action {
+                kind_tag: MillActionKind::Place as i16,
+                from_node: -1,
+                to_node: 2,
+                aux: -1,
+                payload_bits: 0,
+            },
+        );
+        let state = MillRules::decode(&after);
+
+        assert_eq!(empty_square_count(&state), 2);
+        assert_eq!(state.phase, MillPhase::Placing);
+        assert_eq!(state.side_to_move, 0);
+        assert_eq!(state.pending_removals[0], 1);
+        assert_eq!(state.pieces_in_hand, [2, 4]);
     }
 
     #[test]
