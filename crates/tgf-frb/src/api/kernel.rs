@@ -262,6 +262,11 @@ pub fn tgf_kernel_legal_actions(handle: u32) -> Result<Vec<TgfAction>, String> {
 
 #[flutter_rust_bridge::frb(sync)]
 pub fn tgf_kernel_apply(handle: u32, action: TgfAction) -> Result<TgfSnapshot, String> {
+    // NOTE: intentional deviation from master src/position.cpp:do_move.
+    // master assumes the move is legal and mutates directly.  The public FRB
+    // entry point remains checked for UI safety; replay/debug callers that
+    // need master-equivalent unchecked application must use
+    // `tgf_kernel_apply_unchecked`.
     let mut guard = KERNELS.lock().expect("kernel registry poisoned");
     let kernel = guard
         .get_mut(&handle)
@@ -270,6 +275,15 @@ pub fn tgf_kernel_apply(handle: u32, action: TgfAction) -> Result<TgfSnapshot, S
         .apply(action.into_action())
         .map_err(map_kernel_error)?;
     Ok(TgfSnapshot::from_snap(next))
+}
+
+#[flutter_rust_bridge::frb(sync)]
+pub fn tgf_kernel_apply_unchecked(handle: u32, action: TgfAction) -> Result<TgfSnapshot, String> {
+    let mut guard = KERNELS.lock().expect("kernel registry poisoned");
+    let kernel = guard
+        .get_mut(&handle)
+        .ok_or_else(|| format!("invalid kernel handle: {handle}"))?;
+    Ok(TgfSnapshot::from_snap(kernel.apply_unchecked(action.into_action())))
 }
 
 #[flutter_rust_bridge::frb(sync)]
@@ -618,6 +632,22 @@ mod tests {
         };
         let err = tgf_kernel_apply(handle, bogus).unwrap_err();
         assert!(err.contains("illegal"));
+        tgf_kernel_dispose(handle);
+    }
+
+    #[test]
+    fn unchecked_apply_bypasses_legality_validation() {
+        let handle = tgf_kernel_create("mill".to_owned()).unwrap();
+        let bogus = TgfAction {
+            kind_tag: 0,
+            from_node: -1,
+            to_node: 99,
+            aux: -1,
+            payload_bits: 0,
+        };
+
+        assert!(tgf_kernel_apply(handle, bogus.clone()).is_err());
+        let _ = tgf_kernel_apply_unchecked(handle, bogus);
         tgf_kernel_dispose(handle);
     }
 
