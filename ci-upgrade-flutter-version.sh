@@ -4,6 +4,11 @@ set -e
 # This script upgrades the Flutter version used in this project.
 # It automatically detects the current Flutter version, finds all
 # version references in the codebase, and updates them.
+#
+# Cursor Cloud / Background Agents read the same pinned version from
+# scripts/ensure_flutter.sh when building .cursor/Dockerfile (see
+# .cursor/environment.json). After upgrading Flutter here, the next
+# image rebuild picks up the new REQUIRED_FLUTTER_VERSION automatically.
 
 # --- Version Detection ---
 
