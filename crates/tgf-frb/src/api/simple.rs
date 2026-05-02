@@ -868,7 +868,9 @@ pub(crate) fn spawn_mill_engine_config_event_stream(
                 let skill_iterations = if all_pieces_on_board == 0 {
                     1_u32
                 } else {
-                    (u32::from(config.skill_level) + 1).saturating_mul(2048)
+                    u32::from(config.skill_level)
+                        .saturating_mul(2048)
+                        .max(1)
                 };
                 let mut mcts = MctsSearcher::<MillGame>::new();
                 let mcts_result = mcts.search_with_options(
@@ -885,12 +887,20 @@ pub(crate) fn spawn_mill_engine_config_event_stream(
                         ab_assist_depth: 6, // P2-I: master ALPHA_BETA_DEPTH=6
                     },
                 );
+                let side = snapshot.side_to_move as usize;
+                let material_score = if side < 2 {
+                    let them = side ^ 1;
+                    i32::from(wb.pieces_on_board()[side])
+                        - i32::from(wb.pieces_on_board()[them])
+                } else {
+                    0
+                };
                 result = SearchResult {
                     best_action: mcts_result.best_action,
-                    score: 0,
+                    score: material_score,
                     nodes: mcts_result.visits as u64,
                 };
-                let _ = sink.add(EngineEvent::info(max_depth, 0, result.nodes));
+                let _ = sink.add(EngineEvent::info(max_depth, result.score, result.nodes));
             }
             SearchAlgorithm::Pvs => {
                 // P2-H: IDS without aspiration windows (master IDS uses none).

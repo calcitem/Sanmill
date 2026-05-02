@@ -7,7 +7,7 @@ use std::sync::{mpsc, Arc};
 use std::thread::{self, JoinHandle};
 use std::time::{Duration, Instant};
 
-use tgf_core::{Action, ActionList, BoardTopology, Game, GameRules, GameStateSnapshot};
+use tgf_core::{Action, ActionList, BoardTopology, Game, GameRules, GameStateSnapshot, Workbench};
 use tgf_mill::{
     default_mill_topology, recommended_search_depth, EngineRuntimeOptions, MillActionKind,
     MillGame, MillRules, MillVariantOptions,
@@ -287,7 +287,7 @@ fn run_configured_search(
         0 | 1 => searcher.search_pvs(&mut wb, depth),
         2 => searcher.search_mtdf(&mut wb, depth),
         3 => {
-            let iterations = u32::from(cfg.skill_level.saturating_add(1)).saturating_mul(2048);
+            let iterations = u32::from(cfg.skill_level).saturating_mul(2048).max(1);
             let mut mcts = MctsSearcher::<MillGame>::new();
             let mcts_result = mcts.search_with_options(
                 &mut wb,
@@ -301,7 +301,7 @@ fn run_configured_search(
             );
             SearchResult {
                 best_action: mcts_result.best_action,
-                score: 0,
+                score: mill_material_score(&wb),
                 nodes: mcts_result.visits as u64,
             }
         }
@@ -326,6 +326,16 @@ fn effective_search_depth(
         developer_mode: cfg.developer_mode,
     };
     recommended_search_depth(&mill_state, options, &runtime).max(1)
+}
+
+fn mill_material_score(wb: &tgf_mill::MillWorkbench) -> i32 {
+    let pieces = wb.pieces_on_board();
+    let side = wb.side_to_move() as usize;
+    if side >= 2 {
+        return 0;
+    }
+    let opponent = side ^ 1;
+    i32::from(pieces[side]) - i32::from(pieces[opponent])
 }
 
 fn finish_active_search(slot: &mut Option<ActiveSearch>) {

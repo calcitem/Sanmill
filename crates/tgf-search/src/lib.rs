@@ -1784,7 +1784,7 @@ impl<G: Game> MctsSearcher<G> {
         }
 
         let root_untried = root_moves.into_iter().collect::<Vec<_>>();
-        let total_iterations = options.iterations.max(1) as usize * root_untried.len().max(1);
+        let total_iterations = options.iterations.max(1) as usize;
         let mut nodes = vec![MctsNode::root(root_untried)];
 
         for i in 0..total_iterations {
