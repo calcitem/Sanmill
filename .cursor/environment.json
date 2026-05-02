@@ -3,5 +3,5 @@
     "dockerfile": "Dockerfile",
     "context": ".."
   },
-  "install": "cargo fetch --workspace && bash ./flutter-init.sh"
+  "install": "cargo fetch && bash ./flutter-init.sh"
 }
