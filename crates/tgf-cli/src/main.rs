@@ -400,6 +400,10 @@ fn drain_finished_search(slot: &mut Option<ActiveSearch>) {
     }
 }
 
+// NOTE: intentional deviation from master src/search_engine.cpp:64.
+// Rust emits standard UCI ("info depth ... score cp|mate ... nodes ...
+// bestmove ...") instead of the legacy "info score N bestmove M" string.
+// Flutter's parser accepts both shapes.
 /// Format the score as a UCI score string (P2-M).
 /// Scores in the mate range (|score| > VALUE_MATE_IN_MAX_PLY) are
 /// formatted as "score mate N" (positive = we win, negative = we lose).

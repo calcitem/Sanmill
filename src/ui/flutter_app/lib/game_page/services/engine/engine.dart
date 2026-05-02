@@ -277,19 +277,30 @@ class Engine {
     }
 
     if (response.contains("bestmove")) {
-      final RegExp regex = RegExp(
+      // NOTE: intentional deviation from master src/search_engine.cpp:64.
+      // Rust CLI defaults to standard UCI (`info depth ... score cp|mate ...`)
+      // instead of the legacy `info score N bestmove M` string.  Keep the
+      // legacy parser as a fallback for older native engine responses.
+      final RegExp standardRegex = RegExp(
+        r"info\b.*\bscore\s+(?:cp|mate)\s+(-?\d+).*?\bbestmove\s+(\S+)",
+      );
+      final RegExp legacyRegex = RegExp(
         r"info score (-?\d+)(?: aimovetype (\w+))? bestmove (.*)",
       );
-      final Match? match = regex.firstMatch(response);
+      final Match? standardMatch = standardRegex.firstMatch(response);
+      final Match? legacyMatch = legacyRegex.firstMatch(response);
       String value = "";
       String aiMoveTypeStr = "";
       String best = "";
       AiMoveType aiMoveType = AiMoveType.unknown;
 
-      if (match != null) {
-        value = match.group(1)!;
-        aiMoveTypeStr = match.group(2) ?? "";
-        best = match.group(3)!.trim();
+      if (standardMatch != null) {
+        value = standardMatch.group(1)!;
+        best = standardMatch.group(2)!.trim();
+      } else if (legacyMatch != null) {
+        value = legacyMatch.group(1)!;
+        aiMoveTypeStr = legacyMatch.group(2) ?? "";
+        best = legacyMatch.group(3)!.trim();
       }
 
       // Guard: engine may reply with "bestmove none" when a search is aborted
