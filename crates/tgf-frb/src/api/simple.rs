@@ -778,6 +778,7 @@ pub(crate) fn spawn_mill_engine_config_event_stream(
             return;
         }
 
+        let rules_options = options.clone();
         let game = MillGame::new(options);
         let mut wb = game.build_workbench(&snapshot);
         let mut searcher = mill_searcher_default();
@@ -798,7 +799,7 @@ pub(crate) fn spawn_mill_engine_config_event_stream(
         let requested_depth = if config.depth > 0 {
             config.depth
         } else {
-            let rules = MillRules::new(options.clone());
+            let rules = MillRules::new(rules_options);
             let state = MillRules::decode_snapshot(snapshot);
             let runtime = EngineRuntimeOptions {
                 skill_level: config.skill_level,
@@ -868,9 +869,7 @@ pub(crate) fn spawn_mill_engine_config_event_stream(
                 let skill_iterations = if all_pieces_on_board == 0 {
                     1_u32
                 } else {
-                    u32::from(config.skill_level)
-                        .saturating_mul(2048)
-                        .max(1)
+                    u32::from(config.skill_level).saturating_mul(2048).max(1)
                 };
                 let mut mcts = MctsSearcher::<MillGame>::new();
                 let mcts_result = mcts.search_with_options(
@@ -890,8 +889,7 @@ pub(crate) fn spawn_mill_engine_config_event_stream(
                 let side = snapshot.side_to_move as usize;
                 let material_score = if side < 2 {
                     let them = side ^ 1;
-                    i32::from(wb.pieces_on_board()[side])
-                        - i32::from(wb.pieces_on_board()[them])
+                    i32::from(wb.pieces_on_board()[side]) - i32::from(wb.pieces_on_board()[them])
                 } else {
                     0
                 };

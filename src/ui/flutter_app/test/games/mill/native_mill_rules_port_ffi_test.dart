@@ -285,32 +285,41 @@ void main() {
         ];
 
         for (final String moveStr in placeOrder) {
-          final GameAction? action = session.legalActions.cast<GameAction?>().firstWhere(
-            (GameAction? a) =>
-                a != null &&
-                a.type == MillActionTypes.place &&
-                MillActionCodec.moveStringFrom(a)?.toLowerCase() == moveStr,
-            orElse: () => null,
+          final GameAction? action = session.legalActions
+              .cast<GameAction?>()
+              .firstWhere(
+                (GameAction? a) =>
+                    a != null &&
+                    a.type == MillActionTypes.place &&
+                    MillActionCodec.moveStringFrom(a)?.toLowerCase() == moveStr,
+                orElse: () => null,
+              );
+          expect(
+            action,
+            isNotNull,
+            reason: 'Could not find place action for $moveStr',
           );
-          expect(action, isNotNull,
-              reason: 'Could not find place action for $moveStr');
           await session.apply(action!);
         }
 
         // After White places f6 (forming mill f2-f4-f6), it is still White's
         // turn because White must remove one of Black's pieces.
-        expect(session.state.value.activeSeat, PlayerSeat.first,
-            reason: 'White keeps turn after forming a mill');
+        expect(
+          session.state.value.activeSeat,
+          PlayerSeat.first,
+          reason: 'White keeps turn after forming a mill',
+        );
 
         final List<GameAction> legal = session.legalActions;
-        expect(legal, isNotEmpty,
-            reason: 'Legal actions must not be empty after forming a mill');
+        expect(
+          legal,
+          isNotEmpty,
+          reason: 'Legal actions must not be empty after forming a mill',
+        );
 
         // All actions should be Remove actions.
         expect(
-          legal.every(
-            (GameAction a) => a.type == MillActionTypes.remove,
-          ),
+          legal.every((GameAction a) => a.type == MillActionTypes.remove),
           isTrue,
           reason: 'All legal actions must be Remove after forming a mill',
         );
@@ -322,8 +331,11 @@ void main() {
               MillActionCodec.moveStringFrom(a)?.toLowerCase() == 'xd6',
           orElse: () => null,
         );
-        expect(removeD6, isNotNull,
-            reason: 'xd6 must be a legal remove target after White forms a mill');
+        expect(
+          removeD6,
+          isNotNull,
+          reason: 'xd6 must be a legal remove target after White forms a mill',
+        );
 
         // Simulate what the tap handler does: MillTapActionSelector.select
         // should find the remove action for d6.
@@ -331,13 +343,13 @@ void main() {
           legalActions: legal,
           tappedLabel: 'd6',
         );
-        expect(selection.action, isNotNull,
-            reason: 'Tapping d6 must resolve to a Remove action');
-        expect(selection.action!.type, MillActionTypes.remove);
         expect(
-          MillActionCodec.moveStringFrom(selection.action!),
-          'xd6',
+          selection.action,
+          isNotNull,
+          reason: 'Tapping d6 must resolve to a Remove action',
         );
+        expect(selection.action!.type, MillActionTypes.remove);
+        expect(MillActionCodec.moveStringFrom(selection.action!), 'xd6');
       },
       skip: _nativeLibrarySkipReason,
     );

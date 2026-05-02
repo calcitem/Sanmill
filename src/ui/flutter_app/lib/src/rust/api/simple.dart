@@ -6,7 +6,7 @@
 import '../frb_generated.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
-// These functions are ignored because they are not marked as `pub`: `best_move`, `error`, `info`, `mill_searcher_default`, `new`, `ready`, `spawn_kernel_search_error`, `spawn_mill_engine_config_event_stream`, `spawn_mill_pvs_event_stream`, `stopped`
+// These functions are ignored because they are not marked as `pub`: `best_move_full`, `error`, `info`, `mill_searcher_default`, `new`, `ready`, `spawn_kernel_search_error`, `spawn_mill_engine_config_event_stream`, `spawn_mill_pvs_event_stream`, `stopped`
 // These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `assert_fields_are_eq`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `eq`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`
 
 /// Returns a greeting string confirming that the Rust → Dart bridge works.
@@ -157,6 +157,11 @@ class EngineEvent {
   final int score;
   final BigInt nodes;
   final int toNode;
+
+  /// For bestMove events: the full UCI move string ("a4", "a1-a4", "xa4")
+  /// is stored here (P1-C.2).  For error events: the error message.
+  /// Using the existing `reason` field avoids adding new FRB bridge fields
+  /// that would require codegen; the Dart side already exposes `reason`.
   final String reason;
 
   const EngineEvent({
@@ -202,7 +207,7 @@ enum MillBoardFullAction {
 /// Consolidates all user-facing AI behaviour knobs that were previously
 /// sent as UCI `setoption` strings via the C++ MethodChannel.
 class MillEngineConfig {
-  /// Search algorithm.  Default: PVS.
+  /// Search algorithm.  Default: MTD(f) (P2-A).
   final MillSearchAlgorithm algorithm;
 
   /// AI search depth (0 → auto via drawOnHumanExperience table on Dart side).
@@ -211,15 +216,28 @@ class MillEngineConfig {
   /// Time limit in milliseconds (0 = unlimited; depth drives termination).
   final int moveTimeMs;
 
-  /// When true the search aborts early when the position is stable.
-  /// Mirrors `AiIsLazy` in `ucioption.cpp`.
+  /// When true, apply the `AiIsLazy` depth adjustment from master
+  /// `search_engine.cpp`: if the previous best value suggests the position
+  /// is winning by more than 1 piece, cap origin_depth to 1; otherwise
+  /// keep it (P2-G).
   final bool aiIsLazy;
+
+  /// The best value from the previous turn's search, used by `ai_is_lazy`
+  /// logic. Mirrors master's `bestvalue` input to `executeSearch` (P2-G).
+  /// Flutter should back-fill this from the last `bestMove` event score.
+  final int lastBestValue;
+
+  /// SkillLevel (0-30): controls MCTS iteration count (skill_level * 2048)
+  /// matching master `SkillLevel * ITERATIONS_PER_SKILL_LEVEL` (P2-F/P2-I).
+  final int skillLevel;
 
   const MillEngineConfig({
     required this.algorithm,
     required this.depth,
     required this.moveTimeMs,
     required this.aiIsLazy,
+    required this.lastBestValue,
+    required this.skillLevel,
   });
 
   static Future<MillEngineConfig> default_() =>
@@ -230,7 +248,9 @@ class MillEngineConfig {
       algorithm.hashCode ^
       depth.hashCode ^
       moveTimeMs.hashCode ^
-      aiIsLazy.hashCode;
+      aiIsLazy.hashCode ^
+      lastBestValue.hashCode ^
+      skillLevel.hashCode;
 
   @override
   bool operator ==(Object other) =>
@@ -240,7 +260,9 @@ class MillEngineConfig {
           algorithm == other.algorithm &&
           depth == other.depth &&
           moveTimeMs == other.moveTimeMs &&
-          aiIsLazy == other.aiIsLazy;
+          aiIsLazy == other.aiIsLazy &&
+          lastBestValue == other.lastBestValue &&
+          skillLevel == other.skillLevel;
 }
 
 enum MillFormationActionInPlacingPhase {

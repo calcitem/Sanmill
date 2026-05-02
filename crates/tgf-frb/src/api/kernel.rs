@@ -283,7 +283,9 @@ pub fn tgf_kernel_apply_unchecked(handle: u32, action: TgfAction) -> Result<TgfS
     let kernel = guard
         .get_mut(&handle)
         .ok_or_else(|| format!("invalid kernel handle: {handle}"))?;
-    Ok(TgfSnapshot::from_snap(kernel.apply_unchecked(action.into_action())))
+    Ok(TgfSnapshot::from_snap(
+        kernel.apply_unchecked(action.into_action()),
+    ))
 }
 
 #[flutter_rust_bridge::frb(sync)]
