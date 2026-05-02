@@ -1081,8 +1081,14 @@ impl MillRules {
 
     fn generate_move_actions(&self, state: &MillState, out: &mut ActionList<256>, allow_fly: bool) {
         let side = state.side_to_move as usize;
+        // Mirror master src/movegen.cpp:87 generate<MOVE> and
+        // src/movegen.cpp:157 generate<LEGAL>: movement, including
+        // Lasker-style leap and fly moves, is only generated when the active
+        // side has no pieces left in hand.
+        let no_pieces_in_hand = state.pieces_in_hand[side] == 0;
         let can_fly = allow_fly
             && self.options.may_fly
+            && no_pieces_in_hand
             && state.pieces_on_board[side] <= self.options.fly_piece_count;
         let opponent_color = (state.side_to_move ^ 1) + 1;
         // Leap moves are emitted *in addition to* regular adjacency moves
@@ -1096,6 +1102,7 @@ impl MillRules {
         // matching master's checkLeapCapture which checks the condition outside
         // any phase guard.
         let leap_enabled = !can_fly
+            && no_pieces_in_hand
             && self.options.leap_capture.enabled
             && capture_phase_allowed(&self.options.leap_capture, state.phase)
             && capture_piece_count_allowed_leap(&self.options.leap_capture, state)
@@ -4473,6 +4480,98 @@ mod tests {
                 .filter(|a| a.kind_tag == MillActionKind::Move as i16)
                 .count(),
             2
+        );
+    }
+
+    #[test]
+    fn placing_phase_leap_requires_empty_hand() {
+        let options = MillVariantOptions {
+            may_move_in_placing_phase: true,
+            leap_capture: CaptureRuleConfig {
+                enabled: true,
+                in_placing_phase: true,
+                ..CaptureRuleConfig::default()
+            },
+            ..MillVariantOptions::default()
+        };
+        let rules = MillRules::new(options);
+        let state = MillState {
+            board: {
+                let mut board = [0_i8; 24];
+                board[0] = 1;
+                board[1] = 2;
+                board
+            },
+            side_to_move: 0,
+            phase: MillPhase::Placing,
+            move_number: 2,
+            pieces_in_hand: [7, 8],
+            pieces_on_board: [1, 1],
+            pending_removals: [0, 0],
+            winner: -1,
+            ..MillState::default()
+        };
+
+        let mut actions = ActionList::<256>::new();
+        rules.legal_actions(&rules.encode(state), &mut actions);
+
+        assert!(
+            actions
+                .iter()
+                .any(|a| a.kind_tag == MillActionKind::Place as i16),
+            "placing actions must remain available while pieces are in hand"
+        );
+        assert!(
+            !actions.iter().any(|a| {
+                a.kind_tag == MillActionKind::Move as i16 && a.from_node == 0 && a.to_node == 2
+            }),
+            "leap move over node 1 must wait until the hand is empty"
+        );
+    }
+
+    #[test]
+    fn moving_phase_fly_requires_empty_hand() {
+        let options = MillVariantOptions {
+            may_fly: true,
+            fly_piece_count: 3,
+            ..MillVariantOptions::default()
+        };
+        let rules = MillRules::new(options);
+        let state = MillState {
+            board: {
+                let mut board = [0_i8; 24];
+                board[0] = 1;
+                board[1] = 1;
+                board[2] = 1;
+                board[8] = 2;
+                board[9] = 2;
+                board[10] = 2;
+                board
+            },
+            side_to_move: 0,
+            phase: MillPhase::Moving,
+            move_number: 18,
+            pieces_in_hand: [1, 0],
+            pieces_on_board: [3, 3],
+            pending_removals: [0, 0],
+            winner: -1,
+            ..MillState::default()
+        };
+
+        let mut actions = ActionList::<256>::new();
+        rules.legal_actions(&rules.encode(state), &mut actions);
+
+        assert!(
+            actions
+                .iter()
+                .any(|a| a.kind_tag == MillActionKind::Move as i16),
+            "adjacent moves still exist in this setup"
+        );
+        assert!(
+            !actions.iter().any(|a| {
+                a.kind_tag == MillActionKind::Move as i16 && a.from_node == 0 && a.to_node == 23
+            }),
+            "non-adjacent fly moves must not be generated with a piece in hand"
         );
     }
 
