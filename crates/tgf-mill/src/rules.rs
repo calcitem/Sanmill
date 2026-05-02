@@ -1608,6 +1608,10 @@ fn bump_ply_since_capture(state: &mut MillState, options: &MillVariantOptions) {
 }
 
 fn maybe_draw_by_n_move_rule(state: &mut MillState, options: &MillVariantOptions) {
+    // Mirror master src/position.cpp:2077 is_three_endgame:
+    // C++ hard-codes the endgame N-move threshold to exactly three pieces,
+    // independent of flyPieceCount. Keep the literal because UI/i18n wording
+    // describes a "three-piece endgame" rather than a fly-threshold endgame.
     // P0-F.2: apply the N-move rule in placing phase as well when
     // may_move_in_placing_phase is enabled, matching master's behaviour where
     // the posKeyHistory size tracks move-type moves in both phases.
@@ -1616,13 +1620,9 @@ fn maybe_draw_by_n_move_rule(state: &mut MillState, options: &MillVariantOptions
     if !is_move_counting_phase {
         return;
     }
-    // Mirror C++ `Position::is_three_endgame()`: endgame threshold applies when
-    // EITHER side has EXACTLY fly_piece_count pieces on board.  Using `== fly_piece_count`
-    // (rather than `<= fly_piece_count`) matches C++ semantics; counts below
-    // fly_piece_count would already have triggered LoseFewerThanThree.
     let is_endgame = options.endgame_n_move_rule > 0
         && options.endgame_n_move_rule < options.n_move_rule
-        && state.pieces_on_board.contains(&options.fly_piece_count);
+        && state.pieces_on_board.contains(&3);
     let threshold = if is_endgame {
         options.endgame_n_move_rule
     } else {
@@ -4483,6 +4483,52 @@ mod tests {
             },
         );
         assert_eq!(rules.outcome(&after).kind, OutcomeKind::Draw);
+    }
+
+    #[test]
+    fn endgame_n_move_rule_ignores_fly_piece_count_four() {
+        let options = MillVariantOptions {
+            fly_piece_count: 4,
+            n_move_rule: 100,
+            endgame_n_move_rule: 5,
+            ..MillVariantOptions::default()
+        };
+        let rules = MillRules::new(options);
+        let state = MillState {
+            board: {
+                let mut board = [0_i8; 24];
+                for node in [0_usize, 3, 6, 9] {
+                    board[node] = 1;
+                }
+                for node in [2_usize, 5, 8, 11] {
+                    board[node] = 2;
+                }
+                board
+            },
+            side_to_move: 0,
+            phase: MillPhase::Moving,
+            move_number: 30,
+            pieces_in_hand: [0, 0],
+            pieces_on_board: [4, 4],
+            pending_removals: [0, 0],
+            winner: -1,
+            ply_since_capture: 4,
+            ..MillState::default()
+        };
+
+        let after = rules.apply(
+            &rules.encode(state),
+            Action {
+                kind_tag: MillActionKind::Move as i16,
+                from_node: 3,
+                to_node: 4,
+                aux: -1,
+                payload_bits: 0,
+            },
+        );
+
+        assert_eq!(rules.outcome(&after).kind, OutcomeKind::Ongoing);
+        assert_eq!(MillRules::decode(&after).ply_since_capture, 5);
     }
 
     #[test]
