@@ -137,20 +137,21 @@ class MiniBoardState extends State<MiniBoard>
         // Tapping anywhere on the board shows the navigation icon (and hides icons on other boards).
         onTap: _handleBoardTap,
         child: Stack(
+          fit: StackFit.expand,
           children: <Widget>[
             // The board background and drawing are rendered by CustomPaint.
             ClipRRect(
               borderRadius: BorderRadius.circular(
                 DB().displaySettings.boardCornerRadius,
               ),
-              child: Container(
+              child: ColoredBox(
                 color: DB().colorSettings.boardBackgroundColor,
                 child: CustomPaint(
                   painter: MiniBoardPainter(
                     boardLayout: widget.boardLayout,
                     extMove: widget.extMove,
                   ),
-                  child: Container(), // Ensures the CustomPaint has a size.
+                  child: const SizedBox.expand(),
                 ),
               ),
             ),
@@ -198,7 +199,7 @@ class MiniBoardPainter extends CustomPainter {
   late final List<PieceColor> boardState;
 
   /// Parse the board layout string into 24 PieceColors.
-  /// Format: "outer/middle/inner", each 8 chars.
+  /// Format: "inner/middle/outer", each 8 chars.
   static List<PieceColor> _parseBoardLayout(String layout) {
     final List<String> parts = layout.split('/');
     if (parts.length != 3 ||
@@ -210,18 +211,11 @@ class MiniBoardPainter extends CustomPainter {
     }
 
     final List<PieceColor> state = <PieceColor>[];
-    // We parse "outer/middle/inner" from left to right,
-    // but store them in the order: inner => middle => outer
-    // so indices 0..7 = inner, 8..15 = middle, 16..23 = outer.
-    //
-    // parts[0] => outer ring
-    // parts[1] => middle ring
-    // parts[2] => inner ring
-    //
-    // BUT the code below does it in reversed fashion to keep painting consistent.
-    // If this mismatch is intentional, keep it. Otherwise reorder accordingly.
+    // Store rings in paint order: 0..7 = inner, 8..15 = middle,
+    // 16..23 = outer. This matches Position.generateBoardLayoutAfterThisMove
+    // and the Rust Mill FEN board section.
 
-    // Inner ring from parts[0]
+    // Inner ring from parts[0].
     for (int i = 0; i < 8; i++) {
       state.add(_charToPieceColor(parts[0][i]));
     }
