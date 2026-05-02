@@ -9,8 +9,10 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:sanmill/game_page/services/mill.dart' as mill;
 import 'package:sanmill/game_platform/game_id.dart';
 import 'package:sanmill/game_platform/game_session.dart';
+import 'package:sanmill/games/mill/mill_action_codec.dart';
 import 'package:sanmill/games/mill/mill_constants.dart';
 import 'package:sanmill/games/mill/mill_session_recorder_bridge.dart';
+import 'package:sanmill/games/mill/mill_tap_action_selector.dart';
 import 'package:sanmill/games/mill/native_mill_ai_turn_controller.dart';
 import 'package:sanmill/games/mill/native_mill_game_session.dart';
 import 'package:sanmill/games/mill/native_mill_rules_port.dart';
@@ -253,6 +255,89 @@ void main() {
         );
         expect(whiteMove, isNotNull);
         expect(firstAiSession.state.value.activeSeat, PlayerSeat.second);
+      },
+      skip: _nativeLibrarySkipReason,
+    );
+
+    test(
+      'mill formation in placing phase exposes remove actions to human player',
+      () async {
+        // Replicates the exact bug scenario:
+        //   1. d2 d6   (White node 13, Black node 9)
+        //   2. f4 b4   (White node 11, Black node 15)
+        //   3. f2 g4   (White node 12, Black node 3)
+        //   4. f6      (White node 10) → forms mill [10,11,12]
+        //
+        // After White forms the mill, session.legalActions must contain
+        // remove actions for all Black pieces, and MillTapActionSelector
+        // must find "xd6" (node 9) when the human taps d6.
+        final NativeMillGameSession session = NativeMillGameSession();
+        addTearDown(session.dispose);
+
+        final List<String> placeOrder = <String>[
+          'd2',
+          'd6',
+          'f4',
+          'b4',
+          'f2',
+          'g4',
+          'f6',
+        ];
+
+        for (final String moveStr in placeOrder) {
+          final GameAction? action = session.legalActions.cast<GameAction?>().firstWhere(
+            (GameAction? a) =>
+                a != null &&
+                a.type == MillActionTypes.place &&
+                MillActionCodec.moveStringFrom(a)?.toLowerCase() == moveStr,
+            orElse: () => null,
+          );
+          expect(action, isNotNull,
+              reason: 'Could not find place action for $moveStr');
+          await session.apply(action!);
+        }
+
+        // After White places f6 (forming mill f2-f4-f6), it is still White's
+        // turn because White must remove one of Black's pieces.
+        expect(session.state.value.activeSeat, PlayerSeat.first,
+            reason: 'White keeps turn after forming a mill');
+
+        final List<GameAction> legal = session.legalActions;
+        expect(legal, isNotEmpty,
+            reason: 'Legal actions must not be empty after forming a mill');
+
+        // All actions should be Remove actions.
+        expect(
+          legal.every(
+            (GameAction a) => a.type == MillActionTypes.remove,
+          ),
+          isTrue,
+          reason: 'All legal actions must be Remove after forming a mill',
+        );
+
+        // Specifically, removing d6 (Black's piece at node 9) must be legal.
+        final GameAction? removeD6 = legal.cast<GameAction?>().firstWhere(
+          (GameAction? a) =>
+              a != null &&
+              MillActionCodec.moveStringFrom(a)?.toLowerCase() == 'xd6',
+          orElse: () => null,
+        );
+        expect(removeD6, isNotNull,
+            reason: 'xd6 must be a legal remove target after White forms a mill');
+
+        // Simulate what the tap handler does: MillTapActionSelector.select
+        // should find the remove action for d6.
+        final MillTapActionSelection selection = MillTapActionSelector.select(
+          legalActions: legal,
+          tappedLabel: 'd6',
+        );
+        expect(selection.action, isNotNull,
+            reason: 'Tapping d6 must resolve to a Remove action');
+        expect(selection.action!.type, MillActionTypes.remove);
+        expect(
+          MillActionCodec.moveStringFrom(selection.action!),
+          'xd6',
+        );
       },
       skip: _nativeLibrarySkipReason,
     );
