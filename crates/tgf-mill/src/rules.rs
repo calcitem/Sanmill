@@ -2909,16 +2909,11 @@ fn append_capture_field(out: &mut String, label: char, targets: [u32; 2], count:
 }
 
 fn position_key(state: &MillState) -> u64 {
-    // P0-G: rewritten to align with master's incremental Zobrist key semantics.
-    // Master's key (Position::st.key) includes:
-    //   * board piece-square hashes (Zobrist::psq[pc][sq])
-    //   * side-to-move (Zobrist::side)
-    //   * pieceToRemoveCount[sideToMove] only (via update_key_misc)
-    //   * capture target bitmaps and counts (custodian/intervention/leap,
-    //     per colour, via setCustodian/Intervention/LeapTargets)
-    // Excluded (not in master): gamePly, rule50, phase, pieces_in_hand,
-    // pieces_on_board, winner, outcome_reason, last_mill_*, used_mill_lines,
-    // delayed_marked_pieces, mill_available_at_removal, formed_mills_bb.
+    // Mirror master src/position.cpp:Position::key:
+    // use deterministic Zobrist-style XOR mixing over every field that
+    // participates in move legality / repetition. This is still recomputed
+    // from scratch after each transition; incremental maintenance can be
+    // introduced later without changing the key layout.
     let mut key = 0xcbf2_9ce4_8422_2325_u64;
     let mut mix = |byte: u8| {
         key ^= u64::from(byte);
@@ -2933,8 +2928,19 @@ fn position_key(state: &MillState) -> u64 {
     // pieceToRemoveCount for the active side only (mirrors update_key_misc).
     let us = (state.side_to_move as usize) & 1;
     mix(state.pending_removals[us]);
-    // Capture-misc: target bitmaps and counts for all three capture types.
+    mix(state.phase as u8);
+    mix(state.action as u8);
     for side in 0..2 {
+        mix(state.pieces_in_hand[side]);
+        mix(state.pieces_on_board[side]);
+        let signed_remove = if state.remove_own_piece[side] {
+            -(i16::from(state.pending_removals[side]))
+        } else {
+            i16::from(state.pending_removals[side])
+        };
+        for byte in signed_remove.to_le_bytes() {
+            mix(byte);
+        }
         for byte in state.custodian_targets[side].to_le_bytes() {
             mix(byte);
         }
@@ -4397,6 +4403,32 @@ mod tests {
 
         wb.undo_move();
         assert_eq!(wb.key(), initial_key);
+    }
+
+    #[test]
+    fn position_key_distinguishes_signed_removal_and_capture_slots() {
+        let mut normal = MillState {
+            side_to_move: 0,
+            phase: MillPhase::Moving,
+            action: MillActionState::Remove,
+            pending_removals: [1, 0],
+            ..MillState::default()
+        };
+        normal.board[0] = 1;
+        normal.board[6] = 2;
+        normal.pieces_on_board = [1, 1];
+
+        let mut own = normal.clone();
+        own.remove_own_piece[0] = true;
+        assert_ne!(position_key(&normal), position_key(&own));
+
+        let mut white_capture = normal.clone();
+        white_capture.custodian_targets[0] = node_bit(6);
+        white_capture.custodian_count[0] = 1;
+        let mut black_capture = normal.clone();
+        black_capture.custodian_targets[1] = node_bit(6);
+        black_capture.custodian_count[1] = 1;
+        assert_ne!(position_key(&white_capture), position_key(&black_capture));
     }
 
     #[test]
