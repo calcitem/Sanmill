@@ -64,6 +64,7 @@ struct EngineConfig {
     developer_mode: bool,
     hash_mb: u32,
     ponder: bool,
+    use_lazy_smp: bool,
 }
 
 impl Default for EngineConfig {
@@ -78,6 +79,9 @@ impl Default for EngineConfig {
             developer_mode: true,
             hash_mb: 16,
             ponder: false,
+            use_lazy_smp: std::env::var("TGF_USE_LAZY_SMP")
+                .map(|value| value == "1" || value.eq_ignore_ascii_case("true"))
+                .unwrap_or(false),
         }
     }
 }
@@ -220,7 +224,13 @@ fn spawn_search(
     let abort = Arc::new(AtomicBool::new(false));
     let abort_handle = SearchAbortHandle::from_arc(Arc::clone(&abort));
 
-    let handle = if threads <= 1 {
+    // NOTE: master C++ keeps `Threads` for the engine commander pool only.
+    // Mill search itself stays single-threaded. We mirror that default here;
+    // set `UseLazySmp = true` (or TGF_USE_LAZY_SMP=1) to opt into Rust's
+    // lazy-SMP variant for higher NPS.
+    let use_lazy_smp = cfg.use_lazy_smp && threads > 1;
+
+    let handle = if !use_lazy_smp {
         let abort_for_worker = Arc::clone(&abort);
         thread::spawn(move || {
             let mut searcher = mill_searcher();
@@ -485,6 +495,7 @@ fn print_uci_options() {
     println!("option name Slow Mover type spin default 100 min 10 max 1000");
     println!("option name nodestime type spin default 0 min 0 max 10000");
     println!("option name Shuffling type check default true");
+    println!("option name UseLazySmp type check default false");
     println!("option name Algorithm type spin default 2 min 0 max 4");
     println!("option name DrawOnHumanExperience type check default true");
     println!("option name ConsiderMobility type check default true");
@@ -626,6 +637,12 @@ fn apply_setoption(
         "shuffling" => parse_bool(value)
             .map(|v| {
                 engine_cfg.shuffling = v;
+                SetoptionResult::SearchConfig
+            })
+            .unwrap_or(SetoptionResult::Unknown),
+        "uselazysmp" | "use lazy smp" => parse_bool(value)
+            .map(|v| {
+                engine_cfg.use_lazy_smp = v;
                 SetoptionResult::SearchConfig
             })
             .unwrap_or(SetoptionResult::Unknown),
@@ -1417,6 +1434,27 @@ mod tests {
             ),
             SetoptionResult::ClearHash
         );
+    }
+
+    #[test]
+    fn lazy_smp_requires_explicit_option() {
+        let mut cfg = EngineConfig::default();
+        assert!(!cfg.use_lazy_smp);
+
+        let mut options = MillVariantOptions::default();
+        let mut threads = 1;
+        let mut qsearch = 0;
+        assert_eq!(
+            apply_setoption(
+                "setoption name UseLazySmp value true",
+                &mut options,
+                &mut threads,
+                &mut qsearch,
+                &mut cfg,
+            ),
+            SetoptionResult::SearchConfig
+        );
+        assert!(cfg.use_lazy_smp);
     }
 
     #[test]
