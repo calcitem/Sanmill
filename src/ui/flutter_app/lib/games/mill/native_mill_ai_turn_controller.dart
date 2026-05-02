@@ -97,6 +97,13 @@ class NativeMillAiTurnController {
     return level > tableDepth ? tableDepth : level;
   }
 
+  /// Search time limit in milliseconds derived from [generalSettings.moveTime].
+  /// A value of 0 means unlimited (depth alone drives termination).
+  int get moveLimitMs {
+    final int secs = generalSettings.moveTime;
+    return secs > 0 ? secs * 1000 : 0;
+  }
+
   /// Run native search-and-apply until the active seat changes away from the
   /// AI (or the game ends).  This handles mill formation correctly: after a
   /// Place that completes a mill, `state.value.activeSeat` stays on the AI
@@ -109,13 +116,16 @@ class NativeMillAiTurnController {
     if (!isAiTurn(session)) {
       return null;
     }
+    final int searchDepth = searchDepthForSession(session);
+    final int timeLimit = moveLimitMs;
     GameAction? lastApplied;
     for (int step = 0; step < maxStepsPerTurn; step++) {
       if (!isAiTurn(session)) {
         break;
       }
       final GameAction? applied = await session.searchAndApplyBestAction(
-        depth: searchDepthForSession(session),
+        depth: searchDepth,
+        moveLimitMs: timeLimit,
       );
       if (applied == null) {
         break;

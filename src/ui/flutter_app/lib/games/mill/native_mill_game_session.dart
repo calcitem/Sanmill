@@ -24,6 +24,10 @@ import 'mill_action_codec.dart';
 import 'mill_board_coordinate_maps.dart';
 import 'native_mill_rules_port.dart';
 
+import '../../shared/services/logger.dart';
+
+const String _logTag = '[NativeMillGameSession]';
+
 class NativeMillGameSession implements GameSessionHandle {
   factory NativeMillGameSession({
     NativeMillRulesPort? rulesPort,
@@ -216,24 +220,44 @@ class NativeMillGameSession implements GameSessionHandle {
   /// Search from the current Rust kernel state backing this session.  Exposed
   /// as a concrete method (not on [GameSession]) while phase 6 moves
   /// `engine.dart` toward EngineEvent streams.
-  Stream<tgf.EngineEvent> millSearchEvents({required int depth}) {
-    return rulesPort.millSearchEvents(depth: depth);
+  ///
+  /// When [moveLimitMs] is greater than zero the search is time-bounded.
+  Stream<tgf.EngineEvent> millSearchEvents({
+    required int depth,
+    int moveLimitMs = 0,
+  }) {
+    return rulesPort.millSearchEvents(depth: depth, moveLimitMs: moveLimitMs);
   }
 
   /// Search the current kernel state and map the final bestMove event back to
   /// one of this session's current legal actions.  The current Rust event only
   /// exposes `toNode`, which is unambiguous for placing-phase dogfood; extend
   /// the event payload before using this for moving/removal searches.
-  Future<GameAction?> searchBestAction({int depth = 1}) async {
+  ///
+  /// [moveLimitMs]: when > 0, the search is time-bounded (mirrors the legacy
+  /// C++ `MoveTime` UCI option).  When 0, depth alone drives termination.
+  Future<GameAction?> searchBestAction({
+    int depth = 1,
+    int moveLimitMs = 0,
+  }) async {
     if (_disposed || outcome.isTerminal) {
       return null;
     }
+
+    logger.d(
+      '$_logTag searchBestAction: depth=$depth '
+      'moveLimitMs=$moveLimitMs phase=${state.value.phase}',
+    );
 
     GameAction? bestAction;
     try {
       await for (final tgf.EngineEvent event in millSearchEvents(
         depth: depth,
+        moveLimitMs: moveLimitMs,
       )) {
+        logger.t(
+          '$_logTag search event: kind=${event.kind} toNode=${event.toNode}',
+        );
         if (event.kind != 'bestMove' || event.toNode < 0) {
           continue;
         }
@@ -241,16 +265,29 @@ class NativeMillGameSession implements GameSessionHandle {
       }
     } catch (e) {
       // Stream error (e.g. Rust search panicked); treat as no best action.
+      logger.e('$_logTag searchBestAction stream error: $e');
       return null;
     }
+    logger.d(
+      '$_logTag searchBestAction done: '
+      'bestAction=${bestAction?.payload["move"] ?? "(none)"}',
+    );
     return bestAction;
   }
 
   /// Convenience dogfood hook used by the future engine.dart replacement: run
   /// Rust search from the current session, apply the best action if available,
   /// and return it to the caller for recording / UI feedback.
-  Future<GameAction?> searchAndApplyBestAction({int depth = 1}) async {
-    final GameAction? action = await searchBestAction(depth: depth);
+  ///
+  /// [moveLimitMs]: when > 0, the search is time-bounded.
+  Future<GameAction?> searchAndApplyBestAction({
+    int depth = 1,
+    int moveLimitMs = 0,
+  }) async {
+    final GameAction? action = await searchBestAction(
+      depth: depth,
+      moveLimitMs: moveLimitMs,
+    );
     if (action == null) {
       return null;
     }
@@ -260,6 +297,7 @@ class NativeMillGameSession implements GameSessionHandle {
       // The apply failed (e.g. the Rust kernel rejected the action as
       // illegal after a concurrent state change).  Return null so the
       // caller can retry or surface an error.
+      logger.e('$_logTag searchAndApplyBestAction apply failed: $e');
       return null;
     }
     return action;

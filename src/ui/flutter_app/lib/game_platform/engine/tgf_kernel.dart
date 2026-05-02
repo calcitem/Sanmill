@@ -175,8 +175,26 @@ class TgfKernel {
 
   /// PVS search event stream for Mill kernels only — uses the session snapshot
   /// and the variant registered at [TgfKernel.createMill].
-  Stream<tgf_simple.EngineEvent> millSearchEvents({required int depth}) {
+  ///
+  /// When [moveLimitMs] is greater than zero the search is time-bounded
+  /// (matches the legacy C++ `MoveTime` UCI option); otherwise depth alone
+  /// drives termination.
+  Stream<tgf_simple.EngineEvent> millSearchEvents({
+    required int depth,
+    int moveLimitMs = 0,
+  }) {
     _checkAlive();
+    if (moveLimitMs > 0) {
+      return tgf.tgfKernelMillSearchEventsWithConfig(
+        handle: _handle,
+        config: tgf_simple.MillEngineConfig(
+          algorithm: tgf_simple.MillSearchAlgorithm.pvs,
+          depth: depth,
+          moveTimeMs: moveLimitMs,
+          aiIsLazy: false,
+        ),
+      );
+    }
     return tgf.tgfKernelMillSearchEvents(handle: _handle, depth: depth);
   }
 

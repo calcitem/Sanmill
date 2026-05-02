@@ -156,8 +156,14 @@ class NativeMillRulesPort implements RulesPort {
   /// Stream Rust-native Mill search events from this port's current kernel
   /// state.  This keeps the future engine path tied to the same session
   /// snapshot that legalActions/apply/undo/redo mutate.
-  Stream<tgf_simple.EngineEvent> millSearchEvents({required int depth}) {
-    return _kernel.millSearchEvents(depth: depth);
+  ///
+  /// When [moveLimitMs] is greater than zero the search is time-bounded
+  /// (matches the legacy C++ `MoveTime` UCI option).
+  Stream<tgf_simple.EngineEvent> millSearchEvents({
+    required int depth,
+    int moveLimitMs = 0,
+  }) {
+    return _kernel.millSearchEvents(depth: depth, moveLimitMs: moveLimitMs);
   }
 
   GameStateSnapshot _snapshotFromKernel({GameAction? lastAction}) {
