@@ -451,7 +451,7 @@ impl MillWorkbench {
 
 impl Workbench for MillWorkbench {
     fn snapshot(&self) -> GameStateSnapshot {
-        self.rules.encode(self.state)
+        self.rules.encode(self.state.clone())
     }
 
     fn key(&self) -> u64 {
@@ -467,7 +467,7 @@ impl Workbench for MillWorkbench {
     }
 
     fn do_move(&mut self, a: Action) {
-        self.undo_stack.push(self.state);
+        self.undo_stack.push(self.state.clone());
         let next = self.rules.apply(&self.snapshot(), a);
         self.state = MillRules::decode(&next);
     }
@@ -1906,33 +1906,28 @@ fn repetition_signature(state: &MillState) -> u64 {
 /// MOVETYPE_REMOVE (engine_commands.cpp L151-157). Cycles can only span
 /// pure Move sequences.
 fn clear_key_history(state: &mut MillState) {
-    state.key_history = [0_u64; 24];
+    state.key_history.clear();
     state.key_history_len = 0;
 }
 
 /// Append the current state's repetition signature to the rolling buffer and
 /// end the game in a draw when the same signature has appeared three times.
-/// Mirrors master's `posKeyHistory.push_back(key())` + `count(key) >= 3`.
-/// The buffer is a ring of 24 entries; practical mill repetitions are always
-/// detected within a few moves. No-op when `threefold_repetition_rule` is
-/// disabled.
+/// Mirrors master src/position.cpp:25 `posKeyHistory`: the runtime history is
+/// vector-backed and may grow to 256 entries; snapshot payloads persist only
+/// the most recent 24 entries for compatibility with existing FRB snapshots.
+/// No-op when `threefold_repetition_rule` is disabled.
 fn push_key_and_check_threefold(state: &mut MillState, options: &MillVariantOptions) {
     if !options.threefold_repetition_rule {
         return;
     }
     let key = repetition_signature(state);
-    if state.key_history_len < 24 {
-        state.key_history[state.key_history_len as usize] = key;
-        state.key_history_len += 1;
-    } else {
-        state.key_history.copy_within(1..24, 0);
-        state.key_history[23] = key;
+    if state.key_history.len() >= 256 {
+        state.key_history.remove(0);
     }
-    let len = state.key_history_len as usize;
-    let count = state.key_history[..len]
-        .iter()
-        .filter(|k| **k == key)
-        .count();
+    debug_assert!(state.key_history.len() < 256);
+    state.key_history.push(key);
+    state.key_history_len = state.key_history.len();
+    let count = state.key_history.iter().filter(|k| **k == key).count();
     if count >= 3 {
         state.phase = MillPhase::GameOver;
         state.winner = 2;
@@ -1951,7 +1946,7 @@ fn move_action(from: usize, to: usize) -> Action {
     }
 }
 
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[derive(Clone, Debug, PartialEq, Eq)]
 pub struct MillState {
     board: [i8; 24],
     side_to_move: i8,
@@ -2008,17 +2003,13 @@ pub struct MillState {
     /// are persisted for UI/FEN round-trips but must not activate stalemate
     /// adjacency filtering once Rust has transitioned the phase to Moving.
     board_full_removing: bool,
-    /// Rolling window of repetition signatures, each appended on a
-    /// side-changing Move with no mill/capture and cleared on Place/Remove
-    /// (mirroring master's posKeyHistory: push on MOVETYPE_MOVE, clear on
-    /// MOVETYPE_PLACE / MOVETYPE_REMOVE).  The array is a ring buffer capped
-    /// at 24 entries; in practice mill repetitions are detected within a few
-    /// moves, so the 24-entry window covers all realistic cases.  Longer
-    /// cycles (> 24 moves without capture/placement) would require master's
-    /// unbounded vector and are not supported in snapshot serialisation.
-    key_history: [u64; 24],
+    /// Repetition signatures appended on reversible side-changing moves and
+    /// cleared on Place/Remove, mirroring master's global `posKeyHistory`
+    /// vector. Runtime history is capped at 256 entries; snapshots persist
+    /// only the most recent 24 entries for payload compatibility.
+    key_history: Vec<u64>,
     /// Number of valid entries in `key_history`, clamped to 24.
-    key_history_len: u8,
+    key_history_len: usize,
 }
 
 impl Default for MillState {
@@ -2052,7 +2043,7 @@ impl Default for MillState {
             stalemate_removing: false,
             both_stalemate_removing: false,
             board_full_removing: false,
-            key_history: [0_u64; 24],
+            key_history: Vec::new(),
             key_history_len: 0,
         }
     }
@@ -2101,7 +2092,7 @@ impl MillState {
                 || (self.side_to_move >= 0
                     && self.pending_removals[self.side_to_move as usize] > 0))
         {
-            let mut normalized = *self;
+            let mut normalized = self.clone();
             normalized.sync_action_after_transition();
             normalized.action
         } else {
@@ -2135,13 +2126,17 @@ impl MillState {
         payload[35..39].copy_from_slice(&self.used_mill_lines.to_le_bytes());
         payload[39..43].copy_from_slice(&self.delayed_marked_pieces.to_le_bytes());
         payload[43] = self.outcome_reason as u8;
-        // 44..=235: key_history (24 × 8 bytes, little-endian).
-        for (slot_idx, key) in self.key_history.iter().enumerate() {
+        // 44..=235: serialized key_history window (24 × 8 bytes,
+        // little-endian). Runtime history is a Vec capped at 256 to mirror
+        // master; snapshots persist the most recent 24 keys for compatibility.
+        let start = self.key_history.len().saturating_sub(24);
+        let history_window = &self.key_history[start..];
+        for (slot_idx, key) in history_window.iter().enumerate() {
             let base = 44 + slot_idx * 8;
             payload[base..base + 8].copy_from_slice(&key.to_le_bytes());
         }
-        // 236: key_history_len (clamped to 24, fits in a single byte).
-        payload[236] = self.key_history_len.min(24);
+        // 236: serialized key_history_len (clamped to the payload window).
+        payload[236] = history_window.len().min(24) as u8;
         payload[237..241].copy_from_slice(&self.custodian_targets[0].to_le_bytes());
         payload[241..245].copy_from_slice(&self.intervention_targets[0].to_le_bytes());
         payload[245..249].copy_from_slice(&self.leap_targets[0].to_le_bytes());
@@ -2180,12 +2175,13 @@ impl MillState {
         for (i, slot) in board.iter_mut().enumerate() {
             *slot = payload[i] as i8;
         }
-        let mut key_history = [0_u64; 24];
-        for (slot_idx, key) in key_history.iter_mut().enumerate() {
+        let history_len = usize::from(payload[236].min(24));
+        let mut key_history = Vec::with_capacity(history_len);
+        for slot_idx in 0..history_len {
             let base = 44 + slot_idx * 8;
             let mut bytes = [0_u8; 8];
             bytes.copy_from_slice(&payload[base..base + 8]);
-            *key = u64::from_le_bytes(bytes);
+            key_history.push(u64::from_le_bytes(bytes));
         }
         let read_u32 = |offset: usize| {
             let mut bytes = [0_u8; 4];
@@ -2243,7 +2239,7 @@ impl MillState {
                 _ => MillOutcomeReason::Ongoing,
             },
             key_history,
-            key_history_len: payload[236].min(24),
+            key_history_len: history_len,
             custodian_targets: [read_u32(237), read_u32(264)],
             intervention_targets: [read_u32(241), read_u32(268)],
             leap_targets: [read_u32(245), read_u32(272)],
@@ -2387,7 +2383,7 @@ impl MillState {
         self.stalemate_removing = false;
         self.both_stalemate_removing = false;
         self.remove_own_piece = [false, false];
-        self.key_history = [0_u64; 24];
+        self.key_history.clear();
         self.key_history_len = 0;
     }
 }
@@ -5255,14 +5251,13 @@ mod tests {
         let rules = MillRules::default();
         let mut state = moving_phase_swap_state(0);
         // Pre-populate history with the *post-move* signature twice.
-        let mut after_move = state;
+        let mut after_move = state.clone();
         after_move.board[9] = 0;
         after_move.board[1] = 1;
         after_move.side_to_move = 1;
         let target_key = repetition_signature(&after_move);
-        state.key_history[0] = target_key;
-        state.key_history[1] = target_key;
-        state.key_history_len = 2;
+        state.key_history = vec![target_key, target_key];
+        state.key_history_len = state.key_history.len();
 
         let after = rules.apply(
             &rules.encode(state),
@@ -5285,14 +5280,14 @@ mod tests {
     fn threefold_does_not_trigger_after_two_repetitions() {
         let rules = MillRules::default();
         let mut state = moving_phase_swap_state(0);
-        let mut after_move = state;
+        let mut after_move = state.clone();
         after_move.board[9] = 0;
         after_move.board[1] = 1;
         after_move.side_to_move = 1;
         let target_key = repetition_signature(&after_move);
         // Only one prior occurrence: the new push will make count == 2.
-        state.key_history[0] = target_key;
-        state.key_history_len = 1;
+        state.key_history = vec![target_key];
+        state.key_history_len = state.key_history.len();
 
         let after = rules.apply(
             &rules.encode(state),
@@ -5335,15 +5330,14 @@ mod tests {
         state.board[10] = 2; // f6 (non-mill, capturable)
         state.board[15] = 2; // b4 (extra, avoid lose-by-<3 after removal)
 
-        let mut bogus_state = state;
+        let mut bogus_state = state.clone();
         bogus_state.pending_removals = [0, 0];
         bogus_state.board[10] = 0;
         bogus_state.pieces_on_board = [3, 3];
         bogus_state.side_to_move = 1;
         let target_key = repetition_signature(&bogus_state);
-        state.key_history[0] = target_key;
-        state.key_history[1] = target_key;
-        state.key_history_len = 2;
+        state.key_history = vec![target_key, target_key];
+        state.key_history_len = state.key_history.len();
 
         let after = rules.apply(
             &rules.encode(state),
@@ -5374,14 +5368,13 @@ mod tests {
         let mut state = moving_phase_swap_state(0);
         // Same setup that would trigger when the rule is on: 2 prior
         // occurrences in history, the move would make it 3.
-        let mut after_move = state;
+        let mut after_move = state.clone();
         after_move.board[9] = 0;
         after_move.board[1] = 1;
         after_move.side_to_move = 1;
         let target_key = repetition_signature(&after_move);
-        state.key_history[0] = target_key;
-        state.key_history[1] = target_key;
-        state.key_history_len = 2;
+        state.key_history = vec![target_key, target_key];
+        state.key_history_len = state.key_history.len();
 
         let after = rules.apply(
             &rules.encode(state),
@@ -5399,6 +5392,28 @@ mod tests {
         // disabled, so push is skipped entirely).
         assert_eq!(final_state.key_history_len, 2);
         assert_eq!(rules.outcome(&after).kind, OutcomeKind::Ongoing);
+    }
+
+    #[test]
+    fn long_runtime_history_serializes_recent_payload_window() {
+        let rules = MillRules::default();
+        let mut long_state = moving_phase_swap_state(0);
+        long_state.key_history = (0..40).map(|i| 0x1234_0000_u64 + i).collect();
+        long_state.key_history_len = long_state.key_history.len();
+
+        let decoded = MillRules::decode(&rules.encode(long_state));
+        assert_eq!(
+            decoded.key_history_len, 24,
+            "snapshot payload stores the most recent 24 history entries"
+        );
+        assert_eq!(
+            decoded.key_history.first().copied(),
+            Some(0x1234_0000_u64 + 16)
+        );
+        assert_eq!(
+            decoded.key_history.last().copied(),
+            Some(0x1234_0000_u64 + 39)
+        );
     }
 
     #[test]
@@ -6169,7 +6184,10 @@ mod tests {
         assert_eq!(place_state.action, MillActionState::Place);
 
         let mut remove_actions = ActionList::<256>::new();
-        rules.legal_actions(&rules.encode_state(remove_state), &mut remove_actions);
+        rules.legal_actions(
+            &rules.encode_state(remove_state.clone()),
+            &mut remove_actions,
+        );
         let mut place_actions = ActionList::<256>::new();
         rules.legal_actions(&rules.encode_state(place_state), &mut place_actions);
 
