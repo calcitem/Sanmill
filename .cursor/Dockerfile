@@ -56,3 +56,7 @@ ENV PATH="/opt/flutter/bin:${PATH}"
 
 RUN flutter config --no-analytics \
     && flutter precache --linux
+
+# Keep the code generator aligned with the Flutter runtime dependency in
+# src/ui/flutter_app/pubspec.yaml.
+RUN cargo install flutter_rust_bridge_codegen --version 2.12.0 --locked

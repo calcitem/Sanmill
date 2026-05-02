@@ -225,7 +225,6 @@ fn spawn_search(
         allow_null_move: false,
         shuffle_root: cfg.shuffling,
         move_order_context: move_order_context(&cfg),
-        ..Default::default()
     };
     let depth = effective_search_depth(&options, &state, go.depth, &cfg);
     let root_side_to_move = state.side_to_move;

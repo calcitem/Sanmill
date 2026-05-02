@@ -192,6 +192,8 @@ class TgfKernel {
           depth: depth,
           moveTimeMs: moveLimitMs,
           aiIsLazy: false,
+          lastBestValue: 0,
+          skillLevel: 1,
         ),
       );
     }
