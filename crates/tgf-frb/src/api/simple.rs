@@ -713,6 +713,7 @@ pub fn native_mill_search_zero_time_limit_aborts() -> bool {
         depth_extension: false,
         node_limit: None,
         time_limit_ms: Some(0),
+        allow_null_move: true,
     });
     let _ = searcher.search(&mut wb, 3);
     searcher.was_aborted()
