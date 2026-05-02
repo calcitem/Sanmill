@@ -946,7 +946,9 @@ impl GameRules for MillRules {
                 // in Moving phase and omitted in-hand count; both are fixed here.
                 let pieces_total = u32::from(state.pieces_on_board[target_color_index])
                     + u32::from(state.pieces_in_hand[target_color_index]);
-                if pieces_total < u32::from(self.options.pieces_at_least_count) {
+                if state.pieces_in_hand == [0, 0]
+                    && pieces_total < u32::from(self.options.pieces_at_least_count)
+                {
                     state.phase = MillPhase::GameOver;
                     state.winner = if removing_own {
                         opponent as i8
@@ -1080,6 +1082,37 @@ impl MillRules {
                 clear_capture_state(state);
             }
         }
+    }
+
+    fn check_if_game_is_over(&self, state: &mut MillState) {
+        if state.phase == MillPhase::GameOver || state.side_to_move < 0 {
+            return;
+        }
+        // Mirror master src/position.cpp:2069 Position::check_if_game_is_over:
+        // terminal conditions are evaluated after FEN import just as they are
+        // after normal moves.
+        maybe_finish_full_board(state, &self.options);
+        if state.phase == MillPhase::GameOver {
+            return;
+        }
+        maybe_draw_by_n_move_rule(state, &self.options);
+        if state.phase == MillPhase::GameOver {
+            return;
+        }
+        if state.phase == MillPhase::Moving {
+            for side in 0..2 {
+                let pieces_total =
+                    u32::from(state.pieces_on_board[side]) + u32::from(state.pieces_in_hand[side]);
+                if pieces_total < u32::from(self.options.pieces_at_least_count) {
+                    state.phase = MillPhase::GameOver;
+                    state.winner = (side ^ 1) as i8;
+                    state.outcome_reason = MillOutcomeReason::LoseFewerThanThree;
+                    state.side_to_move = -1;
+                    return;
+                }
+            }
+        }
+        self.maybe_handle_stalemate(state);
     }
 
     fn generate_move_actions(&self, state: &MillState, out: &mut ActionList<256>, allow_fly: bool) {
@@ -2495,7 +2528,7 @@ impl MillRules {
             (remove_w, remove_b)
         };
 
-        Ok(MillState {
+        let mut state = MillState {
             board,
             side_to_move,
             phase,
@@ -2522,7 +2555,15 @@ impl MillRules {
             preferred_remove_target,
             winner: -1,
             ..MillState::default()
-        })
+        };
+        // Mirror master src/position.cpp:2069 Position::check_if_game_is_over:
+        // importing a FEN immediately runs the same terminal checks as a
+        // freshly reached position.  Game-over FENs keep their encoded phase
+        // untouched because the FEN format does not carry a winner token.
+        if state.phase != MillPhase::GameOver {
+            self.check_if_game_is_over(&mut state);
+        }
+        Ok(state)
     }
 
     /// Serialize a `MillState` into a Mill FEN string compatible with the
@@ -5824,6 +5865,30 @@ mod tests {
             state2.pieces_in_hand, state.pieces_in_hand,
             "hand counts round-trip"
         );
+    }
+
+    #[test]
+    fn set_from_fen_runs_immediate_terminal_checks() {
+        let rules = MillRules::default();
+
+        let lose_fen = "**O**O**/**@**@**/******** w m s 2 0 2 0 0 0 0 0 0 0 0 0 1";
+        let lose_state = rules
+            .set_from_fen(lose_fen)
+            .expect("terminal fewer-than-three FEN must parse");
+        assert_eq!(lose_state.phase, MillPhase::GameOver);
+        assert_eq!(lose_state.winner, 1);
+        assert_eq!(
+            lose_state.outcome_reason,
+            MillOutcomeReason::LoseFewerThanThree
+        );
+
+        let draw_fen = "***OOO**/***@@@**/******** w m s 3 0 3 0 0 0 0 0 0 0 0 100 1";
+        let draw_state = rules
+            .set_from_fen(draw_fen)
+            .expect("terminal n-move FEN must parse");
+        assert_eq!(draw_state.phase, MillPhase::GameOver);
+        assert_eq!(draw_state.winner, 2);
+        assert_eq!(draw_state.outcome_reason, MillOutcomeReason::DrawFiftyMove);
     }
 
     /// FEN trailing-extension parity: the trailing `c:/i:/l:/p:/s:` block
