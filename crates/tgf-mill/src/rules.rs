@@ -3643,6 +3643,68 @@ mod tests {
         assert_eq!(state.pieces_on_board[1], 1);
     }
 
+    #[test]
+    fn placing_mill_f2_f4_f6_generates_remove_actions_for_black() {
+        // Replicates the exact sequence reported in the bug:
+        //   1. d2 d6   (W node 13, B node 9)
+        //   2. f4 b4   (W node 11, B node 15)
+        //   3. f2 g4   (W node 12, B node 3)
+        //   4. f6      (W node 10) → forms mill [10,11,12] (f6-f4-f2)
+        //
+        // After White places f6, pending_removals[0] must be 1 and
+        // legal_actions must include remove actions for every Black piece.
+        let rules = MillRules::default();
+        let mut snap = rules.initial_state(&[]);
+        for node in [13_i16, 9, 11, 15, 12, 3, 10] {
+            snap = rules.apply(
+                &snap,
+                Action {
+                    kind_tag: MillActionKind::Place as i16,
+                    from_node: -1,
+                    to_node: node,
+                    aux: -1,
+                    payload_bits: 0,
+                },
+            );
+        }
+
+        let state = MillRules::decode(&snap);
+        assert_eq!(
+            state.side_to_move, 0,
+            "White keeps turn after forming the mill"
+        );
+        assert_eq!(
+            state.pending_removals[0], 1,
+            "White must remove one Black piece"
+        );
+
+        let mut actions = ActionList::<256>::new();
+        rules.legal_actions(&snap, &mut actions);
+        assert_eq!(
+            actions.len(),
+            3,
+            "Exactly three remove actions (one per Black piece)"
+        );
+        assert!(
+            actions
+                .iter()
+                .all(|a| a.kind_tag == MillActionKind::Remove as i16),
+            "All actions must be Remove"
+        );
+        assert!(
+            actions.iter().any(|a| a.to_node == 9),
+            "xd6 (node 9) must be a legal remove target"
+        );
+        assert!(
+            actions.iter().any(|a| a.to_node == 15),
+            "xb4 (node 15) must be a legal remove target"
+        );
+        assert!(
+            actions.iter().any(|a| a.to_node == 3),
+            "xg4 (node 3) must be a legal remove target"
+        );
+    }
+
     fn placing_mill_fixture_for_action(
         action: MillFormationActionInPlacingPhase,
     ) -> (MillRules, GameStateSnapshot) {
