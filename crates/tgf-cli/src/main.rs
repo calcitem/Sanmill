@@ -148,6 +148,7 @@ fn run_uci_loop() {
                 threads,
                 qsearch_max_depth,
                 engine_cfg.hash_mb,
+                engine_cfg.clone(),
             ));
         } else if line == "stop" {
             if let Some(active) = active_search.take() {
@@ -194,6 +195,7 @@ fn spawn_search(
     threads: usize,
     qsearch_max_depth: i32,
     hash_mb: u32,
+    cfg: EngineConfig,
 ) -> ActiveSearch {
     let search_options = SearchOptions {
         depth_extension: false,
@@ -219,9 +221,7 @@ fn spawn_search(
             searcher.set_abort_flag(abort_for_worker);
             searcher.set_options(search_options);
             searcher.set_qsearch_max_depth(qsearch_max_depth);
-            let game = MillGame::new(options);
-            let mut wb = game.build_workbench(&state);
-            let result = searcher.search_pvs(&mut wb, depth);
+            let result = run_configured_search(options, state, depth, &cfg, &mut searcher);
             let _ = tx.send(SpawnResult {
                 depth,
                 result,
@@ -259,6 +259,44 @@ fn spawn_search(
         handle,
         abort_handle,
         receiver: rx,
+    }
+}
+
+fn run_configured_search(
+    options: MillVariantOptions,
+    state: GameStateSnapshot,
+    depth: i32,
+    cfg: &EngineConfig,
+    searcher: &mut Searcher<MillGame>,
+) -> SearchResult {
+    // Mirror master src/search_engine.cpp:381 executeSearch: route the
+    // user-visible Algorithm option into the actual search implementation.
+    let game = MillGame::new(options);
+    let mut wb = game.build_workbench(&state);
+    match cfg.algorithm {
+        0 | 1 => searcher.search_pvs(&mut wb, depth),
+        2 => searcher.search_mtdf(&mut wb, depth),
+        3 => {
+            let iterations = u32::from(cfg.skill_level.saturating_add(1)).saturating_mul(2048);
+            let mut mcts = MctsSearcher::<MillGame>::new();
+            let mcts_result = mcts.search_with_options(
+                &mut wb,
+                MctsOptions {
+                    iterations: iterations.max(1),
+                    playout_depth: 6,
+                    time_limit_ms: cfg.move_time_secs.checked_mul(1000).map(u64::from),
+                    exploration: 0.5,
+                    ab_assist_depth: 0,
+                },
+            );
+            SearchResult {
+                best_action: mcts_result.best_action,
+                score: 0,
+                nodes: mcts_result.visits as u64,
+            }
+        }
+        4 => searcher.random_search(&mut wb),
+        _ => searcher.search_pvs(&mut wb, depth),
     }
 }
 
@@ -1281,6 +1319,26 @@ mod tests {
             SetoptionResult::Variant
         ));
         assert_eq!(options.fly_piece_count, 4);
+    }
+
+    #[test]
+    fn engine_config_algorithm_routes_search() {
+        let rules = MillRules::default();
+        let snap = rules.initial_state(&[]);
+        let cfg = EngineConfig {
+            algorithm: 4,
+            shuffling: false,
+            ..EngineConfig::default()
+        };
+        let mut searcher = mill_searcher();
+        let result =
+            run_configured_search(MillVariantOptions::default(), snap, 1, &cfg, &mut searcher);
+
+        assert!(
+            !result.best_action.is_none(),
+            "random algorithm path must still return a best move"
+        );
+        assert_eq!(result.score, 0, "random path returns a neutral score");
     }
 
     #[test]
