@@ -53,6 +53,45 @@ pub enum MillPhase {
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[repr(u8)]
+enum MillActionState {
+    Place = 0,
+    Select = 1,
+    Remove = 2,
+    GameOver = 3,
+}
+
+impl MillActionState {
+    fn from_fen_token(token: &str) -> Self {
+        match token {
+            "p" => Self::Place,
+            "s" => Self::Select,
+            "r" => Self::Remove,
+            _ => Self::GameOver,
+        }
+    }
+
+    fn to_fen_token(self) -> char {
+        match self {
+            Self::Place => 'p',
+            Self::Select => 's',
+            Self::Remove => 'r',
+            Self::GameOver => '?',
+        }
+    }
+
+    fn from_payload(value: u8) -> Self {
+        match value {
+            0 => Self::Place,
+            1 => Self::Select,
+            2 => Self::Remove,
+            3 => Self::GameOver,
+            _ => Self::Place,
+        }
+    }
+}
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
 #[repr(i16)]
 pub enum MillBoardFullAction {
     FirstPlayerLose = 0,
@@ -630,12 +669,13 @@ impl GameRules for MillRules {
 
     fn legal_actions(&self, snap: &GameStateSnapshot, out: &mut ActionList<256>) {
         let state = Self::decode(snap);
-        match state.phase {
-            MillPhase::Placing => {
+        match state.action_for_legal_generation() {
+            MillActionState::Remove => {
                 if state.pending_removals[state.side_to_move as usize] > 0 {
                     self.generate_remove_actions(&state, out);
-                    return;
                 }
+            }
+            MillActionState::Place => {
                 if state.pieces_in_hand[state.side_to_move as usize] > 0 {
                     for (node, piece) in state.board.iter().enumerate() {
                         if *piece == 0 {
@@ -653,14 +693,12 @@ impl GameRules for MillRules {
                     self.generate_move_actions(&state, out, false);
                 }
             }
-            MillPhase::Moving => {
-                if state.pending_removals[state.side_to_move as usize] > 0 {
-                    self.generate_remove_actions(&state, out);
-                    return;
+            MillActionState::Select => {
+                if state.phase == MillPhase::Moving {
+                    self.generate_move_actions(&state, out, true);
                 }
-                self.generate_move_actions(&state, out, true);
             }
-            MillPhase::Ready | MillPhase::GameOver => {}
+            MillActionState::GameOver => {}
         }
     }
 
@@ -696,6 +734,7 @@ impl GameRules for MillRules {
                             if remaining > 0 {
                                 state.pending_removals[side] = remaining;
                                 state.mill_available_at_removal = true;
+                                sync_action_state(&mut state);
                             } else {
                                 state.side_to_move = if matches!(
                                     self.options.mill_formation_action_in_placing_phase,
@@ -708,6 +747,7 @@ impl GameRules for MillRules {
                                 maybe_transition_to_moving(&mut state, &self.options);
                                 sync_phase_for_may_move_in_placing(&mut state, &self.options);
                                 maybe_finish_full_board(&mut state, &self.options);
+                                sync_action_state(&mut state);
                             }
                             clear_capture_state(&mut state);
                         }
@@ -717,6 +757,7 @@ impl GameRules for MillRules {
                             state.pending_removals[opponent] = removals;
                             state.mill_available_at_removal = false;
                             clear_capture_state(&mut state);
+                            sync_action_state(&mut state);
                         }
                         MillFormationActionInPlacingPhase::MarkAndDelayRemovingPieces => {
                             // Same shape as the standard "remove opponent's
@@ -734,6 +775,7 @@ impl GameRules for MillRules {
                                 state.pending_removals[side] = state.pending_removals[side]
                                     .saturating_add(capture_total(&state));
                             }
+                            sync_action_state(&mut state);
                         }
                         MillFormationActionInPlacingPhase::RemovalBasedOnMillCounts => {
                             clear_capture_state(&mut state);
@@ -745,6 +787,7 @@ impl GameRules for MillRules {
                             maybe_transition_to_moving(&mut state, &self.options);
                             sync_phase_for_may_move_in_placing(&mut state, &self.options);
                             maybe_finish_full_board(&mut state, &self.options);
+                            sync_action_state(&mut state);
                         }
                         MillFormationActionInPlacingPhase::RemoveOpponentsPieceFromBoard => {
                             state.pending_removals[side] = removals;
@@ -754,6 +797,7 @@ impl GameRules for MillRules {
                                 state.pending_removals[side] =
                                     state.pending_removals[side].saturating_add(capture_total(&state));
                             }
+                            sync_action_state(&mut state);
                         }
                     }
                     note_mill_formation(&mut state, side, -1, to as i8, usable_bits, &self.options);
@@ -761,6 +805,7 @@ impl GameRules for MillRules {
                     activate_capture_state(&mut state, custodian, intervention, 0);
                     state.pending_removals[side] = capture_total(&state);
                     state.mill_available_at_removal = false;
+                    sync_action_state(&mut state);
                 } else {
                     clear_capture_state(&mut state);
                     // Mirror master src/position.cpp:1217 put_piece:
@@ -774,6 +819,7 @@ impl GameRules for MillRules {
                     maybe_transition_to_moving(&mut state, &self.options);
                     sync_phase_for_may_move_in_placing(&mut state, &self.options);
                     maybe_finish_full_board(&mut state, &self.options);
+                    sync_action_state(&mut state);
                 }
             }
             x if x == MillActionKind::Move as i16 => {
@@ -795,6 +841,7 @@ impl GameRules for MillRules {
                     activate_capture_state(&mut state, 0, 0, leap);
                     state.pending_removals[side] = 1;
                     state.mill_available_at_removal = false;
+                    sync_action_state(&mut state);
                 } else if usable_bits != 0 {
                     state.pending_removals[side] =
                         removal_count_for_bits(usable_bits, &self.options);
@@ -812,10 +859,12 @@ impl GameRules for MillRules {
                         usable_bits,
                         &self.options,
                     );
+                    sync_action_state(&mut state);
                 } else if custodian != 0 || intervention != 0 {
                     activate_capture_state(&mut state, custodian, intervention, 0);
                     state.pending_removals[side] = capture_total(&state);
                     state.mill_available_at_removal = false;
+                    sync_action_state(&mut state);
                 } else {
                     clear_capture_state(&mut state);
                     // Clear the per-side last-mill record when no mill was
@@ -838,6 +887,7 @@ impl GameRules for MillRules {
                     // Mirror C++ set_side_to_move phase sync for
                     // may_move_in_placing_phase variant.
                     sync_phase_for_may_move_in_placing(&mut state, &self.options);
+                    sync_action_state(&mut state);
                 }
             }
             x if x == MillActionKind::Remove as i16 => {
@@ -980,6 +1030,7 @@ impl GameRules for MillRules {
                     maybe_transition_to_moving(&mut state, &self.options);
                     sync_phase_for_may_move_in_placing(&mut state, &self.options);
                     maybe_finish_full_board(&mut state, &self.options);
+                    sync_action_state(&mut state);
                 }
             }
             _ => {}
@@ -1905,6 +1956,7 @@ pub struct MillState {
     board: [i8; 24],
     side_to_move: i8,
     phase: MillPhase,
+    action: MillActionState,
     move_number: i16,
     pub pieces_in_hand: [u8; 2],
     pieces_on_board: [u8; 2],
@@ -1975,6 +2027,7 @@ impl Default for MillState {
             board: [0_i8; 24],
             side_to_move: 0,
             phase: MillPhase::Placing,
+            action: MillActionState::Place,
             move_number: 0,
             pieces_in_hand: [0, 0],
             pieces_on_board: [0, 0],
@@ -2028,6 +2081,40 @@ enum MillOutcomeReason {
 }
 
 impl MillState {
+    fn sync_action_after_transition(&mut self) {
+        self.action = if self.phase == MillPhase::GameOver {
+            MillActionState::GameOver
+        } else if self.side_to_move >= 0 && self.pending_removals[self.side_to_move as usize] > 0 {
+            MillActionState::Remove
+        } else {
+            match self.phase {
+                MillPhase::Placing | MillPhase::Ready => MillActionState::Place,
+                MillPhase::Moving => MillActionState::Select,
+                MillPhase::GameOver => MillActionState::GameOver,
+            }
+        };
+    }
+
+    fn action_for_legal_generation(&self) -> MillActionState {
+        if self.action == MillActionState::Place
+            && (self.phase != MillPhase::Placing
+                || (self.side_to_move >= 0
+                    && self.pending_removals[self.side_to_move as usize] > 0))
+        {
+            let mut normalized = *self;
+            normalized.sync_action_after_transition();
+            normalized.action
+        } else {
+            self.action
+        }
+    }
+}
+
+fn sync_action_state(state: &mut MillState) {
+    state.sync_action_after_transition();
+}
+
+impl MillState {
     fn encode(self) -> [u8; OPAQUE_PAYLOAD_LEN] {
         let mut payload = [0_u8; OPAQUE_PAYLOAD_LEN];
         for (i, piece) in self.board.iter().enumerate() {
@@ -2040,6 +2127,7 @@ impl MillState {
         payload[28] = self.pending_removals[0];
         payload[29] = self.pending_removals[1];
         payload[30] = self.winner as u8;
+        payload[279] = self.action as u8;
         payload[31] = (self.ply_since_capture & 0xff) as u8;
         payload[32] = (self.ply_since_capture >> 8) as u8;
         payload[33] = self.last_mill_from[0] as u8;
@@ -2118,6 +2206,7 @@ impl MillState {
             pieces_on_board: [payload[26], payload[27]],
             pending_removals: [payload[28], payload[29]],
             winner: payload[30] as i8,
+            action: MillActionState::from_payload(payload[279]),
             ply_since_capture: u16::from(payload[31]) | (u16::from(payload[32]) << 8),
             last_mill_from: [payload[33] as i8, payload[253] as i8],
             last_mill_to: [payload[34] as i8, payload[254] as i8],
@@ -2395,15 +2484,13 @@ impl MillRules {
             "o" => MillPhase::GameOver,
             s => return Err(format!("invalid phase '{s}' in FEN")),
         };
-        // Field 3 is the C++ Action token ('p'/'s'/'r'/'?').  Rust derives
-        // the action from pending_removals and phase rather than storing a
-        // separate enum.  Accept any single-character token and record whether
-        // the action is 'r' (remove) so we can infer a pending removal below
-        // when the count fields are inconsistent (P0-E.1).
+        // Mirror master src/position.cpp:set FEN action parsing: phase and
+        // action are independent tokens in legacy FEN.
         if fields[3].len() != 1 {
             return Err(format!("invalid action token '{}' in FEN", fields[3]));
         }
-        let action_is_remove = fields[3] == "r";
+        let fen_action = MillActionState::from_fen_token(fields[3]);
+        let action_is_remove = fen_action == MillActionState::Remove;
 
         let parse_u8 = |s: &str| -> Result<u8, String> {
             s.parse::<u8>()
@@ -2554,6 +2641,7 @@ impl MillRules {
             leap_count,
             stalemate_removing,
             both_stalemate_removing,
+            action: fen_action,
             mill_available_at_removal: (final_remove_w > 0 || final_remove_b > 0)
                 && !(custodian_count[side_usize] > 0
                     || intervention_count[side_usize] > 0
@@ -2623,19 +2711,7 @@ impl MillRules {
         let side_is_black = i32::from(state.side_to_move == 1);
         let full_move = (1 + (i32::from(state.move_number) - side_is_black) / 2).max(1);
 
-        // Mirror Position::fen action token (legacy uci.cpp): 'r' on a
-        // pending removal, 'p' while still placing, 's' for the moving
-        // phase select-square step, '?' for none / game over.
-        let action_idx = (state.side_to_move as usize).min(1);
-        let action_token = if state.pending_removals[action_idx] > 0 {
-            'r'
-        } else {
-            match state.phase {
-                MillPhase::Placing | MillPhase::Ready => 'p',
-                MillPhase::Moving => 's',
-                MillPhase::GameOver => '?',
-            }
-        };
+        let action_token = state.action.to_fen_token();
 
         // Encode signed pieceToRemoveCount mirroring legacy semantics.
         let signed_remove = |idx: usize| -> i32 {
@@ -6074,6 +6150,45 @@ mod tests {
         assert!(exported.contains("c:w-1-8|b-1-31"), "{exported}");
         assert!(exported.contains("i:w-2-9.10|b-1-30"), "{exported}");
         assert!(exported.contains("l:w-1-11|b-1-29"), "{exported}");
+    }
+
+    #[test]
+    fn set_from_fen_preserves_action_independently_from_phase() {
+        let rules = MillRules::default();
+        let remove_fen = "O@******/********/******** w p r 1 8 1 8 0 0 0 0 0 0 0 0 1";
+        let place_fen = "O@******/********/******** w p p 1 8 1 8 0 0 0 0 0 0 0 0 1";
+
+        let remove_state = rules
+            .set_from_fen(remove_fen)
+            .expect("remove-action FEN must parse");
+        let place_state = rules
+            .set_from_fen(place_fen)
+            .expect("place-action FEN must parse");
+        assert_eq!(remove_state.phase, MillPhase::Placing);
+        assert_eq!(remove_state.action, MillActionState::Remove);
+        assert_eq!(place_state.action, MillActionState::Place);
+
+        let mut remove_actions = ActionList::<256>::new();
+        rules.legal_actions(&rules.encode_state(remove_state), &mut remove_actions);
+        let mut place_actions = ActionList::<256>::new();
+        rules.legal_actions(&rules.encode_state(place_state), &mut place_actions);
+
+        assert!(
+            remove_actions
+                .iter()
+                .all(|a| a.kind_tag == MillActionKind::Remove as i16),
+            "phase=p action=r must route to remove generation"
+        );
+        assert!(
+            place_actions
+                .iter()
+                .any(|a| a.kind_tag == MillActionKind::Place as i16),
+            "phase=p action=p must route to placing generation"
+        );
+        assert_eq!(
+            rules.export_fen(&remove_state).split_whitespace().nth(3),
+            Some("r")
+        );
     }
 
     /// `formed_mills_bb` is FEN field 14, encoded as
