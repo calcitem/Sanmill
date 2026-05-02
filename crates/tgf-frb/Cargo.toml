@@ -17,7 +17,6 @@ tgf-core  = { path = "../tgf-core" }
 tgf-mill  = { path = "../tgf-mill" }
 tgf-othello = { path = "../tgf-othello" }
 tgf-search = { path = "../tgf-search" }
-tgf-legacy-cxx = { path = "../tgf-legacy-cxx" }
 flutter_rust_bridge = "=2.12.0"
 once_cell = "1"
 

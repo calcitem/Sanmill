@@ -63,13 +63,27 @@ int tgfKernelRedoDepth({required int handle}) =>
 /// PVS search over the kernel's **current** Mill position, using the same
 /// variant options as [tgf_kernel_create_mill].
 ///
-/// Streams the same [EngineEvent] sequence as [crate::api::simple::native_mill_search_events].
+/// Streams the same [EngineEvent] sequence as [crate::api::simple::native_mill_search_events]:
+/// one `info` event per IDS depth, then `bestMove` + `stopped`.
 Stream<EngineEvent> tgfKernelMillSearchEvents({
   required int handle,
   required int depth,
 }) => RustLib.instance.api.crateApiKernelTgfKernelMillSearchEvents(
   handle: handle,
   depth: depth,
+);
+
+/// Full-config search over the kernel's **current** Mill position.
+///
+/// Accepts a [`MillEngineConfig`] that controls algorithm, depth, time limit
+/// and lazy-search behaviour.  Preferred over [tgf_kernel_mill_search_events]
+/// for production use once the Flutter side has migrated to the typed config.
+Stream<EngineEvent> tgfKernelMillSearchEventsWithConfig({
+  required int handle,
+  required MillEngineConfig config,
+}) => RustLib.instance.api.crateApiKernelTgfKernelMillSearchEventsWithConfig(
+  handle: handle,
+  config: config,
 );
 
 /// Clear the board associated with a Mill kernel handle and reset all pieces,

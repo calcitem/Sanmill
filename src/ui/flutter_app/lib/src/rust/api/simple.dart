@@ -6,8 +6,8 @@
 import '../frb_generated.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
-// These functions are ignored because they are not marked as `pub`: `best_move`, `error`, `info`, `mill_searcher_default`, `new`, `ready`, `spawn_kernel_search_error`, `spawn_mill_pvs_event_stream`, `stopped`
-// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`
+// These functions are ignored because they are not marked as `pub`: `best_move`, `error`, `info`, `mill_searcher_default`, `new`, `ready`, `spawn_kernel_search_error`, `spawn_mill_engine_config_event_stream`, `spawn_mill_pvs_event_stream`, `stopped`
+// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `assert_fields_are_eq`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `eq`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`
 
 /// Returns a greeting string confirming that the Rust → Dart bridge works.
 /// Called from Dart as `tgfHelloWorld()` after `await RustLib.init()`.
@@ -28,37 +28,6 @@ int nativeOthelloInitialLegalCount() =>
 /// selected destination node.
 int nativeOthelloSearchDepthOneBestToNode() =>
     RustLib.instance.api.crateApiSimpleNativeOthelloSearchDepthOneBestToNode();
-
-/// Create/reset a global legacy C++ kernel.
-///
-/// This is intentionally a temporary singleton for Phase 2.  Phase 3+ replaces
-/// it with real per-session handles once the Rust GameKernel is introduced.
-String legacyKernelReset({required int ruleIdx}) =>
-    RustLib.instance.api.crateApiSimpleLegacyKernelReset(ruleIdx: ruleIdx);
-
-/// Current legacy C++ FEN string.
-String legacyKernelFen() =>
-    RustLib.instance.api.crateApiSimpleLegacyKernelFen();
-
-/// Replace current legacy C++ position with a FEN snapshot.
-void legacyKernelSetFen({required String fen}) =>
-    RustLib.instance.api.crateApiSimpleLegacyKernelSetFen(fen: fen);
-
-/// Current legal actions in UCI notation.
-List<String> legacyKernelLegalActions() =>
-    RustLib.instance.api.crateApiSimpleLegacyKernelLegalActions();
-
-/// Apply one UCI action (`d7`, `d7-g7`, `xa1`, ...).
-bool legacyKernelApplyUci({required String moveUci}) =>
-    RustLib.instance.api.crateApiSimpleLegacyKernelApplyUci(moveUci: moveUci);
-
-/// Raw C++ Phase enum tag.
-int legacyKernelPhaseTag() =>
-    RustLib.instance.api.crateApiSimpleLegacyKernelPhaseTag();
-
-/// Raw C++ Color enum tag for side to move.
-int legacyKernelSideToMove() =>
-    RustLib.instance.api.crateApiSimpleLegacyKernelSideToMove();
 
 /// Return the Rust-native standard 24-point Mill topology.
 ///
@@ -119,26 +88,6 @@ int nativeMillMctsBestToNode({
   seed: seed,
   iterationsPerMove: iterationsPerMove,
 );
-
-/// Differential perft check: returns true when the Rust-native MillRules and
-/// the legacy C++ engine produce identical perft counts at the given depth.
-bool nativeAndLegacyPerftMatch({required int depth}) =>
-    RustLib.instance.api.crateApiSimpleNativeAndLegacyPerftMatch(depth: depth);
-
-/// Differential perft check from the canonical pending-remove state after
-/// W d7, B a1, W g7, B d1, W a7.
-bool nativeAndLegacyPendingRemovePerftMatch({required int depth}) => RustLib
-    .instance
-    .api
-    .crateApiSimpleNativeAndLegacyPendingRemovePerftMatch(depth: depth);
-
-/// Differential perft check from a fully placed moving-phase state with no
-/// pending removals.  The state is the no-mill 18-placement sequence used by
-/// the C++ golden tests.
-bool nativeAndLegacyMovingPhasePerftMatch({required int depth}) => RustLib
-    .instance
-    .api
-    .crateApiSimpleNativeAndLegacyMovingPhasePerftMatch(depth: depth);
 
 /// Smoke-check that the Rust searcher honours a zero-millisecond time limit.
 bool nativeMillSearchZeroTimeLimitAborts() =>
@@ -249,6 +198,51 @@ enum MillBoardFullAction {
   agreeToDraw,
 }
 
+/// Engine configuration passed from Flutter to Rust for every search.
+/// Consolidates all user-facing AI behaviour knobs that were previously
+/// sent as UCI `setoption` strings via the C++ MethodChannel.
+class MillEngineConfig {
+  /// Search algorithm.  Default: PVS.
+  final MillSearchAlgorithm algorithm;
+
+  /// AI search depth (0 → auto via drawOnHumanExperience table on Dart side).
+  final int depth;
+
+  /// Time limit in milliseconds (0 = unlimited; depth drives termination).
+  final int moveTimeMs;
+
+  /// When true the search aborts early when the position is stable.
+  /// Mirrors `AiIsLazy` in `ucioption.cpp`.
+  final bool aiIsLazy;
+
+  const MillEngineConfig({
+    required this.algorithm,
+    required this.depth,
+    required this.moveTimeMs,
+    required this.aiIsLazy,
+  });
+
+  static Future<MillEngineConfig> default_() =>
+      RustLib.instance.api.crateApiSimpleMillEngineConfigDefault();
+
+  @override
+  int get hashCode =>
+      algorithm.hashCode ^
+      depth.hashCode ^
+      moveTimeMs.hashCode ^
+      aiIsLazy.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is MillEngineConfig &&
+          runtimeType == other.runtimeType &&
+          algorithm == other.algorithm &&
+          depth == other.depth &&
+          moveTimeMs == other.moveTimeMs &&
+          aiIsLazy == other.aiIsLazy;
+}
+
 enum MillFormationActionInPlacingPhase {
   removeOpponentsPieceFromBoard,
   removeOpponentsPieceFromHandThenOpponentsTurn,
@@ -256,6 +250,20 @@ enum MillFormationActionInPlacingPhase {
   opponentRemovesOwnPiece,
   markAndDelayRemovingPieces,
   removalBasedOnMillCounts,
+}
+
+/// Search algorithm selector exposed to Flutter.
+/// Values match C++ `Algorithm` enum in `src/types.h` and Dart's
+/// `SearchAlgorithm` enum in `general_settings.dart`.
+enum MillSearchAlgorithm {
+  alphaBeta,
+  pvs,
+  mtdf,
+  mcts,
+  random;
+
+  static Future<MillSearchAlgorithm> default_() =>
+      RustLib.instance.api.crateApiSimpleMillSearchAlgorithmDefault();
 }
 
 /// Public FRB DTO for the subset of Mill variant options already supported by

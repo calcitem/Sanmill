@@ -234,12 +234,6 @@ void main() {
     ]);
     expect(events[2].toNode, inInclusiveRange(0, 23));
     expect(nativeMillSearchStop(), isFalse);
-    expect(nativeAndLegacyPerftMatch(depth: 1), isTrue);
-    expect(nativeAndLegacyPerftMatch(depth: 2), isTrue);
-    expect(nativeAndLegacyPendingRemovePerftMatch(depth: 1), isTrue);
-    expect(nativeAndLegacyPendingRemovePerftMatch(depth: 2), isTrue);
-    expect(nativeAndLegacyMovingPhasePerftMatch(depth: 1), isTrue);
-    expect(nativeAndLegacyMovingPhasePerftMatch(depth: 2), isTrue);
   });
 
   testWidgets('Typed FRB kernel API exposes a Mill session', (

@@ -36,6 +36,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   bool dco_decode_bool(dynamic raw);
 
   @protected
+  MillEngineConfig dco_decode_box_autoadd_mill_engine_config(dynamic raw);
+
+  @protected
   MillVariantOptions dco_decode_box_autoadd_mill_variant_options(dynamic raw);
 
   @protected
@@ -52,9 +55,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   int dco_decode_i_32(dynamic raw);
-
-  @protected
-  List<String> dco_decode_list_String(dynamic raw);
 
   @protected
   List<Uint16List> dco_decode_list_list_prim_u_16_strict(dynamic raw);
@@ -78,8 +78,14 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   MillBoardFullAction dco_decode_mill_board_full_action(dynamic raw);
 
   @protected
+  MillEngineConfig dco_decode_mill_engine_config(dynamic raw);
+
+  @protected
   MillFormationActionInPlacingPhase
   dco_decode_mill_formation_action_in_placing_phase(dynamic raw);
+
+  @protected
+  MillSearchAlgorithm dco_decode_mill_search_algorithm(dynamic raw);
 
   @protected
   MillVariantOptions dco_decode_mill_variant_options(dynamic raw);
@@ -135,6 +141,11 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   bool sse_decode_bool(SseDeserializer deserializer);
 
   @protected
+  MillEngineConfig sse_decode_box_autoadd_mill_engine_config(
+    SseDeserializer deserializer,
+  );
+
+  @protected
   MillVariantOptions sse_decode_box_autoadd_mill_variant_options(
     SseDeserializer deserializer,
   );
@@ -155,9 +166,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   int sse_decode_i_32(SseDeserializer deserializer);
-
-  @protected
-  List<String> sse_decode_list_String(SseDeserializer deserializer);
 
   @protected
   List<Uint16List> sse_decode_list_list_prim_u_16_strict(
@@ -189,8 +197,16 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   );
 
   @protected
+  MillEngineConfig sse_decode_mill_engine_config(SseDeserializer deserializer);
+
+  @protected
   MillFormationActionInPlacingPhase
   sse_decode_mill_formation_action_in_placing_phase(
+    SseDeserializer deserializer,
+  );
+
+  @protected
+  MillSearchAlgorithm sse_decode_mill_search_algorithm(
     SseDeserializer deserializer,
   );
 
@@ -254,6 +270,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void sse_encode_bool(bool self, SseSerializer serializer);
 
   @protected
+  void sse_encode_box_autoadd_mill_engine_config(
+    MillEngineConfig self,
+    SseSerializer serializer,
+  );
+
+  @protected
   void sse_encode_box_autoadd_mill_variant_options(
     MillVariantOptions self,
     SseSerializer serializer,
@@ -279,9 +301,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void sse_encode_i_32(int self, SseSerializer serializer);
-
-  @protected
-  void sse_encode_list_String(List<String> self, SseSerializer serializer);
 
   @protected
   void sse_encode_list_list_prim_u_16_strict(
@@ -326,8 +345,20 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   );
 
   @protected
+  void sse_encode_mill_engine_config(
+    MillEngineConfig self,
+    SseSerializer serializer,
+  );
+
+  @protected
   void sse_encode_mill_formation_action_in_placing_phase(
     MillFormationActionInPlacingPhase self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void sse_encode_mill_search_algorithm(
+    MillSearchAlgorithm self,
     SseSerializer serializer,
   );
 
