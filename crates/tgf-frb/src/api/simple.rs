@@ -1042,6 +1042,114 @@ mod tests {
         );
     }
 
+    /// Same as `native_search_after_mill_keeps_turn_and_chains_remove` but
+    /// searches at depth=5 to activate null-move pruning (which requires
+    /// depth >= NULL_MOVE_MIN_DEPTH = 3).  Regression for Phase 5 null-move
+    /// incorrectly preventing the AI from finding a Remove action after
+    /// forming a mill.
+    #[test]
+    fn native_search_after_mill_chains_remove_at_high_depth() {
+        let rules = MillRules::default();
+        let game = MillGame::default();
+        let options = NativeMillVariantOptions::default();
+
+        let mut state = rules.setup_empty();
+        state.set_piece(0, 1); // White on node 0 (a7)
+        state.set_piece(2, 1); // White on node 2 (g7)
+        state.set_piece(3, 2); // Black on node 3 (g4)
+        state.set_piece(5, 2); // Black on node 5 (d1)
+        state.set_side_to_move(0);
+        state.recompute_aux(&options);
+        let snap = rules.encode_state(state);
+
+        // 1) Search at depth=2 to find the mill-forming move.
+        let mut wb = game.build_workbench(&snap);
+        let mut searcher = mill_searcher_default();
+        let mill_move = searcher.search_pvs(&mut wb, 2).best_action;
+        assert_eq!(mill_move.to_node, 1, "AI must form the mill at node 1");
+
+        // 2) Apply the mill-forming move.
+        let after_mill = rules.apply(&snap, mill_move);
+        assert_eq!(after_mill.side_to_move, 0, "still White's turn");
+        assert_eq!(
+            after_mill.opaque_payload[28], 1,
+            "pending_removals[White]=1"
+        );
+
+        // 3) At depth=5 (null-move activates at depth >= 3), the Remove search
+        //    must still find and return a valid Remove action — not Action::NONE.
+        let mut wb2 = game.build_workbench(&after_mill);
+        let mut searcher5 = mill_searcher_default();
+        let remove_move = searcher5.search_pvs(&mut wb2, 5).best_action;
+        assert_eq!(
+            remove_move.kind_tag,
+            MillActionKind::Remove as i16,
+            "depth=5 Remove search must return Remove, not kind={}",
+            remove_move.kind_tag
+        );
+        assert!(
+            matches!(remove_move.to_node, 3 | 5),
+            "Remove target must be Black's piece (3 or 5), got {}",
+            remove_move.to_node
+        );
+    }
+
+    /// Moving-phase version: AI moves a piece to form a mill at depth=5.
+    /// Regression for Phase 5 null-move incorrectly preventing Remove.
+    #[test]
+    fn native_search_moving_phase_mill_chains_remove_at_high_depth() {
+        let rules = MillRules::default();
+        let game = MillGame::default();
+        let options = NativeMillVariantOptions::default();
+
+        // Moving phase: White on 0, 2, 4; Black on 5, 6, 7.
+        // White can complete the [0,1,2] mill by moving 4->1.
+        let mut state = rules.setup_empty();
+        state.set_piece(0, 1); // White on a7
+        state.set_piece(2, 1); // White on g7
+        state.set_piece(4, 1); // White on e4 (adjacent to node 1 via edge moves)
+        state.set_piece(5, 2); // Black on d1
+        state.set_piece(6, 2); // Black on c3
+        state.set_piece(7, 2); // Black on a1
+        state.set_side_to_move(0);
+        state.recompute_aux(&options);
+        state.set_phase(MillPhase::Moving); // Force moving phase
+        let snap = rules.encode_state(state);
+
+        // Verify this is moving phase
+        assert_eq!(snap.phase_tag, MillPhase::Moving as i16);
+
+        // 1) At depth=5 the AI must find a Move action.
+        let mut wb = game.build_workbench(&snap);
+        let mut searcher = mill_searcher_default();
+        let best_move = searcher.search_pvs(&mut wb, 5).best_action;
+        assert_eq!(
+            best_move.kind_tag,
+            MillActionKind::Move as i16,
+            "expected Move action, got kind={}",
+            best_move.kind_tag
+        );
+
+        // 2) Apply it and check if a mill was formed.
+        let after_move = rules.apply(&snap, best_move);
+
+        // If the move formed a mill, pending_removals is encoded at payload[28].
+        // pending_removals[0] > 0 means White has a pending Remove.
+        if after_move.opaque_payload[28] > 0 {
+            assert_eq!(after_move.side_to_move, 0, "side must stay on White");
+            // 3) Remove search at depth=5 must return a Remove action.
+            let mut wb2 = game.build_workbench(&after_move);
+            let mut searcher2 = mill_searcher_default();
+            let remove = searcher2.search_pvs(&mut wb2, 5).best_action;
+            assert_eq!(
+                remove.kind_tag,
+                MillActionKind::Remove as i16,
+                "Remove search must return Remove, not kind={}",
+                remove.kind_tag
+            );
+        }
+    }
+
     #[test]
     fn rust_only_variant_option_toggles_are_reachable() {
         let variant = MillVariantOptions {

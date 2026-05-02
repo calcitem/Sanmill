@@ -450,26 +450,16 @@ pub struct SearchPolicy {
     pub remove_kind_tag: Option<i16>,
 }
 
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
 pub struct SearchOptions {
     pub depth_extension: bool,
     pub node_limit: Option<u64>,
     pub time_limit_ms: Option<u64>,
-    /// Enable null-move pruning in alpha_beta.  Default: true (matches C++
-    /// engine default; disable for correctness-sensitive search like endgame
-    /// tablebase generation or Mill rule edge-case debugging).
+    /// Enable the simplified null-move proxy in alpha_beta.
+    /// Disabled by default: the current proxy (-static_eval) is a rough
+    /// approximation that can prune incorrect branches in specific positions.
+    /// Enable explicitly only for experimental use.
     pub allow_null_move: bool,
-}
-
-impl Default for SearchOptions {
-    fn default() -> Self {
-        Self {
-            depth_extension: false,
-            node_limit: None,
-            time_limit_ms: None,
-            allow_null_move: true,
-        }
-    }
 }
 
 /// Reference-counted handle to a packed transposition table.  Multiple

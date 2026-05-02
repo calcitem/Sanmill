@@ -143,7 +143,7 @@ fn spawn_search(
         depth_extension: false,
         node_limit: go.node_limit,
         time_limit_ms: go.movetime_ms,
-        allow_null_move: true,
+        allow_null_move: false,
     };
     let depth = go.depth;
     let (tx, rx) = mpsc::channel();
