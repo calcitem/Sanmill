@@ -680,7 +680,6 @@ impl GameRules for MillRules {
                 // repetition history accumulated in the moving phase
                 // becomes irrelevant.
                 clear_key_history(&mut state);
-                maybe_stop_placing_when_two_empty(&mut state, &self.options);
                 let custodian = detect_custodian_targets(&state, &self.options, to);
                 let intervention = detect_intervention_targets(&state, &self.options, to);
                 let mill_bits = formed_mill_bits_at(&state, &self.options, to, state.side_to_move);
@@ -764,6 +763,13 @@ impl GameRules for MillRules {
                     state.mill_available_at_removal = false;
                 } else {
                     clear_capture_state(&mut state);
+                    // Mirror master src/position.cpp:1217 put_piece:
+                    // StopPlacingWhenTwoEmptySquares is checked only after
+                    // the no-mill/no-capture placing path has been selected.
+                    // Mill formation and capture obligations must keep the
+                    // remaining hand counts intact until their removal flow
+                    // completes.
+                    maybe_stop_placing_when_two_empty(&mut state, &self.options);
                     state.side_to_move ^= 1;
                     maybe_transition_to_moving(&mut state, &self.options);
                     sync_phase_for_may_move_in_placing(&mut state, &self.options);
@@ -4629,6 +4635,64 @@ mod tests {
         let state = MillRules::decode(&after);
         assert_eq!(state.pieces_in_hand, [0, 0]);
         assert_eq!(state.phase, MillPhase::Moving);
+    }
+
+    #[test]
+    fn stop_placing_two_empty_does_not_preempt_mill_removal() {
+        let options = MillVariantOptions {
+            piece_count: 12,
+            stop_placing_when_two_empty_squares: true,
+            mill_formation_action_in_placing_phase:
+                MillFormationActionInPlacingPhase::RemoveOpponentsPieceFromBoard,
+            ..MillVariantOptions::default()
+        };
+        let rules = MillRules::new(options);
+        let mut board = [2_i8; 24];
+        // White forms a mill on [20, 21, 22] by placing at 22 while the
+        // board has exactly three empty squares before the move.
+        board[20] = 1;
+        board[21] = 1;
+        board[22] = 0;
+        board[23] = 0;
+        board[0] = 0;
+        let state = MillState {
+            board,
+            side_to_move: 0,
+            phase: MillPhase::Placing,
+            move_number: 21,
+            pieces_in_hand: [1, 0],
+            pieces_on_board: [2, 19],
+            pending_removals: [0, 0],
+            winner: -1,
+            ..MillState::default()
+        };
+
+        let after = rules.apply(
+            &rules.encode(state),
+            Action {
+                kind_tag: MillActionKind::Place as i16,
+                from_node: -1,
+                to_node: 22,
+                aux: -1,
+                payload_bits: 0,
+            },
+        );
+        let state = MillRules::decode(&after);
+
+        assert_eq!(
+            state.pending_removals[0], 1,
+            "mill removal must be preserved when the two-empty rule is also true"
+        );
+        assert_eq!(
+            state.side_to_move, 0,
+            "mill removal keeps the forming side to move"
+        );
+        assert_eq!(
+            state.pieces_in_hand,
+            [0, 0],
+            "the played piece itself leaves White with no hand pieces"
+        );
+        assert_eq!(state.phase, MillPhase::Placing);
     }
 
     #[test]
