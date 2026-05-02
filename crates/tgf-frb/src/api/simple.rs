@@ -20,6 +20,7 @@ use tgf_mill::{
     StalemateAction as NativeStalemateAction,
 };
 use tgf_othello::{OthelloGame, OthelloRules};
+use tgf_search::SearchResult;
 use tgf_search::{
     MctsOptions, MctsSearcher, SearchAbortHandle, SearchAlgorithm, SearchOptions, SearchPolicy,
     Searcher,
@@ -441,24 +442,36 @@ impl From<MillSearchAlgorithm> for SearchAlgorithm {
 /// sent as UCI `setoption` strings via the C++ MethodChannel.
 #[derive(Clone, Debug)]
 pub struct MillEngineConfig {
-    /// Search algorithm.  Default: PVS.
+    /// Search algorithm.  Default: MTD(f) (P2-A).
     pub algorithm: MillSearchAlgorithm,
     /// AI search depth (0 → auto via drawOnHumanExperience table on Dart side).
     pub depth: i32,
     /// Time limit in milliseconds (0 = unlimited; depth drives termination).
     pub move_time_ms: u32,
-    /// When true the search aborts early when the position is stable.
-    /// Mirrors `AiIsLazy` in `ucioption.cpp`.
+    /// When true, apply the `AiIsLazy` depth adjustment from master
+    /// `search_engine.cpp`: if the previous best value suggests the position
+    /// is winning by more than 1 piece, cap origin_depth to 1; otherwise
+    /// keep it (P2-G).
     pub ai_is_lazy: bool,
+    /// The best value from the previous turn's search, used by `ai_is_lazy`
+    /// logic. Mirrors master's `bestvalue` input to `executeSearch` (P2-G).
+    /// Flutter should back-fill this from the last `bestMove` event score.
+    pub last_best_value: i32,
+    /// SkillLevel (0-30): controls MCTS iteration count (skill_level * 2048)
+    /// matching master `SkillLevel * ITERATIONS_PER_SKILL_LEVEL` (P2-F/P2-I).
+    pub skill_level: u8,
 }
 
 impl Default for MillEngineConfig {
     fn default() -> Self {
         Self {
-            algorithm: MillSearchAlgorithm::Pvs,
+            // P2-A: master defaults to Algorithm = 2 (MTD(f)); align here.
+            algorithm: MillSearchAlgorithm::Mtdf,
             depth: 1,
             move_time_ms: 0,
             ai_is_lazy: false,
+            last_best_value: 0,
+            skill_level: 1,
         }
     }
 }
@@ -470,6 +483,10 @@ pub struct EngineEvent {
     pub score: i32,
     pub nodes: u64,
     pub to_node: i32,
+    /// For bestMove events: the full UCI move string ("a4", "a1-a4", "xa4")
+    /// is stored here (P1-C.2).  For error events: the error message.
+    /// Using the existing `reason` field avoids adding new FRB bridge fields
+    /// that would require codegen; the Dart side already exposes `reason`.
     pub reason: String,
 }
 
@@ -504,14 +521,25 @@ impl EngineEvent {
         }
     }
 
-    fn best_move(to_node: i32, score: i32) -> Self {
+    /// Construct a bestMove event with complete action information (P1-C.2).
+    /// `root_side_to_move` is used to flip the score to White's perspective
+    /// (P1-C.1), matching master SearchEngine::emitCommand.
+    /// The full UCI move string is stored in `reason` for backwards-compatible
+    /// access without requiring FRB codegen update.
+    fn best_move_full(action: tgf_core::Action, score: i32, root_side_to_move: i8) -> Self {
+        let output_score = if root_side_to_move == 1 {
+            -score
+        } else {
+            score
+        };
+        let uci = crate::api::kernel::action_to_uci_str(action);
         Self {
             kind: "bestMove".to_owned(),
-            depth: 0,
-            score,
+            depth: action.from_node as i32,
+            score: output_score,
             nodes: 0,
-            to_node,
-            reason: String::new(),
+            to_node: action.to_node as i32,
+            reason: uci,
         }
     }
 
@@ -714,6 +742,7 @@ pub fn native_mill_search_zero_time_limit_aborts() -> bool {
         node_limit: None,
         time_limit_ms: Some(0),
         allow_null_move: true,
+        ..Default::default()
     });
     let _ = searcher.search(&mut wb, 3);
     searcher.was_aborted()
@@ -766,52 +795,84 @@ pub(crate) fn spawn_mill_engine_config_event_stream(
             *active = Some(searcher.abort_handle());
         }
 
-        let max_depth = config.depth.max(1);
-        let mut result = tgf_search::SearchResult::default_none();
+        // P2-G: AiIsLazy depth adjustment mirroring master executeSearch.
+        // np = lastBestValue / VALUE_EACH_PIECE (5); if np > 1 the position
+        // is "clearly won/lost", so cap origin_depth to 1 or 4.
+        const VALUE_EACH_PIECE: i32 = 5;
+        let origin_depth = if config.ai_is_lazy {
+            let np = config.last_best_value.abs() / VALUE_EACH_PIECE;
+            if np > 1 {
+                if config.depth < 4 {
+                    1
+                } else {
+                    4
+                }
+            } else {
+                config.depth.max(1)
+            }
+        } else {
+            config.depth.max(1)
+        };
+        let max_depth = origin_depth;
+        let mut result = SearchResult::default_none();
 
         match SearchAlgorithm::from(config.algorithm) {
             SearchAlgorithm::Random => {
+                // P2-J: use time-seeded random to match master's rand()+time() behaviour.
+                let seed = std::time::SystemTime::now()
+                    .duration_since(std::time::UNIX_EPOCH)
+                    .map(|d| d.as_secs())
+                    .unwrap_or(42);
+                searcher.set_random_seed(seed);
                 result = searcher.random_search(&mut wb);
                 let _ = sink.add(EngineEvent::info(1, result.score, result.nodes));
             }
             SearchAlgorithm::AlphaBeta => {
-                // Iterative deepening over alpha_beta, emitting per-depth info.
+                // P2-B: master Algorithm 0 (AlphaBeta) and 1 (PVS) both call
+                // the same `Search::search()` function (PVS implementation).
+                // Route AlphaBeta to search_pvs here for master equivalence.
+                // P2-H: no aspiration windows (master IDS uses none).
                 for d in 1..=max_depth {
                     if searcher.was_aborted() {
                         break;
                     }
-                    result = searcher.search(&mut wb, d);
+                    result = searcher.search_pvs(&mut wb, d);
                     let _ = sink.add(EngineEvent::info(d, result.score, result.nodes));
                 }
             }
             SearchAlgorithm::Mtdf => {
-                // MTD(f): single call at max_depth; emit one info event.
-                let guess = 0;
-                let score = searcher.mtdf(&mut wb, guess, max_depth);
-                result = tgf_search::SearchResult {
-                    best_action: tgf_core::Action::NONE,
-                    score,
-                    nodes: 0,
-                };
-                let _ = sink.add(EngineEvent::info(max_depth, score, 0));
+                // P2-C: use search_mtdf which returns the best action from the
+                // TT after all MTD(f) iterations, matching master's MTDF
+                // bestMove update via reference.
+                result = searcher.search_mtdf(&mut wb, max_depth);
+                let _ = sink.add(EngineEvent::info(max_depth, result.score, result.nodes));
             }
             SearchAlgorithm::Mcts => {
+                // P2-I: skill_level * 2048 iterations (master ITERATIONS_PER_SKILL_LEVEL=2048).
+                // Empty board early stop: max_iterations = 1 when no pieces on board.
+                let pieces_on_board = wb.pieces_on_board();
+                let all_pieces_on_board = pieces_on_board[0] as u32 + pieces_on_board[1] as u32;
+                let skill_iterations = if all_pieces_on_board == 0 {
+                    1_u32
+                } else {
+                    (u32::from(config.skill_level) + 1).saturating_mul(2048)
+                };
                 let mut mcts = MctsSearcher::<MillGame>::new();
                 let mcts_result = mcts.search_with_options(
                     &mut wb,
                     MctsOptions {
-                        iterations: (max_depth as u32).max(1).saturating_mul(512),
-                        playout_depth: 4,
+                        iterations: skill_iterations,
+                        playout_depth: 6, // P2-I: master ALPHA_BETA_DEPTH=6
                         time_limit_ms: if config.move_time_ms > 0 {
                             Some(config.move_time_ms as u64)
                         } else {
                             None
                         },
                         exploration: 0.5,
-                        ab_assist_depth: 0,
+                        ab_assist_depth: 6, // P2-I: master ALPHA_BETA_DEPTH=6
                     },
                 );
-                result = tgf_search::SearchResult {
+                result = SearchResult {
                     best_action: mcts_result.best_action,
                     score: 0,
                     nodes: mcts_result.visits as u64,
@@ -819,24 +880,27 @@ pub(crate) fn spawn_mill_engine_config_event_stream(
                 let _ = sink.add(EngineEvent::info(max_depth, 0, result.nodes));
             }
             SearchAlgorithm::Pvs => {
-                // PVS iterative deepening: emit one info per depth.
+                // P2-H: IDS without aspiration windows (master IDS uses none).
                 for d in 1..=max_depth {
                     if searcher.was_aborted() {
                         break;
                     }
                     result = searcher.search_pvs(&mut wb, d);
                     let _ = sink.add(EngineEvent::info(d, result.score, result.nodes));
-                    // aiIsLazy: abort early if the score is stable (≤ 1 cp change).
-                    if config.ai_is_lazy && d >= 3 {
+                    // P2-G: AiIsLazy early abort already reflected in max_depth;
+                    // no further IDS break needed here.
+                    let _ = d; // suppress warning
+                    if false {
                         break;
                     }
                 }
             }
         }
 
-        let _ = sink.add(EngineEvent::best_move(
-            result.best_action.to_node as i32,
+        let _ = sink.add(EngineEvent::best_move_full(
+            result.best_action,
             result.score,
+            snapshot.side_to_move,
         ));
         let _ = sink.add(EngineEvent::stopped());
         let mut active = ACTIVE_SEARCH.lock().expect("active search mutex poisoned");

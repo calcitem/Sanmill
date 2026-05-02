@@ -48,12 +48,44 @@ fn print_help() {
     eprintln!("  tgf uci      # run minimal UCI-like loop backed by Rust Mill");
 }
 
+/// Runtime engine configuration (non-variant search/difficulty parameters).
+/// These mirror the master `GameOptions` fields that are set via UCI setoption.
+#[derive(Clone, Debug)]
+struct EngineConfig {
+    skill_level: u8,
+    algorithm: u8,
+    ai_is_lazy: bool,
+    move_time_secs: u32,
+    shuffling: bool,
+    draw_on_human_experience: bool,
+    developer_mode: bool,
+    hash_mb: u32,
+    ponder: bool,
+}
+
+impl Default for EngineConfig {
+    fn default() -> Self {
+        Self {
+            skill_level: 1,
+            algorithm: 2,
+            ai_is_lazy: false,
+            move_time_secs: 1,
+            shuffling: true,
+            draw_on_human_experience: true,
+            developer_mode: true,
+            hash_mb: 16,
+            ponder: false,
+        }
+    }
+}
+
 fn run_uci_loop() {
     let mut options = MillVariantOptions::default();
     let mut rules = MillRules::new(options.clone());
     let mut state = rules.initial_state(&[]);
     let mut threads: usize = 1;
     let mut qsearch_max_depth: i32 = 0;
+    let mut engine_cfg = EngineConfig::default();
     let mut active_search: Option<ActiveSearch> = None;
     let stdin = io::stdin();
     for line in stdin.lock().lines().map_while(Result::ok) {
@@ -71,18 +103,35 @@ fn run_uci_loop() {
         } else if line == "ucinewgame" {
             finish_active_search(&mut active_search);
             state = rules.initial_state(&[]);
+        } else if line == "compiler" {
+            println!(
+                "info string compiler Rust {} target {}",
+                env!("CARGO_PKG_VERSION"),
+                std::env::consts::ARCH
+            );
         } else if line.starts_with("setoption") {
             finish_active_search(&mut active_search);
-            match apply_setoption(line, &mut options, &mut threads, &mut qsearch_max_depth) {
+            match apply_setoption(
+                line,
+                &mut options,
+                &mut threads,
+                &mut qsearch_max_depth,
+                &mut engine_cfg,
+            ) {
                 SetoptionResult::Variant => {
                     rules = MillRules::new(options.clone());
                     state = rules.initial_state(&[]);
                 }
-                SetoptionResult::Threads | SetoptionResult::SearchConfig => {}
+                SetoptionResult::ClearHash => {}
+                SetoptionResult::Threads
+                | SetoptionResult::SearchConfig
+                | SetoptionResult::Acknowledged => {}
                 SetoptionResult::Unknown => {
                     println!("info string unsupported setoption: {line}");
                 }
             }
+        } else if line.starts_with("bench") {
+            println!("info string bench is a separate subcommand; run: tgf bench");
         } else if line.starts_with("position") {
             finish_active_search(&mut active_search);
             state = parse_position_command(&rules, line);
@@ -90,13 +139,14 @@ fn run_uci_loop() {
             print_board_ascii(&state);
         } else if line.starts_with("go") {
             finish_active_search(&mut active_search);
-            let go = parse_go_options(line);
+            let go = parse_go_options(line, state.side_to_move, &engine_cfg);
             active_search = Some(spawn_search(
                 options.clone(),
                 state,
                 go,
                 threads,
                 qsearch_max_depth,
+                engine_cfg.hash_mb,
             ));
         } else if line == "stop" {
             if let Some(active) = active_search.take() {
@@ -130,6 +180,10 @@ struct ActiveSearch {
 struct SpawnResult {
     depth: i32,
     result: SearchResult,
+    /// Side to move at the root of the search tree (0=white, 1=black).
+    /// Used by join_and_print to flip the score to White's perspective,
+    /// matching master SearchEngine::emitCommand (P1-C.1).
+    root_side_to_move: i8,
 }
 
 fn spawn_search(
@@ -138,14 +192,17 @@ fn spawn_search(
     go: GoOptions,
     threads: usize,
     qsearch_max_depth: i32,
+    hash_mb: u32,
 ) -> ActiveSearch {
     let search_options = SearchOptions {
         depth_extension: false,
         node_limit: go.node_limit,
         time_limit_ms: go.movetime_ms,
         allow_null_move: false,
+        ..Default::default()
     };
     let depth = go.depth;
+    let root_side_to_move = state.side_to_move;
     let (tx, rx) = mpsc::channel();
     let abort = Arc::new(AtomicBool::new(false));
     let abort_handle = SearchAbortHandle::from_arc(Arc::clone(&abort));
@@ -154,13 +211,21 @@ fn spawn_search(
         let abort_for_worker = Arc::clone(&abort);
         thread::spawn(move || {
             let mut searcher = mill_searcher();
+            // P2-L plan-C: resize TT when Hash setoption specifies a size.
+            if hash_mb > 0 {
+                searcher.resize_tt_by_mb(hash_mb);
+            }
             searcher.set_abort_flag(abort_for_worker);
             searcher.set_options(search_options);
             searcher.set_qsearch_max_depth(qsearch_max_depth);
             let game = MillGame::new(options);
             let mut wb = game.build_workbench(&state);
             let result = searcher.search_pvs(&mut wb, depth);
-            let _ = tx.send(SpawnResult { depth, result });
+            let _ = tx.send(SpawnResult {
+                depth,
+                result,
+                root_side_to_move,
+            });
         })
     } else {
         let abort_for_workers = Arc::clone(&abort);
@@ -181,7 +246,11 @@ fn spawn_search(
                 shared_tt,
                 Some(abort_for_workers),
             );
-            let _ = tx.send(SpawnResult { depth, result });
+            let _ = tx.send(SpawnResult {
+                depth,
+                result,
+                root_side_to_move,
+            });
         })
     };
 
@@ -198,19 +267,43 @@ fn finish_active_search(slot: &mut Option<ActiveSearch>) {
     }
 }
 
+/// Format the score as a UCI score string (P2-M).
+/// Scores in the mate range (|score| > VALUE_MATE_IN_MAX_PLY) are
+/// formatted as "score mate N" (positive = we win, negative = we lose).
+/// Other scores are formatted as "score cp N" (centipawn-style).
+/// VALUE_MATE = 80, MAX_PLY = 32 → VALUE_MATE_IN_MAX_PLY = 80 - 32 = 48.
+fn format_score(output_score: i32) -> String {
+    const VALUE_MATE: i32 = 80;
+    const MAX_PLY: i32 = 32;
+    const VALUE_MATE_IN_MAX_PLY: i32 = VALUE_MATE - MAX_PLY;
+    if output_score.abs() > VALUE_MATE_IN_MAX_PLY {
+        let mate_in = if output_score > 0 {
+            (VALUE_MATE - output_score + 1) / 2
+        } else {
+            -(VALUE_MATE + output_score + 1) / 2
+        };
+        format!("score mate {mate_in}")
+    } else {
+        format!("score cp {output_score}")
+    }
+}
+
 fn join_and_print(active: ActiveSearch) {
     let _ = active.handle.join();
     if let Ok(spawn) = active.receiver.recv() {
-        // Match legacy SearchEngine::print_bestmove() in master:
-        //   "info score <score> bestmove <uci>"
-        // is emitted on a single line.  Rust additionally surfaces depth
-        // and nodes alongside `score cp` so standard UCI clients still
-        // see them as valid info fields (master tools tolerate the
-        // extras and key only on `score` / `bestmove`).
+        // Mirror master SearchEngine::emitCommand (P1-C.1): the UCI score is
+        // always from White's perspective.  When Black is to move the raw
+        // search score (from the mover's perspective) is negated.
+        let output_score = if spawn.root_side_to_move == 1 {
+            -spawn.result.score
+        } else {
+            spawn.result.score
+        };
+        let score_str = format_score(output_score);
         let uci = action_to_uci(spawn.result.best_action).unwrap_or_else(|| "none".to_owned());
         println!(
-            "info depth {} score cp {} nodes {} bestmove {}",
-            spawn.depth, spawn.result.score, spawn.result.nodes, uci
+            "info depth {} {} nodes {} bestmove {}",
+            spawn.depth, score_str, spawn.result.nodes, uci
         );
     } else {
         println!("info score 0 bestmove none");
@@ -267,29 +360,64 @@ fn side_label(side: i8) -> &'static str {
 }
 
 fn print_uci_options() {
-    // Search / engine options
-    println!("option name Threads type spin default 1 min 1 max 64");
-    println!("option name Hash type spin default 16 min 1 max 4096");
-    println!("option name MultiPV type spin default 1 min 1 max 64");
+    // Mirrors master src/ucioption.cpp init() ordering (P1-A).
+    println!("option name Threads type spin default 1 min 1 max 512");
+    println!("option name Hash type spin default 16 min 1 max 33554432");
+    println!("option name Clear Hash type button");
+    println!("option name Ponder type check default false");
+    println!("option name MultiPV type spin default 1 min 1 max 500");
+    println!("option name SkillLevel type spin default 1 min 0 max 30");
+    println!("option name MoveTime type spin default 1 min 0 max 60");
+    println!("option name AiIsLazy type check default false");
+    println!("option name Move Overhead type spin default 10 min 0 max 5000");
+    println!("option name Slow Mover type spin default 100 min 10 max 1000");
+    println!("option name nodestime type spin default 0 min 0 max 10000");
+    println!("option name Shuffling type check default true");
+    println!("option name Algorithm type spin default 2 min 0 max 4");
+    println!("option name DrawOnHumanExperience type check default true");
+    println!("option name ConsiderMobility type check default true");
+    println!("option name FocusOnBlockingPaths type check default true");
+    println!("option name DeveloperMode type check default true");
     println!("option name MaxQuiescenceDepth type spin default 0 min 0 max 4");
-    println!("option name SkillLevel type spin default 20 min 0 max 20");
-    // Mill rule variant options.  Prefer legacy-compatible names from
-    // src/ucioption.cpp; keep older tgf-cli aliases too.
-    println!("option name PiecesCount type spin default 9 min 3 max 12");
+    // Mill rule variant options (P1-A). Prefer master-compatible names.
+    println!("option name PiecesCount type spin default 9 min 9 max 12");
     println!("option name flyPieceCount type spin default 3 min 3 max 4");
-    println!("option name PieceCount type spin default 9 min 3 max 12");
-    println!("option name FlyPieceCount type spin default 3 min 3 max 4");
-    println!("option name PiecesAtLeastCount type spin default 3 min 2 max 3");
-    println!("option name MayFly type check default true");
+    println!("option name PiecesAtLeastCount type spin default 3 min 3 max 5");
     println!("option name HasDiagonalLines type check default false");
-    println!("option name MayRemoveFromMillsAlways type check default false");
-    println!("option name MayRemoveMultiple type check default false");
-    println!("option name NMoveRule type spin default 100 min 0 max 200");
-    println!("option name EndgameNMoveRule type spin default 100 min 0 max 200");
+    println!("option name MillFormationActionInPlacingPhase type spin default 0 min 0 max 5");
     println!("option name MayMoveInPlacingPhase type check default false");
     println!("option name IsDefenderMoveFirst type check default false");
+    println!("option name MayRemoveMultiple type check default false");
+    println!("option name MayRemoveFromMillsAlways type check default false");
     println!("option name RestrictRepeatedMillsFormation type check default false");
     println!("option name OneTimeUseMill type check default false");
+    println!("option name CustodianCaptureEnabled type check default false");
+    println!("option name CustodianCaptureOnSquareEdges type check default true");
+    println!("option name CustodianCaptureOnCrossLines type check default true");
+    println!("option name CustodianCaptureOnDiagonalLines type check default true");
+    println!("option name CustodianCaptureInPlacingPhase type check default true");
+    println!("option name CustodianCaptureInMovingPhase type check default true");
+    println!("option name CustodianCaptureOnlyWhenOwnPiecesLeq3 type check default false");
+    println!("option name InterventionCaptureEnabled type check default false");
+    println!("option name InterventionCaptureOnSquareEdges type check default true");
+    println!("option name InterventionCaptureOnCrossLines type check default true");
+    println!("option name InterventionCaptureOnDiagonalLines type check default true");
+    println!("option name InterventionCaptureInPlacingPhase type check default true");
+    println!("option name InterventionCaptureInMovingPhase type check default true");
+    println!("option name InterventionCaptureOnlyWhenOwnPiecesLeq3 type check default false");
+    println!("option name LeapCaptureEnabled type check default false");
+    println!("option name LeapCaptureOnSquareEdges type check default true");
+    println!("option name LeapCaptureOnCrossLines type check default true");
+    println!("option name LeapCaptureOnDiagonalLines type check default true");
+    println!("option name LeapCaptureInPlacingPhase type check default true");
+    println!("option name LeapCaptureInMovingPhase type check default true");
+    println!("option name LeapCaptureOnlyWhenOwnPiecesLeq3 type check default false");
+    println!("option name BoardFullAction type spin default 0 min 0 max 4");
+    println!("option name StopPlacingWhenTwoEmptySquares type check default false");
+    println!("option name StalemateAction type spin default 0 min 0 max 5");
+    println!("option name MayFly type check default true");
+    println!("option name NMoveRule type spin default 100 min 10 max 200");
+    println!("option name EndgameNMoveRule type spin default 100 min 5 max 200");
     println!("option name ThreefoldRepetitionRule type check default true");
 }
 
@@ -297,8 +425,11 @@ fn print_uci_options() {
 enum SetoptionResult {
     Variant,
     Threads,
-    /// A non-variant search parameter changed (e.g. MaxQuiescenceDepth).
+    ClearHash,
+    /// A non-variant search/engine parameter changed (e.g. SkillLevel).
     SearchConfig,
+    /// Option is valid and stored but has no side-effect on game rules.
+    Acknowledged,
     Unknown,
 }
 
@@ -307,6 +438,7 @@ fn apply_setoption(
     options: &mut MillVariantOptions,
     threads: &mut usize,
     qsearch_max_depth: &mut i32,
+    engine_cfg: &mut EngineConfig,
 ) -> SetoptionResult {
     let tokens = line.split_whitespace().collect::<Vec<_>>();
     let Some(name_pos) = tokens.iter().position(|t| *t == "name") else {
@@ -341,10 +473,109 @@ fn apply_setoption(
                 SetoptionResult::SearchConfig
             })
             .unwrap_or(SetoptionResult::Unknown),
+
+        // --- Search / difficulty options (P1-A) ---
+        "skilllevel" | "skill level" => value
+            .parse::<u8>()
+            .ok()
+            .filter(|v| (0..=30).contains(v))
+            .map(|v| {
+                engine_cfg.skill_level = v;
+                SetoptionResult::SearchConfig
+            })
+            .unwrap_or(SetoptionResult::Unknown),
+        "movetime" | "move time" => value
+            .parse::<u32>()
+            .ok()
+            .filter(|v| (0..=60).contains(v))
+            .map(|v| {
+                engine_cfg.move_time_secs = v;
+                SetoptionResult::SearchConfig
+            })
+            .unwrap_or(SetoptionResult::Unknown),
+        "aiislazy" | "ai is lazy" => parse_bool(value)
+            .map(|v| {
+                engine_cfg.ai_is_lazy = v;
+                SetoptionResult::SearchConfig
+            })
+            .unwrap_or(SetoptionResult::Unknown),
+        "algorithm" => value
+            .parse::<u8>()
+            .ok()
+            .filter(|v| (0..=4).contains(v))
+            .map(|v| {
+                engine_cfg.algorithm = v;
+                SetoptionResult::SearchConfig
+            })
+            .unwrap_or(SetoptionResult::Unknown),
+        "shuffling" => parse_bool(value)
+            .map(|v| {
+                engine_cfg.shuffling = v;
+                SetoptionResult::SearchConfig
+            })
+            .unwrap_or(SetoptionResult::Unknown),
+        "drawonhumanexperience" | "draw on human experience" => parse_bool(value)
+            .map(|v| {
+                engine_cfg.draw_on_human_experience = v;
+                SetoptionResult::SearchConfig
+            })
+            .unwrap_or(SetoptionResult::Unknown),
+        "developermode" | "developer mode" => parse_bool(value)
+            .map(|v| {
+                engine_cfg.developer_mode = v;
+                SetoptionResult::SearchConfig
+            })
+            .unwrap_or(SetoptionResult::Unknown),
+        "considermobility" | "consider mobility" => parse_bool(value)
+            .map(|v| {
+                options.consider_mobility = v;
+                SetoptionResult::Variant
+            })
+            .unwrap_or(SetoptionResult::Unknown),
+        "focusonblockingpaths" | "focus on blocking paths" => parse_bool(value)
+            .map(|v| {
+                options.focus_on_blocking_paths = v;
+                SetoptionResult::Variant
+            })
+            .unwrap_or(SetoptionResult::Unknown),
+        "hash" => value
+            .parse::<u32>()
+            .ok()
+            .filter(|v| (1..=33_554_432).contains(v))
+            .map(|v| {
+                engine_cfg.hash_mb = v;
+                SetoptionResult::SearchConfig
+            })
+            .unwrap_or(SetoptionResult::Unknown),
+        "clear hash" | "clearhash" => SetoptionResult::ClearHash,
+        "ponder" => parse_bool(value)
+            .map(|v| {
+                engine_cfg.ponder = v;
+                SetoptionResult::Acknowledged
+            })
+            .unwrap_or(SetoptionResult::Unknown),
+        "multipv" | "multi pv" => {
+            let _ = value.parse::<u32>();
+            SetoptionResult::Acknowledged
+        }
+        "move overhead" | "moveoverhead" => {
+            let _ = value.parse::<u32>();
+            SetoptionResult::Acknowledged
+        }
+        "slow mover" | "slowmover" => {
+            let _ = value.parse::<u32>();
+            SetoptionResult::Acknowledged
+        }
+        "nodestime" | "nodes time" => {
+            let _ = value.parse::<u32>();
+            SetoptionResult::Acknowledged
+        }
+
+        // --- Mill variant rule options ---
         "piecescount" | "pieces count" | "piececount" | "piece count" => value
             .parse::<u8>()
             .ok()
-            .filter(|v| (3..=12).contains(v))
+            .filter(|v| (9..=12).contains(v))
             .map(|v| {
                 options.piece_count = v;
                 SetoptionResult::Variant
@@ -362,6 +593,7 @@ fn apply_setoption(
         "piecesatleastcount" | "pieces at least count" => value
             .parse::<u8>()
             .ok()
+            .filter(|v| (3..=5).contains(v))
             .map(|v| {
                 options.pieces_at_least_count = v;
                 SetoptionResult::Variant
@@ -379,6 +611,25 @@ fn apply_setoption(
                 SetoptionResult::Variant
             })
             .unwrap_or(SetoptionResult::Unknown),
+        "millformationactioninplacingphase" | "mill formation action in placing phase" => value
+            .parse::<i16>()
+            .ok()
+            .filter(|v| (0..=5).contains(v))
+            .and_then(|v| {
+                use tgf_mill::MillFormationActionInPlacingPhase::*;
+                let action = match v {
+                    0 => RemoveOpponentsPieceFromBoard,
+                    1 => RemoveOpponentsPieceFromHandThenOpponentsTurn,
+                    2 => RemoveOpponentsPieceFromHandThenYourTurn,
+                    3 => OpponentRemovesOwnPiece,
+                    4 => MarkAndDelayRemovingPieces,
+                    5 => RemovalBasedOnMillCounts,
+                    _ => return None,
+                };
+                options.mill_formation_action_in_placing_phase = action;
+                Some(SetoptionResult::Variant)
+            })
+            .unwrap_or(SetoptionResult::Unknown),
         "mayremovefrommillsalways" | "may remove from mills always" => parse_bool(value)
             .map(|v| {
                 options.may_remove_from_mills_always = v;
@@ -394,6 +645,7 @@ fn apply_setoption(
         "nmoverule" | "n move rule" => value
             .parse::<u32>()
             .ok()
+            .filter(|v| (10..=200).contains(v))
             .map(|v| {
                 options.n_move_rule = v;
                 SetoptionResult::Variant
@@ -402,6 +654,7 @@ fn apply_setoption(
         "endgamenmoverule" | "endgame n move rule" => value
             .parse::<u32>()
             .ok()
+            .filter(|v| (5..=200).contains(v))
             .map(|v| {
                 options.endgame_n_move_rule = v;
                 SetoptionResult::Variant
@@ -431,14 +684,211 @@ fn apply_setoption(
                 SetoptionResult::Variant
             })
             .unwrap_or(SetoptionResult::Unknown),
+        "stopplacingwhentwoEmptysquares"
+        | "stopplacingwhentwoemptysquares"
+        | "stop placing when two empty squares" => parse_bool(value)
+            .map(|v| {
+                options.stop_placing_when_two_empty_squares = v;
+                SetoptionResult::Variant
+            })
+            .unwrap_or(SetoptionResult::Unknown),
+        "boardfullaction" | "board full action" => value
+            .parse::<u8>()
+            .ok()
+            .filter(|v| (0..=4).contains(v))
+            .and_then(|v| {
+                use tgf_mill::MillBoardFullAction::*;
+                let action = match v {
+                    0 => FirstPlayerLose,
+                    1 => FirstAndSecondPlayerRemovePiece,
+                    2 => SecondAndFirstPlayerRemovePiece,
+                    3 => SideToMoveRemovePiece,
+                    4 => AgreeToDraw,
+                    _ => return None,
+                };
+                options.board_full_action = action;
+                Some(SetoptionResult::Variant)
+            })
+            .unwrap_or(SetoptionResult::Unknown),
+        "stalemateaction" | "stalemate action" => value
+            .parse::<u8>()
+            .ok()
+            .filter(|v| (0..=5).contains(v))
+            .and_then(|v| {
+                use tgf_mill::StalemateAction::*;
+                let action = match v {
+                    0 => EndWithStalemateLoss,
+                    1 => ChangeSideToMove,
+                    2 => RemoveOpponentsPieceAndMakeNextMove,
+                    3 => RemoveOpponentsPieceAndChangeSideToMove,
+                    4 => EndWithStalemateDraw,
+                    5 => BothPlayersRemoveOpponentsPiece,
+                    _ => return None,
+                };
+                options.stalemate_action = action;
+                Some(SetoptionResult::Variant)
+            })
+            .unwrap_or(SetoptionResult::Unknown),
         "threefoldrepetitionrule" | "threefold repetition rule" => parse_bool(value)
             .map(|v| {
                 options.threefold_repetition_rule = v;
                 SetoptionResult::Variant
             })
             .unwrap_or(SetoptionResult::Unknown),
-        // Engine-level options that don't affect the variant but are valid UCI.
-        "hash" | "multipv" | "skilllevel" | "skill level" => SetoptionResult::SearchConfig,
+
+        // --- Custodian capture sub-options ---
+        "custodiancaptureenabled" | "custodian capture enabled" => parse_bool(value)
+            .map(|v| {
+                options.custodian_capture.enabled = v;
+                SetoptionResult::Variant
+            })
+            .unwrap_or(SetoptionResult::Unknown),
+        "custodiancaptureonsquareedges" | "custodian capture on square edges" => parse_bool(value)
+            .map(|v| {
+                options.custodian_capture.on_square_edges = v;
+                SetoptionResult::Variant
+            })
+            .unwrap_or(SetoptionResult::Unknown),
+        "custodiancaptureoncrosslines" | "custodian capture on cross lines" => parse_bool(value)
+            .map(|v| {
+                options.custodian_capture.on_cross_lines = v;
+                SetoptionResult::Variant
+            })
+            .unwrap_or(SetoptionResult::Unknown),
+        "custodiancaptureondiagonallines" | "custodian capture on diagonal lines" => {
+            parse_bool(value)
+                .map(|v| {
+                    options.custodian_capture.on_diagonal_lines = v;
+                    SetoptionResult::Variant
+                })
+                .unwrap_or(SetoptionResult::Unknown)
+        }
+        "custodiancaptureinplacingphase" | "custodian capture in placing phase" => {
+            parse_bool(value)
+                .map(|v| {
+                    options.custodian_capture.in_placing_phase = v;
+                    SetoptionResult::Variant
+                })
+                .unwrap_or(SetoptionResult::Unknown)
+        }
+        "custodiancaptureinmovingphase" | "custodian capture in moving phase" => parse_bool(value)
+            .map(|v| {
+                options.custodian_capture.in_moving_phase = v;
+                SetoptionResult::Variant
+            })
+            .unwrap_or(SetoptionResult::Unknown),
+        "custodiancaptureonlywhenownpiecesleq3"
+        | "custodian capture only when own pieces leq 3" => parse_bool(value)
+            .map(|v| {
+                options
+                    .custodian_capture
+                    .only_available_when_own_pieces_leq3 = v;
+                SetoptionResult::Variant
+            })
+            .unwrap_or(SetoptionResult::Unknown),
+
+        // --- Intervention capture sub-options ---
+        "interventioncaptureenabled" | "intervention capture enabled" => parse_bool(value)
+            .map(|v| {
+                options.intervention_capture.enabled = v;
+                SetoptionResult::Variant
+            })
+            .unwrap_or(SetoptionResult::Unknown),
+        "interventioncaptureonsquareedges" | "intervention capture on square edges" => {
+            parse_bool(value)
+                .map(|v| {
+                    options.intervention_capture.on_square_edges = v;
+                    SetoptionResult::Variant
+                })
+                .unwrap_or(SetoptionResult::Unknown)
+        }
+        "interventioncaptureoncrosslines" | "intervention capture on cross lines" => {
+            parse_bool(value)
+                .map(|v| {
+                    options.intervention_capture.on_cross_lines = v;
+                    SetoptionResult::Variant
+                })
+                .unwrap_or(SetoptionResult::Unknown)
+        }
+        "interventioncaptureondiagonallines" | "intervention capture on diagonal lines" => {
+            parse_bool(value)
+                .map(|v| {
+                    options.intervention_capture.on_diagonal_lines = v;
+                    SetoptionResult::Variant
+                })
+                .unwrap_or(SetoptionResult::Unknown)
+        }
+        "interventioncaptureinplacingphase" | "intervention capture in placing phase" => {
+            parse_bool(value)
+                .map(|v| {
+                    options.intervention_capture.in_placing_phase = v;
+                    SetoptionResult::Variant
+                })
+                .unwrap_or(SetoptionResult::Unknown)
+        }
+        "interventioncaptureinmovingphase" | "intervention capture in moving phase" => {
+            parse_bool(value)
+                .map(|v| {
+                    options.intervention_capture.in_moving_phase = v;
+                    SetoptionResult::Variant
+                })
+                .unwrap_or(SetoptionResult::Unknown)
+        }
+        "interventioncaptureonlywhenownpiecesleq3"
+        | "intervention capture only when own pieces leq 3" => parse_bool(value)
+            .map(|v| {
+                options
+                    .intervention_capture
+                    .only_available_when_own_pieces_leq3 = v;
+                SetoptionResult::Variant
+            })
+            .unwrap_or(SetoptionResult::Unknown),
+
+        // --- Leap capture sub-options ---
+        "leapcaptureenabled" | "leap capture enabled" => parse_bool(value)
+            .map(|v| {
+                options.leap_capture.enabled = v;
+                SetoptionResult::Variant
+            })
+            .unwrap_or(SetoptionResult::Unknown),
+        "leapcaptureonsquareedges" | "leap capture on square edges" => parse_bool(value)
+            .map(|v| {
+                options.leap_capture.on_square_edges = v;
+                SetoptionResult::Variant
+            })
+            .unwrap_or(SetoptionResult::Unknown),
+        "leapcaptureoncrosslines" | "leap capture on cross lines" => parse_bool(value)
+            .map(|v| {
+                options.leap_capture.on_cross_lines = v;
+                SetoptionResult::Variant
+            })
+            .unwrap_or(SetoptionResult::Unknown),
+        "leapcaptureondiagonallines" | "leap capture on diagonal lines" => parse_bool(value)
+            .map(|v| {
+                options.leap_capture.on_diagonal_lines = v;
+                SetoptionResult::Variant
+            })
+            .unwrap_or(SetoptionResult::Unknown),
+        "leapcaptureinplacingphase" | "leap capture in placing phase" => parse_bool(value)
+            .map(|v| {
+                options.leap_capture.in_placing_phase = v;
+                SetoptionResult::Variant
+            })
+            .unwrap_or(SetoptionResult::Unknown),
+        "leapcaptureinmovingphase" | "leap capture in moving phase" => parse_bool(value)
+            .map(|v| {
+                options.leap_capture.in_moving_phase = v;
+                SetoptionResult::Variant
+            })
+            .unwrap_or(SetoptionResult::Unknown),
+        "leapcaptureonlywhenownpiecesleq3" | "leap capture only when own pieces leq 3" => {
+            parse_bool(value)
+                .map(|v| {
+                    options.leap_capture.only_available_when_own_pieces_leq3 = v;
+                    SetoptionResult::Variant
+                })
+                .unwrap_or(SetoptionResult::Unknown)
+        }
         _ => SetoptionResult::Unknown,
     }
 }
@@ -496,12 +946,14 @@ struct GoOptions {
 /// `wtime`, `btime`, `winc`, `binc`, `movetime`, `depth`, `nodes`,
 /// `infinite`, `ponder`.
 ///
-/// When `wtime`/`btime` is given without an explicit `movetime`, a simple
-/// time budget is derived: `budget ≈ remaining / 30 + increment`.
-fn parse_go_options(line: &str) -> GoOptions {
+/// P1-D: `wtime`/`btime` selection is now based on `root_side_to_move`
+/// (0=white, 1=black), matching master's time-management semantics.
+/// When no explicit `movetime` is given in the `go` command and no
+/// wtime/btime is present, `move_time_secs` from `setoption MoveTime`
+/// is used as a fallback (master's primary time-control mechanism).
+fn parse_go_options(line: &str, root_side_to_move: i8, engine_cfg: &EngineConfig) -> GoOptions {
     let tokens = line.split_whitespace().collect::<Vec<_>>();
 
-    // Helper: find the numeric value after a keyword token.
     let find_u64 = |key: &str| -> Option<u64> {
         tokens
             .windows(2)
@@ -516,8 +968,6 @@ fn parse_go_options(line: &str) -> GoOptions {
     };
 
     if tokens.contains(&"infinite") || tokens.contains(&"ponder") {
-        // Cap "infinite" / "ponder" at a very large depth; cancellation comes
-        // from the `stop` or `ponderhit` command through the abort handle.
         return GoOptions {
             depth: 64,
             movetime_ms: None,
@@ -528,16 +978,28 @@ fn parse_go_options(line: &str) -> GoOptions {
     let depth = find_i32("depth").unwrap_or(1).max(1);
     let node_limit = find_u64("nodes");
 
-    // Explicit movetime takes precedence.
+    // Explicit go movetime takes highest priority.
     let movetime_ms = if let Some(ms) = find_u64("movetime") {
         Some(ms)
     } else {
-        // Time-management fallback from wtime/btime + winc/binc.
-        // Use white's remaining time as default; a proper side-to-move-aware
-        // implementation would pick wtime or btime based on the position.
-        let remaining = find_u64("wtime").or_else(|| find_u64("btime"));
-        let increment = find_u64("winc").or_else(|| find_u64("binc")).unwrap_or(0);
-        remaining.map(|r| (r / 30).saturating_add(increment).max(100))
+        // P1-D: select wtime/btime based on side_to_move (matching master
+        // SearchEngine time-management which uses the correct clock for
+        // the player to move).
+        let (time_key, inc_key) = if root_side_to_move == 1 {
+            ("btime", "binc")
+        } else {
+            ("wtime", "winc")
+        };
+        let remaining = find_u64(time_key);
+        if let Some(r) = remaining {
+            let increment = find_u64(inc_key).unwrap_or(0);
+            Some((r / 30).saturating_add(increment).max(100))
+        } else if engine_cfg.move_time_secs > 0 {
+            // Fall back to setoption MoveTime (master's primary mechanism).
+            Some(engine_cfg.move_time_secs as u64 * 1000)
+        } else {
+            None
+        }
     };
 
     GoOptions {
@@ -758,6 +1220,7 @@ mod tests {
         let mut options = MillVariantOptions::default();
         let mut threads = 1;
         let mut qsearch = 0;
+        let mut ecfg = EngineConfig::default();
 
         assert!(matches!(
             apply_setoption(
@@ -765,6 +1228,7 @@ mod tests {
                 &mut options,
                 &mut threads,
                 &mut qsearch,
+                &mut ecfg,
             ),
             SetoptionResult::Variant
         ));
@@ -776,6 +1240,7 @@ mod tests {
                 &mut options,
                 &mut threads,
                 &mut qsearch,
+                &mut ecfg,
             ),
             SetoptionResult::Variant
         ));

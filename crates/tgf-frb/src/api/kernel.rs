@@ -20,9 +20,11 @@ use std::sync::Arc;
 use once_cell::sync::Lazy;
 use std::sync::Mutex;
 
+use tgf_core::BoardTopology;
 use tgf_core::{
     Action, ActionList, GameKernel, GameRules, GameStateSnapshot, KernelError, OutcomeKind,
 };
+use tgf_mill::{default_mill_topology, MillActionKind};
 use tgf_mill::{MillPhase, MillRules, MillVariantOptions as NativeMillVariantOptions};
 use tgf_othello::OthelloRules;
 
@@ -537,6 +539,25 @@ pub fn tgf_kernel_export_fen(handle: u32) -> Result<String, String> {
     let rules = MillRules::new(options);
     let state = tgf_mill::MillRules::decode_snapshot(kernel.snapshot());
     Ok(rules.export_fen(&state))
+}
+
+/// Convert a `tgf_core::Action` to a UCI move string (P1-C.2).
+/// Returns the full UCI text: place = label (e.g. "a4"), move = "a1-a4",
+/// remove = "xa4".  Returns an empty string for the NONE action.
+pub(crate) fn action_to_uci_str(action: Action) -> String {
+    let topo = default_mill_topology();
+    match action.kind_tag {
+        x if x == MillActionKind::Place as i16 => topo.label_of(action.to_node as u16).to_owned(),
+        x if x == MillActionKind::Move as i16 => format!(
+            "{}-{}",
+            topo.label_of(action.from_node as u16),
+            topo.label_of(action.to_node as u16)
+        ),
+        x if x == MillActionKind::Remove as i16 => {
+            format!("x{}", topo.label_of(action.to_node as u16))
+        }
+        _ => String::new(),
+    }
 }
 
 #[cfg(test)]

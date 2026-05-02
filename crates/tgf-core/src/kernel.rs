@@ -103,6 +103,17 @@ impl GameKernel {
         Ok(self.state)
     }
 
+    /// Apply `action` without legality checking (P3.4).
+    /// Mirrors master `Position::do_move` which assumes the move is already
+    /// legal. Use for hot paths (search replay, benchmark) where the move
+    /// has already been validated by `legal_actions`.
+    pub fn apply_unchecked(&mut self, action: Action) -> GameStateSnapshot {
+        self.history.push(self.state);
+        self.state = self.rules.apply(&self.state, action);
+        self.redo_stack.clear();
+        self.state
+    }
+
     /// Pop one entry from the undo stack and push the current state on
     /// the redo stack.  Errors when there is nothing to undo.
     pub fn undo(&mut self) -> Result<GameStateSnapshot, KernelError> {

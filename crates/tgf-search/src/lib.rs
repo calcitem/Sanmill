@@ -19,6 +19,10 @@ use std::{
 use crossbeam_channel::{Receiver, Sender};
 use tgf_core::{Action, ActionList, Evaluator, Game, GameStateSnapshot, Workbench};
 
+/// Mirror of master `VALUE_UNIQUE = 100`: returned when only one root legal
+/// action exists so the caller knows the move was forced (P2-D).
+pub const MILL_VALUE_UNIQUE: i32 = 100;
+
 /// Game-neutral perft: counts the leaves of the legal-action tree at the
 /// requested depth.  At depth 0 we count the current node as one leaf; at
 /// depth 1 we count the number of immediately legal actions.  This matches
@@ -460,6 +464,10 @@ pub struct SearchOptions {
     /// approximation that can prune incorrect branches in specific positions.
     /// Enable explicitly only for experimental use.
     pub allow_null_move: bool,
+    /// Shuffle the root move list before searching. Mirrors master's
+    /// `MoveList<LEGAL>::shuffle()` call at the start of `executeSearch`
+    /// when `Shuffling` is enabled or `SkillLevel < 30` (P2-K).
+    pub shuffle_root: bool,
 }
 
 /// Reference-counted handle to a packed transposition table.  Multiple
@@ -578,6 +586,22 @@ impl<G: Game> Searcher<G> {
             tt: Arc::new(ClusteredTt::new_with_cluster_bits(cluster_bits)),
             ..Self::default()
         }
+    }
+
+    /// Resize the TT to approximately `mb` megabytes (P2-L plan-C).
+    /// Mirrors master UCI `Hash` option which calls `TT.resize(bytes)`.
+    /// Each TT cluster holds 2 slots of 8 bytes = 16 bytes per cluster;
+    /// cluster_bits b gives 2^(b+1) slots = 2^b clusters = 2^b × 16 bytes.
+    /// → cluster_bits = floor(log2(mb × 1024 × 1024 / 16)).
+    /// Clamped to [10, 26] to avoid excessive memory or too-small tables.
+    pub fn resize_tt_by_mb(&mut self, mb: u32) {
+        let bytes = (mb as u64).saturating_mul(1024 * 1024);
+        let cluster_bytes = 16_u64;
+        let num_clusters = (bytes / cluster_bytes).max(1);
+        let bits = (63 - num_clusters.leading_zeros()).clamp(10, 26);
+        self.tt = Arc::new(ClusteredTt::new_with_cluster_bits(bits));
+        self.killers.clear();
+        self.history.clear();
     }
 
     /// Build a Searcher whose transposition table is shared with all other
@@ -707,11 +731,26 @@ impl<G: Game> Searcher<G> {
         }
         let mut moves = ActionList::<256>::new();
         G::generate_legal(wb, &mut moves);
+        // P2-K: root shuffle before sort (mirrors master's MoveList::shuffle).
+        if self.options.shuffle_root {
+            self.shuffle_moves(&mut moves);
+        }
         self.order_moves(wb, wb.key(), depth, &mut moves);
         if moves.is_empty() {
             return SearchResult {
                 best_action: Action::NONE,
                 score: G::Evaluator::score(wb),
+                nodes: self.nodes,
+            };
+        }
+        // P2-D: mirror master Search::search root single-move early return.
+        // When there is only one legal action at the root the engine would
+        // play it regardless of the search result; return VALUE_UNIQUE (100)
+        // to indicate this state to the caller and avoid wasted search.
+        if moves.len() == 1 {
+            return SearchResult {
+                best_action: moves[0],
+                score: MILL_VALUE_UNIQUE,
                 nodes: self.nodes,
             };
         }
@@ -763,11 +802,23 @@ impl<G: Game> Searcher<G> {
         }
         let mut moves = ActionList::<256>::new();
         G::generate_legal(wb, &mut moves);
+        // P2-K: root shuffle before sort.
+        if self.options.shuffle_root {
+            self.shuffle_moves(&mut moves);
+        }
         self.order_moves(wb, wb.key(), depth, &mut moves);
         if moves.is_empty() {
             return SearchResult {
                 best_action: Action::NONE,
                 score: G::Evaluator::score(wb),
+                nodes: self.nodes,
+            };
+        }
+        // P2-D: single root action → no need to search.
+        if moves.len() == 1 {
+            return SearchResult {
+                best_action: moves[0],
+                score: MILL_VALUE_UNIQUE,
                 nodes: self.nodes,
             };
         }
@@ -963,6 +1014,24 @@ impl<G: Game> Searcher<G> {
             }
         }
         g
+    }
+
+    /// Run MTD(f) at `depth` and return a full `SearchResult` including the
+    /// best action retrieved from the TT. Mirrors master's `Search::MTDF`
+    /// which updates `bestMove` by reference (P2-C).
+    pub fn search_mtdf(&mut self, wb: &mut G::Workbench, depth: i32) -> SearchResult {
+        let score = self.mtdf(wb, 0, depth);
+        let key = wb.key();
+        let best_action = self
+            .tt
+            .get(key)
+            .map(|e| e.best_action)
+            .unwrap_or(Action::NONE);
+        SearchResult {
+            best_action,
+            score,
+            nodes: self.nodes,
+        }
     }
 
     #[inline]
@@ -1259,6 +1328,20 @@ impl<G: Game> Searcher<G> {
         moves
             .as_mut_slice()
             .sort_by_key(|m| -self.move_score(wb, key, depth, *m));
+    }
+
+    /// Shuffle the root move list using the internal xorshift RNG (P2-K).
+    /// Mirrors master's MoveList<LEGAL>::shuffle() which is called at the
+    /// start of executeSearch when Shuffling is enabled.
+    fn shuffle_moves(&mut self, moves: &mut ActionList<256>) {
+        let n = moves.len();
+        if n < 2 {
+            return;
+        }
+        for i in (1..n).rev() {
+            let j = self.next_random_index(i + 1);
+            moves.as_mut_slice().swap(i, j);
+        }
     }
 
     #[inline]
@@ -1962,7 +2045,10 @@ mod tests {
         let mut searcher = Searcher::<SameSideGame>::new();
 
         let result = searcher.search(&mut wb, 1);
-        assert_eq!(result.score, 42);
+        // P2-D: single root legal action → VALUE_UNIQUE (100) is returned.
+        // The best action is still set correctly even without deep search.
+        assert_eq!(result.score, MILL_VALUE_UNIQUE);
+        assert!(!result.best_action.is_none());
     }
 
     #[derive(Clone, Copy, Debug)]
@@ -2266,6 +2352,7 @@ mod tests {
             node_limit: Some(1),
             time_limit_ms: None,
             allow_null_move: false,
+            ..Default::default()
         });
 
         let _ = searcher.search(&mut wb, 3);
@@ -2284,6 +2371,7 @@ mod tests {
             node_limit: None,
             time_limit_ms: None,
             allow_null_move: false,
+            ..Default::default()
         });
 
         let result = searcher.search(&mut wb, 1);
@@ -2302,6 +2390,7 @@ mod tests {
             node_limit: None,
             time_limit_ms: Some(0),
             allow_null_move: false,
+            ..Default::default()
         });
 
         let _ = searcher.search(&mut wb, 3);

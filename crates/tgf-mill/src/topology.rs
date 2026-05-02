@@ -165,9 +165,14 @@ fn node(id: u16, square: u16, label: &'static str, x: f32, y: f32) -> MillNode {
 }
 
 fn standard_edges(has_diagonal_lines: bool) -> Vec<Edge> {
-    // Base 40 ring + spoke edges; diagonal adjacency matches `src/mills.cpp`
-    // `adjacentSquares_diagonal` and adds 40 unique diagonal edges.
-    let mut edges = Vec::with_capacity(if has_diagonal_lines { 80 } else { 40 });
+    // 24 ring edges (3 rings × 8) + 8 spoke edges (midpoints only, not corners).
+    // P0-H: the original code iterated i in 0..8 for both inner→middle and
+    // middle→outer spokes, producing 16 spoke edges total, but 8 of those
+    // (corner positions 0,2,4,6 / 8,10,12,14 / etc.) are not actual game
+    // connections in standard Nine Men's Morris. Only the 4 midpoint spokes per
+    // layer are real; odd-indexed nodes (1,3,5,7) in Rust dense numbering are
+    // midpoints and the only ones that carry cross-ring spokes.
+    let mut edges = Vec::with_capacity(if has_diagonal_lines { 48 } else { 32 });
     for start in [0_u16, 8, 16] {
         for i in 0..8_u16 {
             edges.push(Edge {
@@ -176,7 +181,9 @@ fn standard_edges(has_diagonal_lines: bool) -> Vec<Edge> {
             });
         }
     }
-    for i in 0..8_u16 {
+    // Spokes only at midpoint positions (odd dense-node indices within each ring).
+    // NEIGHBORS confirms: inner node 1 → middle node 9, middle node 9 → outer node 17, etc.
+    for i in [1_u16, 3, 5, 7] {
         edges.push(Edge { a: i, b: 8 + i });
         edges.push(Edge {
             a: 8 + i,
@@ -348,7 +355,9 @@ mod tests {
     fn geometry_matches_existing_flutter_shape() {
         let topo = default_mill_topology();
         assert_eq!(topo.node_count(), 24);
-        assert_eq!(topo.edges().len(), 40);
+        // P0-H: 24 ring edges + 8 midpoint spokes (4 inner-middle + 4 middle-outer)
+        // = 32 total. Old count of 40 included 8 spurious corner cross-ring edges.
+        assert_eq!(topo.edges().len(), 32);
         assert_eq!(topo.line_groups().len(), 16);
         assert_eq!(topo.coordinate_of(0), UnitPoint { x: 0.1, y: 0.1 });
         assert_eq!(topo.coordinate_of(23), UnitPoint { x: 0.3, y: 0.5 });
@@ -367,7 +376,7 @@ mod tests {
     fn diagonal_topology_matches_cxx_diagonal_rules() {
         let topo = MillTopology::with_diagonals();
         assert_eq!(topo.name(), "mill.24.diagonal");
-        assert_eq!(topo.edges().len(), 80);
+        assert_eq!(topo.edges().len(), 72);
         assert_eq!(topo.line_groups().len(), 20);
         assert_eq!(topo.neighbors(0), &[1, 7, 8]);
         assert_eq!(topo.neighbors(2), &[1, 3, 10]);

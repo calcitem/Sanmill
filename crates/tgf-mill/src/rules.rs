@@ -403,6 +403,13 @@ impl MillGame {
     }
 }
 
+impl MillWorkbench {
+    /// Expose pieces-on-board counts for search heuristics (e.g. MCTS empty-board early stop).
+    pub fn pieces_on_board(&self) -> [u8; 2] {
+        self.state.pieces_on_board
+    }
+}
+
 impl Workbench for MillWorkbench {
     fn snapshot(&self) -> GameStateSnapshot {
         self.rules.encode(self.state)
@@ -772,7 +779,7 @@ impl GameRules for MillRules {
                 state.board[to] = state.side_to_move + 1;
                 state.move_number += 1;
                 let side = state.side_to_move as usize;
-                bump_ply_since_capture(&mut state);
+                bump_ply_since_capture(&mut state, &self.options);
                 let custodian = detect_custodian_targets(&state, &self.options, to);
                 let intervention = detect_intervention_targets(&state, &self.options, to);
                 let leap = detect_leap_targets(&state, &self.options, from, to);
@@ -927,10 +934,13 @@ impl GameRules for MillRules {
                 // Capturing changes material — restart the rolling
                 // repetition window.
                 clear_key_history(&mut state);
-                if state.phase == MillPhase::Moving
-                    && state.pieces_on_board[target_color_index]
-                        < self.options.pieces_at_least_count
-                {
+                // P0-B.1: Mirror master remove_piece L1834-1838 which checks
+                // `pieceOnBoardCount[them] + pieceInHandCount[them] < piecesAtLeastCount`
+                // WITHOUT a phase guard. The original Rust code only checked
+                // in Moving phase and omitted in-hand count; both are fixed here.
+                let pieces_total = u32::from(state.pieces_on_board[target_color_index])
+                    + u32::from(state.pieces_in_hand[target_color_index]);
+                if pieces_total < u32::from(self.options.pieces_at_least_count) {
                     state.phase = MillPhase::GameOver;
                     state.winner = if removing_own {
                         opponent as i8
@@ -1075,10 +1085,14 @@ impl MillRules {
         // and — when in placing — that may_move_in_placing_phase opens
         // movement.  In fly state, every empty square is already
         // reachable so the leap superset is redundant.
+        // Use capture_piece_count_allowed_leap (not the generic variant) so that
+        // onlyAvailableWhenOwnPiecesLeq3 is enforced in placing phase too,
+        // matching master's checkLeapCapture which checks the condition outside
+        // any phase guard.
         let leap_enabled = !can_fly
             && self.options.leap_capture.enabled
             && capture_phase_allowed(&self.options.leap_capture, state.phase)
-            && capture_piece_count_allowed(&self.options.leap_capture, state)
+            && capture_piece_count_allowed_leap(&self.options.leap_capture, state)
             && (state.phase == MillPhase::Moving
                 || (state.phase == MillPhase::Placing
                     && self.options.may_move_in_placing_phase
@@ -1107,10 +1121,10 @@ impl MillRules {
             if leap_enabled {
                 // For every three-point line with `from` at one end, jumping
                 // over an opponent in the middle to the empty far end is a
-                // legal leap move.  master generate<MOVE> emits the same
-                // `make_move(from, b)` shape, deferring capture to the
-                // subsequent Remove resolution that matches our
-                // detect_leap_targets path.
+                // legal leap move.  master generate<MOVE> calls checkLeapCapture
+                // which also validates that the captured middle piece is actually
+                // removable under mill-protection rules (P0-A.2). We replicate
+                // that check here via leap_capture_target_is_removable.
                 for line in active_capture_lines(&self.options.leap_capture, &self.options) {
                     let (a, mid, b) = (line[0], line[1], line[2]);
                     let jumps_from_a =
@@ -1118,10 +1132,15 @@ impl MillRules {
                     let jumps_from_b =
                         from == b && state.board[a] == 0 && state.board[mid] == opponent_color;
                     if jumps_from_a {
-                        if !self.is_restricted_repeated_mill(state, from, b) {
+                        if !self.is_restricted_repeated_mill(state, from, b)
+                            && leap_capture_target_is_removable(state, &self.options, mid)
+                        {
                             out.push(move_action(from, b));
                         }
-                    } else if jumps_from_b && !self.is_restricted_repeated_mill(state, from, a) {
+                    } else if jumps_from_b
+                        && !self.is_restricted_repeated_mill(state, from, a)
+                        && leap_capture_target_is_removable(state, &self.options, mid)
+                    {
                         out.push(move_action(from, a));
                     }
                 }
@@ -1165,13 +1184,25 @@ impl MillRules {
     fn generate_remove_actions(&self, state: &MillState, out: &mut ActionList<256>) {
         let capture_targets =
             state.custodian_targets | state.intervention_targets | state.leap_targets;
-        if capture_targets != 0 && !state.mill_available_at_removal {
-            self.generate_capture_remove_actions(state, out, capture_targets);
-            return;
-        }
-
         if capture_targets != 0 {
             self.generate_capture_remove_actions(state, out, capture_targets);
+            // Mirror master generate<REMOVE>'s `totalRemovals <= captureCount`
+            // cutoff (P0-A.1): when pending removals are fully covered by
+            // capture obligations, only capture targets are legal this turn.
+            // When remove_own_piece is set the "totalRemovals" equivalent is
+            // negative which is always <= any positive captureCount, so we
+            // return early in that case too (matching master's behaviour).
+            let us = state.side_to_move as usize;
+            if us >= 2
+                || state.remove_own_piece[us]
+                || state.pending_removals[us] <= capture_total(state)
+            {
+                return;
+            }
+            // pending_removals[us] > capture_total: the current player formed
+            // a mill simultaneously with a capture, so also generate the
+            // regular mill-remove targets below (excluding capture targets
+            // already emitted above).
         }
 
         // When `remove_own_piece[us]` is set the active side must remove a
@@ -1468,16 +1499,29 @@ fn maybe_finish_full_board(state: &mut MillState, options: &MillVariantOptions) 
         MillBoardFullAction::FirstAndSecondPlayerRemovePiece => {
             state.pending_removals = [1, 1];
             state.side_to_move = 0;
+            // P0-C.1: set both_stalemate_removing so that the adjacency
+            // restriction (is_stalemate_removal_context) stays active for
+            // BOTH removals. Without this flag, after side-0 removes a piece
+            // the board has 1 empty square, the empty_square_count == 0 guard
+            // fails, and side-1's removal loses the adjacency check. This
+            // mirrors master's is_board_full_removal_at_placing_phase_end
+            // staying true during the entire placing-phase removal sequence.
+            state.both_stalemate_removing = true;
         }
         MillBoardFullAction::SecondAndFirstPlayerRemovePiece => {
             state.pending_removals = [1, 1];
             state.side_to_move = 1;
+            // P0-C.1: same reasoning as FirstAndSecondPlayerRemovePiece above.
+            state.both_stalemate_removing = true;
         }
         MillBoardFullAction::SideToMoveRemovePiece => {
             state.pending_removals = [0, 0];
             let remover = if options.is_defender_move_first { 1 } else { 0 };
             state.side_to_move = remover;
             state.pending_removals[remover as usize] = 1;
+            // Single removal: the empty_square_count == 0 guard in
+            // is_stalemate_removal_context handles the adjacency check for
+            // this one turn; no persistent flag needed.
         }
     }
 }
@@ -1541,14 +1585,25 @@ fn apply_removal_based_on_mill_counts(state: &mut MillState, options: &MillVaria
     state.mill_available_at_removal = state.pending_removals.iter().any(|count| *count > 0);
 }
 
-fn bump_ply_since_capture(state: &mut MillState) {
-    if state.phase == MillPhase::Moving {
+fn bump_ply_since_capture(state: &mut MillState, options: &MillVariantOptions) {
+    // P0-F.2: mirror master's `isMovingOrMayMoveInPlacing` check in
+    // search_engine.cpp L432-L458 which accumulates posKeyHistory (and thus
+    // rule50) for BOTH the standard moving phase AND the placing-phase when
+    // may_move_in_placing_phase is enabled.
+    let is_move_counting_phase = state.phase == MillPhase::Moving
+        || (state.phase == MillPhase::Placing && options.may_move_in_placing_phase);
+    if is_move_counting_phase {
         state.ply_since_capture = state.ply_since_capture.saturating_add(1);
     }
 }
 
 fn maybe_draw_by_n_move_rule(state: &mut MillState, options: &MillVariantOptions) {
-    if state.phase != MillPhase::Moving {
+    // P0-F.2: apply the N-move rule in placing phase as well when
+    // may_move_in_placing_phase is enabled, matching master's behaviour where
+    // the posKeyHistory size tracks move-type moves in both phases.
+    let is_move_counting_phase = state.phase == MillPhase::Moving
+        || (state.phase == MillPhase::Placing && options.may_move_in_placing_phase);
+    if !is_move_counting_phase {
         return;
     }
     // Mirror C++ `Position::is_three_endgame()`: endgame threshold applies when
@@ -1772,45 +1827,31 @@ fn note_mill_formation(
     }
 }
 
-/// Hash the parts of a `MillState` that participate in threefold
-/// repetition: board layout, side to move, phase, pending-removals.
-/// Excludes counters that change each ply (`move_number`,
-/// `ply_since_capture`, etc.) so a repeated board genuinely hashes the
-/// same on every visit.
+/// Hash the parts of a `MillState` that participate in threefold repetition.
+/// P0-G: aligned with master's posKeyHistory key (same fields as
+/// position_key): board layout, side-to-move, pending_removals[us] only, and
+/// capture-misc. Phase, move_number, ply_since_capture and other transient
+/// counters are excluded so a repeated board configuration always hashes
+/// identically regardless of ply distance.
 fn repetition_signature(state: &MillState) -> u64 {
-    let mut key = 0xcbf2_9ce4_8422_2325_u64;
-    let mut mix = |byte: u8| {
-        key ^= u64::from(byte);
-        key = key.wrapping_mul(0x1000_0000_01b3);
-    };
-    for piece in state.board {
-        mix(piece as u8);
-    }
-    mix(state.side_to_move as u8);
-    mix(state.phase as u8);
-    mix(state.pending_removals[0]);
-    mix(state.pending_removals[1]);
-    mix(u8::from(state.remove_own_piece[0]));
-    mix(u8::from(state.remove_own_piece[1]));
-    if key == 0 {
-        1
-    } else {
-        key
-    }
+    position_key(state)
 }
 
-/// Empty the rolling repetition history.  Called on irreversible events
-/// (a Place into hand drains, a Remove that captures a piece) so cycles
-/// only span pure Move sequences.
+/// Empty the rolling repetition history on irreversible events (Place/Remove),
+/// matching master's `posKeyHistory.clear()` for MOVETYPE_PLACE and
+/// MOVETYPE_REMOVE (engine_commands.cpp L151-157). Cycles can only span
+/// pure Move sequences.
 fn clear_key_history(state: &mut MillState) {
     state.key_history = [0_u64; 24];
     state.key_history_len = 0;
 }
 
-/// Append the current state's repetition signature to the rolling
-/// buffer (FIFO, max 24 entries) and end the game in a draw when the
-/// same signature has occurred three times.  No-op when
-/// `threefold_repetition_rule` is disabled.
+/// Append the current state's repetition signature to the rolling buffer and
+/// end the game in a draw when the same signature has appeared three times.
+/// Mirrors master's `posKeyHistory.push_back(key())` + `count(key) >= 3`.
+/// The buffer is a ring of 24 entries; practical mill repetitions are always
+/// detected within a few moves. No-op when `threefold_repetition_rule` is
+/// disabled.
 fn push_key_and_check_threefold(state: &mut MillState, options: &MillVariantOptions) {
     if !options.threefold_repetition_rule {
         return;
@@ -1899,10 +1940,16 @@ pub struct MillState {
     mill_available_at_removal: bool,
     stalemate_removing: bool,
     both_stalemate_removing: bool,
-    /// Ring buffer of repetition-only Zobrist signatures (board + side +
-    /// phase + pending removals) collected at moving-phase ply boundaries.
-    /// Cleared on Place / Remove so only reversible Move events count.
+    /// Rolling window of repetition signatures, each appended on a
+    /// side-changing Move with no mill/capture and cleared on Place/Remove
+    /// (mirroring master's posKeyHistory: push on MOVETYPE_MOVE, clear on
+    /// MOVETYPE_PLACE / MOVETYPE_REMOVE).  The array is a ring buffer capped
+    /// at 24 entries; in practice mill repetitions are detected within a few
+    /// moves, so the 24-entry window covers all realistic cases.  Longer
+    /// cycles (> 24 moves without capture/placement) would require master's
+    /// unbounded vector and are not supported in snapshot serialisation.
     key_history: [u64; 24],
+    /// Number of valid entries in `key_history`, clamped to 24.
     key_history_len: u8,
 }
 
@@ -2136,6 +2183,14 @@ impl MillState {
         self.phase = phase;
     }
 
+    pub fn phase(&self) -> MillPhase {
+        self.phase
+    }
+
+    pub fn pieces_on_board(&self) -> [u8; 2] {
+        self.pieces_on_board
+    }
+
     /// Set the winner field directly.  Used by setup-position tools that
     /// need to mark an immediate-GameOver position (e.g. fewer than
     /// pieces_at_least_count pieces after `setup_finish`).
@@ -2315,13 +2370,15 @@ impl MillRules {
             "o" => MillPhase::GameOver,
             s => return Err(format!("invalid phase '{s}' in FEN")),
         };
-        // Field 3 is the C++ Action token ('p'/'s'/'r'/'?').  Rust does
-        // not maintain a separate Action enum — pending_removals already
-        // tells us when the next Action is "remove" — so we tolerate any
-        // single-character token without enforcement.
+        // Field 3 is the C++ Action token ('p'/'s'/'r'/'?').  Rust derives
+        // the action from pending_removals and phase rather than storing a
+        // separate enum.  Accept any single-character token and record whether
+        // the action is 'r' (remove) so we can infer a pending removal below
+        // when the count fields are inconsistent (P0-E.1).
         if fields[3].len() != 1 {
             return Err(format!("invalid action token '{}' in FEN", fields[3]));
         }
+        let action_is_remove = fields[3] == "r";
 
         let parse_u8 = |s: &str| -> Result<u8, String> {
             s.parse::<u8>()
@@ -2430,6 +2487,27 @@ impl MillRules {
             }
         }
 
+        // P0-E.1: If the action token is 'r' (remove) but the piece-to-remove
+        // count for the active side is 0, infer a single pending removal.  This
+        // handles FENs where the action token is the authoritative source for
+        // the next expected action (matching master's Action::remove semantics).
+        let side_usize = side_to_move as usize;
+        let (final_remove_w, final_remove_b) = if action_is_remove
+            && remove_w == 0
+            && remove_b == 0
+            && custodian_count == 0
+            && intervention_count == 0
+            && leap_count == 0
+        {
+            if side_usize == 0 {
+                (1_u8, 0_u8)
+            } else {
+                (0_u8, 1_u8)
+            }
+        } else {
+            (remove_w, remove_b)
+        };
+
         Ok(MillState {
             board,
             side_to_move,
@@ -2437,7 +2515,7 @@ impl MillRules {
             move_number,
             pieces_on_board: [on_board_w, on_board_b],
             pieces_in_hand: [in_hand_w, in_hand_b],
-            pending_removals: [remove_w, remove_b],
+            pending_removals: [final_remove_w, final_remove_b],
             remove_own_piece: remove_own,
             ply_since_capture: rule50,
             last_mill_from,
@@ -2451,7 +2529,7 @@ impl MillRules {
             leap_count,
             stalemate_removing,
             both_stalemate_removing,
-            mill_available_at_removal: (remove_w > 0 || remove_b > 0)
+            mill_available_at_removal: (final_remove_w > 0 || final_remove_b > 0)
                 && !(custodian_count > 0 || intervention_count > 0 || leap_count > 0),
             formed_mills_bb,
             preferred_remove_target,
@@ -2749,41 +2827,31 @@ fn append_capture_field(
 }
 
 fn position_key(state: &MillState) -> u64 {
-    // Stable FNV-1a style position key.  This is not the final incremental
-    // Zobrist implementation, but unlike the Phase 4 zero key it gives the
-    // Rust transposition table distinct keys for distinct Mill positions.
+    // P0-G: rewritten to align with master's incremental Zobrist key semantics.
+    // Master's key (Position::st.key) includes:
+    //   * board piece-square hashes (Zobrist::psq[pc][sq])
+    //   * side-to-move (Zobrist::side)
+    //   * pieceToRemoveCount[sideToMove] only (via update_key_misc)
+    //   * capture target bitmaps and counts (custodian/intervention/leap,
+    //     per colour, via setCustodian/Intervention/LeapTargets)
+    // Excluded (not in master): gamePly, rule50, phase, pieces_in_hand,
+    // pieces_on_board, winner, outcome_reason, last_mill_*, used_mill_lines,
+    // delayed_marked_pieces, mill_available_at_removal, formed_mills_bb.
     let mut key = 0xcbf2_9ce4_8422_2325_u64;
     let mut mix = |byte: u8| {
         key ^= u64::from(byte);
         key = key.wrapping_mul(0x1000_0000_01b3);
     };
+    // Board pieces (piece-square, 24 squares × 2 bits owner).
     for piece in state.board {
         mix(piece as u8);
     }
+    // Side to move.
     mix(state.side_to_move as u8);
-    mix(state.phase as u8);
-    mix((state.move_number & 0xff) as u8);
-    mix(((state.move_number >> 8) & 0xff) as u8);
-    mix(state.pieces_in_hand[0]);
-    mix(state.pieces_in_hand[1]);
-    mix(state.pieces_on_board[0]);
-    mix(state.pieces_on_board[1]);
-    mix(state.pending_removals[0]);
-    mix(state.pending_removals[1]);
-    mix(state.winner as u8);
-    mix(state.outcome_reason as u8);
-    mix((state.ply_since_capture & 0xff) as u8);
-    mix((state.ply_since_capture >> 8) as u8);
-    mix(state.last_mill_from[0] as u8);
-    mix(state.last_mill_to[0] as u8);
-    mix(state.last_mill_from[1] as u8);
-    mix(state.last_mill_to[1] as u8);
-    for byte in state.used_mill_lines.to_le_bytes() {
-        mix(byte);
-    }
-    for byte in state.delayed_marked_pieces.to_le_bytes() {
-        mix(byte);
-    }
+    // pieceToRemoveCount for the active side only (mirrors update_key_misc).
+    let us = (state.side_to_move as usize) & 1;
+    mix(state.pending_removals[us]);
+    // Capture-misc: target bitmaps and counts for all three capture types.
     for byte in state.custodian_targets.to_le_bytes() {
         mix(byte);
     }
@@ -2796,13 +2864,6 @@ fn position_key(state: &MillState) -> u64 {
     mix(state.custodian_count);
     mix(state.intervention_count);
     mix(state.leap_count);
-    mix(u8::from(state.mill_available_at_removal));
-    for byte in state.formed_mills_bb[0].to_le_bytes() {
-        mix(byte);
-    }
-    for byte in state.formed_mills_bb[1].to_le_bytes() {
-        mix(byte);
-    }
     if key == 0 {
         1
     } else {
@@ -3024,7 +3085,24 @@ fn capture_phase_allowed(config: &CaptureRuleConfig, phase: MillPhase) -> bool {
 }
 
 fn capture_piece_count_allowed(config: &CaptureRuleConfig, state: &MillState) -> bool {
+    // For custodian and intervention captures, onlyAvailableWhenOwnPiecesLeq3
+    // only applies in moving phase, matching master's checkCustodianCapture and
+    // checkInterventionCapture where the condition is guarded by
+    // `if (phase == Phase::moving)`.
     if !config.only_available_when_own_pieces_leq3 || state.phase != MillPhase::Moving {
+        return true;
+    }
+    let side = state.side_to_move as usize;
+    let us = state.pieces_on_board[side];
+    us <= 3
+}
+
+fn capture_piece_count_allowed_leap(config: &CaptureRuleConfig, state: &MillState) -> bool {
+    // For leap captures, onlyAvailableWhenOwnPiecesLeq3 applies in BOTH placing
+    // and moving phases. This mirrors master's checkLeapCapture where the
+    // condition is checked OUTSIDE any phase guard (unlike custodian/intervention
+    // which wrap it in `if (phase == Phase::moving)`).
+    if !config.only_available_when_own_pieces_leq3 {
         return true;
     }
     let side = state.side_to_move as usize;
@@ -3039,6 +3117,29 @@ fn is_all_in_mills(state: &MillState, options: &MillVariantOptions, piece: i8) -
         .enumerate()
         .filter(|(_, p)| **p == piece)
         .all(|(idx, _)| is_piece_in_mill(state, options, idx))
+}
+
+/// Validates that the piece at `mid` (the captured middle square) is actually
+/// removable under mill-protection rules. Called during leap move generation
+/// to mirror master's checkLeapCapture mill-protection validation (P0-A.2).
+fn leap_capture_target_is_removable(
+    state: &MillState,
+    options: &MillVariantOptions,
+    mid: usize,
+) -> bool {
+    let opponent_piece = (state.side_to_move ^ 1) + 1;
+    if state.board[mid] != opponent_piece {
+        return false;
+    }
+    // Mill protection: if may_remove_from_mills_always is false, a piece in a
+    // mill cannot be captured unless ALL opponent pieces are in mills.
+    if !options.may_remove_from_mills_always
+        && is_piece_in_mill(state, options, mid)
+        && !is_all_in_mills(state, options, opponent_piece)
+    {
+        return false;
+    }
+    true
 }
 
 fn is_adjacent_to_side_piece(state: &MillState, topology: &MillTopology, node: usize) -> bool {
@@ -3096,16 +3197,36 @@ fn detect_intervention_targets(state: &MillState, options: &MillVariantOptions, 
         return 0;
     }
     let opponent = (state.side_to_move ^ 1) + 1;
+
+    // P0-D.1: mirror master checkInterventionCapture which selects the
+    // capture line containing preferredRemoveTarget when multiple lines are
+    // available. If preferredTarget is set and a line contains it, that line
+    // takes priority; otherwise fall back to the first valid line (captureLines[0]).
+    let preferred = state.preferred_remove_target;
+
+    let mut capture_lines: Vec<u32> = Vec::new();
     for line in active_capture_lines(config, options) {
         if to == line[1] && state.board[line[0]] == opponent && state.board[line[2]] == opponent {
             let targets = node_bit(line[0]) | node_bit(line[2]);
             let filtered = filter_capture_targets(state, options, targets);
             if filtered != 0 {
-                return filtered;
+                capture_lines.push(filtered);
             }
         }
     }
-    0
+    if capture_lines.is_empty() {
+        return 0;
+    }
+
+    // Select the line containing preferredRemoveTarget if specified.
+    if preferred >= 0 {
+        let pref_mask = node_bit(preferred as usize);
+        if let Some(&line) = capture_lines.iter().find(|&&l| (l & pref_mask) != 0) {
+            return line;
+        }
+    }
+    // Fall back to the first valid line (mirrors master's captureLines[0]).
+    capture_lines[0]
 }
 
 fn detect_leap_targets(
@@ -3115,7 +3236,12 @@ fn detect_leap_targets(
     to: usize,
 ) -> u32 {
     let config = &options.leap_capture;
-    if !capture_phase_allowed(config, state.phase) || !capture_piece_count_allowed(config, state) {
+    // Use the leap-specific piece-count check that applies in both placing and
+    // moving phases (master checkLeapCapture has the count guard outside any
+    // phase conditional, unlike custodian/intervention).
+    if !capture_phase_allowed(config, state.phase)
+        || !capture_piece_count_allowed_leap(config, state)
+    {
         return 0;
     }
     let opponent = (state.side_to_move ^ 1) + 1;
@@ -4843,8 +4969,8 @@ mod tests {
         );
         let final_state = MillRules::decode(&after);
         assert_eq!(final_state.phase, MillPhase::Moving);
-        // History still grew (the disable check happens inside the helper,
-        // but we explicitly skip both push and check when off).
+        // History still has the 2 pre-loaded entries only (threefold is
+        // disabled, so push is skipped entirely).
         assert_eq!(final_state.key_history_len, 2);
         assert_eq!(rules.outcome(&after).kind, OutcomeKind::Ongoing);
     }
