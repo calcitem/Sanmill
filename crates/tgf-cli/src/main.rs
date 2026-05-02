@@ -89,6 +89,7 @@ fn run_uci_loop() {
     let mut active_search: Option<ActiveSearch> = None;
     let stdin = io::stdin();
     for line in stdin.lock().lines().map_while(Result::ok) {
+        drain_finished_search(&mut active_search);
         let line = line.trim();
         if line.is_empty() {
             continue;
@@ -267,6 +268,33 @@ fn finish_active_search(slot: &mut Option<ActiveSearch>) {
     }
 }
 
+fn take_finished_search(slot: &mut Option<ActiveSearch>) -> Option<SpawnResult> {
+    let active = slot.as_ref()?;
+    match active.receiver.try_recv() {
+        Ok(spawn) => {
+            let active = slot.take().expect("active search present");
+            let _ = active.handle.join();
+            Some(spawn)
+        }
+        Err(mpsc::TryRecvError::Empty) => None,
+        Err(mpsc::TryRecvError::Disconnected) => {
+            let active = slot.take().expect("active search present");
+            let _ = active.handle.join();
+            Some(SpawnResult {
+                depth: 0,
+                result: SearchResult::default_none(),
+                root_side_to_move: 0,
+            })
+        }
+    }
+}
+
+fn drain_finished_search(slot: &mut Option<ActiveSearch>) {
+    if let Some(spawn) = take_finished_search(slot) {
+        print_spawn_result(spawn);
+    }
+}
+
 /// Format the score as a UCI score string (P2-M).
 /// Scores in the mate range (|score| > VALUE_MATE_IN_MAX_PLY) are
 /// formatted as "score mate N" (positive = we win, negative = we lose).
@@ -291,23 +319,31 @@ fn format_score(output_score: i32) -> String {
 fn join_and_print(active: ActiveSearch) {
     let _ = active.handle.join();
     if let Ok(spawn) = active.receiver.recv() {
-        // Mirror master SearchEngine::emitCommand (P1-C.1): the UCI score is
-        // always from White's perspective.  When Black is to move the raw
-        // search score (from the mover's perspective) is negated.
-        let output_score = if spawn.root_side_to_move == 1 {
-            -spawn.result.score
-        } else {
-            spawn.result.score
-        };
-        let score_str = format_score(output_score);
-        let uci = action_to_uci(spawn.result.best_action).unwrap_or_else(|| "none".to_owned());
-        println!(
-            "info depth {} {} nodes {} bestmove {}",
-            spawn.depth, score_str, spawn.result.nodes, uci
-        );
+        print_spawn_result(spawn);
     } else {
         println!("info score 0 bestmove none");
     }
+}
+
+fn format_spawn_result(spawn: &SpawnResult) -> String {
+    // Mirror master SearchEngine::emitCommand (P1-C.1): the UCI score is
+    // always from White's perspective.  When Black is to move the raw
+    // search score (from the mover's perspective) is negated.
+    let output_score = if spawn.root_side_to_move == 1 {
+        -spawn.result.score
+    } else {
+        spawn.result.score
+    };
+    let score_str = format_score(output_score);
+    let uci = action_to_uci(spawn.result.best_action).unwrap_or_else(|| "none".to_owned());
+    format!(
+        "info depth {} {} nodes {} bestmove {}",
+        spawn.depth, score_str, spawn.result.nodes, uci
+    )
+}
+
+fn print_spawn_result(spawn: SpawnResult) {
+    println!("{}", format_spawn_result(&spawn));
 }
 
 /// ASCII board reproduction matching the layout of `Position::print_board`
@@ -1245,5 +1281,48 @@ mod tests {
             SetoptionResult::Variant
         ));
         assert_eq!(options.fly_piece_count, 4);
+    }
+
+    #[test]
+    fn active_search_try_take_finished_emits_without_followup_command() {
+        let (tx, rx) = mpsc::channel();
+        let handle = thread::spawn(move || {
+            tx.send(SpawnResult {
+                depth: 1,
+                result: SearchResult {
+                    best_action: Action {
+                        kind_tag: MillActionKind::Place as i16,
+                        from_node: -1,
+                        to_node: 0,
+                        aux: -1,
+                        payload_bits: 0,
+                    },
+                    score: 5,
+                    nodes: 1,
+                },
+                root_side_to_move: 0,
+            })
+            .unwrap();
+        });
+        let mut active = Some(ActiveSearch {
+            handle,
+            abort_handle: SearchAbortHandle::from_arc(Arc::new(AtomicBool::new(false))),
+            receiver: rx,
+        });
+
+        let mut result = None;
+        for _ in 0..100 {
+            if let Some(spawn) = take_finished_search(&mut active) {
+                result = Some(format_spawn_result(&spawn));
+                break;
+            }
+            thread::sleep(Duration::from_millis(1));
+        }
+
+        assert!(active.is_none(), "finished search must be drained");
+        assert_eq!(
+            result.as_deref(),
+            Some("info depth 1 score cp 5 nodes 1 bestmove a7")
+        );
     }
 }
