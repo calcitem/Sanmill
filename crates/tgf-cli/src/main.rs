@@ -130,6 +130,11 @@ fn run_uci_loop() {
                 &mut engine_cfg,
             ) {
                 SetoptionResult::Variant => {
+                    // NOTE: intentional deviation from master src/ucioption.cpp.
+                    // master only updates the global rule table when a variant
+                    // option changes.  Rust resets the position because a
+                    // mid-game variant switch can invalidate MillState counts;
+                    // callers can re-issue `position fen ...` afterwards.
                     rules = MillRules::new(options.clone());
                     state = rules.initial_state(&[]);
                 }

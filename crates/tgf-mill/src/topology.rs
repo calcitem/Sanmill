@@ -199,6 +199,19 @@ fn standard_edges(has_diagonal_lines: bool) -> Vec<Edge> {
             }
         }
     }
+    // Diagonal neighbor exports include the standard ring/spoke neighbors too.
+    // Deduplicate `(min, max)` edge pairs here while preserving `neighbors()`
+    // exactly as translated from the C++ adjacency tables.
+    edges.sort_by_key(|edge| {
+        let a = edge.a.min(edge.b);
+        let b = edge.a.max(edge.b);
+        (a, b)
+    });
+    edges.dedup_by_key(|edge| {
+        let a = edge.a.min(edge.b);
+        let b = edge.a.max(edge.b);
+        (a, b)
+    });
     edges
 }
 
@@ -376,7 +389,7 @@ mod tests {
     fn diagonal_topology_matches_cxx_diagonal_rules() {
         let topo = MillTopology::with_diagonals();
         assert_eq!(topo.name(), "mill.24.diagonal");
-        assert_eq!(topo.edges().len(), 72);
+        assert_eq!(topo.edges().len(), 40);
         assert_eq!(topo.line_groups().len(), 20);
         assert_eq!(topo.neighbors(0), &[1, 7, 8]);
         assert_eq!(topo.neighbors(2), &[1, 3, 10]);
