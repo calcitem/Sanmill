@@ -1215,19 +1215,16 @@ impl MillRules {
         if from != last_to as usize || to != last_from as usize {
             return false;
         }
-        // Match master movegen: restrict only when `from` *currently*
-        // sits in a completed mill (`potential_mills_count(from, side) > 0`)
-        // AND moving the piece to `to` would (re-)form one
-        // (`potential_mills_count(to, side, from) > 0`).  The first
-        // predicate guards against false positives when the original
-        // mill has already been dismantled by some unrelated capture.
-        if !is_piece_in_mill(state, &self.options, from) {
+        // Mirror master src/position.cpp:1068 / potential_mills_count:
+        // restrict only when `from` currently counts as a usable mill and
+        // moving back to `to` would form another usable mill.  Under
+        // oneTimeUseMill, potential_mills_count filters out lines already
+        // recorded in formedMillsBB, so an already consumed mill must not
+        // keep the reverse move restricted.
+        if potential_mills_count_at(state, &self.options, from, state.side_to_move, None) == 0 {
             return false;
         }
-        let mut candidate = *state;
-        candidate.board[from] = 0;
-        candidate.board[to] = state.side_to_move + 1;
-        count_mills_at(&candidate, &self.options, to, state.side_to_move) > 0
+        potential_mills_count_at(state, &self.options, to, state.side_to_move, Some(from)) > 0
     }
 
     fn generate_remove_actions(&self, state: &MillState, out: &mut ActionList<256>) {
@@ -2897,17 +2894,6 @@ fn position_key(state: &MillState) -> u64 {
     } else {
         key
     }
-}
-
-/// Number of mill lines passing through `node` that are now all owned by
-/// `side_to_move`.  Used by `apply` to honour `may_remove_multiple`.
-fn count_mills_at(
-    state: &MillState,
-    options: &MillVariantOptions,
-    node: usize,
-    side_to_move: i8,
-) -> usize {
-    formed_mill_bits_at(state, options, node, side_to_move).count_ones() as usize
 }
 
 fn formed_mill_bits_at(
@@ -4694,6 +4680,48 @@ mod tests {
         let mut actions = ActionList::<256>::new();
         rules.legal_actions(&rules.encode(state), &mut actions);
         assert!(!actions.iter().any(|a| a.from_node == 8 && a.to_node == 9));
+    }
+
+    #[test]
+    fn one_time_use_mill_allows_used_reverse_reform_move() {
+        let used_line = node_bit(1) | node_bit(9) | node_bit(17);
+        let options = MillVariantOptions {
+            restrict_repeated_mills_formation: true,
+            one_time_use_mill: true,
+            ..MillVariantOptions::default()
+        };
+        let rules = MillRules::new(options);
+        let state = MillState {
+            board: {
+                let mut board = [0_i8; 24];
+                board[8] = 1;
+                board[1] = 1;
+                board[17] = 1;
+                board[14] = 1;
+                board[15] = 1;
+                board[6] = 2;
+                board[5] = 2;
+                board[10] = 2;
+                board
+            },
+            side_to_move: 0,
+            phase: MillPhase::Moving,
+            move_number: 20,
+            pieces_in_hand: [0, 0],
+            pieces_on_board: [5, 3],
+            pending_removals: [0, 0],
+            winner: -1,
+            last_mill_from: [9, -1],
+            last_mill_to: [8, -1],
+            formed_mills_bb: [used_line, 0],
+            ..MillState::default()
+        };
+        let mut actions = ActionList::<256>::new();
+        rules.legal_actions(&rules.encode(state), &mut actions);
+        assert!(
+            actions.iter().any(|a| a.from_node == 8 && a.to_node == 9),
+            "oneTimeUseMill-used lines are ignored by repeated-mill restriction"
+        );
     }
 
     #[test]
