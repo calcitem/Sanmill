@@ -230,11 +230,18 @@ class NativeMillGameSession implements GameSessionHandle {
     }
 
     GameAction? bestAction;
-    await for (final tgf.EngineEvent event in millSearchEvents(depth: depth)) {
-      if (event.kind != 'bestMove' || event.toNode < 0) {
-        continue;
+    try {
+      await for (final tgf.EngineEvent event in millSearchEvents(
+        depth: depth,
+      )) {
+        if (event.kind != 'bestMove' || event.toNode < 0) {
+          continue;
+        }
+        bestAction = _legalActionForBestMoveToNode(event.toNode);
       }
-      bestAction = _legalActionForBestMoveToNode(event.toNode);
+    } catch (e) {
+      // Stream error (e.g. Rust search panicked); treat as no best action.
+      return null;
     }
     return bestAction;
   }
@@ -247,7 +254,14 @@ class NativeMillGameSession implements GameSessionHandle {
     if (action == null) {
       return null;
     }
-    await apply(action);
+    try {
+      await apply(action);
+    } catch (e) {
+      // The apply failed (e.g. the Rust kernel rejected the action as
+      // illegal after a concurrent state change).  Return null so the
+      // caller can retry or surface an error.
+      return null;
+    }
     return action;
   }
 

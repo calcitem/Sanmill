@@ -3,6 +3,7 @@
 
 import '../../game_platform/game_session.dart';
 import '../../general_settings/models/general_settings.dart';
+import '../../shared/services/logger.dart';
 import 'native_mill_game_session.dart';
 
 /// Minimal AI-turn adapter for the Rust-native Mill dogfood path.
@@ -35,8 +36,24 @@ class NativeMillAiTurnController {
       generalSettings.aiMovesFirst ? PlayerSeat.first : PlayerSeat.second;
 
   bool isAiTurn(NativeMillGameSession session) {
-    return !session.outcome.isTerminal &&
-        session.state.value.activeSeat == aiSeat;
+    final bool notTerminal = !session.outcome.isTerminal;
+    final PlayerSeat active = session.state.value.activeSeat;
+    final bool result = notTerminal && active == aiSeat;
+    if (!result) {
+      // Diagnostic: log why isAiTurn returns false.
+      if (!notTerminal) {
+        logger.w(
+          '[NativeMillAiTurnController] isAiTurn=false: game is terminal '
+          '(outcome=${session.outcome})',
+        );
+      } else {
+        logger.w(
+          '[NativeMillAiTurnController] isAiTurn=false: '
+          'activeSeat=$active aiSeat=$aiSeat phase=${session.state.value.phase}',
+        );
+      }
+    }
+    return result;
   }
 
   int searchDepthForSession(NativeMillGameSession session) {

@@ -104,13 +104,23 @@ class TapHandler {
     final NativeMillAiTurnController aiTurnController =
         NativeMillAiTurnController(generalSettings: DB().generalSettings);
     if (mode == GameMode.humanVsAi && aiTurnController.isAiTurn(session)) {
-      final GameAction? aiAction = await aiTurnController.playIfAiTurn(session);
-      logger.i(
-        "$_logTag Native Mill AI pre-tap action: ${aiAction?.payload['move'] ?? '(none)'}",
-      );
-      return aiAction == null
-          ? const EngineNoBestMove()
-          : const EngineResponseOK();
+      try {
+        final GameAction? aiAction = await aiTurnController.playIfAiTurn(
+          session,
+        );
+        logger.i(
+          "$_logTag Native Mill AI pre-tap action: ${aiAction?.payload['move'] ?? '(none)'}",
+        );
+        return aiAction == null
+            ? const EngineNoBestMove()
+            : const EngineResponseOK();
+      } catch (e, st) {
+        logger.e(
+          "$_logTag Native Mill AI pre-tap action failed: $e",
+          stackTrace: st,
+        );
+        return const EngineNoBestMove();
+      }
     }
 
     final String tappedLabel = ExtMove.sqToNotation(sq);
@@ -138,15 +148,23 @@ class TapHandler {
           GameController().sendLanMove(appliedMove ?? tappedLabel);
         }
         if (mode == GameMode.humanVsAi && aiTurnController.isAiTurn(session)) {
-          final GameAction? aiAction = await aiTurnController.playIfAiTurn(
-            session,
-          );
-          logger.i(
-            "$_logTag Native Mill AI response: ${aiAction?.payload['move'] ?? '(none)'}",
-          );
-          return aiAction == null
-              ? const EngineNoBestMove()
-              : const EngineResponseOK();
+          try {
+            final GameAction? aiAction = await aiTurnController.playIfAiTurn(
+              session,
+            );
+            logger.i(
+              "$_logTag Native Mill AI response: ${aiAction?.payload['move'] ?? '(none)'}",
+            );
+            return aiAction == null
+                ? const EngineNoBestMove()
+                : const EngineResponseOK();
+          } catch (e, st) {
+            logger.e(
+              "$_logTag Native Mill AI response failed: $e",
+              stackTrace: st,
+            );
+            return const EngineNoBestMove();
+          }
         }
         return const EngineResponseHumanOK();
       case MillSessionTapStatus.ignored:

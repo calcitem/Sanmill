@@ -1150,6 +1150,97 @@ mod tests {
         }
     }
 
+    /// Regression test for the exact game sequence in the bug report:
+    /// 1.d1 d6  2.g1 f4  3.g4 d2  4.a4 [AI must respond]
+    ///
+    /// After White places a4 (Rust node 7), the game should have
+    /// side_to_move=1 (Black's turn) and NOT be terminal.
+    /// This confirms that the Rust rules engine correctly switches sides
+    /// and that the AI can find a valid response.
+    #[test]
+    fn ai_must_respond_after_a4_in_reported_sequence() {
+        let rules = MillRules::default();
+        let game = MillGame::default();
+
+        // Apply the sequence: d1=node5, d6=node9, g1=node4, f4=node11,
+        // g4=node3, d2=node13.  Then White places a4=node7.
+        let mut snap = rules.initial_state(&[]);
+        for node in [5_i16, 9, 4, 11, 3, 13] {
+            snap = rules.apply(
+                &snap,
+                Action {
+                    kind_tag: MillActionKind::Place as i16,
+                    from_node: -1,
+                    to_node: node,
+                    aux: -1,
+                    payload_bits: 0,
+                },
+            );
+        }
+
+        // State: White has d1(5)+g1(4)+g4(3), Black has d6(9)+f4(11)+d2(13).
+        // It is White's turn (side_to_move=0).
+        assert_eq!(snap.side_to_move, 0, "should be White's turn before a4");
+        assert_eq!(
+            snap.phase_tag,
+            MillPhase::Placing as i16,
+            "should be placing"
+        );
+
+        // White places a4 (Rust node 7).
+        snap = rules.apply(
+            &snap,
+            Action {
+                kind_tag: MillActionKind::Place as i16,
+                from_node: -1,
+                to_node: 7,
+                aux: -1,
+                payload_bits: 0,
+            },
+        );
+
+        // After a4: must be Black's turn and game NOT terminal.
+        assert_eq!(
+            snap.side_to_move, 1,
+            "after White places a4 it must be Black's turn (side=1)"
+        );
+        assert_eq!(
+            snap.phase_tag,
+            MillPhase::Placing as i16,
+            "still placing phase"
+        );
+        // Verify not terminal: outcome.kind would be "ongoing".
+        // We check this indirectly: legal actions must be non-empty.
+        let mut legal = tgf_core::ActionList::<256>::new();
+        rules.legal_actions(&snap, &mut legal);
+        assert!(
+            !legal.is_empty(),
+            "Black must have legal actions after White places a4"
+        );
+        assert!(
+            legal
+                .iter()
+                .all(|a| a.kind_tag == MillActionKind::Place as i16),
+            "all Black legal actions should be Place in placing phase"
+        );
+
+        // AI (Black, depth 1) must find a valid Place action — no NONE.
+        let mut wb = game.build_workbench(&snap);
+        let mut searcher = mill_searcher_default();
+        let ai_action = searcher.search_pvs(&mut wb, 1).best_action;
+        assert_eq!(
+            ai_action.kind_tag,
+            MillActionKind::Place as i16,
+            "AI must respond with a Place action, got kind={}",
+            ai_action.kind_tag
+        );
+        assert!(
+            (0..24).contains(&(ai_action.to_node as usize)),
+            "AI Place action must target a valid board node 0..23, got {}",
+            ai_action.to_node
+        );
+    }
+
     #[test]
     fn rust_only_variant_option_toggles_are_reachable() {
         let variant = MillVariantOptions {
