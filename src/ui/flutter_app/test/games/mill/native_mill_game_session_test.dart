@@ -235,7 +235,10 @@ class _FakeNativeMillRulesPort implements NativeMillRulesPort {
   }
 
   @override
-  Stream<tgf.EngineEvent> millSearchEvents({required int depth}) {
+  Stream<tgf.EngineEvent> millSearchEvents({
+    required int depth,
+    int moveLimitMs = 0,
+  }) {
     return const Stream<tgf.EngineEvent>.empty();
   }
 

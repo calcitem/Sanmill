@@ -17,7 +17,7 @@
 // `scripts/check_perf_baseline.py`.
 
 use criterion::{criterion_group, criterion_main, Criterion};
-use tgf_core::{Game, GameRules};
+use tgf_core::{Game, GameRules, MoveOrderAlgorithm, MoveOrderContext};
 use tgf_mill::{MillActionKind, MillGame, MillRules};
 use tgf_search::{
     lazy_smp_search, perft, LazySmpWorker, MctsOptions, MctsSearcher, SearchOptions, SearchPolicy,
@@ -148,6 +148,7 @@ fn bench_mill_mcts_default(c: &mut Criterion) {
                     time_limit_ms: None,
                     exploration: 0.5,
                     ab_assist_depth: 0,
+                    ..MctsOptions::default()
                 },
             )
         });
@@ -175,6 +176,7 @@ fn bench_mill_mcts_assist_depth_1(c: &mut Criterion) {
                     time_limit_ms: None,
                     exploration: 0.5,
                     ab_assist_depth: 1,
+                    ..MctsOptions::default()
                 },
             )
         });

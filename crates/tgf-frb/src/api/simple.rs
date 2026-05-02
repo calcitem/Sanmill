@@ -11,7 +11,9 @@ use std::sync::Mutex;
 use std::thread;
 
 use crate::frb_generated::StreamSink;
-use tgf_core::{Action, ActionList, BoardTopology, Game, GameRules};
+use tgf_core::{
+    Action, ActionList, BoardTopology, Game, GameRules, MoveOrderAlgorithm, MoveOrderContext,
+};
 use tgf_mill::{
     default_mill_topology, recommended_search_depth, CaptureRuleConfig as NativeCaptureRuleConfig,
     EngineRuntimeOptions, MillActionKind, MillBoardFullAction as NativeMillBoardFullAction,
@@ -35,6 +37,23 @@ fn mill_searcher_default() -> Searcher<MillGame> {
         remove_kind_tag: Some(MillActionKind::Remove as i16),
     });
     s
+}
+
+fn mcts_move_order_context(skill_level: u8) -> MoveOrderContext {
+    MoveOrderContext {
+        algorithm: MoveOrderAlgorithm::Mcts,
+        skill_level,
+        shuffling: true,
+        hash_move: None,
+        shuffle_seed: search_shuffle_seed(),
+    }
+}
+
+fn search_shuffle_seed() -> u64 {
+    std::time::SystemTime::now()
+        .duration_since(std::time::UNIX_EPOCH)
+        .map(|d| d.as_nanos() as u64)
+        .unwrap_or(0)
 }
 
 /// FRB required initialisation.  Called once at Flutter app startup before
@@ -539,7 +558,7 @@ impl EngineEvent {
             score: output_score,
             nodes: 0,
             to_node: action.to_node as i32,
-            reason: uci,
+            reason: format!("{uci} rawScore={score}"),
         }
     }
 
@@ -724,6 +743,7 @@ pub fn native_mill_mcts_best_to_node(seed: u64, iterations_per_move: u32) -> i32
             time_limit_ms: None,
             exploration: 0.5,
             ab_assist_depth: 0,
+            move_order_context: mcts_move_order_context(1),
         },
     )
     .best_action
@@ -738,7 +758,7 @@ pub fn native_mill_search_zero_time_limit_aborts() -> bool {
     let mut wb = game.build_workbench(&snap);
     let mut searcher = mill_searcher_default();
     searcher.set_options(SearchOptions {
-        depth_extension: false,
+        depth_extension: true,
         node_limit: None,
         time_limit_ms: Some(0),
         allow_null_move: true,
@@ -782,11 +802,26 @@ pub(crate) fn spawn_mill_engine_config_event_stream(
         let game = MillGame::new(options);
         let mut wb = game.build_workbench(&snapshot);
         let mut searcher = mill_searcher_default();
+        let search_context = MoveOrderContext {
+            algorithm: match SearchAlgorithm::from(config.algorithm) {
+                SearchAlgorithm::AlphaBeta => MoveOrderAlgorithm::AlphaBeta,
+                SearchAlgorithm::Pvs => MoveOrderAlgorithm::Pvs,
+                SearchAlgorithm::Mtdf => MoveOrderAlgorithm::Mtdf,
+                SearchAlgorithm::Mcts => MoveOrderAlgorithm::Mcts,
+                SearchAlgorithm::Random => MoveOrderAlgorithm::Random,
+            },
+            skill_level: config.skill_level,
+            shuffling: true,
+            hash_move: None,
+            shuffle_seed: search_shuffle_seed(),
+        };
+        searcher.set_move_order_context(search_context);
 
         // Apply time limit if requested.
         if config.move_time_ms > 0 {
             searcher.set_options(SearchOptions {
                 time_limit_ms: Some(config.move_time_ms as u64),
+                move_order_context: search_context,
                 ..SearchOptions::default()
             });
         }
@@ -811,10 +846,12 @@ pub(crate) fn spawn_mill_engine_config_event_stream(
 
         // P2-G: AiIsLazy depth adjustment mirroring master executeSearch.
         // np = lastBestValue / VALUE_EACH_PIECE (5); if np > 1 the position
-        // is "clearly won/lost", so cap origin_depth to 1 or 4.
+        // is clearly winning from the root side-to-move perspective, so cap
+        // origin_depth to 1 or 4. Do not use abs(): losing positions must not
+        // make the AI lazy.
         const VALUE_EACH_PIECE: i32 = 5;
         let origin_depth = if config.ai_is_lazy {
-            let np = config.last_best_value.abs() / VALUE_EACH_PIECE;
+            let np = config.last_best_value / VALUE_EACH_PIECE;
             if np > 1 {
                 if requested_depth < 4 {
                     1
@@ -829,6 +866,8 @@ pub(crate) fn spawn_mill_engine_config_event_stream(
         };
         let max_depth = origin_depth;
         let mut result = SearchResult::default_none();
+        let run_ids = config.move_time_ms > 0;
+        let mut first_guess = 0;
 
         match SearchAlgorithm::from(config.algorithm) {
             SearchAlgorithm::Random => {
@@ -841,25 +880,41 @@ pub(crate) fn spawn_mill_engine_config_event_stream(
                 result = searcher.random_search(&mut wb);
                 let _ = sink.add(EngineEvent::info(1, result.score, result.nodes));
             }
-            SearchAlgorithm::AlphaBeta => {
-                // P2-B: master Algorithm 0 (AlphaBeta) and 1 (PVS) both call
-                // the same `Search::search()` function (PVS implementation).
-                // Route AlphaBeta to search_pvs here for master equivalence.
-                // P2-H: no aspiration windows (master IDS uses none).
-                for d in 1..=max_depth {
-                    if searcher.was_aborted() {
-                        break;
+            SearchAlgorithm::AlphaBeta | SearchAlgorithm::Pvs => {
+                if run_ids {
+                    for d in 2..max_depth {
+                        if searcher.was_aborted() {
+                            break;
+                        }
+                        result = searcher.search(&mut wb, d);
+                        first_guess = result.score;
+                        let _ = sink.add(EngineEvent::info(d, result.score, result.nodes));
                     }
-                    result = searcher.search_pvs(&mut wb, d);
-                    let _ = sink.add(EngineEvent::info(d, result.score, result.nodes));
+                }
+                if !searcher.was_aborted() || result.best_action.is_none() {
+                    // Master executeSearch routes Algorithm 0 and 1 to the
+                    // same Search::search path; search_pvs remains available
+                    // as a Rust implementation but is not used for parity.
+                    result = searcher.search(&mut wb, max_depth);
+                    let _ = sink.add(EngineEvent::info(max_depth, result.score, result.nodes));
                 }
             }
             SearchAlgorithm::Mtdf => {
-                // P2-C: use search_mtdf which returns the best action from the
-                // TT after all MTD(f) iterations, matching master's MTDF
-                // bestMove update via reference.
-                result = searcher.search_mtdf(&mut wb, max_depth);
-                let _ = sink.add(EngineEvent::info(max_depth, result.score, result.nodes));
+                if run_ids {
+                    for d in 2..max_depth {
+                        if searcher.was_aborted() {
+                            break;
+                        }
+                        result = searcher.search_mtdf_with_guess(&mut wb, d, first_guess);
+                        first_guess = result.score;
+                        let _ = sink.add(EngineEvent::info(d, result.score, result.nodes));
+                    }
+                }
+                if !searcher.was_aborted() || result.best_action.is_none() {
+                    result =
+                        searcher.search_mtdf_with_guess(&mut wb, max_depth, first_guess);
+                    let _ = sink.add(EngineEvent::info(max_depth, result.score, result.nodes));
+                }
             }
             SearchAlgorithm::Mcts => {
                 // P2-I: skill_level * 2048 iterations (master ITERATIONS_PER_SKILL_LEVEL=2048).
@@ -884,12 +939,18 @@ pub(crate) fn spawn_mill_engine_config_event_stream(
                         },
                         exploration: 0.5,
                         ab_assist_depth: 6, // P2-I: master ALPHA_BETA_DEPTH=6
+                        move_order_context: mcts_move_order_context(config.skill_level),
                     },
                 );
                 let side = snapshot.side_to_move as usize;
                 let material_score = if side < 2 {
                     let them = side ^ 1;
-                    i32::from(wb.pieces_on_board()[side]) - i32::from(wb.pieces_on_board()[them])
+                    let board = wb.pieces_on_board();
+                    let hand = wb.pieces_in_hand();
+                    (i32::from(board[side]) + i32::from(hand[side])
+                        - i32::from(board[them])
+                        - i32::from(hand[them]))
+                        * VALUE_EACH_PIECE
                 } else {
                     0
                 };
@@ -899,22 +960,6 @@ pub(crate) fn spawn_mill_engine_config_event_stream(
                     nodes: mcts_result.visits as u64,
                 };
                 let _ = sink.add(EngineEvent::info(max_depth, result.score, result.nodes));
-            }
-            SearchAlgorithm::Pvs => {
-                // P2-H: IDS without aspiration windows (master IDS uses none).
-                for d in 1..=max_depth {
-                    if searcher.was_aborted() {
-                        break;
-                    }
-                    result = searcher.search_pvs(&mut wb, d);
-                    let _ = sink.add(EngineEvent::info(d, result.score, result.nodes));
-                    // P2-G: AiIsLazy early abort already reflected in max_depth;
-                    // no further IDS break needed here.
-                    let _ = d; // suppress warning
-                    if false {
-                        break;
-                    }
-                }
             }
         }
 

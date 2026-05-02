@@ -447,6 +447,10 @@ impl MillWorkbench {
     pub fn pieces_on_board(&self) -> [u8; 2] {
         self.state.pieces_on_board
     }
+
+    pub fn pieces_in_hand(&self) -> [u8; 2] {
+        self.state.pieces_in_hand
+    }
 }
 
 impl Workbench for MillWorkbench {
@@ -558,6 +562,14 @@ impl Game for MillGame {
 
     fn generate_legal(wb: &Self::Workbench, out: &mut ActionList<256>) {
         wb.rules.legal_actions(&wb.snapshot(), out);
+    }
+
+    fn generate_legal_ctx(
+        wb: &Self::Workbench,
+        out: &mut ActionList<256>,
+        ctx: &tgf_core::MoveOrderContext,
+    ) {
+        wb.rules.legal_actions_ctx(&wb.state, out, ctx);
     }
 
     /// MovePicker-style move ordering bonus translated from
@@ -677,7 +689,7 @@ impl GameRules for MillRules {
         match state.action_for_legal_generation() {
             MillActionState::Remove => {
                 if state.pending_removals[state.side_to_move as usize] > 0 {
-                    self.generate_remove_actions(&state, out);
+                    self.generate_remove_actions(&state, out, &default_dense_priority());
                 }
             }
             MillActionState::Place => {
@@ -1083,6 +1095,46 @@ impl GameRules for MillRules {
 }
 
 impl MillRules {
+    fn legal_actions_ctx(
+        &self,
+        state: &MillState,
+        out: &mut ActionList<256>,
+        ctx: &tgf_core::MoveOrderContext,
+    ) {
+        let priority = move_priority_list_for_search(&self.options, ctx);
+        match state.action_for_legal_generation() {
+            MillActionState::Remove => {
+                if state.pending_removals[state.side_to_move as usize] > 0 {
+                    self.generate_remove_actions(state, out, &priority);
+                }
+            }
+            MillActionState::Place => {
+                if state.pieces_in_hand[state.side_to_move as usize] > 0 {
+                    for &node in &priority {
+                        if state.board[node] == 0 {
+                            out.push(Action {
+                                kind_tag: MillActionKind::Place as i16,
+                                from_node: -1,
+                                to_node: node as i16,
+                                aux: -1,
+                                payload_bits: 0,
+                            });
+                        }
+                    }
+                }
+                if self.options.may_move_in_placing_phase {
+                    self.generate_move_actions_with_priority(state, out, false, &priority);
+                }
+            }
+            MillActionState::Select => {
+                if state.phase == MillPhase::Moving {
+                    self.generate_move_actions_with_priority(state, out, true, &priority);
+                }
+            }
+            MillActionState::GameOver => {}
+        }
+    }
+
     fn has_legal_move(&self, state: &MillState) -> bool {
         if state.phase != MillPhase::Moving {
             return true;
@@ -1173,6 +1225,17 @@ impl MillRules {
     }
 
     fn generate_move_actions(&self, state: &MillState, out: &mut ActionList<256>, allow_fly: bool) {
+        let priority = default_dense_priority();
+        self.generate_move_actions_with_priority(state, out, allow_fly, &priority);
+    }
+
+    fn generate_move_actions_with_priority(
+        &self,
+        state: &MillState,
+        out: &mut ActionList<256>,
+        allow_fly: bool,
+        priority: &[usize; 24],
+    ) {
         let side = state.side_to_move as usize;
         // Mirror master src/movegen.cpp:87 generate<MOVE> and
         // src/movegen.cpp:157 generate<LEGAL>: movement, including
@@ -1203,7 +1266,7 @@ impl MillRules {
                 || (state.phase == MillPhase::Placing
                     && self.options.may_move_in_placing_phase
                     && self.options.leap_capture.in_placing_phase));
-        for (from, _piece) in state.board.iter().enumerate() {
+        for &from in priority.iter().rev() {
             // Use live_piece() rather than the raw board value so that
             // mark-and-delay MARKED_PIECE squares are treated as empty
             // (not movable) — mirrors C++ generate<MOVE>'s byColorBB filter.
@@ -1211,8 +1274,8 @@ impl MillRules {
                 continue;
             }
             if can_fly {
-                for (to, target) in state.board.iter().enumerate() {
-                    if *target == 0 && !self.is_restricted_repeated_mill(state, from, to) {
+                for to in 0_usize..24 {
+                    if state.board[to] == 0 && !self.is_restricted_repeated_mill(state, from, to) {
                         out.push(move_action(from, to));
                     }
                 }
@@ -1284,7 +1347,12 @@ impl MillRules {
         potential_mills_count_at(state, &self.options, to, state.side_to_move, Some(from)) > 0
     }
 
-    fn generate_remove_actions(&self, state: &MillState, out: &mut ActionList<256>) {
+    fn generate_remove_actions(
+        &self,
+        state: &MillState,
+        out: &mut ActionList<256>,
+        priority: &[usize; 24],
+    ) {
         let us = state.side_to_move as usize;
         let capture_targets = if us < 2 {
             state.custodian_targets[us] | state.intervention_targets[us] | state.leap_targets[us]
@@ -1310,12 +1378,24 @@ impl MillRules {
             // negative pieceToRemoveCount switches the target colour to the
             // mover's own pieces, then the common stalemate and mill
             // protection filters at lines 1793-1801 still run.
-            self.generate_regular_remove_actions_for_piece(state, out, state.side_to_move + 1, 0);
+            self.generate_regular_remove_actions_for_piece(
+                state,
+                out,
+                state.side_to_move + 1,
+                0,
+                priority,
+            );
             return;
         }
 
         let opponent_piece = (state.side_to_move ^ 1) + 1;
-        self.generate_regular_remove_actions_for_piece(state, out, opponent_piece, capture_targets);
+        self.generate_regular_remove_actions_for_piece(
+            state,
+            out,
+            opponent_piece,
+            capture_targets,
+            priority,
+        );
     }
 
     fn generate_regular_remove_actions_for_piece(
@@ -1324,6 +1404,7 @@ impl MillRules {
         out: &mut ActionList<256>,
         target_piece: i8,
         excluded_targets: u32,
+        priority: &[usize; 24],
     ) {
         // When `may_remove_from_mills_always` is set the rule simplifies:
         // every target-colour piece is legal, regardless of whether
@@ -1335,34 +1416,11 @@ impl MillRules {
         // Marked pieces are filtered out via `live_piece` to mirror
         // legacy `removeColorPiece` matching against `byColorBB[c]`,
         // which excludes MARKED_PIECE squares.
-        if self.options.may_remove_from_mills_always {
-            for node in 0_usize..24 {
-                if live_piece(state, node) == target_piece {
-                    if (excluded_targets & node_bit(node)) != 0 {
-                        continue;
-                    }
-                    if self.is_stalemate_removal_context(state)
-                        && !is_adjacent_to_side_piece(state, &self.topology, node)
-                    {
-                        continue;
-                    }
-                    out.push(Action {
-                        kind_tag: MillActionKind::Remove as i16,
-                        from_node: -1,
-                        to_node: node as i16,
-                        aux: -1,
-                        payload_bits: 0,
-                    });
-                }
-            }
-            return;
-        }
-
         let has_non_mill_target = (0_usize..24).any(|idx| {
             live_piece(state, idx) == target_piece && !is_piece_in_mill(state, &self.options, idx)
         });
 
-        for node in 0_usize..24 {
+        for &node in priority.iter().rev() {
             if live_piece(state, node) != target_piece {
                 continue;
             }
@@ -1374,7 +1432,10 @@ impl MillRules {
             {
                 continue;
             }
-            if has_non_mill_target && is_piece_in_mill(state, &self.options, node) {
+            if !self.options.may_remove_from_mills_always
+                && has_non_mill_target
+                && is_piece_in_mill(state, &self.options, node)
+            {
                 continue;
             }
             out.push(Action {
@@ -3072,6 +3133,74 @@ const RATING_BLOCK_ONE_MILL: i32 = 10;
 const RATING_ONE_MILL: i32 = 11;
 const RATING_STAR_SQUARE: i32 = 11;
 
+const PRIORITY_NO_DIAGONAL: [usize; 24] = [
+    9, 11, 13, 15, 1, 3, 5, 7, 17, 19, 21, 23, 10, 12, 14, 8, 2, 4, 6, 0, 18, 20, 22, 16,
+];
+const PRIORITY_DIAGONAL: [usize; 24] = [
+    10, 12, 14, 8, 2, 4, 6, 0, 18, 20, 22, 16, 9, 11, 13, 15, 1, 3, 5, 7, 17, 19, 21, 23,
+];
+const PRIORITY_SKILL_1: [usize; 24] = [
+    17, 18, 19, 20, 21, 22, 23, 16, 9, 10, 11, 12, 13, 14, 15, 8, 1, 2, 3, 4, 5, 6, 7, 0,
+];
+
+fn move_priority_list_for_search(
+    options: &MillVariantOptions,
+    ctx: &tgf_core::MoveOrderContext,
+) -> [usize; 24] {
+    let mut priority = if ctx.skill_level == 1 {
+        PRIORITY_SKILL_1
+    } else if options.has_diagonal_lines {
+        PRIORITY_DIAGONAL
+    } else {
+        PRIORITY_NO_DIAGONAL
+    };
+
+    if !ctx.shuffling {
+        return priority;
+    }
+    if ctx.skill_level == 1 {
+        shuffle_priority_slice(&mut priority, ctx.shuffle_seed);
+    } else {
+        let mut seed = ctx.shuffle_seed;
+        shuffle_priority_slice(&mut priority[0..4], seed);
+        seed = splitmix64(seed);
+        shuffle_priority_slice(&mut priority[4..12], seed);
+        seed = splitmix64(seed);
+        shuffle_priority_slice(&mut priority[12..16], seed);
+        seed = splitmix64(seed);
+        shuffle_priority_slice(&mut priority[16..24], seed);
+    }
+    priority
+}
+
+fn default_dense_priority() -> [usize; 24] {
+    std::array::from_fn(|idx| idx)
+}
+
+fn shuffle_priority_slice(slice: &mut [usize], seed: u64) {
+    if slice.len() < 2 {
+        return;
+    }
+    let mut state = if seed == 0 {
+        0x9E37_79B9_7F4A_7C15
+    } else {
+        seed
+    };
+    for i in (1..slice.len()).rev() {
+        state = splitmix64(state);
+        let j = (state as usize) % (i + 1);
+        slice.swap(i, j);
+    }
+}
+
+fn splitmix64(mut value: u64) -> u64 {
+    value = value.wrapping_add(0x9E37_79B9_7F4A_7C15);
+    let mut z = value;
+    z = (z ^ (z >> 30)).wrapping_mul(0xBF58_476D_1CE4_E5B9);
+    z = (z ^ (z >> 27)).wrapping_mul(0x94D0_49BB_1331_11EB);
+    z ^ (z >> 31)
+}
+
 fn is_star_square(options: &MillVariantOptions, node: usize) -> bool {
     if options.has_diagonal_lines {
         // C++ `Mills::move_priority_list_shuffle` uses legacy squares
@@ -3595,6 +3724,16 @@ mod tests {
                 },
             );
         }
+        snap = rules.apply(
+            &snap,
+            Action {
+                kind_tag: MillActionKind::Place as i16,
+                from_node: -1,
+                to_node: 4,
+                aux: -1,
+                payload_bits: 0,
+            },
+        );
         let wb = game.build_workbench(&snap);
         let star_place = Action {
             kind_tag: MillActionKind::Place as i16,
@@ -3682,12 +3821,13 @@ mod tests {
             payload_bits: 0,
         };
 
+        assert_eq!(<MillGame as Game>::move_order_bias(&wb, close_own_mill), 0);
         assert_eq!(
-            <MillGame as Game>::move_order_bias(&wb, close_own_mill),
+            <MillGame as Game>::move_order_bias_ctx(&wb, close_own_mill, &Default::default()),
             RATING_ONE_MILL
         );
         assert_eq!(
-            <MillGame as Game>::move_order_bias(&wb, block_opponent_mill),
+            <MillGame as Game>::move_order_bias_ctx(&wb, block_opponent_mill, &Default::default()),
             RATING_BLOCK_ONE_MILL
         );
     }
@@ -3735,8 +3875,11 @@ mod tests {
             payload_bits: 0,
         };
 
-        let mobile_score = <MillGame as Game>::move_order_bias(&wb, mobile_target);
-        let surrounded_score = <MillGame as Game>::move_order_bias(&wb, surrounded_target);
+        assert_eq!(<MillGame as Game>::move_order_bias(&wb, mobile_target), 0);
+        let mobile_score =
+            <MillGame as Game>::move_order_bias_ctx(&wb, mobile_target, &Default::default());
+        let surrounded_score =
+            <MillGame as Game>::move_order_bias_ctx(&wb, surrounded_target, &Default::default());
         assert!(
             mobile_score > surrounded_score,
             "high-mobility remove target should out-score a surrounded one (mobile={}, surrounded={})",
@@ -6148,6 +6291,89 @@ mod tests {
         assert_eq!(draw_state.phase, MillPhase::GameOver);
         assert_eq!(draw_state.winner, 2);
         assert_eq!(draw_state.outcome_reason, MillOutcomeReason::DrawFiftyMove);
+    }
+
+    #[test]
+    fn search_priority_lists_match_master_without_shuffle() {
+        let standard = MillVariantOptions::default();
+        let ctx = tgf_core::MoveOrderContext {
+            skill_level: 30,
+            shuffling: false,
+            ..Default::default()
+        };
+        assert_eq!(
+            move_priority_list_for_search(&standard, &ctx),
+            PRIORITY_NO_DIAGONAL
+        );
+
+        let diagonal = MillVariantOptions {
+            has_diagonal_lines: true,
+            ..Default::default()
+        };
+        assert_eq!(
+            move_priority_list_for_search(&diagonal, &ctx),
+            PRIORITY_DIAGONAL
+        );
+
+        let skill_one = tgf_core::MoveOrderContext {
+            skill_level: 1,
+            shuffling: false,
+            ..Default::default()
+        };
+        assert_eq!(
+            move_priority_list_for_search(&standard, &skill_one),
+            PRIORITY_SKILL_1
+        );
+    }
+
+    #[test]
+    fn generate_legal_ctx_uses_place_priority_order() {
+        use tgf_core::Game;
+
+        let rules = MillRules::default();
+        let game = MillGame::default();
+        let snap = rules.initial_state(&[]);
+        let wb = game.build_workbench(&snap);
+        let ctx = tgf_core::MoveOrderContext {
+            skill_level: 30,
+            shuffling: false,
+            ..Default::default()
+        };
+        let mut actions = ActionList::<256>::new();
+        MillGame::generate_legal_ctx(&wb, &mut actions, &ctx);
+        let order = actions
+            .iter()
+            .map(|action| action.to_node as usize)
+            .collect::<Vec<_>>();
+        assert_eq!(order, PRIORITY_NO_DIAGONAL);
+    }
+
+    #[test]
+    fn generate_legal_ctx_uses_reverse_priority_for_remove() {
+        let rules = MillRules::default();
+        let state = MillState {
+            board: [2; 24],
+            side_to_move: 0,
+            phase: MillPhase::Moving,
+            pending_removals: [1, 0],
+            mill_available_at_removal: true,
+            pieces_on_board: [0, 24],
+            ..MillState::default()
+        };
+        let ctx = tgf_core::MoveOrderContext {
+            skill_level: 30,
+            shuffling: false,
+            ..Default::default()
+        };
+        let mut actions = ActionList::<256>::new();
+        rules.legal_actions_ctx(&state, &mut actions, &ctx);
+        let order = actions
+            .iter()
+            .map(|action| action.to_node as usize)
+            .collect::<Vec<_>>();
+        let mut expected = PRIORITY_NO_DIAGONAL.to_vec();
+        expected.reverse();
+        assert_eq!(order, expected);
     }
 
     /// FEN trailing-extension parity: the trailing `c:/i:/l:/p:/s:` block

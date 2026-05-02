@@ -61,6 +61,9 @@ struct EngineConfig {
     skill_level: u8,
     algorithm: u8,
     ai_is_lazy: bool,
+    ids_enabled: bool,
+    depth_extension: bool,
+    last_best_value: i32,
     move_time_secs: u32,
     shuffling: bool,
     draw_on_human_experience: bool,
@@ -76,6 +79,9 @@ impl Default for EngineConfig {
             skill_level: 1,
             algorithm: 2,
             ai_is_lazy: false,
+            ids_enabled: false,
+            depth_extension: true,
+            last_best_value: 0,
             move_time_secs: 1,
             shuffling: true,
             draw_on_human_experience: true,
@@ -99,7 +105,7 @@ fn run_uci_loop() {
     let mut active_search: Option<ActiveSearch> = None;
     let stdin = io::stdin();
     for line in stdin.lock().lines().map_while(Result::ok) {
-        drain_finished_search(&mut active_search);
+        drain_finished_search(&mut active_search, &mut engine_cfg);
         let line = line.trim();
         if line.is_empty() {
             continue;
@@ -112,7 +118,7 @@ fn run_uci_loop() {
         } else if line == "isready" {
             println!("readyok");
         } else if line == "ucinewgame" {
-            finish_active_search(&mut active_search);
+            finish_active_search(&mut active_search, &mut engine_cfg);
             state = rules.initial_state(&[]);
         } else if line == "compiler" {
             println!(
@@ -121,7 +127,7 @@ fn run_uci_loop() {
                 std::env::consts::ARCH
             );
         } else if line.starts_with("setoption") {
-            finish_active_search(&mut active_search);
+            finish_active_search(&mut active_search, &mut engine_cfg);
             match apply_setoption(
                 line,
                 &mut options,
@@ -155,12 +161,12 @@ fn run_uci_loop() {
         } else if line.starts_with("bench") {
             println!("info string bench is a separate subcommand; run: tgf bench");
         } else if line.starts_with("position") {
-            finish_active_search(&mut active_search);
+            finish_active_search(&mut active_search, &mut engine_cfg);
             state = parse_position_command(&rules, line);
         } else if line == "d" {
             print_board_ascii(&state, &options);
         } else if line.starts_with("go") {
-            finish_active_search(&mut active_search);
+            finish_active_search(&mut active_search, &mut engine_cfg);
             let go = parse_go_options(line, state.side_to_move, &engine_cfg);
             active_search = Some(spawn_search(
                 options.clone(),
@@ -174,7 +180,7 @@ fn run_uci_loop() {
         } else if line == "stop" {
             if let Some(active) = active_search.take() {
                 active.abort_handle.request_abort();
-                join_and_print(active);
+                join_and_update(active, &mut engine_cfg);
             } else {
                 // Match legacy single-line SearchEngine::print_bestmove output.
                 println!("info score 0 bestmove none");
@@ -183,7 +189,7 @@ fn run_uci_loop() {
             // In ponder mode the engine switches from pondering to searching;
             // since tgf-cli doesn't implement ponder, silently ignore.
         } else if line == "quit" {
-            finish_active_search(&mut active_search);
+            finish_active_search(&mut active_search, &mut engine_cfg);
             break;
         } else {
             println!("info string unknown command: {line}");
@@ -191,7 +197,7 @@ fn run_uci_loop() {
     }
     // Drain on EOF: join any in-flight search and emit its bestmove instead
     // of orphaning the spawned thread or losing the result entirely.
-    finish_active_search(&mut active_search);
+    finish_active_search(&mut active_search, &mut engine_cfg);
 }
 
 struct ActiveSearch {
@@ -204,7 +210,7 @@ struct SpawnResult {
     depth: i32,
     result: SearchResult,
     /// Side to move at the root of the search tree (0=white, 1=black).
-    /// Used by join_and_print to flip the score to White's perspective,
+    /// Used by format_spawn_result to flip the score to White's perspective,
     /// matching master SearchEngine::emitCommand (P1-C.1).
     root_side_to_move: i8,
 }
@@ -219,7 +225,7 @@ fn spawn_search(
     cfg: EngineConfig,
 ) -> ActiveSearch {
     let search_options = SearchOptions {
-        depth_extension: false,
+        depth_extension: cfg.depth_extension,
         node_limit: go.node_limit,
         time_limit_ms: go.movetime_ms,
         allow_null_move: false,
@@ -250,11 +256,13 @@ fn spawn_search(
             searcher.set_options(search_options);
             searcher.set_qsearch_max_depth(qsearch_max_depth);
             let result = run_configured_search(options, state, depth, &cfg, &mut searcher);
-            let _ = tx.send(SpawnResult {
+            let spawn = SpawnResult {
                 depth,
                 result,
                 root_side_to_move,
-            });
+            };
+            println!("{}", format_spawn_result(&spawn));
+            let _ = tx.send(spawn);
         })
     } else {
         let abort_for_workers = Arc::clone(&abort);
@@ -275,11 +283,13 @@ fn spawn_search(
                 shared_tt,
                 Some(abort_for_workers),
             );
-            let _ = tx.send(SpawnResult {
+            let spawn = SpawnResult {
                 depth,
                 result,
                 root_side_to_move,
-            });
+            };
+            println!("{}", format_spawn_result(&spawn));
+            let _ = tx.send(spawn);
         })
     };
 
@@ -299,32 +309,76 @@ fn run_configured_search(
 ) -> SearchResult {
     // Mirror master src/search_engine.cpp:381 executeSearch: route the
     // user-visible Algorithm option into the actual search implementation.
-    let game = MillGame::new(options);
+    let game = MillGame::new(options.clone());
     let mut wb = game.build_workbench(&state);
-    match cfg.algorithm {
-        0 | 1 => searcher.search_pvs(&mut wb, depth),
-        2 => searcher.search_mtdf(&mut wb, depth),
-        3 => {
-            let iterations = u32::from(cfg.skill_level).saturating_mul(2048).max(1);
-            let mut mcts = MctsSearcher::<MillGame>::new();
-            let mcts_result = mcts.search_with_options(
-                &mut wb,
-                MctsOptions {
-                    iterations: iterations.max(1),
-                    playout_depth: 6,
-                    time_limit_ms: cfg.move_time_secs.checked_mul(1000).map(u64::from),
-                    exploration: 0.5,
-                    ab_assist_depth: 0,
-                },
-            );
-            SearchResult {
-                best_action: mcts_result.best_action,
-                score: mill_material_score(&wb),
-                nodes: mcts_result.visits as u64,
+    let mut value = 0;
+    let mut best_so_far = SearchResult::default_none();
+    let run_ids = cfg.move_time_secs > 0 || cfg.ids_enabled;
+    if run_ids {
+        for d in 2..depth {
+            let result = run_algorithm_at_depth(searcher, &mut wb, cfg, d, value);
+            value = result.score;
+            if !searcher.was_aborted() {
+                best_so_far = result;
+            }
+            if searcher.was_aborted() {
+                break;
             }
         }
-        4 => searcher.random_search(&mut wb),
-        _ => searcher.search_pvs(&mut wb, depth),
+    }
+    if !searcher.was_aborted() || best_so_far.best_action.is_none() {
+        run_algorithm_at_depth(searcher, &mut wb, cfg, depth, value)
+    } else {
+        best_so_far
+    }
+}
+
+fn run_algorithm_at_depth(
+    searcher: &mut Searcher<MillGame>,
+    wb: &mut tgf_mill::MillWorkbench,
+    cfg: &EngineConfig,
+    depth: i32,
+    first_guess: i32,
+) -> SearchResult {
+    match cfg.algorithm {
+        // Master executeSearch currently routes both Algorithm 0 and 1 to
+        // Search::search; Rust search_pvs remains available but is not the
+        // master-equivalent route here.
+        0 | 1 => searcher.search(wb, depth),
+        2 => searcher.search_mtdf_with_guess(wb, depth, first_guess),
+        3 => run_mcts_search(wb, cfg),
+        4 => searcher.random_search(wb),
+        _ => searcher.search(wb, depth),
+    }
+}
+
+fn run_mcts_search(wb: &mut tgf_mill::MillWorkbench, cfg: &EngineConfig) -> SearchResult {
+    let pieces_on_board = wb.pieces_on_board();
+    let all_on_board = u32::from(pieces_on_board[0]) + u32::from(pieces_on_board[1]);
+    let iterations = if all_on_board == 0 {
+        1
+    } else {
+        u32::from(cfg.skill_level).saturating_mul(2048).max(1)
+    };
+    let mut mcts = MctsSearcher::<MillGame>::new();
+    mcts.set_policy(SearchPolicy {
+        remove_kind_tag: Some(MillActionKind::Remove as i16),
+    });
+    let mcts_result = mcts.search_with_options(
+        wb,
+        MctsOptions {
+            iterations,
+            playout_depth: 6,
+            time_limit_ms: cfg.move_time_secs.checked_mul(1000).map(u64::from),
+            exploration: 0.5,
+            ab_assist_depth: 6,
+            move_order_context: move_order_context_with_algorithm(cfg, MoveOrderAlgorithm::Mcts),
+        },
+    );
+    SearchResult {
+        best_action: mcts_result.best_action,
+        score: mill_material_score(wb),
+        nodes: mcts_result.visits as u64,
     }
 }
 
@@ -334,46 +388,77 @@ fn effective_search_depth(
     requested_depth: i32,
     cfg: &EngineConfig,
 ) -> i32 {
-    if requested_depth > 0 {
-        return requested_depth;
-    }
-    let mill_state = MillRules::decode_snapshot(*state);
-    let runtime = EngineRuntimeOptions {
-        skill_level: cfg.skill_level,
-        draw_on_human_experience: cfg.draw_on_human_experience,
-        developer_mode: cfg.developer_mode,
+    let requested_depth = if requested_depth > 0 {
+        requested_depth
+    } else {
+        let mill_state = MillRules::decode_snapshot(*state);
+        let runtime = EngineRuntimeOptions {
+            skill_level: cfg.skill_level,
+            draw_on_human_experience: cfg.draw_on_human_experience,
+            developer_mode: cfg.developer_mode,
+        };
+        recommended_search_depth(&mill_state, options, &runtime).max(1)
     };
-    recommended_search_depth(&mill_state, options, &runtime).max(1)
+    if cfg.ai_is_lazy {
+        const VALUE_EACH_PIECE: i32 = 5;
+        let np = cfg.last_best_value / VALUE_EACH_PIECE;
+        if np > 1 {
+            return if requested_depth < 4 { 1 } else { 4 };
+        }
+    }
+    requested_depth.max(1)
 }
 
 fn move_order_context(cfg: &EngineConfig) -> MoveOrderContext {
-    MoveOrderContext {
-        algorithm: match cfg.algorithm {
+    move_order_context_with_algorithm(
+        cfg,
+        match cfg.algorithm {
             0 => MoveOrderAlgorithm::AlphaBeta,
             2 => MoveOrderAlgorithm::Mtdf,
             3 => MoveOrderAlgorithm::Mcts,
             4 => MoveOrderAlgorithm::Random,
             _ => MoveOrderAlgorithm::Pvs,
         },
+    )
+}
+
+fn move_order_context_with_algorithm(
+    cfg: &EngineConfig,
+    algorithm: MoveOrderAlgorithm,
+) -> MoveOrderContext {
+    MoveOrderContext {
+        algorithm,
         skill_level: cfg.skill_level,
         shuffling: cfg.shuffling,
         hash_move: None,
+        shuffle_seed: search_shuffle_seed(),
     }
 }
 
 fn mill_material_score(wb: &tgf_mill::MillWorkbench) -> i32 {
     let pieces = wb.pieces_on_board();
+    let in_hand = wb.pieces_in_hand();
     let side = wb.side_to_move() as usize;
     if side >= 2 {
         return 0;
     }
     let opponent = side ^ 1;
-    i32::from(pieces[side]) - i32::from(pieces[opponent])
+    (i32::from(pieces[side]) + i32::from(in_hand[side])
+        - i32::from(pieces[opponent])
+        - i32::from(in_hand[opponent]))
+        * 5
 }
 
-fn finish_active_search(slot: &mut Option<ActiveSearch>) {
+fn search_shuffle_seed() -> u64 {
+    std::time::SystemTime::now()
+        .duration_since(std::time::UNIX_EPOCH)
+        .map(|d| d.as_nanos() as u64)
+        .unwrap_or(0)
+}
+
+fn finish_active_search(slot: &mut Option<ActiveSearch>, cfg: &mut EngineConfig) {
     if let Some(active) = slot.take() {
-        join_and_print(active);
+        join_and_update(active, cfg);
     }
 }
 
@@ -398,9 +483,9 @@ fn take_finished_search(slot: &mut Option<ActiveSearch>) -> Option<SpawnResult> 
     }
 }
 
-fn drain_finished_search(slot: &mut Option<ActiveSearch>) {
+fn drain_finished_search(slot: &mut Option<ActiveSearch>, cfg: &mut EngineConfig) {
     if let Some(spawn) = take_finished_search(slot) {
-        print_spawn_result(spawn);
+        update_last_best_value(cfg, &spawn);
     }
 }
 
@@ -429,13 +514,15 @@ fn format_score(output_score: i32) -> String {
     }
 }
 
-fn join_and_print(active: ActiveSearch) {
+fn join_and_update(active: ActiveSearch, cfg: &mut EngineConfig) {
     let _ = active.handle.join();
     if let Ok(spawn) = active.receiver.recv() {
-        print_spawn_result(spawn);
-    } else {
-        println!("info score 0 bestmove none");
+        update_last_best_value(cfg, &spawn);
     }
+}
+
+fn update_last_best_value(cfg: &mut EngineConfig, spawn: &SpawnResult) {
+    cfg.last_best_value = spawn.result.score;
 }
 
 fn format_spawn_result(spawn: &SpawnResult) -> String {
@@ -453,10 +540,6 @@ fn format_spawn_result(spawn: &SpawnResult) -> String {
         "info depth {} {} nodes {} bestmove {}",
         spawn.depth, score_str, spawn.result.nodes, uci
     )
-}
-
-fn print_spawn_result(spawn: SpawnResult) {
-    println!("{}", format_spawn_result(&spawn));
 }
 
 /// ASCII board reproduction matching the layout of `Position::print_board`.
@@ -551,6 +634,8 @@ fn print_uci_options() {
     println!("option name SkillLevel type spin default 1 min 0 max 30");
     println!("option name MoveTime type spin default 1 min 0 max 60");
     println!("option name AiIsLazy type check default false");
+    println!("option name IDSEnabled type check default false");
+    println!("option name DepthExtension type check default true");
     println!("option name Move Overhead type spin default 10 min 0 max 5000");
     println!("option name Slow Mover type spin default 100 min 10 max 1000");
     println!("option name nodestime type spin default 0 min 0 max 10000");
@@ -682,6 +767,18 @@ fn apply_setoption(
         "aiislazy" | "ai is lazy" => parse_bool(value)
             .map(|v| {
                 engine_cfg.ai_is_lazy = v;
+                SetoptionResult::SearchConfig
+            })
+            .unwrap_or(SetoptionResult::Unknown),
+        "idsenabled" | "ids enabled" => parse_bool(value)
+            .map(|v| {
+                engine_cfg.ids_enabled = v;
+                SetoptionResult::SearchConfig
+            })
+            .unwrap_or(SetoptionResult::Unknown),
+        "depthextension" | "depth extension" => parse_bool(value)
+            .map(|v| {
+                engine_cfg.depth_extension = v;
                 SetoptionResult::SearchConfig
             })
             .unwrap_or(SetoptionResult::Unknown),
@@ -1351,6 +1448,13 @@ fn run_mcts_self_play(games: u32, seed: u64, ab_assist_depth: i32) -> u32 {
             time_limit_ms: None,
             exploration: 0.5,
             ab_assist_depth,
+            move_order_context: MoveOrderContext {
+                algorithm: MoveOrderAlgorithm::Mcts,
+                skill_level: 1,
+                shuffling: false,
+                hash_move: None,
+                shuffle_seed: 0,
+            },
         };
         for _ in 0..120 {
             use tgf_core::GameRules;
@@ -1478,6 +1582,26 @@ mod tests {
     }
 
     #[test]
+    fn ai_is_lazy_uses_signed_previous_score() {
+        let options = MillVariantOptions::default();
+        let rules = MillRules::new(options.clone());
+        let snap = rules.initial_state(&[]);
+        let lazy_ahead = EngineConfig {
+            ai_is_lazy: true,
+            last_best_value: 15,
+            ..EngineConfig::default()
+        };
+        let lazy_behind = EngineConfig {
+            ai_is_lazy: true,
+            last_best_value: -15,
+            ..EngineConfig::default()
+        };
+
+        assert_eq!(effective_search_depth(&options, &snap, 6, &lazy_ahead), 4);
+        assert_eq!(effective_search_depth(&options, &snap, 6, &lazy_behind), 6);
+    }
+
+    #[test]
     fn clear_hash_button_does_not_require_value() {
         let mut options = MillVariantOptions::default();
         let mut threads = 1;
@@ -1529,7 +1653,7 @@ mod tests {
     }
 
     #[test]
-    fn active_search_try_take_finished_emits_without_followup_command() {
+    fn active_search_try_take_finished_updates_last_best_value() {
         let (tx, rx) = mpsc::channel();
         let handle = thread::spawn(move || {
             tx.send(SpawnResult {
@@ -1555,19 +1679,16 @@ mod tests {
             receiver: rx,
         });
 
-        let mut result = None;
+        let mut cfg = EngineConfig::default();
         for _ in 0..100 {
             if let Some(spawn) = take_finished_search(&mut active) {
-                result = Some(format_spawn_result(&spawn));
+                update_last_best_value(&mut cfg, &spawn);
                 break;
             }
             thread::sleep(Duration::from_millis(1));
         }
 
         assert!(active.is_none(), "finished search must be drained");
-        assert_eq!(
-            result.as_deref(),
-            Some("info depth 1 score cp 5 nodes 1 bestmove a7")
-        );
+        assert_eq!(cfg.last_best_value, 5);
     }
 }

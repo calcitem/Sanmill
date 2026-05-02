@@ -27,6 +27,9 @@ pub struct MoveOrderContext {
     pub skill_level: u8,
     pub shuffling: bool,
     pub hash_move: Option<Action>,
+    /// Per-search seed used by games that mirror a global shuffled move
+    /// priority table. A value of 0 keeps shuffling deterministic for tests.
+    pub shuffle_seed: u64,
 }
 
 /// Mutable, search-only working position.  Lives on the searcher's thread.
@@ -74,6 +77,18 @@ pub trait Game: 'static + Send + Sync {
 
     /// MUST be `#[inline]` in every concrete implementation.
     fn generate_legal(wb: &Self::Workbench, out: &mut ActionList<256>);
+
+    /// Context-aware legal generation used by search. The default preserves
+    /// legacy game implementations; games with skill/shuffle-dependent move
+    /// priority can override this without affecting perft/API enumeration.
+    #[inline]
+    fn generate_legal_ctx(
+        wb: &Self::Workbench,
+        out: &mut ActionList<256>,
+        _ctx: &MoveOrderContext,
+    ) {
+        Self::generate_legal(wb, out);
+    }
 
     /// Optional static move-ordering bonus (e.g. Mill star squares).  Hot path:
     /// keep this `#[inline]` and allocation-free in concrete games.

@@ -66,6 +66,7 @@ class TgfKernel {
   final int _handle;
   final String gameId;
   bool _disposed = false;
+  int _lastRawBestValue = 0;
 
   /// Drop the underlying Rust session.  Safe to call multiple times.
   void dispose() {
@@ -184,20 +185,34 @@ class TgfKernel {
     int moveLimitMs = 0,
   }) {
     _checkAlive();
-    if (moveLimitMs > 0) {
-      return tgf.tgfKernelMillSearchEventsWithConfig(
-        handle: _handle,
-        config: tgf_simple.MillEngineConfig(
-          algorithm: tgf_simple.MillSearchAlgorithm.pvs,
-          depth: depth,
-          moveTimeMs: moveLimitMs,
-          aiIsLazy: false,
-          lastBestValue: 0,
-          skillLevel: 1,
-        ),
-      );
+    final Stream<tgf_simple.EngineEvent> events = tgf
+        .tgfKernelMillSearchEventsWithConfig(
+          handle: _handle,
+          config: tgf_simple.MillEngineConfig(
+            algorithm: tgf_simple.MillSearchAlgorithm.pvs,
+            depth: depth,
+            moveTimeMs: moveLimitMs,
+            aiIsLazy: false,
+            lastBestValue: _lastRawBestValue,
+            skillLevel: 1,
+          ),
+        );
+    return events.map((tgf_simple.EngineEvent event) {
+      if (event.kind == 'bestMove') {
+        _lastRawBestValue = _rawScoreFromReason(event.reason);
+      }
+      return event;
+    });
+  }
+
+  int _rawScoreFromReason(String reason) {
+    final RegExpMatch? match = RegExp(
+      r'(?:^|\s)rawScore=(-?\d+)(?:\s|$)',
+    ).firstMatch(reason);
+    if (match == null) {
+      return 0;
     }
-    return tgf.tgfKernelMillSearchEvents(handle: _handle, depth: depth);
+    return int.tryParse(match.group(1)!) ?? 0;
   }
 
   // --------------------------------------------------------------- mappings

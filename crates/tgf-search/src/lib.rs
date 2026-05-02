@@ -456,7 +456,7 @@ pub struct SearchPolicy {
     pub remove_kind_tag: Option<i16>,
 }
 
-#[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct SearchOptions {
     pub depth_extension: bool,
     pub node_limit: Option<u64>,
@@ -471,6 +471,19 @@ pub struct SearchOptions {
     /// when `Shuffling` is enabled or `SkillLevel < 30` (P2-K).
     pub shuffle_root: bool,
     pub move_order_context: tgf_core::MoveOrderContext,
+}
+
+impl Default for SearchOptions {
+    fn default() -> Self {
+        Self {
+            depth_extension: true,
+            node_limit: None,
+            time_limit_ms: None,
+            allow_null_move: false,
+            shuffle_root: false,
+            move_order_context: tgf_core::MoveOrderContext::default(),
+        }
+    }
 }
 
 /// Reference-counted handle to a packed transposition table.  Multiple
@@ -753,7 +766,7 @@ impl<G: Game> Searcher<G> {
             };
         }
         let mut moves = ActionList::<256>::new();
-        G::generate_legal(wb, &mut moves);
+        G::generate_legal_ctx(wb, &mut moves, &self.options.move_order_context);
         // P2-K: root shuffle before sort (mirrors master's MoveList::shuffle).
         if self.options.shuffle_root {
             self.shuffle_moves(&mut moves);
@@ -824,7 +837,7 @@ impl<G: Game> Searcher<G> {
             };
         }
         let mut moves = ActionList::<256>::new();
-        G::generate_legal(wb, &mut moves);
+        G::generate_legal_ctx(wb, &mut moves, &self.options.move_order_context);
         // P2-K: root shuffle before sort.
         if self.options.shuffle_root {
             self.shuffle_moves(&mut moves);
@@ -884,7 +897,7 @@ impl<G: Game> Searcher<G> {
     /// this from time; tests pass a fixed seed to keep results reproducible.
     pub fn random_search(&mut self, wb: &mut G::Workbench) -> SearchResult {
         let mut moves = ActionList::<256>::new();
-        G::generate_legal(wb, &mut moves);
+        G::generate_legal_ctx(wb, &mut moves, &self.options.move_order_context);
         if moves.is_empty() {
             return SearchResult {
                 best_action: Action::NONE,
@@ -973,7 +986,7 @@ impl<G: Game> Searcher<G> {
             return SearchResult::default_none().with_score(score);
         }
         let mut moves = ActionList::<256>::new();
-        G::generate_legal(wb, &mut moves);
+        G::generate_legal_ctx(wb, &mut moves, &self.options.move_order_context);
         self.order_moves(wb, wb.key(), depth, &mut moves);
         if moves.is_empty() {
             return SearchResult {
@@ -1047,7 +1060,49 @@ impl<G: Game> Searcher<G> {
     /// best action retrieved from the TT. Mirrors master's `Search::MTDF`
     /// which updates `bestMove` by reference (P2-C).
     pub fn search_mtdf(&mut self, wb: &mut G::Workbench, depth: i32) -> SearchResult {
-        let score = self.mtdf(wb, 0, depth);
+        self.search_mtdf_with_guess(wb, depth, 0)
+    }
+
+    /// Run MTD(f) at `depth` with a caller-provided first guess.  The root
+    /// pre-check mirrors `search`: terminal positions, empty roots, and
+    /// single legal root moves are handled before the zero-window loop so
+    /// Algorithm=2 returns VALUE_UNIQUE for forced moves just like master.
+    pub fn search_mtdf_with_guess(
+        &mut self,
+        wb: &mut G::Workbench,
+        depth: i32,
+        first_guess: i32,
+    ) -> SearchResult {
+        self.begin_root_search();
+        if let Some(score) = G::terminal_score(wb, wb.side_to_move(), depth) {
+            return SearchResult {
+                best_action: Action::NONE,
+                score,
+                nodes: self.nodes,
+            };
+        }
+        let mut moves = ActionList::<256>::new();
+        G::generate_legal_ctx(wb, &mut moves, &self.options.move_order_context);
+        if self.options.shuffle_root {
+            self.shuffle_moves(&mut moves);
+        }
+        self.order_moves(wb, wb.key(), depth, &mut moves);
+        if moves.is_empty() {
+            return SearchResult {
+                best_action: Action::NONE,
+                score: G::Evaluator::score(wb),
+                nodes: self.nodes,
+            };
+        }
+        if moves.len() == 1 {
+            return SearchResult {
+                best_action: moves[0],
+                score: MILL_VALUE_UNIQUE,
+                nodes: self.nodes,
+            };
+        }
+
+        let score = self.mtdf(wb, first_guess, depth);
         let key = wb.key();
         let best_action = self
             .tt
@@ -1079,11 +1134,11 @@ impl<G: Game> Searcher<G> {
 
         // Detect in-search repetition: if the current Zobrist key has
         // appeared on the search path from root to here, the game would cycle
-        // indefinitely → treat as draw (score 0).  Mirrors C++ search's
-        // `has_repeated` / `posKeyHistory` within the search stack.
+        // indefinitely.  Master returns VALUE_DRAW + 1 to avoid threefold
+        // blindness among otherwise equal drawing lines.
         let key = wb.key();
         if key != 0 && self.repetition_stack.contains(&key) {
-            return 0;
+            return 1;
         }
 
         // Transition to qsearch when depth falls to or below the qsearch
@@ -1133,7 +1188,7 @@ impl<G: Game> Searcher<G> {
         }
 
         let mut moves = ActionList::<256>::new();
-        G::generate_legal(wb, &mut moves);
+        G::generate_legal_ctx(wb, &mut moves, &self.options.move_order_context);
         self.order_moves(wb, key, depth, &mut moves);
         if moves.is_empty() {
             return G::Evaluator::score(wb);
@@ -1284,7 +1339,7 @@ impl<G: Game> Searcher<G> {
         }
 
         let mut moves = ActionList::<256>::new();
-        G::generate_legal(wb, &mut moves);
+        G::generate_legal_ctx(wb, &mut moves, &self.options.move_order_context);
         moves.retain(|a| a.kind_tag == remove_kind_tag);
         if moves.is_empty() {
             return alpha;
@@ -1373,7 +1428,7 @@ impl<G: Game> Searcher<G> {
 
     #[inline]
     fn move_score(&self, wb: &G::Workbench, key: u64, depth: i32, action: Action) -> i32 {
-        let mut score = G::move_order_bias(wb, action);
+        let mut score = G::move_order_bias_ctx(wb, action, &self.options.move_order_context);
         if key != 0
             && self
                 .tt
@@ -1641,6 +1696,7 @@ pub struct MctsOptions {
     /// random rollout.  The value is the depth passed to `Searcher::search`.
     /// Default 0 = random rollout (original behaviour).
     pub ab_assist_depth: i32,
+    pub move_order_context: MoveOrderContext,
 }
 
 impl Default for MctsOptions {
@@ -1651,6 +1707,10 @@ impl Default for MctsOptions {
             time_limit_ms: None,
             exploration: 0.5,
             ab_assist_depth: 0,
+            move_order_context: MoveOrderContext {
+                algorithm: tgf_core::MoveOrderAlgorithm::Mcts,
+                ..MoveOrderContext::default()
+            },
         }
     }
 }
@@ -1773,6 +1833,10 @@ impl<G: Game> MctsSearcher<G> {
                 time_limit_ms: None,
                 exploration: self.exploration,
                 ab_assist_depth: 0,
+                move_order_context: MoveOrderContext {
+                    algorithm: tgf_core::MoveOrderAlgorithm::Mcts,
+                    ..MoveOrderContext::default()
+                },
             },
         )
     }
@@ -1785,7 +1849,8 @@ impl<G: Game> MctsSearcher<G> {
         self.set_exploration(options.exploration);
         let started_at = Instant::now();
         let mut root_moves = ActionList::<256>::new();
-        G::generate_legal(wb, &mut root_moves);
+        G::generate_legal_ctx(wb, &mut root_moves, &options.move_order_context);
+        self.order_mcts_moves(wb, &options.move_order_context, &mut root_moves);
         if root_moves.is_empty() {
             return MctsResult {
                 best_action: Action::NONE,
@@ -1818,25 +1883,31 @@ impl<G: Game> MctsSearcher<G> {
                 path.push(node_idx);
             }
 
-            // Expansion: pick one untried action and create a child.
+            // Expansion mirrors master MCTS: sort all legal moves, expand all
+            // children at once, and continue simulation from the first child.
             if !nodes[node_idx].untried.is_empty() {
-                let pick = self.next_random_index(nodes[node_idx].untried.len());
-                let action = nodes[node_idx].untried.swap_remove(pick);
+                let actions = std::mem::take(&mut nodes[node_idx].untried);
+                let first_child_idx = nodes.len();
+                for action in actions {
+                    wb.do_move(action);
+                    let mut child_moves = ActionList::<256>::new();
+                    G::generate_legal_ctx(wb, &mut child_moves, &options.move_order_context);
+                    self.order_mcts_moves(wb, &options.move_order_context, &mut child_moves);
+                    wb.undo_move();
+                    let move_index = nodes[node_idx].children.len();
+                    let child_idx = nodes.len();
+                    nodes.push(MctsNode::child(
+                        node_idx,
+                        action,
+                        child_moves.into_iter().collect(),
+                        move_index,
+                    ));
+                    nodes[node_idx].children.push(child_idx);
+                }
+                let action = nodes[first_child_idx].action;
                 wb.do_move(action);
                 applied_moves += 1;
-
-                let mut child_moves = ActionList::<256>::new();
-                G::generate_legal(wb, &mut child_moves);
-                let move_index = nodes[node_idx].children.len();
-                let child_idx = nodes.len();
-                nodes.push(MctsNode::child(
-                    node_idx,
-                    action,
-                    child_moves.into_iter().collect(),
-                    move_index,
-                ));
-                nodes[node_idx].children.push(child_idx);
-                node_idx = child_idx;
+                node_idx = first_child_idx;
                 path.push(node_idx);
             }
 
@@ -1887,6 +1958,17 @@ impl<G: Game> MctsSearcher<G> {
             .expect("node has children")
     }
 
+    fn order_mcts_moves(
+        &self,
+        wb: &G::Workbench,
+        context: &MoveOrderContext,
+        moves: &mut ActionList<256>,
+    ) {
+        moves
+            .as_mut_slice()
+            .sort_by_key(|action| -G::move_order_bias_ctx(wb, *action, context));
+    }
+
     fn uct_value(&self, node: &MctsNode, parent_visits: f64) -> f64 {
         let visits = node.visits();
         if visits == 0 {
@@ -1908,6 +1990,7 @@ impl<G: Game> MctsSearcher<G> {
         if options.ab_assist_depth > 0 && !wb.is_terminal() {
             let mut sub = Searcher::<G>::new();
             sub.set_policy(self.policy);
+            sub.set_move_order_context(options.move_order_context);
             let result = sub.search(wb, options.ab_assist_depth);
             return result.score > 0;
         }
@@ -1916,7 +1999,8 @@ impl<G: Game> MctsSearcher<G> {
             return G::Evaluator::score(wb) > 0;
         }
         let mut moves = ActionList::<256>::new();
-        G::generate_legal(wb, &mut moves);
+        G::generate_legal_ctx(wb, &mut moves, &options.move_order_context);
+        self.order_mcts_moves(wb, &options.move_order_context, &mut moves);
         if moves.is_empty() {
             return G::Evaluator::score(wb) > 0;
         }
@@ -2093,6 +2177,160 @@ mod tests {
     }
 
     #[derive(Clone, Copy, Debug)]
+    struct BiasWorkbench;
+
+    impl Workbench for BiasWorkbench {
+        fn snapshot(&self) -> GameStateSnapshot {
+            GameStateSnapshot::default()
+        }
+        fn key(&self) -> u64 {
+            0
+        }
+        fn side_to_move(&self) -> i8 {
+            0
+        }
+        fn is_terminal(&self) -> bool {
+            false
+        }
+        fn do_move(&mut self, _a: Action) {}
+        fn undo_move(&mut self) {}
+    }
+
+    struct BiasEvaluator;
+
+    impl Evaluator<BiasWorkbench> for BiasEvaluator {
+        fn score(_wb: &BiasWorkbench) -> i32 {
+            0
+        }
+    }
+
+    struct BiasGame;
+
+    impl tgf_core::Game for BiasGame {
+        type Workbench = BiasWorkbench;
+        type Evaluator = BiasEvaluator;
+
+        fn build_workbench(&self, _snap: &GameStateSnapshot) -> Self::Workbench {
+            BiasWorkbench
+        }
+
+        fn generate_legal(_wb: &Self::Workbench, out: &mut ActionList<256>) {
+            out.push(Action {
+                kind_tag: 0,
+                from_node: -1,
+                to_node: 0,
+                aux: -1,
+                payload_bits: 0,
+            });
+            out.push(Action {
+                kind_tag: 0,
+                from_node: -1,
+                to_node: 1,
+                aux: -1,
+                payload_bits: 0,
+            });
+        }
+
+        fn move_order_bias_ctx(
+            _wb: &Self::Workbench,
+            action: Action,
+            ctx: &MoveOrderContext,
+        ) -> i32 {
+            if ctx.skill_level == 7 && action.to_node == 1 {
+                100
+            } else {
+                0
+            }
+        }
+    }
+
+    #[test]
+    fn search_order_uses_contextual_move_bias() {
+        let game = BiasGame;
+        let mut wb = game.build_workbench(&GameStateSnapshot::default());
+        let mut searcher = Searcher::<BiasGame>::new();
+        searcher.set_move_order_context(MoveOrderContext {
+            skill_level: 7,
+            ..Default::default()
+        });
+
+        let result = searcher.search(&mut wb, 1);
+        assert_eq!(result.best_action.to_node, 1);
+    }
+
+    #[derive(Clone, Copy, Debug)]
+    struct RepetitionWorkbench {
+        ply: u8,
+        side: i8,
+    }
+
+    impl Workbench for RepetitionWorkbench {
+        fn snapshot(&self) -> GameStateSnapshot {
+            GameStateSnapshot::default()
+        }
+        fn key(&self) -> u64 {
+            if self.ply == 0 {
+                77
+            } else {
+                77 + u64::from(self.ply)
+            }
+        }
+        fn side_to_move(&self) -> i8 {
+            self.side
+        }
+        fn is_terminal(&self) -> bool {
+            false
+        }
+        fn do_move(&mut self, _a: Action) {
+            self.ply += 1;
+            self.side ^= 1;
+        }
+        fn undo_move(&mut self) {
+            self.ply -= 1;
+            self.side ^= 1;
+        }
+    }
+
+    struct RepetitionEvaluator;
+
+    impl Evaluator<RepetitionWorkbench> for RepetitionEvaluator {
+        fn score(_wb: &RepetitionWorkbench) -> i32 {
+            0
+        }
+    }
+
+    struct RepetitionGame;
+
+    impl tgf_core::Game for RepetitionGame {
+        type Workbench = RepetitionWorkbench;
+        type Evaluator = RepetitionEvaluator;
+
+        fn build_workbench(&self, _snap: &GameStateSnapshot) -> Self::Workbench {
+            RepetitionWorkbench { ply: 0, side: 0 }
+        }
+
+        fn generate_legal(_wb: &Self::Workbench, out: &mut ActionList<256>) {
+            out.push(Action {
+                kind_tag: 0,
+                from_node: -1,
+                to_node: 0,
+                aux: -1,
+                payload_bits: 0,
+            });
+        }
+    }
+
+    #[test]
+    fn repetition_returns_draw_plus_one_bias() {
+        let game = RepetitionGame;
+        let mut wb = game.build_workbench(&GameStateSnapshot::default());
+        let mut searcher = Searcher::<RepetitionGame>::new();
+        searcher.repetition_stack.push(wb.key());
+
+        assert_eq!(searcher.alpha_beta(&mut wb, 2, -10, 10), 1);
+    }
+
+    #[derive(Clone, Copy, Debug)]
     struct KeyedWorkbench {
         ply: u8,
         side: i8,
@@ -2258,6 +2496,17 @@ mod tests {
         let score = searcher.mtdf(&mut wb, 0, 1);
         assert!(score > i32::MIN + 1);
         assert!(score < i32::MAX - 1);
+    }
+
+    #[test]
+    fn search_mtdf_returns_unique_for_single_root_move() {
+        let game = SameSideGame;
+        let mut wb = game.build_workbench(&GameStateSnapshot::default());
+        let mut searcher = Searcher::<SameSideGame>::new();
+
+        let result = searcher.search_mtdf(&mut wb, 3);
+        assert_eq!(result.score, MILL_VALUE_UNIQUE);
+        assert!(!result.best_action.is_none());
     }
 
     #[test]
@@ -2563,6 +2812,10 @@ mod tests {
                 time_limit_ms: None,
                 exploration: 0.5,
                 ab_assist_depth: 1,
+                move_order_context: MoveOrderContext {
+                    algorithm: tgf_core::MoveOrderAlgorithm::Mcts,
+                    ..MoveOrderContext::default()
+                },
             },
         );
 
@@ -2595,6 +2848,10 @@ mod tests {
                 time_limit_ms: Some(0),
                 exploration: 0.5,
                 ab_assist_depth: 0,
+                move_order_context: MoveOrderContext {
+                    algorithm: tgf_core::MoveOrderAlgorithm::Mcts,
+                    ..MoveOrderContext::default()
+                },
             },
         );
         assert!(!result.best_action.is_none());
