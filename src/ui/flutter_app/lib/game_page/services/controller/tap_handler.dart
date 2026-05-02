@@ -104,10 +104,21 @@ class TapHandler {
     final NativeMillAiTurnController aiTurnController =
         NativeMillAiTurnController(generalSettings: DB().generalSettings);
     if (mode == GameMode.humanVsAi && aiTurnController.isAiTurn(session)) {
+      controller.refreshNativeSessionHeader(
+        context,
+        session,
+        showThinking: true,
+      );
       try {
         final GameAction? aiAction = await aiTurnController.playIfAiTurn(
           session,
         );
+        if (!context.mounted) {
+          return aiAction == null
+              ? const EngineNoBestMove()
+              : const EngineResponseOK();
+        }
+        controller.refreshNativeSessionHeader(context, session);
         logger.i(
           "$_logTag Native Mill AI pre-tap action: ${aiAction?.payload['move'] ?? '(none)'}",
         );
@@ -115,6 +126,9 @@ class TapHandler {
             ? const EngineNoBestMove()
             : const EngineResponseOK();
       } catch (e, st) {
+        if (context.mounted) {
+          controller.refreshNativeSessionHeader(context, session);
+        }
         logger.e(
           "$_logTag Native Mill AI pre-tap action failed: $e",
           stackTrace: st,
@@ -129,6 +143,9 @@ class TapHandler {
       session: session,
       tappedLabel: tappedLabel,
     );
+    if (!context.mounted) {
+      return const EngineResponseSkip();
+    }
 
     switch (result.status) {
       case MillSessionTapStatus.selectedSource:
@@ -147,11 +164,24 @@ class TapHandler {
           final String? appliedMove = result.action?.payload['move'] as String?;
           GameController().sendLanMove(appliedMove ?? tappedLabel);
         }
-        if (mode == GameMode.humanVsAi && aiTurnController.isAiTurn(session)) {
+        final bool shouldPlayAi =
+            mode == GameMode.humanVsAi && aiTurnController.isAiTurn(session);
+        controller.refreshNativeSessionHeader(
+          context,
+          session,
+          showThinking: shouldPlayAi,
+        );
+        if (shouldPlayAi) {
           try {
             final GameAction? aiAction = await aiTurnController.playIfAiTurn(
               session,
             );
+            if (!context.mounted) {
+              return aiAction == null
+                  ? const EngineNoBestMove()
+                  : const EngineResponseOK();
+            }
+            controller.refreshNativeSessionHeader(context, session);
             logger.i(
               "$_logTag Native Mill AI response: ${aiAction?.payload['move'] ?? '(none)'}",
             );
@@ -159,6 +189,9 @@ class TapHandler {
                 ? const EngineNoBestMove()
                 : const EngineResponseOK();
           } catch (e, st) {
+            if (context.mounted) {
+              controller.refreshNativeSessionHeader(context, session);
+            }
             logger.e(
               "$_logTag Native Mill AI response failed: $e",
               stackTrace: st,
@@ -166,6 +199,7 @@ class TapHandler {
             return const EngineNoBestMove();
           }
         }
+        controller.refreshNativeSessionHeader(context, session);
         return const EngineResponseHumanOK();
       case MillSessionTapStatus.ignored:
         logger.t("$_logTag Native Mill ignored tap <$tappedLabel>.");

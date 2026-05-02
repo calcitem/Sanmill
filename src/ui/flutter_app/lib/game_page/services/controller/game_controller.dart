@@ -82,13 +82,7 @@ class GameController {
     if (true) {
       final GameStateSnapshot? snapshot = activeSessionSnapshot;
       if (snapshot != null) {
-        final BuildContext? ctx = rootScaffoldMessengerKey.currentContext;
-        final Object? sess = ctx != null
-            ? GameSessionScope.sessionOf(ctx)
-            : null;
-        final String? exportedFen = sess is NativeMillGameSession
-            ? sess.getFen()
-            : null;
+        final String? exportedFen = activeNativeMillSession?.getFen();
         final MillBoardView? view = MillBoardView.fromNativeSnapshot(
           snapshot,
           exportedFen,
@@ -171,6 +165,99 @@ class GameController {
 
   set activeSessionSnapshot(GameStateSnapshot? snapshot) {
     activeSessionSnapshotNotifier.value = snapshot;
+  }
+
+  GameSession? _activeSession;
+
+  /// Binds the session owned by the game shell so controller code that is not
+  /// under the page [BuildContext] can still update the active native kernel.
+  void bindActiveSession(GameSession session) {
+    _activeSession = session;
+    activeSessionSnapshot = session.state.value;
+  }
+
+  void unbindActiveSession(GameSession session) {
+    if (!identical(_activeSession, session)) {
+      return;
+    }
+    _activeSession = null;
+    activeSessionSnapshot = null;
+  }
+
+  NativeMillGameSession? get activeNativeMillSession {
+    final GameSession? session = _activeSession;
+    return session is NativeMillGameSession ? session : null;
+  }
+
+  void refreshNativeSessionHeader(
+    BuildContext context,
+    NativeMillGameSession session, {
+    bool showThinking = false,
+  }) {
+    headerIconsNotifier.showIcons();
+    boardSemanticsNotifier.updateSemantics();
+
+    if (session.outcome.isTerminal) {
+      return;
+    }
+
+    if (showThinking) {
+      headerTipNotifier.showTip(S.of(context).thinking, snackBar: false);
+      return;
+    }
+
+    final String? tip = _nativeSessionTurnTip(context, session);
+    if (tip != null) {
+      headerTipNotifier.showTip(tip, snackBar: false);
+    }
+  }
+
+  String? _nativeSessionTurnTip(
+    BuildContext context,
+    NativeMillGameSession session,
+  ) {
+    final GameStateSnapshot snapshot = session.state.value;
+    final PieceColor side = switch (snapshot.activeSeat) {
+      PlayerSeat.first => PieceColor.white,
+      PlayerSeat.second => PieceColor.black,
+      PlayerSeat.none => PieceColor.nobody,
+    };
+    if (side == PieceColor.nobody) {
+      return null;
+    }
+
+    final String sideName = side.playerName(context);
+    final MillBoardView? boardView = MillBoardView.fromNativeSnapshot(
+      snapshot,
+      session.getFen(),
+    );
+    final Phase phase =
+        boardView?.phase ?? activeSessionPhase ?? position.phase;
+    final Act action = boardView?.action ?? position.action;
+    final bool showSide =
+        gameInstance.gameMode == GameMode.humanVsHuman ||
+        gameInstance.gameMode == GameMode.humanVsLAN;
+
+    if (action == Act.remove) {
+      return showSide
+          ? "${S.of(context).tipToMove(sideName)} ${S.of(context).tipRemove}"
+          : S.of(context).tipRemove;
+    }
+
+    if (phase == Phase.moving) {
+      return showSide
+          ? "${S.of(context).tipToMove(sideName)} ${S.of(context).tipMove}"
+          : S.of(context).tipMove;
+    }
+
+    if (phase == Phase.placing) {
+      if (showSide || DB().ruleSettings.mayMoveInPlacingPhase) {
+        return S.of(context).tipToMove(sideName);
+      }
+      return S.of(context).tipPlace;
+    }
+
+    return null;
   }
 
   /// Remembers whether the host chose White; used for header icon arrangement.
@@ -262,22 +349,13 @@ class GameController {
     if (!true || gameInstance.gameMode != GameMode.humanVsLAN) {
       return null;
     }
-    final BuildContext? context = rootScaffoldMessengerKey.currentContext;
-    if (context == null) {
-      return null;
-    }
-    final GameSession? session = GameSessionScope.sessionOf(context);
-    return session is NativeMillGameSession ? session.lanMeta : null;
+    return activeNativeMillSession?.lanMeta;
   }
 
   /// Returns the active [PuzzleMillSession] when puzzle mode is active under
   /// the native-session flag, or null otherwise.
   PuzzleMillSession? get activePuzzleMillSession {
-    final BuildContext? context = rootScaffoldMessengerKey.currentContext;
-    if (context == null) {
-      return null;
-    }
-    final GameSession? session = GameSessionScope.sessionOf(context);
+    final GameSession? session = _activeSession;
     return session is PuzzleMillSession ? session : null;
   }
 
@@ -285,12 +363,8 @@ class GameController {
   ///
   /// Returns true if a session was available and undo was triggered.
   Future<bool> undoNativeMove() async {
-    final BuildContext? context = rootScaffoldMessengerKey.currentContext;
-    if (context == null) {
-      return false;
-    }
-    final GameSession? session = GameSessionScope.sessionOf(context);
-    if (session is! NativeMillGameSession) {
+    final NativeMillGameSession? session = activeNativeMillSession;
+    if (session == null) {
       return false;
     }
     await session.undo();
@@ -325,7 +399,7 @@ class GameController {
     }
 
     await session.apply(action);
-    refreshLanTurn(showTip: true);
+    refreshLanTurn();
     if (session.outcome.isTerminal) {
       gameResultNotifier.showResult(force: true);
     }
@@ -604,19 +678,12 @@ class GameController {
       gameRecorder.lastPositionWithRemove = fen;
       position.setFen(fen);
       // Restore the setup FEN into the native session as well.
-      final BuildContext? ctx = rootScaffoldMessengerKey.currentContext;
-      final Object? sess = ctx != null ? GameSessionScope.sessionOf(ctx) : null;
-      if (sess is NativeMillGameSession) {
-        sess.loadFen(fen);
-      }
+      activeNativeMillSession?.loadFen(fen);
     } else {
       // New game: reset the native session to the initial empty board so it
       // matches the freshly re-created legacy Position.
-      final BuildContext? ctx = rootScaffoldMessengerKey.currentContext;
-      final Object? sess = ctx != null ? GameSessionScope.sessionOf(ctx) : null;
-      if (sess is NativeMillGameSession) {
-        sess.resetGame();
-      }
+      activeNativeMillSession?.resetGame();
+      gameRecorder.lastPositionWithRemove = activeFen;
     }
 
     gameInstance.gameMode = gameModeBak;
@@ -1258,12 +1325,9 @@ class GameController {
       return const EngineResponseHumanOK();
     }
 
-    final String thinkingStr = S.of(context).thinking;
     isEngineRunning = true;
     isControllerActive = true;
-    headerTipNotifier.showTip(thinkingStr, snackBar: false);
-    headerIconsNotifier.showIcons();
-    boardSemanticsNotifier.updateSemantics();
+    refreshNativeSessionHeader(context, scopedSession, showThinking: true);
 
     try {
       final GameAction? action = await aiTurnController.playIfAiTurn(
@@ -1276,7 +1340,9 @@ class GameController {
       return const EngineResponseOK();
     } finally {
       isEngineRunning = false;
-      boardSemanticsNotifier.updateSemantics();
+      if (context.mounted) {
+        refreshNativeSessionHeader(context, scopedSession);
+      }
     }
   }
 

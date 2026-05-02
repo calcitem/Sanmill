@@ -171,9 +171,11 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
   }
 
   void _bindActiveSessionSnapshot(GameSession session) {
-    GameController().activeSessionSnapshot = session.state.value;
+    GameController().bindActiveSession(session);
     void listener() {
-      GameController().activeSessionSnapshot = session.state.value;
+      final GameController controller = GameController();
+      controller.activeSessionSnapshot = session.state.value;
+      controller.headerIconsNotifier.showIcons();
     }
 
     session.state.addListener(listener);
@@ -187,7 +189,9 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
       session.state.removeListener(listener);
     }
     _activeSessionSnapshotListener = null;
-    GameController().activeSessionSnapshot = null;
+    if (session != null) {
+      GameController().unbindActiveSession(session);
+    }
     _disposeActiveMillRecorderBridge();
   }
 
