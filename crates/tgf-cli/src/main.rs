@@ -158,7 +158,7 @@ fn run_uci_loop() {
             finish_active_search(&mut active_search);
             state = parse_position_command(&rules, line);
         } else if line == "d" {
-            print_board_ascii(&state);
+            print_board_ascii(&state, &options);
         } else if line.starts_with("go") {
             finish_active_search(&mut active_search);
             let go = parse_go_options(line, state.side_to_move, &engine_cfg);
@@ -460,10 +460,16 @@ fn print_spawn_result(spawn: SpawnResult) {
     println!("{}", format_spawn_result(&spawn));
 }
 
-/// ASCII board reproduction matching the layout of `Position::print_board`
-/// (no diagonal lines).  Letters mirror the legacy notation: uppercase for
-/// White (side 0), lowercase for Black (side 1), `.` for empty.
-fn print_board_ascii(state: &GameStateSnapshot) {
+/// ASCII board reproduction matching the layout of `Position::print_board`.
+/// Letters mirror the legacy notation: uppercase for White (side 0),
+/// lowercase for Black (side 1), `.` for empty.
+fn print_board_ascii(state: &GameStateSnapshot, options: &MillVariantOptions) {
+    for line in board_ascii_lines(state, options.has_diagonal_lines) {
+        println!("{line}");
+    }
+}
+
+fn board_ascii_lines(state: &GameStateSnapshot, has_diagonal_lines: bool) -> Vec<String> {
     let board: [u8; 24] = {
         let mut b = [0_u8; 24];
         b.copy_from_slice(&state.opaque_payload[..24]);
@@ -477,28 +483,55 @@ fn print_board_ascii(state: &GameStateSnapshot) {
         }
     };
     let g = |n: usize| glyph(n);
-    println!("{} ----- {} ----- {}", g(0), g(1), g(2));
-    println!("|       |       |");
-    println!("|  {} -- {} -- {}  |", g(8), g(9), g(10));
-    println!("|  |     |     |  |");
-    println!("|  |  {} {} {}  |  |", g(16), g(17), g(18));
-    println!(
-        "{} {} {}       {} {} {}",
-        g(7),
-        g(15),
-        g(23),
-        g(19),
-        g(11),
-        g(3)
-    );
-    println!("|  |  {} {} {}  |  |", g(22), g(21), g(20));
-    println!("|  |     |     |  |");
-    println!("|  {} -- {} -- {}  |", g(14), g(13), g(12));
-    println!("|       |       |");
-    println!("{} ----- {} ----- {}", g(6), g(5), g(4));
-    println!("side: {}", side_label(state.side_to_move));
-    println!("phase_tag: {}", state.phase_tag);
-    println!("move_number: {}", state.move_number);
+    let mut lines = if has_diagonal_lines {
+        vec![
+            format!("{} ----- {} ----- {}", g(0), g(1), g(2)),
+            "| \\     |     / |".to_owned(),
+            format!("|  {} -- {} -- {}  |", g(8), g(9), g(10)),
+            "|  | \\   |   / |  |".to_owned(),
+            format!("|  |  {} {} {}  |  |", g(16), g(17), g(18)),
+            format!(
+                "{} {} {}       {} {} {}",
+                g(7),
+                g(15),
+                g(23),
+                g(19),
+                g(11),
+                g(3)
+            ),
+            format!("|  |  {} {} {}  |  |", g(22), g(21), g(20)),
+            "|  | /   |   \\ |  |".to_owned(),
+            format!("|  {} -- {} -- {}  |", g(14), g(13), g(12)),
+            "| /     |     \\ |".to_owned(),
+            format!("{} ----- {} ----- {}", g(6), g(5), g(4)),
+        ]
+    } else {
+        vec![
+            format!("{} ----- {} ----- {}", g(0), g(1), g(2)),
+            "|       |       |".to_owned(),
+            format!("|  {} -- {} -- {}  |", g(8), g(9), g(10)),
+            "|  |     |     |  |".to_owned(),
+            format!("|  |  {} {} {}  |  |", g(16), g(17), g(18)),
+            format!(
+                "{} {} {}       {} {} {}",
+                g(7),
+                g(15),
+                g(23),
+                g(19),
+                g(11),
+                g(3)
+            ),
+            format!("|  |  {} {} {}  |  |", g(22), g(21), g(20)),
+            "|  |     |     |  |".to_owned(),
+            format!("|  {} -- {} -- {}  |", g(14), g(13), g(12)),
+            "|       |       |".to_owned(),
+            format!("{} ----- {} ----- {}", g(6), g(5), g(4)),
+        ]
+    };
+    lines.push(format!("side: {}", side_label(state.side_to_move)));
+    lines.push(format!("phase_tag: {}", state.phase_tag));
+    lines.push(format!("move_number: {}", state.move_number));
+    lines
 }
 
 fn side_label(side: i8) -> &'static str {
@@ -1483,6 +1516,17 @@ mod tests {
             SetoptionResult::SearchConfig
         );
         assert!(cfg.use_lazy_smp);
+    }
+
+    #[test]
+    fn print_board_ascii_switches_diagonal_template() {
+        let rules = MillRules::default();
+        let snap = rules.initial_state(&[]);
+        let standard = board_ascii_lines(&snap, false).join("\n");
+        let diagonal = board_ascii_lines(&snap, true).join("\n");
+
+        assert!(standard.contains("|       |       |"));
+        assert!(diagonal.contains(r"\     |     /"));
     }
 
     #[test]
