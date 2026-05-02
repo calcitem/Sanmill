@@ -11,13 +11,12 @@ implement and that Flutter modules should consume.
 
 ```text
 crates/
-├── tgf-core        # Game-neutral traits and POD types + GameKernel
-├── tgf-search      # Generic monomorphised searchers
-├── tgf-mill        # Mill game implementation
-├── tgf-othello     # Othello pressure-test implementation
-├── tgf-legacy-cxx  # Transitional bridge to the mature C++ engine
-├── tgf-frb         # FRB API surface compiled as rust_lib_sanmill
-└── tgf-cli         # Rust CLI / benchmark helper
+├── tgf-core     # Game-neutral traits and POD types + GameKernel
+├── tgf-search   # Generic monomorphised searchers
+├── tgf-mill     # Mill game implementation
+├── tgf-othello  # Othello pressure-test implementation
+├── tgf-frb      # FRB API surface compiled as rust_lib_sanmill
+└── tgf-cli      # Rust CLI / benchmark helper
 ```
 
 `tgf-core` exposes a runtime-polymorphic `GameKernel` that the FRB layer
@@ -349,22 +348,6 @@ A game module should provide:
 `OthelloGameModule` is the current non-Mill pressure test.  It validates that a
 new game can be registered without changing `game_platform`.
 
-## Legacy C++ bridge policy
-
-`tgf-legacy-cxx` is transitional and intentionally small.
-
-Allowed uses:
-
-- differential tests against mature C++ behavior
-- temporary FRB-backed MillRulesPort and LegacyTgfKernel
-- perfect DB/opening book retention until Rust replacements are justified
-
-Rules:
-
-- The C++ bridge is not thread-safe.  Tests touching it must serialize access.
-- New Rust game logic must not depend on global C++ rule state.
-- Do not widen the bridge unless it directly supports a migration step or a
-  differential test.
 
 ## Adding a new game
 
@@ -430,8 +413,7 @@ now represented in the Rust path.  Delayed marked-mill bits are encoded in
 `MillState.opaque_payload` at bytes 39..43 (`delayed_marked_pieces`, LE u32);
 Flutter reads them via `MillMarkedPiecesCodec.markedNodesFromOpaquePayload` in
 `lib/game_platform/mill_marked_pieces_codec.dart` (payload key `millMarkedNodes`
-on `GameStateSnapshot`).  Perfect DB and opening book intentionally remain behind
-the cxx bridge and should not be converted to Rust.
+on `GameStateSnapshot`).
 
 Each new field follows the same pattern: extend `MillVariantOptions`, update
 `MillRules::apply` / `legal_actions` / `outcome`, mirror it in

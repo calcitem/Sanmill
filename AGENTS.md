@@ -18,7 +18,7 @@ consistent, high-quality contributions.
 ## 2) Project Context
 
 * **Project Name:** Sanmill
-* **Description:** A free, powerful Mill (N Men's Morris) game with CUI (legacy C++), Flutter GUI, Qt GUI, and an in-progress Rust/TGF framework.
+* **Description:** A free, powerful Mill (N Men's Morris) game with Flutter GUI and a native Rust/TGF AI engine.
 * **License:** GNU General Public License version 3 (GPL v3)
 * **Primary Goals:**
   - Deliver a high-quality, cross-platform Mill game
@@ -27,24 +27,18 @@ consistent, high-quality contributions.
 * **Key Constraints:**
   - GPL v3 compliance for all code contributions
   - Cross-platform compatibility required
-  - Performance-critical AI/search paths (legacy C++ plus Rust/TGF migration)
+  - Performance-critical AI/search paths (Rust/TGF framework)
   - Mobile-first UI/UX design (Flutter)
 
 ### Technology Stack
 
-**Rust / TGF Framework (in progress):**
+**Rust / TGF Framework:**
 - `crates/tgf-core`: game-neutral traits and POD types
-- `crates/tgf-search`: generic monomorphised searchers
-- `crates/tgf-mill`: Mill rules/topology migration
+- `crates/tgf-search`: generic monomorphised searchers (PVS, MTD(f), MCTS)
+- `crates/tgf-mill`: Mill rules, topology, evaluator, and presets
 - `crates/tgf-othello`: second-game pressure test
 - `crates/tgf-frb`: Flutter Rust Bridge API surface (`rust_lib_sanmill`)
 - See `docs/FRAMEWORK_API.md` for the current API contract
-
-**Legacy Core Engine (C++):**
-- Mature UCI-like protocol implementation
-- Search algorithms (MTD(f), Alpha-Beta, MCTS, perfect DB integration)
-- Bitboard representation
-- Still authoritative for unsupported Mill rule variants during migration
 
 **Frontend (Flutter/Dart):**
 - Cross-platform UI (Android, iOS, Windows, macOS, Linux)
@@ -64,7 +58,7 @@ consistent, high-quality contributions.
 **Build & Automation:**
 - Shell scripts for initialization and deployment
 - CI/CD: GitHub Actions
-- Code formatting: clang-format (C++), dart format (Dart), cargo fmt/clippy (Rust)
+- Code formatting: dart format (Dart), cargo fmt/clippy (Rust)
 
 ### Project Structure
 
@@ -72,15 +66,12 @@ consistent, high-quality contributions.
 /
 ├── crates/                    # Rust/TGF workspace
 │   ├── tgf-core/              # Game-neutral traits and POD types
-│   ├── tgf-search/            # Generic searchers
-│   ├── tgf-mill/              # Mill implementation
+│   ├── tgf-search/            # Generic searchers (PVS, MTD(f), MCTS)
+│   ├── tgf-mill/              # Mill rules, evaluator, presets
 │   ├── tgf-othello/           # Second-game pressure test
-│   ├── tgf-frb/               # FRB API surface
-│   └── tgf-legacy-cxx/        # Transitional C++ bridge
-├── src/                       # Legacy C++ engine source
-│   ├── *.cpp, *.h            # Core game logic, AI, UCI
-│   ├── Makefile              # DELETED in Phase 8.2; use cargo build
-│   ├── perfect/              # Perfect play databases
+│   ├── tgf-frb/               # FRB API surface (rust_lib_sanmill)
+│   └── tgf-cli/               # Rust CLI / bench tool
+├── src/                       # Source root
 │   └── ui/
 │       ├── flutter_app/      # Flutter frontend (PRIMARY)
 │       │   ├── lib/          # Dart source code
@@ -206,14 +197,13 @@ Refs #789
 * Keep `tgf-core` and `tgf-search` game-neutral.
 * Concrete games belong in `crates/tgf-<game_id>/`.
 * Search hot paths must use `Searcher<G: Game>`, not `dyn GameRules`.
-* Do not widen `tgf-legacy-cxx` unless it directly supports a migration step or
-  a differential test against mature C++ behavior.
-
 **Performance:**
 * Preserve monomorphised `Game / Workbench / Evaluator` call paths.
 * Avoid heap allocation in move generation hot paths unless justified by tests
   or benchmarks.
-* Keep differential tests against legacy C++ for behavior that is being moved.
+* The oracle snapshots in `crates/tgf-mill/testdata/legacy_oracle/` provide
+  the reference for regression testing; regeneration is no longer possible
+  after the C++ engine was removed.
 
 **Style:**
 * Follow `cargo fmt` and pass `cargo clippy --workspace --all-targets
