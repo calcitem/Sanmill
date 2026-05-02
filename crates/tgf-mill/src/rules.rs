@@ -971,6 +971,9 @@ impl GameRules for MillRules {
                     if state.both_stalemate_removing && state.pending_removals == [0, 0] {
                         state.both_stalemate_removing = false;
                     }
+                    if state.board_full_removing && state.pending_removals == [0, 0] {
+                        state.board_full_removing = false;
+                    }
                     maybe_transition_to_moving(&mut state, &self.options);
                     sync_phase_for_may_move_in_placing(&mut state, &self.options);
                     maybe_finish_full_board(&mut state, &self.options);
@@ -1320,28 +1323,11 @@ impl MillRules {
         if state.stalemate_removing || state.both_stalemate_removing {
             return true;
         }
-        // Mirror Position::is_stalemate_removal() second branch: at the
-        // placing-to-moving transition of a 12-piece variant with a
-        // board-full action that issues a removal, the remover gets the
-        // *stalemate-removal* target set (adjacent-only), not the regular
-        // mill-aware target set.  This branch fires on the very first
-        // Remove action emitted after `maybe_finish_full_board` armed the
-        // pending_removals: phase is now Moving, no piece has been
-        // removed yet (board still full), and at least one side owes a
-        // removal.
-        if self.options.piece_count == 12
-            && state.phase == MillPhase::Moving
-            && empty_square_count(state) == 0
-            && state.pending_removals.iter().any(|c| *c > 0)
-            && matches!(
-                self.options.board_full_action,
-                MillBoardFullAction::FirstAndSecondPlayerRemovePiece
-                    | MillBoardFullAction::SecondAndFirstPlayerRemovePiece
-                    | MillBoardFullAction::SideToMoveRemovePiece
-            )
-        {
-            return true;
-        }
+        // Mirror master src/position.cpp:3475 is_board_full_removal_at_placing_phase_end:
+        // the board-full branch is only a placing-phase predicate. Rust arms
+        // the removals after transitioning to Moving, so board_full_removing
+        // is persisted only as UI/FEN metadata and never enables stalemate
+        // adjacency filtering.
         matches!(
             self.options.stalemate_action,
             StalemateAction::RemoveOpponentsPieceAndMakeNextMove
@@ -1503,29 +1489,19 @@ fn maybe_finish_full_board(state: &mut MillState, options: &MillVariantOptions) 
         MillBoardFullAction::FirstAndSecondPlayerRemovePiece => {
             state.pending_removals = [1, 1];
             state.side_to_move = 0;
-            // P0-C.1: set both_stalemate_removing so that the adjacency
-            // restriction (is_stalemate_removal_context) stays active for
-            // BOTH removals. Without this flag, after side-0 removes a piece
-            // the board has 1 empty square, the empty_square_count == 0 guard
-            // fails, and side-1's removal loses the adjacency check. This
-            // mirrors master's is_board_full_removal_at_placing_phase_end
-            // staying true during the entire placing-phase removal sequence.
-            state.both_stalemate_removing = true;
+            state.board_full_removing = true;
         }
         MillBoardFullAction::SecondAndFirstPlayerRemovePiece => {
             state.pending_removals = [1, 1];
             state.side_to_move = 1;
-            // P0-C.1: same reasoning as FirstAndSecondPlayerRemovePiece above.
-            state.both_stalemate_removing = true;
+            state.board_full_removing = true;
         }
         MillBoardFullAction::SideToMoveRemovePiece => {
             state.pending_removals = [0, 0];
             let remover = if options.is_defender_move_first { 1 } else { 0 };
             state.side_to_move = remover;
             state.pending_removals[remover as usize] = 1;
-            // Single removal: the empty_square_count == 0 guard in
-            // is_stalemate_removal_context handles the adjacency check for
-            // this one turn; no persistent flag needed.
+            state.board_full_removing = true;
         }
     }
 }
@@ -1944,6 +1920,10 @@ pub struct MillState {
     mill_available_at_removal: bool,
     stalemate_removing: bool,
     both_stalemate_removing: bool,
+    /// Board-full removals are a distinct placing-end flow in master.  They
+    /// are persisted for UI/FEN round-trips but must not activate stalemate
+    /// adjacency filtering once Rust has transitioned the phase to Moving.
+    board_full_removing: bool,
     /// Rolling window of repetition signatures, each appended on a
     /// side-changing Move with no mill/capture and cleared on Place/Remove
     /// (mirroring master's posKeyHistory: push on MOVETYPE_MOVE, clear on
@@ -1986,6 +1966,7 @@ impl Default for MillState {
             mill_available_at_removal: false,
             stalemate_removing: false,
             both_stalemate_removing: false,
+            board_full_removing: false,
             key_history: [0_u64; 24],
             key_history_len: 0,
         }
@@ -2047,12 +2028,13 @@ impl MillState {
         payload[249] = self.custodian_count;
         payload[250] = self.intervention_count;
         payload[251] = self.leap_count;
-        // Pack five loose bool flags into a single byte (bits 0-4).
+        // Pack loose bool flags into a single byte (bits 0-5).
         let flags: u8 = u8::from(self.mill_available_at_removal)
             | (u8::from(self.stalemate_removing) << 1)
             | (u8::from(self.both_stalemate_removing) << 2)
             | (u8::from(self.remove_own_piece[0]) << 3)
-            | (u8::from(self.remove_own_piece[1]) << 4);
+            | (u8::from(self.remove_own_piece[1]) << 4)
+            | (u8::from(self.board_full_removing) << 5);
         payload[252] = flags;
         payload[253] = self.last_mill_from[1] as u8;
         payload[254] = self.last_mill_to[1] as u8;
@@ -2145,6 +2127,7 @@ impl MillState {
             stalemate_removing: (payload[252] & 0x02) != 0,
             both_stalemate_removing: (payload[252] & 0x04) != 0,
             remove_own_piece: [(payload[252] & 0x08) != 0, (payload[252] & 0x10) != 0],
+            board_full_removing: (payload[252] & 0x20) != 0,
             preferred_remove_target: payload[255] as i8,
             formed_mills_bb: [read_u32(256), read_u32(260)],
         }
@@ -4936,13 +4919,11 @@ mod tests {
         )
     }
 
-    /// Mirror Position::is_stalemate_removal at board-full removal: the
-    /// white remover may only target black pieces that are *adjacent to
-    /// at least one white piece*.  Pick a black piece deep inside the
-    /// black cluster (no white neighbours) and verify that target is
-    /// excluded from legal_actions.
+    /// Mirror master src/position.cpp:3475 is_board_full_removal_at_placing_phase_end:
+    /// after Rust transitions the full board to Moving, board-full removals
+    /// remain regular mill-aware removals rather than stalemate removals.
     #[test]
-    fn board_full_remove_uses_stalemate_adjacency_filter() {
+    fn board_full_removal_does_not_use_stalemate_adjacency_filter() {
         let rules = MillRules::new(MillVariantOptions {
             piece_count: 12,
             board_full_action: MillBoardFullAction::FirstAndSecondPlayerRemovePiece,
@@ -4960,23 +4941,22 @@ mod tests {
             "white must have at least one legal target"
         );
 
-        // Every legal Remove must point to a black square that is
-        // adjacent to a white piece (master Position::is_adjacent_to(s, us)).
-        for a in actions
+        let non_mill_opponent_targets = state
+            .board
             .iter()
-            .filter(|a| a.kind_tag == MillActionKind::Remove as i16)
-        {
-            let target = a.to_node as usize;
-            let topo = crate::default_mill_topology();
-            let touched_white = topo
-                .neighbors(target as u16)
+            .enumerate()
+            .filter(|(node, piece)| {
+                **piece == 2 && !is_piece_in_mill(&state, &rules.options, *node)
+            })
+            .count();
+        assert_eq!(
+            actions
                 .iter()
-                .any(|&n| state.board[n as usize] == 1);
-            assert!(
-                touched_white,
-                "node {target} is not adjacent to any white piece"
-            );
-        }
+                .filter(|a| a.kind_tag == MillActionKind::Remove as i16)
+                .count(),
+            non_mill_opponent_targets,
+            "board-full removals must keep regular mill protection but not adjacency filtering"
+        );
     }
 
     #[test]
