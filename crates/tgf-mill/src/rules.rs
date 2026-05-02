@@ -566,7 +566,11 @@ impl Game for MillGame {
     /// numeric weights match `RATING_*` constants in `src/types.h`; killer /
     /// history / TT bonuses are still applied in `Searcher::move_score`.
     #[inline]
-    fn move_order_bias(wb: &Self::Workbench, action: Action) -> i32 {
+    fn move_order_bias_ctx(
+        wb: &Self::Workbench,
+        action: Action,
+        ctx: &tgf_core::MoveOrderContext,
+    ) -> i32 {
         let to = action.to_node as usize;
         if to >= 24 {
             return 0;
@@ -618,6 +622,7 @@ impl Game for MillGame {
         if state.phase == MillPhase::Placing
             && side == 1
             && state.board.iter().filter(|&&p| p == 2).count() < 2
+            && (options.has_diagonal_lines || ctx.algorithm == tgf_core::MoveOrderAlgorithm::Mcts)
             && is_star_square(options, to)
         {
             score += RATING_STAR_SQUARE;
@@ -3550,7 +3555,17 @@ mod tests {
             aux: -1,
             payload_bits: 0,
         };
-        assert_eq!(<MillGame as Game>::move_order_bias(&wb, star_place), 11);
+        assert_eq!(
+            <MillGame as Game>::move_order_bias_ctx(
+                &wb,
+                star_place,
+                &tgf_core::MoveOrderContext {
+                    algorithm: tgf_core::MoveOrderAlgorithm::Mcts,
+                    ..Default::default()
+                }
+            ),
+            11
+        );
         let non_star = Action {
             kind_tag: MillActionKind::Place as i16,
             from_node: -1,
@@ -3559,6 +3574,48 @@ mod tests {
             payload_bits: 0,
         };
         assert_eq!(<MillGame as Game>::move_order_bias(&wb, non_star), 0);
+    }
+
+    #[test]
+    fn move_order_bias_mcts_enables_star_square_without_diagonals() {
+        use tgf_core::{Game, MoveOrderAlgorithm, MoveOrderContext};
+
+        let rules = MillRules::default();
+        let game = MillGame::default();
+        let mut snap = rules.initial_state(&[]);
+        for n in [0_i16, 2] {
+            snap = rules.apply(
+                &snap,
+                Action {
+                    kind_tag: MillActionKind::Place as i16,
+                    from_node: -1,
+                    to_node: n,
+                    aux: -1,
+                    payload_bits: 0,
+                },
+            );
+        }
+        let wb = game.build_workbench(&snap);
+        let star_place = Action {
+            kind_tag: MillActionKind::Place as i16,
+            from_node: -1,
+            to_node: 9,
+            aux: -1,
+            payload_bits: 0,
+        };
+
+        assert_eq!(<MillGame as Game>::move_order_bias(&wb, star_place), 0);
+        assert_eq!(
+            <MillGame as Game>::move_order_bias_ctx(
+                &wb,
+                star_place,
+                &MoveOrderContext {
+                    algorithm: MoveOrderAlgorithm::Mcts,
+                    ..Default::default()
+                },
+            ),
+            RATING_STAR_SQUARE
+        );
     }
 
     #[test]

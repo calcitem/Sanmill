@@ -7,7 +7,10 @@ use std::sync::{mpsc, Arc};
 use std::thread::{self, JoinHandle};
 use std::time::{Duration, Instant};
 
-use tgf_core::{Action, ActionList, BoardTopology, Game, GameRules, GameStateSnapshot, Workbench};
+use tgf_core::{
+    Action, ActionList, BoardTopology, Game, GameRules, GameStateSnapshot, MoveOrderAlgorithm,
+    MoveOrderContext, Workbench,
+};
 use tgf_mill::{
     default_mill_topology, recommended_search_depth, EngineRuntimeOptions, MillActionKind,
     MillGame, MillRules, MillVariantOptions,
@@ -216,6 +219,7 @@ fn spawn_search(
         time_limit_ms: go.movetime_ms,
         allow_null_move: false,
         shuffle_root: cfg.shuffling,
+        move_order_context: move_order_context(&cfg),
         ..Default::default()
     };
     let depth = effective_search_depth(&options, &state, go.depth, &cfg);
@@ -336,6 +340,21 @@ fn effective_search_depth(
         developer_mode: cfg.developer_mode,
     };
     recommended_search_depth(&mill_state, options, &runtime).max(1)
+}
+
+fn move_order_context(cfg: &EngineConfig) -> MoveOrderContext {
+    MoveOrderContext {
+        algorithm: match cfg.algorithm {
+            0 => MoveOrderAlgorithm::AlphaBeta,
+            2 => MoveOrderAlgorithm::Mtdf,
+            3 => MoveOrderAlgorithm::Mcts,
+            4 => MoveOrderAlgorithm::Random,
+            _ => MoveOrderAlgorithm::Pvs,
+        },
+        skill_level: cfg.skill_level,
+        shuffling: cfg.shuffling,
+        hash_move: None,
+    }
 }
 
 fn mill_material_score(wb: &tgf_mill::MillWorkbench) -> i32 {

@@ -17,7 +17,9 @@ use std::{
 };
 
 use crossbeam_channel::{Receiver, Sender};
-use tgf_core::{Action, ActionList, Evaluator, Game, GameStateSnapshot, Workbench};
+use tgf_core::{
+    Action, ActionList, Evaluator, Game, GameStateSnapshot, MoveOrderContext, Workbench,
+};
 
 /// Mirror of master `VALUE_UNIQUE = 100`: returned when only one root legal
 /// action exists so the caller knows the move was forced (P2-D).
@@ -468,6 +470,7 @@ pub struct SearchOptions {
     /// `MoveList<LEGAL>::shuffle()` call at the start of `executeSearch`
     /// when `Shuffling` is enabled or `SkillLevel < 30` (P2-K).
     pub shuffle_root: bool,
+    pub move_order_context: tgf_core::MoveOrderContext,
 }
 
 /// Reference-counted handle to a packed transposition table.  Multiple
@@ -709,6 +712,10 @@ impl<G: Game> Searcher<G> {
 
     pub fn set_options(&mut self, options: SearchOptions) {
         self.options = options;
+    }
+
+    pub fn set_move_order_context(&mut self, context: MoveOrderContext) {
+        self.options.move_order_context = context;
     }
 
     /// Set the maximum quiescence depth extension (default 0 = stand-pat only).

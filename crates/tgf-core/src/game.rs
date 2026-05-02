@@ -11,6 +11,24 @@ use crate::{
     game_state::{GameStateSnapshot, Outcome},
 };
 
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
+pub enum MoveOrderAlgorithm {
+    AlphaBeta,
+    #[default]
+    Pvs,
+    Mtdf,
+    Mcts,
+    Random,
+}
+
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
+pub struct MoveOrderContext {
+    pub algorithm: MoveOrderAlgorithm,
+    pub skill_level: u8,
+    pub shuffling: bool,
+    pub hash_move: Option<Action>,
+}
+
 /// Mutable, search-only working position.  Lives on the searcher's thread.
 /// Hot-path methods MUST be `#[inline]` in concrete implementations.
 pub trait Workbench: Sized {
@@ -62,6 +80,11 @@ pub trait Game: 'static + Send + Sync {
     #[inline]
     fn move_order_bias(_wb: &Self::Workbench, _action: Action) -> i32 {
         0
+    }
+
+    #[inline]
+    fn move_order_bias_ctx(wb: &Self::Workbench, action: Action, _ctx: &MoveOrderContext) -> i32 {
+        Self::move_order_bias(wb, action)
     }
 
     /// Optional terminal-node score from `perspective` player's point of view.
