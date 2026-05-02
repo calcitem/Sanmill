@@ -3185,20 +3185,18 @@ fn detect_intervention_targets(state: &MillState, options: &MillVariantOptions, 
     }
     let opponent = (state.side_to_move ^ 1) + 1;
 
-    // P0-D.1: mirror master checkInterventionCapture which selects the
-    // capture line containing preferredRemoveTarget when multiple lines are
-    // available. If preferredTarget is set and a line contains it, that line
-    // takes priority; otherwise fall back to the first valid line (captureLines[0]).
+    // Mirror master src/position.cpp:2670 checkInterventionCapture:
+    // collect raw capture lines first, select the preferred/first line, then
+    // apply mill-protection filtering only to that selected line. If filtering
+    // removes every target, the intervention capture is abandoned instead of
+    // falling back to another line.
     let preferred = state.preferred_remove_target;
 
     let mut capture_lines: Vec<u32> = Vec::new();
     for line in active_capture_lines(config, options) {
         if to == line[1] && state.board[line[0]] == opponent && state.board[line[2]] == opponent {
             let targets = node_bit(line[0]) | node_bit(line[2]);
-            let filtered = filter_capture_targets(state, options, targets);
-            if filtered != 0 {
-                capture_lines.push(filtered);
-            }
+            capture_lines.push(targets);
         }
     }
     if capture_lines.is_empty() {
@@ -3209,11 +3207,11 @@ fn detect_intervention_targets(state: &MillState, options: &MillVariantOptions, 
     if preferred >= 0 {
         let pref_mask = node_bit(preferred as usize);
         if let Some(&line) = capture_lines.iter().find(|&&l| (l & pref_mask) != 0) {
-            return line;
+            return filter_capture_targets(state, options, line);
         }
     }
     // Fall back to the first valid line (mirrors master's captureLines[0]).
-    capture_lines[0]
+    filter_capture_targets(state, options, capture_lines[0])
 }
 
 fn detect_leap_targets(
@@ -5295,6 +5293,61 @@ mod tests {
         assert_eq!(actions.len(), 2);
         assert!(actions.iter().any(|a| a.to_node == 0));
         assert!(actions.iter().any(|a| a.to_node == 2));
+    }
+
+    #[test]
+    fn intervention_capture_does_not_fallback_after_filtering_selected_line() {
+        let options = MillVariantOptions {
+            intervention_capture: CaptureRuleConfig {
+                enabled: true,
+                ..CaptureRuleConfig::default()
+            },
+            ..MillVariantOptions::default()
+        };
+        let rules = MillRules::new(options);
+        let state = MillState {
+            board: {
+                let mut board = [0_i8; 24];
+                // Both targets in the preferred line [0,1,2] sit in mills,
+                // so filtering that selected line empties it. The alternate
+                // raw line [1,9,17] has removable targets, but master does
+                // not fall back to it.
+                for node in [0_usize, 2, 3, 4, 6, 7, 8, 9, 10, 17] {
+                    board[node] = 2;
+                }
+                board[5] = 1;
+                board
+            },
+            side_to_move: 0,
+            phase: MillPhase::Placing,
+            move_number: 8,
+            pieces_in_hand: [8, 0],
+            pieces_on_board: [1, 10],
+            preferred_remove_target: 0,
+            ..MillState::default()
+        };
+
+        let after = rules.apply(
+            &rules.encode(state),
+            Action {
+                kind_tag: MillActionKind::Place as i16,
+                from_node: -1,
+                to_node: 1,
+                aux: -1,
+                payload_bits: 0,
+            },
+        );
+        let state = MillRules::decode(&after);
+
+        assert!(is_piece_in_mill(&state, &rules.options, 0));
+        assert!(is_piece_in_mill(&state, &rules.options, 2));
+        assert!(!is_all_in_mills(&state, &rules.options, 2));
+        assert_eq!(state.intervention_targets, 0);
+        assert_eq!(state.intervention_count, 0);
+        assert_eq!(
+            state.pending_removals[0], 0,
+            "filtered selected intervention line must cancel the capture"
+        );
     }
 
     #[test]
