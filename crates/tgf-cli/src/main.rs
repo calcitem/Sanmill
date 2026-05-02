@@ -126,7 +126,13 @@ fn run_uci_loop() {
                     rules = MillRules::new(options.clone());
                     state = rules.initial_state(&[]);
                 }
-                SetoptionResult::ClearHash => {}
+                SetoptionResult::ClearHash => {
+                    // Mirror master src/ucioption.cpp:357 Clear Hash button.
+                    // The CLI creates a fresh searcher per `go`, so there is
+                    // no live TT handle outside an active search.  Treat the
+                    // button as an acknowledged hard-clear request; the next
+                    // search starts from a fresh table.
+                }
                 SetoptionResult::Threads
                 | SetoptionResult::SearchConfig
                 | SetoptionResult::Acknowledged => {}
@@ -540,16 +546,19 @@ fn apply_setoption(
     let Some(name_pos) = tokens.iter().position(|t| *t == "name") else {
         return SetoptionResult::Unknown;
     };
-    let Some(value_pos) = tokens.iter().position(|t| *t == "value") else {
-        return SetoptionResult::Unknown;
-    };
-    if value_pos <= name_pos + 1 || value_pos + 1 >= tokens.len() {
+    let value_pos = tokens.iter().position(|t| *t == "value");
+    let name_end = value_pos.unwrap_or(tokens.len());
+    if name_end <= name_pos + 1 {
         return SetoptionResult::Unknown;
     }
-    let name = tokens[name_pos + 1..value_pos]
+    let name = tokens[name_pos + 1..name_end]
         .join(" ")
         .to_ascii_lowercase();
-    let value = tokens[value_pos + 1];
+    let value = match value_pos.and_then(|idx| tokens.get(idx + 1).copied()) {
+        Some(value) => value,
+        None if matches!(name.as_str(), "clear hash" | "clearhash") => "",
+        None => return SetoptionResult::Unknown,
+    };
 
     match name.as_str() {
         "threads" => {
@@ -1379,6 +1388,25 @@ mod tests {
         assert_eq!(go.depth, 0, "missing depth is represented as auto");
         let depth = effective_search_depth(&options, &snap, go.depth, &cfg);
         assert_eq!(depth, 5);
+    }
+
+    #[test]
+    fn clear_hash_button_does_not_require_value() {
+        let mut options = MillVariantOptions::default();
+        let mut threads = 1;
+        let mut qsearch = 0;
+        let mut ecfg = EngineConfig::default();
+
+        assert_eq!(
+            apply_setoption(
+                "setoption name Clear Hash",
+                &mut options,
+                &mut threads,
+                &mut qsearch,
+                &mut ecfg,
+            ),
+            SetoptionResult::ClearHash
+        );
     }
 
     #[test]
