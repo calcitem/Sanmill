@@ -603,15 +603,19 @@ class GameController {
       gameRecorder.setupPosition = fen;
       gameRecorder.lastPositionWithRemove = fen;
       position.setFen(fen);
-      // Also load FEN into the native session when active.
-      if (true) {
-        final BuildContext? ctx = rootScaffoldMessengerKey.currentContext;
-        final Object? sess = ctx != null
-            ? GameSessionScope.sessionOf(ctx)
-            : null;
-        if (sess is NativeMillGameSession) {
-          sess.loadFen(fen);
-        }
+      // Restore the setup FEN into the native session as well.
+      final BuildContext? ctx = rootScaffoldMessengerKey.currentContext;
+      final Object? sess = ctx != null ? GameSessionScope.sessionOf(ctx) : null;
+      if (sess is NativeMillGameSession) {
+        sess.loadFen(fen);
+      }
+    } else {
+      // New game: reset the native session to the initial empty board so it
+      // matches the freshly re-created legacy Position.
+      final BuildContext? ctx = rootScaffoldMessengerKey.currentContext;
+      final Object? sess = ctx != null ? GameSessionScope.sessionOf(ctx) : null;
+      if (sess is NativeMillGameSession) {
+        sess.resetGame();
       }
     }
 

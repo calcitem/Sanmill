@@ -76,6 +76,21 @@ class NativeMillGameSession implements GameSessionHandle {
 
   // -------------------------------------------------------- setup-position API
 
+  /// Reset the game to the initial state (all pieces in hand, empty board,
+  /// White to move).  Called by [GameController.reset] when "New Game" is
+  /// triggered so that the native Rust kernel is in sync with the re-created
+  /// legacy [Position].
+  void resetGame() {
+    if (_disposed) {
+      return;
+    }
+    // setupClear resets the kernel to an empty board with all pieces in hand.
+    // setupFinish transitions that state to a playable placing-phase position.
+    rulesPort.setupClear();
+    final GameStateSnapshot next = rulesPort.setupFinish();
+    _setState(next);
+  }
+
   /// Clear the board for setup-position editing.
   void setupClear() {
     if (_disposed) {
