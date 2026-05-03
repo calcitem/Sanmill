@@ -749,3 +749,41 @@ fn iterative_deepening_bumps_age_between_depths() {
     );
     assert!(!result.best_action.is_none());
 }
+
+#[test]
+fn perft_split_partitions_leaf_count_per_root_action() {
+    let game = KeyedGame;
+    let mut wb = game.build_workbench(&GameStateSnapshot::default());
+
+    // Depth 2: root has 2 actions; each leads to a node with 2 actions
+    // before the workbench reports terminal at ply == 2.  Total leaves
+    // expected = 4, evenly split.
+    let total = crate::perft::perft::<KeyedGame>(&mut wb, 2);
+    let split = crate::perft::perft_split::<KeyedGame>(&mut wb, 2);
+    assert_eq!(total, 4);
+    let split_total: u64 = split.iter().map(|(_, n)| *n).sum();
+    assert_eq!(split_total, total);
+    assert_eq!(split.len(), 2);
+    for (_, leaves) in split {
+        assert_eq!(leaves, 2);
+    }
+}
+
+#[test]
+fn perft_split_returns_empty_at_zero_depth() {
+    let game = KeyedGame;
+    let mut wb = game.build_workbench(&GameStateSnapshot::default());
+    assert!(crate::perft::perft_split::<KeyedGame>(&mut wb, 0).is_empty());
+}
+
+#[test]
+fn perft_unique_keys_counts_distinct_workbench_keys() {
+    let game = KeyedGame;
+    let mut wb = game.build_workbench(&GameStateSnapshot::default());
+
+    // KeyedWorkbench uses a ply-indexed key, so depth 2 reaches the
+    // single key 102 (ply == 2 = terminal).  Confirm the helper does
+    // not double-count transpositions.
+    let keys = crate::perft::perft_unique_keys::<KeyedGame>(&mut wb, 2);
+    assert_eq!(keys, 1);
+}

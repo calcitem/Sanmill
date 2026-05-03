@@ -32,7 +32,7 @@ mod tt;
 pub use abort::SearchAbortHandle;
 pub use mcts::{MctsOptions, MctsResult, MctsSearcher};
 pub use options::{SearchAlgorithm, SearchOptions, SearchPolicy};
-pub use perft::perft;
+pub use perft::{perft, perft_split, perft_unique_keys};
 #[allow(deprecated)]
 pub use result::MILL_VALUE_UNIQUE;
 pub use result::{SearchResult, VALUE_UNIQUE_ROOT_MOVE};
