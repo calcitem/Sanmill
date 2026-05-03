@@ -22,5 +22,9 @@
 // concrete types.
 
 pub mod grid;
+pub mod hex;
+pub mod star;
 
 pub use grid::{GridConnectivity, GridLabelScheme, GridTopology, GridTopologyBuilder};
+pub use hex::{HexConnectivity, HexTopology, HexTopologyBuilder};
+pub use star::{StarConnectivity, StarTopology, StarTopologyBuilder};
