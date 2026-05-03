@@ -9,6 +9,7 @@ pub mod board_topology;
 pub mod game;
 pub mod game_state;
 pub mod kernel;
+pub mod repetition;
 pub mod topology_helpers;
 
 // Convenience re-exports for downstream crates.
@@ -20,6 +21,7 @@ pub use game::{
 };
 pub use game_state::{GameStateSnapshot, Outcome, OutcomeKind, OPAQUE_PAYLOAD_LEN};
 pub use kernel::{GameKernel, KernelError};
+pub use repetition::RepetitionTracker;
 
 /// Phase 1 smoke-check: ensures the crate compiles.
 #[cfg(test)]
