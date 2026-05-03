@@ -218,7 +218,10 @@ fn play_one_game(
         time_limit_ms: None,
         allow_null_move: false,
         shuffle_root: false,
-        enable_prefetch: false,
+        // Selfplay leverages Mill's O(1) Zobrist key_after via the
+        // Workbench trait override; prefetch is safe and
+        // deterministic here.
+        enable_prefetch: true,
         enable_aspiration_window: false,
         enable_killers: false,
         enable_history: false,

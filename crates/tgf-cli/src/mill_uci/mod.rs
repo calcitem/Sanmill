@@ -238,10 +238,10 @@ fn spawn_search(
         // Mill's generate_legal_ctx already mirrors that list, so do not
         // additionally shuffle the root action list here.
         shuffle_root: false,
-        // Mill's full-state position_key makes Workbench::key_after a
-        // do/undo round-trip, so prefetch's overhead exceeds its
-        // benefit until the planned incremental Zobrist migration.
-        enable_prefetch: false,
+        // Mill now ships a Zobrist-based incremental Workbench::key_after
+        // (see crates/tgf-mill/src/rules/game_impls.rs) so prefetch
+        // hints land on the right cache line in O(1) per move.
+        enable_prefetch: true,
         // Master executeSearch uses full windows for every IDS pass.
         enable_aspiration_window: false,
         // Master MovePicker has no killer / history tables.

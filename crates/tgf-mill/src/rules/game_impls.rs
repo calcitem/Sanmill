@@ -59,6 +59,107 @@ impl Workbench for MillWorkbench {
             self.state = prev;
         }
     }
+
+    /// O(1) Zobrist-based prediction of the post-move key, used by
+    /// the searcher's TT prefetch hints (see master
+    /// `Position::key_after` in src/position.cpp).
+    ///
+    /// We predict only the dominant XOR contributions per action
+    /// kind:
+    ///
+    ///   * Place  : key ^ side ^ psq[stm][to]
+    ///   * Move   : key ^ side ^ psq[stm][from] ^ psq[stm][to]
+    ///   * Remove : key ^ side ^ psq[opp][to]
+    ///
+    /// What we deliberately do NOT model here:
+    ///
+    ///   * Mill formation triggering pending_removals -> the misc
+    ///     bits in the top KEY_MISC_BIT may not match the post-apply
+    ///     value.  Since master's TT cluster index is taken from the
+    ///     low bits and the prefetch is only a hint (the actual TT
+    ///     save / probe re-validates via the 32-bit signature),
+    ///     mispredicting the misc bits costs at most one wasted
+    ///     prefetch.
+    ///   * Capture-state target/count toggles (custodian /
+    ///     intervention / leap activations).  These are rare relative
+    ///     to total node count and reproducing the master apply
+    ///     branching here would dwarf the prefetch savings.
+    ///
+    /// The result is therefore a *prefetch-quality* key, not a
+    /// correctness-quality one.  Callers MUST NOT use it for TT save
+    /// or repetition tracking; only the cache-line address matters.
+    fn key_after(&mut self, action: Action) -> u64 {
+        use super::types::MillActionKind;
+        use super::zobrist::MILL_ZOBRIST;
+
+        // Prerequisite: the cached key reflects the current state.
+        // It always does on workbenches built via build_workbench,
+        // because that path goes through MillRules::encode ->
+        // recompute_zobrist.  The fallback path (state.zobrist_key
+        // == 0) computes once and caches inline.
+        let mut key = if self.state.zobrist_key != 0 {
+            self.state.zobrist_key
+        } else {
+            super::zobrist::full_state_key(&self.state)
+        };
+
+        let stm = self.state.side_to_move;
+        if !(0..2).contains(&stm) {
+            // Side-to-move is undefined (e.g. GameOver); fall back to
+            // do/undo round-trip so we never publish a wrong key.
+            self.do_move(action);
+            let next = self.key();
+            self.undo_move();
+            return next;
+        }
+        let stm = stm as usize;
+        let opp = stm ^ 1;
+        let to = action.to_node;
+        let from = action.from_node;
+
+        // Side-to-move flips on most apply branches.  The main
+        // exceptions are the "stay-on-same-side" continuations after
+        // a Place that activated pending_removals (where the active
+        // side keeps the turn for the upcoming Remove).  Master's
+        // key_after also flips Zobrist::side unconditionally and lets
+        // the next apply correct it; we follow the same convention.
+        key ^= MILL_ZOBRIST.side;
+
+        match action.kind_tag {
+            x if x == MillActionKind::Place as i16 => {
+                if (0..24).contains(&to) {
+                    key ^= MILL_ZOBRIST.psq[stm + 1][to as usize];
+                }
+            }
+            x if x == MillActionKind::Move as i16 => {
+                if (0..24).contains(&from) {
+                    key ^= MILL_ZOBRIST.psq[stm + 1][from as usize];
+                }
+                if (0..24).contains(&to) {
+                    key ^= MILL_ZOBRIST.psq[stm + 1][to as usize];
+                }
+            }
+            x if x == MillActionKind::Remove as i16 => {
+                if (0..24).contains(&to) {
+                    key ^= MILL_ZOBRIST.psq[opp + 1][to as usize];
+                }
+            }
+            _ => {
+                // Unknown kind tag (e.g. Action::NONE).  Fall back to
+                // the do/undo + key default.
+                self.do_move(action);
+                let next = self.key();
+                self.undo_move();
+                return next;
+            }
+        }
+
+        if key == 0 {
+            1
+        } else {
+            key
+        }
+    }
 }
 
 impl Evaluator<MillWorkbench> for MillEvaluator {
