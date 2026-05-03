@@ -124,7 +124,8 @@ fn run_mcts_self_play(games: u32, seed: u64, ab_assist_depth: i32) -> u32 {
     let rules = MillRules::default();
     let game = MillGame::default();
     let policy = SearchPolicy {
-        remove_kind_tag: Some(MillActionKind::Remove as i16),
+        quiescence_kind_tag: Some(MillActionKind::Remove as i16),
+        ..Default::default()
     };
     let mut wins = 0u32;
     for g in 0..games {

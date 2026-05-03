@@ -54,7 +54,8 @@ fn tt_cluster_bits_from_env() -> u32 {
 fn mill_searcher() -> Searcher<MillGame> {
     let mut s = Searcher::new_with_tt_cluster_bits(tt_cluster_bits_from_env());
     s.set_policy(SearchPolicy {
-        remove_kind_tag: Some(MillActionKind::Remove as i16),
+        quiescence_kind_tag: Some(MillActionKind::Remove as i16),
+        ..Default::default()
     });
     s
 }
@@ -374,7 +375,8 @@ fn run_mcts_search(wb: &mut tgf_mill::MillWorkbench, cfg: &EngineConfig) -> Sear
     let mut mcts = MctsSearcher::<MillGame>::new();
     mcts.set_random_seed(search_shuffle_seed());
     mcts.set_policy(SearchPolicy {
-        remove_kind_tag: Some(MillActionKind::Remove as i16),
+        quiescence_kind_tag: Some(MillActionKind::Remove as i16),
+        ..Default::default()
     });
     let mcts_result = mcts.search_with_options(
         wb,

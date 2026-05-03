@@ -171,7 +171,8 @@ fn bench_mill_mcts_assist_depth_1(c: &mut Criterion) {
             let mut mcts = MctsSearcher::<MillGame>::new();
             mcts.set_random_seed(0xCAFE_BABE);
             mcts.set_policy(SearchPolicy {
-                remove_kind_tag: Some(MillActionKind::Remove as i16),
+                quiescence_kind_tag: Some(MillActionKind::Remove as i16),
+                ..Default::default()
             });
             mcts.search_with_options(
                 &mut wb,

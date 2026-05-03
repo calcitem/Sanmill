@@ -438,7 +438,8 @@ fn qsearch_accepts_remove_policy_on_mock_game() {
     // value is irrelevant; the assertion only checks that the call is
     // accepted and returns a finite, reasonable score.
     searcher.set_policy(SearchPolicy {
-        remove_kind_tag: Some(0),
+        quiescence_kind_tag: Some(0),
+        ..Default::default()
     });
 
     let score = searcher.qsearch(&mut wb, i32::MIN + 1, i32::MAX - 1);

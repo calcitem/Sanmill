@@ -146,7 +146,7 @@ impl<G: Game> MctsSearcher<G> {
 
     /// Set the search policy forwarded to the α-β sub-searcher used during
     /// the simulation phase when `MctsOptions::ab_assist_depth > 0`.
-    /// For Mill, pass `SearchPolicy { remove_kind_tag: Some(MillActionKind::Remove as i16) }`.
+    /// For Mill, pass `SearchPolicy { quiescence_kind_tag: Some(MillActionKind::Remove as i16), ..Default::default() }`.
     pub fn set_policy(&mut self, policy: SearchPolicy) {
         self.policy = policy;
     }

@@ -22,9 +22,35 @@ pub enum SearchAlgorithm {
     Random,
 }
 
+/// Per-game search policy hooks.
+///
+/// All fields are optional kind-tag selectors (matching
+/// `Action::kind_tag`).  The searcher consults them at well-defined
+/// extension / pruning points so games can opt into quiescence-style
+/// behaviour without modifying the shared `Searcher<G>` core.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
 pub struct SearchPolicy {
-    pub remove_kind_tag: Option<i16>,
+    /// Action kind that drives the q-search "tactical" extension.
+    /// Mill uses `Remove`; chess-style games typically use `Capture`.
+    /// `None` disables the extension entirely.
+    pub quiescence_kind_tag: Option<i16>,
+    /// Action kind that, when emitted, MUST be played even if other
+    /// moves are legal.  Used by games with forced chain captures
+    /// (international checkers maximum-take rule, certain Mill
+    /// variants).  `None` means no forced-chain enforcement.
+    pub forced_chain_kind_tag: Option<i16>,
+}
+
+impl SearchPolicy {
+    /// Backwards-compatible accessor — historically the only field on
+    /// SearchPolicy was `remove_kind_tag`.  Keep the deprecated name as
+    /// an alias so external callers can migrate without churn.
+    #[deprecated(since = "0.2.0", note = "use `quiescence_kind_tag` instead")]
+    #[doc(hidden)]
+    #[inline]
+    pub fn remove_kind_tag(&self) -> Option<i16> {
+        self.quiescence_kind_tag
+    }
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]

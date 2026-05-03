@@ -99,7 +99,8 @@ fn mill_qsearch_accepts_remove_policy() {
     let mut wb = game.build_workbench(&snap);
     let mut searcher = Searcher::<MillGame>::new();
     searcher.set_policy(SearchPolicy {
-        remove_kind_tag: Some(MillActionKind::Remove as i16),
+        quiescence_kind_tag: Some(MillActionKind::Remove as i16),
+        ..Default::default()
     });
 
     let score = searcher.qsearch(&mut wb, i32::MIN + 1, i32::MAX - 1);
@@ -320,7 +321,8 @@ fn mill_mcts_with_ab_assist_picks_immediate_mill() {
     let mut mcts = MctsSearcher::<MillGame>::new();
     mcts.set_random_seed(42);
     mcts.set_policy(SearchPolicy {
-        remove_kind_tag: Some(MillActionKind::Remove as i16),
+        quiescence_kind_tag: Some(MillActionKind::Remove as i16),
+        ..Default::default()
     });
 
     let result = mcts.search_with_options(
@@ -460,7 +462,8 @@ fn mill_forced_root_move_returns_unique_score() {
     if removes == 1 && moves.len() == 1 {
         let mut searcher = Searcher::<MillGame>::new();
         searcher.set_policy(SearchPolicy {
-            remove_kind_tag: Some(MillActionKind::Remove as i16),
+            quiescence_kind_tag: Some(MillActionKind::Remove as i16),
+            ..Default::default()
         });
         let result = searcher.search(&mut wb, 1);
         assert_eq!(result.score, VALUE_UNIQUE_ROOT_MOVE);

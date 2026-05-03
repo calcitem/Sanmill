@@ -99,7 +99,8 @@ impl Default for MillEngineConfigPlan {
 pub(crate) fn mill_searcher_default() -> Searcher<MillGame> {
     let mut s = Searcher::new();
     s.set_policy(SearchPolicy {
-        remove_kind_tag: Some(MillActionKind::Remove as i16),
+        quiescence_kind_tag: Some(MillActionKind::Remove as i16),
+        ..Default::default()
     });
     s
 }
