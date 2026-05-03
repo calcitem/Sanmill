@@ -56,11 +56,20 @@ pub(crate) struct ClusteredTt {
 }
 
 impl ClusteredTt {
-    /// 14 → 16 Ki clusters, 32 Ki slots (~1 MiB with padding).
-    pub(crate) const DEFAULT_CLUSTER_BITS: u32 = 14;
+    /// 23 → 8 Mi clusters, 16 Mi slots (~128 MiB), matching master
+    /// `TRANSPOSITION_TABLE_SIZE = 0x1000000` (16 Mi entries) in
+    /// `src/tt.cpp`.  Master's TTEntry is ~6 bytes vs Rust's 16-byte
+    /// cluster, so the Rust default uses ~128 MiB to keep the same
+    /// number of addressable slots; users with constrained memory
+    /// can downsize via `Searcher::resize_tt_by_mb` or the
+    /// `TGF_TT_CLUSTER_BITS` environment variable.
+    pub(crate) const DEFAULT_CLUSTER_BITS: u32 = 23;
 
     pub(crate) fn new_with_cluster_bits(bits: u32) -> Self {
-        let bits = bits.clamp(10, 18);
+        // Permit larger TTs: master defaults to 16 Mi slots which
+        // requires cluster_bits >= 23.  Cap at 26 (≈1 GiB) to keep
+        // accidental misuse from immediately exhausting memory.
+        let bits = bits.clamp(10, 26);
         let n = 1usize << bits;
         let mask = n - 1;
         let mut clusters = Vec::with_capacity(n);

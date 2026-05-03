@@ -41,14 +41,15 @@ use board::{
 };
 use setoption::{apply_setoption, SetoptionResult};
 
-/// `TGF_TT_CLUSTER_BITS` (10–18) selects `2^(bits+1)` TT slots; see
-/// `tgf_search::Searcher::new_with_tt_cluster_bits`.
+/// `TGF_TT_CLUSTER_BITS` (10–26) selects `2^(bits+1)` TT slots; see
+/// `tgf_search::Searcher::new_with_tt_cluster_bits`.  Default 23 to
+/// match master `TRANSPOSITION_TABLE_SIZE = 0x1000000` (16 Mi slots).
 fn tt_cluster_bits_from_env() -> u32 {
     std::env::var("TGF_TT_CLUSTER_BITS")
         .ok()
         .and_then(|s| s.parse().ok())
-        .unwrap_or(14)
-        .clamp(10, 18)
+        .unwrap_or(23)
+        .clamp(10, 26)
 }
 
 fn mill_searcher() -> Searcher<MillGame> {
