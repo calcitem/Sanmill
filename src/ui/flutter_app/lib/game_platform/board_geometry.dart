@@ -14,12 +14,18 @@ class BoardPoint {
 }
 
 /// An undirected edge between two [BoardPoint.id] values.
+///
+/// [kindTag] mirrors `tgf_core::Edge::kind_tag` and lets games with
+/// multi-modal connections (军棋: railroad vs ordinary edges, xiangqi:
+/// river-crossing edges) classify their adjacency without parsing the
+/// edge id.  Defaults to `0` for games whose edges are uniform.
 @immutable
 class BoardEdge {
-  const BoardEdge(this.a, this.b);
+  const BoardEdge(this.a, this.b, {this.kindTag = 0});
 
   final int a;
   final int b;
+  final int kindTag;
 }
 
 enum BoardLayoutKind { graph, grid, region }

@@ -11,20 +11,34 @@ import '../board_geometry.dart';
 class NativeTopologyFactory {
   const NativeTopologyFactory();
 
+  /// Fetch the geometry of the kernel session identified by [kernelHandle].
+  ///
+  /// This is the game-neutral entry point that future games (Othello,
+  /// Junqi, Halma, …) should consume.  Mill keeps using
+  /// [millBoardGeometry] for the placing-phase board that does not yet
+  /// have a kernel.
+  BoardGeometry forKernel(int kernelHandle) {
+    final tgf.TopologyBlob blob = tgf.tgfKernelTopology(handle: kernelHandle);
+    return _fromBlob(blob);
+  }
+
   /// Fetch the standard Mill topology from Rust and convert it to BoardGeometry.
   ///
   /// The returned geometry intentionally keeps the same dense node ids (0..23)
   /// used by the legacy Mill UI, so current Flutter painters and hit testing
   /// can migrate without coordinate changes.
   BoardGeometry millBoardGeometry() {
-    final tgf.TopologyBlob blob = tgf.kernelTopology();
+    final tgf.TopologyBlob blob = tgf.nativeMillTopology();
+    return _fromBlob(blob);
+  }
 
+  BoardGeometry _fromBlob(tgf.TopologyBlob blob) {
     return BoardGeometry(
       points: blob.points
           .map((tgf.TopologyPoint p) => BoardPoint(id: p.id, x: p.x, y: p.y))
           .toList(growable: false),
       edges: blob.edges
-          .map((tgf.TopologyEdge e) => BoardEdge(e.a, e.b))
+          .map((tgf.TopologyEdge e) => BoardEdge(e.a, e.b, kindTag: e.kindTag))
           .toList(growable: false),
     );
   }
