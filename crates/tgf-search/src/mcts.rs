@@ -34,7 +34,13 @@ pub struct MctsOptions {
     pub exploration: f64,
     /// When > 0, the simulation phase uses a shallow α-β search instead of
     /// random rollout.  The value is the depth passed to `Searcher::search`.
-    /// Default 0 = random rollout (original behaviour).
+    ///
+    /// The default mirrors master `mcts.h` `ALPHA_BETA_DEPTH = 6`:
+    /// `simulate` always evaluates leaves with a depth-6 alpha-beta
+    /// search, never a random rollout.  Callers that prefer the
+    /// classical random rollout can explicitly set this to `0` (kept
+    /// supported so `tgf selfplay --algorithm pvs` and unit tests
+    /// stay deterministic).
     pub ab_assist_depth: i32,
     /// Number of independent worker threads.  `None` resolves to
     /// `std::thread::available_parallelism()` matching master
@@ -55,7 +61,13 @@ impl Default for MctsOptions {
             playout_depth: 6,
             time_limit_ms: None,
             exploration: 0.5,
-            ab_assist_depth: 0,
+            // Master `mcts.h` `ALPHA_BETA_DEPTH = 6` -- master never does a
+            // random rollout, every simulate() runs a depth-6 alpha-beta
+            // evaluation.  Default to the same here so MCTS calls without
+            // explicit overrides match master signal quality.  Tests / the
+            // selfplay PVS path explicitly opt out via `ab_assist_depth: 0`
+            // when they need pure-MCTS rollout for determinism.
+            ab_assist_depth: 6,
             num_threads: None,
             move_order_context: MoveOrderContext {
                 algorithm: tgf_core::MoveOrderAlgorithm::Mcts,
