@@ -145,6 +145,25 @@ impl Game for MillGame {
     /// star-square opening preference, and capture-target preference.  The
     /// numeric weights match `RATING_*` constants in `src/types.h`; killer /
     /// history / TT bonuses are still applied in `Searcher::move_score`.
+    ///
+    /// # Note on master's "score-negation" bug (Diff 17)
+    ///
+    /// Master `src/movepick.cpp:152-154` runs after the per-move scoring
+    /// loop:
+    /// ```cpp
+    ///     if (!pos.shouldFocusOnBlockingPaths()) {
+    ///         cur->value = -cur->value;
+    ///     }
+    /// ```
+    /// At that point `cur` already equals `endMoves` (the for-loop
+    /// post-incremented past the last entry), so the negation lands on
+    /// the one-past-end placeholder slot rather than reversing every
+    /// move's value.  This is a master bug noted in
+    /// SEARCH_DIFF_REPORT.md (Diff 4.2) -- effectively master never
+    /// reverses the score, identical to the Rust port (which simply
+    /// returns the positive score here).  No code change needed; this
+    /// comment documents the alignment so future readers do not
+    /// reintroduce a literal port of the buggy negation.
     #[inline]
     fn move_order_bias_ctx(
         wb: &Self::Workbench,
