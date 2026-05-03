@@ -311,6 +311,12 @@ pub(crate) fn spawn_mill_engine_config_event_stream(
                         },
                         exploration: 0.5,
                         ab_assist_depth: 6,
+                        // FRB engine search runs on a worker thread that
+                        // already isolates one search per session; keep
+                        // MCTS single-threaded inside that worker.  UI
+                        // callers wanting parallel MCTS should switch to
+                        // tgf_search::mcts_search_parallel.
+                        num_threads: Some(1),
                         move_order_context: mcts_move_order_context(config.skill_level),
                     },
                 );

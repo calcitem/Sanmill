@@ -30,7 +30,7 @@ mod thread_pool;
 mod tt;
 
 pub use abort::SearchAbortHandle;
-pub use mcts::{MctsOptions, MctsResult, MctsSearcher};
+pub use mcts::{mcts_search_parallel, MctsOptions, MctsResult, MctsSearcher};
 pub use options::{SearchAlgorithm, SearchOptions, SearchPolicy};
 pub use perft::{perft, perft_split, perft_unique_keys};
 #[allow(deprecated)]

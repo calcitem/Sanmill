@@ -14,8 +14,8 @@ use tgf_core::{
 };
 use tgf_mill::{MillActionKind, MillEvaluator, MillGame, MillRules, MillVariantOptions};
 use tgf_search::{
-    lazy_smp_search, perft, LazySmpWorker, MctsOptions, MctsSearcher, SearchOptions, SearchPolicy,
-    Searcher, SharedTt, VALUE_UNIQUE_ROOT_MOVE,
+    lazy_smp_search, mcts_search_parallel, perft, LazySmpWorker, MctsOptions, MctsSearcher,
+    SearchOptions, SearchPolicy, Searcher, SharedTt, VALUE_UNIQUE_ROOT_MOVE,
 };
 
 #[test]
@@ -132,6 +132,60 @@ fn lazy_smp_search_runs_workers_against_shared_tt() {
     assert_eq!(result.best_action.kind_tag, MillActionKind::Place as i16);
     // Workers ran with the same TT, so it must have observable contents.
     assert!(shared_tt.len_occupied() > 0);
+}
+
+#[test]
+fn mcts_search_parallel_returns_a_legal_action_with_multiple_workers() {
+    let rules = MillRules::default();
+    let game = MillGame::default();
+    let snapshot = rules.initial_state(&[]);
+
+    let options = MctsOptions {
+        iterations: 64,
+        playout_depth: 4,
+        ab_assist_depth: 2,
+        num_threads: Some(2),
+        ..MctsOptions::default()
+    };
+
+    let result = mcts_search_parallel::<MillGame>(&game, snapshot, options, 0xC0DE_FACE);
+    assert!(!result.best_action.is_none());
+    assert_eq!(result.best_action.kind_tag, MillActionKind::Place as i16);
+    assert!(
+        result.visits > 0,
+        "aggregated visits across workers must be non-zero"
+    );
+}
+
+#[test]
+fn mcts_search_parallel_with_one_thread_matches_searcher_with_options() {
+    // Force a single worker so MctsSearcher::search_with_options and
+    // mcts_search_parallel walk identical code paths.  Verifies the new
+    // multi-threaded driver is a strict superset (no behaviour drift on
+    // the deterministic single-thread path).
+    let rules = MillRules::default();
+    let game = MillGame::default();
+    let snapshot = rules.initial_state(&[]);
+    let seed = 0xA1B2_C3D4_5566_7788;
+
+    let options = MctsOptions {
+        iterations: 32,
+        playout_depth: 4,
+        ab_assist_depth: 0,
+        num_threads: Some(1),
+        ..MctsOptions::default()
+    };
+
+    let parallel = mcts_search_parallel::<MillGame>(&game, snapshot, options, seed);
+
+    let mut searcher = MctsSearcher::<MillGame>::new();
+    searcher.set_random_seed(seed.max(1));
+    let mut wb = game.build_workbench(&snapshot);
+    let serial = searcher.search_with_options(&mut wb, options);
+
+    assert_eq!(parallel.best_action, serial.best_action);
+    assert_eq!(parallel.visits, serial.visits);
+    assert_eq!(parallel.wins, serial.wins);
 }
 
 /// `n_move_rule = 1` collapses every reversible moving-phase move to a
@@ -333,6 +387,7 @@ fn mill_mcts_with_ab_assist_picks_immediate_mill() {
             time_limit_ms: None,
             exploration: 0.5,
             ab_assist_depth: 1,
+            num_threads: Some(1),
             move_order_context: MoveOrderContext {
                 algorithm: MoveOrderAlgorithm::Mcts,
                 ..MoveOrderContext::default()
@@ -368,6 +423,7 @@ fn mill_mcts_options_accept_time_limit() {
             time_limit_ms: Some(0),
             exploration: 0.5,
             ab_assist_depth: 0,
+            num_threads: Some(1),
             move_order_context: MoveOrderContext {
                 algorithm: MoveOrderAlgorithm::Mcts,
                 ..MoveOrderContext::default()

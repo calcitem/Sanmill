@@ -756,6 +756,7 @@ pub fn native_mill_mcts_best_to_node(seed: u64, iterations_per_move: u32) -> i32
             time_limit_ms: None,
             exploration: 0.5,
             ab_assist_depth: 0,
+            num_threads: Some(1),
             move_order_context: mcts_move_order_context(1),
         },
     )

@@ -630,6 +630,7 @@ fn mcts_options_accept_time_limit_on_mock_game() {
             time_limit_ms: Some(0),
             exploration: 0.5,
             ab_assist_depth: 0,
+            num_threads: Some(1),
             move_order_context: MoveOrderContext {
                 algorithm: tgf_core::MoveOrderAlgorithm::Mcts,
                 ..MoveOrderContext::default()

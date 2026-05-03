@@ -390,6 +390,11 @@ fn run_mcts_search(wb: &mut tgf_mill::MillWorkbench, cfg: &EngineConfig) -> Sear
             time_limit_ms: cfg.move_time_secs.checked_mul(1000).map(u64::from),
             exploration: 0.5,
             ab_assist_depth: 6,
+            // CLI go path runs in the foreground UCI loop; keep MCTS
+            // single-threaded here.  Multi-thread MCTS is exposed via
+            // tgf_search::mcts_search_parallel for callers that own
+            // their own scheduling.
+            num_threads: Some(1),
             move_order_context: move_order_context_with_algorithm(cfg, MoveOrderAlgorithm::Mcts),
         },
     );

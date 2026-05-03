@@ -6,14 +6,18 @@
 // Optional α-β-assisted simulation (see `MctsOptions::ab_assist_depth`)
 // shares this crate's `Searcher` and TT for higher-quality rollouts.
 
+use std::collections::HashMap;
 use std::marker::PhantomData;
 use std::sync::atomic::{AtomicI64, AtomicU32, Ordering};
 use std::time::{Duration, Instant};
 
-use tgf_core::{Action, ActionList, Evaluator, Game, MoveOrderContext, Workbench};
+use tgf_core::{
+    Action, ActionList, Evaluator, Game, GameStateSnapshot, MoveOrderContext, Workbench,
+};
 
 use crate::options::SearchPolicy;
 use crate::searcher::Searcher;
+use crate::thread_pool::SearchThreadPool;
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct MctsResult {
@@ -32,6 +36,15 @@ pub struct MctsOptions {
     /// random rollout.  The value is the depth passed to `Searcher::search`.
     /// Default 0 = random rollout (original behaviour).
     pub ab_assist_depth: i32,
+    /// Number of independent worker threads.  `None` resolves to
+    /// `std::thread::available_parallelism()` matching master
+    /// `monte_carlo_tree_search` (which uses `hardware_concurrency`).
+    /// `Some(1)` forces single-threaded operation (deterministic;
+    /// required by selfplay regression tests).  Master splits
+    /// `iterations` across workers, so each worker sees
+    /// `iterations / num_threads` rollouts; we follow the same
+    /// convention.
+    pub num_threads: Option<u32>,
     pub move_order_context: MoveOrderContext,
 }
 
@@ -43,6 +56,7 @@ impl Default for MctsOptions {
             time_limit_ms: None,
             exploration: 0.5,
             ab_assist_depth: 0,
+            num_threads: None,
             move_order_context: MoveOrderContext {
                 algorithm: tgf_core::MoveOrderAlgorithm::Mcts,
                 ..MoveOrderContext::default()
@@ -52,7 +66,7 @@ impl Default for MctsOptions {
 }
 
 #[derive(Debug)]
-struct MctsNode {
+pub(crate) struct MctsNode {
     action: Action,
     children: Vec<usize>,
     untried: Vec<Action>,
@@ -169,6 +183,7 @@ impl<G: Game> MctsSearcher<G> {
                 time_limit_ms: None,
                 exploration: self.exploration,
                 ab_assist_depth: 0,
+                num_threads: Some(1),
                 move_order_context: MoveOrderContext {
                     algorithm: tgf_core::MoveOrderAlgorithm::Mcts,
                     ..MoveOrderContext::default()
@@ -281,7 +296,7 @@ impl<G: Game> MctsSearcher<G> {
         }
     }
 
-    fn best_uct_child(&self, nodes: &[MctsNode], node_idx: usize) -> usize {
+    pub(crate) fn best_uct_child(&self, nodes: &[MctsNode], node_idx: usize) -> usize {
         let parent_visits = nodes[node_idx].visits().max(1) as f64;
         *nodes[node_idx]
             .children
@@ -294,7 +309,7 @@ impl<G: Game> MctsSearcher<G> {
             .expect("node has children")
     }
 
-    fn order_mcts_moves(
+    pub(crate) fn order_mcts_moves(
         &self,
         wb: &G::Workbench,
         context: &MoveOrderContext,
@@ -317,7 +332,12 @@ impl<G: Game> MctsSearcher<G> {
         mean + exploration + variance + bias
     }
 
-    fn simulate(&mut self, wb: &mut G::Workbench, depth: i32, options: &MctsOptions) -> bool {
+    pub(crate) fn simulate(
+        &mut self,
+        wb: &mut G::Workbench,
+        depth: i32,
+        options: &MctsOptions,
+    ) -> bool {
         // α-β assisted simulation: when ab_assist_depth > 0 use a shallow
         // α-β search instead of random rollout so the Monte-Carlo signal is
         // higher quality.  A fresh Searcher is constructed per simulation to
@@ -357,4 +377,202 @@ impl<G: Game> MctsSearcher<G> {
         let value = x.wrapping_mul(0x2545_F491_4F6C_DD1D);
         (value as usize) % len
     }
+}
+
+/// Multi-threaded MCTS driver mirroring master `monte_carlo_tree_search`.
+///
+/// Master spawns `std::thread::hardware_concurrency()` workers that
+/// each run their own root MCTS for `iterations / num_threads`
+/// rollouts; the per-move visits / wins are then aggregated through a
+/// `ThreadSafeNodeVisits` struct and the move with the most total
+/// visits wins.  The Rust port follows the same shape:
+///
+///   * each worker constructs its own `MctsSearcher` with a distinct
+///     PRNG seed (xorshift cannot collapse to zero, hence the `i + 1`
+///     seed mix);
+///   * each worker builds its own `Workbench` from `snapshot` so the
+///     shared `Game` can be reused across threads;
+///   * the per-action visits / wins are summed in atomic maps and the
+///     final best action is the one with the highest total visit
+///     count, matching master `best_move_index` selection.
+///
+/// `MctsOptions::num_threads` controls the worker count:
+///   * `Some(n)` forces `n` workers (use `Some(1)` for deterministic
+///     selfplay regression testing);
+///   * `None` defaults to `available_parallelism().map(NonZero::get)`
+///     and falls back to 1 when the platform refuses to report.
+pub fn mcts_search_parallel<G>(
+    game: &G,
+    snapshot: GameStateSnapshot,
+    options: MctsOptions,
+    base_seed: u64,
+) -> MctsResult
+where
+    G: Game + Clone + Send + Sync + 'static,
+    G::Workbench: 'static,
+{
+    let num_threads = options
+        .num_threads
+        .map(|n| n.max(1))
+        .unwrap_or_else(default_num_threads);
+    if num_threads <= 1 {
+        let mut searcher = MctsSearcher::<G>::new();
+        searcher.set_random_seed(base_seed.max(1));
+        let mut wb = game.build_workbench(&snapshot);
+        return searcher.search_with_options(&mut wb, options);
+    }
+
+    // Split iterations across workers (master semantics: each worker
+    // sees iterations/num_threads).
+    let per_worker = options.iterations.max(num_threads) / num_threads;
+
+    let pool = SearchThreadPool::new(num_threads as usize);
+    let mut receivers = Vec::with_capacity(num_threads as usize);
+    for w in 0..num_threads {
+        let game = game.clone();
+        let mut local_options = options;
+        local_options.iterations = per_worker.max(1);
+        local_options.num_threads = Some(1);
+        // Distinct non-zero seed per worker so xorshift cannot
+        // collapse to the all-zero attractor and worker rollouts
+        // diverge.
+        let worker_seed = base_seed
+            .wrapping_add(0x9E37_79B9_7F4A_7C15_u64.wrapping_mul(u64::from(w) + 1))
+            .max(1);
+        receivers.push(pool.submit(move || {
+            let mut searcher = MctsSearcher::<G>::new();
+            searcher.set_random_seed(worker_seed);
+            let mut wb = game.build_workbench(&snapshot);
+            // Collect per-action visits / wins from this worker.
+            collect_worker_root_stats::<G>(&mut searcher, &mut wb, local_options)
+        }));
+    }
+
+    // Aggregate visits / wins per action across workers.
+    let mut visits_total: HashMap<Action, u64> = HashMap::new();
+    let mut wins_total: HashMap<Action, u64> = HashMap::new();
+    for rx in receivers {
+        let stats = rx.recv().expect("MCTS worker must return per-action stats");
+        for (action, (visits, wins)) in stats {
+            *visits_total.entry(action).or_insert(0) += u64::from(visits);
+            *wins_total.entry(action).or_insert(0) += wins;
+        }
+    }
+
+    let Some((best_action, best_visits)) = visits_total
+        .iter()
+        .max_by_key(|(_, v)| *v)
+        .map(|(a, v)| (*a, *v))
+    else {
+        return MctsResult {
+            best_action: Action::NONE,
+            visits: 0,
+            wins: 0,
+        };
+    };
+    let best_wins = wins_total.get(&best_action).copied().unwrap_or(0);
+    MctsResult {
+        best_action,
+        visits: best_visits.min(u32::MAX as u64) as u32,
+        wins: best_wins.min(u32::MAX as u64) as u32,
+    }
+}
+
+/// Resolve `available_parallelism()` to a concrete worker count,
+/// defaulting to 1 if the platform refuses to report.
+fn default_num_threads() -> u32 {
+    std::thread::available_parallelism()
+        .map(|n| u32::try_from(n.get()).unwrap_or(u32::MAX))
+        .unwrap_or(1)
+        .max(1)
+}
+
+/// Run a single MCTS root search on the supplied workbench and
+/// return a per-action `(visits, wins)` stats vector for aggregation.
+fn collect_worker_root_stats<G>(
+    searcher: &mut MctsSearcher<G>,
+    wb: &mut G::Workbench,
+    options: MctsOptions,
+) -> Vec<(Action, (u32, u64))>
+where
+    G: Game,
+{
+    // We piggy-back on `search_with_options`: it already maintains the
+    // per-root-child visits / wins.  Mirror its bookkeeping here so we
+    // can return *all* root-children stats rather than only the best
+    // child.  This keeps the worker self-contained and matches master
+    // `mcts_worker` returning every child to the shared aggregator.
+    searcher.set_exploration(options.exploration);
+    let started_at = Instant::now();
+    let mut root_moves = ActionList::<256>::new();
+    G::generate_legal_ctx(wb, &mut root_moves, &options.move_order_context);
+    searcher.order_mcts_moves(wb, &options.move_order_context, &mut root_moves);
+    if root_moves.is_empty() {
+        return Vec::new();
+    }
+    let root_untried = root_moves.into_iter().collect::<Vec<_>>();
+    let total_iterations = options.iterations.max(1) as usize;
+    let mut nodes = vec![MctsNode::root(root_untried)];
+
+    for i in 0..total_iterations {
+        if let Some(limit_ms) = options.time_limit_ms {
+            if i > 0 && started_at.elapsed() >= Duration::from_millis(limit_ms) {
+                break;
+            }
+        }
+        let mut node_idx = 0_usize;
+        let mut path = vec![0_usize];
+        let mut applied_moves = 0_usize;
+        while nodes[node_idx].untried.is_empty() && !nodes[node_idx].children.is_empty() {
+            let child_idx = searcher.best_uct_child(&nodes, node_idx);
+            let action = nodes[child_idx].action;
+            wb.do_move(action);
+            applied_moves += 1;
+            node_idx = child_idx;
+            path.push(node_idx);
+        }
+        if !nodes[node_idx].untried.is_empty() {
+            let actions = std::mem::take(&mut nodes[node_idx].untried);
+            let first_child_idx = nodes.len();
+            for action in actions {
+                wb.do_move(action);
+                let mut child_moves = ActionList::<256>::new();
+                G::generate_legal_ctx(wb, &mut child_moves, &options.move_order_context);
+                searcher.order_mcts_moves(wb, &options.move_order_context, &mut child_moves);
+                wb.undo_move();
+                let move_index = nodes[node_idx].children.len();
+                let child_idx = nodes.len();
+                nodes.push(MctsNode::child(
+                    node_idx,
+                    action,
+                    child_moves.into_iter().collect(),
+                    move_index,
+                ));
+                nodes[node_idx].children.push(child_idx);
+            }
+            let action = nodes[first_child_idx].action;
+            wb.do_move(action);
+            applied_moves += 1;
+            node_idx = first_child_idx;
+            path.push(node_idx);
+        }
+        let mut win = searcher.simulate(wb, options.playout_depth, &options);
+        for _ in 0..applied_moves {
+            wb.undo_move();
+        }
+        for idx in path.into_iter().rev() {
+            nodes[idx].record_simulation(win);
+            win = !win;
+        }
+    }
+
+    // Collect per-root-child (visits, wins).
+    nodes[0]
+        .children
+        .iter()
+        .map(|&idx| {
+            let n = &nodes[idx];
+            (n.action, (n.visits(), n.wins().max(0) as u64))
+        })
+        .collect()
 }

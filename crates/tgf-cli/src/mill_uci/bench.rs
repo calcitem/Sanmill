@@ -139,6 +139,9 @@ fn run_mcts_self_play(games: u32, seed: u64, ab_assist_depth: i32) -> u32 {
             time_limit_ms: None,
             exploration: 0.5,
             ab_assist_depth,
+            // Bench is sequential; force single-threaded MCTS so the
+            // perf-baseline TOML stays deterministic.
+            num_threads: Some(1),
             move_order_context: MoveOrderContext {
                 algorithm: MoveOrderAlgorithm::Mcts,
                 skill_level: 1,
