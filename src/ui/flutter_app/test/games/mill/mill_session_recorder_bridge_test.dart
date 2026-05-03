@@ -34,6 +34,7 @@ void main() {
           'type': MillActionTypes.place,
           'move': 'a7',
           'mover': 'first',
+          'boardLayout': '********/********/*******O',
         },
       );
 
@@ -44,6 +45,7 @@ void main() {
       expect(move, isNotNull);
       expect(move!.move, 'a7');
       expect(move.side, mill.PieceColor.white);
+      expect(move.boardLayout, '********/********/*******O');
     });
 
     test('ignores non-move events and incomplete payloads', () {
@@ -80,6 +82,7 @@ void main() {
             'type': MillActionTypes.place,
             'move': 'a7',
             'mover': 'first',
+            'boardLayout': '********/********/*******O',
           },
         ),
       );
@@ -88,6 +91,10 @@ void main() {
       expect(recorder.mainlineMoves, hasLength(1));
       expect(recorder.mainlineMoves.single.move, 'a7');
       expect(recorder.mainlineMoves.single.side, mill.PieceColor.white);
+      expect(
+        recorder.mainlineMoves.single.boardLayout,
+        '********/********/*******O',
+      );
 
       // Replaying the same event should follow the existing node rather than
       // creating a duplicate move.
