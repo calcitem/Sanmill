@@ -422,6 +422,14 @@ fn effective_search_depth(
         };
         recommended_search_depth(&mill_state, options, &runtime).max(1)
     };
+    // ai_is_lazy mirrors master src/search_engine.cpp::executeSearch
+    // (lines around 401-413): when the previous root score reports a
+    // material advantage greater than 1 piece (np = last_best_value /
+    // VALUE_EACH_PIECE), cap the originDepth to 1 (when requested < 4)
+    // or 4 (otherwise) so the engine plays "lazy" winning moves.  We
+    // intentionally use the signed previous score rather than abs(): a
+    // losing position must keep its full search depth so the AI can
+    // play the best defensive line.
     if cfg.ai_is_lazy {
         const VALUE_EACH_PIECE: i32 = 5;
         let np = cfg.last_best_value / VALUE_EACH_PIECE;
