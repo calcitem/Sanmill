@@ -18,6 +18,7 @@
 
 use std::collections::{BTreeMap, BTreeSet, HashMap};
 
+use crate::board_topology::zone_role;
 use crate::board_topology::{BoardTopology, Decoration, Edge, UnitPoint, Zone};
 
 /// Connectivity model for star-of-david grids.  Currently only the
@@ -216,14 +217,14 @@ impl StarTopologyBuilder {
                 ("home_se", |(q, _), s| (q as i32) > s as i32),
             ];
             arms.iter()
-                .map(|(id, predicate)| Zone {
-                    id: (*id).to_owned(),
-                    node_ids: coords
+                .map(|(id, predicate)| {
+                    let node_ids: Vec<u16> = coords
                         .iter()
                         .enumerate()
                         .filter(|(_, &c)| predicate(c, s as i16))
                         .map(|(i, _)| i as u16)
-                        .collect(),
+                        .collect();
+                    Zone::with_role(*id, node_ids, zone_role::HOME_BASE)
                 })
                 .collect()
         } else {

@@ -36,11 +36,70 @@ impl Edge {
 }
 
 /// A named set of board nodes (hand, capture pile, scoring area, …).
+///
+/// `role` is an optional canonical tag the shell / engine can react to
+/// without having to parse `id`.  Values come from
+/// [`zone_role`](self::zone_role) (e.g. `"home_base"`, `"goal"`,
+/// `"camp"`, `"headquarters"`, `"railroad"`, `"promotion"`,
+/// `"hand"`).  The empty string keeps backwards compatibility for
+/// games that have not classified their zones yet.
 #[derive(Clone, Debug)]
 pub struct Zone {
     /// Stable identifier, e.g. "hand_white", "capture_pile".
     pub id: String,
     pub node_ids: Vec<u16>,
+    /// Canonical role token; empty string when not classified.
+    pub role: String,
+}
+
+impl Zone {
+    /// Construct a [`Zone`] without a canonical role token.
+    #[inline]
+    pub fn new(id: impl Into<String>, node_ids: Vec<u16>) -> Self {
+        Self {
+            id: id.into(),
+            node_ids,
+            role: String::new(),
+        }
+    }
+
+    /// Construct a [`Zone`] tagged with a canonical role.  See
+    /// [`zone_role`](self::zone_role) for the predefined token list.
+    #[inline]
+    pub fn with_role(id: impl Into<String>, node_ids: Vec<u16>, role: impl Into<String>) -> Self {
+        Self {
+            id: id.into(),
+            node_ids,
+            role: role.into(),
+        }
+    }
+}
+
+/// Canonical [`Zone::role`] tokens shared across games so the shell
+/// can render or filter zones uniformly.  Games may still emit custom
+/// role strings; these constants merely document the framework's
+/// recommended vocabulary.
+pub mod zone_role {
+    /// Empty / not classified.  Equivalent to `Zone::role.is_empty()`.
+    pub const NONE: &str = "";
+    /// Player starting / piece-bank area (Mill hand, Backgammon bar).
+    pub const HAND: &str = "hand";
+    /// Captured-piece pile / score column.
+    pub const CAPTURE_PILE: &str = "capture_pile";
+    /// Promotion zone (Chess back rank, Checkers king row).
+    pub const PROMOTION: &str = "promotion";
+    /// Player's home triangle in Halma / Chinese Checkers.
+    pub const HOME_BASE: &str = "home_base";
+    /// Opponent's triangle the player must reach (Halma / 中国跳棋).
+    pub const GOAL: &str = "goal";
+    /// 军棋 行营 — safe square that cannot be attacked.
+    pub const CAMP: &str = "camp";
+    /// 军棋 大本营 / 总部 — flag-carrying objective square.
+    pub const HEADQUARTERS: &str = "headquarters";
+    /// 军棋 铁路 line — fast straight-line movement zone.
+    pub const RAILROAD: &str = "railroad";
+    /// Geographic divider (xiangqi 河, Backgammon home/outer board).
+    pub const RIVER: &str = "river";
 }
 
 /// Game-specific visual decoration rendered below the pieces.
@@ -190,5 +249,39 @@ mod tests {
         assert_eq!(e.a, 2);
         assert_eq!(e.b, 5);
         assert_eq!(e.kind_tag, 0);
+    }
+
+    #[test]
+    fn zone_new_has_no_role_and_with_role_round_trips() {
+        let plain = Zone::new("hand_white", vec![1, 2, 3]);
+        assert_eq!(plain.id, "hand_white");
+        assert_eq!(plain.node_ids, vec![1, 2, 3]);
+        assert_eq!(plain.role, zone_role::NONE);
+
+        let tagged = Zone::with_role("home_north", vec![10, 11, 12], zone_role::HOME_BASE);
+        assert_eq!(tagged.role, "home_base");
+        assert_eq!(tagged.role, zone_role::HOME_BASE);
+    }
+
+    #[test]
+    fn canonical_zone_role_tokens_are_distinct() {
+        // Sanity-check the role vocabulary: every advertised constant
+        // should be unique so role lookup tables in the shell never
+        // collide.
+        let tokens = [
+            zone_role::HAND,
+            zone_role::CAPTURE_PILE,
+            zone_role::PROMOTION,
+            zone_role::HOME_BASE,
+            zone_role::GOAL,
+            zone_role::CAMP,
+            zone_role::HEADQUARTERS,
+            zone_role::RAILROAD,
+            zone_role::RIVER,
+        ];
+        let mut seen = std::collections::HashSet::new();
+        for t in tokens {
+            assert!(seen.insert(t), "duplicate canonical role token {t:?}");
+        }
     }
 }
