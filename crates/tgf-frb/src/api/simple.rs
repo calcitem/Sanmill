@@ -22,11 +22,12 @@ use tgf_mill::{
 };
 use tgf_search::{MctsOptions, MctsSearcher, SearchOptions};
 
+use tgf_mill::MillSearchAlgorithmKind;
+
 use crate::games::mill::search::{
     mcts_move_order_context, mill_searcher_default, request_abort_active_search,
     spawn_mill_engine_config_event_stream as spawn_mill_engine_config_event_stream_internal,
-    spawn_mill_pvs_event_stream as spawn_mill_pvs_event_stream_internal, MillAlgorithmInternal,
-    MillEngineConfigInternal,
+    spawn_mill_pvs_event_stream as spawn_mill_pvs_event_stream_internal, MillEngineConfigPlan,
 };
 
 // Re-export the game-neutral error helper so `crate::api::kernel` can keep
@@ -412,19 +413,19 @@ pub enum MillSearchAlgorithm {
     Random,
 }
 
-impl From<MillSearchAlgorithm> for MillAlgorithmInternal {
+impl From<MillSearchAlgorithm> for MillSearchAlgorithmKind {
     fn from(alg: MillSearchAlgorithm) -> Self {
         match alg {
-            MillSearchAlgorithm::AlphaBeta => MillAlgorithmInternal::AlphaBeta,
-            MillSearchAlgorithm::Pvs => MillAlgorithmInternal::Pvs,
-            MillSearchAlgorithm::Mtdf => MillAlgorithmInternal::Mtdf,
-            MillSearchAlgorithm::Mcts => MillAlgorithmInternal::Mcts,
-            MillSearchAlgorithm::Random => MillAlgorithmInternal::Random,
+            MillSearchAlgorithm::AlphaBeta => MillSearchAlgorithmKind::AlphaBeta,
+            MillSearchAlgorithm::Pvs => MillSearchAlgorithmKind::Pvs,
+            MillSearchAlgorithm::Mtdf => MillSearchAlgorithmKind::Mtdf,
+            MillSearchAlgorithm::Mcts => MillSearchAlgorithmKind::Mcts,
+            MillSearchAlgorithm::Random => MillSearchAlgorithmKind::Random,
         }
     }
 }
 
-impl From<MillEngineConfig> for MillEngineConfigInternal {
+impl From<MillEngineConfig> for MillEngineConfigPlan {
     fn from(cfg: MillEngineConfig) -> Self {
         Self {
             algorithm: cfg.algorithm.into(),
@@ -766,7 +767,7 @@ pub(crate) fn spawn_mill_engine_config_event_stream(
     config: MillEngineConfig,
     sink: StreamSink<EngineEvent>,
 ) {
-    let internal_cfg: MillEngineConfigInternal = config.into();
+    let internal_cfg: MillEngineConfigPlan = config.into();
     spawn_mill_engine_config_event_stream_internal(snapshot, options, internal_cfg, sink);
 }
 

@@ -22,7 +22,7 @@ use once_cell::sync::Lazy;
 use tgf_core::{Game, GameStateSnapshot, MoveOrderAlgorithm, MoveOrderContext};
 use tgf_mill::{
     recommended_search_depth, EngineRuntimeOptions, MillActionKind, MillGame, MillRules,
-    MillVariantOptions as NativeMillVariantOptions,
+    MillSearchAlgorithmKind, MillVariantOptions as NativeMillVariantOptions,
 };
 use tgf_search::{
     MctsOptions, MctsSearcher, SearchAbortHandle, SearchAlgorithm, SearchOptions, SearchPolicy,
@@ -44,42 +44,32 @@ pub(crate) static ACTIVE_SEARCH: Lazy<Mutex<Option<SearchAbortHandle>>> =
     Lazy::new(|| Mutex::new(None));
 
 // ---------------------------------------------------------------------------
-// Mill-specific runtime configuration mirrored from the FRB `MillEngineConfig`
-// DTO.  Keeping a native struct here means the `crate::api::*` modules can
-// translate Dart-facing DTOs into a single internal type without entangling
-// the search dispatch with FRB ABI concerns.
+// Mill-specific runtime configuration consumed by the search dispatcher.
+//
+// The FRB-public `MillEngineConfig` DTO (in `crate::api::simple`) converts
+// into [`MillEngineConfigPlan`] before reaching the dispatch loop so
+// `crate::api::*` stays thin and the dispatcher does not depend on FRB
+// ABI details.  The algorithm enumeration is shared with the rest of the
+// crate via [`MillSearchAlgorithmKind`] in `tgf_mill::engine_config`.
 // ---------------------------------------------------------------------------
 
-/// Mill search algorithm enumeration used by the internal dispatcher.
-/// The FRB-public variant lives in `crate::api::simple` and converts into
-/// this type before reaching the search loop.
-#[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
-pub(crate) enum MillAlgorithmInternal {
-    AlphaBeta,
-    #[default]
-    Pvs,
-    Mtdf,
-    Mcts,
-    Random,
-}
-
-impl From<MillAlgorithmInternal> for SearchAlgorithm {
-    fn from(alg: MillAlgorithmInternal) -> Self {
-        match alg {
-            MillAlgorithmInternal::AlphaBeta => SearchAlgorithm::AlphaBeta,
-            MillAlgorithmInternal::Pvs => SearchAlgorithm::Pvs,
-            MillAlgorithmInternal::Mtdf => SearchAlgorithm::Mtdf,
-            MillAlgorithmInternal::Mcts => SearchAlgorithm::Mcts,
-            MillAlgorithmInternal::Random => SearchAlgorithm::Random,
-        }
+#[inline]
+fn algorithm_to_search(kind: MillSearchAlgorithmKind) -> SearchAlgorithm {
+    match kind {
+        MillSearchAlgorithmKind::AlphaBeta => SearchAlgorithm::AlphaBeta,
+        MillSearchAlgorithmKind::Pvs => SearchAlgorithm::Pvs,
+        MillSearchAlgorithmKind::Mtdf => SearchAlgorithm::Mtdf,
+        MillSearchAlgorithmKind::Mcts => SearchAlgorithm::Mcts,
+        MillSearchAlgorithmKind::Random => SearchAlgorithm::Random,
     }
 }
 
-/// Internal mirror of the FRB-public `MillEngineConfig`.  Lives here so
-/// the search dispatcher does not depend on FRB ABI details.
+/// FRB-internal Mill engine configuration.  Lives next to the dispatch
+/// loop so the FRB DTO layer can translate the public `MillEngineConfig`
+/// into a typed plan and hand it directly to the worker thread.
 #[derive(Clone, Debug)]
-pub(crate) struct MillEngineConfigInternal {
-    pub algorithm: MillAlgorithmInternal,
+pub(crate) struct MillEngineConfigPlan {
+    pub algorithm: MillSearchAlgorithmKind,
     pub depth: i32,
     pub move_time_ms: u32,
     pub ai_is_lazy: bool,
@@ -87,10 +77,10 @@ pub(crate) struct MillEngineConfigInternal {
     pub skill_level: u8,
 }
 
-impl Default for MillEngineConfigInternal {
+impl Default for MillEngineConfigPlan {
     fn default() -> Self {
         Self {
-            algorithm: MillAlgorithmInternal::Mtdf,
+            algorithm: MillSearchAlgorithmKind::Mtdf,
             depth: 1,
             move_time_ms: 0,
             ai_is_lazy: false,
@@ -147,7 +137,7 @@ pub(crate) fn spawn_mill_pvs_event_stream(
     depth: i32,
     sink: StreamSink<EngineEvent>,
 ) {
-    let config = MillEngineConfigInternal {
+    let config = MillEngineConfigPlan {
         depth,
         ..Default::default()
     };
@@ -159,7 +149,7 @@ pub(crate) fn spawn_mill_pvs_event_stream(
 pub(crate) fn spawn_mill_engine_config_event_stream(
     snapshot: GameStateSnapshot,
     options: NativeMillVariantOptions,
-    config: MillEngineConfigInternal,
+    config: MillEngineConfigPlan,
     sink: StreamSink<EngineEvent>,
 ) {
     thread::spawn(move || {
@@ -172,7 +162,7 @@ pub(crate) fn spawn_mill_engine_config_event_stream(
         let mut wb = game.build_workbench(&snapshot);
         let mut searcher = mill_searcher_default();
         let search_context = MoveOrderContext {
-            algorithm: match SearchAlgorithm::from(config.algorithm) {
+            algorithm: match algorithm_to_search(config.algorithm) {
                 SearchAlgorithm::AlphaBeta => MoveOrderAlgorithm::AlphaBeta,
                 SearchAlgorithm::Pvs => MoveOrderAlgorithm::Pvs,
                 SearchAlgorithm::Mtdf => MoveOrderAlgorithm::Mtdf,
@@ -238,7 +228,7 @@ pub(crate) fn spawn_mill_engine_config_event_stream(
         let run_ids = config.move_time_ms > 0;
         let mut first_guess = 0;
 
-        match SearchAlgorithm::from(config.algorithm) {
+        match algorithm_to_search(config.algorithm) {
             SearchAlgorithm::Random => {
                 // Use time-seeded random to match master's rand()+time() behaviour.
                 let seed = std::time::SystemTime::now()
