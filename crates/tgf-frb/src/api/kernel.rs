@@ -13,18 +13,11 @@
 // individual function takes the lock only for the duration of one call,
 // so there is no risk of long-held mutexes blocking the Flutter UI.
 
-use std::collections::HashMap;
-use std::sync::atomic::{AtomicU32, Ordering};
 use std::sync::Arc;
 
-use once_cell::sync::Lazy;
-use std::sync::Mutex;
-
-use tgf_core::BoardTopology;
 use tgf_core::{
     Action, ActionList, GameKernel, GameRules, GameStateSnapshot, KernelError, OutcomeKind,
 };
-use tgf_mill::{default_mill_topology, MillActionKind};
 use tgf_mill::{MillPhase, MillRules, MillVariantOptions as NativeMillVariantOptions};
 use tgf_othello::OthelloRules;
 
@@ -33,60 +26,8 @@ use super::simple::{
     EngineEvent, MillEngineConfig, MillVariantOptions,
 };
 use crate::frb_generated::StreamSink;
-
-// ---------------------------------------------------------------------------
-// Session registry
-// ---------------------------------------------------------------------------
-
-static KERNELS: Lazy<Mutex<HashMap<u32, GameKernel>>> = Lazy::new(|| Mutex::new(HashMap::new()));
-static NEXT_KERNEL_ID: AtomicU32 = AtomicU32::new(1);
-
-/// Per-handle Mill rule options (only kernels created as Mill).
-static MILL_VARIANT_BY_HANDLE: Lazy<Mutex<HashMap<u32, NativeMillVariantOptions>>> =
-    Lazy::new(|| Mutex::new(HashMap::new()));
-
-fn register_mill_variant(handle: u32, options: NativeMillVariantOptions) {
-    MILL_VARIANT_BY_HANDLE
-        .lock()
-        .expect("mill variant map poisoned")
-        .insert(handle, options);
-}
-
-fn unregister_mill_variant(handle: u32) {
-    MILL_VARIANT_BY_HANDLE
-        .lock()
-        .expect("mill variant map poisoned")
-        .remove(&handle);
-}
-
-fn mill_variant_for_handle(handle: u32) -> NativeMillVariantOptions {
-    MILL_VARIANT_BY_HANDLE
-        .lock()
-        .expect("mill variant map poisoned")
-        .get(&handle)
-        .cloned()
-        .unwrap_or_default()
-}
-
-fn insert_kernel(kernel: GameKernel) -> u32 {
-    let id = NEXT_KERNEL_ID.fetch_add(1, Ordering::SeqCst);
-    KERNELS
-        .lock()
-        .expect("kernel registry poisoned")
-        .insert(id, kernel);
-    id
-}
-
-/// Run `f` against the kernel with the given `handle`.  Returns
-/// `KernelError::Internal("invalid handle")` when the registry no longer
-/// contains the requested session (already disposed or never created).
-fn with_kernel<R>(handle: u32, f: impl FnOnce(&mut GameKernel) -> R) -> Result<R, String> {
-    let mut guard = KERNELS.lock().expect("kernel registry poisoned");
-    let kernel = guard
-        .get_mut(&handle)
-        .ok_or_else(|| format!("invalid kernel handle: {handle}"))?;
-    Ok(f(kernel))
-}
+use crate::games::mill::variant_extras;
+use crate::session_registry::{insert_kernel, remove_kernel, with_kernel};
 
 // ---------------------------------------------------------------------------
 // FRB DTOs
@@ -207,7 +148,7 @@ pub fn tgf_kernel_create(game_id: String) -> Result<u32, String> {
     let kernel = GameKernel::new(rules, &[]);
     let id = insert_kernel(kernel);
     if game_id == "mill" {
-        register_mill_variant(id, NativeMillVariantOptions::default());
+        variant_extras::attach(id, NativeMillVariantOptions::default());
     }
     Ok(id)
 }
@@ -221,7 +162,7 @@ pub fn tgf_kernel_create_mill(variant: MillVariantOptions) -> Result<u32, String
     let rules: Arc<dyn GameRules> = Arc::new(MillRules::new(native.clone()));
     let kernel = GameKernel::new(rules, &[]);
     let id = insert_kernel(kernel);
-    register_mill_variant(id, native);
+    variant_extras::attach(id, native);
     Ok(id)
 }
 
@@ -229,11 +170,7 @@ pub fn tgf_kernel_create_mill(variant: MillVariantOptions) -> Result<u32, String
 /// twice is a no-op.
 #[flutter_rust_bridge::frb(sync)]
 pub fn tgf_kernel_dispose(handle: u32) {
-    unregister_mill_variant(handle);
-    KERNELS
-        .lock()
-        .expect("kernel registry poisoned")
-        .remove(&handle);
+    remove_kernel(handle);
 }
 
 #[flutter_rust_bridge::frb(sync)]
@@ -267,45 +204,39 @@ pub fn tgf_kernel_apply(handle: u32, action: TgfAction) -> Result<TgfSnapshot, S
     // entry point remains checked for UI safety; replay/debug callers that
     // need master-equivalent unchecked application must use
     // `tgf_kernel_apply_unchecked`.
-    let mut guard = KERNELS.lock().expect("kernel registry poisoned");
-    let kernel = guard
-        .get_mut(&handle)
-        .ok_or_else(|| format!("invalid kernel handle: {handle}"))?;
-    let next = kernel
-        .apply(action.into_action())
-        .map_err(map_kernel_error)?;
-    Ok(TgfSnapshot::from_snap(next))
+    with_kernel(handle, |kernel| {
+        kernel
+            .apply(action.into_action())
+            .map(TgfSnapshot::from_snap)
+            .map_err(map_kernel_error)
+    })?
 }
 
 #[flutter_rust_bridge::frb(sync)]
 pub fn tgf_kernel_apply_unchecked(handle: u32, action: TgfAction) -> Result<TgfSnapshot, String> {
-    let mut guard = KERNELS.lock().expect("kernel registry poisoned");
-    let kernel = guard
-        .get_mut(&handle)
-        .ok_or_else(|| format!("invalid kernel handle: {handle}"))?;
-    Ok(TgfSnapshot::from_snap(
-        kernel.apply_unchecked(action.into_action()),
-    ))
+    with_kernel(handle, |kernel| {
+        TgfSnapshot::from_snap(kernel.apply_unchecked(action.into_action()))
+    })
 }
 
 #[flutter_rust_bridge::frb(sync)]
 pub fn tgf_kernel_undo(handle: u32) -> Result<TgfSnapshot, String> {
-    let mut guard = KERNELS.lock().expect("kernel registry poisoned");
-    let kernel = guard
-        .get_mut(&handle)
-        .ok_or_else(|| format!("invalid kernel handle: {handle}"))?;
-    let next = kernel.undo().map_err(map_kernel_error)?;
-    Ok(TgfSnapshot::from_snap(next))
+    with_kernel(handle, |kernel| {
+        kernel
+            .undo()
+            .map(TgfSnapshot::from_snap)
+            .map_err(map_kernel_error)
+    })?
 }
 
 #[flutter_rust_bridge::frb(sync)]
 pub fn tgf_kernel_redo(handle: u32) -> Result<TgfSnapshot, String> {
-    let mut guard = KERNELS.lock().expect("kernel registry poisoned");
-    let kernel = guard
-        .get_mut(&handle)
-        .ok_or_else(|| format!("invalid kernel handle: {handle}"))?;
-    let next = kernel.redo().map_err(map_kernel_error)?;
-    Ok(TgfSnapshot::from_snap(next))
+    with_kernel(handle, |kernel| {
+        kernel
+            .redo()
+            .map(TgfSnapshot::from_snap)
+            .map_err(map_kernel_error)
+    })?
 }
 
 #[flutter_rust_bridge::frb(sync)]
@@ -354,7 +285,7 @@ pub fn tgf_kernel_mill_search_events(handle: u32, depth: i32, sink: StreamSink<E
         }
     };
 
-    let options = mill_variant_for_handle(handle);
+    let options = variant_extras::options_for(handle);
     spawn_mill_pvs_event_stream(snapshot, options, depth, sink);
 }
 
@@ -386,7 +317,7 @@ pub fn tgf_kernel_mill_search_events_with_config(
             return;
         }
     };
-    let options = mill_variant_for_handle(handle);
+    let options = variant_extras::options_for(handle);
     spawn_mill_engine_config_event_stream(snapshot, options, config, sink);
 }
 
@@ -408,19 +339,17 @@ pub fn tgf_kernel_mill_search_events_with_config(
 /// piece, then `tgf_kernel_setup_finish` to transition to a playable state.
 #[flutter_rust_bridge::frb(sync)]
 pub fn tgf_kernel_setup_clear(handle: u32) -> Result<TgfSnapshot, String> {
-    let mut guard = KERNELS.lock().expect("kernel registry poisoned");
-    let kernel = guard
-        .get_mut(&handle)
-        .ok_or_else(|| format!("invalid kernel handle: {handle}"))?;
-    if kernel.game_id() != "mill" {
-        return Err(format!("setup is only supported for Mill kernels"));
-    }
-    let options = mill_variant_for_handle(handle);
-    let rules = MillRules::new(options.clone());
-    let empty_state = rules.setup_empty();
-    let snapshot = rules.encode_state(empty_state);
-    kernel.replace_state(snapshot);
-    Ok(TgfSnapshot::from_snap(kernel.snapshot()))
+    let options = variant_extras::options_for(handle);
+    with_kernel(handle, |kernel| {
+        if kernel.game_id() != "mill" {
+            return Err("setup is only supported for Mill kernels".to_owned());
+        }
+        let rules = MillRules::new(options.clone());
+        let empty_state = rules.setup_empty();
+        let snapshot = rules.encode_state(empty_state);
+        kernel.replace_state(snapshot);
+        Ok(TgfSnapshot::from_snap(kernel.snapshot()))
+    })?
 }
 
 /// Set or clear a single piece at `node` for a Mill kernel in setup mode.
@@ -436,26 +365,24 @@ pub fn tgf_kernel_setup_set_piece(
     node: i32,
     owner: i32,
 ) -> Result<TgfSnapshot, String> {
-    let mut guard = KERNELS.lock().expect("kernel registry poisoned");
-    let kernel = guard
-        .get_mut(&handle)
-        .ok_or_else(|| format!("invalid kernel handle: {handle}"))?;
-    if kernel.game_id() != "mill" {
-        return Err("setup is only supported for Mill kernels".to_owned());
-    }
-    let options = mill_variant_for_handle(handle);
-    let rules = MillRules::new(options.clone());
-    let mut state = tgf_mill::MillRules::decode_snapshot(kernel.snapshot());
     if !(0..24).contains(&node) {
         return Err(format!(
             "setup_set_piece node out of range: {node}; expected Rust node 0..23"
         ));
     }
-    state.set_piece(node as u16, owner as i8);
-    state.recompute_aux(&options);
-    let new_snap = rules.encode_state(state);
-    kernel.replace_state(new_snap);
-    Ok(TgfSnapshot::from_snap(new_snap))
+    let options = variant_extras::options_for(handle);
+    with_kernel(handle, |kernel| {
+        if kernel.game_id() != "mill" {
+            return Err("setup is only supported for Mill kernels".to_owned());
+        }
+        let rules = MillRules::new(options.clone());
+        let mut state = tgf_mill::MillRules::decode_snapshot(kernel.snapshot());
+        state.set_piece(node as u16, owner as i8);
+        state.recompute_aux(&options);
+        let new_snap = rules.encode_state(state);
+        kernel.replace_state(new_snap);
+        Ok(TgfSnapshot::from_snap(new_snap))
+    })?
 }
 
 /// Set the side to move for a Mill kernel in setup mode.
@@ -463,20 +390,18 @@ pub fn tgf_kernel_setup_set_piece(
 /// `side`: `0` = first player (White), `1` = second player (Black).
 #[flutter_rust_bridge::frb(sync)]
 pub fn tgf_kernel_setup_set_side(handle: u32, side: i32) -> Result<TgfSnapshot, String> {
-    let mut guard = KERNELS.lock().expect("kernel registry poisoned");
-    let kernel = guard
-        .get_mut(&handle)
-        .ok_or_else(|| format!("invalid kernel handle: {handle}"))?;
-    if kernel.game_id() != "mill" {
-        return Err("setup is only supported for Mill kernels".to_owned());
-    }
-    let options = mill_variant_for_handle(handle);
-    let rules = MillRules::new(options.clone());
-    let mut state = tgf_mill::MillRules::decode_snapshot(kernel.snapshot());
-    state.set_side_to_move(side.clamp(0, 1) as i8);
-    let new_snap = rules.encode_state(state);
-    kernel.replace_state(new_snap);
-    Ok(TgfSnapshot::from_snap(new_snap))
+    let options = variant_extras::options_for(handle);
+    with_kernel(handle, |kernel| {
+        if kernel.game_id() != "mill" {
+            return Err("setup is only supported for Mill kernels".to_owned());
+        }
+        let rules = MillRules::new(options.clone());
+        let mut state = tgf_mill::MillRules::decode_snapshot(kernel.snapshot());
+        state.set_side_to_move(side.clamp(0, 1) as i8);
+        let new_snap = rules.encode_state(state);
+        kernel.replace_state(new_snap);
+        Ok(TgfSnapshot::from_snap(new_snap))
+    })?
 }
 
 /// Finish the setup-position editing flow.
@@ -487,37 +412,32 @@ pub fn tgf_kernel_setup_set_side(handle: u32, side: i32) -> Result<TgfSnapshot, 
 /// for normal play (legal actions, apply, search).
 #[flutter_rust_bridge::frb(sync)]
 pub fn tgf_kernel_setup_finish(handle: u32) -> Result<TgfSnapshot, String> {
-    let mut guard = KERNELS.lock().expect("kernel registry poisoned");
-    let kernel = guard
-        .get_mut(&handle)
-        .ok_or_else(|| format!("invalid kernel handle: {handle}"))?;
-    if kernel.game_id() != "mill" {
-        return Err("setup is only supported for Mill kernels".to_owned());
-    }
-    let options = mill_variant_for_handle(handle);
-    let rules = MillRules::new(options.clone());
-    let mut state = tgf_mill::MillRules::decode_snapshot(kernel.snapshot());
-    state.recompute_aux(&options);
-    // Determine phase: placing if either side still has pieces in hand,
-    // moving otherwise — but check for an immediate GameOver when either
-    // side would have fewer than pieces_at_least_count pieces on board
-    // (mirrors C++ `check_if_game_is_over` at position-setup boundaries).
-    if state.pieces_in_hand[0] > 0 || state.pieces_in_hand[1] > 0 {
-        state.set_phase(MillPhase::Placing);
-    } else {
-        // Both hands empty: determine if the resulting moving-phase position
-        // is already terminal (either side below pieces_at_least_count).
-        if let Some(winner) = state.check_pieces_at_least(&options) {
+    let options = variant_extras::options_for(handle);
+    with_kernel(handle, |kernel| {
+        if kernel.game_id() != "mill" {
+            return Err("setup is only supported for Mill kernels".to_owned());
+        }
+        let rules = MillRules::new(options.clone());
+        let mut state = tgf_mill::MillRules::decode_snapshot(kernel.snapshot());
+        state.recompute_aux(&options);
+        // Determine phase: placing if either side still has pieces in
+        // hand, moving otherwise — but check for an immediate GameOver
+        // when either side would have fewer than pieces_at_least_count
+        // pieces on board (mirrors C++ `check_if_game_is_over` at
+        // position-setup boundaries).
+        if state.pieces_in_hand[0] > 0 || state.pieces_in_hand[1] > 0 {
+            state.set_phase(MillPhase::Placing);
+        } else if let Some(winner) = state.check_pieces_at_least(&options) {
             state.set_phase(MillPhase::GameOver);
             state.set_winner(winner);
             state.set_outcome_reason_fewer_than_threshold();
         } else {
             state.set_phase(MillPhase::Moving);
         }
-    }
-    let new_snap = rules.encode_state(state);
-    kernel.replace_state(new_snap);
-    Ok(TgfSnapshot::from_snap(new_snap))
+        let new_snap = rules.encode_state(state);
+        kernel.replace_state(new_snap);
+        Ok(TgfSnapshot::from_snap(new_snap))
+    })?
 }
 
 /// Load a Mill board position from a FEN string (Phase 6.A.3.B).
@@ -526,54 +446,31 @@ pub fn tgf_kernel_setup_finish(handle: u32) -> Result<TgfSnapshot, String> {
 /// new snapshot on success, or an error string on parse failure.
 #[flutter_rust_bridge::frb(sync)]
 pub fn tgf_kernel_set_from_fen(handle: u32, fen: String) -> Result<TgfSnapshot, String> {
-    let mut guard = KERNELS.lock().expect("kernel registry poisoned");
-    let kernel = guard
-        .get_mut(&handle)
-        .ok_or_else(|| format!("invalid kernel handle: {handle}"))?;
-    if kernel.game_id() != "mill" {
-        return Err("set_from_fen is only supported for Mill kernels".to_owned());
-    }
-    let options = mill_variant_for_handle(handle);
-    let rules = MillRules::new(options);
-    let state = rules.set_from_fen(&fen)?;
-    let new_snap = rules.encode_state(state);
-    kernel.replace_state(new_snap);
-    Ok(TgfSnapshot::from_snap(new_snap))
+    let options = variant_extras::options_for(handle);
+    with_kernel(handle, |kernel| {
+        if kernel.game_id() != "mill" {
+            return Err("set_from_fen is only supported for Mill kernels".to_owned());
+        }
+        let rules = MillRules::new(options);
+        let state = rules.set_from_fen(&fen)?;
+        let new_snap = rules.encode_state(state);
+        kernel.replace_state(new_snap);
+        Ok(TgfSnapshot::from_snap(new_snap))
+    })?
 }
 
 /// Export the current Mill kernel state as a FEN string (Phase 6.A.3.B).
 #[flutter_rust_bridge::frb(sync)]
 pub fn tgf_kernel_export_fen(handle: u32) -> Result<String, String> {
-    let guard = KERNELS.lock().expect("kernel registry poisoned");
-    let kernel = guard
-        .get(&handle)
-        .ok_or_else(|| format!("invalid kernel handle: {handle}"))?;
-    if kernel.game_id() != "mill" {
-        return Err("export_fen is only supported for Mill kernels".to_owned());
-    }
-    let options = mill_variant_for_handle(handle);
-    let rules = MillRules::new(options);
-    let state = tgf_mill::MillRules::decode_snapshot(kernel.snapshot());
-    Ok(rules.export_fen(&state))
-}
-
-/// Convert a `tgf_core::Action` to a UCI move string (P1-C.2).
-/// Returns the full UCI text: place = label (e.g. "a4"), move = "a1-a4",
-/// remove = "xa4".  Returns an empty string for the NONE action.
-pub(crate) fn action_to_uci_str(action: Action) -> String {
-    let topo = default_mill_topology();
-    match action.kind_tag {
-        x if x == MillActionKind::Place as i16 => topo.label_of(action.to_node as u16).to_owned(),
-        x if x == MillActionKind::Move as i16 => format!(
-            "{}-{}",
-            topo.label_of(action.from_node as u16),
-            topo.label_of(action.to_node as u16)
-        ),
-        x if x == MillActionKind::Remove as i16 => {
-            format!("x{}", topo.label_of(action.to_node as u16))
+    let options = variant_extras::options_for(handle);
+    with_kernel(handle, |kernel| {
+        if kernel.game_id() != "mill" {
+            return Err("export_fen is only supported for Mill kernels".to_owned());
         }
-        _ => String::new(),
-    }
+        let rules = MillRules::new(options);
+        let state = tgf_mill::MillRules::decode_snapshot(kernel.snapshot());
+        Ok(rules.export_fen(&state))
+    })?
 }
 
 #[cfg(test)]

@@ -6,8 +6,8 @@
 import '../frb_generated.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
-// These functions are ignored because they are not marked as `pub`: `best_move_full`, `error`, `info`, `mill_searcher_default`, `new`, `ready`, `spawn_kernel_search_error`, `spawn_mill_engine_config_event_stream`, `spawn_mill_pvs_event_stream`, `stopped`
-// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `assert_fields_are_eq`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `eq`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`
+// These functions are ignored because they are not marked as `pub`: `spawn_mill_engine_config_event_stream`, `spawn_mill_pvs_event_stream`
+// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `assert_fields_are_eq`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `eq`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`
 
 /// Returns a greeting string confirming that the Rust → Dart bridge works.
 /// Called from Dart as `tgfHelloWorld()` after `await RustLib.init()`.
@@ -93,11 +93,12 @@ int nativeMillMctsBestToNode({
 bool nativeMillSearchZeroTimeLimitAborts() =>
     RustLib.instance.api.crateApiSimpleNativeMillSearchZeroTimeLimitAborts();
 
-/// Phase 5 async search event stream.
+/// Async search event stream rooted at the Mill initial position.
 ///
-/// This is intentionally minimal: it spawns a worker thread, runs the native
-/// Rust Searcher<MillGame>, and emits Ready / Info / BestMove / Stopped.
-/// Later work replaces this with a cancellable long-lived search worker.
+/// Spawns a worker thread, runs the native Rust `Searcher<MillGame>`, and
+/// emits Ready / Info / BestMove / Stopped.  Used as a smoke-check entry
+/// point during development; production paths go through
+/// `tgf_kernel_mill_search_events*` instead.
 Stream<EngineEvent> nativeMillSearchEvents({required int depth}) =>
     RustLib.instance.api.crateApiSimpleNativeMillSearchEvents(depth: depth);
 
@@ -151,6 +152,11 @@ class CaptureRuleConfig {
               other.onlyAvailableWhenOwnPiecesLeq3;
 }
 
+/// Game-neutral engine event POD shipped over the FRB stream API.
+///
+/// This struct is the wire format Dart sees; the helper constructors and
+/// spawn-and-emit logic live in `crate::engine_event` and
+/// `crate::games::*` respectively so this module stays a thin ABI shim.
 class EngineEvent {
   final String kind;
   final int depth;
@@ -158,10 +164,10 @@ class EngineEvent {
   final BigInt nodes;
   final int toNode;
 
-  /// For bestMove events: the full UCI move string ("a4", "a1-a4", "xa4")
-  /// is stored here (P1-C.2).  For error events: the error message.
-  /// Using the existing `reason` field avoids adding new FRB bridge fields
-  /// that would require codegen; the Dart side already exposes `reason`.
+  /// For bestMove events: the full notation move string ("a4", "a1-a4",
+  /// "xa4" for Mill) plus auxiliary annotations such as `rawScore=N`.
+  /// For error events: the human-readable error message.  The Dart side
+  /// parses this loosely; new fields ride along here to avoid codegen.
   final String reason;
 
   const EngineEvent({

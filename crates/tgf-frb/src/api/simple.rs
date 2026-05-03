@@ -1,60 +1,37 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
-// tgf-frb – Phase 1 API surface.
+// tgf-frb – public FRB API surface.
 //
 // Conventions:
 //   - `#[flutter_rust_bridge::frb(sync)]` makes the call synchronous on the
 //     Dart side (no Future wrapping); use only for cheap, non-blocking calls.
 //   - All public functions in this module are auto-exported to Dart by codegen.
-
-use once_cell::sync::Lazy;
-use std::sync::Mutex;
-use std::thread;
+//
+// The DTOs and entry points stay in this file so the generated Dart paths
+// (`lib/src/rust/api/simple.dart`) remain stable.  The implementation
+// behind every Mill-specific entry point lives in `crate::games::mill::*`
+// so this file no longer carries Mill-specific search/codec details.
 
 use crate::frb_generated::StreamSink;
-use tgf_core::{
-    Action, ActionList, BoardTopology, Game, GameRules, MoveOrderAlgorithm, MoveOrderContext,
-};
+use tgf_core::{Action, ActionList, BoardTopology, Game, GameRules};
 use tgf_mill::{
-    default_mill_topology, recommended_search_depth, CaptureRuleConfig as NativeCaptureRuleConfig,
-    EngineRuntimeOptions, MillActionKind, MillBoardFullAction as NativeMillBoardFullAction,
+    default_mill_topology, CaptureRuleConfig as NativeCaptureRuleConfig, MillActionKind,
+    MillBoardFullAction as NativeMillBoardFullAction,
     MillFormationActionInPlacingPhase as NativeMillFormationActionInPlacingPhase, MillGame,
     MillRules, MillVariantOptions as NativeMillVariantOptions,
     StalemateAction as NativeStalemateAction,
 };
-use tgf_othello::{OthelloGame, OthelloRules};
-use tgf_search::SearchResult;
-use tgf_search::{
-    MctsOptions, MctsSearcher, SearchAbortHandle, SearchAlgorithm, SearchOptions, SearchPolicy,
-    Searcher,
+use tgf_search::{MctsOptions, MctsSearcher, SearchOptions};
+
+use crate::games::mill::search::{
+    mcts_move_order_context, mill_searcher_default, request_abort_active_search,
+    spawn_mill_engine_config_event_stream as spawn_mill_engine_config_event_stream_internal,
+    spawn_mill_pvs_event_stream as spawn_mill_pvs_event_stream_internal, MillAlgorithmInternal,
+    MillEngineConfigInternal,
 };
 
-static ACTIVE_SEARCH: Lazy<Mutex<Option<SearchAbortHandle>>> = Lazy::new(|| Mutex::new(None));
-
-/// Mill uses Remove actions in qsearch when [SearchPolicy::remove_kind_tag] is set.
-fn mill_searcher_default() -> Searcher<MillGame> {
-    let mut s = Searcher::new();
-    s.set_policy(SearchPolicy {
-        remove_kind_tag: Some(MillActionKind::Remove as i16),
-    });
-    s
-}
-
-fn mcts_move_order_context(skill_level: u8) -> MoveOrderContext {
-    MoveOrderContext {
-        algorithm: MoveOrderAlgorithm::Mcts,
-        skill_level,
-        shuffling: true,
-        hash_move: None,
-        shuffle_seed: search_shuffle_seed(),
-    }
-}
-
-fn search_shuffle_seed() -> u64 {
-    std::time::SystemTime::now()
-        .duration_since(std::time::UNIX_EPOCH)
-        .map(|d| d.as_nanos() as u64)
-        .unwrap_or(0)
-}
+// Re-export the game-neutral error helper so `crate::api::kernel` can keep
+// its existing import path.
+pub(crate) use crate::engine_event::spawn_kernel_search_error;
 
 /// FRB required initialisation.  Called once at Flutter app startup before
 /// any other TGF function.  Do not remove.
@@ -384,23 +361,14 @@ pub fn native_mill_default_variant_options() -> MillVariantOptions {
 /// Number of legal actions from the Rust-native Othello initial position.
 #[flutter_rust_bridge::frb(sync)]
 pub fn native_othello_initial_legal_count() -> u32 {
-    let rules = OthelloRules::default();
-    let snap = rules.initial_state(&[]);
-    let mut actions = ActionList::<256>::new();
-    rules.legal_actions(&snap, &mut actions);
-    actions.len() as u32
+    crate::games::othello::initial_legal_count()
 }
 
 /// Run the generic Rust Searcher<OthelloGame> for one ply and return the
 /// selected destination node.
 #[flutter_rust_bridge::frb(sync)]
 pub fn native_othello_search_depth_one_best_to_node() -> i32 {
-    let rules = OthelloRules::default();
-    let game = OthelloGame;
-    let snap = rules.initial_state(&[]);
-    let mut wb = game.build_workbench(&snap);
-    let mut searcher = Searcher::<OthelloGame>::new();
-    searcher.search(&mut wb, 1).best_action.to_node as i32
+    crate::games::othello::search_depth_one_best_to_node()
 }
 
 // ---------------------------------------------------------------------------
@@ -444,14 +412,27 @@ pub enum MillSearchAlgorithm {
     Random,
 }
 
-impl From<MillSearchAlgorithm> for SearchAlgorithm {
+impl From<MillSearchAlgorithm> for MillAlgorithmInternal {
     fn from(alg: MillSearchAlgorithm) -> Self {
         match alg {
-            MillSearchAlgorithm::AlphaBeta => SearchAlgorithm::AlphaBeta,
-            MillSearchAlgorithm::Pvs => SearchAlgorithm::Pvs,
-            MillSearchAlgorithm::Mtdf => SearchAlgorithm::Mtdf,
-            MillSearchAlgorithm::Mcts => SearchAlgorithm::Mcts,
-            MillSearchAlgorithm::Random => SearchAlgorithm::Random,
+            MillSearchAlgorithm::AlphaBeta => MillAlgorithmInternal::AlphaBeta,
+            MillSearchAlgorithm::Pvs => MillAlgorithmInternal::Pvs,
+            MillSearchAlgorithm::Mtdf => MillAlgorithmInternal::Mtdf,
+            MillSearchAlgorithm::Mcts => MillAlgorithmInternal::Mcts,
+            MillSearchAlgorithm::Random => MillAlgorithmInternal::Random,
+        }
+    }
+}
+
+impl From<MillEngineConfig> for MillEngineConfigInternal {
+    fn from(cfg: MillEngineConfig) -> Self {
+        Self {
+            algorithm: cfg.algorithm.into(),
+            depth: cfg.depth,
+            move_time_ms: cfg.move_time_ms,
+            ai_is_lazy: cfg.ai_is_lazy,
+            last_best_value: cfg.last_best_value,
+            skill_level: cfg.skill_level,
         }
     }
 }
@@ -495,6 +476,11 @@ impl Default for MillEngineConfig {
     }
 }
 
+/// Game-neutral engine event POD shipped over the FRB stream API.
+///
+/// This struct is the wire format Dart sees; the helper constructors and
+/// spawn-and-emit logic live in `crate::engine_event` and
+/// `crate::games::*` respectively so this module stays a thin ABI shim.
 #[derive(Clone, Debug)]
 pub struct EngineEvent {
     pub kind: String,
@@ -502,76 +488,11 @@ pub struct EngineEvent {
     pub score: i32,
     pub nodes: u64,
     pub to_node: i32,
-    /// For bestMove events: the full UCI move string ("a4", "a1-a4", "xa4")
-    /// is stored here (P1-C.2).  For error events: the error message.
-    /// Using the existing `reason` field avoids adding new FRB bridge fields
-    /// that would require codegen; the Dart side already exposes `reason`.
+    /// For bestMove events: the full notation move string ("a4", "a1-a4",
+    /// "xa4" for Mill) plus auxiliary annotations such as `rawScore=N`.
+    /// For error events: the human-readable error message.  The Dart side
+    /// parses this loosely; new fields ride along here to avoid codegen.
     pub reason: String,
-}
-
-impl EngineEvent {
-    fn ready() -> Self {
-        Self::new("ready")
-    }
-
-    fn stopped() -> Self {
-        Self::new("stopped")
-    }
-
-    fn error(reason: &str) -> Self {
-        Self {
-            kind: "error".to_owned(),
-            depth: 0,
-            score: 0,
-            nodes: 0,
-            to_node: -1,
-            reason: reason.to_owned(),
-        }
-    }
-
-    fn info(depth: i32, score: i32, nodes: u64) -> Self {
-        Self {
-            kind: "info".to_owned(),
-            depth,
-            score,
-            nodes,
-            to_node: -1,
-            reason: String::new(),
-        }
-    }
-
-    /// Construct a bestMove event with complete action information (P1-C.2).
-    /// `root_side_to_move` is used to flip the score to White's perspective
-    /// (P1-C.1), matching master SearchEngine::emitCommand.
-    /// The full UCI move string is stored in `reason` for backwards-compatible
-    /// access without requiring FRB codegen update.
-    fn best_move_full(action: tgf_core::Action, score: i32, root_side_to_move: i8) -> Self {
-        let output_score = if root_side_to_move == 1 {
-            -score
-        } else {
-            score
-        };
-        let uci = crate::api::kernel::action_to_uci_str(action);
-        Self {
-            kind: "bestMove".to_owned(),
-            depth: action.from_node as i32,
-            score: output_score,
-            nodes: 0,
-            to_node: action.to_node as i32,
-            reason: format!("{uci} rawScore={score}"),
-        }
-    }
-
-    fn new(kind: &str) -> Self {
-        Self {
-            kind: kind.to_owned(),
-            depth: 0,
-            score: 0,
-            nodes: 0,
-            to_node: -1,
-            reason: String::new(),
-        }
-    }
 }
 
 /// Return the Rust-native standard 24-point Mill topology.
@@ -768,227 +689,42 @@ pub fn native_mill_search_zero_time_limit_aborts() -> bool {
     searcher.was_aborted()
 }
 
-/// Runs PVS on the given Mill snapshot and streams engine events.
-///
-/// Used by [crate::api::kernel::tgf_kernel_mill_search_events] and the
-/// parameterless smoke entry point below.
+/// Runs PVS on the given Mill snapshot and streams engine events.  This
+/// is a thin shim that delegates to the Mill-specific search dispatcher in
+/// `crate::games::mill::search` so this module does not carry any
+/// Mill-internal state.
 pub(crate) fn spawn_mill_pvs_event_stream(
     snapshot: tgf_core::GameStateSnapshot,
     options: NativeMillVariantOptions,
     depth: i32,
     sink: StreamSink<EngineEvent>,
 ) {
-    let config = MillEngineConfig {
-        depth,
-        ..Default::default()
-    };
-    spawn_mill_engine_config_event_stream(snapshot, options, config, sink);
+    spawn_mill_pvs_event_stream_internal(snapshot, options, depth, sink);
 }
 
 /// Launch a search thread using the full `MillEngineConfig`.  Emits one
 /// `info` event per IDS depth, then a final `bestMove` + `stopped`.
+/// Implementation lives in `crate::games::mill::search`.
 pub(crate) fn spawn_mill_engine_config_event_stream(
     snapshot: tgf_core::GameStateSnapshot,
     options: NativeMillVariantOptions,
     config: MillEngineConfig,
     sink: StreamSink<EngineEvent>,
 ) {
-    thread::spawn(move || {
-        if sink.add(EngineEvent::ready()).is_err() {
-            return;
-        }
-
-        let rules_options = options.clone();
-        let game = MillGame::new(options);
-        let mut wb = game.build_workbench(&snapshot);
-        let mut searcher = mill_searcher_default();
-        let search_context = MoveOrderContext {
-            algorithm: match SearchAlgorithm::from(config.algorithm) {
-                SearchAlgorithm::AlphaBeta => MoveOrderAlgorithm::AlphaBeta,
-                SearchAlgorithm::Pvs => MoveOrderAlgorithm::Pvs,
-                SearchAlgorithm::Mtdf => MoveOrderAlgorithm::Mtdf,
-                SearchAlgorithm::Mcts => MoveOrderAlgorithm::Mcts,
-                SearchAlgorithm::Random => MoveOrderAlgorithm::Random,
-            },
-            skill_level: config.skill_level,
-            shuffling: true,
-            hash_move: None,
-            shuffle_seed: search_shuffle_seed(),
-        };
-        searcher.set_move_order_context(search_context);
-
-        // Apply time limit if requested.
-        if config.move_time_ms > 0 {
-            searcher.set_options(SearchOptions {
-                time_limit_ms: Some(config.move_time_ms as u64),
-                move_order_context: search_context,
-                ..SearchOptions::default()
-            });
-        }
-
-        {
-            let mut active = ACTIVE_SEARCH.lock().expect("active search mutex poisoned");
-            *active = Some(searcher.abort_handle());
-        }
-
-        let requested_depth = if config.depth > 0 {
-            config.depth
-        } else {
-            let rules = MillRules::new(rules_options);
-            let state = MillRules::decode_snapshot(snapshot);
-            let runtime = EngineRuntimeOptions {
-                skill_level: config.skill_level,
-                draw_on_human_experience: true,
-                developer_mode: true,
-            };
-            recommended_search_depth(&state, rules.options(), &runtime).max(1)
-        };
-
-        // P2-G: AiIsLazy depth adjustment mirroring master executeSearch.
-        // np = lastBestValue / VALUE_EACH_PIECE (5); if np > 1 the position
-        // is clearly winning from the root side-to-move perspective, so cap
-        // origin_depth to 1 or 4. Do not use abs(): losing positions must not
-        // make the AI lazy.
-        const VALUE_EACH_PIECE: i32 = 5;
-        let origin_depth = if config.ai_is_lazy {
-            let np = config.last_best_value / VALUE_EACH_PIECE;
-            if np > 1 {
-                if requested_depth < 4 {
-                    1
-                } else {
-                    4
-                }
-            } else {
-                requested_depth.max(1)
-            }
-        } else {
-            requested_depth.max(1)
-        };
-        let max_depth = origin_depth;
-        let mut result = SearchResult::default_none();
-        let run_ids = config.move_time_ms > 0;
-        let mut first_guess = 0;
-
-        match SearchAlgorithm::from(config.algorithm) {
-            SearchAlgorithm::Random => {
-                // P2-J: use time-seeded random to match master's rand()+time() behaviour.
-                let seed = std::time::SystemTime::now()
-                    .duration_since(std::time::UNIX_EPOCH)
-                    .map(|d| d.as_secs())
-                    .unwrap_or(42);
-                searcher.set_random_seed(seed);
-                result = searcher.random_search(&mut wb);
-                let _ = sink.add(EngineEvent::info(1, result.score, result.nodes));
-            }
-            SearchAlgorithm::AlphaBeta | SearchAlgorithm::Pvs => {
-                if run_ids {
-                    for d in 2..max_depth {
-                        if searcher.was_aborted() {
-                            break;
-                        }
-                        result = searcher.search(&mut wb, d);
-                        first_guess = result.score;
-                        let _ = sink.add(EngineEvent::info(d, result.score, result.nodes));
-                    }
-                }
-                if !searcher.was_aborted() || result.best_action.is_none() {
-                    // Master executeSearch routes Algorithm 0 and 1 to the
-                    // same Search::search path; search_pvs remains available
-                    // as a Rust implementation but is not used for parity.
-                    result = searcher.search(&mut wb, max_depth);
-                    let _ = sink.add(EngineEvent::info(max_depth, result.score, result.nodes));
-                }
-            }
-            SearchAlgorithm::Mtdf => {
-                if run_ids {
-                    for d in 2..max_depth {
-                        if searcher.was_aborted() {
-                            break;
-                        }
-                        result = searcher.search_mtdf_with_guess(&mut wb, d, first_guess);
-                        first_guess = result.score;
-                        let _ = sink.add(EngineEvent::info(d, result.score, result.nodes));
-                    }
-                }
-                if !searcher.was_aborted() || result.best_action.is_none() {
-                    result = searcher.search_mtdf_with_guess(&mut wb, max_depth, first_guess);
-                    let _ = sink.add(EngineEvent::info(max_depth, result.score, result.nodes));
-                }
-            }
-            SearchAlgorithm::Mcts => {
-                // P2-I: skill_level * 2048 iterations (master ITERATIONS_PER_SKILL_LEVEL=2048).
-                // Empty board early stop: max_iterations = 1 when no pieces on board.
-                let pieces_on_board = wb.pieces_on_board();
-                let all_pieces_on_board = pieces_on_board[0] as u32 + pieces_on_board[1] as u32;
-                let skill_iterations = if all_pieces_on_board == 0 {
-                    1_u32
-                } else {
-                    u32::from(config.skill_level).saturating_mul(2048).max(1)
-                };
-                let mut mcts = MctsSearcher::<MillGame>::new();
-                let mcts_result = mcts.search_with_options(
-                    &mut wb,
-                    MctsOptions {
-                        iterations: skill_iterations,
-                        playout_depth: 6, // P2-I: master ALPHA_BETA_DEPTH=6
-                        time_limit_ms: if config.move_time_ms > 0 {
-                            Some(config.move_time_ms as u64)
-                        } else {
-                            None
-                        },
-                        exploration: 0.5,
-                        ab_assist_depth: 6, // P2-I: master ALPHA_BETA_DEPTH=6
-                        move_order_context: mcts_move_order_context(config.skill_level),
-                    },
-                );
-                let side = snapshot.side_to_move as usize;
-                let material_score = if side < 2 {
-                    let them = side ^ 1;
-                    let board = wb.pieces_on_board();
-                    let hand = wb.pieces_in_hand();
-                    (i32::from(board[side]) + i32::from(hand[side])
-                        - i32::from(board[them])
-                        - i32::from(hand[them]))
-                        * VALUE_EACH_PIECE
-                } else {
-                    0
-                };
-                result = SearchResult {
-                    best_action: mcts_result.best_action,
-                    score: material_score,
-                    nodes: mcts_result.visits as u64,
-                };
-                let _ = sink.add(EngineEvent::info(max_depth, result.score, result.nodes));
-            }
-        }
-
-        let _ = sink.add(EngineEvent::best_move_full(
-            result.best_action,
-            result.score,
-            snapshot.side_to_move,
-        ));
-        let _ = sink.add(EngineEvent::stopped());
-        let mut active = ACTIVE_SEARCH.lock().expect("active search mutex poisoned");
-        *active = None;
-    });
+    let internal_cfg: MillEngineConfigInternal = config.into();
+    spawn_mill_engine_config_event_stream_internal(snapshot, options, internal_cfg, sink);
 }
 
-pub(crate) fn spawn_kernel_search_error(message: String, sink: StreamSink<EngineEvent>) {
-    thread::spawn(move || {
-        let _ = sink.add(EngineEvent::error(&message));
-        let _ = sink.add(EngineEvent::stopped());
-    });
-}
-
-/// Phase 5 async search event stream.
+/// Async search event stream rooted at the Mill initial position.
 ///
-/// This is intentionally minimal: it spawns a worker thread, runs the native
-/// Rust Searcher<MillGame>, and emits Ready / Info / BestMove / Stopped.
-/// Later work replaces this with a cancellable long-lived search worker.
+/// Spawns a worker thread, runs the native Rust `Searcher<MillGame>`, and
+/// emits Ready / Info / BestMove / Stopped.  Used as a smoke-check entry
+/// point during development; production paths go through
+/// `tgf_kernel_mill_search_events*` instead.
 pub fn native_mill_search_events(depth: i32, sink: StreamSink<EngineEvent>) {
     let rules = MillRules::default();
     let snap = rules.initial_state(&[]);
-    spawn_mill_pvs_event_stream(snap, NativeMillVariantOptions::default(), depth, sink);
+    spawn_mill_pvs_event_stream_internal(snap, NativeMillVariantOptions::default(), depth, sink);
 }
 
 /// Request that the currently running native Rust search stops.
@@ -996,13 +732,7 @@ pub fn native_mill_search_events(depth: i32, sink: StreamSink<EngineEvent>) {
 /// Returns false when no native search worker is active.
 #[flutter_rust_bridge::frb(sync)]
 pub fn native_mill_search_stop() -> bool {
-    let active = ACTIVE_SEARCH.lock().expect("active search mutex poisoned");
-    if let Some(handle) = active.as_ref() {
-        handle.request_abort();
-        true
-    } else {
-        false
-    }
+    request_abort_active_search()
 }
 
 #[cfg(test)]
