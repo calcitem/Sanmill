@@ -720,6 +720,20 @@ fn shared_tt_with_capacity_mb_respects_requested_floor() {
 }
 
 #[test]
+fn shared_tt_prefetch_is_safe_for_arbitrary_keys() {
+    // Prefetch is a hint, not a correctness path; ensure it never
+    // panics or accesses out-of-bounds memory regardless of the input.
+    let tt = SharedTt::with_capacity_mb(1, 14);
+    tt.prefetch(0); // sentinel key: must early-return
+    tt.prefetch(0xdead_beef_cafe_babe_u64);
+    tt.prefetch(u64::MAX);
+    // Idempotent: calling repeatedly is allowed.
+    for k in 1_u64..1024 {
+        tt.prefetch(k);
+    }
+}
+
+#[test]
 fn searcher_clear_tt_uses_bump_age_not_physical_clear() {
     let game = KeyedGame;
     let mut wb = game.build_workbench(&GameStateSnapshot::default());

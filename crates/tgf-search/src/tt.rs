@@ -195,6 +195,52 @@ impl ClusteredTt {
             .filter(|s| s.load(Ordering::Relaxed) != 0)
             .count()
     }
+
+    /// Issue an architecture-specific prefetch hint for the cluster
+    /// that `key` would land in.  Mirrors master
+    /// `TranspositionTable::prefetch` (see `src/tt.cpp`) which emits a
+    /// `_mm_prefetch` for the bucket address before the search visits a
+    /// child node.  When `DISABLE_PREFETCH` is undefined (the master
+    /// default) this can save tens of ns per node on positions where
+    /// the TT spans an L2 / L3 boundary.
+    ///
+    /// On unsupported targets the call is a no-op so callers can wire
+    /// it unconditionally.
+    #[inline]
+    pub(crate) fn prefetch(&self, key: u64) {
+        if key == 0 {
+            return;
+        }
+        let ix = self.cluster_ix(key);
+        let cluster_ptr = self.clusters.as_ptr().wrapping_add(ix) as *const i8;
+        prefetch_read(cluster_ptr);
+    }
+}
+
+/// Architecture-specific prefetch hint helper.
+///
+/// On x86_64 we emit `_mm_prefetch(_, _MM_HINT_T0)` so the address is
+/// pulled into all cache levels closest to the core, matching the
+/// master `TT.prefetch` flag set used in C++.  On AArch64 we use the
+/// `prfm` PLDL1KEEP variant; on other targets the call is a no-op.
+#[inline]
+fn prefetch_read(addr: *const i8) {
+    #[cfg(target_arch = "x86_64")]
+    unsafe {
+        core::arch::x86_64::_mm_prefetch(addr, core::arch::x86_64::_MM_HINT_T0);
+    }
+    #[cfg(target_arch = "aarch64")]
+    unsafe {
+        core::arch::asm!(
+            "prfm pldl1keep, [{addr}]",
+            addr = in(reg) addr,
+            options(nostack, preserves_flags),
+        );
+    }
+    #[cfg(not(any(target_arch = "x86_64", target_arch = "aarch64")))]
+    {
+        let _ = addr;
+    }
 }
 
 pub(crate) struct TtPackedEntry;
@@ -409,6 +455,14 @@ impl SharedTt {
     /// debug logging and bench instrumentation.
     pub fn len_occupied(&self) -> usize {
         self.inner.len_occupied()
+    }
+
+    /// Architecture-specific prefetch hint for the cluster `key` would
+    /// land in.  See [`ClusteredTt::prefetch`] for the underlying
+    /// semantics.
+    #[inline]
+    pub fn prefetch(&self, key: u64) {
+        self.inner.prefetch(key);
     }
 }
 
