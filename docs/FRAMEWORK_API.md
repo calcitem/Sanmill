@@ -358,15 +358,39 @@ To add a deterministic perfect-information game:
 3. Implement `GameRules` for runtime boundary use.
 4. Implement `Game`, `Workbench`, and `Evaluator` for search.
 5. Add Rust tests for `legal_actions`, `apply`, `perft`, and search smoke.
+   End-to-end search regression tests against the generic
+   `tgf_search::Searcher` belong under `crates/tgf-<id>/tests/` so
+   `tgf-search` stays game-neutral.  `crates/tgf-mill/tests/searcher_integration.rs`
+   is the canonical example.
 6. Register the game id in
    `crates/tgf-frb/src/api/kernel.rs::build_rules_default` so the typed
    `tgf_kernel_create("<game_id>")` factory can route to it.
-7. Add a Flutter module under `lib/games/<id>`; for the session class,
+7. Add a per-game adapter module under `crates/tgf-frb/src/games/<id>/`.
+   It owns the FRB-internal helpers for that game (search-event spawn
+   functions, action ↔ notation codec, per-handle extras attached to the
+   kernel session via `crate::session_registry::put_extras`).  The
+   FRB-public DTOs and `pub fn` entry points stay in
+   `crates/tgf-frb/src/api/{simple,kernel}.rs` so the generated Dart
+   import paths remain stable.  `crates/tgf-frb/src/games/mill/` and
+   `crates/tgf-frb/src/games/othello/` are working references.
+8. If the CLI needs a UCI surface for the new game, drop a sibling
+   `<game>_uci.rs` next to `crates/tgf-cli/src/mill_uci.rs` and extend
+   the dispatch in `crates/tgf-cli/src/main.rs`.  Nothing in the entry
+   point file generalises today; adding a second adapter is purely
+   additive.
+9. Add a Flutter module under `lib/games/<id>/`; for the session class,
    subclass `OthelloGameSession`'s pattern (own a `TgfKernel`, translate
    actions through a small codec) — see
    `lib/games/othello/othello_game_session.dart`.
-8. Do not modify `tgf-core`, `tgf-search`, or `game_platform` unless the new
-   game exposes a real framework gap.
+10. If the new game needs to expose extra fields through the
+    framework-level `GameStateSnapshot.payload`, implement a
+    `TgfKernelExtraDecoder` (see
+    `lib/games/mill/mill_marked_pieces_codec.dart::MillKernelExtraDecoder`)
+    and register it from the module bootstrap via
+    `TgfKernelExtraRegistry.instance.register(GameId.<id>, …)`.  The
+    framework `TgfKernel` itself stays game-neutral.
+11. Do not modify `tgf-core`, `tgf-search`, or `game_platform` unless the
+    new game exposes a real framework gap.
 
 For stochastic tabletop games, add an opt-in `ChanceGame` extension trait later
 instead of changing `Game`.  For hidden-information card games, add an opt-in
