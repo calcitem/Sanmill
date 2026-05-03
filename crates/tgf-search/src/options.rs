@@ -76,6 +76,16 @@ pub struct SearchOptions {
     /// they save in cache misses.  Concrete games that override
     /// `key_after` with an O(1) xor path should enable this.
     pub enable_prefetch: bool,
+    /// Wrap each iterative-deepening iteration (depth >= 3) in an
+    /// aspiration window centered on the previous score ± delta.
+    /// Default `false` because master `executeSearch` does not use
+    /// aspiration windows -- every IDS iteration runs with the full
+    /// `[-VALUE_INFINITE, VALUE_INFINITE]` window, even though
+    /// `VALUE_PLACING_WINDOW` / `VALUE_MOVING_WINDOW` constants are
+    /// defined in `src/types.h`.  The Rust scaffold keeps aspiration
+    /// available behind this flag for users who want the extra NPS
+    /// boost on stable scores.
+    pub enable_aspiration_window: bool,
     pub move_order_context: MoveOrderContext,
 }
 
@@ -88,6 +98,8 @@ impl Default for SearchOptions {
             allow_null_move: false,
             shuffle_root: false,
             enable_prefetch: false,
+            // Master executeSearch does NOT use aspiration windows.
+            enable_aspiration_window: false,
             move_order_context: MoveOrderContext::default(),
         }
     }

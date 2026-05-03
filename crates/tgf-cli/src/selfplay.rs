@@ -219,6 +219,7 @@ fn play_one_game(
         allow_null_move: false,
         shuffle_root: false,
         enable_prefetch: false,
+        enable_aspiration_window: false,
         move_order_context,
     };
 

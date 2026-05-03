@@ -243,6 +243,8 @@ fn spawn_search(
         // do/undo round-trip, so prefetch's overhead exceeds its
         // benefit until the planned incremental Zobrist migration.
         enable_prefetch: false,
+        // Master executeSearch uses full windows for every IDS pass.
+        enable_aspiration_window: false,
         move_order_context: move_order_context(&cfg),
     };
     let depth = effective_search_depth(&options, &state, go.depth, &cfg);

@@ -47,14 +47,15 @@ impl<G: Game> Searcher<G> {
             return SearchResult::draw_short_circuit(short_circuit_reason);
         }
         let mut result = self.search_pvs(wb, 1);
+        let aspiration_enabled = self.options.enable_aspiration_window;
         for depth in 2..=max_depth {
             self.tt.bump_age();
             self.tt_age_bumps += 1;
-            if depth < 3 || result.score.abs() >= ASPIRATION_MAX_WINDOW {
-                // Full window for shallow depths or near-terminal scores.
+            if !aspiration_enabled || depth < 3 || result.score.abs() >= ASPIRATION_MAX_WINDOW {
+                // Master shape: full window for every IDS iteration.
                 result = self.search_pvs(wb, depth);
             } else {
-                // Aspiration window centered on previous score.
+                // Optional aspiration window centered on previous score.
                 let mut delta = ASPIRATION_DELTA;
                 let mut alpha = (result.score - delta).max(i32::MIN + 1);
                 let mut beta = (result.score + delta).min(i32::MAX - 1);
