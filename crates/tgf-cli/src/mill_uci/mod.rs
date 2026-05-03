@@ -16,9 +16,7 @@ use std::io::{self, BufRead};
 use std::sync::atomic::AtomicBool;
 use std::sync::{mpsc, Arc};
 use std::thread::{self, JoinHandle};
-use tgf_core::{
-    Game, GameRules, GameStateSnapshot, MoveOrderAlgorithm, MoveOrderContext, Workbench,
-};
+use tgf_core::{Game, GameRules, GameStateSnapshot, MoveOrderAlgorithm, MoveOrderContext};
 use tgf_mill::{
     recommended_search_depth, EngineRuntimeOptions, MillActionKind, MillGame, MillRules,
     MillVariantOptions,
@@ -404,9 +402,13 @@ fn run_mcts_search(wb: &mut tgf_mill::MillWorkbench, cfg: &EngineConfig) -> Sear
             move_order_context: move_order_context_with_algorithm(cfg, MoveOrderAlgorithm::Mcts),
         },
     );
+    // mcts_result.score now mirrors master `monte_carlo_tree_search`
+    // best_value (piece-count diff * VALUE_EACH_PIECE), so we no
+    // longer need to recompute mill_material_score(wb) here.
+    let _ = wb; // formerly fed mill_material_score
     SearchResult {
         best_action: mcts_result.best_action,
-        score: mill_material_score(wb),
+        score: mcts_result.score,
         nodes: mcts_result.visits as u64,
         draw_reason: None,
     }
@@ -471,20 +473,6 @@ fn move_order_context_with_algorithm(
         hash_move: None,
         shuffle_seed: search_shuffle_seed(),
     }
-}
-
-fn mill_material_score(wb: &tgf_mill::MillWorkbench) -> i32 {
-    let pieces = wb.pieces_on_board();
-    let in_hand = wb.pieces_in_hand();
-    let side = wb.side_to_move() as usize;
-    if side >= 2 {
-        return 0;
-    }
-    let opponent = side ^ 1;
-    (i32::from(pieces[side]) + i32::from(in_hand[side])
-        - i32::from(pieces[opponent])
-        - i32::from(in_hand[opponent]))
-        * 5
 }
 
 fn search_shuffle_seed() -> u64 {

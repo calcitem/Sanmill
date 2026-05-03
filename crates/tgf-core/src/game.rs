@@ -342,6 +342,23 @@ pub trait Game: 'static + Send + Sync {
         1
     }
 
+    /// Compute the post-MCTS material score reported alongside the
+    /// best move.  Mirrors master `monte_carlo_tree_search`
+    /// (src/mcts.cpp:391-395) which returns
+    /// the side-to-move material delta in piece-value units, computed
+    /// as `(on_board(stm) + in_hand(stm) - on_board(opp) - in_hand(opp))
+    /// * VALUE_EACH_PIECE`.
+    ///
+    /// Default uses the static evaluator, which is correct for any
+    /// game without a piece-bank concept.  Concrete games (Mill)
+    /// override to reproduce master's piece-difference formula so
+    /// FRB / UCI output keeps the same dimensional units as the
+    /// alpha-beta path.
+    #[inline]
+    fn mcts_terminal_score(wb: &Self::Workbench) -> i32 {
+        Self::Evaluator::score(wb)
+    }
+
     /// Pre-search short-circuit: when the root workbench is already
     /// a rule draw (50-move / N-move-rule, threefold repetition,
     /// endgame N-move-rule, agreed draw, ...), search has nothing to

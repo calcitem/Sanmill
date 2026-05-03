@@ -261,6 +261,27 @@ impl Game for MillGame {
         }
     }
 
+    /// Mill MCTS post-search material score, mirroring master
+    /// `monte_carlo_tree_search` (src/mcts.cpp:391-395):
+    ///   `(piece_on_board(stm) + piece_in_hand(stm)
+    ///     - piece_on_board(opp) - piece_in_hand(opp)) * VALUE_EACH_PIECE`
+    /// where VALUE_EACH_PIECE = 5 in master `src/types.h`.
+    #[inline]
+    fn mcts_terminal_score(wb: &Self::Workbench) -> i32 {
+        const VALUE_EACH_PIECE: i32 = 5;
+        let state = &wb.state;
+        let stm = state.side_to_move;
+        if !(0..2).contains(&stm) {
+            return 0;
+        }
+        let stm = stm as usize;
+        let opp = stm ^ 1;
+        (i32::from(state.pieces_on_board[stm]) + i32::from(state.pieces_in_hand[stm])
+            - i32::from(state.pieces_on_board[opp])
+            - i32::from(state.pieces_in_hand[opp]))
+            * VALUE_EACH_PIECE
+    }
+
     // Mill does NOT override `root_short_circuit_draw` (default `None`).
     //
     // Master `SearchEngine::executeSearch` (src/search_engine.cpp:432-453)

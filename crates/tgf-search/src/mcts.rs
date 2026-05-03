@@ -24,6 +24,13 @@ pub struct MctsResult {
     pub best_action: Action,
     pub visits: u32,
     pub wins: u32,
+    /// Material-style score (mirrors master `monte_carlo_tree_search`
+    /// `best_value` -- piece-count difference times `VALUE_EACH_PIECE`).
+    /// Computed via [`tgf_core::Game::mcts_terminal_score`] so the
+    /// FRB / UCI score column carries the same dimensional units as
+    /// the alpha-beta path; without this hook the MCTS path returned
+    /// raw rollout-win counts which were not comparable.
+    pub score: i32,
 }
 
 #[derive(Clone, Copy, Debug, PartialEq)]
@@ -219,6 +226,7 @@ impl<G: Game> MctsSearcher<G> {
                 best_action: Action::NONE,
                 visits: 0,
                 wins: 0,
+                score: G::mcts_terminal_score(wb),
             };
         }
 
@@ -298,13 +306,19 @@ impl<G: Game> MctsSearcher<G> {
                 best_action: Action::NONE,
                 visits: 0,
                 wins: 0,
+                score: G::mcts_terminal_score(wb),
             };
         };
 
+        // Master `monte_carlo_tree_search` calls best_value AFTER the
+        // worker loop and BEFORE the move is applied (src/mcts.cpp:391-395),
+        // i.e. at the root state.  The Workbench is here unwound to root,
+        // so `mcts_terminal_score(wb)` reads the right side-to-move.
         MctsResult {
             best_action: nodes[best_child].action,
             visits: nodes[best_child].visits(),
             wins: nodes[best_child].wins().max(0) as u32,
+            score: G::mcts_terminal_score(wb),
         }
     }
 
@@ -471,6 +485,12 @@ where
         }
     }
 
+    // Build a fresh root workbench so the master-style material score
+    // (Game::mcts_terminal_score) is reported in the same units as the
+    // alpha-beta path.
+    let score_wb = game.build_workbench(&snapshot);
+    let score = G::mcts_terminal_score(&score_wb);
+
     let Some((best_action, best_visits)) = visits_total
         .iter()
         .max_by_key(|(_, v)| *v)
@@ -480,6 +500,7 @@ where
             best_action: Action::NONE,
             visits: 0,
             wins: 0,
+            score,
         };
     };
     let best_wins = wins_total.get(&best_action).copied().unwrap_or(0);
@@ -487,6 +508,7 @@ where
         best_action,
         visits: best_visits.min(u32::MAX as u64) as u32,
         wins: best_wins.min(u32::MAX as u64) as u32,
+        score,
     }
 }
 

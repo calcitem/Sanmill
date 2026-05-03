@@ -320,21 +320,14 @@ pub(crate) fn spawn_mill_engine_config_event_stream(
                         move_order_context: mcts_move_order_context(config.skill_level),
                     },
                 );
-                let side = snapshot.side_to_move as usize;
-                let material_score = if side < 2 {
-                    let them = side ^ 1;
-                    let board = wb.pieces_on_board();
-                    let hand = wb.pieces_in_hand();
-                    (i32::from(board[side]) + i32::from(hand[side])
-                        - i32::from(board[them])
-                        - i32::from(hand[them]))
-                        * VALUE_EACH_PIECE
-                } else {
-                    0
-                };
+                // mcts_result.score now mirrors master MCTS best_value
+                // (piece-count diff * VALUE_EACH_PIECE) via
+                // tgf_core::Game::mcts_terminal_score; reuse it instead
+                // of recomputing locally so all MCTS callers stay
+                // consistent.
                 result = SearchResult {
                     best_action: mcts_result.best_action,
-                    score: material_score,
+                    score: mcts_result.score,
                     nodes: mcts_result.visits as u64,
                     draw_reason: None,
                 };
