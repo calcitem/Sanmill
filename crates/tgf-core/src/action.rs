@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
-// Phase 1 scaffold – Game-neutral Action POD type.
-// Full definition introduced in Phase 3 (tgf-mill Rust rewrite).
+// Game-neutral Action POD type plus auxiliary metadata
+// (`ActionTrail` for chained moves, `action_kind` canonical tags).
 
 /// Game-neutral action encoding.  POD-trivial so it can cross the
 /// FRB boundary without copy constructors.  Concrete games map their
@@ -38,6 +38,53 @@ impl Action {
 /// Stack-allocated bounded action list.
 /// 256 covers Mill / Chess / Checkers; bump the const-generic when needed.
 pub type ActionList<const N: usize = 256> = arrayvec::ArrayVec<Action, N>;
+
+/// Canonical [`Action::kind_tag`] values shared across games.
+///
+/// Concrete games still own their kind-tag namespace, but games that
+/// pick these defaults gain compatible move-classification across
+/// generic tooling (PGN export, search heuristics keyed on capture
+/// kinds, debugger UIs, …).
+///
+/// The numeric values are stable; new tags must be appended at the
+/// end so existing transposition-table fingerprints stay valid.
+///
+/// Mill currently uses 0 = Place, 1 = Move, 2 = Remove which match
+/// the canonical PLACE / MOVE / REMOVE constants.  Othello uses 0 =
+/// Place, also aligned.
+pub mod action_kind {
+    /// Place a piece from the hand / supply onto the board.
+    pub const PLACE: i16 = 0;
+    /// Move a piece between two existing board nodes.
+    pub const MOVE: i16 = 1;
+    /// Remove an opponent piece from the board.
+    pub const REMOVE: i16 = 2;
+    /// Capture-style move that performs an implicit removal as part
+    /// of the same Action (Othello flips, leap-capture moves).  Use
+    /// MOVE when the captured pieces are tracked separately via a
+    /// remove action; use CAPTURE when the move + capture are atomic.
+    pub const CAPTURE: i16 = 3;
+    /// Promote a piece (chess pawn promotion, checkers king).
+    pub const PROMOTE: i16 = 4;
+    /// Pass / skip turn (Othello forced pass, Go pass).
+    pub const PASS: i16 = 5;
+    /// Drop a piece from the hand back onto the board (Shogi /
+    /// Crazyhouse).
+    pub const DROP: i16 = 6;
+    /// Castling (chess) — encoded as the king's move, with the trail
+    /// recording the rook displacement.
+    pub const CASTLE: i16 = 7;
+    /// Resign (concede the game).
+    pub const RESIGN: i16 = 8;
+    /// Multi-hop chained move (Chinese Checkers chain of jumps,
+    /// International Checkers forced multi-jump capture).  Detail
+    /// lives in `ActionTrail`.
+    pub const HOP_CHAIN: i16 = 9;
+    /// Reveal a hidden piece (军棋 撞子 reveal-on-encounter).
+    pub const REVEAL: i16 = 10;
+    /// Stochastic chance outcome (双陆 dice roll, card draw).
+    pub const CHANCE: i16 = 11;
+}
 
 /// Auxiliary "trail" data describing the intermediate hops a single
 /// [`Action`] traverses.  The framework reserves this for games whose
@@ -168,6 +215,38 @@ mod tests {
         // Too many hops returns None instead of silently truncating.
         let too_many = (0..(ActionTrail::MAX as u16 + 1)).collect::<Vec<_>>();
         assert!(ActionTrail::from_hops(too_many).is_none());
+    }
+
+    #[test]
+    fn canonical_action_kind_constants_are_distinct() {
+        let tags = [
+            action_kind::PLACE,
+            action_kind::MOVE,
+            action_kind::REMOVE,
+            action_kind::CAPTURE,
+            action_kind::PROMOTE,
+            action_kind::PASS,
+            action_kind::DROP,
+            action_kind::CASTLE,
+            action_kind::RESIGN,
+            action_kind::HOP_CHAIN,
+            action_kind::REVEAL,
+            action_kind::CHANCE,
+        ];
+        let mut seen = std::collections::HashSet::new();
+        for tag in tags {
+            assert!(seen.insert(tag), "duplicate canonical kind tag {tag}");
+        }
+    }
+
+    #[test]
+    fn place_move_remove_match_mill_existing_layout() {
+        // Mill currently encodes 0 = Place, 1 = Move, 2 = Remove on
+        // its kind_tag namespace.  Document the alignment with a test
+        // so accidental drift surfaces immediately.
+        assert_eq!(action_kind::PLACE, 0);
+        assert_eq!(action_kind::MOVE, 1);
+        assert_eq!(action_kind::REMOVE, 2);
     }
 
     #[test]
