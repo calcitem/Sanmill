@@ -5,6 +5,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:sanmill/game_page/services/mill.dart' show PieceColor;
 import 'package:sanmill/game_page/widgets/mini_board.dart';
 import 'package:sanmill/shared/database/database.dart';
 
@@ -43,5 +44,14 @@ void main() {
     expect(tester.getSize(boardPainter), const Size(120, 120));
 
     await tester.pumpWidget(const SizedBox.shrink());
+  });
+
+  test('MiniBoardPainter parses a three-ring board layout', () {
+    final MiniBoardPainter painter = MiniBoardPainter(
+      boardLayout: 'O*******/********/*******@',
+    );
+
+    expect(painter.boardState[0], PieceColor.white);
+    expect(painter.boardState[23], PieceColor.black);
   });
 }
