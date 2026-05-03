@@ -36,7 +36,7 @@
 // the action sets / snapshots agree.
 
 use crate::{
-    action::{Action, ActionList},
+    action::{Action, ActionList, ActionTrail},
     board_topology::BoardTopology,
     game_state::{GameStateSnapshot, Outcome},
 };
@@ -149,6 +149,22 @@ pub trait GameRules: Send + Sync {
     }
     fn apply(&self, snap: &GameStateSnapshot, action: Action) -> GameStateSnapshot;
     fn outcome(&self, snap: &GameStateSnapshot) -> Outcome;
+
+    /// Describe the intermediate hops a single `Action` traverses.
+    ///
+    /// Default implementation returns an empty trail, which is the
+    /// correct answer for every game whose moves are single
+    /// `from -> to` steps (Mill, Chess except castling, Othello, …).
+    /// Games with multi-step actions (Chinese Checkers / Halma chains,
+    /// International Checkers forced jumps, chess castling animation)
+    /// override this to populate [`ActionTrail::hops`] so the shell
+    /// can render the move without re-deriving the path.
+    ///
+    /// Cold path: search never queries this; renderers, notation
+    /// codecs and PGN/SGF exporters do.
+    fn action_trail(&self, _snap: &GameStateSnapshot, _action: Action) -> ActionTrail {
+        ActionTrail::EMPTY
+    }
 }
 
 /// Compile-time game contract for the search hot path.  NOT object-safe.
