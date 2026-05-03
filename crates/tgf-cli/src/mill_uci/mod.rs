@@ -585,9 +585,15 @@ fn update_last_best_value(cfg: &mut EngineConfig, spawn: &SpawnResult) {
 }
 
 fn format_spawn_result(spawn: &SpawnResult) -> String {
-    // Mirror master SearchEngine::emitCommand (P1-C.1): the UCI score is
-    // always from White's perspective.  When Black is to move the raw
-    // search score (from the mover's perspective) is negated.
+    // Mirror master SearchEngine::emitCommand
+    // (src/search_engine.cpp:38-43, "outputValue = ... ? -bestvalue
+    // : bestvalue"): the UCI score is always reported from White's
+    // perspective.  When Black is to move the mover-relative search
+    // score is negated on the way out, while the internal
+    // `cfg.last_best_value` (used by ai_is_lazy depth capping) keeps
+    // the side-to-move convention.  The FRB engine_event helper
+    // applies the same swap independently for the Flutter shell --
+    // see `crates/tgf-frb/src/engine_event.rs::best_move_with_notation`.
     let output_score = if spawn.root_side_to_move == 1 {
         -spawn.result.score
     } else {
