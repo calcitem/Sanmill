@@ -1,9 +1,39 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
-// Phase 1 scaffold – Game trait family.
+// Game trait family used by every concrete game crate.
 //
-// Full implementations (MillGame, Searcher<G>) are introduced in Phases 4-5.
-// This module only defines the minimal trait shapes needed by tgf-frb so that
-// the workspace compiles end-to-end in Phase 1.
+// # Two-trait split (`GameRules` vs `Game`)
+//
+// Each concrete game implements TWO traits side-by-side:
+//
+//   * [`GameRules`] is object-safe and used at runtime boundaries
+//     (`tgf-core::GameKernel` / FRB / scripting).  It dispatches
+//     through `dyn GameRules` so a single binary can host multiple
+//     games at the same time.
+//
+//   * [`Game`] is the compile-time CRTP contract used by the search
+//     hot path (`Searcher<G: Game>`).  It uses associated types
+//     (`Workbench`, `Evaluator`) so do/undo/evaluate calls stay
+//     statically dispatched, matching the C++ engine's monomorphised
+//     fast path.
+//
+// ## Consistency invariant
+//
+// Both traits MUST agree on legal moves, transitions, and terminal
+// states for the same `GameStateSnapshot`.  Specifically:
+//
+//   * `GameRules::legal_actions(snap)` must enumerate the same set
+//     of actions as `Game::generate_legal(workbench)` where the
+//     workbench is `Game::build_workbench(snap)`.
+//   * `GameRules::apply(snap, a)` must produce the same successor
+//     snapshot as round-tripping through
+//     `wb.do_move(a) ; wb.snapshot()`.
+//
+// `tgf-core` cannot enforce this with a derive macro because the
+// associated `Workbench` type is opaque to the framework, but every
+// concrete game crate is expected to ship at least one regression
+// test (e.g. `tgf-mill::tests::game_rules_match_game_for_random_walk`)
+// that round-trips both surfaces over a few hundred ply and checks
+// the action sets / snapshots agree.
 
 use crate::{
     action::{Action, ActionList},
@@ -48,6 +78,60 @@ pub trait Workbench: Sized {
 /// compiler can inline them at generic instantiation sites without a vtable.
 pub trait Evaluator<W: Workbench> {
     fn score(wb: &W) -> i32;
+}
+
+/// Assert that a [`GameRules`] / [`Game`] pair agrees on legal moves
+/// and transitions for `snap`.  Concrete game crates plug their own
+/// `Game::build_workbench` / `GameRules::apply` together via this
+/// helper to catch divergences early.
+///
+/// Returns `Ok(())` when the two surfaces agree, or a human-readable
+/// diff string on the first mismatch (legal-action set, side after
+/// move, or post-apply snapshot).  Cheap enough to run in tests for
+/// random-walk corpora.
+///
+/// # Performance
+///
+/// Allocates two `ActionList<256>`s and one `Vec<Action>`; not for
+/// hot paths.  Use only in tests / fuzz harnesses.
+pub fn assert_game_rules_game_consistency<R, G>(
+    rules: &R,
+    game: &G,
+    snap: &GameStateSnapshot,
+) -> Result<(), String>
+where
+    R: GameRules + ?Sized,
+    G: Game,
+{
+    let mut rules_actions = ActionList::<256>::new();
+    rules.legal_actions(snap, &mut rules_actions);
+
+    let workbench = game.build_workbench(snap);
+    let mut game_actions = ActionList::<256>::new();
+    G::generate_legal(&workbench, &mut game_actions);
+
+    if rules_actions.len() != game_actions.len() {
+        return Err(format!(
+            "GameRules / Game disagree on legal-action count at snapshot \
+             phase_tag={}, side_to_move={}: rules={}, game={}",
+            snap.phase_tag,
+            snap.side_to_move,
+            rules_actions.len(),
+            game_actions.len(),
+        ));
+    }
+
+    for action in rules_actions.iter() {
+        if !game_actions.contains(action) {
+            return Err(format!(
+                "GameRules emitted action kind={} from={} to={} that Game did \
+                 not enumerate",
+                action.kind_tag, action.from_node, action.to_node,
+            ));
+        }
+    }
+
+    Ok(())
 }
 
 /// Object-safe trait used at the FRB / kernel boundary for runtime

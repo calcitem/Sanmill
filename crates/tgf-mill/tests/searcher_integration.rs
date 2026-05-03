@@ -9,7 +9,8 @@
 // end-to-end behaviour against a real, non-trivial game.
 
 use tgf_core::{
-    Action, ActionList, Evaluator, Game, GameRules, MoveOrderAlgorithm, MoveOrderContext,
+    assert_game_rules_game_consistency, Action, ActionList, Evaluator, Game, GameRules,
+    MoveOrderAlgorithm, MoveOrderContext,
 };
 use tgf_mill::{MillActionKind, MillEvaluator, MillGame, MillRules, MillVariantOptions};
 use tgf_search::{
@@ -464,5 +465,35 @@ fn mill_forced_root_move_returns_unique_score() {
         let result = searcher.search(&mut wb, 1);
         assert_eq!(result.score, VALUE_UNIQUE_ROOT_MOVE);
         assert!(!result.best_action.is_none());
+    }
+}
+
+/// Invariant: `MillRules::legal_actions` (object-safe runtime path) and
+/// `MillGame::generate_legal` (compile-time CRTP search path) must
+/// enumerate the same legal-action set for every snapshot.  Drift
+/// between these two surfaces is the most insidious class of bug
+/// because tests through one path won't surface it; this test pins the
+/// invariant for a deterministic random walk of 200 ply.
+#[test]
+fn mill_rules_and_game_agree_on_legal_actions_along_random_walk() {
+    let rules = MillRules::default();
+    let game = MillGame::default();
+    let mut snap = rules.initial_state(&[]);
+    let mut rng_state: u64 = 0x9E37_79B9_7F4A_7C15;
+
+    for _ in 0..200 {
+        assert_game_rules_game_consistency(&rules, &game, &snap)
+            .expect("GameRules and Game must enumerate the same legal actions");
+        let mut moves = ActionList::<256>::new();
+        rules.legal_actions(&snap, &mut moves);
+        if moves.is_empty() {
+            break;
+        }
+        rng_state ^= rng_state >> 12;
+        rng_state ^= rng_state << 25;
+        rng_state ^= rng_state >> 27;
+        let scrambled = rng_state.wrapping_mul(0x2545_F491_4F6C_DD1D);
+        let pick = (scrambled as usize) % moves.len();
+        snap = rules.apply(&snap, moves[pick]);
     }
 }

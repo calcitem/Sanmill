@@ -13,7 +13,10 @@ pub mod kernel;
 // Convenience re-exports for downstream crates.
 pub use action::{Action, ActionList};
 pub use board_topology::{BoardTopology, Decoration, Edge, UnitPoint, Zone};
-pub use game::{Evaluator, Game, GameRules, MoveOrderAlgorithm, MoveOrderContext, Workbench};
+pub use game::{
+    assert_game_rules_game_consistency, Evaluator, Game, GameRules, MoveOrderAlgorithm,
+    MoveOrderContext, Workbench,
+};
 pub use game_state::{GameStateSnapshot, Outcome, OutcomeKind, OPAQUE_PAYLOAD_LEN};
 pub use kernel::{GameKernel, KernelError};
 
