@@ -53,22 +53,30 @@ impl<G: Game> Searcher<G> {
         // recovery.  Killer / history bonuses stay gated on their own
         // toggles (default off in commit Phase 16).
         let mut score = G::move_order_bias_ctx(wb, action, &self.options.move_order_context);
-        if self
-            .killers
-            .get(&depth)
-            .is_some_and(|killer| *killer == action)
+        if self.options.enable_killers
+            && self
+                .killers
+                .get(&depth)
+                .is_some_and(|killer| *killer == action)
         {
             score += 100_000;
         }
-        score.saturating_add(self.history.get(&action).copied().unwrap_or_default())
+        if self.options.enable_history {
+            score = score.saturating_add(self.history.get(&action).copied().unwrap_or_default());
+        }
+        score
     }
 
     #[inline]
     pub(super) fn record_cutoff(&mut self, depth: i32, action: Action) {
-        self.killers.insert(depth, action);
-        let bonus = depth.max(1).saturating_mul(depth.max(1));
-        let entry = self.history.entry(action).or_insert(0);
-        *entry = entry.saturating_add(bonus);
+        if self.options.enable_killers {
+            self.killers.insert(depth, action);
+        }
+        if self.options.enable_history {
+            let bonus = depth.max(1).saturating_mul(depth.max(1));
+            let entry = self.history.entry(action).or_insert(0);
+            *entry = entry.saturating_add(bonus);
+        }
     }
 
     #[allow(dead_code)]

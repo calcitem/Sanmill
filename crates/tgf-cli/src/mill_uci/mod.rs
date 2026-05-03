@@ -246,6 +246,9 @@ fn spawn_search(
         enable_prefetch: false,
         // Master executeSearch uses full windows for every IDS pass.
         enable_aspiration_window: false,
+        // Master MovePicker has no killer / history tables.
+        enable_killers: false,
+        enable_history: false,
         move_order_context: move_order_context(&cfg),
     };
     let depth = effective_search_depth(&options, &state, go.depth, &cfg);

@@ -86,6 +86,17 @@ pub struct SearchOptions {
     /// available behind this flag for users who want the extra NPS
     /// boost on stable scores.
     pub enable_aspiration_window: bool,
+    /// Use a per-depth killer-move table to score quiet moves that
+    /// recently caused beta-cutoffs.  Default `false` because master
+    /// `MovePicker::score` does not maintain a killer table -- the
+    /// only quiet bonus there is `RATING_STAR_SQUARE` and the various
+    /// mill-formation / mill-block heuristics.  Enable to opt into
+    /// chess-style killer-heuristic move ordering.
+    pub enable_killers: bool,
+    /// Use the history-heuristic table (per-action accumulated
+    /// fail-high bonus).  Default `false` for the same reason as
+    /// `enable_killers`.
+    pub enable_history: bool,
     pub move_order_context: MoveOrderContext,
 }
 
@@ -100,6 +111,9 @@ impl Default for SearchOptions {
             enable_prefetch: false,
             // Master executeSearch does NOT use aspiration windows.
             enable_aspiration_window: false,
+            // Master MovePicker has no killer / history tables.
+            enable_killers: false,
+            enable_history: false,
             move_order_context: MoveOrderContext::default(),
         }
     }

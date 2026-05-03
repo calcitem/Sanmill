@@ -220,6 +220,8 @@ fn play_one_game(
         shuffle_root: false,
         enable_prefetch: false,
         enable_aspiration_window: false,
+        enable_killers: false,
+        enable_history: false,
         move_order_context,
     };
 
