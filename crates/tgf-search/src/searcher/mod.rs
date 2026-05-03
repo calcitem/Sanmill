@@ -25,6 +25,19 @@ mod move_order;
 mod qsearch;
 
 pub struct Searcher<G: Game> {
+    /// Per-search-instance node counter.
+    ///
+    /// Diff 11.2 alignment: master's `Search::search` uses
+    /// `static uint64_t nodeCounter` (src/search.cpp:312, 50) which
+    /// is a single global shared by every thread.  The C++ MCTS
+    /// driver spawns `hardware_concurrency()` workers that all bump
+    /// this static counter without synchronisation, so the
+    /// time-out check fires at non-deterministic intervals (a
+    /// known TODO in the master source).  The Rust port deliberately
+    /// keeps `nodes` per-Searcher: lazy-SMP / parallel MCTS workers
+    /// each get their own counter and their own timeout cadence,
+    /// which is correct.  No master alignment work is required for
+    /// this difference; the master behaviour is the bug.
     nodes: u64,
     tt_hits: u64,
     tt_misses: u64,

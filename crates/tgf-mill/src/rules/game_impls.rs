@@ -211,6 +211,21 @@ impl Game for MillGame {
         score
     }
 
+    /// Mill terminal-score for the searcher.  Mirrors master
+    /// `Search::search` (src/search.cpp:142-151) and
+    /// `Search::qsearch` (src/search.cpp:60-64), both of which take
+    /// `Eval::evaluate(*pos)` and add `+depth` for positive scores
+    /// (winning side, prefer faster wins) or subtract `depth` for
+    /// negative scores (losing side, prefer slower losses).
+    ///
+    /// Diff 8 alignment: the Rust mate-distance direction matches
+    /// master's `eval += depth` / `eval -= depth` exactly because
+    /// both branches accumulate `+distance` toward the absolute value
+    /// (Rust's winner-perspective branch returns +MATE+distance and
+    /// master's positive eval becomes positive_eval+depth; the loser-
+    /// perspective branch returns -MATE-distance which equals
+    /// negative_eval-depth in master).  Verified against
+    /// SEARCH_DIFF_REPORT.md.
     #[inline]
     fn terminal_score(wb: &Self::Workbench, perspective: i8, depth: i32) -> Option<i32> {
         if wb.state.phase != MillPhase::GameOver {
