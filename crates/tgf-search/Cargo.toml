@@ -11,7 +11,6 @@ tgf-core = { path = "../tgf-core" }
 
 [dev-dependencies]
 criterion = { version = "0.5", features = ["html_reports"] }
-tgf-mill = { path = "../tgf-mill" }
 
 [[bench]]
 name    = "searcher"

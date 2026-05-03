@@ -1,198 +1,123 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
-// Generic searcher benchmarks.
+// Game-neutral searcher benchmarks.
 //
-// These benchmarks lock in concrete numbers for the Rust hot path so the
-// migration plan's "≤5% NPS regression" gate has something to compare
-// against.  They are deliberately scoped to be cheap (every iteration
-// completes in well under 1 ms on a developer laptop) so CI can run the
-// full set on every PR without timeouts.
+// These benches exercise the generic searcher hot path against a tiny
+// mock game so the `tgf-search` crate stays game-agnostic.  The richer,
+// production-flavoured numbers are produced by `tgf-mill`'s benches and
+// the `tgf-cli` bench subcommand.
 //
 // Usage:
 //   cargo bench -p tgf-search
-//   cargo bench -p tgf-search -- mill_search_depth_2
-//
-// The bench results live under `target/criterion/` and are also
-// summarised by `cargo run --release -p tgf-cli -- bench`, which feeds
-// `tests/perf_baseline.toml`-compatible TOML to
-// `scripts/check_perf_baseline.py`.
 
 use criterion::{criterion_group, criterion_main, Criterion};
-use tgf_core::{Game, GameRules, MoveOrderAlgorithm, MoveOrderContext};
-use tgf_mill::{MillActionKind, MillGame, MillRules};
-use tgf_search::{
-    lazy_smp_search, perft, LazySmpWorker, MctsOptions, MctsSearcher, SearchOptions, SearchPolicy,
-    Searcher, SharedTt,
-};
+use tgf_core::{Action, ActionList, Evaluator, Game, GameStateSnapshot, Workbench};
+use tgf_search::{perft, Searcher};
 
-fn bench_mill_search_depth_1(c: &mut Criterion) {
-    c.bench_function("mill_search_depth_1", |b| {
-        let rules = MillRules::default();
-        let game = MillGame::default();
-        let snap = rules.initial_state(&[]);
-
-        b.iter(|| {
-            let mut wb = game.build_workbench(&snap);
-            let mut searcher = Searcher::<MillGame>::new();
-            searcher.search(&mut wb, 1)
-        });
-    });
+#[derive(Clone, Copy, Debug)]
+struct BenchWorkbench {
+    ply: u8,
+    side: i8,
 }
 
-fn bench_mill_search_depth_2(c: &mut Criterion) {
-    c.bench_function("mill_search_depth_2", |b| {
-        let rules = MillRules::default();
-        let game = MillGame::default();
-        let snap = rules.initial_state(&[]);
+impl Workbench for BenchWorkbench {
+    fn snapshot(&self) -> GameStateSnapshot {
+        GameStateSnapshot::default()
+    }
 
+    fn key(&self) -> u64 {
+        100 + u64::from(self.ply)
+    }
+
+    fn side_to_move(&self) -> i8 {
+        self.side
+    }
+
+    fn is_terminal(&self) -> bool {
+        self.ply >= 4
+    }
+
+    fn do_move(&mut self, _: Action) {
+        self.ply += 1;
+        self.side ^= 1;
+    }
+
+    fn undo_move(&mut self) {
+        self.ply -= 1;
+        self.side ^= 1;
+    }
+}
+
+struct BenchEvaluator;
+
+impl Evaluator<BenchWorkbench> for BenchEvaluator {
+    fn score(wb: &BenchWorkbench) -> i32 {
+        i32::from(wb.ply) * 10
+    }
+}
+
+#[derive(Clone)]
+struct BenchGame;
+
+impl Game for BenchGame {
+    type Workbench = BenchWorkbench;
+    type Evaluator = BenchEvaluator;
+
+    fn build_workbench(&self, _snap: &GameStateSnapshot) -> Self::Workbench {
+        BenchWorkbench { ply: 0, side: 0 }
+    }
+
+    fn generate_legal(wb: &Self::Workbench, out: &mut ActionList<256>) {
+        if wb.is_terminal() {
+            return;
+        }
+        for to in 0..4_i16 {
+            out.push(Action {
+                kind_tag: 0,
+                from_node: -1,
+                to_node: to,
+                aux: -1,
+                payload_bits: 0,
+            });
+        }
+    }
+}
+
+fn bench_search_depth_2(c: &mut Criterion) {
+    c.bench_function("generic_search_depth_2", |b| {
+        let game = BenchGame;
         b.iter(|| {
-            let mut wb = game.build_workbench(&snap);
-            let mut searcher = Searcher::<MillGame>::new();
+            let mut wb = game.build_workbench(&GameStateSnapshot::default());
+            let mut searcher = Searcher::<BenchGame>::new();
             searcher.search(&mut wb, 2)
         });
     });
 }
 
-fn bench_mill_pvs_depth_3(c: &mut Criterion) {
-    c.bench_function("mill_pvs_depth_3", |b| {
-        let rules = MillRules::default();
-        let game = MillGame::default();
-        let snap = rules.initial_state(&[]);
-
+fn bench_search_depth_3(c: &mut Criterion) {
+    c.bench_function("generic_search_depth_3", |b| {
+        let game = BenchGame;
         b.iter(|| {
-            let mut wb = game.build_workbench(&snap);
-            let mut searcher = Searcher::<MillGame>::new();
-            searcher.search_pvs(&mut wb, 3)
+            let mut wb = game.build_workbench(&GameStateSnapshot::default());
+            let mut searcher = Searcher::<BenchGame>::new();
+            searcher.search(&mut wb, 3)
         });
     });
 }
 
-fn bench_mill_perft_depth_2(c: &mut Criterion) {
-    c.bench_function("mill_perft_depth_2", |b| {
-        let rules = MillRules::default();
-        let game = MillGame::default();
-        let snap = rules.initial_state(&[]);
-
+fn bench_perft_depth_3(c: &mut Criterion) {
+    c.bench_function("generic_perft_depth_3", |b| {
+        let game = BenchGame;
         b.iter(|| {
-            let mut wb = game.build_workbench(&snap);
-            perft::<MillGame>(&mut wb, 2)
-        });
-    });
-}
-
-fn bench_mill_perft_mid_depth_3(c: &mut Criterion) {
-    c.bench_function("mill_perft_mid_depth_3", |b| {
-        let rules = MillRules::default();
-        let game = MillGame::default();
-        let snap = rules.no_mill_moving_phase_snapshot();
-
-        b.iter(|| {
-            let mut wb = game.build_workbench(&snap);
-            perft::<MillGame>(&mut wb, 3)
-        });
-    });
-}
-
-fn bench_mill_iterative_deepening_depth_3(c: &mut Criterion) {
-    c.bench_function("mill_iterative_deepening_depth_3", |b| {
-        let rules = MillRules::default();
-        let game = MillGame::default();
-        let snap = rules.initial_state(&[]);
-
-        b.iter(|| {
-            let mut wb = game.build_workbench(&snap);
-            let mut searcher = Searcher::<MillGame>::new();
-            searcher.iterative_deepening(&mut wb, 3)
-        });
-    });
-}
-
-fn bench_mill_lazy_smp_2_workers_depth_2(c: &mut Criterion) {
-    c.bench_function("mill_lazy_smp_2_workers_depth_2", |b| {
-        let rules = MillRules::default();
-        let game = MillGame::default();
-        let snap = rules.initial_state(&[]);
-
-        b.iter(|| {
-            let shared_tt = SharedTt::new(12);
-            lazy_smp_search::<MillGame>(
-                game.clone(),
-                snap,
-                2,
-                &[
-                    LazySmpWorker { extra_depth: 0 },
-                    LazySmpWorker { extra_depth: 1 },
-                ],
-                SearchOptions::default(),
-                shared_tt,
-                None,
-            )
-        });
-    });
-}
-
-fn bench_mill_mcts_default(c: &mut Criterion) {
-    c.bench_function("mill_mcts_default", |b| {
-        let rules = MillRules::default();
-        let game = MillGame::default();
-        let snap = rules.initial_state(&[]);
-
-        b.iter(|| {
-            let mut wb = game.build_workbench(&snap);
-            let mut mcts = MctsSearcher::<MillGame>::new();
-            mcts.set_random_seed(0xCAFE_BABE);
-            mcts.search_with_options(
-                &mut wb,
-                MctsOptions {
-                    iterations: 64,
-                    playout_depth: 4,
-                    time_limit_ms: None,
-                    exploration: 0.5,
-                    ab_assist_depth: 0,
-                    ..MctsOptions::default()
-                },
-            )
-        });
-    });
-}
-
-fn bench_mill_mcts_assist_depth_1(c: &mut Criterion) {
-    c.bench_function("mill_mcts_assist_depth_1", |b| {
-        let rules = MillRules::default();
-        let game = MillGame::default();
-        let snap = rules.initial_state(&[]);
-
-        b.iter(|| {
-            let mut wb = game.build_workbench(&snap);
-            let mut mcts = MctsSearcher::<MillGame>::new();
-            mcts.set_random_seed(0xCAFE_BABE);
-            mcts.set_policy(SearchPolicy {
-                remove_kind_tag: Some(MillActionKind::Remove as i16),
-            });
-            mcts.search_with_options(
-                &mut wb,
-                MctsOptions {
-                    iterations: 64,
-                    playout_depth: 4,
-                    time_limit_ms: None,
-                    exploration: 0.5,
-                    ab_assist_depth: 1,
-                    ..MctsOptions::default()
-                },
-            )
+            let mut wb = game.build_workbench(&GameStateSnapshot::default());
+            perft::<BenchGame>(&mut wb, 3)
         });
     });
 }
 
 criterion_group!(
     benches,
-    bench_mill_search_depth_1,
-    bench_mill_search_depth_2,
-    bench_mill_pvs_depth_3,
-    bench_mill_perft_depth_2,
-    bench_mill_perft_mid_depth_3,
-    bench_mill_iterative_deepening_depth_3,
-    bench_mill_lazy_smp_2_workers_depth_2,
-    bench_mill_mcts_default,
-    bench_mill_mcts_assist_depth_1,
+    bench_search_depth_2,
+    bench_search_depth_3,
+    bench_perft_depth_3,
 );
 criterion_main!(benches);

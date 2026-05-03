@@ -990,7 +990,9 @@ dependencies = [
 name = "tgf-mill"
 version = "0.1.0"
 dependencies = [
+ "criterion",
  "tgf-core",
+ "tgf-search",
 ]
 
 [[package]]
@@ -1008,7 +1010,6 @@ dependencies = [
  "criterion",
  "crossbeam-channel",
  "tgf-core",
- "tgf-mill",
 ]
 
 [[package]]

@@ -2044,68 +2044,7 @@ impl<G: Game> MctsSearcher<G> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use tgf_core::{Evaluator, GameRules, GameStateSnapshot, Workbench};
-    use tgf_mill::{MillActionKind, MillEvaluator, MillGame, MillRules, MillVariantOptions};
-
-    #[test]
-    fn mill_searcher_finds_a_legal_opening_action() {
-        let rules = MillRules::default();
-        let game = MillGame::default();
-        let snap = rules.initial_state(&[]);
-        let mut wb = game.build_workbench(&snap);
-        let mut searcher = Searcher::<MillGame>::new();
-
-        let result = searcher.search(&mut wb, 1);
-        assert!(!result.best_action.is_none());
-        assert_eq!(result.best_action.kind_tag, MillActionKind::Place as i16);
-        assert!(result.nodes > 0);
-    }
-
-    #[test]
-    fn mill_pvs_finds_a_legal_opening_action() {
-        let rules = MillRules::default();
-        let game = MillGame::default();
-        let snap = rules.initial_state(&[]);
-        let mut wb = game.build_workbench(&snap);
-        let mut searcher = Searcher::<MillGame>::new();
-
-        let result = searcher.search_pvs(&mut wb, 1);
-        assert!(!result.best_action.is_none());
-        assert_eq!(result.best_action.kind_tag, MillActionKind::Place as i16);
-        assert!(result.nodes > 0);
-    }
-
-    #[test]
-    fn mill_random_search_is_seeded_and_deterministic() {
-        let rules = MillRules::default();
-        let game = MillGame::default();
-        let snap = rules.initial_state(&[]);
-        let mut wb1 = game.build_workbench(&snap);
-        let mut wb2 = game.build_workbench(&snap);
-        let mut a = Searcher::<MillGame>::new();
-        let mut b = Searcher::<MillGame>::new();
-        a.set_random_seed(1234);
-        b.set_random_seed(1234);
-
-        assert_eq!(
-            a.random_search(&mut wb1).best_action,
-            b.random_search(&mut wb2).best_action
-        );
-
-        let mut shuffled_pick = Searcher::<MillGame>::new();
-        let mut direct_pick = Searcher::<MillGame>::new();
-        shuffled_pick.set_random_seed(2026);
-        direct_pick.set_random_seed(2026);
-        let mut wb3 = game.build_workbench(&snap);
-        let shuffled = shuffled_pick.random_search(&mut wb3).best_action;
-        let mut direct_moves = ActionList::<256>::new();
-        MillGame::generate_legal(&wb3, &mut direct_moves);
-        let direct = direct_moves[direct_pick.next_random_index(direct_moves.len())];
-        assert_ne!(
-            shuffled, direct,
-            "random search must shuffle before selecting the final index"
-        );
-    }
+    use tgf_core::{Evaluator, GameStateSnapshot, Workbench};
 
     #[derive(Clone, Copy, Debug)]
     struct SameSideWorkbench {
@@ -2132,8 +2071,9 @@ mod tests {
 
         fn do_move(&mut self, _a: Action) {
             self.moved = true;
-            // Intentionally keep side unchanged to model a mill-removal
-            // obligation.  The search must NOT negate this branch.
+            // Intentionally keep side unchanged to model a "same-side"
+            // continuation obligation (e.g. a removal phase).  The search
+            // must NOT negate this branch.
             self.side = 0;
         }
 
@@ -2394,6 +2334,7 @@ mod tests {
         }
     }
 
+    #[derive(Clone)]
     struct KeyedGame;
 
     impl tgf_core::Game for KeyedGame {
@@ -2475,10 +2416,10 @@ mod tests {
         assert_eq!(pool.worker_count(), 2);
 
         let a = pool.submit(|| 21 + 21);
-        let b = pool.submit(|| "mill".to_owned());
+        let b = pool.submit(|| "tgf".to_owned());
 
         assert_eq!(a.recv().expect("worker should return result"), 42);
-        assert_eq!(b.recv().expect("worker should return result"), "mill");
+        assert_eq!(b.recv().expect("worker should return result"), "tgf");
     }
 
     #[test]
@@ -2491,26 +2432,21 @@ mod tests {
     }
 
     #[test]
-    fn mill_iterative_deepening_returns_deepest_result() {
-        let rules = MillRules::default();
-        let game = MillGame::default();
-        let snap = rules.initial_state(&[]);
-        let mut wb = game.build_workbench(&snap);
-        let mut searcher = Searcher::<MillGame>::new();
+    fn iterative_deepening_returns_deepest_result_on_mock_game() {
+        let game = KeyedGame;
+        let mut wb = game.build_workbench(&GameStateSnapshot::default());
+        let mut searcher = Searcher::<KeyedGame>::new();
 
         let result = searcher.iterative_deepening(&mut wb, 2);
         assert!(!result.best_action.is_none());
-        assert_eq!(result.best_action.kind_tag, MillActionKind::Place as i16);
         assert!(result.nodes > 0);
     }
 
     #[test]
-    fn mill_mtdf_returns_a_finite_score() {
-        let rules = MillRules::default();
-        let game = MillGame::default();
-        let snap = rules.initial_state(&[]);
-        let mut wb = game.build_workbench(&snap);
-        let mut searcher = Searcher::<MillGame>::new();
+    fn mtdf_returns_a_finite_score_on_mock_game() {
+        let game = KeyedGame;
+        let mut wb = game.build_workbench(&GameStateSnapshot::default());
+        let mut searcher = Searcher::<KeyedGame>::new();
 
         let score = searcher.mtdf(&mut wb, 0, 1);
         assert!(score > i32::MIN + 1);
@@ -2529,14 +2465,17 @@ mod tests {
     }
 
     #[test]
-    fn mill_qsearch_accepts_remove_policy() {
-        let rules = MillRules::default();
-        let game = MillGame::default();
-        let snap = rules.initial_state(&[]);
-        let mut wb = game.build_workbench(&snap);
-        let mut searcher = Searcher::<MillGame>::new();
+    fn qsearch_accepts_remove_policy_on_mock_game() {
+        let game = KeyedGame;
+        let mut wb = game.build_workbench(&GameStateSnapshot::default());
+        let mut searcher = Searcher::<KeyedGame>::new();
+        // remove_kind_tag = 0 happens to match the KeyedGame action kind,
+        // which lets the qsearch extension exercise the recursive remove
+        // branch without dragging in a concrete game crate.  The exact tag
+        // value is irrelevant; the assertion only checks that the call is
+        // accepted and returns a finite, reasonable score.
         searcher.set_policy(SearchPolicy {
-            remove_kind_tag: Some(MillActionKind::Remove as i16),
+            remove_kind_tag: Some(0),
         });
 
         let score = searcher.qsearch(&mut wb, i32::MIN + 1, i32::MAX - 1);
@@ -2546,12 +2485,11 @@ mod tests {
 
     #[test]
     fn lazy_smp_search_runs_workers_against_shared_tt() {
-        let rules = MillRules::default();
-        let game = MillGame::default();
-        let snapshot = rules.initial_state(&[]);
+        let game = KeyedGame;
+        let snapshot = GameStateSnapshot::default();
         let shared_tt = SharedTt::new(12);
 
-        let result = lazy_smp_search::<MillGame>(
+        let result = lazy_smp_search::<KeyedGame>(
             game,
             snapshot,
             2,
@@ -2565,7 +2503,6 @@ mod tests {
         );
 
         assert!(!result.best_action.is_none());
-        assert_eq!(result.best_action.kind_tag, MillActionKind::Place as i16);
         // Workers ran with the same TT, so it must have observable contents.
         assert!(shared_tt.len_occupied() > 0);
     }
@@ -2623,39 +2560,11 @@ mod tests {
         assert_eq!(at_zero - at_minus_three, 3);
     }
 
-    /// `n_move_rule=1` collapses every reversible moving-phase move to a
-    /// draw.  The Phase::GameOver branch of `MillEvaluator::score` must
-    /// return `0` when neither the fly-mate nor the LoseFewerThanThree
-    /// triggers apply, regardless of perspective.  This is the test the
-    /// legacy material-only evaluator passed; the new evaluator preserves
-    /// the contract for the GameOver-Draw case while extending the
-    /// placing/moving branches with mobility and mill-count terms.
-    #[test]
-    fn mill_search_scores_n_move_rule_draw_as_zero() {
-        let options = MillVariantOptions::default();
-        let rules = MillRules::new(options.clone());
-        let game = MillGame::new(options);
-        // Build a balanced GameOver position via FEN: phase 'o', equal
-        // material, no fly-mate, no stalemate flags.  The evaluator's
-        // GameOver branch must therefore return exactly 0.
-        // Sparse layout: 9 white + 9 black with plenty of empty squares so
-        // is_all_surrounded(side=WHITE) is false and the GameOver branch
-        // falls through to the explicit `0` return.
-        let fen = "O*O*O*O*/*@*@*@*@/O@O@O@O@ w o p 9 0 9 0 0 0 0 0 0 0 0 0 1";
-        let state = rules.set_from_fen(fen).expect("valid FEN");
-        let snap = rules.encode_state(state);
-        let wb = game.build_workbench(&snap);
-
-        assert_eq!(MillEvaluator::score(&wb), 0);
-    }
-
     #[test]
     fn node_limit_marks_search_as_aborted() {
-        let rules = MillRules::default();
-        let game = MillGame::default();
-        let snap = rules.initial_state(&[]);
-        let mut wb = game.build_workbench(&snap);
-        let mut searcher = Searcher::<MillGame>::new();
+        let game = KeyedGame;
+        let mut wb = game.build_workbench(&GameStateSnapshot::default());
+        let mut searcher = Searcher::<KeyedGame>::new();
         searcher.set_options(SearchOptions {
             depth_extension: false,
             node_limit: Some(1),
@@ -2670,11 +2579,9 @@ mod tests {
 
     #[test]
     fn depth_extension_option_is_accepted() {
-        let rules = MillRules::default();
-        let game = MillGame::default();
-        let snap = rules.initial_state(&[]);
-        let mut wb = game.build_workbench(&snap);
-        let mut searcher = Searcher::<MillGame>::new();
+        let game = KeyedGame;
+        let mut wb = game.build_workbench(&GameStateSnapshot::default());
+        let mut searcher = Searcher::<KeyedGame>::new();
         searcher.set_options(SearchOptions {
             depth_extension: true,
             node_limit: None,
@@ -2689,11 +2596,9 @@ mod tests {
 
     #[test]
     fn wall_clock_time_limit_marks_search_as_aborted() {
-        let rules = MillRules::default();
-        let game = MillGame::default();
-        let snap = rules.initial_state(&[]);
-        let mut wb = game.build_workbench(&snap);
-        let mut searcher = Searcher::<MillGame>::new();
+        let game = KeyedGame;
+        let mut wb = game.build_workbench(&GameStateSnapshot::default());
+        let mut searcher = Searcher::<KeyedGame>::new();
         searcher.set_options(SearchOptions {
             depth_extension: false,
             node_limit: None,
@@ -2707,156 +2612,50 @@ mod tests {
     }
 
     #[test]
-    fn perft_initial_position_returns_24_at_depth_one() {
-        let rules = MillRules::default();
-        let game = MillGame::default();
-        let snap = rules.initial_state(&[]);
-        let mut wb = game.build_workbench(&snap);
+    fn perft_visits_every_legal_action_on_mock_game() {
+        let game = KeyedGame;
+        let mut wb = game.build_workbench(&GameStateSnapshot::default());
 
-        assert_eq!(perft::<MillGame>(&mut wb, 0), 1);
-        assert_eq!(perft::<MillGame>(&mut wb, 1), 24);
+        // Depth 0 always counts a single leaf at the root.
+        assert_eq!(perft::<KeyedGame>(&mut wb, 0), 1);
+        // Depth 1 enumerates the two legal actions.
+        assert_eq!(perft::<KeyedGame>(&mut wb, 1), 2);
     }
 
     #[test]
     fn external_abort_handle_can_request_abort() {
-        let rules = MillRules::default();
-        let game = MillGame::default();
-        let snap = rules.initial_state(&[]);
-        let mut wb = game.build_workbench(&snap);
-        let mut searcher = Searcher::<MillGame>::new();
+        let game = KeyedGame;
+        let mut wb = game.build_workbench(&GameStateSnapshot::default());
+        let mut searcher = Searcher::<KeyedGame>::new();
         let handle = searcher.abort_handle();
         handle.request_abort();
 
         let _ = searcher.search(&mut wb, 3);
         // Root search no longer clears the shared abort flag, so a stop
         // requested through the handle before the search even starts is
-        // honoured immediately on the first abort poll.  This matches how
-        // a UCI `stop` racing with `go infinite` should behave.
+        // honoured immediately on the first abort poll.
         assert!(searcher.was_aborted());
         handle.request_abort();
         assert!(handle.is_aborted());
     }
 
     #[test]
-    fn mill_mcts_returns_a_legal_opening_action() {
-        let rules = MillRules::default();
-        let game = MillGame::default();
-        let snap = rules.initial_state(&[]);
-        let mut wb = game.build_workbench(&snap);
-        let mut mcts = MctsSearcher::<MillGame>::new();
+    fn mcts_returns_a_legal_action_on_mock_game() {
+        let game = KeyedGame;
+        let mut wb = game.build_workbench(&GameStateSnapshot::default());
+        let mut mcts = MctsSearcher::<KeyedGame>::new();
         mcts.set_random_seed(2026);
 
         let result = mcts.search(&mut wb, 2, 2);
         assert!(!result.best_action.is_none());
-        assert_eq!(result.best_action.kind_tag, MillActionKind::Place as i16);
         assert!(result.visits > 0);
     }
 
     #[test]
-    fn mcts_with_ab_assist_picks_immediate_mill() {
-        // White has two pieces on a3/c3 and can form the mill a3-b3-c3 by
-        // placing on b3.  With ab_assist_depth=1 the MCTS simulation
-        // correctly sees this as a high-value move and should prefer it.
-        use tgf_mill::MillActionKind;
-
-        let rules = MillRules::default();
-
-        // Build a position where White is to place and has an immediate mill.
-        // Nodes: 0=a7, 1=d7, 2=g7 (top mill line for default 9MM).
-        // White places two pieces on nodes 0 and 2, then it is White's turn
-        // to place.  Placing on node 1 (d7) forms a mill.
-        let snap = {
-            let mut s = rules.initial_state(&[]);
-            // Place White on node 0.
-            s = rules.apply(
-                &s,
-                tgf_core::Action {
-                    kind_tag: MillActionKind::Place as i16,
-                    from_node: -1,
-                    to_node: 0,
-                    aux: -1,
-                    payload_bits: 0,
-                },
-            );
-            // Place Black somewhere neutral (node 6).
-            s = rules.apply(
-                &s,
-                tgf_core::Action {
-                    kind_tag: MillActionKind::Place as i16,
-                    from_node: -1,
-                    to_node: 6,
-                    aux: -1,
-                    payload_bits: 0,
-                },
-            );
-            // Place White on node 2.
-            s = rules.apply(
-                &s,
-                tgf_core::Action {
-                    kind_tag: MillActionKind::Place as i16,
-                    from_node: -1,
-                    to_node: 2,
-                    aux: -1,
-                    payload_bits: 0,
-                },
-            );
-            // Place Black somewhere neutral (node 5).
-            s = rules.apply(
-                &s,
-                tgf_core::Action {
-                    kind_tag: MillActionKind::Place as i16,
-                    from_node: -1,
-                    to_node: 5,
-                    aux: -1,
-                    payload_bits: 0,
-                },
-            );
-            s // White to move: placing on node 1 forms mill 0-1-2.
-        };
-
-        let game = MillGame::default();
-        let mut wb = game.build_workbench(&snap);
-
-        let mut mcts = MctsSearcher::<MillGame>::new();
-        mcts.set_random_seed(42);
-        mcts.set_policy(SearchPolicy {
-            remove_kind_tag: Some(MillActionKind::Remove as i16),
-        });
-
-        let result = mcts.search_with_options(
-            &mut wb,
-            MctsOptions {
-                iterations: 64,
-                playout_depth: 4,
-                time_limit_ms: None,
-                exploration: 0.5,
-                ab_assist_depth: 1,
-                move_order_context: MoveOrderContext {
-                    algorithm: tgf_core::MoveOrderAlgorithm::Mcts,
-                    ..MoveOrderContext::default()
-                },
-            },
-        );
-
-        assert!(
-            !result.best_action.is_none(),
-            "MCTS with ab_assist must return a legal action"
-        );
-        // The immediate mill-forming move is to_node=1.  With ab_assist_depth=1
-        // the searcher should strongly prefer it.
-        assert_eq!(
-            result.best_action.to_node, 1,
-            "MCTS+AB should select the mill-forming move at node 1"
-        );
-    }
-
-    #[test]
-    fn mill_mcts_options_accept_time_limit() {
-        let rules = MillRules::default();
-        let game = MillGame::default();
-        let snap = rules.initial_state(&[]);
-        let mut wb = game.build_workbench(&snap);
-        let mut mcts = MctsSearcher::<MillGame>::new();
+    fn mcts_options_accept_time_limit_on_mock_game() {
+        let game = KeyedGame;
+        let mut wb = game.build_workbench(&GameStateSnapshot::default());
+        let mut mcts = MctsSearcher::<KeyedGame>::new();
         mcts.set_random_seed(2026);
 
         let result = mcts.search_with_options(
@@ -2958,11 +2757,9 @@ mod tests {
 
     #[test]
     fn searcher_clear_tt_uses_bump_age_not_physical_clear() {
-        let rules = MillRules::default();
-        let game = MillGame::default();
-        let snap = rules.initial_state(&[]);
-        let mut wb = game.build_workbench(&snap);
-        let mut searcher = Searcher::<MillGame>::new();
+        let game = KeyedGame;
+        let mut wb = game.build_workbench(&GameStateSnapshot::default());
+        let mut searcher = Searcher::<KeyedGame>::new();
 
         searcher.search(&mut wb, 1);
         assert_eq!(searcher.tt_age_bumps(), 0);
@@ -2975,11 +2772,9 @@ mod tests {
 
     #[test]
     fn iterative_deepening_bumps_age_between_depths() {
-        let rules = MillRules::default();
-        let game = MillGame::default();
-        let snap = rules.initial_state(&[]);
-        let mut wb = game.build_workbench(&snap);
-        let mut searcher = Searcher::<MillGame>::new();
+        let game = KeyedGame;
+        let mut wb = game.build_workbench(&GameStateSnapshot::default());
+        let mut searcher = Searcher::<KeyedGame>::new();
 
         let result = searcher.iterative_deepening(&mut wb, 3);
         // Depth 1→2 and 2→3 each bump once, so 2 bumps for max_depth=3.

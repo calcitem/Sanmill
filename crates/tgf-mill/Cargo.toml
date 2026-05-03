@@ -7,3 +7,14 @@ license     = "GPL-3.0-or-later"
 
 [dependencies]
 tgf-core = { path = "../tgf-core" }
+
+[dev-dependencies]
+# tgf-search powers the integration tests below that exercise the generic
+# searcher against MillGame.  Keeping these tests in tgf-mill keeps
+# tgf-search game-neutral while still validating end-to-end behaviour.
+tgf-search = { path = "../tgf-search" }
+criterion  = { version = "0.5", features = ["html_reports"] }
+
+[[bench]]
+name    = "searcher"
+harness = false
