@@ -8,6 +8,7 @@
 // from touching the entry point.
 
 mod mill_uci;
+mod uci_adapter;
 
 fn main() {
     let mut args = std::env::args().skip(1);
