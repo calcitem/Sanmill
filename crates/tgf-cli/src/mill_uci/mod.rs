@@ -343,11 +343,44 @@ fn run_configured_search(
             }
         }
     }
-    if !searcher.was_aborted() || best_so_far.best_action.is_none() {
+    let mut result = if !searcher.was_aborted() || best_so_far.best_action.is_none() {
         run_algorithm_at_depth(searcher, &mut wb, cfg, depth, value)
     } else {
         best_so_far
+    };
+
+    // Fallback chain mirroring master SearchEngine::executeSearch
+    // (src/search_engine.cpp:643-680).  When the main search returns
+    // no best move, master tries a fixed depth=4 quick search; if that
+    // still fails it calls Search::random_search.  In _DEBUG master
+    // skips the random fallback to keep the bug surface obvious.  We
+    // surface the same pattern: assert(false) in debug, depth-4 +
+    // random in release.
+    if result.best_action.is_none() {
+        debug_assert!(
+            false,
+            "main search returned MOVE_NONE; bug must be diagnosed before \
+             release-mode fallback masks it",
+        );
+        let mut quick_searcher = mill_searcher();
+        quick_searcher.set_options(SearchOptions {
+            depth_extension: cfg.depth_extension,
+            ..SearchOptions::default()
+        });
+        // Fresh workbench: master rewinds via Sanmill::Stack<Position>;
+        // here we just rebuild from the original snapshot.
+        let mut quick_wb = MillGame::new(options.clone()).build_workbench(&state);
+        let quick_result = quick_searcher.search(&mut quick_wb, 4);
+        if !quick_result.best_action.is_none() {
+            result = quick_result;
+        } else {
+            let mut rand_searcher = mill_searcher();
+            rand_searcher.set_random_seed(search_shuffle_seed());
+            let mut rand_wb = MillGame::new(options).build_workbench(&state);
+            result = rand_searcher.random_search(&mut rand_wb);
+        }
     }
+    result
 }
 
 fn run_algorithm_at_depth(
