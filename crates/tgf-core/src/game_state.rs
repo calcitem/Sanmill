@@ -42,12 +42,101 @@ impl Default for GameStateSnapshot {
 }
 
 /// Coarse game outcome renderable by the shared shell UI.
+///
+/// Two-player games emit `Win(player)`; multi-player team games
+/// (军棋 4 人对战, Halma 6 人 3 队 …) emit `WinTeam(team)` with the
+/// team id whose payoff is +1.
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub enum OutcomeKind {
     Ongoing,
-    Win(i8), // winning player index
+    /// Single-player victory; payload is the winning player id (matches
+    /// `GameStateSnapshot::side_to_move` numbering).
+    Win(i8),
+    /// Team victory (multi-player games only); payload is the winning
+    /// team id from [`MultiPlayerInfo::team_of`].
+    WinTeam(u8),
     Draw,
     Abandoned,
+}
+
+/// Optional multi-player metadata describing the player count and
+/// team layout of a game session.  Two-player games leave this at
+/// [`MultiPlayerInfo::two_player_default`] and never need to look at
+/// it.
+///
+/// Concrete games expose this through
+/// [`crate::GameRules::multi_player_info`] so the FRB layer / shell
+/// can render team-aware UI (turn-order indicators, team colours,
+/// `WinTeam` renderers) without per-game branches.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub struct MultiPlayerInfo {
+    /// Number of distinct players (1..=8).
+    pub player_count: u8,
+    /// `team_of[i]` is the team id (0..=7) of player `i`.  Players in
+    /// the same team share win/loss outcomes.  Default: every player
+    /// is in its own team (`team_of[i] = i`).
+    pub team_of: [u8; 8],
+    /// Turn order; `turn_order[i]` is the player id that plays on the
+    /// i-th ply.  Default: `[0, 1, ..., player_count - 1]`.
+    pub turn_order: [u8; 8],
+}
+
+impl MultiPlayerInfo {
+    /// Standard two-player free-for-all metadata.  Matches every
+    /// existing game in the framework.
+    #[inline]
+    pub const fn two_player_default() -> Self {
+        Self {
+            player_count: 2,
+            team_of: [0, 1, 2, 3, 4, 5, 6, 7],
+            turn_order: [0, 1, 2, 3, 4, 5, 6, 7],
+        }
+    }
+
+    /// Construct a free-for-all (every player in its own team) layout
+    /// for `player_count` players using the default sequential turn
+    /// order.
+    #[inline]
+    pub const fn free_for_all(player_count: u8) -> Self {
+        assert!(
+            player_count >= 1 && player_count <= 8,
+            "player_count must be 1..=8",
+        );
+        Self {
+            player_count,
+            team_of: [0, 1, 2, 3, 4, 5, 6, 7],
+            turn_order: [0, 1, 2, 3, 4, 5, 6, 7],
+        }
+    }
+
+    /// True when the metadata describes a single team per player
+    /// (i.e. no alliances).
+    #[inline]
+    pub fn is_free_for_all(&self) -> bool {
+        for i in 0..self.player_count as usize {
+            if self.team_of[i] != i as u8 {
+                return false;
+            }
+        }
+        true
+    }
+
+    /// Team id of `player`, or `None` when `player` is out of range.
+    #[inline]
+    pub fn team_of(&self, player: u8) -> Option<u8> {
+        if player < self.player_count {
+            Some(self.team_of[player as usize])
+        } else {
+            None
+        }
+    }
+}
+
+impl Default for MultiPlayerInfo {
+    #[inline]
+    fn default() -> Self {
+        Self::two_player_default()
+    }
 }
 
 /// Full outcome including a stable reason token the shell maps to l10n text.
@@ -158,6 +247,47 @@ mod tests {
         let draw = Outcome::draw(canonical_reason::THREEFOLD_REPETITION);
         assert_eq!(draw.kind, OutcomeKind::Draw);
         assert_eq!(draw.reason, "threefoldRepetition");
+    }
+
+    #[test]
+    fn two_player_default_is_free_for_all_with_two_players() {
+        let info = MultiPlayerInfo::two_player_default();
+        assert_eq!(info.player_count, 2);
+        assert!(info.is_free_for_all());
+        assert_eq!(info.team_of(0), Some(0));
+        assert_eq!(info.team_of(1), Some(1));
+        assert_eq!(info.team_of(2), None);
+    }
+
+    #[test]
+    fn free_for_all_constructor_assigns_unique_teams() {
+        let info = MultiPlayerInfo::free_for_all(4);
+        assert_eq!(info.player_count, 4);
+        assert!(info.is_free_for_all());
+    }
+
+    #[test]
+    fn explicit_team_assignment_is_recognised_as_non_ffa() {
+        // 4 players in 2 teams (军棋 4-player layout): {0,2} vs {1,3}.
+        let info = MultiPlayerInfo {
+            player_count: 4,
+            team_of: [0, 1, 0, 1, 0, 0, 0, 0],
+            turn_order: [0, 1, 2, 3, 0, 0, 0, 0],
+        };
+        assert!(!info.is_free_for_all());
+        assert_eq!(info.team_of(2), Some(0));
+    }
+
+    #[test]
+    fn outcome_kind_win_team_round_trips() {
+        let outcome = Outcome {
+            kind: OutcomeKind::WinTeam(1),
+            reason: "flagCaptured".to_owned(),
+        };
+        match outcome.kind {
+            OutcomeKind::WinTeam(t) => assert_eq!(t, 1),
+            _ => panic!("expected WinTeam variant"),
+        }
     }
 
     #[test]

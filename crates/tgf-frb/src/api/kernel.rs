@@ -99,9 +99,13 @@ pub struct TgfOutcome {
 
 impl TgfOutcome {
     fn from_outcome(o: tgf_core::Outcome) -> Self {
+        // `winner` carries the player id for `Win`, the team id for
+        // `WinTeam`, and -1 otherwise.  The `kind` token distinguishes
+        // the two so the Dart side can pick the right rendering path.
         let (kind, winner) = match o.kind {
             OutcomeKind::Ongoing => ("ongoing", -1),
             OutcomeKind::Win(w) => ("win", w as i32),
+            OutcomeKind::WinTeam(t) => ("winTeam", t as i32),
             OutcomeKind::Draw => ("draw", -1),
             OutcomeKind::Abandoned => ("abandoned", -1),
         };

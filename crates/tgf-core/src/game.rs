@@ -38,7 +38,7 @@
 use crate::{
     action::{Action, ActionList, ActionTrail},
     board_topology::BoardTopology,
-    game_state::{GameStateSnapshot, Outcome},
+    game_state::{GameStateSnapshot, MultiPlayerInfo, Outcome},
 };
 
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
@@ -164,6 +164,17 @@ pub trait GameRules: Send + Sync {
     /// codecs and PGN/SGF exporters do.
     fn action_trail(&self, _snap: &GameStateSnapshot, _action: Action) -> ActionTrail {
         ActionTrail::EMPTY
+    }
+
+    /// Multi-player metadata describing the player count and team
+    /// layout of this game.  Default: standard two-player free-for-all
+    /// layout matching every existing game in the framework.  Multi-
+    /// player team games (军棋 4 人对战 / Halma 多人) override this.
+    ///
+    /// Cold path: queried at session creation by the FRB layer / UI;
+    /// search never inspects it.
+    fn multi_player_info(&self) -> MultiPlayerInfo {
+        MultiPlayerInfo::two_player_default()
     }
 }
 

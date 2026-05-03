@@ -22,7 +22,7 @@ pub use game::{
     MoveOrderContext, Workbench,
 };
 pub use game_state::{
-    canonical_reason, GameStateSnapshot, Outcome, OutcomeKind, OPAQUE_PAYLOAD_LEN,
+    canonical_reason, GameStateSnapshot, MultiPlayerInfo, Outcome, OutcomeKind, OPAQUE_PAYLOAD_LEN,
 };
 pub use kernel::{GameKernel, KernelError};
 pub use n_move_rule::NMoveRuleCounter;
