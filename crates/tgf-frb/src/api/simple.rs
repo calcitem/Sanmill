@@ -911,8 +911,7 @@ pub(crate) fn spawn_mill_engine_config_event_stream(
                     }
                 }
                 if !searcher.was_aborted() || result.best_action.is_none() {
-                    result =
-                        searcher.search_mtdf_with_guess(&mut wb, max_depth, first_guess);
+                    result = searcher.search_mtdf_with_guess(&mut wb, max_depth, first_guess);
                     let _ = sink.add(EngineEvent::info(max_depth, result.score, result.nodes));
                 }
             }

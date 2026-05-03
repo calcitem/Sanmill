@@ -21,9 +21,21 @@ use tgf_core::{
     Action, ActionList, Evaluator, Game, GameStateSnapshot, MoveOrderContext, Workbench,
 };
 
-/// Mirror of master `VALUE_UNIQUE = 100`: returned when only one root legal
-/// action exists so the caller knows the move was forced (P2-D).
-pub const MILL_VALUE_UNIQUE: i32 = 100;
+/// Sentinel score returned when the root has exactly one legal action.
+/// The move is forced regardless of the search outcome, so the searcher
+/// short-circuits and returns this value.  Game-neutral: any concrete
+/// `Game` whose root collapses to a single legal action will get this
+/// value.  Concrete games may map it to a game-local mate constant via
+/// [`tgf_core::Game::terminal_score`] or their evaluator scale.
+pub const VALUE_UNIQUE_ROOT_MOVE: i32 = 100;
+
+/// Deprecated alias retained for one release cycle.  New code should use
+/// [`VALUE_UNIQUE_ROOT_MOVE`].
+#[deprecated(
+    since = "0.2.0",
+    note = "renamed to VALUE_UNIQUE_ROOT_MOVE; the Mill prefix was a leak from the migration era"
+)]
+pub const MILL_VALUE_UNIQUE: i32 = VALUE_UNIQUE_ROOT_MOVE;
 
 /// Game-neutral perft: counts the leaves of the legal-action tree at the
 /// requested depth.  At depth 0 we count the current node as one leaf; at
@@ -779,14 +791,15 @@ impl<G: Game> Searcher<G> {
                 nodes: self.nodes,
             };
         }
-        // P2-D: mirror master Search::search root single-move early return.
-        // When there is only one legal action at the root the engine would
-        // play it regardless of the search result; return VALUE_UNIQUE (100)
-        // to indicate this state to the caller and avoid wasted search.
+        // Root single-move early return (P2-D, mirroring master
+        // `Search::search`).  When there is only one legal action at the
+        // root the engine would play it regardless of search result; we
+        // return `VALUE_UNIQUE_ROOT_MOVE` (100) to flag the state and skip
+        // wasted work.
         if moves.len() == 1 {
             return SearchResult {
                 best_action: moves[0],
-                score: MILL_VALUE_UNIQUE,
+                score: VALUE_UNIQUE_ROOT_MOVE,
                 nodes: self.nodes,
             };
         }
@@ -854,7 +867,7 @@ impl<G: Game> Searcher<G> {
         if moves.len() == 1 {
             return SearchResult {
                 best_action: moves[0],
-                score: MILL_VALUE_UNIQUE,
+                score: VALUE_UNIQUE_ROOT_MOVE,
                 nodes: self.nodes,
             };
         }
@@ -1097,7 +1110,7 @@ impl<G: Game> Searcher<G> {
         if moves.len() == 1 {
             return SearchResult {
                 best_action: moves[0],
-                score: MILL_VALUE_UNIQUE,
+                score: VALUE_UNIQUE_ROOT_MOVE,
                 nodes: self.nodes,
             };
         }
@@ -1163,19 +1176,24 @@ impl<G: Game> Searcher<G> {
         // means the position is already so good we can prune without
         // searching children.  Only applied at depth ≥ 3 to avoid pruning
         // near the horizon where the null-move assumption is unreliable.
-        // Guard: skip null-move when the evaluator already reports
-        // a near-terminal value (|score| > MILL_TERMINAL_WIN_SCORE/2)
-        // to avoid pruning genuine mate sequences.
+        // Guard: skip null-move when the evaluator already reports a
+        // near-terminal value (|score| > NULL_MOVE_TERMINAL_GUARD) to
+        // avoid pruning genuine mate sequences.  The guard is intentionally
+        // game-neutral: concrete games choose their own evaluator scale,
+        // and the constant below is sized for the reference Mill mate-score
+        // family (VALUE_MATE = 80) which other games are free to align with
+        // by overriding `Game::terminal_score`.
         const NULL_MOVE_MIN_DEPTH: i32 = 3;
         const NULL_MOVE_TERMINAL_GUARD: i32 = 40; // half of VALUE_MATE = 80
         if self.options.allow_null_move && depth >= NULL_MOVE_MIN_DEPTH && beta < i32::MAX - 1 {
             let static_eval = G::Evaluator::score(wb);
             if static_eval.abs() < NULL_MOVE_TERMINAL_GUARD {
                 // "Pass" the turn by flipping side_to_move in the workbench.
-                // Since Workbench does not expose a null-move primitive, we
-                // skip null-move when the game rules do not support passing.
-                // In Mill, all positions should have legal moves, so we just
-                // do the zero-window call without actually making a move.
+                // The `Workbench` trait does not expose a null-move
+                // primitive (most games either always have legal moves or
+                // need a game-specific "pass" encoding), so we skip the
+                // recursive null search and instead use the static eval
+                // proxy below.
                 // This is a simplified null-move: score the position from
                 // the opponent's perspective at reduced depth.
                 let null_score = -static_eval; // crude "null move" proxy
@@ -2170,9 +2188,10 @@ mod tests {
         let mut searcher = Searcher::<SameSideGame>::new();
 
         let result = searcher.search(&mut wb, 1);
-        // P2-D: single root legal action → VALUE_UNIQUE (100) is returned.
-        // The best action is still set correctly even without deep search.
-        assert_eq!(result.score, MILL_VALUE_UNIQUE);
+        // Single root legal action → VALUE_UNIQUE_ROOT_MOVE (100) is
+        // returned.  The best action is still set correctly even without
+        // a deep search.
+        assert_eq!(result.score, VALUE_UNIQUE_ROOT_MOVE);
         assert!(!result.best_action.is_none());
     }
 
@@ -2505,7 +2524,7 @@ mod tests {
         let mut searcher = Searcher::<SameSideGame>::new();
 
         let result = searcher.search_mtdf(&mut wb, 3);
-        assert_eq!(result.score, MILL_VALUE_UNIQUE);
+        assert_eq!(result.score, VALUE_UNIQUE_ROOT_MOVE);
         assert!(!result.best_action.is_none());
     }
 
