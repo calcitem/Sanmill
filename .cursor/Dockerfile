@@ -13,16 +13,25 @@ ENV DEBIAN_FRONTEND=noninteractive \
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
         build-essential \
+        binutils \
+        clang \
         pkg-config \
         libssl-dev \
         clang-format \
+        cmake \
         curl \
         ca-certificates \
         git \
+        libgstreamer-plugins-base1.0-dev \
+        libgstreamer1.0-dev \
+        libgtk-3-dev \
+        lld \
+        ninja-build \
         unzip \
         xz-utils \
         zip \
         xvfb \
+        xdg-user-dirs \
         libglu1-mesa \
     && rm -rf /var/lib/apt/lists/*
 

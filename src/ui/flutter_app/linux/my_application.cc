@@ -21,12 +21,7 @@
 #include <gdk/gdkx.h>
 #endif
 
-#include <iostream>
-#include <memory>
-
 #include "flutter/generated_plugin_registrant.h"
-
-#include "mill_engine.h"
 
 struct _MyApplication
 {
@@ -35,43 +30,6 @@ struct _MyApplication
 };
 
 G_DEFINE_TYPE(MyApplication, my_application, GTK_TYPE_APPLICATION)
-
-MillEngine *engine = nullptr;
-
-static void method_call_cb(FlMethodChannel *channel, FlMethodCall *method_call,
-                           gpointer user_data)
-{
-    const gchar *method = fl_method_call_get_name(method_call);
-
-    if (g_strcmp0(method, "startup") == 0) {
-        FlValue* value = fl_value_new_int(engine->startup());
-        fl_method_call_respond_success(method_call, value, nullptr);
-    } else if (g_strcmp0(method, "send") == 0) {
-        FlValue* args = fl_method_call_get_args(method_call);
-        const char* str = fl_value_get_string(args);
-        FlValue* value = fl_value_new_int(engine->send(str));
-        fl_method_call_respond_success(method_call, value, nullptr);
-    } else if (g_strcmp0(method, "read") == 0) {
-        FlValue* value = fl_value_new_string(engine->read().c_str());
-        fl_method_call_respond_success(method_call, value, nullptr);
-    } else if (g_strcmp0(method, "shutdown") == 0) {
-        FlValue* value = fl_value_new_int(engine->shutdown());
-        fl_method_call_respond_success(method_call, value, nullptr);
-    } else if (g_strcmp0(method, "isReady") == 0) {
-        FlValue* value = fl_value_new_bool(engine->isReady());
-        fl_method_call_respond_success(method_call, value, nullptr);
-    } else if (g_strcmp0(method, "isThinking") == 0) {
-        FlValue* value = fl_value_new_bool(engine->isThinking());
-        fl_method_call_respond_success(method_call, value, nullptr);
-    } else if (g_strcmp0(method, "getResponseDroppedCount") == 0) {
-        FlValue* value = fl_value_new_int(engine->getResponseDroppedCount());
-        fl_method_call_respond_success(method_call, value, nullptr);
-    } else {
-        g_autoptr(FlMethodResponse) response = FL_METHOD_RESPONSE(fl_method_not_implemented_response_new());
-        g_autoptr(GError) error = nullptr;
-        fl_method_call_respond(method_call, response, &error);
-    }
-}
 
 // Implements GApplication::activate.
 static void my_application_activate(GApplication *application)
@@ -121,24 +79,6 @@ static void my_application_activate(GApplication *application)
 
     fl_register_plugins(FL_PLUGIN_REGISTRY(view));
 
-    // START OF OUR CUSTOM  BLOCK
-
-    if (engine == nullptr) {
-        engine = new MillEngine();
-
-        // Get engine from view
-        FlEngine *fl_engine = fl_view_get_engine(view);
-
-        g_autoptr(FlStandardMethodCodec) codec = fl_standard_method_codec_new();
-        g_autoptr(FlBinaryMessenger) messenger = fl_engine_get_binary_messenger(fl_engine);
-        g_autoptr(FlMethodChannel) channel = fl_method_channel_new(messenger,
-                                        "com.calcitem.sanmill/engine",
-                                        FL_METHOD_CODEC(codec));
-        fl_method_channel_set_method_call_handler(channel, method_call_cb, g_object_ref(view), g_object_unref);
-    }
-
-    // END OF OUR CUSTOM BLOCK
-
     gtk_widget_grab_focus(GTK_WIDGET(view));
 }
 
@@ -167,12 +107,6 @@ static gboolean my_application_local_command_line(GApplication *application,
 // Implements GObject::dispose.
 static void my_application_dispose(GObject *object)
 {
-    if (engine != nullptr) {
-        engine->shutdown();
-        delete engine;
-        engine = nullptr;
-    }
-
     MyApplication *self = MY_APPLICATION(object);
     g_clear_pointer(&self->dart_entrypoint_arguments, g_strfreev);
     G_OBJECT_CLASS(my_application_parent_class)->dispose(object);
