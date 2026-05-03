@@ -21,10 +21,12 @@
 // hand them to the kernel as `Arc<dyn BoardTopology>` without leaking
 // concrete types.
 
+pub mod graph;
 pub mod grid;
 pub mod hex;
 pub mod star;
 
+pub use graph::{GraphEdge, GraphNode, GraphTopology, GraphTopologyBuilder, GraphZone};
 pub use grid::{GridConnectivity, GridLabelScheme, GridTopology, GridTopologyBuilder};
 pub use hex::{HexConnectivity, HexTopology, HexTopologyBuilder};
 pub use star::{StarConnectivity, StarTopology, StarTopologyBuilder};
