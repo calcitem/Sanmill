@@ -213,6 +213,61 @@ pub trait Game: 'static + Send + Sync {
         Self::move_order_bias(wb, action)
     }
 
+    // -----------------------------------------------------------------
+    // Composable move-score components.
+    //
+    // The hooks below are summed into the move-order key used by
+    // `Searcher<G>`.  Default implementations return `0`, so
+    // monomorphisation eliminates them entirely for games that do not
+    // override.  Concrete games may pick the hooks that match their
+    // tactical surface (e.g. chess fills `capture_value_bias` and
+    // `promotion_bias`; Halma fills `progress_bias`; 军棋 fills
+    // `objective_bias`) without inflating a single super-`match`.
+    //
+    // Hot path: every override MUST be `#[inline]` and allocation-free.
+    // -----------------------------------------------------------------
+
+    /// Per-action capture-value bonus (chess MVV-LVA, Mill capture rules).
+    /// Default: `0` — no contribution.
+    #[inline]
+    fn capture_value_bias(_wb: &Self::Workbench, _action: Action) -> i32 {
+        0
+    }
+
+    /// Per-action promotion bonus (chess pawn promotion, checkers king).
+    /// Default: `0` — no contribution.
+    #[inline]
+    fn promotion_bias(_wb: &Self::Workbench, _action: Action) -> i32 {
+        0
+    }
+
+    /// Per-action killer-move bonus (typically a constant for actions
+    /// that match the killer-move table maintained by the searcher).
+    /// Default: `0` — search keeps using its own killer table.  Games
+    /// override only when they want to inject extra killer-style
+    /// bonuses (e.g. the previous PV move) without touching the
+    /// generic search code.
+    #[inline]
+    fn killer_bonus(_wb: &Self::Workbench, _action: Action) -> i32 {
+        0
+    }
+
+    /// Per-action "progress" bonus, encouraging moves that advance a
+    /// piece toward its goal (Halma / 中国跳棋 推进, race-to-bear-off).
+    /// Default: `0`.
+    #[inline]
+    fn progress_bias(_wb: &Self::Workbench, _action: Action) -> i32 {
+        0
+    }
+
+    /// Per-action "objective" bonus for games with key squares whose
+    /// occupation strongly correlates with winning (军棋 总部, chess
+    /// centre control, Othello corners).  Default: `0`.
+    #[inline]
+    fn objective_bias(_wb: &Self::Workbench, _action: Action) -> i32 {
+        0
+    }
+
     /// Optional terminal-node score from `perspective` player's point of view.
     ///
     /// Games with explicit draw/win metadata should override this so search
