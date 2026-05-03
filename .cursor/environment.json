@@ -3,5 +3,5 @@
     "dockerfile": "Dockerfile",
     "context": ".."
   },
-  "install": "cargo fetch && bash ./flutter-init.sh"
+  "install": "cargo fetch && bash ./flutter-init.sh && apt-get update && apt-get install -y --no-install-recommends xdg-user-dirs && xdg-user-dirs-update && cd src/ui/flutter_app && flutter precache --linux"
 }

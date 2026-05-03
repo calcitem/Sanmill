@@ -17,16 +17,25 @@ import 'mill_constants.dart';
 class MillSessionRecorderBridge {
   MillSessionRecorderBridge({
     required GameSession session,
-    required mill.GameRecorder recorder,
-  }) : _recorder = recorder {
+    mill.GameRecorder? recorder,
+    mill.GameRecorder Function()? recorderProvider,
+  }) : assert(
+         recorder == null || recorderProvider == null,
+         'Provide either recorder or recorderProvider, not both.',
+       ),
+       _recorderProvider =
+           recorderProvider ??
+           (() => recorder ?? mill.GameController().gameRecorder) {
     _subscription = session.events.listen(_onEvent);
   }
 
   MillSessionRecorderBridge.forGameController({required GameSession session})
-    : this(session: session, recorder: mill.GameController().gameRecorder);
+    : this(session: session);
 
-  final mill.GameRecorder _recorder;
+  final mill.GameRecorder Function() _recorderProvider;
   late final StreamSubscription<GameSessionEvent> _subscription;
+
+  mill.GameRecorder get _recorder => _recorderProvider();
 
   Future<void> dispose() => _subscription.cancel();
 

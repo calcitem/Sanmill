@@ -175,6 +175,43 @@ void main() {
         'g7',
       ]);
     });
+
+    test(
+      'forGameController follows the current recorder after reset',
+      () async {
+        final _EventOnlySession session = _EventOnlySession();
+        final mill.GameController controller = mill.GameController();
+        controller.reset(force: true);
+
+        final MillSessionRecorderBridge bridge =
+            MillSessionRecorderBridge.forGameController(session: session);
+        addTearDown(bridge.dispose);
+
+        final mill.GameRecorder originalRecorder = controller.gameRecorder;
+
+        controller.reset(force: true);
+        final mill.GameRecorder currentRecorder = controller.gameRecorder;
+
+        expect(identical(originalRecorder, currentRecorder), isFalse);
+
+        session.emit(
+          const GameSessionEvent(
+            MillEventTypes.moveApplied,
+            payload: <String, Object?>{
+              'type': MillActionTypes.place,
+              'move': 'a7',
+              'mover': 'first',
+              'boardLayout': '********/********/*******O',
+            },
+          ),
+        );
+        await Future<void>.delayed(Duration.zero);
+
+        expect(originalRecorder.mainlineMoves, isEmpty);
+        expect(currentRecorder.mainlineMoves, hasLength(1));
+        expect(currentRecorder.mainlineMoves.single.move, 'a7');
+      },
+    );
   });
 }
 
