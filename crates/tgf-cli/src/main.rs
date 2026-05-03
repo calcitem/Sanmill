@@ -8,6 +8,7 @@
 // from touching the entry point.
 
 mod mill_uci;
+mod selfplay;
 mod uci_adapter;
 
 fn main() {
@@ -15,6 +16,7 @@ fn main() {
     match args.next().as_deref() {
         Some("bench") => mill_uci::print_benchmark_toml(),
         Some("uci") => mill_uci::run_uci_loop(),
+        Some("selfplay") => selfplay::run_selfplay(),
         Some("--help") | Some("-h") => print_help(),
         _ => print_help(),
     }
@@ -22,6 +24,8 @@ fn main() {
 
 fn print_help() {
     eprintln!("Usage:");
-    eprintln!("  tgf bench    # emit perf_baseline-compatible TOML");
-    eprintln!("  tgf uci      # run minimal UCI-like loop backed by Rust Mill");
+    eprintln!("  tgf bench       # emit perf_baseline-compatible TOML");
+    eprintln!("  tgf uci         # run minimal UCI-like loop backed by Rust Mill");
+    eprintln!("  tgf selfplay    # deterministic self-play harness for regressions");
+    eprintln!("                  # args: --depth N --max-games N --algorithm pvs|alphabeta");
 }
