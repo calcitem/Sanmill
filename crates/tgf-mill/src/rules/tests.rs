@@ -3,6 +3,7 @@
 // dedicated file so the main rules module stays under the 1k-line bar.
 
 use super::*;
+use tgf_core::{Evaluator, Game, Workbench};
 
 #[test]
 fn initial_state_has_24_placing_actions() {
