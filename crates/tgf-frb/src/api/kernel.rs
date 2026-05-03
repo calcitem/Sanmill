@@ -13,14 +13,9 @@
 // individual function takes the lock only for the duration of one call,
 // so there is no risk of long-held mutexes blocking the Flutter UI.
 
-use std::sync::Arc;
+use tgf_core::{Action, ActionList, GameKernel, GameStateSnapshot, KernelError, OutcomeKind};
 
-use tgf_core::{
-    Action, ActionList, GameKernel, GameRules, GameStateSnapshot, KernelError, OutcomeKind,
-};
-use tgf_mill::MillRules;
-use tgf_othello::OthelloRules;
-
+use crate::game_registry::build_rules;
 use crate::session_registry::{insert_kernel, remove_kernel, with_kernel};
 
 // ---------------------------------------------------------------------------
@@ -122,18 +117,6 @@ fn map_kernel_error(err: KernelError) -> String {
 }
 
 // ---------------------------------------------------------------------------
-// Game registry — extend this when wiring in a new game crate
-// ---------------------------------------------------------------------------
-
-fn build_rules_default(game_id: &str) -> Result<Arc<dyn GameRules>, String> {
-    match game_id {
-        "mill" => Ok(Arc::new(MillRules::default())),
-        "othello" => Ok(Arc::new(OthelloRules::default())),
-        other => Err(format!("unknown game id: {other}")),
-    }
-}
-
-// ---------------------------------------------------------------------------
 // Public FRB surface
 // ---------------------------------------------------------------------------
 
@@ -142,7 +125,7 @@ fn build_rules_default(game_id: &str) -> Result<Arc<dyn GameRules>, String> {
 /// 8x8).  Returns the new session handle on success.
 #[flutter_rust_bridge::frb(sync)]
 pub fn tgf_kernel_create(game_id: String) -> Result<u32, String> {
-    let rules = build_rules_default(&game_id)?;
+    let rules = build_rules(&game_id)?;
     let kernel = GameKernel::new(rules, &[]);
     let id = insert_kernel(kernel);
     if game_id == "mill" {

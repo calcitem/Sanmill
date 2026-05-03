@@ -23,6 +23,7 @@
 mod frb_generated;
 
 mod engine_event;
+mod game_registry;
 mod games;
 mod session_registry;
 
