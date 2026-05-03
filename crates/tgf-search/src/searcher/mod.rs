@@ -419,6 +419,24 @@ impl<G: Game> Searcher<G> {
         // appeared on the search path from root to here, the game would cycle
         // indefinitely.  Master returns VALUE_DRAW + 1 to avoid threefold
         // blindness among otherwise equal drawing lines.
+        //
+        // Divergence from master `Search::has_repeated` (Diff 1.5/1.6/1.7):
+        //   * master walks BOTH the global `posKeyHistory` (positions seen
+        //     before the search root) AND the search stack `ss`, terminating
+        //     the walk on the first MOVETYPE_REMOVE.
+        //   * Rust only checks the in-search `repetition_stack`, because the
+        //     pre-root history is already enforced by `MillRules::apply`
+        //     through `MillState::key_history` (which surfaces a terminal
+        //     `Outcome::Draw` with the `drawThreefoldRepetition` reason --
+        //     see `crates/tgf-mill/src/rules/transitions.rs`).
+        //   * master also restricts the check to non-root nodes
+        //     (`depth != originDepth`) and uses an `alpha >= beta` short
+        //     circuit before forcing the draw.  Rust returns the bias
+        //     unconditionally because `search_pvs` does not push the root
+        //     key onto `repetition_stack`, so the comparison cannot fire at
+        //     the root anyway, and the bias matches master's `VALUE_DRAW + 1`
+        //     when callers do not narrow the window further.
+        // Verified by the deterministic `tgf-cli selfplay` baselines.
         let key = wb.key();
         if key != 0 && self.repetition_stack.contains(&key) {
             return G::repetition_draw_bias();
