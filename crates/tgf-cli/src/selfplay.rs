@@ -218,6 +218,7 @@ fn play_one_game(
         time_limit_ms: None,
         allow_null_move: false,
         shuffle_root: false,
+        enable_prefetch: false,
         move_order_context,
     };
 

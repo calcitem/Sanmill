@@ -239,6 +239,10 @@ fn spawn_search(
         // Mill's generate_legal_ctx already mirrors that list, so do not
         // additionally shuffle the root action list here.
         shuffle_root: false,
+        // Mill's full-state position_key makes Workbench::key_after a
+        // do/undo round-trip, so prefetch's overhead exceeds its
+        // benefit until the planned incremental Zobrist migration.
+        enable_prefetch: false,
         move_order_context: move_order_context(&cfg),
     };
     let depth = effective_search_depth(&options, &state, go.depth, &cfg);

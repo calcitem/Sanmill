@@ -67,6 +67,15 @@ pub struct SearchOptions {
     /// `MoveList<LEGAL>::shuffle()` call at the start of `executeSearch`
     /// when `Shuffling` is enabled or `SkillLevel < 30` (P2-K).
     pub shuffle_root: bool,
+    /// Issue `TT::prefetch` hints for every candidate child before
+    /// iterating the move loop, mirroring master `Search::search` /
+    /// `Search::qsearch` (which always emit prefetch when
+    /// `DISABLE_PREFETCH` is undefined).  Default `false` because the
+    /// Rust default `Workbench::key_after` is a do/undo round-trip;
+    /// games with full-state hashing pay more for the round-trip than
+    /// they save in cache misses.  Concrete games that override
+    /// `key_after` with an O(1) xor path should enable this.
+    pub enable_prefetch: bool,
     pub move_order_context: MoveOrderContext,
 }
 
@@ -78,6 +87,7 @@ impl Default for SearchOptions {
             time_limit_ms: None,
             allow_null_move: false,
             shuffle_root: false,
+            enable_prefetch: false,
             move_order_context: MoveOrderContext::default(),
         }
     }

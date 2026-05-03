@@ -499,6 +499,20 @@ impl<G: Game> Searcher<G> {
             return G::Evaluator::score(wb);
         }
 
+        // TT prefetch (mirrors master Search::search).  Issuing the hint
+        // here lets the TT cluster cache line arrive before alpha_beta
+        // recurses into the child node; without it the first probe in
+        // each child stalls on memory in large TTs.  Only invoked when
+        // the game opted in via `SearchOptions::enable_prefetch` because
+        // the default `Workbench::key_after` is a do/undo round-trip
+        // (not free).
+        if self.options.enable_prefetch {
+            for action in &moves {
+                let predicted_key = wb.key_after(*action);
+                self.tt.prefetch(predicted_key);
+            }
+        }
+
         let mut best_value = i32::MIN + 1;
         let mut best_action = Action::NONE;
         let depth_extension = if self.options.depth_extension && moves.len() == 1 {
