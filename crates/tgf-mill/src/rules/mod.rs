@@ -377,6 +377,11 @@ impl MillRules {
         }
     }
 
+    /// Smoke fixture used by `crate::api::simple::native_mill_*` FRB
+    /// entry points to surface a known-good remove-count from the Rust
+    /// rules engine.  Not part of the production API; new code should
+    /// drive its own snapshot via `MillRules::apply` instead.
+    #[doc(hidden)]
     pub fn moving_mill_remove_count_smoke() -> u32 {
         let rules = MillRules::default();
         let state = MillState {
@@ -441,6 +446,11 @@ impl MillRules {
         snap
     }
 
+    /// Smoke fixture used by `crate::api::simple::native_mill_*` FRB
+    /// entry points: verifies that removing the third black piece in a
+    /// fly-endgame ends the game with White declared the winner.  Not
+    /// part of the production API.
+    #[doc(hidden)]
     pub fn removal_below_three_winner_smoke() -> i32 {
         let rules = MillRules::default();
         let state = MillState {
