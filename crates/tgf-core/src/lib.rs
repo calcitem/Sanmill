@@ -12,6 +12,7 @@ pub mod kernel;
 pub mod n_move_rule;
 pub mod notation;
 pub mod repetition;
+pub mod text_format;
 pub mod topology_helpers;
 pub mod zobrist;
 
@@ -29,6 +30,7 @@ pub use kernel::{GameKernel, KernelError};
 pub use n_move_rule::NMoveRuleCounter;
 pub use notation::NotationCodec;
 pub use repetition::RepetitionTracker;
+pub use text_format::PositionTextFormat;
 pub use zobrist::ZobristTable;
 
 /// Phase 1 smoke-check: ensures the crate compiles.

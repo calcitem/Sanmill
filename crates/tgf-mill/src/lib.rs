@@ -6,6 +6,7 @@ pub mod notation;
 pub mod presets;
 pub mod rules;
 pub mod search_depth;
+pub mod text_format;
 pub mod topology;
 
 pub use engine_config::{MillEngineRuntime, MillSearchAlgorithmKind};
@@ -17,4 +18,5 @@ pub use rules::{
     MillWorkbench, StalemateAction,
 };
 pub use search_depth::{recommended_search_depth, EngineRuntimeOptions};
+pub use text_format::MillFenFormat;
 pub use topology::{default_mill_topology, MillTopology};
