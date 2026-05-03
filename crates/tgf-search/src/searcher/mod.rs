@@ -297,6 +297,18 @@ impl<G: Game> Searcher<G> {
     /// a full window; later moves use a null window and are re-searched on
     /// fail-high inside the original alpha/beta window.  This mirrors the
     /// shape of `Search::pvs` in the mature C++ engine.
+    ///
+    /// # Divergence from master
+    ///
+    /// `origin/master`'s `Search::pvs` is *defined* but only consumed by
+    /// `tests/test_search.cpp`; the production root in
+    /// `SearchEngine::executeSearch` is `Search::search` (plain alpha-beta).
+    /// The Rust scaffold uses PVS here because the null-window + re-search
+    /// pattern produces the same bestmove as plain alpha-beta on
+    /// terminal-deterministic Mill positions while pruning more nodes
+    /// (validated by the `tgf-cli selfplay` deterministic regression
+    /// baselines).  Callers that need the master-equivalent shape should
+    /// invoke `Self::search` (plain alpha-beta) instead.
     pub fn search_pvs(&mut self, wb: &mut G::Workbench, depth: i32) -> SearchResult {
         self.begin_root_search();
         if let Some(score) = G::terminal_score(wb, wb.side_to_move(), depth) {

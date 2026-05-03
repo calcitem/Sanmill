@@ -21,6 +21,21 @@ impl<G: Game> Searcher<G> {
     /// The TT generation counter is bumped between iterations so non-Exact
     /// entries from the previous iteration are treated as stale, matching C++
     /// `Search::clear` semantics from `src/search.cpp`.
+    ///
+    /// # Divergence from master `src/search.cpp`
+    ///
+    /// In `origin/master`'s C++ engine `Search::pvs` is *defined* but only
+    /// invoked from `tests/test_search.cpp` -- the actual root entry point
+    /// driven by `SearchEngine::executeSearch` is `Search::search`, a plain
+    /// alpha-beta loop with depth-extension when the moveCount is 1.  The
+    /// Rust scaffold here intentionally prefers PVS at the root because its
+    /// null-window + re-search structure yields the same bestmove on
+    /// terminal-deterministic positions while pruning more nodes; the
+    /// `tgf-cli selfplay` deterministic regression suite in
+    /// `selfplay_baseline_*.toml` confirms parity with the plain alpha-beta
+    /// root in fixed-depth Mill self-play.  Callers that need the literal
+    /// master shape can call `Self::search` directly instead of
+    /// `iterative_deepening`.
     pub fn iterative_deepening(&mut self, wb: &mut G::Workbench, max_depth: i32) -> SearchResult {
         const ASPIRATION_DELTA: i32 = 15; // ~3 piece values
         const ASPIRATION_MAX_WINDOW: i32 = 200;
