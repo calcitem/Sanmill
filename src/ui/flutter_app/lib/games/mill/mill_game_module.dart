@@ -38,6 +38,7 @@ import '../../shared/themes/app_theme.dart';
 import '../../statistics/widgets/stats_page.dart';
 import 'mill_action_codec.dart';
 import 'mill_engine_port.dart';
+import 'mill_marked_pieces_codec.dart';
 import 'mill_notation_port.dart';
 import 'mill_route_ids.dart';
 import 'mill_rule_settings_port.dart';
@@ -62,7 +63,12 @@ class MillGameModule extends GameModule {
               rules: ruleSettings,
               generalSettings: generalSettings,
             );
-          });
+          }) {
+    // Hook the Mill payload extras decoder into the framework so generic
+    // [TgfKernel] callers see `millMarkedNodes` in their snapshot payload
+    // without the framework needing to know about Mill internals.
+    registerMillKernelExtras();
+  }
 
   final NativeMillSessionFactory _nativeSessionFactory;
 

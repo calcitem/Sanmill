@@ -24,10 +24,9 @@
 import 'dart:typed_data';
 
 import '../../src/rust/api/kernel.dart' as tgf;
-import '../../src/rust/api/simple.dart' as tgf_simple;
 import '../game_id.dart';
 import '../game_session.dart';
-import '../mill_marked_pieces_codec.dart';
+import 'tgf_kernel_extras.dart';
 
 /// Surfaced when the underlying Rust kernel returns a [Result::Err].  The
 /// inner [reason] is the stable English token from `tgf_core::KernelError`
@@ -57,16 +56,22 @@ class TgfKernel {
     return TgfKernel._(handle, gameId);
   }
 
-  /// Spin up a Mill session with explicit variant options.
-  factory TgfKernel.createMill(tgf_simple.MillVariantOptions variant) {
-    final int handle = tgf.tgfKernelCreateMill(variant: variant);
-    return TgfKernel._(handle, 'mill');
+  /// Internal constructor used by per-game session adapters (e.g.
+  /// `MillKernelSession.fromVariant`) that already obtained a handle from
+  /// a game-specific FRB factory such as `tgfKernelCreateMill`.
+  factory TgfKernel.adopt({required int handle, required String gameId}) {
+    return TgfKernel._(handle, gameId);
   }
 
   final int _handle;
   final String gameId;
   bool _disposed = false;
-  int _lastRawBestValue = 0;
+
+  /// Internal accessor used by per-game session adapters (e.g. Mill's
+  /// [MillKernelSession]) that need to feed the raw handle back into the
+  /// FRB layer for game-specific entry points such as
+  /// `tgfKernelMillSearchEvents*`.
+  int get rawHandle => _handle;
 
   /// Drop the underlying Rust session.  Safe to call multiple times.
   void dispose() {
@@ -130,92 +135,11 @@ class TgfKernel {
     return tgf.tgfKernelRedoDepth(handle: _handle);
   }
 
-  // -------------------------------------------------------- setup-position API
-
-  /// Clear the board and reset all pieces for setup-position editing.
-  /// Returns the empty-board snapshot.  History is cleared.
-  tgf.TgfSnapshot rawSetupClear() {
-    _checkAlive();
-    return tgf.tgfKernelSetupClear(handle: _handle);
-  }
-
-  /// Place or clear a single piece during setup editing.
-  /// [owner]: 1 = first player, 2 = second player, other = clear.
-  tgf.TgfSnapshot rawSetupSetPiece(int node, int owner) {
-    _checkAlive();
-    return tgf.tgfKernelSetupSetPiece(
-      handle: _handle,
-      node: node,
-      owner: owner,
-    );
-  }
-
-  /// Set the side to move during setup editing. [side]: 0 or 1.
-  tgf.TgfSnapshot rawSetupSetSide(int side) {
-    _checkAlive();
-    return tgf.tgfKernelSetupSetSide(handle: _handle, side: side);
-  }
-
-  /// Finish setup editing and transition to a playable game state.
-  tgf.TgfSnapshot rawSetupFinish() {
-    _checkAlive();
-    return tgf.tgfKernelSetupFinish(handle: _handle);
-  }
-
-  /// Load a position from a Mill FEN string (Phase 6.A.3.B).
-  tgf.TgfSnapshot rawSetFromFen(String fen) {
-    _checkAlive();
-    return tgf.tgfKernelSetFromFen(handle: _handle, fen: fen);
-  }
-
-  /// Export the current kernel state as a Mill FEN string (Phase 6.A.3.B).
-  String rawExportFen() {
-    _checkAlive();
-    return tgf.tgfKernelExportFen(handle: _handle);
-  }
-
-  /// PVS search event stream for Mill kernels only — uses the session snapshot
-  /// and the variant registered at [TgfKernel.createMill].
-  ///
-  /// When [moveLimitMs] is greater than zero the search is time-bounded
-  /// (matches the legacy C++ `MoveTime` UCI option); otherwise depth alone
-  /// drives termination.
-  Stream<tgf_simple.EngineEvent> millSearchEvents({
-    required int depth,
-    int moveLimitMs = 0,
-  }) {
-    _checkAlive();
-    final Stream<tgf_simple.EngineEvent> events = tgf
-        .tgfKernelMillSearchEventsWithConfig(
-          handle: _handle,
-          config: tgf_simple.MillEngineConfig(
-            algorithm: tgf_simple.MillSearchAlgorithm.pvs,
-            depth: depth,
-            moveTimeMs: moveLimitMs,
-            aiIsLazy: false,
-            lastBestValue: _lastRawBestValue,
-            skillLevel: 1,
-          ),
-        );
-    return events.map((tgf_simple.EngineEvent event) {
-      if (event.kind == 'bestMove') {
-        _lastRawBestValue = _rawScoreFromReason(event.reason);
-      }
-      return event;
-    });
-  }
-
-  int _rawScoreFromReason(String reason) {
-    final RegExpMatch? match = RegExp(
-      r'(?:^|\s)rawScore=(-?\d+)(?:\s|$)',
-    ).firstMatch(reason);
-    if (match == null) {
-      return 0;
-    }
-    return int.tryParse(match.group(1)!) ?? 0;
-  }
-
   // --------------------------------------------------------------- mappings
+  //
+  // Note: Mill-specific setup-position editors and FEN import/export
+  // entry points live on `MillKernelSession` (under `lib/games/mill/`).
+  // Adding new games does not require changing this file.
 
   /// Project the typed Rust snapshot into the framework-level
   /// `GameStateSnapshot` value object the Flutter shell already understands.
@@ -229,22 +153,26 @@ class TgfKernel {
     final tgf.TgfOutcome outcomeRaw = rawOutcome();
     final GameOutcome outcome = _mapOutcome(outcomeRaw);
     final Uint8List opaque = Uint8List.fromList(raw.opaquePayload);
+    final GameId mappedId = _mapGameId();
+    final Map<String, Object?> payload = <String, Object?>{
+      'tgfHandle': _handle,
+      'tgfPhaseTag': raw.phaseTag,
+      'tgfMoveNumber': raw.moveNumber,
+      'tgfZobrist': raw.zobristKey,
+      'tgfPayload': opaque,
+    };
+    final TgfKernelExtraDecoder? decoder = TgfKernelExtraRegistry.instance
+        .decoderFor(mappedId);
+    if (decoder != null) {
+      payload.addAll(decoder.decode(opaque));
+    }
     return GameStateSnapshot(
-      gameId: _mapGameId(),
+      gameId: mappedId,
       activeSeat: seat,
       outcome: outcome,
       phase: 'phase_${raw.phaseTag}',
       lastAction: lastAction,
-      payload: <String, Object?>{
-        'tgfHandle': _handle,
-        'tgfPhaseTag': raw.phaseTag,
-        'tgfMoveNumber': raw.moveNumber,
-        'tgfZobrist': raw.zobristKey,
-        'tgfPayload': opaque,
-        'millMarkedNodes': MillMarkedPiecesCodec.markedNodesFromOpaquePayload(
-          opaque,
-        ),
-      },
+      payload: payload,
     );
   }
 

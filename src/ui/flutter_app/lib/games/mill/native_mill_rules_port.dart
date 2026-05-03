@@ -13,23 +13,24 @@ import 'dart:typed_data';
 import '../../game_platform/engine/tgf_kernel.dart';
 import '../../game_platform/game_id.dart';
 import '../../game_platform/game_session.dart';
-import '../../game_platform/mill_marked_pieces_codec.dart';
 import '../../game_platform/rules_port.dart';
 import '../../general_settings/models/general_settings.dart';
 import '../../rule_settings/models/rule_settings.dart';
 import '../../src/rust/api/kernel.dart' as tgf;
 import '../../src/rust/api/simple.dart' as tgf_simple;
 import 'mill_action_codec.dart';
+import 'mill_kernel_session.dart';
+import 'mill_marked_pieces_codec.dart';
 import 'mill_variant_options_mapper.dart';
 
 class NativeMillRulesPort implements RulesPort {
   NativeMillRulesPort({
-    TgfKernel? kernel,
+    MillKernelSession? session,
     RuleSettings ruleSettings = const RuleSettings(),
     GeneralSettings? generalSettings,
-  }) : _kernel =
-           kernel ??
-           TgfKernel.createMill(
+  }) : _session =
+           session ??
+           MillKernelSession.fromVariant(
              ruleSettings.toTgfMillVariantOptions(
                generalSettings: generalSettings,
              ),
@@ -37,8 +38,10 @@ class NativeMillRulesPort implements RulesPort {
     _snapshot = _snapshotFromKernel();
   }
 
-  final TgfKernel _kernel;
+  final MillKernelSession _session;
   late GameStateSnapshot _snapshot;
+
+  TgfKernel get _kernel => _session.kernel;
 
   @override
   GameStateSnapshot get snapshot => _snapshot;
@@ -95,7 +98,7 @@ class NativeMillRulesPort implements RulesPort {
   /// Clear the board for setup-position editing.
   /// Returns the new snapshot with all squares empty.
   GameStateSnapshot setupClear() {
-    final tgf.TgfSnapshot raw = _kernel.rawSetupClear();
+    final tgf.TgfSnapshot raw = _session.rawSetupClear();
     _snapshot = _snapshotFromRaw(raw);
     return _snapshot;
   }
@@ -103,34 +106,34 @@ class NativeMillRulesPort implements RulesPort {
   /// Place or clear a single piece at [node] during setup editing.
   /// [owner]: 1 = first player, 2 = second player, other = clear.
   GameStateSnapshot setupSetPiece(int node, int owner) {
-    final tgf.TgfSnapshot raw = _kernel.rawSetupSetPiece(node, owner);
+    final tgf.TgfSnapshot raw = _session.rawSetupSetPiece(node, owner);
     _snapshot = _snapshotFromRaw(raw);
     return _snapshot;
   }
 
   /// Set the side to move during setup editing. [side]: 0 or 1.
   GameStateSnapshot setupSetSide(int side) {
-    final tgf.TgfSnapshot raw = _kernel.rawSetupSetSide(side);
+    final tgf.TgfSnapshot raw = _session.rawSetupSetSide(side);
     _snapshot = _snapshotFromRaw(raw);
     return _snapshot;
   }
 
   /// Finish setup-position editing and transition to a playable game state.
   GameStateSnapshot setupFinish() {
-    final tgf.TgfSnapshot raw = _kernel.rawSetupFinish();
+    final tgf.TgfSnapshot raw = _session.rawSetupFinish();
     _snapshot = _snapshotFromRaw(raw);
     return _snapshot;
   }
 
   /// Load a board position from a Mill FEN string (Phase 6.A.3.B).
   GameStateSnapshot setFromFen(String fen) {
-    final tgf.TgfSnapshot raw = _kernel.rawSetFromFen(fen);
+    final tgf.TgfSnapshot raw = _session.rawSetFromFen(fen);
     _snapshot = _snapshotFromRaw(raw);
     return _snapshot;
   }
 
   /// Export the current kernel state as a Mill FEN string (Phase 6.A.3.B).
-  String exportFen() => _kernel.rawExportFen();
+  String exportFen() => _session.rawExportFen();
 
   GameStateSnapshot _snapshotFromRaw(tgf.TgfSnapshot raw) {
     final tgf.TgfOutcome outcome = _kernel.rawOutcome();
@@ -146,9 +149,8 @@ class NativeMillRulesPort implements RulesPort {
         'tgfZobrist': raw.zobristKey,
         'tgfOutcomeReason': outcome.reason,
         'tgfPayload': opaque,
-        'millMarkedNodes': MillMarkedPiecesCodec.markedNodesFromOpaquePayload(
-          opaque,
-        ),
+        millMarkedNodesPayloadKey:
+            MillMarkedPiecesCodec.markedNodesFromOpaquePayload(opaque),
       },
     );
   }
@@ -163,7 +165,7 @@ class NativeMillRulesPort implements RulesPort {
     required int depth,
     int moveLimitMs = 0,
   }) {
-    return _kernel.millSearchEvents(depth: depth, moveLimitMs: moveLimitMs);
+    return _session.searchEvents(depth: depth, moveLimitMs: moveLimitMs);
   }
 
   GameStateSnapshot _snapshotFromKernel({GameAction? lastAction}) {
@@ -182,9 +184,8 @@ class NativeMillRulesPort implements RulesPort {
         'tgfZobrist': raw.zobristKey,
         'tgfOutcomeReason': outcome.reason,
         'tgfPayload': opaque,
-        'millMarkedNodes': MillMarkedPiecesCodec.markedNodesFromOpaquePayload(
-          opaque,
-        ),
+        millMarkedNodesPayloadKey:
+            MillMarkedPiecesCodec.markedNodesFromOpaquePayload(opaque),
       },
     );
   }

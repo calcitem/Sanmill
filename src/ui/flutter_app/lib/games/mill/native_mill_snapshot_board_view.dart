@@ -4,7 +4,7 @@
 import 'dart:typed_data';
 
 import '../../game_platform/game_session.dart';
-import '../../game_platform/mill_marked_pieces_codec.dart';
+import 'mill_marked_pieces_codec.dart';
 import 'mill_board_coordinate_maps.dart';
 
 /// Read-only board view over the Rust-native Mill opaque payload.

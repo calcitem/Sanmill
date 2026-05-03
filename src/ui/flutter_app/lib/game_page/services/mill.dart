@@ -30,7 +30,7 @@ import '../../experience_recording/models/recording_models.dart';
 import '../../experience_recording/services/recording_service.dart';
 import '../../game_platform/game_export_service.dart';
 import '../../game_platform/game_session.dart';
-import '../../game_platform/mill_marked_pieces_codec.dart';
+import '../../games/mill/mill_marked_pieces_codec.dart';
 import '../../game_platform/game_session.dart' as platform;
 import '../../game_shell/game_session_scope.dart';
 import '../../games/mill/lan_session_meta.dart';

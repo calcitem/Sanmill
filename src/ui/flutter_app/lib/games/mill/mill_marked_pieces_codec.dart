@@ -7,8 +7,15 @@
 
 import 'dart:typed_data';
 
+import '../../game_platform/engine/tgf_kernel_extras.dart';
+import '../../game_platform/game_id.dart';
+
+/// Stable map key under which [MillKernelExtraDecoder] publishes the set
+/// of currently-marked node ids.
+const String millMarkedNodesPayloadKey = 'millMarkedNodes';
+
 /// Extracts marked-piece node ids for
-/// [MillFormationActionInPlacingPhase.markAndDelayRemovingPieces].
+/// `MillFormationActionInPlacingPhase.markAndDelayRemovingPieces`.
 abstract final class MillMarkedPiecesCodec {
   MillMarkedPiecesCodec._();
 
@@ -34,4 +41,26 @@ abstract final class MillMarkedPiecesCodec {
     }
     return out;
   }
+}
+
+/// [TgfKernelExtraDecoder] implementation injected by [MillGameModule] so
+/// the framework-level [TgfKernel] never has to know about Mill's
+/// payload layout.
+class MillKernelExtraDecoder implements TgfKernelExtraDecoder {
+  const MillKernelExtraDecoder();
+
+  @override
+  Map<String, Object?> decode(Uint8List opaquePayload) => <String, Object?>{
+    millMarkedNodesPayloadKey:
+        MillMarkedPiecesCodec.markedNodesFromOpaquePayload(opaquePayload),
+  };
+}
+
+/// Convenience hook used by [MillGameModule] to register the decoder at
+/// app startup; idempotent (calling twice replaces the previous entry).
+void registerMillKernelExtras() {
+  TgfKernelExtraRegistry.instance.register(
+    GameId.mill,
+    const MillKernelExtraDecoder(),
+  );
 }
