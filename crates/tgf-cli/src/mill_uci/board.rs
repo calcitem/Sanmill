@@ -6,8 +6,8 @@
 //   * parse_position_command                             — `position …` parser
 //   * action_to_uci / action_from_uci                    — UCI move codec
 
-use tgf_core::{Action, ActionList, BoardTopology, GameRules, GameStateSnapshot};
-use tgf_mill::{default_mill_topology, MillActionKind, MillRules, MillVariantOptions};
+use tgf_core::{Action, ActionList, GameRules, GameStateSnapshot};
+use tgf_mill::{MillRules, MillVariantOptions};
 
 use super::EngineConfig;
 
@@ -283,19 +283,12 @@ pub(super) fn action_from_uci(
 }
 
 pub(super) fn action_to_uci(action: Action) -> Option<String> {
-    let topo = default_mill_topology();
-    match action.kind_tag {
-        x if x == MillActionKind::Place as i16 => {
-            Some(topo.label_of(action.to_node as u16).to_owned())
-        }
-        x if x == MillActionKind::Move as i16 => Some(format!(
-            "{}-{}",
-            topo.label_of(action.from_node as u16),
-            topo.label_of(action.to_node as u16)
-        )),
-        x if x == MillActionKind::Remove as i16 => {
-            Some(format!("x{}", topo.label_of(action.to_node as u16)))
-        }
-        _ => None,
+    // Delegate to the canonical Mill UCI codec so every consumer
+    // (CLI / FRB / transcripts) routes through one implementation.
+    let text = tgf_mill::MillUciCodec::encode_action(action);
+    if text.is_empty() {
+        None
+    } else {
+        Some(text)
     }
 }

@@ -10,6 +10,7 @@ pub mod game;
 pub mod game_state;
 pub mod kernel;
 pub mod n_move_rule;
+pub mod notation;
 pub mod repetition;
 pub mod topology_helpers;
 pub mod zobrist;
@@ -26,6 +27,7 @@ pub use game_state::{
 };
 pub use kernel::{GameKernel, KernelError};
 pub use n_move_rule::NMoveRuleCounter;
+pub use notation::NotationCodec;
 pub use repetition::RepetitionTracker;
 pub use zobrist::ZobristTable;
 
