@@ -110,4 +110,18 @@ pub trait Game: 'static + Send + Sync {
     fn terminal_score(wb: &Self::Workbench, _perspective: i8, _depth: i32) -> Option<i32> {
         wb.is_terminal().then(|| Self::Evaluator::score(wb))
     }
+
+    /// Sentinel score returned when the search root has exactly one legal
+    /// action.  The default value (`100`) matches the long-standing
+    /// "VALUE_UNIQUE" constant used by Mill and is large enough not to
+    /// collide with typical evaluator outputs while still well below mate
+    /// scores.  Concrete games may override to align this with their own
+    /// evaluator scale.
+    ///
+    /// Search uses this only at the root single-move short-circuit; it
+    /// never affects deeper alpha-beta windows or transposition entries.
+    #[inline]
+    fn unique_root_move_score() -> i32 {
+        100
+    }
 }

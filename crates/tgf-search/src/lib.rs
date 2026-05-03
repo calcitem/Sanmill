@@ -799,7 +799,7 @@ impl<G: Game> Searcher<G> {
         if moves.len() == 1 {
             return SearchResult {
                 best_action: moves[0],
-                score: VALUE_UNIQUE_ROOT_MOVE,
+                score: G::unique_root_move_score(),
                 nodes: self.nodes,
             };
         }
@@ -867,7 +867,7 @@ impl<G: Game> Searcher<G> {
         if moves.len() == 1 {
             return SearchResult {
                 best_action: moves[0],
-                score: VALUE_UNIQUE_ROOT_MOVE,
+                score: G::unique_root_move_score(),
                 nodes: self.nodes,
             };
         }
@@ -1110,7 +1110,7 @@ impl<G: Game> Searcher<G> {
         if moves.len() == 1 {
             return SearchResult {
                 best_action: moves[0],
-                score: VALUE_UNIQUE_ROOT_MOVE,
+                score: G::unique_root_move_score(),
                 nodes: self.nodes,
             };
         }
