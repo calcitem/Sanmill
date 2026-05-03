@@ -25,9 +25,9 @@ abstract final class MillActionTypes {
 
 /// Event type strings emitted by [MillGameSession] via [GameSessionEvent.type].
 ///
-/// Centralising these strings lets [MillGameSession],
-/// [MillRulesPlatformStub], and any future listeners share a single
-/// authoritative source rather than scattered bare literals.
+/// Centralising these strings lets [MillGameSession] and any future
+/// listeners share a single authoritative source rather than scattered
+/// bare literals.
 abstract final class MillEventTypes {
   static const String stateChanged = 'millStateChanged';
   static const String moveApplied = 'millMoveApplied';
