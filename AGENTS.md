@@ -365,6 +365,40 @@ Before submitting changes:
 * Version 1.0 format uses structured `PuzzleSolution` and `PuzzleMove`
  objects with explicit side-to-move information
 
+### Rust module organisation conventions
+
+To keep individual files reviewable and to make the repo easy to
+navigate, follow these rules when a module crosses ~1k lines or
+needs new sibling helpers:
+
+* **Single-file module → directory:** when adding a sibling that
+ belongs to the same module, convert `foo.rs` to `foo/mod.rs` and
+ add the sibling as `foo/<sibling>.rs`.  Existing examples:
+ `crates/tgf-mill/src/rules/`, `crates/tgf-cli/src/mill_uci/`,
+ `crates/tgf-search/src/searcher/`, `crates/tgf-othello/src/`.
+* **Tests next to a single-file module:** if the module is still a
+ flat `foo.rs` (e.g. `crates/tgf-frb/src/api/simple.rs`) and the
+ inline `#[cfg(test)] mod tests { … }` block is large, hoist the
+ tests into a sibling `foo_tests.rs` and reference it via:
+
+ ```rust
+ #[cfg(test)]
+ #[path = "foo_tests.rs"]
+ mod tests;
+ ```
+
+ The trailing `_tests.rs` suffix and the `#[path]` attribute are
+ the convention; do not invent variants.
+* **Tests inside a directory module:** when the module is already a
+ `foo/` directory, host the test file as `foo/tests.rs` and pull
+ it in with `#[cfg(test)] mod tests;` from `foo/mod.rs`.  Do not
+ use `#[path]` in this shape — the regular module declaration is
+ the convention.
+* **Cross-module helpers:** prefer `pub(super)` over `pub(crate)`
+ unless the helper is truly used outside the immediate parent
+ module.  This keeps the crate-wide grep noise low and makes it
+ obvious where sibling files draw their dependencies from.
+
 ---
 
 ## 10) Internationalization (i18n)
