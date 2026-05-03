@@ -39,6 +39,7 @@ mod evaluation;
 mod fen;
 mod game_impls;
 mod legacy_squares;
+mod legal_actions;
 mod legal_apply;
 mod lines;
 mod move_priority;
