@@ -72,6 +72,30 @@ pub trait Workbench: Sized {
 
     fn do_move(&mut self, a: Action);
     fn undo_move(&mut self);
+
+    /// Compute the position key the Workbench would have *after*
+    /// applying `action`.  Used by the searcher to issue TT prefetch
+    /// hints before recursing into child nodes (mirrors master
+    /// `Position::key_after` in `src/position.cpp`).
+    ///
+    /// The default implementation does an actual `do_move` / `key()` /
+    /// `undo_move` round-trip so games with full-state hashing keep
+    /// working without changes.  Concrete games whose key is
+    /// incrementally maintained (Zobrist-style) should override this
+    /// with an O(1) xor-only computation -- see master `key_after`
+    /// for the reference shape.
+    ///
+    /// `&mut` is required so the default implementation can borrow
+    /// the workbench mutably for the do/undo round-trip; concrete
+    /// O(1) overrides are still expected to leave the Workbench
+    /// observably unchanged on return.
+    #[inline]
+    fn key_after(&mut self, action: Action) -> u64 {
+        self.do_move(action);
+        let key = self.key();
+        self.undo_move();
+        key
+    }
 }
 
 /// Per-game static evaluator.  Methods are free functions (not `&self`) so the

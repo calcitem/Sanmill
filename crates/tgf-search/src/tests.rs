@@ -720,6 +720,29 @@ fn shared_tt_with_capacity_mb_respects_requested_floor() {
 }
 
 #[test]
+fn workbench_default_key_after_matches_do_move_round_trip() {
+    let game = KeyedGame;
+    let mut wb = game.build_workbench(&GameStateSnapshot::default());
+
+    let mut moves = ActionList::<256>::new();
+    KeyedGame::generate_legal(&wb, &mut moves);
+    assert!(!moves.is_empty(), "fixture must have legal moves");
+
+    let action = moves[0];
+    let key_before = wb.key();
+    let predicted_after = wb.key_after(action);
+
+    // Workbench observably unchanged after key_after.
+    assert_eq!(wb.key(), key_before, "key_after must restore state");
+
+    // Predicted key must match the real key after applying the move.
+    wb.do_move(action);
+    assert_eq!(wb.key(), predicted_after, "default key_after mismatch");
+    wb.undo_move();
+    assert_eq!(wb.key(), key_before);
+}
+
+#[test]
 fn shared_tt_prefetch_is_safe_for_arbitrary_keys() {
     // Prefetch is a hint, not a correctness path; ensure it never
     // panics or accesses out-of-bounds memory regardless of the input.
