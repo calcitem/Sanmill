@@ -21,8 +21,8 @@
 // them here keeps `tgf-search` game-neutral while still exercising the
 // same hot path against a real, non-trivial game.
 
-use criterion::{criterion_group, criterion_main, Criterion};
-use tgf_core::{Game, GameRules};
+use criterion::{black_box, criterion_group, criterion_main, Criterion};
+use tgf_core::{Action, Game, GameRules, Workbench};
 use tgf_mill::{MillActionKind, MillGame, MillRules};
 use tgf_search::{
     lazy_smp_search, perft, LazySmpWorker, MctsOptions, MctsSearcher, SearchOptions, SearchPolicy,
@@ -189,6 +189,48 @@ fn bench_mill_mcts_assist_depth_1(c: &mut Criterion) {
     });
 }
 
+/// Bench `Workbench::key()` after the Zobrist migration (commit
+/// "Migrate Mill position_key to Zobrist...").  The cached fast path
+/// is the dominant signal: every searcher node pays exactly one
+/// `wb.key()` call, so the relative speedup vs. pre-migration FNV
+/// shows up directly in NPS.
+fn bench_mill_workbench_key_initial(c: &mut Criterion) {
+    c.bench_function("mill_workbench_key_initial", |b| {
+        let rules = MillRules::default();
+        let game = MillGame::default();
+        let snap = rules.initial_state(&[]);
+        let wb = game.build_workbench(&snap);
+        b.iter(|| {
+            let k = black_box(&wb).key();
+            black_box(k)
+        });
+    });
+}
+
+/// Bench `Workbench::key_after(action)` for a Place action.  Mirrors
+/// the prefetch hot path -- the searcher emits one `key_after` per
+/// candidate child before recursing.  The Zobrist override should
+/// stay O(1) and well below the Place's actual `apply` cost.
+fn bench_mill_workbench_key_after_place(c: &mut Criterion) {
+    c.bench_function("mill_workbench_key_after_place", |b| {
+        let rules = MillRules::default();
+        let game = MillGame::default();
+        let snap = rules.initial_state(&[]);
+        let mut wb = game.build_workbench(&snap);
+        let action = Action {
+            kind_tag: MillActionKind::Place as i16,
+            from_node: -1,
+            to_node: 0,
+            aux: -1,
+            payload_bits: 0,
+        };
+        b.iter(|| {
+            let k = black_box(&mut wb).key_after(black_box(action));
+            black_box(k)
+        });
+    });
+}
+
 criterion_group!(
     benches,
     bench_mill_search_depth_1,
@@ -200,5 +242,7 @@ criterion_group!(
     bench_mill_lazy_smp_2_workers_depth_2,
     bench_mill_mcts_default,
     bench_mill_mcts_assist_depth_1,
+    bench_mill_workbench_key_initial,
+    bench_mill_workbench_key_after_place,
 );
 criterion_main!(benches);
