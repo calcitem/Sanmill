@@ -1719,9 +1719,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   TopologyEdge dco_decode_topology_edge(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     final arr = raw as List<dynamic>;
-    if (arr.length != 2)
-      throw Exception('unexpected arr length: expect 2 but see ${arr.length}');
-    return TopologyEdge(a: dco_decode_u_16(arr[0]), b: dco_decode_u_16(arr[1]));
+    if (arr.length != 3)
+      throw Exception('unexpected arr length: expect 3 but see ${arr.length}');
+    return TopologyEdge(
+      a: dco_decode_u_16(arr[0]),
+      b: dco_decode_u_16(arr[1]),
+      kindTag: dco_decode_u_16(arr[2]),
+    );
   }
 
   @protected
@@ -2114,7 +2118,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var var_a = sse_decode_u_16(deserializer);
     var var_b = sse_decode_u_16(deserializer);
-    return TopologyEdge(a: var_a, b: var_b);
+    var var_kindTag = sse_decode_u_16(deserializer);
+    return TopologyEdge(a: var_a, b: var_b, kindTag: var_kindTag);
   }
 
   @protected
@@ -2460,6 +2465,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_u_16(self.a, serializer);
     sse_encode_u_16(self.b, serializer);
+    sse_encode_u_16(self.kindTag, serializer);
   }
 
   @protected

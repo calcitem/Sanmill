@@ -390,6 +390,10 @@ pub struct TopologyPoint {
 pub struct TopologyEdge {
     pub a: u16,
     pub b: u16,
+    /// Per-game edge classification (see `tgf_core::Edge::kind_tag`).
+    /// `0` = default/generic.  Used by games with multi-modal edges
+    /// (军棋: railroad vs ordinary connections).
+    pub kind_tag: u16,
 }
 
 #[derive(Clone, Debug)]
@@ -525,6 +529,7 @@ pub fn native_mill_topology() -> TopologyBlob {
         .map(|edge| TopologyEdge {
             a: edge.a,
             b: edge.b,
+            kind_tag: edge.kind_tag,
         })
         .collect();
     TopologyBlob {
@@ -574,6 +579,7 @@ pub fn tgf_kernel_topology(handle: u32) -> Result<TopologyBlob, String> {
             .map(|edge| TopologyEdge {
                 a: edge.a,
                 b: edge.b,
+                kind_tag: edge.kind_tag,
             })
             .collect();
         TopologyBlob {

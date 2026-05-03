@@ -175,26 +175,20 @@ fn standard_edges(has_diagonal_lines: bool) -> Vec<Edge> {
     let mut edges = Vec::with_capacity(if has_diagonal_lines { 48 } else { 32 });
     for start in [0_u16, 8, 16] {
         for i in 0..8_u16 {
-            edges.push(Edge {
-                a: start + i,
-                b: start + ((i + 1) % 8),
-            });
+            edges.push(Edge::untyped(start + i, start + ((i + 1) % 8)));
         }
     }
     // Spokes only at midpoint positions (odd dense-node indices within each ring).
     // NEIGHBORS confirms: inner node 1 → middle node 9, middle node 9 → outer node 17, etc.
     for i in [1_u16, 3, 5, 7] {
-        edges.push(Edge { a: i, b: 8 + i });
-        edges.push(Edge {
-            a: 8 + i,
-            b: 16 + i,
-        });
+        edges.push(Edge::untyped(i, 8 + i));
+        edges.push(Edge::untyped(8 + i, 16 + i));
     }
     if has_diagonal_lines {
         for a in 0_u16..24 {
             for &b in NEIGHBORS_DIAGONAL[a as usize] {
                 if a < b {
-                    edges.push(Edge { a, b });
+                    edges.push(Edge::untyped(a, b));
                 }
             }
         }

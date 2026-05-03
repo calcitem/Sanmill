@@ -218,7 +218,10 @@ impl GridTopologyBuilder {
                 neighbors[me as usize] = nbr;
             }
         }
-        let edges: Vec<Edge> = edge_set.into_iter().map(|(a, b)| Edge { a, b }).collect();
+        let edges: Vec<Edge> = edge_set
+            .into_iter()
+            .map(|(a, b)| Edge::untyped(a, b))
+            .collect();
 
         // Line groups: rows + columns.  These let UIs draw rank/file
         // gridlines without re-deriving the geometry.

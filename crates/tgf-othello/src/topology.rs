@@ -27,16 +27,10 @@ impl Default for OthelloTopology {
         for r in 0..8 {
             for c in 0..8 {
                 if c < 7 {
-                    edges.push(Edge {
-                        a: idx(c, r) as u16,
-                        b: idx(c + 1, r) as u16,
-                    });
+                    edges.push(Edge::untyped(idx(c, r) as u16, idx(c + 1, r) as u16));
                 }
                 if r < 7 {
-                    edges.push(Edge {
-                        a: idx(c, r) as u16,
-                        b: idx(c, r + 1) as u16,
-                    });
+                    edges.push(Edge::untyped(idx(c, r) as u16, idx(c, r + 1) as u16));
                 }
             }
         }

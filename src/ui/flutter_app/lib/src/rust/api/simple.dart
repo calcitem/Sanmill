@@ -479,10 +479,15 @@ class TopologyEdge {
   final int a;
   final int b;
 
-  const TopologyEdge({required this.a, required this.b});
+  /// Per-game edge classification (see `tgf_core::Edge::kind_tag`).
+  /// `0` = default/generic.  Used by games with multi-modal edges
+  /// (军棋: railroad vs ordinary connections).
+  final int kindTag;
+
+  const TopologyEdge({required this.a, required this.b, required this.kindTag});
 
   @override
-  int get hashCode => a.hashCode ^ b.hashCode;
+  int get hashCode => a.hashCode ^ b.hashCode ^ kindTag.hashCode;
 
   @override
   bool operator ==(Object other) =>
@@ -490,7 +495,8 @@ class TopologyEdge {
       other is TopologyEdge &&
           runtimeType == other.runtimeType &&
           a == other.a &&
-          b == other.b;
+          b == other.b &&
+          kindTag == other.kindTag;
 }
 
 class TopologyPoint {

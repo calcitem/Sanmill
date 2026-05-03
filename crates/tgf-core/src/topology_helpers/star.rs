@@ -177,7 +177,10 @@ impl StarTopologyBuilder {
             nbr.dedup();
             neighbors[i] = nbr;
         }
-        let edges: Vec<Edge> = edge_set.into_iter().map(|(a, b)| Edge { a, b }).collect();
+        let edges: Vec<Edge> = edge_set
+            .into_iter()
+            .map(|(a, b)| Edge::untyped(a, b))
+            .collect();
 
         // Line groups: rows of constant `r`, columns of constant `q`,
         // diagonals of constant `s = -q - r`.
