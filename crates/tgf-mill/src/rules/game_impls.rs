@@ -27,7 +27,17 @@ impl Workbench for MillWorkbench {
     }
 
     fn key(&self) -> u64 {
-        position_key(&self.state)
+        // Fast path: zobrist_key is cached on every state that goes
+        // through MillRules::encode / decode round-trip.  We only fall
+        // back to a full recompute when the workbench was built from
+        // a hand-synthesised state (tests, FEN setup) that bypassed
+        // encode.  position_key handles that fallback transparently.
+        let cached = self.state.zobrist_key;
+        if cached != 0 {
+            cached
+        } else {
+            position_key(&self.state)
+        }
     }
 
     fn side_to_move(&self) -> i8 {

@@ -1051,7 +1051,13 @@ fn position_key_changes_after_move_and_restores_after_undo() {
 }
 
 #[test]
-fn position_key_distinguishes_signed_removal_and_capture_slots() {
+fn position_key_distinguishes_capture_slots_per_side() {
+    // Note: master's Zobrist key (mirrored by the Rust port post
+    // Phase 15+) intentionally COLLAPSES `remove_own_piece` -- the
+    // misc bits only store `pending_removals[stm]` (clamped to 4),
+    // matching master `update_key_misc` (src/position.cpp).  Two
+    // states differing only in remove_own_piece therefore hash to
+    // the same key, which is master's documented behaviour.
     let mut normal = MillState {
         side_to_move: 0,
         phase: MillPhase::Moving,
@@ -1063,10 +1069,8 @@ fn position_key_distinguishes_signed_removal_and_capture_slots() {
     normal.board[6] = 2;
     normal.pieces_on_board = [1, 1];
 
-    let mut own = normal.clone();
-    own.remove_own_piece[0] = true;
-    assert_ne!(position_key(&normal), position_key(&own));
-
+    // What still must differ: per-side capture target bitmaps go
+    // through dedicated Zobrist::custodianTarget[color][s] entries.
     let mut white_capture = normal.clone();
     white_capture.custodian_targets[0] = node_bit(6);
     white_capture.custodian_count[0] = 1;

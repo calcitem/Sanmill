@@ -90,50 +90,22 @@ pub(super) fn append_capture_field(
 }
 
 /// Position-fingerprint hash used by repetition detection and the FEN
-/// round-trip helpers.  Mirrors `Position::key` in master `position.cpp`:
-/// deterministic XOR-style mixing over every field that participates in
-/// move legality / repetition.
+/// round-trip helpers.  Returns the cached `MillState::zobrist_key`
+/// when it is non-zero (i.e. when the state went through
+/// `MillRules::apply` or `recompute_zobrist`); falls back to a full
+/// Zobrist recomputation otherwise to keep consumers that synthesise
+/// `MillState` directly (tests, FEN setup) working without first
+/// calling apply.
+///
+/// Mirrors `Position::key` in master `src/position.cpp`: piece-square
+/// xor + side-to-move + capture-state target/count xors + 2-bit
+/// piece-to-remove counter in the high bits (`update_key_misc`).
 pub(super) fn position_key(state: &MillState) -> u64 {
-    let mut key = 0xcbf2_9ce4_8422_2325_u64;
-    let mut mix = |byte: u8| {
-        key ^= u64::from(byte);
-        key = key.wrapping_mul(0x1000_0000_01b3);
-    };
-    // Board pieces (piece-square, 24 squares × 2 bits owner).
-    for piece in state.board {
-        mix(piece as u8);
+    let cached = state.zobrist_key;
+    if cached != 0 {
+        return cached;
     }
-    // Side to move.
-    mix(state.side_to_move as u8);
-    // pieceToRemoveCount for the active side only (mirrors update_key_misc).
-    let us = (state.side_to_move as usize) & 1;
-    mix(state.pending_removals[us]);
-    mix(state.phase as u8);
-    mix(state.action as u8);
-    for side in 0..2 {
-        mix(state.pieces_in_hand[side]);
-        mix(state.pieces_on_board[side]);
-        let signed_remove = if state.remove_own_piece[side] {
-            -(i16::from(state.pending_removals[side]))
-        } else {
-            i16::from(state.pending_removals[side])
-        };
-        for byte in signed_remove.to_le_bytes() {
-            mix(byte);
-        }
-        for byte in state.custodian_targets[side].to_le_bytes() {
-            mix(byte);
-        }
-        for byte in state.intervention_targets[side].to_le_bytes() {
-            mix(byte);
-        }
-        for byte in state.leap_targets[side].to_le_bytes() {
-            mix(byte);
-        }
-        mix(state.custodian_count[side]);
-        mix(state.intervention_count[side]);
-        mix(state.leap_count[side]);
-    }
+    let key = super::zobrist::full_state_key(state);
     if key == 0 {
         1
     } else {

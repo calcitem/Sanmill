@@ -47,6 +47,7 @@ mod rules_setup;
 mod state_impl;
 mod transitions;
 mod types;
+mod zobrist;
 
 use types::MillActionState;
 pub use types::{
@@ -56,7 +57,26 @@ pub use types::{
 
 use state_impl::sync_action_state;
 
+#[cfg(test)]
 use fen::position_key;
+
+/// Recompute the cached `MillState::zobrist_key` field from scratch.
+///
+/// Called at the end of `MillRules::encode` (i.e. after every
+/// `MillRules::apply` or setup/encode flow) so the hot-path
+/// `Workbench::key()` and `Workbench::key_after()` can read the
+/// cache in O(1) instead of mixing a fresh hash on every probe.
+/// Mirrors master's "incremental key + final commit" pattern: the
+/// per-mutation `st.key ^= Zobrist::*` updates inside C++ apply
+/// keep the key correct as the state mutates; we centralise the
+/// xor work in a single full-state pass at the apply boundary so
+/// future commits can move the maintenance into per-mutation
+/// helpers without breaking the contract.
+#[inline]
+pub(super) fn recompute_zobrist(state: &mut MillState) {
+    state.zobrist_key = zobrist::full_state_key(state);
+}
+
 use transitions::{
     apply_removal_based_on_mill_counts, bump_ply_since_capture, clear_key_history,
     is_action_within_board_bounds, live_piece, maybe_draw_by_n_move_rule, maybe_finish_full_board,
@@ -177,12 +197,17 @@ impl MillRules {
         MillState::decode(&snap)
     }
 
-    fn encode(&self, state: MillState) -> GameStateSnapshot {
+    fn encode(&self, mut state: MillState) -> GameStateSnapshot {
+        // Refresh the cached Zobrist key right before serialising so
+        // every emitted snapshot carries an up-to-date key and the
+        // hot-path `Workbench::key()` can read the cache in O(1).
+        recompute_zobrist(&mut state);
+        let key = state.zobrist_key;
         GameStateSnapshot {
             side_to_move: state.side_to_move,
             phase_tag: state.phase as i16,
             move_number: state.move_number,
-            zobrist_key: position_key(&state),
+            zobrist_key: if key == 0 { 1 } else { key },
             opaque_payload: state.encode(),
         }
     }
@@ -396,6 +421,13 @@ pub struct MillState {
     key_history: Vec<u64>,
     /// Number of valid entries in `key_history`, clamped to 24.
     key_history_len: usize,
+    /// Cached Zobrist position key.  Mirrors master `Position::st.key`
+    /// and is maintained incrementally through `MillRules::apply`
+    /// (recomputed via `zobrist::full_state_key` at the end of every
+    /// apply that has not yet wired per-mutation xor maintenance).
+    /// `Workbench::key()` and `Workbench::key_after()` read this
+    /// field directly so the search hot path is O(1).
+    zobrist_key: u64,
 }
 
 impl Default for MillState {
@@ -431,6 +463,7 @@ impl Default for MillState {
             board_full_removing: false,
             key_history: Vec::new(),
             key_history_len: 0,
+            zobrist_key: 0,
         }
     }
 }

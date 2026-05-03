@@ -6,8 +6,8 @@
 use tgf_core::Action;
 
 use super::{
-    fen::position_key, mill_lines, node_bit, MillBoardFullAction,
-    MillFormationActionInPlacingPhase, MillOutcomeReason, MillPhase, MillState, MillVariantOptions,
+    mill_lines, node_bit, MillBoardFullAction, MillFormationActionInPlacingPhase,
+    MillOutcomeReason, MillPhase, MillState, MillVariantOptions,
 };
 
 /// and this helper is not called, so the placing-phase indicator stays
@@ -376,7 +376,19 @@ pub(super) fn note_mill_formation(
 /// counters are excluded so a repeated board configuration always hashes
 /// identically regardless of ply distance.
 pub(super) fn repetition_signature(state: &MillState) -> u64 {
-    position_key(state)
+    // Always recompute from scratch: this is invoked from inside
+    // `MillRules::apply` *before* `recompute_zobrist` writes the cache,
+    // so `state.zobrist_key` may still hold the pre-mutation value.
+    // Using the cache here would compare the new state against the
+    // pre-move history under the wrong key.  Mirrors master's
+    // `Position::key()` which always reads st.key after every
+    // st.key ^= update inside do_move.
+    let key = super::zobrist::full_state_key(state);
+    if key == 0 {
+        1
+    } else {
+        key
+    }
 }
 
 /// Empty the rolling repetition history on irreversible events (Place/Remove),

@@ -189,6 +189,14 @@ impl MillState {
             board_full_removing: (payload[252] & 0x20) != 0,
             preferred_remove_target: payload[255] as i8,
             formed_mills_bb: [read_u32(256), read_u32(260)],
+            // Snapshot-side Zobrist key was computed in
+            // `MillRules::encode` -> `recompute_zobrist`; carry it
+            // through so the search hot path's `Workbench::key()` is
+            // O(1).  Test fixtures that hand-build a snapshot without
+            // going through encode pass `zobrist_key = 0`; those
+            // states fall back to a full recompute the first time
+            // `position_key` is invoked.
+            zobrist_key: snapshot.zobrist_key,
         }
     }
 }
