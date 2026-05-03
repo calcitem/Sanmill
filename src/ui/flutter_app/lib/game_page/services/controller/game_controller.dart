@@ -1114,8 +1114,18 @@ class GameController {
       return const EngineResponseHumanOK();
     }
 
-    if (true && gameInstance.gameMode == GameMode.humanVsAi) {
+    if (gameInstance.gameMode == GameMode.humanVsAi) {
       return _nativeSessionEngineToGo(context, isMoveNow: isMoveNow);
+    }
+
+    // AI vs AI must also drive the Rust/FRB native session.  The legacy
+    // `engine.search()` path delegates UCI commands through method-channel
+    // stubs (see `Engine.startup` doc) that no longer reach a real engine
+    // thread, so without this branch clicking "New Game" while in AI vs AI
+    // mode silently spins on `_waitResponse(["bestmove"])` and the board
+    // never advances.  Route through the dedicated native loop instead.
+    if (gameInstance.gameMode == GameMode.aiVsAi) {
+      return _nativeAiVsAiLoop(context, isMoveNow: isMoveNow);
     }
 
     late EngineRet engineRet;
@@ -1342,6 +1352,122 @@ class GameController {
       isEngineRunning = false;
       if (context.mounted) {
         refreshNativeSessionHeader(context, scopedSession);
+      }
+    }
+  }
+
+  /// AI vs AI loop driven by the Rust/FRB native session.
+  ///
+  /// Mirrors the structure of `_nativeSessionEngineToGo` but keeps invoking
+  /// `playIfAiTurn` while the session is still alive and the controller has
+  /// not been deactivated.  Each iteration:
+  ///   * lets the AI consume one full obligation chain (place / move +
+  ///     follow-up removes are handled inside `playIfAiTurn`);
+  ///   * refreshes the header tip so the UI reflects who is to move next;
+  ///   * yields to the Flutter event loop via an animation-aware delay so
+  ///     the UI can render the board and capture frames.
+  ///
+  /// When `isMoveNow` is true, the loop runs at most one iteration to honour
+  /// the "Move Now" semantics of the legacy adapter.
+  Future<EngineResponse> _nativeAiVsAiLoop(
+    BuildContext context, {
+    required bool isMoveNow,
+  }) async {
+    const String tag = "[engineToGo][native][aiVsAi]";
+    final GameSession? scopedSession = GameSessionScope.sessionOf(context);
+    if (scopedSession is! NativeMillGameSession) {
+      logger.w(
+        "$tag AI-vs-AI requires NativeMillGameSession, got ${scopedSession.runtimeType}.",
+      );
+      return const EngineResponseSkip();
+    }
+
+    if (isEngineRunning && !isMoveNow) {
+      logger.t("$tag _nativeAiVsAiLoop already running, skip.");
+      return const EngineResponseSkip();
+    }
+
+    final NativeMillAiTurnController aiTurnController =
+        NativeMillAiTurnController(generalSettings: DB().generalSettings);
+
+    isEngineRunning = true;
+    isControllerActive = true;
+    boardSemanticsNotifier.updateSemantics();
+
+    bool searched = false;
+    try {
+      while (isControllerActive) {
+        if (scopedSession.outcome.isTerminal) {
+          break;
+        }
+        // Both players are AI in this mode, so `aiTurnController.aiSeat`
+        // does not cover the full picture: the active seat is always the
+        // AI side here.  Using the seat-aware check still works because
+        // both white and black are AI -- isAiTurn returns true while the
+        // game is ongoing, so the loop terminates only on terminal
+        // outcomes or controller deactivation.
+        if (!aiTurnController.isAiTurn(scopedSession)) {
+          break;
+        }
+
+        if (context.mounted) {
+          refreshNativeSessionHeader(
+            context,
+            scopedSession,
+            showThinking: true,
+          );
+        }
+
+        final GameAction? action = await aiTurnController.playIfAiTurn(
+          scopedSession,
+        );
+        if (action == null) {
+          if (!searched) {
+            return const EngineNoBestMove();
+          }
+          break;
+        }
+        searched = true;
+        logger.i("$tag Applied native AI move ${action.payload['move']}");
+
+        if (context.mounted) {
+          refreshNativeSessionHeader(context, scopedSession);
+        }
+
+        // Honour Move Now: a single AI turn is enough.
+        if (isMoveNow) {
+          break;
+        }
+
+        // Yield to the Flutter event loop so the UI repaints between AI
+        // moves; this also gives `isControllerActive = false` (e.g. user
+        // navigated away or pressed New Game) a chance to break the loop.
+        final double animationDuration = DB().displaySettings.animationDuration;
+        if (animationDuration > 0) {
+          isEngineInDelay = true;
+          await Future<void>.delayed(
+            Duration(milliseconds: (animationDuration * 1000).toInt()),
+          );
+          isEngineInDelay = false;
+        } else {
+          // Even with zero animation time we must yield once so the event
+          // loop can flush taps and lifecycle callbacks.
+          await Future<void>.delayed(Duration.zero);
+        }
+      }
+      return searched
+          ? const EngineResponseOK()
+          : const EngineResponseHumanOK();
+    } finally {
+      isEngineInDelay = false;
+      isEngineRunning = false;
+      if (context.mounted) {
+        refreshNativeSessionHeader(context, scopedSession);
+      }
+      // Trigger result dialog when the AI vs AI game has finished so the
+      // UI does not get stuck on the "Thinking..." tip.
+      if (scopedSession.outcome.isTerminal) {
+        gameResultNotifier.showResult(force: true);
       }
     }
   }
