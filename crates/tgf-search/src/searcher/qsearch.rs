@@ -50,7 +50,14 @@ impl<G: Game> Searcher<G> {
             alpha = stand_pat;
         }
         if wb.is_terminal() {
-            return alpha;
+            // Master src/search.cpp:81-83 returns `stand_pat` in this
+            // branch (`if (unlikely(pos->phase == Phase::gameOver))
+            // return stand_pat;`).  The previous Rust implementation
+            // returned `alpha`, which clamps below the depth-adjusted
+            // stand-pat when stand_pat had not yet been folded into
+            // alpha.  Returning stand_pat keeps the depth-adjusted
+            // mate-distance bias visible to the caller.
+            return stand_pat;
         }
 
         let Some(quiescence_kind_tag) = self.policy.quiescence_kind_tag else {
