@@ -1,7 +1,15 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
-// Unit / integration tests for `crate::api::simple`.  Hosted in a
-// dedicated file so the public FRB-entry-point file stays under the
-// 1000-line bar.
+// Unit / integration tests for `crate::api::simple`.
+//
+// Despite the generic file name, the entire suite covers Mill-specific
+// regressions: oracle-replay fixtures generated from the legacy C++
+// engine, native-search behaviour, variant-toggle round-trips, and so
+// on.  The `simple` module is itself dominated by Mill DTO / spawn /
+// smoke entry points that FRB scans by physical position; once those
+// move into a sibling `api/mill_*.rs` file (planned follow-up), this
+// suite will be split into matching `mill_api_tests.rs` /
+// `oracle_replay_tests.rs`.  For now the `simple_tests.rs` name
+// matches the AGENTS.md convention for flat-file modules.
 
 use std::collections::BTreeSet;
 
