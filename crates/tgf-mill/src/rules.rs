@@ -720,6 +720,18 @@ impl GameRules for MillRules {
     }
 
     fn apply(&self, snap: &GameStateSnapshot, action: Action) -> GameStateSnapshot {
+        // Memory-safety guard: even on the "unchecked" apply path the
+        // caller may have supplied an out-of-range `from_node` or
+        // `to_node` (see FRB `tgf_kernel_apply_unchecked`).  Reject such
+        // actions up-front by returning the input snapshot unchanged so
+        // we never index `state.board[..]` out of bounds.  Game-level
+        // legality (mill formation, side-to-move, phase, capture
+        // policies, …) is still the caller's responsibility — the
+        // `*_unchecked` contract is "skip the slow legal-action lookup",
+        // not "open up a memory-safety hole".
+        if !is_action_within_board_bounds(&action) {
+            return *snap;
+        }
         let mut state = Self::decode(snap);
         match action.kind_tag {
             x if x == MillActionKind::Place as i16 => {
@@ -1607,6 +1619,23 @@ fn maybe_stop_placing_when_two_empty(state: &mut MillState, options: &MillVarian
 
 fn empty_square_count(state: &MillState) -> usize {
     state.board.iter().filter(|piece| **piece == 0).count()
+}
+
+/// Memory-safety check for FRB callers (in particular
+/// `tgf_kernel_apply_unchecked`) that bypass `is_legal` but must not be
+/// allowed to crash the engine with an out-of-range board index.
+///
+/// The 24-node Mill board uses `0..24` for real squares and `-1` as the
+/// sentinel "no node" value (placing from hand, removal-only, etc.).
+/// Accept Place / Move / Remove kinds whose source / destination fields
+/// fall in those ranges; reject everything else so callers can recover
+/// instead of triggering a panic deep inside `apply`.
+#[inline]
+fn is_action_within_board_bounds(action: &Action) -> bool {
+    fn is_node_or_none(value: i16) -> bool {
+        value == -1 || (0..24).contains(&value)
+    }
+    is_node_or_none(action.from_node) && is_node_or_none(action.to_node)
 }
 
 fn maybe_finish_full_board(state: &mut MillState, options: &MillVariantOptions) {
@@ -3610,6 +3639,46 @@ mod tests {
         assert!(actions
             .iter()
             .all(|a| a.kind_tag == MillActionKind::Place as i16));
+    }
+
+    /// Regression for the `apply_unchecked` memory-safety guard:
+    /// caller-supplied actions whose `from_node` / `to_node` falls
+    /// outside the 0..24 board range must not panic; instead the rules
+    /// engine returns the input snapshot unchanged so the FFI boundary
+    /// can recover.  The "unchecked" path skips the slow legality
+    /// lookup; it must not skip basic memory-safety bounds.
+    #[test]
+    fn apply_with_out_of_range_action_is_a_noop() {
+        let rules = MillRules::default();
+        let snap = rules.initial_state(&[]);
+        for bogus_to in [-2_i16, 24, 99, i16::MAX] {
+            let action = Action {
+                kind_tag: MillActionKind::Place as i16,
+                from_node: -1,
+                to_node: bogus_to,
+                aux: -1,
+                payload_bits: 0,
+            };
+            let result = rules.apply(&snap, action);
+            assert_eq!(
+                result, snap,
+                "out-of-range to_node={bogus_to} must yield an unmodified snapshot",
+            );
+        }
+        for bogus_from in [-2_i16, 24, 99, i16::MAX] {
+            let action = Action {
+                kind_tag: MillActionKind::Move as i16,
+                from_node: bogus_from,
+                to_node: 0,
+                aux: -1,
+                payload_bits: 0,
+            };
+            let result = rules.apply(&snap, action);
+            assert_eq!(
+                result, snap,
+                "out-of-range from_node={bogus_from} must yield an unmodified snapshot",
+            );
+        }
     }
 
     #[test]
