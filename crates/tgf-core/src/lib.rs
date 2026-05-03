@@ -9,6 +9,7 @@ pub mod board_topology;
 pub mod game;
 pub mod game_state;
 pub mod kernel;
+pub mod topology_helpers;
 
 // Convenience re-exports for downstream crates.
 pub use action::{Action, ActionList};

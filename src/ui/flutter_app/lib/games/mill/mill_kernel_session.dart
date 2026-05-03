@@ -43,8 +43,8 @@ class MillKernelSession {
     if (kernel.isDisposed) {
       throw KernelException('handle already disposed');
     }
-    final Stream<tgf_simple.EngineEvent> events =
-        tgf_mill.tgfKernelMillSearchEventsWithConfig(
+    final Stream<tgf_simple.EngineEvent> events = tgf_mill
+        .tgfKernelMillSearchEventsWithConfig(
           handle: kernel.rawHandle,
           config: tgf_simple.MillEngineConfig(
             algorithm: tgf_simple.MillSearchAlgorithm.pvs,
