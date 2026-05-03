@@ -497,10 +497,15 @@ pub struct EngineEvent {
 
 /// Return the Rust-native standard 24-point Mill topology.
 ///
-/// This is the Phase 3 single source of truth for board geometry.  The Dart
+/// This is the single source of truth for Mill board geometry.  The Dart
 /// shell converts this blob into its existing BoardGeometry value object.
+///
+/// Generic callers that already hold a kernel handle should prefer
+/// [`tgf_kernel_topology`] instead — it routes through the same
+/// `BoardTopology` trait every game implements, so it works for
+/// Othello / Checkers / future games without an extra entry point.
 #[flutter_rust_bridge::frb(sync)]
-pub fn kernel_topology() -> TopologyBlob {
+pub fn native_mill_topology() -> TopologyBlob {
     let topo = default_mill_topology();
     let points = topo
         .nodes()
@@ -527,6 +532,56 @@ pub fn kernel_topology() -> TopologyBlob {
         edges,
         line_groups: topo.line_groups().to_vec(),
     }
+}
+
+/// Backwards-compatible alias for [`native_mill_topology`].  Deprecated
+/// because the name implies kernel awareness while the implementation
+/// always returns the default Mill topology regardless of any kernel
+/// state.  Will be removed one release after every Dart call site
+/// migrates.
+#[flutter_rust_bridge::frb(sync)]
+pub fn kernel_topology() -> TopologyBlob {
+    native_mill_topology()
+}
+
+/// Game-neutral topology accessor: routes the call through the kernel
+/// session's `BoardTopology` so each game ships its own geometry
+/// without needing a bespoke FRB entry.  The `square` field of every
+/// emitted [`TopologyPoint`] mirrors the node id for games that have
+/// no separate legacy square space (i.e. everything except Mill);
+/// Mill's square space is exposed through [`native_mill_topology`].
+#[flutter_rust_bridge::frb(sync)]
+pub fn tgf_kernel_topology(handle: u32) -> Result<TopologyBlob, String> {
+    crate::session_registry::with_kernel(handle, |kernel| {
+        let topo = kernel.topology();
+        let n = topo.node_count();
+        let points: Vec<TopologyPoint> = (0..n)
+            .map(|id| {
+                let pt = topo.coordinate_of(id);
+                TopologyPoint {
+                    id,
+                    square: id,
+                    label: topo.label_of(id).to_owned(),
+                    x: pt.x,
+                    y: pt.y,
+                }
+            })
+            .collect();
+        let edges = topo
+            .edges()
+            .iter()
+            .map(|edge| TopologyEdge {
+                a: edge.a,
+                b: edge.b,
+            })
+            .collect();
+        TopologyBlob {
+            name: topo.name().to_owned(),
+            points,
+            edges,
+            line_groups: topo.line_groups().to_vec(),
+        }
+    })
 }
 
 // ---------------------------------------------------------------------------

@@ -31,10 +31,32 @@ int nativeOthelloSearchDepthOneBestToNode() =>
 
 /// Return the Rust-native standard 24-point Mill topology.
 ///
-/// This is the Phase 3 single source of truth for board geometry.  The Dart
+/// This is the single source of truth for Mill board geometry.  The Dart
 /// shell converts this blob into its existing BoardGeometry value object.
+///
+/// Generic callers that already hold a kernel handle should prefer
+/// [`tgf_kernel_topology`] instead — it routes through the same
+/// `BoardTopology` trait every game implements, so it works for
+/// Othello / Checkers / future games without an extra entry point.
+TopologyBlob nativeMillTopology() =>
+    RustLib.instance.api.crateApiSimpleNativeMillTopology();
+
+/// Backwards-compatible alias for [`native_mill_topology`].  Deprecated
+/// because the name implies kernel awareness while the implementation
+/// always returns the default Mill topology regardless of any kernel
+/// state.  Will be removed one release after every Dart call site
+/// migrates.
 TopologyBlob kernelTopology() =>
     RustLib.instance.api.crateApiSimpleKernelTopology();
+
+/// Game-neutral topology accessor: routes the call through the kernel
+/// session's `BoardTopology` so each game ships its own geometry
+/// without needing a bespoke FRB entry.  The `square` field of every
+/// emitted [`TopologyPoint`] mirrors the node id for games that have
+/// no separate legacy square space (i.e. everything except Mill);
+/// Mill's square space is exposed through [`native_mill_topology`].
+TopologyBlob tgfKernelTopology({required int handle}) =>
+    RustLib.instance.api.crateApiSimpleTgfKernelTopology(handle: handle);
 
 /// Number of legal actions from a fresh Rust-native Mill initial position.
 /// This should match the mature C++ engine at depth 1: 24 placing moves.
