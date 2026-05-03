@@ -88,7 +88,11 @@ class MillSessionRecorderBridge {
     if (side == null) {
       return null;
     }
-    return mill.ExtMove(move, side: side);
+    return mill.ExtMove(
+      move,
+      side: side,
+      boardLayout: event.payload['boardLayout'] as String?,
+    );
   }
 
   static mill.PieceColor? _pieceColorFromMover(String? mover) {

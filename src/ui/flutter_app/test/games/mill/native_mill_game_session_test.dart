@@ -43,6 +43,7 @@ void main() {
       );
       expect(events.last.payload['mover'], PlayerSeat.first.name);
       expect(events.last.payload['move'], 'a7');
+      expect(events.last.payload['boardLayout'], 'O*******/********/********');
     });
 
     test('rejects illegal actions without mutating state', () async {
@@ -259,5 +260,5 @@ class _FakeNativeMillRulesPort implements NativeMillRulesPort {
 
   @override
   String exportFen() =>
-      '********/********/******** w p p 0 9 0 9 0 0 0 0 0 0 0 0 1';
+      'O*******/********/******** w p p 0 9 0 9 0 0 0 0 0 0 0 0 1';
 }

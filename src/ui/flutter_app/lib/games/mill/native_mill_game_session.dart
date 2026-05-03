@@ -198,10 +198,12 @@ class NativeMillGameSession implements GameSessionHandle {
     }
     final PlayerSeat mover = _state.value.activeSeat;
     final GameStateSnapshot next = rulesPort.apply(action);
+    final String? boardLayout = _extractBoardLayout(rulesPort.exportFen());
     _setState(next);
     _emit(MillEventTypes.moveApplied, <String, Object?>{
       'type': action.type,
       'mover': mover.name,
+      if (boardLayout != null) 'boardLayout': boardLayout,
       ...action.payload,
     });
   }
@@ -368,6 +370,18 @@ class NativeMillGameSession implements GameSessionHandle {
     if (!_events.isClosed) {
       _events.add(GameSessionEvent(type, payload: payload));
     }
+  }
+
+  static String? _extractBoardLayout(String fen) {
+    final int spaceIdx = fen.indexOf(' ');
+    if (spaceIdx <= 0) {
+      return null;
+    }
+    final String boardLayout = fen.substring(0, spaceIdx);
+    if (boardLayout.length != 26) {
+      return null;
+    }
+    return boardLayout;
   }
 
   GameAction? _legalActionForBestMoveToNode(int toNode) {
