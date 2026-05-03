@@ -1,0 +1,360 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Monte-Carlo tree search scaffold.
+//
+// `MctsSearcher<G>` is monomorphised over the same `Game` trait family
+// as `Searcher<G>` so its hot path stays statically dispatched.
+// Optional α-β-assisted simulation (see `MctsOptions::ab_assist_depth`)
+// shares this crate's `Searcher` and TT for higher-quality rollouts.
+
+use std::marker::PhantomData;
+use std::sync::atomic::{AtomicI64, AtomicU32, Ordering};
+use std::time::{Duration, Instant};
+
+use tgf_core::{Action, ActionList, Evaluator, Game, MoveOrderContext, Workbench};
+
+use crate::options::SearchPolicy;
+use crate::searcher::Searcher;
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub struct MctsResult {
+    pub best_action: Action,
+    pub visits: u32,
+    pub wins: u32,
+}
+
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub struct MctsOptions {
+    pub iterations: u32,
+    pub playout_depth: i32,
+    pub time_limit_ms: Option<u64>,
+    pub exploration: f64,
+    /// When > 0, the simulation phase uses a shallow α-β search instead of
+    /// random rollout.  The value is the depth passed to `Searcher::search`.
+    /// Default 0 = random rollout (original behaviour).
+    pub ab_assist_depth: i32,
+    pub move_order_context: MoveOrderContext,
+}
+
+impl Default for MctsOptions {
+    fn default() -> Self {
+        Self {
+            iterations: 2048,
+            playout_depth: 6,
+            time_limit_ms: None,
+            exploration: 0.5,
+            ab_assist_depth: 0,
+            move_order_context: MoveOrderContext {
+                algorithm: tgf_core::MoveOrderAlgorithm::Mcts,
+                ..MoveOrderContext::default()
+            },
+        }
+    }
+}
+
+#[derive(Debug)]
+struct MctsNode {
+    action: Action,
+    children: Vec<usize>,
+    untried: Vec<Action>,
+    visits: AtomicU32,
+    wins: AtomicI64,
+    move_index: usize,
+}
+
+impl MctsNode {
+    fn root(untried: Vec<Action>) -> Self {
+        Self {
+            action: Action::NONE,
+            children: Vec::new(),
+            untried,
+            visits: AtomicU32::new(0),
+            wins: AtomicI64::new(0),
+            move_index: 0,
+        }
+    }
+
+    fn child(_parent: usize, action: Action, untried: Vec<Action>, move_index: usize) -> Self {
+        Self {
+            action,
+            children: Vec::new(),
+            untried,
+            visits: AtomicU32::new(0),
+            wins: AtomicI64::new(0),
+            move_index,
+        }
+    }
+
+    fn visits(&self) -> u32 {
+        self.visits.load(Ordering::Relaxed)
+    }
+
+    fn wins(&self) -> i64 {
+        self.wins.load(Ordering::Relaxed)
+    }
+
+    fn record_simulation(&self, win: bool) {
+        self.visits.fetch_add(1, Ordering::Relaxed);
+        if win {
+            self.wins.fetch_add(1, Ordering::Relaxed);
+        }
+    }
+
+    fn win_score(&self) -> f64 {
+        let visits = self.visits();
+        if visits == 0 {
+            0.0
+        } else {
+            self.wins() as f64 / visits as f64
+        }
+    }
+}
+
+pub struct MctsSearcher<G: Game> {
+    rng_state: u64,
+    exploration: f64,
+    policy: SearchPolicy,
+    _phantom: PhantomData<G>,
+}
+
+impl<G: Game> Default for MctsSearcher<G> {
+    fn default() -> Self {
+        Self {
+            rng_state: 0xD1B5_4A32_D192_ED03,
+            exploration: 0.5,
+            policy: SearchPolicy::default(),
+            _phantom: PhantomData,
+        }
+    }
+}
+
+impl<G: Game> MctsSearcher<G> {
+    pub fn new() -> Self {
+        Self::default()
+    }
+
+    pub fn set_random_seed(&mut self, seed: u64) {
+        self.rng_state = if seed == 0 {
+            0xD1B5_4A32_D192_ED03
+        } else {
+            seed
+        };
+    }
+
+    pub fn set_exploration(&mut self, exploration: f64) {
+        self.exploration = exploration.max(0.0);
+    }
+
+    /// Set the search policy forwarded to the α-β sub-searcher used during
+    /// the simulation phase when `MctsOptions::ab_assist_depth > 0`.
+    /// For Mill, pass `SearchPolicy { remove_kind_tag: Some(MillActionKind::Remove as i16) }`.
+    pub fn set_policy(&mut self, policy: SearchPolicy) {
+        self.policy = policy;
+    }
+
+    /// Monte-Carlo Tree Search scaffold using UCT selection, expansion,
+    /// random playout, and backpropagation.  This is still single-threaded and
+    /// does not yet include the optional C++ alpha-beta assisted simulation, but
+    /// unlike the first scaffold it maintains a real tree of node statistics.
+    pub fn search(
+        &mut self,
+        wb: &mut G::Workbench,
+        iterations_per_move: u32,
+        playout_depth: i32,
+    ) -> MctsResult {
+        self.search_with_options(
+            wb,
+            MctsOptions {
+                iterations: iterations_per_move.max(1),
+                playout_depth,
+                time_limit_ms: None,
+                exploration: self.exploration,
+                ab_assist_depth: 0,
+                move_order_context: MoveOrderContext {
+                    algorithm: tgf_core::MoveOrderAlgorithm::Mcts,
+                    ..MoveOrderContext::default()
+                },
+            },
+        )
+    }
+
+    pub fn search_with_options(
+        &mut self,
+        wb: &mut G::Workbench,
+        options: MctsOptions,
+    ) -> MctsResult {
+        self.set_exploration(options.exploration);
+        let started_at = Instant::now();
+        let mut root_moves = ActionList::<256>::new();
+        G::generate_legal_ctx(wb, &mut root_moves, &options.move_order_context);
+        self.order_mcts_moves(wb, &options.move_order_context, &mut root_moves);
+        if root_moves.is_empty() {
+            return MctsResult {
+                best_action: Action::NONE,
+                visits: 0,
+                wins: 0,
+            };
+        }
+
+        let root_untried = root_moves.into_iter().collect::<Vec<_>>();
+        let total_iterations = options.iterations.max(1) as usize;
+        let mut nodes = vec![MctsNode::root(root_untried)];
+
+        for i in 0..total_iterations {
+            if let Some(limit_ms) = options.time_limit_ms {
+                if i > 0 && started_at.elapsed() >= Duration::from_millis(limit_ms) {
+                    break;
+                }
+            }
+            let mut node_idx = 0_usize;
+            let mut path = vec![0_usize];
+            let mut applied_moves = 0_usize;
+
+            // Selection: descend by UCT while fully expanded.
+            while nodes[node_idx].untried.is_empty() && !nodes[node_idx].children.is_empty() {
+                let child_idx = self.best_uct_child(&nodes, node_idx);
+                let action = nodes[child_idx].action;
+                wb.do_move(action);
+                applied_moves += 1;
+                node_idx = child_idx;
+                path.push(node_idx);
+            }
+
+            // Expansion mirrors master MCTS: sort all legal moves, expand all
+            // children at once, and continue simulation from the first child.
+            if !nodes[node_idx].untried.is_empty() {
+                let actions = std::mem::take(&mut nodes[node_idx].untried);
+                let first_child_idx = nodes.len();
+                for action in actions {
+                    wb.do_move(action);
+                    let mut child_moves = ActionList::<256>::new();
+                    G::generate_legal_ctx(wb, &mut child_moves, &options.move_order_context);
+                    self.order_mcts_moves(wb, &options.move_order_context, &mut child_moves);
+                    wb.undo_move();
+                    let move_index = nodes[node_idx].children.len();
+                    let child_idx = nodes.len();
+                    nodes.push(MctsNode::child(
+                        node_idx,
+                        action,
+                        child_moves.into_iter().collect(),
+                        move_index,
+                    ));
+                    nodes[node_idx].children.push(child_idx);
+                }
+                let action = nodes[first_child_idx].action;
+                wb.do_move(action);
+                applied_moves += 1;
+                node_idx = first_child_idx;
+                path.push(node_idx);
+            }
+
+            let mut win = self.simulate(wb, options.playout_depth, &options);
+
+            for _ in 0..applied_moves {
+                wb.undo_move();
+            }
+
+            // Backpropagate.  Alternate win perspective at each parent, matching
+            // the mature C++ implementation.
+            for idx in path.into_iter().rev() {
+                nodes[idx].record_simulation(win);
+                win = !win;
+            }
+        }
+
+        let Some(best_child) = nodes[0]
+            .children
+            .iter()
+            .copied()
+            .max_by_key(|idx| nodes[*idx].visits())
+        else {
+            return MctsResult {
+                best_action: Action::NONE,
+                visits: 0,
+                wins: 0,
+            };
+        };
+
+        MctsResult {
+            best_action: nodes[best_child].action,
+            visits: nodes[best_child].visits(),
+            wins: nodes[best_child].wins().max(0) as u32,
+        }
+    }
+
+    fn best_uct_child(&self, nodes: &[MctsNode], node_idx: usize) -> usize {
+        let parent_visits = nodes[node_idx].visits().max(1) as f64;
+        *nodes[node_idx]
+            .children
+            .iter()
+            .max_by(|a, b| {
+                let av = self.uct_value(&nodes[**a], parent_visits);
+                let bv = self.uct_value(&nodes[**b], parent_visits);
+                av.partial_cmp(&bv).unwrap_or(std::cmp::Ordering::Equal)
+            })
+            .expect("node has children")
+    }
+
+    fn order_mcts_moves(
+        &self,
+        wb: &G::Workbench,
+        context: &MoveOrderContext,
+        moves: &mut ActionList<256>,
+    ) {
+        moves
+            .as_mut_slice()
+            .sort_by_key(|action| -G::move_order_bias_ctx(wb, *action, context));
+    }
+
+    fn uct_value(&self, node: &MctsNode, parent_visits: f64) -> f64 {
+        let visits = node.visits();
+        if visits == 0 {
+            return f64::INFINITY;
+        }
+        let mean = node.win_score();
+        let exploration = self.exploration * (2.0 * parent_visits.ln() / visits as f64).sqrt();
+        let variance = ((mean * (1.0 - mean)) / visits as f64).sqrt();
+        let bias = 0.05 * (256.0 - node.move_index as f64);
+        mean + exploration + variance + bias
+    }
+
+    fn simulate(&mut self, wb: &mut G::Workbench, depth: i32, options: &MctsOptions) -> bool {
+        // α-β assisted simulation: when ab_assist_depth > 0 use a shallow
+        // α-β search instead of random rollout so the Monte-Carlo signal is
+        // higher quality.  A fresh Searcher is constructed per simulation to
+        // keep MCTS state independent; this is intentionally simple —
+        // production callers can share TTs if they need higher throughput.
+        if options.ab_assist_depth > 0 && !wb.is_terminal() {
+            let mut sub = Searcher::<G>::new();
+            sub.set_policy(self.policy);
+            sub.set_move_order_context(options.move_order_context);
+            let result = sub.search(wb, options.ab_assist_depth);
+            return result.score > 0;
+        }
+
+        if depth <= 0 || wb.is_terminal() {
+            return G::Evaluator::score(wb) > 0;
+        }
+        let mut moves = ActionList::<256>::new();
+        G::generate_legal_ctx(wb, &mut moves, &options.move_order_context);
+        self.order_mcts_moves(wb, &options.move_order_context, &mut moves);
+        if moves.is_empty() {
+            return G::Evaluator::score(wb) > 0;
+        }
+        let idx = self.next_random_index(moves.len());
+        wb.do_move(moves[idx]);
+        let win = !self.simulate(wb, depth - 1, options);
+        wb.undo_move();
+        win
+    }
+
+    fn next_random_index(&mut self, len: usize) -> usize {
+        debug_assert!(len > 0);
+        let mut x = self.rng_state;
+        x ^= x >> 12;
+        x ^= x << 25;
+        x ^= x >> 27;
+        self.rng_state = x;
+        let value = x.wrapping_mul(0x2545_F491_4F6C_DD1D);
+        (value as usize) % len
+    }
+}

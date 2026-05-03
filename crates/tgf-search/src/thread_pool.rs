@@ -1,0 +1,160 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Generic worker pool and lazy-SMP fan-out for the searcher.
+//
+// `SearchThreadPool` is intentionally game-agnostic: it accepts any
+// `FnOnce() + Send` job and wires up `crossbeam_channel` dispatch.  The
+// `lazy_smp_search` helper reuses it to spawn N searchers against a
+// shared TT and a shared abort flag — this is the foundation for the
+// migration plan's lazy-SMP scaffold.
+
+use std::sync::atomic::AtomicBool;
+use std::sync::Arc;
+use std::thread;
+
+use crossbeam_channel::{Receiver, Sender};
+use tgf_core::{Game, GameStateSnapshot};
+
+use crate::options::SearchOptions;
+use crate::result::SearchResult;
+use crate::searcher::Searcher;
+use crate::tt::SharedTt;
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub struct LazySmpWorker {
+    pub extra_depth: i32,
+}
+
+/// Run a Lazy-SMP-style parallel search.  All workers share one
+/// transposition table through [`SharedTt`] AND a single abort flag, so
+/// requesting an abort through [`SearchAbortHandle`] once stops every
+/// worker.  Each worker still has its own killer / history bookkeeping
+/// because those are inherently thread-local.
+///
+/// The deepest completed result wins on score; this is intentionally
+/// simpler than full YBWC and is the stepping stone toward phase 5.2 in
+/// the migration plan.  When `abort_flag` is `None` a fresh shared flag
+/// is allocated; pass `Some(...)` to participate in an existing
+/// cancellation chain (e.g. UCI `stop` from the main thread).
+pub fn lazy_smp_search<G>(
+    game: G,
+    snapshot: GameStateSnapshot,
+    base_depth: i32,
+    workers: &[LazySmpWorker],
+    options: SearchOptions,
+    shared_tt: SharedTt,
+    abort_flag: Option<Arc<AtomicBool>>,
+) -> SearchResult
+where
+    G: Game + Clone + Send + 'static,
+    G::Workbench: 'static,
+{
+    let workers = if workers.is_empty() {
+        &[LazySmpWorker { extra_depth: 0 }][..]
+    } else {
+        workers
+    };
+    let abort = abort_flag.unwrap_or_else(|| Arc::new(AtomicBool::new(false)));
+
+    let pool = SearchThreadPool::new(workers.len());
+    let mut receivers = Vec::with_capacity(workers.len());
+    for worker in workers {
+        let game_for_worker = game.clone();
+        let shared_tt = shared_tt.clone();
+        let options_for_worker = options;
+        let snapshot_for_worker = snapshot;
+        let abort = Arc::clone(&abort);
+        let depth = (base_depth + worker.extra_depth).max(1);
+        receivers.push(pool.submit(move || {
+            let mut searcher = Searcher::<G>::with_shared_tt(shared_tt);
+            searcher.set_abort_flag(abort);
+            searcher.set_options(options_for_worker);
+            let mut wb = game_for_worker.build_workbench(&snapshot_for_worker);
+            searcher.iterative_deepening(&mut wb, depth)
+        }));
+    }
+
+    let mut best: Option<SearchResult> = None;
+    for rx in receivers {
+        let result = rx
+            .recv()
+            .expect("lazy-smp worker should return a SearchResult");
+        if best.as_ref().is_none_or(|prev| result.score > prev.score) {
+            best = Some(result);
+        }
+    }
+    best.expect("at least one lazy-smp worker should run")
+}
+
+enum ThreadPoolMessage {
+    Run(Box<dyn FnOnce() + Send + 'static>),
+    Stop,
+}
+
+/// Minimal fixed-size worker pool for search tasks.
+///
+/// The mature C++ engine has a dedicated `ThreadPool`; phase 5.2 recreates
+/// that shape in Rust with `std::thread` workers and `crossbeam_channel`
+/// dispatch.  This pool intentionally does not know about games or searchers:
+/// callers submit closures, which keeps it reusable for lazy SMP, future YBWC,
+/// and MCTS shared-visit experiments.
+pub struct SearchThreadPool {
+    sender: Sender<ThreadPoolMessage>,
+    workers: Vec<thread::JoinHandle<()>>,
+}
+
+impl SearchThreadPool {
+    pub fn new(worker_count: usize) -> Self {
+        let worker_count = worker_count.max(1);
+        let (sender, receiver) = crossbeam_channel::unbounded::<ThreadPoolMessage>();
+        let mut workers = Vec::with_capacity(worker_count);
+        for _ in 0..worker_count {
+            let receiver = receiver.clone();
+            workers.push(thread::spawn(move || {
+                while let Ok(message) = receiver.recv() {
+                    match message {
+                        ThreadPoolMessage::Run(job) => job(),
+                        ThreadPoolMessage::Stop => break,
+                    }
+                }
+            }));
+        }
+        Self { sender, workers }
+    }
+
+    pub fn worker_count(&self) -> usize {
+        self.workers.len()
+    }
+
+    pub fn execute<F>(&self, job: F)
+    where
+        F: FnOnce() + Send + 'static,
+    {
+        self.sender
+            .send(ThreadPoolMessage::Run(Box::new(job)))
+            .expect("search thread pool workers stopped unexpectedly");
+    }
+
+    pub fn submit<F, R>(&self, job: F) -> Receiver<R>
+    where
+        F: FnOnce() -> R + Send + 'static,
+        R: Send + 'static,
+    {
+        let (tx, rx) = crossbeam_channel::bounded(1);
+        self.execute(move || {
+            let result = job();
+            let _ = tx.send(result);
+        });
+        rx
+    }
+}
+
+impl Drop for SearchThreadPool {
+    fn drop(&mut self) {
+        for _ in &self.workers {
+            let _ = self.sender.send(ThreadPoolMessage::Stop);
+        }
+        for worker in self.workers.drain(..) {
+            worker.join().expect("search thread pool worker panicked");
+        }
+    }
+}

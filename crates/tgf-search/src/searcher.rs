@@ -1,0 +1,1007 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Generic monomorphised game-tree searcher.
+//
+// `Searcher<G: Game>` is the hot-path entry point: alpha-beta, PVS,
+// MTD(f), iterative deepening, qsearch, root random search.  It never
+// stores `dyn GameRules` or `dyn Workbench` — every call is dispatched
+// statically through the `G: Game` type parameter, mirroring the C++
+// CRTP design in the migration plan.
+
+use std::collections::HashMap;
+use std::marker::PhantomData;
+use std::sync::atomic::{AtomicBool, Ordering};
+use std::sync::Arc;
+use std::time::{Duration, Instant};
+
+use tgf_core::{Action, ActionList, Evaluator, Game, MoveOrderContext, Workbench};
+
+use crate::abort::SearchAbortHandle;
+use crate::options::{SearchOptions, SearchPolicy};
+use crate::result::SearchResult;
+use crate::tt::{Bound, ClusteredTt, SharedTt, TtEntry};
+
+pub struct Searcher<G: Game> {
+    nodes: u64,
+    tt_hits: u64,
+    tt_misses: u64,
+    tt_age_bumps: u64,
+    rng_state: u64,
+    tt: Arc<ClusteredTt>,
+    killers: HashMap<i32, Action>,
+    history: HashMap<Action, i32>,
+    policy: SearchPolicy,
+    options: SearchOptions,
+    /// Maximum quiescence depth extension beyond `depth == 0`.  Mirrors the
+    /// C++ `MaxQuiescenceDepth` setoption.  At 0 (default) the qsearch is a
+    /// stand-pat-only evaluation; setting it to N lets the remove extension
+    /// recurse N plies deeper than the main search horizon.
+    qsearch_max_depth: i32,
+    search_started_at: Option<Instant>,
+    abort_flag: Arc<AtomicBool>,
+    aborted: bool,
+    /// Zobrist keys of positions on the search path from root to the current
+    /// node.  Used to detect in-search repetitions and return draw score
+    /// immediately rather than searching deeper into a cycle.  Mirrors C++
+    /// `Search::hasRepeated / posKeyHistory` within the search stack.
+    /// Independent of the game-state-side key_history (which only collects
+    /// moving-phase reversible moves).
+    pub(crate) repetition_stack: Vec<u64>,
+    _phantom: PhantomData<G>,
+}
+
+impl<G: Game> Default for Searcher<G> {
+    fn default() -> Self {
+        Self {
+            nodes: 0,
+            tt_hits: 0,
+            tt_misses: 0,
+            tt_age_bumps: 0,
+            rng_state: 0x9E37_79B9_7F4A_7C15,
+            tt: Arc::new(ClusteredTt::default()),
+            killers: HashMap::new(),
+            history: HashMap::new(),
+            policy: SearchPolicy::default(),
+            options: SearchOptions::default(),
+            qsearch_max_depth: 0,
+            search_started_at: None,
+            abort_flag: Arc::new(AtomicBool::new(false)),
+            aborted: false,
+            repetition_stack: Vec::new(),
+            _phantom: PhantomData,
+        }
+    }
+}
+
+impl<G: Game> Searcher<G> {
+    pub fn new() -> Self {
+        Self::default()
+    }
+
+    /// Override TT size (`2^(bits+1)` slots).  Clamp matches [ClusteredTt].
+    pub fn new_with_tt_cluster_bits(cluster_bits: u32) -> Self {
+        Self {
+            tt: Arc::new(ClusteredTt::new_with_cluster_bits(cluster_bits)),
+            ..Self::default()
+        }
+    }
+
+    /// Resize the TT to approximately `mb` megabytes (P2-L plan-C).
+    /// Mirrors master UCI `Hash` option which calls `TT.resize(bytes)`.
+    /// Each TT cluster holds 2 slots of 8 bytes = 16 bytes per cluster;
+    /// cluster_bits b gives 2^(b+1) slots = 2^b clusters = 2^b × 16 bytes.
+    /// → cluster_bits = floor(log2(mb × 1024 × 1024 / 16)).
+    /// Clamped to [10, 26] to avoid excessive memory or too-small tables.
+    pub fn resize_tt_by_mb(&mut self, mb: u32) {
+        let bytes = (mb as u64).saturating_mul(1024 * 1024);
+        let cluster_bytes = 16_u64;
+        let num_clusters = (bytes / cluster_bytes).max(1);
+        let bits = (63 - num_clusters.leading_zeros()).clamp(10, 26);
+        self.tt = Arc::new(ClusteredTt::new_with_cluster_bits(bits));
+        self.killers.clear();
+        self.history.clear();
+    }
+
+    /// Build a Searcher whose transposition table is shared with all other
+    /// Searchers holding the same [`SharedTt`].  This is the entry point for
+    /// lazy-SMP parallel search: spawn N threads, each owning its own
+    /// Searcher (with independent killers / history / abort flag) but all
+    /// reading and writing the same cluster array.
+    pub fn with_shared_tt(shared: SharedTt) -> Self {
+        Self {
+            tt: shared.inner,
+            ..Self::default()
+        }
+    }
+
+    /// Replace this Searcher's abort flag with an externally-owned one,
+    /// typically the shared flag used by `lazy_smp_search` so that one
+    /// `stop` aborts every worker.  Existing handles obtained from
+    /// [`Self::abort_handle`] BEFORE this call become disconnected.
+    pub fn set_abort_flag(&mut self, flag: Arc<AtomicBool>) {
+        self.abort_flag = flag;
+    }
+
+    /// Return a cloned `SharedTt` handle pointing at this Searcher's TT so
+    /// additional workers can be spawned against the same cluster array.
+    pub fn shared_tt(&self) -> SharedTt {
+        SharedTt {
+            inner: Arc::clone(&self.tt),
+        }
+    }
+
+    pub fn nodes(&self) -> u64 {
+        self.nodes
+    }
+
+    pub fn tt_hits(&self) -> u64 {
+        self.tt_hits
+    }
+
+    pub fn tt_misses(&self) -> u64 {
+        self.tt_misses
+    }
+
+    pub fn tt_hit_rate_pct(&self) -> f64 {
+        let total = self.tt_hits + self.tt_misses;
+        if total == 0 {
+            0.0
+        } else {
+            self.tt_hits as f64 * 100.0 / total as f64
+        }
+    }
+
+    /// Soft-clear the transposition table by bumping its generation counter.
+    /// Non-Exact entries stored in the previous generation are treated as
+    /// stale on the next probe, matching the C++ fake-clean semantics.
+    /// Also clears killer and history tables (these are always position-local).
+    pub fn clear_tt(&mut self) {
+        self.tt.bump_age();
+        self.tt_age_bumps += 1;
+        self.killers.clear();
+        self.history.clear();
+    }
+
+    /// Total number of TT age bumps since this Searcher was created.
+    /// Useful for bench instrumentation (`[meta] tt_age_bumps`).
+    pub fn tt_age_bumps(&self) -> u64 {
+        self.tt_age_bumps
+    }
+
+    /// Current TT generation counter (same as `SharedTt::current_age`).
+    pub fn tt_current_age(&self) -> u8 {
+        self.tt.current_age()
+    }
+
+    pub fn tt_len(&self) -> usize {
+        self.tt.len_occupied()
+    }
+
+    pub fn set_random_seed(&mut self, seed: u64) {
+        self.rng_state = if seed == 0 {
+            0x9E37_79B9_7F4A_7C15
+        } else {
+            seed
+        };
+    }
+
+    pub fn set_policy(&mut self, policy: SearchPolicy) {
+        self.policy = policy;
+    }
+
+    pub fn set_options(&mut self, options: SearchOptions) {
+        self.options = options;
+    }
+
+    pub fn set_move_order_context(&mut self, context: MoveOrderContext) {
+        self.options.move_order_context = context;
+    }
+
+    /// Set the maximum quiescence depth extension (default 0 = stand-pat only).
+    /// Matches the C++ `MaxQuiescenceDepth` setoption.  Values are clamped to
+    /// [0, 4] to prevent excessive recursion.
+    pub fn set_qsearch_max_depth(&mut self, depth: i32) {
+        self.qsearch_max_depth = depth.clamp(0, 4);
+    }
+
+    pub fn qsearch_max_depth(&self) -> i32 {
+        self.qsearch_max_depth
+    }
+
+    pub fn abort_handle(&self) -> SearchAbortHandle {
+        SearchAbortHandle {
+            flag: Arc::clone(&self.abort_flag),
+        }
+    }
+
+    pub fn request_abort(&self) {
+        self.abort_flag.store(true, Ordering::Relaxed);
+    }
+
+    pub fn was_aborted(&self) -> bool {
+        self.aborted
+    }
+
+    pub fn search(&mut self, wb: &mut G::Workbench, depth: i32) -> SearchResult {
+        self.begin_root_search();
+        if let Some(score) = G::terminal_score(wb, wb.side_to_move(), depth) {
+            return SearchResult {
+                best_action: Action::NONE,
+                score,
+                nodes: self.nodes,
+            };
+        }
+        let mut moves = ActionList::<256>::new();
+        G::generate_legal_ctx(wb, &mut moves, &self.options.move_order_context);
+        // P2-K: root shuffle before sort (mirrors master's MoveList::shuffle).
+        if self.options.shuffle_root {
+            self.shuffle_moves(&mut moves);
+        }
+        self.order_moves(wb, wb.key(), depth, &mut moves);
+        if moves.is_empty() {
+            return SearchResult {
+                best_action: Action::NONE,
+                score: G::Evaluator::score(wb),
+                nodes: self.nodes,
+            };
+        }
+        // Root single-move early return (P2-D, mirroring master
+        // `Search::search`).  When there is only one legal action at the
+        // root the engine would play it regardless of search result; we
+        // return `VALUE_UNIQUE_ROOT_MOVE` (100) to flag the state and skip
+        // wasted work.
+        if moves.len() == 1 {
+            return SearchResult {
+                best_action: moves[0],
+                score: G::unique_root_move_score(),
+                nodes: self.nodes,
+            };
+        }
+
+        let mut best_action = moves[0];
+        let mut best_score = i32::MIN + 1;
+        let root_key = wb.key();
+        for action in moves {
+            if self.should_abort() {
+                break;
+            }
+            let before = wb.side_to_move();
+            if root_key != 0 {
+                self.repetition_stack.push(root_key);
+            }
+            wb.do_move(action);
+            let after = wb.side_to_move();
+            let score =
+                self.search_after_move(wb, depth - 1, i32::MIN + 1, i32::MAX - 1, before, after);
+            wb.undo_move();
+            if root_key != 0 {
+                self.repetition_stack.pop();
+            }
+            if score > best_score {
+                best_score = score;
+                best_action = action;
+            }
+        }
+
+        SearchResult {
+            best_action,
+            score: best_score,
+            nodes: self.nodes,
+        }
+    }
+
+    /// Principal Variation Search root entry.  The first move is searched with
+    /// a full window; later moves use a null window and are re-searched on
+    /// fail-high inside the original alpha/beta window.  This mirrors the
+    /// shape of `Search::pvs` in the mature C++ engine.
+    pub fn search_pvs(&mut self, wb: &mut G::Workbench, depth: i32) -> SearchResult {
+        self.begin_root_search();
+        if let Some(score) = G::terminal_score(wb, wb.side_to_move(), depth) {
+            return SearchResult {
+                best_action: Action::NONE,
+                score,
+                nodes: self.nodes,
+            };
+        }
+        let mut moves = ActionList::<256>::new();
+        G::generate_legal_ctx(wb, &mut moves, &self.options.move_order_context);
+        // P2-K: root shuffle before sort.
+        if self.options.shuffle_root {
+            self.shuffle_moves(&mut moves);
+        }
+        self.order_moves(wb, wb.key(), depth, &mut moves);
+        if moves.is_empty() {
+            return SearchResult {
+                best_action: Action::NONE,
+                score: G::Evaluator::score(wb),
+                nodes: self.nodes,
+            };
+        }
+        // P2-D: single root action → no need to search.
+        if moves.len() == 1 {
+            return SearchResult {
+                best_action: moves[0],
+                score: G::unique_root_move_score(),
+                nodes: self.nodes,
+            };
+        }
+
+        let mut best_action = moves[0];
+        let mut alpha = i32::MIN + 1;
+        let beta = i32::MAX - 1;
+
+        let root_key = wb.key();
+        for (i, action) in moves.into_iter().enumerate() {
+            if self.should_abort() {
+                break;
+            }
+            let before = wb.side_to_move();
+            if root_key != 0 {
+                self.repetition_stack.push(root_key);
+            }
+            wb.do_move(action);
+            let after = wb.side_to_move();
+            let value = self.pvs_after_move(wb, depth - 1, alpha, beta, i, before, after);
+            wb.undo_move();
+            if root_key != 0 {
+                self.repetition_stack.pop();
+            }
+
+            if value > alpha {
+                alpha = value;
+                best_action = action;
+            }
+        }
+
+        SearchResult {
+            best_action,
+            score: alpha,
+            nodes: self.nodes,
+        }
+    }
+
+    /// Deterministic random-search equivalent.  Production callers can seed
+    /// this from time; tests pass a fixed seed to keep results reproducible.
+    pub fn random_search(&mut self, wb: &mut G::Workbench) -> SearchResult {
+        let mut moves = ActionList::<256>::new();
+        G::generate_legal_ctx(wb, &mut moves, &self.options.move_order_context);
+        if moves.is_empty() {
+            return SearchResult {
+                best_action: Action::NONE,
+                score: 0,
+                nodes: 0,
+            };
+        }
+        // Mirror master src/movegen.cpp:348 MoveList<LEGAL>::shuffle and
+        // src/search_engine.cpp random path: shuffle the legal move list first,
+        // then choose a random index from the shuffled list.
+        self.shuffle_moves(&mut moves);
+        let index = self.next_random_index(moves.len());
+        SearchResult {
+            best_action: moves[index],
+            score: 0,
+            nodes: 0,
+        }
+    }
+
+    /// Iterative deepening using PVS (fixes the pre-Phase 5 inconsistency where
+    /// IDS drove `search` while the root entry point was `search_pvs`).
+    ///
+    /// Uses aspiration windows from depth 3 onwards: the initial window is
+    /// centered on the previous iteration's score ± `ASPIRATION_DELTA`.  When
+    /// the search falls outside the window, the window is widened and the depth
+    /// is re-searched.  This typically improves NPS by reducing the search tree.
+    ///
+    /// The TT generation counter is bumped between iterations so non-Exact
+    /// entries from the previous iteration are treated as stale, matching C++
+    /// `Search::clear` semantics from `src/search.cpp`.
+    pub fn iterative_deepening(&mut self, wb: &mut G::Workbench, max_depth: i32) -> SearchResult {
+        const ASPIRATION_DELTA: i32 = 15; // ~3 piece values
+        const ASPIRATION_MAX_WINDOW: i32 = 200;
+        let max_depth = max_depth.max(1);
+        let mut result = self.search_pvs(wb, 1);
+        for depth in 2..=max_depth {
+            self.tt.bump_age();
+            self.tt_age_bumps += 1;
+            if depth < 3 || result.score.abs() >= ASPIRATION_MAX_WINDOW {
+                // Full window for shallow depths or near-terminal scores.
+                result = self.search_pvs(wb, depth);
+            } else {
+                // Aspiration window centered on previous score.
+                let mut delta = ASPIRATION_DELTA;
+                let mut alpha = (result.score - delta).max(i32::MIN + 1);
+                let mut beta = (result.score + delta).min(i32::MAX - 1);
+                loop {
+                    let candidate = self.search_pvs_windowed(wb, depth, alpha, beta);
+                    if candidate.score <= alpha {
+                        // Fail low: widen alpha.
+                        alpha = (alpha - delta).max(i32::MIN + 1);
+                    } else if candidate.score >= beta {
+                        // Fail high: widen beta.
+                        beta = (beta + delta).min(i32::MAX - 1);
+                    } else {
+                        result = candidate;
+                        break;
+                    }
+                    delta = delta.saturating_mul(2);
+                    if delta >= ASPIRATION_MAX_WINDOW {
+                        // Degenerate to full window.
+                        result = self.search_pvs(wb, depth);
+                        break;
+                    }
+                }
+            }
+            if self.was_aborted() {
+                break;
+            }
+        }
+        result
+    }
+
+    /// Windowed PVS root (aspiration-window helper): searches with explicit
+    /// alpha/beta bounds rather than ±∞.  Returns the best result found within
+    /// the window.
+    fn search_pvs_windowed(
+        &mut self,
+        wb: &mut G::Workbench,
+        depth: i32,
+        alpha: i32,
+        beta: i32,
+    ) -> SearchResult {
+        self.begin_root_search();
+        if let Some(score) = G::terminal_score(wb, wb.side_to_move(), depth) {
+            return SearchResult::default_none().with_score(score);
+        }
+        let mut moves = ActionList::<256>::new();
+        G::generate_legal_ctx(wb, &mut moves, &self.options.move_order_context);
+        self.order_moves(wb, wb.key(), depth, &mut moves);
+        if moves.is_empty() {
+            return SearchResult {
+                best_action: Action::NONE,
+                score: G::Evaluator::score(wb),
+                nodes: self.nodes,
+            };
+        }
+        let mut best_action = moves[0];
+        let mut best_alpha = alpha;
+        let root_key = wb.key();
+        for (i, action) in moves.into_iter().enumerate() {
+            if self.should_abort() {
+                break;
+            }
+            let before = wb.side_to_move();
+            if root_key != 0 {
+                self.repetition_stack.push(root_key);
+            }
+            wb.do_move(action);
+            let after = wb.side_to_move();
+            let value = self.pvs_after_move(wb, depth - 1, best_alpha, beta, i, before, after);
+            wb.undo_move();
+            if root_key != 0 {
+                self.repetition_stack.pop();
+            }
+            if value > best_alpha {
+                best_alpha = value;
+                best_action = action;
+            }
+            if best_alpha >= beta {
+                break;
+            }
+        }
+        SearchResult {
+            best_action,
+            score: best_alpha,
+            nodes: self.nodes,
+        }
+    }
+
+    /// MTD(f) with proper TT integration.  Each zero-window alpha-beta call
+    /// writes its result into the TT; subsequent iterations reuse those entries
+    /// to prune the search tree, which is what makes MTD(f) efficient.
+    ///
+    /// Unlike the old scaffold, the TT is NOT bypassed here — `alpha_beta`
+    /// already probes and saves the TT on every node.
+    pub fn mtdf(&mut self, wb: &mut G::Workbench, first_guess: i32, depth: i32) -> i32 {
+        let mut g = first_guess;
+        let mut upper_bound = i32::MAX - 1;
+        let mut lower_bound = i32::MIN + 1;
+
+        while lower_bound < upper_bound {
+            let beta = if g == lower_bound { g + 1 } else { g };
+            // alpha_beta now probes/saves the TT at every node, so each
+            // iteration benefits from the previous iteration's TT entries.
+            g = self.alpha_beta(wb, depth, beta - 1, beta);
+            if g < beta {
+                upper_bound = g;
+            } else {
+                lower_bound = g;
+            }
+            if self.was_aborted() {
+                break;
+            }
+        }
+        g
+    }
+
+    /// Run MTD(f) at `depth` and return a full `SearchResult` including the
+    /// best action retrieved from the TT. Mirrors master's `Search::MTDF`
+    /// which updates `bestMove` by reference (P2-C).
+    pub fn search_mtdf(&mut self, wb: &mut G::Workbench, depth: i32) -> SearchResult {
+        self.search_mtdf_with_guess(wb, depth, 0)
+    }
+
+    /// Run MTD(f) at `depth` with a caller-provided first guess.  The root
+    /// pre-check mirrors `search`: terminal positions, empty roots, and
+    /// single legal root moves are handled before the zero-window loop so
+    /// Algorithm=2 returns VALUE_UNIQUE for forced moves just like master.
+    pub fn search_mtdf_with_guess(
+        &mut self,
+        wb: &mut G::Workbench,
+        depth: i32,
+        first_guess: i32,
+    ) -> SearchResult {
+        self.begin_root_search();
+        if let Some(score) = G::terminal_score(wb, wb.side_to_move(), depth) {
+            return SearchResult {
+                best_action: Action::NONE,
+                score,
+                nodes: self.nodes,
+            };
+        }
+        let mut moves = ActionList::<256>::new();
+        G::generate_legal_ctx(wb, &mut moves, &self.options.move_order_context);
+        if self.options.shuffle_root {
+            self.shuffle_moves(&mut moves);
+        }
+        self.order_moves(wb, wb.key(), depth, &mut moves);
+        if moves.is_empty() {
+            return SearchResult {
+                best_action: Action::NONE,
+                score: G::Evaluator::score(wb),
+                nodes: self.nodes,
+            };
+        }
+        if moves.len() == 1 {
+            return SearchResult {
+                best_action: moves[0],
+                score: G::unique_root_move_score(),
+                nodes: self.nodes,
+            };
+        }
+
+        let score = self.mtdf(wb, first_guess, depth);
+        let key = wb.key();
+        let best_action = self
+            .tt
+            .get(key)
+            .map(|e| e.best_action)
+            .unwrap_or(Action::NONE);
+        SearchResult {
+            best_action,
+            score,
+            nodes: self.nodes,
+        }
+    }
+
+    #[inline]
+    pub fn alpha_beta(
+        &mut self,
+        wb: &mut G::Workbench,
+        depth: i32,
+        mut alpha: i32,
+        beta: i32,
+    ) -> i32 {
+        self.nodes += 1;
+        if self.should_abort() {
+            return G::Evaluator::score(wb);
+        }
+        if let Some(score) = G::terminal_score(wb, wb.side_to_move(), depth) {
+            return score;
+        }
+
+        // Detect in-search repetition: if the current Zobrist key has
+        // appeared on the search path from root to here, the game would cycle
+        // indefinitely.  Master returns VALUE_DRAW + 1 to avoid threefold
+        // blindness among otherwise equal drawing lines.
+        let key = wb.key();
+        if key != 0 && self.repetition_stack.contains(&key) {
+            return 1;
+        }
+
+        // Transition to qsearch when depth falls to or below the qsearch
+        // horizon.  With qsearch_max_depth == 0 this matches the C++ stand-
+        // pat-only behaviour; positive values extend the remove branch.
+        if depth <= 0 {
+            return self.qsearch_with_depth(wb, depth, alpha, beta);
+        }
+
+        let old_alpha = alpha;
+        if let Some(value) = self.probe_tt(key, depth, &mut alpha, beta) {
+            self.tt_hits += 1;
+            return value;
+        }
+        if key != 0 {
+            self.tt_misses += 1;
+        }
+
+        // Null-move pruning (Phase 5): when not in qsearch, when depth is
+        // sufficient, and when allowed by SearchOptions, make a "null" move
+        // (pass the turn) and search at reduced depth.  A fail-high here
+        // means the position is already so good we can prune without
+        // searching children.  Only applied at depth ≥ 3 to avoid pruning
+        // near the horizon where the null-move assumption is unreliable.
+        // Guard: skip null-move when the evaluator already reports a
+        // near-terminal value (|score| > NULL_MOVE_TERMINAL_GUARD) to
+        // avoid pruning genuine mate sequences.  The guard is intentionally
+        // game-neutral: concrete games choose their own evaluator scale,
+        // and the constant below is sized for the reference Mill mate-score
+        // family (VALUE_MATE = 80) which other games are free to align with
+        // by overriding `Game::terminal_score`.
+        const NULL_MOVE_MIN_DEPTH: i32 = 3;
+        const NULL_MOVE_TERMINAL_GUARD: i32 = 40; // half of VALUE_MATE = 80
+        if self.options.allow_null_move && depth >= NULL_MOVE_MIN_DEPTH && beta < i32::MAX - 1 {
+            let static_eval = G::Evaluator::score(wb);
+            if static_eval.abs() < NULL_MOVE_TERMINAL_GUARD {
+                // "Pass" the turn by flipping side_to_move in the workbench.
+                // The `Workbench` trait does not expose a null-move
+                // primitive (most games either always have legal moves or
+                // need a game-specific "pass" encoding), so we skip the
+                // recursive null search and instead use the static eval
+                // proxy below.
+                // This is a simplified null-move: score the position from
+                // the opponent's perspective at reduced depth.
+                let null_score = -static_eval; // crude "null move" proxy
+                if null_score >= beta {
+                    // Prune: static evaluation already exceeds beta, so a
+                    // real null move would also fail high.
+                    return beta;
+                }
+            }
+        }
+
+        let mut moves = ActionList::<256>::new();
+        G::generate_legal_ctx(wb, &mut moves, &self.options.move_order_context);
+        self.order_moves(wb, key, depth, &mut moves);
+        if moves.is_empty() {
+            return G::Evaluator::score(wb);
+        }
+
+        let mut best_value = i32::MIN + 1;
+        let mut best_action = Action::NONE;
+        let depth_extension = if self.options.depth_extension && moves.len() == 1 {
+            1
+        } else {
+            0
+        };
+        for action in moves {
+            if self.should_abort() {
+                return best_value.max(alpha);
+            }
+            let before = wb.side_to_move();
+            if key != 0 {
+                self.repetition_stack.push(key);
+            }
+            wb.do_move(action);
+            let after = wb.side_to_move();
+            let score =
+                self.search_after_move(wb, depth - 1 + depth_extension, alpha, beta, before, after);
+            wb.undo_move();
+            if key != 0 {
+                self.repetition_stack.pop();
+            }
+            if score > best_value {
+                best_value = score;
+                best_action = action;
+            }
+            if score >= beta {
+                self.record_cutoff(depth, action);
+                self.save_tt(key, depth, beta, Bound::Lower, action);
+                return beta;
+            }
+            if score > alpha {
+                alpha = score;
+            }
+        }
+        let bound = if best_value <= old_alpha {
+            Bound::Upper
+        } else {
+            Bound::Exact
+        };
+        self.save_tt(key, depth, alpha, bound, best_action);
+        alpha
+    }
+
+    #[inline]
+    fn should_abort(&mut self) -> bool {
+        if let Some(limit) = self.options.node_limit {
+            if self.nodes >= limit {
+                self.aborted = true;
+            }
+        }
+        if let (Some(start), Some(limit_ms)) = (self.search_started_at, self.options.time_limit_ms)
+        {
+            if start.elapsed() >= Duration::from_millis(limit_ms) {
+                self.aborted = true;
+            }
+        }
+        if self.abort_flag.load(Ordering::Relaxed) {
+            self.aborted = true;
+        }
+        self.aborted
+    }
+
+    #[inline]
+    fn begin_root_search(&mut self) {
+        self.nodes = 0;
+        self.tt_hits = 0;
+        self.tt_misses = 0;
+        self.aborted = false;
+        self.repetition_stack.clear();
+        // Intentionally do NOT clear `abort_flag` here.  External callers
+        // hold a clone of the Arc and may have already requested an abort
+        // (especially when search is spawned on another thread): clearing
+        // the flag here would race with the request and silently lose it.
+        // To rerun an aborted Searcher, call [`Self::clear_abort`].
+        self.search_started_at = Some(Instant::now());
+    }
+
+    /// Reset the shared abort flag so a Searcher can be reused after a
+    /// previous abort.  External callers spawning a fresh search via
+    /// [`Self::abort_handle`] should NOT call this between
+    /// `abort_handle()` and search start, otherwise pending stop requests
+    /// would be lost.
+    pub fn clear_abort(&mut self) {
+        self.aborted = false;
+        self.abort_flag.store(false, Ordering::Relaxed);
+    }
+
+    /// Quiescence search entry point preserved for external callers.  Equivalent
+    /// to invoking [`Self::qsearch_with_depth`] at depth 0; alpha-beta callers
+    /// should prefer the depth-aware variant so the stand-pat mate-distance
+    /// decay matches `src/search.cpp::qsearch`.
+    pub fn qsearch(&mut self, wb: &mut G::Workbench, alpha: i32, beta: i32) -> i32 {
+        self.qsearch_with_depth(wb, 0, alpha, beta)
+    }
+
+    /// Depth-aware quiescence search mirroring `Search::qsearch` in
+    /// `src/search.cpp`.  Adjusts the static stand-pat by `depth` (which is
+    /// always non-positive at this entry) so deeper extensions prefer faster
+    /// wins / slower losses, then extends only the action kind that the game
+    /// policy identifies as a removal.  Removal candidates are ordered
+    /// through the same MovePicker-style scoring used in the main search.
+    pub fn qsearch_with_depth(
+        &mut self,
+        wb: &mut G::Workbench,
+        depth: i32,
+        mut alpha: i32,
+        beta: i32,
+    ) -> i32 {
+        self.nodes += 1;
+        if self.should_abort() {
+            return G::Evaluator::score(wb);
+        }
+        if let Some(score) = G::terminal_score(wb, wb.side_to_move(), depth) {
+            return score;
+        }
+        let mut stand_pat = G::Evaluator::score(wb);
+        if stand_pat > 0 {
+            stand_pat = stand_pat.saturating_add(depth);
+        } else {
+            stand_pat = stand_pat.saturating_sub(depth);
+        }
+        if stand_pat >= beta {
+            return beta;
+        }
+        if stand_pat > alpha {
+            alpha = stand_pat;
+        }
+        if wb.is_terminal() {
+            return alpha;
+        }
+
+        let Some(remove_kind_tag) = self.policy.remove_kind_tag else {
+            return alpha;
+        };
+
+        // Enforce the MaxQuiescenceDepth gate: do not recurse deeper than
+        // `qsearch_max_depth` plies past the main search horizon (depth == 0).
+        // `depth` is <= 0 here; -depth is how many plies we have extended.
+        if -depth >= self.qsearch_max_depth {
+            return alpha;
+        }
+
+        let mut moves = ActionList::<256>::new();
+        G::generate_legal_ctx(wb, &mut moves, &self.options.move_order_context);
+        moves.retain(|a| a.kind_tag == remove_kind_tag);
+        if moves.is_empty() {
+            return alpha;
+        }
+        let key = wb.key();
+        self.order_moves(wb, key, depth, &mut moves);
+
+        for action in moves {
+            if self.should_abort() {
+                return alpha;
+            }
+            let before = wb.side_to_move();
+            wb.do_move(action);
+            let after = wb.side_to_move();
+            let value = if after != before {
+                -self.qsearch_with_depth(wb, depth - 1, -beta, -alpha)
+            } else {
+                self.qsearch_with_depth(wb, depth - 1, alpha, beta)
+            };
+            wb.undo_move();
+            if value > alpha {
+                alpha = value;
+                if alpha >= beta {
+                    return beta;
+                }
+            }
+        }
+        alpha
+    }
+
+    #[inline]
+    fn probe_tt(&self, key: u64, depth: i32, alpha: &mut i32, mut beta: i32) -> Option<i32> {
+        if key == 0 {
+            return None;
+        }
+        let entry = self.tt.get(key)?;
+        if entry.depth < depth {
+            return None;
+        }
+        match entry.bound {
+            Bound::Exact => Some(entry.value),
+            Bound::Lower => {
+                *alpha = (*alpha).max(entry.value);
+                (*alpha >= beta).then_some(entry.value)
+            }
+            Bound::Upper => {
+                beta = beta.min(entry.value);
+                (*alpha >= beta).then_some(entry.value)
+            }
+        }
+    }
+
+    #[inline]
+    fn save_tt(&mut self, key: u64, depth: i32, value: i32, bound: Bound, best_action: Action) {
+        self.tt.save(
+            key,
+            TtEntry {
+                value,
+                depth,
+                bound,
+                best_action,
+            },
+        );
+    }
+
+    #[inline]
+    fn order_moves(&self, wb: &G::Workbench, key: u64, depth: i32, moves: &mut ActionList<256>) {
+        moves
+            .as_mut_slice()
+            .sort_by_key(|m| -self.move_score(wb, key, depth, *m));
+    }
+
+    /// Shuffle the root move list using the internal xorshift RNG (P2-K).
+    /// Mirrors master's MoveList<LEGAL>::shuffle() which is called at the
+    /// start of executeSearch when Shuffling is enabled.
+    fn shuffle_moves(&mut self, moves: &mut ActionList<256>) {
+        let n = moves.len();
+        if n < 2 {
+            return;
+        }
+        for i in (1..n).rev() {
+            let j = self.next_random_index(i + 1);
+            moves.as_mut_slice().swap(i, j);
+        }
+    }
+
+    #[inline]
+    fn move_score(&self, wb: &G::Workbench, key: u64, depth: i32, action: Action) -> i32 {
+        let mut score = G::move_order_bias_ctx(wb, action, &self.options.move_order_context);
+        if key != 0
+            && self
+                .tt
+                .get(key)
+                .is_some_and(|entry| entry.best_action == action)
+        {
+            score += 1_000_000;
+        }
+        if self
+            .killers
+            .get(&depth)
+            .is_some_and(|killer| *killer == action)
+        {
+            score += 100_000;
+        }
+        score.saturating_add(self.history.get(&action).copied().unwrap_or_default())
+    }
+
+    #[inline]
+    fn record_cutoff(&mut self, depth: i32, action: Action) {
+        self.killers.insert(depth, action);
+        let bonus = depth.max(1).saturating_mul(depth.max(1));
+        let entry = self.history.entry(action).or_insert(0);
+        *entry = entry.saturating_add(bonus);
+    }
+
+    #[allow(dead_code)]
+    fn order_moves_by_tt(&self, key: u64, moves: &mut ActionList<256>) {
+        if key == 0 {
+            return;
+        }
+        let Some(entry) = self.tt.get(key) else {
+            return;
+        };
+        if let Some(index) = moves.iter().position(|m| *m == entry.best_action) {
+            moves.as_mut_slice().swap(0, index);
+        }
+    }
+
+    #[inline]
+    fn search_after_move(
+        &mut self,
+        wb: &mut G::Workbench,
+        depth: i32,
+        alpha: i32,
+        beta: i32,
+        before: i8,
+        after: i8,
+    ) -> i32 {
+        if let Some(score) = G::terminal_score(wb, before, depth) {
+            return score;
+        }
+        if after != before {
+            -self.alpha_beta(wb, depth, -beta, -alpha)
+        } else {
+            self.alpha_beta(wb, depth, alpha, beta)
+        }
+    }
+
+    #[allow(clippy::too_many_arguments)]
+    #[inline]
+    fn pvs_after_move(
+        &mut self,
+        wb: &mut G::Workbench,
+        depth: i32,
+        alpha: i32,
+        beta: i32,
+        move_index: usize,
+        before: i8,
+        after: i8,
+    ) -> i32 {
+        if let Some(score) = G::terminal_score(wb, before, depth) {
+            return score;
+        }
+        if move_index == 0 {
+            return self.search_after_move(wb, depth, alpha, beta, before, after);
+        }
+
+        const PVS_WINDOW: i32 = 1;
+        let mut value = if after != before {
+            -self.alpha_beta(wb, depth, -alpha - PVS_WINDOW, -alpha)
+        } else {
+            self.alpha_beta(wb, depth, alpha, alpha + PVS_WINDOW)
+        };
+
+        if value > alpha && value < beta {
+            value = self.search_after_move(wb, depth, alpha, beta, before, after);
+        }
+        value
+    }
+
+    #[inline]
+    pub(crate) fn next_random_index(&mut self, len: usize) -> usize {
+        debug_assert!(len > 0);
+        // xorshift64*: tiny deterministic PRNG, adequate for random-search
+        // move selection and reproducible tests.
+        let mut x = self.rng_state;
+        x ^= x >> 12;
+        x ^= x << 25;
+        x ^= x >> 27;
+        self.rng_state = x;
+        let value = x.wrapping_mul(0x2545_F491_4F6C_DD1D);
+        (value as usize) % len
+    }
+}
