@@ -212,7 +212,7 @@ pub fn tgf_kernel_setup_finish(handle: u32) -> Result<TgfSnapshot, String> {
         // when either side would have fewer than pieces_at_least_count
         // pieces on board (mirrors C++ `check_if_game_is_over` at
         // position-setup boundaries).
-        if state.pieces_in_hand[0] > 0 || state.pieces_in_hand[1] > 0 {
+        if state.pieces_in_hand()[0] > 0 || state.pieces_in_hand()[1] > 0 {
             state.set_phase(MillPhase::Placing);
         } else if let Some(winner) = state.check_pieces_at_least(&options) {
             state.set_phase(MillPhase::GameOver);

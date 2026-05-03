@@ -726,7 +726,7 @@ pub struct MillState {
     phase: MillPhase,
     action: MillActionState,
     move_number: i16,
-    pub pieces_in_hand: [u8; 2],
+    pub(crate) pieces_in_hand: [u8; 2],
     pieces_on_board: [u8; 2],
     pending_removals: [u8; 2],
     /// Per-side flag matching the legacy C++ engine's negative

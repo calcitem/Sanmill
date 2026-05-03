@@ -237,6 +237,12 @@ impl MillState {
         self.pieces_on_board
     }
 
+    /// Per-side pieces still in hand, indexed by side (0 = white, 1 = black).
+    /// Mirrors `Position::pieceInHandCount[c]` in the legacy C++ engine.
+    pub fn pieces_in_hand(&self) -> [u8; 2] {
+        self.pieces_in_hand
+    }
+
     /// Set the winner field directly.  Used by setup-position tools that
     /// need to mark an immediate-GameOver position (e.g. fewer than
     /// pieces_at_least_count pieces after `setup_finish`).
