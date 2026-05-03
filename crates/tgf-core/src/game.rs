@@ -290,4 +290,31 @@ pub trait Game: 'static + Send + Sync {
     fn unique_root_move_score() -> i32 {
         100
     }
+
+    /// Magnitude above which static-evaluator scores are considered
+    /// "near-terminal" and null-move pruning is skipped.  Default: 40,
+    /// matching Mill's VALUE_MATE = 80 (half of mate).  Games with a
+    /// different mate-score scale (chess, ~30000) override this to keep
+    /// genuine mate sequences from being pruned.
+    ///
+    /// Hot path: queried once per node when null-move pruning is
+    /// enabled; keep `#[inline]` and constant.
+    #[inline]
+    fn null_move_terminal_guard() -> i32 {
+        40
+    }
+
+    /// Bias applied when the search detects a repetition along the
+    /// path from root to the current node.  Default: `+1`, matching
+    /// Mill's "VALUE_DRAW + 1" tie-breaker that avoids threefold
+    /// blindness among otherwise equal drawing lines.  Games may
+    /// return `0` to treat repetition as an exact draw, or a small
+    /// negative number to actively avoid repeating.
+    ///
+    /// Hot path: queried at most once per visited node; keep
+    /// `#[inline]` and constant.
+    #[inline]
+    fn repetition_draw_bias() -> i32 {
+        1
+    }
 }

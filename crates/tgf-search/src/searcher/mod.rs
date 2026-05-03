@@ -409,7 +409,7 @@ impl<G: Game> Searcher<G> {
         // blindness among otherwise equal drawing lines.
         let key = wb.key();
         if key != 0 && self.repetition_stack.contains(&key) {
-            return 1;
+            return G::repetition_draw_bias();
         }
 
         // Transition to qsearch when depth falls to or below the qsearch
@@ -435,17 +435,16 @@ impl<G: Game> Searcher<G> {
         // searching children.  Only applied at depth ≥ 3 to avoid pruning
         // near the horizon where the null-move assumption is unreliable.
         // Guard: skip null-move when the evaluator already reports a
-        // near-terminal value (|score| > NULL_MOVE_TERMINAL_GUARD) to
-        // avoid pruning genuine mate sequences.  The guard is intentionally
-        // game-neutral: concrete games choose their own evaluator scale,
-        // and the constant below is sized for the reference Mill mate-score
-        // family (VALUE_MATE = 80) which other games are free to align with
-        // by overriding `Game::terminal_score`.
+        // near-terminal value (|score| > Game::null_move_terminal_guard())
+        // to avoid pruning genuine mate sequences.  The guard is
+        // game-neutral: concrete games override
+        // `Game::null_move_terminal_guard()` to align with their own
+        // evaluator scale (Mill: 40 ≈ ½ × VALUE_MATE; chess-style:
+        // ~10_000).
         const NULL_MOVE_MIN_DEPTH: i32 = 3;
-        const NULL_MOVE_TERMINAL_GUARD: i32 = 40; // half of VALUE_MATE = 80
         if self.options.allow_null_move && depth >= NULL_MOVE_MIN_DEPTH && beta < i32::MAX - 1 {
             let static_eval = G::Evaluator::score(wb);
-            if static_eval.abs() < NULL_MOVE_TERMINAL_GUARD {
+            if static_eval.abs() < G::null_move_terminal_guard() {
                 // "Pass" the turn by flipping side_to_move in the workbench.
                 // The `Workbench` trait does not expose a null-move
                 // primitive (most games either always have legal moves or
