@@ -21,7 +21,9 @@ pub use game::{
     assert_game_rules_game_consistency, Evaluator, Game, GameRules, MoveOrderAlgorithm,
     MoveOrderContext, Workbench,
 };
-pub use game_state::{GameStateSnapshot, Outcome, OutcomeKind, OPAQUE_PAYLOAD_LEN};
+pub use game_state::{
+    canonical_reason, GameStateSnapshot, Outcome, OutcomeKind, OPAQUE_PAYLOAD_LEN,
+};
 pub use kernel::{GameKernel, KernelError};
 pub use n_move_rule::NMoveRuleCounter;
 pub use repetition::RepetitionTracker;
