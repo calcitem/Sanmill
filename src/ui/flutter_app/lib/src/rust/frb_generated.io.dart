@@ -90,6 +90,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   MillVariantOptions dco_decode_mill_variant_options(dynamic raw);
 
   @protected
+  PlayerInfoBlob dco_decode_player_info_blob(dynamic raw);
+
+  @protected
   StalemateAction dco_decode_stalemate_action(dynamic raw);
 
   @protected
@@ -213,6 +216,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   MillVariantOptions sse_decode_mill_variant_options(
     SseDeserializer deserializer,
   );
+
+  @protected
+  PlayerInfoBlob sse_decode_player_info_blob(SseDeserializer deserializer);
 
   @protected
   StalemateAction sse_decode_stalemate_action(SseDeserializer deserializer);
@@ -364,6 +370,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   void sse_encode_mill_variant_options(
     MillVariantOptions self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void sse_encode_player_info_blob(
+    PlayerInfoBlob self,
     SseSerializer serializer,
   );
 

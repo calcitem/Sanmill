@@ -80,6 +80,13 @@ impl GameKernel {
         self.rules.topology()
     }
 
+    /// Expose the underlying multi-player metadata so the FRB layer
+    /// can render team-aware UI.  Most games return the standard
+    /// two-player layout; team games (军棋, Halma) override.
+    pub fn multi_player_info(&self) -> crate::game_state::MultiPlayerInfo {
+        self.rules.multi_player_info()
+    }
+
     /// Generate the legal-action list for the current state.  Returns a
     /// heap `Vec` because FRB needs an owned, sized collection across the
     /// boundary.  Search code should NOT call this; use the generic

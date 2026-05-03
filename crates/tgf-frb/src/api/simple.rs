@@ -591,6 +591,36 @@ pub fn tgf_kernel_topology(handle: u32) -> Result<TopologyBlob, String> {
     })
 }
 
+/// Multi-player metadata mirroring [`tgf_core::MultiPlayerInfo`] for
+/// the FRB boundary.  Two-player games (Mill, Othello) emit
+/// `player_count = 2` and the standard sequential turn order; team
+/// games (军棋, Halma) populate `team_of` to advertise alliances so
+/// the shell can render team UI / colour palettes accordingly.
+#[derive(Clone, Debug)]
+pub struct PlayerInfoBlob {
+    pub player_count: u8,
+    pub team_of: Vec<u8>,
+    pub turn_order: Vec<u8>,
+}
+
+/// Game-neutral player-info accessor: routes the call through the
+/// kernel session's `GameRules::multi_player_info` so each game ships
+/// its own player layout without a bespoke FRB entry.  The shell uses
+/// this to decide turn-order indicators, team colour palettes, and
+/// `WinTeam` rendering paths at session start.
+#[flutter_rust_bridge::frb(sync)]
+pub fn tgf_kernel_player_info(handle: u32) -> Result<PlayerInfoBlob, String> {
+    crate::session_registry::with_kernel(handle, |kernel| {
+        let info = kernel.multi_player_info();
+        let count = info.player_count as usize;
+        PlayerInfoBlob {
+            player_count: info.player_count,
+            team_of: info.team_of[..count].to_vec(),
+            turn_order: info.turn_order[..count].to_vec(),
+        }
+    })
+}
+
 // ---------------------------------------------------------------------------
 // Phase 4 native Rust Mill rules scaffold API.
 // ---------------------------------------------------------------------------

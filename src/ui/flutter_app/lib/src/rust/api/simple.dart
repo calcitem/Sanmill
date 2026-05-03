@@ -7,7 +7,7 @@ import '../frb_generated.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
 // These functions are ignored because they are not marked as `pub`: `spawn_mill_engine_config_event_stream`, `spawn_mill_pvs_event_stream`
-// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `assert_fields_are_eq`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `eq`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`
+// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `assert_fields_are_eq`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `eq`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`
 
 /// Returns a greeting string confirming that the Rust → Dart bridge works.
 /// Called from Dart as `tgfHelloWorld()` after `await RustLib.init()`.
@@ -57,6 +57,14 @@ TopologyBlob kernelTopology() =>
 /// Mill's square space is exposed through [`native_mill_topology`].
 TopologyBlob tgfKernelTopology({required int handle}) =>
     RustLib.instance.api.crateApiSimpleTgfKernelTopology(handle: handle);
+
+/// Game-neutral player-info accessor: routes the call through the
+/// kernel session's `GameRules::multi_player_info` so each game ships
+/// its own player layout without a bespoke FRB entry.  The shell uses
+/// this to decide turn-order indicators, team colour palettes, and
+/// `WinTeam` rendering paths at session start.
+PlayerInfoBlob tgfKernelPlayerInfo({required int handle}) =>
+    RustLib.instance.api.crateApiSimpleTgfKernelPlayerInfo(handle: handle);
 
 /// Number of legal actions from a fresh Rust-native Mill initial position.
 /// This should match the mature C++ engine at depth 1: 24 placing moves.
@@ -436,6 +444,36 @@ class MillVariantOptions {
           stalemateAction == other.stalemateAction &&
           considerMobility == other.considerMobility &&
           focusOnBlockingPaths == other.focusOnBlockingPaths;
+}
+
+/// Multi-player metadata mirroring [`tgf_core::MultiPlayerInfo`] for
+/// the FRB boundary.  Two-player games (Mill, Othello) emit
+/// `player_count = 2` and the standard sequential turn order; team
+/// games (军棋, Halma) populate `team_of` to advertise alliances so
+/// the shell can render team UI / colour palettes accordingly.
+class PlayerInfoBlob {
+  final int playerCount;
+  final Uint8List teamOf;
+  final Uint8List turnOrder;
+
+  const PlayerInfoBlob({
+    required this.playerCount,
+    required this.teamOf,
+    required this.turnOrder,
+  });
+
+  @override
+  int get hashCode =>
+      playerCount.hashCode ^ teamOf.hashCode ^ turnOrder.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is PlayerInfoBlob &&
+          runtimeType == other.runtimeType &&
+          playerCount == other.playerCount &&
+          teamOf == other.teamOf &&
+          turnOrder == other.turnOrder;
 }
 
 enum StalemateAction {

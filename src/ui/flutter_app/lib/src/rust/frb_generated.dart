@@ -68,7 +68,7 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
   String get codegenVersion => '2.12.0';
 
   @override
-  int get rustContentHash => 1259438866;
+  int get rustContentHash => 471898739;
 
   static const kDefaultExternalLibraryLoaderConfig =
       ExternalLibraryLoaderConfig(
@@ -168,6 +168,8 @@ abstract class RustLibApi extends BaseApi {
   });
 
   TgfOutcome crateApiKernelTgfKernelOutcome({required int handle});
+
+  PlayerInfoBlob crateApiSimpleTgfKernelPlayerInfo({required int handle});
 
   TgfSnapshot crateApiKernelTgfKernelRedo({required int handle});
 
@@ -1141,13 +1143,39 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
-  TgfSnapshot crateApiKernelTgfKernelRedo({required int handle}) {
+  PlayerInfoBlob crateApiSimpleTgfKernelPlayerInfo({required int handle}) {
     return handler.executeSync(
       SyncTask(
         callFfi: () {
           final serializer = SseSerializer(generalizedFrbRustBinding);
           sse_encode_u_32(handle, serializer);
           return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 35)!;
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_player_info_blob,
+          decodeErrorData: sse_decode_String,
+        ),
+        constMeta: kCrateApiSimpleTgfKernelPlayerInfoConstMeta,
+        argValues: [handle],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kCrateApiSimpleTgfKernelPlayerInfoConstMeta =>
+      const TaskConstMeta(
+        debugName: "tgf_kernel_player_info",
+        argNames: ["handle"],
+      );
+
+  @override
+  TgfSnapshot crateApiKernelTgfKernelRedo({required int handle}) {
+    return handler.executeSync(
+      SyncTask(
+        callFfi: () {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_u_32(handle, serializer);
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 36)!;
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_tgf_snapshot,
@@ -1170,7 +1198,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         callFfi: () {
           final serializer = SseSerializer(generalizedFrbRustBinding);
           sse_encode_u_32(handle, serializer);
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 36)!;
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 37)!;
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_u_32,
@@ -1200,7 +1228,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           final serializer = SseSerializer(generalizedFrbRustBinding);
           sse_encode_u_32(handle, serializer);
           sse_encode_String(fen, serializer);
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 37)!;
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 38)!;
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_tgf_snapshot,
@@ -1226,7 +1254,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         callFfi: () {
           final serializer = SseSerializer(generalizedFrbRustBinding);
           sse_encode_u_32(handle, serializer);
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 38)!;
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 39)!;
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_tgf_snapshot,
@@ -1252,7 +1280,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         callFfi: () {
           final serializer = SseSerializer(generalizedFrbRustBinding);
           sse_encode_u_32(handle, serializer);
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 39)!;
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 40)!;
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_tgf_snapshot,
@@ -1284,7 +1312,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           sse_encode_u_32(handle, serializer);
           sse_encode_i_32(node, serializer);
           sse_encode_i_32(owner, serializer);
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 40)!;
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 41)!;
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_tgf_snapshot,
@@ -1314,7 +1342,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           final serializer = SseSerializer(generalizedFrbRustBinding);
           sse_encode_u_32(handle, serializer);
           sse_encode_i_32(side, serializer);
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 41)!;
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 42)!;
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_tgf_snapshot,
@@ -1340,7 +1368,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         callFfi: () {
           final serializer = SseSerializer(generalizedFrbRustBinding);
           sse_encode_u_32(handle, serializer);
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 42)!;
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 43)!;
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_tgf_snapshot,
@@ -1366,7 +1394,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         callFfi: () {
           final serializer = SseSerializer(generalizedFrbRustBinding);
           sse_encode_u_32(handle, serializer);
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 43)!;
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 44)!;
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_topology_blob,
@@ -1392,7 +1420,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         callFfi: () {
           final serializer = SseSerializer(generalizedFrbRustBinding);
           sse_encode_u_32(handle, serializer);
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 44)!;
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 45)!;
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_tgf_snapshot,
@@ -1415,7 +1443,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         callFfi: () {
           final serializer = SseSerializer(generalizedFrbRustBinding);
           sse_encode_u_32(handle, serializer);
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 45)!;
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 46)!;
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_u_32,
@@ -1440,7 +1468,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       SyncTask(
         callFfi: () {
           final serializer = SseSerializer(generalizedFrbRustBinding);
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 46)!;
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 47)!;
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_String,
@@ -1649,6 +1677,19 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       stalemateAction: dco_decode_stalemate_action(arr[20]),
       considerMobility: dco_decode_bool(arr[21]),
       focusOnBlockingPaths: dco_decode_bool(arr[22]),
+    );
+  }
+
+  @protected
+  PlayerInfoBlob dco_decode_player_info_blob(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 3)
+      throw Exception('unexpected arr length: expect 3 but see ${arr.length}');
+    return PlayerInfoBlob(
+      playerCount: dco_decode_u_8(arr[0]),
+      teamOf: dco_decode_list_prim_u_8_strict(arr[1]),
+      turnOrder: dco_decode_list_prim_u_8_strict(arr[2]),
     );
   }
 
@@ -2049,6 +2090,19 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  PlayerInfoBlob sse_decode_player_info_blob(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_playerCount = sse_decode_u_8(deserializer);
+    var var_teamOf = sse_decode_list_prim_u_8_strict(deserializer);
+    var var_turnOrder = sse_decode_list_prim_u_8_strict(deserializer);
+    return PlayerInfoBlob(
+      playerCount: var_playerCount,
+      teamOf: var_teamOf,
+      turnOrder: var_turnOrder,
+    );
+  }
+
+  @protected
   StalemateAction sse_decode_stalemate_action(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var inner = sse_decode_i_32(deserializer);
@@ -2412,6 +2466,17 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_stalemate_action(self.stalemateAction, serializer);
     sse_encode_bool(self.considerMobility, serializer);
     sse_encode_bool(self.focusOnBlockingPaths, serializer);
+  }
+
+  @protected
+  void sse_encode_player_info_blob(
+    PlayerInfoBlob self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_u_8(self.playerCount, serializer);
+    sse_encode_list_prim_u_8_strict(self.teamOf, serializer);
+    sse_encode_list_prim_u_8_strict(self.turnOrder, serializer);
   }
 
   @protected
