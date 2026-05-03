@@ -229,7 +229,10 @@ fn spawn_search(
         node_limit: go.node_limit,
         time_limit_ms: go.movetime_ms,
         allow_null_move: false,
-        shuffle_root: cfg.shuffling,
+        // Master shuffles the global movePriorityList before generation.
+        // Mill's generate_legal_ctx already mirrors that list, so do not
+        // additionally shuffle the root action list here.
+        shuffle_root: false,
         move_order_context: move_order_context(&cfg),
     };
     let depth = effective_search_depth(&options, &state, go.depth, &cfg);
@@ -347,7 +350,10 @@ fn run_algorithm_at_depth(
         0 | 1 => searcher.search(wb, depth),
         2 => searcher.search_mtdf_with_guess(wb, depth, first_guess),
         3 => run_mcts_search(wb, cfg),
-        4 => searcher.random_search(wb),
+        4 => {
+            searcher.set_random_seed(search_shuffle_seed());
+            searcher.random_search(wb)
+        }
         _ => searcher.search(wb, depth),
     }
 }
@@ -361,6 +367,7 @@ fn run_mcts_search(wb: &mut tgf_mill::MillWorkbench, cfg: &EngineConfig) -> Sear
         u32::from(cfg.skill_level).saturating_mul(2048).max(1)
     };
     let mut mcts = MctsSearcher::<MillGame>::new();
+    mcts.set_random_seed(search_shuffle_seed());
     mcts.set_policy(SearchPolicy {
         remove_kind_tag: Some(MillActionKind::Remove as i16),
     });
