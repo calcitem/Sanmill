@@ -12,6 +12,7 @@ pub mod kernel;
 pub mod n_move_rule;
 pub mod repetition;
 pub mod topology_helpers;
+pub mod zobrist;
 
 // Convenience re-exports for downstream crates.
 pub use action::{Action, ActionList};
@@ -24,6 +25,7 @@ pub use game_state::{GameStateSnapshot, Outcome, OutcomeKind, OPAQUE_PAYLOAD_LEN
 pub use kernel::{GameKernel, KernelError};
 pub use n_move_rule::NMoveRuleCounter;
 pub use repetition::RepetitionTracker;
+pub use zobrist::ZobristTable;
 
 /// Phase 1 smoke-check: ensures the crate compiles.
 #[cfg(test)]
