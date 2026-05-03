@@ -78,6 +78,35 @@ fn mill_iterative_deepening_returns_deepest_result() {
     assert!(result.nodes > 0);
 }
 
+/// Pre-search short-circuit (Diff 7.2): a position whose rule50
+/// counter is already past the n-move threshold is converted to
+/// GameOver / winner=draw inside `MillRules::set_from_fen` via
+/// `check_if_game_is_over`, and `iterative_deepening` then returns
+/// score 0 with no searched nodes through the standard
+/// `terminal_score` path.  This mirrors master's `executeSearch`
+/// `return 50` behaviour without needing a separate Mill-side
+/// override of `Game::root_short_circuit_draw`; see the explanatory
+/// comment in `crates/tgf-mill/src/rules/game_impls.rs`.
+#[test]
+fn mill_iterative_deepening_returns_draw_on_n_move_rule_terminal() {
+    let rules = MillRules::default();
+    let game = MillGame::default();
+    // 9-on-board moving phase, rule50 = 200, well past the 100-ply
+    // n-move-rule threshold so set_from_fen transitions to GameOver.
+    let fen = "OOOO@@@@/OOOO@@@@/O****@** w m s 9 0 9 0 0 0 0 0 0 0 0 200 1";
+    let state = rules
+        .set_from_fen(fen)
+        .expect("setup FEN must parse for the regression");
+    let snap = rules.encode_state(state);
+
+    let mut wb = game.build_workbench(&snap);
+    let mut searcher = Searcher::<MillGame>::new();
+    let result = searcher.iterative_deepening(&mut wb, 4);
+
+    assert_eq!(result.score, 0, "n-move-rule terminal evaluates to draw");
+    assert_eq!(result.nodes, 0, "no node should be searched");
+}
+
 #[test]
 fn mill_mtdf_returns_a_finite_score() {
     let rules = MillRules::default();

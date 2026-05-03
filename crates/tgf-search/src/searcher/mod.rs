@@ -232,6 +232,7 @@ impl<G: Game> Searcher<G> {
                 best_action: Action::NONE,
                 score,
                 nodes: self.nodes,
+                draw_reason: None,
             };
         }
         let mut moves = ActionList::<256>::new();
@@ -246,6 +247,7 @@ impl<G: Game> Searcher<G> {
                 best_action: Action::NONE,
                 score: G::Evaluator::score(wb),
                 nodes: self.nodes,
+                draw_reason: None,
             };
         }
         // Root single-move early return (P2-D, mirroring master
@@ -258,6 +260,7 @@ impl<G: Game> Searcher<G> {
                 best_action: moves[0],
                 score: G::unique_root_move_score(),
                 nodes: self.nodes,
+                draw_reason: None,
             };
         }
 
@@ -290,6 +293,7 @@ impl<G: Game> Searcher<G> {
             best_action,
             score: best_score,
             nodes: self.nodes,
+            draw_reason: None,
         }
     }
 
@@ -316,6 +320,7 @@ impl<G: Game> Searcher<G> {
                 best_action: Action::NONE,
                 score,
                 nodes: self.nodes,
+                draw_reason: None,
             };
         }
         let mut moves = ActionList::<256>::new();
@@ -330,6 +335,7 @@ impl<G: Game> Searcher<G> {
                 best_action: Action::NONE,
                 score: G::Evaluator::score(wb),
                 nodes: self.nodes,
+                draw_reason: None,
             };
         }
         // P2-D: single root action → no need to search.
@@ -338,6 +344,7 @@ impl<G: Game> Searcher<G> {
                 best_action: moves[0],
                 score: G::unique_root_move_score(),
                 nodes: self.nodes,
+                draw_reason: None,
             };
         }
 
@@ -372,6 +379,7 @@ impl<G: Game> Searcher<G> {
             best_action,
             score: alpha,
             nodes: self.nodes,
+            draw_reason: None,
         }
     }
 
@@ -385,6 +393,7 @@ impl<G: Game> Searcher<G> {
                 best_action: Action::NONE,
                 score: 0,
                 nodes: 0,
+                draw_reason: None,
             };
         }
         // Mirror master src/movegen.cpp:348 MoveList<LEGAL>::shuffle and
@@ -396,6 +405,7 @@ impl<G: Game> Searcher<G> {
             best_action: moves[index],
             score: 0,
             nodes: 0,
+            draw_reason: None,
         }
     }
 

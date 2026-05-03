@@ -226,4 +226,31 @@ impl Game for MillGame {
             Some(-MILL_TERMINAL_WIN_SCORE - distance)
         }
     }
+
+    // Mill does NOT override `root_short_circuit_draw` (default `None`).
+    //
+    // Master `SearchEngine::executeSearch` (src/search_engine.cpp:432-453)
+    // emits a "draw" bestmove string before iterative deepening when
+    //   posKeyHistory.size() >= rule.nMoveRule    -> return 50
+    //   is_three_endgame && posKeyHistory >= endgameNMoveRule -> return 10
+    //   threefoldRepetitionRule && has_game_cycle() -> return 3
+    // so the UI sees an immediate draw.
+    //
+    // Mill on the Rust side reaches the same end state through a
+    // different but equivalent path:
+    //   * `MillRules::apply` -> `bump_ply_since_capture` ->
+    //     `maybe_draw_by_n_move_rule` flips `phase = GameOver` and
+    //     `winner = 2` (draw) the moment the threshold fires;
+    //   * `MillRules::set_from_fen` runs `check_if_game_is_over` after
+    //     parsing so an imported FEN past the threshold also lands in
+    //     GameOver;
+    //   * `MillRules::apply` likewise marks the threefold-repetition
+    //     terminal via `push_key_and_check_threefold` (see
+    //     `rules/transitions.rs`).
+    //
+    // The searcher's `terminal_score` then sees GameOver / winner==2
+    // and returns score 0 without entering the search loop, which is
+    // observationally identical to master's "return draw bestmove"
+    // path.  Adding a Mill-side override of `root_short_circuit_draw`
+    // would only produce a redundant detection at the same boundary.
 }

@@ -24,6 +24,15 @@ pub struct SearchResult {
     pub best_action: Action,
     pub score: i32,
     pub nodes: u64,
+    /// When the root position is already a rule draw (50-move /
+    /// N-move-rule / threefold) and the engine short-circuits without
+    /// searching any node, this carries the canonical English reason
+    /// token (`tgf_core::canonical_reason::*`).  Master mirrors this
+    /// path through `executeSearch`'s `return 50 / 10 / 3` codes that
+    /// the engine then translates to `setBestMoveString("draw")`.
+    /// `None` means the result came out of a normal search and the
+    /// reason is encoded in the score / best_action.
+    pub draw_reason: Option<&'static str>,
 }
 
 impl SearchResult {
@@ -34,6 +43,7 @@ impl SearchResult {
             best_action: Action::NONE,
             score: 0,
             nodes: 0,
+            draw_reason: None,
         }
     }
 
@@ -41,5 +51,16 @@ impl SearchResult {
     pub fn with_score(mut self, score: i32) -> Self {
         self.score = score;
         self
+    }
+
+    /// Construct a draw short-circuit result tagged with `reason`
+    /// (use one of the constants in [`tgf_core::canonical_reason`]).
+    pub fn draw_short_circuit(reason: &'static str) -> Self {
+        Self {
+            best_action: Action::NONE,
+            score: 0,
+            nodes: 0,
+            draw_reason: Some(reason),
+        }
     }
 }

@@ -341,4 +341,30 @@ pub trait Game: 'static + Send + Sync {
     fn repetition_draw_bias() -> i32 {
         1
     }
+
+    /// Pre-search short-circuit: when the root workbench is already
+    /// a rule draw (50-move / N-move-rule, threefold repetition,
+    /// endgame N-move-rule, agreed draw, ...), search has nothing to
+    /// add and the engine should return a draw bestmove immediately.
+    ///
+    /// Mirrors master `SearchEngine::executeSearch`
+    /// (src/search_engine.cpp:432-453) which checks
+    /// `posKeyHistory.size() >= rule.nMoveRule`,
+    /// `is_three_endgame() && posKeyHistory.size() >= endgameNMoveRule`,
+    /// and `threefoldRepetitionRule && has_game_cycle()` before
+    /// entering iterative deepening.
+    ///
+    /// Default: `None` (no short-circuit).  Concrete games override
+    /// to return a stable English `reason` token (see
+    /// `tgf_core::canonical_reason`) -- the searcher emits a
+    /// `SearchResult` carrying that reason and skips the hot loop
+    /// entirely, mirroring master's "return 50 / 10 / 3" path.
+    ///
+    /// Cold path: invoked once per top-level `iterative_deepening`
+    /// call before any node is searched.  Static so the Searcher can
+    /// invoke it without holding a `&Game` reference.
+    #[inline]
+    fn root_short_circuit_draw(_wb: &Self::Workbench) -> Option<&'static str> {
+        None
+    }
 }

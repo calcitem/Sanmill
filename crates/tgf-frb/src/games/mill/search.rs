@@ -336,6 +336,7 @@ pub(crate) fn spawn_mill_engine_config_event_stream(
                     best_action: mcts_result.best_action,
                     score: material_score,
                     nodes: mcts_result.visits as u64,
+                    draw_reason: None,
                 };
                 let _ = sink.add(crate::engine_event::info(
                     max_depth,

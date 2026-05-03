@@ -402,6 +402,7 @@ fn run_mcts_search(wb: &mut tgf_mill::MillWorkbench, cfg: &EngineConfig) -> Sear
         best_action: mcts_result.best_action,
         score: mill_material_score(wb),
         nodes: mcts_result.visits as u64,
+        draw_reason: None,
     }
 }
 

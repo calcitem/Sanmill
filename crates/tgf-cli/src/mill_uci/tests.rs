@@ -189,6 +189,7 @@ fn active_search_try_take_finished_updates_last_best_value() {
                 },
                 score: 5,
                 nodes: 1,
+                draw_reason: None,
             },
             root_side_to_move: 0,
         })

@@ -40,6 +40,12 @@ impl<G: Game> Searcher<G> {
         const ASPIRATION_DELTA: i32 = 15; // ~3 piece values
         const ASPIRATION_MAX_WINDOW: i32 = 200;
         let max_depth = max_depth.max(1);
+        // Pre-search short-circuit (mirrors master executeSearch
+        // return-50/10/3 path before IDS): when the game is already a
+        // rule draw, do not waste search time.
+        if let Some(short_circuit_reason) = G::root_short_circuit_draw(wb) {
+            return SearchResult::draw_short_circuit(short_circuit_reason);
+        }
         let mut result = self.search_pvs(wb, 1);
         for depth in 2..=max_depth {
             self.tt.bump_age();
@@ -101,6 +107,7 @@ impl<G: Game> Searcher<G> {
                 best_action: Action::NONE,
                 score: G::Evaluator::score(wb),
                 nodes: self.nodes,
+                draw_reason: None,
             };
         }
         let mut best_action = moves[0];
@@ -133,6 +140,7 @@ impl<G: Game> Searcher<G> {
             best_action,
             score: best_alpha,
             nodes: self.nodes,
+            draw_reason: None,
         }
     }
 
@@ -187,6 +195,7 @@ impl<G: Game> Searcher<G> {
                 best_action: Action::NONE,
                 score,
                 nodes: self.nodes,
+                draw_reason: None,
             };
         }
         let mut moves = ActionList::<256>::new();
@@ -200,6 +209,7 @@ impl<G: Game> Searcher<G> {
                 best_action: Action::NONE,
                 score: G::Evaluator::score(wb),
                 nodes: self.nodes,
+                draw_reason: None,
             };
         }
         if moves.len() == 1 {
@@ -207,6 +217,7 @@ impl<G: Game> Searcher<G> {
                 best_action: moves[0],
                 score: G::unique_root_move_score(),
                 nodes: self.nodes,
+                draw_reason: None,
             };
         }
 
@@ -221,6 +232,7 @@ impl<G: Game> Searcher<G> {
             best_action,
             score,
             nodes: self.nodes,
+            draw_reason: None,
         }
     }
 }
