@@ -362,15 +362,16 @@ fn packed_tt_entry_round_trips_compact_fields() {
         best_action: action,
     };
 
-    let packed = TtPackedEntry::pack(0x1234_5678_9abc_def0, entry, 3);
-    let unpacked = TtPackedEntry::unpack_entry(packed);
+    let meta = TtPackedEntry::pack_meta(0x1234_5678_9abc_def0, &entry, 3);
+    let action_bits = TtPackedEntry::pack_action(entry.best_action);
+    let unpacked = TtPackedEntry::unpack_entry(meta, action_bits);
 
     assert_eq!(unpacked.value, entry.value);
     assert_eq!(unpacked.depth, entry.depth);
     assert_eq!(unpacked.bound, entry.bound);
     assert_eq!(unpacked.best_action, entry.best_action);
-    assert_eq!(TtPackedEntry::packed_age(packed), 3);
-    assert_ne!(packed, 0);
+    assert_eq!(TtPackedEntry::packed_age(meta), 3);
+    assert_ne!(meta, 0);
 }
 
 #[test]

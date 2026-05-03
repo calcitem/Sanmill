@@ -39,19 +39,20 @@ impl<G: Game> Searcher<G> {
     pub(super) fn move_score(
         &self,
         wb: &G::Workbench,
-        key: u64,
+        _key: u64,
         depth: i32,
         action: Action,
     ) -> i32 {
+        // Master MovePicker::score (src/movepick.cpp:46-52) only adds
+        // RATING_TT (=100) when ttMove is non-NONE, but TT_MOVE_ENABLE
+        // is undefined in the default master config so ttMove always
+        // stays MOVE_NONE and the bonus never fires.  The Rust port
+        // mirrors that no-op by intentionally NOT consulting the TT for
+        // a best-action bonus here.  TT lookups remain available
+        // through `Searcher::search_mtdf_with_guess` for root move
+        // recovery.  Killer / history bonuses stay gated on their own
+        // toggles (default off in commit Phase 16).
         let mut score = G::move_order_bias_ctx(wb, action, &self.options.move_order_context);
-        if key != 0
-            && self
-                .tt
-                .get(key)
-                .is_some_and(|entry| entry.best_action == action)
-        {
-            score += 1_000_000;
-        }
         if self
             .killers
             .get(&depth)

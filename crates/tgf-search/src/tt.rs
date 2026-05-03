@@ -8,7 +8,7 @@
 // any locking on the hot path.
 
 use std::sync::{
-    atomic::{AtomicU64, AtomicU8, Ordering},
+    atomic::{AtomicU32, AtomicU64, AtomicU8, Ordering},
     Arc,
 };
 
@@ -33,15 +33,33 @@ pub(crate) struct TtEntry {
 // Clustered TT: fixed `2 * 2^cluster_bits` packed atomic slots.
 // ---------------------------------------------------------------------------
 
+/// One slot in a cluster.
+///
+/// Master `src/tt.h` stores a `TTEntry { value8, depth8, genBound8 }`
+/// plus optional `ttMove` (disabled by default via TT_MOVE_ENABLE).
+/// The Rust packing widens the key signature to 32 bits to match
+/// master's default `Key = uint32_t` (TRANSPOSITION_TABLE_64BIT_KEY
+/// undefined) instead of 8 bits, eliminating the false-positive
+/// hit rate caused by 1/256 signature collisions.  The action is
+/// kept in a sibling atomic so callers like `Searcher::search_mtdf`
+/// can still pull a best move out of the TT.
+///
+/// Layout (per slot):
+///   * meta (u64): [key_sig:32][age:6][value:16][depth:8][bound:2]
+///   * action (u32): packed Action (kind 4 / from 7 / to 7 / aux 4)
+///
+/// Total slot size = 12 bytes; cluster = 2 slots = 24 bytes.
 pub(crate) struct TtCluster {
-    pub(crate) slots: [AtomicU64; 2],
+    pub(crate) meta: [AtomicU64; 2],
+    pub(crate) action: [AtomicU32; 2],
 }
 
 impl TtCluster {
     #[inline]
     fn empty() -> Self {
         Self {
-            slots: [AtomicU64::new(0), AtomicU64::new(0)],
+            meta: [AtomicU64::new(0), AtomicU64::new(0)],
+            action: [AtomicU32::new(0), AtomicU32::new(0)],
         }
     }
 }
@@ -94,19 +112,20 @@ impl ClusteredTt {
         let cur_age = self.current_age.load(Ordering::Relaxed);
         let key_sig = TtPackedEntry::key_sig(key);
         let c = &self.clusters[self.cluster_ix(key)];
-        for s in &c.slots {
-            let packed = s.load(Ordering::Relaxed);
-            if packed == 0 {
+        for i in 0..2 {
+            let meta = c.meta[i].load(Ordering::Relaxed);
+            if meta == 0 {
                 continue;
             }
-            if TtPackedEntry::packed_key_sig(packed) == key_sig {
+            if TtPackedEntry::packed_key_sig(meta) == key_sig {
                 // Fake-clean: treat non-Exact old-generation entries as misses,
                 // matching C++ TRANSPOSITION_TABLE_FAKE_CLEAN semantics.
-                let entry_age = TtPackedEntry::packed_age(packed);
-                if entry_age != cur_age && TtPackedEntry::unpack_bound(packed) != Bound::Exact {
+                let entry_age = TtPackedEntry::packed_age(meta);
+                if entry_age != cur_age && TtPackedEntry::unpack_bound(meta) != Bound::Exact {
                     continue;
                 }
-                return Some(TtPackedEntry::unpack_entry(packed));
+                let action_bits = c.action[i].load(Ordering::Relaxed);
+                return Some(TtPackedEntry::unpack_entry(meta, action_bits));
             }
         }
         None
@@ -117,50 +136,55 @@ impl ClusteredTt {
             return;
         }
         let cur_age = self.current_age.load(Ordering::Relaxed);
-        let new_packed = TtPackedEntry::pack(key, entry, cur_age);
+        let new_meta = TtPackedEntry::pack_meta(key, &entry, cur_age);
+        let new_action = TtPackedEntry::pack_action(entry.best_action);
         let key_sig = TtPackedEntry::key_sig(key);
         let ix = self.cluster_ix(key);
         let c = &self.clusters[ix];
         // 1. Update an existing same-key entry (depth-gated for same generation).
-        for s in &c.slots {
-            let packed = s.load(Ordering::Relaxed);
-            if packed == 0 {
+        for i in 0..2 {
+            let meta = c.meta[i].load(Ordering::Relaxed);
+            if meta == 0 {
                 continue;
             }
-            if TtPackedEntry::packed_key_sig(packed) == key_sig {
-                let same_gen = TtPackedEntry::packed_age(packed) == cur_age;
-                if same_gen && entry.depth < TtPackedEntry::unpack_depth(packed) {
+            if TtPackedEntry::packed_key_sig(meta) == key_sig {
+                let same_gen = TtPackedEntry::packed_age(meta) == cur_age;
+                if same_gen && entry.depth < TtPackedEntry::unpack_depth(meta) {
                     return;
                 }
-                s.store(new_packed, Ordering::Relaxed);
+                c.meta[i].store(new_meta, Ordering::Relaxed);
+                c.action[i].store(new_action, Ordering::Relaxed);
                 return;
             }
         }
         // 2. Fill an empty slot.
-        for s in &c.slots {
-            if s.load(Ordering::Relaxed) == 0 {
-                s.store(new_packed, Ordering::Relaxed);
+        for i in 0..2 {
+            if c.meta[i].load(Ordering::Relaxed) == 0 {
+                c.meta[i].store(new_meta, Ordering::Relaxed);
+                c.action[i].store(new_action, Ordering::Relaxed);
                 return;
             }
         }
         // 3. Prefer evicting old-generation slots (they are effectively stale).
-        for s in &c.slots {
-            let packed = s.load(Ordering::Relaxed);
-            if TtPackedEntry::packed_age(packed) != cur_age {
-                s.store(new_packed, Ordering::Relaxed);
+        for i in 0..2 {
+            let meta = c.meta[i].load(Ordering::Relaxed);
+            if TtPackedEntry::packed_age(meta) != cur_age {
+                c.meta[i].store(new_meta, Ordering::Relaxed);
+                c.action[i].store(new_action, Ordering::Relaxed);
                 return;
             }
         }
         // 4. Fallback: evict minimum-depth current-generation slot.
         let mut wi = 0_usize;
-        let mut wd = TtPackedEntry::unpack_depth(c.slots[0].load(Ordering::Relaxed));
-        let depth1 = TtPackedEntry::unpack_depth(c.slots[1].load(Ordering::Relaxed));
+        let mut wd = TtPackedEntry::unpack_depth(c.meta[0].load(Ordering::Relaxed));
+        let depth1 = TtPackedEntry::unpack_depth(c.meta[1].load(Ordering::Relaxed));
         if depth1 < wd {
             wi = 1;
             wd = depth1;
         }
         if entry.depth >= wd {
-            c.slots[wi].store(new_packed, Ordering::Relaxed);
+            c.meta[wi].store(new_meta, Ordering::Relaxed);
+            c.action[wi].store(new_action, Ordering::Relaxed);
         }
     }
 
@@ -169,8 +193,9 @@ impl ClusteredTt {
     /// but marks all non-Exact existing entries as stale.
     pub(crate) fn clear(&self) {
         for c in self.clusters.iter() {
-            for s in &c.slots {
-                s.store(0, Ordering::Relaxed);
+            for i in 0..2 {
+                c.meta[i].store(0, Ordering::Relaxed);
+                c.action[i].store(0, Ordering::Relaxed);
             }
         }
         self.current_age.store(0, Ordering::Relaxed);
@@ -178,15 +203,17 @@ impl ClusteredTt {
 
     /// Soft "fake-clean" clear: increment the generation counter so all
     /// non-Exact entries are treated as stale on the next probe.  Cheaper
-    /// than zeroing the whole table.  Wraps at 255 → performs a full
-    /// physical clear to avoid generation-0 aliasing with stale slots.
+    /// than zeroing the whole table.  Wraps at 63 (the new 6-bit age
+    /// field) → performs a full physical clear to avoid generation-0
+    /// aliasing with stale slots.
     pub(crate) fn bump_age(&self) {
         let prev = self.current_age.fetch_add(1, Ordering::Relaxed);
-        if prev == u8::MAX {
-            // Wrap: physically zero the table and start from generation 1.
+        // Age is encoded in 6 bits (mask 0x3f); wrap at the field max.
+        if prev >= 0x3f {
             for c in self.clusters.iter() {
-                for s in &c.slots {
-                    s.store(0, Ordering::Relaxed);
+                for i in 0..2 {
+                    c.meta[i].store(0, Ordering::Relaxed);
+                    c.action[i].store(0, Ordering::Relaxed);
                 }
             }
             self.current_age.store(1, Ordering::Relaxed);
@@ -194,13 +221,13 @@ impl ClusteredTt {
     }
 
     pub(crate) fn current_age(&self) -> u8 {
-        self.current_age.load(Ordering::Relaxed)
+        self.current_age.load(Ordering::Relaxed) & 0x3f
     }
 
     pub(crate) fn len_occupied(&self) -> usize {
         self.clusters
             .iter()
-            .flat_map(|c| c.slots.iter())
+            .flat_map(|c| c.meta.iter())
             .filter(|s| s.load(Ordering::Relaxed) != 0)
             .count()
     }
@@ -255,61 +282,69 @@ fn prefetch_read(addr: *const i8) {
 pub(crate) struct TtPackedEntry;
 
 impl TtPackedEntry {
-    // Bit layout (64 bits total):
-    //   [0:7]   key_sig  (8 bits)  — halved from 16 to make room for age
-    //   [8:15]  age      (8 bits)  — generation counter (fake-clean semantics)
-    //   [16:31] value    (16 bits)
-    //   [32:39] depth    (8 bits)
-    //   [40:41] bound    (2 bits)
-    //   [42:63] action   (22 bits)
-    const KEY_SIG_BITS: u32 = 8;
-    const AGE_SHIFT: u32 = 8;
-    const VALUE_SHIFT: u32 = 16;
-    const DEPTH_SHIFT: u32 = 32;
-    const BOUND_SHIFT: u32 = 40;
-    const ACTION_SHIFT: u32 = 42;
+    // Meta bit layout (64 bits total):
+    //   [0:31]  key_sig  (32 bits)  — matches master `Key = uint32_t`
+    //   [32:37] age      (6 bits)   — generation counter (fake-clean)
+    //   [38:53] value    (16 bits)
+    //   [54:61] depth    (8 bits)
+    //   [62:63] bound    (2 bits)
+    //
+    // The action lives in a sibling AtomicU32 inside the cluster so we
+    // can preserve `TtEntry::best_action` without sacrificing any of
+    // the new 32-bit signature.  Keeping the action also keeps
+    // Searcher::search_mtdf_with_guess able to retrieve the root
+    // bestmove from the TT.  Master itself drops the move when
+    // TT_MOVE_ENABLE is undefined (default), which only affects
+    // `MovePicker::score`'s ttMove bonus -- that path is removed
+    // separately in commit Phase 16.
+    const KEY_SIG_MASK: u64 = 0xffff_ffff;
+    const AGE_SHIFT: u32 = 32;
+    const VALUE_SHIFT: u32 = 38;
+    const DEPTH_SHIFT: u32 = 54;
+    const BOUND_SHIFT: u32 = 62;
 
-    const KEY_SIG_MASK: u64 = (1_u64 << Self::KEY_SIG_BITS) - 1; // 0xff
-    const AGE_MASK: u64 = 0xff;
+    const AGE_MASK: u64 = 0x3f;
     const VALUE_MASK: u64 = 0xffff;
     const DEPTH_MASK: u64 = 0xff;
     const BOUND_MASK: u64 = 0x03;
-    const ACTION_MASK: u64 = (1_u64 << 22) - 1;
+    const ACTION_MASK: u32 = (1_u32 << 22) - 1;
 
     #[inline]
-    pub(crate) fn key_sig(key: u64) -> u16 {
-        // 8-bit signature; returned as u16 for comparison with `packed_key_sig`.
-        let sig = ((key >> 48) ^ (key >> 32) ^ (key >> 16) ^ key) as u8;
-        u16::from(sig.max(1))
+    pub(crate) fn key_sig(key: u64) -> u32 {
+        // 32-bit signature mirroring master's default `Key = u32`.
+        // Mix the high 32 bits so callers using full 64-bit Zobrist keys
+        // do not collapse all signatures to the lower half.  Use `.max(1)`
+        // so a zero signature never aliases the empty-slot sentinel.
+        let mixed = (key as u32) ^ ((key >> 32) as u32);
+        mixed.max(1)
     }
 
     #[inline]
-    pub(crate) fn packed_key_sig(packed: u64) -> u16 {
-        (packed & Self::KEY_SIG_MASK) as u16
+    pub(crate) fn packed_key_sig(meta: u64) -> u32 {
+        (meta & Self::KEY_SIG_MASK) as u32
     }
 
     #[inline]
-    pub(crate) fn packed_age(packed: u64) -> u8 {
-        ((packed >> Self::AGE_SHIFT) & Self::AGE_MASK) as u8
+    pub(crate) fn packed_age(meta: u64) -> u8 {
+        ((meta >> Self::AGE_SHIFT) & Self::AGE_MASK) as u8
     }
 
     #[inline]
-    pub(crate) fn pack(key: u64, entry: TtEntry, age: u8) -> u64 {
+    pub(crate) fn pack_meta(key: u64, entry: &TtEntry, age: u8) -> u64 {
         u64::from(Self::key_sig(key))
-            | (u64::from(age) << Self::AGE_SHIFT)
+            | ((u64::from(age) & Self::AGE_MASK) << Self::AGE_SHIFT)
             | (u64::from(Self::compact_value(entry.value)) << Self::VALUE_SHIFT)
             | (u64::from(Self::compact_depth(entry.depth)) << Self::DEPTH_SHIFT)
             | (u64::from(Self::pack_bound(entry.bound)) << Self::BOUND_SHIFT)
-            | (u64::from(Self::pack_action(entry.best_action)) << Self::ACTION_SHIFT)
     }
 
     #[inline]
-    pub(crate) fn unpack_entry(packed: u64) -> TtEntry {
+    pub(crate) fn unpack_entry(meta: u64, action_bits: u32) -> TtEntry {
         TtEntry {
-            value: Self::unpack_value(packed),
-            depth: Self::unpack_depth(packed),
-            bound: Self::unpack_bound(packed),
-            best_action: Self::unpack_action(packed),
+            value: Self::unpack_value(meta),
+            depth: Self::unpack_depth(meta),
+            bound: Self::unpack_bound(meta),
+            best_action: Self::unpack_action(action_bits),
         }
     }
 
@@ -319,8 +354,8 @@ impl TtPackedEntry {
     }
 
     #[inline]
-    fn unpack_value(packed: u64) -> i32 {
-        (((packed >> Self::VALUE_SHIFT) & Self::VALUE_MASK) as u16 as i16) as i32
+    fn unpack_value(meta: u64) -> i32 {
+        (((meta >> Self::VALUE_SHIFT) & Self::VALUE_MASK) as u16 as i16) as i32
     }
 
     #[inline]
@@ -329,8 +364,8 @@ impl TtPackedEntry {
     }
 
     #[inline]
-    pub(crate) fn unpack_depth(packed: u64) -> i32 {
-        (((packed >> Self::DEPTH_SHIFT) & Self::DEPTH_MASK) as u8 as i8) as i32
+    pub(crate) fn unpack_depth(meta: u64) -> i32 {
+        (((meta >> Self::DEPTH_SHIFT) & Self::DEPTH_MASK) as u8 as i8) as i32
     }
 
     #[inline]
@@ -343,8 +378,8 @@ impl TtPackedEntry {
     }
 
     #[inline]
-    pub(crate) fn unpack_bound(packed: u64) -> Bound {
-        match ((packed >> Self::BOUND_SHIFT) & Self::BOUND_MASK) as u8 {
+    pub(crate) fn unpack_bound(meta: u64) -> Bound {
+        match ((meta >> Self::BOUND_SHIFT) & Self::BOUND_MASK) as u8 {
             0 => Bound::Exact,
             1 => Bound::Lower,
             2 => Bound::Upper,
@@ -353,7 +388,7 @@ impl TtPackedEntry {
     }
 
     #[inline]
-    fn pack_action(action: Action) -> u32 {
+    pub(crate) fn pack_action(action: Action) -> u32 {
         let Some(kind) = Self::pack_action_field(action.kind_tag, 4) else {
             return 0;
         };
@@ -366,12 +401,16 @@ impl TtPackedEntry {
         let Some(aux) = Self::pack_action_field(action.aux, 4) else {
             return 0;
         };
-        u32::from(kind) | (u32::from(from) << 4) | (u32::from(to) << 11) | (u32::from(aux) << 18)
+        let bits = u32::from(kind)
+            | (u32::from(from) << 4)
+            | (u32::from(to) << 11)
+            | (u32::from(aux) << 18);
+        bits & Self::ACTION_MASK
     }
 
     #[inline]
-    fn unpack_action(packed: u64) -> Action {
-        let bits = ((packed >> Self::ACTION_SHIFT) & Self::ACTION_MASK) as u32;
+    fn unpack_action(action_bits: u32) -> Action {
+        let bits = action_bits & Self::ACTION_MASK;
         if bits == 0 {
             return Action::NONE;
         }
