@@ -4,6 +4,7 @@
 // ignore_for_file: unused_import, unused_element, unnecessary_import, duplicate_ignore, invalid_use_of_internal_member, annotate_overrides, non_constant_identifier_names, curly_braces_in_flow_control_structures, prefer_const_literals_to_create_immutables, unused_field
 
 import 'api/kernel.dart';
+import 'api/mill_kernel.dart';
 import 'api/simple.dart';
 import 'dart:async';
 import 'dart:convert';
@@ -67,7 +68,7 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
   String get codegenVersion => '2.12.0';
 
   @override
-  int get rustContentHash => -2089199072;
+  int get rustContentHash => 1438350104;
 
   static const kDefaultExternalLibraryLoaderConfig =
       ExternalLibraryLoaderConfig(
@@ -140,11 +141,13 @@ abstract class RustLibApi extends BaseApi {
 
   int crateApiKernelTgfKernelCreate({required String gameId});
 
-  int crateApiKernelTgfKernelCreateMill({required MillVariantOptions variant});
+  int crateApiMillKernelTgfKernelCreateMill({
+    required MillVariantOptions variant,
+  });
 
   void crateApiKernelTgfKernelDispose({required int handle});
 
-  String crateApiKernelTgfKernelExportFen({required int handle});
+  String crateApiMillKernelTgfKernelExportFen({required int handle});
 
   String crateApiKernelTgfKernelGameId({required int handle});
 
@@ -152,12 +155,12 @@ abstract class RustLibApi extends BaseApi {
 
   List<TgfAction> crateApiKernelTgfKernelLegalActions({required int handle});
 
-  Stream<EngineEvent> crateApiKernelTgfKernelMillSearchEvents({
+  Stream<EngineEvent> crateApiMillKernelTgfKernelMillSearchEvents({
     required int handle,
     required int depth,
   });
 
-  Stream<EngineEvent> crateApiKernelTgfKernelMillSearchEventsWithConfig({
+  Stream<EngineEvent> crateApiMillKernelTgfKernelMillSearchEventsWithConfig({
     required int handle,
     required MillEngineConfig config,
   });
@@ -168,22 +171,22 @@ abstract class RustLibApi extends BaseApi {
 
   int crateApiKernelTgfKernelRedoDepth({required int handle});
 
-  TgfSnapshot crateApiKernelTgfKernelSetFromFen({
+  TgfSnapshot crateApiMillKernelTgfKernelSetFromFen({
     required int handle,
     required String fen,
   });
 
-  TgfSnapshot crateApiKernelTgfKernelSetupClear({required int handle});
+  TgfSnapshot crateApiMillKernelTgfKernelSetupClear({required int handle});
 
-  TgfSnapshot crateApiKernelTgfKernelSetupFinish({required int handle});
+  TgfSnapshot crateApiMillKernelTgfKernelSetupFinish({required int handle});
 
-  TgfSnapshot crateApiKernelTgfKernelSetupSetPiece({
+  TgfSnapshot crateApiMillKernelTgfKernelSetupSetPiece({
     required int handle,
     required int node,
     required int owner,
   });
 
-  TgfSnapshot crateApiKernelTgfKernelSetupSetSide({
+  TgfSnapshot crateApiMillKernelTgfKernelSetupSetSide({
     required int handle,
     required int side,
   });
@@ -846,7 +849,9 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       const TaskConstMeta(debugName: "tgf_kernel_create", argNames: ["gameId"]);
 
   @override
-  int crateApiKernelTgfKernelCreateMill({required MillVariantOptions variant}) {
+  int crateApiMillKernelTgfKernelCreateMill({
+    required MillVariantOptions variant,
+  }) {
     return handler.executeSync(
       SyncTask(
         callFfi: () {
@@ -858,14 +863,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           decodeSuccessData: sse_decode_u_32,
           decodeErrorData: sse_decode_String,
         ),
-        constMeta: kCrateApiKernelTgfKernelCreateMillConstMeta,
+        constMeta: kCrateApiMillKernelTgfKernelCreateMillConstMeta,
         argValues: [variant],
         apiImpl: this,
       ),
     );
   }
 
-  TaskConstMeta get kCrateApiKernelTgfKernelCreateMillConstMeta =>
+  TaskConstMeta get kCrateApiMillKernelTgfKernelCreateMillConstMeta =>
       const TaskConstMeta(
         debugName: "tgf_kernel_create_mill",
         argNames: ["variant"],
@@ -898,7 +903,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
-  String crateApiKernelTgfKernelExportFen({required int handle}) {
+  String crateApiMillKernelTgfKernelExportFen({required int handle}) {
     return handler.executeSync(
       SyncTask(
         callFfi: () {
@@ -910,14 +915,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           decodeSuccessData: sse_decode_String,
           decodeErrorData: sse_decode_String,
         ),
-        constMeta: kCrateApiKernelTgfKernelExportFenConstMeta,
+        constMeta: kCrateApiMillKernelTgfKernelExportFenConstMeta,
         argValues: [handle],
         apiImpl: this,
       ),
     );
   }
 
-  TaskConstMeta get kCrateApiKernelTgfKernelExportFenConstMeta =>
+  TaskConstMeta get kCrateApiMillKernelTgfKernelExportFenConstMeta =>
       const TaskConstMeta(
         debugName: "tgf_kernel_export_fen",
         argNames: ["handle"],
@@ -1002,7 +1007,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
-  Stream<EngineEvent> crateApiKernelTgfKernelMillSearchEvents({
+  Stream<EngineEvent> crateApiMillKernelTgfKernelMillSearchEvents({
     required int handle,
     required int depth,
   }) {
@@ -1026,7 +1031,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             decodeSuccessData: sse_decode_unit,
             decodeErrorData: null,
           ),
-          constMeta: kCrateApiKernelTgfKernelMillSearchEventsConstMeta,
+          constMeta: kCrateApiMillKernelTgfKernelMillSearchEventsConstMeta,
           argValues: [handle, depth, sink],
           apiImpl: this,
         ),
@@ -1035,14 +1040,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     return sink.stream;
   }
 
-  TaskConstMeta get kCrateApiKernelTgfKernelMillSearchEventsConstMeta =>
+  TaskConstMeta get kCrateApiMillKernelTgfKernelMillSearchEventsConstMeta =>
       const TaskConstMeta(
         debugName: "tgf_kernel_mill_search_events",
         argNames: ["handle", "depth", "sink"],
       );
 
   @override
-  Stream<EngineEvent> crateApiKernelTgfKernelMillSearchEventsWithConfig({
+  Stream<EngineEvent> crateApiMillKernelTgfKernelMillSearchEventsWithConfig({
     required int handle,
     required MillEngineConfig config,
   }) {
@@ -1067,7 +1072,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             decodeErrorData: null,
           ),
           constMeta:
-              kCrateApiKernelTgfKernelMillSearchEventsWithConfigConstMeta,
+              kCrateApiMillKernelTgfKernelMillSearchEventsWithConfigConstMeta,
           argValues: [handle, config, sink],
           apiImpl: this,
         ),
@@ -1077,7 +1082,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   TaskConstMeta
-  get kCrateApiKernelTgfKernelMillSearchEventsWithConfigConstMeta =>
+  get kCrateApiMillKernelTgfKernelMillSearchEventsWithConfigConstMeta =>
       const TaskConstMeta(
         debugName: "tgf_kernel_mill_search_events_with_config",
         argNames: ["handle", "config", "sink"],
@@ -1159,7 +1164,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
-  TgfSnapshot crateApiKernelTgfKernelSetFromFen({
+  TgfSnapshot crateApiMillKernelTgfKernelSetFromFen({
     required int handle,
     required String fen,
   }) {
@@ -1175,21 +1180,21 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           decodeSuccessData: sse_decode_tgf_snapshot,
           decodeErrorData: sse_decode_String,
         ),
-        constMeta: kCrateApiKernelTgfKernelSetFromFenConstMeta,
+        constMeta: kCrateApiMillKernelTgfKernelSetFromFenConstMeta,
         argValues: [handle, fen],
         apiImpl: this,
       ),
     );
   }
 
-  TaskConstMeta get kCrateApiKernelTgfKernelSetFromFenConstMeta =>
+  TaskConstMeta get kCrateApiMillKernelTgfKernelSetFromFenConstMeta =>
       const TaskConstMeta(
         debugName: "tgf_kernel_set_from_fen",
         argNames: ["handle", "fen"],
       );
 
   @override
-  TgfSnapshot crateApiKernelTgfKernelSetupClear({required int handle}) {
+  TgfSnapshot crateApiMillKernelTgfKernelSetupClear({required int handle}) {
     return handler.executeSync(
       SyncTask(
         callFfi: () {
@@ -1201,21 +1206,21 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           decodeSuccessData: sse_decode_tgf_snapshot,
           decodeErrorData: sse_decode_String,
         ),
-        constMeta: kCrateApiKernelTgfKernelSetupClearConstMeta,
+        constMeta: kCrateApiMillKernelTgfKernelSetupClearConstMeta,
         argValues: [handle],
         apiImpl: this,
       ),
     );
   }
 
-  TaskConstMeta get kCrateApiKernelTgfKernelSetupClearConstMeta =>
+  TaskConstMeta get kCrateApiMillKernelTgfKernelSetupClearConstMeta =>
       const TaskConstMeta(
         debugName: "tgf_kernel_setup_clear",
         argNames: ["handle"],
       );
 
   @override
-  TgfSnapshot crateApiKernelTgfKernelSetupFinish({required int handle}) {
+  TgfSnapshot crateApiMillKernelTgfKernelSetupFinish({required int handle}) {
     return handler.executeSync(
       SyncTask(
         callFfi: () {
@@ -1227,21 +1232,21 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           decodeSuccessData: sse_decode_tgf_snapshot,
           decodeErrorData: sse_decode_String,
         ),
-        constMeta: kCrateApiKernelTgfKernelSetupFinishConstMeta,
+        constMeta: kCrateApiMillKernelTgfKernelSetupFinishConstMeta,
         argValues: [handle],
         apiImpl: this,
       ),
     );
   }
 
-  TaskConstMeta get kCrateApiKernelTgfKernelSetupFinishConstMeta =>
+  TaskConstMeta get kCrateApiMillKernelTgfKernelSetupFinishConstMeta =>
       const TaskConstMeta(
         debugName: "tgf_kernel_setup_finish",
         argNames: ["handle"],
       );
 
   @override
-  TgfSnapshot crateApiKernelTgfKernelSetupSetPiece({
+  TgfSnapshot crateApiMillKernelTgfKernelSetupSetPiece({
     required int handle,
     required int node,
     required int owner,
@@ -1259,21 +1264,21 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           decodeSuccessData: sse_decode_tgf_snapshot,
           decodeErrorData: sse_decode_String,
         ),
-        constMeta: kCrateApiKernelTgfKernelSetupSetPieceConstMeta,
+        constMeta: kCrateApiMillKernelTgfKernelSetupSetPieceConstMeta,
         argValues: [handle, node, owner],
         apiImpl: this,
       ),
     );
   }
 
-  TaskConstMeta get kCrateApiKernelTgfKernelSetupSetPieceConstMeta =>
+  TaskConstMeta get kCrateApiMillKernelTgfKernelSetupSetPieceConstMeta =>
       const TaskConstMeta(
         debugName: "tgf_kernel_setup_set_piece",
         argNames: ["handle", "node", "owner"],
       );
 
   @override
-  TgfSnapshot crateApiKernelTgfKernelSetupSetSide({
+  TgfSnapshot crateApiMillKernelTgfKernelSetupSetSide({
     required int handle,
     required int side,
   }) {
@@ -1289,14 +1294,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           decodeSuccessData: sse_decode_tgf_snapshot,
           decodeErrorData: sse_decode_String,
         ),
-        constMeta: kCrateApiKernelTgfKernelSetupSetSideConstMeta,
+        constMeta: kCrateApiMillKernelTgfKernelSetupSetSideConstMeta,
         argValues: [handle, side],
         apiImpl: this,
       ),
     );
   }
 
-  TaskConstMeta get kCrateApiKernelTgfKernelSetupSetSideConstMeta =>
+  TaskConstMeta get kCrateApiMillKernelTgfKernelSetupSetSideConstMeta =>
       const TaskConstMeta(
         debugName: "tgf_kernel_setup_set_side",
         argNames: ["handle", "side"],

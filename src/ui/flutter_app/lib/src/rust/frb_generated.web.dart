@@ -7,6 +7,7 @@
 // ignore_for_file: argument_type_not_assignable
 
 import 'api/kernel.dart';
+import 'api/mill_kernel.dart';
 import 'api/simple.dart';
 import 'dart:async';
 import 'dart:convert';

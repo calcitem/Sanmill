@@ -5,7 +5,6 @@
 
 import '../frb_generated.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
-import 'simple.dart';
 
 // These functions are ignored because they are not marked as `pub`: `build_rules_default`, `from_action`, `from_outcome`, `from_snap`, `into_action`, `map_kernel_error`
 // These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `clone`, `clone`, `fmt`, `fmt`, `fmt`
@@ -15,12 +14,6 @@ import 'simple.dart';
 /// 8x8).  Returns the new session handle on success.
 int tgfKernelCreate({required String gameId}) =>
     RustLib.instance.api.crateApiKernelTgfKernelCreate(gameId: gameId);
-
-/// Create a Mill kernel with explicit variant options.  Use this once
-/// the Flutter `RuleSettings` model is mapped through
-/// `MillVariantOptionsMapper`.
-int tgfKernelCreateMill({required MillVariantOptions variant}) =>
-    RustLib.instance.api.crateApiKernelTgfKernelCreateMill(variant: variant);
 
 /// Drop the session associated with `handle`.  Idempotent: invoking
 /// twice is a no-op.
@@ -67,90 +60,6 @@ int tgfKernelUndoDepth({required int handle}) =>
 
 int tgfKernelRedoDepth({required int handle}) =>
     RustLib.instance.api.crateApiKernelTgfKernelRedoDepth(handle: handle);
-
-/// PVS search over the kernel's **current** Mill position, using the same
-/// variant options as [tgf_kernel_create_mill].
-///
-/// Streams the same [EngineEvent] sequence as [crate::api::simple::native_mill_search_events]:
-/// one `info` event per IDS depth, then `bestMove` + `stopped`.
-Stream<EngineEvent> tgfKernelMillSearchEvents({
-  required int handle,
-  required int depth,
-}) => RustLib.instance.api.crateApiKernelTgfKernelMillSearchEvents(
-  handle: handle,
-  depth: depth,
-);
-
-/// Full-config search over the kernel's **current** Mill position.
-///
-/// Accepts a [`MillEngineConfig`] that controls algorithm, depth, time limit
-/// and lazy-search behaviour.  Preferred over [tgf_kernel_mill_search_events]
-/// for production use once the Flutter side has migrated to the typed config.
-Stream<EngineEvent> tgfKernelMillSearchEventsWithConfig({
-  required int handle,
-  required MillEngineConfig config,
-}) => RustLib.instance.api.crateApiKernelTgfKernelMillSearchEventsWithConfig(
-  handle: handle,
-  config: config,
-);
-
-/// Clear the board associated with a Mill kernel handle and reset all pieces,
-/// returning the fresh empty snapshot.  History and redo stacks are cleared.
-///
-/// This is the entry point for the Flutter setup-position flow: call
-/// `tgf_kernel_setup_clear` first, then `tgf_kernel_setup_set_piece` for each
-/// piece, then `tgf_kernel_setup_finish` to transition to a playable state.
-TgfSnapshot tgfKernelSetupClear({required int handle}) =>
-    RustLib.instance.api.crateApiKernelTgfKernelSetupClear(handle: handle);
-
-/// Set or clear a single piece at `node` for a Mill kernel in setup mode.
-///
-/// `owner`: `1` = first player (White), `2` = second player (Black),
-/// any other value = clear the square.
-///
-/// Call `tgf_kernel_setup_clear` before the first `set_piece` to start with
-/// a blank board, then `tgf_kernel_setup_finish` when editing is complete.
-TgfSnapshot tgfKernelSetupSetPiece({
-  required int handle,
-  required int node,
-  required int owner,
-}) => RustLib.instance.api.crateApiKernelTgfKernelSetupSetPiece(
-  handle: handle,
-  node: node,
-  owner: owner,
-);
-
-/// Set the side to move for a Mill kernel in setup mode.
-///
-/// `side`: `0` = first player (White), `1` = second player (Black).
-TgfSnapshot tgfKernelSetupSetSide({required int handle, required int side}) =>
-    RustLib.instance.api.crateApiKernelTgfKernelSetupSetSide(
-      handle: handle,
-      side: side,
-    );
-
-/// Finish the setup-position editing flow.
-///
-/// Determines whether the resulting board is in placing or moving phase
-/// based on whether any pieces remain in hand, recomputes auxiliary fields,
-/// and replaces the kernel state.  After this call the kernel can be used
-/// for normal play (legal actions, apply, search).
-TgfSnapshot tgfKernelSetupFinish({required int handle}) =>
-    RustLib.instance.api.crateApiKernelTgfKernelSetupFinish(handle: handle);
-
-/// Load a Mill board position from a FEN string (Phase 6.A.3.B).
-///
-/// The FEN must follow the legacy Dart/C++ engine format.  Returns the
-/// new snapshot on success, or an error string on parse failure.
-TgfSnapshot tgfKernelSetFromFen({required int handle, required String fen}) =>
-    RustLib.instance.api.crateApiKernelTgfKernelSetFromFen(
-      handle: handle,
-      fen: fen,
-    );
-
-/// Export the current Mill kernel state as a FEN string (Phase 6.A.3.B).
-String tgfKernelExportFen({required int handle}) =>
-    RustLib.instance.api.crateApiKernelTgfKernelExportFen(handle: handle);
 
 /// Mirror of `tgf_core::Action` with i32 fields so FRB can ship it as
 /// trivial dart `int` types.  Conversion is `From`-symmetric.

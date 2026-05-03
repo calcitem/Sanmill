@@ -8,6 +8,7 @@
 
 import '../../game_platform/engine/tgf_kernel.dart';
 import '../../src/rust/api/kernel.dart' as tgf;
+import '../../src/rust/api/mill_kernel.dart' as tgf_mill;
 import '../../src/rust/api/simple.dart' as tgf_simple;
 
 /// Wraps a [TgfKernel] and exposes the FRB entry points that are only
@@ -20,7 +21,7 @@ class MillKernelSession {
   /// Spin up a fresh Mill kernel with explicit variant options and wrap
   /// it in a [MillKernelSession].
   factory MillKernelSession.fromVariant(tgf_simple.MillVariantOptions variant) {
-    final int handle = tgf.tgfKernelCreateMill(variant: variant);
+    final int handle = tgf_mill.tgfKernelCreateMill(variant: variant);
     final TgfKernel adopted = TgfKernel.adopt(handle: handle, gameId: 'mill');
     return MillKernelSession(adopted);
   }
@@ -42,8 +43,8 @@ class MillKernelSession {
     if (kernel.isDisposed) {
       throw KernelException('handle already disposed');
     }
-    final Stream<tgf_simple.EngineEvent> events = tgf
-        .tgfKernelMillSearchEventsWithConfig(
+    final Stream<tgf_simple.EngineEvent> events =
+        tgf_mill.tgfKernelMillSearchEventsWithConfig(
           handle: kernel.rawHandle,
           config: tgf_simple.MillEngineConfig(
             algorithm: tgf_simple.MillSearchAlgorithm.pvs,
@@ -67,13 +68,13 @@ class MillKernelSession {
   /// Clear the board and reset all pieces for setup-position editing.
   /// Returns the empty-board snapshot.  History is cleared.
   tgf.TgfSnapshot rawSetupClear() {
-    return tgf.tgfKernelSetupClear(handle: kernel.rawHandle);
+    return tgf_mill.tgfKernelSetupClear(handle: kernel.rawHandle);
   }
 
   /// Place or clear a single piece during setup editing.
   /// [owner]: 1 = first player, 2 = second player, other = clear.
   tgf.TgfSnapshot rawSetupSetPiece(int node, int owner) {
-    return tgf.tgfKernelSetupSetPiece(
+    return tgf_mill.tgfKernelSetupSetPiece(
       handle: kernel.rawHandle,
       node: node,
       owner: owner,
@@ -82,22 +83,22 @@ class MillKernelSession {
 
   /// Set the side to move during setup editing.  [side]: 0 or 1.
   tgf.TgfSnapshot rawSetupSetSide(int side) {
-    return tgf.tgfKernelSetupSetSide(handle: kernel.rawHandle, side: side);
+    return tgf_mill.tgfKernelSetupSetSide(handle: kernel.rawHandle, side: side);
   }
 
   /// Finish setup editing and transition to a playable game state.
   tgf.TgfSnapshot rawSetupFinish() {
-    return tgf.tgfKernelSetupFinish(handle: kernel.rawHandle);
+    return tgf_mill.tgfKernelSetupFinish(handle: kernel.rawHandle);
   }
 
   /// Load a position from a Mill FEN string.
   tgf.TgfSnapshot rawSetFromFen(String fen) {
-    return tgf.tgfKernelSetFromFen(handle: kernel.rawHandle, fen: fen);
+    return tgf_mill.tgfKernelSetFromFen(handle: kernel.rawHandle, fen: fen);
   }
 
   /// Export the current kernel state as a Mill FEN string.
   String rawExportFen() {
-    return tgf.tgfKernelExportFen(handle: kernel.rawHandle);
+    return tgf_mill.tgfKernelExportFen(handle: kernel.rawHandle);
   }
 
   int _rawScoreFromReason(String reason) {
