@@ -200,11 +200,6 @@ void main() {
       final GameController controller = GameController();
       expect(controller.boardSemanticsNotifier, isNotNull);
     });
-
-    test('setupPositionNotifier should be accessible', () {
-      final GameController controller = GameController();
-      expect(controller.setupPositionNotifier, isNotNull);
-    });
   });
 
   // ---------------------------------------------------------------------------

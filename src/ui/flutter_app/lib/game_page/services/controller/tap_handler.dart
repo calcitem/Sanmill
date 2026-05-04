@@ -48,13 +48,12 @@ class TapHandler {
   Future<EngineResponse?> _tryNativeSessionTap(int sq) async {
     // The Rust-native session path is now supported for:
     //   - humanVsHuman, humanVsAi (placing / moving / removing)
-    //   - setupPosition (direct board editing via setupSetPiece)
+    //   - humanVsLAN
     // Replay still depends on legacy side effects.
     final GameMode mode = controller.gameInstance.gameMode;
     if (mode != GameMode.humanVsHuman &&
         mode != GameMode.humanVsAi &&
-        mode != GameMode.humanVsLAN &&
-        mode != GameMode.setupPosition) {
+        mode != GameMode.humanVsLAN) {
       _nativeSessionTapController.clearSelection();
       return null;
     }
@@ -191,54 +190,6 @@ class TapHandler {
     }
   }
 
-  Future<EngineResponse> setupPosition(int sq) async {
-    if (true) {
-      final GameSession? session = GameSessionScope.sessionOf(context);
-      if (session is NativeMillGameSession) {
-        final int? node = MillBoardCoordinateMaps.legacySquareToNode[sq];
-        if (node != null) {
-          // Determine owner: cycle through empty → first → second based on
-          // the current piece at the node in the native board view.
-          final NativeMillSnapshotBoardView? boardView =
-              GameController().activeNativeMillBoardView;
-          final PlayerSeat? current = boardView?.pieceAtNode(node);
-          final int nextOwner = switch (current) {
-            null => 1,
-            PlayerSeat.none => 1,
-            PlayerSeat.first => 2,
-            PlayerSeat.second => 0,
-          };
-          session.setupSetPiece(node, nextOwner);
-          GameController().boardSemanticsNotifier.updateSemantics();
-          GameController().headerTipNotifier.showTip(
-            ExtMove.sqToNotation(sq),
-            snackBar: false,
-          );
-          return const EngineResponseHumanOK();
-        }
-      }
-    }
-
-    // Legacy path.
-    if (GameController().position.action == Act.place ||
-        GameController().position.action == Act.select) {
-      GameController().position.putPieceForSetupPosition(sq);
-    } else if (GameController().position.action == Act.remove) {
-      GameController().position._removePieceForSetupPosition(sq);
-    } else {
-      logger.e("$_logTag Invalid action: ${GameController().position.action}");
-    }
-
-    GameController().setupPositionNotifier.updateIcons();
-    GameController().boardSemanticsNotifier.updateSemantics();
-    GameController().headerTipNotifier.showTip(
-      ExtMove.sqToNotation(sq),
-      snackBar: false,
-    );
-
-    return const EngineResponseHumanOK();
-  }
-
   Future<EngineResponse> onBoardTap(int sq) async {
     // Record every tap so replay can reproduce selection + move sequences.
     _recordBoardTap(sq);
@@ -282,12 +233,6 @@ class TapHandler {
     }
 
     GameController().loadedGameFilenamePrefix = null;
-
-    if (GameController().gameInstance.gameMode == GameMode.setupPosition) {
-      logger.t("$_logTag Setup position.");
-      await setupPosition(sq);
-      return const EngineResponseSkip();
-    }
 
     if (GameController().gameInstance.gameMode == GameMode.testViaLAN) {
       logger.t("$_logTag Engine type is no human, ignore tapping.");

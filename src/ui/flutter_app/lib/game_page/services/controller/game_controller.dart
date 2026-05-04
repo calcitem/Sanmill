@@ -39,7 +39,6 @@ class GameController {
   bool isControllerActive = false;
   bool isEngineRunning = false;
   bool isEngineInDelay = false;
-  bool isPieceMarkedInPositionSetup = false;
 
   /// Monotonic counter incremented on every reset() so any in-flight
   /// AI loop (e.g. _nativeAiVsAiLoop) can detect that a New Game has
@@ -272,7 +271,6 @@ class GameController {
 
   final HeaderTipNotifier headerTipNotifier = HeaderTipNotifier();
   final HeaderIconsNotifier headerIconsNotifier = HeaderIconsNotifier();
-  final SetupPositionNotifier setupPositionNotifier = SetupPositionNotifier();
   final GameResultNotifier gameResultNotifier = GameResultNotifier();
   final BoardSemanticsNotifier boardSemanticsNotifier =
       BoardSemanticsNotifier();

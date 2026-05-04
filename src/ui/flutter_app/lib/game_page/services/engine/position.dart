@@ -5257,84 +5257,11 @@ extension SetupPosition on Position {
     return pos;
   }
 
-  bool putPieceForSetupPosition(int s) {
-    final PieceColor piece = GameController().isPieceMarkedInPositionSetup
-        ? PieceColor.marked
-        : sideToMove;
-    //final us = _sideToMove;
-
-    // TODO: Allow to overwrite.
-    if (_board[s] != PieceColor.none) {
-      SoundManager().playTone(Sound.illegal);
-      return false;
-    }
-
-    if (countPieceOnBoard(piece) == DB().ruleSettings.piecesCount) {
-      SoundManager().playTone(Sound.illegal);
-      return false;
-    }
-
-    if (DB().ruleSettings.millFormationActionInPlacingPhase ==
-        MillFormationActionInPlacingPhase.markAndDelayRemovingPieces) {
-      if (countTotalPieceOnBoard() >= DB().ruleSettings.piecesCount * 2) {
-        SoundManager().playTone(Sound.illegal);
-        return false;
-      }
-    }
-
-    /*
-    // No need to update
-    if (pieceInHandCount[us] != null) {
-      pieceInHandCount[us] = pieceInHandCount[us]! - 1;
-    }
-
-    if (pieceOnBoardCount[us] != null) {
-      pieceOnBoardCount[us] = pieceOnBoardCount[us]! + 1;
-    }
-     */
-
-    _grid[squareToIndex[s]!] = piece;
-    _board[s] = piece;
-
-    //GameController().gameInstance.focusIndex = squareToIndex[s];
-    SoundManager().playTone(
-      GameController().isPieceMarkedInPositionSetup
-          ? Sound.remove
-          : Sound.place,
-    );
-
-    GameController().setupPositionNotifier.updateIcons();
-
-    return true;
-  }
-
-  GameResponse _removePieceForSetupPosition(int s) {
-    if (action != Act.remove) {
-      SoundManager().playTone(Sound.illegal);
-      return const IllegalAction();
-    }
-
-    if (_board[s] == PieceColor.none) {
-      SoundManager().playTone(Sound.illegal);
-      return const IllegalAction();
-    }
-
-    // Remove only
-    _board[s] = _grid[squareToIndex[s]!] = PieceColor.none;
-
-    /*
-    // No need to update
-    // TODO: How to use it to verify?
-    if (pieceOnBoardCount[_them] != null) {
-      pieceOnBoardCount[_them] = pieceOnBoardCount[_them]! - 1;
-    }
-     */
-
-    SoundManager().playTone(Sound.remove);
-    GameController().setupPositionNotifier.updateIcons();
-
-    return const GameResponseOK();
-  }
+  // Setup-position editor helpers were removed along with the
+  // setup_position_toolbar UI; the matching `Position` methods
+  // (`putPieceForSetupPosition` / `_removePieceForSetupPosition`)
+  // have no callers left and are deleted here in advance of the
+  // wider `Position` removal in phase eta.
 
   int countPieceOnBoard(PieceColor pieceColor) {
     int count = 0;

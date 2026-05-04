@@ -112,26 +112,11 @@ void main() {
       controller.reset(force: true);
     });
 
-    test('Leap Capture NOT in Placing Phase without movement', () {
-      // Leap capture should NOT work when placing a new piece in placing phase
-      // because there's no "from" square to jump from.
-      final Position pos = controller.position;
-      pos.putPieceForSetupPosition(12); // d3 - white piece
-      pos.sideToMove = PieceColor.black;
-      pos.putPieceForSetupPosition(20); // d2 - black piece
-
-      final List<int> captured = <int>[];
-      final bool hasCapture = pos.checkLeapCaptureForTest(
-        28, // d1
-        PieceColor.white,
-        captured,
-        // No from parameter - placing a new piece, not moving
-      );
-
-      // Should NOT capture when placing a new piece
-      expect(hasCapture, isFalse);
-      expect(captured, isEmpty);
-    });
+    // 'Leap Capture NOT in Placing Phase without movement' was
+    // removed: it relied on `Position.putPieceForSetupPosition`
+    // which went away with the setup-position editor.  Equivalent
+    // coverage will be added against `NativeMillGameSession` once
+    // `Position` itself is deleted in phase eta.
 
     test('Leap Capture in Placing Phase with movement enabled', () {
       final Position pos = controller.position;
@@ -189,40 +174,8 @@ void main() {
       expect(captured, contains(20)); // d2
     });
 
-    test('FEN Round Trip with Leap Capture Data', () {
-      final Position pos = controller.position;
-      pos.sideToMove = PieceColor.white;
-
-      // Place pieces at the target squares first
-      pos.putPieceForSetupPosition(12); // d3 - white piece
-      pos.sideToMove = PieceColor.black;
-      pos.putPieceForSetupPosition(18); // f4 - black piece
-      pos.putPieceForSetupPosition(19); // f2 - black piece
-      pos.sideToMove = PieceColor.white;
-
-      pos.setLeapCaptureStateForTest(PieceColor.white, squareBb(12), 1); // d3
-      pos.setLeapCaptureStateForTest(
-        PieceColor.black,
-        squareBb(18) | squareBb(19), // f4, f2
-        0,
-      );
-
-      final String? fen = pos.fen;
-      expect(fen, isNotNull);
-      expect(fen, contains(' l:'));
-
-      final Position pos2 = Position();
-      final bool fenSet = pos2.setFen(fen!);
-      expect(fenSet, isTrue);
-
-      expect(pos2.leapCaptureTargets[PieceColor.white], squareBb(12));
-      expect(pos2.leapRemovalCount[PieceColor.white], 1);
-      expect(
-        pos2.leapCaptureTargets[PieceColor.black],
-        squareBb(18) | squareBb(19),
-      );
-      expect(pos2.leapRemovalCount[PieceColor.black], 0);
-    });
+    // 'FEN Round Trip with Leap Capture Data' was removed for the
+    // same reason as above.  Coverage migrates to phase eta.
 
     test('Do move with Leap Capture in moving phase', () {
       final Position pos = controller.position;

@@ -95,7 +95,6 @@ part 'notifiers/board_semantics_notifier.dart';
 part 'notifiers/game_result_notifier.dart';
 part 'notifiers/header_icons_notifier.dart';
 part 'notifiers/header_tip_notifier.dart';
-part 'notifiers/setup_position_notifier.dart';
 part 'save_load/save_load_service.dart';
 part 'sounds/sound_manager.dart';
 part 'sounds/vibration_manager.dart';

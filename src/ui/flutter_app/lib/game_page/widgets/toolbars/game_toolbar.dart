@@ -8,7 +8,6 @@
 library;
 
 import 'dart:async';
-import 'dart:math';
 
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/foundation.dart';
@@ -18,23 +17,12 @@ import 'package:flutter/services.dart';
 
 import '../../../experience_recording/models/recording_models.dart';
 import '../../../experience_recording/services/recording_service.dart';
-import '../../../game_platform/game_session.dart';
-import '../../../game_shell/game_session_scope.dart';
-import '../../../games/mill/native_mill_game_session.dart';
 import '../../../generated/intl/l10n.dart';
-import '../../../rule_settings/models/rule_settings.dart';
-import '../../../shared/database/database.dart';
-import '../../../shared/services/logger.dart';
 import '../../../shared/services/screenshot_service.dart';
-import '../../../shared/utils/helpers/string_helpers/string_buffer_helper.dart';
-import '../../../shared/widgets/snackbars/scaffold_messenger.dart';
 import '../../services/annotation/annotation_manager.dart';
-import '../../services/mill.dart';
-import '../../services/transform/transform.dart';
 
 part 'src/annotation_toolbar.dart';
 part 'src/game_page_toolbar.dart';
 part 'src/item_theme.dart';
 part 'src/item_theme_data.dart';
-part 'src/setup_position_toolbar.dart';
 part 'src/toolbar_item.dart';

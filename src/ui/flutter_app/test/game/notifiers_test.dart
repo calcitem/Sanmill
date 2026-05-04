@@ -177,15 +177,7 @@ void main() {
   });
 
   // ---------------------------------------------------------------------------
-  // SetupPositionNotifier
-  // ---------------------------------------------------------------------------
-  group('SetupPositionNotifier', () {
-    test('should be accessible from GameController', () {
-      final GameController controller = GameController();
-      expect(controller.setupPositionNotifier, isNotNull);
-      expect(controller.setupPositionNotifier, isA<SetupPositionNotifier>());
-    });
-  });
+  // SetupPositionNotifier removed along with setup-position editor.
 
   // ---------------------------------------------------------------------------
   // ChangeNotifier behavior
