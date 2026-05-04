@@ -82,21 +82,21 @@ class GameController {
 
   /// Returns a read-only [MillBoardView] for the current game state.
   ///
-  /// When the native session is active the view is derived from the
-  /// session snapshot (and therefore stays in sync with the Rust kernel).
-  /// Otherwise the legacy [Position] is used as the data source.
+  /// Steady-state reads come from the native session snapshot.  The
+  /// legacy `Position` is consulted only at very-early app startup
+  /// before the first session has been bound (e.g. a widget rebuilds
+  /// during `initState` before `bindActiveSession` runs).  Phase \u03b7
+  /// drops the fallback altogether once `position.dart` is deleted.
   MillBoardView get activeBoardView {
-    if (true) {
-      final GameStateSnapshot? snapshot = activeSessionSnapshot;
-      if (snapshot != null) {
-        final String? exportedFen = activeNativeMillSession?.getFen();
-        final MillBoardView? view = MillBoardView.fromNativeSnapshot(
-          snapshot,
-          exportedFen,
-        );
-        if (view != null) {
-          return view;
-        }
+    final GameStateSnapshot? snapshot = activeSessionSnapshot;
+    if (snapshot != null) {
+      final String? exportedFen = activeNativeMillSession?.getFen();
+      final MillBoardView? view = MillBoardView.fromNativeSnapshot(
+        snapshot,
+        exportedFen,
+      );
+      if (view != null) {
+        return view;
       }
     }
     return MillBoardView.fromPosition(position);
