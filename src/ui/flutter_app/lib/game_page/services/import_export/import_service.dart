@@ -380,7 +380,7 @@ class ImportService {
     final NativeMillGameSession? nativeSession = _nativeImportSession();
 
     final GameRecorder newHistory = GameRecorder(
-      lastPositionWithRemove: GameController().position.fen,
+      lastPositionWithRemove: GameController().activeFen,
     );
 
     final List<String> list = cleanUpPlayOkMoveList(moveList).split(" ");
@@ -576,7 +576,7 @@ class ImportService {
     _loadActiveNativeSessionFromFenIfNeeded(fen);
 
     final GameRecorder newHistory = GameRecorder(
-      lastPositionWithRemove: fen ?? GameController().position.fen,
+      lastPositionWithRemove: fen ?? GameController().activeFen,
       setupPosition: fen,
     );
 

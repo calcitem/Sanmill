@@ -286,7 +286,7 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
       return;
     }
 
-    final String? fen = GameController().position.fen;
+    final String? fen = GameController().activeFen;
     final String copyStr = S.of(context).copy;
 
     if (fen != null) {
@@ -1149,7 +1149,7 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
     if (setSetupPositionDone() == false) {
       logger.e("Invalid Position.");
     }
-    logger.i("FEN: ${GameController().position.fen}");
+    logger.i("FEN: ${GameController().activeFen}");
 
     super.deactivate();
   }
