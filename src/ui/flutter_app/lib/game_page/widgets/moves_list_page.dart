@@ -488,8 +488,15 @@ class MovesListPageState extends State<MovesListPage> {
       case QrImageOption.none:
         return null;
       case QrImageOption.board:
-        final String layout = GameController().position
-            .generateBoardLayoutAfterThisMove();
+        // The native session FEN starts with the same 26-character
+        // ring-layout string that the legacy `Position.
+        // generateBoardLayoutAfterThisMove()` produced.  Slice it out
+        // and feed it to the QR renderer.
+        final String? fen = GameController().activeFen;
+        if (fen == null || fen.length < 26) {
+          return null;
+        }
+        final String layout = fen.substring(0, 26);
         return QrCodeDialog.renderBoardImage(layout, 200);
       case QrImageOption.custom:
         final XFile? file = await ImagePicker().pickImage(
