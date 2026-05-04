@@ -113,11 +113,6 @@ class Game {
     blurIndex = null;
   }
 
-  void _select(int pos) {
-    focusIndex = pos;
-    blurIndex = null;
-  }
-
   @visibleForTesting
   bool doMove(ExtMove extMove) {
     assert(GameController().position.phase != Phase.ready);
