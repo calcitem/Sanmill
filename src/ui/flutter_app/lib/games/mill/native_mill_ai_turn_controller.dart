@@ -131,15 +131,33 @@ class NativeMillAiTurnController {
   /// sides' moves back-to-back without giving the outer driver a chance to
   /// repaint the board between them.
   Future<GameAction?> playIfAiTurn(NativeMillGameSession session) async {
+    logger.i(
+      '[NativeMillAiTurnController] playIfAiTurn entry: '
+      'bothSidesAi=$bothSidesAi, '
+      'activeSeat=${session.state.value.activeSeat}, '
+      'aiSeat=$aiSeat, '
+      'phase=${session.state.value.phase}, '
+      'isTerminal=${session.outcome.isTerminal}',
+    );
     if (!isAiTurn(session)) {
+      logger.w('[NativeMillAiTurnController] playIfAiTurn abort: not AI turn');
       return null;
     }
     final int searchDepth = searchDepthForSession(session);
     final int timeLimit = moveLimitMs;
     final PlayerSeat startingSeat = session.state.value.activeSeat;
+    logger.i(
+      '[NativeMillAiTurnController] playIfAiTurn loop: '
+      'searchDepth=$searchDepth, timeLimit=$timeLimit, startingSeat=$startingSeat',
+    );
     GameAction? lastApplied;
     for (int step = 0; step < maxStepsPerTurn; step++) {
+      logger.i(
+        '[NativeMillAiTurnController] step=$step '
+        'activeSeat=${session.state.value.activeSeat}',
+      );
       if (!isAiTurn(session)) {
+        logger.i('[NativeMillAiTurnController] step=$step !isAiTurn; break.');
         break;
       }
       // In aiVsAi we deliberately stop after the side flips so the
@@ -150,17 +168,36 @@ class NativeMillAiTurnController {
       if (bothSidesAi &&
           lastApplied != null &&
           session.state.value.activeSeat != startingSeat) {
+        logger.i(
+          '[NativeMillAiTurnController] step=$step seat flipped from '
+          '$startingSeat to ${session.state.value.activeSeat}; '
+          'yielding to outer loop.',
+        );
         break;
       }
+      final Stopwatch sw = Stopwatch()..start();
       final GameAction? applied = await session.searchAndApplyBestAction(
         depth: searchDepth,
         moveLimitMs: timeLimit,
       );
+      sw.stop();
+      logger.i(
+        '[NativeMillAiTurnController] step=$step searchAndApplyBestAction '
+        'returned in ${sw.elapsedMilliseconds}ms: '
+        'applied=${applied?.payload['move'] ?? '(null)'}',
+      );
       if (applied == null) {
+        logger.w(
+          '[NativeMillAiTurnController] step=$step applied=null; break.',
+        );
         break;
       }
       lastApplied = applied;
     }
+    logger.i(
+      '[NativeMillAiTurnController] playIfAiTurn done: '
+      'lastApplied=${lastApplied?.payload['move'] ?? '(null)'}',
+    );
     return lastApplied;
   }
 }

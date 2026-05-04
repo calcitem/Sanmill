@@ -1120,6 +1120,13 @@ class GameController {
     required bool isMoveNow,
   }) async {
     const String tag = "[engineToGo]";
+    logger.i(
+      "$tag entry: gameMode=${gameInstance.gameMode}, "
+      "isMoveNow=$isMoveNow, isEngineRunning=$isEngineRunning, "
+      "isControllerActive=$isControllerActive, "
+      "activeSessionSnapshot=${activeSessionSnapshot != null}, "
+      "_activeSession.runtimeType=${_activeSession.runtimeType}",
+    );
 
     if (gameInstance.gameMode == GameMode.humanVsLAN) {
       // In LAN mode, we don't use the engine; moves come from the network
@@ -1137,6 +1144,7 @@ class GameController {
     // mode silently spins on `_waitResponse(["bestmove"])` and the board
     // never advances.  Route through the dedicated native loop instead.
     if (gameInstance.gameMode == GameMode.aiVsAi) {
+      logger.i("$tag routing to _nativeAiVsAiLoop");
       return _nativeAiVsAiLoop(context, isMoveNow: isMoveNow);
     }
 
@@ -1387,6 +1395,13 @@ class GameController {
   }) async {
     const String tag = "[engineToGo][native][aiVsAi]";
     final GameSession? scopedSession = GameSessionScope.sessionOf(context);
+    logger.i(
+      "$tag enter: isMoveNow=$isMoveNow, "
+      "scopedSession=${scopedSession.runtimeType}, "
+      "_activeSession=${_activeSession.runtimeType}, "
+      "identical=${identical(_activeSession, scopedSession)}, "
+      "isEngineRunning=$isEngineRunning",
+    );
     if (scopedSession is! NativeMillGameSession) {
       logger.w(
         "$tag AI-vs-AI requires NativeMillGameSession, got ${scopedSession.runtimeType}.",
@@ -1395,7 +1410,9 @@ class GameController {
     }
 
     if (isEngineRunning && !isMoveNow) {
-      logger.t("$tag _nativeAiVsAiLoop already running, skip.");
+      logger.w(
+        "$tag _nativeAiVsAiLoop already running (isEngineRunning=true), skip.",
+      );
       return const EngineResponseSkip();
     }
 
@@ -1420,8 +1437,16 @@ class GameController {
     boardSemanticsNotifier.updateSemantics();
 
     bool searched = false;
+    int iteration = 0;
     try {
       while (isControllerActive) {
+        iteration++;
+        logger.i(
+          "$tag iter=$iteration begin: "
+          "phase=${loopSession.state.value.phase}, "
+          "activeSeat=${loopSession.state.value.activeSeat}, "
+          "outcome.isTerminal=${loopSession.outcome.isTerminal}",
+        );
         // Bail out if the active session has been rebuilt under us
         // (New Game button while a loop is in flight).  Without this
         // check, both the old and new loops would race on
@@ -1432,6 +1457,7 @@ class GameController {
           break;
         }
         if (loopSession.outcome.isTerminal) {
+          logger.i("$tag terminal outcome; exiting.");
           break;
         }
         // Both players are AI in this mode, so `aiTurnController.aiSeat`
@@ -1441,6 +1467,7 @@ class GameController {
         // non-terminal seat, so the loop terminates only on terminal
         // outcomes, controller deactivation, or session replacement.
         if (!aiTurnController.isAiTurn(loopSession)) {
+          logger.w("$tag isAiTurn=false; exiting (unexpected).");
           break;
         }
 
@@ -1448,10 +1475,21 @@ class GameController {
           refreshNativeSessionHeader(context, loopSession, showThinking: true);
         }
 
+        logger.i("$tag iter=$iteration calling playIfAiTurn");
+        final Stopwatch sw = Stopwatch()..start();
         final GameAction? action = await aiTurnController.playIfAiTurn(
           loopSession,
         );
+        sw.stop();
+        logger.i(
+          "$tag iter=$iteration playIfAiTurn returned in ${sw.elapsedMilliseconds}ms: "
+          "action=${action?.payload['move'] ?? '(null)'}",
+        );
         if (action == null) {
+          logger.w(
+            "$tag iter=$iteration playIfAiTurn returned null "
+            "(searched=$searched); breaking.",
+          );
           if (!searched) {
             return const EngineNoBestMove();
           }

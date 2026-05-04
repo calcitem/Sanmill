@@ -267,23 +267,37 @@ class NativeMillGameSession implements GameSessionHandle {
     );
 
     GameAction? bestAction;
+    int eventCount = 0;
     try {
       await for (final tgf.EngineEvent event in millSearchEvents(
         depth: depth,
         moveLimitMs: moveLimitMs,
       )) {
-        logger.t(
-          '$_logTag search event: kind=${event.kind} toNode=${event.toNode}',
+        eventCount++;
+        logger.i(
+          '$_logTag search event #$eventCount: kind=${event.kind} '
+          'toNode=${event.toNode} score=${event.score} '
+          'reason=${event.reason}',
         );
         if (event.kind != 'bestMove' || event.toNode < 0) {
           continue;
         }
         bestAction = _legalActionForBestMoveToNode(event.toNode);
+        logger.i(
+          '$_logTag bestMove mapped: toNode=${event.toNode} -> '
+          '${bestAction?.payload["move"] ?? "(no legal action found)"}',
+        );
       }
     } catch (e) {
       // Stream error (e.g. Rust search panicked); treat as no best action.
       logger.e('$_logTag searchBestAction stream error: $e');
       return null;
+    }
+    if (eventCount == 0) {
+      logger.w(
+        '$_logTag searchBestAction: stream emitted 0 events '
+        '(depth=$depth, moveLimitMs=$moveLimitMs)',
+      );
     }
     logger.d(
       '$_logTag searchBestAction done: '

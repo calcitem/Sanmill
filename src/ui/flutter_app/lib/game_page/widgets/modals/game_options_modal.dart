@@ -10,6 +10,8 @@ import 'package:flutter/material.dart';
 
 import '../../../experience_recording/models/recording_models.dart';
 import '../../../experience_recording/services/recording_service.dart';
+import '../../../game_platform/game_session.dart';
+import '../../../game_shell/game_session_scope.dart';
 import '../../../generated/intl/l10n.dart';
 import '../../../shared/config/constants.dart';
 import '../../../shared/database/database.dart';
@@ -70,6 +72,14 @@ class GameOptionsModal extends StatelessWidget {
 
             GameController().engine.stopSearching();
 
+            logger.i(
+              "$_logTag New Game pressed: "
+              "gameMode=${GameController().gameInstance.gameMode}, "
+              "canStart=${_canStartNewGame()}, "
+              "isEngineRunning=${GameController().isEngineRunning}, "
+              "snapshot=${GameController().activeSessionSnapshot != null}",
+            );
+
             if (_canStartNewGame()) {
               // TODO: Called stopSearching(); so isEngineGoing is always false?
               if (GameController().isEngineRunning == false) {
@@ -80,8 +90,24 @@ class GameOptionsModal extends StatelessWidget {
                 );
                 GameController().headerIconsNotifier.showIcons();
 
+                logger.i(
+                  "$_logTag after reset: isAiSideToMove="
+                  "${GameController().gameInstance.isAiSideToMove}",
+                );
+
                 if (GameController().gameInstance.isAiSideToMove) {
-                  logger.i("$_logTag New game, AI to move.");
+                  logger.i("$_logTag New game, AI to move; calling engineToGo");
+                  // Diagnostic: confirm GameSessionScope is reachable
+                  // from the bottom-sheet context.  If null here, the
+                  // modal is outside the scope and engineToGo will
+                  // see scopedSession == null and skip.
+                  final GameSession? scoped = GameSessionScope.sessionOf(
+                    context,
+                  );
+                  logger.i(
+                    "$_logTag GameSessionScope.sessionOf(modalContext)="
+                    "${scoped.runtimeType} (null=${scoped == null})",
+                  );
 
                   GameController().engineToGo(context, isMoveNow: false);
 
