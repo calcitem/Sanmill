@@ -26,20 +26,13 @@ class TapHandler {
 
   void _recordBoardTap(int sq) {
     final GameStateSnapshot? snapshot = GameController().activeSessionSnapshot;
-    final bool useNativeSnapshot = true && snapshot != null;
     RecordingService()
         .recordEvent(RecordingEventType.boardTap, <String, dynamic>{
           'sq': sq,
-          'phase': useNativeSnapshot
-              ? snapshot.phase
-              : GameController().position.phase.toString(),
-          'action': useNativeSnapshot
-              ? snapshot.payload['action']?.toString()
-              : GameController().position.action.toString(),
-          'sideToMove': useNativeSnapshot
-              ? snapshot.activeSeat.name
-              : GameController().position.sideToMove.string,
-          if (useNativeSnapshot)
+          'phase': snapshot?.phase,
+          'action': snapshot?.payload['action']?.toString(),
+          'sideToMove': snapshot?.activeSeat.name,
+          if (snapshot != null)
             'selectedFrom': _nativeSessionTapController.selectedFrom,
           'gameMode': GameController().gameInstance.gameMode.toString(),
         });
@@ -204,15 +197,16 @@ class TapHandler {
     AnalysisMode.disable();
 
     if (!GameController().isControllerReady) {
+      final MillBoardView view = GameController().activeBoardView;
       logger.w(
         "$_logTag [STATE_SNAPSHOT] Tap ignored: isControllerReady=false | "
         "isEngineRunning=${GameController().isEngineRunning} | "
         "isControllerActive=${GameController().isControllerActive} | "
         "isDisposed=${GameController().isDisposed} | "
         "gameMode=${GameController().gameInstance.gameMode} | "
-        "phase=${GameController().position.phase} | "
-        "sideToMove=${GameController().position.sideToMove} | "
-        "action=${GameController().position.action}",
+        "phase=${view.phase} | "
+        "sideToMove=${view.sideToMove} | "
+        "action=${view.action}",
       );
       return const EngineResponseSkip();
     }

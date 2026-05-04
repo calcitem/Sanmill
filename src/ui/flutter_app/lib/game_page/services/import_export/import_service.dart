@@ -580,10 +580,10 @@ class ImportService {
       setupPosition: fen,
     );
 
-    // Set up the board position using FEN if available
-    if (fen != null && fen.isNotEmpty) {
-      GameController().position.setFen(fen);
-    }
+    // The native session was already loaded above via
+    // `_loadActiveNativeSessionFromFenIfNeeded(fen)`; the
+    // legacy `Position.setFen` mirror is no longer maintained
+    // because `Position` itself is being deleted.
 
     /// Helper function to split a SAN move into segments
     List<String> splitSan(String san) {

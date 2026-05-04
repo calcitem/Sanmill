@@ -17,8 +17,6 @@
 
 import 'dart:math';
 
-import '../mill.dart';
-
 /// All 16 symmetry transformations of the Nine Men's Morris board.
 ///
 /// The board has D4 symmetry (8 elements: 4 rotations × 2 reflections).
@@ -694,22 +692,14 @@ String transformMoveNotationWithMap(String move, List<int> map) {
 // Game state transformation (coupled to GameController)
 // ---------------------------------------------------------------------------
 
-/// Transforms the live game's square attribute list in place.
-///
-/// This function is specific to the setup-position feature and operates
-/// directly on [GameController]'s position state.
+/// Was used by the (now-deleted) setup-position editor to shuffle a
+/// per-square attribute list when rotating / mirroring the board.
+/// The setup-position feature is gone; replay events that mention a
+/// transformation no longer need to mutate any per-square attributes
+/// (the attributes themselves were a `Position`-only metadata field
+/// that goes away with `position.dart` in phase eta-2).  Keep the
+/// function as an inert no-op so historical recordings still play
+/// back without crashing.
 void transformSquareSquareAttributeList(TransformationType type) {
-  final List<SquareAttribute> newSqAttrList = List<SquareAttribute>.generate(
-    sqNumber,
-    (int index) => SquareAttribute(placedPieceNumber: 0),
-  );
-
-  final List<int> map = getTransformMap(type);
-
-  for (int i = sqBegin; i < sqEnd; i++) {
-    final int newPosition = map[i - rankNumber] + rankNumber;
-    newSqAttrList[newPosition] = GameController().position.sqAttrList[i];
-  }
-
-  GameController().position.sqAttrList = newSqAttrList;
+  // Intentionally empty.
 }

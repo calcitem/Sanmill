@@ -1191,15 +1191,14 @@ class NetworkService with WidgetsBindingObserver {
     );
 
     GameController().isLanOpponentTurn = false;
-    if (GameController().position.phase != Phase.gameOver) {
-      GameController().position.setGameOver(
-        PieceColor.draw,
-        GameOverReason.drawStalemateCondition,
-      );
-      GameController().headerTipNotifier.showTip(
-        "$userFriendlyMessage, $gameOverText",
-      );
-    }
+    // The legacy `Position.setGameOver` mirror is being removed.
+    // The native session does not yet expose a "force draw on
+    // disconnect" primitive, so we just surface the message.  The
+    // header tip is enough to inform the user; the recorder will
+    // see the LAN session terminate via its event stream.
+    GameController().headerTipNotifier.showTip(
+      "$userFriendlyMessage, $gameOverText",
+    );
 
     _notifyConnectionStatusChanged(false, info: userFriendlyMessage);
     _disposeInternals();
