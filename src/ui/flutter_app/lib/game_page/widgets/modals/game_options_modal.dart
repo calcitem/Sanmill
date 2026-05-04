@@ -31,20 +31,21 @@ class GameOptionsModal extends StatelessWidget {
   static const String _logTag = "[GameOptionsModal]";
 
   String _sideToMoveName(BuildContext context) {
-    final PieceColor side =
-        GameController().activeSessionSideToMove ??
-        GameController().position.sideToMove;
-    return side.playerName(context);
+    return GameController().activeBoardView.sideToMove.playerName(context);
   }
 
   bool _canStartNewGame() {
-    if (true && GameController().activeSessionSnapshot != null) {
+    if (GameController().activeSessionSnapshot != null) {
       return GameController().isEngineRunning == false;
     }
-    return GameController().position.phase == Phase.ready ||
-        (GameController().position.phase == Phase.placing &&
+    // Fallback for the very-early-init window before the native
+    // session has been bound; reaches the same conclusion via the
+    // legacy phase / recorder state.
+    final Phase phase = GameController().activeBoardView.phase;
+    return phase == Phase.ready ||
+        (phase == Phase.placing &&
             GameController().gameRecorder.mainlineMoves.length <= 3) ||
-        GameController().position.phase == Phase.gameOver;
+        phase == Phase.gameOver;
   }
 
   @override

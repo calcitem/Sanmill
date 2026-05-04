@@ -11,11 +11,11 @@ class InfoDialog extends StatelessWidget {
   String _infoText(BuildContext context) {
     final GameController controller = GameController();
     final StringBuffer buffer = StringBuffer();
-    final Position pos = controller.position;
+    final MillBoardView view = controller.activeBoardView;
 
     late final String us;
     late final String them;
-    switch (pos.sideToMove) {
+    switch (view.sideToMove) {
       case PieceColor.white:
         us = S.of(context).player1;
         them = S.of(context).player2;
@@ -31,7 +31,7 @@ class InfoDialog extends StatelessWidget {
         break;
     }
 
-    buffer.write(pos.phase.getName(context));
+    buffer.write(view.phase.getName(context));
 
     if (DB().generalSettings.screenReaderSupport) {
       buffer.writeln(":");
@@ -100,7 +100,7 @@ class InfoDialog extends StatelessWidget {
           .of(context)
           .inHand(
             S.of(context).player1,
-            pos.pieceInHandCount[PieceColor.white]!,
+            view.pieceInHandCountFor(PieceColor.white),
           ),
     );
     buffer.writeComma(
@@ -108,7 +108,7 @@ class InfoDialog extends StatelessWidget {
           .of(context)
           .inHand(
             S.of(context).player2,
-            pos.pieceInHandCount[PieceColor.black]!,
+            view.pieceInHandCountFor(PieceColor.black),
           ),
     );
     buffer.writeComma(
@@ -116,7 +116,7 @@ class InfoDialog extends StatelessWidget {
           .of(context)
           .onBoard(
             S.of(context).player1,
-            pos.pieceOnBoardCount[PieceColor.white]!,
+            view.pieceOnBoardCountFor(PieceColor.white),
           ),
     );
     buffer.writePeriod(
@@ -124,7 +124,7 @@ class InfoDialog extends StatelessWidget {
           .of(context)
           .onBoard(
             S.of(context).player2,
-            pos.pieceOnBoardCount[PieceColor.black]!,
+            view.pieceOnBoardCountFor(PieceColor.black),
           ),
     );
     buffer.writeln();

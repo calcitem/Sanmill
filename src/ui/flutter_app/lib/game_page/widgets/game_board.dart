@@ -632,10 +632,11 @@ class _GameBoardState extends State<GameBoard>
         lastMove: lastMove,
       );
     }
+    final MillBoardView view = GameController().activeBoardView;
     return EngineFailureDialog.buildDiagnosticContext(
       fen: GameController().activeFen,
-      phase: GameController().position.phase.name,
-      sideToMove: GameController().position.sideToMove.playerName(context),
+      phase: view.phase.name,
+      sideToMove: view.sideToMove.playerName(context),
       lastMove: lastMove,
     );
   }
@@ -648,9 +649,14 @@ class _GameBoardState extends State<GameBoard>
     setState(() {});
 
     final GameMode gameMode = GameController().gameInstance.gameMode;
+    final MillBoardView view = GameController().activeBoardView;
     final PieceColor winner =
-        GameController().activeSessionWinner ??
-        GameController().position.winner;
+        GameController().activeSessionWinner ?? view.winner;
+    // The native session does not carry a granular `GameOverReason`
+    // (Rust outcome only distinguishes win / draw / abandoned); fall
+    // back to the legacy `Position.reason` only when the native
+    // outcome is non-terminal, otherwise pass null and let the dialog
+    // pick its default explanation.
     final GameOverReason? reason =
         (GameController().activeSessionSnapshot?.outcome.isTerminal ?? false)
         ? null
@@ -661,7 +667,7 @@ class _GameBoardState extends State<GameBoard>
     final String? message = winner.getWinString(context);
 
     if (message != null && (force == true || winner != PieceColor.nobody)) {
-      if (GameController().position.action == Act.remove) {
+      if (view.action == Act.remove) {
         // Fix sometimes tip show "Please place" when action is remove
         // Commit e9884ea
         //GameController()

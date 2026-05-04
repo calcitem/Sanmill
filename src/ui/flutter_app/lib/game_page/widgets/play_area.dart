@@ -319,6 +319,17 @@ class PlayAreaState extends State<PlayArea> {
 
   /// Builds the row displaying the piece count in hand (if enabled).
   Widget _buildPieceCountRow() {
+    final MillBoardView view = GameController().activeBoardView;
+    final bool aiMovesFirst = DB().generalSettings.aiMovesFirst;
+    final PieceColor humanColor = aiMovesFirst
+        ? PieceColor.black
+        : PieceColor.white;
+    final PieceColor aiColor = aiMovesFirst
+        ? PieceColor.white
+        : PieceColor.black;
+    final int humanInHand = view.pieceInHandCountFor(humanColor);
+    final int aiOnBoard = view.pieceOnBoardCountFor(aiColor);
+    final int aiInHand = view.pieceInHandCountFor(aiColor);
     return Row(
       key: const Key('play_area_piece_count_row'),
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -327,26 +338,14 @@ class PlayAreaState extends State<PlayArea> {
           label: S
               .of(context)
               .inHand(
-                !DB().generalSettings.aiMovesFirst
-                    ? S.of(context).player2
-                    : S.of(context).player1,
-                GameController().position.pieceInHandCount[!DB()
-                        .generalSettings
-                        .aiMovesFirst
-                    ? PieceColor.black
-                    : PieceColor.white]!,
+                aiMovesFirst ? S.of(context).player2 : S.of(context).player1,
+                humanInHand,
               ),
           child: Text(
-            _getPiecesText(
-              GameController().position.pieceInHandCount[!DB()
-                      .generalSettings
-                      .aiMovesFirst
-                  ? PieceColor.black
-                  : PieceColor.white]!,
-            ),
+            _getPiecesText(humanInHand),
             key: const Key('play_area_piece_count_text_hand'),
             style: TextStyle(
-              color: !DB().generalSettings.aiMovesFirst
+              color: aiMovesFirst
                   ? DB().colorSettings.blackPieceColor
                   : DB().colorSettings.whitePieceColor,
               shadows: const <Shadow>[
@@ -363,21 +362,11 @@ class PlayAreaState extends State<PlayArea> {
           label: S.of(context).welcome,
           child: Text(
             _getPiecesText(
-              DB().ruleSettings.piecesCount -
-                  GameController().position.pieceInHandCount[!DB()
-                          .generalSettings
-                          .aiMovesFirst
-                      ? PieceColor.white
-                      : PieceColor.black]! -
-                  GameController().position.pieceOnBoardCount[!DB()
-                          .generalSettings
-                          .aiMovesFirst
-                      ? PieceColor.white
-                      : PieceColor.black]!,
+              DB().ruleSettings.piecesCount - aiInHand - aiOnBoard,
             ),
             key: const Key('play_area_piece_count_text_remaining'),
             style: TextStyle(
-              color: !DB().generalSettings.aiMovesFirst
+              color: aiMovesFirst
                   ? DB().colorSettings.whitePieceColor.withValues(alpha: 0.8)
                   : DB().colorSettings.blackPieceColor.withValues(alpha: 0.8),
               shadows: const <Shadow>[
@@ -396,6 +385,17 @@ class PlayAreaState extends State<PlayArea> {
 
   /// Builds the row displaying the removed piece count (if enabled).
   Widget _buildRemovedPieceCountRow() {
+    final MillBoardView view = GameController().activeBoardView;
+    final bool aiMovesFirst = DB().generalSettings.aiMovesFirst;
+    final PieceColor humanColor = aiMovesFirst
+        ? PieceColor.black
+        : PieceColor.white;
+    final PieceColor aiColor = aiMovesFirst
+        ? PieceColor.white
+        : PieceColor.black;
+    final int humanOnBoard = view.pieceOnBoardCountFor(humanColor);
+    final int humanInHand = view.pieceInHandCountFor(humanColor);
+    final int aiInHand = view.pieceInHandCountFor(aiColor);
     return Row(
       key: const Key('play_area_removed_piece_count_row'),
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -404,21 +404,11 @@ class PlayAreaState extends State<PlayArea> {
           label: S.of(context).welcome,
           child: Text(
             _getPiecesText(
-              DB().ruleSettings.piecesCount -
-                  GameController().position.pieceInHandCount[!DB()
-                          .generalSettings
-                          .aiMovesFirst
-                      ? PieceColor.black
-                      : PieceColor.white]! -
-                  GameController().position.pieceOnBoardCount[!DB()
-                          .generalSettings
-                          .aiMovesFirst
-                      ? PieceColor.black
-                      : PieceColor.white]!,
+              DB().ruleSettings.piecesCount - humanInHand - humanOnBoard,
             ),
             key: const Key('play_area_removed_piece_count_text_remaining'),
             style: TextStyle(
-              color: !DB().generalSettings.aiMovesFirst
+              color: aiMovesFirst
                   ? DB().colorSettings.blackPieceColor.withValues(alpha: 0.8)
                   : DB().colorSettings.whitePieceColor.withValues(alpha: 0.8),
               shadows: const <Shadow>[
@@ -435,26 +425,14 @@ class PlayAreaState extends State<PlayArea> {
           label: S
               .of(context)
               .inHand(
-                !DB().generalSettings.aiMovesFirst
-                    ? S.of(context).player1
-                    : S.of(context).player2,
-                GameController().position.pieceInHandCount[!DB()
-                        .generalSettings
-                        .aiMovesFirst
-                    ? PieceColor.white
-                    : PieceColor.black]!,
+                aiMovesFirst ? S.of(context).player1 : S.of(context).player2,
+                aiInHand,
               ),
           child: Text(
-            _getPiecesText(
-              GameController().position.pieceInHandCount[!DB()
-                      .generalSettings
-                      .aiMovesFirst
-                  ? PieceColor.white
-                  : PieceColor.black]!,
-            ),
+            _getPiecesText(aiInHand),
             key: const Key('play_area_removed_piece_count_text_hand'),
             style: TextStyle(
-              color: !DB().generalSettings.aiMovesFirst
+              color: aiMovesFirst
                   ? DB().colorSettings.whitePieceColor
                   : DB().colorSettings.blackPieceColor,
               shadows: const <Shadow>[

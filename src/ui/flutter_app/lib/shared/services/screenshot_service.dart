@@ -248,39 +248,37 @@ class ScreenshotService {
       // fontFamily: 'Courier', // Uncomment to force monospaced characters
     );
 
-    // Retrieve game position.
-    final Position position = GameController().position;
+    // Retrieve game state via the unified read-only board view.
+    final MillBoardView view = GameController().activeBoardView;
 
     // 1) Phase symbols: [⬇️] ↔️ if Placing, ⬇️ [↔️] if Moving.
-    final String phaseSymbols = position.phase == Phase.placing
+    final String phaseSymbols = view.phase == Phase.placing
         ? "[⬇️] ↔️ "
         : " ⬇️ [↔️]";
 
     // 2) Turn indicator: add brackets if it is that side's turn.
-    final String whiteTurnEmoji = (position.sideToMove == PieceColor.white)
+    final String whiteTurnEmoji = (view.sideToMove == PieceColor.white)
         ? "[⚪]"
         : " ⚪ ";
-    final String blackTurnEmoji = (position.sideToMove == PieceColor.black)
+    final String blackTurnEmoji = (view.sideToMove == PieceColor.black)
         ? "[⚫]"
         : " ⚫ ";
 
     // 3) Calculate removed pieces.
     final int totalPieces = DB().ruleSettings.piecesCount;
-    final int whiteRemoved =
-        totalPieces -
-        (position.pieceInHandCount[PieceColor.white]! +
-            position.pieceOnBoardCount[PieceColor.white]!);
-    final int blackRemoved =
-        totalPieces -
-        (position.pieceInHandCount[PieceColor.black]! +
-            position.pieceOnBoardCount[PieceColor.black]!);
+    final int whiteInHand = view.pieceInHandCountFor(PieceColor.white);
+    final int whiteOnBoard = view.pieceOnBoardCountFor(PieceColor.white);
+    final int blackInHand = view.pieceInHandCountFor(PieceColor.black);
+    final int blackOnBoard = view.pieceOnBoardCountFor(PieceColor.black);
+    final int whiteRemoved = totalPieces - (whiteInHand + whiteOnBoard);
+    final int blackRemoved = totalPieces - (blackInHand + blackOnBoard);
 
     // 4) Piece info for White and Black using emojis:
     //    🖐️ for in-hand, 🪟 for on-board, 🗑️ for removed.
     final String whiteInfo =
-        "$whiteTurnEmoji 🖐️${position.pieceInHandCount[PieceColor.white]} 🪟${position.pieceOnBoardCount[PieceColor.white]} 🗑️$whiteRemoved";
+        "$whiteTurnEmoji 🖐️$whiteInHand 🪟$whiteOnBoard 🗑️$whiteRemoved";
     final String blackInfo =
-        "$blackTurnEmoji 🖐️${position.pieceInHandCount[PieceColor.black]} 🪟${position.pieceOnBoardCount[PieceColor.black]} 🗑️$blackRemoved";
+        "$blackTurnEmoji 🖐️$blackInHand 🪟$blackOnBoard 🗑️$blackRemoved";
 
     // 5) Recent moves: prefix with 📄.
     final List<ExtMove> moves = GameController().gameRecorder.mainlineMoves;

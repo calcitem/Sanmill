@@ -120,7 +120,17 @@ class _GameHeaderState extends State<GameHeader> {
 
     if ((value == valueUnique || value == -valueUnique) ||
         GameController().gameInstance.gameMode == GameMode.humanVsHuman) {
-      value = valueEachPiece * GameController().position.pieceCountDiff();
+      // pieceCountDiff = (white on board + in hand) - (black on board + in hand).
+      // Express via the active read-only board view so this widget no longer
+      // needs the legacy `Position` instance.
+      final MillBoardView view = GameController().activeBoardView;
+      final int whiteTotal =
+          view.pieceOnBoardCountFor(PieceColor.white) +
+          view.pieceInHandCountFor(PieceColor.white);
+      final int blackTotal =
+          view.pieceOnBoardCountFor(PieceColor.black) +
+          view.pieceInHandCountFor(PieceColor.black);
+      value = valueEachPiece * (whiteTotal - blackTotal);
     }
 
     value = (value * 2).clamp(-valueLimit, valueLimit);

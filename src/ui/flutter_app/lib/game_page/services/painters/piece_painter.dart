@@ -38,18 +38,7 @@ class PiecePainter extends CustomPainter {
   final PieceEffectAnimation removeEffectAnimation;
 
   PieceColor _pieceColorAtGridIndex(int index) {
-    final NativeMillSnapshotBoardView? native = nativeBoardView;
-    if (native != null) {
-      if (native.isMarkedLegacyGridIndex(index)) {
-        return PieceColor.marked;
-      }
-      return switch (native.pieceAtLegacyGridIndex(index)) {
-        PlayerSeat.first => PieceColor.white,
-        PlayerSeat.second => PieceColor.black,
-        PlayerSeat.none || null => PieceColor.none,
-      };
-    }
-    return GameController().position.pieceOnGrid(index);
+    return GameController().activeBoardView.pieceOnGrid(index);
   }
 
   SquareAttribute? _squareAttributeAtGridIndex(int index) {
@@ -60,11 +49,7 @@ class PiecePainter extends CustomPainter {
     return square == null ? null : GameController().position.sqAttrList[square];
   }
 
-  bool get _isNativeMovingPhase =>
-      GameController().activeSessionSnapshot?.phase == 'moving';
-
-  bool get _isNativePlacingPhase =>
-      GameController().activeSessionSnapshot?.phase == 'placing';
+  Phase get _phase => GameController().activeBoardView.phase;
 
   /// Calculate the scale and shadow properties for a piece based on animation state
   /// Returns a map with 'scale', 'shadowBlur' and 'lift' keys
@@ -78,12 +63,8 @@ class PiecePainter extends CustomPainter {
     double shadowBlur = 2.0;
     double lift = 0.0;
 
-    final bool isMovingPhase = nativeBoardView == null
-        ? GameController().position.phase == Phase.moving
-        : _isNativeMovingPhase;
-    final bool isPlacingPhase = nativeBoardView == null
-        ? GameController().position.phase == Phase.placing
-        : _isNativePlacingPhase;
+    final bool isMovingPhase = _phase == Phase.moving;
+    final bool isPlacingPhase = _phase == Phase.placing;
     final bool isAnimationEnabled =
         DB().displaySettings.isPiecePickUpAnimationEnabled;
 
@@ -274,8 +255,7 @@ class PiecePainter extends CustomPainter {
           final GameMode mode = GameController().gameInstance.gameMode;
           final PieceColor capturerColor =
               GameController().gameInstance.removeByColor ??
-              GameController().activeSessionSideToMove ??
-              GameController().position.sideToMove;
+              GameController().activeBoardView.sideToMove;
 
           if (mode == GameMode.humanVsAi) {
             final bool aiMovesFirst = DB().generalSettings.aiMovesFirst;

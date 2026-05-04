@@ -182,16 +182,16 @@ class _BoardSemanticsState extends State<_BoardSemantics> {
       }
     }
 
-    final NativeMillSnapshotBoardView? nativeBoardView =
-        GameController().activeNativeMillBoardView;
+    // Read piece occupancy through the unified `MillBoardView` so the
+    // widget does not need to know whether the data came from the
+    // native session or the legacy fallback.
+    final MillBoardView boardView = GameController().activeBoardView;
 
     for (int i = 0; i < 7 * 7; i++) {
       if (checkPoints[i] == 0) {
         pieceDesc.add(S.of(context).noPoint);
       } else {
-        final PieceColor piece = nativeBoardView == null
-            ? GameController().position.pieceOnGrid(i)
-            : _pieceColorFromNativeBoardView(nativeBoardView, i);
+        final PieceColor piece = boardView.pieceOnGrid(i);
         pieceDesc.add(piece.pieceName(context));
       }
     }
@@ -208,20 +208,6 @@ class _BoardSemanticsState extends State<_BoardSemantics> {
     }
 
     return squareDesc;
-  }
-
-  PieceColor _pieceColorFromNativeBoardView(
-    NativeMillSnapshotBoardView nativeBoardView,
-    int gridIndex,
-  ) {
-    if (nativeBoardView.isMarkedLegacyGridIndex(gridIndex)) {
-      return PieceColor.marked;
-    }
-    return switch (nativeBoardView.pieceAtLegacyGridIndex(gridIndex)) {
-      PlayerSeat.first => PieceColor.white,
-      PlayerSeat.second => PieceColor.black,
-      PlayerSeat.none || null => PieceColor.none,
-    };
   }
 
   @override

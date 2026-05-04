@@ -43,8 +43,8 @@ class AiChatService {
         return _getDefaultSystemPrompt();
       }
 
-      final Position position = controller.position;
-      final String? fen = position.fen;
+      final MillBoardView view = controller.activeBoardView;
+      final String? fen = controller.activeFen;
 
       // Check if game has changed and auto-reset session if needed
       if (_sessionManager.checkAndResetIfGameChanged(fen)) {
@@ -57,20 +57,20 @@ class AiChatService {
       }
 
       // Get current game state
-      final String sideToMove = position.sideToMove == PieceColor.white
+      final String sideToMove = view.sideToMove == PieceColor.white
           ? "White"
           : "Black";
-      final String phase = _getPhaseDescription(position.phase);
-      final String action = _getActionDescription(position.action);
+      final String phase = _getPhaseDescription(view.phase);
+      final String action = _getActionDescription(view.action);
 
-      final int whitePiecesOnBoard =
-          position.pieceOnBoardCount[PieceColor.white] ?? 0;
-      final int whitePiecesInHand =
-          position.pieceInHandCount[PieceColor.white] ?? 0;
-      final int blackPiecesOnBoard =
-          position.pieceOnBoardCount[PieceColor.black] ?? 0;
-      final int blackPiecesInHand =
-          position.pieceInHandCount[PieceColor.black] ?? 0;
+      final int whitePiecesOnBoard = view.pieceOnBoardCountFor(
+        PieceColor.white,
+      );
+      final int whitePiecesInHand = view.pieceInHandCountFor(PieceColor.white);
+      final int blackPiecesOnBoard = view.pieceOnBoardCountFor(
+        PieceColor.black,
+      );
+      final int blackPiecesInHand = view.pieceInHandCountFor(PieceColor.black);
 
       // Get move history
       final String moveHistory = _getMoveHistory(controller.gameRecorder);
