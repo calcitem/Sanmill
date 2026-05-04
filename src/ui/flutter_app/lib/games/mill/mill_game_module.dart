@@ -27,7 +27,6 @@ import '../../game_platform/rules_port.dart';
 import '../../game_platform/shell_route_navigation_source.dart';
 import '../../general_settings/models/general_settings.dart';
 import '../../generated/intl/l10n.dart';
-import '../../puzzle/pages/puzzles_home_page.dart';
 import '../../rule_settings/models/rule_settings.dart';
 import '../../rule_settings/widgets/rule_settings_page.dart';
 import '../../shared/database/database.dart' show DB;
@@ -80,7 +79,6 @@ class MillGameModule extends GameModule {
   GameFeatureFlags get features => const GameFeatureFlags(
     supportsAi: true,
     supportsLan: true,
-    supportsPuzzles: true,
     supportsSetupPosition: true,
     supportsStatistics: true,
     supportsTimer: true,
@@ -385,24 +383,11 @@ class MillGameModule extends GameModule {
 
   @override
   List<GameMenuContribution> drawerContributions(BuildContext context) {
-    if (!features.supports(GameCapability.puzzles) &&
-        !features.supports(GameCapability.statistics)) {
+    if (!features.supports(GameCapability.statistics)) {
       return const <GameMenuContribution>[];
     }
     final S s = S.of(context);
     return <GameMenuContribution>[
-      if (features.supports(GameCapability.puzzles))
-        GameMenuContribution(
-          id: MillRouteIds.puzzles,
-          label: s.puzzles,
-          icon: FluentIcons.puzzle_piece_24_regular,
-          drawerKey: const Key('drawer_item_puzzles'),
-          contentKey: const Key('puzzles'),
-          isAvailable: (_) => features.supports(GameCapability.puzzles),
-          builder: (BuildContext context, {Key? key, GameSession? session}) {
-            return PuzzlesHomePage(key: key);
-          },
-        ),
       if (features.supports(GameCapability.statistics))
         GameMenuContribution(
           id: MillRouteIds.statistics,

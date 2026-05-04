@@ -24,7 +24,7 @@ bool isQrContentUrl(String text) {
 }
 
 /// Shows a dialog that presents raw [content] that could not be recognised
-/// as valid game data (move list or puzzle).
+/// as valid game data (move list).
 ///
 /// The optional [title] overrides the default dialog heading.  When
 /// [content] is detected as a URL an "Open in Browser" button is also shown

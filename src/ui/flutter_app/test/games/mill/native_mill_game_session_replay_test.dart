@@ -25,8 +25,7 @@ void main() {
     });
 
     test('NativeMillGameSession.fromPort constructor is accessible', () {
-      // Confirms the public constructor introduced for PuzzleMillSession is
-      // not accidentally private.
+      // Confirms the public constructor stays accessible to subclassers.
       expect(NativeMillGameSession, isNotNull);
     });
 

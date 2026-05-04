@@ -214,8 +214,10 @@ class EloRatingService {
           logger.i("$_logTag Setup position mode, not updating stats");
           break;
         case GameMode.puzzle:
-          // Puzzle mode has its own tracking system
-          logger.i("$_logTag Puzzle mode, not updating general stats");
+          // Puzzle mode is retired; the enum value is kept as a
+          // sentinel for old experience recordings only.  Skip
+          // statistics updates for it.
+          logger.i("$_logTag Puzzle mode (retired), not updating stats");
           break;
         case GameMode.testViaLAN:
           // Test mode doesn't track stats

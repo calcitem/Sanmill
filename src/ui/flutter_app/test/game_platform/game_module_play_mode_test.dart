@@ -74,10 +74,6 @@ void main() {
 
       final GameModule module = GameRegistry.instance.getModule(GameId.mill)!;
       expect(
-        module.isPlayModeRoute(MillRouteIds.puzzles.value, context),
-        isFalse,
-      );
-      expect(
         module.isPlayModeRoute(MillRouteIds.statistics.value, context),
         isFalse,
       );

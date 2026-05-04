@@ -24,7 +24,6 @@ import 'game_platform/game_registry.dart';
 import 'games/built_in_game_modules.dart';
 import 'generated/intl/l10n.dart';
 import 'home/home.dart';
-import 'puzzle/services/puzzle_manager.dart';
 import 'shared/config/constants.dart';
 import 'shared/database/database.dart';
 import 'shared/database/settings_repositories.dart';
@@ -76,9 +75,6 @@ Future<void> main() async {
 
   // Initialize ELO service
   EloRatingService();
-
-  // Initialize Puzzle Manager
-  await PuzzleManager().init();
 
   // Initialize Screenshot service (if not in test mode)
   if (!EnvironmentConfig.test) {

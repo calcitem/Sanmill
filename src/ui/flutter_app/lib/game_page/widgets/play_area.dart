@@ -539,12 +539,9 @@ class PlayAreaState extends State<PlayArea> {
                     ),
 
                   // History navigation toolbar if enabled and not in setup mode, not at bottom
-                  // Hide in puzzle mode to keep the interface clean
                   if (DB().displaySettings.isHistoryNavigationToolbarShown &&
                       GameController().gameInstance.gameMode !=
                           GameMode.setupPosition &&
-                      GameController().gameInstance.gameMode !=
-                          GameMode.puzzle &&
                       !isToolbarAtBottom)
                     GamePageToolbar(
                       key: const Key('play_area_history_nav_toolbar'),
@@ -569,11 +566,8 @@ class PlayAreaState extends State<PlayArea> {
                   // ──────────────────────────────────────────────────────────
 
                   // Main toolbar if not in setup mode and not at bottom
-                  // Hide in puzzle mode to keep the interface clean
                   if (GameController().gameInstance.gameMode !=
                           GameMode.setupPosition &&
-                      GameController().gameInstance.gameMode !=
-                          GameMode.puzzle &&
                       !isToolbarAtBottom)
                     GamePageToolbar(
                       key: const Key('play_area_main_toolbar'),
@@ -615,11 +609,9 @@ class PlayAreaState extends State<PlayArea> {
                     ),
 
                   // History navigation toolbar if enabled and not in setup mode
-                  // Hide in puzzle mode to keep the interface clean
                   if (DB().displaySettings.isHistoryNavigationToolbarShown &&
                       GameController().gameInstance.gameMode !=
-                          GameMode.setupPosition &&
-                      GameController().gameInstance.gameMode != GameMode.puzzle)
+                          GameMode.setupPosition)
                     GamePageToolbar(
                       key: const Key('play_area_history_nav_toolbar_bottom'),
                       backgroundColor:
@@ -634,10 +626,8 @@ class PlayAreaState extends State<PlayArea> {
                   // Analysis toolbar removed (see note above).
 
                   // Main toolbar if not in setup mode
-                  // Hide in puzzle mode to keep the interface clean
                   if (GameController().gameInstance.gameMode !=
-                          GameMode.setupPosition &&
-                      GameController().gameInstance.gameMode != GameMode.puzzle)
+                      GameMode.setupPosition)
                     GamePageToolbar(
                       key: const Key('play_area_main_toolbar_bottom'),
                       backgroundColor:

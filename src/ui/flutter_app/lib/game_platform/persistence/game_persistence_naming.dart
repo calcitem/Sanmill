@@ -59,7 +59,6 @@ const Set<String> kAppScopedSettings = <String>{
 /// that a per-game migration would split first.
 const Set<String> kGameScopedSettings = <String>{
   'rule_settings',
-  'puzzle_progress',
   'statistics',
   'experience_recordings',
 };

@@ -71,23 +71,15 @@ void main() {
       );
 
       final GameModule module = GameRegistry.instance.current;
-      expect(module.features.supports(GameCapability.puzzles), isTrue);
       expect(module.features.supports(GameCapability.statistics), isTrue);
 
       final List<GameMenuContribution> contributions = module
           .drawerContributions(context);
-      final GameMenuContribution puzzles = contributions.singleWhere(
-        (GameMenuContribution contribution) =>
-            contribution.id == MillRouteIds.puzzles,
-      );
       final GameMenuContribution statistics = contributions.singleWhere(
         (GameMenuContribution contribution) =>
             contribution.id == MillRouteIds.statistics,
       );
 
-      expect(puzzles.drawerKey, const Key('drawer_item_puzzles'));
-      expect(puzzles.contentKey, const Key('puzzles'));
-      expect(puzzles.icon, isNotNull);
       expect(statistics.drawerKey, const Key('drawer_item_statistics'));
       expect(statistics.contentKey, const Key('statistics'));
       expect(statistics.icon, isNotNull);

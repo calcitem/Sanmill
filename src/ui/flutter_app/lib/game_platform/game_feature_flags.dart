@@ -7,7 +7,6 @@ import 'package:flutter/foundation.dart';
 enum GameCapability {
   ai,
   lan,
-  puzzles,
   setupPosition,
   statistics,
   timer,
@@ -22,7 +21,6 @@ class GameFeatureFlags {
   const GameFeatureFlags({
     this.supportsAi = false,
     this.supportsLan = false,
-    this.supportsPuzzles = false,
     this.supportsSetupPosition = false,
     this.supportsStatistics = false,
     this.supportsTimer = false,
@@ -32,14 +30,12 @@ class GameFeatureFlags {
   const GameFeatureFlags.fromCapabilities(this.capabilities)
     : supportsAi = false,
       supportsLan = false,
-      supportsPuzzles = false,
       supportsSetupPosition = false,
       supportsStatistics = false,
       supportsTimer = false;
 
   final bool supportsAi;
   final bool supportsLan;
-  final bool supportsPuzzles;
   final bool supportsSetupPosition;
   final bool supportsStatistics;
   final bool supportsTimer;
@@ -51,8 +47,6 @@ class GameFeatureFlags {
         return supportsAi || capabilities.contains(capability);
       case GameCapability.lan:
         return supportsLan || capabilities.contains(capability);
-      case GameCapability.puzzles:
-        return supportsPuzzles || capabilities.contains(capability);
       case GameCapability.setupPosition:
         return supportsSetupPosition || capabilities.contains(capability);
       case GameCapability.statistics:
