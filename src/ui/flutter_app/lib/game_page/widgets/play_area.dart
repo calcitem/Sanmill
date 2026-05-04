@@ -482,9 +482,7 @@ class PlayAreaState extends State<PlayArea> {
                   GameHeader(key: const Key('play_area_game_header')),
 
                   // Piece counts or spacing if not used
-                  if ((DB().displaySettings.isUnplacedAndRemovedPiecesShown ||
-                          GameController().gameInstance.gameMode ==
-                              GameMode.setupPosition) &&
+                  if (DB().displaySettings.isUnplacedAndRemovedPiecesShown &&
                       !(Constants.isSmallScreen(context) == true &&
                           DB().ruleSettings.piecesCount > 9))
                     _buildPieceCountRow()
@@ -504,9 +502,7 @@ class PlayAreaState extends State<PlayArea> {
                   ),
 
                   // Removed pieces row or spacing
-                  if ((DB().displaySettings.isUnplacedAndRemovedPiecesShown ||
-                          GameController().gameInstance.gameMode ==
-                              GameMode.setupPosition) &&
+                  if (DB().displaySettings.isUnplacedAndRemovedPiecesShown &&
                       !(Constants.isSmallScreen(context) == true &&
                           DB().ruleSettings.piecesCount > 9))
                     _buildRemovedPieceCountRow()
@@ -515,8 +511,6 @@ class PlayAreaState extends State<PlayArea> {
 
                   // Advantage graph if enabled
                   if (DB().displaySettings.isAdvantageGraphShown &&
-                      GameController().gameInstance.gameMode !=
-                          GameMode.setupPosition &&
                       advantageData.isNotEmpty)
                     SizedBox(
                       key: const Key('play_area_advantage_graph'),
@@ -530,18 +524,8 @@ class PlayAreaState extends State<PlayArea> {
                       ),
                     ),
 
-                  // Setup toolbar if in setup mode and not at bottom
-                  if (GameController().gameInstance.gameMode ==
-                          GameMode.setupPosition &&
-                      !isToolbarAtBottom)
-                    const SetupPositionToolbar(
-                      key: Key('play_area_setup_position_toolbar'),
-                    ),
-
-                  // History navigation toolbar if enabled and not in setup mode, not at bottom
+                  // History navigation toolbar if enabled and not at bottom
                   if (DB().displaySettings.isHistoryNavigationToolbarShown &&
-                      GameController().gameInstance.gameMode !=
-                          GameMode.setupPosition &&
                       !isToolbarAtBottom)
                     GamePageToolbar(
                       key: const Key('play_area_history_nav_toolbar'),
@@ -565,10 +549,8 @@ class PlayAreaState extends State<PlayArea> {
                   //       All annotation features are now in the center overlay.
                   // ──────────────────────────────────────────────────────────
 
-                  // Main toolbar if not in setup mode and not at bottom
-                  if (GameController().gameInstance.gameMode !=
-                          GameMode.setupPosition &&
-                      !isToolbarAtBottom)
+                  // Main toolbar if not at bottom
+                  if (!isToolbarAtBottom)
                     GamePageToolbar(
                       key: const Key('play_area_main_toolbar'),
                       backgroundColor:
@@ -601,17 +583,8 @@ class PlayAreaState extends State<PlayArea> {
                 children: <Widget>[
                   Expanded(child: mainContent),
 
-                  // Setup toolbar if in setup mode
-                  if (GameController().gameInstance.gameMode ==
-                      GameMode.setupPosition)
-                    const SetupPositionToolbar(
-                      key: Key('play_area_setup_position_toolbar_bottom'),
-                    ),
-
-                  // History navigation toolbar if enabled and not in setup mode
-                  if (DB().displaySettings.isHistoryNavigationToolbarShown &&
-                      GameController().gameInstance.gameMode !=
-                          GameMode.setupPosition)
+                  // History navigation toolbar if enabled
+                  if (DB().displaySettings.isHistoryNavigationToolbarShown)
                     GamePageToolbar(
                       key: const Key('play_area_history_nav_toolbar_bottom'),
                       backgroundColor:
@@ -625,19 +598,17 @@ class PlayAreaState extends State<PlayArea> {
 
                   // Analysis toolbar removed (see note above).
 
-                  // Main toolbar if not in setup mode
-                  if (GameController().gameInstance.gameMode !=
-                      GameMode.setupPosition)
-                    GamePageToolbar(
-                      key: const Key('play_area_main_toolbar_bottom'),
-                      backgroundColor:
-                          DB().colorSettings.mainToolbarBackgroundColor,
-                      itemColor: DB().colorSettings.mainToolbarIconColor,
-                      children: _buildToolbarItems(
-                        context,
-                        _getMainToolbarItems(context),
-                      ),
+                  // Main toolbar
+                  GamePageToolbar(
+                    key: const Key('play_area_main_toolbar_bottom'),
+                    backgroundColor:
+                        DB().colorSettings.mainToolbarBackgroundColor,
+                    itemColor: DB().colorSettings.mainToolbarIconColor,
+                    children: _buildToolbarItems(
+                      context,
+                      _getMainToolbarItems(context),
                     ),
+                  ),
 
                   const SizedBox(height: AppTheme.boardMargin),
                 ],

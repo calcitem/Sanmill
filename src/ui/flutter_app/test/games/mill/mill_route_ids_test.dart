@@ -13,7 +13,6 @@ void main() {
         MillRouteIds.humanVsHuman,
         MillRouteIds.aiVsAi,
         MillRouteIds.humanVsLan,
-        MillRouteIds.setupPosition,
         MillRouteIds.statistics,
       ];
       for (final GameRouteId routeId in millRoutes) {
@@ -27,7 +26,6 @@ void main() {
         MillRouteIds.humanVsHuman,
         MillRouteIds.aiVsAi,
         MillRouteIds.humanVsLan,
-        MillRouteIds.setupPosition,
         MillRouteIds.statistics,
       ];
       final Set<String> values = all.map((GameRouteId r) => r.value).toSet();

@@ -51,10 +51,6 @@ void main() {
         module.isPlayModeRoute(MillRouteIds.humanVsLan.value, context),
         isTrue,
       );
-      expect(
-        module.isPlayModeRoute(MillRouteIds.setupPosition.value, context),
-        isTrue,
-      );
     });
 
     testWidgets('drawer contributions and app routes are not play modes', (

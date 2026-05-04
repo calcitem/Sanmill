@@ -79,7 +79,6 @@ class MillGameModule extends GameModule {
   GameFeatureFlags get features => const GameFeatureFlags(
     supportsAi: true,
     supportsLan: true,
-    supportsSetupPosition: true,
     supportsStatistics: true,
     supportsTimer: true,
     capabilities: <GameCapability>{
@@ -359,24 +358,6 @@ class MillGameModule extends GameModule {
         isAvailable: (_) => features.supports(GameCapability.lan),
         builder: (BuildContext context, {Key? key, GameSession? session}) =>
             GamePage(GameMode.humanVsLAN, key: key),
-      ),
-      GameModeEntry(
-        id: MillRouteIds.setupPosition,
-        label: s.setupPosition,
-        icon: FluentIcons.drafts_24_regular,
-        drawerKey: const Key('drawer_item_setup_position'),
-        contentKey: const Key('setup_position'),
-        isAvailable: (BuildContext context) {
-          return features.supports(GameCapability.setupPosition) &&
-              DB().ruleSettings.millFormationActionInPlacingPhase !=
-                  MillFormationActionInPlacingPhase
-                      .removeOpponentsPieceFromHandThenYourTurn &&
-              DB().ruleSettings.millFormationActionInPlacingPhase !=
-                  MillFormationActionInPlacingPhase
-                      .removeOpponentsPieceFromHandThenOpponentsTurn;
-        },
-        builder: (BuildContext context, {Key? key, GameSession? session}) =>
-            GamePage(GameMode.setupPosition, key: key),
       ),
     ];
   }

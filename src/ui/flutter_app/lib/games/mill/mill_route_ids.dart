@@ -13,9 +13,6 @@ abstract final class MillRouteIds {
   static const GameRouteId humanVsHuman = GameRouteId('mill.play.humanVsHuman');
   static const GameRouteId aiVsAi = GameRouteId('mill.play.aiVsAi');
   static const GameRouteId humanVsLan = GameRouteId('mill.play.humanVsLan');
-  static const GameRouteId setupPosition = GameRouteId(
-    'mill.play.setupPosition',
-  );
 
   // Non-play module screens
   static const GameRouteId statistics = GameRouteId('mill.game.statistics');

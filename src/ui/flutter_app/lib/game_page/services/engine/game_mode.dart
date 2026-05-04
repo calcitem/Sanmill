@@ -45,17 +45,12 @@ extension GameModeExtension on GameMode {
       case GameMode.aiVsAi:
         return botIcon;
       case GameMode.setupPosition:
-        if (DB().generalSettings.aiMovesFirst) {
-          return FluentIcons.bot_24_regular;
-        } else {
-          return FluentIcons.person_24_regular;
-        }
       case GameMode.puzzle:
-        // Puzzle mode is retired but the enum value is kept as a
-        // sentinel so old experience-recording sessions still parse.
-        // The icon is unreachable on this branch (no UI route mounts
-        // it any more) but must be a valid `IconData` to keep the
-        // switch exhaustive.
+        // Setup-position and puzzle modes are retired but the enum
+        // values are kept as sentinels so old experience-recording
+        // sessions still parse.  The icons are unreachable on this
+        // branch (no UI route mounts these modes any more) but must
+        // be valid `IconData`s to keep the switch exhaustive.
         return FluentIcons.person_24_filled;
       case GameMode.humanVsCloud:
         return FluentIcons.person_24_filled;
@@ -83,13 +78,9 @@ extension GameModeExtension on GameMode {
       case GameMode.aiVsAi:
         return botIcon;
       case GameMode.setupPosition:
-        if (DB().generalSettings.aiMovesFirst) {
-          return FluentIcons.person_24_regular;
-        } else {
-          return FluentIcons.bot_24_regular;
-        }
       case GameMode.puzzle:
-        // See `leftHeaderIcon` -- sentinel branch.
+        // See `leftHeaderIcon` -- sentinel branches for retired
+        // game modes.
         return FluentIcons.person_24_filled;
       case GameMode.humanVsCloud:
         return FluentIcons.cloud_24_filled;
