@@ -65,7 +65,7 @@ class TapHandler {
     // The Rust-native session path is now supported for:
     //   - humanVsHuman, humanVsAi (placing / moving / removing)
     //   - setupPosition (direct board editing via setupSetPiece)
-    // Replay and puzzle modes still depend on legacy side effects.
+    // Replay still depends on legacy side effects.
     final GameMode mode = controller.gameInstance.gameMode;
     if (mode != GameMode.humanVsHuman &&
         mode != GameMode.humanVsAi &&
@@ -352,8 +352,7 @@ class TapHandler {
         _isBoardEmpty) {
       //controller.reset();
 
-      if (isAiSideToMove &&
-          controller.gameInstance.gameMode != GameMode.puzzle) {
+      if (isAiSideToMove) {
         logger.i("$_logTag AI is not thinking. AI is to move.");
 
         if (GameController().isExperienceReplayActive) {
@@ -362,20 +361,6 @@ class TapHandler {
         }
 
         return GameController().engineToGo(context, isMoveNow: false);
-      }
-    }
-
-    // Puzzle mode: the user should only play one side.
-    // We use GameController.puzzleHumanColor as the single source of truth,
-    // set by PuzzlePage when a puzzle is initialized.
-    if (controller.gameInstance.gameMode == GameMode.puzzle) {
-      final PieceColor? humanColor = controller.puzzleHumanColor;
-      if (humanColor != null) {
-        final bool isHumanTurn = controller.position.sideToMove == humanColor;
-        if (!isHumanTurn || controller.isPuzzleAutoMoveInProgress) {
-          showTip(S.of(context).opponentSTurn, snackBar: true);
-          return const EngineResponseSkip();
-        }
       }
     }
 
@@ -1022,12 +1007,6 @@ class TapHandler {
       if (_isGameRunning && GameController().gameInstance.isAiSideToMove) {
         if (GameController().isExperienceReplayActive) {
           // During experience replay, AI moves are applied by ReplayService.
-          return const EngineResponseHumanOK();
-        }
-        if (GameController().gameInstance.gameMode == GameMode.puzzle) {
-          // Puzzle mode: do not trigger native engine search here.
-          // PuzzlePage will auto-play the opponent's forced responses from
-          // the predefined solution line.
           return const EngineResponseHumanOK();
         }
         return GameController().engineToGo(context, isMoveNow: false);

@@ -53,13 +53,6 @@ class GameController {
 
   bool disableStats = false;
 
-  // Puzzle mode state:
-  // - puzzleHumanColor: which side the user controls when solving a puzzle.
-  // - isPuzzleAutoMoveInProgress: prevents user input while the app auto-plays
-  //   the opponent's forced responses.
-  PieceColor? puzzleHumanColor;
-  bool isPuzzleAutoMoveInProgress = false;
-
   String? value;
   AiMoveType? aiMoveType;
 
@@ -359,13 +352,6 @@ class GameController {
     return activeNativeMillSession?.lanMeta;
   }
 
-  /// Returns the active [PuzzleMillSession] when puzzle mode is active under
-  /// the native-session flag, or null otherwise.
-  PuzzleMillSession? get activePuzzleMillSession {
-    final GameSession? session = _activeSession;
-    return session is PuzzleMillSession ? session : null;
-  }
-
   /// Undo the last move through the active [NativeMillGameSession].
   ///
   /// Returns true if a session was available and undo was triggered.
@@ -621,9 +607,6 @@ class GameController {
     String? fen = "";
     final bool isPosSetup = isPositionSetup;
     final bool? savedHostPlaysWhite = lanHostPlaysWhite;
-
-    // Puzzle mode: reset any transient auto-move lock.
-    isPuzzleAutoMoveInProgress = false;
 
     value = "0";
     aiMoveType = AiMoveType.unknown;
@@ -1188,11 +1171,11 @@ class GameController {
     // Every game mode that drives the AI is intercepted above
     // (humanVsLAN early-returns, humanVsAi delegates to
     // `_nativeSessionEngineToGo`, aiVsAi delegates to
-    // `_nativeAiVsAiLoop`).  humanVsHuman / setupPosition / puzzle
-    // never reach `engineToGo` because the legacy `Engine` no longer
-    // exists.  Keep this assert as a tripwire: if a future game mode
-    // is added without an explicit branch above, surface it loudly
-    // instead of silently falling through to a deleted UCI loop.
+    // `_nativeAiVsAiLoop`).  humanVsHuman / setupPosition never reach
+    // `engineToGo` because the legacy `Engine` no longer exists.
+    // Keep this assert as a tripwire: if a future game mode is added
+    // without an explicit branch above, surface it loudly instead of
+    // silently falling through to a deleted UCI loop.
     assert(
       false,
       "$tag unreachable: gameMode=${gameInstance.gameMode} has no AI driver.",

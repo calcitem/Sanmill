@@ -63,11 +63,6 @@ extension.
   with `MillGameSession`'s event stream; forwards through
   `GameController.gameRecorder` so legacy widgets keep working.
 
-## Puzzle integration
-
-* `puzzle_mill_session.dart` — Mill-flavoured `GameSession` used by
-  the Puzzle module.
-
 ## Constants / route ids / metadata
 
 * `mill_constants.dart` — `MillActionTypes`, `MillEventTypes`,

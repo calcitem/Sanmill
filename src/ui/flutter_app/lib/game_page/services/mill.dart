@@ -43,7 +43,6 @@ import '../../games/mill/native_mill_ai_turn_controller.dart';
 import '../../games/mill/native_mill_game_session.dart';
 import '../../games/mill/native_mill_rules_port.dart';
 import '../../games/mill/native_mill_snapshot_board_view.dart';
-import '../../games/mill/puzzle_mill_session.dart';
 import '../../general_settings/models/general_settings.dart';
 import '../../generated/assets/assets.gen.dart';
 import '../../generated/intl/l10n.dart';
