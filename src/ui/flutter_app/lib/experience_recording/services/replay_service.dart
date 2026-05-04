@@ -10,7 +10,6 @@ import 'package:flutter/material.dart';
 
 import '../../game_page/services/annotation/annotation_manager.dart';
 import '../../game_page/services/mill.dart';
-import '../../game_page/services/transform/transform.dart';
 import '../../game_platform/game_session.dart';
 import '../../game_shell/game_session_scope.dart';
 import '../../games/mill/mill_board_coordinate_maps.dart';
@@ -805,88 +804,15 @@ class ReplayService {
 
   /// Replays a setup-position toolbar action.
   ///
-  /// Piece selection and phase changes update [GameController.position]
-  /// directly so that subsequent [boardTap] events are interpreted correctly.
+  /// The setup-position editor was retired with the rule-machine
+  /// cleanup; older recordings may still contain these events, so
+  /// we accept them but skip the side-effects.
   void _applySetupPositionAction(Map<String, dynamic> data, BuildContext? ctx) {
     final String action = data['action'] as String? ?? '';
-    final Position position = GameController().position;
-    final GameSession? session = ctx == null
-        ? null
-        : GameSessionScope.sessionOf(ctx);
-    final NativeMillGameSession? nativeSession =
-        true && session is NativeMillGameSession ? session : null;
-
-    switch (action) {
-      case 'selectPiece':
-        final String value = data['value'] as String? ?? '';
-        switch (value) {
-          case 'white':
-            position.sideToSetup = PieceColor.white;
-            position.sideToMove = PieceColor.white;
-            position.action = Act.place;
-          case 'black':
-            position.sideToSetup = PieceColor.black;
-            position.sideToMove = PieceColor.black;
-            position.action = Act.place;
-          case 'marked':
-            position.sideToSetup = PieceColor.marked;
-            position.action = Act.place;
-          case 'none':
-            position.action = Act.remove;
-        }
-
-      case 'selectPhase':
-        final String value = data['value'] as String? ?? '';
-        if (value == 'placing') {
-          position.phase = Phase.placing;
-        } else if (value == 'moving') {
-          position.phase = Phase.moving;
-        }
-
-      case 'transform':
-        final String value = data['value'] as String? ?? '';
-        TransformationType? type;
-        switch (value) {
-          case 'rotate90':
-            type = TransformationType.rotate90;
-          case 'mirrorHorizontal':
-            type = TransformationType.mirrorHorizontal;
-          case 'mirrorVertical':
-            type = TransformationType.mirrorVertical;
-          case 'innerOuterFlip':
-            type = TransformationType.swap;
-        }
-        if (type != null) {
-          final String? fen = position.fen;
-          if (fen != null) {
-            transformSquareSquareAttributeList(type);
-            final String newFen = transformFEN(fen, type);
-            position.setFen(newFen);
-            // Mirror the transformation in the native session so both stay
-            // in sync during setup-position replay.
-            nativeSession?.loadFen(newFen);
-          }
-        }
-
-      case 'clear':
-        nativeSession?.setupClear();
-        position.reset();
-
-      case 'setNeedRemove':
-        // The need-remove count is widget state in SetupPositionToolbarState.
-        // It does not directly affect GameController.position, so we skip it.
-        break;
-
-      case 'copy':
-      case 'paste':
-      case 'cancel':
-        // Clipboard and cancel operations cannot be meaningfully replayed.
-        break;
-
-      default:
-        logger.w('$_logTag Replay: unknown setupPositionAction: "$action"');
-    }
-    logger.i('$_logTag Replay: setupPositionAction $action');
+    logger.i(
+      '$_logTag Replay: setupPositionAction $action ignored '
+      '(setup-position editor removed).',
+    );
   }
 
   void _applySettingsChange(Map<String, dynamic> data) {

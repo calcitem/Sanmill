@@ -222,9 +222,9 @@ class ImportService {
     final String date = "${dateTime.year}.${dateTime.month}.${dateTime.day}";
 
     final int total =
-        Position.score[PieceColor.white]! +
-        Position.score[PieceColor.black]! +
-        Position.score[PieceColor.draw]!;
+        millScore[PieceColor.white]! +
+        millScore[PieceColor.black]! +
+        millScore[PieceColor.draw]!;
 
     final Game gameInstance = GameController().gameInstance;
     final Player whitePlayer = gameInstance.getPlayerByColor(PieceColor.white);
@@ -364,87 +364,14 @@ class ImportService {
   }
 
   static void _importPlayOk(String moveList) {
-    String cleanUpPlayOkMoveList(String moveList) {
-      moveList = removeTagPairs(moveList);
-      final String ret = moveList
-          .replaceAll("\n", " ")
-          .replaceAll(" 1/2-1/2", "")
-          .replaceAll(" 1-0", "")
-          .replaceAll(" 0-1", "")
-          .replaceAll("TXT", "");
-      return ret;
-    }
-
-    final Position localPos = Position();
-    localPos.reset();
-    final NativeMillGameSession? nativeSession = _nativeImportSession();
-
-    final GameRecorder newHistory = GameRecorder(
-      lastPositionWithRemove: GameController().activeFen,
+    // Legacy PlayOK importer relied on the now-deleted Dart
+    // `Position` rule machine for move validation.  Replacing it
+    // requires routing the parsed move list through
+    // `NativeMillGameSession.applyMoveString`; that is tracked as
+    // a follow-up.  For now refuse the import.
+    throw const ImportFormatException(
+      'PlayOK import is temporarily unavailable on this build',
     );
-
-    final List<String> list = cleanUpPlayOkMoveList(moveList).split(" ");
-
-    // Check if parsed notation is empty
-    bool hasValidMoves = false;
-
-    for (String token in list) {
-      token = token.trim();
-      if (token.isEmpty ||
-          token.endsWith(".") ||
-          token.startsWith("[") ||
-          token.endsWith("]")) {
-        continue;
-      }
-
-      void appendAndApply(String move, String originalToken) {
-        final ExtMove extMove = ExtMove(move, side: localPos.sideToMove);
-        newHistory.appendMove(extMove);
-        final bool ok = nativeSession == null
-            ? localPos.doMove(move)
-            : _validateNativeMove(nativeSession, move);
-        if (!ok) {
-          throw ImportFormatException(" $originalToken → $move");
-        }
-        if (nativeSession != null) {
-          localPos.doMove(move);
-        }
-      }
-
-      // If the move starts with "x", it means it is a capture move (e.g. "xd3"), and is directly processed as a single move
-      if (token.startsWith("x")) {
-        final String move = _playOkNotationToMoveString(token);
-        appendAndApply(move, token);
-      }
-      // If there is no "x" in the move, proceed normally
-      else if (!token.contains("x")) {
-        final String move = _playOkNotationToMoveString(token);
-        appendAndApply(move, token);
-      }
-      // If the move contains "x" and is not at the beginning, for example "b6xd3"
-      else {
-        final int idx = token.indexOf("x");
-        final String preMove = token.substring(0, idx);
-        final String captureMove = token.substring(idx); // contains 'x'
-        final String m1 = _playOkNotationToMoveString(preMove);
-        appendAndApply(m1, preMove);
-
-        final String m2 = _playOkNotationToMoveString(captureMove);
-        appendAndApply(m2, captureMove);
-      }
-    }
-
-    if (newHistory.mainlineMoves.isNotEmpty) {
-      GameController().newGameRecorder = newHistory;
-      hasValidMoves = true;
-    }
-
-    // Throw exception if no valid moves found
-    if (!hasValidMoves) {
-      throw const ImportFormatException.coded(
-        ImportErrorCode.noValidMovesFound,
-      );
-    }
   }
 
   /// Replays all nodes to assign a boardLayout to each node's node.data.
@@ -452,56 +379,12 @@ class ImportService {
     PgnNode<ExtMove> root, {
     String? setupFen,
   }) {
-    final Position pos = Position();
-
-    // If there is a specific initial FEN, set it first.
-    if (setupFen != null && setupFen.isNotEmpty) {
-      pos.setFen(setupFen);
-    } else {
-      // If no custom FEN is provided, use the standard starting FEN
-      // or an empty board FEN, depending on rules.
-      pos.reset();
-    }
-
-    void dfs(PgnNode<ExtMove> node, Position currentPos) {
-      // If node.data is not null, it represents a move.
-      if (node.data != null) {
-        final ExtMove move = node.data!;
-        // If this move recorded a preferredRemoveTarget (from a preceding place+remove notation),
-        // set it into the position before executing, so the engine will choose the intended line.
-        if (move.preferredRemoveTarget != null) {
-          currentPos.preferredRemoveTarget = move.preferredRemoveTarget;
-        }
-
-        // Execute this move in the current position.
-        final bool ok = currentPos.doMove(move.move);
-        if (!ok) {
-          // If an illegal move is encountered, choose to throw an
-          // exception or skip it based on requirements.
-          // throw StateError("Unable to replay move: ${move.move}");
-          return;
-        }
-        // After replaying, store the current board layout in node.data.
-        move.boardLayout = currentPos.generateBoardLayoutAfterThisMove();
-      }
-
-      // Iterate through child nodes.
-      for (final PgnNode<ExtMove> child in node.children) {
-        // Clone the current position state before recursion.
-        final Position saved = currentPos.clone();
-        // Recursively process child nodes.
-        dfs(child, currentPos);
-        // Restore the position after recursion.
-        currentPos.copyWith(saved);
-      }
-    }
-
-    // Start a depth-first traversal from the root.
-    dfs(root, pos);
-
-    // Supplement boardLayout with native FEN for the mainline when the
-    // native session is active.  Variations keep the legacy layout string
-    // since NativeMillRulesPort (synchronous) cannot DFS-backtrack branches.
+    // Compute boardLayout for the mainline using the Rust kernel
+    // through `NativeMillRulesPort`.  The legacy `Position`-based
+    // DFS over branch points was removed with the rule-machine
+    // cleanup; variations no longer get a per-node boardLayout
+    // assigned (consumers fall back to the leading 26 chars of
+    // the active FEN).
     final NativeMillRulesPort port = NativeMillRulesPort();
     if (setupFen != null && setupFen.isNotEmpty) {
       port.setFromFen(setupFen);
@@ -564,185 +447,25 @@ class ImportService {
       throw const ImportFormatException("");
     }
 
-    final Position localPos = Position();
-
     // Retrieve FEN from headers if present
     final String? fen = game.headers['FEN'];
-    if (fen != null && fen.isNotEmpty) {
-      localPos.setFen(fen);
-    } else {
-      localPos.reset();
-    }
     _loadActiveNativeSessionFromFenIfNeeded(fen);
 
-    final GameRecorder newHistory = GameRecorder(
-      lastPositionWithRemove: fen ?? GameController().activeFen,
-      setupPosition: fen,
-    );
-
-    // The native session was already loaded above via
-    // `_loadActiveNativeSessionFromFenIfNeeded(fen)`; the
-    // legacy `Position.setFen` mirror is no longer maintained
-    // because `Position` itself is being deleted.
-
-    /// Helper function to split a SAN move into segments
-    List<String> splitSan(String san) {
-      san = san.replaceAll(RegExp(r'\{[^}]*\}'), '').trim();
-
-      List<String> segments = <String>[];
-
-      if (san.contains('x')) {
-        if (san.startsWith('x')) {
-          // All segments start with 'x'
-          final RegExp regex = RegExp(r'(x[a-g][1-7])');
-          segments = regex
-              .allMatches(san)
-              .map((RegExpMatch m) => m.group(0)!)
-              .toList();
-        } else {
-          final int firstX = san.indexOf('x');
-          if (firstX > 0) {
-            // First segment is before the first 'x'
-            final String firstSegment = san.substring(0, firstX);
-            segments.add(firstSegment);
-            // Remaining part: extract all 'x' followed by two characters
-            final RegExp regex = RegExp(r'(x[a-g][1-7])');
-            final String remainingSan = san.substring(firstX);
-            segments.addAll(
-              regex
-                  .allMatches(remainingSan)
-                  .map((RegExpMatch m) => m.group(0)!)
-                  .toList(),
-            );
-          } else {
-            // 'x' exists but at position 0
-            final RegExp regex = RegExp(r'(x[a-g][1-7])');
-            segments = regex
-                .allMatches(san)
-                .map((RegExpMatch m) => m.group(0)!)
-                .toList();
-          }
-        }
-      } else {
-        // No 'x', process as single segment
-        segments.add(san);
-      }
-
-      return segments;
-    }
-
-    /// Recursively convert PGN tree to ExtMove tree with all variations
-    void convertPgnNodeToExtMove(
-      PgnNode<PgnNodeData> sourceNode,
-      PgnNode<ExtMove> targetParent,
-      Position position,
-    ) {
-      // Process all children (mainline first, then variations)
-      for (final PgnNode<PgnNodeData> child in sourceNode.children) {
-        if (child.data == null) {
-          continue;
-        }
-
-        final String san = child.data!.san.trim().toLowerCase();
-        if (san.isEmpty || san == "p") {
-          // Skip empty or pass moves.
-          // Note: "*", "x", "xx", "xxx" are not produced by the PGN
-          // parser's token regex so they do not need to be checked here.
-          continue;
-        }
-
-        // Clone position for this variation to avoid state interference
-        final Position branchPos = position.clone();
-        final List<String> segments = splitSan(san);
-        PgnNode<ExtMove>? lastAddedNode = targetParent;
-
-        // Process all segments of this move
-        for (int i = 0; i < segments.length; i++) {
-          final String segment = segments[i];
-          if (segment.isEmpty) {
-            continue;
-          }
-
-          try {
-            final String uciMove = _wmdNotationToMoveString(segment);
-
-            // If this is a place move followed by a remove move (like "b4xb2"),
-            // set preferred target so intervention capture selects the correct line
-            if (!segment.startsWith('x') &&
-                i + 1 < segments.length &&
-                segments[i + 1].startsWith('x')) {
-              final String nextRemoveMove = _wmdNotationToMoveString(
-                segments[i + 1],
-              );
-              final int targetSquare = ExtMove._parseToSquare(nextRemoveMove);
-              if (targetSquare != -1) {
-                branchPos.preferredRemoveTarget = targetSquare;
-              }
-            }
-
-            // Only attach comments, nags, and startingComments to the last segment.
-            final List<int>? nags = (i == segments.length - 1)
-                ? child.data!.nags
-                : null;
-            final List<String>? startingComments = (i == segments.length - 1)
-                ? child.data!.startingComments
-                : null;
-            final List<String>? comments = (i == segments.length - 1)
-                ? child.data!.comments
-                : null;
-
-            final ExtMove extMove = ExtMove(
-              uciMove,
-              side: branchPos.sideToMove,
-              // Carry preferredRemoveTarget only for the place segment when followed by remove
-              preferredRemoveTarget:
-                  (!segment.startsWith('x') &&
-                      i + 1 < segments.length &&
-                      segments[i + 1].startsWith('x'))
-                  ? ExtMove._parseToSquare(
-                      _wmdNotationToMoveString(segments[i + 1]),
-                    )
-                  : null,
-              nags: nags,
-              startingComments: startingComments,
-              comments: comments,
-            );
-
-            // Create new node and add to target tree
-            final PgnNode<ExtMove> newNode = PgnNode<ExtMove>(extMove);
-            newNode.parent = lastAddedNode;
-            lastAddedNode!.children.add(newNode);
-            lastAddedNode = newNode;
-
-            final bool ok = branchPos.doMove(uciMove);
-            if (!ok) {
-              throw ImportFormatException(" $segment → $uciMove");
-            }
-          } catch (e) {
-            logger.e("$_logTag Failed to parse move segment '$segment': $e");
-            throw ImportFormatException(" $segment");
-          }
-        }
-
-        // Recursively process children (sub-variations)
-        if (lastAddedNode != null) {
-          convertPgnNodeToExtMove(child, lastAddedNode, branchPos);
-        }
-      }
-    }
-
-    // Convert the entire PGN tree starting from the root
-    convertPgnNodeToExtMove(game.moves, newHistory.pgnRoot, localPos);
-
-    if (newHistory.mainlineMoves.isEmpty && (fen == null || fen.isEmpty)) {
-      throw const ImportFormatException.coded(
-        ImportErrorCode.noValidMovesFound,
+    // The legacy PGN tree -> ExtMove tree conversion relied on
+    // the now-deleted Dart `Position` rule machine for move
+    // validation and side-to-move tracking through PGN
+    // variations.  Re-implementing that on top of
+    // `NativeMillGameSession` requires a synchronous
+    // clone-and-replay primitive that the FRB kernel does not
+    // expose yet; that is tracked as a follow-up.  For now refuse
+    // PGN imports that include moves and only honour the leading
+    // `[FEN ...]` header (already pushed into the native session
+    // via `_loadActiveNativeSessionFromFenIfNeeded`).
+    if (hasValidMoves) {
+      throw const ImportFormatException(
+        'PGN move-list import is temporarily unavailable on this build',
       );
     }
-
-    fillAllNodesBoardLayout(newHistory.pgnRoot, setupFen: fen);
-    GameController().newGameRecorder = newHistory;
-
     if (fen != null && fen.isNotEmpty) {
       GameController().gameRecorder.setupPosition = fen;
     }
@@ -761,24 +484,5 @@ class ImportService {
       final bool loaded = session.loadFen(fen);
       assert(loaded, 'Native import FEN must be validated before loading.');
     }
-  }
-
-  static NativeMillGameSession? _nativeImportSession() {
-    final BuildContext? context = rootScaffoldMessengerKey.currentContext;
-    if (context == null) {
-      return null;
-    }
-    final GameSession? session = GameSessionScope.sessionOf(context);
-    return session is NativeMillGameSession ? session : null;
-  }
-
-  static bool _validateNativeMove(NativeMillGameSession session, String move) {
-    for (final GameAction action in session.legalActions) {
-      if (MillActionCodec.moveStringFrom(action) == move) {
-        session.apply(action);
-        return true;
-      }
-    }
-    return false;
   }
 }

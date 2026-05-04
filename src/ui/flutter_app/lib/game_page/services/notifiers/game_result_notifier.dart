@@ -41,23 +41,17 @@ class GameResultNotifier extends ChangeNotifier {
     // Preserve previous state to detect changes
     final bool prevHasResult = _hasResult;
 
-    // Prefer the native session outcome (single source of truth on
-    // `next`); fall back to the legacy `Position` mirror at very-early
-    // init before the session is bound.
+    // Read terminal state from the native session outcome.  The
+    // legacy `Position` mirror is gone with the rule-machine
+    // cleanup; pre-session-bind reads simply see "not terminal".
     final platform.GameOutcome? nativeOutcome =
         controller.activeSessionSnapshot?.outcome;
-    if (nativeOutcome != null) {
-      _hasResult = nativeOutcome.isTerminal;
-      _winner = controller.activeBoardView.winner;
-    } else {
-      _hasResult = controller.position.hasGameResult;
-      _winner = controller.position.winner;
-    }
+    _hasResult = nativeOutcome?.isTerminal ?? false;
+    _winner = controller.activeBoardView.winner;
     // Granular `GameOverReason` is not exposed by the Rust outcome
-    // yet, so keep reading from the legacy position; this falls
-    // through to the engine-failure / draw-default text in the
-    // dialog when the legacy mirror has not been updated.
-    _reason = controller.position.reason;
+    // yet -- the dialog falls back to a generic explanation when
+    // this is null.
+    _reason = null;
 
     // If a game result is newly detected, update ratings once
     if (_hasResult && !prevHasResult) {

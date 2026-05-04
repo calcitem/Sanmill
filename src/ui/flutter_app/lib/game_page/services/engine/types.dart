@@ -86,9 +86,7 @@ extension PieceColorExtension on PieceColor {
       case PieceColor.draw:
         return S.of(context).isDraw;
       case PieceColor.nobody:
-        return (GameController().activeSessionPhase ??
-                GameController().position.phase)
-            .getTip(context);
+        return GameController().activeBoardView.phase.getTip(context);
       case PieceColor.none:
       case PieceColor.marked:
         return null;
@@ -141,9 +139,7 @@ extension PieceColorExtension on PieceColor {
         platform.GameOutcomeKind.ongoing => PieceColor.nobody._arrow,
       };
     }
-    return (GameController().activeSessionPhase ??
-                GameController().position.phase) ==
-            Phase.gameOver
+    return GameController().activeBoardView.phase == Phase.gameOver
         ? _arrow
         : _chevron;
   }
@@ -164,7 +160,7 @@ extension PieceColorExtension on PieceColor {
 
   IconData get _arrow {
     switch (GameController().activeSessionWinner ??
-        GameController().position.winner) {
+        GameController().activeBoardView.winner) {
       case PieceColor.white:
         return FluentIcons.toggle_left_24_regular;
       case PieceColor.black:
@@ -241,18 +237,15 @@ extension PhaseExtension on Phase {
     switch (this) {
       case Phase.placing:
         if (DB().ruleSettings.mayMoveInPlacingPhase) {
-          final String side = GameController().position.sideToMove.playerName(
-            context,
-          );
+          final String side = GameController().activeBoardView.sideToMove
+              .playerName(context);
           return S.of(context).tipToMove(side);
         } else {
           return S.of(context).tipPlace;
         }
       case Phase.moving:
-        if (GameController().position.pieceToRemoveCount[GameController()
-                .position
-                .sideToMove]! !=
-            0) {
+        final MillBoardView view = GameController().activeBoardView;
+        if (view.pieceToRemoveCountFor(view.sideToMove) != 0) {
           return S.of(context).tipRemove;
         }
         return S.of(context).tipMove;

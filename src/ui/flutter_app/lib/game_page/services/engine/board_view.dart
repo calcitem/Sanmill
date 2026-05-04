@@ -125,22 +125,29 @@ class MillBoardView {
     );
   }
 
-  /// Construct from the legacy [Position].
-  ///
-  /// Used as a fallback when the native session is inactive.  Marked pieces
-  /// are not propagated from the legacy representation (their rendering relies
-  /// on the legacy board painter which reads from [Position] directly).
-  static MillBoardView fromPosition(Position pos) {
+  /// Empty placeholder board view used at very-early init before the
+  /// native session is bound.  Returns "ready" phase, both-sides-zero
+  /// counts, and `PieceColor.none` for every grid index.
+  static MillBoardView empty() {
     return MillBoardView._(
-      phase: pos.phase,
-      action: pos.action,
-      sideToMove: pos.sideToMove,
-      pieceOnBoardCount: Map<PieceColor, int>.of(pos.pieceOnBoardCount),
-      pieceInHandCount: Map<PieceColor, int>.of(pos.pieceInHandCount),
-      pieceToRemoveCount: Map<PieceColor, int>.of(pos.pieceToRemoveCount),
-      winner: pos.winner,
-      fen: pos.fen,
-      pieceAtFn: (int gridIndex) => pos.pieceOnGrid(gridIndex),
+      phase: Phase.ready,
+      action: Act.place,
+      sideToMove: PieceColor.white,
+      pieceOnBoardCount: const <PieceColor, int>{
+        PieceColor.white: 0,
+        PieceColor.black: 0,
+      },
+      pieceInHandCount: const <PieceColor, int>{
+        PieceColor.white: 0,
+        PieceColor.black: 0,
+      },
+      pieceToRemoveCount: const <PieceColor, int>{
+        PieceColor.white: 0,
+        PieceColor.black: 0,
+      },
+      winner: PieceColor.nobody,
+      fen: null,
+      pieceAtFn: (int _) => PieceColor.none,
       markedGridIndices: const <int>{},
       isNative: false,
     );

@@ -8,7 +8,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart'; // Import flutter services
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sanmill/game_page/services/engine/bitboard.dart';
 import 'package:sanmill/generated/intl/l10n.dart';
 import 'package:sanmill/home/home.dart';
 import 'package:sanmill/main.dart';
@@ -71,7 +70,6 @@ void main() {
     // Initialize the database and other services
     await DB.init();
     await initializeUI(true);
-    initBitboards();
   });
 
   testWidgets('SanmillApp smoke test', (WidgetTester tester) async {

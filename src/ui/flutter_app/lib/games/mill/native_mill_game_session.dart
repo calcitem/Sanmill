@@ -13,7 +13,7 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 
-import '../../game_page/services/mill.dart' show ExtMove, PieceColor, Position;
+import '../../game_page/services/mill.dart' show ExtMove;
 import '../../game_platform/game_session.dart';
 import '../../game_platform/game_session_handle.dart';
 import '../../general_settings/models/general_settings.dart';
@@ -21,7 +21,6 @@ import '../../rule_settings/models/rule_settings.dart';
 import '../../src/rust/api/simple.dart' as tgf;
 import 'lan_session_meta.dart';
 import 'mill_action_codec.dart';
-import 'mill_board_coordinate_maps.dart';
 import 'native_mill_rules_port.dart';
 
 import '../../shared/services/logger.dart';
@@ -144,33 +143,14 @@ class NativeMillGameSession implements GameSessionHandle {
     }
   }
 
-  /// Reload using the legacy [Position] FEN parser as a fallback when the
-  /// Rust parser rejects the FEN (e.g. extended custodian/intervention FENs
-  /// not yet handled natively).
+  /// The legacy `Position`-backed FEN parser used to provide a
+  /// fallback when the Rust kernel rejected an extended FEN.  The
+  /// rule-machine cleanup deleted the legacy parser; the Rust
+  /// kernel is the only path now.  This stub is kept for compat
+  /// with any caller that still references it; it always returns
+  /// false (i.e. "no fallback succeeded").
   bool loadFenLegacyFallback(String fen) {
-    if (_disposed) {
-      return false;
-    }
-    final Position parsed = Position();
-    if (!parsed.setFen(fen)) {
-      return false;
-    }
-    setupClear();
-    for (final MapEntry<int, int> entry
-        in MillBoardCoordinateMaps.nodeToLegacySquare.entries) {
-      final PieceColor piece = parsed.pieceOnGrid(entry.value);
-      final int owner = switch (piece) {
-        PieceColor.white => 1,
-        PieceColor.black => 2,
-        _ => 0,
-      };
-      if (owner != 0) {
-        setupSetPiece(entry.key, owner);
-      }
-    }
-    setupSetSide(parsed.sideToMove == PieceColor.black ? 1 : 0);
-    setupFinish();
-    return true;
+    return false;
   }
 
   /// Export the current kernel state as a Mill FEN string.

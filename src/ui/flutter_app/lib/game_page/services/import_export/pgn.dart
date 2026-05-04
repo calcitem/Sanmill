@@ -8,8 +8,6 @@ import 'dart:math' as math;
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:meta/meta.dart';
 
-import '../mill.dart';
-
 typedef PgnHeaders = Map<String, String>;
 
 /// A small stub to replace references to an `fromPgn`.
@@ -182,17 +180,10 @@ class PgnGame<T extends PgnNodeData> {
     return games;
   }
 
-  static Position startingPosition(PgnHeaders headers) {
-    final Position pos = Position();
-    pos.reset();
-    if (headers.containsKey('FEN')) {
-      final String fen = headers['FEN']!;
-      if (!pos.setFen(fen)) {
-        throw Exception("Invalid FEN: $fen");
-      }
-    }
-    return pos;
-  }
+  // The legacy `startingPosition` factory used the now-deleted
+  // `Position` class to seed PGN parsing.  No callers remain after
+  // the rule-machine cleanup; PGN parse paths use the native session
+  // directly via `_loadActiveNativeSessionFromFenIfNeeded`.
 
   /// Checks if the parsed PGN game tree contains any variations.
   /// Returns true if any node has more than one child (indicating branches).

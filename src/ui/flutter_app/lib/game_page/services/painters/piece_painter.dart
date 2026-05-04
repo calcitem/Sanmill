@@ -41,12 +41,11 @@ class PiecePainter extends CustomPainter {
     return GameController().activeBoardView.pieceOnGrid(index);
   }
 
-  SquareAttribute? _squareAttributeAtGridIndex(int index) {
-    if (nativeBoardView != null) {
-      return null;
-    }
-    final int? square = MillBoardCoordinateMaps.gridIndexToSquare[index];
-    return square == null ? null : GameController().position.sqAttrList[square];
+  Object? _squareAttributeAtGridIndex(int index) {
+    // The legacy `Position.sqAttrList` was a setup-position-only
+    // field tracking placement order for the editor; both the
+    // editor and the field are gone with the rule-machine cleanup.
+    return null;
   }
 
   Phase get _phase => GameController().activeBoardView.phase;
@@ -379,9 +378,7 @@ class PiecePainter extends CustomPainter {
           continue;
         }
 
-        final SquareAttribute? squareAttribute = _squareAttributeAtGridIndex(
-          index,
-        );
+        final Object? squareAttribute = _squareAttributeAtGridIndex(index);
 
         final ui.Image? image = pieceImages == null
             ? null
@@ -519,34 +516,9 @@ class PiecePainter extends CustomPainter {
         canvas.drawCircle(drawPos, pieceInnerRadius, paint);
       }
 
-      // Draw numbers on pieces if enabled.
-      if (DB().displaySettings.isNumbersOnPiecesShown &&
-          piece.squareAttribute?.placedPieceNumber != null &&
-          piece.squareAttribute!.placedPieceNumber > 0) {
-        // Text Drawing:
-        final TextPainter textPainter = TextPainter(
-          text: TextSpan(
-            text: piece.squareAttribute?.placedPieceNumber.toString(),
-            style: TextStyle(
-              color: piece.pieceColor.mainColor.computeLuminance() > 0.5
-                  ? Colors.black
-                  : Colors.white,
-              fontSize: piece.diameter * 0.5,
-            ),
-          ),
-          textAlign: TextAlign.center,
-          textDirection: TextDirection.ltr,
-        );
-        textPainter.layout();
-
-        // Calculate offset for centering the text.
-        final Offset textOffset = Offset(
-          drawPos.dx - textPainter.width / 2,
-          drawPos.dy - textPainter.height / 2,
-        );
-
-        textPainter.paint(canvas, textOffset);
-      }
+      // Numbers-on-pieces overlay is disabled: it depended on
+      // `Position.sqAttrList` which was a setup-position-only
+      // metadata field, both gone with the rule-machine cleanup.
     }
 
     // Draw moving pieces on top of normal pieces.
@@ -638,34 +610,7 @@ class PiecePainter extends CustomPainter {
         canvas.drawCircle(drawPos, pieceInnerRadius, paint);
       }
 
-      // Draw numbers on pieces if enabled.
-      if (DB().displaySettings.isNumbersOnPiecesShown &&
-          piece.squareAttribute?.placedPieceNumber != null &&
-          piece.squareAttribute!.placedPieceNumber > 0) {
-        // Text Drawing:
-        final TextPainter textPainter = TextPainter(
-          text: TextSpan(
-            text: piece.squareAttribute?.placedPieceNumber.toString(),
-            style: TextStyle(
-              color: piece.pieceColor.mainColor.computeLuminance() > 0.5
-                  ? Colors.black.withValues(alpha: opacity)
-                  : Colors.white.withValues(alpha: opacity),
-              fontSize: piece.diameter * 0.5,
-            ),
-          ),
-          textAlign: TextAlign.center,
-          textDirection: TextDirection.ltr,
-        );
-        textPainter.layout();
-
-        // Calculate offset for centering the text.
-        final Offset textOffset = Offset(
-          drawPos.dx - textPainter.width / 2,
-          drawPos.dy - textPainter.height / 2,
-        );
-
-        textPainter.paint(canvas, textOffset);
-      }
+      // Numbers-on-pieces overlay is disabled (see note above).
 
       // Restore canvas if we applied rotation
       if (isRemovingThisPiece &&
@@ -674,30 +619,14 @@ class PiecePainter extends CustomPainter {
       }
     }
 
-    // Draw capturable pieces highlight if enabled
-    if (DB().displaySettings.isCapturablePiecesHighlightShown &&
-        nativeBoardView == null &&
-        GameController().gameInstance.gameMode != GameMode.setupPosition &&
-        GameController().position.action == Act.remove) {
-      final List<int> capturablePieces = GameController().position
-          .getCapturablePieces();
-
-      paint.color = DB().colorSettings.capturablePieceHighlightColor;
-      paint.style = PaintingStyle.stroke;
-      paint.strokeWidth = 3;
-
-      for (final int sq in capturablePieces) {
-        final int? index = MillBoardCoordinateMaps.squareToGridIndex[sq];
-        if (index != null) {
-          final Offset pos = pointFromIndex(index, size);
-          canvas.drawCircle(pos, pieceWidth / 2, paint);
-        }
-      }
-    }
+    // Capturable-piece highlight relied on the legacy
+    // `Position.getCapturablePieces()` which is gone; the native
+    // session does not yet expose an equivalent.  Settings still
+    // expose the toggle for forward compatibility but no overlay
+    // is drawn until a Rust-backed replacement lands.
 
     // Draw focus and blur positions.
-    if (focusIndex != null &&
-        GameController().gameInstance.gameMode != GameMode.setupPosition) {
+    if (focusIndex != null) {
       paint.color = DB().colorSettings.pieceHighlightColor;
       paint.style = PaintingStyle.stroke;
       paint.strokeWidth = 2;

@@ -657,10 +657,10 @@ class _GameBoardState extends State<GameBoard>
     // back to the legacy `Position.reason` only when the native
     // outcome is non-terminal, otherwise pass null and let the dialog
     // pick its default explanation.
-    final GameOverReason? reason =
-        (GameController().activeSessionSnapshot?.outcome.isTerminal ?? false)
-        ? null
-        : GameController().position.reason;
+    // Granular `GameOverReason` is not exposed by the native
+    // outcome yet; the dialog falls back to a generic
+    // explanation when this is null.
+    const GameOverReason? reason = null;
     final bool force = GameController().gameResultNotifier.force;
 
     // Header tip shows simple win/lose message

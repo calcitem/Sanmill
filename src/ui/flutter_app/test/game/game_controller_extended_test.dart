@@ -8,7 +8,6 @@
 
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sanmill/game_page/services/engine/bitboard.dart';
 import 'package:sanmill/game_page/services/mill.dart';
 import 'package:sanmill/shared/database/database.dart';
 
@@ -25,7 +24,6 @@ void main() {
 
   setUp(() {
     DB.instance = MockDB();
-    initBitboards();
     SoundManager.instance = MockAudios();
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
         .setMockMethodCallHandler(engineChannel, (MethodCall methodCall) async {
@@ -87,12 +85,11 @@ void main() {
       // Make some moves
       controller.reset(force: true);
 
-      // After reset, position should be in placing phase
-      expect(
-        controller.position.phase == Phase.placing ||
-            controller.position.phase == Phase.ready,
-        isTrue,
-      );
+      // After reset, the active board view should be in placing
+      // phase (or "ready" before the native session has finished
+      // wiring up).
+      final Phase phase = controller.activeBoardView.phase;
+      expect(phase == Phase.placing || phase == Phase.ready, isTrue);
     });
 
     test('reset should clear focus and blur indices', () {
@@ -114,28 +111,28 @@ void main() {
 
       controller.reset(force: true);
 
-      // Should not throw
-      expect(controller.position, isNotNull);
+      // Should not throw -- read through the native-backed view.
+      expect(controller.activeBoardView, isNotNull);
     });
   });
 
   // ---------------------------------------------------------------------------
-  // Position access
+  // Active board view access (replaces the legacy GameController.position
+  // accessor that came with the Dart `Position` rule machine).
   // ---------------------------------------------------------------------------
-  group('GameController.position', () {
-    test('should provide access to the game position', () {
+  group('GameController.activeBoardView', () {
+    test('should provide a board view at any time', () {
       final GameController controller = GameController();
 
-      expect(controller.position, isNotNull);
-      expect(controller.position, isA<Position>());
+      expect(controller.activeBoardView, isNotNull);
     });
 
-    test('position should have default sideToMove as white', () {
+    test('default sideToMove is white after a fresh reset', () {
       final GameController controller = GameController();
       controller.animationManager = MockAnimationManager();
       controller.reset(force: true);
 
-      expect(controller.position.sideToMove, PieceColor.white);
+      expect(controller.activeBoardView.sideToMove, PieceColor.white);
     });
   });
 

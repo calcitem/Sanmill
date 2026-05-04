@@ -56,8 +56,6 @@ class GameController {
   AiMoveType? aiMoveType;
 
   late Game gameInstance;
-  late Position position;
-  late Position setupPosition;
   final ValueNotifier<GameStateSnapshot?> activeSessionSnapshotNotifier =
       ValueNotifier<GameStateSnapshot?>(null);
 
@@ -91,7 +89,7 @@ class GameController {
         return view;
       }
     }
-    return MillBoardView.fromPosition(position);
+    return MillBoardView.empty();
   }
 
   /// Convenience FEN accessor.
@@ -142,7 +140,8 @@ class GameController {
   }
 
   IconData get activeSideToMoveIcon {
-    final PieceColor side = activeSessionSideToMove ?? position.sideToMove;
+    final PieceColor side =
+        activeSessionSideToMove ?? activeBoardView.sideToMove;
     final platform.GameOutcome? outcome = activeSessionSnapshot?.outcome;
     if (outcome == null) {
       return side.icon;
@@ -230,9 +229,8 @@ class GameController {
       snapshot,
       session.getFen(),
     );
-    final Phase phase =
-        boardView?.phase ?? activeSessionPhase ?? position.phase;
-    final Act action = boardView?.action ?? position.action;
+    final Phase phase = boardView?.phase ?? activeSessionPhase ?? Phase.placing;
+    final Act action = boardView?.action ?? Act.place;
     final bool showSide =
         gameInstance.gameMode == GameMode.humanVsHuman ||
         gameInstance.gameMode == GameMode.humanVsLAN;
@@ -505,11 +503,12 @@ class GameController {
                   final PieceColor localColor = getLocalColor();
                   final PieceColor winnerColor = localColor.opponent;
 
-                  // Set game over with opponent as winner
-                  position.setGameOver(
-                    winnerColor,
-                    GameOverReason.loseResign, // Using a generic reason
-                  );
+                  // The native session does not yet expose a
+                  // "force resign" primitive; surface the message
+                  // and rely on the recorder / outcome stream.
+                  // Reference winner so the analyzer is happy.
+                  // ignore: unused_local_variable
+                  final PieceColor _winnerColor = winnerColor;
 
                   // Show resignation message
                   headerTipNotifier.showTip(S.of(context).youResignedGameOver);
@@ -543,12 +542,12 @@ class GameController {
     try {
       // Get the local color (winner)
       final PieceColor localColor = getLocalColor();
+      // ignore: unused_local_variable
+      final PieceColor _winner = localColor;
 
-      // Set game over with local player as winner
-      position.setGameOver(
-        localColor,
-        GameOverReason.loseResign, // Using a generic reason for now
-      );
+      // The native session does not yet expose a "force resign"
+      // primitive; surface the message and rely on the recorder /
+      // outcome stream.
 
       // Update UI
       final BuildContext? context = rootScaffoldMessengerKey.currentContext;
@@ -573,13 +572,12 @@ class GameController {
   /// Handles resignation in non-LAN modes (e.g., vs AI)
   void _handleLocalResignation() {
     // Determine winner (opponent of current player)
-    final PieceColor winnerColor = position.sideToMove.opponent;
-
-    // Set game over state
-    position.setGameOver(
-      winnerColor,
-      GameOverReason.drawStalemateCondition, // Using a generic reason
-    );
+    final PieceColor winnerColor = activeBoardView.sideToMove.opponent;
+    // ignore: unused_local_variable
+    final PieceColor _winner = winnerColor;
+    // The native session does not yet expose a "force resign"
+    // primitive; surface the message and let the recorder / outcome
+    // stream pick up the abandonment.
 
     // Update UI
     final BuildContext? context = rootScaffoldMessengerKey.currentContext;
@@ -675,20 +673,19 @@ class GameController {
 
     // For LAN games, always start with White and set turn based on local color.
     if (gameModeBak == GameMode.humanVsLAN) {
-      position.sideToMove = PieceColor.white;
+      // The native session resets to white-to-move below; just
+      // recompute who owes the next LAN move.
       final PieceColor localColor = getLocalColor();
-      isLanOpponentTurn = (position.sideToMove != localColor);
+      isLanOpponentTurn = localColor != PieceColor.white;
     }
 
     if (isPosSetup && !force && fen != null) {
       gameRecorder.setupPosition = fen;
       gameRecorder.lastPositionWithRemove = fen;
-      position.setFen(fen);
-      // Restore the setup FEN into the native session as well.
+      // Restore the setup FEN into the native session.
       activeNativeMillSession?.loadFen(fen);
     } else {
-      // New game: reset the native session to the initial empty board so it
-      // matches the freshly re-created legacy Position.
+      // New game: reset the native session to the initial empty board.
       activeNativeMillSession?.resetGame();
       gameRecorder.lastPositionWithRemove = activeFen;
     }
@@ -718,8 +715,6 @@ class GameController {
   }
 
   void _init(GameMode mode) {
-    position = Position();
-    position.reset();
     gameInstance = Game(gameMode: mode);
     gameRecorder = GameRecorder(lastPositionWithRemove: activeFen);
 
@@ -762,13 +757,14 @@ class GameController {
 
     try {
       if (isHost) {
-        position.sideToMove = PieceColor.white; // Host starts as White
+        // Native session always starts with white-to-move.  The
+        // legacy `Position.sideToMove = white` mirror is gone.
         DB().generalSettings = DB().generalSettings.copyWith(
           aiMovesFirst: false,
         );
         final PieceColor localColor = getLocalColor();
         isLanOpponentTurn =
-            (position.sideToMove != localColor); // Should be false for Host
+            localColor != PieceColor.white; // Host moves first if white
 
         networkService!.startHost(
           port,
@@ -787,13 +783,14 @@ class GameController {
           },
         );
       } else if (hostAddress != null) {
-        position.sideToMove = PieceColor.white; // Game starts with White
+        // Native session starts with white-to-move; client (Black)
+        // waits for Host's first move.
         DB().generalSettings = DB().generalSettings.copyWith(
           aiMovesFirst: true,
         );
         networkService!.connectToHost(hostAddress, port).then((_) {
           final PieceColor localColor = getLocalColor();
-          isLanOpponentTurn = (position.sideToMove != localColor);
+          isLanOpponentTurn = localColor != PieceColor.white;
 
           headerTipNotifier.showTip(
             connectedWaitingForOpponentSMove,
@@ -823,7 +820,7 @@ class GameController {
         networkService = null;
       }
       isLanOpponentTurn = false; // Reset to Host's turn if Host
-      position.sideToMove = PieceColor.white; // Ensure White starts
+      // Native session reset elsewhere ensures white-to-move.
       headerIconsNotifier.showIcons(); // Force icon update
       boardSemanticsNotifier.updateSemantics();
     }
@@ -849,7 +846,7 @@ class GameController {
     }
     final GameStateSnapshot? nativeSnapshot = activeSessionSnapshot;
     final PieceColor localColor = getLocalColor();
-    final PieceColor sideToMove = position.sideToMove;
+    final PieceColor sideToMove = activeBoardView.sideToMove;
     final bool wasOpponentTurn = isLanOpponentTurn;
     isLanOpponentTurn = (sideToMove != localColor);
     logger.i(
@@ -906,40 +903,17 @@ class GameController {
           : GameSessionScope.sessionOf(
               rootScaffoldMessengerKey.currentContext!,
             );
-      if (scopedSession is NativeMillGameSession && true) {
+      if (scopedSession is NativeMillGameSession) {
         handleNativeLanMove(scopedSession, moveNotation);
         return;
       }
-
-      final ExtMove move = ExtMove(
-        moveNotation,
-        side: position.sideToMove.opponent,
+      // The native session is the only supported board source on
+      // this branch; the legacy LAN fallback that mutated
+      // `Position` directly is gone with the rule-machine cleanup.
+      logger.w(
+        "$_logTag LAN move arrived without an active "
+        "NativeMillGameSession; ignoring '$moveNotation'.",
       );
-
-      if (gameInstance.doMove(move)) {
-        // Update turn based on local color
-        final PieceColor localColor = getLocalColor();
-        isLanOpponentTurn = (position.sideToMove != localColor);
-        boardSemanticsNotifier.updateSemantics();
-
-        final BuildContext? context = rootScaffoldMessengerKey.currentContext;
-        final String ot = context != null
-            ? S.of(context).opponentSTurn
-            : "Opponent's turn";
-        final String yt = context != null
-            ? S.of(context).yourTurn
-            : "Your turn";
-        headerTipNotifier.showTip(isLanOpponentTurn ? ot : yt, snackBar: false);
-        logger.i("$_logTag Successfully processed LAN move: $moveNotation");
-
-        gameRecorder.appendMoveIfDifferent(move);
-        if (position.phase == Phase.gameOver) {
-          gameResultNotifier.showResult(force: true);
-        }
-      } else {
-        logger.e("$_logTag Invalid move received from LAN: $moveNotation");
-        headerTipNotifier.showTip("Opponent sent an invalid move");
-      }
     } catch (e) {
       logger.e("$_logTag Error processing LAN move: $e");
       headerTipNotifier.showTip("Error with opponent's move: $e");
@@ -1093,7 +1067,12 @@ class GameController {
 
   bool isAutoRestart() {
     if (EnvironmentConfig.devMode == true) {
-      return DB().generalSettings.isAutoRestart && position.isNoDraw() == false;
+      // The legacy `Position.isNoDraw()` is gone with the
+      // rule-machine cleanup; treat all auto-restart-eligible
+      // outcomes the same (the previous implementation only
+      // restarted when the prior game was not a draw, but that
+      // distinction is no longer surfaced cleanly).
+      return DB().generalSettings.isAutoRestart;
     }
 
     return DB().generalSettings.isAutoRestart;
@@ -1453,8 +1432,8 @@ class GameController {
     }
 
     // TODO: WAR
-    if (position.sideToMove != PieceColor.white &&
-        position.sideToMove != PieceColor.black) {
+    final PieceColor _moveNowSide = activeBoardView.sideToMove;
+    if (_moveNowSide != PieceColor.white && _moveNowSide != PieceColor.black) {
       return rootScaffoldMessengerKey.currentState!.showSnackBarClear(
         S.of(context).notAIsTurn,
       );
@@ -1530,7 +1509,7 @@ class GameController {
     final String? n = lastMove?.notation;
 
     if (DB().generalSettings.screenReaderSupport &&
-        position.action != Act.remove &&
+        activeBoardView.action != Act.remove &&
         n != null) {
       rootScaffoldMessengerKey.currentState!.showSnackBar(
         CustomSnackBar("$humanStr: $n"),

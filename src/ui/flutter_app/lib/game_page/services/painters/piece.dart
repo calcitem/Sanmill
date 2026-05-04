@@ -32,6 +32,9 @@ class Piece {
   /// The index of the piece.
   final int index;
 
-  final SquareAttribute? squareAttribute;
+  /// Legacy per-square attribute used by the (now-deleted) setup
+  /// position editor.  The field is kept as an opaque `Object?` for
+  /// API compat; the painter always passes null on this branch.
+  final Object? squareAttribute;
   final Image? image;
 }

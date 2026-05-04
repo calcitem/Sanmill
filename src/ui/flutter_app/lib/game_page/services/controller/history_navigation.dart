@@ -392,76 +392,10 @@ class HistoryNavigator {
     if (nativeSession != null) {
       return _nativeDoEachMove(nativeSession, navMode, number);
     }
-
-    // 1) Adjust the active node according to navMode
-    switch (navMode) {
-      case HistoryNavMode.takeBack:
-        _takeBack(1);
-        break;
-      case HistoryNavMode.takeBackN:
-        if (number == null) {
-          return const HistoryRange();
-        }
-        _takeBack(number);
-        break;
-      case HistoryNavMode.takeBackAll:
-        _takeBackAll();
-        break;
-      case HistoryNavMode.stepForward:
-        _stepForward(1);
-        break;
-      case HistoryNavMode.stepForwardAll:
-        _stepForwardAll();
-        break;
-    }
-
-    // 2) Temporarily set the game mode to humanVsHuman
-    final GameMode backupMode = GameController().gameInstance.gameMode;
-    GameController().gameInstance.gameMode = GameMode.humanVsHuman;
-
-    if (GameController().newGameRecorder == null) {
-      GameController().newGameRecorder = GameController().gameRecorder;
-    }
-
-    // 3) Reset board, replay moves from root to current HEAD
-    // Preserve LAN connection during history replay if we're originally in LAN mode.
-    GameController().reset(preserveLan: backupMode == GameMode.humanVsLAN);
-    posKeyHistory.clear();
-
-    final GameRecorder tempRec = GameController().newGameRecorder!;
-
-    final List<ExtMove> pathMoves = _collectPathMoves(tempRec);
-
-    bool success = true;
-    for (final ExtMove move in pathMoves) {
-      // Preserve preferredRemoveTarget during replay execution
-      if (move.preferredRemoveTarget != null) {
-        GameController().position.preferredRemoveTarget =
-            move.preferredRemoveTarget;
-      }
-
-      if (!GameController().gameInstance.doMove(move)) {
-        importFailedStr = move.notation;
-        success = false;
-        break;
-      }
-    }
-
-    // 4) Restore context
-    GameController().gameInstance.gameMode = backupMode;
-
-    final String? lastPosWithRemove =
-        GameController().gameRecorder.lastPositionWithRemove;
-
-    // Restore the original recorder.  Its activeNode was correctly adjusted
-    // by the nav-mode functions in step 1 (_takeBack, _stepForward, etc.)
-    // and was NOT modified during the replay (which operates on the
-    // separate recorder created by reset()).  No re-location is needed.
-    GameController().gameRecorder = tempRec;
-    GameController().gameRecorder.lastPositionWithRemove = lastPosWithRemove;
-    GameController().newGameRecorder = null;
-
-    return success ? const HistoryOK() : const HistoryRule();
+    // No active native session: nothing to navigate.  The legacy
+    // `Position`-driven replay fallback was removed with the
+    // rule-machine cleanup.
+    return const HistoryOK();
   }
 
   static Future<HistoryResponse?> gotoNode(
@@ -504,64 +438,15 @@ class HistoryNavigator {
       return success ? const HistoryOK() : const HistoryRule();
     }
 
-    // Save the original game mode
-    final GameMode backupMode = GameController().gameInstance.gameMode;
-    // Force into humanVsHuman so we can freely replay moves
-    GameController().gameInstance.gameMode = GameMode.humanVsHuman;
-
-    // CRITICAL: Save the original gameRecorder to preserve the PGN tree
-    // reset() will create a new GameRecorder, losing all variations/branches
-    final GameRecorder originalRecorder = GameController().gameRecorder;
-
-    // Reset the board, clear position history, and replay moves on the path
-    GameController().reset();
-    posKeyHistory.clear();
-
-    // Let reset() create a temporary new recorder for replay
-    // This prevents adding duplicate nodes to the original tree
-
-    bool success = true;
-    for (final PgnNode<ExtMove> node in path) {
-      if (node.data != null) {
-        // Preserve preferredRemoveTarget during replay execution
-        final ExtMove m = node.data!;
-        if (m.preferredRemoveTarget != null) {
-          GameController().position.preferredRemoveTarget =
-              m.preferredRemoveTarget;
-        }
-
-        final bool ok = GameController().gameInstance.doMove(m);
-        if (!ok) {
-          importFailedStr = node.data!.notation;
-          success = false;
-          break;
-        }
-      }
-    }
-
-    // Restore game mode
-    GameController().gameInstance.gameMode = backupMode;
-
-    // CRITICAL: Restore the original gameRecorder AFTER replay
-    // This preserves the PGN tree without adding duplicate nodes
-    GameController().gameRecorder = originalRecorder;
-
-    // Update the active node to the target
-    GameController().gameRecorder.activeNode = targetNode;
-    // Notify move count change using currentPath to reflect actual position
-    GameController().gameRecorder.moveCountNotifier.value =
-        GameController().gameRecorder.currentPath.length;
-
-    // Re-enable the controller
+    // No active native session: cannot replay history.  The legacy
+    // `Position`-driven replay fallback was removed with the
+    // rule-machine cleanup.
     GameController().isControllerActive = true;
     SoundManager().unMute();
-
-    // Optionally close the current route if pop == true
     if (pop && context.mounted) {
       Navigator.pop(context);
     }
-
-    return success ? const HistoryOK() : const HistoryRule();
+    return const HistoryOK();
   }
 
   static GameSession? _scopedSession([BuildContext? context]) {

@@ -40,17 +40,14 @@ class GameResultAlertDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Position position = GameController().position;
+    final MillBoardView position = GameController().activeBoardView;
 
     // Special handling for AI vs AI mode
     if (gameMode == GameMode.aiVsAi) {
       return _buildAiVsAiDialog(context, position);
     }
 
-    // TODO: Why sometimes _gameResult is null?
-    position.result = _gameResult;
-
-    switch (position.result) {
+    switch (_gameResult) {
       case GameResult.win:
         SoundManager().playTone(Sound.win);
         break;
@@ -69,9 +66,9 @@ class GameResultAlertDialog extends StatelessWidget {
     final bool isTopLevel =
         DB().generalSettings.skillLevel == Constants.highestSkillLevel;
 
-    final String reason =
-        position.gameOverReason?.getName(context, position.winner) ??
-        S.of(context).gameOverUnknownReason;
+    // The granular `Position.gameOverReason` is gone with the
+    // rule-machine cleanup; surface the generic explanation.
+    final String reason = S.of(context).gameOverUnknownReason;
 
     final StringBuffer content = StringBuffer(reason);
 
@@ -239,7 +236,7 @@ class GameResultAlertDialog extends StatelessWidget {
     );
   }
 
-  Widget _buildAiVsAiDialog(BuildContext context, Position position) {
+  Widget _buildAiVsAiDialog(BuildContext context, MillBoardView position) {
     // Get game duration in seconds
     final int gameDurationSeconds = GameController()
         .calculateGameDurationSeconds();
@@ -259,10 +256,9 @@ class GameResultAlertDialog extends StatelessWidget {
       winnerText = "Draw";
     }
 
-    // Get game over reason
-    final String reason =
-        position.gameOverReason?.getName(context, position.winner) ??
-        S.of(context).gameOverUnknownReason;
+    // The granular `Position.gameOverReason` is gone with the
+    // rule-machine cleanup; surface the generic explanation.
+    final String reason = S.of(context).gameOverUnknownReason;
 
     // Build content with game duration
     final StringBuffer content = StringBuffer();

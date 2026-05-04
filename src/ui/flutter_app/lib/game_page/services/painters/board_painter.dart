@@ -19,7 +19,7 @@ class BoardPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     assert(size.width == size.height);
 
-    final Position position = GameController().position;
+    final MillBoardView position = GameController().activeBoardView;
     final ColorSettings colorSettings = DB().colorSettings;
     final double boardBorderLineWidth =
         DB().displaySettings.boardBorderLineWidth;
@@ -52,7 +52,7 @@ class BoardPainter extends CustomPainter {
     return paint;
   }
 
-  void _drawOptionalElements(Canvas canvas, Size size, Position position) {
+  void _drawOptionalElements(Canvas canvas, Size size, MillBoardView position) {
     if (_shouldDrawPieceCount(position)) {
       _drawPieceCount(position, canvas, size);
     }
@@ -62,9 +62,8 @@ class BoardPainter extends CustomPainter {
     }
   }
 
-  bool _shouldDrawPieceCount(Position position) {
+  bool _shouldDrawPieceCount(MillBoardView position) {
     return DB().displaySettings.isPieceCountInHandShown &&
-        GameController().gameInstance.gameMode != GameMode.setupPosition &&
         position.phase == Phase.placing;
   }
 
@@ -251,7 +250,14 @@ class BoardPainter extends CustomPainter {
     final NativeMillSnapshotBoardView? native =
         GameController().activeNativeMillBoardView;
     if (native == null) {
-      return GameController().position.formedMills;
+      // No active native board view (very-early init); skip the
+      // mill-line highlight overlay.  The legacy
+      // `Position.formedMills` fallback is gone with the
+      // rule-machine cleanup.
+      return const <PieceColor, List<List<int>>>{
+        PieceColor.white: <List<int>>[],
+        PieceColor.black: <List<int>>[],
+      };
     }
     final Map<PlayerSeat, List<List<int>>> nativeMills = native
         .usedMillLinesAsLegacySquares(
@@ -308,7 +314,11 @@ class BoardPainter extends CustomPainter {
     }
   }
 
-  static void _drawPieceCount(Position position, Canvas canvas, Size size) {
+  static void _drawPieceCount(
+    MillBoardView position,
+    Canvas canvas,
+    Size size,
+  ) {
     final int pieceInHandCount = _calculatePieceInHandCount(position);
 
     final TextSpan textSpan = TextSpan(
@@ -332,12 +342,12 @@ class BoardPainter extends CustomPainter {
     );
   }
 
-  static int _calculatePieceInHandCount(Position position) {
-    if (position.pieceOnBoardCount[PieceColor.white] == 0 &&
-        position.pieceOnBoardCount[PieceColor.black] == 0) {
+  static int _calculatePieceInHandCount(MillBoardView position) {
+    if (position.pieceOnBoardCountFor(PieceColor.white) == 0 &&
+        position.pieceOnBoardCountFor(PieceColor.black) == 0) {
       return DB().ruleSettings.piecesCount;
     } else {
-      return position.pieceInHandCount[position.sideToMove]!;
+      return position.pieceInHandCountFor(position.sideToMove);
     }
   }
 

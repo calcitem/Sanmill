@@ -40,13 +40,11 @@ class _GameHeaderState extends State<GameHeader> {
   }
 
   void _validatePosition() {
-    if (GameController().activeSessionSnapshot != null) {
-      return;
-    }
-    final String? fen = GameController().activeFen;
-    if (fen == null || !GameController().position.validateFen(fen)) {
-      GameController().headerTipNotifier.showTip(S.of(context).invalidPosition);
-    }
+    // The native session validates positions on every move; the
+    // legacy `Position.validateFen` fallback is gone with the
+    // rule-machine cleanup, so this method is effectively a no-op
+    // when the native session is bound.  Kept as a hook for any
+    // future client-side validation surface.
   }
 
   @override
@@ -479,9 +477,7 @@ class HeaderStateIcons extends State<HeaderIcons> {
     // Determine which player is active based on the current side to move
     final GameController controller = GameController();
     final bool isPlayer1Turn =
-        (controller.activeSessionSideToMove ??
-            controller.position.sideToMove) ==
-        PieceColor.white;
+        controller.activeBoardView.sideToMove == PieceColor.white;
 
     // Skip timer update if this is the first move of the game
     if (_isFirstMove && controller.gameRecorder.mainlineMoves.isEmpty) {

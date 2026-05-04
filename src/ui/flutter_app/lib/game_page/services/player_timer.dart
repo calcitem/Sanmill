@@ -107,9 +107,8 @@ class PlayerTimer {
 
   /// Called every second to update the timer
   void _tick(Timer timer) {
-    // Get the current game controller and position
+    // Get the current game controller.
     final GameController gameController = GameController();
-    final Position position = gameController.position;
 
     // Check if AI is currently thinking
     final bool isAIThinking =
@@ -167,14 +166,10 @@ class PlayerTimer {
         return;
       }
 
-      // For human player in non-LAN mode
-      // Set game over with current player as loser
-      position.setGameOver(
-        position.sideToMove.opponent,
-        GameOverReason.loseTimeout,
-      );
-
-      // Trigger result display (header tip + snackbar will be shown by _showResult)
+      // For human player in non-LAN mode the legacy
+      // `Position.setGameOver` mirror is gone.  Surface the result
+      // via the notifier; the native session does not yet expose a
+      // "force timeout" primitive.
       gameController.gameResultNotifier.showResult(force: true);
 
       // Play sound

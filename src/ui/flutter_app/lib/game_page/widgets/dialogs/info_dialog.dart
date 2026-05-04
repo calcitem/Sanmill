@@ -130,14 +130,12 @@ class InfoDialog extends StatelessWidget {
     buffer.writeln();
     buffer.writeln(S.of(context).score);
     buffer.writeComma(
-      "${S.of(context).player1}: ${Position.score[PieceColor.white]}",
+      "${S.of(context).player1}: ${millScore[PieceColor.white]}",
     );
     buffer.writeComma(
-      "${S.of(context).player2}: ${Position.score[PieceColor.black]}",
+      "${S.of(context).player2}: ${millScore[PieceColor.black]}",
     );
-    buffer.writePeriod(
-      "${S.of(context).draw}: ${Position.score[PieceColor.draw]}",
-    );
+    buffer.writePeriod("${S.of(context).draw}: ${millScore[PieceColor.draw]}");
 
     return buffer.toString();
   }

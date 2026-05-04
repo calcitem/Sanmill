@@ -18,7 +18,6 @@ import 'package:hive_ce_flutter/hive_flutter.dart' show Box;
 
 import 'appearance_settings/models/display_settings.dart';
 import 'experience_recording/services/recording_navigator_observer.dart';
-import 'game_page/services/engine/bitboard.dart';
 import 'game_page/services/mill.dart' show LoadService;
 import 'game_platform/game_registry.dart';
 import 'games/built_in_game_modules.dart';
@@ -91,8 +90,6 @@ Future<void> main() async {
   // }
 
   await initAppSystemUi(isFullScreen: DB().displaySettings.isFullScreen);
-
-  initBitboards();
 
   if (EnvironmentConfig.catcher && !kIsWeb && !Platform.isIOS) {
     catcher = Catcher2(rootWidget: const SanmillApp(), ensureInitialized: true);
