@@ -199,9 +199,9 @@ class _PuzzlePageState extends State<PuzzlePage> {
 
         DB().ruleSettings = snapshotSettings;
 
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          GameController().engine.setRuleOptions();
-        });
+        // Rule changes are picked up directly by
+        // `MillVariantOptionsMapper.toTgfMillVariantOptions()` on the next
+        // native session creation; no engine-side broadcast is needed.
 
         logger.i(
           '[PuzzlePage] Applied rule-settings snapshot '
@@ -225,9 +225,9 @@ class _PuzzlePageState extends State<PuzzlePage> {
     if (canonicalSettings != null) {
       DB().ruleSettings = canonicalSettings;
 
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        GameController().engine.setRuleOptions();
-      });
+      // Same as above: rule changes propagate via the
+      // RuleSettings -> NativeMillVariantOptions mapping, no engine
+      // broadcast required.
 
       logger.i(
         '[PuzzlePage] Auto-switched rules to "$puzzleVariantId" '

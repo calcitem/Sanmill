@@ -22,8 +22,6 @@ import '../../../games/mill/native_mill_snapshot_board_view.dart';
 import '../../../shared/database/database.dart';
 import '../../../shared/services/environment_config.dart';
 import '../../../shared/themes/app_theme.dart';
-import '../../widgets/board/analysis_renderer.dart';
-import '../analysis_mode.dart';
 import '../mill.dart';
 import 'animations/piece_effect_animation.dart';
 import 'piece.dart';

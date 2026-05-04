@@ -35,14 +35,8 @@ class BoardPainter extends CustomPainter {
     _drawPoints(offset, canvas, paint);
     _drawMillLines(offset, canvas, paint, size);
 
-    // Add analysis renderer to draw analysis results
-    if (AnalysisMode.isEnabled) {
-      AnalysisRenderer.render(
-        canvas,
-        size,
-        size.width / 7,
-      ); // Divide by number of points per row
-    }
+    // Analysis renderer was removed along with the perfect-database
+    // analyze feature; AnalysisMode never becomes enabled now.
   }
 
   Paint _createPaint(

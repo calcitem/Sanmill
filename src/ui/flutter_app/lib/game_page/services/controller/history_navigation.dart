@@ -111,7 +111,9 @@ class HistoryNavigator {
     }
 
     GameController().isControllerActive = false;
-    GameController().engine.stopSearching();
+    if (GameController().isEngineRunning) {
+      tgf.nativeMillSearchStop();
+    }
 
     final GameController controller = GameController();
 
@@ -357,7 +359,9 @@ class HistoryNavigator {
     bool pop = true,
   }) async {
     GameController().isControllerActive = false;
-    GameController().engine.stopSearching();
+    if (GameController().isEngineRunning) {
+      tgf.nativeMillSearchStop();
+    }
 
     final GameRecorder recorder = GameController().gameRecorder;
     final PgnNode<ExtMove> current = recorder.activeNode ?? recorder.pgnRoot;
@@ -467,7 +471,9 @@ class HistoryNavigator {
   }) async {
     // Temporarily disable the controller and stop engine searching
     GameController().isControllerActive = false;
-    GameController().engine.stopSearching();
+    if (GameController().isEngineRunning) {
+      tgf.nativeMillSearchStop();
+    }
 
     // Build the path from root to the targetNode
     final List<PgnNode<ExtMove>> path = <PgnNode<ExtMove>>[];

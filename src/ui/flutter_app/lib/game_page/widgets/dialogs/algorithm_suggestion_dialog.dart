@@ -78,8 +78,10 @@ class AlgorithmSuggestionDialog extends StatelessWidget {
               );
             }
 
-            // Update engine settings
-            GameController().engine.setGeneralOptions();
+            // Settings are picked up directly by
+            // `MillVariantOptionsMapper.toTgfMillVariantOptions` and the
+            // `NativeMillAiTurnController` on the next AI turn, so no
+            // engine-side broadcast is necessary.
 
             // Reset the suggestion flag
             final StatsSettings statsSettings = DB().statsSettings;

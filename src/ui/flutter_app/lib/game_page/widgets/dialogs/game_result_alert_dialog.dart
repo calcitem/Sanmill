@@ -106,7 +106,9 @@ class GameResultAlertDialog extends StatelessWidget {
               skillLevel: settings.skillLevel + 1,
             );
 
-            GameController().engine.setGeneralOptions();
+            // The Rust/FRB native session reads `skillLevel` from
+            // `DB().generalSettings` on the next search call, so no
+            // engine-side broadcast is needed.
 
             logger.t("[config] skillLevel: ${DB().generalSettings.skillLevel}");
 

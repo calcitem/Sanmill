@@ -312,63 +312,6 @@ class PlayAreaState extends State<PlayArea> {
     ];
   }
 
-  /// Retrieves the analysis toolbar items.
-  List<ToolbarItem> _getAnalysisToolbarItems(BuildContext context) {
-    return <ToolbarItem>[
-      ToolbarItem(
-        key: const Key('play_area_analysis_toolbar_engine'),
-        onPressed:
-            (GameController().isEngineRunning || AnalysisMode.isAnalyzing)
-            ? null
-            : () => _analyzePosition(),
-        child: Icon(
-          AnalysisMode.isEnabled
-              ? FluentIcons.brain_circuit_24_filled
-              : FluentIcons.brain_circuit_24_regular,
-          semanticLabel: S.of(context).analysis,
-        ),
-      ),
-    ];
-  }
-
-  /// Triggers analysis of the current position
-  Future<void> _analyzePosition() async {
-    // If analysis is already enabled, disable it and exit
-    if (AnalysisMode.isEnabled) {
-      RecordingService().recordEvent(
-        RecordingEventType.toolbarAction,
-        <String, dynamic>{'toolbar': 'analysis', 'action': 'analysisOff'},
-      );
-      AnalysisMode.disable();
-      return;
-    }
-    RecordingService().recordEvent(
-      RecordingEventType.toolbarAction,
-      <String, dynamic>{'toolbar': 'analysis', 'action': 'analysisOn'},
-    );
-
-    // Set analyzing flag to true
-    AnalysisMode.setAnalyzing(true);
-
-    // Run analysis and display results
-    final PositionAnalysisResult result = await GameController().engine
-        .analyzePosition();
-
-    // Reset analyzing flag
-    AnalysisMode.setAnalyzing(false);
-
-    if (!result.isValid) {
-      return;
-    }
-
-    // Enable analysis mode with the results
-    AnalysisMode.enable(result.possibleMoves);
-
-    // setState is still called here to ensure board is repainted
-    // when user explicitly clicks the analysis button
-    setState(() {});
-  }
-
   /// Returns a string of '●' characters based on [count].
   String _getPiecesText(int count) {
     return "●" * count;
@@ -636,22 +579,11 @@ class PlayAreaState extends State<PlayArea> {
                       ),
                     ),
 
-                  // Analysis toolbar if enabled and not at bottom
-                  // Hide in puzzle mode to keep the interface clean
-                  if (DB().displaySettings.isAnalysisToolbarShown &&
-                      GameController().gameInstance.gameMode !=
-                          GameMode.puzzle &&
-                      !isToolbarAtBottom)
-                    GamePageToolbar(
-                      key: const Key('play_area_analysis_toolbar'),
-                      backgroundColor:
-                          DB().colorSettings.analysisToolbarBackgroundColor,
-                      itemColor: DB().colorSettings.analysisToolbarIconColor,
-                      children: _buildToolbarItems(
-                        context,
-                        _getAnalysisToolbarItems(context),
-                      ),
-                    ),
+                  // Analysis toolbar removed: the perfect-database analyze
+                  // feature relied on the deleted C++ engine and has no
+                  // Rust backend yet.  Keep `isAnalysisToolbarShown` in
+                  // settings storage for Hive backward compat, but do not
+                  // render anything.
 
                   // ──────────────────────────────────────────────────────────
                   // NOTE: The bottom black Annotation Toolbar is removed.
@@ -721,20 +653,7 @@ class PlayAreaState extends State<PlayArea> {
                       ),
                     ),
 
-                  // Analysis toolbar if enabled
-                  // Hide in puzzle mode to keep the interface clean
-                  if (DB().displaySettings.isAnalysisToolbarShown &&
-                      GameController().gameInstance.gameMode != GameMode.puzzle)
-                    GamePageToolbar(
-                      key: const Key('play_area_analysis_toolbar_bottom'),
-                      backgroundColor:
-                          DB().colorSettings.analysisToolbarBackgroundColor,
-                      itemColor: DB().colorSettings.analysisToolbarIconColor,
-                      children: _buildToolbarItems(
-                        context,
-                        _getAnalysisToolbarItems(context),
-                      ),
-                    ),
+                  // Analysis toolbar removed (see note above).
 
                   // Main toolbar if not in setup mode
                   // Hide in puzzle mode to keep the interface clean

@@ -3,7 +3,6 @@
 
 import 'dart:async';
 
-import '../../game_page/services/mill.dart' show GameController;
 import '../../game_platform/engine/engine_port.dart';
 import '../../game_platform/engine/native_engine_client.dart';
 import '../../game_platform/game_id.dart';
@@ -13,8 +12,10 @@ import '../../src/rust/api/simple.dart' as tgf;
 import 'mill_constants.dart';
 import 'mill_variant_options_mapper.dart';
 
-/// Bridges the Mill native engine to [EnginePort]. Event streaming is not yet
-/// exposed from the legacy [Engine] implementation; [eventLines] is a stub.
+/// Bridges the Rust/FRB Mill native search to the game-neutral
+/// [EnginePort] surface used by `GameRegistry`.  Streaming events come
+/// from `tgf.nativeMillSearchEvents`; the legacy method-channel UCI
+/// path is gone, so [eventLines] is intentionally an empty stream.
 class MillEnginePortAdapter implements EnginePort {
   final StreamController<EngineEvent> _events =
       StreamController<EngineEvent>.broadcast();
@@ -23,7 +24,7 @@ class MillEnginePortAdapter implements EnginePort {
   @override
   Future<void> dispose() async {
     await _nativeSearchSub?.cancel();
-    await GameController().engine.shutdown();
+    _nativeSearchSub = null;
     await _events.close();
   }
 
@@ -34,12 +35,13 @@ class MillEnginePortAdapter implements EnginePort {
   Stream<EngineEvent> get events => _events.stream;
 
   @override
-  Future<void> start([GameEngineConfig? config]) {
+  Future<void> start([GameEngineConfig? config]) async {
     assert(
       config == null || config.gameId == GameId.mill,
       'MillEnginePortAdapter only supports GameId.mill.',
     );
-    return GameController().engine.ensureReady();
+    // The Rust kernel is created lazily by `NativeMillRulesPort`; no
+    // explicit startup is required.
   }
 
   @override
@@ -150,24 +152,29 @@ class MillEnginePortAdapter implements EnginePort {
         return NativeEngineResponse.unsupported(
           request,
           reason:
-              'Mill legacy engine has not migrated ${request.command.name}.',
+              'Mill EnginePort does not implement '
+              '${request.command.name}; consumers should use '
+              'NativeMillGameSession directly.',
         );
     }
   }
 
   @override
   Future<void> updateGeneralOptions() async {
-    GameController().engine.setGeneralOptions();
+    // General settings (skill level, move time, search algorithm,
+    // shuffling, …) are read directly from `DB().generalSettings` by
+    // `NativeMillAiTurnController` / `MillVariantOptionsMapper` on the
+    // next AI turn, so this hook is a no-op now that the legacy UCI
+    // engine has been deleted.
   }
 
   @override
   Future<void> updateRuleOptions() async {
-    GameController().engine.setRuleOptions();
-
-    // Phase 6 typed Rust path: validate the subset of rule settings that
-    // Rust-native MillRules already supports.  The legacy C++ engine remains
-    // authoritative for unsupported rule fields until those are implemented in
-    // Rust, but this keeps the typed FRB option path exercised.
+    // Rule changes propagate through
+    // `RuleSettings.toTgfMillVariantOptions()` whenever a fresh
+    // `NativeMillGameSession` is created, so no broadcast is needed.
+    // We still validate that the typed FRB option path produces a
+    // non-empty opening to catch encoder regressions early.
     final tgf.MillVariantOptions variant = DB().ruleSettings
         .toTgfMillVariantOptions(generalSettings: DB().generalSettings);
     final int openingCount = tgf.nativeMillInitialLegalCountForVariant(
@@ -187,7 +194,6 @@ class MillEnginePortAdapter implements EnginePort {
     tgf.nativeMillSearchStop();
     await _nativeSearchSub?.cancel();
     _nativeSearchSub = null;
-    await GameController().engine.stopSearching();
   }
 
   Future<void> _startNativeSearch({required int depth}) async {

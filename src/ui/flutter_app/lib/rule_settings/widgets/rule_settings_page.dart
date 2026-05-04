@@ -1167,8 +1167,6 @@ class RuleSettingsPage extends StatelessWidget {
     GameController().isControllerActive = false;
     GameController().reset();
 
-    //GameController().engine.shutdown();
-
     return ValueListenableBuilder<Box<ColorSettings>>(
       valueListenable: DB().listenColorSettings,
       builder: (BuildContext context, Box<ColorSettings> box, Widget? child) {

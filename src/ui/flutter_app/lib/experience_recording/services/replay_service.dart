@@ -8,7 +8,6 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 
-import '../../game_page/services/analysis_mode.dart';
 import '../../game_page/services/annotation/annotation_manager.dart';
 import '../../game_page/services/mill.dart';
 import '../../game_page/services/transform/transform.dart';
@@ -697,14 +696,15 @@ class ReplayService {
         logger.i('$_logTag Replay: toolbarAction moveNow');
 
       case 'analysisOn':
-        // Analysis mode is cosmetic; replay toggles it but skips the engine
-        // call to avoid blocking the event loop.
-        AnalysisMode.enable(<MoveAnalysisResult>[]);
-        logger.i('$_logTag Replay: toolbarAction analysisOn (no engine call)');
-
       case 'analysisOff':
-        AnalysisMode.disable();
-        logger.i('$_logTag Replay: toolbarAction analysisOff');
+        // The perfect-database analysis toolbar was removed along
+        // with the legacy C++ engine; older recordings may still
+        // contain these events.  Skip them silently so playback
+        // does not error out on historical data.
+        logger.i(
+          '$_logTag Replay: toolbarAction $action ignored (analysis '
+          'feature removed).',
+        );
 
       default:
         logger.w('$_logTag Replay: unknown toolbarAction: "$action"');

@@ -43,6 +43,7 @@ import '../../shared/utils/helpers/string_helpers/string_buffer_helper.dart';
 import '../../shared/utils/helpers/text_helpers/safe_text_editing_controller.dart';
 import '../../shared/widgets/custom_spacer.dart';
 import '../../shared/widgets/snackbars/scaffold_messenger.dart';
+import '../../src/rust/api/simple.dart' as tgf;
 import '../../statistics/model/stats_settings.dart';
 // Voice assistant functionality disabled
 // import '../../voice_assistant/widgets/voice_button.dart';
@@ -266,25 +267,10 @@ class _GamePageInnerState extends State<_GamePageInner> {
                                         onPressed: () =>
                                             _showAiChatDialog(context),
                                       ),
-                                    // Analysis button (only in humanVsHuman mode)
-                                    if (GameController()
-                                            .gameInstance
-                                            .gameMode ==
-                                        GameMode.humanVsHuman)
-                                      IconButton(
-                                        key: const Key(
-                                          'game_page_analysis_button',
-                                        ),
-                                        icon: Icon(
-                                          AnalysisMode.isEnabled
-                                              ? FluentIcons.eye_off_24_regular
-                                              : FluentIcons.eye_24_regular,
-                                          color: Colors.white,
-                                        ),
-                                        tooltip: S.of(context).analysis,
-                                        onPressed: () =>
-                                            _analyzePosition(context),
-                                      ),
+                                    // Analysis overlay button removed: the
+                                    // perfect-database analyze feature
+                                    // depended on the deleted C++ engine and
+                                    // has no Rust backend yet.
                                     // Board image recognition buttons (only in Setup Position mode)
                                     if (GameController()
                                             .gameInstance
@@ -536,36 +522,6 @@ class _GamePageInnerState extends State<_GamePageInner> {
       toolbarHeight *= 5;
     }
     return toolbarHeight;
-  }
-
-  // Add analysis method to the GamePage class
-  Future<void> _analyzePosition(BuildContext context) async {
-    // If analysis is already enabled, disable it and exit
-    if (AnalysisMode.isEnabled) {
-      AnalysisMode.disable();
-      // No need to call setState here as the listener will handle it
-      return;
-    }
-
-    // Run analysis and display results
-    final PositionAnalysisResult result = await GameController().engine
-        .analyzePosition();
-
-    // Check if widget is still mounted after async operation
-    if (!mounted) {
-      return;
-    }
-
-    if (!result.isValid) {
-      return;
-    }
-
-    // Enable analysis mode with the results and trap moves
-    AnalysisMode.enable(result.possibleMoves, trapMoves: result.trapMoves);
-
-    // setState is still called here to ensure board is repainted
-    // when user explicitly clicks the analysis button
-    setState(() {});
   }
 
   // Method to handle board image recognition

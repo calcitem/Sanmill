@@ -393,13 +393,13 @@ class TapHandler {
         );
         return const EngineResponseSkip();
       }
-      // Check if engine is actually thinking
-      final bool nativeThinking = await GameController().engine.isThinking();
+      // The Rust searcher does not expose a synchronous "is thinking?"
+      // probe, but `isEngineRunning` already tracks that state for the
+      // native session and is what other tap-paths check.
       logger.w(
         "$_logTag [STATE_SNAPSHOT] Tap ignored: AI's turn | "
         "isEngineRunning=${GameController().isEngineRunning} | "
         "isControllerActive=${GameController().isControllerActive} | "
-        "nativeIsThinking=$nativeThinking | "
         "gameMode=${GameController().gameInstance.gameMode} | "
         "phase=${GameController().position.phase} | "
         "sideToMove=${GameController().position.sideToMove} | "

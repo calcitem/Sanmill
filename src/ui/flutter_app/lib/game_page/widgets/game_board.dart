@@ -125,7 +125,9 @@ class _GameBoardState extends State<GameBoard>
       });
     }
 
-    GameController().engine.startup();
+    // Engine startup used to bootstrap the C++ UCI thread; the
+    // Rust/FRB native session is created lazily by
+    // `GameRegistry`, so no startup call is needed here.
 
     _setupValueNotifierListener();
 
@@ -162,7 +164,9 @@ class _GameBoardState extends State<GameBoard>
 
           animationManager.completeAllAnimations();
 
-          GameController().engine.stopSearching();
+          if (GameController().isEngineRunning) {
+            tgf.nativeMillSearchStop();
+          }
 
           GameController().isControllerActive = false;
         }
@@ -184,7 +188,9 @@ class _GameBoardState extends State<GameBoard>
       case AppLifecycleState.detached:
         // App is being terminated
         logger.i("$_logTag App detached, cleaning up engine");
-        GameController().engine.stopSearching();
+        if (GameController().isEngineRunning) {
+          tgf.nativeMillSearchStop();
+        }
         break;
     }
   }
@@ -744,11 +750,11 @@ class _GameBoardState extends State<GameBoard>
     // Mark controller as disposed to cancel any pending engine responses
     GameController().isDisposed = true;
 
-    // Stop any ongoing search to prevent race conditions and timeout issues
-    // This will increment the search epoch and set cancellation flag
-    GameController().engine.stopSearching();
-
-    //GameController().engine.shutdown();
+    // Stop any ongoing search to prevent race conditions and timeout
+    // issues during dispose.
+    if (GameController().isEngineRunning) {
+      tgf.nativeMillSearchStop();
+    }
 
     // Ensure any loaded images are released promptly to avoid native GPU
     // memory growth during repeated page navigation (Monkey tests).

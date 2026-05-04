@@ -18,6 +18,7 @@ import '../../../shared/database/database.dart';
 import '../../../shared/services/logger.dart';
 import '../../../shared/themes/app_theme.dart';
 import '../../../shared/widgets/custom_spacer.dart';
+import '../../../src/rust/api/simple.dart' as tgf;
 import '../../services/mill.dart';
 import '../game_page.dart';
 import '../saved_games_page.dart';
@@ -70,7 +71,10 @@ class GameOptionsModal extends StatelessWidget {
 
             GameController().loadedGameFilenamePrefix = null;
 
-            GameController().engine.stopSearching();
+            // Abort any in-flight Rust search before navigating.
+            if (GameController().isEngineRunning) {
+              tgf.nativeMillSearchStop();
+            }
 
             logger.i(
               "$_logTag New Game pressed: "
