@@ -17,6 +17,7 @@ class NativeMillAiTurnController {
     this.depth,
     this.generalSettings = const GeneralSettings(),
     this.maxStepsPerTurn = 8,
+    this.bothSidesAi = false,
   });
 
   /// Optional fixed depth override used by tests and targeted dogfood paths.
@@ -32,26 +33,38 @@ class NativeMillAiTurnController {
   /// chain is at most place/move + (1..3 removes), so 8 is conservative.
   final int maxStepsPerTurn;
 
+  /// When `true`, treat *both* seats as AI-controlled (AI vs AI mode).
+  /// Disables the [aiSeat] side filter so the controller advances the
+  /// game on every active seat until terminal, mirroring master's
+  /// `Search::executeSearch` continuously running while
+  /// `gameMode == GameMode::aiVsAi`.
+  final bool bothSidesAi;
+
   PlayerSeat get aiSeat =>
       generalSettings.aiMovesFirst ? PlayerSeat.first : PlayerSeat.second;
 
   bool isAiTurn(NativeMillGameSession session) {
     final bool notTerminal = !session.outcome.isTerminal;
+    if (!notTerminal) {
+      logger.w(
+        '[NativeMillAiTurnController] isAiTurn=false: game is terminal '
+        '(outcome=${session.outcome})',
+      );
+      return false;
+    }
+    if (bothSidesAi) {
+      // AI vs AI: every non-terminal active seat is an AI turn.  Skip
+      // the seat-equality filter so the controller drives both white
+      // and black moves consecutively.
+      return true;
+    }
     final PlayerSeat active = session.state.value.activeSeat;
-    final bool result = notTerminal && active == aiSeat;
+    final bool result = active == aiSeat;
     if (!result) {
-      // Diagnostic: log why isAiTurn returns false.
-      if (!notTerminal) {
-        logger.w(
-          '[NativeMillAiTurnController] isAiTurn=false: game is terminal '
-          '(outcome=${session.outcome})',
-        );
-      } else {
-        logger.w(
-          '[NativeMillAiTurnController] isAiTurn=false: '
-          'activeSeat=$active aiSeat=$aiSeat phase=${session.state.value.phase}',
-        );
-      }
+      logger.w(
+        '[NativeMillAiTurnController] isAiTurn=false: '
+        'activeSeat=$active aiSeat=$aiSeat phase=${session.state.value.phase}',
+      );
     }
     return result;
   }
@@ -112,15 +125,31 @@ class NativeMillAiTurnController {
   ///
   /// Returns the LAST applied action for logging / UI.  Returns null when no
   /// AI move was applied (e.g. the search aborted on the first iteration).
+  ///
+  /// In [bothSidesAi] mode the inner loop additionally stops as soon as the
+  /// active seat changes -- otherwise a single call would consume both
+  /// sides' moves back-to-back without giving the outer driver a chance to
+  /// repaint the board between them.
   Future<GameAction?> playIfAiTurn(NativeMillGameSession session) async {
     if (!isAiTurn(session)) {
       return null;
     }
     final int searchDepth = searchDepthForSession(session);
     final int timeLimit = moveLimitMs;
+    final PlayerSeat startingSeat = session.state.value.activeSeat;
     GameAction? lastApplied;
     for (int step = 0; step < maxStepsPerTurn; step++) {
       if (!isAiTurn(session)) {
+        break;
+      }
+      // In aiVsAi we deliberately stop after the side flips so the
+      // outer driver can yield to the Flutter event loop between the
+      // two AIs' turns.  Mill mill-formation chains keep the same
+      // active seat (pending_removals stays on the mover) so this
+      // still consumes Place + Remove correctly.
+      if (bothSidesAi &&
+          lastApplied != null &&
+          session.state.value.activeSeat != startingSeat) {
         break;
       }
       final GameAction? applied = await session.searchAndApplyBestAction(

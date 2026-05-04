@@ -621,6 +621,18 @@ class GameController {
     value = "0";
     aiMoveType = AiMoveType.unknown;
     engine.stopSearching();
+    // Signal any running AI-vs-AI / human-vs-AI loop to bail out:
+    // _nativeAiVsAiLoop checks isControllerActive between iterations
+    // and breaks out as soon as it flips to false.  We also clear
+    // isEngineRunning so the *new* engineToGo call we are about to
+    // dispatch can start its own loop instead of getting an early
+    // 'engine still running, skip' return.  Without this, pressing
+    // New Game during an active aiVsAi self-play left the prior loop
+    // running on the old session reference while the freshly-built
+    // session was idle, surfacing as 'no AI activity after New Game'.
+    isControllerActive = false;
+    isEngineRunning = false;
+    isEngineInDelay = false;
     AnalysisMode.disable();
 
     if (gameModeBak == GameMode.humanVsAi) {
@@ -1387,8 +1399,21 @@ class GameController {
       return const EngineResponseSkip();
     }
 
+    // bothSidesAi: true bypasses the aiSeat filter inside the turn
+    // controller so playIfAiTurn keeps advancing the game on every
+    // active seat until terminal, mirroring master Search where
+    // gameMode == GameMode::aiVsAi runs the engine for both colours.
     final NativeMillAiTurnController aiTurnController =
-        NativeMillAiTurnController(generalSettings: DB().generalSettings);
+        NativeMillAiTurnController(
+          generalSettings: DB().generalSettings,
+          bothSidesAi: true,
+        );
+
+    // Pin the session identity so the loop can detect a New Game
+    // (which rebuilds _activeSession) and exit the old iteration.
+    // Without this, two loops would race on isControllerActive and
+    // both try to drive different sessions concurrently.
+    final NativeMillGameSession loopSession = scopedSession;
 
     isEngineRunning = true;
     isControllerActive = true;
@@ -1397,29 +1422,34 @@ class GameController {
     bool searched = false;
     try {
       while (isControllerActive) {
-        if (scopedSession.outcome.isTerminal) {
+        // Bail out if the active session has been rebuilt under us
+        // (New Game button while a loop is in flight).  Without this
+        // check, both the old and new loops would race on
+        // isControllerActive and try to drive different sessions
+        // concurrently.
+        if (!identical(_activeSession, loopSession)) {
+          logger.i("$tag session was replaced; exiting old loop.");
+          break;
+        }
+        if (loopSession.outcome.isTerminal) {
           break;
         }
         // Both players are AI in this mode, so `aiTurnController.aiSeat`
         // does not cover the full picture: the active seat is always the
         // AI side here.  Using the seat-aware check still works because
-        // both white and black are AI -- isAiTurn returns true while the
-        // game is ongoing, so the loop terminates only on terminal
-        // outcomes or controller deactivation.
-        if (!aiTurnController.isAiTurn(scopedSession)) {
+        // bothSidesAi=true makes isAiTurn return true for any active
+        // non-terminal seat, so the loop terminates only on terminal
+        // outcomes, controller deactivation, or session replacement.
+        if (!aiTurnController.isAiTurn(loopSession)) {
           break;
         }
 
         if (context.mounted) {
-          refreshNativeSessionHeader(
-            context,
-            scopedSession,
-            showThinking: true,
-          );
+          refreshNativeSessionHeader(context, loopSession, showThinking: true);
         }
 
         final GameAction? action = await aiTurnController.playIfAiTurn(
-          scopedSession,
+          loopSession,
         );
         if (action == null) {
           if (!searched) {
@@ -1431,7 +1461,7 @@ class GameController {
         logger.i("$tag Applied native AI move ${action.payload['move']}");
 
         if (context.mounted) {
-          refreshNativeSessionHeader(context, scopedSession);
+          refreshNativeSessionHeader(context, loopSession);
         }
 
         // Honour Move Now: a single AI turn is enough.
@@ -1460,13 +1490,20 @@ class GameController {
           : const EngineResponseHumanOK();
     } finally {
       isEngineInDelay = false;
-      isEngineRunning = false;
+      // Only release the running flag when the loop owns the active
+      // session.  If a New Game raced ahead and replaced _activeSession
+      // before this finally fires, the new loop has already taken
+      // ownership of isEngineRunning and we must not clobber it.
+      if (identical(_activeSession, loopSession)) {
+        isEngineRunning = false;
+      }
       if (context.mounted) {
-        refreshNativeSessionHeader(context, scopedSession);
+        refreshNativeSessionHeader(context, loopSession);
       }
       // Trigger result dialog when the AI vs AI game has finished so the
       // UI does not get stuck on the "Thinking..." tip.
-      if (scopedSession.outcome.isTerminal) {
+      if (loopSession.outcome.isTerminal &&
+          identical(_activeSession, loopSession)) {
         gameResultNotifier.showResult(force: true);
       }
     }
