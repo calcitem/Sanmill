@@ -2,9 +2,8 @@
 // Copyright (C) 2019-2026 The Sanmill developers (see AUTHORS file)
 //
 // Real `GameSession` for Othello backed by the Rust-native `tgf-othello`
-// crate.  This is the first non-Mill module to talk to the Rust kernel
-// without going through the legacy C++ engine: it serves as the
-// FRB-typed-API pressure test promised by Phase 7 of the migration plan.
+// crate.  Exercises the typed FRB kernel surface end-to-end as a
+// secondary game beside Mill.
 
 import 'dart:async';
 

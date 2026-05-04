@@ -3,10 +3,10 @@
 //
 // Rust-native Mill RulesPort.
 //
-// This port is intentionally parallel to the existing `MillRulesPort`
-// (legacy C++ bridge) and is not wired into the main GameController yet.
-// It gives tests and future sessions a direct RulesPort backed by
-// `crates/tgf-mill::MillRules` through the typed FRB `TgfKernel` surface.
+// Backs `NativeMillGameSession` with the `crates/tgf-mill::MillRules`
+// implementation through the typed FRB `TgfKernel` surface.  This is
+// the production path for the Mill game on `next`; the legacy C++
+// bridge it used to parallel was deleted in Phase 3 / Phase 4.
 
 import 'dart:typed_data';
 

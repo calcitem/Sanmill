@@ -11,7 +11,7 @@ consistent, high-quality contributions.
 * Provide consistent guidance for AI Agents (code assistants, automation
   bots).
 * Cover planning, execution, safety, testing, and collaboration practices.
-* Maintain code quality across Rust/TGF, C++, Flutter/Dart, and build tooling.
+* Maintain code quality across Rust/TGF, Flutter/Dart, and build tooling.
 
 ---
 
@@ -45,15 +45,15 @@ consistent, high-quality contributions.
 - Internationalization (Many languages via ARB files)
 - Build system: Flutter CLI, platform-specific tools
 
-**Legacy (Qt/C++):**
-- Desktop GUI primarily for debugging
-- Not actively maintained; use Flutter for new features
-
 **Testing:**
-- C++ unit tests: Google Test (gtest)
+- Rust unit / integration tests: `cargo test --workspace`
 - Flutter widget tests and integration tests
 - UI automation: Appium
 - Monkey testing for stability
+
+The legacy Qt UI and C++ / gtest layer were retired in
+Phase 3 / Phase 4 (commit ff357aadc).  All gameplay logic and AI
+search now live in the Rust/TGF stack.
 
 **Build & Automation:**
 - Shell scripts for initialization and deployment
@@ -73,20 +73,19 @@ consistent, high-quality contributions.
 │   └── tgf-cli/               # Rust CLI / bench tool
 ├── src/                       # Source root
 │   └── ui/
-│       ├── flutter_app/      # Flutter frontend (PRIMARY)
-│       │   ├── lib/          # Dart source code
-│       │   ├── l10n.yaml     # Localization config
-│       │   ├── pubspec.yaml  # Flutter dependencies
-│       │   └── android/ios/linux/macos/windows/
-│       └── qt/               # Qt frontend (DEBUG ONLY)
-├── tests/                    # C++ and integration tests
-│   ├── test_*.cpp            # gtest unit tests
-│   ├── gtest/                # gtest project files
+│       └── flutter_app/      # Flutter frontend (PRIMARY)
+│           ├── lib/          # Dart source code
+│           ├── l10n.yaml     # Localization config
+│           ├── pubspec.yaml  # Flutter dependencies
+│           └── android/ios/linux/macos/windows/
+├── tests/                    # Integration / UI / perf tests
 │   ├── appium/               # UI automation tests
-│   └── monkey/               # Stability testing
+│   ├── golden/               # Golden-image baselines
+│   ├── monkey/               # Stability testing
+│   └── perf_baseline.toml    # Search perf baseline
 ├── scripts/                  # Utility scripts
 ├── fastlane/metadata/        # App store metadata
-├── include/                  # Public headers
+├── include/                  # Public headers (version.h)
 ├── format.sh                 # Code formatting script
 ├── flutter-init.sh           # Flutter setup
 └── *.sh                      # Various build/deploy scripts
@@ -121,10 +120,13 @@ consistent, high-quality contributions.
 4. Run `git commit` with proper message (see §5)
 
 **Never skip the formatting step.** The script runs:
-- `clang-format` on all C++ source files
 - `dart format` on all Dart/Flutter code
-- `cargo fmt --all` on Rust code
+- `cargo fmt --all` on Rust code (when `Cargo.toml` is present)
 - `cargo clippy --workspace --all-targets --all-features -- -D warnings`
+
+The C++ engine and Qt UI were removed in Phase 3 / Phase 4 (commit
+ff357aadc), so the `format.sh` script no longer invokes
+`clang-format`.
 
 ---
 
@@ -170,26 +172,26 @@ Refs #789
 
 ## 6) Code Quality and Style Guidelines
 
-### C++ Specific Rules
+### General Rules (apply to all languages)
 
 **Error Handling:**
-* **Never use try/catch blocks** in C++ code
-* **Use assertions** (`assert()`) for preconditions and
-  invariants
+* **Use assertions** (`assert!` / `debug_assert!` in Rust,
+  `assert(...)` in Dart) for preconditions and invariants.
 * **Avoid fallback mechanisms** that hide errors; prefer fail-fast
-  behavior
-* Errors should be surfaced immediately, not masked with default values
+  behavior so root causes surface immediately during development.
+* Errors should be surfaced rather than masked with default values.
 
 **Code Extension:**
 * **Modify existing functions directly** rather than creating wrapper
-  functions
-* **Avoid "Enhanced" or "Extended" class names** (e.g., no
-  `EnhancedSearch`)
-* Prefer direct modification of original implementations to maintain
-  clarity
+  functions whose only purpose is to intercept calls.
+* **Avoid "Enhanced" / "Extended" class names** (e.g., no
+  `EnhancedSearch`); prefer editing the original implementation.
 
-**Style:**
-* Follow existing code style (enforced by clang-format)
+The C++ engine and Qt UI were removed in Phase 3 / Phase 4, so the
+"C++ Specific Rules" that used to live here no longer apply.  The
+remaining native code (small iOS / macOS / Android Runner shims)
+follows the conventions of the corresponding platform tooling and
+is rarely touched.
 
 ### Rust/TGF Specific Rules
 
@@ -233,7 +235,7 @@ Refs #789
 
 ### Build Tools
 
-**Rust / TGF engine (replaces legacy C++ engine):**
+**Rust / TGF engine:**
 ```bash
 cargo test --workspace
 cargo clippy --workspace --all-targets --all-features -- -D warnings
@@ -307,7 +309,7 @@ is critical to avoid common mistakes.
 
 ### Testing
 
-**Rust unit tests (replaces legacy C++ gtest):**
+**Rust unit tests:**
 ```bash
 cargo test --workspace
 cargo test -p rust_lib_sanmill --lib -- --ignored random_walk_extended
@@ -428,7 +430,7 @@ needs new sibling helpers:
 # Format/check code (ALWAYS before commit)
 ./format.sh s
 
-# Build Rust engine (replaces legacy C++ engine)
+# Build Rust engine
 cargo build --workspace --release
 
 # Run Rust/TGF tests + benchmarks
@@ -456,7 +458,7 @@ flutter test
 * `src/ui/flutter_app/pubspec.yaml` - Flutter dependencies
 * `src/ui/flutter_app/lib/` - Flutter source code
 * `src/ui/flutter_app/l10n.yaml` - Localization configuration
-* `format.sh` - Code formatting/check script (C++, Dart, Rust fmt/clippy)
+* `format.sh` - Code formatting/check script (Dart, Rust fmt/clippy)
 * `AGENTS.md` - This file
 * `docs/FRAMEWORK_API.md` - Rust/TGF framework API contract
 * `README.md` - User-facing documentation
