@@ -1,45 +1,14 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // Copyright (C) 2019-2026 The Sanmill developers (see AUTHORS file)
 
-// engine.dart
+// game_mode.dart
 //
-// Post-Phase-3 shim.  The real Mill engine lives in the Rust/TGF stack
-// (`crates/tgf-mill::MillRules`, `crates/tgf-search::Searcher`) and is
-// surfaced to Dart through `tgf_kernel_*` FRB calls and
-// `NativeMillGameSession`.  Everything that used to talk to the C++
-// UCI thread over `MethodChannel("com.calcitem.sanmill/engine")` has
-// been deleted; the channel handlers on the iOS / macOS / Android
-// runners no longer exist, and the C++ source tree was removed in
-// Phase 3 (commit ff357aadc).
-//
-// This file remains as the home of:
-//
-//   * `enum GameMode` and its `whoIsAI` / header-icon extension —
-//     consumed by the controller, the AI-turn controller, the
-//     game-page header, the move-options modal, and the persistence
-//     layer.  Migration of these consumers to the typed Rust path is
-//     tracked in a follow-up cleanup; for now they share this enum
-//     definition.
-//   * `aiMoveTypeIcons` — static lookup used by the page header.
-//   * `class Engine {}` — empty shim placeholder.  The
-//     `GameController.engine` field still exists for one transition
-//     so call-sites that read it during dispose / navigation paths
-//     do not have to be fanned out in the same patch.  Phase C will
-//     remove the field and this class together.
+// Game-mode enum + header-icon extension that used to live next to the
+// (now deleted) Mill UCI engine bridge.  Consumers across the
+// controller, AI-turn driver, page header, modal, and persistence
+// layer share these symbols.
 
 part of '../mill.dart';
-
-/// Empty shim left behind by the Phase 3 / Phase 4 cleanup.
-///
-/// The class no longer talks to a native UCI engine; every previous
-/// public method (search / analyze / startup / shutdown / option
-/// broadcast) was a stub after the C++ engine deletion in Phase 3
-/// and has been removed.  The remaining `Engine engine` field on
-/// `GameController` is kept for one PR so consumers that hold a
-/// stale reference compile; the field itself is deleted in Phase C.
-class Engine {
-  const Engine();
-}
 
 enum GameMode {
   humanVsAi,

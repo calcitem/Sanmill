@@ -66,7 +66,6 @@ class GameController {
   late Game gameInstance;
   late Position position;
   late Position setupPosition;
-  final Engine engine = Engine();
   final ValueNotifier<GameStateSnapshot?> activeSessionSnapshotNotifier =
       ValueNotifier<GameStateSnapshot?>(null);
 
