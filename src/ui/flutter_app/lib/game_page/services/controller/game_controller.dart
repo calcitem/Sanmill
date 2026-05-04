@@ -1142,6 +1142,34 @@ class GameController {
       return const EngineResponseHumanOK();
     }
 
+    // Move Now while a native search is already running: ask the
+    // Rust searcher to abort.  The driving coroutine that started the
+    // search will then receive the aborted bestmove from
+    // `searchBestAction`, apply it, and clear `isEngineRunning`.  We
+    // must NOT spawn a second concurrent search on top of it -- both
+    // calls would race for the global `ACTIVE_SEARCH` slot in
+    // `crates/tgf-frb/src/games/mill/search.rs` and produce no visible
+    // move, which is the exact symptom reported on this branch.
+    //
+    // Master's Move Now used `engine.stopSoft()` over UCI to achieve
+    // the same effect; here we mirror that by hitting the FRB stop
+    // entry point directly.  When the engine is idle this is a no-op
+    // and we fall through to the regular dispatch below so the AI
+    // starts thinking on demand (e.g. user pressed Move Now while it
+    // was the human's turn after `moveNow()` swapped roles).
+    if (isMoveNow && isEngineRunning) {
+      logger.i(
+        "$tag isMoveNow && isEngineRunning -> request native search abort.",
+      );
+      // Both calls are no-ops when the corresponding engine is idle.
+      tgf.nativeMillSearchStop();
+      // Keep legacy engine compat: send "stop" so the (stub) UCI path
+      // also flushes if it is in use.
+      // ignore: discarded_futures
+      engine.stopSoft();
+      return const EngineResponseSkip();
+    }
+
     if (gameInstance.gameMode == GameMode.humanVsAi) {
       return _nativeSessionEngineToGo(context, isMoveNow: isMoveNow);
     }
@@ -1361,12 +1389,28 @@ class GameController {
       return const EngineResponseSkip();
     }
 
+    // The controller's seat-aware filter normally derives `aiSeat`
+    // from `generalSettings.aiMovesFirst`.  That breaks when Move Now
+    // is pressed on a human-to-move turn, because `moveNow()` flips
+    // who-is-AI via `gameInstance.reverseWhoIsAi()` but does NOT
+    // touch the persisted `aiMovesFirst` flag.  The canonical "is it
+    // an AI turn?" predicate is `gameInstance.isAiSideToMove`, which
+    // checks `players[sideToMove].isAi` and therefore reflects the
+    // temporary swap.  Run the controller in `bothSidesAi: true` mode
+    // for the Move Now / human-vs-AI dispatch so it advances any
+    // active seat the legacy logic deemed AI-controlled, and gate
+    // entry on `gameInstance.isAiSideToMove` instead of the
+    // controller's narrower seat predicate.
     final NativeMillAiTurnController aiTurnController =
-        NativeMillAiTurnController(generalSettings: DB().generalSettings);
-    if (isMoveNow && !aiTurnController.isAiTurn(scopedSession)) {
+        NativeMillAiTurnController(
+          generalSettings: DB().generalSettings,
+          bothSidesAi: true,
+        );
+    final bool aiTurn = gameInstance.isAiSideToMove;
+    if (isMoveNow && !aiTurn) {
       return const EngineResponseSkip();
     }
-    if (!aiTurnController.isAiTurn(scopedSession)) {
+    if (!aiTurn) {
       return const EngineResponseHumanOK();
     }
 
