@@ -41,6 +41,14 @@ class GameController {
   bool isEngineInDelay = false;
   bool isPieceMarkedInPositionSetup = false;
 
+  /// Monotonic counter incremented on every reset() so any in-flight
+  /// AI loop (e.g. _nativeAiVsAiLoop) can detect that a New Game has
+  /// happened underneath it and bail out cleanly.  Without this the
+  /// previous loop continues racing with the freshly-spawned one,
+  /// surfacing as 'AI vs AI New Game does nothing' when both loops
+  /// trip over each other on isControllerActive / isEngineRunning.
+  int aiLoopEpoch = 0;
+
   bool lastMoveFromAI = false;
 
   bool disableStats = false;
@@ -633,6 +641,7 @@ class GameController {
     isControllerActive = false;
     isEngineRunning = false;
     isEngineInDelay = false;
+    aiLoopEpoch++;
     AnalysisMode.disable();
 
     if (gameModeBak == GameMode.humanVsAi) {
@@ -1338,10 +1347,16 @@ class GameController {
     required bool isMoveNow,
   }) async {
     const String tag = "[engineToGo][native]";
-    final GameSession? scopedSession = GameSessionScope.sessionOf(context);
+    // Same fall-back as _nativeAiVsAiLoop -- prefer the
+    // controller-bound active session so flows triggered from the
+    // modal route still work even if the InheritedWidget probe via
+    // context returns null.
+    final GameSession? scopedFromContext = GameSessionScope.sessionOf(context);
+    final GameSession? scopedSession = scopedFromContext ?? _activeSession;
     if (scopedSession is! NativeMillGameSession) {
       logger.w(
-        "$tag Native flag is enabled but session is ${scopedSession.runtimeType}.",
+        "$tag Native flag is enabled but session is "
+        "${scopedSession.runtimeType}.",
       );
       return const EngineResponseSkip();
     }
@@ -1394,17 +1409,26 @@ class GameController {
     required bool isMoveNow,
   }) async {
     const String tag = "[engineToGo][native][aiVsAi]";
-    final GameSession? scopedSession = GameSessionScope.sessionOf(context);
+    // Resolve session via the controller-bound `_activeSession`
+    // FIRST so we don't depend on the modal's BuildContext still
+    // being inside the GameSessionScope InheritedWidget tree --
+    // showModalBottomSheet routes inside the same Navigator, but we
+    // saw scopedSession show up as null in some app states; the
+    // controller-bound reference is set by Home.dart whenever the
+    // active session changes and never goes stale on a mode switch.
+    final GameSession? scopedFromContext = GameSessionScope.sessionOf(context);
+    final GameSession? scopedSession = scopedFromContext ?? _activeSession;
     logger.i(
       "$tag enter: isMoveNow=$isMoveNow, "
-      "scopedSession=${scopedSession.runtimeType}, "
+      "scopedFromContext=${scopedFromContext.runtimeType}, "
       "_activeSession=${_activeSession.runtimeType}, "
-      "identical=${identical(_activeSession, scopedSession)}, "
+      "resolved=${scopedSession.runtimeType}, "
       "isEngineRunning=$isEngineRunning",
     );
     if (scopedSession is! NativeMillGameSession) {
       logger.w(
-        "$tag AI-vs-AI requires NativeMillGameSession, got ${scopedSession.runtimeType}.",
+        "$tag AI-vs-AI requires NativeMillGameSession, got "
+        "${scopedSession.runtimeType}.",
       );
       return const EngineResponseSkip();
     }
@@ -1426,11 +1450,19 @@ class GameController {
           bothSidesAi: true,
         );
 
-    // Pin the session identity so the loop can detect a New Game
-    // (which rebuilds _activeSession) and exit the old iteration.
-    // Without this, two loops would race on isControllerActive and
-    // both try to drive different sessions concurrently.
+    // Pin both the session identity AND the AI-loop epoch so the
+    // loop can detect a New Game while it is mid-await.  reset()
+    // increments aiLoopEpoch and the session's resetGame() mutates
+    // the same object in-place, so identity alone is not enough --
+    // the identity check fails to fire when the active session is
+    // the same Dart object but the underlying state was wiped by
+    // the freshly-clicked New Game.  The epoch is the canonical
+    // signal: if it has been bumped while we were awaiting Rust
+    // search, the loop bails out and lets the freshly-spawned loop
+    // own the session exclusively.
     final NativeMillGameSession loopSession = scopedSession;
+    aiLoopEpoch++;
+    final int loopEpoch = aiLoopEpoch;
 
     isEngineRunning = true;
     isControllerActive = true;
@@ -1447,13 +1479,19 @@ class GameController {
           "activeSeat=${loopSession.state.value.activeSeat}, "
           "outcome.isTerminal=${loopSession.outcome.isTerminal}",
         );
-        // Bail out if the active session has been rebuilt under us
-        // (New Game button while a loop is in flight).  Without this
-        // check, both the old and new loops would race on
-        // isControllerActive and try to drive different sessions
-        // concurrently.
+        // Bail out if the active session has been rebuilt under us,
+        // OR if the aiLoopEpoch has advanced (a fresh New Game spun
+        // up another loop).  Either signal means this loop has been
+        // superseded and must release the session to the new owner.
         if (!identical(_activeSession, loopSession)) {
           logger.i("$tag session was replaced; exiting old loop.");
+          break;
+        }
+        if (aiLoopEpoch != loopEpoch) {
+          logger.i(
+            "$tag aiLoopEpoch advanced from $loopEpoch to $aiLoopEpoch;"
+            " exiting old loop.",
+          );
           break;
         }
         if (loopSession.outcome.isTerminal) {
@@ -1528,20 +1566,19 @@ class GameController {
           : const EngineResponseHumanOK();
     } finally {
       isEngineInDelay = false;
-      // Only release the running flag when the loop owns the active
-      // session.  If a New Game raced ahead and replaced _activeSession
-      // before this finally fires, the new loop has already taken
-      // ownership of isEngineRunning and we must not clobber it.
-      if (identical(_activeSession, loopSession)) {
+      // Only release running flag / show dialog when this loop is
+      // still the *current* one (epoch matches) AND owns the active
+      // session.  If a New Game raced ahead the new loop has already
+      // taken ownership and we must not clobber its state.
+      final bool stillCurrent =
+          aiLoopEpoch == loopEpoch && identical(_activeSession, loopSession);
+      if (stillCurrent) {
         isEngineRunning = false;
       }
       if (context.mounted) {
         refreshNativeSessionHeader(context, loopSession);
       }
-      // Trigger result dialog when the AI vs AI game has finished so the
-      // UI does not get stuck on the "Thinking..." tip.
-      if (loopSession.outcome.isTerminal &&
-          identical(_activeSession, loopSession)) {
+      if (stillCurrent && loopSession.outcome.isTerminal) {
         gameResultNotifier.showResult(force: true);
       }
     }
