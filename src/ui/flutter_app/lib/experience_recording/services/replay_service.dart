@@ -539,15 +539,15 @@ class ReplayService {
             return;
           }
         }
-      }
-      final ExtMove extMove = ExtMove(move, side: side);
-      final bool ok = GameController().applyMove(extMove);
-      assert(ok, 'Replay aiMove failed: $move (side=$side)');
-      if (!ok) {
-        logger.e('$_logTag Replay: aiMove failed: $move (side=$side)');
+        // Steady-state replay always finds a native session.  If it
+        // does not (test fixtures, very-early init), surface loudly
+        // instead of falling through to the deleted
+        // `gameInstance.doMove` legacy path.
+        logger.e(
+          '$_logTag Replay: aiMove had no NativeMillGameSession '
+          'available; skipping move=$move side=$side.',
+        );
         stop();
-      } else {
-        logger.i('$_logTag Replay: applied aiMove $move (side=$side)');
       }
     } catch (e) {
       logger.e('$_logTag Replay: aiMove exception: $move (side=$side): $e');

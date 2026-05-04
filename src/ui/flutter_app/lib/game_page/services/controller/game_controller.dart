@@ -712,15 +712,6 @@ class GameController {
     // It will be started in tap_handler after the first human move.
   }
 
-  /// Apply a move programmatically without going through UI tapping.
-  ///
-  /// This is primarily used by Puzzle mode to auto-play the opponent's forced
-  /// responses while keeping the core move execution inside the `mill.dart`
-  /// library.
-  bool applyMove(ExtMove move) {
-    return gameInstance.doMove(move);
-  }
-
   /// S.of(context).starts the current game.
   ///
   /// This method is suitable to use for starting a new game.
