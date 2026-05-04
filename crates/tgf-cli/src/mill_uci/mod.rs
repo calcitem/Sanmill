@@ -238,10 +238,19 @@ fn spawn_search(
         // Mill's generate_legal_ctx already mirrors that list, so do not
         // additionally shuffle the root action list here.
         shuffle_root: false,
-        // Mill now ships a Zobrist-based incremental Workbench::key_after
-        // (see crates/tgf-mill/src/rules/game_impls.rs) so prefetch
-        // hints land on the right cache line in O(1) per move.
-        enable_prefetch: true,
+        // Empirical A/B regression (selfplay depth 5 / 6 / 7 x 24
+        // openings, three runs each) shows TT prefetch is neutral to
+        // slightly negative for Mill: 0.1-1.7% slower with prefetch
+        // ON.  Reasons: the 16 Mi-cluster TT (~256 MiB) far exceeds
+        // typical L3 (~16-64 MiB) so most probes miss anyway, while
+        // the prefetch instruction + key_after computation add ~5 ns
+        // per move that the CPU hardware prefetcher and TT signature
+        // re-validation cannot recover.  The infrastructure remains
+        // (see SearchOptions::enable_prefetch + Workbench::key_after);
+        // games whose TT fits in cache or whose key_after is cheaper
+        // than Mill's may still benefit.  See
+        // /opt/cursor/artifacts/PREFETCH_EVALUATION_REPORT.md.
+        enable_prefetch: false,
         // Master executeSearch uses full windows for every IDS pass.
         enable_aspiration_window: false,
         // Master MovePicker has no killer / history tables.

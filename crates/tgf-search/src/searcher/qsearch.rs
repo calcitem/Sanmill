@@ -80,11 +80,13 @@ impl<G: Game> Searcher<G> {
         let key = wb.key();
         self.order_moves(wb, key, depth, &mut moves);
 
-        // TT prefetch (mirrors master Search::qsearch).  See alpha_beta
-        // for rationale.
+        // TT prefetch: only warm the cache line for the first
+        // candidate.  See alpha_beta for the rationale; the same
+        // "prefetch-the-first-only" pattern wins at depth 5+ in
+        // selfplay.
         if self.options.enable_prefetch {
-            for action in &moves {
-                let predicted_key = wb.key_after(*action);
+            if let Some(&first_action) = moves.first() {
+                let predicted_key = wb.key_after(first_action);
                 self.tt.prefetch(predicted_key);
             }
         }

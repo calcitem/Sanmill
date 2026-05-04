@@ -44,6 +44,11 @@ pub fn run_selfplay() {
     let mut depth: i32 = 5;
     let mut max_games: usize = 24;
     let mut algorithm: SelfplayAlgorithm = SelfplayAlgorithm::Pvs;
+    // Default off after empirical A/B testing showed prefetch is
+    // neutral to slightly negative for Mill at depths 5-7 (the TT
+    // does not fit in L3 and the prefetch overhead exceeds the
+    // savings).  Pass --prefetch true to A/B-test changes.
+    let mut enable_prefetch: bool = false;
 
     let mut args = std::env::args().skip(2); // skip "tgf" and "selfplay"
     while let Some(token) = args.next() {
@@ -70,6 +75,11 @@ pub fn run_selfplay() {
                     };
                 }
             }
+            "--prefetch" => {
+                if let Some(value) = args.next() {
+                    enable_prefetch = matches!(value.as_str(), "1" | "true" | "on" | "yes");
+                }
+            }
             other => {
                 eprintln!("# warning: ignoring unknown selfplay arg `{other}`");
             }
@@ -93,6 +103,7 @@ pub fn run_selfplay() {
     println!("openings = {total}");
     println!("algorithm = \"{}\"", algorithm.label());
     println!("seed = \"{SELFPLAY_SEED:#018x}\"");
+    println!("enable_prefetch = {enable_prefetch}");
 
     let mut total_plies: u64 = 0;
     let mut total_nodes: u64 = 0;
@@ -103,7 +114,15 @@ pub fn run_selfplay() {
 
     for (i, &opening) in openings.iter().take(total).enumerate() {
         let game_started = Instant::now();
-        let game_result = play_one_game(&rules, &game, &initial, opening, depth, algorithm);
+        let game_result = play_one_game(
+            &rules,
+            &game,
+            &initial,
+            opening,
+            depth,
+            algorithm,
+            enable_prefetch,
+        );
         let elapsed_ms = game_started.elapsed().as_millis() as u64;
 
         total_plies += game_result.plies as u64;
@@ -194,6 +213,7 @@ fn play_one_game(
     opening: Action,
     depth: i32,
     algorithm: SelfplayAlgorithm,
+    enable_prefetch: bool,
 ) -> PlayResult {
     use tgf_core::OutcomeKind;
 
@@ -218,10 +238,8 @@ fn play_one_game(
         time_limit_ms: None,
         allow_null_move: false,
         shuffle_root: false,
-        // Selfplay leverages Mill's O(1) Zobrist key_after via the
-        // Workbench trait override; prefetch is safe and
-        // deterministic here.
-        enable_prefetch: true,
+        // Driven by the --prefetch CLI flag for empirical A/B testing.
+        enable_prefetch,
         enable_aspiration_window: false,
         enable_killers: false,
         enable_history: false,
