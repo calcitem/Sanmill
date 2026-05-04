@@ -10,11 +10,29 @@ ENV DEBIAN_FRONTEND=noninteractive \
     LANG=C.UTF-8 \
     LC_ALL=C.UTF-8
 
+# System packages required to build and run the Flutter Linux desktop
+# bundle, the Rust/TGF engine, and to drive end-to-end testing under
+# Xvfb in background agents. Notes on a few non-obvious entries:
+#   * llvm-18 - provides /usr/lib/llvm-18/bin/ar (and llvm-ar). The
+#     clang-18 package alone does not ship the archiver under its
+#     private bin directory, which causes "Failed to find any of
+#     [llvm-ar, ar]" when Flutter compiles native code.
+#   * gstreamer1.0-plugins-base / -good / -tools - runtime plugins
+#     required by the audioplayers_linux plugin. Without "playbin"
+#     (plugins-base) and the codecs / sinks (plugins-good),
+#     AudioPlayer's constructor throws
+#     "Not all elements could be created." and the whole bundle
+#     aborts before reaching main(). The matching -dev headers are
+#     only needed for compilation.
+#   * gdb / imagemagick / scrot / xdotool - debugging and screenshot
+#     helpers used to diagnose Linux-desktop startup crashes and to
+#     capture UI evidence under Xvfb.
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
         build-essential \
         binutils \
         clang \
+        llvm-18 \
         pkg-config \
         libssl-dev \
         clang-format \
@@ -24,6 +42,9 @@ RUN apt-get update \
         git \
         libgstreamer-plugins-base1.0-dev \
         libgstreamer1.0-dev \
+        gstreamer1.0-plugins-base \
+        gstreamer1.0-plugins-good \
+        gstreamer1.0-tools \
         libgtk-3-dev \
         lld \
         ninja-build \
@@ -33,6 +54,10 @@ RUN apt-get update \
         xvfb \
         xdg-user-dirs \
         libglu1-mesa \
+        gdb \
+        imagemagick \
+        scrot \
+        xdotool \
     && rm -rf /var/lib/apt/lists/*
 
 # Rust (channel must stay aligned with rust-toolchain.toml).
