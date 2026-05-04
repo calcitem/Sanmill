@@ -5,7 +5,8 @@
 
 part of '../mill.dart';
 
-enum MoveType { place, move, remove, draw, none }
+// `enum MoveType` lives in `lib/games/mill/mill_types.dart` so it
+// survives the upcoming `engine/ext_move.dart` cleanup.
 
 class MoveParser {
   MoveType parseMoveType(String move) {

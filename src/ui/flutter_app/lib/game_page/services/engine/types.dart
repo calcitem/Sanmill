@@ -2,25 +2,16 @@
 // Copyright (C) 2019-2026 The Sanmill developers (see AUTHORS file)
 
 // types.dart
+//
+// Extensions and constants on the Mill enums declared in
+// `lib/games/mill/mill_types.dart`.  This file stays inside the
+// legacy `mill.dart` part-of family because every extension below
+// reads through `GameController().position` / `GameController().
+// gameInstance` -- those references are migrated in later phases of
+// the rule-machine cleanup, after which this file can be folded
+// back into `mill_types.dart` (Phase \u03b8).
 
 part of '../mill.dart';
-
-int abs(int value) => value > 0 ? value : -value;
-
-enum PieceColor { none, white, black, marked, nobody, draw }
-
-Color getAverageColor(Color a, Color b) {
-  return Color.fromARGB(
-    (a.a + b.a) ~/ 2,
-    (a.a + b.r) ~/ 2,
-    (a.a + b.g) ~/ 2,
-    (a.a + b.b) ~/ 2,
-  );
-}
-
-Color getTranslucentColor(Color c, double opacity) {
-  return c.withValues(alpha: opacity);
-}
 
 extension PieceColorExtension on PieceColor {
   String get string {
@@ -232,10 +223,6 @@ extension PieceColorExtension on PieceColor {
   Color get blurPositionColor => mainColor.withValues(alpha: 0.1);
 }
 
-enum AiMoveType { unknown, traditional, consensus }
-
-enum Phase { ready, placing, moving, gameOver }
-
 extension PhaseExtension on Phase {
   String get fen {
     switch (this) {
@@ -288,8 +275,6 @@ extension PhaseExtension on Phase {
     }
   }
 }
-
-enum Act { select, place, remove }
 
 extension ActExtension on Act {
   String get fen {
