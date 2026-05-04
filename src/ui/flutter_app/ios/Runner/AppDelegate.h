@@ -9,10 +9,12 @@
 #import <Flutter/Flutter.h>
 #import <UIKit/UIKit.h>
 #endif
-#import "../../command/mill_engine_ios.h"
 
-@interface AppDelegate : FlutterAppDelegate {
-    MillEngine* engine;
-}
+// The legacy `MillEngine` ObjC class (`command/mill_engine_ios.h`) was
+// removed together with the C++ engine in Phase 3 / Phase 4.  The
+// Rust/TGF engine talks to Dart through `flutter_rust_bridge`, so no
+// engine ivar is needed on the iOS / macOS app delegate any more.
+
+@interface AppDelegate : FlutterAppDelegate
 
 @end

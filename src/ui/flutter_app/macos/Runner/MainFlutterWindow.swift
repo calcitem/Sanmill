@@ -11,7 +11,6 @@ import share_plus
 import url_launcher_macos
 
 class MainFlutterWindow: NSWindow {
-    var engine: MillEngine?
 
     private func setTitle(title: String) {
         DispatchQueue.main.async {
@@ -19,41 +18,11 @@ class MainFlutterWindow: NSWindow {
         }
     }
 
-    private func setupMethodChannel( controller: FlutterViewController) {
-
-        let channel = FlutterMethodChannel(name: "com.calcitem.sanmill/engine",
-                                          binaryMessenger: controller.engine.binaryMessenger)
-
-        channel.setMethodCallHandler { [weak self] (call, result) in
-            guard let strongEngine = self?.engine else {
-                result(FlutterMethodNotImplemented)
-                return
-            }
-
-            switch call.method {
-            case "startup":
-                result(strongEngine.startup(controller))
-            case "send":
-                if let arguments = call.arguments as? String {
-                    result(strongEngine.send(arguments))
-                } else {
-                    result(FlutterMethodNotImplemented)
-                }
-            case "read":
-                result(strongEngine.read())
-            case "shutdown":
-                result(strongEngine.shutdown())
-            case "isReady":
-                result(strongEngine.isReady())
-            case "isThinking":
-                result(strongEngine.isThinking())
-            case "getResponseDroppedCount":
-                result(strongEngine.getResponseDroppedCount())
-            default:
-                result(FlutterMethodNotImplemented)
-            }
-        }
-    }
+    // The Mill engine MethodChannel that used to run here was removed in
+    // Phase 3 / Phase 4 along with the native C++ engine; the Rust/TGF
+    // engine talks to Dart through `flutter_rust_bridge` so no Swift-side
+    // handler is needed.  The remaining `com.calcitem.sanmill/ui`
+    // channel only forwards window-title updates from the Flutter side.
 
     private func setupUIMethodChannel(controller: FlutterViewController) {
             let uiChannel = FlutterMethodChannel(name: "com.calcitem.sanmill/ui",
@@ -85,9 +54,6 @@ class MainFlutterWindow: NSWindow {
 
     super.awakeFromNib()
 
-    self.engine = MillEngine()
-
-    setupMethodChannel(controller: flutterViewController)
     setupUIMethodChannel(controller: flutterViewController)
   }
 }
