@@ -535,9 +535,19 @@ class _CustomPuzzlesPageState extends State<CustomPuzzlesPage> {
       case QrImageOption.none:
         return null;
       case QrImageOption.board:
-        final String layout = GameController().position
-            .generateBoardLayoutAfterThisMove();
-        return QrCodeDialog.renderBoardImage(layout, 200);
+        // Slice the 26-char ring-layout out of the active session
+        // FEN; mirrors the same pattern used by the moves-list page
+        // and the saved-games page.
+        final String? fen = GameController().activeFen;
+        if (fen == null || fen.length < 26) {
+          return null;
+        }
+        final int spaceIdx = fen.indexOf(' ');
+        final int end = spaceIdx == -1 ? fen.length : spaceIdx;
+        if (end < 26) {
+          return null;
+        }
+        return QrCodeDialog.renderBoardImage(fen.substring(0, 26), 200);
       case QrImageOption.custom:
         final XFile? file = await ImagePicker().pickImage(
           source: ImageSource.gallery,

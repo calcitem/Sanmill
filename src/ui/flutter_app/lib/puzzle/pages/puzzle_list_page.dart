@@ -659,10 +659,19 @@ class _PuzzleListPageState extends State<PuzzleListPage> {
       case QrImageOption.none:
         return null;
       case QrImageOption.board:
-        // For puzzle export, use the current game position if available.
-        final String layout = GameController().position
-            .generateBoardLayoutAfterThisMove();
-        return QrCodeDialog.renderBoardImage(layout, 200);
+        // For puzzle export, use the current native session position
+        // when available -- the leading 26 chars of the FEN are the
+        // ring-layout string the QR renderer expects.
+        final String? fen = GameController().activeFen;
+        if (fen == null || fen.length < 26) {
+          return null;
+        }
+        final int spaceIdx = fen.indexOf(' ');
+        final int end = spaceIdx == -1 ? fen.length : spaceIdx;
+        if (end < 26) {
+          return null;
+        }
+        return QrCodeDialog.renderBoardImage(fen.substring(0, 26), 200);
       case QrImageOption.custom:
         final XFile? file = await ImagePicker().pickImage(
           source: ImageSource.gallery,

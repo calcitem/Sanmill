@@ -377,12 +377,15 @@ class _SavedGamesPageState extends State<SavedGamesPage> {
     }
 
     // If there are no moves, but FEN exists, produce a layout from FEN directly.
-    if (fen != null && fen.isNotEmpty) {
-      final Position pos = Position();
-      if (!pos.setFen(fen)) {
-        return '';
+    // The first 26 characters of a Mill FEN are the ring-layout
+    // string ("OO***@**/..." -- outer / middle / inner ring), which is
+    // the same shape `MiniBoardPainter` expects.
+    if (fen != null && fen.isNotEmpty && fen.length >= 26) {
+      final int spaceIdx = fen.indexOf(' ');
+      final int end = spaceIdx == -1 ? fen.length : spaceIdx;
+      if (end >= 26) {
+        return fen.substring(0, 26);
       }
-      return pos.generateBoardLayoutAfterThisMove();
     }
     return '';
   }
