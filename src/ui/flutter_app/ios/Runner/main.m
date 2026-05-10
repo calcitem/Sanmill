@@ -5,8 +5,6 @@
 
 #if TARGET_OS_OSX
 
-// TODO: The game form has not been successfully loaded
-
 #import <FlutterMacOS/FlutterMacOS.h>
 #import "AppDelegate.h"
 
