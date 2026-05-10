@@ -449,7 +449,7 @@ class DaSanQiRuleSettings extends RuleSettings {
 /// https://id.wikibooks.org/wiki/Permainan_Tradisional_%22Catur%22_di_Indonesia/Mul-mulan_(Pulau_Jawa)
 /// https://id.wikibooks.org/wiki/Permainan_Tradisional_%22Catur%22_di_Indonesia/Derek_Dua_Olas_(Lombok)
 /// https://www.researchgate.net/publication/331483882_Adaptasi_Permainan_Tradisional_Mul-Mulan_ke_dalam_Perancangan_Game_Design_Document
-/// TODO: Implement the gotong rule.
+/// The gotong rule (cooperative capture) is not yet implemented.
 class MulMulanRuleSettings extends RuleSettings {
   const MulMulanRuleSettings()
     : super(
@@ -474,15 +474,17 @@ class MulMulanRuleSettings extends RuleSettings {
 /// https://www.youtube.com/watch?v=9cfaO4GcFSM&ab_channel=HattonNationalBankPLC
 /// https://www.youtube.com/watch?v=9nK7gPKtbKc&t=24s&ab_channel=ShalikaWickramasinghe
 /// https://www.youtube.com/watch?v=iXYCtguLfUA&t=33s&ab_channel=PantherLk (Not Standard?)
-/// TOOD: Each with 12 counters of one color, take turns placing one counter at a time on an empty point, until 22 counters are placed and two points are left empty.
-/// TODO: A player making a Nerenchi during the placement phase, takes an extra turn.
+/// Each player has 12 counters; they alternate placing one counter per turn
+/// until 22 are placed and two points remain empty.
+/// A player who forms a Nerenchi (mill) during the placement phase takes an
+/// extra turn; this extra-turn rule is not yet implemented.
 class NerenchiRuleSettings extends RuleSettings {
   const NerenchiRuleSettings()
     : super(
         piecesCount: 12,
         hasDiagonalLines: true,
         isDefenderMoveFirst: true,
-        mayRemoveFromMillsAlways: true, // TODO: Right?
+        mayRemoveFromMillsAlways: true, // Nerenchi allows removing from mills.
       );
 }
 
