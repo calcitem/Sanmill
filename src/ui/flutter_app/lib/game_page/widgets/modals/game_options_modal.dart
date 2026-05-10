@@ -10,15 +10,12 @@ import 'package:flutter/material.dart';
 
 import '../../../experience_recording/models/recording_models.dart';
 import '../../../experience_recording/services/recording_service.dart';
-import '../../../game_platform/game_session.dart';
-import '../../../game_shell/game_session_scope.dart';
 import '../../../generated/intl/l10n.dart';
 import '../../../shared/config/constants.dart';
 import '../../../shared/database/database.dart';
 import '../../../shared/services/logger.dart';
 import '../../../shared/themes/app_theme.dart';
 import '../../../shared/widgets/custom_spacer.dart';
-import '../../../src/rust/api/simple.dart' as tgf;
 import '../../services/mill.dart';
 import '../game_page.dart';
 import '../saved_games_page.dart';
@@ -34,9 +31,43 @@ class GameOptionsModal extends StatelessWidget {
     return GameController().activeBoardView.sideToMove.playerName(context);
   }
 
+  void _startNewGame(BuildContext context) {
+    GameController().reset(force: true);
+
+    GameController().headerTipNotifier.showTip(S.of(context).gameStarted);
+    GameController().headerIconsNotifier.showIcons();
+
+    logger.i(
+      "$_logTag after reset: isAiSideToMove="
+      "${GameController().gameInstance.isAiSideToMove}",
+    );
+
+    if (GameController().gameInstance.isAiSideToMove) {
+      logger.i("$_logTag New game, AI to move; calling engineToGo");
+
+      GameController().engineToGo(context, isMoveNow: false);
+
+      final String side = _sideToMoveName(context);
+
+      if (DB().ruleSettings.mayMoveInPlacingPhase) {
+        GameController().headerTipNotifier.showTip(
+          S.of(context).tipToMove(side),
+          snackBar: false,
+        );
+      } else {
+        GameController().headerTipNotifier.showTip(
+          S.of(context).tipPlace,
+          snackBar: false,
+        );
+      }
+    }
+
+    GameController().headerIconsNotifier.showIcons();
+  }
+
   bool _canStartNewGame() {
     if (GameController().activeSessionSnapshot != null) {
-      return GameController().isEngineRunning == false;
+      return true;
     }
     // Fallback for the very-early-init window before the native
     // session has been bound; reaches the same conclusion via the
@@ -66,16 +97,7 @@ class GameOptionsModal extends StatelessWidget {
             );
             //Navigator.pop(context);
 
-            // TODO: If no dialog showing, When the AI is thinking,
-            //  restarting the game may cause two or three pieces to appear on the board,
-            //  sometimes it will keep displaying Thinking...
-
             GameController().loadedGameFilenamePrefix = null;
-
-            // Abort any in-flight Rust search before navigating.
-            if (GameController().isEngineRunning) {
-              tgf.nativeMillSearchStop();
-            }
 
             logger.i(
               "$_logTag New Game pressed: "
@@ -86,54 +108,7 @@ class GameOptionsModal extends StatelessWidget {
             );
 
             if (_canStartNewGame()) {
-              // TODO: Called stopSearching(); so isEngineGoing is always false?
-              if (GameController().isEngineRunning == false) {
-                GameController().reset(force: true);
-
-                GameController().headerTipNotifier.showTip(
-                  S.of(context).gameStarted,
-                );
-                GameController().headerIconsNotifier.showIcons();
-
-                logger.i(
-                  "$_logTag after reset: isAiSideToMove="
-                  "${GameController().gameInstance.isAiSideToMove}",
-                );
-
-                if (GameController().gameInstance.isAiSideToMove) {
-                  logger.i("$_logTag New game, AI to move; calling engineToGo");
-                  // Diagnostic: confirm GameSessionScope is reachable
-                  // from the bottom-sheet context.  If null here, the
-                  // modal is outside the scope and engineToGo will
-                  // see scopedSession == null and skip.
-                  final GameSession? scoped = GameSessionScope.sessionOf(
-                    context,
-                  );
-                  logger.i(
-                    "$_logTag GameSessionScope.sessionOf(modalContext)="
-                    "${scoped.runtimeType} (null=${scoped == null})",
-                  );
-
-                  GameController().engineToGo(context, isMoveNow: false);
-
-                  final String side = _sideToMoveName(context);
-
-                  if (DB().ruleSettings.mayMoveInPlacingPhase) {
-                    GameController().headerTipNotifier.showTip(
-                      S.of(context).tipToMove(side),
-                      snackBar: false,
-                    );
-                  } else {
-                    GameController().headerTipNotifier.showTip(
-                      S.of(context).tipPlace,
-                      snackBar: false,
-                    );
-                  }
-                }
-
-                GameController().headerIconsNotifier.showIcons();
-              }
-
+              _startNewGame(context);
               Navigator.of(context).pop();
             } else {
               await showRestartGameAlertDialog(context);
@@ -314,36 +289,7 @@ class GameOptionsModal extends StatelessWidget {
         ),
       ),
       onPressed: () {
-        // TODO: Called stopSearching(); so isEngineGoing is always false?
-        if (GameController().isEngineRunning == false) {
-          GameController().reset(force: true);
-
-          GameController().headerTipNotifier.showTip(S.of(context).gameStarted);
-          GameController().headerIconsNotifier.showIcons();
-
-          if (GameController().gameInstance.isAiSideToMove) {
-            logger.i("$_logTag New game, AI to move.");
-
-            GameController().engineToGo(context, isMoveNow: false);
-
-            final String side = _sideToMoveName(context);
-
-            if (DB().ruleSettings.mayMoveInPlacingPhase) {
-              GameController().headerTipNotifier.showTip(
-                S.of(context).tipToMove(side),
-                snackBar: false,
-              );
-            } else {
-              GameController().headerTipNotifier.showTip(
-                S.of(context).tipPlace,
-                snackBar: false,
-              );
-            }
-          }
-
-          GameController().headerIconsNotifier.showIcons();
-        }
-
+        _startNewGame(context);
         Navigator.of(context, rootNavigator: true).pop(true);
         Navigator.of(context).pop();
       },
