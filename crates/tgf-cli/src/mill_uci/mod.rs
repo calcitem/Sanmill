@@ -8,22 +8,21 @@
 //   * `Searcher<MillGame>` factory tuned for Mill (Remove qsearch policy)
 //   * the bench harness used by `tgf bench` and the perf-baseline pipeline
 //
-// `main.rs` only routes the subcommand.  Adding a new game (e.g. Othello)
-// is a matter of dropping a new sibling module here and wiring it into
-// the dispatch in `main.rs`; nothing else in this file generalises.
+// The game registry calls this module through `games::mill`; nothing in this
+// file is expected to generalise to another game.
 
 use std::io::{self, BufRead};
 use std::sync::atomic::AtomicBool;
-use std::sync::{mpsc, Arc};
+use std::sync::{Arc, mpsc};
 use std::thread::{self, JoinHandle};
 use tgf_core::{Game, GameRules, GameStateSnapshot, MoveOrderAlgorithm, MoveOrderContext};
 use tgf_mill::{
-    recommended_search_depth, EngineRuntimeOptions, MillActionKind, MillGame, MillRules,
-    MillVariantOptions,
+    EngineRuntimeOptions, MillActionKind, MillGame, MillRules, MillVariantOptions,
+    recommended_search_depth,
 };
 use tgf_search::{
-    lazy_smp_search, LazySmpWorker, MctsOptions, MctsSearcher, SearchAbortHandle, SearchOptions,
-    SearchPolicy, SearchResult, Searcher, SharedTt,
+    LazySmpWorker, MctsOptions, MctsSearcher, SearchAbortHandle, SearchOptions, SearchPolicy,
+    SearchResult, Searcher, SharedTt, lazy_smp_search,
 };
 
 mod bench;
@@ -34,10 +33,10 @@ pub use bench::print_benchmark_toml;
 #[cfg(test)]
 use board::board_ascii_lines;
 use board::{
-    action_to_uci, parse_go_options, parse_position_command, print_board_ascii, print_uci_options,
-    GoOptions,
+    GoOptions, action_to_uci, parse_go_options, parse_position_command, print_board_ascii,
+    print_uci_options,
 };
-use setoption::{apply_setoption, SetoptionResult};
+use setoption::{SetoptionResult, apply_setoption};
 
 /// `TGF_TT_CLUSTER_BITS` (10–26) selects `2^(bits+1)` TT slots; see
 /// `tgf_search::Searcher::new_with_tt_cluster_bits`.  Default 23 to

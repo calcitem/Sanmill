@@ -36,11 +36,11 @@ const SELFPLAY_SEED: u64 = 0xA1B2_C3D4_5566_7788;
 /// searcher returns no progress.
 const MAX_PLIES: u32 = 400;
 
-/// `tgf selfplay` entry point.  Args (after the subcommand name):
+/// `tgf selfplay` entry point.  Args (after the selected command):
 ///   --depth N          fixed search depth (default 5)
 ///   --max-games N      cap the number of games (default 24)
 ///   --algorithm pvs|alphabeta  (default pvs)
-pub fn run_selfplay() {
+pub fn run_selfplay(command_args: &[String]) {
     let mut depth: i32 = 5;
     let mut max_games: usize = 24;
     let mut algorithm: SelfplayAlgorithm = SelfplayAlgorithm::Pvs;
@@ -50,7 +50,7 @@ pub fn run_selfplay() {
     // savings).  Pass --prefetch true to A/B-test changes.
     let mut enable_prefetch: bool = false;
 
-    let mut args = std::env::args().skip(2); // skip "tgf" and "selfplay"
+    let mut args = command_args.iter();
     while let Some(token) = args.next() {
         match token.as_str() {
             "--depth" => {
