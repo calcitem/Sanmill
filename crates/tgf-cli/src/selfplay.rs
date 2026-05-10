@@ -23,7 +23,7 @@ use std::time::Instant;
 
 use tgf_core::{Action, ActionList, Game, GameRules, GameStateSnapshot, MoveOrderContext};
 use tgf_mill::{MillActionKind, MillGame, MillRules};
-use tgf_search::{SearchOptions, SearchPolicy, Searcher};
+use tgf_search::{MctsOptions, MctsSearcher, SearchOptions, SearchPolicy, Searcher};
 
 /// Fixed random seed for the searcher's xorshift PRNG.  Selected
 /// arbitrarily; only required to be non-zero so xorshift does not
@@ -37,9 +37,10 @@ const SELFPLAY_SEED: u64 = 0xA1B2_C3D4_5566_7788;
 const MAX_PLIES: u32 = 400;
 
 /// `tgf selfplay` entry point.  Args (after the selected command):
-///   --depth N          fixed search depth (default 5)
+///   --depth N          fixed search depth (default 5); for MCTS this
+///                      is multiplied by 200 to derive iteration count
 ///   --max-games N      cap the number of games (default 24)
-///   --algorithm pvs|alphabeta  (default pvs)
+///   --algorithm pvs|alphabeta|mtdf|mcts|random  (default pvs)
 pub(crate) fn run_selfplay(command_args: &[String]) {
     let mut depth: i32 = 5;
     let mut max_games: usize = 24;
@@ -71,6 +72,9 @@ pub(crate) fn run_selfplay(command_args: &[String]) {
                 if let Some(value) = args.next() {
                     algorithm = match value.as_str() {
                         "alphabeta" | "alpha-beta" | "ab" => SelfplayAlgorithm::AlphaBeta,
+                        "mtdf" | "mtd-f" | "mtd_f" => SelfplayAlgorithm::Mtdf,
+                        "mcts" => SelfplayAlgorithm::Mcts,
+                        "random" | "rand" => SelfplayAlgorithm::Random,
                         _ => SelfplayAlgorithm::Pvs,
                     };
                 }
@@ -168,6 +172,9 @@ pub(crate) fn run_selfplay(command_args: &[String]) {
 enum SelfplayAlgorithm {
     AlphaBeta,
     Pvs,
+    Mtdf,
+    Mcts,
+    Random,
 }
 
 impl SelfplayAlgorithm {
@@ -175,6 +182,9 @@ impl SelfplayAlgorithm {
         match self {
             SelfplayAlgorithm::AlphaBeta => "alphabeta",
             SelfplayAlgorithm::Pvs => "pvs",
+            SelfplayAlgorithm::Mtdf => "mtdf",
+            SelfplayAlgorithm::Mcts => "mcts",
+            SelfplayAlgorithm::Random => "random",
         }
     }
 }
@@ -226,6 +236,9 @@ fn play_one_game(
         algorithm: match algorithm {
             SelfplayAlgorithm::AlphaBeta => tgf_core::MoveOrderAlgorithm::AlphaBeta,
             SelfplayAlgorithm::Pvs => tgf_core::MoveOrderAlgorithm::Pvs,
+            SelfplayAlgorithm::Mtdf => tgf_core::MoveOrderAlgorithm::Mtdf,
+            SelfplayAlgorithm::Mcts => tgf_core::MoveOrderAlgorithm::Mcts,
+            SelfplayAlgorithm::Random => tgf_core::MoveOrderAlgorithm::Random,
         },
         skill_level: 30,
         shuffling: false,
@@ -245,6 +258,11 @@ fn play_one_game(
         enable_history: false,
         move_order_context,
     };
+
+    // MCTS iteration count derived from depth: depth * 200 gives a
+    // rough equivalence to the FRB skill_level * 2048 formula at
+    // skill_level ~30 while keeping selfplay runtimes manageable.
+    let mcts_iterations = (depth as u32).saturating_mul(200).max(1);
 
     while plies < MAX_PLIES {
         // Outcome check before searching.
@@ -298,18 +316,48 @@ fn play_one_game(
             }
         }
 
-        let mut searcher = Searcher::<MillGame>::new();
-        searcher.set_options(search_options);
-        searcher.set_policy(SearchPolicy {
-            quiescence_kind_tag: Some(MillActionKind::Remove as i16),
-            ..Default::default()
-        });
-        searcher.set_random_seed(SELFPLAY_SEED);
-
         let mut workbench = game.build_workbench(&snapshot);
-        let result = match algorithm {
-            SelfplayAlgorithm::AlphaBeta => searcher.search(&mut workbench, depth),
-            SelfplayAlgorithm::Pvs => searcher.search_pvs(&mut workbench, depth),
+
+        // MCTS uses a separate searcher type; all other algorithms use
+        // the shared Searcher<MillGame> with fixed options.
+        let result = if let SelfplayAlgorithm::Mcts = algorithm {
+            let mut mcts = MctsSearcher::<MillGame>::new();
+            let mcts_result = mcts.search_with_options(
+                &mut workbench,
+                MctsOptions {
+                    iterations: mcts_iterations,
+                    playout_depth: 6,
+                    time_limit_ms: None,
+                    exploration: 0.5,
+                    ab_assist_depth: 6,
+                    num_threads: Some(1),
+                    move_order_context,
+                },
+            );
+            tgf_search::SearchResult {
+                best_action: mcts_result.best_action,
+                score: mcts_result.score,
+                // MCTS counts tree node visits rather than alpha-beta
+                // evaluations; use visits as the node-count analogue so
+                // the summary statistics remain meaningful.
+                nodes: mcts_result.visits as u64,
+                draw_reason: None,
+            }
+        } else {
+            let mut searcher = Searcher::<MillGame>::new();
+            searcher.set_options(search_options);
+            searcher.set_policy(SearchPolicy {
+                quiescence_kind_tag: Some(MillActionKind::Remove as i16),
+                ..Default::default()
+            });
+            searcher.set_random_seed(SELFPLAY_SEED);
+            match algorithm {
+                SelfplayAlgorithm::AlphaBeta => searcher.search(&mut workbench, depth),
+                SelfplayAlgorithm::Pvs => searcher.search_pvs(&mut workbench, depth),
+                SelfplayAlgorithm::Mtdf => searcher.search_mtdf(&mut workbench, depth),
+                SelfplayAlgorithm::Random => searcher.random_search(&mut workbench),
+                SelfplayAlgorithm::Mcts => unreachable!("handled above"),
+            }
         };
 
         total_nodes = total_nodes.saturating_add(result.nodes);
