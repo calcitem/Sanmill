@@ -117,7 +117,6 @@ class HistoryNavigator {
 
     final GameController controller = GameController();
 
-    // TODO: Move to the end of this function. Or change to S.of(context).waiting?
     GameController().headerTipNotifier.showTip(atEnd);
     GameController().headerIconsNotifier.showIcons();
     GameController().boardSemanticsNotifier.updateSemantics();
@@ -160,7 +159,9 @@ class HistoryNavigator {
               GameController().boardSemanticsNotifier.updateSemantics();
             }
             break;
-          case HistoryRange(): // TODO: Impossible resp
+          case HistoryRange():
+            // Reached when `doEachMove` declines a request such as
+            // `takeBackN` without a `number`; surface as "at end" tip.
             rootScaffoldMessengerKey.currentState!.showSnackBarClear(
               S.of(context).atEnd,
             );

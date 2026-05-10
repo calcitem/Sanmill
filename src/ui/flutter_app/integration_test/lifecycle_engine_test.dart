@@ -19,7 +19,7 @@ void main() {
       (WidgetTester tester) async {
         // Build the game page
         await tester.pumpWidget(
-          MaterialApp(home: GamePage(GameMode.humanVsAi)),
+          const MaterialApp(home: GamePage(GameMode.humanVsAi)),
         );
 
         // Wait for initial build
@@ -72,7 +72,7 @@ void main() {
       'Multiple rapid lifecycle changes should not break engine',
       (WidgetTester tester) async {
         await tester.pumpWidget(
-          MaterialApp(home: GamePage(GameMode.humanVsAi)),
+          const MaterialApp(home: GamePage(GameMode.humanVsAi)),
         );
 
         await tester.pumpAndSettle();

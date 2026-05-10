@@ -279,15 +279,24 @@ class ReplayService {
           if (!_useRecordedAiMoves) {
             await _waitForHumanTurn();
           }
-          // Re-fetch context after the async wait to avoid stale-context
-          // issues (use_build_context_synchronously).
-          final BuildContext? freshCtx = currentNavigatorKey.currentContext;
-          if (!_stopRequested && freshCtx != null) {
-            if (true && await _applyNativeBoardTap(sq, freshCtx)) {
-              break;
-            }
-            await TapHandler(context: freshCtx).onBoardTap(sq);
+          if (_stopRequested) {
+            break;
           }
+          // Re-fetch and validate the context after each async gap so
+          // BuildContext is never used past a possible unmount
+          // (use_build_context_synchronously).
+          BuildContext? freshCtx = currentNavigatorKey.currentContext;
+          if (freshCtx == null || !freshCtx.mounted) {
+            break;
+          }
+          if (await _applyNativeBoardTap(sq, freshCtx)) {
+            break;
+          }
+          freshCtx = currentNavigatorKey.currentContext;
+          if (_stopRequested || freshCtx == null || !freshCtx.mounted) {
+            break;
+          }
+          await TapHandler(context: freshCtx).onBoardTap(sq);
         }
 
       case RecordingEventType.aiMove:

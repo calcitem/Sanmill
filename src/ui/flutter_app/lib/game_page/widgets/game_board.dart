@@ -197,7 +197,6 @@ class _GameBoardState extends State<GameBoard>
 
   Future<void> _setReadyState() async {
     logger.i("$_logTag Check if need to set Ready state...");
-    // TODO: v1 has "&& mounted && Config.settingsLoaded"
     if (GameController().isControllerReady == false) {
       logger.i("$_logTag Set Ready State...");
       GameController().isControllerReady = true;

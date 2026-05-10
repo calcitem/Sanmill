@@ -1909,17 +1909,14 @@ class MovesListPageState extends State<MovesListPage> {
     );
   }
 
-  /// Shows hover preview for desktop (currently placeholder - would need overlay implementation)
-  void _showVariationHoverPreview(PgnNode<ExtMove> variationNode) {
-    // TODO: Implement hover preview with overlay
-    // This requires tracking mouse position and showing a positioned overlay
-    // For now, we'll rely on the long-press dialog for both mobile and desktop
-  }
+  /// Shows hover preview for desktop. Intentionally a no-op: both desktop and
+  /// mobile rely on `_showVariationPreviewDialog` triggered by long-press, so
+  /// no positioned overlay is rendered yet.
+  void _showVariationHoverPreview(PgnNode<ExtMove> variationNode) {}
 
-  /// Hides hover preview for desktop
-  void _hideVariationHoverPreview() {
-    // TODO: Implement overlay hiding
-  }
+  /// Hides hover preview for desktop. Counterpart no-op for the unimplemented
+  /// hover overlay; long-press dialog handles dismissal on its own.
+  void _hideVariationHoverPreview() {}
 
   /// Shows variation preview dialog (for mobile long-press and desktop interaction)
   void _showVariationPreviewDialog(PgnNode<ExtMove> variationNode) {

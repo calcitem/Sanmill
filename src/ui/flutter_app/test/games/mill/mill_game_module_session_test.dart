@@ -41,9 +41,7 @@ void main() {
                 return nativeSession;
               },
         );
-        mockDb.generalSettings = const GeneralSettings(
-          useNativeMillSession: true,
-        );
+        mockDb.generalSettings = const GeneralSettings();
         mockDb.ruleSettings = const RuleSettings(piecesCount: 12);
 
         final GameSessionHandle session = module.startSession();

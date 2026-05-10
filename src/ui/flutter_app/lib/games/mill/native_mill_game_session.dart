@@ -18,12 +18,11 @@ import '../../game_platform/game_session.dart';
 import '../../game_platform/game_session_handle.dart';
 import '../../general_settings/models/general_settings.dart';
 import '../../rule_settings/models/rule_settings.dart';
+import '../../shared/services/logger.dart';
 import '../../src/rust/api/simple.dart' as tgf;
 import 'lan_session_meta.dart';
 import 'mill_action_codec.dart';
 import 'native_mill_rules_port.dart';
-
-import '../../shared/services/logger.dart';
 
 const String _logTag = '[NativeMillGameSession]';
 
@@ -183,7 +182,7 @@ class NativeMillGameSession implements GameSessionHandle {
     _emit(MillEventTypes.moveApplied, <String, Object?>{
       'type': action.type,
       'mover': mover.name,
-      if (boardLayout != null) 'boardLayout': boardLayout,
+      'boardLayout': ?boardLayout,
       ...action.payload,
     });
   }

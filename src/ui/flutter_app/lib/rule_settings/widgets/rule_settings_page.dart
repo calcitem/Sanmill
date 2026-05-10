@@ -114,7 +114,6 @@ class RuleSettingsPage extends StatelessWidget {
     );
   }
 
-  // TODO: This feature EndgameNMoveRule is not implemented yet
   void _setEndgameNMoveRule(BuildContext context, RuleSettings ruleSettings) {
     void callback(int? endgameNMoveRule) {
       if (endgameNMoveRule == null ||
@@ -191,7 +190,7 @@ class RuleSettingsPage extends StatelessWidget {
 
       logger.t("[config] boardFullAction = $boardFullAction");
 
-      // TODO: BoardFullAction: experimental
+      // Non-default BoardFullAction values are still considered experimental.
       if (boardFullAction != BoardFullAction.firstPlayerLose &&
           boardFullAction != BoardFullAction.agreeToDraw) {
         rootScaffoldMessengerKey.currentState!.showSnackBarClear(
@@ -318,7 +317,7 @@ class RuleSettingsPage extends StatelessWidget {
 
       logger.t("[config] stalemateAction = $stalemateAction");
 
-      // TODO: StalemateAction: experimental
+      // Non-default StalemateAction values are still considered experimental.
       if (stalemateAction != StalemateAction.endWithStalemateLoss &&
           stalemateAction != StalemateAction.changeSideToMove) {
         rootScaffoldMessengerKey.currentState!.showSnackBarClear(

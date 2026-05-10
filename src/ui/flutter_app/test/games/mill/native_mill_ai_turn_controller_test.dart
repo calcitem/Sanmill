@@ -37,10 +37,7 @@ void main() {
 
     test('uses human-experience placing depth table when enabled', () {
       const NativeMillAiTurnController controller = NativeMillAiTurnController(
-        generalSettings: GeneralSettings(
-          skillLevel: 30,
-          drawOnHumanExperience: true,
-        ),
+        generalSettings: GeneralSettings(skillLevel: 30),
       );
 
       // 9MM placing index 4 maps to depth 3 in master Mills::get_search_depth.

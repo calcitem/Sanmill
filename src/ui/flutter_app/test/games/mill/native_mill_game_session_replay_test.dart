@@ -20,7 +20,7 @@ void main() {
     test('NativeMillGameSession exposes replayMainline as Future<bool>', () {
       // Verify the type signature is what callers expect: async, returns bool.
       // We cannot call it here without FRB, but we can confirm the symbol exists.
-      final Type sessionType = NativeMillGameSession;
+      const Type sessionType = NativeMillGameSession;
       expect(sessionType, isNotNull);
     });
 
@@ -49,10 +49,10 @@ void main() {
     });
 
     test('GameStateSnapshot is structurally comparable', () {
-      final GameStateSnapshot s = GameStateSnapshot(
+      const GameStateSnapshot s = GameStateSnapshot(
         gameId: GameId.mill,
         activeSeat: PlayerSeat.first,
-        outcome: const GameOutcome.ongoing(),
+        outcome: GameOutcome.ongoing(),
         phase: 'placing',
       );
       expect(s.gameId.value, 'mill');

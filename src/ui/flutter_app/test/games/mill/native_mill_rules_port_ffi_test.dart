@@ -10,7 +10,6 @@ import 'package:sanmill/game_page/services/mill.dart' as mill;
 import 'package:sanmill/game_platform/game_id.dart';
 import 'package:sanmill/game_platform/game_session.dart';
 import 'package:sanmill/games/mill/mill_action_codec.dart';
-import 'package:sanmill/games/mill/mill_constants.dart';
 import 'package:sanmill/games/mill/mill_session_recorder_bridge.dart';
 import 'package:sanmill/games/mill/mill_tap_action_selector.dart';
 import 'package:sanmill/games/mill/native_mill_ai_turn_controller.dart';

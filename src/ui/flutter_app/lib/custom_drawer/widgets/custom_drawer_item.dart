@@ -32,7 +32,8 @@ class CustomDrawerItem<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: drawerHighlightTextColor
+    // Selected and unselected items currently share drawerTextColor; a
+    // dedicated highlight color can be introduced when the theme grows one.
     final Color color = isSelected
         ? DB().colorSettings.drawerTextColor
         : DB().colorSettings.drawerTextColor;

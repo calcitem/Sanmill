@@ -23,7 +23,7 @@ class _BoardSemanticsState extends State<_BoardSemantics> {
   }
 
   void updateBoardSemantics() {
-    setState(() {}); // TODO
+    setState(() {});
   }
 
   @override

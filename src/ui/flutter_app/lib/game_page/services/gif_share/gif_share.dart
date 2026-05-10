@@ -99,7 +99,8 @@ class GifShare {
     }
 
     if (pngs.isNotEmpty) {
-      _evictOldestFrame(); // TODO: WAR
+      // Evict the oldest frame to bound peak memory before encoding.
+      _evictOldestFrame();
     }
 
     final img.GifEncoder encoder = img.GifEncoder(

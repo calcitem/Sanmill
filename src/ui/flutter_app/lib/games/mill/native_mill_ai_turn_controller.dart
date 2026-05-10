@@ -75,9 +75,9 @@ class NativeMillAiTurnController {
 
   int searchDepthForSnapshot(GameStateSnapshot snapshot) {
     if (depth != null) {
-      return depth!.clamp(1, 64).toInt();
+      return depth!.clamp(1, 64);
     }
-    final int level = generalSettings.skillLevel.clamp(1, 30).toInt();
+    final int level = generalSettings.skillLevel.clamp(1, 30);
     if (!generalSettings.drawOnHumanExperience || snapshot.phase != 'placing') {
       return level;
     }
@@ -94,11 +94,8 @@ class NativeMillAiTurnController {
     final int whiteTotal = whiteInHand + whiteOnBoard;
     final int blackTotal = blackInHand + blackOnBoard;
     final int pieceCount = (whiteTotal > blackTotal ? whiteTotal : blackTotal)
-        .clamp(0, 12)
-        .toInt();
-    final int index = (pieceCount * 2 - whiteInHand - blackInHand)
-        .clamp(0, 24)
-        .toInt();
+        .clamp(0, 12);
+    final int index = (pieceCount * 2 - whiteInHand - blackInHand).clamp(0, 24);
 
     final List<int> table = pieceCount == 12
         ? _placingDepthTable12

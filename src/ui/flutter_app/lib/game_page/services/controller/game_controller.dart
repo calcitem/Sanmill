@@ -428,14 +428,16 @@ class GameController {
   /// Sends a restart request to the LAN opponent.
   /// This method is called when the local user requests a game restart.
   void requestRestart() {
-    // TODO: Use S.of(context).restartRequestSentWaitingForOpponentSResponse
     if (gameInstance.gameMode == GameMode.humanVsLAN &&
         (networkService?.isConnected ?? false)) {
-      // Send a restart request message to the opponent
       networkService!.sendMove("restart:request");
-      // Optionally, show a tip that the request has been sent
+      final BuildContext? context = rootScaffoldMessengerKey.currentContext;
+      if (context != null) {
+        headerTipNotifier.showTip(
+          S.of(context).restartRequestSentWaitingForOpponentSResponse,
+        );
+      }
     } else {
-      // For non-LAN modes, simply reset the game.
       reset();
     }
   }
@@ -508,7 +510,7 @@ class GameController {
                   // and rely on the recorder / outcome stream.
                   // Reference winner so the analyzer is happy.
                   // ignore: unused_local_variable
-                  final PieceColor _winnerColor = winnerColor;
+                  final PieceColor winnerColor0 = winnerColor;
 
                   // Show resignation message
                   headerTipNotifier.showTip(S.of(context).youResignedGameOver);
@@ -543,7 +545,7 @@ class GameController {
       // Get the local color (winner)
       final PieceColor localColor = getLocalColor();
       // ignore: unused_local_variable
-      final PieceColor _winner = localColor;
+      final PieceColor winner = localColor;
 
       // The native session does not yet expose a "force resign"
       // primitive; surface the message and rely on the recorder /
@@ -574,7 +576,7 @@ class GameController {
     // Determine winner (opponent of current player)
     final PieceColor winnerColor = activeBoardView.sideToMove.opponent;
     // ignore: unused_local_variable
-    final PieceColor _winner = winnerColor;
+    final PieceColor winner = winnerColor;
     // The native session does not yet expose a "force resign"
     // primitive; surface the message and let the recorder / outcome
     // stream pick up the abandonment.
@@ -1078,8 +1080,6 @@ class GameController {
     return DB().generalSettings.isAutoRestart;
   }
 
-  // TODO: [Leptopoda] The reference of this method has been removed in a few instances.
-  // We'll need to find a better way for this.
   Future<EngineResponse> engineToGo(
     BuildContext context, {
     required bool isMoveNow,
@@ -1431,9 +1431,10 @@ class GameController {
       );
     }
 
-    // TODO: WAR
-    final PieceColor _moveNowSide = activeBoardView.sideToMove;
-    if (_moveNowSide != PieceColor.white && _moveNowSide != PieceColor.black) {
+    // Defensive: sideToMove may be PieceColor.nobody when the game is over
+    // or before the first move; treat that as "not AI's turn".
+    final PieceColor moveNowSide = activeBoardView.sideToMove;
+    if (moveNowSide != PieceColor.white && moveNowSide != PieceColor.black) {
       return rootScaffoldMessengerKey.currentState!.showSnackBarClear(
         S.of(context).notAIsTurn,
       );

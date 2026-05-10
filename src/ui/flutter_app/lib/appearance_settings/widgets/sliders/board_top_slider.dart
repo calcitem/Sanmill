@@ -31,7 +31,6 @@ class _BoardTopSlider extends StatelessWidget {
                 key: const Key('board_top_slider'),
                 value: displaySettings.boardTop,
                 max: 288.0,
-                // TODO: Overflow, convert to v2 config
                 divisions: 288,
                 label: displaySettings.boardTop.toStringAsFixed(1),
                 onChanged: (double value) {

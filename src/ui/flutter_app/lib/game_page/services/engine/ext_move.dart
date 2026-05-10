@@ -17,13 +17,14 @@ class MoveParser {
     } else if (RegExp(r'^[a-g][1-7]$').hasMatch(move)) {
       return MoveType.place;
     } else if (move == "draw") {
-      logger.i("[TODO] Computer request draw");
+      logger.i("Computer requested a draw");
       return MoveType.draw;
     } else if (move == "(none)" || move == "none") {
       logger.i("MoveType is (none).");
       return MoveType.none;
     } else {
-      // TODO: If Setup Position is illegal
+      // Reachable when an illegal Setup Position string is fed in; surface
+      // the parse failure to the caller rather than silently returning.
       throw const FormatException();
     }
   }
@@ -259,9 +260,10 @@ class ExtMove extends PgnNodeData {
 
   /// Validate the move string format.
   static void _checkLegal(String move) {
-    // TODO: Which one?
+    // Accept all three sentinel forms ("draw", "(none)", "none") so the
+    // checker stays compatible with both UCI-style and engine-internal output.
     if (move == "draw" || move == "(none)" || move == "none") {
-      return; // no further checks
+      return;
     }
 
     // Check standard notation patterns

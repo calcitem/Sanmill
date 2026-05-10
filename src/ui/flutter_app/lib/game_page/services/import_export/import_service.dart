@@ -293,7 +293,6 @@ class ImportService {
     }
 
     try {
-      // TODO: Improve this logic
       if (isPlayOkMoveList(ml)) {
         _importPlayOk(ml);
         return;

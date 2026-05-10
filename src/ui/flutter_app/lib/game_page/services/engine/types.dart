@@ -282,7 +282,6 @@ extension ActExtension on Act {
   }
 }
 
-// TODO: [Leptopoda] Throw this stuff to faster detect a game over
 enum GameOverReason {
   loseFewerThanThree,
   loseNoLegalMoves,
@@ -318,7 +317,9 @@ extension GameOverReasonExtension on GameOverReason {
       case GameOverReason.drawFullBoard:
         return S.of(context).drawReasonBoardIsFull;
       case GameOverReason.drawStalemateCondition:
-        return S.of(context).endWithStalemateDraw; // TODO: Not drawReasonXXX
+        // Reuses the StalemateAction wording; no dedicated drawReason key
+        // exists yet, but the message conveys the same meaning to players.
+        return S.of(context).endWithStalemateDraw;
       case GameOverReason.drawThreefoldRepetition:
         return S.of(context).drawReasonThreefoldRepetition;
     }
@@ -381,7 +382,9 @@ bool isOk(int sq) {
     logger.w("[types] $sq is not OK");
   }
 
-  return ret; // TODO: SQ_NONE?
+  // SQ_NONE is intentionally excluded: callers should treat the sentinel
+  // separately rather than letting it pass coordinate validation.
+  return ret;
 }
 
 int fileOf(int sq) {

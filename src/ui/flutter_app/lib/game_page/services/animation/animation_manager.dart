@@ -410,9 +410,7 @@ class AnimationManager {
 
   // Handle Place Animation with proper disposal check
   void animatePlace() {
-    // TODO: See f0c1f3d5df544e5910b194b8479d956dd10fe527
-    if ( /* GameController().isDisposed == true || */ _isDisposed) {
-      // Avoid animation when GameController or AnimationManager is disposed
+    if (_isDisposed) {
       return;
     }
 
@@ -425,8 +423,7 @@ class AnimationManager {
 
   // Handle Move Animation with proper disposal check
   void animateMove() {
-    if ( /* GameController().isDisposed == true || */ _isDisposed) {
-      // Avoid animation when GameController or AnimationManager is disposed
+    if (_isDisposed) {
       return;
     }
 
@@ -439,8 +436,7 @@ class AnimationManager {
 
   // Handle Remove Animation with proper disposal check
   void animateRemove() {
-    if ( /* GameController().isDisposed == true || */ _isDisposed) {
-      // Avoid animation when GameController or AnimationManager is disposed
+    if (_isDisposed) {
       return;
     }
 
@@ -482,8 +478,7 @@ class AnimationManager {
   // Handle Pick-up Animation with proper disposal check
   // This animates the piece lifting effect when selected
   void animatePickUp() {
-    if ( /* GameController().isDisposed == true || */ _isDisposed) {
-      // Avoid animation when GameController or AnimationManager is disposed
+    if (_isDisposed) {
       return;
     }
 
@@ -496,8 +491,7 @@ class AnimationManager {
   // Reverse the pick-up animation (animate piece going back down)
   // Called when a piece is deselected without being placed
   void reversePickUp() {
-    if ( /* GameController().isDisposed == true || */ _isDisposed) {
-      // Avoid animation when GameController or AnimationManager is disposed
+    if (_isDisposed) {
       return;
     }
 
@@ -510,8 +504,7 @@ class AnimationManager {
   // Handle Put-down Animation with proper disposal check
   // This animates the piece landing effect when placed
   void animatePutDown() {
-    if ( /* GameController().isDisposed == true || */ _isDisposed) {
-      // Avoid animation when GameController or AnimationManager is disposed
+    if (_isDisposed) {
       return;
     }
 

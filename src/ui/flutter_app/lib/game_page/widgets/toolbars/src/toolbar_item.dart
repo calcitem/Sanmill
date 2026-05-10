@@ -444,7 +444,6 @@ class _ToolbarItemChild extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       key: const Key('toolbar_item_child_column'),
-      // TODO: [Calcitem] Replace with a Row for horizontal icon + text
       children: <Widget>[icon, label],
     );
   }

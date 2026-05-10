@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // Copyright (C) 2019-2026 The Sanmill developers (see AUTHORS file)
 
+import 'package:meta/meta.dart';
+
 import '../../game_platform/game_session.dart';
 
 /// LAN-specific ownership metadata for a native Mill session.
@@ -8,6 +10,7 @@ import '../../game_platform/game_session.dart';
 /// The Rust session only knows whose turn it is.  LAN UI code also needs to
 /// know which seat belongs to this device so it can block opponent taps and
 /// compute the local/remote turn state without consulting legacy `Position`.
+@immutable
 class LanSessionMeta {
   const LanSessionMeta({required this.localSeat, required this.hostPlaysWhite});
 
