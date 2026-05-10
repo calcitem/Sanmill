@@ -886,8 +886,7 @@ class GeneralSettingsPage extends StatelessWidget {
               ),
             ],
           ),
-        // TODO: Fix iOS bug
-        if (!kIsWeb && (Platform.isAndroid))
+        if (supportsGameScreenRecorder)
           SettingsCard(
             key: const Key(
               'general_settings_page_settings_card_game_screen_recorder',

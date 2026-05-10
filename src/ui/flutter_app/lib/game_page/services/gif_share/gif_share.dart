@@ -6,12 +6,17 @@
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:flutter/foundation.dart';
 import 'package:image/image.dart' as img;
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../../../shared/database/database.dart';
 import 'widgets_to_image_controller.dart';
+
+/// The GIF recorder is currently validated only on Android. Keep iOS disabled
+/// until the historical capture/share issue is verified on device.
+bool get supportsGameScreenRecorder => !kIsWeb && Platform.isAndroid;
 
 class GifShare {
   factory GifShare() => _instance ?? GifShare._internal();
@@ -68,7 +73,8 @@ class GifShare {
   }
 
   Future<void> captureView({bool first = false}) async {
-    if (DB().generalSettings.gameScreenRecorderSupport == false) {
+    if (!supportsGameScreenRecorder ||
+        DB().generalSettings.gameScreenRecorderSupport == false) {
       return;
     }
 
@@ -90,7 +96,8 @@ class GifShare {
 
   /// Call when "Share GIF" is tapped.
   Future<bool> shareGif() async {
-    if (DB().generalSettings.gameScreenRecorderSupport == false) {
+    if (!supportsGameScreenRecorder ||
+        DB().generalSettings.gameScreenRecorderSupport == false) {
       return false;
     }
 
@@ -132,7 +139,8 @@ class GifShare {
   }
 
   Future<bool> _writeGifToFile(List<int> gif) async {
-    if (DB().generalSettings.gameScreenRecorderSupport == false) {
+    if (!supportsGameScreenRecorder ||
+        DB().generalSettings.gameScreenRecorderSupport == false) {
       return false;
     }
 

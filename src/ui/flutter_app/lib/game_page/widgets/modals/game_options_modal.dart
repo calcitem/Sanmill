@@ -3,8 +3,6 @@
 
 // game_options_modal.dart
 
-import 'dart:io';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -16,6 +14,7 @@ import '../../../shared/database/database.dart';
 import '../../../shared/services/logger.dart';
 import '../../../shared/themes/app_theme.dart';
 import '../../../shared/widgets/custom_spacer.dart';
+import '../../services/gif_share/gif_share.dart';
 import '../../services/mill.dart';
 import '../game_page.dart';
 import '../saved_games_page.dart';
@@ -216,10 +215,11 @@ class GameOptionsModal extends StatelessWidget {
               child: Text(S.of(context).exportGame),
             ),
           ),
-        // TODO: Fix iOS bug
-        if (DB().generalSettings.gameScreenRecorderSupport && !Platform.isIOS)
+        if (supportsGameScreenRecorder &&
+            DB().generalSettings.gameScreenRecorderSupport)
           const CustomSpacer(),
-        if (DB().generalSettings.gameScreenRecorderSupport && !Platform.isIOS)
+        if (supportsGameScreenRecorder &&
+            DB().generalSettings.gameScreenRecorderSupport)
           SimpleDialogOption(
             key: const Key('share_gif_option'),
             onPressed: () {
