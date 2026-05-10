@@ -9,9 +9,9 @@ mv ../key.jks src/ui/flutter_app/android/
 mv ../key.properties src/ui/flutter_app/android/
 
 if [ "$(uname)" == "Darwin" ]; then
-    echo "TODO: macOS"
+    ./flutter-macos-init.sh
 elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
-    echo "TODO: Linux"
+    ./flutter-linux-init.sh
 else
     ./flutter-windows-init.sh
 fi
