@@ -239,7 +239,8 @@ class GameOptionsModal extends StatelessWidget {
               child: Text(S.of(context).shareGIF),
             ),
           ),
-        // TODO: Support other platforms (Depend on native_screenshot package)
+        // native_screenshot_widget only supports mobile capture; keep this
+        // gallery screenshot action limited to Android 10+.
         if (Constants.isAndroid10Plus == true) const CustomSpacer(),
         if (Constants.isAndroid10Plus == true)
           SimpleDialogOption(
