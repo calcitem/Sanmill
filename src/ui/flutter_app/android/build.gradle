@@ -50,7 +50,8 @@ subprojects {
             // fails with the libc++ shipped in NDK r28+. Compiling with C++20
             // resolves the issue via char8_t support.
             // See: https://github.com/zxing-cpp/zxing-cpp/issues/822
-            // TODO: Remove once flutter_zxing integrates zxing-cpp PR #836.
+            // Remove after upgrading flutter_zxing to a release that bundles
+            // zxing-cpp commit d98739c or a later equivalent fix.
             if (project.name == "flutter_zxing") {
                 project.android {
                     defaultConfig {
