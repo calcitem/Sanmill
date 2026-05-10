@@ -1,7 +1,7 @@
 [package]
 name        = "tgf-search"
 version     = "0.1.0"
-edition     = "2026"
+edition     = "2024"
 description = "TGF – generic game-tree searcher (αβ / MTD(f) / MCTS), monomorphised via Searcher<G: Game>"
 license     = "GPL-3.0-or-later"
 

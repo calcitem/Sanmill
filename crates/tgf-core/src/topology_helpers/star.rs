@@ -221,7 +221,7 @@ impl StarTopologyBuilder {
                     let node_ids: Vec<u16> = coords
                         .iter()
                         .enumerate()
-                        .filter(|(_, &c)| predicate(c, s as i16))
+                        .filter(|&(_, &c)| predicate(c, s as i16))
                         .map(|(i, _)| i as u16)
                         .collect();
                     Zone::with_role(*id, node_ids, zone_role::HOME_BASE)

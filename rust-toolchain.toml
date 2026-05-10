@@ -1,6 +1,7 @@
 [toolchain]
 # Pin the Rust toolchain so CI and contributors always get the same compiler
 # version, preventing silent ABI/behaviour differences across releases.
+# Minimum required: 1.85.0 (stabilised Rust 2024 edition).
 channel = "1.95.0"
 components = ["rustfmt", "clippy"]
 targets = [
