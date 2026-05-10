@@ -41,7 +41,8 @@ class _BoardSemanticsState extends State<_BoardSemantics> {
         (int index) => Center(
           child: Semantics(
             key: Key('board_square_$index'),
-            // TODO: [Calcitem] Add more descriptive information
+            // The current label exposes the square coordinate and occupancy.
+            // Action-specific hints need legal move context from the game state.
             label: squareDesc[index],
           ),
         ),
