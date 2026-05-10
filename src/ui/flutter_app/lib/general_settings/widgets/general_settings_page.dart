@@ -534,7 +534,8 @@ class GeneralSettingsPage extends StatelessWidget {
 
       logger.t("$_logTag soundTheme = $soundTheme");
 
-      // TODO: Take effect on iOS
+      // On iOS, audioplayers does not support hot-reloading asset sources
+      // after the players have been initialised; a restart is required.
       if (Platform.isIOS) {
         SnackBarService.showRootSnackBar(S.of(context).reopenToTakeEffect);
       } else {
