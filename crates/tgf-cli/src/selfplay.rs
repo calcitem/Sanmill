@@ -40,7 +40,7 @@ const MAX_PLIES: u32 = 400;
 ///   --depth N          fixed search depth (default 5)
 ///   --max-games N      cap the number of games (default 24)
 ///   --algorithm pvs|alphabeta  (default pvs)
-pub fn run_selfplay(command_args: &[String]) {
+pub(crate) fn run_selfplay(command_args: &[String]) {
     let mut depth: i32 = 5;
     let mut max_games: usize = 24;
     let mut algorithm: SelfplayAlgorithm = SelfplayAlgorithm::Pvs;

@@ -3,9 +3,9 @@
 
 use crate::game_adapter::{CliGame, CommandId, CommandSpec};
 
-pub(crate) struct MillCli;
+pub(super) struct MillCli;
 
-pub(crate) static MILL_GAME: MillCli = MillCli;
+pub(super) static MILL_GAME: MillCli = MillCli;
 
 const CMD_UCI: CommandId = CommandId::new("uci");
 const CMD_BENCH: CommandId = CommandId::new("bench");

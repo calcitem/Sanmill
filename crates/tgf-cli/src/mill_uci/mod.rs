@@ -13,30 +13,30 @@
 
 use std::io::{self, BufRead};
 use std::sync::atomic::AtomicBool;
-use std::sync::{Arc, mpsc};
+use std::sync::{mpsc, Arc};
 use std::thread::{self, JoinHandle};
 use tgf_core::{Game, GameRules, GameStateSnapshot, MoveOrderAlgorithm, MoveOrderContext};
 use tgf_mill::{
-    EngineRuntimeOptions, MillActionKind, MillGame, MillRules, MillVariantOptions,
-    recommended_search_depth,
+    recommended_search_depth, EngineRuntimeOptions, MillActionKind, MillGame, MillRules,
+    MillVariantOptions,
 };
 use tgf_search::{
-    LazySmpWorker, MctsOptions, MctsSearcher, SearchAbortHandle, SearchOptions, SearchPolicy,
-    SearchResult, Searcher, SharedTt, lazy_smp_search,
+    lazy_smp_search, LazySmpWorker, MctsOptions, MctsSearcher, SearchAbortHandle, SearchOptions,
+    SearchPolicy, SearchResult, Searcher, SharedTt,
 };
 
 mod bench;
 mod board;
 mod setoption;
 
-pub use bench::print_benchmark_toml;
+pub(crate) use bench::print_benchmark_toml;
 #[cfg(test)]
 use board::board_ascii_lines;
 use board::{
-    GoOptions, action_to_uci, parse_go_options, parse_position_command, print_board_ascii,
-    print_uci_options,
+    action_to_uci, parse_go_options, parse_position_command, print_board_ascii, print_uci_options,
+    GoOptions,
 };
-use setoption::{SetoptionResult, apply_setoption};
+use setoption::{apply_setoption, SetoptionResult};
 
 /// `TGF_TT_CLUSTER_BITS` (10–26) selects `2^(bits+1)` TT slots; see
 /// `tgf_search::Searcher::new_with_tt_cluster_bits`.  Default 23 to
@@ -99,7 +99,7 @@ impl Default for EngineConfig {
     }
 }
 
-pub fn run_uci_loop() {
+pub(crate) fn run_uci_loop() {
     let mut options = MillVariantOptions::default();
     let mut rules = MillRules::new(options.clone());
     let mut state = rules.initial_state(&[]);
