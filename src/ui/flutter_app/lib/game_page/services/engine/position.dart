@@ -724,8 +724,16 @@ class Position {
 
     // Part 4: White piece on board
     final int whitePieceOnBoard = int.parse(parts[4]);
+    // Part 5: White piece in hand
+    final int whitePieceInHand = int.parse(parts[5]);
+    // The minimum-piece loss condition must consider both on-board and
+    // in-hand pieces, consistent with the game-over check in _removePiece().
+    // In variants where the moving phase begins while pieces remain in hand
+    // (e.g. StopPlacingWhenTwoEmptySquares with MayMoveInPlacingPhase), the
+    // on-board count alone can legitimately fall below piecesAtLeastCount.
     if (phrase == 'm' &&
-        whitePieceOnBoard < DB().ruleSettings.piecesAtLeastCount) {
+        whitePieceOnBoard + whitePieceInHand <
+            DB().ruleSettings.piecesAtLeastCount) {
       // Use assert to reduce log spam in release builds
       assert(() {
         logger.e(
@@ -744,8 +752,6 @@ class Position {
       return false;
     }
 
-    // Part 5: White piece in hand
-    final int whitePieceInHand = int.parse(parts[5]);
     if (whitePieceInHand < 0 ||
         whitePieceInHand > DB().ruleSettings.piecesCount) {
       assert(() {
@@ -767,8 +773,13 @@ class Position {
 
     // Part 6: Black piece on board
     final int blackPieceOnBoard = int.parse(parts[6]);
+    // Part 7: Black piece in hand
+    final int blackPieceInHand = int.parse(parts[7]);
+    // See the white-side comment above: count on-board and in-hand pieces
+    // together for the minimum-piece loss condition.
     if (phrase == 'm' &&
-        blackPieceOnBoard < DB().ruleSettings.piecesAtLeastCount) {
+        blackPieceOnBoard + blackPieceInHand <
+            DB().ruleSettings.piecesAtLeastCount) {
       assert(() {
         logger.e(
           'Invalid black piece on board. Must be at least ${DB().ruleSettings.piecesAtLeastCount}.',
@@ -786,8 +797,6 @@ class Position {
       return false;
     }
 
-    // Part 7: Black piece in hand
-    final int blackPieceInHand = int.parse(parts[7]);
     if (blackPieceInHand < 0 ||
         blackPieceInHand > DB().ruleSettings.piecesCount) {
       assert(() {
