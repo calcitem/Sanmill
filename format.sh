@@ -17,7 +17,14 @@ clang-format -i tests/*.cpp
 #clang-format -i tests/perfect/*.h
 #clang-format -i tests/perfect/*.cpp
 
-dart format .
+# Format only project source trees. Avoid build/ and rust_builder/ artifacts,
+# which inherit analysis_options.yaml but lack flutter_lints resolution.
+dart format \
+    src/ui/flutter_app/lib \
+    src/ui/flutter_app/test \
+    src/ui/flutter_app/integration_test \
+    src/ui/flutter_app/test_driver \
+    scripts/find_keys
 
 if [ "$1" != "s" ]; then
     git add .
