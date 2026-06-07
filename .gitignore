@@ -468,3 +468,10 @@ diff-files*.md
 *.pth
 *.npz
 *_report.json
+
+# Local development artifacts
+.cursor/plans/
+crates/
+nul
+src/ui/flutter_app/rust_builder/
+target/
