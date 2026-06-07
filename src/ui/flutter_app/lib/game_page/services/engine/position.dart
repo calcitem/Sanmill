@@ -1189,14 +1189,15 @@ class Position {
           // Don't return here - need to check placing phase end logic
         }
 
-        // Only play sound and set focus if no capture was triggered
-        if (totalCaptureRemoval == 0) {
-          GameController().gameInstance.focusIndex = squareToIndex[s];
-          // Sound plays when piece lands (put-down animation completes)
-          // If pick-up animation is disabled, play immediately
-          if (!DB().displaySettings.isPiecePickUpAnimationEnabled) {
-            SoundManager().playTone(Sound.place);
-          }
+        // Always set focus for the newly placed piece so place animation
+        // targets the correct square (including when capture is triggered).
+        GameController().gameInstance.focusIndex = squareToIndex[s];
+
+        // Sound plays when piece lands (put-down animation completes)
+        // If pick-up animation is disabled, play immediately
+        if (totalCaptureRemoval == 0 &&
+            !DB().displaySettings.isPiecePickUpAnimationEnabled) {
+          SoundManager().playTone(Sound.place);
         }
 
         if (DB().ruleSettings.millFormationActionInPlacingPhase ==
