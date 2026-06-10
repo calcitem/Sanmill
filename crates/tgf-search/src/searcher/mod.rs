@@ -543,6 +543,13 @@ impl<G: Game> Searcher<G> {
         // while the bulk pattern was 0.5-1.6% slower at depth 7.
         if self.options.enable_prefetch {
             if let Some(&first_action) = moves.first() {
+                // SAFETY INVARIANT: `key_after` is prefetch-quality, not
+                // correctness-quality (it skips mill/capture-state and misc
+                // bits). `predicted_key` must ONLY feed `tt.prefetch`, which
+                // emits a cache hint and never touches a TT slot. Probe,
+                // save, and repetition tracking all use the real `wb.key()`
+                // instead, so an inaccurate prediction can never escape past
+                // a wasted prefetch.
                 let predicted_key = wb.key_after(first_action);
                 self.tt.prefetch(predicted_key);
             }
