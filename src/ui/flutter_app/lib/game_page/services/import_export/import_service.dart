@@ -405,6 +405,18 @@ class ImportService {
     port.apply(action);
   }
 
+  /// Creates a private validation port configured with the user's active
+  /// rule settings.  Import validation must run under the same variant as
+  /// the active session (created from `DB().ruleSettings` by
+  /// `MillGameModule.startSession`); a default-constructed port would
+  /// reject legal moves from variants such as Twelve Men's Morris.
+  static NativeMillRulesPort _newValidationPort() {
+    return NativeMillRulesPort(
+      ruleSettings: DB().ruleSettings,
+      generalSettings: DB().generalSettings,
+    );
+  }
+
   static void _importPlayOk(String moveList) {
     String cleanUpPlayOkMoveList(String moveList) {
       moveList = removeTagPairs(moveList);
@@ -417,7 +429,7 @@ class ImportService {
       return ret;
     }
 
-    final NativeMillRulesPort localPort = NativeMillRulesPort();
+    final NativeMillRulesPort localPort = _newValidationPort();
     try {
       final GameRecorder newHistory = GameRecorder(
         lastPositionWithRemove: GameController().activeFen,
@@ -495,7 +507,7 @@ class ImportService {
     PgnNode<ExtMove> root, {
     String? setupFen,
   }) {
-    final NativeMillRulesPort port = NativeMillRulesPort();
+    final NativeMillRulesPort port = _newValidationPort();
     try {
       if (setupFen != null && setupFen.isNotEmpty) {
         port.setFromFen(setupFen);
@@ -567,7 +579,7 @@ class ImportService {
     // Retrieve FEN from headers if present
     final String? fen = game.headers['FEN'];
 
-    final NativeMillRulesPort localPort = NativeMillRulesPort();
+    final NativeMillRulesPort localPort = _newValidationPort();
     try {
       // Set up the board position using FEN if available; an invalid FEN
       // surfaces as an exception and aborts the import before any global
