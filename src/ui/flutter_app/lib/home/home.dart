@@ -30,6 +30,7 @@ import '../game_shell/debug_route_ids.dart';
 import '../game_shell/game_session_scope.dart';
 import '../game_shell/shared_game_shell.dart';
 import '../game_shell/shell_route_ids.dart';
+import '../games/mill/mill_session_animation_bridge.dart';
 import '../games/mill/mill_session_recorder_bridge.dart';
 import '../general_settings/models/general_settings.dart';
 import '../general_settings/services/config_import_export_service.dart';
@@ -74,6 +75,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
   GameSessionHandle? _activeSession;
   GameId? _activeSessionGameId;
   MillSessionRecorderBridge? _activeMillRecorderBridge;
+  MillSessionAnimationBridge? _activeMillAnimationBridge;
   VoidCallback? _activeSessionSnapshotListener;
 
   SettingsRepository get _settingsRepository =>
@@ -97,6 +99,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
       _activeMillRecorderBridge = MillSessionRecorderBridge.forGameController(
         session: session,
       );
+      _activeMillAnimationBridge = MillSessionAnimationBridge(session: session);
     }
   }
 
@@ -193,6 +196,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
       GameController().unbindActiveSession(session);
     }
     _disposeActiveMillRecorderBridge();
+    _disposeActiveMillAnimationBridge();
   }
 
   void _disposeActiveMillRecorderBridge() {
@@ -201,6 +205,15 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
       return;
     }
     _activeMillRecorderBridge = null;
+    unawaited(bridge.dispose());
+  }
+
+  void _disposeActiveMillAnimationBridge() {
+    final MillSessionAnimationBridge? bridge = _activeMillAnimationBridge;
+    if (bridge == null) {
+      return;
+    }
+    _activeMillAnimationBridge = null;
     unawaited(bridge.dispose());
   }
 

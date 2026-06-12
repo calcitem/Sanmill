@@ -4,7 +4,13 @@
 import '../../game_platform/game_session.dart';
 import '../../general_settings/models/general_settings.dart';
 import '../../shared/services/logger.dart';
+import 'mill_constants.dart';
 import 'native_mill_game_session.dart';
+
+/// Optional hook invoked immediately before a remove [GameAction] is applied.
+/// Used to await [Game.pendingMillSoundCompleter] so mill audio finishes
+/// before the capture animation/sound (master `engineToGo` parity).
+typedef BeforeRemoveApplyHook = Future<void> Function();
 
 /// Minimal AI-turn adapter for the Rust-native Mill dogfood path.
 ///
@@ -18,6 +24,7 @@ class NativeMillAiTurnController {
     this.generalSettings = const GeneralSettings(),
     this.maxStepsPerTurn = 8,
     this.bothSidesAi = false,
+    this.onBeforeRemoveApply,
   });
 
   /// Optional fixed depth override used by tests and targeted dogfood paths.
@@ -39,6 +46,9 @@ class NativeMillAiTurnController {
   /// `Search::executeSearch` continuously running while
   /// `gameMode == GameMode::aiVsAi`.
   final bool bothSidesAi;
+
+  /// When set, called before applying a remove action inside [playIfAiTurn].
+  final BeforeRemoveApplyHook? onBeforeRemoveApply;
 
   PlayerSeat get aiSeat =>
       generalSettings.aiMovesFirst ? PlayerSeat.first : PlayerSeat.second;
@@ -173,23 +183,29 @@ class NativeMillAiTurnController {
         break;
       }
       final Stopwatch sw = Stopwatch()..start();
-      final GameAction? applied = await session.searchAndApplyBestAction(
+      final GameAction? action = await session.searchBestAction(
         depth: searchDepth,
         moveLimitMs: timeLimit,
       );
-      sw.stop();
-      logger.i(
-        '[NativeMillAiTurnController] step=$step searchAndApplyBestAction '
-        'returned in ${sw.elapsedMilliseconds}ms: '
-        'applied=${applied?.payload['move'] ?? '(null)'}',
-      );
-      if (applied == null) {
+      if (action == null) {
+        sw.stop();
         logger.w(
-          '[NativeMillAiTurnController] step=$step applied=null; break.',
+          '[NativeMillAiTurnController] step=$step searchBestAction=null; '
+          'break.',
         );
         break;
       }
-      lastApplied = applied;
+      if (action.type == MillActionTypes.remove) {
+        await onBeforeRemoveApply?.call();
+      }
+      await session.apply(action);
+      sw.stop();
+      logger.i(
+        '[NativeMillAiTurnController] step=$step search+apply '
+        'returned in ${sw.elapsedMilliseconds}ms: '
+        'applied=${action.payload['move']}',
+      );
+      lastApplied = action;
     }
     logger.i(
       '[NativeMillAiTurnController] playIfAiTurn done: '

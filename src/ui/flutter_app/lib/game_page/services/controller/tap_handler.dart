@@ -78,7 +78,11 @@ class TapHandler {
     }
 
     final NativeMillAiTurnController aiTurnController =
-        NativeMillAiTurnController(generalSettings: DB().generalSettings);
+        NativeMillAiTurnController(
+          generalSettings: DB().generalSettings,
+          onBeforeRemoveApply:
+              controller.gameInstance.awaitPendingMillSoundBeforeRemove,
+        );
     if (mode == GameMode.humanVsAi && aiTurnController.isAiTurn(session)) {
       controller.refreshNativeSessionHeader(
         context,
@@ -128,6 +132,7 @@ class TapHandler {
         logger.t(
           "$_logTag Native Mill selected ${result.selectedFrom}; waiting for destination.",
         );
+        _applySelectionFeedback(result.selectedFrom);
         showTip(tipMove, snackBar: false);
         return const EngineResponseSkip();
       case MillSessionTapStatus.applied:
@@ -181,6 +186,27 @@ class TapHandler {
         logger.t("$_logTag Native Mill ignored tap <$tappedLabel>.");
         return const EngineResponseSkip();
     }
+  }
+
+  /// Visual + audio feedback when the first tap of a move selects a source
+  /// piece (moving phase).  Mirrors the legacy `position.dart` selection
+  /// behaviour: lift the chosen piece (pick-up animation), highlight it, and
+  /// play the select tone.  The destination tap is handled by the session
+  /// `moveApplied` event through [MillSessionAnimationBridge].
+  void _applySelectionFeedback(String? selectedFrom) {
+    if (selectedFrom == null || selectedFrom.isEmpty) {
+      return;
+    }
+    final int node = MillBoardCoordinateMaps.notationToNode(selectedFrom);
+    final int? square = MillBoardCoordinateMaps.nodeToLegacySquare[node];
+    final int? gridIndex = square == null
+        ? null
+        : MillBoardCoordinateMaps.squareToGridIndex[square];
+    controller.gameInstance
+      ..focusIndex = gridIndex
+      ..blurIndex = null;
+    controller.animationManager.animatePickUp();
+    SoundManager().playTone(Sound.select);
   }
 
   Future<EngineResponse> onBoardTap(int sq) async {

@@ -523,7 +523,12 @@ class ReplayService {
             : GameSessionScope.sessionOf(context);
         if (session is NativeMillGameSession) {
           final NativeMillAiTurnController aiTurnController =
-              NativeMillAiTurnController(generalSettings: DB().generalSettings);
+              NativeMillAiTurnController(
+                generalSettings: DB().generalSettings,
+                onBeforeRemoveApply: GameController()
+                    .gameInstance
+                    .awaitPendingMillSoundBeforeRemove,
+              );
           GameAction? action;
           for (final GameAction legal in session.legalActions) {
             if (legal.payload['move'] == move) {

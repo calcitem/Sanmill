@@ -1186,6 +1186,7 @@ class GameController {
         NativeMillAiTurnController(
           generalSettings: DB().generalSettings,
           bothSidesAi: true,
+          onBeforeRemoveApply: gameInstance.awaitPendingMillSoundBeforeRemove,
         );
     final bool aiTurn = gameInstance.isAiSideToMove;
     if (isMoveNow && !aiTurn) {
@@ -1273,6 +1274,7 @@ class GameController {
         NativeMillAiTurnController(
           generalSettings: DB().generalSettings,
           bothSidesAi: true,
+          onBeforeRemoveApply: gameInstance.awaitPendingMillSoundBeforeRemove,
         );
 
     // Pin both the session identity AND the AI-loop epoch so the

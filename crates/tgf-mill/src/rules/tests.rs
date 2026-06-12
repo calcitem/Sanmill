@@ -2923,6 +2923,31 @@ fn set_from_fen_then_export_round_trip() {
 }
 
 #[test]
+fn set_from_fen_moving_phase_counts_in_hand_for_fewer_than_three() {
+    let rules = MillRules::default();
+    // Regression for master Dart validateFen (eb69c427a): the moving phase may
+    // begin while a side still holds pieces, so on-board count alone can sit
+    // below `pieces_at_least_count` when board + hand total is still legal.
+    let legal_fen = "********/@@@*O*@@/******** b m s 1 3 5 4 0 0 0 0 0 0 0 0 0 1";
+    let state = rules
+        .set_from_fen(legal_fen)
+        .expect("legal moving-phase FEN with pieces in hand must parse");
+    assert_eq!(state.phase, MillPhase::Moving);
+    assert_eq!(state.winner, -1);
+
+    // Board + hand total below threshold => immediate loss on import.
+    let illegal_fen = "********/@@@*O*@@/******** b m s 1 1 5 4 0 0 0 0 0 0 0 0 0 1";
+    let lose_state = rules
+        .set_from_fen(illegal_fen)
+        .expect("below-threshold FEN must still parse");
+    assert_eq!(lose_state.phase, MillPhase::GameOver);
+    assert_eq!(
+        lose_state.outcome_reason,
+        MillOutcomeReason::LoseFewerThanThree
+    );
+}
+
+#[test]
 fn set_from_fen_runs_immediate_terminal_checks() {
     let rules = MillRules::default();
 

@@ -48,6 +48,19 @@ class Game {
   /// overlapping audio.
   Completer<void>? pendingMillSoundCompleter;
 
+  /// Wait until a deferred mill landing sound finishes before applying a
+  /// follow-up remove move.  Mirrors master `engineToGo` which awaited
+  /// [pendingMillSoundCompleter] when the AI's next move was a capture.
+  Future<void> awaitPendingMillSoundBeforeRemove() async {
+    final Completer<void>? pending = pendingMillSoundCompleter;
+    if (pending != null && !pending.isCompleted) {
+      await pending.future;
+    }
+    if (pendingMillSoundCompleter == pending) {
+      pendingMillSoundCompleter = null;
+    }
+  }
+
   final List<Player> players = <Player>[
     Player(color: PieceColor.white, isAi: false),
     Player(color: PieceColor.black, isAi: true),
