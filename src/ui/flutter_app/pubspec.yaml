@@ -1,7 +1,7 @@
 name: sanmill
 description: Sanmill is a open-source, powerful UCI-like Nine Men's Morris (and its variants) program.
 publish_to: none
-version: 7.4.2+5568
+version: 7.4.3+5573
 
 environment:
   sdk: ">=3.8.0 <4.0.0"
@@ -61,13 +61,6 @@ dependencies:
   vibration: 3.1.5
   url_launcher: 6.3.2
   uuid: 4.5.2
-  # Vendored: pub 0.1.0 CMake target is screenshot_plugin; Flutter expects
-  # just_screenshot_plugin. See third_party/just_screenshot/PATCHES.md.
-  just_screenshot:
-    path: third_party/just_screenshot
-  rust_lib_sanmill:
-    path: rust_builder
-  flutter_rust_bridge: 2.12.0
   # Voice assistant plugins removed - voice assistant functionality disabled
   # whisper_ggml: 1.7.0
   # record: 6.1.2
@@ -146,6 +139,23 @@ flutter:
     - assets/images/white_piece_image_8.png
     - assets/images/black_piece_image_8.png
     - assets/images/marked_piece_image.png
+    - assets/databases/std.secval
+    - assets/databases/std_0_0_9_9.sec2
+    - assets/databases/std_0_1_9_8.sec2
+    - assets/databases/std_1_1_8_8.sec2
+    - assets/databases/std_1_2_8_7.sec2
+    - assets/databases/std_1_3_7_6.sec2
+    - assets/databases/std_2_2_7_7.sec2
+    - assets/databases/std_2_3_6_6.sec2
+    - assets/databases/std_2_3_7_6.sec2
+    - assets/databases/std_2_4_6_5.sec2
+    - assets/databases/std_3_3_5_5.sec2
+    - assets/databases/std_3_3_6_5.sec2
+    - assets/databases/std_3_3_6_6.sec2
+    - assets/databases/std_3_4_5_5.sec2
+    - assets/databases/std_3_4_6_5.sec2
+    - assets/databases/std_4_3_5_5.sec2
+    - assets/databases/std_4_4_5_5.sec2
 
 msix_config:
   display_name: Mill (N Men's Morris)

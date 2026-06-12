@@ -1,6 +1,10 @@
 cmake_minimum_required(VERSION 3.15)
 project(sanmill LANGUAGES CXX)
 
+# MSVC 14.51+ (VS 2026) deprecates experimental coroutines used by some
+# Flutter Windows plugins (e.g. audioplayers_windows, permission_handler_windows).
+add_compile_definitions(_SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS)
+
 set(BINARY_NAME "mill")
 
 cmake_policy(SET CMP0063 NEW)
