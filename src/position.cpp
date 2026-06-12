@@ -1188,7 +1188,11 @@ bool Position::put_piece(Square s, bool updateRecord)
                 pieceToRemoveCount[sideToMove] = totalCaptureRemoval;
                 update_key_misc();
                 action = Action::remove;
-                // Don't return here - need to check placing phase end logic
+            }
+
+            // Complete capture removal before placing-phase end side switching.
+            if (totalCaptureRemoval > 0 && pieceToRemoveCount[sideToMove] > 0) {
+                return true;
             }
 
             if (rule.millFormationActionInPlacingPhase ==
@@ -1205,11 +1209,6 @@ bool Position::put_piece(Square s, bool updateRecord)
                     }
                     return true;
                 }
-            }
-
-            // If we have custodian capture to handle, return early
-            if (totalCaptureRemoval > 0 && pieceToRemoveCount[sideToMove] > 0) {
-                return true;
             }
 
             // Begin of set side to move

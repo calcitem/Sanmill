@@ -1200,6 +1200,11 @@ class Position {
           SoundManager().playTone(Sound.place);
         }
 
+        // Complete capture removal before placing-phase end side switching.
+        if (totalCaptureRemoval > 0 && pieceToRemoveCount[sideToMove]! > 0) {
+          return true;
+        }
+
         if (DB().ruleSettings.millFormationActionInPlacingPhase ==
             MillFormationActionInPlacingPhase.removalBasedOnMillCounts) {
           if (pieceInHandCount[PieceColor.white]! == 0 &&
@@ -1214,11 +1219,6 @@ class Position {
             }
             return true;
           }
-        }
-
-        // If we have custodian capture to handle, return early
-        if (totalCaptureRemoval > 0 && pieceToRemoveCount[sideToMove]! > 0) {
-          return true;
         }
 
         // Begin of set side to move
