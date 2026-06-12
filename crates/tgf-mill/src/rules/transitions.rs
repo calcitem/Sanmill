@@ -29,22 +29,30 @@ pub(super) fn maybe_transition_to_moving(state: &mut MillState, options: &MillVa
     }
 }
 
-/// When `may_move_in_placing_phase` is enabled the C++ engine determines
-/// the effective phase from the **active player's** hand count on every
-/// side switch (see `Position::set_side_to_move` in position.cpp).  This
-/// means a player who has placed all their pieces enters "moving" phase
-/// even while the opponent still holds pieces in hand.
+/// The C++ engine determines the effective phase from the **active
+/// player's** hand count on every side switch, for every variant (see
+/// `Position::set_side_to_move` in legacy position.cpp):
 ///
-/// Call this after every `state.side_to_move ^= 1` in `apply()` to mirror
-/// that behaviour.  The function is a no-op for all other variants so it
-/// is safe to call unconditionally after every side change.
-pub(super) fn sync_phase_for_may_move_in_placing(
-    state: &mut MillState,
-    options: &MillVariantOptions,
-) {
-    if !options.may_move_in_placing_phase {
-        return;
-    }
+/// ```cpp
+/// if (pieceInHandCount[sideToMove] == 0) { phase = moving;  ... }
+/// else                                   { phase = placing; ... }
+/// ```
+///
+/// For most variants both hands deplete in lockstep, so this is a no-op
+/// until the regular placing-end transition fires.  It becomes
+/// observable whenever hand counts diverge:
+///   * `may_move_in_placing_phase` (Lasker Morris): a player who has
+///     placed all pieces starts moving while the opponent still places.
+///   * `RemoveOpponentsPieceFromHandThenOpponentsTurn` (Dooz): a mill
+///     removes a piece from the opponent's hand, so the opponent can run
+///     out of hand pieces early and must answer with board moves.
+///
+/// Call this after every side change in `apply()`.  Only the
+/// Placing/Moving pair is touched — terminal phases stay intact, and the
+/// placing-end bookkeeping (marked-piece sweep, defender-first seat
+/// assignment) still happens exclusively in `enter_moving_phase` once
+/// both hands are empty.
+pub(super) fn sync_phase_with_active_hand(state: &mut MillState) {
     // Only adjust when the game is still in progress (placing or moving).
     if state.phase != MillPhase::Placing && state.phase != MillPhase::Moving {
         return;

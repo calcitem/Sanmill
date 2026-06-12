@@ -85,7 +85,11 @@ impl MillRules {
                 state.side_to_move = -1;
             }
             StalemateAction::ChangeSideToMove => {
+                // C++ runs change_side_to_move() -> set_side_to_move(),
+                // which re-derives the phase from the new active side's
+                // hand count.
                 state.side_to_move ^= 1;
+                sync_phase_with_active_hand(state);
             }
             StalemateAction::RemoveOpponentsPieceAndMakeNextMove => {
                 let side = state.side_to_move as usize;
@@ -115,6 +119,13 @@ impl MillRules {
                 clear_capture_state(state);
             }
         }
+        // Mirror the tail of master Position::check_if_game_is_over
+        // (position.cpp): `if (pieceToRemoveCount[sideToMove] != 0)
+        // action = Action::remove;`.  Without this resync the action
+        // stays at Select after a stalemate arms pending removals, and
+        // move generation would return an empty list instead of the
+        // removal targets.
+        sync_action_state(state);
     }
 
     pub(super) fn check_if_game_is_over(&self, state: &mut MillState) {
@@ -348,6 +359,15 @@ impl MillRules {
         let has_non_mill_target = (0_usize..24).any(|idx| {
             live_piece(state, idx) == target_piece && !is_piece_in_mill(state, &self.options, idx)
         });
+        // Mirror master generate<REMOVE>'s branch structure: the
+        // stalemate-removal path applies ONLY the "adjacent to the
+        // remover's pieces" filter (own-colour targets are unrestricted)
+        // and returns before any mill-protection check, so a piece
+        // sitting in a mill is still removable during a stalemate
+        // removal.  Mill protection applies exclusively to the regular
+        // (non-stalemate) path.
+        let stalemate_removal = self.is_stalemate_removal_context(state);
+        let removing_own = state.side_to_move >= 0 && target_piece == state.side_to_move + 1;
 
         for &node in priority.iter().rev() {
             if live_piece(state, node) != target_piece {
@@ -356,12 +376,11 @@ impl MillRules {
             if (excluded_targets & node_bit(node)) != 0 {
                 continue;
             }
-            if self.is_stalemate_removal_context(state)
-                && !is_adjacent_to_side_piece(state, &self.topology, node)
-            {
-                continue;
-            }
-            if !self.options.may_remove_from_mills_always
+            if stalemate_removal {
+                if !removing_own && !is_adjacent_to_side_piece(state, &self.topology, node) {
+                    continue;
+                }
+            } else if !self.options.may_remove_from_mills_always
                 && has_non_mill_target
                 && is_piece_in_mill(state, &self.options, node)
             {

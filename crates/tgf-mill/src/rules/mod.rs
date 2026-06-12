@@ -81,7 +81,7 @@ use transitions::{
     apply_removal_based_on_mill_counts, bump_ply_since_capture, clear_key_history,
     is_action_within_board_bounds, live_piece, maybe_draw_by_n_move_rule, maybe_finish_full_board,
     maybe_stop_placing_when_two_empty, maybe_transition_to_moving, note_mill_formation,
-    push_key_and_check_threefold, removal_count_for_bits, sync_phase_for_may_move_in_placing,
+    push_key_and_check_threefold, removal_count_for_bits, sync_phase_with_active_hand,
     usable_mill_bits,
 };
 #[cfg(test)]

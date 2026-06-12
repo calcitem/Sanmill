@@ -636,8 +636,10 @@ fn native_self_play_restrict_repeated_mills_no_panic() {
 // yet generated for this environment).  After running the generator once
 // and committing the files, the tests become hard assertions.
 //
-// Rules 8 (Zhi Qi) and 9 (El Filja) are marked #[ignore] because they
-// have known divergences tracked in known_failures.toml.
+// All 11 rule presets replay clean: the historical divergences for
+// Dooz (per-side phase sync), Zhi Qi (stalemate-removal action sync and
+// mill-protection bypass), and El Filja were fixed in Phase X1 and the
+// corresponding known_failures.toml entries were retired.
 // ---------------------------------------------------------------------------
 
 #[cfg(test)]
@@ -783,7 +785,6 @@ mod oracle_replay {
         run_oracle_replay(1);
     }
     #[test]
-    #[ignore = "Dooz oracle replay: RemoveOpponentsPieceFromHandThenOpponentsTurn placing-phase gap, tracked in known_failures.toml"]
     fn oracle_replay_dooz() {
         run_oracle_replay(2);
     }
@@ -813,12 +814,10 @@ mod oracle_replay {
     }
 
     #[test]
-    #[ignore = "Zhi Qi oracle replay: known divergence, tracked in known_failures.toml"]
     fn oracle_replay_zhi_qi() {
         run_oracle_replay(8);
     }
     #[test]
-    #[ignore = "El Filja oracle replay: known divergence, tracked in known_failures.toml"]
     fn oracle_replay_el_filja() {
         run_oracle_replay(9);
     }

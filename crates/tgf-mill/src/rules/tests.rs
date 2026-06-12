@@ -484,6 +484,97 @@ fn mill_action_remove_from_hand_then_opponent_turn() {
     assert_eq!(state.side_to_move, 1, "turn passes to opponent");
 }
 
+/// Dooz regression (oracle rule_idx 2): when the in-hand removal
+/// empties the opponent's hand mid-placing, C++ `set_side_to_move`
+/// derives the phase from the active side's hand count, so the
+/// opponent answers with board moves while the mill former still
+/// holds pieces in hand — and the phase flips back to placing once
+/// the turn returns.
+#[test]
+fn from_hand_removal_emptying_opponent_hand_starts_their_moving_turn() {
+    let rules = MillRules::new(MillVariantOptions {
+        mill_formation_action_in_placing_phase:
+            MillFormationActionInPlacingPhase::RemoveOpponentsPieceFromHandThenOpponentsTurn,
+        ..MillVariantOptions::default()
+    });
+    let mut state = MillState {
+        side_to_move: 0,
+        phase: MillPhase::Placing,
+        move_number: 8,
+        pieces_in_hand: [2, 1],
+        pieces_on_board: [2, 3],
+        pending_removals: [0, 0],
+        winner: -1,
+        ..MillState::default()
+    };
+    // White completes the [0, 1, 2] line by placing at 2; black owns
+    // 16..=18 on the outer ring.
+    state.board[0] = 1;
+    state.board[1] = 1;
+    for node in 16_usize..=18 {
+        state.board[node] = 2;
+    }
+
+    let snap = rules.apply(
+        &rules.encode(state),
+        Action {
+            kind_tag: MillActionKind::Place as i16,
+            from_node: -1,
+            to_node: 2,
+            aux: -1,
+            payload_bits: 0,
+        },
+    );
+    let state = MillRules::decode(&snap);
+    assert_eq!(
+        state.pieces_in_hand,
+        [1, 0],
+        "the removal must come from black's hand"
+    );
+    assert_eq!(state.side_to_move, 1, "turn passes to the opponent");
+    assert_eq!(
+        state.phase,
+        MillPhase::Moving,
+        "black has no hand pieces left, so black moves on the board"
+    );
+
+    let mut actions = ActionList::<256>::new();
+    rules.legal_actions(&snap, &mut actions);
+    assert!(
+        !actions.is_empty(),
+        "black must receive board moves, not an empty legal set"
+    );
+    assert!(
+        actions
+            .iter()
+            .all(|a| a.kind_tag == MillActionKind::Move as i16)
+    );
+
+    // Black answers 16 -> 23 (no mill); the turn returns to White who
+    // still holds one piece in hand, so the phase flips back to placing.
+    let snap = rules.apply(
+        &snap,
+        Action {
+            kind_tag: MillActionKind::Move as i16,
+            from_node: 16,
+            to_node: 23,
+            aux: -1,
+            payload_bits: 0,
+        },
+    );
+    let state = MillRules::decode(&snap);
+    assert_eq!(state.side_to_move, 0);
+    assert_eq!(state.phase, MillPhase::Placing);
+    let mut actions = ActionList::<256>::new();
+    rules.legal_actions(&snap, &mut actions);
+    assert!(
+        actions
+            .iter()
+            .all(|a| a.kind_tag == MillActionKind::Place as i16),
+        "white is still placing and Dooz has no move-in-placing option"
+    );
+}
+
 #[test]
 fn mill_action_remove_from_hand_then_your_turn() {
     let (_rules, snap) = placing_mill_fixture_for_action(
@@ -848,6 +939,53 @@ fn stalemate_remove_and_make_next_move_keeps_turn_after_remove() {
     assert_eq!(state.side_to_move, 0);
     assert_eq!(state.pending_removals, [0, 0]);
     assert!(!state.stalemate_removing);
+}
+
+/// Zhi Qi regression (oracle rule_idx 8): arming a stalemate removal
+/// must resync the action state (mirror of `check_if_game_is_over`'s
+/// tail in legacy position.cpp) so the legal-action generator emits
+/// the removal targets instead of an empty move list, and the
+/// stalemate path skips mill protection (mirror of `generate<REMOVE>`),
+/// so opponent pieces inside a mill stay removable.
+#[test]
+fn stalemate_removal_offers_adjacent_targets_without_mill_protection() {
+    let rules = MillRules::new(MillVariantOptions {
+        stalemate_action: StalemateAction::RemoveOpponentsPieceAndMakeNextMove,
+        ..MillVariantOptions::default()
+    });
+    let mut state = stalemate_fixture();
+    // Extend the fixture with a black mill on the [1, 9, 17] spoke.
+    state.board[9] = 2;
+    state.board[17] = 2;
+    state.pieces_on_board[1] += 2;
+
+    let mut state_after = state.clone();
+    rules.maybe_handle_stalemate(&mut state_after);
+    assert_eq!(state_after.pending_removals, [1, 0]);
+    assert!(state_after.stalemate_removing);
+
+    let mut actions = ActionList::<256>::new();
+    rules.legal_actions(&rules.encode(state_after), &mut actions);
+    assert!(
+        !actions.is_empty(),
+        "the stalemated side must see removal targets, not an empty set"
+    );
+    assert!(
+        actions
+            .iter()
+            .all(|a| a.kind_tag == MillActionKind::Remove as i16)
+    );
+    let targets: std::collections::BTreeSet<i16> = actions.iter().map(|a| a.to_node).collect();
+    assert_eq!(
+        targets,
+        [1_i16, 3, 5, 7].into_iter().collect(),
+        "exactly the black pieces adjacent to white are removable"
+    );
+    assert!(
+        targets.contains(&1),
+        "node 1 sits in the black mill [1, 9, 17] and must stay removable \
+         because the stalemate path bypasses mill protection"
+    );
 }
 
 #[test]
@@ -1700,12 +1838,16 @@ fn stop_placing_when_two_empty_squares_is_twelve_men_only() {
     board[20] = 2;
     board[13] = 2;
     board[5] = 2;
+    // Keep both hands non-empty so the per-side phase sync (mirror of
+    // C++ set_side_to_move) stays in Placing for the next mover; the
+    // discriminating observable for the 12-piece-only shortcut is that
+    // the hands are NOT force-zeroed.
     let state = MillState {
         board,
         side_to_move: 0,
         phase: MillPhase::Placing,
         move_number: 21,
-        pieces_in_hand: [3, 0],
+        pieces_in_hand: [3, 2],
         pieces_on_board: [0, 21],
         pending_removals: [0, 0],
         winner: -1,
@@ -1723,6 +1865,11 @@ fn stop_placing_when_two_empty_squares_is_twelve_men_only() {
         },
     );
     let state = MillRules::decode(&after);
+    assert_eq!(
+        state.pieces_in_hand,
+        [2, 2],
+        "9-piece games must not zero the hands via the two-empty shortcut"
+    );
     assert_eq!(
         state.phase,
         MillPhase::Placing,

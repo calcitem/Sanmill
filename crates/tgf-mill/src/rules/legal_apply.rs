@@ -124,7 +124,7 @@ impl GameRules for MillRules {
                                     side as i8
                                 };
                                 maybe_transition_to_moving(&mut state, &self.options);
-                                sync_phase_for_may_move_in_placing(&mut state, &self.options);
+                                sync_phase_with_active_hand(&mut state);
                                 maybe_finish_full_board(&mut state, &self.options);
                                 sync_action_state(&mut state);
                             }
@@ -164,7 +164,7 @@ impl GameRules for MillRules {
                                 state.side_to_move ^= 1;
                             }
                             maybe_transition_to_moving(&mut state, &self.options);
-                            sync_phase_for_may_move_in_placing(&mut state, &self.options);
+                            sync_phase_with_active_hand(&mut state);
                             maybe_finish_full_board(&mut state, &self.options);
                             sync_action_state(&mut state);
                         }
@@ -196,7 +196,7 @@ impl GameRules for MillRules {
                     maybe_stop_placing_when_two_empty(&mut state, &self.options);
                     state.side_to_move ^= 1;
                     maybe_transition_to_moving(&mut state, &self.options);
-                    sync_phase_for_may_move_in_placing(&mut state, &self.options);
+                    sync_phase_with_active_hand(&mut state);
                     maybe_finish_full_board(&mut state, &self.options);
                     sync_action_state(&mut state);
                 }
@@ -263,9 +263,10 @@ impl GameRules for MillRules {
                     // becomes a no-op (it inspects `state.phase`).
                     push_key_and_check_threefold(&mut state, &self.options);
                     maybe_draw_by_n_move_rule(&mut state, &self.options);
-                    // Mirror C++ set_side_to_move phase sync for
-                    // may_move_in_placing_phase variant.
-                    sync_phase_for_may_move_in_placing(&mut state, &self.options);
+                    // Mirror C++ set_side_to_move: phase follows the new
+                    // active side's hand count (matters for Dooz-style
+                    // asymmetric hands and may_move_in_placing_phase).
+                    sync_phase_with_active_hand(&mut state);
                     sync_action_state(&mut state);
                 }
             }
@@ -407,7 +408,7 @@ impl GameRules for MillRules {
                         state.board_full_removing = false;
                     }
                     maybe_transition_to_moving(&mut state, &self.options);
-                    sync_phase_for_may_move_in_placing(&mut state, &self.options);
+                    sync_phase_with_active_hand(&mut state);
                     maybe_finish_full_board(&mut state, &self.options);
                     sync_action_state(&mut state);
                 }
