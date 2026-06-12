@@ -195,8 +195,10 @@ void main() {
   // AiMoveType
   // ---------------------------------------------------------------------------
   group('AiMoveType', () {
-    test('should have five values', () {
-      expect(AiMoveType.values.length, 5);
+    test('should have three values', () {
+      // `perfect` and `openingBook` were removed together with the
+      // perfect-database and opening-book backends in the Rust port.
+      expect(AiMoveType.values.length, 3);
     });
 
     test('should include all expected types', () {

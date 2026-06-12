@@ -362,48 +362,166 @@ class ImportService {
     }
   }
 
-  static void _importPlayOk(String moveList) {
-    // Legacy PlayOK importer relied on the now-deleted Dart
-    // `Position` rule machine for move validation.  Replacing it
-    // requires routing the parsed move list through
-    // `NativeMillGameSession.applyMoveString`; that is tracked as
-    // a follow-up.  For now refuse the import.
-    throw const ImportFormatException(
-      'PlayOK import is temporarily unavailable on this build',
+  /// Maps the rules-port active seat onto the legacy [PieceColor] domain
+  /// used by [ExtMove.side].
+  static PieceColor _sideToMoveOf(NativeMillRulesPort port) {
+    final PlayerSeat seat = port.snapshot.activeSeat;
+    assert(
+      seat == PlayerSeat.first || seat == PlayerSeat.second,
+      "$_logTag Cannot derive a mover from seat $seat.",
     );
+    return seat == PlayerSeat.first ? PieceColor.white : PieceColor.black;
+  }
+
+  /// Finds the legal action whose canonical move string equals [move]
+  /// (e.g. "d6", "a1-a4", "xa1") in [port]'s current position, or null
+  /// when the move is illegal there.
+  static GameAction? _legalActionForMoveString(
+    NativeMillRulesPort port,
+    String move,
+  ) {
+    for (final GameAction action in port.legalActions) {
+      if (MillActionCodec.moveStringFrom(action) == move) {
+        return action;
+      }
+    }
+    return null;
+  }
+
+  /// Validates [move] against [port], appends it to [history], and advances
+  /// the port.  Throws [ImportFormatException] when the move is illegal in
+  /// the current position ([token] names the offending source token).
+  static void _applyValidatedMove(
+    NativeMillRulesPort port,
+    GameRecorder history,
+    String move,
+    String token,
+  ) {
+    final GameAction? action = _legalActionForMoveString(port, move);
+    if (action == null) {
+      throw ImportFormatException(" $token → $move");
+    }
+    history.appendMove(ExtMove(move, side: _sideToMoveOf(port)));
+    port.apply(action);
+  }
+
+  static void _importPlayOk(String moveList) {
+    String cleanUpPlayOkMoveList(String moveList) {
+      moveList = removeTagPairs(moveList);
+      final String ret = moveList
+          .replaceAll("\n", " ")
+          .replaceAll(" 1/2-1/2", "")
+          .replaceAll(" 1-0", "")
+          .replaceAll(" 0-1", "")
+          .replaceAll("TXT", "");
+      return ret;
+    }
+
+    final NativeMillRulesPort localPort = NativeMillRulesPort();
+    try {
+      final GameRecorder newHistory = GameRecorder(
+        lastPositionWithRemove: GameController().activeFen,
+      );
+
+      final List<String> list = cleanUpPlayOkMoveList(moveList).split(" ");
+
+      for (String token in list) {
+        token = token.trim();
+        if (token.isEmpty ||
+            token.endsWith(".") ||
+            token.startsWith("[") ||
+            token.endsWith("]")) {
+          continue;
+        }
+
+        // A leading "x" marks a standalone capture move (e.g. "x12").
+        if (token.startsWith("x")) {
+          _applyValidatedMove(
+            localPort,
+            newHistory,
+            _playOkNotationToMoveString(token),
+            token,
+          );
+        }
+        // No "x" at all: a plain place / move token.
+        else if (!token.contains("x")) {
+          _applyValidatedMove(
+            localPort,
+            newHistory,
+            _playOkNotationToMoveString(token),
+            token,
+          );
+        }
+        // An embedded "x" (e.g. "18x21") encodes a move immediately
+        // followed by a capture; split and apply both halves.
+        else {
+          final int idx = token.indexOf("x");
+          final String preMove = token.substring(0, idx);
+          final String captureMove = token.substring(idx); // contains 'x'
+          _applyValidatedMove(
+            localPort,
+            newHistory,
+            _playOkNotationToMoveString(preMove),
+            preMove,
+          );
+          _applyValidatedMove(
+            localPort,
+            newHistory,
+            _playOkNotationToMoveString(captureMove),
+            captureMove,
+          );
+        }
+      }
+
+      if (newHistory.mainlineMoves.isEmpty) {
+        throw const ImportFormatException.coded(
+          ImportErrorCode.noValidMovesFound,
+        );
+      }
+
+      GameController().newGameRecorder = newHistory;
+    } finally {
+      localPort.dispose();
+    }
   }
 
   /// Replays all nodes to assign a boardLayout to each node's node.data.
+  ///
+  /// The whole PGN tree (mainline and variations) is walked depth-first on
+  /// a private Rust-kernel port; the kernel undo stack restores the parent
+  /// position when backtracking out of a branch, mirroring the clone-based
+  /// DFS the legacy `Position` rule machine used.
   static void fillAllNodesBoardLayout(
     PgnNode<ExtMove> root, {
     String? setupFen,
   }) {
-    // Compute boardLayout for the mainline using the Rust kernel
-    // through `NativeMillRulesPort`.  The legacy `Position`-based
-    // DFS over branch points was removed with the rule-machine
-    // cleanup; variations no longer get a per-node boardLayout
-    // assigned (consumers fall back to the leading 26 chars of
-    // the active FEN).
     final NativeMillRulesPort port = NativeMillRulesPort();
-    if (setupFen != null && setupFen.isNotEmpty) {
-      port.setFromFen(setupFen);
+    try {
+      if (setupFen != null && setupFen.isNotEmpty) {
+        port.setFromFen(setupFen);
+      }
+      _fillBoardLayoutDfs(root, port);
+    } finally {
+      port.dispose();
     }
-    PgnNode<ExtMove> cursor = root;
-    while (cursor.children.isNotEmpty) {
-      final PgnNode<ExtMove> child = cursor.children.first;
-      if (child.data == null) {
-        break;
+  }
+
+  static void _fillBoardLayoutDfs(
+    PgnNode<ExtMove> node,
+    NativeMillRulesPort port,
+  ) {
+    for (final PgnNode<ExtMove> child in node.children) {
+      final ExtMove? move = child.data;
+      if (move == null) {
+        continue;
       }
-      final ExtMove move = child.data!;
-      GameAction? action;
-      for (final GameAction a in port.legalActions) {
-        if (MillActionCodec.moveStringFrom(a) == move.move) {
-          action = a;
-          break;
-        }
-      }
+      final GameAction? action = _legalActionForMoveString(port, move.move);
       if (action == null) {
-        break;
+        // Mirrors the legacy DFS: an unreplayable move (e.g. from a
+        // hand-edited or rule-mismatched save) skips that subtree
+        // instead of failing the whole load; consumers fall back to
+        // the leading 26 chars of the active FEN.
+        continue;
       }
       port.apply(action);
       final String fen = port.exportFen();
@@ -415,9 +533,9 @@ class ImportService {
           move.boardLayout = nativeBoard;
         }
       }
-      cursor = child;
+      _fillBoardLayoutDfs(child, port);
+      port.undo();
     }
-    port.dispose();
   }
 
   /// For standard PGN strings containing headers and moves, parse them
@@ -448,30 +566,181 @@ class ImportService {
 
     // Retrieve FEN from headers if present
     final String? fen = game.headers['FEN'];
-    _loadActiveNativeSessionFromFenIfNeeded(fen);
 
-    // The legacy PGN tree -> ExtMove tree conversion relied on
-    // the now-deleted Dart `Position` rule machine for move
-    // validation and side-to-move tracking through PGN
-    // variations.  Re-implementing that on top of
-    // `NativeMillGameSession` requires a synchronous
-    // clone-and-replay primitive that the FRB kernel does not
-    // expose yet; that is tracked as a follow-up.  For now refuse
-    // PGN imports that include moves and only honour the leading
-    // `[FEN ...]` header (already pushed into the native session
-    // via `_loadActiveNativeSessionFromFenIfNeeded`).
-    if (hasValidMoves) {
-      throw const ImportFormatException(
-        'PGN move-list import is temporarily unavailable on this build',
+    final NativeMillRulesPort localPort = NativeMillRulesPort();
+    try {
+      // Set up the board position using FEN if available; an invalid FEN
+      // surfaces as an exception and aborts the import before any global
+      // state is touched.
+      if (fen != null && fen.isNotEmpty) {
+        localPort.setFromFen(fen);
+      }
+
+      final GameRecorder newHistory = GameRecorder(
+        lastPositionWithRemove: fen ?? GameController().activeFen,
+        setupPosition: fen,
       );
+
+      // Convert the entire PGN tree (with variations) to an ExtMove tree,
+      // validating every move against the Rust kernel along the way.
+      _convertPgnNodeToExtMove(game.moves, newHistory.pgnRoot, localPort);
+
+      if (newHistory.mainlineMoves.isEmpty && (fen == null || fen.isEmpty)) {
+        throw const ImportFormatException.coded(
+          ImportErrorCode.noValidMovesFound,
+        );
+      }
+
+      fillAllNodesBoardLayout(newHistory.pgnRoot, setupFen: fen);
+
+      // The parse succeeded; only now touch controller / session state.
+      _loadActiveNativeSessionFromFenIfNeeded(fen);
+      GameController().newGameRecorder = newHistory;
+
+      if (fen != null && fen.isNotEmpty) {
+        GameController().gameRecorder.setupPosition = fen;
+      }
+    } finally {
+      localPort.dispose();
     }
-    if (fen != null && fen.isNotEmpty) {
-      GameController().gameRecorder.setupPosition = fen;
+  }
+
+  /// Splits a SAN token into its primitive move segments: an optional
+  /// place / move part followed by zero or more "x.." capture parts
+  /// (e.g. "b4xb2xc3" → ["b4", "xb2", "xc3"]).
+  static List<String> _splitSan(String san) {
+    san = san.replaceAll(RegExp(r'\{[^}]*\}'), '').trim();
+
+    List<String> segments = <String>[];
+
+    if (san.contains('x')) {
+      if (san.startsWith('x')) {
+        // All segments start with 'x'
+        final RegExp regex = RegExp(r'(x[a-g][1-7])');
+        segments = regex
+            .allMatches(san)
+            .map((RegExpMatch m) => m.group(0)!)
+            .toList();
+      } else {
+        final int firstX = san.indexOf('x');
+        // 'x' is known to be present and not at index 0 here.
+        final String firstSegment = san.substring(0, firstX);
+        segments.add(firstSegment);
+        // Remaining part: extract all 'x' followed by two characters
+        final RegExp regex = RegExp(r'(x[a-g][1-7])');
+        final String remainingSan = san.substring(firstX);
+        segments.addAll(
+          regex
+              .allMatches(remainingSan)
+              .map((RegExpMatch m) => m.group(0)!)
+              .toList(),
+        );
+      }
+    } else {
+      // No 'x', process as single segment
+      segments.add(san);
+    }
+
+    return segments;
+  }
+
+  /// Recursively converts a parsed PGN tree into the ExtMove tree rooted at
+  /// [targetParent], validating every move against [port].
+  ///
+  /// Each child branch is applied on the shared kernel port and undone after
+  /// its subtree has been processed, which replaces the `Position.clone()`
+  /// per-variation isolation the legacy Dart rule machine provided.
+  static void _convertPgnNodeToExtMove(
+    PgnNode<PgnNodeData> sourceNode,
+    PgnNode<ExtMove> targetParent,
+    NativeMillRulesPort port,
+  ) {
+    // Process all children (mainline first, then variations)
+    for (final PgnNode<PgnNodeData> child in sourceNode.children) {
+      if (child.data == null) {
+        continue;
+      }
+
+      final String san = child.data!.san.trim().toLowerCase();
+      if (san.isEmpty || san == "p") {
+        // Skip empty or pass moves.
+        // Note: "*", "x", "xx", "xxx" are not produced by the PGN
+        // parser's token regex so they do not need to be checked here.
+        continue;
+      }
+
+      final List<String> segments = _splitSan(san);
+      PgnNode<ExtMove> lastAddedNode = targetParent;
+      int appliedCount = 0;
+
+      // Process all segments of this move
+      for (int i = 0; i < segments.length; i++) {
+        final String segment = segments[i];
+        if (segment.isEmpty) {
+          continue;
+        }
+
+        try {
+          final String uciMove = _wmdNotationToMoveString(segment);
+
+          final GameAction? action = _legalActionForMoveString(port, uciMove);
+          if (action == null) {
+            throw ImportFormatException(" $segment → $uciMove");
+          }
+
+          // If this is a place / move segment followed by a remove segment
+          // (like "b4xb2"), record the preferred target so replay selects
+          // the correct intervention-capture line.
+          final bool nextSegmentRemoves =
+              !segment.startsWith('x') &&
+              i + 1 < segments.length &&
+              segments[i + 1].startsWith('x');
+
+          // Only attach comments, nags, and startingComments to the last segment.
+          final bool isLastSegment = i == segments.length - 1;
+
+          final ExtMove extMove = ExtMove(
+            uciMove,
+            side: _sideToMoveOf(port),
+            preferredRemoveTarget: nextSegmentRemoves
+                ? ExtMove._parseToSquare(
+                    _wmdNotationToMoveString(segments[i + 1]),
+                  )
+                : null,
+            nags: isLastSegment ? child.data!.nags : null,
+            startingComments: isLastSegment
+                ? child.data!.startingComments
+                : null,
+            comments: isLastSegment ? child.data!.comments : null,
+          );
+
+          // Create new node and add to target tree
+          final PgnNode<ExtMove> newNode = PgnNode<ExtMove>(extMove);
+          newNode.parent = lastAddedNode;
+          lastAddedNode.children.add(newNode);
+          lastAddedNode = newNode;
+
+          port.apply(action);
+          appliedCount++;
+        } catch (e) {
+          logger.e("$_logTag Failed to parse move segment '$segment': $e");
+          throw ImportFormatException(" $segment");
+        }
+      }
+
+      // Recursively process children (sub-variations)
+      _convertPgnNodeToExtMove(child, lastAddedNode, port);
+
+      // Backtrack out of this branch so siblings start from the same
+      // parent position.
+      for (int i = 0; i < appliedCount; i++) {
+        port.undo();
+      }
     }
   }
 
   static void _loadActiveNativeSessionFromFenIfNeeded(String? fen) {
-    if (!true || fen == null || fen.isEmpty) {
+    if (fen == null || fen.isEmpty) {
       return;
     }
     final BuildContext? context = rootScaffoldMessengerKey.currentContext;
@@ -483,5 +752,96 @@ class ImportService {
       final bool loaded = session.loadFen(fen);
       assert(loaded, 'Native import FEN must be validated before loading.');
     }
+  }
+
+  // ---------------------------------------------------------------------
+  // Notation conversion helpers (restored from the legacy
+  // `notation_parsing.dart` after the rule-machine cleanup deleted it).
+  // ---------------------------------------------------------------------
+
+  /// Validates a WMD-style token and returns the canonical move string
+  /// ("a1", "a1-a4", "xa1").  Throws [ImportFormatException] otherwise.
+  static String _wmdNotationToMoveString(String wmd) {
+    if (wmd.startsWith('x') && wmd.length == 3) {
+      // Remove move format: "xa1", "xd5", etc.
+      return wmd;
+    }
+
+    if (wmd.length == 5 && wmd[2] == '-') {
+      // Move format: "a1-a4", "d5-e5", etc.
+      return wmd;
+    }
+
+    if (wmd.length == 2 && RegExp(r'^[a-g][1-7]$').hasMatch(wmd)) {
+      // Place move format: "a1", "d5", etc.
+      return wmd;
+    }
+
+    // Unsupported format
+    logger.w("$_logTag Unsupported move format: $wmd");
+    throw ImportFormatException(wmd);
+  }
+
+  /// Converts PlayOK numeric notation ("12", "x12", "12-13") to the
+  /// standard notation used by the engine.
+  static String _playOkNotationToMoveString(String playOk) {
+    if (playOk.isEmpty) {
+      throw ImportFormatException(playOk);
+    }
+
+    final int iDash = playOk.indexOf("-");
+    final int iX = playOk.indexOf("x");
+
+    if (iDash == -1 && iX == -1) {
+      // Simple place move: "12" -> "c4"
+      final int val = int.parse(playOk);
+      if (val >= 1 && val <= 24) {
+        final String? standardNotation =
+            playOkNotationToStandardNotation[playOk];
+        if (standardNotation != null) {
+          return standardNotation;
+        }
+      }
+      throw ImportFormatException(playOk);
+    }
+
+    if (iX == 0) {
+      // Remove move: "x12" -> "xc4"
+      final String sub = playOk.substring(1);
+      final int val = int.parse(sub);
+      if (val >= 1 && val <= 24) {
+        final String? standardNotation = playOkNotationToStandardNotation[sub];
+        if (standardNotation != null) {
+          return "x$standardNotation";
+        }
+      }
+      throw ImportFormatException(playOk);
+    }
+
+    if (iDash != -1 && iX == -1) {
+      // Move: "12-13" -> "c4-e4"
+      final String sub1 = playOk.substring(0, iDash);
+      final int val1 = int.parse(sub1);
+      if (val1 < 1 || val1 > 24) {
+        throw ImportFormatException(playOk);
+      }
+
+      final String sub2 = playOk.substring(iDash + 1);
+      final int val2 = int.parse(sub2);
+      if (val2 < 1 || val2 > 24) {
+        throw ImportFormatException(playOk);
+      }
+
+      final String? fromSquare = playOkNotationToStandardNotation[sub1];
+      final String? toSquare = playOkNotationToStandardNotation[sub2];
+
+      if (fromSquare != null && toSquare != null) {
+        return "$fromSquare-$toSquare";
+      }
+      throw ImportFormatException(playOk);
+    }
+
+    logger.w("$_logTag Not support parsing format oo-ooxo PlayOK notation.");
+    throw ImportFormatException(playOk);
   }
 }

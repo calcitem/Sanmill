@@ -45,18 +45,29 @@ void main() {
     });
 
     test('negative selection should be clamped to 0', () {
-      final SafeTextEditingController _ = SafeTextEditingController();
-
-      // Use sanitize directly to test negative handling
+      // dart:ui's TextRange asserts offsets >= -1, so -1 is the only
+      // representable negative offset.  A mixed (-1, 2) selection
+      // exercises the clamp-to-0 path without tripping that assert
+      // (the fully-invalid (-1, -1) case is normalized to end-of-text
+      // and covered by the dedicated test below).
       final TextEditingValue sanitized = SafeTextEditingController.sanitize(
-        TextEditingValue(
+        const TextEditingValue(
           text: 'abc',
-          selection: TextSelection(baseOffset: -5, extentOffset: -3),
+          selection: TextSelection(baseOffset: -1, extentOffset: 2),
         ),
       );
 
       expect(sanitized.selection.baseOffset, 0);
-      expect(sanitized.selection.extentOffset, 0);
+      expect(sanitized.selection.extentOffset, 2);
+    });
+
+    test('unset selection (-1, -1) should normalize to end of text', () {
+      final TextEditingValue sanitized = SafeTextEditingController.sanitize(
+        const TextEditingValue(text: 'abc'),
+      );
+
+      expect(sanitized.selection.baseOffset, 3);
+      expect(sanitized.selection.extentOffset, 3);
     });
 
     test('composing range should be clamped to text length', () {

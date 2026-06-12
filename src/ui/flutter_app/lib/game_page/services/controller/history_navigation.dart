@@ -468,6 +468,16 @@ class HistoryNavigator {
     HistoryNavMode navMode,
     int? number,
   ) async {
+    // Adopt a freshly imported recorder before navigating.  ImportService
+    // parses into `newGameRecorder` so a failed parse cannot clobber the
+    // current game; the first navigation after a successful import swaps
+    // it in (mirrors the legacy `doEachMove` behaviour).
+    final GameRecorder? imported = GameController().newGameRecorder;
+    if (imported != null) {
+      GameController().gameRecorder = imported;
+      GameController().newGameRecorder = null;
+    }
+
     switch (navMode) {
       case HistoryNavMode.takeBack:
         _takeBack(1);

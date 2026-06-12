@@ -12,6 +12,7 @@ import '../helpers/mocks/mock_animation_manager.dart';
 import '../helpers/mocks/mock_audios.dart';
 import '../helpers/mocks/mock_database.dart';
 import '../helpers/test_mills.dart';
+import '../helpers/test_native_library.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -20,6 +21,12 @@ void main() {
   const MethodChannel engineChannel = MethodChannel(
     "com.calcitem.sanmill/engine",
   );
+
+  // PGN import validates moves through the Rust kernel, so the FFI
+  // bridge must be initialized against the locally built library.
+  setUpAll(initRustLibForTests);
+
+  tearDownAll(disposeRustLibForTests);
 
   setUp(() {
     // Use the new API to set up mock handlers for MethodChannel
@@ -87,6 +94,14 @@ void main() {
       ImportService.import(const WinLessThanThreeGame().moveList);
 
       expect(GameController().gameInstance.focusIndex, isNull);
-    });
+      // The parsed game is staged in newGameRecorder until the first
+      // history navigation adopts it.
+      expect(GameController().newGameRecorder, isNotNull);
+      expect(
+        GameController().newGameRecorder!.mainlineMoves,
+        isNotEmpty,
+        reason: 'PGN import must reconstruct the move tree',
+      );
+    }, skip: nativeLibrarySkipReason());
   });
 }

@@ -8,12 +8,16 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart'; // Import flutter services
 import 'package:flutter_test/flutter_test.dart';
+import 'package:sanmill/game_platform/game_registry.dart';
+import 'package:sanmill/games/built_in_game_modules.dart';
 import 'package:sanmill/generated/intl/l10n.dart';
 import 'package:sanmill/home/home.dart';
 import 'package:sanmill/main.dart';
 import 'package:sanmill/shared/database/database.dart';
 import 'package:sanmill/shared/services/environment_config.dart';
 import 'package:sanmill/shared/services/system_ui_service.dart';
+
+import 'helpers/test_native_library.dart';
 
 void main() {
   // Ensure the binding is initialized before tests run
@@ -67,10 +71,21 @@ void main() {
           return null;
         });
 
+    // Initialize the Rust/FRB bridge: Home starts a NativeMillGameSession
+    // (backed by the Rust kernel) as soon as it builds.
+    await initRustLibForTests();
+
     // Initialize the database and other services
     await DB.init();
+
+    // Register the built-in game modules, mirroring main(): the Home
+    // shell asserts that a module is registered for the active GameId.
+    registerBuiltInGameModules(GameRegistry.instance);
+
     await initializeUI(true);
   });
+
+  tearDownAll(disposeRustLibForTests);
 
   testWidgets('SanmillApp smoke test', (WidgetTester tester) async {
     // Build the app and trigger a frame
@@ -79,18 +94,28 @@ void main() {
     // Verify that MaterialApp and Scaffold are present
     expect(find.byType(MaterialApp), findsOneWidget);
     expect(find.byType(Scaffold), findsWidgets);
-  });
 
-  testWidgets('Verify app navigation and localization', (
-    WidgetTester tester,
-  ) async {
-    // Build the app and trigger a frame
-    await tester.pumpWidget(const SanmillApp());
+    // Let the SettingsSideEffectCoordinator debounce timer (300 ms),
+    // armed by Home.firstRun saving the settings, expire before the
+    // pending-timer invariant check at test teardown.
+    await tester.pump(const Duration(milliseconds: 350));
+  }, skip: nativeLibrarySkipReason() != null);
 
-    // Check that the supported locales include English
-    expect(S.supportedLocales.contains(const Locale('en')), isTrue);
+  testWidgets(
+    'Verify app navigation and localization',
+    (WidgetTester tester) async {
+      // Build the app and trigger a frame
+      await tester.pumpWidget(const SanmillApp());
 
-    // Verify that the Home widget is present
-    expect(find.byType(Home), findsOneWidget);
-  });
+      // Check that the supported locales include English
+      expect(S.supportedLocales.contains(const Locale('en')), isTrue);
+
+      // Verify that the Home widget is present
+      expect(find.byType(Home), findsOneWidget);
+
+      // Drain any settings-save debounce timer (see the smoke test above).
+      await tester.pump(const Duration(milliseconds: 350));
+    },
+    skip: nativeLibrarySkipReason() != null,
+  );
 }
