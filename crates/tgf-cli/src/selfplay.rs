@@ -55,17 +55,17 @@ pub(crate) fn run_selfplay(command_args: &[String]) {
     while let Some(token) = args.next() {
         match token.as_str() {
             "--depth" => {
-                if let Some(value) = args.next() {
-                    if let Ok(parsed) = value.parse::<i32>() {
-                        depth = parsed.max(1);
-                    }
+                if let Some(value) = args.next()
+                    && let Ok(parsed) = value.parse::<i32>()
+                {
+                    depth = parsed.max(1);
                 }
             }
             "--max-games" => {
-                if let Some(value) = args.next() {
-                    if let Ok(parsed) = value.parse::<usize>() {
-                        max_games = parsed.max(1);
-                    }
+                if let Some(value) = args.next()
+                    && let Ok(parsed) = value.parse::<usize>()
+                {
+                    max_games = parsed.max(1);
                 }
             }
             "--algorithm" => {

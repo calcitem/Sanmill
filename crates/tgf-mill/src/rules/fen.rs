@@ -4,8 +4,8 @@
 // that turn raw FEN tokens into the equivalent `MillState` field
 // updates and back.
 
-use super::legacy_squares::{legacy_square_to_node_signed, node_to_legacy_square};
 use super::MillState;
+use super::legacy_squares::{legacy_square_to_node_signed, node_to_legacy_square};
 
 /// Parse a capture field shaped like `w-N-sq.sq|b-N-sq.sq` into per-side
 /// target bitmaps and counts, mirroring master Position::set_fen.
@@ -40,12 +40,12 @@ pub(super) fn parse_capture_field(
             if token.is_empty() {
                 continue;
             }
-            if let Ok(square_value) = token.parse::<i32>() {
-                if (8..32).contains(&square_value) {
-                    let node = legacy_square_to_node_signed(square_value as u8);
-                    if (0..24).contains(&node) {
-                        targets_out[side] |= 1_u32 << (node as u8);
-                    }
+            if let Ok(square_value) = token.parse::<i32>()
+                && (8..32).contains(&square_value)
+            {
+                let node = legacy_square_to_node_signed(square_value as u8);
+                if (0..24).contains(&node) {
+                    targets_out[side] |= 1_u32 << (node as u8);
                 }
             }
         }
@@ -106,9 +106,5 @@ pub(super) fn position_key(state: &MillState) -> u64 {
         return cached;
     }
     let key = super::zobrist::full_state_key(state);
-    if key == 0 {
-        1
-    } else {
-        key
-    }
+    if key == 0 { 1 } else { key }
 }

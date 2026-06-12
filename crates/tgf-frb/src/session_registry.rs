@@ -8,8 +8,8 @@
 
 use std::any::Any;
 use std::collections::HashMap;
-use std::sync::atomic::{AtomicU32, Ordering};
 use std::sync::Mutex;
+use std::sync::atomic::{AtomicU32, Ordering};
 
 use once_cell::sync::Lazy;
 use tgf_core::GameKernel;

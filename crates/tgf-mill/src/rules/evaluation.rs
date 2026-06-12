@@ -5,7 +5,7 @@
 // keeps `mod.rs` focused on the rules / move dispatch surface.
 
 use super::{
-    live_piece, MillBoardFullAction, MillPhase, MillState, MillVariantOptions, StalemateAction,
+    MillBoardFullAction, MillPhase, MillState, MillVariantOptions, StalemateAction, live_piece,
 };
 
 /// Mirror of `Position::shouldConsiderMobility()` in option.h: enabled

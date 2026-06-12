@@ -6,7 +6,7 @@
 use tgf_core::{ActionList, Evaluator, Game, GameStateSnapshot, Workbench};
 
 use crate::rules::OthelloRules;
-use crate::state::{apply_othello_action, decode, encode, othello_key, OthelloState};
+use crate::state::{OthelloState, apply_othello_action, decode, encode, othello_key};
 
 #[derive(Clone, Debug, Default)]
 pub struct OthelloGame;

@@ -10,8 +10,8 @@ use tgf_core::BoardTopology;
 
 use super::lines::{CAPTURE_CROSS_LINES, CAPTURE_DIAGONAL_LINES, CAPTURE_SQUARE_EDGE_LINES};
 use super::{
-    is_piece_in_mill, node_bit, CaptureRuleConfig, MillPhase, MillState, MillTopology,
-    MillVariantOptions,
+    CaptureRuleConfig, MillPhase, MillState, MillTopology, MillVariantOptions, is_piece_in_mill,
+    node_bit,
 };
 
 pub(super) fn active_capture_lines(

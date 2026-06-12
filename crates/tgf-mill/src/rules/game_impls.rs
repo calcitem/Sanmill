@@ -12,13 +12,13 @@ use super::evaluation::{
 };
 use super::fen::position_key;
 use super::move_priority::{
-    is_star_square, RATING_BLOCK_ONE_MILL, RATING_ONE_MILL, RATING_STAR_SQUARE,
+    RATING_BLOCK_ONE_MILL, RATING_ONE_MILL, RATING_STAR_SQUARE, is_star_square,
 };
 use super::potential_mills_count_at;
 use super::types::MillActionKind;
 use super::{
-    MillEvaluator, MillFormationActionInPlacingPhase, MillGame, MillPhase, MillRules,
-    MillWorkbench, MILL_TERMINAL_WIN_SCORE,
+    MILL_TERMINAL_WIN_SCORE, MillEvaluator, MillFormationActionInPlacingPhase, MillGame, MillPhase,
+    MillRules, MillWorkbench,
 };
 
 impl Workbench for MillWorkbench {
@@ -154,11 +154,7 @@ impl Workbench for MillWorkbench {
             }
         }
 
-        if key == 0 {
-            1
-        } else {
-            key
-        }
+        if key == 0 { 1 } else { key }
     }
 }
 

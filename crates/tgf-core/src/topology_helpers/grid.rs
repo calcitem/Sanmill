@@ -310,7 +310,7 @@ mod tests {
         assert_eq!(topo.node_count(), 64);
         assert_eq!(topo.neighbors(0).len(), 2); // corner: right + down
         assert_eq!(topo.neighbors(1).len(), 3); // edge: 3 neighbours
-                                                // Centre cell at (3,3) -> id 27 has 4 orthogonal neighbours.
+        // Centre cell at (3,3) -> id 27 has 4 orthogonal neighbours.
         assert_eq!(topo.neighbors(27).len(), 4);
     }
 

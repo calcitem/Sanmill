@@ -99,12 +99,12 @@ use captures::{
 #[cfg(test)]
 use evaluation::mobility_diff;
 use lines::{DIAGONAL_MILL_LINES, STANDARD_MILL_LINES};
-use move_priority::{default_dense_priority, move_priority_list_for_search};
 #[cfg(test)]
 use move_priority::{
-    is_star_square, PRIORITY_DIAGONAL, PRIORITY_NO_DIAGONAL, PRIORITY_SKILL_1,
-    RATING_BLOCK_ONE_MILL, RATING_ONE_MILL, RATING_STAR_SQUARE,
+    PRIORITY_DIAGONAL, PRIORITY_NO_DIAGONAL, PRIORITY_SKILL_1, RATING_BLOCK_ONE_MILL,
+    RATING_ONE_MILL, RATING_STAR_SQUARE, is_star_square,
 };
+use move_priority::{default_dense_priority, move_priority_list_for_search};
 
 #[derive(Clone, Debug)]
 pub struct MillRules {

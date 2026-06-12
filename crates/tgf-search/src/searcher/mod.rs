@@ -9,8 +9,8 @@
 
 use std::collections::HashMap;
 use std::marker::PhantomData;
-use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::Arc;
+use std::sync::atomic::{AtomicBool, Ordering};
 use std::time::{Duration, Instant};
 
 use tgf_core::{Action, ActionList, Evaluator, Game, MoveOrderContext, Workbench};
@@ -541,18 +541,18 @@ impl<G: Game> Searcher<G> {
         // Empirical A/B (depth 5/6/7 selfplay) shows this targeted
         // pattern matches the no-prefetch wall-clock within noise,
         // while the bulk pattern was 0.5-1.6% slower at depth 7.
-        if self.options.enable_prefetch {
-            if let Some(&first_action) = moves.first() {
-                // SAFETY INVARIANT: `key_after` is prefetch-quality, not
-                // correctness-quality (it skips mill/capture-state and misc
-                // bits). `predicted_key` must ONLY feed `tt.prefetch`, which
-                // emits a cache hint and never touches a TT slot. Probe,
-                // save, and repetition tracking all use the real `wb.key()`
-                // instead, so an inaccurate prediction can never escape past
-                // a wasted prefetch.
-                let predicted_key = wb.key_after(first_action);
-                self.tt.prefetch(predicted_key);
-            }
+        if self.options.enable_prefetch
+            && let Some(&first_action) = moves.first()
+        {
+            // SAFETY INVARIANT: `key_after` is prefetch-quality, not
+            // correctness-quality (it skips mill/capture-state and misc
+            // bits). `predicted_key` must ONLY feed `tt.prefetch`, which
+            // emits a cache hint and never touches a TT slot. Probe,
+            // save, and repetition tracking all use the real `wb.key()`
+            // instead, so an inaccurate prediction can never escape past
+            // a wasted prefetch.
+            let predicted_key = wb.key_after(first_action);
+            self.tt.prefetch(predicted_key);
         }
         for action in moves {
             if self.should_abort() {
@@ -594,16 +594,15 @@ impl<G: Game> Searcher<G> {
 
     #[inline]
     fn should_abort(&mut self) -> bool {
-        if let Some(limit) = self.options.node_limit {
-            if self.nodes >= limit {
-                self.aborted = true;
-            }
+        if let Some(limit) = self.options.node_limit
+            && self.nodes >= limit
+        {
+            self.aborted = true;
         }
         if let (Some(start), Some(limit_ms)) = (self.search_started_at, self.options.time_limit_ms)
+            && start.elapsed() >= Duration::from_millis(limit_ms)
         {
-            if start.elapsed() >= Duration::from_millis(limit_ms) {
-                self.aborted = true;
-            }
+            self.aborted = true;
         }
         if self.abort_flag.load(Ordering::Relaxed) {
             self.aborted = true;

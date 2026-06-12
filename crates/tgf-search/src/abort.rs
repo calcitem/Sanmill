@@ -2,8 +2,8 @@
 // Cooperative search abort handle.
 
 use std::sync::{
-    atomic::{AtomicBool, Ordering},
     Arc,
+    atomic::{AtomicBool, Ordering},
 };
 
 #[derive(Clone, Debug)]

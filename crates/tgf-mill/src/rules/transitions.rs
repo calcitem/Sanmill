@@ -6,8 +6,8 @@
 use tgf_core::Action;
 
 use super::{
-    mill_lines, node_bit, MillBoardFullAction, MillFormationActionInPlacingPhase,
-    MillOutcomeReason, MillPhase, MillState, MillVariantOptions,
+    MillBoardFullAction, MillFormationActionInPlacingPhase, MillOutcomeReason, MillPhase,
+    MillState, MillVariantOptions, mill_lines, node_bit,
 };
 
 /// and this helper is not called, so the placing-phase indicator stays
@@ -384,11 +384,7 @@ pub(super) fn repetition_signature(state: &MillState) -> u64 {
     // `Position::key()` which always reads st.key after every
     // st.key ^= update inside do_move.
     let key = super::zobrist::full_state_key(state);
-    if key == 0 {
-        1
-    } else {
-        key
-    }
+    if key == 0 { 1 } else { key }
 }
 
 /// Empty the rolling repetition history on irreversible events (Place/Remove),

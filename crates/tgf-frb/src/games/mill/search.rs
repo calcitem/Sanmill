@@ -21,8 +21,8 @@ use once_cell::sync::Lazy;
 
 use tgf_core::{Game, GameStateSnapshot, MoveOrderAlgorithm, MoveOrderContext};
 use tgf_mill::{
-    recommended_search_depth, EngineRuntimeOptions, MillActionKind, MillGame, MillRules,
-    MillSearchAlgorithmKind, MillVariantOptions as NativeMillVariantOptions,
+    EngineRuntimeOptions, MillActionKind, MillGame, MillRules, MillSearchAlgorithmKind,
+    MillVariantOptions as NativeMillVariantOptions, recommended_search_depth,
 };
 use tgf_search::{
     MctsOptions, MctsSearcher, SearchAbortHandle, SearchAlgorithm, SearchOptions, SearchPolicy,
@@ -213,11 +213,7 @@ pub(crate) fn spawn_mill_engine_config_event_stream(
         let origin_depth = if config.ai_is_lazy {
             let np = config.last_best_value / VALUE_EACH_PIECE;
             if np > 1 {
-                if requested_depth < 4 {
-                    1
-                } else {
-                    4
-                }
+                if requested_depth < 4 { 1 } else { 4 }
             } else {
                 requested_depth.max(1)
             }

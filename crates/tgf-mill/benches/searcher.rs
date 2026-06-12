@@ -21,12 +21,12 @@
 // them here keeps `tgf-search` game-neutral while still exercising the
 // same hot path against a real, non-trivial game.
 
-use criterion::{black_box, criterion_group, criterion_main, Criterion};
+use criterion::{Criterion, black_box, criterion_group, criterion_main};
 use tgf_core::{Action, Game, GameRules, Workbench};
 use tgf_mill::{MillActionKind, MillGame, MillRules};
 use tgf_search::{
-    lazy_smp_search, perft, LazySmpWorker, MctsOptions, MctsSearcher, SearchOptions, SearchPolicy,
-    Searcher, SharedTt,
+    LazySmpWorker, MctsOptions, MctsSearcher, SearchOptions, SearchPolicy, Searcher, SharedTt,
+    lazy_smp_search, perft,
 };
 
 fn bench_mill_search_depth_1(c: &mut Criterion) {

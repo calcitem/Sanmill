@@ -11,12 +11,12 @@ pub mod topology;
 
 pub use engine_config::{MillEngineRuntime, MillSearchAlgorithmKind};
 pub use notation::MillUciCodec;
-pub use presets::{preset_for, rules_for_preset, MillRulePreset, N_PRESETS};
+pub use presets::{MillRulePreset, N_PRESETS, preset_for, rules_for_preset};
 pub use rules::{
     CaptureRuleConfig, MillActionKind, MillBoardFullAction, MillEvaluator,
     MillFormationActionInPlacingPhase, MillGame, MillPhase, MillRules, MillVariantOptions,
     MillWorkbench, StalemateAction,
 };
-pub use search_depth::{recommended_search_depth, EngineRuntimeOptions};
+pub use search_depth::{EngineRuntimeOptions, recommended_search_depth};
 pub use text_format::MillFenFormat;
-pub use topology::{default_mill_topology, MillTopology};
+pub use topology::{MillTopology, default_mill_topology};

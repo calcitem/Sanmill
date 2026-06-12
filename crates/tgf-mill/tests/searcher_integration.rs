@@ -9,13 +9,13 @@
 // end-to-end behaviour against a real, non-trivial game.
 
 use tgf_core::{
-    assert_game_rules_game_consistency, Action, ActionList, Evaluator, Game, GameRules,
-    MoveOrderAlgorithm, MoveOrderContext,
+    Action, ActionList, Evaluator, Game, GameRules, MoveOrderAlgorithm, MoveOrderContext,
+    assert_game_rules_game_consistency,
 };
 use tgf_mill::{MillActionKind, MillEvaluator, MillGame, MillRules, MillVariantOptions};
 use tgf_search::{
-    lazy_smp_search, mcts_search_parallel, perft, LazySmpWorker, MctsOptions, MctsSearcher,
-    SearchOptions, SearchPolicy, Searcher, SharedTt, VALUE_UNIQUE_ROOT_MOVE,
+    LazySmpWorker, MctsOptions, MctsSearcher, SearchOptions, SearchPolicy, Searcher, SharedTt,
+    VALUE_UNIQUE_ROOT_MOVE, lazy_smp_search, mcts_search_parallel, perft,
 };
 
 #[test]

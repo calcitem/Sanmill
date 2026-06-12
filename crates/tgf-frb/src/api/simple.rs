@@ -14,20 +14,21 @@
 use crate::frb_generated::StreamSink;
 use tgf_core::{Action, ActionList, BoardTopology, Game, GameRules};
 use tgf_mill::{
-    default_mill_topology, CaptureRuleConfig as NativeCaptureRuleConfig, MillActionKind,
+    CaptureRuleConfig as NativeCaptureRuleConfig, MillActionKind,
     MillBoardFullAction as NativeMillBoardFullAction,
     MillFormationActionInPlacingPhase as NativeMillFormationActionInPlacingPhase, MillGame,
     MillRules, MillVariantOptions as NativeMillVariantOptions,
-    StalemateAction as NativeStalemateAction,
+    StalemateAction as NativeStalemateAction, default_mill_topology,
 };
 use tgf_search::{MctsOptions, MctsSearcher, SearchOptions};
 
 use tgf_mill::MillSearchAlgorithmKind;
 
 use crate::games::mill::search::{
-    mcts_move_order_context, mill_searcher_default, request_abort_active_search,
+    MillEngineConfigPlan, mcts_move_order_context, mill_searcher_default,
+    request_abort_active_search,
     spawn_mill_engine_config_event_stream as spawn_mill_engine_config_event_stream_internal,
-    spawn_mill_pvs_event_stream as spawn_mill_pvs_event_stream_internal, MillEngineConfigPlan,
+    spawn_mill_pvs_event_stream as spawn_mill_pvs_event_stream_internal,
 };
 
 // Re-export the game-neutral error helper so `crate::api::kernel` can keep

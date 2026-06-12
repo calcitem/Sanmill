@@ -11,7 +11,7 @@ use super::legacy_squares::{
     node_to_legacy_square,
 };
 use super::transitions::is_marked;
-use super::{node_bit, MillActionState, MillPhase, MillRules, MillState};
+use super::{MillActionState, MillPhase, MillRules, MillState, node_bit};
 
 // MillRules setup-position helpers (used by the FRB kernel API)
 // ---------------------------------------------------------------------------
@@ -203,10 +203,10 @@ impl MillRules {
                     // Mirror Position::set_fen: parse `p:NN` (legacy
                     // Square id) into preferred_remove_target as a Rust
                     // dense node id (or -1 for SQ_NONE / out of range).
-                    if let Ok(legacy_sq) = value.parse::<i32>() {
-                        if (8..32).contains(&legacy_sq) {
-                            preferred_remove_target = legacy_square_to_node_signed(legacy_sq as u8);
-                        }
+                    if let Ok(legacy_sq) = value.parse::<i32>()
+                        && (8..32).contains(&legacy_sq)
+                    {
+                        preferred_remove_target = legacy_square_to_node_signed(legacy_sq as u8);
                     }
                 }
                 b's' => {

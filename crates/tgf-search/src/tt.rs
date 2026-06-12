@@ -8,8 +8,8 @@
 // any locking on the hot path.
 
 use std::sync::{
-    atomic::{AtomicU32, AtomicU64, AtomicU8, Ordering},
     Arc,
+    atomic::{AtomicU8, AtomicU32, AtomicU64, Ordering},
 };
 
 use tgf_core::Action;

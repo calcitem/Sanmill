@@ -5,9 +5,9 @@ use tgf_core::{
     Action, ActionList, BoardTopology, GameRules, GameStateSnapshot, Outcome, OutcomeKind,
 };
 
-use crate::state::{apply_othello_action, decode, encode, would_flip, OthelloState};
-use crate::topology::OthelloTopology;
 use crate::OthelloActionKind;
+use crate::state::{OthelloState, apply_othello_action, decode, encode, would_flip};
+use crate::topology::OthelloTopology;
 
 #[derive(Clone, Debug, Default)]
 pub struct OthelloRules {

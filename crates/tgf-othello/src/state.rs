@@ -65,11 +65,7 @@ pub(crate) fn othello_key(state: &OthelloState) -> u64 {
     mix(state.side_to_move as u8);
     mix((state.move_number & 0xff) as u8);
     mix(((state.move_number >> 8) & 0xff) as u8);
-    if key == 0 {
-        1
-    } else {
-        key
-    }
+    if key == 0 { 1 } else { key }
 }
 
 /// Apply an Othello place-and-flip action.  Caller must ensure the

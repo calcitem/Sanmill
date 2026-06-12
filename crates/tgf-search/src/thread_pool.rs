@@ -7,8 +7,8 @@
 // shared TT and a shared abort flag — this is the foundation for the
 // migration plan's lazy-SMP scaffold.
 
-use std::sync::atomic::AtomicBool;
 use std::sync::Arc;
+use std::sync::atomic::AtomicBool;
 use std::thread;
 
 use crossbeam_channel::{Receiver, Sender};

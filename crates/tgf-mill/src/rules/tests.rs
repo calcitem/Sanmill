@@ -12,9 +12,11 @@ fn initial_state_has_24_placing_actions() {
     let mut actions = ActionList::<256>::new();
     rules.legal_actions(&snap, &mut actions);
     assert_eq!(actions.len(), 24);
-    assert!(actions
-        .iter()
-        .all(|a| a.kind_tag == MillActionKind::Place as i16));
+    assert!(
+        actions
+            .iter()
+            .all(|a| a.kind_tag == MillActionKind::Place as i16)
+    );
 }
 
 /// Regression for the `apply_unchecked` memory-safety guard:
@@ -361,9 +363,11 @@ fn mill_formation_generates_remove_actions_and_keeps_turn() {
     let mut actions = ActionList::<256>::new();
     rules.legal_actions(&snap, &mut actions);
     assert_eq!(actions.len(), 2);
-    assert!(actions
-        .iter()
-        .all(|a| a.kind_tag == MillActionKind::Remove as i16));
+    assert!(
+        actions
+            .iter()
+            .all(|a| a.kind_tag == MillActionKind::Remove as i16)
+    );
     assert!(actions.iter().any(|a| a.to_node == 6)); // a1
     assert!(actions.iter().any(|a| a.to_node == 5)); // d1
 
@@ -502,9 +506,11 @@ fn mill_action_opponent_removes_own_piece() {
     rules.legal_actions(&snap, &mut actions);
     // Opponent removes one of White's pieces; at least the just formed
     // mill pieces are legal targets.
-    assert!(actions
-        .iter()
-        .all(|a| a.kind_tag == MillActionKind::Remove as i16));
+    assert!(
+        actions
+            .iter()
+            .all(|a| a.kind_tag == MillActionKind::Remove as i16)
+    );
     assert!(actions.iter().any(|a| a.to_node == 0));
     assert!(actions.iter().any(|a| a.to_node == 1));
     assert!(actions.iter().any(|a| a.to_node == 2));
@@ -951,9 +957,11 @@ fn moving_phase_mill_generates_remove_obligation() {
 
     let mut actions = ActionList::<256>::new();
     rules.legal_actions(&after_move, &mut actions);
-    assert!(actions
-        .iter()
-        .all(|a| a.kind_tag == MillActionKind::Remove as i16));
+    assert!(
+        actions
+            .iter()
+            .all(|a| a.kind_tag == MillActionKind::Remove as i16)
+    );
     assert_eq!(actions.len(), 3);
 }
 
@@ -1116,9 +1124,11 @@ fn may_remove_from_mills_always_relaxes_target_filter() {
     // Expect 3 remove targets even though every black piece is in a
     // mill, because the option is on.
     assert_eq!(actions.len(), 3);
-    assert!(actions
-        .iter()
-        .all(|a| a.kind_tag == MillActionKind::Remove as i16));
+    assert!(
+        actions
+            .iter()
+            .all(|a| a.kind_tag == MillActionKind::Remove as i16)
+    );
 }
 
 #[test]

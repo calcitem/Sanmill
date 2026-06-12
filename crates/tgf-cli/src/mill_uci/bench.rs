@@ -8,8 +8,8 @@ use std::time::{Duration, Instant};
 use tgf_core::{Game, GameRules, MoveOrderAlgorithm, MoveOrderContext};
 use tgf_mill::{MillActionKind, MillGame, MillRules};
 use tgf_search::{
-    lazy_smp_search, perft, LazySmpWorker, MctsOptions, MctsSearcher, SearchOptions, SearchPolicy,
-    SharedTt,
+    LazySmpWorker, MctsOptions, MctsSearcher, SearchOptions, SearchPolicy, SharedTt,
+    lazy_smp_search, perft,
 };
 
 use super::{mill_searcher, tt_cluster_bits_from_env};
@@ -157,10 +157,10 @@ fn run_mcts_self_play(games: u32, seed: u64, ab_assist_depth: i32) -> u32 {
                 outcome.kind,
                 tgf_core::OutcomeKind::Win(_) | tgf_core::OutcomeKind::Draw
             ) {
-                if let tgf_core::OutcomeKind::Win(w) = outcome.kind {
-                    if w == 0 {
-                        wins += 1;
-                    }
+                if let tgf_core::OutcomeKind::Win(w) = outcome.kind
+                    && w == 0
+                {
+                    wins += 1;
                 }
                 break;
             }

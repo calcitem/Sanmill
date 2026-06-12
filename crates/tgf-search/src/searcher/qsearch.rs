@@ -84,16 +84,16 @@ impl<G: Game> Searcher<G> {
         // candidate.  See alpha_beta for the rationale; the same
         // "prefetch-the-first-only" pattern wins at depth 5+ in
         // selfplay.
-        if self.options.enable_prefetch {
-            if let Some(&first_action) = moves.first() {
-                // SAFETY INVARIANT: `key_after` is prefetch-quality, not
-                // correctness-quality. `predicted_key` must ONLY feed
-                // `tt.prefetch` (a cache hint that never touches a TT slot);
-                // probe/save use the real `wb.key()`, so a mispredicted key
-                // costs at most a wasted prefetch.
-                let predicted_key = wb.key_after(first_action);
-                self.tt.prefetch(predicted_key);
-            }
+        if self.options.enable_prefetch
+            && let Some(&first_action) = moves.first()
+        {
+            // SAFETY INVARIANT: `key_after` is prefetch-quality, not
+            // correctness-quality. `predicted_key` must ONLY feed
+            // `tt.prefetch` (a cache hint that never touches a TT slot);
+            // probe/save use the real `wb.key()`, so a mispredicted key
+            // costs at most a wasted prefetch.
+            let predicted_key = wb.key_after(first_action);
+            self.tt.prefetch(predicted_key);
         }
 
         for action in moves {

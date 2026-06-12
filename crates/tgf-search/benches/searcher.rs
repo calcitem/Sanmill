@@ -9,9 +9,9 @@
 // Usage:
 //   cargo bench -p tgf-search
 
-use criterion::{criterion_group, criterion_main, Criterion};
+use criterion::{Criterion, criterion_group, criterion_main};
 use tgf_core::{Action, ActionList, Evaluator, Game, GameStateSnapshot, Workbench};
-use tgf_search::{perft, Searcher};
+use tgf_search::{Searcher, perft};
 
 #[derive(Clone, Copy, Debug)]
 struct BenchWorkbench {

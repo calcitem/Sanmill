@@ -54,11 +54,7 @@ struct SameSideEvaluator;
 
 impl Evaluator<SameSideWorkbench> for SameSideEvaluator {
     fn score(wb: &SameSideWorkbench) -> i32 {
-        if wb.moved {
-            42
-        } else {
-            0
-        }
+        if wb.moved { 42 } else { 0 }
     }
 }
 

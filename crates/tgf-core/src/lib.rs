@@ -17,14 +17,14 @@ pub mod topology_helpers;
 pub mod zobrist;
 
 // Convenience re-exports for downstream crates.
-pub use action::{action_kind, Action, ActionList, ActionTrail};
+pub use action::{Action, ActionList, ActionTrail, action_kind};
 pub use board_topology::{BoardTopology, Decoration, Edge, UnitPoint, Zone};
 pub use game::{
-    assert_game_rules_game_consistency, Evaluator, Game, GameRules, MoveOrderAlgorithm,
-    MoveOrderContext, Workbench,
+    Evaluator, Game, GameRules, MoveOrderAlgorithm, MoveOrderContext, Workbench,
+    assert_game_rules_game_consistency,
 };
 pub use game_state::{
-    canonical_reason, GameStateSnapshot, MultiPlayerInfo, Outcome, OutcomeKind, OPAQUE_PAYLOAD_LEN,
+    GameStateSnapshot, MultiPlayerInfo, OPAQUE_PAYLOAD_LEN, Outcome, OutcomeKind, canonical_reason,
 };
 pub use kernel::{GameKernel, KernelError};
 pub use n_move_rule::NMoveRuleCounter;

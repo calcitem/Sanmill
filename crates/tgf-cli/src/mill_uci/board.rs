@@ -286,9 +286,5 @@ pub(super) fn action_to_uci(action: Action) -> Option<String> {
     // Delegate to the canonical Mill UCI codec so every consumer
     // (CLI / FRB / transcripts) routes through one implementation.
     let text = tgf_mill::MillUciCodec::encode_action(action);
-    if text.is_empty() {
-        None
-    } else {
-        Some(text)
-    }
+    if text.is_empty() { None } else { Some(text) }
 }

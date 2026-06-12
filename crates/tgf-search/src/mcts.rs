@@ -235,10 +235,11 @@ impl<G: Game> MctsSearcher<G> {
         let mut nodes = vec![MctsNode::root(root_untried)];
 
         for i in 0..total_iterations {
-            if let Some(limit_ms) = options.time_limit_ms {
-                if i > 0 && started_at.elapsed() >= Duration::from_millis(limit_ms) {
-                    break;
-                }
+            if let Some(limit_ms) = options.time_limit_ms
+                && i > 0
+                && started_at.elapsed() >= Duration::from_millis(limit_ms)
+            {
+                break;
             }
             let mut node_idx = 0_usize;
             let mut path = vec![0_usize];
@@ -549,10 +550,11 @@ where
     let mut nodes = vec![MctsNode::root(root_untried)];
 
     for i in 0..total_iterations {
-        if let Some(limit_ms) = options.time_limit_ms {
-            if i > 0 && started_at.elapsed() >= Duration::from_millis(limit_ms) {
-                break;
-            }
+        if let Some(limit_ms) = options.time_limit_ms
+            && i > 0
+            && started_at.elapsed() >= Duration::from_millis(limit_ms)
+        {
+            break;
         }
         let mut node_idx = 0_usize;
         let mut path = vec![0_usize];

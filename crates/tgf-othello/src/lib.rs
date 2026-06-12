@@ -37,7 +37,7 @@ pub enum OthelloActionKind {
 mod tests {
     use super::*;
     use tgf_core::{ActionList, Game, GameRules};
-    use tgf_search::{perft, Searcher};
+    use tgf_search::{Searcher, perft};
 
     #[test]
     fn initial_othello_has_four_legal_actions() {
