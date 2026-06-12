@@ -8,6 +8,8 @@
 *.sh
 *.pl
 !ensure_flutter.sh
+!ensure_frb_codegen.sh
+!generate_frb.sh
 !search-commit-message.py
 !check_perf_baseline.py
 !record_rust_perf_baseline.py

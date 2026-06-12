@@ -15,6 +15,9 @@ jobs:
       - name: Install Rust toolchain
         uses: dtolnay/rust-toolchain@stable
 
+      - name: Generate FRB bindings
+        uses: ./.github/actions/generate-frb
+
       - name: Run ignored random_walk_extended (release)
         run: |
           cargo test --release -p rust_lib_sanmill --lib -- \

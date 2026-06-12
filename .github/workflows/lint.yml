@@ -17,6 +17,9 @@ on:
       - 'crates/**'
       - 'scripts/check_perf_baseline.py'
       - 'scripts/record_rust_perf_baseline.py'
+      - 'scripts/generate_frb.sh'
+      - 'scripts/ensure_frb_codegen.sh'
+      - '.github/actions/generate-frb/**'
       - 'tests/perf_baseline.toml'
       - 'src/ui/flutter_app/**/*.dart'
       - 'src/ui/flutter_app/pubspec.yaml'
@@ -35,6 +38,9 @@ on:
       - 'crates/**'
       - 'scripts/check_perf_baseline.py'
       - 'scripts/record_rust_perf_baseline.py'
+      - 'scripts/generate_frb.sh'
+      - 'scripts/ensure_frb_codegen.sh'
+      - '.github/actions/generate-frb/**'
       - 'tests/perf_baseline.toml'
       - 'src/ui/flutter_app/**/*.dart'
       - 'src/ui/flutter_app/pubspec.yaml'
@@ -104,6 +110,10 @@ jobs:
         with:
           components: clippy
 
+      - name: Generate FRB bindings
+        if: steps.rust_check.outputs.exists == 'true'
+        uses: ./.github/actions/generate-frb
+
       - name: Cache Rust build artifacts
         if: steps.rust_check.outputs.exists == 'true'
         uses: Swatinem/rust-cache@v2
@@ -148,6 +158,12 @@ jobs:
         with:
           components: rustfmt
 
+      # rustfmt resolves `mod frb_generated;` while parsing, so the
+      # gitignored generated file must exist even for a format check.
+      - name: Generate FRB bindings
+        if: steps.rust_check.outputs.exists == 'true'
+        uses: ./.github/actions/generate-frb
+
       - name: Check formatting
         if: steps.rust_check.outputs.exists == 'true'
         run: cargo fmt --all -- --check
@@ -177,6 +193,10 @@ jobs:
       - name: Set up Rust toolchain
         if: steps.rust_check.outputs.exists == 'true'
         uses: dtolnay/rust-toolchain@stable
+
+      - name: Generate FRB bindings
+        if: steps.rust_check.outputs.exists == 'true'
+        uses: ./.github/actions/generate-frb
 
       - name: Cache Rust build artifacts
         if: steps.rust_check.outputs.exists == 'true'
@@ -211,6 +231,10 @@ jobs:
       - name: Set up Rust toolchain
         if: steps.rust_check.outputs.exists == 'true'
         uses: dtolnay/rust-toolchain@stable
+
+      - name: Generate FRB bindings
+        if: steps.rust_check.outputs.exists == 'true'
+        uses: ./.github/actions/generate-frb
 
       - name: Cache Rust build artifacts
         if: steps.rust_check.outputs.exists == 'true'

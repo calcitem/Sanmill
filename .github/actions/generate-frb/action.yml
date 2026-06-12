@@ -1,0 +1,27 @@
+name: Generate FRB bindings
+description: >-
+  Install flutter_rust_bridge_codegen and regenerate Rust/Dart FRB glue before
+  cargo or flutter build steps.
+
+runs:
+  using: composite
+  steps:
+    # cargo install builds the codegen from source (5-10 min); cache the
+    # binary keyed on the script that pins FRB_CODEGEN_VERSION.
+    - name: Cache flutter_rust_bridge_codegen binary
+      uses: actions/cache@v4
+      with:
+        path: ~/.cargo/bin/flutter_rust_bridge_codegen*
+        key: frb-codegen-${{ runner.os }}-${{ hashFiles('scripts/ensure_frb_codegen.sh') }}
+
+    - name: Set up Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        # Keep in sync with the flutter-version pinned by the build
+        # workflows (aab.yml, flutter.yml, msix.yml, ...).
+        flutter-version: '3.38.7'
+        cache: true
+
+    - name: Generate FRB bindings
+      shell: bash
+      run: bash scripts/generate_frb.sh
