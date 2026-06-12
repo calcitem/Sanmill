@@ -226,9 +226,9 @@ class NativeMillGameSession implements GameSessionHandle {
   }
 
   /// Search the current kernel state and map the final bestMove event back to
-  /// one of this session's current legal actions.  The current Rust event only
-  /// exposes `toNode`, which is unambiguous for placing-phase dogfood; extend
-  /// the event payload before using this for moving/removal searches.
+  /// one of this session's current legal actions.  Matching uses the full
+  /// UCI notation carried in the event's `reason` field, so place, move, and
+  /// removal searches are all unambiguous (see [_legalActionForBestMove]).
   ///
   /// [moveLimitMs]: when > 0, the search is time-bounded (mirrors the legacy
   /// C++ `MoveTime` UCI option).  When 0, depth alone drives termination.
@@ -261,7 +261,7 @@ class NativeMillGameSession implements GameSessionHandle {
         if (event.kind != 'bestMove' || event.toNode < 0) {
           continue;
         }
-        bestAction = _legalActionForBestMoveToNode(event.toNode);
+        bestAction = _legalActionForBestMove(event);
         logger.i(
           '$_logTag bestMove mapped: toNode=${event.toNode} -> '
           '${bestAction?.payload["move"] ?? "(no legal action found)"}',
@@ -377,12 +377,39 @@ class NativeMillGameSession implements GameSessionHandle {
     return boardLayout;
   }
 
-  GameAction? _legalActionForBestMoveToNode(int toNode) {
+  /// Map a Rust `bestMove` event back to one of this session's current
+  /// legal actions.
+  ///
+  /// The event's `reason` field starts with the full UCI notation of the
+  /// searched action ("a4", "a1-a4", "xa4"), produced by the Rust
+  /// `MillUciCodec` from the same node-label table that
+  /// [MillActionCodec.moveStringFromTgfAction] uses, so an exact string
+  /// match identifies the action without ambiguity.  Matching by `toNode`
+  /// alone is NOT sufficient: in the moving phase two pieces can converge
+  /// on the same destination square, and in `mayMoveInPlacingPhase`
+  /// variants a place and a move can share a destination.
+  GameAction? _legalActionForBestMove(tgf.EngineEvent event) {
+    final String notation = event.reason.split(' ').first;
+    assert(
+      notation.isNotEmpty,
+      'bestMove event (toNode=${event.toNode}) carries no notation in '
+      'reason="${event.reason}".',
+    );
     for (final GameAction action in legalActions) {
-      if (action.payload['toNode'] == toNode) {
+      if (MillActionCodec.moveStringFrom(action) == notation) {
+        assert(
+          action.payload['toNode'] == null ||
+              action.payload['toNode'] == event.toNode,
+          'Legal action "$notation" has toNode=${action.payload['toNode']} '
+          'but the engine reported toNode=${event.toNode}.',
+        );
         return action;
       }
     }
+    logger.w(
+      '$_logTag bestMove "$notation" (toNode=${event.toNode}) matches no '
+      'current legal action; treating as no best move.',
+    );
     return null;
   }
 }

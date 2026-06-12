@@ -138,6 +138,107 @@ void main() {
       },
     );
 
+    test('searchBestAction picks the searched move when two moving-phase '
+        'actions share the destination node', () async {
+      // a7-a4 (node 0 -> 7) is listed BEFORE a1-a4 (node 6 -> 7); a
+      // destination-only match would wrongly return a7-a4.
+      const GameAction moveA7A4 = GameAction(
+        type: MillActionTypes.move,
+        payload: <String, Object?>{'move': 'a7-a4', 'fromNode': 0, 'toNode': 7},
+      );
+      const GameAction moveA1A4 = GameAction(
+        type: MillActionTypes.move,
+        payload: <String, Object?>{'move': 'a1-a4', 'fromNode': 6, 'toNode': 7},
+      );
+      final _FakeNativeMillRulesPort rulesPort = _FakeNativeMillRulesPort(
+        initial: const GameStateSnapshot(
+          gameId: GameId.mill,
+          activeSeat: PlayerSeat.first,
+          outcome: GameOutcome.ongoing(),
+          phase: 'moving',
+        ),
+        legalActionsOverride: const <GameAction>[moveA7A4, moveA1A4],
+        searchEvents: Stream<tgf.EngineEvent>.fromIterable(<tgf.EngineEvent>[
+          tgf.EngineEvent(
+            kind: 'bestMove',
+            depth: 6,
+            score: 0,
+            nodes: BigInt.zero,
+            toNode: 7,
+            reason: 'a1-a4 rawScore=0',
+          ),
+        ]),
+      );
+      final NativeMillGameSession session = NativeMillGameSession(
+        rulesPort: rulesPort,
+      );
+      addTearDown(session.dispose);
+
+      final GameAction? applied = await session.searchAndApplyBestAction();
+      expect(applied, isNotNull);
+      expect(applied!.payload['move'], 'a1-a4');
+      expect(rulesPort.lastApplied?.payload['move'], 'a1-a4');
+    });
+
+    test('searchBestAction keeps the action type when a place and a move '
+        'share the destination node', () async {
+      // mayMoveInPlacingPhase variants expose place + move actions with
+      // the same destination at the same time.
+      const GameAction moveA1A4 = GameAction(
+        type: MillActionTypes.move,
+        payload: <String, Object?>{'move': 'a1-a4', 'fromNode': 6, 'toNode': 7},
+      );
+      const GameAction placeA4 = GameAction(
+        type: MillActionTypes.place,
+        payload: <String, Object?>{'move': 'a4', 'fromNode': -1, 'toNode': 7},
+      );
+      final _FakeNativeMillRulesPort rulesPort = _FakeNativeMillRulesPort(
+        legalActionsOverride: const <GameAction>[moveA1A4, placeA4],
+        searchEvents: Stream<tgf.EngineEvent>.fromIterable(<tgf.EngineEvent>[
+          tgf.EngineEvent(
+            kind: 'bestMove',
+            depth: -1,
+            score: 0,
+            nodes: BigInt.zero,
+            toNode: 7,
+            reason: 'a4 rawScore=0',
+          ),
+        ]),
+      );
+      final NativeMillGameSession session = NativeMillGameSession(
+        rulesPort: rulesPort,
+      );
+      addTearDown(session.dispose);
+
+      final GameAction? best = await session.searchBestAction();
+      expect(best, isNotNull);
+      expect(best!.type, MillActionTypes.place);
+      expect(best.payload['move'], 'a4');
+    });
+
+    test('searchBestAction returns null when the engine notation matches no '
+        'legal action', () async {
+      final _FakeNativeMillRulesPort rulesPort = _FakeNativeMillRulesPort(
+        searchEvents: Stream<tgf.EngineEvent>.fromIterable(<tgf.EngineEvent>[
+          tgf.EngineEvent(
+            kind: 'bestMove',
+            depth: -1,
+            score: 0,
+            nodes: BigInt.zero,
+            toNode: 7,
+            reason: 'a4 rawScore=0',
+          ),
+        ]),
+      );
+      final NativeMillGameSession session = NativeMillGameSession(
+        rulesPort: rulesPort,
+      );
+      addTearDown(session.dispose);
+
+      expect(await session.searchBestAction(), isNull);
+      expect(rulesPort.applyCount, 0);
+    });
+
     test('stores LAN metadata for native LAN turn checks', () {
       final _FakeNativeMillRulesPort rulesPort = _FakeNativeMillRulesPort();
       final NativeMillGameSession session = NativeMillGameSession(
@@ -157,8 +258,13 @@ void main() {
 }
 
 class _FakeNativeMillRulesPort implements NativeMillRulesPort {
-  _FakeNativeMillRulesPort({GameStateSnapshot? initial})
-    : _snapshot = initial ?? _initialSnapshot;
+  _FakeNativeMillRulesPort({
+    GameStateSnapshot? initial,
+    List<GameAction>? legalActionsOverride,
+    Stream<tgf.EngineEvent>? searchEvents,
+  }) : _snapshot = initial ?? _initialSnapshot,
+       _legalActionsOverride = legalActionsOverride,
+       _searchEvents = searchEvents;
 
   static const GameStateSnapshot _initialSnapshot = GameStateSnapshot(
     gameId: GameId.mill,
@@ -173,10 +279,13 @@ class _FakeNativeMillRulesPort implements NativeMillRulesPort {
   );
 
   GameStateSnapshot _snapshot;
+  final List<GameAction>? _legalActionsOverride;
+  final Stream<tgf.EngineEvent>? _searchEvents;
   int applyCount = 0;
   int undoCount = 0;
   int redoCount = 0;
   bool disposed = false;
+  GameAction? lastApplied;
 
   @override
   int get undoDepth => applyCount - undoCount + redoCount;
@@ -190,16 +299,19 @@ class _FakeNativeMillRulesPort implements NativeMillRulesPort {
   @override
   List<GameAction> get legalActions => _snapshot.outcome.isTerminal
       ? const <GameAction>[]
-      : <GameAction>[placeA7];
+      : _legalActionsOverride ?? <GameAction>[placeA7];
 
   @override
-  bool isLegal(GameAction action) =>
-      action.type == placeA7.type &&
-      action.payload['move'] == placeA7.payload['move'];
+  bool isLegal(GameAction action) => legalActions.any(
+    (GameAction legal) =>
+        legal.type == action.type &&
+        legal.payload['move'] == action.payload['move'],
+  );
 
   @override
   GameStateSnapshot apply(GameAction action) {
     applyCount++;
+    lastApplied = action;
     _snapshot = GameStateSnapshot(
       gameId: GameId.mill,
       activeSeat: PlayerSeat.second,
@@ -240,7 +352,7 @@ class _FakeNativeMillRulesPort implements NativeMillRulesPort {
     required int depth,
     int moveLimitMs = 0,
   }) {
-    return const Stream<tgf.EngineEvent>.empty();
+    return _searchEvents ?? const Stream<tgf.EngineEvent>.empty();
   }
 
   @override

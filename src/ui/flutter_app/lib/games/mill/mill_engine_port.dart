@@ -8,8 +8,9 @@ import '../../game_platform/engine/native_engine_client.dart';
 import '../../game_platform/game_id.dart';
 import '../../game_platform/game_session.dart';
 import '../../shared/database/database.dart';
+import '../../src/rust/api/kernel.dart' as tgf_kernel;
 import '../../src/rust/api/simple.dart' as tgf;
-import 'mill_constants.dart';
+import 'mill_action_codec.dart';
 import 'mill_variant_options_mapper.dart';
 
 /// Bridges the Rust/FRB Mill native search to the game-neutral
@@ -244,24 +245,27 @@ class MillEnginePortAdapter implements EnginePort {
     );
   }
 
+  /// Decode the engine's bestMove event into a typed [GameAction].
+  ///
+  /// The `reason` field starts with the full UCI notation ("a4", "a1-a4",
+  /// "xa4"), so moves and removals keep their real type and origin node
+  /// instead of being collapsed into a place at the destination node.
   GameAction? _actionFromNativeBestMove(tgf.EngineEvent event) {
     if (event.kind != 'bestMove' || event.toNode < 0) {
       return null;
     }
-    final String move = _labelForNode(event.toNode);
-    return GameAction(
-      type: MillActionTypes.place,
-      payload: <String, Object?>{'move': move, 'toNode': event.toNode},
+    final String notation = event.reason.split(' ').first;
+    final tgf_kernel.TgfAction? tgfAction =
+        MillActionCodec.tgfActionFromMoveString(notation);
+    assert(
+      tgfAction != null && tgfAction.toNode == event.toNode,
+      'bestMove notation "$notation" (reason="${event.reason}") decodes to '
+      'toNode=${tgfAction?.toNode} but the engine reported '
+      'toNode=${event.toNode}.',
     );
-  }
-
-  String _labelForNode(int node) {
-    final tgf.TopologyBlob topology = tgf.kernelTopology();
-    for (final tgf.TopologyPoint point in topology.points) {
-      if (point.id == node) {
-        return point.label;
-      }
+    if (tgfAction == null) {
+      return null;
     }
-    return '';
+    return MillActionCodec.fromTgfAction(tgfAction);
   }
 }
