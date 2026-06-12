@@ -1146,6 +1146,56 @@ fn moving_phase_removal_below_three_ends_game() {
     assert_eq!(outcome.reason, "loseFewerThanThree");
 }
 
+/// Mirror of master remove_piece L1834-1838: the fewer-than-three loss
+/// fires as soon as `pieceOnBoardCount + pieceInHandCount` drops below
+/// `pieces_at_least_count`, even during the placing phase while the
+/// victim still holds pieces in hand.  Regression test for the removed
+/// `pieces_in_hand == [0, 0]` gate which deferred the loss and let a
+/// doomed position keep playing.
+#[test]
+fn placing_phase_removal_below_three_ends_game_despite_pieces_in_hand() {
+    let rules = MillRules::default();
+    let state = MillState {
+        board: {
+            let mut board = [0_i8; 24];
+            board[0] = 1;
+            board[1] = 1;
+            board[2] = 1;
+            board[6] = 2;
+            board
+        },
+        side_to_move: 0,
+        phase: MillPhase::Placing,
+        move_number: 13,
+        // Both sides still hold pieces; Black's board + hand total will
+        // drop to 2 (< 3) after the capture below.
+        pieces_in_hand: [4, 2],
+        pieces_on_board: [3, 1],
+        pending_removals: [1, 0],
+        winner: -1,
+        ..MillState::default()
+    };
+    let snap = rules.encode(state);
+    let after_remove = rules.apply(
+        &snap,
+        Action {
+            kind_tag: MillActionKind::Remove as i16,
+            from_node: -1,
+            to_node: 6,
+            aux: -1,
+            payload_bits: 0,
+        },
+    );
+
+    let state = MillRules::decode(&after_remove);
+    assert_eq!(state.phase, MillPhase::GameOver);
+    assert_eq!(state.winner, 0);
+    assert_eq!(state.side_to_move, -1);
+    let outcome = rules.outcome(&after_remove);
+    assert_eq!(outcome.kind, OutcomeKind::Win(0));
+    assert_eq!(outcome.reason, "loseFewerThanThree");
+}
+
 #[test]
 fn mill_game_workbench_do_and_undo_move() {
     let rules = MillRules::default();

@@ -373,13 +373,19 @@ impl GameRules for MillRules {
                 clear_key_history(&mut state);
                 // P0-B.1: Mirror master remove_piece L1834-1838 which checks
                 // `pieceOnBoardCount[them] + pieceInHandCount[them] < piecesAtLeastCount`
-                // WITHOUT a phase guard. The original Rust code only checked
-                // in Moving phase and omitted in-hand count; both are fixed here.
+                // WITHOUT a phase guard and WITHOUT requiring empty hands.
+                // A side whose board + hand total has dropped below
+                // `pieces_at_least_count` can never reach the minimum piece
+                // count again, so the loss is declared immediately even in
+                // the placing phase (e.g. repeated captures while the victim
+                // still holds pieces in hand).  An earlier revision gated
+                // this on `pieces_in_hand == [0, 0]`, which deferred the
+                // loss; since this is the only fewer-than-three check on the
+                // apply path, a doomed position could then drag on into the
+                // moving phase and even reach an n-move-rule draw.
                 let pieces_total = u32::from(state.pieces_on_board[target_color_index])
                     + u32::from(state.pieces_in_hand[target_color_index]);
-                if state.pieces_in_hand == [0, 0]
-                    && pieces_total < u32::from(self.options.pieces_at_least_count)
-                {
+                if pieces_total < u32::from(self.options.pieces_at_least_count) {
                     state.phase = MillPhase::GameOver;
                     state.winner = if removing_own {
                         opponent as i8
