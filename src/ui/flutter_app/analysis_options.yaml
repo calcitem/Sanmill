@@ -33,6 +33,9 @@ analyzer:
     - lib/generated/**
     - lib/src/rust/**
     - lib/**/**.g.dart
+    # top-level generated files (e.g. lib/hive_registrar.g.dart) are not
+    # covered by the nested glob above
+    - lib/*.g.dart
 
 linter:
   rules:

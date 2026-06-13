@@ -18,5 +18,6 @@ abstract final class MillRouteIds {
   );
 
   // Non-play module screens
+  static const GameRouteId puzzles = GameRouteId('mill.game.puzzles');
   static const GameRouteId statistics = GameRouteId('mill.game.statistics');
 }

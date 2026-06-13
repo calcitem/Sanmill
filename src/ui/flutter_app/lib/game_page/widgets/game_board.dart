@@ -101,7 +101,9 @@ class _GameBoardState extends State<GameBoard>
   void initState() {
     super.initState();
     gameImagesFuture = _loadImages();
-    animationManager = AnimationManager(this);
+    animationManager = DB().displaySettings.animationDuration == 0.0
+        ? HeadlessAnimationManager()
+        : AnimationManager(this);
 
     // Register lifecycle observer to handle app background/foreground transitions
     WidgetsBinding.instance.addObserver(this);

@@ -488,6 +488,11 @@ class PlayAreaState extends State<PlayArea> {
         final bool isSetupPosition =
             GameController().gameInstance.gameMode == GameMode.setupPosition;
 
+        // Hide the regular history / main toolbars in puzzle mode to keep the
+        // interface clean; the PuzzlePage provides its own puzzle controls.
+        final bool isPuzzle =
+            GameController().gameInstance.gameMode == GameMode.puzzle;
+
         // Main content without bottom toolbars:
         final Widget mainContent = SizedBox(
           key: const Key('play_area_main_content'),
@@ -552,7 +557,8 @@ class PlayAreaState extends State<PlayArea> {
                   // History navigation toolbar if enabled and not at bottom
                   if (DB().displaySettings.isHistoryNavigationToolbarShown &&
                       !isToolbarAtBottom &&
-                      !isSetupPosition)
+                      !isSetupPosition &&
+                      !isPuzzle)
                     GamePageToolbar(
                       key: const Key('play_area_history_nav_toolbar'),
                       backgroundColor:
@@ -590,7 +596,7 @@ class PlayAreaState extends State<PlayArea> {
                       const SetupPositionToolbar(
                         key: Key('play_area_setup_position_toolbar'),
                       )
-                    else
+                    else if (!isPuzzle)
                       GamePageToolbar(
                         key: const Key('play_area_main_toolbar'),
                         backgroundColor:
@@ -625,7 +631,8 @@ class PlayAreaState extends State<PlayArea> {
 
                   // History navigation toolbar if enabled
                   if (DB().displaySettings.isHistoryNavigationToolbarShown &&
-                      !isSetupPosition)
+                      !isSetupPosition &&
+                      !isPuzzle)
                     GamePageToolbar(
                       key: const Key('play_area_history_nav_toolbar_bottom'),
                       backgroundColor:
@@ -656,7 +663,7 @@ class PlayAreaState extends State<PlayArea> {
                     const SetupPositionToolbar(
                       key: Key('play_area_setup_position_toolbar_bottom'),
                     )
-                  else
+                  else if (!isPuzzle)
                     GamePageToolbar(
                       key: const Key('play_area_main_toolbar_bottom'),
                       backgroundColor:

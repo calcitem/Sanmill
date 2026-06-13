@@ -49,6 +49,7 @@ import '../../statistics/model/stats_settings.dart';
 import '../services/analysis/analysis_service.dart';
 import '../services/analysis_mode.dart';
 import '../services/animation/animation_manager.dart';
+import '../services/animation/headless_animation_manager.dart';
 import '../services/annotation/annotation_manager.dart';
 import '../services/import_export/pgn.dart';
 import '../services/painters/animations/piece_effect_animation.dart';

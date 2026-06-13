@@ -15,6 +15,7 @@ import 'package:path_provider/path_provider.dart';
 import '../../appearance_settings/models/color_settings.dart';
 import '../../appearance_settings/models/display_settings.dart';
 import '../../general_settings/models/general_settings.dart';
+import '../../puzzle/models/puzzle_models.dart';
 import '../../rule_settings/models/rule_settings.dart';
 import '../../statistics/model/stats_settings.dart';
 // Voice assistant functionality disabled
@@ -96,6 +97,23 @@ class Database {
   /// Key at which the [_statsSettingsBox] will be saved
   static const String _statsSettingsBoxName = "statsSettings";
 
+  /// [PuzzleSettings] Box reference
+  static late final Box<PuzzleSettings> _puzzleSettingsBox;
+
+  /// Key at which the [PuzzleSettings] will be saved in the [_puzzleSettingsBox]
+  static const String puzzleSettingsKey = "settings";
+
+  /// Key at which the [_puzzleSettingsBox] will be saved
+  static const String _puzzleSettingsBoxName = "puzzleSettings";
+
+  /// Dynamic box for puzzle analytics (attempt history, etc.)
+  static late final Box<dynamic> _puzzleAnalyticsBox;
+  static const String _puzzleAnalyticsBoxName = "puzzleAnalytics";
+  static const String puzzleAttemptHistoryKey = "attemptHistory";
+
+  /// Getter for puzzle analytics box (for DailyPuzzleService, PuzzleStreakPage, etc.)
+  Box<dynamic> get puzzleAnalyticsBox => _puzzleAnalyticsBox;
+
   // Voice assistant functionality disabled
   // /// [VoiceAssistantSettings] Box reference
   // static late final Box<VoiceAssistantSettings> _voiceAssistantSettingsBox;
@@ -116,10 +134,8 @@ class Database {
     await _initColorSettings();
     await _initCustomThemes();
     await _initStatsSettings();
-    // Puzzle Hive boxes (puzzleSettings, puzzleAnalytics) are no
-    // longer initialised; the puzzle feature was retired but
-    // existing on-disk box files are intentionally left untouched
-    // so the app does not need a destructive migration.
+    await _initPuzzleSettings();
+    await _initPuzzleAnalytics();
     // Voice assistant functionality disabled
     // await _initVoiceAssistantSettings();
 
@@ -136,6 +152,8 @@ class Database {
     await _displaySettingsBox.delete(displaySettingsKey);
     await _customThemesBox.delete(customThemesKey);
     await _statsSettingsBox.delete(statsSettingsKey);
+    await _puzzleSettingsBox.delete(puzzleSettingsKey);
+    await _puzzleAnalyticsBox.delete(puzzleAttemptHistoryKey);
     // Voice assistant functionality disabled
     // await _voiceAssistantSettingsBox.delete(voiceAssistantSettingsKey);
   }
@@ -368,9 +386,84 @@ class Database {
   StatsSettings get statsSettings =>
       _statsSettingsBox.get(statsSettingsKey) ?? const StatsSettings();
 
-  // PuzzleSettings / PuzzleAnalytics box wiring removed along with
-  // the puzzle feature.  See `init()` for the policy on existing
-  // on-disk box files.
+  /// PuzzleSettings
+
+  /// Initializes the [PuzzleSettings] reference
+  static Future<void> _initPuzzleSettings() async {
+    if (!Hive.isAdapterRegistered(pieceColorTypeId)) {
+      Hive.registerAdapter(PieceColorAdapter());
+    }
+    if (!Hive.isAdapterRegistered(puzzleDifficultyTypeId)) {
+      Hive.registerAdapter<PuzzleDifficulty>(PuzzleDifficultyAdapter());
+    }
+    if (!Hive.isAdapterRegistered(puzzleCategoryTypeId)) {
+      Hive.registerAdapter<PuzzleCategory>(PuzzleCategoryAdapter());
+    }
+    if (!Hive.isAdapterRegistered(puzzleMoveTypeId)) {
+      Hive.registerAdapter<PuzzleMove>(PuzzleMoveAdapter());
+    }
+    if (!Hive.isAdapterRegistered(puzzleSolutionTypeId)) {
+      Hive.registerAdapter<PuzzleSolution>(PuzzleSolutionAdapter());
+    }
+    if (!Hive.isAdapterRegistered(puzzleInfoTypeId)) {
+      Hive.registerAdapter<PuzzleInfo>(PuzzleInfoAdapter());
+    }
+    if (!Hive.isAdapterRegistered(puzzleProgressTypeId)) {
+      Hive.registerAdapter<PuzzleProgress>(PuzzleProgressAdapter());
+    }
+    if (!Hive.isAdapterRegistered(puzzleSettingsTypeId)) {
+      Hive.registerAdapter<PuzzleSettings>(PuzzleSettingsAdapter());
+    }
+    _puzzleSettingsBox = await Hive.openBox<PuzzleSettings>(
+      _puzzleSettingsBoxName,
+    );
+  }
+
+  /// Initializes the puzzle analytics box.
+  static Future<void> _initPuzzleAnalytics() async {
+    _puzzleAnalyticsBox = await Hive.openBox<dynamic>(_puzzleAnalyticsBoxName);
+  }
+
+  /// Raw attempt history for puzzles.
+  ///
+  /// Each entry is a JSON-like map with only primitive values so it can be
+  /// stored in a dynamic Hive box safely.
+  List<Map<String, dynamic>> get puzzleAttemptHistoryRaw {
+    final dynamic rawData = _puzzleAnalyticsBox.get(puzzleAttemptHistoryKey);
+    if (rawData is! List) {
+      return <Map<String, dynamic>>[];
+    }
+
+    final List<Map<String, dynamic>> result = <Map<String, dynamic>>[];
+    for (final dynamic item in rawData) {
+      if (item is Map) {
+        final Map<String, dynamic> normalized = <String, dynamic>{};
+        item.forEach((dynamic key, dynamic value) {
+          if (key is String) {
+            normalized[key] = value;
+          }
+        });
+        result.add(normalized);
+      }
+    }
+    return result;
+  }
+
+  set puzzleAttemptHistoryRaw(List<Map<String, dynamic>> history) {
+    _puzzleAnalyticsBox.put(puzzleAttemptHistoryKey, history);
+  }
+
+  /// Listens to changes inside the PuzzleSettings Box
+  ValueListenable<Box<PuzzleSettings>> get listenPuzzleSettings =>
+      _puzzleSettingsBox.listenable(keys: <String>[puzzleSettingsKey]);
+
+  /// Saves the given [settings] to the PuzzleSettings Box
+  set puzzleSettings(PuzzleSettings settings) =>
+      _puzzleSettingsBox.put(puzzleSettingsKey, settings);
+
+  /// Gets the stored [PuzzleSettings] or returns a default value
+  PuzzleSettings get puzzleSettings =>
+      _puzzleSettingsBox.get(puzzleSettingsKey) ?? const PuzzleSettings();
 
   // Voice assistant functionality disabled
   // /// VoiceAssistantSettings

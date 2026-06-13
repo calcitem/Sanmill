@@ -1,0 +1,422 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2019-2026 The Sanmill developers (see AUTHORS file)
+
+// puzzle_rating_service.dart
+//
+// Service for managing puzzle rating (ELO-based system)
+
+import 'dart:math';
+
+import '../../shared/database/database.dart';
+import '../../shared/services/logger.dart';
+import '../models/puzzle_models.dart';
+
+/// User's puzzle rating and statistics
+class PuzzleRating {
+  PuzzleRating({
+    required this.rating,
+    required this.gamesPlayed,
+    required this.provisionalGames,
+    required this.ratingDeviation,
+  });
+
+  int rating;
+  int gamesPlayed;
+  int provisionalGames; // First N games are provisional
+  double ratingDeviation; // Uncertainty in rating
+
+  bool get isProvisional => gamesPlayed < provisionalGames;
+}
+
+/// Result of a puzzle attempt
+class PuzzleAttemptResult {
+  PuzzleAttemptResult({
+    required this.puzzleId,
+    required this.success,
+    required this.timeSpent,
+    required this.hintsUsed,
+    required this.movesPlayed,
+    required this.timestamp,
+    this.oldRating,
+    this.newRating,
+    this.ratingChange,
+  });
+
+  /// Create from persisted JSON-like data.
+  factory PuzzleAttemptResult.fromJson(Map<String, dynamic> json) {
+    final String? timestampIso = json['timestamp'] as String?;
+    final DateTime? parsedTimestamp = timestampIso == null
+        ? null
+        : DateTime.tryParse(timestampIso);
+    assert(
+      parsedTimestamp != null,
+      'PuzzleAttemptResult.fromJson: invalid timestamp "$timestampIso".',
+    );
+
+    final int timeSpentMs = (json['timeSpentMs'] as int?) ?? 0;
+
+    return PuzzleAttemptResult(
+      puzzleId: (json['puzzleId'] as String?) ?? '',
+      success: (json['success'] as bool?) ?? false,
+      timeSpent: Duration(milliseconds: timeSpentMs),
+      hintsUsed: (json['hintsUsed'] as int?) ?? 0,
+      movesPlayed: (json['movesPlayed'] as int?) ?? 0,
+      timestamp: parsedTimestamp ?? DateTime.fromMillisecondsSinceEpoch(0),
+      oldRating: json['oldRating'] as int?,
+      newRating: json['newRating'] as int?,
+      ratingChange: json['ratingChange'] as int?,
+    );
+  }
+
+  final String puzzleId;
+  final bool success;
+  final Duration timeSpent;
+  final int hintsUsed;
+  final int movesPlayed;
+  final DateTime timestamp;
+  int? oldRating;
+  int? newRating;
+  int? ratingChange;
+
+  /// Convert to JSON-like data with only primitive values.
+  Map<String, dynamic> toJson() {
+    return <String, dynamic>{
+      'puzzleId': puzzleId,
+      'success': success,
+      'timeSpentMs': timeSpent.inMilliseconds,
+      'hintsUsed': hintsUsed,
+      'movesPlayed': movesPlayed,
+      'timestamp': timestamp.toIso8601String(),
+      if (oldRating != null) 'oldRating': oldRating,
+      if (newRating != null) 'newRating': newRating,
+      if (ratingChange != null) 'ratingChange': ratingChange,
+    };
+  }
+}
+
+/// Service for managing puzzle ratings
+class PuzzleRatingService {
+  factory PuzzleRatingService() => _instance;
+
+  PuzzleRatingService._internal();
+
+  static final PuzzleRatingService _instance = PuzzleRatingService._internal();
+
+  static const String _tag = "[PuzzleRatingService]";
+
+  // Rating constants
+  static const int _initialRating = 1500;
+  static const int _provisionalGames = 10;
+  static const double _initialRD = 350.0; // Initial rating deviation
+  static const double _minRD = 50.0; // Minimum rating deviation
+  static const double _kFactorProvisional = 40.0;
+  static const double _kFactorNormal = 20.0;
+  static const int _maxStoredAttempts = 500;
+
+  /// Get user's current puzzle rating
+  PuzzleRating getUserRating() {
+    // Load from PuzzleSettings
+    final int currentRating = DB().puzzleSettings.userRating;
+    // Count total attempts from history
+    final int gamesPlayed = getAttemptHistory().length;
+
+    return PuzzleRating(
+      rating: currentRating,
+      gamesPlayed: gamesPlayed,
+      provisionalGames: _provisionalGames,
+      ratingDeviation: gamesPlayed < _provisionalGames ? _initialRD : _minRD,
+    );
+  }
+
+  /// Get user's current puzzle rating (alias for getUserRating)
+  PuzzleRating getCurrentRating() => getUserRating();
+
+  /// Update rating based on puzzle result
+  PuzzleAttemptResult updateRating({
+    required String puzzleId,
+    required PuzzleInfo puzzle,
+    required bool success,
+    required Duration timeSpent,
+    required int hintsUsed,
+    required int movesPlayed,
+  }) {
+    final PuzzleRating userRating = getUserRating();
+    final int oldRating = userRating.rating;
+
+    // Calculate rating change using modified ELO formula
+    final int ratingChange = _calculateRatingChange(
+      userRating: userRating,
+      puzzleRating: puzzle.rating ?? _initialRating,
+      success: success,
+      timeSpent: timeSpent,
+      hintsUsed: hintsUsed,
+    );
+
+    // Update user rating
+    userRating.rating += ratingChange;
+
+    // Reduce rating deviation as user plays more
+    if (userRating.ratingDeviation > _minRD) {
+      userRating.ratingDeviation = max(
+        _minRD,
+        userRating.ratingDeviation - 5.0,
+      );
+    }
+
+    _saveUserRating(userRating);
+
+    final PuzzleAttemptResult result = PuzzleAttemptResult(
+      puzzleId: puzzleId,
+      success: success,
+      timeSpent: timeSpent,
+      hintsUsed: hintsUsed,
+      movesPlayed: movesPlayed,
+      timestamp: DateTime.now(),
+      oldRating: oldRating,
+      newRating: userRating.rating,
+      ratingChange: ratingChange,
+    );
+
+    _saveAttemptResult(result);
+
+    logger.i(
+      "$_tag Rating updated: $oldRating -> ${userRating.rating} (${ratingChange >= 0 ? '+' : ''}$ratingChange)",
+    );
+
+    return result;
+  }
+
+  /// Record a puzzle attempt with rating calculation
+  PuzzleAttemptResult recordAttempt({
+    required String puzzleId,
+    required int puzzleRating,
+    required bool success,
+    required Duration timeSpent,
+    required int hintsUsed,
+    required int movesPlayed,
+  }) {
+    final PuzzleRating userRating = getUserRating();
+    final int oldRating = userRating.rating;
+
+    // Calculate rating change using modified ELO formula
+    final int ratingChange = _calculateRatingChange(
+      userRating: userRating,
+      puzzleRating: puzzleRating,
+      success: success,
+      timeSpent: timeSpent,
+      hintsUsed: hintsUsed,
+    );
+
+    // Update user rating
+    userRating.rating += ratingChange;
+
+    // Reduce rating deviation as user plays more
+    if (userRating.ratingDeviation > _minRD) {
+      userRating.ratingDeviation = max(
+        _minRD,
+        userRating.ratingDeviation - 5.0,
+      );
+    }
+
+    _saveUserRating(userRating);
+
+    final PuzzleAttemptResult result = PuzzleAttemptResult(
+      puzzleId: puzzleId,
+      success: success,
+      timeSpent: timeSpent,
+      hintsUsed: hintsUsed,
+      movesPlayed: movesPlayed,
+      timestamp: DateTime.now(),
+      oldRating: oldRating,
+      newRating: userRating.rating,
+      ratingChange: ratingChange,
+    );
+
+    _saveAttemptResult(result);
+
+    logger.i(
+      "$_tag Rating updated: $oldRating -> ${userRating.rating} (${ratingChange >= 0 ? '+' : ''}$ratingChange)",
+    );
+
+    return result;
+  }
+
+  /// Calculate rating change using ELO formula with modifiers
+  int _calculateRatingChange({
+    required PuzzleRating userRating,
+    required int puzzleRating,
+    required bool success,
+    required Duration timeSpent,
+    required int hintsUsed,
+  }) {
+    // K-factor (how much rating can change per game)
+    final double kFactor = userRating.isProvisional
+        ? _kFactorProvisional
+        : _kFactorNormal;
+
+    // Expected score based on rating difference
+    final double expectedScore =
+        1.0 / (1.0 + pow(10.0, (puzzleRating - userRating.rating) / 400.0));
+
+    // Actual score (1 for success, 0 for failure)
+    final double actualScore = success ? 1.0 : 0.0;
+
+    // Base rating change
+    double ratingChange = kFactor * (actualScore - expectedScore);
+
+    // Time bonus/penalty (faster = more points, slower = less points)
+    if (success) {
+      // Reward fast solves (under 30 seconds = bonus, over 2 minutes = penalty)
+      final int seconds = timeSpent.inSeconds;
+      if (seconds < 30) {
+        ratingChange *= 1.2; // 20% bonus for very fast solves
+      } else if (seconds > 120) {
+        ratingChange *= 0.9; // 10% penalty for slow solves
+      }
+    }
+
+    // Hint penalty (each hint reduces rating gain)
+    if (hintsUsed > 0) {
+      ratingChange *= pow(0.8, hintsUsed.toDouble()); // -20% per hint
+    }
+
+    return ratingChange.round();
+  }
+
+  /// Get recommended puzzles based on user rating
+  List<PuzzleInfo> getRecommendedPuzzles(
+    List<PuzzleInfo> allPuzzles, {
+    int count = 10,
+  }) {
+    final PuzzleRating userRating = getUserRating();
+    final int targetRating = userRating.rating;
+    final double rd = userRating.ratingDeviation;
+
+    // Calculate acceptable rating range (within 2 RD)
+    final int minRating = (targetRating - 2 * rd).round();
+    final int maxRating = (targetRating + 2 * rd).round();
+
+    // Filter puzzles within rating range
+    final List<PuzzleInfo> suitable = allPuzzles.where((PuzzleInfo puzzle) {
+      final int puzzleRating = puzzle.rating ?? _initialRating;
+      return puzzleRating >= minRating && puzzleRating <= maxRating;
+    }).toList();
+
+    // Shuffle and take requested count
+    suitable.shuffle();
+    return suitable.take(count).toList();
+  }
+
+  /// Get puzzle attempt history
+  List<PuzzleAttemptResult> getAttemptHistory({int? limit}) {
+    final List<Map<String, dynamic>> raw = DB().puzzleAttemptHistoryRaw;
+    final List<PuzzleAttemptResult> results = <PuzzleAttemptResult>[];
+
+    for (final Map<String, dynamic> entry in raw) {
+      final String? ts = entry['timestamp'] as String?;
+      final DateTime? parsed = ts == null ? null : DateTime.tryParse(ts);
+      if (parsed == null) {
+        continue; // Skip corrupted entries.
+      }
+      results.add(PuzzleAttemptResult.fromJson(entry));
+    }
+
+    // Stored order is newest-first, but keep this robust.
+    results.sort(
+      (PuzzleAttemptResult a, PuzzleAttemptResult b) =>
+          b.timestamp.compareTo(a.timestamp),
+    );
+
+    return limit == null ? results : results.take(limit).toList();
+  }
+
+  /// Get puzzle attempt history (alias for getAttemptHistory)
+  /// Returns results in chronological order (oldest first, newest last)
+  List<PuzzleAttemptResult> getHistory({int? limit}) {
+    final List<PuzzleAttemptResult> results = getAttemptHistory(limit: limit);
+    // Reverse to get chronological order (oldest first, newest last)
+    return results.reversed.toList();
+  }
+
+  /// Get rating history over time
+  List<MapEntry<DateTime, int>> getRatingHistory() {
+    final List<PuzzleAttemptResult> history = getAttemptHistory();
+    final List<MapEntry<DateTime, int>> points = <MapEntry<DateTime, int>>[];
+
+    for (final PuzzleAttemptResult attempt in history) {
+      if (attempt.newRating != null) {
+        points.add(
+          MapEntry<DateTime, int>(attempt.timestamp, attempt.newRating!),
+        );
+      }
+    }
+
+    // Sort ascending for charts.
+    points.sort((MapEntry<DateTime, int> a, MapEntry<DateTime, int> b) {
+      return a.key.compareTo(b.key);
+    });
+    return points;
+  }
+
+  /// Calculate various statistics
+  Map<String, dynamic> getStatistics() {
+    final PuzzleRating rating = getUserRating();
+    final List<PuzzleAttemptResult> history = getAttemptHistory();
+
+    final int totalAttempts = history.length;
+    final int successCount = history
+        .where((PuzzleAttemptResult r) => r.success)
+        .length;
+    final double successRate = totalAttempts > 0
+        ? (successCount / totalAttempts) * 100
+        : 0.0;
+
+    // Calculate average solve time (successful puzzles only)
+    final List<PuzzleAttemptResult> successful = history
+        .where((PuzzleAttemptResult r) => r.success)
+        .toList();
+    final Duration avgTime = successful.isEmpty
+        ? Duration.zero
+        : Duration(
+            seconds:
+                successful
+                    .map((PuzzleAttemptResult r) => r.timeSpent.inSeconds)
+                    .reduce((int a, int b) => a + b) ~/
+                successful.length,
+          );
+
+    return <String, dynamic>{
+      'rating': rating.rating,
+      'gamesPlayed': rating.gamesPlayed,
+      'isProvisional': rating.isProvisional,
+      'totalAttempts': totalAttempts,
+      'successCount': successCount,
+      'failCount': totalAttempts - successCount,
+      'successRate': successRate,
+      'averageTime': avgTime.inSeconds,
+    };
+  }
+
+  /// Save user rating
+  void _saveUserRating(PuzzleRating rating) {
+    final PuzzleSettings currentSettings = DB().puzzleSettings;
+    DB().puzzleSettings = currentSettings.copyWith(userRating: rating.rating);
+    logger.i("$_tag Saved user rating: ${rating.rating}");
+  }
+
+  /// Save attempt result
+  void _saveAttemptResult(PuzzleAttemptResult result) {
+    final List<Map<String, dynamic>> history = DB().puzzleAttemptHistoryRaw;
+    history.insert(0, result.toJson());
+    if (history.length > _maxStoredAttempts) {
+      history.removeRange(_maxStoredAttempts, history.length);
+    }
+    DB().puzzleAttemptHistoryRaw = history;
+    logger.i("$_tag Saved attempt result: ${result.puzzleId}");
+  }
+
+  /// Persist an externally computed attempt result (e.g. from UI flows).
+  void saveAttemptResult(PuzzleAttemptResult result) {
+    _saveAttemptResult(result);
+  }
+}

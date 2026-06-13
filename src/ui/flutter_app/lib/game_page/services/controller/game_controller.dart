@@ -52,6 +52,13 @@ class GameController {
 
   bool disableStats = false;
 
+  // Puzzle mode state:
+  // - puzzleHumanColor: which side the user controls when solving a puzzle.
+  // - isPuzzleAutoMoveInProgress: prevents user input while the app auto-plays
+  //   the opponent's forced responses.
+  PieceColor? puzzleHumanColor;
+  bool isPuzzleAutoMoveInProgress = false;
+
   String? value;
   AiMoveType? aiMoveType;
 
@@ -696,6 +703,9 @@ class GameController {
     String? fen = "";
     final bool isPosSetup = isPositionSetup;
     final bool? savedHostPlaysWhite = lanHostPlaysWhite;
+
+    // Puzzle mode: reset any transient auto-move lock.
+    isPuzzleAutoMoveInProgress = false;
 
     value = "0";
     aiMoveType = AiMoveType.unknown;

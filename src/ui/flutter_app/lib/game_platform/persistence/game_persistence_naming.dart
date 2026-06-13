@@ -61,4 +61,5 @@ const Set<String> kGameScopedSettings = <String>{
   'rule_settings',
   'statistics',
   'experience_recordings',
+  'puzzle_progress',
 };

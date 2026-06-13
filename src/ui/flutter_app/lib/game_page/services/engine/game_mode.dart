@@ -46,13 +46,13 @@ extension GameModeExtension on GameMode {
         return FluentIcons.person_24_filled;
       case GameMode.aiVsAi:
         return botIcon;
-      case GameMode.setupPosition:
       case GameMode.puzzle:
-        // Setup-position and puzzle modes are retired but the enum
-        // values are kept as sentinels so old experience-recording
-        // sessions still parse.  The icons are unreachable on this
-        // branch (no UI route mounts these modes any more) but must
-        // be valid `IconData`s to keep the switch exhaustive.
+        return FluentIcons.puzzle_piece_24_filled;
+      case GameMode.setupPosition:
+        // Setup-position mode is retired but the enum value is kept
+        // as a sentinel so old experience-recording sessions still
+        // parse.  The icon is unreachable on this branch but must be
+        // a valid `IconData` to keep the switch exhaustive.
         return FluentIcons.person_24_filled;
       case GameMode.humanVsCloud:
         return FluentIcons.person_24_filled;
@@ -79,10 +79,11 @@ extension GameModeExtension on GameMode {
         return FluentIcons.person_24_filled;
       case GameMode.aiVsAi:
         return botIcon;
-      case GameMode.setupPosition:
       case GameMode.puzzle:
-        // See `leftHeaderIcon` -- sentinel branches for retired
-        // game modes.
+        return FluentIcons.lightbulb_24_filled;
+      case GameMode.setupPosition:
+        // See `leftHeaderIcon` -- sentinel branch for the retired
+        // setup-position mode.
         return FluentIcons.person_24_filled;
       case GameMode.humanVsCloud:
         return FluentIcons.cloud_24_filled;
@@ -102,10 +103,26 @@ extension GameModeExtension on GameMode {
           PieceColor.black: !DB().generalSettings.aiMovesFirst,
         };
       case GameMode.puzzle:
-        // Puzzle mode is retired -- the enum value lingers as a
-        // sentinel for old experience recordings.  No live UI route
-        // produces this case any more, so treat both sides as human
-        // (no engine search, no AI gating).
+        // Puzzle mode: the human plays exactly one side (set by PuzzlePage).
+        // The opponent is treated as AI so the rest of the game logic can
+        // recognize whose turn it is, while the actual moves are auto-played
+        // from the puzzle's predefined solution line.
+        final PieceColor? humanColor = GameController().puzzleHumanColor;
+        if (humanColor == PieceColor.white) {
+          return <PieceColor, bool>{
+            PieceColor.white: false,
+            PieceColor.black: true,
+          };
+        }
+        if (humanColor == PieceColor.black) {
+          return <PieceColor, bool>{
+            PieceColor.white: true,
+            PieceColor.black: false,
+          };
+        }
+
+        // If the puzzle hasn't been initialized yet, keep both sides human to
+        // avoid triggering engine search from generic AI hooks.
         return <PieceColor, bool>{
           PieceColor.white: false,
           PieceColor.black: false,

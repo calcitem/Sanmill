@@ -42,11 +42,14 @@ class TapHandler {
     // The Rust-native session path is now supported for:
     //   - humanVsHuman, humanVsAi (placing / moving / removing)
     //   - humanVsLAN
+    //   - puzzle (human plays one side; opponent moves are auto-played
+    //     by PuzzlePage from the solution line, not the engine)
     // Replay still depends on legacy side effects.
     final GameMode mode = controller.gameInstance.gameMode;
     if (mode != GameMode.humanVsHuman &&
         mode != GameMode.humanVsAi &&
-        mode != GameMode.humanVsLAN) {
+        mode != GameMode.humanVsLAN &&
+        mode != GameMode.puzzle) {
       _nativeSessionTapController.clearSelection();
       return null;
     }
@@ -74,6 +77,21 @@ class TapHandler {
         logger.w("$_logTag No active LAN connection");
         showTip(S.of(context).noLanConnection, snackBar: true);
         return const EngineResponseSkip();
+      }
+    }
+
+    // Puzzle mode: the user only controls one side, tracked by
+    // GameController.puzzleHumanColor (set by PuzzlePage).  Block taps when it
+    // is the opponent's turn or while the app auto-plays the solution line.
+    if (mode == GameMode.puzzle) {
+      final PieceColor? humanColor = controller.puzzleHumanColor;
+      if (humanColor != null) {
+        final bool isHumanTurn =
+            controller.activeBoardView.sideToMove == humanColor;
+        if (!isHumanTurn || controller.isPuzzleAutoMoveInProgress) {
+          showTip(S.of(context).opponentSTurn, snackBar: true);
+          return const EngineResponseSkip();
+        }
       }
     }
 

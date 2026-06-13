@@ -13,7 +13,7 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 
-import '../../game_page/services/mill.dart' show ExtMove;
+import '../../game_page/services/mill.dart' show ExtMove, PieceColor;
 import '../../game_platform/game_session.dart';
 import '../../game_platform/game_session_handle.dart';
 import '../../general_settings/models/general_settings.dart';
@@ -182,6 +182,32 @@ class NativeMillGameSession implements GameSessionHandle {
 
   @override
   ValueListenable<GameStateSnapshot> get state => _state;
+
+  /// The side to move in the current snapshot, as a Mill [PieceColor].
+  PieceColor get sideToMove => switch (_state.value.activeSeat) {
+    PlayerSeat.first => PieceColor.white,
+    PlayerSeat.second => PieceColor.black,
+    PlayerSeat.none => PieceColor.nobody,
+  };
+
+  /// Applies the legal move identified by [move] (notation form, e.g. "d6",
+  /// "d6-e5", "xd6") if it is currently legal.
+  ///
+  /// Recording is handled by [MillSessionRecorderBridge] which listens for the
+  /// emitted `moveApplied` event, so callers do not append to the recorder.
+  /// Returns true when a legal move matched and was applied.
+  bool applyMoveString(String move) {
+    if (_disposed) {
+      return false;
+    }
+    for (final GameAction action in legalActions) {
+      if (action.payload['move'] == move) {
+        apply(action);
+        return true;
+      }
+    }
+    return false;
+  }
 
   @override
   Future<void> apply(GameAction action) async {
