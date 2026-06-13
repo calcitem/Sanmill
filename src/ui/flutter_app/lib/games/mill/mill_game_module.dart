@@ -36,7 +36,6 @@ import '../../shared/services/logger.dart';
 import '../../shared/services/snackbar_service.dart';
 import '../../shared/themes/app_theme.dart';
 import '../../statistics/widgets/stats_page.dart';
-import 'mill_action_codec.dart';
 import 'mill_engine_port.dart';
 import 'mill_marked_pieces_codec.dart';
 import 'mill_notation_port.dart';
@@ -146,10 +145,15 @@ class MillGameModule extends GameModule {
     BuildContext context, {
     required GameSession session,
   }) {
-    final List<GameAction> actions = GameController().gameRecorder.mainlineMoves
-        .map(MillActionCodec.fromExtMove)
-        .toList(growable: false);
-    return GameExportData(snapshot: session.state.value, actions: actions);
+    // Mill exports through its dedicated PGN writer (`ExportService`),
+    // which preserves the tag pairs, move numbers, the result marker,
+    // variations, annotations, and the setup `[FEN]`.  The cross-game
+    // `NotationPort` can only emit a flat space-separated move-token
+    // list and would silently drop all of that, so opt out of the
+    // generic export path here: `GameController.export` then falls back
+    // to the full PGN exporter.  Revisit once the notation port can
+    // round-trip PGN metadata and variations.
+    return null;
   }
 
   @override

@@ -166,14 +166,11 @@ class PlayerTimer {
         return;
       }
 
-      // For human player in non-LAN mode the legacy
-      // `Position.setGameOver` mirror is gone.  Surface the result
-      // via the notifier; the native session does not yet expose a
-      // "force timeout" primitive.
-      gameController.gameResultNotifier.showResult(force: true);
-
-      // Play sound
-      SoundManager().playTone(Sound.lose);
+      // Human player in non-LAN mode exceeded the move clock: award the
+      // win to the opponent of the side to move (mirrors the legacy
+      // `loseTimeout` game-over) so the result dialog, score tally, and
+      // ELO update all fire.  The dialog plays the end-of-game tone.
+      gameController.handleHumanTimeout();
     }
   }
 

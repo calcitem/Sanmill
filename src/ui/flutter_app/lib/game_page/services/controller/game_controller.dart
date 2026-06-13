@@ -146,6 +146,20 @@ class GameController {
     };
   }
 
+  /// The granular game-over reason for the current session snapshot, or
+  /// null when the game is ongoing or the reason is unknown.
+  ///
+  /// The reason token is published by [NativeMillRulesPort] (from the Rust
+  /// engine) and by [forceGameOver] (resignation / timeout) under
+  /// [millOutcomeReasonPayloadKey]; it is decoded back to a
+  /// [GameOverReason] via [gameOverReasonFromTgfReason].  Backs the result
+  /// dialog and the detailed game-over SnackBar.
+  GameOverReason? get activeSessionGameOverReason {
+    final Object? raw =
+        activeSessionSnapshot?.payload[millOutcomeReasonPayloadKey];
+    return raw is String ? gameOverReasonFromTgfReason(raw) : null;
+  }
+
   IconData get activeSideToMoveIcon {
     final PieceColor side =
         activeSessionSideToMove ?? activeBoardView.sideToMove;
@@ -599,23 +613,14 @@ class GameController {
                   networkService!.sendMove("resign:request");
                   logger.i("$_logTag Sent resignation request");
 
-                  // Get the opponent's color (winner)
-                  final PieceColor localColor = getLocalColor();
-                  final PieceColor winnerColor = localColor.opponent;
+                  // The local player resigned, so the opponent wins.
+                  // Drive the native session to a terminal `loseResign`
+                  // state; the result dialog plays the end-of-game tone.
+                  final PieceColor winnerColor = getLocalColor().opponent;
+                  forceGameOver(winnerColor, GameOverReason.loseResign);
 
-                  // The native session does not yet expose a
-                  // "force resign" primitive; surface the message
-                  // and rely on the recorder / outcome stream.
-                  // Reference winner so the analyzer is happy.
-                  // ignore: unused_local_variable
-                  final PieceColor winnerColor0 = winnerColor;
-
-                  // Show resignation message
                   headerTipNotifier.showTip(S.of(context).youResignedGameOver);
-                  gameResultNotifier.showResult(force: true);
-
-                  // Play sound if enabled
-                  SoundManager().playTone(Sound.lose);
+                  gameResultNotifier.showResult();
                 } catch (e) {
                   logger.e("$_logTag Failed to send resignation: $e");
                   headerTipNotifier.showTip(
@@ -640,14 +645,11 @@ class GameController {
     }
 
     try {
-      // Get the local color (winner)
-      final PieceColor localColor = getLocalColor();
-      // ignore: unused_local_variable
-      final PieceColor winner = localColor;
-
-      // The native session does not yet expose a "force resign"
-      // primitive; surface the message and rely on the recorder /
-      // outcome stream.
+      // The LAN opponent resigned, so the local player wins.  Drive the
+      // native session to a terminal `loseResign` state; the result
+      // dialog plays the end-of-game tone.
+      final PieceColor winner = getLocalColor();
+      forceGameOver(winner, GameOverReason.loseResign);
 
       // Update UI
       final BuildContext? context = rootScaffoldMessengerKey.currentContext;
@@ -656,11 +658,8 @@ class GameController {
       } else {
         headerTipNotifier.showTip("Opponent resigned, you win");
       }
-      gameResultNotifier.showResult(force: true);
+      gameResultNotifier.showResult();
       isLanOpponentTurn = false;
-
-      // Play sound if enabled
-      SoundManager().playTone(Sound.win);
 
       logger.i("$_logTag Handled opponent resignation");
     } catch (e) {
@@ -671,26 +670,68 @@ class GameController {
 
   /// Handles resignation in non-LAN modes (e.g., vs AI)
   void _handleLocalResignation() {
-    // Determine winner (opponent of current player)
+    // The side to move resigns, so its opponent wins.  Drive the native
+    // session to a terminal `loseResign` state so the result dialog,
+    // score tally, and ELO update all fire.
     final PieceColor winnerColor = activeBoardView.sideToMove.opponent;
-    // ignore: unused_local_variable
-    final PieceColor winner = winnerColor;
-    // The native session does not yet expose a "force resign"
-    // primitive; surface the message and let the recorder / outcome
-    // stream pick up the abandonment.
+    forceGameOver(winnerColor, GameOverReason.loseResign);
 
-    // Update UI
+    // Update UI.  The result dialog plays the appropriate end-of-game
+    // tone, so no explicit SoundManager call is needed here.
     final BuildContext? context = rootScaffoldMessengerKey.currentContext;
     final String youResignedGameOver = context != null
         ? S.of(context).youResignedGameOver
         : "You resigned, game over";
     headerTipNotifier.showTip(youResignedGameOver);
-    gameResultNotifier.showResult(force: true);
-
-    // Play sound if enabled
-    SoundManager().playTone(Sound.win);
+    gameResultNotifier.showResult();
 
     logger.i("$_logTag Local player resigned. Winner: $winnerColor");
+  }
+
+  /// Maps a Mill [PieceColor] winner onto the platform [GameOutcome]
+  /// consumed by the native session.  A draw collapses to
+  /// [platform.GameOutcome.draw]; an unknown / "nobody" winner collapses
+  /// to [platform.GameOutcome.abandoned].
+  static platform.GameOutcome _sessionOutcomeForWinner(PieceColor winner) {
+    return switch (winner) {
+      PieceColor.white => const platform.GameOutcome.win(
+        platform.PlayerSeat.first,
+      ),
+      PieceColor.black => const platform.GameOutcome.win(
+        platform.PlayerSeat.second,
+      ),
+      PieceColor.draw => const platform.GameOutcome.draw(),
+      _ => const platform.GameOutcome.abandoned(),
+    };
+  }
+
+  /// Force the active native Mill session into a terminal state that the
+  /// Rust rule machine cannot derive on its own (resignation, human-clock
+  /// timeout).  Mirrors the legacy `Position.setGameOver(winner, reason)`.
+  ///
+  /// Returns true when an active native session accepted the override.
+  /// Callers should invoke [GameResultNotifier.showResult] afterwards to
+  /// surface the result UI from the now-terminal snapshot.
+  bool forceGameOver(PieceColor winner, GameOverReason reason) {
+    final NativeMillGameSession? session = activeNativeMillSession;
+    if (session == null) {
+      logger.w("$_logTag forceGameOver: no active native Mill session.");
+      return false;
+    }
+    session.forceTerminal(
+      _sessionOutcomeForWinner(winner),
+      reason: reason.tgfReason,
+    );
+    return true;
+  }
+
+  /// The human player's move clock expired: award the win to the opponent
+  /// of the side to move (mirrors the legacy `loseTimeout` game-over) and
+  /// surface the result.
+  void handleHumanTimeout() {
+    final PieceColor winnerColor = activeBoardView.sideToMove.opponent;
+    forceGameOver(winnerColor, GameOverReason.loseTimeout);
+    gameResultNotifier.showResult();
   }
 
   /// Modify the reset method so that in LAN restart mode the socket is preserved.

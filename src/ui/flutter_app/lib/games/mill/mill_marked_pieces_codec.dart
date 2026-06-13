@@ -14,6 +14,12 @@ import '../../game_platform/game_id.dart';
 /// of currently-marked node ids.
 const String millMarkedNodesPayloadKey = 'millMarkedNodes';
 
+/// Stable map key under which the session snapshot carries the
+/// outcome-reason token (see `NativeMillRulesPort` and
+/// `GameController.forceGameOver`).  The value is the canonical token
+/// emitted by the Rust engine or by `GameOverReasonExtension.tgfReason`.
+const String millOutcomeReasonPayloadKey = 'tgfOutcomeReason';
+
 /// Extracts marked-piece node ids for
 /// `MillFormationActionInPlacingPhase.markAndDelayRemovingPieces`.
 abstract final class MillMarkedPiecesCodec {

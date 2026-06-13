@@ -324,6 +324,72 @@ extension GameOverReasonExtension on GameOverReason {
         return S.of(context).drawReasonThreefoldRepetition;
     }
   }
+
+  /// The canonical outcome-reason token shared with the Rust engine
+  /// (`crates/tgf-mill/src/rules/legal_apply.rs::outcome`) and carried in
+  /// the session snapshot under [millOutcomeReasonPayloadKey].
+  ///
+  /// `loseResign` / `loseTimeout` are produced only on the Dart side via
+  /// [GameController.forceGameOver] (the Rust rule machine never emits
+  /// them), but they reuse the same vocabulary so the mapping in
+  /// [gameOverReasonFromTgfReason] stays symmetric.
+  String get tgfReason {
+    switch (this) {
+      case GameOverReason.loseFewerThanThree:
+        return 'loseFewerThanThree';
+      case GameOverReason.loseNoLegalMoves:
+        return 'loseNoLegalMoves';
+      case GameOverReason.loseFullBoard:
+        return 'loseFullBoard';
+      case GameOverReason.loseResign:
+        return 'loseResign';
+      case GameOverReason.loseTimeout:
+        return 'loseTimeout';
+      case GameOverReason.drawThreefoldRepetition:
+        return 'drawThreefoldRepetition';
+      case GameOverReason.drawFiftyMove:
+        return 'drawFiftyMove';
+      case GameOverReason.drawEndgameFiftyMove:
+        return 'drawEndgameFiftyMove';
+      case GameOverReason.drawFullBoard:
+        return 'drawFullBoard';
+      case GameOverReason.drawStalemateCondition:
+        return 'drawStalemateCondition';
+    }
+  }
+}
+
+/// Maps an outcome-reason token emitted by the Rust engine
+/// (`crates/tgf-mill/src/rules/legal_apply.rs::outcome`) or by the Dart
+/// [GameOverReasonExtension.tgfReason] back to a [GameOverReason].
+///
+/// Returns null for `ongoing`, the generic `draw` fallback, and any
+/// unrecognised token so the UI falls back to its default explanation.
+GameOverReason? gameOverReasonFromTgfReason(String? reason) {
+  switch (reason) {
+    case 'loseFewerThanThree':
+      return GameOverReason.loseFewerThanThree;
+    case 'loseNoLegalMoves':
+      return GameOverReason.loseNoLegalMoves;
+    case 'loseFullBoard':
+      return GameOverReason.loseFullBoard;
+    case 'loseResign':
+      return GameOverReason.loseResign;
+    case 'loseTimeout':
+      return GameOverReason.loseTimeout;
+    case 'drawThreefoldRepetition':
+      return GameOverReason.drawThreefoldRepetition;
+    case 'drawFiftyMove':
+      return GameOverReason.drawFiftyMove;
+    case 'drawEndgameFiftyMove':
+      return GameOverReason.drawEndgameFiftyMove;
+    case 'drawFullBoard':
+      return GameOverReason.drawFullBoard;
+    case 'drawStalemateCondition':
+      return GameOverReason.drawStalemateCondition;
+    default:
+      return null;
+  }
 }
 
 enum GameResult { win, lose, draw }

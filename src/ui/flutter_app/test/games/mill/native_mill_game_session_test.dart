@@ -8,6 +8,7 @@ import 'package:sanmill/game_platform/game_id.dart';
 import 'package:sanmill/game_platform/game_session.dart';
 import 'package:sanmill/games/mill/lan_session_meta.dart';
 import 'package:sanmill/games/mill/mill_constants.dart';
+import 'package:sanmill/games/mill/mill_marked_pieces_codec.dart';
 import 'package:sanmill/games/mill/native_mill_game_session.dart';
 import 'package:sanmill/games/mill/native_mill_rules_port.dart';
 import 'package:sanmill/src/rust/api/simple.dart' as tgf;
@@ -121,6 +122,45 @@ void main() {
 
       expect(session.outcome.isTerminal, isTrue);
       expect(session.legalActions, isEmpty);
+    });
+
+    test('forceTerminal overlays a terminal result and blocks further '
+        'moves until a real transition clears it', () async {
+      final _FakeNativeMillRulesPort rulesPort = _FakeNativeMillRulesPort();
+      final NativeMillGameSession session = NativeMillGameSession(
+        rulesPort: rulesPort,
+      );
+      addTearDown(session.dispose);
+
+      expect(session.outcome.isTerminal, isFalse);
+
+      // Resignation / timeout: the rule machine cannot derive this, so it
+      // is overlaid at the session layer.
+      session.forceTerminal(
+        const GameOutcome.win(PlayerSeat.first),
+        reason: 'loseResign',
+      );
+
+      expect(session.outcome.kind, GameOutcomeKind.win);
+      expect(session.outcome.winner, PlayerSeat.first);
+      expect(
+        session.state.value.payload[millOutcomeReasonPayloadKey],
+        'loseResign',
+      );
+      expect(session.legalActions, isEmpty);
+
+      // Further moves are rejected while the forced terminal stands.
+      await session.apply(rulesPort.placeA7);
+      await Future<void>.delayed(Duration.zero);
+      expect(rulesPort.applyCount, 0);
+
+      // A real kernel transition (New Game) clears the override so the
+      // board accepts moves again.
+      session.resetGame();
+      expect(session.outcome.isTerminal, isFalse);
+      await session.apply(rulesPort.placeA7);
+      await Future<void>.delayed(Duration.zero);
+      expect(rulesPort.applyCount, 1);
     });
 
     test(

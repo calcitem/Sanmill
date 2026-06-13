@@ -6,10 +6,14 @@
 part of '../game_page.dart';
 
 class GameResultAlertDialog extends StatelessWidget {
-  GameResultAlertDialog({required this.winner, super.key});
+  GameResultAlertDialog({required this.winner, this.reason, super.key});
 
   final GameMode gameMode = GameController().gameInstance.gameMode;
   final PieceColor winner;
+
+  /// The granular game-over reason, or null to show the generic
+  /// explanation (`gameOverUnknownReason`).
+  final GameOverReason? reason;
 
   static const String _logTag = "[Game Over Alert]";
 
@@ -66,11 +70,12 @@ class GameResultAlertDialog extends StatelessWidget {
     final bool isTopLevel =
         DB().generalSettings.skillLevel == Constants.highestSkillLevel;
 
-    // The granular `Position.gameOverReason` is gone with the
-    // rule-machine cleanup; surface the generic explanation.
-    final String reason = S.of(context).gameOverUnknownReason;
+    // Use the granular reason when known; otherwise fall back to the
+    // generic explanation.
+    final String reasonText =
+        reason?.getName(context, winner) ?? S.of(context).gameOverUnknownReason;
 
-    final StringBuffer content = StringBuffer(reason);
+    final StringBuffer content = StringBuffer(reasonText);
 
     logger.t("$_logTag Game over reason string: $content");
 
@@ -256,13 +261,14 @@ class GameResultAlertDialog extends StatelessWidget {
       winnerText = "Draw";
     }
 
-    // The granular `Position.gameOverReason` is gone with the
-    // rule-machine cleanup; surface the generic explanation.
-    final String reason = S.of(context).gameOverUnknownReason;
+    // Use the granular reason when known; otherwise fall back to the
+    // generic explanation.
+    final String reasonText =
+        reason?.getName(context, winner) ?? S.of(context).gameOverUnknownReason;
 
     // Build content with game duration
     final StringBuffer content = StringBuffer();
-    content.writeln(reason);
+    content.writeln(reasonText);
     content.writeln();
     content.writeln("Game Duration: $durationText");
 

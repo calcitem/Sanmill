@@ -653,15 +653,11 @@ class _GameBoardState extends State<GameBoard>
     final MillBoardView view = GameController().activeBoardView;
     final PieceColor winner =
         GameController().activeSessionWinner ?? view.winner;
-    // The native session does not carry a granular `GameOverReason`
-    // (Rust outcome only distinguishes win / draw / abandoned); fall
-    // back to the legacy `Position.reason` only when the native
-    // outcome is non-terminal, otherwise pass null and let the dialog
-    // pick its default explanation.
-    // Granular `GameOverReason` is not exposed by the native
-    // outcome yet; the dialog falls back to a generic
-    // explanation when this is null.
-    const GameOverReason? reason = null;
+    // The granular game-over reason is decoded from the session snapshot
+    // (published by the Rust engine and by `GameController.forceGameOver`
+    // for resignation / timeout).  Null falls back to the dialog's
+    // generic explanation.
+    final GameOverReason? reason = GameController().activeSessionGameOverReason;
     final bool force = GameController().gameResultNotifier.force;
 
     // Header tip shows simple win/lose message
@@ -708,7 +704,7 @@ class _GameBoardState extends State<GameBoard>
       _isDialogShowing = true;
       showDialog(
         context: context,
-        builder: (_) => GameResultAlertDialog(winner: winner),
+        builder: (_) => GameResultAlertDialog(winner: winner, reason: reason),
       ).then((_) {
         // Reset flag when dialog is dismissed
         _isDialogShowing = false;

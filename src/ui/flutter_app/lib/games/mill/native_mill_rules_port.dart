@@ -168,7 +168,7 @@ class NativeMillRulesPort implements RulesPort {
         'tgfPhaseTag': raw.phaseTag,
         'tgfMoveNumber': raw.moveNumber,
         'tgfZobrist': raw.zobristKey,
-        'tgfOutcomeReason': outcome.reason,
+        millOutcomeReasonPayloadKey: outcome.reason,
         'tgfPayload': opaque,
         millMarkedNodesPayloadKey:
             MillMarkedPiecesCodec.markedNodesFromOpaquePayload(opaque),
@@ -236,7 +236,7 @@ class NativeMillRulesPort implements RulesPort {
         'tgfPhaseTag': raw.phaseTag,
         'tgfMoveNumber': raw.moveNumber,
         'tgfZobrist': raw.zobristKey,
-        'tgfOutcomeReason': outcome.reason,
+        millOutcomeReasonPayloadKey: outcome.reason,
         'tgfPayload': opaque,
         millMarkedNodesPayloadKey:
             MillMarkedPiecesCodec.markedNodesFromOpaquePayload(opaque),

@@ -22,6 +22,7 @@ import '../../shared/services/logger.dart';
 import '../../src/rust/api/simple.dart' as tgf;
 import 'lan_session_meta.dart';
 import 'mill_action_codec.dart';
+import 'mill_marked_pieces_codec.dart';
 import 'mill_types.dart';
 import 'native_mill_rules_port.dart';
 
@@ -54,6 +55,12 @@ class NativeMillGameSession implements GameSessionHandle {
   final StreamController<GameSessionEvent> _events =
       StreamController<GameSessionEvent>.broadcast();
   bool _disposed = false;
+
+  /// True while a session-level terminal result (resignation / timeout /
+  /// abandonment) is overlaid on top of the Rust kernel state.  Cleared by
+  /// the next real kernel transition (every [_setState] call that is not a
+  /// forced terminal).  See [forceTerminal].
+  bool _forcedTerminal = false;
 
   AiMoveType lastAiMoveType = AiMoveType.unknown;
 
@@ -167,6 +174,44 @@ class NativeMillGameSession implements GameSessionHandle {
     return rulesPort.exportFen();
   }
 
+  /// Overlay a session-level terminal result that the Rust rule machine
+  /// cannot derive on its own (resignation, human-clock timeout, or other
+  /// abandonment).
+  ///
+  /// Mirrors the legacy `Position.setGameOver(winner, reason)` override:
+  /// the board payload is left untouched, only the reported [outcome] and
+  /// the [millOutcomeReasonPayloadKey] entry change, so shared UI (result
+  /// dialog, score tally, ELO) observes a terminal state.  The board view
+  /// keeps rendering the real position underneath.
+  ///
+  /// The override is cleared automatically by the next real kernel
+  /// transition (apply / undo / redo / reset / setup / loadFen): all of
+  /// those route through [_setState] without the forced-terminal flag.
+  void forceTerminal(GameOutcome outcome, {String? reason}) {
+    if (_disposed) {
+      return;
+    }
+    assert(
+      outcome.isTerminal,
+      'forceTerminal requires a terminal outcome; got ${outcome.kind}.',
+    );
+    final GameStateSnapshot current = _state.value;
+    _setState(
+      GameStateSnapshot(
+        gameId: current.gameId,
+        activeSeat: current.activeSeat,
+        outcome: outcome,
+        phase: current.phase,
+        lastAction: current.lastAction,
+        payload: <String, Object?>{
+          ...current.payload,
+          millOutcomeReasonPayloadKey: ?reason,
+        },
+      ),
+      forcedTerminal: true,
+    );
+  }
+
   /// Analyse the current position, returning one verdict per legal move plus
   /// detected trap moves (empty when the session is terminal/disposed or the
   /// active rule variant is unsupported).  Backs the analysis overlay.
@@ -211,7 +256,10 @@ class NativeMillGameSession implements GameSessionHandle {
 
   @override
   Future<void> apply(GameAction action) async {
-    if (_disposed) {
+    if (_disposed || _forcedTerminal) {
+      // A forced terminal (resignation / timeout) has ended the game;
+      // reject further moves until a real transition (reset / undo /
+      // setup / loadFen) clears the override.
       return;
     }
     if (!rulesPort.isLegal(action)) {
@@ -397,7 +445,10 @@ class NativeMillGameSession implements GameSessionHandle {
     _events.close();
   }
 
-  void _setState(GameStateSnapshot next) {
+  void _setState(GameStateSnapshot next, {bool forcedTerminal = false}) {
+    // Any real kernel transition supersedes a prior forced terminal; only
+    // forceTerminal sets the flag.
+    _forcedTerminal = forcedTerminal;
     _state.value = next;
     _emit(MillEventTypes.stateChanged, <String, Object?>{
       'phase': next.phase,

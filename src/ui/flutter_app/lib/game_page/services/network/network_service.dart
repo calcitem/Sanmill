@@ -1191,14 +1191,20 @@ class NetworkService with WidgetsBindingObserver {
     );
 
     GameController().isLanOpponentTurn = false;
-    // The legacy `Position.setGameOver` mirror is being removed.
-    // The native session does not yet expose a "force draw on
-    // disconnect" primitive, so we just surface the message.  The
-    // header tip is enough to inform the user; the recorder will
-    // see the LAN session terminate via its event stream.
-    GameController().headerTipNotifier.showTip(
-      "$userFriendlyMessage, $gameOverText",
-    );
+    // Mirror the legacy behavior: a mid-game LAN disconnect ends the game
+    // as a draw (drawStalemateCondition) so the result dialog and score
+    // tally fire.  Skip when the game already ended.
+    final GameController controller = GameController();
+    if (controller.activeSessionSnapshot?.outcome.isTerminal != true) {
+      controller.forceGameOver(
+        PieceColor.draw,
+        GameOverReason.drawStalemateCondition,
+      );
+      controller.gameResultNotifier.showResult();
+      controller.headerTipNotifier.showTip(
+        "$userFriendlyMessage, $gameOverText",
+      );
+    }
 
     _notifyConnectionStatusChanged(false, info: userFriendlyMessage);
     _disposeInternals();

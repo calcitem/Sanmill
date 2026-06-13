@@ -47,11 +47,15 @@ class GameResultNotifier extends ChangeNotifier {
     final platform.GameOutcome? nativeOutcome =
         controller.activeSessionSnapshot?.outcome;
     _hasResult = nativeOutcome?.isTerminal ?? false;
-    _winner = controller.activeBoardView.winner;
-    // Granular `GameOverReason` is not exposed by the Rust outcome
-    // yet -- the dialog falls back to a generic explanation when
-    // this is null.
-    _reason = null;
+    // Prefer the session outcome winner: it distinguishes a draw
+    // (mapped to `PieceColor.draw`) and reflects forced terminals
+    // (resignation / timeout) that the board-view winner byte does not
+    // carry.  Fall back to the board-view winner only pre-session-bind.
+    _winner =
+        controller.activeSessionWinner ?? controller.activeBoardView.winner;
+    // The granular reason is published on the session snapshot by the
+    // Rust engine and by `GameController.forceGameOver`.
+    _reason = controller.activeSessionGameOverReason;
 
     // If a game result is newly detected, tally the score and update
     // ratings exactly once for this terminal transition.
