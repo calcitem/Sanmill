@@ -296,6 +296,14 @@ class GeneralSettingsPage extends StatelessWidget {
     logger.t("$_logTag shufflingEnabled: $value");
   }
 
+  void _setTrapAwareness(GeneralSettings generalSettings, bool value) {
+    _settingsRepository.generalSettings = generalSettings.copyWith(
+      trapAwareness: value,
+    );
+
+    logger.t("$_logTag trapAwareness: $value");
+  }
+
   void _setUseOpeningBook(GeneralSettings generalSettings, bool value) {
     _settingsRepository.generalSettings = generalSettings.copyWith(
       useOpeningBook: value,
@@ -815,6 +823,20 @@ class GeneralSettingsPage extends StatelessWidget {
                 },
                 titleString: S.of(context).usePerfectDatabase,
                 subtitleString: perfectDatabaseDescriptionFistLine,
+              ),
+            if (!kIsWeb &&
+                generalSettings.usePerfectDatabase &&
+                isRuleSupportingPerfectDatabase())
+              SettingsListTile.switchTile(
+                key: const Key(
+                  'general_settings_page_settings_card_ais_play_style_trap_awareness',
+                ),
+                value: generalSettings.trapAwareness,
+                onChanged: (bool val) {
+                  _setTrapAwareness(generalSettings, val);
+                },
+                titleString: S.of(context).trapAwareness,
+                subtitleString: S.of(context).trapAwarenessDescription,
               ),
             SettingsListTile.switchTile(
               key: const Key(

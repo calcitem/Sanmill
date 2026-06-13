@@ -104,6 +104,36 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
     setState(() {});
   }
 
+  Future<void> _showPlacedCountPicker() async {
+    final MillSetupPositionController? controller = _controller;
+    if (controller == null) {
+      return;
+    }
+    if (controller.phase != Phase.placing) {
+      GameController().headerTipNotifier.showTip(S.of(context).notPlacingPhase);
+      return;
+    }
+
+    final int? selected = await showModalBottomSheet<int>(
+      context: context,
+      builder: (BuildContext context) => _PlacedCountModal(
+        placedGroupValue: controller.placedCount,
+        begin: controller.placedCountModalBegin,
+        piecesCount: controller.piecesCount,
+      ),
+    );
+    if (!mounted || selected == null) {
+      return;
+    }
+
+    controller.setPlacedCount(selected);
+    _record('setPlacedCount', <String, dynamic>{'value': selected});
+    GameController().headerTipNotifier.showTip(
+      S.of(context).hasPlacedPieceCount(selected),
+    );
+    setState(() {});
+  }
+
   void _cycleNeedRemove() {
     final MillSetupPositionController? controller = _controller;
     if (controller == null) {
@@ -281,6 +311,16 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
     );
   }
 
+  ToolbarItem _placedCountButton(BuildContext context) {
+    final int placed = _controller?.placedCount ?? 0;
+    return ToolbarItem.icon(
+      key: const Key('setup_placed_count_button'),
+      onPressed: _showPlacedCountPicker,
+      icon: const Icon(FluentIcons.text_word_count_24_regular),
+      label: _ellipsisText(S.of(context).placedCount(placed)),
+    );
+  }
+
   static Text _ellipsisText(String label) =>
       Text(label, maxLines: 1, overflow: TextOverflow.ellipsis);
 
@@ -349,7 +389,7 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
       Expanded(child: _paintColorButton(context)),
       Expanded(child: _phaseButton(context)),
       Expanded(child: _needRemoveButton(context)),
-      Expanded(child: clearButton),
+      Expanded(child: _placedCountButton(context)),
     ];
     final List<Widget> row2 = <Widget>[
       Expanded(child: rotateButton),
@@ -360,6 +400,7 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
     final List<Widget> row3 = <Widget>[
       Expanded(child: copyButton),
       Expanded(child: pasteButton),
+      Expanded(child: clearButton),
       Expanded(child: cancelButton),
       Expanded(child: doneButton),
     ];
@@ -435,6 +476,40 @@ class SetupPositionButtonsContainer extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: child,
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class _PlacedCountModal extends StatelessWidget {
+  const _PlacedCountModal({
+    required this.placedGroupValue,
+    required this.begin,
+    required this.piecesCount,
+  });
+
+  final int placedGroupValue;
+  final int begin;
+  final int piecesCount;
+
+  @override
+  Widget build(BuildContext context) {
+    return Semantics(
+      label: S.of(context).placedPieceCount,
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            for (int i = begin; i <= piecesCount; i++)
+              RadioListTile<int>(
+                key: Key('placed_option_$i'),
+                title: Text(i.toString()),
+                groupValue: placedGroupValue,
+                value: i,
+                onChanged: (int? value) => Navigator.pop(context, value),
+              ),
+          ],
         ),
       ),
     );

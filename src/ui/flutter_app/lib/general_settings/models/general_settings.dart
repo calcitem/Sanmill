@@ -163,7 +163,6 @@ class GeneralSettings {
     this.llmBaseUrl = '',
     this.llmTemperature = 0.7,
     this.aiChatEnabled = false,
-    @Deprecated('Removed; field retained for Hive backward compatibility.')
     this.trapAwareness = false,
     this.backgroundMusicEnabled = false,
     this.backgroundMusicFilePath = '',
@@ -324,7 +323,6 @@ class GeneralSettings {
 
   // Enable trap awareness analysis when using Perfect DB
   @HiveField(40, defaultValue: false)
-  @Deprecated('Removed; field retained for Hive backward compatibility.')
   final bool trapAwareness;
 
   // Background music playback toggle (local file only).

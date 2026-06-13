@@ -68,6 +68,11 @@ class MillSetupPositionController {
     PieceColor.black: 0,
   };
 
+  /// Pieces already placed in the placing phase, mirroring the legacy
+  /// setup editor's `newPlaced`.  Drives in-hand counts independently of
+  /// on-board occupancy so mid-placing studies can be authored.
+  int placedCount = 0;
+
   /// FEN captured on entry so [cancel] can roll the board back.
   String? _backupFen;
 
@@ -106,6 +111,7 @@ class MillSetupPositionController {
     paintColor = sideToMove;
     needRemove[PieceColor.white] = 0;
     needRemove[PieceColor.black] = 0;
+    _readPlacedCountFromSessionFen();
   }
 
   // ----------------------------------------------------------- edit intents
@@ -150,6 +156,44 @@ class MillSetupPositionController {
     if (phase != Phase.placing && paintColor == PieceColor.marked) {
       paintColor = sideToMove;
     }
+    if (phase == Phase.moving) {
+      placedCount = piecesCount;
+    } else {
+      updatePlacedCountFromBoard();
+    }
+    _sync();
+  }
+
+  /// Infer how many pieces have been placed from the current board layout.
+  /// Mirrors legacy `setSetupPositionPlacedGetBegin`.
+  int inferPlacedCountFromBoard() {
+    if (phase == Phase.moving) {
+      return piecesCount;
+    }
+
+    final int white = countOnBoard(PieceColor.white);
+    final int black = countOnBoard(PieceColor.black);
+    int begin = white > black ? white : black;
+    if (sideToMove == PieceColor.black && white > black) {
+      begin--;
+    }
+    return begin.clamp(0, piecesCount);
+  }
+
+  /// Lowest selectable value for the placed-count picker.
+  int get placedCountModalBegin => inferPlacedCountFromBoard();
+
+  /// Recompute [placedCount] from the board after occupancy changes.
+  void updatePlacedCountFromBoard() {
+    placedCount = inferPlacedCountFromBoard();
+  }
+
+  /// Set how many pieces have been placed in the placing phase.
+  void setPlacedCount(int count) {
+    if (phase != Phase.placing) {
+      return;
+    }
+    placedCount = count.clamp(0, piecesCount);
     _sync();
   }
 
@@ -175,6 +219,7 @@ class MillSetupPositionController {
       }
       _board[node] = paintColor;
     }
+    updatePlacedCountFromBoard();
     _sync();
   }
 
@@ -203,6 +248,7 @@ class MillSetupPositionController {
     }
     needRemove[PieceColor.white] = 0;
     needRemove[PieceColor.black] = 0;
+    updatePlacedCountFromBoard();
     _sync();
   }
 
@@ -211,6 +257,7 @@ class MillSetupPositionController {
     final String transformed = transformFEN(session.getFen(), type);
     if (session.loadFen(transformed)) {
       _readBoardFromSession();
+      updatePlacedCountFromBoard();
     }
   }
 
@@ -233,6 +280,7 @@ class MillSetupPositionController {
         : PieceColor.white;
     phase = snapshot.phase == 'moving' ? Phase.moving : Phase.placing;
     paintColor = sideToMove;
+    _readPlacedCountFromSessionFen();
     return true;
   }
 
@@ -301,8 +349,13 @@ class MillSetupPositionController {
       inHandWhite = 0;
       inHandBlack = 0;
     } else {
-      inHandWhite = (piecesCount - onWhite).clamp(0, piecesCount);
-      inHandBlack = (piecesCount - onBlack).clamp(0, piecesCount);
+      final ({int white, int black}) inHand = placingInHandCounts(
+        piecesCount: piecesCount,
+        placedCount: placedCount,
+        sideToMove: sideToMove,
+      );
+      inHandWhite = inHand.white;
+      inHandBlack = inHand.black;
     }
 
     final int removeWhite = needRemove[PieceColor.white] ?? 0;
@@ -359,6 +412,48 @@ class MillSetupPositionController {
       PieceColor.black => PieceColor.white,
       _ => PieceColor.none,
     };
+  }
+
+  void _readPlacedCountFromSessionFen() {
+    if (phase == Phase.moving) {
+      placedCount = piecesCount;
+      return;
+    }
+
+    final List<String> parts = session.getFen().split(' ');
+    if (parts.length < 8) {
+      updatePlacedCountFromBoard();
+      return;
+    }
+
+    final int? blackInHand = int.tryParse(parts[7]);
+    if (blackInHand == null) {
+      updatePlacedCountFromBoard();
+      return;
+    }
+
+    placedCount = (piecesCount - blackInHand).clamp(0, piecesCount);
+  }
+
+  /// Encode in-hand counts for a placing-phase FEN from [placedCount].
+  /// Mirrors legacy `updateSetupPositionPiecesCount`.
+  static ({int white, int black}) placingInHandCounts({
+    required int piecesCount,
+    required int placedCount,
+    required PieceColor sideToMove,
+  }) {
+    final int clampedPlaced = placedCount.clamp(0, piecesCount);
+    final int blackInHand = (piecesCount - clampedPlaced).clamp(0, piecesCount);
+    if (sideToMove == PieceColor.white) {
+      return (white: blackInHand, black: blackInHand);
+    }
+    if (sideToMove == PieceColor.black) {
+      return (
+        white: (blackInHand - 1).clamp(0, piecesCount),
+        black: blackInHand,
+      );
+    }
+    return (white: blackInHand, black: blackInHand);
   }
 
   static String _pieceChar(PieceColor color) {

@@ -46,6 +46,7 @@ void main() {
       expect(s.backgroundMusicEnabled, isFalse);
       expect(s.backgroundMusicFilePath, '');
       expect(s.lastPgnSaveDirectory, '');
+      expect(s.trapAwareness, isFalse);
     });
   });
 
