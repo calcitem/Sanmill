@@ -49,9 +49,14 @@ impl Workbench for MillWorkbench {
     }
 
     fn do_move(&mut self, a: Action) {
+        // Hot path: mutate the owned `MillState` in place via
+        // `apply_to_state`, skipping the `snapshot()->encode->apply->decode`
+        // round-trip the legacy path performed on every tree edge.  Undo is
+        // still a clone-restore (`undo_stack`); the cached Zobrist key is
+        // refreshed here because `apply_to_state` does not call `encode`.
         self.undo_stack.push(self.state.clone());
-        let next = self.rules.apply(&self.snapshot(), a);
-        self.state = MillRules::decode(&next);
+        self.rules.apply_to_state(&mut self.state, a);
+        super::recompute_zobrist(&mut self.state);
     }
 
     fn undo_move(&mut self) {

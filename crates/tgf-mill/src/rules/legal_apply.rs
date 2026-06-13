@@ -82,7 +82,71 @@ impl GameRules for MillRules {
         if !is_action_within_board_bounds(&action) {
             return *snap;
         }
+        // FRB / kernel single-move boundary: decode the POD snapshot, run
+        // the in-place rule mutation, then re-encode.  The search hot path
+        // bypasses this round-trip via `MillWorkbench::do_move`, which calls
+        // `apply_to_state` directly on its owned `MillState`.
         let mut state = Self::decode(snap);
+        self.apply_to_state(&mut state, action);
+        self.encode(state)
+    }
+
+    fn outcome(&self, snap: &GameStateSnapshot) -> Outcome {
+        let state = Self::decode(snap);
+        if state.phase == MillPhase::GameOver {
+            if state.winner == 2 {
+                return Outcome {
+                    kind: OutcomeKind::Draw,
+                    reason: match state.outcome_reason {
+                        MillOutcomeReason::DrawFullBoard => "drawFullBoard",
+                        // Legacy value kept for deserialized snapshots.
+                        MillOutcomeReason::DrawNMoveRule => "drawFiftyMove",
+                        MillOutcomeReason::DrawFiftyMove => "drawFiftyMove",
+                        MillOutcomeReason::DrawEndgameFiftyMove => "drawEndgameFiftyMove",
+                        MillOutcomeReason::DrawThreefold => "drawThreefoldRepetition",
+                        MillOutcomeReason::DrawStalemate => "drawStalemateCondition",
+                        _ => "draw",
+                    }
+                    .to_owned(),
+                };
+            }
+            Outcome {
+                kind: OutcomeKind::Win(state.winner),
+                reason: match state.outcome_reason {
+                    MillOutcomeReason::LoseFullBoard => "loseFullBoard",
+                    MillOutcomeReason::LoseFewerThanThree => "loseFewerThanThree",
+                    MillOutcomeReason::LoseNoLegalMoves => "loseNoLegalMoves",
+                    _ => "loseFewerThanThree",
+                }
+                .to_owned(),
+            }
+        } else {
+            Outcome {
+                kind: OutcomeKind::Ongoing,
+                reason: "ongoing".to_owned(),
+            }
+        }
+    }
+}
+
+impl MillRules {
+    /// In-place core of [`GameRules::apply`].
+    ///
+    /// Applies `action` by mutating `state_out` directly, skipping the
+    /// `encode`/`decode` snapshot round-trip that the trait boundary needs
+    /// for the FRB / kernel single-move path.  The search hot path
+    /// ([`MillWorkbench::do_move`]) calls this once per tree edge.  The
+    /// caller is responsible for refreshing the cached `zobrist_key`
+    /// afterwards (the trait `apply` does so via `encode`; `do_move` calls
+    /// `recompute_zobrist`).  Out-of-range actions are a no-op.
+    pub(super) fn apply_to_state(&self, state_out: &mut MillState, action: Action) {
+        if !is_action_within_board_bounds(&action) {
+            return;
+        }
+        // Move the owned state out (leaving a non-allocating `Default`) so
+        // the rule logic below operates on a local `state` value verbatim,
+        // then move it back.  No clone, no heap traffic.
+        let mut state = std::mem::take(state_out);
         match action.kind_tag {
             x if x == MillActionKind::Place as i16 => {
                 let to = action.to_node as usize;
@@ -422,43 +486,18 @@ impl GameRules for MillRules {
             _ => {}
         }
         self.maybe_handle_stalemate(&mut state);
-        self.encode(state)
-    }
-
-    fn outcome(&self, snap: &GameStateSnapshot) -> Outcome {
-        let state = Self::decode(snap);
-        if state.phase == MillPhase::GameOver {
-            if state.winner == 2 {
-                return Outcome {
-                    kind: OutcomeKind::Draw,
-                    reason: match state.outcome_reason {
-                        MillOutcomeReason::DrawFullBoard => "drawFullBoard",
-                        // Legacy value kept for deserialized snapshots.
-                        MillOutcomeReason::DrawNMoveRule => "drawFiftyMove",
-                        MillOutcomeReason::DrawFiftyMove => "drawFiftyMove",
-                        MillOutcomeReason::DrawEndgameFiftyMove => "drawEndgameFiftyMove",
-                        MillOutcomeReason::DrawThreefold => "drawThreefoldRepetition",
-                        MillOutcomeReason::DrawStalemate => "drawStalemateCondition",
-                        _ => "draw",
-                    }
-                    .to_owned(),
-                };
-            }
-            Outcome {
-                kind: OutcomeKind::Win(state.winner),
-                reason: match state.outcome_reason {
-                    MillOutcomeReason::LoseFullBoard => "loseFullBoard",
-                    MillOutcomeReason::LoseFewerThanThree => "loseFewerThanThree",
-                    MillOutcomeReason::LoseNoLegalMoves => "loseNoLegalMoves",
-                    _ => "loseFewerThanThree",
-                }
-                .to_owned(),
-            }
-        } else {
-            Outcome {
-                kind: OutcomeKind::Ongoing,
-                reason: "ongoing".to_owned(),
-            }
+        // Preserve the legacy FRB-snapshot round-trip behaviour: the
+        // 24-entry payload window (see `MillState::encode`) truncated the
+        // rolling repetition history on every move, so threefold detection
+        // effectively used a 24-signature window.  Replicate it here so the
+        // in-place search path stays bit-compatible with the encode/decode
+        // kernel path.  No-op until a long reversible run grows the history
+        // past the window.
+        if state.key_history.len() > 24 {
+            let start = state.key_history.len() - 24;
+            state.key_history.drain(0..start);
         }
+        state.key_history_len = state.key_history.len();
+        *state_out = state;
     }
 }
