@@ -15,7 +15,9 @@ use std::io::{self, BufRead};
 use std::sync::atomic::AtomicBool;
 use std::sync::{Arc, mpsc};
 use std::thread::{self, JoinHandle};
-use tgf_core::{Game, GameRules, GameStateSnapshot, MoveOrderAlgorithm, MoveOrderContext};
+use tgf_core::{
+    Action, ActionList, Game, GameRules, GameStateSnapshot, MoveOrderAlgorithm, MoveOrderContext,
+};
 use tgf_mill::{
     EngineRuntimeOptions, MillActionKind, MillGame, MillRules, MillVariantOptions,
     recommended_search_depth,
@@ -75,6 +77,12 @@ struct EngineConfig {
     hash_mb: u32,
     ponder: bool,
     use_lazy_smp: bool,
+    /// When true, query the vendored perfect database after search and prefer
+    /// its move for the standard 9-piece variant (mirrors the Flutter shell).
+    use_perfect_database: bool,
+    /// Filesystem directory holding the `std_*.sec2` / `std.secval` dataset.
+    /// Set via the `PerfectDatabasePath` UCI option before enabling the DB.
+    perfect_db_path: Option<String>,
 }
 
 impl Default for EngineConfig {
@@ -95,7 +103,33 @@ impl Default for EngineConfig {
             use_lazy_smp: std::env::var("TGF_USE_LAZY_SMP")
                 .map(|value| value == "1" || value.eq_ignore_ascii_case("true"))
                 .unwrap_or(false),
+            use_perfect_database: false,
+            perfect_db_path: None,
         }
+    }
+}
+
+/// Bring the process-wide perfect-database handle in line with [`EngineConfig`]:
+/// initialize it (from `perfect_db_path`) when the option is enabled and a path
+/// is known, and release it when the option is turned off.  Idempotent.
+fn sync_perfect_db(cfg: &EngineConfig) {
+    if cfg.use_perfect_database {
+        if !perfect_db::is_initialized() {
+            match &cfg.perfect_db_path {
+                Some(path) => {
+                    if !perfect_db::init(path) {
+                        println!("info string perfect database init failed: {path}");
+                    }
+                }
+                None => {
+                    println!(
+                        "info string perfect database enabled but PerfectDatabasePath is unset"
+                    );
+                }
+            }
+        }
+    } else if perfect_db::is_initialized() {
+        perfect_db::deinit();
     }
 }
 
@@ -155,9 +189,12 @@ pub(crate) fn run_uci_loop() {
                     // button as an acknowledged hard-clear request; the next
                     // search starts from a fresh table.
                 }
-                SetoptionResult::Threads
-                | SetoptionResult::SearchConfig
-                | SetoptionResult::Acknowledged => {}
+                SetoptionResult::SearchConfig => {
+                    // A search/engine parameter changed; the perfect-database
+                    // toggle and path live here, so reconcile the global handle.
+                    sync_perfect_db(&engine_cfg);
+                }
+                SetoptionResult::Threads | SetoptionResult::Acknowledged => {}
                 SetoptionResult::Unknown => {
                     println!("info string unsupported setoption: {line}");
                 }
@@ -357,6 +394,24 @@ fn run_configured_search(
         best_so_far
     };
 
+    // Perfect-database consultation (P-DB): when enabled and the position is
+    // in the std 9-piece dataset, prefer the database move over the search
+    // result.  Emits an `aimovetype` info line mirroring the Flutter shell:
+    // `consensus` when search and DB agree, `perfect` when the DB overrides.
+    if cfg.use_perfect_database
+        && let Some(pd_action) = try_perfect_best_action(&options, &state)
+    {
+        let same =
+            action_to_uci(result.best_action).as_deref() == action_to_uci(pd_action).as_deref();
+        if !same {
+            result.best_action = pd_action;
+        }
+        println!(
+            "info string aimovetype={}",
+            if same { "consensus" } else { "perfect" }
+        );
+    }
+
     // Fallback chain mirroring master SearchEngine::executeSearch
     // (src/search_engine.cpp:643-680).  When the main search returns
     // no best move, master tries a fixed depth=4 quick search; if that
@@ -411,6 +466,26 @@ fn run_algorithm_at_depth(
         }
         _ => searcher.search(wb, depth),
     }
+}
+
+/// Match the perfect-database best-move token against the current legal
+/// actions.  Returns `None` when the DB is unavailable, the variant is not
+/// std 9-piece, or no legal action matches (see
+/// `perfect_db::best_move_token_for_state`).
+fn try_perfect_best_action(
+    options: &MillVariantOptions,
+    state: &GameStateSnapshot,
+) -> Option<Action> {
+    let mill_state = MillRules::decode_snapshot(*state);
+    let token = perfect_db::best_move_token_for_state(&mill_state, options, state.side_to_move)?;
+    let rules = MillRules::new(options.clone());
+    let mut legal = ActionList::<256>::default();
+    rules.legal_actions(state, &mut legal);
+    legal
+        .as_slice()
+        .iter()
+        .copied()
+        .find(|action| action_to_uci(*action).as_deref() == Some(token.as_str()))
 }
 
 fn run_mcts_search(wb: &mut tgf_mill::MillWorkbench, cfg: &EngineConfig) -> SearchResult {

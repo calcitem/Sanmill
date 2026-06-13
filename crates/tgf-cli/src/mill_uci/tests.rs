@@ -66,6 +66,64 @@ fn setoption_accepts_legacy_piece_count_names() {
 }
 
 #[test]
+fn setoption_parses_perfect_database_options() {
+    let mut options = MillVariantOptions::default();
+    let mut threads = 1;
+    let mut qsearch = 0;
+    let mut ecfg = EngineConfig::default();
+
+    assert!(matches!(
+        apply_setoption(
+            "setoption name UsePerfectDatabase value true",
+            &mut options,
+            &mut threads,
+            &mut qsearch,
+            &mut ecfg,
+        ),
+        SetoptionResult::SearchConfig
+    ));
+    assert!(ecfg.use_perfect_database);
+
+    // A path with spaces must be captured in full, not truncated to one token.
+    assert!(matches!(
+        apply_setoption(
+            "setoption name PerfectDatabasePath value /tmp/perfect db/strong",
+            &mut options,
+            &mut threads,
+            &mut qsearch,
+            &mut ecfg,
+        ),
+        SetoptionResult::SearchConfig
+    ));
+    assert_eq!(
+        ecfg.perfect_db_path.as_deref(),
+        Some("/tmp/perfect db/strong")
+    );
+
+    assert!(matches!(
+        apply_setoption(
+            "setoption name UsePerfectDatabase value off",
+            &mut options,
+            &mut threads,
+            &mut qsearch,
+            &mut ecfg,
+        ),
+        SetoptionResult::SearchConfig
+    ));
+    assert!(!ecfg.use_perfect_database);
+}
+
+#[test]
+fn perfect_database_lookup_is_noop_when_uninitialized() {
+    // Without an initialized database the helper must yield None so the
+    // search result is used unchanged.
+    let rules = MillRules::default();
+    let state = rules.initial_state(&[]);
+    assert!(!perfect_db::is_initialized());
+    assert!(try_perfect_best_action(&MillVariantOptions::default(), &state).is_none());
+}
+
+#[test]
 fn engine_config_algorithm_routes_search() {
     let rules = MillRules::default();
     let snap = rules.initial_state(&[]);

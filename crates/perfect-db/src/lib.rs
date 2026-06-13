@@ -7,6 +7,9 @@ use std::ffi::{CStr, CString};
 use std::os::raw::c_char;
 use std::sync::atomic::{AtomicBool, Ordering};
 
+mod mill;
+pub use mill::best_move_token_for_state;
+
 static INITIALIZED: AtomicBool = AtomicBool::new(false);
 
 unsafe extern "C" {

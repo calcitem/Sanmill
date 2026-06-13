@@ -735,6 +735,8 @@ name = "perfect-db"
 version = "0.1.0"
 dependencies = [
  "cc",
+ "tgf-core",
+ "tgf-mill",
 ]
 
 [[package]]
@@ -981,6 +983,7 @@ dependencies = [
 name = "tgf-cli"
 version = "0.1.0"
 dependencies = [
+ "perfect-db",
  "tgf-core",
  "tgf-mill",
  "tgf-search",

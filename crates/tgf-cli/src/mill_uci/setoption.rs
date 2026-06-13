@@ -127,6 +127,26 @@ pub(super) fn apply_setoption(
                 SetoptionResult::SearchConfig
             })
             .unwrap_or(SetoptionResult::Unknown),
+        "useperfectdatabase" | "use perfect database" => parse_bool(value)
+            .map(|v| {
+                engine_cfg.use_perfect_database = v;
+                SetoptionResult::SearchConfig
+            })
+            .unwrap_or(SetoptionResult::Unknown),
+        "perfectdatabasepath" | "perfect database path" => {
+            // A filesystem path may contain spaces, so take the entire
+            // remainder of the line after `value` rather than a single token.
+            let path = value_pos
+                .map(|idx| tokens[idx + 1..].join(" "))
+                .filter(|s| !s.is_empty());
+            match path {
+                Some(path) => {
+                    engine_cfg.perfect_db_path = Some(path);
+                    SetoptionResult::SearchConfig
+                }
+                None => SetoptionResult::Unknown,
+            }
+        }
         "developermode" | "developer mode" => parse_bool(value)
             .map(|v| {
                 engine_cfg.developer_mode = v;

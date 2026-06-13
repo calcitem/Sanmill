@@ -6,6 +6,8 @@ description = "Vendored C++ Perfect Database bridge for Nine Men's Morris"
 license     = "GPL-3.0-or-later"
 
 [dependencies]
+tgf-core = { path = "../tgf-core" }
+tgf-mill = { path = "../tgf-mill" }
 
 [build-dependencies]
 cc = "1"
