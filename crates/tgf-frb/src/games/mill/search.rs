@@ -128,6 +128,40 @@ pub(crate) fn search_shuffle_seed() -> u64 {
         .unwrap_or(0)
 }
 
+/// Fallback chain mirroring master `SearchEngine::executeSearch`
+/// (`src/search_engine.cpp:643-680`) and `tgf-cli` mill UCI
+/// (`mill_uci/mod.rs`).  When the primary search (and optional perfect-DB
+/// override) still yields `Action::NONE`, retry at depth 4, then pick a
+/// random legal move so Flutter does not surface `EngineNoBestMove` for
+/// recoverable engine gaps.
+///
+/// TODO(search-diagnostics): Replace silent fallback with a hard `assert!`
+/// and a user-visible error dialog that invites sending an error report
+/// when the primary search (and perfect-DB override) still yields MOVE_NONE.
+/// Until then, keep the master/UCI depth-4 + random chain so Flutter does
+/// not surface `EngineNoBestMove` for recoverable engine gaps.
+fn apply_move_none_fallback(
+    result: SearchResult,
+    snapshot: GameStateSnapshot,
+    options: &NativeMillVariantOptions,
+) -> SearchResult {
+    if !result.best_action.is_none() {
+        return result;
+    }
+
+    let mut quick_searcher = mill_searcher_default();
+    let mut quick_wb = MillGame::new(options.clone()).build_workbench(&snapshot);
+    let quick_result = quick_searcher.search(&mut quick_wb, 4);
+    if !quick_result.best_action.is_none() {
+        return quick_result;
+    }
+
+    let mut rand_searcher = mill_searcher_default();
+    rand_searcher.set_random_seed(search_shuffle_seed());
+    let mut rand_wb = MillGame::new(options.clone()).build_workbench(&snapshot);
+    rand_searcher.random_search(&mut rand_wb)
+}
+
 // ---------------------------------------------------------------------------
 // Spawn helpers
 // ---------------------------------------------------------------------------
@@ -338,8 +372,7 @@ pub(crate) fn spawn_mill_engine_config_event_stream(
             }
         }
 
-        let fallback_action = result.best_action;
-        let mut best_action = fallback_action;
+        let search_action = result.best_action;
         let mut aimovetype = "traditional";
 
         if config.use_perfect_database {
@@ -350,18 +383,20 @@ pub(crate) fn spawn_mill_engine_config_event_stream(
             if let Some(pd_action) =
                 perfect::try_perfect_best_action(&snapshot, rules.options(), legal_slice)
             {
-                if pd_action == fallback_action {
+                if pd_action == search_action {
                     aimovetype = "consensus";
                 } else {
                     aimovetype = "perfect";
-                    best_action = pd_action;
+                    result.best_action = pd_action;
                 }
             }
         }
 
-        let notation = action_to_uci_str(best_action);
+        result = apply_move_none_fallback(result, snapshot, &rules_options);
+
+        let notation = action_to_uci_str(result.best_action);
         let _ = sink.add(crate::engine_event::best_move_with_notation_and_aimovetype(
-            best_action,
+            result.best_action,
             result.score,
             snapshot.side_to_move,
             &notation,
@@ -382,5 +417,21 @@ pub(crate) fn request_abort_active_search() -> bool {
         true
     } else {
         false
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use tgf_mill::MillRules;
+
+    #[test]
+    fn move_none_fallback_recovers_legal_move_from_initial_position() {
+        let rules = MillRules::default();
+        let snapshot = rules.initial_state(&[]);
+        let options = NativeMillVariantOptions::default();
+        let empty = SearchResult::default_none();
+        let recovered = apply_move_none_fallback(empty, snapshot, &options);
+        assert!(!recovered.best_action.is_none());
     }
 }
