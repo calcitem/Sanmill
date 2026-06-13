@@ -2349,6 +2349,87 @@ fn custodian_capture_places_single_remove_obligation() {
 }
 
 #[test]
+fn placing_end_custodian_capture_resolves_before_phase_transition() {
+    let options = MillVariantOptions {
+        mill_formation_action_in_placing_phase:
+            MillFormationActionInPlacingPhase::RemovalBasedOnMillCounts,
+        custodian_capture: CaptureRuleConfig {
+            enabled: true,
+            ..CaptureRuleConfig::default()
+        },
+        ..MillVariantOptions::default()
+    };
+    let rules = MillRules::new(options);
+    let state = MillState {
+        board: {
+            let mut board = [0_i8; 24];
+            board[1] = 2; // B d7 will be trapped between W a7 and W g7.
+            board[2] = 1; // W g7
+            board[3] = 1;
+            board[4] = 2;
+            board[5] = 2;
+            board[6] = 1;
+            board[8] = 1;
+            board[9] = 1;
+            board[10] = 2;
+            board[11] = 1;
+            board[12] = 1;
+            board[13] = 2;
+            board[14] = 2;
+            board[15] = 2;
+            board[16] = 2;
+            board[17] = 2;
+            board[19] = 2;
+            board
+        },
+        side_to_move: 0,
+        phase: MillPhase::Placing,
+        move_number: 17,
+        pieces_in_hand: [1, 0],
+        pieces_on_board: [8, 9],
+        ..MillState::default()
+    };
+
+    let after_place = rules.apply(
+        &rules.encode(state),
+        Action {
+            kind_tag: MillActionKind::Place as i16,
+            from_node: -1,
+            to_node: 0, // Final W a7 placement triggers custodian capture.
+            aux: -1,
+            payload_bits: 0,
+        },
+    );
+    let state = MillRules::decode(&after_place);
+
+    assert_eq!(state.phase, MillPhase::Placing);
+    assert_eq!(state.side_to_move, 0, "capturing side must remove first");
+    assert_eq!(state.pieces_in_hand, [0, 0]);
+    assert_eq!(state.pending_removals[0], 1);
+    assert_eq!(state.custodian_targets[0], node_bit(1));
+    assert!(!state.mill_available_at_removal);
+
+    let mut actions = ActionList::<256>::new();
+    rules.legal_actions(&after_place, &mut actions);
+    assert_eq!(actions.len(), 1);
+    let remove = actions.iter().next().copied().unwrap();
+    assert_eq!(remove.kind_tag, MillActionKind::Remove as i16);
+    assert_eq!(remove.to_node, 1);
+
+    let after_remove = rules.apply(&after_place, remove);
+    let state = MillRules::decode(&after_remove);
+    assert_eq!(state.phase, MillPhase::Moving);
+    assert_eq!(state.board[1], 0, "custodian target must be removed first");
+    assert_eq!(
+        state.pending_removals,
+        [1, 1],
+        "mill-count removals are scheduled only after capture removal"
+    );
+    assert_eq!(state.side_to_move, 0);
+    assert_eq!(state.remove_own_piece, [true, true]);
+}
+
+#[test]
 fn intervention_capture_uses_one_line_of_two_targets() {
     let options = MillVariantOptions {
         intervention_capture: CaptureRuleConfig {
