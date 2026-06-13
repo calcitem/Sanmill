@@ -1,0 +1,11 @@
+[package]
+name        = "perfect-db"
+version     = "0.1.0"
+edition     = "2024"
+description = "Vendored C++ Perfect Database bridge for Nine Men's Morris"
+license     = "GPL-3.0-or-later"
+
+[dependencies]
+
+[build-dependencies]
+cc = "1"
