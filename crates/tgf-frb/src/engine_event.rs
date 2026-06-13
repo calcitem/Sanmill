@@ -54,11 +54,31 @@ pub(crate) fn info(depth: i32, score: i32, nodes: u64) -> EngineEvent {
 /// the Dart side never needs to know about side-relative scoring; the
 /// original (mover-relative) value is preserved inside `reason` as
 /// `rawScore=<score>` for callers that depend on it.
+#[expect(dead_code)]
 pub(crate) fn best_move_with_notation(
     action: tgf_core::Action,
     score: i32,
     root_side_to_move: i8,
     notation: &str,
+) -> EngineEvent {
+    best_move_with_notation_and_aimovetype(
+        action,
+        score,
+        root_side_to_move,
+        notation,
+        "traditional",
+    )
+}
+
+/// Like [best_move_with_notation] but annotates `reason` with an explicit
+/// `aimovetype=` tag for the Flutter UI (`traditional` / `perfect` /
+/// `consensus`).
+pub(crate) fn best_move_with_notation_and_aimovetype(
+    action: tgf_core::Action,
+    score: i32,
+    root_side_to_move: i8,
+    notation: &str,
+    aimovetype: &str,
 ) -> EngineEvent {
     let output_score = if root_side_to_move == 1 {
         -score
@@ -71,7 +91,7 @@ pub(crate) fn best_move_with_notation(
         score: output_score,
         nodes: 0,
         to_node: action.to_node as i32,
-        reason: format!("{notation} rawScore={score}"),
+        reason: format!("{notation} aimovetype={aimovetype} rawScore={score}"),
     }
 }
 

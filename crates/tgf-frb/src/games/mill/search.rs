@@ -19,7 +19,7 @@ use std::thread;
 
 use once_cell::sync::Lazy;
 
-use tgf_core::{Game, GameStateSnapshot, MoveOrderAlgorithm, MoveOrderContext};
+use tgf_core::{Game, GameRules, GameStateSnapshot, MoveOrderAlgorithm, MoveOrderContext};
 use tgf_mill::{
     EngineRuntimeOptions, MillActionKind, MillGame, MillRules, MillSearchAlgorithmKind,
     MillVariantOptions as NativeMillVariantOptions, recommended_search_depth,
@@ -32,6 +32,7 @@ use tgf_search::{
 use crate::engine_event::EngineEvent;
 use crate::frb_generated::StreamSink;
 use crate::games::mill::action_codec::action_to_uci_str;
+use crate::games::mill::perfect;
 
 // ---------------------------------------------------------------------------
 // Cancellation handle for the most recent native Mill search worker.
@@ -75,6 +76,7 @@ pub(crate) struct MillEngineConfigPlan {
     pub ai_is_lazy: bool,
     pub last_best_value: i32,
     pub skill_level: u8,
+    pub use_perfect_database: bool,
 }
 
 impl Default for MillEngineConfigPlan {
@@ -86,6 +88,7 @@ impl Default for MillEngineConfigPlan {
             ai_is_lazy: false,
             last_best_value: 0,
             skill_level: 1,
+            use_perfect_database: false,
         }
     }
 }
@@ -194,7 +197,7 @@ pub(crate) fn spawn_mill_engine_config_event_stream(
         let requested_depth = if config.depth > 0 {
             config.depth
         } else {
-            let rules = MillRules::new(rules_options);
+            let rules = MillRules::new(rules_options.clone());
             let state = MillRules::decode_snapshot(snapshot);
             let runtime = EngineRuntimeOptions {
                 skill_level: config.skill_level,
@@ -335,11 +338,34 @@ pub(crate) fn spawn_mill_engine_config_event_stream(
             }
         }
 
-        let _ = sink.add(crate::engine_event::best_move_with_notation(
-            result.best_action,
+        let fallback_action = result.best_action;
+        let mut best_action = fallback_action;
+        let mut aimovetype = "traditional";
+
+        if config.use_perfect_database {
+            let mut legal = tgf_core::ActionList::<256>::default();
+            let rules = MillRules::new(rules_options.clone());
+            rules.legal_actions(&snapshot, &mut legal);
+            let legal_slice = legal.as_slice();
+            if let Some(pd_action) =
+                perfect::try_perfect_best_action(&snapshot, rules.options(), legal_slice)
+            {
+                if pd_action == fallback_action {
+                    aimovetype = "consensus";
+                } else {
+                    aimovetype = "perfect";
+                    best_action = pd_action;
+                }
+            }
+        }
+
+        let notation = action_to_uci_str(best_action);
+        let _ = sink.add(crate::engine_event::best_move_with_notation_and_aimovetype(
+            best_action,
             result.score,
             snapshot.side_to_move,
-            &action_to_uci_str(result.best_action),
+            &notation,
+            aimovetype,
         ));
         let _ = sink.add(crate::engine_event::stopped());
         let mut active = ACTIVE_SEARCH.lock().expect("active search mutex poisoned");

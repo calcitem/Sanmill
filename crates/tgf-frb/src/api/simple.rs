@@ -439,6 +439,7 @@ impl From<MillEngineConfig> for MillEngineConfigPlan {
             ai_is_lazy: cfg.ai_is_lazy,
             last_best_value: cfg.last_best_value,
             skill_level: cfg.skill_level,
+            use_perfect_database: cfg.use_perfect_database,
         }
     }
 }
@@ -466,6 +467,9 @@ pub struct MillEngineConfig {
     /// SkillLevel (0-30): controls MCTS iteration count (skill_level * 2048)
     /// matching master `SkillLevel * ITERATIONS_PER_SKILL_LEVEL` (P2-F/P2-I).
     pub skill_level: u8,
+    /// When true, query the vendored perfect database after search and prefer
+    /// its move when the position is in the std 9-piece database.
+    pub use_perfect_database: bool,
 }
 
 impl Default for MillEngineConfig {
@@ -478,6 +482,7 @@ impl Default for MillEngineConfig {
             ai_is_lazy: false,
             last_best_value: 0,
             skill_level: 1,
+            use_perfect_database: false,
         }
     }
 }
@@ -499,6 +504,19 @@ pub struct EngineEvent {
     /// For error events: the human-readable error message.  The Dart side
     /// parses this loosely; new fields ride along here to avoid codegen.
     pub reason: String,
+}
+
+/// Initialize the vendored Nine Men's Morris perfect database from `path`.
+/// The directory must contain `std.secval` and `std_*.sec2` sector files.
+#[flutter_rust_bridge::frb(sync)]
+pub fn mill_perfect_db_init(path: String) -> bool {
+    perfect_db::init(&path)
+}
+
+/// Release perfect-database resources for the current process.
+#[flutter_rust_bridge::frb(sync)]
+pub fn mill_perfect_db_deinit() {
+    perfect_db::deinit();
 }
 
 /// Return the Rust-native standard 24-point Mill topology.

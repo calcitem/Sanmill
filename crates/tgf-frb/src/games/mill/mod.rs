@@ -11,5 +11,6 @@
 // Mill-specific implementation details.
 
 pub(crate) mod action_codec;
+pub(crate) mod perfect;
 pub(crate) mod search;
 pub(crate) mod variant_extras;

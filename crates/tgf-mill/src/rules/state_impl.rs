@@ -251,6 +251,16 @@ impl MillState {
         self.pieces_in_hand
     }
 
+    /// Read-only view of the 24-node board (0 = empty, 1 = white, 2 = black).
+    pub fn board(&self) -> &[i8; 24] {
+        &self.board
+    }
+
+    /// Pending removal obligations per side (mirrors `pieceToRemoveCount`).
+    pub fn pending_removals(&self) -> [u8; 2] {
+        self.pending_removals
+    }
+
     /// Set the winner field directly.  Used by setup-position tools that
     /// need to mark an immediate-GameOver position (e.g. fewer than
     /// pieces_at_least_count pieces after `setup_finish`).
