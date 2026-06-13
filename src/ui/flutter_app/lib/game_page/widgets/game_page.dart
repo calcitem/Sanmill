@@ -112,6 +112,11 @@ class _GamePageInnerState extends State<_GamePageInner> {
   @override
   void initState() {
     super.initState();
+    // Reset the cumulative win/draw/loss tally when entering the game page,
+    // mirroring the legacy `Position.resetScore()` call that lived in the
+    // old GamePage constructor. The score then accumulates across in-page
+    // restarts and is read by the info dialog and PGN import.
+    resetMillScore();
     // Initialize annotation manager from game controller.
     _annotationManager = widget.controller.annotationManager;
 

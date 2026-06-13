@@ -53,8 +53,10 @@ class GameResultNotifier extends ChangeNotifier {
     // this is null.
     _reason = null;
 
-    // If a game result is newly detected, update ratings once
+    // If a game result is newly detected, tally the score and update
+    // ratings exactly once for this terminal transition.
     if (_hasResult && !prevHasResult) {
+      _tallyScore();
       _updateRatings();
 
       // Record game over event for experience recording.
@@ -88,6 +90,26 @@ class GameResultNotifier extends ChangeNotifier {
     _winner = null;
     _reason = null;
     notifyListeners();
+  }
+
+  /// Increment the in-memory win / draw / loss tally for the finished game.
+  ///
+  /// Invoked only on the terminal transition so a single game counts once.
+  /// The session outcome is the source of truth because it distinguishes a
+  /// draw (mapped to [PieceColor.draw]); the board-view winner byte collapses
+  /// draws to "nobody" and would otherwise drop them from the tally. Setup
+  /// Position is skipped because it does not represent a played-out game.
+  void _tallyScore() {
+    if (GameController().gameInstance.gameMode == GameMode.setupPosition) {
+      return;
+    }
+
+    final PieceColor? scored = GameController().activeSessionWinner;
+    if (scored == PieceColor.white ||
+        scored == PieceColor.black ||
+        scored == PieceColor.draw) {
+      millScore[scored!] = (millScore[scored] ?? 0) + 1;
+    }
   }
 
   /// Update ELO ratings based on game result
