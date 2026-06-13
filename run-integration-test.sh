@@ -84,26 +84,27 @@ check_flutter() {
     flutter --version | head -n 1
 }
 
-# Run single test case
+# Run capture scenario search tests (native session + FRB).
 run_single_test() {
     local device="$1"
 
-    print_info "Running single test case on device: $device"
-    print_info "Test file: integration_test/automated_move_single_test.dart"
+    print_info "Running single capture scenario on device: $device"
+    print_info "Test file: test/games/mill/capture_scenarios/capture_scenario_search_test.dart"
     echo ""
 
-    flutter test integration_test/automated_move_single_test.dart -d "$device"
+    flutter test test/games/mill/capture_scenarios/capture_scenario_search_test.dart \
+        --plain-name "positive: edge_case_1 imports, replays, and searches a legal move"
 }
 
-# Run complete integration tests
+# Run complete capture scenario batch.
 run_full_test() {
     local device="$1"
 
-    print_info "Running complete integration tests on device: $device"
-    print_info "Test file: integration_test/automated_move_integration_test.dart"
+    print_info "Running full capture scenario batch on device: $device"
+    print_info "Test file: test/games/mill/capture_scenarios/capture_scenario_search_test.dart"
     echo ""
 
-    flutter test integration_test/automated_move_integration_test.dart -d "$device"
+    flutter test test/games/mill/capture_scenarios/capture_scenario_search_test.dart
 }
 
 # Print usage information
@@ -111,11 +112,11 @@ print_usage() {
     cat << EOF
 Usage: $0 [OPTIONS]
 
-Automated integration test runner for Sanmill.
+Automated capture-scenario test runner for Sanmill (native Mill session).
 
 OPTIONS:
-    -s, --single     Run single test case (automated_move_single_test.dart)
-    -f, --full       Run complete integration tests (automated_move_integration_test.dart)
+    -s, --single     Run one sample scenario (placing intervention search smoke)
+    -f, --full       Run the full custodian / intervention batch
     -d, --device     Specify device (linux/macos/windows), auto-detect if not specified
     -h, --help       Show this help message
 

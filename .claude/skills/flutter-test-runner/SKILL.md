@@ -46,15 +46,17 @@ flutter test --coverage
 ### Integration Tests
 
 ```bash
-# From repository root - use the project script (recommended)
-./run-integration-test.sh --full           # Complete test suite
-./run-integration-test.sh --single         # Single test case
-./run-integration-test.sh --help           # Show options
+# Run capture scenario batch (native session + FRB; host VM)
+./run-integration-test.sh --full
+./run-integration-test.sh --single
 
-# Manual execution (from src/ui/flutter_app)
-flutter test integration_test/ -d linux    # Linux
-flutter test integration_test/ -d macos    # macOS
-flutter test integration_test/ -d windows  # Windows
+# AI hang smoke + smart monkey (need platform device)
+cd src/ui/flutter_app
+flutter test integration_test/ai_hang_smoke_test.dart -d linux
+./tests/monkey/smart-monkey.sh linux
+
+# Manual capture scenarios (from src/ui/flutter_app)
+flutter test test/games/mill/capture_scenarios/capture_scenario_search_test.dart
 ```
 
 ## Test Types Comparison
@@ -64,7 +66,7 @@ flutter test integration_test/ -d windows  # Windows
 | **Unit/Widget** | Dart VM | ❌ No | ⚡ Fast | Pure Dart logic, UI components |
 | **Integration** | Real platform | ✅ Yes | 🐌 Slower | AI behavior, platform features |
 
-**Key difference**: Integration tests use the real C++ AI engine and must run on actual platforms, not the Dart VM.
+**Key difference**: Integration tests exercise the Rust/FRB native Mill session on real platforms. Capture-scenario search tests run on the host VM when `cargo build -p rust_lib_sanmill` has been executed.
 
 ## Coverage Reports
 
@@ -114,7 +116,9 @@ genhtml coverage/lcov.info -o coverage/html
 
 ## Reference Documentation
 
-- **Integration tests**: `src/ui/flutter_app/integration_test/AUTOMATED_MOVE_TESTS_README.md`
+- **Capture scenarios**: `test/games/mill/capture_scenarios/`
+- **AI hang smoke**: `integration_test/ai_hang_smoke_test.dart`
+- **Smart monkey**: `integration_test/monkey/smart_monkey_test.dart`
 - **Flutter testing guide**: https://docs.flutter.dev/testing
 - **Test directories**: `src/ui/flutter_app/test/` and `src/ui/flutter_app/integration_test/`
 

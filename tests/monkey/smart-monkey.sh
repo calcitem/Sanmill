@@ -43,11 +43,17 @@ echo ""
 
 cd "$FLUTTER_APP_DIR"
 
+TEST_FILE="integration_test/monkey/smart_monkey_test.dart"
+if [ ! -f "$TEST_FILE" ]; then
+    echo "ERROR: $TEST_FILE not found. Run from repository root after checkout."
+    exit 1
+fi
+
 echo "Running smart monkey integration test..."
 echo ""
 
 flutter test \
-    integration_test/monkey/smart_monkey_test.dart \
+    "$TEST_FILE" \
     -d "$DEVICE" \
     --timeout 600s
 
