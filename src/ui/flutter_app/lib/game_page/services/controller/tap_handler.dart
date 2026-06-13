@@ -230,6 +230,22 @@ class TapHandler {
     // Clear any existing analysis markers when player makes a move
     AnalysisMode.disable();
 
+    // Setup-position editing: route taps to the setup controller, which
+    // paints/clears the tapped point and re-syncs the native session.
+    if (GameController().gameInstance.gameMode == GameMode.setupPosition) {
+      final MillSetupPositionController? setup =
+          GameController().setupPositionController;
+      if (setup != null) {
+        final int node = MillBoardCoordinateMaps.legacySquareToNode[sq] ?? -1;
+        if (node >= 0) {
+          setup.tapNode(node);
+          GameController().setupPositionNotifier.updateIcons();
+          GameController().boardSemanticsNotifier.updateSemantics();
+        }
+      }
+      return const EngineResponseSkip();
+    }
+
     if (!GameController().isControllerReady) {
       final MillBoardView view = GameController().activeBoardView;
       logger.w(

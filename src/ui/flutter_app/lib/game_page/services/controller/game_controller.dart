@@ -277,6 +277,14 @@ class GameController {
   final GameResultNotifier gameResultNotifier = GameResultNotifier();
   final BoardSemanticsNotifier boardSemanticsNotifier =
       BoardSemanticsNotifier();
+  final SetupPositionNotifier setupPositionNotifier = SetupPositionNotifier();
+
+  /// Active setup-position editor, or null when not in setup mode.  Owned
+  /// by the controller while [GameMode.setupPosition] is active.
+  MillSetupPositionController? setupPositionController;
+
+  /// Game mode to restore when leaving the setup-position editor.
+  GameMode? _setupPreviousMode;
 
   late GameRecorder gameRecorder;
   GameRecorder? newGameRecorder;
@@ -308,6 +316,80 @@ class GameController {
   bool get isPositionSetup => gameRecorder.setupPosition != null;
 
   void clearPositionSetupFlag() => gameRecorder.setupPosition = null;
+
+  /// True while the setup-position editor is active.
+  bool get isSetupPosition =>
+      gameInstance.gameMode == GameMode.setupPosition &&
+      setupPositionController != null;
+
+  /// Enter the setup-position editor, seeding it from the current native
+  /// session board.  No-op when there is no active native Mill session or
+  /// when an editor is already active (idempotent).
+  void enterSetupPosition() {
+    if (setupPositionController != null) {
+      return;
+    }
+    final NativeMillGameSession? session = activeNativeMillSession;
+    if (session == null) {
+      logger.w("$_logTag enterSetupPosition: no active native Mill session.");
+      return;
+    }
+    final MillSetupPositionController controller = MillSetupPositionController(
+      session: session,
+      ruleSettings: DB().ruleSettings,
+    )..initFromSession();
+    // The editor may be mounted directly on a setup-position route, in which
+    // case the previous mode is already `setupPosition`; fall back to a
+    // playable mode so committing/cancelling lands on a real game.
+    _setupPreviousMode = gameInstance.gameMode == GameMode.setupPosition
+        ? GameMode.humanVsAi
+        : gameInstance.gameMode;
+    setupPositionController = controller;
+    gameInstance.gameMode = GameMode.setupPosition;
+    headerIconsNotifier.showIcons();
+    boardSemanticsNotifier.updateSemantics();
+  }
+
+  /// Commit the edited position: install [fen] as the game's setup
+  /// position and restore the previous (playable) game mode.
+  void finishSetupPosition(String fen) {
+    final GameMode previous = _setupPreviousMode ?? GameMode.humanVsAi;
+    gameRecorder = GameRecorder(
+      lastPositionWithRemove: fen,
+      setupPosition: fen,
+    );
+    setupPositionController = null;
+    _setupPreviousMode = null;
+    gameInstance.gameMode = previous;
+    headerIconsNotifier.showIcons();
+    boardSemanticsNotifier.updateSemantics();
+  }
+
+  /// Abandon setup editing, rolling the board back and restoring the
+  /// previous game mode.
+  void cancelSetupPosition() {
+    final GameMode previous = _setupPreviousMode ?? GameMode.humanVsAi;
+    setupPositionController?.cancel();
+    setupPositionController = null;
+    _setupPreviousMode = null;
+    gameInstance.gameMode = previous;
+    headerIconsNotifier.showIcons();
+    boardSemanticsNotifier.updateSemantics();
+  }
+
+  /// Discard an in-progress setup edit without changing the current game
+  /// mode.  Used when the setup-position page is torn down by navigation:
+  /// the next route has already set its own game mode, so this only rolls
+  /// the board back and releases the editor.
+  void abandonSetupPositionIfActive() {
+    final MillSetupPositionController? controller = setupPositionController;
+    if (controller == null) {
+      return;
+    }
+    controller.cancel();
+    setupPositionController = null;
+    _setupPreviousMode = null;
+  }
 
   @visibleForTesting
   static GameController instance = GameController._();

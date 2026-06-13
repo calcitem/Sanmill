@@ -359,6 +359,17 @@ class MillGameModule extends GameModule {
         builder: (BuildContext context, {Key? key, GameSession? session}) =>
             GamePage(GameMode.humanVsLAN, key: key),
       ),
+      if (!kIsWeb)
+        GameModeEntry(
+          id: MillRouteIds.setupPosition,
+          label: s.setupPosition,
+          icon: FluentIcons.edit_24_regular,
+          drawerKey: const Key('drawer_item_setup_position'),
+          contentKey: const Key('setup_position'),
+          isAvailable: (_) => !kIsWeb,
+          builder: (BuildContext context, {Key? key, GameSession? session}) =>
+              GamePage(GameMode.setupPosition, key: key),
+        ),
     ];
   }
 

@@ -483,6 +483,11 @@ class PlayAreaState extends State<PlayArea> {
         // Check if the user wants toolbars at the bottom.
         final bool isToolbarAtBottom = DB().displaySettings.isToolbarAtBottom;
 
+        // While editing a setup position the regular history / analysis /
+        // main toolbars are replaced by the dedicated setup toolbar.
+        final bool isSetupPosition =
+            GameController().gameInstance.gameMode == GameMode.setupPosition;
+
         // Main content without bottom toolbars:
         final Widget mainContent = SizedBox(
           key: const Key('play_area_main_content'),
@@ -546,7 +551,8 @@ class PlayAreaState extends State<PlayArea> {
 
                   // History navigation toolbar if enabled and not at bottom
                   if (DB().displaySettings.isHistoryNavigationToolbarShown &&
-                      !isToolbarAtBottom)
+                      !isToolbarAtBottom &&
+                      !isSetupPosition)
                     GamePageToolbar(
                       key: const Key('play_area_history_nav_toolbar'),
                       backgroundColor:
@@ -560,7 +566,8 @@ class PlayAreaState extends State<PlayArea> {
 
                   // Analysis toolbar (perfect-database overlay toggle).
                   if (DB().displaySettings.isAnalysisToolbarShown &&
-                      !isToolbarAtBottom)
+                      !isToolbarAtBottom &&
+                      !isSetupPosition)
                     GamePageToolbar(
                       key: const Key('play_area_analysis_toolbar'),
                       backgroundColor:
@@ -577,18 +584,23 @@ class PlayAreaState extends State<PlayArea> {
                   //       All annotation features are now in the center overlay.
                   // ──────────────────────────────────────────────────────────
 
-                  // Main toolbar if not at bottom
+                  // Main toolbar (or setup-position toolbar) if not at bottom
                   if (!isToolbarAtBottom)
-                    GamePageToolbar(
-                      key: const Key('play_area_main_toolbar'),
-                      backgroundColor:
-                          DB().colorSettings.mainToolbarBackgroundColor,
-                      itemColor: DB().colorSettings.mainToolbarIconColor,
-                      children: _buildToolbarItems(
-                        context,
-                        _getMainToolbarItems(context),
+                    if (isSetupPosition)
+                      const SetupPositionToolbar(
+                        key: Key('play_area_setup_position_toolbar'),
+                      )
+                    else
+                      GamePageToolbar(
+                        key: const Key('play_area_main_toolbar'),
+                        backgroundColor:
+                            DB().colorSettings.mainToolbarBackgroundColor,
+                        itemColor: DB().colorSettings.mainToolbarIconColor,
+                        children: _buildToolbarItems(
+                          context,
+                          _getMainToolbarItems(context),
+                        ),
                       ),
-                    ),
 
                   const SizedBox(height: AppTheme.boardMargin),
                 ],
@@ -612,7 +624,8 @@ class PlayAreaState extends State<PlayArea> {
                   Expanded(child: mainContent),
 
                   // History navigation toolbar if enabled
-                  if (DB().displaySettings.isHistoryNavigationToolbarShown)
+                  if (DB().displaySettings.isHistoryNavigationToolbarShown &&
+                      !isSetupPosition)
                     GamePageToolbar(
                       key: const Key('play_area_history_nav_toolbar_bottom'),
                       backgroundColor:
@@ -625,7 +638,8 @@ class PlayAreaState extends State<PlayArea> {
                     ),
 
                   // Analysis toolbar (perfect-database overlay toggle).
-                  if (DB().displaySettings.isAnalysisToolbarShown)
+                  if (DB().displaySettings.isAnalysisToolbarShown &&
+                      !isSetupPosition)
                     GamePageToolbar(
                       key: const Key('play_area_analysis_toolbar_bottom'),
                       backgroundColor:
@@ -637,17 +651,22 @@ class PlayAreaState extends State<PlayArea> {
                       ),
                     ),
 
-                  // Main toolbar
-                  GamePageToolbar(
-                    key: const Key('play_area_main_toolbar_bottom'),
-                    backgroundColor:
-                        DB().colorSettings.mainToolbarBackgroundColor,
-                    itemColor: DB().colorSettings.mainToolbarIconColor,
-                    children: _buildToolbarItems(
-                      context,
-                      _getMainToolbarItems(context),
+                  // Main toolbar (or setup-position toolbar)
+                  if (isSetupPosition)
+                    const SetupPositionToolbar(
+                      key: Key('play_area_setup_position_toolbar_bottom'),
+                    )
+                  else
+                    GamePageToolbar(
+                      key: const Key('play_area_main_toolbar_bottom'),
+                      backgroundColor:
+                          DB().colorSettings.mainToolbarBackgroundColor,
+                      itemColor: DB().colorSettings.mainToolbarIconColor,
+                      children: _buildToolbarItems(
+                        context,
+                        _getMainToolbarItems(context),
+                      ),
                     ),
-                  ),
 
                   const SizedBox(height: AppTheme.boardMargin),
                 ],

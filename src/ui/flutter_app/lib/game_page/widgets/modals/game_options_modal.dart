@@ -119,6 +119,33 @@ class GameOptionsModal extends StatelessWidget {
           ),
         ),
         const CustomSpacer(),
+        if (GameController().activeNativeMillSession != null)
+          SimpleDialogOption(
+            key: const Key('setup_position_option'),
+            onPressed: () {
+              RecordingService().recordEvent(
+                RecordingEventType.dialogAction,
+                <String, dynamic>{
+                  'dialog': 'gameOptions',
+                  'action': 'select',
+                  'selection': 'setupPosition',
+                },
+              );
+              GameController().loadedGameFilenamePrefix = null;
+              GameController().enterSetupPosition();
+              GameController().headerTipNotifier.showTip(
+                S.of(context).setupPosition,
+                snackBar: false,
+              );
+              Navigator.of(context).pop();
+            },
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 2.0),
+              child: Text(S.of(context).setupPosition),
+            ),
+          ),
+        if (GameController().activeNativeMillSession != null)
+          const CustomSpacer(),
         if (!kIsWeb &&
             (GameController().gameRecorder.mainlineMoves.isNotEmpty ||
                 GameController().isPositionSetup == true))

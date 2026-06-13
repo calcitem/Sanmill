@@ -118,6 +118,18 @@ class _GamePageInnerState extends State<_GamePageInner> {
 
     // Auto-start experience recording if enabled and not already recording.
     _maybeStartRecording();
+
+    // When this page is mounted directly on the setup-position route (via the
+    // drawer), open the editor once the active native session is bound.
+    if (widget.controller.gameInstance.gameMode == GameMode.setupPosition) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted &&
+            widget.controller.gameInstance.gameMode == GameMode.setupPosition &&
+            widget.controller.setupPositionController == null) {
+          widget.controller.enterSetupPosition();
+        }
+      });
+    }
   }
 
   /// Starts experience recording automatically when the feature is enabled.
@@ -147,6 +159,9 @@ class _GamePageInnerState extends State<_GamePageInner> {
   void dispose() {
     // Remove listener when the widget is disposed
     AnalysisMode.stateNotifier.removeListener(_updateAnalysisButton);
+    // Discard an unfinished setup edit when navigating away from the page
+    // without changing the mode the next route just installed.
+    widget.controller.abandonSetupPositionIfActive();
     super.dispose();
   }
 
