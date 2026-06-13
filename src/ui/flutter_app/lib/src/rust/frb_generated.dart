@@ -1732,8 +1732,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   MillEngineConfig dco_decode_mill_engine_config(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     final arr = raw as List<dynamic>;
-    if (arr.length != 7)
-      throw Exception('unexpected arr length: expect 7 but see ${arr.length}');
+    if (arr.length != 8)
+      throw Exception('unexpected arr length: expect 8 but see ${arr.length}');
     return MillEngineConfig(
       algorithm: dco_decode_mill_search_algorithm(arr[0]),
       depth: dco_decode_i_32(arr[1]),
@@ -1742,6 +1742,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       lastBestValue: dco_decode_i_32(arr[4]),
       skillLevel: dco_decode_u_8(arr[5]),
       usePerfectDatabase: dco_decode_bool(arr[6]),
+      shuffling: dco_decode_bool(arr[7]),
     );
   }
 
@@ -2167,6 +2168,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     var var_lastBestValue = sse_decode_i_32(deserializer);
     var var_skillLevel = sse_decode_u_8(deserializer);
     var var_usePerfectDatabase = sse_decode_bool(deserializer);
+    var var_shuffling = sse_decode_bool(deserializer);
     return MillEngineConfig(
       algorithm: var_algorithm,
       depth: var_depth,
@@ -2175,6 +2177,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       lastBestValue: var_lastBestValue,
       skillLevel: var_skillLevel,
       usePerfectDatabase: var_usePerfectDatabase,
+      shuffling: var_shuffling,
     );
   }
 
@@ -2625,6 +2628,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_i_32(self.lastBestValue, serializer);
     sse_encode_u_8(self.skillLevel, serializer);
     sse_encode_bool(self.usePerfectDatabase, serializer);
+    sse_encode_bool(self.shuffling, serializer);
   }
 
   @protected

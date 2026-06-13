@@ -440,6 +440,7 @@ impl From<MillEngineConfig> for MillEngineConfigPlan {
             last_best_value: cfg.last_best_value,
             skill_level: cfg.skill_level,
             use_perfect_database: cfg.use_perfect_database,
+            shuffling: cfg.shuffling,
         }
     }
 }
@@ -470,6 +471,12 @@ pub struct MillEngineConfig {
     /// When true, query the vendored perfect database after search and prefer
     /// its move when the position is in the std 9-piece database.
     pub use_perfect_database: bool,
+    /// When true, randomise the order of equally-ranked root moves so the AI
+    /// does not always play the same line (master `Shuffling` UCI option).
+    /// Flutter forwards `GeneralSettings.shufflingEnabled`; disable for
+    /// deterministic play.  Also drives the per-rollout move ordering in the
+    /// MCTS path.
+    pub shuffling: bool,
 }
 
 impl Default for MillEngineConfig {
@@ -483,6 +490,7 @@ impl Default for MillEngineConfig {
             last_best_value: 0,
             skill_level: 1,
             use_perfect_database: false,
+            shuffling: true,
         }
     }
 }
@@ -804,7 +812,7 @@ pub fn native_mill_mcts_best_to_node(seed: u64, iterations_per_move: u32) -> i32
             exploration: 0.5,
             ab_assist_depth: 0,
             num_threads: Some(1),
-            move_order_context: mcts_move_order_context(1),
+            move_order_context: mcts_move_order_context(1, true),
         },
     )
     .best_action

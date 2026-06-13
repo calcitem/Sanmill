@@ -196,6 +196,7 @@ class NativeMillRulesPort implements RulesPort {
       algorithm: _millSearchAlgorithm(_generalSettings.searchAlgorithm),
       aiIsLazy: _generalSettings.aiIsLazy,
       skillLevel: _generalSettings.skillLevel,
+      shuffling: _generalSettings.shufflingEnabled,
     );
   }
 

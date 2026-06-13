@@ -44,6 +44,7 @@ class MillKernelSession {
         tgf_simple.MillSearchAlgorithm.pvs,
     bool aiIsLazy = false,
     int skillLevel = 1,
+    bool shuffling = true,
   }) {
     if (kernel.isDisposed) {
       throw KernelException('handle already disposed');
@@ -59,6 +60,7 @@ class MillKernelSession {
             lastBestValue: _lastRawBestValue,
             skillLevel: skillLevel,
             usePerfectDatabase: usePerfectDatabase,
+            shuffling: shuffling,
           ),
         );
     return events.map((tgf_simple.EngineEvent event) {

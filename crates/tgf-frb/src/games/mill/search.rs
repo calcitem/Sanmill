@@ -25,8 +25,8 @@ use tgf_mill::{
     MillVariantOptions as NativeMillVariantOptions, recommended_search_depth,
 };
 use tgf_search::{
-    MctsOptions, MctsSearcher, SearchAbortHandle, SearchAlgorithm, SearchOptions, SearchPolicy,
-    SearchResult, Searcher,
+    MctsOptions, SearchAbortHandle, SearchAlgorithm, SearchOptions, SearchPolicy, SearchResult,
+    Searcher, mcts_search_parallel,
 };
 
 use crate::engine_event::EngineEvent;
@@ -77,6 +77,10 @@ pub(crate) struct MillEngineConfigPlan {
     pub last_best_value: i32,
     pub skill_level: u8,
     pub use_perfect_database: bool,
+    /// Randomise the order of equally-ranked root moves so the AI does not
+    /// always pick the same line.  Maps to master's `Shuffling` UCI option;
+    /// disable for deterministic play.
+    pub shuffling: bool,
 }
 
 impl Default for MillEngineConfigPlan {
@@ -89,6 +93,7 @@ impl Default for MillEngineConfigPlan {
             last_best_value: 0,
             skill_level: 1,
             use_perfect_database: false,
+            shuffling: true,
         }
     }
 }
@@ -109,11 +114,11 @@ pub(crate) fn mill_searcher_default() -> Searcher<MillGame> {
 }
 
 /// Move-order context used for the MCTS path.
-pub(crate) fn mcts_move_order_context(skill_level: u8) -> MoveOrderContext {
+pub(crate) fn mcts_move_order_context(skill_level: u8, shuffling: bool) -> MoveOrderContext {
     MoveOrderContext {
         algorithm: MoveOrderAlgorithm::Mcts,
         skill_level,
-        shuffling: true,
+        shuffling,
         hash_move: None,
         shuffle_seed: search_shuffle_seed(),
     }
@@ -208,7 +213,7 @@ pub(crate) fn spawn_mill_engine_config_event_stream(
                 SearchAlgorithm::Random => MoveOrderAlgorithm::Random,
             },
             skill_level: config.skill_level,
-            shuffling: true,
+            shuffling: config.shuffling,
             hash_move: None,
             shuffle_seed: search_shuffle_seed(),
         };
@@ -331,9 +336,19 @@ pub(crate) fn spawn_mill_engine_config_event_stream(
                 } else {
                     u32::from(config.skill_level).saturating_mul(2048).max(1)
                 };
-                let mut mcts = MctsSearcher::<MillGame>::new();
-                let mcts_result = mcts.search_with_options(
-                    &mut wb,
+                // Root-parallel MCTS mirroring master `monte_carlo_tree_search`,
+                // which fans rollouts across `hardware_concurrency()` workers.
+                // `num_threads: None` lets the driver pick the available
+                // parallelism; each worker runs `iterations / num_threads`
+                // rollouts and the per-action visit counts are aggregated.  The
+                // surrounding FRB worker is a plain `std::thread`, so spawning
+                // the short-lived rollout pool here has no async-runtime
+                // constraint -- isolating one *search* per session does not
+                // preclude parallelising the rollouts within that search, just
+                // as the C++ engine did on its own search thread.
+                let mcts_result = mcts_search_parallel::<MillGame>(
+                    &game,
+                    snapshot,
                     MctsOptions {
                         iterations: skill_iterations,
                         playout_depth: 6,
@@ -344,14 +359,13 @@ pub(crate) fn spawn_mill_engine_config_event_stream(
                         },
                         exploration: 0.5,
                         ab_assist_depth: 6,
-                        // FRB engine search runs on a worker thread that
-                        // already isolates one search per session; keep
-                        // MCTS single-threaded inside that worker.  UI
-                        // callers wanting parallel MCTS should switch to
-                        // tgf_search::mcts_search_parallel.
-                        num_threads: Some(1),
-                        move_order_context: mcts_move_order_context(config.skill_level),
+                        num_threads: None,
+                        move_order_context: mcts_move_order_context(
+                            config.skill_level,
+                            config.shuffling,
+                        ),
                     },
+                    search_shuffle_seed(),
                 );
                 // mcts_result.score now mirrors master MCTS best_value
                 // (piece-count diff * VALUE_EACH_PIECE) via

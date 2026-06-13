@@ -303,6 +303,13 @@ class MillEngineConfig {
   /// its move when the position is in the std 9-piece database.
   final bool usePerfectDatabase;
 
+  /// When true, randomise the order of equally-ranked root moves so the AI
+  /// does not always play the same line (master `Shuffling` UCI option).
+  /// Flutter forwards `GeneralSettings.shufflingEnabled`; disable for
+  /// deterministic play.  Also drives the per-rollout move ordering in the
+  /// MCTS path.
+  final bool shuffling;
+
   const MillEngineConfig({
     required this.algorithm,
     required this.depth,
@@ -311,6 +318,7 @@ class MillEngineConfig {
     required this.lastBestValue,
     required this.skillLevel,
     required this.usePerfectDatabase,
+    required this.shuffling,
   });
 
   static Future<MillEngineConfig> default_() =>
@@ -324,7 +332,8 @@ class MillEngineConfig {
       aiIsLazy.hashCode ^
       lastBestValue.hashCode ^
       skillLevel.hashCode ^
-      usePerfectDatabase.hashCode;
+      usePerfectDatabase.hashCode ^
+      shuffling.hashCode;
 
   @override
   bool operator ==(Object other) =>
@@ -337,7 +346,8 @@ class MillEngineConfig {
           aiIsLazy == other.aiIsLazy &&
           lastBestValue == other.lastBestValue &&
           skillLevel == other.skillLevel &&
-          usePerfectDatabase == other.usePerfectDatabase;
+          usePerfectDatabase == other.usePerfectDatabase &&
+          shuffling == other.shuffling;
 }
 
 enum MillFormationActionInPlacingPhase {
