@@ -187,6 +187,11 @@ class GameController {
     return session is NativeMillGameSession ? session : null;
   }
 
+  void syncAiMoveTypeFromSession(NativeMillGameSession session) {
+    aiMoveType = session.lastAiMoveType;
+    headerIconsNotifier.showIcons();
+  }
+
   void refreshNativeSessionHeader(
     BuildContext context,
     NativeMillGameSession session, {
@@ -315,6 +320,10 @@ class GameController {
 
     await SoundManager().loadSounds();
     await SoundManager().startBackgroundMusic();
+
+    if (DB().generalSettings.usePerfectDatabase) {
+      unawaited(ensurePerfectDatabaseReady());
+    }
 
     _isInitialized = true;
     logger.i("$_logTag initialized");
@@ -1187,6 +1196,10 @@ class GameController {
           generalSettings: DB().generalSettings,
           bothSidesAi: true,
           onBeforeRemoveApply: gameInstance.awaitPendingMillSoundBeforeRemove,
+          openingBook: MillOpeningBookProvider(
+            ruleSettings: DB().ruleSettings,
+            generalSettings: DB().generalSettings,
+          ),
         );
     final bool aiTurn = gameInstance.isAiSideToMove;
     if (isMoveNow && !aiTurn) {
@@ -1207,6 +1220,7 @@ class GameController {
       if (action == null) {
         return const EngineNoBestMove();
       }
+      syncAiMoveTypeFromSession(scopedSession);
       logger.i("$tag Applied native AI move ${action.payload['move']}");
       return const EngineResponseOK();
     } finally {
@@ -1275,6 +1289,10 @@ class GameController {
           generalSettings: DB().generalSettings,
           bothSidesAi: true,
           onBeforeRemoveApply: gameInstance.awaitPendingMillSoundBeforeRemove,
+          openingBook: MillOpeningBookProvider(
+            ruleSettings: DB().ruleSettings,
+            generalSettings: DB().generalSettings,
+          ),
         );
 
     // Pin both the session identity AND the AI-loop epoch so the
@@ -1361,6 +1379,7 @@ class GameController {
           break;
         }
         searched = true;
+        syncAiMoveTypeFromSession(loopSession);
         // Record AI-vs-AI game start time on the first applied move
         // so `calculateGameDurationSeconds` reports a meaningful
         // wall-clock duration on the result dialog.

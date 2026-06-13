@@ -22,6 +22,7 @@ import '../../shared/services/logger.dart';
 import '../../src/rust/api/simple.dart' as tgf;
 import 'lan_session_meta.dart';
 import 'mill_action_codec.dart';
+import 'mill_types.dart';
 import 'native_mill_rules_port.dart';
 
 const String _logTag = '[NativeMillGameSession]';
@@ -53,6 +54,12 @@ class NativeMillGameSession implements GameSessionHandle {
   final StreamController<GameSessionEvent> _events =
       StreamController<GameSessionEvent>.broadcast();
   bool _disposed = false;
+
+  AiMoveType lastAiMoveType = AiMoveType.unknown;
+
+  static final RegExp _aimovetypePattern = RegExp(
+    r'(?:^|\s)aimovetype=(\w+)(?:\s|$)',
+  );
 
   @override
   Stream<GameSessionEvent> get events => _events.stream;
@@ -261,6 +268,7 @@ class NativeMillGameSession implements GameSessionHandle {
         if (event.kind != 'bestMove' || event.toNode < 0) {
           continue;
         }
+        lastAiMoveType = _aiMoveTypeFromReason(event.reason);
         bestAction = _legalActionForBestMove(event);
         logger.i(
           '$_logTag bestMove mapped: toNode=${event.toNode} -> '
@@ -411,5 +419,19 @@ class NativeMillGameSession implements GameSessionHandle {
       'current legal action; treating as no best move.',
     );
     return null;
+  }
+
+  static AiMoveType _aiMoveTypeFromReason(String reason) {
+    final RegExpMatch? match = _aimovetypePattern.firstMatch(reason);
+    if (match == null) {
+      return AiMoveType.traditional;
+    }
+    return switch (match.group(1)) {
+      'perfect' => AiMoveType.perfect,
+      'consensus' => AiMoveType.consensus,
+      'openingBook' => AiMoveType.openingBook,
+      'traditional' => AiMoveType.traditional,
+      _ => AiMoveType.traditional,
+    };
   }
 }

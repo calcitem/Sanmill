@@ -21,6 +21,7 @@ import '../../src/rust/api/simple.dart' as tgf_simple;
 import 'mill_action_codec.dart';
 import 'mill_kernel_session.dart';
 import 'mill_marked_pieces_codec.dart';
+import 'mill_perfect_database_support.dart';
 import 'mill_variant_options_mapper.dart';
 
 class NativeMillRulesPort implements RulesPort {
@@ -28,7 +29,8 @@ class NativeMillRulesPort implements RulesPort {
     MillKernelSession? session,
     RuleSettings ruleSettings = const RuleSettings(),
     GeneralSettings? generalSettings,
-  }) : _session =
+  }) : _generalSettings = generalSettings ?? const GeneralSettings(),
+       _session =
            session ??
            MillKernelSession.fromVariant(
              ruleSettings.toTgfMillVariantOptions(
@@ -38,6 +40,7 @@ class NativeMillRulesPort implements RulesPort {
     _snapshot = _snapshotFromKernel();
   }
 
+  final GeneralSettings _generalSettings;
   final MillKernelSession _session;
   late GameStateSnapshot _snapshot;
 
@@ -165,7 +168,14 @@ class NativeMillRulesPort implements RulesPort {
     required int depth,
     int moveLimitMs = 0,
   }) {
-    return _session.searchEvents(depth: depth, moveLimitMs: moveLimitMs);
+    final bool usePerfectDatabase =
+        _generalSettings.usePerfectDatabase &&
+        isRuleSupportingPerfectDatabase();
+    return _session.searchEvents(
+      depth: depth,
+      moveLimitMs: moveLimitMs,
+      usePerfectDatabase: usePerfectDatabase,
+    );
   }
 
   GameStateSnapshot _snapshotFromKernel({GameAction? lastAction}) {

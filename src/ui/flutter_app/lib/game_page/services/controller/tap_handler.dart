@@ -82,6 +82,10 @@ class TapHandler {
           generalSettings: DB().generalSettings,
           onBeforeRemoveApply:
               controller.gameInstance.awaitPendingMillSoundBeforeRemove,
+          openingBook: MillOpeningBookProvider(
+            ruleSettings: DB().ruleSettings,
+            generalSettings: DB().generalSettings,
+          ),
         );
     if (mode == GameMode.humanVsAi && aiTurnController.isAiTurn(session)) {
       controller.refreshNativeSessionHeader(
@@ -99,6 +103,7 @@ class TapHandler {
               : const EngineResponseOK();
         }
         controller.refreshNativeSessionHeader(context, session);
+        controller.syncAiMoveTypeFromSession(session);
         logger.i(
           "$_logTag Native Mill AI pre-tap action: ${aiAction?.payload['move'] ?? '(none)'}",
         );
@@ -163,6 +168,9 @@ class TapHandler {
                   : const EngineResponseOK();
             }
             controller.refreshNativeSessionHeader(context, session);
+            if (aiAction != null) {
+              controller.syncAiMoveTypeFromSession(session);
+            }
             logger.i(
               "$_logTag Native Mill AI response: ${aiAction?.payload['move'] ?? '(none)'}",
             );

@@ -29,6 +29,15 @@ int nativeOthelloInitialLegalCount() =>
 int nativeOthelloSearchDepthOneBestToNode() =>
     RustLib.instance.api.crateApiSimpleNativeOthelloSearchDepthOneBestToNode();
 
+/// Initialize the vendored Nine Men's Morris perfect database from `path`.
+/// The directory must contain `std.secval` and `std_*.sec2` sector files.
+bool millPerfectDbInit({required String path}) =>
+    RustLib.instance.api.crateApiSimpleMillPerfectDbInit(path: path);
+
+/// Release perfect-database resources for the current process.
+void millPerfectDbDeinit() =>
+    RustLib.instance.api.crateApiSimpleMillPerfectDbDeinit();
+
 /// Return the Rust-native standard 24-point Mill topology.
 ///
 /// This is the single source of truth for Mill board geometry.  The Dart
@@ -267,6 +276,10 @@ class MillEngineConfig {
   /// matching master `SkillLevel * ITERATIONS_PER_SKILL_LEVEL` (P2-F/P2-I).
   final int skillLevel;
 
+  /// When true, query the vendored perfect database after search and prefer
+  /// its move when the position is in the std 9-piece database.
+  final bool usePerfectDatabase;
+
   const MillEngineConfig({
     required this.algorithm,
     required this.depth,
@@ -274,6 +287,7 @@ class MillEngineConfig {
     required this.aiIsLazy,
     required this.lastBestValue,
     required this.skillLevel,
+    required this.usePerfectDatabase,
   });
 
   static Future<MillEngineConfig> default_() =>
@@ -286,7 +300,8 @@ class MillEngineConfig {
       moveTimeMs.hashCode ^
       aiIsLazy.hashCode ^
       lastBestValue.hashCode ^
-      skillLevel.hashCode;
+      skillLevel.hashCode ^
+      usePerfectDatabase.hashCode;
 
   @override
   bool operator ==(Object other) =>
@@ -298,7 +313,8 @@ class MillEngineConfig {
           moveTimeMs == other.moveTimeMs &&
           aiIsLazy == other.aiIsLazy &&
           lastBestValue == other.lastBestValue &&
-          skillLevel == other.skillLevel;
+          skillLevel == other.skillLevel &&
+          usePerfectDatabase == other.usePerfectDatabase;
 }
 
 enum MillFormationActionInPlacingPhase {

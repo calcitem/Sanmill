@@ -2,9 +2,11 @@
 // Copyright (C) 2019-2026 The Sanmill developers (see AUTHORS file)
 
 import '../../game_platform/game_session.dart';
+import '../../game_platform/opening_book_provider.dart';
 import '../../general_settings/models/general_settings.dart';
 import '../../shared/services/logger.dart';
 import 'mill_constants.dart';
+import 'mill_types.dart';
 import 'native_mill_game_session.dart';
 
 /// Optional hook invoked immediately before a remove [GameAction] is applied.
@@ -25,6 +27,7 @@ class NativeMillAiTurnController {
     this.maxStepsPerTurn = 8,
     this.bothSidesAi = false,
     this.onBeforeRemoveApply,
+    this.openingBook,
   });
 
   /// Optional fixed depth override used by tests and targeted dogfood paths.
@@ -49,6 +52,9 @@ class NativeMillAiTurnController {
 
   /// When set, called before applying a remove action inside [playIfAiTurn].
   final BeforeRemoveApplyHook? onBeforeRemoveApply;
+
+  /// Optional opening-book lookup consulted before engine search.
+  final OpeningBookProvider? openingBook;
 
   PlayerSeat get aiSeat =>
       generalSettings.aiMovesFirst ? PlayerSeat.first : PlayerSeat.second;
@@ -181,6 +187,20 @@ class NativeMillAiTurnController {
           'yielding to outer loop.',
         );
         break;
+      }
+      final GameAction? bookAction = openingBook?.lookup(session);
+      if (bookAction != null) {
+        if (bookAction.type == MillActionTypes.remove) {
+          await onBeforeRemoveApply?.call();
+        }
+        await session.apply(bookAction);
+        session.lastAiMoveType = AiMoveType.openingBook;
+        lastApplied = bookAction;
+        logger.i(
+          '[NativeMillAiTurnController] step=$step opening-book '
+          'applied=${bookAction.payload['move']}',
+        );
+        continue;
       }
       final Stopwatch sw = Stopwatch()..start();
       final GameAction? action = await session.searchBestAction(

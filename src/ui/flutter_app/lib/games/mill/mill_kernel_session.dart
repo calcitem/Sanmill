@@ -39,6 +39,7 @@ class MillKernelSession {
   Stream<tgf_simple.EngineEvent> searchEvents({
     required int depth,
     int moveLimitMs = 0,
+    bool usePerfectDatabase = false,
   }) {
     if (kernel.isDisposed) {
       throw KernelException('handle already disposed');
@@ -53,6 +54,7 @@ class MillKernelSession {
             aiIsLazy: false,
             lastBestValue: _lastRawBestValue,
             skillLevel: 1,
+            usePerfectDatabase: usePerfectDatabase,
           ),
         );
     return events.map((tgf_simple.EngineEvent event) {

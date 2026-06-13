@@ -47,7 +47,7 @@ enum PieceColor { none, white, black, marked, nobody, draw }
 
 /// Whether the AI move comes from the engine's traditional search or from
 /// the ensemble (consensus) path.
-enum AiMoveType { unknown, traditional, consensus }
+enum AiMoveType { unknown, traditional, perfect, consensus, openingBook }
 
 /// Mill game phases.
 enum Phase { ready, placing, moving, gameOver }

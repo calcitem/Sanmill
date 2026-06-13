@@ -1,0 +1,93 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2019-2026 The Sanmill developers (see AUTHORS file)
+
+import 'package:flutter_test/flutter_test.dart';
+import 'package:sanmill/game_platform/game_session.dart';
+import 'package:sanmill/games/mill/mill_opening_book_provider.dart';
+import 'package:sanmill/games/mill/native_mill_game_session.dart';
+import 'package:sanmill/general_settings/models/general_settings.dart';
+import 'package:sanmill/rule_settings/models/rule_settings.dart';
+import 'package:sanmill/shared/database/database.dart';
+
+import '../../helpers/mocks/mock_database.dart';
+import '../../helpers/test_native_library.dart';
+
+void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
+
+  final String? skip = nativeLibrarySkipReason();
+
+  setUpAll(() async {
+    await initRustLibForTests();
+  });
+
+  tearDownAll(disposeRustLibForTests);
+
+  setUp(() {
+    DB.instance = MockDB();
+  });
+
+  group('MillOpeningBookProvider', () {
+    test(
+      'returns a legal opening move for the initial 9mm position',
+      () {
+        (DB.instance! as MockDB).generalSettings = DB().generalSettings
+            .copyWith(useOpeningBook: true);
+
+        final NativeMillGameSession session = NativeMillGameSession();
+        addTearDown(session.dispose);
+        final MillOpeningBookProvider provider = MillOpeningBookProvider(
+          ruleSettings: const RuleSettings(),
+          generalSettings: DB().generalSettings,
+        );
+
+        final GameAction? bookMove = provider.lookup(session);
+        expect(bookMove, isNotNull);
+        expect(
+          session.legalActions.any(
+            (GameAction action) =>
+                action.payload['move'] == bookMove!.payload['move'],
+          ),
+          isTrue,
+        );
+      },
+      skip: skip,
+    );
+
+    test('returns null when useOpeningBook is disabled', () {
+      (DB.instance! as MockDB).generalSettings = DB().generalSettings.copyWith(
+        useOpeningBook: false,
+      );
+
+      final NativeMillGameSession session = NativeMillGameSession();
+      addTearDown(session.dispose);
+      final MillOpeningBookProvider provider = MillOpeningBookProvider(
+        ruleSettings: const RuleSettings(),
+        generalSettings: DB().generalSettings,
+      );
+
+      expect(provider.lookup(session), isNull);
+    }, skip: skip);
+
+    test('returns null for non-9mm rules', () {
+      (DB.instance! as MockDB).generalSettings = DB().generalSettings.copyWith(
+        useOpeningBook: true,
+      );
+      (DB.instance! as MockDB).ruleSettings = DB().ruleSettings.copyWith(
+        piecesCount: 12,
+        hasDiagonalLines: true,
+      );
+
+      final NativeMillGameSession session = NativeMillGameSession(
+        rules: DB().ruleSettings,
+      );
+      addTearDown(session.dispose);
+      final MillOpeningBookProvider provider = MillOpeningBookProvider(
+        ruleSettings: DB().ruleSettings,
+        generalSettings: DB().generalSettings,
+      );
+
+      expect(provider.lookup(session), isNull);
+    }, skip: skip);
+  });
+}

@@ -47,7 +47,9 @@ import '../../shared/config/prompt_defaults.dart';
 import '../../shared/database/database.dart';
 import '../../shared/services/environment_config.dart';
 import '../../shared/services/game_interaction_coordinator.dart';
+import '../../games/mill/mill_opening_book_provider.dart';
 import '../../shared/services/logger.dart';
+import '../../shared/services/perfect_database_service.dart';
 import '../../shared/services/native_methods.dart';
 import '../../shared/services/system_ui_service.dart';
 import '../../shared/themes/app_theme.dart';
@@ -68,6 +70,7 @@ import 'import_export/import_helpers.dart';
 import 'import_export/pgn.dart';
 import 'player_timer.dart';
 
+export '../../games/mill/mill_perfect_database_support.dart';
 export '../../games/mill/mill_score.dart';
 export '../../games/mill/mill_types.dart';
 
