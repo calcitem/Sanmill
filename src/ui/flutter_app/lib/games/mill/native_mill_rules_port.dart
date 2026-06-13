@@ -175,7 +175,33 @@ class NativeMillRulesPort implements RulesPort {
       depth: depth,
       moveLimitMs: moveLimitMs,
       usePerfectDatabase: usePerfectDatabase,
+      algorithm: _millSearchAlgorithm(_generalSettings.searchAlgorithm),
+      aiIsLazy: _generalSettings.aiIsLazy,
+      skillLevel: _generalSettings.skillLevel,
     );
+  }
+
+  /// Map the persisted Dart [SearchAlgorithm] enum onto the FRB
+  /// [tgf_simple.MillSearchAlgorithm] consumed by the Rust dispatcher.
+  /// Falls back to MTD(f) when the setting is null (matches the engine
+  /// default documented on `MillEngineConfig`).
+  static tgf_simple.MillSearchAlgorithm _millSearchAlgorithm(
+    SearchAlgorithm? algorithm,
+  ) {
+    switch (algorithm) {
+      case SearchAlgorithm.alphaBeta:
+        return tgf_simple.MillSearchAlgorithm.alphaBeta;
+      case SearchAlgorithm.pvs:
+        return tgf_simple.MillSearchAlgorithm.pvs;
+      case SearchAlgorithm.mtdf:
+        return tgf_simple.MillSearchAlgorithm.mtdf;
+      case SearchAlgorithm.mcts:
+        return tgf_simple.MillSearchAlgorithm.mcts;
+      case SearchAlgorithm.random:
+        return tgf_simple.MillSearchAlgorithm.random;
+      case null:
+        return tgf_simple.MillSearchAlgorithm.mtdf;
+    }
   }
 
   GameStateSnapshot _snapshotFromKernel({GameAction? lastAction}) {

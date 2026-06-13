@@ -28,31 +28,28 @@ void main() {
   });
 
   group('MillOpeningBookProvider', () {
-    test(
-      'returns a legal opening move for the initial 9mm position',
-      () {
-        (DB.instance! as MockDB).generalSettings = DB().generalSettings
-            .copyWith(useOpeningBook: true);
+    test('returns a legal opening move for the initial 9mm position', () {
+      (DB.instance! as MockDB).generalSettings = DB().generalSettings.copyWith(
+        useOpeningBook: true,
+      );
 
-        final NativeMillGameSession session = NativeMillGameSession();
-        addTearDown(session.dispose);
-        final MillOpeningBookProvider provider = MillOpeningBookProvider(
-          ruleSettings: const RuleSettings(),
-          generalSettings: DB().generalSettings,
-        );
+      final NativeMillGameSession session = NativeMillGameSession();
+      addTearDown(session.dispose);
+      final MillOpeningBookProvider provider = MillOpeningBookProvider(
+        ruleSettings: const RuleSettings(),
+        generalSettings: DB().generalSettings,
+      );
 
-        final GameAction? bookMove = provider.lookup(session);
-        expect(bookMove, isNotNull);
-        expect(
-          session.legalActions.any(
-            (GameAction action) =>
-                action.payload['move'] == bookMove!.payload['move'],
-          ),
-          isTrue,
-        );
-      },
-      skip: skip,
-    );
+      final GameAction? bookMove = provider.lookup(session);
+      expect(bookMove, isNotNull);
+      expect(
+        session.legalActions.any(
+          (GameAction action) =>
+              action.payload['move'] == bookMove!.payload['move'],
+        ),
+        isTrue,
+      );
+    }, skip: skip);
 
     test('returns null when useOpeningBook is disabled', () {
       (DB.instance! as MockDB).generalSettings = DB().generalSettings.copyWith(

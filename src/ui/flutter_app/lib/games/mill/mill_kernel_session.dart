@@ -40,6 +40,10 @@ class MillKernelSession {
     required int depth,
     int moveLimitMs = 0,
     bool usePerfectDatabase = false,
+    tgf_simple.MillSearchAlgorithm algorithm =
+        tgf_simple.MillSearchAlgorithm.pvs,
+    bool aiIsLazy = false,
+    int skillLevel = 1,
   }) {
     if (kernel.isDisposed) {
       throw KernelException('handle already disposed');
@@ -48,12 +52,12 @@ class MillKernelSession {
         .tgfKernelMillSearchEventsWithConfig(
           handle: kernel.rawHandle,
           config: tgf_simple.MillEngineConfig(
-            algorithm: tgf_simple.MillSearchAlgorithm.pvs,
+            algorithm: algorithm,
             depth: depth,
             moveTimeMs: moveLimitMs,
-            aiIsLazy: false,
+            aiIsLazy: aiIsLazy,
             lastBestValue: _lastRawBestValue,
-            skillLevel: 1,
+            skillLevel: skillLevel,
             usePerfectDatabase: usePerfectDatabase,
           ),
         );
