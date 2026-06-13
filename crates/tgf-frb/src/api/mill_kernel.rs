@@ -18,11 +18,11 @@ use tgf_mill::{MillPhase, MillRules, MillVariantOptions as NativeMillVariantOpti
 
 use super::kernel::TgfSnapshot;
 use crate::api::simple::{
-    EngineEvent, MillEngineConfig, MillVariantOptions, spawn_kernel_search_error,
-    spawn_mill_engine_config_event_stream, spawn_mill_pvs_event_stream,
+    EngineEvent, MillAnalysisReport, MillEngineConfig, MillMoveAnalysis, MillVariantOptions,
+    spawn_kernel_search_error, spawn_mill_engine_config_event_stream, spawn_mill_pvs_event_stream,
 };
 use crate::frb_generated::StreamSink;
-use crate::games::mill::variant_extras;
+use crate::games::mill::{perfect, variant_extras};
 use crate::session_registry::{insert_kernel, with_kernel};
 
 /// Create a Mill kernel with explicit variant options.  Use this once
@@ -244,6 +244,42 @@ pub fn tgf_kernel_set_from_fen(handle: u32, fen: String) -> Result<TgfSnapshot, 
         kernel.replace_state(new_snap);
         Ok(TgfSnapshot::from_snap(new_snap))
     })?
+}
+
+/// Analyse the kernel's **current** Mill position, returning one verdict per
+/// legal move plus any detected trap moves.
+///
+/// Each move is evaluated against the perfect database (win/draw/loss + step
+/// count) or, when the database has no entry, with a shallow heuristic search
+/// (advantage/disadvantage).  When `trap_awareness` is set, aggressive moves
+/// with a worse database verdict than an available alternative are reported in
+/// [`MillAnalysisReport::traps`].  This backs the analysis overlay (the legacy
+/// C++ `analyze` UCI command) without mutating the kernel state.
+#[flutter_rust_bridge::frb(sync)]
+pub fn tgf_kernel_mill_perfect_db_analyze(
+    handle: u32,
+    trap_awareness: bool,
+) -> Result<MillAnalysisReport, String> {
+    let game_id = with_kernel(handle, |k| k.game_id().to_owned())?;
+    if game_id != "mill" {
+        return Err(format!("kernel game_id is {game_id}, expected mill"));
+    }
+    let snapshot = with_kernel(handle, |k| k.snapshot())?;
+    let options = variant_extras::options_for(handle);
+    let report = perfect::analyze_position(&snapshot, &options, trap_awareness);
+    Ok(MillAnalysisReport {
+        moves: report
+            .moves
+            .into_iter()
+            .map(|e| MillMoveAnalysis {
+                mv: e.mv,
+                outcome: e.outcome.to_owned(),
+                value: e.value,
+                steps: e.steps,
+            })
+            .collect(),
+        traps: report.traps,
+    })
 }
 
 /// Export the current Mill kernel state as a FEN string.

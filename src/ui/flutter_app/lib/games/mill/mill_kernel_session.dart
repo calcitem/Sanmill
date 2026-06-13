@@ -107,6 +107,19 @@ class MillKernelSession {
     return tgf_mill.tgfKernelExportFen(handle: kernel.rawHandle);
   }
 
+  /// Analyse the kernel's current position, returning one verdict per legal
+  /// move plus detected trap moves.  Verdicts come from the perfect database
+  /// (win/draw/loss) or a heuristic-search fallback (advantage/disadvantage).
+  /// Trap moves are only populated when [trapAwareness] is set.
+  tgf_simple.MillAnalysisReport rawPerfectDbAnalyze({
+    required bool trapAwareness,
+  }) {
+    return tgf_mill.tgfKernelMillPerfectDbAnalyze(
+      handle: kernel.rawHandle,
+      trapAwareness: trapAwareness,
+    );
+  }
+
   int _rawScoreFromReason(String reason) {
     final RegExpMatch? match = RegExp(
       r'(?:^|\s)rawScore=(-?\d+)(?:\s|$)',

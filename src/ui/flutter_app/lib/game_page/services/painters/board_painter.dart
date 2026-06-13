@@ -35,8 +35,12 @@ class BoardPainter extends CustomPainter {
     _drawPoints(offset, canvas, paint);
     _drawMillLines(offset, canvas, paint, size);
 
-    // Analysis renderer was removed along with the perfect-database
-    // analyze feature; AnalysisMode never becomes enabled now.
+    // Draw the perfect-database analysis overlay on top of the board when
+    // the user has run an analysis pass.  No-op while the overlay is off.
+    if (AnalysisMode.isEnabled) {
+      final double squareSize = (size.width - boardMargin * 2) / 6;
+      AnalysisRenderer.render(canvas, size, squareSize);
+    }
   }
 
   Paint _createPaint(

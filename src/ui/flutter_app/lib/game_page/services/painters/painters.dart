@@ -21,11 +21,14 @@ import '../../../games/mill/mill_board_coordinate_maps.dart';
 import '../../../games/mill/native_mill_snapshot_board_view.dart';
 import '../../../shared/database/database.dart';
 import '../../../shared/services/environment_config.dart';
+import '../../../shared/services/logger.dart';
 import '../../../shared/themes/app_theme.dart';
+import '../analysis_mode.dart';
 import '../mill.dart';
 import 'animations/piece_effect_animation.dart';
 import 'piece.dart';
 
+part 'analysis_renderer.dart';
 part 'board_painter.dart';
 part 'board_utils.dart';
 part 'piece_painter.dart';

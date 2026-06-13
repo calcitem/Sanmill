@@ -104,6 +104,23 @@ TgfSnapshot tgfKernelSetFromFen({required int handle, required String fen}) =>
       fen: fen,
     );
 
+/// Analyse the kernel's **current** Mill position, returning one verdict per
+/// legal move plus any detected trap moves.
+///
+/// Each move is evaluated against the perfect database (win/draw/loss + step
+/// count) or, when the database has no entry, with a shallow heuristic search
+/// (advantage/disadvantage).  When `trap_awareness` is set, aggressive moves
+/// with a worse database verdict than an available alternative are reported in
+/// [`MillAnalysisReport::traps`].  This backs the analysis overlay (the legacy
+/// C++ `analyze` UCI command) without mutating the kernel state.
+MillAnalysisReport tgfKernelMillPerfectDbAnalyze({
+  required int handle,
+  required bool trapAwareness,
+}) => RustLib.instance.api.crateApiMillKernelTgfKernelMillPerfectDbAnalyze(
+  handle: handle,
+  trapAwareness: trapAwareness,
+);
+
 /// Export the current Mill kernel state as a FEN string.
 String tgfKernelExportFen({required int handle}) =>
     RustLib.instance.api.crateApiMillKernelTgfKernelExportFen(handle: handle);

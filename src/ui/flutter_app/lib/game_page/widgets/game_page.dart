@@ -46,6 +46,7 @@ import '../../src/rust/api/simple.dart' as tgf;
 import '../../statistics/model/stats_settings.dart';
 // Voice assistant functionality disabled
 // import '../../voice_assistant/widgets/voice_button.dart';
+import '../services/analysis/analysis_service.dart';
 import '../services/analysis_mode.dart';
 import '../services/animation/animation_manager.dart';
 import '../services/annotation/annotation_manager.dart';
@@ -263,10 +264,31 @@ class _GamePageInnerState extends State<_GamePageInner> {
                                         onPressed: () =>
                                             _showAiChatDialog(context),
                                       ),
-                                    // Analysis overlay button removed: the
-                                    // perfect-database analyze feature
-                                    // depended on the deleted C++ engine and
-                                    // has no Rust backend yet.
+                                    // Analysis overlay button: toggles the
+                                    // perfect-database analysis overlay for
+                                    // the current position.
+                                    if (_shouldShowAnalysisButton(settings))
+                                      IconButton(
+                                        key: const Key(
+                                          'game_page_analysis_button',
+                                        ),
+                                        icon: Icon(
+                                          AnalysisMode.isEnabled
+                                              ? FluentIcons
+                                                    .brain_circuit_24_filled
+                                              : FluentIcons
+                                                    .brain_circuit_24_regular,
+                                          color: Colors.white,
+                                        ),
+                                        tooltip: S.of(context).analysis,
+                                        onPressed:
+                                            (GameController().isEngineRunning ||
+                                                AnalysisMode.isAnalyzing)
+                                            ? null
+                                            : () => AnalysisService.toggle(
+                                                context,
+                                              ),
+                                      ),
                                     // Board image recognition removed along
                                     // with the Setup Position editor.
                                   ],
@@ -498,6 +520,20 @@ class _GamePageInnerState extends State<_GamePageInner> {
       return false;
     }
 
+    final GameMode mode = GameController().gameInstance.gameMode;
+    return mode == GameMode.humanVsAi ||
+        mode == GameMode.humanVsHuman ||
+        mode == GameMode.aiVsAi;
+  }
+
+  /// Whether to show the on-board analysis overlay button.
+  ///
+  /// Shown only for play modes where analysing the current position is
+  /// meaningful and the active rule variant has a bundled perfect database.
+  bool _shouldShowAnalysisButton(GeneralSettings settings) {
+    if (!isRuleSupportingPerfectDatabase()) {
+      return false;
+    }
     final GameMode mode = GameController().gameInstance.gameMode;
     return mode == GameMode.humanVsAi ||
         mode == GameMode.humanVsHuman ||

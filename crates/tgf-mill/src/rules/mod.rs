@@ -186,6 +186,21 @@ impl MillRules {
         &self.options
     }
 
+    /// Count the mill lines through `to` (optionally treating the square at
+    /// `from` as vacated) that already hold two of `side`'s pieces — i.e. the
+    /// lines this move could complete.  Mirrors C++
+    /// `Position::potential_mills_count` and is used by the analysis overlay's
+    /// trap detection to decide whether a candidate move is "aggressive".
+    pub fn potential_mills_count(
+        &self,
+        state: &MillState,
+        to: usize,
+        side: i8,
+        from: Option<usize>,
+    ) -> u32 {
+        potential_mills_count_at(state, &self.options, to, side, from)
+    }
+
     fn decode(snapshot: &GameStateSnapshot) -> MillState {
         MillState::decode(snapshot)
     }

@@ -373,4 +373,10 @@ class _FakeNativeMillRulesPort implements NativeMillRulesPort {
   @override
   String exportFen() =>
       'O*******/********/******** w p p 0 9 0 9 0 0 0 0 0 0 0 0 1';
+
+  @override
+  tgf.MillAnalysisReport analyzePerfectDb() => const tgf.MillAnalysisReport(
+    moves: <tgf.MillMoveAnalysis>[],
+    traps: <String>[],
+  );
 }

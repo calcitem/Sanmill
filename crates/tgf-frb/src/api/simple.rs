@@ -519,6 +519,34 @@ pub fn mill_perfect_db_deinit() {
     perfect_db::deinit();
 }
 
+/// Perfect-database verdict for one legal move, used by the analysis overlay.
+///
+/// `value` and `outcome` are expressed from the perspective of the side that
+/// is to move in the analysed position (`"win"` / `"draw"` / `"loss"` and
+/// `1` / `0` / `-1`).  `steps` is the distance-to-conversion step count, or a
+/// negative value when the database does not expose one.
+#[derive(Clone, Debug)]
+pub struct MillMoveAnalysis {
+    /// Mill UCI notation token (`"a4"`, `"a1-a4"`, `"xg7"`).
+    pub mv: String,
+    /// `"win"`, `"draw"` or `"loss"` for the analysing side.
+    pub outcome: String,
+    /// Win/draw/loss value for the analysing side (1 / 0 / -1).
+    pub value: i32,
+    /// Distance-to-conversion step count; negative when unavailable.
+    pub steps: i32,
+}
+
+/// Full analysis result for a position: one verdict per legal move plus the
+/// detected trap moves (empty unless trap detection ran and found any).
+#[derive(Clone, Debug)]
+pub struct MillAnalysisReport {
+    /// One verdict per legal move.
+    pub moves: Vec<MillMoveAnalysis>,
+    /// Notation tokens of moves flagged as traps.
+    pub traps: Vec<String>,
+}
+
 /// Return the Rust-native standard 24-point Mill topology.
 ///
 /// This is the single source of truth for Mill board geometry.  The Dart

@@ -167,6 +167,19 @@ class NativeMillGameSession implements GameSessionHandle {
     return rulesPort.exportFen();
   }
 
+  /// Analyse the current position, returning one verdict per legal move plus
+  /// detected trap moves (empty when the session is terminal/disposed or the
+  /// active rule variant is unsupported).  Backs the analysis overlay.
+  tgf.MillAnalysisReport analyzePerfectDb() {
+    if (_disposed || outcome.isTerminal) {
+      return const tgf.MillAnalysisReport(
+        moves: <tgf.MillMoveAnalysis>[],
+        traps: <String>[],
+      );
+    }
+    return rulesPort.analyzePerfectDb();
+  }
+
   @override
   ValueListenable<GameStateSnapshot> get state => _state;
 

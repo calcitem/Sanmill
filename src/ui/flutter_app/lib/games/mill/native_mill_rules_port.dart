@@ -138,6 +138,24 @@ class NativeMillRulesPort implements RulesPort {
   /// Export the current kernel state as a Mill FEN string (Phase 6.A.3.B).
   String exportFen() => _session.rawExportFen();
 
+  /// Analyse the current position, returning one verdict per legal move plus
+  /// detected trap moves.  Verdicts come from the perfect database
+  /// (win/draw/loss) or a heuristic-search fallback (advantage/disadvantage).
+  /// Trap detection follows the persisted `trapAwareness` setting.  Returns an
+  /// empty report when the active rule variant is not supported by the
+  /// bundled dataset.
+  tgf_simple.MillAnalysisReport analyzePerfectDb() {
+    if (!isRuleSupportingPerfectDatabase()) {
+      return const tgf_simple.MillAnalysisReport(
+        moves: <tgf_simple.MillMoveAnalysis>[],
+        traps: <String>[],
+      );
+    }
+    return _session.rawPerfectDbAnalyze(
+      trapAwareness: _generalSettings.trapAwareness,
+    );
+  }
+
   GameStateSnapshot _snapshotFromRaw(tgf.TgfSnapshot raw) {
     final tgf.TgfOutcome outcome = _kernel.rawOutcome();
     final Uint8List opaque = Uint8List.fromList(raw.opaquePayload);

@@ -7,7 +7,7 @@ import '../frb_generated.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
 // These functions are ignored because they are not marked as `pub`: `spawn_mill_engine_config_event_stream`, `spawn_mill_pvs_event_stream`
-// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `assert_fields_are_eq`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `eq`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`
+// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `assert_fields_are_eq`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `eq`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`
 
 /// Returns a greeting string confirming that the Rust → Dart bridge works.
 /// Called from Dart as `tgfHelloWorld()` after `await RustLib.init()`.
@@ -240,6 +240,29 @@ class EngineEvent {
           reason == other.reason;
 }
 
+/// Full analysis result for a position: one verdict per legal move plus the
+/// detected trap moves (empty unless trap detection ran and found any).
+class MillAnalysisReport {
+  /// One verdict per legal move.
+  final List<MillMoveAnalysis> moves;
+
+  /// Notation tokens of moves flagged as traps.
+  final List<String> traps;
+
+  const MillAnalysisReport({required this.moves, required this.traps});
+
+  @override
+  int get hashCode => moves.hashCode ^ traps.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is MillAnalysisReport &&
+          runtimeType == other.runtimeType &&
+          moves == other.moves &&
+          traps == other.traps;
+}
+
 enum MillBoardFullAction {
   firstPlayerLose,
   firstAndSecondPlayerRemovePiece,
@@ -324,6 +347,47 @@ enum MillFormationActionInPlacingPhase {
   opponentRemovesOwnPiece,
   markAndDelayRemovingPieces,
   removalBasedOnMillCounts,
+}
+
+/// Perfect-database verdict for one legal move, used by the analysis overlay.
+///
+/// `value` and `outcome` are expressed from the perspective of the side that
+/// is to move in the analysed position (`"win"` / `"draw"` / `"loss"` and
+/// `1` / `0` / `-1`).  `steps` is the distance-to-conversion step count, or a
+/// negative value when the database does not expose one.
+class MillMoveAnalysis {
+  /// Mill UCI notation token (`"a4"`, `"a1-a4"`, `"xg7"`).
+  final String mv;
+
+  /// `"win"`, `"draw"` or `"loss"` for the analysing side.
+  final String outcome;
+
+  /// Win/draw/loss value for the analysing side (1 / 0 / -1).
+  final int value;
+
+  /// Distance-to-conversion step count; negative when unavailable.
+  final int steps;
+
+  const MillMoveAnalysis({
+    required this.mv,
+    required this.outcome,
+    required this.value,
+    required this.steps,
+  });
+
+  @override
+  int get hashCode =>
+      mv.hashCode ^ outcome.hashCode ^ value.hashCode ^ steps.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is MillMoveAnalysis &&
+          runtimeType == other.runtimeType &&
+          mv == other.mv &&
+          outcome == other.outcome &&
+          value == other.value &&
+          steps == other.steps;
 }
 
 /// Search algorithm selector exposed to Flutter.

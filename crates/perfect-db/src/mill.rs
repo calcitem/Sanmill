@@ -95,6 +95,43 @@ pub fn best_move_token_for_state(
     )
 }
 
+/// Evaluate `state` through the perfect database, returning `(wdl, steps)`
+/// from the perspective of `side_to_move` (`wdl`: 1 = win, 0 = draw,
+/// -1 = loss; `steps`: distance-to-conversion, or a negative value when the
+/// database does not expose a step count).
+///
+/// Returns `None` under the same conditions as [`best_move_token_for_state`]:
+/// the database is not initialized, the variant is not the standard 9-piece
+/// game, the side to move is invalid, or the position has no entry.  This is
+/// the per-move primitive consumed by the analysis overlay, which evaluates
+/// the position that results from each candidate move.
+pub fn evaluate_state_for(
+    state: &MillState,
+    options: &MillVariantOptions,
+    side_to_move: i8,
+) -> Option<(i32, i32)> {
+    if options.piece_count != 9 || !crate::is_initialized() {
+        return None;
+    }
+    if side_to_move != 0 && side_to_move != 1 {
+        return None;
+    }
+
+    let (white_bits, black_bits) = bitboards_from_state(state);
+    let in_hand = state.pieces_in_hand();
+    let pending = state.pending_removals();
+    let only_stone_taking = pending[side_to_move as usize] > 0;
+
+    crate::evaluate(
+        white_bits,
+        black_bits,
+        in_hand[0],
+        in_hand[1],
+        side_to_move as u8,
+        only_stone_taking,
+    )
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

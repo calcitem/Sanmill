@@ -15,6 +15,7 @@ import '../../shared/config/constants.dart';
 import '../../shared/database/database.dart';
 import '../../shared/services/screenshot_service.dart';
 import '../../shared/themes/app_theme.dart';
+import '../services/analysis/analysis_service.dart';
 import '../services/analysis_mode.dart';
 import '../services/mill.dart';
 import '../services/painters/advantage_graph_painter.dart';
@@ -234,6 +235,25 @@ class PlayAreaState extends State<PlayArea> {
       return const SizedBox.shrink();
     }
     return MoveOptionsModal(mainContext: context);
+  }
+
+  /// Retrieves the analysis toolbar items (perfect-database overlay toggle).
+  List<ToolbarItem> _getAnalysisToolbarItems(BuildContext context) {
+    return <ToolbarItem>[
+      ToolbarItem(
+        key: const Key('play_area_analysis_toolbar_engine'),
+        onPressed:
+            (GameController().isEngineRunning || AnalysisMode.isAnalyzing)
+            ? null
+            : () => AnalysisService.toggle(context),
+        child: Icon(
+          AnalysisMode.isEnabled
+              ? FluentIcons.brain_circuit_24_filled
+              : FluentIcons.brain_circuit_24_regular,
+          semanticLabel: S.of(context).analysis,
+        ),
+      ),
+    ];
   }
 
   /// Retrieves the history navigation toolbar items.
@@ -538,11 +558,19 @@ class PlayAreaState extends State<PlayArea> {
                       ),
                     ),
 
-                  // Analysis toolbar removed: the perfect-database analyze
-                  // feature relied on the deleted C++ engine and has no
-                  // Rust backend yet.  Keep `isAnalysisToolbarShown` in
-                  // settings storage for Hive backward compat, but do not
-                  // render anything.
+                  // Analysis toolbar (perfect-database overlay toggle).
+                  if (DB().displaySettings.isAnalysisToolbarShown &&
+                      !isToolbarAtBottom)
+                    GamePageToolbar(
+                      key: const Key('play_area_analysis_toolbar'),
+                      backgroundColor:
+                          DB().colorSettings.navigationToolbarBackgroundColor,
+                      itemColor: DB().colorSettings.navigationToolbarIconColor,
+                      children: _buildToolbarItems(
+                        context,
+                        _getAnalysisToolbarItems(context),
+                      ),
+                    ),
 
                   // ──────────────────────────────────────────────────────────
                   // NOTE: The bottom black Annotation Toolbar is removed.
@@ -596,7 +624,18 @@ class PlayAreaState extends State<PlayArea> {
                       ),
                     ),
 
-                  // Analysis toolbar removed (see note above).
+                  // Analysis toolbar (perfect-database overlay toggle).
+                  if (DB().displaySettings.isAnalysisToolbarShown)
+                    GamePageToolbar(
+                      key: const Key('play_area_analysis_toolbar_bottom'),
+                      backgroundColor:
+                          DB().colorSettings.navigationToolbarBackgroundColor,
+                      itemColor: DB().colorSettings.navigationToolbarIconColor,
+                      children: _buildToolbarItems(
+                        context,
+                        _getAnalysisToolbarItems(context),
+                      ),
+                    ),
 
                   // Main toolbar
                   GamePageToolbar(
