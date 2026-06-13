@@ -51,6 +51,7 @@ import '../services/analysis_mode.dart';
 import '../services/animation/animation_manager.dart';
 import '../services/animation/headless_animation_manager.dart';
 import '../services/annotation/annotation_manager.dart';
+import '../services/board_recognition_import.dart';
 import '../services/import_export/pgn.dart';
 import '../services/painters/animations/piece_effect_animation.dart';
 import '../services/painters/painters.dart';
@@ -305,8 +306,49 @@ class _GamePageInnerState extends State<_GamePageInner> {
                                                 context,
                                               ),
                                       ),
-                                    // Board image recognition removed along
-                                    // with the Setup Position editor.
+                                    // Board image recognition (Setup Position
+                                    // mode only): load a board position from a
+                                    // gallery image into the setup editor.
+                                    if (GameController()
+                                            .gameInstance
+                                            .gameMode ==
+                                        GameMode.setupPosition) ...<Widget>[
+                                      // Recognition tuning sliders, dev builds
+                                      // only.
+                                      if (EnvironmentConfig.devMode)
+                                        IconButton(
+                                          key: const Key(
+                                            'game_page_recognition_params_button',
+                                          ),
+                                          icon: const Icon(
+                                            FluentIcons.settings_24_regular,
+                                            color: Colors.white,
+                                          ),
+                                          tooltip: S
+                                              .of(context)
+                                              .recognitionParameters,
+                                          onPressed: () =>
+                                              BoardRecognitionImport.showParametersDialog(
+                                                context,
+                                              ),
+                                        ),
+                                      IconButton(
+                                        key: const Key(
+                                          'game_page_image_recognition_button',
+                                        ),
+                                        icon: const Icon(
+                                          FluentIcons.camera_24_regular,
+                                          color: Colors.white,
+                                        ),
+                                        tooltip: S
+                                            .of(context)
+                                            .recognizeBoardFromImage,
+                                        onPressed: () =>
+                                            BoardRecognitionImport.recognizeFromGallery(
+                                              context,
+                                            ),
+                                      ),
+                                    ],
                                   ],
                                 );
                               },
