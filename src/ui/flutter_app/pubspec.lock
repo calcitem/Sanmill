@@ -996,6 +996,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "6.11.1"
+  just_screenshot:
+    dependency: "direct main"
+    description:
+      path: "third_party/just_screenshot"
+      relative: true
+    source: path
+    version: "0.1.0"
   langchain:
     dependency: "direct main"
     description:
@@ -1452,6 +1459,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "3.1.2"
+  rust_lib_sanmill:
+    dependency: "direct main"
+    description:
+      path: rust_builder
+      relative: true
+    source: path
+    version: "0.0.1"
   rxdart:
     dependency: transitive
     description:
