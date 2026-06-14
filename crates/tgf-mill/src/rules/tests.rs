@@ -19,6 +19,44 @@ fn initial_state_has_24_placing_actions() {
     );
 }
 
+/// Regression (bench MCTS self-play crash): a terminal state can carry a
+/// stale `action == Remove` together with the GameOver side-to-move
+/// sentinel `-1` -- the fewer-than-three Remove branch sets
+/// `side_to_move = -1` without re-syncing the cached `action` byte.  MCTS
+/// node expansion generates moves for such a terminal child, so legal-action
+/// generation must return an empty list instead of indexing
+/// `pending_removals[(-1) as usize]` out of bounds.
+#[test]
+fn legal_actions_on_terminal_remove_state_is_empty() {
+    let rules = MillRules::default();
+    let terminal = MillState {
+        phase: MillPhase::GameOver,
+        side_to_move: -1,
+        action: MillActionState::Remove,
+        winner: 0,
+        outcome_reason: MillOutcomeReason::LoseFewerThanThree,
+        ..Default::default()
+    };
+    let snap = rules.encode_state(terminal);
+
+    // MCTS expansion path: `Game::generate_legal_ctx` on the terminal
+    // workbench (this is what panicked in `legal_actions_ctx`).
+    let game = MillGame::default();
+    let wb = game.build_workbench(&snap);
+    let mut ctx_actions = ActionList::<256>::new();
+    MillGame::generate_legal_ctx(
+        &wb,
+        &mut ctx_actions,
+        &tgf_core::MoveOrderContext::default(),
+    );
+    assert!(ctx_actions.is_empty());
+
+    // Trait path: `GameRules::legal_actions`.
+    let mut actions = ActionList::<256>::new();
+    rules.legal_actions(&snap, &mut actions);
+    assert!(actions.is_empty());
+}
+
 /// Regression for the `apply_unchecked` memory-safety guard:
 /// caller-supplied actions whose `from_node` / `to_node` falls
 /// outside the 0..24 board range must not panic; instead the rules

@@ -23,6 +23,17 @@ impl MillState {
     }
 
     pub(super) fn action_for_legal_generation(&self) -> MillActionState {
+        // A terminal position (or any state carrying the GameOver
+        // side-to-move sentinel `-1`) has no legal actions.  Returning
+        // `GameOver` here is the single chokepoint that stops both
+        // `legal_actions` and `legal_actions_ctx` from indexing
+        // `[side_to_move]` out of bounds: a fewer-than-three Remove sets
+        // `side_to_move = -1` without re-syncing the cached `action` byte,
+        // and MCTS node expansion then generates moves for that terminal
+        // child (regression: `legal_actions.rs` index-OOB panic).
+        if self.phase == MillPhase::GameOver || !(0..=1).contains(&self.side_to_move) {
+            return MillActionState::GameOver;
+        }
         if self.action == MillActionState::Place
             && (self.phase != MillPhase::Placing
                 || (self.side_to_move >= 0
