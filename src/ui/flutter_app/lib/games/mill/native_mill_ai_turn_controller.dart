@@ -203,9 +203,17 @@ class NativeMillAiTurnController {
         continue;
       }
       final Stopwatch sw = Stopwatch()..start();
+      // Pass the controller's live [generalSettings] so the engine honours
+      // the *current* user settings (shuffling, algorithm, skill level, lazy
+      // mode, perfect database).  Without this the search would read the
+      // stale snapshot captured by the session's rules port at construction
+      // time, so toggling e.g. the shuffling switch mid-session would have no
+      // effect — diverging from the master engine, which read `gameOptions`
+      // live on every search.
       final GameAction? action = await session.searchBestAction(
         depth: searchDepth,
         moveLimitMs: timeLimit,
+        engineSettings: generalSettings,
       );
       if (action == null) {
         sw.stop();

@@ -222,18 +222,88 @@ impl<G: Game> Searcher<G> {
             };
         }
 
-        let score = self.mtdf(wb, first_guess, depth);
-        let key = wb.key();
-        let best_action = self
-            .tt
-            .get(key)
-            .map(|e| e.best_action)
-            .unwrap_or(Action::NONE);
+        // Persistent best root move threaded through every MTD(f) probe,
+        // mirroring master `Search::MTDF`'s `Move &bestMove` reference
+        // (src/search.cpp).  A converging fail-low (all-node) probe never
+        // raises alpha and therefore must NOT change the move chosen by the
+        // fail-high probe that established the score.  Recovering the move
+        // from the TT after the loop is unreliable: the final all-node probe
+        // stores the first-ordered move with an Upper bound, clobbering the
+        // genuinely best move and making MTD(f) ignore the evaluator.
+        let mut best_action = moves[0];
+        let mut g = first_guess;
+        let mut lower_bound = i32::MIN + 1;
+        let mut upper_bound = i32::MAX - 1;
+        while lower_bound < upper_bound {
+            let beta = if g == lower_bound { g + 1 } else { g };
+            g = self.mtdf_root(wb, depth, beta - 1, beta, &mut best_action);
+            if g < beta {
+                upper_bound = g;
+            } else {
+                lower_bound = g;
+            }
+            if self.was_aborted() {
+                break;
+            }
+        }
         SearchResult {
             best_action,
-            score,
+            score: g,
             nodes: self.nodes,
             draw_reason: None,
         }
+    }
+
+    /// Root driver for one MTD(f) zero-window probe.
+    ///
+    /// Mirrors the root of master `Search::search` (src/search.cpp): it
+    /// iterates the ordered root moves, recurses through the shared
+    /// [`Self::alpha_beta`] for children (so every child still probes and
+    /// saves the TT), and updates `best_action` ONLY when a move raises
+    /// alpha (`value > alpha`).  The caller threads the same `best_action`
+    /// through every probe of the bound loop, exactly like master's
+    /// `Move &bestMove` reference, so a converging all-node probe cannot
+    /// overwrite the move chosen by the fail-high probe that pinned down
+    /// the score.
+    fn mtdf_root(
+        &mut self,
+        wb: &mut G::Workbench,
+        depth: i32,
+        mut alpha: i32,
+        beta: i32,
+        best_action: &mut Action,
+    ) -> i32 {
+        let mut moves = ActionList::<256>::new();
+        G::generate_legal_ctx(wb, &mut moves, &self.options.move_order_context);
+        self.order_moves(wb, wb.key(), depth, &mut moves);
+        let mut best_value = i32::MIN + 1;
+        let root_key = wb.key();
+        for action in moves {
+            if self.should_abort() {
+                break;
+            }
+            let before = wb.side_to_move();
+            if root_key != 0 {
+                self.repetition_stack.push(root_key);
+            }
+            wb.do_move(action);
+            let after = wb.side_to_move();
+            let value = self.search_after_move(wb, depth - 1, alpha, beta, before, after);
+            wb.undo_move();
+            if root_key != 0 {
+                self.repetition_stack.pop();
+            }
+            if value > best_value {
+                best_value = value;
+                if value > alpha {
+                    *best_action = action;
+                    if value >= beta {
+                        break; // fail high
+                    }
+                    alpha = value;
+                }
+            }
+        }
+        best_value
     }
 }

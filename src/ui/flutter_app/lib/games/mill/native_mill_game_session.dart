@@ -315,8 +315,13 @@ class NativeMillGameSession implements GameSessionHandle {
   Stream<tgf.EngineEvent> millSearchEvents({
     required int depth,
     int moveLimitMs = 0,
+    GeneralSettings? engineSettings,
   }) {
-    return rulesPort.millSearchEvents(depth: depth, moveLimitMs: moveLimitMs);
+    return rulesPort.millSearchEvents(
+      depth: depth,
+      moveLimitMs: moveLimitMs,
+      engineSettings: engineSettings,
+    );
   }
 
   /// Search the current kernel state and map the final bestMove event back to
@@ -329,6 +334,7 @@ class NativeMillGameSession implements GameSessionHandle {
   Future<GameAction?> searchBestAction({
     int depth = 1,
     int moveLimitMs = 0,
+    GeneralSettings? engineSettings,
   }) async {
     if (_disposed || outcome.isTerminal) {
       return null;
@@ -345,6 +351,7 @@ class NativeMillGameSession implements GameSessionHandle {
       await for (final tgf.EngineEvent event in millSearchEvents(
         depth: depth,
         moveLimitMs: moveLimitMs,
+        engineSettings: engineSettings,
       )) {
         eventCount++;
         logger.i(
@@ -388,10 +395,12 @@ class NativeMillGameSession implements GameSessionHandle {
   Future<GameAction?> searchAndApplyBestAction({
     int depth = 1,
     int moveLimitMs = 0,
+    GeneralSettings? engineSettings,
   }) async {
     final GameAction? action = await searchBestAction(
       depth: depth,
       moveLimitMs: moveLimitMs,
+      engineSettings: engineSettings,
     );
     if (action == null) {
       return null;

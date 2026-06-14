@@ -182,21 +182,30 @@ class NativeMillRulesPort implements RulesPort {
   ///
   /// When [moveLimitMs] is greater than zero the search is time-bounded
   /// (matches the legacy C++ `MoveTime` UCI option).
+  ///
+  /// [engineSettings] overrides the engine knobs (algorithm, skill level,
+  /// lazy mode, shuffling, perfect database) for this search.  Callers that
+  /// want the engine to honour the *current* user settings — matching the
+  /// master engine which read `gameOptions` live on every search — must pass
+  /// `DB().generalSettings`.  When omitted the snapshot captured at session
+  /// construction is used, which is correct only when settings cannot change
+  /// after the session is created.
   Stream<tgf_simple.EngineEvent> millSearchEvents({
     required int depth,
     int moveLimitMs = 0,
+    GeneralSettings? engineSettings,
   }) {
+    final GeneralSettings settings = engineSettings ?? _generalSettings;
     final bool usePerfectDatabase =
-        _generalSettings.usePerfectDatabase &&
-        isRuleSupportingPerfectDatabase();
+        settings.usePerfectDatabase && isRuleSupportingPerfectDatabase();
     return _session.searchEvents(
       depth: depth,
       moveLimitMs: moveLimitMs,
       usePerfectDatabase: usePerfectDatabase,
-      algorithm: _millSearchAlgorithm(_generalSettings.searchAlgorithm),
-      aiIsLazy: _generalSettings.aiIsLazy,
-      skillLevel: _generalSettings.skillLevel,
-      shuffling: _generalSettings.shufflingEnabled,
+      algorithm: _millSearchAlgorithm(settings.searchAlgorithm),
+      aiIsLazy: settings.aiIsLazy,
+      skillLevel: settings.skillLevel,
+      shuffling: settings.shufflingEnabled,
     );
   }
 
