@@ -11,6 +11,7 @@ import 'package:sanmill/games/mill/mill_constants.dart';
 import 'package:sanmill/games/mill/mill_marked_pieces_codec.dart';
 import 'package:sanmill/games/mill/native_mill_game_session.dart';
 import 'package:sanmill/games/mill/native_mill_rules_port.dart';
+import 'package:sanmill/general_settings/models/general_settings.dart';
 import 'package:sanmill/src/rust/api/simple.dart' as tgf;
 
 void main() {
@@ -391,6 +392,7 @@ class _FakeNativeMillRulesPort implements NativeMillRulesPort {
   Stream<tgf.EngineEvent> millSearchEvents({
     required int depth,
     int moveLimitMs = 0,
+    GeneralSettings? engineSettings,
   }) {
     return _searchEvents ?? const Stream<tgf.EngineEvent>.empty();
   }

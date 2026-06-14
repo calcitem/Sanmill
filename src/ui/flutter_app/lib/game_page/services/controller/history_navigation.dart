@@ -96,7 +96,19 @@ class HistoryNavigator {
       navData,
     );
 
-    if (true) {
+    // Invariant: the kernel's raw undo/redo stack is only authoritative for
+    // incremental navigation while the recorder and kernel are already in
+    // sync.  It does NOT know about moves that ImportService just staged in
+    // `newGameRecorder`, nor can a single redo reconstruct a freshly adopted
+    // tree.  Therefore boundary jumps (takeBackAll / stepForwardAll) and any
+    // pending import must rebuild the kernel from the recorder mainline via
+    // `_nativeDoEachMove`; only genuine single-step navigation may take the
+    // fast `_nativeSessionHistory` undo/redo path.
+    final bool useRecorderReplay =
+        GameController().newGameRecorder != null ||
+        navMode == HistoryNavMode.takeBackAll ||
+        navMode == HistoryNavMode.stepForwardAll;
+    if (!useRecorderReplay) {
       final HistoryResponse? nativeResp = await _nativeSessionHistory(
         context,
         navMode,
@@ -142,6 +154,7 @@ class HistoryNavigator {
     // the in-progress flag: if the route is popped while this awaits, the old
     // path returned without unMute(), leaving game SFX permanently silent.
     try {
+      // Session resolution uses the controller binding (not this context).
       final HistoryResponse resp = await doEachMove(navMode, number);
 
       GameController().animationManager.allowAnimations = true;
@@ -388,14 +401,24 @@ class HistoryNavigator {
   static Future<HistoryResponse> doEachMove(
     HistoryNavMode navMode, [
     int? number,
+    BuildContext? context,
   ]) async {
-    final NativeMillGameSession? nativeSession = _activeNativeSession();
+    final NativeMillGameSession? nativeSession = _activeNativeSession(context);
     if (nativeSession != null) {
       return _nativeDoEachMove(nativeSession, navMode, number);
     }
-    // No active native session: nothing to navigate.  The legacy
-    // `Position`-driven replay fallback was removed with the
-    // rule-machine cleanup.
+    // No active native session resolved.  Fail fast on the specific failure
+    // mode that previously surfaced as "the board does not change after
+    // import": a recorder was staged by ImportService but there is no kernel
+    // to replay it onto.  Headless recorder-only callers (pure unit tests)
+    // legitimately reach here with nothing staged and simply no-op.
+    assert(
+      GameController().newGameRecorder == null,
+      'A game was imported/loaded (newGameRecorder is staged) but no active '
+      'NativeMillGameSession could be resolved to replay it onto, so the board '
+      'would silently not update.  Ensure the shell bound a session via '
+      'GameController.bindActiveSession before navigating.',
+    );
     return const HistoryOK();
   }
 
@@ -458,9 +481,22 @@ class HistoryNavigator {
         : GameSessionScope.sessionOf(scopedContext);
   }
 
+  /// Resolves the active native session.
+  ///
+  /// The controller-bound session is the single source of truth for the
+  /// active game and is reachable without a [BuildContext].  The
+  /// [GameSessionScope] only covers widgets *below* the page subtree, so a
+  /// context taken from a modal route / overlay (e.g. the "Import game" menu)
+  /// or a headless replay cannot see it.  Prefer the binding; fall back to the
+  /// scope only for the rare caller that has a scoped context but no binding.
   static NativeMillGameSession? _activeNativeSession([BuildContext? context]) {
-    final GameSession? session = _scopedSession(context);
-    return session is NativeMillGameSession ? session : null;
+    final NativeMillGameSession? bound =
+        GameController().activeNativeMillSession;
+    if (bound != null) {
+      return bound;
+    }
+    final GameSession? scoped = _scopedSession(context);
+    return scoped is NativeMillGameSession ? scoped : null;
   }
 
   static Future<HistoryResponse> _nativeDoEachMove(

@@ -331,14 +331,10 @@ class ReplayService {
         break;
 
       case RecordingEventType.undoMove:
-        // An undo is equivalent to a single take-back step.
-        if (true &&
-            await _applyNativeHistoryNavigation(
-              HistoryNavMode.takeBack,
-              null,
-            )) {
-          break;
-        }
+        // An undo is equivalent to a single take-back step.  Route through the
+        // recorder-replay path so a freshly imported/loaded recorder is always
+        // rebuilt onto the kernel; the session's own undo stack has no
+        // knowledge of imported moves.
         await HistoryNavigator.doEachMove(HistoryNavMode.takeBack);
         logger.i('$_logTag Replay: applied undoMove as takeBack');
 
@@ -616,49 +612,13 @@ class ReplayService {
       return;
     }
 
-    if (true && await _applyNativeHistoryNavigation(navMode, steps)) {
-      logger.i(
-        '$_logTag Replay: applied native historyNavigation $name (steps=$steps)',
-      );
-      return;
-    }
-
+    // Route every replayed navigation through the recorder-replay path.  It is
+    // the single source of truth for rebuilding the kernel: unlike the
+    // session's raw undo/redo stack, it adopts a freshly imported or loaded
+    // recorder (gameImport / gameLoad) before navigating, which the raw
+    // undo/redo path silently failed to do.
     await HistoryNavigator.doEachMove(navMode, steps);
     logger.i('$_logTag Replay: applied historyNavigation $name (steps=$steps)');
-  }
-
-  Future<bool> _applyNativeHistoryNavigation(
-    HistoryNavMode navMode,
-    int? steps,
-  ) async {
-    final BuildContext? context = currentNavigatorKey.currentContext;
-    final GameSession? session = context == null
-        ? null
-        : GameSessionScope.sessionOf(context);
-    if (session is! NativeMillGameSession) {
-      return false;
-    }
-
-    switch (navMode) {
-      case HistoryNavMode.takeBack:
-        await session.undo();
-      case HistoryNavMode.takeBackN:
-        final int count = steps ?? 0;
-        for (int i = 0; i < count; i++) {
-          await session.undo();
-        }
-      case HistoryNavMode.takeBackAll:
-        while (session.undoDepth > 0) {
-          await session.undo();
-        }
-      case HistoryNavMode.stepForward:
-        await session.redo();
-      case HistoryNavMode.stepForwardAll:
-        while (session.redoDepth > 0) {
-          await session.redo();
-        }
-    }
-    return true;
   }
 
   /// Restores the game recorder from a recorded PGN text payload so that the

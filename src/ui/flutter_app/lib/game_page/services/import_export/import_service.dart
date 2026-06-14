@@ -755,12 +755,13 @@ class ImportService {
     if (fen == null || fen.isEmpty) {
       return;
     }
-    final BuildContext? context = rootScaffoldMessengerKey.currentContext;
-    if (context == null) {
-      return;
-    }
-    final GameSession? session = GameSessionScope.sessionOf(context);
-    if (session is NativeMillGameSession) {
+    // Resolve the session through the controller binding (the single source of
+    // truth) rather than a scoped context: imports are frequently triggered
+    // from modal routes whose BuildContext sits above the GameSessionScope, so
+    // a scope lookup would miss and the setup position would never load.
+    final NativeMillGameSession? session =
+        GameController().activeNativeMillSession;
+    if (session != null) {
       final bool loaded = session.loadFen(fen);
       assert(loaded, 'Native import FEN must be validated before loading.');
     }
