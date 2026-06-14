@@ -16,6 +16,9 @@ impl<G: Game> Searcher<G> {
         depth: i32,
         moves: &mut ActionList<256>,
     ) {
+        // `sort_by_key` is a *stable* sort, so equally-scored moves keep
+        // their `generate<LEGAL>` relative order, matching master's
+        // `partial_insertion_sort` (movepick.cpp).
         moves
             .as_mut_slice()
             .sort_by_key(|m| -self.move_score(wb, key, depth, *m));

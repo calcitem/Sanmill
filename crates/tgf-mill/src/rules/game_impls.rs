@@ -11,6 +11,7 @@ use super::evaluation::{
     should_consider_mobility, should_focus_on_blocking_paths, surrounded_pieces_count,
 };
 use super::fen::position_key;
+use super::legacy_squares::node_to_legacy_square;
 use super::move_priority::{
     RATING_BLOCK_ONE_MILL, RATING_ONE_MILL, RATING_STAR_SQUARE, is_star_square,
 };
@@ -319,7 +320,11 @@ impl Game for MillGame {
             let their_mills = potential_mills_count_at(state, options, to, opponent, from) as i32;
             if their_mills > 0 {
                 let (_, theirs, _) = surrounded_pieces_count(state, options, to);
-                let parity_match = if to.is_multiple_of(2) {
+                // Master `movepick.cpp::score()` keys the block-mill parity
+                // off the legacy `Square` id (`to_sq(m)`), not the dense node.
+                let legacy_to = node_to_legacy_square(to as i8);
+                assert!((8..32).contains(&legacy_to));
+                let parity_match = if legacy_to.is_multiple_of(2) {
                     theirs == 3
                 } else {
                     theirs == 2
@@ -363,6 +368,14 @@ impl Game for MillGame {
             return None;
         }
         if wb.state.winner == 2 {
+            // Neutral VALUE_DRAW (0) for every draw, matching Stockfish's
+            // symmetric `value_draw`.  We intentionally do NOT port master's
+            // `has_repeated` -> `VALUE_DRAW + 1` repetition bias here: master
+            // adds it on the child (opponent) node, so after negamax negation
+            // it makes the side that forces the cycle *avoid* the draw, while
+            // adding it on this `before`-perspective terminal (which
+            // `search_after_move` returns without negation) would instead make
+            // the engine actively *prefer* forcing a repetition draw.
             return Some(0);
         }
         let distance = depth.max(0);
