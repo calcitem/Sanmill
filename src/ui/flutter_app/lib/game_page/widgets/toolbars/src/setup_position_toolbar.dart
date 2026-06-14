@@ -498,18 +498,20 @@ class _PlacedCountModal extends StatelessWidget {
     return Semantics(
       label: S.of(context).placedPieceCount,
       child: SingleChildScrollView(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            for (int i = begin; i <= piecesCount; i++)
-              RadioListTile<int>(
-                key: Key('placed_option_$i'),
-                title: Text(i.toString()),
-                groupValue: placedGroupValue,
-                value: i,
-                onChanged: (int? value) => Navigator.pop(context, value),
-              ),
-          ],
+        child: RadioGroup<int>(
+          groupValue: placedGroupValue,
+          onChanged: (int? value) => Navigator.pop(context, value),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              for (int i = begin; i <= piecesCount; i++)
+                RadioListTile<int>(
+                  key: Key('placed_option_$i'),
+                  title: Text(i.toString()),
+                  value: i,
+                ),
+            ],
+          ),
         ),
       ),
     );
