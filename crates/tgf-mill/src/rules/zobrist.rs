@@ -256,6 +256,182 @@ pub(crate) fn full_state_key(state: &MillState) -> u64 {
     apply_misc(key, count)
 }
 
+/// Snapshot of the `MillState` fields that contribute to the Zobrist key,
+/// captured *before* `MillRules::apply_to_state` mutates the state so the
+/// post-apply key can be derived incrementally via [`key_after_apply`].
+#[derive(Clone, Copy)]
+pub(crate) struct ZobristInputs {
+    board: [i8; NODE_COUNT],
+    side_to_move: i8,
+    delayed_marked_pieces: u32,
+    custodian_targets: [u32; 2],
+    custodian_count: [u8; 2],
+    intervention_targets: [u32; 2],
+    intervention_count: [u8; 2],
+    leap_targets: [u32; 2],
+    leap_count: [u8; 2],
+}
+
+impl ZobristInputs {
+    #[inline]
+    pub(crate) fn capture(state: &MillState) -> Self {
+        Self {
+            board: state.board,
+            side_to_move: state.side_to_move,
+            delayed_marked_pieces: state.delayed_marked_pieces,
+            custodian_targets: state.custodian_targets,
+            custodian_count: state.custodian_count,
+            intervention_targets: state.intervention_targets,
+            intervention_count: state.intervention_count,
+            leap_targets: state.leap_targets,
+            leap_count: state.leap_count,
+        }
+    }
+}
+
+/// XOR delta of a capture-target bitmap contribution between two states.
+#[inline]
+fn target_delta(table: &[u64; NODE_COUNT], old_targets: u32, new_targets: u32) -> u64 {
+    let mut delta = 0_u64;
+    let mut diff = old_targets ^ new_targets;
+    while diff != 0 {
+        let s = diff.trailing_zeros() as usize;
+        diff &= diff - 1;
+        if s < NODE_COUNT {
+            delta ^= table[s];
+        }
+    }
+    delta
+}
+
+/// XOR delta of a capture-count table entry between two states.
+#[inline]
+fn count_delta(table: &[u64], old_count: u8, new_count: u8, max: usize) -> u64 {
+    let oc = (old_count as usize).min(max - 1);
+    let nc = (new_count as usize).min(max - 1);
+    if oc == nc { 0 } else { table[oc] ^ table[nc] }
+}
+
+/// Incrementally derive the post-apply Zobrist key.
+///
+/// `old_key` is `full_state_key(old_state)` (the key before the apply),
+/// `old` captures the pre-apply key inputs (see [`ZobristInputs::capture`]),
+/// `new_state` is the post-apply state, and `from_node` / `to_node` are the
+/// applied action's squares.  The return value is bit-identical to
+/// `full_state_key(new_state)` but skips the full 24-square board scan.
+///
+/// Correct by construction: `full_state_key` is
+/// `apply_misc(board ^ marked ^ side ^ captures, misc)`, and `apply_misc`
+/// depends only on the low bits of its accumulator plus the misc count, so
+/// `apply_misc(old_key ^ delta, misc_new)` reproduces the new key when
+/// `delta` is the XOR difference of every non-misc component.  A
+/// `debug_assert` in `apply_to_state` cross-checks this against
+/// `full_state_key` on every apply.
+pub(crate) fn key_after_apply(
+    old_key: u64,
+    old: &ZobristInputs,
+    new_state: &MillState,
+    from_node: i16,
+    to_node: i16,
+) -> u64 {
+    let z = &MILL_ZOBRIST;
+    let mut delta = 0_u64;
+
+    // Board piece-square delta.  The only board writes in `apply_to_state`
+    // are the action's from/to squares and the placing-to-moving marked
+    // sweep, so the candidate square set is bounded by those.
+    let mut candidates = old.delayed_marked_pieces;
+    if (0..NODE_COUNT as i16).contains(&from_node) {
+        candidates |= 1_u32 << from_node;
+    }
+    if (0..NODE_COUNT as i16).contains(&to_node) {
+        candidates |= 1_u32 << to_node;
+    }
+    let mut cb = candidates;
+    while cb != 0 {
+        let s = cb.trailing_zeros() as usize;
+        cb &= cb - 1;
+        if s >= NODE_COUNT {
+            continue;
+        }
+        let o = old.board[s];
+        let n = new_state.board[s];
+        if o == n {
+            continue;
+        }
+        if o == 1 || o == 2 {
+            delta ^= z.psq[o as usize][s];
+        }
+        if n == 1 || n == 2 {
+            delta ^= z.psq[n as usize][s];
+        }
+    }
+
+    // Side-to-move delta (only the "is it Black" bit matters).
+    if (old.side_to_move == 1) != (new_state.side_to_move == 1) {
+        delta ^= z.side;
+    }
+
+    // Marked-piece (psq[3]) delta: symmetric difference of the marked sets.
+    let mut md = old.delayed_marked_pieces ^ new_state.delayed_marked_pieces;
+    while md != 0 {
+        let s = md.trailing_zeros() as usize;
+        md &= md - 1;
+        if s < NODE_COUNT {
+            delta ^= z.psq[3][s];
+        }
+    }
+
+    // Capture-state deltas (custodian / intervention / leap).
+    for c in 0..2 {
+        delta ^= target_delta(
+            &z.custodian_target[c],
+            old.custodian_targets[c],
+            new_state.custodian_targets[c],
+        );
+        delta ^= count_delta(
+            &z.custodian_count[c],
+            old.custodian_count[c],
+            new_state.custodian_count[c],
+            MAX_CUSTODIAN,
+        );
+        delta ^= target_delta(
+            &z.intervention_target[c],
+            old.intervention_targets[c],
+            new_state.intervention_targets[c],
+        );
+        delta ^= count_delta(
+            &z.intervention_count[c],
+            old.intervention_count[c],
+            new_state.intervention_count[c],
+            MAX_INTERVENTION,
+        );
+        delta ^= target_delta(
+            &z.leap_target[c],
+            old.leap_targets[c],
+            new_state.leap_targets[c],
+        );
+        delta ^= count_delta(
+            &z.leap_count[c],
+            old.leap_count[c],
+            new_state.leap_count[c],
+            MAX_LEAP,
+        );
+    }
+
+    // Misc counter for the new side to move (master `update_key_misc`).
+    let misc = if new_state.phase != MillPhase::GameOver
+        && (new_state.side_to_move == 0 || new_state.side_to_move == 1)
+    {
+        let stm = new_state.side_to_move as usize;
+        u64::from(new_state.pending_removals[stm].min(3))
+    } else {
+        0
+    };
+
+    apply_misc(old_key ^ delta, misc)
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

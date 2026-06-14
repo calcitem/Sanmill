@@ -147,6 +147,10 @@ impl MillRules {
         // the rule logic below operates on a local `state` value verbatim,
         // then move it back.  No clone, no heap traffic.
         let mut state = std::mem::take(state_out);
+        // Capture the pre-apply Zobrist inputs so the post-apply key can be
+        // refreshed incrementally (avoids the full 24-square scan per node).
+        let old_key = state.zobrist_key;
+        let old_zobrist = super::zobrist::ZobristInputs::capture(&state);
         match action.kind_tag {
             x if x == MillActionKind::Place as i16 => {
                 let to = action.to_node as usize;
@@ -498,6 +502,28 @@ impl MillRules {
             state.key_history.drain(0..start);
         }
         state.key_history_len = state.key_history.len();
+        // Refresh the cached Zobrist key incrementally from the pre-apply
+        // inputs, skipping the full board scan.  `old_key == 0` only on a
+        // hand-built state that bypassed encode/decode (no known baseline);
+        // fall back to a full recompute there.  The debug_assert validates
+        // the incremental result against the authoritative full recompute on
+        // every apply in debug / test builds.
+        if old_key == 0 {
+            recompute_zobrist(&mut state);
+        } else {
+            state.zobrist_key = super::zobrist::key_after_apply(
+                old_key,
+                &old_zobrist,
+                &state,
+                action.from_node,
+                action.to_node,
+            );
+        }
+        debug_assert_eq!(
+            state.zobrist_key,
+            super::zobrist::full_state_key(&state),
+            "incremental Zobrist key diverged from full_state_key",
+        );
         *state_out = state;
     }
 }
