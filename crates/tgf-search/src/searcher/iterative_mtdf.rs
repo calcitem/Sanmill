@@ -8,6 +8,7 @@ use tgf_core::{Action, ActionList, Evaluator, Game, Workbench};
 
 use super::Searcher;
 use crate::result::SearchResult;
+use crate::tt::Bound;
 
 impl<G: Game> Searcher<G> {
     /// Iterative deepening using PVS (fixes the pre-Phase 5 inconsistency where
@@ -120,7 +121,8 @@ impl<G: Game> Searcher<G> {
             }
             let before = wb.side_to_move();
             if root_key != 0 {
-                self.repetition_stack.push(root_key);
+                self.repetition_stack
+                    .push((root_key, G::action_resets_repetition(action)));
             }
             wb.do_move(action);
             let after = wb.side_to_move();
@@ -129,6 +131,8 @@ impl<G: Game> Searcher<G> {
             if root_key != 0 {
                 self.repetition_stack.pop();
             }
+            // Keep the FIRST move on ties (strict `value > best_alpha`),
+            // matching master's strict root update.
             if value > best_alpha {
                 best_alpha = value;
                 best_action = action;
@@ -270,21 +274,36 @@ impl<G: Game> Searcher<G> {
         wb: &mut G::Workbench,
         depth: i32,
         mut alpha: i32,
-        beta: i32,
+        mut beta: i32,
         best_action: &mut Action,
     ) -> i32 {
+        let root_key = wb.key();
+        let old_alpha = alpha;
+        // Master `Search::search` probes the TT at EVERY node, including the
+        // root (depth == originDepth).  On a TT cutoff it returns the probed
+        // value WITHOUT updating `bestMove`, so the threaded `best_action` is
+        // preserved across MTD(f) iterations.  Reusing the root entry the same
+        // way mirrors master's deterministic deep MTD(f) behaviour.
+        if let Some(value) = self.probe_tt(root_key, depth, &mut alpha, &mut beta) {
+            self.tt_hits += 1;
+            return value;
+        }
+        if root_key != 0 {
+            self.tt_misses += 1;
+        }
         let mut moves = ActionList::<256>::new();
         G::generate_legal_ctx(wb, &mut moves, &self.options.move_order_context);
-        self.order_moves(wb, wb.key(), depth, &mut moves);
+        self.order_moves(wb, root_key, depth, &mut moves);
         let mut best_value = i32::MIN + 1;
-        let root_key = wb.key();
+        let mut best_local = Action::NONE;
         for action in moves {
             if self.should_abort() {
                 break;
             }
             let before = wb.side_to_move();
             if root_key != 0 {
-                self.repetition_stack.push(root_key);
+                self.repetition_stack
+                    .push((root_key, G::action_resets_repetition(action)));
             }
             wb.do_move(action);
             let after = wb.side_to_move();
@@ -293,10 +312,14 @@ impl<G: Game> Searcher<G> {
             if root_key != 0 {
                 self.repetition_stack.pop();
             }
+            // Mirror master `Search::search`'s root update exactly: the best
+            // move only changes on a strict `value > alpha` improvement, so
+            // the FIRST move is kept on ties.
             if value > best_value {
                 best_value = value;
                 if value > alpha {
                     *best_action = action;
+                    best_local = action;
                     if value >= beta {
                         break; // fail high
                     }
@@ -304,6 +327,18 @@ impl<G: Game> Searcher<G> {
                 }
             }
         }
+        // Master saves bestValue + bound at every node (src/search.cpp:372).
+        // TT_MOVE is undefined in master, so the stored move is unused by move
+        // ordering and does not affect the search; we keep `best_local` for
+        // symmetry with `alpha_beta`.
+        let bound = if best_value <= old_alpha {
+            Bound::Upper
+        } else if best_value >= beta {
+            Bound::Lower
+        } else {
+            Bound::Exact
+        };
+        self.save_tt(root_key, depth, best_value, bound, best_local);
         best_value
     }
 }

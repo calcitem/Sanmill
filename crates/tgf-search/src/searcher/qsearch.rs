@@ -34,14 +34,19 @@ impl<G: Game> Searcher<G> {
         if self.should_abort() {
             return G::Evaluator::score(wb);
         }
-        if let Some(score) = G::terminal_score(wb, wb.side_to_move(), depth) {
-            return score;
-        }
         let mut stand_pat = G::Evaluator::score(wb);
         if stand_pat > 0 {
             stand_pat = stand_pat.saturating_add(depth);
         } else {
             stand_pat = stand_pat.saturating_sub(depth);
+        }
+        // Master qsearch returns stand-pat at the depth limit before checking
+        // gameOver / repetition.  This matters at shallow Skill=1 leaves:
+        // a move that completes threefold at the qsearch horizon should be
+        // evaluated like master's non-terminal `do_move` child, while the
+        // actual rule verdict remains enforced by `apply` in real play.
+        if -depth >= self.qsearch_max_depth {
+            return stand_pat;
         }
         if stand_pat >= beta {
             return beta;
@@ -63,13 +68,6 @@ impl<G: Game> Searcher<G> {
         let Some(quiescence_kind_tag) = self.policy.quiescence_kind_tag else {
             return alpha;
         };
-
-        // Enforce the MaxQuiescenceDepth gate: do not recurse deeper than
-        // `qsearch_max_depth` plies past the main search horizon (depth == 0).
-        // `depth` is <= 0 here; -depth is how many plies we have extended.
-        if -depth >= self.qsearch_max_depth {
-            return alpha;
-        }
 
         let mut moves = ActionList::<256>::new();
         G::generate_legal_ctx(wb, &mut moves, &self.options.move_order_context);
@@ -119,13 +117,23 @@ impl<G: Game> Searcher<G> {
         alpha
     }
 
+    /// Probe the TT and narrow the search window in place.
+    ///
+    /// Mirrors master `Search::search` (src/search.cpp): on a `BOUND_LOWER`
+    /// hit it raises `alpha`, on a `BOUND_UPPER` hit it lowers `beta`, and
+    /// returns the stored value as a cutoff when `alpha >= beta`.  Crucially
+    /// BOTH `alpha` and `beta` are taken by `&mut` so that, when there is no
+    /// immediate cutoff, the narrowed window propagates back to the caller and
+    /// is used for the remaining move loop and the final bound classification.
+    /// Dropping the `beta` narrowing (the previous behaviour) left zero-window
+    /// MTD(f) searching a wider window than master.
     #[inline]
     pub(super) fn probe_tt(
         &self,
         key: u64,
         depth: i32,
         alpha: &mut i32,
-        mut beta: i32,
+        beta: &mut i32,
     ) -> Option<i32> {
         if key == 0 {
             return None;
@@ -138,11 +146,11 @@ impl<G: Game> Searcher<G> {
             Bound::Exact => Some(entry.value),
             Bound::Lower => {
                 *alpha = (*alpha).max(entry.value);
-                (*alpha >= beta).then_some(entry.value)
+                (*alpha >= *beta).then_some(entry.value)
             }
             Bound::Upper => {
-                beta = beta.min(entry.value);
-                (*alpha >= beta).then_some(entry.value)
+                *beta = (*beta).min(entry.value);
+                (*alpha >= *beta).then_some(entry.value)
             }
         }
     }

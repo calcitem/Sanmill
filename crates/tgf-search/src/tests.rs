@@ -239,11 +239,12 @@ impl tgf_core::Game for RepetitionGame {
 }
 
 #[test]
-fn repetition_returns_draw_plus_one_bias() {
+fn third_path_repetition_returns_draw_plus_one_bias() {
     let game = RepetitionGame;
     let mut wb = game.build_workbench(&GameStateSnapshot::default());
     let mut searcher = Searcher::<RepetitionGame>::new();
-    searcher.repetition_stack.push(wb.key());
+    searcher.repetition_stack.push((wb.key(), false));
+    searcher.repetition_stack.push((wb.key(), false));
 
     assert_eq!(searcher.alpha_beta(&mut wb, 2, -10, 10), 1);
 }

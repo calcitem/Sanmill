@@ -87,7 +87,9 @@ impl GameRules for MillRules {
         // bypasses this round-trip via `MillWorkbench::do_move`, which calls
         // `apply_to_state` directly on its owned `MillState`.
         let mut state = Self::decode(snap);
-        self.apply_to_state(&mut state, action);
+        // Real-play boundary: adjudicate threefold so the game actually ends in
+        // a draw at the third occurrence (master's external `has_game_cycle`).
+        self.apply_to_state(&mut state, action, true);
         self.encode(state)
     }
 
@@ -139,7 +141,12 @@ impl MillRules {
     /// caller is responsible for refreshing the cached `zobrist_key`
     /// afterwards (the trait `apply` does so via `encode`; `do_move` calls
     /// `recompute_zobrist`).  Out-of-range actions are a no-op.
-    pub(super) fn apply_to_state(&self, state_out: &mut MillState, action: Action) {
+    pub(super) fn apply_to_state(
+        &self,
+        state_out: &mut MillState,
+        action: Action,
+        adjudicate_repetition: bool,
+    ) {
         if !is_action_within_board_bounds(&action) {
             return;
         }
@@ -329,7 +336,7 @@ impl MillRules {
                     // n-move rule fires; threefold takes precedence and
                     // sets GameOver itself, after which the n-move check
                     // becomes a no-op (it inspects `state.phase`).
-                    push_key_and_check_threefold(&mut state, &self.options);
+                    push_key_and_check_threefold(&mut state, &self.options, adjudicate_repetition);
                     maybe_draw_by_n_move_rule(&mut state, &self.options);
                     // Mirror C++ set_side_to_move: phase follows the new
                     // active side's hand count (matters for Dooz-style

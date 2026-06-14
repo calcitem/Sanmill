@@ -96,6 +96,20 @@ pub trait Workbench: Sized {
         self.undo_move();
         key
     }
+
+    /// Number of times the current position key appears in the reversible
+    /// pre-root repetition history carried by the workbench state.
+    ///
+    /// Searchers use this as a game-neutral hook for master/Stockfish-style
+    /// cycle awareness: a concrete game can keep strict draw adjudication in
+    /// `apply` (for example, only the third occurrence is a draw) while still
+    /// letting search avoid collapsing into repeated positions before the
+    /// terminal rule actually fires.  Games without repetition history leave
+    /// the default at 0.
+    #[inline]
+    fn current_repetition_count(&self) -> usize {
+        0
+    }
 }
 
 /// Per-game static evaluator.  Methods are free functions (not `&self`) so the
@@ -340,6 +354,17 @@ pub trait Game: 'static + Send + Sync {
     #[inline]
     fn repetition_draw_bias() -> i32 {
         1
+    }
+
+    /// Whether applying `action` makes earlier repetition history irrelevant.
+    ///
+    /// Concrete games override this for irreversible moves (for example Mill
+    /// Place/Remove, chess capture/pawn move).  The searcher uses it only for
+    /// the in-search repetition stack; rule-side histories remain owned by the
+    /// concrete game state.
+    #[inline]
+    fn action_resets_repetition(_action: Action) -> bool {
+        false
     }
 
     /// Compute the post-MCTS material score reported alongside the

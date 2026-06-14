@@ -18,8 +18,8 @@ use super::move_priority::{
 use super::potential_mills_count_at;
 use super::types::MillActionKind;
 use super::{
-    MILL_TERMINAL_WIN_SCORE, MillEvaluator, MillFormationActionInPlacingPhase, MillGame, MillPhase,
-    MillRules, MillWorkbench,
+    MILL_TERMINAL_WIN_SCORE, MillEvaluator, MillFormationActionInPlacingPhase, MillGame,
+    MillOutcomeReason, MillPhase, MillRules, MillWorkbench,
 };
 
 impl Workbench for MillWorkbench {
@@ -57,7 +57,12 @@ impl Workbench for MillWorkbench {
         // the cached Zobrist key incrementally, so no `recompute_zobrist` is
         // needed here.
         self.undo_stack.push(self.state.clone());
-        self.rules.apply_to_state(&mut self.state, a);
+        // Search path: do NOT terminalise threefold (master `do_move` never
+        // does).  Repetitions inside the tree are handled by the searcher's
+        // `has_repeated` cut; a position that completes a threefold is scored
+        // by its heuristic here, exactly like master.  The repetition history
+        // is still tracked so `current_repetition_count` stays accurate.
+        self.rules.apply_to_state(&mut self.state, a, false);
     }
 
     fn undo_move(&mut self) {
@@ -161,6 +166,15 @@ impl Workbench for MillWorkbench {
         }
 
         if key == 0 { 1 } else { key }
+    }
+
+    #[inline]
+    fn current_repetition_count(&self) -> usize {
+        let key = self.key();
+        if key == 0 {
+            return 0;
+        }
+        self.state.key_history.iter().filter(|k| **k == key).count()
     }
 }
 
@@ -368,14 +382,17 @@ impl Game for MillGame {
             return None;
         }
         if wb.state.winner == 2 {
-            // Neutral VALUE_DRAW (0) for every draw, matching Stockfish's
-            // symmetric `value_draw`.  We intentionally do NOT port master's
-            // `has_repeated` -> `VALUE_DRAW + 1` repetition bias here: master
-            // adds it on the child (opponent) node, so after negamax negation
-            // it makes the side that forces the cycle *avoid* the draw, while
-            // adding it on this `before`-perspective terminal (which
-            // `search_after_move` returns without negation) would instead make
-            // the engine actively *prefer* forcing a repetition draw.
+            // Master scores every in-search repetition as `VALUE_DRAW + 1`
+            // (src/search.cpp `has_repeated` cut).  Because that cut fires on
+            // the SECOND occurrence, the search never actually reaches a 3-fold
+            // terminal node, so this branch is effectively root-only (a game
+            // that is already a draw before the engine is asked to move).  We
+            // keep it consistent with the in-search bias so the rare root case
+            // scores the same small positive draw value.  Other draws (50-move
+            // / stalemate / full-board) stay neutral at VALUE_DRAW (0).
+            if wb.state.outcome_reason == MillOutcomeReason::DrawThreefold {
+                return Some(Self::repetition_draw_bias());
+            }
             return Some(0);
         }
         let distance = depth.max(0);
@@ -384,6 +401,17 @@ impl Game for MillGame {
         } else {
             Some(-MILL_TERMINAL_WIN_SCORE - distance)
         }
+    }
+
+    #[inline]
+    fn action_resets_repetition(action: Action) -> bool {
+        // Master `Position::has_repeated` walks the search stack back only as
+        // far as the last REMOVE (capture); a placement does NOT reset that
+        // window.  We therefore mark only Remove as a barrier.  (Placing
+        // positions can never collide with moving positions because the piece
+        // counts differ, so omitting Place as a barrier is faithful AND
+        // harmless for detection.)
+        action.kind_tag == MillActionKind::Remove as i16
     }
 
     /// Mill MCTS post-search material score, mirroring master
@@ -407,30 +435,22 @@ impl Game for MillGame {
             * VALUE_EACH_PIECE
     }
 
-    // Mill does NOT override `root_short_circuit_draw` (default `None`).
+    // Mill intentionally does NOT override `root_short_circuit_draw` and does
+    // not bias root tie-breaks toward draws.  Master's non-Qt (Flutter) engine
+    // keeps the FIRST move on ties: `Position::has_game_cycle()` returns
+    // `count >= 3` outside `QT_GUI_LIB`, i.e. the STANDARD threefold, which is
+    // already handled by `terminal_score` (the `count >= 2` early-draw is a
+    // Qt-only quirk we deliberately ignore per the Flutter-is-ground-truth
+    // decision).  Master's `g7-d7`-style "finish the game" choices therefore
+    // emerge naturally from the in-search `has_repeated` cut alone:
     //
-    // Master `SearchEngine::executeSearch` (src/search_engine.cpp:432-453)
-    // emits a "draw" bestmove string before iterative deepening when
-    //   posKeyHistory.size() >= rule.nMoveRule    -> return 50
-    //   is_three_endgame && posKeyHistory >= endgameNMoveRule -> return 10
-    //   threefoldRepetitionRule && has_game_cycle() -> return 3
-    // so the UI sees an immediate draw.
-    //
-    // Mill on the Rust side reaches the same end state through a
-    // different but equivalent path:
-    //   * `MillRules::apply` -> `bump_ply_since_capture` ->
-    //     `maybe_draw_by_n_move_rule` flips `phase = GameOver` and
-    //     `winner = 2` (draw) the moment the threshold fires;
-    //   * `MillRules::set_from_fen` runs `check_if_game_is_over` after
-    //     parsing so an imported FEN past the threshold also lands in
-    //     GameOver;
-    //   * `MillRules::apply` likewise marks the threefold-repetition
-    //     terminal via `push_key_and_check_threefold` (see
-    //     `rules/transitions.rs`).
-    //
-    // The searcher's `terminal_score` then sees GameOver / winner==2
-    // and returns score 0 without entering the search loop, which is
-    // observationally identical to master's "return draw bestmove"
-    // path.  Adding a Mill-side override of `root_short_circuit_draw`
-    // would only produce a redundant detection at the same boundary.
+    //   * `terminal_score` keeps a real DrawThreefold at the small positive
+    //     `VALUE_DRAW + 1` master uses for repetitions;
+    //   * `Searcher::alpha_beta` reproduces master `has_repeated` exactly --
+    //     after the TT probe, second-occurrence detection across both the
+    //     pre-root reversible history (`Workbench::current_repetition_count`)
+    //     and the in-search path with a REMOVE-only barrier
+    //     (`action_resets_repetition`) -- returning `VALUE_DRAW + 1` to prune
+    //     the cycle without ever adjudicating a draw before `apply` reaches
+    //     the standard third occurrence (handled by `GameRules::apply`).
 }

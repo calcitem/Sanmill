@@ -57,12 +57,10 @@ pub struct Searcher<G: Game> {
     abort_flag: Arc<AtomicBool>,
     aborted: bool,
     /// Zobrist keys of positions on the search path from root to the current
-    /// node.  Used to detect in-search repetitions and return draw score
-    /// immediately rather than searching deeper into a cycle.  Mirrors C++
-    /// `Search::hasRepeated / posKeyHistory` within the search stack.
-    /// Independent of the game-state-side key_history (which only collects
-    /// moving-phase reversible moves).
-    pub(crate) repetition_stack: Vec<u64>,
+    /// node, plus whether the action from that position to its child resets
+    /// repetition history.  Used to detect in-search cycles without scanning
+    /// past irreversible moves (Mill Place/Remove, chess capture/pawn move).
+    pub(crate) repetition_stack: Vec<(u64, bool)>,
     _phantom: PhantomData<G>,
 }
 
@@ -286,7 +284,8 @@ impl<G: Game> Searcher<G> {
             }
             let before = wb.side_to_move();
             if root_key != 0 {
-                self.repetition_stack.push(root_key);
+                self.repetition_stack
+                    .push((root_key, G::action_resets_repetition(action)));
             }
             wb.do_move(action);
             let after = wb.side_to_move();
@@ -296,6 +295,9 @@ impl<G: Game> Searcher<G> {
             if root_key != 0 {
                 self.repetition_stack.pop();
             }
+            // Keep the FIRST move on ties, matching master `Search::search`'s
+            // strict `value > bestValue` root update (src/search.cpp): the
+            // best move only changes on a strict score improvement.
             if score > best_score {
                 best_score = score;
                 best_action = action;
@@ -372,7 +374,8 @@ impl<G: Game> Searcher<G> {
             }
             let before = wb.side_to_move();
             if root_key != 0 {
-                self.repetition_stack.push(root_key);
+                self.repetition_stack
+                    .push((root_key, G::action_resets_repetition(action)));
             }
             wb.do_move(action);
             let after = wb.side_to_move();
@@ -382,6 +385,9 @@ impl<G: Game> Searcher<G> {
                 self.repetition_stack.pop();
             }
 
+            // Keep the FIRST move on ties (strict `value > alpha`), matching
+            // master's root update where the best move only changes on a
+            // strict improvement.
             if value > alpha {
                 alpha = value;
                 best_action = action;
@@ -428,41 +434,11 @@ impl<G: Game> Searcher<G> {
         wb: &mut G::Workbench,
         depth: i32,
         mut alpha: i32,
-        beta: i32,
+        mut beta: i32,
     ) -> i32 {
         self.nodes += 1;
         if self.should_abort() {
             return G::Evaluator::score(wb);
-        }
-        if let Some(score) = G::terminal_score(wb, wb.side_to_move(), depth) {
-            return score;
-        }
-
-        // Detect in-search repetition: if the current Zobrist key has
-        // appeared on the search path from root to here, the game would cycle
-        // indefinitely.  Master returns VALUE_DRAW + 1 to avoid threefold
-        // blindness among otherwise equal drawing lines.
-        //
-        // Divergence from master `Search::has_repeated` (Diff 1.5/1.6/1.7):
-        //   * master walks BOTH the global `posKeyHistory` (positions seen
-        //     before the search root) AND the search stack `ss`, terminating
-        //     the walk on the first MOVETYPE_REMOVE.
-        //   * Rust only checks the in-search `repetition_stack`, because the
-        //     pre-root history is already enforced by `MillRules::apply`
-        //     through `MillState::key_history` (which surfaces a terminal
-        //     `Outcome::Draw` with the `drawThreefoldRepetition` reason --
-        //     see `crates/tgf-mill/src/rules/transitions.rs`).
-        //   * master also restricts the check to non-root nodes
-        //     (`depth != originDepth`) and uses an `alpha >= beta` short
-        //     circuit before forcing the draw.  Rust returns the bias
-        //     unconditionally because `search_pvs` does not push the root
-        //     key onto `repetition_stack`, so the comparison cannot fire at
-        //     the root anyway, and the bias matches master's `VALUE_DRAW + 1`
-        //     when callers do not narrow the window further.
-        // Verified by the deterministic `tgf-cli selfplay` baselines.
-        let key = wb.key();
-        if key != 0 && self.repetition_stack.contains(&key) {
-            return G::repetition_draw_bias();
         }
 
         // Transition to qsearch when depth falls to or below the qsearch
@@ -472,13 +448,41 @@ impl<G: Game> Searcher<G> {
             return self.qsearch_with_depth(wb, depth, alpha, beta);
         }
 
+        if let Some(score) = G::terminal_score(wb, wb.side_to_move(), depth) {
+            return score;
+        }
+
+        let key = wb.key();
         let old_alpha = alpha;
-        if let Some(value) = self.probe_tt(key, depth, &mut alpha, beta) {
+        if let Some(value) = self.probe_tt(key, depth, &mut alpha, &mut beta) {
             self.tt_hits += 1;
             return value;
         }
         if key != 0 {
             self.tt_misses += 1;
+        }
+
+        // Repetition cut, faithfully mirroring master `Search::search`
+        // (src/search.cpp: after the TT probe, `if (rule.threefoldRepetition
+        // Rule && depth != originDepth && pos->has_repeated(ss)) return
+        // VALUE_DRAW + 1;`).
+        //
+        // `alpha_beta` only runs on positions reached AFTER a root move, so
+        // the master `depth != originDepth` guard (skip the root) always
+        // holds here.  Master `Position::has_repeated` returns true on the
+        // SECOND occurrence of the position -- one prior appearance in either
+        // the reversible pre-root history (`posKeyHistory`) or the in-search
+        // path walked back to the last capture (`ss`, barrier = REMOVE).  It
+        // then returns the small positive draw bias `VALUE_DRAW + 1` instead
+        // of searching deeper into the cycle.
+        //
+        // Matching this EXACTLY (2nd occurrence, REMOVE-only barrier, after
+        // TT, +bias) is required for deterministic move parity once the
+        // moving phase is reached: it is what prunes otherwise-deeper lines
+        // to a draw.  `path_repeats_since_reset` covers the search-stack half;
+        // `current_repetition_count` covers the pre-root reversible history.
+        if key != 0 && (self.path_repeats_since_reset(key) || wb.current_repetition_count() >= 2) {
+            return G::repetition_draw_bias();
         }
 
         // Null-move pruning (Phase 5): when not in qsearch, when depth is
@@ -560,7 +564,8 @@ impl<G: Game> Searcher<G> {
             }
             let before = wb.side_to_move();
             if key != 0 {
-                self.repetition_stack.push(key);
+                self.repetition_stack
+                    .push((key, G::action_resets_repetition(action)));
             }
             wb.do_move(action);
             let after = wb.side_to_move();
@@ -576,8 +581,8 @@ impl<G: Game> Searcher<G> {
             }
             if score >= beta {
                 self.record_cutoff(depth, action);
-                self.save_tt(key, depth, beta, Bound::Lower, action);
-                return beta;
+                self.save_tt(key, depth, score, Bound::Lower, action);
+                return score;
             }
             if score > alpha {
                 alpha = score;
@@ -585,11 +590,13 @@ impl<G: Game> Searcher<G> {
         }
         let bound = if best_value <= old_alpha {
             Bound::Upper
+        } else if best_value >= beta {
+            Bound::Lower
         } else {
             Bound::Exact
         };
-        self.save_tt(key, depth, alpha, bound, best_action);
-        alpha
+        self.save_tt(key, depth, best_value, bound, best_action);
+        best_value
     }
 
     #[inline]
@@ -635,6 +642,28 @@ impl<G: Game> Searcher<G> {
         self.abort_flag.store(false, Ordering::Relaxed);
     }
 
+    /// Search-stack half of master `Position::has_repeated` (src/position.cpp).
+    ///
+    /// Master walks the search stack from the current node back toward the
+    /// root, stops at the first capture (REMOVE) it crosses, and reports a
+    /// repetition on the FIRST match it finds -- i.e. the SECOND occurrence of
+    /// the position (one prior appearance on the path).  `repetition_stack`
+    /// stores `(ancestor_key, outgoing_move_was_remove)` for every node on the
+    /// path, so we replicate the same walk: bail at the REMOVE barrier first,
+    /// then compare keys.
+    #[inline]
+    fn path_repeats_since_reset(&self, key: u64) -> bool {
+        for (ancestor_key, reset_after_action) in self.repetition_stack.iter().rev() {
+            if *reset_after_action {
+                break;
+            }
+            if *ancestor_key == key {
+                return true;
+            }
+        }
+        false
+    }
+
     #[inline]
     fn search_after_move(
         &mut self,
@@ -645,9 +674,6 @@ impl<G: Game> Searcher<G> {
         before: i8,
         after: i8,
     ) -> i32 {
-        if let Some(score) = G::terminal_score(wb, before, depth) {
-            return score;
-        }
         if after != before {
             -self.alpha_beta(wb, depth, -beta, -alpha)
         } else {
@@ -667,6 +693,9 @@ impl<G: Game> Searcher<G> {
         before: i8,
         after: i8,
     ) -> i32 {
+        if depth <= 0 {
+            return self.search_after_move(wb, depth, alpha, beta, before, after);
+        }
         if let Some(score) = G::terminal_score(wb, before, depth) {
             return score;
         }

@@ -404,13 +404,36 @@ pub(super) fn clear_key_history(state: &mut MillState) {
     state.key_history_len = 0;
 }
 
-/// Append the current state's repetition signature to the rolling buffer and
-/// end the game in a draw when the same signature has appeared three times.
+/// Append the current state's repetition signature to the rolling buffer and,
+/// when `adjudicate` is set, end the game in a draw once the same signature has
+/// appeared three times.
+///
 /// Mirrors master src/position.cpp:25 `posKeyHistory`: the runtime history is
 /// vector-backed and may grow to 256 entries; snapshot payloads persist only
 /// the most recent 24 entries for compatibility with existing FRB snapshots.
 /// No-op when `threefold_repetition_rule` is disabled.
-pub(super) fn push_key_and_check_threefold(state: &mut MillState, options: &MillVariantOptions) {
+///
+/// `adjudicate` separates the two ways master uses repetition information:
+///
+///   * **Search** (`MillWorkbench::do_move`, `adjudicate = false`): master's
+///     `Position::do_move` NEVER terminalises a threefold; the position stays
+///     in the moving phase and `Eval::evaluate` returns the ordinary heuristic.
+///     Inside the tree, repetitions are handled by `Search::has_repeated`
+///     (a `VALUE_DRAW + 1` cut on the SECOND occurrence) -- not by a GameOver
+///     state.  Keeping `do_move` non-terminalising is required for move parity:
+///     e.g. at a Skill-1 (depth-1) leaf a move that completes a threefold must
+///     be scored by its heuristic (master picks it), not collapsed to a draw.
+///   * **Real play** (`GameRules::apply`, `adjudicate = true`): the move that
+///     reaches the third occurrence ends the game, matching master's external
+///     `has_game_cycle()` / `check_if_game_is_over` adjudication (non-Qt
+///     `count >= 3`, i.e. the standard threefold).  The history itself is
+///     tracked in BOTH modes so the search still sees the same repetition
+///     window through `Workbench::current_repetition_count`.
+pub(super) fn push_key_and_check_threefold(
+    state: &mut MillState,
+    options: &MillVariantOptions,
+    adjudicate: bool,
+) {
     if !options.threefold_repetition_rule {
         return;
     }
@@ -421,6 +444,9 @@ pub(super) fn push_key_and_check_threefold(state: &mut MillState, options: &Mill
     debug_assert!(state.key_history.len() < 256);
     state.key_history.push(key);
     state.key_history_len = state.key_history.len();
+    if !adjudicate {
+        return;
+    }
     let count = state.key_history.iter().filter(|k| **k == key).count();
     if count >= 3 {
         state.phase = MillPhase::GameOver;
