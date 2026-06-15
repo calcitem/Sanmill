@@ -1,6 +1,10 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-use perfect_db::{best_move_token, best_move_token_for_state, evaluate, evaluate_state_for, init};
+use perfect_db::database::{Database, FileDatabaseProvider};
+use perfect_db::{
+    best_move_token, best_move_token_for_state, evaluate, evaluate_state_for,
+    evaluate_state_with_database, init,
+};
 use tgf_core::{ActionList, GameRules, GameStateSnapshot};
 use tgf_mill::notation::MillUciCodec;
 use tgf_mill::{MillRules, MillVariantOptions};
@@ -63,6 +67,7 @@ fn std_perfect_db_oracle_vectors() {
 
     let rules = MillRules::default();
     let options = MillVariantOptions::default();
+    let mut rust_db = Database::open(FileDatabaseProvider::new(db_path())).unwrap();
     let cases = [
         OracleCase {
             name: "empty",
@@ -84,6 +89,12 @@ fn std_perfect_db_oracle_vectors() {
             evaluate_state_for(&state, &options, side as i8),
             case.expected_eval,
             "{} must match the current C++ perfect-db oracle",
+            case.name
+        );
+        assert_eq!(
+            evaluate_state_with_database(&mut rust_db, &state, &options, side as i8).unwrap(),
+            case.expected_eval,
+            "{} must match the Rust-native perfect-db loader",
             case.name
         );
         let token = best_move_token_for_state(&state, &options, side as i8)

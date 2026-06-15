@@ -11,6 +11,7 @@
 
 use std::sync::OnceLock;
 
+use crate::database::{Database, DatabaseError, DatabaseProvider, PerfectQuery};
 use tgf_mill::rules::MillState;
 use tgf_mill::{MillVariantOptions, default_mill_topology};
 
@@ -61,6 +62,34 @@ fn bitboards_from_state(state: &MillState) -> (u32, u32) {
     (white_bits, black_bits)
 }
 
+fn query_from_state(
+    state: &MillState,
+    options: &MillVariantOptions,
+    side_to_move: i8,
+) -> Option<PerfectQuery> {
+    if options.piece_count != 9 {
+        return None;
+    }
+    assert!(
+        side_to_move == 0 || side_to_move == 1,
+        "Perfect DB side_to_move must be 0 or 1"
+    );
+
+    let (white_bits, black_bits) = bitboards_from_state(state);
+    let in_hand = state.pieces_in_hand();
+    let pending = state.pending_removals();
+    let only_stone_taking = pending[side_to_move as usize] > 0;
+
+    Some(PerfectQuery::new(
+        white_bits,
+        black_bits,
+        in_hand[0],
+        in_hand[1],
+        side_to_move as u8,
+        only_stone_taking,
+    ))
+}
+
 /// Query the perfect database for the best move in `state`, returned as a Mill
 /// UCI notation token (`"a4"`, `"a1-a4"`, `"xg7"`).
 ///
@@ -73,25 +102,21 @@ pub fn best_move_token_for_state(
     options: &MillVariantOptions,
     side_to_move: i8,
 ) -> Option<String> {
-    if options.piece_count != 9 || !crate::is_initialized() {
+    if !crate::is_initialized() {
         return None;
     }
     if side_to_move != 0 && side_to_move != 1 {
         return None;
     }
-
-    let (white_bits, black_bits) = bitboards_from_state(state);
-    let in_hand = state.pieces_in_hand();
-    let pending = state.pending_removals();
-    let only_stone_taking = pending[side_to_move as usize] > 0;
+    let query = query_from_state(state, options, side_to_move)?;
 
     crate::best_move_token(
-        white_bits,
-        black_bits,
-        in_hand[0],
-        in_hand[1],
-        side_to_move as u8,
-        only_stone_taking,
+        query.white_bits,
+        query.black_bits,
+        query.white_in_hand,
+        query.black_in_hand,
+        query.side_to_move,
+        query.only_stone_taking,
     )
 }
 
@@ -110,26 +135,38 @@ pub fn evaluate_state_for(
     options: &MillVariantOptions,
     side_to_move: i8,
 ) -> Option<(i32, i32)> {
-    if options.piece_count != 9 || !crate::is_initialized() {
+    if !crate::is_initialized() {
         return None;
     }
     if side_to_move != 0 && side_to_move != 1 {
         return None;
     }
-
-    let (white_bits, black_bits) = bitboards_from_state(state);
-    let in_hand = state.pieces_in_hand();
-    let pending = state.pending_removals();
-    let only_stone_taking = pending[side_to_move as usize] > 0;
+    let query = query_from_state(state, options, side_to_move)?;
 
     crate::evaluate(
-        white_bits,
-        black_bits,
-        in_hand[0],
-        in_hand[1],
-        side_to_move as u8,
-        only_stone_taking,
+        query.white_bits,
+        query.black_bits,
+        query.white_in_hand,
+        query.black_in_hand,
+        query.side_to_move,
+        query.only_stone_taking,
     )
+}
+
+/// Evaluate `state` through a Rust-native database instance.
+///
+/// This is the migration bridge used by tests and future callers while the
+/// public process-global API still delegates to the C++ oracle.
+pub fn evaluate_state_with_database<P: DatabaseProvider>(
+    database: &mut Database<P>,
+    state: &MillState,
+    options: &MillVariantOptions,
+    side_to_move: i8,
+) -> Result<Option<(i32, i32)>, DatabaseError> {
+    let Some(query) = query_from_state(state, options, side_to_move) else {
+        return Ok(None);
+    };
+    database.evaluate(query)
 }
 
 #[cfg(test)]
