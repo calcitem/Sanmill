@@ -358,10 +358,18 @@ fn head_to_head_vs_master() {
             );
             print_standings(i + 1, total, &white, &black);
         }
-        let net = white[0] as i64 - black[0] as i64;
+        let (ww, bw) = (white[0], black[0]);
+        let net = ww as i64 - bw as i64;
+        let verdict = if net > 0 {
+            "White is favoured"
+        } else if net < 0 {
+            "Black is favoured"
+        } else {
+            "colours are even"
+        };
         eprintln!();
         eprintln!(
-            "FINAL net (White_wins - Black_wins) = {net:+}  ({label} self-play; >0 => White favoured)"
+            "FINAL: {label} self-play  White {ww} wins vs Black {bw} wins  net {net:+}  =>  {verdict}"
         );
     } else {
         // vs mode: current vs master, alternating colours each game so the live
@@ -404,10 +412,22 @@ fn head_to_head_vs_master() {
             );
             print_standings(i + 1, total, &white, &black);
         }
-        let net = (white[0] + black[0]) as i64 - (white[1] + black[1]) as i64;
+        let cwin = white[0] + black[0];
+        let closs = white[1] + black[1];
+        let cdraw = white[2] + black[2];
+        let decided = cwin + closs + cdraw;
+        let net = cwin as i64 - closs as i64;
+        let verdict = if net > 0 {
+            "current is STRONGER than master"
+        } else if net < 0 {
+            "current is WEAKER than master"
+        } else {
+            "current and master are EVEN"
+        };
         eprintln!();
         eprintln!(
-            "FINAL net (current_wins - current_losses) = {net:+}  (positive => current stronger)"
+            "FINAL: current {cwin}W-{closs}L-{cdraw}D / {decided} decided  Score {:.1}%  net {net:+}  =>  {verdict}",
+            pct(cwin as f64 + 0.5 * cdraw as f64, decided)
         );
     }
 }
