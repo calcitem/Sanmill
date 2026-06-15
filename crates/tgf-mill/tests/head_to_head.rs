@@ -241,9 +241,17 @@ fn standings_row(side: &str, s: &[usize; 4]) {
     );
 }
 
-/// Print the live standings table (White / Black / total rows) plus the
-/// completed / remaining / progress footer.
-fn print_standings(done: usize, total: usize, white: &[usize; 4], black: &[usize; 4]) {
+/// Print the live standings table (White / Black / total rows) plus a footer
+/// noting the SkillLevel and Thinking Time and the completed / remaining /
+/// progress counts.
+fn print_standings(
+    done: usize,
+    total: usize,
+    white: &[usize; 4],
+    black: &[usize; 4],
+    skill: u32,
+    move_time: u32,
+) {
     let tot = [
         white[0] + black[0],
         white[1] + black[1],
@@ -260,6 +268,10 @@ fn print_standings(done: usize, total: usize, white: &[usize; 4], black: &[usize
     standings_row("Black", black);
     standings_row("TOTAL", &tot);
     eprintln!("{TABLE_SEP}");
+    eprintln!(
+        "SkillLevel: {skill}   Thinking Time: {move_time}s{}",
+        if move_time == 0 { " (fixed depth)" } else { "" }
+    );
     eprintln!(
         "Completed: {done}/{total} ({:.1}%)   Remaining: {}",
         pct(done as f64, total),
@@ -356,7 +368,7 @@ fn head_to_head_vs_master() {
                 "Game {}/{total}: White vs Black -> {res:?} ({plies} plies)",
                 i + 1
             );
-            print_standings(i + 1, total, &white, &black);
+            print_standings(i + 1, total, &white, &black, skill, move_time);
         }
         let (ww, bw) = (white[0], black[0]);
         let net = ww as i64 - bw as i64;
@@ -410,7 +422,7 @@ fn head_to_head_vs_master() {
                     _ => "unfinished",
                 }
             );
-            print_standings(i + 1, total, &white, &black);
+            print_standings(i + 1, total, &white, &black, skill, move_time);
         }
         let cwin = white[0] + black[0];
         let closs = white[1] + black[1];
