@@ -425,10 +425,10 @@ pub(super) fn clear_key_history(state: &mut MillState) {
 ///     be scored by its heuristic (master picks it), not collapsed to a draw.
 ///   * **Real play** (`GameRules::apply`, `adjudicate = true`): the move that
 ///     reaches the third occurrence ends the game, matching master's external
-///     `has_game_cycle()` / `check_if_game_is_over` adjudication (non-Qt
-///     `count >= 3`, i.e. the standard threefold).  The history itself is
-///     tracked in BOTH modes so the search still sees the same repetition
-///     window through `Workbench::current_repetition_count`.
+///     `has_game_cycle()` / `check_if_game_is_over` adjudication with the
+///     standard threefold threshold. The history itself is tracked in BOTH
+///     modes so the search still sees the same repetition window through
+///     `Workbench::current_repetition_count`.
 pub(super) fn push_key_and_check_threefold(
     state: &mut MillState,
     options: &MillVariantOptions,

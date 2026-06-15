@@ -12,11 +12,6 @@
 #pragma execution_character_set("utf-8")
 #endif
 
-/// If Qt is used and QT += GUI is included in the configuration,
-/// QT_GUI_LIB will be defined automatically.
-/// If Qt is not used, QT_GUI_LIB is defined by Visual C++ .vcxproj file.
-// #undef QT_GUI_LIB
-
 /// In UCI, do move when the opponent has done moving, usually for the test.
 // #define UCI_AUTO_RE_GO
 
@@ -31,7 +26,6 @@
 
 /// FLUTTER_UI is defined by CMakeList.txt of flutter_app.
 #ifdef FLUTTER_UI
-#undef QT_GUI_LIB
 #undef ANALYZE_POSITION
 #endif
 
@@ -39,13 +33,8 @@
 #define UCI_AUTO_RE_GO
 #endif
 
-// Play via network (TODO(calcitem): Port to Qt 6)
+// Play via network.
 // #define NET_FIGHT_SUPPORT
-
-/// Qt simple GUI like a mobile app (WIP)
-// #define QT_MOBILE_APP_UI
-
-// #define QT_UI_TEST_MODE
 
 // #define UCT_DEMO
 
@@ -115,9 +104,7 @@ constexpr auto DEPTH_ADJUST = 0;
 #define DRAW_POLAR_COORDINATES
 #endif
 
-#ifndef QT_MOBILE_APP_UI
 #define SAVE_GAME_BOOK_WHEN_ACTION_NEW_TRIGGERED
-#endif
 
 // #define DO_NOT_PLAY_WIN_SOUND
 
@@ -146,8 +133,6 @@ constexpr auto DEPTH_ADJUST = 0;
 #include "base.h"
 #endif
 
-#ifndef QT_GUI_LIB
 // #define ENABLE_BENCHMARK
-#endif
 
 #endif // INCLUDE_CONFIG_H_

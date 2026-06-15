@@ -32,7 +32,6 @@ SNAP_YAML_FILE=snap/snapcraft.yaml
 SNAP_DESKTOP_FILE=snap/gui/mill.desktop
 DEBIAN_YAML_FILE=src/ui/flutter_app/debian/debian.yaml
 DEBIAN_DESKTOP_FILE=src/ui/flutter_app/debian/gui/mill.desktop
-QT_RC_FILE=src/ui/qt/mill-pro.rc
 
 CHANGELOG_DIRS=(
   "fastlane/metadata/android/ar/changelogs"
@@ -156,12 +155,6 @@ $SED -i "s/Version=${OLD_VERSION}/Version=${NEW_VERSION}/g" $SNAP_DESKTOP_FILE
 # Modify Debian
 $SED -i "s/Version: ${OLD_VERSION}/Version: ${NEW_VERSION}/g" $DEBIAN_YAML_FILE
 $SED -i "s/Version=${OLD_VERSION}/Version=${NEW_VERSION}/g" $DEBIAN_DESKTOP_FILE
-
-# Modify Qt
-OLD_FILEVERSION="$MAJOR_NUMBER,$MINOR_NUMBER,$OLD_PATCH_NUMBER"
-FILEVERSION="$MAJOR_NUMBER,$MINOR_NUMBER,$PATCH_NUMBER"
-$SED -i "s/${OLD_FILEVERSION},0/${FILEVERSION},0/g" $QT_RC_FILE
-$SED -i "s/${OLD_VERSION}.0/${NEW_VERSION}.0/g" $QT_RC_FILE
 
 # Changelog
 rm -f ${BUILD_NUMBER}.txt

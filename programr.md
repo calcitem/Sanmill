@@ -4,9 +4,9 @@ Sanmill is a mill game program.
 
 Usage of the source code is governed by the GPL license: see `Copying.txt` for details.
 
-Sanmill includes a console-based mill game engine that be used with separately available interface for mill game programs, or with UCI-like interface programs. In addition, two custom Flutter/Qt user interface programs for Sanmill are available; the Flutter frontend communicates with the mill game engine using a channel.
+Sanmill includes a console-based mill game engine that can be used with separately available interfaces for mill game programs, or with UCI-like interface programs. The Flutter frontend communicates with the native engine through the FRB bridge.
 
-Sanmill is written in C++ and Dart. The Sanmill mill game engine supports both Windows (32- or 64-bit versions) and other platforms such as Linux.
+Sanmill is written in Rust, Dart, and a small amount of C++ for the perfect database wrapper. The Sanmill mill game engine supports Windows and other platforms such as Linux.
 
 Sanmill has mostly been tested on Intel & AMD processors but the code is designed to be portable to other processors.
 
@@ -98,9 +98,7 @@ Pawn structure scoring is done in two stages. First, the hash table is probed to
 
 ## Flutter user interface
 
-The mill game engine is now run as a separate process that communicates with the user interface through a channel.
-
-Compared to Qt UI, the Flutter UI lacks some features: for example, it cannot be used to communicate with a mill game server.
+The mill game engine communicates with the user interface through the FRB bridge.
 
 The Flutter user interface is a pretty standard Dart program.
 

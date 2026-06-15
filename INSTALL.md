@@ -26,19 +26,3 @@ You can run the `./flutter-linux-init.sh` script to initialize the Flutter envir
 cd src/ui/flutter_app
 flutter build linux -v
 ```
-
-## Qt Application for Windows
-
-> **Note**
->
-> We primarily use the Qt Application for verifying and testing algorithms, though there are many bugs in the GUI. I hope you can understand.
-
-Download [Qt Runtime](https://github.com/calcitem/Sanmill-Runtime/archive/master.zip) .
-
-Unzip Sanmill-Runtime-master.zip
-
-Get executable file from [GitHub Actions](https://github.com/calcitem/Sanmill/actions/workflows/qt-on-windows.yml).
-
-Put `mill-pro.exe` into the `Sanmill-Runtime-master` directory, and click `mill-pro.exe` to run.
-
-If you cannot run, try to install [Microsoft Visual C++ Redistributable packages for Visual Studio 2015, 2017, 2019, and 2022](https://docs.microsoft.com/en-US/cpp/windows/latest-supported-vc-redist?view=msvc-170). Download [vc_redist.x64.exe](https://aka.ms/vs/17/release/vc_redist.x64.exe) and install it.

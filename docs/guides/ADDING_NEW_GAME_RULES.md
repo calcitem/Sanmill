@@ -2,8 +2,7 @@
 
 Sanmill's active rules engine is the Rust/TGF implementation.  New Mill rule
 variants are represented as data in `MillVariantOptions`, mapped from Flutter
-`RuleSettings`, and passed to Rust through the FRB API.  The retired C++ engine
-and Qt UI are no longer part of the implementation workflow.
+`RuleSettings`, and passed to Rust through the FRB API.
 
 ## Quick Start
 

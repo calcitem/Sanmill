@@ -51,9 +51,7 @@ consistent, high-quality contributions.
 - UI automation: Appium
 - Monkey testing for stability
 
-The legacy Qt UI and C++ / gtest layer were retired in
-Phase 3 / Phase 4 (commit ff357aadc).  All gameplay logic and AI
-search now live in the Rust/TGF stack.
+All gameplay logic and AI search live in the Rust/TGF stack.
 
 **Build & Automation:**
 - Shell scripts for initialization and deployment
@@ -124,9 +122,7 @@ search now live in the Rust/TGF stack.
 - `cargo fmt --all` on Rust code (when `Cargo.toml` is present)
 - `cargo clippy --workspace --all-targets --all-features -- -D warnings`
 
-The C++ engine and Qt UI were removed in Phase 3 / Phase 4 (commit
-ff357aadc), so the `format.sh` script no longer invokes
-`clang-format`.
+The `format.sh` script no longer invokes `clang-format`.
 
 ---
 
@@ -187,9 +183,7 @@ Refs #789
 * **Avoid "Enhanced" / "Extended" class names** (e.g., no
   `EnhancedSearch`); prefer editing the original implementation.
 
-The C++ engine and Qt UI were removed in Phase 3 / Phase 4, so the
-"C++ Specific Rules" that used to live here no longer apply.  The
-remaining native code (small iOS / macOS / Android Runner shims)
+The remaining native code (small iOS / macOS / Android Runner shims)
 follows the conventions of the corresponding platform tooling and
 is rarely touched.
 

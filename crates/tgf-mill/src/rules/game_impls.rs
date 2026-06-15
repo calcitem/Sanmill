@@ -440,13 +440,10 @@ impl Game for MillGame {
     }
 
     // Mill intentionally does NOT override `root_short_circuit_draw` and does
-    // not bias root tie-breaks toward draws.  Master's non-Qt (Flutter) engine
-    // keeps the FIRST move on ties: `Position::has_game_cycle()` returns
-    // `count >= 3` outside `QT_GUI_LIB`, i.e. the STANDARD threefold, which is
-    // already handled by `terminal_score` (the `count >= 2` early-draw is a
-    // Qt-only quirk we deliberately ignore per the Flutter-is-ground-truth
-    // decision).  Master's `g7-d7`-style "finish the game" choices therefore
-    // emerge naturally from the in-search `has_repeated` cut alone:
+    // not bias root tie-breaks toward draws. The engine keeps the FIRST move
+    // on ties: the standard threefold is already handled by `terminal_score`.
+    // Master's `g7-d7`-style "finish the game" choices therefore emerge
+    // naturally from the in-search `has_repeated` cut alone:
     //
     //   * `terminal_score` keeps a real DrawThreefold at the small positive
     //     `VALUE_DRAW + 1` master uses for repetitions;

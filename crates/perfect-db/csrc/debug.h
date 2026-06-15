@@ -10,20 +10,8 @@
 
 #include <cstdio>
 
-#ifdef QT_GUI_LIB
-#include <QDebug>
-#endif
-
-// #define QT_NO_DEBUG_OUTPUT
-
 #define CSTYLE_DEBUG_OUTPUT
 
-#ifdef CSTYLE_DEBUG_OUTPUT
 #define debugPrintf printf
-#else
-#ifdef QT_GUI_LIB
-#define debugPrintf qDebug
-#endif
-#endif /* CSTYLE_DEBUG_OUTPUT */
 
 #endif /* DEBUG_H_INCLUDED */

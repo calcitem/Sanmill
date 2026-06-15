@@ -23,7 +23,7 @@
 
 [![Codemagic build status](https://api.codemagic.io/apps/5fafbd77605096975ff9d1ba/5fafbd77605096975ff9d1b9/status_badge.svg)](https://codemagic.io/apps/5fafbd77605096975ff9d1ba/5fafbd77605096975ff9d1b9/latest_build)
 
-[Sanmill](https://gitee.com/calcitem/Sanmill) 是一个直棋程序，具有命令行、移动端 Flutter 和 PC 端 Qt 三个界面。其遵循 **GNU 通用公共许可证第三版** (GPL v3) 发布，确保其保持自由软件的属性。用户可以修改和重新分发这款软件，但必须遵守 GPL 的条款。
+[Sanmill](https://gitee.com/calcitem/Sanmill) 是一个直棋程序，具有命令行引擎和 Flutter 图形界面。其遵循 **GNU 通用公共许可证第三版** (GPL v3) 发布，确保其保持自由软件的属性。用户可以修改和重新分发这款软件，但必须遵守 GPL 的条款。
 
 直棋为棋规简单、老少皆宜的双人游戏，通常棋盘为同心的数个正方形，并用直线或斜线将不同的正方形相连结。直棋普遍以消灭对方吃子能力，或困毙对方为胜。规则可用 “**先摆后移，成三吃子，余三飞子，无路者负。**” 简述之。
 
@@ -110,34 +110,28 @@ Sanmill 的此发行版包含以下文件：
 
 * Copying.txt，包含 GNU 通用公共许可证版本 3 的文本文件。
 
-* src，包含完整源代码的子目录，包括可用于在类 Unix 系统上编译 Sanmill 命令行程序的 Makefile。
+* crates，包含 Rust/TGF 工作区、规则引擎、搜索代码、FRB API crate 和无界面 CLI。
 
 * src/ui/flutter_app，包含 Flutter 前端的子目录。
 
-* src/ui/qt，包含 Qt 前端的子目录。
-
 ## 前端选项
 
-Sanmill 提供两个前端选项：**Flutter** 和 **Qt**。当前主要发布和维护的是 Flutter 前端，支持 Android、iOS、Windows 和 macOS，适合希望在多个平台上获得一致体验的用户。Qt 前端主要用于调试 AI 引擎，不活跃维护。建议用户使用 Flutter 前端以获取最新的功能和更新。
+Sanmill 支持的图形前端是 Flutter App，支持 Android、iOS、Windows、macOS 和 Linux。
 
 ## 如何构建
 
 ### 命令行程序
 
-Sanmill 命令行程序支持 32 位或 64 位 CPU、某些硬件指令、Power PC 等大端机器和其他平台。
-
-可以简单地在类 Unix 系统上使用包含在文件夹 `src` 中的 Makefile 直接从源代码编译 Sanmill。通常，建议运行 `make help` 以查看带有相应描述的 make 目标列表。
+Sanmill 命令行引擎可用于无界面测试、回归对战和调试。
 
 ```shell
-cd src
-make help
-make build ARCH=x86-64-modern
+bash scripts/build_console_engine.sh
 ```
 
 报告问题或错误时，请告诉我们您用于创建可执行文件的版本和编译器。可以通过在控制台中键入以下命令来找到此信息：
 
 ```shell
-./sanmill compiler
+target/release/tgf compiler
 ```
 
 ### Flutter App
@@ -185,24 +179,6 @@ python scripts/check_perf_baseline.py   --baseline tests/perf_baseline.toml   --
 ```
 
 框架 API 契约请参阅 `docs/FRAMEWORK_API.md`。
-
-### Qt 应用程序
-
-如果您已经开始使用 Ubuntu 或任何基于 Ubuntu 的 GNU/Linux 发行版，则必须通过以 root 身份运行以下命令来安装 Qt：
-
-```shell
-sudo apt-get install qt6-base-dev qt6-multimedia-dev qtcreator
-```
-
-使用 Qt Creator 打开 `src/ui/qt/CMakeLists.txt` ，或者运行：
-
-```shell
-cd src/ui/qt
-cmake .
-cmake --build . --target mill-pro
-```
-
-并使用 Visual Studio 打开 `src\ui\qt\mill-pro.sln` 来构建 Qt 应用程序。
 
 ## 了解代码库并参与项目
 
