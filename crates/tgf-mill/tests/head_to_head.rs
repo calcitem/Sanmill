@@ -242,7 +242,7 @@ fn standings_row(side: &str, s: &[usize; 4]) {
 }
 
 /// Print the live standings table (White / Black / total rows) plus a footer
-/// noting the SkillLevel and Thinking Time and the completed / remaining /
+/// noting the Skill Level and Thinking Time and the completed / remaining /
 /// progress counts.
 fn print_standings(
     done: usize,
@@ -269,7 +269,7 @@ fn print_standings(
     standings_row("TOTAL", &tot);
     eprintln!("{TABLE_SEP}");
     eprintln!(
-        "SkillLevel: {skill}   Thinking Time: {move_time}s{}",
+        "Skill Level: {skill}   Thinking Time: {move_time}s{}",
         if move_time == 0 { " (fixed depth)" } else { "" }
     );
     eprintln!(

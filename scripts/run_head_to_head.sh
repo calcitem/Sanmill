@@ -41,8 +41,8 @@ Modes:
 
 Options:
   -g, --games N        games per colour (total played = 2*N)      [default: 10]
-  -s, --skill N        SkillLevel for the engine(s), 0..30        [default: 10]
-  -t, --time SECONDS   per-move thinking time, 0..60, 0=unlimited [default: 0]
+  -s, --skill N        Skill Level for the engine(s), 0..30       [default: 10]
+  -t, --time SECONDS   per-move Thinking Time, 0..60, 0=unlimited [default: 0]
   -p, --max-plies N    ply cap; reaching it scores a draw         [default: 160]
       --self ENGINE     self-play ENGINE (current|master) instead of vs match
   -m, --master PATH    path to master_engine.exe
@@ -56,7 +56,7 @@ Each option also has an environment-variable form (command-line flags win):
 
 Fairness notes:
   * Depth is controlled by --skill: the master engine IGNORES UCI `go depth N`
-    and always derives depth from SkillLevel, so SKILL is the only correct way
+    and always derives depth from Skill Level, so SKILL is the only correct way
     to set an equal depth.
   * --time 0 (fixed depth) is speed-independent and matches "Thinking Time 0".
     --time >0 favours the FASTER engine (master, C++); use only for a
