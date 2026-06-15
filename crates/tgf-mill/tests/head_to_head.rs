@@ -46,8 +46,8 @@ use std::env;
 use std::io::{BufRead, BufReader, Write};
 use std::process::{Child, ChildStdin, ChildStdout, Command, Stdio};
 
-use tgf_core::{Game, GameRules, OutcomeKind, Workbench};
-use tgf_mill::{MillGame, MillRules, MillUciCodec, MillVariantOptions};
+use tgf_core::{Action, Game, GameRules, GameStateSnapshot, OutcomeKind, Workbench};
+use tgf_mill::{MillActionKind, MillGame, MillPhase, MillRules, MillUciCodec, MillVariantOptions};
 
 /// One UCI engine subprocess.
 struct Engine {
@@ -166,6 +166,89 @@ enum GameResult {
     Unfinished,
 }
 
+/// Match-level repetition adjudicator. `GameStateSnapshot` persists only a
+/// compact key window for FRB compatibility, while the master console engine
+/// rebuilds a full 256-entry `posKeyHistory` from the UCI move list.
+#[derive(Default)]
+struct RepetitionReferee {
+    key_history: Vec<u64>,
+}
+
+impl RepetitionReferee {
+    const MAX_KEYS: usize = 256;
+
+    fn is_root_threefold_draw(&self, snap: &GameStateSnapshot) -> bool {
+        if snap.phase_tag != MillPhase::Moving as i16 {
+            return false;
+        }
+        let key = snap.zobrist_key;
+        debug_assert_ne!(key, 0, "Mill snapshots must carry a non-zero key");
+        self.key_history
+            .iter()
+            .filter(|stored| **stored == key)
+            .count()
+            >= 3
+    }
+
+    fn record_after_apply(&mut self, action: Action, snap: &GameStateSnapshot) {
+        match action.kind_tag {
+            x if x == MillActionKind::Move as i16 => {
+                let key = snap.zobrist_key;
+                debug_assert_ne!(key, 0, "Mill snapshots must carry a non-zero key");
+                if self.key_history.len() >= Self::MAX_KEYS {
+                    self.key_history.remove(0);
+                }
+                debug_assert!(self.key_history.len() < Self::MAX_KEYS);
+                self.key_history.push(key);
+            }
+            x if x == MillActionKind::Place as i16 || x == MillActionKind::Remove as i16 => {
+                self.key_history.clear();
+            }
+            other => panic!("unknown Mill action kind_tag {other}"),
+        }
+    }
+}
+
+fn action(kind: MillActionKind) -> Action {
+    Action {
+        kind_tag: kind as i16,
+        from_node: -1,
+        to_node: 0,
+        aux: -1,
+        payload_bits: 0,
+    }
+}
+
+fn moving_snapshot_with_key(key: u64) -> GameStateSnapshot {
+    GameStateSnapshot {
+        phase_tag: MillPhase::Moving as i16,
+        zobrist_key: key,
+        ..GameStateSnapshot::default()
+    }
+}
+
+#[test]
+fn repetition_referee_preserves_long_reversible_history() {
+    let mut referee = RepetitionReferee::default();
+    let repeated = moving_snapshot_with_key(42);
+
+    referee.record_after_apply(action(MillActionKind::Move), &repeated);
+    for key in 1_000..1_030 {
+        referee.record_after_apply(action(MillActionKind::Move), &moving_snapshot_with_key(key));
+    }
+    referee.record_after_apply(action(MillActionKind::Move), &repeated);
+    for key in 2_000..2_030 {
+        referee.record_after_apply(action(MillActionKind::Move), &moving_snapshot_with_key(key));
+    }
+    referee.record_after_apply(action(MillActionKind::Move), &repeated);
+
+    assert!(referee.key_history.len() > 24);
+    assert!(referee.is_root_threefold_draw(&repeated));
+
+    referee.record_after_apply(action(MillActionKind::Remove), &repeated);
+    assert!(!referee.is_root_threefold_draw(&repeated));
+}
+
 /// Play one full game between the `white` and `black` engines; returns the
 /// outcome by board colour (`tgf-mill` is the referee).
 fn play_game(white: &mut Engine, black: &mut Engine, max_plies: usize) -> (GameResult, usize) {
@@ -173,6 +256,7 @@ fn play_game(white: &mut Engine, black: &mut Engine, max_plies: usize) -> (GameR
     let game = MillGame::new(MillVariantOptions::default());
     let mut snap = rules.initial_state(&[]);
     let mut moves: Vec<String> = Vec::new();
+    let mut repetition = RepetitionReferee::default();
     white.new_game();
     black.new_game();
 
@@ -183,6 +267,9 @@ fn play_game(white: &mut Engine, black: &mut Engine, max_plies: usize) -> (GameR
             OutcomeKind::Win(1) => return (GameResult::BlackWin, ply),
             OutcomeKind::Draw => return (GameResult::Draw, ply),
             _ => return (GameResult::Unfinished, ply),
+        }
+        if repetition.is_root_threefold_draw(&snap) {
+            return (GameResult::Draw, ply);
         }
 
         let stm = game.build_workbench(&snap).side_to_move();
@@ -199,6 +286,7 @@ fn play_game(white: &mut Engine, black: &mut Engine, max_plies: usize) -> (GameR
             return (GameResult::Unfinished, ply);
         };
         snap = rules.apply(&snap, action);
+        repetition.record_after_apply(action, &snap);
         moves.push(mv);
     }
     // Ply cap reached: both sides maneuvering -> score as a draw.
