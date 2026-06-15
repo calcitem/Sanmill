@@ -491,3 +491,6 @@ crates/tgf-frb/src/frb_generated.rs
 rust_sources_combined.txt
 master_cxx_combined.txt
 nul
+
+# OpenAI Codex Config & Cache
+.codex/
