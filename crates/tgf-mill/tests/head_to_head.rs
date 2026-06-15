@@ -214,6 +214,39 @@ fn pct(num: f64, den: usize) -> f64 {
     }
 }
 
+/// Two-sided normal critical value for 99.9% confidence (alpha = 0.001).
+const Z_99_9: f64 = 3.290_526_731_491_925;
+
+/// Observed Score proportion `(W + 0.5*D) / decided` and the decided-game count.
+fn score_proportion(s: &[usize; 4]) -> (f64, usize) {
+    let decided = s[0] + s[1] + s[2];
+    if decided == 0 {
+        return (0.0, 0);
+    }
+    let score = s[0] as f64 + 0.5 * s[2] as f64;
+    (score / decided as f64, decided)
+}
+
+/// Wald margin of error for a proportion at 99.9% confidence, in percentage
+/// points (e.g. 2.1 means ±2.1%).
+fn margin_of_error_pct(p: f64, n: usize) -> f64 {
+    if n == 0 {
+        return 0.0;
+    }
+    100.0 * Z_99_9 * (p * (1.0 - p) / n as f64).sqrt()
+}
+
+/// Format `Score% ± margin` with sample size for one standings row.
+fn format_score_with_margin(s: &[usize; 4]) -> String {
+    let (p, n) = score_proportion(s);
+    if n == 0 {
+        return "N/A".to_string();
+    }
+    let score_pct = pct(p * n as f64, n);
+    let me = margin_of_error_pct(p, n);
+    format!("{score_pct:.1}% ± {me:.1}% (n={n})")
+}
+
 /// Row/separator template for the live standings table.
 const TABLE_SEP: &str =
     "+--------+-------+------+------+------+--------+--------+--------+--------+";
@@ -277,6 +310,10 @@ fn print_standings(
         pct(done as f64, total),
         total - done
     );
+    eprintln!("99.9% confidence sampling error (Score%):");
+    eprintln!("  White: {}", format_score_with_margin(white));
+    eprintln!("  Black: {}", format_score_with_margin(black));
+    eprintln!("  Total: {}", format_score_with_margin(&tot));
     if tot[3] > 0 {
         eprintln!(
             "(note: {} game(s) unfinished/aborted, excluded from rates)",
