@@ -16,6 +16,8 @@ use tgf_core::{Action, ActionList, GameRules, GameStateSnapshot, OutcomeKind};
 use tgf_mill::rules::MillState;
 use tgf_mill::{MillRules, MillUciCodec, MillVariantOptions, default_mill_topology};
 
+const MAX_REMOVAL_CONTINUATION_DEPTH: u8 = 4;
+
 /// C++ `Square` ids returned by Malom's `from_perfect_square` for perfect
 /// indices 0..24.  The mapping itself is recovered from the Mill topology at
 /// runtime (see [`node_to_perfect_index`]); this table only encodes the
@@ -173,9 +175,8 @@ pub fn evaluate_state_with_database<P: DatabaseProvider>(
 /// Select a deterministic best legal action using the Rust-native database.
 ///
 /// This intentionally reuses `tgf-mill` legal action generation and apply.
-/// The first migration step ranks only the W/D/L class and skips child states
-/// that still require a removal, because those need compound action expansion
-/// to match the old C++ `AdvancedMove` model exactly.
+/// Compound mill-closing candidates are represented as ordinary TGF action
+/// continuations instead of copying C++ `AdvancedMove`.
 pub fn best_move_token_with_database<P: DatabaseProvider>(
     database: &mut Database<P>,
     rules: &MillRules,
@@ -215,23 +216,61 @@ fn child_value_for_root<P: DatabaseProvider>(
     options: &MillVariantOptions,
     root_side: i8,
 ) -> Result<Option<i32>, DatabaseError> {
-    if let Some(wdl) = terminal_wdl_for_root(rules, child_snap, root_side) {
+    continuation_value_for_root(database, rules, child_snap, options, root_side, 0)
+}
+
+fn continuation_value_for_root<P: DatabaseProvider>(
+    database: &mut Database<P>,
+    rules: &MillRules,
+    snap: &GameStateSnapshot,
+    options: &MillVariantOptions,
+    root_side: i8,
+    depth: u8,
+) -> Result<Option<i32>, DatabaseError> {
+    assert!(
+        depth <= MAX_REMOVAL_CONTINUATION_DEPTH,
+        "Perfect DB removal continuation exceeded the expected Mill bound"
+    );
+
+    if let Some(wdl) = terminal_wdl_for_root(rules, snap, root_side) {
         return Ok(Some(wdl));
     }
 
-    let child_side = child_snap.side_to_move;
-    if child_side != 0 && child_side != 1 {
+    let side_to_move = snap.side_to_move;
+    if side_to_move != 0 && side_to_move != 1 {
         return Ok(None);
     }
 
-    let child_state = MillRules::decode_snapshot(*child_snap);
+    let state = MillRules::decode_snapshot(*snap);
+    if state.pending_removals()[side_to_move as usize] > 0 {
+        assert!(
+            depth < MAX_REMOVAL_CONTINUATION_DEPTH,
+            "Perfect DB removal continuation must finish before the depth cap"
+        );
+        let mut actions = ActionList::<256>::new();
+        rules.legal_actions(snap, &mut actions);
+        let mut best: Option<i32> = None;
+        for &action in actions.as_slice() {
+            let next = rules.apply(snap, action);
+            let Some(wdl) =
+                continuation_value_for_root(database, rules, &next, options, root_side, depth + 1)?
+            else {
+                continue;
+            };
+            if best.is_none_or(|best_wdl| wdl > best_wdl) {
+                best = Some(wdl);
+            }
+        }
+        return Ok(best);
+    }
+
     let Some((wdl, _steps)) =
-        evaluate_state_with_database(database, &child_state, options, child_side)?
+        evaluate_state_with_database(database, &state, options, side_to_move)?
     else {
         return Ok(None);
     };
 
-    Ok(Some(if child_side == root_side { wdl } else { -wdl }))
+    Ok(Some(if side_to_move == root_side { wdl } else { -wdl }))
 }
 
 fn terminal_wdl_for_root(

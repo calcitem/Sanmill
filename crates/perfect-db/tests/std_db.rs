@@ -5,9 +5,9 @@ use perfect_db::{
     best_move_token, best_move_token_for_state, best_move_token_with_database, evaluate,
     evaluate_state_for, evaluate_state_with_database, init,
 };
-use tgf_core::{ActionList, GameRules, GameStateSnapshot};
+use tgf_core::{ActionList, BoardTopology, GameRules, GameStateSnapshot};
 use tgf_mill::notation::MillUciCodec;
-use tgf_mill::{MillRules, MillVariantOptions};
+use tgf_mill::{MillRules, MillVariantOptions, default_mill_topology};
 
 fn apply_sequence(rules: &MillRules, labels: &[&str]) -> GameStateSnapshot {
     let mut snap = rules.initial_state(&[]);
@@ -41,6 +41,28 @@ fn assert_best_move_is_legal(rules: &MillRules, snap: &GameStateSnapshot, token:
         legal.as_slice().contains(&action),
         "best move token {token} must be legal"
     );
+}
+
+fn set_piece_by_label(state: &mut tgf_mill::rules::MillState, label: &str, owner: i8) {
+    let topo = default_mill_topology();
+    let node = topo
+        .node_from_label(label)
+        .unwrap_or_else(|| panic!("missing node label {label}"));
+    state.set_piece(node, owner);
+}
+
+fn pending_removal_snapshot(rules: &MillRules, options: &MillVariantOptions) -> GameStateSnapshot {
+    let mut state = rules.setup_empty();
+    for label in ["a4", "a7", "d7"] {
+        set_piece_by_label(&mut state, label, 1);
+    }
+    for label in ["g7", "g4"] {
+        set_piece_by_label(&mut state, label, 2);
+    }
+    state.recompute_aux(options);
+    state.set_side_to_move(0);
+    state.set_pending_removal(0, 1);
+    rules.encode_state(state)
 }
 
 struct OracleCase {
@@ -110,4 +132,22 @@ fn std_perfect_db_oracle_vectors() {
     // Do not call deinit here: the current C++ bridge has fragile sector-hash
     // shutdown behavior. The Rust rewrite should make shutdown deterministic,
     // but these oracle vectors only need process-lifetime resources.
+}
+
+#[test]
+fn rust_best_move_expands_removal_continuations() {
+    let rules = MillRules::default();
+    let options = MillVariantOptions::default();
+    let snap = pending_removal_snapshot(&rules, &options);
+    let mut rust_db = Database::open(FileDatabaseProvider::new(db_path())).unwrap();
+
+    let token = best_move_token_with_database(&mut rust_db, &rules, &snap, &options)
+        .unwrap()
+        .expect("pending removal state must produce a Rust best move token");
+
+    assert!(
+        token.starts_with('x'),
+        "pending removal best move must be a removal token, got {token}"
+    );
+    assert_best_move_is_legal(&rules, &snap, &token);
 }
