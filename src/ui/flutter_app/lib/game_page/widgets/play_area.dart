@@ -4,6 +4,7 @@
 // play_area.dart
 
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:native_screenshot_widget/native_screenshot_widget.dart';
 
@@ -572,6 +573,7 @@ class PlayAreaState extends State<PlayArea> {
 
                   // Analysis toolbar (perfect-database overlay toggle).
                   if (DB().displaySettings.isAnalysisToolbarShown &&
+                      !kIsWeb &&
                       !isToolbarAtBottom &&
                       !isSetupPosition)
                     GamePageToolbar(
@@ -646,6 +648,7 @@ class PlayAreaState extends State<PlayArea> {
 
                   // Analysis toolbar (perfect-database overlay toggle).
                   if (DB().displaySettings.isAnalysisToolbarShown &&
+                      !kIsWeb &&
                       !isSetupPosition)
                     GamePageToolbar(
                       key: const Key('play_area_analysis_toolbar_bottom'),

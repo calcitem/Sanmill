@@ -21,6 +21,9 @@ migration:
     - platform: macos
       create_revision: 78666c8dc57e9f7548ca9f8dd0740fbf0c658dc9
       base_revision: 78666c8dc57e9f7548ca9f8dd0740fbf0c658dc9
+    - platform: web
+      create_revision: 3b62efc2a3da49882f43c372e0bc53daef7295a6
+      base_revision: 3b62efc2a3da49882f43c372e0bc53daef7295a6
 
   # User provided section
 

@@ -2,7 +2,6 @@
 // Copyright (C) 2019-2026 The Sanmill developers (see AUTHORS file)
 
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 
 import '../../game_page/services/mill.dart' show GameController, GameMode;
@@ -165,9 +164,7 @@ class MillGameModule extends GameModule {
 
   @override
   String defaultShellRoute(BuildContext context) {
-    return kIsWeb
-        ? MillRouteIds.humanVsHuman.value
-        : MillRouteIds.humanVsAi.value;
+    return MillRouteIds.humanVsAi.value;
   }
 
   @override
@@ -324,17 +321,16 @@ class MillGameModule extends GameModule {
   List<GameModeEntry> playModes(BuildContext context) {
     final S s = S.of(context);
     return <GameModeEntry>[
-      if (!kIsWeb)
-        GameModeEntry(
-          id: MillRouteIds.humanVsAi,
-          label: s.humanVsAi,
-          icon: FluentIcons.person_24_regular,
-          drawerKey: const Key('drawer_item_human_vs_ai'),
-          contentKey: const Key('human_ai'),
-          isAvailable: (_) => features.supports(GameCapability.ai) && !kIsWeb,
-          builder: (BuildContext context, {Key? key, GameSession? session}) =>
-              GamePage(GameMode.humanVsAi, key: key),
-        ),
+      GameModeEntry(
+        id: MillRouteIds.humanVsAi,
+        label: s.humanVsAi,
+        icon: FluentIcons.person_24_regular,
+        drawerKey: const Key('drawer_item_human_vs_ai'),
+        contentKey: const Key('human_ai'),
+        isAvailable: (_) => features.supports(GameCapability.ai),
+        builder: (BuildContext context, {Key? key, GameSession? session}) =>
+            GamePage(GameMode.humanVsAi, key: key),
+      ),
       GameModeEntry(
         id: MillRouteIds.humanVsHuman,
         label: s.humanVsHuman,
@@ -344,17 +340,16 @@ class MillGameModule extends GameModule {
         builder: (BuildContext context, {Key? key, GameSession? session}) =>
             GamePage(GameMode.humanVsHuman, key: key),
       ),
-      if (!kIsWeb)
-        GameModeEntry(
-          id: MillRouteIds.aiVsAi,
-          label: s.aiVsAi,
-          icon: FluentIcons.bot_24_regular,
-          drawerKey: const Key('drawer_item_ai_vs_ai'),
-          contentKey: const Key('ai_ai'),
-          isAvailable: (_) => features.supports(GameCapability.ai) && !kIsWeb,
-          builder: (BuildContext context, {Key? key, GameSession? session}) =>
-              GamePage(GameMode.aiVsAi, key: key),
-        ),
+      GameModeEntry(
+        id: MillRouteIds.aiVsAi,
+        label: s.aiVsAi,
+        icon: FluentIcons.bot_24_regular,
+        drawerKey: const Key('drawer_item_ai_vs_ai'),
+        contentKey: const Key('ai_ai'),
+        isAvailable: (_) => features.supports(GameCapability.ai),
+        builder: (BuildContext context, {Key? key, GameSession? session}) =>
+            GamePage(GameMode.aiVsAi, key: key),
+      ),
       GameModeEntry(
         id: MillRouteIds.humanVsLan,
         label: s.humanVsLAN,
@@ -365,17 +360,15 @@ class MillGameModule extends GameModule {
         builder: (BuildContext context, {Key? key, GameSession? session}) =>
             GamePage(GameMode.humanVsLAN, key: key),
       ),
-      if (!kIsWeb)
-        GameModeEntry(
-          id: MillRouteIds.setupPosition,
-          label: s.setupPosition,
-          icon: FluentIcons.edit_24_regular,
-          drawerKey: const Key('drawer_item_setup_position'),
-          contentKey: const Key('setup_position'),
-          isAvailable: (_) => !kIsWeb,
-          builder: (BuildContext context, {Key? key, GameSession? session}) =>
-              GamePage(GameMode.setupPosition, key: key),
-        ),
+      GameModeEntry(
+        id: MillRouteIds.setupPosition,
+        label: s.setupPosition,
+        icon: FluentIcons.edit_24_regular,
+        drawerKey: const Key('drawer_item_setup_position'),
+        contentKey: const Key('setup_position'),
+        builder: (BuildContext context, {Key? key, GameSession? session}) =>
+            GamePage(GameMode.setupPosition, key: key),
+      ),
     ];
   }
 
@@ -420,9 +413,6 @@ class MillGameModule extends GameModule {
     Key? key,
     GameSession? session,
   }) {
-    return GamePage(
-      kIsWeb ? GameMode.humanVsHuman : GameMode.humanVsAi,
-      key: key,
-    );
+    return GamePage(GameMode.humanVsAi, key: key);
   }
 }

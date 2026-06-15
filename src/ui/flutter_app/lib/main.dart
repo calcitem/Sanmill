@@ -21,6 +21,7 @@ import 'experience_recording/services/recording_navigator_observer.dart';
 import 'game_page/services/mill.dart' show LoadService;
 import 'game_platform/game_registry.dart';
 import 'games/built_in_game_modules.dart';
+import 'general_settings/models/general_settings.dart';
 import 'generated/intl/l10n.dart';
 import 'home/home.dart';
 import 'puzzle/services/puzzle_manager.dart';
@@ -54,12 +55,17 @@ Future<void> main() async {
   //   enableFlutterDriverExtension();
   // }
 
-  // Initialise the Rust/FRB bridge before any other app services.
-  // This loads the platform native library (tgf_frb.so / .dylib / .dll)
-  // and sets up the async task dispatcher.
+  // Initialise the Rust/FRB bridge before any native app services. Native
+  // targets load the dynamic library; Web loads the wasm-bindgen package.
   await RustLib.init();
 
   await DB.init();
+  if (kIsWeb && DB().generalSettings.usePerfectDatabase) {
+    DB().generalSettings = DB().generalSettings.copyWith(
+      usePerfectDatabase: false,
+      trapAwareness: false,
+    );
+  }
 
   registerBuiltInGameModules(GameRegistry.instance);
   SettingsRepositories.instance.init();

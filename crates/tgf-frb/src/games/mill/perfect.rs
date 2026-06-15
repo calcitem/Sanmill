@@ -1,14 +1,25 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // Perfect-database lookup for Mill positions (Nine Men's Morris std only).
+//
+// The vendored database bridge compiles C++ and reads native files, so the
+// WebAssembly build treats Perfect DB as unavailable while keeping the public
+// FRB surface stable.
 
-use tgf_core::{Action, Game, GameRules, GameStateSnapshot};
-use tgf_mill::{MillActionKind, MillGame, MillRules, MillVariantOptions};
+use tgf_core::{Action, GameStateSnapshot};
+#[cfg(not(target_arch = "wasm32"))]
+use tgf_core::{Game, GameRules};
+use tgf_mill::MillVariantOptions;
+#[cfg(not(target_arch = "wasm32"))]
+use tgf_mill::{MillActionKind, MillGame, MillRules};
 
+#[cfg(not(target_arch = "wasm32"))]
 use crate::games::mill::action_codec::action_to_uci_str;
+#[cfg(not(target_arch = "wasm32"))]
 use crate::games::mill::search::mill_searcher_default;
 
 /// Depth of the heuristic-search fallback used for moves with no perfect
 /// database entry.  Mirrors the legacy C++ `runAnalyze` shallow search depth.
+#[cfg(not(target_arch = "wasm32"))]
 const FALLBACK_SEARCH_DEPTH: i32 = 4;
 
 /// Query the vendored perfect database for a legal action matching the
@@ -19,6 +30,7 @@ const FALLBACK_SEARCH_DEPTH: i32 = 4;
 /// `perfect_db::best_move_token_for_state`; this wrapper only matches the
 /// returned token against the caller's legal action list via the shared
 /// `tgf_mill::MillUciCodec`.
+#[cfg(not(target_arch = "wasm32"))]
 pub(crate) fn try_perfect_best_action(
     snapshot: &tgf_core::GameStateSnapshot,
     options: &MillVariantOptions,
@@ -31,6 +43,15 @@ pub(crate) fn try_perfect_best_action(
         .iter()
         .copied()
         .find(|action| action_to_uci_str(*action) == token)
+}
+
+#[cfg(target_arch = "wasm32")]
+pub(crate) fn try_perfect_best_action(
+    _snapshot: &GameStateSnapshot,
+    _options: &MillVariantOptions,
+    _legal: &[Action],
+) -> Option<Action> {
+    None
 }
 
 /// Verdict for a single analysed move, expressed from the perspective of the
@@ -59,6 +80,7 @@ pub(crate) struct AnalysisReport {
 /// Per-move working data retained for trap detection.  Only moves with a
 /// definitive perfect-database verdict participate, matching the legacy C++
 /// behaviour where trap awareness is gated on the database.
+#[cfg(not(target_arch = "wasm32"))]
 struct TrapCandidate {
     token: String,
     to: usize,
@@ -80,6 +102,7 @@ struct TrapCandidate {
 /// When `trap_awareness` is set, aggressive moves (those that complete or block
 /// a mill) whose database verdict is worse than an available alternative are
 /// reported as traps.
+#[cfg(not(target_arch = "wasm32"))]
 pub(crate) fn analyze_position(
     snapshot: &GameStateSnapshot,
     options: &MillVariantOptions,
@@ -186,12 +209,25 @@ pub(crate) fn analyze_position(
     AnalysisReport { moves, traps }
 }
 
+#[cfg(target_arch = "wasm32")]
+pub(crate) fn analyze_position(
+    _snapshot: &GameStateSnapshot,
+    _options: &MillVariantOptions,
+    _trap_awareness: bool,
+) -> AnalysisReport {
+    AnalysisReport {
+        moves: Vec::new(),
+        traps: Vec::new(),
+    }
+}
+
 /// Detect trap moves among `candidates` (perfect-database-backed moves).
 ///
 /// Mirrors the legacy C++ `runAnalyze` trap pass: skip detection entirely when
 /// every move shares the same verdict (all draws or all losses), then flag any
 /// aggressive move (one completing or blocking a mill) whose verdict is worse
 /// than an available alternative.
+#[cfg(not(target_arch = "wasm32"))]
 fn detect_traps(
     rules: &MillRules,
     snapshot: &GameStateSnapshot,
@@ -231,6 +267,7 @@ fn detect_traps(
 }
 
 /// Convert an action node field to a board index, or `None` when out of range.
+#[cfg(not(target_arch = "wasm32"))]
 fn node_in_range(node: i16) -> Option<usize> {
     if (0..24).contains(&node) {
         Some(node as usize)

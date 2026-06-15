@@ -561,7 +561,7 @@ class _GamePageInnerState extends State<_GamePageInner> {
       toolbarHeight *= 2;
     } else if (DB().displaySettings.isAnnotationToolbarShown) {
       toolbarHeight *= 4;
-    } else if (DB().displaySettings.isAnalysisToolbarShown) {
+    } else if (!kIsWeb && DB().displaySettings.isAnalysisToolbarShown) {
       toolbarHeight *= 5;
     }
     return toolbarHeight;
@@ -594,6 +594,9 @@ class _GamePageInnerState extends State<_GamePageInner> {
   /// Shown only for play modes where analysing the current position is
   /// meaningful and the active rule variant has a bundled perfect database.
   bool _shouldShowAnalysisButton(GeneralSettings settings) {
+    if (kIsWeb) {
+      return false;
+    }
     if (!isRuleSupportingPerfectDatabase()) {
       return false;
     }

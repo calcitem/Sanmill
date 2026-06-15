@@ -15,6 +15,7 @@
 // thin and game-neutral structurally.
 
 use std::sync::Mutex;
+#[cfg(not(target_arch = "wasm32"))]
 use std::thread;
 
 use once_cell::sync::Lazy;
@@ -24,9 +25,13 @@ use tgf_mill::{
     EngineRuntimeOptions, MillActionKind, MillGame, MillRules, MillSearchAlgorithmKind,
     MillVariantOptions as NativeMillVariantOptions, recommended_search_depth,
 };
+#[cfg(target_arch = "wasm32")]
+use tgf_search::MctsSearcher;
+#[cfg(not(target_arch = "wasm32"))]
+use tgf_search::mcts_search_parallel;
 use tgf_search::{
     MctsOptions, SearchAbortHandle, SearchAlgorithm, SearchOptions, SearchPolicy, SearchResult,
-    Searcher, mcts_search_parallel,
+    Searcher,
 };
 
 use crate::engine_event::EngineEvent;
@@ -197,160 +202,204 @@ pub(crate) fn spawn_mill_engine_config_event_stream(
     config: MillEngineConfigPlan,
     sink: StreamSink<EngineEvent>,
 ) {
+    #[cfg(not(target_arch = "wasm32"))]
     thread::spawn(move || {
-        if sink.add(crate::engine_event::ready()).is_err() {
-            return;
-        }
+        run_mill_engine_config_event_stream(
+            snapshot,
+            root_repetition_history,
+            options,
+            config,
+            sink,
+        );
+    });
 
-        let rules_options = options.clone();
-        let game = MillGame::new_with_repetition_history(options, root_repetition_history);
-        let mut wb = game.build_workbench(&snapshot);
-        let mut searcher = mill_searcher_default();
-        let search_context = MoveOrderContext {
-            algorithm: match algorithm_to_search(config.algorithm) {
-                SearchAlgorithm::AlphaBeta => MoveOrderAlgorithm::AlphaBeta,
-                SearchAlgorithm::Pvs => MoveOrderAlgorithm::Pvs,
-                SearchAlgorithm::Mtdf => MoveOrderAlgorithm::Mtdf,
-                SearchAlgorithm::Mcts => MoveOrderAlgorithm::Mcts,
-                SearchAlgorithm::Random => MoveOrderAlgorithm::Random,
-            },
+    #[cfg(target_arch = "wasm32")]
+    run_mill_engine_config_event_stream(snapshot, root_repetition_history, options, config, sink);
+}
+
+fn run_mill_engine_config_event_stream(
+    snapshot: GameStateSnapshot,
+    root_repetition_history: Vec<u64>,
+    options: NativeMillVariantOptions,
+    config: MillEngineConfigPlan,
+    sink: StreamSink<EngineEvent>,
+) {
+    if sink.add(crate::engine_event::ready()).is_err() {
+        return;
+    }
+
+    let rules_options = options.clone();
+    let game = MillGame::new_with_repetition_history(options, root_repetition_history);
+    let mut wb = game.build_workbench(&snapshot);
+    let mut searcher = mill_searcher_default();
+    let search_context = MoveOrderContext {
+        algorithm: match algorithm_to_search(config.algorithm) {
+            SearchAlgorithm::AlphaBeta => MoveOrderAlgorithm::AlphaBeta,
+            SearchAlgorithm::Pvs => MoveOrderAlgorithm::Pvs,
+            SearchAlgorithm::Mtdf => MoveOrderAlgorithm::Mtdf,
+            SearchAlgorithm::Mcts => MoveOrderAlgorithm::Mcts,
+            SearchAlgorithm::Random => MoveOrderAlgorithm::Random,
+        },
+        skill_level: config.skill_level,
+        shuffling: config.shuffling,
+        hash_move: None,
+        shuffle_seed: search_shuffle_seed(),
+    };
+    searcher.set_move_order_context(search_context);
+
+    // Apply time limit if requested.
+    if config.move_time_ms > 0 {
+        searcher.set_options(SearchOptions {
+            time_limit_ms: Some(config.move_time_ms as u64),
+            move_order_context: search_context,
+            ..SearchOptions::default()
+        });
+    }
+
+    {
+        let mut active = ACTIVE_SEARCH.lock().expect("active search mutex poisoned");
+        *active = Some(searcher.abort_handle());
+    }
+
+    let requested_depth = if config.depth > 0 {
+        config.depth
+    } else {
+        let rules = MillRules::new(rules_options.clone());
+        let state = MillRules::decode_snapshot(snapshot);
+        let runtime = EngineRuntimeOptions {
             skill_level: config.skill_level,
-            shuffling: config.shuffling,
-            hash_move: None,
-            shuffle_seed: search_shuffle_seed(),
+            draw_on_human_experience: true,
+            developer_mode: true,
         };
-        searcher.set_move_order_context(search_context);
+        recommended_search_depth(&state, rules.options(), &runtime).max(1)
+    };
 
-        // Apply time limit if requested.
-        if config.move_time_ms > 0 {
-            searcher.set_options(SearchOptions {
-                time_limit_ms: Some(config.move_time_ms as u64),
-                move_order_context: search_context,
-                ..SearchOptions::default()
-            });
-        }
-
-        {
-            let mut active = ACTIVE_SEARCH.lock().expect("active search mutex poisoned");
-            *active = Some(searcher.abort_handle());
-        }
-
-        let requested_depth = if config.depth > 0 {
-            config.depth
-        } else {
-            let rules = MillRules::new(rules_options.clone());
-            let state = MillRules::decode_snapshot(snapshot);
-            let runtime = EngineRuntimeOptions {
-                skill_level: config.skill_level,
-                draw_on_human_experience: true,
-                developer_mode: true,
-            };
-            recommended_search_depth(&state, rules.options(), &runtime).max(1)
-        };
-
-        // P2-G: AiIsLazy depth adjustment mirroring master executeSearch.
-        // np = lastBestValue / VALUE_EACH_PIECE (5); if np > 1 the position
-        // is clearly winning from the root side-to-move perspective, so cap
-        // origin_depth to 1 or 4.  Do not use abs(): losing positions must
-        // not make the AI lazy.
-        const VALUE_EACH_PIECE: i32 = 5;
-        let origin_depth = if config.ai_is_lazy {
-            let np = config.last_best_value / VALUE_EACH_PIECE;
-            if np > 1 {
-                if requested_depth < 4 { 1 } else { 4 }
-            } else {
-                requested_depth.max(1)
-            }
+    // P2-G: AiIsLazy depth adjustment mirroring master executeSearch.
+    // np = lastBestValue / VALUE_EACH_PIECE (5); if np > 1 the position
+    // is clearly winning from the root side-to-move perspective, so cap
+    // origin_depth to 1 or 4.  Do not use abs(): losing positions must
+    // not make the AI lazy.
+    const VALUE_EACH_PIECE: i32 = 5;
+    let origin_depth = if config.ai_is_lazy {
+        let np = config.last_best_value / VALUE_EACH_PIECE;
+        if np > 1 {
+            if requested_depth < 4 { 1 } else { 4 }
         } else {
             requested_depth.max(1)
-        };
-        let max_depth = origin_depth;
-        let mut result = SearchResult::default_none();
-        let run_ids = config.move_time_ms > 0;
-        let mut first_guess = 0;
+        }
+    } else {
+        requested_depth.max(1)
+    };
+    let max_depth = origin_depth;
+    let mut result = SearchResult::default_none();
+    let run_ids = config.move_time_ms > 0;
+    let mut first_guess = 0;
 
-        match algorithm_to_search(config.algorithm) {
-            SearchAlgorithm::Random => {
-                // Use time-seeded random to match master's rand()+time() behaviour.
-                let seed = std::time::SystemTime::now()
-                    .duration_since(std::time::UNIX_EPOCH)
-                    .map(|d| d.as_secs())
-                    .unwrap_or(42);
-                searcher.set_random_seed(seed);
-                result = searcher.random_search(&mut wb);
-                let _ = sink.add(crate::engine_event::info(1, result.score, result.nodes));
-            }
-            SearchAlgorithm::AlphaBeta | SearchAlgorithm::Pvs => {
-                if run_ids {
-                    for d in 2..max_depth {
-                        if searcher.was_aborted() {
-                            break;
-                        }
-                        result = searcher.search(&mut wb, d);
-                        // first_guess is consumed by the MTD(f) branch only;
-                        // Pvs / AlphaBeta still update it for symmetry but
-                        // never read it back.
-                        let _ = first_guess;
-                        first_guess = result.score;
-                        let _ = sink.add(crate::engine_event::info(d, result.score, result.nodes));
+    match algorithm_to_search(config.algorithm) {
+        SearchAlgorithm::Random => {
+            // Use time-seeded random to match master's rand()+time() behaviour.
+            let seed = std::time::SystemTime::now()
+                .duration_since(std::time::UNIX_EPOCH)
+                .map(|d| d.as_secs())
+                .unwrap_or(42);
+            searcher.set_random_seed(seed);
+            result = searcher.random_search(&mut wb);
+            let _ = sink.add(crate::engine_event::info(1, result.score, result.nodes));
+        }
+        SearchAlgorithm::AlphaBeta | SearchAlgorithm::Pvs => {
+            if run_ids {
+                for d in 2..max_depth {
+                    if searcher.was_aborted() {
+                        break;
                     }
-                }
-                if !searcher.was_aborted() || result.best_action.is_none() {
-                    // Master executeSearch routes Algorithm 0 and 1 to
-                    // the same Search::search path; search_pvs remains
-                    // available as a Rust implementation but is not used
-                    // for parity.
-                    result = searcher.search(&mut wb, max_depth);
-                    let _ = sink.add(crate::engine_event::info(
-                        max_depth,
-                        result.score,
-                        result.nodes,
-                    ));
+                    result = searcher.search(&mut wb, d);
+                    // first_guess is consumed by the MTD(f) branch only;
+                    // Pvs / AlphaBeta still update it for symmetry but
+                    // never read it back.
+                    let _ = first_guess;
+                    first_guess = result.score;
+                    let _ = sink.add(crate::engine_event::info(d, result.score, result.nodes));
                 }
             }
-            SearchAlgorithm::Mtdf => {
-                if run_ids {
-                    for d in 2..max_depth {
-                        if searcher.was_aborted() {
-                            break;
-                        }
-                        result = searcher.search_mtdf_with_guess(&mut wb, d, first_guess);
-                        first_guess = result.score;
-                        let _ = sink.add(crate::engine_event::info(d, result.score, result.nodes));
+            if !searcher.was_aborted() || result.best_action.is_none() {
+                // Master executeSearch routes Algorithm 0 and 1 to
+                // the same Search::search path; search_pvs remains
+                // available as a Rust implementation but is not used
+                // for parity.
+                result = searcher.search(&mut wb, max_depth);
+                let _ = sink.add(crate::engine_event::info(
+                    max_depth,
+                    result.score,
+                    result.nodes,
+                ));
+            }
+        }
+        SearchAlgorithm::Mtdf => {
+            if run_ids {
+                for d in 2..max_depth {
+                    if searcher.was_aborted() {
+                        break;
                     }
-                }
-                if !searcher.was_aborted() || result.best_action.is_none() {
-                    result = searcher.search_mtdf_with_guess(&mut wb, max_depth, first_guess);
-                    let _ = sink.add(crate::engine_event::info(
-                        max_depth,
-                        result.score,
-                        result.nodes,
-                    ));
+                    result = searcher.search_mtdf_with_guess(&mut wb, d, first_guess);
+                    first_guess = result.score;
+                    let _ = sink.add(crate::engine_event::info(d, result.score, result.nodes));
                 }
             }
-            SearchAlgorithm::Mcts => {
-                // P2-I: skill_level * 2048 iterations (master ITERATIONS_PER_SKILL_LEVEL).
-                // Empty board early stop: max_iterations = 1 when no pieces on board.
-                let pieces_on_board = wb.pieces_on_board();
-                let all_pieces_on_board = pieces_on_board[0] as u32 + pieces_on_board[1] as u32;
-                let skill_iterations = if all_pieces_on_board == 0 {
-                    1_u32
-                } else {
-                    u32::from(config.skill_level).saturating_mul(2048).max(1)
-                };
-                // Root-parallel MCTS mirroring master `monte_carlo_tree_search`,
-                // which fans rollouts across `hardware_concurrency()` workers.
-                // `num_threads: None` lets the driver pick the available
-                // parallelism; each worker runs `iterations / num_threads`
-                // rollouts and the per-action visit counts are aggregated.  The
-                // surrounding FRB worker is a plain `std::thread`, so spawning
-                // the short-lived rollout pool here has no async-runtime
-                // constraint -- isolating one *search* per session does not
-                // preclude parallelising the rollouts within that search, just
-                // as the C++ engine did on its own search thread.
-                let mcts_result = mcts_search_parallel::<MillGame>(
-                    &game,
-                    snapshot,
+            if !searcher.was_aborted() || result.best_action.is_none() {
+                result = searcher.search_mtdf_with_guess(&mut wb, max_depth, first_guess);
+                let _ = sink.add(crate::engine_event::info(
+                    max_depth,
+                    result.score,
+                    result.nodes,
+                ));
+            }
+        }
+        SearchAlgorithm::Mcts => {
+            // P2-I: skill_level * 2048 iterations (master ITERATIONS_PER_SKILL_LEVEL).
+            // Empty board early stop: max_iterations = 1 when no pieces on board.
+            let pieces_on_board = wb.pieces_on_board();
+            let all_pieces_on_board = pieces_on_board[0] as u32 + pieces_on_board[1] as u32;
+            let skill_iterations = if all_pieces_on_board == 0 {
+                1_u32
+            } else {
+                u32::from(config.skill_level).saturating_mul(2048).max(1)
+            };
+            // Native targets use the root-parallel driver mirroring master
+            // `monte_carlo_tree_search`; wasm runs the same MCTS options
+            // through the single-threaded searcher because browser Wasm does
+            // not provide native `std::thread::spawn`.
+            #[cfg(not(target_arch = "wasm32"))]
+            let mcts_result = mcts_search_parallel::<MillGame>(
+                &game,
+                snapshot,
+                MctsOptions {
+                    iterations: skill_iterations,
+                    playout_depth: 6,
+                    time_limit_ms: if config.move_time_ms > 0 {
+                        Some(config.move_time_ms as u64)
+                    } else {
+                        None
+                    },
+                    exploration: 0.5,
+                    ab_assist_depth: 6,
+                    num_threads: None,
+                    move_order_context: mcts_move_order_context(
+                        config.skill_level,
+                        config.shuffling,
+                    ),
+                },
+                search_shuffle_seed(),
+            );
+            #[cfg(target_arch = "wasm32")]
+            let mcts_result = {
+                let mut mcts_searcher = MctsSearcher::<MillGame>::new();
+                mcts_searcher.set_policy(SearchPolicy {
+                    quiescence_kind_tag: Some(MillActionKind::Remove as i16),
+                    ..Default::default()
+                });
+                mcts_searcher.set_random_seed(search_shuffle_seed());
+                mcts_searcher.search_with_options(
+                    &mut wb,
                     MctsOptions {
                         iterations: skill_iterations,
                         playout_depth: 6,
@@ -361,67 +410,66 @@ pub(crate) fn spawn_mill_engine_config_event_stream(
                         },
                         exploration: 0.5,
                         ab_assist_depth: 6,
-                        num_threads: None,
+                        num_threads: Some(1),
                         move_order_context: mcts_move_order_context(
                             config.skill_level,
                             config.shuffling,
                         ),
                     },
-                    search_shuffle_seed(),
-                );
-                // mcts_result.score now mirrors master MCTS best_value
-                // (piece-count diff * VALUE_EACH_PIECE) via
-                // tgf_core::Game::mcts_terminal_score; reuse it instead
-                // of recomputing locally so all MCTS callers stay
-                // consistent.
-                result = SearchResult {
-                    best_action: mcts_result.best_action,
-                    score: mcts_result.score,
-                    nodes: mcts_result.visits as u64,
-                    draw_reason: None,
-                };
-                let _ = sink.add(crate::engine_event::info(
-                    max_depth,
-                    result.score,
-                    result.nodes,
-                ));
+                )
+            };
+            // mcts_result.score now mirrors master MCTS best_value
+            // (piece-count diff * VALUE_EACH_PIECE) via
+            // tgf_core::Game::mcts_terminal_score; reuse it instead
+            // of recomputing locally so all MCTS callers stay
+            // consistent.
+            result = SearchResult {
+                best_action: mcts_result.best_action,
+                score: mcts_result.score,
+                nodes: mcts_result.visits as u64,
+                draw_reason: None,
+            };
+            let _ = sink.add(crate::engine_event::info(
+                max_depth,
+                result.score,
+                result.nodes,
+            ));
+        }
+    }
+
+    let search_action = result.best_action;
+    let mut aimovetype = "traditional";
+
+    if config.use_perfect_database {
+        let mut legal = tgf_core::ActionList::<256>::default();
+        let rules = MillRules::new(rules_options.clone());
+        rules.legal_actions(&snapshot, &mut legal);
+        let legal_slice = legal.as_slice();
+        if let Some(pd_action) =
+            perfect::try_perfect_best_action(&snapshot, rules.options(), legal_slice)
+        {
+            if pd_action == search_action {
+                aimovetype = "consensus";
+            } else {
+                aimovetype = "perfect";
+                result.best_action = pd_action;
             }
         }
+    }
 
-        let search_action = result.best_action;
-        let mut aimovetype = "traditional";
+    result = apply_move_none_fallback(result, snapshot, &rules_options);
 
-        if config.use_perfect_database {
-            let mut legal = tgf_core::ActionList::<256>::default();
-            let rules = MillRules::new(rules_options.clone());
-            rules.legal_actions(&snapshot, &mut legal);
-            let legal_slice = legal.as_slice();
-            if let Some(pd_action) =
-                perfect::try_perfect_best_action(&snapshot, rules.options(), legal_slice)
-            {
-                if pd_action == search_action {
-                    aimovetype = "consensus";
-                } else {
-                    aimovetype = "perfect";
-                    result.best_action = pd_action;
-                }
-            }
-        }
-
-        result = apply_move_none_fallback(result, snapshot, &rules_options);
-
-        let notation = action_to_uci_str(result.best_action);
-        let _ = sink.add(crate::engine_event::best_move_with_notation_and_aimovetype(
-            result.best_action,
-            result.score,
-            snapshot.side_to_move,
-            &notation,
-            aimovetype,
-        ));
-        let _ = sink.add(crate::engine_event::stopped());
-        let mut active = ACTIVE_SEARCH.lock().expect("active search mutex poisoned");
-        *active = None;
-    });
+    let notation = action_to_uci_str(result.best_action);
+    let _ = sink.add(crate::engine_event::best_move_with_notation_and_aimovetype(
+        result.best_action,
+        result.score,
+        snapshot.side_to_move,
+        &notation,
+        aimovetype,
+    ));
+    let _ = sink.add(crate::engine_event::stopped());
+    let mut active = ACTIVE_SEARCH.lock().expect("active search mutex poisoned");
+    *active = None;
 }
 
 /// Request that the currently-running native Mill search aborts.

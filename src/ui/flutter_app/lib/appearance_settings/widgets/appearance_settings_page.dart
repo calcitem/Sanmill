@@ -571,7 +571,7 @@ class AppearanceSettingsPage extends StatelessWidget {
             navigationToolbarIconColor: val,
           ),
         ),
-        if (EnvironmentConfig.devMode)
+        if (EnvironmentConfig.devMode && !kIsWeb)
           SettingsListTile.color(
             key: const Key(
               'color_settings_card_analysis_toolbar_background_color_settings_list_tile',
@@ -581,7 +581,7 @@ class AppearanceSettingsPage extends StatelessWidget {
             onChanged: (Color val) => DB().colorSettings = colorSettings
                 .copyWith(analysisToolbarBackgroundColor: val),
           ),
-        if (EnvironmentConfig.devMode)
+        if (EnvironmentConfig.devMode && !kIsWeb)
           SettingsListTile.color(
             key: const Key(
               'color_settings_card_analysis_toolbar_icon_color_settings_list_tile',
@@ -714,7 +714,7 @@ class AppearanceSettingsPage extends StatelessWidget {
               .copyWith(isHistoryNavigationToolbarShown: val),
           titleString: S.of(context).isHistoryNavigationToolbarShown,
         ),
-        if (EnvironmentConfig.devMode)
+        if (EnvironmentConfig.devMode && !kIsWeb)
           SettingsListTile.switchTile(
             key: const Key(
               'display_settings_card_analysis_toolbar_shown_switch_tile',

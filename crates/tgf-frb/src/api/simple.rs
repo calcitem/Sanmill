@@ -515,15 +515,27 @@ pub struct EngineEvent {
 /// Initialize the vendored Nine Men's Morris perfect database from `path`.
 /// The directory must contain `std.secval` and `std_*.sec2` sector files.
 #[flutter_rust_bridge::frb(sync)]
+#[cfg(not(target_arch = "wasm32"))]
 pub fn mill_perfect_db_init(path: String) -> bool {
     perfect_db::init(&path)
 }
 
+#[flutter_rust_bridge::frb(sync)]
+#[cfg(target_arch = "wasm32")]
+pub fn mill_perfect_db_init(_path: String) -> bool {
+    false
+}
+
 /// Release perfect-database resources for the current process.
 #[flutter_rust_bridge::frb(sync)]
+#[cfg(not(target_arch = "wasm32"))]
 pub fn mill_perfect_db_deinit() {
     perfect_db::deinit();
 }
+
+#[flutter_rust_bridge::frb(sync)]
+#[cfg(target_arch = "wasm32")]
+pub fn mill_perfect_db_deinit() {}
 
 /// Perfect-database verdict for one legal move, used by the analysis overlay.
 ///

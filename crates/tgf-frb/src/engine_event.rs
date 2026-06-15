@@ -98,10 +98,17 @@ pub(crate) fn best_move_with_notation_and_aimovetype(
 /// Background-spawn an `error → stopped` sequence on a fresh thread so a
 /// failed search request still releases the Dart-side `Stream`.
 pub(crate) fn spawn_kernel_search_error(message: String, sink: StreamSink<EngineEvent>) {
+    #[cfg(not(target_arch = "wasm32"))]
     std::thread::spawn(move || {
         let _ = sink.add(error(&message));
         let _ = sink.add(stopped());
     });
+
+    #[cfg(target_arch = "wasm32")]
+    {
+        let _ = sink.add(error(&message));
+        let _ = sink.add(stopped());
+    }
 }
 
 fn new(kind: &str) -> EngineEvent {

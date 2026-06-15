@@ -19,8 +19,11 @@ bool _isCopying = false;
 bool _hasCopied = false;
 
 Future<Directory?> _perfectDatabaseDirectory() async {
+  if (kIsWeb) {
+    return null;
+  }
   try {
-    return (!kIsWeb && Platform.isAndroid)
+    return Platform.isAndroid
         ? await getExternalStorageDirectory()
         : await getApplicationDocumentsDirectory();
   } catch (e) {
@@ -126,6 +129,9 @@ Future<bool> copyPerfectDatabaseFiles({bool force = false}) async {
 /// Copy bundled database assets to device storage and initialize the Rust
 /// perfect-database bridge.  Returns false when copy or init fails.
 Future<bool> ensurePerfectDatabaseReady() async {
+  if (kIsWeb) {
+    return false;
+  }
   final bool copied = await copyPerfectDatabaseFiles();
   if (!copied) {
     return false;
@@ -142,6 +148,9 @@ Future<bool> ensurePerfectDatabaseReady() async {
 }
 
 void disablePerfectDatabase() {
+  if (kIsWeb) {
+    return;
+  }
   tgf.millPerfectDbDeinit();
 }
 
