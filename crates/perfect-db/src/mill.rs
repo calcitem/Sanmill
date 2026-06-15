@@ -11,7 +11,7 @@
 
 use std::sync::OnceLock;
 
-use crate::database::{Database, DatabaseError, DatabaseProvider, PerfectQuery};
+use crate::database::{Database, DatabaseError, DatabaseProvider, PerfectOutcome, PerfectQuery};
 use tgf_core::{Action, ActionList, GameRules, GameStateSnapshot, OutcomeKind};
 use tgf_mill::rules::MillState;
 use tgf_mill::{MillRules, MillUciCodec, MillVariantOptions, default_mill_topology};
@@ -166,10 +166,22 @@ pub fn evaluate_state_with_database<P: DatabaseProvider>(
     options: &MillVariantOptions,
     side_to_move: i8,
 ) -> Result<Option<(i32, i32)>, DatabaseError> {
+    Ok(
+        evaluate_state_outcome_with_database(database, state, options, side_to_move)?
+            .map(PerfectOutcome::to_wdl_steps),
+    )
+}
+
+pub fn evaluate_state_outcome_with_database<P: DatabaseProvider>(
+    database: &mut Database<P>,
+    state: &MillState,
+    options: &MillVariantOptions,
+    side_to_move: i8,
+) -> Result<Option<PerfectOutcome>, DatabaseError> {
     let Some(query) = query_from_state(state, options, side_to_move) else {
         return Ok(None);
     };
-    database.evaluate(query)
+    database.evaluate_outcome(query)
 }
 
 /// Select a deterministic best legal action using the Rust-native database.
@@ -194,46 +206,48 @@ pub fn best_move_token_with_database<P: DatabaseProvider>(
     let mut actions = ActionList::<256>::new();
     rules.legal_actions(snap, &mut actions);
 
-    let mut best: Option<(Action, i32)> = None;
+    let mut best: Option<(Action, PerfectOutcome)> = None;
     for &action in actions.as_slice() {
         let child_snap = rules.apply(snap, action);
-        let Some(wdl) = child_value_for_root(database, rules, &child_snap, options, root_side)?
+        let Some(outcome) =
+            child_outcome_for_root(database, rules, &child_snap, options, root_side)?
         else {
             continue;
         };
-        if best.is_none_or(|(_, best_wdl)| wdl > best_wdl) {
-            best = Some((action, wdl));
+        if best.is_none_or(|(_, best_outcome)| outcome.default_rank() > best_outcome.default_rank())
+        {
+            best = Some((action, outcome));
         }
     }
 
     Ok(best.map(|(action, _)| MillUciCodec::encode_action(action)))
 }
 
-fn child_value_for_root<P: DatabaseProvider>(
+fn child_outcome_for_root<P: DatabaseProvider>(
     database: &mut Database<P>,
     rules: &MillRules,
     child_snap: &GameStateSnapshot,
     options: &MillVariantOptions,
     root_side: i8,
-) -> Result<Option<i32>, DatabaseError> {
-    continuation_value_for_root(database, rules, child_snap, options, root_side, 0)
+) -> Result<Option<PerfectOutcome>, DatabaseError> {
+    continuation_outcome_for_root(database, rules, child_snap, options, root_side, 0)
 }
 
-fn continuation_value_for_root<P: DatabaseProvider>(
+fn continuation_outcome_for_root<P: DatabaseProvider>(
     database: &mut Database<P>,
     rules: &MillRules,
     snap: &GameStateSnapshot,
     options: &MillVariantOptions,
     root_side: i8,
     depth: u8,
-) -> Result<Option<i32>, DatabaseError> {
+) -> Result<Option<PerfectOutcome>, DatabaseError> {
     assert!(
         depth <= MAX_REMOVAL_CONTINUATION_DEPTH,
         "Perfect DB removal continuation exceeded the expected Mill bound"
     );
 
-    if let Some(wdl) = terminal_wdl_for_root(rules, snap, root_side) {
-        return Ok(Some(wdl));
+    if let Some(outcome) = terminal_outcome_for_root(rules, snap, root_side) {
+        return Ok(Some(outcome));
     }
 
     let side_to_move = snap.side_to_move;
@@ -249,39 +263,54 @@ fn continuation_value_for_root<P: DatabaseProvider>(
         );
         let mut actions = ActionList::<256>::new();
         rules.legal_actions(snap, &mut actions);
-        let mut best: Option<i32> = None;
+        let mut best: Option<PerfectOutcome> = None;
         for &action in actions.as_slice() {
             let next = rules.apply(snap, action);
-            let Some(wdl) =
-                continuation_value_for_root(database, rules, &next, options, root_side, depth + 1)?
+            let Some(outcome) = continuation_outcome_for_root(
+                database,
+                rules,
+                &next,
+                options,
+                root_side,
+                depth + 1,
+            )?
             else {
                 continue;
             };
-            if best.is_none_or(|best_wdl| wdl > best_wdl) {
-                best = Some(wdl);
+            if best.is_none_or(|best_outcome| outcome.default_rank() > best_outcome.default_rank())
+            {
+                best = Some(outcome);
             }
         }
         return Ok(best);
     }
 
-    let Some((wdl, _steps)) =
-        evaluate_state_with_database(database, &state, options, side_to_move)?
+    let Some(outcome) =
+        evaluate_state_outcome_with_database(database, &state, options, side_to_move)?
     else {
         return Ok(None);
     };
 
-    Ok(Some(if side_to_move == root_side { wdl } else { -wdl }))
+    Ok(Some(if side_to_move == root_side {
+        outcome
+    } else {
+        outcome.negate()
+    }))
 }
 
-fn terminal_wdl_for_root(
+fn terminal_outcome_for_root(
     rules: &MillRules,
     snap: &GameStateSnapshot,
     root_side: i8,
-) -> Option<i32> {
+) -> Option<PerfectOutcome> {
     match rules.outcome(snap).kind {
         OutcomeKind::Ongoing => None,
-        OutcomeKind::Draw => Some(0),
-        OutcomeKind::Win(side) => Some(if side == root_side { 1 } else { -1 }),
+        OutcomeKind::Draw => Some(PerfectOutcome::Draw { steps: 0 }),
+        OutcomeKind::Win(side) => Some(if side == root_side {
+            PerfectOutcome::Win { steps: 0 }
+        } else {
+            PerfectOutcome::Loss { steps: 0 }
+        }),
         OutcomeKind::Abandoned | OutcomeKind::WinTeam(_) => None,
     }
 }

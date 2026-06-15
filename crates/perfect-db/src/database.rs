@@ -8,6 +8,7 @@
 //! native files and future Web asset bytes can share the same parser and
 //! indexing code.
 
+use std::cmp::Ordering;
 use std::collections::BTreeMap;
 use std::fmt;
 use std::path::{Path, PathBuf};
@@ -157,21 +158,82 @@ pub struct DatabaseEval {
     pub sector_value: i16,
 }
 
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum PerfectOutcome {
+    Win { steps: i32 },
+    Draw { steps: i32 },
+    Loss { steps: i32 },
+}
+
+impl PerfectOutcome {
+    pub fn wdl(self) -> i32 {
+        match self {
+            Self::Win { .. } => 1,
+            Self::Draw { .. } => 0,
+            Self::Loss { .. } => -1,
+        }
+    }
+
+    pub fn steps(self) -> i32 {
+        match self {
+            Self::Win { steps } | Self::Draw { steps } | Self::Loss { steps } => steps,
+        }
+    }
+
+    pub fn to_wdl_steps(self) -> (i32, i32) {
+        (self.wdl(), self.steps())
+    }
+
+    pub fn default_rank(self) -> i32 {
+        self.wdl()
+    }
+
+    pub fn strict_cmp(self, other: Self) -> Ordering {
+        match self.wdl().cmp(&other.wdl()) {
+            Ordering::Equal => match (self, other) {
+                (Self::Win { steps }, Self::Win { steps: other_steps }) => other_steps.cmp(&steps),
+                (Self::Loss { steps }, Self::Loss { steps: other_steps }) => {
+                    steps.cmp(&other_steps)
+                }
+                _ => Ordering::Equal,
+            },
+            ordering => ordering,
+        }
+    }
+
+    pub fn negate(self) -> Self {
+        match self {
+            Self::Win { steps } => Self::Loss { steps },
+            Self::Draw { steps } => Self::Draw { steps },
+            Self::Loss { steps } => Self::Win { steps },
+        }
+    }
+}
+
 impl DatabaseEval {
     pub fn absolute_key1(self) -> i32 {
         self.raw.key1 + i32::from(self.sector_value)
     }
 
-    pub fn to_wdl_steps(self, sec_vals: &SecValTable) -> (i32, i32) {
+    pub fn to_outcome(self, sec_vals: &SecValTable) -> PerfectOutcome {
         let absolute = self.absolute_key1();
-        let wdl = if absolute == i32::from(sec_vals.virt_win_val()) {
-            1
+        if absolute == i32::from(sec_vals.virt_win_val()) {
+            PerfectOutcome::Win {
+                steps: self.raw.key2,
+            }
         } else if absolute == i32::from(sec_vals.virt_loss_val()) {
-            -1
+            PerfectOutcome::Loss {
+                steps: self.raw.key2,
+            }
         } else {
-            0
-        };
-        (wdl, self.raw.key2)
+            PerfectOutcome::Draw {
+                steps: self.raw.key2,
+            }
+        }
+    }
+
+    pub fn to_wdl_steps(self, sec_vals: &SecValTable) -> (i32, i32) {
+        self.to_outcome(sec_vals).to_wdl_steps()
     }
 }
 
@@ -255,8 +317,17 @@ impl<P: DatabaseProvider> Database<P> {
 
     pub fn evaluate(&mut self, query: PerfectQuery) -> Result<Option<(i32, i32)>, DatabaseError> {
         Ok(self
+            .evaluate_outcome(query)?
+            .map(PerfectOutcome::to_wdl_steps))
+    }
+
+    pub fn evaluate_outcome(
+        &mut self,
+        query: PerfectQuery,
+    ) -> Result<Option<PerfectOutcome>, DatabaseError> {
+        Ok(self
             .evaluate_raw(query)?
-            .map(|eval| eval.to_wdl_steps(&self.sec_vals)))
+            .map(|eval| eval.to_outcome(&self.sec_vals)))
     }
 
     fn load_sector(&mut self, id: SectorId) -> Result<&LoadedSector, DatabaseError> {
@@ -350,5 +421,25 @@ mod tests {
         let mut db = Database::open(FileDatabaseProvider::new(asset_root())).unwrap();
         let query = PerfectQuery::new(1, 0, 8, 9, 1, true);
         assert_eq!(db.evaluate_raw(query).unwrap(), None);
+    }
+
+    #[test]
+    fn perfect_outcome_comparison_matches_cxx_direction() {
+        assert_eq!(
+            PerfectOutcome::Win { steps: 1 }.strict_cmp(PerfectOutcome::Win { steps: 3 }),
+            std::cmp::Ordering::Greater
+        );
+        assert_eq!(
+            PerfectOutcome::Loss { steps: 5 }.strict_cmp(PerfectOutcome::Loss { steps: 2 }),
+            std::cmp::Ordering::Greater
+        );
+        assert_eq!(
+            PerfectOutcome::Draw { steps: 1 }.strict_cmp(PerfectOutcome::Draw { steps: 9 }),
+            std::cmp::Ordering::Equal
+        );
+        assert_eq!(
+            PerfectOutcome::Win { steps: 8 }.strict_cmp(PerfectOutcome::Draw { steps: 0 }),
+            std::cmp::Ordering::Greater
+        );
     }
 }

@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-use perfect_db::database::{Database, FileDatabaseProvider};
+use perfect_db::database::{Database, FileDatabaseProvider, PerfectOutcome};
 use perfect_db::{
     best_move_token, best_move_token_for_state, best_move_token_with_database, evaluate,
-    evaluate_state_for, evaluate_state_with_database, init,
+    evaluate_state_for, evaluate_state_outcome_with_database, evaluate_state_with_database, init,
 };
 use tgf_core::{ActionList, BoardTopology, GameRules, GameStateSnapshot};
 use tgf_mill::notation::MillUciCodec;
@@ -117,6 +117,14 @@ fn std_perfect_db_oracle_vectors() {
             evaluate_state_with_database(&mut rust_db, &state, &options, side as i8).unwrap(),
             case.expected_eval,
             "{} must match the Rust-native perfect-db loader",
+            case.name
+        );
+        assert_eq!(
+            evaluate_state_outcome_with_database(&mut rust_db, &state, &options, side as i8)
+                .unwrap()
+                .map(PerfectOutcome::to_wdl_steps),
+            case.expected_eval,
+            "{} structured outcome must match the tuple API",
             case.name
         );
         let token = best_move_token_for_state(&state, &options, side as i8)
