@@ -2,8 +2,8 @@
 
 use perfect_db::database::{Database, FileDatabaseProvider};
 use perfect_db::{
-    best_move_token, best_move_token_for_state, evaluate, evaluate_state_for,
-    evaluate_state_with_database, init,
+    best_move_token, best_move_token_for_state, best_move_token_with_database, evaluate,
+    evaluate_state_for, evaluate_state_with_database, init,
 };
 use tgf_core::{ActionList, GameRules, GameStateSnapshot};
 use tgf_mill::notation::MillUciCodec;
@@ -100,6 +100,11 @@ fn std_perfect_db_oracle_vectors() {
         let token = best_move_token_for_state(&state, &options, side as i8)
             .unwrap_or_else(|| panic!("{} must return a best move token", case.name));
         assert_best_move_is_legal(&rules, &snap, &token);
+
+        let rust_token = best_move_token_with_database(&mut rust_db, &rules, &snap, &options)
+            .unwrap()
+            .unwrap_or_else(|| panic!("{} must return a Rust best move token", case.name));
+        assert_best_move_is_legal(&rules, &snap, &rust_token);
     }
 
     // Do not call deinit here: the current C++ bridge has fragile sector-hash

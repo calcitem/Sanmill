@@ -12,8 +12,9 @@
 use std::sync::OnceLock;
 
 use crate::database::{Database, DatabaseError, DatabaseProvider, PerfectQuery};
+use tgf_core::{Action, ActionList, GameRules, GameStateSnapshot, OutcomeKind};
 use tgf_mill::rules::MillState;
-use tgf_mill::{MillVariantOptions, default_mill_topology};
+use tgf_mill::{MillRules, MillUciCodec, MillVariantOptions, default_mill_topology};
 
 /// C++ `Square` ids returned by Malom's `from_perfect_square` for perfect
 /// indices 0..24.  The mapping itself is recovered from the Mill topology at
@@ -167,6 +168,83 @@ pub fn evaluate_state_with_database<P: DatabaseProvider>(
         return Ok(None);
     };
     database.evaluate(query)
+}
+
+/// Select a deterministic best legal action using the Rust-native database.
+///
+/// This intentionally reuses `tgf-mill` legal action generation and apply.
+/// The first migration step ranks only the W/D/L class and skips child states
+/// that still require a removal, because those need compound action expansion
+/// to match the old C++ `AdvancedMove` model exactly.
+pub fn best_move_token_with_database<P: DatabaseProvider>(
+    database: &mut Database<P>,
+    rules: &MillRules,
+    snap: &GameStateSnapshot,
+    options: &MillVariantOptions,
+) -> Result<Option<String>, DatabaseError> {
+    let root_side = snap.side_to_move;
+    if options.piece_count != 9 {
+        return Ok(None);
+    }
+    if root_side != 0 && root_side != 1 {
+        return Ok(None);
+    }
+
+    let mut actions = ActionList::<256>::new();
+    rules.legal_actions(snap, &mut actions);
+
+    let mut best: Option<(Action, i32)> = None;
+    for &action in actions.as_slice() {
+        let child_snap = rules.apply(snap, action);
+        let Some(wdl) = child_value_for_root(database, rules, &child_snap, options, root_side)?
+        else {
+            continue;
+        };
+        if best.is_none_or(|(_, best_wdl)| wdl > best_wdl) {
+            best = Some((action, wdl));
+        }
+    }
+
+    Ok(best.map(|(action, _)| MillUciCodec::encode_action(action)))
+}
+
+fn child_value_for_root<P: DatabaseProvider>(
+    database: &mut Database<P>,
+    rules: &MillRules,
+    child_snap: &GameStateSnapshot,
+    options: &MillVariantOptions,
+    root_side: i8,
+) -> Result<Option<i32>, DatabaseError> {
+    if let Some(wdl) = terminal_wdl_for_root(rules, child_snap, root_side) {
+        return Ok(Some(wdl));
+    }
+
+    let child_side = child_snap.side_to_move;
+    if child_side != 0 && child_side != 1 {
+        return Ok(None);
+    }
+
+    let child_state = MillRules::decode_snapshot(*child_snap);
+    let Some((wdl, _steps)) =
+        evaluate_state_with_database(database, &child_state, options, child_side)?
+    else {
+        return Ok(None);
+    };
+
+    Ok(Some(if child_side == root_side { wdl } else { -wdl }))
+}
+
+fn terminal_wdl_for_root(
+    rules: &MillRules,
+    snap: &GameStateSnapshot,
+    root_side: i8,
+) -> Option<i32> {
+    match rules.outcome(snap).kind {
+        OutcomeKind::Ongoing => None,
+        OutcomeKind::Draw => Some(0),
+        OutcomeKind::Win(side) => Some(if side == root_side { 1 } else { -1 }),
+        OutcomeKind::Abandoned | OutcomeKind::WinTeam(_) => None,
+    }
 }
 
 #[cfg(test)]
