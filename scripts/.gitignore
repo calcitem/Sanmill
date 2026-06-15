@@ -8,4 +8,5 @@
 *.sh
 *.pl
 !ensure_flutter.sh
+!build_console_engine.sh
 !search-commit-message.py

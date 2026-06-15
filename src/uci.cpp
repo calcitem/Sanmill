@@ -28,6 +28,21 @@
 #include "engine_controller.h"
 #include "engine_commands.h"
 
+// #region debug commands (engine-parity instrumentation, off the hot path)
+// These extra UCI verbs (valuevec / gomtdf / goab / mobdiff / evaldecomp) are
+// only used when manually diagnosing search/eval divergences against another
+// engine.  They never run during a normal game, so they add no overhead to the
+// standard position/go/bestmove path used by the head-to-head harness.
+#include "evaluate.h"
+#include "position.h"
+#include "search.h"
+#include "movegen.h"
+#include "tt.h"
+#include <algorithm>
+#include <cstdio>
+#include <cstdlib>
+// #endregion
+
 using std::cin;
 using std::istream;
 using std::istringstream;
@@ -178,6 +193,165 @@ void UCI::loop(int argc, char *argv[])
             // token = "quit";
         }
 #endif // SELF_PLAY
+        // #region debug commands (engine-parity instrumentation)
+        // `valuevec [childDepth] [move...]` searches every (optionally
+        // filtered) legal root move at a fixed child depth and reports each
+        // move's value from White's point of view.  When the environment
+        // variable SANMILL_DEBUG_LOG is set, the per-move values are also
+        // appended there as NDJSON so they can be diffed against another
+        // engine; otherwise the values are printed to stdout only.  The
+        // session/hypothesis tags come from SANMILL_DEBUG_SESSION /
+        // SANMILL_DEBUG_HYPOTHESIS (defaulting to "debug"/"master").
+        else if (token == "valuevec") {
+            int childDepth = 7;
+            string dtok;
+            if (is >> dtok) {
+                try {
+                    childDepth = std::stoi(dtok);
+                } catch (...) {
+                }
+            }
+            std::vector<std::string> filter;
+            {
+                string ftok;
+                while (is >> ftok)
+                    filter.push_back(ftok);
+            }
+            const char *logPath = std::getenv("SANMILL_DEBUG_LOG");
+            const char *sessEnv = std::getenv("SANMILL_DEBUG_SESSION");
+            const char *hypEnv = std::getenv("SANMILL_DEBUG_HYPOTHESIS");
+            const std::string session = sessEnv ? sessEnv : "debug";
+            const std::string hypothesis = hypEnv ? hypEnv : "master";
+            const std::string savedFen = pos->fen();
+            FILE *flog = logPath ? std::fopen(logPath, "a") : nullptr;
+            searchEngine.beginNewSearch(pos);
+            Sanmill::Stack<Position> ssv;
+            for (const auto &mm : MoveList<LEGAL>(*pos)) {
+                const std::string mv = UCI::move(mm);
+                if (!filter.empty() &&
+                    std::find(filter.begin(), filter.end(), mv) ==
+                        filter.end())
+                    continue;
+#ifdef TRANSPOSITION_TABLE_ENABLE
+                TT.clear();
+#endif
+                pos->set(savedFen);
+                const Color before = pos->side_to_move();
+                pos->do_move(mm);
+                const Color after = pos->side_to_move();
+                Move bm = MOVE_NONE;
+                const Value cv = Search::search(searchEngine, pos, ssv,
+                                                childDepth, childDepth,
+                                                -VALUE_INFINITE, VALUE_INFINITE,
+                                                bm);
+                const Value wv = (after != before) ? static_cast<Value>(-cv) :
+                                                     cv;
+                sync_cout << "valuevec " << mv << " depth=" << childDepth
+                          << " white_value=" << static_cast<int>(wv)
+                          << sync_endl;
+                if (flog)
+                    std::fprintf(flog,
+                                 "{\"sessionId\":\"%s\",\"hypothesisId\":\"%s\","
+                                 "\"location\":\"uci.cpp:valuevec\",\"message\":"
+                                 "\"root_value\",\"data\":{\"uci\":\"%s\","
+                                 "\"child_depth\":%d,\"white_value\":%d},"
+                                 "\"timestamp\":0}\n",
+                                 session.c_str(), hypothesis.c_str(),
+                                 mv.c_str(), childDepth, static_cast<int>(wv));
+            }
+            pos->set(savedFen);
+            if (flog)
+                std::fclose(flog);
+            sync_cout << "valuevec done depth=" << childDepth << sync_endl;
+        }
+        // `gomtdf [depth]` runs an explicit MTD(f) loop at a fixed depth,
+        // mirroring the engine's per-move fake-clean TT handling, and logs
+        // every (beta, g, bestmove) iteration so the convergence sequence can
+        // be compared move-for-move with another engine.
+        else if (token == "gomtdf") {
+            int d = 15;
+            string dtok;
+            if (is >> dtok) {
+                try {
+                    d = std::stoi(dtok);
+                } catch (...) {
+                }
+            }
+            searchEngine.beginNewSearch(pos);
+#ifdef TRANSPOSITION_TABLE_ENABLE
+            TranspositionTable::clear();
+#endif
+            Sanmill::Stack<Position> ssg;
+            Move bm = MOVE_NONE;
+            Value g = VALUE_ZERO;
+            Value lower = -VALUE_INFINITE;
+            Value upper = VALUE_INFINITE;
+            int it = 0;
+            while (lower < upper) {
+                const Value beta = (g == lower) ? static_cast<Value>(g + 1) : g;
+                g = Search::search(searchEngine, pos, ssg, d, d,
+                                   static_cast<Value>(beta - 1), beta, bm);
+                sync_cout << "  mtdf-iter " << it++ << " beta="
+                          << static_cast<int>(beta)
+                          << " g=" << static_cast<int>(g)
+                          << " best=" << UCI::move(bm) << sync_endl;
+                if (g < beta) {
+                    upper = g;
+                } else {
+                    lower = g;
+                }
+            }
+            sync_cout << "gomtdf depth=" << d << " value="
+                      << static_cast<int>(g) << " bestmove " << UCI::move(bm)
+                      << sync_endl;
+        }
+        // `goab [depth]` runs a single plain alpha-beta search at a fixed
+        // depth with a full window and a freshly cleared TT.
+        else if (token == "goab") {
+            int d = 15;
+            string dtok;
+            if (is >> dtok) {
+                try {
+                    d = std::stoi(dtok);
+                } catch (...) {
+                }
+            }
+            searchEngine.beginNewSearch(pos);
+#ifdef TRANSPOSITION_TABLE_ENABLE
+            TranspositionTable::clear();
+#endif
+            Sanmill::Stack<Position> ssab;
+            Move bm = MOVE_NONE;
+            const Value v = Search::search(searchEngine, pos, ssab, d, d,
+                                           -VALUE_INFINITE, VALUE_INFINITE, bm);
+            sync_cout << "goab depth=" << d << " value=" << static_cast<int>(v)
+                      << " bestmove " << UCI::move(bm) << sync_endl;
+        }
+        // `mobdiff` compares the incrementally tracked mobility difference with
+        // a full recalculation, to catch incremental-update drift.
+        else if (token == "mobdiff") {
+            const int incremental = pos->get_mobility_diff();
+            const int recalc = pos->calculate_mobility_diff();
+            sync_cout << "mobdiff incremental=" << incremental
+                      << " recalc=" << recalc << sync_endl;
+        }
+        // `evaldecomp` prints the individual evaluation terms for the current
+        // position so eval discrepancies can be localised.
+        else if (token == "evaldecomp") {
+            sync_cout << "evaldecomp phase="
+                      << static_cast<int>(pos->get_phase())
+                      << " mob=" << pos->get_mobility_diff()
+                      << " onbW=" << pos->piece_on_board_count(WHITE)
+                      << " onbB=" << pos->piece_on_board_count(BLACK)
+                      << " inhW=" << pos->piece_in_hand_count(WHITE)
+                      << " inhB=" << pos->piece_in_hand_count(BLACK)
+                      << " rmW=" << pos->piece_to_remove_count(WHITE)
+                      << " rmB=" << pos->piece_to_remove_count(BLACK)
+                      << " stm=" << static_cast<int>(pos->side_to_move())
+                      << " eval=" << static_cast<int>(Eval::evaluate(*pos))
+                      << sync_endl;
+        }
+        // #endregion
         else if (token == "isready") {
             sync_cout << "readyok" << sync_endl;
 #ifdef FLUTTER_UI
