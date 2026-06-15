@@ -3,7 +3,7 @@
 // dedicated file so the main rules module stays under the 1k-line bar.
 
 use super::*;
-use tgf_core::{Evaluator, Game, Workbench};
+use tgf_core::{Evaluator, Game, GameRules, GameStateSnapshot, Workbench};
 
 #[test]
 fn initial_state_has_24_placing_actions() {
@@ -2227,6 +2227,73 @@ fn threefold_does_not_trigger_after_two_repetitions() {
     assert_eq!(final_state.phase, MillPhase::Moving);
     assert_eq!(final_state.key_history_len, 2);
     assert_eq!(rules.outcome(&after).kind, OutcomeKind::Ongoing);
+}
+
+fn history_marker_snapshot(key: u64) -> GameStateSnapshot {
+    let mut snap = GameStateSnapshot {
+        phase_tag: MillPhase::Moving as i16,
+        zobrist_key: key,
+        ..GameStateSnapshot::default()
+    };
+    snap.opaque_payload[236] = 1;
+    snap
+}
+
+#[test]
+fn apply_with_history_detects_threefold_beyond_payload_window() {
+    let rules = MillRules::default();
+    let mut state = moving_phase_swap_state(0);
+    let mut after_move = state.clone();
+    after_move.board[9] = 0;
+    after_move.board[1] = 1;
+    after_move.side_to_move = 1;
+    let target_key = repetition_signature(&after_move);
+
+    state.key_history = (0..MILL_REPETITION_SNAPSHOT_WINDOW)
+        .map(|i| 0xCAFE_0000_u64 + i as u64)
+        .collect();
+    state.key_history_len = state.key_history.len();
+    let snap = rules.encode(state);
+
+    let mut history = vec![GameStateSnapshot::default()];
+    for i in 0..30_u64 {
+        let key = if i == 3 || i == 9 {
+            target_key
+        } else {
+            0xBEEF_0000_u64 + i
+        };
+        history.push(history_marker_snapshot(key));
+    }
+
+    let after = rules.apply_with_history(
+        &snap,
+        Action {
+            kind_tag: MillActionKind::Move as i16,
+            from_node: 9,
+            to_node: 1,
+            aux: -1,
+            payload_bits: 0,
+        },
+        &history,
+    );
+
+    assert_eq!(rules.outcome(&after).kind, OutcomeKind::Draw);
+    assert_eq!(rules.outcome(&after).reason, "drawThreefoldRepetition");
+}
+
+#[test]
+fn mill_game_root_repetition_history_feeds_workbench() {
+    let rules = MillRules::default();
+    let state = moving_phase_swap_state(0);
+    let snap = rules.encode(state);
+    let key = snap.zobrist_key;
+    let game = MillGame::new_with_repetition_history(
+        MillVariantOptions::default(),
+        vec![key, 0x1234_5678, key],
+    );
+    let wb = game.build_workbench(&snap);
+
+    assert_eq!(wb.current_repetition_count(), 2);
 }
 
 #[test]

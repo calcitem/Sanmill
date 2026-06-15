@@ -13,7 +13,8 @@ fn parse_position_fen_loads_board() {
     let state = parse_position_command(
         &rules,
         "position fen O@******/********/******** w p p 1 8 1 8 0 0 0 0 0 0 0 0 1",
-    );
+    )
+    .state;
 
     // FEN position 0/1 are legacy sq 8/9, which map to dense nodes 17/18.
     assert_eq!(state.opaque_payload[17], 1);
@@ -27,7 +28,8 @@ fn parse_position_fen_with_moves_applies_tail_moves() {
     let state = parse_position_command(
         &rules,
         "position fen ********/********/******** w p p 0 9 0 9 0 0 0 0 0 0 0 0 1 moves d7",
-    );
+    )
+    .state;
 
     assert_eq!(state.opaque_payload[1], 1); // d7 / node 1
     assert_eq!(state.side_to_move, 1);
@@ -133,7 +135,14 @@ fn engine_config_algorithm_routes_search() {
         ..EngineConfig::default()
     };
     let mut searcher = mill_searcher();
-    let result = run_configured_search(MillVariantOptions::default(), snap, 1, &cfg, &mut searcher);
+    let result = run_configured_search(
+        MillVariantOptions::default(),
+        snap,
+        Vec::new(),
+        1,
+        &cfg,
+        &mut searcher,
+    );
 
     assert!(
         !result.best_action.is_none(),

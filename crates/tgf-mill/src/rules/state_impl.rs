@@ -5,7 +5,10 @@
 
 use tgf_core::{GameStateSnapshot, OPAQUE_PAYLOAD_LEN};
 
-use super::{MillActionState, MillOutcomeReason, MillPhase, MillState, MillVariantOptions};
+use super::{
+    MILL_REPETITION_SNAPSHOT_WINDOW, MillActionState, MillOutcomeReason, MillPhase, MillState,
+    MillVariantOptions,
+};
 
 impl MillState {
     pub(super) fn sync_action_after_transition(&mut self) {
@@ -76,14 +79,17 @@ impl MillState {
         // 44..=235: serialized key_history window (24 × 8 bytes,
         // little-endian). Runtime history is a Vec capped at 256 to mirror
         // master; snapshots persist the most recent 24 keys for compatibility.
-        let start = self.key_history.len().saturating_sub(24);
+        let start = self
+            .key_history
+            .len()
+            .saturating_sub(MILL_REPETITION_SNAPSHOT_WINDOW);
         let history_window = &self.key_history[start..];
         for (slot_idx, key) in history_window.iter().enumerate() {
             let base = 44 + slot_idx * 8;
             payload[base..base + 8].copy_from_slice(&key.to_le_bytes());
         }
         // 236: serialized key_history_len (clamped to the payload window).
-        payload[236] = history_window.len().min(24) as u8;
+        payload[236] = history_window.len().min(MILL_REPETITION_SNAPSHOT_WINDOW) as u8;
         payload[237..241].copy_from_slice(&self.custodian_targets[0].to_le_bytes());
         payload[241..245].copy_from_slice(&self.intervention_targets[0].to_le_bytes());
         payload[245..249].copy_from_slice(&self.leap_targets[0].to_le_bytes());
@@ -122,7 +128,7 @@ impl MillState {
         for (i, slot) in board.iter_mut().enumerate() {
             *slot = payload[i] as i8;
         }
-        let history_len = usize::from(payload[236].min(24));
+        let history_len = usize::from(payload[236].min(MILL_REPETITION_SNAPSHOT_WINDOW as u8));
         let mut key_history = Vec::with_capacity(history_len);
         for slot_idx in 0..history_len {
             let base = 44 + slot_idx * 8;

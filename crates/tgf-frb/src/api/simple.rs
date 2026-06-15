@@ -843,11 +843,12 @@ pub fn native_mill_search_zero_time_limit_aborts() -> bool {
 /// Mill-internal state.
 pub(crate) fn spawn_mill_pvs_event_stream(
     snapshot: tgf_core::GameStateSnapshot,
+    root_repetition_history: Vec<u64>,
     options: NativeMillVariantOptions,
     depth: i32,
     sink: StreamSink<EngineEvent>,
 ) {
-    spawn_mill_pvs_event_stream_internal(snapshot, options, depth, sink);
+    spawn_mill_pvs_event_stream_internal(snapshot, root_repetition_history, options, depth, sink);
 }
 
 /// Launch a search thread using the full `MillEngineConfig`.  Emits one
@@ -855,12 +856,19 @@ pub(crate) fn spawn_mill_pvs_event_stream(
 /// Implementation lives in `crate::games::mill::search`.
 pub(crate) fn spawn_mill_engine_config_event_stream(
     snapshot: tgf_core::GameStateSnapshot,
+    root_repetition_history: Vec<u64>,
     options: NativeMillVariantOptions,
     config: MillEngineConfig,
     sink: StreamSink<EngineEvent>,
 ) {
     let internal_cfg: MillEngineConfigPlan = config.into();
-    spawn_mill_engine_config_event_stream_internal(snapshot, options, internal_cfg, sink);
+    spawn_mill_engine_config_event_stream_internal(
+        snapshot,
+        root_repetition_history,
+        options,
+        internal_cfg,
+        sink,
+    );
 }
 
 /// Async search event stream rooted at the Mill initial position.
@@ -872,7 +880,13 @@ pub(crate) fn spawn_mill_engine_config_event_stream(
 pub fn native_mill_search_events(depth: i32, sink: StreamSink<EngineEvent>) {
     let rules = MillRules::default();
     let snap = rules.initial_state(&[]);
-    spawn_mill_pvs_event_stream_internal(snap, NativeMillVariantOptions::default(), depth, sink);
+    spawn_mill_pvs_event_stream_internal(
+        snap,
+        Vec::new(),
+        NativeMillVariantOptions::default(),
+        depth,
+        sink,
+    );
 }
 
 /// Request that the currently running native Rust search stops.

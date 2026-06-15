@@ -438,10 +438,10 @@ pub(super) fn push_key_and_check_threefold(
         return;
     }
     let key = repetition_signature(state);
-    if state.key_history.len() >= 256 {
+    if state.key_history.len() >= super::MILL_REPETITION_HISTORY_CAP {
         state.key_history.remove(0);
     }
-    debug_assert!(state.key_history.len() < 256);
+    debug_assert!(state.key_history.len() < super::MILL_REPETITION_HISTORY_CAP);
     state.key_history.push(key);
     state.key_history_len = state.key_history.len();
     if !adjudicate {

@@ -115,6 +115,7 @@ pub struct MillRules {
 #[derive(Clone, Debug, Default)]
 pub struct MillGame {
     options: MillVariantOptions,
+    root_repetition_history: Vec<u64>,
 }
 
 #[derive(Clone, Debug)]
@@ -134,6 +135,8 @@ pub struct MillEvaluator;
 /// losses.  The static evaluator's max is ~75 (within VALUE_KNOWN_WIN = 25
 /// range for material imbalance), giving a safe gap from 80.
 const MILL_TERMINAL_WIN_SCORE: i32 = 80; // == VALUE_MATE
+const MILL_REPETITION_HISTORY_CAP: usize = 256;
+const MILL_REPETITION_SNAPSHOT_WINDOW: usize = 24;
 
 impl MillVariantOptions {
     /// Assert that the option values are in the C++-compatible ranges.
@@ -344,7 +347,24 @@ impl Default for MillRules {
 
 impl MillGame {
     pub fn new(options: MillVariantOptions) -> Self {
-        Self { options }
+        Self {
+            options,
+            root_repetition_history: Vec::new(),
+        }
+    }
+
+    pub fn new_with_repetition_history(
+        options: MillVariantOptions,
+        root_repetition_history: Vec<u64>,
+    ) -> Self {
+        assert!(
+            root_repetition_history.len() <= MILL_REPETITION_HISTORY_CAP,
+            "root repetition history exceeds Mill cap"
+        );
+        Self {
+            options,
+            root_repetition_history,
+        }
     }
 }
 
@@ -434,7 +454,8 @@ pub struct MillState {
     /// vector. Runtime history is capped at 256 entries; snapshots persist
     /// only the most recent 24 entries for payload compatibility.
     key_history: Vec<u64>,
-    /// Number of valid entries in `key_history`, clamped to 24.
+    /// Runtime length of `key_history`; snapshot encoding clamps it to the
+    /// compact payload window.
     key_history_len: usize,
     /// Cached Zobrist position key.  Mirrors master `Position::st.key`
     /// and is maintained incrementally through `MillRules::apply`

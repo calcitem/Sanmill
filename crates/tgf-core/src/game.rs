@@ -186,6 +186,22 @@ pub trait GameRules: Send + Sync {
         list.contains(&action)
     }
     fn apply(&self, snap: &GameStateSnapshot, action: Action) -> GameStateSnapshot;
+
+    /// Apply `action` with access to the session's prior snapshots.
+    ///
+    /// Snapshot payloads are intentionally compact, so games that need
+    /// longer-lived auxiliary state at the runtime boundary can rebuild it
+    /// from the kernel undo history here.  The default keeps existing games
+    /// purely snapshot-driven.
+    fn apply_with_history(
+        &self,
+        snap: &GameStateSnapshot,
+        action: Action,
+        _history: &[GameStateSnapshot],
+    ) -> GameStateSnapshot {
+        self.apply(snap, action)
+    }
+
     fn outcome(&self, snap: &GameStateSnapshot) -> Outcome;
 
     /// Describe the intermediate hops a single `Action` traverses.

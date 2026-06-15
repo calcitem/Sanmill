@@ -10,6 +10,63 @@
 
 use super::*;
 
+impl MillRules {
+    fn hydrate_repetition_history_from_snapshots(
+        &self,
+        state: &mut MillState,
+        snap: &GameStateSnapshot,
+        history: &[GameStateSnapshot],
+    ) {
+        if !self.options.threefold_repetition_rule {
+            return;
+        }
+        let rebuilt = Self::repetition_history_from_snapshots(snap, history);
+        if rebuilt.len() > state.key_history.len() {
+            state.key_history = rebuilt;
+            state.key_history_len = state.key_history.len();
+        }
+    }
+
+    /// Rebuild the runtime repetition history from a kernel-style snapshot
+    /// stack without expanding the compact snapshot payload.
+    ///
+    /// The history slice must be chronological and must not include `snap`.
+    /// Each snapshot after a reversible Move carries `key_history_len > 0`;
+    /// Place and Remove transitions clear it, which gives us an exact reset
+    /// marker.  Scanning backwards is bounded to master's 256-key cap and is
+    /// only used at runtime boundaries, never inside the search tree.
+    pub fn repetition_history_from_snapshots(
+        snap: &GameStateSnapshot,
+        history: &[GameStateSnapshot],
+    ) -> Vec<u64> {
+        let decoded_current = Self::decode(snap);
+        if history.is_empty() {
+            return decoded_current.key_history;
+        }
+
+        let mut reversed = Vec::new();
+        for candidate in history.iter().chain(std::iter::once(snap)).rev() {
+            let decoded = Self::decode(candidate);
+            if decoded.key_history_len == 0 {
+                break;
+            }
+            let key = candidate.zobrist_key;
+            debug_assert_ne!(key, 0, "Mill snapshots must carry a non-zero key");
+            reversed.push(key);
+            if reversed.len() == MILL_REPETITION_HISTORY_CAP {
+                break;
+            }
+        }
+
+        if reversed.is_empty() {
+            decoded_current.key_history
+        } else {
+            reversed.reverse();
+            reversed
+        }
+    }
+}
+
 impl GameRules for MillRules {
     fn game_id(&self) -> &str {
         "mill"
@@ -70,6 +127,15 @@ impl GameRules for MillRules {
     }
 
     fn apply(&self, snap: &GameStateSnapshot, action: Action) -> GameStateSnapshot {
+        self.apply_with_history(snap, action, &[])
+    }
+
+    fn apply_with_history(
+        &self,
+        snap: &GameStateSnapshot,
+        action: Action,
+        history: &[GameStateSnapshot],
+    ) -> GameStateSnapshot {
         // Memory-safety guard: even on the "unchecked" apply path the
         // caller may have supplied an out-of-range `from_node` or
         // `to_node` (see FRB `tgf_kernel_apply_unchecked`).  Reject such
@@ -87,6 +153,7 @@ impl GameRules for MillRules {
         // bypasses this round-trip via `MillWorkbench::do_move`, which calls
         // `apply_to_state` directly on its owned `MillState`.
         let mut state = Self::decode(snap);
+        self.hydrate_repetition_history_from_snapshots(&mut state, snap, history);
         // Real-play boundary: adjudicate threefold so the game actually ends in
         // a draw at the third occurrence (master's external `has_game_cycle`).
         self.apply_to_state(&mut state, action, true);
@@ -497,17 +564,6 @@ impl MillRules {
             _ => {}
         }
         self.maybe_handle_stalemate(&mut state);
-        // Preserve the legacy FRB-snapshot round-trip behaviour: the
-        // 24-entry payload window (see `MillState::encode`) truncated the
-        // rolling repetition history on every move, so threefold detection
-        // effectively used a 24-signature window.  Replicate it here so the
-        // in-place search path stays bit-compatible with the encode/decode
-        // kernel path.  No-op until a long reversible run grows the history
-        // past the window.
-        if state.key_history.len() > 24 {
-            let start = state.key_history.len() - 24;
-            state.key_history.drain(0..start);
-        }
         state.key_history_len = state.key_history.len();
         // Refresh the cached Zobrist key incrementally from the pre-apply
         // inputs, skipping the full board scan.  `old_key == 0` only on a

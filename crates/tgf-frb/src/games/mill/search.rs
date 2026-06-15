@@ -176,6 +176,7 @@ fn apply_move_none_fallback(
 /// the kernel-handle search variants once they have resolved the snapshot.
 pub(crate) fn spawn_mill_pvs_event_stream(
     snapshot: GameStateSnapshot,
+    root_repetition_history: Vec<u64>,
     options: NativeMillVariantOptions,
     depth: i32,
     sink: StreamSink<EngineEvent>,
@@ -184,13 +185,14 @@ pub(crate) fn spawn_mill_pvs_event_stream(
         depth,
         ..Default::default()
     };
-    spawn_mill_engine_config_event_stream(snapshot, options, config, sink);
+    spawn_mill_engine_config_event_stream(snapshot, root_repetition_history, options, config, sink);
 }
 
 /// Launch a search thread using the full `MillEngineConfig`.  Emits one
 /// `info` event per IDS depth, then a final `bestMove` + `stopped`.
 pub(crate) fn spawn_mill_engine_config_event_stream(
     snapshot: GameStateSnapshot,
+    root_repetition_history: Vec<u64>,
     options: NativeMillVariantOptions,
     config: MillEngineConfigPlan,
     sink: StreamSink<EngineEvent>,
@@ -201,7 +203,7 @@ pub(crate) fn spawn_mill_engine_config_event_stream(
         }
 
         let rules_options = options.clone();
-        let game = MillGame::new(options);
+        let game = MillGame::new_with_repetition_history(options, root_repetition_history);
         let mut wb = game.build_workbench(&snapshot);
         let mut searcher = mill_searcher_default();
         let search_context = MoveOrderContext {

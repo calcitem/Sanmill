@@ -35,8 +35,8 @@ pub(crate) use bench::print_benchmark_toml;
 #[cfg(test)]
 use board::board_ascii_lines;
 use board::{
-    GoOptions, action_to_uci, parse_go_options, parse_position_command, print_board_ascii,
-    print_uci_options,
+    GoOptions, ParsedPosition, action_to_uci, parse_go_options, parse_position_command,
+    print_board_ascii, print_uci_options,
 };
 use setoption::{SetoptionResult, apply_setoption};
 
@@ -137,6 +137,7 @@ pub(crate) fn run_uci_loop() {
     let mut options = MillVariantOptions::default();
     let mut rules = MillRules::new(options.clone());
     let mut state = rules.initial_state(&[]);
+    let mut state_history: Vec<GameStateSnapshot> = Vec::new();
     let mut threads: usize = 1;
     let mut qsearch_max_depth: i32 = 0;
     let mut engine_cfg = EngineConfig::default();
@@ -158,6 +159,7 @@ pub(crate) fn run_uci_loop() {
         } else if line == "ucinewgame" {
             finish_active_search(&mut active_search, &mut engine_cfg);
             state = rules.initial_state(&[]);
+            state_history.clear();
         } else if line == "compiler" {
             println!(
                 "info string compiler Rust {} target {}",
@@ -181,6 +183,7 @@ pub(crate) fn run_uci_loop() {
                     // callers can re-issue `position fen ...` afterwards.
                     rules = MillRules::new(options.clone());
                     state = rules.initial_state(&[]);
+                    state_history.clear();
                 }
                 SetoptionResult::ClearHash => {
                     // Mirror master src/ucioption.cpp:357 Clear Hash button.
@@ -203,7 +206,9 @@ pub(crate) fn run_uci_loop() {
             println!("info string bench is a separate subcommand; run: tgf bench");
         } else if line.starts_with("position") {
             finish_active_search(&mut active_search, &mut engine_cfg);
-            state = parse_position_command(&rules, line);
+            let parsed = parse_position_command(&rules, line);
+            state = parsed.state;
+            state_history = parsed.history;
         } else if line == "d" {
             print_board_ascii(&state, &options);
         } else if line.starts_with("go") {
@@ -211,7 +216,10 @@ pub(crate) fn run_uci_loop() {
             let go = parse_go_options(line, state.side_to_move, &engine_cfg);
             active_search = Some(spawn_search(
                 options.clone(),
-                state,
+                ParsedPosition {
+                    state,
+                    history: state_history.clone(),
+                },
                 go,
                 threads,
                 qsearch_max_depth,
@@ -258,13 +266,16 @@ struct SpawnResult {
 
 fn spawn_search(
     options: MillVariantOptions,
-    state: GameStateSnapshot,
+    position: ParsedPosition,
     go: GoOptions,
     threads: usize,
     qsearch_max_depth: i32,
     hash_mb: u32,
     cfg: EngineConfig,
 ) -> ActiveSearch {
+    let state = position.state;
+    let root_repetition_history =
+        MillRules::repetition_history_from_snapshots(&state, &position.history);
     let search_options = SearchOptions {
         depth_extension: cfg.depth_extension,
         node_limit: go.node_limit,
@@ -317,7 +328,14 @@ fn spawn_search(
             searcher.set_abort_flag(abort_for_worker);
             searcher.set_options(search_options);
             searcher.set_qsearch_max_depth(qsearch_max_depth);
-            let result = run_configured_search(options, state, depth, &cfg, &mut searcher);
+            let result = run_configured_search(
+                options,
+                state,
+                root_repetition_history,
+                depth,
+                &cfg,
+                &mut searcher,
+            );
             let spawn = SpawnResult {
                 depth,
                 result,
@@ -335,7 +353,7 @@ fn spawn_search(
                 })
                 .collect();
             let shared_tt = SharedTt::with_capacity_mb(hash_mb, tt_cluster_bits_from_env());
-            let game = MillGame::new(options);
+            let game = MillGame::new_with_repetition_history(options, root_repetition_history);
             let result = lazy_smp_search::<MillGame>(
                 game,
                 state,
@@ -365,13 +383,14 @@ fn spawn_search(
 fn run_configured_search(
     options: MillVariantOptions,
     state: GameStateSnapshot,
+    root_repetition_history: Vec<u64>,
     depth: i32,
     cfg: &EngineConfig,
     searcher: &mut Searcher<MillGame>,
 ) -> SearchResult {
     // Mirror master src/search_engine.cpp:381 executeSearch: route the
     // user-visible Algorithm option into the actual search implementation.
-    let game = MillGame::new(options.clone());
+    let game = MillGame::new_with_repetition_history(options.clone(), root_repetition_history);
     let mut wb = game.build_workbench(&state);
     let mut value = 0;
     let mut best_so_far = SearchResult::default_none();

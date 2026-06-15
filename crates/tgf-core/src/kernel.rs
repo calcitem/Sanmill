@@ -71,6 +71,10 @@ impl GameKernel {
         self.state
     }
 
+    pub fn history_snapshots(&self) -> &[GameStateSnapshot] {
+        &self.history
+    }
+
     pub fn outcome(&self) -> Outcome {
         self.rules.outcome(&self.state)
     }
@@ -104,8 +108,12 @@ impl GameKernel {
         if !self.rules.is_legal(&self.state, action) {
             return Err(KernelError::IllegalAction);
         }
+        let previous = self.state;
+        let next = self
+            .rules
+            .apply_with_history(&previous, action, &self.history);
         self.history.push(self.state);
-        self.state = self.rules.apply(&self.state, action);
+        self.state = next;
         self.redo_stack.clear();
         Ok(self.state)
     }
@@ -115,8 +123,12 @@ impl GameKernel {
     /// legal. Use for hot paths (search replay, benchmark) where the move
     /// has already been validated by `legal_actions`.
     pub fn apply_unchecked(&mut self, action: Action) -> GameStateSnapshot {
+        let previous = self.state;
+        let next = self
+            .rules
+            .apply_with_history(&previous, action, &self.history);
         self.history.push(self.state);
-        self.state = self.rules.apply(&self.state, action);
+        self.state = next;
         self.redo_stack.clear();
         self.state
     }

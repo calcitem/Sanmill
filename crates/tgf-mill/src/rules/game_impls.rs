@@ -247,7 +247,11 @@ impl Game for MillGame {
 
     fn build_workbench(&self, snap: &GameStateSnapshot) -> Self::Workbench {
         let rules = MillRules::new(self.options.clone());
-        let state = MillRules::decode(snap);
+        let mut state = MillRules::decode(snap);
+        if self.root_repetition_history.len() > state.key_history.len() {
+            state.key_history = self.root_repetition_history.clone();
+            state.key_history_len = state.key_history.len();
+        }
         MillWorkbench {
             rules,
             state,

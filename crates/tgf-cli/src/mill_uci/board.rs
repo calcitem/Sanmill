@@ -160,7 +160,13 @@ pub(super) fn print_uci_options() {
     println!("option name ThreefoldRepetitionRule type check default true");
 }
 
-pub(super) fn parse_position_command(rules: &MillRules, line: &str) -> GameStateSnapshot {
+#[derive(Clone, Debug)]
+pub(super) struct ParsedPosition {
+    pub(super) state: GameStateSnapshot,
+    pub(super) history: Vec<GameStateSnapshot>,
+}
+
+pub(super) fn parse_position_command(rules: &MillRules, line: &str) -> ParsedPosition {
     let tokens = line.split_whitespace().collect::<Vec<_>>();
 
     let moves_idx = tokens.iter().position(|t| *t == "moves");
@@ -179,19 +185,22 @@ pub(super) fn parse_position_command(rules: &MillRules, line: &str) -> GameState
         }
         _ => rules.initial_state(&[]),
     };
+    let mut history = Vec::new();
 
     let Some(moves_idx) = moves_idx else {
-        return state;
+        return ParsedPosition { state, history };
     };
     for mv in tokens.iter().skip(moves_idx + 1) {
         if let Some(action) = action_from_uci(rules, &state, mv) {
-            state = rules.apply(&state, action);
+            let next = rules.apply_with_history(&state, action, &history);
+            history.push(state);
+            state = next;
         } else {
             println!("info string illegal move ignored: {mv}");
             break;
         }
     }
-    state
+    ParsedPosition { state, history }
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]

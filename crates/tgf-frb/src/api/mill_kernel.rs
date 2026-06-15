@@ -57,16 +57,18 @@ pub fn tgf_kernel_mill_search_events(handle: u32, depth: i32, sink: StreamSink<E
         return;
     }
 
-    let snapshot = match with_kernel(handle, |k| k.snapshot()) {
-        Ok(s) => s,
-        Err(e) => {
-            spawn_kernel_search_error(e, sink);
-            return;
-        }
-    };
+    let (snapshot, history) =
+        match with_kernel(handle, |k| (k.snapshot(), k.history_snapshots().to_vec())) {
+            Ok(state) => state,
+            Err(e) => {
+                spawn_kernel_search_error(e, sink);
+                return;
+            }
+        };
 
     let options = variant_extras::options_for(handle);
-    spawn_mill_pvs_event_stream(snapshot, options, depth, sink);
+    let root_repetition_history = MillRules::repetition_history_from_snapshots(&snapshot, &history);
+    spawn_mill_pvs_event_stream(snapshot, root_repetition_history, options, depth, sink);
 }
 
 /// Full-config search over the kernel's **current** Mill position.
@@ -91,15 +93,17 @@ pub fn tgf_kernel_mill_search_events_with_config(
         spawn_kernel_search_error(format!("kernel game_id is {game_id}, expected mill"), sink);
         return;
     }
-    let snapshot = match with_kernel(handle, |k| k.snapshot()) {
-        Ok(s) => s,
-        Err(e) => {
-            spawn_kernel_search_error(e, sink);
-            return;
-        }
-    };
+    let (snapshot, history) =
+        match with_kernel(handle, |k| (k.snapshot(), k.history_snapshots().to_vec())) {
+            Ok(state) => state,
+            Err(e) => {
+                spawn_kernel_search_error(e, sink);
+                return;
+            }
+        };
     let options = variant_extras::options_for(handle);
-    spawn_mill_engine_config_event_stream(snapshot, options, config, sink);
+    let root_repetition_history = MillRules::repetition_history_from_snapshots(&snapshot, &history);
+    spawn_mill_engine_config_event_stream(snapshot, root_repetition_history, options, config, sink);
 }
 
 // ---------------------------------------------------------------------------
