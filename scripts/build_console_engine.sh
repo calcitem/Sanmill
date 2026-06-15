@@ -14,8 +14,8 @@
 #
 # Design notes:
 #   * The Perfect Database tree is NOT compiled.  Its few entry-point symbols
-#     are satisfied by perfect_stub.cpp (repo root); they are never called
-#     because the harness keeps UsePerfectDatabase disabled.
+#     are satisfied by tools/console_engine/perfect_stub.cpp; they are never
+#     called because the harness keeps UsePerfectDatabase disabled.
 #   * benchmark.cpp is excluded (it only pulls in unused perfect symbols).
 #   * Static linking is attempted on MinGW/Linux when NO_STATIC is unset;
 #     macOS always links dynamically (Apple does not support portable static
@@ -34,7 +34,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_DIR="$(cd "${SCRIPT_DIR}/.." && pwd)"
 cd "${ROOT_DIR}"
 
-STUB="perfect_stub.cpp"
+STUB="${ROOT_DIR}/tools/console_engine/perfect_stub.cpp"
 
 detect_platform() {
     local uname_s

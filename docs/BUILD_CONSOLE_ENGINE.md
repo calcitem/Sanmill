@@ -18,10 +18,12 @@ Supported build hosts: **Linux**, **macOS**, and **Windows (MinGW-w64)**.
   `master_engine.exe` on MinGW) that speaks **standard UCI**: `uci`,
   `isready`, `setoption`, `position`, `go`, `bestmove`, `quit`.
 * The **Perfect Database** tree is *not* compiled. The few entry-point
-  symbols it would otherwise provide are satisfied by `perfect_stub.cpp` in
-  the repo root. These stubs are never executed because the engine keeps
+  symbols it would otherwise provide are satisfied by
+  `tools/console_engine/perfect_stub.cpp`. These stubs are never executed because the engine keeps
   `UsePerfectDatabase` disabled.
 * `benchmark.cpp` is excluded (it only references unused perfect-DB symbols).
+* Link stubs live in `tools/console_engine/perfect_stub.cpp` (not under
+  `src/`, so the Qt/Flutter CMake glob of `src/*.cpp` never picks them up).
 
 The build is intentionally lean: one compiler invocation, ~20 seconds on a
 typical desktop.
