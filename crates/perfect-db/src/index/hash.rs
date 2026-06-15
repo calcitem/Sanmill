@@ -18,6 +18,12 @@ pub struct PerfectHasher {
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub struct HashProbe {
+    pub index: usize,
+    pub canonical_board: u64,
+}
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
 struct WhiteEntry {
     index: usize,
     transform_to_canonical: u8,
@@ -60,7 +66,7 @@ impl PerfectHasher {
             .map_or(0, |max| max + 1)
     }
 
-    pub fn hash_index(&self, board: u64) -> usize {
+    pub fn hash_probe(&self, board: u64) -> HashProbe {
         let white = (board & MASK24) as u32;
         let black = ((board >> 24) & MASK24) as u32;
         assert_eq!(
@@ -102,7 +108,48 @@ impl PerfectHasher {
             .copied()
             .expect("collapsed black bitboard must be indexed");
 
-        entry.index * self.positions_per_white + black_index
+        HashProbe {
+            index: entry.index * self.positions_per_white + black_index,
+            canonical_board: canonical,
+        }
+    }
+
+    pub fn hash_index(&self, board: u64) -> usize {
+        self.hash_probe(board).index
+    }
+
+    pub fn direct_hash_index(&self, board: u64) -> usize {
+        let white = (board & MASK24) as u32;
+        let black = ((board >> 24) & MASK24) as u32;
+        assert_eq!(
+            white.count_ones(),
+            u32::from(self.white_count),
+            "white bit count must match hasher sector"
+        );
+        assert_eq!(
+            black.count_ones(),
+            u32::from(self.black_count),
+            "black bit count must match hasher sector"
+        );
+        assert_eq!(
+            white & black,
+            0,
+            "white and black bitboards must not overlap"
+        );
+
+        let white_index = self
+            .white_lookup
+            .get(&white)
+            .map(|entry| entry.index)
+            .expect("white bitboard with matching popcount must be indexed");
+        let compact_black = collapse(board);
+        let black_index = self
+            .black_rank
+            .get(&compact_black)
+            .copied()
+            .expect("collapsed black bitboard must be indexed");
+
+        white_index * self.positions_per_white + black_index
     }
 }
 

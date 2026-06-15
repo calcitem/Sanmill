@@ -7,6 +7,7 @@ use std::ffi::{CStr, CString};
 use std::os::raw::c_char;
 use std::sync::atomic::{AtomicBool, Ordering};
 
+pub mod database;
 pub mod file_format;
 pub mod index;
 mod mill;
