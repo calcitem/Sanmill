@@ -6,7 +6,7 @@
 // Backs `NativeMillGameSession` with the `crates/tgf-mill::MillRules`
 // implementation through the typed FRB `TgfKernel` surface.  This is
 // the production path for the Mill game on `next`; the legacy C++
-// bridge it used to parallel was deleted in Phase 3 / Phase 4.
+// bridge it used to parallel has been removed.
 
 import 'dart:typed_data';
 
@@ -128,14 +128,14 @@ class NativeMillRulesPort implements RulesPort {
     return _snapshot;
   }
 
-  /// Load a board position from a Mill FEN string (Phase 6.A.3.B).
+  /// Load a board position from a Mill FEN string.
   GameStateSnapshot setFromFen(String fen) {
     final tgf.TgfSnapshot raw = _session.rawSetFromFen(fen);
     _snapshot = _snapshotFromRaw(raw);
     return _snapshot;
   }
 
-  /// Export the current kernel state as a Mill FEN string (Phase 6.A.3.B).
+  /// Export the current kernel state as a Mill FEN string.
   String exportFen() => _session.rawExportFen();
 
   /// Analyse the current position, returning one verdict per legal move plus

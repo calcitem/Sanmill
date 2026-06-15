@@ -11,7 +11,7 @@ use crate::result::SearchResult;
 use crate::tt::Bound;
 
 impl<G: Game> Searcher<G> {
-    /// Iterative deepening using PVS (fixes the pre-Phase 5 inconsistency where
+    /// Iterative deepening using PVS (fixes the earlier inconsistency where
     /// IDS drove `search` while the root entry point was `search_pvs`).
     ///
     /// Uses aspiration windows from depth 3 onwards: the initial window is
@@ -29,8 +29,8 @@ impl<G: Game> Searcher<G> {
     /// invoked from `tests/test_search.cpp` -- the actual root entry point
     /// driven by `SearchEngine::executeSearch` is `Search::search`, a plain
     /// alpha-beta loop with depth-extension when the moveCount is 1.  The
-    /// Rust scaffold here intentionally prefers PVS at the root because its
-    /// null-window + re-search structure yields the same bestmove on
+    /// Rust implementation here intentionally prefers PVS at the root because
+    /// its null-window + re-search structure yields the same bestmove on
     /// terminal-deterministic positions while pruning more nodes; the
     /// `tgf-cli selfplay` deterministic regression suite in
     /// `selfplay_baseline_*.toml` confirms parity with the plain alpha-beta
@@ -153,7 +153,8 @@ impl<G: Game> Searcher<G> {
     /// writes its result into the TT; subsequent iterations reuse those entries
     /// to prune the search tree, which is what makes MTD(f) efficient.
     ///
-    /// Unlike the old scaffold, the TT is NOT bypassed here — `alpha_beta`
+    /// Unlike the earlier implementation, the TT is NOT bypassed here —
+    /// `alpha_beta`
     /// already probes and saves the TT on every node.
     pub fn mtdf(&mut self, wb: &mut G::Workbench, first_guess: i32, depth: i32) -> i32 {
         let mut g = first_guess;

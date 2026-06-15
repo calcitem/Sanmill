@@ -25,7 +25,7 @@ class MillTapActionSelection {
   bool get hasAction => action != null;
 }
 
-/// Pure selector used by the Native Mill dogfood path.
+/// Pure selector used by the native Mill session path.
 ///
 /// The legacy tap handler receives C++ square ids and turns them into labels
 /// with `ExtMove.sqToNotation`; this class deliberately works at the label

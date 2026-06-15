@@ -176,13 +176,13 @@ Rules:
 - `perft`
 - `MctsSearcher<G: Game>`
 
-Current scaffolds already include:
+The current implementation includes:
 
 - side-aware score polarity
 - TT exact/lower/upper bound handling
 - TT best-move ordering
 - packed two-slot TT clusters (`AtomicU64` slots) sharable across threads
-  via `SharedTt` and the `lazy_smp_search` scaffold
+  via `SharedTt` and the `lazy_smp_search` helper
 - `SearchThreadPool` (`std::thread` workers + `crossbeam_channel` dispatch)
   used by lazy SMP worker fan-out
 - killer/history move ordering
@@ -216,47 +216,37 @@ thresholds (5 % / 5 % / 1 pp / 10 %) become active.  CI also passes
 complementary.  Tighten the runtime baselines toward ~70 % of the canonical
 CI run once a stable reference hardware target is selected.
 
-### Differential testing
+### Regression and differential testing
 
-`crates/tgf-frb/src/api/simple.rs::random_walk_native_and_legacy_agree`
-plays seeded random Mill games (default 5,000 × 80 plies, override via
-`TGF_RANDOM_WALK_GAMES` / `TGF_RANDOM_WALK_SEED`) and asserts that the native
-Rust `MillRules` and the legacy C++ engine return identical legal action
-sets, phase tags, and side-to-move at every ply.
+The retired C++ engine is no longer linked into the app or FRB test surface.
+Rust/TGF regression coverage now comes from focused Mill rule tests, fixed
+search-position tests, self-play/head-to-head harnesses, and legacy oracle
+snapshots under `crates/tgf-mill/testdata/legacy_oracle/`.
 
-For the migration plan's 1,000,000-position target, the
-`#[ignore]`-marked nightly variant
-`crates/tgf-frb/src/api/simple.rs::random_walk_extended` runs 12,500
-games × 80 plies (~60 s in release).  Run it explicitly with:
+For broad rule-path coverage, run the Mill rule/action agreement walk and
+the FRB oracle replay suite:
 
 ```bash
-cargo test --release -p rust_lib_sanmill --lib -- \
-    --ignored random_walk_extended
+cargo test -p tgf-mill \
+    mill_rules_and_game_agree_on_legal_actions_along_random_walk
+cargo test -p rust_lib_sanmill oracle_replay
 ```
 
-Plus the existing fixed-position `native_and_legacy_*` perft tests.
+Use `scripts/run_head_to_head.sh` for strength and parity checks against a
+separately built master-reference engine.  That harness treats the Rust rules
+crate as the referee and should not be confused with an in-app C++ bridge.
 
-### Still incomplete compared with mature C++
+### Current gaps
 
-Work in progress (see migration plan phase 5):
-
-- remaining TT parity knobs such as C++ fake-clean age semantics, if retained
-- C++ qsearch is currently a depth-0 stand-pat with the recursive remove
-  branch gated behind `MAX_QUIESCENCE_DEPTH = 0`; `tgf-search`'s
-  `qsearch_with_depth` already runs the full remove extension (sorted via the
-  same MovePicker-style scoring) and applies the
-  `if (stand_pat > 0) stand_pat += depth;` mate-distance decay.  Future work
-  is to lift that depth gate in C++ and verify the deeper qsearch agrees.
-- MCTS alpha-beta assisted simulation
-
-**Intentionally staying on the cxx bridge (not “incomplete” bugs):** perfect DB
-and opening book remain in C++ by policy; see §Legacy C++ bridge policy.
+- MCTS alpha-beta assisted simulation remains an optional search improvement.
+- Perfect database probing is available through the Rust `perfect-db` wrapper
+  around the vendored database code, not through the removed legacy engine.
 
 ## Search tuning (Rust `tgf-search` / `tgf-cli`)
 
 - **TT size:** `tgf_cli`’s `bench` and UCI `go` path use
   `Searcher::new_with_tt_cluster_bits` driven by the environment variable
-  `TGF_TT_CLUSTER_BITS` (clamped 10–18, default 14).  The TOML block printed by
+  `TGF_TT_CLUSTER_BITS` (clamped 10–26, default 23).  The TOML block printed by
   `cargo run -p tgf-cli -- bench` includes the effective value under `[meta]`.
 - **Move order:** `Game::move_order_bias` (default `0`) is added to the
   internal move score.  Mill implements the C++ `RATING_STAR_SQUARE` / star-node
@@ -282,7 +272,7 @@ Dart side gets a long-lived session keyed by an `int` handle:
   kernel’s **current** snapshot; uses the same `MillVariantOptions` stored when
   creating the session (`tgf_kernel_create_mill` / default nine-piece factory).
 
-#### Setup-position editing API (Phase 6.A.1)
+#### Setup-position editing API
 
 The kernel exposes a direct board-editing flow for the setup-position game mode:
 
@@ -301,7 +291,7 @@ cycles the owner value on each tap via `setup_set_piece(node, owner)` — one
 call covers all edit intents.  There is no `tgfKernelSetupSetAction` function
 and none is planned.
 
-#### FEN import / export API (Phase 6.A.3.B)
+#### FEN import / export API
 
 - `tgfKernelSetFromFen({handle, fen})` — load a Mill FEN string compatible with
   the legacy Dart/C++ engine format; returns updated snapshot.
@@ -316,13 +306,12 @@ framework-level `GameStateSnapshot` / `GameOutcome` values directly.
 `OthelloGameSession` is the first non-Mill session driven entirely by this
 typed API; future games should follow the same pattern.
 
-### Legacy / smoke surfaces
+### Smoke surfaces
 
-These remain available during the transition:
+These remain available for diagnostics and development:
 
 - `kernelTopology()` for Mill geometry
-- `legacyKernel*` functions for the transitional C++ bridge
-- `nativeMill*` / `nativeOthello*` smoke and differential helpers
+- `nativeMill*` / `nativeOthello*` smoke helpers
 - `nativeMillSearchEvents(depth)` stream (start-position smoke; prefer
   `tgfKernelMillSearchEvents` when a typed Mill kernel handle exists)
 - `nativeMillSearchStop()` cancellation request
@@ -417,14 +406,14 @@ perfect-information invariants.
 - `board_full_action` for all variants
 - `mill_formation_action_in_placing_phase` for all variants at the state-machine
   level.  `markAndDelayRemovingPieces` records the delayed mill-line bitmask
-  without introducing a third on-board `MARKED_PIECE` value in Rust yet; this is
-  sufficient for FRB state parity but the Flutter legacy renderer still owns
-  marked-piece visuals.
+  without introducing a third on-board `MARKED_PIECE` value in Rust. Flutter
+  reads those bits from the native snapshot payload for marked-piece visuals.
 - `stalemate_action` for all variants: loss, draw, side-change, stalemated side
   removes and keeps the move, stalemated side removes and changes side, and both
   players remove adjacent opponent pieces in order.
-- `threefold_repetition_rule` (state-side detection at apply time;
-  rolling 24-entry signature buffer in `MillState.opaque_payload`)
+- `threefold_repetition_rule` (state-side detection at apply time; runtime
+  history keeps up to 256 signatures and snapshots persist the compact
+  24-entry payload window)
 - `custodian_capture`, `intervention_capture`, and `leap_capture` on square-edge,
   cross, and diagonal lines when `has_diagonal_lines` is true and each capture
   config has `on_diagonal_lines: true`.  The Rust path mirrors the C++ stacking
@@ -436,8 +425,8 @@ All `Rule` fields that affect core Mill move legality and terminal state are
 now represented in the Rust path.  Delayed marked-mill bits are encoded in
 `MillState.opaque_payload` at bytes 39..43 (`delayed_marked_pieces`, LE u32);
 Flutter reads them via `MillMarkedPiecesCodec.markedNodesFromOpaquePayload` in
-`lib/game_platform/mill_marked_pieces_codec.dart` (payload key `millMarkedNodes`
-on `GameStateSnapshot`).
+`lib/games/mill/mill_marked_pieces_codec.dart` (payload key
+`millMarkedNodes` on `GameStateSnapshot`).
 
 Each new field follows the same pattern: extend `MillVariantOptions`, update
 `MillRules::apply` / `legal_actions` / `outcome`, mirror it in

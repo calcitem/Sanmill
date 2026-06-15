@@ -169,9 +169,9 @@ class GeneralSettings {
     this.lastPgnSaveDirectory = '',
     this.experienceRecordingEnabled = false,
 
-    /// Deprecated: always true as of Phase 6.B.1.  Retained to preserve the
-    /// Hive `@HiveField(46)` slot for existing saved data.  The field will be
-    /// removed in a future major version once all stored boxes have migrated.
+    /// Deprecated: always true. Retained to preserve the Hive `@HiveField(46)`
+    /// slot for existing saved data. The field will be removed in a future
+    /// major version once all stored boxes have migrated.
     @Deprecated(
       'useNativeMillSession is always true; field retained for Hive compatibility.',
     )

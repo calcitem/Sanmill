@@ -5,8 +5,7 @@ use tgf_core::MoveOrderContext;
 
 /// Search algorithm selector.  Mirrors C++ `Algorithm` enum in `src/types.h`.
 ///
-/// The default is `Pvs`, matching the C++ engine's production configuration
-/// (`MTD(f)` is the C++ default but PVS is more stable in the Rust scaffold).
+/// The default is `Pvs`, which gives the Rust engine stable pruning behavior.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
 pub enum SearchAlgorithm {
     /// Fail-soft Alpha-Beta.
@@ -82,7 +81,7 @@ pub struct SearchOptions {
     /// aspiration windows -- every IDS iteration runs with the full
     /// `[-VALUE_INFINITE, VALUE_INFINITE]` window, even though
     /// `VALUE_PLACING_WINDOW` / `VALUE_MOVING_WINDOW` constants are
-    /// defined in `src/types.h`.  The Rust scaffold keeps aspiration
+    /// defined in `src/types.h`.  The Rust implementation keeps aspiration
     /// available behind this flag for users who want the extra NPS
     /// boost on stable scores.
     pub enable_aspiration_window: bool,

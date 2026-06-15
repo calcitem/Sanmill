@@ -9,7 +9,7 @@ import 'mill_marked_pieces_codec.dart';
 
 /// Read-only board view over the Rust-native Mill opaque payload.
 ///
-/// Layout matches `crates/tgf-mill/src/rules.rs::MillState::encode`:
+/// Layout matches `crates/tgf-mill/src/rules/state_impl.rs::MillState::encode`:
 /// bytes 0..23 store node occupancy (`0` empty, `1` first player, `2`
 /// second player).  Marked delayed-removal pieces are read through
 /// [MillMarkedPiecesCodec].

@@ -3,7 +3,8 @@
 //
 // Decode Rust `MillState.delayed_marked_pieces` from `GameStateSnapshot` /
 // `TgfSnapshot.opaque_payload`.  Layout matches
-// `crates/tgf-mill/src/rules.rs::MillState::encode` (LE u32 at bytes 39..43).
+// `crates/tgf-mill/src/rules/state_impl.rs::MillState::encode`
+// (LE u32 at bytes 39..43).
 
 import 'dart:typed_data';
 

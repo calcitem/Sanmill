@@ -1286,8 +1286,8 @@ fn position_key_changes_after_move_and_restores_after_undo() {
 
 #[test]
 fn position_key_distinguishes_capture_slots_per_side() {
-    // Note: master's Zobrist key (mirrored by the Rust port post
-    // Phase 15+) intentionally COLLAPSES `remove_own_piece` -- the
+    // Note: master's Zobrist key (mirrored by the Rust port) intentionally
+    // COLLAPSES `remove_own_piece` -- the
     // misc bits only store `pending_removals[stm]` (clamped to 4),
     // matching master `update_key_misc` (src/position.cpp).  Two
     // states differing only in remove_own_piece therefore hash to
@@ -2983,7 +2983,7 @@ fn mill_evaluator_gameover_loss_under_three_pieces() {
 }
 
 // ---------------------------------------------------------------------------
-// Phase 6.A.1: setup-position editing tests
+// Setup-position editing tests
 // ---------------------------------------------------------------------------
 
 #[test]

@@ -17,9 +17,9 @@
 //   * Rust uses dense node ids (0..24) instead of master's legacy
 //     SQ_8..SQ_31 squares.  All Zobrist accesses go through the dense
 //     id, so the per-square arrays are sized [24] instead of [40].
-//   * `Key` is u64 internally to match the rest of `tgf-core`'s API
-//     (the Searcher's TT key signature is 32-bit per Phase 15, so the
-//     extra 32 bits are simply unused-but-harmless when stored).
+//   * `Key` is u64 internally to match the rest of `tgf-core`'s API.
+//     The searcher's TT key signature uses the lower 32 bits, so the
+//     extra 32 bits are unused-but-harmless when stored.
 //   * The Zobrist values are generated at build time from a fixed
 //     non-zero seed via xorshift64*; master uses a runtime PRNG seeded
 //     by `Position::init`.  The fixed seed keeps Mill move logs

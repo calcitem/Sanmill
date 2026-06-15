@@ -10,15 +10,12 @@ import '../../rule_settings/models/rule_settings.dart';
 import '../../src/rust/api/simple.dart' as tgf;
 
 extension MillVariantOptionsMapper on RuleSettings {
-  /// Convert the subset of settings currently supported by Rust-native
-  /// MillRules into the FRB DTO.  Unsupported fields remain on the legacy
-  /// C++ path until the corresponding Rust rule is implemented.
+  /// Convert persisted Flutter rule settings into the Rust-native MillRules
+  /// FRB DTO.
   ///
   /// `generalSettings` carries the engine-behavior toggles (mobility,
-  /// blocking paths) that the legacy C++ engine read from the global
-  /// `gameOptions` singleton.  When omitted the FRB defaults
-  /// (`consider_mobility=true`, `focus_on_blocking_paths=false`) apply,
-  /// matching the C++ initialisation in option.h.
+  /// blocking paths).  When omitted the FRB defaults
+  /// (`consider_mobility=true`, `focus_on_blocking_paths=false`) apply.
   tgf.MillVariantOptions toTgfMillVariantOptions({
     GeneralSettings? generalSettings,
   }) {

@@ -3,7 +3,7 @@
 //
 // The hot path is generic over `G: Game`; it never stores `dyn GameRules`
 // or `dyn Workbench`.  This mirrors the C++ CRTP design in the migration
-// plan and keeps do/undo/evaluate calls statically dispatchable.
+// work and keeps do/undo/evaluate calls statically dispatchable.
 //
 // The crate is internally split into focused submodules so each file
 // stays comfortably under ~1000 lines:
@@ -15,7 +15,7 @@
 //   - `perft`        — game-neutral leaf counter
 //   - `searcher`     — `Searcher<G>`: alpha-beta / PVS / MTD(f) / qsearch
 //   - `thread_pool`  — `SearchThreadPool` and `lazy_smp_search`
-//   - `mcts`         — `MctsSearcher<G>` UCT scaffold
+//   - `mcts`         — `MctsSearcher<G>` UCT implementation
 //
 // External callers should keep using the flat `pub use` re-exports
 // below; the module split is purely an organisational refactor.

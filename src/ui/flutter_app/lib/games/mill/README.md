@@ -19,8 +19,8 @@ extension.
 
 ## Ports (`game_platform` interface implementations)
 
-* `mill_engine_port.dart` — `EnginePort` adapter; routes the legacy
-  `Engine` through the platform engine boundary.
+* `mill_engine_port.dart` — `EnginePort` adapter; keeps the historical
+  engine-facing UI boundary backed by native Rust search events.
 * `mill_notation_port.dart` — `NotationPort`: encode / decode notation
   strings for Mill move lists.
 * `mill_rule_settings_port.dart` — `RuleSettingsPort` glue over the
@@ -74,10 +74,9 @@ extension.
 
 ## Conventions
 
-* New code should prefer the **native** rules port / game session and
-  the typed `MillKernelSession` over the legacy `GameController`
-  facade.  The legacy paths are still wired through for backwards
-  compatibility but new game modes should not extend them.
+* New code should use the **native** rules port / game session and the typed
+  `MillKernelSession`.  Compatibility shims around `GameController` remain
+  only where older widgets or recordings still depend on them.
 * Only `mill_marked_pieces_codec.dart` is allowed to touch the raw
   FRB opaque payload bytes — every other consumer reads through the
   `GameStateSnapshotMillExt` getter.

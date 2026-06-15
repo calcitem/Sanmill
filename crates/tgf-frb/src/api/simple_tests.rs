@@ -175,9 +175,9 @@ fn native_search_after_mill_keeps_turn_and_chains_remove() {
 
 /// Same as `native_search_after_mill_keeps_turn_and_chains_remove` but
 /// searches at depth=5 to activate null-move pruning (which requires
-/// depth >= NULL_MOVE_MIN_DEPTH = 3).  Regression for Phase 5 null-move
-/// incorrectly preventing the AI from finding a Remove action after
-/// forming a mill.
+/// depth >= NULL_MOVE_MIN_DEPTH = 3).  Regression for null-move pruning
+/// incorrectly preventing the AI from finding a Remove action after forming
+/// a mill.
 #[test]
 fn native_search_after_mill_chains_remove_at_high_depth() {
     let rules = MillRules::default();
@@ -226,7 +226,7 @@ fn native_search_after_mill_chains_remove_at_high_depth() {
 }
 
 /// Moving-phase version: AI moves a piece to form a mill at depth=5.
-/// Regression for Phase 5 null-move incorrectly preventing Remove.
+/// Regression for null-move pruning incorrectly preventing Remove.
 #[test]
 fn native_search_moving_phase_mill_chains_remove_at_high_depth() {
     let rules = MillRules::default();
@@ -625,7 +625,7 @@ fn native_self_play_restrict_repeated_mills_no_panic() {
 }
 
 // ---------------------------------------------------------------------------
-// Oracle replay tests (Phase 0)
+// Oracle replay tests
 //
 // These tests read pre-generated JSON oracle files produced by
 // `cargo run -p xtask-legacy-oracle` and verify that the Rust tgf-mill

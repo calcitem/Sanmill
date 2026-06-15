@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // Rust-native Mill board topology.
 //
-// This is the Phase 3 single source of truth for Mill board geometry.  Node ids
-// are dense (0..23) and match the existing Flutter BoardGeometry ids so the UI
-// can switch over without repaint changes.  The `square` field maps back to the
-// mature C++ engine's SQ_8..SQ_31 ids and `label` matches UCI::square().
+// This is the single source of truth for Mill board geometry.  Node ids are
+// dense (0..23) and match the existing Flutter BoardGeometry ids.  The
+// `square` field maps back to the mature C++ engine's SQ_8..SQ_31 ids and
+// `label` matches UCI::square().
 
 use tgf_core::board_topology::{BoardTopology, Decoration, Edge, UnitPoint, Zone};
 

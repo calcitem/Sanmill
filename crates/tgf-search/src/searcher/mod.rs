@@ -322,8 +322,8 @@ impl<G: Game> Searcher<G> {
     /// `origin/master`'s `Search::pvs` is *defined* but only consumed by
     /// `tests/test_search.cpp`; the production root in
     /// `SearchEngine::executeSearch` is `Search::search` (plain alpha-beta).
-    /// The Rust scaffold uses PVS here because the null-window + re-search
-    /// pattern produces the same bestmove as plain alpha-beta on
+    /// The Rust implementation uses PVS here because the null-window +
+    /// re-search pattern produces the same bestmove as plain alpha-beta on
     /// terminal-deterministic Mill positions while pruning more nodes
     /// (validated by the `tgf-cli selfplay` deterministic regression
     /// baselines).  Callers that need the master-equivalent shape should
@@ -485,8 +485,8 @@ impl<G: Game> Searcher<G> {
             return G::repetition_draw_bias();
         }
 
-        // Null-move pruning (Phase 5): when not in qsearch, when depth is
-        // sufficient, and when allowed by SearchOptions, make a "null" move
+        // Null-move pruning: when not in qsearch, when depth is sufficient,
+        // and when allowed by SearchOptions, make a "null" move
         // (pass the turn) and search at reduced depth.  A fail-high here
         // means the position is already so good we can prune without
         // searching children.  Only applied at depth ≥ 3 to avoid pruning

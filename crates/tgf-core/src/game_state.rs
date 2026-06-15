@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
-// Phase 1 scaffold – GameStateSnapshot and Outcome.
+// Game-neutral state snapshots and outcome values.
 
 /// Immutable, game-neutral state snapshot.  Concrete games store their own
 /// bitboards / counters in the opaque_payload byte array.  This type is

@@ -43,7 +43,7 @@ pub fn init_app() {
 }
 
 // ---------------------------------------------------------------------------
-// Phase 1 smoke-check
+// Bridge smoke-check APIs.
 // ---------------------------------------------------------------------------
 
 /// Returns a greeting string confirming that the Rust → Dart bridge works.
@@ -62,10 +62,9 @@ pub fn tgf_version() -> String {
     env!("CARGO_PKG_VERSION").to_owned()
 }
 
-/// Public FRB DTO for the subset of Mill variant options already supported by
-/// the Rust-native rules scaffold.  It intentionally mirrors the field names
-/// that will later replace the C++ Rule struct; new rule flags are added
-/// here whenever `crates/tgf-mill::MillVariantOptions` grows them.
+/// Public FRB DTO for Mill variant options. It mirrors
+/// `tgf_mill::rules::MillVariantOptions`; new rule flags should be added here
+/// whenever the Rust rules crate grows them.
 #[derive(Clone, Debug)]
 pub struct MillVariantOptions {
     pub piece_count: u8,
@@ -357,7 +356,7 @@ pub fn native_mill_default_variant_options() -> MillVariantOptions {
 }
 
 // ---------------------------------------------------------------------------
-// Phase 7 Othello pressure-test APIs.
+// Othello pressure-test APIs.
 // ---------------------------------------------------------------------------
 
 /// Number of legal actions from the Rust-native Othello initial position.
@@ -374,8 +373,7 @@ pub fn native_othello_search_depth_one_best_to_node() -> i32 {
 }
 
 // ---------------------------------------------------------------------------
-// ---------------------------------------------------------------------------
-// Phase 3 topology API: Rust-native Mill topology exposed through FRB.
+// Rust-native Mill topology exposed through FRB.
 // ---------------------------------------------------------------------------
 
 #[derive(Clone, Debug)]
@@ -677,7 +675,7 @@ pub fn tgf_kernel_player_info(handle: u32) -> Result<PlayerInfoBlob, String> {
 }
 
 // ---------------------------------------------------------------------------
-// Phase 4 native Rust Mill rules scaffold API.
+// Native Rust Mill rules smoke APIs.
 // ---------------------------------------------------------------------------
 
 /// Number of legal actions from a fresh Rust-native Mill initial position.
@@ -702,7 +700,7 @@ pub fn native_mill_initial_legal_count_for_variant(variant: MillVariantOptions) 
 }
 
 /// Apply the first Rust-native place action and return the side-to-move tag.
-/// This is a small typed smoke-check for the native MillRules scaffold.
+/// This is a small typed smoke-check for the native MillRules implementation.
 #[flutter_rust_bridge::frb(sync)]
 pub fn native_mill_apply_first_place_side_to_move() -> i32 {
     let rules = MillRules::default();
@@ -759,8 +757,7 @@ pub fn native_mill_removal_below_three_winner() -> i32 {
 }
 
 /// Run the Rust generic Searcher<MillGame> for one ply and return the best
-/// destination node.  This is a Phase 5 smoke-check for the monomorphised
-/// search path.
+/// destination node. This is a smoke-check for the monomorphised search path.
 #[flutter_rust_bridge::frb(sync)]
 pub fn native_mill_search_depth_one_best_to_node() -> i32 {
     let rules = MillRules::default();
@@ -794,7 +791,7 @@ pub fn native_mill_random_best_to_node(seed: u64) -> i32 {
     searcher.random_search(&mut wb).best_action.to_node as i32
 }
 
-/// Run the Rust generic MCTS scaffold and return the selected destination node.
+/// Run the Rust generic MCTS path and return the selected destination node.
 #[flutter_rust_bridge::frb(sync)]
 pub fn native_mill_mcts_best_to_node(seed: u64, iterations_per_move: u32) -> i32 {
     let rules = MillRules::default();

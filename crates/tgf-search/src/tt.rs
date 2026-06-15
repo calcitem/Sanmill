@@ -295,8 +295,8 @@ impl TtPackedEntry {
     // Searcher::search_mtdf_with_guess able to retrieve the root
     // bestmove from the TT.  Master itself drops the move when
     // TT_MOVE_ENABLE is undefined (default), which only affects
-    // `MovePicker::score`'s ttMove bonus -- that path is removed
-    // separately in commit Phase 16.
+    // `MovePicker::score`'s ttMove bonus -- the Rust move-ordering path
+    // intentionally leaves that bonus disabled by default.
     const KEY_SIG_MASK: u64 = 0xffff_ffff;
     const AGE_SHIFT: u32 = 32;
     const VALUE_SHIFT: u32 = 38;

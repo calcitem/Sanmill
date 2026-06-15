@@ -670,10 +670,9 @@ class ReplayService {
 
       case 'analysisOn':
       case 'analysisOff':
-        // The perfect-database analysis toolbar was removed along
-        // with the legacy C++ engine; older recordings may still
-        // contain these events.  Skip them silently so playback
-        // does not error out on historical data.
+        // The old analysis toolbar actions are no longer replayable UI
+        // events. Older recordings may still contain them, so skip them
+        // silently instead of failing playback.
         logger.i(
           '$_logTag Replay: toolbarAction $action ignored (analysis '
           'feature removed).',

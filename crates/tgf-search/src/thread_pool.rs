@@ -4,8 +4,7 @@
 // `SearchThreadPool` is intentionally game-agnostic: it accepts any
 // `FnOnce() + Send` job and wires up `crossbeam_channel` dispatch.  The
 // `lazy_smp_search` helper reuses it to spawn N searchers against a
-// shared TT and a shared abort flag — this is the foundation for the
-// migration plan's lazy-SMP scaffold.
+// shared TT and a shared abort flag.
 
 use std::sync::Arc;
 use std::sync::atomic::AtomicBool;
@@ -31,10 +30,9 @@ pub struct LazySmpWorker {
 /// because those are inherently thread-local.
 ///
 /// The deepest completed result wins on score; this is intentionally
-/// simpler than full YBWC and is the stepping stone toward phase 5.2 in
-/// the migration plan.  When `abort_flag` is `None` a fresh shared flag
-/// is allocated; pass `Some(...)` to participate in an existing
-/// cancellation chain (e.g. UCI `stop` from the main thread).
+/// simpler than full YBWC.  When `abort_flag` is `None` a fresh shared flag is
+/// allocated; pass `Some(...)` to participate in an existing cancellation chain
+/// (e.g. UCI `stop` from the main thread).
 pub fn lazy_smp_search<G>(
     game: G,
     snapshot: GameStateSnapshot,
@@ -92,11 +90,9 @@ enum ThreadPoolMessage {
 
 /// Minimal fixed-size worker pool for search tasks.
 ///
-/// The mature C++ engine has a dedicated `ThreadPool`; phase 5.2 recreates
-/// that shape in Rust with `std::thread` workers and `crossbeam_channel`
-/// dispatch.  This pool intentionally does not know about games or searchers:
-/// callers submit closures, which keeps it reusable for lazy SMP, future YBWC,
-/// and MCTS shared-visit experiments.
+/// This pool intentionally does not know about games or searchers: callers
+/// submit closures, which keeps it reusable for lazy SMP, future YBWC, and
+/// MCTS shared-visit experiments.
 pub struct SearchThreadPool {
     sender: Sender<ThreadPoolMessage>,
     workers: Vec<thread::JoinHandle<()>>,

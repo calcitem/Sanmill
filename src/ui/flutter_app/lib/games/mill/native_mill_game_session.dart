@@ -3,11 +3,8 @@
 //
 // Rust-native Mill GameSession.
 //
-// This is a parallel session implementation backed by `NativeMillRulesPort`
-// and therefore by `crates/tgf-mill` through the typed FRB `TgfKernel`.
-// `MillGameModule.startSession()` can select it behind the
-// `GeneralSettings.useNativeMillSession` dogfood flag while the legacy
-// `MillGameSession` remains the default rollback path.
+// This is the production Mill session backed by `NativeMillRulesPort` and
+// therefore by `crates/tgf-mill` through the typed FRB `TgfKernel`.
 
 import 'dart:async';
 
@@ -90,8 +87,7 @@ class NativeMillGameSession implements GameSessionHandle {
 
   /// Reset the game to the initial state (all pieces in hand, empty board,
   /// White to move).  Called by [GameController.reset] when "New Game" is
-  /// triggered so that the native Rust kernel is in sync with the re-created
-  /// legacy [Position].
+  /// triggered so that the native Rust kernel is in sync with the UI facade.
   void resetGame() {
     if (_disposed) {
       return;
@@ -387,9 +383,8 @@ class NativeMillGameSession implements GameSessionHandle {
     return bestAction;
   }
 
-  /// Convenience dogfood hook used by the future engine.dart replacement: run
-  /// Rust search from the current session, apply the best action if available,
-  /// and return it to the caller for recording / UI feedback.
+  /// Run Rust search from the current session, apply the best action if
+  /// available, and return it to the caller for recording / UI feedback.
   ///
   /// [moveLimitMs]: when > 0, the search is time-bounded.
   Future<GameAction?> searchAndApplyBestAction({

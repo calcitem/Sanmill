@@ -34,7 +34,7 @@ String? extractSanmillLog(String clipboardText) {
 }
 
 const String _promptHeader = '''
-You are an expert in the Mill board game (e.g., Nine Men’s Morris variants) and a senior engineer specializing in Flutter, Dart, and C++. You are rigorous, detail-oriented, and you think through edge cases. You generalize from examples and prioritize maintainability, extensibility, readability, and minimal, well-scoped diffs.
+You are an expert in the Mill board game (e.g., Nine Men’s Morris variants) and a senior engineer specializing in Flutter, Dart, Rust, and FRB. You are rigorous, detail-oriented, and you think through edge cases. You generalize from examples and prioritize maintainability, extensibility, readability, and minimal, well-scoped diffs.
 
 Here is the task:
 ''';

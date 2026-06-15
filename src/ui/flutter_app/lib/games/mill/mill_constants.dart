@@ -39,9 +39,8 @@ abstract final class MillEventTypes {
 
 /// Phase name constants used in [GameStateSnapshot.phase] for Mill sessions.
 ///
-/// [legacy] is the transitional phase value reported while the Mill module
-/// still delegates to the process-wide [GameController] and has not yet
-/// migrated to a self-contained state machine.
+/// [legacy] is reserved for compatibility snapshots emitted by deprecated
+/// controller-backed paths.
 abstract final class MillPhases {
   static const String legacy = 'legacy';
 }

@@ -54,7 +54,7 @@ impl<G: Game> Searcher<G> {
         // a best-action bonus here.  TT lookups remain available
         // through `Searcher::search_mtdf_with_guess` for root move
         // recovery.  Killer / history bonuses stay gated on their own
-        // toggles (default off in commit Phase 16).
+        // toggles and default to off.
         let mut score = G::move_order_bias_ctx(wb, action, &self.options.move_order_context);
         if self.options.enable_killers
             && self

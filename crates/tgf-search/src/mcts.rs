@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
-// Monte-Carlo tree search scaffold.
+// Monte-Carlo tree search implementation.
 //
 // `MctsSearcher<G>` is monomorphised over the same `Game` trait family
 // as `Searcher<G>` so its hot path stays statically dispatched.
@@ -184,10 +184,9 @@ impl<G: Game> MctsSearcher<G> {
         self.policy = policy;
     }
 
-    /// Monte-Carlo Tree Search scaffold using UCT selection, expansion,
-    /// random playout, and backpropagation.  This is still single-threaded and
-    /// does not yet include the optional C++ alpha-beta assisted simulation, but
-    /// unlike the first scaffold it maintains a real tree of node statistics.
+    /// Monte-Carlo Tree Search using UCT selection, expansion, random playout,
+    /// and backpropagation.  This entry point is single-threaded and uses a
+    /// real tree of node statistics.
     pub fn search(
         &mut self,
         wb: &mut G::Workbench,

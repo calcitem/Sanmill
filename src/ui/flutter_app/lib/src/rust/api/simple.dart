@@ -88,7 +88,7 @@ int nativeMillInitialLegalCountForVariant({
 );
 
 /// Apply the first Rust-native place action and return the side-to-move tag.
-/// This is a small typed smoke-check for the native MillRules scaffold.
+/// This is a small typed smoke-check for the native MillRules implementation.
 int nativeMillApplyFirstPlaceSideToMove() =>
     RustLib.instance.api.crateApiSimpleNativeMillApplyFirstPlaceSideToMove();
 
@@ -106,8 +106,7 @@ int nativeMillRemovalBelowThreeWinner() =>
     RustLib.instance.api.crateApiSimpleNativeMillRemovalBelowThreeWinner();
 
 /// Run the Rust generic Searcher<MillGame> for one ply and return the best
-/// destination node.  This is a Phase 5 smoke-check for the monomorphised
-/// search path.
+/// destination node. This is a smoke-check for the monomorphised search path.
 int nativeMillSearchDepthOneBestToNode() =>
     RustLib.instance.api.crateApiSimpleNativeMillSearchDepthOneBestToNode();
 
@@ -119,7 +118,7 @@ int nativeMillPvsDepthOneBestToNode() =>
 int nativeMillRandomBestToNode({required BigInt seed}) =>
     RustLib.instance.api.crateApiSimpleNativeMillRandomBestToNode(seed: seed);
 
-/// Run the Rust generic MCTS scaffold and return the selected destination node.
+/// Run the Rust generic MCTS path and return the selected destination node.
 int nativeMillMctsBestToNode({
   required BigInt seed,
   required int iterationsPerMove,
@@ -414,10 +413,9 @@ enum MillSearchAlgorithm {
       RustLib.instance.api.crateApiSimpleMillSearchAlgorithmDefault();
 }
 
-/// Public FRB DTO for the subset of Mill variant options already supported by
-/// the Rust-native rules scaffold.  It intentionally mirrors the field names
-/// that will later replace the C++ Rule struct; new rule flags are added
-/// here whenever `crates/tgf-mill::MillVariantOptions` grows them.
+/// Public FRB DTO for Mill variant options. It mirrors
+/// `tgf_mill::rules::MillVariantOptions`; new rule flags should be added here
+/// whenever the Rust rules crate grows them.
 class MillVariantOptions {
   final int pieceCount;
   final int flyPieceCount;

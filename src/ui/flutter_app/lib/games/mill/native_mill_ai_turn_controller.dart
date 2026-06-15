@@ -14,7 +14,7 @@ import 'native_mill_game_session.dart';
 /// before the capture animation/sound (master `engineToGo` parity).
 typedef BeforeRemoveApplyHook = Future<void> Function();
 
-/// Minimal AI-turn adapter for the Rust-native Mill dogfood path.
+/// AI-turn adapter for the Rust-native Mill session path.
 ///
 /// This intentionally does not touch `GameController`, timers, or recording.
 /// It only answers: "Is the active side controlled by AI, and if so, run the
@@ -30,7 +30,7 @@ class NativeMillAiTurnController {
     this.openingBook,
   });
 
-  /// Optional fixed depth override used by tests and targeted dogfood paths.
+  /// Optional fixed depth override used by tests and targeted diagnostics.
   ///
   /// When null, the depth is derived from [generalSettings.skillLevel] and the
   /// current session snapshot to preserve the legacy "draw on human

@@ -1,25 +1,22 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
-// Rule presets matching RULES[] in src/rule.cpp.
+// Canonical Mill rule presets.
 //
 // Each preset is a named MillVariantOptions configuration that corresponds
-// 1-to-1 with a C++ `Rule` entry.  These are used:
-//   * by the oracle generator (crates/xtask-legacy-oracle) to drive LegacyKernel
-//     with the same options as native Rust MillRules.
-//   * by the FRB API `tgf_kernel_create_mill_with_preset(rule_idx)` so that
-//     Flutter can request a named rule variant without constructing options manually.
-//   * by the replay tests to map oracle rule_idx → MillRules.
+// to one user-selectable rule variant.  These are used:
+//   * by Flutter/Dart rule settings as the stable list of named variants.
+//   * by replay and oracle tests to map persisted rule_idx values to MillRules.
 //
-// The order and field values MUST stay in sync with RULES[] in src/rule.cpp.
+// The order and field values are persisted app-level compatibility data.
 
 use crate::rules::{
     MillBoardFullAction, MillFormationActionInPlacingPhase, MillRules, MillVariantOptions,
     StalemateAction,
 };
 
-/// A named rule preset matching a C++ `Rule` entry in `RULES[]`.
+/// A named rule preset.
 #[derive(Clone, Debug)]
 pub struct MillRulePreset {
-    /// Index matching C++ `RULES[id]`.
+    /// Stable persisted preset index.
     pub id: i32,
     /// Human-readable English name.
     pub name: &'static str,
@@ -152,7 +149,7 @@ pub fn rules_for_preset(idx: i32) -> Option<MillRules> {
     Some(MillRules::new(preset.options))
 }
 
-/// Number of canonical presets (== C++ N_RULES).
+/// Number of canonical presets.
 pub const N_PRESETS: i32 = 11;
 
 #[cfg(test)]

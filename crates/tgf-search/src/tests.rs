@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // Game-neutral unit tests for the searcher / TT / thread pool / MCTS
-// scaffolds.  Mill end-to-end coverage lives under
+// components.  Mill end-to-end coverage lives under
 // `crates/tgf-mill/tests/searcher_integration.rs`.
 
 use super::*;
@@ -639,7 +639,7 @@ fn mcts_options_accept_time_limit_on_mock_game() {
 }
 
 // ---------------------------------------------------------------------------
-// Phase 5.1: TT generation aging tests
+// TT generation aging tests
 // ---------------------------------------------------------------------------
 
 #[test]

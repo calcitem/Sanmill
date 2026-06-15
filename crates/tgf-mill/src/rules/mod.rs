@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
-// Rust-native Mill rules scaffold.
+// Rust-native Mill rules implementation.
 //
-// Implemented (Iterations 2-4):
+// Implemented:
 //   * piece_count, fly_piece_count, pieces_at_least_count, may_fly
 //   * has_diagonal_lines (diagonal topology, adjacency, and mill lines)
 //   * may_remove_from_mills_always, may_remove_multiple
@@ -16,17 +16,15 @@
 //     machine level; mark-and-delay records delayed line bits without a
 //     third on-board MARKED_PIECE value)
 //   * stalemate_action (all variants)
-//   * threefold_repetition_rule (state-side, history kept in
-//     `MillState.opaque_payload[38..230]`, drawn at apply time)
+//   * threefold_repetition_rule (runtime history capped at 256 entries;
+//     snapshots persist the compact 24-entry payload window)
 //   * custodian / intervention / leap capture on square-edge, cross, and
 //     diagonal lines when `has_diagonal_lines` and `on_diagonal_lines` are
 //     both enabled (12MM diagonal topology).
+//   * FEN import/export, setup-position editing, and search integration.
 //
-// Still owned by the legacy C++ path:
-//   * Flutter/Qt rendering for marked pieces and legacy notation side-effects
-//
-// Perfect DB and opening book intentionally remain behind the cxx
-// bridge — see `crates/tgf-legacy-cxx/`.
+// The retired C++ engine is used only as a historical parity reference in
+// tests and scripts.  Runtime Flutter play uses this Rust implementation.
 
 use tgf_core::{
     Action, ActionList, BoardTopology, GameRules, GameStateSnapshot, Outcome, OutcomeKind,

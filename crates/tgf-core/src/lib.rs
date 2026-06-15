@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // TGF core – public re-exports.
 //
-// Phase 1 scaffold: all modules compile to empty stubs; the actual trait
-// definitions are introduced in Phases 3–5.
+// Game-neutral traits, POD types, kernels, and helpers shared by concrete
+// game crates and the FRB API layer.
 
 pub mod action;
 pub mod board_topology;
@@ -33,7 +33,7 @@ pub use repetition::RepetitionTracker;
 pub use text_format::PositionTextFormat;
 pub use zobrist::ZobristTable;
 
-/// Phase 1 smoke-check: ensures the crate compiles.
+/// Smoke-check: ensures the crate compiles.
 #[cfg(test)]
 mod tests {
     #[test]

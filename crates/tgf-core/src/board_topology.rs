@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
-// Phase 1 scaffold – BoardTopology trait.
-// Full implementation (MillTopology) introduced in Phase 3.
+// Game-neutral board topology traits and geometry POD types.
 
 /// A point on the board in unit-square coordinates [0,1]×[0,1].
 #[repr(C)]
