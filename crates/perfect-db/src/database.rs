@@ -235,6 +235,21 @@ impl DatabaseEval {
     pub fn to_wdl_steps(self, sec_vals: &SecValTable) -> (i32, i32) {
         self.to_outcome(sec_vals).to_wdl_steps()
     }
+
+    /// Mirrors the legacy `pd_evaluate` wrapper, which parses
+    /// `gui_eval_elem2::to_string()` into `Value` before converting to WDL.
+    /// Best-move ranking should use `to_outcome()` instead.
+    pub fn to_public_wdl_steps(self, sec_vals: &SecValTable) -> (i32, i32) {
+        let absolute = self.absolute_key1();
+        let wdl = if absolute == i32::from(sec_vals.virt_win_val()) {
+            1
+        } else if absolute == 0 {
+            0
+        } else {
+            -1
+        };
+        (wdl, self.raw.key2)
+    }
 }
 
 #[derive(Debug)]
@@ -317,8 +332,8 @@ impl<P: DatabaseProvider> Database<P> {
 
     pub fn evaluate(&mut self, query: PerfectQuery) -> Result<Option<(i32, i32)>, DatabaseError> {
         Ok(self
-            .evaluate_outcome(query)?
-            .map(PerfectOutcome::to_wdl_steps))
+            .evaluate_raw(query)?
+            .map(|eval| eval.to_public_wdl_steps(&self.sec_vals)))
     }
 
     pub fn evaluate_outcome(
@@ -440,6 +455,37 @@ mod tests {
         assert_eq!(
             PerfectOutcome::Win { steps: 8 }.strict_cmp(PerfectOutcome::Draw { steps: 0 }),
             std::cmp::Ordering::Greater
+        );
+    }
+
+    #[test]
+    fn public_wdl_steps_match_cxx_string_parser_shape() {
+        let sec_vals =
+            SecValTable::parse("virt_loss_val: -299\nvirt_win_val: 299\n1\n0 0 9 9  21\n").unwrap();
+
+        assert_eq!(
+            DatabaseEval {
+                raw: RawEval::new(-21, 2),
+                sector_value: 21,
+            }
+            .to_public_wdl_steps(&sec_vals),
+            (0, 2)
+        );
+        assert_eq!(
+            DatabaseEval {
+                raw: RawEval::new(-20, -5),
+                sector_value: 10,
+            }
+            .to_public_wdl_steps(&sec_vals),
+            (-1, -5)
+        );
+        assert_eq!(
+            DatabaseEval {
+                raw: RawEval::new(298, 4),
+                sector_value: 1,
+            }
+            .to_public_wdl_steps(&sec_vals),
+            (1, 4)
         );
     }
 }

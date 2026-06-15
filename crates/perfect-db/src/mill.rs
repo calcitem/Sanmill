@@ -166,10 +166,10 @@ pub fn evaluate_state_with_database<P: DatabaseProvider>(
     options: &MillVariantOptions,
     side_to_move: i8,
 ) -> Result<Option<(i32, i32)>, DatabaseError> {
-    Ok(
-        evaluate_state_outcome_with_database(database, state, options, side_to_move)?
-            .map(PerfectOutcome::to_wdl_steps),
-    )
+    let Some(query) = query_from_state(state, options, side_to_move) else {
+        return Ok(None);
+    };
+    database.evaluate(query)
 }
 
 pub fn evaluate_state_outcome_with_database<P: DatabaseProvider>(

@@ -71,6 +71,11 @@ struct OracleCase {
     expected_eval: Option<(i32, i32)>,
 }
 
+struct ParityCase {
+    name: &'static str,
+    labels: &'static [&'static str],
+}
+
 #[test]
 fn std_perfect_db_oracle_vectors() {
     assert!(
@@ -135,6 +140,56 @@ fn std_perfect_db_oracle_vectors() {
             .unwrap()
             .unwrap_or_else(|| panic!("{} must return a Rust best move token", case.name));
         assert_best_move_is_legal(&rules, &snap, &rust_token);
+    }
+
+    let parity_cases = [
+        ParityCase {
+            name: "after_a4_g7",
+            labels: &["a4", "g7"],
+        },
+        ParityCase {
+            name: "after_a4_g7_d7",
+            labels: &["a4", "g7", "d7"],
+        },
+        ParityCase {
+            name: "after_a4_g7_d7_a1",
+            labels: &["a4", "g7", "d7", "a1"],
+        },
+        ParityCase {
+            name: "after_a4_g7_d7_a1_g1",
+            labels: &["a4", "g7", "d7", "a1", "g1"],
+        },
+        ParityCase {
+            name: "after_a4_g7_d7_a1_g1_d1",
+            labels: &["a4", "g7", "d7", "a1", "g1", "d1"],
+        },
+        ParityCase {
+            name: "after_a4_g7_d7_a1_g1_d1_b6",
+            labels: &["a4", "g7", "d7", "a1", "g1", "d1", "b6"],
+        },
+        ParityCase {
+            name: "after_a4_g7_d7_a1_g1_d1_b6_f6",
+            labels: &["a4", "g7", "d7", "a1", "g1", "d1", "b6", "f6"],
+        },
+    ];
+
+    for case in parity_cases {
+        let snap = apply_sequence(&rules, case.labels);
+        let state = MillRules::decode_snapshot(snap);
+        let side = case.labels.len() % 2;
+        let cpp_eval = evaluate_state_for(&state, &options, side as i8);
+        let rust_eval =
+            evaluate_state_with_database(&mut rust_db, &state, &options, side as i8).unwrap();
+        assert!(
+            cpp_eval.is_some(),
+            "{} must be covered by the bundled C++ perfect DB assets",
+            case.name
+        );
+        assert_eq!(
+            rust_eval, cpp_eval,
+            "{} must match between C++ oracle and Rust loader",
+            case.name
+        );
     }
 
     // Do not call deinit here: the current C++ bridge has fragile sector-hash
