@@ -6,9 +6,11 @@
 //
 // Configuration matches the requested scenario: Skill 14, MoveTime 0 (fixed
 // depth), Shuffling on (random tie-break -> varied games), MTD(f) (Algorithm
-// 2), DeveloperMode off, DrawOnHumanExperience on, Perfect DB off.  The current
-// engine plays GAMES games as White and GAMES games as Black; results are
-// tallied from the current engine's perspective.
+// 2), DeveloperMode off, DrawOnHumanExperience on, Perfect DB off.  Colours
+// ALTERNATE every game (W, B, W, B, ...) for GAMES games per colour, and an
+// aligned standings table (White / Black / total Win% and Score%, completed /
+// remaining / progress) is printed from the current engine's perspective after
+// every game.
 //
 // Ignored by default (needs both built engines).  Run with:
 //   H2H_GAMES=20 cargo test -p tgf-mill --release --test head_to_head \
@@ -22,13 +24,23 @@
 //   H2H_MAX_PLIES  ply cap -> over-cap counted as a maneuvering draw (default 200)
 //   H2H_GO_CURRENT go command for the current engine (default "go depth 0")
 //   H2H_GO_MASTER  go command for the master engine     (default "go")
+//   H2H_MOVETIME   per-move thinking time in SECONDS via the MoveTime option
+//                  (range 0..=60; default 0 = pure fixed depth / Time 0)
+//   H2H_MODE       "vs" (current vs master, default), "self-current" or
+//                  "self-master": the named engine plays ITSELF (two
+//                  independent instances), and the White / Black rows then show
+//                  the game's first/second-player colour bias rather than a
+//                  current-vs-master result.
 //
 // Feasibility note: at Skill 14 / Time 0 (pure depth 14) quiet middlegame
-// positions can take ~minute per move, so a drawn game can run for hours.  For
-// a statistically meaningful multi-game match, add an equal per-move cap to
-// BOTH engines, e.g. a 3 s/move time control:
-//   H2H_GO_CURRENT="go movetime 3000" H2H_GO_MASTER="go movetime 3000"
-// (both engines are capped identically, so the comparison stays fair).
+// positions can take ~a minute per move, so a drawn game can run for hours.
+// For a statistically meaningful multi-game match, cap per-move time equally
+// for BOTH engines with H2H_MOVETIME seconds (the MoveTime option drives a
+// timed iterative-deepening search up to depth = skill, so fast positions
+// still reach full depth while slow ones are bounded).  Both engines treat the
+// MoveTime option as whole seconds.  Note: the current engine's `go movetime N`
+// path is NOT used for this -- only the MoveTime option gives it a correct
+// timed search; `go movetime` collapses to a depth-1 search.
 
 use std::env;
 use std::io::{BufRead, BufReader, Write};
@@ -47,7 +59,14 @@ struct Engine {
 }
 
 impl Engine {
-    fn spawn(program: &str, args: &[&str], go: &str, name: &str, skill: u32) -> Engine {
+    fn spawn(
+        program: &str,
+        args: &[&str],
+        go: &str,
+        name: &str,
+        skill: u32,
+        move_time_secs: u32,
+    ) -> Engine {
         let mut child = Command::new(program)
             .args(args)
             .stdin(Stdio::piped())
@@ -72,7 +91,7 @@ impl Engine {
             ("DrawOnHumanExperience", "true".to_string()),
             ("Shuffling", "true".to_string()),
             ("Algorithm", "2".to_string()),
-            ("MoveTime", "0".to_string()),
+            ("MoveTime", move_time_secs.to_string()),
             ("UsePerfectDatabase", "false".to_string()),
         ] {
             e.cmd(&format!("setoption name {k} value {v}"));
@@ -138,22 +157,18 @@ impl Drop for Engine {
     }
 }
 
+/// Outcome of a game by board colour (independent of which engine played it).
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
-enum Res {
-    CurrentWin,
-    MasterWin,
+enum GameResult {
+    WhiteWin,
+    BlackWin,
     Draw,
     Unfinished,
 }
 
-/// Play one full game; `white`/`black` are the engines for each side and
-/// `current_is_white` says which role the current-branch engine holds.
-fn play_game(
-    white: &mut Engine,
-    black: &mut Engine,
-    current_is_white: bool,
-    max_plies: usize,
-) -> (Res, usize) {
+/// Play one full game between the `white` and `black` engines; returns the
+/// outcome by board colour (`tgf-mill` is the referee).
+fn play_game(white: &mut Engine, black: &mut Engine, max_plies: usize) -> (GameResult, usize) {
     let rules = MillRules::default();
     let game = MillGame::new(MillVariantOptions::default());
     let mut snap = rules.initial_state(&[]);
@@ -164,48 +179,98 @@ fn play_game(
     for ply in 0..max_plies {
         match rules.outcome(&snap).kind {
             OutcomeKind::Ongoing => {}
-            OutcomeKind::Win(0) => {
-                return (
-                    if current_is_white {
-                        Res::CurrentWin
-                    } else {
-                        Res::MasterWin
-                    },
-                    ply,
-                );
-            }
-            OutcomeKind::Win(1) => {
-                return (
-                    if current_is_white {
-                        Res::MasterWin
-                    } else {
-                        Res::CurrentWin
-                    },
-                    ply,
-                );
-            }
-            OutcomeKind::Draw => return (Res::Draw, ply),
-            _ => return (Res::Unfinished, ply),
+            OutcomeKind::Win(0) => return (GameResult::WhiteWin, ply),
+            OutcomeKind::Win(1) => return (GameResult::BlackWin, ply),
+            OutcomeKind::Draw => return (GameResult::Draw, ply),
+            _ => return (GameResult::Unfinished, ply),
         }
 
         let stm = game.build_workbench(&snap).side_to_move();
         let engine = if stm == 0 { &mut *white } else { &mut *black };
         let Some(mv) = engine.best_move(&moves) else {
             eprintln!("  ! {} returned no move at ply {ply}", engine.name);
-            return (Res::Unfinished, ply);
+            return (GameResult::Unfinished, ply);
         };
         let Some(action) = MillUciCodec::decode_action(&snap, &mv) else {
             eprintln!(
                 "  ! undecodable move `{mv}` from {} at ply {ply}",
                 engine.name
             );
-            return (Res::Unfinished, ply);
+            return (GameResult::Unfinished, ply);
         };
         snap = rules.apply(&snap, action);
         moves.push(mv);
     }
     // Ply cap reached: both sides maneuvering -> score as a draw.
-    (Res::Draw, max_plies)
+    (GameResult::Draw, max_plies)
+}
+
+/// Percentage of `num` out of `den` (0 when `den == 0`).
+fn pct(num: f64, den: usize) -> f64 {
+    if den == 0 {
+        0.0
+    } else {
+        100.0 * num / den as f64
+    }
+}
+
+/// Row/separator template for the live standings table.
+const TABLE_SEP: &str =
+    "+--------+-------+------+------+------+--------+--------+--------+--------+";
+
+/// Print one standings row for a side.  `s` is its `[Win, Loss, Draw,
+/// Unfinished]` tally; the row shows decided games (W+D+L), the Win/Draw/Loss
+/// split, and the Win% / Draw% / Loss% / Score% rates, where
+/// Score% = `(W + 0.5*D) / decided`.
+fn standings_row(side: &str, s: &[usize; 4]) {
+    let (win, loss, draw) = (s[0], s[1], s[2]);
+    let decided = win + loss + draw;
+    let score = win as f64 + 0.5 * draw as f64;
+    let rate = |n: f64| format!("{:.1}%", pct(n, decided));
+    eprintln!(
+        "| {:<6} | {:>5} | {:>4} | {:>4} | {:>4} | {:>6} | {:>6} | {:>6} | {:>6} |",
+        side,
+        decided,
+        win,
+        draw,
+        loss,
+        rate(win as f64),
+        rate(draw as f64),
+        rate(loss as f64),
+        rate(score),
+    );
+}
+
+/// Print the live standings table (White / Black / total rows) plus the
+/// completed / remaining / progress footer.
+fn print_standings(done: usize, total: usize, white: &[usize; 4], black: &[usize; 4]) {
+    let tot = [
+        white[0] + black[0],
+        white[1] + black[1],
+        white[2] + black[2],
+        white[3] + black[3],
+    ];
+    eprintln!("{TABLE_SEP}");
+    eprintln!(
+        "| {:<6} | {:>5} | {:>4} | {:>4} | {:>4} | {:>6} | {:>6} | {:>6} | {:>6} |",
+        "Side", "Games", "Win", "Draw", "Loss", "Win%", "Draw%", "Loss%", "Score%"
+    );
+    eprintln!("{TABLE_SEP}");
+    standings_row("White", white);
+    standings_row("Black", black);
+    standings_row("TOTAL", &tot);
+    eprintln!("{TABLE_SEP}");
+    eprintln!(
+        "Completed: {done}/{total} ({:.1}%)   Remaining: {}",
+        pct(done as f64, total),
+        total - done
+    );
+    if tot[3] > 0 {
+        eprintln!(
+            "(note: {} game(s) unfinished/aborted, excluded from rates)",
+            tot[3]
+        );
+    }
 }
 
 #[test]
@@ -229,62 +294,120 @@ fn head_to_head_vs_master() {
         .unwrap_or(200);
     let go_current = env::var("H2H_GO_CURRENT").unwrap_or_else(|_| "go depth 0".to_string());
     let go_master = env::var("H2H_GO_MASTER").unwrap_or_else(|_| "go".to_string());
+    let move_time: u32 = env::var("H2H_MOVETIME")
+        .ok()
+        .and_then(|s| s.parse().ok())
+        .unwrap_or(0);
 
-    eprintln!(
-        "Head-to-head: current=`{current}` vs master=`{master}`\n  skill={skill} shuffling=on algo=MTD(f) games/color={games} ply_cap={max_plies}\n  go_current=`{go_current}` go_master=`{go_master}`"
-    );
+    // Mode: "vs" (current vs master, default), "self-current", "self-master".
+    let mode = env::var("H2H_MODE").unwrap_or_else(|_| "vs".to_string());
+    let total = games * 2;
 
-    let mut cur = Engine::spawn(&current, &["uci"], &go_current, "current", skill);
-    let mut mas = Engine::spawn(&master, &[], &go_master, "master", skill);
-
-    // [CurrentWin, MasterWin, Draw, Unfinished]
+    // Per-row tally [Win, Loss, Draw, Unfinished].  In "vs" mode the rows are
+    // the current engine playing White / Black; in self-play they are the
+    // White / Black side of the single engine under test.
     let mut white = [0usize; 4];
     let mut black = [0usize; 4];
-    let bucket = |r: Res| match r {
-        Res::CurrentWin => 0,
-        Res::MasterWin => 1,
-        Res::Draw => 2,
-        Res::Unfinished => 3,
-    };
 
-    eprintln!("--- current as WHITE ---");
-    for g in 0..games {
-        let (res, plies) = play_game(&mut cur, &mut mas, true, max_plies);
-        white[bucket(res)] += 1;
-        eprintln!("  W g{g}: {res:?} ({plies} plies)");
-    }
-    eprintln!("--- current as BLACK ---");
-    for g in 0..games {
-        let (res, plies) = play_game(&mut mas, &mut cur, false, max_plies);
-        black[bucket(res)] += 1;
-        eprintln!("  B g{g}: {res:?} ({plies} plies)");
-    }
-
-    let report = |tag: &str, s: &[usize; 4]| {
-        let total = (s[0] + s[1] + s[2] + s[3]).max(1);
+    if mode == "self-current" || mode == "self-master" {
+        let is_master = mode == "self-master";
+        let label = if is_master { "master" } else { "current" };
         eprintln!(
-            "{tag}: current_win={} loss={} draw={} unfinished={}  draw_rate={:.1}%  current_score={:.1}/{}",
-            s[0],
-            s[1],
-            s[2],
-            s[3],
-            100.0 * s[2] as f64 / total as f64,
-            s[0] as f64 + 0.5 * s[2] as f64,
-            total
+            "Self-play: {label} vs {label}  (rows = board side)\n  skill={skill} movetime_s={move_time} shuffling=on algo=MTD(f) games={total} ply_cap={max_plies}"
         );
-    };
-    eprintln!("================ RESULTS ================");
-    report("current WHITE", &white);
-    report("current BLACK", &black);
-    let tot = [
-        white[0] + black[0],
-        white[1] + black[1],
-        white[2] + black[2],
-        white[3] + black[3],
-    ];
-    report("TOTAL        ", &tot);
-    let net = tot[0] as i64 - tot[1] as i64;
-    eprintln!(
-        "NET (current_wins - current_losses) = {net:+}  (positive => current stronger than master)"
-    );
+        // Two independent instances of the SAME engine (separate TTs), one
+        // permanently White and one permanently Black, so the table directly
+        // measures the game's first/second-player (White/Black) bias.
+        let (mut ew, mut eb) = if is_master {
+            (
+                Engine::spawn(&master, &[], &go_master, "white", skill, move_time),
+                Engine::spawn(&master, &[], &go_master, "black", skill, move_time),
+            )
+        } else {
+            (
+                Engine::spawn(&current, &["uci"], &go_current, "white", skill, move_time),
+                Engine::spawn(&current, &["uci"], &go_current, "black", skill, move_time),
+            )
+        };
+        for i in 0..total {
+            let (res, plies) = play_game(&mut ew, &mut eb, max_plies);
+            // A White win is a Black loss and vice versa, so every game updates
+            // both rows; the White/Black Score% gap is the colour bias.
+            match res {
+                GameResult::WhiteWin => {
+                    white[0] += 1;
+                    black[1] += 1;
+                }
+                GameResult::BlackWin => {
+                    white[1] += 1;
+                    black[0] += 1;
+                }
+                GameResult::Draw => {
+                    white[2] += 1;
+                    black[2] += 1;
+                }
+                GameResult::Unfinished => {
+                    white[3] += 1;
+                    black[3] += 1;
+                }
+            }
+            eprintln!();
+            eprintln!(
+                "Game {}/{total}: White vs Black -> {res:?} ({plies} plies)",
+                i + 1
+            );
+            print_standings(i + 1, total, &white, &black);
+        }
+        let net = white[0] as i64 - black[0] as i64;
+        eprintln!();
+        eprintln!(
+            "FINAL net (White_wins - Black_wins) = {net:+}  ({label} self-play; >0 => White favoured)"
+        );
+    } else {
+        // vs mode: current vs master, alternating colours each game so the live
+        // rates are not skewed by Black's structural edge until colours balance.
+        eprintln!(
+            "Head-to-head: current=`{current}` vs master=`{master}`  (rows = current's colour)\n  skill={skill} movetime_s={move_time} shuffling=on algo=MTD(f) games/color={games} ply_cap={max_plies}\n  go_current=`{go_current}` go_master=`{go_master}`"
+        );
+        let mut cur = Engine::spawn(&current, &["uci"], &go_current, "current", skill, move_time);
+        let mut mas = Engine::spawn(&master, &[], &go_master, "master", skill, move_time);
+        for i in 0..total {
+            let current_white = i % 2 == 0;
+            let (res, plies) = if current_white {
+                play_game(&mut cur, &mut mas, max_plies)
+            } else {
+                play_game(&mut mas, &mut cur, max_plies)
+            };
+            // Map the board outcome to the current engine's row for its colour.
+            let idx = match (res, current_white) {
+                (GameResult::WhiteWin, true) | (GameResult::BlackWin, false) => 0, // current win
+                (GameResult::BlackWin, true) | (GameResult::WhiteWin, false) => 1, // current loss
+                (GameResult::Draw, _) => 2,
+                (GameResult::Unfinished, _) => 3,
+            };
+            if current_white {
+                white[idx] += 1;
+            } else {
+                black[idx] += 1;
+            }
+            eprintln!();
+            eprintln!(
+                "Game {}/{total}: current={} -> {} ({plies} plies)",
+                i + 1,
+                if current_white { "White" } else { "Black" },
+                match idx {
+                    0 => "current win",
+                    1 => "current loss",
+                    2 => "draw",
+                    _ => "unfinished",
+                }
+            );
+            print_standings(i + 1, total, &white, &black);
+        }
+        let net = (white[0] + black[0]) as i64 - (white[1] + black[1]) as i64;
+        eprintln!();
+        eprintln!(
+            "FINAL net (current_wins - current_losses) = {net:+}  (positive => current stronger)"
+        );
+    }
 }
