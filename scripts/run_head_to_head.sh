@@ -12,12 +12,37 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 
+is_windows_shell() {
+    case "$(uname -s 2>/dev/null || echo unknown)" in
+        MINGW*|MSYS*|CYGWIN*) return 0 ;;
+        *) return 1 ;;
+    esac
+}
+
+engine_suffix() {
+    if is_windows_shell; then
+        echo ".exe"
+    fi
+}
+
+default_current_engine() {
+    echo "$REPO_ROOT/target/release/tgf$(engine_suffix)"
+}
+
+default_master_engine() {
+    if is_windows_shell; then
+        echo "D:/Repo/Sanmill-master/Sanmill/master_engine.exe"
+    else
+        echo "$(cd "$REPO_ROOT/.." && pwd)/Sanmill-master/master_engine"
+    fi
+}
+
 # Defaults (overridable by environment, then by command-line flags).
 GAMES="${GAMES:-10}"
 SKILL="${SKILL:-10}"
 MOVETIME="${MOVETIME:-0}"
 MAX_PLIES="${MAX_PLIES:-160}"
-MASTER_ENGINE="${MASTER_ENGINE:-D:/Repo/Sanmill-master/Sanmill/master_engine.exe}"
+MASTER_ENGINE="${MASTER_ENGINE:-$(default_master_engine)}"
 CURRENT_OVERRIDE="${CURRENT_ENGINE:-}"
 MINGW_BIN="${MINGW_BIN:-}"
 SELF="${SELF:-}"
@@ -45,8 +70,8 @@ Options:
   -t, --time SECONDS   per-move Thinking Time, 0..60, 0=unlimited [default: 0]
   -p, --max-plies N    ply cap; reaching it scores a draw         [default: 160]
       --self ENGINE     self-play ENGINE (current|master) instead of vs match
-  -m, --master PATH    path to master_engine.exe
-  -c, --current PATH   path to current engine (default: freshly built tgf.exe)
+  -m, --master PATH    path to master_engine
+  -c, --current PATH   path to current engine (default: freshly built tgf)
       --mingw-bin DIR   dir holding MinGW runtime DLLs to copy next to master
   -h, --help           show this help and exit
 
@@ -103,7 +128,7 @@ esac
 # Convert a path to a Windows form the native engine binaries accept.
 winpath() { cygpath -m "$1" 2>/dev/null || echo "$1"; }
 
-CURRENT_ENGINE="${CURRENT_OVERRIDE:-$REPO_ROOT/target/release/tgf.exe}"
+CURRENT_ENGINE="${CURRENT_OVERRIDE:-$(default_current_engine)}"
 if [ "$NEED_CURRENT" -eq 1 ]; then
     if [ -z "$CURRENT_OVERRIDE" ]; then
         echo ">> Building current engine (tgf, release) ..."
@@ -118,7 +143,7 @@ fi
 if [ "$NEED_MASTER" -eq 1 ]; then
     # Best-effort: make sure a MinGW-built master engine can find its DLLs.
     master_dir="$(dirname "$MASTER_ENGINE")"
-    if [ -f "$MASTER_ENGINE" ] && [ ! -f "$master_dir/libstdc++-6.dll" ]; then
+    if is_windows_shell && [ -f "$MASTER_ENGINE" ] && [ ! -f "$master_dir/libstdc++-6.dll" ]; then
         cand="$MINGW_BIN"
         if [ -z "$cand" ] && command -v g++ >/dev/null 2>&1; then
             cand="$(dirname "$(command -v g++)")"
@@ -135,7 +160,7 @@ if [ "$NEED_MASTER" -eq 1 ]; then
     fi
     if [ ! -f "$MASTER_ENGINE" ]; then
         echo "ERROR: master engine not found: $MASTER_ENGINE" >&2
-        echo "       Pass --master /path/to/master_engine.exe" >&2
+        echo "       Pass --master /path/to/master_engine" >&2
         exit 1
     fi
 fi
