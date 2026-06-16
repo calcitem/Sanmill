@@ -195,6 +195,14 @@ pub fn best_move_token_for_state(
     }
     let query = query_from_state(state, options, side_to_move)?;
 
+    if crate::is_rust_backend_enabled() {
+        return match crate::best_move_token_for_state_rust_database(state, options, side_to_move) {
+            Ok(token) => token,
+            Err(err) if err.is_missing_asset() => None,
+            Err(err) => panic!("Rust Perfect DB state best move failed: {err}"),
+        };
+    }
+
     crate::best_move_token(
         query.white_bits,
         query.black_bits,

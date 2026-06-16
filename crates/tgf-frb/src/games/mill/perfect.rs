@@ -1,10 +1,15 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
-// Perfect-database lookup for Mill positions (Nine Men's Morris std only).
+// Perfect-database lookup for Mill positions.
 //
-// The native database backend reads database files from the local platform.
-// WebAssembly keeps Perfect DB unavailable while preserving the public FRB
-// surface.
+// The native database backend reads database files from the local platform and
+// selects std/lask/mora from the active MillVariantOptions. WebAssembly keeps
+// Perfect DB unavailable while preserving the public FRB surface.
 
+#[cfg(not(target_arch = "wasm32"))]
+use std::sync::Mutex;
+
+#[cfg(not(target_arch = "wasm32"))]
+use once_cell::sync::Lazy;
 use tgf_core::{Action, GameStateSnapshot};
 #[cfg(not(target_arch = "wasm32"))]
 use tgf_core::{Game, GameRules};
@@ -22,9 +27,78 @@ use crate::games::mill::search::mill_searcher_default;
 #[cfg(not(target_arch = "wasm32"))]
 const FALLBACK_SEARCH_DEPTH: i32 = 4;
 
+#[cfg(not(target_arch = "wasm32"))]
+static PERFECT_DB_PATH: Lazy<Mutex<Option<String>>> = Lazy::new(|| Mutex::new(None));
+
+#[cfg(not(target_arch = "wasm32"))]
+pub(crate) fn init_database_path(path: String) -> bool {
+    let supported = match perfect_db::supported_variants(&path) {
+        Ok(supported) => supported,
+        Err(_) => return false,
+    };
+    if supported.is_empty() {
+        return false;
+    }
+
+    *PERFECT_DB_PATH
+        .lock()
+        .expect("FRB Perfect DB path mutex must not be poisoned") = Some(path.clone());
+
+    if supported
+        .find(perfect_db::database::DatabaseVariant::STANDARD)
+        .is_some()
+    {
+        return perfect_db::init_variant(&path, perfect_db::database::DatabaseVariant::STANDARD);
+    }
+
+    perfect_db::deinit();
+    true
+}
+
+#[cfg(target_arch = "wasm32")]
+pub(crate) fn init_database_path(_path: String) -> bool {
+    false
+}
+
+#[cfg(not(target_arch = "wasm32"))]
+pub(crate) fn deinit_database() {
+    *PERFECT_DB_PATH
+        .lock()
+        .expect("FRB Perfect DB path mutex must not be poisoned") = None;
+    perfect_db::deinit();
+}
+
+#[cfg(target_arch = "wasm32")]
+pub(crate) fn deinit_database() {}
+
+#[cfg(not(target_arch = "wasm32"))]
+fn ensure_database_for_options(options: &MillVariantOptions) -> bool {
+    let Some(variant) = perfect_db::database::DatabaseVariant::from_mill_options(options) else {
+        return false;
+    };
+
+    if perfect_db::is_initialized() && perfect_db::loaded_variant_rust_database() == Some(variant) {
+        return true;
+    }
+
+    let Some(path) = PERFECT_DB_PATH
+        .lock()
+        .expect("FRB Perfect DB path mutex must not be poisoned")
+        .clone()
+    else {
+        return false;
+    };
+
+    if perfect_db::is_initialized() {
+        perfect_db::deinit();
+    }
+    perfect_db::init_variant(&path, variant)
+}
+
 /// Query the perfect database for a legal action matching the
 /// current position.  Returns `None` when the DB is unavailable, the
-/// variant is not std 9-piece, or no legal action matches the DB token.
+/// variant has no matching database assets, or no legal action matches the DB
+/// token.
 ///
 /// The board-to-bitboard encoding and node-to-perfect-index mapping live in
 /// `perfect_db::best_move_token_for_state`; this wrapper only matches the
@@ -36,6 +110,9 @@ pub(crate) fn try_perfect_best_action(
     options: &MillVariantOptions,
     legal: &[Action],
 ) -> Option<Action> {
+    if !ensure_database_for_options(options) {
+        return None;
+    }
     let state = MillRules::decode_snapshot(*snapshot);
     let token = perfect_db::best_move_token_for_state(&state, options, snapshot.side_to_move)?;
 
@@ -108,6 +185,7 @@ pub(crate) fn analyze_position(
     options: &MillVariantOptions,
     trap_awareness: bool,
 ) -> AnalysisReport {
+    let database_available = ensure_database_for_options(options);
     let rules = MillRules::new(options.clone());
     let game = MillGame::new(options.clone());
     let root_side = snapshot.side_to_move;
@@ -126,8 +204,9 @@ pub(crate) fn analyze_position(
         let token = action_to_uci_str(action);
         let next_state = MillRules::decode_snapshot(next);
 
-        if let Some((wdl, steps)) =
-            perfect_db::evaluate_state_for(&next_state, options, next.side_to_move)
+        if database_available
+            && let Some((wdl, steps)) =
+                perfect_db::evaluate_state_for(&next_state, options, next.side_to_move)
         {
             // Convert the database value to the analysing side's perspective.
             let value = if next.side_to_move != root_side {
@@ -322,10 +401,18 @@ mod tests {
         rules.encode_state(state)
     }
 
+    fn morabaraba_options() -> MillVariantOptions {
+        MillVariantOptions {
+            piece_count: 12,
+            has_diagonal_lines: true,
+            ..MillVariantOptions::default()
+        }
+    }
+
     #[test]
     fn perfect_best_action_uses_rust_database_for_endgame_moving_sector() {
         let _guard = perfect_db_test_lock();
-        perfect_db::deinit();
+        deinit_database();
         assert!(perfect_db::init(db_path()));
 
         let rules = MillRules::default();
@@ -339,13 +426,13 @@ mod tests {
         assert!(legal.as_slice().contains(&action));
         assert!(tgf_mill::MillUciCodec::encode_action(action).contains('-'));
 
-        perfect_db::deinit();
+        deinit_database();
     }
 
     #[test]
     fn perfect_best_action_returns_none_when_rust_database_sector_is_missing() {
         let _guard = perfect_db_test_lock();
-        perfect_db::deinit();
+        deinit_database();
         assert!(perfect_db::init(db_path()));
 
         let rules = MillRules::default();
@@ -356,6 +443,33 @@ mod tests {
 
         assert!(try_perfect_best_action(&snapshot, &options, legal.as_slice()).is_none());
 
-        perfect_db::deinit();
+        deinit_database();
+    }
+
+    #[test]
+    fn perfect_best_action_syncs_morabaraba_database_from_saved_path() {
+        let _guard = perfect_db_test_lock();
+        deinit_database();
+        assert!(init_database_path(db_path().to_owned()));
+        assert_eq!(
+            perfect_db::loaded_variant_rust_database(),
+            Some(perfect_db::database::DatabaseVariant::STANDARD)
+        );
+
+        let options = morabaraba_options();
+        let rules = MillRules::new(options.clone());
+        let snapshot = rules.initial_state(&[]);
+        let mut legal = tgf_core::ActionList::<256>::default();
+        rules.legal_actions(&snapshot, &mut legal);
+
+        let action = try_perfect_best_action(&snapshot, &options, legal.as_slice())
+            .expect("covered Morabaraba opening sector must return a perfect action");
+        assert!(legal.as_slice().contains(&action));
+        assert_eq!(
+            perfect_db::loaded_variant_rust_database(),
+            Some(perfect_db::database::DatabaseVariant::MORABARABA)
+        );
+
+        deinit_database();
     }
 }

@@ -23,8 +23,8 @@ pub use mill::{
 };
 pub use rust_global::{
     best_move_choice_for_rust_database, best_move_choice_rust_database,
-    best_move_token_rust_database, deinit_rust_database, evaluate_outcome_rust_database,
-    evaluate_rust_database, evaluate_state_for_rust_database,
+    best_move_token_for_state_rust_database, best_move_token_rust_database, deinit_rust_database,
+    evaluate_outcome_rust_database, evaluate_rust_database, evaluate_state_for_rust_database,
     evaluate_state_outcome_for_rust_database, init_rust_database, init_rust_database_from_provider,
     init_rust_database_from_provider_variant,
     init_rust_database_from_provider_variant_with_options,
@@ -385,6 +385,18 @@ mod tests {
         assert!(!is_initialized());
         assert_eq!(loaded_sector_count_rust_database(), None);
 
+        assert!(init_variant(
+            db_path(),
+            database::DatabaseVariant::MORABARABA
+        ));
+        assert!(is_initialized());
+        assert_eq!(
+            loaded_variant_rust_database(),
+            Some(database::DatabaseVariant::MORABARABA)
+        );
+        assert!(evaluate(0, 0, 12, 12, 0, false).is_some());
+        deinit();
+
         #[cfg(feature = "cpp-oracle")]
         set_rust_backend_enabled(true);
     }
@@ -397,13 +409,20 @@ mod tests {
         let standard = supported
             .find(database::DatabaseVariant::STANDARD)
             .expect("bundled assets must expose standard metadata");
+        let morabaraba = supported
+            .find(database::DatabaseVariant::MORABARABA)
+            .expect("bundled assets must expose morabaraba metadata");
 
         assert!(!is_initialized());
-        assert_eq!(supported.len(), 1);
+        assert_eq!(supported.len(), 2);
         assert_eq!(standard.sector_count(), 498);
         assert!(standard.has_available_sector(file_format::SectorId::new(0, 0, 9, 9)));
         assert!(standard.has_available_sector(file_format::SectorId::new(3, 3, 0, 0)));
         assert!(!standard.is_fully_available());
+        assert_eq!(morabaraba.sector_count(), 1216);
+        assert!(morabaraba.has_available_sector(file_format::SectorId::new(0, 0, 12, 12)));
+        assert!(morabaraba.has_available_sector(file_format::SectorId::new(0, 1, 12, 11)));
+        assert!(!morabaraba.is_fully_available());
 
         #[cfg(feature = "cpp-oracle")]
         set_rust_backend_enabled(true);

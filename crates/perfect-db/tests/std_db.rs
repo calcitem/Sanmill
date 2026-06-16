@@ -837,6 +837,50 @@ fn memory_provider_handles_endgame_moving_phase_sector() {
 }
 
 #[test]
+fn morabaraba_database_handles_opening_sectors() {
+    let options = MillVariantOptions {
+        piece_count: 12,
+        has_diagonal_lines: true,
+        ..MillVariantOptions::default()
+    };
+    let rules = MillRules::new(options.clone());
+    let snap = rules.initial_state(&[]);
+    let mut rust_db = Database::open_variant(
+        FileDatabaseProvider::new(db_path()),
+        DatabaseVariant::MORABARABA,
+    )
+    .unwrap();
+
+    assert_eq!(rust_db.variant(), DatabaseVariant::MORABARABA);
+    assert!(
+        rust_db
+            .evaluate(PerfectQuery::new(0, 0, 12, 12, 0, false))
+            .unwrap()
+            .is_some(),
+        "mora_0_0_12_12 must have an evaluation"
+    );
+    assert!(
+        rust_db
+            .evaluate(PerfectQuery::new(
+                perfect_bits(&["a4"]),
+                0,
+                11,
+                12,
+                1,
+                false
+            ))
+            .unwrap()
+            .is_some(),
+        "mora_0_1_12_11 must have an evaluation from black to move"
+    );
+
+    let choice = best_move_choice_with_database(&mut rust_db, &rules, &snap, &options)
+        .unwrap()
+        .expect("Morabaraba opening must produce a Rust best move choice");
+    assert_best_move_is_legal(&rules, &snap, &choice.token);
+}
+
+#[test]
 fn rust_database_rejects_variant_mismatched_state_queries() {
     let options = MillVariantOptions {
         piece_count: 10,

@@ -24,6 +24,7 @@ use tgf_search::{MctsOptions, MctsSearcher, SearchOptions};
 
 use tgf_mill::MillSearchAlgorithmKind;
 
+use crate::games::mill::perfect as mill_perfect;
 use crate::games::mill::search::{
     MillEngineConfigPlan, mcts_move_order_context, mill_searcher_default,
     request_abort_active_search,
@@ -512,30 +513,19 @@ pub struct EngineEvent {
     pub reason: String,
 }
 
-/// Initialize the Nine Men's Morris perfect database from `path`.
-/// The directory must contain `std.secval` and `std_*.sec2` sector files.
+/// Initialize the Mill perfect database directory from `path`.
+/// The directory may contain `std`, `lask`, and/or `mora` database files; the
+/// active Mill rules select the concrete variant at query time.
 #[flutter_rust_bridge::frb(sync)]
-#[cfg(not(target_arch = "wasm32"))]
 pub fn mill_perfect_db_init(path: String) -> bool {
-    perfect_db::init(&path)
-}
-
-#[flutter_rust_bridge::frb(sync)]
-#[cfg(target_arch = "wasm32")]
-pub fn mill_perfect_db_init(_path: String) -> bool {
-    false
+    mill_perfect::init_database_path(path)
 }
 
 /// Release perfect-database resources for the current process.
 #[flutter_rust_bridge::frb(sync)]
-#[cfg(not(target_arch = "wasm32"))]
 pub fn mill_perfect_db_deinit() {
-    perfect_db::deinit();
+    mill_perfect::deinit_database();
 }
-
-#[flutter_rust_bridge::frb(sync)]
-#[cfg(target_arch = "wasm32")]
-pub fn mill_perfect_db_deinit() {}
 
 /// Perfect-database verdict for one legal move, used by the analysis overlay.
 ///

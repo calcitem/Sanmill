@@ -216,6 +216,24 @@ pub fn best_move_token_rust_database(
     .map(|choice| choice.token))
 }
 
+pub fn best_move_token_for_state_rust_database(
+    state: &MillState,
+    options: &MillVariantOptions,
+    side_to_move: i8,
+) -> Result<Option<String>, DatabaseError> {
+    let rules = MillRules::new(options.clone());
+    let mut state = state.clone();
+    state.set_side_to_move(side_to_move);
+    let snap = rules.encode_state(state);
+    let Some(result) = with_rust_database(|database| {
+        best_move_choice_with_database(database, &rules, &snap, options)
+    })?
+    else {
+        return Ok(None);
+    };
+    Ok(result.map(|choice| choice.token))
+}
+
 pub fn evaluate_state_for_rust_database(
     state: &MillState,
     options: &MillVariantOptions,

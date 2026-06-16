@@ -854,6 +854,9 @@ mod tests {
         let std = supported
             .find(DatabaseVariant::STANDARD)
             .expect("bundled assets must include std.secval");
+        let mora = supported
+            .find(DatabaseVariant::MORABARABA)
+            .expect("bundled assets must include mora.secval");
         let expected_available = std::fs::read_dir(asset_root())
             .unwrap()
             .filter_map(Result::ok)
@@ -864,9 +867,20 @@ mod tests {
                     .is_some_and(|name| name.starts_with("std_") && name.ends_with(".sec2"))
             })
             .count();
+        let expected_mora_available = std::fs::read_dir(asset_root())
+            .unwrap()
+            .filter_map(Result::ok)
+            .filter(|entry| {
+                entry
+                    .file_name()
+                    .to_str()
+                    .is_some_and(|name| name.starts_with("mora_") && name.ends_with(".sec2"))
+            })
+            .count();
 
-        assert_eq!(supported.len(), 1);
+        assert_eq!(supported.len(), 2);
         assert_eq!(supported.as_slice()[0].variant, DatabaseVariant::STANDARD);
+        assert_eq!(supported.as_slice()[1].variant, DatabaseVariant::MORABARABA);
         assert_eq!(supported.iter().count(), supported.len());
         assert_eq!(std.sector_count(), 498);
         assert_eq!(std.available_sector_count(), expected_available);
@@ -874,8 +888,14 @@ mod tests {
         assert!(std.has_available_sector(SectorId::new(0, 0, 9, 9)));
         assert!(std.has_available_sector(SectorId::new(3, 3, 0, 0)));
         assert!(!std.has_available_sector(SectorId::new(9, 9, 0, 0)));
+        assert_eq!(mora.sector_count(), 1216);
+        assert_eq!(mora.available_sector_count(), expected_mora_available);
+        assert!(!mora.is_fully_available());
+        assert!(mora.has_available_sector(SectorId::new(0, 0, 12, 12)));
+        assert!(mora.has_available_sector(SectorId::new(0, 1, 12, 11)));
+        assert!(mora.has_available_sector(SectorId::new(2, 2, 10, 10)));
+        assert!(!mora.has_available_sector(SectorId::new(12, 12, 0, 0)));
         assert_eq!(supported.find(DatabaseVariant::LASKER), None);
-        assert_eq!(supported.find(DatabaseVariant::MORABARABA), None);
     }
 
     #[test]

@@ -101,6 +101,13 @@ Future<bool> copyPerfectDatabaseFiles({bool force = false}) async {
       'assets/databases/std_4_3_0_0.sec2',
       'assets/databases/std_4_3_5_5.sec2',
       'assets/databases/std_4_4_5_5.sec2',
+      'assets/databases/mora.secval',
+      'assets/databases/mora_0_0_12_12.sec2',
+      'assets/databases/mora_0_1_12_11.sec2',
+      'assets/databases/mora_1_1_11_11.sec2',
+      'assets/databases/mora_1_2_11_10.sec2',
+      'assets/databases/mora_1_3_10_9.sec2',
+      'assets/databases/mora_2_2_10_10.sec2',
     ];
 
     for (final String asset in assetFiles) {
