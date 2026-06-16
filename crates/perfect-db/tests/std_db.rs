@@ -311,6 +311,29 @@ fn std_perfect_db_oracle_vectors() {
         assert_state_eval_parity(case.name, &mut rust_db, &state, &options, side as i8);
     }
 
+    let endgame_cases = [
+        (
+            "endgame_3_3",
+            &["a4", "d7", "g1"][..],
+            &["g7", "d1", "b4"][..],
+        ),
+        (
+            "endgame_3_4",
+            &["a4", "d7", "g1"][..],
+            &["g7", "d1", "b4", "c5"][..],
+        ),
+        (
+            "endgame_4_3",
+            &["a4", "d7", "g1", "c5"][..],
+            &["g7", "d1", "b4"][..],
+        ),
+    ];
+    for (name, white, black) in endgame_cases {
+        let snap = endgame_moving_snapshot(&rules, &options, white, black);
+        let state = MillRules::decode_snapshot(snap);
+        assert_state_eval_parity(name, &mut rust_db, &state, &options, snap.side_to_move);
+    }
+
     // Do not call deinit here: the current C++ bridge has fragile sector-hash
     // shutdown behavior. The Rust rewrite should make shutdown deterministic,
     // but these oracle vectors only need process-lifetime resources.

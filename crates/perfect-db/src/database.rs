@@ -386,7 +386,12 @@ impl DatabaseEval {
         } else {
             -1
         };
-        (wdl, self.raw.key2)
+        let steps = if self.raw.key1 == 0 {
+            -1
+        } else {
+            self.raw.key2
+        };
+        (wdl, steps)
     }
 }
 
@@ -717,6 +722,14 @@ mod tests {
             }
             .to_public_wdl_steps(&sec_vals),
             (1, 4)
+        );
+        assert_eq!(
+            DatabaseEval {
+                raw: RawEval::new(0, 51),
+                sector_value: -299,
+            }
+            .to_public_wdl_steps(&sec_vals),
+            (-1, -1)
         );
     }
 }
