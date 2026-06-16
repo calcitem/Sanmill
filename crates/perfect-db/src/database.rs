@@ -37,6 +37,15 @@ pub enum DatabaseError {
     },
 }
 
+impl DatabaseError {
+    pub fn is_missing_asset(&self) -> bool {
+        matches!(
+            self,
+            Self::Read { source, .. } if source.kind() == io::ErrorKind::NotFound
+        )
+    }
+}
+
 impl fmt::Display for DatabaseError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {

@@ -5,7 +5,6 @@
 
 #[cfg(feature = "cpp-oracle")]
 use std::ffi::{CStr, CString};
-use std::io::ErrorKind;
 #[cfg(feature = "cpp-oracle")]
 use std::os::raw::c_char;
 use std::sync::atomic::{AtomicBool, Ordering};
@@ -187,11 +186,7 @@ fn rust_query_or_none<T>(
 ) -> Option<T> {
     match result {
         Ok(value) => value,
-        Err(database::DatabaseError::Read { source, .. })
-            if source.kind() == ErrorKind::NotFound =>
-        {
-            None
-        }
+        Err(err) if err.is_missing_asset() => None,
         Err(err) => panic!("Rust Perfect DB {context} failed: {err}"),
     }
 }

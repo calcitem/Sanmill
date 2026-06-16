@@ -383,6 +383,16 @@ fn rust_database_reports_missing_moving_phase_sector() {
         }
         other => panic!("expected missing moving-phase sector, got {other}"),
     }
+    assert_eq!(
+        best_move_choice_with_database(&mut rust_db, &rules, &snap, &options).unwrap(),
+        None,
+        "partial database coverage must not choose a best move"
+    );
+    assert_eq!(
+        best_move_token_with_database(&mut rust_db, &rules, &snap, &options).unwrap(),
+        None,
+        "token wrapper must preserve missing-sector fallback semantics"
+    );
 }
 
 #[test]

@@ -276,11 +276,11 @@ pub fn best_move_choice_with_database<P: DatabaseProvider>(
     let mut best: Option<(Action, PerfectOutcome)> = None;
     for &action in actions.as_slice() {
         let child_snap = rules.apply(snap, action);
-        let Some(outcome) =
-            child_outcome_for_root(database, rules, &child_snap, options, root_side)?
-        else {
-            continue;
-        };
+        let outcome =
+            match child_outcome_for_root(database, rules, &child_snap, options, root_side)? {
+                Some(outcome) => outcome,
+                None => return Ok(None),
+            };
         if best.is_none_or(|(_, best_outcome)| outcome.default_rank() > best_outcome.default_rank())
         {
             best = Some((action, outcome));
@@ -355,16 +355,16 @@ fn continuation_outcome_for_root<P: DatabaseProvider>(
         let mut best: Option<PerfectOutcome> = None;
         for &action in actions.as_slice() {
             let next = rules.apply(snap, action);
-            let Some(outcome) = continuation_outcome_for_root(
+            let outcome = match continuation_outcome_for_root(
                 database,
                 rules,
                 &next,
                 options,
                 root_side,
                 depth + 1,
-            )?
-            else {
-                continue;
+            )? {
+                Some(outcome) => outcome,
+                None => return Ok(None),
             };
             if best.is_none_or(|best_outcome| outcome.default_rank() > best_outcome.default_rank())
             {
@@ -374,11 +374,13 @@ fn continuation_outcome_for_root<P: DatabaseProvider>(
         return Ok(best);
     }
 
-    let Some(outcome) =
-        evaluate_state_outcome_with_database(database, &state, options, side_to_move)?
-    else {
-        return Ok(None);
-    };
+    let outcome =
+        match evaluate_state_outcome_with_database(database, &state, options, side_to_move) {
+            Ok(Some(outcome)) => outcome,
+            Ok(None) => return Ok(None),
+            Err(err) if err.is_missing_asset() => return Ok(None),
+            Err(err) => return Err(err),
+        };
 
     Ok(Some(if side_to_move == root_side {
         outcome
