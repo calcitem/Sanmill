@@ -9,7 +9,6 @@ import 'dart:ui' as ui;
 import 'dart:ui';
 
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart' show Box;
@@ -46,8 +45,6 @@ import '../../src/rust/api/simple.dart' as tgf;
 import '../../statistics/model/stats_settings.dart';
 // Voice assistant functionality disabled
 // import '../../voice_assistant/widgets/voice_button.dart';
-import '../services/analysis/analysis_service.dart';
-import '../services/analysis_mode.dart';
 import '../services/animation/animation_manager.dart';
 import '../services/animation/headless_animation_manager.dart';
 import '../services/annotation/annotation_manager.dart';
@@ -120,9 +117,6 @@ class _GamePageInnerState extends State<_GamePageInner> {
     // Initialize annotation manager from game controller.
     _annotationManager = widget.controller.annotationManager;
 
-    // Listen for analysis mode state changes
-    AnalysisMode.stateNotifier.addListener(_updateAnalysisButton);
-
     // Auto-start experience recording if enabled and not already recording.
     _maybeStartRecording();
 
@@ -152,20 +146,8 @@ class _GamePageInnerState extends State<_GamePageInner> {
     }
   }
 
-  // Method to update only the analysis button when state changes
-  void _updateAnalysisButton() {
-    // This will force a rebuild of only the analysis button area
-    // without requiring a full board repaint
-    setState(() {
-      // No need to do anything in the setState body
-      // The Icon will check AnalysisMode.isEnabled when rebuilding
-    });
-  }
-
   @override
   void dispose() {
-    // Remove listener when the widget is disposed
-    AnalysisMode.stateNotifier.removeListener(_updateAnalysisButton);
     // Discard an unfinished setup edit when navigating away from the page
     // without changing the mode the next route just installed.
     widget.controller.abandonSetupPositionIfActive();
@@ -285,31 +267,6 @@ class _GamePageInnerState extends State<_GamePageInner> {
                                             .aiChatButtonTooltip,
                                         onPressed: () =>
                                             _showAiChatDialog(context),
-                                      ),
-                                    // Analysis overlay button: toggles the
-                                    // perfect-database analysis overlay for
-                                    // the current position.
-                                    if (_shouldShowAnalysisButton(settings))
-                                      IconButton(
-                                        key: const Key(
-                                          'game_page_analysis_button',
-                                        ),
-                                        icon: Icon(
-                                          AnalysisMode.isEnabled
-                                              ? FluentIcons
-                                                    .brain_circuit_24_filled
-                                              : FluentIcons
-                                                    .brain_circuit_24_regular,
-                                          color: Colors.white,
-                                        ),
-                                        tooltip: S.of(context).analysis,
-                                        onPressed:
-                                            (GameController().isEngineRunning ||
-                                                AnalysisMode.isAnalyzing)
-                                            ? null
-                                            : () => AnalysisService.toggle(
-                                                context,
-                                              ),
                                       ),
                                     // Board image recognition (Setup Position
                                     // mode only): load a board position from a
@@ -561,8 +518,6 @@ class _GamePageInnerState extends State<_GamePageInner> {
       toolbarHeight *= 2;
     } else if (DB().displaySettings.isAnnotationToolbarShown) {
       toolbarHeight *= 4;
-    } else if (!kIsWeb && DB().displaySettings.isAnalysisToolbarShown) {
-      toolbarHeight *= 5;
     }
     return toolbarHeight;
   }
@@ -583,23 +538,6 @@ class _GamePageInnerState extends State<_GamePageInner> {
       return false;
     }
 
-    final GameMode mode = GameController().gameInstance.gameMode;
-    return mode == GameMode.humanVsAi ||
-        mode == GameMode.humanVsHuman ||
-        mode == GameMode.aiVsAi;
-  }
-
-  /// Whether to show the on-board analysis overlay button.
-  ///
-  /// Shown only for play modes where analysing the current position is
-  /// meaningful and the active rule variant has a bundled perfect database.
-  bool _shouldShowAnalysisButton(GeneralSettings settings) {
-    if (kIsWeb) {
-      return false;
-    }
-    if (!isRuleSupportingPerfectDatabase()) {
-      return false;
-    }
     final GameMode mode = GameController().gameInstance.gameMode;
     return mode == GameMode.humanVsAi ||
         mode == GameMode.humanVsHuman ||

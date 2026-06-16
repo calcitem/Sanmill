@@ -4,7 +4,6 @@
 // play_area.dart
 
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:native_screenshot_widget/native_screenshot_widget.dart';
 
@@ -16,8 +15,6 @@ import '../../shared/config/constants.dart';
 import '../../shared/database/database.dart';
 import '../../shared/services/screenshot_service.dart';
 import '../../shared/themes/app_theme.dart';
-import '../services/analysis/analysis_service.dart';
-import '../services/analysis_mode.dart';
 import '../services/mill.dart';
 import '../services/painters/advantage_graph_painter.dart';
 import 'game_page.dart';
@@ -57,9 +54,6 @@ class PlayAreaState extends State<PlayArea> {
     // Listen to changes in header icons (usually triggered after a move).
     GameController().headerIconsNotifier.addListener(_updateUI);
 
-    // Listen for analysis mode state changes
-    AnalysisMode.stateNotifier.addListener(_updateAnalysisButton);
-
     // Optionally, initialize advantageData with the current value:
     advantageData.add(_getCurrentAdvantageValue());
   }
@@ -67,7 +61,6 @@ class PlayAreaState extends State<PlayArea> {
   @override
   void dispose() {
     GameController().headerIconsNotifier.removeListener(_updateUI);
-    AnalysisMode.stateNotifier.removeListener(_updateAnalysisButton);
     super.dispose();
   }
 
@@ -97,14 +90,6 @@ class PlayAreaState extends State<PlayArea> {
         advantageData.add(_getCurrentAdvantageValue());
         GameController().lastMoveFromAI = false;
       }
-    });
-  }
-
-  /// Method to update only the analysis button when state changes
-  void _updateAnalysisButton() {
-    setState(() {
-      // No need to do anything in the setState body
-      // The Icon will check AnalysisMode.isEnabled when rebuilding
     });
   }
 
@@ -236,25 +221,6 @@ class PlayAreaState extends State<PlayArea> {
       return const SizedBox.shrink();
     }
     return MoveOptionsModal(mainContext: context);
-  }
-
-  /// Retrieves the analysis toolbar items (perfect-database overlay toggle).
-  List<ToolbarItem> _getAnalysisToolbarItems(BuildContext context) {
-    return <ToolbarItem>[
-      ToolbarItem(
-        key: const Key('play_area_analysis_toolbar_engine'),
-        onPressed:
-            (GameController().isEngineRunning || AnalysisMode.isAnalyzing)
-            ? null
-            : () => AnalysisService.toggle(context),
-        child: Icon(
-          AnalysisMode.isEnabled
-              ? FluentIcons.brain_circuit_24_filled
-              : FluentIcons.brain_circuit_24_regular,
-          semanticLabel: S.of(context).analysis,
-        ),
-      ),
-    ];
   }
 
   /// Retrieves the history navigation toolbar items.
@@ -571,22 +537,6 @@ class PlayAreaState extends State<PlayArea> {
                       ),
                     ),
 
-                  // Analysis toolbar (perfect-database overlay toggle).
-                  if (DB().displaySettings.isAnalysisToolbarShown &&
-                      !kIsWeb &&
-                      !isToolbarAtBottom &&
-                      !isSetupPosition)
-                    GamePageToolbar(
-                      key: const Key('play_area_analysis_toolbar'),
-                      backgroundColor:
-                          DB().colorSettings.navigationToolbarBackgroundColor,
-                      itemColor: DB().colorSettings.navigationToolbarIconColor,
-                      children: _buildToolbarItems(
-                        context,
-                        _getAnalysisToolbarItems(context),
-                      ),
-                    ),
-
                   // ──────────────────────────────────────────────────────────
                   // NOTE: The bottom black Annotation Toolbar is removed.
                   //       All annotation features are now in the center overlay.
@@ -643,21 +593,6 @@ class PlayAreaState extends State<PlayArea> {
                       children: _buildToolbarItems(
                         context,
                         _getHistoryNavToolbarItems(context),
-                      ),
-                    ),
-
-                  // Analysis toolbar (perfect-database overlay toggle).
-                  if (DB().displaySettings.isAnalysisToolbarShown &&
-                      !kIsWeb &&
-                      !isSetupPosition)
-                    GamePageToolbar(
-                      key: const Key('play_area_analysis_toolbar_bottom'),
-                      backgroundColor:
-                          DB().colorSettings.navigationToolbarBackgroundColor,
-                      itemColor: DB().colorSettings.navigationToolbarIconColor,
-                      children: _buildToolbarItems(
-                        context,
-                        _getAnalysisToolbarItems(context),
                       ),
                     ),
 

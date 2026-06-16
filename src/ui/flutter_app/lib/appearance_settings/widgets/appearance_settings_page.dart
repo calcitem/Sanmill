@@ -24,7 +24,6 @@ import '../../generated/assets/assets.gen.dart';
 import '../../generated/intl/l10n.dart';
 import '../../shared/config/constants.dart';
 import '../../shared/database/database.dart';
-import '../../shared/services/environment_config.dart';
 import '../../shared/services/language_locale_mapping.dart';
 import '../../shared/services/logger.dart';
 import '../../shared/themes/app_theme.dart';
@@ -571,26 +570,6 @@ class AppearanceSettingsPage extends StatelessWidget {
             navigationToolbarIconColor: val,
           ),
         ),
-        if (EnvironmentConfig.devMode && !kIsWeb)
-          SettingsListTile.color(
-            key: const Key(
-              'color_settings_card_analysis_toolbar_background_color_settings_list_tile',
-            ),
-            titleString: S.of(context).analysisToolbarBackgroundColor,
-            value: DB().colorSettings.analysisToolbarBackgroundColor,
-            onChanged: (Color val) => DB().colorSettings = colorSettings
-                .copyWith(analysisToolbarBackgroundColor: val),
-          ),
-        if (EnvironmentConfig.devMode && !kIsWeb)
-          SettingsListTile.color(
-            key: const Key(
-              'color_settings_card_analysis_toolbar_icon_color_settings_list_tile',
-            ),
-            titleString: S.of(context).analysisToolbarIconColor,
-            value: DB().colorSettings.analysisToolbarIconColor,
-            onChanged: (Color val) => DB().colorSettings = colorSettings
-                .copyWith(analysisToolbarIconColor: val),
-          ),
         SettingsListTile.color(
           key: const Key(
             'color_settings_card_annotation_toolbar_background_color_settings_list_tile',
@@ -714,16 +693,6 @@ class AppearanceSettingsPage extends StatelessWidget {
               .copyWith(isHistoryNavigationToolbarShown: val),
           titleString: S.of(context).isHistoryNavigationToolbarShown,
         ),
-        if (EnvironmentConfig.devMode && !kIsWeb)
-          SettingsListTile.switchTile(
-            key: const Key(
-              'display_settings_card_analysis_toolbar_shown_switch_tile',
-            ),
-            value: displaySettings.isAnalysisToolbarShown,
-            onChanged: (bool val) => DB().displaySettings = displaySettings
-                .copyWith(isAnalysisToolbarShown: val),
-            titleString: S.of(context).isAnalysisToolbarShown,
-          ),
         SettingsListTile.switchTile(
           key: const Key(
             'display_settings_card_annotation_toolbar_shown_switch_tile',
