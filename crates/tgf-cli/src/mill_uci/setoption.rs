@@ -147,6 +147,15 @@ pub(super) fn apply_setoption(
                 None => SetoptionResult::Unknown,
             }
         }
+        "perfectdatabasecachesectors" | "perfect database cache sectors" => value
+            .parse::<usize>()
+            .ok()
+            .filter(|v| *v <= 1_048_576)
+            .map(|v| {
+                engine_cfg.perfect_db_cache_sectors = (v > 0).then_some(v);
+                SetoptionResult::SearchConfig
+            })
+            .unwrap_or(SetoptionResult::Unknown),
         "developermode" | "developer mode" => parse_bool(value)
             .map(|v| {
                 engine_cfg.developer_mode = v;

@@ -104,6 +104,30 @@ fn setoption_parses_perfect_database_options() {
 
     assert!(matches!(
         apply_setoption(
+            "setoption name PerfectDatabaseCacheSectors value 2",
+            &mut options,
+            &mut threads,
+            &mut qsearch,
+            &mut ecfg,
+        ),
+        SetoptionResult::SearchConfig
+    ));
+    assert_eq!(ecfg.perfect_db_cache_sectors, Some(2));
+
+    assert!(matches!(
+        apply_setoption(
+            "setoption name Perfect Database Cache Sectors value 0",
+            &mut options,
+            &mut threads,
+            &mut qsearch,
+            &mut ecfg,
+        ),
+        SetoptionResult::SearchConfig
+    ));
+    assert_eq!(ecfg.perfect_db_cache_sectors, None);
+
+    assert!(matches!(
+        apply_setoption(
             "setoption name UsePerfectDatabase value off",
             &mut options,
             &mut threads,

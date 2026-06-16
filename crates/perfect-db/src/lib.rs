@@ -64,8 +64,13 @@ unsafe extern "C" {
 
 /// Initialize the standard Nine Men's Morris perfect database from `db_path`.
 pub fn init(db_path: &str) -> bool {
+    init_with_options(db_path, database::DatabaseOptions::default())
+}
+
+/// Initialize the standard Nine Men's Morris perfect database from `db_path`.
+pub fn init_with_options(db_path: &str, options: database::DatabaseOptions) -> bool {
     if is_rust_backend_enabled() {
-        let ok = rust_global::init_rust_database(db_path).is_ok();
+        let ok = rust_global::init_rust_database_with_options(db_path, options).is_ok();
         if !ok {
             rust_global::deinit_rust_database();
         }
@@ -73,6 +78,11 @@ pub fn init(db_path: &str) -> bool {
         return ok;
     }
 
+    assert_eq!(
+        options,
+        database::DatabaseOptions::default(),
+        "C++ Perfect DB backend does not support DatabaseOptions"
+    );
     let ok = init_cpp_database(db_path);
     INITIALIZED.store(ok, Ordering::SeqCst);
     ok
@@ -322,6 +332,27 @@ mod tests {
         assert!(best_move_token(0, 0, 9, 9, 0, false).is_some_and(|token| !token.is_empty()));
         deinit();
         assert!(!is_initialized());
+        #[cfg(feature = "cpp-oracle")]
+        set_rust_backend_enabled(true);
+    }
+
+    #[test]
+    fn stable_api_init_with_options_bounds_global_sector_cache() {
+        let _guard = stable_api_test_lock();
+        set_rust_backend_enabled(true);
+        assert!(init_with_options(
+            db_path(),
+            database::DatabaseOptions::with_sector_cache_capacity(1),
+        ));
+        assert!(is_initialized());
+        assert_eq!(loaded_sector_count_rust_database(), Some(0));
+        assert_eq!(evaluate(0, 0, 9, 9, 0, false), Some((0, 2)));
+        assert_eq!(loaded_sector_count_rust_database(), Some(1));
+        assert_eq!(evaluate(1, 0, 8, 9, 1, false), Some((0, 1)));
+        assert_eq!(loaded_sector_count_rust_database(), Some(1));
+        deinit();
+        assert!(!is_initialized());
+        assert_eq!(loaded_sector_count_rust_database(), None);
         #[cfg(feature = "cpp-oracle")]
         set_rust_backend_enabled(true);
     }

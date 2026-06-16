@@ -15,6 +15,8 @@ use std::io::{self, BufRead};
 use std::sync::atomic::AtomicBool;
 use std::sync::{Arc, mpsc};
 use std::thread::{self, JoinHandle};
+
+use perfect_db::database::DatabaseOptions;
 use tgf_core::{
     Action, ActionList, Game, GameRules, GameStateSnapshot, MoveOrderAlgorithm, MoveOrderContext,
 };
@@ -60,6 +62,12 @@ fn mill_searcher() -> Searcher<MillGame> {
     s
 }
 
+#[derive(Clone, Debug, PartialEq, Eq)]
+struct PerfectDatabaseRuntimeConfig {
+    path: String,
+    options: DatabaseOptions,
+}
+
 /// Runtime engine configuration (non-variant search/difficulty parameters).
 /// These mirror the master `GameOptions` fields that are set via UCI setoption.
 #[derive(Clone, Debug)]
@@ -83,6 +91,10 @@ struct EngineConfig {
     /// Filesystem directory holding the `std_*.sec2` / `std.secval` dataset.
     /// Set via the `PerfectDatabasePath` UCI option before enabling the DB.
     perfect_db_path: Option<String>,
+    /// Maximum number of sector files kept loaded by the Rust Perfect DB.
+    /// `None` preserves the historical unbounded native behavior.
+    perfect_db_cache_sectors: Option<usize>,
+    active_perfect_db: Option<PerfectDatabaseRuntimeConfig>,
 }
 
 impl Default for EngineConfig {
@@ -105,31 +117,52 @@ impl Default for EngineConfig {
                 .unwrap_or(false),
             use_perfect_database: false,
             perfect_db_path: None,
+            perfect_db_cache_sectors: None,
+            active_perfect_db: None,
         }
+    }
+}
+
+impl EngineConfig {
+    fn desired_perfect_db_config(&self) -> Option<PerfectDatabaseRuntimeConfig> {
+        let path = self.perfect_db_path.as_ref()?;
+        let options = self
+            .perfect_db_cache_sectors
+            .map(DatabaseOptions::with_sector_cache_capacity)
+            .unwrap_or_default();
+        Some(PerfectDatabaseRuntimeConfig {
+            path: path.clone(),
+            options,
+        })
     }
 }
 
 /// Bring the process-wide perfect-database handle in line with [`EngineConfig`]:
 /// initialize it (from `perfect_db_path`) when the option is enabled and a path
 /// is known, and release it when the option is turned off.  Idempotent.
-fn sync_perfect_db(cfg: &EngineConfig) {
+fn sync_perfect_db(cfg: &mut EngineConfig) {
     if cfg.use_perfect_database {
-        if !perfect_db::is_initialized() {
-            match &cfg.perfect_db_path {
-                Some(path) => {
-                    if !perfect_db::init(path) {
-                        println!("info string perfect database init failed: {path}");
-                    }
-                }
-                None => {
-                    println!(
-                        "info string perfect database enabled but PerfectDatabasePath is unset"
-                    );
-                }
-            }
+        let Some(desired) = cfg.desired_perfect_db_config() else {
+            println!("info string perfect database enabled but PerfectDatabasePath is unset");
+            return;
+        };
+        if cfg.active_perfect_db.as_ref() == Some(&desired) && perfect_db::is_initialized() {
+            return;
+        }
+        if perfect_db::is_initialized() {
+            perfect_db::deinit();
+        }
+        if perfect_db::init_with_options(&desired.path, desired.options) {
+            cfg.active_perfect_db = Some(desired);
+        } else {
+            println!("info string perfect database init failed: {}", desired.path);
+            cfg.active_perfect_db = None;
         }
     } else if perfect_db::is_initialized() {
         perfect_db::deinit();
+        cfg.active_perfect_db = None;
+    } else {
+        cfg.active_perfect_db = None;
     }
 }
 
@@ -195,7 +228,7 @@ pub(crate) fn run_uci_loop() {
                 SetoptionResult::SearchConfig => {
                     // A search/engine parameter changed; the perfect-database
                     // toggle and path live here, so reconcile the global handle.
-                    sync_perfect_db(&engine_cfg);
+                    sync_perfect_db(&mut engine_cfg);
                 }
                 SetoptionResult::Threads | SetoptionResult::Acknowledged => {}
                 SetoptionResult::Unknown => {
