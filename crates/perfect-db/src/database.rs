@@ -11,6 +11,7 @@
 use std::cmp::Ordering;
 use std::collections::BTreeMap;
 use std::fmt;
+use std::io;
 use std::path::{Path, PathBuf};
 
 use crate::file_format::{ParseError, RawEval, RawEvalKind, SecValTable, SectorFile, SectorId};
@@ -79,6 +80,58 @@ impl DatabaseProvider for FileDatabaseProvider {
             name: path.display().to_string(),
             source,
         })
+    }
+}
+
+#[derive(Clone, Debug, Default)]
+pub struct MemoryDatabaseProvider {
+    files: BTreeMap<String, Vec<u8>>,
+}
+
+impl MemoryDatabaseProvider {
+    pub fn from_files<I, N, B>(files: I) -> Self
+    where
+        I: IntoIterator<Item = (N, B)>,
+        N: Into<String>,
+        B: Into<Vec<u8>>,
+    {
+        let mut provider = Self::default();
+        for (name, bytes) in files {
+            provider.insert(name, bytes);
+        }
+        provider
+    }
+
+    pub fn insert(&mut self, name: impl Into<String>, bytes: impl Into<Vec<u8>>) {
+        let name = name.into();
+        assert!(
+            !self.files.contains_key(&name),
+            "Perfect DB memory provider file names must be unique"
+        );
+        self.files.insert(name, bytes.into());
+    }
+
+    pub fn len(&self) -> usize {
+        self.files.len()
+    }
+
+    pub fn is_empty(&self) -> bool {
+        self.files.is_empty()
+    }
+}
+
+impl DatabaseProvider for MemoryDatabaseProvider {
+    fn read(&self, name: &str) -> Result<Vec<u8>, DatabaseError> {
+        self.files
+            .get(name)
+            .cloned()
+            .ok_or_else(|| DatabaseError::Read {
+                name: name.to_owned(),
+                source: io::Error::new(
+                    io::ErrorKind::NotFound,
+                    "perfect database memory asset is missing",
+                ),
+            })
     }
 }
 
@@ -444,6 +497,46 @@ mod tests {
 
     fn asset_root() -> PathBuf {
         PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../../src/ui/flutter_app/assets/databases")
+    }
+
+    fn memory_provider_for(names: &[&str]) -> MemoryDatabaseProvider {
+        let files = names.iter().map(|name| {
+            let bytes = std::fs::read(asset_root().join(name)).unwrap();
+            ((*name).to_owned(), bytes)
+        });
+        MemoryDatabaseProvider::from_files(files)
+    }
+
+    #[test]
+    fn memory_provider_reads_assets_without_filesystem_dependency() {
+        let provider = memory_provider_for(&["std.secval", "std_0_0_9_9.sec2"]);
+        assert_eq!(provider.len(), 2);
+
+        let mut db = Database::open(provider).unwrap();
+        let query = PerfectQuery::new(0, 0, 9, 9, 0, false);
+        assert_eq!(db.evaluate(query).unwrap(), Some((0, 2)));
+    }
+
+    #[test]
+    fn memory_provider_reports_missing_assets() {
+        let provider = MemoryDatabaseProvider::from_files([("std.secval", b"0\n".to_vec())]);
+        let err = provider.read("std_0_0_9_9.sec2").unwrap_err();
+        match err {
+            DatabaseError::Read { name, source } => {
+                assert_eq!(name, "std_0_0_9_9.sec2");
+                assert_eq!(source.kind(), io::ErrorKind::NotFound);
+            }
+            other => panic!("expected missing memory asset read error, got {other}"),
+        }
+    }
+
+    #[test]
+    #[should_panic(expected = "file names must be unique")]
+    fn memory_provider_rejects_duplicate_names() {
+        let _ = MemoryDatabaseProvider::from_files([
+            ("std.secval", b"0\n".to_vec()),
+            ("std.secval", b"1\n".to_vec()),
+        ]);
     }
 
     #[test]
