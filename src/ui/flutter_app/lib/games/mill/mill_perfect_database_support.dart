@@ -7,15 +7,9 @@ import '../../shared/database/database.dart';
 bool isRuleSupportingPerfectDatabase() {
   final RuleSettings ruleSettings = DB().ruleSettings;
 
-  if (((ruleSettings.piecesCount == 9 &&
-              !ruleSettings.hasDiagonalLines &&
-              ruleSettings.mayMoveInPlacingPhase == false) ||
-          (ruleSettings.piecesCount == 10 &&
-              !ruleSettings.hasDiagonalLines &&
-              ruleSettings.mayMoveInPlacingPhase == true) ||
-          (ruleSettings.piecesCount == 12 &&
-              ruleSettings.hasDiagonalLines &&
-              ruleSettings.mayMoveInPlacingPhase == false)) &&
+  if (ruleSettings.piecesCount == 9 &&
+      !ruleSettings.hasDiagonalLines &&
+      ruleSettings.mayMoveInPlacingPhase == false &&
       ruleSettings.flyPieceCount == 3 &&
       ruleSettings.piecesAtLeastCount == 3 &&
       ruleSettings.millFormationActionInPlacingPhase ==
