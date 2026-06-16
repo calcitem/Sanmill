@@ -275,3 +275,39 @@ fn node_in_range(node: i16) -> Option<usize> {
         None
     }
 }
+
+#[cfg(all(test, not(target_arch = "wasm32")))]
+mod tests {
+    use super::*;
+    use std::sync::{LazyLock, Mutex, MutexGuard};
+
+    fn db_path() -> &'static str {
+        concat!(
+            env!("CARGO_MANIFEST_DIR"),
+            "/../../src/ui/flutter_app/assets/databases"
+        )
+    }
+
+    fn perfect_db_test_lock() -> MutexGuard<'static, ()> {
+        static LOCK: LazyLock<Mutex<()>> = LazyLock::new(|| Mutex::new(()));
+        LOCK.lock()
+            .expect("FRB Perfect DB test lock must not be poisoned")
+    }
+
+    #[test]
+    fn perfect_best_action_returns_none_when_rust_database_sector_is_missing() {
+        let _guard = perfect_db_test_lock();
+        perfect_db::deinit();
+        assert!(perfect_db::init(db_path()));
+
+        let rules = MillRules::default();
+        let options = MillVariantOptions::default();
+        let snapshot = rules.no_mill_moving_phase_snapshot();
+        let mut legal = tgf_core::ActionList::<256>::default();
+        rules.legal_actions(&snapshot, &mut legal);
+
+        assert!(try_perfect_best_action(&snapshot, &options, legal.as_slice()).is_none());
+
+        perfect_db::deinit();
+    }
+}
