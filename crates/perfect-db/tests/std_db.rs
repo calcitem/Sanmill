@@ -7,10 +7,10 @@ use perfect_db::database::{
 };
 use perfect_db::{
     best_move_choice_for_rust_database, best_move_choice_rust_database,
-    best_move_choice_with_database, best_move_token_rust_database, best_move_token_with_database,
-    deinit_rust_database, evaluate, evaluate_rust_database, evaluate_state_for_rust_database,
-    evaluate_state_with_database, init, init_rust_database, init_rust_database_from_provider,
-    is_rust_database_initialized, snapshot_from_perfect_query,
+    best_move_choice_with_database, best_move_choices_with_database, best_move_token_rust_database,
+    best_move_token_with_database, deinit_rust_database, evaluate, evaluate_rust_database,
+    evaluate_state_for_rust_database, evaluate_state_with_database, init, init_rust_database,
+    init_rust_database_from_provider, is_rust_database_initialized, snapshot_from_perfect_query,
 };
 #[cfg(feature = "cpp-oracle")]
 use perfect_db::{
@@ -426,6 +426,28 @@ fn rust_best_move_expands_removal_continuations() {
         Some(choice.token),
         "pending removal token wrapper must match structured choice"
     );
+}
+
+#[test]
+fn rust_database_returns_all_opening_optimal_choices() {
+    let rules = MillRules::default();
+    let options = MillVariantOptions::default();
+    let snap = rules.initial_state(&[]);
+    let mut rust_db = Database::open(FileDatabaseProvider::new(db_path())).unwrap();
+
+    let choices = best_move_choices_with_database(&mut rust_db, &rules, &snap, &options)
+        .unwrap()
+        .expect("opening position must produce Rust best move choices");
+    let single_choice = best_move_choice_with_database(&mut rust_db, &rules, &snap, &options)
+        .unwrap()
+        .expect("opening position must produce a Rust best move choice");
+
+    assert_eq!(choices.len(), 24);
+    assert_eq!(choices[0], single_choice);
+    for choice in &choices {
+        assert_best_move_is_legal(&rules, &snap, &choice.token);
+        assert_eq!(choice.outcome, choices[0].outcome);
+    }
 }
 
 #[test]

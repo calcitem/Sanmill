@@ -15,7 +15,7 @@ use std::sync::OnceLock;
 use crate::database::{
     Database, DatabaseError, DatabaseProvider, DatabaseVariant, PerfectOutcome, PerfectQuery,
 };
-use tgf_core::{Action, ActionList, GameRules, GameStateSnapshot, OutcomeKind};
+use tgf_core::{ActionList, GameRules, GameStateSnapshot, OutcomeKind};
 use tgf_mill::rules::MillState;
 use tgf_mill::{MillPhase, MillRules, MillUciCodec, MillVariantOptions, default_mill_topology};
 
@@ -294,6 +294,22 @@ pub fn best_move_choice_with_database<P: DatabaseProvider>(
     )
 }
 
+/// Select every legal action tied for the best database outcome.
+pub fn best_move_choices_with_database<P: DatabaseProvider>(
+    database: &mut Database<P>,
+    rules: &MillRules,
+    snap: &GameStateSnapshot,
+    options: &MillVariantOptions,
+) -> Result<Option<Vec<PerfectMoveChoice>>, DatabaseError> {
+    best_move_choices_with_ordering(
+        database,
+        rules,
+        snap,
+        options,
+        PerfectMoveOrdering::LegacyWdl,
+    )
+}
+
 /// Select a deterministic best legal action using the requested database
 /// comparison policy.
 pub fn best_move_choice_with_ordering<P: DatabaseProvider>(
@@ -303,6 +319,21 @@ pub fn best_move_choice_with_ordering<P: DatabaseProvider>(
     options: &MillVariantOptions,
     ordering: PerfectMoveOrdering,
 ) -> Result<Option<PerfectMoveChoice>, DatabaseError> {
+    Ok(
+        best_move_choices_with_ordering(database, rules, snap, options, ordering)?
+            .and_then(|choices| choices.into_iter().next()),
+    )
+}
+
+/// Select every legal action tied for the best database outcome under the
+/// requested comparison policy.
+pub fn best_move_choices_with_ordering<P: DatabaseProvider>(
+    database: &mut Database<P>,
+    rules: &MillRules,
+    snap: &GameStateSnapshot,
+    options: &MillVariantOptions,
+    ordering: PerfectMoveOrdering,
+) -> Result<Option<Vec<PerfectMoveChoice>>, DatabaseError> {
     let root_side = snap.side_to_move;
     if !DatabaseVariant::from_piece_count(options.piece_count)
         .is_some_and(DatabaseVariant::is_standard)
@@ -316,7 +347,8 @@ pub fn best_move_choice_with_ordering<P: DatabaseProvider>(
     let mut actions = ActionList::<256>::new();
     rules.legal_actions(snap, &mut actions);
 
-    let mut best: Option<(Action, PerfectOutcome)> = None;
+    let mut best_outcome: Option<PerfectOutcome> = None;
+    let mut best_choices = Vec::new();
     for &action in actions.as_slice() {
         let child_snap = rules.apply(snap, action);
         let outcome = match child_outcome_for_root(
@@ -330,15 +362,37 @@ pub fn best_move_choice_with_ordering<P: DatabaseProvider>(
             Some(outcome) => outcome,
             None => return Ok(None),
         };
-        if best.is_none_or(|(_, best_outcome)| ordering.is_better(outcome, best_outcome)) {
-            best = Some((action, outcome));
+        match best_outcome {
+            None => {
+                best_outcome = Some(outcome);
+                best_choices.push(PerfectMoveChoice {
+                    token: MillUciCodec::encode_action(action),
+                    outcome,
+                });
+            }
+            Some(incumbent) => match ordering.compare(outcome, incumbent) {
+                Ordering::Greater => {
+                    best_outcome = Some(outcome);
+                    best_choices.clear();
+                    best_choices.push(PerfectMoveChoice {
+                        token: MillUciCodec::encode_action(action),
+                        outcome,
+                    });
+                }
+                Ordering::Equal => best_choices.push(PerfectMoveChoice {
+                    token: MillUciCodec::encode_action(action),
+                    outcome,
+                }),
+                Ordering::Less => {}
+            },
         }
     }
 
-    Ok(best.map(|(action, outcome)| PerfectMoveChoice {
-        token: MillUciCodec::encode_action(action),
-        outcome,
-    }))
+    if best_choices.is_empty() {
+        Ok(None)
+    } else {
+        Ok(Some(best_choices))
+    }
 }
 
 pub fn best_move_choice_for_query_with_database<P: DatabaseProvider>(
