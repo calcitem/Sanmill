@@ -16,7 +16,7 @@ use std::sync::atomic::AtomicBool;
 use std::sync::{Arc, mpsc};
 use std::thread::{self, JoinHandle};
 
-use perfect_db::database::{DatabaseOptions, DatabaseVariant};
+use perfect_db::database::{DatabaseOptions, DatabaseVariant, PerfectDatabaseRuleMismatch};
 use tgf_core::{
     Action, ActionList, Game, GameRules, GameStateSnapshot, MoveOrderAlgorithm, MoveOrderContext,
 };
@@ -128,13 +128,11 @@ impl EngineConfig {
     fn desired_perfect_db_config(
         &self,
         options: &MillVariantOptions,
-    ) -> Result<Option<PerfectDatabaseRuntimeConfig>, u8> {
+    ) -> Result<Option<PerfectDatabaseRuntimeConfig>, PerfectDatabaseRuleMismatch> {
         let Some(path) = self.perfect_db_path.as_ref() else {
             return Ok(None);
         };
-        let Some(variant) = DatabaseVariant::from_mill_options(options) else {
-            return Err(options.piece_count);
-        };
+        let variant = DatabaseVariant::match_mill_options(options)?;
         let options = self
             .perfect_db_cache_sectors
             .map(DatabaseOptions::with_sector_cache_capacity)
@@ -158,12 +156,12 @@ fn sync_perfect_db(cfg: &mut EngineConfig, options: &MillVariantOptions) {
                 println!("info string perfect database enabled but PerfectDatabasePath is unset");
                 return;
             }
-            Err(piece_count) => {
+            Err(mismatch) => {
                 if perfect_db::is_initialized() {
                     perfect_db::deinit();
                 }
                 cfg.active_perfect_db = None;
-                println!("info string perfect database unsupported piece count: {piece_count}");
+                println!("info string perfect database unsupported rule variant: {mismatch}");
                 return;
             }
         };

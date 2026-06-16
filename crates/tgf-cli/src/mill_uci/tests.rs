@@ -156,7 +156,14 @@ fn perfect_database_runtime_config_tracks_supported_rule_variants() {
     assert_eq!(standard.options.sector_cache_capacity, Some(2));
 
     options.piece_count = 10;
-    assert_eq!(cfg.desired_perfect_db_config(&options), Err(10));
+    assert_eq!(
+        cfg.desired_perfect_db_config(&options),
+        Err(PerfectDatabaseRuleMismatch::VariantShape {
+            piece_count: 10,
+            has_diagonal_lines: false,
+            may_move_in_placing_phase: false,
+        })
+    );
     options.may_move_in_placing_phase = true;
     let lasker = cfg
         .desired_perfect_db_config(&options)
@@ -176,14 +183,32 @@ fn perfect_database_runtime_config_tracks_supported_rule_variants() {
     assert_eq!(morabaraba.variant, DatabaseVariant::MORABARABA);
 
     options.has_diagonal_lines = false;
-    assert_eq!(cfg.desired_perfect_db_config(&options), Err(12));
+    assert_eq!(
+        cfg.desired_perfect_db_config(&options),
+        Err(PerfectDatabaseRuleMismatch::VariantShape {
+            piece_count: 12,
+            has_diagonal_lines: false,
+            may_move_in_placing_phase: false,
+        })
+    );
 
     options = MillVariantOptions::default();
     options.may_remove_multiple = true;
-    assert_eq!(cfg.desired_perfect_db_config(&options), Err(9));
+    assert_eq!(
+        cfg.desired_perfect_db_config(&options),
+        Err(PerfectDatabaseRuleMismatch::CommonRules)
+    );
 
+    options = MillVariantOptions::default();
     options.piece_count = 11;
-    assert_eq!(cfg.desired_perfect_db_config(&options), Err(11));
+    assert_eq!(
+        cfg.desired_perfect_db_config(&options),
+        Err(PerfectDatabaseRuleMismatch::VariantShape {
+            piece_count: 11,
+            has_diagonal_lines: false,
+            may_move_in_placing_phase: false,
+        })
+    );
 }
 
 #[test]

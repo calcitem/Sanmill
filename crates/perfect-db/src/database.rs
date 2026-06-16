@@ -208,6 +208,34 @@ pub struct DatabaseVariant {
     pub piece_count: u8,
 }
 
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum PerfectDatabaseRuleMismatch {
+    CommonRules,
+    VariantShape {
+        piece_count: u8,
+        has_diagonal_lines: bool,
+        may_move_in_placing_phase: bool,
+    },
+}
+
+impl fmt::Display for PerfectDatabaseRuleMismatch {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            Self::CommonRules => {
+                write!(f, "rule options differ from the legacy Perfect DB rule set")
+            }
+            Self::VariantShape {
+                piece_count,
+                has_diagonal_lines,
+                may_move_in_placing_phase,
+            } => write!(
+                f,
+                "unsupported variant shape (pieces={piece_count}, diagonals={has_diagonal_lines}, move-in-placing={may_move_in_placing_phase})"
+            ),
+        }
+    }
+}
+
 impl DatabaseVariant {
     pub const STANDARD: Self = Self {
         name: "std",
@@ -230,8 +258,14 @@ impl DatabaseVariant {
     }
 
     pub fn from_mill_options(options: &MillVariantOptions) -> Option<Self> {
+        Self::match_mill_options(options).ok()
+    }
+
+    pub fn match_mill_options(
+        options: &MillVariantOptions,
+    ) -> Result<Self, PerfectDatabaseRuleMismatch> {
         if !matches_perfect_database_common_rules(options) {
-            return None;
+            return Err(PerfectDatabaseRuleMismatch::CommonRules);
         }
 
         match (
@@ -239,10 +273,14 @@ impl DatabaseVariant {
             options.has_diagonal_lines,
             options.may_move_in_placing_phase,
         ) {
-            (9, false, false) => Some(Self::STANDARD),
-            (10, false, true) => Some(Self::LASKER),
-            (12, true, false) => Some(Self::MORABARABA),
-            _ => None,
+            (9, false, false) => Ok(Self::STANDARD),
+            (10, false, true) => Ok(Self::LASKER),
+            (12, true, false) => Ok(Self::MORABARABA),
+            _ => Err(PerfectDatabaseRuleMismatch::VariantShape {
+                piece_count: options.piece_count,
+                has_diagonal_lines: options.has_diagonal_lines,
+                may_move_in_placing_phase: options.may_move_in_placing_phase,
+            }),
         }
     }
 
@@ -1021,14 +1059,30 @@ mod tests {
         custom.piece_count = 12;
         custom.has_diagonal_lines = false;
         assert_eq!(DatabaseVariant::from_mill_options(&custom), None);
+        assert_eq!(
+            DatabaseVariant::match_mill_options(&custom),
+            Err(PerfectDatabaseRuleMismatch::VariantShape {
+                piece_count: 12,
+                has_diagonal_lines: false,
+                may_move_in_placing_phase: false,
+            })
+        );
 
         custom = MillVariantOptions::default();
         custom.may_remove_multiple = true;
         assert_eq!(DatabaseVariant::from_mill_options(&custom), None);
+        assert_eq!(
+            DatabaseVariant::match_mill_options(&custom),
+            Err(PerfectDatabaseRuleMismatch::CommonRules)
+        );
 
         custom = MillVariantOptions::default();
         custom.leap_capture.enabled = true;
         assert_eq!(DatabaseVariant::from_mill_options(&custom), None);
+        assert_eq!(
+            DatabaseVariant::match_mill_options(&custom),
+            Err(PerfectDatabaseRuleMismatch::CommonRules)
+        );
     }
 
     #[test]
