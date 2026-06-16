@@ -5,6 +5,7 @@
 
 #[cfg(feature = "cpp-oracle")]
 use std::ffi::{CStr, CString};
+use std::io::ErrorKind;
 #[cfg(feature = "cpp-oracle")]
 use std::os::raw::c_char;
 use std::sync::atomic::{AtomicBool, Ordering};
@@ -121,15 +122,17 @@ pub fn evaluate(
         return None;
     }
     if is_rust_backend_enabled() {
-        return rust_global::evaluate_rust_database(
-            white_bits,
-            black_bits,
-            white_in_hand,
-            black_in_hand,
-            player_to_move,
-            only_stone_taking,
-        )
-        .unwrap_or_else(|err| panic!("Rust Perfect DB evaluate failed: {err}"));
+        return rust_query_or_none(
+            rust_global::evaluate_rust_database(
+                white_bits,
+                black_bits,
+                white_in_hand,
+                black_in_hand,
+                player_to_move,
+                only_stone_taking,
+            ),
+            "evaluate",
+        );
     }
 
     evaluate_cpp_database(
@@ -155,15 +158,17 @@ pub fn best_move_token(
         return None;
     }
     if is_rust_backend_enabled() {
-        return rust_global::best_move_token_rust_database(
-            white_bits,
-            black_bits,
-            white_in_hand,
-            black_in_hand,
-            player_to_move,
-            only_stone_taking,
-        )
-        .unwrap_or_else(|err| panic!("Rust Perfect DB best move failed: {err}"));
+        return rust_query_or_none(
+            rust_global::best_move_token_rust_database(
+                white_bits,
+                black_bits,
+                white_in_hand,
+                black_in_hand,
+                player_to_move,
+                only_stone_taking,
+            ),
+            "best move",
+        );
     }
 
     best_move_token_cpp_database(
@@ -174,6 +179,21 @@ pub fn best_move_token(
         player_to_move,
         only_stone_taking,
     )
+}
+
+fn rust_query_or_none<T>(
+    result: Result<Option<T>, database::DatabaseError>,
+    context: &str,
+) -> Option<T> {
+    match result {
+        Ok(value) => value,
+        Err(database::DatabaseError::Read { source, .. })
+            if source.kind() == ErrorKind::NotFound =>
+        {
+            None
+        }
+        Err(err) => panic!("Rust Perfect DB {context} failed: {err}"),
+    }
 }
 
 #[cfg(feature = "cpp-oracle")]
@@ -320,6 +340,23 @@ mod tests {
         )));
         assert!(!is_initialized());
         assert_eq!(evaluate(0, 0, 9, 9, 0, false), None);
+        deinit();
+        #[cfg(feature = "cpp-oracle")]
+        set_rust_backend_enabled(false);
+    }
+
+    #[test]
+    fn stable_api_rust_backend_reports_missing_sector_as_none() {
+        let _guard = stable_api_test_lock();
+        set_rust_backend_enabled(true);
+        assert!(init(db_path()));
+        let white_bits = (1 << 9) - 1;
+        let black_bits = ((1 << 9) - 1) << 9;
+        assert_eq!(evaluate(white_bits, black_bits, 0, 0, 0, false), None);
+        assert_eq!(
+            best_move_token(white_bits, black_bits, 0, 0, 0, false),
+            None
+        );
         deinit();
         #[cfg(feature = "cpp-oracle")]
         set_rust_backend_enabled(false);
