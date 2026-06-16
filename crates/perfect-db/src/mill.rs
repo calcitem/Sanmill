@@ -215,8 +215,8 @@ pub fn evaluate_state_for(
 
 /// Evaluate `state` through a Rust-native database instance.
 ///
-/// This is the migration bridge used by tests and future callers while the
-/// public process-global API still delegates to the C++ oracle.
+/// This is the migration bridge used by tests and future callers that need an
+/// explicit Rust database instance instead of the process-global API.
 pub fn evaluate_state_with_database<P: DatabaseProvider>(
     database: &mut Database<P>,
     state: &MillState,

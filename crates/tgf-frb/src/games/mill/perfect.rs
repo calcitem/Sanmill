@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // Perfect-database lookup for Mill positions (Nine Men's Morris std only).
 //
-// The vendored database bridge compiles C++ and reads native files, so the
-// WebAssembly build treats Perfect DB as unavailable while keeping the public
-// FRB surface stable.
+// The native database backend reads database files from the local platform.
+// WebAssembly keeps Perfect DB unavailable while preserving the public FRB
+// surface.
 
 use tgf_core::{Action, GameStateSnapshot};
 #[cfg(not(target_arch = "wasm32"))]
@@ -22,7 +22,7 @@ use crate::games::mill::search::mill_searcher_default;
 #[cfg(not(target_arch = "wasm32"))]
 const FALLBACK_SEARCH_DEPTH: i32 = 4;
 
-/// Query the vendored perfect database for a legal action matching the
+/// Query the perfect database for a legal action matching the
 /// current position.  Returns `None` when the DB is unavailable, the
 /// variant is not std 9-piece, or no legal action matches the DB token.
 ///

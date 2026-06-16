@@ -4,7 +4,7 @@
 //! Rust-native Perfect Database loader prototype.
 //!
 //! This layer combines the byte parser and perfect-index hasher without
-//! replacing the current C++ bridge. It is deliberately provider-based so
+//! depending on the optional C++ oracle. It is deliberately provider-based so
 //! native files and future Web asset bytes can share the same parser and
 //! indexing code.
 

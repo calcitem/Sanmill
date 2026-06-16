@@ -21,7 +21,7 @@ flutter_rust_bridge = "=2.12.0"
 once_cell = "1"
 
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]
-perfect-db = { path = "../perfect-db" }
+perfect-db = { path = "../perfect-db", default-features = false }
 
 [package.metadata.wasm-pack.profile.release]
 wasm-opt = false

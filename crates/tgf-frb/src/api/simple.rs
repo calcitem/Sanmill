@@ -466,7 +466,7 @@ pub struct MillEngineConfig {
     /// SkillLevel (0-30): controls MCTS iteration count (skill_level * 2048)
     /// matching master `SkillLevel * ITERATIONS_PER_SKILL_LEVEL` (P2-F/P2-I).
     pub skill_level: u8,
-    /// When true, query the vendored perfect database after search and prefer
+    /// When true, query the perfect database after search and prefer
     /// its move when the position is in the std 9-piece database.
     pub use_perfect_database: bool,
     /// When true, randomise the order of equally-ranked root moves so the AI
@@ -512,7 +512,7 @@ pub struct EngineEvent {
     pub reason: String,
 }
 
-/// Initialize the vendored Nine Men's Morris perfect database from `path`.
+/// Initialize the Nine Men's Morris perfect database from `path`.
 /// The directory must contain `std.secval` and `std_*.sec2` sector files.
 #[flutter_rust_bridge::frb(sync)]
 #[cfg(not(target_arch = "wasm32"))]

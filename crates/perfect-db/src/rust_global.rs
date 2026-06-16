@@ -3,9 +3,9 @@
 
 //! Process-global Rust-native Perfect Database handle.
 //!
-//! The current public API still delegates to the C++ wrapper. This module is
-//! the migration handle that lets tests and future call sites exercise the
-//! Rust loader with the same process-lifetime shape.
+//! The default build can still delegate to the C++ oracle. This module is the
+//! migration handle that lets Rust-only builds, tests, and future call sites
+//! exercise the Rust loader with the same process-lifetime shape.
 
 use std::sync::{LazyLock, Mutex};
 

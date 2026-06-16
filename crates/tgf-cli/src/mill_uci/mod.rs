@@ -77,7 +77,7 @@ struct EngineConfig {
     hash_mb: u32,
     ponder: bool,
     use_lazy_smp: bool,
-    /// When true, query the vendored perfect database after search and prefer
+    /// When true, query the perfect database after search and prefer
     /// its move for the standard 9-piece variant (mirrors the Flutter shell).
     use_perfect_database: bool,
     /// Filesystem directory holding the `std_*.sec2` / `std.secval` dataset.
