@@ -448,6 +448,23 @@ fn rust_database_handles_endgame_moving_phase_sectors() {
 }
 
 #[test]
+fn memory_provider_handles_endgame_moving_phase_sector() {
+    let rules = MillRules::default();
+    let options = MillVariantOptions::default();
+    let snap = endgame_moving_snapshot(&rules, &options, &["a4", "d7", "g1"], &["g7", "d1", "b4"]);
+    let state = MillRules::decode_snapshot(snap);
+    let mut rust_db =
+        Database::open(memory_provider_for(&["std.secval", "std_3_3_0_0.sec2"])).unwrap();
+
+    assert!(
+        evaluate_state_with_database(&mut rust_db, &state, &options, snap.side_to_move)
+            .unwrap()
+            .is_some(),
+        "memory-backed endgame sector must have a Rust database evaluation"
+    );
+}
+
+#[test]
 fn rust_process_global_database_evaluates_state() {
     #[cfg(feature = "cpp-oracle")]
     let _guard = cpp_oracle_test_lock();
