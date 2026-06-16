@@ -109,12 +109,18 @@ pub(crate) fn try_perfect_best_action(
     snapshot: &tgf_core::GameStateSnapshot,
     options: &MillVariantOptions,
     legal: &[Action],
+    ordering: perfect_db::PerfectMoveOrdering,
 ) -> Option<Action> {
     if !ensure_database_for_options(options) {
         return None;
     }
     let state = MillRules::decode_snapshot(*snapshot);
-    let token = perfect_db::best_move_token_for_state(&state, options, snapshot.side_to_move)?;
+    let token = perfect_db::best_move_token_for_state_with_ordering(
+        &state,
+        options,
+        snapshot.side_to_move,
+        ordering,
+    )?;
 
     legal
         .iter()
@@ -127,6 +133,7 @@ pub(crate) fn try_perfect_best_action(
     _snapshot: &GameStateSnapshot,
     _options: &MillVariantOptions,
     _legal: &[Action],
+    _ordering: perfect_db::PerfectMoveOrdering,
 ) -> Option<Action> {
     None
 }
@@ -450,8 +457,13 @@ mod tests {
         let mut legal = tgf_core::ActionList::<256>::default();
         rules.legal_actions(&snapshot, &mut legal);
 
-        let action = try_perfect_best_action(&snapshot, &options, legal.as_slice())
-            .expect("covered endgame moving sector must return a perfect action");
+        let action = try_perfect_best_action(
+            &snapshot,
+            &options,
+            legal.as_slice(),
+            perfect_db::PerfectMoveOrdering::LegacyWdl,
+        )
+        .expect("covered endgame moving sector must return a perfect action");
         assert!(legal.as_slice().contains(&action));
         assert!(tgf_mill::MillUciCodec::encode_action(action).contains('-'));
 
@@ -470,7 +482,15 @@ mod tests {
         let mut legal = tgf_core::ActionList::<256>::default();
         rules.legal_actions(&snapshot, &mut legal);
 
-        assert!(try_perfect_best_action(&snapshot, &options, legal.as_slice()).is_none());
+        assert!(
+            try_perfect_best_action(
+                &snapshot,
+                &options,
+                legal.as_slice(),
+                perfect_db::PerfectMoveOrdering::LegacyWdl,
+            )
+            .is_none()
+        );
 
         deinit_database();
     }
@@ -491,8 +511,13 @@ mod tests {
         let mut legal = tgf_core::ActionList::<256>::default();
         rules.legal_actions(&snapshot, &mut legal);
 
-        let action = try_perfect_best_action(&snapshot, &options, legal.as_slice())
-            .expect("covered Morabaraba opening sector must return a perfect action");
+        let action = try_perfect_best_action(
+            &snapshot,
+            &options,
+            legal.as_slice(),
+            perfect_db::PerfectMoveOrdering::LegacyWdl,
+        )
+        .expect("covered Morabaraba opening sector must return a perfect action");
         assert!(legal.as_slice().contains(&action));
         assert_eq!(
             perfect_db::loaded_variant_rust_database(),
@@ -516,7 +541,15 @@ mod tests {
         let mut legal = tgf_core::ActionList::<256>::default();
         rules.legal_actions(&snapshot, &mut legal);
 
-        assert!(try_perfect_best_action(&snapshot, &options, legal.as_slice()).is_none());
+        assert!(
+            try_perfect_best_action(
+                &snapshot,
+                &options,
+                legal.as_slice(),
+                perfect_db::PerfectMoveOrdering::LegacyWdl,
+            )
+            .is_none()
+        );
         assert_eq!(
             perfect_db::loaded_variant_rust_database(),
             Some(perfect_db::database::DatabaseVariant::LASKER)

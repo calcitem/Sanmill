@@ -184,6 +184,25 @@ pub fn best_move_token_for_state(
     options: &MillVariantOptions,
     side_to_move: i8,
 ) -> Option<String> {
+    best_move_token_for_state_with_ordering(
+        state,
+        options,
+        side_to_move,
+        PerfectMoveOrdering::LegacyWdl,
+    )
+}
+
+/// Query the perfect database for the best move in `state` using an explicit
+/// move ordering policy.
+///
+/// This is the runtime entry point for callers that mirror master C++'s
+/// Random/non-lazy strict-step branch. See [`PerfectMoveOrdering`].
+pub fn best_move_token_for_state_with_ordering(
+    state: &MillState,
+    options: &MillVariantOptions,
+    side_to_move: i8,
+    ordering: PerfectMoveOrdering,
+) -> Option<String> {
     if !crate::is_initialized() {
         return None;
     }
@@ -196,13 +215,23 @@ pub fn best_move_token_for_state(
     let query = query_from_state(state, options, side_to_move)?;
 
     if crate::is_rust_backend_enabled() {
-        return match crate::best_move_token_for_state_rust_database(state, options, side_to_move) {
+        return match crate::best_move_token_for_state_rust_database_with_ordering(
+            state,
+            options,
+            side_to_move,
+            ordering,
+        ) {
             Ok(token) => token,
             Err(err) if err.is_missing_asset() => None,
             Err(err) => panic!("Rust Perfect DB state best move failed: {err}"),
         };
     }
 
+    assert_eq!(
+        ordering,
+        PerfectMoveOrdering::LegacyWdl,
+        "C++ Perfect DB oracle wrapper does not expose strict-step ordering"
+    );
     crate::best_move_token(
         query.white_bits,
         query.black_bits,
@@ -438,8 +467,24 @@ pub fn best_move_choice_for_query_with_database<P: DatabaseProvider>(
     options: &MillVariantOptions,
     query: PerfectQuery,
 ) -> Result<Option<PerfectMoveChoice>, DatabaseError> {
+    best_move_choice_for_query_with_ordering(
+        database,
+        rules,
+        options,
+        query,
+        PerfectMoveOrdering::LegacyWdl,
+    )
+}
+
+pub fn best_move_choice_for_query_with_ordering<P: DatabaseProvider>(
+    database: &mut Database<P>,
+    rules: &MillRules,
+    options: &MillVariantOptions,
+    query: PerfectQuery,
+    ordering: PerfectMoveOrdering,
+) -> Result<Option<PerfectMoveChoice>, DatabaseError> {
     let snap = snapshot_from_perfect_query(rules, options, query);
-    best_move_choice_with_database(database, rules, &snap, options)
+    best_move_choice_with_ordering(database, rules, &snap, options, ordering)
 }
 
 pub fn best_move_token_with_database<P: DatabaseProvider>(
@@ -449,6 +494,19 @@ pub fn best_move_token_with_database<P: DatabaseProvider>(
     options: &MillVariantOptions,
 ) -> Result<Option<String>, DatabaseError> {
     Ok(best_move_choice_with_database(database, rules, snap, options)?.map(|choice| choice.token))
+}
+
+pub fn best_move_token_with_ordering<P: DatabaseProvider>(
+    database: &mut Database<P>,
+    rules: &MillRules,
+    snap: &GameStateSnapshot,
+    options: &MillVariantOptions,
+    ordering: PerfectMoveOrdering,
+) -> Result<Option<String>, DatabaseError> {
+    Ok(
+        best_move_choice_with_ordering(database, rules, snap, options, ordering)?
+            .map(|choice| choice.token),
+    )
 }
 
 fn child_outcome_for_root<P: DatabaseProvider>(

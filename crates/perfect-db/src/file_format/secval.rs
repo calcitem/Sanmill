@@ -95,6 +95,28 @@ impl SecValTable {
         })
     }
 
+    /// Validate the virtual sentinel values against the packed `key1` width.
+    ///
+    /// The legacy reader derives `secValMinValue` from `field1Size` and asserts
+    /// `2 * virt_loss_val - 5 > secValMinValue` after loading `.secval`.
+    pub fn validate_value_range(&self, field1_size: u8) -> ParseResult<()> {
+        assert!(
+            (1..=15).contains(&field1_size),
+            "Perfect DB field1 size must fit a signed i16 value"
+        );
+        let sec_val_min_value = -(1_i32 << (field1_size - 1));
+        let guarded_loss = 2 * i32::from(self.virt_loss_val) - 5;
+        if guarded_loss <= sec_val_min_value {
+            return Err(ParseError::InvalidHeader {
+                message: format!(
+                    "virt_loss_val {} is outside field1_size {field1_size}",
+                    self.virt_loss_val
+                ),
+            });
+        }
+        Ok(())
+    }
+
     pub fn virt_loss_val(&self) -> i16 {
         self.virt_loss_val
     }

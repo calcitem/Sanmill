@@ -145,6 +145,14 @@ impl EngineConfig {
     }
 }
 
+fn perfect_move_ordering(cfg: &EngineConfig) -> perfect_db::PerfectMoveOrdering {
+    if cfg.algorithm == 4 && !cfg.ai_is_lazy {
+        perfect_db::PerfectMoveOrdering::StrictSteps
+    } else {
+        perfect_db::PerfectMoveOrdering::LegacyWdl
+    }
+}
+
 /// Bring the process-wide perfect-database handle in line with [`EngineConfig`]:
 /// initialize it (from `perfect_db_path`) when the option is enabled and a path
 /// is known, and release it when the option is turned off.  Idempotent.
@@ -469,12 +477,14 @@ fn run_configured_search(
         best_so_far
     };
 
-    // Perfect-database consultation (P-DB): when enabled and the position is
-    // in the std 9-piece dataset, prefer the database move over the search
-    // result.  Emits an `aimovetype` info line mirroring the Flutter shell:
-    // `consensus` when search and DB agree, `perfect` when the DB overrides.
+    // Perfect-database consultation (P-DB): when enabled and the active rule
+    // variant has matching database assets, prefer the database move over the
+    // search result.  Emits an `aimovetype` info line mirroring the Flutter
+    // shell: `consensus` when search and DB agree, `perfect` when the DB
+    // overrides.
     if cfg.use_perfect_database
-        && let Some(pd_action) = try_perfect_best_action(&options, &state)
+        && let Some(pd_action) =
+            try_perfect_best_action(&options, &state, perfect_move_ordering(cfg))
     {
         let same =
             action_to_uci(result.best_action).as_deref() == action_to_uci(pd_action).as_deref();
@@ -545,14 +555,20 @@ fn run_algorithm_at_depth(
 
 /// Match the perfect-database best-move token against the current legal
 /// actions.  Returns `None` when the DB is unavailable, the variant is not
-/// std 9-piece, or no legal action matches (see
-/// `perfect_db::best_move_token_for_state`).
+/// covered by the loaded database, or no legal action matches (see
+/// `perfect_db::best_move_token_for_state_with_ordering`).
 fn try_perfect_best_action(
     options: &MillVariantOptions,
     state: &GameStateSnapshot,
+    ordering: perfect_db::PerfectMoveOrdering,
 ) -> Option<Action> {
     let mill_state = MillRules::decode_snapshot(*state);
-    let token = perfect_db::best_move_token_for_state(&mill_state, options, state.side_to_move)?;
+    let token = perfect_db::best_move_token_for_state_with_ordering(
+        &mill_state,
+        options,
+        state.side_to_move,
+        ordering,
+    )?;
     let rules = MillRules::new(options.clone());
     let mut legal = ActionList::<256>::default();
     rules.legal_actions(state, &mut legal);

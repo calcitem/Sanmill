@@ -16,17 +16,21 @@ mod mill;
 mod rust_global;
 pub use mill::{
     PerfectMoveChoice, PerfectMoveOrdering, best_move_choice_for_query_with_database,
-    best_move_choice_with_database, best_move_choice_with_ordering,
-    best_move_choices_with_database, best_move_choices_with_ordering, best_move_token_for_state,
-    best_move_token_with_database, evaluate_state_for, evaluate_state_outcome_with_database,
+    best_move_choice_for_query_with_ordering, best_move_choice_with_database,
+    best_move_choice_with_ordering, best_move_choices_with_database,
+    best_move_choices_with_ordering, best_move_token_for_state,
+    best_move_token_for_state_with_ordering, best_move_token_with_database,
+    best_move_token_with_ordering, evaluate_state_for, evaluate_state_outcome_with_database,
     evaluate_state_with_database, snapshot_from_perfect_query,
 };
 pub use rust_global::{
-    best_move_choice_for_rust_database, best_move_choice_rust_database,
-    best_move_token_for_state_rust_database, best_move_token_rust_database, deinit_rust_database,
-    evaluate_outcome_rust_database, evaluate_rust_database, evaluate_state_for_rust_database,
-    evaluate_state_outcome_for_rust_database, init_rust_database, init_rust_database_from_provider,
-    init_rust_database_from_provider_variant,
+    best_move_choice_for_rust_database, best_move_choice_for_rust_database_with_ordering,
+    best_move_choice_rust_database, best_move_choice_rust_database_with_options,
+    best_move_token_for_state_rust_database, best_move_token_for_state_rust_database_with_ordering,
+    best_move_token_rust_database, best_move_token_rust_database_with_options,
+    deinit_rust_database, evaluate_outcome_rust_database, evaluate_rust_database,
+    evaluate_state_for_rust_database, evaluate_state_outcome_for_rust_database, init_rust_database,
+    init_rust_database_from_provider, init_rust_database_from_provider_variant,
     init_rust_database_from_provider_variant_with_options,
     init_rust_database_from_provider_with_options, init_rust_database_variant,
     init_rust_database_variant_with_options, init_rust_database_with_options,
@@ -191,7 +195,12 @@ pub fn evaluate(
     )
 }
 
-/// Query the perfect-database best move as a notation token (`a4`, `a1-a4`, `xg7`).
+/// Query the standard/default-rule perfect-database best move as a notation
+/// token (`a4`, `a1-a4`, `xg7`).
+///
+/// This raw compatibility API builds snapshots with default Nine Men's Morris
+/// options. Use [`best_move_token_with_options`] or
+/// [`best_move_token_for_state_with_ordering`] for Lasker/Morabaraba callers.
 pub fn best_move_token(
     white_bits: u32,
     black_bits: u32,
@@ -200,30 +209,52 @@ pub fn best_move_token(
     player_to_move: u8,
     only_stone_taking: bool,
 ) -> Option<String> {
-    if !is_initialized() {
-        return None;
-    }
-    if is_rust_backend_enabled() {
-        return rust_query_or_none(
-            rust_global::best_move_token_rust_database(
-                white_bits,
-                black_bits,
-                white_in_hand,
-                black_in_hand,
-                player_to_move,
-                only_stone_taking,
-            ),
-            "best move",
-        );
-    }
-
-    best_move_token_cpp_database(
+    let query = database::PerfectQuery::new(
         white_bits,
         black_bits,
         white_in_hand,
         black_in_hand,
         player_to_move,
         only_stone_taking,
+    );
+    let options = tgf_mill::MillVariantOptions::default();
+    best_move_token_with_options(&query, &options, PerfectMoveOrdering::LegacyWdl)
+}
+
+/// Query the perfect-database best move with explicit Mill rule options and
+/// move ordering policy.
+pub fn best_move_token_with_options(
+    query: &database::PerfectQuery,
+    options: &tgf_mill::MillVariantOptions,
+    ordering: PerfectMoveOrdering,
+) -> Option<String> {
+    if !is_initialized() {
+        return None;
+    }
+    if is_rust_backend_enabled() {
+        return rust_query_or_none(
+            rust_global::best_move_token_rust_database_with_options(query, options, ordering),
+            "best move",
+        );
+    }
+
+    assert_eq!(
+        database::DatabaseVariant::from_mill_options(options),
+        Some(database::DatabaseVariant::STANDARD),
+        "C++ Perfect DB oracle wrapper only supports standard rule options"
+    );
+    assert_eq!(
+        ordering,
+        PerfectMoveOrdering::LegacyWdl,
+        "C++ Perfect DB oracle wrapper does not expose strict-step ordering"
+    );
+    best_move_token_cpp_database(
+        query.white_bits,
+        query.black_bits,
+        query.white_in_hand,
+        query.black_in_hand,
+        query.side_to_move,
+        query.only_stone_taking,
     )
 }
 
@@ -395,6 +426,19 @@ mod tests {
             Some(database::DatabaseVariant::MORABARABA)
         );
         assert!(evaluate(0, 0, 12, 12, 0, false).is_some());
+        let morabaraba_options = tgf_mill::MillVariantOptions {
+            piece_count: 12,
+            has_diagonal_lines: true,
+            ..tgf_mill::MillVariantOptions::default()
+        };
+        assert!(
+            best_move_token_with_options(
+                &database::PerfectQuery::new(0, 0, 12, 12, 0, false),
+                &morabaraba_options,
+                PerfectMoveOrdering::LegacyWdl,
+            )
+            .is_some()
+        );
         deinit();
 
         #[cfg(feature = "cpp-oracle")]

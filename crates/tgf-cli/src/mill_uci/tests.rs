@@ -218,7 +218,38 @@ fn perfect_database_lookup_is_noop_when_uninitialized() {
     let rules = MillRules::default();
     let state = rules.initial_state(&[]);
     assert!(!perfect_db::is_initialized());
-    assert!(try_perfect_best_action(&MillVariantOptions::default(), &state).is_none());
+    assert!(
+        try_perfect_best_action(
+            &MillVariantOptions::default(),
+            &state,
+            perfect_db::PerfectMoveOrdering::LegacyWdl,
+        )
+        .is_none()
+    );
+}
+
+#[test]
+fn perfect_database_ordering_matches_master_random_lazy_branch() {
+    assert_eq!(
+        perfect_move_ordering(&EngineConfig::default()),
+        perfect_db::PerfectMoveOrdering::LegacyWdl
+    );
+    assert_eq!(
+        perfect_move_ordering(&EngineConfig {
+            algorithm: 4,
+            ai_is_lazy: false,
+            ..EngineConfig::default()
+        }),
+        perfect_db::PerfectMoveOrdering::StrictSteps
+    );
+    assert_eq!(
+        perfect_move_ordering(&EngineConfig {
+            algorithm: 4,
+            ai_is_lazy: true,
+            ..EngineConfig::default()
+        }),
+        perfect_db::PerfectMoveOrdering::LegacyWdl
+    );
 }
 
 #[test]

@@ -103,6 +103,14 @@ impl Default for MillEngineConfigPlan {
     }
 }
 
+fn perfect_move_ordering(config: &MillEngineConfigPlan) -> perfect_db::PerfectMoveOrdering {
+    if config.algorithm == MillSearchAlgorithmKind::Random && !config.ai_is_lazy {
+        perfect_db::PerfectMoveOrdering::StrictSteps
+    } else {
+        perfect_db::PerfectMoveOrdering::LegacyWdl
+    }
+}
+
 // ---------------------------------------------------------------------------
 // Searcher / move-ordering helpers
 // ---------------------------------------------------------------------------
@@ -445,9 +453,12 @@ fn run_mill_engine_config_event_stream(
         let rules = MillRules::new(rules_options.clone());
         rules.legal_actions(&snapshot, &mut legal);
         let legal_slice = legal.as_slice();
-        if let Some(pd_action) =
-            perfect::try_perfect_best_action(&snapshot, rules.options(), legal_slice)
-        {
+        if let Some(pd_action) = perfect::try_perfect_best_action(
+            &snapshot,
+            rules.options(),
+            legal_slice,
+            perfect_move_ordering(&config),
+        ) {
             if pd_action == search_action {
                 aimovetype = "consensus";
             } else {
@@ -497,5 +508,29 @@ mod tests {
         let empty = SearchResult::default_none();
         let recovered = apply_move_none_fallback(empty, snapshot, &options);
         assert!(!recovered.best_action.is_none());
+    }
+
+    #[test]
+    fn perfect_database_ordering_matches_master_random_lazy_branch() {
+        assert_eq!(
+            perfect_move_ordering(&MillEngineConfigPlan::default()),
+            perfect_db::PerfectMoveOrdering::LegacyWdl
+        );
+        assert_eq!(
+            perfect_move_ordering(&MillEngineConfigPlan {
+                algorithm: MillSearchAlgorithmKind::Random,
+                ai_is_lazy: false,
+                ..MillEngineConfigPlan::default()
+            }),
+            perfect_db::PerfectMoveOrdering::StrictSteps
+        );
+        assert_eq!(
+            perfect_move_ordering(&MillEngineConfigPlan {
+                algorithm: MillSearchAlgorithmKind::Random,
+                ai_is_lazy: true,
+                ..MillEngineConfigPlan::default()
+            }),
+            perfect_db::PerfectMoveOrdering::LegacyWdl
+        );
     }
 }

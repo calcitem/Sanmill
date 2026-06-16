@@ -29,8 +29,9 @@ int nativeOthelloInitialLegalCount() =>
 int nativeOthelloSearchDepthOneBestToNode() =>
     RustLib.instance.api.crateApiSimpleNativeOthelloSearchDepthOneBestToNode();
 
-/// Initialize the vendored Nine Men's Morris perfect database from `path`.
-/// The directory must contain `std.secval` and `std_*.sec2` sector files.
+/// Initialize the Mill perfect database directory from `path`.
+/// The directory may contain `std`, `lask`, and/or `mora` database files; the
+/// active Mill rules select the concrete variant at query time.
 bool millPerfectDbInit({required String path}) =>
     RustLib.instance.api.crateApiSimpleMillPerfectDbInit(path: path);
 
@@ -298,8 +299,8 @@ class MillEngineConfig {
   /// matching master `SkillLevel * ITERATIONS_PER_SKILL_LEVEL` (P2-F/P2-I).
   final int skillLevel;
 
-  /// When true, query the vendored perfect database after search and prefer
-  /// its move when the position is in the std 9-piece database.
+  /// When true, query the perfect database after search and prefer its move
+  /// when the active rule variant has matching database assets.
   final bool usePerfectDatabase;
 
   /// When true, randomise the order of equally-ranked root moves so the AI

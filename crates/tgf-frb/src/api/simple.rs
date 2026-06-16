@@ -467,8 +467,8 @@ pub struct MillEngineConfig {
     /// SkillLevel (0-30): controls MCTS iteration count (skill_level * 2048)
     /// matching master `SkillLevel * ITERATIONS_PER_SKILL_LEVEL` (P2-F/P2-I).
     pub skill_level: u8,
-    /// When true, query the perfect database after search and prefer
-    /// its move when the position is in the std 9-piece database.
+    /// When true, query the perfect database after search and prefer its move
+    /// when the active rule variant has matching database assets.
     pub use_perfect_database: bool,
     /// When true, randomise the order of equally-ranked root moves so the AI
     /// does not always play the same line (master `Shuffling` UCI option).

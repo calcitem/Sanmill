@@ -14,8 +14,9 @@ use crate::database::{
     DatabaseVariant, FileDatabaseProvider, PerfectOutcome, PerfectQuery,
 };
 use crate::mill::{
-    PerfectMoveChoice, best_move_choice_for_query_with_database, best_move_choice_with_database,
-    evaluate_state_outcome_with_database, evaluate_state_with_database,
+    PerfectMoveChoice, PerfectMoveOrdering, best_move_choice_for_query_with_ordering,
+    best_move_choice_with_ordering, evaluate_state_outcome_with_database,
+    evaluate_state_with_database,
 };
 use tgf_core::GameStateSnapshot;
 use tgf_mill::rules::MillState;
@@ -187,9 +188,17 @@ pub fn best_move_choice_rust_database(
         only_stone_taking,
     );
     let options = MillVariantOptions::default();
+    best_move_choice_rust_database_with_options(&query, &options, PerfectMoveOrdering::LegacyWdl)
+}
+
+pub fn best_move_choice_rust_database_with_options(
+    query: &PerfectQuery,
+    options: &MillVariantOptions,
+    ordering: PerfectMoveOrdering,
+) -> Result<Option<PerfectMoveChoice>, DatabaseError> {
     let rules = MillRules::new(options.clone());
     let Some(result) = with_rust_database(|database| {
-        best_move_choice_for_query_with_database(database, &rules, &options, query)
+        best_move_choice_for_query_with_ordering(database, &rules, options, *query, ordering)
     })?
     else {
         return Ok(None);
@@ -205,15 +214,27 @@ pub fn best_move_token_rust_database(
     side_to_move: u8,
     only_stone_taking: bool,
 ) -> Result<Option<String>, DatabaseError> {
-    Ok(best_move_choice_rust_database(
+    let query = PerfectQuery::new(
         white_bits,
         black_bits,
         white_in_hand,
         black_in_hand,
         side_to_move,
         only_stone_taking,
-    )?
-    .map(|choice| choice.token))
+    );
+    let options = MillVariantOptions::default();
+    best_move_token_rust_database_with_options(&query, &options, PerfectMoveOrdering::LegacyWdl)
+}
+
+pub fn best_move_token_rust_database_with_options(
+    query: &PerfectQuery,
+    options: &MillVariantOptions,
+    ordering: PerfectMoveOrdering,
+) -> Result<Option<String>, DatabaseError> {
+    Ok(
+        best_move_choice_rust_database_with_options(query, options, ordering)?
+            .map(|choice| choice.token),
+    )
 }
 
 pub fn best_move_token_for_state_rust_database(
@@ -221,12 +242,26 @@ pub fn best_move_token_for_state_rust_database(
     options: &MillVariantOptions,
     side_to_move: i8,
 ) -> Result<Option<String>, DatabaseError> {
+    best_move_token_for_state_rust_database_with_ordering(
+        state,
+        options,
+        side_to_move,
+        PerfectMoveOrdering::LegacyWdl,
+    )
+}
+
+pub fn best_move_token_for_state_rust_database_with_ordering(
+    state: &MillState,
+    options: &MillVariantOptions,
+    side_to_move: i8,
+    ordering: PerfectMoveOrdering,
+) -> Result<Option<String>, DatabaseError> {
     let rules = MillRules::new(options.clone());
     let mut state = state.clone();
     state.set_side_to_move(side_to_move);
     let snap = rules.encode_state(state);
     let Some(result) = with_rust_database(|database| {
-        best_move_choice_with_database(database, &rules, &snap, options)
+        best_move_choice_with_ordering(database, &rules, &snap, options, ordering)
     })?
     else {
         return Ok(None);
@@ -267,8 +302,22 @@ pub fn best_move_choice_for_rust_database(
     snap: &GameStateSnapshot,
     options: &MillVariantOptions,
 ) -> Result<Option<PerfectMoveChoice>, DatabaseError> {
+    best_move_choice_for_rust_database_with_ordering(
+        rules,
+        snap,
+        options,
+        PerfectMoveOrdering::LegacyWdl,
+    )
+}
+
+pub fn best_move_choice_for_rust_database_with_ordering(
+    rules: &MillRules,
+    snap: &GameStateSnapshot,
+    options: &MillVariantOptions,
+    ordering: PerfectMoveOrdering,
+) -> Result<Option<PerfectMoveChoice>, DatabaseError> {
     let Some(result) = with_rust_database(|database| {
-        best_move_choice_with_database(database, rules, snap, options)
+        best_move_choice_with_ordering(database, rules, snap, options, ordering)
     })?
     else {
         return Ok(None);

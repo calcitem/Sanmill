@@ -288,6 +288,14 @@ impl DatabaseVariant {
         self == Self::STANDARD
     }
 
+    fn field1_size(self) -> u8 {
+        assert!(
+            Self::KNOWN.contains(&self),
+            "Perfect DB field1 size is defined only for known legacy variants"
+        );
+        if self == Self::STANDARD { 12 } else { 14 }
+    }
+
     fn secval_file_name(self) -> String {
         format!("{}.secval", self.name)
     }
@@ -794,10 +802,17 @@ fn read_secval(
         name: name.clone(),
         source,
     })?;
-    SecValTable::parse(&text).map_err(|source| DatabaseError::Parse {
+    let table = SecValTable::parse(&text).map_err(|source| DatabaseError::Parse {
         name: name.clone(),
         source,
-    })
+    })?;
+    table
+        .validate_value_range(variant.field1_size())
+        .map_err(|source| DatabaseError::Parse {
+            name: name.clone(),
+            source,
+        })?;
+    Ok(table)
 }
 
 #[cfg(test)]
@@ -887,6 +902,26 @@ mod tests {
             ("std.secval", b"0\n".to_vec()),
             ("std.secval", b"1\n".to_vec()),
         ]);
+    }
+
+    #[test]
+    fn database_open_rejects_secval_outside_field1_range() {
+        let provider = MemoryDatabaseProvider::from_files([(
+            "std.secval",
+            b"virt_loss_val: -1022\nvirt_win_val: 1022\n1\n0 0 9 9 0\n".to_vec(),
+        )]);
+        let err = Database::open(provider).unwrap_err();
+        match err {
+            DatabaseError::Parse {
+                name,
+                source: ParseError::InvalidHeader { message },
+            } => {
+                assert_eq!(name, "std.secval");
+                assert!(message.contains("virt_loss_val"));
+                assert!(message.contains("field1_size 12"));
+            }
+            other => panic!("expected invalid secval range parse error, got {other}"),
+        }
     }
 
     #[test]
