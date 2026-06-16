@@ -2,9 +2,10 @@
 
 use perfect_db::database::{Database, FileDatabaseProvider, PerfectOutcome};
 use perfect_db::{
-    best_move_choice_with_database, best_move_token, best_move_token_for_state,
-    best_move_token_with_database, evaluate, evaluate_state_for,
-    evaluate_state_outcome_with_database, evaluate_state_with_database, init,
+    best_move_choice_for_rust_database, best_move_choice_with_database, best_move_token,
+    best_move_token_for_state, best_move_token_with_database, deinit_rust_database, evaluate,
+    evaluate_state_for, evaluate_state_for_rust_database, evaluate_state_outcome_with_database,
+    evaluate_state_with_database, init, init_rust_database, is_rust_database_initialized,
 };
 use tgf_core::{ActionList, BoardTopology, GameRules, GameStateSnapshot};
 use tgf_mill::notation::MillUciCodec;
@@ -230,5 +231,34 @@ fn rust_best_move_expands_removal_continuations() {
         best_move_token_with_database(&mut rust_db, &rules, &snap, &options).unwrap(),
         Some(choice.token),
         "pending removal token wrapper must match structured choice"
+    );
+}
+
+#[test]
+fn rust_process_global_database_evaluates_state() {
+    deinit_rust_database();
+    assert!(!is_rust_database_initialized());
+    init_rust_database(db_path()).unwrap();
+    assert!(is_rust_database_initialized());
+
+    let rules = MillRules::default();
+    let options = MillVariantOptions::default();
+    let snap = rules.initial_state(&[]);
+    let state = MillRules::decode_snapshot(snap);
+
+    assert_eq!(
+        evaluate_state_for_rust_database(&state, &options, 0).unwrap(),
+        Some((0, 2))
+    );
+    let choice = best_move_choice_for_rust_database(&rules, &snap, &options)
+        .unwrap()
+        .expect("global Rust DB must return an opening choice");
+    assert_best_move_is_legal(&rules, &snap, &choice.token);
+
+    deinit_rust_database();
+    assert!(!is_rust_database_initialized());
+    assert_eq!(
+        evaluate_state_for_rust_database(&state, &options, 0).unwrap(),
+        None
     );
 }

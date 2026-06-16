@@ -11,10 +11,15 @@ pub mod database;
 pub mod file_format;
 pub mod index;
 mod mill;
+mod rust_global;
 pub use mill::{
     PerfectMoveChoice, best_move_choice_with_database, best_move_token_for_state,
     best_move_token_with_database, evaluate_state_for, evaluate_state_outcome_with_database,
     evaluate_state_with_database,
+};
+pub use rust_global::{
+    best_move_choice_for_rust_database, deinit_rust_database, evaluate_state_for_rust_database,
+    evaluate_state_outcome_for_rust_database, init_rust_database, is_rust_database_initialized,
 };
 
 static INITIALIZED: AtomicBool = AtomicBool::new(false);
