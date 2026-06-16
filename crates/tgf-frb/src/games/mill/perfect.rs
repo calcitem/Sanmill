@@ -36,7 +36,10 @@ pub(crate) fn init_database_path(path: String) -> bool {
         Ok(supported) => supported,
         Err(_) => return false,
     };
-    if supported.is_empty() {
+    if !supported
+        .iter()
+        .any(|variant| variant.available_sector_count() > 0)
+    {
         return false;
     }
 
@@ -46,7 +49,7 @@ pub(crate) fn init_database_path(path: String) -> bool {
 
     if supported
         .find(perfect_db::database::DatabaseVariant::STANDARD)
-        .is_some()
+        .is_some_and(|variant| variant.available_sector_count() > 0)
     {
         return perfect_db::init_variant(&path, perfect_db::database::DatabaseVariant::STANDARD);
     }
@@ -88,6 +91,17 @@ fn ensure_database_for_options(options: &MillVariantOptions) -> bool {
     else {
         return false;
     };
+
+    let supported = match perfect_db::supported_variants(&path) {
+        Ok(supported) => supported,
+        Err(_) => return false,
+    };
+    if supported
+        .find(variant)
+        .is_none_or(|variant| variant.available_sector_count() == 0)
+    {
+        return false;
+    }
 
     if perfect_db::is_initialized() {
         perfect_db::deinit();
@@ -427,7 +441,7 @@ mod tests {
         }
     }
 
-    fn write_lasker_only_database() -> PathBuf {
+    fn write_lasker_secval_only_database() -> PathBuf {
         let unique = SystemTime::now()
             .duration_since(UNIX_EPOCH)
             .expect("system clock must be after UNIX_EPOCH")
@@ -439,9 +453,23 @@ mod tests {
         fs::create_dir(&path).expect("temporary Lasker DB directory must be created");
         fs::write(
             path.join("lask.secval"),
-            "virt_loss_val: -1\nvirt_win_val: 1\n2\n0 0 10 10 0\n0 1 10 9 0\n",
+            concat!(
+                "virt_loss_val: -1\n",
+                "virt_win_val: 1\n",
+                "3\n",
+                "0 0 10 10 0\n",
+                "0 1 10 9 0\n",
+                "1 1 9 9 0\n",
+            ),
         )
         .expect("temporary Lasker secval must be written");
+        path
+    }
+
+    fn write_lasker_partial_database() -> PathBuf {
+        let path = write_lasker_secval_only_database();
+        fs::write(path.join("lask_1_1_9_9.sec2"), b"placeholder")
+            .expect("temporary Lasker sector placeholder must be written");
         path
     }
 
@@ -530,7 +558,7 @@ mod tests {
     #[test]
     fn perfect_best_action_syncs_lasker_database_from_saved_path() {
         let _guard = perfect_db_test_lock();
-        let path = write_lasker_only_database();
+        let path = write_lasker_partial_database();
         deinit_database();
         assert!(init_database_path(path.display().to_string()));
         assert_eq!(perfect_db::loaded_variant_rust_database(), None);
@@ -554,6 +582,19 @@ mod tests {
             perfect_db::loaded_variant_rust_database(),
             Some(perfect_db::database::DatabaseVariant::LASKER)
         );
+
+        deinit_database();
+        fs::remove_dir_all(path).expect("temporary Lasker DB directory must be removable");
+    }
+
+    #[test]
+    fn perfect_database_init_rejects_secval_without_sector_files() {
+        let _guard = perfect_db_test_lock();
+        let path = write_lasker_secval_only_database();
+        deinit_database();
+
+        assert!(!init_database_path(path.display().to_string()));
+        assert_eq!(perfect_db::loaded_variant_rust_database(), None);
 
         deinit_database();
         fs::remove_dir_all(path).expect("temporary Lasker DB directory must be removable");

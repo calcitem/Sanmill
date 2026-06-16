@@ -513,12 +513,87 @@ pub struct EngineEvent {
     pub reason: String,
 }
 
+/// Availability summary for one Perfect Database variant in a directory.
+#[derive(Clone, Debug)]
+pub struct MillPerfectDatabaseVariantStatus {
+    /// Legacy database variant name: `std`, `lask`, or `mora`.
+    pub name: String,
+    /// Piece count associated with the variant.
+    pub piece_count: u8,
+    /// Number of sector ids listed by the `.secval` file.
+    pub sector_count: u32,
+    /// Number of listed sectors whose `.sec2` files are present.
+    pub available_sector_count: u32,
+}
+
+/// Perfect Database directory status used for setup diagnostics.
+#[derive(Clone, Debug)]
+pub struct MillPerfectDatabaseStatus {
+    /// Whether the directory could be read and parsed.
+    pub readable: bool,
+    /// Parse/read error message when `readable` is false; empty otherwise.
+    pub error: String,
+    /// Whether any supported `.secval` metadata was found.
+    pub has_metadata: bool,
+    /// Whether any supported variant has at least one available `.sec2` file.
+    pub has_available_sectors: bool,
+    /// Status for every supported variant found in the directory.
+    pub variants: Vec<MillPerfectDatabaseVariantStatus>,
+}
+
 /// Initialize the Mill perfect database directory from `path`.
 /// The directory may contain `std`, `lask`, and/or `mora` database files; the
 /// active Mill rules select the concrete variant at query time.
 #[flutter_rust_bridge::frb(sync)]
 pub fn mill_perfect_db_init(path: String) -> bool {
     mill_perfect::init_database_path(path)
+}
+
+/// Inspect the Mill perfect database directory without initializing it.
+#[flutter_rust_bridge::frb(sync)]
+pub fn mill_perfect_db_status(path: String) -> MillPerfectDatabaseStatus {
+    #[cfg(target_arch = "wasm32")]
+    {
+        let _ = path;
+        return MillPerfectDatabaseStatus {
+            readable: false,
+            error: "Perfect Database is not available on Web".to_owned(),
+            has_metadata: false,
+            has_available_sectors: false,
+            variants: Vec::new(),
+        };
+    }
+
+    #[cfg(not(target_arch = "wasm32"))]
+    match perfect_db::supported_variants(&path) {
+        Ok(supported) => {
+            let variants = supported
+                .iter()
+                .map(|supported| MillPerfectDatabaseVariantStatus {
+                    name: supported.variant.name.to_owned(),
+                    piece_count: supported.variant.piece_count,
+                    sector_count: supported.sector_count() as u32,
+                    available_sector_count: supported.available_sector_count() as u32,
+                })
+                .collect::<Vec<_>>();
+            MillPerfectDatabaseStatus {
+                readable: true,
+                error: String::new(),
+                has_metadata: !supported.is_empty(),
+                has_available_sectors: variants
+                    .iter()
+                    .any(|variant| variant.available_sector_count > 0),
+                variants,
+            }
+        }
+        Err(err) => MillPerfectDatabaseStatus {
+            readable: false,
+            error: err.to_string(),
+            has_metadata: false,
+            has_available_sectors: false,
+            variants: Vec::new(),
+        },
+    }
 }
 
 /// Release perfect-database resources for the current process.

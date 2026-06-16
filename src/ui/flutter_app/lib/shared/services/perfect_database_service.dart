@@ -153,7 +153,29 @@ Future<bool> ensurePerfectDatabaseReady() async {
   if (path == null) {
     return false;
   }
-  return tgf.millPerfectDbInit(path: path);
+  final tgf.MillPerfectDatabaseStatus status = tgf.millPerfectDbStatus(
+    path: path,
+  );
+  if (!status.readable) {
+    logger.e('Perfect database directory is not readable: ${status.error}');
+    return false;
+  }
+  if (!status.hasMetadata) {
+    logger.w('Perfect database directory has no supported secval metadata.');
+    return false;
+  }
+  if (!status.hasAvailableSectors) {
+    logger.w(
+      'Perfect database directory has secval metadata but no available sec2 files.',
+    );
+    return false;
+  }
+
+  final bool initialized = tgf.millPerfectDbInit(path: path);
+  if (!initialized) {
+    logger.w('Perfect database initialization was rejected by Rust.');
+  }
+  return initialized;
 }
 
 void disablePerfectDatabase() {

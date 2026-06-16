@@ -7,7 +7,7 @@ import '../frb_generated.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
 // These functions are ignored because they are not marked as `pub`: `spawn_mill_engine_config_event_stream`, `spawn_mill_pvs_event_stream`
-// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `assert_fields_are_eq`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `eq`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`
+// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `assert_fields_are_eq`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `eq`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`
 
 /// Returns a greeting string confirming that the Rust → Dart bridge works.
 /// Called from Dart as `tgfHelloWorld()` after `await RustLib.init()`.
@@ -34,6 +34,10 @@ int nativeOthelloSearchDepthOneBestToNode() =>
 /// active Mill rules select the concrete variant at query time.
 bool millPerfectDbInit({required String path}) =>
     RustLib.instance.api.crateApiSimpleMillPerfectDbInit(path: path);
+
+/// Inspect the Mill perfect database directory without initializing it.
+MillPerfectDatabaseStatus millPerfectDbStatus({required String path}) =>
+    RustLib.instance.api.crateApiSimpleMillPerfectDbStatus(path: path);
 
 /// Release perfect-database resources for the current process.
 void millPerfectDbDeinit() =>
@@ -398,6 +402,90 @@ class MillMoveAnalysis {
           outcome == other.outcome &&
           value == other.value &&
           steps == other.steps;
+}
+
+/// Perfect Database directory status used for setup diagnostics.
+class MillPerfectDatabaseStatus {
+  /// Whether the directory could be read and parsed.
+  final bool readable;
+
+  /// Parse/read error message when `readable` is false; empty otherwise.
+  final String error;
+
+  /// Whether any supported `.secval` metadata was found.
+  final bool hasMetadata;
+
+  /// Whether any supported variant has at least one available `.sec2` file.
+  final bool hasAvailableSectors;
+
+  /// Status for every supported variant found in the directory.
+  final List<MillPerfectDatabaseVariantStatus> variants;
+
+  const MillPerfectDatabaseStatus({
+    required this.readable,
+    required this.error,
+    required this.hasMetadata,
+    required this.hasAvailableSectors,
+    required this.variants,
+  });
+
+  @override
+  int get hashCode =>
+      readable.hashCode ^
+      error.hashCode ^
+      hasMetadata.hashCode ^
+      hasAvailableSectors.hashCode ^
+      variants.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is MillPerfectDatabaseStatus &&
+          runtimeType == other.runtimeType &&
+          readable == other.readable &&
+          error == other.error &&
+          hasMetadata == other.hasMetadata &&
+          hasAvailableSectors == other.hasAvailableSectors &&
+          variants == other.variants;
+}
+
+/// Availability summary for one Perfect Database variant in a directory.
+class MillPerfectDatabaseVariantStatus {
+  /// Legacy database variant name: `std`, `lask`, or `mora`.
+  final String name;
+
+  /// Piece count associated with the variant.
+  final int pieceCount;
+
+  /// Number of sector ids listed by the `.secval` file.
+  final int sectorCount;
+
+  /// Number of listed sectors whose `.sec2` files are present.
+  final int availableSectorCount;
+
+  const MillPerfectDatabaseVariantStatus({
+    required this.name,
+    required this.pieceCount,
+    required this.sectorCount,
+    required this.availableSectorCount,
+  });
+
+  @override
+  int get hashCode =>
+      name.hashCode ^
+      pieceCount.hashCode ^
+      sectorCount.hashCode ^
+      availableSectorCount.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is MillPerfectDatabaseVariantStatus &&
+          runtimeType == other.runtimeType &&
+          name == other.name &&
+          pieceCount == other.pieceCount &&
+          sectorCount == other.sectorCount &&
+          availableSectorCount == other.availableSectorCount;
 }
 
 /// Search algorithm selector exposed to Flutter.

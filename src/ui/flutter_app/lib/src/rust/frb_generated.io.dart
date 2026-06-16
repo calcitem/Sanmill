@@ -65,6 +65,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   List<MillMoveAnalysis> dco_decode_list_mill_move_analysis(dynamic raw);
 
   @protected
+  List<MillPerfectDatabaseVariantStatus>
+  dco_decode_list_mill_perfect_database_variant_status(dynamic raw);
+
+  @protected
   Uint16List dco_decode_list_prim_u_16_strict(dynamic raw);
 
   @protected
@@ -94,6 +98,15 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   MillMoveAnalysis dco_decode_mill_move_analysis(dynamic raw);
+
+  @protected
+  MillPerfectDatabaseStatus dco_decode_mill_perfect_database_status(
+    dynamic raw,
+  );
+
+  @protected
+  MillPerfectDatabaseVariantStatus
+  dco_decode_mill_perfect_database_variant_status(dynamic raw);
 
   @protected
   MillSearchAlgorithm dco_decode_mill_search_algorithm(dynamic raw);
@@ -195,6 +208,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   );
 
   @protected
+  List<MillPerfectDatabaseVariantStatus>
+  sse_decode_list_mill_perfect_database_variant_status(
+    SseDeserializer deserializer,
+  );
+
+  @protected
   Uint16List sse_decode_list_prim_u_16_strict(SseDeserializer deserializer);
 
   @protected
@@ -234,6 +253,15 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   MillMoveAnalysis sse_decode_mill_move_analysis(SseDeserializer deserializer);
+
+  @protected
+  MillPerfectDatabaseStatus sse_decode_mill_perfect_database_status(
+    SseDeserializer deserializer,
+  );
+
+  @protected
+  MillPerfectDatabaseVariantStatus
+  sse_decode_mill_perfect_database_variant_status(SseDeserializer deserializer);
 
   @protected
   MillSearchAlgorithm sse_decode_mill_search_algorithm(
@@ -351,6 +379,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   );
 
   @protected
+  void sse_encode_list_mill_perfect_database_variant_status(
+    List<MillPerfectDatabaseVariantStatus> self,
+    SseSerializer serializer,
+  );
+
+  @protected
   void sse_encode_list_prim_u_16_strict(
     Uint16List self,
     SseSerializer serializer,
@@ -407,6 +441,18 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   void sse_encode_mill_move_analysis(
     MillMoveAnalysis self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void sse_encode_mill_perfect_database_status(
+    MillPerfectDatabaseStatus self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void sse_encode_mill_perfect_database_variant_status(
+    MillPerfectDatabaseVariantStatus self,
     SseSerializer serializer,
   );
 

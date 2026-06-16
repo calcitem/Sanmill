@@ -12,6 +12,9 @@
 // matches the AGENTS.md convention for flat-file modules.
 
 use std::collections::BTreeSet;
+use std::fs;
+use std::path::PathBuf;
+use std::time::{SystemTime, UNIX_EPOCH};
 
 use super::*;
 use tgf_mill::MillPhase;
@@ -68,6 +71,40 @@ fn next_random_index(state: &mut u64, len: usize) -> usize {
     *state = x;
     let scrambled = x.wrapping_mul(0x2545_F491_4F6C_DD1D);
     (scrambled as usize) % len
+}
+
+fn write_secval_only_lasker_status_database() -> PathBuf {
+    let unique = SystemTime::now()
+        .duration_since(UNIX_EPOCH)
+        .expect("system clock must be after UNIX_EPOCH")
+        .as_nanos();
+    let path = std::env::temp_dir().join(format!(
+        "sanmill-frb-status-perfect-db-{}-{unique}",
+        std::process::id()
+    ));
+    fs::create_dir(&path).expect("temporary Perfect DB directory must be created");
+    fs::write(
+        path.join("lask.secval"),
+        "virt_loss_val: -1\nvirt_win_val: 1\n1\n0 0 10 10 0\n",
+    )
+    .expect("temporary Lasker secval must be written");
+    path
+}
+
+#[test]
+fn mill_perfect_db_status_reports_secval_without_sectors() {
+    let path = write_secval_only_lasker_status_database();
+    let status = mill_perfect_db_status(path.display().to_string());
+
+    assert!(status.readable);
+    assert!(status.has_metadata);
+    assert!(!status.has_available_sectors);
+    assert_eq!(status.variants.len(), 1);
+    assert_eq!(status.variants[0].name, "lask");
+    assert_eq!(status.variants[0].sector_count, 1);
+    assert_eq!(status.variants[0].available_sector_count, 0);
+
+    fs::remove_dir_all(path).expect("temporary Perfect DB directory must be removable");
 }
 
 #[test]
