@@ -427,6 +427,33 @@ const FROZEN_LEGAL_SECTOR_ORACLE: &[FrozenSectorOracle] = &[
     },
 ];
 
+const FROZEN_MORABARABA_LEGAL_SECTOR_ORACLE: &[FrozenSectorOracle] = &[
+    FrozenSectorOracle {
+        sector: (0, 0, 12, 12),
+        expected: (1, 49),
+    },
+    FrozenSectorOracle {
+        sector: (0, 1, 12, 11),
+        expected: (0, 5),
+    },
+    FrozenSectorOracle {
+        sector: (1, 1, 11, 11),
+        expected: (1, 49),
+    },
+    FrozenSectorOracle {
+        sector: (1, 2, 11, 10),
+        expected: (1, 43),
+    },
+    FrozenSectorOracle {
+        sector: (1, 3, 10, 9),
+        expected: (-1, 36),
+    },
+    FrozenSectorOracle {
+        sector: (2, 2, 10, 10),
+        expected: (-1, 54),
+    },
+];
+
 #[test]
 fn perfect_query_snapshot_preserves_counts_and_removal() {
     let rules = MillRules::default();
@@ -958,10 +985,13 @@ fn morabaraba_database_handles_bundled_sectors() {
         .into_iter()
         .collect::<BTreeSet<_>>();
     let samples = legal_sector_samples_for(&rules, &options, &sector_ids);
+    let frozen_sector_ids = FROZEN_MORABARABA_LEGAL_SECTOR_ORACLE
+        .iter()
+        .map(|case| case.sector_id())
+        .collect::<BTreeSet<_>>();
     assert_eq!(
-        sector_ids.len(),
-        6,
-        "test must cover every currently bundled Morabaraba sector asset"
+        sector_ids, frozen_sector_ids,
+        "frozen oracle samples must cover every currently bundled Morabaraba sector"
     );
     assert_eq!(
         samples.keys().copied().collect::<BTreeSet<_>>(),
@@ -969,13 +999,18 @@ fn morabaraba_database_handles_bundled_sectors() {
         "legal sample generation must reach every bundled Morabaraba sector"
     );
 
-    for (id, snap) in samples {
+    for case in FROZEN_MORABARABA_LEGAL_SECTOR_ORACLE {
+        let id = case.sector_id();
+        let snap = *samples
+            .get(&id)
+            .unwrap_or_else(|| panic!("missing legal sample for frozen Morabaraba sector {id:?}"));
         let state = MillRules::decode_snapshot(snap);
-        assert!(
-            evaluate_state_with_database(&mut rust_db, &state, &options, snap.side_to_move)
-                .unwrap()
-                .is_some(),
-            "Morabaraba sector {id:?} legal sample must have an evaluation"
+        let eval = evaluate_state_with_database(&mut rust_db, &state, &options, snap.side_to_move)
+            .unwrap();
+        assert_eq!(
+            eval,
+            Some(case.expected),
+            "Morabaraba sector {id:?} must match the frozen C++ oracle sample"
         );
     }
 
