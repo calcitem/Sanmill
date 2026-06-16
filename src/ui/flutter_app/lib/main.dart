@@ -60,7 +60,8 @@ Future<void> main() async {
   await RustLib.init();
 
   await DB.init();
-  if (kIsWeb && DB().generalSettings.usePerfectDatabase) {
+  if (DB().generalSettings.usePerfectDatabase ||
+      DB().generalSettings.trapAwareness) {
     DB().generalSettings = DB().generalSettings.copyWith(
       usePerfectDatabase: false,
       trapAwareness: false,
