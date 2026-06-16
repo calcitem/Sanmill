@@ -5,6 +5,8 @@ use perfect_db::database::PerfectOutcome;
 use perfect_db::database::{
     Database, DatabaseError, FileDatabaseProvider, MemoryDatabaseProvider, PerfectQuery,
 };
+#[cfg(feature = "cpp-oracle")]
+use perfect_db::file_format::SectorId;
 use perfect_db::{
     best_move_choice_for_rust_database, best_move_choice_rust_database,
     best_move_choice_with_database, best_move_choices_with_database, best_move_token_rust_database,
@@ -18,7 +20,10 @@ use perfect_db::{
     evaluate_state_outcome_with_database,
 };
 #[cfg(feature = "cpp-oracle")]
-use std::sync::{LazyLock, Mutex, MutexGuard};
+use std::{
+    collections::{BTreeMap, BTreeSet},
+    sync::{LazyLock, Mutex, MutexGuard},
+};
 use tgf_core::{ActionList, BoardTopology, GameRules, GameStateSnapshot};
 use tgf_mill::notation::MillUciCodec;
 #[cfg(feature = "cpp-oracle")]
@@ -187,6 +192,130 @@ fn next_walk_index(seed: &mut u64, len: usize) -> usize {
     assert!(len > 0, "legal action list must not be empty");
     *seed = seed.wrapping_mul(6364136223846793005).wrapping_add(1);
     ((*seed >> 32) as usize) % len
+}
+
+#[cfg(feature = "cpp-oracle")]
+fn bundled_sector_ids() -> Vec<SectorId> {
+    let mut ids = std::fs::read_dir(db_path())
+        .expect("database asset directory must be readable")
+        .map(|entry| entry.expect("database asset directory entry must be readable"))
+        .filter_map(|entry| {
+            let name = entry.file_name();
+            parse_std_sector_name(name.to_str().expect("database asset name must be UTF-8"))
+        })
+        .collect::<Vec<_>>();
+    ids.sort_unstable();
+    ids
+}
+
+#[cfg(feature = "cpp-oracle")]
+fn parse_std_sector_name(name: &str) -> Option<SectorId> {
+    let stem = name.strip_prefix("std_")?.strip_suffix(".sec2")?;
+    let parts = stem
+        .split('_')
+        .map(|part| part.parse::<u8>().ok())
+        .collect::<Option<Vec<_>>>()?;
+    assert_eq!(
+        parts.len(),
+        4,
+        "std sector file names must contain four numeric fields"
+    );
+    Some(SectorId::new(parts[0], parts[1], parts[2], parts[3]))
+}
+
+#[cfg(feature = "cpp-oracle")]
+fn sector_id_for_snapshot(snap: &GameStateSnapshot) -> Option<SectorId> {
+    if snap.side_to_move != 0 && snap.side_to_move != 1 {
+        return None;
+    }
+    let state = MillRules::decode_snapshot(*snap);
+    if state.pending_removals().iter().any(|&count| count > 0) {
+        return None;
+    }
+
+    let white_on_board = state.board().iter().filter(|&&owner| owner == 1).count() as u8;
+    let black_on_board = state.board().iter().filter(|&&owner| owner == 2).count() as u8;
+    let in_hand = state.pieces_in_hand();
+    if snap.side_to_move == 0 {
+        Some(SectorId::new(
+            white_on_board,
+            black_on_board,
+            in_hand[0],
+            in_hand[1],
+        ))
+    } else {
+        Some(SectorId::new(
+            black_on_board,
+            white_on_board,
+            in_hand[1],
+            in_hand[0],
+        ))
+    }
+}
+
+#[cfg(feature = "cpp-oracle")]
+fn record_sector_sample(
+    samples: &mut BTreeMap<SectorId, GameStateSnapshot>,
+    bundled: &BTreeSet<SectorId>,
+    snap: GameStateSnapshot,
+) {
+    let Some(id) = sector_id_for_snapshot(&snap) else {
+        return;
+    };
+    if bundled.contains(&id) {
+        samples.entry(id).or_insert(snap);
+    }
+}
+
+#[cfg(feature = "cpp-oracle")]
+fn legal_sector_samples(
+    rules: &MillRules,
+    options: &MillVariantOptions,
+) -> BTreeMap<SectorId, GameStateSnapshot> {
+    let bundled = bundled_sector_ids().into_iter().collect::<BTreeSet<_>>();
+    let mut samples = BTreeMap::new();
+
+    record_sector_sample(&mut samples, &bundled, rules.initial_state(&[]));
+    let no_capture_line = ["a4", "g7", "d7", "a1", "g1", "d1", "b6", "f6"];
+    let mut snap = rules.initial_state(&[]);
+    for label in no_capture_line {
+        let action = MillUciCodec::decode_action(&snap, label)
+            .unwrap_or_else(|| panic!("failed to decode action {label}"));
+        snap = rules.apply(&snap, action);
+        record_sector_sample(&mut samples, &bundled, snap);
+    }
+
+    for (white, black) in [
+        (&["a4", "d7", "g1"][..], &["g7", "d1", "b4"][..]),
+        (&["a4", "d7", "g1"][..], &["g7", "d1", "b4", "c5"][..]),
+        (&["a4", "d7", "g1", "c5"][..], &["g7", "d1", "b4"][..]),
+    ] {
+        record_sector_sample(
+            &mut samples,
+            &bundled,
+            endgame_moving_snapshot(rules, options, white, black),
+        );
+    }
+
+    let mut seed = 0x51de_cafe_f00d_u64;
+    for _ in 0..4096 {
+        let mut snap = rules.initial_state(&[]);
+        for _ in 0..18 {
+            if samples.len() == bundled.len() {
+                return samples;
+            }
+            let mut legal = ActionList::<256>::default();
+            rules.legal_actions(&snap, &mut legal);
+            if legal.is_empty() {
+                break;
+            }
+            let idx = next_walk_index(&mut seed, legal.as_slice().len());
+            snap = rules.apply(&snap, legal.as_slice()[idx]);
+            record_sector_sample(&mut samples, &bundled, snap);
+        }
+    }
+
+    samples
 }
 
 #[test]
@@ -401,6 +530,47 @@ fn std_perfect_db_oracle_vectors() {
     // Do not call deinit here: the current C++ bridge has fragile sector-hash
     // shutdown behavior. The Rust rewrite should make shutdown deterministic,
     // but these oracle vectors only need process-lifetime resources.
+    perfect_db::set_rust_backend_enabled(true);
+}
+
+#[cfg(feature = "cpp-oracle")]
+#[test]
+fn std_perfect_db_oracle_matches_legal_bundled_sector_samples() {
+    let _guard = cpp_oracle_test_lock();
+    perfect_db::set_rust_backend_enabled(false);
+    assert!(
+        init(db_path()),
+        "pd_init_std must succeed with bundled assets"
+    );
+
+    let rules = MillRules::default();
+    let options = MillVariantOptions::default();
+    let mut rust_db = Database::open(FileDatabaseProvider::new(db_path())).unwrap();
+    let sector_ids = bundled_sector_ids().into_iter().collect::<BTreeSet<_>>();
+    let samples = legal_sector_samples(&rules, &options);
+    assert_eq!(
+        sector_ids.len(),
+        19,
+        "test must cover every currently bundled std sector asset"
+    );
+    assert_eq!(
+        samples.keys().copied().collect::<BTreeSet<_>>(),
+        sector_ids,
+        "legal sample generation must reach every bundled std sector"
+    );
+
+    for (id, snap) in samples {
+        let state = MillRules::decode_snapshot(snap);
+        let cpp_eval = evaluate_state_for(&state, &options, snap.side_to_move);
+        let rust_eval =
+            evaluate_state_with_database(&mut rust_db, &state, &options, snap.side_to_move)
+                .unwrap();
+        assert_eq!(
+            rust_eval, cpp_eval,
+            "sector {id:?} legal sample must match the C++ oracle"
+        );
+    }
+
     perfect_db::set_rust_backend_enabled(true);
 }
 
