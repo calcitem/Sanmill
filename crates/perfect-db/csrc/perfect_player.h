@@ -75,6 +75,7 @@ public:
     static std::map<Wrappers::WID, Wrappers::WSector> get_sectors();
 
     static bool has_database();
+    static void reset();
 };
 
 class Player

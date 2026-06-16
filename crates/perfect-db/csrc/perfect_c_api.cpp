@@ -8,6 +8,8 @@
 #include "perfect_common.h"
 #include "perfect_errors.h"
 #include "perfect_game_state.h"
+#include "perfect_player.h"
+#include "perfect_sec_val.h"
 #include "perfect_wrappers.h"
 #include "perfect_sector.h"
 #include "perfect_hash.h"
@@ -31,7 +33,29 @@ static bool g_pd_inited = false;
 
 extern "C" {
 
-PD_API int pd_init_std(const char *db_path)
+static void reset_perfect_database_oracle()
+{
+    MalomSolutionAccess::deinitialize_if_needed();
+    Sectors::reset();
+    reset_sec_vals();
+    g_pd_inited = false;
+}
+
+static bool set_perfect_database_rule(int piece_count)
+{
+    switch (piece_count) {
+    case 9:
+        return set_rule(0);
+    case 10:
+        return set_rule(5);
+    case 12:
+        return set_rule(1);
+    default:
+        return false;
+    }
+}
+
+PD_API int pd_init_variant(const char *db_path, int piece_count)
 {
     try {
         using namespace PerfectErrors;
@@ -40,13 +64,18 @@ PD_API int pd_init_std(const char *db_path)
         if (!db_path || !*db_path)
             return 0;
 
+        reset_perfect_database_oracle();
+
+        if (!set_perfect_database_rule(piece_count))
+            return 0;
+
         gameOptions.setPerfectDatabasePath(std::string(db_path));
         gameOptions.setUsePerfectDatabase(true);
 
-        set_rule(0);
-
-        if (!MalomSolutionAccess::initialize_if_needed())
+        if (!MalomSolutionAccess::initialize_if_needed()) {
+            reset_perfect_database_oracle();
             return 0;
+        }
 
         g_pd_inited = true;
         return 1;
@@ -55,13 +84,15 @@ PD_API int pd_init_std(const char *db_path)
     }
 }
 
+PD_API int pd_init_std(const char *db_path)
+{
+    return pd_init_variant(db_path, 9);
+}
+
 PD_API void pd_deinit()
 {
     try {
-        if (!g_pd_inited)
-            return;
-        MalomSolutionAccess::deinitialize_if_needed();
-        g_pd_inited = false;
+        reset_perfect_database_oracle();
     } catch (...) {
         g_pd_inited = false;
     }

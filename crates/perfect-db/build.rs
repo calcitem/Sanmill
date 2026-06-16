@@ -14,6 +14,7 @@ fn main() {
 fn build_cpp_oracle() {
     let manifest_dir = PathBuf::from(env::var("CARGO_MANIFEST_DIR").expect("CARGO_MANIFEST_DIR"));
     let csrc = manifest_dir.join("csrc");
+    println!("cargo:rerun-if-changed=build.rs");
 
     let sources = [
         "perfect_api.cpp",
@@ -39,6 +40,22 @@ fn build_cpp_oracle() {
         "option.cpp",
         "rule.cpp",
     ];
+
+    for src in sources {
+        println!("cargo:rerun-if-changed={}", csrc.join(src).display());
+    }
+
+    for header in std::fs::read_dir(&csrc).expect("Perfect DB csrc directory must be readable") {
+        let path = header
+            .expect("Perfect DB csrc entry must be readable")
+            .path();
+        if matches!(
+            path.extension().and_then(|extension| extension.to_str()),
+            Some("h" | "hpp")
+        ) {
+            println!("cargo:rerun-if-changed={}", path.display());
+        }
+    }
 
     let mut build = cc::Build::new();
     build.cpp(true).std("c++17").include(&csrc).warnings(false);

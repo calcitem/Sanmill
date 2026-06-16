@@ -10,28 +10,39 @@ int ruleVariant;
 
 std::unordered_map<Id, int> sector_sizes;
 
+namespace {
+
+std::set<std::pair<int, ::Sector *>> g_loaded_hashes;
+std::map<::Sector *, int> g_loaded_hashes_inv;
+int g_loaded_hash_timestamp = 0;
+
+} // namespace
+
+void Wrappers::reset_hash_cache()
+{
+    g_loaded_hashes.clear();
+    g_loaded_hashes_inv.clear();
+    g_loaded_hash_timestamp = 0;
+}
+
 // This manages the lookup tables of the hash function: it keeps them in memory
 // for a few most recently accessed sectors.
 std::pair<int, Wrappers::gui_eval_elem2> Wrappers::WSector::hash(board a)
 {
-    static std::set<std::pair<int, ::Sector *>> loaded_hashes;
-    static std::map<::Sector *, int> loaded_hashes_inv;
-    static int timestamp = 0;
-
     ::Sector *tmp = s;
 
     if (s->hash == nullptr) {
         // hash object is not present
 
-        if (loaded_hashes.size() == 8) {
+        if (g_loaded_hashes.size() == 8) {
             // release one if there are too many
-            ::Sector *to_release = loaded_hashes.begin()->second;
+            ::Sector *to_release = g_loaded_hashes.begin()->second;
 #ifdef DEBUG
             LOG("Releasing hash: %s\n", to_release->id.to_string().c_str());
 #endif
             to_release->release_hash();
-            loaded_hashes.erase(loaded_hashes.begin());
-            loaded_hashes_inv.erase(to_release);
+            g_loaded_hashes.erase(g_loaded_hashes.begin());
+            g_loaded_hashes_inv.erase(to_release);
         }
 
         // load new one
@@ -41,13 +52,13 @@ std::pair<int, Wrappers::gui_eval_elem2> Wrappers::WSector::hash(board a)
         s->allocate_hash();
     } else {
         // update access time
-        loaded_hashes.erase(std::make_pair(loaded_hashes_inv[tmp], tmp));
+        g_loaded_hashes.erase(std::make_pair(g_loaded_hashes_inv[tmp], tmp));
     }
-    loaded_hashes.insert(std::make_pair(timestamp, tmp));
+    g_loaded_hashes.insert(std::make_pair(g_loaded_hash_timestamp, tmp));
     // s doesn't work here, which is probably a compiler bug!
-    loaded_hashes_inv[tmp] = timestamp;
+    g_loaded_hashes_inv[tmp] = g_loaded_hash_timestamp;
 
-    timestamp++;
+    g_loaded_hash_timestamp++;
 
     if (!s->hash) {
         LOG("Error: hash not initialized for sector %s\n",

@@ -32,6 +32,8 @@ class WSector;
 
 extern std::unordered_map<Id, int> sector_sizes;
 
+void reset_hash_cache();
+
 struct WID
 {
     int W, B, WF, BF;

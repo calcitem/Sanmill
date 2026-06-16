@@ -16,13 +16,13 @@ std::map<Id, sec_val> sec_vals;
 std::map<sec_val, Id> inv_sec_vals;
 #endif
 sec_val virt_loss_val = 0, virt_win_val = 0;
+static bool sec_vals_initialized = false;
 
 void init_sec_vals()
 {
-    static bool called = false;
-    if (called)
+    if (sec_vals_initialized)
         return;
-    called = true;
+    sec_vals_initialized = true;
 
 #ifdef DD
 #ifndef STONE_DIFF
@@ -92,6 +92,17 @@ void init_sec_vals()
                                                                // zero-sum
     }
 #endif
+}
+
+void reset_sec_vals()
+{
+    sec_vals.clear();
+#ifndef STONE_DIFF
+    inv_sec_vals.clear();
+#endif
+    virt_loss_val = 0;
+    virt_win_val = 0;
+    sec_vals_initialized = false;
 }
 
 std::string sec_val_to_sec_name(sec_val v)

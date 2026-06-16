@@ -13,6 +13,12 @@
 
 extern "C" {
 
+// Initialize a specific Perfect DB variant by piece count:
+// 9 = std, 10 = lask, 12 = mora.
+// db_path: directory containing <variant>_*.sec2 and <variant>.secval
+// Returns 1 for success, 0 for failure
+PD_API int pd_init_variant(const char *db_path, int piece_count);
+
 // Initialize the standard Nine Men's Perfect DB (std, 9 pieces)
 // db_path: directory containing std_*.sec2 and std.secval
 // Returns 1 for success, 0 for failure

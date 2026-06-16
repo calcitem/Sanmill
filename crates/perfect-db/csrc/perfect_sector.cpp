@@ -378,7 +378,9 @@ void Sector::release_hash()
     em_set.clear();
 
 #ifdef WRAPPER
-    fclose(f);
-    f = nullptr;
+    if (f != nullptr) {
+        fclose(f);
+        f = nullptr;
+    }
 #endif
 }

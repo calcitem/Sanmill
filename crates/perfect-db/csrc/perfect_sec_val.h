@@ -19,5 +19,6 @@ extern sec_val virt_loss_val, virt_win_val;
 std::string sec_val_to_sec_name(sec_val v);
 
 void init_sec_vals();
+void reset_sec_vals();
 
 #endif // PERFECT_SEV_VAL_H_INCLUDED

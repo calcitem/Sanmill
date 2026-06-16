@@ -79,6 +79,25 @@ bool Sectors::has_database()
     return get_sectors().size() > 0;
 }
 
+void Sectors::reset()
+{
+    Wrappers::reset_hash_cache();
+    sectors.clear();
+    created = false;
+
+    for (Sector *sector : sector_objs) {
+        if (sector == nullptr) {
+            continue;
+        }
+        if (sector->hash != nullptr || sector->f != nullptr) {
+            sector->release_hash();
+        }
+        delete sector;
+    }
+    sector_objs.clear();
+    ::sectors.clear();
+}
+
 // The object is informed to enter the specified game
 void Player::enter_game(Game *_g)
 {

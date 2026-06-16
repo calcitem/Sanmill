@@ -650,6 +650,71 @@ fn std_perfect_db_oracle_vectors() {
 
 #[cfg(feature = "cpp-oracle")]
 #[test]
+fn morabaraba_perfect_db_oracle_vectors() {
+    let _guard = cpp_oracle_test_lock();
+    perfect_db::set_rust_backend_enabled(false);
+    assert!(
+        perfect_db::init_variant(db_path(), DatabaseVariant::MORABARABA),
+        "C++ oracle must initialize the bundled Morabaraba assets"
+    );
+
+    let options = MillVariantOptions {
+        piece_count: 12,
+        has_diagonal_lines: true,
+        ..MillVariantOptions::default()
+    };
+    let rules = MillRules::new(options.clone());
+    let snap = rules.initial_state(&[]);
+    let state = MillRules::decode_snapshot(snap);
+    let mut rust_db = Database::open_variant(
+        FileDatabaseProvider::new(db_path()),
+        DatabaseVariant::MORABARABA,
+    )
+    .unwrap();
+
+    let cpp_eval = evaluate_state_for(&state, &options, snap.side_to_move);
+    let rust_eval =
+        evaluate_state_with_database(&mut rust_db, &state, &options, snap.side_to_move).unwrap();
+    assert!(
+        cpp_eval.is_some(),
+        "bundled Morabaraba opening sector must be covered by the C++ oracle"
+    );
+    assert_eq!(
+        rust_eval, cpp_eval,
+        "Morabaraba opening eval must match between C++ oracle and Rust loader"
+    );
+
+    let token = best_move_token_for_state(&state, &options, snap.side_to_move)
+        .expect("Morabaraba C++ oracle must return an opening best move");
+    assert_best_move_is_legal(&rules, &snap, &token);
+
+    let choices = best_move_choices_with_database(&mut rust_db, &rules, &snap, &options)
+        .unwrap()
+        .expect("Rust Morabaraba loader must expose opening best choices");
+    let optimal_tokens: BTreeSet<&str> =
+        choices.iter().map(|choice| choice.token.as_str()).collect();
+    assert!(
+        optimal_tokens.contains(token.as_str()),
+        "Morabaraba C++ state best move {token} must be Rust-optimal"
+    );
+
+    let raw_token = perfect_db::best_move_token_with_options(
+        &PerfectQuery::new(0, 0, 12, 12, 0, false),
+        &options,
+        perfect_db::PerfectMoveOrdering::LegacyWdl,
+    )
+    .expect("raw Morabaraba C++ oracle must return an opening best move");
+    assert_best_move_is_legal(&rules, &snap, &raw_token);
+    assert!(
+        optimal_tokens.contains(raw_token.as_str()),
+        "raw Morabaraba best move {raw_token} must be Rust-optimal"
+    );
+
+    perfect_db::set_rust_backend_enabled(true);
+}
+
+#[cfg(feature = "cpp-oracle")]
+#[test]
 fn std_perfect_db_oracle_matches_legal_bundled_sector_samples() {
     let _guard = cpp_oracle_test_lock();
     perfect_db::set_rust_backend_enabled(false);

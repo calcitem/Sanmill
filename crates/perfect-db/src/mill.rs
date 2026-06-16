@@ -169,7 +169,7 @@ fn process_global_database_matches_options(options: &MillVariantOptions) -> bool
     if crate::is_rust_backend_enabled() {
         return crate::loaded_variant_rust_database() == Some(variant);
     }
-    variant.is_standard()
+    crate::loaded_variant_cpp_database() == Some(variant)
 }
 
 /// Query the perfect database for the best move in `state`, returned as a Mill
@@ -232,14 +232,7 @@ pub fn best_move_token_for_state_with_ordering(
         PerfectMoveOrdering::LegacyWdl,
         "C++ Perfect DB oracle wrapper does not expose strict-step ordering"
     );
-    crate::best_move_token(
-        query.white_bits,
-        query.black_bits,
-        query.white_in_hand,
-        query.black_in_hand,
-        query.side_to_move,
-        query.only_stone_taking,
-    )
+    crate::best_move_token_with_options(&query, options, ordering)
 }
 
 /// Evaluate `state` through the perfect database, returning `(wdl, steps)`

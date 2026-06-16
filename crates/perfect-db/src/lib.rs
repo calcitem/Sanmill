@@ -8,6 +8,8 @@ use std::ffi::{CStr, CString};
 #[cfg(feature = "cpp-oracle")]
 use std::os::raw::c_char;
 use std::sync::atomic::{AtomicBool, Ordering};
+#[cfg(feature = "cpp-oracle")]
+use std::sync::{LazyLock, Mutex};
 
 pub mod database;
 pub mod file_format;
@@ -58,7 +60,7 @@ static USE_RUST_BACKEND: AtomicBool = AtomicBool::new(true);
 
 #[cfg(feature = "cpp-oracle")]
 unsafe extern "C" {
-    fn pd_init_std(db_path: *const c_char) -> i32;
+    fn pd_init_variant(db_path: *const c_char, piece_count: i32) -> i32;
     fn pd_deinit();
     fn pd_evaluate(
         white_bits: i32,
@@ -81,6 +83,10 @@ unsafe extern "C" {
         out_buf_len: i32,
     ) -> i32;
 }
+
+#[cfg(feature = "cpp-oracle")]
+static CPP_LOADED_VARIANT: LazyLock<Mutex<Option<database::DatabaseVariant>>> =
+    LazyLock::new(|| Mutex::new(None));
 
 /// Initialize the standard Nine Men's Morris perfect database from `db_path`.
 pub fn init(db_path: &str) -> bool {
@@ -114,16 +120,11 @@ pub fn init_variant_with_options(
     }
 
     assert_eq!(
-        variant,
-        database::DatabaseVariant::STANDARD,
-        "C++ Perfect DB backend only supports standard initialization"
-    );
-    assert_eq!(
         options,
         database::DatabaseOptions::default(),
         "C++ Perfect DB backend does not support DatabaseOptions"
     );
-    let ok = init_cpp_database(db_path);
+    let ok = init_cpp_database(db_path, variant);
     INITIALIZED.store(ok, Ordering::SeqCst);
     ok
 }
@@ -157,6 +158,22 @@ pub fn set_rust_backend_enabled(enabled: bool) {
 
 pub fn is_rust_backend_enabled() -> bool {
     USE_RUST_BACKEND.load(Ordering::SeqCst)
+}
+
+pub(crate) fn loaded_variant_cpp_database() -> Option<database::DatabaseVariant> {
+    loaded_variant_cpp_database_impl()
+}
+
+#[cfg(feature = "cpp-oracle")]
+fn loaded_variant_cpp_database_impl() -> Option<database::DatabaseVariant> {
+    *CPP_LOADED_VARIANT
+        .lock()
+        .expect("C++ Perfect DB loaded-variant mutex must not be poisoned")
+}
+
+#[cfg(not(feature = "cpp-oracle"))]
+fn loaded_variant_cpp_database_impl() -> Option<database::DatabaseVariant> {
+    None
 }
 
 /// Evaluate a position. Returns `(wdl, steps)` where `wdl` is 1=win, 0=draw, -1=loss.
@@ -240,8 +257,8 @@ pub fn best_move_token_with_options(
 
     assert_eq!(
         database::DatabaseVariant::from_mill_options(options),
-        Some(database::DatabaseVariant::STANDARD),
-        "C++ Perfect DB oracle wrapper only supports standard rule options"
+        loaded_variant_cpp_database(),
+        "C++ Perfect DB oracle wrapper must match the requested rule options"
     );
     assert_eq!(
         ordering,
@@ -270,21 +287,29 @@ fn rust_query_or_none<T>(
 }
 
 #[cfg(feature = "cpp-oracle")]
-fn init_cpp_database(db_path: &str) -> bool {
+fn init_cpp_database(db_path: &str, variant: database::DatabaseVariant) -> bool {
     let Ok(path) = CString::new(db_path) else {
         return false;
     };
-    unsafe { pd_init_std(path.as_ptr()) != 0 }
+    let ok = unsafe { pd_init_variant(path.as_ptr(), i32::from(variant.piece_count)) != 0 };
+    *CPP_LOADED_VARIANT
+        .lock()
+        .expect("C++ Perfect DB loaded-variant mutex must not be poisoned") =
+        if ok { Some(variant) } else { None };
+    ok
 }
 
 #[cfg(not(feature = "cpp-oracle"))]
-fn init_cpp_database(_db_path: &str) -> bool {
+fn init_cpp_database(_db_path: &str, _variant: database::DatabaseVariant) -> bool {
     panic!("C++ Perfect DB oracle backend is not compiled");
 }
 
 #[cfg(feature = "cpp-oracle")]
 fn deinit_cpp_database() {
     unsafe { pd_deinit() };
+    *CPP_LOADED_VARIANT
+        .lock()
+        .expect("C++ Perfect DB loaded-variant mutex must not be poisoned") = None;
 }
 
 #[cfg(not(feature = "cpp-oracle"))]
