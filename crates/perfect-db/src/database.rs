@@ -65,6 +65,14 @@ impl std::error::Error for DatabaseError {}
 
 pub trait DatabaseProvider {
     fn read(&self, name: &str) -> Result<Vec<u8>, DatabaseError>;
+
+    fn exists(&self, name: &str) -> Result<bool, DatabaseError> {
+        match self.read(name) {
+            Ok(_) => Ok(true),
+            Err(err) if err.is_missing_asset() => Ok(false),
+            Err(err) => Err(err),
+        }
+    }
 }
 
 pub struct BoxDatabaseProvider {
@@ -111,6 +119,14 @@ impl DatabaseProvider for FileDatabaseProvider {
     fn read(&self, name: &str) -> Result<Vec<u8>, DatabaseError> {
         let path = self.root.join(name);
         std::fs::read(&path).map_err(|source| DatabaseError::Read {
+            name: path.display().to_string(),
+            source,
+        })
+    }
+
+    fn exists(&self, name: &str) -> Result<bool, DatabaseError> {
+        let path = self.root.join(name);
+        path.try_exists().map_err(|source| DatabaseError::Read {
             name: path.display().to_string(),
             source,
         })
@@ -166,6 +182,10 @@ impl DatabaseProvider for MemoryDatabaseProvider {
                     "perfect database memory asset is missing",
                 ),
             })
+    }
+
+    fn exists(&self, name: &str) -> Result<bool, DatabaseError> {
+        Ok(self.files.contains_key(name))
     }
 }
 
@@ -236,6 +256,85 @@ impl DatabaseVariant {
             black_on_board + query.black_in_hand <= self.piece_count,
             "Perfect DB black on-board plus in-hand count must fit the database variant"
         );
+    }
+}
+
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct SupportedPerfectVariant {
+    pub variant: DatabaseVariant,
+    pub sector_ids: Vec<SectorId>,
+    pub available_sector_ids: Vec<SectorId>,
+}
+
+impl SupportedPerfectVariant {
+    pub fn sector_count(&self) -> usize {
+        self.sector_ids.len()
+    }
+
+    pub fn available_sector_count(&self) -> usize {
+        self.available_sector_ids.len()
+    }
+
+    pub fn has_available_sector(&self, id: SectorId) -> bool {
+        self.available_sector_ids.binary_search(&id).is_ok()
+    }
+
+    pub fn is_fully_available(&self) -> bool {
+        self.sector_ids == self.available_sector_ids
+    }
+}
+
+#[derive(Clone, Debug, Default, PartialEq, Eq)]
+pub struct SupportedPerfectVariants {
+    variants: Vec<SupportedPerfectVariant>,
+}
+
+impl SupportedPerfectVariants {
+    pub fn from_provider(provider: &impl DatabaseProvider) -> Result<Self, DatabaseError> {
+        let mut variants = Vec::new();
+        for variant in DatabaseVariant::KNOWN {
+            let secval_name = variant.secval_file_name();
+            if !provider.exists(&secval_name)? {
+                continue;
+            }
+            let sec_vals = read_secval(provider, variant)?;
+            let sector_ids = sec_vals.sector_ids().collect::<Vec<_>>();
+            let mut available_sector_ids = Vec::new();
+            for &id in &sector_ids {
+                if provider.exists(&variant.sector_file_name(id))? {
+                    available_sector_ids.push(id);
+                }
+            }
+            variants.push(SupportedPerfectVariant {
+                variant,
+                sector_ids,
+                available_sector_ids,
+            });
+        }
+
+        Ok(Self { variants })
+    }
+
+    pub fn as_slice(&self) -> &[SupportedPerfectVariant] {
+        &self.variants
+    }
+
+    pub fn iter(&self) -> impl Iterator<Item = &SupportedPerfectVariant> {
+        self.variants.iter()
+    }
+
+    pub fn len(&self) -> usize {
+        self.variants.len()
+    }
+
+    pub fn is_empty(&self) -> bool {
+        self.variants.is_empty()
+    }
+
+    pub fn find(&self, variant: DatabaseVariant) -> Option<&SupportedPerfectVariant> {
+        self.variants
+            .iter()
+            .find(|supported| supported.variant == variant)
     }
 }
 
@@ -420,6 +519,10 @@ struct LoadedSector {
 }
 
 impl<P: DatabaseProvider> Database<P> {
+    pub fn supported_variants(provider: &P) -> Result<SupportedPerfectVariants, DatabaseError> {
+        SupportedPerfectVariants::from_provider(provider)
+    }
+
     pub fn open(provider: P) -> Result<Self, DatabaseError> {
         Self::open_variant(provider, DatabaseVariant::STANDARD)
     }
@@ -429,16 +532,7 @@ impl<P: DatabaseProvider> Database<P> {
             DatabaseVariant::KNOWN.contains(&variant),
             "Perfect DB variant metadata must be one of the known legacy variants"
         );
-        let name = variant.secval_file_name();
-        let bytes = provider.read(&name)?;
-        let text = String::from_utf8(bytes).map_err(|source| DatabaseError::InvalidUtf8 {
-            name: name.clone(),
-            source,
-        })?;
-        let sec_vals = SecValTable::parse(&text).map_err(|source| DatabaseError::Parse {
-            name: name.clone(),
-            source,
-        })?;
+        let sec_vals = read_secval(&provider, variant)?;
 
         Ok(Self {
             provider,
@@ -536,6 +630,40 @@ impl<P: DatabaseProvider> Database<P> {
             .get(&id)
             .expect("sector must be loaded after insertion"))
     }
+
+    pub fn variant(&self) -> DatabaseVariant {
+        self.variant
+    }
+
+    pub fn sector_ids(&self) -> Vec<SectorId> {
+        self.sec_vals.sector_ids().collect()
+    }
+
+    pub fn available_sector_ids(&self) -> Result<Vec<SectorId>, DatabaseError> {
+        let mut ids = Vec::new();
+        for id in self.sec_vals.sector_ids() {
+            if self.provider.exists(&self.variant.sector_file_name(id))? {
+                ids.push(id);
+            }
+        }
+        Ok(ids)
+    }
+}
+
+fn read_secval(
+    provider: &impl DatabaseProvider,
+    variant: DatabaseVariant,
+) -> Result<SecValTable, DatabaseError> {
+    let name = variant.secval_file_name();
+    let bytes = provider.read(&name)?;
+    let text = String::from_utf8(bytes).map_err(|source| DatabaseError::InvalidUtf8 {
+        name: name.clone(),
+        source,
+    })?;
+    SecValTable::parse(&text).map_err(|source| DatabaseError::Parse {
+        name: name.clone(),
+        source,
+    })
 }
 
 #[cfg(test)]
@@ -569,6 +697,7 @@ mod tests {
     #[test]
     fn memory_provider_reports_missing_assets() {
         let provider = MemoryDatabaseProvider::from_files([("std.secval", b"0\n".to_vec())]);
+        assert!(!provider.exists("std_0_0_9_9.sec2").unwrap());
         let err = provider.read("std_0_0_9_9.sec2").unwrap_err();
         match err {
             DatabaseError::Read { name, source } => {
@@ -586,6 +715,67 @@ mod tests {
             ("std.secval", b"0\n".to_vec()),
             ("std.secval", b"1\n".to_vec()),
         ]);
+    }
+
+    #[test]
+    fn supported_variants_report_bundled_standard_sector_subset() {
+        let provider = FileDatabaseProvider::new(asset_root());
+        let supported = Database::<FileDatabaseProvider>::supported_variants(&provider).unwrap();
+        let std = supported
+            .find(DatabaseVariant::STANDARD)
+            .expect("bundled assets must include std.secval");
+        let expected_available = std::fs::read_dir(asset_root())
+            .unwrap()
+            .filter_map(Result::ok)
+            .filter(|entry| {
+                entry
+                    .file_name()
+                    .to_str()
+                    .is_some_and(|name| name.starts_with("std_") && name.ends_with(".sec2"))
+            })
+            .count();
+
+        assert_eq!(supported.len(), 1);
+        assert_eq!(supported.as_slice()[0].variant, DatabaseVariant::STANDARD);
+        assert_eq!(supported.iter().count(), supported.len());
+        assert_eq!(std.sector_count(), 498);
+        assert_eq!(std.available_sector_count(), expected_available);
+        assert!(!std.is_fully_available());
+        assert!(std.has_available_sector(SectorId::new(0, 0, 9, 9)));
+        assert!(std.has_available_sector(SectorId::new(3, 3, 0, 0)));
+        assert!(!std.has_available_sector(SectorId::new(9, 9, 0, 0)));
+        assert_eq!(supported.find(DatabaseVariant::LASKER), None);
+        assert_eq!(supported.find(DatabaseVariant::MORABARABA), None);
+    }
+
+    #[test]
+    fn supported_variants_work_with_memory_assets() {
+        let provider = memory_provider_for(&["std.secval", "std_0_0_9_9.sec2", "std_3_3_0_0.sec2"]);
+        let supported = Database::<MemoryDatabaseProvider>::supported_variants(&provider).unwrap();
+        let std = supported
+            .find(DatabaseVariant::STANDARD)
+            .expect("memory provider must include std.secval");
+
+        assert_eq!(supported.len(), 1);
+        assert_eq!(std.sector_count(), 498);
+        assert_eq!(std.available_sector_count(), 2);
+        assert!(std.has_available_sector(SectorId::new(0, 0, 9, 9)));
+        assert!(std.has_available_sector(SectorId::new(3, 3, 0, 0)));
+        assert!(!std.has_available_sector(SectorId::new(3, 4, 0, 0)));
+    }
+
+    #[test]
+    fn database_reports_loaded_variant_and_available_sectors() {
+        let provider = FileDatabaseProvider::new(asset_root());
+        let db = Database::open(provider).unwrap();
+        let sector_ids = db.sector_ids();
+        let available = db.available_sector_ids().unwrap();
+
+        assert_eq!(db.variant(), DatabaseVariant::STANDARD);
+        assert_eq!(sector_ids.len(), 498);
+        assert!(sector_ids.binary_search(&SectorId::new(9, 9, 0, 0)).is_ok());
+        assert!(available.binary_search(&SectorId::new(3, 4, 0, 0)).is_ok());
+        assert!(available.binary_search(&SectorId::new(9, 9, 0, 0)).is_err());
     }
 
     #[test]

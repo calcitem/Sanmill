@@ -114,6 +114,10 @@ impl SecValTable {
     pub fn value(&self, id: SectorId) -> Option<i16> {
         self.values.get(&id).copied()
     }
+
+    pub fn sector_ids(&self) -> impl Iterator<Item = SectorId> + '_ {
+        self.values.keys().copied()
+    }
 }
 
 fn next_line<'a>(
