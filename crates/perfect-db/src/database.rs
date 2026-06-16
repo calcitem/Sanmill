@@ -17,6 +17,9 @@ use std::path::{Path, PathBuf};
 use crate::file_format::{ParseError, RawEval, RawEvalKind, SecValTable, SectorFile, SectorId};
 use crate::index::PerfectHasher;
 use crate::index::symmetry::transform48;
+use tgf_mill::{
+    MillBoardFullAction, MillFormationActionInPlacingPhase, MillVariantOptions, StalemateAction,
+};
 
 #[derive(Debug)]
 pub enum DatabaseError {
@@ -226,6 +229,23 @@ impl DatabaseVariant {
             .find(|variant| variant.piece_count == piece_count)
     }
 
+    pub fn from_mill_options(options: &MillVariantOptions) -> Option<Self> {
+        if !matches_perfect_database_common_rules(options) {
+            return None;
+        }
+
+        match (
+            options.piece_count,
+            options.has_diagonal_lines,
+            options.may_move_in_placing_phase,
+        ) {
+            (9, false, false) => Some(Self::STANDARD),
+            (10, false, true) => Some(Self::LASKER),
+            (12, true, false) => Some(Self::MORABARABA),
+            _ => None,
+        }
+    }
+
     pub fn is_standard(self) -> bool {
         self == Self::STANDARD
     }
@@ -257,6 +277,23 @@ impl DatabaseVariant {
             "Perfect DB black on-board plus in-hand count must fit the database variant"
         );
     }
+}
+
+fn matches_perfect_database_common_rules(options: &MillVariantOptions) -> bool {
+    options.fly_piece_count == 3
+        && options.pieces_at_least_count == 3
+        && options.mill_formation_action_in_placing_phase
+            == MillFormationActionInPlacingPhase::RemoveOpponentsPieceFromBoard
+        && options.board_full_action == MillBoardFullAction::FirstPlayerLose
+        && !options.restrict_repeated_mills_formation
+        && options.stalemate_action == StalemateAction::EndWithStalemateLoss
+        && options.may_fly
+        && !options.may_remove_from_mills_always
+        && !options.may_remove_multiple
+        && !options.custodian_capture.enabled
+        && !options.intervention_capture.enabled
+        && !options.leap_capture.enabled
+        && !options.one_time_use_mill
 }
 
 #[derive(Clone, Debug, PartialEq, Eq)]
@@ -894,6 +931,56 @@ mod tests {
             Some(DatabaseVariant::MORABARABA)
         );
         assert_eq!(DatabaseVariant::from_piece_count(11), None);
+    }
+
+    #[test]
+    fn database_variant_matches_legacy_perfect_rule_sets() {
+        let standard = MillVariantOptions::default();
+        assert_eq!(
+            DatabaseVariant::from_mill_options(&standard),
+            Some(DatabaseVariant::STANDARD)
+        );
+
+        let lasker = MillVariantOptions {
+            piece_count: 10,
+            may_move_in_placing_phase: true,
+            ..MillVariantOptions::default()
+        };
+        assert_eq!(
+            DatabaseVariant::from_mill_options(&lasker),
+            Some(DatabaseVariant::LASKER)
+        );
+
+        let morabaraba = MillVariantOptions {
+            piece_count: 12,
+            has_diagonal_lines: true,
+            ..MillVariantOptions::default()
+        };
+        assert_eq!(
+            DatabaseVariant::from_mill_options(&morabaraba),
+            Some(DatabaseVariant::MORABARABA)
+        );
+    }
+
+    #[test]
+    fn database_variant_rejects_custom_rule_combinations() {
+        let mut custom = MillVariantOptions {
+            piece_count: 10,
+            ..MillVariantOptions::default()
+        };
+        assert_eq!(DatabaseVariant::from_mill_options(&custom), None);
+
+        custom.piece_count = 12;
+        custom.has_diagonal_lines = false;
+        assert_eq!(DatabaseVariant::from_mill_options(&custom), None);
+
+        custom = MillVariantOptions::default();
+        custom.may_remove_multiple = true;
+        assert_eq!(DatabaseVariant::from_mill_options(&custom), None);
+
+        custom = MillVariantOptions::default();
+        custom.leap_capture.enabled = true;
+        assert_eq!(DatabaseVariant::from_mill_options(&custom), None);
     }
 
     #[test]

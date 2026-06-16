@@ -140,7 +140,7 @@ fn setoption_parses_perfect_database_options() {
 }
 
 #[test]
-fn perfect_database_runtime_config_tracks_piece_count_variant() {
+fn perfect_database_runtime_config_tracks_supported_rule_variants() {
     let cfg = EngineConfig {
         perfect_db_path: Some("/tmp/perfect-db".to_owned()),
         perfect_db_cache_sectors: Some(2),
@@ -156,18 +156,31 @@ fn perfect_database_runtime_config_tracks_piece_count_variant() {
     assert_eq!(standard.options.sector_cache_capacity, Some(2));
 
     options.piece_count = 10;
+    assert_eq!(cfg.desired_perfect_db_config(&options), Err(10));
+    options.may_move_in_placing_phase = true;
     let lasker = cfg
         .desired_perfect_db_config(&options)
         .unwrap()
-        .expect("10-piece Mill must map to a Perfect DB variant");
+        .expect("Lasker Morris must map to a Perfect DB variant");
     assert_eq!(lasker.variant, DatabaseVariant::LASKER);
 
-    options.piece_count = 12;
+    options = MillVariantOptions {
+        piece_count: 12,
+        has_diagonal_lines: true,
+        ..MillVariantOptions::default()
+    };
     let morabaraba = cfg
         .desired_perfect_db_config(&options)
         .unwrap()
-        .expect("12-piece Mill must map to a Perfect DB variant");
+        .expect("Morabaraba must map to a Perfect DB variant");
     assert_eq!(morabaraba.variant, DatabaseVariant::MORABARABA);
+
+    options.has_diagonal_lines = false;
+    assert_eq!(cfg.desired_perfect_db_config(&options), Err(12));
+
+    options = MillVariantOptions::default();
+    options.may_remove_multiple = true;
+    assert_eq!(cfg.desired_perfect_db_config(&options), Err(9));
 
     options.piece_count = 11;
     assert_eq!(cfg.desired_perfect_db_config(&options), Err(11));

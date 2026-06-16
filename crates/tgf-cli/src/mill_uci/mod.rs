@@ -132,7 +132,7 @@ impl EngineConfig {
         let Some(path) = self.perfect_db_path.as_ref() else {
             return Ok(None);
         };
-        let Some(variant) = DatabaseVariant::from_piece_count(options.piece_count) else {
+        let Some(variant) = DatabaseVariant::from_mill_options(options) else {
             return Err(options.piece_count);
         };
         let options = self

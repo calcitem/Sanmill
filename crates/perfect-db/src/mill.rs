@@ -152,7 +152,7 @@ fn query_from_state(
 }
 
 fn variant_from_options(options: &MillVariantOptions) -> Option<DatabaseVariant> {
-    DatabaseVariant::from_piece_count(options.piece_count)
+    DatabaseVariant::from_mill_options(options)
 }
 
 fn database_matches_options<P: DatabaseProvider>(
