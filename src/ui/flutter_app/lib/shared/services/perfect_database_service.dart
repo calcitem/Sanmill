@@ -106,15 +106,14 @@ Future<bool> copyPerfectDatabaseFiles({bool force = false}) async {
     for (final String asset in assetFiles) {
       try {
         final File file = File('${directory.path}/${asset.split('/').last}');
-        if (!await _exists(file)) {
+        final bool exists = await _exists(file);
+        if (!exists || force) {
           final ByteData byteData = await rootBundle.load(asset);
           final ByteBuffer buffer = byteData.buffer;
           await file.writeAsBytes(
             buffer.asUint8List(byteData.offsetInBytes, byteData.lengthInBytes),
           );
-          logger.i('Copied file to ${file.path}');
-        } else if (force) {
-          logger.i('File already exists and was not overwritten: ${file.path}');
+          logger.i('${exists ? 'Updated' : 'Copied'} file at ${file.path}');
         }
       } catch (e) {
         logger.e('Failed to copy asset $asset: $e');
