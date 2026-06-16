@@ -28,6 +28,7 @@ bool isRuleSupportingPerfectDatabase() {
       ruleSettings.mayRemoveMultiple == false &&
       ruleSettings.enableCustodianCapture == false &&
       ruleSettings.enableInterventionCapture == false &&
+      ruleSettings.enableLeapCapture == false &&
       ruleSettings.oneTimeUseMill == false) {
     return true;
   } else {
