@@ -9,7 +9,7 @@
 //! indexing code.
 
 use std::cmp::Ordering;
-use std::collections::BTreeMap;
+use std::collections::{BTreeMap, VecDeque};
 use std::fmt;
 use std::io;
 use std::path::{Path, PathBuf};
@@ -507,8 +507,10 @@ impl DatabaseEval {
 pub struct Database<P> {
     provider: P,
     variant: DatabaseVariant,
+    options: DatabaseOptions,
     sec_vals: SecValTable,
     sectors: BTreeMap<SectorId, LoadedSector>,
+    sector_load_order: VecDeque<SectorId>,
 }
 
 #[derive(Clone, Debug)]
@@ -516,6 +518,23 @@ struct LoadedSector {
     value: i16,
     hasher: PerfectHasher,
     file: SectorFile,
+}
+
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
+pub struct DatabaseOptions {
+    pub sector_cache_capacity: Option<usize>,
+}
+
+impl DatabaseOptions {
+    pub fn with_sector_cache_capacity(capacity: usize) -> Self {
+        assert!(
+            capacity > 0,
+            "Perfect DB sector cache capacity must be positive"
+        );
+        Self {
+            sector_cache_capacity: Some(capacity),
+        }
+    }
 }
 
 impl<P: DatabaseProvider> Database<P> {
@@ -528,6 +547,18 @@ impl<P: DatabaseProvider> Database<P> {
     }
 
     pub fn open_variant(provider: P, variant: DatabaseVariant) -> Result<Self, DatabaseError> {
+        Self::open_variant_with_options(provider, variant, DatabaseOptions::default())
+    }
+
+    pub fn open_with_options(provider: P, options: DatabaseOptions) -> Result<Self, DatabaseError> {
+        Self::open_variant_with_options(provider, DatabaseVariant::STANDARD, options)
+    }
+
+    pub fn open_variant_with_options(
+        provider: P,
+        variant: DatabaseVariant,
+        options: DatabaseOptions,
+    ) -> Result<Self, DatabaseError> {
         assert!(
             DatabaseVariant::KNOWN.contains(&variant),
             "Perfect DB variant metadata must be one of the known legacy variants"
@@ -537,8 +568,10 @@ impl<P: DatabaseProvider> Database<P> {
         Ok(Self {
             provider,
             variant,
+            options,
             sec_vals,
             sectors: BTreeMap::new(),
+            sector_load_order: VecDeque::new(),
         })
     }
 
@@ -615,6 +648,7 @@ impl<P: DatabaseProvider> Database<P> {
                     source,
                 }
             })?;
+            self.evict_sector_for_insert();
             self.sectors.insert(
                 id,
                 LoadedSector {
@@ -623,12 +657,33 @@ impl<P: DatabaseProvider> Database<P> {
                     file,
                 },
             );
+            self.sector_load_order.push_back(id);
         }
 
         Ok(self
             .sectors
             .get(&id)
             .expect("sector must be loaded after insertion"))
+    }
+
+    fn evict_sector_for_insert(&mut self) {
+        let Some(capacity) = self.options.sector_cache_capacity else {
+            return;
+        };
+        assert!(
+            capacity > 0,
+            "Perfect DB sector cache capacity must be positive"
+        );
+        while self.sectors.len() >= capacity {
+            let evicted = self
+                .sector_load_order
+                .pop_front()
+                .expect("sector load order must track cached sectors");
+            assert!(
+                self.sectors.remove(&evicted).is_some(),
+                "sector load order must not contain uncached sectors"
+            );
+        }
     }
 
     pub fn variant(&self) -> DatabaseVariant {
@@ -647,6 +702,10 @@ impl<P: DatabaseProvider> Database<P> {
             }
         }
         Ok(ids)
+    }
+
+    pub fn loaded_sector_count(&self) -> usize {
+        self.sectors.len()
     }
 }
 
@@ -692,6 +751,40 @@ mod tests {
         let mut db = Database::open(provider).unwrap();
         let query = PerfectQuery::new(0, 0, 9, 9, 0, false);
         assert_eq!(db.evaluate(query).unwrap(), Some((0, 2)));
+    }
+
+    #[test]
+    fn database_options_bound_loaded_sector_cache() {
+        let provider = memory_provider_for(&["std.secval", "std_0_0_9_9.sec2", "std_0_1_9_8.sec2"]);
+        let mut db =
+            Database::open_with_options(provider, DatabaseOptions::with_sector_cache_capacity(1))
+                .unwrap();
+
+        assert_eq!(db.loaded_sector_count(), 0);
+        assert_eq!(
+            db.evaluate(PerfectQuery::new(0, 0, 9, 9, 0, false))
+                .unwrap(),
+            Some((0, 2))
+        );
+        assert_eq!(db.loaded_sector_count(), 1);
+        assert_eq!(
+            db.evaluate(PerfectQuery::new(1, 0, 8, 9, 1, false))
+                .unwrap(),
+            Some((0, 1))
+        );
+        assert_eq!(db.loaded_sector_count(), 1);
+        assert_eq!(
+            db.evaluate(PerfectQuery::new(0, 0, 9, 9, 0, false))
+                .unwrap(),
+            Some((0, 2))
+        );
+        assert_eq!(db.loaded_sector_count(), 1);
+    }
+
+    #[test]
+    #[should_panic(expected = "sector cache capacity must be positive")]
+    fn database_options_reject_zero_sector_cache_capacity() {
+        let _ = DatabaseOptions::with_sector_cache_capacity(0);
     }
 
     #[test]
