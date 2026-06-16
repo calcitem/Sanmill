@@ -5,7 +5,6 @@ use perfect_db::database::PerfectOutcome;
 use perfect_db::database::{
     Database, DatabaseError, FileDatabaseProvider, MemoryDatabaseProvider, PerfectQuery,
 };
-#[cfg(feature = "cpp-oracle")]
 use perfect_db::file_format::SectorId;
 use perfect_db::{
     best_move_choice_for_rust_database, best_move_choice_rust_database,
@@ -19,11 +18,9 @@ use perfect_db::{
     best_move_token, best_move_token_for_state, evaluate_state_for,
     evaluate_state_outcome_with_database,
 };
+use std::collections::{BTreeMap, BTreeSet};
 #[cfg(feature = "cpp-oracle")]
-use std::{
-    collections::{BTreeMap, BTreeSet},
-    sync::{LazyLock, Mutex, MutexGuard},
-};
+use std::sync::{LazyLock, Mutex, MutexGuard};
 use tgf_core::{ActionList, BoardTopology, GameRules, GameStateSnapshot};
 use tgf_mill::notation::MillUciCodec;
 #[cfg(feature = "cpp-oracle")]
@@ -187,14 +184,12 @@ fn assert_state_eval_option_parity(
     );
 }
 
-#[cfg(feature = "cpp-oracle")]
 fn next_walk_index(seed: &mut u64, len: usize) -> usize {
     assert!(len > 0, "legal action list must not be empty");
     *seed = seed.wrapping_mul(6364136223846793005).wrapping_add(1);
     ((*seed >> 32) as usize) % len
 }
 
-#[cfg(feature = "cpp-oracle")]
 fn bundled_sector_ids() -> Vec<SectorId> {
     let mut ids = std::fs::read_dir(db_path())
         .expect("database asset directory must be readable")
@@ -208,7 +203,6 @@ fn bundled_sector_ids() -> Vec<SectorId> {
     ids
 }
 
-#[cfg(feature = "cpp-oracle")]
 fn parse_std_sector_name(name: &str) -> Option<SectorId> {
     let stem = name.strip_prefix("std_")?.strip_suffix(".sec2")?;
     let parts = stem
@@ -223,7 +217,6 @@ fn parse_std_sector_name(name: &str) -> Option<SectorId> {
     Some(SectorId::new(parts[0], parts[1], parts[2], parts[3]))
 }
 
-#[cfg(feature = "cpp-oracle")]
 fn sector_id_for_snapshot(snap: &GameStateSnapshot) -> Option<SectorId> {
     if snap.side_to_move != 0 && snap.side_to_move != 1 {
         return None;
@@ -253,7 +246,6 @@ fn sector_id_for_snapshot(snap: &GameStateSnapshot) -> Option<SectorId> {
     }
 }
 
-#[cfg(feature = "cpp-oracle")]
 fn record_sector_sample(
     samples: &mut BTreeMap<SectorId, GameStateSnapshot>,
     bundled: &BTreeSet<SectorId>,
@@ -267,7 +259,6 @@ fn record_sector_sample(
     }
 }
 
-#[cfg(feature = "cpp-oracle")]
 fn legal_sector_samples(
     rules: &MillRules,
     options: &MillVariantOptions,
@@ -318,6 +309,98 @@ fn legal_sector_samples(
     samples
 }
 
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+struct FrozenSectorOracle {
+    sector: (u8, u8, u8, u8),
+    expected: (i32, i32),
+}
+
+impl FrozenSectorOracle {
+    fn sector_id(self) -> SectorId {
+        let (white_on_board, black_on_board, white_in_hand, black_in_hand) = self.sector;
+        SectorId::new(white_on_board, black_on_board, white_in_hand, black_in_hand)
+    }
+}
+
+const FROZEN_LEGAL_SECTOR_ORACLE: &[FrozenSectorOracle] = &[
+    FrozenSectorOracle {
+        sector: (0, 0, 9, 9),
+        expected: (0, 2),
+    },
+    FrozenSectorOracle {
+        sector: (0, 1, 9, 8),
+        expected: (0, 1),
+    },
+    FrozenSectorOracle {
+        sector: (1, 1, 8, 8),
+        expected: (0, 4),
+    },
+    FrozenSectorOracle {
+        sector: (1, 2, 8, 7),
+        expected: (0, 1),
+    },
+    FrozenSectorOracle {
+        sector: (1, 3, 7, 6),
+        expected: (0, 31),
+    },
+    FrozenSectorOracle {
+        sector: (2, 2, 7, 7),
+        expected: (0, 6),
+    },
+    FrozenSectorOracle {
+        sector: (2, 3, 6, 6),
+        expected: (-1, 12),
+    },
+    FrozenSectorOracle {
+        sector: (2, 3, 7, 6),
+        expected: (0, 1),
+    },
+    FrozenSectorOracle {
+        sector: (2, 4, 6, 5),
+        expected: (0, 29),
+    },
+    FrozenSectorOracle {
+        sector: (3, 3, 0, 0),
+        expected: (1, 13),
+    },
+    FrozenSectorOracle {
+        sector: (3, 3, 5, 5),
+        expected: (-1, 38),
+    },
+    FrozenSectorOracle {
+        sector: (3, 3, 6, 5),
+        expected: (1, 55),
+    },
+    FrozenSectorOracle {
+        sector: (3, 3, 6, 6),
+        expected: (1, 53),
+    },
+    FrozenSectorOracle {
+        sector: (3, 4, 0, 0),
+        expected: (-1, -1),
+    },
+    FrozenSectorOracle {
+        sector: (3, 4, 5, 5),
+        expected: (-1, 16),
+    },
+    FrozenSectorOracle {
+        sector: (3, 4, 6, 5),
+        expected: (-1, -5),
+    },
+    FrozenSectorOracle {
+        sector: (4, 3, 0, 0),
+        expected: (-1, -1),
+    },
+    FrozenSectorOracle {
+        sector: (4, 3, 5, 5),
+        expected: (0, 30),
+    },
+    FrozenSectorOracle {
+        sector: (4, 4, 5, 5),
+        expected: (1, 33),
+    },
+];
+
 #[test]
 fn perfect_query_snapshot_preserves_counts_and_removal() {
     let rules = MillRules::default();
@@ -344,6 +427,35 @@ fn perfect_query_snapshot_preserves_counts_and_removal() {
     }
     assert_eq!(state.pieces_in_hand(), [5, 6]);
     assert_eq!(state.pending_removals(), [1, 0]);
+}
+
+#[test]
+fn rust_database_matches_frozen_legal_sector_oracle_samples() {
+    let rules = MillRules::default();
+    let options = MillVariantOptions::default();
+    let mut rust_db = Database::open(FileDatabaseProvider::new(db_path())).unwrap();
+    let samples = legal_sector_samples(&rules, &options);
+
+    assert_eq!(
+        samples.len(),
+        FROZEN_LEGAL_SECTOR_ORACLE.len(),
+        "frozen oracle samples must cover every currently bundled std sector"
+    );
+
+    for case in FROZEN_LEGAL_SECTOR_ORACLE {
+        let id = case.sector_id();
+        let snap = *samples
+            .get(&id)
+            .unwrap_or_else(|| panic!("missing legal sample for frozen sector {id:?}"));
+        let state = MillRules::decode_snapshot(snap);
+        let eval = evaluate_state_with_database(&mut rust_db, &state, &options, snap.side_to_move)
+            .unwrap();
+        assert_eq!(
+            eval,
+            Some(case.expected),
+            "sector {id:?} must match the frozen C++ oracle sample"
+        );
+    }
 }
 
 #[cfg(feature = "cpp-oracle")]
