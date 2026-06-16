@@ -1,9 +1,17 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
+#[cfg(feature = "cpp-oracle")]
 use std::env;
+#[cfg(feature = "cpp-oracle")]
 use std::path::PathBuf;
 
 fn main() {
+    #[cfg(feature = "cpp-oracle")]
+    build_cpp_oracle();
+}
+
+#[cfg(feature = "cpp-oracle")]
+fn build_cpp_oracle() {
     let manifest_dir = PathBuf::from(env::var("CARGO_MANIFEST_DIR").expect("CARGO_MANIFEST_DIR"));
     let csrc = manifest_dir.join("csrc");
 

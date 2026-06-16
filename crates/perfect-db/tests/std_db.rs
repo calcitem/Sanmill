@@ -1,13 +1,18 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-use perfect_db::database::{Database, FileDatabaseProvider, PerfectOutcome, PerfectQuery};
+#[cfg(feature = "cpp-oracle")]
+use perfect_db::database::PerfectOutcome;
+use perfect_db::database::{Database, FileDatabaseProvider, PerfectQuery};
 use perfect_db::{
     best_move_choice_for_rust_database, best_move_choice_rust_database,
-    best_move_choice_with_database, best_move_token, best_move_token_for_state,
-    best_move_token_rust_database, best_move_token_with_database, deinit_rust_database, evaluate,
-    evaluate_rust_database, evaluate_state_for, evaluate_state_for_rust_database,
-    evaluate_state_outcome_with_database, evaluate_state_with_database, init, init_rust_database,
-    is_rust_database_initialized, snapshot_from_perfect_query,
+    best_move_choice_with_database, best_move_token_rust_database, best_move_token_with_database,
+    deinit_rust_database, evaluate, evaluate_rust_database, evaluate_state_for_rust_database, init,
+    init_rust_database, is_rust_database_initialized, snapshot_from_perfect_query,
+};
+#[cfg(feature = "cpp-oracle")]
+use perfect_db::{
+    best_move_token, best_move_token_for_state, evaluate_state_for,
+    evaluate_state_outcome_with_database, evaluate_state_with_database,
 };
 use tgf_core::{ActionList, BoardTopology, GameRules, GameStateSnapshot};
 use tgf_mill::notation::MillUciCodec;
@@ -84,12 +89,14 @@ fn pending_removal_snapshot(rules: &MillRules, options: &MillVariantOptions) -> 
     rules.encode_state(state)
 }
 
+#[cfg(feature = "cpp-oracle")]
 struct OracleCase {
     name: &'static str,
     labels: &'static [&'static str],
     expected_eval: Option<(i32, i32)>,
 }
 
+#[cfg(feature = "cpp-oracle")]
 struct ParityCase {
     name: &'static str,
     labels: &'static [&'static str],
@@ -123,6 +130,7 @@ fn perfect_query_snapshot_preserves_counts_and_removal() {
     assert_eq!(state.pending_removals(), [1, 0]);
 }
 
+#[cfg(feature = "cpp-oracle")]
 #[test]
 fn std_perfect_db_oracle_vectors() {
     assert!(

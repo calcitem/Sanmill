@@ -1,9 +1,11 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // Copyright (C) 2019-2026 The Sanmill developers (see AUTHORS file)
 
-//! Safe Rust wrapper around the vendored C++ Perfect Database (`pd_*` C API).
+//! Safe Rust wrapper around the Perfect Database.
 
+#[cfg(feature = "cpp-oracle")]
 use std::ffi::{CStr, CString};
+#[cfg(feature = "cpp-oracle")]
 use std::os::raw::c_char;
 use std::sync::atomic::{AtomicBool, Ordering};
 
@@ -26,8 +28,12 @@ pub use rust_global::{
 };
 
 static INITIALIZED: AtomicBool = AtomicBool::new(false);
+#[cfg(feature = "cpp-oracle")]
 static USE_RUST_BACKEND: AtomicBool = AtomicBool::new(false);
+#[cfg(not(feature = "cpp-oracle"))]
+static USE_RUST_BACKEND: AtomicBool = AtomicBool::new(true);
 
+#[cfg(feature = "cpp-oracle")]
 unsafe extern "C" {
     fn pd_init_std(db_path: *const c_char) -> i32;
     fn pd_deinit();
@@ -62,10 +68,7 @@ pub fn init(db_path: &str) -> bool {
         return true;
     }
 
-    let Ok(path) = CString::new(db_path) else {
-        return false;
-    };
-    let ok = unsafe { pd_init_std(path.as_ptr()) != 0 };
+    let ok = init_cpp_database(db_path);
     INITIALIZED.store(ok, Ordering::SeqCst);
     ok
 }
@@ -75,7 +78,7 @@ pub fn deinit() {
     if is_rust_backend_enabled() {
         rust_global::deinit_rust_database();
     } else {
-        unsafe { pd_deinit() };
+        deinit_cpp_database();
     }
     INITIALIZED.store(false, Ordering::SeqCst);
 }
@@ -91,6 +94,10 @@ pub fn is_initialized() -> bool {
 /// Enable this before calling [`init`] to exercise the Rust-native backend
 /// through the same public API surface.
 pub fn set_rust_backend_enabled(enabled: bool) {
+    assert!(
+        enabled || cfg!(feature = "cpp-oracle"),
+        "C++ Perfect DB oracle backend is not compiled"
+    );
     USE_RUST_BACKEND.store(enabled, Ordering::SeqCst);
 }
 
@@ -122,21 +129,14 @@ pub fn evaluate(
         .unwrap_or_else(|err| panic!("Rust Perfect DB evaluate failed: {err}"));
     }
 
-    let mut wdl = 0_i32;
-    let mut steps = 0_i32;
-    let ok = unsafe {
-        pd_evaluate(
-            white_bits as i32,
-            black_bits as i32,
-            i32::from(white_in_hand),
-            i32::from(black_in_hand),
-            i32::from(player_to_move),
-            i32::from(only_stone_taking),
-            &mut wdl,
-            &mut steps,
-        )
-    };
-    if ok == 0 { None } else { Some((wdl, steps)) }
+    evaluate_cpp_database(
+        white_bits,
+        black_bits,
+        white_in_hand,
+        black_in_hand,
+        player_to_move,
+        only_stone_taking,
+    )
 }
 
 /// Query the perfect-database best move as a notation token (`a4`, `a1-a4`, `xg7`).
@@ -163,7 +163,87 @@ pub fn best_move_token(
         .unwrap_or_else(|err| panic!("Rust Perfect DB best move failed: {err}"));
     }
 
-    let mut buf = vec![0_i8; 32];
+    best_move_token_cpp_database(
+        white_bits,
+        black_bits,
+        white_in_hand,
+        black_in_hand,
+        player_to_move,
+        only_stone_taking,
+    )
+}
+
+#[cfg(feature = "cpp-oracle")]
+fn init_cpp_database(db_path: &str) -> bool {
+    let Ok(path) = CString::new(db_path) else {
+        return false;
+    };
+    unsafe { pd_init_std(path.as_ptr()) != 0 }
+}
+
+#[cfg(not(feature = "cpp-oracle"))]
+fn init_cpp_database(_db_path: &str) -> bool {
+    panic!("C++ Perfect DB oracle backend is not compiled");
+}
+
+#[cfg(feature = "cpp-oracle")]
+fn deinit_cpp_database() {
+    unsafe { pd_deinit() };
+}
+
+#[cfg(not(feature = "cpp-oracle"))]
+fn deinit_cpp_database() {
+    panic!("C++ Perfect DB oracle backend is not compiled");
+}
+
+#[cfg(feature = "cpp-oracle")]
+fn evaluate_cpp_database(
+    white_bits: u32,
+    black_bits: u32,
+    white_in_hand: u8,
+    black_in_hand: u8,
+    player_to_move: u8,
+    only_stone_taking: bool,
+) -> Option<(i32, i32)> {
+    let mut wdl = 0_i32;
+    let mut steps = 0_i32;
+    let ok = unsafe {
+        pd_evaluate(
+            white_bits as i32,
+            black_bits as i32,
+            i32::from(white_in_hand),
+            i32::from(black_in_hand),
+            i32::from(player_to_move),
+            i32::from(only_stone_taking),
+            &mut wdl,
+            &mut steps,
+        )
+    };
+    if ok == 0 { None } else { Some((wdl, steps)) }
+}
+
+#[cfg(not(feature = "cpp-oracle"))]
+fn evaluate_cpp_database(
+    _white_bits: u32,
+    _black_bits: u32,
+    _white_in_hand: u8,
+    _black_in_hand: u8,
+    _player_to_move: u8,
+    _only_stone_taking: bool,
+) -> Option<(i32, i32)> {
+    panic!("C++ Perfect DB oracle backend is not compiled");
+}
+
+#[cfg(feature = "cpp-oracle")]
+fn best_move_token_cpp_database(
+    white_bits: u32,
+    black_bits: u32,
+    white_in_hand: u8,
+    black_in_hand: u8,
+    player_to_move: u8,
+    only_stone_taking: bool,
+) -> Option<String> {
+    let mut buf = vec![0 as c_char; 32];
     let ok = unsafe {
         pd_best_move(
             white_bits as i32,
@@ -181,6 +261,18 @@ pub fn best_move_token(
     }
     let cstr = unsafe { CStr::from_ptr(buf.as_ptr()) };
     Some(cstr.to_string_lossy().into_owned())
+}
+
+#[cfg(not(feature = "cpp-oracle"))]
+fn best_move_token_cpp_database(
+    _white_bits: u32,
+    _black_bits: u32,
+    _white_in_hand: u8,
+    _black_in_hand: u8,
+    _player_to_move: u8,
+    _only_stone_taking: bool,
+) -> Option<String> {
+    panic!("C++ Perfect DB oracle backend is not compiled");
 }
 
 #[cfg(test)]
@@ -203,6 +295,7 @@ mod tests {
         assert!(best_move_token(0, 0, 9, 9, 0, false).is_some_and(|token| !token.is_empty()));
         deinit();
         assert!(!is_initialized());
+        #[cfg(feature = "cpp-oracle")]
         set_rust_backend_enabled(false);
     }
 }

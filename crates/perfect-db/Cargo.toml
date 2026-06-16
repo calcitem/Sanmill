@@ -5,9 +5,13 @@ edition     = "2024"
 description = "Vendored C++ Perfect Database bridge for Nine Men's Morris"
 license     = "GPL-3.0-or-later"
 
+[features]
+default = ["cpp-oracle"]
+cpp-oracle = ["dep:cc"]
+
 [dependencies]
 tgf-core = { path = "../tgf-core" }
 tgf-mill = { path = "../tgf-mill" }
 
 [build-dependencies]
-cc = "1"
+cc = { version = "1", optional = true }
