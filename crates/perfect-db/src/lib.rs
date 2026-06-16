@@ -12,8 +12,9 @@ pub mod file_format;
 pub mod index;
 mod mill;
 pub use mill::{
-    best_move_token_for_state, best_move_token_with_database, evaluate_state_for,
-    evaluate_state_outcome_with_database, evaluate_state_with_database,
+    PerfectMoveChoice, best_move_choice_with_database, best_move_token_for_state,
+    best_move_token_with_database, evaluate_state_for, evaluate_state_outcome_with_database,
+    evaluate_state_with_database,
 };
 
 static INITIALIZED: AtomicBool = AtomicBool::new(false);

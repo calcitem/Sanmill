@@ -2,8 +2,9 @@
 
 use perfect_db::database::{Database, FileDatabaseProvider, PerfectOutcome};
 use perfect_db::{
-    best_move_token, best_move_token_for_state, best_move_token_with_database, evaluate,
-    evaluate_state_for, evaluate_state_outcome_with_database, evaluate_state_with_database, init,
+    best_move_choice_with_database, best_move_token, best_move_token_for_state,
+    best_move_token_with_database, evaluate, evaluate_state_for,
+    evaluate_state_outcome_with_database, evaluate_state_with_database, init,
 };
 use tgf_core::{ActionList, BoardTopology, GameRules, GameStateSnapshot};
 use tgf_mill::notation::MillUciCodec;
@@ -136,10 +137,21 @@ fn std_perfect_db_oracle_vectors() {
             .unwrap_or_else(|| panic!("{} must return a best move token", case.name));
         assert_best_move_is_legal(&rules, &snap, &token);
 
-        let rust_token = best_move_token_with_database(&mut rust_db, &rules, &snap, &options)
+        let rust_choice = best_move_choice_with_database(&mut rust_db, &rules, &snap, &options)
             .unwrap()
-            .unwrap_or_else(|| panic!("{} must return a Rust best move token", case.name));
-        assert_best_move_is_legal(&rules, &snap, &rust_token);
+            .unwrap_or_else(|| panic!("{} must return a Rust best move choice", case.name));
+        assert_best_move_is_legal(&rules, &snap, &rust_choice.token);
+        assert_eq!(
+            best_move_token_with_database(&mut rust_db, &rules, &snap, &options).unwrap(),
+            Some(rust_choice.token),
+            "{} token wrapper must match structured choice",
+            case.name
+        );
+        assert!(
+            rust_choice.outcome.default_rank() >= 0,
+            "{} stable vectors should not choose a losing Rust move",
+            case.name
+        );
     }
 
     let parity_cases = [
@@ -204,13 +216,19 @@ fn rust_best_move_expands_removal_continuations() {
     let snap = pending_removal_snapshot(&rules, &options);
     let mut rust_db = Database::open(FileDatabaseProvider::new(db_path())).unwrap();
 
-    let token = best_move_token_with_database(&mut rust_db, &rules, &snap, &options)
+    let choice = best_move_choice_with_database(&mut rust_db, &rules, &snap, &options)
         .unwrap()
-        .expect("pending removal state must produce a Rust best move token");
+        .expect("pending removal state must produce a Rust best move choice");
 
     assert!(
-        token.starts_with('x'),
-        "pending removal best move must be a removal token, got {token}"
+        choice.token.starts_with('x'),
+        "pending removal best move must be a removal token, got {}",
+        choice.token
     );
-    assert_best_move_is_legal(&rules, &snap, &token);
+    assert_best_move_is_legal(&rules, &snap, &choice.token);
+    assert_eq!(
+        best_move_token_with_database(&mut rust_db, &rules, &snap, &options).unwrap(),
+        Some(choice.token),
+        "pending removal token wrapper must match structured choice"
+    );
 }

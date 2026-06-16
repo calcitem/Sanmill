@@ -184,17 +184,23 @@ pub fn evaluate_state_outcome_with_database<P: DatabaseProvider>(
     database.evaluate_outcome(query)
 }
 
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct PerfectMoveChoice {
+    pub token: String,
+    pub outcome: PerfectOutcome,
+}
+
 /// Select a deterministic best legal action using the Rust-native database.
 ///
 /// This intentionally reuses `tgf-mill` legal action generation and apply.
 /// Compound mill-closing candidates are represented as ordinary TGF action
 /// continuations instead of copying C++ `AdvancedMove`.
-pub fn best_move_token_with_database<P: DatabaseProvider>(
+pub fn best_move_choice_with_database<P: DatabaseProvider>(
     database: &mut Database<P>,
     rules: &MillRules,
     snap: &GameStateSnapshot,
     options: &MillVariantOptions,
-) -> Result<Option<String>, DatabaseError> {
+) -> Result<Option<PerfectMoveChoice>, DatabaseError> {
     let root_side = snap.side_to_move;
     if options.piece_count != 9 {
         return Ok(None);
@@ -220,7 +226,19 @@ pub fn best_move_token_with_database<P: DatabaseProvider>(
         }
     }
 
-    Ok(best.map(|(action, _)| MillUciCodec::encode_action(action)))
+    Ok(best.map(|(action, outcome)| PerfectMoveChoice {
+        token: MillUciCodec::encode_action(action),
+        outcome,
+    }))
+}
+
+pub fn best_move_token_with_database<P: DatabaseProvider>(
+    database: &mut Database<P>,
+    rules: &MillRules,
+    snap: &GameStateSnapshot,
+    options: &MillVariantOptions,
+) -> Result<Option<String>, DatabaseError> {
+    Ok(best_move_choice_with_database(database, rules, snap, options)?.map(|choice| choice.token))
 }
 
 fn child_outcome_for_root<P: DatabaseProvider>(
