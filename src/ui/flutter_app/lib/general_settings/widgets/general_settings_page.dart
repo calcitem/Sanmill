@@ -25,9 +25,7 @@ import '../../shared/database/settings_repositories.dart';
 import '../../shared/database/settings_repository.dart';
 import '../../shared/services/environment_config.dart';
 import '../../shared/services/logger.dart';
-import '../../shared/services/perfect_database_service.dart';
 import '../../shared/services/snackbar_service.dart';
-import '../../shared/services/url.dart';
 import '../../shared/themes/app_theme.dart';
 import '../../shared/widgets/settings/settings.dart';
 import '../../shared/widgets/snackbars/scaffold_messenger.dart';
@@ -38,7 +36,6 @@ import 'dialogs/llm_config_dialog.dart';
 import 'dialogs/llm_prompt_dialog.dart';
 
 part 'dialogs/reset_settings_alert_dialog.dart';
-part 'dialogs/use_perfect_database_dialog.dart';
 part 'modals/algorithm_modal.dart';
 part 'modals/duration_modal.dart';
 part 'modals/ratio_modal.dart';
@@ -50,7 +47,6 @@ class GeneralSettingsPage extends StatelessWidget {
   const GeneralSettingsPage({super.key});
 
   static const String _logTag = "[general_settings_page]";
-  static Timer? _databaseCopyDebounce;
 
   SettingsRepository get _settingsRepository =>
       SettingsRepositories.instance.current.repository;
@@ -296,14 +292,6 @@ class GeneralSettingsPage extends StatelessWidget {
     logger.t("$_logTag shufflingEnabled: $value");
   }
 
-  void _setTrapAwareness(GeneralSettings generalSettings, bool value) {
-    _settingsRepository.generalSettings = generalSettings.copyWith(
-      trapAwareness: value,
-    );
-
-    logger.t("$_logTag trapAwareness: $value");
-  }
-
   void _setUseOpeningBook(GeneralSettings generalSettings, bool value) {
     _settingsRepository.generalSettings = generalSettings.copyWith(
       useOpeningBook: value,
@@ -311,35 +299,6 @@ class GeneralSettingsPage extends StatelessWidget {
 
     logger.t("$_logTag useOpeningBook: $value");
   }
-
-  void _setUsePerfectDatabase(GeneralSettings generalSettings, bool value) {
-    _settingsRepository.generalSettings = generalSettings.copyWith(
-      usePerfectDatabase: value,
-    );
-
-    logger.t("$_logTag usePerfectDatabase: $value");
-
-    if (value) {
-      _databaseCopyDebounce?.cancel();
-      _databaseCopyDebounce = Timer(const Duration(seconds: 1), () {
-        unawaited(
-          ensurePerfectDatabaseReady().then((bool success) {
-            if (!success) {
-              logger.w('$_logTag Failed to initialize perfect database');
-            }
-          }),
-        );
-      });
-    } else {
-      _databaseCopyDebounce?.cancel();
-      disablePerfectDatabase();
-    }
-  }
-
-  void _showUsePerfectDatabaseDialog(BuildContext context) => showDialog(
-    context: context,
-    builder: (_) => const _UsePerfectDatabaseDialog(),
-  );
 
   void _setTone(GeneralSettings generalSettings, bool value) {
     _settingsRepository.generalSettings = generalSettings.copyWith(
@@ -693,17 +652,6 @@ class GeneralSettingsPage extends StatelessWidget {
       defaultValue: const GeneralSettings(),
     )!;
 
-    final String perfectDatabaseDescription = S
-        .of(context)
-        .perfectDatabaseDescription;
-    final String perfectDatabaseDescriptionFistLine =
-        perfectDatabaseDescription.contains('\n')
-        ? perfectDatabaseDescription.substring(
-            0,
-            perfectDatabaseDescription.indexOf('\n'),
-          )
-        : perfectDatabaseDescription;
-
     return SettingsList(
       key: const Key('general_settings_page_settings_list'),
       children: <Widget>[
@@ -804,39 +752,6 @@ class GeneralSettingsPage extends StatelessWidget {
                 },
                 titleString: S.of(context).useOpeningBook,
                 subtitleString: S.of(context).useOpeningBook_Detail,
-              ),
-            if (!kIsWeb)
-              SettingsListTile.switchTile(
-                key: const Key(
-                  'general_settings_page_settings_card_ais_play_style_use_perfect_database',
-                ),
-                value: generalSettings.usePerfectDatabase,
-                onChanged: (bool val) {
-                  if (val) {
-                    _showUsePerfectDatabaseDialog(context);
-                    if (isRuleSupportingPerfectDatabase()) {
-                      _setUsePerfectDatabase(generalSettings, true);
-                    }
-                  } else {
-                    _setUsePerfectDatabase(generalSettings, false);
-                  }
-                },
-                titleString: S.of(context).usePerfectDatabase,
-                subtitleString: perfectDatabaseDescriptionFistLine,
-              ),
-            if (!kIsWeb &&
-                generalSettings.usePerfectDatabase &&
-                isRuleSupportingPerfectDatabase())
-              SettingsListTile.switchTile(
-                key: const Key(
-                  'general_settings_page_settings_card_ais_play_style_trap_awareness',
-                ),
-                value: generalSettings.trapAwareness,
-                onChanged: (bool val) {
-                  _setTrapAwareness(generalSettings, val);
-                },
-                titleString: S.of(context).trapAwareness,
-                subtitleString: S.of(context).trapAwarenessDescription,
               ),
             SettingsListTile.switchTile(
               key: const Key(
