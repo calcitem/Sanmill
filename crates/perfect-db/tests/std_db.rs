@@ -4,8 +4,9 @@ use perfect_db::database::{Database, FileDatabaseProvider, PerfectOutcome};
 use perfect_db::{
     best_move_choice_for_rust_database, best_move_choice_with_database, best_move_token,
     best_move_token_for_state, best_move_token_with_database, deinit_rust_database, evaluate,
-    evaluate_state_for, evaluate_state_for_rust_database, evaluate_state_outcome_with_database,
-    evaluate_state_with_database, init, init_rust_database, is_rust_database_initialized,
+    evaluate_rust_database, evaluate_state_for, evaluate_state_for_rust_database,
+    evaluate_state_outcome_with_database, evaluate_state_with_database, init, init_rust_database,
+    is_rust_database_initialized,
 };
 use tgf_core::{ActionList, BoardTopology, GameRules, GameStateSnapshot};
 use tgf_mill::notation::MillUciCodec;
@@ -240,6 +241,10 @@ fn rust_process_global_database_evaluates_state() {
     assert!(!is_rust_database_initialized());
     init_rust_database(db_path()).unwrap();
     assert!(is_rust_database_initialized());
+    assert!(
+        init(db_path()),
+        "pd_init_std must succeed for bitboard parity checks"
+    );
 
     let rules = MillRules::default();
     let options = MillVariantOptions::default();
@@ -249,6 +254,14 @@ fn rust_process_global_database_evaluates_state() {
     assert_eq!(
         evaluate_state_for_rust_database(&state, &options, 0).unwrap(),
         Some((0, 2))
+    );
+    assert_eq!(
+        evaluate_rust_database(0, 0, 9, 9, 0, false).unwrap(),
+        evaluate(0, 0, 9, 9, 0, false)
+    );
+    assert_eq!(
+        evaluate_rust_database(1, 0, 8, 9, 1, false).unwrap(),
+        evaluate(1, 0, 8, 9, 1, false)
     );
     let choice = best_move_choice_for_rust_database(&rules, &snap, &options)
         .unwrap()

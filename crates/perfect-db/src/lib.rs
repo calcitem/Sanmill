@@ -18,7 +18,8 @@ pub use mill::{
     evaluate_state_with_database,
 };
 pub use rust_global::{
-    best_move_choice_for_rust_database, deinit_rust_database, evaluate_state_for_rust_database,
+    best_move_choice_for_rust_database, deinit_rust_database, evaluate_outcome_rust_database,
+    evaluate_rust_database, evaluate_state_for_rust_database,
     evaluate_state_outcome_for_rust_database, init_rust_database, is_rust_database_initialized,
 };
 

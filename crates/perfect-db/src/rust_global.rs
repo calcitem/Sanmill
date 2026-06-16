@@ -9,7 +9,9 @@
 
 use std::sync::{LazyLock, Mutex};
 
-use crate::database::{Database, DatabaseError, FileDatabaseProvider, PerfectOutcome};
+use crate::database::{
+    Database, DatabaseError, FileDatabaseProvider, PerfectOutcome, PerfectQuery,
+};
 use crate::mill::{
     PerfectMoveChoice, best_move_choice_with_database, evaluate_state_outcome_with_database,
     evaluate_state_with_database,
@@ -42,6 +44,50 @@ pub fn is_rust_database_initialized() -> bool {
         .lock()
         .expect("Rust Perfect DB global mutex must not be poisoned")
         .is_some()
+}
+
+pub fn evaluate_rust_database(
+    white_bits: u32,
+    black_bits: u32,
+    white_in_hand: u8,
+    black_in_hand: u8,
+    side_to_move: u8,
+    only_stone_taking: bool,
+) -> Result<Option<(i32, i32)>, DatabaseError> {
+    let query = PerfectQuery::new(
+        white_bits,
+        black_bits,
+        white_in_hand,
+        black_in_hand,
+        side_to_move,
+        only_stone_taking,
+    );
+    let Some(result) = with_rust_database(|database| database.evaluate(query))? else {
+        return Ok(None);
+    };
+    Ok(result)
+}
+
+pub fn evaluate_outcome_rust_database(
+    white_bits: u32,
+    black_bits: u32,
+    white_in_hand: u8,
+    black_in_hand: u8,
+    side_to_move: u8,
+    only_stone_taking: bool,
+) -> Result<Option<PerfectOutcome>, DatabaseError> {
+    let query = PerfectQuery::new(
+        white_bits,
+        black_bits,
+        white_in_hand,
+        black_in_hand,
+        side_to_move,
+        only_stone_taking,
+    );
+    let Some(result) = with_rust_database(|database| database.evaluate_outcome(query))? else {
+        return Ok(None);
+    };
+    Ok(result)
 }
 
 pub fn evaluate_state_for_rust_database(
