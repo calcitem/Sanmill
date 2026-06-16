@@ -11,7 +11,9 @@
 
 use std::sync::OnceLock;
 
-use crate::database::{Database, DatabaseError, DatabaseProvider, PerfectOutcome, PerfectQuery};
+use crate::database::{
+    Database, DatabaseError, DatabaseProvider, DatabaseVariant, PerfectOutcome, PerfectQuery,
+};
 use tgf_core::{Action, ActionList, GameRules, GameStateSnapshot, OutcomeKind};
 use tgf_mill::rules::MillState;
 use tgf_mill::{MillPhase, MillRules, MillUciCodec, MillVariantOptions, default_mill_topology};
@@ -127,7 +129,7 @@ fn query_from_state(
     options: &MillVariantOptions,
     side_to_move: i8,
 ) -> Option<PerfectQuery> {
-    if options.piece_count != 9 {
+    if !DatabaseVariant::from_piece_count(options.piece_count)?.is_standard() {
         return None;
     }
     assert!(
@@ -259,7 +261,9 @@ pub fn best_move_choice_with_database<P: DatabaseProvider>(
     options: &MillVariantOptions,
 ) -> Result<Option<PerfectMoveChoice>, DatabaseError> {
     let root_side = snap.side_to_move;
-    if options.piece_count != 9 {
+    if !DatabaseVariant::from_piece_count(options.piece_count)
+        .is_some_and(DatabaseVariant::is_standard)
+    {
         return Ok(None);
     }
     if root_side != 0 && root_side != 1 {

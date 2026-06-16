@@ -191,6 +191,16 @@ impl DatabaseVariant {
     };
     pub const KNOWN: [Self; 3] = [Self::STANDARD, Self::LASKER, Self::MORABARABA];
 
+    pub fn from_piece_count(piece_count: u8) -> Option<Self> {
+        Self::KNOWN
+            .into_iter()
+            .find(|variant| variant.piece_count == piece_count)
+    }
+
+    pub fn is_standard(self) -> bool {
+        self == Self::STANDARD
+    }
+
     fn secval_file_name(self) -> String {
         format!("{}.secval", self.name)
     }
@@ -572,6 +582,21 @@ mod tests {
         assert_eq!(DatabaseVariant::LASKER.piece_count, 10);
         assert_eq!(DatabaseVariant::MORABARABA.name, "mora");
         assert_eq!(DatabaseVariant::MORABARABA.piece_count, 12);
+        assert!(DatabaseVariant::STANDARD.is_standard());
+        assert!(!DatabaseVariant::LASKER.is_standard());
+        assert_eq!(
+            DatabaseVariant::from_piece_count(9),
+            Some(DatabaseVariant::STANDARD)
+        );
+        assert_eq!(
+            DatabaseVariant::from_piece_count(10),
+            Some(DatabaseVariant::LASKER)
+        );
+        assert_eq!(
+            DatabaseVariant::from_piece_count(12),
+            Some(DatabaseVariant::MORABARABA)
+        );
+        assert_eq!(DatabaseVariant::from_piece_count(11), None);
     }
 
     #[test]

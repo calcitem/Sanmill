@@ -2,7 +2,7 @@
 name        = "perfect-db"
 version     = "0.1.0"
 edition     = "2024"
-description = "Vendored C++ Perfect Database bridge for Nine Men's Morris"
+description = "Rust-native Perfect Database loader with an optional C++ oracle"
 license     = "GPL-3.0-or-later"
 
 [features]
