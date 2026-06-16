@@ -2,18 +2,20 @@
 
 #[cfg(feature = "cpp-oracle")]
 use perfect_db::database::PerfectOutcome;
-use perfect_db::database::{Database, FileDatabaseProvider, MemoryDatabaseProvider, PerfectQuery};
+use perfect_db::database::{
+    Database, DatabaseError, FileDatabaseProvider, MemoryDatabaseProvider, PerfectQuery,
+};
 use perfect_db::{
     best_move_choice_for_rust_database, best_move_choice_rust_database,
     best_move_choice_with_database, best_move_token_rust_database, best_move_token_with_database,
-    deinit_rust_database, evaluate, evaluate_rust_database, evaluate_state_for_rust_database, init,
-    init_rust_database, init_rust_database_from_provider, is_rust_database_initialized,
-    snapshot_from_perfect_query,
+    deinit_rust_database, evaluate, evaluate_rust_database, evaluate_state_for_rust_database,
+    evaluate_state_with_database, init, init_rust_database, init_rust_database_from_provider,
+    is_rust_database_initialized, snapshot_from_perfect_query,
 };
 #[cfg(feature = "cpp-oracle")]
 use perfect_db::{
     best_move_token, best_move_token_for_state, evaluate_state_for,
-    evaluate_state_outcome_with_database, evaluate_state_with_database,
+    evaluate_state_outcome_with_database,
 };
 #[cfg(feature = "cpp-oracle")]
 use std::sync::{LazyLock, Mutex, MutexGuard};
@@ -316,6 +318,28 @@ fn rust_best_move_expands_removal_continuations() {
         Some(choice.token),
         "pending removal token wrapper must match structured choice"
     );
+}
+
+#[test]
+fn rust_database_reports_missing_moving_phase_sector() {
+    let rules = MillRules::default();
+    let options = MillVariantOptions::default();
+    let snap = rules.no_mill_moving_phase_snapshot();
+    let state = MillRules::decode_snapshot(snap);
+    let mut rust_db = Database::open(FileDatabaseProvider::new(db_path())).unwrap();
+
+    let err = evaluate_state_with_database(&mut rust_db, &state, &options, snap.side_to_move)
+        .expect_err("current bundled assets do not include moving-phase sectors");
+    match err {
+        DatabaseError::Read { name, source } => {
+            assert!(
+                name.ends_with("std_9_9_0_0.sec2"),
+                "unexpected missing sector: {name}"
+            );
+            assert_eq!(source.kind(), std::io::ErrorKind::NotFound);
+        }
+        other => panic!("expected missing moving-phase sector, got {other}"),
+    }
 }
 
 #[test]
