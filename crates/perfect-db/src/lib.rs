@@ -30,7 +30,7 @@ pub use rust_global::{
 
 static INITIALIZED: AtomicBool = AtomicBool::new(false);
 #[cfg(feature = "cpp-oracle")]
-static USE_RUST_BACKEND: AtomicBool = AtomicBool::new(false);
+static USE_RUST_BACKEND: AtomicBool = AtomicBool::new(true);
 #[cfg(not(feature = "cpp-oracle"))]
 static USE_RUST_BACKEND: AtomicBool = AtomicBool::new(true);
 
@@ -93,9 +93,8 @@ pub fn is_initialized() -> bool {
 
 /// Select whether the stable process-global API delegates to the Rust loader.
 ///
-/// The default is `false`, keeping the current C++ wrapper as the oracle.
-/// Enable this before calling [`init`] to exercise the Rust-native backend
-/// through the same public API surface.
+/// The default is `true`; tests can set this to `false` when they need the
+/// C++ oracle through the same public API surface.
 pub fn set_rust_backend_enabled(enabled: bool) {
     assert!(
         enabled || cfg!(feature = "cpp-oracle"),
@@ -322,7 +321,7 @@ mod tests {
         deinit();
         assert!(!is_initialized());
         #[cfg(feature = "cpp-oracle")]
-        set_rust_backend_enabled(false);
+        set_rust_backend_enabled(true);
     }
 
     #[test]
@@ -337,7 +336,7 @@ mod tests {
         assert_eq!(evaluate(0, 0, 9, 9, 0, false), None);
         deinit();
         #[cfg(feature = "cpp-oracle")]
-        set_rust_backend_enabled(false);
+        set_rust_backend_enabled(true);
     }
 
     #[test]
@@ -354,7 +353,7 @@ mod tests {
         );
         deinit();
         #[cfg(feature = "cpp-oracle")]
-        set_rust_backend_enabled(false);
+        set_rust_backend_enabled(true);
     }
 
     #[test]
@@ -373,6 +372,6 @@ mod tests {
         );
         deinit();
         #[cfg(feature = "cpp-oracle")]
-        set_rust_backend_enabled(false);
+        set_rust_backend_enabled(true);
     }
 }

@@ -198,6 +198,7 @@ fn perfect_query_snapshot_preserves_counts_and_removal() {
 #[test]
 fn std_perfect_db_oracle_vectors() {
     let _guard = cpp_oracle_test_lock();
+    perfect_db::set_rust_backend_enabled(false);
     assert!(
         init(db_path()),
         "pd_init_std must succeed with bundled assets"
@@ -337,6 +338,7 @@ fn std_perfect_db_oracle_vectors() {
     // Do not call deinit here: the current C++ bridge has fragile sector-hash
     // shutdown behavior. The Rust rewrite should make shutdown deterministic,
     // but these oracle vectors only need process-lifetime resources.
+    perfect_db::set_rust_backend_enabled(true);
 }
 
 #[test]
@@ -473,6 +475,8 @@ fn rust_process_global_database_evaluates_state() {
     assert!(!is_rust_database_initialized());
     init_rust_database(db_path()).unwrap();
     assert!(is_rust_database_initialized());
+    #[cfg(feature = "cpp-oracle")]
+    perfect_db::set_rust_backend_enabled(false);
     assert!(
         init(db_path()),
         "pd_init_std must succeed for bitboard parity checks"
@@ -495,6 +499,8 @@ fn rust_process_global_database_evaluates_state() {
         evaluate_rust_database(1, 0, 8, 9, 1, false).unwrap(),
         evaluate(1, 0, 8, 9, 1, false)
     );
+    #[cfg(feature = "cpp-oracle")]
+    perfect_db::set_rust_backend_enabled(true);
     let choice = best_move_choice_for_rust_database(&rules, &snap, &options)
         .unwrap()
         .expect("global Rust DB must return an opening choice");
