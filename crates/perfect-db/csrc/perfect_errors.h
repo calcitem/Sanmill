@@ -7,15 +7,8 @@
 #ifndef PERFECT_ERRORS_H
 #define PERFECT_ERRORS_H
 
-#include <string>
 #include <fstream>
-#include <vector>
-
-#ifdef _MSC_VER
-#include <windows.h>
-#else
-#include <pthread.h>
-#endif
+#include <string>
 
 namespace PerfectErrors {
 
@@ -40,12 +33,6 @@ struct ErrorContext
     const char *file = nullptr;
     int line = 0;
 };
-
-#ifdef _MSC_VER
-extern DWORD tls_key;
-#else
-extern pthread_key_t key;
-#endif
 
 void initialize_thread_local_storage();
 void cleanup_thread_local_storage();

@@ -8,15 +8,8 @@
 #include "perfect_log.h"
 #include <iostream>
 #include <sstream>
-#include <cstdlib>
 
 namespace PerfectErrors {
-
-#ifdef _MSC_VER
-DWORD tls_key;
-#else
-pthread_key_t key;
-#endif
 
 void initialize_thread_local_storage()
 {
