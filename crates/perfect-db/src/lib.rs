@@ -63,10 +63,12 @@ unsafe extern "C" {
 /// Initialize the standard Nine Men's Morris perfect database from `db_path`.
 pub fn init(db_path: &str) -> bool {
     if is_rust_backend_enabled() {
-        rust_global::init_rust_database(db_path)
-            .unwrap_or_else(|err| panic!("Rust Perfect DB init failed: {err}"));
-        INITIALIZED.store(true, Ordering::SeqCst);
-        return true;
+        let ok = rust_global::init_rust_database(db_path).is_ok();
+        if !ok {
+            rust_global::deinit_rust_database();
+        }
+        INITIALIZED.store(ok, Ordering::SeqCst);
+        return ok;
     }
 
     let ok = init_cpp_database(db_path);
@@ -279,6 +281,7 @@ fn best_move_token_cpp_database(
 #[cfg(test)]
 mod tests {
     use super::*;
+    use std::sync::{LazyLock, Mutex, MutexGuard};
 
     fn db_path() -> &'static str {
         concat!(
@@ -287,8 +290,15 @@ mod tests {
         )
     }
 
+    fn stable_api_test_lock() -> MutexGuard<'static, ()> {
+        static LOCK: LazyLock<Mutex<()>> = LazyLock::new(|| Mutex::new(()));
+        LOCK.lock()
+            .expect("stable Perfect DB API test lock must not be poisoned")
+    }
+
     #[test]
     fn stable_api_can_delegate_to_rust_backend() {
+        let _guard = stable_api_test_lock();
         set_rust_backend_enabled(true);
         assert!(init(db_path()));
         assert!(is_initialized());
@@ -296,6 +306,21 @@ mod tests {
         assert!(best_move_token(0, 0, 9, 9, 0, false).is_some_and(|token| !token.is_empty()));
         deinit();
         assert!(!is_initialized());
+        #[cfg(feature = "cpp-oracle")]
+        set_rust_backend_enabled(false);
+    }
+
+    #[test]
+    fn stable_api_rust_backend_reports_missing_database() {
+        let _guard = stable_api_test_lock();
+        set_rust_backend_enabled(true);
+        assert!(!init(concat!(
+            env!("CARGO_MANIFEST_DIR"),
+            "/../../src/ui/flutter_app/assets/missing-perfect-db"
+        )));
+        assert!(!is_initialized());
+        assert_eq!(evaluate(0, 0, 9, 9, 0, false), None);
+        deinit();
         #[cfg(feature = "cpp-oracle")]
         set_rust_backend_enabled(false);
     }
