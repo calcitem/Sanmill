@@ -166,6 +166,29 @@ fn assert_state_eval_parity(
     );
 }
 
+#[cfg(feature = "cpp-oracle")]
+fn assert_state_eval_option_parity(
+    name: &str,
+    rust_db: &mut Database<FileDatabaseProvider>,
+    state: &MillState,
+    options: &MillVariantOptions,
+    side_to_move: i8,
+) {
+    let cpp_eval = evaluate_state_for(state, options, side_to_move);
+    let rust_eval = evaluate_state_with_database(rust_db, state, options, side_to_move).unwrap();
+    assert_eq!(
+        rust_eval, cpp_eval,
+        "{name} must match between C++ oracle and Rust loader"
+    );
+}
+
+#[cfg(feature = "cpp-oracle")]
+fn next_walk_index(seed: &mut u64, len: usize) -> usize {
+    assert!(len > 0, "legal action list must not be empty");
+    *seed = seed.wrapping_mul(6364136223846793005).wrapping_add(1);
+    ((*seed >> 32) as usize) % len
+}
+
 #[test]
 fn perfect_query_snapshot_preserves_counts_and_removal() {
     let rules = MillRules::default();
@@ -192,6 +215,46 @@ fn perfect_query_snapshot_preserves_counts_and_removal() {
     }
     assert_eq!(state.pieces_in_hand(), [5, 6]);
     assert_eq!(state.pending_removals(), [1, 0]);
+}
+
+#[cfg(feature = "cpp-oracle")]
+#[test]
+fn std_perfect_db_oracle_matches_legal_walk_samples() {
+    let _guard = cpp_oracle_test_lock();
+    perfect_db::set_rust_backend_enabled(false);
+    assert!(
+        init(db_path()),
+        "pd_init_std must succeed with bundled assets"
+    );
+
+    let rules = MillRules::default();
+    let options = MillVariantOptions::default();
+    let mut rust_db = Database::open(FileDatabaseProvider::new(db_path())).unwrap();
+    let mut seed = 0x05ee_d9db_u64;
+
+    for walk in 0..8 {
+        let mut snap = rules.initial_state(&[]);
+        for ply in 0..=8 {
+            let state = MillRules::decode_snapshot(snap);
+            assert_state_eval_option_parity(
+                &format!("walk_{walk}_ply_{ply}"),
+                &mut rust_db,
+                &state,
+                &options,
+                snap.side_to_move,
+            );
+            if ply == 8 {
+                break;
+            }
+
+            let mut legal = ActionList::<256>::default();
+            rules.legal_actions(&snap, &mut legal);
+            let idx = next_walk_index(&mut seed, legal.as_slice().len());
+            snap = rules.apply(&snap, legal.as_slice()[idx]);
+        }
+    }
+
+    perfect_db::set_rust_backend_enabled(true);
 }
 
 #[cfg(feature = "cpp-oracle")]
