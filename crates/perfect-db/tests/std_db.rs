@@ -15,8 +15,12 @@ use perfect_db::{
     best_move_token, best_move_token_for_state, evaluate_state_for,
     evaluate_state_outcome_with_database, evaluate_state_with_database,
 };
+#[cfg(feature = "cpp-oracle")]
+use std::sync::{LazyLock, Mutex, MutexGuard};
 use tgf_core::{ActionList, BoardTopology, GameRules, GameStateSnapshot};
 use tgf_mill::notation::MillUciCodec;
+#[cfg(feature = "cpp-oracle")]
+use tgf_mill::rules::MillState;
 use tgf_mill::{MillRules, MillVariantOptions, default_mill_topology};
 
 fn apply_sequence(rules: &MillRules, labels: &[&str]) -> GameStateSnapshot {
@@ -113,6 +117,33 @@ struct ParityCase {
     labels: &'static [&'static str],
 }
 
+#[cfg(feature = "cpp-oracle")]
+fn cpp_oracle_test_lock() -> MutexGuard<'static, ()> {
+    static LOCK: LazyLock<Mutex<()>> = LazyLock::new(|| Mutex::new(()));
+    LOCK.lock()
+        .expect("C++ Perfect DB oracle test lock must not be poisoned")
+}
+
+#[cfg(feature = "cpp-oracle")]
+fn assert_state_eval_parity(
+    name: &str,
+    rust_db: &mut Database<FileDatabaseProvider>,
+    state: &MillState,
+    options: &MillVariantOptions,
+    side_to_move: i8,
+) {
+    let cpp_eval = evaluate_state_for(state, options, side_to_move);
+    let rust_eval = evaluate_state_with_database(rust_db, state, options, side_to_move).unwrap();
+    assert!(
+        cpp_eval.is_some(),
+        "{name} must be covered by the bundled C++ perfect DB assets"
+    );
+    assert_eq!(
+        rust_eval, cpp_eval,
+        "{name} must match between C++ oracle and Rust loader"
+    );
+}
+
 #[test]
 fn perfect_query_snapshot_preserves_counts_and_removal() {
     let rules = MillRules::default();
@@ -144,6 +175,7 @@ fn perfect_query_snapshot_preserves_counts_and_removal() {
 #[cfg(feature = "cpp-oracle")]
 #[test]
 fn std_perfect_db_oracle_vectors() {
+    let _guard = cpp_oracle_test_lock();
     assert!(
         init(db_path()),
         "pd_init_std must succeed with bundled assets"
@@ -254,19 +286,7 @@ fn std_perfect_db_oracle_vectors() {
         let snap = apply_sequence(&rules, case.labels);
         let state = MillRules::decode_snapshot(snap);
         let side = case.labels.len() % 2;
-        let cpp_eval = evaluate_state_for(&state, &options, side as i8);
-        let rust_eval =
-            evaluate_state_with_database(&mut rust_db, &state, &options, side as i8).unwrap();
-        assert!(
-            cpp_eval.is_some(),
-            "{} must be covered by the bundled C++ perfect DB assets",
-            case.name
-        );
-        assert_eq!(
-            rust_eval, cpp_eval,
-            "{} must match between C++ oracle and Rust loader",
-            case.name
-        );
+        assert_state_eval_parity(case.name, &mut rust_db, &state, &options, side as i8);
     }
 
     // Do not call deinit here: the current C++ bridge has fragile sector-hash
@@ -300,6 +320,9 @@ fn rust_best_move_expands_removal_continuations() {
 
 #[test]
 fn rust_process_global_database_evaluates_state() {
+    #[cfg(feature = "cpp-oracle")]
+    let _guard = cpp_oracle_test_lock();
+
     deinit_rust_database();
     assert!(!is_rust_database_initialized());
     init_rust_database(db_path()).unwrap();
