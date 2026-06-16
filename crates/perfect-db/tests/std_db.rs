@@ -194,20 +194,30 @@ fn next_walk_index(seed: &mut u64, len: usize) -> usize {
 }
 
 fn bundled_sector_ids() -> Vec<SectorId> {
+    bundled_sector_ids_for("std")
+}
+
+fn bundled_sector_ids_for(prefix: &str) -> Vec<SectorId> {
     let mut ids = std::fs::read_dir(db_path())
         .expect("database asset directory must be readable")
         .map(|entry| entry.expect("database asset directory entry must be readable"))
         .filter_map(|entry| {
             let name = entry.file_name();
-            parse_std_sector_name(name.to_str().expect("database asset name must be UTF-8"))
+            parse_sector_name(
+                prefix,
+                name.to_str().expect("database asset name must be UTF-8"),
+            )
         })
         .collect::<Vec<_>>();
     ids.sort_unstable();
     ids
 }
 
-fn parse_std_sector_name(name: &str) -> Option<SectorId> {
-    let stem = name.strip_prefix("std_")?.strip_suffix(".sec2")?;
+fn parse_sector_name(prefix: &str, name: &str) -> Option<SectorId> {
+    let stem = name
+        .strip_prefix(prefix)?
+        .strip_prefix('_')?
+        .strip_suffix(".sec2")?;
     let parts = stem
         .split('_')
         .map(|part| part.parse::<u8>().ok())
@@ -267,16 +277,29 @@ fn legal_sector_samples(
     options: &MillVariantOptions,
 ) -> BTreeMap<SectorId, GameStateSnapshot> {
     let bundled = bundled_sector_ids().into_iter().collect::<BTreeSet<_>>();
+    legal_sector_samples_for(rules, options, &bundled)
+}
+
+fn legal_sector_samples_for(
+    rules: &MillRules,
+    options: &MillVariantOptions,
+    bundled: &BTreeSet<SectorId>,
+) -> BTreeMap<SectorId, GameStateSnapshot> {
     let mut samples = BTreeMap::new();
 
-    record_sector_sample(&mut samples, &bundled, rules.initial_state(&[]));
+    record_sector_sample(&mut samples, bundled, rules.initial_state(&[]));
     let no_capture_line = ["a4", "g7", "d7", "a1", "g1", "d1", "b6", "f6"];
     let mut snap = rules.initial_state(&[]);
     for label in no_capture_line {
         let action = MillUciCodec::decode_action(&snap, label)
             .unwrap_or_else(|| panic!("failed to decode action {label}"));
+        let mut legal = ActionList::<256>::default();
+        rules.legal_actions(&snap, &mut legal);
+        if !legal.as_slice().contains(&action) {
+            break;
+        }
         snap = rules.apply(&snap, action);
-        record_sector_sample(&mut samples, &bundled, snap);
+        record_sector_sample(&mut samples, bundled, snap);
     }
 
     for (white, black) in [
@@ -286,7 +309,7 @@ fn legal_sector_samples(
     ] {
         record_sector_sample(
             &mut samples,
-            &bundled,
+            bundled,
             endgame_moving_snapshot(rules, options, white, black),
         );
     }
@@ -305,7 +328,7 @@ fn legal_sector_samples(
             }
             let idx = next_walk_index(&mut seed, legal.as_slice().len());
             snap = rules.apply(&snap, legal.as_slice()[idx]);
-            record_sector_sample(&mut samples, &bundled, snap);
+            record_sector_sample(&mut samples, bundled, snap);
         }
     }
 
@@ -672,17 +695,31 @@ fn morabaraba_perfect_db_oracle_vectors() {
     )
     .unwrap();
 
-    let cpp_eval = evaluate_state_for(&state, &options, snap.side_to_move);
-    let rust_eval =
-        evaluate_state_with_database(&mut rust_db, &state, &options, snap.side_to_move).unwrap();
-    assert!(
-        cpp_eval.is_some(),
-        "bundled Morabaraba opening sector must be covered by the C++ oracle"
+    let sector_ids = bundled_sector_ids_for("mora")
+        .into_iter()
+        .collect::<BTreeSet<_>>();
+    let samples = legal_sector_samples_for(&rules, &options, &sector_ids);
+    assert_eq!(
+        sector_ids.len(),
+        6,
+        "test must cover every currently bundled Morabaraba sector asset"
     );
     assert_eq!(
-        rust_eval, cpp_eval,
-        "Morabaraba opening eval must match between C++ oracle and Rust loader"
+        samples.keys().copied().collect::<BTreeSet<_>>(),
+        sector_ids,
+        "legal sample generation must reach every bundled Morabaraba sector"
     );
+    for (id, sample_snap) in samples {
+        let sample_state = MillRules::decode_snapshot(sample_snap);
+        let name = format!("Morabaraba sector {id:?}");
+        assert_state_eval_parity(
+            &name,
+            &mut rust_db,
+            &sample_state,
+            &options,
+            sample_snap.side_to_move,
+        );
+    }
 
     let token = best_move_token_for_state(&state, &options, snap.side_to_move)
         .expect("Morabaraba C++ oracle must return an opening best move");
@@ -902,14 +939,13 @@ fn memory_provider_handles_endgame_moving_phase_sector() {
 }
 
 #[test]
-fn morabaraba_database_handles_opening_sectors() {
+fn morabaraba_database_handles_bundled_sectors() {
     let options = MillVariantOptions {
         piece_count: 12,
         has_diagonal_lines: true,
         ..MillVariantOptions::default()
     };
     let rules = MillRules::new(options.clone());
-    let snap = rules.initial_state(&[]);
     let mut rust_db = Database::open_variant(
         FileDatabaseProvider::new(db_path()),
         DatabaseVariant::MORABARABA,
@@ -917,28 +953,33 @@ fn morabaraba_database_handles_opening_sectors() {
     .unwrap();
 
     assert_eq!(rust_db.variant(), DatabaseVariant::MORABARABA);
-    assert!(
-        rust_db
-            .evaluate(PerfectQuery::new(0, 0, 12, 12, 0, false))
-            .unwrap()
-            .is_some(),
-        "mora_0_0_12_12 must have an evaluation"
+
+    let sector_ids = bundled_sector_ids_for("mora")
+        .into_iter()
+        .collect::<BTreeSet<_>>();
+    let samples = legal_sector_samples_for(&rules, &options, &sector_ids);
+    assert_eq!(
+        sector_ids.len(),
+        6,
+        "test must cover every currently bundled Morabaraba sector asset"
     );
-    assert!(
-        rust_db
-            .evaluate(PerfectQuery::new(
-                perfect_bits(&["a4"]),
-                0,
-                11,
-                12,
-                1,
-                false
-            ))
-            .unwrap()
-            .is_some(),
-        "mora_0_1_12_11 must have an evaluation from black to move"
+    assert_eq!(
+        samples.keys().copied().collect::<BTreeSet<_>>(),
+        sector_ids,
+        "legal sample generation must reach every bundled Morabaraba sector"
     );
 
+    for (id, snap) in samples {
+        let state = MillRules::decode_snapshot(snap);
+        assert!(
+            evaluate_state_with_database(&mut rust_db, &state, &options, snap.side_to_move)
+                .unwrap()
+                .is_some(),
+            "Morabaraba sector {id:?} legal sample must have an evaluation"
+        );
+    }
+
+    let snap = rules.initial_state(&[]);
     let choice = best_move_choice_with_database(&mut rust_db, &rules, &snap, &options)
         .unwrap()
         .expect("Morabaraba opening must produce a Rust best move choice");
