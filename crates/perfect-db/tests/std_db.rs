@@ -23,7 +23,7 @@ use tgf_core::{ActionList, BoardTopology, GameRules, GameStateSnapshot};
 use tgf_mill::notation::MillUciCodec;
 #[cfg(feature = "cpp-oracle")]
 use tgf_mill::rules::MillState;
-use tgf_mill::{MillRules, MillVariantOptions, default_mill_topology};
+use tgf_mill::{MillPhase, MillRules, MillVariantOptions, default_mill_topology};
 
 fn apply_sequence(rules: &MillRules, labels: &[&str]) -> GameStateSnapshot {
     let mut snap = rules.initial_state(&[]);
@@ -103,6 +103,26 @@ fn pending_removal_snapshot(rules: &MillRules, options: &MillVariantOptions) -> 
     state.recompute_aux(options);
     state.set_side_to_move(0);
     state.set_pending_removal(0, 1);
+    rules.encode_state(state)
+}
+
+fn endgame_moving_snapshot(
+    rules: &MillRules,
+    options: &MillVariantOptions,
+    white: &[&str],
+    black: &[&str],
+) -> GameStateSnapshot {
+    let mut state = rules.setup_empty();
+    for label in white {
+        set_piece_by_label(&mut state, label, 1);
+    }
+    for label in black {
+        set_piece_by_label(&mut state, label, 2);
+    }
+    state.recompute_aux(options);
+    state.set_pieces_in_hand([0, 0], options);
+    state.set_phase(MillPhase::Moving);
+    state.set_side_to_move(0);
     rules.encode_state(state)
 }
 
@@ -339,6 +359,58 @@ fn rust_database_reports_missing_moving_phase_sector() {
             assert_eq!(source.kind(), std::io::ErrorKind::NotFound);
         }
         other => panic!("expected missing moving-phase sector, got {other}"),
+    }
+}
+
+#[test]
+fn rust_database_handles_endgame_moving_phase_sectors() {
+    let rules = MillRules::default();
+    let options = MillVariantOptions::default();
+    let mut rust_db = Database::open(FileDatabaseProvider::new(db_path())).unwrap();
+    let cases = [
+        (
+            "std_3_3_0_0",
+            &["a4", "d7", "g1"][..],
+            &["g7", "d1", "b4"][..],
+        ),
+        (
+            "std_3_4_0_0",
+            &["a4", "d7", "g1"][..],
+            &["g7", "d1", "b4", "c5"][..],
+        ),
+        (
+            "std_4_3_0_0",
+            &["a4", "d7", "g1", "c5"][..],
+            &["g7", "d1", "b4"][..],
+        ),
+    ];
+
+    for (name, white, black) in cases {
+        let snap = endgame_moving_snapshot(&rules, &options, white, black);
+        let state = MillRules::decode_snapshot(snap);
+        assert!(
+            evaluate_state_with_database(&mut rust_db, &state, &options, snap.side_to_move)
+                .unwrap()
+                .is_some(),
+            "{name} must have a Rust database evaluation"
+        );
+
+        let choice = best_move_choice_with_database(&mut rust_db, &rules, &snap, &options)
+            .unwrap()
+            .unwrap_or_else(|| panic!("{name} must produce a Rust best move choice"));
+        assert!(
+            choice.token.contains('-'),
+            "{name} best move must be a moving token, got {}",
+            choice.token
+        );
+        assert_best_move_is_legal(&rules, &snap, &choice.token);
+
+        let token = choice.token.clone();
+        assert_eq!(
+            best_move_token_with_database(&mut rust_db, &rules, &snap, &options).unwrap(),
+            Some(token),
+            "{name} token wrapper must match structured choice"
+        );
     }
 }
 

@@ -156,11 +156,14 @@ flutter:
     - assets/databases/std_2_3_6_6.sec2
     - assets/databases/std_2_3_7_6.sec2
     - assets/databases/std_2_4_6_5.sec2
+    - assets/databases/std_3_3_0_0.sec2
     - assets/databases/std_3_3_5_5.sec2
     - assets/databases/std_3_3_6_5.sec2
     - assets/databases/std_3_3_6_6.sec2
+    - assets/databases/std_3_4_0_0.sec2
     - assets/databases/std_3_4_5_5.sec2
     - assets/databases/std_3_4_6_5.sec2
+    - assets/databases/std_4_3_0_0.sec2
     - assets/databases/std_4_3_5_5.sec2
     - assets/databases/std_4_4_5_5.sec2
 

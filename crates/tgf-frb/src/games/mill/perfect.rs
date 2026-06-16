@@ -280,6 +280,8 @@ fn node_in_range(node: i16) -> Option<usize> {
 mod tests {
     use super::*;
     use std::sync::{LazyLock, Mutex, MutexGuard};
+    use tgf_core::BoardTopology;
+    use tgf_mill::{MillPhase, default_mill_topology};
 
     fn db_path() -> &'static str {
         concat!(
@@ -292,6 +294,52 @@ mod tests {
         static LOCK: LazyLock<Mutex<()>> = LazyLock::new(|| Mutex::new(()));
         LOCK.lock()
             .expect("FRB Perfect DB test lock must not be poisoned")
+    }
+
+    fn set_piece_by_label(state: &mut tgf_mill::rules::MillState, label: &str, owner: i8) {
+        let topo = default_mill_topology();
+        let node = topo
+            .node_from_label(label)
+            .unwrap_or_else(|| panic!("missing node label {label}"));
+        state.set_piece(node, owner);
+    }
+
+    fn endgame_moving_snapshot(
+        rules: &MillRules,
+        options: &MillVariantOptions,
+    ) -> GameStateSnapshot {
+        let mut state = rules.setup_empty();
+        for label in ["a4", "d7", "g1"] {
+            set_piece_by_label(&mut state, label, 1);
+        }
+        for label in ["g7", "d1", "b4"] {
+            set_piece_by_label(&mut state, label, 2);
+        }
+        state.recompute_aux(options);
+        state.set_pieces_in_hand([0, 0], options);
+        state.set_phase(MillPhase::Moving);
+        state.set_side_to_move(0);
+        rules.encode_state(state)
+    }
+
+    #[test]
+    fn perfect_best_action_uses_rust_database_for_endgame_moving_sector() {
+        let _guard = perfect_db_test_lock();
+        perfect_db::deinit();
+        assert!(perfect_db::init(db_path()));
+
+        let rules = MillRules::default();
+        let options = MillVariantOptions::default();
+        let snapshot = endgame_moving_snapshot(&rules, &options);
+        let mut legal = tgf_core::ActionList::<256>::default();
+        rules.legal_actions(&snapshot, &mut legal);
+
+        let action = try_perfect_best_action(&snapshot, &options, legal.as_slice())
+            .expect("covered endgame moving sector must return a perfect action");
+        assert!(legal.as_slice().contains(&action));
+        assert!(tgf_mill::MillUciCodec::encode_action(action).contains('-'));
+
+        perfect_db::deinit();
     }
 
     #[test]
