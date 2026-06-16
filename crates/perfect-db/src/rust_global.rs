@@ -13,8 +13,8 @@ use crate::database::{
     Database, DatabaseError, FileDatabaseProvider, PerfectOutcome, PerfectQuery,
 };
 use crate::mill::{
-    PerfectMoveChoice, best_move_choice_with_database, evaluate_state_outcome_with_database,
-    evaluate_state_with_database,
+    PerfectMoveChoice, best_move_choice_for_query_with_database, best_move_choice_with_database,
+    evaluate_state_outcome_with_database, evaluate_state_with_database,
 };
 use tgf_core::GameStateSnapshot;
 use tgf_mill::rules::MillState;
@@ -88,6 +88,52 @@ pub fn evaluate_outcome_rust_database(
         return Ok(None);
     };
     Ok(result)
+}
+
+pub fn best_move_choice_rust_database(
+    white_bits: u32,
+    black_bits: u32,
+    white_in_hand: u8,
+    black_in_hand: u8,
+    side_to_move: u8,
+    only_stone_taking: bool,
+) -> Result<Option<PerfectMoveChoice>, DatabaseError> {
+    let query = PerfectQuery::new(
+        white_bits,
+        black_bits,
+        white_in_hand,
+        black_in_hand,
+        side_to_move,
+        only_stone_taking,
+    );
+    let options = MillVariantOptions::default();
+    let rules = MillRules::new(options.clone());
+    let Some(result) = with_rust_database(|database| {
+        best_move_choice_for_query_with_database(database, &rules, &options, query)
+    })?
+    else {
+        return Ok(None);
+    };
+    Ok(result)
+}
+
+pub fn best_move_token_rust_database(
+    white_bits: u32,
+    black_bits: u32,
+    white_in_hand: u8,
+    black_in_hand: u8,
+    side_to_move: u8,
+    only_stone_taking: bool,
+) -> Result<Option<String>, DatabaseError> {
+    Ok(best_move_choice_rust_database(
+        white_bits,
+        black_bits,
+        white_in_hand,
+        black_in_hand,
+        side_to_move,
+        only_stone_taking,
+    )?
+    .map(|choice| choice.token))
 }
 
 pub fn evaluate_state_for_rust_database(

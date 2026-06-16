@@ -14,7 +14,7 @@ use std::sync::OnceLock;
 use crate::database::{Database, DatabaseError, DatabaseProvider, PerfectOutcome, PerfectQuery};
 use tgf_core::{Action, ActionList, GameRules, GameStateSnapshot, OutcomeKind};
 use tgf_mill::rules::MillState;
-use tgf_mill::{MillRules, MillUciCodec, MillVariantOptions, default_mill_topology};
+use tgf_mill::{MillPhase, MillRules, MillUciCodec, MillVariantOptions, default_mill_topology};
 
 const MAX_REMOVAL_CONTINUATION_DEPTH: u8 = 4;
 
@@ -27,6 +27,7 @@ const PERFECT_TO_SQUARE: [u16; 24] = [
 ];
 
 static NODE_TO_PERFECT: OnceLock<[u8; 24]> = OnceLock::new();
+static PERFECT_TO_NODE: OnceLock<[u8; 24]> = OnceLock::new();
 
 /// Build (and cache) the `node_id -> perfect_index` lookup by reverse-mapping
 /// the canonical Mill topology's `square` field through [`PERFECT_TO_SQUARE`].
@@ -49,6 +50,17 @@ fn node_to_perfect_index() -> &'static [u8; 24] {
     })
 }
 
+fn perfect_to_node_index() -> &'static [u8; 24] {
+    PERFECT_TO_NODE.get_or_init(|| {
+        let node_map = node_to_perfect_index();
+        let mut map = [0u8; 24];
+        for (node, &perfect_idx) in node_map.iter().enumerate() {
+            map[perfect_idx as usize] = node as u8;
+        }
+        map
+    })
+}
+
 fn bitboards_from_state(state: &MillState) -> (u32, u32) {
     let node_map = node_to_perfect_index();
     let mut white_bits = 0u32;
@@ -63,6 +75,51 @@ fn bitboards_from_state(state: &MillState) -> (u32, u32) {
         }
     }
     (white_bits, black_bits)
+}
+
+/// Build a TGF Mill snapshot from a perfect-database bitboard query.
+///
+/// The coordinate conversion is intentionally confined to this database
+/// boundary. After this point callers use the normal `tgf-mill` state,
+/// legal-action, and apply machinery.
+pub fn snapshot_from_perfect_query(
+    rules: &MillRules,
+    options: &MillVariantOptions,
+    query: PerfectQuery,
+) -> GameStateSnapshot {
+    let mut state = rules.setup_empty();
+    let node_map = perfect_to_node_index();
+    for (perfect_idx, &node) in node_map.iter().enumerate() {
+        let mask = 1u32 << perfect_idx;
+        let node = u16::from(node);
+        if query.white_bits & mask != 0 {
+            state.set_piece(node, 1);
+        } else if query.black_bits & mask != 0 {
+            state.set_piece(node, 2);
+        }
+    }
+
+    state.recompute_aux(options);
+    state.set_pieces_in_hand([query.white_in_hand, query.black_in_hand], options);
+    state.set_side_to_move(query.side_to_move as i8);
+
+    if query.white_in_hand > 0 || query.black_in_hand > 0 {
+        state.set_phase(MillPhase::Placing);
+    } else if !query.only_stone_taking
+        && let Some(winner) = state.check_pieces_at_least(options)
+    {
+        state.set_phase(MillPhase::GameOver);
+        state.set_winner(winner);
+        state.set_outcome_reason_fewer_than_threshold();
+    } else {
+        state.set_phase(MillPhase::Moving);
+    }
+
+    if query.only_stone_taking {
+        state.set_pending_removal(query.side_to_move as usize, 1);
+    }
+
+    rules.encode_state(state)
 }
 
 fn query_from_state(
@@ -230,6 +287,16 @@ pub fn best_move_choice_with_database<P: DatabaseProvider>(
         token: MillUciCodec::encode_action(action),
         outcome,
     }))
+}
+
+pub fn best_move_choice_for_query_with_database<P: DatabaseProvider>(
+    database: &mut Database<P>,
+    rules: &MillRules,
+    options: &MillVariantOptions,
+    query: PerfectQuery,
+) -> Result<Option<PerfectMoveChoice>, DatabaseError> {
+    let snap = snapshot_from_perfect_query(rules, options, query);
+    best_move_choice_with_database(database, rules, &snap, options)
 }
 
 pub fn best_move_token_with_database<P: DatabaseProvider>(

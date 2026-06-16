@@ -1,12 +1,13 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-use perfect_db::database::{Database, FileDatabaseProvider, PerfectOutcome};
+use perfect_db::database::{Database, FileDatabaseProvider, PerfectOutcome, PerfectQuery};
 use perfect_db::{
-    best_move_choice_for_rust_database, best_move_choice_with_database, best_move_token,
-    best_move_token_for_state, best_move_token_with_database, deinit_rust_database, evaluate,
+    best_move_choice_for_rust_database, best_move_choice_rust_database,
+    best_move_choice_with_database, best_move_token, best_move_token_for_state,
+    best_move_token_rust_database, best_move_token_with_database, deinit_rust_database, evaluate,
     evaluate_rust_database, evaluate_state_for, evaluate_state_for_rust_database,
     evaluate_state_outcome_with_database, evaluate_state_with_database, init, init_rust_database,
-    is_rust_database_initialized,
+    is_rust_database_initialized, snapshot_from_perfect_query,
 };
 use tgf_core::{ActionList, BoardTopology, GameRules, GameStateSnapshot};
 use tgf_mill::notation::MillUciCodec;
@@ -46,6 +47,21 @@ fn assert_best_move_is_legal(rules: &MillRules, snap: &GameStateSnapshot, token:
     );
 }
 
+fn perfect_bits(labels: &[&str]) -> u32 {
+    const PERFECT_LABELS: [&str; 24] = [
+        "a4", "a7", "d7", "g7", "g4", "g1", "d1", "a1", "b4", "b6", "d6", "f6", "f4", "f2", "d2",
+        "b2", "c4", "c5", "d5", "e5", "e4", "e3", "d3", "c3",
+    ];
+
+    labels.iter().fold(0u32, |bits, label| {
+        let idx = PERFECT_LABELS
+            .iter()
+            .position(|candidate| candidate == label)
+            .unwrap_or_else(|| panic!("missing perfect label {label}"));
+        bits | (1u32 << idx)
+    })
+}
+
 fn set_piece_by_label(state: &mut tgf_mill::rules::MillState, label: &str, owner: i8) {
     let topo = default_mill_topology();
     let node = topo
@@ -77,6 +93,34 @@ struct OracleCase {
 struct ParityCase {
     name: &'static str,
     labels: &'static [&'static str],
+}
+
+#[test]
+fn perfect_query_snapshot_preserves_counts_and_removal() {
+    let rules = MillRules::default();
+    let options = MillVariantOptions::default();
+    let query = PerfectQuery::new(
+        perfect_bits(&["a4", "a7", "d7"]),
+        perfect_bits(&["g7", "g4"]),
+        5,
+        6,
+        0,
+        true,
+    );
+    let snap = snapshot_from_perfect_query(&rules, &options, query);
+    let state = MillRules::decode_snapshot(snap);
+    let topo = default_mill_topology();
+
+    for label in ["a4", "a7", "d7"] {
+        let node = topo.node_from_label(label).unwrap();
+        assert_eq!(state.board()[node as usize], 1, "{label} must be white");
+    }
+    for label in ["g7", "g4"] {
+        let node = topo.node_from_label(label).unwrap();
+        assert_eq!(state.board()[node as usize], 2, "{label} must be black");
+    }
+    assert_eq!(state.pieces_in_hand(), [5, 6]);
+    assert_eq!(state.pending_removals(), [1, 0]);
 }
 
 #[test]
@@ -267,6 +311,40 @@ fn rust_process_global_database_evaluates_state() {
         .unwrap()
         .expect("global Rust DB must return an opening choice");
     assert_best_move_is_legal(&rules, &snap, &choice.token);
+    assert_eq!(
+        best_move_choice_rust_database(0, 0, 9, 9, 0, false)
+            .unwrap()
+            .map(|choice| choice.token),
+        best_move_token_rust_database(0, 0, 9, 9, 0, false).unwrap(),
+        "bitboard choice and token wrappers must match"
+    );
+    let opening_token = best_move_token_rust_database(0, 0, 9, 9, 0, false)
+        .unwrap()
+        .expect("bitboard Rust DB must return an opening move");
+    assert_best_move_is_legal(&rules, &snap, &opening_token);
+
+    let after_a4 = apply_sequence(&rules, &["a4"]);
+    let after_a4_token = best_move_token_rust_database(perfect_bits(&["a4"]), 0, 8, 9, 1, false)
+        .unwrap()
+        .expect("bitboard Rust DB must return a move after a4");
+    assert_best_move_is_legal(&rules, &after_a4, &after_a4_token);
+
+    let removal_snap = pending_removal_snapshot(&rules, &options);
+    let removal_token = best_move_token_rust_database(
+        perfect_bits(&["a4", "a7", "d7"]),
+        perfect_bits(&["g7", "g4"]),
+        6,
+        7,
+        0,
+        true,
+    )
+    .unwrap()
+    .expect("bitboard Rust DB must return a pending-removal move");
+    assert!(
+        removal_token.starts_with('x'),
+        "pending-removal token must be a removal, got {removal_token}"
+    );
+    assert_best_move_is_legal(&rules, &removal_snap, &removal_token);
 
     deinit_rust_database();
     assert!(!is_rust_database_initialized());

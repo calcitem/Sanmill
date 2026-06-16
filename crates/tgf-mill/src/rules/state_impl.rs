@@ -268,6 +268,25 @@ impl MillState {
         self.pieces_in_hand
     }
 
+    /// Set exact per-side pieces still in hand for setup/import adapters.
+    ///
+    /// This is intentionally separate from `recompute_aux`: some imported
+    /// positions have captured pieces, so `piece_count - pieces_on_board` is
+    /// not always the correct hand count.
+    pub fn set_pieces_in_hand(&mut self, pieces_in_hand: [u8; 2], options: &MillVariantOptions) {
+        for (side, &count) in pieces_in_hand.iter().enumerate() {
+            assert!(
+                count <= options.piece_count,
+                "Mill hand count must not exceed the variant piece count"
+            );
+            assert!(
+                self.pieces_on_board[side] + count <= options.piece_count,
+                "Mill on-board plus in-hand count must not exceed the variant piece count"
+            );
+        }
+        self.pieces_in_hand = pieces_in_hand;
+    }
+
     /// Read-only view of the 24-node board (0 = empty, 1 = white, 2 = black).
     pub fn board(&self) -> &[i8; 24] {
         &self.board
