@@ -6,7 +6,7 @@ description = "Rust-native Perfect Database loader with an optional C++ oracle"
 license     = "GPL-3.0-or-later"
 
 [features]
-default = ["cpp-oracle"]
+default = []
 cpp-oracle = ["dep:cc"]
 
 [dependencies]
