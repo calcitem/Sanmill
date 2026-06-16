@@ -9,6 +9,7 @@
 //! one place.  Each caller matches the returned token against its own legal
 //! action list (using the shared `tgf_mill::MillUciCodec`).
 
+use std::cmp::Ordering;
 use std::sync::OnceLock;
 
 use crate::database::{
@@ -249,6 +250,30 @@ pub struct PerfectMoveChoice {
     pub outcome: PerfectOutcome,
 }
 
+/// Move ordering policy used when several legal actions have database values.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum PerfectMoveOrdering {
+    /// Match the legacy C++ default/lazy branch: any win beats any draw, any
+    /// draw beats any loss, and step counts do not break ties.
+    LegacyWdl,
+    /// Use the full database comparison: faster wins and slower losses are
+    /// preferred, while draws remain tied.
+    StrictSteps,
+}
+
+impl PerfectMoveOrdering {
+    pub fn compare(self, candidate: PerfectOutcome, incumbent: PerfectOutcome) -> Ordering {
+        match self {
+            Self::LegacyWdl => candidate.default_rank().cmp(&incumbent.default_rank()),
+            Self::StrictSteps => candidate.strict_cmp(incumbent),
+        }
+    }
+
+    fn is_better(self, candidate: PerfectOutcome, incumbent: PerfectOutcome) -> bool {
+        self.compare(candidate, incumbent).is_gt()
+    }
+}
+
 /// Select a deterministic best legal action using the Rust-native database.
 ///
 /// This intentionally reuses `tgf-mill` legal action generation and apply.
@@ -259,6 +284,24 @@ pub fn best_move_choice_with_database<P: DatabaseProvider>(
     rules: &MillRules,
     snap: &GameStateSnapshot,
     options: &MillVariantOptions,
+) -> Result<Option<PerfectMoveChoice>, DatabaseError> {
+    best_move_choice_with_ordering(
+        database,
+        rules,
+        snap,
+        options,
+        PerfectMoveOrdering::LegacyWdl,
+    )
+}
+
+/// Select a deterministic best legal action using the requested database
+/// comparison policy.
+pub fn best_move_choice_with_ordering<P: DatabaseProvider>(
+    database: &mut Database<P>,
+    rules: &MillRules,
+    snap: &GameStateSnapshot,
+    options: &MillVariantOptions,
+    ordering: PerfectMoveOrdering,
 ) -> Result<Option<PerfectMoveChoice>, DatabaseError> {
     let root_side = snap.side_to_move;
     if !DatabaseVariant::from_piece_count(options.piece_count)
@@ -276,13 +319,18 @@ pub fn best_move_choice_with_database<P: DatabaseProvider>(
     let mut best: Option<(Action, PerfectOutcome)> = None;
     for &action in actions.as_slice() {
         let child_snap = rules.apply(snap, action);
-        let outcome =
-            match child_outcome_for_root(database, rules, &child_snap, options, root_side)? {
-                Some(outcome) => outcome,
-                None => return Ok(None),
-            };
-        if best.is_none_or(|(_, best_outcome)| outcome.default_rank() > best_outcome.default_rank())
-        {
+        let outcome = match child_outcome_for_root(
+            database,
+            rules,
+            &child_snap,
+            options,
+            root_side,
+            ordering,
+        )? {
+            Some(outcome) => outcome,
+            None => return Ok(None),
+        };
+        if best.is_none_or(|(_, best_outcome)| ordering.is_better(outcome, best_outcome)) {
             best = Some((action, outcome));
         }
     }
@@ -318,8 +366,9 @@ fn child_outcome_for_root<P: DatabaseProvider>(
     child_snap: &GameStateSnapshot,
     options: &MillVariantOptions,
     root_side: i8,
+    ordering: PerfectMoveOrdering,
 ) -> Result<Option<PerfectOutcome>, DatabaseError> {
-    continuation_outcome_for_root(database, rules, child_snap, options, root_side, 0)
+    continuation_outcome_for_root(database, rules, child_snap, options, root_side, ordering, 0)
 }
 
 fn continuation_outcome_for_root<P: DatabaseProvider>(
@@ -328,6 +377,7 @@ fn continuation_outcome_for_root<P: DatabaseProvider>(
     snap: &GameStateSnapshot,
     options: &MillVariantOptions,
     root_side: i8,
+    ordering: PerfectMoveOrdering,
     depth: u8,
 ) -> Result<Option<PerfectOutcome>, DatabaseError> {
     assert!(
@@ -361,13 +411,13 @@ fn continuation_outcome_for_root<P: DatabaseProvider>(
                 &next,
                 options,
                 root_side,
+                ordering,
                 depth + 1,
             )? {
                 Some(outcome) => outcome,
                 None => return Ok(None),
             };
-            if best.is_none_or(|best_outcome| outcome.default_rank() > best_outcome.default_rank())
-            {
+            if best.is_none_or(|best_outcome| ordering.is_better(outcome, best_outcome)) {
                 best = Some(outcome);
             }
         }
@@ -428,5 +478,41 @@ mod tests {
                 "perfect index {perfect_idx}"
             );
         }
+    }
+
+    #[test]
+    fn perfect_move_ordering_preserves_legacy_and_strict_semantics() {
+        assert_eq!(
+            PerfectMoveOrdering::LegacyWdl.compare(
+                PerfectOutcome::Win { steps: 1 },
+                PerfectOutcome::Win { steps: 5 },
+            ),
+            Ordering::Equal,
+            "legacy/lazy C++ mode treats all wins as tied"
+        );
+        assert_eq!(
+            PerfectMoveOrdering::StrictSteps.compare(
+                PerfectOutcome::Win { steps: 1 },
+                PerfectOutcome::Win { steps: 5 },
+            ),
+            Ordering::Greater,
+            "strict mode prefers faster wins"
+        );
+        assert_eq!(
+            PerfectMoveOrdering::StrictSteps.compare(
+                PerfectOutcome::Loss { steps: 5 },
+                PerfectOutcome::Loss { steps: 2 },
+            ),
+            Ordering::Greater,
+            "strict mode prefers slower losses"
+        );
+        assert_eq!(
+            PerfectMoveOrdering::StrictSteps.compare(
+                PerfectOutcome::Draw { steps: 1 },
+                PerfectOutcome::Draw { steps: 9 },
+            ),
+            Ordering::Equal,
+            "database draws remain tied"
+        );
     }
 }
