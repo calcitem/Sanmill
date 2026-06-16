@@ -3,8 +3,8 @@
 #[cfg(feature = "cpp-oracle")]
 use perfect_db::database::PerfectOutcome;
 use perfect_db::database::{
-    Database, DatabaseError, DatabaseOptions, FileDatabaseProvider, MemoryDatabaseProvider,
-    PerfectQuery,
+    Database, DatabaseError, DatabaseOptions, DatabaseVariant, FileDatabaseProvider,
+    MemoryDatabaseProvider, PerfectQuery,
 };
 use perfect_db::file_format::SectorId;
 use perfect_db::{
@@ -13,7 +13,8 @@ use perfect_db::{
     best_move_token_with_database, deinit_rust_database, evaluate, evaluate_rust_database,
     evaluate_state_for_rust_database, evaluate_state_with_database, init, init_rust_database,
     init_rust_database_from_provider, init_rust_database_from_provider_with_options,
-    is_rust_database_initialized, loaded_sector_count_rust_database, snapshot_from_perfect_query,
+    is_rust_database_initialized, loaded_sector_count_rust_database, loaded_variant_rust_database,
+    snapshot_from_perfect_query,
 };
 #[cfg(feature = "cpp-oracle")]
 use perfect_db::{
@@ -836,6 +837,29 @@ fn memory_provider_handles_endgame_moving_phase_sector() {
 }
 
 #[test]
+fn rust_database_rejects_variant_mismatched_state_queries() {
+    let options = MillVariantOptions {
+        piece_count: 10,
+        ..MillVariantOptions::default()
+    };
+    let rules = MillRules::new(options.clone());
+    let snap = rules.initial_state(&[]);
+    let state = MillRules::decode_snapshot(snap);
+    let mut rust_db = Database::open(FileDatabaseProvider::new(db_path())).unwrap();
+
+    assert_eq!(
+        evaluate_state_with_database(&mut rust_db, &state, &options, snap.side_to_move).unwrap(),
+        None,
+        "state evaluation must not query a database for a different variant"
+    );
+    assert_eq!(
+        best_move_choice_with_database(&mut rust_db, &rules, &snap, &options).unwrap(),
+        None,
+        "best move selection must not query a database for a different variant"
+    );
+}
+
+#[test]
 fn rust_process_global_database_evaluates_state() {
     #[cfg(feature = "cpp-oracle")]
     let _guard = cpp_oracle_test_lock();
@@ -844,6 +868,10 @@ fn rust_process_global_database_evaluates_state() {
     assert!(!is_rust_database_initialized());
     init_rust_database(db_path()).unwrap();
     assert!(is_rust_database_initialized());
+    assert_eq!(
+        loaded_variant_rust_database(),
+        Some(DatabaseVariant::STANDARD)
+    );
     #[cfg(feature = "cpp-oracle")]
     perfect_db::set_rust_backend_enabled(false);
     assert!(
@@ -911,6 +939,7 @@ fn rust_process_global_database_evaluates_state() {
 
     deinit_rust_database();
     assert!(!is_rust_database_initialized());
+    assert_eq!(loaded_variant_rust_database(), None);
     assert_eq!(
         evaluate_state_for_rust_database(&state, &options, 0).unwrap(),
         None

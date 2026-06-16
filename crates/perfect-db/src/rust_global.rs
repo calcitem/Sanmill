@@ -118,6 +118,14 @@ pub fn loaded_sector_count_rust_database() -> Option<usize> {
         .map(Database::loaded_sector_count)
 }
 
+pub fn loaded_variant_rust_database() -> Option<DatabaseVariant> {
+    RUST_DATABASE
+        .lock()
+        .expect("Rust Perfect DB global mutex must not be poisoned")
+        .as_ref()
+        .map(Database::variant)
+}
+
 pub fn evaluate_rust_database(
     white_bits: u32,
     black_bits: u32,

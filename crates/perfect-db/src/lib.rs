@@ -30,7 +30,7 @@ pub use rust_global::{
     init_rust_database_from_provider_variant_with_options,
     init_rust_database_from_provider_with_options, init_rust_database_variant,
     init_rust_database_variant_with_options, init_rust_database_with_options,
-    is_rust_database_initialized, loaded_sector_count_rust_database,
+    is_rust_database_initialized, loaded_sector_count_rust_database, loaded_variant_rust_database,
 };
 
 pub fn supported_variants_from_provider(

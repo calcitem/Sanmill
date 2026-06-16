@@ -130,9 +130,7 @@ fn query_from_state(
     options: &MillVariantOptions,
     side_to_move: i8,
 ) -> Option<PerfectQuery> {
-    if !DatabaseVariant::from_piece_count(options.piece_count)?.is_standard() {
-        return None;
-    }
+    variant_from_options(options)?;
     assert!(
         side_to_move == 0 || side_to_move == 1,
         "Perfect DB side_to_move must be 0 or 1"
@@ -153,13 +151,34 @@ fn query_from_state(
     ))
 }
 
+fn variant_from_options(options: &MillVariantOptions) -> Option<DatabaseVariant> {
+    DatabaseVariant::from_piece_count(options.piece_count)
+}
+
+fn database_matches_options<P: DatabaseProvider>(
+    database: &Database<P>,
+    options: &MillVariantOptions,
+) -> bool {
+    variant_from_options(options) == Some(database.variant())
+}
+
+fn process_global_database_matches_options(options: &MillVariantOptions) -> bool {
+    let Some(variant) = variant_from_options(options) else {
+        return false;
+    };
+    if crate::is_rust_backend_enabled() {
+        return crate::loaded_variant_rust_database() == Some(variant);
+    }
+    variant.is_standard()
+}
+
 /// Query the perfect database for the best move in `state`, returned as a Mill
 /// UCI notation token (`"a4"`, `"a1-a4"`, `"xg7"`).
 ///
-/// Returns `None` when the database is not initialized, the variant is not the
-/// standard 9-piece game (the only bundled dataset), the side to move is
-/// invalid, or the database has no entry for the position.  Callers match the
-/// token against their own legal action list.
+/// Returns `None` when the database is not initialized, the loaded database
+/// variant does not match the Mill options, the side to move is invalid, or the
+/// database has no entry for the position.  Callers match the token against
+/// their own legal action list.
 pub fn best_move_token_for_state(
     state: &MillState,
     options: &MillVariantOptions,
@@ -169,6 +188,9 @@ pub fn best_move_token_for_state(
         return None;
     }
     if side_to_move != 0 && side_to_move != 1 {
+        return None;
+    }
+    if !process_global_database_matches_options(options) {
         return None;
     }
     let query = query_from_state(state, options, side_to_move)?;
@@ -189,10 +211,10 @@ pub fn best_move_token_for_state(
 /// database does not expose a step count).
 ///
 /// Returns `None` under the same conditions as [`best_move_token_for_state`]:
-/// the database is not initialized, the variant is not the standard 9-piece
-/// game, the side to move is invalid, or the position has no entry.  This is
-/// the per-move primitive consumed by the analysis overlay, which evaluates
-/// the position that results from each candidate move.
+/// the database is not initialized, the loaded database variant does not match
+/// the Mill options, the side to move is invalid, or the position has no entry.
+/// This is the per-move primitive consumed by the analysis overlay, which
+/// evaluates the position that results from each candidate move.
 pub fn evaluate_state_for(
     state: &MillState,
     options: &MillVariantOptions,
@@ -202,6 +224,9 @@ pub fn evaluate_state_for(
         return None;
     }
     if side_to_move != 0 && side_to_move != 1 {
+        return None;
+    }
+    if !process_global_database_matches_options(options) {
         return None;
     }
     let query = query_from_state(state, options, side_to_move)?;
@@ -226,6 +251,9 @@ pub fn evaluate_state_with_database<P: DatabaseProvider>(
     options: &MillVariantOptions,
     side_to_move: i8,
 ) -> Result<Option<(i32, i32)>, DatabaseError> {
+    if !database_matches_options(database, options) {
+        return Ok(None);
+    }
     let Some(query) = query_from_state(state, options, side_to_move) else {
         return Ok(None);
     };
@@ -238,6 +266,9 @@ pub fn evaluate_state_outcome_with_database<P: DatabaseProvider>(
     options: &MillVariantOptions,
     side_to_move: i8,
 ) -> Result<Option<PerfectOutcome>, DatabaseError> {
+    if !database_matches_options(database, options) {
+        return Ok(None);
+    }
     let Some(query) = query_from_state(state, options, side_to_move) else {
         return Ok(None);
     };
@@ -335,9 +366,7 @@ pub fn best_move_choices_with_ordering<P: DatabaseProvider>(
     ordering: PerfectMoveOrdering,
 ) -> Result<Option<Vec<PerfectMoveChoice>>, DatabaseError> {
     let root_side = snap.side_to_move;
-    if !DatabaseVariant::from_piece_count(options.piece_count)
-        .is_some_and(DatabaseVariant::is_standard)
-    {
+    if !database_matches_options(database, options) {
         return Ok(None);
     }
     if root_side != 0 && root_side != 1 {
