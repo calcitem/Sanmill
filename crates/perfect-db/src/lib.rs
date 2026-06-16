@@ -26,6 +26,7 @@ pub use rust_global::{
 };
 
 static INITIALIZED: AtomicBool = AtomicBool::new(false);
+static USE_RUST_BACKEND: AtomicBool = AtomicBool::new(false);
 
 unsafe extern "C" {
     fn pd_init_std(db_path: *const c_char) -> i32;
@@ -54,6 +55,13 @@ unsafe extern "C" {
 
 /// Initialize the standard Nine Men's Morris perfect database from `db_path`.
 pub fn init(db_path: &str) -> bool {
+    if is_rust_backend_enabled() {
+        rust_global::init_rust_database(db_path)
+            .unwrap_or_else(|err| panic!("Rust Perfect DB init failed: {err}"));
+        INITIALIZED.store(true, Ordering::SeqCst);
+        return true;
+    }
+
     let Ok(path) = CString::new(db_path) else {
         return false;
     };
@@ -64,13 +72,30 @@ pub fn init(db_path: &str) -> bool {
 
 /// Release perfect-database resources.
 pub fn deinit() {
-    unsafe { pd_deinit() };
+    if is_rust_backend_enabled() {
+        rust_global::deinit_rust_database();
+    } else {
+        unsafe { pd_deinit() };
+    }
     INITIALIZED.store(false, Ordering::SeqCst);
 }
 
 /// Returns whether [init] succeeded for the current process.
 pub fn is_initialized() -> bool {
     INITIALIZED.load(Ordering::SeqCst)
+}
+
+/// Select whether the stable process-global API delegates to the Rust loader.
+///
+/// The default is `false`, keeping the current C++ wrapper as the oracle.
+/// Enable this before calling [`init`] to exercise the Rust-native backend
+/// through the same public API surface.
+pub fn set_rust_backend_enabled(enabled: bool) {
+    USE_RUST_BACKEND.store(enabled, Ordering::SeqCst);
+}
+
+pub fn is_rust_backend_enabled() -> bool {
+    USE_RUST_BACKEND.load(Ordering::SeqCst)
 }
 
 /// Evaluate a position. Returns `(wdl, steps)` where `wdl` is 1=win, 0=draw, -1=loss.
@@ -85,6 +110,18 @@ pub fn evaluate(
     if !is_initialized() {
         return None;
     }
+    if is_rust_backend_enabled() {
+        return rust_global::evaluate_rust_database(
+            white_bits,
+            black_bits,
+            white_in_hand,
+            black_in_hand,
+            player_to_move,
+            only_stone_taking,
+        )
+        .unwrap_or_else(|err| panic!("Rust Perfect DB evaluate failed: {err}"));
+    }
+
     let mut wdl = 0_i32;
     let mut steps = 0_i32;
     let ok = unsafe {
@@ -114,6 +151,18 @@ pub fn best_move_token(
     if !is_initialized() {
         return None;
     }
+    if is_rust_backend_enabled() {
+        return rust_global::best_move_token_rust_database(
+            white_bits,
+            black_bits,
+            white_in_hand,
+            black_in_hand,
+            player_to_move,
+            only_stone_taking,
+        )
+        .unwrap_or_else(|err| panic!("Rust Perfect DB best move failed: {err}"));
+    }
+
     let mut buf = vec![0_i8; 32];
     let ok = unsafe {
         pd_best_move(
@@ -132,4 +181,28 @@ pub fn best_move_token(
     }
     let cstr = unsafe { CStr::from_ptr(buf.as_ptr()) };
     Some(cstr.to_string_lossy().into_owned())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn db_path() -> &'static str {
+        concat!(
+            env!("CARGO_MANIFEST_DIR"),
+            "/../../src/ui/flutter_app/assets/databases"
+        )
+    }
+
+    #[test]
+    fn stable_api_can_delegate_to_rust_backend() {
+        set_rust_backend_enabled(true);
+        assert!(init(db_path()));
+        assert!(is_initialized());
+        assert_eq!(evaluate(0, 0, 9, 9, 0, false), Some((0, 2)));
+        assert!(best_move_token(0, 0, 9, 9, 0, false).is_some_and(|token| !token.is_empty()));
+        deinit();
+        assert!(!is_initialized());
+        set_rust_backend_enabled(false);
+    }
 }
