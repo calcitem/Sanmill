@@ -30,6 +30,19 @@ pub use rust_global::{
     is_rust_database_initialized, loaded_sector_count_rust_database,
 };
 
+pub fn supported_variants_from_provider(
+    provider: &impl database::DatabaseProvider,
+) -> Result<database::SupportedPerfectVariants, database::DatabaseError> {
+    database::SupportedPerfectVariants::from_provider(provider)
+}
+
+pub fn supported_variants(
+    db_path: &str,
+) -> Result<database::SupportedPerfectVariants, database::DatabaseError> {
+    let provider = database::FileDatabaseProvider::new(db_path);
+    supported_variants_from_provider(&provider)
+}
+
 static INITIALIZED: AtomicBool = AtomicBool::new(false);
 #[cfg(feature = "cpp-oracle")]
 static USE_RUST_BACKEND: AtomicBool = AtomicBool::new(true);
@@ -334,6 +347,45 @@ mod tests {
         assert!(!is_initialized());
         #[cfg(feature = "cpp-oracle")]
         set_rust_backend_enabled(true);
+    }
+
+    #[test]
+    fn stable_api_reports_supported_variants_without_initializing() {
+        let _guard = stable_api_test_lock();
+        deinit();
+        let supported = supported_variants(db_path()).unwrap();
+        let standard = supported
+            .find(database::DatabaseVariant::STANDARD)
+            .expect("bundled assets must expose standard metadata");
+
+        assert!(!is_initialized());
+        assert_eq!(supported.len(), 1);
+        assert_eq!(standard.sector_count(), 498);
+        assert!(standard.has_available_sector(file_format::SectorId::new(0, 0, 9, 9)));
+        assert!(standard.has_available_sector(file_format::SectorId::new(3, 3, 0, 0)));
+        assert!(!standard.is_fully_available());
+
+        #[cfg(feature = "cpp-oracle")]
+        set_rust_backend_enabled(true);
+    }
+
+    #[test]
+    fn stable_api_reports_supported_variants_from_provider() {
+        let secval = std::fs::read(format!("{}/std.secval", db_path())).unwrap();
+        let moving_sector = std::fs::read(format!("{}/std_3_3_0_0.sec2", db_path())).unwrap();
+        let provider = database::MemoryDatabaseProvider::from_files([
+            ("std.secval", secval),
+            ("std_3_3_0_0.sec2", moving_sector),
+        ]);
+        let supported = supported_variants_from_provider(&provider).unwrap();
+        let standard = supported
+            .find(database::DatabaseVariant::STANDARD)
+            .expect("memory assets must expose standard metadata");
+
+        assert_eq!(supported.len(), 1);
+        assert_eq!(standard.available_sector_count(), 1);
+        assert!(standard.has_available_sector(file_format::SectorId::new(3, 3, 0, 0)));
+        assert!(!standard.has_available_sector(file_format::SectorId::new(0, 0, 9, 9)));
     }
 
     #[test]
