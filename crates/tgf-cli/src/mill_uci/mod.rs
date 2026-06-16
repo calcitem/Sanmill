@@ -16,7 +16,7 @@ use std::sync::atomic::AtomicBool;
 use std::sync::{Arc, mpsc};
 use std::thread::{self, JoinHandle};
 
-use perfect_db::database::DatabaseOptions;
+use perfect_db::database::{DatabaseOptions, DatabaseVariant};
 use tgf_core::{
     Action, ActionList, Game, GameRules, GameStateSnapshot, MoveOrderAlgorithm, MoveOrderContext,
 };
@@ -65,6 +65,7 @@ fn mill_searcher() -> Searcher<MillGame> {
 #[derive(Clone, Debug, PartialEq, Eq)]
 struct PerfectDatabaseRuntimeConfig {
     path: String,
+    variant: DatabaseVariant,
     options: DatabaseOptions,
 }
 
@@ -86,7 +87,7 @@ struct EngineConfig {
     ponder: bool,
     use_lazy_smp: bool,
     /// When true, query the perfect database after search and prefer
-    /// its move for the standard 9-piece variant (mirrors the Flutter shell).
+    /// its move when the current Mill variant has matching database assets.
     use_perfect_database: bool,
     /// Filesystem directory holding the `std_*.sec2` / `std.secval` dataset.
     /// Set via the `PerfectDatabasePath` UCI option before enabling the DB.
@@ -124,27 +125,47 @@ impl Default for EngineConfig {
 }
 
 impl EngineConfig {
-    fn desired_perfect_db_config(&self) -> Option<PerfectDatabaseRuntimeConfig> {
-        let path = self.perfect_db_path.as_ref()?;
+    fn desired_perfect_db_config(
+        &self,
+        options: &MillVariantOptions,
+    ) -> Result<Option<PerfectDatabaseRuntimeConfig>, u8> {
+        let Some(path) = self.perfect_db_path.as_ref() else {
+            return Ok(None);
+        };
+        let Some(variant) = DatabaseVariant::from_piece_count(options.piece_count) else {
+            return Err(options.piece_count);
+        };
         let options = self
             .perfect_db_cache_sectors
             .map(DatabaseOptions::with_sector_cache_capacity)
             .unwrap_or_default();
-        Some(PerfectDatabaseRuntimeConfig {
+        Ok(Some(PerfectDatabaseRuntimeConfig {
             path: path.clone(),
+            variant,
             options,
-        })
+        }))
     }
 }
 
 /// Bring the process-wide perfect-database handle in line with [`EngineConfig`]:
 /// initialize it (from `perfect_db_path`) when the option is enabled and a path
 /// is known, and release it when the option is turned off.  Idempotent.
-fn sync_perfect_db(cfg: &mut EngineConfig) {
+fn sync_perfect_db(cfg: &mut EngineConfig, options: &MillVariantOptions) {
     if cfg.use_perfect_database {
-        let Some(desired) = cfg.desired_perfect_db_config() else {
-            println!("info string perfect database enabled but PerfectDatabasePath is unset");
-            return;
+        let desired = match cfg.desired_perfect_db_config(options) {
+            Ok(Some(desired)) => desired,
+            Ok(None) => {
+                println!("info string perfect database enabled but PerfectDatabasePath is unset");
+                return;
+            }
+            Err(piece_count) => {
+                if perfect_db::is_initialized() {
+                    perfect_db::deinit();
+                }
+                cfg.active_perfect_db = None;
+                println!("info string perfect database unsupported piece count: {piece_count}");
+                return;
+            }
         };
         if cfg.active_perfect_db.as_ref() == Some(&desired) && perfect_db::is_initialized() {
             return;
@@ -152,10 +173,13 @@ fn sync_perfect_db(cfg: &mut EngineConfig) {
         if perfect_db::is_initialized() {
             perfect_db::deinit();
         }
-        if perfect_db::init_with_options(&desired.path, desired.options) {
+        if perfect_db::init_variant_with_options(&desired.path, desired.variant, desired.options) {
             cfg.active_perfect_db = Some(desired);
         } else {
-            println!("info string perfect database init failed: {}", desired.path);
+            println!(
+                "info string perfect database init failed: {} ({})",
+                desired.path, desired.variant.name
+            );
             cfg.active_perfect_db = None;
         }
     } else if perfect_db::is_initialized() {
@@ -217,6 +241,7 @@ pub(crate) fn run_uci_loop() {
                     rules = MillRules::new(options.clone());
                     state = rules.initial_state(&[]);
                     state_history.clear();
+                    sync_perfect_db(&mut engine_cfg, &options);
                 }
                 SetoptionResult::ClearHash => {
                     // Mirror master src/ucioption.cpp:357 Clear Hash button.
@@ -228,7 +253,7 @@ pub(crate) fn run_uci_loop() {
                 SetoptionResult::SearchConfig => {
                     // A search/engine parameter changed; the perfect-database
                     // toggle and path live here, so reconcile the global handle.
-                    sync_perfect_db(&mut engine_cfg);
+                    sync_perfect_db(&mut engine_cfg, &options);
                 }
                 SetoptionResult::Threads | SetoptionResult::Acknowledged => {}
                 SetoptionResult::Unknown => {

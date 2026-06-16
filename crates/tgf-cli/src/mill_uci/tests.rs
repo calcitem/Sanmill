@@ -140,6 +140,40 @@ fn setoption_parses_perfect_database_options() {
 }
 
 #[test]
+fn perfect_database_runtime_config_tracks_piece_count_variant() {
+    let cfg = EngineConfig {
+        perfect_db_path: Some("/tmp/perfect-db".to_owned()),
+        perfect_db_cache_sectors: Some(2),
+        ..EngineConfig::default()
+    };
+    let mut options = MillVariantOptions::default();
+
+    let standard = cfg
+        .desired_perfect_db_config(&options)
+        .unwrap()
+        .expect("path must produce a desired Perfect DB config");
+    assert_eq!(standard.variant, DatabaseVariant::STANDARD);
+    assert_eq!(standard.options.sector_cache_capacity, Some(2));
+
+    options.piece_count = 10;
+    let lasker = cfg
+        .desired_perfect_db_config(&options)
+        .unwrap()
+        .expect("10-piece Mill must map to a Perfect DB variant");
+    assert_eq!(lasker.variant, DatabaseVariant::LASKER);
+
+    options.piece_count = 12;
+    let morabaraba = cfg
+        .desired_perfect_db_config(&options)
+        .unwrap()
+        .expect("12-piece Mill must map to a Perfect DB variant");
+    assert_eq!(morabaraba.variant, DatabaseVariant::MORABARABA);
+
+    options.piece_count = 11;
+    assert_eq!(cfg.desired_perfect_db_config(&options), Err(11));
+}
+
+#[test]
 fn perfect_database_lookup_is_noop_when_uninitialized() {
     // Without an initialized database the helper must yield None so the
     // search result is used unchanged.
