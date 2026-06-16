@@ -780,6 +780,10 @@ mod tests {
         MemoryDatabaseProvider::from_files(files)
     }
 
+    fn minimal_secval(piece_count: u8) -> String {
+        format!("virt_loss_val: -1\nvirt_win_val: 1\n1\n0 0 {piece_count} {piece_count} 0\n")
+    }
+
     #[test]
     fn memory_provider_reads_assets_without_filesystem_dependency() {
         let provider = memory_provider_for(&["std.secval", "std_0_0_9_9.sec2"]);
@@ -912,6 +916,30 @@ mod tests {
         assert!(std.has_available_sector(SectorId::new(0, 0, 9, 9)));
         assert!(std.has_available_sector(SectorId::new(3, 3, 0, 0)));
         assert!(!std.has_available_sector(SectorId::new(3, 4, 0, 0)));
+    }
+
+    #[test]
+    fn supported_variants_include_user_supplied_lasker_assets() {
+        let provider = MemoryDatabaseProvider::from_files([
+            ("std.secval", minimal_secval(9).into_bytes()),
+            ("std_0_0_9_9.sec2", b"std opening placeholder".to_vec()),
+            ("lask.secval", minimal_secval(10).into_bytes()),
+            ("lask_0_0_10_10.sec2", b"lask opening placeholder".to_vec()),
+            ("mora.secval", minimal_secval(12).into_bytes()),
+            ("mora_0_0_12_12.sec2", b"mora opening placeholder".to_vec()),
+        ]);
+        let supported = Database::<MemoryDatabaseProvider>::supported_variants(&provider).unwrap();
+        let lasker = supported
+            .find(DatabaseVariant::LASKER)
+            .expect("user-supplied Lasker assets must be discoverable");
+
+        assert_eq!(supported.len(), 3);
+        assert_eq!(supported.as_slice()[0].variant, DatabaseVariant::STANDARD);
+        assert_eq!(supported.as_slice()[1].variant, DatabaseVariant::LASKER);
+        assert_eq!(supported.as_slice()[2].variant, DatabaseVariant::MORABARABA);
+        assert_eq!(lasker.sector_count(), 1);
+        assert_eq!(lasker.available_sector_count(), 1);
+        assert!(lasker.has_available_sector(SectorId::new(0, 0, 10, 10)));
     }
 
     #[test]

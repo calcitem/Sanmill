@@ -358,7 +358,10 @@ fn node_in_range(node: i16) -> Option<usize> {
 #[cfg(all(test, not(target_arch = "wasm32")))]
 mod tests {
     use super::*;
+    use std::fs;
+    use std::path::PathBuf;
     use std::sync::{LazyLock, Mutex, MutexGuard};
+    use std::time::{SystemTime, UNIX_EPOCH};
     use tgf_core::BoardTopology;
     use tgf_mill::{MillPhase, default_mill_topology};
 
@@ -407,6 +410,32 @@ mod tests {
             has_diagonal_lines: true,
             ..MillVariantOptions::default()
         }
+    }
+
+    fn lasker_options() -> MillVariantOptions {
+        MillVariantOptions {
+            piece_count: 10,
+            may_move_in_placing_phase: true,
+            ..MillVariantOptions::default()
+        }
+    }
+
+    fn write_lasker_only_database() -> PathBuf {
+        let unique = SystemTime::now()
+            .duration_since(UNIX_EPOCH)
+            .expect("system clock must be after UNIX_EPOCH")
+            .as_nanos();
+        let path = std::env::temp_dir().join(format!(
+            "sanmill-frb-lasker-perfect-db-{}-{unique}",
+            std::process::id()
+        ));
+        fs::create_dir(&path).expect("temporary Lasker DB directory must be created");
+        fs::write(
+            path.join("lask.secval"),
+            "virt_loss_val: -1\nvirt_win_val: 1\n2\n0 0 10 10 0\n0 1 10 9 0\n",
+        )
+        .expect("temporary Lasker secval must be written");
+        path
     }
 
     #[test]
@@ -471,5 +500,29 @@ mod tests {
         );
 
         deinit_database();
+    }
+
+    #[test]
+    fn perfect_best_action_syncs_lasker_database_from_saved_path() {
+        let _guard = perfect_db_test_lock();
+        let path = write_lasker_only_database();
+        deinit_database();
+        assert!(init_database_path(path.display().to_string()));
+        assert_eq!(perfect_db::loaded_variant_rust_database(), None);
+
+        let options = lasker_options();
+        let rules = MillRules::new(options.clone());
+        let snapshot = rules.initial_state(&[]);
+        let mut legal = tgf_core::ActionList::<256>::default();
+        rules.legal_actions(&snapshot, &mut legal);
+
+        assert!(try_perfect_best_action(&snapshot, &options, legal.as_slice()).is_none());
+        assert_eq!(
+            perfect_db::loaded_variant_rust_database(),
+            Some(perfect_db::database::DatabaseVariant::LASKER)
+        );
+
+        deinit_database();
+        fs::remove_dir_all(path).expect("temporary Lasker DB directory must be removable");
     }
 }
