@@ -13,6 +13,7 @@ import 'package:path_provider/path_provider.dart';
 
 import '../../src/rust/api/simple.dart' as tgf;
 import 'logger.dart';
+import 'perfect_database_assets.dart';
 
 // Track copying state to prevent concurrent calls
 bool _isCopying = false;
@@ -79,40 +80,10 @@ Future<bool> copyPerfectDatabaseFiles({bool force = false}) async {
       return false;
     }
 
-    // List of asset files to copy
-    final List<String> assetFiles = <String>[
-      'assets/databases/std.secval',
-      'assets/databases/std_0_0_9_9.sec2',
-      'assets/databases/std_0_1_9_8.sec2',
-      'assets/databases/std_1_1_8_8.sec2',
-      'assets/databases/std_1_2_8_7.sec2',
-      'assets/databases/std_1_3_7_6.sec2',
-      'assets/databases/std_2_2_7_7.sec2',
-      'assets/databases/std_2_3_6_6.sec2',
-      'assets/databases/std_2_3_7_6.sec2',
-      'assets/databases/std_2_4_6_5.sec2',
-      'assets/databases/std_3_3_0_0.sec2',
-      'assets/databases/std_3_3_5_5.sec2',
-      'assets/databases/std_3_3_6_5.sec2',
-      'assets/databases/std_3_3_6_6.sec2',
-      'assets/databases/std_3_4_0_0.sec2',
-      'assets/databases/std_3_4_5_5.sec2',
-      'assets/databases/std_3_4_6_5.sec2',
-      'assets/databases/std_4_3_0_0.sec2',
-      'assets/databases/std_4_3_5_5.sec2',
-      'assets/databases/std_4_4_5_5.sec2',
-      'assets/databases/mora.secval',
-      'assets/databases/mora_0_0_12_12.sec2',
-      'assets/databases/mora_0_1_12_11.sec2',
-      'assets/databases/mora_1_1_11_11.sec2',
-      'assets/databases/mora_1_2_11_10.sec2',
-      'assets/databases/mora_1_3_10_9.sec2',
-      'assets/databases/mora_2_2_10_10.sec2',
-    ];
-
-    for (final String asset in assetFiles) {
+    for (final String fileName in bundledPerfectDatabaseFileNames) {
+      final String asset = perfectDatabaseAssetPath(fileName);
       try {
-        final File file = File('${directory.path}/${asset.split('/').last}');
+        final File file = File('${directory.path}/$fileName');
         final bool exists = await _exists(file);
         if (!exists || force) {
           final ByteData byteData = await rootBundle.load(asset);
