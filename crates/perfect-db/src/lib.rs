@@ -26,7 +26,10 @@ pub use rust_global::{
     best_move_token_rust_database, deinit_rust_database, evaluate_outcome_rust_database,
     evaluate_rust_database, evaluate_state_for_rust_database,
     evaluate_state_outcome_for_rust_database, init_rust_database, init_rust_database_from_provider,
-    init_rust_database_from_provider_with_options, init_rust_database_with_options,
+    init_rust_database_from_provider_variant,
+    init_rust_database_from_provider_variant_with_options,
+    init_rust_database_from_provider_with_options, init_rust_database_variant,
+    init_rust_database_variant_with_options, init_rust_database_with_options,
     is_rust_database_initialized, loaded_sector_count_rust_database,
 };
 
@@ -77,13 +80,28 @@ unsafe extern "C" {
 
 /// Initialize the standard Nine Men's Morris perfect database from `db_path`.
 pub fn init(db_path: &str) -> bool {
-    init_with_options(db_path, database::DatabaseOptions::default())
+    init_variant(db_path, database::DatabaseVariant::STANDARD)
+}
+
+/// Initialize a specific Rust-native perfect database variant from `db_path`.
+pub fn init_variant(db_path: &str, variant: database::DatabaseVariant) -> bool {
+    init_variant_with_options(db_path, variant, database::DatabaseOptions::default())
 }
 
 /// Initialize the standard Nine Men's Morris perfect database from `db_path`.
 pub fn init_with_options(db_path: &str, options: database::DatabaseOptions) -> bool {
+    init_variant_with_options(db_path, database::DatabaseVariant::STANDARD, options)
+}
+
+/// Initialize a specific perfect database variant from `db_path`.
+pub fn init_variant_with_options(
+    db_path: &str,
+    variant: database::DatabaseVariant,
+    options: database::DatabaseOptions,
+) -> bool {
     if is_rust_backend_enabled() {
-        let ok = rust_global::init_rust_database_with_options(db_path, options).is_ok();
+        let ok =
+            rust_global::init_rust_database_variant_with_options(db_path, variant, options).is_ok();
         if !ok {
             rust_global::deinit_rust_database();
         }
@@ -91,6 +109,11 @@ pub fn init_with_options(db_path: &str, options: database::DatabaseOptions) -> b
         return ok;
     }
 
+    assert_eq!(
+        variant,
+        database::DatabaseVariant::STANDARD,
+        "C++ Perfect DB backend only supports standard initialization"
+    );
     assert_eq!(
         options,
         database::DatabaseOptions::default(),
@@ -345,6 +368,23 @@ mod tests {
         assert!(best_move_token(0, 0, 9, 9, 0, false).is_some_and(|token| !token.is_empty()));
         deinit();
         assert!(!is_initialized());
+        #[cfg(feature = "cpp-oracle")]
+        set_rust_backend_enabled(true);
+    }
+
+    #[test]
+    fn stable_api_init_variant_respects_requested_variant() {
+        let _guard = stable_api_test_lock();
+        set_rust_backend_enabled(true);
+        assert!(init_variant(db_path(), database::DatabaseVariant::STANDARD));
+        assert!(is_initialized());
+        assert_eq!(evaluate(0, 0, 9, 9, 0, false), Some((0, 2)));
+        deinit();
+
+        assert!(!init_variant(db_path(), database::DatabaseVariant::LASKER));
+        assert!(!is_initialized());
+        assert_eq!(loaded_sector_count_rust_database(), None);
+
         #[cfg(feature = "cpp-oracle")]
         set_rust_backend_enabled(true);
     }

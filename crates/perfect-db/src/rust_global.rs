@@ -11,7 +11,7 @@ use std::sync::{LazyLock, Mutex};
 
 use crate::database::{
     BoxDatabaseProvider, Database, DatabaseError, DatabaseOptions, DatabaseProvider,
-    FileDatabaseProvider, PerfectOutcome, PerfectQuery,
+    DatabaseVariant, FileDatabaseProvider, PerfectOutcome, PerfectQuery,
 };
 use crate::mill::{
     PerfectMoveChoice, best_move_choice_for_query_with_database, best_move_choice_with_database,
@@ -25,27 +25,70 @@ static RUST_DATABASE: LazyLock<Mutex<Option<Database<BoxDatabaseProvider>>>> =
     LazyLock::new(|| Mutex::new(None));
 
 pub fn init_rust_database(db_path: &str) -> Result<(), DatabaseError> {
-    init_rust_database_from_provider(FileDatabaseProvider::new(db_path))
+    init_rust_database_variant(db_path, DatabaseVariant::STANDARD)
+}
+
+pub fn init_rust_database_variant(
+    db_path: &str,
+    variant: DatabaseVariant,
+) -> Result<(), DatabaseError> {
+    init_rust_database_variant_with_options(db_path, variant, DatabaseOptions::default())
 }
 
 pub fn init_rust_database_with_options(
     db_path: &str,
     options: DatabaseOptions,
 ) -> Result<(), DatabaseError> {
-    init_rust_database_from_provider_with_options(FileDatabaseProvider::new(db_path), options)
+    init_rust_database_variant_with_options(db_path, DatabaseVariant::STANDARD, options)
+}
+
+pub fn init_rust_database_variant_with_options(
+    db_path: &str,
+    variant: DatabaseVariant,
+    options: DatabaseOptions,
+) -> Result<(), DatabaseError> {
+    init_rust_database_from_provider_variant_with_options(
+        FileDatabaseProvider::new(db_path),
+        variant,
+        options,
+    )
 }
 
 pub fn init_rust_database_from_provider(
     provider: impl DatabaseProvider + Send + Sync + 'static,
 ) -> Result<(), DatabaseError> {
-    init_rust_database_from_provider_with_options(provider, DatabaseOptions::default())
+    init_rust_database_from_provider_variant(provider, DatabaseVariant::STANDARD)
+}
+
+pub fn init_rust_database_from_provider_variant(
+    provider: impl DatabaseProvider + Send + Sync + 'static,
+    variant: DatabaseVariant,
+) -> Result<(), DatabaseError> {
+    init_rust_database_from_provider_variant_with_options(
+        provider,
+        variant,
+        DatabaseOptions::default(),
+    )
 }
 
 pub fn init_rust_database_from_provider_with_options(
     provider: impl DatabaseProvider + Send + Sync + 'static,
     options: DatabaseOptions,
 ) -> Result<(), DatabaseError> {
-    let database = Database::open_with_options(BoxDatabaseProvider::new(provider), options)?;
+    init_rust_database_from_provider_variant_with_options(
+        provider,
+        DatabaseVariant::STANDARD,
+        options,
+    )
+}
+
+pub fn init_rust_database_from_provider_variant_with_options(
+    provider: impl DatabaseProvider + Send + Sync + 'static,
+    variant: DatabaseVariant,
+    options: DatabaseOptions,
+) -> Result<(), DatabaseError> {
+    let database =
+        Database::open_variant_with_options(BoxDatabaseProvider::new(provider), variant, options)?;
     let mut slot = RUST_DATABASE
         .lock()
         .expect("Rust Perfect DB global mutex must not be poisoned");
