@@ -779,6 +779,29 @@ fn morabaraba_perfect_db_oracle_vectors() {
 
 #[cfg(feature = "cpp-oracle")]
 #[test]
+fn cpp_oracle_missing_lasker_assets_do_not_poison_standard_init() {
+    let _guard = cpp_oracle_test_lock();
+    perfect_db::set_rust_backend_enabled(false);
+    assert!(
+        !perfect_db::init_variant(db_path(), DatabaseVariant::LASKER),
+        "C++ oracle must reject missing bundled Lasker assets"
+    );
+    assert!(
+        !perfect_db::is_initialized(),
+        "failed Lasker initialization must leave the public API uninitialized"
+    );
+
+    assert!(
+        init(db_path()),
+        "standard C++ oracle init must still succeed after missing Lasker"
+    );
+    assert_eq!(evaluate(0, 0, 9, 9, 0, false), Some((0, 2)));
+
+    perfect_db::set_rust_backend_enabled(true);
+}
+
+#[cfg(feature = "cpp-oracle")]
+#[test]
 fn std_perfect_db_oracle_matches_legal_bundled_sector_samples() {
     let _guard = cpp_oracle_test_lock();
     perfect_db::set_rust_backend_enabled(false);

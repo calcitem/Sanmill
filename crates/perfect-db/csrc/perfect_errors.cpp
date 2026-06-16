@@ -18,51 +18,20 @@ DWORD tls_key;
 pthread_key_t key;
 #endif
 
-namespace {
-void destructor(void *value)
-{
-    delete static_cast<ErrorContext *>(value);
-}
-} // namespace
-
 void initialize_thread_local_storage()
 {
-#ifdef _MSC_VER
-    if ((tls_key = TlsAlloc()) == TLS_OUT_OF_INDEXES) {
-        std::cerr << "Failed to allocate TLS key" << std::endl;
-        exit(1);
-    }
-#else
-    pthread_key_create(&key, destructor);
-#endif
+    // ErrorContext is backed by C++ thread_local storage.
 }
 
 void cleanup_thread_local_storage()
 {
-#ifdef _MSC_VER
-    TlsFree(tls_key);
-#else
-    pthread_key_delete(key);
-#endif
+    // ErrorContext is backed by C++ thread_local storage.
 }
 
 static ErrorContext *get_error_context()
 {
-#ifdef _MSC_VER
-    ErrorContext *context = static_cast<ErrorContext *>(TlsGetValue(tls_key));
-    if (!context) {
-        context = new ErrorContext();
-        TlsSetValue(tls_key, context);
-    }
-#else
-    ErrorContext *context = static_cast<ErrorContext *>(
-        pthread_getspecific(key));
-    if (!context) {
-        context = new ErrorContext();
-        pthread_setspecific(key, context);
-    }
-#endif
-    return context;
+    thread_local ErrorContext context;
+    return &context;
 }
 
 // Set an error for the current thread.
