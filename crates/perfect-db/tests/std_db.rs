@@ -3,7 +3,8 @@
 #[cfg(feature = "cpp-oracle")]
 use perfect_db::database::PerfectOutcome;
 use perfect_db::database::{
-    Database, DatabaseError, FileDatabaseProvider, MemoryDatabaseProvider, PerfectQuery,
+    Database, DatabaseError, DatabaseOptions, FileDatabaseProvider, MemoryDatabaseProvider,
+    PerfectQuery,
 };
 use perfect_db::file_format::SectorId;
 use perfect_db::{
@@ -11,7 +12,8 @@ use perfect_db::{
     best_move_choice_with_database, best_move_choices_with_database, best_move_token_rust_database,
     best_move_token_with_database, deinit_rust_database, evaluate, evaluate_rust_database,
     evaluate_state_for_rust_database, evaluate_state_with_database, init, init_rust_database,
-    init_rust_database_from_provider, is_rust_database_initialized, snapshot_from_perfect_query,
+    init_rust_database_from_provider, init_rust_database_from_provider_with_options,
+    is_rust_database_initialized, loaded_sector_count_rust_database, snapshot_from_perfect_query,
 };
 #[cfg(feature = "cpp-oracle")]
 use perfect_db::{
@@ -920,5 +922,25 @@ fn rust_process_global_database_evaluates_state() {
         evaluate_rust_database(0, 0, 9, 9, 0, false).unwrap(),
         Some((0, 2))
     );
+    assert_eq!(loaded_sector_count_rust_database(), Some(1));
     deinit_rust_database();
+
+    init_rust_database_from_provider_with_options(
+        memory_provider_for(&["std.secval", "std_0_0_9_9.sec2", "std_0_1_9_8.sec2"]),
+        DatabaseOptions::with_sector_cache_capacity(1),
+    )
+    .unwrap();
+    assert_eq!(loaded_sector_count_rust_database(), Some(0));
+    assert_eq!(
+        evaluate_rust_database(0, 0, 9, 9, 0, false).unwrap(),
+        Some((0, 2))
+    );
+    assert_eq!(loaded_sector_count_rust_database(), Some(1));
+    assert_eq!(
+        evaluate_rust_database(perfect_bits(&["a4"]), 0, 8, 9, 1, false).unwrap(),
+        Some((0, 1))
+    );
+    assert_eq!(loaded_sector_count_rust_database(), Some(1));
+    deinit_rust_database();
+    assert_eq!(loaded_sector_count_rust_database(), None);
 }

@@ -10,8 +10,8 @@
 use std::sync::{LazyLock, Mutex};
 
 use crate::database::{
-    BoxDatabaseProvider, Database, DatabaseError, DatabaseProvider, FileDatabaseProvider,
-    PerfectOutcome, PerfectQuery,
+    BoxDatabaseProvider, Database, DatabaseError, DatabaseOptions, DatabaseProvider,
+    FileDatabaseProvider, PerfectOutcome, PerfectQuery,
 };
 use crate::mill::{
     PerfectMoveChoice, best_move_choice_for_query_with_database, best_move_choice_with_database,
@@ -28,10 +28,24 @@ pub fn init_rust_database(db_path: &str) -> Result<(), DatabaseError> {
     init_rust_database_from_provider(FileDatabaseProvider::new(db_path))
 }
 
+pub fn init_rust_database_with_options(
+    db_path: &str,
+    options: DatabaseOptions,
+) -> Result<(), DatabaseError> {
+    init_rust_database_from_provider_with_options(FileDatabaseProvider::new(db_path), options)
+}
+
 pub fn init_rust_database_from_provider(
     provider: impl DatabaseProvider + Send + Sync + 'static,
 ) -> Result<(), DatabaseError> {
-    let database = Database::open(BoxDatabaseProvider::new(provider))?;
+    init_rust_database_from_provider_with_options(provider, DatabaseOptions::default())
+}
+
+pub fn init_rust_database_from_provider_with_options(
+    provider: impl DatabaseProvider + Send + Sync + 'static,
+    options: DatabaseOptions,
+) -> Result<(), DatabaseError> {
+    let database = Database::open_with_options(BoxDatabaseProvider::new(provider), options)?;
     let mut slot = RUST_DATABASE
         .lock()
         .expect("Rust Perfect DB global mutex must not be poisoned");
@@ -51,6 +65,14 @@ pub fn is_rust_database_initialized() -> bool {
         .lock()
         .expect("Rust Perfect DB global mutex must not be poisoned")
         .is_some()
+}
+
+pub fn loaded_sector_count_rust_database() -> Option<usize> {
+    RUST_DATABASE
+        .lock()
+        .expect("Rust Perfect DB global mutex must not be poisoned")
+        .as_ref()
+        .map(Database::loaded_sector_count)
 }
 
 pub fn evaluate_rust_database(

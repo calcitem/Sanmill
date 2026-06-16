@@ -26,7 +26,8 @@ pub use rust_global::{
     best_move_token_rust_database, deinit_rust_database, evaluate_outcome_rust_database,
     evaluate_rust_database, evaluate_state_for_rust_database,
     evaluate_state_outcome_for_rust_database, init_rust_database, init_rust_database_from_provider,
-    is_rust_database_initialized,
+    init_rust_database_from_provider_with_options, init_rust_database_with_options,
+    is_rust_database_initialized, loaded_sector_count_rust_database,
 };
 
 static INITIALIZED: AtomicBool = AtomicBool::new(false);
