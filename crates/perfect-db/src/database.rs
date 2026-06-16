@@ -58,6 +58,31 @@ pub trait DatabaseProvider {
     fn read(&self, name: &str) -> Result<Vec<u8>, DatabaseError>;
 }
 
+pub struct BoxDatabaseProvider {
+    inner: Box<dyn DatabaseProvider + Send + Sync>,
+}
+
+impl BoxDatabaseProvider {
+    pub fn new(provider: impl DatabaseProvider + Send + Sync + 'static) -> Self {
+        Self {
+            inner: Box::new(provider),
+        }
+    }
+}
+
+impl fmt::Debug for BoxDatabaseProvider {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.debug_struct("BoxDatabaseProvider")
+            .finish_non_exhaustive()
+    }
+}
+
+impl DatabaseProvider for BoxDatabaseProvider {
+    fn read(&self, name: &str) -> Result<Vec<u8>, DatabaseError> {
+        self.inner.read(name)
+    }
+}
+
 #[derive(Clone, Debug)]
 pub struct FileDatabaseProvider {
     root: PathBuf,

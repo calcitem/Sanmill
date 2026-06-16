@@ -2,12 +2,13 @@
 
 #[cfg(feature = "cpp-oracle")]
 use perfect_db::database::PerfectOutcome;
-use perfect_db::database::{Database, FileDatabaseProvider, PerfectQuery};
+use perfect_db::database::{Database, FileDatabaseProvider, MemoryDatabaseProvider, PerfectQuery};
 use perfect_db::{
     best_move_choice_for_rust_database, best_move_choice_rust_database,
     best_move_choice_with_database, best_move_token_rust_database, best_move_token_with_database,
     deinit_rust_database, evaluate, evaluate_rust_database, evaluate_state_for_rust_database, init,
-    init_rust_database, is_rust_database_initialized, snapshot_from_perfect_query,
+    init_rust_database, init_rust_database_from_provider, is_rust_database_initialized,
+    snapshot_from_perfect_query,
 };
 #[cfg(feature = "cpp-oracle")]
 use perfect_db::{
@@ -39,6 +40,16 @@ fn db_path() -> &'static str {
         env!("CARGO_MANIFEST_DIR"),
         "/../../src/ui/flutter_app/assets/databases"
     )
+}
+
+fn memory_provider_for(names: &[&str]) -> MemoryDatabaseProvider {
+    let files = names.iter().map(|name| {
+        let path = format!("{}/{}", db_path(), name);
+        let bytes =
+            std::fs::read(&path).unwrap_or_else(|err| panic!("failed to read {path}: {err}"));
+        ((*name).to_owned(), bytes)
+    });
+    MemoryDatabaseProvider::from_files(files)
 }
 
 fn assert_best_move_is_legal(rules: &MillRules, snap: &GameStateSnapshot, token: &str) {
@@ -360,4 +371,12 @@ fn rust_process_global_database_evaluates_state() {
         evaluate_state_for_rust_database(&state, &options, 0).unwrap(),
         None
     );
+
+    init_rust_database_from_provider(memory_provider_for(&["std.secval", "std_0_0_9_9.sec2"]))
+        .unwrap();
+    assert_eq!(
+        evaluate_rust_database(0, 0, 9, 9, 0, false).unwrap(),
+        Some((0, 2))
+    );
+    deinit_rust_database();
 }

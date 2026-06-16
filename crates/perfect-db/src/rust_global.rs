@@ -10,7 +10,8 @@
 use std::sync::{LazyLock, Mutex};
 
 use crate::database::{
-    Database, DatabaseError, FileDatabaseProvider, PerfectOutcome, PerfectQuery,
+    BoxDatabaseProvider, Database, DatabaseError, DatabaseProvider, FileDatabaseProvider,
+    PerfectOutcome, PerfectQuery,
 };
 use crate::mill::{
     PerfectMoveChoice, best_move_choice_for_query_with_database, best_move_choice_with_database,
@@ -20,11 +21,17 @@ use tgf_core::GameStateSnapshot;
 use tgf_mill::rules::MillState;
 use tgf_mill::{MillRules, MillVariantOptions};
 
-static RUST_DATABASE: LazyLock<Mutex<Option<Database<FileDatabaseProvider>>>> =
+static RUST_DATABASE: LazyLock<Mutex<Option<Database<BoxDatabaseProvider>>>> =
     LazyLock::new(|| Mutex::new(None));
 
 pub fn init_rust_database(db_path: &str) -> Result<(), DatabaseError> {
-    let database = Database::open(FileDatabaseProvider::new(db_path))?;
+    init_rust_database_from_provider(FileDatabaseProvider::new(db_path))
+}
+
+pub fn init_rust_database_from_provider(
+    provider: impl DatabaseProvider + Send + Sync + 'static,
+) -> Result<(), DatabaseError> {
+    let database = Database::open(BoxDatabaseProvider::new(provider))?;
     let mut slot = RUST_DATABASE
         .lock()
         .expect("Rust Perfect DB global mutex must not be poisoned");
@@ -179,7 +186,7 @@ pub fn best_move_choice_for_rust_database(
 }
 
 fn with_rust_database<T>(
-    f: impl FnOnce(&mut Database<FileDatabaseProvider>) -> Result<T, DatabaseError>,
+    f: impl FnOnce(&mut Database<BoxDatabaseProvider>) -> Result<T, DatabaseError>,
 ) -> Result<Option<T>, DatabaseError> {
     let mut slot = RUST_DATABASE
         .lock()
