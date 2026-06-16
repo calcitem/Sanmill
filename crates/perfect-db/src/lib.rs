@@ -356,4 +356,23 @@ mod tests {
         #[cfg(feature = "cpp-oracle")]
         set_rust_backend_enabled(false);
     }
+
+    #[test]
+    fn stable_api_rust_backend_handles_endgame_moving_sector() {
+        let _guard = stable_api_test_lock();
+        set_rust_backend_enabled(true);
+        assert!(init(db_path()));
+        let white_bits = (1 << 0) | (1 << 2) | (1 << 5);
+        let black_bits = (1 << 3) | (1 << 6) | (1 << 8);
+        assert!(evaluate(white_bits, black_bits, 0, 0, 0, false).is_some());
+        let token = best_move_token(white_bits, black_bits, 0, 0, 0, false)
+            .expect("covered endgame moving sector must return a best move");
+        assert!(
+            token.contains('-'),
+            "endgame moving best move must be a move token, got {token}"
+        );
+        deinit();
+        #[cfg(feature = "cpp-oracle")]
+        set_rust_backend_enabled(false);
+    }
 }
