@@ -92,6 +92,56 @@ pub struct PerfectQuery {
     pub only_stone_taking: bool,
 }
 
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub struct DatabaseVariant {
+    pub name: &'static str,
+    pub piece_count: u8,
+}
+
+impl DatabaseVariant {
+    pub const STANDARD: Self = Self {
+        name: "std",
+        piece_count: 9,
+    };
+    pub const LASKER: Self = Self {
+        name: "lask",
+        piece_count: 10,
+    };
+    pub const MORABARABA: Self = Self {
+        name: "mora",
+        piece_count: 12,
+    };
+    pub const KNOWN: [Self; 3] = [Self::STANDARD, Self::LASKER, Self::MORABARABA];
+
+    fn secval_file_name(self) -> String {
+        format!("{}.secval", self.name)
+    }
+
+    fn sector_file_name(self, id: SectorId) -> String {
+        format!(
+            "{}_{}_{}_{}_{}.sec2",
+            self.name, id.white_on_board, id.black_on_board, id.white_in_hand, id.black_in_hand
+        )
+    }
+
+    fn assert_supports(self, query: PerfectQuery) {
+        let white_on_board = query.white_bits.count_ones() as u8;
+        let black_on_board = query.black_bits.count_ones() as u8;
+        assert!(
+            query.white_in_hand <= self.piece_count && query.black_in_hand <= self.piece_count,
+            "Perfect DB query hand counts must not exceed the database variant piece count"
+        );
+        assert!(
+            white_on_board + query.white_in_hand <= self.piece_count,
+            "Perfect DB white on-board plus in-hand count must fit the database variant"
+        );
+        assert!(
+            black_on_board + query.black_in_hand <= self.piece_count,
+            "Perfect DB black on-board plus in-hand count must fit the database variant"
+        );
+    }
+}
+
 impl PerfectQuery {
     pub fn new(
         white_bits: u32,
@@ -255,7 +305,7 @@ impl DatabaseEval {
 #[derive(Debug)]
 pub struct Database<P> {
     provider: P,
-    variant_name: &'static str,
+    variant: DatabaseVariant,
     sec_vals: SecValTable,
     sectors: BTreeMap<SectorId, LoadedSector>,
 }
@@ -269,20 +319,28 @@ struct LoadedSector {
 
 impl<P: DatabaseProvider> Database<P> {
     pub fn open(provider: P) -> Result<Self, DatabaseError> {
-        let name = "std.secval";
-        let bytes = provider.read(name)?;
+        Self::open_variant(provider, DatabaseVariant::STANDARD)
+    }
+
+    pub fn open_variant(provider: P, variant: DatabaseVariant) -> Result<Self, DatabaseError> {
+        assert!(
+            DatabaseVariant::KNOWN.contains(&variant),
+            "Perfect DB variant metadata must be one of the known legacy variants"
+        );
+        let name = variant.secval_file_name();
+        let bytes = provider.read(&name)?;
         let text = String::from_utf8(bytes).map_err(|source| DatabaseError::InvalidUtf8 {
-            name: name.to_owned(),
+            name: name.clone(),
             source,
         })?;
         let sec_vals = SecValTable::parse(&text).map_err(|source| DatabaseError::Parse {
-            name: name.to_owned(),
+            name: name.clone(),
             source,
         })?;
 
         Ok(Self {
             provider,
-            variant_name: "std",
+            variant,
             sec_vals,
             sectors: BTreeMap::new(),
         })
@@ -292,12 +350,13 @@ impl<P: DatabaseProvider> Database<P> {
         &mut self,
         query: PerfectQuery,
     ) -> Result<Option<DatabaseEval>, DatabaseError> {
+        self.variant.assert_supports(query);
         if query.only_stone_taking {
             return Ok(None);
         }
 
         let (id, board) = query.sector_and_board();
-        let sector_name = sector_file_name(self.variant_name, id);
+        let sector_name = self.variant.sector_file_name(id);
         let sector = self.load_sector(id)?;
         let probe = sector.hasher.hash_probe(board);
         let mut raw = sector
@@ -352,7 +411,7 @@ impl<P: DatabaseProvider> Database<P> {
                 .value(id)
                 .ok_or(DatabaseError::MissingSectorValue { id })?;
             let hasher = PerfectHasher::new(id.white_on_board, id.black_on_board);
-            let name = sector_file_name(self.variant_name, id);
+            let name = self.variant.sector_file_name(id);
             let bytes = self.provider.read(&name)?;
             let file = SectorFile::parse(&bytes, hasher.hash_count()).map_err(|source| {
                 DatabaseError::Parse {
@@ -377,13 +436,6 @@ impl<P: DatabaseProvider> Database<P> {
     }
 }
 
-fn sector_file_name(variant_name: &str, id: SectorId) -> String {
-    format!(
-        "{variant_name}_{}_{}_{}_{}.sec2",
-        id.white_on_board, id.black_on_board, id.white_in_hand, id.black_in_hand
-    )
-}
-
 #[cfg(test)]
 mod tests {
     use std::path::PathBuf;
@@ -392,6 +444,42 @@ mod tests {
 
     fn asset_root() -> PathBuf {
         PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../../src/ui/flutter_app/assets/databases")
+    }
+
+    #[test]
+    fn database_variant_metadata_matches_legacy_counts() {
+        assert_eq!(DatabaseVariant::STANDARD.name, "std");
+        assert_eq!(DatabaseVariant::STANDARD.piece_count, 9);
+        assert_eq!(DatabaseVariant::LASKER.name, "lask");
+        assert_eq!(DatabaseVariant::LASKER.piece_count, 10);
+        assert_eq!(DatabaseVariant::MORABARABA.name, "mora");
+        assert_eq!(DatabaseVariant::MORABARABA.piece_count, 12);
+    }
+
+    #[test]
+    fn missing_non_standard_variant_fails_explicitly() {
+        let err = Database::open_variant(
+            FileDatabaseProvider::new(asset_root()),
+            DatabaseVariant::LASKER,
+        )
+        .unwrap_err();
+        match err {
+            DatabaseError::Read { name, .. } => {
+                assert!(
+                    name.ends_with("lask.secval"),
+                    "unexpected missing file: {name}"
+                );
+            }
+            other => panic!("expected missing variant file, got {other}"),
+        }
+    }
+
+    #[test]
+    #[should_panic(expected = "database variant piece count")]
+    fn standard_database_rejects_ten_piece_queries() {
+        let mut db = Database::open(FileDatabaseProvider::new(asset_root())).unwrap();
+        let query = PerfectQuery::new(0, 0, 10, 10, 0, false);
+        let _ = db.evaluate_raw(query);
     }
 
     #[test]
