@@ -176,6 +176,40 @@ fn selfplay_variant_options() -> MillVariantOptions {
     }
 }
 
+const MASTER_GO_SKILL1_FULL_GAME: &[&str] = &[
+    "d6", "f4", "d2", "b4", "e4", "d5", "c4", "d3", "g4", "d7", "a4", "d1", "e5", "e3", "c3", "c5",
+    "f6", "b6", "a4-a7", "b4-a4", "c4-b4", "c5-c4", "g4-g1", "d7-g7", "g1-g4", "g7-d7", "g4-g1",
+    "d7-g7", "g1-g4", "g7-d7",
+];
+
+const MASTER_GO_SKILL2_FULL_GAME: &[&str] = &[
+    "d6", "f4", "d2", "b4", "g4", "d7", "a4", "d1", "e4", "d5", "c4", "d3", "f6", "b6", "b2", "f2",
+    "g7", "g1", "c4-c5", "d1-a1", "c5-c4", "a1-d1", "c4-c5", "b4-c4", "b2-b4", "d1-a1", "a4-a7",
+    "a1-a4", "e4-e3", "g1-d1", "e3-e4", "d3-e3", "g4-g1", "e3-d3", "g1-g4", "d5-e5", "c5-d5",
+    "c4-c5",
+];
+
+const MASTER_GO_SKILL3_FULL_GAME: &[&str] = &[
+    "d6", "f4", "d2", "b4", "g4", "d7", "a4", "d1", "e4", "d5", "d3", "f6", "f2", "b2", "b6", "g7",
+    "a7", "e3", "a4-a1", "d5-e5", "d3-c3", "e3-d3", "d6-d5", "f6-d6", "c3-c4", "d1-g1", "a1-a4",
+    "g1-d1", "e4-e3", "e5-e4", "d5-e5", "d3-c3", "e5-d5", "e4-e5", "e3-d3", "e5-e4", "c4-c5",
+    "c3-c4",
+];
+
+const RUST_SKILL4_FULL_GAME: &[&str] = &[
+    "d6", "f4", "d2", "b4", "g4", "d7", "a4", "d1", "e4", "d5", "c4", "d3", "f6", "b6", "b2", "f2",
+    "g7", "g1", "a4-a1", "d3-c3", "c4-c5", "c3-d3", "c5-c4", "d5-c5", "a1-a4", "c5-d5", "c4-c5",
+    "b4-c4", "b2-b4", "d1-a1", "e4-e3", "a1-d1", "a4-a1", "d5-e5", "c5-d5", "e5-e4", "a1-a4",
+    "c4-c5",
+];
+
+const MASTER_GO_SKILL4_FULL_GAME: &[&str] = &[
+    "d6", "f4", "d2", "b4", "g4", "d7", "a4", "d1", "e4", "d5", "c4", "d3", "f6", "b6", "b2", "f2",
+    "g7", "g1", "a4-a1", "d3-c3", "c4-c5", "c3-d3", "c5-c4", "d5-c5", "a1-a4", "c5-d5", "c4-c5",
+    "b4-c4", "b2-b4", "d1-a1", "e4-e3", "a1-d1", "a4-a1", "d5-e5", "c5-d5", "e5-e4", "d5-e5",
+    "c4-c5",
+];
+
 #[test]
 fn move15_black_search_skill1_depth1_shuffling_off() {
     let rules = MillRules::default();
@@ -424,12 +458,17 @@ fn faithful_selfplay(skill_level: u8, max_plies: usize) -> Vec<String> {
     faithful_selfplay_opts(skill_level, max_plies, false, false)
 }
 
-fn assert_deterministic_selfplay_prefix(skill_level: u8, expected: &[&str]) {
-    let first = faithful_selfplay(skill_level, expected.len());
-    let second = faithful_selfplay(skill_level, expected.len());
-    let expected: Vec<String> = expected.iter().map(|m| (*m).to_owned()).collect();
+fn move_vec(moves: &[&str]) -> Vec<String> {
+    moves.iter().map(|m| (*m).to_owned()).collect()
+}
+
+fn assert_deterministic_selfplay_full_game(skill_level: u8, expected: &[&str]) -> Vec<String> {
+    let first = faithful_selfplay(skill_level, 400);
+    let second = faithful_selfplay(skill_level, 400);
+    let expected = move_vec(expected);
     assert_eq!(first, expected);
     assert_eq!(second, expected);
+    first
 }
 
 fn faithful_selfplay_opts(
@@ -498,46 +537,39 @@ fn faithful_selfplay_opts(
 }
 
 #[test]
-fn ai_vs_ai_skill1_time0_shuffling_off_matches_master_go_prefix() {
-    assert_deterministic_selfplay_prefix(
-        1,
-        &[
-            "d6", "f4", "d2", "b4", "e4", "d5", "c4", "d3", "g4", "d7", "a4", "d1", "e5", "e3",
-            "c3", "c5", "f6", "b6", "a4-a7", "b4-a4", "c4-b4", "c5-c4", "g4-g1", "d7-g7",
-        ],
-    );
+fn ai_vs_ai_skill1_time0_shuffling_off_matches_master_go_full_game() {
+    assert_deterministic_selfplay_full_game(1, MASTER_GO_SKILL1_FULL_GAME);
 }
 
 #[test]
-fn ai_vs_ai_skill2_time0_shuffling_off_matches_master_go_prefix() {
-    assert_deterministic_selfplay_prefix(
-        2,
-        &[
-            "d6", "f4", "d2", "b4", "g4", "d7", "a4", "d1", "e4", "d5", "c4", "d3", "f6", "b6",
-            "b2", "f2", "g7", "g1", "c4-c5", "d1-a1", "c5-c4", "a1-d1", "c4-c5", "b4-c4",
-        ],
-    );
+fn ai_vs_ai_skill2_time0_shuffling_off_matches_master_go_full_game() {
+    assert_deterministic_selfplay_full_game(2, MASTER_GO_SKILL2_FULL_GAME);
 }
 
 #[test]
-fn ai_vs_ai_skill3_time0_shuffling_off_matches_master_go_prefix() {
-    assert_deterministic_selfplay_prefix(
-        3,
-        &[
-            "d6", "f4", "d2", "b4", "g4", "d7", "a4", "d1", "e4", "d5", "d3", "f6", "f2", "b2",
-            "b6", "g7", "a7", "e3", "a4-a1", "d5-e5", "d3-c3", "e3-d3", "d6-d5", "f6-d6",
-        ],
-    );
+fn ai_vs_ai_skill3_time0_shuffling_off_matches_master_go_full_game() {
+    assert_deterministic_selfplay_full_game(3, MASTER_GO_SKILL3_FULL_GAME);
 }
 
 #[test]
-fn ai_vs_ai_skill4_time0_shuffling_off_matches_master_go_prefix() {
-    assert_deterministic_selfplay_prefix(
-        4,
-        &[
-            "d6", "f4", "d2", "b4", "g4", "d7", "a4", "d1", "e4", "d5", "c4", "d3", "f6", "b6",
-            "b2", "f2", "g7", "g1", "a4-a1", "d3-c3", "c4-c5", "c3-d3", "c5-c4", "d5-c5",
-        ],
+fn ai_vs_ai_skill4_time0_shuffling_off_full_game_has_known_master_tail_divergence() {
+    let actual = assert_deterministic_selfplay_full_game(4, RUST_SKILL4_FULL_GAME);
+    let master = move_vec(MASTER_GO_SKILL4_FULL_GAME);
+
+    assert_eq!(actual.len(), master.len());
+    assert_eq!(
+        actual
+            .iter()
+            .zip(master.iter())
+            .position(|(left, right)| left != right),
+        Some(36),
+        "Skill 4 should only diverge from master at the final reversible white move"
+    );
+    assert_eq!(&actual[36..], move_vec(&["a1-a4", "c4-c5"]).as_slice());
+    assert_eq!(&master[36..], move_vec(&["d5-e5", "c4-c5"]).as_slice());
+    assert_ne!(
+        actual, master,
+        "This full-game fixture intentionally documents the remaining master tail divergence"
     );
 }
 
@@ -571,20 +603,6 @@ fn faithful_selfplay_skill4_movelist() {
     let moves = faithful_selfplay(4, 400);
     eprintln!("SELFPLAY skill=4 plies={}", moves.len());
     eprintln!("SELFPLAY skill=4 moves: {}", moves.join(" "));
-}
-
-#[test]
-#[ignore = "self-play prefix capture; run explicitly when updating baselines"]
-fn faithful_selfplay_skill3_prefix24() {
-    let moves = faithful_selfplay(3, 24);
-    eprintln!("SELFPLAY skill=3 prefix24: {}", moves.join(" "));
-}
-
-#[test]
-#[ignore = "self-play prefix capture; run explicitly when updating baselines"]
-fn faithful_selfplay_skill4_prefix24() {
-    let moves = faithful_selfplay(4, 24);
-    eprintln!("SELFPLAY skill=4 prefix24: {}", moves.join(" "));
 }
 
 #[test]
