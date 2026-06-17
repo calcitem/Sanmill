@@ -481,45 +481,45 @@ fn faithful_selfplay_opts(
 }
 
 #[test]
-fn ai_vs_ai_skill1_time0_shuffling_off_is_repeatable() {
-    // Master App `go` at SkillLevel=1 can still fall through to its
-    // time-seeded random fallback on the first move. The Rust/TGF App path
-    // keeps this requested configuration deterministic, so pin the stable
-    // next-engine prefix rather than reproducing master's fallback bug.
+fn ai_vs_ai_skill1_time0_shuffling_off_matches_master_go_prefix() {
     assert_deterministic_selfplay_prefix(
         1,
         &[
-            "d6", "f4", "d2", "b4", "e4", "d5", "c4", "d3", "g4", "d7", "a4", "d1",
+            "d6", "f4", "d2", "b4", "e4", "d5", "c4", "d3", "g4", "d7", "a4", "d1", "e5", "e3",
+            "c3", "c5", "f6", "b6", "a4-a7", "b4-a4", "c4-b4", "c5-c4", "g4-g1", "d7-g7",
         ],
     );
 }
 
 #[test]
-fn ai_vs_ai_skill2_time0_shuffling_off_matches_master_gomtdf_prefix() {
+fn ai_vs_ai_skill2_time0_shuffling_off_matches_master_go_prefix() {
     assert_deterministic_selfplay_prefix(
         2,
         &[
-            "d6", "f4", "d2", "b4", "g4", "d7", "a4", "d1", "e4", "d5", "c4", "d3",
+            "d6", "f4", "d2", "b4", "g4", "d7", "a4", "d1", "e4", "d5", "c4", "d3", "f6", "b6",
+            "b2", "f2", "g7", "g1", "c4-c5", "d1-a1", "c5-c4", "a1-d1", "c4-c5", "b4-c4",
         ],
     );
 }
 
 #[test]
-fn ai_vs_ai_skill3_time0_shuffling_off_matches_master_gomtdf_prefix() {
+fn ai_vs_ai_skill3_time0_shuffling_off_matches_master_go_prefix() {
     assert_deterministic_selfplay_prefix(
         3,
         &[
-            "d6", "f4", "d2", "b4", "g4", "d7", "a4", "d1", "e4", "d5", "d3", "f6",
+            "d6", "f4", "d2", "b4", "g4", "d7", "a4", "d1", "e4", "d5", "d3", "f6", "f2", "b2",
+            "b6", "g7", "a7", "e3", "a4-a1", "d5-e5", "d3-c3", "e3-d3", "d6-d5", "f6-d6",
         ],
     );
 }
 
 #[test]
-fn ai_vs_ai_skill4_time0_shuffling_off_matches_master_gomtdf_prefix() {
+fn ai_vs_ai_skill4_time0_shuffling_off_matches_master_go_prefix() {
     assert_deterministic_selfplay_prefix(
         4,
         &[
-            "d6", "f4", "d2", "b4", "g4", "d7", "a4", "d1", "e4", "d5", "c4", "d3",
+            "d6", "f4", "d2", "b4", "g4", "d7", "a4", "d1", "e4", "d5", "c4", "d3", "f6", "b6",
+            "b2", "f2", "g7", "g1", "a4-a1", "d3-c3", "c4-c5", "c3-d3", "c5-c4", "d5-c5",
         ],
     );
 }
