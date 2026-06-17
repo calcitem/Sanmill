@@ -1211,12 +1211,10 @@ class GameController {
 
   bool isAutoRestart() {
     if (EnvironmentConfig.devMode == true) {
-      // The legacy `Position.isNoDraw()` is gone with the
-      // rule-machine cleanup; treat all auto-restart-eligible
-      // outcomes the same (the previous implementation only
-      // restarted when the prior game was not a draw, but that
-      // distinction is no longer surfaced cleanly).
-      return DB().generalSettings.isAutoRestart;
+      final bool hasNonDrawScore =
+          (millScore[PieceColor.white] ?? 0) > 0 ||
+          (millScore[PieceColor.black] ?? 0) > 0;
+      return DB().generalSettings.isAutoRestart && !hasNonDrawScore;
     }
 
     return DB().generalSettings.isAutoRestart;

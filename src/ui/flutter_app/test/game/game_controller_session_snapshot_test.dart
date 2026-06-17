@@ -8,7 +8,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:sanmill/game_page/services/mill.dart';
 import 'package:sanmill/game_platform/game_id.dart';
 import 'package:sanmill/game_platform/game_session.dart' as platform;
+import 'package:sanmill/general_settings/models/general_settings.dart';
 import 'package:sanmill/shared/database/database.dart';
+import 'package:sanmill/shared/services/environment_config.dart';
 
 import '../helpers/mocks/mock_database.dart';
 
@@ -97,4 +99,35 @@ void main() {
       platform.PlayerSeat.first,
     );
   });
+
+  test(
+    'GameController dev auto restart keeps the legacy no-draw score gate',
+    () {
+      final MockDB db = MockDB();
+      db.generalSettings = const GeneralSettings(isAutoRestart: true);
+      DB.instance = db;
+      final bool originalDevMode = EnvironmentConfig.devMode;
+      addTearDown(() {
+        EnvironmentConfig.devMode = originalDevMode;
+        resetMillScore();
+        DB.instance = null;
+      });
+
+      final GameController controller = GameController.instance;
+      EnvironmentConfig.devMode = true;
+      resetMillScore();
+
+      expect(controller.isAutoRestart(), isTrue);
+
+      millScore[PieceColor.white] = 1;
+      expect(controller.isAutoRestart(), isFalse);
+
+      resetMillScore();
+      millScore[PieceColor.black] = 1;
+      expect(controller.isAutoRestart(), isFalse);
+
+      EnvironmentConfig.devMode = false;
+      expect(controller.isAutoRestart(), isTrue);
+    },
+  );
 }
