@@ -9,23 +9,32 @@ import '../../game_platform/game_id.dart';
 import '../../game_platform/game_session.dart';
 import '../../shared/database/database.dart';
 import '../../src/rust/api/kernel.dart' as tgf_kernel;
+import '../../src/rust/api/mill_kernel.dart' as tgf_mill;
 import '../../src/rust/api/simple.dart' as tgf;
 import 'mill_action_codec.dart';
+import 'mill_perfect_database_support.dart';
 import 'mill_variant_options_mapper.dart';
+import 'native_mill_rules_port.dart';
 
 /// Bridges the Rust/FRB Mill native search to the game-neutral
 /// [EnginePort] surface used by `GameRegistry`.  Streaming events come
-/// from `tgf.nativeMillSearchEvents`; the legacy method-channel UCI
-/// path is gone, so [eventLines] is intentionally an empty stream.
+/// from a live Mill kernel handle or an owned FEN-backed kernel; the
+/// legacy method-channel UCI path is gone, so [eventLines] is intentionally
+/// an empty stream.
 class MillEnginePortAdapter implements EnginePort {
   final StreamController<EngineEvent> _events =
       StreamController<EngineEvent>.broadcast();
   StreamSubscription<tgf.EngineEvent>? _nativeSearchSub;
+  NativeMillRulesPort? _ownedRulesPort;
+  int? _currentKernelHandle;
+  int _lastRawBestValue = 0;
 
   @override
   Future<void> dispose() async {
     await _nativeSearchSub?.cancel();
     _nativeSearchSub = null;
+    _ownedRulesPort?.dispose();
+    _ownedRulesPort = null;
     await _events.close();
   }
 
@@ -48,6 +57,25 @@ class MillEnginePortAdapter implements EnginePort {
   @override
   Future<void> setPosition(EnginePosition position) async {
     assert(position.snapshot.gameId == GameId.mill, 'Expected Mill position.');
+    final int? kernelHandle = _kernelHandleFrom(position.snapshot);
+    if (kernelHandle != null) {
+      _ownedRulesPort?.dispose();
+      _ownedRulesPort = null;
+      _currentKernelHandle = kernelHandle;
+      return;
+    }
+
+    final String? fen = _fenFrom(position);
+    assert(
+      fen != null && fen.isNotEmpty,
+      'Mill EnginePort.setPosition needs a live tgfHandle snapshot or FEN.',
+    );
+    if (fen == null || fen.isEmpty) {
+      _currentKernelHandle = null;
+      return;
+    }
+    _currentKernelHandle = null;
+    _ensureOwnedRulesPort().setFromFen(fen);
   }
 
   @override
@@ -56,7 +84,10 @@ class MillEnginePortAdapter implements EnginePort {
       request.position.snapshot.gameId == GameId.mill,
       'Expected Mill search request.',
     );
-    await _startNativeSearch(depth: request.depth ?? 1);
+    await _startNativeSearch(
+      position: request.position,
+      depth: request.depth ?? 1,
+    );
   }
 
   @override
@@ -65,7 +96,10 @@ class MillEnginePortAdapter implements EnginePort {
       request.position.snapshot.gameId == GameId.mill,
       'Expected Mill analyze request.',
     );
-    await _startNativeSearch(depth: request.depth ?? 1);
+    await _startNativeSearch(
+      position: request.position,
+      depth: request.depth ?? 1,
+    );
   }
 
   @override
@@ -115,6 +149,7 @@ class MillEnginePortAdapter implements EnginePort {
                     activeSeat: PlayerSeat.first,
                     outcome: const GameOutcome.ongoing(),
                   ),
+              notation: request.payload['notation'] as String?,
             ),
             depth: request.payload['depth'] as int?,
           ),
@@ -135,6 +170,7 @@ class MillEnginePortAdapter implements EnginePort {
                     activeSeat: PlayerSeat.first,
                     outcome: const GameOutcome.ongoing(),
                   ),
+              notation: request.payload['notation'] as String?,
             ),
             depth: request.payload['depth'] as int?,
           ),
@@ -197,33 +233,141 @@ class MillEnginePortAdapter implements EnginePort {
     _nativeSearchSub = null;
   }
 
-  Future<void> _startNativeSearch({required int depth}) async {
+  Future<void> _startNativeSearch({
+    required EnginePosition position,
+    required int depth,
+  }) async {
     await _nativeSearchSub?.cancel();
-    _nativeSearchSub = tgf
-        .nativeMillSearchEvents(depth: depth)
-        .listen(
-          (tgf.EngineEvent event) {
-            if (_events.isClosed) {
-              return;
-            }
-            _events.add(_mapNativeEvent(event));
-          },
-          onError: (Object error, StackTrace stackTrace) {
-            if (!_events.isClosed) {
-              _events.add(
-                EngineEvent(
-                  kind: EngineEventKind.error,
-                  line: error.toString(),
-                  payload: <String, Object?>{'error': error.toString()},
-                ),
-              );
-            }
-          },
-          onDone: () => _nativeSearchSub = null,
-        );
+
+    final int? kernelHandle =
+        _kernelHandleFrom(position.snapshot) ?? _currentKernelHandle;
+    if (kernelHandle != null) {
+      _listenToNativeEvents(
+        tgf_mill.tgfKernelMillSearchEventsWithConfig(
+          handle: kernelHandle,
+          config: _engineConfig(depth),
+        ),
+      );
+      return;
+    }
+
+    final String? fen = _fenFrom(position);
+    if (fen != null && fen.isNotEmpty) {
+      final NativeMillRulesPort rulesPort = _ensureOwnedRulesPort()
+        ..setFromFen(fen);
+      _listenToNativeEvents(
+        rulesPort.millSearchEvents(
+          depth: depth,
+          engineSettings: DB().generalSettings,
+        ),
+      );
+      return;
+    }
+
+    final NativeMillRulesPort? rulesPort = _ownedRulesPort;
+    if (rulesPort != null) {
+      _listenToNativeEvents(
+        rulesPort.millSearchEvents(
+          depth: depth,
+          engineSettings: DB().generalSettings,
+        ),
+      );
+      return;
+    }
+
+    const String message =
+        'Mill EnginePort search needs a live tgfHandle snapshot or FEN.';
+    assert(false, message);
+    if (!_events.isClosed) {
+      _events.add(
+        const EngineEvent(
+          kind: EngineEventKind.error,
+          line: message,
+          payload: <String, Object?>{'error': message},
+        ),
+      );
+    }
+  }
+
+  void _listenToNativeEvents(Stream<tgf.EngineEvent> stream) {
+    _nativeSearchSub = stream.listen(
+      (tgf.EngineEvent event) {
+        if (_events.isClosed) {
+          return;
+        }
+        _events.add(_mapNativeEvent(event));
+      },
+      onError: (Object error, StackTrace stackTrace) {
+        if (!_events.isClosed) {
+          _events.add(
+            EngineEvent(
+              kind: EngineEventKind.error,
+              line: error.toString(),
+              payload: <String, Object?>{'error': error.toString()},
+            ),
+          );
+        }
+      },
+      onDone: () => _nativeSearchSub = null,
+    );
+  }
+
+  NativeMillRulesPort _ensureOwnedRulesPort() {
+    return _ownedRulesPort ??= NativeMillRulesPort(
+      ruleSettings: DB().ruleSettings,
+      generalSettings: DB().generalSettings,
+    );
+  }
+
+  tgf.MillEngineConfig _engineConfig(int depth) {
+    final settings = DB().generalSettings;
+    return tgf.MillEngineConfig(
+      algorithm: NativeMillRulesPort.millSearchAlgorithmFor(
+        settings.searchAlgorithm,
+      ),
+      depth: depth,
+      moveTimeMs: 0,
+      aiIsLazy: settings.aiIsLazy,
+      lastBestValue: _lastRawBestValue,
+      skillLevel: settings.skillLevel,
+      usePerfectDatabase:
+          settings.usePerfectDatabase && isRuleSupportingPerfectDatabase(),
+      shuffling: settings.shufflingEnabled,
+    );
+  }
+
+  static int? _kernelHandleFrom(GameStateSnapshot snapshot) {
+    final Object? handle = snapshot.payload['tgfHandle'];
+    return handle is int ? handle : null;
+  }
+
+  static String? _fenFrom(EnginePosition position) {
+    final String? notation = position.notation?.trim();
+    if (notation != null && notation.isNotEmpty) {
+      return notation;
+    }
+    final Object? payloadFen =
+        position.snapshot.payload['fen'] ??
+        position.snapshot.payload['millFen'];
+    return payloadFen is String && payloadFen.trim().isNotEmpty
+        ? payloadFen.trim()
+        : null;
+  }
+
+  void _updateLastRawBestValue(tgf.EngineEvent event) {
+    if (event.kind != 'bestMove') {
+      return;
+    }
+    final RegExpMatch? match = RegExp(
+      r'(?:^|\s)rawScore=(-?\d+)(?:\s|$)',
+    ).firstMatch(event.reason);
+    if (match != null) {
+      _lastRawBestValue = int.parse(match.group(1)!);
+    }
   }
 
   EngineEvent _mapNativeEvent(tgf.EngineEvent event) {
+    _updateLastRawBestValue(event);
     final EngineEventKind kind = switch (event.kind) {
       'ready' => EngineEventKind.ready,
       'info' => EngineEventKind.info,

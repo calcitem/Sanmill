@@ -166,6 +166,7 @@ class NativeMillRulesPort implements RulesPort {
       phase: _phaseName(raw.phaseTag),
       payload: <String, Object?>{
         'tgfPhaseTag': raw.phaseTag,
+        'tgfHandle': _kernel.rawHandle,
         'tgfMoveNumber': raw.moveNumber,
         'tgfZobrist': raw.zobristKey,
         millOutcomeReasonPayloadKey: outcome.reason,
@@ -202,7 +203,7 @@ class NativeMillRulesPort implements RulesPort {
       depth: depth,
       moveLimitMs: moveLimitMs,
       usePerfectDatabase: usePerfectDatabase,
-      algorithm: _millSearchAlgorithm(settings.searchAlgorithm),
+      algorithm: millSearchAlgorithmFor(settings.searchAlgorithm),
       aiIsLazy: settings.aiIsLazy,
       skillLevel: settings.skillLevel,
       shuffling: settings.shufflingEnabled,
@@ -213,7 +214,7 @@ class NativeMillRulesPort implements RulesPort {
   /// [tgf_simple.MillSearchAlgorithm] consumed by the Rust dispatcher.
   /// Falls back to MTD(f) when the setting is null (matches the engine
   /// default documented on `MillEngineConfig`).
-  static tgf_simple.MillSearchAlgorithm _millSearchAlgorithm(
+  static tgf_simple.MillSearchAlgorithm millSearchAlgorithmFor(
     SearchAlgorithm? algorithm,
   ) {
     switch (algorithm) {
@@ -244,6 +245,7 @@ class NativeMillRulesPort implements RulesPort {
       lastAction: lastAction,
       payload: <String, Object?>{
         'tgfPhaseTag': raw.phaseTag,
+        'tgfHandle': _kernel.rawHandle,
         'tgfMoveNumber': raw.moveNumber,
         'tgfZobrist': raw.zobristKey,
         millOutcomeReasonPayloadKey: outcome.reason,

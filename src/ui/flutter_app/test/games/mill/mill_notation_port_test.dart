@@ -53,11 +53,23 @@ void main() {
   });
 
   group('MillNotationPort.decodeMoveList', () {
-    test('wraps non-empty notation in a single millNotation action', () {
-      final List<GameAction> actions = port.decodeMoveList('d6 e5-d4');
-      expect(actions, hasLength(1));
-      expect(actions.first.type, 'millNotation');
-      expect(actions.first.payload['notation'], 'd6 e5-d4');
+    test('decodes non-empty notation into typed Mill actions', () {
+      final List<GameAction> actions = port.decodeMoveList('d6 e5-d5');
+      expect(actions, hasLength(2));
+      expect(actions[0].type, 'mill.place');
+      expect(actions[0].payload['move'], 'd6');
+      expect(actions[1].type, 'mill.move');
+      expect(actions[1].payload['move'], 'e5-d5');
+    });
+
+    test('splits compact capture notation into primitive actions', () {
+      final List<GameAction> actions = port.decodeMoveList('1. d6xc3xb4');
+      expect(actions.map(port.describeMove), <String>['d6', 'xc3', 'xb4']);
+      expect(actions.map((GameAction action) => action.type), <String>[
+        'mill.place',
+        'mill.remove',
+        'mill.remove',
+      ]);
     });
   });
 
@@ -93,8 +105,7 @@ void main() {
       ];
       final String encoded = port.encodeMoveList(original);
       final List<GameAction> decoded = port.decodeMoveList(encoded);
-      expect(decoded, hasLength(1));
-      expect(decoded.first.payload['notation'], encoded);
+      expect(decoded.map(port.describeMove), <String>['d6', 'd6-e5']);
     });
   });
 }

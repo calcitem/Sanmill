@@ -3,20 +3,25 @@
 
 import '../../game_platform/game_session.dart';
 import '../../game_platform/notation_port.dart';
+import 'mill_action_codec.dart';
 
-/// Transitional notation adapter for Mill.
+/// Notation adapter for Mill's compact move-token list.
 class MillNotationPort implements NotationPort {
   const MillNotationPort();
 
   @override
   List<GameAction> decodeMoveList(String notation) {
     assert(notation.isNotEmpty, 'Mill notation must not be empty.');
-    return <GameAction>[
-      GameAction(
-        type: 'millNotation',
-        payload: <String, Object?>{'notation': notation},
-      ),
-    ];
+    final List<GameAction> actions = <GameAction>[];
+    for (final String token in _moveTokens(notation)) {
+      for (final String segment in _splitCaptures(token)) {
+        final tgfAction = MillActionCodec.tgfActionFromMoveString(segment);
+        assert(tgfAction != null, 'Invalid Mill move token: $segment.');
+        actions.add(MillActionCodec.fromTgfAction(tgfAction!));
+      }
+    }
+    assert(actions.isNotEmpty, 'Mill notation contained no moves.');
+    return actions;
   }
 
   @override
@@ -40,5 +45,58 @@ class MillNotationPort implements NotationPort {
       'MillNotationPort needs Mill state.',
     );
     return encodeMoveList(actions);
+  }
+
+  static Iterable<String> _moveTokens(String notation) sync* {
+    final String withoutComments = notation.replaceAll(
+      RegExp(r'\{[^}]*\}'),
+      ' ',
+    );
+    for (final String raw in withoutComments.split(RegExp(r'\s+'))) {
+      final String token = _normaliseMoveToken(raw);
+      if (token.isNotEmpty) {
+        yield token;
+      }
+    }
+  }
+
+  static String _normaliseMoveToken(String raw) {
+    String token = raw.trim().toLowerCase();
+    if (token.isEmpty) {
+      return '';
+    }
+    if (token == '1-0' ||
+        token == '0-1' ||
+        token == '1/2-1/2' ||
+        token == '*') {
+      return '';
+    }
+    token = token.replaceFirst(RegExp(r'^\d+\.(?:\.\.)?'), '');
+    token = token.replaceFirst(RegExp(r'^\.\.\.'), '');
+    token = token.replaceAll(RegExp(r'[!?]+$'), '');
+    if (token.startsWith(r'$')) {
+      return '';
+    }
+    return token;
+  }
+
+  /// Splits a move token into the primitive action sequence understood by the
+  /// Rust kernel, e.g. "b4xb2xc3" becomes ["b4", "xb2", "xc3"].
+  static List<String> _splitCaptures(String token) {
+    if (!token.contains('x')) {
+      return <String>[token];
+    }
+    final List<String> segments = <String>[];
+    if (!token.startsWith('x')) {
+      final int firstCapture = token.indexOf('x');
+      segments.add(token.substring(0, firstCapture));
+      token = token.substring(firstCapture);
+    }
+    segments.addAll(
+      RegExp(
+        r'x[a-g][1-7]',
+      ).allMatches(token).map((RegExpMatch m) => m.group(0)!),
+    );
+    return segments;
   }
 }

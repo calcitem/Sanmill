@@ -56,6 +56,7 @@ void main() {
         expect(port.snapshot.activeSeat, PlayerSeat.first);
         expect(port.snapshot.phase, 'placing');
         expect(port.snapshot.outcome.isTerminal, isFalse);
+        expect(port.snapshot.payload['tgfHandle'], isA<int>());
         expect(port.legalActions, hasLength(24));
         expect(
           port.legalActions.every(
