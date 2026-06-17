@@ -71,6 +71,18 @@ fn mtdf_search_at_skill_with_options(
     skill_level: u8,
     options: MillVariantOptions,
 ) -> (String, i32) {
+    let (best, score, _nodes) =
+        mtdf_search_at_skill_with_options_and_nodes(snap, shuffling, depth, skill_level, options);
+    (best, score)
+}
+
+fn mtdf_search_at_skill_with_options_and_nodes(
+    snap: &tgf_core::GameStateSnapshot,
+    shuffling: bool,
+    depth: i32,
+    skill_level: u8,
+    options: MillVariantOptions,
+) -> (String, i32, u64) {
     let game = MillGame::new(options);
     let ctx = MoveOrderContext {
         algorithm: MoveOrderAlgorithm::Mtdf,
@@ -90,6 +102,7 @@ fn mtdf_search_at_skill_with_options(
     (
         MillUciCodec::encode_action(result.best_action),
         result.score,
+        result.nodes,
     )
 }
 
@@ -506,6 +519,26 @@ fn skill15_move8_white_depth15_matches_master_placing_choice() {
     let (best, score) = mtdf_search_at_skill(&snap, false, 15, 15);
     eprintln!("skill15 move8 depth=15: best={best} score={score}");
     assert_eq!(best, "e5");
+}
+
+#[test]
+#[ignore = "slow depth=14 node-count parity case; run when auditing master search statistics"]
+fn skill15_move5_white_depth14_matches_master_node_count() {
+    let rules = MillRules::default();
+    let mut snap = rules.initial_state(&[]);
+    apply_line(&rules, &mut snap, &["d6", "f4", "d2", "b4"]);
+
+    let (best, score, nodes) = mtdf_search_at_skill_with_options_and_nodes(
+        &snap,
+        false,
+        14,
+        15,
+        MillVariantOptions::default(),
+    );
+
+    assert_eq!(best, "f6");
+    assert_eq!(score, 2);
+    assert_eq!(nodes, 19_397_250);
 }
 
 #[test]

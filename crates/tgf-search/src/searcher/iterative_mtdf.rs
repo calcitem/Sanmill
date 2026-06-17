@@ -298,6 +298,11 @@ impl<G: Game> Searcher<G> {
         mut beta: i32,
         best_action: &mut Action,
     ) -> i32 {
+        // Master `Search::search` counts the root zero-window probe itself
+        // before terminal checks, TT probing, or child generation.  MTD(f)
+        // calls this root probe once per bound iteration, so the node counter
+        // must include those entries for exact legacy parity.
+        self.nodes += 1;
         let root_key = wb.key();
         let old_alpha = alpha;
         // Master `Search::search` probes the TT at EVERY node, including the
