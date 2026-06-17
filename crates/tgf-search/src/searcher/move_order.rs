@@ -16,12 +16,29 @@ impl<G: Game> Searcher<G> {
         depth: i32,
         moves: &mut ActionList<256>,
     ) {
-        // `sort_by_key` is a *stable* sort, so equally-scored moves keep
-        // their `generate<LEGAL>` relative order, matching master's
-        // `partial_insertion_sort` (movepick.cpp).
-        moves
-            .as_mut_slice()
-            .sort_by_key(|m| -self.move_score(wb, key, depth, *m));
+        let moves = moves.as_mut_slice();
+        let mut scores = [0_i32; 256];
+        assert!(moves.len() <= scores.len());
+        for (i, action) in moves.iter().copied().enumerate() {
+            scores[i] = self.move_score(wb, key, depth, action);
+        }
+
+        // Stable descending insertion sort.  This preserves the generated
+        // move order for equal scores, matching master's partial insertion
+        // sort, while computing the expensive Mill move score exactly once
+        // per candidate.
+        for i in 1..moves.len() {
+            let action = moves[i];
+            let score = scores[i];
+            let mut j = i;
+            while j > 0 && scores[j - 1] < score {
+                moves[j] = moves[j - 1];
+                scores[j] = scores[j - 1];
+                j -= 1;
+            }
+            moves[j] = action;
+            scores[j] = score;
+        }
     }
 
     /// Shuffle the root move list using the internal xorshift RNG (P2-K).

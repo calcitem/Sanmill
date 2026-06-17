@@ -4,6 +4,7 @@
 // `crates/tgf-mill/tests/searcher_integration.rs`.
 
 use super::*;
+use std::sync::atomic::{AtomicUsize, Ordering};
 use tgf_core::{
     Action, ActionList, Evaluator, Game, GameStateSnapshot, MoveOrderContext, Workbench,
 };
@@ -128,6 +129,8 @@ impl Evaluator<BiasWorkbench> for BiasEvaluator {
 
 struct BiasGame;
 
+static BIAS_SCORE_CALLS: AtomicUsize = AtomicUsize::new(0);
+
 impl tgf_core::Game for BiasGame {
     type Workbench = BiasWorkbench;
     type Evaluator = BiasEvaluator;
@@ -154,6 +157,7 @@ impl tgf_core::Game for BiasGame {
     }
 
     fn move_order_bias_ctx(_wb: &Self::Workbench, action: Action, ctx: &MoveOrderContext) -> i32 {
+        BIAS_SCORE_CALLS.fetch_add(1, Ordering::Relaxed);
         if ctx.skill_level == 7 && action.to_node == 1 {
             100
         } else {
@@ -167,6 +171,7 @@ fn search_order_uses_contextual_move_bias() {
     let game = BiasGame;
     let mut wb = game.build_workbench(&GameStateSnapshot::default());
     let mut searcher = Searcher::<BiasGame>::new();
+    BIAS_SCORE_CALLS.store(0, Ordering::Relaxed);
     searcher.set_move_order_context(MoveOrderContext {
         skill_level: 7,
         ..Default::default()
@@ -174,6 +179,7 @@ fn search_order_uses_contextual_move_bias() {
 
     let result = searcher.search(&mut wb, 1);
     assert_eq!(result.best_action.to_node, 1);
+    assert_eq!(BIAS_SCORE_CALLS.load(Ordering::Relaxed), 2);
 }
 
 #[derive(Clone, Copy, Debug)]
