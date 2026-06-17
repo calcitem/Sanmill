@@ -217,13 +217,50 @@ void UCI::loop(int argc, char *argv[])
                 while (is >> ftok)
                     filter.push_back(ftok);
             }
-            const char *logPath = std::getenv("SANMILL_DEBUG_LOG");
-            const char *sessEnv = std::getenv("SANMILL_DEBUG_SESSION");
-            const char *hypEnv = std::getenv("SANMILL_DEBUG_HYPOTHESIS");
-            const std::string session = sessEnv ? sessEnv : "debug";
-            const std::string hypothesis = hypEnv ? hypEnv : "master";
+            std::string logPathStr;
+            std::string session;
+            std::string hypothesis;
+#ifdef _WIN32
+            char *buf = nullptr;
+            size_t len = 0;
+            if (_dupenv_s(&buf, &len, "SANMILL_DEBUG_LOG") == 0 && buf) {
+                logPathStr = buf;
+                free(buf);
+            }
+            if (_dupenv_s(&buf, &len, "SANMILL_DEBUG_SESSION") == 0 && buf) {
+                session = buf;
+                free(buf);
+            } else {
+                session = "debug";
+            }
+            if (_dupenv_s(&buf, &len, "SANMILL_DEBUG_HYPOTHESIS") == 0 && buf) {
+                hypothesis = buf;
+                free(buf);
+            } else {
+                hypothesis = "master";
+            }
+#else
+            if (const char *logPath = std::getenv("SANMILL_DEBUG_LOG"))
+                logPathStr = logPath;
+            if (const char *sessEnv = std::getenv("SANMILL_DEBUG_SESSION"))
+                session = sessEnv;
+            else
+                session = "debug";
+            if (const char *hypEnv = std::getenv("SANMILL_DEBUG_HYPOTHESIS"))
+                hypothesis = hypEnv;
+            else
+                hypothesis = "master";
+#endif
             const std::string savedFen = pos->fen();
-            FILE *flog = logPath ? std::fopen(logPath, "a") : nullptr;
+            FILE *flog = nullptr;
+#ifdef _WIN32
+            if (!logPathStr.empty() &&
+                fopen_s(&flog, logPathStr.c_str(), "a") != 0)
+                flog = nullptr;
+#else
+            if (!logPathStr.empty())
+                flog = std::fopen(logPathStr.c_str(), "a");
+#endif
             searchEngine.beginNewSearch(pos);
             Sanmill::Stack<Position> ssv;
             for (const auto &mm : MoveList<LEGAL>(*pos)) {
@@ -240,10 +277,10 @@ void UCI::loop(int argc, char *argv[])
                 pos->do_move(mm);
                 const Color after = pos->side_to_move();
                 Move bm = MOVE_NONE;
-                const Value cv = Search::search(searchEngine, pos, ssv,
-                                                childDepth, childDepth,
-                                                -VALUE_INFINITE, VALUE_INFINITE,
-                                                bm);
+                const Value cv = Search::search(
+                    searchEngine, pos, ssv, static_cast<Depth>(childDepth),
+                    static_cast<Depth>(childDepth), -VALUE_INFINITE,
+                    VALUE_INFINITE, bm);
                 const Value wv = (after != before) ? static_cast<Value>(-cv) :
                                                      cv;
                 sync_cout << "valuevec " << mv << " depth=" << childDepth
@@ -289,7 +326,8 @@ void UCI::loop(int argc, char *argv[])
             int it = 0;
             while (lower < upper) {
                 const Value beta = (g == lower) ? static_cast<Value>(g + 1) : g;
-                g = Search::search(searchEngine, pos, ssg, d, d,
+                g = Search::search(searchEngine, pos, ssg,
+                                   static_cast<Depth>(d), static_cast<Depth>(d),
                                    static_cast<Value>(beta - 1), beta, bm);
                 sync_cout << "  mtdf-iter " << it++ << " beta="
                           << static_cast<int>(beta)
@@ -322,8 +360,9 @@ void UCI::loop(int argc, char *argv[])
 #endif
             Sanmill::Stack<Position> ssab;
             Move bm = MOVE_NONE;
-            const Value v = Search::search(searchEngine, pos, ssab, d, d,
-                                           -VALUE_INFINITE, VALUE_INFINITE, bm);
+            const Value v = Search::search(
+                searchEngine, pos, ssab, static_cast<Depth>(d),
+                static_cast<Depth>(d), -VALUE_INFINITE, VALUE_INFINITE, bm);
             sync_cout << "goab depth=" << d << " value=" << static_cast<int>(v)
                       << " bestmove " << UCI::move(bm) << sync_endl;
         }
