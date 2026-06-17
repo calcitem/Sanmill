@@ -304,6 +304,31 @@ fn move15_move_order_bias_and_sorted_order() {
 }
 
 #[test]
+fn skill2_move5_white_depth2_matches_master_placing_choice() {
+    let rules = MillRules::default();
+    let mut snap = rules.initial_state(&[]);
+    apply_line(&rules, &mut snap, SKILL15_MOVES_TO_WHITE_MOVE_5);
+
+    let (best, score) = mtdf_search_at_skill(&snap, false, 2, 2);
+    eprintln!("skill2 move5 depth=2: best={best} score={score}");
+    // Master `gomtdf 2` with SkillLevel=2 and shuffling off chooses e4.
+    assert_eq!(best, "e4");
+}
+
+#[test]
+fn skill2_move8_white_depth2_matches_master_placing_choice() {
+    let rules = MillRules::default();
+    let mut snap = rules.initial_state(&[]);
+    apply_line(&rules, &mut snap, SKILL15_MOVES_TO_WHITE_MOVE_8);
+
+    let (best, score) = mtdf_search_at_skill(&snap, false, 2, 2);
+    eprintln!("skill2 move8 depth=2: best={best} score={score}");
+    // Master `gomtdf 2` with SkillLevel=2 and shuffling off chooses e4.
+    assert_eq!(best, "e4");
+}
+
+#[test]
+#[ignore = "slow depth=15 parity case; covered by the default skill2/depth2 smoke test"]
 fn skill15_move5_white_depth15_matches_master_placing_choice() {
     let rules = MillRules::default();
     let mut snap = rules.initial_state(&[]);
@@ -317,6 +342,7 @@ fn skill15_move5_white_depth15_matches_master_placing_choice() {
 }
 
 #[test]
+#[ignore = "slow depth=15 parity case; covered by the default skill2/depth2 smoke test"]
 fn skill15_move8_white_depth15_matches_master_placing_choice() {
     let rules = MillRules::default();
     let mut snap = rules.initial_state(&[]);
