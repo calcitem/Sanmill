@@ -3,7 +3,35 @@
 // dedicated file so the main rules module stays under the 1k-line bar.
 
 use super::*;
+use crate::notation::MillUciCodec;
 use tgf_core::{Evaluator, Game, GameRules, GameStateSnapshot, Workbench};
+
+fn apply_uci_sequence(rules: &MillRules, labels: &[&str]) -> GameStateSnapshot {
+    let mut snap = rules.initial_state(&[]);
+    for label in labels {
+        let action = MillUciCodec::decode_action(&snap, label)
+            .unwrap_or_else(|| panic!("failed to decode UCI action {label}"));
+        let mut legal = ActionList::<256>::new();
+        rules.legal_actions(&snap, &mut legal);
+        assert!(
+            legal.as_slice().contains(&action),
+            "UCI action {label} must be legal before applying it"
+        );
+        snap = rules.apply(&snap, action);
+    }
+    snap
+}
+
+fn legal_uci_labels(rules: &MillRules, snap: &GameStateSnapshot) -> Vec<String> {
+    let mut actions = ActionList::<256>::new();
+    rules.legal_actions(snap, &mut actions);
+    let mut labels = actions
+        .iter()
+        .map(|action| MillUciCodec::encode_action(*action))
+        .collect::<Vec<_>>();
+    labels.sort();
+    labels
+}
 
 #[test]
 fn initial_state_has_24_placing_actions() {
@@ -3106,6 +3134,110 @@ fn set_from_fen_then_export_round_trip() {
         state2.pieces_in_hand, state.pieces_in_hand,
         "hand counts round-trip"
     );
+}
+
+#[test]
+fn applied_uci_sequences_export_master_fen_snapshots() {
+    struct FenCase {
+        name: &'static str,
+        moves: &'static [&'static str],
+        expected_fen: &'static str,
+    }
+
+    let rules = MillRules::default();
+    let cases = [
+        FenCase {
+            name: "after_a4",
+            moves: &["a4"],
+            expected_fen: "********/********/******O* b p p 1 8 0 9 0 0 0 0 0 0 0 0 1",
+        },
+        FenCase {
+            name: "after_a4_g7",
+            moves: &["a4", "g7"],
+            expected_fen: "********/********/*@****O* w p p 1 8 1 8 0 0 0 0 0 0 0 0 2",
+        },
+        FenCase {
+            name: "quiet_six_ply_placing",
+            moves: &["a4", "g7", "d7", "a1", "g1", "d1"],
+            expected_fen: "********/********/O@*O@@O* w p p 3 6 3 6 0 0 0 0 0 0 0 0 4",
+        },
+        FenCase {
+            name: "f6_forms_remove_state",
+            moves: &["d2", "d6", "f4", "b4", "f2", "g4", "f6"],
+            expected_fen: "********/@OOOO*@*/**@***** w p r 4 5 3 6 1 0 0 0 0 0 0 0 4",
+        },
+        FenCase {
+            name: "a7_forms_remove_state",
+            moves: &["d7", "a1", "g7", "d1", "a7"],
+            expected_fen: "********/********/OO**@@*O w p r 3 6 2 7 1 0 0 0 0 0 0 0 3",
+        },
+    ];
+
+    for case in cases {
+        let snap = apply_uci_sequence(&rules, case.moves);
+        let state = MillRules::decode_snapshot(snap);
+        assert_eq!(
+            rules.export_fen(&state),
+            case.expected_fen,
+            "{} must match master Position::fen()",
+            case.name
+        );
+    }
+}
+
+#[test]
+fn applied_uci_sequences_generate_master_legal_action_sets() {
+    struct LegalCase {
+        name: &'static str,
+        moves: &'static [&'static str],
+        expected_uci: &'static [&'static str],
+    }
+
+    let rules = MillRules::default();
+    let cases = [
+        LegalCase {
+            name: "black_places_after_a4",
+            moves: &["a4"],
+            expected_uci: &[
+                "d6", "f4", "d2", "b4", "d7", "g4", "d1", "d5", "e4", "d3", "c4", "f6", "f2", "b2",
+                "b6", "g7", "g1", "a1", "a7", "e5", "e3", "c3", "c5",
+            ],
+        },
+        LegalCase {
+            name: "white_places_after_quiet_six_ply",
+            moves: &["a4", "g7", "d7", "a1", "g1", "d1"],
+            expected_uci: &[
+                "d6", "f4", "d2", "b4", "g4", "d5", "e4", "d3", "c4", "f6", "f2", "b2", "b6", "a7",
+                "e5", "e3", "c3", "c5",
+            ],
+        },
+        LegalCase {
+            name: "white_removes_after_f6_mill",
+            moves: &["d2", "d6", "f4", "b4", "f2", "g4", "f6"],
+            expected_uci: &["xg4", "xb4", "xd6"],
+        },
+        LegalCase {
+            name: "white_removes_after_a7_mill",
+            moves: &["d7", "a1", "g7", "d1", "a7"],
+            expected_uci: &["xa1", "xd1"],
+        },
+    ];
+
+    for case in cases {
+        let snap = apply_uci_sequence(&rules, case.moves);
+        let mut expected = case
+            .expected_uci
+            .iter()
+            .map(|label| (*label).to_owned())
+            .collect::<Vec<_>>();
+        expected.sort();
+        assert_eq!(
+            legal_uci_labels(&rules, &snap),
+            expected,
+            "{} must match master legal UCI actions",
+            case.name
+        );
+    }
 }
 
 #[test]

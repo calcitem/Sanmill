@@ -357,8 +357,13 @@ pub(super) fn note_mill_formation(
     options: &MillVariantOptions,
 ) {
     debug_assert!(side < 2);
-    state.last_mill_from[side] = from;
-    state.last_mill_to[side] = to;
+    if options.restrict_repeated_mills_formation {
+        state.last_mill_from[side] = from;
+        state.last_mill_to[side] = to;
+    } else {
+        state.last_mill_from[side] = -1;
+        state.last_mill_to[side] = -1;
+    }
     state.used_mill_lines |= bits;
     // Mirror Position::potential_mills_count (`oneTimeUseMill` branch):
     // Only record into `formedMillsBB[c]` when oneTimeUseMill is enabled.
