@@ -52,11 +52,12 @@ impl Workbench for MillWorkbench {
     fn do_move(&mut self, a: Action) {
         // Hot path: mutate the owned `MillState` in place via
         // `apply_to_state`, skipping the `snapshot()->encode->apply->decode`
-        // round-trip the legacy path performed on every tree edge.  Undo is
-        // still a clone-restore (`undo_stack`).  `apply_to_state` refreshes
-        // the cached Zobrist key incrementally, so no `recompute_zobrist` is
-        // needed here.
-        self.undo_stack.push(self.state.clone());
+        // round-trip the legacy path performed on every tree edge.  Undo uses
+        // a compact scalar snapshot and only clones repetition history when
+        // an irreversible action must restore a non-empty history window.
+        // `apply_to_state` refreshes the cached Zobrist key incrementally, so
+        // no `recompute_zobrist` is needed here.
+        let undo = super::MillUndoState::capture(&self.state, a);
         // Search path: do NOT terminalise threefold (master `do_move` never
         // does).  Repetitions inside the tree are handled by the searcher's
         // `has_repeated` cut; a position that completes a threefold is scored
@@ -66,11 +67,12 @@ impl Workbench for MillWorkbench {
         // repetition history is still tracked so `current_repetition_count`
         // stays accurate.
         self.rules.apply_to_state(&mut self.state, a, false);
+        self.undo_stack.push(undo);
     }
 
     fn undo_move(&mut self) {
-        if let Some(prev) = self.undo_stack.pop() {
-            self.state = prev;
+        if let Some(undo) = self.undo_stack.pop() {
+            undo.restore(&mut self.state);
         }
     }
 

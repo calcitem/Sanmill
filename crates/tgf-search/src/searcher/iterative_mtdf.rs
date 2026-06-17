@@ -115,7 +115,7 @@ impl<G: Game> Searcher<G> {
         let mut best_action = moves[0];
         let mut best_alpha = alpha;
         let root_key = wb.key();
-        for (i, action) in moves.into_iter().enumerate() {
+        for (i, action) in moves.iter().copied().enumerate() {
             if self.should_abort() {
                 break;
             }
@@ -297,7 +297,7 @@ impl<G: Game> Searcher<G> {
         self.order_moves(wb, root_key, depth, &mut moves);
         let mut best_value = i32::MIN + 1;
         let mut best_local = Action::NONE;
-        for action in moves {
+        for action in moves.iter().copied() {
             if self.should_abort() {
                 break;
             }

@@ -278,7 +278,7 @@ impl<G: Game> Searcher<G> {
         let mut best_action = moves[0];
         let mut best_score = i32::MIN + 1;
         let root_key = wb.key();
-        for action in moves {
+        for action in moves.iter().copied() {
             if self.should_abort() {
                 break;
             }
@@ -368,7 +368,7 @@ impl<G: Game> Searcher<G> {
         let beta = i32::MAX - 1;
 
         let root_key = wb.key();
-        for (i, action) in moves.into_iter().enumerate() {
+        for (i, action) in moves.iter().copied().enumerate() {
             if self.should_abort() {
                 break;
             }
@@ -565,7 +565,7 @@ impl<G: Game> Searcher<G> {
             let predicted_key = wb.key_after(first_action);
             self.tt.prefetch(predicted_key);
         }
-        for action in moves {
+        for action in moves.iter().copied() {
             if self.should_abort() {
                 return best_value.max(alpha);
             }

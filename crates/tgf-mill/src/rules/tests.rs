@@ -34,6 +34,35 @@ fn legal_uci_labels(rules: &MillRules, snap: &GameStateSnapshot) -> Vec<String> 
 }
 
 #[test]
+fn mill_line_index_tables_match_full_scan() {
+    for has_diagonal_lines in [false, true] {
+        let options = MillVariantOptions {
+            has_diagonal_lines,
+            ..MillVariantOptions::default()
+        };
+        let lines = mill_lines(&options);
+
+        for node in 0_usize..24 {
+            let indexed = mill_line_indices_for_node(&options, node)
+                .iter()
+                .take_while(|line_idx| **line_idx != NO_MILL_LINE)
+                .map(|line_idx| *line_idx as usize)
+                .collect::<Vec<_>>();
+            let scanned = lines
+                .iter()
+                .enumerate()
+                .filter_map(|(line_idx, line)| line.contains(&node).then_some(line_idx))
+                .collect::<Vec<_>>();
+
+            assert_eq!(
+                indexed, scanned,
+                "node {node} mismatch with has_diagonal_lines={has_diagonal_lines}"
+            );
+        }
+    }
+}
+
+#[test]
 fn initial_state_has_24_placing_actions() {
     let rules = MillRules::default();
     let snap = rules.initial_state(&[]);
@@ -1319,6 +1348,68 @@ fn mill_game_workbench_do_and_undo_move() {
     assert_eq!(wb.side_to_move(), 0);
     assert_eq!(wb.state.pieces_in_hand[0], 9);
     assert_eq!(wb.state.pieces_on_board[0], 0);
+}
+
+#[test]
+fn workbench_undo_restores_repetition_history_after_reversible_move() {
+    let rules = MillRules::default();
+    let game = MillGame::default();
+    let mut state = MillRules::decode(&rules.no_mill_moving_phase_snapshot());
+    state.key_history = vec![0x1111, 0x2222];
+    state.key_history_len = state.key_history.len();
+    let snap = rules.encode(state);
+    let mut wb = game.build_workbench(&snap);
+    let before = wb.state.clone();
+
+    wb.do_move(move_action(18, 19));
+
+    assert_eq!(wb.state.key_history.len(), before.key_history.len() + 1);
+    wb.undo_move();
+    assert_eq!(wb.state, before);
+}
+
+#[test]
+fn workbench_undo_restores_repetition_history_after_remove_clears_it() {
+    let rules = MillRules::default();
+    let game = MillGame::default();
+    let state = MillState {
+        board: {
+            let mut board = [0_i8; 24];
+            board[0] = 1;
+            board[1] = 1;
+            board[2] = 1;
+            board[3] = 2;
+            board[4] = 2;
+            board[5] = 2;
+            board
+        },
+        side_to_move: 0,
+        phase: MillPhase::Moving,
+        action: MillActionState::Remove,
+        move_number: 24,
+        pieces_in_hand: [0, 0],
+        pieces_on_board: [3, 3],
+        pending_removals: [1, 0],
+        winner: -1,
+        key_history: vec![0xaaaa, 0xbbbb, 0xcccc],
+        key_history_len: 3,
+        ..MillState::default()
+    };
+    let snap = rules.encode(state);
+    let mut wb = game.build_workbench(&snap);
+    let before = wb.state.clone();
+
+    wb.do_move(Action {
+        kind_tag: MillActionKind::Remove as i16,
+        from_node: -1,
+        to_node: 3,
+        aux: -1,
+        payload_bits: 0,
+    });
+
+    assert!(wb.state.key_history.is_empty());
+    wb.undo_move();
+    assert_eq!(wb.state, before);
 }
 
 #[test]

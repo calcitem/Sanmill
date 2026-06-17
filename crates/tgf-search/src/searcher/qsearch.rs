@@ -94,7 +94,7 @@ impl<G: Game> Searcher<G> {
             self.tt.prefetch(predicted_key);
         }
 
-        for action in moves {
+        for action in moves.iter().copied() {
             if self.should_abort() {
                 return alpha;
             }

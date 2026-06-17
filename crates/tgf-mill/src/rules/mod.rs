@@ -120,7 +120,7 @@ pub struct MillGame {
 pub struct MillWorkbench {
     rules: MillRules,
     state: MillState,
-    undo_stack: Vec<MillState>,
+    undo_stack: Vec<MillUndoState>,
 }
 
 pub struct MillEvaluator;
@@ -135,6 +135,35 @@ pub struct MillEvaluator;
 const MILL_TERMINAL_WIN_SCORE: i32 = 80; // == VALUE_MATE
 const MILL_REPETITION_HISTORY_CAP: usize = 256;
 const MILL_REPETITION_SNAPSHOT_WINDOW: usize = 24;
+const MAX_MILL_LINES_PER_NODE: usize = 3;
+const NO_MILL_LINE: u8 = u8::MAX;
+const STANDARD_MILL_LINE_INDICES_BY_NODE: [[u8; MAX_MILL_LINES_PER_NODE]; 24] =
+    build_mill_line_indices_by_node(STANDARD_MILL_LINES);
+const DIAGONAL_MILL_LINE_INDICES_BY_NODE: [[u8; MAX_MILL_LINES_PER_NODE]; 24] =
+    build_mill_line_indices_by_node(DIAGONAL_MILL_LINES);
+
+const fn build_mill_line_indices_by_node(
+    lines: &[[usize; 3]],
+) -> [[u8; MAX_MILL_LINES_PER_NODE]; 24] {
+    let mut table = [[NO_MILL_LINE; MAX_MILL_LINES_PER_NODE]; 24];
+    let mut counts = [0_usize; 24];
+    let mut line_idx = 0_usize;
+    while line_idx < lines.len() {
+        let line = lines[line_idx];
+        let mut offset = 0_usize;
+        while offset < 3 {
+            let node = line[offset];
+            assert!(node < 24);
+            let count = counts[node];
+            assert!(count < MAX_MILL_LINES_PER_NODE);
+            table[node][count] = line_idx as u8;
+            counts[node] = count + 1;
+            offset += 1;
+        }
+        line_idx += 1;
+    }
+    table
+}
 
 impl MillVariantOptions {
     /// Assert that the option values are in the C++-compatible ranges.
@@ -524,6 +553,153 @@ enum MillOutcomeReason {
     DrawEndgameFiftyMove = 9,
 }
 
+#[derive(Clone, Debug)]
+struct MillUndoState {
+    core: MillUndoCore,
+    key_history: MillKeyHistoryUndo,
+}
+
+#[derive(Clone, Debug)]
+struct MillUndoCore {
+    board: [i8; 24],
+    side_to_move: i8,
+    phase: MillPhase,
+    action: MillActionState,
+    move_number: i16,
+    pieces_in_hand: [u8; 2],
+    pieces_on_board: [u8; 2],
+    pending_removals: [u8; 2],
+    remove_own_piece: [bool; 2],
+    winner: i8,
+    outcome_reason: MillOutcomeReason,
+    ply_since_capture: u16,
+    last_mill_from: [i8; 2],
+    last_mill_to: [i8; 2],
+    used_mill_lines: u32,
+    delayed_marked_pieces: u32,
+    formed_mills_bb: [u32; 2],
+    custodian_targets: [u32; 2],
+    intervention_targets: [u32; 2],
+    leap_targets: [u32; 2],
+    custodian_count: [u8; 2],
+    intervention_count: [u8; 2],
+    leap_count: [u8; 2],
+    preferred_remove_target: i8,
+    mill_available_at_removal: bool,
+    stalemate_removing: bool,
+    both_stalemate_removing: bool,
+    board_full_removing: bool,
+    key_history_len: usize,
+    zobrist_key: u64,
+}
+
+#[derive(Clone, Debug)]
+enum MillKeyHistoryUndo {
+    Truncate(usize),
+    Restore(Vec<u64>),
+}
+
+impl MillUndoState {
+    fn capture(state: &MillState, action: Action) -> Self {
+        let clears_history = action.kind_tag == MillActionKind::Place as i16
+            || action.kind_tag == MillActionKind::Remove as i16;
+        let must_restore_history = state.key_history.len() == MILL_REPETITION_HISTORY_CAP
+            || (clears_history && !state.key_history.is_empty());
+        let key_history = if must_restore_history {
+            MillKeyHistoryUndo::Restore(state.key_history.clone())
+        } else {
+            MillKeyHistoryUndo::Truncate(state.key_history.len())
+        };
+        Self {
+            core: MillUndoCore::capture(state),
+            key_history,
+        }
+    }
+
+    fn restore(self, state: &mut MillState) {
+        match self.key_history {
+            MillKeyHistoryUndo::Truncate(len) => state.key_history.truncate(len),
+            MillKeyHistoryUndo::Restore(history) => state.key_history = history,
+        }
+        self.core.restore(state);
+        debug_assert_eq!(
+            state.key_history.len(),
+            state.key_history_len,
+            "undo restored inconsistent repetition history length"
+        );
+    }
+}
+
+impl MillUndoCore {
+    fn capture(state: &MillState) -> Self {
+        Self {
+            board: state.board,
+            side_to_move: state.side_to_move,
+            phase: state.phase,
+            action: state.action,
+            move_number: state.move_number,
+            pieces_in_hand: state.pieces_in_hand,
+            pieces_on_board: state.pieces_on_board,
+            pending_removals: state.pending_removals,
+            remove_own_piece: state.remove_own_piece,
+            winner: state.winner,
+            outcome_reason: state.outcome_reason,
+            ply_since_capture: state.ply_since_capture,
+            last_mill_from: state.last_mill_from,
+            last_mill_to: state.last_mill_to,
+            used_mill_lines: state.used_mill_lines,
+            delayed_marked_pieces: state.delayed_marked_pieces,
+            formed_mills_bb: state.formed_mills_bb,
+            custodian_targets: state.custodian_targets,
+            intervention_targets: state.intervention_targets,
+            leap_targets: state.leap_targets,
+            custodian_count: state.custodian_count,
+            intervention_count: state.intervention_count,
+            leap_count: state.leap_count,
+            preferred_remove_target: state.preferred_remove_target,
+            mill_available_at_removal: state.mill_available_at_removal,
+            stalemate_removing: state.stalemate_removing,
+            both_stalemate_removing: state.both_stalemate_removing,
+            board_full_removing: state.board_full_removing,
+            key_history_len: state.key_history_len,
+            zobrist_key: state.zobrist_key,
+        }
+    }
+
+    fn restore(self, state: &mut MillState) {
+        state.board = self.board;
+        state.side_to_move = self.side_to_move;
+        state.phase = self.phase;
+        state.action = self.action;
+        state.move_number = self.move_number;
+        state.pieces_in_hand = self.pieces_in_hand;
+        state.pieces_on_board = self.pieces_on_board;
+        state.pending_removals = self.pending_removals;
+        state.remove_own_piece = self.remove_own_piece;
+        state.winner = self.winner;
+        state.outcome_reason = self.outcome_reason;
+        state.ply_since_capture = self.ply_since_capture;
+        state.last_mill_from = self.last_mill_from;
+        state.last_mill_to = self.last_mill_to;
+        state.used_mill_lines = self.used_mill_lines;
+        state.delayed_marked_pieces = self.delayed_marked_pieces;
+        state.formed_mills_bb = self.formed_mills_bb;
+        state.custodian_targets = self.custodian_targets;
+        state.intervention_targets = self.intervention_targets;
+        state.leap_targets = self.leap_targets;
+        state.custodian_count = self.custodian_count;
+        state.intervention_count = self.intervention_count;
+        state.leap_count = self.leap_count;
+        state.preferred_remove_target = self.preferred_remove_target;
+        state.mill_available_at_removal = self.mill_available_at_removal;
+        state.stalemate_removing = self.stalemate_removing;
+        state.both_stalemate_removing = self.both_stalemate_removing;
+        state.board_full_removing = self.board_full_removing;
+        state.key_history_len = self.key_history_len;
+        state.zobrist_key = self.zobrist_key;
+    }
+}
+
 fn formed_mill_bits_at(
     state: &MillState,
     options: &MillVariantOptions,
@@ -531,11 +707,15 @@ fn formed_mill_bits_at(
     side_to_move: i8,
 ) -> u32 {
     let mut bits = 0_u32;
-    for (line_idx, line) in mill_lines(options).iter().enumerate() {
-        if line.contains(&node)
-            && line
-                .iter()
-                .all(|idx| live_piece(state, *idx) == side_to_move + 1)
+    let lines = mill_lines(options);
+    for &line_idx in mill_line_indices_for_node(options, node) {
+        if line_idx == NO_MILL_LINE {
+            break;
+        }
+        let line = lines[line_idx as usize];
+        if line
+            .iter()
+            .all(|idx| live_piece(state, *idx) == side_to_move + 1)
         {
             bits |= 1_u32 << line_idx;
         }
@@ -567,12 +747,14 @@ fn potential_mills_count_at(
         0
     };
     let mut count = 0_u32;
-    for line in mill_lines(options) {
-        if !line.contains(&to) {
-            continue;
+    let lines = mill_lines(options);
+    for &line_idx in mill_line_indices_for_node(options, to) {
+        if line_idx == NO_MILL_LINE {
+            break;
         }
+        let line = lines[line_idx as usize];
         let mut all_color = true;
-        for &idx in line {
+        for idx in line {
             if idx == to {
                 continue;
             }
@@ -606,17 +788,27 @@ fn is_piece_in_mill(state: &MillState, options: &MillVariantOptions, node: usize
     if piece == 0 {
         return false;
     }
-    mill_lines_for_node(options, node)
+    let lines = mill_lines(options);
+    mill_line_indices_for_node(options, node)
         .iter()
-        .any(|line| line.iter().all(|idx| live_piece(state, *idx) == piece))
+        .take_while(|line_idx| **line_idx != NO_MILL_LINE)
+        .any(|line_idx| {
+            lines[*line_idx as usize]
+                .iter()
+                .all(|idx| live_piece(state, *idx) == piece)
+        })
 }
 
-fn mill_lines_for_node(options: &MillVariantOptions, node: usize) -> Vec<[usize; 3]> {
-    mill_lines(options)
-        .iter()
-        .copied()
-        .filter(|line| line.contains(&node))
-        .collect()
+fn mill_line_indices_for_node(
+    options: &MillVariantOptions,
+    node: usize,
+) -> &'static [u8; MAX_MILL_LINES_PER_NODE] {
+    debug_assert!(node < 24, "node {node} out of range");
+    if options.has_diagonal_lines {
+        &DIAGONAL_MILL_LINE_INDICES_BY_NODE[node]
+    } else {
+        &STANDARD_MILL_LINE_INDICES_BY_NODE[node]
+    }
 }
 
 fn mill_lines(options: &MillVariantOptions) -> &'static [[usize; 3]] {
