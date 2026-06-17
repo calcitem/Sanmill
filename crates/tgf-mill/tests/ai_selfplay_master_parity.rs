@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
-// Regression tests pinning the Rust engine's move choices to the master C++
-// engine under standard rules, Thinking-Time = 0 (fixed depth), shuffling off.
+// Regression tests pinning Rust engine move choices to the master C++ engine
+// under standard rules, Thinking-Time = 0 (fixed depth), shuffling off.
 //
 // # Known, explained divergence: deep MTD(f) Graph-History-Interaction (GHI)
 //
@@ -32,8 +32,8 @@
 // accurate, so it is intentionally left as-is.
 //
 // The tests below pin the behaviours that DO match master move-for-move:
-// placing-phase choices, shallow-skill self-play, repetition adjudication, and
-// move ordering.
+// placing-phase choices, skill 1-8 deterministic self-play, repetition
+// adjudication, and move ordering.
 
 use tgf_core::{Game, GameRules, MoveOrderAlgorithm, MoveOrderContext, Workbench};
 use tgf_mill::{MillGame, MillRules, MillUciCodec, MillVariantOptions};
@@ -216,6 +216,34 @@ const MASTER_GO_SKILL4_FULL_GAME: &[&str] = &[
     "g7", "g1", "a4-a1", "d3-c3", "c4-c5", "c3-d3", "c5-c4", "d5-c5", "a1-a4", "c5-d5", "c4-c5",
     "b4-c4", "b2-b4", "d1-a1", "e4-e3", "a1-d1", "a4-a1", "d5-e5", "c5-d5", "e5-e4", "d5-e5",
     "c4-c5",
+];
+
+const MASTER_GO_SKILL5_FULL_GAME: &[&str] = &[
+    "d6", "f4", "d2", "b4", "g4", "d7", "a4", "d1", "d5", "d3", "e4", "f6", "f2", "b2", "b6", "g7",
+    "a7", "c3", "d5-c5", "c3-c4", "e4-e5", "c4-c3", "d6-d5", "xd3", "c3-d3", "c5-c4", "f6-d6",
+    "c4-c5", "xf4", "b4-c4", "e5-e4", "d6-f6", "f2-f4", "xd3", "b2-b4", "e4-e5", "xd1", "f6-d6",
+    "e5-e4", "xc4", "b4-c4", "f4-f6", "c4-c3", "c5-c4", "c3-d3", "c4-c3", "d3-e3", "c3-d3",
+];
+
+const MASTER_GO_SKILL6_FULL_GAME: &[&str] = &[
+    "d6", "f4", "d2", "b4", "g4", "d7", "a4", "d1", "e4", "d5", "c4", "d3", "f6", "b6", "b2", "f2",
+    "g7", "g1", "a4-a1", "d3-c3", "a1-a4", "c3-d3", "a4-a1", "d3-e3", "a1-a4", "d1-a1", "c4-c5",
+    "b4-c4", "b2-b4", "d5-e5", "c5-d5", "e3-d3", "e4-e3", "e5-e4", "d5-e5", "a1-d1", "e5-d5",
+    "c4-c5",
+];
+
+const MASTER_GO_SKILL7_FULL_GAME: &[&str] = &[
+    "d6", "f4", "d2", "b4", "g4", "d7", "a4", "d1", "e4", "d5", "d3", "f6", "e3", "f2", "xe3",
+    "e3", "e5", "c3", "xe5", "c4", "g4-g1", "d7-a7", "g1-g4", "d5-e5", "g4-g7", "b4-b6", "g7-g4",
+    "e5-d5", "a4-b4", "d1-g1", "b4-a4", "b6-b4", "e4-e5", "f4-e4", "g4-f4", "g1-d1", "d2-b2",
+    "d1-d2", "d6-d7", "d5-d6",
+];
+
+const MASTER_GO_SKILL8_FULL_GAME: &[&str] = &[
+    "d6", "f4", "d2", "b4", "g4", "d7", "a4", "d1", "e4", "d5", "c4", "d3", "g7", "g1", "a1", "a7",
+    "f6", "e5", "c4-c5", "d3-c3", "c5-c4", "c3-d3", "c4-c5", "d3-e3", "c5-c4", "d5-c5", "d6-d5",
+    "d7-d6", "g7-d7", "e3-d3", "c4-c3", "c5-c4", "e4-e3", "e5-e4", "d5-e5", "c4-c5", "c3-c4",
+    "c5-d5",
 ];
 
 const SKILL4_MOVES_TO_N_MOVE_FLOOR_TAIL: &[&str] = &[
@@ -476,12 +504,17 @@ fn move_vec(moves: &[&str]) -> Vec<String> {
     moves.iter().map(|m| (*m).to_owned()).collect()
 }
 
-fn assert_deterministic_selfplay_full_game(skill_level: u8, expected: &[&str]) -> Vec<String> {
-    let first = faithful_selfplay(skill_level, 400);
-    let second = faithful_selfplay(skill_level, 400);
+fn assert_selfplay_full_game(skill_level: u8, expected: &[&str]) -> Vec<String> {
+    let actual = faithful_selfplay(skill_level, 400);
     let expected = move_vec(expected);
-    assert_eq!(first, expected);
-    assert_eq!(second, expected);
+    assert_eq!(actual, expected);
+    actual
+}
+
+fn assert_deterministic_selfplay_full_game(skill_level: u8, expected: &[&str]) -> Vec<String> {
+    let first = assert_selfplay_full_game(skill_level, expected);
+    let second = assert_selfplay_full_game(skill_level, expected);
+    assert_eq!(second, first);
     first
 }
 
@@ -551,17 +584,17 @@ fn faithful_selfplay_opts(
 }
 
 #[test]
-fn ai_vs_ai_skill1_time0_shuffling_off_matches_master_go_full_game() {
+fn selfplay_skill1_time0_shuffling_off_matches_master_go_full_game() {
     assert_deterministic_selfplay_full_game(1, MASTER_GO_SKILL1_FULL_GAME);
 }
 
 #[test]
-fn ai_vs_ai_skill2_time0_shuffling_off_matches_master_go_full_game() {
+fn selfplay_skill2_time0_shuffling_off_matches_master_go_full_game() {
     assert_deterministic_selfplay_full_game(2, MASTER_GO_SKILL2_FULL_GAME);
 }
 
 #[test]
-fn ai_vs_ai_skill3_time0_shuffling_off_matches_master_go_full_game() {
+fn selfplay_skill3_time0_shuffling_off_matches_master_go_full_game() {
     assert_deterministic_selfplay_full_game(3, MASTER_GO_SKILL3_FULL_GAME);
 }
 
@@ -579,8 +612,28 @@ fn skill4_tail_n_move_floor_keeps_master_mtdf_choice() {
 }
 
 #[test]
-fn ai_vs_ai_skill4_time0_shuffling_off_matches_master_go_full_game() {
+fn selfplay_skill4_time0_shuffling_off_matches_master_go_full_game() {
     assert_deterministic_selfplay_full_game(4, MASTER_GO_SKILL4_FULL_GAME);
+}
+
+#[test]
+fn selfplay_skill5_time0_shuffling_off_matches_master_go_full_game() {
+    assert_selfplay_full_game(5, MASTER_GO_SKILL5_FULL_GAME);
+}
+
+#[test]
+fn selfplay_skill6_time0_shuffling_off_matches_master_go_full_game() {
+    assert_selfplay_full_game(6, MASTER_GO_SKILL6_FULL_GAME);
+}
+
+#[test]
+fn selfplay_skill7_time0_shuffling_off_matches_master_go_full_game() {
+    assert_selfplay_full_game(7, MASTER_GO_SKILL7_FULL_GAME);
+}
+
+#[test]
+fn selfplay_skill8_time0_shuffling_off_matches_master_go_full_game() {
+    assert_selfplay_full_game(8, MASTER_GO_SKILL8_FULL_GAME);
 }
 
 #[test]
@@ -613,6 +666,38 @@ fn faithful_selfplay_skill4_movelist() {
     let moves = faithful_selfplay(4, 400);
     eprintln!("SELFPLAY skill=4 plies={}", moves.len());
     eprintln!("SELFPLAY skill=4 moves: {}", moves.join(" "));
+}
+
+#[test]
+#[ignore = "self-play ground-truth harness; run explicitly to diff vs master"]
+fn faithful_selfplay_skill5_movelist() {
+    let moves = faithful_selfplay(5, 400);
+    eprintln!("SELFPLAY skill=5 plies={}", moves.len());
+    eprintln!("SELFPLAY skill=5 moves: {}", moves.join(" "));
+}
+
+#[test]
+#[ignore = "self-play ground-truth harness; run explicitly to diff vs master"]
+fn faithful_selfplay_skill6_movelist() {
+    let moves = faithful_selfplay(6, 400);
+    eprintln!("SELFPLAY skill=6 plies={}", moves.len());
+    eprintln!("SELFPLAY skill=6 moves: {}", moves.join(" "));
+}
+
+#[test]
+#[ignore = "self-play ground-truth harness; run explicitly to diff vs master"]
+fn faithful_selfplay_skill7_movelist() {
+    let moves = faithful_selfplay(7, 400);
+    eprintln!("SELFPLAY skill=7 plies={}", moves.len());
+    eprintln!("SELFPLAY skill=7 moves: {}", moves.join(" "));
+}
+
+#[test]
+#[ignore = "self-play ground-truth harness; run explicitly to diff vs master"]
+fn faithful_selfplay_skill8_movelist() {
+    let moves = faithful_selfplay(8, 400);
+    eprintln!("SELFPLAY skill=8 plies={}", moves.len());
+    eprintln!("SELFPLAY skill=8 moves: {}", moves.join(" "));
 }
 
 #[test]
