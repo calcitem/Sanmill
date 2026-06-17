@@ -71,6 +71,26 @@ void main() {
         'mill.remove',
       ]);
     });
+
+    test('splits leading capture chains like master import _splitSan', () {
+      final List<GameAction> actions = port.decodeMoveList('xb2xc3');
+      expect(actions.map(port.describeMove), <String>['xb2', 'xc3']);
+      expect(
+        actions.every((GameAction action) => action.type == 'mill.remove'),
+        isTrue,
+      );
+    });
+
+    test('ignores move numbers, comments, NAGs, suffixes, and results', () {
+      final List<GameAction> actions = port.decodeMoveList(
+        '1. d6! {forms a mill} \$1 1-0 2... f6?',
+      );
+      expect(actions.map(port.describeMove), <String>['d6', 'f6']);
+      expect(actions.map((GameAction action) => action.type), <String>[
+        'mill.place',
+        'mill.place',
+      ]);
+    });
   });
 
   group('MillNotationPort.exportGame', () {

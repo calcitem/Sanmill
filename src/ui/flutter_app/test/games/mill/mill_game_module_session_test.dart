@@ -2,6 +2,7 @@
 // Copyright (C) 2019-2026 The Sanmill developers (see AUTHORS file)
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sanmill/game_platform/game_id.dart';
 import 'package:sanmill/game_platform/game_session.dart';
@@ -72,6 +73,30 @@ void main() {
 
       expect(session, same(nativeSession));
       expect(forwardedRules, same(rules));
+    });
+
+    testWidgets('buildExportData opts out of flat generic Mill export', (
+      WidgetTester tester,
+    ) async {
+      final MillGameModule module = MillGameModule();
+      final _RecordingSession session = _RecordingSession();
+      addTearDown(session.dispose);
+
+      await tester.pumpWidget(
+        Builder(
+          builder: (BuildContext context) {
+            expect(
+              module.buildExportData(context, session: session),
+              isNull,
+              reason:
+                  'Mill must fall back to the dedicated PGN exporter so tag '
+                  'pairs, move numbers, variations, annotations, and setup '
+                  'FEN are not replaced by a flat move-token list.',
+            );
+            return const SizedBox.shrink();
+          },
+        ),
+      );
     });
   });
 }
