@@ -702,45 +702,67 @@ class _GameBoardState extends State<GameBoard>
     // Prevent duplicate dialog display
     if (shouldShowDialog && aiVsAiConditions && !_isDialogShowing) {
       _isDialogShowing = true;
-      showDialog(
-        context: context,
-        builder: (_) => GameResultAlertDialog(winner: winner, reason: reason),
-      ).then((_) {
-        // Reset flag when dialog is dismissed
-        _isDialogShowing = false;
-
+      WidgetsBinding.instance.addPostFrameCallback((_) {
         if (!mounted) {
+          _isDialogShowing = false;
           return;
         }
 
-        // Check if we should show algorithm suggestion dialog
-        final StatsSettings statsSettings = DB().statsSettings;
+        final GameMode currentGameMode = GameController().gameInstance.gameMode;
+        final PieceColor currentWinner =
+            GameController().activeSessionWinner ??
+            GameController().activeBoardView.winner;
+        if (currentWinner == PieceColor.nobody ||
+            currentGameMode == GameMode.setupPosition) {
+          _isDialogShowing = false;
+          return;
+        }
 
-        // Show MCTS suggestion dialog if needed
-        if (statsSettings.shouldSuggestMctsSwitch) {
-          showDialog(
-            context: context,
-            builder: (_) => const AlgorithmSuggestionDialog(
-              suggestionType: AlgorithmSuggestionType.switchToMcts,
-            ),
-          );
-        }
-        // Show MTD(f) suggestion dialog if needed
-        else if (statsSettings.shouldSuggestMtdfSwitch) {
-          showDialog(
-            context: context,
-            builder: (_) => const AlgorithmSuggestionDialog(
-              suggestionType: AlgorithmSuggestionType.switchToMtdf,
-            ),
-          );
-        }
-        // Show NMM strategy guide suggestion if needed
-        else if (statsSettings.shouldSuggestNmmStrategy) {
-          showDialog(
-            context: context,
-            builder: (_) => const StrategySuggestionDialog(),
-          );
-        }
+        final GameOverReason? currentReason =
+            GameController().activeSessionGameOverReason ?? reason;
+        showDialog(
+          context: context,
+          builder: (_) => GameResultAlertDialog(
+            winner: currentWinner,
+            reason: currentReason,
+          ),
+        ).then((_) {
+          // Reset flag when dialog is dismissed
+          _isDialogShowing = false;
+
+          if (!mounted) {
+            return;
+          }
+
+          // Check if we should show algorithm suggestion dialog
+          final StatsSettings statsSettings = DB().statsSettings;
+
+          // Show MCTS suggestion dialog if needed
+          if (statsSettings.shouldSuggestMctsSwitch) {
+            showDialog(
+              context: context,
+              builder: (_) => const AlgorithmSuggestionDialog(
+                suggestionType: AlgorithmSuggestionType.switchToMcts,
+              ),
+            );
+          }
+          // Show MTD(f) suggestion dialog if needed
+          else if (statsSettings.shouldSuggestMtdfSwitch) {
+            showDialog(
+              context: context,
+              builder: (_) => const AlgorithmSuggestionDialog(
+                suggestionType: AlgorithmSuggestionType.switchToMtdf,
+              ),
+            );
+          }
+          // Show NMM strategy guide suggestion if needed
+          else if (statsSettings.shouldSuggestNmmStrategy) {
+            showDialog(
+              context: context,
+              builder: (_) => const StrategySuggestionDialog(),
+            );
+          }
+        });
       });
     }
   }
