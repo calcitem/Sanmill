@@ -60,10 +60,31 @@ pub(super) fn mills_pieces_count_difference(
 
 /// Translation of `Position::calculate_mobility_diff`: every empty (or
 /// `MARKED_PIECE`) square contributes the count of its White / Black
-/// neighbours.  The C++ engine maintains this incrementally; the Rust
-/// evaluator currently computes it on demand because `MillState` does
-/// not yet store a running mobility difference.
-pub(super) fn mobility_diff(state: &MillState, options: &MillVariantOptions) -> i32 {
+/// neighbours.
+pub(super) fn calculate_mobility_diff(state: &MillState, options: &MillVariantOptions) -> i32 {
+    if state.delayed_marked_pieces == 0 {
+        let mut white = 0_i32;
+        let mut black = 0_i32;
+        for s in 0_usize..24 {
+            let piece = state.board[s];
+            if piece != 1 && piece != 2 {
+                continue;
+            }
+            let mut mobility = 0_i32;
+            for &to in crate::topology::neighbors_for(s, options.has_diagonal_lines) {
+                if state.board[to as usize] == 0 {
+                    mobility += 1;
+                }
+            }
+            if piece == 1 {
+                white += mobility;
+            } else {
+                black += mobility;
+            }
+        }
+        return white - black;
+    }
+
     let mut white = 0_i32;
     let mut black = 0_i32;
     for s in 0_usize..24 {
@@ -80,6 +101,85 @@ pub(super) fn mobility_diff(state: &MillState, options: &MillVariantOptions) -> 
         }
     }
     white - black
+}
+
+#[inline]
+pub(super) fn mobility_diff(state: &MillState, _options: &MillVariantOptions) -> i32 {
+    state.mobility_diff
+}
+
+pub(super) fn recompute_mobility_diff(state: &mut MillState, options: &MillVariantOptions) {
+    state.mobility_diff = if should_consider_mobility(options) {
+        calculate_mobility_diff(state, options)
+    } else {
+        0
+    };
+}
+
+#[inline]
+pub(super) fn update_mobility_place(
+    state: &mut MillState,
+    options: &MillVariantOptions,
+    node: usize,
+    side: usize,
+) {
+    if !should_consider_mobility(options) {
+        return;
+    }
+    let (adjacent_white, adjacent_black, adjacent_empty) =
+        adjacent_mobility_counts(state, options, node);
+    state.mobility_diff -= adjacent_white;
+    state.mobility_diff += adjacent_black;
+    if side == 0 {
+        state.mobility_diff += adjacent_empty;
+    } else {
+        state.mobility_diff -= adjacent_empty;
+    }
+}
+
+#[inline]
+pub(super) fn update_mobility_remove(
+    state: &mut MillState,
+    options: &MillVariantOptions,
+    node: usize,
+) {
+    if !should_consider_mobility(options) {
+        return;
+    }
+    let piece = live_piece(state, node);
+    debug_assert!(
+        piece == 1 || piece == 2,
+        "remove target must hold a live piece"
+    );
+    let (adjacent_white, adjacent_black, adjacent_empty) =
+        adjacent_mobility_counts(state, options, node);
+    state.mobility_diff += adjacent_white;
+    state.mobility_diff -= adjacent_black;
+    if piece == 1 {
+        state.mobility_diff -= adjacent_empty;
+    } else {
+        state.mobility_diff += adjacent_empty;
+    }
+}
+
+#[inline]
+fn adjacent_mobility_counts(
+    state: &MillState,
+    options: &MillVariantOptions,
+    node: usize,
+) -> (i32, i32, i32) {
+    let mut white = 0_i32;
+    let mut black = 0_i32;
+    let mut empty = 0_i32;
+    for &neighbor in crate::topology::neighbors_for(node, options.has_diagonal_lines) {
+        match live_piece(state, neighbor as usize) {
+            0 => empty += 1,
+            1 => white += 1,
+            2 => black += 1,
+            _ => {}
+        }
+    }
+    (white, black, empty)
 }
 
 /// Detect whether the side has any legal move (placing or fly excluded:

@@ -105,6 +105,5 @@ pub(super) fn position_key(state: &MillState) -> u64 {
     if cached != 0 {
         return cached;
     }
-    let key = super::zobrist::full_state_key(state);
-    if key == 0 { 1 } else { key }
+    super::zobrist::full_state_key(state)
 }

@@ -467,3 +467,31 @@ pub(super) fn push_key_and_check_threefold(
         state.side_to_move = -1;
     }
 }
+
+pub(super) fn push_key_and_check_threefold_with_key(
+    state: &mut MillState,
+    options: &MillVariantOptions,
+    adjudicate: bool,
+    key: u64,
+) {
+    if !options.threefold_repetition_rule {
+        return;
+    }
+    let key = if key == 0 { 1 } else { key };
+    if state.key_history.len() >= super::MILL_REPETITION_HISTORY_CAP {
+        state.key_history.remove(0);
+    }
+    debug_assert!(state.key_history.len() < super::MILL_REPETITION_HISTORY_CAP);
+    state.key_history.push(key);
+    state.key_history_len = state.key_history.len();
+    if !adjudicate {
+        return;
+    }
+    let count = state.key_history.iter().filter(|k| **k == key).count();
+    if count >= 3 {
+        state.phase = MillPhase::GameOver;
+        state.winner = 2;
+        state.outcome_reason = MillOutcomeReason::DrawThreefold;
+        state.side_to_move = -1;
+    }
+}

@@ -24,6 +24,8 @@ mod iterative_mtdf;
 mod move_order;
 mod qsearch;
 
+pub type RootProbeRows = Vec<(Action, i32, u64, bool)>;
+
 pub struct Searcher<G: Game> {
     /// Per-search-instance node counter.
     ///
@@ -92,7 +94,7 @@ impl<G: Game> Searcher<G> {
         Self::default()
     }
 
-    /// Override TT size (`2^(bits+1)` slots).  Clamp matches [ClusteredTt].
+    /// Override TT size (`2^bits` direct slots).  Clamp matches [ClusteredTt].
     pub fn new_with_tt_cluster_bits(cluster_bits: u32) -> Self {
         Self {
             tt: Arc::new(ClusteredTt::new_with_cluster_bits(cluster_bits)),
@@ -100,17 +102,17 @@ impl<G: Game> Searcher<G> {
         }
     }
 
-    /// Resize the TT to approximately `mb` megabytes (P2-L plan-C).
-    /// Mirrors master UCI `Hash` option which calls `TT.resize(bytes)`.
-    /// Each TT cluster holds 2 slots of 8 bytes = 16 bytes per cluster;
-    /// cluster_bits b gives 2^(b+1) slots = 2^b clusters = 2^b × 16 bytes.
-    /// → cluster_bits = floor(log2(mb × 1024 × 1024 / 16)).
-    /// Clamped to [10, 26] to avoid excessive memory or too-small tables.
+    /// Resize the TT from the UCI `Hash` option while preserving master's
+    /// lower bound.  The C++ engine starts with 16 Mi direct entries and
+    /// `TT.resize(value)` ignores any value below that entry count, so the
+    /// default `Hash = 16` must not shrink the table.
     pub fn resize_tt_by_mb(&mut self, mb: u32) {
         let bytes = (mb as u64).saturating_mul(1024 * 1024);
-        let cluster_bytes = 16_u64;
+        let cluster_bytes = 8_u64;
         let num_clusters = (bytes / cluster_bytes).max(1);
-        let bits = (63 - num_clusters.leading_zeros()).clamp(10, 26);
+        let bits = (63 - num_clusters.leading_zeros())
+            .max(ClusteredTt::DEFAULT_CLUSTER_BITS)
+            .clamp(10, 26);
         self.tt = Arc::new(ClusteredTt::new_with_cluster_bits(bits));
         self.killers.clear();
         self.history.clear();
@@ -402,6 +404,71 @@ impl<G: Game> Searcher<G> {
         }
     }
 
+    /// Diagnostic root probe used by engine-parity tooling.  It runs one
+    /// root alpha-beta pass with the supplied window, preserves the TT across
+    /// separate calls on the same `Searcher`, and returns per-root-action
+    /// values in the order they were searched.
+    pub fn debug_root_probe(
+        &mut self,
+        wb: &mut G::Workbench,
+        depth: i32,
+        mut alpha: i32,
+        beta: i32,
+    ) -> (i32, Action, RootProbeRows) {
+        self.begin_root_search();
+        let root_key = wb.key();
+        let old_alpha = alpha;
+        let mut moves = ActionList::<256>::new();
+        G::generate_legal_ctx(wb, &mut moves, &self.options.move_order_context);
+        self.order_moves(wb, root_key, depth, &mut moves);
+        let mut best_value = i32::MIN + 1;
+        let mut best_action = Action::NONE;
+        let mut best_local = Action::NONE;
+        let mut rows = Vec::with_capacity(moves.len());
+        for action in moves.iter().copied() {
+            let nodes_before = self.nodes;
+            let before = wb.side_to_move();
+            if root_key != 0 {
+                self.repetition_stack
+                    .push((root_key, G::action_resets_repetition(action)));
+            }
+            wb.do_move(action);
+            let after = wb.side_to_move();
+            let value = self.search_after_move(wb, depth - 1, alpha, beta, before, after);
+            wb.undo_move();
+            if root_key != 0 {
+                self.repetition_stack.pop();
+            }
+            let action_nodes = self.nodes.saturating_sub(nodes_before);
+            let mut cutoff = false;
+            if value > best_value {
+                best_value = value;
+                if value > alpha {
+                    best_action = action;
+                    best_local = action;
+                    if value >= beta {
+                        cutoff = true;
+                    } else {
+                        alpha = value;
+                    }
+                }
+            }
+            rows.push((action, value, action_nodes, cutoff));
+            if cutoff {
+                break;
+            }
+        }
+        let bound = if best_value <= old_alpha {
+            Bound::Upper
+        } else if best_value >= beta {
+            Bound::Lower
+        } else {
+            Bound::Exact
+        };
+        self.save_tt(root_key, depth, best_value, bound, best_local);
+        (best_value, best_action, rows)
+    }
+
     /// Deterministic random-search equivalent.  Production callers can seed
     /// this from time; tests pass a fixed seed to keep results reproducible.
     pub fn random_search(&mut self, wb: &mut G::Workbench) -> SearchResult {
@@ -441,15 +508,16 @@ impl<G: Game> Searcher<G> {
             return G::Evaluator::score(wb);
         }
 
-        // Transition to qsearch when depth falls to or below the qsearch
-        // horizon.  With qsearch_max_depth == 0 this matches the C++ stand-
-        // pat-only behaviour; positive values extend the remove branch.
-        if depth <= 0 {
-            return self.qsearch_with_depth(wb, depth, alpha, beta);
-        }
-
         if let Some(score) = G::terminal_score(wb, wb.side_to_move(), depth) {
             return score;
+        }
+
+        // Transition to qsearch when depth falls to or below the qsearch
+        // horizon.  Master checks game-over before this branch in
+        // Search::search, so keep terminal mate-distance scoring visible even
+        // when a line lands exactly on the horizon.
+        if depth <= 0 {
+            return self.qsearch_with_depth(wb, depth, alpha, beta);
         }
 
         if let Some(floor) = G::search_alpha_floor(wb) {
@@ -540,18 +608,11 @@ impl<G: Game> Searcher<G> {
         } else {
             0
         };
-        // TT prefetch (mirrors master Search::search): warm the cache
-        // line for the FIRST candidate move only.  A single targeted
-        // prefetch right before the visit consistently beats the
-        // master-style "prefetch all candidates up front" loop because
-        // by the time alpha_beta returns from move 0's recursion, the
-        // cache lines for moves 1..N have long been evicted; the bulk
-        // prefetch turns into pure cache pollution.  Subsequent moves
-        // do not need a hint because the TT slots they touch are
-        // already in L2/L3 from the move-order sort that ran above.
-        // Empirical A/B (depth 5/6/7 selfplay) shows this targeted
-        // pattern matches the no-prefetch wall-clock within noise,
-        // while the bulk pattern was 0.5-1.6% slower at depth 7.
+        // TT prefetch: warm the first candidate's child slot.  With the
+        // master-aligned direct TT this is a net win on deep placing roots,
+        // while prefetching every candidate is slower because Mill's
+        // `key_after` is still non-trivial and most later hints age out before
+        // use.
         if self.options.enable_prefetch
             && let Some(&first_action) = moves.first()
         {
@@ -559,9 +620,7 @@ impl<G: Game> Searcher<G> {
             // correctness-quality (it skips mill/capture-state and misc
             // bits). `predicted_key` must ONLY feed `tt.prefetch`, which
             // emits a cache hint and never touches a TT slot. Probe,
-            // save, and repetition tracking all use the real `wb.key()`
-            // instead, so an inaccurate prediction can never escape past
-            // a wasted prefetch.
+            // save, and repetition tracking all use the real `wb.key()`.
             let predicted_key = wb.key_after(first_action);
             self.tt.prefetch(predicted_key);
         }

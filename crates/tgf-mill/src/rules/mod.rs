@@ -79,8 +79,8 @@ use transitions::{
     apply_removal_based_on_mill_counts, bump_ply_since_capture, clear_key_history,
     is_action_within_board_bounds, live_piece, maybe_draw_by_n_move_rule, maybe_finish_full_board,
     maybe_stop_placing_when_two_empty, maybe_transition_to_moving, note_mill_formation,
-    push_key_and_check_threefold, removal_count_for_bits, sync_phase_with_active_hand,
-    usable_mill_bits,
+    push_key_and_check_threefold, push_key_and_check_threefold_with_key, removal_count_for_bits,
+    sync_phase_with_active_hand, usable_mill_bits,
 };
 #[cfg(test)]
 use transitions::{enter_moving_phase, repetition_signature};
@@ -95,7 +95,8 @@ use captures::{
     leap_capture_target_is_removable,
 };
 #[cfg(test)]
-use evaluation::mobility_diff;
+use evaluation::{calculate_mobility_diff, mobility_diff};
+use evaluation::{recompute_mobility_diff, update_mobility_place, update_mobility_remove};
 use lines::{DIAGONAL_MILL_LINES, STANDARD_MILL_LINES};
 #[cfg(test)]
 use move_priority::{
@@ -108,6 +109,7 @@ use move_priority::{default_dense_priority, move_priority_list_for_search};
 pub struct MillRules {
     options: MillVariantOptions,
     topology: MillTopology,
+    standard_place_fast_path: bool,
 }
 
 #[derive(Clone, Debug, Default)]
@@ -141,6 +143,10 @@ const STANDARD_MILL_LINE_INDICES_BY_NODE: [[u8; MAX_MILL_LINES_PER_NODE]; 24] =
     build_mill_line_indices_by_node(STANDARD_MILL_LINES);
 const DIAGONAL_MILL_LINE_INDICES_BY_NODE: [[u8; MAX_MILL_LINES_PER_NODE]; 24] =
     build_mill_line_indices_by_node(DIAGONAL_MILL_LINES);
+const STANDARD_MILL_LINE_PEERS_BY_NODE: [[[u8; 3]; MAX_MILL_LINES_PER_NODE]; 24] =
+    build_mill_line_peers_by_node(STANDARD_MILL_LINES);
+const DIAGONAL_MILL_LINE_PEERS_BY_NODE: [[[u8; 3]; MAX_MILL_LINES_PER_NODE]; 24] =
+    build_mill_line_peers_by_node(DIAGONAL_MILL_LINES);
 
 const fn build_mill_line_indices_by_node(
     lines: &[[usize; 3]],
@@ -157,6 +163,31 @@ const fn build_mill_line_indices_by_node(
             let count = counts[node];
             assert!(count < MAX_MILL_LINES_PER_NODE);
             table[node][count] = line_idx as u8;
+            counts[node] = count + 1;
+            offset += 1;
+        }
+        line_idx += 1;
+    }
+    table
+}
+
+const fn build_mill_line_peers_by_node(
+    lines: &[[usize; 3]],
+) -> [[[u8; 3]; MAX_MILL_LINES_PER_NODE]; 24] {
+    let mut table = [[[NO_MILL_LINE; 3]; MAX_MILL_LINES_PER_NODE]; 24];
+    let mut counts = [0_usize; 24];
+    let mut line_idx = 0_usize;
+    while line_idx < lines.len() {
+        let line = lines[line_idx];
+        let mut offset = 0_usize;
+        while offset < 3 {
+            let node = line[offset];
+            assert!(node < 24);
+            let count = counts[node];
+            assert!(count < MAX_MILL_LINES_PER_NODE);
+            let peer_a = line[(offset + 1) % 3];
+            let peer_b = line[(offset + 2) % 3];
+            table[node][count] = [line_idx as u8, peer_a as u8, peer_b as u8];
             counts[node] = count + 1;
             offset += 1;
         }
@@ -204,11 +235,31 @@ impl MillVariantOptions {
     }
 }
 
+fn standard_place_fast_path_enabled(options: &MillVariantOptions) -> bool {
+    matches!(
+        options.mill_formation_action_in_placing_phase,
+        MillFormationActionInPlacingPhase::RemoveOpponentsPieceFromBoard
+    ) && !options.has_diagonal_lines
+        && !options.may_move_in_placing_phase
+        && !options.may_remove_multiple
+        && !options.restrict_repeated_mills_formation
+        && !options.one_time_use_mill
+        && !options.stop_placing_when_two_empty_squares
+        && !options.custodian_capture.enabled
+        && !options.intervention_capture.enabled
+        && !options.leap_capture.enabled
+}
+
 impl MillRules {
     pub fn new(options: MillVariantOptions) -> Self {
         options.assert_valid();
+        let standard_place_fast_path = standard_place_fast_path_enabled(&options);
         let topology = MillTopology::new(options.has_diagonal_lines);
-        Self { options, topology }
+        Self {
+            options,
+            topology,
+            standard_place_fast_path,
+        }
     }
 
     /// Borrow the variant options used when this `MillRules` was constructed.
@@ -235,6 +286,12 @@ impl MillRules {
         MillState::decode(snapshot)
     }
 
+    fn decode_with_options(&self, snapshot: &GameStateSnapshot) -> MillState {
+        let mut state = MillState::decode(snapshot);
+        recompute_mobility_diff(&mut state, &self.options);
+        state
+    }
+
     /// Decode an opaque `GameStateSnapshot` back to a mutable `MillState`
     /// for setup-position editing.  Exposed publicly so the FRB setup API
     /// can decode, mutate, and re-encode without going through `GameRules`.
@@ -246,13 +303,13 @@ impl MillRules {
         // Refresh the cached Zobrist key right before serialising so
         // every emitted snapshot carries an up-to-date key and the
         // hot-path `Workbench::key()` can read the cache in O(1).
+        recompute_mobility_diff(&mut state, &self.options);
         recompute_zobrist(&mut state);
-        let key = state.zobrist_key;
         GameStateSnapshot {
             side_to_move: state.side_to_move,
             phase_tag: state.phase as i16,
             move_number: state.move_number,
-            zobrist_key: if key == 0 { 1 } else { key },
+            zobrist_key: state.zobrist_key,
             opaque_payload: state.encode(),
         }
     }
@@ -409,6 +466,7 @@ impl MillWorkbench {
 /// Transition to the moving phase only after a side switch, mirroring the
 /// mature C++ engine's `pieceInHandCount[sideToMove] == 0` check inside
 /// `change_side_to_move()`.  If a mill is pending the side does not switch
+#[inline(always)]
 fn move_action(from: usize, to: usize) -> Action {
     Action {
         kind_tag: MillActionKind::Move as i16,
@@ -428,6 +486,7 @@ pub struct MillState {
     move_number: i16,
     pub(crate) pieces_in_hand: [u8; 2],
     pieces_on_board: [u8; 2],
+    mobility_diff: i32,
     pending_removals: [u8; 2],
     /// Per-side flag matching the legacy C++ engine's negative
     /// `pieceToRemoveCount[c]`: when `true`, the side with `pending_removals[c] > 0`
@@ -503,6 +562,7 @@ impl Default for MillState {
             move_number: 0,
             pieces_in_hand: [0, 0],
             pieces_on_board: [0, 0],
+            mobility_diff: 0,
             pending_removals: [0, 0],
             remove_own_piece: [false, false],
             winner: -1,
@@ -568,6 +628,7 @@ struct MillUndoCore {
     move_number: i16,
     pieces_in_hand: [u8; 2],
     pieces_on_board: [u8; 2],
+    mobility_diff: i32,
     pending_removals: [u8; 2],
     remove_own_piece: [bool; 2],
     winner: i8,
@@ -640,6 +701,7 @@ impl MillUndoCore {
             move_number: state.move_number,
             pieces_in_hand: state.pieces_in_hand,
             pieces_on_board: state.pieces_on_board,
+            mobility_diff: state.mobility_diff,
             pending_removals: state.pending_removals,
             remove_own_piece: state.remove_own_piece,
             winner: state.winner,
@@ -674,6 +736,7 @@ impl MillUndoCore {
         state.move_number = self.move_number;
         state.pieces_in_hand = self.pieces_in_hand;
         state.pieces_on_board = self.pieces_on_board;
+        state.mobility_diff = self.mobility_diff;
         state.pending_removals = self.pending_removals;
         state.remove_own_piece = self.remove_own_piece;
         state.winner = self.winner;
@@ -700,12 +763,30 @@ impl MillUndoCore {
     }
 }
 
+#[inline(always)]
 fn formed_mill_bits_at(
     state: &MillState,
     options: &MillVariantOptions,
     node: usize,
     side_to_move: i8,
 ) -> u32 {
+    if state.delayed_marked_pieces == 0 {
+        let target = side_to_move + 1;
+        if state.board[node] != target {
+            return 0;
+        }
+        let mut bits = 0_u32;
+        for &[line_idx, peer_a, peer_b] in mill_line_peers_for_node(options, node) {
+            if line_idx == NO_MILL_LINE {
+                break;
+            }
+            if state.board[peer_a as usize] == target && state.board[peer_b as usize] == target {
+                bits |= 1_u32 << line_idx;
+            }
+        }
+        return bits;
+    }
+
     let mut bits = 0_u32;
     let lines = mill_lines(options);
     for &line_idx in mill_line_indices_for_node(options, node) {
@@ -732,6 +813,7 @@ fn formed_mill_bits_at(
 /// every mill line whose three squares already sit in the per-side
 /// `formedMillsBB[c]` (i.e. the line has already been activated for a
 /// removal previously, so it is no longer counted as a potential mill).
+#[inline(always)]
 fn potential_mills_count_at(
     state: &MillState,
     options: &MillVariantOptions,
@@ -746,33 +828,31 @@ fn potential_mills_count_at(
     } else {
         0
     };
+    let from = from.unwrap_or(usize::MAX);
     let mut count = 0_u32;
-    let lines = mill_lines(options);
-    for &line_idx in mill_line_indices_for_node(options, to) {
+    for &[line_idx, peer_a, peer_b] in mill_line_peers_for_node(options, to) {
         if line_idx == NO_MILL_LINE {
             break;
         }
-        let line = lines[line_idx as usize];
-        let mut all_color = true;
-        for idx in line {
-            if idx == to {
-                continue;
-            }
-            if from == Some(idx) {
-                all_color = false;
-                break;
-            }
-            if state.board[idx] != target {
-                all_color = false;
-                break;
-            }
+        let peer_a = peer_a as usize;
+        let peer_b = peer_b as usize;
+        if peer_a == from || peer_b == from {
+            continue;
         }
-        if !all_color {
+        // SAFETY: peer tables are built from static mill-line node ids in
+        // 0..24. Using unchecked indexing here keeps this search-hot helper
+        // equivalent to the array version without repeated bounds checks.
+        let has_peers = unsafe {
+            *state.board.get_unchecked(peer_a) == target
+                && *state.board.get_unchecked(peer_b) == target
+        };
+        if !has_peers {
             continue;
         }
         if one_time_use {
             // Skip lines whose three squares are already recorded as a
             // historically-formed mill for this side.
+            let line = mill_lines(options)[line_idx as usize];
             let line_bb = node_bit(line[0]) | node_bit(line[1]) | node_bit(line[2]);
             if (line_bb & formed_bb) == line_bb {
                 continue;
@@ -783,10 +863,46 @@ fn potential_mills_count_at(
     count
 }
 
+#[inline(always)]
+fn potential_mills_count_standard_unrestricted_pair(
+    board: &[i8; 24],
+    to: usize,
+    our_target: i8,
+    their_target: i8,
+) -> (u32, u32) {
+    let mut our_count = 0_u32;
+    let mut their_count = 0_u32;
+    for &[line_idx, peer_a, peer_b] in &STANDARD_MILL_LINE_PEERS_BY_NODE[to] {
+        if line_idx == NO_MILL_LINE {
+            break;
+        }
+        // SAFETY: STANDARD_MILL_LINE_PEERS_BY_NODE is generated from
+        // STANDARD_MILL_LINES, whose node ids are asserted to be in 0..24.
+        let (a, b) = unsafe {
+            (
+                *board.get_unchecked(peer_a as usize),
+                *board.get_unchecked(peer_b as usize),
+            )
+        };
+        our_count += u32::from(a == our_target && b == our_target);
+        their_count += u32::from(a == their_target && b == their_target);
+    }
+    (our_count, their_count)
+}
+
+#[inline(always)]
 fn is_piece_in_mill(state: &MillState, options: &MillVariantOptions, node: usize) -> bool {
     let piece = live_piece(state, node);
     if piece == 0 {
         return false;
+    }
+    if state.delayed_marked_pieces == 0 {
+        return mill_line_peers_for_node(options, node)
+            .iter()
+            .take_while(|peer| peer[0] != NO_MILL_LINE)
+            .any(|peer| {
+                state.board[peer[1] as usize] == piece && state.board[peer[2] as usize] == piece
+            });
     }
     let lines = mill_lines(options);
     mill_line_indices_for_node(options, node)
@@ -799,6 +915,7 @@ fn is_piece_in_mill(state: &MillState, options: &MillVariantOptions, node: usize
         })
 }
 
+#[inline(always)]
 fn mill_line_indices_for_node(
     options: &MillVariantOptions,
     node: usize,
@@ -811,6 +928,20 @@ fn mill_line_indices_for_node(
     }
 }
 
+#[inline(always)]
+fn mill_line_peers_for_node(
+    options: &MillVariantOptions,
+    node: usize,
+) -> &'static [[u8; 3]; MAX_MILL_LINES_PER_NODE] {
+    debug_assert!(node < 24, "node {node} out of range");
+    if options.has_diagonal_lines {
+        &DIAGONAL_MILL_LINE_PEERS_BY_NODE[node]
+    } else {
+        &STANDARD_MILL_LINE_PEERS_BY_NODE[node]
+    }
+}
+
+#[inline(always)]
 fn mill_lines(options: &MillVariantOptions) -> &'static [[usize; 3]] {
     if options.has_diagonal_lines {
         DIAGONAL_MILL_LINES
@@ -819,6 +950,7 @@ fn mill_lines(options: &MillVariantOptions) -> &'static [[usize; 3]] {
     }
 }
 
+#[inline(always)]
 fn node_bit(node: usize) -> u32 {
     1_u32 << node
 }

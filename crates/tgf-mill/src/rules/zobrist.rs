@@ -14,17 +14,12 @@
 //   Key leapCount[COLOR_NB][2];
 //
 // Differences from master:
-//   * Rust uses dense node ids (0..24) instead of master's legacy
-//     SQ_8..SQ_31 squares.  All Zobrist accesses go through the dense
-//     id, so the per-square arrays are sized [24] instead of [40].
-//   * `Key` is u64 internally to match the rest of `tgf-core`'s API.
-//     The searcher's TT key signature uses the lower 32 bits, so the
-//     extra 32 bits are unused-but-harmless when stored.
-//   * The Zobrist values are generated at build time from a fixed
-//     non-zero seed via xorshift64*; master uses a runtime PRNG seeded
-//     by `Position::init`.  The fixed seed keeps Mill move logs
-//     deterministic across runs and allows the table to live in
-//     `.rodata`.
+//   * Rust stores only dense node ids (0..24), but the table is generated in
+//     master's legacy SQ_8..SQ_31 order and remapped to dense nodes.  This
+//     keeps TT key flow aligned with the C++ engine while preserving the Rust
+//     board layout.
+//   * `Key` is u64 internally to match the rest of `tgf-core`'s API, but the
+//     generated values occupy only master's low 32-bit key space.
 //   * KEY_MISC_BIT semantics match: the top 2 bits of the final key
 //     hold `min(pending_removals[stm], 3)` so positions with the same
 //     piece-square layout but different remove counts hash to
@@ -68,9 +63,13 @@ pub(crate) struct MillZobrist {
     pub leap_count: [[u64; MAX_LEAP]; 2],
 }
 
-/// Fixed PRNG seed -- chosen arbitrarily, must be non-zero so the
-/// xorshift state cannot collapse to the all-zero attractor.
-const SEED: u64 = 0x9E37_79B9_7F4A_7C15;
+/// Master `Position::init` seed.
+const SEED: u64 = 1_070_372;
+
+/// Legacy SQ_8..SQ_31 → Rust dense node id.
+const LEGACY_TO_NODE: [usize; NODE_COUNT] = [
+    17, 18, 19, 20, 21, 22, 23, 16, 9, 10, 11, 12, 13, 14, 15, 8, 1, 2, 3, 4, 5, 6, 7, 0,
+];
 
 /// Generate the Zobrist table at compile time so the values live in
 /// `.rodata` and stay deterministic across runs.
@@ -79,23 +78,22 @@ const fn build_zobrist() -> MillZobrist {
 
     macro_rules! next {
         () => {{
-            state = next_xorshift64(state);
-            state
+            state = next_prng_state(state);
+            key_from_prng_state(state)
         }};
     }
 
     let mut psq = [[0_u64; NODE_COUNT]; PIECE_TYPES];
-    let mut p = 1; // skip 0 = empty (master never reads psq[NO_PIECE_TYPE])
+    let mut p = 0;
     while p < PIECE_TYPES {
-        let mut s = 0;
-        while s < NODE_COUNT {
-            psq[p][s] = next!();
-            s += 1;
+        let mut legacy = 0;
+        while legacy < NODE_COUNT {
+            let node = LEGACY_TO_NODE[legacy];
+            psq[p][node] = next!();
+            legacy += 1;
         }
         p += 1;
     }
-
-    let side = next!();
 
     let mut custodian_target = [[0_u64; NODE_COUNT]; 2];
     let mut custodian_count = [[0_u64; MAX_CUSTODIAN]; 2];
@@ -106,10 +104,11 @@ const fn build_zobrist() -> MillZobrist {
 
     let mut c = 0;
     while c < 2 {
-        let mut s = 0;
-        while s < NODE_COUNT {
-            custodian_target[c][s] = next!();
-            s += 1;
+        let mut legacy = 0;
+        while legacy < NODE_COUNT {
+            let node = LEGACY_TO_NODE[legacy];
+            custodian_target[c][node] = next!();
+            legacy += 1;
         }
         let mut i = 0;
         while i < MAX_CUSTODIAN {
@@ -117,10 +116,11 @@ const fn build_zobrist() -> MillZobrist {
             i += 1;
         }
 
-        let mut s = 0;
-        while s < NODE_COUNT {
-            intervention_target[c][s] = next!();
-            s += 1;
+        let mut legacy = 0;
+        while legacy < NODE_COUNT {
+            let node = LEGACY_TO_NODE[legacy];
+            intervention_target[c][node] = next!();
+            legacy += 1;
         }
         let mut i = 0;
         while i < MAX_INTERVENTION {
@@ -128,10 +128,11 @@ const fn build_zobrist() -> MillZobrist {
             i += 1;
         }
 
-        let mut s = 0;
-        while s < NODE_COUNT {
-            leap_target[c][s] = next!();
-            s += 1;
+        let mut legacy = 0;
+        while legacy < NODE_COUNT {
+            let node = LEGACY_TO_NODE[legacy];
+            leap_target[c][node] = next!();
+            legacy += 1;
         }
         let mut i = 0;
         while i < MAX_LEAP {
@@ -141,6 +142,8 @@ const fn build_zobrist() -> MillZobrist {
 
         c += 1;
     }
+
+    let side = next!();
 
     MillZobrist {
         psq,
@@ -154,12 +157,16 @@ const fn build_zobrist() -> MillZobrist {
     }
 }
 
-const fn next_xorshift64(state: u64) -> u64 {
+const fn next_prng_state(state: u64) -> u64 {
     let mut x = state;
-    x ^= x << 13;
-    x ^= x >> 7;
-    x ^= x << 17;
-    x.wrapping_mul(0x2545_F491_4F6C_DD1D)
+    x ^= x >> 12;
+    x ^= x << 25;
+    x ^= x >> 27;
+    x
+}
+
+const fn key_from_prng_state(state: u64) -> u64 {
+    (state.wrapping_mul(2_685_821_657_736_338_717) as u32 & 0x3fff_ffff) as u64
 }
 
 /// Static Zobrist tables consumed by `position_key` and the
@@ -170,7 +177,7 @@ pub(crate) static MILL_ZOBRIST: MillZobrist = build_zobrist();
 /// Mirrors master `update_key_misc` (src/position.cpp).
 #[inline]
 pub(crate) fn apply_misc(mut key: u64, count: u64) -> u64 {
-    let shift = u64::BITS - KEY_MISC_BIT;
+    let shift = u32::BITS - KEY_MISC_BIT;
     key &= (1_u64 << shift) - 1;
     key |= (count & ((1_u64 << KEY_MISC_BIT) - 1)) << shift;
     key
@@ -217,7 +224,9 @@ pub(crate) fn full_state_key(state: &MillState) -> u64 {
             targets &= targets - 1;
         }
         let count = (state.custodian_count[c] as usize).min(MAX_CUSTODIAN - 1);
-        key ^= MILL_ZOBRIST.custodian_count[c][count];
+        if count != 0 {
+            key ^= MILL_ZOBRIST.custodian_count[c][count];
+        }
 
         let mut targets = state.intervention_targets[c];
         while targets != 0 {
@@ -228,7 +237,9 @@ pub(crate) fn full_state_key(state: &MillState) -> u64 {
             targets &= targets - 1;
         }
         let count = (state.intervention_count[c] as usize).min(MAX_INTERVENTION - 1);
-        key ^= MILL_ZOBRIST.intervention_count[c][count];
+        if count != 0 {
+            key ^= MILL_ZOBRIST.intervention_count[c][count];
+        }
 
         let mut targets = state.leap_targets[c];
         while targets != 0 {
@@ -239,7 +250,9 @@ pub(crate) fn full_state_key(state: &MillState) -> u64 {
             targets &= targets - 1;
         }
         let count = (state.leap_count[c] as usize).min(MAX_LEAP - 1);
-        key ^= MILL_ZOBRIST.leap_count[c][count];
+        if count != 0 {
+            key ^= MILL_ZOBRIST.leap_count[c][count];
+        }
     }
 
     // Misc counter: piece-to-remove count for the side to move
@@ -309,7 +322,17 @@ fn target_delta(table: &[u64; NODE_COUNT], old_targets: u32, new_targets: u32) -
 fn count_delta(table: &[u64], old_count: u8, new_count: u8, max: usize) -> u64 {
     let oc = (old_count as usize).min(max - 1);
     let nc = (new_count as usize).min(max - 1);
-    if oc == nc { 0 } else { table[oc] ^ table[nc] }
+    if oc == nc {
+        return 0;
+    }
+    let mut delta = 0_u64;
+    if oc != 0 {
+        delta ^= table[oc];
+    }
+    if nc != 0 {
+        delta ^= table[nc];
+    }
+    delta
 }
 
 /// Incrementally derive the post-apply Zobrist key.
@@ -336,6 +359,55 @@ pub(crate) fn key_after_apply(
 ) -> u64 {
     let z = &MILL_ZOBRIST;
     let mut delta = 0_u64;
+
+    if old.delayed_marked_pieces == 0
+        && new_state.delayed_marked_pieces == 0
+        && capture_state_is_empty(
+            old.custodian_targets,
+            old.custodian_count,
+            old.intervention_targets,
+            old.intervention_count,
+            old.leap_targets,
+            old.leap_count,
+        )
+        && capture_state_is_empty(
+            new_state.custodian_targets,
+            new_state.custodian_count,
+            new_state.intervention_targets,
+            new_state.intervention_count,
+            new_state.leap_targets,
+            new_state.leap_count,
+        )
+    {
+        if (0..NODE_COUNT as i16).contains(&from_node) {
+            let s = from_node as usize;
+            let o = old.board[s];
+            let n = new_state.board[s];
+            if o == 1 || o == 2 {
+                delta ^= z.psq[o as usize][s];
+            }
+            if n == 1 || n == 2 {
+                delta ^= z.psq[n as usize][s];
+            }
+        }
+        if (0..NODE_COUNT as i16).contains(&to_node) {
+            let s = to_node as usize;
+            let o = old.board[s];
+            let n = new_state.board[s];
+            if o != n {
+                if o == 1 || o == 2 {
+                    delta ^= z.psq[o as usize][s];
+                }
+                if n == 1 || n == 2 {
+                    delta ^= z.psq[n as usize][s];
+                }
+            }
+        }
+        if (old.side_to_move == 1) != (new_state.side_to_move == 1) {
+            delta ^= z.side;
+        }
+        return apply_misc(old_key ^ delta, misc_count(new_state));
+    }
 
     // Board piece-square delta.  The only board writes in `apply_to_state`
     // are the action's from/to squares and the placing-to-moving marked
@@ -420,16 +492,75 @@ pub(crate) fn key_after_apply(
     }
 
     // Misc counter for the new side to move (master `update_key_misc`).
-    let misc = if new_state.phase != MillPhase::GameOver
-        && (new_state.side_to_move == 0 || new_state.side_to_move == 1)
-    {
-        let stm = new_state.side_to_move as usize;
-        u64::from(new_state.pending_removals[stm].min(3))
+    apply_misc(old_key ^ delta, misc_count(new_state))
+}
+
+#[inline]
+pub(crate) fn capture_state_is_empty(
+    custodian_targets: [u32; 2],
+    custodian_count: [u8; 2],
+    intervention_targets: [u32; 2],
+    intervention_count: [u8; 2],
+    leap_targets: [u32; 2],
+    leap_count: [u8; 2],
+) -> bool {
+    custodian_targets == [0, 0]
+        && custodian_count == [0, 0]
+        && intervention_targets == [0, 0]
+        && intervention_count == [0, 0]
+        && leap_targets == [0, 0]
+        && leap_count == [0, 0]
+}
+
+#[inline]
+pub(crate) fn key_after_apply_from_changed_squares(
+    old_key: u64,
+    old_side_to_move: i8,
+    old_from_piece: i8,
+    old_to_piece: i8,
+    new_state: &MillState,
+    from_node: i16,
+    to_node: i16,
+) -> u64 {
+    let z = &MILL_ZOBRIST;
+    let mut delta = 0_u64;
+
+    if (0..NODE_COUNT as i16).contains(&from_node) {
+        let s = from_node as usize;
+        if old_from_piece == 1 || old_from_piece == 2 {
+            delta ^= z.psq[old_from_piece as usize][s];
+        }
+        let new_piece = new_state.board[s];
+        if new_piece == 1 || new_piece == 2 {
+            delta ^= z.psq[new_piece as usize][s];
+        }
+    }
+    if (0..NODE_COUNT as i16).contains(&to_node) {
+        let s = to_node as usize;
+        if from_node != to_node {
+            if old_to_piece == 1 || old_to_piece == 2 {
+                delta ^= z.psq[old_to_piece as usize][s];
+            }
+            let new_piece = new_state.board[s];
+            if new_piece == 1 || new_piece == 2 {
+                delta ^= z.psq[new_piece as usize][s];
+            }
+        }
+    }
+    if (old_side_to_move == 1) != (new_state.side_to_move == 1) {
+        delta ^= z.side;
+    }
+    apply_misc(old_key ^ delta, misc_count(new_state))
+}
+
+#[inline]
+fn misc_count(state: &MillState) -> u64 {
+    if state.phase != MillPhase::GameOver && (state.side_to_move == 0 || state.side_to_move == 1) {
+        let stm = state.side_to_move as usize;
+        u64::from(state.pending_removals[stm].min(3))
     } else {
         0
-    };
-
-    apply_misc(old_key ^ delta, misc)
+    }
 }
 
 #[cfg(test)]
@@ -468,11 +599,20 @@ mod tests {
     }
 
     #[test]
+    fn zobrist_opening_entries_match_legacy_engine() {
+        // Master generates psq entries in legacy SQ_8..SQ_31 order. d6 is
+        // legacy SQ_16 and dense node 9 in the Rust topology.
+        assert_eq!(MILL_ZOBRIST.psq[1][9], 411_597_989);
+        assert_eq!(MILL_ZOBRIST.side, 687_726_975);
+        assert_eq!(MILL_ZOBRIST.psq[1][9] ^ MILL_ZOBRIST.side, 813_014_490);
+    }
+
+    #[test]
     fn key_misc_bit_round_trips_through_apply_misc() {
         let key = 0x00FF_FFFF_FFFF_FFFF_u64;
         for count in 0..=3 {
             let with_misc = apply_misc(key, count as u64);
-            let extracted = with_misc >> (u64::BITS - KEY_MISC_BIT);
+            let extracted = with_misc >> (u32::BITS - KEY_MISC_BIT);
             assert_eq!(extracted, count as u64);
         }
     }

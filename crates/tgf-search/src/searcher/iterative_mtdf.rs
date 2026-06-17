@@ -195,6 +195,23 @@ impl<G: Game> Searcher<G> {
         depth: i32,
         first_guess: i32,
     ) -> SearchResult {
+        self.search_mtdf_with_guess_traced(wb, depth, first_guess, &mut |_, _, _, _, _| {})
+    }
+
+    /// Run MTD(f) and report each zero-window probe through `on_iteration`.
+    /// This is intentionally the same implementation used by
+    /// [`Self::search_mtdf_with_guess`], so CLI diagnostics cannot diverge
+    /// from production search behavior.
+    pub fn search_mtdf_with_guess_traced<F>(
+        &mut self,
+        wb: &mut G::Workbench,
+        depth: i32,
+        first_guess: i32,
+        on_iteration: &mut F,
+    ) -> SearchResult
+    where
+        F: FnMut(usize, i32, i32, Action, u64),
+    {
         self.begin_root_search();
         if let Some(score) = G::terminal_score(wb, wb.side_to_move(), depth) {
             return SearchResult {
@@ -239,9 +256,12 @@ impl<G: Game> Searcher<G> {
         let mut g = first_guess;
         let mut lower_bound = i32::MIN + 1;
         let mut upper_bound = i32::MAX - 1;
+        let mut iteration = 0;
         while lower_bound < upper_bound {
             let beta = if g == lower_bound { g + 1 } else { g };
             g = self.mtdf_root(wb, depth, beta - 1, beta, &mut best_action);
+            on_iteration(iteration, beta, g, best_action, self.nodes);
+            iteration += 1;
             if g < beta {
                 upper_bound = g;
             } else {

@@ -33,6 +33,30 @@ fn legal_uci_labels(rules: &MillRules, snap: &GameStateSnapshot) -> Vec<String> 
     labels
 }
 
+fn assert_mobility_cache_matches_full_scan(state: &MillState, options: &MillVariantOptions) {
+    assert_eq!(
+        state.mobility_diff,
+        calculate_mobility_diff(state, options),
+        "cached mobility_diff must match full board scan"
+    );
+}
+
+fn assert_workbench_action_preserves_mobility_cache(
+    game: &MillGame,
+    options: &MillVariantOptions,
+    snap: &GameStateSnapshot,
+    label: &str,
+) {
+    let action = MillUciCodec::decode_action(snap, label)
+        .unwrap_or_else(|| panic!("failed to decode UCI action {label}"));
+    let mut wb = game.build_workbench(snap);
+    assert_mobility_cache_matches_full_scan(&wb.state, options);
+    wb.do_move(action);
+    assert_mobility_cache_matches_full_scan(&wb.state, options);
+    wb.undo_move();
+    assert_mobility_cache_matches_full_scan(&wb.state, options);
+}
+
 #[test]
 fn mill_line_index_tables_match_full_scan() {
     for has_diagonal_lines in [false, true] {
@@ -60,6 +84,34 @@ fn mill_line_index_tables_match_full_scan() {
             );
         }
     }
+}
+
+#[test]
+fn mobility_diff_cache_tracks_search_do_move_and_undo() {
+    let options = MillVariantOptions::default();
+    let rules = MillRules::new(options.clone());
+    let game = MillGame::new(options.clone());
+
+    let placing_snap = apply_uci_sequence(&rules, &["d6", "f4", "d2", "b4"]);
+    assert_workbench_action_preserves_mobility_cache(&game, &options, &placing_snap, "g4");
+
+    let moving_snap = apply_uci_sequence(
+        &rules,
+        &[
+            "d6", "f4", "d2", "b4", "g4", "d7", "a4", "d1", "d5", "d3", "f6", "b6", "b2", "f2",
+            "e5", "c5", "c3", "e4",
+        ],
+    );
+    assert_workbench_action_preserves_mobility_cache(&game, &options, &moving_snap, "c3-c4");
+
+    let remove_snap = apply_uci_sequence(
+        &rules,
+        &[
+            "d6", "f4", "d2", "b4", "g4", "d7", "a4", "d1", "d5", "d3", "e4", "f6", "f2", "b2",
+            "b6", "g7", "a7", "c3", "d5-c5", "c3-c4", "e4-e5", "c4-c3", "d6-d5",
+        ],
+    );
+    assert_workbench_action_preserves_mobility_cache(&game, &options, &remove_snap, "xd3");
 }
 
 #[test]

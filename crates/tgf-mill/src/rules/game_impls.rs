@@ -16,6 +16,7 @@ use super::move_priority::{
     RATING_BLOCK_ONE_MILL, RATING_ONE_MILL, RATING_STAR_SQUARE, is_star_square,
 };
 use super::potential_mills_count_at;
+use super::potential_mills_count_standard_unrestricted_pair;
 use super::types::MillActionKind;
 use super::{
     MILL_TERMINAL_WIN_SCORE, MillEvaluator, MillFormationActionInPlacingPhase, MillGame,
@@ -252,7 +253,7 @@ impl Game for MillGame {
 
     fn build_workbench(&self, snap: &GameStateSnapshot) -> Self::Workbench {
         let rules = MillRules::new(self.options.clone());
-        let mut state = MillRules::decode(snap);
+        let mut state = rules.decode_with_options(snap);
         if self.root_repetition_history.len() > state.key_history.len() {
             state.key_history = self.root_repetition_history.clone();
             state.key_history_len = state.key_history.len();
@@ -324,6 +325,25 @@ impl Game for MillGame {
 
         let side = state.side_to_move;
         let opponent = side ^ 1;
+        if kind == MillActionKind::Place as i16
+            && state.phase == MillPhase::Placing
+            && !options.has_diagonal_lines
+            && !options.may_move_in_placing_phase
+            && !options.one_time_use_mill
+            && ctx.algorithm != tgf_core::MoveOrderAlgorithm::Mcts
+        {
+            let (our_mills, their_mills) = potential_mills_count_standard_unrestricted_pair(
+                &state.board,
+                to,
+                side + 1,
+                opponent + 1,
+            );
+            let our_mills = our_mills as i32;
+            if our_mills > 0 {
+                return RATING_ONE_MILL * our_mills;
+            }
+            return RATING_BLOCK_ONE_MILL * their_mills as i32;
+        }
         let from = if kind == MillActionKind::Move as i16 {
             Some(action.from_node as usize)
         } else {
@@ -360,8 +380,8 @@ impl Game for MillGame {
 
         if state.phase == MillPhase::Placing
             && side == 1
-            && state.board.iter().filter(|&&p| p == 2).count() < 2
             && (options.has_diagonal_lines || ctx.algorithm == tgf_core::MoveOrderAlgorithm::Mcts)
+            && state.board.iter().filter(|&&p| p == 2).count() < 2
             && is_star_square(options, to)
         {
             score += RATING_STAR_SQUARE;

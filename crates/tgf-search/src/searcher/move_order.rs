@@ -6,6 +6,7 @@
 use tgf_core::{Action, ActionList, Game};
 
 use super::Searcher;
+use std::mem::MaybeUninit;
 
 impl<G: Game> Searcher<G> {
     #[inline]
@@ -17,10 +18,10 @@ impl<G: Game> Searcher<G> {
         moves: &mut ActionList<256>,
     ) {
         let moves = moves.as_mut_slice();
-        let mut scores = [0_i32; 256];
+        let mut scores: [MaybeUninit<i32>; 256] = [MaybeUninit::uninit(); 256];
         assert!(moves.len() <= scores.len());
         for (i, action) in moves.iter().copied().enumerate() {
-            scores[i] = self.move_score(wb, key, depth, action);
+            scores[i].write(self.move_score(wb, key, depth, action));
         }
 
         // Stable descending insertion sort.  This preserves the generated
@@ -29,15 +30,18 @@ impl<G: Game> Searcher<G> {
         // per candidate.
         for i in 1..moves.len() {
             let action = moves[i];
-            let score = scores[i];
+            // SAFETY: indices below `moves.len()` were initialized in the
+            // scoring loop above, and insertion sort only reads / writes
+            // within that initialized prefix.
+            let score = unsafe { scores[i].assume_init() };
             let mut j = i;
-            while j > 0 && scores[j - 1] < score {
+            while j > 0 && unsafe { scores[j - 1].assume_init() } < score {
                 moves[j] = moves[j - 1];
-                scores[j] = scores[j - 1];
+                scores[j].write(unsafe { scores[j - 1].assume_init() });
                 j -= 1;
             }
             moves[j] = action;
-            scores[j] = score;
+            scores[j].write(score);
         }
     }
 

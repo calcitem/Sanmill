@@ -351,28 +351,26 @@ fn transposition_table_saves_and_reuses_entries() {
 
 #[test]
 fn packed_tt_entry_round_trips_compact_fields() {
-    let action = Action {
-        kind_tag: 2,
-        from_node: 23,
-        to_node: 17,
-        aux: -1,
-        payload_bits: 0,
-    };
     let entry = TtEntry {
         value: 900,
         depth: 12,
         bound: Bound::Lower,
-        best_action: action,
+        best_action: Action {
+            kind_tag: 2,
+            from_node: 23,
+            to_node: 17,
+            aux: -1,
+            payload_bits: 0,
+        },
     };
 
     let meta = TtPackedEntry::pack_meta(0x1234_5678_9abc_def0, &entry, 3);
-    let action_bits = TtPackedEntry::pack_action(entry.best_action);
-    let unpacked = TtPackedEntry::unpack_entry(meta, action_bits);
+    let unpacked = TtPackedEntry::unpack_entry(meta);
 
     assert_eq!(unpacked.value, entry.value);
     assert_eq!(unpacked.depth, entry.depth);
     assert_eq!(unpacked.bound, entry.bound);
-    assert_eq!(unpacked.best_action, entry.best_action);
+    assert_eq!(unpacked.best_action, Action::NONE);
     assert_eq!(TtPackedEntry::packed_age(meta), 3);
     assert_ne!(meta, 0);
 }

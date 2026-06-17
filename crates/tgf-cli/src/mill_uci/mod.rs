@@ -19,6 +19,7 @@ use std::thread::{self, JoinHandle};
 use perfect_db::database::{DatabaseOptions, DatabaseVariant, PerfectDatabaseRuleMismatch};
 use tgf_core::{
     Action, ActionList, Game, GameRules, GameStateSnapshot, MoveOrderAlgorithm, MoveOrderContext,
+    Workbench,
 };
 use tgf_mill::{
     EngineRuntimeOptions, MillActionKind, MillGame, MillRules, MillVariantOptions,
@@ -42,14 +43,14 @@ use board::{
 };
 use setoption::{SetoptionResult, apply_setoption};
 
-/// `TGF_TT_CLUSTER_BITS` (10–26) selects `2^(bits+1)` TT slots; see
-/// `tgf_search::Searcher::new_with_tt_cluster_bits`.  Default 23 to
+/// `TGF_TT_CLUSTER_BITS` (10-26) selects `2^bits` direct TT slots; see
+/// `tgf_search::Searcher::new_with_tt_cluster_bits`.  Default 24 to
 /// match master `TRANSPOSITION_TABLE_SIZE = 0x1000000` (16 Mi slots).
 fn tt_cluster_bits_from_env() -> u32 {
     std::env::var("TGF_TT_CLUSTER_BITS")
         .ok()
         .and_then(|s| s.parse().ok())
-        .unwrap_or(23)
+        .unwrap_or(24)
         .clamp(10, 26)
 }
 
@@ -275,6 +276,47 @@ pub(crate) fn run_uci_loop() {
             state_history = parsed.history;
         } else if line == "d" {
             print_board_ascii(&state, &options);
+        } else if line == "key" {
+            let game = MillGame::new(options.clone());
+            let wb = game.build_workbench(&state);
+            println!("key {}", wb.key() as u32);
+        } else if line.starts_with("gomtdf") {
+            finish_active_search(&mut active_search, &mut engine_cfg);
+            let depth = parse_fixed_depth_debug_command(line, 15);
+            run_mtdf_debug_command(
+                &options,
+                state,
+                &state_history,
+                &engine_cfg,
+                qsearch_max_depth,
+                engine_cfg.hash_mb,
+                depth,
+            );
+        } else if line.starts_with("goab") {
+            finish_active_search(&mut active_search, &mut engine_cfg);
+            let depth = parse_fixed_depth_debug_command(line, 15);
+            run_alpha_beta_debug_command(
+                &options,
+                state,
+                &state_history,
+                &engine_cfg,
+                qsearch_max_depth,
+                engine_cfg.hash_mb,
+                depth,
+            );
+        } else if line.starts_with("rootprobe") {
+            finish_active_search(&mut active_search, &mut engine_cfg);
+            let (depth, betas) = parse_root_probe_debug_command(line);
+            run_root_probe_debug_command(
+                &options,
+                state,
+                &state_history,
+                &engine_cfg,
+                qsearch_max_depth,
+                engine_cfg.hash_mb,
+                depth,
+                &betas,
+            );
         } else if line.starts_with("go") {
             finish_active_search(&mut active_search, &mut engine_cfg);
             let go = parse_go_options(line, state.side_to_move, &engine_cfg);
@@ -340,35 +382,7 @@ fn spawn_search(
     let state = position.state;
     let root_repetition_history =
         MillRules::repetition_history_from_snapshots(&state, &position.history);
-    let search_options = SearchOptions {
-        depth_extension: cfg.depth_extension,
-        node_limit: go.node_limit,
-        time_limit_ms: go.movetime_ms,
-        allow_null_move: false,
-        // Master shuffles the global movePriorityList before generation.
-        // Mill's generate_legal_ctx already mirrors that list, so do not
-        // additionally shuffle the root action list here.
-        shuffle_root: false,
-        // Empirical A/B regression (selfplay depth 5 / 6 / 7 x 24
-        // openings, three runs each) shows TT prefetch is neutral to
-        // slightly negative for Mill: 0.1-1.7% slower with prefetch
-        // ON.  Reasons: the 16 Mi-cluster TT (~256 MiB) far exceeds
-        // typical L3 (~16-64 MiB) so most probes miss anyway, while
-        // the prefetch instruction + key_after computation add ~5 ns
-        // per move that the CPU hardware prefetcher and TT signature
-        // re-validation cannot recover.  The infrastructure remains
-        // (see SearchOptions::enable_prefetch + Workbench::key_after);
-        // games whose TT fits in cache or whose key_after is cheaper
-        // than Mill's may still benefit.  See
-        // /opt/cursor/artifacts/PREFETCH_EVALUATION_REPORT.md.
-        enable_prefetch: false,
-        // Master executeSearch uses full windows for every IDS pass.
-        enable_aspiration_window: false,
-        // Master MovePicker has no killer / history tables.
-        enable_killers: false,
-        enable_history: false,
-        move_order_context: move_order_context(&cfg),
-    };
+    let search_options = search_options_for_go(&cfg, &go);
     let depth = effective_search_depth(&options, &state, go.depth, &cfg);
     let root_side_to_move = state.side_to_move;
     let (tx, rx) = mpsc::channel();
@@ -551,6 +565,175 @@ fn run_algorithm_at_depth(
         }
         _ => searcher.search(wb, depth),
     }
+}
+
+fn search_options_for_go(cfg: &EngineConfig, go: &GoOptions) -> SearchOptions {
+    SearchOptions {
+        depth_extension: cfg.depth_extension,
+        node_limit: go.node_limit,
+        time_limit_ms: go.movetime_ms,
+        allow_null_move: false,
+        // Master shuffles the global movePriorityList before generation.
+        // Mill's generate_legal_ctx already mirrors that list, so do not
+        // additionally shuffle the root action list here.
+        shuffle_root: false,
+        // Master prefetches TT child entries before recursive search.
+        // With the master-aligned direct TT and O(1) Mill key_after,
+        // prefetching the first candidate is a small net win on deep
+        // placing roots; bulk prefetching every candidate was slower.
+        enable_prefetch: true,
+        // Master executeSearch uses full windows for every IDS pass.
+        enable_aspiration_window: false,
+        // Master MovePicker has no killer / history tables.
+        enable_killers: false,
+        enable_history: false,
+        move_order_context: move_order_context(cfg),
+    }
+}
+
+fn debug_searcher(
+    cfg: &EngineConfig,
+    qsearch_max_depth: i32,
+    hash_mb: u32,
+    depth: i32,
+) -> Searcher<MillGame> {
+    let mut searcher = mill_searcher();
+    if hash_mb > 0 {
+        searcher.resize_tt_by_mb(hash_mb);
+    }
+    searcher.set_options(search_options_for_go(
+        cfg,
+        &GoOptions {
+            depth,
+            movetime_ms: None,
+            node_limit: None,
+        },
+    ));
+    searcher.set_qsearch_max_depth(qsearch_max_depth);
+    searcher
+}
+
+fn debug_workbench(
+    options: &MillVariantOptions,
+    state: GameStateSnapshot,
+    state_history: &[GameStateSnapshot],
+) -> tgf_mill::MillWorkbench {
+    let root_repetition_history =
+        MillRules::repetition_history_from_snapshots(&state, state_history);
+    MillGame::new_with_repetition_history(options.clone(), root_repetition_history)
+        .build_workbench(&state)
+}
+
+fn parse_fixed_depth_debug_command(line: &str, default_depth: i32) -> i32 {
+    line.split_whitespace()
+        .nth(1)
+        .and_then(|token| token.parse::<i32>().ok())
+        .unwrap_or(default_depth)
+        .max(1)
+}
+
+fn parse_root_probe_debug_command(line: &str) -> (i32, Vec<i32>) {
+    let mut tokens = line.split_whitespace().skip(1);
+    let depth = tokens
+        .next()
+        .and_then(|token| token.parse::<i32>().ok())
+        .unwrap_or(15)
+        .max(1);
+    let betas = tokens
+        .filter_map(|token| token.parse::<i32>().ok())
+        .collect::<Vec<_>>();
+    let betas = if betas.is_empty() { vec![0] } else { betas };
+    (depth, betas)
+}
+
+fn run_alpha_beta_debug_command(
+    options: &MillVariantOptions,
+    state: GameStateSnapshot,
+    state_history: &[GameStateSnapshot],
+    cfg: &EngineConfig,
+    qsearch_max_depth: i32,
+    hash_mb: u32,
+    depth: i32,
+) {
+    let mut wb = debug_workbench(options, state, state_history);
+    let mut searcher = debug_searcher(cfg, qsearch_max_depth, hash_mb, depth);
+    let result = searcher.search(&mut wb, depth);
+    println!(
+        "goab depth={} value={} bestmove {} nodes {}",
+        depth,
+        result.score,
+        action_to_uci(result.best_action).unwrap_or_else(|| "none".to_owned()),
+        result.nodes
+    );
+}
+
+#[allow(clippy::too_many_arguments)]
+fn run_root_probe_debug_command(
+    options: &MillVariantOptions,
+    state: GameStateSnapshot,
+    state_history: &[GameStateSnapshot],
+    cfg: &EngineConfig,
+    qsearch_max_depth: i32,
+    hash_mb: u32,
+    depth: i32,
+    betas: &[i32],
+) {
+    let mut wb = debug_workbench(options, state, state_history);
+    let mut searcher = debug_searcher(cfg, qsearch_max_depth, hash_mb, depth);
+    for beta in betas {
+        let (value, best_action, rows) = searcher.debug_root_probe(&mut wb, depth, beta - 1, *beta);
+        println!(
+            "rootprobe depth={} beta={} value={} bestmove {} nodes {}",
+            depth,
+            beta,
+            value,
+            action_to_uci(best_action).unwrap_or_else(|| "none".to_owned()),
+            searcher.nodes()
+        );
+        for (action, value, nodes, cutoff) in rows {
+            println!(
+                "  rootmove {} value={} nodes={} cutoff={}",
+                action_to_uci(action).unwrap_or_else(|| "none".to_owned()),
+                value,
+                nodes,
+                cutoff
+            );
+        }
+    }
+}
+
+fn run_mtdf_debug_command(
+    options: &MillVariantOptions,
+    state: GameStateSnapshot,
+    state_history: &[GameStateSnapshot],
+    cfg: &EngineConfig,
+    qsearch_max_depth: i32,
+    hash_mb: u32,
+    depth: i32,
+) {
+    let mut wb = debug_workbench(options, state, state_history);
+    let mut searcher = debug_searcher(cfg, qsearch_max_depth, hash_mb, depth);
+    let result = searcher.search_mtdf_with_guess_traced(
+        &mut wb,
+        depth,
+        0,
+        &mut |iteration, beta, g, best_action, _nodes| {
+            println!(
+                "  mtdf-iter {} beta={} g={} best={}",
+                iteration,
+                beta,
+                g,
+                action_to_uci(best_action).unwrap_or_else(|| "none".to_owned()),
+            );
+        },
+    );
+    println!(
+        "gomtdf depth={} value={} bestmove {} nodes {}",
+        depth,
+        result.score,
+        action_to_uci(result.best_action).unwrap_or_else(|| "none".to_owned()),
+        result.nodes
+    );
 }
 
 /// Match the perfect-database best-move token against the current legal

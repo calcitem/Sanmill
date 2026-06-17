@@ -135,9 +135,6 @@ impl<G: Game> Searcher<G> {
         alpha: &mut i32,
         beta: &mut i32,
     ) -> Option<i32> {
-        if key == 0 {
-            return None;
-        }
         let entry = self.tt.get(key)?;
         if entry.depth < depth {
             return None;

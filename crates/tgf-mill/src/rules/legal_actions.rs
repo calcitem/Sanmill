@@ -16,6 +16,7 @@
 // transition helper, capture detector, …) as `pub(super)` so this file
 // can `use super::*` and stay close to the original layout.
 
+use super::move_priority::static_move_priority_for_search;
 use super::*;
 
 impl MillRules {
@@ -25,16 +26,22 @@ impl MillRules {
         out: &mut ActionList<256>,
         ctx: &tgf_core::MoveOrderContext,
     ) {
-        let priority = move_priority_list_for_search(&self.options, ctx);
+        let priority_storage;
+        let priority = if ctx.shuffling {
+            priority_storage = move_priority_list_for_search(&self.options, ctx);
+            &priority_storage
+        } else {
+            static_move_priority_for_search(&self.options, ctx)
+        };
         match state.action_for_legal_generation() {
             MillActionState::Remove => {
                 if state.pending_removals[state.side_to_move as usize] > 0 {
-                    self.generate_remove_actions(state, out, &priority);
+                    self.generate_remove_actions(state, out, priority);
                 }
             }
             MillActionState::Place => {
                 if state.pieces_in_hand[state.side_to_move as usize] > 0 {
-                    for &node in &priority {
+                    for &node in priority {
                         if state.board[node] == 0 {
                             out.push(Action {
                                 kind_tag: MillActionKind::Place as i16,
@@ -47,12 +54,12 @@ impl MillRules {
                     }
                 }
                 if self.options.may_move_in_placing_phase {
-                    self.generate_move_actions_with_priority(state, out, false, &priority);
+                    self.generate_move_actions_with_priority(state, out, false, priority);
                 }
             }
             MillActionState::Select => {
                 if state.phase == MillPhase::Moving {
-                    self.generate_move_actions_with_priority(state, out, true, &priority);
+                    self.generate_move_actions_with_priority(state, out, true, priority);
                 }
             }
             MillActionState::GameOver => {}
@@ -63,18 +70,55 @@ impl MillRules {
         if state.phase != MillPhase::Moving {
             return true;
         }
+        let side = state.side_to_move;
+        if !(0..=1).contains(&side) {
+            return false;
+        }
+        let side = side as usize;
+        let no_pieces_in_hand = state.pieces_in_hand[side] == 0;
+        let can_fly = self.options.may_fly
+            && no_pieces_in_hand
+            && state.pieces_on_board[side] <= self.options.fly_piece_count;
+        let leap_enabled = !can_fly
+            && no_pieces_in_hand
+            && self.options.leap_capture.enabled
+            && capture_phase_allowed(&self.options.leap_capture, state.phase)
+            && capture_piece_count_allowed_leap(&self.options.leap_capture, state);
+        if state.delayed_marked_pieces == 0
+            && !self.options.restrict_repeated_mills_formation
+            && !leap_enabled
+        {
+            let own_piece = state.side_to_move + 1;
+            if can_fly {
+                let has_own_piece = state.board.contains(&own_piece);
+                let has_empty = state.board.contains(&0);
+                return has_own_piece && has_empty;
+            }
+            for from in 0_usize..24 {
+                if state.board[from] != own_piece {
+                    continue;
+                }
+                if crate::topology::neighbors_for(from, self.options.has_diagonal_lines)
+                    .iter()
+                    .any(|to| state.board[*to as usize] == 0)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
         let mut actions = ActionList::<256>::new();
         self.generate_move_actions(state, &mut actions, true);
         !actions.is_empty()
     }
 
-    pub(super) fn maybe_handle_stalemate(&self, state: &mut MillState) {
+    pub(super) fn maybe_handle_stalemate(&self, state: &mut MillState) -> bool {
         if state.phase != MillPhase::Moving
             || state.side_to_move < 0
             || state.pending_removals[state.side_to_move as usize] != 0
             || self.has_legal_move(state)
         {
-            return;
+            return false;
         }
 
         match self.options.stalemate_action {
@@ -126,6 +170,7 @@ impl MillRules {
         // move generation would return an empty list instead of the
         // removal targets.
         sync_action_state(state);
+        true
     }
 
     pub(super) fn check_if_game_is_over(&self, state: &mut MillState) {
@@ -206,6 +251,33 @@ impl MillRules {
                 || (state.phase == MillPhase::Placing
                     && self.options.may_move_in_placing_phase
                     && self.options.leap_capture.in_placing_phase));
+        if state.delayed_marked_pieces == 0
+            && !self.options.restrict_repeated_mills_formation
+            && !leap_enabled
+        {
+            let own_piece = state.side_to_move + 1;
+            for &from in priority.iter().rev() {
+                if state.board[from] != own_piece {
+                    continue;
+                }
+                if can_fly {
+                    for to in 0_usize..24 {
+                        if state.board[to] == 0 {
+                            out.push(move_action(from, to));
+                        }
+                    }
+                } else {
+                    for &to in crate::topology::neighbors_for(from, self.options.has_diagonal_lines)
+                    {
+                        let to = to as usize;
+                        if state.board[to] == 0 {
+                            out.push(move_action(from, to));
+                        }
+                    }
+                }
+            }
+            return;
+        }
         for &from in priority.iter().rev() {
             // Use live_piece() rather than the raw board value so that
             // mark-and-delay MARKED_PIECE squares are treated as empty

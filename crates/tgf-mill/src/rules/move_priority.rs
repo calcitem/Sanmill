@@ -21,17 +21,24 @@ pub(super) const PRIORITY_SKILL_1: [usize; 24] = [
     17, 18, 19, 20, 21, 22, 23, 16, 9, 10, 11, 12, 13, 14, 15, 8, 1, 2, 3, 4, 5, 6, 7, 0,
 ];
 
+pub(super) fn static_move_priority_for_search(
+    options: &MillVariantOptions,
+    ctx: &MoveOrderContext,
+) -> &'static [usize; 24] {
+    if ctx.skill_level == 1 {
+        &PRIORITY_SKILL_1
+    } else if options.has_diagonal_lines {
+        &PRIORITY_DIAGONAL
+    } else {
+        &PRIORITY_NO_DIAGONAL
+    }
+}
+
 pub(super) fn move_priority_list_for_search(
     options: &MillVariantOptions,
     ctx: &MoveOrderContext,
 ) -> [usize; 24] {
-    let mut priority = if ctx.skill_level == 1 {
-        PRIORITY_SKILL_1
-    } else if options.has_diagonal_lines {
-        PRIORITY_DIAGONAL
-    } else {
-        PRIORITY_NO_DIAGONAL
-    };
+    let mut priority = *static_move_priority_for_search(options, ctx);
 
     if !ctx.shuffling {
         return priority;

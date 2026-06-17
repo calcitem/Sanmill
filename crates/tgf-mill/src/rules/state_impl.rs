@@ -7,7 +7,7 @@ use tgf_core::{GameStateSnapshot, OPAQUE_PAYLOAD_LEN};
 
 use super::{
     MILL_REPETITION_SNAPSHOT_WINDOW, MillActionState, MillOutcomeReason, MillPhase, MillState,
-    MillVariantOptions,
+    MillVariantOptions, recompute_mobility_diff,
 };
 
 impl MillState {
@@ -119,6 +119,9 @@ impl MillState {
         payload[276] = self.custodian_count[1];
         payload[277] = self.intervention_count[1];
         payload[278] = self.leap_count[1];
+        // 280..284: derived mobility cache.  Older snapshots leave this
+        // zero; rule paths recompute it from board/options after decode.
+        payload[280..284].copy_from_slice(&self.mobility_diff.to_le_bytes());
         payload
     }
 
@@ -153,6 +156,12 @@ impl MillState {
             move_number: snapshot.move_number,
             pieces_in_hand: [payload[24], payload[25]],
             pieces_on_board: [payload[26], payload[27]],
+            mobility_diff: i32::from_le_bytes([
+                payload[280],
+                payload[281],
+                payload[282],
+                payload[283],
+            ]),
             pending_removals: [payload[28], payload[29]],
             winner: payload[30] as i8,
             action: MillActionState::from_payload(payload[279]),
@@ -381,5 +390,6 @@ impl MillState {
         self.remove_own_piece = [false, false];
         self.key_history.clear();
         self.key_history_len = 0;
+        recompute_mobility_diff(self, options);
     }
 }
