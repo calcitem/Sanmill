@@ -17,3 +17,4 @@
 !dump_rust_sources.py
 !dump_master_cxx_sources.py
 !uci_probe.py
+!compare_engine_perf.py
