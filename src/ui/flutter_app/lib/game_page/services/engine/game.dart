@@ -146,14 +146,25 @@ class Game {
       return false;
     }
 
+    // A "draw"/"none" pseudo-move (e.g. the engine declaring a draw) only sets
+    // the game result; no real board move was made, so position._record still
+    // holds the PREVIOUS move. Appending it here would duplicate the last move
+    // at the tail of the recorder, which surfaces as a phantom extra move when
+    // exporting the move list. Skip recorder mutation for such result-only
+    // pseudo-moves (the game-over state has already been set by position).
+    final bool isResultOnlyMove =
+        extMove.type == MoveType.draw || extMove.type == MoveType.none;
+
     // 2) Determine if we are at the "end of the activeNode"
     //    - If "not at the end", create a new branch from the activeNode
     //    - If "indeed at the end", just append
     // Use finalMove instead of the incoming extMove
-    if (!GameController().gameRecorder.isAtEnd()) {
-      GameController().gameRecorder.branchNewMoveFromActiveNode(finalMove);
-    } else {
-      GameController().gameRecorder.appendMove(finalMove);
+    if (!isResultOnlyMove) {
+      if (!GameController().gameRecorder.isAtEnd()) {
+        GameController().gameRecorder.branchNewMoveFromActiveNode(finalMove);
+      } else {
+        GameController().gameRecorder.appendMove(finalMove);
+      }
     }
 
     // Keep the engine's incremental position reconstruction consistent.
