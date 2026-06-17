@@ -358,6 +358,17 @@ class NativeMillGameSession implements GameSessionHandle {
         if (event.kind != 'bestMove' || event.toNode < 0) {
           continue;
         }
+        if (_shouldResignFromSearch(event, engineSettings)) {
+          final PlayerSeat loser = state.value.activeSeat;
+          final PlayerSeat winner = _opponentSeat(loser);
+          assert(
+            winner != PlayerSeat.none,
+            'ResignIfMostLose requires an active player seat.',
+          );
+          forceTerminal(GameOutcome.win(winner), reason: 'loseResign');
+          bestAction = null;
+          continue;
+        }
         lastAiMoveType = _aiMoveTypeFromReason(event.reason);
         bestAction = _legalActionForBestMove(event);
         logger.i(
@@ -410,6 +421,23 @@ class NativeMillGameSession implements GameSessionHandle {
       return null;
     }
     return action;
+  }
+
+  static bool _shouldResignFromSearch(
+    tgf.EngineEvent event,
+    GeneralSettings? engineSettings,
+  ) {
+    const int valueMate = 80;
+    return engineSettings?.resignIfMostLose == true &&
+        event.score <= -valueMate;
+  }
+
+  static PlayerSeat _opponentSeat(PlayerSeat seat) {
+    return switch (seat) {
+      PlayerSeat.first => PlayerSeat.second,
+      PlayerSeat.second => PlayerSeat.first,
+      PlayerSeat.none => PlayerSeat.none,
+    };
   }
 
   /// Undo back to the root, then replay [moves] through this native session.

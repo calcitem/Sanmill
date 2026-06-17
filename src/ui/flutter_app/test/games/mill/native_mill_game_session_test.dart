@@ -179,6 +179,49 @@ void main() {
       },
     );
 
+    test(
+      'searchBestAction forces resignation when most-lost search is enabled',
+      () async {
+        final _FakeNativeMillRulesPort rulesPort = _FakeNativeMillRulesPort(
+          searchEvents: Stream<tgf.EngineEvent>.fromIterable(<tgf.EngineEvent>[
+            tgf.EngineEvent(
+              kind: 'bestMove',
+              depth: 6,
+              score: -80,
+              nodes: BigInt.from(42),
+              toNode: 0,
+              reason: 'a7 rawScore=-80',
+            ),
+            tgf.EngineEvent(
+              kind: 'stopped',
+              depth: 6,
+              score: -80,
+              nodes: BigInt.from(42),
+              toNode: -1,
+              reason: '',
+            ),
+          ]),
+        );
+        final NativeMillGameSession session = NativeMillGameSession(
+          rulesPort: rulesPort,
+        );
+        addTearDown(session.dispose);
+
+        final GameAction? action = await session.searchBestAction(
+          engineSettings: const GeneralSettings(resignIfMostLose: true),
+        );
+
+        expect(action, isNull);
+        expect(session.outcome.kind, GameOutcomeKind.win);
+        expect(session.outcome.winner, PlayerSeat.second);
+        expect(
+          session.state.value.payload[millOutcomeReasonPayloadKey],
+          'loseResign',
+        );
+        expect(session.legalActions, isEmpty);
+      },
+    );
+
     test('searchBestAction picks the searched move when two moving-phase '
         'actions share the destination node', () async {
       // a7-a4 (node 0 -> 7) is listed BEFORE a1-a4 (node 6 -> 7); a
