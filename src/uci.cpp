@@ -39,8 +39,15 @@
 #include "movegen.h"
 #include "tt.h"
 #include <algorithm>
+#include <charconv>
 #include <cstdio>
 #include <cstdlib>
+
+static bool parse_optional_int(const std::string &s, int &out)
+{
+    const auto result = std::from_chars(s.data(), s.data() + s.size(), out);
+    return result.ec == std::errc();
+}
 // #endregion
 
 using std::cin;
@@ -205,12 +212,8 @@ void UCI::loop(int argc, char *argv[])
         else if (token == "valuevec") {
             int childDepth = 7;
             string dtok;
-            if (is >> dtok) {
-                try {
-                    childDepth = std::stoi(dtok);
-                } catch (...) {
-                }
-            }
+            if (is >> dtok)
+                parse_optional_int(dtok, childDepth);
             std::vector<std::string> filter;
             {
                 string ftok;
@@ -310,12 +313,8 @@ void UCI::loop(int argc, char *argv[])
         else if (token == "gomtdf") {
             int d = 15;
             string dtok;
-            if (is >> dtok) {
-                try {
-                    d = std::stoi(dtok);
-                } catch (...) {
-                }
-            }
+            if (is >> dtok)
+                parse_optional_int(dtok, d);
             searchEngine.beginNewSearch(pos);
 #ifdef TRANSPOSITION_TABLE_ENABLE
             TranspositionTable::clear();
@@ -350,12 +349,8 @@ void UCI::loop(int argc, char *argv[])
         else if (token == "goab") {
             int d = 15;
             string dtok;
-            if (is >> dtok) {
-                try {
-                    d = std::stoi(dtok);
-                } catch (...) {
-                }
-            }
+            if (is >> dtok)
+                parse_optional_int(dtok, d);
             searchEngine.beginNewSearch(pos);
 #ifdef TRANSPOSITION_TABLE_ENABLE
             TranspositionTable::clear();
