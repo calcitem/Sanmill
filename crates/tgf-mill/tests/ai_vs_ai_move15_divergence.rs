@@ -161,6 +161,21 @@ const SKILL15_MOVES_TO_WHITE_MOVE_8: &[&str] = &[
 
 const SKILL15_MOVES_TO_WHITE_MOVE_5: &[&str] = &["d6", "f4", "d2", "b4", "g4", "d7", "a4", "d1"];
 
+// Self-play can become very expensive once both sides enter the flying
+// phase, because every piece can move to every empty point.  Keep the
+// regression harness on the same fixed-depth engine path, but shorten the
+// moving-phase draw rule from the default 50 full moves (100 plies) to
+// 10 full moves (20 plies) so ignored full-game captures terminate promptly.
+const SELFPLAY_N_MOVE_RULE_PLIES: u32 = 20;
+
+fn selfplay_variant_options() -> MillVariantOptions {
+    MillVariantOptions {
+        n_move_rule: SELFPLAY_N_MOVE_RULE_PLIES,
+        endgame_n_move_rule: SELFPLAY_N_MOVE_RULE_PLIES,
+        ..MillVariantOptions::default()
+    }
+}
+
 #[test]
 fn move15_black_search_skill1_depth1_shuffling_off() {
     let rules = MillRules::default();
@@ -400,6 +415,8 @@ fn move12_repetition_history_search_bias_does_not_adjudicate_early() {
 /// * time 0 (no IDS) → a single `search_mtdf_with_guess(depth, first_guess=0)`
 ///   per ply.
 /// * shuffling off.
+/// * n-move draw = 10 full moving-phase moves, to keep flying-phase self-play
+///   regression captures bounded.
 ///
 /// Returns the full move list (UCI labels) so it can be diffed against the
 /// master C++ engine driven with the same settings.
@@ -423,8 +440,8 @@ fn faithful_selfplay_opts(
 ) -> Vec<String> {
     use tgf_mill::{EngineRuntimeOptions, recommended_search_depth};
 
-    let rules = MillRules::default();
-    let options = MillVariantOptions::default();
+    let options = selfplay_variant_options();
+    let rules = MillRules::new(options.clone());
     let game = MillGame::new(options.clone());
     let mut snap = rules.initial_state(&[]);
     let mut moves: Vec<String> = Vec::new();
