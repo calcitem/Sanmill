@@ -385,10 +385,7 @@ impl Game for MillGame {
     /// SEARCH_DIFF_REPORT.md.
     #[inline]
     fn terminal_score(wb: &Self::Workbench, perspective: i8, depth: i32) -> Option<i32> {
-        if wb.state.phase != MillPhase::GameOver {
-            return search_n_move_draw_score(wb);
-        }
-        if wb.state.winner == 2 {
+        if wb.state.phase == MillPhase::GameOver && wb.state.winner == 2 {
             // Master scores every in-search repetition as `VALUE_DRAW + 1`
             // (src/search.cpp `has_repeated` cut).  Because that cut fires on
             // the SECOND occurrence, the search never actually reaches a 3-fold
@@ -402,12 +399,20 @@ impl Game for MillGame {
             }
             return Some(0);
         }
+        if wb.state.phase != MillPhase::GameOver {
+            return None;
+        }
         let distance = depth.max(0);
         if wb.state.winner == perspective {
             Some(MILL_TERMINAL_WIN_SCORE + distance)
         } else {
             Some(-MILL_TERMINAL_WIN_SCORE - distance)
         }
+    }
+
+    #[inline]
+    fn search_alpha_floor(wb: &Self::Workbench) -> Option<i32> {
+        search_n_move_draw_alpha_floor(wb)
     }
 
     #[inline]
@@ -460,7 +465,7 @@ impl Game for MillGame {
 }
 
 #[inline]
-fn search_n_move_draw_score(wb: &MillWorkbench) -> Option<i32> {
+fn search_n_move_draw_alpha_floor(wb: &MillWorkbench) -> Option<i32> {
     let state = &wb.state;
     let options = &wb.rules.options;
     let is_move_counting_phase = state.phase == MillPhase::Moving
@@ -472,9 +477,10 @@ fn search_n_move_draw_score(wb: &MillWorkbench) -> Option<i32> {
     // Master separates real-play adjudication from search-tree scoring:
     // Position::check_if_game_is_over uses `>= nMoveRule`, but
     // Search::search uses `rule50_count() > nMoveRule` for the regular
-    // rule and `>= endgameNMoveRule` for the three-piece endgame rule.
-    // Keeping the asymmetry avoids ending reversible search lines one ply
-    // earlier than the mature C++ engine.
+    // rule and `>= endgameNMoveRule` for the three-piece endgame rule, then
+    // applies it as `alpha = VALUE_DRAW` instead of returning immediately.
+    // Keeping both asymmetries avoids ending reversible search lines before
+    // master's later TT and repetition checks can participate.
     let ply_since_capture = u32::from(state.ply_since_capture);
     let is_endgame = options.endgame_n_move_rule > 0
         && options.endgame_n_move_rule < options.n_move_rule

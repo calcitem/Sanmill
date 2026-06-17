@@ -1518,13 +1518,24 @@ fn search_workbench_regular_n_move_rule_draws_only_after_threshold() {
     assert_eq!(
         <MillGame as Game>::terminal_score(&wb, wb.side_to_move(), 4),
         None,
+        "N-move is a search alpha floor, not a terminal score"
+    );
+    assert_eq!(
+        <MillGame as Game>::search_alpha_floor(&wb),
+        None,
         "master search scores the regular N-move draw only after the threshold"
     );
 
     wb.state.ply_since_capture = 11;
     assert_eq!(
         <MillGame as Game>::terminal_score(&wb, wb.side_to_move(), 4),
-        Some(0)
+        None,
+        "N-move must not hide repetition handling as a hard terminal"
+    );
+    assert_eq!(
+        <MillGame as Game>::search_alpha_floor(&wb),
+        Some(0),
+        "master search applies the regular N-move draw as alpha = 0"
     );
 }
 
@@ -1567,8 +1578,13 @@ fn search_workbench_endgame_n_move_rule_draws_at_threshold() {
     assert_eq!(wb.state.phase, MillPhase::Moving);
     assert_eq!(
         <MillGame as Game>::terminal_score(&wb, wb.side_to_move(), 4),
+        None,
+        "N-move must not hide repetition handling as a hard terminal"
+    );
+    assert_eq!(
+        <MillGame as Game>::search_alpha_floor(&wb),
         Some(0),
-        "master search scores the three-piece endgame rule at the threshold"
+        "master search applies the three-piece endgame rule as alpha = 0"
     );
 }
 

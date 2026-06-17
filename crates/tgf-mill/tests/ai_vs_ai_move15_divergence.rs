@@ -84,7 +84,22 @@ fn mtdf_search_at_skill(
     depth: i32,
     skill_level: u8,
 ) -> (String, i32) {
-    let options = MillVariantOptions::default();
+    mtdf_search_at_skill_with_options(
+        snap,
+        shuffling,
+        depth,
+        skill_level,
+        MillVariantOptions::default(),
+    )
+}
+
+fn mtdf_search_at_skill_with_options(
+    snap: &tgf_core::GameStateSnapshot,
+    shuffling: bool,
+    depth: i32,
+    skill_level: u8,
+    options: MillVariantOptions,
+) -> (String, i32) {
     let game = MillGame::new(options);
     let ctx = MoveOrderContext {
         algorithm: MoveOrderAlgorithm::Mtdf,
@@ -196,18 +211,17 @@ const MASTER_GO_SKILL3_FULL_GAME: &[&str] = &[
     "c3-c4",
 ];
 
-const RUST_SKILL4_FULL_GAME: &[&str] = &[
-    "d6", "f4", "d2", "b4", "g4", "d7", "a4", "d1", "e4", "d5", "c4", "d3", "f6", "b6", "b2", "f2",
-    "g7", "g1", "a4-a1", "d3-c3", "c4-c5", "c3-d3", "c5-c4", "d5-c5", "a1-a4", "c5-d5", "c4-c5",
-    "b4-c4", "b2-b4", "d1-a1", "e4-e3", "a1-d1", "a4-a1", "d5-e5", "c5-d5", "e5-e4", "a1-a4",
-    "c4-c5",
-];
-
 const MASTER_GO_SKILL4_FULL_GAME: &[&str] = &[
     "d6", "f4", "d2", "b4", "g4", "d7", "a4", "d1", "e4", "d5", "c4", "d3", "f6", "b6", "b2", "f2",
     "g7", "g1", "a4-a1", "d3-c3", "c4-c5", "c3-d3", "c5-c4", "d5-c5", "a1-a4", "c5-d5", "c4-c5",
     "b4-c4", "b2-b4", "d1-a1", "e4-e3", "a1-d1", "a4-a1", "d5-e5", "c5-d5", "e5-e4", "d5-e5",
     "c4-c5",
+];
+
+const SKILL4_MOVES_TO_N_MOVE_FLOOR_TAIL: &[&str] = &[
+    "d6", "f4", "d2", "b4", "g4", "d7", "a4", "d1", "e4", "d5", "c4", "d3", "f6", "b6", "b2", "f2",
+    "g7", "g1", "a4-a1", "d3-c3", "c4-c5", "c3-d3", "c5-c4", "d5-c5", "a1-a4", "c5-d5", "c4-c5",
+    "b4-c4", "b2-b4", "d1-a1", "e4-e3", "a1-d1", "a4-a1", "d5-e5", "c5-d5", "e5-e4",
 ];
 
 #[test]
@@ -552,25 +566,21 @@ fn ai_vs_ai_skill3_time0_shuffling_off_matches_master_go_full_game() {
 }
 
 #[test]
-fn ai_vs_ai_skill4_time0_shuffling_off_full_game_has_known_master_tail_divergence() {
-    let actual = assert_deterministic_selfplay_full_game(4, RUST_SKILL4_FULL_GAME);
-    let master = move_vec(MASTER_GO_SKILL4_FULL_GAME);
+fn skill4_tail_n_move_floor_keeps_master_mtdf_choice() {
+    let options = selfplay_variant_options();
+    let rules = MillRules::new(options.clone());
+    let mut snap = rules.initial_state(&[]);
+    apply_line(&rules, &mut snap, SKILL4_MOVES_TO_N_MOVE_FLOOR_TAIL);
 
-    assert_eq!(actual.len(), master.len());
-    assert_eq!(
-        actual
-            .iter()
-            .zip(master.iter())
-            .position(|(left, right)| left != right),
-        Some(36),
-        "Skill 4 should only diverge from master at the final reversible white move"
-    );
-    assert_eq!(&actual[36..], move_vec(&["a1-a4", "c4-c5"]).as_slice());
-    assert_eq!(&master[36..], move_vec(&["d5-e5", "c4-c5"]).as_slice());
-    assert_ne!(
-        actual, master,
-        "This full-game fixture intentionally documents the remaining master tail divergence"
-    );
+    let (best, score) = mtdf_search_at_skill_with_options(&snap, false, 4, 4, options);
+
+    assert_eq!(best, "d5-e5");
+    assert_eq!(score, 0);
+}
+
+#[test]
+fn ai_vs_ai_skill4_time0_shuffling_off_matches_master_go_full_game() {
+    assert_deterministic_selfplay_full_game(4, MASTER_GO_SKILL4_FULL_GAME);
 }
 
 #[test]

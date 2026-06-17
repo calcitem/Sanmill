@@ -331,6 +331,18 @@ pub trait Game: 'static + Send + Sync {
         wb.is_terminal().then(|| Self::Evaluator::score(wb))
     }
 
+    /// Optional lower bound applied inside alpha-beta before TT and
+    /// repetition probes.
+    ///
+    /// Some mature engines model soft rule draws as `alpha = draw` rather
+    /// than as immediate terminal nodes: the search may still discover a
+    /// better tactical result or a repetition draw-bias below the same node.
+    /// Default: `None` (no alpha floor).
+    #[inline]
+    fn search_alpha_floor(_wb: &Self::Workbench) -> Option<i32> {
+        None
+    }
+
     /// Sentinel score returned when the search root has exactly one legal
     /// action.  The default value (`100`) matches the long-standing
     /// "VALUE_UNIQUE" constant used by Mill and is large enough not to

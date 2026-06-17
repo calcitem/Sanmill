@@ -452,6 +452,13 @@ impl<G: Game> Searcher<G> {
             return score;
         }
 
+        if let Some(floor) = G::search_alpha_floor(wb) {
+            alpha = alpha.max(floor);
+            if alpha >= beta {
+                return alpha;
+            }
+        }
+
         let key = wb.key();
         let old_alpha = alpha;
         if let Some(value) = self.probe_tt(key, depth, &mut alpha, &mut beta) {
