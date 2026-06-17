@@ -38,8 +38,17 @@ const List<String> morabarabaPerfectDatabaseFileNames = <String>[
   'mora_2_2_10_10.sec2',
 ];
 
+const List<String> laskerPerfectDatabaseFileNames = <String>[
+  'lask.secval',
+  'lask_0_0_10_10.sec2',
+  'lask_0_1_10_9.sec2',
+  'lask_1_1_9_9.sec2',
+  'lask_1_2_9_8.sec2',
+];
+
 const List<String> bundledPerfectDatabaseFileNames = <String>[
   ...standardPerfectDatabaseFileNames,
+  ...laskerPerfectDatabaseFileNames,
   ...morabarabaPerfectDatabaseFileNames,
 ];
 

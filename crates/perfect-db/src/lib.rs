@@ -437,9 +437,27 @@ mod tests {
         assert_eq!(evaluate(0, 0, 9, 9, 0, false), Some((0, 2)));
         deinit();
 
-        assert!(!init_variant(db_path(), database::DatabaseVariant::LASKER));
-        assert!(!is_initialized());
-        assert_eq!(loaded_sector_count_rust_database(), None);
+        assert!(init_variant(db_path(), database::DatabaseVariant::LASKER));
+        assert!(is_initialized());
+        assert_eq!(
+            loaded_variant_rust_database(),
+            Some(database::DatabaseVariant::LASKER)
+        );
+        assert!(evaluate(0, 0, 10, 10, 0, false).is_some());
+        let lasker_options = tgf_mill::MillVariantOptions {
+            piece_count: 10,
+            may_move_in_placing_phase: true,
+            ..tgf_mill::MillVariantOptions::default()
+        };
+        assert!(
+            best_move_token_with_options(
+                &database::PerfectQuery::new(0, 0, 10, 10, 0, false),
+                &lasker_options,
+                PerfectMoveOrdering::LegacyWdl,
+            )
+            .is_some()
+        );
+        deinit();
 
         assert!(init_variant(
             db_path(),
@@ -481,13 +499,20 @@ mod tests {
         let morabaraba = supported
             .find(database::DatabaseVariant::MORABARABA)
             .expect("bundled assets must expose morabaraba metadata");
+        let lasker = supported
+            .find(database::DatabaseVariant::LASKER)
+            .expect("bundled assets must expose Lasker metadata");
 
         assert!(!is_initialized());
-        assert_eq!(supported.len(), 2);
+        assert_eq!(supported.len(), 3);
         assert_eq!(standard.sector_count(), 498);
         assert!(standard.has_available_sector(file_format::SectorId::new(0, 0, 9, 9)));
         assert!(standard.has_available_sector(file_format::SectorId::new(3, 3, 0, 0)));
         assert!(!standard.is_fully_available());
+        assert_eq!(lasker.sector_count(), 3070);
+        assert!(lasker.has_available_sector(file_format::SectorId::new(0, 0, 10, 10)));
+        assert!(lasker.has_available_sector(file_format::SectorId::new(1, 2, 9, 8)));
+        assert!(!lasker.is_fully_available());
         assert_eq!(morabaraba.sector_count(), 1216);
         assert!(morabaraba.has_available_sector(file_format::SectorId::new(0, 0, 12, 12)));
         assert!(morabaraba.has_available_sector(file_format::SectorId::new(0, 1, 12, 11)));

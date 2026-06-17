@@ -91,6 +91,13 @@ fn write_secval_only_lasker_status_database() -> PathBuf {
     path
 }
 
+fn bundled_perfect_database_path() -> String {
+    PathBuf::from(env!("CARGO_MANIFEST_DIR"))
+        .join("../../src/ui/flutter_app/assets/databases")
+        .display()
+        .to_string()
+}
+
 #[test]
 fn mill_perfect_db_status_reports_secval_without_sectors() {
     let path = write_secval_only_lasker_status_database();
@@ -105,6 +112,40 @@ fn mill_perfect_db_status_reports_secval_without_sectors() {
     assert_eq!(status.variants[0].available_sector_count, 0);
 
     fs::remove_dir_all(path).expect("temporary Perfect DB directory must be removable");
+}
+
+#[test]
+fn mill_perfect_db_status_reports_bundled_variants() {
+    let status = mill_perfect_db_status(bundled_perfect_database_path());
+
+    assert!(status.readable);
+    assert!(status.error.is_empty());
+    assert!(status.has_metadata);
+    assert!(status.has_available_sectors);
+    assert_eq!(status.variants.len(), 3);
+
+    let variant = |name: &str| {
+        status
+            .variants
+            .iter()
+            .find(|variant| variant.name == name)
+            .unwrap_or_else(|| panic!("bundled Perfect DB status must include {name}"))
+    };
+
+    let standard = variant("std");
+    assert_eq!(standard.piece_count, 9);
+    assert_eq!(standard.sector_count, 498);
+    assert_eq!(standard.available_sector_count, 19);
+
+    let lasker = variant("lask");
+    assert_eq!(lasker.piece_count, 10);
+    assert_eq!(lasker.sector_count, 3070);
+    assert_eq!(lasker.available_sector_count, 4);
+
+    let morabaraba = variant("mora");
+    assert_eq!(morabaraba.piece_count, 12);
+    assert_eq!(morabaraba.sector_count, 1216);
+    assert_eq!(morabaraba.available_sector_count, 6);
 }
 
 #[test]

@@ -166,6 +166,11 @@ flutter:
     - assets/databases/std_4_3_0_0.sec2
     - assets/databases/std_4_3_5_5.sec2
     - assets/databases/std_4_4_5_5.sec2
+    - assets/databases/lask.secval
+    - assets/databases/lask_0_0_10_10.sec2
+    - assets/databases/lask_0_1_10_9.sec2
+    - assets/databases/lask_1_1_9_9.sec2
+    - assets/databases/lask_1_2_9_8.sec2
     - assets/databases/mora.secval
     - assets/databases/mora_0_0_12_12.sec2
     - assets/databases/mora_0_1_12_11.sec2

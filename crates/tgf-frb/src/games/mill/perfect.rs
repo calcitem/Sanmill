@@ -466,13 +466,6 @@ mod tests {
         path
     }
 
-    fn write_lasker_partial_database() -> PathBuf {
-        let path = write_lasker_secval_only_database();
-        fs::write(path.join("lask_1_1_9_9.sec2"), b"placeholder")
-            .expect("temporary Lasker sector placeholder must be written");
-        path
-    }
-
     #[test]
     fn perfect_best_action_uses_rust_database_for_endgame_moving_sector() {
         let _guard = perfect_db_test_lock();
@@ -558,10 +551,12 @@ mod tests {
     #[test]
     fn perfect_best_action_syncs_lasker_database_from_saved_path() {
         let _guard = perfect_db_test_lock();
-        let path = write_lasker_partial_database();
         deinit_database();
-        assert!(init_database_path(path.display().to_string()));
-        assert_eq!(perfect_db::loaded_variant_rust_database(), None);
+        assert!(init_database_path(db_path().to_owned()));
+        assert_eq!(
+            perfect_db::loaded_variant_rust_database(),
+            Some(perfect_db::database::DatabaseVariant::STANDARD)
+        );
 
         let options = lasker_options();
         let rules = MillRules::new(options.clone());
@@ -569,22 +564,20 @@ mod tests {
         let mut legal = tgf_core::ActionList::<256>::default();
         rules.legal_actions(&snapshot, &mut legal);
 
-        assert!(
-            try_perfect_best_action(
-                &snapshot,
-                &options,
-                legal.as_slice(),
-                perfect_db::PerfectMoveOrdering::LegacyWdl,
-            )
-            .is_none()
-        );
+        let action = try_perfect_best_action(
+            &snapshot,
+            &options,
+            legal.as_slice(),
+            perfect_db::PerfectMoveOrdering::LegacyWdl,
+        )
+        .expect("covered Lasker opening sector must return a perfect action");
+        assert!(legal.as_slice().contains(&action));
         assert_eq!(
             perfect_db::loaded_variant_rust_database(),
             Some(perfect_db::database::DatabaseVariant::LASKER)
         );
 
         deinit_database();
-        fs::remove_dir_all(path).expect("temporary Lasker DB directory must be removable");
     }
 
     #[test]

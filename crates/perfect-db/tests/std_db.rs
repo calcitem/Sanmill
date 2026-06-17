@@ -454,6 +454,25 @@ const FROZEN_MORABARABA_LEGAL_SECTOR_ORACLE: &[FrozenSectorOracle] = &[
     },
 ];
 
+const FROZEN_LASKER_LEGAL_SECTOR_ORACLE: &[FrozenSectorOracle] = &[
+    FrozenSectorOracle {
+        sector: (0, 0, 10, 10),
+        expected: (-1, 1),
+    },
+    FrozenSectorOracle {
+        sector: (0, 1, 10, 9),
+        expected: (0, 1),
+    },
+    FrozenSectorOracle {
+        sector: (1, 1, 9, 9),
+        expected: (1, 61),
+    },
+    FrozenSectorOracle {
+        sector: (1, 2, 9, 8),
+        expected: (0, 1),
+    },
+];
+
 #[test]
 fn perfect_query_snapshot_preserves_counts_and_removal() {
     let rules = MillRules::default();
@@ -779,23 +798,79 @@ fn morabaraba_perfect_db_oracle_vectors() {
 
 #[cfg(feature = "cpp-oracle")]
 #[test]
-fn cpp_oracle_missing_lasker_assets_do_not_poison_standard_init() {
+fn lasker_perfect_db_oracle_vectors() {
     let _guard = cpp_oracle_test_lock();
     perfect_db::set_rust_backend_enabled(false);
     assert!(
-        !perfect_db::init_variant(db_path(), DatabaseVariant::LASKER),
-        "C++ oracle must reject missing bundled Lasker assets"
-    );
-    assert!(
-        !perfect_db::is_initialized(),
-        "failed Lasker initialization must leave the public API uninitialized"
+        perfect_db::init_variant(db_path(), DatabaseVariant::LASKER),
+        "C++ oracle must initialize the bundled Lasker assets"
     );
 
-    assert!(
-        init(db_path()),
-        "standard C++ oracle init must still succeed after missing Lasker"
+    let options = MillVariantOptions {
+        piece_count: 10,
+        may_move_in_placing_phase: true,
+        ..MillVariantOptions::default()
+    };
+    let rules = MillRules::new(options.clone());
+    let snap = rules.initial_state(&[]);
+    let state = MillRules::decode_snapshot(snap);
+    let mut rust_db = Database::open_variant(
+        FileDatabaseProvider::new(db_path()),
+        DatabaseVariant::LASKER,
+    )
+    .unwrap();
+
+    let sector_ids = bundled_sector_ids_for("lask")
+        .into_iter()
+        .collect::<BTreeSet<_>>();
+    let samples = legal_sector_samples_for(&rules, &options, &sector_ids);
+    assert_eq!(
+        sector_ids.len(),
+        4,
+        "test must cover every currently bundled Lasker sector asset"
     );
-    assert_eq!(evaluate(0, 0, 9, 9, 0, false), Some((0, 2)));
+    assert_eq!(
+        samples.keys().copied().collect::<BTreeSet<_>>(),
+        sector_ids,
+        "legal sample generation must reach every bundled Lasker sector"
+    );
+    for (id, sample_snap) in samples {
+        let sample_state = MillRules::decode_snapshot(sample_snap);
+        let name = format!("Lasker sector {id:?}");
+        assert_state_eval_parity(
+            &name,
+            &mut rust_db,
+            &sample_state,
+            &options,
+            sample_snap.side_to_move,
+        );
+    }
+
+    let token = best_move_token_for_state(&state, &options, snap.side_to_move)
+        .expect("Lasker C++ oracle must return an opening best move");
+    assert_best_move_is_legal(&rules, &snap, &token);
+
+    let choices = best_move_choices_with_database(&mut rust_db, &rules, &snap, &options)
+        .unwrap()
+        .expect("Rust Lasker loader must expose opening best choices");
+    let optimal_tokens: BTreeSet<&str> =
+        choices.iter().map(|choice| choice.token.as_str()).collect();
+    assert!(
+        optimal_tokens.contains(token.as_str()),
+        "Lasker C++ state best move {token} must be Rust-optimal"
+    );
+
+    let raw_token = perfect_db::best_move_token_with_options(
+        &PerfectQuery::new(0, 0, 10, 10, 0, false),
+        &options,
+        perfect_db::PerfectMoveOrdering::LegacyWdl,
+    )
+    .expect("raw Lasker C++ oracle must return an opening best move");
+    assert_best_move_is_legal(&rules, &snap, &raw_token);
+    assert!(
+        optimal_tokens.contains(raw_token.as_str()),
+        "raw Lasker best move {raw_token} must be Rust-optimal"
+    );
 
     perfect_db::set_rust_backend_enabled(true);
 }
@@ -1041,6 +1116,60 @@ fn morabaraba_database_handles_bundled_sectors() {
     let choice = best_move_choice_with_database(&mut rust_db, &rules, &snap, &options)
         .unwrap()
         .expect("Morabaraba opening must produce a Rust best move choice");
+    assert_best_move_is_legal(&rules, &snap, &choice.token);
+}
+
+#[test]
+fn lasker_database_handles_bundled_sectors() {
+    let options = MillVariantOptions {
+        piece_count: 10,
+        may_move_in_placing_phase: true,
+        ..MillVariantOptions::default()
+    };
+    let rules = MillRules::new(options.clone());
+    let mut rust_db = Database::open_variant(
+        FileDatabaseProvider::new(db_path()),
+        DatabaseVariant::LASKER,
+    )
+    .unwrap();
+    let sector_ids = bundled_sector_ids_for("lask")
+        .into_iter()
+        .collect::<BTreeSet<_>>();
+    let samples = legal_sector_samples_for(&rules, &options, &sector_ids);
+    let frozen_sector_ids = FROZEN_LASKER_LEGAL_SECTOR_ORACLE
+        .iter()
+        .map(|case| case.sector_id())
+        .collect::<BTreeSet<_>>();
+    assert_eq!(
+        sector_ids, frozen_sector_ids,
+        "frozen oracle samples must cover every currently bundled Lasker sector"
+    );
+    assert_eq!(
+        samples.keys().copied().collect::<BTreeSet<_>>(),
+        sector_ids,
+        "legal sample generation must reach every bundled Lasker sector"
+    );
+
+    for (id, snap) in samples {
+        let state = MillRules::decode_snapshot(snap);
+        let eval = evaluate_state_with_database(&mut rust_db, &state, &options, snap.side_to_move)
+            .unwrap();
+        let expected = FROZEN_LASKER_LEGAL_SECTOR_ORACLE
+            .iter()
+            .find(|case| case.sector_id() == id)
+            .unwrap_or_else(|| panic!("missing frozen Lasker sector sample for {id:?}"))
+            .expected;
+        assert_eq!(
+            eval,
+            Some(expected),
+            "Lasker sector {id:?} must match the frozen Rust sample"
+        );
+    }
+
+    let snap = rules.initial_state(&[]);
+    let choice = best_move_choice_with_database(&mut rust_db, &rules, &snap, &options)
+        .unwrap()
+        .expect("Lasker opening must produce a Rust best move choice");
     assert_best_move_is_legal(&rules, &snap, &choice.token);
 }
 

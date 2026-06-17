@@ -105,6 +105,20 @@ mod tests {
     }
 
     #[test]
+    fn parses_lasker_secval_asset() {
+        let text = std::fs::read_to_string(asset_path("lask.secval")).unwrap();
+        let table = SecValTable::parse(&text).unwrap();
+
+        assert_eq!(table.virt_loss_val(), -1715);
+        assert_eq!(table.virt_win_val(), 1715);
+        assert_eq!(table.len(), 3070);
+        assert_eq!(table.value(SectorId::new(0, 0, 10, 10)), Some(47));
+        assert_eq!(table.value(SectorId::new(0, 1, 10, 9)), Some(-67));
+        assert_eq!(table.value(SectorId::new(1, 1, 9, 9)), Some(0));
+        assert_eq!(table.value(SectorId::new(1, 2, 9, 8)), Some(-386));
+    }
+
+    #[test]
     fn parses_empty_board_sector_asset() {
         let bytes = std::fs::read(asset_path("std_0_0_9_9.sec2")).unwrap();
         let sector = SectorFile::parse(&bytes, 1).unwrap();
@@ -121,6 +135,19 @@ mod tests {
     #[test]
     fn parses_mora_empty_board_sector_asset() {
         let bytes = std::fs::read(asset_path("mora_0_0_12_12.sec2")).unwrap();
+        let sector = SectorFile::parse(&bytes, 1).unwrap();
+
+        assert_eq!(sector.header().version, 2);
+        assert_eq!(sector.header().eval_struct_size, 3);
+        assert_eq!(sector.header().field2_offset, 14);
+        assert!(!sector.header().stone_diff);
+        assert_eq!(sector.eval_count(), 1);
+        assert_eq!(sector.em_set_len(), 0);
+    }
+
+    #[test]
+    fn parses_lasker_empty_board_sector_asset() {
+        let bytes = std::fs::read(asset_path("lask_0_0_10_10.sec2")).unwrap();
         let sector = SectorFile::parse(&bytes, 1).unwrap();
 
         assert_eq!(sector.header().version, 2);
