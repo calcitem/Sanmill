@@ -407,6 +407,14 @@ fn faithful_selfplay(skill_level: u8, max_plies: usize) -> Vec<String> {
     faithful_selfplay_opts(skill_level, max_plies, false, false)
 }
 
+fn assert_deterministic_selfplay_prefix(skill_level: u8, expected: &[&str]) {
+    let first = faithful_selfplay(skill_level, expected.len());
+    let second = faithful_selfplay(skill_level, expected.len());
+    let expected: Vec<String> = expected.iter().map(|m| (*m).to_owned()).collect();
+    assert_eq!(first, expected);
+    assert_eq!(second, expected);
+}
+
 fn faithful_selfplay_opts(
     skill_level: u8,
     max_plies: usize,
@@ -473,6 +481,50 @@ fn faithful_selfplay_opts(
 }
 
 #[test]
+fn ai_vs_ai_skill1_time0_shuffling_off_is_repeatable() {
+    // Master App `go` at SkillLevel=1 can still fall through to its
+    // time-seeded random fallback on the first move. The Rust/TGF App path
+    // keeps this requested configuration deterministic, so pin the stable
+    // next-engine prefix rather than reproducing master's fallback bug.
+    assert_deterministic_selfplay_prefix(
+        1,
+        &[
+            "d6", "f4", "d2", "b4", "e4", "d5", "c4", "d3", "g4", "d7", "a4", "d1",
+        ],
+    );
+}
+
+#[test]
+fn ai_vs_ai_skill2_time0_shuffling_off_matches_master_gomtdf_prefix() {
+    assert_deterministic_selfplay_prefix(
+        2,
+        &[
+            "d6", "f4", "d2", "b4", "g4", "d7", "a4", "d1", "e4", "d5", "c4", "d3",
+        ],
+    );
+}
+
+#[test]
+fn ai_vs_ai_skill3_time0_shuffling_off_matches_master_gomtdf_prefix() {
+    assert_deterministic_selfplay_prefix(
+        3,
+        &[
+            "d6", "f4", "d2", "b4", "g4", "d7", "a4", "d1", "e4", "d5", "d3", "f6",
+        ],
+    );
+}
+
+#[test]
+fn ai_vs_ai_skill4_time0_shuffling_off_matches_master_gomtdf_prefix() {
+    assert_deterministic_selfplay_prefix(
+        4,
+        &[
+            "d6", "f4", "d2", "b4", "g4", "d7", "a4", "d1", "e4", "d5", "c4", "d3",
+        ],
+    );
+}
+
+#[test]
 #[ignore = "self-play ground-truth harness; run explicitly to diff vs master"]
 fn faithful_selfplay_skill1_movelist() {
     let moves = faithful_selfplay(1, 400);
@@ -486,6 +538,36 @@ fn faithful_selfplay_skill2_movelist() {
     let moves = faithful_selfplay(2, 400);
     eprintln!("SELFPLAY skill=2 plies={}", moves.len());
     eprintln!("SELFPLAY skill=2 moves: {}", moves.join(" "));
+}
+
+#[test]
+#[ignore = "self-play ground-truth harness; run explicitly to diff vs master"]
+fn faithful_selfplay_skill3_movelist() {
+    let moves = faithful_selfplay(3, 400);
+    eprintln!("SELFPLAY skill=3 plies={}", moves.len());
+    eprintln!("SELFPLAY skill=3 moves: {}", moves.join(" "));
+}
+
+#[test]
+#[ignore = "self-play ground-truth harness; run explicitly to diff vs master"]
+fn faithful_selfplay_skill4_movelist() {
+    let moves = faithful_selfplay(4, 400);
+    eprintln!("SELFPLAY skill=4 plies={}", moves.len());
+    eprintln!("SELFPLAY skill=4 moves: {}", moves.join(" "));
+}
+
+#[test]
+#[ignore = "self-play prefix capture; run explicitly when updating baselines"]
+fn faithful_selfplay_skill3_prefix24() {
+    let moves = faithful_selfplay(3, 24);
+    eprintln!("SELFPLAY skill=3 prefix24: {}", moves.join(" "));
+}
+
+#[test]
+#[ignore = "self-play prefix capture; run explicitly when updating baselines"]
+fn faithful_selfplay_skill4_prefix24() {
+    let moves = faithful_selfplay(4, 24);
+    eprintln!("SELFPLAY skill=4 prefix24: {}", moves.join(" "));
 }
 
 #[test]
