@@ -193,15 +193,15 @@ void UCI::loop(int argc, char *argv[])
             // token = "quit";
         }
 #endif // SELF_PLAY
-        // #region debug commands (engine-parity instrumentation)
-        // `valuevec [childDepth] [move...]` searches every (optionally
-        // filtered) legal root move at a fixed child depth and reports each
-        // move's value from White's point of view.  When the environment
-        // variable SANMILL_DEBUG_LOG is set, the per-move values are also
-        // appended there as NDJSON so they can be diffed against another
-        // engine; otherwise the values are printed to stdout only.  The
-        // session/hypothesis tags come from SANMILL_DEBUG_SESSION /
-        // SANMILL_DEBUG_HYPOTHESIS (defaulting to "debug"/"master").
+       // #region debug commands (engine-parity instrumentation)
+       // `valuevec [childDepth] [move...]` searches every (optionally
+       // filtered) legal root move at a fixed child depth and reports each
+       // move's value from White's point of view.  When the environment
+       // variable SANMILL_DEBUG_LOG is set, the per-move values are also
+       // appended there as NDJSON so they can be diffed against another
+       // engine; otherwise the values are printed to stdout only.  The
+       // session/hypothesis tags come from SANMILL_DEBUG_SESSION /
+       // SANMILL_DEBUG_HYPOTHESIS (defaulting to "debug"/"master").
         else if (token == "valuevec") {
             int childDepth = 7;
             string dtok;
@@ -266,8 +266,7 @@ void UCI::loop(int argc, char *argv[])
             for (const auto &mm : MoveList<LEGAL>(*pos)) {
                 const std::string mv = UCI::move(mm);
                 if (!filter.empty() &&
-                    std::find(filter.begin(), filter.end(), mv) ==
-                        filter.end())
+                    std::find(filter.begin(), filter.end(), mv) == filter.end())
                     continue;
 #ifdef TRANSPOSITION_TABLE_ENABLE
                 TT.clear();
@@ -277,10 +276,11 @@ void UCI::loop(int argc, char *argv[])
                 pos->do_move(mm);
                 const Color after = pos->side_to_move();
                 Move bm = MOVE_NONE;
-                const Value cv = Search::search(
-                    searchEngine, pos, ssv, static_cast<Depth>(childDepth),
-                    static_cast<Depth>(childDepth), -VALUE_INFINITE,
-                    VALUE_INFINITE, bm);
+                const Value cv = Search::search(searchEngine, pos, ssv,
+                                                static_cast<Depth>(childDepth),
+                                                static_cast<Depth>(childDepth),
+                                                -VALUE_INFINITE, VALUE_INFINITE,
+                                                bm);
                 const Value wv = (after != before) ? static_cast<Value>(-cv) :
                                                      cv;
                 sync_cout << "valuevec " << mv << " depth=" << childDepth
@@ -288,8 +288,10 @@ void UCI::loop(int argc, char *argv[])
                           << sync_endl;
                 if (flog)
                     std::fprintf(flog,
-                                 "{\"sessionId\":\"%s\",\"hypothesisId\":\"%s\","
-                                 "\"location\":\"uci.cpp:valuevec\",\"message\":"
+                                 "{\"sessionId\":\"%s\",\"hypothesisId\":\"%"
+                                 "s\","
+                                 "\"location\":\"uci.cpp:valuevec\","
+                                 "\"message\":"
                                  "\"root_value\",\"data\":{\"uci\":\"%s\","
                                  "\"child_depth\":%d,\"white_value\":%d},"
                                  "\"timestamp\":0}\n",
@@ -329,8 +331,8 @@ void UCI::loop(int argc, char *argv[])
                 g = Search::search(searchEngine, pos, ssg,
                                    static_cast<Depth>(d), static_cast<Depth>(d),
                                    static_cast<Value>(beta - 1), beta, bm);
-                sync_cout << "  mtdf-iter " << it++ << " beta="
-                          << static_cast<int>(beta)
+                sync_cout << "  mtdf-iter " << it++
+                          << " beta=" << static_cast<int>(beta)
                           << " g=" << static_cast<int>(g)
                           << " best=" << UCI::move(bm) << sync_endl;
                 if (g < beta) {
@@ -339,9 +341,9 @@ void UCI::loop(int argc, char *argv[])
                     lower = g;
                 }
             }
-            sync_cout << "gomtdf depth=" << d << " value="
-                      << static_cast<int>(g) << " bestmove " << UCI::move(bm)
-                      << sync_endl;
+            sync_cout << "gomtdf depth=" << d
+                      << " value=" << static_cast<int>(g) << " bestmove "
+                      << UCI::move(bm) << sync_endl;
         }
         // `goab [depth]` runs a single plain alpha-beta search at a fixed
         // depth with a full window and a freshly cleared TT.
@@ -360,9 +362,10 @@ void UCI::loop(int argc, char *argv[])
 #endif
             Sanmill::Stack<Position> ssab;
             Move bm = MOVE_NONE;
-            const Value v = Search::search(
-                searchEngine, pos, ssab, static_cast<Depth>(d),
-                static_cast<Depth>(d), -VALUE_INFINITE, VALUE_INFINITE, bm);
+            const Value v = Search::search(searchEngine, pos, ssab,
+                                           static_cast<Depth>(d),
+                                           static_cast<Depth>(d),
+                                           -VALUE_INFINITE, VALUE_INFINITE, bm);
             sync_cout << "goab depth=" << d << " value=" << static_cast<int>(v)
                       << " bestmove " << UCI::move(bm) << sync_endl;
         }
