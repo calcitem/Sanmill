@@ -93,6 +93,35 @@ fn mtdf_search_at_skill_with_options(
     )
 }
 
+fn mtdf_search_with_root_history(
+    snap: &tgf_core::GameStateSnapshot,
+    root_repetition_history: Vec<u64>,
+    options: MillVariantOptions,
+    depth: i32,
+    skill_level: u8,
+) -> (String, i32) {
+    let game = MillGame::new_with_repetition_history(options, root_repetition_history);
+    let ctx = MoveOrderContext {
+        algorithm: MoveOrderAlgorithm::Mtdf,
+        skill_level,
+        shuffling: false,
+        hash_move: None,
+        shuffle_seed: 0,
+    };
+    let mut searcher = Searcher::<MillGame>::new();
+    searcher.set_policy(SearchPolicy {
+        quiescence_kind_tag: Some(tgf_mill::MillActionKind::Remove as i16),
+        ..Default::default()
+    });
+    searcher.set_move_order_context(ctx);
+    let mut wb = game.build_workbench(snap);
+    let result = searcher.search_mtdf_with_guess(&mut wb, depth, 0);
+    (
+        MillUciCodec::encode_action(result.best_action),
+        result.score,
+    )
+}
+
 fn score_all_legal_at_depth1(snap: &tgf_core::GameStateSnapshot) -> Vec<(String, i32)> {
     use tgf_core::{ActionList, Game};
     let options = MillVariantOptions::default();
@@ -264,6 +293,21 @@ const MASTER_GO_SKILL15_FULL_GAME: &[&str] = &[
     "c3", "e4", "c3-c4", "d3-c3", "a4-a1", "d1-g1", "a1-a4", "c3-d3", "c4-c3", "d7-a7", "c3-c4",
     "g1-d1", "c4-c3", "a7-d7", "a4-a7", "d3-e3", "c3-c4", "e3-d3", "g4-g1", "d3-c3", "a7-a4",
     "c3-d3",
+];
+
+const MASTER_GO_SKILL15_N30_ENDGAME20_FULL_GAME: &[&str] = &[
+    "d6", "f4", "d2", "b4", "g4", "d7", "a4", "d1", "d5", "d3", "f6", "b6", "b2", "f2", "e5", "c5",
+    "c3", "e4", "c3-c4", "d3-c3", "a4-a1", "d1-g1", "a1-a4", "c3-d3", "c4-c3", "d7-a7", "c3-c4",
+    "d3-c3", "a4-a1", "a7-a4", "a1-d1", "a4-a1", "d2-d3", "f2-d2", "d6-d7", "b6-d6", "d7-a7",
+    "a1-a4", "a7-d7", "e4-e3", "e5-e4", "a4-a7", "e4-e5", "e3-e4", "d3-e3", "c3-d3", "d7-g7",
+    "a7-d7",
+];
+
+const SKILL15_N30_ENDGAME20_MOVES_TO_BLACK_MOVE_20: &[&str] = &[
+    "d6", "f4", "d2", "b4", "g4", "d7", "a4", "d1", "d5", "d3", "f6", "b6", "b2", "f2", "e5", "c5",
+    "c3", "e4", "c3-c4", "d3-c3", "a4-a1", "d1-g1", "a1-a4", "c3-d3", "c4-c3", "d7-a7", "c3-c4",
+    "d3-c3", "a4-a1", "a7-a4", "a1-d1", "a4-a1", "d2-d3", "f2-d2", "d6-d7", "b6-d6", "d7-a7",
+    "a1-a4", "a7-d7",
 ];
 
 const SKILL4_MOVES_TO_N_MOVE_FLOOR_TAIL: &[&str] = &[
@@ -517,7 +561,13 @@ fn move12_repetition_history_search_bias_does_not_adjudicate_early() {
 /// Returns the full move list (UCI labels) so it can be diffed against the
 /// master C++ engine driven with the same settings.
 fn faithful_selfplay(skill_level: u8, max_plies: usize) -> Vec<String> {
-    faithful_selfplay_opts(skill_level, max_plies, false, false)
+    faithful_selfplay_opts(
+        skill_level,
+        max_plies,
+        selfplay_variant_options(),
+        false,
+        false,
+    )
 }
 
 fn move_vec(moves: &[&str]) -> Vec<String> {
@@ -525,7 +575,15 @@ fn move_vec(moves: &[&str]) -> Vec<String> {
 }
 
 fn assert_selfplay_full_game(skill_level: u8, expected: &[&str]) -> Vec<String> {
-    let actual = faithful_selfplay(skill_level, 400);
+    assert_selfplay_full_game_with_options(skill_level, expected, selfplay_variant_options())
+}
+
+fn assert_selfplay_full_game_with_options(
+    skill_level: u8,
+    expected: &[&str],
+    options: MillVariantOptions,
+) -> Vec<String> {
+    let actual = faithful_selfplay_opts(skill_level, 400, options, false, false);
     let expected = move_vec(expected);
     assert_eq!(actual, expected);
     actual
@@ -541,12 +599,12 @@ fn assert_deterministic_selfplay_full_game(skill_level: u8, expected: &[&str]) -
 fn faithful_selfplay_opts(
     skill_level: u8,
     max_plies: usize,
+    options: MillVariantOptions,
     persist_tt: bool,
     use_alpha_beta: bool,
 ) -> Vec<String> {
     use tgf_mill::{EngineRuntimeOptions, recommended_search_depth};
 
-    let options = selfplay_variant_options();
     let rules = MillRules::new(options.clone());
     let game = MillGame::new(options.clone());
     let mut snap = rules.initial_state(&[]);
@@ -632,6 +690,56 @@ fn skill4_tail_n_move_floor_keeps_master_mtdf_choice() {
 }
 
 #[test]
+#[ignore = "slow depth=15 parity case; mirrors Flutter NMove=30/EndgameNMove=20 diagnostics"]
+fn skill15_n30_endgame20_black_move20_matches_master() {
+    let options = MillVariantOptions {
+        n_move_rule: 30,
+        endgame_n_move_rule: 20,
+        ..MillVariantOptions::default()
+    };
+    let rules = MillRules::new(options.clone());
+    let mut snap = rules.initial_state(&[]);
+    apply_line(
+        &rules,
+        &mut snap,
+        SKILL15_N30_ENDGAME20_MOVES_TO_BLACK_MOVE_20,
+    );
+
+    let (best, score) = mtdf_search_at_skill_with_options(&snap, false, 15, 15, options);
+
+    assert_eq!(best, "e4-e3");
+    assert_eq!(score, 0);
+}
+
+#[test]
+#[ignore = "slow depth=15 parity case; verifies Flutter kernel-history search path"]
+fn skill15_n30_endgame20_kernel_history_black_move20_matches_master() {
+    use std::sync::Arc;
+    use tgf_core::GameKernel;
+
+    let options = MillVariantOptions {
+        n_move_rule: 30,
+        endgame_n_move_rule: 20,
+        ..MillVariantOptions::default()
+    };
+    let rules = MillRules::new(options.clone());
+    let mut kernel = GameKernel::new(Arc::new(rules.clone()), &[]);
+    for uci in SKILL15_N30_ENDGAME20_MOVES_TO_BLACK_MOVE_20 {
+        let action = MillUciCodec::decode_action(&kernel.snapshot(), uci).expect(uci);
+        kernel.apply(action).expect("legal self-play move");
+    }
+    let snapshot = kernel.snapshot();
+    let root_repetition_history =
+        MillRules::repetition_history_from_snapshots(&snapshot, kernel.history_snapshots());
+
+    let (best, score) =
+        mtdf_search_with_root_history(&snapshot, root_repetition_history, options, 15, 15);
+
+    assert_eq!(best, "e4-e3");
+    assert_eq!(score, 0);
+}
+
+#[test]
 fn selfplay_skill4_time0_shuffling_off_matches_master_go_full_game() {
     assert_deterministic_selfplay_full_game(4, MASTER_GO_SKILL4_FULL_GAME);
 }
@@ -696,6 +804,20 @@ fn selfplay_skill14_time0_shuffling_off_matches_master_go_full_game() {
 #[ignore = "slow depth=15 parity case; run explicitly for full master parity"]
 fn selfplay_skill15_time0_shuffling_off_matches_master_go_full_game() {
     assert_selfplay_full_game(15, MASTER_GO_SKILL15_FULL_GAME);
+}
+
+#[test]
+#[ignore = "slow depth=15 parity case; mirrors Flutter NMove=30/EndgameNMove=20"]
+fn selfplay_skill15_n30_endgame20_time0_shuffling_off_matches_master_go_full_game() {
+    assert_selfplay_full_game_with_options(
+        15,
+        MASTER_GO_SKILL15_N30_ENDGAME20_FULL_GAME,
+        MillVariantOptions {
+            n_move_rule: 30,
+            endgame_n_move_rule: 20,
+            ..MillVariantOptions::default()
+        },
+    );
 }
 
 #[test]
@@ -821,7 +943,7 @@ fn faithful_selfplay_skill15_movelist() {
 #[test]
 #[ignore = "self-play ground-truth harness; run explicitly to diff vs master"]
 fn faithful_selfplay_skill15_persist_tt_movelist() {
-    let moves = faithful_selfplay_opts(15, 400, true, false);
+    let moves = faithful_selfplay_opts(15, 400, selfplay_variant_options(), true, false);
     eprintln!("SELFPLAY-TT skill=15 plies={}", moves.len());
     eprintln!("SELFPLAY-TT skill=15 moves: {}", moves.join(" "));
 }
@@ -829,7 +951,25 @@ fn faithful_selfplay_skill15_persist_tt_movelist() {
 #[test]
 #[ignore = "self-play ground-truth harness; run explicitly to diff vs master"]
 fn faithful_selfplay_skill15_alphabeta_movelist() {
-    let moves = faithful_selfplay_opts(15, 400, false, true);
+    let moves = faithful_selfplay_opts(15, 400, selfplay_variant_options(), false, true);
     eprintln!("SELFPLAY-AB skill=15 plies={}", moves.len());
     eprintln!("SELFPLAY-AB skill=15 moves: {}", moves.join(" "));
+}
+
+#[test]
+#[ignore = "self-play ground-truth harness; mirrors Flutter NMove=30/EndgameNMove=20 diagnostics"]
+fn faithful_selfplay_skill15_n30_endgame20_movelist() {
+    let moves = faithful_selfplay_opts(
+        15,
+        400,
+        MillVariantOptions {
+            n_move_rule: 30,
+            endgame_n_move_rule: 20,
+            ..MillVariantOptions::default()
+        },
+        false,
+        false,
+    );
+    eprintln!("SELFPLAY-N30E20 skill=15 plies={}", moves.len());
+    eprintln!("SELFPLAY-N30E20 skill=15 moves: {}", moves.join(" "));
 }

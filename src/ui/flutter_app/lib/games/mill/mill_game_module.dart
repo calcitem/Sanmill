@@ -121,8 +121,10 @@ class MillGameModule extends GameModule {
   }
 
   @override
-  RulesPort? get rulesPort =>
-      NativeMillRulesPort(generalSettings: DB().generalSettings);
+  RulesPort? get rulesPort => NativeMillRulesPort(
+    ruleSettings: DB().ruleSettings,
+    generalSettings: DB().generalSettings,
+  );
 
   /// Alias for [rulesPort]; provided for explicit opt-in at call sites.
   RulesPort nativeRulesPort({

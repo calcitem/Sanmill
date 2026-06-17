@@ -830,7 +830,10 @@ class GameController {
       activeNativeMillSession?.loadFen(fen);
     } else {
       // New game: reset the native session to the initial empty board.
-      activeNativeMillSession?.resetGame();
+      activeNativeMillSession?.resetGame(
+        rules: DB().ruleSettings,
+        generalSettings: DB().generalSettings,
+      );
       gameRecorder.lastPositionWithRemove = activeFen;
     }
 

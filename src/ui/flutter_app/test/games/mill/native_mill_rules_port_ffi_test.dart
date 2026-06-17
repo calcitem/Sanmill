@@ -17,6 +17,7 @@ import 'package:sanmill/games/mill/native_mill_game_session.dart';
 import 'package:sanmill/games/mill/native_mill_rules_port.dart';
 import 'package:sanmill/games/mill/native_mill_snapshot_board_view.dart';
 import 'package:sanmill/general_settings/models/general_settings.dart';
+import 'package:sanmill/rule_settings/models/rule_settings.dart';
 import 'package:sanmill/src/rust/api/simple.dart' as tgf;
 import 'package:sanmill/src/rust/frb_generated.dart';
 
@@ -46,6 +47,18 @@ void main() {
   });
 
   group('NativeMillRulesPort FFI smoke', () {
+    Future<void> replayMoves(
+      NativeMillGameSession session,
+      List<String> moves,
+    ) async {
+      for (final String move in moves) {
+        final GameAction action = session.legalActions.firstWhere(
+          (GameAction action) => MillActionCodec.moveStringFrom(action) == move,
+        );
+        await session.apply(action);
+      }
+    }
+
     test(
       'initial state exposes 24 legal Mill placements',
       () {
@@ -64,6 +77,81 @@ void main() {
           ),
           isTrue,
         );
+      },
+      skip: _nativeLibrarySkipReason,
+    );
+
+    test(
+      'resetGame rebuilds the native kernel with current rule settings',
+      () async {
+        final NativeMillGameSession session = NativeMillGameSession();
+        addTearDown(session.dispose);
+
+        session.resetGame(
+          rules: const RuleSettings(nMoveRule: 30, endgameNMoveRule: 20),
+          generalSettings: const GeneralSettings(
+            aiIsLazy: false,
+            skillLevel: 15,
+            moveTime: 0,
+            shufflingEnabled: false,
+            usePerfectDatabase: false,
+          ),
+        );
+        await replayMoves(session, const <String>[
+          'd6',
+          'f4',
+          'd2',
+          'b4',
+          'g4',
+          'd7',
+          'a4',
+          'd1',
+          'd5',
+          'd3',
+          'f6',
+          'b6',
+          'b2',
+          'f2',
+          'e5',
+          'c5',
+          'c3',
+          'e4',
+          'c3-c4',
+          'd3-c3',
+          'a4-a1',
+          'd1-g1',
+          'a1-a4',
+          'c3-d3',
+          'c4-c3',
+          'd7-a7',
+          'c3-c4',
+          'd3-c3',
+          'a4-a1',
+          'a7-a4',
+          'a1-d1',
+          'a4-a1',
+          'd2-d3',
+          'f2-d2',
+          'd6-d7',
+          'b6-d6',
+          'd7-a7',
+          'a1-a4',
+          'a7-d7',
+        ]);
+
+        final GameAction? best = await session.searchBestAction(
+          depth: 15,
+          moveLimitMs: 0,
+          engineSettings: const GeneralSettings(
+            aiIsLazy: false,
+            skillLevel: 15,
+            moveTime: 0,
+            shufflingEnabled: false,
+            usePerfectDatabase: false,
+          ),
+        );
+
+        expect(MillActionCodec.moveStringFrom(best!), 'e4-e3');
       },
       skip: _nativeLibrarySkipReason,
     );

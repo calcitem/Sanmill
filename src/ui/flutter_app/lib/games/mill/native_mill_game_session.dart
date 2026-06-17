@@ -46,7 +46,7 @@ class NativeMillGameSession implements GameSessionHandle {
   NativeMillGameSession.fromPort(this.rulesPort, {this.lanMeta})
     : _state = ValueNotifier<GameStateSnapshot>(rulesPort.snapshot);
 
-  final NativeMillRulesPort rulesPort;
+  NativeMillRulesPort rulesPort;
   LanSessionMeta? lanMeta;
   final ValueNotifier<GameStateSnapshot> _state;
   final StreamController<GameSessionEvent> _events =
@@ -88,8 +88,18 @@ class NativeMillGameSession implements GameSessionHandle {
   /// Reset the game to the initial state (all pieces in hand, empty board,
   /// White to move).  Called by [GameController.reset] when "New Game" is
   /// triggered so that the native Rust kernel is in sync with the UI facade.
-  void resetGame() {
+  void resetGame({RuleSettings? rules, GeneralSettings? generalSettings}) {
     if (_disposed) {
+      return;
+    }
+    if (rules != null) {
+      final NativeMillRulesPort nextPort = NativeMillRulesPort(
+        ruleSettings: rules,
+        generalSettings: generalSettings,
+      );
+      rulesPort.dispose();
+      rulesPort = nextPort;
+      _setState(rulesPort.snapshot);
       return;
     }
     // setupClear resets the kernel to an empty board with all pieces in hand.
