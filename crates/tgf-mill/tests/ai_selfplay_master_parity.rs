@@ -2,38 +2,9 @@
 // Regression tests pinning Rust engine move choices to the master C++ engine
 // under standard rules, Thinking-Time = 0 (fixed depth), shuffling off.
 //
-// # Known, explained divergence: deep MTD(f) Graph-History-Interaction (GHI)
-//
-// At higher skill levels a small number of *moving-phase* positions can differ
-// between the two engines (e.g. move 16 of the skill-15 self-play: master plays
-// `a1-d1`, Rust's MTD(f) plays `d6-d7`).  This was investigated exhaustively
-// and traced to a Graph-History-Interaction artifact, NOT a rules/eval bug:
-//
-//   * Both engines probe the transposition table BEFORE the repetition check
-//     (master `Search::search`, src/search.cpp).  A position first stored via a
-//     non-repeating line is later cut off by that TT entry when the SAME
-//     position recurs as a path repetition, returning the stale stored value
-//     instead of the `VALUE_DRAW + 1` draw bias.
-//   * Whether that cutoff fires is depth-gated and therefore depends on the
-//     exact search-tree shape.  Zero-window MTD(f) and full-window alpha-beta
-//     prune differently, so they reach the transposition at different depths.
-//     master's MTD(f) reaches it at a cut-off depth (→ `a1-d1`, consistent with
-//     its own alpha-beta); Rust's MTD(f) reaches the repetition instead and
-//     applies the draw bias (→ `d6-d7`).  Rust's *alpha-beta* matches master.
-//   * Confirmed with the TT disabled both engines collapse to the same true
-//     minimax (MTD(f) == alpha-beta), proving the difference is 100% TT/GHI.
-//
-// Both moves are theoretical draws (verified against the perfect database), and
-// Rust's MTD(f) is arguably the more correct of the two (it honours the
-// repetition draw bias rather than a stale TT value).  Reproducing master's
-// exact GHI would require byte-identical replication of master's whole TT
-// lifecycle (32-bit Zobrist key, direct-mapped slot, replacement/aging across
-// the full zero-window iteration sequence) and would make Rust strictly less
-// accurate, so it is intentionally left as-is.
-//
 // The tests below pin the behaviours that DO match master move-for-move:
-// placing-phase choices, skill 1-8 deterministic self-play, repetition
-// adjudication, and move ordering.
+// placing-phase choices, skill 1-8 default deterministic self-play, ignored
+// skill 9-15 full-depth self-play, repetition adjudication, and move ordering.
 
 use tgf_core::{Game, GameRules, MoveOrderAlgorithm, MoveOrderContext, Workbench};
 use tgf_mill::{MillGame, MillRules, MillUciCodec, MillVariantOptions};
@@ -244,6 +215,55 @@ const MASTER_GO_SKILL8_FULL_GAME: &[&str] = &[
     "f6", "e5", "c4-c5", "d3-c3", "c5-c4", "c3-d3", "c4-c5", "d3-e3", "c5-c4", "d5-c5", "d6-d5",
     "d7-d6", "g7-d7", "e3-d3", "c4-c3", "c5-c4", "e4-e3", "e5-e4", "d5-e5", "c4-c5", "c3-c4",
     "c5-d5",
+];
+
+const MASTER_GO_SKILL9_FULL_GAME: &[&str] = &[
+    "d6", "f4", "d2", "b4", "g4", "d7", "a4", "d1", "e4", "d5", "d3", "g7", "a7", "a1", "c4", "g1",
+    "xd6", "d6", "c3", "c4-c5", "b4-c4", "d3-e3", "c3-d3", "e4-e5", "f4-e4", "d6-b6", "d5-d6",
+    "e5-d5", "c4-b4", "c5-c4", "d3-c3", "e3-d3", "e4-e3", "c4-c5", "c3-c4", "d3-c3", "e3-d3",
+    "d5-e5", "d3-e3",
+];
+
+const MASTER_GO_SKILL10_FULL_GAME: &[&str] = &[
+    "d6", "f4", "d2", "b4", "g4", "d7", "a4", "d1", "e4", "d5", "f6", "b6", "b2", "f2", "e3", "e5",
+    "c5", "d3", "a4-a7", "d1-a1", "c5-c4", "a1-d1", "a7-a4", "d5-c5", "a4-a7", "d1-a1", "a7-a4",
+    "d7-a7", "g4-g1", "a7-d7", "g1-d1", "c5-d5", "c4-c5", "d7-g7", "c5-c4", "g7-g4", "c4-c5",
+    "g4-g1",
+];
+
+const MASTER_GO_SKILL11_FULL_GAME: &[&str] = &[
+    "d6", "f4", "d2", "b4", "g4", "d7", "a4", "d1", "f6", "b6", "b2", "f2", "d5", "g7", "a7", "a1",
+    "g1", "e5", "d5-c5", "b4-c4", "c5-d5", "b6-b4", "d2-d3", "f2-d2", "d3-e3", "c4-c5", "e3-d3",
+    "b4-b6", "d3-e3", "c5-c4", "e3-d3", "e5-e4", "b2-b4", "c4-c5", "d3-c3", "c5-c4", "d5-e5",
+    "e4-e3",
+];
+
+const MASTER_GO_SKILL12_FULL_GAME: &[&str] = &[
+    "d6", "f4", "d2", "b4", "g4", "d7", "a4", "d3", "f6", "b6", "b2", "f2", "e4", "d5", "c3", "c4",
+    "c5", "d1", "e4-e3", "d5-e5", "c5-d5", "e5-e4", "d5-e5", "c4-c5", "c3-c4", "c5-d5", "c4-c5",
+    "d3-c3", "c5-c4", "d5-c5", "e3-d3", "c5-d5", "c4-c5", "c3-c4", "d3-c3", "e4-e3", "c3-d3",
+    "c4-c3",
+];
+
+const MASTER_GO_SKILL13_FULL_GAME: &[&str] = &[
+    "d6", "f4", "d2", "b4", "g4", "d7", "a4", "d1", "d5", "d3", "f6", "b6", "b2", "f2", "e5", "c5",
+    "c3", "e4", "g4-g7", "d1-g1", "g7-g4", "d7-a7", "c3-c4", "d3-c3", "a4-a1", "a7-d7", "a1-a4",
+    "c3-d3", "a4-a7", "g1-d1", "a7-a4", "d3-c3", "a4-a7", "e4-e3", "e5-e4", "c3-d3", "a7-a4",
+    "d3-c3",
+];
+
+const MASTER_GO_SKILL14_FULL_GAME: &[&str] = &[
+    "d6", "f4", "d2", "b4", "g4", "d7", "a4", "d1", "e4", "d5", "f6", "b6", "b2", "f2", "e3", "e5",
+    "c5", "d3", "c5-c4", "d5-c5", "a4-a7", "c5-d5", "a7-a4", "d1-a1", "a4-a7", "a1-a4", "c4-c5",
+    "d3-c3", "c5-c4", "d5-c5", "e3-d3", "a4-a1", "a7-a4", "c5-d5", "c4-c5", "c3-c4", "d3-c3",
+    "a1-d1",
+];
+
+const MASTER_GO_SKILL15_FULL_GAME: &[&str] = &[
+    "d6", "f4", "d2", "b4", "g4", "d7", "a4", "d1", "d5", "d3", "f6", "b6", "b2", "f2", "e5", "c5",
+    "c3", "e4", "c3-c4", "d3-c3", "a4-a1", "d1-g1", "a1-a4", "c3-d3", "c4-c3", "d7-a7", "c3-c4",
+    "g1-d1", "c4-c3", "a7-d7", "a4-a7", "d3-e3", "c3-c4", "e3-d3", "g4-g1", "d3-c3", "a7-a4",
+    "c3-d3",
 ];
 
 const SKILL4_MOVES_TO_N_MOVE_FLOOR_TAIL: &[&str] = &[
@@ -637,6 +657,48 @@ fn selfplay_skill8_time0_shuffling_off_matches_master_go_full_game() {
 }
 
 #[test]
+#[ignore = "slow depth=9 parity case; default coverage stops at skill8"]
+fn selfplay_skill9_time0_shuffling_off_matches_master_go_full_game() {
+    assert_selfplay_full_game(9, MASTER_GO_SKILL9_FULL_GAME);
+}
+
+#[test]
+#[ignore = "slow depth=10 parity case; default coverage stops at skill8"]
+fn selfplay_skill10_time0_shuffling_off_matches_master_go_full_game() {
+    assert_selfplay_full_game(10, MASTER_GO_SKILL10_FULL_GAME);
+}
+
+#[test]
+#[ignore = "slow depth=11 parity case; default coverage stops at skill8"]
+fn selfplay_skill11_time0_shuffling_off_matches_master_go_full_game() {
+    assert_selfplay_full_game(11, MASTER_GO_SKILL11_FULL_GAME);
+}
+
+#[test]
+#[ignore = "slow depth=12 parity case; default coverage stops at skill8"]
+fn selfplay_skill12_time0_shuffling_off_matches_master_go_full_game() {
+    assert_selfplay_full_game(12, MASTER_GO_SKILL12_FULL_GAME);
+}
+
+#[test]
+#[ignore = "slow depth=13 parity case; default coverage stops at skill8"]
+fn selfplay_skill13_time0_shuffling_off_matches_master_go_full_game() {
+    assert_selfplay_full_game(13, MASTER_GO_SKILL13_FULL_GAME);
+}
+
+#[test]
+#[ignore = "slow depth=14 parity case; default coverage stops at skill8"]
+fn selfplay_skill14_time0_shuffling_off_matches_master_go_full_game() {
+    assert_selfplay_full_game(14, MASTER_GO_SKILL14_FULL_GAME);
+}
+
+#[test]
+#[ignore = "slow depth=15 parity case; run explicitly for full master parity"]
+fn selfplay_skill15_time0_shuffling_off_matches_master_go_full_game() {
+    assert_selfplay_full_game(15, MASTER_GO_SKILL15_FULL_GAME);
+}
+
+#[test]
 #[ignore = "self-play ground-truth harness; run explicitly to diff vs master"]
 fn faithful_selfplay_skill1_movelist() {
     let moves = faithful_selfplay(1, 400);
@@ -698,6 +760,54 @@ fn faithful_selfplay_skill8_movelist() {
     let moves = faithful_selfplay(8, 400);
     eprintln!("SELFPLAY skill=8 plies={}", moves.len());
     eprintln!("SELFPLAY skill=8 moves: {}", moves.join(" "));
+}
+
+#[test]
+#[ignore = "self-play ground-truth harness; run explicitly to diff vs master"]
+fn faithful_selfplay_skill9_movelist() {
+    let moves = faithful_selfplay(9, 400);
+    eprintln!("SELFPLAY skill=9 plies={}", moves.len());
+    eprintln!("SELFPLAY skill=9 moves: {}", moves.join(" "));
+}
+
+#[test]
+#[ignore = "self-play ground-truth harness; run explicitly to diff vs master"]
+fn faithful_selfplay_skill10_movelist() {
+    let moves = faithful_selfplay(10, 400);
+    eprintln!("SELFPLAY skill=10 plies={}", moves.len());
+    eprintln!("SELFPLAY skill=10 moves: {}", moves.join(" "));
+}
+
+#[test]
+#[ignore = "self-play ground-truth harness; run explicitly to diff vs master"]
+fn faithful_selfplay_skill11_movelist() {
+    let moves = faithful_selfplay(11, 400);
+    eprintln!("SELFPLAY skill=11 plies={}", moves.len());
+    eprintln!("SELFPLAY skill=11 moves: {}", moves.join(" "));
+}
+
+#[test]
+#[ignore = "self-play ground-truth harness; run explicitly to diff vs master"]
+fn faithful_selfplay_skill12_movelist() {
+    let moves = faithful_selfplay(12, 400);
+    eprintln!("SELFPLAY skill=12 plies={}", moves.len());
+    eprintln!("SELFPLAY skill=12 moves: {}", moves.join(" "));
+}
+
+#[test]
+#[ignore = "self-play ground-truth harness; run explicitly to diff vs master"]
+fn faithful_selfplay_skill13_movelist() {
+    let moves = faithful_selfplay(13, 400);
+    eprintln!("SELFPLAY skill=13 plies={}", moves.len());
+    eprintln!("SELFPLAY skill=13 moves: {}", moves.join(" "));
+}
+
+#[test]
+#[ignore = "self-play ground-truth harness; run explicitly to diff vs master"]
+fn faithful_selfplay_skill14_movelist() {
+    let moves = faithful_selfplay(14, 400);
+    eprintln!("SELFPLAY skill=14 plies={}", moves.len());
+    eprintln!("SELFPLAY skill=14 moves: {}", moves.join(" "));
 }
 
 #[test]
