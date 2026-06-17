@@ -38,6 +38,14 @@ class PiecePainter extends CustomPainter {
   final PieceEffectAnimation removeEffectAnimation;
 
   PieceColor _pieceColorAtGridIndex(int index) {
+    final NativeMillSnapshotBoardView? view = nativeBoardView;
+    if (view != null) {
+      return switch (view.pieceAtLegacyGridIndex(index)) {
+        PlayerSeat.first => PieceColor.white,
+        PlayerSeat.second => PieceColor.black,
+        PlayerSeat.none || null => PieceColor.none,
+      };
+    }
     return GameController().activeBoardView.pieceOnGrid(index);
   }
 
@@ -685,5 +693,18 @@ class PiecePainter extends CustomPainter {
       removeAnimationValue != oldDelegate.removeAnimationValue ||
       pickUpAnimationValue != oldDelegate.pickUpAnimationValue ||
       putDownAnimationValue != oldDelegate.putDownAnimationValue ||
-      isPutDownAnimating != oldDelegate.isPutDownAnimating;
+      isPutDownAnimating != oldDelegate.isPutDownAnimating ||
+      _nativeBoardVisibleStateChanged(oldDelegate);
+
+  bool _nativeBoardVisibleStateChanged(PiecePainter oldDelegate) {
+    final NativeMillSnapshotBoardView? current = nativeBoardView;
+    final NativeMillSnapshotBoardView? previous = oldDelegate.nativeBoardView;
+    if (identical(current, previous)) {
+      return false;
+    }
+    if (current == null || previous == null) {
+      return current != previous;
+    }
+    return !current.hasSameVisibleState(previous);
+  }
 }

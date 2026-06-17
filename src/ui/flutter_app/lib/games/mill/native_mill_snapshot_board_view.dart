@@ -54,6 +54,23 @@ class NativeMillSnapshotBoardView {
     };
   }
 
+  bool hasSameVisibleState(NativeMillSnapshotBoardView other) {
+    for (int node = 0; node < nodeCount; node++) {
+      if (_payload[node] != other._payload[node]) {
+        return false;
+      }
+    }
+    if (markedNodes.length != other.markedNodes.length) {
+      return false;
+    }
+    for (final int node in markedNodes) {
+      if (!other.markedNodes.contains(node)) {
+        return false;
+      }
+    }
+    return true;
+  }
+
   bool isMarkedLegacySquare(int square) {
     final int? node = MillBoardCoordinateMaps.legacySquareToNode[square];
     return node != null && markedNodes.contains(node);

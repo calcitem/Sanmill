@@ -418,6 +418,8 @@ class AnimationManager {
       resetPlaceAnimation();
       forwardPlaceAnimation();
       // Note: Put-down animation is triggered automatically via status listener
+    } else {
+      _placeAnimationController.value = 1.0;
     }
   }
 
@@ -431,6 +433,8 @@ class AnimationManager {
       resetMoveAnimation();
       forwardMoveAnimation();
       // Note: Put-down animation is triggered automatically via status listener
+    } else {
+      _moveAnimationController.value = 1.0;
     }
   }
 
@@ -444,6 +448,8 @@ class AnimationManager {
       resetRemoveAnimation();
       forwardRemoveAnimation();
       // Note: Index cleanup is handled automatically via status listener
+    } else {
+      _removeAnimationController.value = 1.0;
     }
   }
 

@@ -78,6 +78,41 @@ void main() {
       expect(view.isMarkedLegacyGridIndex(0), isFalse);
     });
 
+    test('compares visible board state only', () {
+      final Uint8List payload = Uint8List(256);
+      payload[0] = 1;
+      payload[23] = 2;
+      payload[39] = 1 << 2;
+
+      final Uint8List sameVisiblePayload = Uint8List.fromList(payload);
+      sameVisiblePayload[30] = 2;
+      sameVisiblePayload[35] = 1;
+
+      final Uint8List movedPayload = Uint8List.fromList(payload);
+      movedPayload[23] = 0;
+      movedPayload[22] = 2;
+
+      final Uint8List markedPayload = Uint8List.fromList(payload);
+      markedPayload[39] = 1 << 7;
+
+      NativeMillSnapshotBoardView viewFor(Uint8List raw) {
+        return NativeMillSnapshotBoardView.fromSnapshot(
+          GameStateSnapshot(
+            gameId: GameId.mill,
+            activeSeat: PlayerSeat.first,
+            outcome: const GameOutcome.ongoing(),
+            payload: <String, Object?>{'tgfPayload': raw},
+          ),
+        )!;
+      }
+
+      final NativeMillSnapshotBoardView view = viewFor(payload);
+
+      expect(view.hasSameVisibleState(viewFor(sameVisiblePayload)), isTrue);
+      expect(view.hasSameVisibleState(viewFor(movedPayload)), isFalse);
+      expect(view.hasSameVisibleState(viewFor(markedPayload)), isFalse);
+    });
+
     test('decodes used mill lines as legacy squares with owner', () {
       final Uint8List payload = Uint8List(256);
       payload[0] = 1;

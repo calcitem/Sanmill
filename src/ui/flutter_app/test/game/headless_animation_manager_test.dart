@@ -73,6 +73,24 @@ void main() {
       expect(manager.removeAnimation, isNotNull);
     });
 
+    test('should complete action animations immediately', () {
+      final GameController controller = GameController();
+      controller.reset();
+
+      final HeadlessAnimationManager manager = HeadlessAnimationManager();
+
+      manager.animatePlace();
+      expect(manager.placeAnimation.value, 1.0);
+
+      manager.animateMove();
+      expect(manager.moveAnimation.value, 1.0);
+
+      controller.gameInstance.removeIndex = 1;
+      manager.animateRemove();
+      expect(manager.removeAnimation.value, 1.0);
+      expect(controller.gameInstance.removeIndex, isNull);
+    });
+
     test('dispose should not throw', () {
       final GameController controller = GameController();
       controller.reset();
