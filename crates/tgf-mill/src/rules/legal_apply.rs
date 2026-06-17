@@ -404,7 +404,7 @@ impl MillRules {
                     // sets GameOver itself, after which the n-move check
                     // becomes a no-op (it inspects `state.phase`).
                     push_key_and_check_threefold(&mut state, &self.options, adjudicate_repetition);
-                    maybe_draw_by_n_move_rule(&mut state, &self.options);
+                    maybe_draw_by_n_move_rule(&mut state, &self.options, adjudicate_repetition);
                     // Mirror C++ set_side_to_move: phase follows the new
                     // active side's hand count (matters for Dooz-style
                     // asymmetric hands and may_move_in_placing_phase).

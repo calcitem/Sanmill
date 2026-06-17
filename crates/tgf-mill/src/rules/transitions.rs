@@ -278,7 +278,14 @@ pub(super) fn bump_ply_since_capture(state: &mut MillState, options: &MillVarian
     }
 }
 
-pub(super) fn maybe_draw_by_n_move_rule(state: &mut MillState, options: &MillVariantOptions) {
+pub(super) fn maybe_draw_by_n_move_rule(
+    state: &mut MillState,
+    options: &MillVariantOptions,
+    adjudicate: bool,
+) {
+    if !adjudicate {
+        return;
+    }
     // Mirror master src/position.cpp:2077 is_three_endgame:
     // C++ hard-codes the endgame N-move threshold to exactly three pieces,
     // independent of flyPieceCount. Keep the literal because UI/i18n wording

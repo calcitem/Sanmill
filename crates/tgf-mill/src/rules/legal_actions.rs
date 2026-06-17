@@ -139,7 +139,7 @@ impl MillRules {
         if state.phase == MillPhase::GameOver {
             return;
         }
-        maybe_draw_by_n_move_rule(state, &self.options);
+        maybe_draw_by_n_move_rule(state, &self.options, true);
         if state.phase == MillPhase::GameOver {
             return;
         }

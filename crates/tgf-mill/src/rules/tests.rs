@@ -346,6 +346,43 @@ fn move_order_bias_prefers_completing_own_mill_and_blocking_opponent() {
 }
 
 #[test]
+fn move_order_bias_scores_moving_phase_blocking_opponent() {
+    use tgf_core::Game;
+
+    let rules = MillRules::default();
+    let game = MillGame::default();
+    let mut board = [0_i8; 24];
+    // White can fly from g4 to a7.  Black already controls d7/g7 and
+    // a4, so a7 blocks the a7-d7-g7 mill and has the legacy odd-square
+    // neighbour parity required by master MovePicker.
+    for node in [3_usize, 4, 5] {
+        board[node] = 1;
+    }
+    for node in [1_usize, 2, 7] {
+        board[node] = 2;
+    }
+    let state = MillState {
+        board,
+        side_to_move: 0,
+        phase: MillPhase::Moving,
+        pieces_in_hand: [0, 0],
+        pieces_on_board: [3, 3],
+        ..MillState::default()
+    };
+    let snap = rules.encode(state);
+    let wb = game.build_workbench(&snap);
+    let block_opponent_mill = move_action(3, 0);
+
+    let mut legal = ActionList::<256>::new();
+    rules.legal_actions(&snap, &mut legal);
+    assert!(legal.as_slice().contains(&block_opponent_mill));
+    assert_eq!(
+        <MillGame as Game>::move_order_bias_ctx(&wb, block_opponent_mill, &Default::default()),
+        RATING_BLOCK_ONE_MILL
+    );
+}
+
+#[test]
 fn move_order_bias_remove_prefers_high_mobility_targets() {
     use tgf_core::Game;
 
@@ -1459,6 +1496,80 @@ fn n_move_rule_draws_after_threshold_without_capture() {
     assert_eq!(state.phase, MillPhase::GameOver);
     assert_eq!(state.winner, 2);
     assert_eq!(rules.outcome(&after).kind, OutcomeKind::Draw);
+}
+
+#[test]
+fn search_workbench_regular_n_move_rule_draws_only_after_threshold() {
+    let options = MillVariantOptions {
+        n_move_rule: 10,
+        ..MillVariantOptions::default()
+    };
+    let rules = MillRules::new(options.clone());
+    let game = MillGame::new(options);
+    let mut state = MillRules::decode(&rules.no_mill_moving_phase_snapshot());
+    state.ply_since_capture = 9;
+    let snap = rules.encode(state);
+    let mut wb = game.build_workbench(&snap);
+
+    wb.do_move(move_action(18, 19));
+
+    assert_eq!(wb.state.ply_since_capture, 10);
+    assert_eq!(wb.state.phase, MillPhase::Moving);
+    assert_eq!(
+        <MillGame as Game>::terminal_score(&wb, wb.side_to_move(), 4),
+        None,
+        "master search scores the regular N-move draw only after the threshold"
+    );
+
+    wb.state.ply_since_capture = 11;
+    assert_eq!(
+        <MillGame as Game>::terminal_score(&wb, wb.side_to_move(), 4),
+        Some(0)
+    );
+}
+
+#[test]
+fn search_workbench_endgame_n_move_rule_draws_at_threshold() {
+    let options = MillVariantOptions {
+        n_move_rule: 100,
+        endgame_n_move_rule: 5,
+        ..MillVariantOptions::default()
+    };
+    let rules = MillRules::new(options.clone());
+    let game = MillGame::new(options);
+    let state = MillState {
+        board: {
+            let mut board = [0_i8; 24];
+            board[1] = 1;
+            board[17] = 1;
+            board[3] = 1;
+            board[6] = 2;
+            board[5] = 2;
+            board[10] = 2;
+            board
+        },
+        side_to_move: 0,
+        phase: MillPhase::Moving,
+        move_number: 30,
+        pieces_in_hand: [0, 0],
+        pieces_on_board: [3, 3],
+        pending_removals: [0, 0],
+        winner: -1,
+        ply_since_capture: 4,
+        ..MillState::default()
+    };
+    let snap = rules.encode(state);
+    let mut wb = game.build_workbench(&snap);
+
+    wb.do_move(move_action(3, 4));
+
+    assert_eq!(wb.state.ply_since_capture, 5);
+    assert_eq!(wb.state.phase, MillPhase::Moving);
+    assert_eq!(
+        <MillGame as Game>::terminal_score(&wb, wb.side_to_move(), 4),
+        Some(0),
+        "master search scores the three-piece endgame rule at the threshold"
+    );
 }
 
 #[test]

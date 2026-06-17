@@ -60,8 +60,11 @@ impl Workbench for MillWorkbench {
         // Search path: do NOT terminalise threefold (master `do_move` never
         // does).  Repetitions inside the tree are handled by the searcher's
         // `has_repeated` cut; a position that completes a threefold is scored
-        // by its heuristic here, exactly like master.  The repetition history
-        // is still tracked so `current_repetition_count` stays accurate.
+        // by its heuristic here, exactly like master.  The N-move rule is
+        // likewise not adjudicated by do_move: terminal_score mirrors master's
+        // search-time `> nMoveRule` / `>= endgameNMoveRule` thresholds.  The
+        // repetition history is still tracked so `current_repetition_count`
+        // stays accurate.
         self.rules.apply_to_state(&mut self.state, a, false);
     }
 
@@ -330,12 +333,12 @@ impl Game for MillGame {
         if our_mills > 0 {
             score += RATING_ONE_MILL * our_mills;
         } else if state.phase == MillPhase::Placing && !options.may_move_in_placing_phase {
-            let their_mills = potential_mills_count_at(state, options, to, opponent, from) as i32;
+            let their_mills = potential_mills_count_at(state, options, to, opponent, None) as i32;
             score += RATING_BLOCK_ONE_MILL * their_mills;
         } else if state.phase == MillPhase::Moving
             || (state.phase == MillPhase::Placing && options.may_move_in_placing_phase)
         {
-            let their_mills = potential_mills_count_at(state, options, to, opponent, from) as i32;
+            let their_mills = potential_mills_count_at(state, options, to, opponent, None) as i32;
             if their_mills > 0 {
                 let (_, theirs, _) = surrounded_pieces_count(state, options, to);
                 // Master `movepick.cpp::score()` keys the block-mill parity
@@ -383,7 +386,7 @@ impl Game for MillGame {
     #[inline]
     fn terminal_score(wb: &Self::Workbench, perspective: i8, depth: i32) -> Option<i32> {
         if wb.state.phase != MillPhase::GameOver {
-            return None;
+            return search_n_move_draw_score(wb);
         }
         if wb.state.winner == 2 {
             // Master scores every in-search repetition as `VALUE_DRAW + 1`
@@ -454,4 +457,32 @@ impl Game for MillGame {
     //     (`action_resets_repetition`) -- returning `VALUE_DRAW + 1` to prune
     //     the cycle without ever adjudicating a draw before `apply` reaches
     //     the standard third occurrence (handled by `GameRules::apply`).
+}
+
+#[inline]
+fn search_n_move_draw_score(wb: &MillWorkbench) -> Option<i32> {
+    let state = &wb.state;
+    let options = &wb.rules.options;
+    let is_move_counting_phase = state.phase == MillPhase::Moving
+        || (state.phase == MillPhase::Placing && options.may_move_in_placing_phase);
+    if !is_move_counting_phase {
+        return None;
+    }
+
+    // Master separates real-play adjudication from search-tree scoring:
+    // Position::check_if_game_is_over uses `>= nMoveRule`, but
+    // Search::search uses `rule50_count() > nMoveRule` for the regular
+    // rule and `>= endgameNMoveRule` for the three-piece endgame rule.
+    // Keeping the asymmetry avoids ending reversible search lines one ply
+    // earlier than the mature C++ engine.
+    let ply_since_capture = u32::from(state.ply_since_capture);
+    let is_endgame = options.endgame_n_move_rule > 0
+        && options.endgame_n_move_rule < options.n_move_rule
+        && state.pieces_on_board.contains(&3);
+    let draws = if is_endgame {
+        ply_since_capture >= options.endgame_n_move_rule
+    } else {
+        options.n_move_rule > 0 && ply_since_capture > options.n_move_rule
+    };
+    draws.then_some(0)
 }
