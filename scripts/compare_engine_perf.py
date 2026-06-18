@@ -15,6 +15,13 @@ them.  The case set is chosen to split performance issues by phase:
 Example:
   cargo build --release -p tgf-cli
   python3 scripts/compare_engine_perf.py --skills 5,10,15 --repeat 3
+
+  # Legacy fixed-depth debug commands such as gomtdf do not enter
+  # SearchEngine::executeSearch(), so they do not refresh the legacy
+  # MoveList priority table by themselves.  Prime the master engine before
+  # fixed-depth probes when comparing SkillLevel=1.
+  python3 scripts/compare_engine_perf.py --depths 1,2 --skills 1 \
+      --master-prime-go go
 """
 
 from __future__ import annotations
@@ -450,6 +457,7 @@ def probe_once(
     label: str,
     command: str,
     go_command: str,
+    prime_go_command: str | None,
     case: Case,
     skill: int,
     run: int,
@@ -472,6 +480,14 @@ def probe_once(
         position = "position startpos"
         if case.moves:
             position += " moves " + " ".join(case.moves)
+
+        if prime_go_command:
+            engine.send(position)
+            engine.send(prime_go_command)
+            engine.read_until(re.compile(r"\bbestmove\s+\S+"), timeout=timeout)
+            engine.drain_quiet()
+            engine.send("ucinewgame")
+
         engine.send(position)
 
         start = time.perf_counter()
@@ -535,7 +551,8 @@ def print_summary(rows: list[ProbeResult]) -> None:
     print("\nsummary")
     print(
         f"{'case':<24} {'skill':>5} {'req':>5} {'cur_ms':>10} {'mas_ms':>10} "
-        f"{'ratio':>9} {'same':>5} {'cur_nodes':>12} {'mas_nodes':>12}"
+        f"{'ratio':>9} {'move':>5} {'score':>5} {'nodes':>5} "
+        f"{'cur_nodes':>12} {'mas_nodes':>12}"
     )
     cases = sorted({row.case for row in rows})
     skills = sorted({row.skill for row in rows})
@@ -564,8 +581,14 @@ def print_summary(rows: list[ProbeResult]) -> None:
                 cur_ms = median([row.elapsed_ms for row in current])
                 mas_ms = median([row.elapsed_ms for row in master])
                 ratio = cur_ms / mas_ms if mas_ms > 0 else float("inf")
-                same = {row.bestmove for row in current} == {
+                same_move = {row.bestmove for row in current} == {
                     row.bestmove for row in master
+                }
+                same_score = {row.score for row in current} == {
+                    row.score for row in master
+                }
+                same_nodes = {row.nodes for row in current} == {
+                    row.nodes for row in master
                 }
                 cur_nodes = (
                     ",".join(sorted({row.nodes for row in current if row.nodes})) or "-"
@@ -576,7 +599,9 @@ def print_summary(rows: list[ProbeResult]) -> None:
                 print(
                     f"{case:<24} {skill:>5} {format_optional(requested_depth):>5} "
                     f"{cur_ms:>10.2f} {mas_ms:>10.2f} "
-                    f"{ratio:>9.3f} {str(same):>5} {cur_nodes:>12} {mas_nodes:>12}"
+                    f"{ratio:>9.3f} {str(same_move):>5} "
+                    f"{str(same_score):>5} {str(same_nodes):>5} "
+                    f"{cur_nodes:>12} {mas_nodes:>12}"
                 )
 
 
@@ -615,6 +640,21 @@ def parse_args() -> argparse.Namespace:
         "--master-depth-go",
         default="gomtdf {depth}",
         help="master fixed-depth go command template used with --depths",
+    )
+    parser.add_argument(
+        "--current-prime-go",
+        help=(
+            "optional go command sent to the current engine before each measured "
+            "probe; the same position is restored before measuring"
+        ),
+    )
+    parser.add_argument(
+        "--master-prime-go",
+        help=(
+            "optional go command sent to the master engine before each measured "
+            "probe; useful for legacy fixed-depth debug commands that need "
+            "SearchEngine::executeSearch() to refresh static move priority"
+        ),
     )
     parser.add_argument("--skills", default="1,5,10,15", help="comma-separated skill levels")
     parser.add_argument(
@@ -683,6 +723,7 @@ def main() -> int:
                         "current",
                         args.current,
                         current_go,
+                        args.current_prime_go,
                         case,
                         skill,
                         run,
@@ -702,6 +743,7 @@ def main() -> int:
                         "master",
                         args.master,
                         master_go,
+                        args.master_prime_go,
                         case,
                         skill,
                         run,
