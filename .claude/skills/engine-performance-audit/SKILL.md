@@ -313,6 +313,12 @@ as a design reference but not as a literal container recipe:
   new search. Do not allocate a fresh 16 Mi-slot TT inside every `go`,
   `gomtdf`, or Flutter search request; repeated in-process depth-18 probes
   showed this as high `sys` time rather than a tree-shape issue.
+- TT first-touch behavior: Rust zeroed allocation may leave TT pages backed by
+  demand-zero mappings. The first search can then fault once on probe reads and
+  again on save writes. Pre-touch process-global UCI/FRB TT allocations with a
+  physical clear, then use fake-clean for later searches. Validate this with
+  `perf stat -e page-faults,minor-faults,task-clock` on a fresh-process first
+  `gomtdf` probe.
 - Measurement caveat: `scripts/compare_engine_perf.py` starts a fresh process
   for each measured run, so it hides benefits that come from reusing process
   state such as TT allocation. Pair it with a same-process repeated-search

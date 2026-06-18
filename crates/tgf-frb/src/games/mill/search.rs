@@ -49,7 +49,13 @@ use crate::games::mill::perfect;
 pub(crate) static ACTIVE_SEARCH: Lazy<Mutex<Option<SearchAbortHandle>>> =
     Lazy::new(|| Mutex::new(None));
 
-static MILL_SHARED_TT: Lazy<SharedTt> = Lazy::new(SharedTt::default);
+static MILL_SHARED_TT: Lazy<SharedTt> = Lazy::new(|| {
+    let tt = SharedTt::default();
+    // Match master's process-global TT lifecycle: pay physical initialization
+    // once, then use fake-clean generation bumps before each search.
+    tt.clear();
+    tt
+});
 
 // ---------------------------------------------------------------------------
 // Mill-specific runtime configuration consumed by the search dispatcher.

@@ -95,6 +95,16 @@ fn mill_searcher_with_shared_tt(shared_tt: SharedTt) -> Searcher<MillGame> {
     s
 }
 
+fn allocate_shared_tt(hash_mb: u32) -> SharedTt {
+    let tt = SharedTt::with_capacity_mb(hash_mb, tt_cluster_bits_from_env());
+    // Master physically initializes the process-global TT before search and
+    // later uses fake-clean generation bumps. Touch the Rust shared TT once at
+    // allocation time so first-search probe/save traffic does not pay both
+    // demand-zero read faults and private-page write faults in the hot path.
+    tt.clear();
+    tt
+}
+
 #[derive(Clone, Debug, PartialEq, Eq)]
 struct PerfectDatabaseRuntimeConfig {
     path: String,
@@ -237,7 +247,7 @@ pub(crate) fn run_uci_loop() {
     let mut threads: usize = 1;
     let mut qsearch_max_depth: i32 = 0;
     let mut engine_cfg = EngineConfig::default();
-    let mut shared_tt = SharedTt::with_capacity_mb(engine_cfg.hash_mb, tt_cluster_bits_from_env());
+    let mut shared_tt = allocate_shared_tt(engine_cfg.hash_mb);
     let mut active_search: Option<ActiveSearch> = None;
     let stdin = io::stdin();
     for line in stdin.lock().lines().map_while(Result::ok) {
@@ -292,10 +302,7 @@ pub(crate) fn run_uci_loop() {
                 }
                 SetoptionResult::SearchConfig => {
                     if engine_cfg.hash_mb != old_hash_mb {
-                        shared_tt = SharedTt::with_capacity_mb(
-                            engine_cfg.hash_mb,
-                            tt_cluster_bits_from_env(),
-                        );
+                        shared_tt = allocate_shared_tt(engine_cfg.hash_mb);
                     }
                     // A search/engine parameter changed; the perfect-database
                     // toggle and path live here, so reconcile the global handle.

@@ -68,13 +68,19 @@ pub struct Searcher<G: Game> {
 
 impl<G: Game> Default for Searcher<G> {
     fn default() -> Self {
+        Self::with_tt_arc(Arc::new(ClusteredTt::default()))
+    }
+}
+
+impl<G: Game> Searcher<G> {
+    fn with_tt_arc(tt: Arc<ClusteredTt>) -> Self {
         Self {
             nodes: 0,
             tt_hits: 0,
             tt_misses: 0,
             tt_age_bumps: 0,
             rng_state: 0x9E37_79B9_7F4A_7C15,
-            tt: Arc::new(ClusteredTt::default()),
+            tt,
             policy: SearchPolicy::default(),
             options: SearchOptions::default(),
             qsearch_max_depth: 0,
@@ -87,19 +93,14 @@ impl<G: Game> Default for Searcher<G> {
             _phantom: PhantomData,
         }
     }
-}
 
-impl<G: Game> Searcher<G> {
     pub fn new() -> Self {
         Self::default()
     }
 
     /// Override TT size (`2^bits` direct slots).  Clamp matches [ClusteredTt].
     pub fn new_with_tt_cluster_bits(cluster_bits: u32) -> Self {
-        Self {
-            tt: Arc::new(ClusteredTt::new_with_cluster_bits(cluster_bits)),
-            ..Self::default()
-        }
+        Self::with_tt_arc(Arc::new(ClusteredTt::new_with_cluster_bits(cluster_bits)))
     }
 
     /// Resize the TT from the UCI `Hash` option while preserving the supplied
@@ -128,10 +129,7 @@ impl<G: Game> Searcher<G> {
     /// Searcher (with an independent abort flag) but all reading and writing
     /// the same cluster array.
     pub fn with_shared_tt(shared: SharedTt) -> Self {
-        Self {
-            tt: shared.inner,
-            ..Self::default()
-        }
+        Self::with_tt_arc(shared.inner)
     }
 
     /// Replace this Searcher's abort flag with an externally-owned one,
