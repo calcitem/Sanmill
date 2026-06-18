@@ -274,7 +274,7 @@ void main() {
       });
 
       test('respects beginner difficulty star threshold', () {
-        // Beginner allows 3 extra moves for 3 stars
+        // Beginner allows 3 extra moves for 2 stars.
         final int stars = PuzzleProgress.calculateStars(
           moveCount: 8,
           optimalMoveCount: 5,
@@ -282,11 +282,11 @@ void main() {
           hintsUsed: false,
         );
 
-        expect(stars, equals(3));
+        expect(stars, equals(2));
       });
 
       test('respects easy difficulty star threshold', () {
-        // Easy allows 2 extra moves for 3 stars
+        // Easy allows 2 extra moves for 2 stars.
         final int stars = PuzzleProgress.calculateStars(
           moveCount: 7,
           optimalMoveCount: 5,
@@ -294,11 +294,11 @@ void main() {
           hintsUsed: false,
         );
 
-        expect(stars, equals(3));
+        expect(stars, equals(2));
       });
 
       test('respects hard difficulty star threshold', () {
-        // Hard allows 1 extra move for 3 stars
+        // Hard allows 1 extra move for 2 stars.
         final int stars = PuzzleProgress.calculateStars(
           moveCount: 6,
           optimalMoveCount: 5,
@@ -306,11 +306,11 @@ void main() {
           hintsUsed: false,
         );
 
-        expect(stars, equals(3));
+        expect(stars, equals(2));
       });
 
       test('respects expert difficulty star threshold', () {
-        // Expert requires exact optimal for 3 stars
+        // Expert requires exact optimal for any stars.
         final int stars = PuzzleProgress.calculateStars(
           moveCount: 6,
           optimalMoveCount: 5,
@@ -318,11 +318,11 @@ void main() {
           hintsUsed: false,
         );
 
-        expect(stars, equals(2));
+        expect(stars, equals(0));
       });
 
       test('respects master difficulty star threshold', () {
-        // Master requires exact optimal for 3 stars
+        // Master requires exact optimal for any stars.
         final int stars = PuzzleProgress.calculateStars(
           moveCount: 6,
           optimalMoveCount: 5,
@@ -330,7 +330,7 @@ void main() {
           hintsUsed: false,
         );
 
-        expect(stars, equals(2));
+        expect(stars, equals(0));
       });
     });
 

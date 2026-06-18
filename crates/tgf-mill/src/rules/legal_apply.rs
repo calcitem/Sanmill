@@ -531,55 +531,65 @@ impl MillRules {
                         state.last_mill_from[side] = -1;
                         state.last_mill_to[side] = -1;
                         state.side_to_move ^= 1;
-                        // Record this side-changing reversible move into the
-                        // repetition history *before* deciding whether the
-                        // n-move rule fires; threefold takes precedence and
-                        // sets GameOver itself, after which the n-move check
-                        // becomes a no-op (it inspects `state.phase`).
-                        if !adjudicate_repetition && old_key != 0 {
-                            let key = if old_zobrist.is_none()
-                                && state.delayed_marked_pieces == 0
-                                && super::zobrist::capture_state_is_empty(
-                                    state.custodian_targets,
-                                    state.custodian_count,
-                                    state.intervention_targets,
-                                    state.intervention_count,
-                                    state.leap_targets,
-                                    state.leap_count,
-                                ) {
-                                super::zobrist::key_after_apply_from_changed_squares(
-                                    old_key,
-                                    old_side_to_move,
-                                    old_from_piece,
-                                    old_to_piece,
-                                    &state,
-                                    action.from_node,
-                                    action.to_node,
-                                )
-                            } else {
-                                super::zobrist::key_after_apply(
-                                    old_key,
-                                    old_zobrist
-                                        .as_ref()
-                                        .expect("full Zobrist inputs required for complex apply"),
-                                    &state,
-                                    action.from_node,
-                                    action.to_node,
-                                )
-                            };
-                            pre_stalemate_key = Some(key);
-                            push_key_and_check_threefold_with_key(
-                                &mut state,
-                                &self.options,
-                                false,
-                                key,
-                            );
+                        // For real play, record this side-changing reversible
+                        // move before the n-move rule check; threefold takes
+                        // precedence and sets GameOver itself.  Search
+                        // workbenches mirror master by keeping the pre-root
+                        // posKeyHistory unchanged and detecting in-tree
+                        // repetitions from the search stack.
+                        let incremental_repetition_key = if old_key != 0 {
+                            Some(
+                                if old_zobrist.is_none()
+                                    && state.delayed_marked_pieces == 0
+                                    && super::zobrist::capture_state_is_empty(
+                                        state.custodian_targets,
+                                        state.custodian_count,
+                                        state.intervention_targets,
+                                        state.intervention_count,
+                                        state.leap_targets,
+                                        state.leap_count,
+                                    )
+                                {
+                                    super::zobrist::key_after_apply_from_changed_squares(
+                                        old_key,
+                                        old_side_to_move,
+                                        old_from_piece,
+                                        old_to_piece,
+                                        &state,
+                                        action.from_node,
+                                        action.to_node,
+                                    )
+                                } else {
+                                    super::zobrist::key_after_apply(
+                                        old_key,
+                                        old_zobrist.as_ref().expect(
+                                            "full Zobrist inputs required for complex apply",
+                                        ),
+                                        &state,
+                                        action.from_node,
+                                        action.to_node,
+                                    )
+                                },
+                            )
                         } else {
-                            push_key_and_check_threefold(
-                                &mut state,
-                                &self.options,
-                                adjudicate_repetition,
-                            );
+                            None
+                        };
+                        if let Some(key) = incremental_repetition_key
+                            && !adjudicate_repetition
+                        {
+                            pre_stalemate_key = Some(key);
+                        }
+                        if adjudicate_repetition {
+                            if let Some(key) = incremental_repetition_key {
+                                push_key_and_check_threefold_with_key(
+                                    &mut state,
+                                    &self.options,
+                                    true,
+                                    key,
+                                );
+                            } else {
+                                push_key_and_check_threefold(&mut state, &self.options, true);
+                            }
                         }
                         maybe_draw_by_n_move_rule(&mut state, &self.options, adjudicate_repetition);
                         // Mirror C++ set_side_to_move: phase follows the new

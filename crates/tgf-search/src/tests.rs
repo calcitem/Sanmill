@@ -186,6 +186,7 @@ fn search_order_uses_contextual_move_bias() {
 struct RepetitionWorkbench {
     ply: u8,
     side: i8,
+    root_repetition_count: usize,
 }
 
 impl Workbench for RepetitionWorkbench {
@@ -204,6 +205,9 @@ impl Workbench for RepetitionWorkbench {
     }
     fn is_terminal(&self) -> bool {
         false
+    }
+    fn current_repetition_count(&self) -> usize {
+        self.root_repetition_count
     }
     fn do_move(&mut self, _a: Action) {
         self.ply += 1;
@@ -230,7 +234,11 @@ impl tgf_core::Game for RepetitionGame {
     type Evaluator = RepetitionEvaluator;
 
     fn build_workbench(&self, _snap: &GameStateSnapshot) -> Self::Workbench {
-        RepetitionWorkbench { ply: 0, side: 0 }
+        RepetitionWorkbench {
+            ply: 0,
+            side: 0,
+            root_repetition_count: 0,
+        }
     }
 
     fn generate_legal(_wb: &Self::Workbench, out: &mut ActionList<256>) {
@@ -251,6 +259,18 @@ fn third_path_repetition_returns_draw_plus_one_bias() {
     let mut searcher = Searcher::<RepetitionGame>::new();
     searcher.repetition_stack.push((wb.key(), false));
     searcher.repetition_stack.push((wb.key(), false));
+
+    assert_eq!(searcher.alpha_beta(&mut wb, 2, -10, 10), 1);
+}
+
+#[test]
+fn single_prior_root_repetition_returns_draw_plus_one_bias() {
+    let mut wb = RepetitionWorkbench {
+        ply: 0,
+        side: 0,
+        root_repetition_count: 1,
+    };
+    let mut searcher = Searcher::<RepetitionGame>::new();
 
     assert_eq!(searcher.alpha_beta(&mut wb, 2, -10, 10), 1);
 }

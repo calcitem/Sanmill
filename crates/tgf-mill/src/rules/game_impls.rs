@@ -65,8 +65,9 @@ impl Workbench for MillWorkbench {
         // by its heuristic here, exactly like master.  The N-move rule is
         // likewise not adjudicated by do_move: terminal_score mirrors master's
         // search-time `> nMoveRule` / `>= endgameNMoveRule` thresholds.  The
-        // repetition history is still tracked so `current_repetition_count`
-        // stays accurate.
+        // The pre-root repetition history is kept unchanged; master stores
+        // searched path nodes only in `ss`, which `Searcher` mirrors with its
+        // own repetition stack.
         self.rules.apply_to_state(&mut self.state, a, false);
         self.undo_stack.push(undo);
     }
@@ -180,7 +181,17 @@ impl Workbench for MillWorkbench {
         if key == 0 {
             return 0;
         }
-        self.state.key_history.iter().filter(|k| **k == key).count()
+        self.state
+            .key_history
+            .iter()
+            .take(self.state.key_history.len().saturating_sub(1))
+            .filter(|k| **k == key)
+            .count()
+    }
+
+    #[inline]
+    fn current_position_resets_repetition(&self) -> bool {
+        self.state.key_history.is_empty()
     }
 }
 

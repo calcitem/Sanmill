@@ -62,8 +62,7 @@ enum PuzzleDifficulty {
     }
   }
 
-  /// Returns the star rating threshold for this difficulty
-  /// (moves over optimal to still get 3 stars)
+  /// Returns the extra-move tolerance used by the star rating tiers.
   int get starThreshold {
     switch (this) {
       case PuzzleDifficulty.beginner:

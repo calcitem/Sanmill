@@ -97,7 +97,7 @@ impl<G: Game> Searcher<G> {
         alpha: i32,
         beta: i32,
     ) -> SearchResult {
-        self.begin_root_search();
+        self.begin_root_search_at(wb);
         if let Some(score) = G::terminal_score(wb, wb.side_to_move(), depth) {
             return SearchResult::default_none().with_score(score);
         }
@@ -120,17 +120,12 @@ impl<G: Game> Searcher<G> {
                 break;
             }
             let before = wb.side_to_move();
-            if root_key != 0 {
-                self.repetition_stack
-                    .push((root_key, G::action_resets_repetition(action)));
-            }
+            let previous_incoming_reset = self.push_repetition_ancestor(root_key, action);
             wb.do_move(action);
             let after = wb.side_to_move();
             let value = self.pvs_after_move(wb, depth - 1, best_alpha, beta, i, before, after);
             wb.undo_move();
-            if root_key != 0 {
-                self.repetition_stack.pop();
-            }
+            self.pop_repetition_ancestor(root_key, previous_incoming_reset);
             // Keep the FIRST move on ties (strict `value > best_alpha`),
             // matching master's strict root update.
             if value > best_alpha {
@@ -212,7 +207,7 @@ impl<G: Game> Searcher<G> {
     where
         F: FnMut(usize, i32, i32, Action, u64),
     {
-        self.begin_root_search();
+        self.begin_root_search_at(wb);
         if let Some(score) = G::terminal_score(wb, wb.side_to_move(), depth) {
             return SearchResult {
                 best_action: Action::NONE,
@@ -327,17 +322,12 @@ impl<G: Game> Searcher<G> {
                 break;
             }
             let before = wb.side_to_move();
-            if root_key != 0 {
-                self.repetition_stack
-                    .push((root_key, G::action_resets_repetition(action)));
-            }
+            let previous_incoming_reset = self.push_repetition_ancestor(root_key, action);
             wb.do_move(action);
             let after = wb.side_to_move();
             let value = self.search_after_move(wb, depth - 1, alpha, beta, before, after);
             wb.undo_move();
-            if root_key != 0 {
-                self.repetition_stack.pop();
-            }
+            self.pop_repetition_ancestor(root_key, previous_incoming_reset);
             // Mirror master `Search::search`'s root update exactly: the best
             // move only changes on a strict `value > alpha` improvement, so
             // the FIRST move is kept on ties.

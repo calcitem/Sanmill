@@ -11,7 +11,7 @@ class MockAudios extends Mock implements SoundManager {
   Future<void> loadSounds() async {}
 
   @override
-  void disposePool() {}
+  Future<void> disposePool() async {}
 
   @override
   Future<void> playTone(Sound sound) async {}

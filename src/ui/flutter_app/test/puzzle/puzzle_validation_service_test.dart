@@ -318,7 +318,7 @@ void main() {
       );
     });
 
-    test('detects incorrect side alternation', () {
+    test('warns about unexpected side alternation', () {
       final PuzzleInfo puzzle = PuzzleInfo(
         id: 'test',
         title: 'Test Puzzle',
@@ -343,8 +343,9 @@ void main() {
       final PuzzleValidationReport report =
           PuzzleValidationService.validatePuzzle(puzzle);
 
-      expect(report.isValid, isFalse);
-      expect(report.errors, contains(contains('incorrect side')));
+      expect(report.isValid, isTrue);
+      expect(report.errors, isEmpty);
+      expect(report.warnings, contains(contains('unexpected side')));
     });
   });
 

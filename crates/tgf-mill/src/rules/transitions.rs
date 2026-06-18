@@ -427,19 +427,15 @@ pub(super) fn clear_key_history(state: &mut MillState) {
 ///
 /// `adjudicate` separates the two ways master uses repetition information:
 ///
-///   * **Search** (`MillWorkbench::do_move`, `adjudicate = false`): master's
-///     `Position::do_move` NEVER terminalises a threefold; the position stays
-///     in the moving phase and `Eval::evaluate` returns the ordinary heuristic.
-///     Inside the tree, repetitions are handled by `Search::has_repeated`
-///     (a `VALUE_DRAW + 1` cut on the SECOND occurrence) -- not by a GameOver
-///     state.  Keeping `do_move` non-terminalising is required for move parity:
-///     e.g. at a Skill-1 (depth-1) leaf a move that completes a threefold must
-///     be scored by its heuristic (master picks it), not collapsed to a draw.
+///   * **Search** (`MillWorkbench::do_move`, `adjudicate = false`): callers do
+///     not push into this history.  Master keeps `posKeyHistory` fixed at the
+///     root and detects in-tree repetitions from the search stack, so Rust does
+///     the same in `Searcher`.
 ///   * **Real play** (`GameRules::apply`, `adjudicate = true`): the move that
 ///     reaches the third occurrence ends the game, matching master's external
 ///     `has_game_cycle()` / `check_if_game_is_over` adjudication with the
 ///     standard threefold threshold. The history itself is tracked in BOTH
-///     modes so the search still sees the same repetition window through
+///     modes so future searches see the same root repetition window through
 ///     `Workbench::current_repetition_count`.
 pub(super) fn push_key_and_check_threefold(
     state: &mut MillState,

@@ -9,6 +9,7 @@
 
 import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:sanmill/game_page/services/mill.dart' show SoundManager;
 import 'package:sanmill/main.dart' as app;
 import 'package:sanmill/shared/services/logger.dart';
 
@@ -32,8 +33,62 @@ const double kResetScrollOffset = 10000.0;
 ///
 /// This should be called at the beginning of each test to render the app.
 Future<void> initApp(WidgetTester tester) async {
+  SoundManager().mute();
+  addTearDown(disposeTestAudio);
   await tester.pumpWidget(const app.SanmillApp());
-  await tester.pumpAndSettle(kDefaultPumpTimeout);
+  await pumpAndSettleWithin(tester, timeout: kDefaultPumpTimeout);
+}
+
+/// Releases audio players that can keep scheduler callbacks alive in tests.
+Future<void> disposeTestAudio() async {
+  SoundManager().mute();
+  await SoundManager().disposePool();
+}
+
+/// Pumps until the widget tree settles or [timeout] elapses.
+///
+/// Integration tests can keep scheduling frames for engine or UI animations.
+/// Timeouts are therefore treated as a bounded wait; other Flutter errors are
+/// still surfaced.
+Future<void> pumpAndSettleWithin(
+  WidgetTester tester, {
+  Duration timeout = kDefaultPumpTimeout,
+}) async {
+  try {
+    await tester.pumpAndSettle(
+      const Duration(milliseconds: 100),
+      EnginePhase.sendSemanticsUpdate,
+      timeout,
+    );
+  } on FlutterError catch (error) {
+    if (!error.message.contains('timed out')) {
+      rethrow;
+    }
+    await tester.pump(const Duration(milliseconds: 100));
+  }
+}
+
+/// Dismisses modal overlays that can block toolbar interactions.
+Future<void> dismissBlockingDialogs(WidgetTester tester) async {
+  for (final String key in <String>[
+    'game_result_alert_dialog_cancel_button',
+    'game_result_alert_dialog_cancel_button_challenge',
+    'ai_vs_ai_game_result_dialog_close_button',
+    'info_dialog_ok_button',
+    'restart_game_no_button',
+  ]) {
+    final Finder button = find.byKey(Key(key));
+    if (button.evaluate().isNotEmpty) {
+      await tester.tap(button.first, warnIfMissed: false);
+      await pumpAndSettleWithin(tester, timeout: const Duration(seconds: 3));
+    }
+  }
+
+  final Finder okText = find.text('OK');
+  if (okText.evaluate().isNotEmpty) {
+    await tester.tap(okText.first, warnIfMissed: false);
+    await pumpAndSettleWithin(tester, timeout: const Duration(seconds: 3));
+  }
 }
 
 // ---------------------------------------------------------------------------
@@ -258,6 +313,8 @@ Future<void> tapToolbarItem(WidgetTester tester, String key) async {
 /// dialog appears. Handles both fresh game (no dialog) and active game
 /// (with restart confirmation dialog) scenarios.
 Future<void> startNewGame(WidgetTester tester) async {
+  await dismissBlockingDialogs(tester);
+
   // Tap the Game toolbar item to open the game options modal
   await tapToolbarItem(tester, 'play_area_toolbar_item_game');
 

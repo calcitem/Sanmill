@@ -1403,7 +1403,7 @@ fn mill_game_workbench_do_and_undo_move() {
 }
 
 #[test]
-fn workbench_undo_restores_repetition_history_after_reversible_move() {
+fn workbench_do_move_keeps_root_repetition_history_unchanged() {
     let rules = MillRules::default();
     let game = MillGame::default();
     let mut state = MillRules::decode(&rules.no_mill_moving_phase_snapshot());
@@ -1415,7 +1415,7 @@ fn workbench_undo_restores_repetition_history_after_reversible_move() {
 
     wb.do_move(move_action(18, 19));
 
-    assert_eq!(wb.state.key_history.len(), before.key_history.len() + 1);
+    assert_eq!(wb.state.key_history, before.key_history);
     wb.undo_move();
     assert_eq!(wb.state, before);
 }
@@ -2591,7 +2591,7 @@ fn mill_game_root_repetition_history_feeds_workbench() {
     );
     let wb = game.build_workbench(&snap);
 
-    assert_eq!(wb.current_repetition_count(), 2);
+    assert_eq!(wb.current_repetition_count(), 1);
 }
 
 #[test]
@@ -3640,6 +3640,43 @@ fn generate_legal_ctx_uses_reverse_priority_for_remove() {
     let mut expected = PRIORITY_NO_DIAGONAL.to_vec();
     expected.reverse();
     assert_eq!(order, expected);
+}
+
+#[test]
+fn generate_legal_ctx_uses_legacy_destination_order_for_flying() {
+    let rules = MillRules::default();
+    let snap = apply_uci_sequence(
+        &rules,
+        &[
+            "d6", "f4", "d2", "b4", "g4", "d7", "a4", "d1", "d5", "d3", "e4", "f6", "f2", "b2",
+            "b6", "g7", "a7", "c3", "d5-c5", "c3-c4", "e4-e5", "c4-c3", "d6-d5", "xd3", "c3-d3",
+            "c5-c4", "f6-d6", "c4-c5", "xf4", "b4-c4", "e5-e4", "d6-f6", "f2-f4", "xd3", "b2-b4",
+            "e4-e5", "xd1", "f6-d6", "e5-e4", "xc4", "b4-c4", "f4-f6", "c4-b4", "f6-f4", "xg7",
+        ],
+    );
+    let game = MillGame::default();
+    let wb = game.build_workbench(&snap);
+    let ctx = tgf_core::MoveOrderContext {
+        skill_level: 15,
+        shuffling: false,
+        ..Default::default()
+    };
+    let mut actions = ActionList::<256>::new();
+    MillGame::generate_legal_ctx(&wb, &mut actions, &ctx);
+    let labels = actions
+        .iter()
+        .map(|action| MillUciCodec::encode_action(*action))
+        .collect::<Vec<_>>();
+
+    assert_eq!(
+        labels,
+        [
+            "d7-e5", "d7-e3", "d7-d3", "d7-c3", "d7-c4", "d7-f6", "d7-f2", "d7-b2", "d7-g7",
+            "d7-g1", "d7-d1", "d7-a1", "b4-e5", "b4-e3", "b4-d3", "b4-c3", "b4-c4", "b4-f6",
+            "b4-f2", "b4-b2", "b4-g7", "b4-g1", "b4-d1", "b4-a1", "d6-e5", "d6-e3", "d6-d3",
+            "d6-c3", "d6-c4", "d6-f6", "d6-f2", "d6-b2", "d6-g7", "d6-g1", "d6-d1", "d6-a1",
+        ]
+    );
 }
 
 /// FEN trailing-extension parity: the trailing `c:/i:/l:/p:/s:` block

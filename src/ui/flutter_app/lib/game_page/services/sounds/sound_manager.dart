@@ -305,13 +305,13 @@ class SoundManager {
     _isTemporaryMute = false;
   }
 
-  void disposePool() {
-    _players.forEach((_, SoundPlayer soundPlayer) {
-      soundPlayer.player.dispose();
-    });
+  Future<void> disposePool() async {
+    for (final SoundPlayer soundPlayer in _players.values) {
+      await soundPlayer.player.dispose();
+    }
     _players.clear();
 
-    _backgroundMusicPlayer?.dispose();
+    await _backgroundMusicPlayer?.dispose();
     _backgroundMusicPlayer = null;
     _backgroundMusicPath = null;
   }

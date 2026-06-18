@@ -59,10 +59,11 @@ pub struct Searcher<G: Game> {
     abort_flag: Arc<AtomicBool>,
     aborted: bool,
     /// Zobrist keys of positions on the search path from root to the current
-    /// node, plus whether the action from that position to its child resets
-    /// repetition history.  Used to detect in-search cycles without scanning
-    /// past irreversible moves (Mill Place/Remove, chess capture/pawn move).
+    /// node, plus whether the action that reached that ancestor reset
+    /// repetition history.  This mirrors master `ss[i].move`: the barrier is
+    /// attached to the ancestor itself, not to the outgoing child edge.
     pub(crate) repetition_stack: Vec<(u64, bool)>,
+    repetition_current_incoming_reset: bool,
     _phantom: PhantomData<G>,
 }
 
@@ -84,6 +85,7 @@ impl<G: Game> Default for Searcher<G> {
             abort_flag: Arc::new(AtomicBool::new(false)),
             aborted: false,
             repetition_stack: Vec::new(),
+            repetition_current_incoming_reset: false,
             _phantom: PhantomData,
         }
     }
@@ -239,7 +241,7 @@ impl<G: Game> Searcher<G> {
     }
 
     pub fn search(&mut self, wb: &mut G::Workbench, depth: i32) -> SearchResult {
-        self.begin_root_search();
+        self.begin_root_search_at(wb);
         if let Some(score) = G::terminal_score(wb, wb.side_to_move(), depth) {
             return SearchResult {
                 best_action: Action::NONE,
@@ -285,18 +287,13 @@ impl<G: Game> Searcher<G> {
                 break;
             }
             let before = wb.side_to_move();
-            if root_key != 0 {
-                self.repetition_stack
-                    .push((root_key, G::action_resets_repetition(action)));
-            }
+            let previous_incoming_reset = self.push_repetition_ancestor(root_key, action);
             wb.do_move(action);
             let after = wb.side_to_move();
             let score =
                 self.search_after_move(wb, depth - 1, i32::MIN + 1, i32::MAX - 1, before, after);
             wb.undo_move();
-            if root_key != 0 {
-                self.repetition_stack.pop();
-            }
+            self.pop_repetition_ancestor(root_key, previous_incoming_reset);
             // Keep the FIRST move on ties, matching master `Search::search`'s
             // strict `value > bestValue` root update (src/search.cpp): the
             // best move only changes on a strict score improvement.
@@ -331,7 +328,7 @@ impl<G: Game> Searcher<G> {
     /// baselines).  Callers that need the master-equivalent shape should
     /// invoke `Self::search` (plain alpha-beta) instead.
     pub fn search_pvs(&mut self, wb: &mut G::Workbench, depth: i32) -> SearchResult {
-        self.begin_root_search();
+        self.begin_root_search_at(wb);
         if let Some(score) = G::terminal_score(wb, wb.side_to_move(), depth) {
             return SearchResult {
                 best_action: Action::NONE,
@@ -375,17 +372,12 @@ impl<G: Game> Searcher<G> {
                 break;
             }
             let before = wb.side_to_move();
-            if root_key != 0 {
-                self.repetition_stack
-                    .push((root_key, G::action_resets_repetition(action)));
-            }
+            let previous_incoming_reset = self.push_repetition_ancestor(root_key, action);
             wb.do_move(action);
             let after = wb.side_to_move();
             let value = self.pvs_after_move(wb, depth - 1, alpha, beta, i, before, after);
             wb.undo_move();
-            if root_key != 0 {
-                self.repetition_stack.pop();
-            }
+            self.pop_repetition_ancestor(root_key, previous_incoming_reset);
 
             // Keep the FIRST move on ties (strict `value > alpha`), matching
             // master's root update where the best move only changes on a
@@ -415,7 +407,7 @@ impl<G: Game> Searcher<G> {
         mut alpha: i32,
         beta: i32,
     ) -> (i32, Action, RootProbeRows) {
-        self.begin_root_search();
+        self.begin_root_search_at(wb);
         let root_key = wb.key();
         let old_alpha = alpha;
         let mut moves = ActionList::<256>::new();
@@ -428,17 +420,12 @@ impl<G: Game> Searcher<G> {
         for action in moves.iter().copied() {
             let nodes_before = self.nodes;
             let before = wb.side_to_move();
-            if root_key != 0 {
-                self.repetition_stack
-                    .push((root_key, G::action_resets_repetition(action)));
-            }
+            let previous_incoming_reset = self.push_repetition_ancestor(root_key, action);
             wb.do_move(action);
             let after = wb.side_to_move();
             let value = self.search_after_move(wb, depth - 1, alpha, beta, before, after);
             wb.undo_move();
-            if root_key != 0 {
-                self.repetition_stack.pop();
-            }
+            self.pop_repetition_ancestor(root_key, previous_incoming_reset);
             let action_nodes = self.nodes.saturating_sub(nodes_before);
             let mut cutoff = false;
             if value > best_value {
@@ -556,7 +543,7 @@ impl<G: Game> Searcher<G> {
         // moving phase is reached: it is what prunes otherwise-deeper lines
         // to a draw.  `path_repeats_since_reset` covers the search-stack half;
         // `current_repetition_count` covers the pre-root reversible history.
-        if key != 0 && (self.path_repeats_since_reset(key) || wb.current_repetition_count() >= 2) {
+        if key != 0 && (self.path_repeats_since_reset(key) || wb.current_repetition_count() >= 1) {
             return G::repetition_draw_bias();
         }
 
@@ -629,18 +616,13 @@ impl<G: Game> Searcher<G> {
                 return best_value.max(alpha);
             }
             let before = wb.side_to_move();
-            if key != 0 {
-                self.repetition_stack
-                    .push((key, G::action_resets_repetition(action)));
-            }
+            let previous_incoming_reset = self.push_repetition_ancestor(key, action);
             wb.do_move(action);
             let after = wb.side_to_move();
             let score =
                 self.search_after_move(wb, depth - 1 + depth_extension, alpha, beta, before, after);
             wb.undo_move();
-            if key != 0 {
-                self.repetition_stack.pop();
-            }
+            self.pop_repetition_ancestor(key, previous_incoming_reset);
             if score > best_value {
                 best_value = score;
                 best_action = action;
@@ -690,12 +672,37 @@ impl<G: Game> Searcher<G> {
         self.tt_misses = 0;
         self.aborted = false;
         self.repetition_stack.clear();
+        self.repetition_current_incoming_reset = false;
         // Intentionally do NOT clear `abort_flag` here.  External callers
         // hold a clone of the Arc and may have already requested an abort
         // (especially when search is spawned on another thread): clearing
         // the flag here would race with the request and silently lose it.
         // To rerun an aborted Searcher, call [`Self::clear_abort`].
         self.search_started_at = Some(Instant::now());
+    }
+
+    #[inline]
+    fn begin_root_search_at(&mut self, wb: &G::Workbench) {
+        self.begin_root_search();
+        self.repetition_current_incoming_reset = wb.current_position_resets_repetition();
+    }
+
+    #[inline]
+    fn push_repetition_ancestor(&mut self, key: u64, action_to_child: Action) -> bool {
+        let previous_incoming_reset = self.repetition_current_incoming_reset;
+        if key != 0 {
+            self.repetition_stack.push((key, previous_incoming_reset));
+        }
+        self.repetition_current_incoming_reset = G::action_resets_repetition(action_to_child);
+        previous_incoming_reset
+    }
+
+    #[inline]
+    fn pop_repetition_ancestor(&mut self, key: u64, previous_incoming_reset: bool) {
+        self.repetition_current_incoming_reset = previous_incoming_reset;
+        if key != 0 {
+            self.repetition_stack.pop();
+        }
     }
 
     /// Reset the shared abort flag so a Searcher can be reused after a
@@ -711,12 +718,9 @@ impl<G: Game> Searcher<G> {
     /// Search-stack half of master `Position::has_repeated` (src/position.cpp).
     ///
     /// Master walks the search stack from the current node back toward the
-    /// root, stops at the first capture (REMOVE) it crosses, and reports a
-    /// repetition on the FIRST match it finds -- i.e. the SECOND occurrence of
-    /// the position (one prior appearance on the path).  `repetition_stack`
-    /// stores `(ancestor_key, outgoing_move_was_remove)` for every node on the
-    /// path, so we replicate the same walk: bail at the REMOVE barrier first,
-    /// then compare keys.
+    /// root, stops at the first ancestor that was reached by a capture
+    /// (REMOVE), and reports a repetition on the FIRST match it finds -- i.e.
+    /// the SECOND occurrence of the position.
     #[inline]
     fn path_repeats_since_reset(&self, key: u64) -> bool {
         for (ancestor_key, reset_after_action) in self.repetition_stack.iter().rev() {

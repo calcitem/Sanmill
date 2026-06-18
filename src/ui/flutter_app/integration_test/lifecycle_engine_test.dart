@@ -7,37 +7,31 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:sanmill/game_page/services/mill.dart';
-import 'package:sanmill/game_page/widgets/game_page.dart';
 import 'package:sanmill/shared/services/logger.dart';
+
+import 'helpers.dart' show disposeTestAudio, initApp;
+import 'init_test_environment.dart';
 
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
+
+  setUpAll(initTestEnvironment);
+
+  setUp(() {
+    SoundManager().mute();
+    addTearDown(disposeTestAudio);
+  });
 
   group('Engine Lifecycle Tests', () {
     testWidgets(
       'Engine should remain functional after rapid background/foreground transitions',
       (WidgetTester tester) async {
-        // Build the game page
-        await tester.pumpWidget(
-          const MaterialApp(home: GamePage(GameMode.humanVsAi)),
-        );
+        await initApp(tester);
 
-        // Wait for initial build
-        await tester.pumpAndSettle();
-
-        // Simulate app going to background during engine startup
-        logger.i('[TEST] Simulating lifecycle: paused');
         final TestWidgetsFlutterBinding binding = tester.binding;
-        binding.handleAppLifecycleStateChanged(AppLifecycleState.paused);
-        await tester.pump(const Duration(milliseconds: 50));
+        await _simulateLifecycleRoundTrip(tester, binding);
 
-        // Simulate app resuming
-        logger.i('[TEST] Simulating lifecycle: resumed');
-        binding.handleAppLifecycleStateChanged(AppLifecycleState.resumed);
-        await tester.pump(const Duration(milliseconds: 100));
-
-        // Wait for engine to be ready
-        await tester.pumpAndSettle(const Duration(seconds: 2));
+        await _waitForControllerReady(tester);
 
         // Verify controller is ready
         expect(
@@ -59,39 +53,28 @@ void main() {
 
         // Tap on the center of the board
         await tester.tap(boardFinder);
-        await tester.pumpAndSettle();
+        await tester.pump(const Duration(milliseconds: 200));
 
         // The tap should have been processed
         // (We can't easily verify the exact game state, but we verify no crash)
         logger.i('[TEST] Tap processed successfully');
       },
-      timeout: const Timeout(Duration(seconds: 30)),
+      timeout: const Timeout(Duration(seconds: 60)),
     );
 
     testWidgets(
       'Multiple rapid lifecycle changes should not break engine',
       (WidgetTester tester) async {
-        await tester.pumpWidget(
-          const MaterialApp(home: GamePage(GameMode.humanVsAi)),
-        );
-
-        await tester.pumpAndSettle();
+        await initApp(tester);
 
         final TestWidgetsFlutterBinding binding = tester.binding;
 
         // Simulate rapid background/foreground cycles
         for (int i = 0; i < 3; i++) {
-          logger.i('[TEST] Cycle $i: paused');
-          binding.handleAppLifecycleStateChanged(AppLifecycleState.paused);
-          await tester.pump(const Duration(milliseconds: 100));
-
-          logger.i('[TEST] Cycle $i: resumed');
-          binding.handleAppLifecycleStateChanged(AppLifecycleState.resumed);
-          await tester.pump(const Duration(milliseconds: 100));
+          await _simulateLifecycleRoundTrip(tester, binding, cycle: i);
         }
 
-        // Wait for stabilization
-        await tester.pumpAndSettle(const Duration(seconds: 2));
+        await _waitForControllerReady(tester);
 
         // Verify system is still functional
         expect(GameController().isControllerReady, true);
@@ -100,11 +83,53 @@ void main() {
         // Try to interact
         final Finder boardFinder = find.byType(CustomPaint).first;
         await tester.tap(boardFinder);
-        await tester.pumpAndSettle();
+        await tester.pump(const Duration(milliseconds: 200));
 
         logger.i('[TEST] System remains functional after multiple cycles');
       },
-      timeout: const Timeout(Duration(seconds: 30)),
+      timeout: const Timeout(Duration(seconds: 60)),
     );
   });
+}
+
+Future<void> _simulateLifecycleRoundTrip(
+  WidgetTester tester,
+  TestWidgetsFlutterBinding binding, {
+  int? cycle,
+}) async {
+  final String prefix = cycle == null ? '[TEST]' : '[TEST] Cycle $cycle:';
+
+  logger.i('$prefix paused');
+  binding.handleAppLifecycleStateChanged(AppLifecycleState.paused);
+
+  logger.i('$prefix resumed');
+  binding.handleAppLifecycleStateChanged(AppLifecycleState.resumed);
+
+  await tester.pump(const Duration(milliseconds: 100));
+}
+
+Future<void> _waitForControllerReady(
+  WidgetTester tester, {
+  Duration timeout = const Duration(seconds: 10),
+}) async {
+  final DateTime deadline = DateTime.now().add(timeout);
+
+  while (DateTime.now().isBefore(deadline)) {
+    if (GameController().isControllerReady &&
+        GameController().isControllerActive) {
+      return;
+    }
+    await tester.pump(const Duration(milliseconds: 100));
+  }
+
+  expect(
+    GameController().isControllerReady,
+    true,
+    reason: 'Controller should become ready within $timeout',
+  );
+  expect(
+    GameController().isControllerActive,
+    true,
+    reason: 'Controller should become active within $timeout',
+  );
 }

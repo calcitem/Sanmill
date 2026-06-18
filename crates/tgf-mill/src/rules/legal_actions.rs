@@ -16,6 +16,7 @@
 // transition helper, capture detector, …) as `pub(super)` so this file
 // can `use super::*` and stay close to the original layout.
 
+use super::legacy_squares::LEGACY_SQUARE_ORDER_NODES;
 use super::move_priority::static_move_priority_for_search;
 use super::*;
 
@@ -261,7 +262,7 @@ impl MillRules {
                     continue;
                 }
                 if can_fly {
-                    for to in 0_usize..24 {
+                    for &to in LEGACY_SQUARE_ORDER_NODES.iter() {
                         if state.board[to] == 0 {
                             out.push(move_action(from, to));
                         }
@@ -286,7 +287,7 @@ impl MillRules {
                 continue;
             }
             if can_fly {
-                for to in 0_usize..24 {
+                for &to in LEGACY_SQUARE_ORDER_NODES.iter() {
                     if state.board[to] == 0 && !self.is_restricted_repeated_mill(state, from, to) {
                         out.push(move_action(from, to));
                     }

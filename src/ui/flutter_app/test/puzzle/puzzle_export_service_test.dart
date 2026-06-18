@@ -173,17 +173,22 @@ void main() {
       );
 
       test('exportPuzzlesToQrString returns null when data is too large', () {
-        // Build a list of puzzles large enough to exceed 2331 bytes even when
-        // compressed by generating many distinct puzzles.
+        String noisyText(int seed) {
+          return List<String>.generate(240, (int index) {
+            final int value = (seed * 1103515245 + index * 12345) & 0x7fffffff;
+            return '${seed.toRadixString(36)}_'
+                '${index.toRadixString(36)}_'
+                '${value.toRadixString(36)}';
+          }).join('|');
+        }
+
+        // Build a payload large enough to exceed 2331 bytes even after gzip.
         final List<PuzzleInfo> largeBatch = List<PuzzleInfo>.generate(
-          30,
+          80,
           (int i) => testPuzzle.copyWith(
             id: 'test_qr_overflow_$i',
-            title: 'Overflow Test Puzzle $i with a long descriptive title',
-            description:
-                'This is a detailed description for overflow test puzzle $i. '
-                'It contains enough text to push the total payload over the '
-                'QR code limit even after gzip compression is applied.',
+            title: 'Overflow Test Puzzle ${noisyText(i).substring(0, 80)}',
+            description: noisyText(i + 1000),
           ),
         );
 
@@ -225,10 +230,10 @@ void main() {
       });
 
       test('importPuzzleFromString handles invalid JSON', () {
-        final PuzzleInfo? imported = PuzzleExportService.importPuzzleFromString(
-          'invalid json',
+        expect(
+          () => PuzzleExportService.importPuzzleFromString('invalid json'),
+          throwsA(isA<AssertionError>()),
         );
-        expect(imported, isNull);
       });
 
       test('importPuzzleFromString validates FEN', () {
@@ -236,13 +241,10 @@ void main() {
         json['initialPosition'] = 'invalid_fen';
         final String jsonString = jsonEncode(json);
 
-        final PuzzleInfo? imported = PuzzleExportService.importPuzzleFromString(
-          jsonString,
+        expect(
+          () => PuzzleExportService.importPuzzleFromString(jsonString),
+          throwsA(isA<AssertionError>()),
         );
-
-        // Should return null due to FEN validation failure (assert in debug mode)
-        // Note: assertions might be enabled in tests
-        expect(imported, isNull);
       });
     });
 

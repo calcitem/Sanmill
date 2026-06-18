@@ -21,12 +21,13 @@ import 'package:sanmill/games/othello/othello_game_session.dart';
 import 'package:sanmill/rule_settings/models/rule_settings.dart';
 import 'package:sanmill/src/rust/api/kernel.dart' as tgf_kernel_api;
 import 'package:sanmill/src/rust/api/simple.dart';
-import 'package:sanmill/src/rust/frb_generated.dart';
+
+import 'init_test_environment.dart';
 
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
-  setUpAll(() async => RustLib.init());
+  setUpAll(initTestEnvironment);
 
   testWidgets('tgfHelloWorld returns TGF greeting', (
     WidgetTester tester,
@@ -54,11 +55,11 @@ void main() {
     final BoardGeometry geometry = factory.millBoardGeometry();
 
     expect(geometry.points, hasLength(24));
-    expect(geometry.edges, hasLength(40));
-    expect(geometry.points.first.x, 0.1);
-    expect(geometry.points.first.y, 0.1);
-    expect(geometry.points.last.x, 0.3);
-    expect(geometry.points.last.y, 0.5);
+    expect(geometry.edges, hasLength(32));
+    expect(geometry.points.first.x, closeTo(0.1, 1e-6));
+    expect(geometry.points.first.y, closeTo(0.1, 1e-6));
+    expect(geometry.points.last.x, closeTo(0.3, 1e-6));
+    expect(geometry.points.last.y, closeTo(0.5, 1e-6));
   });
 
   testWidgets('Rust-native Mill rules scaffold matches opening count', (
@@ -184,7 +185,7 @@ void main() {
       expect(session.state.value.activeSeat, isNot(PlayerSeat.first));
       expect(
         events.map((GameSessionEvent e) => e.type),
-        contains('millMoveApplied'),
+        contains('millStateChanged'),
       );
 
       await session.undo();

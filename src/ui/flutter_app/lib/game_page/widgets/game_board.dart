@@ -111,6 +111,7 @@ class _GameBoardState extends State<GameBoard>
     // Ensure controller is marked as active when a new board is mounted
     // so engine waits for responses instead of early-returning as disposed.
     GameController().isDisposed = false;
+    GameController().isControllerActive = true;
 
     GameController().gameResultNotifier.addListener(_showResult);
 

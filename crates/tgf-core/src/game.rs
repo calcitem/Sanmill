@@ -98,7 +98,8 @@ pub trait Workbench: Sized {
     }
 
     /// Number of times the current position key appears in the reversible
-    /// pre-root repetition history carried by the workbench state.
+    /// pre-root repetition history carried by the workbench state, excluding
+    /// the current position itself if the game stores it in that history.
     ///
     /// Searchers use this as a game-neutral hook for master/Stockfish-style
     /// cycle awareness: a concrete game can keep strict draw adjudication in
@@ -109,6 +110,14 @@ pub trait Workbench: Sized {
     #[inline]
     fn current_repetition_count(&self) -> usize {
         0
+    }
+
+    /// Whether the current workbench position was reached by an action that
+    /// resets repetition history.  Searchers use this for the root stack entry;
+    /// descendants are tracked from the action that led to each child.
+    #[inline]
+    fn current_position_resets_repetition(&self) -> bool {
+        false
     }
 }
 

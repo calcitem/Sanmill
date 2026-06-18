@@ -51,6 +51,7 @@ class PuzzleHintService {
   /// Get the next hint
   /// Hints are progressive: textual -> next move -> show solution
   PuzzleHint? getNextHint(int currentPlayerMoveIndex) {
+    assert(currentPlayerMoveIndex >= 0, 'currentPlayerMoveIndex must be >= 0');
     logger.i(
       "$_tag Getting hint (level $_currentHintLevel) for puzzle ${puzzle.id}",
     );
@@ -106,6 +107,7 @@ class PuzzleHintService {
   /// Previously the counter was incremented unconditionally, which inflated
   /// the hints-used metric when the requested hint type was unavailable.
   PuzzleHint? getHintOfType(HintType type, int currentPlayerMoveIndex) {
+    assert(currentPlayerMoveIndex >= 0, 'currentPlayerMoveIndex must be >= 0');
     logger.i("$_tag Getting hint of type $type for puzzle ${puzzle.id}");
 
     PuzzleHint? result;

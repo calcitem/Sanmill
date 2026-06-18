@@ -11,8 +11,11 @@ void main() {
     late PuzzleInfo testPuzzle;
     late PuzzleHintService hintService;
 
-    setUp(() {
-      testPuzzle = PuzzleInfo(
+    PuzzleInfo createHintPuzzle({
+      String? hint = 'Try to form a mill on the outer ring',
+      bool includeHint = true,
+    }) {
+      return PuzzleInfo(
         id: 'hint_test_001',
         title: 'Test Puzzle',
         description: 'Puzzle for testing hints',
@@ -20,7 +23,7 @@ void main() {
         difficulty: PuzzleDifficulty.easy,
         initialPosition:
             '********/********/******** w p p 0 9 0 9 0 0 0 0 0 0 0 0 1',
-        hint: 'Try to form a mill on the outer ring',
+        hint: includeHint ? hint : null,
         solutions: const <PuzzleSolution>[
           PuzzleSolution(
             moves: <PuzzleMove>[
@@ -33,6 +36,10 @@ void main() {
           ),
         ],
       );
+    }
+
+    setUp(() {
+      testPuzzle = createHintPuzzle();
 
       hintService = PuzzleHintService(puzzle: testPuzzle);
     });
@@ -100,7 +107,7 @@ void main() {
 
     group('puzzle without textual hint', () {
       test('skips to next move hint when no textual hint', () {
-        final PuzzleInfo puzzleNoHint = testPuzzle.copyWith();
+        final PuzzleInfo puzzleNoHint = createHintPuzzle(includeHint: false);
         final PuzzleHintService service = PuzzleHintService(
           puzzle: puzzleNoHint,
         );
@@ -112,7 +119,7 @@ void main() {
       });
 
       test('skips to next move hint when textual hint is empty', () {
-        final PuzzleInfo puzzleEmptyHint = testPuzzle.copyWith(hint: '');
+        final PuzzleInfo puzzleEmptyHint = createHintPuzzle(hint: '');
         final PuzzleHintService service = PuzzleHintService(
           puzzle: puzzleEmptyHint,
         );
@@ -156,7 +163,7 @@ void main() {
       });
 
       test('returns null for textual hint when not available', () {
-        final PuzzleInfo puzzleNoHint = testPuzzle.copyWith();
+        final PuzzleInfo puzzleNoHint = createHintPuzzle(includeHint: false);
         final PuzzleHintService service = PuzzleHintService(
           puzzle: puzzleNoHint,
         );
@@ -393,14 +400,10 @@ void main() {
       });
 
       test('handles negative current player move index', () {
-        final PuzzleHint? hint = hintService.getHintOfType(
-          HintType.nextMove,
-          -1,
+        expect(
+          () => hintService.getHintOfType(HintType.nextMove, -1),
+          throwsA(isA<AssertionError>()),
         );
-
-        // Should handle gracefully - either return first move or null
-        // depending on implementation
-        expect(hint, isNull);
       });
     });
 

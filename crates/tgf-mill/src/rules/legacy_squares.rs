@@ -6,17 +6,22 @@
 // and by any helper that needs to surface a square id in the legacy
 // bit-layout (e.g. the FEN field-14 formed-mills bitmask).
 
+/// Dense node order reached by iterating legacy C++ `Square` ids
+/// `SQ_BEGIN..SQ_END`.  The legacy move generator uses this order for flying
+/// destinations, so search move ordering depends on preserving it exactly.
+pub(super) const LEGACY_SQUARE_ORDER_NODES: [usize; 24] = [
+    17, 18, 19, 20, 21, 22, 23, 16, 9, 10, 11, 12, 13, 14, 15, 8, 1, 2, 3, 4, 5, 6, 7, 0,
+];
+
 /// Convert a legacy C++ `Square` enum value (8..32) to a Rust dense node
 /// id (0..24).  Returns `-1` when the legacy id is `0` (i.e. SQ_NONE) so
 /// the result lines up with `MillState::last_mill_from/to` semantics.
+#[inline(always)]
 pub(super) fn legacy_square_to_node_signed(legacy: u8) -> i8 {
     if legacy == 0 || !(8..32).contains(&legacy) {
         return -1;
     }
-    const FEN_TO_NODE: [usize; 24] = [
-        17, 18, 19, 20, 21, 22, 23, 16, 9, 10, 11, 12, 13, 14, 15, 8, 1, 2, 3, 4, 5, 6, 7, 0,
-    ];
-    FEN_TO_NODE[(legacy - 8) as usize] as i8
+    LEGACY_SQUARE_ORDER_NODES[(legacy - 8) as usize] as i8
 }
 
 /// Inverse of [`legacy_square_to_node_signed`].  `-1` (no last mill) is

@@ -13,7 +13,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:sanmill/game_page/services/mill.dart';
 import 'package:sanmill/general_settings/models/general_settings.dart';
-import 'package:sanmill/main.dart' as app;
 import 'package:sanmill/shared/database/database.dart';
 
 import 'backup_service.dart';
@@ -45,8 +44,7 @@ void main() {
     testWidgets(
       'Human vs AI completes moves without hanging',
       (WidgetTester tester) async {
-        app.main();
-        await tester.pumpAndSettle(const Duration(seconds: 5));
+        await initApp(tester);
 
         DB().generalSettings = DB().generalSettings.copyWith(
           skillLevel: 1,

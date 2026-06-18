@@ -11,7 +11,7 @@
 
 import 'dart:math';
 
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sanmill/game_page/services/mill.dart';
 
@@ -372,6 +372,15 @@ class SmartActions {
   Future<ActionResult> _uiOpenCloseDrawer(WidgetTester tester) async {
     print('[SmartAction] UI: open/close drawer');
     try {
+      final Finder drawerButton = find.byKey(
+        const Key('custom_drawer_drawer_overlay_button'),
+      );
+      if (drawerButton.evaluate().isEmpty ||
+          tester.widget<IconButton>(drawerButton).onPressed == null) {
+        skippedActions++;
+        return ActionResult.skipped;
+      }
+
       await openDrawer(tester);
       await _safePumpAndSettle(tester);
       await closeDrawer(tester);
@@ -425,34 +434,7 @@ class SmartActions {
 
   /// Try to dismiss any visible dialogs by tapping common dismiss buttons.
   Future<void> _dismissDialogs(WidgetTester tester) async {
-    // Try OK / Yes / close buttons commonly used in dialogs.
-    for (final String key in <String>[
-      'game_result_alert_dialog_yes_button',
-      'game_result_alert_dialog_no_button',
-      'game_result_alert_dialog_cancel_button',
-      'game_result_alert_dialog_restart_button',
-      'ai_vs_ai_game_result_dialog_close_button',
-      'ai_vs_ai_game_result_dialog_restart_button',
-      'restart_game_yes_button',
-      'info_dialog_ok_button',
-    ]) {
-      final Finder btn = find.byKey(Key(key));
-      if (btn.evaluate().isNotEmpty) {
-        await tester.tap(btn.first);
-        await _safePumpAndSettle(tester);
-      }
-    }
-
-    // Try generic OK / text buttons.
-    final Finder okText = find.text('OK');
-    if (okText.evaluate().isNotEmpty) {
-      try {
-        await tester.tap(okText.first);
-        await _safePumpAndSettle(tester);
-      } catch (_) {
-        // Ignore if not tappable.
-      }
-    }
+    await dismissBlockingDialogs(tester);
   }
 
   /// Try to navigate back to the game page.
@@ -510,13 +492,7 @@ class SmartActions {
     WidgetTester tester, {
     Duration timeout = const Duration(seconds: 3),
   }) async {
-    try {
-      await tester.pumpAndSettle(timeout);
-    } on FlutterError {
-      // pumpAndSettle timed out — the tree may still be animating
-      // (e.g. AI thinking indicator). Pump once and move on.
-      await tester.pump(const Duration(milliseconds: 100));
-    }
+    await pumpAndSettleWithin(tester, timeout: timeout);
   }
 
   /// Print a summary of all actions performed.

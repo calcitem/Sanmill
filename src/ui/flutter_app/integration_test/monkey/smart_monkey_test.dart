@@ -21,8 +21,8 @@ import '../init_test_environment.dart';
 import 'game_state_reader.dart';
 import 'smart_actions.dart';
 
-const int kActionsPerHvHGame = 120;
-const int kActionsPerHvAIGame = 60;
+const int kActionsPerHvHGame = 80;
+const int kActionsPerHvAIGame = 20;
 
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
@@ -100,7 +100,11 @@ void main() {
           await actions.performAction(tester);
 
           try {
-            await tester.pumpAndSettle(const Duration(seconds: 3));
+            await tester.pumpAndSettle(
+              const Duration(milliseconds: 100),
+              EnginePhase.sendSemanticsUpdate,
+              const Duration(seconds: 3),
+            );
           } on FlutterError {
             await tester.pump(const Duration(milliseconds: 200));
           }

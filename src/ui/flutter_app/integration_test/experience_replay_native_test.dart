@@ -15,12 +15,13 @@ import 'package:sanmill/game_page/services/mill.dart' show ExtMove, PieceColor;
 import 'package:sanmill/game_platform/game_session.dart';
 import 'package:sanmill/games/mill/mill_action_codec.dart';
 import 'package:sanmill/games/mill/native_mill_game_session.dart';
-import 'package:sanmill/src/rust/frb_generated.dart';
+
+import 'init_test_environment.dart';
 
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
-  setUpAll(() async => RustLib.init());
+  setUpAll(initRustForIntegrationTest);
 
   group('NativeMillGameSession replay', () {
     testWidgets('replayMainline reconstructs placing-phase position', (
