@@ -21,10 +21,10 @@ use super::move_priority::static_move_priority_for_search;
 use super::*;
 
 impl MillRules {
-    pub(super) fn legal_actions_ctx(
+    pub(super) fn legal_actions_ctx<const N: usize>(
         &self,
         state: &MillState,
-        out: &mut ActionList<256>,
+        out: &mut ActionList<N>,
         ctx: &tgf_core::MoveOrderContext,
     ) {
         let priority_storage;
@@ -99,7 +99,14 @@ impl MillRules {
                 if state.board[from] != own_piece {
                     continue;
                 }
-                if crate::topology::neighbors_for(from, self.options.has_diagonal_lines)
+                if self.options.has_diagonal_lines {
+                    if crate::topology::diagonal_neighbors_for(from)
+                        .iter()
+                        .any(|to| state.board[*to as usize] == 0)
+                    {
+                        return true;
+                    }
+                } else if crate::topology::standard_neighbors_for(from)
                     .iter()
                     .any(|to| state.board[*to as usize] == 0)
                 {
@@ -205,20 +212,20 @@ impl MillRules {
         self.maybe_handle_stalemate(state);
     }
 
-    pub(super) fn generate_move_actions(
+    pub(super) fn generate_move_actions<const N: usize>(
         &self,
         state: &MillState,
-        out: &mut ActionList<256>,
+        out: &mut ActionList<N>,
         allow_fly: bool,
     ) {
         let priority = default_dense_priority();
         self.generate_move_actions_with_priority(state, out, allow_fly, &priority);
     }
 
-    fn generate_move_actions_with_priority(
+    fn generate_move_actions_with_priority<const N: usize>(
         &self,
         state: &MillState,
-        out: &mut ActionList<256>,
+        out: &mut ActionList<N>,
         allow_fly: bool,
         priority: &[usize; 24],
     ) {
@@ -267,9 +274,15 @@ impl MillRules {
                             out.push(move_action(from, to));
                         }
                     }
+                } else if self.options.has_diagonal_lines {
+                    for &to in crate::topology::diagonal_neighbors_for(from) {
+                        let to = to as usize;
+                        if state.board[to] == 0 {
+                            out.push(move_action(from, to));
+                        }
+                    }
                 } else {
-                    for &to in crate::topology::neighbors_for(from, self.options.has_diagonal_lines)
-                    {
+                    for &to in crate::topology::standard_neighbors_for(from) {
                         let to = to as usize;
                         if state.board[to] == 0 {
                             out.push(move_action(from, to));
@@ -360,10 +373,10 @@ impl MillRules {
         potential_mills_count_at(state, &self.options, to, state.side_to_move, Some(from)) > 0
     }
 
-    pub(super) fn generate_remove_actions(
+    pub(super) fn generate_remove_actions<const N: usize>(
         &self,
         state: &MillState,
-        out: &mut ActionList<256>,
+        out: &mut ActionList<N>,
         priority: &[usize; 24],
     ) {
         let us = state.side_to_move as usize;
@@ -411,10 +424,10 @@ impl MillRules {
         );
     }
 
-    fn generate_regular_remove_actions_for_piece(
+    fn generate_regular_remove_actions_for_piece<const N: usize>(
         &self,
         state: &MillState,
-        out: &mut ActionList<256>,
+        out: &mut ActionList<N>,
         target_piece: i8,
         excluded_targets: u32,
         priority: &[usize; 24],
@@ -469,10 +482,10 @@ impl MillRules {
         }
     }
 
-    fn generate_capture_remove_actions(
+    fn generate_capture_remove_actions<const N: usize>(
         &self,
         state: &MillState,
-        out: &mut ActionList<256>,
+        out: &mut ActionList<N>,
         targets: u32,
     ) {
         let opponent_piece = (state.side_to_move ^ 1) + 1;

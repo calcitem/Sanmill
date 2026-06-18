@@ -68,7 +68,16 @@ pub fn tgf_kernel_mill_search_events(handle: u32, depth: i32, sink: StreamSink<E
 
     let options = variant_extras::options_for(handle);
     let root_repetition_history = MillRules::repetition_history_from_snapshots(&snapshot, &history);
-    spawn_mill_pvs_event_stream(snapshot, root_repetition_history, options, depth, sink);
+    let root_position_resets_repetition =
+        MillRules::root_position_resets_repetition_from_snapshots(&snapshot, &history);
+    spawn_mill_pvs_event_stream(
+        snapshot,
+        root_repetition_history,
+        root_position_resets_repetition,
+        options,
+        depth,
+        sink,
+    );
 }
 
 /// Full-config search over the kernel's **current** Mill position.
@@ -103,7 +112,16 @@ pub fn tgf_kernel_mill_search_events_with_config(
         };
     let options = variant_extras::options_for(handle);
     let root_repetition_history = MillRules::repetition_history_from_snapshots(&snapshot, &history);
-    spawn_mill_engine_config_event_stream(snapshot, root_repetition_history, options, config, sink);
+    let root_position_resets_repetition =
+        MillRules::root_position_resets_repetition_from_snapshots(&snapshot, &history);
+    spawn_mill_engine_config_event_stream(
+        snapshot,
+        root_repetition_history,
+        root_position_resets_repetition,
+        options,
+        config,
+        sink,
+    );
 }
 
 // ---------------------------------------------------------------------------

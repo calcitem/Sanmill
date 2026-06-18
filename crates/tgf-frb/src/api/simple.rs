@@ -918,11 +918,19 @@ pub fn native_mill_search_zero_time_limit_aborts() -> bool {
 pub(crate) fn spawn_mill_pvs_event_stream(
     snapshot: tgf_core::GameStateSnapshot,
     root_repetition_history: Vec<u64>,
+    root_position_resets_repetition: bool,
     options: NativeMillVariantOptions,
     depth: i32,
     sink: StreamSink<EngineEvent>,
 ) {
-    spawn_mill_pvs_event_stream_internal(snapshot, root_repetition_history, options, depth, sink);
+    spawn_mill_pvs_event_stream_internal(
+        snapshot,
+        root_repetition_history,
+        root_position_resets_repetition,
+        options,
+        depth,
+        sink,
+    );
 }
 
 /// Launch a search thread using the full `MillEngineConfig`.  Emits one
@@ -931,6 +939,7 @@ pub(crate) fn spawn_mill_pvs_event_stream(
 pub(crate) fn spawn_mill_engine_config_event_stream(
     snapshot: tgf_core::GameStateSnapshot,
     root_repetition_history: Vec<u64>,
+    root_position_resets_repetition: bool,
     options: NativeMillVariantOptions,
     config: MillEngineConfig,
     sink: StreamSink<EngineEvent>,
@@ -939,6 +948,7 @@ pub(crate) fn spawn_mill_engine_config_event_stream(
     spawn_mill_engine_config_event_stream_internal(
         snapshot,
         root_repetition_history,
+        root_position_resets_repetition,
         options,
         internal_cfg,
         sink,
@@ -957,6 +967,7 @@ pub fn native_mill_search_events(depth: i32, sink: StreamSink<EngineEvent>) {
     spawn_mill_pvs_event_stream_internal(
         snap,
         Vec::new(),
+        false,
         NativeMillVariantOptions::default(),
         depth,
         sink,

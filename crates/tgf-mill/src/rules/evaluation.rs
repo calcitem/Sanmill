@@ -171,6 +171,17 @@ fn adjacent_mobility_counts(
     let mut white = 0_i32;
     let mut black = 0_i32;
     let mut empty = 0_i32;
+    if state.delayed_marked_pieces == 0 && !options.has_diagonal_lines {
+        for &neighbor in crate::topology::standard_neighbors_for(node) {
+            match state.board[neighbor as usize] {
+                0 => empty += 1,
+                1 => white += 1,
+                2 => black += 1,
+                _ => {}
+            }
+        }
+        return (white, black, empty);
+    }
     for &neighbor in crate::topology::neighbors_for(node, options.has_diagonal_lines) {
         match live_piece(state, neighbor as usize) {
             0 => empty += 1,
@@ -283,8 +294,24 @@ pub(super) fn surrounded_pieces_count(
 pub(super) fn remove_move_score(state: &MillState, options: &MillVariantOptions, to: usize) -> i32 {
     let side = state.side_to_move;
     let opponent = side ^ 1;
-    let our_mills = super::potential_mills_count_at(state, options, to, side, None) as i32;
-    let their_mills = super::potential_mills_count_at(state, options, to, opponent, None) as i32;
+    let (our_mills, their_mills) = if state.delayed_marked_pieces == 0
+        && !options.has_diagonal_lines
+        && !options.one_time_use_mill
+    {
+        let (our_mills, their_mills) = super::potential_mills_count_standard_unrestricted_pair(
+            &state.board,
+            to,
+            side + 1,
+            opponent + 1,
+            None,
+        );
+        (our_mills as i32, their_mills as i32)
+    } else {
+        (
+            super::potential_mills_count_at(state, options, to, side, None) as i32,
+            super::potential_mills_count_at(state, options, to, opponent, None) as i32,
+        )
+    };
     let (our_count, their_count, empty_count) = surrounded_pieces_count(state, options, to);
 
     let mut score = 0_i32;

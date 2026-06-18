@@ -13,11 +13,11 @@
 //                            bugs.
 //
 // All three are pure walk routines and never touch the searcher's
-// transposition table, killers or evaluator.
+// transposition table or evaluator.
 
 use std::collections::HashSet;
 
-use tgf_core::{Action, ActionList, Game, Workbench};
+use tgf_core::{Action, Game, SearchActionList, Workbench};
 
 /// Game-neutral perft: counts the leaves of the legal-action tree at the
 /// requested depth.  At depth 0 we count the current node as one leaf; at
@@ -28,7 +28,7 @@ pub fn perft<G: Game>(wb: &mut G::Workbench, depth: i32) -> u64 {
     if depth <= 0 || wb.is_terminal() {
         return 1;
     }
-    let mut moves = ActionList::<256>::new();
+    let mut moves = SearchActionList::new();
     G::generate_legal(wb, &mut moves);
     if moves.is_empty() {
         return 1;
@@ -53,7 +53,7 @@ pub fn perft_split<G: Game>(wb: &mut G::Workbench, depth: i32) -> Vec<(Action, u
     if depth <= 0 || wb.is_terminal() {
         return Vec::new();
     }
-    let mut moves = ActionList::<256>::new();
+    let mut moves = SearchActionList::new();
     G::generate_legal(wb, &mut moves);
     if moves.is_empty() {
         return Vec::new();
@@ -90,7 +90,7 @@ fn fill_unique_keys<G: Game>(wb: &mut G::Workbench, depth: i32, out: &mut HashSe
         out.insert(wb.key());
         return;
     }
-    let mut moves = ActionList::<256>::new();
+    let mut moves = SearchActionList::new();
     G::generate_legal(wb, &mut moves);
     if moves.is_empty() {
         out.insert(wb.key());

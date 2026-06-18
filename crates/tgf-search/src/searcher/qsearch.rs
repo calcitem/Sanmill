@@ -3,10 +3,16 @@
 // with `alpha_beta`.  Hosted in a sibling impl block so the main
 // `searcher/mod.rs` stays under 1k lines.
 
-use tgf_core::{Action, ActionList, Evaluator, Game, Workbench};
+use tgf_core::{Action, Evaluator, Game, SearchActionList, Workbench};
 
 use super::Searcher;
 use crate::tt::{Bound, TtEntry};
+
+pub(super) enum TtProbe {
+    Miss,
+    HitNoCutoff,
+    Cutoff(i32),
+}
 
 impl<G: Game> Searcher<G> {
     /// Quiescence search entry point preserved for external callers.  Equivalent
@@ -69,7 +75,7 @@ impl<G: Game> Searcher<G> {
             return alpha;
         };
 
-        let mut moves = ActionList::<256>::new();
+        let mut moves = SearchActionList::new();
         G::generate_legal_ctx(wb, &mut moves, &self.options.move_order_context);
         moves.retain(|a| a.kind_tag == quiescence_kind_tag);
         if moves.is_empty() {
@@ -78,21 +84,7 @@ impl<G: Game> Searcher<G> {
         let key = wb.key();
         self.order_moves(wb, key, depth, &mut moves);
 
-        // TT prefetch: only warm the cache line for the first
-        // candidate.  See alpha_beta for the rationale; the same
-        // "prefetch-the-first-only" pattern wins at depth 5+ in
-        // selfplay.
-        if self.options.enable_prefetch
-            && let Some(&first_action) = moves.first()
-        {
-            // SAFETY INVARIANT: `key_after` is prefetch-quality, not
-            // correctness-quality. `predicted_key` must ONLY feed
-            // `tt.prefetch` (a cache hint that never touches a TT slot);
-            // probe/save use the real `wb.key()`, so a mispredicted key
-            // costs at most a wasted prefetch.
-            let predicted_key = wb.key_after(first_action);
-            self.tt.prefetch(predicted_key);
-        }
+        self.prefetch_child_keys(wb, &moves);
 
         for action in moves.iter().copied() {
             if self.should_abort() {
@@ -121,8 +113,11 @@ impl<G: Game> Searcher<G> {
     ///
     /// Mirrors master `Search::search` (src/search.cpp): on a `BOUND_LOWER`
     /// hit it raises `alpha`, on a `BOUND_UPPER` hit it lowers `beta`, and
-    /// returns the stored value as a cutoff when `alpha >= beta`.  Crucially
-    /// BOTH `alpha` and `beta` are taken by `&mut` so that, when there is no
+    /// returns the stored value as a cutoff when `alpha >= beta`. A
+    /// depth-sufficient non-cutoff Lower/Upper entry is still a TT hit in
+    /// master's diagnostics, so callers must count `HitNoCutoff` as a hit and
+    /// then continue searching with the narrowed window. Crucially BOTH
+    /// `alpha` and `beta` are taken by `&mut` so that, when there is no
     /// immediate cutoff, the narrowed window propagates back to the caller and
     /// is used for the remaining move loop and the final bound classification.
     /// Dropping the `beta` narrowing (the previous behaviour) left zero-window
@@ -134,20 +129,27 @@ impl<G: Game> Searcher<G> {
         depth: i32,
         alpha: &mut i32,
         beta: &mut i32,
-    ) -> Option<i32> {
-        let entry = self.tt.get(key)?;
-        if entry.depth < depth {
-            return None;
-        }
-        match entry.bound {
-            Bound::Exact => Some(entry.value),
+    ) -> TtProbe {
+        let Some((value, bound)) = self.tt.probe_value_bound(key, depth) else {
+            return TtProbe::Miss;
+        };
+        match bound {
+            Bound::Exact => TtProbe::Cutoff(value),
             Bound::Lower => {
-                *alpha = (*alpha).max(entry.value);
-                (*alpha >= *beta).then_some(entry.value)
+                *alpha = (*alpha).max(value);
+                if *alpha >= *beta {
+                    TtProbe::Cutoff(value)
+                } else {
+                    TtProbe::HitNoCutoff
+                }
             }
             Bound::Upper => {
-                *beta = (*beta).min(entry.value);
-                (*alpha >= *beta).then_some(entry.value)
+                *beta = (*beta).min(value);
+                if *alpha >= *beta {
+                    TtProbe::Cutoff(value)
+                } else {
+                    TtProbe::HitNoCutoff
+                }
             }
         }
     }
@@ -170,5 +172,27 @@ impl<G: Game> Searcher<G> {
                 best_action,
             },
         );
+    }
+
+    #[inline]
+    pub(super) fn prefetch_child_keys(&self, wb: &mut G::Workbench, moves: &SearchActionList) {
+        if !self.options.enable_prefetch {
+            return;
+        }
+
+        // SAFETY INVARIANT: `key_after` is prefetch-quality, not
+        // correctness-quality. `predicted_key` must ONLY feed
+        // `tt.prefetch` (a cache hint that never touches a TT slot);
+        // probe/save use the real `wb.key()`, so a mispredicted key
+        // costs at most a wasted prefetch.
+        if self.options.prefetch_all {
+            for action in moves.iter().copied() {
+                let predicted_key = wb.key_after(action);
+                self.tt.prefetch(predicted_key);
+            }
+        } else if let Some(&first_action) = moves.first() {
+            let predicted_key = wb.key_after(first_action);
+            self.tt.prefetch(predicted_key);
+        }
     }
 }

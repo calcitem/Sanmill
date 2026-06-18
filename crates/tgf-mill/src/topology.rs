@@ -338,10 +338,22 @@ const NEIGHBORS_DIAGONAL: [&[u16]; 24] = [
 #[inline]
 pub(crate) fn neighbors_for(node: usize, has_diagonal_lines: bool) -> &'static [u16] {
     if has_diagonal_lines {
-        NEIGHBORS_DIAGONAL[node]
+        diagonal_neighbors_for(node)
     } else {
-        NEIGHBORS[node]
+        standard_neighbors_for(node)
     }
+}
+
+#[inline]
+pub(crate) fn standard_neighbors_for(node: usize) -> &'static [u16] {
+    debug_assert!(node < 24);
+    NEIGHBORS[node]
+}
+
+#[inline]
+pub(crate) fn diagonal_neighbors_for(node: usize) -> &'static [u16] {
+    debug_assert!(node < 24);
+    NEIGHBORS_DIAGONAL[node]
 }
 
 #[cfg(test)]

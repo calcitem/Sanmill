@@ -6,7 +6,7 @@
 use super::*;
 use std::sync::atomic::{AtomicUsize, Ordering};
 use tgf_core::{
-    Action, ActionList, Evaluator, Game, GameStateSnapshot, MoveOrderContext, Workbench,
+    Action, Evaluator, Game, GameStateSnapshot, MoveOrderContext, SearchActionList, Workbench,
 };
 
 // Re-export internal TT primitives so the regression suite can poke
@@ -72,7 +72,7 @@ impl tgf_core::Game for SameSideGame {
         }
     }
 
-    fn generate_legal(wb: &Self::Workbench, out: &mut ActionList<256>) {
+    fn generate_legal(wb: &Self::Workbench, out: &mut SearchActionList) {
         if !wb.moved {
             out.push(Action {
                 kind_tag: 0,
@@ -139,7 +139,7 @@ impl tgf_core::Game for BiasGame {
         BiasWorkbench
     }
 
-    fn generate_legal(_wb: &Self::Workbench, out: &mut ActionList<256>) {
+    fn generate_legal(_wb: &Self::Workbench, out: &mut SearchActionList) {
         out.push(Action {
             kind_tag: 0,
             from_node: -1,
@@ -241,7 +241,7 @@ impl tgf_core::Game for RepetitionGame {
         }
     }
 
-    fn generate_legal(_wb: &Self::Workbench, out: &mut ActionList<256>) {
+    fn generate_legal(_wb: &Self::Workbench, out: &mut SearchActionList) {
         out.push(Action {
             kind_tag: 0,
             from_node: -1,
@@ -331,7 +331,7 @@ impl tgf_core::Game for KeyedGame {
         KeyedWorkbench { ply: 0, side: 0 }
     }
 
-    fn generate_legal(wb: &Self::Workbench, out: &mut ActionList<256>) {
+    fn generate_legal(wb: &Self::Workbench, out: &mut SearchActionList) {
         if wb.ply < 2 {
             out.push(Action {
                 kind_tag: 0,
@@ -534,7 +534,7 @@ fn qsearch_with_depth_decays_stand_pat_for_mate_distance() {
         fn build_workbench(&self, _: &GameStateSnapshot) -> Self::Workbench {
             StaticEvalWorkbench
         }
-        fn generate_legal(_: &Self::Workbench, _: &mut ActionList<256>) {}
+        fn generate_legal(_: &Self::Workbench, _: &mut SearchActionList) {}
     }
 
     let mut wb = StaticEvalWorkbench;
@@ -693,20 +693,20 @@ fn tt_non_exact_entry_is_skipped_after_age_bump() {
 }
 
 #[test]
-fn tt_exact_entry_survives_age_bump() {
+fn tt_exact_entry_is_skipped_after_age_bump() {
     let tt = ClusteredTt::new_with_cluster_bits(10);
     let key = 0x1234_5678_9abc_def0_u64;
     let entry = TtEntry {
         value: 42,
         depth: 5,
-        bound: Bound::Exact, // Exact always survives
+        bound: Bound::Exact,
         best_action: Action::NONE,
     };
     tt.save(key, entry);
     tt.bump_age();
     assert!(
-        tt.get(key).is_some(),
-        "Exact entry should survive a generation bump"
+        tt.get(key).is_none(),
+        "Exact entry should be invisible after age bump"
     );
 }
 
@@ -747,7 +747,7 @@ fn workbench_default_key_after_matches_do_move_round_trip() {
     let game = KeyedGame;
     let mut wb = game.build_workbench(&GameStateSnapshot::default());
 
-    let mut moves = ActionList::<256>::new();
+    let mut moves = SearchActionList::new();
     KeyedGame::generate_legal(&wb, &mut moves);
     assert!(!moves.is_empty(), "fixture must have legal moves");
 

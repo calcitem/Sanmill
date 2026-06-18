@@ -7,17 +7,17 @@
 // statically through the `G: Game` type parameter, mirroring the C++
 // CRTP design in the migration plan.
 
-use std::collections::HashMap;
 use std::marker::PhantomData;
 use std::sync::Arc;
 use std::sync::atomic::{AtomicBool, Ordering};
 use std::time::{Duration, Instant};
 
-use tgf_core::{Action, ActionList, Evaluator, Game, MoveOrderContext, Workbench};
+use tgf_core::{Action, Evaluator, Game, MoveOrderContext, SearchActionList, Workbench};
 
 use crate::abort::SearchAbortHandle;
 use crate::options::{SearchOptions, SearchPolicy};
 use crate::result::SearchResult;
+use crate::searcher::qsearch::TtProbe;
 use crate::tt::{Bound, ClusteredTt, SharedTt};
 
 mod iterative_mtdf;
@@ -46,8 +46,6 @@ pub struct Searcher<G: Game> {
     tt_age_bumps: u64,
     rng_state: u64,
     tt: Arc<ClusteredTt>,
-    killers: HashMap<i32, Action>,
-    history: HashMap<Action, i32>,
     policy: SearchPolicy,
     options: SearchOptions,
     /// Maximum quiescence depth extension beyond `depth == 0`.  Mirrors the
@@ -56,6 +54,7 @@ pub struct Searcher<G: Game> {
     /// recurse N plies deeper than the main search horizon.
     qsearch_max_depth: i32,
     search_started_at: Option<Instant>,
+    fixed_depth_no_budget: bool,
     abort_flag: Arc<AtomicBool>,
     aborted: bool,
     /// Zobrist keys of positions on the search path from root to the current
@@ -76,15 +75,14 @@ impl<G: Game> Default for Searcher<G> {
             tt_age_bumps: 0,
             rng_state: 0x9E37_79B9_7F4A_7C15,
             tt: Arc::new(ClusteredTt::default()),
-            killers: HashMap::new(),
-            history: HashMap::new(),
             policy: SearchPolicy::default(),
             options: SearchOptions::default(),
             qsearch_max_depth: 0,
             search_started_at: None,
+            fixed_depth_no_budget: false,
             abort_flag: Arc::new(AtomicBool::new(false)),
             aborted: false,
-            repetition_stack: Vec::new(),
+            repetition_stack: Vec::with_capacity(128),
             repetition_current_incoming_reset: false,
             _phantom: PhantomData,
         }
@@ -104,27 +102,31 @@ impl<G: Game> Searcher<G> {
         }
     }
 
-    /// Resize the TT from the UCI `Hash` option while preserving master's
-    /// lower bound.  The C++ engine starts with 16 Mi direct entries and
-    /// `TT.resize(value)` ignores any value below that entry count, so the
-    /// default `Hash = 16` must not shrink the table.
-    pub fn resize_tt_by_mb(&mut self, mb: u32) {
+    /// Resize the TT from the UCI `Hash` option while preserving the supplied
+    /// lower bound.  Production callers pass [`ClusteredTt::DEFAULT_CLUSTER_BITS`],
+    /// matching master: the C++ engine starts with 16 Mi direct entries and
+    /// `TT.resize(value)` ignores any value below that entry count.  Diagnostic
+    /// callers may pass a smaller floor to study cache locality without changing
+    /// production defaults.
+    pub fn resize_tt_by_mb_with_floor(&mut self, mb: u32, floor_bits: u32) {
         let bytes = (mb as u64).saturating_mul(1024 * 1024);
         let cluster_bytes = 8_u64;
         let num_clusters = (bytes / cluster_bytes).max(1);
         let bits = (63 - num_clusters.leading_zeros())
-            .max(ClusteredTt::DEFAULT_CLUSTER_BITS)
+            .max(floor_bits)
             .clamp(10, 26);
         self.tt = Arc::new(ClusteredTt::new_with_cluster_bits(bits));
-        self.killers.clear();
-        self.history.clear();
+    }
+
+    pub fn resize_tt_by_mb(&mut self, mb: u32) {
+        self.resize_tt_by_mb_with_floor(mb, ClusteredTt::DEFAULT_CLUSTER_BITS);
     }
 
     /// Build a Searcher whose transposition table is shared with all other
     /// Searchers holding the same [`SharedTt`].  This is the entry point for
     /// lazy-SMP parallel search: spawn N threads, each owning its own
-    /// Searcher (with independent killers / history / abort flag) but all
-    /// reading and writing the same cluster array.
+    /// Searcher (with an independent abort flag) but all reading and writing
+    /// the same cluster array.
     pub fn with_shared_tt(shared: SharedTt) -> Self {
         Self {
             tt: shared.inner,
@@ -172,12 +174,9 @@ impl<G: Game> Searcher<G> {
     /// Soft-clear the transposition table by bumping its generation counter.
     /// Non-Exact entries stored in the previous generation are treated as
     /// stale on the next probe, matching the C++ fake-clean semantics.
-    /// Also clears killer and history tables (these are always position-local).
     pub fn clear_tt(&mut self) {
         self.tt.bump_age();
         self.tt_age_bumps += 1;
-        self.killers.clear();
-        self.history.clear();
     }
 
     /// Total number of TT age bumps since this Searcher was created.
@@ -250,7 +249,7 @@ impl<G: Game> Searcher<G> {
                 draw_reason: None,
             };
         }
-        let mut moves = ActionList::<256>::new();
+        let mut moves = SearchActionList::new();
         G::generate_legal_ctx(wb, &mut moves, &self.options.move_order_context);
         // P2-K: root shuffle before sort (mirrors master's MoveList::shuffle).
         if self.options.shuffle_root {
@@ -337,7 +336,7 @@ impl<G: Game> Searcher<G> {
                 draw_reason: None,
             };
         }
-        let mut moves = ActionList::<256>::new();
+        let mut moves = SearchActionList::new();
         G::generate_legal_ctx(wb, &mut moves, &self.options.move_order_context);
         // P2-K: root shuffle before sort.
         if self.options.shuffle_root {
@@ -410,7 +409,7 @@ impl<G: Game> Searcher<G> {
         self.begin_root_search_at(wb);
         let root_key = wb.key();
         let old_alpha = alpha;
-        let mut moves = ActionList::<256>::new();
+        let mut moves = SearchActionList::new();
         G::generate_legal_ctx(wb, &mut moves, &self.options.move_order_context);
         self.order_moves(wb, root_key, depth, &mut moves);
         let mut best_value = i32::MIN + 1;
@@ -459,7 +458,7 @@ impl<G: Game> Searcher<G> {
     /// Deterministic random-search equivalent.  Production callers can seed
     /// this from time; tests pass a fixed seed to keep results reproducible.
     pub fn random_search(&mut self, wb: &mut G::Workbench) -> SearchResult {
-        let mut moves = ActionList::<256>::new();
+        let mut moves = SearchActionList::new();
         G::generate_legal_ctx(wb, &mut moves, &self.options.move_order_context);
         if moves.is_empty() {
             return SearchResult {
@@ -516,12 +515,19 @@ impl<G: Game> Searcher<G> {
 
         let key = wb.key();
         let old_alpha = alpha;
-        if let Some(value) = self.probe_tt(key, depth, &mut alpha, &mut beta) {
-            self.tt_hits += 1;
-            return value;
-        }
-        if key != 0 {
-            self.tt_misses += 1;
+        match self.probe_tt(key, depth, &mut alpha, &mut beta) {
+            TtProbe::Cutoff(value) => {
+                self.tt_hits += 1;
+                return value;
+            }
+            TtProbe::HitNoCutoff => {
+                self.tt_hits += 1;
+            }
+            TtProbe::Miss => {
+                if key != 0 {
+                    self.tt_misses += 1;
+                }
+            }
         }
 
         // Repetition cut, faithfully mirroring master `Search::search`
@@ -581,7 +587,7 @@ impl<G: Game> Searcher<G> {
             }
         }
 
-        let mut moves = ActionList::<256>::new();
+        let mut moves = SearchActionList::new();
         G::generate_legal_ctx(wb, &mut moves, &self.options.move_order_context);
         self.order_moves(wb, key, depth, &mut moves);
         if moves.is_empty() {
@@ -595,22 +601,7 @@ impl<G: Game> Searcher<G> {
         } else {
             0
         };
-        // TT prefetch: warm the first candidate's child slot.  With the
-        // master-aligned direct TT this is a net win on deep placing roots,
-        // while prefetching every candidate is slower because Mill's
-        // `key_after` is still non-trivial and most later hints age out before
-        // use.
-        if self.options.enable_prefetch
-            && let Some(&first_action) = moves.first()
-        {
-            // SAFETY INVARIANT: `key_after` is prefetch-quality, not
-            // correctness-quality (it skips mill/capture-state and misc
-            // bits). `predicted_key` must ONLY feed `tt.prefetch`, which
-            // emits a cache hint and never touches a TT slot. Probe,
-            // save, and repetition tracking all use the real `wb.key()`.
-            let predicted_key = wb.key_after(first_action);
-            self.tt.prefetch(predicted_key);
-        }
+        self.prefetch_child_keys(wb, &moves);
         for action in moves.iter().copied() {
             if self.should_abort() {
                 return best_value.max(alpha);
@@ -628,7 +619,6 @@ impl<G: Game> Searcher<G> {
                 best_action = action;
             }
             if score >= beta {
-                self.record_cutoff(depth, action);
                 self.save_tt(key, depth, score, Bound::Lower, action);
                 return score;
             }
@@ -649,6 +639,23 @@ impl<G: Game> Searcher<G> {
 
     #[inline]
     fn should_abort(&mut self) -> bool {
+        if self.aborted {
+            return true;
+        }
+        if self.fixed_depth_no_budget {
+            if (self.nodes & 1023) != 0 {
+                return false;
+            }
+            if self.abort_flag.load(Ordering::Relaxed) {
+                self.aborted = true;
+            }
+            return self.aborted;
+        }
+        self.should_abort_slow()
+    }
+
+    #[inline(never)]
+    fn should_abort_slow(&mut self) -> bool {
         if let Some(limit) = self.options.node_limit
             && self.nodes >= limit
         {
@@ -673,12 +680,17 @@ impl<G: Game> Searcher<G> {
         self.aborted = false;
         self.repetition_stack.clear();
         self.repetition_current_incoming_reset = false;
+        self.fixed_depth_no_budget =
+            self.options.node_limit.is_none() && self.options.time_limit_ms.is_none();
         // Intentionally do NOT clear `abort_flag` here.  External callers
         // hold a clone of the Arc and may have already requested an abort
         // (especially when search is spawned on another thread): clearing
         // the flag here would race with the request and silently lose it.
         // To rerun an aborted Searcher, call [`Self::clear_abort`].
-        self.search_started_at = Some(Instant::now());
+        self.search_started_at = self.options.time_limit_ms.map(|_| Instant::now());
+        if self.abort_flag.load(Ordering::Relaxed) {
+            self.aborted = true;
+        }
     }
 
     #[inline]

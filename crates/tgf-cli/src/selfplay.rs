@@ -253,9 +253,8 @@ fn play_one_game(
         shuffle_root: false,
         // Driven by the --prefetch CLI flag for empirical A/B testing.
         enable_prefetch,
+        prefetch_all: false,
         enable_aspiration_window: false,
-        enable_killers: false,
-        enable_history: false,
         move_order_context,
     };
 

@@ -65,8 +65,9 @@ pub(crate) struct ClusteredTt {
     pub(crate) clusters: Box<[TtCluster]>,
     pub(crate) cluster_mask: usize,
     /// Global generation counter used for soft "fake-clean" clear semantics,
-    /// matching C++ `transpositionTableAge` in `src/tt.cpp`.  Incrementing
-    /// this bumps all non-Exact cached entries to stale without zeroing memory.
+    /// matching C++ `transpositionTableAge` in `src/tt.cpp`. Incrementing this
+    /// makes every cached entry from the old generation stale without zeroing
+    /// memory.
     pub(crate) current_age: AtomicU8,
 }
 
@@ -96,32 +97,62 @@ impl ClusteredTt {
 
     #[inline]
     fn cluster_ix(&self, key: u64) -> usize {
-        (TtPackedEntry::key_sig(key) as usize) & self.cluster_mask
+        self.cluster_ix_from_sig(TtPackedEntry::key_sig(key))
     }
 
+    #[inline]
+    fn cluster_ix_from_sig(&self, key_sig: u32) -> usize {
+        (key_sig as usize) & self.cluster_mask
+    }
+
+    #[inline(always)]
     pub(crate) fn get(&self, key: u64) -> Option<TtEntry> {
         let cur_age = self.current_age.load(Ordering::Relaxed);
         let key_sig = TtPackedEntry::key_sig(key);
-        let meta = self.clusters[self.cluster_ix(key)]
+        let meta = self.clusters[self.cluster_ix_from_sig(key_sig)]
             .meta
             .load(Ordering::Relaxed);
         if meta == 0 || TtPackedEntry::packed_key_sig(meta) != key_sig {
             return None;
         }
-        // Fake-clean: treat non-Exact old-generation entries as misses,
-        // matching C++ TRANSPOSITION_TABLE_FAKE_CLEAN semantics.
+        // Fake-clean: master has TRANSPOSITION_TABLE_FAKE_CLEAN enabled and
+        // TRANSPOSITION_TABLE_FAKE_CLEAN_NOT_EXACT_ONLY disabled, so every
+        // old-generation entry is a miss, including Exact entries.
         let entry_age = TtPackedEntry::packed_age(meta);
-        if entry_age != cur_age && TtPackedEntry::unpack_bound(meta) != Bound::Exact {
+        if entry_age != cur_age {
             return None;
         }
         Some(TtPackedEntry::unpack_entry(meta))
     }
 
+    #[inline(always)]
+    pub(crate) fn probe_value_bound(&self, key: u64, depth: i32) -> Option<(i32, Bound)> {
+        let cur_age = self.current_age.load(Ordering::Relaxed);
+        let key_sig = TtPackedEntry::key_sig(key);
+        let meta = self.clusters[self.cluster_ix_from_sig(key_sig)]
+            .meta
+            .load(Ordering::Relaxed);
+        if meta == 0 || TtPackedEntry::packed_key_sig(meta) != key_sig {
+            return None;
+        }
+        if TtPackedEntry::packed_age(meta) != cur_age {
+            return None;
+        }
+        if TtPackedEntry::unpack_depth(meta) < depth {
+            return None;
+        }
+        Some((
+            TtPackedEntry::unpack_value(meta),
+            TtPackedEntry::unpack_bound(meta),
+        ))
+    }
+
+    #[inline(always)]
     pub(crate) fn save(&self, key: u64, entry: TtEntry) {
         let cur_age = self.current_age.load(Ordering::Relaxed);
         let new_meta = TtPackedEntry::pack_meta(key, &entry, cur_age);
         let key_sig = TtPackedEntry::key_sig(key);
-        let ix = self.cluster_ix(key);
+        let ix = self.cluster_ix_from_sig(key_sig);
         let slot = &self.clusters[ix].meta;
         let meta = slot.load(Ordering::Relaxed);
         if meta != 0 && TtPackedEntry::packed_key_sig(meta) == key_sig {
@@ -342,16 +373,16 @@ impl SharedTt {
 
     /// Allocate a shared TT sized from the UCI `Hash` option.
     ///
-    /// Mirrors master's effective lower bound: the C++ engine allocates
+    /// Mirrors master's effective lower bound when callers pass
+    /// [`ClusteredTt::DEFAULT_CLUSTER_BITS`]: the C++ engine allocates
     /// `0x1000000` entries at startup and ignores smaller resize requests.
-    /// The result is rounded down to a power-of-two slot count and never below
-    /// either `cluster_bits_floor` or [`ClusteredTt::DEFAULT_CLUSTER_BITS`].
+    /// Diagnostic callers can pass a smaller `cluster_bits_floor` to study
+    /// cache locality without changing production defaults.
     pub fn with_capacity_mb(mb: u32, cluster_bits_floor: u32) -> Self {
         let bytes = (mb.max(1) as usize).saturating_mul(1024 * 1024);
         let cluster_size = std::mem::size_of::<TtCluster>().max(1);
         let clusters = (bytes / cluster_size).max(1);
         let bits = (usize::BITS - 1 - clusters.leading_zeros())
-            .max(ClusteredTt::DEFAULT_CLUSTER_BITS)
             .max(cluster_bits_floor)
             .clamp(10, 26);
         Self::new(bits)

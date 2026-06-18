@@ -266,6 +266,7 @@ fn engine_config_algorithm_routes_search() {
         MillVariantOptions::default(),
         snap,
         Vec::new(),
+        false,
         1,
         &cfg,
         &mut searcher,

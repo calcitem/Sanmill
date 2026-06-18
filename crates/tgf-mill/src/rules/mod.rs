@@ -109,13 +109,14 @@ use move_priority::{default_dense_priority, move_priority_list_for_search};
 pub struct MillRules {
     options: MillVariantOptions,
     topology: MillTopology,
-    standard_place_fast_path: bool,
+    standard_fast_path: bool,
 }
 
 #[derive(Clone, Debug, Default)]
 pub struct MillGame {
     options: MillVariantOptions,
     root_repetition_history: Vec<u64>,
+    root_position_resets_repetition: bool,
 }
 
 #[derive(Clone, Debug)]
@@ -123,7 +124,11 @@ pub struct MillWorkbench {
     rules: MillRules,
     state: MillState,
     undo_stack: Vec<MillUndoState>,
+    root_position_resets_repetition: bool,
 }
+
+/// Search undo stack capacity, matching master `Sanmill::Stack<T, 128>`.
+const MILL_SEARCH_STACK_CAPACITY: usize = 128;
 
 pub struct MillEvaluator;
 
@@ -235,7 +240,7 @@ impl MillVariantOptions {
     }
 }
 
-fn standard_place_fast_path_enabled(options: &MillVariantOptions) -> bool {
+fn standard_fast_path_enabled(options: &MillVariantOptions) -> bool {
     matches!(
         options.mill_formation_action_in_placing_phase,
         MillFormationActionInPlacingPhase::RemoveOpponentsPieceFromBoard
@@ -253,12 +258,12 @@ fn standard_place_fast_path_enabled(options: &MillVariantOptions) -> bool {
 impl MillRules {
     pub fn new(options: MillVariantOptions) -> Self {
         options.assert_valid();
-        let standard_place_fast_path = standard_place_fast_path_enabled(&options);
+        let standard_fast_path = standard_fast_path_enabled(&options);
         let topology = MillTopology::new(options.has_diagonal_lines);
         Self {
             options,
             topology,
-            standard_place_fast_path,
+            standard_fast_path,
         }
     }
 
@@ -434,6 +439,7 @@ impl MillGame {
         Self {
             options,
             root_repetition_history: Vec::new(),
+            root_position_resets_repetition: false,
         }
     }
 
@@ -448,6 +454,23 @@ impl MillGame {
         Self {
             options,
             root_repetition_history,
+            root_position_resets_repetition: false,
+        }
+    }
+
+    pub fn new_with_repetition_context(
+        options: MillVariantOptions,
+        root_repetition_history: Vec<u64>,
+        root_position_resets_repetition: bool,
+    ) -> Self {
+        assert!(
+            root_repetition_history.len() <= MILL_REPETITION_HISTORY_CAP,
+            "root repetition history exceeds Mill cap"
+        );
+        Self {
+            options,
+            root_repetition_history,
+            root_position_resets_repetition,
         }
     }
 }
@@ -621,7 +644,7 @@ struct MillUndoState {
 
 #[derive(Clone, Debug)]
 struct MillUndoCore {
-    board: [i8; 24],
+    board: MillBoardUndo,
     side_to_move: i8,
     phase: MillPhase,
     action: MillActionState,
@@ -657,22 +680,22 @@ struct MillUndoCore {
 #[derive(Clone, Debug)]
 enum MillKeyHistoryUndo {
     Truncate(usize),
-    Restore(Vec<u64>),
+    Restore(Box<[u64]>),
 }
 
 impl MillUndoState {
-    fn capture(state: &MillState, action: Action) -> Self {
+    fn capture(state: &MillState, action: Action, options: &MillVariantOptions) -> Self {
         let clears_history = action.kind_tag == MillActionKind::Place as i16
             || action.kind_tag == MillActionKind::Remove as i16;
         let must_restore_history = state.key_history.len() == MILL_REPETITION_HISTORY_CAP
             || (clears_history && !state.key_history.is_empty());
         let key_history = if must_restore_history {
-            MillKeyHistoryUndo::Restore(state.key_history.clone())
+            MillKeyHistoryUndo::Restore(state.key_history.clone().into_boxed_slice())
         } else {
             MillKeyHistoryUndo::Truncate(state.key_history.len())
         };
         Self {
-            core: MillUndoCore::capture(state),
+            core: MillUndoCore::capture(state, action, options),
             key_history,
         }
     }
@@ -680,7 +703,7 @@ impl MillUndoState {
     fn restore(self, state: &mut MillState) {
         match self.key_history {
             MillKeyHistoryUndo::Truncate(len) => state.key_history.truncate(len),
-            MillKeyHistoryUndo::Restore(history) => state.key_history = history,
+            MillKeyHistoryUndo::Restore(history) => state.key_history = history.into_vec(),
         }
         self.core.restore(state);
         debug_assert_eq!(
@@ -692,9 +715,9 @@ impl MillUndoState {
 }
 
 impl MillUndoCore {
-    fn capture(state: &MillState) -> Self {
+    fn capture(state: &MillState, action: Action, options: &MillVariantOptions) -> Self {
         Self {
-            board: state.board,
+            board: MillBoardUndo::capture(state, action, options),
             side_to_move: state.side_to_move,
             phase: state.phase,
             action: state.action,
@@ -729,7 +752,7 @@ impl MillUndoCore {
     }
 
     fn restore(self, state: &mut MillState) {
-        state.board = self.board;
+        self.board.restore(state);
         state.side_to_move = self.side_to_move;
         state.phase = self.phase;
         state.action = self.action;
@@ -760,6 +783,81 @@ impl MillUndoCore {
         state.board_full_removing = self.board_full_removing;
         state.key_history_len = self.key_history_len;
         state.zobrist_key = self.zobrist_key;
+    }
+}
+
+#[derive(Clone, Debug)]
+enum MillBoardUndo {
+    Delta {
+        len: u8,
+        cells: [(u8, i8); MillBoardUndo::MAX_DELTA_CELLS],
+    },
+    Full(Box<[i8; 24]>),
+}
+
+impl MillBoardUndo {
+    const MAX_DELTA_CELLS: usize = 2;
+
+    fn capture(state: &MillState, action: Action, options: &MillVariantOptions) -> Self {
+        if Self::requires_full_board_snapshot(state, options) {
+            return Self::Full(Box::new(state.board));
+        }
+
+        let mut cells = [(0_u8, 0_i8); Self::MAX_DELTA_CELLS];
+        let mut len = 0_u8;
+        Self::push_cell(&mut cells, &mut len, state, action.from_node);
+        Self::push_cell(&mut cells, &mut len, state, action.to_node);
+        Self::Delta { len, cells }
+    }
+
+    fn requires_full_board_snapshot(state: &MillState, options: &MillVariantOptions) -> bool {
+        state.delayed_marked_pieces != 0
+            || matches!(
+                options.mill_formation_action_in_placing_phase,
+                MillFormationActionInPlacingPhase::MarkAndDelayRemovingPieces
+                    | MillFormationActionInPlacingPhase::RemovalBasedOnMillCounts
+            )
+            || options.custodian_capture.enabled
+            || options.intervention_capture.enabled
+            || options.leap_capture.enabled
+    }
+
+    fn push_cell(
+        cells: &mut [(u8, i8); Self::MAX_DELTA_CELLS],
+        len: &mut u8,
+        state: &MillState,
+        node: i16,
+    ) {
+        if !(0..24).contains(&node) {
+            return;
+        }
+        let node = node as u8;
+        if cells[..usize::from(*len)]
+            .iter()
+            .any(|(old_node, _)| *old_node == node)
+        {
+            return;
+        }
+        let idx = usize::from(*len);
+        assert!(
+            idx < Self::MAX_DELTA_CELLS,
+            "Mill board undo delta capacity exceeded"
+        );
+        cells[idx] = (node, state.board[node as usize]);
+        *len += 1;
+    }
+
+    fn restore(self, state: &mut MillState) {
+        match self {
+            Self::Delta { len, cells } => {
+                for (node, value) in cells.into_iter().take(usize::from(len)) {
+                    state.board[node as usize] = value;
+                }
+            }
+            Self::Full(board) => {
+                state.board = *board;
+            }
+        }
     }
 }
 
@@ -864,12 +962,42 @@ fn potential_mills_count_at(
 }
 
 #[inline(always)]
+fn potential_mills_count_standard_unrestricted(
+    board: &[i8; 24],
+    to: usize,
+    target: i8,
+    from: Option<usize>,
+) -> u32 {
+    let from = from.unwrap_or(usize::MAX);
+    let mut count = 0_u32;
+    for &[line_idx, peer_a, peer_b] in &STANDARD_MILL_LINE_PEERS_BY_NODE[to] {
+        if line_idx == NO_MILL_LINE {
+            break;
+        }
+        let peer_a = peer_a as usize;
+        let peer_b = peer_b as usize;
+        if peer_a == from || peer_b == from {
+            continue;
+        }
+        // SAFETY: STANDARD_MILL_LINE_PEERS_BY_NODE is generated from
+        // STANDARD_MILL_LINES, whose node ids are asserted to be in 0..24.
+        let has_peers = unsafe {
+            *board.get_unchecked(peer_a) == target && *board.get_unchecked(peer_b) == target
+        };
+        count += u32::from(has_peers);
+    }
+    count
+}
+
+#[inline(always)]
 fn potential_mills_count_standard_unrestricted_pair(
     board: &[i8; 24],
     to: usize,
     our_target: i8,
     their_target: i8,
+    our_from: Option<usize>,
 ) -> (u32, u32) {
+    let our_from = our_from.unwrap_or(usize::MAX);
     let mut our_count = 0_u32;
     let mut their_count = 0_u32;
     for &[line_idx, peer_a, peer_b] in &STANDARD_MILL_LINE_PEERS_BY_NODE[to] {
@@ -884,7 +1012,11 @@ fn potential_mills_count_standard_unrestricted_pair(
                 *board.get_unchecked(peer_b as usize),
             )
         };
-        our_count += u32::from(a == our_target && b == our_target);
+        let peer_a = peer_a as usize;
+        let peer_b = peer_b as usize;
+        our_count += u32::from(
+            peer_a != our_from && peer_b != our_from && a == our_target && b == our_target,
+        );
         their_count += u32::from(a == their_target && b == their_target);
     }
     (our_count, their_count)

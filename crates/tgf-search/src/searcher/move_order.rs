@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
-// Move-ordering / killer / history / TT-best-action shuffling helpers.
+// Move-ordering / TT-best-action shuffling helpers.
 // These are pure `Searcher<G>` methods; they live in a sibling impl
 // block so the main `searcher/mod.rs` does not have to host them too.
 
-use tgf_core::{Action, ActionList, Game};
+use tgf_core::{Action, Game, SEARCH_ACTION_CAPACITY, SearchActionList};
 
 use super::Searcher;
 use std::mem::MaybeUninit;
@@ -15,13 +15,26 @@ impl<G: Game> Searcher<G> {
         wb: &G::Workbench,
         key: u64,
         depth: i32,
-        moves: &mut ActionList<256>,
+        moves: &mut SearchActionList,
     ) {
         let moves = moves.as_mut_slice();
-        let mut scores: [MaybeUninit<i32>; 256] = [MaybeUninit::uninit(); 256];
+        let mut scores: [MaybeUninit<i32>; SEARCH_ACTION_CAPACITY] =
+            [MaybeUninit::uninit(); SEARCH_ACTION_CAPACITY];
         assert!(moves.len() <= scores.len());
+        let mut previous_score = 0_i32;
+        let mut has_previous = false;
+        let mut needs_sort = false;
         for (i, action) in moves.iter().copied().enumerate() {
-            scores[i].write(self.move_score(wb, key, depth, action));
+            let score = self.move_score(wb, key, depth, action);
+            scores[i].write(score);
+            if has_previous && previous_score < score {
+                needs_sort = true;
+            }
+            previous_score = score;
+            has_previous = true;
+        }
+        if !needs_sort {
+            return;
         }
 
         // Stable descending insertion sort.  This preserves the generated
@@ -48,7 +61,7 @@ impl<G: Game> Searcher<G> {
     /// Shuffle the root move list using the internal xorshift RNG (P2-K).
     /// Mirrors master's MoveList<LEGAL>::shuffle() which is called at the
     /// start of executeSearch when Shuffling is enabled.
-    pub(super) fn shuffle_moves(&mut self, moves: &mut ActionList<256>) {
+    pub(super) fn shuffle_moves(&mut self, moves: &mut SearchActionList) {
         let n = moves.len();
         if n < 2 {
             return;
@@ -64,7 +77,7 @@ impl<G: Game> Searcher<G> {
         &self,
         wb: &G::Workbench,
         _key: u64,
-        depth: i32,
+        _depth: i32,
         action: Action,
     ) -> i32 {
         // Master MovePicker::score (src/movepick.cpp:46-52) only adds
@@ -74,37 +87,12 @@ impl<G: Game> Searcher<G> {
         // mirrors that no-op by intentionally NOT consulting the TT for
         // a best-action bonus here.  TT lookups remain available
         // through `Searcher::search_mtdf_with_guess` for root move
-        // recovery.  Killer / history bonuses stay gated on their own
-        // toggles and default to off.
-        let mut score = G::move_order_bias_ctx(wb, action, &self.options.move_order_context);
-        if self.options.enable_killers
-            && self
-                .killers
-                .get(&depth)
-                .is_some_and(|killer| *killer == action)
-        {
-            score += 100_000;
-        }
-        if self.options.enable_history {
-            score = score.saturating_add(self.history.get(&action).copied().unwrap_or_default());
-        }
-        score
-    }
-
-    #[inline]
-    pub(super) fn record_cutoff(&mut self, depth: i32, action: Action) {
-        if self.options.enable_killers {
-            self.killers.insert(depth, action);
-        }
-        if self.options.enable_history {
-            let bonus = depth.max(1).saturating_mul(depth.max(1));
-            let entry = self.history.entry(action).or_insert(0);
-            *entry = entry.saturating_add(bonus);
-        }
+        // recovery.
+        G::move_order_bias_ctx(wb, action, &self.options.move_order_context)
     }
 
     #[allow(dead_code)]
-    fn order_moves_by_tt(&self, key: u64, moves: &mut ActionList<256>) {
+    fn order_moves_by_tt(&self, key: u64, moves: &mut SearchActionList) {
         if key == 0 {
             return;
         }

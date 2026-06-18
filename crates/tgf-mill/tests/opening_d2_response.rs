@@ -20,7 +20,8 @@
 //     star square -- it never wanders to an arbitrary point.
 
 use tgf_core::{
-    Action, ActionList, Evaluator, Game, GameRules, MoveOrderAlgorithm, MoveOrderContext, Workbench,
+    Action, Evaluator, Game, GameRules, MoveOrderAlgorithm, MoveOrderContext, SearchActionList,
+    Workbench,
 };
 use tgf_mill::{
     MillActionKind, MillEvaluator, MillGame, MillRules, MillUciCodec, MillVariantOptions,
@@ -130,7 +131,7 @@ fn evaluator_ranks_star_squares_above_every_other_reply() {
     let (game, snap) = position_after_white_d2();
     let ctx = ctx_for(false, 0);
     let mut wb = game.build_workbench(&snap);
-    let mut moves = ActionList::<256>::new();
+    let mut moves = SearchActionList::new();
     MillGame::generate_legal_ctx(&wb, &mut moves, &ctx);
 
     let mut best_non_star = i32::MIN;

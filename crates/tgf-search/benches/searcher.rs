@@ -10,7 +10,7 @@
 //   cargo bench -p tgf-search
 
 use criterion::{Criterion, criterion_group, criterion_main};
-use tgf_core::{Action, ActionList, Evaluator, Game, GameStateSnapshot, Workbench};
+use tgf_core::{Action, Evaluator, Game, GameStateSnapshot, SearchActionList, Workbench};
 use tgf_search::{Searcher, perft};
 
 #[derive(Clone, Copy, Debug)]
@@ -66,7 +66,7 @@ impl Game for BenchGame {
         BenchWorkbench { ply: 0, side: 0 }
     }
 
-    fn generate_legal(wb: &Self::Workbench, out: &mut ActionList<256>) {
+    fn generate_legal(wb: &Self::Workbench, out: &mut SearchActionList) {
         if wb.is_terminal() {
             return;
         }

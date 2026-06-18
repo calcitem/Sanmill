@@ -23,17 +23,26 @@ user gives different paths.
 3. Never compare against stale binaries. Rebuild and record executable paths.
 4. Change one variable at a time: build flags, TT size, thread count, depth,
    rule options, and database/book settings must be explicit.
-5. Do not casually delete diagnostic code added during an investigation.
+5. When using `/home/user/Sanmill-master` as the reference, ignore its Qt UI
+   code. Compare only the core engine/search/rules code, Flutter-facing engine
+   integration, Flutter UI behavior that drives engine calls, and shared build
+   tooling needed to reproduce those paths.
+6. Do not casually delete diagnostic code added during an investigation.
    Treat useful probes, scripts, trace commands, and counters as reusable
    project assets for future audits. Keep them only if they are maintainable
    and do not affect formal release performance.
-6. Never put profiling overhead in release hot paths. Gate instrumentation
+7. Never put profiling overhead in release hot paths. Gate instrumentation
    behind debug/test code, feature flags, CLI diagnostics, scripts, or other
    opt-in paths so normal engine builds remain fast.
-7. Preserve monomorphized Rust search paths. Avoid `dyn`, heap allocation, or
+8. Preserve monomorphized Rust search paths. Avoid `dyn`, heap allocation, or
    fallback behavior in hot paths unless measurements justify it.
-8. Report exact commands and raw artifact paths. Do not claim a universal
+9. Report exact commands and raw artifact paths. Do not claim a universal
    speedup from a single position or noisy run.
+10. Treat killer-move and history-heuristic searchers as experimental only.
+    Before keeping either one, prove that bestmove, score, root order,
+    self-play movelist, and node counts remain master-equivalent, then show a
+    stable speedup across the standard comparison matrix. Remove or disable
+    them when they slow the engine down or only win by changing the tree.
 
 ## Baseline checklist
 
@@ -68,9 +77,17 @@ symbols and frame pointers. Keep the comparable release binary separate.
 Rust:
 
 ```bash
-RUSTFLAGS="-C force-frame-pointers=yes -C debuginfo=1" \
+env CARGO_TARGET_DIR=/tmp/sanmill-symbol-release \
+  CARGO_PROFILE_RELEASE_STRIP=false \
+  CARGO_PROFILE_RELEASE_DEBUG=1 \
+  RUSTFLAGS="-C force-frame-pointers=yes" \
   cargo build --release -p tgf-cli
 ```
+
+The repository's normal release profile strips symbols. Do not overwrite or
+time the standard `target/release/tgf` when the goal is only to get function
+names for `perf`; use the `/tmp` profiling binary for call stacks and the
+standard release binary for comparable timings.
 
 C++: inspect `scripts/build_console_engine.sh` and add `-g
 -fno-omit-frame-pointer` to a temporary profiling build only. Record the exact
@@ -217,7 +234,7 @@ Start near the hottest symbol, then map it to the owning layer:
   `crates/tgf-mill/src/rules/transitions.rs`, and `MillWorkbench`.
 - Hashing and TT prefetch:
   `crates/tgf-mill/src/rules/zobrist.rs` and
-  `crates/tgf-search/src/transposition_table.rs`.
+  `crates/tgf-search/src/tt.rs`.
 - Evaluation:
   `crates/tgf-mill/src/evaluator.rs` and rule helpers it calls.
 - CLI/diagnostic overhead:
@@ -225,6 +242,9 @@ Start near the hottest symbol, then map it to the owning layer:
 - Flutter/FRB integration overhead:
   `crates/tgf-frb/src/games/mill/search.rs` and
   `src/ui/flutter_app/lib/games/mill/`.
+- Reference-scope guard:
+  do not use `/home/user/Sanmill-master/src/ui/qt/` or other Qt-only code as
+  parity or performance evidence. Use Flutter and core engine paths instead.
 - Perfect database overhead:
   `crates/perfect-db/` and the C++ shim under `crates/perfect-db/csrc/`.
 
@@ -242,6 +262,82 @@ When a hotspot is identified:
 6. Re-run parity first, then performance. Record before/after nodes and time.
 7. If speed improves only by changing node count, prove the new node count is
    still master-equivalent or explain the intentional algorithmic change.
+
+## StateInfo / undo-stack experiments
+
+When investigating Mill `do_move` / `undo_move` overhead, Stockfish is useful
+as a design reference but not as a literal container recipe:
+
+- Stockfish links `StateInfo` objects through `previous` pointers, but those
+  objects are owned by a preallocated search stack. Do not model this with
+  Rust `std::collections::LinkedList`; pointer chasing and per-node allocation
+  would work against the search hot path.
+- Legacy Sanmill `Sanmill::Stack<T, 128>` is also a fixed-capacity contiguous
+  stack. In Rust, prefer `Vec::with_capacity(128)` plus `assert!` capacity
+  checks, `ArrayVec`, or a thin fixed-capacity wrapper over contiguous storage.
+- A StateInfo-style refactor only helps if it reduces copied state. Merely
+  changing `Vec<MillUndoState>` into a linked structure while copying the same
+  `MillState` fields is not an optimization.
+- Before reducing copied fields, add or run a test that enumerates legal
+  actions from representative positions, applies `do_move`, runs `undo_move`,
+  and compares every `MillState` field with the pre-move value.
+- Keep complex or uncommon rule paths conservative. It is acceptable for
+  standard release rules to use compact deltas while variants such as delayed
+  marking, removal-by-mill-count, or custodian/intervention/leap captures fall
+  back to full snapshots until they have equally strong coverage.
+- After every undo-layout change, run node-count parity first, then self-play
+  movelist parity, then performance timing. Do not keep an optimization that
+  only wins by changing nodes or move order.
+
+## Current investigation notes
+
+- Sorting: legacy master calls `partial_insertion_sort(moves, endMoves,
+  INT_MIN)`, which behaves as a full stable descending insertion sort for the
+  generated move list. Rust `order_moves` should preserve stable descending
+  order. A safe optimization is to score once and skip insertion sort when the
+  generated score sequence is already non-increasing. Do not replace this with
+  an unstable sort; equal-score order affects node parity.
+- Killer/history ordering: previous experiments were not stable wins. Keep
+  them disabled unless a future audit proves unchanged root order, self-play
+  movelist, and node counts plus a stable speedup across the standard matrix.
+- TT size/locality: shrinking `TGF_TT_CLUSTER_BITS` can make deep
+  `moving_entry` much faster, but it changes TT collision behavior and node
+  counts. Treat it as a diagnostic for cache locality, not a default release
+  fix, unless node-count parity is explicitly re-baselined and accepted.
+- TT prefetch: `TGF_PREFETCH_MODE=first` can help some moving/capture probes
+  without changing nodes, while `all` has shown regressions. Keep prefetch
+  default-off until a full matrix proves a stable win.
+- TT allocation/reuse: master owns a process-global TT and `clear()` is a
+  fake-clean generation bump. Rust UCI and FRB search paths must reuse
+  `SharedTt` across searches and call `clear_tt()` / `bump_age()` before each
+  new search. Do not allocate a fresh 16 Mi-slot TT inside every `go`,
+  `gomtdf`, or Flutter search request; repeated in-process depth-18 probes
+  showed this as high `sys` time rather than a tree-shape issue.
+- Measurement caveat: `scripts/compare_engine_perf.py` starts a fresh process
+  for each measured run, so it hides benefits that come from reusing process
+  state such as TT allocation. Pair it with a same-process repeated-search
+  `perf stat` run and inspect user/sys time when auditing allocation fixes.
+- Recent prefetch retest after standard apply fast paths: both `first` and
+  `all` preserved nodes/bestmove on the tested matrix, but worsened
+  `placing8` / `capture_pending` and did not improve `moving_entry d15`.
+  Do not enable either mode by default from a single moving-position win.
+- Standard Remove fast path experiment: a narrow search-only remove fast path
+  preserved node and self-play parity, but did not produce a stable timing win
+  and sometimes worsened `moving_entry d15`. Do not keep or reintroduce it
+  unless a future profile shows remove apply itself as the dominant bottleneck.
+- Standard move-generation branch-hoist experiment: hoisting `can_fly` /
+  `has_diagonal_lines` out of the per-piece loop preserved parity but did not
+  improve the standard matrix. Avoid making the generator more duplicated for
+  that micro-optimization alone.
+- Standard mobility-count fast path: direct `state.board` reads for
+  non-diagonal, non-marked positions preserve parity and can slightly reduce
+  apply/remove overhead. Keep the generic `live_piece` path for delayed-marked
+  and diagonal variants.
+- Known current hotspots after the safe fast paths: depth-aware TT
+  `probe_value_bound` / `save` memory traffic dominates deep moving searches;
+  Mill apply, move-order scoring, and move generation are secondary. This
+  points to TT/cache layout and compact search-action representation as the
+  next major design areas, not to a different sorting algorithm.
 
 ## Report format
 

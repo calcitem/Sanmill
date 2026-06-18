@@ -18,7 +18,7 @@ fn apply_line(rules: &MillRules, snap: &mut tgf_core::GameStateSnapshot, moves: 
 }
 
 fn root_search_move_order(snap: &tgf_core::GameStateSnapshot) -> Vec<String> {
-    use tgf_core::{ActionList, Game};
+    use tgf_core::{Game, SearchActionList};
     let ctx = MoveOrderContext {
         algorithm: MoveOrderAlgorithm::Mtdf,
         skill_level: 1,
@@ -28,7 +28,7 @@ fn root_search_move_order(snap: &tgf_core::GameStateSnapshot) -> Vec<String> {
     };
     let game = MillGame::new(MillVariantOptions::default());
     let wb = game.build_workbench(snap);
-    let mut moves = ActionList::<256>::new();
+    let mut moves = SearchActionList::new();
     MillGame::generate_legal_ctx(&wb, &mut moves, &ctx);
     moves.as_mut_slice().sort_by(|a, b| {
         let sa = MillGame::move_order_bias_ctx(&wb, *a, &ctx);
@@ -136,7 +136,7 @@ fn mtdf_search_with_root_history(
 }
 
 fn score_all_legal_at_depth1(snap: &tgf_core::GameStateSnapshot) -> Vec<(String, i32)> {
-    use tgf_core::{ActionList, Game};
+    use tgf_core::{Game, SearchActionList};
     let options = MillVariantOptions::default();
     let game = MillGame::new(options);
     let ctx = MoveOrderContext {
@@ -147,7 +147,7 @@ fn score_all_legal_at_depth1(snap: &tgf_core::GameStateSnapshot) -> Vec<(String,
         shuffle_seed: 0,
     };
     let mut wb = game.build_workbench(snap);
-    let mut moves = ActionList::<256>::new();
+    let mut moves = SearchActionList::new();
     MillGame::generate_legal_ctx(&wb, &mut moves, &ctx);
     let mut searcher = Searcher::<MillGame>::new();
     searcher.set_policy(SearchPolicy {
@@ -363,7 +363,7 @@ fn move15_legal_move_generation_order() {
     let rules = MillRules::default();
     let mut snap = rules.initial_state(&[]);
     apply_line(&rules, &mut snap, MOVES_TO_BLACK_MOVE_15);
-    use tgf_core::ActionList;
+    use tgf_core::SearchActionList;
     let ctx = MoveOrderContext {
         algorithm: MoveOrderAlgorithm::Mtdf,
         skill_level: 1,
@@ -373,7 +373,7 @@ fn move15_legal_move_generation_order() {
     };
     let game = MillGame::new(MillVariantOptions::default());
     let wb = game.build_workbench(&snap);
-    let mut moves = ActionList::<256>::new();
+    let mut moves = SearchActionList::new();
     MillGame::generate_legal_ctx(&wb, &mut moves, &ctx);
     let labels: Vec<String> = moves
         .iter()
@@ -410,7 +410,7 @@ fn move15_repeated_mill_restrictions_on_zero_score_moves() {
     let rules = MillRules::default();
     let mut snap = rules.initial_state(&[]);
     apply_line(&rules, &mut snap, MOVES_TO_BLACK_MOVE_15);
-    use tgf_core::ActionList;
+    use tgf_core::SearchActionList;
     let ctx = MoveOrderContext {
         algorithm: MoveOrderAlgorithm::Mtdf,
         skill_level: 1,
@@ -419,7 +419,7 @@ fn move15_repeated_mill_restrictions_on_zero_score_moves() {
     };
     let game = MillGame::new(MillVariantOptions::default());
     let wb = game.build_workbench(&snap);
-    let mut moves = ActionList::<256>::new();
+    let mut moves = SearchActionList::new();
     MillGame::generate_legal_ctx(&wb, &mut moves, &ctx);
     let legal: Vec<String> = moves
         .iter()
@@ -433,7 +433,7 @@ fn move15_repeated_mill_restrictions_on_zero_score_moves() {
 
 #[test]
 fn move15_move_order_bias_and_sorted_order() {
-    use tgf_core::{ActionList, Game, MoveOrderAlgorithm, MoveOrderContext};
+    use tgf_core::{Game, MoveOrderAlgorithm, MoveOrderContext, SearchActionList};
     let rules = MillRules::default();
     let mut snap = rules.initial_state(&[]);
     apply_line(&rules, &mut snap, MOVES_TO_BLACK_MOVE_15);
@@ -446,7 +446,7 @@ fn move15_move_order_bias_and_sorted_order() {
     };
     let game = MillGame::new(MillVariantOptions::default());
     let wb = game.build_workbench(&snap);
-    let mut moves = ActionList::<256>::new();
+    let mut moves = SearchActionList::new();
     MillGame::generate_legal_ctx(&wb, &mut moves, &ctx);
     let mut scored: Vec<(String, i32)> = moves
         .iter()

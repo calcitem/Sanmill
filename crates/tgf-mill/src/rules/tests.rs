@@ -4,7 +4,7 @@
 
 use super::*;
 use crate::notation::MillUciCodec;
-use tgf_core::{Evaluator, Game, GameRules, GameStateSnapshot, Workbench};
+use tgf_core::{Evaluator, Game, GameRules, GameStateSnapshot, SearchActionList, Workbench};
 
 fn apply_uci_sequence(rules: &MillRules, labels: &[&str]) -> GameStateSnapshot {
     let mut snap = rules.initial_state(&[]);
@@ -20,6 +20,28 @@ fn apply_uci_sequence(rules: &MillRules, labels: &[&str]) -> GameStateSnapshot {
         snap = rules.apply(&snap, action);
     }
     snap
+}
+
+fn apply_uci_sequence_with_history(
+    rules: &MillRules,
+    labels: &[&str],
+) -> (GameStateSnapshot, Vec<GameStateSnapshot>) {
+    let mut snap = rules.initial_state(&[]);
+    let mut history = Vec::new();
+    for label in labels {
+        let action = MillUciCodec::decode_action(&snap, label)
+            .unwrap_or_else(|| panic!("failed to decode UCI action {label}"));
+        let mut legal = ActionList::<256>::new();
+        rules.legal_actions(&snap, &mut legal);
+        assert!(
+            legal.as_slice().contains(&action),
+            "UCI action {label} must be legal before applying it"
+        );
+        let next = rules.apply_with_history(&snap, action, &history);
+        history.push(snap);
+        snap = next;
+    }
+    (snap, history)
 }
 
 fn legal_uci_labels(rules: &MillRules, snap: &GameStateSnapshot) -> Vec<String> {
@@ -55,6 +77,67 @@ fn assert_workbench_action_preserves_mobility_cache(
     assert_mobility_cache_matches_full_scan(&wb.state, options);
     wb.undo_move();
     assert_mobility_cache_matches_full_scan(&wb.state, options);
+}
+
+fn assert_key_after_matches_default_tt_index(labels: &[&str]) {
+    const DEFAULT_TT_INDEX_MASK: u64 = (1_u64 << 24) - 1;
+
+    let options = MillVariantOptions::default();
+    let rules = MillRules::new(options.clone());
+    let game = MillGame::new(options);
+    let snap = apply_uci_sequence(&rules, labels);
+    let mut wb = game.build_workbench(&snap);
+    let mut actions = SearchActionList::new();
+    MillGame::generate_legal(&wb, &mut actions);
+    assert!(!actions.is_empty(), "test position must have legal actions");
+
+    for action in actions.iter().copied() {
+        let before = wb.key();
+        let predicted = wb.key_after(action);
+        assert_eq!(wb.key(), before, "key_after must not mutate the workbench");
+
+        wb.do_move(action);
+        let actual = wb.key();
+        wb.undo_move();
+        assert_eq!(
+            wb.key(),
+            before,
+            "do/undo must restore key after checking key_after"
+        );
+
+        assert_eq!(
+            predicted & DEFAULT_TT_INDEX_MASK,
+            actual & DEFAULT_TT_INDEX_MASK,
+            "key_after must predict the default TT index for {}",
+            MillUciCodec::encode_action(action)
+        );
+    }
+}
+
+fn assert_all_legal_actions_restore_workbench(options: MillVariantOptions, labels: &[&str]) {
+    let rules = MillRules::new(options.clone());
+    let game = MillGame::new(options);
+    let snap = apply_uci_sequence(&rules, labels);
+    let probe_wb = game.build_workbench(&snap);
+    let mut actions = SearchActionList::new();
+    MillGame::generate_legal(&probe_wb, &mut actions);
+    assert!(
+        !actions.is_empty(),
+        "test position must expose at least one legal action"
+    );
+
+    for action in actions.iter().copied() {
+        let mut wb = game.build_workbench(&snap);
+        let before = wb.state.clone();
+        wb.do_move(action);
+        wb.undo_move();
+        assert_eq!(
+            wb.state,
+            before,
+            "do/undo must restore every MillState field for {}",
+            MillUciCodec::encode_action(action)
+        );
+    }
 }
 
 #[test]
@@ -115,6 +198,66 @@ fn mobility_diff_cache_tracks_search_do_move_and_undo() {
 }
 
 #[test]
+fn mill_key_after_predicts_default_tt_index_for_prefetch() {
+    assert_key_after_matches_default_tt_index(&[]);
+    assert_key_after_matches_default_tt_index(&[
+        "d6", "f4", "d2", "b4", "g4", "d7", "a4", "d1", "d5", "d3", "f6", "b6", "b2", "f2", "e5",
+        "c5", "c3", "e4",
+    ]);
+    assert_key_after_matches_default_tt_index(&[
+        "d6", "f4", "d2", "b4", "g4", "d7", "a4", "d1", "d5", "d3", "e4", "f6", "f2", "b2", "b6",
+        "g7", "a7", "c3", "d5-c5", "c3-c4", "e4-e5", "c4-c3", "d6-d5",
+    ]);
+}
+
+#[test]
+fn workbench_do_undo_restores_all_fields_for_legal_actions() {
+    assert_all_legal_actions_restore_workbench(MillVariantOptions::default(), &[]);
+    assert_all_legal_actions_restore_workbench(
+        MillVariantOptions::default(),
+        &[
+            "d6", "f4", "d2", "b4", "g4", "d7", "a4", "d1", "d5", "d3", "f6", "b6", "b2", "f2",
+            "e5", "c5", "c3", "e4",
+        ],
+    );
+    assert_all_legal_actions_restore_workbench(
+        MillVariantOptions::default(),
+        &[
+            "d6", "f4", "d2", "b4", "g4", "d7", "a4", "d1", "d5", "d3", "e4", "f6", "f2", "b2",
+            "b6", "g7", "a7", "c3", "d5-c5", "c3-c4", "e4-e5", "c4-c3", "d6-d5",
+        ],
+    );
+    assert_all_legal_actions_restore_workbench(
+        MillVariantOptions {
+            mill_formation_action_in_placing_phase:
+                MillFormationActionInPlacingPhase::MarkAndDelayRemovingPieces,
+            ..MillVariantOptions::default()
+        },
+        &["d6", "f4", "d2", "b4"],
+    );
+    assert_all_legal_actions_restore_workbench(
+        MillVariantOptions {
+            one_time_use_mill: true,
+            restrict_repeated_mills_formation: true,
+            ..MillVariantOptions::default()
+        },
+        &["d6", "f4", "d2", "b4"],
+    );
+}
+
+#[test]
+fn mill_board_undo_keeps_full_snapshot_out_of_standard_delta() {
+    assert!(
+        std::mem::size_of::<MillBoardUndo>() <= 16,
+        "board undo must keep standard search deltas compact"
+    );
+    assert!(
+        std::mem::size_of::<MillKeyHistoryUndo>() <= 16,
+        "key-history undo must keep the truncate case compact"
+    );
+}
+
+#[test]
 fn initial_state_has_24_placing_actions() {
     let rules = MillRules::default();
     let snap = rules.initial_state(&[]);
@@ -152,7 +295,7 @@ fn legal_actions_on_terminal_remove_state_is_empty() {
     // workbench (this is what panicked in `legal_actions_ctx`).
     let game = MillGame::default();
     let wb = game.build_workbench(&snap);
-    let mut ctx_actions = ActionList::<256>::new();
+    let mut ctx_actions = SearchActionList::new();
     MillGame::generate_legal_ctx(
         &wb,
         &mut ctx_actions,
@@ -1387,7 +1530,7 @@ fn mill_game_workbench_do_and_undo_move() {
     let snap = rules.initial_state(&[]);
     let mut wb = game.build_workbench(&snap);
 
-    let mut actions = ActionList::<256>::new();
+    let mut actions = SearchActionList::new();
     MillGame::generate_legal(&wb, &mut actions);
     assert_eq!(actions.len(), 24);
 
@@ -1483,7 +1626,7 @@ fn position_key_changes_after_move_and_restores_after_undo() {
     let mut wb = game.build_workbench(&snap);
     let initial_key = wb.key();
 
-    let mut actions = ActionList::<256>::new();
+    let mut actions = SearchActionList::new();
     MillGame::generate_legal(&wb, &mut actions);
     wb.do_move(actions[0]);
     assert_ne!(wb.key(), initial_key);
@@ -2595,6 +2738,54 @@ fn mill_game_root_repetition_history_feeds_workbench() {
 }
 
 #[test]
+fn final_placing_root_is_not_a_repetition_reset_barrier() {
+    let rules = MillRules::default();
+    let (snap, history) = apply_uci_sequence_with_history(
+        &rules,
+        &[
+            "d6", "f4", "d2", "b4", "g4", "d7", "a4", "d1", "e4", "d5", "c4", "d3", "f6", "b6",
+            "b2", "f2", "g7", "g1",
+        ],
+    );
+
+    assert!(!MillRules::root_position_resets_repetition_from_snapshots(
+        &snap, &history
+    ));
+    let game = MillGame::new_with_repetition_context(
+        MillVariantOptions::default(),
+        MillRules::repetition_history_from_snapshots(&snap, &history),
+        MillRules::root_position_resets_repetition_from_snapshots(&snap, &history),
+    );
+    let wb = game.build_workbench(&snap);
+
+    assert!(!wb.current_position_resets_repetition());
+}
+
+#[test]
+fn remove_root_is_a_repetition_reset_barrier() {
+    let rules = MillRules::default();
+    let (snap, history) = apply_uci_sequence_with_history(
+        &rules,
+        &[
+            "d6", "f4", "d2", "b4", "g4", "d7", "a4", "d1", "d5", "d3", "e4", "f6", "f2", "b2",
+            "b6", "g7", "a7", "c3", "d5-c5", "c3-c4", "e4-e5", "c4-c3", "d6-d5", "xd3",
+        ],
+    );
+
+    assert!(MillRules::root_position_resets_repetition_from_snapshots(
+        &snap, &history
+    ));
+    let game = MillGame::new_with_repetition_context(
+        MillVariantOptions::default(),
+        MillRules::repetition_history_from_snapshots(&snap, &history),
+        MillRules::root_position_resets_repetition_from_snapshots(&snap, &history),
+    );
+    let wb = game.build_workbench(&snap);
+
+    assert!(wb.current_position_resets_repetition());
+}
+
+#[test]
 fn capture_clears_threefold_history() {
     let rules = MillRules::default();
     // Build a state where W has just formed a mill and must remove a
@@ -3605,7 +3796,7 @@ fn generate_legal_ctx_uses_place_priority_order() {
         shuffling: false,
         ..Default::default()
     };
-    let mut actions = ActionList::<256>::new();
+    let mut actions = SearchActionList::new();
     MillGame::generate_legal_ctx(&wb, &mut actions, &ctx);
     let order = actions
         .iter()
@@ -3661,7 +3852,7 @@ fn generate_legal_ctx_uses_legacy_destination_order_for_flying() {
         shuffling: false,
         ..Default::default()
     };
-    let mut actions = ActionList::<256>::new();
+    let mut actions = SearchActionList::new();
     MillGame::generate_legal_ctx(&wb, &mut actions, &ctx);
     let labels = actions
         .iter()

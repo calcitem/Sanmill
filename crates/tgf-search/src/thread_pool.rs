@@ -26,8 +26,7 @@ pub struct LazySmpWorker {
 /// Run a Lazy-SMP-style parallel search.  All workers share one
 /// transposition table through [`SharedTt`] AND a single abort flag, so
 /// requesting an abort through [`SearchAbortHandle`] once stops every
-/// worker.  Each worker still has its own killer / history bookkeeping
-/// because those are inherently thread-local.
+/// worker.
 ///
 /// The deepest completed result wins on score; this is intentionally
 /// simpler than full YBWC.  When `abort_flag` is `None` a fresh shared flag is

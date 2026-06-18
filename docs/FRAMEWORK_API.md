@@ -39,7 +39,7 @@ pub struct Action {
     pub from_node: i16,
     pub to_node: i16,
     pub aux: i16,
-    pub payload_bits: u64,
+    pub payload_bits: u32,
 }
 ```
 
@@ -48,7 +48,8 @@ Rules:
 - `kind_tag` is owned by the concrete game crate.
 - `from_node == -1` means no source node, e.g. placing from hand.
 - `to_node == -1` means no target node.
-- `payload_bits` is game-defined compact data.
+- `payload_bits` is game-defined compact data. Keep large per-move payloads in
+  game state or a side structure so search actions stay small.
 - `Action::NONE` is the only framework-level sentinel.
 
 ### `GameStateSnapshot`
@@ -185,7 +186,6 @@ The current implementation includes:
   via `SharedTt` and the `lazy_smp_search` helper
 - `SearchThreadPool` (`std::thread` workers + `crossbeam_channel` dispatch)
   used by lazy SMP worker fan-out
-- killer/history move ordering
 - game-specific terminal scoring for rule draws / wins
 - node and wall-clock abort checks
 - deterministic random search seed
@@ -246,7 +246,7 @@ crate as the referee and should not be confused with an in-app C++ bridge.
 
 - **TT size:** `tgf_cli`’s `bench` and UCI `go` path use
   `Searcher::new_with_tt_cluster_bits` driven by the environment variable
-  `TGF_TT_CLUSTER_BITS` (clamped 10–26, default 23).  The TOML block printed by
+  `TGF_TT_CLUSTER_BITS` (clamped 10–26, default 24).  The TOML block printed by
   `cargo run -p tgf-cli -- bench` includes the effective value under `[meta]`.
 - **Move order:** `Game::move_order_bias` (default `0`) is added to the
   internal move score.  Mill implements the C++ `RATING_STAR_SQUARE` / star-node

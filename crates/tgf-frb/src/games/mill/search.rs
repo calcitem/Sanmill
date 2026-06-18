@@ -31,7 +31,7 @@ use tgf_search::MctsSearcher;
 use tgf_search::mcts_search_parallel;
 use tgf_search::{
     MctsOptions, SearchAbortHandle, SearchAlgorithm, SearchOptions, SearchPolicy, SearchResult,
-    Searcher,
+    Searcher, SharedTt,
 };
 
 use crate::engine_event::EngineEvent;
@@ -48,6 +48,8 @@ use crate::games::mill::perfect;
 /// a per-call handle.
 pub(crate) static ACTIVE_SEARCH: Lazy<Mutex<Option<SearchAbortHandle>>> =
     Lazy::new(|| Mutex::new(None));
+
+static MILL_SHARED_TT: Lazy<SharedTt> = Lazy::new(SharedTt::default);
 
 // ---------------------------------------------------------------------------
 // Mill-specific runtime configuration consumed by the search dispatcher.
@@ -118,7 +120,8 @@ fn perfect_move_ordering(config: &MillEngineConfigPlan) -> perfect_db::PerfectMo
 /// Construct a `Searcher<MillGame>` configured with the Mill removal
 /// qsearch policy.  Used by every native_mill_* smoke entry point.
 pub(crate) fn mill_searcher_default() -> Searcher<MillGame> {
-    let mut s = Searcher::new();
+    let mut s = Searcher::with_shared_tt(MILL_SHARED_TT.clone());
+    s.clear_tt();
     s.set_policy(SearchPolicy {
         quiescence_kind_tag: Some(MillActionKind::Remove as i16),
         ..Default::default()
@@ -190,6 +193,7 @@ fn apply_move_none_fallback(
 pub(crate) fn spawn_mill_pvs_event_stream(
     snapshot: GameStateSnapshot,
     root_repetition_history: Vec<u64>,
+    root_position_resets_repetition: bool,
     options: NativeMillVariantOptions,
     depth: i32,
     sink: StreamSink<EngineEvent>,
@@ -198,7 +202,14 @@ pub(crate) fn spawn_mill_pvs_event_stream(
         depth,
         ..Default::default()
     };
-    spawn_mill_engine_config_event_stream(snapshot, root_repetition_history, options, config, sink);
+    spawn_mill_engine_config_event_stream(
+        snapshot,
+        root_repetition_history,
+        root_position_resets_repetition,
+        options,
+        config,
+        sink,
+    );
 }
 
 /// Launch a search thread using the full `MillEngineConfig`.  Emits one
@@ -206,6 +217,7 @@ pub(crate) fn spawn_mill_pvs_event_stream(
 pub(crate) fn spawn_mill_engine_config_event_stream(
     snapshot: GameStateSnapshot,
     root_repetition_history: Vec<u64>,
+    root_position_resets_repetition: bool,
     options: NativeMillVariantOptions,
     config: MillEngineConfigPlan,
     sink: StreamSink<EngineEvent>,
@@ -215,6 +227,7 @@ pub(crate) fn spawn_mill_engine_config_event_stream(
         run_mill_engine_config_event_stream(
             snapshot,
             root_repetition_history,
+            root_position_resets_repetition,
             options,
             config,
             sink,
@@ -222,12 +235,20 @@ pub(crate) fn spawn_mill_engine_config_event_stream(
     });
 
     #[cfg(target_arch = "wasm32")]
-    run_mill_engine_config_event_stream(snapshot, root_repetition_history, options, config, sink);
+    run_mill_engine_config_event_stream(
+        snapshot,
+        root_repetition_history,
+        root_position_resets_repetition,
+        options,
+        config,
+        sink,
+    );
 }
 
 fn run_mill_engine_config_event_stream(
     snapshot: GameStateSnapshot,
     root_repetition_history: Vec<u64>,
+    root_position_resets_repetition: bool,
     options: NativeMillVariantOptions,
     config: MillEngineConfigPlan,
     sink: StreamSink<EngineEvent>,
@@ -237,7 +258,11 @@ fn run_mill_engine_config_event_stream(
     }
 
     let rules_options = options.clone();
-    let game = MillGame::new_with_repetition_history(options, root_repetition_history);
+    let game = MillGame::new_with_repetition_context(
+        options,
+        root_repetition_history,
+        root_position_resets_repetition,
+    );
     let mut wb = game.build_workbench(&snapshot);
     let mut searcher = mill_searcher_default();
     let search_context = MoveOrderContext {

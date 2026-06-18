@@ -4,9 +4,10 @@
 // and TT-aging machinery and are conceptually a unit; hosting them
 // together keeps the main `searcher/mod.rs` focused on struct + setters.
 
-use tgf_core::{Action, ActionList, Evaluator, Game, Workbench};
+use tgf_core::{Action, Evaluator, Game, SearchActionList, Workbench};
 
 use super::Searcher;
+use super::qsearch::TtProbe;
 use crate::result::SearchResult;
 use crate::tt::Bound;
 
@@ -101,7 +102,7 @@ impl<G: Game> Searcher<G> {
         if let Some(score) = G::terminal_score(wb, wb.side_to_move(), depth) {
             return SearchResult::default_none().with_score(score);
         }
-        let mut moves = ActionList::<256>::new();
+        let mut moves = SearchActionList::new();
         G::generate_legal_ctx(wb, &mut moves, &self.options.move_order_context);
         self.order_moves(wb, wb.key(), depth, &mut moves);
         if moves.is_empty() {
@@ -216,7 +217,7 @@ impl<G: Game> Searcher<G> {
                 draw_reason: None,
             };
         }
-        let mut moves = ActionList::<256>::new();
+        let mut moves = SearchActionList::new();
         G::generate_legal_ctx(wb, &mut moves, &self.options.move_order_context);
         if self.options.shuffle_root {
             self.shuffle_moves(&mut moves);
@@ -305,14 +306,21 @@ impl<G: Game> Searcher<G> {
         // value WITHOUT updating `bestMove`, so the threaded `best_action` is
         // preserved across MTD(f) iterations.  Reusing the root entry the same
         // way mirrors master's deterministic deep MTD(f) behaviour.
-        if let Some(value) = self.probe_tt(root_key, depth, &mut alpha, &mut beta) {
-            self.tt_hits += 1;
-            return value;
+        match self.probe_tt(root_key, depth, &mut alpha, &mut beta) {
+            TtProbe::Cutoff(value) => {
+                self.tt_hits += 1;
+                return value;
+            }
+            TtProbe::HitNoCutoff => {
+                self.tt_hits += 1;
+            }
+            TtProbe::Miss => {
+                if root_key != 0 {
+                    self.tt_misses += 1;
+                }
+            }
         }
-        if root_key != 0 {
-            self.tt_misses += 1;
-        }
-        let mut moves = ActionList::<256>::new();
+        let mut moves = SearchActionList::new();
         G::generate_legal_ctx(wb, &mut moves, &self.options.move_order_context);
         self.order_moves(wb, root_key, depth, &mut moves);
         let mut best_value = i32::MIN + 1;

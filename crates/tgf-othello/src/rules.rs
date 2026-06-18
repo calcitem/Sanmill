@@ -15,7 +15,7 @@ pub struct OthelloRules {
 }
 
 impl OthelloRules {
-    pub(crate) fn legal_actions_for(state: &OthelloState, out: &mut ActionList<256>) {
+    pub(crate) fn legal_actions_for<const N: usize>(state: &OthelloState, out: &mut ActionList<N>) {
         for sq in 0..64_usize {
             if state.board[sq] == 0 && would_flip(state, sq).0 > 0 {
                 out.push(Action {

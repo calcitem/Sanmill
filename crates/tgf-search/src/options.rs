@@ -75,6 +75,11 @@ pub struct SearchOptions {
     /// they save in cache misses.  Concrete games that override
     /// `key_after` with an O(1) xor path should enable this.
     pub enable_prefetch: bool,
+    /// Prefetch every candidate child instead of only the first ordered
+    /// candidate. This mirrors master exactly, but it is intentionally a
+    /// separate opt-in because games whose `key_after` is expensive can spend
+    /// more time computing hints than they recover from fewer TT misses.
+    pub prefetch_all: bool,
     /// Wrap each iterative-deepening iteration (depth >= 3) in an
     /// aspiration window centered on the previous score ± delta.
     /// Default `false` because master `executeSearch` does not use
@@ -85,17 +90,6 @@ pub struct SearchOptions {
     /// available behind this flag for users who want the extra NPS
     /// boost on stable scores.
     pub enable_aspiration_window: bool,
-    /// Use a per-depth killer-move table to score quiet moves that
-    /// recently caused beta-cutoffs.  Default `false` because master
-    /// `MovePicker::score` does not maintain a killer table -- the
-    /// only quiet bonus there is `RATING_STAR_SQUARE` and the various
-    /// mill-formation / mill-block heuristics.  Enable to opt into
-    /// chess-style killer-heuristic move ordering.
-    pub enable_killers: bool,
-    /// Use the history-heuristic table (per-action accumulated
-    /// fail-high bonus).  Default `false` for the same reason as
-    /// `enable_killers`.
-    pub enable_history: bool,
     pub move_order_context: MoveOrderContext,
 }
 
@@ -108,11 +102,9 @@ impl Default for SearchOptions {
             allow_null_move: false,
             shuffle_root: false,
             enable_prefetch: false,
+            prefetch_all: false,
             // Master executeSearch does NOT use aspiration windows.
             enable_aspiration_window: false,
-            // Master MovePicker has no killer / history tables.
-            enable_killers: false,
-            enable_history: false,
             move_order_context: MoveOrderContext::default(),
         }
     }

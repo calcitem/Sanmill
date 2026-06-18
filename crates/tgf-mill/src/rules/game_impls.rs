@@ -4,23 +4,25 @@
 // `MillGame`.  Hosting these here keeps `rules/mod.rs` focused on
 // state / configuration rather than search-side wiring.
 
-use tgf_core::{Action, ActionList, Evaluator, Game, GameRules, GameStateSnapshot, Workbench};
+use tgf_core::{Action, Evaluator, Game, GameStateSnapshot, SearchActionList, Workbench};
 
 use super::evaluation::{
     gameover_value, mills_pieces_count_difference, mobility_diff, remove_move_score,
     should_consider_mobility, should_focus_on_blocking_paths, surrounded_pieces_count,
 };
 use super::fen::position_key;
-use super::legacy_squares::node_to_legacy_square;
 use super::move_priority::{
     RATING_BLOCK_ONE_MILL, RATING_ONE_MILL, RATING_STAR_SQUARE, is_star_square,
 };
 use super::potential_mills_count_at;
-use super::potential_mills_count_standard_unrestricted_pair;
 use super::types::MillActionKind;
 use super::{
-    MILL_TERMINAL_WIN_SCORE, MillEvaluator, MillFormationActionInPlacingPhase, MillGame,
-    MillOutcomeReason, MillPhase, MillRules, MillWorkbench,
+    MILL_SEARCH_STACK_CAPACITY, MILL_TERMINAL_WIN_SCORE, MillEvaluator,
+    MillFormationActionInPlacingPhase, MillGame, MillOutcomeReason, MillPhase, MillRules,
+    MillWorkbench,
+};
+use super::{
+    potential_mills_count_standard_unrestricted, potential_mills_count_standard_unrestricted_pair,
 };
 
 impl Workbench for MillWorkbench {
@@ -58,7 +60,11 @@ impl Workbench for MillWorkbench {
         // an irreversible action must restore a non-empty history window.
         // `apply_to_state` refreshes the cached Zobrist key incrementally, so
         // no `recompute_zobrist` is needed here.
-        let undo = super::MillUndoState::capture(&self.state, a);
+        assert!(
+            self.undo_stack.len() < MILL_SEARCH_STACK_CAPACITY,
+            "Mill workbench undo stack capacity exceeded"
+        );
+        let undo = super::MillUndoState::capture(&self.state, a, &self.rules.options);
         // Search path: do NOT terminalise threefold (master `do_move` never
         // does).  Repetitions inside the tree are handled by the searcher's
         // `has_repeated` cut; a position that completes a threefold is scored
@@ -191,7 +197,7 @@ impl Workbench for MillWorkbench {
 
     #[inline]
     fn current_position_resets_repetition(&self) -> bool {
-        self.state.key_history.is_empty()
+        self.root_position_resets_repetition
     }
 }
 
@@ -272,17 +278,19 @@ impl Game for MillGame {
         MillWorkbench {
             rules,
             state,
-            undo_stack: Vec::new(),
+            undo_stack: Vec::with_capacity(MILL_SEARCH_STACK_CAPACITY),
+            root_position_resets_repetition: self.root_position_resets_repetition,
         }
     }
 
-    fn generate_legal(wb: &Self::Workbench, out: &mut ActionList<256>) {
-        wb.rules.legal_actions(&wb.snapshot(), out);
+    fn generate_legal(wb: &Self::Workbench, out: &mut SearchActionList) {
+        wb.rules
+            .legal_actions_ctx(&wb.state, out, &tgf_core::MoveOrderContext::default());
     }
 
     fn generate_legal_ctx(
         wb: &Self::Workbench,
-        out: &mut ActionList<256>,
+        out: &mut SearchActionList,
         ctx: &tgf_core::MoveOrderContext,
     ) {
         wb.rules.legal_actions_ctx(&wb.state, out, ctx);
@@ -291,8 +299,10 @@ impl Game for MillGame {
     /// MovePicker-style move ordering bonus translated from
     /// `src/movepick.cpp::score()`.  Combines mill formation, mill blocking,
     /// star-square opening preference, and capture-target preference.  The
-    /// numeric weights match `RATING_*` constants in `src/types.h`; killer /
-    /// history / TT bonuses are still applied in `Searcher::move_score`.
+    /// numeric weights match `RATING_*` constants in `src/types.h`.  The
+    /// default master build has TT move ordering disabled, and the Rust
+    /// searcher intentionally does not add killer / history bonuses unless a
+    /// future parity-and-performance audit proves they help.
     ///
     /// # Note on master's "score-negation" bug (Diff 17)
     ///
@@ -348,6 +358,7 @@ impl Game for MillGame {
                 to,
                 side + 1,
                 opponent + 1,
+                None,
             );
             let our_mills = our_mills as i32;
             if our_mills > 0 {
@@ -360,6 +371,56 @@ impl Game for MillGame {
         } else {
             None
         };
+
+        if !options.has_diagonal_lines && !options.one_time_use_mill {
+            let our_mills =
+                potential_mills_count_standard_unrestricted(&state.board, to, side + 1, from)
+                    as i32;
+            let mut score = 0_i32;
+            if our_mills > 0 {
+                score += RATING_ONE_MILL * our_mills;
+            } else if state.phase == MillPhase::Placing && !options.may_move_in_placing_phase {
+                let their_mills = potential_mills_count_standard_unrestricted(
+                    &state.board,
+                    to,
+                    opponent + 1,
+                    None,
+                ) as i32;
+                score += RATING_BLOCK_ONE_MILL * their_mills;
+            } else if state.phase == MillPhase::Moving
+                || (state.phase == MillPhase::Placing && options.may_move_in_placing_phase)
+            {
+                let their_mills = potential_mills_count_standard_unrestricted(
+                    &state.board,
+                    to,
+                    opponent + 1,
+                    None,
+                ) as i32;
+                if their_mills > 0 {
+                    let (_, theirs, _) = surrounded_pieces_count(state, options, to);
+                    // Master keys this branch off legacy `Square` parity. In
+                    // the dense node mapping, legacy-even squares are exactly
+                    // odd dense nodes.
+                    let parity_match = if to.is_multiple_of(2) {
+                        theirs == 2
+                    } else {
+                        theirs == 3
+                    };
+                    if parity_match {
+                        score += RATING_BLOCK_ONE_MILL * their_mills;
+                    }
+                }
+            }
+            if state.phase == MillPhase::Placing
+                && side == 1
+                && ctx.algorithm == tgf_core::MoveOrderAlgorithm::Mcts
+                && state.board.iter().filter(|&&p| p == 2).count() < 2
+                && is_star_square(options, to)
+            {
+                score += RATING_STAR_SQUARE;
+            }
+            return score;
+        }
 
         let our_mills = potential_mills_count_at(state, options, to, side, from) as i32;
         let mut score = 0_i32;
@@ -374,14 +435,13 @@ impl Game for MillGame {
             let their_mills = potential_mills_count_at(state, options, to, opponent, None) as i32;
             if their_mills > 0 {
                 let (_, theirs, _) = surrounded_pieces_count(state, options, to);
-                // Master `movepick.cpp::score()` keys the block-mill parity
-                // off the legacy `Square` id (`to_sq(m)`), not the dense node.
-                let legacy_to = node_to_legacy_square(to as i8);
-                assert!((8..32).contains(&legacy_to));
-                let parity_match = if legacy_to.is_multiple_of(2) {
-                    theirs == 3
-                } else {
+                // Master keys this branch off legacy `Square` parity. In the
+                // dense node mapping, legacy-even squares are exactly odd
+                // dense nodes.
+                let parity_match = if to.is_multiple_of(2) {
                     theirs == 2
+                } else {
+                    theirs == 3
                 };
                 if parity_match {
                     score += RATING_BLOCK_ONE_MILL * their_mills;

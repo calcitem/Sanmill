@@ -16,8 +16,12 @@ pub struct Action {
     pub to_node: i16,
     /// Per-game auxiliary integer (promotion piece id, etc.).
     pub aux: i16,
-    /// Per-game bitfield (capture mask, en-passant square, …).
-    pub payload_bits: u64,
+    /// Per-game compact bitfield (capture mask, en-passant square, …).
+    ///
+    /// Keep this 32-bit so the search hot path can store actions densely on
+    /// the stack. Large per-move payloads should live in game state or an
+    /// `ActionTrail`-style side structure instead of every generated action.
+    pub payload_bits: u32,
 }
 
 impl Action {
@@ -38,6 +42,17 @@ impl Action {
 /// Stack-allocated bounded action list.
 /// 256 covers Mill / Chess / Checkers; bump the const-generic when needed.
 pub type ActionList<const N: usize = 256> = arrayvec::ArrayVec<Action, N>;
+
+/// Capacity used by the monomorphised search hot path.
+///
+/// Runtime APIs keep using `ActionList<256>` so broad game tooling remains
+/// future-proof. The currently compiled search games (Mill and Othello) fit
+/// the legacy master `MAX_MOVES = 72` bound, and keeping the hot-path list
+/// below 256 avoids a multi-kilobyte stack frame at every recursive search
+/// node. Exceeding this bound is a rule-generation bug and should panic
+/// immediately through `ArrayVec::push`, not fall back silently.
+pub const SEARCH_ACTION_CAPACITY: usize = 72;
+pub type SearchActionList = ActionList<SEARCH_ACTION_CAPACITY>;
 
 /// Canonical [`Action::kind_tag`] values shared across games.
 ///
@@ -257,5 +272,11 @@ mod tests {
         assert!(Action::NONE.is_none());
         assert!(!Action::default().is_none());
         assert_eq!(Action::NONE.kind_tag, -1);
+    }
+
+    #[test]
+    fn action_layout_stays_compact_for_search_stack() {
+        assert_eq!(std::mem::size_of::<Action>(), 12);
+        assert_eq!(std::mem::align_of::<Action>(), 4);
     }
 }

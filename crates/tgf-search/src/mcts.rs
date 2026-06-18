@@ -12,7 +12,7 @@ use std::sync::atomic::{AtomicI64, AtomicU32, Ordering};
 use std::time::{Duration, Instant};
 
 use tgf_core::{
-    Action, ActionList, Evaluator, Game, GameStateSnapshot, MoveOrderContext, Workbench,
+    Action, Evaluator, Game, GameStateSnapshot, MoveOrderContext, SearchActionList, Workbench,
 };
 
 use crate::options::SearchPolicy;
@@ -217,7 +217,7 @@ impl<G: Game> MctsSearcher<G> {
     ) -> MctsResult {
         self.set_exploration(options.exploration);
         let started_at = Instant::now();
-        let mut root_moves = ActionList::<256>::new();
+        let mut root_moves = SearchActionList::new();
         G::generate_legal_ctx(wb, &mut root_moves, &options.move_order_context);
         self.order_mcts_moves(wb, &options.move_order_context, &mut root_moves);
         if root_moves.is_empty() {
@@ -261,7 +261,7 @@ impl<G: Game> MctsSearcher<G> {
                 let first_child_idx = nodes.len();
                 for action in actions {
                     wb.do_move(action);
-                    let mut child_moves = ActionList::<256>::new();
+                    let mut child_moves = SearchActionList::new();
                     G::generate_legal_ctx(wb, &mut child_moves, &options.move_order_context);
                     self.order_mcts_moves(wb, &options.move_order_context, &mut child_moves);
                     wb.undo_move();
@@ -339,7 +339,7 @@ impl<G: Game> MctsSearcher<G> {
         &self,
         wb: &G::Workbench,
         context: &MoveOrderContext,
-        moves: &mut ActionList<256>,
+        moves: &mut SearchActionList,
     ) {
         moves
             .as_mut_slice()
@@ -380,7 +380,7 @@ impl<G: Game> MctsSearcher<G> {
         if depth <= 0 || wb.is_terminal() {
             return G::Evaluator::score(wb) > 0;
         }
-        let mut moves = ActionList::<256>::new();
+        let mut moves = SearchActionList::new();
         G::generate_legal_ctx(wb, &mut moves, &options.move_order_context);
         self.order_mcts_moves(wb, &options.move_order_context, &mut moves);
         if moves.is_empty() {
@@ -538,7 +538,7 @@ where
     // `mcts_worker` returning every child to the shared aggregator.
     searcher.set_exploration(options.exploration);
     let started_at = Instant::now();
-    let mut root_moves = ActionList::<256>::new();
+    let mut root_moves = SearchActionList::new();
     G::generate_legal_ctx(wb, &mut root_moves, &options.move_order_context);
     searcher.order_mcts_moves(wb, &options.move_order_context, &mut root_moves);
     if root_moves.is_empty() {
@@ -571,7 +571,7 @@ where
             let first_child_idx = nodes.len();
             for action in actions {
                 wb.do_move(action);
-                let mut child_moves = ActionList::<256>::new();
+                let mut child_moves = SearchActionList::new();
                 G::generate_legal_ctx(wb, &mut child_moves, &options.move_order_context);
                 searcher.order_mcts_moves(wb, &options.move_order_context, &mut child_moves);
                 wb.undo_move();

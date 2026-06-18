@@ -11,7 +11,7 @@ use super::legacy_squares::{
     node_to_legacy_square,
 };
 use super::transitions::is_marked;
-use super::{MillActionState, MillPhase, MillRules, MillState, node_bit};
+use super::{MillActionState, MillPhase, MillRules, MillState, node_bit, recompute_mobility_diff};
 
 // MillRules setup-position helpers (used by the FRB kernel API)
 // ---------------------------------------------------------------------------
@@ -271,6 +271,7 @@ impl MillRules {
             winner: -1,
             ..MillState::default()
         };
+        recompute_mobility_diff(&mut state, &self.options);
         // Mirror master src/position.cpp:2069 Position::check_if_game_is_over:
         // importing a FEN immediately runs the same terminal checks as a
         // freshly reached position.  Game-over FENs keep their encoded phase

@@ -3,7 +3,7 @@
 // implementations — the search-side compile-time monomorphisation
 // surface that the generic `Searcher<G: Game>` consumes.
 
-use tgf_core::{ActionList, Evaluator, Game, GameStateSnapshot, Workbench};
+use tgf_core::{ActionList, Evaluator, Game, GameStateSnapshot, SearchActionList, Workbench};
 
 use crate::rules::OthelloRules;
 use crate::state::{OthelloState, apply_othello_action, decode, encode, othello_key};
@@ -71,7 +71,7 @@ impl Game for OthelloGame {
         }
     }
 
-    fn generate_legal(wb: &Self::Workbench, out: &mut ActionList<256>) {
+    fn generate_legal(wb: &Self::Workbench, out: &mut SearchActionList) {
         OthelloRules::legal_actions_for(&wb.state, out);
     }
 }

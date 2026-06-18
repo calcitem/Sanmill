@@ -54,8 +54,40 @@ fn tt_cluster_bits_from_env() -> u32 {
         .clamp(10, 26)
 }
 
+fn prefetch_enabled_from_env() -> bool {
+    match std::env::var("TGF_ENABLE_PREFETCH") {
+        Ok(value) => match value.to_ascii_lowercase().as_str() {
+            "1" | "true" | "on" | "yes" => true,
+            "0" | "false" | "off" | "no" => false,
+            _ => panic!("invalid TGF_ENABLE_PREFETCH value: {value}"),
+        },
+        Err(_) => false,
+    }
+}
+
+fn prefetch_mode_from_env() -> (bool, bool) {
+    match std::env::var("TGF_PREFETCH_MODE") {
+        Ok(value) => match value.to_ascii_lowercase().as_str() {
+            "off" | "none" | "0" | "false" => (false, false),
+            "first" | "1" | "true" | "on" | "yes" => (true, false),
+            "all" | "full" | "master" => (true, true),
+            _ => panic!("invalid TGF_PREFETCH_MODE value: {value}"),
+        },
+        Err(_) => (prefetch_enabled_from_env(), false),
+    }
+}
+
 fn mill_searcher() -> Searcher<MillGame> {
     let mut s = Searcher::new_with_tt_cluster_bits(tt_cluster_bits_from_env());
+    s.set_policy(SearchPolicy {
+        quiescence_kind_tag: Some(MillActionKind::Remove as i16),
+        ..Default::default()
+    });
+    s
+}
+
+fn mill_searcher_with_shared_tt(shared_tt: SharedTt) -> Searcher<MillGame> {
+    let mut s = Searcher::with_shared_tt(shared_tt);
     s.set_policy(SearchPolicy {
         quiescence_kind_tag: Some(MillActionKind::Remove as i16),
         ..Default::default()
@@ -205,6 +237,7 @@ pub(crate) fn run_uci_loop() {
     let mut threads: usize = 1;
     let mut qsearch_max_depth: i32 = 0;
     let mut engine_cfg = EngineConfig::default();
+    let mut shared_tt = SharedTt::with_capacity_mb(engine_cfg.hash_mb, tt_cluster_bits_from_env());
     let mut active_search: Option<ActiveSearch> = None;
     let stdin = io::stdin();
     for line in stdin.lock().lines().map_while(Result::ok) {
@@ -232,6 +265,7 @@ pub(crate) fn run_uci_loop() {
             );
         } else if line.starts_with("setoption") {
             finish_active_search(&mut active_search, &mut engine_cfg);
+            let old_hash_mb = engine_cfg.hash_mb;
             match apply_setoption(
                 line,
                 &mut options,
@@ -252,12 +286,17 @@ pub(crate) fn run_uci_loop() {
                 }
                 SetoptionResult::ClearHash => {
                     // Mirror master src/ucioption.cpp:357 Clear Hash button.
-                    // The CLI creates a fresh searcher per `go`, so there is
-                    // no live TT handle outside an active search.  Treat the
-                    // button as an acknowledged hard-clear request; the next
-                    // search starts from a fresh table.
+                    // The shared TT uses fake-clean semantics, so this is an
+                    // O(1) generation bump unless the age field wraps.
+                    shared_tt.bump_age();
                 }
                 SetoptionResult::SearchConfig => {
+                    if engine_cfg.hash_mb != old_hash_mb {
+                        shared_tt = SharedTt::with_capacity_mb(
+                            engine_cfg.hash_mb,
+                            tt_cluster_bits_from_env(),
+                        );
+                    }
                     // A search/engine parameter changed; the perfect-database
                     // toggle and path live here, so reconcile the global handle.
                     sync_perfect_db(&mut engine_cfg, &options);
@@ -280,6 +319,8 @@ pub(crate) fn run_uci_loop() {
             let game = MillGame::new(options.clone());
             let wb = game.build_workbench(&state);
             println!("key {}", wb.key() as u32);
+        } else if line == "hist" {
+            print_repetition_history(&options, state, &state_history);
         } else if line.starts_with("gomtdf") {
             finish_active_search(&mut active_search, &mut engine_cfg);
             let depth = parse_fixed_depth_debug_command(line, 15);
@@ -289,7 +330,7 @@ pub(crate) fn run_uci_loop() {
                 &state_history,
                 &engine_cfg,
                 qsearch_max_depth,
-                engine_cfg.hash_mb,
+                shared_tt.clone(),
                 depth,
             );
         } else if line.starts_with("goab") {
@@ -301,7 +342,7 @@ pub(crate) fn run_uci_loop() {
                 &state_history,
                 &engine_cfg,
                 qsearch_max_depth,
-                engine_cfg.hash_mb,
+                shared_tt.clone(),
                 depth,
             );
         } else if line.starts_with("rootprobe") {
@@ -313,7 +354,7 @@ pub(crate) fn run_uci_loop() {
                 &state_history,
                 &engine_cfg,
                 qsearch_max_depth,
-                engine_cfg.hash_mb,
+                shared_tt.clone(),
                 depth,
                 &betas,
             );
@@ -329,7 +370,7 @@ pub(crate) fn run_uci_loop() {
                 go,
                 threads,
                 qsearch_max_depth,
-                engine_cfg.hash_mb,
+                shared_tt.clone(),
                 engine_cfg.clone(),
             ));
         } else if line == "stop" {
@@ -376,12 +417,14 @@ fn spawn_search(
     go: GoOptions,
     threads: usize,
     qsearch_max_depth: i32,
-    hash_mb: u32,
+    shared_tt: SharedTt,
     cfg: EngineConfig,
 ) -> ActiveSearch {
     let state = position.state;
     let root_repetition_history =
         MillRules::repetition_history_from_snapshots(&state, &position.history);
+    let root_position_resets_repetition =
+        MillRules::root_position_resets_repetition_from_snapshots(&state, &position.history);
     let search_options = search_options_for_go(&cfg, &go);
     let depth = effective_search_depth(&options, &state, go.depth, &cfg);
     let root_side_to_move = state.side_to_move;
@@ -398,11 +441,8 @@ fn spawn_search(
     let handle = if !use_lazy_smp {
         let abort_for_worker = Arc::clone(&abort);
         thread::spawn(move || {
-            let mut searcher = mill_searcher();
-            // P2-L plan-C: resize TT when Hash setoption specifies a size.
-            if hash_mb > 0 {
-                searcher.resize_tt_by_mb(hash_mb);
-            }
+            let mut searcher = mill_searcher_with_shared_tt(shared_tt);
+            searcher.clear_tt();
             searcher.set_abort_flag(abort_for_worker);
             searcher.set_options(search_options);
             searcher.set_qsearch_max_depth(qsearch_max_depth);
@@ -410,6 +450,7 @@ fn spawn_search(
                 options,
                 state,
                 root_repetition_history,
+                root_position_resets_repetition,
                 depth,
                 &cfg,
                 &mut searcher,
@@ -430,8 +471,12 @@ fn spawn_search(
                     extra_depth: (i % 2) as i32,
                 })
                 .collect();
-            let shared_tt = SharedTt::with_capacity_mb(hash_mb, tt_cluster_bits_from_env());
-            let game = MillGame::new_with_repetition_history(options, root_repetition_history);
+            shared_tt.bump_age();
+            let game = MillGame::new_with_repetition_context(
+                options,
+                root_repetition_history,
+                root_position_resets_repetition,
+            );
             let result = lazy_smp_search::<MillGame>(
                 game,
                 state,
@@ -462,13 +507,18 @@ fn run_configured_search(
     options: MillVariantOptions,
     state: GameStateSnapshot,
     root_repetition_history: Vec<u64>,
+    root_position_resets_repetition: bool,
     depth: i32,
     cfg: &EngineConfig,
     searcher: &mut Searcher<MillGame>,
 ) -> SearchResult {
     // Mirror master src/search_engine.cpp:381 executeSearch: route the
     // user-visible Algorithm option into the actual search implementation.
-    let game = MillGame::new_with_repetition_history(options.clone(), root_repetition_history);
+    let game = MillGame::new_with_repetition_context(
+        options.clone(),
+        root_repetition_history,
+        root_position_resets_repetition,
+    );
     let mut wb = game.build_workbench(&state);
     let mut value = 0;
     let mut best_so_far = SearchResult::default_none();
@@ -568,6 +618,7 @@ fn run_algorithm_at_depth(
 }
 
 fn search_options_for_go(cfg: &EngineConfig, go: &GoOptions) -> SearchOptions {
+    let (enable_prefetch, prefetch_all) = prefetch_mode_from_env();
     SearchOptions {
         depth_extension: cfg.depth_extension,
         node_limit: go.node_limit,
@@ -578,15 +629,13 @@ fn search_options_for_go(cfg: &EngineConfig, go: &GoOptions) -> SearchOptions {
         // additionally shuffle the root action list here.
         shuffle_root: false,
         // Master prefetches TT child entries before recursive search.
-        // With the master-aligned direct TT and O(1) Mill key_after,
-        // prefetching the first candidate is a small net win on deep
-        // placing roots; bulk prefetching every candidate was slower.
-        enable_prefetch: true,
+        // Rust keeps this opt-in because moving-entry measurements show
+        // TT prefetch costs more than it saves on this implementation.
+        // TGF_PREFETCH_MODE=first or all enables targeted diagnostics.
+        enable_prefetch,
+        prefetch_all,
         // Master executeSearch uses full windows for every IDS pass.
         enable_aspiration_window: false,
-        // Master MovePicker has no killer / history tables.
-        enable_killers: false,
-        enable_history: false,
         move_order_context: move_order_context(cfg),
     }
 }
@@ -594,13 +643,11 @@ fn search_options_for_go(cfg: &EngineConfig, go: &GoOptions) -> SearchOptions {
 fn debug_searcher(
     cfg: &EngineConfig,
     qsearch_max_depth: i32,
-    hash_mb: u32,
+    shared_tt: SharedTt,
     depth: i32,
 ) -> Searcher<MillGame> {
-    let mut searcher = mill_searcher();
-    if hash_mb > 0 {
-        searcher.resize_tt_by_mb(hash_mb);
-    }
+    let mut searcher = mill_searcher_with_shared_tt(shared_tt);
+    searcher.clear_tt();
     searcher.set_options(search_options_for_go(
         cfg,
         &GoOptions {
@@ -620,8 +667,52 @@ fn debug_workbench(
 ) -> tgf_mill::MillWorkbench {
     let root_repetition_history =
         MillRules::repetition_history_from_snapshots(&state, state_history);
-    MillGame::new_with_repetition_history(options.clone(), root_repetition_history)
-        .build_workbench(&state)
+    let root_position_resets_repetition =
+        MillRules::root_position_resets_repetition_from_snapshots(&state, state_history);
+    MillGame::new_with_repetition_context(
+        options.clone(),
+        root_repetition_history,
+        root_position_resets_repetition,
+    )
+    .build_workbench(&state)
+}
+
+fn print_repetition_history(
+    options: &MillVariantOptions,
+    state: GameStateSnapshot,
+    state_history: &[GameStateSnapshot],
+) {
+    let root_repetition_history =
+        MillRules::repetition_history_from_snapshots(&state, state_history);
+    let root_position_resets_repetition =
+        MillRules::root_position_resets_repetition_from_snapshots(&state, state_history);
+    let game = MillGame::new_with_repetition_context(
+        options.clone(),
+        root_repetition_history.clone(),
+        root_position_resets_repetition,
+    );
+    let wb = game.build_workbench(&state);
+    let key = wb.key();
+    let count_all = root_repetition_history
+        .iter()
+        .filter(|history_key| **history_key == key)
+        .count();
+    let current_count = root_repetition_history
+        .iter()
+        .take(root_repetition_history.len().saturating_sub(1))
+        .filter(|history_key| **history_key == key)
+        .count();
+    let last_is_current = root_repetition_history.last().copied() == Some(key);
+    println!(
+        "hist key={} len={} current_count={} count_all={} last_is_current={} root_reset={} snapshots={}",
+        key as u32,
+        root_repetition_history.len(),
+        current_count,
+        count_all,
+        last_is_current,
+        root_position_resets_repetition,
+        state_history.len()
+    );
 }
 
 fn parse_fixed_depth_debug_command(line: &str, default_depth: i32) -> i32 {
@@ -652,11 +743,11 @@ fn run_alpha_beta_debug_command(
     state_history: &[GameStateSnapshot],
     cfg: &EngineConfig,
     qsearch_max_depth: i32,
-    hash_mb: u32,
+    shared_tt: SharedTt,
     depth: i32,
 ) {
     let mut wb = debug_workbench(options, state, state_history);
-    let mut searcher = debug_searcher(cfg, qsearch_max_depth, hash_mb, depth);
+    let mut searcher = debug_searcher(cfg, qsearch_max_depth, shared_tt, depth);
     let result = searcher.search(&mut wb, depth);
     println!(
         "goab depth={} value={} bestmove {} nodes {}",
@@ -674,12 +765,12 @@ fn run_root_probe_debug_command(
     state_history: &[GameStateSnapshot],
     cfg: &EngineConfig,
     qsearch_max_depth: i32,
-    hash_mb: u32,
+    shared_tt: SharedTt,
     depth: i32,
     betas: &[i32],
 ) {
     let mut wb = debug_workbench(options, state, state_history);
-    let mut searcher = debug_searcher(cfg, qsearch_max_depth, hash_mb, depth);
+    let mut searcher = debug_searcher(cfg, qsearch_max_depth, shared_tt, depth);
     for beta in betas {
         let (value, best_action, rows) = searcher.debug_root_probe(&mut wb, depth, beta - 1, *beta);
         println!(
@@ -708,11 +799,11 @@ fn run_mtdf_debug_command(
     state_history: &[GameStateSnapshot],
     cfg: &EngineConfig,
     qsearch_max_depth: i32,
-    hash_mb: u32,
+    shared_tt: SharedTt,
     depth: i32,
 ) {
     let mut wb = debug_workbench(options, state, state_history);
-    let mut searcher = debug_searcher(cfg, qsearch_max_depth, hash_mb, depth);
+    let mut searcher = debug_searcher(cfg, qsearch_max_depth, shared_tt, depth);
     let result = searcher.search_mtdf_with_guess_traced(
         &mut wb,
         depth,
@@ -728,11 +819,13 @@ fn run_mtdf_debug_command(
         },
     );
     println!(
-        "gomtdf depth={} value={} bestmove {} nodes {}",
+        "gomtdf depth={} value={} bestmove {} nodes {} tthits {} ttmisses {}",
         depth,
         result.score,
         action_to_uci(result.best_action).unwrap_or_else(|| "none".to_owned()),
-        result.nodes
+        result.nodes,
+        searcher.tt_hits(),
+        searcher.tt_misses()
     );
 }
 

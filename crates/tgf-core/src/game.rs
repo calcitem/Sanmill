@@ -36,7 +36,7 @@
 // the action sets / snapshots agree.
 
 use crate::{
-    action::{Action, ActionList, ActionTrail},
+    action::{Action, ActionList, ActionTrail, SearchActionList},
     board_topology::BoardTopology,
     game_state::{GameStateSnapshot, MultiPlayerInfo, Outcome},
 };
@@ -154,7 +154,7 @@ where
     rules.legal_actions(snap, &mut rules_actions);
 
     let workbench = game.build_workbench(snap);
-    let mut game_actions = ActionList::<256>::new();
+    let mut game_actions = SearchActionList::new();
     G::generate_legal(&workbench, &mut game_actions);
 
     if rules_actions.len() != game_actions.len() {
@@ -250,7 +250,7 @@ pub trait Game: 'static + Send + Sync {
     fn build_workbench(&self, snap: &GameStateSnapshot) -> Self::Workbench;
 
     /// MUST be `#[inline]` in every concrete implementation.
-    fn generate_legal(wb: &Self::Workbench, out: &mut ActionList<256>);
+    fn generate_legal(wb: &Self::Workbench, out: &mut SearchActionList);
 
     /// Context-aware legal generation used by search. The default preserves
     /// legacy game implementations; games with skill/shuffle-dependent move
@@ -258,7 +258,7 @@ pub trait Game: 'static + Send + Sync {
     #[inline]
     fn generate_legal_ctx(
         wb: &Self::Workbench,
-        out: &mut ActionList<256>,
+        out: &mut SearchActionList,
         _ctx: &MoveOrderContext,
     ) {
         Self::generate_legal(wb, out);

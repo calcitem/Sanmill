@@ -10,7 +10,7 @@
 
 use tgf_core::{
     Action, ActionList, Evaluator, Game, GameRules, MoveOrderAlgorithm, MoveOrderContext,
-    assert_game_rules_game_consistency,
+    SearchActionList, assert_game_rules_game_consistency,
 };
 use tgf_mill::{MillActionKind, MillEvaluator, MillGame, MillRules, MillVariantOptions};
 use tgf_search::{
@@ -537,7 +537,7 @@ fn mill_forced_root_move_returns_unique_score() {
 
     let mut wb = game.build_workbench(&snap);
     // Generate to confirm a single Remove is the only legal action.
-    let mut moves = ActionList::<256>::new();
+    let mut moves = SearchActionList::new();
     MillGame::generate_legal(&wb, &mut moves);
     let removes = moves
         .iter()
