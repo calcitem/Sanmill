@@ -548,8 +548,8 @@ impl<G: Game> Searcher<G> {
             return self.qsearch_with_depth(wb, depth, alpha, beta);
         }
 
-        if let Some(floor) = G::search_alpha_floor(wb) {
-            alpha = alpha.max(floor);
+        if let Some(alpha_override) = G::search_alpha_override(wb) {
+            alpha = alpha_override;
             if alpha >= beta {
                 return alpha;
             }

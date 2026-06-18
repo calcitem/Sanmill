@@ -504,8 +504,8 @@ impl Game for MillGame {
     }
 
     #[inline]
-    fn search_alpha_floor(wb: &Self::Workbench) -> Option<i32> {
-        search_n_move_draw_alpha_floor(wb)
+    fn search_alpha_override(wb: &Self::Workbench) -> Option<i32> {
+        search_n_move_draw_alpha_override(wb)
     }
 
     #[inline]
@@ -558,7 +558,7 @@ impl Game for MillGame {
 }
 
 #[inline]
-fn search_n_move_draw_alpha_floor(wb: &MillWorkbench) -> Option<i32> {
+fn search_n_move_draw_alpha_override(wb: &MillWorkbench) -> Option<i32> {
     let state = &wb.state;
     let options = &wb.rules.options;
     let is_move_counting_phase = state.phase == MillPhase::Moving

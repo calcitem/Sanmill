@@ -710,7 +710,7 @@ fn selfplay_skill3_time0_shuffling_off_matches_master_go_full_game() {
 }
 
 #[test]
-fn skill4_tail_n_move_floor_keeps_master_mtdf_choice() {
+fn skill4_tail_n_move_override_keeps_master_mtdf_choice() {
     let options = selfplay_variant_options();
     let rules = MillRules::new(options.clone());
     let mut snap = rules.initial_state(&[]);

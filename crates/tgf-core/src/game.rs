@@ -340,15 +340,15 @@ pub trait Game: 'static + Send + Sync {
         wb.is_terminal().then(|| Self::Evaluator::score(wb))
     }
 
-    /// Optional lower bound applied inside alpha-beta before TT and
+    /// Optional alpha override applied inside alpha-beta before TT and
     /// repetition probes.
     ///
     /// Some mature engines model soft rule draws as `alpha = draw` rather
     /// than as immediate terminal nodes: the search may still discover a
     /// better tactical result or a repetition draw-bias below the same node.
-    /// Default: `None` (no alpha floor).
+    /// Default: `None` (no alpha override).
     #[inline]
-    fn search_alpha_floor(_wb: &Self::Workbench) -> Option<i32> {
+    fn search_alpha_override(_wb: &Self::Workbench) -> Option<i32> {
         None
     }
 
