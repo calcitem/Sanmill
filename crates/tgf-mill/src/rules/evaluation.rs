@@ -194,8 +194,8 @@ fn adjacent_mobility_counts(
 }
 
 /// Detect whether the side has any legal move (placing or fly excluded:
-/// matches `Position::is_all_surrounded`).  Only used for the static
-/// evaluator's gameover branch where C++ checks
+/// matches `Position::is_all_surrounded`).  Used by stalemate handling and
+/// by the static evaluator's gameover branch where C++ checks
 /// `phase == moving && action == select && is_all_surrounded(side)`.
 pub(super) fn is_all_surrounded(state: &MillState, options: &MillVariantOptions, side: i8) -> bool {
     if (side & 1) != side {

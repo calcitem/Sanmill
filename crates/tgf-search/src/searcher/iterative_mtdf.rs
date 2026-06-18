@@ -11,6 +11,13 @@ use super::qsearch::TtProbe;
 use crate::result::SearchResult;
 use crate::tt::Bound;
 
+struct MtdfRootProbe {
+    depth: i32,
+    alpha: i32,
+    beta: i32,
+    iteration: usize,
+}
+
 impl<G: Game> Searcher<G> {
     /// Iterative deepening using PVS (fixes the earlier inconsistency where
     /// IDS drove `search` while the root entry point was `search_pvs`).
@@ -191,7 +198,7 @@ impl<G: Game> Searcher<G> {
         depth: i32,
         first_guess: i32,
     ) -> SearchResult {
-        self.search_mtdf_with_guess_traced(wb, depth, first_guess, &mut |_, _, _, _, _| {})
+        self.search_mtdf_with_guess_traced(wb, depth, first_guess, &mut |_, _, _, _, _, _| {})
     }
 
     /// Run MTD(f) and report each zero-window probe through `on_iteration`.
@@ -206,7 +213,33 @@ impl<G: Game> Searcher<G> {
         on_iteration: &mut F,
     ) -> SearchResult
     where
-        F: FnMut(usize, i32, i32, Action, u64),
+        F: FnMut(usize, i32, i32, Action, u64, u64),
+    {
+        self.search_mtdf_with_guess_trace_roots(
+            wb,
+            depth,
+            first_guess,
+            on_iteration,
+            &mut |_, _, _, _, _, _, _| {},
+        )
+    }
+
+    /// Run MTD(f), reporting both iteration summaries and root-move rows.
+    ///
+    /// This is a diagnostic entry point for parity audits.  The production
+    /// path uses a no-op root callback through
+    /// [`Self::search_mtdf_with_guess_traced`].
+    pub fn search_mtdf_with_guess_trace_roots<F, R>(
+        &mut self,
+        wb: &mut G::Workbench,
+        depth: i32,
+        first_guess: i32,
+        on_iteration: &mut F,
+        on_root_move: &mut R,
+    ) -> SearchResult
+    where
+        F: FnMut(usize, i32, i32, Action, u64, u64),
+        R: FnMut(usize, Action, u64, Option<super::DebugTtEntry>, i32, u64, bool),
     {
         self.begin_root_search_at(wb);
         if let Some(score) = G::terminal_score(wb, wb.side_to_move(), depth) {
@@ -255,8 +288,25 @@ impl<G: Game> Searcher<G> {
         let mut iteration = 0;
         while lower_bound < upper_bound {
             let beta = if g == lower_bound { g + 1 } else { g };
-            g = self.mtdf_root(wb, depth, beta - 1, beta, &mut best_action);
-            on_iteration(iteration, beta, g, best_action, self.nodes);
+            g = self.mtdf_root_traced(
+                wb,
+                MtdfRootProbe {
+                    depth,
+                    alpha: beta - 1,
+                    beta,
+                    iteration,
+                },
+                &mut best_action,
+                on_root_move,
+            );
+            on_iteration(
+                iteration,
+                beta,
+                g,
+                best_action,
+                self.nodes,
+                self.repetition_cuts,
+            );
             iteration += 1;
             if g < beta {
                 upper_bound = g;
@@ -286,14 +336,20 @@ impl<G: Game> Searcher<G> {
     /// `Move &bestMove` reference, so a converging all-node probe cannot
     /// overwrite the move chosen by the fail-high probe that pinned down
     /// the score.
-    fn mtdf_root(
+    fn mtdf_root_traced<R>(
         &mut self,
         wb: &mut G::Workbench,
-        depth: i32,
-        mut alpha: i32,
-        mut beta: i32,
+        probe: MtdfRootProbe,
         best_action: &mut Action,
-    ) -> i32 {
+        on_root_move: &mut R,
+    ) -> i32
+    where
+        R: FnMut(usize, Action, u64, Option<super::DebugTtEntry>, i32, u64, bool),
+    {
+        let depth = probe.depth;
+        let mut alpha = probe.alpha;
+        let mut beta = probe.beta;
+        let iteration = probe.iteration;
         // Master `Search::search` counts the root zero-window probe itself
         // before terminal checks, TT probing, or child generation.  MTD(f)
         // calls this root probe once per bound iteration, so the node counter
@@ -329,13 +385,27 @@ impl<G: Game> Searcher<G> {
             if self.should_abort() {
                 break;
             }
+            let before_nodes = self.nodes;
             let before = wb.side_to_move();
             let previous_incoming_reset = self.push_repetition_ancestor(root_key, action);
             wb.do_move(action);
+            let child_key = wb.key();
+            let child_tt = self.debug_tt_entry_for_key(child_key);
             let after = wb.side_to_move();
             let value = self.search_after_move(wb, depth - 1, alpha, beta, before, after);
             wb.undo_move();
             self.pop_repetition_ancestor(root_key, previous_incoming_reset);
+            let action_nodes = self.nodes - before_nodes;
+            let cutoff = value >= beta;
+            on_root_move(
+                iteration,
+                action,
+                child_key,
+                child_tt,
+                value,
+                action_nodes,
+                cutoff,
+            );
             // Mirror master `Search::search`'s root update exactly: the best
             // move only changes on a strict `value > alpha` improvement, so
             // the FIRST move is kept on ties.

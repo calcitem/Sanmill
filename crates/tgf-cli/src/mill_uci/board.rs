@@ -82,6 +82,26 @@ pub(super) fn board_ascii_lines(
     lines.push(format!("side: {}", side_label(state.side_to_move)));
     lines.push(format!("phase_tag: {}", state.phase_tag));
     lines.push(format!("move_number: {}", state.move_number));
+    lines.push(format!(
+        "pieces_in_hand: [{}, {}]",
+        state.opaque_payload[24], state.opaque_payload[25]
+    ));
+    lines.push(format!(
+        "pieces_on_board: [{}, {}]",
+        state.opaque_payload[26], state.opaque_payload[27]
+    ));
+    lines.push(format!(
+        "pending_removals: [{}, {}]",
+        state.opaque_payload[28], state.opaque_payload[29]
+    ));
+    lines.push(format!("winner: {}", state.opaque_payload[30] as i8));
+    lines.push(format!(
+        "ply_since_capture: {}",
+        u16::from(state.opaque_payload[31]) | (u16::from(state.opaque_payload[32]) << 8)
+    ));
+    lines.push(format!("outcome_reason: {}", state.opaque_payload[43]));
+    lines.push(format!("key_history_len: {}", state.opaque_payload[236]));
+    lines.push(format!("action_tag: {}", state.opaque_payload[279]));
     lines
 }
 

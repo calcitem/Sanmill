@@ -4,8 +4,8 @@
 //
 //   * `legal_actions_ctx`        — context-aware move ordering driven
 //                                  by the search's MoveOrderContext.
-//   * `has_legal_move` / `maybe_handle_stalemate` /
-//     `check_if_game_is_over` — phase-transition helpers that decide
+//   * `maybe_handle_stalemate` / `check_if_game_is_over`
+//                                  — phase-transition helpers that decide
 //                                  whether a position is terminal.
 //   * `generate_*_actions`       — kind-specific generators (move, remove,
 //                                  capture-only-remove, regular remove).
@@ -67,64 +67,11 @@ impl MillRules {
         }
     }
 
-    pub(super) fn has_legal_move(&self, state: &MillState) -> bool {
-        if state.phase != MillPhase::Moving {
-            return true;
-        }
-        let side = state.side_to_move;
-        if !(0..=1).contains(&side) {
-            return false;
-        }
-        let side = side as usize;
-        let no_pieces_in_hand = state.pieces_in_hand[side] == 0;
-        let can_fly = self.options.may_fly
-            && no_pieces_in_hand
-            && state.pieces_on_board[side] <= self.options.fly_piece_count;
-        let leap_enabled = !can_fly
-            && no_pieces_in_hand
-            && self.options.leap_capture.enabled
-            && capture_phase_allowed(&self.options.leap_capture, state.phase)
-            && capture_piece_count_allowed_leap(&self.options.leap_capture, state);
-        if state.delayed_marked_pieces == 0
-            && !self.options.restrict_repeated_mills_formation
-            && !leap_enabled
-        {
-            let own_piece = state.side_to_move + 1;
-            if can_fly {
-                let has_own_piece = state.board.contains(&own_piece);
-                let has_empty = state.board.contains(&0);
-                return has_own_piece && has_empty;
-            }
-            for from in 0_usize..24 {
-                if state.board[from] != own_piece {
-                    continue;
-                }
-                if self.options.has_diagonal_lines {
-                    if crate::topology::diagonal_neighbors_for(from)
-                        .iter()
-                        .any(|to| state.board[*to as usize] == 0)
-                    {
-                        return true;
-                    }
-                } else if crate::topology::standard_neighbors_for(from)
-                    .iter()
-                    .any(|to| state.board[*to as usize] == 0)
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-        let mut actions = ActionList::<256>::new();
-        self.generate_move_actions(state, &mut actions, true);
-        !actions.is_empty()
-    }
-
     pub(super) fn maybe_handle_stalemate(&self, state: &mut MillState) -> bool {
         if state.phase != MillPhase::Moving
             || state.side_to_move < 0
             || state.pending_removals[state.side_to_move as usize] != 0
-            || self.has_legal_move(state)
+            || !evaluation::is_all_surrounded(state, &self.options, state.side_to_move)
         {
             return false;
         }
@@ -134,7 +81,6 @@ impl MillRules {
                 state.phase = MillPhase::GameOver;
                 state.winner = state.side_to_move ^ 1;
                 state.outcome_reason = MillOutcomeReason::LoseNoLegalMoves;
-                state.side_to_move = -1;
             }
             StalemateAction::ChangeSideToMove => {
                 // C++ runs change_side_to_move() -> set_side_to_move(),
@@ -160,7 +106,6 @@ impl MillRules {
                 state.phase = MillPhase::GameOver;
                 state.winner = 2;
                 state.outcome_reason = MillOutcomeReason::DrawStalemate;
-                state.side_to_move = -1;
             }
             StalemateAction::BothPlayersRemoveOpponentsPiece => {
                 let side = state.side_to_move as usize;
@@ -520,6 +465,6 @@ impl MillRules {
         ) && state.phase == MillPhase::Moving
             && state.side_to_move >= 0
             && state.pending_removals[state.side_to_move as usize] > 0
-            && !self.has_legal_move(state)
+            && evaluation::is_all_surrounded(state, &self.options, state.side_to_move)
     }
 }

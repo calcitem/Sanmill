@@ -24,7 +24,24 @@ mod iterative_mtdf;
 mod move_order;
 mod qsearch;
 
-pub type RootProbeRows = Vec<(Action, i32, u64, bool)>;
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub struct DebugTtEntry {
+    pub value: i32,
+    pub depth: i32,
+    pub bound: &'static str,
+}
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub struct RootProbeRow {
+    pub action: Action,
+    pub child_key: u64,
+    pub value: i32,
+    pub nodes: u64,
+    pub cutoff: bool,
+    pub child_tt: Option<DebugTtEntry>,
+}
+
+pub type RootProbeRows = Vec<RootProbeRow>;
 
 pub struct Searcher<G: Game> {
     /// Per-search-instance node counter.
@@ -43,6 +60,7 @@ pub struct Searcher<G: Game> {
     nodes: u64,
     tt_hits: u64,
     tt_misses: u64,
+    repetition_cuts: u64,
     tt_age_bumps: u64,
     rng_state: u64,
     tt: Arc<ClusteredTt>,
@@ -78,6 +96,7 @@ impl<G: Game> Searcher<G> {
             nodes: 0,
             tt_hits: 0,
             tt_misses: 0,
+            repetition_cuts: 0,
             tt_age_bumps: 0,
             rng_state: 0x9E37_79B9_7F4A_7C15,
             tt,
@@ -160,6 +179,10 @@ impl<G: Game> Searcher<G> {
         self.tt_misses
     }
 
+    pub fn repetition_cuts(&self) -> u64 {
+        self.repetition_cuts
+    }
+
     pub fn tt_hit_rate_pct(&self) -> f64 {
         let total = self.tt_hits + self.tt_misses;
         if total == 0 {
@@ -190,6 +213,18 @@ impl<G: Game> Searcher<G> {
 
     pub fn tt_len(&self) -> usize {
         self.tt.len_occupied()
+    }
+
+    pub fn debug_tt_entry_for_key(&self, key: u64) -> Option<DebugTtEntry> {
+        self.tt.get(key).map(|entry| DebugTtEntry {
+            value: entry.value,
+            depth: entry.depth,
+            bound: match entry.bound {
+                Bound::Exact => "exact",
+                Bound::Lower => "lower",
+                Bound::Upper => "upper",
+            },
+        })
     }
 
     pub fn set_random_seed(&mut self, seed: u64) {
@@ -419,6 +454,8 @@ impl<G: Game> Searcher<G> {
             let before = wb.side_to_move();
             let previous_incoming_reset = self.push_repetition_ancestor(root_key, action);
             wb.do_move(action);
+            let child_key = wb.key();
+            let child_tt = self.debug_tt_entry_for_key(child_key);
             let after = wb.side_to_move();
             let value = self.search_after_move(wb, depth - 1, alpha, beta, before, after);
             wb.undo_move();
@@ -437,7 +474,14 @@ impl<G: Game> Searcher<G> {
                     }
                 }
             }
-            rows.push((action, value, action_nodes, cutoff));
+            rows.push(RootProbeRow {
+                action,
+                child_key,
+                value,
+                nodes: action_nodes,
+                cutoff,
+                child_tt,
+            });
             if cutoff {
                 break;
             }
@@ -548,6 +592,7 @@ impl<G: Game> Searcher<G> {
         // to a draw.  `path_repeats_since_reset` covers the search-stack half;
         // `current_repetition_count` covers the pre-root reversible history.
         if key != 0 && (self.path_repeats_since_reset(key) || wb.current_repetition_count() >= 1) {
+            self.repetition_cuts += 1;
             return G::repetition_draw_bias();
         }
 
@@ -675,6 +720,7 @@ impl<G: Game> Searcher<G> {
         self.nodes = 0;
         self.tt_hits = 0;
         self.tt_misses = 0;
+        self.repetition_cuts = 0;
         self.aborted = false;
         self.repetition_stack.clear();
         self.repetition_current_incoming_reset = false;

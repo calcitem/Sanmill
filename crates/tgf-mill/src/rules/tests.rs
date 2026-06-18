@@ -1207,6 +1207,7 @@ fn stalemate_default_action_loses_for_side_to_move() {
     let mut state = stalemate_fixture();
     rules.maybe_handle_stalemate(&mut state);
     assert_eq!(state.phase, MillPhase::GameOver);
+    assert_eq!(state.side_to_move, 0, "master preserves side on stalemate");
     assert_eq!(state.winner, 1);
     let outcome = rules.outcome(&rules.encode(state));
     assert_eq!(outcome.kind, OutcomeKind::Win(1));
@@ -1222,6 +1223,7 @@ fn stalemate_draw_action_draws() {
     let mut state = stalemate_fixture();
     rules.maybe_handle_stalemate(&mut state);
     assert_eq!(state.phase, MillPhase::GameOver);
+    assert_eq!(state.side_to_move, 0, "master preserves side on stalemate");
     assert_eq!(state.winner, 2);
     assert_eq!(
         rules.outcome(&rules.encode(state)).reason,

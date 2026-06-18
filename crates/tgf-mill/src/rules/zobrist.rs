@@ -256,8 +256,9 @@ pub(crate) fn full_state_key(state: &MillState) -> u64 {
     }
 
     // Misc counter: piece-to-remove count for the side to move
-    // (master `update_key_misc`).  Phase Ready / GameOver have
-    // side_to_move = -1; in that case we leave the misc bits cleared.
+    // (master `update_key_misc`).  GameOver positions keep the phase
+    // contribution only; some terminal states still preserve side_to_move
+    // for key parity with master.
     let count = if state.phase != MillPhase::GameOver
         && (state.side_to_move == 0 || state.side_to_move == 1)
     {

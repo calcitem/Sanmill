@@ -781,20 +781,27 @@ fn run_root_probe_debug_command(
     for beta in betas {
         let (value, best_action, rows) = searcher.debug_root_probe(&mut wb, depth, beta - 1, *beta);
         println!(
-            "rootprobe depth={} beta={} value={} bestmove {} nodes {}",
+            "rootprobe depth={} beta={} value={} bestmove {} nodes {} repcuts {}",
             depth,
             beta,
             value,
             action_to_uci(best_action).unwrap_or_else(|| "none".to_owned()),
-            searcher.nodes()
+            searcher.nodes(),
+            searcher.repetition_cuts()
         );
-        for (action, value, nodes, cutoff) in rows {
+        for row in rows {
+            let child_tt = row
+                .child_tt
+                .map(|entry| format!("{}:{}:{}", entry.bound, entry.depth, entry.value))
+                .unwrap_or_else(|| "miss".to_owned());
             println!(
-                "  rootmove {} value={} nodes={} cutoff={}",
-                action_to_uci(action).unwrap_or_else(|| "none".to_owned()),
-                value,
-                nodes,
-                cutoff
+                "  rootmove {} key={} value={} nodes={} cutoff={} prett={}",
+                action_to_uci(row.action).unwrap_or_else(|| "none".to_owned()),
+                row.child_key as u32,
+                row.value,
+                row.nodes,
+                row.cutoff,
+                child_tt
             );
         }
     }
@@ -811,26 +818,44 @@ fn run_mtdf_debug_command(
 ) {
     let mut wb = debug_workbench(options, state, state_history);
     let mut searcher = debug_searcher(cfg, qsearch_max_depth, shared_tt, depth);
-    let result = searcher.search_mtdf_with_guess_traced(
+    let result = searcher.search_mtdf_with_guess_trace_roots(
         &mut wb,
         depth,
         0,
-        &mut |iteration, beta, g, best_action, _nodes| {
+        &mut |iteration, beta, g, best_action, nodes, repetition_cuts| {
             println!(
-                "  mtdf-iter {} beta={} g={} best={}",
+                "  mtdf-iter {} beta={} g={} best={} nodes={} repcuts={}",
                 iteration,
                 beta,
                 g,
                 action_to_uci(best_action).unwrap_or_else(|| "none".to_owned()),
+                nodes,
+                repetition_cuts,
+            );
+        },
+        &mut |iteration, action, child_key, child_tt, value, nodes, cutoff| {
+            let child_tt = child_tt
+                .map(|entry| format!("{}:{}:{}", entry.bound, entry.depth, entry.value))
+                .unwrap_or_else(|| "miss".to_owned());
+            println!(
+                "  mtdf-rootmove iter={} {} key={} value={} nodes={} cutoff={} prett={}",
+                iteration,
+                action_to_uci(action).unwrap_or_else(|| "none".to_owned()),
+                child_key as u32,
+                value,
+                nodes,
+                cutoff,
+                child_tt,
             );
         },
     );
     println!(
-        "gomtdf depth={} value={} bestmove {} nodes {} tthits {} ttmisses {}",
+        "gomtdf depth={} value={} bestmove {} nodes {} repcuts {} tthits {} ttmisses {}",
         depth,
         result.score,
         action_to_uci(result.best_action).unwrap_or_else(|| "none".to_owned()),
         result.nodes,
+        searcher.repetition_cuts(),
         searcher.tt_hits(),
         searcher.tt_misses()
     );
