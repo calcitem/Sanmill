@@ -15,6 +15,7 @@ import '../../game_platform/game_session.dart';
 import '../../game_platform/game_session_handle.dart';
 import '../../general_settings/models/general_settings.dart';
 import '../../rule_settings/models/rule_settings.dart';
+import '../../shared/services/environment_config.dart';
 import '../../shared/services/logger.dart';
 import '../../src/rust/api/simple.dart' as tgf;
 import 'lan_session_meta.dart';
@@ -52,6 +53,7 @@ class NativeMillGameSession implements GameSessionHandle {
   final StreamController<GameSessionEvent> _events =
       StreamController<GameSessionEvent>.broadcast();
   bool _disposed = false;
+  GameAction? _lastSearchLegalAction;
 
   /// True while a session-level terminal result (resignation / timeout /
   /// abandonment) is overlaid on top of the Rust kernel state.  Cleared by
@@ -271,7 +273,12 @@ class NativeMillGameSession implements GameSessionHandle {
       // setup / loadFen) clears the override.
       return false;
     }
-    if (!rulesPort.isLegal(action)) {
+    final bool alreadyMatchedLegalSearchAction = identical(
+      action,
+      _lastSearchLegalAction,
+    );
+    _lastSearchLegalAction = null;
+    if (!alreadyMatchedLegalSearchAction && !rulesPort.isLegal(action)) {
       _emit(MillEventTypes.moveRejected, <String, Object?>{
         'type': action.type,
         ...action.payload,
@@ -280,7 +287,11 @@ class NativeMillGameSession implements GameSessionHandle {
     }
     final PlayerSeat mover = _state.value.activeSeat;
     final GameStateSnapshot next = rulesPort.apply(action);
-    final String? boardLayout = _extractBoardLayout(rulesPort.exportFen());
+    final String? boardLayout = _boardLayoutFromSnapshot(next);
+    assert(
+      boardLayout != null,
+      'Native Mill snapshots must carry a tgfPayload board layout.',
+    );
     _setState(next);
     _emit(MillEventTypes.moveApplied, <String, Object?>{
       'type': action.type,
@@ -350,11 +361,14 @@ class NativeMillGameSession implements GameSessionHandle {
       return null;
     }
 
-    logger.d(
-      '$_logTag searchBestAction: depth=$depth '
-      'moveLimitMs=$moveLimitMs phase=${state.value.phase}',
-    );
+    if (EnvironmentConfig.devMode) {
+      logger.d(
+        '$_logTag searchBestAction: depth=$depth '
+        'moveLimitMs=$moveLimitMs phase=${state.value.phase}',
+      );
+    }
 
+    _lastSearchLegalAction = null;
     GameAction? bestAction;
     int eventCount = 0;
     try {
@@ -364,11 +378,13 @@ class NativeMillGameSession implements GameSessionHandle {
         engineSettings: engineSettings,
       )) {
         eventCount++;
-        logger.i(
-          '$_logTag search event #$eventCount: kind=${event.kind} '
-          'toNode=${event.toNode} score=${event.score} '
-          'reason=${event.reason}',
-        );
+        if (EnvironmentConfig.devMode) {
+          logger.i(
+            '$_logTag search event #$eventCount: kind=${event.kind} '
+            'toNode=${event.toNode} score=${event.score} '
+            'reason=${event.reason}',
+          );
+        }
         if (event.kind != 'bestMove' || event.toNode < 0) {
           continue;
         }
@@ -381,14 +397,18 @@ class NativeMillGameSession implements GameSessionHandle {
           );
           forceTerminal(GameOutcome.win(winner), reason: 'loseResign');
           bestAction = null;
+          _lastSearchLegalAction = null;
           continue;
         }
         lastAiMoveType = _aiMoveTypeFromReason(event.reason);
         bestAction = _legalActionForBestMove(event);
-        logger.i(
-          '$_logTag bestMove mapped: toNode=${event.toNode} -> '
-          '${bestAction?.payload["move"] ?? "(no legal action found)"}',
-        );
+        _lastSearchLegalAction = bestAction;
+        if (EnvironmentConfig.devMode) {
+          logger.i(
+            '$_logTag bestMove mapped: toNode=${event.toNode} -> '
+            '${bestAction?.payload["move"] ?? "(no legal action found)"}',
+          );
+        }
       }
     } catch (e) {
       // Stream error (e.g. Rust search panicked); treat as no best action.
@@ -401,10 +421,12 @@ class NativeMillGameSession implements GameSessionHandle {
         '(depth=$depth, moveLimitMs=$moveLimitMs)',
       );
     }
-    logger.d(
-      '$_logTag searchBestAction done: '
-      'bestAction=${bestAction?.payload["move"] ?? "(none)"}',
-    );
+    if (EnvironmentConfig.devMode) {
+      logger.d(
+        '$_logTag searchBestAction done: '
+        'bestAction=${bestAction?.payload["move"] ?? "(none)"}',
+      );
+    }
     return bestAction;
   }
 
@@ -509,16 +531,43 @@ class NativeMillGameSession implements GameSessionHandle {
     }
   }
 
-  static String? _extractBoardLayout(String fen) {
-    final int spaceIdx = fen.indexOf(' ');
-    if (spaceIdx <= 0) {
+  static String? _boardLayoutFromSnapshot(GameStateSnapshot snapshot) {
+    final Object? rawPayload = snapshot.payload['tgfPayload'];
+    if (rawPayload is! Uint8List || rawPayload.length < 24) {
       return null;
     }
-    final String boardLayout = fen.substring(0, spaceIdx);
-    if (boardLayout.length != 26) {
-      return null;
+    final Object? rawMarkedNodes = snapshot.payload[millMarkedNodesPayloadKey];
+    final Set<int> markedNodes = rawMarkedNodes is Set<int>
+        ? rawMarkedNodes
+        : MillMarkedPiecesCodec.markedNodesFromOpaquePayload(rawPayload);
+
+    // The native node-id FEN dialect stores board nodes in the same order as
+    // the first 24 bytes of MillState::encode(), with slashes after each ring.
+    const int empty = 42; // '*'
+    const int slash = 47; // '/'
+    const int white = 79; // 'O'
+    const int black = 64; // '@'
+    const int marked = 88; // 'X'
+    final List<int> chars = List<int>.filled(26, empty);
+    chars[8] = slash;
+    chars[17] = slash;
+    for (int node = 0; node < 24; node++) {
+      final int slot = node < 8
+          ? node
+          : node < 16
+          ? node + 1
+          : node + 2;
+      if (markedNodes.contains(node)) {
+        chars[slot] = marked;
+      } else {
+        chars[slot] = switch (rawPayload[node]) {
+          1 => white,
+          2 => black,
+          _ => empty,
+        };
+      }
     }
-    return boardLayout;
+    return String.fromCharCodes(chars);
   }
 
   /// Map a Rust `bestMove` event back to one of this session's current

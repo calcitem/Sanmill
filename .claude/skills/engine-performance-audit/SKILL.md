@@ -665,6 +665,45 @@ Conservative, node-preserving candidates:
   `cargo test -p tgf-mill topology::tests::labels_match_cxx_square_table`,
   `cargo test -p tgf-mill notation::tests`, and
   `cargo clippy -p tgf-mill --all-targets --all-features -- -D warnings`.
+- [x] Reduce Flutter AI self-play boundary overhead.  Do not assume a board
+  node-numbering change will show up as a large Flutter self-play speedup:
+  the production UI path includes FRB stream delivery, best-move mapping,
+  session apply, header refresh, animation/event-loop delay, opening-book
+  lookup, and logging around each engine move.  Those costs are outside the
+  search node loop and can mask small ns/node wins from engine layout work.
+
+  Done on 2026-06-19: `NativeMillGameSession` now remembers the exact
+  `GameAction` matched from the legal-action list for the latest search
+  result.  If that same object is immediately applied, Dart skips the
+  redundant pre-apply `isLegal()` call while still using Rust's checked
+  `tgf_kernel_apply` path, so stale or illegal actions are still surfaced.
+  The unit test fake port verifies ordinary user actions still call
+  `isLegal()` and search-and-apply avoids the second legality query.
+  `moveApplied` events also derive `boardLayout` directly from the native
+  `tgfPayload` board bytes instead of calling Rust `exportFen()` and slicing
+  the first token after every apply.  This keeps recorder metadata intact
+  while avoiding an extra FRB call, full FEN serialization, and Dart string
+  parsing on every AI self-play move.
+
+  Also gate normal AI/search trace logging behind `EnvironmentConfig.devMode`.
+  The default Flutter log level records all messages to console and an in-memory
+  buffer, so per-search-event and per-self-play-iteration `logger.i` calls are
+  real UI-path work.  Keep warnings and errors outside the gate; only routine
+  progress traces should be dev-only.  Revisit this area with a dedicated
+  same-process Flutter/FRB self-play benchmark before making claims about
+  percentage speedups.
+- Audit opening-book and UI-loop costs in Flutter AI self-play.  The native
+  AI-vs-AI loop consults the opening book before every search; lookup exports
+  a full FEN, normalises string fields, hashes the string, then scans legal
+  actions to map a book move back to a `GameAction`.  This is useful while a
+  book entry can still match, including delayed-removal opening positions, but
+  it is pure overhead once the game has left the book-covered prefix.  Do not
+  gate this only on `phase == placing`: the current book contains `p r`
+  delayed-removal entries.  Prefer a data-backed bound, such as a maximum
+  placed-piece count observed in the book keys, before skipping FEN export.
+  Also remember that the UI loop refreshes header state and deliberately
+  awaits animation or `Duration.zero` after each move, so visible Flutter
+  self-play throughput is not the same metric as engine NPS.
 - Audit score-width choices in move ordering.  Master ratings fit in small
   signed integers, while Rust currently computes `i32` scores and stores a
   temporary `[i32; 72]` score array beside a 72-action stack list.  A

@@ -1228,13 +1228,15 @@ class GameController {
     required bool isMoveNow,
   }) async {
     const String tag = "[engineToGo]";
-    logger.i(
-      "$tag entry: gameMode=${gameInstance.gameMode}, "
-      "isMoveNow=$isMoveNow, isEngineRunning=$isEngineRunning, "
-      "isControllerActive=$isControllerActive, "
-      "activeSessionSnapshot=${activeSessionSnapshot != null}, "
-      "_activeSession.runtimeType=${_activeSession.runtimeType}",
-    );
+    if (EnvironmentConfig.devMode) {
+      logger.i(
+        "$tag entry: gameMode=${gameInstance.gameMode}, "
+        "isMoveNow=$isMoveNow, isEngineRunning=$isEngineRunning, "
+        "isControllerActive=$isControllerActive, "
+        "activeSessionSnapshot=${activeSessionSnapshot != null}, "
+        "_activeSession.runtimeType=${_activeSession.runtimeType}",
+      );
+    }
 
     if (gameInstance.gameMode == GameMode.humanVsLAN) {
       // In LAN mode, we don't use the engine; moves come from the network
@@ -1257,9 +1259,11 @@ class GameController {
     // starts thinking on demand (e.g. user pressed Move Now while it
     // was the human's turn after `moveNow()` swapped roles).
     if (isMoveNow && isEngineRunning) {
-      logger.i(
-        "$tag isMoveNow && isEngineRunning -> request native search abort.",
-      );
+      if (EnvironmentConfig.devMode) {
+        logger.i(
+          "$tag isMoveNow && isEngineRunning -> request native search abort.",
+        );
+      }
       tgf.nativeMillSearchStop();
       return const EngineResponseSkip();
     }
@@ -1275,7 +1279,9 @@ class GameController {
     // mode silently spins on `_waitResponse(["bestmove"])` and the board
     // never advances.  Route through the dedicated native loop instead.
     if (gameInstance.gameMode == GameMode.aiVsAi) {
-      logger.i("$tag routing to _nativeAiVsAiLoop");
+      if (EnvironmentConfig.devMode) {
+        logger.i("$tag routing to _nativeAiVsAiLoop");
+      }
       return _nativeAiVsAiLoop(context, isMoveNow: isMoveNow);
     }
 
@@ -1355,7 +1361,9 @@ class GameController {
         return const EngineNoBestMove();
       }
       syncAiMoveTypeFromSession(scopedSession);
-      logger.i("$tag Applied native AI move ${action.payload['move']}");
+      if (EnvironmentConfig.devMode) {
+        logger.i("$tag Applied native AI move ${action.payload['move']}");
+      }
       return const EngineResponseOK();
     } finally {
       isEngineRunning = false;
@@ -1392,13 +1400,15 @@ class GameController {
     // active session changes and never goes stale on a mode switch.
     final GameSession? scopedFromContext = GameSessionScope.sessionOf(context);
     final GameSession? scopedSession = scopedFromContext ?? _activeSession;
-    logger.i(
-      "$tag enter: isMoveNow=$isMoveNow, "
-      "scopedFromContext=${scopedFromContext.runtimeType}, "
-      "_activeSession=${_activeSession.runtimeType}, "
-      "resolved=${scopedSession.runtimeType}, "
-      "isEngineRunning=$isEngineRunning",
-    );
+    if (EnvironmentConfig.devMode) {
+      logger.i(
+        "$tag enter: isMoveNow=$isMoveNow, "
+        "scopedFromContext=${scopedFromContext.runtimeType}, "
+        "_activeSession=${_activeSession.runtimeType}, "
+        "resolved=${scopedSession.runtimeType}, "
+        "isEngineRunning=$isEngineRunning",
+      );
+    }
     if (scopedSession is! NativeMillGameSession) {
       logger.w(
         "$tag AI-vs-AI requires NativeMillGameSession, got "
@@ -1452,29 +1462,37 @@ class GameController {
     try {
       while (isControllerActive) {
         iteration++;
-        logger.i(
-          "$tag iter=$iteration begin: "
-          "phase=${loopSession.state.value.phase}, "
-          "activeSeat=${loopSession.state.value.activeSeat}, "
-          "outcome.isTerminal=${loopSession.outcome.isTerminal}",
-        );
+        if (EnvironmentConfig.devMode) {
+          logger.i(
+            "$tag iter=$iteration begin: "
+            "phase=${loopSession.state.value.phase}, "
+            "activeSeat=${loopSession.state.value.activeSeat}, "
+            "outcome.isTerminal=${loopSession.outcome.isTerminal}",
+          );
+        }
         // Bail out if the active session has been rebuilt under us,
         // OR if the aiLoopEpoch has advanced (a fresh New Game spun
         // up another loop).  Either signal means this loop has been
         // superseded and must release the session to the new owner.
         if (!identical(_activeSession, loopSession)) {
-          logger.i("$tag session was replaced; exiting old loop.");
+          if (EnvironmentConfig.devMode) {
+            logger.i("$tag session was replaced; exiting old loop.");
+          }
           break;
         }
         if (aiLoopEpoch != loopEpoch) {
-          logger.i(
-            "$tag aiLoopEpoch advanced from $loopEpoch to $aiLoopEpoch;"
-            " exiting old loop.",
-          );
+          if (EnvironmentConfig.devMode) {
+            logger.i(
+              "$tag aiLoopEpoch advanced from $loopEpoch to $aiLoopEpoch;"
+              " exiting old loop.",
+            );
+          }
           break;
         }
         if (loopSession.outcome.isTerminal) {
-          logger.i("$tag terminal outcome; exiting.");
+          if (EnvironmentConfig.devMode) {
+            logger.i("$tag terminal outcome; exiting.");
+          }
           break;
         }
         // Both players are AI in this mode, so `aiTurnController.aiSeat`
@@ -1492,16 +1510,20 @@ class GameController {
           refreshNativeSessionHeader(context, loopSession, showThinking: true);
         }
 
-        logger.i("$tag iter=$iteration calling playIfAiTurn");
+        if (EnvironmentConfig.devMode) {
+          logger.i("$tag iter=$iteration calling playIfAiTurn");
+        }
         final Stopwatch sw = Stopwatch()..start();
         final GameAction? action = await aiTurnController.playIfAiTurn(
           loopSession,
         );
         sw.stop();
-        logger.i(
-          "$tag iter=$iteration playIfAiTurn returned in ${sw.elapsedMilliseconds}ms: "
-          "action=${action?.payload['move'] ?? '(null)'}",
-        );
+        if (EnvironmentConfig.devMode) {
+          logger.i(
+            "$tag iter=$iteration playIfAiTurn returned in ${sw.elapsedMilliseconds}ms: "
+            "action=${action?.payload['move'] ?? '(null)'}",
+          );
+        }
         if (action == null) {
           logger.w(
             "$tag iter=$iteration playIfAiTurn returned null "
@@ -1518,7 +1540,9 @@ class GameController {
         // so `calculateGameDurationSeconds` reports a meaningful
         // wall-clock duration on the result dialog.
         _recordGameStartTime();
-        logger.i("$tag Applied native AI move ${action.payload['move']}");
+        if (EnvironmentConfig.devMode) {
+          logger.i("$tag Applied native AI move ${action.payload['move']}");
+        }
 
         if (context.mounted) {
           refreshNativeSessionHeader(context, loopSession);

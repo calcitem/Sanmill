@@ -2,6 +2,7 @@
 // Copyright (C) 2019-2026 The Sanmill developers (see AUTHORS file)
 
 import 'dart:async';
+import 'dart:typed_data';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sanmill/game_platform/game_id.dart';
@@ -33,6 +34,7 @@ void main() {
       await session.apply(action);
       await Future<void>.delayed(Duration.zero);
 
+      expect(rulesPort.isLegalCount, 1);
       expect(rulesPort.applyCount, 1);
       expect(session.state.value.lastAction, same(action));
       expect(session.state.value.activeSeat, PlayerSeat.second);
@@ -70,6 +72,7 @@ void main() {
       );
       await Future<void>.delayed(Duration.zero);
 
+      expect(rulesPort.isLegalCount, 1);
       expect(rulesPort.applyCount, 0);
       expect(session.state.value, same(before));
       expect(events.single.type, MillEventTypes.moveRejected);
@@ -262,6 +265,11 @@ void main() {
       expect(applied, isNotNull);
       expect(applied!.payload['move'], 'a1-a4');
       expect(rulesPort.lastApplied?.payload['move'], 'a1-a4');
+      expect(
+        rulesPort.isLegalCount,
+        0,
+        reason: 'bestMove was already matched against legalActions',
+      );
     });
 
     test('searchBestAction keeps the action type when a place and a move '
@@ -366,6 +374,7 @@ class _FakeNativeMillRulesPort implements NativeMillRulesPort {
   final List<GameAction>? _legalActionsOverride;
   final Stream<tgf.EngineEvent>? _searchEvents;
   int applyCount = 0;
+  int isLegalCount = 0;
   int undoCount = 0;
   int redoCount = 0;
   bool disposed = false;
@@ -386,22 +395,31 @@ class _FakeNativeMillRulesPort implements NativeMillRulesPort {
       : _legalActionsOverride ?? <GameAction>[placeA7];
 
   @override
-  bool isLegal(GameAction action) => legalActions.any(
-    (GameAction legal) =>
-        legal.type == action.type &&
-        legal.payload['move'] == action.payload['move'],
-  );
+  bool isLegal(GameAction action) {
+    isLegalCount++;
+    return legalActions.any(
+      (GameAction legal) =>
+          legal.type == action.type &&
+          legal.payload['move'] == action.payload['move'],
+    );
+  }
 
   @override
   GameStateSnapshot apply(GameAction action) {
     applyCount++;
     lastApplied = action;
+    final Uint8List payload = Uint8List(280);
+    payload[0] = 1;
     _snapshot = GameStateSnapshot(
       gameId: GameId.mill,
       activeSeat: PlayerSeat.second,
       outcome: const GameOutcome.ongoing(),
       phase: 'placing',
       lastAction: action,
+      payload: <String, Object?>{
+        'tgfPayload': payload,
+        millMarkedNodesPayloadKey: const <int>{},
+      },
     );
     return _snapshot;
   }
