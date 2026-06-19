@@ -225,6 +225,20 @@ positions, options, skill level, and fixed-depth `gomtdf` command, then records
 wall-clock time plus the engine-reported `bestmove`, `score`, `depth`, and
 `nodes`.
 
+The diagnostic harness intentionally removes sources of search nondeterminism
+and time-management noise before comparing elapsed time:
+
+- `Shuffling=false` disables randomized move ordering.
+- `MoveTime=0` means "no movetime limit" for these fixed-depth probes.
+- `UsePerfectDatabase=false` keeps database I/O and lookup policy out of the
+  search timing.
+- `Algorithm=2` selects the same MTD(f)-style search path used by the
+  fixed-depth `gomtdf` command.
+- `NMoveRule=20`, `EndgameNMoveRule=20`, and
+  `ThreefoldRepetitionRule=true` keep the diagnostic positions bounded and
+  aligned with the current Rust baseline unless a case explicitly overrides
+  them.
+
 For next-branch optimization work, the comparison target should usually be the
 previous locked Rust binary rather than only `~/Sanmill-master`. Comparing only
 against the retired master branch can hide regressions between two recent Rust
@@ -272,6 +286,37 @@ The locked baseline stores the exact command, platform, raw per-run timings,
 median milliseconds, ns/node, best move, score, depth, and node count. Raw CSV
 files are diagnostic artifacts and are not committed; the TOML baseline is the
 reviewable record.
+
+This fixed-node-count workflow is for conservative optimizations: data layout,
+allocation alignment, undo representation, cache locality, and other changes
+that should not alter search decisions. For those changes, identical node
+counts are a safety invariant, not a nice-to-have. If the node count changes,
+the optimization is no longer being measured as a pure speedup and must be
+investigated before accepting the timing result.
+
+More aggressive search changes are evaluated differently. Examples include new
+move ordering heuristics, TT move bonuses, pruning changes, extensions,
+probabilistic search behavior, or anything that intentionally changes the
+visited tree. These changes may legitimately alter node counts and move lists,
+so fixed-depth elapsed-time ratios alone are insufficient. For such changes:
+
+- Keep the deterministic fixed-position report, but treat changed nodes,
+  scores, or best moves as behavior changes that need explanation.
+- Run the ignored self-play parity tests for the affected skill levels, for
+  example:
+
+  ```bash
+  cargo test -p tgf-mill --test ai_selfplay_master_parity \
+    faithful_selfplay_skill2_movelist -- --ignored --exact
+  ```
+
+- Compare old and new binaries with self-play or head-to-head harnesses
+  (`tests/ai_selfplay_master_parity.rs`, `tests/head_to_head.rs`, or
+  `scripts/run_head_to_head.sh`) before claiming playing-strength or practical
+  speed improvements.
+- Report both speed and behavior: elapsed time, NPS or ns/node when useful,
+  node-count deltas, move-list changes, score changes, and match/self-play
+  results.
 
 ### Regression and differential testing
 
