@@ -18,6 +18,9 @@ impl<G: Game> Searcher<G> {
         moves: &mut SearchActionList,
     ) {
         let moves = moves.as_mut_slice();
+        if moves.len() < 2 {
+            return;
+        }
         let mut scores: [MaybeUninit<i32>; SEARCH_ACTION_CAPACITY] =
             [MaybeUninit::uninit(); SEARCH_ACTION_CAPACITY];
         assert!(moves.len() <= scores.len());
