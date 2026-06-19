@@ -42,8 +42,9 @@ impl MillRules {
             }
             MillActionState::Place => {
                 if state.pieces_in_hand[state.side_to_move as usize] > 0 {
+                    let occupied = board_occupied_bitboard(state);
                     for &node in priority {
-                        if state.board[node] == 0 {
+                        if (occupied & node_bit(node)) == 0 {
                             out.push(Action {
                                 kind_tag: MillActionKind::Place as i16,
                                 from_node: -1,
@@ -184,7 +185,9 @@ impl MillRules {
             && self.options.may_fly
             && no_pieces_in_hand
             && state.pieces_on_board[side] <= self.options.fly_piece_count;
-        let opponent_color = (state.side_to_move ^ 1) + 1;
+        let own_bb = state.by_color_bb[side];
+        let opponent_bb = state.by_color_bb[side ^ 1];
+        let occupied = board_occupied_bitboard(state);
         // Leap moves are emitted *in addition to* regular adjacency moves
         // (mirrors master generate<MOVE>'s `tryAddLeap` superset).  They
         // require leap_capture.enabled, the active phase to be allowed,
@@ -208,28 +211,27 @@ impl MillRules {
             && !self.options.restrict_repeated_mills_formation
             && !leap_enabled
         {
-            let own_piece = state.side_to_move + 1;
             for &from in priority.iter().rev() {
-                if state.board[from] != own_piece {
+                if (own_bb & node_bit(from)) == 0 {
                     continue;
                 }
                 if can_fly {
                     for &to in LEGACY_SQUARE_ORDER_NODES.iter() {
-                        if state.board[to] == 0 {
+                        if (occupied & node_bit(to)) == 0 {
                             out.push(move_action(from, to));
                         }
                     }
                 } else if self.options.has_diagonal_lines {
                     for &to in crate::topology::diagonal_neighbors_for(from) {
                         let to = to as usize;
-                        if state.board[to] == 0 {
+                        if (occupied & node_bit(to)) == 0 {
                             out.push(move_action(from, to));
                         }
                     }
                 } else {
                     for &to in crate::topology::standard_neighbors_for(from) {
                         let to = to as usize;
-                        if state.board[to] == 0 {
+                        if (occupied & node_bit(to)) == 0 {
                             out.push(move_action(from, to));
                         }
                     }
@@ -241,12 +243,14 @@ impl MillRules {
             // Use live_piece() rather than the raw board value so that
             // mark-and-delay MARKED_PIECE squares are treated as empty
             // (not movable) — mirrors C++ generate<MOVE>'s byColorBB filter.
-            if live_piece(state, from) != state.side_to_move + 1 {
+            if (own_bb & node_bit(from)) == 0 {
                 continue;
             }
             if can_fly {
                 for &to in LEGACY_SQUARE_ORDER_NODES.iter() {
-                    if state.board[to] == 0 && !self.is_restricted_repeated_mill(state, from, to) {
+                    if (occupied & node_bit(to)) == 0
+                        && !self.is_restricted_repeated_mill(state, from, to)
+                    {
                         out.push(move_action(from, to));
                     }
                 }
@@ -254,7 +258,9 @@ impl MillRules {
             }
             for &to in self.topology.neighbors(from as u16) {
                 let to = to as usize;
-                if state.board[to] == 0 && !self.is_restricted_repeated_mill(state, from, to) {
+                if (occupied & node_bit(to)) == 0
+                    && !self.is_restricted_repeated_mill(state, from, to)
+                {
                     out.push(move_action(from, to));
                 }
             }
@@ -267,10 +273,12 @@ impl MillRules {
                 // that check here via leap_capture_target_is_removable.
                 for line in active_capture_lines(&self.options.leap_capture, &self.options) {
                     let (a, mid, b) = (line[0], line[1], line[2]);
-                    let jumps_from_a =
-                        from == a && state.board[b] == 0 && state.board[mid] == opponent_color;
-                    let jumps_from_b =
-                        from == b && state.board[a] == 0 && state.board[mid] == opponent_color;
+                    let jumps_from_a = from == a
+                        && (occupied & node_bit(b)) == 0
+                        && (opponent_bb & node_bit(mid)) != 0;
+                    let jumps_from_b = from == b
+                        && (occupied & node_bit(a)) == 0
+                        && (opponent_bb & node_bit(mid)) != 0;
                     if jumps_from_a {
                         if !self.is_restricted_repeated_mill(state, from, b)
                             && leap_capture_target_is_removable(state, &self.options, mid)
@@ -387,8 +395,9 @@ impl MillRules {
         // Marked pieces are filtered out via `live_piece` to mirror
         // legacy `removeColorPiece` matching against `byColorBB[c]`,
         // which excludes MARKED_PIECE squares.
+        let target_bb = piece_bitboard(state, target_piece);
         let has_non_mill_target = (0_usize..24).any(|idx| {
-            live_piece(state, idx) == target_piece && !is_piece_in_mill(state, &self.options, idx)
+            (target_bb & node_bit(idx)) != 0 && !is_piece_in_mill(state, &self.options, idx)
         });
         // Mirror master generate<REMOVE>'s branch structure: the
         // stalemate-removal path applies ONLY the "adjacent to the
@@ -401,7 +410,7 @@ impl MillRules {
         let removing_own = state.side_to_move >= 0 && target_piece == state.side_to_move + 1;
 
         for &node in priority.iter().rev() {
-            if live_piece(state, node) != target_piece {
+            if (target_bb & node_bit(node)) == 0 {
                 continue;
             }
             if (excluded_targets & node_bit(node)) != 0 {
@@ -434,8 +443,10 @@ impl MillRules {
         targets: u32,
     ) {
         let opponent_piece = (state.side_to_move ^ 1) + 1;
+        let target_bb = piece_bitboard(state, opponent_piece);
         for node in 0..24_usize {
-            if (targets & node_bit(node)) == 0 || state.board[node] != opponent_piece {
+            let mask = node_bit(node);
+            if (targets & mask) == 0 || (target_bb & mask) == 0 {
                 continue;
             }
             out.push(Action {

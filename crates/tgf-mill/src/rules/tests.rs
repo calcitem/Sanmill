@@ -63,6 +63,14 @@ fn assert_mobility_cache_matches_full_scan(state: &MillState, options: &MillVari
     );
 }
 
+fn assert_color_bitboards_match_board(state: &MillState) {
+    assert_eq!(
+        state.by_color_bb,
+        bitboards_from_board(&state.board, state.delayed_marked_pieces),
+        "cached color bitboards must match live board occupancy"
+    );
+}
+
 fn assert_workbench_action_preserves_mobility_cache(
     game: &MillGame,
     options: &MillVariantOptions,
@@ -73,10 +81,13 @@ fn assert_workbench_action_preserves_mobility_cache(
         .unwrap_or_else(|| panic!("failed to decode UCI action {label}"));
     let mut wb = game.build_workbench(snap);
     assert_mobility_cache_matches_full_scan(&wb.state, options);
+    assert_color_bitboards_match_board(&wb.state);
     wb.do_move(action);
     assert_mobility_cache_matches_full_scan(&wb.state, options);
+    assert_color_bitboards_match_board(&wb.state);
     wb.undo_move();
     assert_mobility_cache_matches_full_scan(&wb.state, options);
+    assert_color_bitboards_match_board(&wb.state);
 }
 
 fn assert_key_after_matches_default_tt_index(labels: &[&str]) {
@@ -1029,6 +1040,7 @@ fn mill_action_mark_and_delay_arms_remove_then_marks_target() {
         (state.delayed_marked_pieces & (1u32 << target.to_node)) != 0,
         "square must be flagged as marked"
     );
+    assert_color_bitboards_match_board(&state);
     // Live mill / mobility helpers must treat the marked cell as empty.
     assert_eq!(live_piece(&state, target.to_node as usize), 0);
 }
@@ -1061,6 +1073,7 @@ fn mark_and_delay_marked_pieces_sweep_on_phase_transition() {
         "marked square must be cleared on entering moving phase"
     );
     assert_eq!(state.delayed_marked_pieces, 0);
+    assert_color_bitboards_match_board(&state);
 }
 
 /// `RemovalBasedOnMillCounts` reaches the placing-to-moving boundary
@@ -3504,12 +3517,14 @@ fn setup_clear_then_set_piece_round_trips() {
     assert_eq!(state.pieces_on_board[1], 1);
     assert_eq!(state.pieces_in_hand[0], 8, "9 - 1 on board");
     assert_eq!(state.pieces_in_hand[1], 8);
+    assert_color_bitboards_match_board(&state);
 
     // Encoding and decoding must round-trip.
     let snap = rules.encode_state(state);
     let decoded = MillRules::decode_snapshot(snap);
     assert_eq!(decoded.board[0], 1);
     assert_eq!(decoded.board[6], 2);
+    assert_color_bitboards_match_board(&decoded);
 }
 
 #[test]
@@ -3819,6 +3834,7 @@ fn generate_legal_ctx_uses_reverse_priority_for_remove() {
         pieces_on_board: [0, 24],
         ..MillState::default()
     };
+    let state = MillRules::decode(&rules.encode(state));
     let ctx = tgf_core::MoveOrderContext {
         skill_level: 30,
         shuffling: false,

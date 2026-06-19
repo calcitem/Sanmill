@@ -1,0 +1,51 @@
+# tests/search_perf_baseline.toml
+#
+# Search performance baseline for comparing future next-branch optimizations
+# against the last locked Rust/TGF result. This is intentionally separate
+# from tests/perf_baseline.toml, which holds conservative CI floors and perft
+# gates.
+#
+# Use the legacy master engine for parity and broad context, but use this file
+# to decide whether a candidate got faster or slower than the previous Rust
+# baseline. Comparing only against master can hide regressions between two
+# next-branch revisions.
+
+[meta]
+locked_at = "2026-06-19T03:17:05Z"
+git_commit = "5337347cf+working-tree"
+platform = "linux-x86_64-local"
+build_flags = "cargo build --release -p tgf-cli"
+command = "python3 scripts/compare_engine_perf.py --current 'target/release/tgf uci' --master '/tmp/sanmill_master_engine_perf' --current-depth-go 'gomtdf {depth}' --master-depth-go 'gomtdf {depth}' --cases start,reduced_material --skills 15 --depths 12 --repeat 3 --timeout 240"
+summary_method = "median elapsed_ms from current engine rows"
+notes = "Locked after Mill by_color_bb and per-node u32 mill peer-mask baseline. Master parity was exact, but runtime checks should compare future Rust candidates against these current Rust numbers."
+
+[thresholds]
+max_elapsed_regress_pct = 8.0
+require_bestmove = true
+require_score = true
+require_depth = true
+require_nodes = true
+
+[[cases]]
+name = "start"
+skill = 15
+requested_depth = 12
+bestmove = "d6"
+score = 3
+depth = 12
+nodes = 5_580_055
+median_ms = 1614.51
+ns_per_node = 289.34
+run_ms = [1598.79, 1614.51, 1659.32]
+
+[[cases]]
+name = "reduced_material"
+skill = 15
+requested_depth = 12
+bestmove = "c4-b4"
+score = -89
+depth = 12
+nodes = 3_209_969
+median_ms = 1191.01
+ns_per_node = 371.03
+run_ms = [1211.37, 1191.01, 1077.25]

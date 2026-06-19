@@ -142,6 +142,45 @@ Interpretation:
 - Rust is faster at shallow depth but slower deep: suspect TT, allocation,
   recursion shape, cache behavior, or repetition/history overhead.
 
+## Next-branch performance baseline
+
+Do not judge every optimization only against `/home/user/Sanmill-master`.
+Master is still the reference for parity and broad context, but it can mislead
+when deciding whether a new next-branch change improved or regressed relative
+to the previous Rust/TGF implementation.
+
+After a safe optimization is validated, lock a Rust/TGF search baseline in
+`tests/search_perf_baseline.toml`. The baseline should record the command,
+case names, skill, fixed depth, bestmove, score, node count, median elapsed
+time, and run samples. Treat node, score, and bestmove changes as parity
+problems unless the algorithmic change was explicitly accepted.
+
+For future optimization candidates, run the same fixed-depth probe and compare
+against the locked Rust baseline before making claims about improvement:
+
+```bash
+python3 scripts/compare_engine_perf.py \
+  --current 'target/release/tgf uci' \
+  --master '/tmp/sanmill_master_engine_perf' \
+  --current-depth-go 'gomtdf {depth}' \
+  --master-depth-go 'gomtdf {depth}' \
+  --cases start,reduced_material \
+  --skills 15 \
+  --depths 12 \
+  --repeat 3 \
+  --timeout 240 \
+  --csv /tmp/sanmill_perf_candidate.csv
+
+python3 scripts/check_search_perf_baseline.py \
+  --baseline tests/search_perf_baseline.toml \
+  --result /tmp/sanmill_perf_candidate.csv
+```
+
+Only update `tests/search_perf_baseline.toml` after parity checks pass and the
+candidate is intentionally accepted as the new next-branch baseline. Keep the
+old CSV path or raw run samples in the baseline notes when useful, but do not
+depend on `/tmp` artifacts remaining available.
+
 ## Stable Rust benchmarks
 
 Use these when the issue is in Rust without needing C++ comparison:

@@ -75,6 +75,148 @@ pub(super) fn recompute_zobrist(state: &mut MillState) {
     state.zobrist_key = zobrist::full_state_key(state);
 }
 
+#[inline(always)]
+fn color_index_for_piece(piece: i8) -> Option<usize> {
+    match piece {
+        1 => Some(0),
+        2 => Some(1),
+        _ => None,
+    }
+}
+
+#[inline(always)]
+fn bitboards_from_board(board: &[i8; 24], delayed_marked_pieces: u32) -> [u32; 2] {
+    let mut by_color = [0_u32; 2];
+    for (node, &piece) in board.iter().enumerate() {
+        if (delayed_marked_pieces & node_bit(node)) != 0 {
+            continue;
+        }
+        if let Some(color) = color_index_for_piece(piece) {
+            by_color[color] |= node_bit(node);
+        }
+    }
+    by_color
+}
+
+#[inline(always)]
+fn sync_bitboards_from_board(state: &mut MillState) {
+    state.by_color_bb = bitboards_from_board(&state.board, state.delayed_marked_pieces);
+}
+
+#[inline(always)]
+fn piece_bitboard(state: &MillState, piece: i8) -> u32 {
+    color_index_for_piece(piece)
+        .map(|color| state.by_color_bb[color])
+        .unwrap_or(0)
+}
+
+#[inline(always)]
+fn live_occupied_bitboard(state: &MillState) -> u32 {
+    state.by_color_bb[0] | state.by_color_bb[1]
+}
+
+#[inline(always)]
+fn board_occupied_bitboard(state: &MillState) -> u32 {
+    live_occupied_bitboard(state) | state.delayed_marked_pieces
+}
+
+#[inline(always)]
+fn set_board_node(state: &mut MillState, node: usize, piece: i8) {
+    debug_assert!(node < 24, "Mill board node out of range");
+    debug_assert!(
+        (0..=2).contains(&piece),
+        "Mill board piece must be 0, 1, or 2"
+    );
+    let mask = node_bit(node);
+    if let Some(color) = color_index_for_piece(state.board[node]) {
+        state.by_color_bb[color] &= !mask;
+    }
+    state.board[node] = piece;
+    if (state.delayed_marked_pieces & mask) == 0
+        && let Some(color) = color_index_for_piece(piece)
+    {
+        state.by_color_bb[color] |= mask;
+    }
+    debug_assert_eq!(
+        state.by_color_bb,
+        bitboards_from_board(&state.board, state.delayed_marked_pieces),
+        "Mill color bitboards diverged from board state"
+    );
+}
+
+#[inline(always)]
+fn place_live_piece(state: &mut MillState, node: usize, side: usize) {
+    debug_assert!(node < 24, "Mill board node out of range");
+    debug_assert!(side < 2, "Mill side out of range");
+    debug_assert_eq!(state.board[node], 0, "place target must be empty");
+    debug_assert_eq!(
+        state.delayed_marked_pieces & node_bit(node),
+        0,
+        "place target must not be marked"
+    );
+    let mask = node_bit(node);
+    state.board[node] = side as i8 + 1;
+    state.by_color_bb[side] |= mask;
+    debug_assert_eq!(
+        state.by_color_bb,
+        bitboards_from_board(&state.board, state.delayed_marked_pieces),
+        "Mill color bitboards diverged after place"
+    );
+}
+
+#[inline(always)]
+fn move_live_piece(state: &mut MillState, from: usize, to: usize, side: usize) {
+    debug_assert!(from < 24 && to < 24, "Mill board node out of range");
+    debug_assert!(side < 2, "Mill side out of range");
+    debug_assert_eq!(state.board[from], side as i8 + 1, "move source mismatch");
+    debug_assert_eq!(state.board[to], 0, "move target must be empty");
+    debug_assert_eq!(
+        state.delayed_marked_pieces & (node_bit(from) | node_bit(to)),
+        0,
+        "move endpoints must not be marked"
+    );
+    let from_mask = node_bit(from);
+    let to_mask = node_bit(to);
+    state.board[from] = 0;
+    state.board[to] = side as i8 + 1;
+    state.by_color_bb[side] = (state.by_color_bb[side] & !from_mask) | to_mask;
+    debug_assert_eq!(
+        state.by_color_bb,
+        bitboards_from_board(&state.board, state.delayed_marked_pieces),
+        "Mill color bitboards diverged after move"
+    );
+}
+
+#[inline(always)]
+fn clear_live_piece(state: &mut MillState, node: usize, side: usize) {
+    debug_assert!(node < 24, "Mill board node out of range");
+    debug_assert!(side < 2, "Mill side out of range");
+    debug_assert_eq!(state.board[node], side as i8 + 1, "clear target mismatch");
+    let mask = node_bit(node);
+    state.board[node] = 0;
+    state.by_color_bb[side] &= !mask;
+    debug_assert_eq!(
+        state.by_color_bb,
+        bitboards_from_board(&state.board, state.delayed_marked_pieces),
+        "Mill color bitboards diverged after clear"
+    );
+}
+
+#[inline(always)]
+fn mark_board_node_inactive(state: &mut MillState, node: usize) {
+    debug_assert!(node < 24, "Mill board node out of range");
+    let mask = node_bit(node);
+    if let Some(color) = color_index_for_piece(state.board[node]) {
+        state.by_color_bb[color] &= !mask;
+    }
+    state.delayed_marked_pieces |= mask;
+    debug_assert_eq!(
+        state.by_color_bb,
+        bitboards_from_board(&state.board, state.delayed_marked_pieces),
+        "Mill color bitboards diverged from marked board state"
+    );
+}
+
 use transitions::{
     apply_removal_based_on_mill_counts, bump_ply_since_capture, clear_key_history,
     is_action_within_board_bounds, live_piece, maybe_draw_by_n_move_rule, maybe_finish_full_board,
@@ -148,10 +290,10 @@ const STANDARD_MILL_LINE_INDICES_BY_NODE: [[u8; MAX_MILL_LINES_PER_NODE]; 24] =
     build_mill_line_indices_by_node(STANDARD_MILL_LINES);
 const DIAGONAL_MILL_LINE_INDICES_BY_NODE: [[u8; MAX_MILL_LINES_PER_NODE]; 24] =
     build_mill_line_indices_by_node(DIAGONAL_MILL_LINES);
-const STANDARD_MILL_LINE_PEERS_BY_NODE: [[[u8; 3]; MAX_MILL_LINES_PER_NODE]; 24] =
-    build_mill_line_peers_by_node(STANDARD_MILL_LINES);
-const DIAGONAL_MILL_LINE_PEERS_BY_NODE: [[[u8; 3]; MAX_MILL_LINES_PER_NODE]; 24] =
-    build_mill_line_peers_by_node(DIAGONAL_MILL_LINES);
+const STANDARD_MILL_LINE_PEER_MASKS_BY_NODE: [[u32; MAX_MILL_LINES_PER_NODE]; 24] =
+    build_mill_line_peer_masks_by_node(STANDARD_MILL_LINES);
+const DIAGONAL_MILL_LINE_PEER_MASKS_BY_NODE: [[u32; MAX_MILL_LINES_PER_NODE]; 24] =
+    build_mill_line_peer_masks_by_node(DIAGONAL_MILL_LINES);
 
 const fn build_mill_line_indices_by_node(
     lines: &[[usize; 3]],
@@ -176,10 +318,10 @@ const fn build_mill_line_indices_by_node(
     table
 }
 
-const fn build_mill_line_peers_by_node(
+const fn build_mill_line_peer_masks_by_node(
     lines: &[[usize; 3]],
-) -> [[[u8; 3]; MAX_MILL_LINES_PER_NODE]; 24] {
-    let mut table = [[[NO_MILL_LINE; 3]; MAX_MILL_LINES_PER_NODE]; 24];
+) -> [[u32; MAX_MILL_LINES_PER_NODE]; 24] {
+    let mut table = [[0_u32; MAX_MILL_LINES_PER_NODE]; 24];
     let mut counts = [0_usize; 24];
     let mut line_idx = 0_usize;
     while line_idx < lines.len() {
@@ -192,7 +334,7 @@ const fn build_mill_line_peers_by_node(
             assert!(count < MAX_MILL_LINES_PER_NODE);
             let peer_a = line[(offset + 1) % 3];
             let peer_b = line[(offset + 2) % 3];
-            table[node][count] = [line_idx as u8, peer_a as u8, peer_b as u8];
+            table[node][count] = node_bit(peer_a) | node_bit(peer_b);
             counts[node] = count + 1;
             offset += 1;
         }
@@ -305,6 +447,7 @@ impl MillRules {
     }
 
     fn encode(&self, mut state: MillState) -> GameStateSnapshot {
+        sync_bitboards_from_board(&mut state);
         // Refresh the cached Zobrist key right before serialising so
         // every emitted snapshot carries an up-to-date key and the
         // hot-path `Workbench::key()` can read the cache in O(1).
@@ -503,6 +646,11 @@ fn move_action(from: usize, to: usize) -> Action {
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct MillState {
     board: [i8; 24],
+    /// Per-side live occupancy bitboards, matching the legacy engine's
+    /// `byColorBB`.  These are derived from `board` plus
+    /// `delayed_marked_pieces`; marked pieces remain visible in `board`
+    /// for UI rendering but are absent from this cache.
+    by_color_bb: [u32; 2],
     side_to_move: i8,
     phase: MillPhase,
     action: MillActionState,
@@ -579,6 +727,7 @@ impl Default for MillState {
     fn default() -> Self {
         Self {
             board: [0_i8; 24],
+            by_color_bb: [0, 0],
             side_to_move: 0,
             phase: MillPhase::Placing,
             action: MillActionState::Place,
@@ -645,6 +794,7 @@ struct MillUndoState {
 #[derive(Clone, Debug)]
 struct MillUndoCore {
     board: MillBoardUndo,
+    by_color_bb: [u32; 2],
     side_to_move: i8,
     phase: MillPhase,
     action: MillActionState,
@@ -718,6 +868,7 @@ impl MillUndoCore {
     fn capture(state: &MillState, action: Action, options: &MillVariantOptions) -> Self {
         Self {
             board: MillBoardUndo::capture(state, action, options),
+            by_color_bb: state.by_color_bb,
             side_to_move: state.side_to_move,
             phase: state.phase,
             action: state.action,
@@ -752,7 +903,7 @@ impl MillUndoCore {
     }
 
     fn restore(self, state: &mut MillState) {
-        self.board.restore(state);
+        self.board.restore_board(state);
         state.side_to_move = self.side_to_move;
         state.phase = self.phase;
         state.action = self.action;
@@ -769,6 +920,7 @@ impl MillUndoCore {
         state.last_mill_to = self.last_mill_to;
         state.used_mill_lines = self.used_mill_lines;
         state.delayed_marked_pieces = self.delayed_marked_pieces;
+        state.by_color_bb = self.by_color_bb;
         state.formed_mills_bb = self.formed_mills_bb;
         state.custodian_targets = self.custodian_targets;
         state.intervention_targets = self.intervention_targets;
@@ -783,6 +935,11 @@ impl MillUndoCore {
         state.board_full_removing = self.board_full_removing;
         state.key_history_len = self.key_history_len;
         state.zobrist_key = self.zobrist_key;
+        debug_assert_eq!(
+            state.by_color_bb,
+            bitboards_from_board(&state.board, state.delayed_marked_pieces),
+            "undo restored inconsistent Mill color bitboards"
+        );
     }
 }
 
@@ -847,7 +1004,7 @@ impl MillBoardUndo {
         *len += 1;
     }
 
-    fn restore(self, state: &mut MillState) {
+    fn restore_board(self, state: &mut MillState) {
         match self {
             Self::Delta { len, cells } => {
                 for (node, value) in cells.into_iter().take(usize::from(len)) {
@@ -869,16 +1026,23 @@ fn formed_mill_bits_at(
     side_to_move: i8,
 ) -> u32 {
     if state.delayed_marked_pieces == 0 {
-        let target = side_to_move + 1;
-        if state.board[node] != target {
+        let Some(color) = color_index_for_piece(side_to_move + 1) else {
+            return 0;
+        };
+        let color_bb = state.by_color_bb[color];
+        if (color_bb & node_bit(node)) == 0 {
             return 0;
         }
         let mut bits = 0_u32;
-        for &[line_idx, peer_a, peer_b] in mill_line_peers_for_node(options, node) {
+        let line_indices = mill_line_indices_for_node(options, node);
+        let peer_masks = mill_line_peer_masks_for_node(options, node);
+        for slot in 0..MAX_MILL_LINES_PER_NODE {
+            let line_idx = line_indices[slot];
             if line_idx == NO_MILL_LINE {
                 break;
             }
-            if state.board[peer_a as usize] == target && state.board[peer_b as usize] == target {
+            let peer_mask = peer_masks[slot];
+            if (color_bb & peer_mask) == peer_mask {
                 bits |= 1_u32 << line_idx;
             }
         }
@@ -919,39 +1083,27 @@ fn potential_mills_count_at(
     side: i8,
     from: Option<usize>,
 ) -> u32 {
-    let target = side + 1;
-    let one_time_use = options.one_time_use_mill;
-    let formed_bb = if (0..2).contains(&side) {
-        state.formed_mills_bb[side as usize]
-    } else {
-        0
+    let Some(color) = color_index_for_piece(side + 1) else {
+        return 0;
     };
-    let from = from.unwrap_or(usize::MAX);
+    let mut color_bb = state.by_color_bb[color];
+    let one_time_use = options.one_time_use_mill;
+    let formed_bb = state.formed_mills_bb[color];
+    if let Some(from) = from {
+        color_bb &= !node_bit(from);
+    }
     let mut count = 0_u32;
-    for &[line_idx, peer_a, peer_b] in mill_line_peers_for_node(options, to) {
-        if line_idx == NO_MILL_LINE {
+    for &peer_mask in mill_line_peer_masks_for_node(options, to) {
+        if peer_mask == 0 {
             break;
         }
-        let peer_a = peer_a as usize;
-        let peer_b = peer_b as usize;
-        if peer_a == from || peer_b == from {
-            continue;
-        }
-        // SAFETY: peer tables are built from static mill-line node ids in
-        // 0..24. Using unchecked indexing here keeps this search-hot helper
-        // equivalent to the array version without repeated bounds checks.
-        let has_peers = unsafe {
-            *state.board.get_unchecked(peer_a) == target
-                && *state.board.get_unchecked(peer_b) == target
-        };
-        if !has_peers {
+        if (color_bb & peer_mask) != peer_mask {
             continue;
         }
         if one_time_use {
             // Skip lines whose three squares are already recorded as a
             // historically-formed mill for this side.
-            let line = mill_lines(options)[line_idx as usize];
-            let line_bb = node_bit(line[0]) | node_bit(line[1]) | node_bit(line[2]);
+            let line_bb = node_bit(to) | peer_mask;
             if (line_bb & formed_bb) == line_bb {
                 continue;
             }
@@ -963,61 +1115,43 @@ fn potential_mills_count_at(
 
 #[inline(always)]
 fn potential_mills_count_standard_unrestricted(
-    board: &[i8; 24],
+    color_bb: u32,
     to: usize,
-    target: i8,
     from: Option<usize>,
 ) -> u32 {
-    let from = from.unwrap_or(usize::MAX);
+    let mut color_bb = color_bb;
+    if let Some(from) = from {
+        color_bb &= !node_bit(from);
+    }
     let mut count = 0_u32;
-    for &[line_idx, peer_a, peer_b] in &STANDARD_MILL_LINE_PEERS_BY_NODE[to] {
-        if line_idx == NO_MILL_LINE {
+    for &peer_mask in &STANDARD_MILL_LINE_PEER_MASKS_BY_NODE[to] {
+        if peer_mask == 0 {
             break;
         }
-        let peer_a = peer_a as usize;
-        let peer_b = peer_b as usize;
-        if peer_a == from || peer_b == from {
-            continue;
-        }
-        // SAFETY: STANDARD_MILL_LINE_PEERS_BY_NODE is generated from
-        // STANDARD_MILL_LINES, whose node ids are asserted to be in 0..24.
-        let has_peers = unsafe {
-            *board.get_unchecked(peer_a) == target && *board.get_unchecked(peer_b) == target
-        };
-        count += u32::from(has_peers);
+        count += u32::from((color_bb & peer_mask) == peer_mask);
     }
     count
 }
 
 #[inline(always)]
 fn potential_mills_count_standard_unrestricted_pair(
-    board: &[i8; 24],
+    our_bb: u32,
+    their_bb: u32,
     to: usize,
-    our_target: i8,
-    their_target: i8,
     our_from: Option<usize>,
 ) -> (u32, u32) {
-    let our_from = our_from.unwrap_or(usize::MAX);
+    let mut our_bb = our_bb;
+    if let Some(our_from) = our_from {
+        our_bb &= !node_bit(our_from);
+    }
     let mut our_count = 0_u32;
     let mut their_count = 0_u32;
-    for &[line_idx, peer_a, peer_b] in &STANDARD_MILL_LINE_PEERS_BY_NODE[to] {
-        if line_idx == NO_MILL_LINE {
+    for &peer_mask in &STANDARD_MILL_LINE_PEER_MASKS_BY_NODE[to] {
+        if peer_mask == 0 {
             break;
         }
-        // SAFETY: STANDARD_MILL_LINE_PEERS_BY_NODE is generated from
-        // STANDARD_MILL_LINES, whose node ids are asserted to be in 0..24.
-        let (a, b) = unsafe {
-            (
-                *board.get_unchecked(peer_a as usize),
-                *board.get_unchecked(peer_b as usize),
-            )
-        };
-        let peer_a = peer_a as usize;
-        let peer_b = peer_b as usize;
-        our_count += u32::from(
-            peer_a != our_from && peer_b != our_from && a == our_target && b == our_target,
-        );
-        their_count += u32::from(a == their_target && b == their_target);
+        our_count += u32::from((our_bb & peer_mask) == peer_mask);
+        their_count += u32::from((their_bb & peer_mask) == peer_mask);
     }
     (our_count, their_count)
 }
@@ -1029,12 +1163,14 @@ fn is_piece_in_mill(state: &MillState, options: &MillVariantOptions, node: usize
         return false;
     }
     if state.delayed_marked_pieces == 0 {
-        return mill_line_peers_for_node(options, node)
+        let Some(color) = color_index_for_piece(piece) else {
+            return false;
+        };
+        let color_bb = state.by_color_bb[color];
+        return mill_line_peer_masks_for_node(options, node)
             .iter()
-            .take_while(|peer| peer[0] != NO_MILL_LINE)
-            .any(|peer| {
-                state.board[peer[1] as usize] == piece && state.board[peer[2] as usize] == piece
-            });
+            .take_while(|peer_mask| **peer_mask != 0)
+            .any(|peer_mask| (color_bb & *peer_mask) == *peer_mask);
     }
     let lines = mill_lines(options);
     mill_line_indices_for_node(options, node)
@@ -1061,15 +1197,15 @@ fn mill_line_indices_for_node(
 }
 
 #[inline(always)]
-fn mill_line_peers_for_node(
+fn mill_line_peer_masks_for_node(
     options: &MillVariantOptions,
     node: usize,
-) -> &'static [[u8; 3]; MAX_MILL_LINES_PER_NODE] {
+) -> &'static [u32; MAX_MILL_LINES_PER_NODE] {
     debug_assert!(node < 24, "node {node} out of range");
     if options.has_diagonal_lines {
-        &DIAGONAL_MILL_LINE_PEERS_BY_NODE[node]
+        &DIAGONAL_MILL_LINE_PEER_MASKS_BY_NODE[node]
     } else {
-        &STANDARD_MILL_LINE_PEERS_BY_NODE[node]
+        &STANDARD_MILL_LINE_PEER_MASKS_BY_NODE[node]
     }
 }
 
@@ -1083,7 +1219,7 @@ fn mill_lines(options: &MillVariantOptions) -> &'static [[usize; 3]] {
 }
 
 #[inline(always)]
-fn node_bit(node: usize) -> u32 {
+const fn node_bit(node: usize) -> u32 {
     1_u32 << node
 }
 

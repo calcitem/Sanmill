@@ -11,7 +11,7 @@ use tgf_core::BoardTopology;
 use super::lines::{CAPTURE_CROSS_LINES, CAPTURE_DIAGONAL_LINES, CAPTURE_SQUARE_EDGE_LINES};
 use super::{
     CaptureRuleConfig, MillPhase, MillState, MillTopology, MillVariantOptions, is_piece_in_mill,
-    node_bit,
+    node_bit, piece_bitboard,
 };
 
 pub(super) fn active_capture_lines(
@@ -70,12 +70,11 @@ pub(super) fn capture_piece_count_allowed_leap(
 }
 
 pub(super) fn is_all_in_mills(state: &MillState, options: &MillVariantOptions, piece: i8) -> bool {
-    state
-        .board
-        .iter()
-        .enumerate()
-        .filter(|(_, p)| **p == piece)
-        .all(|(idx, _)| is_piece_in_mill(state, options, idx))
+    let target_bb = piece_bitboard(state, piece);
+    (0_usize..24).all(|idx| {
+        let mask = node_bit(idx);
+        (target_bb & mask) == 0 || is_piece_in_mill(state, options, idx)
+    })
 }
 
 /// Validates that the piece at `mid` (the captured middle square) is actually
@@ -87,7 +86,7 @@ pub(super) fn leap_capture_target_is_removable(
     mid: usize,
 ) -> bool {
     let opponent_piece = (state.side_to_move ^ 1) + 1;
-    if state.board[mid] != opponent_piece {
+    if (piece_bitboard(state, opponent_piece) & node_bit(mid)) == 0 {
         return false;
     }
     // Mill protection: if may_remove_from_mills_always is false, a piece in a
@@ -109,11 +108,11 @@ pub(super) fn is_adjacent_to_side_piece(
     if state.side_to_move < 0 {
         return false;
     }
-    let own_piece = state.side_to_move + 1;
+    let own_bb = piece_bitboard(state, state.side_to_move + 1);
     topology
         .neighbors(node as u16)
         .iter()
-        .any(|neighbor| state.board[*neighbor as usize] == own_piece)
+        .any(|neighbor| (own_bb & node_bit(*neighbor as usize)) != 0)
 }
 
 pub(super) fn filter_capture_targets(
@@ -122,10 +121,12 @@ pub(super) fn filter_capture_targets(
     targets: u32,
 ) -> u32 {
     let opponent_piece = (state.side_to_move ^ 1) + 1;
+    let opponent_bb = piece_bitboard(state, opponent_piece);
     let mut filtered = 0_u32;
     let all_in_mills = is_all_in_mills(state, options, opponent_piece);
     for node in 0..24_usize {
-        if (targets & node_bit(node)) == 0 || state.board[node] != opponent_piece {
+        let mask = node_bit(node);
+        if (targets & mask) == 0 || (opponent_bb & mask) == 0 {
             continue;
         }
         if !options.may_remove_from_mills_always
@@ -134,7 +135,7 @@ pub(super) fn filter_capture_targets(
         {
             continue;
         }
-        filtered |= node_bit(node);
+        filtered |= mask;
     }
     filtered
 }
@@ -151,11 +152,13 @@ pub(super) fn detect_custodian_targets(
     let us = state.side_to_move + 1;
     let them = state.side_to_move ^ 1;
     let opponent = them + 1;
+    let us_bb = piece_bitboard(state, us);
+    let opponent_bb = piece_bitboard(state, opponent);
     let mut targets = 0_u32;
     for line in active_capture_lines(config, options) {
-        let brackets_middle = (to == line[0] && state.board[line[2]] == us)
-            || (to == line[2] && state.board[line[0]] == us);
-        if brackets_middle && state.board[line[1]] == opponent {
+        let brackets_middle = (to == line[0] && (us_bb & node_bit(line[2])) != 0)
+            || (to == line[2] && (us_bb & node_bit(line[0])) != 0);
+        if brackets_middle && (opponent_bb & node_bit(line[1])) != 0 {
             targets |= node_bit(line[1]);
         }
     }
@@ -172,6 +175,7 @@ pub(super) fn detect_intervention_targets(
         return 0;
     }
     let opponent = (state.side_to_move ^ 1) + 1;
+    let opponent_bb = piece_bitboard(state, opponent);
 
     // Mirror master src/position.cpp:2670 checkInterventionCapture: collect
     // raw capture lines first, select the preferred/first line, then apply
@@ -182,7 +186,10 @@ pub(super) fn detect_intervention_targets(
 
     let mut capture_lines: Vec<u32> = Vec::new();
     for line in active_capture_lines(config, options) {
-        if to == line[1] && state.board[line[0]] == opponent && state.board[line[2]] == opponent {
+        if to == line[1]
+            && (opponent_bb & node_bit(line[0])) != 0
+            && (opponent_bb & node_bit(line[2])) != 0
+        {
             let targets = node_bit(line[0]) | node_bit(line[2]);
             capture_lines.push(targets);
         }
@@ -218,11 +225,12 @@ pub(super) fn detect_leap_targets(
         return 0;
     }
     let opponent = (state.side_to_move ^ 1) + 1;
+    let opponent_bb = piece_bitboard(state, opponent);
     let mut targets = 0_u32;
     for line in active_capture_lines(config, options) {
         let jumps_over_middle =
             (to == line[2] && from == line[0]) || (to == line[0] && from == line[2]);
-        if jumps_over_middle && state.board[line[1]] == opponent {
+        if jumps_over_middle && (opponent_bb & node_bit(line[1])) != 0 {
             targets |= node_bit(line[1]);
         }
     }

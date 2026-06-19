@@ -345,7 +345,24 @@ impl Game for MillGame {
         }
 
         let side = state.side_to_move;
+        if !(0..2).contains(&side) {
+            return 0;
+        }
         let opponent = side ^ 1;
+        let side_idx = side as usize;
+        let opponent_idx = opponent as usize;
+        let side_bb = state.by_color_bb[side_idx];
+        let opponent_bb = state.by_color_bb[opponent_idx];
+        let side_piece_count = side_bb.count_ones();
+        let opponent_piece_count = opponent_bb.count_ones();
+        // This is a move-order scoring fast path, not a terminal shortcut:
+        // early placing positions with fewer pieces are normal.
+        let can_form_mill = if kind == MillActionKind::Place as i16 {
+            side_piece_count >= 2
+        } else {
+            side_piece_count >= 3
+        };
+        let can_block_mill = opponent_piece_count >= 2;
         if kind == MillActionKind::Place as i16
             && state.phase == MillPhase::Placing
             && !options.has_diagonal_lines
@@ -353,13 +370,22 @@ impl Game for MillGame {
             && !options.one_time_use_mill
             && ctx.algorithm != tgf_core::MoveOrderAlgorithm::Mcts
         {
-            let (our_mills, their_mills) = potential_mills_count_standard_unrestricted_pair(
-                &state.board,
-                to,
-                side + 1,
-                opponent + 1,
-                None,
-            );
+            if !can_form_mill && !can_block_mill {
+                return 0;
+            }
+            let (our_mills, their_mills) = if can_form_mill && can_block_mill {
+                potential_mills_count_standard_unrestricted_pair(side_bb, opponent_bb, to, None)
+            } else if can_form_mill {
+                (
+                    potential_mills_count_standard_unrestricted(side_bb, to, None),
+                    0,
+                )
+            } else {
+                (
+                    0,
+                    potential_mills_count_standard_unrestricted(opponent_bb, to, None),
+                )
+            };
             let our_mills = our_mills as i32;
             if our_mills > 0 {
                 return RATING_ONE_MILL * our_mills;
@@ -373,29 +399,26 @@ impl Game for MillGame {
         };
 
         if !options.has_diagonal_lines && !options.one_time_use_mill {
-            let our_mills =
-                potential_mills_count_standard_unrestricted(&state.board, to, side + 1, from)
-                    as i32;
+            let our_mills = if can_form_mill {
+                potential_mills_count_standard_unrestricted(side_bb, to, from) as i32
+            } else {
+                0
+            };
             let mut score = 0_i32;
             if our_mills > 0 {
                 score += RATING_ONE_MILL * our_mills;
             } else if state.phase == MillPhase::Placing && !options.may_move_in_placing_phase {
-                let their_mills = potential_mills_count_standard_unrestricted(
-                    &state.board,
-                    to,
-                    opponent + 1,
-                    None,
-                ) as i32;
-                score += RATING_BLOCK_ONE_MILL * their_mills;
-            } else if state.phase == MillPhase::Moving
-                || (state.phase == MillPhase::Placing && options.may_move_in_placing_phase)
+                if can_block_mill {
+                    let their_mills =
+                        potential_mills_count_standard_unrestricted(opponent_bb, to, None) as i32;
+                    score += RATING_BLOCK_ONE_MILL * their_mills;
+                }
+            } else if can_block_mill
+                && (state.phase == MillPhase::Moving
+                    || (state.phase == MillPhase::Placing && options.may_move_in_placing_phase))
             {
-                let their_mills = potential_mills_count_standard_unrestricted(
-                    &state.board,
-                    to,
-                    opponent + 1,
-                    None,
-                ) as i32;
+                let their_mills =
+                    potential_mills_count_standard_unrestricted(opponent_bb, to, None) as i32;
                 if their_mills > 0 {
                     let (_, theirs, _) = surrounded_pieces_count(state, options, to);
                     // Master keys this branch off legacy `Square` parity. In
@@ -414,7 +437,7 @@ impl Game for MillGame {
             if state.phase == MillPhase::Placing
                 && side == 1
                 && ctx.algorithm == tgf_core::MoveOrderAlgorithm::Mcts
-                && state.board.iter().filter(|&&p| p == 2).count() < 2
+                && state.by_color_bb[1].count_ones() < 2
                 && is_star_square(options, to)
             {
                 score += RATING_STAR_SQUARE;
@@ -422,15 +445,23 @@ impl Game for MillGame {
             return score;
         }
 
-        let our_mills = potential_mills_count_at(state, options, to, side, from) as i32;
+        let our_mills = if can_form_mill {
+            potential_mills_count_at(state, options, to, side, from) as i32
+        } else {
+            0
+        };
         let mut score = 0_i32;
         if our_mills > 0 {
             score += RATING_ONE_MILL * our_mills;
         } else if state.phase == MillPhase::Placing && !options.may_move_in_placing_phase {
-            let their_mills = potential_mills_count_at(state, options, to, opponent, None) as i32;
-            score += RATING_BLOCK_ONE_MILL * their_mills;
-        } else if state.phase == MillPhase::Moving
-            || (state.phase == MillPhase::Placing && options.may_move_in_placing_phase)
+            if can_block_mill {
+                let their_mills =
+                    potential_mills_count_at(state, options, to, opponent, None) as i32;
+                score += RATING_BLOCK_ONE_MILL * their_mills;
+            }
+        } else if can_block_mill
+            && (state.phase == MillPhase::Moving
+                || (state.phase == MillPhase::Placing && options.may_move_in_placing_phase))
         {
             let their_mills = potential_mills_count_at(state, options, to, opponent, None) as i32;
             if their_mills > 0 {
@@ -452,7 +483,7 @@ impl Game for MillGame {
         if state.phase == MillPhase::Placing
             && side == 1
             && (options.has_diagonal_lines || ctx.algorithm == tgf_core::MoveOrderAlgorithm::Mcts)
-            && state.board.iter().filter(|&&p| p == 2).count() < 2
+            && state.by_color_bb[1].count_ones() < 2
             && is_star_square(options, to)
         {
             score += RATING_STAR_SQUARE;

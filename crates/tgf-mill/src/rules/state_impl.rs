@@ -7,7 +7,7 @@ use tgf_core::{GameStateSnapshot, OPAQUE_PAYLOAD_LEN};
 
 use super::{
     MILL_REPETITION_SNAPSHOT_WINDOW, MillActionState, MillOutcomeReason, MillPhase, MillState,
-    MillVariantOptions, recompute_mobility_diff,
+    MillVariantOptions, bitboards_from_board, recompute_mobility_diff, set_board_node,
 };
 
 impl MillState {
@@ -144,7 +144,9 @@ impl MillState {
             bytes.copy_from_slice(&payload[offset..offset + 4]);
             u32::from_le_bytes(bytes)
         };
+        let delayed_marked_pieces = read_u32(39);
         Self {
+            by_color_bb: bitboards_from_board(&board, delayed_marked_pieces),
             board,
             side_to_move: snapshot.side_to_move,
             phase: match snapshot.phase_tag {
@@ -169,7 +171,7 @@ impl MillState {
             last_mill_from: [payload[33] as i8, payload[253] as i8],
             last_mill_to: [payload[34] as i8, payload[254] as i8],
             used_mill_lines: read_u32(35),
-            delayed_marked_pieces: read_u32(39),
+            delayed_marked_pieces,
             outcome_reason: match payload[43] {
                 x if x == MillOutcomeReason::LoseFewerThanThree as u8 => {
                     MillOutcomeReason::LoseFewerThanThree
@@ -250,9 +252,9 @@ impl MillState {
     /// anything else = clear.  Callers must follow up with `recompute_aux`
     /// before encoding the snapshot.
     pub fn set_piece(&mut self, node: u16, owner: i8) {
-        if let Some(slot) = self.board.get_mut(node as usize) {
-            *slot = if owner == 1 || owner == 2 { owner } else { 0 };
-        }
+        let node = usize::from(node);
+        assert!(node < 24, "Mill setup node out of range");
+        set_board_node(self, node, if owner == 1 || owner == 2 { owner } else { 0 });
     }
 
     pub fn set_side_to_move(&mut self, side: i8) {
@@ -376,6 +378,7 @@ impl MillState {
         self.last_mill_to = [-1, -1];
         self.used_mill_lines = 0;
         self.delayed_marked_pieces = 0;
+        self.by_color_bb = bitboards_from_board(&self.board, self.delayed_marked_pieces);
         self.formed_mills_bb = [0, 0];
         self.custodian_targets = [0, 0];
         self.intervention_targets = [0, 0];

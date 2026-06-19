@@ -124,8 +124,9 @@ impl GameRules for MillRules {
             }
             MillActionState::Place => {
                 if state.pieces_in_hand[state.side_to_move as usize] > 0 {
-                    for (node, piece) in state.board.iter().enumerate() {
-                        if *piece == 0 {
+                    let occupied = board_occupied_bitboard(&state);
+                    for node in 0_usize..24 {
+                        if (occupied & node_bit(node)) == 0 {
                             out.push(Action {
                                 kind_tag: MillActionKind::Place as i16,
                                 from_node: -1,
@@ -255,7 +256,7 @@ impl MillRules {
         ));
 
         let side = state.side_to_move as usize;
-        state.board[to] = state.side_to_move + 1;
+        place_live_piece(state, to, side);
         state.pieces_in_hand[side] = state.pieces_in_hand[side].saturating_sub(1);
         state.pieces_on_board[side] += 1;
         update_mobility_place(state, &self.options, to, side);
@@ -338,20 +339,14 @@ impl MillRules {
             state.leap_count,
         ));
 
-        if potential_mills_count_standard_unrestricted(
-            &state.board,
-            to,
-            state.side_to_move + 1,
-            Some(from),
-        ) != 0
+        let side = state.side_to_move as usize;
+        if potential_mills_count_standard_unrestricted(state.by_color_bb[side], to, Some(from)) != 0
         {
             return false;
         }
 
-        let side = state.side_to_move as usize;
         update_mobility_remove(state, &self.options, from);
-        state.board[from] = 0;
-        state.board[to] = state.side_to_move + 1;
+        move_live_piece(state, from, to, side);
         update_mobility_place(state, &self.options, to, side);
         state.move_number += 1;
         bump_ply_since_capture(state, &self.options);
@@ -457,7 +452,7 @@ impl MillRules {
                 let to = action.to_node as usize;
                 debug_assert!(state.board[to] == 0);
                 let side = state.side_to_move as usize;
-                state.board[to] = state.side_to_move + 1;
+                place_live_piece(&mut state, to, side);
                 state.pieces_in_hand[side] = state.pieces_in_hand[side].saturating_sub(1);
                 state.pieces_on_board[side] += 1;
                 update_mobility_place(&mut state, &self.options, to, side);
@@ -590,8 +585,7 @@ impl MillRules {
                 debug_assert_eq!(state.board[to], 0);
                 let side = state.side_to_move as usize;
                 update_mobility_remove(&mut state, &self.options, from);
-                state.board[from] = 0;
-                state.board[to] = state.side_to_move + 1;
+                move_live_piece(&mut state, from, to, side);
                 update_mobility_place(&mut state, &self.options, to, side);
                 state.move_number += 1;
                 bump_ply_since_capture(&mut state, &self.options);
@@ -789,10 +783,10 @@ impl MillRules {
                     // (`live_piece`, `is_marked`) treats the cell as empty
                     // until the placing-to-moving sweep clears it.
                     update_mobility_remove(&mut state, &self.options, to);
-                    state.delayed_marked_pieces |= mask;
+                    mark_board_node_inactive(&mut state, to);
                 } else {
                     update_mobility_remove(&mut state, &self.options, to);
-                    state.board[to] = 0;
+                    clear_live_piece(&mut state, to, target_color_index);
                 }
                 state.pieces_on_board[target_color_index] =
                     state.pieces_on_board[target_color_index].saturating_sub(1);

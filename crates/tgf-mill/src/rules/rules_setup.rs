@@ -11,7 +11,10 @@ use super::legacy_squares::{
     node_to_legacy_square,
 };
 use super::transitions::is_marked;
-use super::{MillActionState, MillPhase, MillRules, MillState, node_bit, recompute_mobility_diff};
+use super::{
+    MillActionState, MillPhase, MillRules, MillState, node_bit, recompute_mobility_diff,
+    sync_bitboards_from_board,
+};
 
 // MillRules setup-position helpers (used by the FRB kernel API)
 // ---------------------------------------------------------------------------
@@ -271,6 +274,7 @@ impl MillRules {
             winner: -1,
             ..MillState::default()
         };
+        sync_bitboards_from_board(&mut state);
         recompute_mobility_diff(&mut state, &self.options);
         // Mirror master src/position.cpp:2069 Position::check_if_game_is_over:
         // importing a FEN immediately runs the same terminal checks as a

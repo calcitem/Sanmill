@@ -5,7 +5,8 @@
 // keeps `mod.rs` focused on the rules / move dispatch surface.
 
 use super::{
-    MillBoardFullAction, MillPhase, MillState, MillVariantOptions, StalemateAction, live_piece,
+    MillBoardFullAction, MillPhase, MillState, MillVariantOptions, StalemateAction,
+    board_occupied_bitboard, live_occupied_bitboard, live_piece, node_bit,
 };
 
 /// Mirror of `Position::shouldConsiderMobility()` in option.h: enabled
@@ -63,16 +64,23 @@ pub(super) fn mills_pieces_count_difference(
 /// neighbours.
 pub(super) fn calculate_mobility_diff(state: &MillState, options: &MillVariantOptions) -> i32 {
     if state.delayed_marked_pieces == 0 {
+        let white_bb = state.by_color_bb[0];
+        let black_bb = state.by_color_bb[1];
+        let occupied = live_occupied_bitboard(state);
         let mut white = 0_i32;
         let mut black = 0_i32;
         for s in 0_usize..24 {
-            let piece = state.board[s];
-            if piece != 1 && piece != 2 {
+            let mask = node_bit(s);
+            let piece = if (white_bb & mask) != 0 {
+                1
+            } else if (black_bb & mask) != 0 {
+                2
+            } else {
                 continue;
-            }
+            };
             let mut mobility = 0_i32;
             for &to in crate::topology::neighbors_for(s, options.has_diagonal_lines) {
-                if state.board[to as usize] == 0 {
+                if (occupied & node_bit(to as usize)) == 0 {
                     mobility += 1;
                 }
             }
@@ -209,12 +217,14 @@ pub(super) fn is_all_surrounded(state: &MillState, options: &MillVariantOptions,
         // Fly endgame: never surrounded as long as an empty square exists.
         return state.pieces_on_board[0] + state.pieces_on_board[1] >= 24;
     }
+    let own_bb = state.by_color_bb[s];
+    let occupied = board_occupied_bitboard(state);
     for from in 0_usize..24 {
-        if state.board[from] != side + 1 {
+        if (own_bb & node_bit(from)) == 0 {
             continue;
         }
         for &to in crate::topology::neighbors_for(from, options.has_diagonal_lines) {
-            if state.board[to as usize] == 0 {
+            if (occupied & node_bit(to as usize)) == 0 {
                 return false;
             }
         }
@@ -271,17 +281,24 @@ pub(super) fn surrounded_pieces_count(
     s: usize,
 ) -> (i32, i32, i32) {
     let neighbors = crate::topology::neighbors_for(s, options.has_diagonal_lines);
-    let our_piece = state.side_to_move + 1;
-    let their_piece = (state.side_to_move ^ 1) + 1;
+    if !(0..2).contains(&state.side_to_move) {
+        return (0, 0, 0);
+    }
+    let side = state.side_to_move as usize;
+    let our_bb = state.by_color_bb[side];
+    let their_bb = state.by_color_bb[side ^ 1];
+    let occupied = board_occupied_bitboard(state);
     let mut our = 0_i32;
     let mut theirs = 0_i32;
     let mut empty = 0_i32;
     for &n in neighbors {
-        match state.board[n as usize] {
-            0 => empty += 1,
-            p if p == our_piece => our += 1,
-            p if p == their_piece => theirs += 1,
-            _ => {}
+        let mask = node_bit(n as usize);
+        if (our_bb & mask) != 0 {
+            our += 1;
+        } else if (their_bb & mask) != 0 {
+            theirs += 1;
+        } else if (occupied & mask) == 0 {
+            empty += 1;
         }
     }
     (our, theirs, empty)
@@ -293,16 +310,18 @@ pub(super) fn surrounded_pieces_count(
 /// already heavily defended.
 pub(super) fn remove_move_score(state: &MillState, options: &MillVariantOptions, to: usize) -> i32 {
     let side = state.side_to_move;
+    if !(0..2).contains(&side) {
+        return 0;
+    }
     let opponent = side ^ 1;
     let (our_mills, their_mills) = if state.delayed_marked_pieces == 0
         && !options.has_diagonal_lines
         && !options.one_time_use_mill
     {
         let (our_mills, their_mills) = super::potential_mills_count_standard_unrestricted_pair(
-            &state.board,
+            state.by_color_bb[side as usize],
+            state.by_color_bb[opponent as usize],
             to,
-            side + 1,
-            opponent + 1,
             None,
         );
         (our_mills as i32, their_mills as i32)

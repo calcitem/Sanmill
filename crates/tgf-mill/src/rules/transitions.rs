@@ -7,7 +7,7 @@ use tgf_core::Action;
 
 use super::{
     MillBoardFullAction, MillFormationActionInPlacingPhase, MillOutcomeReason, MillPhase,
-    MillState, MillVariantOptions, mill_lines, node_bit,
+    MillState, MillVariantOptions, board_occupied_bitboard, mill_lines, node_bit, set_board_node,
 };
 
 /// and this helper is not called, so the placing-phase indicator stays
@@ -76,7 +76,7 @@ pub(super) fn enter_moving_phase(state: &mut MillState, options: &MillVariantOpt
     if state.delayed_marked_pieces != 0 {
         for node in 0_usize..24 {
             if (state.delayed_marked_pieces & node_bit(node)) != 0 {
-                state.board[node] = 0;
+                set_board_node(state, node, 0);
             }
         }
         state.delayed_marked_pieces = 0;
@@ -137,7 +137,7 @@ pub(super) fn maybe_stop_placing_when_two_empty(
 }
 
 pub(super) fn empty_square_count(state: &MillState) -> usize {
-    state.board.iter().filter(|piece| **piece == 0).count()
+    24 - board_occupied_bitboard(state).count_ones() as usize
 }
 
 /// Memory-safety check for FRB callers (in particular
