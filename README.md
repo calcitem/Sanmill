@@ -124,6 +124,9 @@ python scripts/record_rust_perf_baseline.py --output target/tgf_perf_result.toml
 python scripts/check_perf_baseline.py   --baseline tests/perf_baseline.toml   --result target/tgf_perf_result.toml
 ```
 
+For fixed-depth search optimization A/B measurements, including node-count
+parity requirements, see `docs/FRAMEWORK_API.md`.
+
 For the framework API contract, see `docs/FRAMEWORK_API.md`.
 
 ## Understanding the Code Base and Participating in the Project

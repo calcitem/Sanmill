@@ -216,6 +216,63 @@ thresholds (5 % / 5 % / 1 pp / 10 %) become active.  CI also passes
 complementary.  Tighten the runtime baselines toward ~70 % of the canonical
 CI run once a stable reference hardware target is selected.
 
+#### Search optimization A/B measurements
+
+Search hot-path optimization claims are measured with
+`scripts/compare_engine_perf.py`, not with a self-play match or a UI timer. The
+script drives two UCI-compatible engine commands through the same fixed
+positions, options, skill level, and fixed-depth `gomtdf` command, then records
+wall-clock time plus the engine-reported `bestmove`, `score`, `depth`, and
+`nodes`.
+
+For next-branch optimization work, the comparison target should usually be the
+previous locked Rust binary rather than only `~/Sanmill-master`. Comparing only
+against the retired master branch can hide regressions between two recent Rust
+revisions. A typical local run is:
+
+```bash
+cargo build --release -p tgf-cli
+cp target/release/tgf /tmp/sanmill_before_candidate_tgf
+
+# Apply and rebuild the candidate change, then run:
+python3 scripts/compare_engine_perf.py \
+  --current 'target/release/tgf uci' \
+  --master '/tmp/sanmill_before_candidate_tgf uci' \
+  --current-depth-go 'gomtdf {depth}' \
+  --master-depth-go 'gomtdf {depth}' \
+  --cases start,reduced_material \
+  --skills 15 \
+  --depths 12 \
+  --repeat 11 \
+  --timeout 240 \
+  --csv /tmp/sanmill_candidate_r11.csv
+```
+
+The `--master` label is historical: in this workflow it often points at the
+previous Rust binary. The candidate is accepted only when `bestmove`, `score`,
+`depth`, and especially `nodes` are identical for every compared case. Timing
+is summarized by the median of the candidate rows because individual runs are
+noisy on a multitasking desktop. The reported ratio is:
+
+```text
+candidate median elapsed_ms / previous-baseline median elapsed_ms
+```
+
+So `0.840x` means the candidate used 84.0% of the previous elapsed time on the
+same fixed node count. The current locked search baseline lives in
+`tests/search_perf_baseline.toml`; validate a new CSV against it with:
+
+```bash
+python3 scripts/check_search_perf_baseline.py \
+  --baseline tests/search_perf_baseline.toml \
+  --result /tmp/sanmill_candidate_r11.csv
+```
+
+The locked baseline stores the exact command, platform, raw per-run timings,
+median milliseconds, ns/node, best move, score, depth, and node count. Raw CSV
+files are diagnostic artifacts and are not committed; the TOML baseline is the
+reviewable record.
+
 ### Regression and differential testing
 
 The retired C++ engine is no longer linked into the app or FRB test surface.
