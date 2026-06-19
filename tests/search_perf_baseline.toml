@@ -11,13 +11,13 @@
 # next-branch revisions.
 
 [meta]
-locked_at = "2026-06-19T08:59:50Z"
-git_commit = "dad59ffa9+working-tree"
+locked_at = "2026-06-19T09:38:36Z"
+git_commit = "fc9d066b3+working-tree"
 platform = "linux-x86_64-local"
 build_flags = "cargo build --release -p tgf-cli"
-command = "python3 scripts/compare_engine_perf.py --current 'target/release/tgf uci' --master '/tmp/sanmill_before_alloc_lock_tgf uci' --current-depth-go 'gomtdf {depth}' --master-depth-go 'gomtdf {depth}' --cases start,reduced_material --skills 15 --depths 12 --repeat 11 --timeout 240"
+command = "python3 scripts/compare_engine_perf.py --current 'target/release/tgf uci' --master '/tmp/sanmill_before_shared_topology_tgf uci' --current-depth-go 'gomtdf {depth}' --master-depth-go 'gomtdf {depth}' --cases start,reduced_material --skills 15 --depths 12 --repeat 11 --timeout 240"
 summary_method = "median elapsed_ms from current engine rows"
-notes = "Locked after dropping the unused Action payload from packed TT entries and removing dead TT-move ordering scaffolding. Same-run A/B against /tmp/sanmill_before_alloc_lock_tgf showed unchanged bestmove/score/nodes and medians 0.981x start / 0.995x reduced_material. Raw candidate CSV: /tmp/sanmill_tt_entry_drop_action_r11.csv."
+notes = "Locked after sharing immutable Mill topology data across MillRules instances, shrinking MillRules from 184 to 64 bytes and MillWorkbench from 360 to 240 bytes. Same-run A/B kept bestmove/score/nodes unchanged; timing was mixed at 1.044x start and 1.001x reduced_material, while the locked-baseline check still passed. Raw candidate CSV: /tmp/sanmill_shared_topology_r11.csv."
 
 [thresholds]
 max_elapsed_regress_pct = 8.0
@@ -34,9 +34,9 @@ bestmove = "d6"
 score = 3
 depth = 12
 nodes = 5_580_055
-median_ms = 1383.30
-ns_per_node = 247.90
-run_ms = [1565.33, 1285.76, 1314.82, 1245.04, 1430.22, 1546.76, 1383.30, 1405.08, 1297.72, 1464.46, 1311.99]
+median_ms = 1411.09
+ns_per_node = 252.88
+run_ms = [1504.49, 1359.58, 1411.09, 1564.11, 1276.08, 1402.37, 1495.81, 1524.19, 1282.54, 1477.75, 1386.72]
 
 [[cases]]
 name = "reduced_material"
@@ -46,6 +46,6 @@ bestmove = "c4-b4"
 score = -89
 depth = 12
 nodes = 3_209_969
-median_ms = 1032.01
-ns_per_node = 321.50
-run_ms = [1037.98, 931.48, 943.16, 1099.36, 958.32, 1073.03, 951.59, 1152.59, 1024.30, 1032.01, 1063.09]
+median_ms = 1005.32
+ns_per_node = 313.19
+run_ms = [851.29, 899.85, 951.95, 1062.20, 1005.32, 965.26, 1018.32, 1059.33, 976.27, 1158.72, 1022.52]

@@ -6,6 +6,8 @@
 // `square` field maps back to the mature C++ engine's SQ_8..SQ_31 ids and
 // `label` matches UCI::square().
 
+use std::sync::OnceLock;
+
 use tgf_core::board_topology::{BoardTopology, Decoration, Edge, UnitPoint, Zone};
 
 #[derive(Clone, Copy, Debug, PartialEq)]
@@ -120,6 +122,17 @@ impl BoardTopology for MillTopology {
 
 pub fn default_mill_topology() -> MillTopology {
     MillTopology::standard()
+}
+
+pub(crate) fn shared_mill_topology(has_diagonal_lines: bool) -> &'static MillTopology {
+    static STANDARD: OnceLock<MillTopology> = OnceLock::new();
+    static DIAGONAL: OnceLock<MillTopology> = OnceLock::new();
+
+    if has_diagonal_lines {
+        DIAGONAL.get_or_init(MillTopology::with_diagonals)
+    } else {
+        STANDARD.get_or_init(MillTopology::standard)
+    }
 }
 
 // Dense node id -> C++ square id + UCI label + Flutter unit coordinate.

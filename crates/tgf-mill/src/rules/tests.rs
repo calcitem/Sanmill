@@ -269,6 +269,16 @@ fn mill_board_undo_keeps_full_snapshot_out_of_standard_delta() {
         "live Mill state must stay cache compact"
     );
     assert_eq!(
+        std::mem::size_of::<MillRules>(),
+        64,
+        "Mill rules must keep cold topology data out of every workbench"
+    );
+    assert_eq!(
+        std::mem::size_of::<MillWorkbench>(),
+        240,
+        "search workbench must not carry an owned topology clone"
+    );
+    assert_eq!(
         std::mem::size_of::<MillUndoCore>(),
         112,
         "per-ply undo core must stay cache compact"

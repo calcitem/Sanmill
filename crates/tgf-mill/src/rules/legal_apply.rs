@@ -96,7 +96,7 @@ impl GameRules for MillRules {
     }
 
     fn topology(&self) -> &dyn BoardTopology {
-        &self.topology
+        self.topology
     }
 
     fn initial_state(&self, _variant_options: &[u8]) -> GameStateSnapshot {

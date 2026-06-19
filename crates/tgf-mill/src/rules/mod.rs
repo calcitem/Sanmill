@@ -30,7 +30,7 @@ use tgf_core::{
     Action, ActionList, BoardTopology, GameRules, GameStateSnapshot, Outcome, OutcomeKind,
 };
 
-use crate::topology::MillTopology;
+use crate::topology::{MillTopology, shared_mill_topology};
 
 mod captures;
 mod evaluation;
@@ -250,7 +250,7 @@ use move_priority::{default_dense_priority, move_priority_list_for_search};
 #[derive(Clone, Debug)]
 pub struct MillRules {
     options: MillVariantOptions,
-    topology: MillTopology,
+    topology: &'static MillTopology,
     standard_fast_path: bool,
 }
 
@@ -423,7 +423,7 @@ impl MillRules {
     pub fn new(options: MillVariantOptions) -> Self {
         options.assert_valid();
         let standard_fast_path = standard_fast_path_enabled(&options);
-        let topology = MillTopology::new(options.has_diagonal_lines);
+        let topology = shared_mill_topology(options.has_diagonal_lines);
         Self {
             options,
             topology,
