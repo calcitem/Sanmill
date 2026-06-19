@@ -314,6 +314,31 @@ impl<'a> MillMoveOrderScorer<'a> {
         let opponent_idx = side_idx ^ 1;
         let side_bb = state.by_color_bb[side_idx];
         let opponent_bb = state.by_color_bb[opponent_idx];
+        let [white_piece_count, black_piece_count] = if state.delayed_marked_pieces == 0 {
+            debug_assert_eq!(
+                state.by_color_bb[0].count_ones() as u8,
+                state.pieces_on_board[0],
+                "white piece count must match the white bitboard"
+            );
+            debug_assert_eq!(
+                state.by_color_bb[1].count_ones() as u8,
+                state.pieces_on_board[1],
+                "black piece count must match the black bitboard"
+            );
+            [
+                u32::from(state.pieces_on_board[0]),
+                u32::from(state.pieces_on_board[1]),
+            ]
+        } else {
+            // Delayed-marked pieces remain on the board but are deliberately
+            // absent from by-color live bitboards. Count live pieces from the
+            // bitboards only for that uncommon variant path.
+            [
+                state.by_color_bb[0].count_ones(),
+                state.by_color_bb[1].count_ones(),
+            ]
+        };
+        let piece_counts = [white_piece_count, black_piece_count];
         let standard_no_diagonal_no_one_time =
             !options.has_diagonal_lines && !options.one_time_use_mill;
         Self {
@@ -324,9 +349,9 @@ impl<'a> MillMoveOrderScorer<'a> {
             opponent,
             side_bb,
             opponent_bb,
-            side_piece_count: side_bb.count_ones(),
-            opponent_piece_count: opponent_bb.count_ones(),
-            black_piece_count: state.by_color_bb[1].count_ones(),
+            side_piece_count: piece_counts[side_idx],
+            opponent_piece_count: piece_counts[opponent_idx],
+            black_piece_count,
             standard_place_no_move: state.phase == MillPhase::Placing
                 && !options.has_diagonal_lines
                 && !options.may_move_in_placing_phase
@@ -585,6 +610,37 @@ impl<'a> MillMoveOrderScorer<'a> {
     }
 }
 
+#[inline]
+fn score_remove_actions(
+    state: &MillState,
+    options: &MillVariantOptions,
+    actions: &[Action],
+    scores: &mut [MaybeUninit<i32>],
+) -> bool {
+    assert!(
+        actions.len() <= scores.len(),
+        "Mill move-order score buffer is smaller than action list"
+    );
+    let mut previous_score = 0_i32;
+    let mut has_previous = false;
+    let mut needs_sort = false;
+    for (i, action) in actions.iter().copied().enumerate() {
+        let to = action.to_node as usize;
+        let score = if to < 24 {
+            remove_move_score(state, options, to)
+        } else {
+            0
+        };
+        scores[i].write(score);
+        if has_previous && previous_score < score {
+            needs_sort = true;
+        }
+        previous_score = score;
+        has_previous = true;
+    }
+    needs_sort
+}
+
 impl Game for MillGame {
     type Workbench = MillWorkbench;
     type Evaluator = MillEvaluator;
@@ -689,6 +745,18 @@ impl Game for MillGame {
         ctx: &MoveOrderContext,
         scores: &mut [MaybeUninit<i32>],
     ) -> bool {
+        if actions
+            .first()
+            .is_some_and(|action| action.kind_tag == MillActionKind::Remove as i16)
+        {
+            debug_assert!(
+                actions
+                    .iter()
+                    .all(|action| action.kind_tag == MillActionKind::Remove as i16),
+                "Mill remove-action lists must not mix place/move actions"
+            );
+            return score_remove_actions(&wb.state, &wb.rules.options, actions, scores);
+        }
         MillMoveOrderScorer::new(wb, ctx).score_actions(actions, scores)
     }
 

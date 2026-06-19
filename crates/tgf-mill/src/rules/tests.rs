@@ -654,13 +654,13 @@ fn move_order_bias_prefers_completing_own_mill_and_blocking_opponent() {
     board[old_node(2)] = 1;
     board[old_node(4)] = 2;
     board[old_node(6)] = 2;
-    let state = MillState {
+    let mut state = MillState {
         board,
         side_to_move: 0,
         phase: MillPhase::Placing,
-        pieces_in_hand: [9, 9],
         ..MillState::default()
     };
+    state.recompute_aux(&rules.options);
     let snap = rules.encode(state);
     let wb = game.build_workbench(&snap);
 
@@ -749,7 +749,7 @@ fn move_order_bias_remove_prefers_high_mobility_targets() {
         phase: MillPhase::Moving,
         pending_removals: [1, 0],
         flags: MillStateFlags::from_parts([false, false], true, false, false, false),
-        pieces_on_board: [3, 4],
+        pieces_on_board: [0, 4],
         ..MillState::default()
     };
     let snap = rules.encode(state);

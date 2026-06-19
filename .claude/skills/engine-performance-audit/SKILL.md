@@ -513,6 +513,28 @@ Conservative, node-preserving candidates:
   Raw CSV: `/tmp/sanmill_move_order_batch_scores_r7.csv`.  Revisit this
   area when compact search-only actions or a staged MovePicker are introduced,
   because either change may require a different score storage layout.
+
+  Follow-up on 2026-06-19: avoided three per-list `count_ones()` calls in
+  the common non-delayed-marking path by reading the already-maintained
+  `pieces_on_board` counters when they are invariant-equivalent to
+  `by_color_bb.count_ones()`.  Debug assertions guard that invariant, and
+  tests were fixed where hand-built fixtures had inconsistent board/count
+  data.  A first version showed an apparent remove-root regression; deeper
+  analysis found the cause was not the counter fast path but remove-only
+  action lists still constructing the full place/move scorer.  The accepted
+  patch routes remove-only lists through a lightweight `remove_move_score`
+  scorer before building `MillMoveOrderScorer`.  Same-run release A/B against
+  the previous local binary kept bestmove, score, depth, and nodes unchanged:
+  `start` d8 `0.885x`, `placing4` d8 `0.877x`, `placing8` d8 `0.903x`,
+  `placing14` d8 `0.727x`, `reduced_material` d8 `0.954x`; deeper small-case
+  checks gave `capture_pending` d12 `0.882x`, `moving_loop` d12 `0.783x`, and
+  `moving_entry` d15 `0.996x`.  Raw CSVs:
+  `/tmp/sanmill_piece_count_remove_split_matrix_r7.csv`,
+  `/tmp/sanmill_piece_count_remove_split_smallcases_d12_r11.csv`, and
+  `/tmp/sanmill_piece_count_remove_split_moving_entry_d15_r11.csv`.
+  Treat earlier noisy rejected/accepted notes as hypotheses when they lack a
+  theory plus counter or profiler evidence; repeat them with deeper probes
+  before ruling out theoretically sound optimizations.
 - Audit exact standard `key_after` for prefetch only.  Rust currently accepts a
   rough O(1) key prediction because prefetch only needs a likely cache line.
   If prefetch is enabled in benchmarks, compare a standard-only exact child
