@@ -1019,7 +1019,38 @@ struct MillUndoState {
 }
 
 #[derive(Clone, Debug)]
-struct MillUndoCore {
+enum MillUndoCore {
+    Standard(MillStandardUndo),
+    Full(Box<MillUndoFullCore>),
+}
+
+#[derive(Clone, Debug)]
+struct MillStandardUndo {
+    // Standard rules never mutate delayed-marking or capture-extension
+    // fields, so the hot search path only stores fields that can change.
+    board: MillBoardUndo,
+    by_color_bb: [u32; 2],
+    side_to_move: i8,
+    phase: MillPhase,
+    action: MillActionState,
+    move_number: i16,
+    pieces_in_hand: [u8; 2],
+    pieces_on_board: [u8; 2],
+    mobility_diff: i32,
+    pending_removals: [u8; 2],
+    flags: MillStateFlags,
+    winner: i8,
+    outcome_reason: MillOutcomeReason,
+    ply_since_capture: u16,
+    last_mill_from: [i8; 2],
+    last_mill_to: [i8; 2],
+    used_mill_lines: u32,
+    key_history_len: usize,
+    zobrist_key: u64,
+}
+
+#[derive(Clone, Debug)]
+struct MillUndoFullCore {
     board: MillBoardUndo,
     by_color_bb: [u32; 2],
     side_to_move: i8,
@@ -1057,7 +1088,12 @@ enum MillKeyHistoryUndo {
 }
 
 impl MillUndoState {
-    fn capture(state: &MillState, action: Action, options: &MillVariantOptions) -> Self {
+    fn capture(
+        state: &MillState,
+        action: Action,
+        options: &MillVariantOptions,
+        standard_fast_path: bool,
+    ) -> Self {
         let clears_history = action.kind_tag == MillActionKind::Place as i16
             || action.kind_tag == MillActionKind::Remove as i16;
         let must_restore_history = state.key_history.len() == MILL_REPETITION_HISTORY_CAP
@@ -1068,7 +1104,7 @@ impl MillUndoState {
             MillKeyHistoryUndo::Truncate(state.key_history.len())
         };
         Self {
-            core: MillUndoCore::capture(state, action, options),
+            core: MillUndoCore::capture(state, action, options, standard_fast_path),
             key_history,
         }
     }
@@ -1088,6 +1124,110 @@ impl MillUndoState {
 }
 
 impl MillUndoCore {
+    fn capture(
+        state: &MillState,
+        action: Action,
+        options: &MillVariantOptions,
+        standard_fast_path: bool,
+    ) -> Self {
+        if let Some(undo) = MillStandardUndo::capture(state, action, options, standard_fast_path) {
+            return Self::Standard(undo);
+        }
+        Self::Full(Box::new(MillUndoFullCore::capture(state, action, options)))
+    }
+
+    fn restore(self, state: &mut MillState) {
+        match self {
+            Self::Standard(undo) => undo.restore(state),
+            Self::Full(undo) => undo.restore(state),
+        }
+    }
+}
+
+impl MillStandardUndo {
+    fn capture(
+        state: &MillState,
+        action: Action,
+        options: &MillVariantOptions,
+        standard_fast_path: bool,
+    ) -> Option<Self> {
+        if !standard_fast_path
+            || state.delayed_marked_pieces != 0
+            || !zobrist::capture_state_is_empty(
+                state.custodian_targets,
+                state.custodian_count,
+                state.intervention_targets,
+                state.intervention_count,
+                state.leap_targets,
+                state.leap_count,
+            )
+        {
+            return None;
+        }
+        Some(Self {
+            board: MillBoardUndo::capture(state, action, options),
+            by_color_bb: state.by_color_bb,
+            side_to_move: state.side_to_move,
+            phase: state.phase,
+            action: state.action,
+            move_number: state.move_number,
+            pieces_in_hand: state.pieces_in_hand,
+            pieces_on_board: state.pieces_on_board,
+            mobility_diff: state.mobility_diff,
+            pending_removals: state.pending_removals,
+            flags: state.flags,
+            winner: state.winner,
+            outcome_reason: state.outcome_reason,
+            ply_since_capture: state.ply_since_capture,
+            last_mill_from: state.last_mill_from,
+            last_mill_to: state.last_mill_to,
+            used_mill_lines: state.used_mill_lines,
+            key_history_len: state.key_history_len,
+            zobrist_key: state.zobrist_key,
+        })
+    }
+
+    fn restore(self, state: &mut MillState) {
+        self.board.restore_board(state);
+        state.side_to_move = self.side_to_move;
+        state.phase = self.phase;
+        state.action = self.action;
+        state.move_number = self.move_number;
+        state.pieces_in_hand = self.pieces_in_hand;
+        state.pieces_on_board = self.pieces_on_board;
+        state.mobility_diff = self.mobility_diff;
+        state.pending_removals = self.pending_removals;
+        state.flags = self.flags;
+        state.winner = self.winner;
+        state.outcome_reason = self.outcome_reason;
+        state.ply_since_capture = self.ply_since_capture;
+        state.last_mill_from = self.last_mill_from;
+        state.last_mill_to = self.last_mill_to;
+        state.used_mill_lines = self.used_mill_lines;
+        state.delayed_marked_pieces = 0;
+        state.by_color_bb = self.by_color_bb;
+        state.key_history_len = self.key_history_len;
+        state.zobrist_key = self.zobrist_key;
+        debug_assert_eq!(
+            state.by_color_bb,
+            bitboards_from_board(&state.board, state.delayed_marked_pieces),
+            "standard undo restored inconsistent Mill color bitboards"
+        );
+        debug_assert!(
+            zobrist::capture_state_is_empty(
+                state.custodian_targets,
+                state.custodian_count,
+                state.intervention_targets,
+                state.intervention_count,
+                state.leap_targets,
+                state.leap_count,
+            ),
+            "standard undo must not restore non-standard capture state"
+        );
+    }
+}
+
+impl MillUndoFullCore {
     fn capture(state: &MillState, action: Action, options: &MillVariantOptions) -> Self {
         Self {
             board: MillBoardUndo::capture(state, action, options),

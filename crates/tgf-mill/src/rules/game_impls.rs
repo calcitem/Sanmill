@@ -64,7 +64,12 @@ impl Workbench for MillWorkbench {
             self.undo_stack.len() < MILL_SEARCH_STACK_CAPACITY,
             "Mill workbench undo stack capacity exceeded"
         );
-        let undo = super::MillUndoState::capture(&self.state, a, &self.rules.options);
+        let undo = super::MillUndoState::capture(
+            &self.state,
+            a,
+            &self.rules.options,
+            self.rules.standard_fast_path,
+        );
         // Search path: do NOT terminalise threefold (master `do_move` never
         // does).  Repetitions inside the tree are handled by the searcher's
         // `has_repeated` cut; a position that completes a threefold is scored

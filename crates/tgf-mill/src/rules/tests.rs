@@ -280,12 +280,17 @@ fn mill_board_undo_keeps_full_snapshot_out_of_standard_delta() {
     );
     assert_eq!(
         std::mem::size_of::<MillUndoCore>(),
+        72,
+        "standard per-ply undo core must stay cache compact"
+    );
+    assert_eq!(
+        std::mem::size_of::<MillUndoFullCore>(),
         112,
-        "per-ply undo core must stay cache compact"
+        "full undo core must remain available for non-standard rule states"
     );
     assert_eq!(
         std::mem::size_of::<MillUndoState>(),
-        128,
+        88,
         "per-ply undo state must stay cache compact"
     );
     assert!(
