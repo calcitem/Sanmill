@@ -3888,6 +3888,37 @@ fn generate_legal_ctx_uses_reverse_priority_for_remove() {
 }
 
 #[test]
+fn generate_quiescence_ctx_matches_filtered_remove_order() {
+    let rules = MillRules::default();
+    let game = MillGame::default();
+    let state = MillState {
+        board: [2; 24],
+        side_to_move: 0,
+        phase: MillPhase::Moving,
+        pending_removals: [1, 0],
+        flags: MillStateFlags::from_parts([false, false], true, false, false, false),
+        pieces_on_board: [0, 24],
+        ..MillState::default()
+    };
+    let snap = rules.encode(state);
+    let wb = game.build_workbench(&snap);
+    let ctx = tgf_core::MoveOrderContext {
+        skill_level: 30,
+        shuffling: false,
+        ..Default::default()
+    };
+
+    let mut legal = SearchActionList::new();
+    MillGame::generate_legal_ctx(&wb, &mut legal, &ctx);
+    legal.retain(|action| action.kind_tag == MillActionKind::Remove as i16);
+
+    let mut qsearch = SearchActionList::new();
+    MillGame::generate_quiescence_ctx(&wb, &mut qsearch, &ctx, MillActionKind::Remove as i16);
+
+    assert_eq!(qsearch.as_slice(), legal.as_slice());
+}
+
+#[test]
 fn generate_legal_ctx_uses_legacy_destination_order_for_flying() {
     let rules = MillRules::default();
     let snap = apply_uci_sequence(

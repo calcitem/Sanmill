@@ -395,12 +395,21 @@ Conservative, node-preserving candidates:
   for algorithmic parity.  Record build flags and keep them out of same-run
   source-level A/B measurements unless the experiment is explicitly about
   release configuration.
-- Add a remove-only quiescence generator.  Current Rust qsearch generates the
+- [x] Add a remove-only quiescence generator.  Current Rust qsearch generates the
   complete legal action list and then retains only remove actions.  Legacy
   master asks `MovePicker` for `REMOVE` moves directly.  Add a Mill-specific
   quiescence/remove-only path that emits the same ordered remove actions
   without placing or moving candidates first.  Validate qsearch node parity and
   self-play movelist parity before accepting it.
+
+  Done on 2026-06-19: added `Game::generate_quiescence_ctx` with a conservative
+  default fallback that preserves existing games, then overrode it for
+  `MillGame` to call `generate_remove_actions` directly when qsearch requests
+  `MillActionKind::Remove`.  A Mill test verifies the specialized path emits
+  the same remove actions in the same order as filtering `generate_legal_ctx`.
+  This should preserve node counts while avoiding place/move generation at
+  qsearch nodes.  Revisit if packed search actions or a staged MovePicker are
+  introduced, because those may want a more general kind-specific generator.
 - [x] Avoid full root-history scans when a boolean is enough.  Search repetition
   checks often need to know whether the current key appears at least once in
   the root history, but the current implementation may count every match.

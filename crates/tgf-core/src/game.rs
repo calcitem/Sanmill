@@ -275,6 +275,23 @@ pub trait Game: 'static + Send + Sync {
         Self::generate_legal(wb, out);
     }
 
+    /// Context-aware quiescence move generation.
+    ///
+    /// The default is conservative: enumerate legal actions and retain the
+    /// tactical kind requested by the search policy.  Games with a cheap
+    /// kind-specific generator can override this to avoid building the full
+    /// legal move list first.
+    #[inline]
+    fn generate_quiescence_ctx(
+        wb: &Self::Workbench,
+        out: &mut SearchActionList,
+        ctx: &MoveOrderContext,
+        kind_tag: i16,
+    ) {
+        Self::generate_legal_ctx(wb, out, ctx);
+        out.retain(|action| action.kind_tag == kind_tag);
+    }
+
     /// Optional static move-ordering bonus (e.g. Mill star squares).  Hot path:
     /// keep this `#[inline]` and allocation-free in concrete games.
     #[inline]

@@ -76,8 +76,12 @@ impl<G: Game> Searcher<G> {
         };
 
         let mut moves = SearchActionList::new();
-        G::generate_legal_ctx(wb, &mut moves, &self.options.move_order_context);
-        moves.retain(|a| a.kind_tag == quiescence_kind_tag);
+        G::generate_quiescence_ctx(
+            wb,
+            &mut moves,
+            &self.options.move_order_context,
+            quiescence_kind_tag,
+        );
         if moves.is_empty() {
             return alpha;
         }

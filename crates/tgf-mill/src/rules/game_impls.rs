@@ -4,7 +4,9 @@
 // `MillGame`.  Hosting these here keeps `rules/mod.rs` focused on
 // state / configuration rather than search-side wiring.
 
-use tgf_core::{Action, Evaluator, Game, GameStateSnapshot, SearchActionList, Workbench};
+use tgf_core::{
+    Action, Evaluator, Game, GameStateSnapshot, MoveOrderContext, SearchActionList, Workbench,
+};
 
 use super::evaluation::{
     gameover_value, mills_pieces_count_difference, mobility_diff, remove_move_score,
@@ -13,9 +15,10 @@ use super::evaluation::{
 use super::fen::position_key;
 use super::move_priority::{
     RATING_BLOCK_ONE_MILL, RATING_ONE_MILL, RATING_STAR_SQUARE, is_star_square,
+    move_priority_list_for_search, static_move_priority_for_search,
 };
 use super::potential_mills_count_at;
-use super::types::MillActionKind;
+use super::types::{MillActionKind, MillActionState};
 use super::{
     MILL_SEARCH_STACK_CAPACITY, MILL_TERMINAL_WIN_SCORE, MillEvaluator,
     MillFormationActionInPlacingPhase, MillGame, MillOutcomeReason, MillPhase, MillRules,
@@ -309,9 +312,39 @@ impl Game for MillGame {
     fn generate_legal_ctx(
         wb: &Self::Workbench,
         out: &mut SearchActionList,
-        ctx: &tgf_core::MoveOrderContext,
+        ctx: &MoveOrderContext,
     ) {
         wb.rules.legal_actions_ctx(&wb.state, out, ctx);
+    }
+
+    fn generate_quiescence_ctx(
+        wb: &Self::Workbench,
+        out: &mut SearchActionList,
+        ctx: &MoveOrderContext,
+        kind_tag: i16,
+    ) {
+        if kind_tag != MillActionKind::Remove as i16
+            || wb.state.action_for_legal_generation() != MillActionState::Remove
+            || wb.state.side_to_move < 0
+        {
+            Self::generate_legal_ctx(wb, out, ctx);
+            out.retain(|action| action.kind_tag == kind_tag);
+            return;
+        }
+
+        let side = wb.state.side_to_move as usize;
+        if side >= 2 || wb.state.pending_removals[side] == 0 {
+            return;
+        }
+
+        let priority_storage;
+        let priority = if ctx.shuffling {
+            priority_storage = move_priority_list_for_search(&wb.rules.options, ctx);
+            &priority_storage
+        } else {
+            static_move_priority_for_search(&wb.rules.options, ctx)
+        };
+        wb.rules.generate_remove_actions(&wb.state, out, priority);
     }
 
     /// MovePicker-style move ordering bonus translated from
