@@ -139,7 +139,7 @@ RING1/RING2/RING3 SIDE PHASE ACTION WHITEONBOARD WHITEINHAND BLACKONBOARD BLACKI
 ### Example
 
 ```
-OO******/********/******** w p p 2 7 0 9 0 0 0 0 0 0 0 0 1
+OO******/********/******** w p p 2 7 0 9 0 0 -1 -1 -1 -1 0 0 1 ids:nodes
 ```
 
 **Breakdown**:

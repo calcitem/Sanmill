@@ -20,8 +20,7 @@
 //     star square -- it never wanders to an arbitrary point.
 
 use tgf_core::{
-    Action, Evaluator, Game, GameRules, MoveOrderAlgorithm, MoveOrderContext, SearchActionList,
-    Workbench,
+    Evaluator, Game, GameRules, MoveOrderAlgorithm, MoveOrderContext, SearchActionList, Workbench,
 };
 use tgf_mill::{
     MillActionKind, MillEvaluator, MillGame, MillRules, MillUciCodec, MillVariantOptions,
@@ -32,16 +31,6 @@ use tgf_search::{SearchPolicy, Searcher};
 /// diagonal lines these are the four degree-4 intersections d6/f4/d2/b4; d2
 /// is occupied, leaving d6/f4/b4.
 const STAR_SQUARES: [&str; 3] = ["d6", "f4", "b4"];
-
-fn place(node: i16) -> Action {
-    Action {
-        kind_tag: MillActionKind::Place as i16,
-        from_node: -1,
-        to_node: node,
-        aux: -1,
-        payload_bits: 0,
-    }
-}
 
 /// Build a fresh searcher configured exactly like the FRB Mill dispatch
 /// (`spawn_mill_engine_config_event_stream`): qsearch remove policy + the
@@ -67,8 +56,8 @@ fn ctx_for(shuffling: bool, seed: u64) -> MoveOrderContext {
     }
 }
 
-/// Position after the human (white) opens on d2 = dense node 13.  Black to
-/// move; standard 9MM rules with the default mobility-aware evaluator.
+/// Position after the human (white) opens on d2.  Black to move; standard 9MM
+/// rules with the default mobility-aware evaluator.
 fn position_after_white_d2() -> (MillGame, tgf_core::GameStateSnapshot) {
     let options = MillVariantOptions::default();
     assert!(!options.has_diagonal_lines, "standard rules: no diagonals");
@@ -78,7 +67,9 @@ fn position_after_white_d2() -> (MillGame, tgf_core::GameStateSnapshot) {
     );
     let rules = MillRules::new(options.clone());
     let game = MillGame::new(options);
-    let snap = rules.apply(&rules.initial_state(&[]), place(13));
+    let initial = rules.initial_state(&[]);
+    let d2 = MillUciCodec::decode_action(&initial, "d2").expect("d2 must be a legal opening");
+    let snap = rules.apply(&initial, d2);
     (game, snap)
 }
 

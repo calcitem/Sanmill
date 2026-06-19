@@ -12,13 +12,13 @@ fn parse_position_fen_loads_board() {
     let rules = MillRules::default();
     let state = parse_position_command(
         &rules,
-        "position fen O@******/********/******** w p p 1 8 1 8 0 0 0 0 0 0 0 0 1",
+        "position fen O@******/********/******** w p p 1 8 1 8 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
     )
     .state;
 
-    // FEN position 0/1 are legacy sq 8/9, which map to dense nodes 17/18.
-    assert_eq!(state.opaque_payload[17], 1);
-    assert_eq!(state.opaque_payload[18], 2);
+    // Node-id FEN board positions are already in dense node order.
+    assert_eq!(state.opaque_payload[0], 1);
+    assert_eq!(state.opaque_payload[1], 2);
     assert_eq!(state.side_to_move, 0);
 }
 
@@ -27,11 +27,11 @@ fn parse_position_fen_with_moves_applies_tail_moves() {
     let rules = MillRules::default();
     let state = parse_position_command(
         &rules,
-        "position fen ********/********/******** w p p 0 9 0 9 0 0 0 0 0 0 0 0 1 moves d7",
+        "position fen ********/********/******** w p p 0 9 0 9 0 0 -1 -1 -1 -1 0 0 1 ids:nodes moves d7",
     )
     .state;
 
-    assert_eq!(state.opaque_payload[1], 1); // d7 / node 1
+    assert_eq!(state.opaque_payload[16], 1); // d7 / node 16
     assert_eq!(state.side_to_move, 1);
 }
 

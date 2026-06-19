@@ -55,6 +55,32 @@ fn legal_uci_labels(rules: &MillRules, snap: &GameStateSnapshot) -> Vec<String> 
     labels
 }
 
+fn old_node(node: usize) -> usize {
+    // Test fixtures written before the master-normalized layout used the old
+    // Rust topology order (outer, middle, inner rings, starting at top-left).
+    // Keep the old literals readable while translating them into the current
+    // `node = legacy SQ - 8` engine layout.
+    const OLD_TO_MASTER_NORMALIZED: [usize; 24] = [
+        23, 16, 17, 18, 19, 20, 21, 22, 15, 8, 9, 10, 11, 12, 13, 14, 7, 0, 1, 2, 3, 4, 5, 6,
+    ];
+    assert!(node < 24, "old test node out of range");
+    OLD_TO_MASTER_NORMALIZED[node]
+}
+
+fn old_node_i16(node: i16) -> i16 {
+    assert!((0..24).contains(&node), "old test node out of range");
+    old_node(node as usize) as i16
+}
+
+fn old_node_i8(node: i8) -> i8 {
+    assert!((0..24).contains(&node), "old test node out of range");
+    old_node(node as usize) as i8
+}
+
+fn old_node_bit(node: usize) -> u32 {
+    node_bit(old_node(node))
+}
+
 fn assert_mobility_cache_matches_full_scan(state: &MillState, options: &MillVariantOptions) {
     assert_eq!(
         state.mobility_diff,
@@ -160,7 +186,8 @@ fn mill_line_index_tables_match_full_scan() {
         };
         let lines = mill_lines(&options);
 
-        for node in 0_usize..24 {
+        for (node, standard_peer_masks) in STANDARD_MILL_LINE_PEER_MASKS_BY_NODE.iter().enumerate()
+        {
             let indexed = mill_line_indices_for_node(&options, node)
                 .iter()
                 .take_while(|line_idx| **line_idx != NO_MILL_LINE)
@@ -176,6 +203,17 @@ fn mill_line_index_tables_match_full_scan() {
                 indexed, scanned,
                 "node {node} mismatch with has_diagonal_lines={has_diagonal_lines}"
             );
+            if !has_diagonal_lines {
+                assert_eq!(
+                    indexed.len(),
+                    2,
+                    "standard node {node} must have exactly two mill lines"
+                );
+                assert_eq!(
+                    standard_peer_masks[2], 0,
+                    "standard node {node} must keep its sentinel slot empty"
+                );
+            }
         }
     }
 }
@@ -444,7 +482,7 @@ fn move_order_bias_star_square_matches_movepick_rating() {
     let rules = MillRules::default();
     let game = MillGame::default();
     let mut snap = rules.initial_state(&[]);
-    for n in [0_i16, 1, 2] {
+    for n in [0_i16, 1, 2].map(old_node_i16) {
         snap = rules.apply(
             &snap,
             Action {
@@ -462,8 +500,7 @@ fn move_order_bias_star_square_matches_movepick_rating() {
         kind_tag: MillActionKind::Place as i16,
         from_node: -1,
         // Legacy SQ_16 ("d6") is a C++ star-priority square.
-        // In Rust's dense node numbering it is node 9.
-        to_node: 9,
+        to_node: old_node_i16(9),
         aux: -1,
         payload_bits: 0,
     };
@@ -481,7 +518,7 @@ fn move_order_bias_star_square_matches_movepick_rating() {
     let non_star = Action {
         kind_tag: MillActionKind::Place as i16,
         from_node: -1,
-        to_node: 3,
+        to_node: old_node_i16(3),
         aux: -1,
         payload_bits: 0,
     };
@@ -533,7 +570,7 @@ fn move_order_bias_mcts_enables_star_square_without_diagonals() {
     let rules = MillRules::default();
     let game = MillGame::default();
     let mut snap = rules.initial_state(&[]);
-    for n in [0_i16, 2] {
+    for n in [0_i16, 2].map(old_node_i16) {
         snap = rules.apply(
             &snap,
             Action {
@@ -550,7 +587,7 @@ fn move_order_bias_mcts_enables_star_square_without_diagonals() {
         Action {
             kind_tag: MillActionKind::Place as i16,
             from_node: -1,
-            to_node: 4,
+            to_node: old_node_i16(4),
             aux: -1,
             payload_bits: 0,
         },
@@ -559,7 +596,7 @@ fn move_order_bias_mcts_enables_star_square_without_diagonals() {
     let star_place = Action {
         kind_tag: MillActionKind::Place as i16,
         from_node: -1,
-        to_node: 9,
+        to_node: old_node_i16(9),
         aux: -1,
         payload_bits: 0,
     };
@@ -585,21 +622,21 @@ fn star_square_mapping_matches_legacy_move_priority() {
     //   diagonal: SQ_17, SQ_19, SQ_21, SQ_23
     // converted through `MillTopology::square_to_node`.
     let standard = MillVariantOptions::default();
-    assert!(is_star_square(&standard, 9)); // SQ_16 / d6
-    assert!(is_star_square(&standard, 11)); // SQ_18 / f4
-    assert!(is_star_square(&standard, 13)); // SQ_20 / d2
-    assert!(is_star_square(&standard, 15)); // SQ_22 / b4
-    assert!(!is_star_square(&standard, 16)); // SQ_15 / c5
+    assert!(is_star_square(&standard, old_node(9))); // SQ_16 / d6
+    assert!(is_star_square(&standard, old_node(11))); // SQ_18 / f4
+    assert!(is_star_square(&standard, old_node(13))); // SQ_20 / d2
+    assert!(is_star_square(&standard, old_node(15))); // SQ_22 / b4
+    assert!(!is_star_square(&standard, old_node(16))); // SQ_15 / c5
 
     let diagonal = MillVariantOptions {
         has_diagonal_lines: true,
         ..Default::default()
     };
-    assert!(is_star_square(&diagonal, 10)); // SQ_17 / f6
-    assert!(is_star_square(&diagonal, 12)); // SQ_19 / f2
-    assert!(is_star_square(&diagonal, 14)); // SQ_21 / b2
-    assert!(is_star_square(&diagonal, 8)); // SQ_23 / b6
-    assert!(!is_star_square(&diagonal, 17)); // SQ_8 / d5
+    assert!(is_star_square(&diagonal, old_node(10))); // SQ_17 / f6
+    assert!(is_star_square(&diagonal, old_node(12))); // SQ_19 / f2
+    assert!(is_star_square(&diagonal, old_node(14))); // SQ_21 / b2
+    assert!(is_star_square(&diagonal, old_node(8))); // SQ_23 / b6
+    assert!(!is_star_square(&diagonal, old_node(17))); // SQ_8 / d5
 }
 
 #[test]
@@ -613,10 +650,10 @@ fn move_order_bias_prefers_completing_own_mill_and_blocking_opponent() {
     // Black already owns 4 and 6: placing on 5 instead would only block
     // black's mill, which scores `RATING_BLOCK_ONE_MILL` (=10).
     let mut board = [0_i8; 24];
-    board[0] = 1;
-    board[2] = 1;
-    board[4] = 2;
-    board[6] = 2;
+    board[old_node(0)] = 1;
+    board[old_node(2)] = 1;
+    board[old_node(4)] = 2;
+    board[old_node(6)] = 2;
     let state = MillState {
         board,
         side_to_move: 0,
@@ -630,14 +667,14 @@ fn move_order_bias_prefers_completing_own_mill_and_blocking_opponent() {
     let close_own_mill = Action {
         kind_tag: MillActionKind::Place as i16,
         from_node: -1,
-        to_node: 1,
+        to_node: old_node_i16(1),
         aux: -1,
         payload_bits: 0,
     };
     let block_opponent_mill = Action {
         kind_tag: MillActionKind::Place as i16,
         from_node: -1,
-        to_node: 5,
+        to_node: old_node_i16(5),
         aux: -1,
         payload_bits: 0,
     };
@@ -664,10 +701,10 @@ fn move_order_bias_scores_moving_phase_blocking_opponent() {
     // a4, so a7 blocks the a7-d7-g7 mill and has the legacy odd-square
     // neighbour parity required by master MovePicker.
     for node in [3_usize, 4, 5] {
-        board[node] = 1;
+        board[old_node(node)] = 1;
     }
     for node in [1_usize, 2, 7] {
-        board[node] = 2;
+        board[old_node(node)] = 2;
     }
     let state = MillState {
         board,
@@ -679,7 +716,7 @@ fn move_order_bias_scores_moving_phase_blocking_opponent() {
     };
     let snap = rules.encode(state);
     let wb = game.build_workbench(&snap);
-    let block_opponent_mill = move_action(3, 0);
+    let block_opponent_mill = move_action(old_node(3), old_node(0));
 
     let mut legal = ActionList::<256>::new();
     rules.legal_actions(&snap, &mut legal);
@@ -702,10 +739,10 @@ fn move_order_bias_remove_prefers_high_mobility_targets() {
     // (17 and 23 are also black) so empty_count = 0 and the
     // RATING_BLOCK_ONE_MILL-block heuristic does not fire.
     let mut board = [0_i8; 24];
-    board[1] = 2;
-    board[16] = 2;
-    board[17] = 2;
-    board[23] = 2;
+    board[old_node(1)] = 2;
+    board[old_node(16)] = 2;
+    board[old_node(17)] = 2;
+    board[old_node(23)] = 2;
     let state = MillState {
         board,
         side_to_move: 0,
@@ -721,14 +758,14 @@ fn move_order_bias_remove_prefers_high_mobility_targets() {
     let mobile_target = Action {
         kind_tag: MillActionKind::Remove as i16,
         from_node: -1,
-        to_node: 1,
+        to_node: old_node_i16(1),
         aux: -1,
         payload_bits: 0,
     };
     let surrounded_target = Action {
         kind_tag: MillActionKind::Remove as i16,
         from_node: -1,
-        to_node: 16,
+        to_node: old_node_i16(16),
         aux: -1,
         payload_bits: 0,
     };
@@ -754,7 +791,7 @@ fn mill_formation_generates_remove_actions_and_keeps_turn() {
     // Equivalent to the C++ golden scenario:
     // W: d7(1), B: a1(6), W: g7(2), B: d1(5), W: a7(0)
     // White completes a7-d7-g7 and must remove one black piece.
-    for node in [1, 6, 2, 5, 0] {
+    for node in [1_i16, 6, 2, 5, 0].map(old_node_i16) {
         snap = rules.apply(
             &snap,
             Action {
@@ -779,21 +816,21 @@ fn mill_formation_generates_remove_actions_and_keeps_turn() {
             .iter()
             .all(|a| a.kind_tag == MillActionKind::Remove as i16)
     );
-    assert!(actions.iter().any(|a| a.to_node == 6)); // a1
-    assert!(actions.iter().any(|a| a.to_node == 5)); // d1
+    assert!(actions.iter().any(|a| a.to_node == old_node_i16(6))); // a1
+    assert!(actions.iter().any(|a| a.to_node == old_node_i16(5))); // d1
 
     let after_remove = rules.apply(
         &snap,
         Action {
             kind_tag: MillActionKind::Remove as i16,
             from_node: -1,
-            to_node: 6,
+            to_node: old_node_i16(6),
             aux: -1,
             payload_bits: 0,
         },
     );
     let state = MillRules::decode(&after_remove);
-    assert_eq!(state.board[6], 0);
+    assert_eq!(state.board[old_node(6)], 0);
     assert_eq!(state.side_to_move, 1, "Turn passes to black after removal");
     assert_eq!(state.pending_removals[0], 0);
     assert_eq!(state.pieces_on_board[1], 1);
@@ -811,7 +848,7 @@ fn placing_mill_f2_f4_f6_generates_remove_actions_for_black() {
     // legal_actions must include remove actions for every Black piece.
     let rules = MillRules::default();
     let mut snap = rules.initial_state(&[]);
-    for node in [13_i16, 9, 11, 15, 12, 3, 10] {
+    for node in [13_i16, 9, 11, 15, 12, 3, 10].map(old_node_i16) {
         snap = rules.apply(
             &snap,
             Action {
@@ -848,16 +885,16 @@ fn placing_mill_f2_f4_f6_generates_remove_actions_for_black() {
         "All actions must be Remove"
     );
     assert!(
-        actions.iter().any(|a| a.to_node == 9),
-        "xd6 (node 9) must be a legal remove target"
+        actions.iter().any(|a| a.to_node == old_node_i16(9)),
+        "xd6 (old node 9) must be a legal remove target"
     );
     assert!(
-        actions.iter().any(|a| a.to_node == 15),
-        "xb4 (node 15) must be a legal remove target"
+        actions.iter().any(|a| a.to_node == old_node_i16(15)),
+        "xb4 (old node 15) must be a legal remove target"
     );
     assert!(
-        actions.iter().any(|a| a.to_node == 3),
-        "xg4 (node 3) must be a legal remove target"
+        actions.iter().any(|a| a.to_node == old_node_i16(3)),
+        "xg4 (old node 3) must be a legal remove target"
     );
 }
 
@@ -869,7 +906,7 @@ fn placing_mill_fixture_for_action(
         ..MillVariantOptions::default()
     });
     let mut snap = rules.initial_state(&[]);
-    for node in [1, 6, 2, 5, 0] {
+    for node in [1_i16, 6, 2, 5, 0].map(old_node_i16) {
         snap = rules.apply(
             &snap,
             Action {
@@ -918,12 +955,12 @@ fn from_hand_removal_emptying_opponent_hand_starts_their_moving_turn() {
         winner: -1,
         ..MillState::default()
     };
-    // White completes the [0, 1, 2] line by placing at 2; black owns
-    // 16..=18 on the outer ring.
-    state.board[0] = 1;
-    state.board[1] = 1;
+    // White completes the old [0, 1, 2] line by placing at old node 2;
+    // black owns old 16..=18 on the inner ring.
+    state.board[old_node(0)] = 1;
+    state.board[old_node(1)] = 1;
     for node in 16_usize..=18 {
-        state.board[node] = 2;
+        state.board[old_node(node)] = 2;
     }
 
     let snap = rules.apply(
@@ -931,7 +968,7 @@ fn from_hand_removal_emptying_opponent_hand_starts_their_moving_turn() {
         Action {
             kind_tag: MillActionKind::Place as i16,
             from_node: -1,
-            to_node: 2,
+            to_node: old_node_i16(2),
             aux: -1,
             payload_bits: 0,
         },
@@ -961,14 +998,14 @@ fn from_hand_removal_emptying_opponent_hand_starts_their_moving_turn() {
             .all(|a| a.kind_tag == MillActionKind::Move as i16)
     );
 
-    // Black answers 16 -> 23 (no mill); the turn returns to White who
+    // Black answers old 16 -> old 23 (no mill); the turn returns to White who
     // still holds one piece in hand, so the phase flips back to placing.
     let snap = rules.apply(
         &snap,
         Action {
             kind_tag: MillActionKind::Move as i16,
-            from_node: 16,
-            to_node: 23,
+            from_node: old_node_i16(16),
+            to_node: old_node_i16(23),
             aux: -1,
             payload_bits: 0,
         },
@@ -1013,9 +1050,9 @@ fn mill_action_opponent_removes_own_piece() {
             .iter()
             .all(|a| a.kind_tag == MillActionKind::Remove as i16)
     );
-    assert!(actions.iter().any(|a| a.to_node == 0));
-    assert!(actions.iter().any(|a| a.to_node == 1));
-    assert!(actions.iter().any(|a| a.to_node == 2));
+    assert!(actions.iter().any(|a| a.to_node == old_node_i16(0)));
+    assert!(actions.iter().any(|a| a.to_node == old_node_i16(1)));
+    assert!(actions.iter().any(|a| a.to_node == old_node_i16(2)));
 }
 
 #[test]
@@ -1042,12 +1079,12 @@ fn mill_action_removal_based_on_mill_counts_assigns_at_placing_end() {
         board: {
             let mut board = [0_i8; 24];
             // White has one mill a7-d7-g7; black has no mills.
-            board[0] = 1;
-            board[1] = 1;
-            board[2] = 1;
-            board[6] = 2;
-            board[11] = 2;
-            board[14] = 2;
+            board[old_node(0)] = 1;
+            board[old_node(1)] = 1;
+            board[old_node(2)] = 1;
+            board[old_node(6)] = 2;
+            board[old_node(11)] = 2;
+            board[old_node(14)] = 2;
             board
         },
         side_to_move: 0,
@@ -1060,13 +1097,13 @@ fn mill_action_removal_based_on_mill_counts_assigns_at_placing_end() {
         ..MillState::default()
     };
     // Add a harmless final white piece that does not create another mill.
-    state.board[8] = 0;
+    state.board[old_node(8)] = 0;
     let after = rules.apply(
         &rules.encode(state),
         Action {
             kind_tag: MillActionKind::Place as i16,
             from_node: -1,
-            to_node: 8,
+            to_node: old_node_i16(8),
             aux: -1,
             payload_bits: 0,
         },
@@ -1237,10 +1274,10 @@ fn remove_own_piece_respects_mill_protection() {
         board: {
             let mut board = [0_i8; 24];
             for node in [0_usize, 1, 2, 6] {
-                board[node] = 1;
+                board[old_node(node)] = 1;
             }
             for node in [8_usize, 11, 14] {
-                board[node] = 2;
+                board[old_node(node)] = 2;
             }
             board
         },
@@ -1261,7 +1298,7 @@ fn remove_own_piece_respects_mill_protection() {
     assert_eq!(actions.len(), 1);
     assert_eq!(
         actions.iter().next().unwrap().to_node,
-        6,
+        old_node_i16(6),
         "own pieces in a mill stay protected while a non-mill target exists"
     );
 }
@@ -1475,12 +1512,12 @@ fn moving_phase_mill_generates_remove_obligation() {
         // terminal.
         board: {
             let mut board = [0_i8; 24];
-            board[1] = 1; // W d7
-            board[2] = 1; // W g7
-            board[3] = 1; // W g4 (moving piece)
-            board[6] = 2; // B a1
-            board[5] = 2; // B d1
-            board[10] = 2; // B f6
+            board[old_node(1)] = 1; // W d7
+            board[old_node(2)] = 1; // W g7
+            board[old_node(3)] = 1; // W g4 (moving piece)
+            board[old_node(6)] = 2; // B a1
+            board[old_node(5)] = 2; // B d1
+            board[old_node(10)] = 2; // B f6
             board
         },
         side_to_move: 0,
@@ -1497,8 +1534,8 @@ fn moving_phase_mill_generates_remove_obligation() {
         &snap,
         Action {
             kind_tag: MillActionKind::Move as i16,
-            from_node: 3,
-            to_node: 0,
+            from_node: old_node_i16(3),
+            to_node: old_node_i16(0),
             aux: -1,
             payload_bits: 0,
         },
@@ -1777,11 +1814,11 @@ fn may_remove_from_mills_always_relaxes_target_filter() {
         ..MillState::default()
     };
     state.board[0] = 1; // W a7
-    state.board[1] = 1; // W d7
-    state.board[2] = 1; // W g7 — completes outer top mill
-    state.board[6] = 2; // B a1
-    state.board[5] = 2; // B d1
-    state.board[4] = 2; // B g1 — black mill a1-d1-g1
+    state.board[old_node(1)] = 1; // W d7
+    state.board[old_node(2)] = 1; // W g7 — completes outer top mill
+    state.board[old_node(6)] = 2; // B a1
+    state.board[old_node(5)] = 2; // B d1
+    state.board[old_node(4)] = 2; // B g1 — black mill a1-d1-g1
     let snap = rules.encode(state);
 
     let mut actions = ActionList::<256>::new();
@@ -1818,21 +1855,21 @@ fn may_remove_multiple_pending_removals_match_simultaneous_mills() {
         winner: -1,
         ..MillState::default()
     };
-    state.board[0] = 1; // a7
-    state.board[2] = 1; // g7
-    state.board[9] = 1; // d6
-    state.board[17] = 1; // d5
-    state.board[6] = 2;
-    state.board[5] = 2;
-    state.board[4] = 2;
-    state.board[15] = 2;
+    state.board[old_node(0)] = 1; // a7
+    state.board[old_node(2)] = 1; // g7
+    state.board[old_node(9)] = 1; // d6
+    state.board[old_node(17)] = 1; // d5
+    state.board[old_node(6)] = 2;
+    state.board[old_node(5)] = 2;
+    state.board[old_node(4)] = 2;
+    state.board[old_node(15)] = 2;
     let snap = rules.encode(state);
     let after = rules.apply(
         &snap,
         Action {
             kind_tag: MillActionKind::Place as i16,
             from_node: -1,
-            to_node: 1, // d7 hub
+            to_node: old_node_i16(1), // d7 hub
             aux: -1,
             payload_bits: 0,
         },
@@ -2064,7 +2101,7 @@ fn may_move_in_placing_phase_adds_move_actions() {
     let state = MillState {
         board: {
             let mut board = [0_i8; 24];
-            board[0] = 1;
+            board[old_node(0)] = 1;
             board
         },
         side_to_move: 0,
@@ -2197,15 +2234,15 @@ fn restrict_repeated_mills_is_per_side() {
     let state = MillState {
         board: {
             let mut board = [0_i8; 24];
-            board[0] = 2; // black piece at node 0
+            board[old_node(0)] = 2; // black piece at old node 0
             board
         },
         side_to_move: 1,
         phase: MillPhase::Moving,
         pieces_in_hand: [0, 0],
         pieces_on_board: [0, 1],
-        last_mill_from: [9, -1],
-        last_mill_to: [8, -1],
+        last_mill_from: [old_node_i8(9), -1],
+        last_mill_to: [old_node_i8(8), -1],
         ..MillState::default()
     };
     let mut actions = ActionList::<256>::new();
@@ -2225,14 +2262,14 @@ fn restrict_repeated_mills_filters_reverse_reform_move() {
     let state = MillState {
         board: {
             let mut board = [0_i8; 24];
-            board[8] = 1;
-            board[1] = 1;
-            board[17] = 1;
-            board[14] = 1;
-            board[15] = 1;
-            board[6] = 2;
-            board[5] = 2;
-            board[10] = 2;
+            board[old_node(8)] = 1;
+            board[old_node(1)] = 1;
+            board[old_node(17)] = 1;
+            board[old_node(14)] = 1;
+            board[old_node(15)] = 1;
+            board[old_node(6)] = 2;
+            board[old_node(5)] = 2;
+            board[old_node(10)] = 2;
             board
         },
         side_to_move: 0,
@@ -2242,18 +2279,22 @@ fn restrict_repeated_mills_filters_reverse_reform_move() {
         pieces_on_board: [5, 3],
         pending_removals: [0, 0],
         winner: -1,
-        last_mill_from: [9, -1],
-        last_mill_to: [8, -1],
+        last_mill_from: [old_node_i8(9), -1],
+        last_mill_to: [old_node_i8(8), -1],
         ..MillState::default()
     };
     let mut actions = ActionList::<256>::new();
     rules.legal_actions(&rules.encode(state), &mut actions);
-    assert!(!actions.iter().any(|a| a.from_node == 8 && a.to_node == 9));
+    assert!(
+        !actions
+            .iter()
+            .any(|a| a.from_node == old_node_i16(8) && a.to_node == old_node_i16(9))
+    );
 }
 
 #[test]
 fn one_time_use_mill_allows_used_reverse_reform_move() {
-    let used_line = node_bit(1) | node_bit(9) | node_bit(17);
+    let used_line = old_node_bit(1) | old_node_bit(9) | old_node_bit(17);
     let options = MillVariantOptions {
         restrict_repeated_mills_formation: true,
         one_time_use_mill: true,
@@ -2263,14 +2304,14 @@ fn one_time_use_mill_allows_used_reverse_reform_move() {
     let state = MillState {
         board: {
             let mut board = [0_i8; 24];
-            board[8] = 1;
-            board[1] = 1;
-            board[17] = 1;
-            board[14] = 1;
-            board[15] = 1;
-            board[6] = 2;
-            board[5] = 2;
-            board[10] = 2;
+            board[old_node(8)] = 1;
+            board[old_node(1)] = 1;
+            board[old_node(17)] = 1;
+            board[old_node(14)] = 1;
+            board[old_node(15)] = 1;
+            board[old_node(6)] = 2;
+            board[old_node(5)] = 2;
+            board[old_node(10)] = 2;
             board
         },
         side_to_move: 0,
@@ -2280,15 +2321,17 @@ fn one_time_use_mill_allows_used_reverse_reform_move() {
         pieces_on_board: [5, 3],
         pending_removals: [0, 0],
         winner: -1,
-        last_mill_from: [9, -1],
-        last_mill_to: [8, -1],
+        last_mill_from: [old_node_i8(9), -1],
+        last_mill_to: [old_node_i8(8), -1],
         formed_mills_bb: [used_line, 0],
         ..MillState::default()
     };
     let mut actions = ActionList::<256>::new();
     rules.legal_actions(&rules.encode(state), &mut actions);
     assert!(
-        actions.iter().any(|a| a.from_node == 8 && a.to_node == 9),
+        actions
+            .iter()
+            .any(|a| a.from_node == old_node_i16(8) && a.to_node == old_node_i16(9)),
         "oneTimeUseMill-used lines are ignored by repeated-mill restriction"
     );
 }
@@ -2305,14 +2348,14 @@ fn one_time_use_mill_suppresses_second_capture() {
     // usable_mill_bits now consults formed_mills_bb per side rather
     // than the global used_mill_lines, so the test setup populates
     // the right state.
-    let formed_top_line = node_bit(0) | node_bit(1) | node_bit(2);
+    let formed_top_line = old_node_bit(0) | old_node_bit(1) | old_node_bit(2);
     let state = MillState {
         board: {
             let mut board = [0_i8; 24];
-            board[1] = 1;
-            board[2] = 1;
-            board[6] = 2;
-            board[5] = 2;
+            board[old_node(1)] = 1;
+            board[old_node(2)] = 1;
+            board[old_node(6)] = 2;
+            board[old_node(5)] = 2;
             board
         },
         side_to_move: 0,
@@ -2331,7 +2374,7 @@ fn one_time_use_mill_suppresses_second_capture() {
         Action {
             kind_tag: MillActionKind::Place as i16,
             from_node: -1,
-            to_node: 0,
+            to_node: old_node_i16(0),
             aux: -1,
             payload_bits: 0,
         },
@@ -2350,12 +2393,12 @@ fn stop_placing_when_two_empty_squares_enters_moving_phase() {
     };
     let rules = MillRules::new(options);
     let mut board = [2_i8; 24];
-    board[21] = 0;
-    board[22] = 0;
-    board[23] = 0;
-    board[20] = 2;
-    board[13] = 2;
-    board[5] = 2;
+    board[old_node(21)] = 0;
+    board[old_node(22)] = 0;
+    board[old_node(23)] = 0;
+    board[old_node(20)] = 2;
+    board[old_node(13)] = 2;
+    board[old_node(5)] = 2;
     let state = MillState {
         board,
         side_to_move: 0,
@@ -2372,7 +2415,7 @@ fn stop_placing_when_two_empty_squares_enters_moving_phase() {
         Action {
             kind_tag: MillActionKind::Place as i16,
             from_node: -1,
-            to_node: 21,
+            to_node: old_node_i16(21),
             aux: -1,
             payload_bits: 0,
         },
@@ -2395,11 +2438,11 @@ fn stop_placing_two_empty_does_not_preempt_mill_removal() {
     let mut board = [2_i8; 24];
     // White forms a mill on [20, 21, 22] by placing at 22 while the
     // board has exactly three empty squares before the move.
-    board[20] = 1;
-    board[21] = 1;
-    board[22] = 0;
-    board[23] = 0;
-    board[0] = 0;
+    board[old_node(20)] = 1;
+    board[old_node(21)] = 1;
+    board[old_node(22)] = 0;
+    board[old_node(23)] = 0;
+    board[old_node(0)] = 0;
     let state = MillState {
         board,
         side_to_move: 0,
@@ -2417,7 +2460,7 @@ fn stop_placing_two_empty_does_not_preempt_mill_removal() {
         Action {
             kind_tag: MillActionKind::Place as i16,
             from_node: -1,
-            to_node: 22,
+            to_node: old_node_i16(22),
             aux: -1,
             payload_bits: 0,
         },
@@ -2449,12 +2492,12 @@ fn stop_placing_when_two_empty_squares_is_twelve_men_only() {
     };
     let rules = MillRules::new(options);
     let mut board = [2_i8; 24];
-    board[21] = 0;
-    board[22] = 0;
-    board[23] = 0;
-    board[20] = 2;
-    board[13] = 2;
-    board[5] = 2;
+    board[old_node(21)] = 0;
+    board[old_node(22)] = 0;
+    board[old_node(23)] = 0;
+    board[old_node(20)] = 2;
+    board[old_node(13)] = 2;
+    board[old_node(5)] = 2;
     // Keep both hands non-empty so the per-side phase sync (mirror of
     // C++ set_side_to_move) stays in Placing for the next mover; the
     // discriminating observable for the 12-piece-only shortcut is that
@@ -2476,7 +2519,7 @@ fn stop_placing_when_two_empty_squares_is_twelve_men_only() {
         Action {
             kind_tag: MillActionKind::Place as i16,
             from_node: -1,
-            to_node: 21,
+            to_node: old_node_i16(21),
             aux: -1,
             payload_bits: 0,
         },
@@ -2503,11 +2546,11 @@ fn agree_to_draw_on_full_board_returns_draw_outcome() {
     };
     let rules = MillRules::new(options);
     let mut board = [2_i8; 24];
-    board[21] = 0;
-    board[20] = 2;
-    board[22] = 2;
-    board[13] = 2;
-    board[5] = 2;
+    board[old_node(21)] = 0;
+    board[old_node(20)] = 2;
+    board[old_node(22)] = 2;
+    board[old_node(13)] = 2;
+    board[old_node(5)] = 2;
     let state = MillState {
         board,
         side_to_move: 0,
@@ -2524,7 +2567,7 @@ fn agree_to_draw_on_full_board_returns_draw_outcome() {
         Action {
             kind_tag: MillActionKind::Place as i16,
             from_node: -1,
-            to_node: 21,
+            to_node: old_node_i16(21),
             aux: -1,
             payload_bits: 0,
         },
@@ -2535,9 +2578,9 @@ fn agree_to_draw_on_full_board_returns_draw_outcome() {
 fn board_full_one_empty_state() -> MillState {
     let mut board = [2_i8; 24];
     for node in [1_usize, 3, 5, 7, 9, 11, 14, 15, 17, 19, 20] {
-        board[node] = 1;
+        board[old_node(node)] = 1;
     }
-    board[21] = 0;
+    board[old_node(21)] = 0;
     MillState {
         board,
         side_to_move: 0,
@@ -2557,7 +2600,7 @@ fn fill_last_square(rules: &MillRules, state: MillState) -> GameStateSnapshot {
         Action {
             kind_tag: MillActionKind::Place as i16,
             from_node: -1,
-            to_node: 21,
+            to_node: old_node_i16(21),
             aux: -1,
             payload_bits: 0,
         },
@@ -2620,7 +2663,7 @@ fn board_full_first_and_second_remove_in_order() {
         Action {
             kind_tag: MillActionKind::Remove as i16,
             from_node: -1,
-            to_node: 0,
+            to_node: old_node_i16(0),
             aux: -1,
             payload_bits: 0,
         },
@@ -2648,7 +2691,7 @@ fn board_full_second_and_first_remove_in_order() {
         Action {
             kind_tag: MillActionKind::Remove as i16,
             from_node: -1,
-            to_node: 21,
+            to_node: old_node_i16(21),
             aux: -1,
             payload_bits: 0,
         },
@@ -2998,8 +3041,8 @@ fn custodian_capture_places_single_remove_obligation() {
     let state = MillState {
         board: {
             let mut board = [0_i8; 24];
-            board[1] = 2; // B d7 trapped between W a7 and W g7
-            board[2] = 1; // W g7
+            board[old_node(1)] = 2; // B d7 trapped between W a7 and W g7.
+            board[old_node(2)] = 1; // W g7.
             board
         },
         side_to_move: 0,
@@ -3014,20 +3057,20 @@ fn custodian_capture_places_single_remove_obligation() {
         Action {
             kind_tag: MillActionKind::Place as i16,
             from_node: -1,
-            to_node: 0, // W a7
+            to_node: old_node_i16(0), // W a7.
             aux: -1,
             payload_bits: 0,
         },
     );
     let state = MillRules::decode(&after);
     assert_eq!(state.pending_removals[0], 1);
-    assert_eq!(state.custodian_targets[0], node_bit(1));
+    assert_eq!(state.custodian_targets[0], old_node_bit(1));
     assert!(!state.mill_available_at_removal());
     let mut actions = ActionList::<256>::new();
     rules.legal_actions(&after, &mut actions);
     assert_eq!(
         actions.iter().map(|a| a.to_node).collect::<Vec<_>>(),
-        vec![1]
+        vec![old_node_i16(1)]
     );
 }
 
@@ -3046,23 +3089,23 @@ fn placing_end_custodian_capture_resolves_before_phase_transition() {
     let state = MillState {
         board: {
             let mut board = [0_i8; 24];
-            board[1] = 2; // B d7 will be trapped between W a7 and W g7.
-            board[2] = 1; // W g7
-            board[3] = 1;
-            board[4] = 2;
-            board[5] = 2;
-            board[6] = 1;
-            board[8] = 1;
-            board[9] = 1;
-            board[10] = 2;
-            board[11] = 1;
-            board[12] = 1;
-            board[13] = 2;
-            board[14] = 2;
-            board[15] = 2;
-            board[16] = 2;
-            board[17] = 2;
-            board[19] = 2;
+            board[old_node(1)] = 2; // B d7 will be trapped between W a7 and W g7.
+            board[old_node(2)] = 1; // W g7.
+            board[old_node(3)] = 1;
+            board[old_node(4)] = 2;
+            board[old_node(5)] = 2;
+            board[old_node(6)] = 1;
+            board[old_node(8)] = 1;
+            board[old_node(9)] = 1;
+            board[old_node(10)] = 2;
+            board[old_node(11)] = 1;
+            board[old_node(12)] = 1;
+            board[old_node(13)] = 2;
+            board[old_node(14)] = 2;
+            board[old_node(15)] = 2;
+            board[old_node(16)] = 2;
+            board[old_node(17)] = 2;
+            board[old_node(19)] = 2;
             board
         },
         side_to_move: 0,
@@ -3078,7 +3121,7 @@ fn placing_end_custodian_capture_resolves_before_phase_transition() {
         Action {
             kind_tag: MillActionKind::Place as i16,
             from_node: -1,
-            to_node: 0, // Final W a7 placement triggers custodian capture.
+            to_node: old_node_i16(0), // Final W a7 placement triggers custodian capture.
             aux: -1,
             payload_bits: 0,
         },
@@ -3089,7 +3132,7 @@ fn placing_end_custodian_capture_resolves_before_phase_transition() {
     assert_eq!(state.side_to_move, 0, "capturing side must remove first");
     assert_eq!(state.pieces_in_hand, [0, 0]);
     assert_eq!(state.pending_removals[0], 1);
-    assert_eq!(state.custodian_targets[0], node_bit(1));
+    assert_eq!(state.custodian_targets[0], old_node_bit(1));
     assert!(!state.mill_available_at_removal());
 
     let mut actions = ActionList::<256>::new();
@@ -3097,12 +3140,16 @@ fn placing_end_custodian_capture_resolves_before_phase_transition() {
     assert_eq!(actions.len(), 1);
     let remove = actions.iter().next().copied().unwrap();
     assert_eq!(remove.kind_tag, MillActionKind::Remove as i16);
-    assert_eq!(remove.to_node, 1);
+    assert_eq!(remove.to_node, old_node_i16(1));
 
     let after_remove = rules.apply(&after_place, remove);
     let state = MillRules::decode(&after_remove);
     assert_eq!(state.phase, MillPhase::Moving);
-    assert_eq!(state.board[1], 0, "custodian target must be removed first");
+    assert_eq!(
+        state.board[old_node(1)],
+        0,
+        "custodian target must be removed first"
+    );
     assert_eq!(
         state.pending_removals,
         [1, 1],
@@ -3125,8 +3172,8 @@ fn intervention_capture_uses_one_line_of_two_targets() {
     let state = MillState {
         board: {
             let mut board = [0_i8; 24];
-            board[0] = 2; // B a7
-            board[2] = 2; // B g7
+            board[old_node(0)] = 2; // B a7.
+            board[old_node(2)] = 2; // B g7.
             board
         },
         side_to_move: 0,
@@ -3141,19 +3188,22 @@ fn intervention_capture_uses_one_line_of_two_targets() {
         Action {
             kind_tag: MillActionKind::Place as i16,
             from_node: -1,
-            to_node: 1, // W intervenes at d7
+            to_node: old_node_i16(1), // W intervenes at d7.
             aux: -1,
             payload_bits: 0,
         },
     );
     let state = MillRules::decode(&after);
     assert_eq!(state.pending_removals[0], 2);
-    assert_eq!(state.intervention_targets[0], node_bit(0) | node_bit(2));
+    assert_eq!(
+        state.intervention_targets[0],
+        old_node_bit(0) | old_node_bit(2)
+    );
     let mut actions = ActionList::<256>::new();
     rules.legal_actions(&after, &mut actions);
     assert_eq!(actions.len(), 2);
-    assert!(actions.iter().any(|a| a.to_node == 0));
-    assert!(actions.iter().any(|a| a.to_node == 2));
+    assert!(actions.iter().any(|a| a.to_node == old_node_i16(0)));
+    assert!(actions.iter().any(|a| a.to_node == old_node_i16(2)));
 }
 
 #[test]
@@ -3174,9 +3224,9 @@ fn intervention_capture_does_not_fallback_after_filtering_selected_line() {
             // raw line [1,9,17] has removable targets, but master does
             // not fall back to it.
             for node in [0_usize, 2, 3, 4, 6, 7, 8, 9, 10, 17] {
-                board[node] = 2;
+                board[old_node(node)] = 2;
             }
-            board[5] = 1;
+            board[old_node(5)] = 1;
             board
         },
         side_to_move: 0,
@@ -3184,7 +3234,7 @@ fn intervention_capture_does_not_fallback_after_filtering_selected_line() {
         move_number: 8,
         pieces_in_hand: [8, 0],
         pieces_on_board: [1, 10],
-        preferred_remove_target: 0,
+        preferred_remove_target: old_node_i8(0),
         ..MillState::default()
     };
 
@@ -3193,15 +3243,15 @@ fn intervention_capture_does_not_fallback_after_filtering_selected_line() {
         Action {
             kind_tag: MillActionKind::Place as i16,
             from_node: -1,
-            to_node: 1,
+            to_node: old_node_i16(1),
             aux: -1,
             payload_bits: 0,
         },
     );
     let state = MillRules::decode(&after);
 
-    assert!(is_piece_in_mill(&state, &rules.options, 0));
-    assert!(is_piece_in_mill(&state, &rules.options, 2));
+    assert!(is_piece_in_mill(&state, &rules.options, old_node(0)));
+    assert!(is_piece_in_mill(&state, &rules.options, old_node(2)));
     assert!(!is_all_in_mills(&state, &rules.options, 2));
     assert_eq!(state.intervention_targets[0], 0);
     assert_eq!(state.intervention_count[0], 0);
@@ -3224,12 +3274,12 @@ fn leap_capture_takes_precedence_over_mill() {
     let state = MillState {
         board: {
             let mut board = [0_i8; 24];
-            board[0] = 1; // W a7 jumps to g7
-            board[1] = 2; // B d7 jumped
-            board[3] = 1; // W g4
-            board[4] = 1; // W g1, so landing at g7 also forms a mill
-            board[6] = 2;
-            board[5] = 2;
+            board[old_node(0)] = 1; // W a7 jumps to g7.
+            board[old_node(1)] = 2; // B d7 jumped.
+            board[old_node(3)] = 1; // W g4.
+            board[old_node(4)] = 1; // W g1, so landing at g7 also forms a mill.
+            board[old_node(6)] = 2;
+            board[old_node(5)] = 2;
             board
         },
         side_to_move: 0,
@@ -3243,15 +3293,15 @@ fn leap_capture_takes_precedence_over_mill() {
         &rules.encode(state),
         Action {
             kind_tag: MillActionKind::Move as i16,
-            from_node: 0,
-            to_node: 2,
+            from_node: old_node_i16(0),
+            to_node: old_node_i16(2),
             aux: -1,
             payload_bits: 0,
         },
     );
     let state = MillRules::decode(&after);
     assert_eq!(state.pending_removals[0], 1);
-    assert_eq!(state.leap_targets[0], node_bit(1));
+    assert_eq!(state.leap_targets[0], old_node_bit(1));
     assert!(!state.mill_available_at_removal());
 }
 
@@ -3269,11 +3319,11 @@ fn mill_plus_custodian_accumulates_only_when_may_remove_multiple() {
     let state = MillState {
         board: {
             let mut board = [0_i8; 24];
-            board[7] = 1; // W a4
-            board[6] = 1; // W a1 -> placing at a7 forms left mill
-            board[1] = 2; // B d7 trapped by W a7 / W g7
-            board[2] = 1; // W g7
-            board[5] = 2;
+            board[old_node(7)] = 1; // W a4.
+            board[old_node(6)] = 1; // W a1 -> placing at a7 forms left mill.
+            board[old_node(1)] = 2; // B d7 trapped by W a7 / W g7.
+            board[old_node(2)] = 1; // W g7.
+            board[old_node(5)] = 2;
             board
         },
         side_to_move: 0,
@@ -3288,7 +3338,7 @@ fn mill_plus_custodian_accumulates_only_when_may_remove_multiple() {
         Action {
             kind_tag: MillActionKind::Place as i16,
             from_node: -1,
-            to_node: 0,
+            to_node: old_node_i16(0),
             aux: -1,
             payload_bits: 0,
         },
@@ -3296,7 +3346,7 @@ fn mill_plus_custodian_accumulates_only_when_may_remove_multiple() {
     let state = MillRules::decode(&after);
     assert_eq!(state.pending_removals[0], 2);
     assert!(state.mill_available_at_removal());
-    assert_eq!(state.custodian_targets[0], node_bit(1));
+    assert_eq!(state.custodian_targets[0], old_node_bit(1));
 }
 
 #[test]
@@ -3312,11 +3362,11 @@ fn mill_plus_custodian_does_not_accumulate_without_may_remove_multiple() {
     let state = MillState {
         board: {
             let mut board = [0_i8; 24];
-            board[7] = 1;
-            board[6] = 1;
-            board[1] = 2;
-            board[2] = 1;
-            board[5] = 2;
+            board[old_node(7)] = 1;
+            board[old_node(6)] = 1;
+            board[old_node(1)] = 2;
+            board[old_node(2)] = 1;
+            board[old_node(5)] = 2;
             board
         },
         side_to_move: 0,
@@ -3331,7 +3381,7 @@ fn mill_plus_custodian_does_not_accumulate_without_may_remove_multiple() {
         Action {
             kind_tag: MillActionKind::Place as i16,
             from_node: -1,
-            to_node: 0,
+            to_node: old_node_i16(0),
             aux: -1,
             payload_bits: 0,
         },
@@ -3339,7 +3389,7 @@ fn mill_plus_custodian_does_not_accumulate_without_may_remove_multiple() {
     let state = MillRules::decode(&after);
     assert_eq!(state.pending_removals[0], 1);
     assert!(state.mill_available_at_removal());
-    assert_eq!(state.custodian_targets[0], node_bit(1));
+    assert_eq!(state.custodian_targets[0], old_node_bit(1));
 }
 
 #[test]
@@ -3357,16 +3407,16 @@ fn diagonal_lines_form_extra_mills_when_enabled() {
         pieces_on_board: [2, 2],
         ..MillState::default()
     };
-    state.board[0] = 1; // a7
-    state.board[8] = 1; // b6
-    state.board[6] = 2;
-    state.board[5] = 2;
+    state.board[old_node(0)] = 1; // a7.
+    state.board[old_node(8)] = 1; // b6.
+    state.board[old_node(6)] = 2;
+    state.board[old_node(5)] = 2;
     let after = rules.apply(
         &rules.encode(state),
         Action {
             kind_tag: MillActionKind::Place as i16,
             from_node: -1,
-            to_node: 16, // c5 completes a7-b6-c5 diagonal
+            to_node: old_node_i16(16), // c5 completes a7-b6-c5 diagonal.
             aux: -1,
             payload_bits: 0,
         },
@@ -3387,16 +3437,16 @@ fn diagonal_lines_do_not_form_when_disabled() {
         pieces_on_board: [2, 2],
         ..MillState::default()
     };
-    state.board[0] = 1;
-    state.board[8] = 1;
-    state.board[6] = 2;
-    state.board[5] = 2;
+    state.board[old_node(0)] = 1;
+    state.board[old_node(8)] = 1;
+    state.board[old_node(6)] = 2;
+    state.board[old_node(5)] = 2;
     let after = rules.apply(
         &rules.encode(state),
         Action {
             kind_tag: MillActionKind::Place as i16,
             from_node: -1,
-            to_node: 16,
+            to_node: old_node_i16(16),
             aux: -1,
             payload_bits: 0,
         },
@@ -3419,7 +3469,8 @@ fn diagonal_custodian_sandwiches_opponent_on_diagonal_line() {
         ..MillVariantOptions::default()
     };
     let rules = MillRules::new(options);
-    // Line [0, 8, 16]: own at 16, opponent at 8, place at 0 -> capture 8.
+    // Old-layout line [0, 8, 16]: own at 16, opponent at 8,
+    // place at 0 -> capture 8.
     let mut state = MillState {
         side_to_move: 0,
         phase: MillPhase::Placing,
@@ -3428,20 +3479,20 @@ fn diagonal_custodian_sandwiches_opponent_on_diagonal_line() {
         pieces_on_board: [2, 2],
         ..MillState::default()
     };
-    state.board[16] = 1;
-    state.board[8] = 2;
+    state.board[old_node(16)] = 1;
+    state.board[old_node(8)] = 2;
     let after = rules.apply(
         &rules.encode(state),
         Action {
             kind_tag: MillActionKind::Place as i16,
             from_node: -1,
-            to_node: 0,
+            to_node: old_node_i16(0),
             aux: -1,
             payload_bits: 0,
         },
     );
     let st = MillRules::decode(&after);
-    assert_eq!(st.custodian_targets[0], node_bit(8));
+    assert_eq!(st.custodian_targets[0], old_node_bit(8));
     assert_eq!(st.pending_removals[0], 1);
     assert!(!st.mill_available_at_removal());
 }
@@ -3663,12 +3714,13 @@ fn set_from_fen_then_export_round_trip() {
     let rules = MillRules::default();
 
     // A minimal placing-phase FEN with one white and one black piece.
-    let fen = "O@******/********/******** w p p 1 8 1 8 0 0 0 0 0 0 0 0 1";
+    let fen = "O@******/********/******** w p p 1 8 1 8 0 0 -1 -1 -1 -1 0 0 1 ids:nodes";
     let state = rules.set_from_fen(fen).expect("valid FEN must parse");
 
-    // White on FEN pos 0 (sq 8) → node 17; Black on FEN pos 1 (sq 9) → node 18.
-    assert_eq!(state.board[17], 1, "node 17 should be White");
-    assert_eq!(state.board[18], 2, "node 18 should be Black");
+    // White on FEN pos 0 (sq 8) -> node 0; Black on FEN pos 1
+    // (sq 9) -> node 1 under the master-normalized layout.
+    assert_eq!(state.board[0], 1, "node 0 should be White");
+    assert_eq!(state.board[1], 2, "node 1 should be Black");
     assert_eq!(state.side_to_move, 0, "White to move");
     assert_eq!(state.phase, MillPhase::Placing);
     assert_eq!(state.pieces_in_hand[0], 8);
@@ -3689,7 +3741,7 @@ fn set_from_fen_then_export_round_trip() {
 }
 
 #[test]
-fn applied_uci_sequences_export_master_fen_snapshots() {
+fn applied_uci_sequences_export_node_id_fen_snapshots() {
     struct FenCase {
         name: &'static str,
         moves: &'static [&'static str],
@@ -3701,27 +3753,27 @@ fn applied_uci_sequences_export_master_fen_snapshots() {
         FenCase {
             name: "after_a4",
             moves: &["a4"],
-            expected_fen: "********/********/******O* b p p 1 8 0 9 0 0 0 0 0 0 0 0 1",
+            expected_fen: "********/********/******O* b p p 1 8 0 9 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
         },
         FenCase {
             name: "after_a4_g7",
             moves: &["a4", "g7"],
-            expected_fen: "********/********/*@****O* w p p 1 8 1 8 0 0 0 0 0 0 0 0 2",
+            expected_fen: "********/********/*@****O* w p p 1 8 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes",
         },
         FenCase {
             name: "quiet_six_ply_placing",
             moves: &["a4", "g7", "d7", "a1", "g1", "d1"],
-            expected_fen: "********/********/O@*O@@O* w p p 3 6 3 6 0 0 0 0 0 0 0 0 4",
+            expected_fen: "********/********/O@*O@@O* w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes",
         },
         FenCase {
             name: "f6_forms_remove_state",
             moves: &["d2", "d6", "f4", "b4", "f2", "g4", "f6"],
-            expected_fen: "********/@OOOO*@*/**@***** w p r 4 5 3 6 1 0 0 0 0 0 0 0 4",
+            expected_fen: "********/@OOOO*@*/**@***** w p r 4 5 3 6 1 0 -1 -1 -1 -1 0 0 4 ids:nodes",
         },
         FenCase {
             name: "a7_forms_remove_state",
             moves: &["d7", "a1", "g7", "d1", "a7"],
-            expected_fen: "********/********/OO**@@*O w p r 3 6 2 7 1 0 0 0 0 0 0 0 3",
+            expected_fen: "********/********/OO**@@*O w p r 3 6 2 7 1 0 -1 -1 -1 -1 0 0 3 ids:nodes",
         },
     ];
 
@@ -3731,7 +3783,7 @@ fn applied_uci_sequences_export_master_fen_snapshots() {
         assert_eq!(
             rules.export_fen(&state),
             case.expected_fen,
-            "{} must match master Position::fen()",
+            "{} must match node-id Position FEN",
             case.name
         );
     }
@@ -3798,7 +3850,7 @@ fn set_from_fen_moving_phase_counts_in_hand_for_fewer_than_three() {
     // Regression for master Dart validateFen (eb69c427a): the moving phase may
     // begin while a side still holds pieces, so on-board count alone can sit
     // below `pieces_at_least_count` when board + hand total is still legal.
-    let legal_fen = "********/@@@*O*@@/******** b m s 1 3 5 4 0 0 0 0 0 0 0 0 0 1";
+    let legal_fen = "********/@@@*O*@@/******** b m s 1 3 5 4 0 0 -1 -1 -1 -1 0 0 1 ids:nodes";
     let state = rules
         .set_from_fen(legal_fen)
         .expect("legal moving-phase FEN with pieces in hand must parse");
@@ -3806,7 +3858,7 @@ fn set_from_fen_moving_phase_counts_in_hand_for_fewer_than_three() {
     assert_eq!(state.winner, -1);
 
     // Board + hand total below threshold => immediate loss on import.
-    let illegal_fen = "********/@@@*O*@@/******** b m s 1 1 5 4 0 0 0 0 0 0 0 0 0 1";
+    let illegal_fen = "********/@@@*O*@@/******** b m s 1 1 5 4 0 0 -1 -1 -1 -1 0 0 1 ids:nodes";
     let lose_state = rules
         .set_from_fen(illegal_fen)
         .expect("below-threshold FEN must still parse");
@@ -3821,7 +3873,7 @@ fn set_from_fen_moving_phase_counts_in_hand_for_fewer_than_three() {
 fn set_from_fen_runs_immediate_terminal_checks() {
     let rules = MillRules::default();
 
-    let lose_fen = "**O**O**/**@**@**/******** w m s 2 0 2 0 0 0 0 0 0 0 0 0 1";
+    let lose_fen = "**O**O**/**@**@**/******** w m s 2 0 2 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes";
     let lose_state = rules
         .set_from_fen(lose_fen)
         .expect("terminal fewer-than-three FEN must parse");
@@ -3832,7 +3884,7 @@ fn set_from_fen_runs_immediate_terminal_checks() {
         MillOutcomeReason::LoseFewerThanThree
     );
 
-    let draw_fen = "***OOO**/***@@@**/******** w m s 3 0 3 0 0 0 0 0 0 0 0 100 1";
+    let draw_fen = "***OOO**/***@@@**/******** w m s 3 0 3 0 0 0 -1 -1 -1 -1 0 100 1 ids:nodes";
     let draw_state = rules
         .set_from_fen(draw_fen)
         .expect("terminal n-move FEN must parse");
@@ -4047,62 +4099,80 @@ fn set_from_fen_extensions_round_trip() {
     assert!(parsed.stalemate_removing());
 }
 
-/// Master format `s:2` flips `both_stalemate_removing`.  `p:NN`
-/// preserves the preferredRemoveTarget hint as a Rust dense node id.
+/// Node-id format `s:2` flips `both_stalemate_removing`.  `p:NN`
+/// preserves the preferredRemoveTarget hint as a direct node id.
 #[test]
 fn set_from_fen_extensions_supports_both_stalemate_and_preferred_remove() {
     let rules = MillRules::default();
-    // Legacy Square id 21 == "b2"; the FEN_TO_NODE permutation maps
-    // it to Rust dense node 14.
     let fen = concat!(
-        "********/********/******** w p p 0 9 0 9 0 0 0 0 0 0 0 0 1",
-        " p:21 s:2"
+        "********/********/******** w p p 0 9 0 9 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
+        " p:13 s:2"
     );
     let state = rules.set_from_fen(fen).expect("valid trailing tokens");
     assert!(!state.stalemate_removing());
     assert!(state.both_stalemate_removing());
     assert_eq!(
-        state.preferred_remove_target, 14,
-        "p:21 (legacy Square 21 = b2) must map to Rust node 14"
+        state.preferred_remove_target, 13,
+        "p:13 must remain Rust node 13"
     );
-    // Round-trip: export must emit `p:21` again.
+    // Round-trip: export must emit `p:13` again.
     let exported = rules.export_fen(&state);
     assert!(
-        exported.contains("p:21"),
+        exported.contains("p:13"),
         "round-trip preferred-remove: {exported}"
     );
+}
+
+#[test]
+fn set_from_fen_accepts_legacy_square_id_extensions() {
+    let rules = MillRules::default();
+    let fen = concat!(
+        "********/********/******** w p p 0 9 0 9 0 0 0 0 0 0 0 0 1",
+        " p:21 s:2"
+    );
+    let state = rules
+        .set_from_fen(fen)
+        .expect("valid legacy trailing tokens");
+    assert!(state.both_stalemate_removing());
+    assert_eq!(
+        state.preferred_remove_target, 13,
+        "legacy p:21 must import as Rust node 13"
+    );
+    let exported = rules.export_fen(&state);
+    assert!(exported.contains("ids:nodes"), "{exported}");
+    assert!(exported.contains("p:13"), "{exported}");
 }
 
 #[test]
 fn set_from_fen_capture_extensions_keep_per_side_state() {
     let rules = MillRules::default();
     let fen = concat!(
-        "********/********/******** b m r 0 0 0 0 0 0 0 0 0 0 0 0 1",
-        " c:w-1-8|b-1-31 i:w-2-9.10|b-1-30 l:w-1-11|b-1-29"
+        "********/********/******** b m r 0 0 0 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
+        " c:w-1-0|b-1-23 i:w-2-1.2|b-1-22 l:w-1-3|b-1-21"
     );
     let state = rules.set_from_fen(fen).expect("valid capture tokens");
 
-    assert_eq!(state.custodian_targets[0], node_bit(17));
-    assert_eq!(state.custodian_targets[1], node_bit(0));
+    assert_eq!(state.custodian_targets[0], node_bit(0));
+    assert_eq!(state.custodian_targets[1], node_bit(23));
     assert_eq!(state.custodian_count, [1, 1]);
-    assert_eq!(state.intervention_targets[0], node_bit(18) | node_bit(19));
-    assert_eq!(state.intervention_targets[1], node_bit(7));
+    assert_eq!(state.intervention_targets[0], node_bit(1) | node_bit(2));
+    assert_eq!(state.intervention_targets[1], node_bit(22));
     assert_eq!(state.intervention_count, [2, 1]);
-    assert_eq!(state.leap_targets[0], node_bit(20));
-    assert_eq!(state.leap_targets[1], node_bit(6));
+    assert_eq!(state.leap_targets[0], node_bit(3));
+    assert_eq!(state.leap_targets[1], node_bit(21));
     assert_eq!(state.leap_count, [1, 1]);
 
     let exported = rules.export_fen(&state);
-    assert!(exported.contains("c:w-1-8|b-1-31"), "{exported}");
-    assert!(exported.contains("i:w-2-9.10|b-1-30"), "{exported}");
-    assert!(exported.contains("l:w-1-11|b-1-29"), "{exported}");
+    assert!(exported.contains("c:w-1-0|b-1-23"), "{exported}");
+    assert!(exported.contains("i:w-2-1.2|b-1-22"), "{exported}");
+    assert!(exported.contains("l:w-1-3|b-1-21"), "{exported}");
 }
 
 #[test]
 fn set_from_fen_preserves_action_independently_from_phase() {
     let rules = MillRules::default();
-    let remove_fen = "O@******/********/******** w p r 1 8 1 8 0 0 0 0 0 0 0 0 1";
-    let place_fen = "O@******/********/******** w p p 1 8 1 8 0 0 0 0 0 0 0 0 1";
+    let remove_fen = "O@******/********/******** w p r 1 8 1 8 0 0 -1 -1 -1 -1 0 0 1 ids:nodes";
+    let place_fen = "O@******/********/******** w p p 1 8 1 8 0 0 -1 -1 -1 -1 0 0 1 ids:nodes";
 
     let remove_state = rules
         .set_from_fen(remove_fen)
@@ -4141,7 +4211,7 @@ fn set_from_fen_preserves_action_independently_from_phase() {
 }
 
 /// `formed_mills_bb` is FEN field 14, encoded as
-/// `((white_legacy_bb) << 32) | black_legacy_bb`.  Per-side bits set
+/// `((white_node_bb) << 32) | black_node_bb`.  Per-side bits set
 /// by `note_mill_formation` (oneTimeUseMill semantics).  Test the
 /// full round-trip and that the bitmask field becomes non-zero after
 /// a real mill formation under one_time_use_mill.
@@ -4151,7 +4221,7 @@ fn export_fen_carries_formed_mills_bb_round_trip() {
         one_time_use_mill: true,
         ..MillVariantOptions::default()
     });
-    // White just placed at node 2 closing the mill 0/1/2.  `apply`
+    // White just placed at old node 2 closing the mill 0/1/2.  `apply`
     // takes the place action; under one_time_use_mill,
     // note_mill_formation populates formed_mills_bb[0].
     let mut state = MillState {
@@ -4162,14 +4232,14 @@ fn export_fen_carries_formed_mills_bb_round_trip() {
         pieces_on_board: [0, 0],
         ..MillState::default()
     };
-    state.board[0] = 1;
-    state.board[1] = 1;
+    state.board[old_node(0)] = 1;
+    state.board[old_node(1)] = 1;
     let after = rules.apply(
         &rules.encode_state(state),
         Action {
             kind_tag: MillActionKind::Place as i16,
             from_node: -1,
-            to_node: 2,
+            to_node: old_node_i16(2),
             aux: -1,
             payload_bits: 0,
         },
@@ -4179,7 +4249,7 @@ fn export_fen_carries_formed_mills_bb_round_trip() {
         after_state.formed_mills_bb[0], 0,
         "mill formation must populate formed_mills_bb[white]"
     );
-    let expected_white_bb = (1u32 << 0) | (1u32 << 1) | (1u32 << 2);
+    let expected_white_bb = old_node_bit(0) | old_node_bit(1) | old_node_bit(2);
     assert_eq!(after_state.formed_mills_bb[0], expected_white_bb);
     assert_eq!(after_state.formed_mills_bb[1], 0);
 
@@ -4195,7 +4265,7 @@ fn export_fen_carries_formed_mills_bb_round_trip() {
     assert_eq!(parsed.formed_mills_bb, after_state.formed_mills_bb);
 }
 
-/// Field 3 must mirror legacy `Position::fen()` action token:
+/// Field 3 uses the Mill action token:
 ///   - `'r'` iff a removal is pending,
 ///   - `'p'` while still placing (or in Ready phase),
 ///   - `'s'` for the moving-phase select-square step,
@@ -4209,7 +4279,9 @@ fn export_fen_action_token_matches_legacy_position_fen() {
     // Initial position: white-to-move, placing, no pending removal.
     let initial = rules.encode_state(
         rules
-            .set_from_fen("********/********/******** w p p 0 9 0 9 0 0 0 0 0 0 0 0 1")
+            .set_from_fen(
+                "********/********/******** w p p 0 9 0 9 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
+            )
             .unwrap(),
     );
     let state = MillRules::decode_snapshot(initial);

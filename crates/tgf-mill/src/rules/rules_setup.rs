@@ -1,14 +1,13 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // `MillRules` setup-position editing API plus FEN import/export.
-// These methods drive the FRB kernel's setup flow and the legacy
-// position-FEN round-trip.
+// These methods drive the FRB kernel's setup flow and position-FEN
+// round-trips.
 
 use tgf_core::GameStateSnapshot;
 
-use super::fen::{append_capture_field, parse_capture_field};
-use super::legacy_squares::{
-    legacy_square_bb_to_node_bb, legacy_square_to_node_signed, node_bb_to_legacy_square_bb,
-    node_to_legacy_square,
+use super::fen::{
+    NODE_ID_FEN_MARKER, append_capture_field, id_mode_from_extensions, parse_capture_field,
+    parse_node_bitboard, parse_node_id,
 };
 use super::transitions::is_marked;
 use super::{
@@ -31,8 +30,7 @@ impl MillRules {
         self.encode(state)
     }
 
-    /// Parse a Mill FEN string (compatible with the legacy Dart/C++ engine)
-    /// and return the resulting `MillState`.
+    /// Parse a Mill FEN string and return the resulting `MillState`.
     ///
     /// FEN format (17+ whitespace-separated fields):
     /// `<board> <side> <phase> <act> <w_on> <w_hand> <b_on> <b_hand>
@@ -41,9 +39,10 @@ impl MillRules {
     ///
     /// `board` = `inner8/middle8/outer8`; pieces: `O`=white, `@`=black, `*`=empty.
     ///
-    /// Mills-bitmask and last-mill-from/to fields are parsed but ignored; the
-    /// returned state has those auxiliary fields at their defaults so that
-    /// `encode_state` + `decode_snapshot` round-trips cleanly.
+    /// New node-id FENs carry the `ids:nodes` extension token and encode every
+    /// square-like numeric field as an internal node id (`0..23`, `-1` for
+    /// none).  Older FENs without that token are still accepted as legacy
+    /// square-id input at import boundaries.
     pub fn set_from_fen(&self, fen: &str) -> Result<MillState, String> {
         let trimmed = fen.trim();
         // Split FEN into the 17 mandatory whitespace-separated fields plus
@@ -56,13 +55,13 @@ impl MillRules {
         }
         let extension_tokens: Vec<&str> = all_fields.split_off(17);
         let fields = all_fields;
+        let id_mode = id_mode_from_extensions(&extension_tokens);
 
-        // FEN board position index -> Rust board node index.
-        // FEN position i corresponds to legacy square (i + 8), then uses
-        // the same fixed legacySquareToNode permutation as Flutter's
-        // MillBoardCoordinateMaps.  This is not a simple reversed range.
+        // FEN board position index -> Rust board node index.  The engine's
+        // canonical layout is `node = legacy SQ - 8`, so FEN's inner/middle/
+        // outer 8-character ranks are already in node order.
         const FEN_TO_NODE: [usize; 24] = [
-            17, 18, 19, 20, 21, 22, 23, 16, 9, 10, 11, 12, 13, 14, 15, 8, 1, 2, 3, 4, 5, 6, 7, 0,
+            0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23,
         ];
 
         let board_str = fields[0];
@@ -142,34 +141,29 @@ impl MillRules {
         let remove_b = signed_remove_b.unsigned_abs();
         let remove_own = [signed_remove_w < 0, signed_remove_b < 0];
 
-        // Fields 10..14: last-mill from/to per side.  Master stores them as
-        // legacy Square ids; 0 means "none".
-        let last_w_from_sq = parse_u8(fields[10])?;
-        let last_w_to_sq = parse_u8(fields[11])?;
-        let last_b_from_sq = parse_u8(fields[12])?;
-        let last_b_to_sq = parse_u8(fields[13])?;
+        // Fields 10..13: last-mill from/to per side.  Node-id FENs use
+        // `-1` for "none"; legacy imports use square id `0` for "none".
         let last_mill_from = [
-            legacy_square_to_node_signed(last_w_from_sq),
-            legacy_square_to_node_signed(last_b_from_sq),
+            parse_node_id(fields[10], id_mode)?,
+            parse_node_id(fields[12], id_mode)?,
         ];
         let last_mill_to = [
-            legacy_square_to_node_signed(last_w_to_sq),
-            legacy_square_to_node_signed(last_b_to_sq),
+            parse_node_id(fields[11], id_mode)?,
+            parse_node_id(fields[13], id_mode)?,
         ];
 
-        // Field 14: 64-bit formedMillsBB with per-side per-square mill
-        // bitmaps.  Layout matches Position::fen():
+        // Field 14: 64-bit formed-mills bitmaps:
         //   ((white_bb_24bits) << 32) | black_bb_24bits
-        // The legacy engine uses 32-bit Bitboard slots even though only
-        // bits 8..32 are populated (legacy Square ids).  Translate each
-        // side's square bitmap from legacy ids into Rust dense node ids
-        // before storing.
-        let formed_mills_bb_raw = fields[14].parse::<u64>().unwrap_or(0);
-        let formed_white_legacy_bb = ((formed_mills_bb_raw >> 32) & 0xFFFF_FFFF) as u32;
-        let formed_black_legacy_bb = (formed_mills_bb_raw & 0xFFFF_FFFF) as u32;
+        // Node-id FENs store bit 0..23 directly.  Legacy imports store the
+        // same logical squares shifted to legacy Square bits 8..31.
+        let formed_mills_bb_raw = fields[14]
+            .parse::<u64>()
+            .map_err(|_| format!("cannot parse '{}' as formed-mills bitmask", fields[14]))?;
+        let formed_white_raw = ((formed_mills_bb_raw >> 32) & 0xFFFF_FFFF) as u32;
+        let formed_black_raw = (formed_mills_bb_raw & 0xFFFF_FFFF) as u32;
         let formed_mills_bb = [
-            legacy_square_bb_to_node_bb(formed_white_legacy_bb),
-            legacy_square_bb_to_node_bb(formed_black_legacy_bb),
+            parse_node_bitboard(formed_white_raw, id_mode)?,
+            parse_node_bitboard(formed_black_raw, id_mode)?,
         ];
 
         let rule50 = parse_u16(fields[15])?;
@@ -197,26 +191,29 @@ impl MillRules {
             }
             let value = &token[2..];
             match token.as_bytes()[0] {
-                b'c' => parse_capture_field(value, &mut custodian_targets, &mut custodian_count),
-                b'i' => {
-                    parse_capture_field(value, &mut intervention_targets, &mut intervention_count)
-                }
-                b'l' => parse_capture_field(value, &mut leap_targets, &mut leap_count),
+                b'c' => parse_capture_field(
+                    value,
+                    &mut custodian_targets,
+                    &mut custodian_count,
+                    id_mode,
+                )?,
+                b'i' => parse_capture_field(
+                    value,
+                    &mut intervention_targets,
+                    &mut intervention_count,
+                    id_mode,
+                )?,
+                b'l' => parse_capture_field(value, &mut leap_targets, &mut leap_count, id_mode)?,
                 b'p' => {
-                    // Mirror Position::set_fen: parse `p:NN` (legacy
-                    // Square id) into preferred_remove_target as a Rust
-                    // dense node id (or -1 for SQ_NONE / out of range).
-                    if let Ok(legacy_sq) = value.parse::<i32>()
-                        && (8..32).contains(&legacy_sq)
-                    {
-                        preferred_remove_target = legacy_square_to_node_signed(legacy_sq as u8);
-                    }
+                    let node = parse_node_id(value, id_mode)?;
+                    preferred_remove_target = node;
                 }
                 b's' => {
-                    if let Ok(flag) = value.parse::<i32>() {
-                        stalemate_removing = flag == 1;
-                        both_stalemate_removing = flag == 2;
-                    }
+                    let flag = value
+                        .parse::<i32>()
+                        .map_err(|_| format!("cannot parse '{value}' as stalemate flag"))?;
+                    stalemate_removing = flag == 1;
+                    both_stalemate_removing = flag == 2;
                 }
                 _ => {}
             }
@@ -289,8 +286,7 @@ impl MillRules {
         Ok(state)
     }
 
-    /// Serialize a `MillState` into a Mill FEN string compatible with the
-    /// legacy Dart/C++ engine.
+    /// Serialize a `MillState` into the node-id Mill FEN dialect.
     ///
     /// Output covers every parsed field: board layout (with 'X' for
     /// marked pieces), side-to-move, phase ('r/p/m/o'), action token
@@ -299,11 +295,12 @@ impl MillRules {
     /// `remove_own_piece` is set), per-side last-mill from/to, the
     /// mills bitmask placeholder (always `0` because Rust tracks
     /// per-line use rather than per-square), rule50, full-move number,
-    /// and the trailing `c:/i:/l:/p:/s:` extension block when active.
+    /// and the trailing `ids:nodes c:/i:/l:/p:/s:` extension block when active.
     pub fn export_fen(&self, state: &MillState) -> String {
-        // Rust board node index → FEN board position index (inverse of FEN_TO_NODE).
+        // Rust board node index -> FEN board position index.  This is the
+        // identity under the master-normalized `node = legacy SQ - 8` layout.
         const NODE_TO_FEN_POS: [usize; 24] = [
-            23, 16, 17, 18, 19, 20, 21, 22, 15, 8, 9, 10, 11, 12, 13, 14, 7, 0, 1, 2, 3, 4, 5, 6,
+            0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23,
         ];
 
         let mut fenchars = [b'*'; 26];
@@ -351,13 +348,11 @@ impl MillRules {
             }
         };
 
-        // Field 14: legacy formedMillsBB packed as
-        //   ((white_legacy_bb_24bit) << 32) | black_legacy_bb_24bit
-        // Translate per-side dense node bitmaps back to legacy square
-        // bitmaps so master-style Position::set_fen can re-load them.
-        let formed_white_legacy = u64::from(node_bb_to_legacy_square_bb(state.formed_mills_bb[0]));
-        let formed_black_legacy = u64::from(node_bb_to_legacy_square_bb(state.formed_mills_bb[1]));
-        let formed_mills_field = (formed_white_legacy << 32) | formed_black_legacy;
+        // Field 14: formed-mills bitmaps use direct node bits in the node-id
+        // FEN dialect.
+        let formed_white = u64::from(state.formed_mills_bb[0] & 0x00ff_ffff);
+        let formed_black = u64::from(state.formed_mills_bb[1] & 0x00ff_ffff);
+        let formed_mills_field = (formed_white << 32) | formed_black;
 
         let mut out = format!(
             "{} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {}",
@@ -371,14 +366,17 @@ impl MillRules {
             state.pieces_in_hand[1],
             signed_remove(0),
             signed_remove(1),
-            node_to_legacy_square(state.last_mill_from[0]),
-            node_to_legacy_square(state.last_mill_to[0]),
-            node_to_legacy_square(state.last_mill_from[1]),
-            node_to_legacy_square(state.last_mill_to[1]),
+            state.last_mill_from[0],
+            state.last_mill_to[0],
+            state.last_mill_from[1],
+            state.last_mill_to[1],
             formed_mills_field,
             state.ply_since_capture,
             full_move,
         );
+
+        out.push(' ');
+        out.push_str(NODE_ID_FEN_MARKER);
 
         // Trailing extension fields.  Rust keeps single (active-side)
         // capture-state bitmaps because the legacy engine only ever
@@ -398,10 +396,7 @@ impl MillRules {
         );
         append_capture_field(&mut out, 'l', state.leap_targets, state.leap_count);
         if state.preferred_remove_target >= 0 {
-            out.push_str(&format!(
-                " p:{}",
-                node_to_legacy_square(state.preferred_remove_target)
-            ));
+            out.push_str(&format!(" p:{}", state.preferred_remove_target));
         }
         if state.stalemate_removing() {
             out.push_str(" s:1");

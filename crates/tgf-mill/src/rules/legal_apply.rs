@@ -277,7 +277,9 @@ impl MillRules {
             maybe_finish_full_board(state, &self.options);
             sync_action_state(state);
         }
-        self.maybe_handle_stalemate(state);
+        if state.phase == MillPhase::Moving {
+            self.maybe_handle_stalemate(state);
+        }
         state.key_history_len = state.key_history.len();
         state.zobrist_key = super::zobrist::key_after_apply_from_changed_squares(
             old_key,

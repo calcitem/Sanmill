@@ -1578,7 +1578,7 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
 
   /// Extract board layout from FEN string
   /// FEN format: "boardLayout activeColor phase action counts..."
-  /// Example: "OO******/********/******** w p p 2 7 0 9 0 0 0 0 0 0 0 0 1"
+  /// Example: "OO******/********/******** w p p 2 7 0 9 0 0 -1 -1 -1 -1 0 0 1 ids:nodes"
   /// Returns just the board layout part: "OO******/********/********"
   String _extractBoardLayout(String fen) {
     final List<String> parts = fen.split(' ');

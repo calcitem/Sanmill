@@ -88,7 +88,7 @@ void main() {
             'category': 'formMill',
             'difficulty': 'medium',
             'initialPosition':
-                '********/********/******** w p p 0 9 0 9 0 0 0 0 0 0 0 0 1',
+                '********/********/******** w p p 0 9 0 9 0 0 -1 -1 -1 -1 0 0 1 ids:nodes',
             'solutions': <Map<String, dynamic>>[
               <String, dynamic>{
                 'moves': <Map<String, dynamic>>[
@@ -141,7 +141,7 @@ void main() {
             'category': 'formMill',
             'difficulty': 'easy',
             'initialPosition':
-                '********/********/******** w p p 0 9 0 9 0 0 0 0 0 0 0 0 1',
+                '********/********/******** w p p 0 9 0 9 0 0 -1 -1 -1 -1 0 0 1 ids:nodes',
             'solutions': <Map<String, dynamic>>[
               <String, dynamic>{
                 'moves': <Map<String, dynamic>>[
@@ -192,7 +192,7 @@ void main() {
             'category': 'formMill',
             'difficulty': 'easy',
             'initialPosition':
-                '********/********/******** w p p 0 9 0 9 0 0 0 0 0 0 0 0 1',
+                '********/********/******** w p p 0 9 0 9 0 0 -1 -1 -1 -1 0 0 1 ids:nodes',
             'solutions': <Map<String, dynamic>>[
               <String, dynamic>{
                 'moves': <Map<String, dynamic>>[
@@ -214,7 +214,7 @@ void main() {
             'category': 'formMill',
             'difficulty': 'medium',
             'initialPosition':
-                '********/********/******** w p p 0 9 0 9 0 0 0 0 0 0 0 0 1',
+                '********/********/******** w p p 0 9 0 9 0 0 -1 -1 -1 -1 0 0 1 ids:nodes',
             'solutions': <Map<String, dynamic>>[
               <String, dynamic>{
                 'moves': <Map<String, dynamic>>[
@@ -236,7 +236,7 @@ void main() {
             'category': 'formMill',
             'difficulty': 'hard',
             'initialPosition':
-                '********/********/******** w p p 0 9 0 9 0 0 0 0 0 0 0 0 1',
+                '********/********/******** w p p 0 9 0 9 0 0 -1 -1 -1 -1 0 0 1 ids:nodes',
             'solutions': <Map<String, dynamic>>[
               <String, dynamic>{
                 'moves': <Map<String, dynamic>>[
@@ -289,7 +289,7 @@ void main() {
             'category': 'formMill',
             'difficulty': 'expert',
             'initialPosition':
-                '********/********/******** w p p 0 9 0 9 0 0 0 0 0 0 0 0 1',
+                '********/********/******** w p p 0 9 0 9 0 0 -1 -1 -1 -1 0 0 1 ids:nodes',
             'solutions': <Map<String, dynamic>>[
               <String, dynamic>{
                 'moves': <Map<String, dynamic>>[

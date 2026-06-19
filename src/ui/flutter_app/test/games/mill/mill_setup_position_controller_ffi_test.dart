@@ -1,10 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // Copyright (C) 2019-2026 The Sanmill developers (see AUTHORS file)
 
-import 'dart:io';
-
-import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart'
-    show ExternalLibrary;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sanmill/game_platform/game_session.dart';
 import 'package:sanmill/games/mill/mill_setup_position_controller.dart';
@@ -12,13 +8,10 @@ import 'package:sanmill/games/mill/mill_types.dart';
 import 'package:sanmill/games/mill/native_mill_game_session.dart';
 import 'package:sanmill/games/mill/native_mill_snapshot_board_view.dart';
 import 'package:sanmill/rule_settings/models/rule_settings.dart';
-import 'package:sanmill/src/rust/frb_generated.dart';
 
-final File _nativeLibrary = File('../../../target/debug/rust_lib_sanmill.dll');
-final String? _nativeLibrarySkipReason = _nativeLibrary.existsSync()
-    ? null
-    : 'Run `cargo build -p rust_lib_sanmill` before this FFI smoke test.';
-bool _rustLibInitialized = false;
+import '../../helpers/test_native_library.dart';
+
+final String? _nativeLibrarySkipReason = nativeLibrarySkipReason();
 
 MillSetupPositionController _newController(NativeMillGameSession session) {
   return MillSetupPositionController(
@@ -31,19 +24,11 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   setUpAll(() async {
-    if (_nativeLibrarySkipReason != null) {
-      return;
-    }
-    await RustLib.init(
-      externalLibrary: ExternalLibrary.open(_nativeLibrary.absolute.path),
-    );
-    _rustLibInitialized = true;
+    await initRustLibForTests();
   });
 
   tearDownAll(() {
-    if (_rustLibInitialized) {
-      RustLib.dispose();
-    }
+    disposeRustLibForTests();
   });
 
   group('MillSetupPositionController FEN board mapping', () {
@@ -139,6 +124,7 @@ void main() {
         sourceController.setPhase(Phase.moving);
 
         final String exported = sourceController.exportFen();
+        expect(exported.split(' '), contains('ids:nodes'));
         final NativeMillSnapshotBoardView sourceView =
             NativeMillSnapshotBoardView.fromSnapshot(source.state.value)!;
 

@@ -5,7 +5,68 @@
 // updates and back.
 
 use super::MillState;
-use super::legacy_squares::{legacy_square_to_node_signed, node_to_legacy_square};
+
+pub(super) const NODE_ID_FEN_MARKER: &str = "ids:nodes";
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub(super) enum FenIdMode {
+    LegacySquares,
+    Nodes,
+}
+
+#[inline]
+pub(super) fn id_mode_from_extensions(extension_tokens: &[&str]) -> FenIdMode {
+    if extension_tokens
+        .iter()
+        .any(|token| token.eq_ignore_ascii_case(NODE_ID_FEN_MARKER))
+    {
+        FenIdMode::Nodes
+    } else {
+        FenIdMode::LegacySquares
+    }
+}
+
+pub(super) fn parse_node_id(value: &str, mode: FenIdMode) -> Result<i8, String> {
+    match mode {
+        FenIdMode::LegacySquares => {
+            let legacy = value
+                .parse::<i16>()
+                .map_err(|_| format!("cannot parse '{value}' as legacy square id"))?;
+            if legacy == 0 {
+                Ok(-1)
+            } else if (8..32).contains(&legacy) {
+                Ok((legacy - 8) as i8)
+            } else {
+                Err(format!("legacy square id must be 0 or 8..31, got {legacy}"))
+            }
+        }
+        FenIdMode::Nodes => {
+            let node = value
+                .parse::<i8>()
+                .map_err(|_| format!("cannot parse '{value}' as node id"))?;
+            if node == -1 || (0..24).contains(&node) {
+                Ok(node)
+            } else {
+                Err(format!("node id must be -1 or 0..23, got {node}"))
+            }
+        }
+    }
+}
+
+pub(super) fn parse_node_bitboard(value: u32, mode: FenIdMode) -> Result<u32, String> {
+    match mode {
+        FenIdMode::LegacySquares => Ok(super::legacy_squares::legacy_square_bb_to_node_bb(value)),
+        FenIdMode::Nodes => {
+            if value & !0x00ff_ffff == 0 {
+                Ok(value)
+            } else {
+                Err(format!(
+                    "node bitboard must use bits 0..23 only, got {value}"
+                ))
+            }
+        }
+    }
+}
 
 /// Parse a capture field shaped like `w-N-sq.sq|b-N-sq.sq` into per-side
 /// target bitmaps and counts, mirroring master Position::set_fen.
@@ -13,45 +74,42 @@ pub(super) fn parse_capture_field(
     value: &str,
     targets_out: &mut [u32; 2],
     count_out: &mut [u8; 2],
-) {
+    mode: FenIdMode,
+) -> Result<(), String> {
     for segment in value.split('|') {
         let segment = segment.trim();
         if segment.is_empty() || segment.len() < 3 || segment.as_bytes()[1] != b'-' {
-            continue;
+            return Err(format!("invalid capture segment '{segment}'"));
         }
         let side = match segment.as_bytes()[0] {
             b'w' => 0_usize,
             b'b' => 1_usize,
-            _ => continue,
+            _ => return Err(format!("invalid capture side in segment '{segment}'")),
         };
         let after_color = &segment[2..];
-        let dash = match after_color.find('-') {
-            Some(d) => d,
-            None => continue,
-        };
+        let dash = after_color
+            .find('-')
+            .ok_or_else(|| format!("invalid capture segment '{segment}'"))?;
         let count_str = after_color[..dash].trim();
-        let parsed_count = match count_str.parse::<i32>() {
-            Ok(v) => v,
-            Err(_) => continue,
-        };
+        let parsed_count = count_str
+            .parse::<i32>()
+            .map_err(|_| format!("cannot parse '{count_str}' as capture count"))?;
         let list_str = &after_color[dash + 1..];
         for square_token in list_str.split('.') {
             let token = square_token.trim();
             if token.is_empty() {
                 continue;
             }
-            if let Ok(square_value) = token.parse::<i32>()
-                && (8..32).contains(&square_value)
-            {
-                let node = legacy_square_to_node_signed(square_value as u8);
-                if (0..24).contains(&node) {
-                    targets_out[side] |= 1_u32 << (node as u8);
-                }
+            let node = parse_node_id(token, mode)?;
+            if !(0..24).contains(&node) {
+                return Err(format!("capture target must be 0..23, got {node}"));
             }
+            targets_out[side] |= 1_u32 << (node as u8);
         }
         let next = u32::from(count_out[side]).saturating_add(parsed_count.unsigned_abs());
         count_out[side] = next.min(u8::MAX as u32) as u8;
     }
+    Ok(())
 }
 
 /// Append a `c:`/`i:`/`l:` capture field with both side slots.
@@ -84,7 +142,7 @@ pub(super) fn append_capture_field(
                 out.push('.');
             }
             first = false;
-            out.push_str(&node_to_legacy_square(node as i8).to_string());
+            out.push_str(&node.to_string());
         }
     }
 }

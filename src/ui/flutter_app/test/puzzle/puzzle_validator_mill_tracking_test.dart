@@ -111,7 +111,7 @@ void main() {
     test('validator starts with mill flag unset', () {
       final PuzzleInfo puzzle = makeFormMillPuzzle(
         initialPosition:
-            '********/********/******** w p p 0 9 0 9 0 0 0 0 0 0 0 0 1',
+            '********/********/******** w p p 0 9 0 9 0 0 -1 -1 -1 -1 0 0 1 ids:nodes',
         solutionMoves: const <PuzzleMove>[
           PuzzleMove(notation: 'a1', side: PieceColor.white),
         ],
@@ -128,7 +128,7 @@ void main() {
     test('validateSolution detects mill when Act.remove is pending', () {
       final PuzzleInfo puzzle = makeFormMillPuzzle(
         initialPosition:
-            '********/********/******** w p p 0 9 0 9 0 0 0 0 0 0 0 0 1',
+            '********/********/******** w p p 0 9 0 9 0 0 -1 -1 -1 -1 0 0 1 ids:nodes',
         solutionMoves: const <PuzzleMove>[
           PuzzleMove(notation: 'a1', side: PieceColor.white),
         ],
@@ -159,7 +159,7 @@ void main() {
     test('reset clears the mill formation flag', () {
       final PuzzleInfo puzzle = makeFormMillPuzzle(
         initialPosition:
-            '********/********/******** w p p 0 9 0 9 0 0 0 0 0 0 0 0 1',
+            '********/********/******** w p p 0 9 0 9 0 0 -1 -1 -1 -1 0 0 1 ids:nodes',
         solutionMoves: const <PuzzleMove>[
           PuzzleMove(notation: 'a1', side: PieceColor.white),
         ],
@@ -189,7 +189,7 @@ void main() {
       // even if Act.remove is never observed.
       final PuzzleInfo puzzle = makeFormMillPuzzle(
         initialPosition:
-            '********/********/******** w p p 0 9 0 9 0 0 0 0 0 0 0 0 1',
+            '********/********/******** w p p 0 9 0 9 0 0 -1 -1 -1 -1 0 0 1 ids:nodes',
         solutionMoves: const <PuzzleMove>[
           PuzzleMove(notation: 'a1', side: PieceColor.white),
           PuzzleMove(notation: 'd1', side: PieceColor.black),
@@ -211,7 +211,7 @@ void main() {
     test('non-matching moves with no mill show inProgress', () {
       final PuzzleInfo puzzle = makeFormMillPuzzle(
         initialPosition:
-            '********/********/******** w p p 0 9 0 9 0 0 0 0 0 0 0 0 1',
+            '********/********/******** w p p 0 9 0 9 0 0 -1 -1 -1 -1 0 0 1 ids:nodes',
         solutionMoves: const <PuzzleMove>[
           PuzzleMove(notation: 'a1', side: PieceColor.white),
           PuzzleMove(notation: 'd1', side: PieceColor.black),
@@ -240,7 +240,7 @@ void main() {
         category: PuzzleCategory.winGame,
         difficulty: PuzzleDifficulty.medium,
         initialPosition:
-            '********/********/******** w p p 0 9 0 9 0 0 0 0 0 0 0 0 1',
+            '********/********/******** w p p 0 9 0 9 0 0 -1 -1 -1 -1 0 0 1 ids:nodes',
         solutions: const <PuzzleSolution>[
           PuzzleSolution(
             moves: <PuzzleMove>[
@@ -272,7 +272,7 @@ void main() {
           category: cat,
           difficulty: PuzzleDifficulty.easy,
           initialPosition:
-              '********/********/******** w p p 0 9 0 9 0 0 0 0 0 0 0 0 1',
+              '********/********/******** w p p 0 9 0 9 0 0 -1 -1 -1 -1 0 0 1 ids:nodes',
           solutions: const <PuzzleSolution>[
             PuzzleSolution(
               moves: <PuzzleMove>[

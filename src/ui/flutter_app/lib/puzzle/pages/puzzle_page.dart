@@ -7,6 +7,7 @@
 
 import 'dart:convert';
 import 'dart:math';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -1085,7 +1086,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
     }
 
     // Only auto-play when it's the opponent's turn.
-    if (controller.activeBoardView.sideToMove == humanColor) {
+    if (_nativePuzzleSideToAct(nativeSession) == humanColor) {
       return;
     }
 
@@ -1110,7 +1111,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
           solutions: legacySolutions,
           humanColor: humanColor,
           isGameOver: () => !mounted || nativeSession.outcome.isTerminal,
-          sideToMove: () => nativeSession.sideToMove,
+          sideToMove: () => _nativePuzzleSideToAct(nativeSession),
           movesSoFar: () => controller.gameRecorder.mainlineMoves
               .map((ExtMove m) => m.move)
               .toList(growable: false),
@@ -1149,6 +1150,37 @@ class _PuzzlePageState extends State<PuzzlePage> {
         controller.boardSemanticsNotifier.updateSemantics();
       }
     });
+  }
+
+  PieceColor _nativePuzzleSideToAct(NativeMillGameSession nativeSession) {
+    final Object? rawPayload = nativeSession.state.value.payload['tgfPayload'];
+    assert(
+      rawPayload == null || rawPayload is Uint8List,
+      'Native Mill snapshot payload must be a Uint8List.',
+    );
+    if (rawPayload is! Uint8List || rawPayload.length < 30) {
+      return nativeSession.sideToMove;
+    }
+
+    // Bytes 28..29 mirror MillBoardView: pending removals for White/Black.
+    // During a remove action the side with a pending removal is the actor,
+    // regardless of UI snapshot lag while auto-play chains moves.
+    final bool whitePending = rawPayload[28] > 0;
+    final bool blackPending = rawPayload[29] > 0;
+    if (!whitePending && !blackPending) {
+      return nativeSession.sideToMove;
+    }
+    assert(
+      whitePending != blackPending,
+      'Remove action must have exactly one pending remover.',
+    );
+    if (whitePending) {
+      return PieceColor.white;
+    }
+    if (blackPending) {
+      return PieceColor.black;
+    }
+    return nativeSession.sideToMove;
   }
 
   void _onPuzzleSolved(ValidationFeedback feedback) {

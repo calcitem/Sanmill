@@ -19,3 +19,4 @@
 !dump_master_cxx_sources.py
 !uci_probe.py
 !compare_engine_perf.py
+!convert_mill_fen_ids.py

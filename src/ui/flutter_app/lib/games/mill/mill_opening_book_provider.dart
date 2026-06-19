@@ -68,11 +68,14 @@ class MillOpeningBookProvider implements OpeningBookProvider {
 
   static String? _normalizeFen(String fen) {
     final List<String> fenFields = fen.split(' ');
-    if (fenFields.length < 2) {
+    if (fenFields.length < 17) {
       return fen;
     }
-    fenFields[fenFields.length - 2] = '0';
-    fenFields[fenFields.length - 3] = '0';
+    // Mill FEN mandatory fields are fixed.  Keep dialect markers such as
+    // `ids:nodes` untouched while normalising the volatile formed-mills and
+    // rule50 counters used by the static opening book keys.
+    fenFields[14] = '0';
+    fenFields[15] = '0';
     return fenFields.join(' ');
   }
 }

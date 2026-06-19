@@ -15,19 +15,19 @@ void main() {
   group('isPureFen edge cases', () {
     test('valid FEN with all empty board', () {
       const String fen =
-          '********/********/******** w p p 9 0 9 0 0 0 0 0 0 0 0 0 1';
+          '********/********/******** w p p 9 0 9 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes';
       expect(isPureFen(fen), isTrue);
     });
 
     test('valid FEN with pieces on board', () {
       const String fen =
-          'O@O*****/********/******** w p p 3 6 3 6 0 0 0 0 0 0 0 0 1';
+          'O@O*****/********/******** w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 1 ids:nodes';
       expect(isPureFen(fen), isTrue);
     });
 
     test('valid FEN with all pieces placed', () {
       const String fen =
-          'O@O@O@O@/O@O@O@O@/O@O@O@O@ w m s 0 0 0 0 0 0 0 0 0 0 0 0 1';
+          'O@O@O@O@/O@O@O@O@/O@O@O@O@ w m s 0 0 0 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes';
       expect(isPureFen(fen), isTrue);
     });
 

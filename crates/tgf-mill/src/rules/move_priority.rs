@@ -10,21 +10,21 @@ use super::MillVariantOptions;
 pub(super) const RATING_BLOCK_ONE_MILL: i32 = 10;
 pub(super) const RATING_ONE_MILL: i32 = 11;
 pub(super) const RATING_STAR_SQUARE: i32 = 11;
-// Dense-node star masks mirror master's legacy square priority groups.
-// Without diagonals the star squares are dense nodes 9/11/13/15
-// (legacy SQ_16/SQ_18/SQ_20/SQ_22).  With diagonals they are dense
-// nodes 8/10/12/14 (legacy SQ_23/SQ_17/SQ_19/SQ_21).
-const STAR_SQUARES_NO_DIAGONAL: u32 = 0x00aa00;
-const STAR_SQUARES_DIAGONAL: u32 = 0x005500;
+// Node ids are `legacy SQ - 8`, so master's priority groups can be copied as
+// constants with only that normalization.  The star masks are therefore the
+// cardinal middle-ring ranks for standard rules and diagonal middle-ring
+// corners for diagonal rules.
+const STAR_SQUARES_NO_DIAGONAL: u32 = 0x005500; // SQ_16/SQ_18/SQ_20/SQ_22
+const STAR_SQUARES_DIAGONAL: u32 = 0x00aa00; // SQ_17/SQ_19/SQ_21/SQ_23
 
 pub(super) const PRIORITY_NO_DIAGONAL: [usize; 24] = [
-    9, 11, 13, 15, 1, 3, 5, 7, 17, 19, 21, 23, 10, 12, 14, 8, 2, 4, 6, 0, 18, 20, 22, 16,
+    8, 10, 12, 14, 16, 18, 20, 22, 0, 2, 4, 6, 9, 11, 13, 15, 17, 19, 21, 23, 1, 3, 5, 7,
 ];
 pub(super) const PRIORITY_DIAGONAL: [usize; 24] = [
-    10, 12, 14, 8, 2, 4, 6, 0, 18, 20, 22, 16, 9, 11, 13, 15, 1, 3, 5, 7, 17, 19, 21, 23,
+    9, 11, 13, 15, 17, 19, 21, 23, 1, 3, 5, 7, 8, 10, 12, 14, 16, 18, 20, 22, 0, 2, 4, 6,
 ];
 pub(super) const PRIORITY_SKILL_1: [usize; 24] = [
-    17, 18, 19, 20, 21, 22, 23, 16, 9, 10, 11, 12, 13, 14, 15, 8, 1, 2, 3, 4, 5, 6, 7, 0,
+    0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23,
 ];
 
 pub(super) fn static_move_priority_for_search(

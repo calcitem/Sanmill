@@ -7,14 +7,14 @@
 
 // This map contains FEN (Forsyth-Edwards Notation) strings mapped to their best moves
 // specifically for the Nine Men's Morris game.
-// Note: The second-to-last field in the FEN string, referred to as `rule50`,
-// represents the half-move clock (a rule used in chess to track draws by the 50-move rule).
-// In this context, the `rule50` field must always be set to 0.
+// Note: Opening-book keys use node-id FENs marked by `ids:nodes`.
+// Mandatory field 14 (`formed_mills`) and field 15 (`rule50`) must always
+// be set to 0 so volatile counters do not split equivalent book positions.
 //
 // First, complete the <String> list based on symmetry.
 // Then use fen-to-board.py and input:
 //
-//   "********/@*O*O*@*/******** w p p 2 7 2 7 0 0 0 0 0 0 0 0 3": <String>[
+//   "********/@*O*O*@*/******** w p p 2 7 2 7 0 0 -1 -1 -1 -1 0 0 3 ids:nodes": <String>[
 //     "f2",
 //     "d5",
 //     "d7",
@@ -25,7 +25,7 @@
 //
 // Leave a blank line below, generate the output code, and paste it back here.
 //
-// Note: Replace the second and third last field of FEN string with '0'.
+// Note: Replace mandatory fields 14 and 15 of each FEN string with '0'.
 //
 // Note: When removed a piece, FEN cannot be obtained through Setup Position, but must be obtained by normalizedFen during the code flow.
 
@@ -43,16 +43,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/********/******** w p p 0 9 0 9 0 0 0 0 0 0 0 0 1": <String>[
-    "d2",
-    "b4",
-    "d6",
-    "f4",
-    "b2",
-    "b6",
-    "f6",
-    "f2",
-  ],
+  "********/********/******** w p p 0 9 0 9 0 0 -1 -1 -1 -1 0 0 1 ids:nodes":
+      <String>["d2", "b4", "d6", "f4", "b2", "b6", "f6", "f2"],
 
   //////////////////////////////////////////////////////////////////////////////
   /////////////////////////////// Brilliant Mill ///////////////////////////////
@@ -71,15 +63,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/****O***/******** b p p 1 8 0 9 0 0 0 0 0 0 0 0 1": <String>[
-    "d6",
-    "f6",
-    "b6",
-    "f4",
-    "b4",
-    "b2",
-    "f2",
-  ],
+  "********/****O***/******** b p p 1 8 0 9 0 0 -1 -1 -1 -1 0 0 1 ids:nodes":
+      <String>["d6", "f6", "b6", "f4", "b4", "b2", "f2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -94,15 +79,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/O*******/******** b p p 1 8 0 9 0 0 0 0 0 0 0 0 1": <String>[
-    "d2",
-    "f2",
-    "b2",
-    "f4",
-    "b4",
-    "b6",
-    "f6",
-  ],
+  "********/O*******/******** b p p 1 8 0 9 0 0 -1 -1 -1 -1 0 0 1 ids:nodes":
+      <String>["d2", "f2", "b2", "f4", "b4", "b6", "f6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -117,15 +95,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/******O*/******** b p p 1 8 0 9 0 0 0 0 0 0 0 0 1": <String>[
-    "f4",
-    "f2",
-    "f6",
-    "d2",
-    "d6",
-    "b6",
-    "b2",
-  ],
+  "********/******O*/******** b p p 1 8 0 9 0 0 -1 -1 -1 -1 0 0 1 ids:nodes":
+      <String>["f4", "f2", "f6", "d2", "d6", "b6", "b2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -140,15 +111,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/**O*****/******** b p p 1 8 0 9 0 0 0 0 0 0 0 0 1": <String>[
-    "b4",
-    "b2",
-    "b6",
-    "d2",
-    "d6",
-    "f6",
-    "f2",
-  ],
+  "********/**O*****/******** b p p 1 8 0 9 0 0 -1 -1 -1 -1 0 0 1 ids:nodes":
+      <String>["b4", "b2", "b6", "d2", "d6", "f6", "f2"],
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -165,11 +129,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/*****O**/******** b p p 1 8 0 9 0 0 0 0 0 0 0 0 1": <String>[
-    "d6",
-    "f4",
-    "f6",
-  ],
+  "********/*****O**/******** b p p 1 8 0 9 0 0 -1 -1 -1 -1 0 0 1 ids:nodes":
+      <String>["d6", "f4", "f6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -184,11 +145,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/*******O/******** b p p 1 8 0 9 0 0 0 0 0 0 0 0 1": <String>[
-    "d2",
-    "f4",
-    "f2",
-  ],
+  "********/*******O/******** b p p 1 8 0 9 0 0 -1 -1 -1 -1 0 0 1 ids:nodes":
+      <String>["d2", "f4", "f2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -203,11 +161,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/***O****/******** b p p 1 8 0 9 0 0 0 0 0 0 0 0 1": <String>[
-    "d6",
-    "b4",
-    "b6",
-  ],
+  "********/***O****/******** b p p 1 8 0 9 0 0 -1 -1 -1 -1 0 0 1 ids:nodes":
+      <String>["d6", "b4", "b6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -222,11 +177,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/*O******/******** b p p 1 8 0 9 0 0 0 0 0 0 0 0 1": <String>[
-    "d2",
-    "b4",
-    "b2",
-  ],
+  "********/*O******/******** b p p 1 8 0 9 0 0 -1 -1 -1 -1 0 0 1 ids:nodes":
+      <String>["d2", "b4", "b2"],
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -243,12 +195,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@***O***/******** w p p 1 8 1 8 0 0 0 0 0 0 0 0 2": <String>[
-    "f4",
-    "b4",
-    "f6",
-    "b6",
-  ],
+  "********/@***O***/******** w p p 1 8 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes":
+      <String>["f4", "b4", "f6", "b6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -263,12 +211,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/O***@***/******** w p p 1 8 1 8 0 0 0 0 0 0 0 0 2": <String>[
-    "f4",
-    "b4",
-    "f2",
-    "b2",
-  ],
+  "********/O***@***/******** w p p 1 8 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes":
+      <String>["f4", "b4", "f2", "b2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -283,12 +227,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/**@***O*/******** w p p 1 8 1 8 0 0 0 0 0 0 0 0 2": <String>[
-    "d2",
-    "d6",
-    "f2",
-    "f6",
-  ],
+  "********/**@***O*/******** w p p 1 8 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes":
+      <String>["d2", "d6", "f2", "f6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -303,12 +243,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/**O***@*/******** w p p 1 8 1 8 0 0 0 0 0 0 0 0 2": <String>[
-    "d2",
-    "d6",
-    "b2",
-    "b6",
-  ],
+  "********/**O***@*/******** w p p 1 8 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes":
+      <String>["d2", "d6", "b2", "b6"],
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -325,11 +261,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/*@**O***/******** w p p 1 8 1 8 0 0 0 0 0 0 0 0 2": <String>[
-    "b2",
-    "f4",
-    "b4",
-  ],
+  "********/*@**O***/******** w p p 1 8 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes":
+      <String>["b2", "f4", "b4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -344,11 +277,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/O**@****/******** w p p 1 8 1 8 0 0 0 0 0 0 0 0 2": <String>[
-    "b6",
-    "f4",
-    "b4",
-  ],
+  "********/O**@****/******** w p p 1 8 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes":
+      <String>["b6", "f4", "b4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -363,11 +293,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/****O**@/******** w p p 1 8 1 8 0 0 0 0 0 0 0 0 2": <String>[
-    "f2",
-    "b4",
-    "f4",
-  ],
+  "********/****O**@/******** w p p 1 8 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes":
+      <String>["f2", "b4", "f4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -382,11 +309,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/O****@**/******** w p p 1 8 1 8 0 0 0 0 0 0 0 0 2": <String>[
-    "f6",
-    "b4",
-    "f4",
-  ],
+  "********/O****@**/******** w p p 1 8 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes":
+      <String>["f6", "b4", "f4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -401,11 +325,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/***@**O*/******** w p p 1 8 1 8 0 0 0 0 0 0 0 0 2": <String>[
-    "b6",
-    "d2",
-    "d6",
-  ],
+  "********/***@**O*/******** w p p 1 8 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes":
+      <String>["b6", "d2", "d6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -420,11 +341,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/**O**@**/******** w p p 1 8 1 8 0 0 0 0 0 0 0 0 2": <String>[
-    "f6",
-    "d2",
-    "d6",
-  ],
+  "********/**O**@**/******** w p p 1 8 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes":
+      <String>["f6", "d2", "d6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -439,11 +357,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/*@****O*/******** w p p 1 8 1 8 0 0 0 0 0 0 0 0 2": <String>[
-    "b2",
-    "d6",
-    "d2",
-  ],
+  "********/*@****O*/******** w p p 1 8 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes":
+      <String>["b2", "d6", "d2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -458,11 +373,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/**O****@/******** w p p 1 8 1 8 0 0 0 0 0 0 0 0 2": <String>[
-    "f2",
-    "d6",
-    "d2",
-  ],
+  "********/**O****@/******** w p p 1 8 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes":
+      <String>["f2", "d6", "d2"],
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -479,7 +391,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/**@*O***/******** w p p 1 8 1 8 0 0 0 0 0 0 0 0 2": <String>["d6"],
+  "********/**@*O***/******** w p p 1 8 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes":
+      <String>["d6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -494,7 +407,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/O*@*****/******** w p p 1 8 1 8 0 0 0 0 0 0 0 0 2": <String>["d2"],
+  "********/O*@*****/******** w p p 1 8 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes":
+      <String>["d2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -509,7 +423,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/****O*@*/******** w p p 1 8 1 8 0 0 0 0 0 0 0 0 2": <String>["d6"],
+  "********/****O*@*/******** w p p 1 8 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes":
+      <String>["d6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -524,7 +439,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/O*****@*/******** w p p 1 8 1 8 0 0 0 0 0 0 0 0 2": <String>["d2"],
+  "********/O*****@*/******** w p p 1 8 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes":
+      <String>["d2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -539,7 +455,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/****@*O*/******** w p p 1 8 1 8 0 0 0 0 0 0 0 0 2": <String>["f4"],
+  "********/****@*O*/******** w p p 1 8 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes":
+      <String>["f4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -554,7 +471,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/**O*@***/******** w p p 1 8 1 8 0 0 0 0 0 0 0 0 2": <String>["b4"],
+  "********/**O*@***/******** w p p 1 8 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes":
+      <String>["b4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -569,7 +487,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@*****O*/******** w p p 1 8 1 8 0 0 0 0 0 0 0 0 2": <String>["f4"],
+  "********/@*****O*/******** w p p 1 8 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes":
+      <String>["f4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -584,7 +503,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@*O*****/******** w p p 1 8 1 8 0 0 0 0 0 0 0 0 2": <String>["b4"],
+  "********/@*O*****/******** w p p 1 8 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes":
+      <String>["b4"],
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -601,7 +521,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/****O@**/******** w p p 1 8 1 8 0 0 0 0 0 0 0 0 2": <String>["f6"],
+  "********/****O@**/******** w p p 1 8 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes":
+      <String>["f6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -616,7 +537,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/O******@/******** w p p 1 8 1 8 0 0 0 0 0 0 0 0 2": <String>["f2"],
+  "********/O******@/******** w p p 1 8 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes":
+      <String>["f2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -631,7 +553,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/***@O***/******** w p p 1 8 1 8 0 0 0 0 0 0 0 0 2": <String>["b6"],
+  "********/***@O***/******** w p p 1 8 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes":
+      <String>["b6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -646,7 +569,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/O@******/******** w p p 1 8 1 8 0 0 0 0 0 0 0 0 2": <String>["b2"],
+  "********/O@******/******** w p p 1 8 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes":
+      <String>["b2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -661,7 +585,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/******O@/******** w p p 1 8 1 8 0 0 0 0 0 0 0 0 2": <String>["f2"],
+  "********/******O@/******** w p p 1 8 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes":
+      <String>["f2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -676,7 +601,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/*@O*****/******** w p p 1 8 1 8 0 0 0 0 0 0 0 0 2": <String>["b2"],
+  "********/*@O*****/******** w p p 1 8 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes":
+      <String>["b2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -691,7 +617,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/*****@O*/******** w p p 1 8 1 8 0 0 0 0 0 0 0 0 2": <String>["f6"],
+  "********/*****@O*/******** w p p 1 8 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes":
+      <String>["f6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -706,7 +633,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/**O@****/******** w p p 1 8 1 8 0 0 0 0 0 0 0 0 2": <String>["b6"],
+  "********/**O@****/******** w p p 1 8 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes":
+      <String>["b6"],
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -723,7 +651,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@****O**/******** w p p 1 8 1 8 0 0 0 0 0 0 0 0 2": <String>["f6"],
+  "********/@****O**/******** w p p 1 8 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes":
+      <String>["f6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -738,7 +667,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/****@**O/******** w p p 1 8 1 8 0 0 0 0 0 0 0 0 2": <String>["f2"],
+  "********/****@**O/******** w p p 1 8 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes":
+      <String>["f2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -753,7 +683,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@**O****/******** w p p 1 8 1 8 0 0 0 0 0 0 0 0 2": <String>["b6"],
+  "********/@**O****/******** w p p 1 8 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes":
+      <String>["b6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -768,7 +699,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/*O**@***/******** w p p 1 8 1 8 0 0 0 0 0 0 0 0 2": <String>["b2"],
+  "********/*O**@***/******** w p p 1 8 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes":
+      <String>["b2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -783,7 +715,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/**@****O/******** w p p 1 8 1 8 0 0 0 0 0 0 0 0 2": <String>["f2"],
+  "********/**@****O/******** w p p 1 8 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes":
+      <String>["f2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -798,7 +731,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/*O****@*/******** w p p 1 8 1 8 0 0 0 0 0 0 0 0 2": <String>["b2"],
+  "********/*O****@*/******** w p p 1 8 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes":
+      <String>["b2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -813,7 +747,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/**@**O**/******** w p p 1 8 1 8 0 0 0 0 0 0 0 0 2": <String>["f6"],
+  "********/**@**O**/******** w p p 1 8 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes":
+      <String>["f6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -828,7 +763,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/***O**@*/******** w p p 1 8 1 8 0 0 0 0 0 0 0 0 2": <String>["b6"],
+  "********/***O**@*/******** w p p 1 8 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes":
+      <String>["b6"],
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -845,12 +781,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@*O*O***/******** b p p 2 7 1 8 0 0 0 0 0 0 0 0 2": <String>[
-    "b4",
-    "f2",
-    "b2",
-    "f6",
-  ],
+  "********/@*O*O***/******** b p p 2 7 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes":
+      <String>["b4", "f2", "b2", "f6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -865,12 +797,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/O*O*@***/******** b p p 2 7 1 8 0 0 0 0 0 0 0 0 2": <String>[
-    "b4",
-    "f6",
-    "b6",
-    "f2",
-  ],
+  "********/O*O*@***/******** b p p 2 7 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes":
+      <String>["b4", "f6", "b6", "f2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -885,12 +813,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@***O*O*/******** b p p 2 7 1 8 0 0 0 0 0 0 0 0 2": <String>[
-    "f4",
-    "b2",
-    "f2",
-    "b6",
-  ],
+  "********/@***O*O*/******** b p p 2 7 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes":
+      <String>["f4", "b2", "f2", "b6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -905,12 +829,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/O***@*O*/******** b p p 2 7 1 8 0 0 0 0 0 0 0 0 2": <String>[
-    "f4",
-    "b6",
-    "f6",
-    "b2",
-  ],
+  "********/O***@*O*/******** b p p 2 7 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes":
+      <String>["f4", "b6", "f6", "b2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -925,12 +845,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/**@*O*O*/******** b p p 2 7 1 8 0 0 0 0 0 0 0 0 2": <String>[
-    "d6",
-    "b2",
-    "b6",
-    "f2",
-  ],
+  "********/**@*O*O*/******** b p p 2 7 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes":
+      <String>["d6", "b2", "b6", "f2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -945,12 +861,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/**O*O*@*/******** b p p 2 7 1 8 0 0 0 0 0 0 0 0 2": <String>[
-    "d6",
-    "f2",
-    "f6",
-    "b2",
-  ],
+  "********/**O*O*@*/******** b p p 2 7 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes":
+      <String>["d6", "f2", "f6", "b2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -965,12 +877,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/O*@***O*/******** b p p 2 7 1 8 0 0 0 0 0 0 0 0 2": <String>[
-    "d2",
-    "b6",
-    "b2",
-    "f6",
-  ],
+  "********/O*@***O*/******** b p p 2 7 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes":
+      <String>["d2", "b6", "b2", "f6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -985,12 +893,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/O*O***@*/******** b p p 2 7 1 8 0 0 0 0 0 0 0 0 2": <String>[
-    "d2",
-    "f6",
-    "f2",
-    "b6",
-  ],
+  "********/O*O***@*/******** b p p 2 7 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes":
+      <String>["d2", "f6", "f2", "b6"],
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -1007,7 +911,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/*@O*O***/******** b p p 2 7 1 8 0 0 0 0 0 0 0 0 2": <String>["b2"],
+  "********/*@O*O***/******** b p p 2 7 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes":
+      <String>["b2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -1022,7 +927,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/O*O@****/******** b p p 2 7 1 8 0 0 0 0 0 0 0 0 2": <String>["b6"],
+  "********/O*O@****/******** b p p 2 7 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes":
+      <String>["b6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -1037,7 +943,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/****O*O@/******** b p p 2 7 1 8 0 0 0 0 0 0 0 0 2": <String>["f2"],
+  "********/****O*O@/******** b p p 2 7 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes":
+      <String>["f2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -1052,7 +959,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/O****@O*/******** b p p 2 7 1 8 0 0 0 0 0 0 0 0 2": <String>["f6"],
+  "********/O****@O*/******** b p p 2 7 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes":
+      <String>["f6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -1067,7 +975,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/***@O*O*/******** b p p 2 7 1 8 0 0 0 0 0 0 0 0 2": <String>["b6"],
+  "********/***@O*O*/******** b p p 2 7 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes":
+      <String>["b6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -1082,7 +991,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/**O*O@**/******** b p p 2 7 1 8 0 0 0 0 0 0 0 0 2": <String>["f6"],
+  "********/**O*O@**/******** b p p 2 7 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes":
+      <String>["f6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -1097,7 +1007,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/O@****O*/******** b p p 2 7 1 8 0 0 0 0 0 0 0 0 2": <String>["b2"],
+  "********/O@****O*/******** b p p 2 7 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes":
+      <String>["b2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -1112,7 +1023,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/O*O****@/******** b p p 2 7 1 8 0 0 0 0 0 0 0 0 2": <String>["f2"],
+  "********/O*O****@/******** b p p 2 7 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes":
+      <String>["f2"],
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -1129,7 +1041,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/*@**O*O*/******** b p p 2 7 1 8 0 0 0 0 0 0 0 0 2": <String>["b2"],
+  "********/*@**O*O*/******** b p p 2 7 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes":
+      <String>["b2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -1144,7 +1057,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/O**@**O*/******** b p p 2 7 1 8 0 0 0 0 0 0 0 0 2": <String>["b6"],
+  "********/O**@**O*/******** b p p 2 7 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes":
+      <String>["b6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -1159,7 +1073,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/**O*O**@/******** b p p 2 7 1 8 0 0 0 0 0 0 0 0 2": <String>["f2"],
+  "********/**O*O**@/******** b p p 2 7 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes":
+      <String>["f2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -1174,7 +1089,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/O*O**@**/******** b p p 2 7 1 8 0 0 0 0 0 0 0 0 2": <String>["f6"],
+  "********/O*O**@**/******** b p p 2 7 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes":
+      <String>["f6"],
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -1191,7 +1107,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/O*@*O***/******** b p p 2 7 1 8 0 0 0 0 0 0 0 0 2": <String>["b4"],
+  "********/O*@*O***/******** b p p 2 7 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes":
+      <String>["b4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -1206,7 +1123,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/O***O*@*/******** b p p 2 7 1 8 0 0 0 0 0 0 0 0 2": <String>["f4"],
+  "********/O***O*@*/******** b p p 2 7 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes":
+      <String>["f4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -1221,7 +1139,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/**O*@*O*/******** b p p 2 7 1 8 0 0 0 0 0 0 0 0 2": <String>["d6"],
+  "********/**O*@*O*/******** b p p 2 7 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes":
+      <String>["d6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -1236,7 +1155,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@*O***O*/******** b p p 2 7 1 8 0 0 0 0 0 0 0 0 2": <String>["d2"],
+  "********/@*O***O*/******** b p p 2 7 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes":
+      <String>["d2"],
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -1253,10 +1173,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@O***O**/******** b p p 2 7 1 8 0 0 0 0 0 0 0 0 2": <String>[
-    "b4",
-    "f4",
-  ],
+  "********/@O***O**/******** b p p 2 7 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes":
+      <String>["b4", "f4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -1271,10 +1189,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/***O@**O/******** b p p 2 7 1 8 0 0 0 0 0 0 0 0 2": <String>[
-    "b4",
-    "f4",
-  ],
+  "********/***O@**O/******** b p p 2 7 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes":
+      <String>["b4", "f4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -1289,10 +1205,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@**O***O/******** b p p 2 7 1 8 0 0 0 0 0 0 0 0 2": <String>[
-    "f4",
-    "b4",
-  ],
+  "********/@**O***O/******** b p p 2 7 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes":
+      <String>["f4", "b4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -1307,10 +1221,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/*O**@O**/******** b p p 2 7 1 8 0 0 0 0 0 0 0 0 2": <String>[
-    "f4",
-    "b4",
-  ],
+  "********/*O**@O**/******** b p p 2 7 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes":
+      <String>["f4", "b4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -1325,10 +1237,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/**@O***O/******** b p p 2 7 1 8 0 0 0 0 0 0 0 0 2": <String>[
-    "d6",
-    "d2",
-  ],
+  "********/**@O***O/******** b p p 2 7 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes":
+      <String>["d6", "d2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -1343,10 +1253,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/*O***O@*/******** b p p 2 7 1 8 0 0 0 0 0 0 0 0 2": <String>[
-    "d6",
-    "d2",
-  ],
+  "********/*O***O@*/******** b p p 2 7 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes":
+      <String>["d6", "d2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -1361,10 +1269,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/*O@**O**/******** b p p 2 7 1 8 0 0 0 0 0 0 0 0 2": <String>[
-    "d2",
-    "d6",
-  ],
+  "********/*O@**O**/******** b p p 2 7 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes":
+      <String>["d2", "d6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -1379,10 +1285,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/***O**@O/******** b p p 2 7 1 8 0 0 0 0 0 0 0 0 2": <String>[
-    "d2",
-    "d6",
-  ],
+  "********/***O**@O/******** b p p 2 7 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes":
+      <String>["d2", "d6"],
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -1399,16 +1303,17 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/O*O*@*@*/******** w p p 2 7 2 7 0 0 0 0 0 0 0 0 3": <String>[
-    "f6",
-    "d3",
-    "d1",
-    "c4",
-    "a4",
-    "b2",
-    "e5", // Rainer Rosenberger
-    "g7",
-  ],
+  "********/O*O*@*@*/******** w p p 2 7 2 7 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>[
+        "f6",
+        "d3",
+        "d1",
+        "c4",
+        "a4",
+        "b2",
+        "e5", // Rainer Rosenberger
+        "g7",
+      ],
 
   /*
     a7 ----- d7 ----- g7
@@ -1423,16 +1328,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@*O*O*@*/******** w p p 2 7 2 7 0 0 0 0 0 0 0 0 3": <String>[
-    "f2",
-    "d5",
-    "d7",
-    "c4",
-    "a4",
-    "b6",
-    "e3",
-    "g1",
-  ],
+  "********/@*O*O*@*/******** w p p 2 7 2 7 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>["f2", "d5", "d7", "c4", "a4", "b6", "e3", "g1"],
 
   /*
     a7 ----- d7 ----- g7
@@ -1447,16 +1344,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/O*@*@*O*/******** w p p 2 7 2 7 0 0 0 0 0 0 0 0 3": <String>[
-    "b6",
-    "d3",
-    "d1",
-    "e4",
-    "g4",
-    "f2",
-    "c5",
-    "a7",
-  ],
+  "********/O*@*@*O*/******** w p p 2 7 2 7 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>["b6", "d3", "d1", "e4", "g4", "f2", "c5", "a7"],
 
   /*
     a7 ----- d7 ----- g7
@@ -1471,16 +1360,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@*@*O*O*/******** w p p 2 7 2 7 0 0 0 0 0 0 0 0 3": <String>[
-    "b2",
-    "d5",
-    "d7",
-    "e4",
-    "g4",
-    "f6",
-    "c3",
-    "a1",
-  ],
+  "********/@*@*O*O*/******** w p p 2 7 2 7 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>["b2", "d5", "d7", "e4", "g4", "f6", "c3", "a1"],
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -1497,10 +1378,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@*OOO*@*/******** b p p 3 6 2 7 0 0 0 0 0 0 0 0 3": <String>[
-    "f6",
-    "b2",
-  ],
+  "********/@*OOO*@*/******** b p p 3 6 2 7 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>["f6", "b2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -1515,10 +1394,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/OOO*@*@*/******** b p p 3 6 2 7 0 0 0 0 0 0 0 0 3": <String>[
-    "f2",
-    "b6",
-  ],
+  "********/OOO*@*@*/******** b p p 3 6 2 7 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>["f2", "b6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -1533,10 +1410,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@*@*OOO*/******** b p p 3 6 2 7 0 0 0 0 0 0 0 0 3": <String>[
-    "b6",
-    "f2",
-  ],
+  "********/@*@*OOO*/******** b p p 3 6 2 7 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>["b6", "f2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -1551,10 +1426,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/O*@*@*OO/******** b p p 3 6 2 7 0 0 0 0 0 0 0 0 3": <String>[
-    "b2",
-    "f6",
-  ],
+  "********/O*@*@*OO/******** b p p 3 6 2 7 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>["b2", "f6"],
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -1571,7 +1444,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "O*******/@*O*O*@*/******** b p p 3 6 2 7 0 0 0 0 0 0 0 0 3": <String>["b6"],
+  "O*******/@*O*O*@*/******** b p p 3 6 2 7 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>["b6"],
 
   /*
     a7 -----  O ----- g7
@@ -1586,7 +1460,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@*O*O*@*/O******* b p p 3 6 2 7 0 0 0 0 0 0 0 0 3": <String>["b6"],
+  "********/@*O*O*@*/O******* b p p 3 6 2 7 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>["b6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -1601,7 +1476,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "****O***/O*O*@*@*/******** b p p 3 6 2 7 0 0 0 0 0 0 0 0 3": <String>["b2"],
+  "****O***/O*O*@*@*/******** b p p 3 6 2 7 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>["b2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -1616,7 +1492,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "********/O*O*@*@*/****O*** b p p 3 6 2 7 0 0 0 0 0 0 0 0 3": <String>["b2"],
+  "********/O*O*@*@*/****O*** b p p 3 6 2 7 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>["b2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -1631,7 +1508,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "O*******/@*@*O*O*/******** b p p 3 6 2 7 0 0 0 0 0 0 0 0 3": <String>["f6"],
+  "O*******/@*@*O*O*/******** b p p 3 6 2 7 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>["f6"],
 
   /*
     a7 -----  O ----- g7
@@ -1646,7 +1524,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@*@*O*O*/O******* b p p 3 6 2 7 0 0 0 0 0 0 0 0 3": <String>["f6"],
+  "********/@*@*O*O*/O******* b p p 3 6 2 7 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>["f6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -1661,7 +1540,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "****O***/O*@*@*O*/******** b p p 3 6 2 7 0 0 0 0 0 0 0 0 3": <String>["f2"],
+  "****O***/O*@*@*O*/******** b p p 3 6 2 7 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>["f2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -1676,7 +1556,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "********/O*@*@*O*/****O*** b p p 3 6 2 7 0 0 0 0 0 0 0 0 3": <String>["f2"],
+  "********/O*@*@*O*/****O*** b p p 3 6 2 7 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>["f2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -1691,7 +1572,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "**O*****/@*@*O*O*/******** b p p 3 6 2 7 0 0 0 0 0 0 0 0 3": <String>["f6"],
+  "**O*****/@*@*O*O*/******** b p p 3 6 2 7 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>["f6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -1706,7 +1588,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@*@*O*O*/**O***** b p p 3 6 2 7 0 0 0 0 0 0 0 0 3": <String>["f6"],
+  "********/@*@*O*O*/**O***** b p p 3 6 2 7 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>["f6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -1721,7 +1604,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "******O*/@*O*O*@*/******** b p p 3 6 2 7 0 0 0 0 0 0 0 0 3": <String>["b6"],
+  "******O*/@*O*O*@*/******** b p p 3 6 2 7 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>["b6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -1736,7 +1620,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@*O*O*@*/******O* b p p 3 6 2 7 0 0 0 0 0 0 0 0 3": <String>["b6"],
+  "********/@*O*O*@*/******O* b p p 3 6 2 7 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>["b6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -1751,7 +1636,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "**O*****/O*@*@*O*/******** b p p 3 6 2 7 0 0 0 0 0 0 0 0 3": <String>["f2"],
+  "**O*****/O*@*@*O*/******** b p p 3 6 2 7 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>["f2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -1766,7 +1652,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/O*@*@*O*/**O***** b p p 3 6 2 7 0 0 0 0 0 0 0 0 3": <String>["f2"],
+  "********/O*@*@*O*/**O***** b p p 3 6 2 7 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>["f2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -1781,7 +1668,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "******O*/O*O*@*@*/******** b p p 3 6 2 7 0 0 0 0 0 0 0 0 3": <String>["b2"],
+  "******O*/O*O*@*@*/******** b p p 3 6 2 7 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>["b2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -1796,7 +1684,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/O*O*@*@*/******O* b p p 3 6 2 7 0 0 0 0 0 0 0 0 3": <String>["b2"],
+  "********/O*O*@*@*/******O* b p p 3 6 2 7 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>["b2"],
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -1813,10 +1702,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@@OOO*@*/******** w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "b2",
-    "b6",
-  ],
+  "********/@@OOO*@*/******** w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["b2", "b6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -1831,10 +1718,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/OOO@@*@*/******** w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "b6",
-    "b2",
-  ],
+  "********/OOO@@*@*/******** w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["b6", "b2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -1849,10 +1734,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@*@*OOO@/******** w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "f2",
-    "f6",
-  ],
+  "********/@*@*OOO@/******** w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["f2", "f6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -1867,10 +1750,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/O*@*@@OO/******** w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "f6",
-    "f2",
-  ],
+  "********/O*@*@@OO/******** w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["f6", "f2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -1885,10 +1766,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@*@@OOO*/******** w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "b6",
-    "f6",
-  ],
+  "********/@*@@OOO*/******** w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["b6", "f6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -1903,10 +1782,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@*OOO@@*/******** w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "f6",
-    "b6",
-  ],
+  "********/@*OOO@@*/******** w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["f6", "b6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -1921,10 +1798,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/O@@*@*OO/******** w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "b2",
-    "f2",
-  ],
+  "********/O@@*@*OO/******** w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["b2", "f2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -1939,10 +1814,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/OOO*@*@@/******** w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "f2",
-    "b2",
-  ],
+  "********/OOO*@*@@/******** w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["f2", "b2"],
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -1959,7 +1832,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@@OOOO@*/******** w p r 4 5 3 6 1 0 0 0 0 0 0 0 4": <String>["xf6"],
+  "********/@@OOOO@*/******** w p r 4 5 3 6 1 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["xf6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -1974,7 +1848,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/OOO@@*@O/******** w p r 4 5 3 6 1 0 0 0 0 0 0 0 4": <String>["xf2"],
+  "********/OOO@@*@O/******** w p r 4 5 3 6 1 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["xf2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -1989,7 +1864,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@*@OOOO@/******** w p r 4 5 3 6 1 0 0 0 0 0 0 0 4": <String>["xb6"],
+  "********/@*@OOOO@/******** w p r 4 5 3 6 1 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["xb6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -2004,7 +1880,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/OO@*@@OO/******** w p r 4 5 3 6 1 0 0 0 0 0 0 0 4": <String>["xb2"],
+  "********/OO@*@@OO/******** w p r 4 5 3 6 1 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["xb2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -2019,7 +1896,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@*@@OOOO/******** w p r 4 5 3 6 1 0 0 0 0 0 0 0 4": <String>["xf2"],
+  "********/@*@@OOOO/******** w p r 4 5 3 6 1 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["xf2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -2034,7 +1912,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@OOOO@@*/******** w p r 4 5 3 6 1 0 0 0 0 0 0 0 4": <String>["xb2"],
+  "********/@OOOO@@*/******** w p r 4 5 3 6 1 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["xb2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -2049,7 +1928,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/O@@*@OOO/******** w p r 4 5 3 6 1 0 0 0 0 0 0 0 4": <String>["xf6"],
+  "********/O@@*@OOO/******** w p r 4 5 3 6 1 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["xf6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -2064,7 +1944,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/OOOO@*@@/******** w p r 4 5 3 6 1 0 0 0 0 0 0 0 4": <String>["xb6"],
+  "********/OOOO@*@@/******** w p r 4 5 3 6 1 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["xb6"],
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -2081,7 +1962,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@*OOOO@*/******** b p p 4 5 2 6 0 0 0 0 0 0 0 0 4": <String>["f6"],
+  "********/@*OOOO@*/******** b p p 4 5 2 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["f6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -2096,7 +1978,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/OOO*@*@O/******** b p p 4 5 2 6 0 0 0 0 0 0 0 0 4": <String>["f2"],
+  "********/OOO*@*@O/******** b p p 4 5 2 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["f2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -2111,7 +1994,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@*@OOOO*/******** b p p 4 5 2 6 0 0 0 0 0 0 0 0 4": <String>["b6"],
+  "********/@*@OOOO*/******** b p p 4 5 2 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["b6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -2126,7 +2010,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/OO@*@*OO/******** b p p 4 5 2 6 0 0 0 0 0 0 0 0 4": <String>["b2"],
+  "********/OO@*@*OO/******** b p p 4 5 2 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["b2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -2141,7 +2026,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@*@*OOOO/******** b p p 4 5 2 6 0 0 0 0 0 0 0 0 4": <String>["f2"],
+  "********/@*@*OOOO/******** b p p 4 5 2 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["f2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -2156,7 +2042,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@OOOO*@*/******** b p p 4 5 2 6 0 0 0 0 0 0 0 0 4": <String>["b2"],
+  "********/@OOOO*@*/******** b p p 4 5 2 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["b2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -2171,7 +2058,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/O*@*@OOO/******** b p p 4 5 2 6 0 0 0 0 0 0 0 0 4": <String>["f6"],
+  "********/O*@*@OOO/******** b p p 4 5 2 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["f6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -2186,7 +2074,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/OOOO@*@*/******** b p p 4 5 2 6 0 0 0 0 0 0 0 0 4": <String>["b6"],
+  "********/OOOO@*@*/******** b p p 4 5 2 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["b6"],
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -2203,7 +2092,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@@OOO*@O/******** b p p 4 5 3 6 0 0 0 0 0 0 0 0 4": <String>["b2"],
+  "********/@@OOO*@O/******** b p p 4 5 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["b2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -2218,7 +2108,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/OOO@@O@*/******** b p p 4 5 3 6 0 0 0 0 0 0 0 0 4": <String>["b6"],
+  "********/OOO@@O@*/******** b p p 4 5 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["b6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -2233,7 +2124,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@O@*OOO@/******** b p p 4 5 3 6 0 0 0 0 0 0 0 0 4": <String>["f2"],
+  "********/@O@*OOO@/******** b p p 4 5 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["f2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -2248,7 +2140,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/O*@O@@OO/******** b p p 4 5 3 6 0 0 0 0 0 0 0 0 4": <String>["f6"],
+  "********/O*@O@@OO/******** b p p 4 5 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["f6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -2263,7 +2156,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@O@@OOO*/******** b p p 4 5 3 6 0 0 0 0 0 0 0 0 4": <String>["b6"],
+  "********/@O@@OOO*/******** b p p 4 5 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["b6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -2278,7 +2172,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@*OOO@@O/******** b p p 4 5 3 6 0 0 0 0 0 0 0 0 4": <String>["f6"],
+  "********/@*OOO@@O/******** b p p 4 5 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["f6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -2293,7 +2188,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/O@@O@*OO/******** b p p 4 5 3 6 0 0 0 0 0 0 0 0 4": <String>["b2"],
+  "********/O@@O@*OO/******** b p p 4 5 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["b2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -2308,7 +2204,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/OOO*@O@@/******** b p p 4 5 3 6 0 0 0 0 0 0 0 0 4": <String>["f2"],
+  "********/OOO*@O@@/******** b p p 4 5 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["f2"],
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -2325,7 +2222,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "O*******/@*O*O*@@/******** w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>["b2"],
+  "O*******/@*O*O*@@/******** w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["b2"],
 
   /*
     a7 -----  O ----- g7
@@ -2340,7 +2238,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@*O*O*@@/O******* w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>["b2"],
+  "********/@*O*O*@@/O******* w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["b2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -2355,7 +2254,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "****O***/O*O*@@@*/******** w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>["b6"],
+  "****O***/O*O*@@@*/******** w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["b6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -2370,7 +2270,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "********/O*O*@@@*/****O*** w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>["b6"],
+  "********/O*O*@@@*/****O*** w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["b6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -2385,7 +2286,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "O*******/@@@*O*O*/******** w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>["f2"],
+  "O*******/@@@*O*O*/******** w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["f2"],
 
   /*
     a7 -----  O ----- g7
@@ -2400,7 +2302,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@@@*O*O*/O******* w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>["f2"],
+  "********/@@@*O*O*/O******* w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["f2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -2415,7 +2318,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "****O***/O*@@@*O*/******** w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>["f6"],
+  "****O***/O*@@@*O*/******** w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["f6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -2430,7 +2334,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "********/O*@@@*O*/****O*** w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>["f6"],
+  "********/O*@@@*O*/****O*** w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["f6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -2445,7 +2350,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "**O*****/@@@*O*O*/******** w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>["b6"],
+  "**O*****/@@@*O*O*/******** w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["b6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -2460,7 +2366,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@@@*O*O*/**O***** w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>["b6"],
+  "********/@@@*O*O*/**O***** w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["b6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -2475,7 +2382,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "******O*/@*O*O*@@/******** w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>["f6"],
+  "******O*/@*O*O*@@/******** w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["f6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -2490,7 +2398,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@*O*O*@@/******O* w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>["f6"],
+  "********/@*O*O*@@/******O* w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["f6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -2505,7 +2414,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "**O*****/O*@@@*O*/******** w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>["b2"],
+  "**O*****/O*@@@*O*/******** w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["b2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -2520,7 +2430,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/O*@@@*O*/**O***** w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>["b2"],
+  "********/O*@@@*O*/**O***** w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["b2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -2535,7 +2446,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "******O*/O*O*@@@*/******** w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>["f2"],
+  "******O*/O*O*@@@*/******** w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["f2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -2550,7 +2462,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/O*O*@@@*/******O* w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>["f2"],
+  "********/O*O*@@@*/******O* w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["f2"],
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -2567,10 +2480,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "O*******/@*O*OO@@/******** b p p 4 5 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "f2",
-    "f6",
-  ],
+  "O*******/@*O*OO@@/******** b p p 4 5 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["f2", "f6"],
 
   /*
     a7 -----  O ----- g7
@@ -2585,10 +2496,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@*O*OO@@/O******* b p p 4 5 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "f2",
-    "f6",
-  ],
+  "********/@*O*OO@@/O******* b p p 4 5 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["f2", "f6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -2603,10 +2512,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "****O***/O*O*@@@O/******** b p p 4 5 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "f6",
-    "f2",
-  ],
+  "****O***/O*O*@@@O/******** b p p 4 5 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["f6", "f2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -2621,10 +2528,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "********/O*O*@@@O/****O*** b p p 4 5 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "f6",
-    "f2",
-  ],
+  "********/O*O*@@@O/****O*** b p p 4 5 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["f6", "f2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -2639,10 +2544,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "O*******/@@@OO*O*/******** b p p 4 5 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "b2",
-    "b6",
-  ],
+  "O*******/@@@OO*O*/******** b p p 4 5 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["b2", "b6"],
 
   /*
     a7 -----  O ----- g7
@@ -2657,10 +2560,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@@@OO*O*/O******* b p p 4 5 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "b2",
-    "b6",
-  ],
+  "********/@@@OO*O*/O******* b p p 4 5 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["b2", "b6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -2675,10 +2576,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "****O***/OO@@@*O*/******** b p p 4 5 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "b6",
-    "b2",
-  ],
+  "****O***/OO@@@*O*/******** b p p 4 5 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["b6", "b2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -2693,10 +2592,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "********/OO@@@*O*/****O*** b p p 4 5 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "b6",
-    "b2",
-  ],
+  "********/OO@@@*O*/****O*** b p p 4 5 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["b6", "b2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -2711,10 +2608,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "**O*****/@@@*O*OO/******** b p p 4 5 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "b2",
-    "f2",
-  ],
+  "**O*****/@@@*O*OO/******** b p p 4 5 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["b2", "f2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -2729,10 +2624,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@@@*O*OO/**O***** b p p 4 5 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "b2",
-    "f2",
-  ],
+  "********/@@@*O*OO/**O***** b p p 4 5 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["b2", "f2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -2747,10 +2640,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "******O*/@OO*O*@@/******** b p p 4 5 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "f2",
-    "b2",
-  ],
+  "******O*/@OO*O*@@/******** b p p 4 5 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["f2", "b2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -2765,10 +2656,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@OO*O*@@/******O* b p p 4 5 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "f2",
-    "b2",
-  ],
+  "********/@OO*O*@@/******O* b p p 4 5 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["f2", "b2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -2783,10 +2672,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "**O*****/O*@@@OO*/******** b p p 4 5 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "b6",
-    "f6",
-  ],
+  "**O*****/O*@@@OO*/******** b p p 4 5 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["b6", "f6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -2801,10 +2688,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/O*@@@OO*/**O***** b p p 4 5 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "b6",
-    "f6",
-  ],
+  "********/O*@@@OO*/**O***** b p p 4 5 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["b6", "f6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -2819,10 +2704,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "******O*/O*OO@@@*/******** b p p 4 5 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "f6",
-    "b6",
-  ],
+  "******O*/O*OO@@@*/******** b p p 4 5 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["f6", "b6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -2837,10 +2720,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/O*OO@@@*/******O* b p p 4 5 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "f6",
-    "b6",
-  ],
+  "********/O*OO@@@*/******O* b p p 4 5 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["f6", "b6"],
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -2857,7 +2738,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "O*******/@@O*OO@@/******** b p r 4 5 4 5 0 1 0 0 0 0 0 0 4": <String>["xb2"],
+  "O*******/@@O*OO@@/******** b p r 4 5 4 5 0 1 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["xb2"],
 
   /*
     a7 -----  O ----- g7
@@ -2872,7 +2754,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@@O*OO@@/O******* b p r 4 5 4 5 0 1 0 0 0 0 0 0 4": <String>["xb2"],
+  "********/@@O*OO@@/O******* b p r 4 5 4 5 0 1 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["xb2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -2887,7 +2770,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "****O***/O*O@@@@O/******** b p r 4 5 4 5 0 1 0 0 0 0 0 0 4": <String>["xb6"],
+  "****O***/O*O@@@@O/******** b p r 4 5 4 5 0 1 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["xb6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -2902,7 +2786,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "********/O*O@@@@O/****O*** b p r 4 5 4 5 0 1 0 0 0 0 0 0 4": <String>["xb6"],
+  "********/O*O@@@@O/****O*** b p r 4 5 4 5 0 1 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["xb6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -2917,7 +2802,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "O*******/@@@OO*O@/******** b p r 4 5 4 5 0 1 0 0 0 0 0 0 4": <String>["xf2"],
+  "O*******/@@@OO*O@/******** b p r 4 5 4 5 0 1 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["xf2"],
 
   /*
     a7 -----  O ----- g7
@@ -2932,7 +2818,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@@@OO*O@/O******* b p r 4 5 4 5 0 1 0 0 0 0 0 0 4": <String>["xf2"],
+  "********/@@@OO*O@/O******* b p r 4 5 4 5 0 1 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["xf2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -2947,7 +2834,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "****O***/OO@@@@O*/******** b p r 4 5 4 5 0 1 0 0 0 0 0 0 4": <String>["xf6"],
+  "****O***/OO@@@@O*/******** b p r 4 5 4 5 0 1 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["xf6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -2962,7 +2850,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "********/OO@@@@O*/****O*** b p r 4 5 4 5 0 1 0 0 0 0 0 0 4": <String>["xf6"],
+  "********/OO@@@@O*/****O*** b p r 4 5 4 5 0 1 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["xf6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -2977,7 +2866,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "**O*****/@@@@O*OO/******** b p r 4 5 4 5 0 1 0 0 0 0 0 0 4": <String>["xb6"],
+  "**O*****/@@@@O*OO/******** b p r 4 5 4 5 0 1 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["xb6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -2992,7 +2882,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@@@@O*OO/**O***** b p r 4 5 4 5 0 1 0 0 0 0 0 0 4": <String>["xb6"],
+  "********/@@@@O*OO/**O***** b p r 4 5 4 5 0 1 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["xb6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -3007,7 +2898,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "******O*/@OO*O@@@/******** b p r 4 5 4 5 0 1 0 0 0 0 0 0 4": <String>["xf6"],
+  "******O*/@OO*O@@@/******** b p r 4 5 4 5 0 1 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["xf6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -3022,7 +2914,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@OO*O@@@/******O* b p r 4 5 4 5 0 1 0 0 0 0 0 0 4": <String>["xf6"],
+  "********/@OO*O@@@/******O* b p r 4 5 4 5 0 1 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["xf6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -3037,7 +2930,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "**O*****/O@@@@OO*/******** b p r 4 5 4 5 0 1 0 0 0 0 0 0 4": <String>["xb2"],
+  "**O*****/O@@@@OO*/******** b p r 4 5 4 5 0 1 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["xb2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -3052,7 +2946,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/O@@@@OO*/**O***** b p r 4 5 4 5 0 1 0 0 0 0 0 0 4": <String>["xb2"],
+  "********/O@@@@OO*/**O***** b p r 4 5 4 5 0 1 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["xb2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -3067,7 +2962,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "******O*/O*OO@@@@/******** b p r 4 5 4 5 0 1 0 0 0 0 0 0 4": <String>["xf2"],
+  "******O*/O*OO@@@@/******** b p r 4 5 4 5 0 1 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["xf2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -3082,7 +2978,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/O*OO@@@@/******O* b p r 4 5 4 5 0 1 0 0 0 0 0 0 4": <String>["xf2"],
+  "********/O*OO@@@@/******O* b p r 4 5 4 5 0 1 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["xf2"],
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -3101,10 +2998,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/OO@*@@OO/******** w p p 4 5 3 5 0 0 0 0 0 0 0 0 5": <String>[
-    "f2",
-    "c5",
-  ],
+  "********/OO@*@@OO/******** w p p 4 5 3 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["f2", "c5"],
 
   /*
     a7 ----- d7 ----- g7
@@ -3119,10 +3014,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@*@OOOO@/******** w p p 4 5 3 5 0 0 0 0 0 0 0 0 5": <String>[
-    "f6",
-    "c3",
-  ],
+  "********/@*@OOOO@/******** w p p 4 5 3 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["f6", "c3"],
 
   /*
     a7 ----- d7 ----- g7
@@ -3137,10 +3030,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/OOO@@*@O/******** w p p 4 5 3 5 0 0 0 0 0 0 0 0 5": <String>[
-    "b2",
-    "e5",
-  ],
+  "********/OOO@@*@O/******** w p p 4 5 3 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["b2", "e5"],
 
   /*
     a7 ----- d7 ----- g7
@@ -3155,10 +3046,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@@OOOO@*/******** w p p 4 5 3 5 0 0 0 0 0 0 0 0 5": <String>[
-    "b6",
-    "e3",
-  ],
+  "********/@@OOOO@*/******** w p p 4 5 3 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["b6", "e3"],
 
   /*
     a7 ----- d7 ----- g7
@@ -3173,10 +3062,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/OOOO@*@@/******** w p p 4 5 3 5 0 0 0 0 0 0 0 0 5": <String>[
-    "b2",
-    "e5",
-  ],
+  "********/OOOO@*@@/******** w p p 4 5 3 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["b2", "e5"],
 
   /*
     a7 ----- d7 ----- g7
@@ -3191,10 +3078,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/O@@*@OOO/******** w p p 4 5 3 5 0 0 0 0 0 0 0 0 5": <String>[
-    "f2",
-    "c5",
-  ],
+  "********/O@@*@OOO/******** w p p 4 5 3 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["f2", "c5"],
 
   /*
     a7 ----- d7 ----- g7
@@ -3209,10 +3094,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@OOOO@@*/******** w p p 4 5 3 5 0 0 0 0 0 0 0 0 5": <String>[
-    "b6",
-    "e3",
-  ],
+  "********/@OOOO@@*/******** w p p 4 5 3 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["b6", "e3"],
 
   /*
     a7 ----- d7 ----- g7
@@ -3227,10 +3110,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@*@@OOOO/******** w p p 4 5 3 5 0 0 0 0 0 0 0 0 5": <String>[
-    "f6",
-    "c3",
-  ],
+  "********/@*@@OOOO/******** w p p 4 5 3 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["f6", "c3"],
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -3247,7 +3128,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "O*******/@*O@OO@@/******** w p p 4 5 4 5 0 0 0 0 0 0 0 0 5": <String>["f6"],
+  "O*******/@*O@OO@@/******** w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["f6"],
 
   /*
     a7 -----  O ----- g7
@@ -3262,7 +3144,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@*O@OO@@/O******* w p p 4 5 4 5 0 0 0 0 0 0 0 0 5": <String>["f6"],
+  "********/@*O@OO@@/O******* w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["f6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -3277,7 +3160,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "****O***/O@O*@@@O/******** w p p 4 5 4 5 0 0 0 0 0 0 0 0 5": <String>["f2"],
+  "****O***/O@O*@@@O/******** w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["f2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -3292,7 +3176,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "********/O@O*@@@O/****O*** w p p 4 5 4 5 0 0 0 0 0 0 0 0 5": <String>["f2"],
+  "********/O@O*@@@O/****O*** w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["f2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -3307,7 +3192,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "O*******/@@@OO@O*/******** w p p 4 5 4 5 0 0 0 0 0 0 0 0 5": <String>["b6"],
+  "O*******/@@@OO@O*/******** w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["b6"],
 
   /*
     a7 -----  O ----- g7
@@ -3322,7 +3208,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@@@OO@O*/O******* w p p 4 5 4 5 0 0 0 0 0 0 0 0 5": <String>["b6"],
+  "********/@@@OO@O*/O******* w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["b6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -3337,7 +3224,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "****O***/OO@@@*O@/******** w p p 4 5 4 5 0 0 0 0 0 0 0 0 5": <String>["b2"],
+  "****O***/OO@@@*O@/******** w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["b2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -3352,7 +3240,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "********/OO@@@*O@/****O*** w p p 4 5 4 5 0 0 0 0 0 0 0 0 5": <String>["b2"],
+  "********/OO@@@*O@/****O*** w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["b2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -3367,7 +3256,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "**O*****/@@@*O@OO/******** w p p 4 5 4 5 0 0 0 0 0 0 0 0 5": <String>["f2"],
+  "**O*****/@@@*O@OO/******** w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["f2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -3382,7 +3272,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@@@*O@OO/**O***** w p p 4 5 4 5 0 0 0 0 0 0 0 0 5": <String>["f2"],
+  "********/@@@*O@OO/**O***** w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["f2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -3397,7 +3288,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "******O*/@OO@O*@@/******** w p p 4 5 4 5 0 0 0 0 0 0 0 0 5": <String>["b2"],
+  "******O*/@OO@O*@@/******** w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["b2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -3412,7 +3304,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@OO@O*@@/******O* w p p 4 5 4 5 0 0 0 0 0 0 0 0 5": <String>["b2"],
+  "********/@OO@O*@@/******O* w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["b2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -3427,7 +3320,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "**O*****/O*@@@OO@/******** w p p 4 5 4 5 0 0 0 0 0 0 0 0 5": <String>["f6"],
+  "**O*****/O*@@@OO@/******** w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["f6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -3442,7 +3336,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/O*@@@OO@/**O***** w p p 4 5 4 5 0 0 0 0 0 0 0 0 5": <String>["f6"],
+  "********/O*@@@OO@/**O***** w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["f6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -3457,7 +3352,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "******O*/O@OO@@@*/******** w p p 4 5 4 5 0 0 0 0 0 0 0 0 5": <String>["b6"],
+  "******O*/O@OO@@@*/******** w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["b6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -3472,7 +3368,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/O@OO@@@*/******O* w p p 4 5 4 5 0 0 0 0 0 0 0 0 5": <String>["b6"],
+  "********/O@OO@@@*/******O* w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["b6"],
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -3489,7 +3386,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "O*******/@@O*O*@@/******** w p p 3 5 4 5 0 0 0 0 0 0 0 0 5": <String>["b2"],
+  "O*******/@@O*O*@@/******** w p p 3 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["b2"],
 
   /*
     a7 -----  O ----- g7
@@ -3504,7 +3402,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@@O*O*@@/O******* w p p 3 5 4 5 0 0 0 0 0 0 0 0 5": <String>["b2"],
+  "********/@@O*O*@@/O******* w p p 3 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["b2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -3519,7 +3418,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "****O***/O*O@@@@*/******** w p p 3 5 4 5 0 0 0 0 0 0 0 0 5": <String>["b6"],
+  "****O***/O*O@@@@*/******** w p p 3 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["b6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -3534,7 +3434,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "********/O*O@@@@*/****O*** w p p 3 5 4 5 0 0 0 0 0 0 0 0 5": <String>["b6"],
+  "********/O*O@@@@*/****O*** w p p 3 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["b6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -3549,7 +3450,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "O*******/@@@*O*O@/******** w p p 3 5 4 5 0 0 0 0 0 0 0 0 5": <String>["f2"],
+  "O*******/@@@*O*O@/******** w p p 3 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["f2"],
 
   /*
     a7 -----  O ----- g7
@@ -3564,7 +3466,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@@@*O*O@/O******* w p p 3 5 4 5 0 0 0 0 0 0 0 0 5": <String>["f2"],
+  "********/@@@*O*O@/O******* w p p 3 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["f2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -3579,7 +3482,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "****O***/O*@@@@O*/******** w p p 3 5 4 5 0 0 0 0 0 0 0 0 5": <String>["f6"],
+  "****O***/O*@@@@O*/******** w p p 3 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["f6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -3594,7 +3498,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "********/O*@@@@O*/****O*** w p p 3 5 4 5 0 0 0 0 0 0 0 0 5": <String>["f6"],
+  "********/O*@@@@O*/****O*** w p p 3 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["f6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -3609,7 +3514,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "**O*****/@@@@O*O*/******** w p p 3 5 4 5 0 0 0 0 0 0 0 0 5": <String>["b6"],
+  "**O*****/@@@@O*O*/******** w p p 3 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["b6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -3624,7 +3530,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@@@@O*O*/**O***** w p p 3 5 4 5 0 0 0 0 0 0 0 0 5": <String>["b6"],
+  "********/@@@@O*O*/**O***** w p p 3 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["b6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -3639,7 +3546,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "******O*/@*O*O@@@/******** w p p 3 5 4 5 0 0 0 0 0 0 0 0 5": <String>["f6"],
+  "******O*/@*O*O@@@/******** w p p 3 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["f6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -3654,7 +3562,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@*O*O@@@/******O* w p p 3 5 4 5 0 0 0 0 0 0 0 0 5": <String>["f6"],
+  "********/@*O*O@@@/******O* w p p 3 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["f6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -3669,7 +3578,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "**O*****/O@@@@*O*/******** w p p 3 5 4 5 0 0 0 0 0 0 0 0 5": <String>["b2"],
+  "**O*****/O@@@@*O*/******** w p p 3 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["b2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -3684,7 +3594,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/O@@@@*O*/**O***** w p p 3 5 4 5 0 0 0 0 0 0 0 0 5": <String>["b2"],
+  "********/O@@@@*O*/**O***** w p p 3 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["b2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -3699,7 +3610,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "******O*/O*O*@@@@/******** w p p 3 5 4 5 0 0 0 0 0 0 0 0 5": <String>["f2"],
+  "******O*/O*O*@@@@/******** w p p 3 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["f2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -3714,7 +3626,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/O*O*@@@@/******O* w p p 3 5 4 5 0 0 0 0 0 0 0 0 5": <String>["f2"],
+  "********/O*O*@@@@/******O* w p p 3 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["f2"],
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -3731,7 +3644,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "O*******/@@O*OO@@/******** b p p 4 4 4 5 0 0 0 0 0 0 0 0 5": <String>["f2"],
+  "O*******/@@O*OO@@/******** b p p 4 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["f2"],
 
   /*
     a7 -----  O ----- g7
@@ -3746,7 +3660,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@@O*OO@@/O******* b p p 4 4 4 5 0 0 0 0 0 0 0 0 5": <String>["f2"],
+  "********/@@O*OO@@/O******* b p p 4 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["f2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -3761,7 +3676,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "****O***/O*O@@@@O/******** b p p 4 4 4 5 0 0 0 0 0 0 0 0 5": <String>["f6"],
+  "****O***/O*O@@@@O/******** b p p 4 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["f6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -3776,7 +3692,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "********/O*O@@@@O/****O*** b p p 4 4 4 5 0 0 0 0 0 0 0 0 5": <String>["f6"],
+  "********/O*O@@@@O/****O*** b p p 4 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["f6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -3791,7 +3708,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "O*******/@@@OO*O@/******** b p p 4 4 4 5 0 0 0 0 0 0 0 0 5": <String>["b2"],
+  "O*******/@@@OO*O@/******** b p p 4 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["b2"],
 
   /*
     a7 -----  O ----- g7
@@ -3806,7 +3724,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@@@OO*O@/O******* b p p 4 4 4 5 0 0 0 0 0 0 0 0 5": <String>["b2"],
+  "********/@@@OO*O@/O******* b p p 4 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["b2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -3821,7 +3740,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "****O***/OO@@@@O*/******** b p p 4 4 4 5 0 0 0 0 0 0 0 0 5": <String>["b6"],
+  "****O***/OO@@@@O*/******** b p p 4 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["b6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -3836,7 +3756,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "********/OO@@@@O*/****O*** b p p 4 4 4 5 0 0 0 0 0 0 0 0 5": <String>["b6"],
+  "********/OO@@@@O*/****O*** b p p 4 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["b6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -3851,7 +3772,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "**O*****/@@@@O*OO/******** b p p 4 4 4 5 0 0 0 0 0 0 0 0 5": <String>["b2"],
+  "**O*****/@@@@O*OO/******** b p p 4 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["b2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -3866,7 +3788,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@@@@O*OO/**O***** b p p 4 4 4 5 0 0 0 0 0 0 0 0 5": <String>["b2"],
+  "********/@@@@O*OO/**O***** b p p 4 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["b2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -3881,7 +3804,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "******O*/@OO*O@@@/******** b p p 4 4 4 5 0 0 0 0 0 0 0 0 5": <String>["f2"],
+  "******O*/@OO*O@@@/******** b p p 4 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["f2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -3896,7 +3820,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@OO*O@@@/******O* b p p 4 4 4 5 0 0 0 0 0 0 0 0 5": <String>["f2"],
+  "********/@OO*O@@@/******O* b p p 4 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["f2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -3911,7 +3836,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "**O*****/O@@@@OO*/******** b p p 4 4 4 5 0 0 0 0 0 0 0 0 5": <String>["b6"],
+  "**O*****/O@@@@OO*/******** b p p 4 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["b6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -3926,7 +3852,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/O@@@@OO*/**O***** b p p 4 4 4 5 0 0 0 0 0 0 0 0 5": <String>["b6"],
+  "********/O@@@@OO*/**O***** b p p 4 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["b6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -3941,7 +3868,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "******O*/O*OO@@@@/******** b p p 4 4 4 5 0 0 0 0 0 0 0 0 5": <String>["f6"],
+  "******O*/O*OO@@@@/******** b p p 4 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["f6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -3956,7 +3884,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/O*OO@@@@/******O* b p p 4 4 4 5 0 0 0 0 0 0 0 0 5": <String>["f6"],
+  "********/O*OO@@@@/******O* b p p 4 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["f6"],
 
   ///////////////////////////// Low Risk ///////////////////////////////////////
 
@@ -3973,10 +3902,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@O@**O**/******** w p p 2 7 2 7 0 0 0 0 0 0 0 0 3": <String>[
-    "d2",
-    "b4",
-  ],
+  "********/@O@**O**/******** w p p 2 7 2 7 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>["d2", "b4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -3991,10 +3918,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/**@O@**O/******** w p p 2 7 2 7 0 0 0 0 0 0 0 0 3": <String>[
-    "d6",
-    "b4",
-  ],
+  "********/**@O@**O/******** w p p 2 7 2 7 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>["d6", "b4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -4009,10 +3934,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@**O**@O/******** w p p 2 7 2 7 0 0 0 0 0 0 0 0 3": <String>[
-    "d2",
-    "f4",
-  ],
+  "********/@**O**@O/******** w p p 2 7 2 7 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>["d2", "f4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -4027,10 +3950,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/*O**@O@*/******** w p p 2 7 2 7 0 0 0 0 0 0 0 0 3": <String>[
-    "d6",
-    "f4",
-  ],
+  "********/*O**@O@*/******** w p p 2 7 2 7 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>["d6", "f4"],
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -4047,7 +3968,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/*@**OO**/******** b p p 2 7 1 8 0 0 0 0 0 0 0 0 2": <String>["f2"],
+  "********/*@**OO**/******** b p p 2 7 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes":
+      <String>["f2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -4062,7 +3984,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/O**@***O/******** b p p 2 7 1 8 0 0 0 0 0 0 0 0 2": <String>["f6"],
+  "********/O**@***O/******** b p p 2 7 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes":
+      <String>["f6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -4077,7 +4000,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/***OO**@/******** b p p 2 7 1 8 0 0 0 0 0 0 0 0 2": <String>["b2"],
+  "********/***OO**@/******** b p p 2 7 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes":
+      <String>["b2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -4092,7 +4016,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/OO***@**/******** b p p 2 7 1 8 0 0 0 0 0 0 0 0 2": <String>["b6"],
+  "********/OO***@**/******** b p p 2 7 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes":
+      <String>["b6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -4107,7 +4032,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/***@**OO/******** b p p 2 7 1 8 0 0 0 0 0 0 0 0 2": <String>["b2"],
+  "********/***@**OO/******** b p p 2 7 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes":
+      <String>["b2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -4122,7 +4048,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/*OO**@**/******** b p p 2 7 1 8 0 0 0 0 0 0 0 0 2": <String>["f2"],
+  "********/*OO**@**/******** b p p 2 7 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes":
+      <String>["f2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -4137,7 +4064,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/*@***OO*/******** b p p 2 7 1 8 0 0 0 0 0 0 0 0 2": <String>["b6"],
+  "********/*@***OO*/******** b p p 2 7 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes":
+      <String>["b6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -4152,7 +4080,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/**OO***@/******** b p p 2 7 1 8 0 0 0 0 0 0 0 0 2": <String>["f6"],
+  "********/**OO***@/******** b p p 2 7 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes":
+      <String>["f6"],
 
   ////////////////////////////// Ignore no threat //////////////////////////////
 
@@ -4169,11 +4098,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/*@O@OO**/******** b p p 3 6 2 7 0 0 0 0 0 0 0 0 3": <String>[
-    "d1",
-    "d3",
-    "b4",
-  ],
+  "********/*@O@OO**/******** b p p 3 6 2 7 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>["d1", "d3", "b4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -4188,11 +4114,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/O@O@***O/******** b p p 3 6 2 7 0 0 0 0 0 0 0 0 3": <String>[
-    "d7",
-    "d5",
-    "b4",
-  ],
+  "********/O@O@***O/******** b p p 3 6 2 7 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>["d7", "d5", "b4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -4207,11 +4130,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/***OO@O@/******** b p p 3 6 2 7 0 0 0 0 0 0 0 0 3": <String>[
-    "d1",
-    "d3",
-    "f4",
-  ],
+  "********/***OO@O@/******** b p p 3 6 2 7 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>["d1", "d3", "f4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -4226,11 +4146,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/OO***@O@/******** b p p 3 6 2 7 0 0 0 0 0 0 0 0 3": <String>[
-    "d7",
-    "d5",
-    "f4",
-  ],
+  "********/OO***@O@/******** b p p 3 6 2 7 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>["d7", "d5", "f4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -4245,11 +4162,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/***@O@OO/******** b p p 3 6 2 7 0 0 0 0 0 0 0 0 3": <String>[
-    "a4",
-    "c4",
-    "d6",
-  ],
+  "********/***@O@OO/******** b p p 3 6 2 7 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>["a4", "c4", "d6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -4264,11 +4178,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/*OO@O@**/******** b p p 3 6 2 7 0 0 0 0 0 0 0 0 3": <String>[
-    "g4",
-    "e4",
-    "d6",
-  ],
+  "********/*OO@O@**/******** b p p 3 6 2 7 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>["g4", "e4", "d6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -4283,11 +4194,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/O@***OO@/******** b p p 3 6 2 7 0 0 0 0 0 0 0 0 3": <String>[
-    "a4",
-    "c4",
-    "d2",
-  ],
+  "********/O@***OO@/******** b p p 3 6 2 7 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>["a4", "c4", "d2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -4302,11 +4210,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/O@OO***@/******** b p p 3 6 2 7 0 0 0 0 0 0 0 0 3": <String>[
-    "g4",
-    "e4",
-    "d2",
-  ],
+  "********/O@OO***@/******** b p p 3 6 2 7 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>["g4", "e4", "d2"],
 
   ////////////////////////////////// Low Risk //////////////////////////////////
 
@@ -4323,11 +4228,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/*O**O@**/******** b p p 2 7 1 8 0 0 0 0 0 0 0 0 2": <String>[
-    "b4",
-    "f4",
-    "d6",
-  ],
+  "********/*O**O@**/******** b p p 2 7 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes":
+      <String>["b4", "f4", "d6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -4342,11 +4244,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/O**O***@/******** b p p 2 7 1 8 0 0 0 0 0 0 0 0 2": <String>[
-    "b4",
-    "f4",
-    "d2",
-  ],
+  "********/O**O***@/******** b p p 2 7 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes":
+      <String>["b4", "f4", "d2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -4361,11 +4260,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/***@O**O/******** b p p 2 7 1 8 0 0 0 0 0 0 0 0 2": <String>[
-    "f4",
-    "b4",
-    "d6",
-  ],
+  "********/***@O**O/******** b p p 2 7 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes":
+      <String>["f4", "b4", "d6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -4380,11 +4276,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/O@***O**/******** b p p 2 7 1 8 0 0 0 0 0 0 0 0 2": <String>[
-    "f4",
-    "b4",
-    "d2",
-  ],
+  "********/O@***O**/******** b p p 2 7 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes":
+      <String>["f4", "b4", "d2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -4399,11 +4292,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/***O**O@/******** b p p 2 7 1 8 0 0 0 0 0 0 0 0 2": <String>[
-    "d6",
-    "d2",
-    "f4",
-  ],
+  "********/***O**O@/******** b p p 2 7 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes":
+      <String>["d6", "d2", "f4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -4418,11 +4308,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/*@O**O**/******** b p p 2 7 1 8 0 0 0 0 0 0 0 0 2": <String>[
-    "d6",
-    "d2",
-    "b4",
-  ],
+  "********/*@O**O**/******** b p p 2 7 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes":
+      <String>["d6", "d2", "b4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -4437,11 +4324,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/*O***@O*/******** b p p 2 7 1 8 0 0 0 0 0 0 0 0 2": <String>[
-    "d2",
-    "d6",
-    "f4",
-  ],
+  "********/*O***@O*/******** b p p 2 7 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes":
+      <String>["d2", "d6", "f4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -4456,11 +4340,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/**O@***O/******** b p p 2 7 1 8 0 0 0 0 0 0 0 0 2": <String>[
-    "d2",
-    "d6",
-    "b4",
-  ],
+  "********/**O@***O/******** b p p 2 7 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes":
+      <String>["d2", "d6", "b4"],
 
   //////////////////////////////// Low Risk ////////////////////////////////////
 
@@ -4477,12 +4358,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@@OOO@@O/******** w p p 4 5 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "a4",
-    "c4",
-    "d5",
-    "d7",
-  ],
+  "********/@@OOO@@O/******** w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["a4", "c4", "d5", "d7"],
 
   /*
     a7 ----- d7 ----- g7
@@ -4497,12 +4374,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/OOO@@O@@/******** w p p 4 5 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "a4",
-    "c4",
-    "d3",
-    "d1",
-  ],
+  "********/OOO@@O@@/******** w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["a4", "c4", "d3", "d1"],
 
   /*
     a7 ----- d7 ----- g7
@@ -4517,12 +4390,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@O@@OOO@/******** w p p 4 5 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "g4",
-    "e4",
-    "d5",
-    "d7",
-  ],
+  "********/@O@@OOO@/******** w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["g4", "e4", "d5", "d7"],
 
   /*
     a7 ----- d7 ----- g7
@@ -4537,12 +4406,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/O@@O@@OO/******** w p p 4 5 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "g4",
-    "e4",
-    "d3",
-    "d1",
-  ],
+  "********/O@@O@@OO/******** w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["g4", "e4", "d3", "d1"],
 
   ////////////////////////////// Ignore no threat //////////////////////////////
 
@@ -4559,10 +4424,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/*@O*O@**/******** w p p 2 7 2 7 0 0 0 0 0 0 0 0 3": <String>[
-    "b4",
-    "d6",
-  ],
+  "********/*@O*O@**/******** w p p 2 7 2 7 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>["b4", "d6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -4577,10 +4440,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/O*O@***@/******** w p p 2 7 2 7 0 0 0 0 0 0 0 0 3": <String>[
-    "b4",
-    "d2",
-  ],
+  "********/O*O@***@/******** w p p 2 7 2 7 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>["b4", "d2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -4595,10 +4456,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/***@O*O@/******** w p p 2 7 2 7 0 0 0 0 0 0 0 0 3": <String>[
-    "f4",
-    "d6",
-  ],
+  "********/***@O*O@/******** w p p 2 7 2 7 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>["f4", "d6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -4613,10 +4472,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/O@***@O*/******** w p p 2 7 2 7 0 0 0 0 0 0 0 0 3": <String>[
-    "f4",
-    "d2",
-  ],
+  "********/O@***@O*/******** w p p 2 7 2 7 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>["f4", "d2"],
 
   ////////////////////////////// Ignore no threat //////////////////////////////
 
@@ -4633,11 +4490,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/*@***O**/******** w p p 1 8 1 8 0 0 0 0 0 0 0 0 2": <String>[
-    "b4",
-    "f4",
-    "d6",
-  ],
+  "********/*@***O**/******** w p p 1 8 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes":
+      <String>["b4", "f4", "d6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -4652,11 +4506,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/***@***O/******** w p p 1 8 1 8 0 0 0 0 0 0 0 0 2": <String>[
-    "b4",
-    "f4",
-    "d2",
-  ],
+  "********/***@***O/******** w p p 1 8 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes":
+      <String>["b4", "f4", "d2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -4671,11 +4522,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/***O***@/******** w p p 1 8 1 8 0 0 0 0 0 0 0 0 2": <String>[
-    "f4",
-    "b4",
-    "d6",
-  ],
+  "********/***O***@/******** w p p 1 8 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes":
+      <String>["f4", "b4", "d6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -4690,11 +4538,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/*O***@**/******** w p p 1 8 1 8 0 0 0 0 0 0 0 0 2": <String>[
-    "f4",
-    "b4",
-    "d2",
-  ],
+  "********/*O***@**/******** w p p 1 8 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes":
+      <String>["f4", "b4", "d2"],
 
   ////////////////////////////////// Low Risk //////////////////////////////////
 
@@ -4711,16 +4556,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/O*@*O*@*/******** w p p 2 7 2 7 0 0 0 0 0 0 0 0 3": <String>[
-    "b2",
-    "f2",
-    "a4",
-    "c4",
-    "e4",
-    "g4",
-    "b6",
-    "f6",
-  ],
+  "********/O*@*O*@*/******** w p p 2 7 2 7 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>["b2", "f2", "a4", "c4", "e4", "g4", "b6", "f6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -4735,16 +4572,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@*O*@*O*/******** w p p 2 7 2 7 0 0 0 0 0 0 0 0 3": <String>[
-    "b6",
-    "b2",
-    "d7",
-    "d5",
-    "d3",
-    "d1",
-    "f6",
-    "f2",
-  ],
+  "********/@*O*@*O*/******** w p p 2 7 2 7 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>["b6", "b2", "d7", "d5", "d3", "d1", "f6", "f2"],
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -4761,27 +4590,28 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@*O*O*@O/******** b p p 3 6 2 7 0 0 0 0 0 0 0 0 3": <String>[
-    "a1",
-    "d1",
-    "g1",
-    "b2",
-    "f2",
-    "c3",
-    "d3",
-    "e3",
-    "a4",
-    "c4",
-    "e4",
-    "g4",
-    "c5",
-    "d5",
-    "e5",
-    "f6",
-    "a7",
-    "d7",
-    "g7",
-  ],
+  "********/@*O*O*@O/******** b p p 3 6 2 7 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>[
+        "a1",
+        "d1",
+        "g1",
+        "b2",
+        "f2",
+        "c3",
+        "d3",
+        "e3",
+        "a4",
+        "c4",
+        "e4",
+        "g4",
+        "c5",
+        "d5",
+        "e5",
+        "f6",
+        "a7",
+        "d7",
+        "g7",
+      ],
 
   /*
     a7 ----- d7 ----- g7
@@ -4796,27 +4626,28 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/O*O*@O@*/******** b p p 3 6 2 7 0 0 0 0 0 0 0 0 3": <String>[
-    "a7",
-    "d7",
-    "g7",
-    "b6",
-    "f6",
-    "c5",
-    "d5",
-    "e5",
-    "a4",
-    "c4",
-    "e4",
-    "g4",
-    "c3",
-    "d3",
-    "e3",
-    "f2",
-    "a1",
-    "d1",
-    "g1",
-  ],
+  "********/O*O*@O@*/******** b p p 3 6 2 7 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>[
+        "a7",
+        "d7",
+        "g7",
+        "b6",
+        "f6",
+        "c5",
+        "d5",
+        "e5",
+        "a4",
+        "c4",
+        "e4",
+        "g4",
+        "c3",
+        "d3",
+        "e3",
+        "f2",
+        "a1",
+        "d1",
+        "g1",
+      ],
 
   /*
     a7 ----- d7 ----- g7
@@ -4831,27 +4662,28 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@O@*O*O*/******** b p p 3 6 2 7 0 0 0 0 0 0 0 0 3": <String>[
-    "g1",
-    "d1",
-    "a1",
-    "f2",
-    "b2",
-    "e3",
-    "d3",
-    "c3",
-    "g4",
-    "e4",
-    "c4",
-    "a4",
-    "e5",
-    "d5",
-    "c5",
-    "b6",
-    "g7",
-    "d7",
-    "a7",
-  ],
+  "********/@O@*O*O*/******** b p p 3 6 2 7 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>[
+        "g1",
+        "d1",
+        "a1",
+        "f2",
+        "b2",
+        "e3",
+        "d3",
+        "c3",
+        "g4",
+        "e4",
+        "c4",
+        "a4",
+        "e5",
+        "d5",
+        "c5",
+        "b6",
+        "g7",
+        "d7",
+        "a7",
+      ],
 
   /*
     a7 ----- d7 ----- g7
@@ -4866,27 +4698,28 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/O*@O@*O*/******** b p p 3 6 2 7 0 0 0 0 0 0 0 0 3": <String>[
-    "g7",
-    "d7",
-    "a7",
-    "f6",
-    "b6",
-    "e5",
-    "d5",
-    "c5",
-    "g4",
-    "e4",
-    "c4",
-    "a4",
-    "e3",
-    "d3",
-    "c3",
-    "b2",
-    "g1",
-    "d1",
-    "a1",
-  ],
+  "********/O*@O@*O*/******** b p p 3 6 2 7 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>[
+        "g7",
+        "d7",
+        "a7",
+        "f6",
+        "b6",
+        "e5",
+        "d5",
+        "c5",
+        "g4",
+        "e4",
+        "c4",
+        "a4",
+        "e3",
+        "d3",
+        "c3",
+        "b2",
+        "g1",
+        "d1",
+        "a1",
+      ],
 
   ////////////////////////////////// Ignore no threat //////////////////////////
 
@@ -4903,7 +4736,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@O**O***/******** b p p 2 7 1 8 0 0 0 0 0 0 0 0 2": <String>["b4"],
+  "********/@O**O***/******** b p p 2 7 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes":
+      <String>["b4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -4918,7 +4752,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/O**O@***/******** b p p 2 7 1 8 0 0 0 0 0 0 0 0 2": <String>["b4"],
+  "********/O**O@***/******** b p p 2 7 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes":
+      <String>["b4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -4933,7 +4768,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@***O**O/******** b p p 2 7 1 8 0 0 0 0 0 0 0 0 2": <String>["f4"],
+  "********/@***O**O/******** b p p 2 7 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes":
+      <String>["f4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -4948,7 +4784,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/O***@O**/******** b p p 2 7 1 8 0 0 0 0 0 0 0 0 2": <String>["f4"],
+  "********/O***@O**/******** b p p 2 7 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes":
+      <String>["f4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -4963,7 +4800,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/**@O**O*/******** b p p 2 7 1 8 0 0 0 0 0 0 0 0 2": <String>["d6"],
+  "********/**@O**O*/******** b p p 2 7 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes":
+      <String>["d6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -4978,7 +4816,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/**O**O@*/******** b p p 2 7 1 8 0 0 0 0 0 0 0 0 2": <String>["d6"],
+  "********/**O**O@*/******** b p p 2 7 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes":
+      <String>["d6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -4993,7 +4832,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/*O@***O*/******** b p p 2 7 1 8 0 0 0 0 0 0 0 0 2": <String>["d2"],
+  "********/*O@***O*/******** b p p 2 7 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes":
+      <String>["d2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -5008,7 +4848,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/**O***@O/******** b p p 2 7 1 8 0 0 0 0 0 0 0 0 2": <String>["d2"],
+  "********/**O***@O/******** b p p 2 7 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes":
+      <String>["d2"],
 
   ///////////////////////////////// Low Risk ///////////////////////////////////
 
@@ -5025,7 +4866,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "O*******/@OO@OO@@/******** b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>["e3"],
+  "O*******/@OO@OO@@/******** b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["e3"],
 
   /*
     a7 -----  O ----- g7
@@ -5040,7 +4882,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@OO@OO@@/O******* b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>["g1"],
+  "********/@OO@OO@@/O******* b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["g1"],
 
   /*
     a7 ----- d7 ----- g7
@@ -5055,7 +4898,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "****O***/O@OO@@@O/******** b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>["e5"],
+  "****O***/O@OO@@@O/******** b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["e5"],
 
   /*
     a7 ----- d7 ----- g7
@@ -5070,7 +4914,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "********/O@OO@@@O/****O*** b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>["g7"],
+  "********/O@OO@@@O/****O*** b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["g7"],
 
   /*
     a7 ----- d7 ----- g7
@@ -5085,7 +4930,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "O*******/@@@OO@OO/******** b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>["c3"],
+  "O*******/@@@OO@OO/******** b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["c3"],
 
   /*
     a7 -----  O ----- g7
@@ -5100,7 +4946,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@@@OO@OO/O******* b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>["a1"],
+  "********/@@@OO@OO/O******* b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["a1"],
 
   /*
     a7 ----- d7 ----- g7
@@ -5115,7 +4962,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "****O***/OO@@@OO@/******** b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>["c5"],
+  "****O***/OO@@@OO@/******** b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["c5"],
 
   /*
     a7 ----- d7 ----- g7
@@ -5130,7 +4978,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "********/OO@@@OO@/****O*** b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>["a7"],
+  "********/OO@@@OO@/****O*** b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["a7"],
 
   /*
     a7 ----- d7 ----- g7
@@ -5145,7 +4994,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "**O*****/@@@OO@OO/******** b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>["c3"],
+  "**O*****/@@@OO@OO/******** b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["c3"],
 
   /*
     a7 ----- d7 ----- g7
@@ -5160,7 +5010,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@@@OO@OO/**O***** b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>["a1"],
+  "********/@@@OO@OO/**O***** b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["a1"],
 
   /*
     a7 ----- d7 ----- g7
@@ -5175,7 +5026,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "******O*/@OO@OO@@/******** b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>["e3"],
+  "******O*/@OO@OO@@/******** b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["e3"],
 
   /*
     a7 ----- d7 ----- g7
@@ -5190,7 +5042,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@OO@OO@@/******O* b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>["g1"],
+  "********/@OO@OO@@/******O* b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["g1"],
 
   /*
     a7 ----- d7 ----- g7
@@ -5205,7 +5058,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "**O*****/OO@@@OO@/******** b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>["c5"],
+  "**O*****/OO@@@OO@/******** b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["c5"],
 
   /*
     a7 ----- d7 ----- g7
@@ -5220,7 +5074,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/OO@@@OO@/**O***** b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>["a7"],
+  "********/OO@@@OO@/**O***** b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["a7"],
 
   /*
     a7 ----- d7 ----- g7
@@ -5235,7 +5090,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "******O*/O@OO@@@O/******** b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>["e5"],
+  "******O*/O@OO@@@O/******** b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["e5"],
 
   /*
     a7 ----- d7 ----- g7
@@ -5250,7 +5106,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/O@OO@@@O/******O* b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>["g7"],
+  "********/O@OO@@@O/******O* b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["g7"],
 
   //////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////  Z-Mill  /////////////////////////////////
@@ -5273,22 +5130,23 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/OO@O@@OO/******** b p p 5 4 3 5 0 0 0 0 0 0 0 0 5": <String>[
-    "a1",
-    "d1",
-    "c3",
-    "d3",
-    "a4",
-    "c4",
-    "e4",
-    "g4",
-    "c5",
-    "d5",
-    "e5",
-    "a7",
-    "d7",
-    "g7",
-  ],
+  "********/OO@O@@OO/******** b p p 5 4 3 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>[
+        "a1",
+        "d1",
+        "c3",
+        "d3",
+        "a4",
+        "c4",
+        "e4",
+        "g4",
+        "c5",
+        "d5",
+        "e5",
+        "a7",
+        "d7",
+        "g7",
+      ],
 
   /*
     a7 ----- d7 ----- g7
@@ -5303,22 +5161,23 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@O@OOOO@/******** b p p 5 4 3 5 0 0 0 0 0 0 0 0 5": <String>[
-    "a7",
-    "d7",
-    "c5",
-    "d5",
-    "a4",
-    "c4",
-    "e4",
-    "g4",
-    "c3",
-    "d3",
-    "e3",
-    "a1",
-    "d1",
-    "g1",
-  ],
+  "********/@O@OOOO@/******** b p p 5 4 3 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>[
+        "a7",
+        "d7",
+        "c5",
+        "d5",
+        "a4",
+        "c4",
+        "e4",
+        "g4",
+        "c3",
+        "d3",
+        "e3",
+        "a1",
+        "d1",
+        "g1",
+      ],
 
   /*
     a7 ----- d7 ----- g7
@@ -5333,22 +5192,23 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/OOO@@O@O/******** b p p 5 4 3 5 0 0 0 0 0 0 0 0 5": <String>[
-    "g1",
-    "d1",
-    "e3",
-    "d3",
-    "g4",
-    "e4",
-    "c4",
-    "a4",
-    "e5",
-    "d5",
-    "c5",
-    "g7",
-    "d7",
-    "a7",
-  ],
+  "********/OOO@@O@O/******** b p p 5 4 3 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>[
+        "g1",
+        "d1",
+        "e3",
+        "d3",
+        "g4",
+        "e4",
+        "c4",
+        "a4",
+        "e5",
+        "d5",
+        "c5",
+        "g7",
+        "d7",
+        "a7",
+      ],
 
   /*
     a7 ----- d7 ----- g7
@@ -5363,22 +5223,23 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@@OOOO@O/******** b p p 5 4 3 5 0 0 0 0 0 0 0 0 5": <String>[
-    "g7",
-    "d7",
-    "e5",
-    "d5",
-    "g4",
-    "e4",
-    "c4",
-    "a4",
-    "e3",
-    "d3",
-    "c3",
-    "g1",
-    "d1",
-    "a1",
-  ],
+  "********/@@OOOO@O/******** b p p 5 4 3 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>[
+        "g7",
+        "d7",
+        "e5",
+        "d5",
+        "g4",
+        "e4",
+        "c4",
+        "a4",
+        "e3",
+        "d3",
+        "c3",
+        "g1",
+        "d1",
+        "a1",
+      ],
 
   /*
     a7 ----- d7 ----- g7
@@ -5393,22 +5254,23 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/OOOO@O@@/******** b p p 5 4 3 5 0 0 0 0 0 0 0 0 5": <String>[
-    "a7",
-    "a4",
-    "c5",
-    "c4",
-    "d7",
-    "d5",
-    "d3",
-    "d1",
-    "e5",
-    "e4",
-    "e3",
-    "g7",
-    "g4",
-    "g1",
-  ],
+  "********/OOOO@O@@/******** b p p 5 4 3 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>[
+        "a7",
+        "a4",
+        "c5",
+        "c4",
+        "d7",
+        "d5",
+        "d3",
+        "d1",
+        "e5",
+        "e4",
+        "e3",
+        "g7",
+        "g4",
+        "g1",
+      ],
 
   /*
     a7 ----- d7 ----- g7
@@ -5423,22 +5285,23 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/O@@O@OOO/******** b p p 5 4 3 5 0 0 0 0 0 0 0 0 5": <String>[
-    "g7",
-    "g4",
-    "e5",
-    "e4",
-    "d7",
-    "d5",
-    "d3",
-    "d1",
-    "c5",
-    "c4",
-    "c3",
-    "a7",
-    "a4",
-    "a1",
-  ],
+  "********/O@@O@OOO/******** b p p 5 4 3 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>[
+        "g7",
+        "g4",
+        "e5",
+        "e4",
+        "d7",
+        "d5",
+        "d3",
+        "d1",
+        "c5",
+        "c4",
+        "c3",
+        "a7",
+        "a4",
+        "a1",
+      ],
 
   /*
     a7 ----- d7 ----- g7
@@ -5453,22 +5316,23 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@OOOO@@O/******** b p p 5 4 3 5 0 0 0 0 0 0 0 0 5": <String>[
-    "a1",
-    "a4",
-    "c3",
-    "c4",
-    "d1",
-    "d3",
-    "d5",
-    "d7",
-    "e3",
-    "e4",
-    "e5",
-    "g1",
-    "g4",
-    "g7",
-  ],
+  "********/@OOOO@@O/******** b p p 5 4 3 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>[
+        "a1",
+        "a4",
+        "c3",
+        "c4",
+        "d1",
+        "d3",
+        "d5",
+        "d7",
+        "e3",
+        "e4",
+        "e5",
+        "g1",
+        "g4",
+        "g7",
+      ],
 
   /*
     a7 ----- d7 ----- g7
@@ -5483,22 +5347,23 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@O@@OOOO/******** b p p 5 4 3 5 0 0 0 0 0 0 0 0 5": <String>[
-    "g1",
-    "g4",
-    "e3",
-    "e4",
-    "d1",
-    "d3",
-    "d5",
-    "d7",
-    "c3",
-    "c4",
-    "c5",
-    "a1",
-    "a4",
-    "a7",
-  ],
+  "********/@O@@OOOO/******** b p p 5 4 3 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>[
+        "g1",
+        "g4",
+        "e3",
+        "e4",
+        "d1",
+        "d3",
+        "d5",
+        "d7",
+        "c3",
+        "c4",
+        "c5",
+        "a1",
+        "a4",
+        "a7",
+      ],
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -5515,16 +5380,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "@*******/OO@O@@OO/******** w p p 5 4 4 4 0 0 0 0 0 0 0 0 6": <String>[
-    "d1",
-    "g1",
-    "c3",
-    "d3",
-    "e3",
-    "e4",
-    "g4",
-    "c5",
-  ],
+  "@*******/OO@O@@OO/******** w p p 5 4 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["d1", "g1", "c3", "d3", "e3", "e4", "g4", "c5"],
 
   /*
     a7 -----  @ ----- g7
@@ -5539,16 +5396,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/OO@O@@OO/@******* w p p 5 4 4 4 0 0 0 0 0 0 0 0 6": <String>[
-    "d3",
-    "e3",
-    "a1",
-    "d1",
-    "g1",
-    "g4",
-    "e4",
-    "a7",
-  ],
+  "********/OO@O@@OO/@******* w p p 5 4 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["d3", "e3", "a1", "d1", "g1", "g4", "e4", "a7"],
 
   /*
     a7 ----- d7 ----- g7
@@ -5563,16 +5412,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "****@***/@O@OOOO@/******** w p p 5 4 4 4 0 0 0 0 0 0 0 0 6": <String>[
-    "d7",
-    "g7",
-    "c5",
-    "d5",
-    "e5",
-    "e4",
-    "g4",
-    "c3",
-  ],
+  "****@***/@O@OOOO@/******** w p p 5 4 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["d7", "g7", "c5", "d5", "e5", "e4", "g4", "c3"],
 
   /*
     a7 ----- d7 ----- g7
@@ -5587,16 +5428,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "********/@O@OOOO@/****@*** w p p 5 4 4 4 0 0 0 0 0 0 0 0 6": <String>[
-    "d5",
-    "e5",
-    "a7",
-    "d7",
-    "g7",
-    "g4",
-    "e4",
-    "a1",
-  ],
+  "********/@O@OOOO@/****@*** w p p 5 4 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["d5", "e5", "a7", "d7", "g7", "g4", "e4", "a1"],
 
   /*
     a7 ----- d7 ----- g7
@@ -5611,16 +5444,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "@*******/OOO@@O@O/******** w p p 5 4 4 4 0 0 0 0 0 0 0 0 6": <String>[
-    "d1",
-    "a1",
-    "e3",
-    "d3",
-    "c3",
-    "c4",
-    "a4",
-    "e5",
-  ],
+  "@*******/OOO@@O@O/******** w p p 5 4 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["d1", "a1", "e3", "d3", "c3", "c4", "a4", "e5"],
 
   /*
     a7 -----  @ ----- g7
@@ -5635,16 +5460,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/OOO@@O@O/@******* w p p 5 4 4 4 0 0 0 0 0 0 0 0 6": <String>[
-    "d3",
-    "c3",
-    "g1",
-    "d1",
-    "a1",
-    "a4",
-    "c4",
-    "g7",
-  ],
+  "********/OOO@@O@O/@******* w p p 5 4 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["d3", "c3", "g1", "d1", "a1", "a4", "c4", "g7"],
 
   /*
     a7 ----- d7 ----- g7
@@ -5659,16 +5476,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "****@***/@@OOOO@O/******** w p p 5 4 4 4 0 0 0 0 0 0 0 0 6": <String>[
-    "d7",
-    "a7",
-    "e5",
-    "d5",
-    "c5",
-    "c4",
-    "a4",
-    "e3",
-  ],
+  "****@***/@@OOOO@O/******** w p p 5 4 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["d7", "a7", "e5", "d5", "c5", "c4", "a4", "e3"],
 
   /*
     a7 ----- d7 ----- g7
@@ -5683,16 +5492,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "********/@@OOOO@O/****@*** w p p 5 4 4 4 0 0 0 0 0 0 0 0 6": <String>[
-    "d5",
-    "c5",
-    "g7",
-    "d7",
-    "a7",
-    "a4",
-    "c4",
-    "g1",
-  ],
+  "********/@@OOOO@O/****@*** w p p 5 4 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["d5", "c5", "g7", "d7", "a7", "a4", "c4", "g1"],
 
   /*
     a7 ----- d7 ----- g7
@@ -5707,16 +5508,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "**@*****/OOOO@O@@/******** w p p 5 4 4 4 0 0 0 0 0 0 0 0 6": <String>[
-    "a4",
-    "a1",
-    "c5",
-    "c4",
-    "c3",
-    "d3",
-    "d1",
-    "e5",
-  ],
+  "**@*****/OOOO@O@@/******** w p p 5 4 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["a4", "a1", "c5", "c4", "c3", "d3", "d1", "e5"],
 
   /*
     a7 ----- d7 ----- g7
@@ -5731,16 +5524,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/OOOO@O@@/**@***** w p p 5 4 4 4 0 0 0 0 0 0 0 0 6": <String>[
-    "c4",
-    "c3",
-    "a7",
-    "a4",
-    "a1",
-    "d1",
-    "d3",
-    "g7",
-  ],
+  "********/OOOO@O@@/**@***** w p p 5 4 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["c4", "c3", "a7", "a4", "a1", "d1", "d3", "g7"],
 
   /*
     a7 ----- d7 ----- g7
@@ -5755,16 +5540,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "******@*/O@@O@OOO/******** w p p 5 4 4 4 0 0 0 0 0 0 0 0 6": <String>[
-    "g4",
-    "g1",
-    "e5",
-    "e4",
-    "e3",
-    "d3",
-    "d1",
-    "c5",
-  ],
+  "******@*/O@@O@OOO/******** w p p 5 4 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["g4", "g1", "e5", "e4", "e3", "d3", "d1", "c5"],
 
   /*
     a7 ----- d7 ----- g7
@@ -5779,16 +5556,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/O@@O@OOO/******@* w p p 5 4 4 4 0 0 0 0 0 0 0 0 6": <String>[
-    "e4",
-    "e3",
-    "g7",
-    "g4",
-    "g1",
-    "d1",
-    "d3",
-    "a7",
-  ],
+  "********/O@@O@OOO/******@* w p p 5 4 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["e4", "e3", "g7", "g4", "g1", "d1", "d3", "a7"],
 
   /*
     a7 ----- d7 ----- g7
@@ -5803,16 +5572,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "**@*****/@OOOO@@O/******** w p p 5 4 4 4 0 0 0 0 0 0 0 0 6": <String>[
-    "a4",
-    "a7",
-    "c3",
-    "c4",
-    "c5",
-    "d5",
-    "d7",
-    "e3",
-  ],
+  "**@*****/@OOOO@@O/******** w p p 5 4 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["a4", "a7", "c3", "c4", "c5", "d5", "d7", "e3"],
 
   /*
     a7 ----- d7 ----- g7
@@ -5827,16 +5588,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@OOOO@@O/**@***** w p p 5 4 4 4 0 0 0 0 0 0 0 0 6": <String>[
-    "c4",
-    "c5",
-    "a1",
-    "a4",
-    "a7",
-    "d7",
-    "d5",
-    "g1",
-  ],
+  "********/@OOOO@@O/**@***** w p p 5 4 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["c4", "c5", "a1", "a4", "a7", "d7", "d5", "g1"],
 
   /*
     a7 ----- d7 ----- g7
@@ -5851,16 +5604,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "******@*/@O@@OOOO/******** w p p 5 4 4 4 0 0 0 0 0 0 0 0 6": <String>[
-    "g4",
-    "g7",
-    "e3",
-    "e4",
-    "e5",
-    "d5",
-    "d7",
-    "c3",
-  ],
+  "******@*/@O@@OOOO/******** w p p 5 4 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["g4", "g7", "e3", "e4", "e5", "d5", "d7", "c3"],
 
   /*
     a7 ----- d7 ----- g7
@@ -5875,16 +5620,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@O@@OOOO/******@* w p p 5 4 4 4 0 0 0 0 0 0 0 0 6": <String>[
-    "e4",
-    "e5",
-    "g1",
-    "g4",
-    "g7",
-    "d7",
-    "d5",
-    "a1",
-  ],
+  "********/@O@@OOOO/******@* w p p 5 4 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["e4", "e5", "g1", "g4", "g7", "d7", "d5", "a1"],
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -5903,7 +5640,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/OO@O@@OO/*@****** w p p 5 4 4 4 0 0 0 0 0 0 0 0 6": <String>["g1"],
+  "********/OO@O@@OO/*@****** w p p 5 4 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["g1"],
 
   /*
     a7 ----- d7 ----- g7
@@ -5918,7 +5656,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "*@******/OO@O@@OO/******** w p p 5 4 4 4 0 0 0 0 0 0 0 0 6": <String>["e3"],
+  "*@******/OO@O@@OO/******** w p p 5 4 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["e3"],
 
   /*
     a7 ----- d7 ----- g7
@@ -5933,7 +5672,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 -----  @
   */
-  "********/@O@OOOO@/***@**** w p p 5 4 4 4 0 0 0 0 0 0 0 0 6": <String>["g7"],
+  "********/@O@OOOO@/***@**** w p p 5 4 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["g7"],
 
   /*
     a7 ----- d7 ----- g7
@@ -5948,7 +5688,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "***@****/@O@OOOO@/******** w p p 5 4 4 4 0 0 0 0 0 0 0 0 6": <String>["e5"],
+  "***@****/@O@OOOO@/******** w p p 5 4 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["e5"],
 
   /*
      @ ----- d7 ----- g7
@@ -5963,7 +5704,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/OOO@@O@O/*******@ w p p 5 4 4 4 0 0 0 0 0 0 0 0 6": <String>["a1"],
+  "********/OOO@@O@O/*******@ w p p 5 4 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["a1"],
 
   /*
     a7 ----- d7 ----- g7
@@ -5978,7 +5720,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "*******@/OOO@@O@O/******** w p p 5 4 4 4 0 0 0 0 0 0 0 0 6": <String>["c3"],
+  "*******@/OOO@@O@O/******** w p p 5 4 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["c3"],
 
   /*
     a7 ----- d7 ----- g7
@@ -5993,7 +5736,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      @ ----- d1 ----- g1
   */
-  "********/@@OOOO@O/*****@** w p p 5 4 4 4 0 0 0 0 0 0 0 0 6": <String>["a7"],
+  "********/@@OOOO@O/*****@** w p p 5 4 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["a7"],
 
   /*
     a7 ----- d7 ----- g7
@@ -6008,7 +5752,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "*****@**/@@OOOO@O/******** w p p 5 4 4 4 0 0 0 0 0 0 0 0 6": <String>["c5"],
+  "*****@**/@@OOOO@O/******** w p p 5 4 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["c5"],
 
   /*
     a7 ----- d7 ----- g7
@@ -6023,7 +5768,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 -----  @
   */
-  "********/OOOO@O@@/***@**** w p p 5 4 4 4 0 0 0 0 0 0 0 0 6": <String>["a1"],
+  "********/OOOO@O@@/***@**** w p p 5 4 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["a1"],
 
   /*
     a7 ----- d7 ----- g7
@@ -6038,7 +5784,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "***@****/OOOO@O@@/******** w p p 5 4 4 4 0 0 0 0 0 0 0 0 6": <String>["c3"],
+  "***@****/OOOO@O@@/******** w p p 5 4 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["c3"],
 
   /*
     a7 ----- d7 ----- g7
@@ -6053,7 +5800,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      @ ----- d1 ----- g1
   */
-  "********/O@@O@OOO/*****@** w p p 5 4 4 4 0 0 0 0 0 0 0 0 6": <String>["g1"],
+  "********/O@@O@OOO/*****@** w p p 5 4 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["g1"],
 
   /*
     a7 ----- d7 ----- g7
@@ -6068,7 +5816,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "*****@**/O@@O@OOO/******** w p p 5 4 4 4 0 0 0 0 0 0 0 0 6": <String>["e3"],
+  "*****@**/O@@O@OOO/******** w p p 5 4 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["e3"],
 
   /*
     a7 ----- d7 -----  @
@@ -6083,7 +5832,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@OOOO@@O/*@****** w p p 5 4 4 4 0 0 0 0 0 0 0 0 6": <String>["a7"],
+  "********/@OOOO@@O/*@****** w p p 5 4 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["a7"],
 
   /*
     a7 ----- d7 ----- g7
@@ -6098,7 +5848,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "*@******/@OOOO@@O/******** w p p 5 4 4 4 0 0 0 0 0 0 0 0 6": <String>["c5"],
+  "*@******/@OOOO@@O/******** w p p 5 4 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["c5"],
 
   /*
      @ ----- d7 ----- g7
@@ -6113,7 +5864,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@O@@OOOO/*******@ w p p 5 4 4 4 0 0 0 0 0 0 0 0 6": <String>["g7"],
+  "********/@O@@OOOO/*******@ w p p 5 4 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["g7"],
 
   /*
     a7 ----- d7 ----- g7
@@ -6128,7 +5880,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "*******@/@O@@OOOO/******** w p p 5 4 4 4 0 0 0 0 0 0 0 0 6": <String>["e5"],
+  "*******@/@O@@OOOO/******** w p p 5 4 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["e5"],
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -6145,15 +5898,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "**@*****/OO@O@@OO/******** w p p 5 4 4 4 0 0 0 0 0 0 0 0 6": <String>[
-    "a1",
-    "c3",
-    "a4",
-    "c4",
-    "c5",
-    "e5",
-    "a7",
-  ],
+  "**@*****/OO@O@@OO/******** w p p 5 4 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["a1", "c3", "a4", "c4", "c5", "e5", "a7"],
 
   /*
     a7 ----- d7 ----- g7
@@ -6168,15 +5914,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/OO@O@@OO/**@***** w p p 5 4 4 4 0 0 0 0 0 0 0 0 6": <String>[
-    "c3",
-    "a1",
-    "c4",
-    "a4",
-    "a7",
-    "g7",
-    "c5",
-  ],
+  "********/OO@O@@OO/**@***** w p p 5 4 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["c3", "a1", "c4", "a4", "a7", "g7", "c5"],
 
   /*
     a7 ----- d7 ----- g7
@@ -6191,15 +5930,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "**@*****/@O@OOOO@/******** w p p 5 4 4 4 0 0 0 0 0 0 0 0 6": <String>[
-    "a7",
-    "c5",
-    "a4",
-    "c4",
-    "c3",
-    "e3",
-    "a1",
-  ],
+  "**@*****/@O@OOOO@/******** w p p 5 4 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["a7", "c5", "a4", "c4", "c3", "e3", "a1"],
 
   /*
     a7 ----- d7 ----- g7
@@ -6214,15 +5946,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@O@OOOO@/**@***** w p p 5 4 4 4 0 0 0 0 0 0 0 0 6": <String>[
-    "c5",
-    "a7",
-    "c4",
-    "a4",
-    "a1",
-    "g1",
-    "c3",
-  ],
+  "********/@O@OOOO@/**@***** w p p 5 4 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["c5", "a7", "c4", "a4", "a1", "g1", "c3"],
 
   /*
     a7 ----- d7 ----- g7
@@ -6237,15 +5962,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "******@*/OOO@@O@O/******** w p p 5 4 4 4 0 0 0 0 0 0 0 0 6": <String>[
-    "g1",
-    "e3",
-    "g4",
-    "e4",
-    "e5",
-    "c5",
-    "g7",
-  ],
+  "******@*/OOO@@O@O/******** w p p 5 4 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["g1", "e3", "g4", "e4", "e5", "c5", "g7"],
 
   /*
     a7 ----- d7 ----- g7
@@ -6260,15 +5978,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/OOO@@O@O/******@* w p p 5 4 4 4 0 0 0 0 0 0 0 0 6": <String>[
-    "e3",
-    "g1",
-    "e4",
-    "g4",
-    "g7",
-    "a7",
-    "e5",
-  ],
+  "********/OOO@@O@O/******@* w p p 5 4 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["e3", "g1", "e4", "g4", "g7", "a7", "e5"],
 
   /*
     a7 ----- d7 ----- g7
@@ -6283,15 +5994,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "******@*/@@OOOO@O/******** w p p 5 4 4 4 0 0 0 0 0 0 0 0 6": <String>[
-    "g7",
-    "e5",
-    "g4",
-    "e4",
-    "e3",
-    "c3",
-    "g1",
-  ],
+  "******@*/@@OOOO@O/******** w p p 5 4 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["g7", "e5", "g4", "e4", "e3", "c3", "g1"],
 
   /*
     a7 ----- d7 ----- g7
@@ -6306,15 +6010,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@@OOOO@O/******@* w p p 5 4 4 4 0 0 0 0 0 0 0 0 6": <String>[
-    "e5",
-    "g7",
-    "e4",
-    "g4",
-    "g1",
-    "a1",
-    "e3",
-  ],
+  "********/@@OOOO@O/******@* w p p 5 4 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["e5", "g7", "e4", "g4", "g1", "a1", "e3"],
 
   /*
     a7 ----- d7 ----- g7
@@ -6329,15 +6026,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "****@***/OOOO@O@@/******** w p p 5 4 4 4 0 0 0 0 0 0 0 0 6": <String>[
-    "a7",
-    "c5",
-    "d7",
-    "d5",
-    "e5",
-    "e3",
-    "g7",
-  ],
+  "****@***/OOOO@O@@/******** w p p 5 4 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["a7", "c5", "d7", "d5", "e5", "e3", "g7"],
 
   /*
     a7 ----- d7 ----- g7
@@ -6352,15 +6042,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "********/OOOO@O@@/****@*** w p p 5 4 4 4 0 0 0 0 0 0 0 0 6": <String>[
-    "c5",
-    "a7",
-    "d5",
-    "d7",
-    "g7",
-    "g1",
-    "e5",
-  ],
+  "********/OOOO@O@@/****@*** w p p 5 4 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["c5", "a7", "d5", "d7", "g7", "g1", "e5"],
 
   /*
     a7 ----- d7 ----- g7
@@ -6375,15 +6058,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "****@***/O@@O@OOO/******** w p p 5 4 4 4 0 0 0 0 0 0 0 0 6": <String>[
-    "g7",
-    "e5",
-    "d7",
-    "d5",
-    "c5",
-    "c3",
-    "a7",
-  ],
+  "****@***/O@@O@OOO/******** w p p 5 4 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["g7", "e5", "d7", "d5", "c5", "c3", "a7"],
 
   /*
     a7 ----- d7 ----- g7
@@ -6398,15 +6074,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "********/O@@O@OOO/****@*** w p p 5 4 4 4 0 0 0 0 0 0 0 0 6": <String>[
-    "e5",
-    "g7",
-    "d5",
-    "d7",
-    "a7",
-    "a1",
-    "c5",
-  ],
+  "********/O@@O@OOO/****@*** w p p 5 4 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["e5", "g7", "d5", "d7", "a7", "a1", "c5"],
 
   /*
     a7 ----- d7 ----- g7
@@ -6421,15 +6090,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "@*******/@OOOO@@O/******** w p p 5 4 4 4 0 0 0 0 0 0 0 0 6": <String>[
-    "a1",
-    "c3",
-    "d1",
-    "d3",
-    "e3",
-    "e5",
-    "g1",
-  ],
+  "@*******/@OOOO@@O/******** w p p 5 4 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["a1", "c3", "d1", "d3", "e3", "e5", "g1"],
 
   /*
     a7 -----  @ ----- g7
@@ -6444,15 +6106,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@OOOO@@O/@******* w p p 5 4 4 4 0 0 0 0 0 0 0 0 6": <String>[
-    "c3",
-    "a1",
-    "d3",
-    "d1",
-    "g1",
-    "g7",
-    "e3",
-  ],
+  "********/@OOOO@@O/@******* w p p 5 4 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["c3", "a1", "d3", "d1", "g1", "g7", "e3"],
 
   /*
     a7 ----- d7 ----- g7
@@ -6467,15 +6122,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "@*******/@O@@OOOO/******** w p p 5 4 4 4 0 0 0 0 0 0 0 0 6": <String>[
-    "g1",
-    "e3",
-    "d1",
-    "d3",
-    "c3",
-    "c5",
-    "a1",
-  ],
+  "@*******/@O@@OOOO/******** w p p 5 4 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["g1", "e3", "d1", "d3", "c3", "c5", "a1"],
 
   /*
     a7 -----  @ ----- g7
@@ -6490,15 +6138,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@O@@OOOO/@******* w p p 5 4 4 4 0 0 0 0 0 0 0 0 6": <String>[
-    "e3",
-    "g1",
-    "d3",
-    "d1",
-    "a1",
-    "a7",
-    "c3",
-  ],
+  "********/@O@@OOOO/@******* w p p 5 4 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["e3", "g1", "d3", "d1", "a1", "a7", "c3"],
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -6515,20 +6156,21 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "*****@**/OO@O@@OO/******** w p p 5 4 4 4 0 0 0 0 0 0 0 0 6": <String>[
-    "a1",
-    "d1",
-    "g1",
-    "d3",
-    "e3",
-    "a4",
-    "c4",
-    "e4",
-    "g4",
-    "c5",
-    "e5",
-    "a7",
-  ],
+  "*****@**/OO@O@@OO/******** w p p 5 4 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>[
+        "a1",
+        "d1",
+        "g1",
+        "d3",
+        "e3",
+        "a4",
+        "c4",
+        "e4",
+        "g4",
+        "c5",
+        "e5",
+        "a7",
+      ],
 
   /*
     a7 ----- d7 ----- g7
@@ -6543,20 +6185,21 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      @ ----- d1 ----- g1
   */
-  "********/OO@O@@OO/*****@** w p p 5 4 4 4 0 0 0 0 0 0 0 0 6": <String>[
-    "c3",
-    "d3",
-    "e3",
-    "d1",
-    "g1",
-    "c4",
-    "a4",
-    "g4",
-    "e4",
-    "a7",
-    "g7",
-    "c5",
-  ],
+  "********/OO@O@@OO/*****@** w p p 5 4 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>[
+        "c3",
+        "d3",
+        "e3",
+        "d1",
+        "g1",
+        "c4",
+        "a4",
+        "g4",
+        "e4",
+        "a7",
+        "g7",
+        "c5",
+      ],
 
   /*
     a7 ----- d7 ----- g7
@@ -6571,20 +6214,21 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "*******@/@O@OOOO@/******** w p p 5 4 4 4 0 0 0 0 0 0 0 0 6": <String>[
-    "a7",
-    "d7",
-    "g7",
-    "d5",
-    "e5",
-    "a4",
-    "c4",
-    "e4",
-    "g4",
-    "c3",
-    "e3",
-    "a1",
-  ],
+  "*******@/@O@OOOO@/******** w p p 5 4 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>[
+        "a7",
+        "d7",
+        "g7",
+        "d5",
+        "e5",
+        "a4",
+        "c4",
+        "e4",
+        "g4",
+        "c3",
+        "e3",
+        "a1",
+      ],
 
   /*
      @ ----- d7 ----- g7
@@ -6599,20 +6243,21 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@O@OOOO@/*******@ w p p 5 4 4 4 0 0 0 0 0 0 0 0 6": <String>[
-    "c5",
-    "d5",
-    "e5",
-    "d7",
-    "g7",
-    "c4",
-    "a4",
-    "g4",
-    "e4",
-    "a1",
-    "g1",
-    "c3",
-  ],
+  "********/@O@OOOO@/*******@ w p p 5 4 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>[
+        "c5",
+        "d5",
+        "e5",
+        "d7",
+        "g7",
+        "c4",
+        "a4",
+        "g4",
+        "e4",
+        "a1",
+        "g1",
+        "c3",
+      ],
 
   /*
     a7 ----- d7 ----- g7
@@ -6627,20 +6272,21 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "***@****/OOO@@O@O/******** w p p 5 4 4 4 0 0 0 0 0 0 0 0 6": <String>[
-    "g1",
-    "d1",
-    "a1",
-    "d3",
-    "c3",
-    "g4",
-    "e4",
-    "c4",
-    "a4",
-    "e5",
-    "c5",
-    "g7",
-  ],
+  "***@****/OOO@@O@O/******** w p p 5 4 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>[
+        "g1",
+        "d1",
+        "a1",
+        "d3",
+        "c3",
+        "g4",
+        "e4",
+        "c4",
+        "a4",
+        "e5",
+        "c5",
+        "g7",
+      ],
 
   /*
     a7 ----- d7 ----- g7
@@ -6655,20 +6301,21 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 -----  @
   */
-  "********/OOO@@O@O/***@**** w p p 5 4 4 4 0 0 0 0 0 0 0 0 6": <String>[
-    "e3",
-    "d3",
-    "c3",
-    "d1",
-    "a1",
-    "e4",
-    "g4",
-    "a4",
-    "c4",
-    "g7",
-    "a7",
-    "e5",
-  ],
+  "********/OOO@@O@O/***@**** w p p 5 4 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>[
+        "e3",
+        "d3",
+        "c3",
+        "d1",
+        "a1",
+        "e4",
+        "g4",
+        "a4",
+        "c4",
+        "g7",
+        "a7",
+        "e5",
+      ],
 
   /*
     a7 ----- d7 ----- g7
@@ -6683,20 +6330,21 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "*@******/@@OOOO@O/******** w p p 5 4 4 4 0 0 0 0 0 0 0 0 6": <String>[
-    "g7",
-    "d7",
-    "a7",
-    "d5",
-    "c5",
-    "g4",
-    "e4",
-    "c4",
-    "a4",
-    "e3",
-    "c3",
-    "g1",
-  ],
+  "*@******/@@OOOO@O/******** w p p 5 4 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>[
+        "g7",
+        "d7",
+        "a7",
+        "d5",
+        "c5",
+        "g4",
+        "e4",
+        "c4",
+        "a4",
+        "e3",
+        "c3",
+        "g1",
+      ],
 
   /*
     a7 ----- d7 -----  @
@@ -6711,20 +6359,21 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@@OOOO@O/*@****** w p p 5 4 4 4 0 0 0 0 0 0 0 0 6": <String>[
-    "e5",
-    "d5",
-    "c5",
-    "d7",
-    "a7",
-    "e4",
-    "g4",
-    "a4",
-    "c4",
-    "g1",
-    "a1",
-    "e3",
-  ],
+  "********/@@OOOO@O/*@****** w p p 5 4 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>[
+        "e5",
+        "d5",
+        "c5",
+        "d7",
+        "a7",
+        "e4",
+        "g4",
+        "a4",
+        "c4",
+        "g1",
+        "a1",
+        "e3",
+      ],
 
   /*
     a7 ----- d7 ----- g7
@@ -6739,20 +6388,21 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "*******@/OOOO@O@@/******** w p p 5 4 4 4 0 0 0 0 0 0 0 0 6": <String>[
-    "a7",
-    "a4",
-    "a1",
-    "c4",
-    "c3",
-    "d7",
-    "d5",
-    "d3",
-    "d1",
-    "e5",
-    "e3",
-    "g7",
-  ],
+  "*******@/OOOO@O@@/******** w p p 5 4 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>[
+        "a7",
+        "a4",
+        "a1",
+        "c4",
+        "c3",
+        "d7",
+        "d5",
+        "d3",
+        "d1",
+        "e5",
+        "e3",
+        "g7",
+      ],
 
   /*
      @ ----- d7 ----- g7
@@ -6767,20 +6417,21 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/OOOO@O@@/*******@ w p p 5 4 4 4 0 0 0 0 0 0 0 0 6": <String>[
-    "c5",
-    "c4",
-    "c3",
-    "a4",
-    "a1",
-    "d5",
-    "d7",
-    "d1",
-    "d3",
-    "g7",
-    "g1",
-    "e5",
-  ],
+  "********/OOOO@O@@/*******@ w p p 5 4 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>[
+        "c5",
+        "c4",
+        "c3",
+        "a4",
+        "a1",
+        "d5",
+        "d7",
+        "d1",
+        "d3",
+        "g7",
+        "g1",
+        "e5",
+      ],
 
   /*
     a7 ----- d7 ----- g7
@@ -6795,20 +6446,21 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "*@******/O@@O@OOO/******** w p p 5 4 4 4 0 0 0 0 0 0 0 0 6": <String>[
-    "g7",
-    "g4",
-    "g1",
-    "e4",
-    "e3",
-    "d7",
-    "d5",
-    "d3",
-    "d1",
-    "c5",
-    "c3",
-    "a7",
-  ],
+  "*@******/O@@O@OOO/******** w p p 5 4 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>[
+        "g7",
+        "g4",
+        "g1",
+        "e4",
+        "e3",
+        "d7",
+        "d5",
+        "d3",
+        "d1",
+        "c5",
+        "c3",
+        "a7",
+      ],
 
   /*
     a7 ----- d7 -----  @
@@ -6823,20 +6475,21 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/O@@O@OOO/*@****** w p p 5 4 4 4 0 0 0 0 0 0 0 0 6": <String>[
-    "e5",
-    "e4",
-    "e3",
-    "g4",
-    "g1",
-    "d5",
-    "d7",
-    "d1",
-    "d3",
-    "a7",
-    "a1",
-    "c5",
-  ],
+  "********/O@@O@OOO/*@****** w p p 5 4 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>[
+        "e5",
+        "e4",
+        "e3",
+        "g4",
+        "g1",
+        "d5",
+        "d7",
+        "d1",
+        "d3",
+        "a7",
+        "a1",
+        "c5",
+      ],
 
   /*
     a7 ----- d7 ----- g7
@@ -6851,20 +6504,21 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "*****@**/@OOOO@@O/******** w p p 5 4 4 4 0 0 0 0 0 0 0 0 6": <String>[
-    "a1",
-    "a4",
-    "a7",
-    "c4",
-    "c5",
-    "d1",
-    "d3",
-    "d5",
-    "d7",
-    "e3",
-    "e5",
-    "g1",
-  ],
+  "*****@**/@OOOO@@O/******** w p p 5 4 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>[
+        "a1",
+        "a4",
+        "a7",
+        "c4",
+        "c5",
+        "d1",
+        "d3",
+        "d5",
+        "d7",
+        "e3",
+        "e5",
+        "g1",
+      ],
 
   /*
     a7 ----- d7 ----- g7
@@ -6879,20 +6533,21 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      @ ----- d1 ----- g1
   */
-  "********/@OOOO@@O/*****@** w p p 5 4 4 4 0 0 0 0 0 0 0 0 6": <String>[
-    "c3",
-    "c4",
-    "c5",
-    "a4",
-    "a7",
-    "d3",
-    "d1",
-    "d7",
-    "d5",
-    "g1",
-    "g7",
-    "e3",
-  ],
+  "********/@OOOO@@O/*****@** w p p 5 4 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>[
+        "c3",
+        "c4",
+        "c5",
+        "a4",
+        "a7",
+        "d3",
+        "d1",
+        "d7",
+        "d5",
+        "g1",
+        "g7",
+        "e3",
+      ],
 
   /*
     a7 ----- d7 ----- g7
@@ -6907,20 +6562,21 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "***@****/@O@@OOOO/******** w p p 5 4 4 4 0 0 0 0 0 0 0 0 6": <String>[
-    "g1",
-    "g4",
-    "g7",
-    "e4",
-    "e5",
-    "d1",
-    "d3",
-    "d5",
-    "d7",
-    "c3",
-    "c5",
-    "a1",
-  ],
+  "***@****/@O@@OOOO/******** w p p 5 4 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>[
+        "g1",
+        "g4",
+        "g7",
+        "e4",
+        "e5",
+        "d1",
+        "d3",
+        "d5",
+        "d7",
+        "c3",
+        "c5",
+        "a1",
+      ],
 
   /*
     a7 ----- d7 ----- g7
@@ -6935,20 +6591,21 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 -----  @
   */
-  "********/@O@@OOOO/***@**** w p p 5 4 4 4 0 0 0 0 0 0 0 0 6": <String>[
-    "e3",
-    "e4",
-    "e5",
-    "g4",
-    "g7",
-    "d3",
-    "d1",
-    "d7",
-    "d5",
-    "a1",
-    "a7",
-    "c3",
-  ],
+  "********/@O@@OOOO/***@**** w p p 5 4 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>[
+        "e3",
+        "e4",
+        "e5",
+        "g4",
+        "g7",
+        "d3",
+        "d1",
+        "d7",
+        "d5",
+        "a1",
+        "a7",
+        "c3",
+      ],
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -6965,17 +6622,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "******@*/OO@O@@OO/******** w p p 5 4 4 4 0 0 0 0 0 0 0 0 6": <String>[
-    "d1",
-    "g1",
-    "c3",
-    "d3",
-    "e3",
-    "e4",
-    "g4",
-    "c5",
-    "e5",
-  ],
+  "******@*/OO@O@@OO/******** w p p 5 4 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["d1", "g1", "c3", "d3", "e3", "e4", "g4", "c5", "e5"],
 
   /*
     a7 ----- d7 ----- g7
@@ -6990,17 +6638,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/OO@O@@OO/******@* w p p 5 4 4 4 0 0 0 0 0 0 0 0 6": <String>[
-    "d3",
-    "e3",
-    "a1",
-    "d1",
-    "g1",
-    "g4",
-    "e4",
-    "a7",
-    "g7",
-  ],
+  "********/OO@O@@OO/******@* w p p 5 4 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["d3", "e3", "a1", "d1", "g1", "g4", "e4", "a7", "g7"],
 
   /*
     a7 ----- d7 ----- g7
@@ -7015,17 +6654,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "******@*/@O@OOOO@/******** w p p 5 4 4 4 0 0 0 0 0 0 0 0 6": <String>[
-    "d7",
-    "g7",
-    "c5",
-    "d5",
-    "e5",
-    "e4",
-    "g4",
-    "c3",
-    "e3",
-  ],
+  "******@*/@O@OOOO@/******** w p p 5 4 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["d7", "g7", "c5", "d5", "e5", "e4", "g4", "c3", "e3"],
 
   /*
     a7 ----- d7 ----- g7
@@ -7040,17 +6670,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@O@OOOO@/******@* w p p 5 4 4 4 0 0 0 0 0 0 0 0 6": <String>[
-    "d5",
-    "e5",
-    "a7",
-    "d7",
-    "g7",
-    "g4",
-    "e4",
-    "a1",
-    "g1",
-  ],
+  "********/@O@OOOO@/******@* w p p 5 4 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["d5", "e5", "a7", "d7", "g7", "g4", "e4", "a1", "g1"],
 
   /*
     a7 ----- d7 ----- g7
@@ -7065,17 +6686,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "**@*****/OOO@@O@O/******** w p p 5 4 4 4 0 0 0 0 0 0 0 0 6": <String>[
-    "d1",
-    "a1",
-    "e3",
-    "d3",
-    "c3",
-    "c4",
-    "a4",
-    "e5",
-    "c5",
-  ],
+  "**@*****/OOO@@O@O/******** w p p 5 4 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["d1", "a1", "e3", "d3", "c3", "c4", "a4", "e5", "c5"],
 
   /*
     a7 ----- d7 ----- g7
@@ -7090,17 +6702,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/OOO@@O@O/**@***** w p p 5 4 4 4 0 0 0 0 0 0 0 0 6": <String>[
-    "d3",
-    "c3",
-    "g1",
-    "d1",
-    "a1",
-    "a4",
-    "c4",
-    "g7",
-    "a7",
-  ],
+  "********/OOO@@O@O/**@***** w p p 5 4 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["d3", "c3", "g1", "d1", "a1", "a4", "c4", "g7", "a7"],
 
   /*
     a7 ----- d7 ----- g7
@@ -7115,17 +6718,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "**@*****/@@OOOO@O/******** w p p 5 4 4 4 0 0 0 0 0 0 0 0 6": <String>[
-    "d7",
-    "a7",
-    "e5",
-    "d5",
-    "c5",
-    "c4",
-    "a4",
-    "e3",
-    "c3",
-  ],
+  "**@*****/@@OOOO@O/******** w p p 5 4 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["d7", "a7", "e5", "d5", "c5", "c4", "a4", "e3", "c3"],
 
   /*
     a7 ----- d7 ----- g7
@@ -7140,17 +6734,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@@OOOO@O/**@***** w p p 5 4 4 4 0 0 0 0 0 0 0 0 6": <String>[
-    "d5",
-    "c5",
-    "g7",
-    "d7",
-    "a7",
-    "a4",
-    "c4",
-    "g1",
-    "a1",
-  ],
+  "********/@@OOOO@O/**@***** w p p 5 4 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["d5", "c5", "g7", "d7", "a7", "a4", "c4", "g1", "a1"],
 
   /*
     a7 ----- d7 ----- g7
@@ -7165,17 +6750,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "@*******/OOOO@O@@/******** w p p 5 4 4 4 0 0 0 0 0 0 0 0 6": <String>[
-    "a4",
-    "a1",
-    "c5",
-    "c4",
-    "c3",
-    "d3",
-    "d1",
-    "e5",
-    "e3",
-  ],
+  "@*******/OOOO@O@@/******** w p p 5 4 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["a4", "a1", "c5", "c4", "c3", "d3", "d1", "e5", "e3"],
 
   /*
     a7 -----  @ ----- g7
@@ -7190,17 +6766,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/OOOO@O@@/@******* w p p 5 4 4 4 0 0 0 0 0 0 0 0 6": <String>[
-    "c4",
-    "c3",
-    "a7",
-    "a4",
-    "a1",
-    "d1",
-    "d3",
-    "g7",
-    "g1",
-  ],
+  "********/OOOO@O@@/@******* w p p 5 4 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["c4", "c3", "a7", "a4", "a1", "d1", "d3", "g7", "g1"],
 
   /*
     a7 ----- d7 ----- g7
@@ -7215,17 +6782,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "@*******/O@@O@OOO/******** w p p 5 4 4 4 0 0 0 0 0 0 0 0 6": <String>[
-    "g4",
-    "g1",
-    "e5",
-    "e4",
-    "e3",
-    "d3",
-    "d1",
-    "c5",
-    "c3",
-  ],
+  "@*******/O@@O@OOO/******** w p p 5 4 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["g4", "g1", "e5", "e4", "e3", "d3", "d1", "c5", "c3"],
 
   /*
     a7 -----  @ ----- g7
@@ -7240,17 +6798,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/O@@O@OOO/@******* w p p 5 4 4 4 0 0 0 0 0 0 0 0 6": <String>[
-    "e4",
-    "e3",
-    "g7",
-    "g4",
-    "g1",
-    "d1",
-    "d3",
-    "a7",
-    "a1",
-  ],
+  "********/O@@O@OOO/@******* w p p 5 4 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["e4", "e3", "g7", "g4", "g1", "d1", "d3", "a7", "a1"],
 
   /*
     a7 ----- d7 ----- g7
@@ -7265,17 +6814,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "****@***/@OOOO@@O/******** w p p 5 4 4 4 0 0 0 0 0 0 0 0 6": <String>[
-    "a4",
-    "a7",
-    "c3",
-    "c4",
-    "c5",
-    "d5",
-    "d7",
-    "e3",
-    "e5",
-  ],
+  "****@***/@OOOO@@O/******** w p p 5 4 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["a4", "a7", "c3", "c4", "c5", "d5", "d7", "e3", "e5"],
 
   /*
     a7 ----- d7 ----- g7
@@ -7290,17 +6830,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "********/@OOOO@@O/****@*** w p p 5 4 4 4 0 0 0 0 0 0 0 0 6": <String>[
-    "c4",
-    "c5",
-    "a1",
-    "a4",
-    "a7",
-    "d7",
-    "d5",
-    "g1",
-    "g7",
-  ],
+  "********/@OOOO@@O/****@*** w p p 5 4 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["c4", "c5", "a1", "a4", "a7", "d7", "d5", "g1", "g7"],
 
   /*
     a7 ----- d7 ----- g7
@@ -7315,17 +6846,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "****@***/@O@@OOOO/******** w p p 5 4 4 4 0 0 0 0 0 0 0 0 6": <String>[
-    "g4",
-    "g7",
-    "e3",
-    "e4",
-    "e5",
-    "d5",
-    "d7",
-    "c3",
-    "c5",
-  ],
+  "****@***/@O@@OOOO/******** w p p 5 4 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["g4", "g7", "e3", "e4", "e5", "d5", "d7", "c3", "c5"],
 
   /*
     a7 ----- d7 ----- g7
@@ -7340,17 +6862,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "********/@O@@OOOO/****@*** w p p 5 4 4 4 0 0 0 0 0 0 0 0 6": <String>[
-    "e4",
-    "e5",
-    "g1",
-    "g4",
-    "g7",
-    "d7",
-    "d5",
-    "a1",
-    "a7",
-  ],
+  "********/@O@@OOOO/****@*** w p p 5 4 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["e4", "e5", "g1", "g4", "g7", "d7", "d5", "a1", "a7"],
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -7367,17 +6880,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "*******@/OO@O@@OO/******** w p p 5 4 4 4 0 0 0 0 0 0 0 0 6": <String>[
-    "a1",
-    "d1",
-    "g1",
-    "c3",
-    "e3",
-    "a4",
-    "e4",
-    "g4",
-    "g7",
-  ],
+  "*******@/OO@O@@OO/******** w p p 5 4 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["a1", "d1", "g1", "c3", "e3", "a4", "e4", "g4", "g7"],
 
   /*
      @ ----- d7 ----- g7
@@ -7392,17 +6896,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/OO@O@@OO/*******@ w p p 5 4 4 4 0 0 0 0 0 0 0 0 6": <String>[
-    "c3",
-    "d3",
-    "e3",
-    "a1",
-    "g1",
-    "c4",
-    "g4",
-    "e4",
-    "e5",
-  ],
+  "********/OO@O@@OO/*******@ w p p 5 4 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["c3", "d3", "e3", "a1", "g1", "c4", "g4", "e4", "e5"],
 
   /*
     a7 ----- d7 ----- g7
@@ -7417,17 +6912,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "*****@**/@O@OOOO@/******** w p p 5 4 4 4 0 0 0 0 0 0 0 0 6": <String>[
-    "a7",
-    "d7",
-    "g7",
-    "c5",
-    "e5",
-    "a4",
-    "e4",
-    "g4",
-    "g1",
-  ],
+  "*****@**/@O@OOOO@/******** w p p 5 4 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["a7", "d7", "g7", "c5", "e5", "a4", "e4", "g4", "g1"],
 
   /*
     a7 ----- d7 ----- g7
@@ -7442,17 +6928,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      @ ----- d1 ----- g1
   */
-  "********/@O@OOOO@/*****@** w p p 5 4 4 4 0 0 0 0 0 0 0 0 6": <String>[
-    "c5",
-    "d5",
-    "e5",
-    "a7",
-    "g7",
-    "c4",
-    "g4",
-    "e4",
-    "e3",
-  ],
+  "********/@O@OOOO@/*****@** w p p 5 4 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["c5", "d5", "e5", "a7", "g7", "c4", "g4", "e4", "e3"],
 
   /*
     a7 ----- d7 ----- g7
@@ -7467,17 +6944,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "*@******/OOO@@O@O/******** w p p 5 4 4 4 0 0 0 0 0 0 0 0 6": <String>[
-    "g1",
-    "d1",
-    "a1",
-    "e3",
-    "c3",
-    "g4",
-    "c4",
-    "a4",
-    "a7",
-  ],
+  "*@******/OOO@@O@O/******** w p p 5 4 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["g1", "d1", "a1", "e3", "c3", "g4", "c4", "a4", "a7"],
 
   /*
     a7 ----- d7 -----  @
@@ -7492,17 +6960,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/OOO@@O@O/*@****** w p p 5 4 4 4 0 0 0 0 0 0 0 0 6": <String>[
-    "e3",
-    "d3",
-    "c3",
-    "g1",
-    "a1",
-    "e4",
-    "a4",
-    "c4",
-    "c5",
-  ],
+  "********/OOO@@O@O/*@****** w p p 5 4 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["e3", "d3", "c3", "g1", "a1", "e4", "a4", "c4", "c5"],
 
   /*
     a7 ----- d7 ----- g7
@@ -7517,17 +6976,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "***@****/@@OOOO@O/******** w p p 5 4 4 4 0 0 0 0 0 0 0 0 6": <String>[
-    "g7",
-    "d7",
-    "a7",
-    "e5",
-    "c5",
-    "g4",
-    "c4",
-    "a4",
-    "a1",
-  ],
+  "***@****/@@OOOO@O/******** w p p 5 4 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["g7", "d7", "a7", "e5", "c5", "g4", "c4", "a4", "a1"],
 
   /*
     a7 ----- d7 ----- g7
@@ -7542,17 +6992,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 -----  @
   */
-  "********/@@OOOO@O/***@**** w p p 5 4 4 4 0 0 0 0 0 0 0 0 6": <String>[
-    "e5",
-    "d5",
-    "c5",
-    "g7",
-    "a7",
-    "e4",
-    "a4",
-    "c4",
-    "c3",
-  ],
+  "********/@@OOOO@O/***@**** w p p 5 4 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["e5", "d5", "c5", "g7", "a7", "e4", "a4", "c4", "c3"],
 
   /*
     a7 ----- d7 ----- g7
@@ -7567,17 +7008,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "*@******/OOOO@O@@/******** w p p 5 4 4 4 0 0 0 0 0 0 0 0 6": <String>[
-    "a7",
-    "a4",
-    "a1",
-    "c5",
-    "c3",
-    "d7",
-    "d3",
-    "d1",
-    "g1",
-  ],
+  "*@******/OOOO@O@@/******** w p p 5 4 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["a7", "a4", "a1", "c5", "c3", "d7", "d3", "d1", "g1"],
 
   /*
     a7 ----- d7 -----  @
@@ -7592,17 +7024,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/OOOO@O@@/*@****** w p p 5 4 4 4 0 0 0 0 0 0 0 0 6": <String>[
-    "c5",
-    "c4",
-    "c3",
-    "a7",
-    "a1",
-    "d5",
-    "d1",
-    "d3",
-    "e3",
-  ],
+  "********/OOOO@O@@/*@****** w p p 5 4 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["c5", "c4", "c3", "a7", "a1", "d5", "d1", "d3", "e3"],
 
   /*
     a7 ----- d7 ----- g7
@@ -7617,17 +7040,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "*******@/O@@O@OOO/******** w p p 5 4 4 4 0 0 0 0 0 0 0 0 6": <String>[
-    "g7",
-    "g4",
-    "g1",
-    "e5",
-    "e3",
-    "d7",
-    "d3",
-    "d1",
-    "a1",
-  ],
+  "*******@/O@@O@OOO/******** w p p 5 4 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["g7", "g4", "g1", "e5", "e3", "d7", "d3", "d1", "a1"],
 
   /*
      @ ----- d7 ----- g7
@@ -7642,17 +7056,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/O@@O@OOO/*******@ w p p 5 4 4 4 0 0 0 0 0 0 0 0 6": <String>[
-    "e5",
-    "e4",
-    "e3",
-    "g7",
-    "g1",
-    "d5",
-    "d1",
-    "d3",
-    "c3",
-  ],
+  "********/O@@O@OOO/*******@ w p p 5 4 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["e5", "e4", "e3", "g7", "g1", "d5", "d1", "d3", "c3"],
 
   /*
     a7 ----- d7 ----- g7
@@ -7667,17 +7072,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "***@****/@OOOO@@O/******** w p p 5 4 4 4 0 0 0 0 0 0 0 0 6": <String>[
-    "a1",
-    "a4",
-    "a7",
-    "c3",
-    "c5",
-    "d1",
-    "d5",
-    "d7",
-    "g7",
-  ],
+  "***@****/@OOOO@@O/******** w p p 5 4 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["a1", "a4", "a7", "c3", "c5", "d1", "d5", "d7", "g7"],
 
   /*
     a7 ----- d7 ----- g7
@@ -7692,17 +7088,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 -----  @
   */
-  "********/@OOOO@@O/***@**** w p p 5 4 4 4 0 0 0 0 0 0 0 0 6": <String>[
-    "c3",
-    "c4",
-    "c5",
-    "a1",
-    "a7",
-    "d3",
-    "d7",
-    "d5",
-    "e5",
-  ],
+  "********/@OOOO@@O/***@**** w p p 5 4 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["c3", "c4", "c5", "a1", "a7", "d3", "d7", "d5", "e5"],
 
   /*
     a7 ----- d7 ----- g7
@@ -7717,17 +7104,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "*****@**/@O@@OOOO/******** w p p 5 4 4 4 0 0 0 0 0 0 0 0 6": <String>[
-    "g1",
-    "g4",
-    "g7",
-    "e3",
-    "e5",
-    "d1",
-    "d5",
-    "d7",
-    "a7",
-  ],
+  "*****@**/@O@@OOOO/******** w p p 5 4 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["g1", "g4", "g7", "e3", "e5", "d1", "d5", "d7", "a7"],
 
   /*
     a7 ----- d7 ----- g7
@@ -7742,17 +7120,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      @ ----- d1 ----- g1
   */
-  "********/@O@@OOOO/*****@** w p p 5 4 4 4 0 0 0 0 0 0 0 0 6": <String>[
-    "e3",
-    "e4",
-    "e5",
-    "g1",
-    "g7",
-    "d3",
-    "d7",
-    "d5",
-    "c5",
-  ],
+  "********/@O@@OOOO/*****@** w p p 5 4 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["e3", "e4", "e5", "g1", "g7", "d3", "d7", "d5", "c5"],
 
   //////////////////////////////////////////////////////////////////////////////
   ////////////////////////////  Rainer Rosenberger  ////////////////////////////
@@ -7773,11 +7142,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "@****OOO/OO@*@@OO/******@* w p p 7 2 5 2 0 0 0 0 0 0 0 0 9": <String>[
-    "d1",
-    "e3",
-    "e4",
-  ],
+  "@****OOO/OO@*@@OO/******@* w p p 7 2 5 2 0 0 -1 -1 -1 -1 0 0 9 ids:nodes":
+      <String>["d1", "e3", "e4"],
 
   /*
      O -----  @ ----- g7
@@ -7792,11 +7158,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      O ----- d1 ----- g1
   */
-  "******@*/OO@*@@OO/@****OOO w p p 7 2 5 2 0 0 0 0 0 0 0 0 9": <String>[
-    "d3",
-    "g1",
-    "g4",
-  ],
+  "******@*/OO@*@@OO/@****OOO w p p 7 2 5 2 0 0 -1 -1 -1 -1 0 0 9 ids:nodes":
+      <String>["d3", "g1", "g4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -7811,11 +7174,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "****@OOO/@*@OOOO@/******@* w p p 7 2 5 2 0 0 0 0 0 0 0 0 9": <String>[
-    "d7",
-    "e5",
-    "e4",
-  ],
+  "****@OOO/@*@OOOO@/******@* w p p 7 2 5 2 0 0 -1 -1 -1 -1 0 0 9 ids:nodes":
+      <String>["d7", "e5", "e4"],
 
   /*
      O ----- d7 ----- g7
@@ -7830,11 +7190,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      O -----  @ ----- g1
   */
-  "******@*/@*@OOOO@/****@OOO w p p 7 2 5 2 0 0 0 0 0 0 0 0 9": <String>[
-    "d5",
-    "g7",
-    "g4",
-  ],
+  "******@*/@*@OOOO@/****@OOO w p p 7 2 5 2 0 0 -1 -1 -1 -1 0 0 9 ids:nodes":
+      <String>["d5", "g7", "g4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -7849,11 +7206,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "@OOO****/OOO@@*@O/**@***** w p p 7 2 5 2 0 0 0 0 0 0 0 0 9": <String>[
-    "d1",
-    "c3",
-    "c4",
-  ],
+  "@OOO****/OOO@@*@O/**@***** w p p 7 2 5 2 0 0 -1 -1 -1 -1 0 0 9 ids:nodes":
+      <String>["d1", "c3", "c4"],
 
   /*
     a7 -----  @ -----  O
@@ -7868,11 +7222,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 -----  O
   */
-  "**@*****/OOO@@*@O/@OOO**** w p p 7 2 5 2 0 0 0 0 0 0 0 0 9": <String>[
-    "d3",
-    "a1",
-    "a4",
-  ],
+  "**@*****/OOO@@*@O/@OOO**** w p p 7 2 5 2 0 0 -1 -1 -1 -1 0 0 9 ids:nodes":
+      <String>["d3", "a1", "a4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -7887,11 +7238,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "*OOO@***/@@OOOO@*/**@***** w p p 7 2 5 2 0 0 0 0 0 0 0 0 9": <String>[
-    "d7",
-    "c5",
-    "c4",
-  ],
+  "*OOO@***/@@OOOO@*/**@***** w p p 7 2 5 2 0 0 -1 -1 -1 -1 0 0 9 ids:nodes":
+      <String>["d7", "c5", "c4"],
 
   /*
     a7 ----- d7 -----  O
@@ -7906,11 +7254,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ -----  O
   */
-  "**@*****/@@OOOO@*/*OOO@*** w p p 7 2 5 2 0 0 0 0 0 0 0 0 9": <String>[
-    "d5",
-    "a7",
-    "a4",
-  ],
+  "**@*****/@@OOOO@*/*OOO@*** w p p 7 2 5 2 0 0 -1 -1 -1 -1 0 0 9 ids:nodes":
+      <String>["d5", "a7", "a4"],
 
   /*
     a7 -----  @ ----- g7
@@ -7925,11 +7270,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "OO@****O/OOOO@*@@/@******* w p p 7 2 5 2 0 0 0 0 0 0 0 0 9": <String>[
-    "a4",
-    "c3",
-    "d3",
-  ],
+  "OO@****O/OOOO@*@@/@******* w p p 7 2 5 2 0 0 -1 -1 -1 -1 0 0 9 ids:nodes":
+      <String>["a4", "c3", "d3"],
 
   /*
      O -----  O -----  O
@@ -7944,11 +7286,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "@*******/OOOO@*@@/OO@****O w p p 7 2 5 2 0 0 0 0 0 0 0 0 9": <String>[
-    "c4",
-    "a1",
-    "d1",
-  ],
+  "@*******/OOOO@*@@/OO@****O w p p 7 2 5 2 0 0 -1 -1 -1 -1 0 0 9 ids:nodes":
+      <String>["c4", "a1", "d1"],
 
   /*
     a7 -----  @ ----- g7
@@ -7963,11 +7302,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "OO****@O/O@@*@OOO/@******* w p p 7 2 5 2 0 0 0 0 0 0 0 0 9": <String>[
-    "g4",
-    "e3",
-    "d3",
-  ],
+  "OO****@O/O@@*@OOO/@******* w p p 7 2 5 2 0 0 -1 -1 -1 -1 0 0 9 ids:nodes":
+      <String>["g4", "e3", "d3"],
 
   /*
      O -----  O -----  O
@@ -7982,11 +7318,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "@*******/O@@*@OOO/OO****@O w p p 7 2 5 2 0 0 0 0 0 0 0 0 9": <String>[
-    "e4",
-    "g1",
-    "d1",
-  ],
+  "@*******/O@@*@OOO/OO****@O w p p 7 2 5 2 0 0 -1 -1 -1 -1 0 0 9 ids:nodes":
+      <String>["e4", "g1", "d1"],
 
   /*
     a7 ----- d7 ----- g7
@@ -8001,11 +7334,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "**@OOO**/@OOOO@@*/****@*** w p p 7 2 5 2 0 0 0 0 0 0 0 0 9": <String>[
-    "a4",
-    "c5",
-    "d5",
-  ],
+  "**@OOO**/@OOOO@@*/****@*** w p p 7 2 5 2 0 0 -1 -1 -1 -1 0 0 9 ids:nodes":
+      <String>["a4", "c5", "d5"],
 
   /*
     a7 ----- d7 ----- g7
@@ -8020,11 +7350,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      O -----  O -----  O
   */
-  "****@***/@OOOO@@*/**@OOO** w p p 7 2 5 2 0 0 0 0 0 0 0 0 9": <String>[
-    "c4",
-    "a7",
-    "d7",
-  ],
+  "****@***/@OOOO@@*/**@OOO** w p p 7 2 5 2 0 0 -1 -1 -1 -1 0 0 9 ids:nodes":
+      <String>["c4", "a7", "d7"],
 
   /*
     a7 ----- d7 ----- g7
@@ -8039,11 +7366,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "***OOO@*/@*@@OOOO/****@*** w p p 7 2 5 2 0 0 0 0 0 0 0 0 9": <String>[
-    "g4",
-    "e5",
-    "d5",
-  ],
+  "***OOO@*/@*@@OOOO/****@*** w p p 7 2 5 2 0 0 -1 -1 -1 -1 0 0 9 ids:nodes":
+      <String>["g4", "e5", "d5"],
 
   /*
     a7 ----- d7 ----- g7
@@ -8058,11 +7382,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      O -----  O -----  O
   */
-  "****@***/@*@@OOOO/***OOO@* w p p 7 2 5 2 0 0 0 0 0 0 0 0 9": <String>[
-    "e4",
-    "g7",
-    "d7",
-  ],
+  "****@***/@*@@OOOO/***OOO@* w p p 7 2 5 2 0 0 -1 -1 -1 -1 0 0 9 ids:nodes":
+      <String>["e4", "g7", "d7"],
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -8079,10 +7400,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "*O******/O*O*@*@*/******** b p p 3 6 2 7 0 0 0 0 0 0 0 0 3": <String>[
-    "d5",
-    "e4",
-  ],
+  "*O******/O*O*@*@*/******** b p p 3 6 2 7 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>["d5", "e4"],
 
   /*
     a7 ----- d7 -----  O
@@ -8097,10 +7416,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/O*O*@*@*/*O****** b p p 3 6 2 7 0 0 0 0 0 0 0 0 3": <String>[
-    "d7",
-    "g4",
-  ],
+  "********/O*O*@*@*/*O****** b p p 3 6 2 7 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>["d7", "g4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -8115,10 +7432,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "***O****/@*O*O*@*/******** b p p 3 6 2 7 0 0 0 0 0 0 0 0 3": <String>[
-    "d3",
-    "e4",
-  ],
+  "***O****/@*O*O*@*/******** b p p 3 6 2 7 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>["d3", "e4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -8133,10 +7448,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 -----  O
   */
-  "********/@*O*O*@*/***O**** b p p 3 6 2 7 0 0 0 0 0 0 0 0 3": <String>[
-    "d1",
-    "g4",
-  ],
+  "********/@*O*O*@*/***O**** b p p 3 6 2 7 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>["d1", "g4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -8151,10 +7464,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "*******O/O*@*@*O*/******** b p p 3 6 2 7 0 0 0 0 0 0 0 0 3": <String>[
-    "d5",
-    "c4",
-  ],
+  "*******O/O*@*@*O*/******** b p p 3 6 2 7 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>["d5", "c4"],
 
   /*
      O ----- d7 ----- g7
@@ -8169,10 +7480,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/O*@*@*O*/*******O b p p 3 6 2 7 0 0 0 0 0 0 0 0 3": <String>[
-    "d7",
-    "a4",
-  ],
+  "********/O*@*@*O*/*******O b p p 3 6 2 7 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>["d7", "a4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -8187,10 +7496,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "*****O**/@*@*O*O*/******** b p p 3 6 2 7 0 0 0 0 0 0 0 0 3": <String>[
-    "d3",
-    "c4",
-  ],
+  "*****O**/@*@*O*O*/******** b p p 3 6 2 7 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>["d3", "c4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -8205,10 +7512,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      O ----- d1 ----- g1
   */
-  "********/@*@*O*O*/*****O** b p p 3 6 2 7 0 0 0 0 0 0 0 0 3": <String>[
-    "d1",
-    "a4",
-  ],
+  "********/@*@*O*O*/*****O** b p p 3 6 2 7 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>["d1", "a4"],
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -8225,7 +7530,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "*O@*****/O*O*@*@*/******** w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>["d5"],
+  "*O@*****/O*O*@*@*/******** w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["d5"],
 
   /*
     a7 ----- d7 -----  O
@@ -8240,7 +7546,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/O*O*@*@*/*O@***** w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>["d7"],
+  "********/O*O*@*@*/*O@***** w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["d7"],
 
   /*
     a7 ----- d7 ----- g7
@@ -8255,7 +7562,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "**@O****/@*O*O*@*/******** w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>["d3"],
+  "**@O****/@*O*O*@*/******** w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["d3"],
 
   /*
     a7 ----- d7 ----- g7
@@ -8270,7 +7578,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 -----  O
   */
-  "********/@*O*O*@*/**@O**** w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>["d1"],
+  "********/@*O*O*@*/**@O**** w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["d1"],
 
   /*
     a7 ----- d7 ----- g7
@@ -8285,7 +7594,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "******@O/O*@*@*O*/******** w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>["d5"],
+  "******@O/O*@*@*O*/******** w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["d5"],
 
   /*
      O ----- d7 ----- g7
@@ -8300,7 +7610,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/O*@*@*O*/******@O w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>["d7"],
+  "********/O*@*@*O*/******@O w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["d7"],
 
   /*
     a7 ----- d7 ----- g7
@@ -8315,7 +7626,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "*****O@*/@*@*O*O*/******** w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>["d3"],
+  "*****O@*/@*@*O*O*/******** w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["d3"],
 
   /*
     a7 ----- d7 ----- g7
@@ -8330,7 +7642,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      O ----- d1 ----- g1
   */
-  "********/@*@*O*O*/*****O@* w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>["d1"],
+  "********/@*@*O*O*/*****O@* w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["d1"],
 
   /*
     a7 ----- d7 ----- g7
@@ -8345,7 +7658,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "***O@***/@*O*O*@*/******** w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>["e4"],
+  "***O@***/@*O*O*@*/******** w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["e4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -8360,7 +7674,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ -----  O
   */
-  "********/@*O*O*@*/***O@*** w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>["g4"],
+  "********/@*O*O*@*/***O@*** w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["g4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -8375,7 +7690,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "****@O**/@*@*O*O*/******** w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>["c4"],
+  "****@O**/@*@*O*O*/******** w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["c4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -8390,7 +7706,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      O -----  @ ----- g1
   */
-  "********/@*@*O*O*/****@O** w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>["a4"],
+  "********/@*@*O*O*/****@O** w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["a4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -8405,7 +7722,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "@O******/O*O*@*@*/******** w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>["e4"],
+  "@O******/O*O*@*@*/******** w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["e4"],
 
   /*
     a7 -----  @ -----  O
@@ -8420,7 +7738,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/O*O*@*@*/@O****** w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>["g4"],
+  "********/O*O*@*@*/@O****** w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["g4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -8435,7 +7754,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "@******O/O*@*@*O*/******** w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>["c4"],
+  "@******O/O*@*@*O*/******** w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["c4"],
 
   /*
      O -----  @ ----- g7
@@ -8450,7 +7770,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/O*@*@*O*/@******O w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>["a4"],
+  "********/O*@*@*O*/@******O w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["a4"],
 
   //////////////////////////////////////////////////////////////////////////////
   /////////////////////////////   Fix Bad Move    //////////////////////////////
@@ -8471,7 +7792,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "*@****O@/OOO@@O@O/******** w p p 6 3 5 3 0 0 0 0 0 0 0 0 7": <String>["d1"],
+  "*@****O@/OOO@@O@O/******** w p p 6 3 5 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["d1"],
 
   /*
      @ ----- d7 -----  @
@@ -8486,7 +7808,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/OOO@@O@O/*@****O@ w p p 6 3 5 3 0 0 0 0 0 0 0 0 7": <String>["d3"],
+  "********/OOO@@O@O/*@****O@ w p p 6 3 5 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["d3"],
 
   /*
     a7 ----- d7 ----- g7
@@ -8501,7 +7824,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "***@*@O*/@@OOOO@O/******** w p p 6 3 5 3 0 0 0 0 0 0 0 0 7": <String>["d7"],
+  "***@*@O*/@@OOOO@O/******** w p p 6 3 5 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["d7"],
 
   /*
     a7 ----- d7 ----- g7
@@ -8516,7 +7840,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      @ ----- d1 -----  @
   */
-  "********/@@OOOO@O/***@*@O* w p p 6 3 5 3 0 0 0 0 0 0 0 0 7": <String>["d5"],
+  "********/@@OOOO@O/***@*@O* w p p 6 3 5 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["d5"],
 
   /*
     a7 ----- d7 ----- g7
@@ -8531,7 +7856,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "*@O****@/OO@O@@OO/******** w p p 6 3 5 3 0 0 0 0 0 0 0 0 7": <String>["d1"],
+  "*@O****@/OO@O@@OO/******** w p p 6 3 5 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["d1"],
 
   /*
      @ ----- d7 -----  @
@@ -8546,7 +7872,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/OO@O@@OO/*@O****@ w p p 6 3 5 3 0 0 0 0 0 0 0 0 7": <String>["d3"],
+  "********/OO@O@@OO/*@O****@ w p p 6 3 5 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["d3"],
 
   /*
     a7 ----- d7 ----- g7
@@ -8561,7 +7888,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "**O@*@**/@O@OOOO@/******** w p p 6 3 5 3 0 0 0 0 0 0 0 0 7": <String>["d7"],
+  "**O@*@**/@O@OOOO@/******** w p p 6 3 5 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["d7"],
 
   /*
     a7 ----- d7 ----- g7
@@ -8576,7 +7904,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      @ ----- d1 -----  @
   */
-  "********/@O@OOOO@/**O@*@** w p p 6 3 5 3 0 0 0 0 0 0 0 0 7": <String>["d5"],
+  "********/@O@OOOO@/**O@*@** w p p 6 3 5 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["d5"],
 
   /*
     a7 ----- d7 ----- g7
@@ -8591,7 +7920,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "O@*@****/@OOOO@@O/******** w p p 6 3 5 3 0 0 0 0 0 0 0 0 7": <String>["a4"],
+  "O@*@****/@OOOO@@O/******** w p p 6 3 5 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["a4"],
 
   /*
     a7 -----  O -----  @
@@ -8606,7 +7936,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 -----  @
   */
-  "********/@OOOO@@O/O@*@**** w p p 6 3 5 3 0 0 0 0 0 0 0 0 7": <String>["c4"],
+  "********/@OOOO@@O/O@*@**** w p p 6 3 5 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["c4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -8621,7 +7952,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "O****@*@/@O@@OOOO/******** w p p 6 3 5 3 0 0 0 0 0 0 0 0 7": <String>["g4"],
+  "O****@*@/@O@@OOOO/******** w p p 6 3 5 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["g4"],
 
   /*
      @ -----  O ----- g7
@@ -8636,7 +7968,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      @ ----- d1 ----- g1
   */
-  "********/@O@@OOOO/O****@*@ w p p 6 3 5 3 0 0 0 0 0 0 0 0 7": <String>["e4"],
+  "********/@O@@OOOO/O****@*@ w p p 6 3 5 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["e4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -8651,7 +7984,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "*@*@O***/OOOO@O@@/******** w p p 6 3 5 3 0 0 0 0 0 0 0 0 7": <String>["a4"],
+  "*@*@O***/OOOO@O@@/******** w p p 6 3 5 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["a4"],
 
   /*
     a7 ----- d7 -----  @
@@ -8666,7 +8000,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O -----  @
   */
-  "********/OOOO@O@@/*@*@O*** w p p 6 3 5 3 0 0 0 0 0 0 0 0 7": <String>["c4"],
+  "********/OOOO@O@@/*@*@O*** w p p 6 3 5 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["c4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -8681,7 +8016,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "****O@*@/O@@O@OOO/******** w p p 6 3 5 3 0 0 0 0 0 0 0 0 7": <String>["g4"],
+  "****O@*@/O@@O@OOO/******** w p p 6 3 5 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["g4"],
 
   /*
      @ ----- d7 ----- g7
@@ -8696,7 +8032,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      @ -----  O ----- g1
   */
-  "********/O@@O@OOO/****O@*@ w p p 6 3 5 3 0 0 0 0 0 0 0 0 7": <String>["e4"],
+  "********/O@@O@OOO/****O@*@ w p p 6 3 5 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["e4"],
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -8713,7 +8050,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "**@***O*/OOO@@O@O/*@**O**@ w p p 7 2 6 2 0 0 0 0 0 0 0 0 8": <String>["a4"],
+  "**@***O*/OOO@@O@O/*@**O**@ w p p 7 2 6 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["a4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -8728,7 +8066,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "*@**O**@/OOO@@O@O/**@***O* w p p 7 2 6 2 0 0 0 0 0 0 0 0 8": <String>["c4"],
+  "*@**O**@/OOO@@O@O/**@***O* w p p 7 2 6 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["c4"],
 
   /*
     a7 -----  O ----- g7
@@ -8743,7 +8082,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      @ ----- d1 -----  @
   */
-  "**@***O*/@@OOOO@O/O**@*@** w p p 7 2 6 2 0 0 0 0 0 0 0 0 8": <String>["a4"],
+  "**@***O*/@@OOOO@O/O**@*@** w p p 7 2 6 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["a4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -8758,7 +8098,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "O**@*@**/@@OOOO@O/**@***O* w p p 7 2 6 2 0 0 0 0 0 0 0 0 8": <String>["c4"],
+  "O**@*@**/@@OOOO@O/**@***O* w p p 7 2 6 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["c4"],
 
   /*
      @ ----- d7 -----  @
@@ -8773,7 +8114,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "**O***@*/OO@O@@OO/*@**O**@ w p p 7 2 6 2 0 0 0 0 0 0 0 0 8": <String>["g4"],
+  "**O***@*/OO@O@@OO/*@**O**@ w p p 7 2 6 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["g4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -8788,7 +8130,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "*@**O**@/OO@O@@OO/**O***@* w p p 7 2 6 2 0 0 0 0 0 0 0 0 8": <String>["e4"],
+  "*@**O**@/OO@O@@OO/**O***@* w p p 7 2 6 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["e4"],
 
   /*
     a7 -----  O ----- g7
@@ -8803,7 +8146,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      @ ----- d1 -----  @
   */
-  "**O***@*/@O@OOOO@/O**@*@** w p p 7 2 6 2 0 0 0 0 0 0 0 0 8": <String>["g4"],
+  "**O***@*/@O@OOOO@/O**@*@** w p p 7 2 6 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["g4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -8818,7 +8162,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "O**@*@**/@O@OOOO@/**O***@* w p p 7 2 6 2 0 0 0 0 0 0 0 0 8": <String>["e4"],
+  "O**@*@**/@O@OOOO@/**O***@* w p p 7 2 6 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["e4"],
 
   /*
     a7 ----- d7 -----  @
@@ -8833,7 +8178,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 -----  @
   */
-  "O***@***/@OOOO@@O/*@*@**O* w p p 7 2 6 2 0 0 0 0 0 0 0 0 8": <String>["d7"],
+  "O***@***/@OOOO@@O/*@*@**O* w p p 7 2 6 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["d7"],
 
   /*
     a7 -----  O ----- g7
@@ -8848,7 +8194,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "*@*@**O*/@OOOO@@O/O***@*** w p p 7 2 6 2 0 0 0 0 0 0 0 0 8": <String>["d5"],
+  "*@*@**O*/@OOOO@@O/O***@*** w p p 7 2 6 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["d5"],
 
   /*
      @ ----- d7 ----- g7
@@ -8863,7 +8210,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      @ ----- d1 ----- g1
   */
-  "O***@***/@O@@OOOO/**O**@*@ w p p 7 2 6 2 0 0 0 0 0 0 0 0 8": <String>["d7"],
+  "O***@***/@O@@OOOO/**O**@*@ w p p 7 2 6 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["d7"],
 
   /*
     a7 -----  O ----- g7
@@ -8878,7 +8226,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "**O**@*@/@O@@OOOO/O***@*** w p p 7 2 6 2 0 0 0 0 0 0 0 0 8": <String>["d5"],
+  "**O**@*@/@O@@OOOO/O***@*** w p p 7 2 6 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["d5"],
 
   /*
     a7 ----- d7 -----  @
@@ -8893,7 +8242,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 -----  @
   */
-  "@***O***/OOOO@O@@/*@*@**O* w p p 7 2 6 2 0 0 0 0 0 0 0 0 8": <String>["d1"],
+  "@***O***/OOOO@O@@/*@*@**O* w p p 7 2 6 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["d1"],
 
   /*
     a7 -----  @ ----- g7
@@ -8908,7 +8258,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "*@*@**O*/OOOO@O@@/@***O*** w p p 7 2 6 2 0 0 0 0 0 0 0 0 8": <String>["d3"],
+  "*@*@**O*/OOOO@O@@/@***O*** w p p 7 2 6 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["d3"],
 
   /*
      @ ----- d7 ----- g7
@@ -8923,7 +8274,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      @ ----- d1 ----- g1
   */
-  "@***O***/O@@O@OOO/**O**@*@ w p p 7 2 6 2 0 0 0 0 0 0 0 0 8": <String>["d1"],
+  "@***O***/O@@O@OOO/**O**@*@ w p p 7 2 6 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["d1"],
 
   /*
     a7 -----  @ ----- g7
@@ -8938,7 +8290,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "**O**@*@/O@@O@OOO/@***O*** w p p 7 2 6 2 0 0 0 0 0 0 0 0 8": <String>["d3"],
+  "**O**@*@/O@@O@OOO/@***O*** w p p 7 2 6 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["d3"],
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -8955,19 +8308,20 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "****O***/O*O*@*@*/*O@*@*O* b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "a1",
-    "b2",
-    "f2",
-    "c3",
-    "e4",
-    "c5",
-    "d5",
-    "e5",
-    "b6",
-    "f6",
-    "d7",
-  ],
+  "****O***/O*O*@*@*/*O@*@*O* b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>[
+        "a1",
+        "b2",
+        "f2",
+        "c3",
+        "e4",
+        "c5",
+        "d5",
+        "e5",
+        "b6",
+        "f6",
+        "d7",
+      ],
 
   /*
     a7 ----- d7 ----- g7
@@ -8982,19 +8336,20 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "*O@*@*O*/O*O*@*@*/****O*** b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "c3",
-    "b2",
-    "f2",
-    "a1",
-    "g4",
-    "a7",
-    "d7",
-    "g7",
-    "b6",
-    "f6",
-    "d5",
-  ],
+  "*O@*@*O*/O*O*@*@*/****O*** b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>[
+        "c3",
+        "b2",
+        "f2",
+        "a1",
+        "g4",
+        "a7",
+        "d7",
+        "g7",
+        "b6",
+        "f6",
+        "d5",
+      ],
 
   /*
     a7 -----  @ ----- g7
@@ -9009,19 +8364,20 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 -----  O
   */
-  "O*******/@*O*O*@*/@*@O**O* b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "a7",
-    "b6",
-    "f6",
-    "c5",
-    "e4",
-    "c3",
-    "d3",
-    "e3",
-    "b2",
-    "f2",
-    "d1",
-  ],
+  "O*******/@*O*O*@*/@*@O**O* b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>[
+        "a7",
+        "b6",
+        "f6",
+        "c5",
+        "e4",
+        "c3",
+        "d3",
+        "e3",
+        "b2",
+        "f2",
+        "d1",
+      ],
 
   /*
     a7 -----  O ----- g7
@@ -9036,19 +8392,20 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "@*@O**O*/@*O*O*@*/O******* b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "c5",
-    "b6",
-    "f6",
-    "a7",
-    "g4",
-    "a1",
-    "d1",
-    "g1",
-    "b2",
-    "f2",
-    "d3",
-  ],
+  "@*@O**O*/@*O*O*@*/O******* b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>[
+        "c5",
+        "b6",
+        "f6",
+        "a7",
+        "g4",
+        "a1",
+        "d1",
+        "g1",
+        "b2",
+        "f2",
+        "d3",
+      ],
 
   /*
      O ----- d7 ----- g7
@@ -9063,19 +8420,20 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "****O***/O*@*@*O*/**O*@*@O b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "g1",
-    "f2",
-    "b2",
-    "e3",
-    "c4",
-    "e5",
-    "d5",
-    "c5",
-    "f6",
-    "b6",
-    "d7",
-  ],
+  "****O***/O*@*@*O*/**O*@*@O b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>[
+        "g1",
+        "f2",
+        "b2",
+        "e3",
+        "c4",
+        "e5",
+        "d5",
+        "c5",
+        "f6",
+        "b6",
+        "d7",
+      ],
 
   /*
     a7 ----- d7 ----- g7
@@ -9090,19 +8448,20 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "**O*@*@O/O*@*@*O*/****O*** b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "e3",
-    "f2",
-    "b2",
-    "g1",
-    "a4",
-    "g7",
-    "d7",
-    "a7",
-    "f6",
-    "b6",
-    "d5",
-  ],
+  "**O*@*@O/O*@*@*O*/****O*** b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>[
+        "e3",
+        "f2",
+        "b2",
+        "g1",
+        "a4",
+        "g7",
+        "d7",
+        "a7",
+        "f6",
+        "b6",
+        "d5",
+      ],
 
   /*
     a7 -----  @ ----- g7
@@ -9117,19 +8476,20 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      O ----- d1 ----- g1
   */
-  "O*******/@*@*O*O*/@*O**O@* b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "g7",
-    "f6",
-    "b6",
-    "e5",
-    "c4",
-    "e3",
-    "d3",
-    "c3",
-    "f2",
-    "b2",
-    "d1",
-  ],
+  "O*******/@*@*O*O*/@*O**O@* b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>[
+        "g7",
+        "f6",
+        "b6",
+        "e5",
+        "c4",
+        "e3",
+        "d3",
+        "c3",
+        "f2",
+        "b2",
+        "d1",
+      ],
 
   /*
     a7 -----  O ----- g7
@@ -9144,19 +8504,20 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "@*O**O@*/@*@*O*O*/O******* b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "e5",
-    "f6",
-    "b6",
-    "g7",
-    "a4",
-    "g1",
-    "d1",
-    "a1",
-    "f2",
-    "b2",
-    "d3",
-  ],
+  "@*O**O@*/@*@*O*O*/O******* b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>[
+        "e5",
+        "f6",
+        "b6",
+        "g7",
+        "a4",
+        "g1",
+        "d1",
+        "a1",
+        "f2",
+        "b2",
+        "d3",
+      ],
 
   /*
     a7 -----  O ----- g7
@@ -9171,19 +8532,20 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ -----  O
   */
-  "******O*/@*O*O*@*/O**O@*@* b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "a7",
-    "b6",
-    "b2",
-    "c5",
-    "d3",
-    "e5",
-    "e4",
-    "e3",
-    "f6",
-    "f2",
-    "g4",
-  ],
+  "******O*/@*O*O*@*/O**O@*@* b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>[
+        "a7",
+        "b6",
+        "b2",
+        "c5",
+        "d3",
+        "e5",
+        "e4",
+        "e3",
+        "f6",
+        "f2",
+        "g4",
+      ],
 
   /*
     a7 ----- d7 ----- g7
@@ -9198,19 +8560,20 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "O**O@*@*/@*O*O*@*/******O* b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "c5",
-    "b6",
-    "b2",
-    "a7",
-    "d1",
-    "g7",
-    "g4",
-    "g1",
-    "f6",
-    "f2",
-    "e4",
-  ],
+  "O**O@*@*/@*O*O*@*/******O* b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>[
+        "c5",
+        "b6",
+        "b2",
+        "a7",
+        "d1",
+        "g7",
+        "g4",
+        "g1",
+        "f6",
+        "f2",
+        "e4",
+      ],
 
   /*
     a7 -----  O ----- g7
@@ -9225,19 +8588,20 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      O -----  @ ----- g1
   */
-  "**O*****/@*@*O*O*/O*@*@O** b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "g7",
-    "f6",
-    "f2",
-    "e5",
-    "d3",
-    "c5",
-    "c4",
-    "c3",
-    "b6",
-    "b2",
-    "a4",
-  ],
+  "**O*****/@*@*O*O*/O*@*@O** b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>[
+        "g7",
+        "f6",
+        "f2",
+        "e5",
+        "d3",
+        "c5",
+        "c4",
+        "c3",
+        "b6",
+        "b2",
+        "a4",
+      ],
 
   /*
     a7 ----- d7 ----- g7
@@ -9252,19 +8616,20 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "O*@*@O**/@*@*O*O*/**O***** b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "e5",
-    "f6",
-    "f2",
-    "g7",
-    "d1",
-    "a7",
-    "a4",
-    "a1",
-    "b6",
-    "b2",
-    "c4",
-  ],
+  "O*@*@O**/@*@*O*O*/**O***** b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>[
+        "e5",
+        "f6",
+        "f2",
+        "g7",
+        "d1",
+        "a7",
+        "a4",
+        "a1",
+        "b6",
+        "b2",
+        "c4",
+      ],
 
   /*
     a7 -----  @ -----  O
@@ -9279,19 +8644,20 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "******O*/O*O*@*@*/@O**O*@* b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "a1",
-    "b2",
-    "b6",
-    "c3",
-    "d5",
-    "e3",
-    "e4",
-    "e5",
-    "f2",
-    "f6",
-    "g4",
-  ],
+  "******O*/O*O*@*@*/@O**O*@* b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>[
+        "a1",
+        "b2",
+        "b6",
+        "c3",
+        "d5",
+        "e3",
+        "e4",
+        "e5",
+        "f2",
+        "f6",
+        "g4",
+      ],
 
   /*
     a7 ----- d7 ----- g7
@@ -9306,19 +8672,20 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "@O**O*@*/O*O*@*@*/******O* b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "c3",
-    "b2",
-    "b6",
-    "a1",
-    "d7",
-    "g1",
-    "g4",
-    "g7",
-    "f2",
-    "f6",
-    "e4",
-  ],
+  "@O**O*@*/O*O*@*@*/******O* b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>[
+        "c3",
+        "b2",
+        "b6",
+        "a1",
+        "d7",
+        "g1",
+        "g4",
+        "g7",
+        "f2",
+        "f6",
+        "e4",
+      ],
 
   /*
      O -----  @ ----- g7
@@ -9333,19 +8700,20 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "**O*****/O*@*@*O*/@*@*O**O b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "g1",
-    "f2",
-    "f6",
-    "e3",
-    "d5",
-    "c3",
-    "c4",
-    "c5",
-    "b2",
-    "b6",
-    "a4",
-  ],
+  "**O*****/O*@*@*O*/@*@*O**O b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>[
+        "g1",
+        "f2",
+        "f6",
+        "e3",
+        "d5",
+        "c3",
+        "c4",
+        "c5",
+        "b2",
+        "b6",
+        "a4",
+      ],
 
   /*
     a7 ----- d7 ----- g7
@@ -9360,19 +8728,20 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "@*@*O**O/O*@*@*O*/**O***** b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "e3",
-    "f2",
-    "f6",
-    "g1",
-    "d7",
-    "a1",
-    "a4",
-    "a7",
-    "b2",
-    "b6",
-    "c4",
-  ],
+  "@*@*O**O/O*@*@*O*/**O***** b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>[
+        "e3",
+        "f2",
+        "f6",
+        "g1",
+        "d7",
+        "a1",
+        "a4",
+        "a7",
+        "b2",
+        "b6",
+        "c4",
+      ],
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -9389,19 +8758,20 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "**@*****/@*@*O*O*/O*O***** b p p 4 5 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "d1",
-    "g1",
-    "b2",
-    "f2",
-    "d3",
-    "a4",
-    "c4",
-    "c5",
-    "b6",
-    "a7",
-    "g7",
-  ],
+  "**@*****/@*@*O*O*/O*O***** b p p 4 5 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>[
+        "d1",
+        "g1",
+        "b2",
+        "f2",
+        "d3",
+        "a4",
+        "c4",
+        "c5",
+        "b6",
+        "a7",
+        "g7",
+      ],
 
   /*
     a7 ----- d7 ----- g7
@@ -9416,19 +8786,20 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "O*O*****/@*@*O*O*/**@***** b p p 4 5 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "d3",
-    "e3",
-    "b2",
-    "f2",
-    "d1",
-    "c4",
-    "a4",
-    "a7",
-    "b6",
-    "c5",
-    "e5",
-  ],
+  "O*O*****/@*@*O*O*/**@***** b p p 4 5 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>[
+        "d3",
+        "e3",
+        "b2",
+        "f2",
+        "d1",
+        "c4",
+        "a4",
+        "a7",
+        "b6",
+        "c5",
+        "e5",
+      ],
 
   /*
     a7 ----- d7 ----- g7
@@ -9443,19 +8814,20 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "**@*****/O*@*@*O*/**O*O*** b p p 4 5 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "d7",
-    "g7",
-    "b6",
-    "f6",
-    "d5",
-    "a4",
-    "c4",
-    "c3",
-    "b2",
-    "a1",
-    "g1",
-  ],
+  "**@*****/O*@*@*O*/**O*O*** b p p 4 5 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>[
+        "d7",
+        "g7",
+        "b6",
+        "f6",
+        "d5",
+        "a4",
+        "c4",
+        "c3",
+        "b2",
+        "a1",
+        "g1",
+      ],
 
   /*
     a7 ----- d7 ----- g7
@@ -9470,19 +8842,20 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "**O*O***/O*@*@*O*/**@***** b p p 4 5 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "d5",
-    "e5",
-    "b6",
-    "f6",
-    "d7",
-    "c4",
-    "a4",
-    "a1",
-    "b2",
-    "c3",
-    "e3",
-  ],
+  "**O*O***/O*@*@*O*/**@***** b p p 4 5 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>[
+        "d5",
+        "e5",
+        "b6",
+        "f6",
+        "d7",
+        "c4",
+        "a4",
+        "a1",
+        "b2",
+        "c3",
+        "e3",
+      ],
 
   /*
     a7 -----  O ----- g7
@@ -9497,19 +8870,20 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "******@*/@*O*O*@*/O*****O* b p p 4 5 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "d1",
-    "a1",
-    "f2",
-    "b2",
-    "d3",
-    "g4",
-    "e4",
-    "e5",
-    "f6",
-    "g7",
-    "a7",
-  ],
+  "******@*/@*O*O*@*/O*****O* b p p 4 5 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>[
+        "d1",
+        "a1",
+        "f2",
+        "b2",
+        "d3",
+        "g4",
+        "e4",
+        "e5",
+        "f6",
+        "g7",
+        "a7",
+      ],
 
   /*
     a7 ----- d7 ----- g7
@@ -9524,19 +8898,20 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "O*****O*/@*O*O*@*/******@* b p p 4 5 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "d3",
-    "c3",
-    "f2",
-    "b2",
-    "d1",
-    "e4",
-    "g4",
-    "g7",
-    "f6",
-    "e5",
-    "c5",
-  ],
+  "O*****O*/@*O*O*@*/******@* b p p 4 5 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>[
+        "d3",
+        "c3",
+        "f2",
+        "b2",
+        "d1",
+        "e4",
+        "g4",
+        "g7",
+        "f6",
+        "e5",
+        "c5",
+      ],
 
   /*
     a7 ----- d7 ----- g7
@@ -9551,19 +8926,20 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "******@*/O*O*@*@*/****O*O* b p p 4 5 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "d7",
-    "a7",
-    "f6",
-    "b6",
-    "d5",
-    "g4",
-    "e4",
-    "e3",
-    "f2",
-    "g1",
-    "a1",
-  ],
+  "******@*/O*O*@*@*/****O*O* b p p 4 5 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>[
+        "d7",
+        "a7",
+        "f6",
+        "b6",
+        "d5",
+        "g4",
+        "e4",
+        "e3",
+        "f2",
+        "g1",
+        "a1",
+      ],
 
   /*
     a7 ----- d7 ----- g7
@@ -9578,19 +8954,20 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "****O*O*/O*O*@*@*/******@* b p p 4 5 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "d5",
-    "c5",
-    "f6",
-    "b6",
-    "d7",
-    "e4",
-    "g4",
-    "g1",
-    "f2",
-    "e3",
-    "c3",
-  ],
+  "****O*O*/O*O*@*@*/******@* b p p 4 5 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>[
+        "d5",
+        "c5",
+        "f6",
+        "b6",
+        "d7",
+        "e4",
+        "g4",
+        "g1",
+        "f2",
+        "e3",
+        "c3",
+      ],
 
   /*
     a7 ----- d7 ----- g7
@@ -9605,19 +8982,20 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "****@***/O*@*@*O*/**O*O*** b p p 4 5 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "a4",
-    "a1",
-    "b6",
-    "b2",
-    "c4",
-    "d7",
-    "d5",
-    "e5",
-    "f6",
-    "g7",
-    "g1",
-  ],
+  "****@***/O*@*@*O*/**O*O*** b p p 4 5 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>[
+        "a4",
+        "a1",
+        "b6",
+        "b2",
+        "c4",
+        "d7",
+        "d5",
+        "e5",
+        "f6",
+        "g7",
+        "g1",
+      ],
 
   /*
     a7 ----- d7 ----- g7
@@ -9632,19 +9010,20 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "**O*O***/O*@*@*O*/****@*** b p p 4 5 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "c4",
-    "c3",
-    "b6",
-    "b2",
-    "a4",
-    "d5",
-    "d7",
-    "g7",
-    "f6",
-    "e5",
-    "e3",
-  ],
+  "**O*O***/O*@*@*O*/****@*** b p p 4 5 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>[
+        "c4",
+        "c3",
+        "b6",
+        "b2",
+        "a4",
+        "d5",
+        "d7",
+        "g7",
+        "f6",
+        "e5",
+        "e3",
+      ],
 
   /*
     a7 ----- d7 ----- g7
@@ -9659,19 +9038,20 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "****@***/O*O*@*@*/****O*O* b p p 4 5 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "g4",
-    "g1",
-    "f6",
-    "f2",
-    "e4",
-    "d7",
-    "d5",
-    "c5",
-    "b6",
-    "a7",
-    "a1",
-  ],
+  "****@***/O*O*@*@*/****O*O* b p p 4 5 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>[
+        "g4",
+        "g1",
+        "f6",
+        "f2",
+        "e4",
+        "d7",
+        "d5",
+        "c5",
+        "b6",
+        "a7",
+        "a1",
+      ],
 
   /*
     a7 ----- d7 ----- g7
@@ -9686,19 +9066,20 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "****O*O*/O*O*@*@*/****@*** b p p 4 5 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "e4",
-    "e3",
-    "f6",
-    "f2",
-    "g4",
-    "d5",
-    "d7",
-    "a7",
-    "b6",
-    "c5",
-    "c3",
-  ],
+  "****O*O*/O*O*@*@*/****@*** b p p 4 5 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>[
+        "e4",
+        "e3",
+        "f6",
+        "f2",
+        "g4",
+        "d5",
+        "d7",
+        "a7",
+        "b6",
+        "c5",
+        "c3",
+      ],
 
   /*
     a7 -----  O ----- g7
@@ -9713,19 +9094,20 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "@*******/@*@*O*O*/O*O***** b p p 4 5 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "a4",
-    "a7",
-    "b2",
-    "b6",
-    "c4",
-    "d1",
-    "d3",
-    "e3",
-    "f2",
-    "g1",
-    "g7",
-  ],
+  "@*******/@*@*O*O*/O*O***** b p p 4 5 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>[
+        "a4",
+        "a7",
+        "b2",
+        "b6",
+        "c4",
+        "d1",
+        "d3",
+        "e3",
+        "f2",
+        "g1",
+        "g7",
+      ],
 
   /*
     a7 -----  @ ----- g7
@@ -9740,19 +9122,20 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "O*O*****/@*@*O*O*/@******* b p p 4 5 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "c4",
-    "c5",
-    "b2",
-    "b6",
-    "a4",
-    "d3",
-    "d1",
-    "g1",
-    "f2",
-    "e3",
-    "e5",
-  ],
+  "O*O*****/@*@*O*O*/@******* b p p 4 5 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>[
+        "c4",
+        "c5",
+        "b2",
+        "b6",
+        "a4",
+        "d3",
+        "d1",
+        "g1",
+        "f2",
+        "e3",
+        "e5",
+      ],
 
   /*
     a7 -----  O ----- g7
@@ -9767,19 +9150,20 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "@*******/@*O*O*@*/O*****O* b p p 4 5 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "g4",
-    "g7",
-    "f2",
-    "f6",
-    "e4",
-    "d1",
-    "d3",
-    "c3",
-    "b2",
-    "a1",
-    "a7",
-  ],
+  "@*******/@*O*O*@*/O*****O* b p p 4 5 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>[
+        "g4",
+        "g7",
+        "f2",
+        "f6",
+        "e4",
+        "d1",
+        "d3",
+        "c3",
+        "b2",
+        "a1",
+        "a7",
+      ],
 
   /*
     a7 -----  @ ----- g7
@@ -9794,19 +9178,20 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "O*****O*/@*O*O*@*/@******* b p p 4 5 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "e4",
-    "e5",
-    "f2",
-    "f6",
-    "g4",
-    "d3",
-    "d1",
-    "a1",
-    "b2",
-    "c3",
-    "c5",
-  ],
+  "O*****O*/@*O*O*@*/@******* b p p 4 5 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>[
+        "e4",
+        "e5",
+        "f2",
+        "f6",
+        "g4",
+        "d3",
+        "d1",
+        "a1",
+        "b2",
+        "c3",
+        "c5",
+      ],
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -9823,25 +9208,26 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "*******@/O*O*@*@*/****O*** w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "a1",
-    "g1",
-    "b2",
-    "f2",
-    "c3",
-    "d3",
-    "e3",
-    "a4",
-    "c4",
-    "e4",
-    "g4",
-    "d5",
-    "e5",
-    "b6",
-    "f6",
-    "a7",
-    "g7",
-  ],
+  "*******@/O*O*@*@*/****O*** w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>[
+        "a1",
+        "g1",
+        "b2",
+        "f2",
+        "c3",
+        "d3",
+        "e3",
+        "a4",
+        "c4",
+        "e4",
+        "g4",
+        "d5",
+        "e5",
+        "b6",
+        "f6",
+        "a7",
+        "g7",
+      ],
 
   /*
      @ ----- d7 ----- g7
@@ -9856,25 +9242,26 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "****O***/O*O*@*@*/*******@ w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "c3",
-    "e3",
-    "b2",
-    "f2",
-    "a1",
-    "d1",
-    "g1",
-    "c4",
-    "a4",
-    "g4",
-    "e4",
-    "d7",
-    "g7",
-    "b6",
-    "f6",
-    "c5",
-    "e5",
-  ],
+  "****O***/O*O*@*@*/*******@ w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>[
+        "c3",
+        "e3",
+        "b2",
+        "f2",
+        "a1",
+        "d1",
+        "g1",
+        "c4",
+        "a4",
+        "g4",
+        "e4",
+        "d7",
+        "g7",
+        "b6",
+        "f6",
+        "c5",
+        "e5",
+      ],
 
   /*
     a7 -----  O ----- g7
@@ -9889,25 +9276,26 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "*****@**/@*O*O*@*/O******* w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "a7",
-    "g7",
-    "b6",
-    "f6",
-    "c5",
-    "d5",
-    "e5",
-    "a4",
-    "c4",
-    "e4",
-    "g4",
-    "d3",
-    "e3",
-    "b2",
-    "f2",
-    "a1",
-    "g1",
-  ],
+  "*****@**/@*O*O*@*/O******* w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>[
+        "a7",
+        "g7",
+        "b6",
+        "f6",
+        "c5",
+        "d5",
+        "e5",
+        "a4",
+        "c4",
+        "e4",
+        "g4",
+        "d3",
+        "e3",
+        "b2",
+        "f2",
+        "a1",
+        "g1",
+      ],
 
   /*
     a7 ----- d7 ----- g7
@@ -9922,25 +9310,26 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      @ ----- d1 ----- g1
   */
-  "O*******/@*O*O*@*/*****@** w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "c5",
-    "e5",
-    "b6",
-    "f6",
-    "a7",
-    "d7",
-    "g7",
-    "c4",
-    "a4",
-    "g4",
-    "e4",
-    "d1",
-    "g1",
-    "b2",
-    "f2",
-    "c3",
-    "e3",
-  ],
+  "O*******/@*O*O*@*/*****@** w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>[
+        "c5",
+        "e5",
+        "b6",
+        "f6",
+        "a7",
+        "d7",
+        "g7",
+        "c4",
+        "a4",
+        "g4",
+        "e4",
+        "d1",
+        "g1",
+        "b2",
+        "f2",
+        "c3",
+        "e3",
+      ],
 
   /*
     a7 ----- d7 ----- g7
@@ -9955,25 +9344,26 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "*@******/O*@*@*O*/****O*** w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "g1",
-    "a1",
-    "f2",
-    "b2",
-    "e3",
-    "d3",
-    "c3",
-    "g4",
-    "e4",
-    "c4",
-    "a4",
-    "d5",
-    "c5",
-    "f6",
-    "b6",
-    "g7",
-    "a7",
-  ],
+  "*@******/O*@*@*O*/****O*** w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>[
+        "g1",
+        "a1",
+        "f2",
+        "b2",
+        "e3",
+        "d3",
+        "c3",
+        "g4",
+        "e4",
+        "c4",
+        "a4",
+        "d5",
+        "c5",
+        "f6",
+        "b6",
+        "g7",
+        "a7",
+      ],
 
   /*
     a7 ----- d7 -----  @
@@ -9988,25 +9378,26 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "****O***/O*@*@*O*/*@****** w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "e3",
-    "c3",
-    "f2",
-    "b2",
-    "g1",
-    "d1",
-    "a1",
-    "e4",
-    "g4",
-    "a4",
-    "c4",
-    "d7",
-    "a7",
-    "f6",
-    "b6",
-    "e5",
-    "c5",
-  ],
+  "****O***/O*@*@*O*/*@****** w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>[
+        "e3",
+        "c3",
+        "f2",
+        "b2",
+        "g1",
+        "d1",
+        "a1",
+        "e4",
+        "g4",
+        "a4",
+        "c4",
+        "d7",
+        "a7",
+        "f6",
+        "b6",
+        "e5",
+        "c5",
+      ],
 
   /*
     a7 -----  O ----- g7
@@ -10021,25 +9412,26 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "***@****/@*@*O*O*/O******* w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "g7",
-    "a7",
-    "f6",
-    "b6",
-    "e5",
-    "d5",
-    "c5",
-    "g4",
-    "e4",
-    "c4",
-    "a4",
-    "d3",
-    "c3",
-    "f2",
-    "b2",
-    "g1",
-    "a1",
-  ],
+  "***@****/@*@*O*O*/O******* w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>[
+        "g7",
+        "a7",
+        "f6",
+        "b6",
+        "e5",
+        "d5",
+        "c5",
+        "g4",
+        "e4",
+        "c4",
+        "a4",
+        "d3",
+        "c3",
+        "f2",
+        "b2",
+        "g1",
+        "a1",
+      ],
 
   /*
     a7 ----- d7 ----- g7
@@ -10054,25 +9446,26 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 -----  @
   */
-  "O*******/@*@*O*O*/***@**** w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "e5",
-    "c5",
-    "f6",
-    "b6",
-    "g7",
-    "d7",
-    "a7",
-    "e4",
-    "g4",
-    "a4",
-    "c4",
-    "d1",
-    "a1",
-    "f2",
-    "b2",
-    "e3",
-    "c3",
-  ],
+  "O*******/@*@*O*O*/***@**** w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>[
+        "e5",
+        "c5",
+        "f6",
+        "b6",
+        "g7",
+        "d7",
+        "a7",
+        "e4",
+        "g4",
+        "a4",
+        "c4",
+        "d1",
+        "a1",
+        "f2",
+        "b2",
+        "e3",
+        "c3",
+      ],
 
   /*
     a7 ----- d7 ----- g7
@@ -10087,25 +9480,26 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "*@******/@*O*O*@*/******O* w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "a7",
-    "a1",
-    "b6",
-    "b2",
-    "c5",
-    "c4",
-    "c3",
-    "d7",
-    "d5",
-    "d3",
-    "d1",
-    "e4",
-    "e3",
-    "f6",
-    "f2",
-    "g7",
-    "g1",
-  ],
+  "*@******/@*O*O*@*/******O* w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>[
+        "a7",
+        "a1",
+        "b6",
+        "b2",
+        "c5",
+        "c4",
+        "c3",
+        "d7",
+        "d5",
+        "d3",
+        "d1",
+        "e4",
+        "e3",
+        "f6",
+        "f2",
+        "g7",
+        "g1",
+      ],
 
   /*
     a7 ----- d7 -----  @
@@ -10120,25 +9514,26 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "******O*/@*O*O*@*/*@****** w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "c5",
-    "c3",
-    "b6",
-    "b2",
-    "a7",
-    "a4",
-    "a1",
-    "d5",
-    "d7",
-    "d1",
-    "d3",
-    "g4",
-    "g1",
-    "f6",
-    "f2",
-    "e5",
-    "e3",
-  ],
+  "******O*/@*O*O*@*/*@****** w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>[
+        "c5",
+        "c3",
+        "b6",
+        "b2",
+        "a7",
+        "a4",
+        "a1",
+        "d5",
+        "d7",
+        "d1",
+        "d3",
+        "g4",
+        "g1",
+        "f6",
+        "f2",
+        "e5",
+        "e3",
+      ],
 
   /*
     a7 ----- d7 ----- g7
@@ -10153,25 +9548,26 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "*******@/@*@*O*O*/**O***** w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "g7",
-    "g1",
-    "f6",
-    "f2",
-    "e5",
-    "e4",
-    "e3",
-    "d7",
-    "d5",
-    "d3",
-    "d1",
-    "c4",
-    "c3",
-    "b6",
-    "b2",
-    "a7",
-    "a1",
-  ],
+  "*******@/@*@*O*O*/**O***** w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>[
+        "g7",
+        "g1",
+        "f6",
+        "f2",
+        "e5",
+        "e4",
+        "e3",
+        "d7",
+        "d5",
+        "d3",
+        "d1",
+        "c4",
+        "c3",
+        "b6",
+        "b2",
+        "a7",
+        "a1",
+      ],
 
   /*
      @ ----- d7 ----- g7
@@ -10186,25 +9582,26 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "**O*****/@*@*O*O*/*******@ w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "e5",
-    "e3",
-    "f6",
-    "f2",
-    "g7",
-    "g4",
-    "g1",
-    "d5",
-    "d7",
-    "d1",
-    "d3",
-    "a4",
-    "a1",
-    "b6",
-    "b2",
-    "c5",
-    "c3",
-  ],
+  "**O*****/@*@*O*O*/*******@ w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>[
+        "e5",
+        "e3",
+        "f6",
+        "f2",
+        "g7",
+        "g4",
+        "g1",
+        "d5",
+        "d7",
+        "d1",
+        "d3",
+        "a4",
+        "a1",
+        "b6",
+        "b2",
+        "c5",
+        "c3",
+      ],
 
   /*
     a7 ----- d7 ----- g7
@@ -10219,25 +9616,26 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "***@****/O*O*@*@*/******O* w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "a1",
-    "a7",
-    "b2",
-    "b6",
-    "c3",
-    "c4",
-    "c5",
-    "d1",
-    "d3",
-    "d5",
-    "d7",
-    "e4",
-    "e5",
-    "f2",
-    "f6",
-    "g1",
-    "g7",
-  ],
+  "***@****/O*O*@*@*/******O* w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>[
+        "a1",
+        "a7",
+        "b2",
+        "b6",
+        "c3",
+        "c4",
+        "c5",
+        "d1",
+        "d3",
+        "d5",
+        "d7",
+        "e4",
+        "e5",
+        "f2",
+        "f6",
+        "g1",
+        "g7",
+      ],
 
   /*
     a7 ----- d7 ----- g7
@@ -10252,25 +9650,26 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 -----  @
   */
-  "******O*/O*O*@*@*/***@**** w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "c3",
-    "c5",
-    "b2",
-    "b6",
-    "a1",
-    "a4",
-    "a7",
-    "d3",
-    "d1",
-    "d7",
-    "d5",
-    "g4",
-    "g7",
-    "f2",
-    "f6",
-    "e3",
-    "e5",
-  ],
+  "******O*/O*O*@*@*/***@**** w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>[
+        "c3",
+        "c5",
+        "b2",
+        "b6",
+        "a1",
+        "a4",
+        "a7",
+        "d3",
+        "d1",
+        "d7",
+        "d5",
+        "g4",
+        "g7",
+        "f2",
+        "f6",
+        "e3",
+        "e5",
+      ],
 
   /*
     a7 ----- d7 ----- g7
@@ -10285,25 +9684,26 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "*****@**/O*@*@*O*/**O***** w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "g1",
-    "g7",
-    "f2",
-    "f6",
-    "e3",
-    "e4",
-    "e5",
-    "d1",
-    "d3",
-    "d5",
-    "d7",
-    "c4",
-    "c5",
-    "b2",
-    "b6",
-    "a1",
-    "a7",
-  ],
+  "*****@**/O*@*@*O*/**O***** w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>[
+        "g1",
+        "g7",
+        "f2",
+        "f6",
+        "e3",
+        "e4",
+        "e5",
+        "d1",
+        "d3",
+        "d5",
+        "d7",
+        "c4",
+        "c5",
+        "b2",
+        "b6",
+        "a1",
+        "a7",
+      ],
 
   /*
     a7 ----- d7 ----- g7
@@ -10318,25 +9718,26 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      @ ----- d1 ----- g1
   */
-  "**O*****/O*@*@*O*/*****@** w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "e3",
-    "e5",
-    "f2",
-    "f6",
-    "g1",
-    "g4",
-    "g7",
-    "d3",
-    "d1",
-    "d7",
-    "d5",
-    "a4",
-    "a7",
-    "b2",
-    "b6",
-    "c3",
-    "c5",
-  ],
+  "**O*****/O*@*@*O*/*****@** w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>[
+        "e3",
+        "e5",
+        "f2",
+        "f6",
+        "g1",
+        "g4",
+        "g7",
+        "d3",
+        "d1",
+        "d7",
+        "d5",
+        "a4",
+        "a7",
+        "b2",
+        "b6",
+        "c3",
+        "c5",
+      ],
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -10353,18 +9754,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "********/O@O*@*@*/**@*O*O* w p p 4 5 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "b2",
-    "c3",
-    "d3",
-    "e3",
-    "c4",
-    "e4",
-    "c5",
-    "d5",
-    "e5",
-    "g7",
-  ],
+  "********/O@O*@*@*/**@*O*O* w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["b2", "c3", "d3", "e3", "c4", "e4", "c5", "d5", "e5", "g7"],
 
   /*
     a7 ----- d7 ----- g7
@@ -10379,18 +9770,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "**@*O*O*/O@O*@*@*/******** w p p 4 5 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "b2",
-    "a1",
-    "d1",
-    "g1",
-    "a4",
-    "g4",
-    "a7",
-    "d7",
-    "g7",
-    "e5",
-  ],
+  "**@*O*O*/O@O*@*@*/******** w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["b2", "a1", "d1", "g1", "a4", "g4", "a7", "d7", "g7", "e5"],
 
   /*
     a7 -----  O ----- g7
@@ -10405,18 +9786,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@*O@O*@*/O*@***O* w p p 4 5 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "b6",
-    "c5",
-    "d5",
-    "e5",
-    "c4",
-    "e4",
-    "c3",
-    "d3",
-    "e3",
-    "g1",
-  ],
+  "********/@*O@O*@*/O*@***O* w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["b6", "c5", "d5", "e5", "c4", "e4", "c3", "d3", "e3", "g1"],
 
   /*
     a7 ----- d7 ----- g7
@@ -10431,18 +9802,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "O*@***O*/@*O@O*@*/******** w p p 4 5 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "b6",
-    "a7",
-    "d7",
-    "g7",
-    "a4",
-    "g4",
-    "a1",
-    "d1",
-    "g1",
-    "e3",
-  ],
+  "O*@***O*/@*O@O*@*/******** w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["b6", "a7", "d7", "g7", "a4", "g4", "a1", "d1", "g1", "e3"],
 
   /*
     a7 ----- d7 ----- g7
@@ -10457,18 +9818,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "********/O*@*@*O@/**O*O*@* w p p 4 5 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "f2",
-    "e3",
-    "d3",
-    "c3",
-    "e4",
-    "c4",
-    "e5",
-    "d5",
-    "c5",
-    "a7",
-  ],
+  "********/O*@*@*O@/**O*O*@* w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["f2", "e3", "d3", "c3", "e4", "c4", "e5", "d5", "c5", "a7"],
 
   /*
     a7 ----- d7 ----- g7
@@ -10483,18 +9834,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "**O*O*@*/O*@*@*O@/******** w p p 4 5 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "f2",
-    "g1",
-    "d1",
-    "a1",
-    "g4",
-    "a4",
-    "g7",
-    "d7",
-    "a7",
-    "c5",
-  ],
+  "**O*O*@*/O*@*@*O@/******** w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["f2", "g1", "d1", "a1", "g4", "a4", "g7", "d7", "a7", "c5"],
 
   /*
     a7 -----  O ----- g7
@@ -10509,18 +9850,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@*@*O@O*/O*O***@* w p p 4 5 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "f6",
-    "e5",
-    "d5",
-    "c5",
-    "e4",
-    "c4",
-    "e3",
-    "d3",
-    "c3",
-    "a1",
-  ],
+  "********/@*@*O@O*/O*O***@* w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["f6", "e5", "d5", "c5", "e4", "c4", "e3", "d3", "c3", "a1"],
 
   /*
     a7 ----- d7 ----- g7
@@ -10535,18 +9866,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "O*O***@*/@*@*O@O*/******** w p p 4 5 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "f6",
-    "g7",
-    "d7",
-    "a7",
-    "g4",
-    "a4",
-    "g1",
-    "d1",
-    "a1",
-    "c3",
-  ],
+  "O*O***@*/@*@*O@O*/******** w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["f6", "g7", "d7", "a7", "g4", "a4", "g1", "d1", "a1", "c3"],
 
   /*
     a7 -----  O ----- g7
@@ -10561,18 +9882,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "********/@*O@O*@*/O***@*O* w p p 4 5 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "b6",
-    "c5",
-    "c4",
-    "c3",
-    "d5",
-    "d3",
-    "e5",
-    "e4",
-    "e3",
-    "g1",
-  ],
+  "********/@*O@O*@*/O***@*O* w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["b6", "c5", "c4", "c3", "d5", "d3", "e5", "e4", "e3", "g1"],
 
   /*
     a7 ----- d7 ----- g7
@@ -10587,18 +9898,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "O***@*O*/@*O@O*@*/******** w p p 4 5 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "b6",
-    "a7",
-    "a4",
-    "a1",
-    "d7",
-    "d1",
-    "g7",
-    "g4",
-    "g1",
-    "e3",
-  ],
+  "O***@*O*/@*O@O*@*/******** w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["b6", "a7", "a4", "a1", "d7", "d1", "g7", "g4", "g1", "e3"],
 
   /*
     a7 -----  O ----- g7
@@ -10613,18 +9914,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "********/@*@*O@O*/O*O*@*** w p p 4 5 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "f6",
-    "e5",
-    "e4",
-    "e3",
-    "d5",
-    "d3",
-    "c5",
-    "c4",
-    "c3",
-    "a1",
-  ],
+  "********/@*@*O@O*/O*O*@*** w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["f6", "e5", "e4", "e3", "d5", "d3", "c5", "c4", "c3", "a1"],
 
   /*
     a7 ----- d7 ----- g7
@@ -10639,18 +9930,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "O*O*@***/@*@*O@O*/******** w p p 4 5 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "f6",
-    "g7",
-    "g4",
-    "g1",
-    "d7",
-    "d1",
-    "a7",
-    "a4",
-    "a1",
-    "c3",
-  ],
+  "O*O*@***/@*@*O@O*/******** w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["f6", "g7", "g4", "g1", "d7", "d1", "a7", "a4", "a1", "c3"],
 
   /*
     a7 -----  @ ----- g7
@@ -10665,18 +9946,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "********/O@O*@*@*/@***O*O* w p p 4 5 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "b2",
-    "c3",
-    "c4",
-    "c5",
-    "d3",
-    "d5",
-    "e3",
-    "e4",
-    "e5",
-    "g7",
-  ],
+  "********/O@O*@*@*/@***O*O* w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["b2", "c3", "c4", "c5", "d3", "d5", "e3", "e4", "e5", "g7"],
 
   /*
     a7 ----- d7 ----- g7
@@ -10691,18 +9962,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "@***O*O*/O@O*@*@*/******** w p p 4 5 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "b2",
-    "a1",
-    "a4",
-    "a7",
-    "d1",
-    "d7",
-    "g1",
-    "g4",
-    "g7",
-    "e5",
-  ],
+  "@***O*O*/O@O*@*@*/******** w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["b2", "a1", "a4", "a7", "d1", "d7", "g1", "g4", "g7", "e5"],
 
   /*
     a7 -----  @ ----- g7
@@ -10717,18 +9978,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "********/O*@*@*O@/@*O*O*** w p p 4 5 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "f2",
-    "e3",
-    "e4",
-    "e5",
-    "d3",
-    "d5",
-    "c3",
-    "c4",
-    "c5",
-    "a7",
-  ],
+  "********/O*@*@*O@/@*O*O*** w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["f2", "e3", "e4", "e5", "d3", "d5", "c3", "c4", "c5", "a7"],
 
   /*
     a7 ----- d7 ----- g7
@@ -10743,18 +9994,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "@*O*O***/O*@*@*O@/******** w p p 4 5 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "f2",
-    "g1",
-    "g4",
-    "g7",
-    "d1",
-    "d7",
-    "a1",
-    "a4",
-    "a7",
-    "c5",
-  ],
+  "@*O*O***/O*@*@*O@/******** w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["f2", "g1", "g4", "g7", "d1", "d7", "a1", "a4", "a7", "c5"],
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -10771,7 +10012,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      O -----  O -----  @
   */
-  "**@*****/O@O*@*O*/@**@OO** w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>["c5"],
+  "**@*****/O@O*@*O*/@**@OO** w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["c5"],
 
   /*
     a7 ----- d7 ----- g7
@@ -10786,7 +10028,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "@**@OO**/O@O*@*O*/**@***** w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>["a7"],
+  "@**@OO**/O@O*@*O*/**@***** w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["a7"],
 
   /*
      O -----  O -----  @
@@ -10801,7 +10044,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "**@*****/@*O@O*O*/O@**@**O w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>["c3"],
+  "**@*****/@*O@O*O*/O@**@**O w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["c3"],
 
   /*
     a7 ----- d7 ----- g7
@@ -10816,7 +10060,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "O@**@**O/@*O@O*O*/**@***** w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>["a1"],
+  "O@**@**O/@*O@O*O*/**@***** w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["a1"],
 
   /*
     a7 -----  @ ----- g7
@@ -10831,7 +10076,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      @ -----  O -----  O
   */
-  "******@*/O*O*@*O@/@**OO@** w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>["e5"],
+  "******@*/O*O*@*O@/@**OO@** w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["e5"],
 
   /*
     a7 ----- d7 ----- g7
@@ -10846,7 +10092,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "@**OO@**/O*O*@*O@/******@* w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>["g7"],
+  "@**OO@**/O*O*@*O@/******@* w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["g7"],
 
   /*
      @ -----  O -----  O
@@ -10861,7 +10108,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "******@*/@*O*O@O*/OO**@**@ w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>["e3"],
+  "******@*/@*O*O@O*/OO**@**@ w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["e3"],
 
   /*
     a7 ----- d7 ----- g7
@@ -10876,7 +10124,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "OO**@**@/@*O*O@O*/******@* w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>["g1"],
+  "OO**@**@/@*O*O@O*/******@* w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["g1"],
 
   /*
      O ----- d7 ----- g7
@@ -10891,7 +10140,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      @ ----- d1 ----- g1
   */
-  "****@***/O*O@O*@*/**@**@OO w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>["e5"],
+  "****@***/O*O@O*@*/**@**@OO w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["e5"],
 
   /*
     a7 ----- d7 ----- g7
@@ -10906,7 +10156,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "**@**@OO/O*O@O*@*/****@*** w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>["g7"],
+  "**@**@OO/O*O@O*@*/****@*** w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["g7"],
 
   /*
     a7 ----- d7 -----  O
@@ -10921,7 +10172,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 -----  @
   */
-  "****@***/O*@*O@O*/*OO@**@* w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>["c5"],
+  "****@***/O*@*O@O*/*OO@**@* w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["c5"],
 
   /*
     a7 ----- d7 ----- g7
@@ -10936,7 +10188,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "*OO@**@*/O*@*O@O*/****@*** w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>["a7"],
+  "*OO@**@*/O*@*O@O*/****@*** w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["a7"],
 
   /*
      @ ----- d7 ----- g7
@@ -10951,7 +10204,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      O ----- d1 ----- g1
   */
-  "@*******/O@O*O*@*/**@**OO@ w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>["e3"],
+  "@*******/O@O*O*@*/**@**OO@ w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["e3"],
 
   /*
     a7 -----  @ ----- g7
@@ -10966,7 +10220,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "**@**OO@/O@O*O*@*/@******* w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>["g1"],
+  "**@**OO@/O@O*O*@*/@******* w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["g1"],
 
   /*
     a7 ----- d7 -----  @
@@ -10981,7 +10236,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 -----  O
   */
-  "@*******/O*@*O*O@/*@OO**@* w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>["c3"],
+  "@*******/O*@*O*O@/*@OO**@* w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["c3"],
 
   /*
     a7 -----  @ ----- g7
@@ -10996,7 +10252,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "*@OO**@*/O*@*O*O@/@******* w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>["a1"],
+  "*@OO**@*/O*@*O*O@/@******* w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["a1"],
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -11013,7 +10270,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "****@*@*/@*@*O*O*/O*****O* w p p 4 5 4 5 0 0 0 0 0 0 0 0 5": <String>["c5"],
+  "****@*@*/@*@*O*O*/O*****O* w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["c5"],
 
   /*
     a7 ----- d7 ----- g7
@@ -11028,7 +10286,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "O*****O*/@*@*O*O*/****@*@* w p p 4 5 4 5 0 0 0 0 0 0 0 0 5": <String>["a7"],
+  "O*****O*/@*@*O*O*/****@*@* w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["a7"],
 
   /*
     a7 ----- d7 ----- g7
@@ -11043,7 +10302,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "@*****@*/O*@*@*O*/****O*O* w p p 4 5 4 5 0 0 0 0 0 0 0 0 5": <String>["c3"],
+  "@*****@*/O*@*@*O*/****O*O* w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["c3"],
 
   /*
     a7 -----  @ ----- g7
@@ -11058,7 +10318,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "****O*O*/O*@*@*O*/@*****@* w p p 4 5 4 5 0 0 0 0 0 0 0 0 5": <String>["a1"],
+  "****O*O*/O*@*@*O*/@*****@* w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["a1"],
 
   /*
     a7 -----  O ----- g7
@@ -11073,7 +10334,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "**@*@***/@*O*O*@*/O*O***** w p p 4 5 4 5 0 0 0 0 0 0 0 0 5": <String>["e5"],
+  "**@*@***/@*O*O*@*/O*O***** w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["e5"],
 
   /*
     a7 ----- d7 ----- g7
@@ -11088,7 +10350,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "O*O*****/@*O*O*@*/**@*@*** w p p 4 5 4 5 0 0 0 0 0 0 0 0 5": <String>["g7"],
+  "O*O*****/@*O*O*@*/**@*@*** w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["g7"],
 
   /*
     a7 ----- d7 ----- g7
@@ -11103,7 +10366,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "@*@*****/O*O*@*@*/**O*O*** w p p 4 5 4 5 0 0 0 0 0 0 0 0 5": <String>["e3"],
+  "@*@*****/O*O*@*@*/**O*O*** w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["e3"],
 
   /*
     a7 -----  @ ----- g7
@@ -11118,7 +10382,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "**O*O***/O*O*@*@*/@*@***** w p p 4 5 4 5 0 0 0 0 0 0 0 0 5": <String>["g1"],
+  "**O*O***/O*O*@*@*/@*@***** w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["g1"],
 
   /*
     a7 -----  O ----- g7
@@ -11133,7 +10398,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "@*****@*/O*@*@*O*/O*O***** w p p 4 5 4 5 0 0 0 0 0 0 0 0 5": <String>["e5"],
+  "@*****@*/O*@*@*O*/O*O***** w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["e5"],
 
   /*
     a7 -----  @ ----- g7
@@ -11148,7 +10414,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "O*O*****/O*@*@*O*/@*****@* w p p 4 5 4 5 0 0 0 0 0 0 0 0 5": <String>["g7"],
+  "O*O*****/O*@*@*O*/@*****@* w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["g7"],
 
   /*
     a7 -----  O ----- g7
@@ -11163,7 +10430,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "@*@*****/O*O*@*@*/O*****O* w p p 4 5 4 5 0 0 0 0 0 0 0 0 5": <String>["c5"],
+  "@*@*****/O*O*@*@*/O*****O* w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["c5"],
 
   /*
     a7 -----  @ ----- g7
@@ -11178,7 +10446,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "O*****O*/O*O*@*@*/@*@***** w p p 4 5 4 5 0 0 0 0 0 0 0 0 5": <String>["a7"],
+  "O*****O*/O*O*@*@*/@*@***** w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["a7"],
 
   /*
     a7 ----- d7 ----- g7
@@ -11193,7 +10462,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "****@*@*/@*@*O*O*/**O*O*** w p p 4 5 4 5 0 0 0 0 0 0 0 0 5": <String>["e3"],
+  "****@*@*/@*@*O*O*/**O*O*** w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["e3"],
 
   /*
     a7 ----- d7 ----- g7
@@ -11208,7 +10478,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "**O*O***/@*@*O*O*/****@*@* w p p 4 5 4 5 0 0 0 0 0 0 0 0 5": <String>["g1"],
+  "**O*O***/@*@*O*O*/****@*@* w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["g1"],
 
   /*
     a7 ----- d7 ----- g7
@@ -11223,7 +10494,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "**@*@***/@*O*O*@*/****O*O* w p p 4 5 4 5 0 0 0 0 0 0 0 0 5": <String>["c3"],
+  "**@*@***/@*O*O*@*/****O*O* w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["c3"],
 
   /*
     a7 ----- d7 ----- g7
@@ -11238,7 +10510,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "****O*O*/@*O*O*@*/**@*@*** w p p 4 5 4 5 0 0 0 0 0 0 0 0 5": <String>["a1"],
+  "****O*O*/@*O*O*@*/**@*@*** w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["a1"],
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -11255,13 +10528,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "O*O***O*/@*@*****/@O@*O*** b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "b2",
-    "d2",
-    "d3",
-    "b4",
-    "c5",
-  ],
+  "O*O***O*/@*@*****/@O@*O*** b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["b2", "d2", "d3", "b4", "c5"],
 
   /*
     a7 -----  O ----- g7
@@ -11276,13 +10544,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "@O@*O***/@*@*****/O*O***O* b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "b2",
-    "d2",
-    "d1",
-    "b4",
-    "a7",
-  ],
+  "@O@*O***/@*@*****/O*O***O* b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["b2", "d2", "d1", "b4", "a7"],
 
   /*
     a7 -----  O ----- g7
@@ -11297,13 +10560,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ -----  O
   */
-  "**O*O*O*/**@*@***/O*@O@*** b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "b6",
-    "d6",
-    "d5",
-    "b4",
-    "c3",
-  ],
+  "**O*O*O*/**@*@***/O*@O@*** b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["b6", "d6", "d5", "b4", "c3"],
 
   /*
     a7 ----- d7 ----- g7
@@ -11318,13 +10576,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "O*@O@***/**@*@***/**O*O*O* b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "b6",
-    "d6",
-    "d7",
-    "b4",
-    "a1",
-  ],
+  "O*@O@***/**@*@***/**O*O*O* b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["b6", "d6", "d7", "b4", "a1"],
 
   /*
      O -----  @ ----- g7
@@ -11339,13 +10592,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "O*O***O*/@*****@*/@***O*@O b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "f2",
-    "d2",
-    "d3",
-    "f4",
-    "e5",
-  ],
+  "O*O***O*/@*****@*/@***O*@O b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["f2", "d2", "d3", "f4", "e5"],
 
   /*
     a7 -----  O ----- g7
@@ -11360,13 +10608,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "@***O*@O/@*****@*/O*O***O* b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "f2",
-    "d2",
-    "d1",
-    "f4",
-    "g7",
-  ],
+  "@***O*@O/@*****@*/O*O***O* b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["f2", "d2", "d1", "f4", "g7"],
 
   /*
     a7 -----  O ----- g7
@@ -11381,13 +10624,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      O -----  @ ----- g1
   */
-  "**O*O*O*/****@*@*/O***@O@* b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "f6",
-    "d6",
-    "d5",
-    "f4",
-    "e3",
-  ],
+  "**O*O*O*/****@*@*/O***@O@* b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["f6", "d6", "d5", "f4", "e3"],
 
   /*
     a7 ----- d7 ----- g7
@@ -11402,13 +10640,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "O***@O@*/****@*@*/**O*O*O* b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "f6",
-    "d6",
-    "d7",
-    "f4",
-    "g1",
-  ],
+  "O***@O@*/****@*@*/**O*O*O* b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["f6", "d6", "d7", "f4", "g1"],
 
   /*
     a7 ----- d7 ----- g7
@@ -11423,13 +10656,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ -----  O
   */
-  "O*O*O***/**@*@***/**@O@*O* b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "b6",
-    "b4",
-    "c4",
-    "d6",
-    "e5",
-  ],
+  "O*O*O***/**@*@***/**@O@*O* b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["b6", "b4", "c4", "d6", "e5"],
 
   /*
     a7 -----  O ----- g7
@@ -11444,13 +10672,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "**@O@*O*/**@*@***/O*O*O*** b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "b6",
-    "b4",
-    "a4",
-    "d6",
-    "g7",
-  ],
+  "**@O@*O*/**@*@***/O*O*O*** b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["b6", "b4", "a4", "d6", "g7"],
 
   /*
     a7 ----- d7 ----- g7
@@ -11465,13 +10688,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      O -----  @ ----- g1
   */
-  "O***O*O*/****@*@*/**O*@O@* b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "f6",
-    "f4",
-    "e4",
-    "d6",
-    "c5",
-  ],
+  "O***O*O*/****@*@*/**O*@O@* b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["f6", "f4", "e4", "d6", "c5"],
 
   /*
     a7 -----  O ----- g7
@@ -11486,13 +10704,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "**O*@O@*/****@*@*/O***O*O* b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "f6",
-    "f4",
-    "g4",
-    "d6",
-    "a7",
-  ],
+  "**O*@O@*/****@*@*/O***O*O* b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["f6", "f4", "g4", "d6", "a7"],
 
   /*
     a7 -----  @ -----  O
@@ -11507,13 +10720,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "O*O*O***/@*@*****/@O@***O* b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "b2",
-    "b4",
-    "c4",
-    "d2",
-    "e3",
-  ],
+  "O*O*O***/@*@*****/@O@***O* b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["b2", "b4", "c4", "d2", "e3"],
 
   /*
     a7 -----  O ----- g7
@@ -11528,13 +10736,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "@O@***O*/@*@*****/O*O*O*** b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "b2",
-    "b4",
-    "a4",
-    "d2",
-    "g1",
-  ],
+  "@O@***O*/@*@*****/O*O*O*** b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["b2", "b4", "a4", "d2", "g1"],
 
   /*
      O -----  @ ----- g7
@@ -11549,13 +10752,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "O***O*O*/@*****@*/@*O***@O b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "f2",
-    "f4",
-    "e4",
-    "d2",
-    "c3",
-  ],
+  "O***O*O*/@*****@*/@*O***@O b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["f2", "f4", "e4", "d2", "c3"],
 
   /*
     a7 -----  O ----- g7
@@ -11570,13 +10768,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "@*O***@O/@*****@*/O***O*O* b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "f2",
-    "f4",
-    "g4",
-    "d2",
-    "a1",
-  ],
+  "@*O***@O/@*****@*/O***O*O* b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["f2", "f4", "g4", "d2", "a1"],
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -11593,10 +10786,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "@*O*@*O*/O@OO@O@@/@*@*O*O* w p p 8 1 8 1 0 0 0 0 0 0 0 0 9": <String>[
-    "g1",
-    "g7",
-  ],
+  "@*O*@*O*/O@OO@O@@/@*@*O*O* w p p 8 1 8 1 0 0 -1 -1 -1 -1 0 0 9 ids:nodes":
+      <String>["g1", "g7"],
 
   /*
     a7 -----  @ ----- g7
@@ -11611,10 +10802,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "@*@*O*O*/O@OO@O@@/@*O*@*O* w p p 8 1 8 1 0 0 0 0 0 0 0 0 9": <String>[
-    "e3",
-    "e5",
-  ],
+  "@*@*O*O*/O@OO@O@@/@*O*@*O* w p p 8 1 8 1 0 0 -1 -1 -1 -1 0 0 9 ids:nodes":
+      <String>["e3", "e5"],
 
   /*
     a7 -----  O ----- g7
@@ -11629,10 +10818,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "@*O*@*O*/@OO@O@@O/O*@*@*O* w p p 8 1 8 1 0 0 0 0 0 0 0 0 9": <String>[
-    "g7",
-    "g1",
-  ],
+  "@*O*@*O*/@OO@O@@O/O*@*@*O* w p p 8 1 8 1 0 0 -1 -1 -1 -1 0 0 9 ids:nodes":
+      <String>["g7", "g1"],
 
   /*
     a7 -----  @ ----- g7
@@ -11647,10 +10834,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "O*@*@*O*/@OO@O@@O/@*O*@*O* w p p 8 1 8 1 0 0 0 0 0 0 0 0 9": <String>[
-    "e5",
-    "e3",
-  ],
+  "O*@*@*O*/@OO@O@@O/@*O*@*O* w p p 8 1 8 1 0 0 -1 -1 -1 -1 0 0 9 ids:nodes":
+      <String>["e5", "e3"],
 
   /*
     a7 -----  @ ----- g7
@@ -11665,10 +10850,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "@*O*@*O*/O@@O@OO@/@*O*O*@* w p p 8 1 8 1 0 0 0 0 0 0 0 0 9": <String>[
-    "a1",
-    "a7",
-  ],
+  "@*O*@*O*/O@@O@OO@/@*O*O*@* w p p 8 1 8 1 0 0 -1 -1 -1 -1 0 0 9 ids:nodes":
+      <String>["a1", "a7"],
 
   /*
     a7 -----  @ ----- g7
@@ -11683,10 +10866,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "@*O*O*@*/O@@O@OO@/@*O*@*O* w p p 8 1 8 1 0 0 0 0 0 0 0 0 9": <String>[
-    "c3",
-    "c5",
-  ],
+  "@*O*O*@*/O@@O@OO@/@*O*@*O* w p p 8 1 8 1 0 0 -1 -1 -1 -1 0 0 9 ids:nodes":
+      <String>["c3", "c5"],
 
   /*
     a7 -----  O ----- g7
@@ -11701,10 +10882,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "@*O*@*O*/@O@@O@OO/O*O*@*@* w p p 8 1 8 1 0 0 0 0 0 0 0 0 9": <String>[
-    "a7",
-    "a1",
-  ],
+  "@*O*@*O*/@O@@O@OO/O*O*@*@* w p p 8 1 8 1 0 0 -1 -1 -1 -1 0 0 9 ids:nodes":
+      <String>["a7", "a1"],
 
   /*
     a7 -----  @ ----- g7
@@ -11719,10 +10898,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "O*O*@*@*/@O@@O@OO/@*O*@*O* w p p 8 1 8 1 0 0 0 0 0 0 0 0 9": <String>[
-    "c5",
-    "c3",
-  ],
+  "O*O*@*@*/@O@@O@OO/@*O*@*O* w p p 8 1 8 1 0 0 -1 -1 -1 -1 0 0 9 ids:nodes":
+      <String>["c5", "c3"],
 
   /*
     a7 -----  O ----- g7
@@ -11737,10 +10914,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "O*@*O*@*/@@O@OO@O/O*@*@*O* w p p 8 1 8 1 0 0 0 0 0 0 0 0 9": <String>[
-    "a1",
-    "g1",
-  ],
+  "O*@*O*@*/@@O@OO@O/O*@*@*O* w p p 8 1 8 1 0 0 -1 -1 -1 -1 0 0 9 ids:nodes":
+      <String>["a1", "g1"],
 
   /*
     a7 -----  O ----- g7
@@ -11755,10 +10930,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "O*@*@*O*/@@O@OO@O/O*@*O*@* w p p 8 1 8 1 0 0 0 0 0 0 0 0 9": <String>[
-    "c3",
-    "e3",
-  ],
+  "O*@*@*O*/@@O@OO@O/O*@*O*@* w p p 8 1 8 1 0 0 -1 -1 -1 -1 0 0 9 ids:nodes":
+      <String>["c3", "e3"],
 
   /*
     a7 -----  O ----- g7
@@ -11773,10 +10946,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "O*@*O*@*/@O@OO@O@/O*O*@*@* w p p 8 1 8 1 0 0 0 0 0 0 0 0 9": <String>[
-    "g1",
-    "a1",
-  ],
+  "O*@*O*@*/@O@OO@O@/O*O*@*@* w p p 8 1 8 1 0 0 -1 -1 -1 -1 0 0 9 ids:nodes":
+      <String>["g1", "a1"],
 
   /*
     a7 -----  O ----- g7
@@ -11791,10 +10962,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "O*O*@*@*/@O@OO@O@/O*@*O*@* w p p 8 1 8 1 0 0 0 0 0 0 0 0 9": <String>[
-    "e3",
-    "c3",
-  ],
+  "O*O*@*@*/@O@OO@O@/O*@*O*@* w p p 8 1 8 1 0 0 -1 -1 -1 -1 0 0 9 ids:nodes":
+      <String>["e3", "c3"],
 
   /*
     a7 -----  @ ----- g7
@@ -11809,10 +10978,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "O*@*O*@*/O@O@@O@O/@*@*O*O* w p p 8 1 8 1 0 0 0 0 0 0 0 0 9": <String>[
-    "a7",
-    "g7",
-  ],
+  "O*@*O*@*/O@O@@O@O/@*@*O*O* w p p 8 1 8 1 0 0 -1 -1 -1 -1 0 0 9 ids:nodes":
+      <String>["a7", "g7"],
 
   /*
     a7 -----  O ----- g7
@@ -11827,10 +10994,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "@*@*O*O*/O@O@@O@O/O*@*O*@* w p p 8 1 8 1 0 0 0 0 0 0 0 0 9": <String>[
-    "c5",
-    "e5",
-  ],
+  "@*@*O*O*/O@O@@O@O/O*@*O*@* w p p 8 1 8 1 0 0 -1 -1 -1 -1 0 0 9 ids:nodes":
+      <String>["c5", "e5"],
 
   /*
     a7 -----  @ ----- g7
@@ -11845,10 +11010,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "O*@*O*@*/OO@O@@O@/@*O*O*@* w p p 8 1 8 1 0 0 0 0 0 0 0 0 9": <String>[
-    "g7",
-    "a7",
-  ],
+  "O*@*O*@*/OO@O@@O@/@*O*O*@* w p p 8 1 8 1 0 0 -1 -1 -1 -1 0 0 9 ids:nodes":
+      <String>["g7", "a7"],
 
   /*
     a7 -----  O ----- g7
@@ -11863,10 +11026,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "@*O*O*@*/OO@O@@O@/O*@*O*@* w p p 8 1 8 1 0 0 0 0 0 0 0 0 9": <String>[
-    "e5",
-    "c5",
-  ],
+  "@*O*O*@*/OO@O@@O@/O*@*O*@* w p p 8 1 8 1 0 0 -1 -1 -1 -1 0 0 9 ids:nodes":
+      <String>["e5", "c5"],
 
   //////////////////////////////////////////////////////////////////////////////
   //////////////////////////////////   Trap    /////////////////////////////////
@@ -11887,7 +11048,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "******O@/OOO@@O@O/******** b p p 6 3 4 4 0 0 0 0 0 0 0 0 6": <String>["e5"],
+  "******O@/OOO@@O@O/******** b p p 6 3 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["e5"],
 
   /*
      @ ----- d7 ----- g7
@@ -11902,7 +11064,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/OOO@@O@O/******O@ b p p 6 3 4 4 0 0 0 0 0 0 0 0 6": <String>["g7"],
+  "********/OOO@@O@O/******O@ b p p 6 3 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["g7"],
 
   /*
     a7 ----- d7 ----- g7
@@ -11917,7 +11080,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "*****@O*/@@OOOO@O/******** b p p 6 3 4 4 0 0 0 0 0 0 0 0 6": <String>["e3"],
+  "*****@O*/@@OOOO@O/******** b p p 6 3 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["e3"],
 
   /*
     a7 ----- d7 ----- g7
@@ -11932,7 +11096,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      @ ----- d1 ----- g1
   */
-  "********/@@OOOO@O/*****@O* b p p 6 3 4 4 0 0 0 0 0 0 0 0 6": <String>["g1"],
+  "********/@@OOOO@O/*****@O* b p p 6 3 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["g1"],
 
   /*
     a7 ----- d7 ----- g7
@@ -11947,7 +11112,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "*@O*****/OO@O@@OO/******** b p p 6 3 4 4 0 0 0 0 0 0 0 0 6": <String>["c5"],
+  "*@O*****/OO@O@@OO/******** b p p 6 3 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["c5"],
 
   /*
     a7 ----- d7 -----  @
@@ -11962,7 +11128,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/OO@O@@OO/*@O***** b p p 6 3 4 4 0 0 0 0 0 0 0 0 6": <String>["a7"],
+  "********/OO@O@@OO/*@O***** b p p 6 3 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["a7"],
 
   /*
     a7 ----- d7 ----- g7
@@ -11977,7 +11144,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "**O@****/@O@OOOO@/******** b p p 6 3 4 4 0 0 0 0 0 0 0 0 6": <String>["c3"],
+  "**O@****/@O@OOOO@/******** b p p 6 3 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["c3"],
 
   /*
     a7 ----- d7 ----- g7
@@ -11992,7 +11160,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 -----  @
   */
-  "********/@O@OOOO@/**O@**** b p p 6 3 4 4 0 0 0 0 0 0 0 0 6": <String>["a1"],
+  "********/@O@OOOO@/**O@**** b p p 6 3 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["a1"],
 
   /*
     a7 ----- d7 ----- g7
@@ -12007,7 +11176,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "O@******/@OOOO@@O/******** b p p 6 3 4 4 0 0 0 0 0 0 0 0 6": <String>["e3"],
+  "O@******/@OOOO@@O/******** b p p 6 3 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["e3"],
 
   /*
     a7 -----  O -----  @
@@ -12022,7 +11192,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@OOOO@@O/O@****** b p p 6 3 4 4 0 0 0 0 0 0 0 0 6": <String>["g1"],
+  "********/@OOOO@@O/O@****** b p p 6 3 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["g1"],
 
   /*
     a7 ----- d7 ----- g7
@@ -12037,7 +11208,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "O******@/@O@@OOOO/******** b p p 6 3 4 4 0 0 0 0 0 0 0 0 6": <String>["c3"],
+  "O******@/@O@@OOOO/******** b p p 6 3 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["c3"],
 
   /*
      @ -----  O ----- g7
@@ -12052,7 +11224,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@O@@OOOO/O******@ b p p 6 3 4 4 0 0 0 0 0 0 0 0 6": <String>["a1"],
+  "********/@O@@OOOO/O******@ b p p 6 3 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["a1"],
 
   /*
     a7 ----- d7 ----- g7
@@ -12067,7 +11240,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "***@O***/OOOO@O@@/******** b p p 6 3 4 4 0 0 0 0 0 0 0 0 6": <String>["e5"],
+  "***@O***/OOOO@O@@/******** b p p 6 3 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["e5"],
 
   /*
     a7 ----- d7 ----- g7
@@ -12082,7 +11256,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O -----  @
   */
-  "********/OOOO@O@@/***@O*** b p p 6 3 4 4 0 0 0 0 0 0 0 0 6": <String>["g7"],
+  "********/OOOO@O@@/***@O*** b p p 6 3 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["g7"],
 
   /*
     a7 ----- d7 ----- g7
@@ -12097,7 +11272,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "****O@**/O@@O@OOO/******** b p p 6 3 4 4 0 0 0 0 0 0 0 0 6": <String>["c5"],
+  "****O@**/O@@O@OOO/******** b p p 6 3 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["c5"],
 
   /*
     a7 ----- d7 ----- g7
@@ -12112,7 +11288,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      @ -----  O ----- g1
   */
-  "********/O@@O@OOO/****O@** b p p 6 3 4 4 0 0 0 0 0 0 0 0 6": <String>["a7"],
+  "********/O@@O@OOO/****O@** b p p 6 3 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["a7"],
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -12129,7 +11306,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 -----  O
   */
-  "********/@*O*O*@*/O@@O***O b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>["d3"],
+  "********/@*O*O*@*/O@@O***O b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["d3"],
 
   /*
     a7 ----- d7 ----- g7
@@ -12144,7 +11322,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "O@@O***O/@*O*O*@*/******** b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>["d1"],
+  "O@@O***O/@*O*O*@*/******** b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["d1"],
 
   /*
     a7 ----- d7 -----  O
@@ -12159,7 +11338,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      O -----  O -----  @
   */
-  "********/O*O*@*@*/*O@@OO** b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>["d5"],
+  "********/O*O*@*@*/*O@@OO** b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["d5"],
 
   /*
     a7 ----- d7 ----- g7
@@ -12174,7 +11354,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "*O@@OO**/O*O*@*@*/******** b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>["d7"],
+  "*O@@OO**/O*O*@*@*/******** b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["d7"],
 
   /*
      @ -----  O -----  O
@@ -12189,7 +11370,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      O ----- d1 ----- g1
   */
-  "********/@*@*O*O*/OO***O@@ b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>["d3"],
+  "********/@*@*O*O*/OO***O@@ b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["d3"],
 
   /*
     a7 ----- d7 ----- g7
@@ -12204,7 +11386,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "OO***O@@/@*@*O*O*/******** b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>["d1"],
+  "OO***O@@/@*@*O*O*/******** b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["d1"],
 
   /*
      O ----- d7 ----- g7
@@ -12219,7 +11402,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      @ -----  O -----  O
   */
-  "********/O*@*@*O*/***OO@@O b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>["d5"],
+  "********/O*@*@*O*/***OO@@O b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["d5"],
 
   /*
     a7 ----- d7 ----- g7
@@ -12234,7 +11418,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "***OO@@O/O*@*@*O*/******** b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>["d7"],
+  "***OO@@O/O*@*@*O*/******** b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["d7"],
 
   /*
     a7 ----- d7 -----  O
@@ -12249,7 +11434,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      O -----  @ -----  @
   */
-  "********/@*@*O*O*/*OO@@O** b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>["c4"],
+  "********/@*@*O*O*/*OO@@O** b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["c4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -12264,7 +11450,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "*OO@@O**/@*@*O*O*/******** b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>["a4"],
+  "*OO@@O**/@*@*O*O*/******** b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["a4"],
 
   /*
      O ----- d7 ----- g7
@@ -12279,7 +11466,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      @ -----  @ -----  O
   */
-  "********/@*O*O*@*/***O@@OO b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>["e4"],
+  "********/@*O*O*@*/***O@@OO b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["e4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -12294,7 +11482,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "***O@@OO/@*O*O*@*/******** b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>["g4"],
+  "***O@@OO/@*O*O*@*/******** b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["g4"],
 
   /*
      O -----  @ -----  @
@@ -12309,7 +11498,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 -----  O
   */
-  "********/O*@*@*O*/@@OO***O b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>["c4"],
+  "********/O*@*@*O*/@@OO***O b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["c4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -12324,7 +11514,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "@@OO***O/O*@*@*O*/******** b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>["a4"],
+  "@@OO***O/O*@*@*O*/******** b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["a4"],
 
   /*
      @ -----  @ -----  O
@@ -12339,7 +11530,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      O ----- d1 ----- g1
   */
-  "********/O*O*@*@*/@O***OO@ b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>["e4"],
+  "********/O*O*@*@*/@O***OO@ b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["e4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -12354,7 +11546,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "@O***OO@/O*O*@*@*/******** b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>["g4"],
+  "@O***OO@/O*O*@*@*/******** b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["g4"],
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -12371,7 +11564,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "@*@*****/O@O*@*O*/**O*O*@* w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>["c3"],
+  "@*@*****/O@O*@*O*/**O*O*@* w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["c3"],
 
   /*
     a7 -----  @ ----- g7
@@ -12386,7 +11580,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "**O*O*@*/O@O*@*O*/@*@***** w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>["a1"],
+  "**O*O*@*/O@O*@*O*/@*@***** w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["a1"],
 
   /*
     a7 -----  O ----- g7
@@ -12401,7 +11596,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "**@*@***/@*O@O*O*/O*O***@* w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>["c5"],
+  "**@*@***/@*O@O*O*/O*O***@* w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["c5"],
 
   /*
     a7 ----- d7 ----- g7
@@ -12416,7 +11612,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "O*O***@*/@*O@O*O*/**@*@*** w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>["a7"],
+  "O*O***@*/@*O@O*O*/**@*@*** w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["a7"],
 
   /*
     a7 ----- d7 ----- g7
@@ -12431,7 +11628,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "@*****@*/O*O*@*O@/**@*O*O* w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>["e3"],
+  "@*****@*/O*O*@*O@/**@*O*O* w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["e3"],
 
   /*
     a7 -----  @ ----- g7
@@ -12446,7 +11644,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "**@*O*O*/O*O*@*O@/@*****@* w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>["g1"],
+  "**@*O*O*/O*O*@*O@/@*****@* w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["g1"],
 
   /*
     a7 -----  O ----- g7
@@ -12461,7 +11660,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "****@*@*/@*O*O@O*/O*@***O* w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>["e5"],
+  "****@*@*/@*O*O@O*/O*@***O* w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["e5"],
 
   /*
     a7 ----- d7 ----- g7
@@ -12476,7 +11676,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "O*@***O*/@*O*O@O*/****@*@* w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>["g7"],
+  "O*@***O*/@*O*O@O*/****@*@* w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["g7"],
 
   /*
     a7 -----  @ ----- g7
@@ -12491,7 +11692,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "**@*@***/O*O@O*@*/@***O*O* w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>["c5"],
+  "**@*@***/O*O@O*@*/@***O*O* w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["c5"],
 
   /*
     a7 ----- d7 ----- g7
@@ -12506,7 +11708,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "@***O*O*/O*O@O*@*/**@*@*** w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>["a7"],
+  "@***O*O*/O*O@O*@*/**@*@*** w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["a7"],
 
   /*
     a7 -----  @ ----- g7
@@ -12521,7 +11724,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "****@*@*/O*@*O@O*/@*O*O*** w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>["e5"],
+  "****@*@*/O*@*O@O*/@*O*O*** w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["e5"],
 
   /*
     a7 ----- d7 ----- g7
@@ -12536,7 +11740,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "@*O*O***/O*@*O@O*/****@*@* w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>["g7"],
+  "@*O*O***/O*@*O@O*/****@*@* w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["g7"],
 
   /*
     a7 -----  O ----- g7
@@ -12551,7 +11756,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "@*@*****/O@O*O*@*/O***@*O* w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>["c3"],
+  "@*@*****/O@O*O*@*/O***@*O* w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["c3"],
 
   /*
     a7 -----  @ ----- g7
@@ -12566,7 +11772,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "O***@*O*/O@O*O*@*/@*@***** w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>["a1"],
+  "O***@*O*/O@O*O*@*/@*@***** w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["a1"],
 
   /*
     a7 -----  O ----- g7
@@ -12581,7 +11788,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "@*****@*/O*@*O*O@/O*O*@*** w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>["e3"],
+  "@*****@*/O*@*O*O@/O*O*@*** w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["e3"],
 
   /*
     a7 -----  @ ----- g7
@@ -12596,7 +11804,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "O*O*@***/O*@*O*O@/@*****@* w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>["g1"],
+  "O*O*@***/O*@*O*O@/@*****@* w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["g1"],
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -12613,7 +11822,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "@*@*O*@*/O*@*@*O*/**O***O* w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>["f2"],
+  "@*@*O*@*/O*@*@*O*/**O***O* w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["f2"],
 
   /*
     a7 -----  @ ----- g7
@@ -12628,7 +11838,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "**O***O*/O*@*@*O*/@*@*O*@* w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>["f2"],
+  "**O***O*/O*@*@*O*/@*@*O*@* w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["f2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -12643,7 +11854,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "O*@*@*@*/@*@*O*O*/**O***O* w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>["f6"],
+  "O*@*@*@*/@*@*O*O*/**O***O* w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["f6"],
 
   /*
     a7 -----  O ----- g7
@@ -12658,7 +11870,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "**O***O*/@*@*O*O*/O*@*@*@* w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>["f6"],
+  "**O***O*/@*@*O*O*/O*@*@*@* w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["f6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -12673,7 +11886,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "@*@*O*@*/O*O*@*@*/**O***O* w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>["b2"],
+  "@*@*O*@*/O*O*@*@*/**O***O* w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["b2"],
 
   /*
     a7 -----  @ ----- g7
@@ -12688,7 +11902,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "**O***O*/O*O*@*@*/@*@*O*@* w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>["b2"],
+  "**O***O*/O*O*@*@*/@*@*O*@* w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["b2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -12703,7 +11918,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "O*@*@*@*/@*O*O*@*/**O***O* w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>["b6"],
+  "O*@*@*@*/@*O*O*@*/**O***O* w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["b6"],
 
   /*
     a7 -----  O ----- g7
@@ -12718,7 +11934,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "**O***O*/@*O*O*@*/O*@*@*@* w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>["b6"],
+  "**O***O*/@*O*O*@*/O*@*@*@* w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["b6"],
 
   /*
     a7 -----  O ----- g7
@@ -12733,7 +11950,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "@*@*@*O*/O*O*@*@*/O***O*** w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>["b2"],
+  "@*@*@*O*/O*O*@*@*/O***O*** w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["b2"],
 
   /*
     a7 -----  @ ----- g7
@@ -12748,7 +11966,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "O***O***/O*O*@*@*/@*@*@*O* w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>["b2"],
+  "O***O***/O*O*@*@*/@*@*@*O* w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["b2"],
 
   /*
     a7 -----  O ----- g7
@@ -12763,7 +11982,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "@*O*@*@*/O*@*@*O*/O***O*** w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>["f2"],
+  "@*O*@*@*/O*@*@*O*/O***O*** w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["f2"],
 
   /*
     a7 -----  @ ----- g7
@@ -12778,7 +11998,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "O***O***/O*@*@*O*/@*O*@*@* w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>["f2"],
+  "O***O***/O*@*@*O*/@*O*@*@* w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["f2"],
 
   /*
     a7 -----  O ----- g7
@@ -12793,7 +12014,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "@*@*@*O*/@*O*O*@*/O***O*** w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>["b6"],
+  "@*@*@*O*/@*O*O*@*/O***O*** w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["b6"],
 
   /*
     a7 -----  @ ----- g7
@@ -12808,7 +12030,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "O***O***/@*O*O*@*/@*@*@*O* w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>["b6"],
+  "O***O***/@*O*O*@*/@*@*@*O* w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["b6"],
 
   /*
     a7 -----  O ----- g7
@@ -12823,7 +12046,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "@*O*@*@*/@*@*O*O*/O***O*** w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>["f6"],
+  "@*O*@*@*/@*@*O*O*/O***O*** w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["f6"],
 
   /*
     a7 -----  @ ----- g7
@@ -12838,7 +12062,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "O***O***/@*@*O*O*/@*O*@*@* w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>["f6"],
+  "O***O***/@*@*O*O*/@*O*@*@* w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["f6"],
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -12855,11 +12080,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "@*O*****/O@@OO@@O/******** w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>[
-    "g1",
-    "g4",
-    "g7",
-  ],
+  "@*O*****/O@@OO@@O/******** w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["g1", "g4", "g7"],
 
   /*
     a7 -----  @ ----- g7
@@ -12874,11 +12096,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/O@@OO@@O/@*O***** w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>[
-    "e3",
-    "e4",
-    "e5",
-  ],
+  "********/O@@OO@@O/@*O***** w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["e3", "e4", "e5"],
 
   /*
     a7 ----- d7 ----- g7
@@ -12893,11 +12112,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "**O*@***/OO@@OO@@/******** w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>[
-    "g7",
-    "g4",
-    "g1",
-  ],
+  "**O*@***/OO@@OO@@/******** w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["g7", "g4", "g1"],
 
   /*
     a7 ----- d7 ----- g7
@@ -12912,11 +12128,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "********/OO@@OO@@/**O*@*** w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>[
-    "e5",
-    "e4",
-    "e3",
-  ],
+  "********/OO@@OO@@/**O*@*** w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["e5", "e4", "e3"],
 
   /*
     a7 ----- d7 ----- g7
@@ -12931,11 +12144,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "@*****O*/OO@@OO@@/******** w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>[
-    "a1",
-    "a4",
-    "a7",
-  ],
+  "@*****O*/OO@@OO@@/******** w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["a1", "a4", "a7"],
 
   /*
     a7 -----  @ ----- g7
@@ -12950,11 +12160,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/OO@@OO@@/@*****O* w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>[
-    "c3",
-    "c4",
-    "c5",
-  ],
+  "********/OO@@OO@@/@*****O* w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["c3", "c4", "c5"],
 
   /*
     a7 ----- d7 ----- g7
@@ -12969,11 +12176,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "****@*O*/O@@OO@@O/******** w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>[
-    "a7",
-    "a4",
-    "a1",
-  ],
+  "****@*O*/O@@OO@@O/******** w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["a7", "a4", "a1"],
 
   /*
     a7 ----- d7 ----- g7
@@ -12988,11 +12192,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "********/O@@OO@@O/****@*O* w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>[
-    "c5",
-    "c4",
-    "c3",
-  ],
+  "********/O@@OO@@O/****@*O* w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["c5", "c4", "c3"],
 
   /*
     a7 ----- d7 ----- g7
@@ -13007,11 +12208,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "**@*O***/@OO@@OO@/******** w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>[
-    "a1",
-    "d1",
-    "g1",
-  ],
+  "**@*O***/@OO@@OO@/******** w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["a1", "d1", "g1"],
 
   /*
     a7 ----- d7 ----- g7
@@ -13026,11 +12224,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "********/@OO@@OO@/**@*O*** w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>[
-    "c3",
-    "d3",
-    "e3",
-  ],
+  "********/@OO@@OO@/**@*O*** w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["c3", "d3", "e3"],
 
   /*
     a7 ----- d7 ----- g7
@@ -13045,11 +12240,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "****O*@*/@@OO@@OO/******** w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>[
-    "g1",
-    "d1",
-    "a1",
-  ],
+  "****O*@*/@@OO@@OO/******** w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["g1", "d1", "a1"],
 
   /*
     a7 ----- d7 ----- g7
@@ -13064,11 +12256,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "********/@@OO@@OO/****O*@* w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>[
-    "e3",
-    "d3",
-    "c3",
-  ],
+  "********/@@OO@@OO/****O*@* w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["e3", "d3", "c3"],
 
   /*
     a7 ----- d7 ----- g7
@@ -13083,11 +12272,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "O*@*****/@@OO@@OO/******** w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>[
-    "a7",
-    "d7",
-    "g7",
-  ],
+  "O*@*****/@@OO@@OO/******** w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["a7", "d7", "g7"],
 
   /*
     a7 -----  O ----- g7
@@ -13102,11 +12288,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@@OO@@OO/O*@***** w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>[
-    "c5",
-    "d5",
-    "e5",
-  ],
+  "********/@@OO@@OO/O*@***** w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["c5", "d5", "e5"],
 
   /*
     a7 ----- d7 ----- g7
@@ -13121,11 +12304,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "O*****@*/@OO@@OO@/******** w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>[
-    "g7",
-    "d7",
-    "a7",
-  ],
+  "O*****@*/@OO@@OO@/******** w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["g7", "d7", "a7"],
 
   /*
     a7 -----  O ----- g7
@@ -13140,11 +12320,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@OO@@OO@/O*****@* w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>[
-    "e5",
-    "d5",
-    "c5",
-  ],
+  "********/@OO@@OO@/O*****@* w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["e5", "d5", "c5"],
 
   //////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////   Self-Play    ///////////////////////////////
@@ -13163,11 +12340,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "O***O***/*@OO@*@O/@*@***** w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>[
-    "a1",
-    "a4",
-    "g1",
-  ],
+  "O***O***/*@OO@*@O/@*@***** w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["a1", "a4", "g1"],
 
   /*
     a7 -----  O ----- g7
@@ -13182,11 +12356,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "@*@*****/*@OO@*@O/O***O*** w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>[
-    "c3",
-    "c4",
-    "e3",
-  ],
+  "@*@*****/*@OO@*@O/O***O*** w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["c3", "c4", "e3"],
 
   /*
     a7 ----- d7 ----- g7
@@ -13201,11 +12372,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "O***O***/@OO@*O@*/**@*@*** w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>[
-    "a7",
-    "a4",
-    "g7",
-  ],
+  "O***O***/@OO@*O@*/**@*@*** w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["a7", "a4", "g7"],
 
   /*
     a7 -----  O ----- g7
@@ -13220,11 +12388,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "**@*@***/@OO@*O@*/O***O*** w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>[
-    "c5",
-    "c4",
-    "e5",
-  ],
+  "**@*@***/@OO@*O@*/O***O*** w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["c5", "c4", "e5"],
 
   /*
     a7 -----  @ ----- g7
@@ -13239,11 +12404,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "O***O***/*O@*@OO@/@*****@* w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>[
-    "g1",
-    "g4",
-    "a1",
-  ],
+  "O***O***/*O@*@OO@/@*****@* w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["g1", "g4", "a1"],
 
   /*
     a7 -----  O ----- g7
@@ -13258,11 +12420,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "@*****@*/*O@*@OO@/O***O*** w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>[
-    "e3",
-    "e4",
-    "c3",
-  ],
+  "@*****@*/*O@*@OO@/O***O*** w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["e3", "e4", "c3"],
 
   /*
     a7 ----- d7 ----- g7
@@ -13277,11 +12436,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "O***O***/@*@O*@OO/****@*@* w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>[
-    "g7",
-    "g4",
-    "a7",
-  ],
+  "O***O***/@*@O*@OO/****@*@* w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["g7", "g4", "a7"],
 
   /*
     a7 -----  O ----- g7
@@ -13296,11 +12452,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "****@*@*/@*@O*@OO/O***O*** w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>[
-    "e5",
-    "e4",
-    "c5",
-  ],
+  "****@*@*/@*@O*@OO/O***O*** w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["e5", "e4", "c5"],
 
   /*
     a7 ----- d7 ----- g7
@@ -13315,11 +12468,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "**O***O*/@O*@OO@*/**@*@*** w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>[
-    "a7",
-    "d7",
-    "a1",
-  ],
+  "**O***O*/@O*@OO@*/**@*@*** w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["a7", "d7", "a1"],
 
   /*
     a7 ----- d7 ----- g7
@@ -13334,11 +12484,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "**@*@***/@O*@OO@*/**O***O* w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>[
-    "c5",
-    "d5",
-    "c3",
-  ],
+  "**@*@***/@O*@OO@*/**O***O* w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["c5", "d5", "c3"],
 
   /*
     a7 ----- d7 ----- g7
@@ -13353,11 +12500,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "**O***O*/@*@OO@*O/****@*@* w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>[
-    "g7",
-    "d7",
-    "g1",
-  ],
+  "**O***O*/@*@OO@*O/****@*@* w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["g7", "d7", "g1"],
 
   /*
     a7 ----- d7 ----- g7
@@ -13372,11 +12516,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "****@*@*/@*@OO@*O/**O***O* w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>[
-    "e5",
-    "d5",
-    "e3",
-  ],
+  "****@*@*/@*@OO@*O/**O***O* w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["e5", "d5", "e3"],
 
   /*
     a7 -----  @ ----- g7
@@ -13391,11 +12532,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "**O***O*/O@*O@*@O/@*@***** w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>[
-    "a1",
-    "d1",
-    "a7",
-  ],
+  "**O***O*/O@*O@*@O/@*@***** w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["a1", "d1", "a7"],
 
   /*
     a7 ----- d7 ----- g7
@@ -13410,11 +12548,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "@*@*****/O@*O@*@O/**O***O* w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>[
-    "c3",
-    "d3",
-    "c5",
-  ],
+  "@*@*****/O@*O@*@O/**O***O* w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["c3", "d3", "c5"],
 
   /*
     a7 -----  @ ----- g7
@@ -13429,11 +12564,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "**O***O*/OO@*@O*@/@*****@* w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>[
-    "g1",
-    "d1",
-    "g7",
-  ],
+  "**O***O*/OO@*@O*@/@*****@* w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["g1", "d1", "g7"],
 
   /*
     a7 ----- d7 ----- g7
@@ -13448,11 +12580,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "@*****@*/OO@*@O*@/**O***O* w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>[
-    "e3",
-    "d3",
-    "e5",
-  ],
+  "@*****@*/OO@*@O*@/**O***O* w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["e3", "d3", "e5"],
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -13469,13 +12598,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "**@*@*O*/@*O@O*@O/****O*** w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>[
-    "e3",
-    "a4",
-    "d5",
-    "a7",
-    "d7",
-  ],
+  "**@*@*O*/@*O@O*@O/****O*** w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["e3", "a4", "d5", "a7", "d7"],
 
   /*
     a7 ----- d7 ----- g7
@@ -13490,13 +12614,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "****O***/@*O@O*@O/**@*@*O* w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>[
-    "g1",
-    "c4",
-    "d7",
-    "c5",
-    "d5",
-  ],
+  "****O***/@*O@O*@O/**@*@*O* w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["g1", "c4", "d7", "c5", "d5"],
 
   /*
     a7 -----  O ----- g7
@@ -13511,13 +12630,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "@*@***O*/O@O*@O@*/O******* w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>[
-    "e5",
-    "a4",
-    "d3",
-    "a1",
-    "d1",
-  ],
+  "@*@***O*/O@O*@O@*/O******* w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["e5", "a4", "d3", "a1", "d1"],
 
   /*
     a7 -----  @ ----- g7
@@ -13532,13 +12646,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "O*******/O@O*@O@*/@*@***O* w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>[
-    "g7",
-    "c4",
-    "d1",
-    "c3",
-    "d3",
-  ],
+  "O*******/O@O*@O@*/@*@***O* w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["g7", "c4", "d1", "c3", "d3"],
 
   /*
     a7 ----- d7 ----- g7
@@ -13553,13 +12662,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "**O*@*@*/@O@*O@O*/****O*** w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>[
-    "c3",
-    "g4",
-    "d5",
-    "g7",
-    "d7",
-  ],
+  "**O*@*@*/@O@*O@O*/****O*** w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["c3", "g4", "d5", "g7", "d7"],
 
   /*
     a7 ----- d7 ----- g7
@@ -13574,13 +12678,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "****O***/@O@*O@O*/**O*@*@* w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>[
-    "a1",
-    "e4",
-    "d7",
-    "e5",
-    "d5",
-  ],
+  "****O***/@O@*O@O*/**O*@*@* w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["a1", "e4", "d7", "e5", "d5"],
 
   /*
     a7 -----  O ----- g7
@@ -13595,13 +12694,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "@*O***@*/O*@O@*O@/O******* w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>[
-    "c5",
-    "g4",
-    "d3",
-    "g1",
-    "d1",
-  ],
+  "@*O***@*/O*@O@*O@/O******* w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["c5", "g4", "d3", "g1", "d1"],
 
   /*
     a7 -----  @ ----- g7
@@ -13616,13 +12710,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "O*******/O*@O@*O@/@*O***@* w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>[
-    "a7",
-    "e4",
-    "d1",
-    "e3",
-    "d3",
-  ],
+  "O*******/O*@O@*O@/@*O***@* w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["a7", "e4", "d1", "e3", "d3"],
 
   /*
     a7 ----- d7 ----- g7
@@ -13637,13 +12726,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "O***@*@*/@O@*O@O*/******O* w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>[
-    "c3",
-    "d7",
-    "e4",
-    "g7",
-    "g4",
-  ],
+  "O***@*@*/@O@*O@O*/******O* w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["c3", "d7", "e4", "g7", "g4"],
 
   /*
     a7 -----  O ----- g7
@@ -13658,13 +12742,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "******O*/@O@*O@O*/O***@*@* w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>[
-    "a1",
-    "d5",
-    "g4",
-    "e5",
-    "e4",
-  ],
+  "******O*/@O@*O@O*/O***@*@* w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["a1", "d5", "g4", "e5", "e4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -13679,13 +12758,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "O*@*@***/@*O@O*@O/**O***** w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>[
-    "e3",
-    "d7",
-    "c4",
-    "a7",
-    "a4",
-  ],
+  "O*@*@***/@*O@O*@O/**O***** w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["e3", "d7", "c4", "a7", "a4"],
 
   /*
     a7 -----  O ----- g7
@@ -13700,13 +12774,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "**O*****/@*O@O*@O/O*@*@*** w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>[
-    "g1",
-    "d5",
-    "a4",
-    "c5",
-    "c4",
-  ],
+  "**O*****/@*O@O*@O/O*@*@*** w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["g1", "d5", "a4", "c5", "c4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -13721,13 +12790,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "@***O*@*/O*@O@*O@/******O* w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>[
-    "c5",
-    "d1",
-    "e4",
-    "g1",
-    "g4",
-  ],
+  "@***O*@*/O*@O@*O@/******O* w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["c5", "d1", "e4", "g1", "g4"],
 
   /*
     a7 -----  @ ----- g7
@@ -13742,13 +12806,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "******O*/O*@O@*O@/@***O*@* w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>[
-    "a7",
-    "d3",
-    "g4",
-    "e3",
-    "e4",
-  ],
+  "******O*/O*@O@*O@/@***O*@* w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["a7", "d3", "g4", "e3", "e4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -13763,13 +12822,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "@*@*O***/O@O*@O@*/**O***** w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>[
-    "e5",
-    "d1",
-    "c4",
-    "a1",
-    "a4",
-  ],
+  "@*@*O***/O@O*@O@*/**O***** w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["e5", "d1", "c4", "a1", "a4"],
 
   /*
     a7 -----  @ ----- g7
@@ -13784,13 +12838,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "**O*****/O@O*@O@*/@*@*O*** w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>[
-    "g7",
-    "d3",
-    "a4",
-    "c3",
-    "c4",
-  ],
+  "**O*****/O@O*@O@*/@*@*O*** w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["g7", "d3", "a4", "c3", "c4"],
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -13807,13 +12856,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "O****O**/@O@@OOO@/@******* b p p 6 3 5 4 0 0 0 0 0 0 0 0 6": <String>[
-    "g1",
-    "d3",
-    "a4",
-    "c4",
-    "e4",
-  ],
+  "O****O**/@O@@OOO@/@******* b p p 6 3 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["g1", "d3", "a4", "c4", "e4"],
 
   /*
     a7 -----  O ----- g7
@@ -13828,13 +12872,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      O ----- d1 ----- g1
   */
-  "@*******/@O@@OOO@/O****O** b p p 6 3 5 4 0 0 0 0 0 0 0 0 6": <String>[
-    "e3",
-    "d1",
-    "c4",
-    "a4",
-    "g4",
-  ],
+  "@*******/@O@@OOO@/O****O** b p p 6 3 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["e3", "d1", "c4", "a4", "g4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -13849,13 +12888,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "****O**O/O@@O@@OO/****@*** b p p 6 3 5 4 0 0 0 0 0 0 0 0 6": <String>[
-    "g7",
-    "d5",
-    "a4",
-    "c4",
-    "e4",
-  ],
+  "****O**O/O@@O@@OO/****@*** b p p 6 3 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["g7", "d5", "a4", "c4", "e4"],
 
   /*
      O ----- d7 ----- g7
@@ -13870,13 +12904,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "****@***/O@@O@@OO/****O**O b p p 6 3 5 4 0 0 0 0 0 0 0 0 6": <String>[
-    "e5",
-    "d7",
-    "c4",
-    "a4",
-    "g4",
-  ],
+  "****@***/O@@O@@OO/****O**O b p p 6 3 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["e5", "d7", "c4", "a4", "g4"],
 
   /*
     a7 -----  @ ----- g7
@@ -13891,13 +12920,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "O**O****/@@OOO@@O/@******* b p p 6 3 5 4 0 0 0 0 0 0 0 0 6": <String>[
-    "a1",
-    "d3",
-    "g4",
-    "e4",
-    "c4",
-  ],
+  "O**O****/@@OOO@@O/@******* b p p 6 3 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["a1", "d3", "g4", "e4", "c4"],
 
   /*
     a7 -----  O ----- g7
@@ -13912,13 +12936,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 -----  O
   */
-  "@*******/@@OOO@@O/O**O**** b p p 6 3 5 4 0 0 0 0 0 0 0 0 6": <String>[
-    "c3",
-    "d1",
-    "e4",
-    "g4",
-    "a4",
-  ],
+  "@*******/@@OOO@@O/O**O**** b p p 6 3 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["c3", "d1", "e4", "g4", "a4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -13933,13 +12952,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "*O**O***/OOO@@O@@/****@*** b p p 6 3 5 4 0 0 0 0 0 0 0 0 6": <String>[
-    "a7",
-    "d5",
-    "g4",
-    "e4",
-    "c4",
-  ],
+  "*O**O***/OOO@@O@@/****@*** b p p 6 3 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["a7", "d5", "g4", "e4", "c4"],
 
   /*
     a7 ----- d7 -----  O
@@ -13954,13 +12968,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "****@***/OOO@@O@@/*O**O*** b p p 6 3 5 4 0 0 0 0 0 0 0 0 6": <String>[
-    "c5",
-    "d7",
-    "e4",
-    "g4",
-    "a4",
-  ],
+  "****@***/OOO@@O@@/*O**O*** b p p 6 3 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["c5", "d7", "e4", "g4", "a4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -13975,13 +12984,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "**O****O/O@@O@@OO/**@***** b p p 6 3 5 4 0 0 0 0 0 0 0 0 6": <String>[
-    "a1",
-    "c4",
-    "d7",
-    "d5",
-    "d3",
-  ],
+  "**O****O/O@@O@@OO/**@***** b p p 6 3 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["a1", "c4", "d7", "d5", "d3"],
 
   /*
      O ----- d7 ----- g7
@@ -13996,13 +13000,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "**@*****/O@@O@@OO/**O****O b p p 6 3 5 4 0 0 0 0 0 0 0 0 6": <String>[
-    "c3",
-    "a4",
-    "d5",
-    "d7",
-    "d1",
-  ],
+  "**@*****/O@@O@@OO/**O****O b p p 6 3 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["c3", "a4", "d5", "d7", "d1"],
 
   /*
     a7 ----- d7 ----- g7
@@ -14017,13 +13016,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "*O****O*/OOO@@O@@/******@* b p p 6 3 5 4 0 0 0 0 0 0 0 0 6": <String>[
-    "g1",
-    "e4",
-    "d7",
-    "d5",
-    "d3",
-  ],
+  "*O****O*/OOO@@O@@/******@* b p p 6 3 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["g1", "e4", "d7", "d5", "d3"],
 
   /*
     a7 ----- d7 -----  O
@@ -14038,13 +13032,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "******@*/OOO@@O@@/*O****O* b p p 6 3 5 4 0 0 0 0 0 0 0 0 6": <String>[
-    "e3",
-    "g4",
-    "d5",
-    "d7",
-    "d1",
-  ],
+  "******@*/OOO@@O@@/*O****O* b p p 6 3 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["e3", "g4", "d5", "d7", "d1"],
 
   /*
     a7 ----- d7 ----- g7
@@ -14059,13 +13048,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "**O**O**/@O@@OOO@/**@***** b p p 6 3 5 4 0 0 0 0 0 0 0 0 6": <String>[
-    "a7",
-    "c4",
-    "d1",
-    "d3",
-    "d5",
-  ],
+  "**O**O**/@O@@OOO@/**@***** b p p 6 3 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["a7", "c4", "d1", "d3", "d5"],
 
   /*
     a7 ----- d7 ----- g7
@@ -14080,13 +13064,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      O ----- d1 ----- g1
   */
-  "**@*****/@O@@OOO@/**O**O** b p p 6 3 5 4 0 0 0 0 0 0 0 0 6": <String>[
-    "c5",
-    "a4",
-    "d3",
-    "d1",
-    "d7",
-  ],
+  "**@*****/@O@@OOO@/**O**O** b p p 6 3 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["c5", "a4", "d3", "d1", "d7"],
 
   /*
     a7 ----- d7 ----- g7
@@ -14101,13 +13080,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "***O**O*/@@OOO@@O/******@* b p p 6 3 5 4 0 0 0 0 0 0 0 0 6": <String>[
-    "g7",
-    "e4",
-    "d1",
-    "d3",
-    "d5",
-  ],
+  "***O**O*/@@OOO@@O/******@* b p p 6 3 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["g7", "e4", "d1", "d3", "d5"],
 
   /*
     a7 ----- d7 ----- g7
@@ -14122,13 +13096,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 -----  O
   */
-  "******@*/@@OOO@@O/***O**O* b p p 6 3 5 4 0 0 0 0 0 0 0 0 6": <String>[
-    "e5",
-    "g4",
-    "d3",
-    "d1",
-    "d7",
-  ],
+  "******@*/@@OOO@@O/***O**O* b p p 6 3 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["e5", "g4", "d3", "d1", "d7"],
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -14145,13 +13114,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "***@OO**/O@@O@@OO/****@*** w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "e4",
-    "g4",
-    "c5",
-    "d5",
-    "d7",
-  ],
+  "***@OO**/O@@O@@OO/****@*** w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["e4", "g4", "c5", "d5", "d7"],
 
   /*
     a7 ----- d7 ----- g7
@@ -14166,13 +13130,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      O -----  O -----  @
   */
-  "****@***/O@@O@@OO/***@OO** w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "g4",
-    "e4",
-    "a7",
-    "d7",
-    "d5",
-  ],
+  "****@***/O@@O@@OO/***@OO** w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["g4", "e4", "a7", "d7", "d5"],
 
   /*
     a7 -----  @ ----- g7
@@ -14187,13 +13146,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "O@*****O/@O@@OOO@/@******* w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "e4",
-    "g4",
-    "c3",
-    "d3",
-    "d1",
-  ],
+  "O@*****O/@O@@OOO@/@******* w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["e4", "g4", "c3", "d3", "d1"],
 
   /*
      O -----  O -----  @
@@ -14208,13 +13162,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "@*******/@O@@OOO@/O@*****O w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "g4",
-    "e4",
-    "a1",
-    "d1",
-    "d3",
-  ],
+  "@*******/@O@@OOO@/O@*****O w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["g4", "e4", "a1", "d1", "d3"],
 
   /*
     a7 ----- d7 ----- g7
@@ -14229,13 +13178,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "***OO@**/OOO@@O@@/****@*** w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "c4",
-    "a4",
-    "e5",
-    "d5",
-    "d7",
-  ],
+  "***OO@**/OOO@@O@@/****@*** w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["c4", "a4", "e5", "d5", "d7"],
 
   /*
     a7 ----- d7 ----- g7
@@ -14250,13 +13194,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      @ -----  O -----  O
   */
-  "****@***/OOO@@O@@/***OO@** w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "a4",
-    "c4",
-    "g7",
-    "d7",
-    "d5",
-  ],
+  "****@***/OOO@@O@@/***OO@** w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["a4", "c4", "g7", "d7", "d5"],
 
   /*
     a7 -----  @ ----- g7
@@ -14271,13 +13210,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "OO*****@/@@OOO@@O/@******* w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "c4",
-    "a4",
-    "e3",
-    "d3",
-    "d1",
-  ],
+  "OO*****@/@@OOO@@O/@******* w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["c4", "a4", "e3", "d3", "d1"],
 
   /*
      @ -----  O -----  O
@@ -14292,13 +13226,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "@*******/@@OOO@@O/OO*****@ w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "a4",
-    "c4",
-    "g1",
-    "d1",
-    "d3",
-  ],
+  "@*******/@@OOO@@O/OO*****@ w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["a4", "c4", "g1", "d1", "d3"],
 
   /*
     a7 ----- d7 ----- g7
@@ -14313,13 +13242,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "*****@OO/OOO@@O@@/******@* w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "d3",
-    "d1",
-    "e5",
-    "e4",
-    "g4",
-  ],
+  "*****@OO/OOO@@O@@/******@* w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["d3", "d1", "e5", "e4", "g4"],
 
   /*
      O ----- d7 ----- g7
@@ -14334,13 +13258,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      @ ----- d1 ----- g1
   */
-  "******@*/OOO@@O@@/*****@OO w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "d1",
-    "d3",
-    "g7",
-    "g4",
-    "e4",
-  ],
+  "******@*/OOO@@O@@/*****@OO w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["d1", "d3", "g7", "g4", "e4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -14355,13 +13274,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "*OO@****/O@@O@@OO/**@***** w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "d3",
-    "d1",
-    "c5",
-    "c4",
-    "a4",
-  ],
+  "*OO@****/O@@O@@OO/**@***** w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["d3", "d1", "c5", "c4", "a4"],
 
   /*
     a7 ----- d7 -----  O
@@ -14376,13 +13290,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 -----  @
   */
-  "**@*****/O@@O@@OO/*OO@**** w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "d1",
-    "d3",
-    "a7",
-    "a4",
-    "c4",
-  ],
+  "**@*****/O@@O@@OO/*OO@**** w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["d1", "d3", "a7", "a4", "c4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -14397,13 +13306,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "*****OO@/@@OOO@@O/******@* w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "d5",
-    "d7",
-    "e3",
-    "e4",
-    "g4",
-  ],
+  "*****OO@/@@OOO@@O/******@* w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["d5", "d7", "e3", "e4", "g4"],
 
   /*
      @ ----- d7 ----- g7
@@ -14418,13 +13322,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      O ----- d1 ----- g1
   */
-  "******@*/@@OOO@@O/*****OO@ w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "d7",
-    "d5",
-    "g1",
-    "g4",
-    "e4",
-  ],
+  "******@*/@@OOO@@O/*****OO@ w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["d7", "d5", "g1", "g4", "e4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -14439,13 +13338,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "*@OO****/@O@@OOO@/**@***** w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "d5",
-    "d7",
-    "c3",
-    "c4",
-    "a4",
-  ],
+  "*@OO****/@O@@OOO@/**@***** w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["d5", "d7", "c3", "c4", "a4"],
 
   /*
     a7 ----- d7 -----  @
@@ -14460,13 +13354,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 -----  O
   */
-  "**@*****/@O@@OOO@/*@OO**** w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "d7",
-    "d5",
-    "a1",
-    "a4",
-    "c4",
-  ],
+  "**@*****/@O@@OOO@/*@OO**** w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["d7", "d5", "a1", "a4", "c4"],
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -14483,10 +13372,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "@*******/*O@*@OO@/O******* w p p 4 5 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "d1",
-    "d3",
-  ],
+  "@*******/*O@*@OO@/O******* w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["d1", "d3"],
 
   /*
     a7 -----  @ ----- g7
@@ -14501,10 +13388,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "O*******/*O@*@OO@/@******* w p p 4 5 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "d3",
-    "d1",
-  ],
+  "O*******/*O@*@OO@/@******* w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["d3", "d1"],
 
   /*
     a7 ----- d7 ----- g7
@@ -14519,10 +13404,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "****@***/@*@O*@OO/****O*** w p p 4 5 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "d7",
-    "d5",
-  ],
+  "****@***/@*@O*@OO/****O*** w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["d7", "d5"],
 
   /*
     a7 ----- d7 ----- g7
@@ -14537,10 +13420,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "****O***/@*@O*@OO/****@*** w p p 4 5 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "d5",
-    "d7",
-  ],
+  "****O***/@*@O*@OO/****@*** w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["d5", "d7"],
 
   /*
     a7 -----  O ----- g7
@@ -14555,10 +13436,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "@*******/*@OO@*@O/O******* w p p 4 5 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "d1",
-    "d3",
-  ],
+  "@*******/*@OO@*@O/O******* w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["d1", "d3"],
 
   /*
     a7 -----  @ ----- g7
@@ -14573,10 +13452,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "O*******/*@OO@*@O/@******* w p p 4 5 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "d3",
-    "d1",
-  ],
+  "O*******/*@OO@*@O/@******* w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["d3", "d1"],
 
   /*
     a7 ----- d7 ----- g7
@@ -14591,10 +13468,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "****@***/@OO@*O@*/****O*** w p p 4 5 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "d7",
-    "d5",
-  ],
+  "****@***/@OO@*O@*/****O*** w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["d7", "d5"],
 
   /*
     a7 ----- d7 ----- g7
@@ -14609,10 +13484,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "****O***/@OO@*O@*/****@*** w p p 4 5 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "d5",
-    "d7",
-  ],
+  "****O***/@OO@*O@*/****@*** w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["d5", "d7"],
 
   /*
     a7 ----- d7 ----- g7
@@ -14627,10 +13500,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "**@*****/O@*O@*@O/**O***** w p p 4 5 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "a4",
-    "c4",
-  ],
+  "**@*****/O@*O@*@O/**O***** w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["a4", "c4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -14645,10 +13516,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "**O*****/O@*O@*@O/**@***** w p p 4 5 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "c4",
-    "a4",
-  ],
+  "**O*****/O@*O@*@O/**@***** w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["c4", "a4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -14663,10 +13532,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "******@*/OO@*@O*@/******O* w p p 4 5 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "g4",
-    "e4",
-  ],
+  "******@*/OO@*@O*@/******O* w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["g4", "e4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -14681,10 +13548,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "******O*/OO@*@O*@/******@* w p p 4 5 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "e4",
-    "g4",
-  ],
+  "******O*/OO@*@O*@/******@* w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["e4", "g4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -14699,10 +13564,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "**@*****/@O*@OO@*/**O***** w p p 4 5 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "a4",
-    "c4",
-  ],
+  "**@*****/@O*@OO@*/**O***** w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["a4", "c4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -14717,10 +13580,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "**O*****/@O*@OO@*/**@***** w p p 4 5 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "c4",
-    "a4",
-  ],
+  "**O*****/@O*@OO@*/**@***** w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["c4", "a4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -14735,10 +13596,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "******@*/@*@OO@*O/******O* w p p 4 5 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "g4",
-    "e4",
-  ],
+  "******@*/@*@OO@*O/******O* w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["g4", "e4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -14753,10 +13612,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "******O*/@*@OO@*O/******@* w p p 4 5 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "e4",
-    "g4",
-  ],
+  "******O*/@*@OO@*O/******@* w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["e4", "g4"],
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -14773,11 +13630,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "@***O*OO/O@@O@@OO/****@*** b p p 7 2 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "g1",
-    "a4",
-    "e4",
-  ],
+  "@***O*OO/O@@O@@OO/****@*** b p p 7 2 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["g1", "a4", "e4"],
 
   /*
      O -----  @ ----- g7
@@ -14792,11 +13646,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "****@***/O@@O@@OO/@***O*OO b p p 7 2 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "e3",
-    "c4",
-    "g4",
-  ],
+  "****@***/O@@O@@OO/@***O*OO b p p 7 2 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["e3", "c4", "g4"],
 
   /*
     a7 -----  @ ----- g7
@@ -14811,11 +13662,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "O***@OO*/@O@@OOO@/@******* b p p 7 2 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "g7",
-    "a4",
-    "e4",
-  ],
+  "O***@OO*/@O@@OOO@/@******* b p p 7 2 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["g7", "a4", "e4"],
 
   /*
     a7 -----  O ----- g7
@@ -14830,11 +13678,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      O -----  @ ----- g1
   */
-  "@*******/@O@@OOO@/O***@OO* b p p 7 2 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "e5",
-    "c4",
-    "g4",
-  ],
+  "@*******/@O@@OOO@/O***@OO* b p p 7 2 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["e5", "c4", "g4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -14849,11 +13694,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "@OO*O***/OOO@@O@@/****@*** b p p 7 2 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "a1",
-    "g4",
-    "c4",
-  ],
+  "@OO*O***/OOO@@O@@/****@*** b p p 7 2 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["a1", "g4", "c4"],
 
   /*
     a7 -----  @ -----  O
@@ -14868,11 +13710,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "****@***/OOO@@O@@/@OO*O*** b p p 7 2 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "c3",
-    "e4",
-    "a4",
-  ],
+  "****@***/OOO@@O@@/@OO*O*** b p p 7 2 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["c3", "e4", "a4"],
 
   /*
     a7 -----  @ ----- g7
@@ -14887,11 +13726,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "O*OO@***/@@OOO@@O/@******* b p p 7 2 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "a7",
-    "g4",
-    "c4",
-  ],
+  "O*OO@***/@@OOO@@O/@******* b p p 7 2 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["a7", "g4", "c4"],
 
   /*
     a7 -----  O ----- g7
@@ -14906,11 +13742,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ -----  O
   */
-  "@*******/@@OOO@@O/O*OO@*** b p p 7 2 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "c5",
-    "e4",
-    "a4",
-  ],
+  "@*******/@@OOO@@O/O*OO@*** b p p 7 2 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["c5", "e4", "a4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -14925,11 +13758,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "OO@***O*/OOO@@O@@/******@* b p p 7 2 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "a1",
-    "d7",
-    "d3",
-  ],
+  "OO@***O*/OOO@@O@@/******@* b p p 7 2 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["a1", "d7", "d3"],
 
   /*
     a7 -----  O -----  O
@@ -14944,11 +13774,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "******@*/OOO@@O@@/OO@***O* b p p 7 2 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "c3",
-    "d5",
-    "d1",
-  ],
+  "******@*/OOO@@O@@/OO@***O* b p p 7 2 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["c3", "d5", "d1"],
 
   /*
     a7 ----- d7 ----- g7
@@ -14963,11 +13790,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "O*O***@O/O@@O@@OO/**@***** b p p 7 2 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "g1",
-    "d7",
-    "d3",
-  ],
+  "O*O***@O/O@@O@@OO/**@***** b p p 7 2 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["g1", "d7", "d3"],
 
   /*
      O -----  O ----- g7
@@ -14982,11 +13806,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "**@*****/O@@O@@OO/O*O***@O b p p 7 2 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "e3",
-    "d5",
-    "d1",
-  ],
+  "**@*****/O@@O@@OO/O*O***@O b p p 7 2 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["e3", "d5", "d1"],
 
   /*
     a7 ----- d7 ----- g7
@@ -15001,11 +13822,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "**@OO*O*/@@OOO@@O/******@* b p p 7 2 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "a7",
-    "d1",
-    "d5",
-  ],
+  "**@OO*O*/@@OOO@@O/******@* b p p 7 2 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["a7", "d1", "d5"],
 
   /*
     a7 ----- d7 ----- g7
@@ -15020,11 +13838,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O -----  O
   */
-  "******@*/@@OOO@@O/**@OO*O* b p p 7 2 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "c5",
-    "d3",
-    "d7",
-  ],
+  "******@*/@@OOO@@O/**@OO*O* b p p 7 2 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["c5", "d3", "d7"],
 
   /*
     a7 ----- d7 ----- g7
@@ -15039,11 +13854,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "**O*OO@*/@O@@OOO@/**@***** b p p 7 2 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "g7",
-    "d1",
-    "d5",
-  ],
+  "**O*OO@*/@O@@OOO@/**@***** b p p 7 2 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["g7", "d1", "d5"],
 
   /*
     a7 ----- d7 ----- g7
@@ -15058,11 +13870,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      O -----  O ----- g1
   */
-  "**@*****/@O@@OOO@/**O*OO@* b p p 7 2 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "e5",
-    "d3",
-    "d7",
-  ],
+  "**@*****/@O@@OOO@/**O*OO@* b p p 7 2 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["e5", "d3", "d7"],
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -15079,10 +13888,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "O*@*@*@*/@*O@O@OO/**O*@**O w p p 7 2 7 2 0 0 0 0 0 0 0 0 8": <String>[
-    "c5",
-    "e5",
-  ],
+  "O*@*@*@*/@*O@O@OO/**O*@**O w p p 7 2 7 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["c5", "e5"],
 
   /*
     a7 -----  O ----- g7
@@ -15097,10 +13904,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "**O*@**O/@*O@O@OO/O*@*@*@* w p p 7 2 7 2 0 0 0 0 0 0 0 0 8": <String>[
-    "a7",
-    "g7",
-  ],
+  "**O*@**O/@*O@O@OO/O*@*@*@* w p p 7 2 7 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["a7", "g7"],
 
   /*
     a7 -----  @ ----- g7
@@ -15115,10 +13920,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      O ----- d1 ----- g1
   */
-  "@*@*O*@*/O@O*@OO@/@*O**O** w p p 7 2 7 2 0 0 0 0 0 0 0 0 8": <String>[
-    "c3",
-    "e3",
-  ],
+  "@*@*O*@*/O@O*@OO@/@*O**O** w p p 7 2 7 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["c3", "e3"],
 
   /*
     a7 -----  @ ----- g7
@@ -15133,10 +13936,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "@*O**O**/O@O*@OO@/@*@*O*@* w p p 7 2 7 2 0 0 0 0 0 0 0 0 8": <String>[
-    "a1",
-    "g1",
-  ],
+  "@*O**O**/O@O*@OO@/@*@*O*@* w p p 7 2 7 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["a1", "g1"],
 
   /*
     a7 ----- d7 -----  O
@@ -15151,10 +13952,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "O*@*@*@*/@OO@O@O*/*O**@*O* w p p 7 2 7 2 0 0 0 0 0 0 0 0 8": <String>[
-    "e5",
-    "c5",
-  ],
+  "O*@*@*@*/@OO@O@O*/*O**@*O* w p p 7 2 7 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["e5", "c5"],
 
   /*
     a7 -----  O ----- g7
@@ -15169,10 +13968,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "*O**@*O*/@OO@O@O*/O*@*@*@* w p p 7 2 7 2 0 0 0 0 0 0 0 0 8": <String>[
-    "g7",
-    "a7",
-  ],
+  "*O**@*O*/@OO@O@O*/O*@*@*@* w p p 7 2 7 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["g7", "a7"],
 
   /*
     a7 -----  @ ----- g7
@@ -15187,10 +13984,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 -----  O
   */
-  "@*@*O*@*/O@OO@*O@/@**O**O* w p p 7 2 7 2 0 0 0 0 0 0 0 0 8": <String>[
-    "e3",
-    "c3",
-  ],
+  "@*@*O*@*/O@OO@*O@/@**O**O* w p p 7 2 7 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["e3", "c3"],
 
   /*
     a7 -----  @ ----- g7
@@ -15205,10 +14000,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "@**O**O*/O@OO@*O@/@*@*O*@* w p p 7 2 7 2 0 0 0 0 0 0 0 0 8": <String>[
-    "g1",
-    "a1",
-  ],
+  "@**O**O*/O@OO@*O@/@*@*O*@* w p p 7 2 7 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["g1", "a1"],
 
   /*
     a7 ----- d7 -----  O
@@ -15223,10 +14016,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "@*O*@*@*/OO@*O@O@/*O**O*@* w p p 7 2 7 2 0 0 0 0 0 0 0 0 8": <String>[
-    "e5",
-    "e3",
-  ],
+  "@*O*@*@*/OO@*O@O@/*O**O*@* w p p 7 2 7 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["e5", "e3"],
 
   /*
     a7 -----  @ ----- g7
@@ -15241,10 +14032,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "*O**O*@*/OO@*O@O@/@*O*@*@* w p p 7 2 7 2 0 0 0 0 0 0 0 0 8": <String>[
-    "g7",
-    "g1",
-  ],
+  "*O**O*@*/OO@*O@O@/@*O*@*@* w p p 7 2 7 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["g7", "g1"],
 
   /*
      O ----- d7 ----- g7
@@ -15259,10 +14048,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "@*@*@*O*/O@O@O*@O/**@*O**O w p p 7 2 7 2 0 0 0 0 0 0 0 0 8": <String>[
-    "c5",
-    "c3",
-  ],
+  "@*@*@*O*/O@O@O*@O/**@*O**O w p p 7 2 7 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["c5", "c3"],
 
   /*
     a7 -----  @ ----- g7
@@ -15277,10 +14064,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "**@*O**O/O@O@O*@O/@*@*@*O* w p p 7 2 7 2 0 0 0 0 0 0 0 0 8": <String>[
-    "a7",
-    "a1",
-  ],
+  "**@*O**O/O@O@O*@O/@*@*@*O* w p p 7 2 7 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["a7", "a1"],
 
   /*
     a7 -----  O ----- g7
@@ -15295,10 +14080,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 -----  O
   */
-  "@*O*@*@*/O*@OO@O@/O**O**@* w p p 7 2 7 2 0 0 0 0 0 0 0 0 8": <String>[
-    "e3",
-    "e5",
-  ],
+  "@*O*@*@*/O*@OO@O@/O**O**@* w p p 7 2 7 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["e3", "e5"],
 
   /*
     a7 -----  @ ----- g7
@@ -15313,10 +14096,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "O**O**@*/O*@OO@O@/@*O*@*@* w p p 7 2 7 2 0 0 0 0 0 0 0 0 8": <String>[
-    "g1",
-    "g7",
-  ],
+  "O**O**@*/O*@OO@O@/@*O*@*@* w p p 7 2 7 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["g1", "g7"],
 
   /*
     a7 -----  O ----- g7
@@ -15331,10 +14112,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      O ----- d1 ----- g1
   */
-  "@*@*@*O*/O@O@OO@*/O*@**O** w p p 7 2 7 2 0 0 0 0 0 0 0 0 8": <String>[
-    "c3",
-    "c5",
-  ],
+  "@*@*@*O*/O@O@OO@*/O*@**O** w p p 7 2 7 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["c3", "c5"],
 
   /*
     a7 -----  @ ----- g7
@@ -15349,10 +14128,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "O*@**O**/O@O@OO@*/@*@*@*O* w p p 7 2 7 2 0 0 0 0 0 0 0 0 8": <String>[
-    "a1",
-    "a7",
-  ],
+  "O*@**O**/O@O@OO@*/@*@*@*O* w p p 7 2 7 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["a1", "a7"],
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -15369,11 +14146,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "*@@*O***/@OO*@OO@/O*@*O*@* w p p 7 2 7 2 0 0 0 0 0 0 0 0 8": <String>[
-    "e3",
-    "c5",
-    "d5",
-  ],
+  "*@@*O***/@OO*@OO@/O*@*O*@* w p p 7 2 7 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["e3", "c5", "d5"],
 
   /*
     a7 ----- d7 -----  @
@@ -15388,11 +14162,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "O*@*O*@*/@OO*@OO@/*@@*O*** w p p 7 2 7 2 0 0 0 0 0 0 0 0 8": <String>[
-    "g1",
-    "a7",
-    "d7",
-  ],
+  "O*@*O*@*/@OO*@OO@/*@@*O*** w p p 7 2 7 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["g1", "a7", "d7"],
 
   /*
     a7 -----  O ----- g7
@@ -15407,11 +14178,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "O*@@****/@*OO@@OO/O*@*O*@* w p p 7 2 7 2 0 0 0 0 0 0 0 0 8": <String>[
-    "e5",
-    "c3",
-    "d3",
-  ],
+  "O*@@****/@*OO@@OO/O*@*O*@* w p p 7 2 7 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["e5", "c3", "d3"],
 
   /*
     a7 -----  O ----- g7
@@ -15426,11 +14194,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 -----  @
   */
-  "O*@*O*@*/@*OO@@OO/O*@@**** w p p 7 2 7 2 0 0 0 0 0 0 0 0 8": <String>[
-    "g7",
-    "a1",
-    "d1",
-  ],
+  "O*@*O*@*/@*OO@@OO/O*@@**** w p p 7 2 7 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["g7", "a1", "d1"],
 
   /*
     a7 -----  O ----- g7
@@ -15445,11 +14210,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "****O*@@/@@OO@*OO/O*@*O*@* w p p 7 2 7 2 0 0 0 0 0 0 0 0 8": <String>[
-    "c3",
-    "e5",
-    "d5",
-  ],
+  "****O*@@/@@OO@*OO/O*@*O*@* w p p 7 2 7 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["c3", "e5", "d5"],
 
   /*
      @ ----- d7 ----- g7
@@ -15464,11 +14226,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "O*@*O*@*/@@OO@*OO/****O*@@ w p p 7 2 7 2 0 0 0 0 0 0 0 0 8": <String>[
-    "a1",
-    "g7",
-    "d7",
-  ],
+  "O*@*O*@*/@@OO@*OO/****O*@@ w p p 7 2 7 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["a1", "g7", "d7"],
 
   /*
     a7 -----  O ----- g7
@@ -15483,11 +14242,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "O****@@*/@OO@@OO*/O*@*O*@* w p p 7 2 7 2 0 0 0 0 0 0 0 0 8": <String>[
-    "c5",
-    "e3",
-    "d3",
-  ],
+  "O****@@*/@OO@@OO*/O*@*O*@* w p p 7 2 7 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["c5", "e3", "d3"],
 
   /*
     a7 -----  O ----- g7
@@ -15502,11 +14258,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      @ ----- d1 ----- g1
   */
-  "O*@*O*@*/@OO@@OO*/O****@@* w p p 7 2 7 2 0 0 0 0 0 0 0 0 8": <String>[
-    "a7",
-    "g1",
-    "d1",
-  ],
+  "O*@*O*@*/@OO@@OO*/O****@@* w p p 7 2 7 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["a7", "g1", "d1"],
 
   /*
     a7 -----  @ ----- g7
@@ -15521,11 +14274,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "***@@*O*/O@@OO*@O/@*O*@*O* w p p 7 2 7 2 0 0 0 0 0 0 0 0 8": <String>[
-    "c3",
-    "e5",
-    "e4",
-  ],
+  "***@@*O*/O@@OO*@O/@*O*@*O* w p p 7 2 7 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["c3", "e5", "e4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -15540,11 +14290,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ -----  @
   */
-  "@*O*@*O*/O@@OO*@O/***@@*O* w p p 7 2 7 2 0 0 0 0 0 0 0 0 8": <String>[
-    "a1",
-    "g7",
-    "g4",
-  ],
+  "@*O*@*O*/O@@OO*@O/***@@*O* w p p 7 2 7 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["a1", "g7", "g4"],
 
   /*
     a7 -----  @ ----- g7
@@ -15559,11 +14306,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "**O*@@**/OO@*OO@@/@*O*@*O* w p p 7 2 7 2 0 0 0 0 0 0 0 0 8": <String>[
-    "e3",
-    "c5",
-    "c4",
-  ],
+  "**O*@@**/OO@*OO@@/@*O*@*O* w p p 7 2 7 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["e3", "c5", "c4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -15578,11 +14322,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      @ -----  @ ----- g1
   */
-  "@*O*@*O*/OO@*OO@@/**O*@@** w p p 7 2 7 2 0 0 0 0 0 0 0 0 8": <String>[
-    "g1",
-    "a7",
-    "a4",
-  ],
+  "@*O*@*O*/OO@*OO@@/**O*@@** w p p 7 2 7 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["g1", "a7", "a4"],
 
   /*
     a7 -----  @ ----- g7
@@ -15597,11 +14338,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "@@****O*/OO@@OO@*/@*O*@*O* w p p 7 2 7 2 0 0 0 0 0 0 0 0 8": <String>[
-    "c5",
-    "e3",
-    "e4",
-  ],
+  "@@****O*/OO@@OO@*/@*O*@*O* w p p 7 2 7 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["c5", "e3", "e4"],
 
   /*
     a7 -----  @ -----  @
@@ -15616,11 +14354,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "@*O*@*O*/OO@@OO@*/@@****O* w p p 7 2 7 2 0 0 0 0 0 0 0 0 8": <String>[
-    "a7",
-    "g1",
-    "g4",
-  ],
+  "@*O*@*O*/OO@@OO@*/@@****O* w p p 7 2 7 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["a7", "g1", "g4"],
 
   /*
     a7 -----  @ ----- g7
@@ -15635,11 +14370,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "@*O****@/O*@OO@@O/@*O*@*O* w p p 7 2 7 2 0 0 0 0 0 0 0 0 8": <String>[
-    "e5",
-    "c3",
-    "c4",
-  ],
+  "@*O****@/O*@OO@@O/@*O*@*O* w p p 7 2 7 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["e5", "c3", "c4"],
 
   /*
      @ -----  @ ----- g7
@@ -15654,11 +14386,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "@*O*@*O*/O*@OO@@O/@*O****@ w p p 7 2 7 2 0 0 0 0 0 0 0 0 8": <String>[
-    "g7",
-    "a1",
-    "a4",
-  ],
+  "@*O*@*O*/O*@OO@@O/@*O****@ w p p 7 2 7 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["g7", "a1", "a4"],
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -15675,10 +14404,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "****@*O*/O@O@O*@O/@*@***O* w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "g1",
-    "e3",
-  ],
+  "****@*O*/O@O@O*@O/@*@***O* w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["g1", "e3"],
 
   /*
     a7 ----- d7 ----- g7
@@ -15693,10 +14420,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "@*@***O*/O@O@O*@O/****@*O* w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "e3",
-    "g1",
-  ],
+  "@*@***O*/O@O@O*@O/****@*O* w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["e3", "g1"],
 
   /*
     a7 ----- d7 ----- g7
@@ -15711,10 +14436,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "@*****O*/O@O@OO@*/**@*@*O* w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "g7",
-    "e5",
-  ],
+  "@*****O*/O@O@OO@*/**@*@*O* w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["g7", "e5"],
 
   /*
     a7 -----  @ ----- g7
@@ -15729,10 +14452,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "**@*@*O*/O@O@OO@*/@*****O* w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "e5",
-    "g7",
-  ],
+  "**@*@*O*/O@O@OO@*/@*****O* w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["e5", "g7"],
 
   /*
     a7 -----  @ ----- g7
@@ -15747,10 +14468,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "**O*@***/OO@*O@O@/@*O***@* w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "a1",
-    "c3",
-  ],
+  "**O*@***/OO@*O@O@/@*O***@* w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["a1", "c3"],
 
   /*
     a7 ----- d7 ----- g7
@@ -15765,10 +14484,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "@*O***@*/OO@*O@O@/**O*@*** w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "c3",
-    "a1",
-  ],
+  "@*O***@*/OO@*O@O@/**O*@*** w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["c3", "a1"],
 
   /*
     a7 ----- d7 ----- g7
@@ -15783,10 +14500,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "@*O*****/O*@OO@O@/**O*@*@* w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "a7",
-    "c5",
-  ],
+  "@*O*****/O*@OO@O@/**O*@*@* w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["a7", "c5"],
 
   /*
     a7 -----  @ ----- g7
@@ -15801,10 +14516,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "**O*@*@*/O*@OO@O@/@*O***** w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "c5",
-    "a7",
-  ],
+  "**O*@*@*/O*@OO@O@/@*O***** w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["c5", "a7"],
 
   /*
     a7 -----  O ----- g7
@@ -15819,10 +14532,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "O*****@*/@OO@O@O*/O*@*@*** w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "a1",
-    "c3",
-  ],
+  "O*****@*/@OO@O@O*/O*@*@*** w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["a1", "c3"],
 
   /*
     a7 -----  O ----- g7
@@ -15837,10 +14548,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "O*@*@***/@OO@O@O*/O*****@* w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "c3",
-    "a1",
-  ],
+  "O*@*@***/@OO@O@O*/O*****@* w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["c3", "a1"],
 
   /*
     a7 -----  O ----- g7
@@ -15855,10 +14564,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "O*@*****/@*O@O@OO/O***@*@* w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "g1",
-    "e3",
-  ],
+  "O*@*****/@*O@O@OO/O***@*@* w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["g1", "e3"],
 
   /*
     a7 -----  O ----- g7
@@ -15873,10 +14580,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "O***@*@*/@*O@O@OO/O*@***** w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "e3",
-    "g1",
-  ],
+  "O***@*@*/@*O@O@OO/O*@***** w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["e3", "g1"],
 
   /*
     a7 -----  @ ----- g7
@@ -15891,10 +14596,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "****O*@*/O@OO@*O@/@*@*O*** w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "a7",
-    "c5",
-  ],
+  "****O*@*/O@OO@*O@/@*@*O*** w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["a7", "c5"],
 
   /*
     a7 ----- d7 ----- g7
@@ -15909,10 +14612,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "@*@*O***/O@OO@*O@/****O*@* w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "c5",
-    "a7",
-  ],
+  "@*@*O***/O@OO@*O@/****O*@* w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["c5", "a7"],
 
   /*
     a7 -----  @ ----- g7
@@ -15927,10 +14628,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "**@*O***/O@O*@OO@/@***O*@* w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "g7",
-    "e5",
-  ],
+  "**@*O***/O@O*@OO@/@***O*@* w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["g7", "e5"],
 
   /*
     a7 ----- d7 ----- g7
@@ -15945,10 +14644,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "@***O*@*/O@O*@OO@/**@*O*** w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "e5",
-    "g7",
-  ],
+  "@***O*@*/O@O*@OO@/**@*O*** w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["e5", "g7"],
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -15965,12 +14662,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "@**OO@O*/OOO@@O@@/****@*** w p p 7 2 7 2 0 0 0 0 0 0 0 0 8": <String>[
-    "g1",
-    "g4",
-    "a7",
-    "g7",
-  ],
+  "@**OO@O*/OOO@@O@@/****@*** w p p 7 2 7 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["g1", "g4", "a7", "g7"],
 
   /*
     a7 -----  @ ----- g7
@@ -15985,12 +14678,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      @ -----  O -----  O
   */
-  "****@***/OOO@@O@@/@**OO@O* w p p 7 2 7 2 0 0 0 0 0 0 0 0 8": <String>[
-    "e3",
-    "e4",
-    "c5",
-    "e5",
-  ],
+  "****@***/OOO@@O@@/@**OO@O* w p p 7 2 7 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["e3", "e4", "c5", "e5"],
 
   /*
     a7 -----  @ ----- g7
@@ -16005,12 +14694,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "OO**@*O@/@@OOO@@O/@******* w p p 7 2 7 2 0 0 0 0 0 0 0 0 8": <String>[
-    "g7",
-    "g4",
-    "a1",
-    "g1",
-  ],
+  "OO**@*O@/@@OOO@@O/@******* w p p 7 2 7 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["g7", "g4", "a1", "g1"],
 
   /*
      @ -----  O -----  O
@@ -16025,12 +14710,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "@*******/@@OOO@@O/OO**@*O@ w p p 7 2 7 2 0 0 0 0 0 0 0 0 8": <String>[
-    "e5",
-    "e4",
-    "c3",
-    "e3",
-  ],
+  "@*******/@@OOO@@O/OO**@*O@ w p p 7 2 7 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["e5", "e4", "c3", "e3"],
 
   /*
     a7 ----- d7 ----- g7
@@ -16045,12 +14726,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "@*O@OO**/O@@O@@OO/****@*** w p p 7 2 7 2 0 0 0 0 0 0 0 0 8": <String>[
-    "a1",
-    "a4",
-    "g7",
-    "a7",
-  ],
+  "@*O@OO**/O@@O@@OO/****@*** w p p 7 2 7 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["a1", "a4", "g7", "a7"],
 
   /*
     a7 -----  @ ----- g7
@@ -16065,12 +14742,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      O -----  O -----  @
   */
-  "****@***/O@@O@@OO/@*O@OO** w p p 7 2 7 2 0 0 0 0 0 0 0 0 8": <String>[
-    "c3",
-    "c4",
-    "e5",
-    "c5",
-  ],
+  "****@***/O@@O@@OO/@*O@OO** w p p 7 2 7 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["c3", "c4", "e5", "c5"],
 
   /*
     a7 -----  @ ----- g7
@@ -16085,12 +14758,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "O@O*@**O/@O@@OOO@/@******* w p p 7 2 7 2 0 0 0 0 0 0 0 0 8": <String>[
-    "a7",
-    "a4",
-    "g1",
-    "a1",
-  ],
+  "O@O*@**O/@O@@OOO@/@******* w p p 7 2 7 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["a7", "a4", "g1", "a1"],
 
   /*
      O -----  O -----  @
@@ -16105,12 +14774,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "@*******/@O@@OOO@/O@O*@**O w p p 7 2 7 2 0 0 0 0 0 0 0 0 8": <String>[
-    "c5",
-    "c4",
-    "e3",
-    "c3",
-  ],
+  "@*******/@O@@OOO@/O@O*@**O w p p 7 2 7 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["c5", "c4", "e3", "c3"],
 
   /*
     a7 ----- d7 ----- g7
@@ -16125,12 +14790,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "O*@**OO@/@@OOO@@O/******@* w p p 7 2 7 2 0 0 0 0 0 0 0 0 8": <String>[
-    "a1",
-    "d1",
-    "g7",
-    "g1",
-  ],
+  "O*@**OO@/@@OOO@@O/******@* w p p 7 2 7 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["a1", "d1", "g7", "g1"],
 
   /*
      @ -----  O ----- g7
@@ -16145,12 +14806,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      O ----- d1 ----- g1
   */
-  "******@*/@@OOO@@O/O*@**OO@ w p p 7 2 7 2 0 0 0 0 0 0 0 0 8": <String>[
-    "c3",
-    "d3",
-    "e5",
-    "e3",
-  ],
+  "******@*/@@OOO@@O/O*@**OO@ w p p 7 2 7 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["c3", "d3", "e5", "e3"],
 
   /*
     a7 ----- d7 ----- g7
@@ -16165,12 +14822,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "O@OO**@*/@O@@OOO@/**@***** w p p 7 2 7 2 0 0 0 0 0 0 0 0 8": <String>[
-    "g1",
-    "d1",
-    "a7",
-    "a1",
-  ],
+  "O@OO**@*/@O@@OOO@/**@***** w p p 7 2 7 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["g1", "d1", "a7", "a1"],
 
   /*
     a7 -----  O -----  @
@@ -16185,12 +14838,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 -----  O
   */
-  "**@*****/@O@@OOO@/O@OO**@* w p p 7 2 7 2 0 0 0 0 0 0 0 0 8": <String>[
-    "e3",
-    "d3",
-    "c5",
-    "c3",
-  ],
+  "**@*****/@O@@OOO@/O@OO**@* w p p 7 2 7 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["e3", "d3", "c5", "c3"],
 
   /*
     a7 ----- d7 ----- g7
@@ -16205,12 +14854,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "**@*O@OO/OOO@@O@@/******@* w p p 7 2 7 2 0 0 0 0 0 0 0 0 8": <String>[
-    "a7",
-    "d7",
-    "g1",
-    "g7",
-  ],
+  "**@*O@OO/OOO@@O@@/******@* w p p 7 2 7 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["a7", "d7", "g1", "g7"],
 
   /*
      O ----- d7 ----- g7
@@ -16225,12 +14870,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      @ -----  O ----- g1
   */
-  "******@*/OOO@@O@@/**@*O@OO w p p 7 2 7 2 0 0 0 0 0 0 0 0 8": <String>[
-    "c5",
-    "d5",
-    "e3",
-    "e5",
-  ],
+  "******@*/OOO@@O@@/**@*O@OO w p p 7 2 7 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["c5", "d5", "e3", "e5"],
 
   /*
     a7 ----- d7 ----- g7
@@ -16245,12 +14886,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "*OO@O*@*/O@@O@@OO/**@***** w p p 7 2 7 2 0 0 0 0 0 0 0 0 8": <String>[
-    "g7",
-    "d7",
-    "a1",
-    "a7",
-  ],
+  "*OO@O*@*/O@@O@@OO/**@***** w p p 7 2 7 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["g7", "d7", "a1", "a7"],
 
   /*
     a7 ----- d7 -----  O
@@ -16265,12 +14902,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O -----  @
   */
-  "**@*****/O@@O@@OO/*OO@O*@* w p p 7 2 7 2 0 0 0 0 0 0 0 0 8": <String>[
-    "e5",
-    "d5",
-    "c3",
-    "c5",
-  ],
+  "**@*****/O@@O@@OO/*OO@O*@* w p p 7 2 7 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["e5", "d5", "c3", "c5"],
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -16287,7 +14920,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ -----  O
   */
-  "O*O***@*/OO@@O*O@/@O*O@*@* b p p 8 1 7 2 0 0 0 0 0 0 0 0 8": <String>["b2"],
+  "O*O***@*/OO@@O*O@/@O*O@*@* b p p 8 1 7 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["b2"],
 
   /*
     a7 -----  O ----- g7
@@ -16302,7 +14936,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "@O*O@*@*/OO@@O*O@/O*O***@* b p p 8 1 7 2 0 0 0 0 0 0 0 0 8": <String>["b2"],
+  "@O*O@*@*/OO@@O*O@/O*O***@* b p p 8 1 7 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["b2"],
 
   /*
     a7 -----  @ -----  O
@@ -16317,7 +14952,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ -----  O
   */
-  "**O*O*@*/O@@OO@O*/@O*O@*@* b p p 8 1 7 2 0 0 0 0 0 0 0 0 8": <String>["b6"],
+  "**O*O*@*/O@@OO@O*/@O*O@*@* b p p 8 1 7 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["b6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -16332,7 +14968,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "@O*O@*@*/O@@OO@O*/**O*O*@* b p p 8 1 7 2 0 0 0 0 0 0 0 0 8": <String>["b6"],
+  "@O*O@*@*/O@@OO@O*/**O*O*@* b p p 8 1 7 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["b6"],
 
   /*
      O -----  @ ----- g7
@@ -16347,7 +14984,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      O -----  @ ----- g1
   */
-  "O*@***O*/O@O*O@@O/@*@*@O*O b p p 8 1 7 2 0 0 0 0 0 0 0 0 8": <String>["f2"],
+  "O*@***O*/O@O*O@@O/@*@*@O*O b p p 8 1 7 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["f2"],
 
   /*
     a7 -----  O ----- g7
@@ -16362,7 +15000,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "@*@*@O*O/O@O*O@@O/O*@***O* b p p 8 1 7 2 0 0 0 0 0 0 0 0 8": <String>["f2"],
+  "@*@*@O*O/O@O*O@@O/O*@***O* b p p 8 1 7 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["f2"],
 
   /*
      O -----  @ ----- g7
@@ -16377,7 +15016,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      O -----  @ ----- g1
   */
-  "**@*O*O*/O*O@OO@@/@*@*@O*O b p p 8 1 7 2 0 0 0 0 0 0 0 0 8": <String>["f6"],
+  "**@*O*O*/O*O@OO@@/@*@*@O*O b p p 8 1 7 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["f6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -16392,7 +15032,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "@*@*@O*O/O*O@OO@@/**@*O*O* b p p 8 1 7 2 0 0 0 0 0 0 0 0 8": <String>["f6"],
+  "@*@*@O*O/O*O@OO@@/**@*O*O* b p p 8 1 7 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["f6"],
 
   /*
     a7 -----  @ ----- g7
@@ -16407,7 +15048,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      O ----- d1 -----  O
   */
-  "@*O*O***/O@OO@@O*/@*@O*O@* b p p 8 1 7 2 0 0 0 0 0 0 0 0 8": <String>["b6"],
+  "@*O*O***/O@OO@@O*/@*@O*O@* b p p 8 1 7 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["b6"],
 
   /*
     a7 -----  @ ----- g7
@@ -16422,7 +15064,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "@*@O*O@*/O@OO@@O*/@*O*O*** b p p 8 1 7 2 0 0 0 0 0 0 0 0 8": <String>["b6"],
+  "@*@O*O@*/O@OO@@O*/@*O*O*** b p p 8 1 7 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["b6"],
 
   /*
     a7 -----  @ ----- g7
@@ -16437,7 +15080,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      O ----- d1 -----  O
   */
-  "@***O*O*/O*O@@OO@/@*@O*O@* b p p 8 1 7 2 0 0 0 0 0 0 0 0 8": <String>["f6"],
+  "@***O*O*/O*O@@OO@/@*@O*O@* b p p 8 1 7 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["f6"],
 
   /*
     a7 -----  @ ----- g7
@@ -16452,7 +15096,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "@*@O*O@*/O*O@@OO@/@***O*O* b p p 8 1 7 2 0 0 0 0 0 0 0 0 8": <String>["f6"],
+  "@*@O*O@*/O*O@@OO@/@***O*O* b p p 8 1 7 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["f6"],
 
   /*
      O ----- d7 -----  O
@@ -16467,7 +15112,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "O*O*@***/@OO@O*O@/*O@*@*@O b p p 8 1 7 2 0 0 0 0 0 0 0 0 8": <String>["b2"],
+  "O*O*@***/@OO@O*O@/*O@*@*@O b p p 8 1 7 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["b2"],
 
   /*
     a7 -----  O ----- g7
@@ -16482,7 +15128,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "*O@*@*@O/@OO@O*O@/O*O*@*** b p p 8 1 7 2 0 0 0 0 0 0 0 0 8": <String>["b2"],
+  "*O@*@*@O/@OO@O*O@/O*O*@*** b p p 8 1 7 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["b2"],
 
   /*
      O ----- d7 -----  O
@@ -16497,7 +15144,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "O***@*O*/@@O*O@OO/*O@*@*@O b p p 8 1 7 2 0 0 0 0 0 0 0 0 8": <String>["f2"],
+  "O***@*O*/@@O*O@OO/*O@*@*@O b p p 8 1 7 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["f2"],
 
   /*
     a7 -----  O ----- g7
@@ -16512,7 +15160,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "*O@*@*@O/@@O*O@OO/O***@*O* b p p 8 1 7 2 0 0 0 0 0 0 0 0 8": <String>["f2"],
+  "*O@*@*@O/@@O*O@OO/O***@*O* b p p 8 1 7 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["f2"],
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -16529,12 +15178,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@OO@*O@*/******** w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "d1",
-    "d3",
-    "d5",
-    "d7",
-  ],
+  "********/@OO@*O@*/******** w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["d1", "d3", "d5", "d7"],
 
   /*
     a7 ----- d7 ----- g7
@@ -16549,12 +15194,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/*@OO@*@O/******** w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "d7",
-    "d5",
-    "d3",
-    "d1",
-  ],
+  "********/*@OO@*@O/******** w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["d7", "d5", "d3", "d1"],
 
   /*
     a7 ----- d7 ----- g7
@@ -16569,12 +15210,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@*@O*@OO/******** w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "d1",
-    "d3",
-    "d5",
-    "d7",
-  ],
+  "********/@*@O*@OO/******** w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["d1", "d3", "d5", "d7"],
 
   /*
     a7 ----- d7 ----- g7
@@ -16589,12 +15226,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/*O@*@OO@/******** w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "d7",
-    "d5",
-    "d3",
-    "d1",
-  ],
+  "********/*O@*@OO@/******** w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["d7", "d5", "d3", "d1"],
 
   /*
     a7 ----- d7 ----- g7
@@ -16609,12 +15242,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@*@OO@*O/******** w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "a4",
-    "c4",
-    "e4",
-    "g4",
-  ],
+  "********/@*@OO@*O/******** w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["a4", "c4", "e4", "g4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -16629,12 +15258,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@O*@OO@*/******** w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "g4",
-    "e4",
-    "c4",
-    "a4",
-  ],
+  "********/@O*@OO@*/******** w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["g4", "e4", "c4", "a4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -16649,12 +15274,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/OO@*@O*@/******** w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "a4",
-    "c4",
-    "e4",
-    "g4",
-  ],
+  "********/OO@*@O*@/******** w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["a4", "c4", "e4", "g4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -16669,12 +15290,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/O@*O@*@O/******** w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "g4",
-    "e4",
-    "c4",
-    "a4",
-  ],
+  "********/O@*O@*@O/******** w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["g4", "e4", "c4", "a4"],
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -16691,19 +15308,20 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@*O**O@*/******** w p p 2 7 2 7 0 0 0 0 0 0 0 0 3": <String>[
-    "d1",
-    "d3",
-    "a4",
-    "c4",
-    "c5",
-    "d5",
-    "e5",
-    "f6",
-    "a7",
-    "d7",
-    "g7",
-  ],
+  "********/@*O**O@*/******** w p p 2 7 2 7 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>[
+        "d1",
+        "d3",
+        "a4",
+        "c4",
+        "c5",
+        "d5",
+        "e5",
+        "f6",
+        "a7",
+        "d7",
+        "g7",
+      ],
 
   /*
     a7 ----- d7 ----- g7
@@ -16718,19 +15336,20 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/**O*@*@O/******** w p p 2 7 2 7 0 0 0 0 0 0 0 0 3": <String>[
-    "d7",
-    "d5",
-    "a4",
-    "c4",
-    "c3",
-    "d3",
-    "e3",
-    "f2",
-    "a1",
-    "d1",
-    "g1",
-  ],
+  "********/**O*@*@O/******** w p p 2 7 2 7 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>[
+        "d7",
+        "d5",
+        "a4",
+        "c4",
+        "c3",
+        "d3",
+        "e3",
+        "f2",
+        "a1",
+        "d1",
+        "g1",
+      ],
 
   /*
     a7 ----- d7 ----- g7
@@ -16745,19 +15364,20 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@*@O**O*/******** w p p 2 7 2 7 0 0 0 0 0 0 0 0 3": <String>[
-    "d1",
-    "d3",
-    "g4",
-    "e4",
-    "e5",
-    "d5",
-    "c5",
-    "b6",
-    "g7",
-    "d7",
-    "a7",
-  ],
+  "********/@*@O**O*/******** w p p 2 7 2 7 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>[
+        "d1",
+        "d3",
+        "g4",
+        "e4",
+        "e5",
+        "d5",
+        "c5",
+        "b6",
+        "g7",
+        "d7",
+        "a7",
+      ],
 
   /*
     a7 ----- d7 ----- g7
@@ -16772,19 +15392,20 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/*O@*@*O*/******** w p p 2 7 2 7 0 0 0 0 0 0 0 0 3": <String>[
-    "d7",
-    "d5",
-    "g4",
-    "e4",
-    "e3",
-    "d3",
-    "c3",
-    "b2",
-    "g1",
-    "d1",
-    "a1",
-  ],
+  "********/*O@*@*O*/******** w p p 2 7 2 7 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>[
+        "d7",
+        "d5",
+        "g4",
+        "e4",
+        "e3",
+        "d3",
+        "c3",
+        "b2",
+        "g1",
+        "d1",
+        "a1",
+      ],
 
   /*
     a7 ----- d7 ----- g7
@@ -16799,19 +15420,20 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@*@*O**O/******** w p p 2 7 2 7 0 0 0 0 0 0 0 0 3": <String>[
-    "a4",
-    "c4",
-    "d7",
-    "d5",
-    "e5",
-    "e4",
-    "e3",
-    "f2",
-    "g7",
-    "g4",
-    "g1",
-  ],
+  "********/@*@*O**O/******** w p p 2 7 2 7 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>[
+        "a4",
+        "c4",
+        "d7",
+        "d5",
+        "e5",
+        "e4",
+        "e3",
+        "f2",
+        "g7",
+        "g4",
+        "g1",
+      ],
 
   /*
     a7 ----- d7 ----- g7
@@ -16826,19 +15448,20 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@O**O*@*/******** w p p 2 7 2 7 0 0 0 0 0 0 0 0 3": <String>[
-    "g4",
-    "e4",
-    "d7",
-    "d5",
-    "c5",
-    "c4",
-    "c3",
-    "b2",
-    "a7",
-    "a4",
-    "a1",
-  ],
+  "********/@O**O*@*/******** w p p 2 7 2 7 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>[
+        "g4",
+        "e4",
+        "d7",
+        "d5",
+        "c5",
+        "c4",
+        "c3",
+        "b2",
+        "a7",
+        "a4",
+        "a1",
+      ],
 
   /*
     a7 ----- d7 ----- g7
@@ -16853,19 +15476,20 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/O*@*@O**/******** w p p 2 7 2 7 0 0 0 0 0 0 0 0 3": <String>[
-    "a4",
-    "c4",
-    "d1",
-    "d3",
-    "e3",
-    "e4",
-    "e5",
-    "f6",
-    "g1",
-    "g4",
-    "g7",
-  ],
+  "********/O*@*@O**/******** w p p 2 7 2 7 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>[
+        "a4",
+        "c4",
+        "d1",
+        "d3",
+        "e3",
+        "e4",
+        "e5",
+        "f6",
+        "g1",
+        "g4",
+        "g7",
+      ],
 
   /*
     a7 ----- d7 ----- g7
@@ -16880,19 +15504,20 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/O**O@*@*/******** w p p 2 7 2 7 0 0 0 0 0 0 0 0 3": <String>[
-    "g4",
-    "e4",
-    "d1",
-    "d3",
-    "c3",
-    "c4",
-    "c5",
-    "b6",
-    "a1",
-    "a4",
-    "a7",
-  ],
+  "********/O**O@*@*/******** w p p 2 7 2 7 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>[
+        "g4",
+        "e4",
+        "d1",
+        "d3",
+        "c3",
+        "c4",
+        "c5",
+        "b6",
+        "a1",
+        "a4",
+        "a7",
+      ],
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -16909,12 +15534,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "*O*O@***/@@OOO@@O/**@***** w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "a1",
-    "a4",
-    "a7",
-    "d7",
-  ],
+  "*O*O@***/@@OOO@@O/**@***** w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["a1", "a4", "a7", "d7"],
 
   /*
     a7 ----- d7 -----  O
@@ -16929,12 +15550,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ -----  O
   */
-  "**@*****/@@OOO@@O/*O*O@*** w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "c3",
-    "c4",
-    "c5",
-    "d5",
-  ],
+  "**@*****/@@OOO@@O/*O*O@*** w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["c3", "c4", "c5", "d5"],
 
   /*
     a7 ----- d7 ----- g7
@@ -16949,12 +15566,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "@O*O****/OOO@@O@@/**@***** w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "a7",
-    "a4",
-    "a1",
-    "d1",
-  ],
+  "@O*O****/OOO@@O@@/**@***** w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["a7", "a4", "a1", "d1"],
 
   /*
     a7 -----  @ -----  O
@@ -16969,12 +15582,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 -----  O
   */
-  "**@*****/OOO@@O@@/@O*O**** w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "c5",
-    "c4",
-    "c3",
-    "d3",
-  ],
+  "**@*****/OOO@@O@@/@O*O**** w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["c5", "c4", "c3", "d3"],
 
   /*
     a7 ----- d7 ----- g7
@@ -16989,12 +15598,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "****@O*O/@O@@OOO@/******@* w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "g1",
-    "g4",
-    "g7",
-    "d7",
-  ],
+  "****@O*O/@O@@OOO@/******@* w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["g1", "g4", "g7", "d7"],
 
   /*
      O ----- d7 ----- g7
@@ -17009,12 +15614,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      O -----  @ ----- g1
   */
-  "******@*/@O@@OOO@/****@O*O w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "e3",
-    "e4",
-    "e5",
-    "d5",
-  ],
+  "******@*/@O@@OOO@/****@O*O w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["e3", "e4", "e5", "d5"],
 
   /*
     a7 ----- d7 ----- g7
@@ -17029,12 +15630,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "@****O*O/O@@O@@OO/******@* w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "g7",
-    "g4",
-    "g1",
-    "d1",
-  ],
+  "@****O*O/O@@O@@OO/******@* w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["g7", "g4", "g1", "d1"],
 
   /*
      O -----  @ ----- g7
@@ -17049,12 +15646,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      O ----- d1 ----- g1
   */
-  "******@*/O@@O@@OO/@****O*O w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "e5",
-    "e4",
-    "e3",
-    "d3",
-  ],
+  "******@*/O@@O@@OO/@****O*O w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["e5", "e4", "e3", "d3"],
 
   /*
     a7 ----- d7 ----- g7
@@ -17069,12 +15662,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "***O*O@*/@O@@OOO@/****@*** w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "a7",
-    "d7",
-    "g7",
-    "g4",
-  ],
+  "***O*O@*/@O@@OOO@/****@*** w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["a7", "d7", "g7", "g4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -17089,12 +15678,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      O ----- d1 -----  O
   */
-  "****@***/@O@@OOO@/***O*O@* w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "c5",
-    "d5",
-    "e5",
-    "e4",
-  ],
+  "****@***/@O@@OOO@/***O*O@* w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["c5", "d5", "e5", "e4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -17109,12 +15694,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "**@O*O**/@@OOO@@O/****@*** w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "g7",
-    "d7",
-    "a7",
-    "a4",
-  ],
+  "**@O*O**/@@OOO@@O/****@*** w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["g7", "d7", "a7", "a4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -17129,12 +15710,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      O ----- d1 -----  O
   */
-  "****@***/@@OOO@@O/**@O*O** w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "e5",
-    "d5",
-    "c5",
-    "c4",
-  ],
+  "****@***/@@OOO@@O/**@O*O** w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["e5", "d5", "c5", "c4"],
 
   /*
     a7 -----  @ ----- g7
@@ -17149,12 +15726,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "*O****@O/O@@O@@OO/@******* w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "a1",
-    "d1",
-    "g1",
-    "g4",
-  ],
+  "*O****@O/O@@O@@OO/@******* w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["a1", "d1", "g1", "g4"],
 
   /*
      O ----- d7 -----  O
@@ -17169,12 +15742,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "@*******/O@@O@@OO/*O****@O w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "c3",
-    "d3",
-    "e3",
-    "e4",
-  ],
+  "@*******/O@@O@@OO/*O****@O w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["c3", "d3", "e3", "e4"],
 
   /*
     a7 -----  @ ----- g7
@@ -17189,12 +15758,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "*O@****O/OOO@@O@@/@******* w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "g1",
-    "d1",
-    "a1",
-    "a4",
-  ],
+  "*O@****O/OOO@@O@@/@******* w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["g1", "d1", "a1", "a4"],
 
   /*
      O ----- d7 -----  O
@@ -17209,12 +15774,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "@*******/OOO@@O@@/*O@****O w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "e3",
-    "d3",
-    "c3",
-    "c4",
-  ],
+  "@*******/OOO@@O@@/*O@****O w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["e3", "d3", "c3", "c4"],
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -17231,7 +15792,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "**@*@*OO/@*O@O*@O/@*O***** w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>["d5"],
+  "**@*@*OO/@*O@O*@O/@*O***** w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["d5"],
 
   /*
      O ----- d7 ----- g7
@@ -17246,7 +15808,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "@*O*****/@*O@O*@O/**@*@*OO w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>["d7"],
+  "@*O*****/@*O@O*@O/**@*@*OO w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["d7"],
 
   /*
     a7 ----- d7 ----- g7
@@ -17261,7 +15824,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "@*@**OO*/O@O*@O@*/**O*@*** w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>["d3"],
+  "@*@**OO*/O@O*@O@*/**O*@*** w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["d3"],
 
   /*
     a7 -----  @ ----- g7
@@ -17276,7 +15840,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      O ----- d1 ----- g1
   */
-  "**O*@***/O@O*@O@*/@*@**OO* w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>["d1"],
+  "**O*@***/O@O*@O@*/@*@**OO* w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["d1"],
 
   /*
     a7 -----  @ ----- g7
@@ -17291,7 +15856,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "*OO*@*@*/@O@*O@O*/@*****O* w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>["d5"],
+  "*OO*@*@*/@O@*O@O*/@*****O* w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["d5"],
 
   /*
     a7 ----- d7 -----  O
@@ -17306,7 +15872,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "@*****O*/@O@*O@O*/*OO*@*@* w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>["d7"],
+  "@*****O*/@O@*O@O*/*OO*@*@* w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["d7"],
 
   /*
     a7 ----- d7 ----- g7
@@ -17321,7 +15888,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "@*OO**@*/O*@O@*O@/****@*O* w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>["d3"],
+  "@*OO**@*/O*@O@*O@/****@*O* w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["d3"],
 
   /*
     a7 -----  @ ----- g7
@@ -17336,7 +15904,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 -----  O
   */
-  "****@*O*/O*@O@*O@/@*OO**@* w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>["d1"],
+  "****@*O*/O*@O@*O@/@*OO**@* w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["d1"],
 
   /*
     a7 ----- d7 ----- g7
@@ -17351,7 +15920,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "OO**@*@*/@O@*O@O*/**@*O*** w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>["e4"],
+  "OO**@*@*/@O@*O@O*/**@*O*** w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["e4"],
 
   /*
     a7 -----  O -----  O
@@ -17366,7 +15936,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "**@*O***/@O@*O@O*/OO**@*@* w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>["g4"],
+  "**@*O***/@O@*O@O*/OO**@*@* w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["g4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -17381,7 +15952,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "O*@*@**O/@*O@O*@O/****O*@* w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>["c4"],
+  "O*@*@**O/@*O@O*@O/****O*@* w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["c4"],
 
   /*
      O -----  O ----- g7
@@ -17396,7 +15968,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "****O*@*/@*O@O*@O/O*@*@**O w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>["a4"],
+  "****O*@*/@*O@O*@O/O*@*@**O w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["a4"],
 
   /*
     a7 -----  O ----- g7
@@ -17411,7 +15984,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "@**OO*@*/O*@O@*O@/O*@***** w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>["e4"],
+  "@**OO*@*/O*@O@*O@/O*@***** w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["e4"],
 
   /*
     a7 -----  @ ----- g7
@@ -17426,7 +16000,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O -----  O
   */
-  "O*@*****/O*@O@*O@/@**OO*@* w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>["g4"],
+  "O*@*****/O*@O@*O@/@**OO*@* w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["g4"],
 
   /*
     a7 -----  O ----- g7
@@ -17441,7 +16016,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "@*@*OO**/O@O*@O@*/O*****@* w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>["c4"],
+  "@*@*OO**/O@O*@O@*/O*****@* w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["c4"],
 
   /*
     a7 -----  @ ----- g7
@@ -17456,7 +16032,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      O -----  O ----- g1
   */
-  "O*****@*/O@O*@O@*/@*@*OO** w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>["a4"],
+  "O*****@*/O@O*@O@*/@*@*OO** w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["a4"],
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -17473,18 +16050,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "@*O*@*O*/O*@*O*@*/******** w p p 4 5 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "a1",
-    "g1",
-    "b2",
-    "f2",
-    "a4",
-    "g4",
-    "b6",
-    "f6",
-    "a7",
-    "g7",
-  ],
+  "@*O*@*O*/O*@*O*@*/******** w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["a1", "g1", "b2", "f2", "a4", "g4", "b6", "f6", "a7", "g7"],
 
   /*
     a7 -----  @ ----- g7
@@ -17499,18 +16066,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "********/O*@*O*@*/@*O*@*O* w p p 4 5 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "c3",
-    "e3",
-    "b2",
-    "f2",
-    "c4",
-    "e4",
-    "b6",
-    "f6",
-    "c5",
-    "e5",
-  ],
+  "********/O*@*O*@*/@*O*@*O* w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["c3", "e3", "b2", "f2", "c4", "e4", "b6", "f6", "c5", "e5"],
 
   /*
     a7 ----- d7 ----- g7
@@ -17525,18 +16082,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "O*@*O*@*/@*O*@*O*/******** w p p 4 5 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "a7",
-    "a1",
-    "b6",
-    "b2",
-    "d7",
-    "d1",
-    "f6",
-    "f2",
-    "g7",
-    "g1",
-  ],
+  "O*@*O*@*/@*O*@*O*/******** w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["a7", "a1", "b6", "b2", "d7", "d1", "f6", "f2", "g7", "g1"],
 
   /*
     a7 -----  O ----- g7
@@ -17551,18 +16098,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "********/@*O*@*O*/O*@*O*@* w p p 4 5 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "c5",
-    "c3",
-    "b6",
-    "b2",
-    "d5",
-    "d3",
-    "f6",
-    "f2",
-    "e5",
-    "e3",
-  ],
+  "********/@*O*@*O*/O*@*O*@* w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["c5", "c3", "b6", "b2", "d5", "d3", "f6", "f2", "e5", "e3"],
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -17579,10 +16116,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "******@*/*O@*@OO@/****O*** w p p 4 5 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "c3",
-    "d7",
-  ],
+  "******@*/*O@*@OO@/****O*** w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["c3", "d7"],
 
   /*
     a7 ----- d7 ----- g7
@@ -17597,10 +16132,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "****O***/*O@*@OO@/******@* w p p 4 5 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "a1",
-    "d5",
-  ],
+  "****O***/*O@*@OO@/******@* w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["a1", "d5"],
 
   /*
     a7 -----  O ----- g7
@@ -17615,10 +16148,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "******@*/@*@O*@OO/O******* w p p 4 5 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "c5",
-    "d1",
-  ],
+  "******@*/@*@O*@OO/O******* w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["c5", "d1"],
 
   /*
     a7 ----- d7 ----- g7
@@ -17633,10 +16164,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "O*******/@*@O*@OO/******@* w p p 4 5 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "a7",
-    "d3",
-  ],
+  "O*******/@*@O*@OO/******@* w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["a7", "d3"],
 
   /*
     a7 ----- d7 ----- g7
@@ -17651,10 +16180,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "**@*****/*@OO@*@O/****O*** w p p 4 5 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "e3",
-    "d7",
-  ],
+  "**@*****/*@OO@*@O/****O*** w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["e3", "d7"],
 
   /*
     a7 ----- d7 ----- g7
@@ -17669,10 +16196,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "****O***/*@OO@*@O/**@***** w p p 4 5 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "g1",
-    "d5",
-  ],
+  "****O***/*@OO@*@O/**@***** w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["g1", "d5"],
 
   /*
     a7 -----  O ----- g7
@@ -17687,10 +16212,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "**@*****/@OO@*O@*/O******* w p p 4 5 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "e5",
-    "d1",
-  ],
+  "**@*****/@OO@*O@*/O******* w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["e5", "d1"],
 
   /*
     a7 ----- d7 ----- g7
@@ -17705,10 +16228,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "O*******/@OO@*O@*/**@***** w p p 4 5 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "g7",
-    "d3",
-  ],
+  "O*******/@OO@*O@*/**@***** w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["g7", "d3"],
 
   /*
     a7 ----- d7 ----- g7
@@ -17723,10 +16244,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "@*******/O@*O@*@O/******O* w p p 4 5 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "c5",
-    "g4",
-  ],
+  "@*******/O@*O@*@O/******O* w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["c5", "g4"],
 
   /*
     a7 -----  @ ----- g7
@@ -17741,10 +16260,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "******O*/O@*O@*@O/@******* w p p 4 5 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "a7",
-    "e4",
-  ],
+  "******O*/O@*O@*@O/@******* w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["a7", "e4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -17759,10 +16276,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "@*******/OO@*@O*@/**O***** w p p 4 5 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "e5",
-    "a4",
-  ],
+  "@*******/OO@*@O*@/**O***** w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["e5", "a4"],
 
   /*
     a7 -----  @ ----- g7
@@ -17777,10 +16292,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "**O*****/OO@*@O*@/@******* w p p 4 5 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "g7",
-    "c4",
-  ],
+  "**O*****/OO@*@O*@/@******* w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["g7", "c4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -17795,10 +16308,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "****@***/@O*@OO@*/******O* w p p 4 5 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "c3",
-    "g4",
-  ],
+  "****@***/@O*@OO@*/******O* w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["c3", "g4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -17813,10 +16324,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "******O*/@O*@OO@*/****@*** w p p 4 5 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "a1",
-    "e4",
-  ],
+  "******O*/@O*@OO@*/****@*** w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["a1", "e4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -17831,10 +16340,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "****@***/@*@OO@*O/**O***** w p p 4 5 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "e3",
-    "a4",
-  ],
+  "****@***/@*@OO@*O/**O***** w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["e3", "a4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -17849,10 +16356,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "**O*****/@*@OO@*O/****@*** w p p 4 5 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "g1",
-    "c4",
-  ],
+  "**O*****/@*@OO@*O/****@*** w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["g1", "c4"],
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -17869,7 +16374,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "@*******/*@OO@*@O/O*@*O*** w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>["c3"],
+  "@*******/*@OO@*@O/O*@*O*** w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["c3"],
 
   /*
     a7 -----  @ ----- g7
@@ -17884,7 +16390,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "O*@*O***/*@OO@*@O/@******* w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>["a1"],
+  "O*@*O***/*@OO@*@O/@******* w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["a1"],
 
   /*
     a7 -----  O ----- g7
@@ -17899,7 +16406,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "****@***/@OO@*O@*/O*@*O*** w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>["c5"],
+  "****@***/@OO@*O@*/O*@*O*** w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["c5"],
 
   /*
     a7 ----- d7 ----- g7
@@ -17914,7 +16422,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "O*@*O***/@OO@*O@*/****@*** w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>["a7"],
+  "O*@*O***/@OO@*O@*/****@*** w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["a7"],
 
   /*
     a7 -----  O ----- g7
@@ -17929,7 +16438,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "@*******/*O@*@OO@/O***O*@* w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>["e3"],
+  "@*******/*O@*@OO@/O***O*@* w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["e3"],
 
   /*
     a7 -----  @ ----- g7
@@ -17944,7 +16454,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "O***O*@*/*O@*@OO@/@******* w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>["g1"],
+  "O***O*@*/*O@*@OO@/@******* w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["g1"],
 
   /*
     a7 -----  O ----- g7
@@ -17959,7 +16470,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "****@***/@*@O*@OO/O***O*@* w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>["e5"],
+  "****@***/@*@O*@OO/O***O*@* w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["e5"],
 
   /*
     a7 ----- d7 ----- g7
@@ -17974,7 +16486,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "O***O*@*/@*@O*@OO/****@*** w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>["g7"],
+  "O***O*@*/@*@O*@OO/****@*** w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["g7"],
 
   /*
     a7 ----- d7 ----- g7
@@ -17989,7 +16502,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "**@*****/@O*@OO@*/**O*@*O* w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>["c5"],
+  "**@*****/@O*@OO@*/**O*@*O* w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["c5"],
 
   /*
     a7 ----- d7 ----- g7
@@ -18004,7 +16518,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "**O*@*O*/@O*@OO@*/**@***** w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>["a7"],
+  "**O*@*O*/@O*@OO@*/**@***** w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["a7"],
 
   /*
     a7 ----- d7 ----- g7
@@ -18019,7 +16534,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "******@*/@*@OO@*O/**O*@*O* w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>["e5"],
+  "******@*/@*@OO@*O/**O*@*O* w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["e5"],
 
   /*
     a7 ----- d7 ----- g7
@@ -18034,7 +16550,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "**O*@*O*/@*@OO@*O/******@* w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>["g7"],
+  "**O*@*O*/@*@OO@*O/******@* w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["g7"],
 
   /*
     a7 -----  @ ----- g7
@@ -18049,7 +16566,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "**@*****/O@*O@*@O/@*O***O* w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>["c3"],
+  "**@*****/O@*O@*@O/@*O***O* w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["c3"],
 
   /*
     a7 ----- d7 ----- g7
@@ -18064,7 +16582,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "@*O***O*/O@*O@*@O/**@***** w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>["a1"],
+  "@*O***O*/O@*O@*@O/**@***** w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["a1"],
 
   /*
     a7 -----  @ ----- g7
@@ -18079,7 +16598,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "******@*/OO@*@O*@/@*O***O* w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>["e3"],
+  "******@*/OO@*@O*@/@*O***O* w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["e3"],
 
   /*
     a7 ----- d7 ----- g7
@@ -18094,7 +16614,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "@*O***O*/OO@*@O*@/******@* w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>["g1"],
+  "@*O***O*/OO@*@O*@/******@* w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["g1"],
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -18111,7 +16632,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "***O@O@*/OO@*O@O@/@OO*@*@* w p p 8 1 8 1 0 0 0 0 0 0 0 0 9": <String>["a1"],
+  "***O@O@*/OO@*O@O@/@OO*@*@* w p p 8 1 8 1 0 0 -1 -1 -1 -1 0 0 9 ids:nodes":
+      <String>["a1"],
 
   /*
     a7 ----- d7 ----- g7
@@ -18126,7 +16648,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      O -----  @ -----  O
   */
-  "@OO*@*@*/OO@*O@O@/***O@O@* w p p 8 1 8 1 0 0 0 0 0 0 0 0 9": <String>["c3"],
+  "@OO*@*@*/OO@*O@O@/***O@O@* w p p 8 1 8 1 0 0 -1 -1 -1 -1 0 0 9 ids:nodes":
+      <String>["c3"],
 
   /*
     a7 -----  @ ----- g7
@@ -18141,7 +16664,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ -----  O
   */
-  "@O****@O/O*@OO@O@/@*OO@*@* w p p 8 1 8 1 0 0 0 0 0 0 0 0 9": <String>["a7"],
+  "@O****@O/O*@OO@O@/@*OO@*@* w p p 8 1 8 1 0 0 -1 -1 -1 -1 0 0 9 ids:nodes":
+      <String>["a7"],
 
   /*
      O -----  @ -----  O
@@ -18156,7 +16680,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "@*OO@*@*/O*@OO@O@/@O****@O w p p 8 1 8 1 0 0 0 0 0 0 0 0 9": <String>["c5"],
+  "@*OO@*@*/O*@OO@O@/@O****@O w p p 8 1 8 1 0 0 -1 -1 -1 -1 0 0 9 ids:nodes":
+      <String>["c5"],
 
   /*
      O -----  @ ----- g7
@@ -18171,7 +16696,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "**@O@O**/O@O@O*@O/@*@*@*OO w p p 8 1 8 1 0 0 0 0 0 0 0 0 9": <String>["g1"],
+  "**@O@O**/O@O@O*@O/@*@*@*OO w p p 8 1 8 1 0 0 -1 -1 -1 -1 0 0 9 ids:nodes":
+      <String>["g1"],
 
   /*
     a7 ----- d7 ----- g7
@@ -18186,7 +16712,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      O -----  @ -----  O
   */
-  "@*@*@*OO/O@O@O*@O/**@O@O** w p p 8 1 8 1 0 0 0 0 0 0 0 0 9": <String>["e3"],
+  "@*@*@*OO/O@O@O*@O/**@O@O** w p p 8 1 8 1 0 0 -1 -1 -1 -1 0 0 9 ids:nodes":
+      <String>["e3"],
 
   /*
     a7 -----  @ ----- g7
@@ -18201,7 +16728,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      O -----  @ ----- g1
   */
-  "@O@****O/O@O@OO@*/@*@*@OO* w p p 8 1 8 1 0 0 0 0 0 0 0 0 9": <String>["g7"],
+  "@O@****O/O@O@OO@*/@*@*@OO* w p p 8 1 8 1 0 0 -1 -1 -1 -1 0 0 9 ids:nodes":
+      <String>["g7"],
 
   /*
      O -----  @ -----  O
@@ -18216,7 +16744,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "@*@*@OO*/O@O@OO@*/@O@****O w p p 8 1 8 1 0 0 0 0 0 0 0 0 9": <String>["e5"],
+  "@*@*@OO*/O@O@OO@*/@O@****O w p p 8 1 8 1 0 0 -1 -1 -1 -1 0 0 9 ids:nodes":
+      <String>["e5"],
 
   /*
     a7 -----  @ ----- g7
@@ -18231,7 +16760,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O -----  O
   */
-  "@****O@O/O@OO@*O@/@*@OO*@* w p p 8 1 8 1 0 0 0 0 0 0 0 0 9": <String>["a7"],
+  "@****O@O/O@OO@*O@/@*@OO*@* w p p 8 1 8 1 0 0 -1 -1 -1 -1 0 0 9 ids:nodes":
+      <String>["a7"],
 
   /*
      O -----  @ ----- g7
@@ -18246,7 +16776,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      O ----- d1 ----- g1
   */
-  "@*@OO*@*/O@OO@*O@/@****O@O w p p 8 1 8 1 0 0 0 0 0 0 0 0 9": <String>["c5"],
+  "@*@OO*@*/O@OO@*O@/@****O@O w p p 8 1 8 1 0 0 -1 -1 -1 -1 0 0 9 ids:nodes":
+      <String>["c5"],
 
   /*
     a7 -----  @ ----- g7
@@ -18261,7 +16792,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      O -----  O ----- g1
   */
-  "@O@O****/O@O*@OO@/@*@*OO@* w p p 8 1 8 1 0 0 0 0 0 0 0 0 9": <String>["g7"],
+  "@O@O****/O@O*@OO@/@*@*OO@* w p p 8 1 8 1 0 0 -1 -1 -1 -1 0 0 9 ids:nodes":
+      <String>["g7"],
 
   /*
     a7 -----  @ -----  O
@@ -18276,7 +16808,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 -----  O
   */
-  "@*@*OO@*/O@O*@OO@/@O@O**** w p p 8 1 8 1 0 0 0 0 0 0 0 0 9": <String>["e5"],
+  "@*@*OO@*/O@O*@OO@/@O@O**** w p p 8 1 8 1 0 0 -1 -1 -1 -1 0 0 9 ids:nodes":
+      <String>["e5"],
 
   /*
     a7 -----  O -----  O
@@ -18291,7 +16824,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "****@O@O/@OO@O@O*/OO@*@*@* w p p 8 1 8 1 0 0 0 0 0 0 0 0 9": <String>["a1"],
+  "****@O@O/@OO@O@O*/OO@*@*@* w p p 8 1 8 1 0 0 -1 -1 -1 -1 0 0 9 ids:nodes":
+      <String>["a1"],
 
   /*
      O ----- d7 ----- g7
@@ -18306,7 +16840,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      O -----  @ ----- g1
   */
-  "OO@*@*@*/@OO@O@O*/****@O@O w p p 8 1 8 1 0 0 0 0 0 0 0 0 9": <String>["c3"],
+  "OO@*@*@*/@OO@O@O*/****@O@O w p p 8 1 8 1 0 0 -1 -1 -1 -1 0 0 9 ids:nodes":
+      <String>["c3"],
 
   /*
      O -----  O ----- g7
@@ -18321,7 +16856,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "*O@O@***/@*O@O@OO/O*@*@*@O w p p 8 1 8 1 0 0 0 0 0 0 0 0 9": <String>["g1"],
+  "*O@O@***/@*O@O@OO/O*@*@*@O w p p 8 1 8 1 0 0 -1 -1 -1 -1 0 0 9 ids:nodes":
+      <String>["g1"],
 
   /*
     a7 ----- d7 -----  O
@@ -18336,7 +16872,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ -----  O
   */
-  "O*@*@*@O/@*O@O@OO/*O@O@*** w p p 8 1 8 1 0 0 0 0 0 0 0 0 9": <String>["e3"],
+  "O*@*@*@O/@*O@O@OO/*O@O@*** w p p 8 1 8 1 0 0 -1 -1 -1 -1 0 0 9 ids:nodes":
+      <String>["e3"],
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -18353,7 +16890,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "***@*@O*/@@OOOO@O/******** w p p 6 3 5 3 0 0 0 0 0 0 0 0 8": <String>["d7"],
+  "***@*@O*/@@OOOO@O/******** w p p 6 3 5 3 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["d7"],
 
   /*
     a7 ----- d7 ----- g7
@@ -18368,7 +16906,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      @ ----- d1 -----  @
   */
-  "********/@@OOOO@O/***@*@O* w p p 6 3 5 3 0 0 0 0 0 0 0 0 8": <String>["d5"],
+  "********/@@OOOO@O/***@*@O* w p p 6 3 5 3 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["d5"],
 
   /*
     a7 ----- d7 ----- g7
@@ -18383,7 +16922,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "*@****O@/OOO@@O@O/******** w p p 6 3 5 3 0 0 0 0 0 0 0 0 8": <String>["d1"],
+  "*@****O@/OOO@@O@O/******** w p p 6 3 5 3 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["d1"],
 
   /*
      @ ----- d7 -----  @
@@ -18398,7 +16938,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/OOO@@O@O/*@****O@ w p p 6 3 5 3 0 0 0 0 0 0 0 0 8": <String>["d3"],
+  "********/OOO@@O@O/*@****O@ w p p 6 3 5 3 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["d3"],
 
   /*
     a7 ----- d7 ----- g7
@@ -18413,7 +16954,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "**O@*@**/@O@OOOO@/******** w p p 6 3 5 3 0 0 0 0 0 0 0 0 8": <String>["d7"],
+  "**O@*@**/@O@OOOO@/******** w p p 6 3 5 3 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["d7"],
 
   /*
     a7 ----- d7 ----- g7
@@ -18428,7 +16970,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      @ ----- d1 -----  @
   */
-  "********/@O@OOOO@/**O@*@** w p p 6 3 5 3 0 0 0 0 0 0 0 0 8": <String>["d5"],
+  "********/@O@OOOO@/**O@*@** w p p 6 3 5 3 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["d5"],
 
   /*
     a7 ----- d7 ----- g7
@@ -18443,7 +16986,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "*@O****@/OO@O@@OO/******** w p p 6 3 5 3 0 0 0 0 0 0 0 0 8": <String>["d1"],
+  "*@O****@/OO@O@@OO/******** w p p 6 3 5 3 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["d1"],
 
   /*
      @ ----- d7 -----  @
@@ -18458,7 +17002,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/OO@O@@OO/*@O****@ w p p 6 3 5 3 0 0 0 0 0 0 0 0 8": <String>["d3"],
+  "********/OO@O@@OO/*@O****@ w p p 6 3 5 3 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["d3"],
 
   /*
     a7 ----- d7 ----- g7
@@ -18473,7 +17018,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "O****@*@/@O@@OOOO/******** w p p 6 3 5 3 0 0 0 0 0 0 0 0 8": <String>["g4"],
+  "O****@*@/@O@@OOOO/******** w p p 6 3 5 3 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["g4"],
 
   /*
      @ -----  O ----- g7
@@ -18488,7 +17034,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      @ ----- d1 ----- g1
   */
-  "********/@O@@OOOO/O****@*@ w p p 6 3 5 3 0 0 0 0 0 0 0 0 8": <String>["e4"],
+  "********/@O@@OOOO/O****@*@ w p p 6 3 5 3 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["e4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -18503,7 +17050,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "O@*@****/@OOOO@@O/******** w p p 6 3 5 3 0 0 0 0 0 0 0 0 8": <String>["a4"],
+  "O@*@****/@OOOO@@O/******** w p p 6 3 5 3 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["a4"],
 
   /*
     a7 -----  O -----  @
@@ -18518,7 +17066,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 -----  @
   */
-  "********/@OOOO@@O/O@*@**** w p p 6 3 5 3 0 0 0 0 0 0 0 0 8": <String>["c4"],
+  "********/@OOOO@@O/O@*@**** w p p 6 3 5 3 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["c4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -18533,7 +17082,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "****O@*@/O@@O@OOO/******** w p p 6 3 5 3 0 0 0 0 0 0 0 0 8": <String>["g4"],
+  "****O@*@/O@@O@OOO/******** w p p 6 3 5 3 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["g4"],
 
   /*
      @ ----- d7 ----- g7
@@ -18548,7 +17098,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      @ -----  O ----- g1
   */
-  "********/O@@O@OOO/****O@*@ w p p 6 3 5 3 0 0 0 0 0 0 0 0 8": <String>["e4"],
+  "********/O@@O@OOO/****O@*@ w p p 6 3 5 3 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["e4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -18563,7 +17114,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "*@*@O***/OOOO@O@@/******** w p p 6 3 5 3 0 0 0 0 0 0 0 0 8": <String>["a4"],
+  "*@*@O***/OOOO@O@@/******** w p p 6 3 5 3 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["a4"],
 
   /*
     a7 ----- d7 -----  @
@@ -18578,7 +17130,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O -----  @
   */
-  "********/OOOO@O@@/*@*@O*** w p p 6 3 5 3 0 0 0 0 0 0 0 0 8": <String>["c4"],
+  "********/OOOO@O@@/*@*@O*** w p p 6 3 5 3 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["c4"],
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -18595,11 +17148,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "******O*/OO@*@O*@/@*O***@* w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>[
-    "e3",
-    "e5",
-    "a7",
-  ],
+  "******O*/OO@*@O*@/@*O***@* w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["e3", "e5", "a7"],
 
   /*
     a7 ----- d7 ----- g7
@@ -18614,11 +17164,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "@*O***@*/OO@*@O*@/******O* w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>[
-    "g1",
-    "g7",
-    "c5",
-  ],
+  "@*O***@*/OO@*@O*@/******O* w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["g1", "g7", "c5"],
 
   /*
     a7 ----- d7 ----- g7
@@ -18633,11 +17180,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "******O*/@*@OO@*O/**O*@*@* w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>[
-    "e5",
-    "e3",
-    "a1",
-  ],
+  "******O*/@*@OO@*O/**O*@*@* w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["e5", "e3", "a1"],
 
   /*
     a7 ----- d7 ----- g7
@@ -18652,11 +17196,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "**O*@*@*/@*@OO@*O/******O* w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>[
-    "g7",
-    "g1",
-    "c3",
-  ],
+  "**O*@*@*/@*@OO@*O/******O* w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["g7", "g1", "c3"],
 
   /*
     a7 -----  @ ----- g7
@@ -18671,11 +17212,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "**O*****/O@*O@*@O/@*@***O* w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>[
-    "c3",
-    "c5",
-    "g7",
-  ],
+  "**O*****/O@*O@*@O/@*@***O* w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["c3", "c5", "g7"],
 
   /*
     a7 ----- d7 ----- g7
@@ -18690,11 +17228,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "@*@***O*/O@*O@*@O/**O***** w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>[
-    "a1",
-    "a7",
-    "e5",
-  ],
+  "@*@***O*/O@*O@*@O/**O***** w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["a1", "a7", "e5"],
 
   /*
     a7 ----- d7 ----- g7
@@ -18709,11 +17244,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "**O*****/@O*@OO@*/**@*@*O* w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>[
-    "c5",
-    "c3",
-    "g1",
-  ],
+  "**O*****/@O*@OO@*/**@*@*O* w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["c5", "c3", "g1"],
 
   /*
     a7 ----- d7 ----- g7
@@ -18728,11 +17260,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "**@*@*O*/@O*@OO@*/**O***** w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>[
-    "a7",
-    "a1",
-    "e3",
-  ],
+  "**@*@*O*/@O*@OO@*/**O***** w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["a7", "a1", "e3"],
 
   /*
     a7 -----  @ ----- g7
@@ -18747,11 +17276,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "O*******/*@OO@*@O/@*@*O*** w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>[
-    "c3",
-    "e3",
-    "g7",
-  ],
+  "O*******/*@OO@*@O/@*@*O*** w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["c3", "e3", "g7"],
 
   /*
     a7 -----  O ----- g7
@@ -18766,11 +17292,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "@*@*O***/*@OO@*@O/O******* w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>[
-    "a1",
-    "g1",
-    "e5",
-  ],
+  "@*@*O***/*@OO@*@O/O******* w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["a1", "g1", "e5"],
 
   /*
     a7 -----  @ ----- g7
@@ -18785,11 +17308,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "O*******/*O@*@OO@/@***O*@* w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>[
-    "e3",
-    "c3",
-    "a7",
-  ],
+  "O*******/*O@*@OO@/@***O*@* w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["e3", "c3", "a7"],
 
   /*
     a7 -----  O ----- g7
@@ -18804,11 +17324,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "@***O*@*/*O@*@OO@/O******* w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>[
-    "g1",
-    "a1",
-    "c5",
-  ],
+  "@***O*@*/*O@*@OO@/O******* w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["g1", "a1", "c5"],
 
   /*
     a7 -----  O ----- g7
@@ -18823,11 +17340,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "****O***/@OO@*O@*/O*@*@*** w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>[
-    "c5",
-    "e5",
-    "g1",
-  ],
+  "****O***/@OO@*O@*/O*@*@*** w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["c5", "e5", "g1"],
 
   /*
     a7 ----- d7 ----- g7
@@ -18842,11 +17356,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "O*@*@***/@OO@*O@*/****O*** w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>[
-    "a7",
-    "g7",
-    "e3",
-  ],
+  "O*@*@***/@OO@*O@*/****O*** w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["a7", "g7", "e3"],
 
   /*
     a7 -----  O ----- g7
@@ -18861,11 +17372,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "****O***/@*@O*@OO/O***@*@* w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>[
-    "e5",
-    "c5",
-    "a1",
-  ],
+  "****O***/@*@O*@OO/O***@*@* w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["e5", "c5", "a1"],
 
   /*
     a7 ----- d7 ----- g7
@@ -18880,11 +17388,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "O***@*@*/@*@O*@OO/****O*** w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>[
-    "g7",
-    "a7",
-    "c3",
-  ],
+  "O***@*@*/@*@O*@OO/****O*** w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["g7", "a7", "c3"],
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -18901,11 +17406,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "OO**@O@@/@O@@O*O*/**O*O*@* b p p 8 1 7 2 0 0 0 0 0 0 0 0 8": <String>[
-    "a1",
-    "g1",
-    "g7",
-  ],
+  "OO**@O@@/@O@@O*O*/**O*O*@* b p p 8 1 7 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["a1", "g1", "g7"],
 
   /*
      @ -----  O -----  O
@@ -18920,11 +17422,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      O -----  @ ----- g1
   */
-  "**O*O*@*/@O@@O*O*/OO**@O@@ b p p 8 1 7 2 0 0 0 0 0 0 0 0 8": <String>[
-    "c3",
-    "e3",
-    "e5",
-  ],
+  "**O*O*@*/@O@@O*O*/OO**@O@@ b p p 8 1 7 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["c3", "e3", "e5"],
 
   /*
     a7 -----  O ----- g7
@@ -18939,11 +17438,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "@**OO@@O/O@@O@*O*/O*O***@* b p p 8 1 7 2 0 0 0 0 0 0 0 0 8": <String>[
-    "a7",
-    "g7",
-    "g1",
-  ],
+  "@**OO@@O/O@@O@*O*/O*O***@* b p p 8 1 7 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["a7", "g7", "g1"],
 
   /*
      O -----  @ ----- g7
@@ -18958,11 +17454,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      @ -----  O -----  O
   */
-  "O*O***@*/O@@O@*O*/@**OO@@O b p p 8 1 7 2 0 0 0 0 0 0 0 0 8": <String>[
-    "c5",
-    "e5",
-    "e3",
-  ],
+  "O*O***@*/O@@O@*O*/@**OO@@O b p p 8 1 7 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["c5", "e5", "e3"],
 
   /*
     a7 ----- d7 ----- g7
@@ -18977,11 +17470,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "O@@O@**O/@*O*O@@O/**@*O*O* b p p 8 1 7 2 0 0 0 0 0 0 0 0 8": <String>[
-    "g1",
-    "a1",
-    "a7",
-  ],
+  "O@@O@**O/@*O*O@@O/**@*O*O* b p p 8 1 7 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["g1", "a1", "a7"],
 
   /*
      O -----  O -----  @
@@ -18996,11 +17486,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ -----  O
   */
-  "**@*O*O*/@*O*O@@O/O@@O@**O b p p 8 1 7 2 0 0 0 0 0 0 0 0 8": <String>[
-    "e3",
-    "c3",
-    "c5",
-  ],
+  "**@*O*O*/@*O*O@@O/O@@O@**O b p p 8 1 7 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["e3", "c3", "c5"],
 
   /*
     a7 -----  O ----- g7
@@ -19015,11 +17502,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "@O@@OO**/O*O*@O@@/O*@***O* b p p 8 1 7 2 0 0 0 0 0 0 0 0 8": <String>[
-    "g7",
-    "a7",
-    "a1",
-  ],
+  "@O@@OO**/O*O*@O@@/O*@***O* b p p 8 1 7 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["g7", "a7", "a1"],
 
   /*
     a7 -----  @ -----  O
@@ -19034,11 +17518,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      O -----  O -----  @
   */
-  "O*@***O*/O*O*@O@@/@O@@OO** b p p 8 1 7 2 0 0 0 0 0 0 0 0 8": <String>[
-    "e5",
-    "c5",
-    "c3",
-  ],
+  "O*@***O*/O*O*@O@@/@O@@OO** b p p 8 1 7 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["e5", "c5", "c3"],
 
   /*
     a7 -----  @ ----- g7
@@ -19053,11 +17534,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "@@OO**@O/O*@O@@O*/@***O*O* b p p 8 1 7 2 0 0 0 0 0 0 0 0 8": <String>[
-    "a7",
-    "a1",
-    "g1",
-  ],
+  "@@OO**@O/O*@O@@O*/@***O*O* b p p 8 1 7 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["a7", "a1", "g1"],
 
   /*
      O -----  @ -----  @
@@ -19072,11 +17550,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 -----  O
   */
-  "@***O*O*/O*@O@@O*/@@OO**@O b p p 8 1 7 2 0 0 0 0 0 0 0 0 8": <String>[
-    "c5",
-    "c3",
-    "e3",
-  ],
+  "@***O*O*/O*@O@@O*/@@OO**@O b p p 8 1 7 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["c5", "c3", "e3"],
 
   /*
     a7 -----  @ ----- g7
@@ -19091,11 +17566,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "@O@**OO@/O*O@@O@*/@*O*O*** b p p 8 1 7 2 0 0 0 0 0 0 0 0 8": <String>[
-    "g7",
-    "g1",
-    "a1",
-  ],
+  "@O@**OO@/O*O@@O@*/@*O*O*** b p p 8 1 7 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["g7", "g1", "a1"],
 
   /*
      @ -----  @ -----  O
@@ -19110,11 +17582,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      O ----- d1 ----- g1
   */
-  "@*O*O***/O*O@@O@*/@O@**OO@ b p p 8 1 7 2 0 0 0 0 0 0 0 0 8": <String>[
-    "e5",
-    "e3",
-    "c3",
-  ],
+  "@*O*O***/O*O@@O@*/@O@**OO@ b p p 8 1 7 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["e5", "e3", "c3"],
 
   /*
     a7 -----  O ----- g7
@@ -19129,11 +17598,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "*OO@@O@*/@O@*O*O@/O***@*O* b p p 8 1 7 2 0 0 0 0 0 0 0 0 8": <String>[
-    "a1",
-    "a7",
-    "g7",
-  ],
+  "*OO@@O@*/@O@*O*O@/O***@*O* b p p 8 1 7 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["a1", "a7", "g7"],
 
   /*
     a7 ----- d7 -----  O
@@ -19148,11 +17614,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      O -----  @ -----  @
   */
-  "O***@*O*/@O@*O*O@/*OO@@O@* b p p 8 1 7 2 0 0 0 0 0 0 0 0 8": <String>[
-    "c3",
-    "c5",
-    "e5",
-  ],
+  "O***@*O*/@O@*O*O@/*OO@@O@* b p p 8 1 7 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["c3", "c5", "e5"],
 
   /*
     a7 -----  O ----- g7
@@ -19167,11 +17630,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "**@O@@OO/@@O*O*@O/O*O*@*** b p p 8 1 7 2 0 0 0 0 0 0 0 0 8": <String>[
-    "g1",
-    "g7",
-    "a7",
-  ],
+  "**@O@@OO/@@O*O*@O/O*O*@*** b p p 8 1 7 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["g1", "g7", "a7"],
 
   /*
      O ----- d7 ----- g7
@@ -19186,11 +17646,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      @ -----  @ -----  O
   */
-  "O*O*@***/@@O*O*@O/**@O@@OO b p p 8 1 7 2 0 0 0 0 0 0 0 0 8": <String>[
-    "e3",
-    "e5",
-    "c5",
-  ],
+  "O*O*@***/@@O*O*@O/**@O@@OO b p p 8 1 7 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["e3", "e5", "c5"],
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -19207,18 +17664,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      @ ----- d1 -----  O
   */
-  "@*O*O***/O@O*@O@*/**@O*@O* b p p 7 2 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "d1",
-    "f2",
-    "c3",
-    "e3",
-    "c4",
-    "e5",
-    "b6",
-    "a7",
-    "d7",
-    "g7",
-  ],
+  "@*O*O***/O@O*@O@*/**@O*@O* b p p 7 2 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["d1", "f2", "c3", "e3", "c4", "e5", "b6", "a7", "d7", "g7"],
 
   /*
     a7 -----  @ ----- g7
@@ -19233,18 +17680,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "**@O*@O*/O@O*@O@*/@*O*O*** b p p 7 2 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "d3",
-    "f2",
-    "a1",
-    "g1",
-    "a4",
-    "g7",
-    "b6",
-    "c5",
-    "d5",
-    "e5",
-  ],
+  "**@O*@O*/O@O*@O@*/@*O*O*** b p p 7 2 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["d3", "f2", "a1", "g1", "a4", "g7", "b6", "c5", "d5", "e5"],
 
   /*
      @ ----- d7 -----  O
@@ -19259,18 +17696,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "O*O*@***/@*O@O*@O/*O@***O@ b p p 7 2 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "d7",
-    "f6",
-    "c5",
-    "e5",
-    "c4",
-    "e3",
-    "b2",
-    "a1",
-    "d1",
-    "g1",
-  ],
+  "O*O*@***/@*O@O*@O/*O@***O@ b p p 7 2 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["d7", "f6", "c5", "e5", "c4", "e3", "b2", "a1", "d1", "g1"],
 
   /*
     a7 -----  O ----- g7
@@ -19285,18 +17712,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "*O@***O@/@*O@O*@O/O*O*@*** b p p 7 2 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "d5",
-    "f6",
-    "a7",
-    "g7",
-    "a4",
-    "g1",
-    "b2",
-    "c3",
-    "d3",
-    "e3",
-  ],
+  "*O@***O@/@*O@O*@O/O*O*@*** b p p 7 2 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["d5", "f6", "a7", "g7", "a4", "g1", "b2", "c3", "d3", "e3"],
 
   /*
     a7 ----- d7 ----- g7
@@ -19311,18 +17728,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      O ----- d1 -----  @
   */
-  "@***O*O*/O*@O@*O@/**O@*O@* b p p 7 2 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "d1",
-    "b2",
-    "e3",
-    "c3",
-    "e4",
-    "c5",
-    "f6",
-    "g7",
-    "d7",
-    "a7",
-  ],
+  "@***O*O*/O*@O@*O@/**O@*O@* b p p 7 2 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["d1", "b2", "e3", "c3", "e4", "c5", "f6", "g7", "d7", "a7"],
 
   /*
     a7 -----  @ ----- g7
@@ -19337,18 +17744,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "**O@*O@*/O*@O@*O@/@***O*O* b p p 7 2 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "d3",
-    "b2",
-    "g1",
-    "a1",
-    "g4",
-    "a7",
-    "f6",
-    "e5",
-    "d5",
-    "c5",
-  ],
+  "**O@*O@*/O*@O@*O@/@***O*O* b p p 7 2 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["d3", "b2", "g1", "a1", "g4", "a7", "f6", "e5", "d5", "c5"],
 
   /*
      O ----- d7 -----  @
@@ -19363,18 +17760,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "O***@*O*/@O@*O@O*/*@O***@O b p p 7 2 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "d7",
-    "b6",
-    "e5",
-    "c5",
-    "e4",
-    "c3",
-    "f2",
-    "g1",
-    "d1",
-    "a1",
-  ],
+  "O***@*O*/@O@*O@O*/*@O***@O b p p 7 2 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["d7", "b6", "e5", "c5", "e4", "c3", "f2", "g1", "d1", "a1"],
 
   /*
     a7 -----  O ----- g7
@@ -19389,18 +17776,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "*@O***@O/@O@*O@O*/O***@*O* b p p 7 2 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "d5",
-    "b6",
-    "g7",
-    "a7",
-    "g4",
-    "a1",
-    "f2",
-    "e3",
-    "d3",
-    "c3",
-  ],
+  "*@O***@O/@O@*O@O*/O***@*O* b p p 7 2 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["d5", "b6", "g7", "a7", "g4", "a1", "f2", "e3", "d3", "c3"],
 
   /*
      @ -----  O ----- g7
@@ -19415,18 +17792,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      O -----  @ ----- g1
   */
-  "**@*O*O*/@*O@O*@O/O***@O*@ b p p 7 2 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "a4",
-    "b2",
-    "c5",
-    "c3",
-    "d5",
-    "e3",
-    "f6",
-    "g7",
-    "g4",
-    "g1",
-  ],
+  "**@*O*O*/@*O@O*@O/O***@O*@ b p p 7 2 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["a4", "b2", "c5", "c3", "d5", "e3", "f6", "g7", "g4", "g1"],
 
   /*
     a7 ----- d7 ----- g7
@@ -19441,18 +17808,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "O***@O*@/@*O@O*@O/**@*O*O* b p p 7 2 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "c4",
-    "b2",
-    "a7",
-    "a1",
-    "d7",
-    "g1",
-    "f6",
-    "e5",
-    "e4",
-    "e3",
-  ],
+  "O***@O*@/@*O@O*@O/**@*O*O* b p p 7 2 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["c4", "b2", "a7", "a1", "d7", "g1", "f6", "e5", "e4", "e3"],
 
   /*
     a7 -----  O -----  @
@@ -19467,18 +17824,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ -----  O
   */
-  "**O*O*@*/@O@*O@O*/O@*O@*** b p p 7 2 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "g4",
-    "f2",
-    "e5",
-    "e3",
-    "d5",
-    "c3",
-    "b6",
-    "a7",
-    "a4",
-    "a1",
-  ],
+  "**O*O*@*/@O@*O@O*/O@*O@*** b p p 7 2 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["g4", "f2", "e5", "e3", "d5", "c3", "b6", "a7", "a4", "a1"],
 
   /*
     a7 ----- d7 ----- g7
@@ -19493,18 +17840,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "O@*O@***/@O@*O@O*/**O*O*@* b p p 7 2 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "e4",
-    "f2",
-    "g7",
-    "g1",
-    "d7",
-    "a1",
-    "b6",
-    "c5",
-    "c4",
-    "c3",
-  ],
+  "O@*O@***/@O@*O@O*/**O*O*@* b p p 7 2 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["e4", "f2", "g7", "g1", "d7", "a1", "b6", "c5", "c4", "c3"],
 
   /*
      O -----  @ ----- g7
@@ -19519,18 +17856,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      @ -----  O ----- g1
   */
-  "O*@***O*/O@O*@O@*/@***O@*O b p p 7 2 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "a4",
-    "b6",
-    "c3",
-    "c5",
-    "d3",
-    "e5",
-    "f2",
-    "g1",
-    "g4",
-    "g7",
-  ],
+  "O*@***O*/O@O*@O@*/@***O@*O b p p 7 2 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["a4", "b6", "c3", "c5", "d3", "e5", "f2", "g1", "g4", "g7"],
 
   /*
     a7 -----  O ----- g7
@@ -19545,18 +17872,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "@***O@*O/O@O*@O@*/O*@***O* b p p 7 2 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "c4",
-    "b6",
-    "a1",
-    "a7",
-    "d1",
-    "g7",
-    "f2",
-    "e3",
-    "e4",
-    "e5",
-  ],
+  "@***O@*O/O@O*@O@*/O*@***O* b p p 7 2 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["c4", "b6", "a1", "a7", "d1", "g7", "f2", "e3", "e4", "e5"],
 
   /*
     a7 -----  @ -----  O
@@ -19571,18 +17888,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O -----  @
   */
-  "O*O***@*/O*@O@*O@/@O*@O*** b p p 7 2 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "g4",
-    "f6",
-    "e3",
-    "e5",
-    "d3",
-    "c5",
-    "b2",
-    "a1",
-    "a4",
-    "a7",
-  ],
+  "O*O***@*/O*@O@*O@/@O*@O*** b p p 7 2 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["g4", "f6", "e3", "e5", "d3", "c5", "b2", "a1", "a4", "a7"],
 
   /*
     a7 -----  O ----- g7
@@ -19597,18 +17904,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "@O*@O***/O*@O@*O@/O*O***@* b p p 7 2 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "e4",
-    "f6",
-    "g1",
-    "g7",
-    "d1",
-    "a7",
-    "b2",
-    "c3",
-    "c4",
-    "c5",
-  ],
+  "@O*@O***/O*@O@*O@/O*O***@* b p p 7 2 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["e4", "f6", "g1", "g7", "d1", "a7", "b2", "c3", "c4", "c5"],
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -19625,7 +17922,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 -----  @
   */
-  "O*@*@***/@*O@O*@O/O*O@**** w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>["a7"],
+  "O*@*@***/@*O@O*@O/O*O@**** w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["a7"],
 
   /*
     a7 -----  O ----- g7
@@ -19640,7 +17938,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "O*O@****/@*O@O*@O/O*@*@*** w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>["c5"],
+  "O*O@****/@*O@O*@O/O*@*@*** w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["c5"],
 
   /*
     a7 ----- d7 -----  @
@@ -19655,7 +17954,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "@*@*O***/O@O*@O@*/*@O*O*** w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>["a1"],
+  "@*@*O***/O@O*@O@*/*@O*O*** w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["a1"],
 
   /*
     a7 -----  @ ----- g7
@@ -19670,7 +17970,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "*@O*O***/O@O*@O@*/@*@*O*** w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>["c3"],
+  "*@O*O***/O@O*@O@*/@*@*O*** w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["c3"],
 
   /*
     a7 -----  O ----- g7
@@ -19685,7 +17986,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      @ ----- d1 ----- g1
   */
-  "O***@*@*/@O@*O@O*/O****@O* w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>["g7"],
+  "O***@*@*/@O@*O@O*/O****@O* w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["g7"],
 
   /*
     a7 -----  O ----- g7
@@ -19700,7 +18002,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "O****@O*/@O@*O@O*/O***@*@* w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>["e5"],
+  "O****@O*/@O@*O@O*/O***@*@* w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["e5"],
 
   /*
      @ ----- d7 ----- g7
@@ -19715,7 +18018,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "@***O*@*/O*@O@*O@/****O*O@ w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>["g1"],
+  "@***O*@*/O*@O@*O@/****O*O@ w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["g1"],
 
   /*
     a7 -----  @ ----- g7
@@ -19730,7 +18034,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "****O*O@/O*@O@*O@/@***O*@* w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>["e3"],
+  "****O*O@/O*@O@*O@/@***O*@* w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["e3"],
 
   /*
     a7 ----- d7 ----- g7
@@ -19745,7 +18050,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      @ -----  O ----- g1
   */
-  "**O*@*@*/@O@*O@O*/**O*O@** w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>["g7"],
+  "**O*@*@*/@O@*O@O*/**O*O@** w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["g7"],
 
   /*
     a7 ----- d7 ----- g7
@@ -19760,7 +18066,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "**O*O@**/@O@*O@O*/**O*@*@* w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>["e5"],
+  "**O*O@**/@O@*O@O*/**O*@*@* w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["e5"],
 
   /*
     a7 ----- d7 ----- g7
@@ -19775,7 +18082,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O -----  @
   */
-  "**@*@*O*/@*O@O*@O/***@O*O* w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>["a7"],
+  "**@*@*O*/@*O@O*@O/***@O*O* w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["a7"],
 
   /*
     a7 ----- d7 ----- g7
@@ -19790,7 +18098,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "***@O*O*/@*O@O*@O/**@*@*O* w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>["c5"],
+  "***@O*O*/@*O@O*@O/**@*@*O* w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["c5"],
 
   /*
      @ -----  O ----- g7
@@ -19805,7 +18114,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "@*O***@*/O*@O@*O@/O*O****@ w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>["g1"],
+  "@*O***@*/O*@O@*O@/O*O****@ w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["g1"],
 
   /*
     a7 -----  @ ----- g7
@@ -19820,7 +18130,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "O*O****@/O*@O@*O@/@*O***@* w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>["e3"],
+  "O*O****@/O*@O@*O@/@*O***@* w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["e3"],
 
   /*
     a7 -----  O -----  @
@@ -19835,7 +18146,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "@*@***O*/O@O*@O@*/O@****O* w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>["a1"],
+  "@*@***O*/O@O*@O@*/O@****O* w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["a1"],
 
   /*
     a7 -----  @ ----- g7
@@ -19850,7 +18162,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "O@****O*/O@O*@O@*/@*@***O* w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>["c3"],
+  "O@****O*/O@O*@O@*/@*@***O* w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["c3"],
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -19867,10 +18180,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "O*@*@***/@*O@O*@O/*@**O*O* w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "e5",
-    "a7",
-  ],
+  "O*@*@***/@*O@O*@O/*@**O*O* w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["e5", "a7"],
 
   /*
     a7 -----  O ----- g7
@@ -19885,10 +18196,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "*@**O*O*/@*O@O*@O/O*@*@*** w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "g7",
-    "c5",
-  ],
+  "*@**O*O*/@*O@O*@O/O*@*@*** w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["g7", "c5"],
 
   /*
     a7 -----  O ----- g7
@@ -19903,10 +18212,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 -----  @
   */
-  "@*@*O***/O@O*@O@*/O**@**O* w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "e3",
-    "a1",
-  ],
+  "@*@*O***/O@O*@O@*/O**@**O* w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["e3", "a1"],
 
   /*
     a7 -----  @ ----- g7
@@ -19921,10 +18228,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "O**@**O*/O@O*@O@*/@*@*O*** w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "g1",
-    "c3",
-  ],
+  "O**@**O*/O@O*@O@*/@*@*O*** w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["g1", "c3"],
 
   /*
      @ ----- d7 ----- g7
@@ -19939,10 +18244,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "O***@*@*/@O@*O@O*/**O*O**@ w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "c5",
-    "g7",
-  ],
+  "O***@*@*/@O@*O@O*/**O*O**@ w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["c5", "g7"],
 
   /*
     a7 -----  O ----- g7
@@ -19957,10 +18260,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "**O*O**@/@O@*O@O*/O***@*@* w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "a7",
-    "e5",
-  ],
+  "**O*O**@/@O@*O@O*/O***@*@* w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["a7", "e5"],
 
   /*
     a7 -----  O ----- g7
@@ -19975,10 +18276,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      @ ----- d1 ----- g1
   */
-  "@***O*@*/O*@O@*O@/O*O**@** w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "c3",
-    "g1",
-  ],
+  "@***O*@*/O*@O@*O@/O*O**@** w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["c3", "g1"],
 
   /*
     a7 -----  @ ----- g7
@@ -19993,10 +18292,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "O*O**@**/O*@O@*O@/@***O*@* w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "a1",
-    "e3",
-  ],
+  "O*O**@**/O*@O@*O@/@***O*@* w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["a1", "e3"],
 
   /*
     a7 -----  O ----- g7
@@ -20011,10 +18308,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 -----  @
   */
-  "**O*@*@*/@O@*O@O*/O**@**O* w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "e3",
-    "g7",
-  ],
+  "**O*@*@*/@O@*O@O*/O**@**O* w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["e3", "g7"],
 
   /*
     a7 ----- d7 ----- g7
@@ -20029,10 +18324,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "O**@**O*/@O@*O@O*/**O*@*@* w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "g1",
-    "e5",
-  ],
+  "O**@**O*/@O@*O@O*/**O*@*@* w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["g1", "e5"],
 
   /*
     a7 -----  O ----- g7
@@ -20047,10 +18340,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      @ ----- d1 ----- g1
   */
-  "**@*@*O*/@*O@O*@O/O*O**@** w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "c3",
-    "a7",
-  ],
+  "**@*@*O*/@*O@O*@O/O*O**@** w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["c3", "a7"],
 
   /*
     a7 ----- d7 ----- g7
@@ -20065,10 +18356,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "O*O**@**/@*O@O*@O/**@*@*O* w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "a1",
-    "c5",
-  ],
+  "O*O**@**/@*O@O*@O/**@*@*O* w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["a1", "c5"],
 
   /*
     a7 ----- d7 -----  @
@@ -20083,10 +18372,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "@*O***@*/O*@O@*O@/*@**O*O* w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "e5",
-    "g1",
-  ],
+  "@*O***@*/O*@O@*O@/*@**O*O* w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["e5", "g1"],
 
   /*
     a7 -----  @ ----- g7
@@ -20101,10 +18388,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "*@**O*O*/O*@O@*O@/@*O***@* w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "g7",
-    "e3",
-  ],
+  "*@**O*O*/O*@O@*O@/@*O***@* w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["g7", "e3"],
 
   /*
      @ ----- d7 ----- g7
@@ -20119,10 +18404,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "@*@***O*/O@O*@O@*/**O*O**@ w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "c5",
-    "a1",
-  ],
+  "@*@***O*/O@O*@O@*/**O*O**@ w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["c5", "a1"],
 
   /*
     a7 -----  @ ----- g7
@@ -20137,10 +18420,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "**O*O**@/O@O*@O@*/@*@***O* w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "a7",
-    "c3",
-  ],
+  "**O*O**@/O@O*@O@*/@*@***O* w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["a7", "c3"],
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -20157,15 +18438,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "@*@*@*O*/O@O@OO@*/O******* w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "a1",
-    "g1",
-    "c3",
-    "e3",
-    "a4",
-    "c5",
-    "a7",
-  ],
+  "@*@*@*O*/O@O@OO@*/O******* w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["a1", "g1", "c3", "e3", "a4", "c5", "a7"],
 
   /*
     a7 -----  @ ----- g7
@@ -20180,15 +18454,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "O*******/O@O@OO@*/@*@*@*O* w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "c3",
-    "e3",
-    "a1",
-    "g1",
-    "c4",
-    "a7",
-    "c5",
-  ],
+  "O*******/O@O@OO@*/@*@*@*O* w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["c3", "e3", "a1", "g1", "c4", "a7", "c5"],
 
   /*
     a7 ----- d7 ----- g7
@@ -20203,15 +18470,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "@*@*@*O*/O@O@O*@O/****O*** w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "a7",
-    "g7",
-    "c5",
-    "e5",
-    "a4",
-    "c3",
-    "a1",
-  ],
+  "@*@*@*O*/O@O@O*@O/****O*** w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["a7", "g7", "c5", "e5", "a4", "c3", "a1"],
 
   /*
     a7 -----  @ ----- g7
@@ -20226,15 +18486,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "****O***/O@O@O*@O/@*@*@*O* w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "c5",
-    "e5",
-    "a7",
-    "g7",
-    "c4",
-    "a1",
-    "c3",
-  ],
+  "****O***/O@O@O*@O/@*@*@*O* w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["c5", "e5", "a7", "g7", "c4", "a1", "c3"],
 
   /*
     a7 -----  O ----- g7
@@ -20249,15 +18502,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "@*O*@*@*/O*@OO@O@/O******* w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "g1",
-    "a1",
-    "e3",
-    "c3",
-    "g4",
-    "e5",
-    "g7",
-  ],
+  "@*O*@*@*/O*@OO@O@/O******* w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["g1", "a1", "e3", "c3", "g4", "e5", "g7"],
 
   /*
     a7 -----  @ ----- g7
@@ -20272,15 +18518,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "O*******/O*@OO@O@/@*O*@*@* w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "e3",
-    "c3",
-    "g1",
-    "a1",
-    "e4",
-    "g7",
-    "e5",
-  ],
+  "O*******/O*@OO@O@/@*O*@*@* w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["e3", "c3", "g1", "a1", "e4", "g7", "e5"],
 
   /*
     a7 ----- d7 ----- g7
@@ -20295,15 +18534,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "@*O*@*@*/OO@*O@O@/****O*** w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "g7",
-    "a7",
-    "e5",
-    "c5",
-    "g4",
-    "e3",
-    "g1",
-  ],
+  "@*O*@*@*/OO@*O@O@/****O*** w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["g7", "a7", "e5", "c5", "g4", "e3", "g1"],
 
   /*
     a7 -----  @ ----- g7
@@ -20318,15 +18550,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "****O***/OO@*O@O@/@*O*@*@* w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "e5",
-    "c5",
-    "g7",
-    "a7",
-    "e4",
-    "g1",
-    "e3",
-  ],
+  "****O***/OO@*O@O@/@*O*@*@* w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["e5", "c5", "g7", "a7", "e4", "g1", "e3"],
 
   /*
     a7 ----- d7 ----- g7
@@ -20341,15 +18566,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "O*@*@*@*/@*O@O@OO/**O***** w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "a7",
-    "a1",
-    "c5",
-    "c3",
-    "d7",
-    "e5",
-    "g7",
-  ],
+  "O*@*@*@*/@*O@O@OO/**O***** w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["a7", "a1", "c5", "c3", "d7", "e5", "g7"],
 
   /*
     a7 -----  O ----- g7
@@ -20364,15 +18582,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "**O*****/@*O@O@OO/O*@*@*@* w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "c5",
-    "c3",
-    "a7",
-    "a1",
-    "d5",
-    "g7",
-    "e5",
-  ],
+  "**O*****/@*O@O@OO/O*@*@*@* w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["c5", "c3", "a7", "a1", "d5", "g7", "e5"],
 
   /*
     a7 ----- d7 ----- g7
@@ -20387,15 +18598,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "O*@*@*@*/@OO@O@O*/******O* w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "g7",
-    "g1",
-    "e5",
-    "e3",
-    "d7",
-    "c5",
-    "a7",
-  ],
+  "O*@*@*@*/@OO@O@O*/******O* w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["g7", "g1", "e5", "e3", "d7", "c5", "a7"],
 
   /*
     a7 -----  O ----- g7
@@ -20410,15 +18614,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "******O*/@OO@O@O*/O*@*@*@* w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "e5",
-    "e3",
-    "g7",
-    "g1",
-    "d5",
-    "a7",
-    "c5",
-  ],
+  "******O*/@OO@O@O*/O*@*@*@* w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["e5", "e3", "g7", "g1", "d5", "a7", "c5"],
 
   /*
     a7 ----- d7 ----- g7
@@ -20433,15 +18630,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "@*@*O*@*/O@O*@OO@/**O***** w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "a1",
-    "a7",
-    "c3",
-    "c5",
-    "d1",
-    "e3",
-    "g1",
-  ],
+  "@*@*O*@*/O@O*@OO@/**O***** w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["a1", "a7", "c3", "c5", "d1", "e3", "g1"],
 
   /*
     a7 -----  @ ----- g7
@@ -20456,15 +18646,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "**O*****/O@O*@OO@/@*@*O*@* w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "c3",
-    "c5",
-    "a1",
-    "a7",
-    "d3",
-    "g1",
-    "e3",
-  ],
+  "**O*****/O@O*@OO@/@*@*O*@* w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["c3", "c5", "a1", "a7", "d3", "g1", "e3"],
 
   /*
     a7 ----- d7 ----- g7
@@ -20479,15 +18662,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "@*@*O*@*/O@OO@*O@/******O* w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "g1",
-    "g7",
-    "e3",
-    "e5",
-    "d1",
-    "c3",
-    "a1",
-  ],
+  "@*@*O*@*/O@OO@*O@/******O* w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["g1", "g7", "e3", "e5", "d1", "c3", "a1"],
 
   /*
     a7 -----  @ ----- g7
@@ -20502,15 +18678,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "******O*/O@OO@*O@/@*@*O*@* w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "e3",
-    "e5",
-    "g1",
-    "g7",
-    "d3",
-    "a1",
-    "c3",
-  ],
+  "******O*/O@OO@*O@/@*@*O*@* w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["e3", "e5", "g1", "g7", "d3", "a1", "c3"],
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -20527,10 +18696,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "**O*@*@*/O*@OO@O@/@*****O* w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "e5",
-    "g7",
-  ],
+  "**O*@*@*/O*@OO@O@/@*****O* w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["e5", "g7"],
 
   /*
     a7 ----- d7 ----- g7
@@ -20545,10 +18712,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "@*****O*/O*@OO@O@/**O*@*@* w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "g7",
-    "e5",
-  ],
+  "@*****O*/O*@OO@O@/**O*@*@* w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["g7", "e5"],
 
   /*
     a7 ----- d7 ----- g7
@@ -20563,10 +18728,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "@*O***@*/OO@*O@O@/****@*O* w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "e3",
-    "g1",
-  ],
+  "@*O***@*/OO@*O@O@/****@*O* w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["e3", "g1"],
 
   /*
     a7 -----  @ ----- g7
@@ -20581,10 +18744,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "****@*O*/OO@*O@O@/@*O***@* w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "g1",
-    "e3",
-  ],
+  "****@*O*/OO@*O@O@/@*O***@* w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["g1", "e3"],
 
   /*
     a7 -----  @ ----- g7
@@ -20599,10 +18760,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "**@*@*O*/O@O@OO@*/@*O***** w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "c5",
-    "a7",
-  ],
+  "**@*@*O*/O@O@OO@*/@*O***** w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["c5", "a7"],
 
   /*
     a7 ----- d7 ----- g7
@@ -20617,10 +18776,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "@*O*****/O@O@OO@*/**@*@*O* w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "a7",
-    "c5",
-  ],
+  "@*O*****/O@O@OO@*/**@*@*O* w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["a7", "c5"],
 
   /*
     a7 ----- d7 ----- g7
@@ -20635,10 +18792,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "@*@***O*/O@O@O*@O/**O*@*** w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "c3",
-    "a1",
-  ],
+  "@*@***O*/O@O@O*@O/**O*@*** w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["c3", "a1"],
 
   /*
     a7 -----  @ ----- g7
@@ -20653,10 +18808,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "**O*@***/O@O@O*@O/@*@***O* w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "a1",
-    "c3",
-  ],
+  "**O*@***/O@O@O*@O/@*@***O* w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["a1", "c3"],
 
   /*
     a7 -----  O ----- g7
@@ -20671,10 +18824,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "@***O*@*/O@O*@OO@/O*@***** w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "e3",
-    "g1",
-  ],
+  "@***O*@*/O@O*@OO@/O*@***** w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["e3", "g1"],
 
   /*
     a7 -----  @ ----- g7
@@ -20689,10 +18840,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "O*@*****/O@O*@OO@/@***O*@* w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "g1",
-    "e3",
-  ],
+  "O*@*****/O@O*@OO@/@***O*@* w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["g1", "e3"],
 
   /*
     a7 -----  O ----- g7
@@ -20707,10 +18856,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "@*@*O***/O@OO@*O@/O*****@* w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "c3",
-    "a1",
-  ],
+  "@*@*O***/O@OO@*O@/O*****@* w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["c3", "a1"],
 
   /*
     a7 -----  @ ----- g7
@@ -20725,10 +18872,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "O*****@*/O@OO@*O@/@*@*O*** w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "a1",
-    "c3",
-  ],
+  "O*****@*/O@OO@*O@/@*@*O*** w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["a1", "c3"],
 
   /*
     a7 ----- d7 ----- g7
@@ -20743,10 +18888,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "O***@*@*/@*O@O@OO/**@*O*** w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "e5",
-    "g7",
-  ],
+  "O***@*@*/@*O@O@OO/**@*O*** w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["e5", "g7"],
 
   /*
     a7 -----  O ----- g7
@@ -20761,10 +18904,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "**@*O***/@*O@O@OO/O***@*@* w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "g7",
-    "e5",
-  ],
+  "**@*O***/@*O@O@OO/O***@*@* w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["g7", "e5"],
 
   /*
     a7 ----- d7 ----- g7
@@ -20779,10 +18920,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "O*@*@***/@OO@O@O*/****O*@* w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "c5",
-    "a7",
-  ],
+  "O*@*@***/@OO@O@O*/****O*@* w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["c5", "a7"],
 
   /*
     a7 -----  O ----- g7
@@ -20797,10 +18936,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "****O*@*/@OO@O@O*/O*@*@*** w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "a7",
-    "c5",
-  ],
+  "****O*@*/@OO@O@O*/O*@*@*** w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["a7", "c5"],
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -20817,7 +18954,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "O*****O*/O*@*O*@*/@***@*** w p p 4 5 4 5 0 0 0 0 0 0 0 0 5": <String>["g4"],
+  "O*****O*/O*@*O*@*/@***@*** w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["g4"],
 
   /*
     a7 -----  O ----- g7
@@ -20832,7 +18970,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "@***@***/O*@*O*@*/O*****O* w p p 4 5 4 5 0 0 0 0 0 0 0 0 5": <String>["e4"],
+  "@***@***/O*@*O*@*/O*****O* w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["e4"],
 
   /*
     a7 -----  @ ----- g7
@@ -20847,7 +18986,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "****O*O*/O*@*O*@*/@***@*** w p p 4 5 4 5 0 0 0 0 0 0 0 0 5": <String>["g4"],
+  "****O*O*/O*@*O*@*/@***@*** w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["g4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -20862,7 +19002,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "@***@***/O*@*O*@*/****O*O* w p p 4 5 4 5 0 0 0 0 0 0 0 0 5": <String>["e4"],
+  "@***@***/O*@*O*@*/****O*O* w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["e4"],
 
   /*
     a7 -----  @ ----- g7
@@ -20877,7 +19018,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "O*O*****/O*@*O*@*/@***@*** w p p 4 5 4 5 0 0 0 0 0 0 0 0 5": <String>["a4"],
+  "O*O*****/O*@*O*@*/@***@*** w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["a4"],
 
   /*
     a7 -----  O ----- g7
@@ -20892,7 +19034,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "@***@***/O*@*O*@*/O*O***** w p p 4 5 4 5 0 0 0 0 0 0 0 0 5": <String>["c4"],
+  "@***@***/O*@*O*@*/O*O***** w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["c4"],
 
   /*
     a7 -----  @ ----- g7
@@ -20907,7 +19050,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "**O*O***/O*@*O*@*/@***@*** w p p 4 5 4 5 0 0 0 0 0 0 0 0 5": <String>["a4"],
+  "**O*O***/O*@*O*@*/@***@*** w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["a4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -20922,7 +19066,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "@***@***/O*@*O*@*/**O*O*** w p p 4 5 4 5 0 0 0 0 0 0 0 0 5": <String>["c4"],
+  "@***@***/O*@*O*@*/**O*O*** w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["c4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -20937,7 +19082,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "O*O*****/@*O*@*O*/**@***@* w p p 4 5 4 5 0 0 0 0 0 0 0 0 5": <String>["d1"],
+  "O*O*****/@*O*@*O*/**@***@* w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["d1"],
 
   /*
     a7 -----  O ----- g7
@@ -20952,7 +19098,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "**@***@*/@*O*@*O*/O*O***** w p p 4 5 4 5 0 0 0 0 0 0 0 0 5": <String>["d3"],
+  "**@***@*/@*O*@*O*/O*O***** w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["d3"],
 
   /*
     a7 ----- d7 ----- g7
@@ -20967,7 +19114,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "O*****O*/@*O*@*O*/**@***@* w p p 4 5 4 5 0 0 0 0 0 0 0 0 5": <String>["d1"],
+  "O*****O*/@*O*@*O*/**@***@* w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["d1"],
 
   /*
     a7 -----  O ----- g7
@@ -20982,7 +19130,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "**@***@*/@*O*@*O*/O*****O* w p p 4 5 4 5 0 0 0 0 0 0 0 0 5": <String>["d3"],
+  "**@***@*/@*O*@*O*/O*****O* w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["d3"],
 
   /*
     a7 ----- d7 ----- g7
@@ -20997,7 +19146,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "**O*O***/@*O*@*O*/**@***@* w p p 4 5 4 5 0 0 0 0 0 0 0 0 5": <String>["d7"],
+  "**O*O***/@*O*@*O*/**@***@* w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["d7"],
 
   /*
     a7 ----- d7 ----- g7
@@ -21012,7 +19162,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "**@***@*/@*O*@*O*/**O*O*** w p p 4 5 4 5 0 0 0 0 0 0 0 0 5": <String>["d5"],
+  "**@***@*/@*O*@*O*/**O*O*** w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["d5"],
 
   /*
     a7 ----- d7 ----- g7
@@ -21027,7 +19178,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "****O*O*/@*O*@*O*/**@***@* w p p 4 5 4 5 0 0 0 0 0 0 0 0 5": <String>["d7"],
+  "****O*O*/@*O*@*O*/**@***@* w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["d7"],
 
   /*
     a7 ----- d7 ----- g7
@@ -21042,7 +19194,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "**@***@*/@*O*@*O*/****O*O* w p p 4 5 4 5 0 0 0 0 0 0 0 0 5": <String>["d5"],
+  "**@***@*/@*O*@*O*/****O*O* w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["d5"],
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -21059,18 +19212,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/OO@*@O@*/******** w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "a1",
-    "d1",
-    "c3",
-    "d3",
-    "a4",
-    "c4",
-    "e4",
-    "g4",
-    "e5",
-    "g7",
-  ],
+  "********/OO@*@O@*/******** w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["a1", "d1", "c3", "d3", "a4", "c4", "e4", "g4", "e5", "g7"],
 
   /*
     a7 ----- d7 ----- g7
@@ -21085,18 +19228,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@*@OO*@O/******** w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "a7",
-    "d7",
-    "c5",
-    "d5",
-    "a4",
-    "c4",
-    "e4",
-    "g4",
-    "e3",
-    "g1",
-  ],
+  "********/@*@OO*@O/******** w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["a7", "d7", "c5", "d5", "a4", "c4", "e4", "g4", "e3", "g1"],
 
   /*
     a7 ----- d7 ----- g7
@@ -21111,18 +19244,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/O*@O@*@O/******** w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "g1",
-    "d1",
-    "e3",
-    "d3",
-    "g4",
-    "e4",
-    "c4",
-    "a4",
-    "c5",
-    "a7",
-  ],
+  "********/O*@O@*@O/******** w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["g1", "d1", "e3", "d3", "g4", "e4", "c4", "a4", "c5", "a7"],
 
   /*
     a7 ----- d7 ----- g7
@@ -21137,18 +19260,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@O@*OO@*/******** w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "g7",
-    "d7",
-    "e5",
-    "d5",
-    "g4",
-    "e4",
-    "c4",
-    "a4",
-    "c3",
-    "a1",
-  ],
+  "********/@O@*OO@*/******** w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["g7", "d7", "e5", "d5", "g4", "e4", "c4", "a4", "c3", "a1"],
 
   /*
     a7 ----- d7 ----- g7
@@ -21163,18 +19276,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@*OO@*@O/******** w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "a7",
-    "a4",
-    "c5",
-    "c4",
-    "d7",
-    "d5",
-    "d3",
-    "d1",
-    "e3",
-    "g1",
-  ],
+  "********/@*OO@*@O/******** w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["a7", "a4", "c5", "c4", "d7", "d5", "d3", "d1", "e3", "g1"],
 
   /*
     a7 ----- d7 ----- g7
@@ -21189,18 +19292,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@O@*@OO*/******** w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "g7",
-    "g4",
-    "e5",
-    "e4",
-    "d7",
-    "d5",
-    "d3",
-    "d1",
-    "c3",
-    "a1",
-  ],
+  "********/@O@*@OO*/******** w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["g7", "g4", "e5", "e4", "d7", "d5", "d3", "d1", "c3", "a1"],
 
   /*
     a7 ----- d7 ----- g7
@@ -21215,18 +19308,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@OO*@O@*/******** w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "a1",
-    "a4",
-    "c3",
-    "c4",
-    "d1",
-    "d3",
-    "d5",
-    "d7",
-    "e5",
-    "g7",
-  ],
+  "********/@OO*@O@*/******** w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["a1", "a4", "c3", "c4", "d1", "d3", "d5", "d7", "e5", "g7"],
 
   /*
     a7 ----- d7 ----- g7
@@ -21241,18 +19324,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@*@O@*OO/******** w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "g1",
-    "g4",
-    "e3",
-    "e4",
-    "d1",
-    "d3",
-    "d5",
-    "d7",
-    "c5",
-    "a7",
-  ],
+  "********/@*@O@*OO/******** w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["g1", "g4", "e3", "e4", "d1", "d3", "d5", "d7", "c5", "a7"],
 
   /////////////////////////////// Low Risk /////////////////////////////////////
 
@@ -21269,10 +19342,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/*O@*@O**/******** w p p 2 7 2 7 0 0 0 0 0 0 0 0 3": <String>[
-    "b4",
-    "d6",
-  ],
+  "********/*O@*@O**/******** w p p 2 7 2 7 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>["b4", "d6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -21287,10 +19358,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@*@O***O/******** w p p 2 7 2 7 0 0 0 0 0 0 0 0 3": <String>[
-    "b4",
-    "d2",
-  ],
+  "********/@*@O***O/******** w p p 2 7 2 7 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>["b4", "d2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -21305,10 +19374,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/***O@*@O/******** w p p 2 7 2 7 0 0 0 0 0 0 0 0 3": <String>[
-    "f4",
-    "d6",
-  ],
+  "********/***O@*@O/******** w p p 2 7 2 7 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>["f4", "d6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -21323,10 +19390,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@O***O@*/******** w p p 2 7 2 7 0 0 0 0 0 0 0 0 3": <String>[
-    "f4",
-    "d2",
-  ],
+  "********/@O***O@*/******** w p p 2 7 2 7 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>["f4", "d2"],
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -21343,20 +19408,21 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "O*******/O**@**O@/@******* w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "a1",
-    "d1",
-    "g1",
-    "d2",
-    "c3",
-    "d3",
-    "e3",
-    "e4",
-    "f4",
-    "g4",
-    "a7",
-    "g7",
-  ],
+  "O*******/O**@**O@/@******* w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>[
+        "a1",
+        "d1",
+        "g1",
+        "d2",
+        "c3",
+        "d3",
+        "e3",
+        "e4",
+        "f4",
+        "g4",
+        "a7",
+        "g7",
+      ],
 
   /*
     a7 -----  O ----- g7
@@ -21371,20 +19437,21 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "@*******/O**@**O@/O******* w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "c3",
-    "d3",
-    "e3",
-    "d2",
-    "a1",
-    "d1",
-    "g1",
-    "g4",
-    "f4",
-    "e4",
-    "c5",
-    "e5",
-  ],
+  "@*******/O**@**O@/O******* w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>[
+        "c3",
+        "d3",
+        "e3",
+        "d2",
+        "a1",
+        "d1",
+        "g1",
+        "g4",
+        "f4",
+        "e4",
+        "c5",
+        "e5",
+      ],
 
   /*
     a7 ----- d7 ----- g7
@@ -21399,20 +19466,21 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "****O***/*@**O@O*/****@*** w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "a7",
-    "d7",
-    "g7",
-    "d6",
-    "c5",
-    "d5",
-    "e5",
-    "e4",
-    "f4",
-    "g4",
-    "a1",
-    "g1",
-  ],
+  "****O***/*@**O@O*/****@*** w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>[
+        "a7",
+        "d7",
+        "g7",
+        "d6",
+        "c5",
+        "d5",
+        "e5",
+        "e4",
+        "f4",
+        "g4",
+        "a1",
+        "g1",
+      ],
 
   /*
     a7 ----- d7 ----- g7
@@ -21427,20 +19495,21 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "****@***/*@**O@O*/****O*** w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "c5",
-    "d5",
-    "e5",
-    "d6",
-    "a7",
-    "d7",
-    "g7",
-    "g4",
-    "f4",
-    "e4",
-    "c3",
-    "e3",
-  ],
+  "****@***/*@**O@O*/****O*** w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>[
+        "c5",
+        "d5",
+        "e5",
+        "d6",
+        "a7",
+        "d7",
+        "g7",
+        "g4",
+        "f4",
+        "e4",
+        "c3",
+        "e3",
+      ],
 
   /*
     a7 -----  @ ----- g7
@@ -21455,20 +19524,21 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "O*******/O@O**@**/@******* w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "g1",
-    "d1",
-    "a1",
-    "d2",
-    "e3",
-    "d3",
-    "c3",
-    "c4",
-    "b4",
-    "a4",
-    "g7",
-    "a7",
-  ],
+  "O*******/O@O**@**/@******* w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>[
+        "g1",
+        "d1",
+        "a1",
+        "d2",
+        "e3",
+        "d3",
+        "c3",
+        "c4",
+        "b4",
+        "a4",
+        "g7",
+        "a7",
+      ],
 
   /*
     a7 -----  O ----- g7
@@ -21483,20 +19553,21 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "@*******/O@O**@**/O******* w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "e3",
-    "d3",
-    "c3",
-    "d2",
-    "g1",
-    "d1",
-    "a1",
-    "a4",
-    "b4",
-    "c4",
-    "e5",
-    "c5",
-  ],
+  "@*******/O@O**@**/O******* w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>[
+        "e3",
+        "d3",
+        "c3",
+        "d2",
+        "g1",
+        "d1",
+        "a1",
+        "a4",
+        "b4",
+        "c4",
+        "e5",
+        "c5",
+      ],
 
   /*
     a7 ----- d7 ----- g7
@@ -21511,20 +19582,21 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "****O***/**O@O**@/****@*** w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "g7",
-    "d7",
-    "a7",
-    "d6",
-    "e5",
-    "d5",
-    "c5",
-    "c4",
-    "b4",
-    "a4",
-    "g1",
-    "a1",
-  ],
+  "****O***/**O@O**@/****@*** w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>[
+        "g7",
+        "d7",
+        "a7",
+        "d6",
+        "e5",
+        "d5",
+        "c5",
+        "c4",
+        "b4",
+        "a4",
+        "g1",
+        "a1",
+      ],
 
   /*
     a7 ----- d7 ----- g7
@@ -21539,20 +19611,21 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "****@***/**O@O**@/****O*** w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "e5",
-    "d5",
-    "c5",
-    "d6",
-    "g7",
-    "d7",
-    "a7",
-    "a4",
-    "b4",
-    "c4",
-    "e3",
-    "c3",
-  ],
+  "****@***/**O@O**@/****O*** w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>[
+        "e5",
+        "d5",
+        "c5",
+        "d6",
+        "g7",
+        "d7",
+        "a7",
+        "a4",
+        "b4",
+        "c4",
+        "e3",
+        "c3",
+      ],
 
   /*
     a7 ----- d7 ----- g7
@@ -21567,20 +19640,21 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "**O*****/O@O**@**/**@***** w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "a7",
-    "a4",
-    "a1",
-    "b4",
-    "c5",
-    "c4",
-    "c3",
-    "d3",
-    "d2",
-    "d1",
-    "g7",
-    "g1",
-  ],
+  "**O*****/O@O**@**/**@***** w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>[
+        "a7",
+        "a4",
+        "a1",
+        "b4",
+        "c5",
+        "c4",
+        "c3",
+        "d3",
+        "d2",
+        "d1",
+        "g7",
+        "g1",
+      ],
 
   /*
     a7 ----- d7 ----- g7
@@ -21595,20 +19669,21 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "**@*****/O@O**@**/**O***** w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "c5",
-    "c4",
-    "c3",
-    "b4",
-    "a7",
-    "a4",
-    "a1",
-    "d1",
-    "d2",
-    "d3",
-    "e5",
-    "e3",
-  ],
+  "**@*****/O@O**@**/**O***** w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>[
+        "c5",
+        "c4",
+        "c3",
+        "b4",
+        "a7",
+        "a4",
+        "a1",
+        "d1",
+        "d2",
+        "d3",
+        "e5",
+        "e3",
+      ],
 
   /*
     a7 ----- d7 ----- g7
@@ -21623,20 +19698,21 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "******O*/O**@**O@/******@* w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "g7",
-    "g4",
-    "g1",
-    "f4",
-    "e5",
-    "e4",
-    "e3",
-    "d3",
-    "d2",
-    "d1",
-    "a7",
-    "a1",
-  ],
+  "******O*/O**@**O@/******@* w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>[
+        "g7",
+        "g4",
+        "g1",
+        "f4",
+        "e5",
+        "e4",
+        "e3",
+        "d3",
+        "d2",
+        "d1",
+        "a7",
+        "a1",
+      ],
 
   /*
     a7 ----- d7 ----- g7
@@ -21651,20 +19727,21 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "******@*/O**@**O@/******O* w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "e5",
-    "e4",
-    "e3",
-    "f4",
-    "g7",
-    "g4",
-    "g1",
-    "d1",
-    "d2",
-    "d3",
-    "c5",
-    "c3",
-  ],
+  "******@*/O**@**O@/******O* w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>[
+        "e5",
+        "e4",
+        "e3",
+        "f4",
+        "g7",
+        "g4",
+        "g1",
+        "d1",
+        "d2",
+        "d3",
+        "c5",
+        "c3",
+      ],
 
   /*
     a7 ----- d7 ----- g7
@@ -21679,20 +19756,21 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "**O*****/**O@O**@/**@***** w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "a1",
-    "a4",
-    "a7",
-    "b4",
-    "c3",
-    "c4",
-    "c5",
-    "d5",
-    "d6",
-    "d7",
-    "g1",
-    "g7",
-  ],
+  "**O*****/**O@O**@/**@***** w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>[
+        "a1",
+        "a4",
+        "a7",
+        "b4",
+        "c3",
+        "c4",
+        "c5",
+        "d5",
+        "d6",
+        "d7",
+        "g1",
+        "g7",
+      ],
 
   /*
     a7 ----- d7 ----- g7
@@ -21707,20 +19785,21 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "**@*****/**O@O**@/**O***** w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "c3",
-    "c4",
-    "c5",
-    "b4",
-    "a1",
-    "a4",
-    "a7",
-    "d7",
-    "d6",
-    "d5",
-    "e3",
-    "e5",
-  ],
+  "**@*****/**O@O**@/**O***** w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>[
+        "c3",
+        "c4",
+        "c5",
+        "b4",
+        "a1",
+        "a4",
+        "a7",
+        "d7",
+        "d6",
+        "d5",
+        "e3",
+        "e5",
+      ],
 
   /*
     a7 ----- d7 ----- g7
@@ -21735,20 +19814,21 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "******O*/*@**O@O*/******@* w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "g1",
-    "g4",
-    "g7",
-    "f4",
-    "e3",
-    "e4",
-    "e5",
-    "d5",
-    "d6",
-    "d7",
-    "a1",
-    "a7",
-  ],
+  "******O*/*@**O@O*/******@* w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>[
+        "g1",
+        "g4",
+        "g7",
+        "f4",
+        "e3",
+        "e4",
+        "e5",
+        "d5",
+        "d6",
+        "d7",
+        "a1",
+        "a7",
+      ],
 
   /*
     a7 ----- d7 ----- g7
@@ -21763,20 +19843,21 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "******@*/*@**O@O*/******O* w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "e3",
-    "e4",
-    "e5",
-    "f4",
-    "g1",
-    "g4",
-    "g7",
-    "d7",
-    "d6",
-    "d5",
-    "c3",
-    "c5",
-  ],
+  "******@*/*@**O@O*/******O* w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>[
+        "e3",
+        "e4",
+        "e5",
+        "f4",
+        "g1",
+        "g4",
+        "g7",
+        "d7",
+        "d6",
+        "d5",
+        "c3",
+        "c5",
+      ],
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -21793,17 +19874,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "@*@*****/@*O*O*@O/O*****O* b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "d1",
-    "f2",
-    "c3",
-    "d3",
-    "e3",
-    "c4",
-    "g4",
-    "a7",
-    "g7",
-  ],
+  "@*@*****/@*O*O*@O/O*****O* b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["d1", "f2", "c3", "d3", "e3", "c4", "g4", "a7", "g7"],
 
   /*
     a7 -----  @ ----- g7
@@ -21818,17 +19890,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "O*****O*/@*O*O*@O/@*@***** b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "d3",
-    "f2",
-    "a1",
-    "d1",
-    "g1",
-    "a4",
-    "e4",
-    "c5",
-    "e5",
-  ],
+  "O*****O*/@*O*O*@O/@*@***** b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["d3", "f2", "a1", "d1", "g1", "a4", "e4", "c5", "e5"],
 
   /*
     a7 ----- d7 ----- g7
@@ -21843,17 +19906,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "**@*@***/O*O*@O@*/****O*O* b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "d7",
-    "f6",
-    "c5",
-    "d5",
-    "e5",
-    "c4",
-    "g4",
-    "a1",
-    "g1",
-  ],
+  "**@*@***/O*O*@O@*/****O*O* b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["d7", "f6", "c5", "d5", "e5", "c4", "g4", "a1", "g1"],
 
   /*
     a7 ----- d7 ----- g7
@@ -21868,17 +19922,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "****O*O*/O*O*@O@*/**@*@*** b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "d5",
-    "f6",
-    "a7",
-    "d7",
-    "g7",
-    "a4",
-    "e4",
-    "c3",
-    "e3",
-  ],
+  "****O*O*/O*O*@O@*/**@*@*** b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["d5", "f6", "a7", "d7", "g7", "a4", "e4", "c3", "e3"],
 
   /*
     a7 -----  O ----- g7
@@ -21893,17 +19938,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "@*****@*/@O@*O*O*/O*O***** b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "d1",
-    "b2",
-    "e3",
-    "d3",
-    "c3",
-    "e4",
-    "a4",
-    "g7",
-    "a7",
-  ],
+  "@*****@*/@O@*O*O*/O*O***** b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["d1", "b2", "e3", "d3", "c3", "e4", "a4", "g7", "a7"],
 
   /*
     a7 -----  @ ----- g7
@@ -21918,17 +19954,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "O*O*****/@O@*O*O*/@*****@* b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "d3",
-    "b2",
-    "g1",
-    "d1",
-    "a1",
-    "g4",
-    "c4",
-    "e5",
-    "c5",
-  ],
+  "O*O*****/@O@*O*O*/@*****@* b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["d3", "b2", "g1", "d1", "a1", "g4", "c4", "e5", "c5"],
 
   /*
     a7 ----- d7 ----- g7
@@ -21943,17 +19970,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "****@*@*/O*@O@*O*/**O*O*** b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "d7",
-    "b6",
-    "e5",
-    "d5",
-    "c5",
-    "e4",
-    "a4",
-    "g1",
-    "a1",
-  ],
+  "****@*@*/O*@O@*O*/**O*O*** b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["d7", "b6", "e5", "d5", "c5", "e4", "a4", "g1", "a1"],
 
   /*
     a7 ----- d7 ----- g7
@@ -21968,17 +19986,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "**O*O***/O*@O@*O*/****@*@* b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "d5",
-    "b6",
-    "g7",
-    "d7",
-    "a7",
-    "g4",
-    "c4",
-    "e3",
-    "c3",
-  ],
+  "**O*O***/O*@O@*O*/****@*@* b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["d5", "b6", "g7", "d7", "a7", "g4", "c4", "e3", "c3"],
 
   /*
     a7 -----  O ----- g7
@@ -21993,17 +20002,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "**@*@***/@O@*O*O*/O*O***** b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "a4",
-    "b2",
-    "c5",
-    "c4",
-    "c3",
-    "d5",
-    "d1",
-    "g7",
-    "g1",
-  ],
+  "**@*@***/@O@*O*O*/O*O***** b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["a4", "b2", "c5", "c4", "c3", "d5", "d1", "g7", "g1"],
 
   /*
     a7 ----- d7 ----- g7
@@ -22018,17 +20018,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "O*O*****/@O@*O*O*/**@*@*** b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "c4",
-    "b2",
-    "a7",
-    "a4",
-    "a1",
-    "d7",
-    "d3",
-    "e5",
-    "e3",
-  ],
+  "O*O*****/@O@*O*O*/**@*@*** b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["c4", "b2", "a7", "a4", "a1", "d7", "d3", "e5", "e3"],
 
   /*
     a7 -----  O ----- g7
@@ -22043,17 +20034,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "****@*@*/@*O*O*@O/O*****O* b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "g4",
-    "f2",
-    "e5",
-    "e4",
-    "e3",
-    "d5",
-    "d1",
-    "a7",
-    "a1",
-  ],
+  "****@*@*/@*O*O*@O/O*****O* b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["g4", "f2", "e5", "e4", "e3", "d5", "d1", "a7", "a1"],
 
   /*
     a7 ----- d7 ----- g7
@@ -22068,17 +20050,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "O*****O*/@*O*O*@O/****@*@* b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "e4",
-    "f2",
-    "g7",
-    "g4",
-    "g1",
-    "d7",
-    "d3",
-    "c5",
-    "c3",
-  ],
+  "O*****O*/@*O*O*@O/****@*@* b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["e4", "f2", "g7", "g4", "g1", "d7", "d3", "c5", "c3"],
 
   /*
     a7 ----- d7 ----- g7
@@ -22093,17 +20066,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "@*@*****/O*@O@*O*/**O*O*** b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "a4",
-    "b6",
-    "c3",
-    "c4",
-    "c5",
-    "d3",
-    "d7",
-    "g1",
-    "g7",
-  ],
+  "@*@*****/O*@O@*O*/**O*O*** b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["a4", "b6", "c3", "c4", "c5", "d3", "d7", "g1", "g7"],
 
   /*
     a7 -----  @ ----- g7
@@ -22118,17 +20082,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "**O*O***/O*@O@*O*/@*@***** b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "c4",
-    "b6",
-    "a1",
-    "a4",
-    "a7",
-    "d1",
-    "d5",
-    "e3",
-    "e5",
-  ],
+  "**O*O***/O*@O@*O*/@*@***** b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["c4", "b6", "a1", "a4", "a7", "d1", "d5", "e3", "e5"],
 
   /*
     a7 ----- d7 ----- g7
@@ -22143,17 +20098,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "@*****@*/O*O*@O@*/****O*O* b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "g4",
-    "f6",
-    "e3",
-    "e4",
-    "e5",
-    "d3",
-    "d7",
-    "a1",
-    "a7",
-  ],
+  "@*****@*/O*O*@O@*/****O*O* b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["g4", "f6", "e3", "e4", "e5", "d3", "d7", "a1", "a7"],
 
   /*
     a7 -----  @ ----- g7
@@ -22168,17 +20114,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "****O*O*/O*O*@O@*/@*****@* b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "e4",
-    "f6",
-    "g1",
-    "g4",
-    "g7",
-    "d1",
-    "d5",
-    "c3",
-    "c5",
-  ],
+  "****O*O*/O*O*@O@*/@*****@* b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["e4", "f6", "g1", "g4", "g7", "d1", "d5", "c3", "c5"],
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -22195,10 +20132,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      @ -----  O -----  O
   */
-  "**@*@*@*/OOO@@O*@/*OOOO@** w p p 8 1 7 1 0 0 0 0 0 0 0 0 9": <String>[
-    "c3",
-    "e3",
-  ],
+  "**@*@*@*/OOO@@O*@/*OOOO@** w p p 8 1 7 1 0 0 -1 -1 -1 -1 0 0 9 ids:nodes":
+      <String>["c3", "e3"],
 
   /*
     a7 ----- d7 ----- g7
@@ -22213,10 +20148,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "*OOOO@**/OOO@@O*@/**@*@*@* w p p 8 1 7 1 0 0 0 0 0 0 0 0 9": <String>[
-    "a1",
-    "g1",
-  ],
+  "*OOOO@**/OOO@@O*@/**@*@*@* w p p 8 1 7 1 0 0 -1 -1 -1 -1 0 0 9 ids:nodes":
+      <String>["a1", "g1"],
 
   /*
      @ -----  O -----  O
@@ -22231,10 +20164,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 -----  O
   */
-  "@*@***@*/@@OOO@*O/OOOO***@ w p p 8 1 7 1 0 0 0 0 0 0 0 0 9": <String>[
-    "c5",
-    "e5",
-  ],
+  "@*@***@*/@@OOO@*O/OOOO***@ w p p 8 1 7 1 0 0 -1 -1 -1 -1 0 0 9 ids:nodes":
+      <String>["c5", "e5"],
 
   /*
     a7 -----  @ ----- g7
@@ -22249,10 +20180,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "OOOO***@/@@OOO@*O/@*@***@* w p p 8 1 7 1 0 0 0 0 0 0 0 0 9": <String>[
-    "a7",
-    "g7",
-  ],
+  "OOOO***@/@@OOO@*O/@*@***@* w p p 8 1 7 1 0 0 -1 -1 -1 -1 0 0 9 ids:nodes":
+      <String>["a7", "g7"],
 
   /*
      O ----- d7 ----- g7
@@ -22267,10 +20196,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      O -----  O -----  @
   */
-  "**@*@*@*/O@*O@@OO/***@OOOO w p p 8 1 7 1 0 0 0 0 0 0 0 0 9": <String>[
-    "e3",
-    "c3",
-  ],
+  "**@*@*@*/O@*O@@OO/***@OOOO w p p 8 1 7 1 0 0 -1 -1 -1 -1 0 0 9 ids:nodes":
+      <String>["e3", "c3"],
 
   /*
     a7 ----- d7 ----- g7
@@ -22285,10 +20212,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "***@OOOO/O@*O@@OO/**@*@*@* w p p 8 1 7 1 0 0 0 0 0 0 0 0 9": <String>[
-    "g1",
-    "a1",
-  ],
+  "***@OOOO/O@*O@@OO/**@*@*@* w p p 8 1 7 1 0 0 -1 -1 -1 -1 0 0 9 ids:nodes":
+      <String>["g1", "a1"],
 
   /*
      O -----  O -----  @
@@ -22303,10 +20228,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      O ----- d1 ----- g1
   */
-  "@*@***@*/@O*@OOO@/O@***OOO w p p 8 1 7 1 0 0 0 0 0 0 0 0 9": <String>[
-    "e5",
-    "c5",
-  ],
+  "@*@***@*/@O*@OOO@/O@***OOO w p p 8 1 7 1 0 0 -1 -1 -1 -1 0 0 9 ids:nodes":
+      <String>["e5", "c5"],
 
   /*
     a7 -----  @ ----- g7
@@ -22321,10 +20244,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "O@***OOO/@O*@OOO@/@*@***@* w p p 8 1 7 1 0 0 0 0 0 0 0 0 9": <String>[
-    "g7",
-    "a7",
-  ],
+  "O@***OOO/@O*@OOO@/@*@***@* w p p 8 1 7 1 0 0 -1 -1 -1 -1 0 0 9 ids:nodes":
+      <String>["g7", "a7"],
 
   /*
      @ ----- d7 ----- g7
@@ -22339,10 +20260,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      O -----  O -----  O
   */
-  "@***@*@*/*@OOO@@O/***OOOO@ w p p 8 1 7 1 0 0 0 0 0 0 0 0 9": <String>[
-    "c5",
-    "c3",
-  ],
+  "@***@*@*/*@OOO@@O/***OOOO@ w p p 8 1 7 1 0 0 -1 -1 -1 -1 0 0 9 ids:nodes":
+      <String>["c5", "c3"],
 
   /*
     a7 -----  @ ----- g7
@@ -22357,10 +20276,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "***OOOO@/*@OOO@@O/@***@*@* w p p 8 1 7 1 0 0 0 0 0 0 0 0 9": <String>[
-    "a7",
-    "a1",
-  ],
+  "***OOOO@/*@OOO@@O/@***@*@* w p p 8 1 7 1 0 0 -1 -1 -1 -1 0 0 9 ids:nodes":
+      <String>["a7", "a1"],
 
   /*
     a7 ----- d7 -----  @
@@ -22375,10 +20292,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      O -----  O -----  O
   */
-  "@*@*@***/*O@@OOO@/*@OOOO** w p p 8 1 7 1 0 0 0 0 0 0 0 0 9": <String>[
-    "e5",
-    "e3",
-  ],
+  "@*@*@***/*O@@OOO@/*@OOOO** w p p 8 1 7 1 0 0 -1 -1 -1 -1 0 0 9 ids:nodes":
+      <String>["e5", "e3"],
 
   /*
     a7 -----  @ ----- g7
@@ -22393,10 +20308,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "*@OOOO**/*O@@OOO@/@*@*@*** w p p 8 1 7 1 0 0 0 0 0 0 0 0 9": <String>[
-    "g7",
-    "g1",
-  ],
+  "*@OOOO**/*O@@OOO@/@*@*@*** w p p 8 1 7 1 0 0 -1 -1 -1 -1 0 0 9 ids:nodes":
+      <String>["g7", "g1"],
 
   /*
      O -----  O -----  O
@@ -22411,10 +20324,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      @ ----- d1 ----- g1
   */
-  "@***@*@*/OOO@*O@@/OO***@OO w p p 8 1 7 1 0 0 0 0 0 0 0 0 9": <String>[
-    "c3",
-    "c5",
-  ],
+  "@***@*@*/OOO@*O@@/OO***@OO w p p 8 1 7 1 0 0 -1 -1 -1 -1 0 0 9 ids:nodes":
+      <String>["c3", "c5"],
 
   /*
     a7 -----  @ ----- g7
@@ -22429,10 +20340,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "OO***@OO/OOO@*O@@/@***@*@* w p p 8 1 7 1 0 0 0 0 0 0 0 0 9": <String>[
-    "a1",
-    "a7",
-  ],
+  "OO***@OO/OOO@*O@@/@***@*@* w p p 8 1 7 1 0 0 -1 -1 -1 -1 0 0 9 ids:nodes":
+      <String>["a1", "a7"],
 
   /*
      O -----  O -----  O
@@ -22447,10 +20356,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 -----  @
   */
-  "@*@*@***/O@@O*@OO/OOO@***O w p p 8 1 7 1 0 0 0 0 0 0 0 0 9": <String>[
-    "e3",
-    "e5",
-  ],
+  "@*@*@***/O@@O*@OO/OOO@***O w p p 8 1 7 1 0 0 -1 -1 -1 -1 0 0 9 ids:nodes":
+      <String>["e3", "e5"],
 
   /*
     a7 -----  @ ----- g7
@@ -22465,10 +20372,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "OOO@***O/O@@O*@OO/@*@*@*** w p p 8 1 7 1 0 0 0 0 0 0 0 0 9": <String>[
-    "g1",
-    "g7",
-  ],
+  "OOO@***O/O@@O*@OO/@*@*@*** w p p 8 1 7 1 0 0 -1 -1 -1 -1 0 0 9 ids:nodes":
+      <String>["g1", "g7"],
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -22485,17 +20390,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "******O*/@O@*@O**/******** w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "a1",
-    "d1",
-    "d3",
-    "a1",
-    "e4",
-    "g4",
-    "d5",
-    "d7",
-    "g7",
-  ],
+  "******O*/@O@*@O**/******** w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["a1", "d1", "d3", "a1", "e4", "g4", "d5", "d7", "g7"],
 
   /*
     a7 ----- d7 ----- g7
@@ -22510,17 +20406,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@O@*@O**/******O* w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "c3",
-    "d3",
-    "d1",
-    "c3",
-    "g4",
-    "e4",
-    "d7",
-    "d5",
-    "e5",
-  ],
+  "********/@O@*@O**/******O* w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["c3", "d3", "d1", "c3", "g4", "e4", "d7", "d5", "e5"],
 
   /*
     a7 ----- d7 ----- g7
@@ -22535,17 +20422,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "******O*/@*@O@**O/******** w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "a7",
-    "d7",
-    "d5",
-    "a7",
-    "e4",
-    "g4",
-    "d3",
-    "d1",
-    "g1",
-  ],
+  "******O*/@*@O@**O/******** w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["a7", "d7", "d5", "a7", "e4", "g4", "d3", "d1", "g1"],
 
   /*
     a7 ----- d7 ----- g7
@@ -22560,17 +20438,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@*@O@**O/******O* w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "c5",
-    "d5",
-    "d7",
-    "c5",
-    "g4",
-    "e4",
-    "d1",
-    "d3",
-    "e3",
-  ],
+  "********/@*@O@**O/******O* w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["c5", "d5", "d7", "c5", "g4", "e4", "d1", "d3", "e3"],
 
   /*
     a7 ----- d7 ----- g7
@@ -22585,17 +20454,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "**O*****/@**O@*@O/******** w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "g1",
-    "d1",
-    "d3",
-    "g1",
-    "c4",
-    "a4",
-    "d5",
-    "d7",
-    "a7",
-  ],
+  "**O*****/@**O@*@O/******** w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["g1", "d1", "d3", "g1", "c4", "a4", "d5", "d7", "a7"],
 
   /*
     a7 ----- d7 ----- g7
@@ -22610,17 +20470,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@**O@*@O/**O***** w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "e3",
-    "d3",
-    "d1",
-    "e3",
-    "a4",
-    "c4",
-    "d7",
-    "d5",
-    "c5",
-  ],
+  "********/@**O@*@O/**O***** w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["e3", "d3", "d1", "e3", "a4", "c4", "d7", "d5", "c5"],
 
   /*
     a7 ----- d7 ----- g7
@@ -22635,17 +20486,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "**O*****/@O**@O@*/******** w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "g7",
-    "d7",
-    "d5",
-    "g7",
-    "c4",
-    "a4",
-    "d3",
-    "d1",
-    "a1",
-  ],
+  "**O*****/@O**@O@*/******** w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["g7", "d7", "d5", "g7", "c4", "a4", "d3", "d1", "a1"],
 
   /*
     a7 ----- d7 ----- g7
@@ -22660,17 +20502,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@O**@O@*/**O***** w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "e5",
-    "d5",
-    "d7",
-    "e5",
-    "a4",
-    "c4",
-    "d1",
-    "d3",
-    "c3",
-  ],
+  "********/@O**@O@*/**O***** w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["e5", "d5", "d7", "e5", "a4", "c4", "d1", "d3", "c3"],
 
   /*
     a7 ----- d7 ----- g7
@@ -22685,17 +20518,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "O*******/**@O@*@O/******** w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "a7",
-    "a4",
-    "c4",
-    "a7",
-    "d3",
-    "d1",
-    "e4",
-    "g4",
-    "g1",
-  ],
+  "O*******/**@O@*@O/******** w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["a7", "a4", "c4", "a7", "d3", "d1", "e4", "g4", "g1"],
 
   /*
     a7 -----  O ----- g7
@@ -22710,17 +20534,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/**@O@*@O/O******* w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "c5",
-    "c4",
-    "a4",
-    "c5",
-    "d1",
-    "d3",
-    "g4",
-    "e4",
-    "e3",
-  ],
+  "********/**@O@*@O/O******* w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["c5", "c4", "a4", "c5", "d1", "d3", "g4", "e4", "e3"],
 
   /*
     a7 ----- d7 ----- g7
@@ -22735,17 +20550,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "O*******/*O@*@O@*/******** w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "g7",
-    "g4",
-    "e4",
-    "g7",
-    "d3",
-    "d1",
-    "c4",
-    "a4",
-    "a1",
-  ],
+  "O*******/*O@*@O@*/******** w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["g7", "g4", "e4", "g7", "d3", "d1", "c4", "a4", "a1"],
 
   /*
     a7 -----  O ----- g7
@@ -22760,17 +20566,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/*O@*@O@*/O******* w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "e5",
-    "e4",
-    "g4",
-    "e5",
-    "d1",
-    "d3",
-    "a4",
-    "c4",
-    "c3",
-  ],
+  "********/*O@*@O@*/O******* w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["e5", "e4", "g4", "e5", "d1", "d3", "a4", "c4", "c3"],
 
   /*
     a7 ----- d7 ----- g7
@@ -22785,17 +20582,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "****O***/@O@**O@*/******** w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "a1",
-    "a4",
-    "c4",
-    "a1",
-    "d5",
-    "d7",
-    "e4",
-    "g4",
-    "g7",
-  ],
+  "****O***/@O@**O@*/******** w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["a1", "a4", "c4", "a1", "d5", "d7", "e4", "g4", "g7"],
 
   /*
     a7 ----- d7 ----- g7
@@ -22810,17 +20598,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "********/@O@**O@*/****O*** w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "c3",
-    "c4",
-    "a4",
-    "c3",
-    "d7",
-    "d5",
-    "g4",
-    "e4",
-    "e5",
-  ],
+  "********/@O@**O@*/****O*** w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["c3", "c4", "a4", "c3", "d7", "d5", "g4", "e4", "e5"],
 
   /*
     a7 ----- d7 ----- g7
@@ -22835,17 +20614,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "****O***/@*@O**@O/******** w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "g1",
-    "g4",
-    "e4",
-    "g1",
-    "d5",
-    "d7",
-    "c4",
-    "a4",
-    "a7",
-  ],
+  "****O***/@*@O**@O/******** w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["g1", "g4", "e4", "g1", "d5", "d7", "c4", "a4", "a7"],
 
   /*
     a7 ----- d7 ----- g7
@@ -22860,17 +20630,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "********/@*@O**@O/****O*** w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "e3",
-    "e4",
-    "g4",
-    "e3",
-    "d7",
-    "d5",
-    "a4",
-    "c4",
-    "c5",
-  ],
+  "********/@*@O**@O/****O*** w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["e3", "e4", "g4", "e3", "d7", "d5", "a4", "c4", "c5"],
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -22887,12 +20648,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      @ ----- d1 ----- g1
   */
-  "****@**O/@*@OO@@O/O*O**@** w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "a4",
-    "d5",
-    "a7",
-    "g7",
-  ],
+  "****@**O/@*@OO@@O/O*O**@** w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["a4", "d5", "a7", "g7"],
 
   /*
      O ----- d7 ----- g7
@@ -22907,12 +20664,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "O*O**@**/@*@OO@@O/****@**O w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "c4",
-    "d7",
-    "c5",
-    "e5",
-  ],
+  "O*O**@**/@*@OO@@O/****@**O w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["c4", "d7", "c5", "e5"],
 
   /*
      @ ----- d7 ----- g7
@@ -22927,12 +20680,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "@****O**/OO@*@O@@/**O*O**@ w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "a4",
-    "d3",
-    "a1",
-    "g1",
-  ],
+  "@****O**/OO@*@O@@/**O*O**@ w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["a4", "d3", "a1", "g1"],
 
   /*
     a7 -----  @ ----- g7
@@ -22947,12 +20696,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      O ----- d1 ----- g1
   */
-  "**O*O**@/OO@*@O@@/@****O** w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "c4",
-    "d1",
-    "c3",
-    "e3",
-  ],
+  "**O*O**@/OO@*@O@@/@****O** w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["c4", "d1", "c3", "e3"],
 
   /*
     a7 -----  O ----- g7
@@ -22967,12 +20712,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 -----  @
   */
-  "*O**@***/@O@@OO@*/O**@**O* w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "g4",
-    "d5",
-    "g7",
-    "a7",
-  ],
+  "*O**@***/@O@@OO@*/O**@**O* w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["g4", "d5", "g7", "a7"],
 
   /*
     a7 ----- d7 -----  O
@@ -22987,12 +20728,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "O**@**O*/@O@@OO@*/*O**@*** w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "e4",
-    "d7",
-    "e5",
-    "c5",
-  ],
+  "O**@**O*/@O@@OO@*/*O**@*** w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["e4", "d7", "e5", "c5"],
 
   /*
     a7 ----- d7 -----  @
@@ -23007,12 +20744,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "@**O****/O@@O@*@O/*@**O*O* w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "g4",
-    "d3",
-    "g1",
-    "a1",
-  ],
+  "@**O****/O@@O@*@O/*@**O*O* w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["g4", "d3", "g1", "a1"],
 
   /*
     a7 -----  @ ----- g7
@@ -23027,12 +20760,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 -----  O
   */
-  "*@**O*O*/O@@O@*@O/@**O**** w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "e4",
-    "d1",
-    "e3",
-    "c3",
-  ],
+  "*@**O*O*/O@@O@*@O/@**O**** w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["e4", "d1", "e3", "c3"],
 
   /*
      @ ----- d7 ----- g7
@@ -23047,12 +20776,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "*O****@*/@O@*@OO@/**O*O**@ w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "d7",
-    "e4",
-    "g7",
-    "g1",
-  ],
+  "*O****@*/@O@*@OO@/**O*O**@ w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["d7", "e4", "g7", "g1"],
 
   /*
     a7 ----- d7 -----  O
@@ -23067,12 +20792,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "**O*O**@/@O@*@OO@/*O****@* w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "d5",
-    "g4",
-    "e5",
-    "e3",
-  ],
+  "**O*O**@/@O@*@OO@/*O****@* w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["d5", "g4", "e5", "e3"],
 
   /*
     a7 ----- d7 -----  @
@@ -23087,12 +20808,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "**@****O/@@OO@*@O/*@**O*O* w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "d7",
-    "c4",
-    "a7",
-    "a1",
-  ],
+  "**@****O/@@OO@*@O/*@**O*O* w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["d7", "c4", "a7", "a1"],
 
   /*
      O ----- d7 ----- g7
@@ -23107,12 +20824,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "*@**O*O*/@@OO@*@O/**@****O w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "d5",
-    "a4",
-    "c5",
-    "c3",
-  ],
+  "*@**O*O*/@@OO@*@O/**@****O w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["d5", "a4", "c5", "c3"],
 
   /*
     a7 -----  O ----- g7
@@ -23127,12 +20840,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      @ ----- d1 ----- g1
   */
-  "***O**@*/@*@O@@OO/O*O**@** w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "d1",
-    "e4",
-    "g1",
-    "g7",
-  ],
+  "***O**@*/@*@O@@OO/O*O**@** w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["d1", "e4", "g1", "g7"],
 
   /*
     a7 ----- d7 ----- g7
@@ -23147,12 +20856,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 -----  O
   */
-  "O*O**@**/@*@O@@OO/***O**@* w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "d3",
-    "g4",
-    "e3",
-    "e5",
-  ],
+  "O*O**@**/@*@O@@OO/***O**@* w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["d3", "g4", "e3", "e5"],
 
   /*
     a7 -----  O ----- g7
@@ -23167,12 +20872,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 -----  @
   */
-  "**@**O**/@OO@@O@*/O**@**O* w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "d1",
-    "c4",
-    "a1",
-    "a7",
-  ],
+  "**@**O**/@OO@@O@*/O**@**O* w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["d1", "c4", "a1", "a7"],
 
   /*
     a7 ----- d7 ----- g7
@@ -23187,12 +20888,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      O ----- d1 ----- g1
   */
-  "O**@**O*/@OO@@O@*/**@**O** w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "d3",
-    "a4",
-    "c3",
-    "c5",
-  ],
+  "O**@**O*/@OO@@O@*/**@**O** w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["d3", "a4", "c3", "c5"],
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -23209,10 +20906,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 -----  @
   */
-  "O*@*****/@O@*@OO@/*OO@**** w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "d1",
-    "d3",
-  ],
+  "O*@*****/@O@*@OO@/*OO@**** w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["d1", "d3"],
 
   /*
     a7 -----  O ----- g7
@@ -23227,10 +20922,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "*OO@****/@O@*@OO@/O*@***** w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "d3",
-    "d1",
-  ],
+  "*OO@****/@O@*@OO@/O*@***** w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["d3", "d1"],
 
   /*
     a7 ----- d7 -----  @
@@ -23245,10 +20938,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 -----  O
   */
-  "**@*O***/@*@O@@OO/*@OO**** w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "d7",
-    "d5",
-  ],
+  "**@*O***/@*@O@@OO/*@OO**** w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["d7", "d5"],
 
   /*
     a7 ----- d7 ----- g7
@@ -23263,10 +20954,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "*@OO****/@*@O@@OO/**@*O*** w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "d5",
-    "d7",
-  ],
+  "*@OO****/@*@O@@OO/**@*O*** w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["d5", "d7"],
 
   /*
      O ----- d7 ----- g7
@@ -23281,10 +20970,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      @ ----- d1 ----- g1
   */
-  "O*****@*/@@OO@*@O/*****@OO w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "d1",
-    "d3",
-  ],
+  "O*****@*/@@OO@*@O/*****@OO w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["d1", "d3"],
 
   /*
     a7 -----  O ----- g7
@@ -23299,10 +20986,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "*****@OO/@@OO@*@O/O*****@* w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "d3",
-    "d1",
-  ],
+  "*****@OO/@@OO@*@O/O*****@* w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["d3", "d1"],
 
   /*
      @ ----- d7 ----- g7
@@ -23317,10 +21002,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      O ----- d1 ----- g1
   */
-  "****O*@*/@OO@@O@*/*****OO@ w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "d7",
-    "d5",
-  ],
+  "****O*@*/@OO@@O@*/*****OO@ w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["d7", "d5"],
 
   /*
     a7 ----- d7 ----- g7
@@ -23335,10 +21018,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "*****OO@/@OO@@O@*/****O*@* w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "d5",
-    "d7",
-  ],
+  "*****OO@/@OO@@O@*/****O*@* w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["d5", "d7"],
 
   /*
     a7 ----- d7 ----- g7
@@ -23353,10 +21034,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      @ -----  O -----  O
   */
-  "**O*@***/O@@O@*@O/***OO@** w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "a4",
-    "c4",
-  ],
+  "**O*@***/O@@O@*@O/***OO@** w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["a4", "c4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -23371,10 +21050,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "***OO@**/O@@O@*@O/**O*@*** w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "c4",
-    "a4",
-  ],
+  "***OO@**/O@@O@*@O/**O*@*** w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["c4", "a4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -23389,10 +21066,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      O -----  O -----  @
   */
-  "****@*O*/OO@*@O@@/***@OO** w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "g4",
-    "e4",
-  ],
+  "****@*O*/OO@*@O@@/***@OO** w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["g4", "e4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -23407,10 +21082,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "***@OO**/OO@*@O@@/****@*O* w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "e4",
-    "g4",
-  ],
+  "***@OO**/OO@*@O@@/****@*O* w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["e4", "g4"],
 
   /*
      @ -----  O -----  O
@@ -23425,10 +21098,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "@*O*****/@O@@OO@*/OO*****@ w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "a4",
-    "c4",
-  ],
+  "@*O*****/@O@@OO@*/OO*****@ w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["a4", "c4"],
 
   /*
     a7 -----  @ ----- g7
@@ -23443,10 +21114,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "OO*****@/@O@@OO@*/@*O***** w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "c4",
-    "a4",
-  ],
+  "OO*****@/@O@@OO@*/@*O***** w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["c4", "a4"],
 
   /*
      O -----  O -----  @
@@ -23461,10 +21130,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "@*****O*/@*@OO@@O/O@*****O w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "g4",
-    "e4",
-  ],
+  "@*****O*/@*@OO@@O/O@*****O w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["g4", "e4"],
 
   /*
     a7 -----  @ ----- g7
@@ -23479,10 +21146,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "O@*****O/@*@OO@@O/@*****O* w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "e4",
-    "g4",
-  ],
+  "O@*****O/@*@OO@@O/@*****O* w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["e4", "g4"],
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -23499,7 +21164,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "OO*****@/@*@*O*@O/@*****O* w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>["f2"],
+  "OO*****@/@*@*O*@O/@*****O* w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["f2"],
 
   /*
      @ -----  O -----  O
@@ -23514,7 +21180,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "@*****O*/@*@*O*@O/OO*****@ w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>["f2"],
+  "@*****O*/@*@*O*@O/OO*****@ w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["f2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -23529,7 +21196,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "***OO@**/O*@*@O@*/****@*O* w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>["f6"],
+  "***OO@**/O*@*@O@*/****@*O* w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["f6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -23544,7 +21212,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      @ -----  O -----  O
   */
-  "****@*O*/O*@*@O@*/***OO@** w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>["f6"],
+  "****@*O*/O*@*@O@*/***OO@** w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["f6"],
 
   /*
     a7 -----  @ ----- g7
@@ -23559,7 +21228,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "O@*****O/@O@*O*@*/@*O***** w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>["b2"],
+  "O@*****O/@O@*O*@*/@*O***** w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["b2"],
 
   /*
      O -----  O -----  @
@@ -23574,7 +21244,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "@*O*****/@O@*O*@*/O@*****O w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>["b2"],
+  "@*O*****/@O@*O*@*/O@*****O w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["b2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -23589,7 +21260,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "***@OO**/O*@O@*@*/**O*@*** w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>["b6"],
+  "***@OO**/O*@O@*@*/**O*@*** w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["b6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -23604,7 +21276,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      O -----  O -----  @
   */
-  "**O*@***/O*@O@*@*/***@OO** w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>["b6"],
+  "**O*@***/O*@O@*@*/***@OO** w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["b6"],
 
   /*
     a7 -----  O ----- g7
@@ -23619,7 +21292,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "*@OO****/@O@*@*O*/O*@***** w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>["b2"],
+  "*@OO****/@O@*@*O*/O*@***** w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["b2"],
 
   /*
     a7 ----- d7 -----  @
@@ -23634,7 +21308,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 -----  O
   */
-  "O*@*****/@O@*@*O*/*@OO**** w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>["b2"],
+  "O*@*****/@O@*@*O*/*@OO**** w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["b2"],
 
   /*
     a7 -----  O ----- g7
@@ -23649,7 +21324,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "*****OO@/@*O*@*@O/O*****@* w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>["f2"],
+  "*****OO@/@*O*@*@O/O*****@* w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["f2"],
 
   /*
      @ ----- d7 ----- g7
@@ -23664,7 +21340,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      O ----- d1 ----- g1
   */
-  "O*****@*/@*O*@*@O/*****OO@ w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>["f2"],
+  "O*****@*/@*O*@*@O/*****OO@ w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["f2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -23679,7 +21356,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "*OO@****/@*@O@*O*/**@*O*** w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>["b6"],
+  "*OO@****/@*@O@*O*/**@*O*** w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["b6"],
 
   /*
     a7 ----- d7 -----  O
@@ -23694,7 +21372,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 -----  @
   */
-  "**@*O***/@*@O@*O*/*OO@**** w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>["b6"],
+  "**@*O***/@*@O@*O*/*OO@**** w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["b6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -23709,7 +21388,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "*****@OO/@*O*@O@*/****O*@* w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>["f6"],
+  "*****@OO/@*O*@O@*/****O*@* w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["f6"],
 
   /*
      O ----- d7 ----- g7
@@ -23724,7 +21404,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      @ ----- d1 ----- g1
   */
-  "****O*@*/@*O*@O@*/*****@OO w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>["f6"],
+  "****O*@*/@*O*@O@*/*****@OO w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["f6"],
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -23741,11 +21422,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "***O****/@O@*@O**/******** w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "d1",
-    "g4",
-    "d7",
-  ],
+  "***O****/@O@*@O**/******** w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["d1", "g4", "d7"],
 
   /*
     a7 ----- d7 ----- g7
@@ -23760,11 +21438,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 -----  O
   */
-  "********/@O@*@O**/***O**** w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "d3",
-    "e4",
-    "d5",
-  ],
+  "********/@O@*@O**/***O**** w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["d3", "e4", "d5"],
 
   /*
     a7 ----- d7 ----- g7
@@ -23779,11 +21454,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "*O******/@*@O@**O/******** w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "d7",
-    "g4",
-    "d1",
-  ],
+  "*O******/@*@O@**O/******** w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["d7", "g4", "d1"],
 
   /*
     a7 ----- d7 -----  O
@@ -23798,11 +21470,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@*@O@**O/*O****** w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "d5",
-    "e4",
-    "d3",
-  ],
+  "********/@*@O@**O/*O****** w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["d5", "e4", "d3"],
 
   /*
     a7 ----- d7 ----- g7
@@ -23817,11 +21486,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "*****O**/@**O@*@O/******** w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "d1",
-    "a4",
-    "d7",
-  ],
+  "*****O**/@**O@*@O/******** w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["d1", "a4", "d7"],
 
   /*
     a7 ----- d7 ----- g7
@@ -23836,11 +21502,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      O ----- d1 ----- g1
   */
-  "********/@**O@*@O/*****O** w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "d3",
-    "c4",
-    "d5",
-  ],
+  "********/@**O@*@O/*****O** w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["d3", "c4", "d5"],
 
   /*
     a7 ----- d7 ----- g7
@@ -23855,11 +21518,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "*******O/@O**@O@*/******** w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "d7",
-    "a4",
-    "d1",
-  ],
+  "*******O/@O**@O@*/******** w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["d7", "a4", "d1"],
 
   /*
      O ----- d7 ----- g7
@@ -23874,11 +21534,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@O**@O@*/*******O w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "d5",
-    "c4",
-    "d3",
-  ],
+  "********/@O**@O@*/*******O w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["d5", "c4", "d3"],
 
   /*
     a7 ----- d7 ----- g7
@@ -23893,11 +21550,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "*****O**/**@O@*@O/******** w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "a4",
-    "d1",
-    "g4",
-  ],
+  "*****O**/**@O@*@O/******** w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["a4", "d1", "g4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -23912,11 +21566,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      O ----- d1 ----- g1
   */
-  "********/**@O@*@O/*****O** w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "c4",
-    "d3",
-    "e4",
-  ],
+  "********/**@O@*@O/*****O** w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["c4", "d3", "e4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -23931,11 +21582,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "***O****/*O@*@O@*/******** w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "g4",
-    "d1",
-    "a4",
-  ],
+  "***O****/*O@*@O@*/******** w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["g4", "d1", "a4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -23950,11 +21598,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 -----  O
   */
-  "********/*O@*@O@*/***O**** w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "e4",
-    "d3",
-    "c4",
-  ],
+  "********/*O@*@O@*/***O**** w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["e4", "d3", "c4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -23969,11 +21614,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "*******O/@O@**O@*/******** w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "a4",
-    "d7",
-    "g4",
-  ],
+  "*******O/@O@**O@*/******** w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["a4", "d7", "g4"],
 
   /*
      O ----- d7 ----- g7
@@ -23988,11 +21630,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@O@**O@*/*******O w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "c4",
-    "d5",
-    "e4",
-  ],
+  "********/@O@**O@*/*******O w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["c4", "d5", "e4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -24007,11 +21646,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "*O******/@*@O**@O/******** w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "g4",
-    "d7",
-    "a4",
-  ],
+  "*O******/@*@O**@O/******** w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["g4", "d7", "a4"],
 
   /*
     a7 ----- d7 -----  O
@@ -24026,11 +21662,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@*@O**@O/*O****** w p p 3 6 3 6 0 0 0 0 0 0 0 0 4": <String>[
-    "e4",
-    "d5",
-    "c4",
-  ],
+  "********/@*@O**@O/*O****** w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["e4", "d5", "c4"],
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -24047,17 +21680,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "********/O@O*@O@*/@O@*O*** w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>[
-    "c3",
-    "d3",
-    "e3",
-    "a4",
-    "c4",
-    "e4",
-    "c5",
-    "d5",
-    "e5",
-  ],
+  "********/O@O*@O@*/@O@*O*** w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["c3", "d3", "e3", "a4", "c4", "e4", "c5", "d5", "e5"],
 
   /*
     a7 ----- d7 ----- g7
@@ -24072,17 +21696,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "@O@*O***/O@O*@O@*/******** w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>[
-    "a1",
-    "d1",
-    "g1",
-    "c4",
-    "a4",
-    "g4",
-    "a7",
-    "d7",
-    "g7",
-  ],
+  "@O@*O***/O@O*@O@*/******** w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["a1", "d1", "g1", "c4", "a4", "g4", "a7", "d7", "g7"],
 
   /*
     a7 -----  O ----- g7
@@ -24097,17 +21712,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ -----  O
   */
-  "********/@*O@O*@O/O*@O@*** w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>[
-    "c5",
-    "d5",
-    "e5",
-    "a4",
-    "c4",
-    "e4",
-    "c3",
-    "d3",
-    "e3",
-  ],
+  "********/@*O@O*@O/O*@O@*** w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["c5", "d5", "e5", "a4", "c4", "e4", "c3", "d3", "e3"],
 
   /*
     a7 ----- d7 ----- g7
@@ -24122,17 +21728,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "O*@O@***/@*O@O*@O/******** w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>[
-    "a7",
-    "d7",
-    "g7",
-    "c4",
-    "a4",
-    "g4",
-    "a1",
-    "d1",
-    "g1",
-  ],
+  "O*@O@***/@*O@O*@O/******** w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["a7", "d7", "g7", "c4", "a4", "g4", "a1", "d1", "g1"],
 
   /*
      O -----  @ ----- g7
@@ -24147,17 +21744,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "********/O*@O@*O@/@***O*@O w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>[
-    "e3",
-    "d3",
-    "c3",
-    "g4",
-    "e4",
-    "c4",
-    "e5",
-    "d5",
-    "c5",
-  ],
+  "********/O*@O@*O@/@***O*@O w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["e3", "d3", "c3", "g4", "e4", "c4", "e5", "d5", "c5"],
 
   /*
     a7 ----- d7 ----- g7
@@ -24172,17 +21760,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "@***O*@O/O*@O@*O@/******** w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>[
-    "g1",
-    "d1",
-    "a1",
-    "e4",
-    "g4",
-    "a4",
-    "g7",
-    "d7",
-    "a7",
-  ],
+  "@***O*@O/O*@O@*O@/******** w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["g1", "d1", "a1", "e4", "g4", "a4", "g7", "d7", "a7"],
 
   /*
     a7 -----  O ----- g7
@@ -24197,17 +21776,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      O -----  @ ----- g1
   */
-  "********/@O@*O@O*/O***@O@* w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>[
-    "e5",
-    "d5",
-    "c5",
-    "g4",
-    "e4",
-    "c4",
-    "e3",
-    "d3",
-    "c3",
-  ],
+  "********/@O@*O@O*/O***@O@* w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["e5", "d5", "c5", "g4", "e4", "c4", "e3", "d3", "c3"],
 
   /*
     a7 ----- d7 ----- g7
@@ -24222,17 +21792,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "O***@O@*/@O@*O@O*/******** w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>[
-    "g7",
-    "d7",
-    "a7",
-    "e4",
-    "g4",
-    "a4",
-    "g1",
-    "d1",
-    "a1",
-  ],
+  "O***@O@*/@O@*O@O*/******** w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["g7", "d7", "a7", "e4", "g4", "a4", "g1", "d1", "a1"],
 
   /*
     a7 ----- d7 ----- g7
@@ -24247,17 +21808,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ -----  O
   */
-  "********/@*O@O*@O/**@O@*O* w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>[
-    "c5",
-    "c4",
-    "c3",
-    "d7",
-    "d5",
-    "d3",
-    "e5",
-    "e4",
-    "e3",
-  ],
+  "********/@*O@O*@O/**@O@*O* w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["c5", "c4", "c3", "d7", "d5", "d3", "e5", "e4", "e3"],
 
   /*
     a7 ----- d7 ----- g7
@@ -24272,17 +21824,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "**@O@*O*/@*O@O*@O/******** w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>[
-    "a7",
-    "a4",
-    "a1",
-    "d5",
-    "d7",
-    "d1",
-    "g7",
-    "g4",
-    "g1",
-  ],
+  "**@O@*O*/@*O@O*@O/******** w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["a7", "a4", "a1", "d5", "d7", "d1", "g7", "g4", "g1"],
 
   /*
     a7 ----- d7 ----- g7
@@ -24297,17 +21840,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      O -----  @ ----- g1
   */
-  "********/@O@*O@O*/**O*@O@* w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>[
-    "e5",
-    "e4",
-    "e3",
-    "d7",
-    "d5",
-    "d3",
-    "c5",
-    "c4",
-    "c3",
-  ],
+  "********/@O@*O@O*/**O*@O@* w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["e5", "e4", "e3", "d7", "d5", "d3", "c5", "c4", "c3"],
 
   /*
     a7 ----- d7 ----- g7
@@ -24322,17 +21856,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "**O*@O@*/@O@*O@O*/******** w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>[
-    "g7",
-    "g4",
-    "g1",
-    "d5",
-    "d7",
-    "d1",
-    "a7",
-    "a4",
-    "a1",
-  ],
+  "**O*@O@*/@O@*O@O*/******** w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["g7", "g4", "g1", "d5", "d7", "d1", "a7", "a4", "a1"],
 
   /*
     a7 -----  @ -----  O
@@ -24347,17 +21872,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/O@O*@O@*/@O@***O* w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>[
-    "c3",
-    "c4",
-    "c5",
-    "d1",
-    "d3",
-    "d5",
-    "e3",
-    "e4",
-    "e5",
-  ],
+  "********/O@O*@O@*/@O@***O* w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["c3", "c4", "c5", "d1", "d3", "d5", "e3", "e4", "e5"],
 
   /*
     a7 ----- d7 ----- g7
@@ -24372,17 +21888,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "@O@***O*/O@O*@O@*/******** w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>[
-    "a1",
-    "a4",
-    "a7",
-    "d3",
-    "d1",
-    "d7",
-    "g1",
-    "g4",
-    "g7",
-  ],
+  "@O@***O*/O@O*@O@*/******** w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["a1", "a4", "a7", "d3", "d1", "d7", "g1", "g4", "g7"],
 
   /*
      O -----  @ ----- g7
@@ -24397,17 +21904,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/O*@O@*O@/@*O***@O w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>[
-    "e3",
-    "e4",
-    "e5",
-    "d1",
-    "d3",
-    "d5",
-    "c3",
-    "c4",
-    "c5",
-  ],
+  "********/O*@O@*O@/@*O***@O w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["e3", "e4", "e5", "d1", "d3", "d5", "c3", "c4", "c5"],
 
   /*
     a7 ----- d7 ----- g7
@@ -24422,17 +21920,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "@*O***@O/O*@O@*O@/******** w p p 5 4 5 4 0 0 0 0 0 0 0 0 6": <String>[
-    "g1",
-    "g4",
-    "g7",
-    "d3",
-    "d1",
-    "d7",
-    "a1",
-    "a4",
-    "a7",
-  ],
+  "@*O***@O/O*@O@*O@/******** w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes":
+      <String>["g1", "g4", "g7", "d3", "d1", "d7", "a1", "a4", "a7"],
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -24449,16 +21938,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "**@O**@*/O@O@OOO@/@******* w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "a1",
-    "d1",
-    "g1",
-    "c3",
-    "c5",
-    "d5",
-    "a7",
-    "g7",
-  ],
+  "**@O**@*/O@O@OOO@/@******* w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["a1", "d1", "g1", "c3", "c5", "d5", "a7", "g7"],
 
   /*
     a7 ----- d7 ----- g7
@@ -24473,16 +21954,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 -----  O
   */
-  "@*******/O@O@OOO@/**@O**@* w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "c3",
-    "d3",
-    "e3",
-    "a1",
-    "a7",
-    "d7",
-    "c5",
-    "e5",
-  ],
+  "@*******/O@O@OOO@/**@O**@* w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["c3", "d3", "e3", "a1", "a7", "d7", "c5", "e5"],
 
   /*
     a7 ----- d7 ----- g7
@@ -24497,16 +21970,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "*O@***@*/O@O@O@OO/****@*** w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "a7",
-    "d7",
-    "g7",
-    "c5",
-    "c3",
-    "d3",
-    "a1",
-    "g1",
-  ],
+  "*O@***@*/O@O@O@OO/****@*** w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["a7", "d7", "g7", "c5", "c3", "d3", "a1", "g1"],
 
   /*
     a7 ----- d7 -----  O
@@ -24521,16 +21986,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "****@***/O@O@O@OO/*O@***@* w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "c5",
-    "d5",
-    "e5",
-    "a7",
-    "a1",
-    "d1",
-    "c3",
-    "e3",
-  ],
+  "****@***/O@O@O@OO/*O@***@* w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["c5", "d5", "e5", "a7", "a1", "d1", "c3", "e3"],
 
   /*
     a7 -----  @ ----- g7
@@ -24545,16 +22002,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "**@**O@*/O@OOO@O@/@******* w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "g1",
-    "d1",
-    "a1",
-    "e3",
-    "e5",
-    "d5",
-    "g7",
-    "a7",
-  ],
+  "**@**O@*/O@OOO@O@/@******* w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["g1", "d1", "a1", "e3", "e5", "d5", "g7", "a7"],
 
   /*
     a7 ----- d7 ----- g7
@@ -24569,16 +22018,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      O ----- d1 ----- g1
   */
-  "@*******/O@OOO@O@/**@**O@* w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "e3",
-    "d3",
-    "c3",
-    "g1",
-    "g7",
-    "d7",
-    "e5",
-    "c5",
-  ],
+  "@*******/O@OOO@O@/**@**O@* w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["e3", "d3", "c3", "g1", "g7", "d7", "e5", "c5"],
 
   /*
     a7 ----- d7 ----- g7
@@ -24593,16 +22034,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "**@***@O/OOO@O@O@/****@*** w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "g7",
-    "d7",
-    "a7",
-    "e5",
-    "e3",
-    "d3",
-    "g1",
-    "a1",
-  ],
+  "**@***@O/OOO@O@O@/****@*** w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["g7", "d7", "a7", "e5", "e3", "d3", "g1", "a1"],
 
   /*
      O ----- d7 ----- g7
@@ -24617,16 +22050,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "****@***/OOO@O@O@/**@***@O w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "e5",
-    "d5",
-    "c5",
-    "g7",
-    "g1",
-    "d1",
-    "e3",
-    "c3",
-  ],
+  "****@***/OOO@O@O@/**@***@O w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["e5", "d5", "c5", "g7", "g1", "d1", "e3", "c3"],
 
   /*
     a7 ----- d7 ----- g7
@@ -24641,16 +22066,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "@***@O**/O@O@O@OO/**@***** w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "a7",
-    "a4",
-    "a1",
-    "c5",
-    "e5",
-    "e4",
-    "g7",
-    "g1",
-  ],
+  "@***@O**/O@O@O@OO/**@***** w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["a7", "a4", "a1", "c5", "e5", "e4", "g7", "g1"],
 
   /*
     a7 -----  @ ----- g7
@@ -24665,16 +22082,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      O -----  @ ----- g1
   */
-  "**@*****/O@O@O@OO/@***@O** w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "c5",
-    "c4",
-    "c3",
-    "a7",
-    "g7",
-    "g4",
-    "e5",
-    "e3",
-  ],
+  "**@*****/O@O@O@OO/@***@O** w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["c5", "c4", "c3", "a7", "g7", "g4", "e5", "e3"],
 
   /*
     a7 ----- d7 ----- g7
@@ -24689,16 +22098,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "@**O@***/OOO@O@O@/******@* w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "g7",
-    "g4",
-    "g1",
-    "e5",
-    "c5",
-    "c4",
-    "a7",
-    "a1",
-  ],
+  "@**O@***/OOO@O@O@/******@* w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["g7", "g4", "g1", "e5", "c5", "c4", "a7", "a1"],
 
   /*
     a7 -----  @ ----- g7
@@ -24713,16 +22114,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ -----  O
   */
-  "******@*/OOO@O@O@/@**O@*** w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "e5",
-    "e4",
-    "e3",
-    "g7",
-    "a7",
-    "a4",
-    "c5",
-    "c3",
-  ],
+  "******@*/OOO@O@O@/@**O@*** w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["e5", "e4", "e3", "g7", "a7", "a4", "c5", "c3"],
 
   /*
     a7 ----- d7 ----- g7
@@ -24737,16 +22130,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "@***@**O/O@O@OOO@/**@***** w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "a1",
-    "a4",
-    "a7",
-    "c3",
-    "e3",
-    "e4",
-    "g1",
-    "g7",
-  ],
+  "@***@**O/O@O@OOO@/**@***** w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["a1", "a4", "a7", "c3", "e3", "e4", "g1", "g7"],
 
   /*
      O -----  @ ----- g7
@@ -24761,16 +22146,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "**@*****/O@O@OOO@/@***@**O w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "c3",
-    "c4",
-    "c5",
-    "a1",
-    "g1",
-    "g4",
-    "e3",
-    "e5",
-  ],
+  "**@*****/O@O@OOO@/@***@**O w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["c3", "c4", "c5", "a1", "g1", "g4", "e3", "e5"],
 
   /*
     a7 ----- d7 ----- g7
@@ -24785,16 +22162,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "@O**@***/O@OOO@O@/******@* w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "g1",
-    "g4",
-    "g7",
-    "e3",
-    "c3",
-    "c4",
-    "a1",
-    "a7",
-  ],
+  "@O**@***/O@OOO@O@/******@* w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["g1", "g4", "g7", "e3", "c3", "c4", "a1", "a7"],
 
   /*
     a7 -----  @ -----  O
@@ -24809,16 +22178,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "******@*/O@OOO@O@/@O**@*** w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "e3",
-    "e4",
-    "e5",
-    "g1",
-    "a1",
-    "a4",
-    "c3",
-    "c5",
-  ],
+  "******@*/O@OOO@O@/@O**@*** w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["e3", "e4", "e5", "g1", "a1", "a4", "c3", "c5"],
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -24835,17 +22196,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "*O@*****/O@O@O@OO/****@*@* w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "a1",
-    "g1",
-    "c3",
-    "c4",
-    "g4",
-    "c5",
-    "a7",
-    "d7",
-    "g7",
-  ],
+  "*O@*****/O@O@O@OO/****@*@* w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["a1", "g1", "c3", "c4", "g4", "c5", "a7", "d7", "g7"],
 
   /*
     a7 ----- d7 -----  O
@@ -24860,17 +22212,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "****@*@*/O@O@O@OO/*O@***** w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "c3",
-    "e3",
-    "a1",
-    "a4",
-    "e4",
-    "a7",
-    "c5",
-    "d5",
-    "e5",
-  ],
+  "****@*@*/O@O@O@OO/*O@***** w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["c3", "e3", "a1", "a4", "e4", "a7", "c5", "d5", "e5"],
 
   /*
     a7 -----  @ ----- g7
@@ -24885,17 +22228,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "**@O****/O@O@OOO@/@*****@* w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "a7",
-    "g7",
-    "c5",
-    "c4",
-    "g4",
-    "c3",
-    "a1",
-    "d1",
-    "g1",
-  ],
+  "**@O****/O@O@OOO@/@*****@* w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["a7", "g7", "c5", "c4", "g4", "c3", "a1", "d1", "g1"],
 
   /*
     a7 ----- d7 ----- g7
@@ -24910,17 +22244,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 -----  O
   */
-  "@*****@*/O@O@OOO@/**@O**** w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "c5",
-    "e5",
-    "a7",
-    "a4",
-    "e4",
-    "a1",
-    "c3",
-    "d3",
-    "e3",
-  ],
+  "@*****@*/O@O@OOO@/**@O**** w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["c5", "e5", "a7", "a4", "e4", "a1", "c3", "d3", "e3"],
 
   /*
     a7 ----- d7 ----- g7
@@ -24935,17 +22260,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "******@O/OOO@O@O@/**@*@*** w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "g1",
-    "a1",
-    "e3",
-    "e4",
-    "a4",
-    "e5",
-    "g7",
-    "d7",
-    "a7",
-  ],
+  "******@O/OOO@O@O@/**@*@*** w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["g1", "a1", "e3", "e4", "a4", "e5", "g7", "d7", "a7"],
 
   /*
      O ----- d7 ----- g7
@@ -24960,17 +22276,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "**@*@***/OOO@O@O@/******@O w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "e3",
-    "c3",
-    "g1",
-    "g4",
-    "c4",
-    "g7",
-    "e5",
-    "d5",
-    "c5",
-  ],
+  "**@*@***/OOO@O@O@/******@O w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["e3", "c3", "g1", "g4", "c4", "g7", "e5", "d5", "c5"],
 
   /*
     a7 -----  @ ----- g7
@@ -24985,17 +22292,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "*****O@*/O@OOO@O@/@*@***** w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "g7",
-    "a7",
-    "e5",
-    "e4",
-    "a4",
-    "e3",
-    "g1",
-    "d1",
-    "a1",
-  ],
+  "*****O@*/O@OOO@O@/@*@***** w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["g7", "a7", "e5", "e4", "a4", "e3", "g1", "d1", "a1"],
 
   /*
     a7 ----- d7 ----- g7
@@ -25010,17 +22308,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      O ----- d1 ----- g1
   */
-  "@*@*****/O@OOO@O@/*****O@* w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "e5",
-    "c5",
-    "g7",
-    "g4",
-    "c4",
-    "g1",
-    "e3",
-    "d3",
-    "c3",
-  ],
+  "@*@*****/O@OOO@O@/*****O@* w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["e5", "c5", "g7", "g4", "c4", "g1", "e3", "d3", "c3"],
 
   /*
     a7 -----  @ ----- g7
@@ -25035,17 +22324,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "***O@***/OOO@O@O@/@*****@* w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "a7",
-    "a1",
-    "c5",
-    "d5",
-    "d1",
-    "e5",
-    "g7",
-    "g4",
-    "g1",
-  ],
+  "***O@***/OOO@O@O@/@*****@* w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["a7", "a1", "c5", "d5", "d1", "e5", "g7", "g4", "g1"],
 
   /*
     a7 ----- d7 ----- g7
@@ -25060,17 +22340,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ -----  O
   */
-  "@*****@*/OOO@O@O@/***O@*** w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "c5",
-    "c3",
-    "a7",
-    "d7",
-    "d3",
-    "g7",
-    "e5",
-    "e4",
-    "e3",
-  ],
+  "@*****@*/OOO@O@O@/***O@*** w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["c5", "c3", "a7", "d7", "d3", "g7", "e5", "e4", "e3"],
 
   /*
     a7 -----  @ ----- g7
@@ -25085,17 +22356,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "****@O**/O@O@O@OO/@*@***** w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "g7",
-    "g1",
-    "e5",
-    "d5",
-    "d1",
-    "c5",
-    "a7",
-    "a4",
-    "a1",
-  ],
+  "****@O**/O@O@O@OO/@*@***** w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["g7", "g1", "e5", "d5", "d1", "c5", "a7", "a4", "a1"],
 
   /*
     a7 ----- d7 ----- g7
@@ -25110,17 +22372,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      O -----  @ ----- g1
   */
-  "@*@*****/O@O@O@OO/****@O** w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "e5",
-    "e3",
-    "g7",
-    "d7",
-    "d3",
-    "a7",
-    "c5",
-    "c4",
-    "c3",
-  ],
+  "@*@*****/O@O@O@OO/****@O** w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["e5", "e3", "g7", "d7", "d3", "a7", "c5", "c4", "c3"],
 
   /*
     a7 ----- d7 ----- g7
@@ -25135,17 +22388,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "@O******/O@OOO@O@/****@*@* w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "a1",
-    "a7",
-    "c3",
-    "d3",
-    "d7",
-    "e3",
-    "g1",
-    "g4",
-    "g7",
-  ],
+  "@O******/O@OOO@O@/****@*@* w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["a1", "a7", "c3", "d3", "d7", "e3", "g1", "g4", "g7"],
 
   /*
     a7 -----  @ -----  O
@@ -25160,17 +22404,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "****@*@*/O@OOO@O@/@O****** w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "c3",
-    "c5",
-    "a1",
-    "d1",
-    "d5",
-    "g1",
-    "e3",
-    "e4",
-    "e5",
-  ],
+  "****@*@*/O@OOO@O@/@O****** w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["c3", "c5", "a1", "d1", "d5", "g1", "e3", "e4", "e5"],
 
   /*
     a7 ----- d7 ----- g7
@@ -25185,17 +22420,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "@******O/O@O@OOO@/**@*@*** w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "g1",
-    "g7",
-    "e3",
-    "d3",
-    "d7",
-    "c3",
-    "a1",
-    "a4",
-    "a7",
-  ],
+  "@******O/O@O@OOO@/**@*@*** w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["g1", "g7", "e3", "d3", "d7", "c3", "a1", "a4", "a7"],
 
   /*
      O -----  @ ----- g7
@@ -25210,17 +22436,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "**@*@***/O@O@OOO@/@******O w p p 6 3 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "e3",
-    "e5",
-    "g1",
-    "d1",
-    "d5",
-    "a1",
-    "c3",
-    "c4",
-    "c5",
-  ],
+  "**@*@***/O@O@OOO@/@******O w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["e3", "e5", "g1", "d1", "d5", "a1", "c3", "c4", "c5"],
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -25237,7 +22454,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 -----  @
   */
-  "*O****OO/O@O@O*@O/O*@@**@* b p p 8 1 6 2 0 0 0 0 0 0 0 0 8": <String>["c5"],
+  "*O****OO/O@O@O*@O/O*@@**@* b p p 8 1 6 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["c5"],
 
   /*
      O ----- d7 -----  O
@@ -25252,7 +22470,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "O*@@**@*/O@O@O*@O/*O****OO b p p 8 1 6 2 0 0 0 0 0 0 0 0 8": <String>["a7"],
+  "O*@@**@*/O@O@O*@O/*O****OO b p p 8 1 6 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["a7"],
 
   /*
     a7 ----- d7 -----  @
@@ -25267,7 +22486,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "***O*OO*/O@O@OO@*/*@@*O*@* b p p 8 1 6 2 0 0 0 0 0 0 0 0 8": <String>["c3"],
+  "***O*OO*/O@O@OO@*/*@@*O*@* b p p 8 1 6 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["c3"],
 
   /*
     a7 ----- d7 ----- g7
@@ -25282,7 +22502,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      O ----- d1 -----  O
   */
-  "*@@*O*@*/O@O@OO@*/***O*OO* b p p 8 1 6 2 0 0 0 0 0 0 0 0 8": <String>["a1"],
+  "*@@*O*@*/O@O@OO@*/***O*OO* b p p 8 1 6 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["a1"],
 
   /*
     a7 -----  O ----- g7
@@ -25297,7 +22518,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      @ ----- d1 ----- g1
   */
-  "*OO****O/OO@*O@O@/O*@**@@* b p p 8 1 6 2 0 0 0 0 0 0 0 0 8": <String>["e5"],
+  "*OO****O/OO@*O@O@/O*@**@@* b p p 8 1 6 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["e5"],
 
   /*
      O ----- d7 -----  O
@@ -25312,7 +22534,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "O*@**@@*/OO@*O@O@/*OO****O b p p 8 1 6 2 0 0 0 0 0 0 0 0 8": <String>["g7"],
+  "O*@**@@*/OO@*O@O@/*OO****O b p p 8 1 6 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["g7"],
 
   /*
      @ ----- d7 ----- g7
@@ -25327,7 +22550,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "**OO*O**/O*@OO@O@/**@*O*@@ b p p 8 1 6 2 0 0 0 0 0 0 0 0 8": <String>["e3"],
+  "**OO*O**/O*@OO@O@/**@*O*@@ b p p 8 1 6 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["e3"],
 
   /*
     a7 ----- d7 ----- g7
@@ -25342,7 +22566,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      O ----- d1 -----  O
   */
-  "**@*O*@@/O*@OO@O@/**OO*O** b p p 8 1 6 2 0 0 0 0 0 0 0 0 8": <String>["g1"],
+  "**@*O*@@/O*@OO@O@/**OO*O** b p p 8 1 6 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["g1"],
 
   /*
     a7 -----  @ ----- g7
@@ -25357,7 +22582,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      @ -----  @ ----- g1
   */
-  "OO*O****/@OO@O@O*/@*O*@@** b p p 8 1 6 2 0 0 0 0 0 0 0 0 8": <String>["e5"],
+  "OO*O****/@OO@O@O*/@*O*@@** b p p 8 1 6 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["e5"],
 
   /*
     a7 -----  O -----  O
@@ -25372,7 +22598,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 -----  O
   */
-  "@*O*@@**/@OO@O@O*/OO*O**** b p p 8 1 6 2 0 0 0 0 0 0 0 0 8": <String>["g7"],
+  "@*O*@@**/@OO@O@O*/OO*O**** b p p 8 1 6 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["g7"],
 
   /*
     a7 -----  @ ----- g7
@@ -25387,7 +22614,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ -----  @
   */
-  "O****O*O/@*O@O@OO/@**@@*O* b p p 8 1 6 2 0 0 0 0 0 0 0 0 8": <String>["c5"],
+  "O****O*O/@*O@O@OO/@**@@*O* b p p 8 1 6 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["c5"],
 
   /*
      O -----  O ----- g7
@@ -25402,7 +22630,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      O ----- d1 ----- g1
   */
-  "@**@@*O*/@*O@O@OO/O****O*O b p p 8 1 6 2 0 0 0 0 0 0 0 0 8": <String>["a7"],
+  "@**@@*O*/@*O@O@OO/O****O*O b p p 8 1 6 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["a7"],
 
   /*
      @ -----  @ ----- g7
@@ -25417,7 +22646,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "*O*OO***/O@OO@*O@/@*O*@**@ b p p 8 1 6 2 0 0 0 0 0 0 0 0 8": <String>["e3"],
+  "*O*OO***/O@OO@*O@/@*O*@**@ b p p 8 1 6 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["e3"],
 
   /*
     a7 ----- d7 -----  O
@@ -25432,7 +22662,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O -----  O
   */
-  "@*O*@**@/O@OO@*O@/*O*OO*** b p p 8 1 6 2 0 0 0 0 0 0 0 0 8": <String>["g1"],
+  "@*O*@**@/O@OO@*O@/*O*OO*** b p p 8 1 6 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["g1"],
 
   /*
     a7 -----  @ -----  @
@@ -25447,7 +22678,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "****OO*O/O@O*@OO@/@@**@*O* b p p 8 1 6 2 0 0 0 0 0 0 0 0 8": <String>["c3"],
+  "****OO*O/O@O*@OO@/@@**@*O* b p p 8 1 6 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["c3"],
 
   /*
      O ----- d7 ----- g7
@@ -25462,7 +22694,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      O -----  O ----- g1
   */
-  "@@**@*O*/O@O*@OO@/****OO*O b p p 8 1 6 2 0 0 0 0 0 0 0 0 8": <String>["a1"],
+  "@@**@*O*/O@O*@OO@/****OO*O b p p 8 1 6 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["a1"],
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -25479,12 +22712,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "*****O**/O@O*@OO@/****@*** b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "c4",
-    "e4",
-    "d5",
-    "d7",
-  ],
+  "*****O**/O@O*@OO@/****@*** b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["c4", "e4", "d5", "d7"],
 
   /*
     a7 ----- d7 ----- g7
@@ -25499,12 +22728,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      O ----- d1 ----- g1
   */
-  "****@***/O@O*@OO@/*****O** b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "a4",
-    "g4",
-    "d7",
-    "d5",
-  ],
+  "****@***/O@O*@OO@/*****O** b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["a4", "g4", "d7", "d5"],
 
   /*
     a7 -----  @ ----- g7
@@ -25519,12 +22744,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "*******O/@*O@O@OO/@******* b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "c4",
-    "e4",
-    "d3",
-    "d1",
-  ],
+  "*******O/@*O@O@OO/@******* b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["c4", "e4", "d3", "d1"],
 
   /*
      O ----- d7 ----- g7
@@ -25539,12 +22760,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "@*******/@*O@O@OO/*******O b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "a4",
-    "g4",
-    "d1",
-    "d3",
-  ],
+  "@*******/@*O@O@OO/*******O b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["a4", "g4", "d1", "d3"],
 
   /*
     a7 ----- d7 ----- g7
@@ -25559,12 +22776,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "***O****/O@OO@*O@/****@*** b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "e4",
-    "c4",
-    "d5",
-    "d7",
-  ],
+  "***O****/O@OO@*O@/****@*** b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["e4", "c4", "d5", "d7"],
 
   /*
     a7 ----- d7 ----- g7
@@ -25579,12 +22792,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 -----  O
   */
-  "****@***/O@OO@*O@/***O**** b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "g4",
-    "a4",
-    "d7",
-    "d5",
-  ],
+  "****@***/O@OO@*O@/***O**** b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["g4", "a4", "d7", "d5"],
 
   /*
     a7 -----  @ ----- g7
@@ -25599,12 +22808,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "*O******/@OO@O@O*/@******* b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "e4",
-    "c4",
-    "d3",
-    "d1",
-  ],
+  "*O******/@OO@O@O*/@******* b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["e4", "c4", "d3", "d1"],
 
   /*
     a7 ----- d7 -----  O
@@ -25619,12 +22824,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "@*******/@OO@O@O*/*O****** b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "g4",
-    "a4",
-    "d1",
-    "d3",
-  ],
+  "@*******/@OO@O@O*/*O****** b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["g4", "a4", "d1", "d3"],
 
   /*
     a7 ----- d7 ----- g7
@@ -25639,12 +22840,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "*******O/O@O@O*@O/******@* b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "d5",
-    "d3",
-    "e4",
-    "g4",
-  ],
+  "*******O/O@O@O*@O/******@* b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["d5", "d3", "e4", "g4"],
 
   /*
      O ----- d7 ----- g7
@@ -25659,12 +22856,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "******@*/O@O@O*@O/*******O b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "d7",
-    "d1",
-    "g4",
-    "e4",
-  ],
+  "******@*/O@O@O*@O/*******O b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["d7", "d1", "g4", "e4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -25679,12 +22872,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "*O******/OO@*O@O@/**@***** b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "d5",
-    "d3",
-    "c4",
-    "a4",
-  ],
+  "*O******/OO@*O@O@/**@***** b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["d5", "d3", "c4", "a4"],
 
   /*
     a7 ----- d7 -----  O
@@ -25699,12 +22888,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "**@*****/OO@*O@O@/*O****** b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "d7",
-    "d1",
-    "a4",
-    "c4",
-  ],
+  "**@*****/OO@*O@O@/*O****** b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["d7", "d1", "a4", "c4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -25719,12 +22904,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "*****O**/O@O@OO@*/******@* b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "d3",
-    "d5",
-    "e4",
-    "g4",
-  ],
+  "*****O**/O@O@OO@*/******@* b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["d3", "d5", "e4", "g4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -25739,12 +22920,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      O ----- d1 ----- g1
   */
-  "******@*/O@O@OO@*/*****O** b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "d1",
-    "d7",
-    "g4",
-    "e4",
-  ],
+  "******@*/O@O@OO@*/*****O** b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["d1", "d7", "g4", "e4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -25759,12 +22936,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "***O****/O*@OO@O@/**@***** b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "d3",
-    "d5",
-    "c4",
-    "a4",
-  ],
+  "***O****/O*@OO@O@/**@***** b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["d3", "d5", "c4", "a4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -25779,12 +22952,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 -----  O
   */
-  "**@*****/O*@OO@O@/***O**** b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "d1",
-    "d7",
-    "a4",
-    "c4",
-  ],
+  "**@*****/O*@OO@O@/***O**** b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["d1", "d7", "a4", "c4"],
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -25801,7 +22970,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "@O@@O*@*/O@O*@OO@/O*O***** b p p 8 1 7 2 0 0 0 0 0 0 0 0 8": <String>["g7"],
+  "@O@@O*@*/O@O*@OO@/O*O***** b p p 8 1 7 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["g7"],
 
   /*
     a7 -----  @ -----  O
@@ -25816,7 +22986,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O -----  @
   */
-  "O*O*****/O@O*@OO@/@O@@O*@* b p p 8 1 7 2 0 0 0 0 0 0 0 0 8": <String>["e5"],
+  "O*O*****/O@O*@OO@/@O@@O*@* b p p 8 1 7 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["e5"],
 
   /*
     a7 ----- d7 ----- g7
@@ -25831,7 +23002,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "O@@O@*@*/@*O@O@OO/**O*O*** b p p 8 1 7 2 0 0 0 0 0 0 0 0 8": <String>["g1"],
+  "O@@O@*@*/@*O@O@OO/**O*O*** b p p 8 1 7 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["g1"],
 
   /*
     a7 -----  O -----  @
@@ -25846,7 +23018,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ -----  O
   */
-  "**O*O***/@*O@O@OO/O@@O@*@* b p p 8 1 7 2 0 0 0 0 0 0 0 0 8": <String>["e3"],
+  "**O*O***/@*O@O@OO/O@@O@*@* b p p 8 1 7 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["e3"],
 
   /*
     a7 -----  O ----- g7
@@ -25861,7 +23034,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "@*@*O@@O/O@OO@*O@/O*****O* b p p 8 1 7 2 0 0 0 0 0 0 0 0 8": <String>["a7"],
+  "@*@*O@@O/O@OO@*O@/O*****O* b p p 8 1 7 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["a7"],
 
   /*
      O -----  @ ----- g7
@@ -25876,7 +23050,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      @ -----  O ----- g1
   */
-  "O*****O*/O@OO@*O@/@*@*O@@O b p p 8 1 7 2 0 0 0 0 0 0 0 0 8": <String>["c5"],
+  "O*****O*/O@OO@*O@/@*@*O@@O b p p 8 1 7 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["c5"],
 
   /*
     a7 ----- d7 ----- g7
@@ -25891,7 +23066,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "O*@*@O@@/@OO@O@O*/****O*O* b p p 8 1 7 2 0 0 0 0 0 0 0 0 8": <String>["a1"],
+  "O*@*@O@@/@OO@O@O*/****O*O* b p p 8 1 7 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["a1"],
 
   /*
      @ -----  O ----- g7
@@ -25906,7 +23082,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      O -----  @ ----- g1
   */
-  "****O*O*/@OO@O@O*/O*@*@O@@ b p p 8 1 7 2 0 0 0 0 0 0 0 0 8": <String>["c3"],
+  "****O*O*/@OO@O@O*/O*@*@O@@ b p p 8 1 7 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["c3"],
 
   /*
     a7 ----- d7 ----- g7
@@ -25921,7 +23098,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "@*@O@@O*/O@O@O*@O/**O*O*** b p p 8 1 7 2 0 0 0 0 0 0 0 0 8": <String>["g1"],
+  "@*@O@@O*/O@O@O*@O/**O*O*** b p p 8 1 7 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["g1"],
 
   /*
     a7 -----  @ ----- g7
@@ -25936,7 +23114,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      @ -----  @ -----  O
   */
-  "**O*O***/O@O@O*@O/@*@O@@O* b p p 8 1 7 2 0 0 0 0 0 0 0 0 8": <String>["e3"],
+  "**O*O***/O@O@O*@O/@*@O@@O* b p p 8 1 7 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["e3"],
 
   /*
     a7 ----- d7 ----- g7
@@ -25951,7 +23130,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "@*O@@O@*/OO@*O@O@/****O*O* b p p 8 1 7 2 0 0 0 0 0 0 0 0 8": <String>["a1"],
+  "@*O@@O@*/OO@*O@O@/****O*O* b p p 8 1 7 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["a1"],
 
   /*
     a7 -----  @ ----- g7
@@ -25966,7 +23146,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      O -----  @ -----  @
   */
-  "****O*O*/OO@*O@O@/@*O@@O@* b p p 8 1 7 2 0 0 0 0 0 0 0 0 8": <String>["c3"],
+  "****O*O*/OO@*O@O@/@*O@@O@* b p p 8 1 7 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["c3"],
 
   /*
     a7 -----  O ----- g7
@@ -25981,7 +23162,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "@O@*@*O@/O@O@OO@*/O*O***** b p p 8 1 7 2 0 0 0 0 0 0 0 0 8": <String>["g7"],
+  "@O@*@*O@/O@O@OO@*/O*O***** b p p 8 1 7 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["g7"],
 
   /*
      @ -----  @ -----  O
@@ -25996,7 +23178,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "O*O*****/O@O@OO@*/@O@*@*O@ b p p 8 1 7 2 0 0 0 0 0 0 0 0 8": <String>["e5"],
+  "O*O*****/O@O@OO@*/@O@*@*O@ b p p 8 1 7 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["e5"],
 
   /*
     a7 -----  O ----- g7
@@ -26011,7 +23194,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "@@O*@*@O/O*@OO@O@/O*****O* b p p 8 1 7 2 0 0 0 0 0 0 0 0 8": <String>["a7"],
+  "@@O*@*@O/O*@OO@O@/O*****O* b p p 8 1 7 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["a7"],
 
   /*
      O -----  @ -----  @
@@ -26026,7 +23210,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "O*****O*/O*@OO@O@/@@O*@*@O b p p 8 1 7 2 0 0 0 0 0 0 0 0 8": <String>["c5"],
+  "O*****O*/O*@OO@O@/@@O*@*@O b p p 8 1 7 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
+      <String>["c5"],
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -26043,11 +23228,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "***O@@**/@*O@O**O/****O*** b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "b4",
-    "g4",
-    "d5",
-  ],
+  "***O@@**/@*O@O**O/****O*** b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["b4", "g4", "d5"],
 
   /*
     a7 ----- d7 ----- g7
@@ -26062,11 +23244,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      @ -----  @ -----  O
   */
-  "****O***/@*O@O**O/***O@@** b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "b4",
-    "e4",
-    "d7",
-  ],
+  "****O***/@*O@O**O/***O@@** b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["b4", "e4", "d7"],
 
   /*
     a7 -----  O ----- g7
@@ -26081,11 +23260,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "@O*****@/O@O*@O**/O******* b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "b4",
-    "g4",
-    "d3",
-  ],
+  "@O*****@/O@O*@O**/O******* b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["b4", "g4", "d3"],
 
   /*
      @ -----  @ -----  O
@@ -26100,11 +23276,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "O*******/O@O*@O**/@O*****@ b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "b4",
-    "e4",
-    "d1",
-  ],
+  "O*******/O@O*@O**/@O*****@ b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["b4", "e4", "d1"],
 
   /*
     a7 ----- d7 ----- g7
@@ -26119,11 +23292,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O ----- g1
   */
-  "***@@O**/@O**O@O*/****O*** b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "f4",
-    "a4",
-    "d5",
-  ],
+  "***@@O**/@O**O@O*/****O*** b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["f4", "a4", "d5"],
 
   /*
     a7 ----- d7 ----- g7
@@ -26138,11 +23308,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      O -----  @ -----  @
   */
-  "****O***/@O**O@O*/***@@O** b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "f4",
-    "c4",
-    "d7",
-  ],
+  "****O***/@O**O@O*/***@@O** b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["f4", "c4", "d7"],
 
   /*
     a7 -----  O ----- g7
@@ -26157,11 +23324,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "@@*****O/O**O@*O@/O******* b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "f4",
-    "a4",
-    "d3",
-  ],
+  "@@*****O/O**O@*O@/O******* b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["f4", "a4", "d3"],
 
   /*
      O -----  @ -----  @
@@ -26176,11 +23340,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "O*******/O**O@*O@/@@*****O b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "f4",
-    "c4",
-    "d1",
-  ],
+  "O*******/O**O@*O@/@@*****O b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["f4", "c4", "d1"],
 
   /*
     a7 ----- d7 ----- g7
@@ -26195,11 +23356,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "*****O@@/*O@*O@O*/******O* b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "d6",
-    "d1",
-    "e4",
-  ],
+  "*****O@@/*O@*O@O*/******O* b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["d6", "d1", "e4"],
 
   /*
      @ ----- d7 ----- g7
@@ -26214,11 +23372,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      O ----- d1 ----- g1
   */
-  "******O*/*O@*O@O*/*****O@@ b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "d6",
-    "d3",
-    "g4",
-  ],
+  "******O*/*O@*O@O*/*****O@@ b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["d6", "d3", "g4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -26233,11 +23388,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "*@@O****/**O@O*@O/**O***** b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "d6",
-    "d1",
-    "c4",
-  ],
+  "*@@O****/**O@O*@O/**O***** b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["d6", "d1", "c4"],
 
   /*
     a7 ----- d7 -----  @
@@ -26252,11 +23404,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 -----  O
   */
-  "**O*****/**O@O*@O/*@@O**** b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "d6",
-    "d3",
-    "a4",
-  ],
+  "**O*****/**O@O*@O/*@@O**** b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["d6", "d3", "a4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -26271,11 +23420,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "*****@@O/O*@O**O@/******O* b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "d2",
-    "d7",
-    "e4",
-  ],
+  "*****@@O/O*@O**O@/******O* b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["d2", "d7", "e4"],
 
   /*
      O ----- d7 ----- g7
@@ -26290,11 +23436,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      @ ----- d1 ----- g1
   */
-  "******O*/O*@O**O@/*****@@O b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "d2",
-    "d5",
-    "g4",
-  ],
+  "******O*/O*@O**O@/*****@@O b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["d2", "d5", "g4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -26309,11 +23452,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "*O@@****/O@O**O@*/**O***** b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "d2",
-    "d7",
-    "c4",
-  ],
+  "*O@@****/O@O**O@*/**O***** b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["d2", "d7", "c4"],
 
   /*
     a7 ----- d7 -----  O
@@ -26328,11 +23468,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 -----  @
   */
-  "**O*****/O@O**O@*/*O@@**** b p p 5 4 4 5 0 0 0 0 0 0 0 0 5": <String>[
-    "d2",
-    "d5",
-    "a4",
-  ],
+  "**O*****/O@O**O@*/*O@@**** b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes":
+      <String>["d2", "d5", "a4"],
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -26349,7 +23486,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "O@***OOO/@*O*@*O*/@*****@* w p p 6 3 5 3 0 0 0 0 0 0 0 0 7": <String>["g4"],
+  "O@***OOO/@*O*@*O*/@*****@* w p p 6 3 5 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["g4"],
 
   /*
      O -----  O -----  @
@@ -26364,7 +23502,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      O ----- d1 ----- g1
   */
-  "@*****@*/@*O*@*O*/O@***OOO w p p 6 3 5 3 0 0 0 0 0 0 0 0 7": <String>["e4"],
+  "@*****@*/@*O*@*O*/O@***OOO w p p 6 3 5 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["e4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -26379,7 +23518,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "***@OOOO/@*O*@*O*/****@*@* w p p 6 3 5 3 0 0 0 0 0 0 0 0 7": <String>["g4"],
+  "***@OOOO/@*O*@*O*/****@*@* w p p 6 3 5 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["g4"],
 
   /*
      O ----- d7 ----- g7
@@ -26394,7 +23534,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      O -----  O -----  @
   */
-  "****@*@*/@*O*@*O*/***@OOOO w p p 6 3 5 3 0 0 0 0 0 0 0 0 7": <String>["e4"],
+  "****@*@*/@*O*@*O*/***@OOOO w p p 6 3 5 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["e4"],
 
   /*
     a7 -----  @ ----- g7
@@ -26409,7 +23550,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "OOOO***@/@*O*@*O*/@*@***** w p p 6 3 5 3 0 0 0 0 0 0 0 0 7": <String>["a4"],
+  "OOOO***@/@*O*@*O*/@*@***** w p p 6 3 5 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["a4"],
 
   /*
      @ -----  O -----  O
@@ -26424,7 +23566,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 -----  O
   */
-  "@*@*****/@*O*@*O*/OOOO***@ w p p 6 3 5 3 0 0 0 0 0 0 0 0 7": <String>["c4"],
+  "@*@*****/@*O*@*O*/OOOO***@ w p p 6 3 5 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["c4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -26439,7 +23582,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "*OOOO@**/@*O*@*O*/**@*@*** w p p 6 3 5 3 0 0 0 0 0 0 0 0 7": <String>["a4"],
+  "*OOOO@**/@*O*@*O*/**@*@*** w p p 6 3 5 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["a4"],
 
   /*
     a7 ----- d7 -----  O
@@ -26454,7 +23598,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      @ -----  O -----  O
   */
-  "**@*@***/@*O*@*O*/*OOOO@** w p p 6 3 5 3 0 0 0 0 0 0 0 0 7": <String>["c4"],
+  "**@*@***/@*O*@*O*/*OOOO@** w p p 6 3 5 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["c4"],
 
   /*
     a7 -----  @ ----- g7
@@ -26469,7 +23614,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "OOO@***O/O*@*O*@*/@*@***** w p p 6 3 5 3 0 0 0 0 0 0 0 0 7": <String>["d1"],
+  "OOO@***O/O*@*O*@*/@*@***** w p p 6 3 5 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["d1"],
 
   /*
      O -----  O -----  O
@@ -26484,7 +23630,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 -----  @
   */
-  "@*@*****/O*@*O*@*/OOO@***O w p p 6 3 5 3 0 0 0 0 0 0 0 0 7": <String>["d3"],
+  "@*@*****/O*@*O*@*/OOO@***O w p p 6 3 5 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["d3"],
 
   /*
     a7 -----  @ ----- g7
@@ -26499,7 +23646,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "OO***@OO/O*@*O*@*/@*****@* w p p 6 3 5 3 0 0 0 0 0 0 0 0 7": <String>["d1"],
+  "OO***@OO/O*@*O*@*/@*****@* w p p 6 3 5 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["d1"],
 
   /*
      O -----  O -----  O
@@ -26514,7 +23662,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      @ ----- d1 ----- g1
   */
-  "@*****@*/O*@*O*@*/OO***@OO w p p 6 3 5 3 0 0 0 0 0 0 0 0 7": <String>["d3"],
+  "@*****@*/O*@*O*@*/OO***@OO w p p 6 3 5 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["d3"],
 
   /*
     a7 ----- d7 ----- g7
@@ -26529,7 +23678,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "*@OOOO**/O*@*O*@*/**@*@*** w p p 6 3 5 3 0 0 0 0 0 0 0 0 7": <String>["d7"],
+  "*@OOOO**/O*@*O*@*/**@*@*** w p p 6 3 5 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["d7"],
 
   /*
     a7 ----- d7 -----  @
@@ -26544,7 +23694,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      O -----  O -----  O
   */
-  "**@*@***/O*@*O*@*/*@OOOO** w p p 6 3 5 3 0 0 0 0 0 0 0 0 7": <String>["d5"],
+  "**@*@***/O*@*O*@*/*@OOOO** w p p 6 3 5 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["d5"],
 
   /*
     a7 ----- d7 ----- g7
@@ -26559,7 +23710,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "***OOOO@/O*@*O*@*/****@*@* w p p 6 3 5 3 0 0 0 0 0 0 0 0 7": <String>["d7"],
+  "***OOOO@/O*@*O*@*/****@*@* w p p 6 3 5 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["d7"],
 
   /*
      @ ----- d7 ----- g7
@@ -26574,7 +23726,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      O -----  O -----  O
   */
-  "****@*@*/O*@*O*@*/***OOOO@ w p p 6 3 5 3 0 0 0 0 0 0 0 0 7": <String>["d5"],
+  "****@*@*/O*@*O*@*/***OOOO@ w p p 6 3 5 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["d5"],
 
   /////////////////////////////////// Ben //////////////////////////////////////
 
@@ -26591,16 +23744,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  O -----  O
   */
-  "***@**@*/OO@@O*O@/*@OOO*** b p p 7 2 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "a7",
-    "d7",
-    "c5",
-    "d5",
-    "e5",
-    "e4",
-    "c3",
-    "b2",
-  ],
+  "***@**@*/OO@@O*O@/*@OOO*** b p p 7 2 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["a7", "d7", "c5", "d5", "e5", "e4", "c3", "b2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -26615,16 +23760,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 -----  @
   */
-  "*@OOO***/OO@@O*O@/***@**@* b p p 7 2 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "c5",
-    "d5",
-    "a7",
-    "d7",
-    "g7",
-    "g4",
-    "a1",
-    "b2",
-  ],
+  "*@OOO***/OO@@O*O@/***@**@* b p p 7 2 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["c5", "d5", "a7", "d7", "g7", "g4", "a1", "b2"],
 
   /*
     a7 -----  O -----  O
@@ -26639,16 +23776,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 -----  @
   */
-  "*@****@*/O@@OO@O*/OOO@**** b p p 7 2 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "a1",
-    "d1",
-    "c3",
-    "d3",
-    "e3",
-    "e4",
-    "c5",
-    "b6",
-  ],
+  "*@****@*/O@@OO@O*/OOO@**** b p p 7 2 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["a1", "d1", "c3", "d3", "e3", "e4", "c5", "b6"],
 
   /*
     a7 ----- d7 -----  @
@@ -26663,16 +23792,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "OOO@****/O@@OO@O*/*@****@* b p p 7 2 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "c3",
-    "d3",
-    "a1",
-    "d1",
-    "g1",
-    "g4",
-    "a7",
-    "b6",
-  ],
+  "OOO@****/O@@OO@O*/*@****@* b p p 7 2 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["c3", "d3", "a1", "d1", "g1", "g4", "a7", "b6"],
 
   /*
      @ ----- d7 ----- g7
@@ -26687,16 +23808,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      O -----  O ----- g1
   */
-  "**@**@**/O@O*O@@O/****OOO@ b p p 7 2 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "g7",
-    "d7",
-    "e5",
-    "d5",
-    "c5",
-    "c4",
-    "e3",
-    "f2",
-  ],
+  "**@**@**/O@O*O@@O/****OOO@ b p p 7 2 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["g7", "d7", "e5", "d5", "c5", "c4", "e3", "f2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -26711,16 +23824,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      @ ----- d1 ----- g1
   */
-  "****OOO@/O@O*O@@O/**@**@** b p p 7 2 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "e5",
-    "d5",
-    "g7",
-    "d7",
-    "a7",
-    "a4",
-    "g1",
-    "f2",
-  ],
+  "****OOO@/O@O*O@@O/**@**@** b p p 7 2 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["e5", "d5", "g7", "d7", "a7", "a4", "g1", "f2"],
 
   /*
      O -----  O ----- g7
@@ -26735,16 +23840,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      @ ----- d1 ----- g1
   */
-  "**@****@/O*O@OO@@/O****@OO b p p 7 2 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "g1",
-    "d1",
-    "e3",
-    "d3",
-    "c3",
-    "c4",
-    "e5",
-    "f6",
-  ],
+  "**@****@/O*O@OO@@/O****@OO b p p 7 2 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["g1", "d1", "e3", "d3", "c3", "c4", "e5", "f6"],
 
   /*
      @ ----- d7 ----- g7
@@ -26759,16 +23856,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "O****@OO/O*O@OO@@/**@****@ b p p 7 2 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "e3",
-    "d3",
-    "g1",
-    "d1",
-    "a1",
-    "a4",
-    "g7",
-    "f6",
-  ],
+  "O****@OO/O*O@OO@@/**@****@ b p p 7 2 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["e3", "d3", "g1", "d1", "a1", "a4", "g7", "f6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -26783,16 +23872,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      O -----  O -----  @
   */
-  "@****@**/O@OO@@O*/***@OOO* b p p 7 2 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "g7",
-    "g4",
-    "e5",
-    "e4",
-    "e3",
-    "d3",
-    "c5",
-    "b6",
-  ],
+  "@****@**/O@OO@@O*/***@OOO* b p p 7 2 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["g7", "g4", "e5", "e4", "e3", "d3", "c5", "b6"],
 
   /*
     a7 -----  @ ----- g7
@@ -26807,16 +23888,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      @ ----- d1 ----- g1
   */
-  "***@OOO*/O@OO@@O*/@****@** b p p 7 2 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "e5",
-    "e4",
-    "g7",
-    "g4",
-    "g1",
-    "d1",
-    "a7",
-    "b6",
-  ],
+  "***@OOO*/O@OO@@O*/@****@** b p p 7 2 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["e5", "e4", "g7", "g4", "g1", "d1", "a7", "b6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -26831,16 +23904,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
      @ -----  O -----  O
   */
-  "@**@****/O*O@@OO@/**OOO@** b p p 7 2 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "a7",
-    "a4",
-    "c5",
-    "c4",
-    "c3",
-    "d3",
-    "e5",
-    "f6",
-  ],
+  "@**@****/O*O@@OO@/**OOO@** b p p 7 2 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["a7", "a4", "c5", "c4", "c3", "d3", "e5", "f6"],
 
   /*
     a7 -----  @ ----- g7
@@ -26855,16 +23920,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 -----  @
   */
-  "**OOO@**/O*O@@OO@/@**@**** b p p 7 2 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "c5",
-    "c4",
-    "a7",
-    "a4",
-    "a1",
-    "d1",
-    "g7",
-    "f6",
-  ],
+  "**OOO@**/O*O@@OO@/@**@**** b p p 7 2 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["c5", "c4", "a7", "a4", "a1", "d1", "g7", "f6"],
 
   /*
      O -----  O -----  @
@@ -26879,16 +23936,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "****@**@/@OO@O*O@/O@****OO b p p 7 2 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "g1",
-    "g4",
-    "e3",
-    "e4",
-    "e5",
-    "d5",
-    "c3",
-    "b2",
-  ],
+  "****@**@/@OO@O*O@/O@****OO b p p 7 2 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["g1", "g4", "e3", "e4", "e5", "d5", "c3", "b2"],
 
   /*
      @ ----- d7 ----- g7
@@ -26903,16 +23952,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "O@****OO/@OO@O*O@/****@**@ b p p 7 2 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "e3",
-    "e4",
-    "g1",
-    "g4",
-    "g7",
-    "d7",
-    "a1",
-    "b2",
-  ],
+  "O@****OO/@OO@O*O@/****@**@ b p p 7 2 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["e3", "e4", "g1", "g4", "g7", "d7", "a1", "b2"],
 
   /*
      @ -----  O -----  O
@@ -26927,16 +23968,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "*@**@***/@@O*O@OO/OOO****@ b p p 7 2 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "a1",
-    "a4",
-    "c3",
-    "c4",
-    "c5",
-    "d5",
-    "e3",
-    "f2",
-  ],
+  "*@**@***/@@O*O@OO/OOO****@ b p p 7 2 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["a1", "a4", "c3", "c4", "c5", "d5", "e3", "f2"],
 
   /*
     a7 ----- d7 -----  @
@@ -26951,16 +23984,8 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ ----- g1
   */
-  "OOO****@/@@O*O@OO/*@**@*** b p p 7 2 6 3 0 0 0 0 0 0 0 0 7": <String>[
-    "c3",
-    "c4",
-    "a1",
-    "a4",
-    "a7",
-    "d7",
-    "g1",
-    "f2",
-  ],
+  "OOO****@/@@O*O@OO/*@**@*** b p p 7 2 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
+      <String>["c3", "c4", "a1", "a4", "a7", "d7", "g1", "f2"],
 };
 
 Map<String, List<String>> elFiljaFenToBestMoves = <String, List<String>>{
@@ -26977,16 +24002,8 @@ Map<String, List<String>> elFiljaFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/********/******** w p p 0 12 0 12 0 0 0 0 0 0 0 0 1": <String>[
-    "d2",
-    "b4",
-    "d6",
-    "f4",
-    "b2",
-    "b6",
-    "f6",
-    "f2",
-  ],
+  "********/********/******** w p p 0 12 0 12 0 0 -1 -1 -1 -1 0 0 1 ids:nodes":
+      <String>["d2", "b4", "d6", "f4", "b2", "b6", "f6", "f2"],
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -27003,19 +24020,20 @@ Map<String, List<String>> elFiljaFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "***@****/O*@*O***/******** w p p 2 10 2 10 0 0 0 0 0 0 0 0 3": <String>[
-    "e4",
-    "g4",
-    "e5",
-    "b6",
-    "f6",
-    "b2",
-    "f2",
-    "d3",
-    "d5",
-    "d7",
-    "b4",
-  ],
+  "***@****/O*@*O***/******** w p p 2 10 2 10 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>[
+        "e4",
+        "g4",
+        "e5",
+        "b6",
+        "f6",
+        "b2",
+        "f2",
+        "d3",
+        "d5",
+        "d7",
+        "b4",
+      ],
 
   /*
     a7 ----- d7 ----- g7
@@ -27030,19 +24048,20 @@ Map<String, List<String>> elFiljaFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 -----  @
   */
-  "********/O*@*O***/***@**** w p p 2 10 2 10 0 0 0 0 0 0 0 0 3": <String>[
-    "g4",
-    "e4",
-    "g7",
-    "b6",
-    "f6",
-    "b2",
-    "f2",
-    "d1",
-    "d7",
-    "d5",
-    "b4",
-  ],
+  "********/O*@*O***/***@**** w p p 2 10 2 10 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>[
+        "g4",
+        "e4",
+        "g7",
+        "b6",
+        "f6",
+        "b2",
+        "f2",
+        "d1",
+        "d7",
+        "d5",
+        "b4",
+      ],
 
   /*
     a7 ----- d7 ----- g7
@@ -27057,19 +24076,20 @@ Map<String, List<String>> elFiljaFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "*@******/O*@*O***/******** w p p 2 10 2 10 0 0 0 0 0 0 0 0 3": <String>[
-    "e4",
-    "g4",
-    "e3",
-    "b2",
-    "f2",
-    "b6",
-    "f6",
-    "d5",
-    "d3",
-    "d1",
-    "b4",
-  ],
+  "*@******/O*@*O***/******** w p p 2 10 2 10 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>[
+        "e4",
+        "g4",
+        "e3",
+        "b2",
+        "f2",
+        "b6",
+        "f6",
+        "d5",
+        "d3",
+        "d1",
+        "b4",
+      ],
 
   /*
     a7 ----- d7 -----  @
@@ -27084,19 +24104,20 @@ Map<String, List<String>> elFiljaFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/O*@*O***/*@****** w p p 2 10 2 10 0 0 0 0 0 0 0 0 3": <String>[
-    "g4",
-    "e4",
-    "g1",
-    "b2",
-    "f2",
-    "b6",
-    "f6",
-    "d7",
-    "d1",
-    "d3",
-    "b4",
-  ],
+  "********/O*@*O***/*@****** w p p 2 10 2 10 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>[
+        "g4",
+        "e4",
+        "g1",
+        "b2",
+        "f2",
+        "b6",
+        "f6",
+        "d7",
+        "d1",
+        "d3",
+        "b4",
+      ],
 
   /*
     a7 ----- d7 ----- g7
@@ -27111,19 +24132,20 @@ Map<String, List<String>> elFiljaFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "*****@**/O***O*@*/******** w p p 2 10 2 10 0 0 0 0 0 0 0 0 3": <String>[
-    "c4",
-    "a4",
-    "c5",
-    "f6",
-    "b6",
-    "f2",
-    "b2",
-    "d3",
-    "d5",
-    "d7",
-    "f4",
-  ],
+  "*****@**/O***O*@*/******** w p p 2 10 2 10 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>[
+        "c4",
+        "a4",
+        "c5",
+        "f6",
+        "b6",
+        "f2",
+        "b2",
+        "d3",
+        "d5",
+        "d7",
+        "f4",
+      ],
 
   /*
     a7 ----- d7 ----- g7
@@ -27138,19 +24160,20 @@ Map<String, List<String>> elFiljaFenToBestMoves = <String, List<String>>{
     |         |        |
      @ ----- d1 ----- g1
   */
-  "********/O***O*@*/*****@** w p p 2 10 2 10 0 0 0 0 0 0 0 0 3": <String>[
-    "a4",
-    "c4",
-    "a7",
-    "f6",
-    "b6",
-    "f2",
-    "b2",
-    "d1",
-    "d7",
-    "d5",
-    "f4",
-  ],
+  "********/O***O*@*/*****@** w p p 2 10 2 10 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>[
+        "a4",
+        "c4",
+        "a7",
+        "f6",
+        "b6",
+        "f2",
+        "b2",
+        "d1",
+        "d7",
+        "d5",
+        "f4",
+      ],
 
   /*
     a7 ----- d7 ----- g7
@@ -27165,19 +24188,20 @@ Map<String, List<String>> elFiljaFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "*******@/O***O*@*/******** w p p 2 10 2 10 0 0 0 0 0 0 0 0 3": <String>[
-    "c4",
-    "a4",
-    "c3",
-    "f2",
-    "b2",
-    "f6",
-    "b6",
-    "d5",
-    "d3",
-    "d1",
-    "f4",
-  ],
+  "*******@/O***O*@*/******** w p p 2 10 2 10 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>[
+        "c4",
+        "a4",
+        "c3",
+        "f2",
+        "b2",
+        "f6",
+        "b6",
+        "d5",
+        "d3",
+        "d1",
+        "f4",
+      ],
 
   /*
      @ ----- d7 ----- g7
@@ -27192,19 +24216,20 @@ Map<String, List<String>> elFiljaFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/O***O*@*/*******@ w p p 2 10 2 10 0 0 0 0 0 0 0 0 3": <String>[
-    "a4",
-    "c4",
-    "a1",
-    "f2",
-    "b2",
-    "f6",
-    "b6",
-    "d7",
-    "d1",
-    "d3",
-    "f4",
-  ],
+  "********/O***O*@*/*******@ w p p 2 10 2 10 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>[
+        "a4",
+        "c4",
+        "a1",
+        "f2",
+        "b2",
+        "f6",
+        "b6",
+        "d7",
+        "d1",
+        "d3",
+        "f4",
+      ],
 
   /*
     a7 ----- d7 ----- g7
@@ -27219,19 +24244,20 @@ Map<String, List<String>> elFiljaFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "*****@**/**O*@*O*/******** w p p 2 10 2 10 0 0 0 0 0 0 0 0 3": <String>[
-    "d3",
-    "d1",
-    "e3",
-    "f6",
-    "f2",
-    "b6",
-    "b2",
-    "c4",
-    "e4",
-    "g4",
-    "d6",
-  ],
+  "*****@**/**O*@*O*/******** w p p 2 10 2 10 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>[
+        "d3",
+        "d1",
+        "e3",
+        "f6",
+        "f2",
+        "b6",
+        "b2",
+        "c4",
+        "e4",
+        "g4",
+        "d6",
+      ],
 
   /*
     a7 ----- d7 ----- g7
@@ -27246,19 +24272,20 @@ Map<String, List<String>> elFiljaFenToBestMoves = <String, List<String>>{
     |         |        |
      @ ----- d1 ----- g1
   */
-  "********/**O*@*O*/*****@** w p p 2 10 2 10 0 0 0 0 0 0 0 0 3": <String>[
-    "d1",
-    "d3",
-    "g1",
-    "f6",
-    "f2",
-    "b6",
-    "b2",
-    "a4",
-    "g4",
-    "e4",
-    "d6",
-  ],
+  "********/**O*@*O*/*****@** w p p 2 10 2 10 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>[
+        "d1",
+        "d3",
+        "g1",
+        "f6",
+        "f2",
+        "b6",
+        "b2",
+        "a4",
+        "g4",
+        "e4",
+        "d6",
+      ],
 
   /*
     a7 ----- d7 ----- g7
@@ -27273,19 +24300,20 @@ Map<String, List<String>> elFiljaFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "***@****/**O*@*O*/******** w p p 2 10 2 10 0 0 0 0 0 0 0 0 3": <String>[
-    "d3",
-    "d1",
-    "c3",
-    "b6",
-    "b2",
-    "f6",
-    "f2",
-    "e4",
-    "c4",
-    "a4",
-    "d6",
-  ],
+  "***@****/**O*@*O*/******** w p p 2 10 2 10 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>[
+        "d3",
+        "d1",
+        "c3",
+        "b6",
+        "b2",
+        "f6",
+        "f2",
+        "e4",
+        "c4",
+        "a4",
+        "d6",
+      ],
 
   /*
     a7 ----- d7 ----- g7
@@ -27300,19 +24328,20 @@ Map<String, List<String>> elFiljaFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 -----  @
   */
-  "********/**O*@*O*/***@**** w p p 2 10 2 10 0 0 0 0 0 0 0 0 3": <String>[
-    "d1",
-    "d3",
-    "a1",
-    "b6",
-    "b2",
-    "f6",
-    "f2",
-    "g4",
-    "a4",
-    "c4",
-    "d6",
-  ],
+  "********/**O*@*O*/***@**** w p p 2 10 2 10 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>[
+        "d1",
+        "d3",
+        "a1",
+        "b6",
+        "b2",
+        "f6",
+        "f2",
+        "g4",
+        "a4",
+        "c4",
+        "d6",
+      ],
 
   /*
     a7 ----- d7 ----- g7
@@ -27327,19 +24356,20 @@ Map<String, List<String>> elFiljaFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "*******@/@*O***O*/******** w p p 2 10 2 10 0 0 0 0 0 0 0 0 3": <String>[
-    "d5",
-    "d7",
-    "e5",
-    "f2",
-    "f6",
-    "b2",
-    "b6",
-    "c4",
-    "e4",
-    "g4",
-    "d2",
-  ],
+  "*******@/@*O***O*/******** w p p 2 10 2 10 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>[
+        "d5",
+        "d7",
+        "e5",
+        "f2",
+        "f6",
+        "b2",
+        "b6",
+        "c4",
+        "e4",
+        "g4",
+        "d2",
+      ],
 
   /*
      @ ----- d7 ----- g7
@@ -27354,19 +24384,20 @@ Map<String, List<String>> elFiljaFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@*O***O*/*******@ w p p 2 10 2 10 0 0 0 0 0 0 0 0 3": <String>[
-    "d7",
-    "d5",
-    "g7",
-    "f2",
-    "f6",
-    "b2",
-    "b6",
-    "a4",
-    "g4",
-    "e4",
-    "d2",
-  ],
+  "********/@*O***O*/*******@ w p p 2 10 2 10 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>[
+        "d7",
+        "d5",
+        "g7",
+        "f2",
+        "f6",
+        "b2",
+        "b6",
+        "a4",
+        "g4",
+        "e4",
+        "d2",
+      ],
 
   /*
     a7 ----- d7 ----- g7
@@ -27381,19 +24412,20 @@ Map<String, List<String>> elFiljaFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "*@******/@*O***O*/******** w p p 2 10 2 10 0 0 0 0 0 0 0 0 3": <String>[
-    "d5",
-    "d7",
-    "c5",
-    "b2",
-    "b6",
-    "f2",
-    "f6",
-    "e4",
-    "c4",
-    "a4",
-    "d2",
-  ],
+  "*@******/@*O***O*/******** w p p 2 10 2 10 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>[
+        "d5",
+        "d7",
+        "c5",
+        "b2",
+        "b6",
+        "f2",
+        "f6",
+        "e4",
+        "c4",
+        "a4",
+        "d2",
+      ],
 
   /*
     a7 ----- d7 -----  @
@@ -27408,19 +24440,20 @@ Map<String, List<String>> elFiljaFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@*O***O*/*@****** w p p 2 10 2 10 0 0 0 0 0 0 0 0 3": <String>[
-    "d7",
-    "d5",
-    "a7",
-    "b2",
-    "b6",
-    "f2",
-    "f6",
-    "g4",
-    "a4",
-    "c4",
-    "d2",
-  ],
+  "********/@*O***O*/*@****** w p p 2 10 2 10 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>[
+        "d7",
+        "d5",
+        "a7",
+        "b2",
+        "b6",
+        "f2",
+        "f6",
+        "g4",
+        "a4",
+        "c4",
+        "d2",
+      ],
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -27437,10 +24470,8 @@ Map<String, List<String>> elFiljaFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "**@@****/O*@*O*O*/******** w p p 3 9 3 9 0 0 0 0 0 0 0 0 4": <String>[
-    "b2",
-    "b6",
-  ],
+  "**@@****/O*@*O*O*/******** w p p 3 9 3 9 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["b2", "b6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -27455,10 +24486,8 @@ Map<String, List<String>> elFiljaFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 -----  @
   */
-  "********/O*@*O*O*/**@@**** w p p 3 9 3 9 0 0 0 0 0 0 0 0 4": <String>[
-    "b2",
-    "b6",
-  ],
+  "********/O*@*O*O*/**@@**** w p p 3 9 3 9 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["b2", "b6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -27473,10 +24502,8 @@ Map<String, List<String>> elFiljaFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "*@@*****/O*@*O*O*/******** w p p 3 9 3 9 0 0 0 0 0 0 0 0 4": <String>[
-    "b6",
-    "b2",
-  ],
+  "*@@*****/O*@*O*O*/******** w p p 3 9 3 9 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["b6", "b2"],
 
   /*
     a7 ----- d7 -----  @
@@ -27491,10 +24518,8 @@ Map<String, List<String>> elFiljaFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/O*@*O*O*/*@@***** w p p 3 9 3 9 0 0 0 0 0 0 0 0 4": <String>[
-    "b6",
-    "b2",
-  ],
+  "********/O*@*O*O*/*@@***** w p p 3 9 3 9 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["b6", "b2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -27509,10 +24534,8 @@ Map<String, List<String>> elFiljaFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "*****@@*/O*O*O*@*/******** w p p 3 9 3 9 0 0 0 0 0 0 0 0 4": <String>[
-    "f2",
-    "f6",
-  ],
+  "*****@@*/O*O*O*@*/******** w p p 3 9 3 9 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["f2", "f6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -27527,10 +24550,8 @@ Map<String, List<String>> elFiljaFenToBestMoves = <String, List<String>>{
     |         |        |
      @ ----- d1 ----- g1
   */
-  "********/O*O*O*@*/*****@@* w p p 3 9 3 9 0 0 0 0 0 0 0 0 4": <String>[
-    "f2",
-    "f6",
-  ],
+  "********/O*O*O*@*/*****@@* w p p 3 9 3 9 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["f2", "f6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -27545,10 +24566,8 @@ Map<String, List<String>> elFiljaFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "******@@/O*O*O*@*/******** w p p 3 9 3 9 0 0 0 0 0 0 0 0 4": <String>[
-    "f6",
-    "f2",
-  ],
+  "******@@/O*O*O*@*/******** w p p 3 9 3 9 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["f6", "f2"],
 
   /*
      @ ----- d7 ----- g7
@@ -27563,10 +24582,8 @@ Map<String, List<String>> elFiljaFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/O*O*O*@*/******@@ w p p 3 9 3 9 0 0 0 0 0 0 0 0 4": <String>[
-    "f6",
-    "f2",
-  ],
+  "********/O*O*O*@*/******@@ w p p 3 9 3 9 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["f6", "f2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -27581,10 +24598,8 @@ Map<String, List<String>> elFiljaFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "****@@**/O*O*@*O*/******** w p p 3 9 3 9 0 0 0 0 0 0 0 0 4": <String>[
-    "b6",
-    "f6",
-  ],
+  "****@@**/O*O*@*O*/******** w p p 3 9 3 9 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["b6", "f6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -27599,10 +24614,8 @@ Map<String, List<String>> elFiljaFenToBestMoves = <String, List<String>>{
     |         |        |
      @ -----  @ ----- g1
   */
-  "********/O*O*@*O*/****@@** w p p 3 9 3 9 0 0 0 0 0 0 0 0 4": <String>[
-    "b6",
-    "f6",
-  ],
+  "********/O*O*@*O*/****@@** w p p 3 9 3 9 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["b6", "f6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -27617,10 +24630,8 @@ Map<String, List<String>> elFiljaFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "***@@***/O*O*@*O*/******** w p p 3 9 3 9 0 0 0 0 0 0 0 0 4": <String>[
-    "f6",
-    "b6",
-  ],
+  "***@@***/O*O*@*O*/******** w p p 3 9 3 9 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["f6", "b6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -27635,10 +24646,8 @@ Map<String, List<String>> elFiljaFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 -----  @ -----  @
   */
-  "********/O*O*@*O*/***@@*** w p p 3 9 3 9 0 0 0 0 0 0 0 0 4": <String>[
-    "f6",
-    "b6",
-  ],
+  "********/O*O*@*O*/***@@*** w p p 3 9 3 9 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["f6", "b6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -27653,10 +24662,8 @@ Map<String, List<String>> elFiljaFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "@******@/@*O*O*O*/******** w p p 3 9 3 9 0 0 0 0 0 0 0 0 4": <String>[
-    "b2",
-    "f2",
-  ],
+  "@******@/@*O*O*O*/******** w p p 3 9 3 9 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["b2", "f2"],
 
   /*
      @ -----  @ ----- g7
@@ -27671,10 +24678,8 @@ Map<String, List<String>> elFiljaFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@*O*O*O*/@******@ w p p 3 9 3 9 0 0 0 0 0 0 0 0 4": <String>[
-    "b2",
-    "f2",
-  ],
+  "********/@*O*O*O*/@******@ w p p 3 9 3 9 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["b2", "f2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -27689,10 +24694,8 @@ Map<String, List<String>> elFiljaFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "@@******/@*O*O*O*/******** w p p 3 9 3 9 0 0 0 0 0 0 0 0 4": <String>[
-    "f2",
-    "b2",
-  ],
+  "@@******/@*O*O*O*/******** w p p 3 9 3 9 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["f2", "b2"],
 
   /*
     a7 -----  @ -----  @
@@ -27707,10 +24710,8 @@ Map<String, List<String>> elFiljaFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@*O*O*O*/@@****** w p p 3 9 3 9 0 0 0 0 0 0 0 0 4": <String>[
-    "f2",
-    "b2",
-  ],
+  "********/@*O*O*O*/@@****** w p p 3 9 3 9 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
+      <String>["f2", "b2"],
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -27727,19 +24728,20 @@ Map<String, List<String>> elFiljaFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "*@******/@*O*O***/******** w p p 2 10 2 10 0 0 0 0 0 0 0 0 3": <String>[
-    "d1",
-    "d3",
-    "e4",
-    "g4",
-    "c5",
-    "d5",
-    "d7",
-    "b2",
-    "f2",
-    "f6",
-    "b4",
-  ],
+  "*@******/@*O*O***/******** w p p 2 10 2 10 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>[
+        "d1",
+        "d3",
+        "e4",
+        "g4",
+        "c5",
+        "d5",
+        "d7",
+        "b2",
+        "f2",
+        "f6",
+        "b4",
+      ],
 
   /*
     a7 ----- d7 -----  @
@@ -27754,19 +24756,20 @@ Map<String, List<String>> elFiljaFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@*O*O***/*@****** w p p 2 10 2 10 0 0 0 0 0 0 0 0 3": <String>[
-    "d3",
-    "d1",
-    "g4",
-    "e4",
-    "a7",
-    "d7",
-    "d5",
-    "b2",
-    "f2",
-    "f6",
-    "b4",
-  ],
+  "********/@*O*O***/*@****** w p p 2 10 2 10 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>[
+        "d3",
+        "d1",
+        "g4",
+        "e4",
+        "a7",
+        "d7",
+        "d5",
+        "b2",
+        "f2",
+        "f6",
+        "b4",
+      ],
 
   /*
     a7 ----- d7 ----- g7
@@ -27781,19 +24784,20 @@ Map<String, List<String>> elFiljaFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "***@****/O*O*@***/******** w p p 2 10 2 10 0 0 0 0 0 0 0 0 3": <String>[
-    "d7",
-    "d5",
-    "e4",
-    "g4",
-    "c3",
-    "d3",
-    "d1",
-    "b6",
-    "f6",
-    "f2",
-    "b4",
-  ],
+  "***@****/O*O*@***/******** w p p 2 10 2 10 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>[
+        "d7",
+        "d5",
+        "e4",
+        "g4",
+        "c3",
+        "d3",
+        "d1",
+        "b6",
+        "f6",
+        "f2",
+        "b4",
+      ],
 
   /*
     a7 ----- d7 ----- g7
@@ -27808,19 +24812,20 @@ Map<String, List<String>> elFiljaFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 -----  @
   */
-  "********/O*O*@***/***@**** w p p 2 10 2 10 0 0 0 0 0 0 0 0 3": <String>[
-    "d5",
-    "d7",
-    "g4",
-    "e4",
-    "a1",
-    "d1",
-    "d3",
-    "b6",
-    "f6",
-    "f2",
-    "b4",
-  ],
+  "********/O*O*@***/***@**** w p p 2 10 2 10 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>[
+        "d5",
+        "d7",
+        "g4",
+        "e4",
+        "a1",
+        "d1",
+        "d3",
+        "b6",
+        "f6",
+        "f2",
+        "b4",
+      ],
 
   /*
     a7 ----- d7 ----- g7
@@ -27835,19 +24840,20 @@ Map<String, List<String>> elFiljaFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "*******@/@***O*O*/******** w p p 2 10 2 10 0 0 0 0 0 0 0 0 3": <String>[
-    "d1",
-    "d3",
-    "c4",
-    "a4",
-    "e5",
-    "d5",
-    "d7",
-    "f2",
-    "b2",
-    "b6",
-    "f4",
-  ],
+  "*******@/@***O*O*/******** w p p 2 10 2 10 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>[
+        "d1",
+        "d3",
+        "c4",
+        "a4",
+        "e5",
+        "d5",
+        "d7",
+        "f2",
+        "b2",
+        "b6",
+        "f4",
+      ],
 
   /*
      @ ----- d7 ----- g7
@@ -27862,19 +24868,20 @@ Map<String, List<String>> elFiljaFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@***O*O*/*******@ w p p 2 10 2 10 0 0 0 0 0 0 0 0 3": <String>[
-    "d3",
-    "d1",
-    "a4",
-    "c4",
-    "g7",
-    "d7",
-    "d5",
-    "f2",
-    "b2",
-    "b6",
-    "f4",
-  ],
+  "********/@***O*O*/*******@ w p p 2 10 2 10 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>[
+        "d3",
+        "d1",
+        "a4",
+        "c4",
+        "g7",
+        "d7",
+        "d5",
+        "f2",
+        "b2",
+        "b6",
+        "f4",
+      ],
 
   /*
     a7 ----- d7 ----- g7
@@ -27889,19 +24896,20 @@ Map<String, List<String>> elFiljaFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "*****@**/O***@*O*/******** w p p 2 10 2 10 0 0 0 0 0 0 0 0 3": <String>[
-    "d7",
-    "d5",
-    "c4",
-    "a4",
-    "e3",
-    "d3",
-    "d1",
-    "f6",
-    "b6",
-    "b2",
-    "f4",
-  ],
+  "*****@**/O***@*O*/******** w p p 2 10 2 10 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>[
+        "d7",
+        "d5",
+        "c4",
+        "a4",
+        "e3",
+        "d3",
+        "d1",
+        "f6",
+        "b6",
+        "b2",
+        "f4",
+      ],
 
   /*
     a7 ----- d7 ----- g7
@@ -27916,19 +24924,20 @@ Map<String, List<String>> elFiljaFenToBestMoves = <String, List<String>>{
     |         |        |
      @ ----- d1 ----- g1
   */
-  "********/O***@*O*/*****@** w p p 2 10 2 10 0 0 0 0 0 0 0 0 3": <String>[
-    "d5",
-    "d7",
-    "a4",
-    "c4",
-    "g1",
-    "d1",
-    "d3",
-    "f6",
-    "b6",
-    "b2",
-    "f4",
-  ],
+  "********/O***@*O*/*****@** w p p 2 10 2 10 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>[
+        "d5",
+        "d7",
+        "a4",
+        "c4",
+        "g1",
+        "d1",
+        "d3",
+        "f6",
+        "b6",
+        "b2",
+        "f4",
+      ],
 
   /*
     a7 ----- d7 ----- g7
@@ -27943,19 +24952,20 @@ Map<String, List<String>> elFiljaFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "***@****/**@*O*O*/******** w p p 2 10 2 10 0 0 0 0 0 0 0 0 3": <String>[
-    "a4",
-    "c4",
-    "d3",
-    "d1",
-    "e5",
-    "e4",
-    "g4",
-    "b6",
-    "b2",
-    "f2",
-    "d6",
-  ],
+  "***@****/**@*O*O*/******** w p p 2 10 2 10 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>[
+        "a4",
+        "c4",
+        "d3",
+        "d1",
+        "e5",
+        "e4",
+        "g4",
+        "b6",
+        "b2",
+        "f2",
+        "d6",
+      ],
 
   /*
     a7 ----- d7 ----- g7
@@ -27970,19 +24980,20 @@ Map<String, List<String>> elFiljaFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 -----  @
   */
-  "********/**@*O*O*/***@**** w p p 2 10 2 10 0 0 0 0 0 0 0 0 3": <String>[
-    "c4",
-    "a4",
-    "d1",
-    "d3",
-    "g7",
-    "g4",
-    "e4",
-    "b6",
-    "b2",
-    "f2",
-    "d6",
-  ],
+  "********/**@*O*O*/***@**** w p p 2 10 2 10 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>[
+        "c4",
+        "a4",
+        "d1",
+        "d3",
+        "g7",
+        "g4",
+        "e4",
+        "b6",
+        "b2",
+        "f2",
+        "d6",
+      ],
 
   /*
     a7 ----- d7 ----- g7
@@ -27997,19 +25008,20 @@ Map<String, List<String>> elFiljaFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "*****@**/**O*O*@*/******** w p p 2 10 2 10 0 0 0 0 0 0 0 0 3": <String>[
-    "g4",
-    "e4",
-    "d3",
-    "d1",
-    "c5",
-    "c4",
-    "a4",
-    "f6",
-    "f2",
-    "b2",
-    "d6",
-  ],
+  "*****@**/**O*O*@*/******** w p p 2 10 2 10 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>[
+        "g4",
+        "e4",
+        "d3",
+        "d1",
+        "c5",
+        "c4",
+        "a4",
+        "f6",
+        "f2",
+        "b2",
+        "d6",
+      ],
 
   /*
     a7 ----- d7 ----- g7
@@ -28024,19 +25036,20 @@ Map<String, List<String>> elFiljaFenToBestMoves = <String, List<String>>{
     |         |        |
      @ ----- d1 ----- g1
   */
-  "********/**O*O*@*/*****@** w p p 2 10 2 10 0 0 0 0 0 0 0 0 3": <String>[
-    "e4",
-    "g4",
-    "d1",
-    "d3",
-    "a7",
-    "a4",
-    "c4",
-    "f6",
-    "f2",
-    "b2",
-    "d6",
-  ],
+  "********/**O*O*@*/*****@** w p p 2 10 2 10 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>[
+        "e4",
+        "g4",
+        "d1",
+        "d3",
+        "a7",
+        "a4",
+        "c4",
+        "f6",
+        "f2",
+        "b2",
+        "d6",
+      ],
 
   /*
     a7 ----- d7 ----- g7
@@ -28051,19 +25064,20 @@ Map<String, List<String>> elFiljaFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "*@******/O*@***O*/******** w p p 2 10 2 10 0 0 0 0 0 0 0 0 3": <String>[
-    "a4",
-    "c4",
-    "d5",
-    "d7",
-    "e3",
-    "e4",
-    "g4",
-    "b2",
-    "b6",
-    "f6",
-    "d2",
-  ],
+  "*@******/O*@***O*/******** w p p 2 10 2 10 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>[
+        "a4",
+        "c4",
+        "d5",
+        "d7",
+        "e3",
+        "e4",
+        "g4",
+        "b2",
+        "b6",
+        "f6",
+        "d2",
+      ],
 
   /*
     a7 ----- d7 -----  @
@@ -28078,19 +25092,20 @@ Map<String, List<String>> elFiljaFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/O*@***O*/*@****** w p p 2 10 2 10 0 0 0 0 0 0 0 0 3": <String>[
-    "c4",
-    "a4",
-    "d7",
-    "d5",
-    "g1",
-    "g4",
-    "e4",
-    "b2",
-    "b6",
-    "f6",
-    "d2",
-  ],
+  "********/O*@***O*/*@****** w p p 2 10 2 10 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>[
+        "c4",
+        "a4",
+        "d7",
+        "d5",
+        "g1",
+        "g4",
+        "e4",
+        "b2",
+        "b6",
+        "f6",
+        "d2",
+      ],
 
   /*
     a7 ----- d7 ----- g7
@@ -28105,19 +25120,20 @@ Map<String, List<String>> elFiljaFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "*******@/O*O***@*/******** w p p 2 10 2 10 0 0 0 0 0 0 0 0 3": <String>[
-    "g4",
-    "e4",
-    "d5",
-    "d7",
-    "c3",
-    "c4",
-    "a4",
-    "f2",
-    "f6",
-    "b6",
-    "d2",
-  ],
+  "*******@/O*O***@*/******** w p p 2 10 2 10 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>[
+        "g4",
+        "e4",
+        "d5",
+        "d7",
+        "c3",
+        "c4",
+        "a4",
+        "f2",
+        "f6",
+        "b6",
+        "d2",
+      ],
 
   /*
      @ ----- d7 ----- g7
@@ -28132,19 +25148,20 @@ Map<String, List<String>> elFiljaFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/O*O***@*/*******@ w p p 2 10 2 10 0 0 0 0 0 0 0 0 3": <String>[
-    "e4",
-    "g4",
-    "d7",
-    "d5",
-    "a1",
-    "a4",
-    "c4",
-    "f2",
-    "f6",
-    "b6",
-    "d2",
-  ],
+  "********/O*O***@*/*******@ w p p 2 10 2 10 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>[
+        "e4",
+        "g4",
+        "d7",
+        "d5",
+        "a1",
+        "a4",
+        "c4",
+        "f2",
+        "f6",
+        "b6",
+        "d2",
+      ],
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -28161,18 +25178,8 @@ Map<String, List<String>> elFiljaFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "*******@/@*O*O***/******** w p p 2 10 2 10 0 0 0 0 0 0 0 0 3": <String>[
-    "d1",
-    "b2",
-    "f2",
-    "d3",
-    "e4",
-    "g4",
-    "d5",
-    "e5",
-    "d7",
-    "b4",
-  ],
+  "*******@/@*O*O***/******** w p p 2 10 2 10 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>["d1", "b2", "f2", "d3", "e4", "g4", "d5", "e5", "d7", "b4"],
 
   /*
      @ ----- d7 ----- g7
@@ -28187,18 +25194,8 @@ Map<String, List<String>> elFiljaFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@*O*O***/*******@ w p p 2 10 2 10 0 0 0 0 0 0 0 0 3": <String>[
-    "d3",
-    "b2",
-    "f2",
-    "d1",
-    "g4",
-    "e4",
-    "d7",
-    "g7",
-    "d5",
-    "b4",
-  ],
+  "********/@*O*O***/*******@ w p p 2 10 2 10 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>["d3", "b2", "f2", "d1", "g4", "e4", "d7", "g7", "d5", "b4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -28213,18 +25210,8 @@ Map<String, List<String>> elFiljaFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "*****@**/O*O*@***/******** w p p 2 10 2 10 0 0 0 0 0 0 0 0 3": <String>[
-    "d7",
-    "b6",
-    "f6",
-    "d5",
-    "e4",
-    "g4",
-    "d3",
-    "e3",
-    "d1",
-    "b4",
-  ],
+  "*****@**/O*O*@***/******** w p p 2 10 2 10 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>["d7", "b6", "f6", "d5", "e4", "g4", "d3", "e3", "d1", "b4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -28239,18 +25226,8 @@ Map<String, List<String>> elFiljaFenToBestMoves = <String, List<String>>{
     |         |        |
      @ ----- d1 ----- g1
   */
-  "********/O*O*@***/*****@** w p p 2 10 2 10 0 0 0 0 0 0 0 0 3": <String>[
-    "d5",
-    "b6",
-    "f6",
-    "d7",
-    "g4",
-    "e4",
-    "d1",
-    "g1",
-    "d3",
-    "b4",
-  ],
+  "********/O*O*@***/*****@** w p p 2 10 2 10 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>["d5", "b6", "f6", "d7", "g4", "e4", "d1", "g1", "d3", "b4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -28265,18 +25242,8 @@ Map<String, List<String>> elFiljaFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "*@******/@***O*O*/******** w p p 2 10 2 10 0 0 0 0 0 0 0 0 3": <String>[
-    "d1",
-    "f2",
-    "b2",
-    "d3",
-    "c4",
-    "a4",
-    "d5",
-    "c5",
-    "d7",
-    "f4",
-  ],
+  "*@******/@***O*O*/******** w p p 2 10 2 10 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>["d1", "f2", "b2", "d3", "c4", "a4", "d5", "c5", "d7", "f4"],
 
   /*
     a7 ----- d7 -----  @
@@ -28291,18 +25258,8 @@ Map<String, List<String>> elFiljaFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@***O*O*/*@****** w p p 2 10 2 10 0 0 0 0 0 0 0 0 3": <String>[
-    "d3",
-    "f2",
-    "b2",
-    "d1",
-    "a4",
-    "c4",
-    "d7",
-    "a7",
-    "d5",
-    "f4",
-  ],
+  "********/@***O*O*/*@****** w p p 2 10 2 10 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>["d3", "f2", "b2", "d1", "a4", "c4", "d7", "a7", "d5", "f4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -28317,18 +25274,8 @@ Map<String, List<String>> elFiljaFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "***@****/O***@*O*/******** w p p 2 10 2 10 0 0 0 0 0 0 0 0 3": <String>[
-    "d7",
-    "f6",
-    "b6",
-    "d5",
-    "c4",
-    "a4",
-    "d3",
-    "c3",
-    "d1",
-    "f4",
-  ],
+  "***@****/O***@*O*/******** w p p 2 10 2 10 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>["d7", "f6", "b6", "d5", "c4", "a4", "d3", "c3", "d1", "f4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -28343,18 +25290,8 @@ Map<String, List<String>> elFiljaFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 -----  @
   */
-  "********/O***@*O*/***@**** w p p 2 10 2 10 0 0 0 0 0 0 0 0 3": <String>[
-    "d5",
-    "f6",
-    "b6",
-    "d7",
-    "a4",
-    "c4",
-    "d1",
-    "a1",
-    "d3",
-    "f4",
-  ],
+  "********/O***@*O*/***@**** w p p 2 10 2 10 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>["d5", "f6", "b6", "d7", "a4", "c4", "d1", "a1", "d3", "f4"],
 
   /*
     a7 ----- d7 ----- g7
@@ -28369,18 +25306,8 @@ Map<String, List<String>> elFiljaFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "*@******/**@*O*O*/******** w p p 2 10 2 10 0 0 0 0 0 0 0 0 3": <String>[
-    "a4",
-    "b6",
-    "b2",
-    "c4",
-    "d3",
-    "d1",
-    "e4",
-    "e3",
-    "g4",
-    "d6",
-  ],
+  "*@******/**@*O*O*/******** w p p 2 10 2 10 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>["a4", "b6", "b2", "c4", "d3", "d1", "e4", "e3", "g4", "d6"],
 
   /*
     a7 ----- d7 -----  @
@@ -28395,18 +25322,8 @@ Map<String, List<String>> elFiljaFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/**@*O*O*/*@****** w p p 2 10 2 10 0 0 0 0 0 0 0 0 3": <String>[
-    "c4",
-    "b6",
-    "b2",
-    "a4",
-    "d1",
-    "d3",
-    "g4",
-    "g1",
-    "e4",
-    "d6",
-  ],
+  "********/**@*O*O*/*@****** w p p 2 10 2 10 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>["c4", "b6", "b2", "a4", "d1", "d3", "g4", "g1", "e4", "d6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -28421,18 +25338,8 @@ Map<String, List<String>> elFiljaFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "*******@/**O*O*@*/******** w p p 2 10 2 10 0 0 0 0 0 0 0 0 3": <String>[
-    "g4",
-    "f6",
-    "f2",
-    "e4",
-    "d3",
-    "d1",
-    "c4",
-    "c3",
-    "a4",
-    "d6",
-  ],
+  "*******@/**O*O*@*/******** w p p 2 10 2 10 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>["g4", "f6", "f2", "e4", "d3", "d1", "c4", "c3", "a4", "d6"],
 
   /*
      @ ----- d7 ----- g7
@@ -28447,18 +25354,8 @@ Map<String, List<String>> elFiljaFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/**O*O*@*/*******@ w p p 2 10 2 10 0 0 0 0 0 0 0 0 3": <String>[
-    "e4",
-    "f6",
-    "f2",
-    "g4",
-    "d1",
-    "d3",
-    "a4",
-    "a1",
-    "c4",
-    "d6",
-  ],
+  "********/**O*O*@*/*******@ w p p 2 10 2 10 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>["e4", "f6", "f2", "g4", "d1", "d3", "a4", "a1", "c4", "d6"],
 
   /*
     a7 ----- d7 ----- g7
@@ -28473,18 +25370,8 @@ Map<String, List<String>> elFiljaFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "***@****/O*@***O*/******** w p p 2 10 2 10 0 0 0 0 0 0 0 0 3": <String>[
-    "a4",
-    "b2",
-    "b6",
-    "c4",
-    "d5",
-    "d7",
-    "e4",
-    "e5",
-    "g4",
-    "d2",
-  ],
+  "***@****/O*@***O*/******** w p p 2 10 2 10 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>["a4", "b2", "b6", "c4", "d5", "d7", "e4", "e5", "g4", "d2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -28499,18 +25386,8 @@ Map<String, List<String>> elFiljaFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 -----  @
   */
-  "********/O*@***O*/***@**** w p p 2 10 2 10 0 0 0 0 0 0 0 0 3": <String>[
-    "c4",
-    "b2",
-    "b6",
-    "a4",
-    "d7",
-    "d5",
-    "g4",
-    "g7",
-    "e4",
-    "d2",
-  ],
+  "********/O*@***O*/***@**** w p p 2 10 2 10 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>["c4", "b2", "b6", "a4", "d7", "d5", "g4", "g7", "e4", "d2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -28525,18 +25402,8 @@ Map<String, List<String>> elFiljaFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "*****@**/O*O***@*/******** w p p 2 10 2 10 0 0 0 0 0 0 0 0 3": <String>[
-    "g4",
-    "f2",
-    "f6",
-    "e4",
-    "d5",
-    "d7",
-    "c4",
-    "c5",
-    "a4",
-    "d2",
-  ],
+  "*****@**/O*O***@*/******** w p p 2 10 2 10 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>["g4", "f2", "f6", "e4", "d5", "d7", "c4", "c5", "a4", "d2"],
 
   /*
     a7 ----- d7 ----- g7
@@ -28551,16 +25418,6 @@ Map<String, List<String>> elFiljaFenToBestMoves = <String, List<String>>{
     |         |        |
      @ ----- d1 ----- g1
   */
-  "********/O*O***@*/*****@** w p p 2 10 2 10 0 0 0 0 0 0 0 0 3": <String>[
-    "e4",
-    "f2",
-    "f6",
-    "g4",
-    "d7",
-    "d5",
-    "a4",
-    "a7",
-    "c4",
-    "d2",
-  ],
+  "********/O*O***@*/*****@** w p p 2 10 2 10 0 0 -1 -1 -1 -1 0 0 3 ids:nodes":
+      <String>["e4", "f2", "f6", "g4", "d7", "d5", "a4", "a7", "c4", "d2"],
 };

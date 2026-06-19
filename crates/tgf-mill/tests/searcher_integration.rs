@@ -93,7 +93,7 @@ fn mill_iterative_deepening_returns_draw_on_n_move_rule_terminal() {
     let game = MillGame::default();
     // 9-on-board moving phase, rule50 = 200, well past the 100-ply
     // n-move-rule threshold so set_from_fen transitions to GameOver.
-    let fen = "OOOO@@@@/OOOO@@@@/O****@** w m s 9 0 9 0 0 0 0 0 0 0 0 200 1";
+    let fen = "OOOO@@@@/OOOO@@@@/O****@** w m s 9 0 9 0 0 0 -1 -1 -1 -1 0 200 1 ids:nodes";
     let state = rules
         .set_from_fen(fen)
         .expect("setup FEN must parse for the regression");
@@ -229,7 +229,7 @@ fn mill_evaluator_scores_game_over_draw_as_zero() {
 
     // FEN: phase 'o' (GameOver), equal material, sparse layout so neither
     // fly-mate nor stalemate flags fire.
-    let fen = "O*O*O*O*/*@*@*@*@/O@O@O@O@ w o p 9 0 9 0 0 0 0 0 0 0 0 0 1";
+    let fen = "O*O*O*O*/*@*@*@*@/O@O@O@O@ w o p 9 0 9 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes";
     let state = rules.set_from_fen(fen).expect("valid FEN");
     let snap = rules.encode_state(state);
     let wb = game.build_workbench(&snap);
@@ -342,22 +342,22 @@ fn mill_mcts_returns_a_legal_opening_action() {
 
 #[test]
 fn mill_mcts_with_ab_assist_picks_immediate_mill() {
-    // White has two pieces on a3/c3 and can form the mill a3-b3-c3 by
-    // placing on b3.  With ab_assist_depth=1 the MCTS simulation
+    // White has two pieces on c5/d5 and can form the mill c5-d5-e5 by
+    // placing on e5.  With ab_assist_depth=1 the MCTS simulation
     // correctly sees this as a high-value move and should prefer it.
     let rules = MillRules::default();
 
     // Build a position where White is to place and has an immediate mill.
-    // Nodes: 0=a7, 1=d7, 2=g7 (top mill line for default 9MM).
+    // Nodes: 7=c5, 0=d5, 1=e5 (inner top line for default 9MM).
     let snap = {
         let mut s = rules.initial_state(&[]);
-        // White on node 0.
+        // White on node 7.
         s = rules.apply(
             &s,
             Action {
                 kind_tag: MillActionKind::Place as i16,
                 from_node: -1,
-                to_node: 0,
+                to_node: 7,
                 aux: -1,
                 payload_bits: 0,
             },
@@ -373,13 +373,13 @@ fn mill_mcts_with_ab_assist_picks_immediate_mill() {
                 payload_bits: 0,
             },
         );
-        // White on node 2.
+        // White on node 0.
         s = rules.apply(
             &s,
             Action {
                 kind_tag: MillActionKind::Place as i16,
                 from_node: -1,
-                to_node: 2,
+                to_node: 0,
                 aux: -1,
                 payload_bits: 0,
             },
@@ -395,7 +395,7 @@ fn mill_mcts_with_ab_assist_picks_immediate_mill() {
                 payload_bits: 0,
             },
         );
-        s // White to move: placing on node 1 forms mill 0-1-2.
+        s // White to move: placing on node 1 forms mill 7-0-1.
     };
 
     let game = MillGame::default();
@@ -527,9 +527,9 @@ fn mill_forced_root_move_returns_unique_score() {
     // Construct: White just formed a mill with one black piece on the
     // board.  pending_removals[0]=1 forces Remove of that piece.
     let mut state = rules.setup_empty();
+    state.set_piece(7, 1); // White
     state.set_piece(0, 1); // White
-    state.set_piece(1, 1); // White
-    state.set_piece(2, 1); // White (forms mill 0-1-2)
+    state.set_piece(1, 1); // White (forms mill 7-0-1)
     state.set_piece(3, 2); // Black (only target)
     state.set_side_to_move(0);
     state.recompute_aux(&MillVariantOptions::default());

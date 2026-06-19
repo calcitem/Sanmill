@@ -1447,6 +1447,9 @@ fn potential_mills_count_at(
     if let Some(from) = from {
         color_bb &= !node_bit(from);
     }
+    if !options.has_diagonal_lines && !one_time_use {
+        return potential_mills_count_standard_unrestricted(color_bb, to, None);
+    }
     let mut count = 0_u32;
     for &peer_mask in mill_line_peer_masks_for_node(options, to) {
         if peer_mask == 0 {
@@ -1478,14 +1481,12 @@ fn potential_mills_count_standard_unrestricted(
     if let Some(from) = from {
         color_bb &= !node_bit(from);
     }
-    let mut count = 0_u32;
-    for &peer_mask in &STANDARD_MILL_LINE_PEER_MASKS_BY_NODE[to] {
-        if peer_mask == 0 {
-            break;
-        }
-        count += u32::from((color_bb & peer_mask) == peer_mask);
-    }
-    count
+    let peer_masks = &STANDARD_MILL_LINE_PEER_MASKS_BY_NODE[to];
+    // Standard Nine Men's Morris gives every node exactly two mill lines.
+    // Keeping this branch fixed-width avoids the generic diagonal sentinel
+    // loop in move-order scoring.
+    u32::from((color_bb & peer_masks[0]) == peer_masks[0])
+        + u32::from((color_bb & peer_masks[1]) == peer_masks[1])
 }
 
 #[inline(always)]
@@ -1499,15 +1500,11 @@ fn potential_mills_count_standard_unrestricted_pair(
     if let Some(our_from) = our_from {
         our_bb &= !node_bit(our_from);
     }
-    let mut our_count = 0_u32;
-    let mut their_count = 0_u32;
-    for &peer_mask in &STANDARD_MILL_LINE_PEER_MASKS_BY_NODE[to] {
-        if peer_mask == 0 {
-            break;
-        }
-        our_count += u32::from((our_bb & peer_mask) == peer_mask);
-        their_count += u32::from((their_bb & peer_mask) == peer_mask);
-    }
+    let peer_masks = &STANDARD_MILL_LINE_PEER_MASKS_BY_NODE[to];
+    let our_count = u32::from((our_bb & peer_masks[0]) == peer_masks[0])
+        + u32::from((our_bb & peer_masks[1]) == peer_masks[1]);
+    let their_count = u32::from((their_bb & peer_masks[0]) == peer_masks[0])
+        + u32::from((their_bb & peer_masks[1]) == peer_masks[1]);
     (our_count, their_count)
 }
 

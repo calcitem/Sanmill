@@ -107,7 +107,7 @@ void main() {
 
       // Load a known position via FEN.
       const String startFen =
-          '********/********/******** w p p 0 9 0 9 0 0 0 0 0 0 0 0 1';
+          '********/********/******** w p p 0 9 0 9 0 0 -1 -1 -1 -1 0 0 1 ids:nodes';
       expect(session.loadFen(startFen), isTrue);
       expect(session.state.value.phase, 'placing');
 

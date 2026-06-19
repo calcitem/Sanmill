@@ -96,8 +96,9 @@ TgfSnapshot tgfKernelSetupFinish({required int handle}) =>
 
 /// Load a Mill board position from a FEN string.
 ///
-/// The FEN must follow the legacy Dart/C++ engine format.  Returns the
-/// new snapshot on success, or an error string on parse failure.
+/// Accepts node-id Mill FENs marked with `ids:nodes`, plus legacy square-id
+/// FENs at import boundaries.  Returns the new snapshot on success, or an
+/// error string on parse failure.
 TgfSnapshot tgfKernelSetFromFen({required int handle, required String fen}) =>
     RustLib.instance.api.crateApiMillKernelTgfKernelSetFromFen(
       handle: handle,

@@ -90,7 +90,7 @@ void main() {
         category: PuzzleCategory.formMill,
         difficulty: PuzzleDifficulty.easy,
         initialPosition:
-            '********/********/******** w p p 0 9 0 9 0 0 0 0 0 0 0 0 1',
+            '********/********/******** w p p 0 9 0 9 0 0 -1 -1 -1 -1 0 0 1 ids:nodes',
         solutions: const <PuzzleSolution>[
           PuzzleSolution(
             moves: <PuzzleMove>[

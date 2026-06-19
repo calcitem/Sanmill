@@ -251,8 +251,9 @@ pub fn tgf_kernel_setup_finish(handle: u32) -> Result<TgfSnapshot, String> {
 
 /// Load a Mill board position from a FEN string.
 ///
-/// The FEN must follow the legacy Dart/C++ engine format.  Returns the
-/// new snapshot on success, or an error string on parse failure.
+/// Accepts node-id Mill FENs marked with `ids:nodes`, plus legacy square-id
+/// FENs at import boundaries.  Returns the new snapshot on success, or an
+/// error string on parse failure.
 #[flutter_rust_bridge::frb(sync)]
 pub fn tgf_kernel_set_from_fen(handle: u32, fen: String) -> Result<TgfSnapshot, String> {
     let options = variant_extras::options_for(handle);

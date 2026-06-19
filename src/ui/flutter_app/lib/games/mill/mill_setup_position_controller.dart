@@ -375,27 +375,18 @@ class MillSetupPositionController {
     //         b_remove w_from w_to b_from b_to mills_mask rule50 fullmove
     return '$board $side $phaseToken $actionToken '
         '$onWhite $inHandWhite $onBlack $inHandBlack '
-        '$removeWhite $removeBlack 0 0 0 0 0 0 1';
+        '$removeWhite $removeBlack -1 -1 -1 -1 0 0 1 ids:nodes';
   }
 
   /// Build the 26-character FEN board field (three 8-char ranks joined by
-  /// '/') from the local node-indexed model.  The node→FEN-slot mapping is
-  /// the inverse of the kernel's `FEN_TO_NODE` permutation and is verified
-  /// by FEN round-trips through `tgf_kernel_set_from_fen`.
+  /// '/') from the local node-indexed model.
   String _buildBoardField() {
-    // Rust board node index -> FEN board position index (0..23).
-    const List<int> nodeToFenPos = <int>[
-      23, 16, 17, 18, 19, 20, 21, 22, //
-      15, 8, 9, 10, 11, 12, 13, 14, //
-      7, 0, 1, 2, 3, 4, 5, 6, //
-    ];
-
     final List<String> chars = List<String>.filled(26, '*');
     chars[8] = '/';
     chars[17] = '/';
 
     for (int node = 0; node < 24; node++) {
-      final int pos = nodeToFenPos[node];
+      final int pos = node;
       final int slot = pos < 8
           ? pos
           : pos < 16

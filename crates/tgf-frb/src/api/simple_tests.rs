@@ -73,6 +73,18 @@ fn next_random_index(state: &mut u64, len: usize) -> usize {
     (scrambled as usize) % len
 }
 
+fn old_node(node: usize) -> u16 {
+    const OLD_TO_MASTER_NORMALIZED: [u16; 24] = [
+        23, 16, 17, 18, 19, 20, 21, 22, 15, 8, 9, 10, 11, 12, 13, 14, 7, 0, 1, 2, 3, 4, 5, 6,
+    ];
+    assert!(node < 24, "old test node out of range");
+    OLD_TO_MASTER_NORMALIZED[node]
+}
+
+fn old_node_i16(node: usize) -> i16 {
+    old_node(node) as i16
+}
+
 fn write_secval_only_lasker_status_database() -> PathBuf {
     let unique = SystemTime::now()
         .duration_since(UNIX_EPOCH)
@@ -154,14 +166,14 @@ fn native_search_replies_to_human_star_with_star_square() {
     let game = MillGame::default();
     let mut snap = rules.initial_state(&[]);
 
-    // Human first move on legacy SQ_16 / Rust node 9 ("d6"), one of the
-    // non-diagonal master-branch star-priority squares.
+    // Human first move on old Rust node 9 / legacy SQ_16 ("d6"), one of
+    // the non-diagonal master-branch star-priority squares.
     snap = rules.apply(
         &snap,
         Action {
             kind_tag: MillActionKind::Place as i16,
             from_node: -1,
-            to_node: 9,
+            to_node: old_node_i16(9),
             aux: -1,
             payload_bits: 0,
         },
@@ -172,11 +184,10 @@ fn native_search_replies_to_human_star_with_star_square() {
     let mut searcher = mill_searcher_default();
     let best = searcher.search_pvs(&mut wb, 1).best_action;
 
-    // Remaining non-diagonal star squares are SQ_18/SQ_20/SQ_22 =
-    // Rust nodes 11/13/15.  This guards against confusing legacy square
-    // ids (16/18/20/22) with dense Rust node ids.
+    // Remaining non-diagonal star squares are old nodes 11/13/15.  This
+    // guards against confusing legacy square ids (18/20/22) with nodes.
     assert!(
-        matches!(best.to_node, 11 | 13 | 15),
+        matches!(best.to_node, n if n == old_node_i16(11) || n == old_node_i16(13) || n == old_node_i16(15)),
         "expected a star-square reply, got to_node={}",
         best.to_node
     );
@@ -194,14 +205,14 @@ fn native_search_after_mill_keeps_turn_and_chains_remove() {
     let options = NativeMillVariantOptions::default();
 
     // Build a placing-phase position via the public setup API where it
-    // is White's turn and White can complete the a7-d7-g7 mill (nodes
-    // 0/1/2) by placing on node 1.  Black has two pieces on nodes 3
-    // and 5 to provide remove targets after the mill is formed.
+    // is White's turn and White can complete the a7-d7-g7 mill (old
+    // nodes 0/1/2) by placing on old node 1.  Black has two pieces on
+    // old nodes 3 and 5 to provide remove targets after the mill forms.
     let mut state = rules.setup_empty();
-    state.set_piece(0, 1); // White on node 0 (a7)
-    state.set_piece(2, 1); // White on node 2 (g7)
-    state.set_piece(3, 2); // Black on node 3 (g4)
-    state.set_piece(5, 2); // Black on node 5 (d1)
+    state.set_piece(old_node(0), 1); // White on a7.
+    state.set_piece(old_node(2), 1); // White on g7.
+    state.set_piece(old_node(3), 2); // Black on g4.
+    state.set_piece(old_node(5), 2); // Black on d1.
     state.set_side_to_move(0);
     state.recompute_aux(&options);
     let snap = rules.encode_state(state);
@@ -215,7 +226,7 @@ fn native_search_after_mill_keeps_turn_and_chains_remove() {
         MillActionKind::Place as i16,
         "expected a Place action that completes the mill"
     );
-    assert_eq!(mill_move.to_node, 1);
+    assert_eq!(mill_move.to_node, old_node_i16(1));
 
     // 2) Apply it.  Side-to-move must stay on White and pending_removal
     //    must become 1, exactly as the C++ legacy engine does after a
@@ -245,8 +256,8 @@ fn native_search_after_mill_keeps_turn_and_chains_remove() {
         remove_move.kind_tag,
     );
     assert!(
-        matches!(remove_move.to_node, 3 | 5),
-        "remove target must be one of Black's pieces (node 3 or 5), got {}",
+        matches!(remove_move.to_node, n if n == old_node_i16(3) || n == old_node_i16(5)),
+        "remove target must be one of Black's pieces, got {}",
         remove_move.to_node
     );
 }
@@ -263,10 +274,10 @@ fn native_search_after_mill_chains_remove_at_high_depth() {
     let options = NativeMillVariantOptions::default();
 
     let mut state = rules.setup_empty();
-    state.set_piece(0, 1); // White on node 0 (a7)
-    state.set_piece(2, 1); // White on node 2 (g7)
-    state.set_piece(3, 2); // Black on node 3 (g4)
-    state.set_piece(5, 2); // Black on node 5 (d1)
+    state.set_piece(old_node(0), 1); // White on a7.
+    state.set_piece(old_node(2), 1); // White on g7.
+    state.set_piece(old_node(3), 2); // Black on g4.
+    state.set_piece(old_node(5), 2); // Black on d1.
     state.set_side_to_move(0);
     state.recompute_aux(&options);
     let snap = rules.encode_state(state);
@@ -275,7 +286,11 @@ fn native_search_after_mill_chains_remove_at_high_depth() {
     let mut wb = game.build_workbench(&snap);
     let mut searcher = mill_searcher_default();
     let mill_move = searcher.search_pvs(&mut wb, 2).best_action;
-    assert_eq!(mill_move.to_node, 1, "AI must form the mill at node 1");
+    assert_eq!(
+        mill_move.to_node,
+        old_node_i16(1),
+        "AI must form the mill at old node 1"
+    );
 
     // 2) Apply the mill-forming move.
     let after_mill = rules.apply(&snap, mill_move);
@@ -297,8 +312,8 @@ fn native_search_after_mill_chains_remove_at_high_depth() {
         remove_move.kind_tag
     );
     assert!(
-        matches!(remove_move.to_node, 3 | 5),
-        "Remove target must be Black's piece (3 or 5), got {}",
+        matches!(remove_move.to_node, n if n == old_node_i16(3) || n == old_node_i16(5)),
+        "Remove target must be Black's piece, got {}",
         remove_move.to_node
     );
 }
@@ -311,15 +326,15 @@ fn native_search_moving_phase_mill_chains_remove_at_high_depth() {
     let game = MillGame::default();
     let options = NativeMillVariantOptions::default();
 
-    // Moving phase: White on 0, 2, 4; Black on 5, 6, 7.
-    // White can complete the [0,1,2] mill by moving 4->1.
+    // Moving phase: White on old nodes 0, 2, 4; Black on old nodes 5, 6, 7.
+    // White can complete the old [0,1,2] mill by moving 4->1.
     let mut state = rules.setup_empty();
-    state.set_piece(0, 1); // White on a7
-    state.set_piece(2, 1); // White on g7
-    state.set_piece(4, 1); // White on e4 (adjacent to node 1 via edge moves)
-    state.set_piece(5, 2); // Black on d1
-    state.set_piece(6, 2); // Black on c3
-    state.set_piece(7, 2); // Black on a1
+    state.set_piece(old_node(0), 1); // White on a7.
+    state.set_piece(old_node(2), 1); // White on g7.
+    state.set_piece(old_node(4), 1); // White adjacent to d7 via edge moves.
+    state.set_piece(old_node(5), 2); // Black on d1.
+    state.set_piece(old_node(6), 2); // Black on c3.
+    state.set_piece(old_node(7), 2); // Black on a1.
     state.set_side_to_move(0);
     state.recompute_aux(&options);
     state.set_phase(MillPhase::Moving); // Force moving phase
@@ -362,7 +377,7 @@ fn native_search_moving_phase_mill_chains_remove_at_high_depth() {
 /// Regression test for the exact game sequence in the bug report:
 /// 1.d1 d6  2.g1 f4  3.g4 d2  4.a4 [AI must respond]
 ///
-/// After White places a4 (Rust node 7), the game should have
+/// After White places a4 (old Rust node 7), the game should have
 /// side_to_move=1 (Black's turn) and NOT be terminal.
 /// This confirms that the Rust rules engine correctly switches sides
 /// and that the AI can find a valid response.
@@ -371,16 +386,16 @@ fn ai_must_respond_after_a4_in_reported_sequence() {
     let rules = MillRules::default();
     let game = MillGame::default();
 
-    // Apply the sequence: d1=node5, d6=node9, g1=node4, f4=node11,
-    // g4=node3, d2=node13.  Then White places a4=node7.
+    // Apply the old-node sequence: d1=5, d6=9, g1=4, f4=11,
+    // g4=3, d2=13.  Then White places a4=7.
     let mut snap = rules.initial_state(&[]);
-    for node in [5_i16, 9, 4, 11, 3, 13] {
+    for node in [5_usize, 9, 4, 11, 3, 13] {
         snap = rules.apply(
             &snap,
             Action {
                 kind_tag: MillActionKind::Place as i16,
                 from_node: -1,
-                to_node: node,
+                to_node: old_node_i16(node),
                 aux: -1,
                 payload_bits: 0,
             },
@@ -396,13 +411,13 @@ fn ai_must_respond_after_a4_in_reported_sequence() {
         "should be placing"
     );
 
-    // White places a4 (Rust node 7).
+    // White places a4 (old Rust node 7).
     snap = rules.apply(
         &snap,
         Action {
             kind_tag: MillActionKind::Place as i16,
             from_node: -1,
-            to_node: 7,
+            to_node: old_node_i16(7),
             aux: -1,
             payload_bits: 0,
         },
@@ -453,7 +468,7 @@ fn ai_must_respond_after_a4_in_reported_sequence() {
 /// Regression test for the reported game sequence
 /// 1.d2 d6 2.f4 b4 3.g1 g4 4.a1 — Black must reply after White's a1.
 ///
-/// Node mapping: d2=13, d6=9, f4=11, b4=15, g1=4, g4=3, a1=6.
+/// Old node mapping: d2=13, d6=9, f4=11, b4=15, g1=4, g4=3, a1=6.
 #[test]
 fn ai_must_respond_after_a1_in_reported_sequence() {
     let rules = MillRules::default();
@@ -462,13 +477,13 @@ fn ai_must_respond_after_a1_in_reported_sequence() {
     let mut snap = rules.initial_state(&[]);
 
     // Play the full sequence; alternates White / Black.
-    for node in [13_i16, 9, 11, 15, 4, 3] {
+    for node in [13_usize, 9, 11, 15, 4, 3] {
         snap = rules.apply(
             &snap,
             Action {
                 kind_tag: MillActionKind::Place as i16,
                 from_node: -1,
-                to_node: node,
+                to_node: old_node_i16(node),
                 aux: -1,
                 payload_bits: 0,
             },
@@ -478,13 +493,13 @@ fn ai_must_respond_after_a1_in_reported_sequence() {
     // After 6 placements it is White's turn (3W + 3B placed).
     assert_eq!(snap.side_to_move, 0, "should be White's turn before a1");
 
-    // White places a1 (Rust node 6).
+    // White places a1 (old Rust node 6).
     snap = rules.apply(
         &snap,
         Action {
             kind_tag: MillActionKind::Place as i16,
             from_node: -1,
-            to_node: 6,
+            to_node: old_node_i16(6),
             aux: -1,
             payload_bits: 0,
         },

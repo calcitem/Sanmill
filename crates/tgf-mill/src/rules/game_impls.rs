@@ -424,13 +424,13 @@ impl<'a> MillMoveOrderScorer<'a> {
                     potential_mills_count_standard_unrestricted(self.opponent_bb, to, None) as i32;
                 if their_mills > 0 {
                     let (_, theirs, _) = surrounded_pieces_count(self.state, self.options, to);
-                    // Master keys this branch off legacy `Square` parity. In
-                    // the dense node mapping, legacy-even squares are exactly
-                    // odd dense nodes.
+                    // Master keys this branch off legacy `Square` parity.
+                    // The master-normalized node is `Square - 8`, so parity
+                    // is preserved.
                     let parity_match = if to.is_multiple_of(2) {
-                        theirs == 2
-                    } else {
                         theirs == 3
+                    } else {
+                        theirs == 2
                     };
                     if parity_match {
                         score += RATING_BLOCK_ONE_MILL * their_mills;
@@ -473,13 +473,13 @@ impl<'a> MillMoveOrderScorer<'a> {
                 potential_mills_count_at(self.state, self.options, to, self.opponent, None) as i32;
             if their_mills > 0 {
                 let (_, theirs, _) = surrounded_pieces_count(self.state, self.options, to);
-                // Master keys this branch off legacy `Square` parity. In the
-                // dense node mapping, legacy-even squares are exactly odd
-                // dense nodes.
+                // Master keys this branch off legacy `Square` parity.  The
+                // master-normalized node is `Square - 8`, so parity is
+                // preserved.
                 let parity_match = if to.is_multiple_of(2) {
-                    theirs == 2
-                } else {
                     theirs == 3
+                } else {
+                    theirs == 2
                 };
                 if parity_match {
                     score += RATING_BLOCK_ONE_MILL * their_mills;

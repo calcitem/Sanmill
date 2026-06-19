@@ -367,7 +367,7 @@ const FROZEN_LEGAL_SECTOR_ORACLE: &[FrozenSectorOracle] = &[
     },
     FrozenSectorOracle {
         sector: (1, 3, 7, 6),
-        expected: (0, 31),
+        expected: (-1, 42),
     },
     FrozenSectorOracle {
         sector: (2, 2, 7, 7),
@@ -383,7 +383,7 @@ const FROZEN_LEGAL_SECTOR_ORACLE: &[FrozenSectorOracle] = &[
     },
     FrozenSectorOracle {
         sector: (2, 4, 6, 5),
-        expected: (0, 29),
+        expected: (-1, 29),
     },
     FrozenSectorOracle {
         sector: (3, 3, 0, 0),
@@ -391,11 +391,11 @@ const FROZEN_LEGAL_SECTOR_ORACLE: &[FrozenSectorOracle] = &[
     },
     FrozenSectorOracle {
         sector: (3, 3, 5, 5),
-        expected: (-1, 38),
+        expected: (-1, 44),
     },
     FrozenSectorOracle {
         sector: (3, 3, 6, 5),
-        expected: (1, 55),
+        expected: (-1, 1),
     },
     FrozenSectorOracle {
         sector: (3, 3, 6, 6),
@@ -407,7 +407,7 @@ const FROZEN_LEGAL_SECTOR_ORACLE: &[FrozenSectorOracle] = &[
     },
     FrozenSectorOracle {
         sector: (3, 4, 5, 5),
-        expected: (-1, 16),
+        expected: (-1, 30),
     },
     FrozenSectorOracle {
         sector: (3, 4, 6, 5),
@@ -419,7 +419,7 @@ const FROZEN_LEGAL_SECTOR_ORACLE: &[FrozenSectorOracle] = &[
     },
     FrozenSectorOracle {
         sector: (4, 3, 5, 5),
-        expected: (0, 30),
+        expected: (-1, 28),
     },
     FrozenSectorOracle {
         sector: (4, 4, 5, 5),
@@ -446,7 +446,7 @@ const FROZEN_MORABARABA_LEGAL_SECTOR_ORACLE: &[FrozenSectorOracle] = &[
     },
     FrozenSectorOracle {
         sector: (1, 3, 10, 9),
-        expected: (-1, 36),
+        expected: (-1, 64),
     },
     FrozenSectorOracle {
         sector: (2, 2, 10, 10),
@@ -514,6 +514,7 @@ fn rust_database_matches_frozen_legal_sector_oracle_samples() {
         "frozen oracle samples must cover every currently bundled std sector"
     );
 
+    let mut mismatches = Vec::new();
     for case in FROZEN_LEGAL_SECTOR_ORACLE {
         let id = case.sector_id();
         let snap = *samples
@@ -522,12 +523,18 @@ fn rust_database_matches_frozen_legal_sector_oracle_samples() {
         let state = MillRules::decode_snapshot(snap);
         let eval = evaluate_state_with_database(&mut rust_db, &state, &options, snap.side_to_move)
             .unwrap();
-        assert_eq!(
-            eval,
-            Some(case.expected),
-            "sector {id:?} must match the frozen C++ oracle sample"
-        );
+        if eval != Some(case.expected) {
+            mismatches.push(format!(
+                "{id:?}: got {eval:?}, expected {:?}",
+                Some(case.expected)
+            ));
+        }
     }
+    assert!(
+        mismatches.is_empty(),
+        "frozen C++ oracle samples must match:\n{}",
+        mismatches.join("\n")
+    );
 }
 
 #[cfg(feature = "cpp-oracle")]

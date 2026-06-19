@@ -14,10 +14,9 @@
 //   Key leapCount[COLOR_NB][2];
 //
 // Differences from master:
-//   * Rust stores only dense node ids (0..24), but the table is generated in
-//     master's legacy SQ_8..SQ_31 order and remapped to dense nodes.  This
-//     keeps TT key flow aligned with the C++ engine while preserving the Rust
-//     board layout.
+//   * Rust stores compact node ids `0..24`, where `node = legacy SQ - 8`.
+//     This keeps TT key generation aligned with C++ `SQ_8..SQ_31` while
+//     avoiding sparse runtime arrays.
 //   * `Key` is u64 internally to match the rest of `tgf-core`'s API, but the
 //     generated values occupy only master's low 32-bit key space.
 //   * KEY_MISC_BIT semantics match: the top 2 bits of the final key
@@ -31,8 +30,7 @@ use super::{MillPhase, MillState};
 /// count for the side to move).  Mirrors master `Zobrist::KEY_MISC_BIT`.
 pub(crate) const KEY_MISC_BIT: u32 = 2;
 
-/// Number of board nodes in the dense Mill encoding.  Master uses
-/// `SQUARE_EXT_NB = 40`; Rust uses 0..24.
+/// Number of board nodes in the compact master-normalized Mill encoding.
 const NODE_COUNT: usize = 24;
 
 /// Number of piece types: empty, white, black, marked.
@@ -66,11 +64,6 @@ pub(crate) struct MillZobrist {
 /// Master `Position::init` seed.
 const SEED: u64 = 1_070_372;
 
-/// Legacy SQ_8..SQ_31 → Rust dense node id.
-const LEGACY_TO_NODE: [usize; NODE_COUNT] = [
-    17, 18, 19, 20, 21, 22, 23, 16, 9, 10, 11, 12, 13, 14, 15, 8, 1, 2, 3, 4, 5, 6, 7, 0,
-];
-
 /// Generate the Zobrist table at compile time so the values live in
 /// `.rodata` and stay deterministic across runs.
 const fn build_zobrist() -> MillZobrist {
@@ -86,11 +79,10 @@ const fn build_zobrist() -> MillZobrist {
     let mut psq = [[0_u64; NODE_COUNT]; PIECE_TYPES];
     let mut p = 0;
     while p < PIECE_TYPES {
-        let mut legacy = 0;
-        while legacy < NODE_COUNT {
-            let node = LEGACY_TO_NODE[legacy];
+        let mut node = 0;
+        while node < NODE_COUNT {
             psq[p][node] = next!();
-            legacy += 1;
+            node += 1;
         }
         p += 1;
     }
@@ -104,11 +96,10 @@ const fn build_zobrist() -> MillZobrist {
 
     let mut c = 0;
     while c < 2 {
-        let mut legacy = 0;
-        while legacy < NODE_COUNT {
-            let node = LEGACY_TO_NODE[legacy];
+        let mut node = 0;
+        while node < NODE_COUNT {
             custodian_target[c][node] = next!();
-            legacy += 1;
+            node += 1;
         }
         let mut i = 0;
         while i < MAX_CUSTODIAN {
@@ -116,11 +107,10 @@ const fn build_zobrist() -> MillZobrist {
             i += 1;
         }
 
-        let mut legacy = 0;
-        while legacy < NODE_COUNT {
-            let node = LEGACY_TO_NODE[legacy];
+        let mut node = 0;
+        while node < NODE_COUNT {
             intervention_target[c][node] = next!();
-            legacy += 1;
+            node += 1;
         }
         let mut i = 0;
         while i < MAX_INTERVENTION {
@@ -128,11 +118,10 @@ const fn build_zobrist() -> MillZobrist {
             i += 1;
         }
 
-        let mut legacy = 0;
-        while legacy < NODE_COUNT {
-            let node = LEGACY_TO_NODE[legacy];
+        let mut node = 0;
+        while node < NODE_COUNT {
             leap_target[c][node] = next!();
-            legacy += 1;
+            node += 1;
         }
         let mut i = 0;
         while i < MAX_LEAP {
@@ -602,10 +591,10 @@ mod tests {
     #[test]
     fn zobrist_opening_entries_match_legacy_engine() {
         // Master generates psq entries in legacy SQ_8..SQ_31 order. d6 is
-        // legacy SQ_16 and dense node 9 in the Rust topology.
-        assert_eq!(MILL_ZOBRIST.psq[1][9], 411_597_989);
+        // legacy SQ_16 and node 8 in the master-normalized Rust topology.
+        assert_eq!(MILL_ZOBRIST.psq[1][8], 411_597_989);
         assert_eq!(MILL_ZOBRIST.side, 687_726_975);
-        assert_eq!(MILL_ZOBRIST.psq[1][9] ^ MILL_ZOBRIST.side, 813_014_490);
+        assert_eq!(MILL_ZOBRIST.psq[1][8] ^ MILL_ZOBRIST.side, 813_014_490);
     }
 
     #[test]

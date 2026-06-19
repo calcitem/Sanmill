@@ -16,7 +16,7 @@
 use tgf_core::{Action, BoardTopology, GameStateSnapshot, NotationCodec};
 
 use crate::rules::MillActionKind;
-use crate::topology::default_mill_topology;
+use crate::topology::shared_mill_topology;
 
 /// Stateless Mill UCI codec singleton.
 #[derive(Clone, Copy, Debug, Default)]
@@ -26,8 +26,8 @@ impl MillUciCodec {
     /// Convenience: encode `action` without going through the trait
     /// (avoids the `&dyn` indirection at fixed call sites).
     pub fn encode_action(action: Action) -> String {
-        let topo = default_mill_topology();
-        encode_with_topology(&topo, action).unwrap_or_default()
+        let topo = shared_mill_topology(false);
+        encode_with_topology(topo, action).unwrap_or_default()
     }
 
     /// Convenience: decode `text` against `snap` without going
@@ -44,8 +44,8 @@ impl NotationCodec for MillUciCodec {
     }
 
     fn encode(&self, _snap: &GameStateSnapshot, action: Action) -> String {
-        let topo = default_mill_topology();
-        encode_with_topology(&topo, action).unwrap_or_default()
+        let topo = shared_mill_topology(false);
+        encode_with_topology(topo, action).unwrap_or_default()
     }
 
     fn decode(&self, _snap: &GameStateSnapshot, text: &str) -> Option<Action> {
@@ -71,7 +71,7 @@ fn encode_with_topology<T: BoardTopology>(topo: &T, action: Action) -> Option<St
 }
 
 fn decode_with_topology(text: &str) -> Option<Action> {
-    let topo = default_mill_topology();
+    let topo = shared_mill_topology(false);
     let trimmed = text.trim();
     if trimmed.is_empty() {
         return None;
@@ -117,10 +117,11 @@ mod tests {
 
     #[test]
     fn place_encodes_to_bare_label() {
+        let topo = shared_mill_topology(false);
         let action = Action {
             kind_tag: MillActionKind::Place as i16,
             from_node: -1,
-            to_node: 0, // "a7" on the standard topology
+            to_node: topo.node_from_label("a7").unwrap() as i16,
             aux: -1,
             payload_bits: 0,
         };
@@ -131,7 +132,7 @@ mod tests {
 
     #[test]
     fn move_encodes_to_dash_separated_pair() {
-        let topo = default_mill_topology();
+        let topo = shared_mill_topology(false);
         let from = topo.node_from_label("a4").unwrap() as i16;
         let to = topo.node_from_label("a7").unwrap() as i16;
         let action = Action {
@@ -147,7 +148,7 @@ mod tests {
 
     #[test]
     fn remove_encodes_to_x_prefixed_label() {
-        let topo = default_mill_topology();
+        let topo = shared_mill_topology(false);
         let to = topo.node_from_label("a4").unwrap() as i16;
         let action = Action {
             kind_tag: MillActionKind::Remove as i16,

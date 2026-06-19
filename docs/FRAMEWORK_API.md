@@ -395,11 +395,18 @@ and none is planned.
 
 #### FEN import / export API
 
-- `tgfKernelSetFromFen({handle, fen})` — load a Mill FEN string compatible with
-  the legacy Dart/C++ engine format; returns updated snapshot.
+- `tgfKernelSetFromFen({handle, fen})` — load a Mill FEN string.  New FENs
+  carry the `ids:nodes` marker and encode square-like numeric fields as direct
+  engine node ids.  Legacy square-id FENs without the marker are still accepted
+  at import boundaries.
 - `tgfKernelExportFen({handle})` — serialize current kernel state as a Mill FEN
-  string.  Round-trip guarantee: `setFromFen(exportFen(s))` reproduces the same
-  board, side, phase, and piece counts (mills-bitmask output as 0).
+  string in the node-id dialect.  Round-trip guarantee:
+  `setFromFen(exportFen(s))` reproduces the same board, side, phase, piece
+  counts, remove state, and formed-mill bitmasks.
+- Use `scripts/convert_mill_fen_ids.py --write <path>...` for one-shot
+  migration of legacy FEN strings in opening books, puzzle data, tests, or
+  docs.  The script preserves the historical legacy-oracle snapshots by
+  default.
 
 The Dart wrapper that hides FFI details is
 `lib/game_platform/engine/tgf_kernel.dart::TgfKernel`.  It also produces

@@ -253,8 +253,7 @@ class NativeMillGameSession implements GameSessionHandle {
     }
     for (final GameAction action in legalActions) {
       if (action.payload['move'] == move) {
-        apply(action);
-        return true;
+        return _applyNow(action);
       }
     }
     return false;
@@ -262,18 +261,22 @@ class NativeMillGameSession implements GameSessionHandle {
 
   @override
   Future<void> apply(GameAction action) async {
+    _applyNow(action);
+  }
+
+  bool _applyNow(GameAction action) {
     if (_disposed || _forcedTerminal) {
       // A forced terminal (resignation / timeout) has ended the game;
       // reject further moves until a real transition (reset / undo /
       // setup / loadFen) clears the override.
-      return;
+      return false;
     }
     if (!rulesPort.isLegal(action)) {
       _emit(MillEventTypes.moveRejected, <String, Object?>{
         'type': action.type,
         ...action.payload,
       });
-      return;
+      return false;
     }
     final PlayerSeat mover = _state.value.activeSeat;
     final GameStateSnapshot next = rulesPort.apply(action);
@@ -285,6 +288,7 @@ class NativeMillGameSession implements GameSessionHandle {
       'boardLayout': ?boardLayout,
       ...action.payload,
     });
+    return true;
   }
 
   @override
@@ -438,7 +442,7 @@ class NativeMillGameSession implements GameSessionHandle {
     GeneralSettings? engineSettings,
   ) {
     const int valueMate = 80;
-    return engineSettings?.resignIfMostLose == true &&
+    return (engineSettings?.resignIfMostLose ?? false) &&
         event.score <= -valueMate;
   }
 

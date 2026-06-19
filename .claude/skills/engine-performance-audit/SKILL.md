@@ -380,6 +380,41 @@ Conservative, node-preserving candidates:
   plus stable priority lists; Rust should keep emitted order identical while
   replacing repeated full-board scans with masks, `trailing_zeros`, and
   precomputed peer/line masks where the order is provably unchanged.
+- [x] Audit master-normalized node numbering for bitboard geometry.  Master
+  numbers real board squares as `SQ_8..SQ_31`, starting at the inner 12
+  o'clock point and proceeding clockwise by ring.  Rust previously used a
+  Flutter-oriented dense order that required mapping tables for legacy square
+  conversion and inverted master parity in a move-order branch.  Prototype
+  `node = legacy Square - SQ_BEGIN` so all real nodes are still dense
+  `0..23` while preserving master's bitboard geometry and parity directly.
+
+  Checked on 2026-06-19: migrated topology, mill lines, priority tables, FEN
+  square ordering, Zobrist square ordering, notation lookup, FRB tests, and
+  oracle-facing tests to the master-normalized layout.  The fixed-depth
+  probes preserved bestmove, score, and node counts for `start` and
+  `reduced_material` at skill 15 depth 12 (`5,580,055` and `3,209,969`
+  nodes respectively).  Layout-only timing was mixed and should not be cited
+  as a speed win by itself.  After adding fixed-width two-line standard mill
+  checks and a placing-phase stalemate guard, whole-process `perf stat` on
+  the same UCI inputs showed fewer instructions and branches than clean
+  `a23638fb9`: `start` about 4.966B vs 5.008B instructions and
+  `reduced_material` about 3.765B vs 3.821B instructions.  I-cache and iTLB
+  events were still worse than clean HEAD, so perf elapsed time was not a
+  reliable acceptance signal for this experiment.
+  Search-only fixed-core A/B remained noisy:
+  `/tmp/sanmill_node_layout_nopack_affinity_a23638fb9_r9.csv` kept nodes
+  identical and showed small median wins (`start` `0.997x`,
+  `reduced_material` `0.985x`).  Treat this as a small conservative
+  improvement and as an enabling layout/bitboard cleanup, not as a large
+  standalone NPS win until a broader same-process benchmark confirms it.
+
+  Rejected during this audit: caching phase/star booleans inside
+  `MillMoveOrderScorer`, packed peer/line tables for `formed_mill_bits_at`,
+  branchless formed-mill bit synthesis, and splitting evaluator
+  standard/diagonal neighbor loops.  Each preserved parity but worsened at
+  least one of instructions, cache events, I-cache events, or fixed-position
+  timing, so those exact micro-optimizations should not be reintroduced unless
+  a later profile changes the cost model.
 - Audit `key_after` prefetch quality.  The current Mill override deliberately
   predicts only the cache-line address and skips rare misc/capture-state
   updates.  If TT prefetch becomes useful again, measure whether a slightly
@@ -445,10 +480,21 @@ Conservative, node-preserving candidates:
   descriptor in `MillWorkbench` could avoid repeated option loads and branch
   chains in move generation, mill checks, remove legality, and move-order
   bias.  Keep asserts proving that the fast descriptor matches the full rules.
-- Revisit remove-target ordering with bitsets.  Master combines bitboards with
+- [x] Revisit remove-target ordering with bitsets.  Master combines bitboards with
   stable priority lists.  Rust can first compute the legal removal target mask
   and then emit targets by precomputed priority ranks.  This should remove
   repeated legality branches while preserving exact emitted order.
+
+  Checked on 2026-06-19: prototyped a regular-remove `legal_targets` mask and
+  a stalemate-adjacency target mask, then emitted removals through the same
+  `priority.iter().rev()` loop to preserve order.  The patch kept bestmove,
+  score, depth, and node counts unchanged, but same-run release A/B against
+  `a23638fb9` was mixed: `start` depth 12 was only 0.989x while
+  `reduced_material` depth 12 regressed to 1.037x.  The code change was
+  reverted.  Do not reintroduce this exact mask-hoist unless a future profile
+  shows regular remove target filtering as a dominant hotspot or a broader
+  packed/staged move generator changes the cost model.  Raw rejected CSV:
+  `/tmp/sanmill_remove_targets_mask_r7.csv`.
 - [x] Cache node-local move-order inputs.  Move scoring repeatedly uses side
   bitboards, opponent bitboards, phase flags, standard-rule flags, and
   occupancy-derived facts.  Measure a small node-local context passed through
@@ -492,11 +538,21 @@ Conservative, node-preserving candidates:
   search.  A persistent worker pool can reduce OS calls and preserve cache
   warmth for repeated Flutter engine moves, but it must keep deterministic
   one-thread behavior unchanged and avoid global locks in the node loop.
-- Review fixed-depth abort checks.  Master treats `MoveTime=0` as unlimited.
+- [x] Review fixed-depth abort checks.  Master treats `MoveTime=0` as unlimited.
   Rust fixed-depth searches still poll the abort flag periodically, which is
   needed for UI responsiveness but adds a branch and atomic load in benchmark
   runs.  Consider a benchmark-only or engine-option path that proves no abort
   polling is required, while preserving external stop behavior for releases.
+
+  Checked on 2026-06-19: `Searcher` already has `fixed_depth_no_budget` and
+  polls the external abort flag only every 1024 nodes in fixed-depth searches
+  without node/time limits.  A narrower prototype skipped the extra child-loop
+  abort check in that mode while keeping node-entry polling, but same-run
+  release A/B against `a23638fb9` regressed `reduced_material` depth 12 to
+  1.065x and left `start` effectively flat at 1.006x.  The code change was
+  reverted.  Do not weaken abort polling further unless a profile points
+  directly at these loop checks or a dedicated benchmark-only mode is accepted.
+  Raw rejected CSV: `/tmp/sanmill_abort_between_moves_r7.csv`.
 - Replace fallback search/random move paths with surfaced errors where safe.
   Existing FRB fallback logic can hide search failures by running a shallow
   retry or choosing a random move.  For deterministic performance audits this
@@ -538,12 +594,24 @@ Conservative, node-preserving candidates:
   is useful.  For standard Mill, store ordered move actions per source square
   and filter them with empty-neighbor masks, so generation copies compact
   prebuilt actions instead of rebuilding every `Action` field at each node.
-- Cache mill-formation scores by bit masks.  Master repeatedly calls
+- [x] Cache mill-formation scores by bit masks.  Master repeatedly calls
   `potential_mills_count` during move ordering; Rust already uses line masks,
   but every action still recomputes several facts.  Investigate tables keyed by
   destination, cleared source, side bitboard, and line masks so standard
   scoring becomes a small number of bit operations with comments explaining the
   constants.
+
+  Checked on 2026-06-19: prototyped a standard placing-path table that
+  precomputed per-destination own/opponent mill counts once per generated move
+  list and then indexed it from `MillMoveOrderScorer`.  The patch preserved
+  bestmove, score, depth, and node counts, but same-run release A/B against
+  `a23638fb9` regressed both locked cases: `start` depth 12 was 1.040x and
+  `reduced_material` depth 12 was 1.038x.  The fixed cost of filling the
+  24-entry table outweighed the saved peer-mask scans in the current move
+  lists, so the code change was reverted.  Revisit only after packed actions,
+  staged generation, or a profile showing move-order mill counting as dominant
+  changes this cost model.  Raw rejected CSV:
+  `/tmp/sanmill_place_mill_counts_r7.csv`.
 - Carry repetition metadata on reversible state updates.  Stockfish computes a
   repetition distance once in `do_move` and then checks `st->repetition`
   cheaply.  Mill cannot copy the chess cuckoo algorithm blindly, but it can
@@ -554,11 +622,27 @@ Conservative, node-preserving candidates:
   `Vec<Vec<u16>>` shapes.  Keep this out of the node hot path; if repeated
   engine/session construction appears in profiles, replace standard topology
   construction with static arrays and borrowed slices.
-- Add cheap label/square lookup tables for UCI and diagnostics.  `node_from_label`
+- 2026-06-19 partial note: `MillUciCodec` now reuses
+  `shared_mill_topology(false)` instead of constructing a fresh owned topology
+  for every encode/decode call.  Keep this broader item open because FRB
+  topology export and session construction still intentionally build owned
+  blobs, and replacing `MillTopology::new` with borrowed static arrays should
+  wait for a profile that shows repeated boundary construction as material.
+- [x] Add cheap label/square lookup tables for UCI and diagnostics.  `node_from_label`
   and `square_to_node` currently scan tiny arrays, which is not a search-node
   cost but can show up in CLI benchmark harnesses and repeated self-play log
   parsing.  Static tables or generated match arms are acceptable if comments
   keep the legacy square mapping clear.
+
+  Done on 2026-06-19: replaced the 24-node case-insensitive label scan with a
+  direct ASCII byte match and replaced the legacy square scan with explicit
+  match arms.  This is a boundary/harness cleanup, not a fixed-depth search
+  NPS optimization, so no `tests/search_perf_baseline.toml` update is needed.
+  Tests covered the existing lowercase mapping, uppercase UCI compatibility,
+  and invalid label/square rejection:
+  `cargo test -p tgf-mill topology::tests::labels_match_cxx_square_table`,
+  `cargo test -p tgf-mill notation::tests`, and
+  `cargo clippy -p tgf-mill --all-targets --all-features -- -D warnings`.
 - Audit score-width choices in move ordering.  Master ratings fit in small
   signed integers, while Rust currently computes `i32` scores and stores a
   temporary `[i32; 72]` score array beside a 72-action stack list.  A

@@ -42,7 +42,7 @@ void main() {
   );
 
   const String initialFen =
-      '********/********/******** w p p 0 9 0 9 0 0 0 0 0 0 0 0 1';
+      '********/********/******** w p p 0 9 0 9 0 0 -1 -1 -1 -1 0 0 1 ids:nodes';
 
   late Directory appDocDir;
   late NativeMillGameSession nativeSession;
@@ -401,6 +401,12 @@ void main() {
       'auto-plays consecutive opponent moves (mill then remove)',
       (WidgetTester tester) async {
         final String startFen = buildPositionFenForOpponentMillThenRemove();
+        final PuzzleRuleEngine? probe = PuzzleRuleEngine.tryLoad(startFen);
+        assert(probe != null, 'Failed to load generated start FEN.');
+        expect(probe!.applyMoves(<String>['g1', 'a7']), 2);
+        expect(probe.legalMoveNotations(), contains('xd1'));
+        probe.dispose();
+
         final PuzzleInfo puzzle = buildPuzzle(
           initialPosition: startFen,
           solutions: const <List<String>>[
