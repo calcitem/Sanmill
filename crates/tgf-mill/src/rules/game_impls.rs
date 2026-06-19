@@ -201,6 +201,19 @@ impl Workbench for MillWorkbench {
     }
 
     #[inline]
+    fn has_current_repetition(&self) -> bool {
+        let key = self.key();
+        if key == 0 {
+            return false;
+        }
+        self.state
+            .key_history
+            .iter()
+            .take(self.state.key_history.len().saturating_sub(1))
+            .any(|k| *k == key)
+    }
+
+    #[inline]
     fn current_position_resets_repetition(&self) -> bool {
         self.root_position_resets_repetition
     }

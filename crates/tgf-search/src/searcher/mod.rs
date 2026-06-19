@@ -592,8 +592,9 @@ impl<G: Game> Searcher<G> {
         // TT, +bias) is required for deterministic move parity once the
         // moving phase is reached: it is what prunes otherwise-deeper lines
         // to a draw.  `path_repeats_since_reset` covers the search-stack half;
-        // `current_repetition_count` covers the pre-root reversible history.
-        if key != 0 && (self.path_repeats_since_reset(key) || wb.current_repetition_count() >= 1) {
+        // `has_current_repetition` covers the pre-root reversible history
+        // without forcing games to count every matching key.
+        if key != 0 && (self.path_repeats_since_reset(key) || wb.has_current_repetition()) {
             self.repetition_cuts += 1;
             return G::repetition_draw_bias();
         }

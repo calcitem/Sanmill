@@ -2785,6 +2785,7 @@ fn mill_game_root_repetition_history_feeds_workbench() {
     let wb = game.build_workbench(&snap);
 
     assert_eq!(wb.current_repetition_count(), 1);
+    assert!(wb.has_current_repetition());
 }
 
 #[test]

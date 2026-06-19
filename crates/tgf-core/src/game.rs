@@ -112,6 +112,17 @@ pub trait Workbench: Sized {
         0
     }
 
+    /// Fast boolean counterpart of [`Self::current_repetition_count`].
+    ///
+    /// Search only needs to know whether the current key appears at least once
+    /// before the root.  The default preserves existing game implementations,
+    /// while games with longer histories can override this to stop scanning as
+    /// soon as a match is found.
+    #[inline]
+    fn has_current_repetition(&self) -> bool {
+        self.current_repetition_count() > 0
+    }
+
     /// Whether the current workbench position was reached by an action that
     /// resets repetition history.  Searchers use this for the root stack entry;
     /// descendants are tracked from the action that led to each child.
