@@ -222,16 +222,34 @@ impl MillRules {
                         }
                     }
                 } else if self.options.has_diagonal_lines {
+                    // Fast path without delayed marks, repeated-mill
+                    // filtering, or leap captures: the adjacency mask is
+                    // only an empty-neighbor precheck.  We still iterate the
+                    // ordered diagonal neighbor slice below so the emitted
+                    // move list keeps the same order as the legacy tables.
+                    let empty_neighbors =
+                        crate::topology::diagonal_neighbor_mask_for(from) & !occupied;
+                    if empty_neighbors == 0 {
+                        continue;
+                    }
                     for &to in crate::topology::diagonal_neighbors_for(from) {
                         let to = to as usize;
-                        if (occupied & node_bit(to)) == 0 {
+                        if (empty_neighbors & node_bit(to)) != 0 {
                             out.push(move_action(from, to));
                         }
                     }
                 } else {
+                    // Standard-board counterpart of the diagonal fast path:
+                    // mask for cheap emptiness testing, slice for stable
+                    // move ordering.
+                    let empty_neighbors =
+                        crate::topology::standard_neighbor_mask_for(from) & !occupied;
+                    if empty_neighbors == 0 {
+                        continue;
+                    }
                     for &to in crate::topology::standard_neighbors_for(from) {
                         let to = to as usize;
-                        if (occupied & node_bit(to)) == 0 {
+                        if (empty_neighbors & node_bit(to)) != 0 {
                             out.push(move_action(from, to));
                         }
                     }
@@ -256,9 +274,24 @@ impl MillRules {
                 }
                 continue;
             }
+            let empty_neighbors =
+                crate::topology::neighbor_mask_for(from, self.options.has_diagonal_lines)
+                    & !occupied;
+            // Empty-neighbor masks cheaply skip surrounded pieces in the
+            // normal move path.  Do not skip when leap is enabled: a leap can
+            // be legal even if every adjacent square is occupied, because the
+            // destination is the far end of a capture line rather than a
+            // direct neighbor.
+            if empty_neighbors == 0 && !leap_enabled {
+                continue;
+            }
+            // Keep using the topology's ordered neighbor slice for actual
+            // emission.  The mask only answers "is this neighbor currently
+            // empty?" and must not reorder moves, especially when the search
+            // compares node counts and root move lists against master.
             for &to in self.topology.neighbors(from as u16) {
                 let to = to as usize;
-                if (occupied & node_bit(to)) == 0
+                if (empty_neighbors & node_bit(to)) != 0
                     && !self.is_restricted_repeated_mill(state, from, to)
                 {
                     out.push(move_action(from, to));
@@ -417,7 +450,7 @@ impl MillRules {
                 continue;
             }
             if stalemate_removal {
-                if !removing_own && !is_adjacent_to_side_piece(state, &self.topology, node) {
+                if !removing_own && !is_adjacent_to_side_piece(state, &self.options, node) {
                     continue;
                 }
             } else if !self.options.may_remove_from_mills_always

@@ -6,12 +6,10 @@
 // `custodian_targets / intervention_targets / leap_targets` state
 // management that follows once a capture is activated.
 
-use tgf_core::BoardTopology;
-
 use super::lines::{CAPTURE_CROSS_LINES, CAPTURE_DIAGONAL_LINES, CAPTURE_SQUARE_EDGE_LINES};
 use super::{
-    CaptureRuleConfig, MillPhase, MillState, MillTopology, MillVariantOptions, is_piece_in_mill,
-    node_bit, piece_bitboard,
+    CaptureRuleConfig, MillPhase, MillState, MillVariantOptions, is_piece_in_mill, node_bit,
+    piece_bitboard,
 };
 
 pub(super) fn active_capture_lines(
@@ -102,17 +100,17 @@ pub(super) fn leap_capture_target_is_removable(
 
 pub(super) fn is_adjacent_to_side_piece(
     state: &MillState,
-    topology: &MillTopology,
+    options: &MillVariantOptions,
     node: usize,
 ) -> bool {
     if state.side_to_move < 0 {
         return false;
     }
     let own_bb = piece_bitboard(state, state.side_to_move + 1);
-    topology
-        .neighbors(node as u16)
-        .iter()
-        .any(|neighbor| (own_bb & node_bit(*neighbor as usize)) != 0)
+    // Stalemate-removal targets must be adjacent to one of the remover's
+    // pieces.  This is an unordered membership test, so the topology mask can
+    // replace scanning the neighbor slice without changing generated order.
+    (own_bb & crate::topology::neighbor_mask_for(node, options.has_diagonal_lines)) != 0
 }
 
 pub(super) fn filter_capture_targets(

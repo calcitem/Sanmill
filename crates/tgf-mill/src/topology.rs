@@ -301,6 +301,21 @@ const NEIGHBORS: [&[u16]; 24] = [
     N0, N1, N2, N3, N4, N5, N6, N7, N8, N9, N10, N11, N12, N13, N14, N15, N16, N17, N18, N19, N20,
     N21, N22, N23,
 ];
+// Same adjacency as `NEIGHBORS`, encoded as bitboards for hot-path
+// membership tests and popcounts.  Bit `1 << n` means dense node `n` is
+// adjacent to the array index node.  Keep these masks next to the ordered
+// slice tables: the masks are faster for set algebra, while the slices are
+// still the source of move-generation order whenever order can affect the
+// emitted move list.
+//
+// These constants mirror master's `MoveList<LEGAL>::adjacentSquaresBB`
+// shape.  The topology tests below recompute the expected masks from the
+// ordered slices so hand-edited hex values cannot silently drift.
+const NEIGHBOR_MASKS: [u32; 24] = [
+    0x000082, 0x000205, 0x00000a, 0x000814, 0x000028, 0x002050, 0x0000a0, 0x008041, 0x008200,
+    0x020502, 0x000a00, 0x081408, 0x002800, 0x205020, 0x00a000, 0x804180, 0x820000, 0x050200,
+    0x0a0000, 0x140800, 0x280000, 0x502000, 0xa00000, 0x418000,
+];
 
 // Translated from `src/mills.cpp` `adjacentSquares_diagonal` (dense node ids 0..23).
 const D0: &[u16] = &[1, 7, 8];
@@ -332,15 +347,20 @@ const NEIGHBORS_DIAGONAL: [&[u16]; 24] = [
     D0, D1, D2, D3, D4, D5, D6, D7, D8, D9, D10, D11, D12, D13, D14, D15, D16, D17, D18, D19, D20,
     D21, D22, D23,
 ];
+// Diagonal-rule variant of `NEIGHBOR_MASKS`.  It has the same dense-node
+// bit encoding and the same "mask for speed, slice for order" split.
+const NEIGHBOR_MASKS_DIAGONAL: [u32; 24] = [
+    0x000182, 0x000205, 0x00040a, 0x000814, 0x001028, 0x002050, 0x0040a0, 0x008041, 0x018201,
+    0x020502, 0x040a04, 0x081408, 0x102810, 0x205020, 0x40a040, 0x804180, 0x820100, 0x050200,
+    0x0a0400, 0x140800, 0x281000, 0x502000, 0xa04000, 0x418000,
+];
 
-/// Crate-internal lookup mirroring `MillTopology::neighbors` so rules-side
-/// heuristics can avoid building a `MillTopology` instance per call.
 #[inline]
-pub(crate) fn neighbors_for(node: usize, has_diagonal_lines: bool) -> &'static [u16] {
+pub(crate) fn neighbor_mask_for(node: usize, has_diagonal_lines: bool) -> u32 {
     if has_diagonal_lines {
-        diagonal_neighbors_for(node)
+        diagonal_neighbor_mask_for(node)
     } else {
-        standard_neighbors_for(node)
+        standard_neighbor_mask_for(node)
     }
 }
 
@@ -351,9 +371,21 @@ pub(crate) fn standard_neighbors_for(node: usize) -> &'static [u16] {
 }
 
 #[inline]
+pub(crate) fn standard_neighbor_mask_for(node: usize) -> u32 {
+    debug_assert!(node < 24);
+    NEIGHBOR_MASKS[node]
+}
+
+#[inline]
 pub(crate) fn diagonal_neighbors_for(node: usize) -> &'static [u16] {
     debug_assert!(node < 24);
     NEIGHBORS_DIAGONAL[node]
+}
+
+#[inline]
+pub(crate) fn diagonal_neighbor_mask_for(node: usize) -> u32 {
+    debug_assert!(node < 24);
+    NEIGHBOR_MASKS_DIAGONAL[node]
 }
 
 #[cfg(test)]
@@ -389,6 +421,13 @@ mod tests {
         assert_eq!(topo.neighbors(1), &[9, 2, 0]);
         assert_eq!(topo.neighbors(9), &[17, 1, 10, 8]);
         assert_eq!(topo.neighbors(17), &[9, 18, 16]);
+        for node in 0..24 {
+            let expected = topo
+                .neighbors(node)
+                .iter()
+                .fold(0_u32, |mask, neighbor| mask | (1_u32 << *neighbor));
+            assert_eq!(standard_neighbor_mask_for(node as usize), expected);
+        }
     }
 
     #[test]
@@ -403,5 +442,12 @@ mod tests {
         assert!(topo.line_groups().contains(&vec![18, 10, 2]));
         assert!(topo.line_groups().contains(&vec![6, 14, 22]));
         assert!(topo.line_groups().contains(&vec![20, 12, 4]));
+        for node in 0..24 {
+            let expected = topo
+                .neighbors(node)
+                .iter()
+                .fold(0_u32, |mask, neighbor| mask | (1_u32 << *neighbor));
+            assert_eq!(diagonal_neighbor_mask_for(node as usize), expected);
+        }
     }
 }

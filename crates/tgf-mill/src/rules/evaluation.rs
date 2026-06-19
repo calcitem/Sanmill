@@ -6,8 +6,14 @@
 
 use super::{
     MillBoardFullAction, MillPhase, MillState, MillVariantOptions, StalemateAction,
-    board_occupied_bitboard, live_occupied_bitboard, live_piece, node_bit,
+    board_occupied_bitboard, live_occupied_bitboard, live_piece,
 };
+
+// Limit inverted bitboards to the 24 real board nodes.  Rust's `!u32`
+// otherwise leaves high bits set, which would make popcount-based empty
+// square counts include non-board bits when the expression is not already
+// intersected by a topology mask.
+const MILL_BOARD_MASK: u32 = (1_u32 << 24) - 1;
 
 /// Mirror of `Position::shouldConsiderMobility()` in option.h: enabled
 /// when the user requested mobility scoring or when blocking-path focus
@@ -63,51 +69,32 @@ pub(super) fn mills_pieces_count_difference(
 /// `MARKED_PIECE`) square contributes the count of its White / Black
 /// neighbours.
 pub(super) fn calculate_mobility_diff(state: &MillState, options: &MillVariantOptions) -> i32 {
-    if state.delayed_marked_pieces == 0 {
-        let white_bb = state.by_color_bb[0];
-        let black_bb = state.by_color_bb[1];
-        let occupied = live_occupied_bitboard(state);
-        let mut white = 0_i32;
-        let mut black = 0_i32;
-        for s in 0_usize..24 {
-            let mask = node_bit(s);
-            let piece = if (white_bb & mask) != 0 {
-                1
-            } else if (black_bb & mask) != 0 {
-                2
-            } else {
-                continue;
-            };
-            let mut mobility = 0_i32;
-            for &to in crate::topology::neighbors_for(s, options.has_diagonal_lines) {
-                if (occupied & node_bit(to as usize)) == 0 {
-                    mobility += 1;
-                }
-            }
-            if piece == 1 {
-                white += mobility;
-            } else {
-                black += mobility;
-            }
-        }
-        return white - black;
+    // Mobility follows master's live-piece semantics: delayed-marked
+    // pieces are not live blockers, so they count as empty for mobility.
+    // This differs from `board_occupied_bitboard`, which keeps marked
+    // squares occupied for movement and surrounded-piece scoring.
+    let live_empty = !live_occupied_bitboard(state) & MILL_BOARD_MASK;
+    let mut white = 0_i32;
+    let mut white_bb = state.by_color_bb[0];
+    while white_bb != 0 {
+        let node = white_bb.trailing_zeros() as usize;
+        let neighbor_mask = crate::topology::neighbor_mask_for(node, options.has_diagonal_lines);
+        white += (neighbor_mask & live_empty).count_ones() as i32;
+        // Clear the least significant set bit and continue with the next
+        // live piece, avoiding a 24-square scan in this evaluator hot path.
+        white_bb &= white_bb - 1;
     }
 
-    let mut white = 0_i32;
     let mut black = 0_i32;
-    for s in 0_usize..24 {
-        if live_piece(state, s) != 0 {
-            // Occupied by a real (non-marked) piece — skip.
-            continue;
-        }
-        for &neigh in crate::topology::neighbors_for(s, options.has_diagonal_lines) {
-            match live_piece(state, neigh as usize) {
-                1 => white += 1,
-                2 => black += 1,
-                _ => {}
-            }
-        }
+    let mut black_bb = state.by_color_bb[1];
+    while black_bb != 0 {
+        let node = black_bb.trailing_zeros() as usize;
+        let neighbor_mask = crate::topology::neighbor_mask_for(node, options.has_diagonal_lines);
+        black += (neighbor_mask & live_empty).count_ones() as i32;
+        // Same bit-pop loop as White: one iteration per live Black piece.
+        black_bb &= black_bb - 1;
     }
+
     white - black
 }
 
@@ -176,28 +163,14 @@ fn adjacent_mobility_counts(
     options: &MillVariantOptions,
     node: usize,
 ) -> (i32, i32, i32) {
-    let mut white = 0_i32;
-    let mut black = 0_i32;
-    let mut empty = 0_i32;
-    if state.delayed_marked_pieces == 0 && !options.has_diagonal_lines {
-        for &neighbor in crate::topology::standard_neighbors_for(node) {
-            match state.board[neighbor as usize] {
-                0 => empty += 1,
-                1 => white += 1,
-                2 => black += 1,
-                _ => {}
-            }
-        }
-        return (white, black, empty);
-    }
-    for &neighbor in crate::topology::neighbors_for(node, options.has_diagonal_lines) {
-        match live_piece(state, neighbor as usize) {
-            0 => empty += 1,
-            1 => white += 1,
-            2 => black += 1,
-            _ => {}
-        }
-    }
+    let neighbor_mask = crate::topology::neighbor_mask_for(node, options.has_diagonal_lines);
+    // Incremental mobility updates must use the same live-empty definition
+    // as `calculate_mobility_diff`; otherwise delayed removal would drift
+    // between full recomputation and make/unmake updates.
+    let live_occupied = live_occupied_bitboard(state);
+    let white = (neighbor_mask & state.by_color_bb[0]).count_ones() as i32;
+    let black = (neighbor_mask & state.by_color_bb[1]).count_ones() as i32;
+    let empty = (neighbor_mask & !live_occupied).count_ones() as i32;
     (white, black, empty)
 }
 
@@ -219,15 +192,17 @@ pub(super) fn is_all_surrounded(state: &MillState, options: &MillVariantOptions,
     }
     let own_bb = state.by_color_bb[s];
     let occupied = board_occupied_bitboard(state);
-    for from in 0_usize..24 {
-        if (own_bb & node_bit(from)) == 0 {
-            continue;
+    let mut pieces = own_bb;
+    while pieces != 0 {
+        let from = pieces.trailing_zeros() as usize;
+        let neighbor_mask = crate::topology::neighbor_mask_for(from, options.has_diagonal_lines);
+        // Surrounded checks are about legal movement, so delayed-marked
+        // squares remain occupied here.  The mask already limits `!occupied`
+        // to adjacent board nodes, making an extra board mask unnecessary.
+        if (neighbor_mask & !occupied) != 0 {
+            return false;
         }
-        for &to in crate::topology::neighbors_for(from, options.has_diagonal_lines) {
-            if (occupied & node_bit(to as usize)) == 0 {
-                return false;
-            }
-        }
+        pieces &= pieces - 1;
     }
     true
 }
@@ -280,27 +255,21 @@ pub(super) fn surrounded_pieces_count(
     options: &MillVariantOptions,
     s: usize,
 ) -> (i32, i32, i32) {
-    let neighbors = crate::topology::neighbors_for(s, options.has_diagonal_lines);
     if !(0..2).contains(&state.side_to_move) {
         return (0, 0, 0);
     }
     let side = state.side_to_move as usize;
+    let neighbor_mask = crate::topology::neighbor_mask_for(s, options.has_diagonal_lines);
     let our_bb = state.by_color_bb[side];
     let their_bb = state.by_color_bb[side ^ 1];
+    // Remove scoring follows master's MovePicker bucket accounting:
+    // live side pieces are counted through by-color bitboards, marked
+    // pieces are deliberately omitted from the side buckets, and board
+    // occupancy prevents marked squares from being counted as empty.
     let occupied = board_occupied_bitboard(state);
-    let mut our = 0_i32;
-    let mut theirs = 0_i32;
-    let mut empty = 0_i32;
-    for &n in neighbors {
-        let mask = node_bit(n as usize);
-        if (our_bb & mask) != 0 {
-            our += 1;
-        } else if (their_bb & mask) != 0 {
-            theirs += 1;
-        } else if (occupied & mask) == 0 {
-            empty += 1;
-        }
-    }
+    let our = (neighbor_mask & our_bb).count_ones() as i32;
+    let theirs = (neighbor_mask & their_bb).count_ones() as i32;
+    let empty = (neighbor_mask & !occupied).count_ones() as i32;
     (our, theirs, empty)
 }
 
