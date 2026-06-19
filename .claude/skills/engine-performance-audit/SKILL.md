@@ -479,12 +479,20 @@ Conservative, node-preserving candidates:
   retry or choosing a random move.  For deterministic performance audits this
   must be disabled so regressions fail loudly and movelist comparisons remain
   meaningful.
-- Audit benchmark timing and node accounting before trusting new baselines.
+- [x] Audit benchmark timing and node accounting before trusting new baselines.
   `tgf bench` must never time multiple searches while reporting only one
   search's nodes.  If a warm-up search is desired, run it before the timer; if
   two measured searches are desired, report the sum of both node counts.  This
   is a measurement fix, not an engine-speed optimization, and should be
   committed separately from search changes.
+
+  Done on 2026-06-19: changed `tgf bench` to run one unmeasured depth-4 warm-up
+  search, then rebuild the workbench and time exactly one measured depth-4
+  search.  The reported `nps`, `depth10_ms`, and TT hit rate now all come from
+  the same measured search.  Added `search_depth = 4` and
+  `search_warmup_runs = 1` metadata so future baseline readers know the exact
+  harness semantics.  Revisit only if the benchmark corpus is broadened or if
+  the legacy `depth10_ms` compatibility field is renamed in a schema update.
 - Broaden the fixed-position benchmark corpus.  Stockfish keeps many benchmark
   positions and legacy Sanmill has self-play benchmark scaffolding.  Sanmill's
   Rust benchmark should include representative placing, moving, removal,

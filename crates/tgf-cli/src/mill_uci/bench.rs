@@ -30,11 +30,12 @@ pub fn print_benchmark_toml() {
     let mut wb = game.build_workbench(&mid_snap);
     let mid_d3 = perft::<MillGame>(&mut wb, 3);
 
-    let mut wb = game.build_workbench(&snap);
     let mut searcher = mill_searcher();
+    let mut warmup_wb = game.build_workbench(&snap);
+    let _ = searcher.search(&mut warmup_wb, 4);
+    let mut wb = game.build_workbench(&snap);
     let start = Instant::now();
     let result = searcher.search(&mut wb, 4);
-    let _ = searcher.search(&mut wb, 4);
     let elapsed = start.elapsed().max(Duration::from_micros(1));
     let depth_ms = elapsed.as_millis() as u64;
     let nps = (result.nodes as f64 / elapsed.as_secs_f64()).round() as u64;
@@ -71,6 +72,8 @@ pub fn print_benchmark_toml() {
     println!("locked_at   = \"\"");
     println!("git_commit  = \"{}\"", git_commit);
     println!("platform    = \"{}\"", platform);
+    println!("search_depth = 4");
+    println!("search_warmup_runs = 1");
     println!(
         "tt_cluster_bits = {}  # set TGF_TT_CLUSTER_BITS to override",
         tt_cluster_bits_from_env()
