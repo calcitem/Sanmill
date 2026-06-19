@@ -245,7 +245,7 @@ impl MillRules {
         debug_assert!(to < 24);
         debug_assert_eq!(old_to_piece, 0);
         debug_assert!(state.pending_removals == [0, 0]);
-        debug_assert!(!state.mill_available_at_removal);
+        debug_assert!(!state.mill_available_at_removal());
         debug_assert!(super::zobrist::capture_state_is_empty(
             state.custodian_targets,
             state.custodian_count,
@@ -267,7 +267,7 @@ impl MillRules {
         let mill_bits = formed_mill_bits_at(state, &self.options, to, state.side_to_move);
         if mill_bits != 0 {
             state.pending_removals[side] = removal_count_for_bits(mill_bits, &self.options);
-            state.mill_available_at_removal = true;
+            state.set_mill_available_at_removal(true);
             sync_action_state(state);
             note_mill_formation(state, side, -1, to as i8, mill_bits, &self.options);
         } else {
@@ -328,7 +328,7 @@ impl MillRules {
         debug_assert_eq!(old_to_piece, 0);
         debug_assert_eq!(state.board[to], 0);
         debug_assert!(state.pending_removals == [0, 0]);
-        debug_assert!(!state.mill_available_at_removal);
+        debug_assert!(!state.mill_available_at_removal());
         debug_assert_eq!(state.delayed_marked_pieces, 0);
         debug_assert!(super::zobrist::capture_state_is_empty(
             state.custodian_targets,
@@ -489,7 +489,7 @@ impl MillRules {
                             let remaining = removals - hand_removed;
                             if remaining > 0 {
                                 state.pending_removals[side] = remaining;
-                                state.mill_available_at_removal = true;
+                                state.set_mill_available_at_removal(true);
                                 sync_action_state(&mut state);
                             } else {
                                 state.side_to_move = if matches!(
@@ -511,7 +511,7 @@ impl MillRules {
                             let opponent = side ^ 1;
                             state.side_to_move = opponent as i8;
                             state.pending_removals[opponent] = removals;
-                            state.mill_available_at_removal = false;
+                            state.set_mill_available_at_removal(false);
                             clear_capture_state(&mut state);
                             sync_action_state(&mut state);
                         }
@@ -525,7 +525,7 @@ impl MillRules {
                             // marked square at the placing-to-moving boundary
                             // (mirrors Position::remove_marked_pieces).
                             state.pending_removals[side] = removals;
-                            state.mill_available_at_removal = true;
+                            state.set_mill_available_at_removal(true);
                             activate_capture_state(&mut state, custodian, intervention, 0);
                             if self.options.may_remove_multiple {
                                 state.pending_removals[side] = state.pending_removals[side]
@@ -547,7 +547,7 @@ impl MillRules {
                         }
                         MillFormationActionInPlacingPhase::RemoveOpponentsPieceFromBoard => {
                             state.pending_removals[side] = removals;
-                            state.mill_available_at_removal = true;
+                            state.set_mill_available_at_removal(true);
                             activate_capture_state(&mut state, custodian, intervention, 0);
                             if self.options.may_remove_multiple {
                                 state.pending_removals[side] =
@@ -560,7 +560,7 @@ impl MillRules {
                 } else if custodian != 0 || intervention != 0 {
                     activate_capture_state(&mut state, custodian, intervention, 0);
                     state.pending_removals[side] = capture_total(&state);
-                    state.mill_available_at_removal = false;
+                    state.set_mill_available_at_removal(false);
                     sync_action_state(&mut state);
                 } else {
                     clear_capture_state(&mut state);
@@ -615,12 +615,12 @@ impl MillRules {
                 if leap != 0 {
                     activate_capture_state(&mut state, 0, 0, leap);
                     state.pending_removals[side] = 1;
-                    state.mill_available_at_removal = false;
+                    state.set_mill_available_at_removal(false);
                     sync_action_state(&mut state);
                 } else if usable_bits != 0 {
                     state.pending_removals[side] =
                         removal_count_for_bits(usable_bits, &self.options);
-                    state.mill_available_at_removal = true;
+                    state.set_mill_available_at_removal(true);
                     activate_capture_state(&mut state, custodian, intervention, 0);
                     if self.options.may_remove_multiple {
                         state.pending_removals[side] =
@@ -638,7 +638,7 @@ impl MillRules {
                 } else if custodian != 0 || intervention != 0 {
                     activate_capture_state(&mut state, custodian, intervention, 0);
                     state.pending_removals[side] = capture_total(&state);
-                    state.mill_available_at_removal = false;
+                    state.set_mill_available_at_removal(false);
                     sync_action_state(&mut state);
                 } else {
                     clear_capture_state(&mut state);
@@ -724,7 +724,7 @@ impl MillRules {
                 let to = action.to_node as usize;
                 let side = state.side_to_move as usize;
                 let opponent = (state.side_to_move ^ 1) as usize;
-                let removing_own = side < 2 && state.remove_own_piece[side];
+                let removing_own = side < 2 && state.remove_own_piece(side);
                 let target_color_index = if removing_own { side } else { opponent };
                 debug_assert_eq!(state.board[to], target_color_index as i8 + 1);
                 debug_assert!(state.pending_removals[side] > 0);
@@ -738,35 +738,35 @@ impl MillRules {
                 let remaining_before = state.pending_removals[side];
 
                 if is_intervention {
-                    state.mill_available_at_removal = false;
+                    state.set_mill_available_at_removal(false);
                     state.custodian_targets[side] = 0;
                     state.custodian_count[side] = 0;
                     state.leap_targets[side] = 0;
                     state.leap_count[side] = 0;
                     state.pending_removals[side] = state.intervention_count[side];
                 } else if is_custodian {
-                    state.mill_available_at_removal = false;
+                    state.set_mill_available_at_removal(false);
                     state.intervention_targets[side] = 0;
                     state.intervention_count[side] = 0;
                     state.leap_targets[side] = 0;
                     state.leap_count[side] = 0;
                     state.pending_removals[side] = 1;
                 } else if is_leap {
-                    state.mill_available_at_removal = false;
+                    state.set_mill_available_at_removal(false);
                     state.custodian_targets[side] = 0;
                     state.custodian_count[side] = 0;
                     state.intervention_targets[side] = 0;
                     state.intervention_count[side] = 0;
                     state.pending_removals[side] = 1;
-                } else if state.mill_available_at_removal && cap_total > 0 {
+                } else if state.mill_available_at_removal() && cap_total > 0 {
                     if self.options.may_remove_multiple && remaining_before > cap_total {
                         state.pending_removals[side] = remaining_before.saturating_sub(cap_total);
                     }
                     clear_capture_state_for_side(&mut state, side);
-                    state.mill_available_at_removal = true;
+                    state.set_mill_available_at_removal(true);
                 } else {
                     debug_assert!(
-                        cap_total == 0 || state.mill_available_at_removal,
+                        cap_total == 0 || state.mill_available_at_removal(),
                         "capture obligation must remove a capture target"
                     );
                 }
@@ -852,18 +852,18 @@ impl MillRules {
                         // Negative pieceToRemoveCount cleared its quota; flip
                         // the flag so the next removal (if scheduled) reverts
                         // to opponent-targeting semantics.
-                        state.remove_own_piece[side] = false;
+                        state.set_remove_own_piece(side, false);
                     }
-                    if state.stalemate_removing {
-                        state.stalemate_removing = false;
+                    if state.stalemate_removing() {
+                        state.set_stalemate_removing(false);
                     } else {
                         state.side_to_move ^= 1;
                     }
-                    if state.both_stalemate_removing && state.pending_removals == [0, 0] {
-                        state.both_stalemate_removing = false;
+                    if state.both_stalemate_removing() && state.pending_removals == [0, 0] {
+                        state.set_both_stalemate_removing(false);
                     }
-                    if state.board_full_removing && state.pending_removals == [0, 0] {
-                        state.board_full_removing = false;
+                    if state.board_full_removing() && state.pending_removals == [0, 0] {
+                        state.set_board_full_removing(false);
                     }
                     maybe_transition_to_moving(&mut state, &self.options);
                     sync_phase_with_active_hand(&mut state);

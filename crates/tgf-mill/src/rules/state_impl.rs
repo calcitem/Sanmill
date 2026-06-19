@@ -96,14 +96,8 @@ impl MillState {
         payload[249] = self.custodian_count[0];
         payload[250] = self.intervention_count[0];
         payload[251] = self.leap_count[0];
-        // Pack loose bool flags into a single byte (bits 0-5).
-        let flags: u8 = u8::from(self.mill_available_at_removal)
-            | (u8::from(self.stalemate_removing) << 1)
-            | (u8::from(self.both_stalemate_removing) << 2)
-            | (u8::from(self.remove_own_piece[0]) << 3)
-            | (u8::from(self.remove_own_piece[1]) << 4)
-            | (u8::from(self.board_full_removing) << 5);
-        payload[252] = flags;
+        // Runtime flags use the same bit layout as the snapshot byte.
+        payload[252] = self.flags.payload_bits();
         payload[253] = self.last_mill_from[1] as u8;
         payload[254] = self.last_mill_to[1] as u8;
         payload[255] = self.preferred_remove_target as u8;
@@ -210,11 +204,7 @@ impl MillState {
             custodian_count: [payload[249], payload[276]],
             intervention_count: [payload[250], payload[277]],
             leap_count: [payload[251], payload[278]],
-            mill_available_at_removal: (payload[252] & 0x01) != 0,
-            stalemate_removing: (payload[252] & 0x02) != 0,
-            both_stalemate_removing: (payload[252] & 0x04) != 0,
-            remove_own_piece: [(payload[252] & 0x08) != 0, (payload[252] & 0x10) != 0],
-            board_full_removing: (payload[252] & 0x20) != 0,
+            flags: super::MillStateFlags::from_payload(payload[252]),
             preferred_remove_target: payload[255] as i8,
             formed_mills_bb: [read_u32(256), read_u32(260)],
             // Snapshot-side Zobrist key was computed in
@@ -387,10 +377,7 @@ impl MillState {
         self.intervention_count = [0, 0];
         self.leap_count = [0, 0];
         self.preferred_remove_target = -1;
-        self.mill_available_at_removal = false;
-        self.stalemate_removing = false;
-        self.both_stalemate_removing = false;
-        self.remove_own_piece = [false, false];
+        self.flags = super::MillStateFlags::default();
         self.key_history.clear();
         self.key_history_len = 0;
         recompute_mobility_diff(self, options);

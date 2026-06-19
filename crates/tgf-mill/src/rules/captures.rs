@@ -274,7 +274,7 @@ pub(super) fn clear_capture_state(state: &mut MillState) {
     state.custodian_count = [0, 0];
     state.intervention_count = [0, 0];
     state.leap_count = [0, 0];
-    state.mill_available_at_removal = false;
+    state.set_mill_available_at_removal(false);
 }
 
 pub(super) fn clear_capture_state_for_side(state: &mut MillState, side: usize) {
@@ -285,7 +285,7 @@ pub(super) fn clear_capture_state_for_side(state: &mut MillState, side: usize) {
     state.custodian_count[side] = 0;
     state.intervention_count[side] = 0;
     state.leap_count[side] = 0;
-    state.mill_available_at_removal = false;
+    state.set_mill_available_at_removal(false);
 }
 
 pub(super) fn activate_capture_state(

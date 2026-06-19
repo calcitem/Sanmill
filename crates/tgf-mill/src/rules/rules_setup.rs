@@ -251,7 +251,16 @@ impl MillRules {
             pieces_on_board: [on_board_w, on_board_b],
             pieces_in_hand: [in_hand_w, in_hand_b],
             pending_removals: [final_remove_w, final_remove_b],
-            remove_own_piece: remove_own,
+            flags: super::MillStateFlags::from_parts(
+                remove_own,
+                (final_remove_w > 0 || final_remove_b > 0)
+                    && !(custodian_count[side_usize] > 0
+                        || intervention_count[side_usize] > 0
+                        || leap_count[side_usize] > 0),
+                stalemate_removing,
+                both_stalemate_removing,
+                false,
+            ),
             ply_since_capture: rule50,
             last_mill_from,
             last_mill_to,
@@ -262,13 +271,7 @@ impl MillRules {
             intervention_count,
             leap_targets,
             leap_count,
-            stalemate_removing,
-            both_stalemate_removing,
             action: fen_action,
-            mill_available_at_removal: (final_remove_w > 0 || final_remove_b > 0)
-                && !(custodian_count[side_usize] > 0
-                    || intervention_count[side_usize] > 0
-                    || leap_count[side_usize] > 0),
             formed_mills_bb,
             preferred_remove_target,
             winner: -1,
@@ -341,7 +344,7 @@ impl MillRules {
         // Encode signed pieceToRemoveCount mirroring legacy semantics.
         let signed_remove = |idx: usize| -> i32 {
             let abs = i32::from(state.pending_removals[idx]);
-            if state.remove_own_piece[idx] {
+            if state.remove_own_piece(idx) {
                 -abs
             } else {
                 abs
@@ -400,9 +403,9 @@ impl MillRules {
                 node_to_legacy_square(state.preferred_remove_target)
             ));
         }
-        if state.stalemate_removing {
+        if state.stalemate_removing() {
             out.push_str(" s:1");
-        } else if state.both_stalemate_removing {
+        } else if state.both_stalemate_removing() {
             out.push_str(" s:2");
         }
         out

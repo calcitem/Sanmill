@@ -258,6 +258,26 @@ fn workbench_do_undo_restores_all_fields_for_legal_actions() {
 
 #[test]
 fn mill_board_undo_keeps_full_snapshot_out_of_standard_delta() {
+    assert_eq!(
+        std::mem::size_of::<MillStateFlags>(),
+        1,
+        "removal/stalemate flags must stay packed into one byte"
+    );
+    assert_eq!(
+        std::mem::size_of::<MillState>(),
+        144,
+        "live Mill state must stay cache compact"
+    );
+    assert_eq!(
+        std::mem::size_of::<MillUndoCore>(),
+        112,
+        "per-ply undo core must stay cache compact"
+    );
+    assert_eq!(
+        std::mem::size_of::<MillUndoState>(),
+        128,
+        "per-ply undo state must stay cache compact"
+    );
     assert!(
         std::mem::size_of::<MillBoardUndo>() <= 16,
         "board undo must keep standard search deltas compact"
@@ -638,7 +658,7 @@ fn move_order_bias_remove_prefers_high_mobility_targets() {
         side_to_move: 0,
         phase: MillPhase::Moving,
         pending_removals: [1, 0],
-        mill_available_at_removal: true,
+        flags: MillStateFlags::from_parts([false, false], true, false, false, false),
         pieces_on_board: [3, 4],
         ..MillState::default()
     };
@@ -1022,7 +1042,7 @@ fn mill_action_mark_and_delay_arms_remove_then_marks_target() {
     // Active side now owes a removal obligation against the opponent.
     assert_eq!(state.pending_removals[0], 1);
     assert_eq!(state.side_to_move, 0);
-    assert!(state.mill_available_at_removal);
+    assert!(state.mill_available_at_removal());
 
     // Pick any opponent piece to "mark".
     let mut actions = ActionList::<256>::new();
@@ -1129,7 +1149,7 @@ fn mill_action_removal_based_on_mill_counts_double_zero_removes_own_piece() {
         "double-zero mills schedules one removal per side"
     );
     assert_eq!(
-        state.remove_own_piece,
+        state.remove_own_pieces(),
         [true, true],
         "negative pieceToRemoveCount semantics: each side removes own"
     );
@@ -1152,7 +1172,7 @@ fn mill_action_removal_based_on_mill_counts_double_zero_removes_own_piece() {
     let after = rules.apply(&after, pick);
     let state = MillRules::decode(&after);
     assert!(
-        !state.remove_own_piece[active as usize],
+        !state.remove_own_piece(active as usize),
         "remove_own_piece flag must clear once quota reaches zero"
     );
 }
@@ -1177,7 +1197,7 @@ fn remove_own_piece_respects_mill_protection() {
         pieces_in_hand: [0, 0],
         pieces_on_board: [4, 3],
         pending_removals: [1, 0],
-        remove_own_piece: [true, false],
+        flags: MillStateFlags::from_parts([true, false], false, false, false, false),
         winner: -1,
         ..MillState::default()
     };
@@ -1266,7 +1286,7 @@ fn stalemate_remove_and_make_next_move_keeps_turn_after_remove() {
     let mut state = stalemate_fixture();
     rules.maybe_handle_stalemate(&mut state);
     assert_eq!(state.pending_removals, [1, 0]);
-    assert!(state.stalemate_removing);
+    assert!(state.stalemate_removing());
     let after = rules.apply(
         &rules.encode(state),
         Action {
@@ -1280,7 +1300,7 @@ fn stalemate_remove_and_make_next_move_keeps_turn_after_remove() {
     let state = MillRules::decode(&after);
     assert_eq!(state.side_to_move, 0);
     assert_eq!(state.pending_removals, [0, 0]);
-    assert!(!state.stalemate_removing);
+    assert!(!state.stalemate_removing());
 }
 
 /// Zhi Qi regression (oracle rule_idx 8): arming a stalemate removal
@@ -1304,7 +1324,7 @@ fn stalemate_removal_offers_adjacent_targets_without_mill_protection() {
     let mut state_after = state.clone();
     rules.maybe_handle_stalemate(&mut state_after);
     assert_eq!(state_after.pending_removals, [1, 0]);
-    assert!(state_after.stalemate_removing);
+    assert!(state_after.stalemate_removing());
 
     let mut actions = ActionList::<256>::new();
     rules.legal_actions(&rules.encode(state_after), &mut actions);
@@ -1363,7 +1383,7 @@ fn stalemate_both_players_remove_in_order() {
     let mut state = stalemate_fixture();
     rules.maybe_handle_stalemate(&mut state);
     assert_eq!(state.pending_removals, [1, 1]);
-    assert!(state.both_stalemate_removing);
+    assert!(state.both_stalemate_removing());
     let after_first = rules.apply(
         &rules.encode(state),
         Action {
@@ -1390,7 +1410,7 @@ fn stalemate_both_players_remove_in_order() {
     let state = MillRules::decode(&after_second);
     assert_eq!(state.side_to_move, 0);
     assert_eq!(state.pending_removals, [0, 0]);
-    assert!(!state.both_stalemate_removing);
+    assert!(!state.both_stalemate_removing());
 }
 
 #[test]
@@ -2948,7 +2968,7 @@ fn custodian_capture_places_single_remove_obligation() {
     let state = MillRules::decode(&after);
     assert_eq!(state.pending_removals[0], 1);
     assert_eq!(state.custodian_targets[0], node_bit(1));
-    assert!(!state.mill_available_at_removal);
+    assert!(!state.mill_available_at_removal());
     let mut actions = ActionList::<256>::new();
     rules.legal_actions(&after, &mut actions);
     assert_eq!(
@@ -3016,7 +3036,7 @@ fn placing_end_custodian_capture_resolves_before_phase_transition() {
     assert_eq!(state.pieces_in_hand, [0, 0]);
     assert_eq!(state.pending_removals[0], 1);
     assert_eq!(state.custodian_targets[0], node_bit(1));
-    assert!(!state.mill_available_at_removal);
+    assert!(!state.mill_available_at_removal());
 
     let mut actions = ActionList::<256>::new();
     rules.legal_actions(&after_place, &mut actions);
@@ -3035,7 +3055,7 @@ fn placing_end_custodian_capture_resolves_before_phase_transition() {
         "mill-count removals are scheduled only after capture removal"
     );
     assert_eq!(state.side_to_move, 0);
-    assert_eq!(state.remove_own_piece, [true, true]);
+    assert_eq!(state.remove_own_pieces(), [true, true]);
 }
 
 #[test]
@@ -3178,7 +3198,7 @@ fn leap_capture_takes_precedence_over_mill() {
     let state = MillRules::decode(&after);
     assert_eq!(state.pending_removals[0], 1);
     assert_eq!(state.leap_targets[0], node_bit(1));
-    assert!(!state.mill_available_at_removal);
+    assert!(!state.mill_available_at_removal());
 }
 
 #[test]
@@ -3221,7 +3241,7 @@ fn mill_plus_custodian_accumulates_only_when_may_remove_multiple() {
     );
     let state = MillRules::decode(&after);
     assert_eq!(state.pending_removals[0], 2);
-    assert!(state.mill_available_at_removal);
+    assert!(state.mill_available_at_removal());
     assert_eq!(state.custodian_targets[0], node_bit(1));
 }
 
@@ -3264,7 +3284,7 @@ fn mill_plus_custodian_does_not_accumulate_without_may_remove_multiple() {
     );
     let state = MillRules::decode(&after);
     assert_eq!(state.pending_removals[0], 1);
-    assert!(state.mill_available_at_removal);
+    assert!(state.mill_available_at_removal());
     assert_eq!(state.custodian_targets[0], node_bit(1));
 }
 
@@ -3369,7 +3389,7 @@ fn diagonal_custodian_sandwiches_opponent_on_diagonal_line() {
     let st = MillRules::decode(&after);
     assert_eq!(st.custodian_targets[0], node_bit(8));
     assert_eq!(st.pending_removals[0], 1);
-    assert!(!st.mill_available_at_removal);
+    assert!(!st.mill_available_at_removal());
 }
 
 #[test]
@@ -3830,7 +3850,7 @@ fn generate_legal_ctx_uses_reverse_priority_for_remove() {
         side_to_move: 0,
         phase: MillPhase::Moving,
         pending_removals: [1, 0],
-        mill_available_at_removal: true,
+        flags: MillStateFlags::from_parts([false, false], true, false, false, false),
         pieces_on_board: [0, 24],
         ..MillState::default()
     };
@@ -3909,13 +3929,12 @@ fn set_from_fen_extensions_round_trip() {
         pieces_in_hand: [7, 8],
         pieces_on_board: [2, 1],
         pending_removals: [1, 1],
-        remove_own_piece: [true, true],
+        flags: MillStateFlags::from_parts([true, true], false, true, false, false),
         last_mill_from: [9, 17],
         last_mill_to: [11, 18],
         delayed_marked_pieces: 1u32 << 0,
         custodian_targets: [1u32 << 5, 0],
         custodian_count: [1, 0],
-        stalemate_removing: true,
         ..MillState::default()
     };
     let exported = rules.export_fen(&original);
@@ -3934,13 +3953,13 @@ fn set_from_fen_extensions_round_trip() {
         .set_from_fen(&exported)
         .expect("export must round-trip");
     assert_eq!(parsed.pending_removals, original.pending_removals);
-    assert_eq!(parsed.remove_own_piece, original.remove_own_piece);
+    assert_eq!(parsed.remove_own_pieces(), original.remove_own_pieces());
     assert_eq!(parsed.last_mill_from, original.last_mill_from);
     assert_eq!(parsed.last_mill_to, original.last_mill_to);
     assert_eq!(parsed.delayed_marked_pieces, original.delayed_marked_pieces);
     assert_eq!(parsed.custodian_targets, original.custodian_targets);
     assert_eq!(parsed.custodian_count, original.custodian_count);
-    assert!(parsed.stalemate_removing);
+    assert!(parsed.stalemate_removing());
 }
 
 /// Master format `s:2` flips `both_stalemate_removing`.  `p:NN`
@@ -3955,8 +3974,8 @@ fn set_from_fen_extensions_supports_both_stalemate_and_preferred_remove() {
         " p:21 s:2"
     );
     let state = rules.set_from_fen(fen).expect("valid trailing tokens");
-    assert!(!state.stalemate_removing);
-    assert!(state.both_stalemate_removing);
+    assert!(!state.stalemate_removing());
+    assert!(state.both_stalemate_removing());
     assert_eq!(
         state.preferred_remove_target, 14,
         "p:21 (legacy Square 21 = b2) must map to Rust node 14"

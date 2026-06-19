@@ -665,6 +665,163 @@ fn move_action(from: usize, to: usize) -> Action {
     }
 }
 
+/// Packed runtime flags for Mill state and undo snapshots.
+///
+/// These bits intentionally mirror the snapshot payload byte at offset 252.
+/// Keeping the same representation in memory avoids six separate bool fields
+/// in every `MillState` and every search undo entry while still making each
+/// flag readable through named accessors.
+#[derive(Clone, Copy, PartialEq, Eq, Default)]
+struct MillStateFlags(u8);
+
+impl MillStateFlags {
+    const MILL_AVAILABLE_AT_REMOVAL: u8 = 1 << 0;
+    const STALEMATE_REMOVING: u8 = 1 << 1;
+    const BOTH_STALEMATE_REMOVING: u8 = 1 << 2;
+    const REMOVE_OWN_FIRST: u8 = 1 << 3;
+    const REMOVE_OWN_SECOND: u8 = 1 << 4;
+    const BOARD_FULL_REMOVING: u8 = 1 << 5;
+    const PAYLOAD_MASK: u8 = Self::MILL_AVAILABLE_AT_REMOVAL
+        | Self::STALEMATE_REMOVING
+        | Self::BOTH_STALEMATE_REMOVING
+        | Self::REMOVE_OWN_FIRST
+        | Self::REMOVE_OWN_SECOND
+        | Self::BOARD_FULL_REMOVING;
+
+    #[inline]
+    fn from_payload(bits: u8) -> Self {
+        debug_assert_eq!(
+            bits & !Self::PAYLOAD_MASK,
+            0,
+            "unknown Mill state flag bits in snapshot payload"
+        );
+        Self(bits & Self::PAYLOAD_MASK)
+    }
+
+    #[inline]
+    fn from_parts(
+        remove_own_piece: [bool; 2],
+        mill_available_at_removal: bool,
+        stalemate_removing: bool,
+        both_stalemate_removing: bool,
+        board_full_removing: bool,
+    ) -> Self {
+        let mut flags = Self::default();
+        flags.set_remove_own_pieces(remove_own_piece);
+        flags.set_mill_available_at_removal(mill_available_at_removal);
+        flags.set_stalemate_removing(stalemate_removing);
+        flags.set_both_stalemate_removing(both_stalemate_removing);
+        flags.set_board_full_removing(board_full_removing);
+        flags
+    }
+
+    #[inline]
+    fn payload_bits(self) -> u8 {
+        self.0 & Self::PAYLOAD_MASK
+    }
+
+    #[inline]
+    fn bit(self, mask: u8) -> bool {
+        (self.0 & mask) != 0
+    }
+
+    #[inline]
+    fn set_bit(&mut self, mask: u8, enabled: bool) {
+        if enabled {
+            self.0 |= mask;
+        } else {
+            self.0 &= !mask;
+        }
+    }
+
+    #[inline]
+    fn remove_own_piece(self, side: usize) -> bool {
+        assert!(side < 2, "Mill remove-own side out of range");
+        self.bit(if side == 0 {
+            Self::REMOVE_OWN_FIRST
+        } else {
+            Self::REMOVE_OWN_SECOND
+        })
+    }
+
+    #[inline]
+    fn remove_own_pieces(self) -> [bool; 2] {
+        [self.remove_own_piece(0), self.remove_own_piece(1)]
+    }
+
+    #[inline]
+    fn set_remove_own_piece(&mut self, side: usize, enabled: bool) {
+        assert!(side < 2, "Mill remove-own side out of range");
+        let mask = if side == 0 {
+            Self::REMOVE_OWN_FIRST
+        } else {
+            Self::REMOVE_OWN_SECOND
+        };
+        self.set_bit(mask, enabled);
+    }
+
+    #[inline]
+    fn set_remove_own_pieces(&mut self, values: [bool; 2]) {
+        self.set_remove_own_piece(0, values[0]);
+        self.set_remove_own_piece(1, values[1]);
+    }
+
+    #[inline]
+    fn mill_available_at_removal(self) -> bool {
+        self.bit(Self::MILL_AVAILABLE_AT_REMOVAL)
+    }
+
+    #[inline]
+    fn set_mill_available_at_removal(&mut self, enabled: bool) {
+        self.set_bit(Self::MILL_AVAILABLE_AT_REMOVAL, enabled);
+    }
+
+    #[inline]
+    fn stalemate_removing(self) -> bool {
+        self.bit(Self::STALEMATE_REMOVING)
+    }
+
+    #[inline]
+    fn set_stalemate_removing(&mut self, enabled: bool) {
+        self.set_bit(Self::STALEMATE_REMOVING, enabled);
+    }
+
+    #[inline]
+    fn both_stalemate_removing(self) -> bool {
+        self.bit(Self::BOTH_STALEMATE_REMOVING)
+    }
+
+    #[inline]
+    fn set_both_stalemate_removing(&mut self, enabled: bool) {
+        self.set_bit(Self::BOTH_STALEMATE_REMOVING, enabled);
+    }
+
+    #[inline]
+    fn board_full_removing(self) -> bool {
+        self.bit(Self::BOARD_FULL_REMOVING)
+    }
+
+    #[inline]
+    fn set_board_full_removing(&mut self, enabled: bool) {
+        self.set_bit(Self::BOARD_FULL_REMOVING, enabled);
+    }
+}
+
+impl std::fmt::Debug for MillStateFlags {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("MillStateFlags")
+            .field("remove_own_piece", &self.remove_own_pieces())
+            .field(
+                "mill_available_at_removal",
+                &self.mill_available_at_removal(),
+            )
+            .field("stalemate_removing", &self.stalemate_removing())
+            .field("both_stalemate_removing", &self.both_stalemate_removing())
+            .field("board_full_removing", &self.board_full_removing())
+            .finish()
+    }
+}
+
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct MillState {
     board: [i8; 24],
@@ -681,13 +838,9 @@ pub struct MillState {
     pieces_on_board: [u8; 2],
     mobility_diff: i32,
     pending_removals: [u8; 2],
-    /// Per-side flag matching the legacy C++ engine's negative
-    /// `pieceToRemoveCount[c]`: when `true`, the side with `pending_removals[c] > 0`
-    /// must remove a piece of *its own* colour rather than the opponent's.
-    /// Currently driven by `RemovalBasedOnMillCounts` when both sides have
-    /// zero mills at the placing-to-moving boundary (whiteRemove =
-    /// blackRemove = -1 in C++).
-    remove_own_piece: [bool; 2],
+    /// Packed removal/stalemate flags.  See `MillStateFlags`; keeping this
+    /// as one byte saves space in both the live state and every undo entry.
+    flags: MillStateFlags,
     winner: i8,
     outcome_reason: MillOutcomeReason,
     ply_since_capture: u16,
@@ -721,13 +874,6 @@ pub struct MillState {
     /// suggested as the "best" target for the next removal, or `-1`
     /// when no preference is set.
     preferred_remove_target: i8,
-    mill_available_at_removal: bool,
-    stalemate_removing: bool,
-    both_stalemate_removing: bool,
-    /// Board-full removals are a distinct placing-end flow in master.  They
-    /// are persisted for UI/FEN round-trips but must not activate stalemate
-    /// adjacency filtering once Rust has transitioned the phase to Moving.
-    board_full_removing: bool,
     /// Repetition signatures appended on reversible side-changing moves and
     /// cleared on Place/Remove, mirroring master's global `posKeyHistory`
     /// vector. Runtime history is capped at 256 entries; snapshots persist
@@ -758,7 +904,7 @@ impl Default for MillState {
             pieces_on_board: [0, 0],
             mobility_diff: 0,
             pending_removals: [0, 0],
-            remove_own_piece: [false, false],
+            flags: MillStateFlags::default(),
             winner: -1,
             outcome_reason: MillOutcomeReason::Ongoing,
             ply_since_capture: 0,
@@ -774,14 +920,73 @@ impl Default for MillState {
             intervention_count: [0, 0],
             leap_count: [0, 0],
             preferred_remove_target: -1,
-            mill_available_at_removal: false,
-            stalemate_removing: false,
-            both_stalemate_removing: false,
-            board_full_removing: false,
             key_history: Vec::new(),
             key_history_len: 0,
             zobrist_key: 0,
         }
+    }
+}
+
+impl MillState {
+    #[inline]
+    fn remove_own_piece(&self, side: usize) -> bool {
+        self.flags.remove_own_piece(side)
+    }
+
+    #[cfg(test)]
+    #[inline]
+    fn remove_own_pieces(&self) -> [bool; 2] {
+        self.flags.remove_own_pieces()
+    }
+
+    #[inline]
+    fn set_remove_own_piece(&mut self, side: usize, enabled: bool) {
+        self.flags.set_remove_own_piece(side, enabled);
+    }
+
+    #[inline]
+    fn set_remove_own_pieces(&mut self, values: [bool; 2]) {
+        self.flags.set_remove_own_pieces(values);
+    }
+
+    #[inline]
+    fn mill_available_at_removal(&self) -> bool {
+        self.flags.mill_available_at_removal()
+    }
+
+    #[inline]
+    fn set_mill_available_at_removal(&mut self, enabled: bool) {
+        self.flags.set_mill_available_at_removal(enabled);
+    }
+
+    #[inline]
+    fn stalemate_removing(&self) -> bool {
+        self.flags.stalemate_removing()
+    }
+
+    #[inline]
+    fn set_stalemate_removing(&mut self, enabled: bool) {
+        self.flags.set_stalemate_removing(enabled);
+    }
+
+    #[inline]
+    fn both_stalemate_removing(&self) -> bool {
+        self.flags.both_stalemate_removing()
+    }
+
+    #[inline]
+    fn set_both_stalemate_removing(&mut self, enabled: bool) {
+        self.flags.set_both_stalemate_removing(enabled);
+    }
+
+    #[inline]
+    fn board_full_removing(&self) -> bool {
+        self.flags.board_full_removing()
+    }
+
+    #[inline]
+    fn set_board_full_removing(&mut self, enabled: bool) {
+        self.flags.set_board_full_removing(enabled);
     }
 }
 
@@ -825,7 +1030,7 @@ struct MillUndoCore {
     pieces_on_board: [u8; 2],
     mobility_diff: i32,
     pending_removals: [u8; 2],
-    remove_own_piece: [bool; 2],
+    flags: MillStateFlags,
     winner: i8,
     outcome_reason: MillOutcomeReason,
     ply_since_capture: u16,
@@ -841,10 +1046,6 @@ struct MillUndoCore {
     intervention_count: [u8; 2],
     leap_count: [u8; 2],
     preferred_remove_target: i8,
-    mill_available_at_removal: bool,
-    stalemate_removing: bool,
-    both_stalemate_removing: bool,
-    board_full_removing: bool,
     key_history_len: usize,
     zobrist_key: u64,
 }
@@ -899,7 +1100,7 @@ impl MillUndoCore {
             pieces_on_board: state.pieces_on_board,
             mobility_diff: state.mobility_diff,
             pending_removals: state.pending_removals,
-            remove_own_piece: state.remove_own_piece,
+            flags: state.flags,
             winner: state.winner,
             outcome_reason: state.outcome_reason,
             ply_since_capture: state.ply_since_capture,
@@ -915,10 +1116,6 @@ impl MillUndoCore {
             intervention_count: state.intervention_count,
             leap_count: state.leap_count,
             preferred_remove_target: state.preferred_remove_target,
-            mill_available_at_removal: state.mill_available_at_removal,
-            stalemate_removing: state.stalemate_removing,
-            both_stalemate_removing: state.both_stalemate_removing,
-            board_full_removing: state.board_full_removing,
             key_history_len: state.key_history_len,
             zobrist_key: state.zobrist_key,
         }
@@ -934,7 +1131,7 @@ impl MillUndoCore {
         state.pieces_on_board = self.pieces_on_board;
         state.mobility_diff = self.mobility_diff;
         state.pending_removals = self.pending_removals;
-        state.remove_own_piece = self.remove_own_piece;
+        state.flags = self.flags;
         state.winner = self.winner;
         state.outcome_reason = self.outcome_reason;
         state.ply_since_capture = self.ply_since_capture;
@@ -951,10 +1148,6 @@ impl MillUndoCore {
         state.intervention_count = self.intervention_count;
         state.leap_count = self.leap_count;
         state.preferred_remove_target = self.preferred_remove_target;
-        state.mill_available_at_removal = self.mill_available_at_removal;
-        state.stalemate_removing = self.stalemate_removing;
-        state.both_stalemate_removing = self.both_stalemate_removing;
-        state.board_full_removing = self.board_full_removing;
         state.key_history_len = self.key_history_len;
         state.zobrist_key = self.zobrist_key;
         debug_assert_eq!(

@@ -93,14 +93,14 @@ impl MillRules {
             StalemateAction::RemoveOpponentsPieceAndMakeNextMove => {
                 let side = state.side_to_move as usize;
                 state.pending_removals[side] = 1;
-                state.stalemate_removing = true;
-                state.mill_available_at_removal = false;
+                state.set_stalemate_removing(true);
+                state.set_mill_available_at_removal(false);
                 clear_capture_state(state);
             }
             StalemateAction::RemoveOpponentsPieceAndChangeSideToMove => {
                 let side = state.side_to_move as usize;
                 state.pending_removals[side] = 1;
-                state.mill_available_at_removal = false;
+                state.set_mill_available_at_removal(false);
                 clear_capture_state(state);
             }
             StalemateAction::EndWithStalemateDraw => {
@@ -112,8 +112,8 @@ impl MillRules {
                 let side = state.side_to_move as usize;
                 state.pending_removals[side] = 1;
                 state.pending_removals[side ^ 1] = 1;
-                state.both_stalemate_removing = true;
-                state.mill_available_at_removal = false;
+                state.set_both_stalemate_removing(true);
+                state.set_mill_available_at_removal(false);
                 clear_capture_state(state);
             }
         }
@@ -385,7 +385,7 @@ impl MillRules {
             // already emitted above).
         }
 
-        if us < 2 && state.remove_own_piece[us] {
+        if us < 2 && state.remove_own_piece(us) {
             // Mirror master src/position.cpp:1773 remove_piece:
             // negative pieceToRemoveCount switches the target colour to the
             // mover's own pieces, then the common stalemate and mill
@@ -503,7 +503,7 @@ impl MillRules {
     }
 
     fn is_stalemate_removal_context(&self, state: &MillState) -> bool {
-        if state.stalemate_removing || state.both_stalemate_removing {
+        if state.stalemate_removing() || state.both_stalemate_removing() {
             return true;
         }
         // Mirror master src/position.cpp:3475 is_board_full_removal_at_placing_phase_end:

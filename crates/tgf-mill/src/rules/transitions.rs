@@ -187,19 +187,19 @@ pub(super) fn maybe_finish_full_board(state: &mut MillState, options: &MillVaria
         MillBoardFullAction::FirstAndSecondPlayerRemovePiece => {
             state.pending_removals = [1, 1];
             state.side_to_move = 0;
-            state.board_full_removing = true;
+            state.set_board_full_removing(true);
         }
         MillBoardFullAction::SecondAndFirstPlayerRemovePiece => {
             state.pending_removals = [1, 1];
             state.side_to_move = 1;
-            state.board_full_removing = true;
+            state.set_board_full_removing(true);
         }
         MillBoardFullAction::SideToMoveRemovePiece => {
             state.pending_removals = [0, 0];
             let remover = if options.is_defender_move_first { 1 } else { 0 };
             state.side_to_move = remover;
             state.pending_removals[remover as usize] = 1;
-            state.board_full_removing = true;
+            state.set_board_full_removing(true);
         }
     }
 }
@@ -242,9 +242,9 @@ pub(super) fn apply_removal_based_on_mill_counts(
     // the negative sign tells movegen to enumerate the *own* colour for
     // removal.  We model the sign with `remove_own_piece[c]` while
     // `pending_removals[c]` keeps the absolute count.
-    state.remove_own_piece = [false, false];
+    state.set_remove_own_pieces([false, false]);
     let (white_remove, black_remove) = if white_mills == 0 && black_mills == 0 {
-        state.remove_own_piece = [true, true];
+        state.set_remove_own_pieces([true, true]);
         (1_u8, 1_u8)
     } else if white_mills > 0 && black_mills == 0 {
         (2, 1)
@@ -263,7 +263,7 @@ pub(super) fn apply_removal_based_on_mill_counts(
     if state.pending_removals[state.side_to_move as usize] == 0 {
         state.side_to_move ^= 1;
     }
-    state.mill_available_at_removal = state.pending_removals.iter().any(|count| *count > 0);
+    state.set_mill_available_at_removal(state.pending_removals.iter().any(|count| *count > 0));
 }
 
 pub(super) fn bump_ply_since_capture(state: &mut MillState, options: &MillVariantOptions) {
