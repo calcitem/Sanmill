@@ -505,11 +505,75 @@ impl<'a> MillMoveOrderScorer<'a> {
             actions.len() <= scores.len(),
             "Mill move-order score buffer is smaller than action list"
         );
+        if self.standard_place_no_move {
+            return self.score_standard_place_no_move_actions(actions, scores);
+        }
         let mut previous_score = 0_i32;
         let mut has_previous = false;
         let mut needs_sort = false;
         for (i, action) in actions.iter().copied().enumerate() {
             let score = self.score(action);
+            scores[i].write(score);
+            if has_previous && previous_score < score {
+                needs_sort = true;
+            }
+            previous_score = score;
+            has_previous = true;
+        }
+        needs_sort
+    }
+
+    #[inline]
+    fn score_standard_place_no_move_actions(
+        &self,
+        actions: &[Action],
+        scores: &mut [MaybeUninit<i32>],
+    ) -> bool {
+        let can_form_mill = self.side_piece_count >= 2;
+        let can_block_mill = self.opponent_piece_count >= 2;
+        let mut node_scores = [0_i32; 24];
+
+        if can_form_mill || can_block_mill {
+            for (to, score) in node_scores.iter_mut().enumerate() {
+                let (our_mills, their_mills) = if can_form_mill && can_block_mill {
+                    potential_mills_count_standard_unrestricted_pair(
+                        self.side_bb,
+                        self.opponent_bb,
+                        to,
+                        None,
+                    )
+                } else if can_form_mill {
+                    (
+                        potential_mills_count_standard_unrestricted(self.side_bb, to, None),
+                        0,
+                    )
+                } else {
+                    (
+                        0,
+                        potential_mills_count_standard_unrestricted(self.opponent_bb, to, None),
+                    )
+                };
+                *score = if our_mills > 0 {
+                    RATING_ONE_MILL * our_mills as i32
+                } else {
+                    RATING_BLOCK_ONE_MILL * their_mills as i32
+                };
+            }
+        }
+
+        let mut previous_score = 0_i32;
+        let mut has_previous = false;
+        let mut needs_sort = false;
+        for (i, action) in actions.iter().copied().enumerate() {
+            let to = action.to_node as usize;
+            let score = if action.kind_tag == MillActionKind::Place as i16 && to < 24 {
+                // Standard placing nodes ask the same two-line mill questions
+                // for many siblings.  Cache the layer-local answers once and
+                // keep the exact score() semantics for out-of-shape actions.
+                node_scores[to]
+            } else {
+                self.score(action)
+            };
             scores[i].write(score);
             if has_previous && previous_score < score {
                 needs_sort = true;
