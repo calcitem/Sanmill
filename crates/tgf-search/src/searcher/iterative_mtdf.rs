@@ -380,7 +380,6 @@ impl<G: Game> Searcher<G> {
         G::generate_legal_ctx(wb, &mut moves, &self.options.move_order_context);
         self.order_moves(wb, root_key, depth, &mut moves);
         let mut best_value = i32::MIN + 1;
-        let mut best_local = Action::NONE;
         for action in moves.iter().copied() {
             if self.should_abort() {
                 break;
@@ -413,7 +412,6 @@ impl<G: Game> Searcher<G> {
                 best_value = value;
                 if value > alpha {
                     *best_action = action;
-                    best_local = action;
                     if value >= beta {
                         break; // fail high
                     }
@@ -422,9 +420,9 @@ impl<G: Game> Searcher<G> {
             }
         }
         // Master saves bestValue + bound at every node (src/search.cpp:372).
-        // TT_MOVE is undefined in master, so the stored move is unused by move
-        // ordering and does not affect the search; we keep `best_local` for
-        // symmetry with `alpha_beta`.
+        // TT_MOVE is undefined in master, so the Rust packed TT stores only
+        // value/depth/bound metadata. The root best move remains threaded
+        // separately through `best_action`, matching master MTD(f).
         let bound = if best_value <= old_alpha {
             Bound::Upper
         } else if best_value >= beta {
@@ -432,7 +430,7 @@ impl<G: Game> Searcher<G> {
         } else {
             Bound::Exact
         };
-        self.save_tt(root_key, depth, best_value, bound, best_local);
+        self.save_tt(root_key, depth, best_value, bound);
         best_value
     }
 }

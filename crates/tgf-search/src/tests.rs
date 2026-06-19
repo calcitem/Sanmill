@@ -371,17 +371,11 @@ fn transposition_table_saves_and_reuses_entries() {
 
 #[test]
 fn packed_tt_entry_round_trips_compact_fields() {
+    assert_eq!(std::mem::size_of::<TtEntry>(), 12);
     let entry = TtEntry {
         value: 900,
         depth: 12,
         bound: Bound::Lower,
-        best_action: Action {
-            kind_tag: 2,
-            from_node: 23,
-            to_node: 17,
-            aux: -1,
-            payload_bits: 0,
-        },
     };
 
     let meta = TtPackedEntry::pack_meta(0x1234_5678_9abc_def0, &entry, 3);
@@ -390,7 +384,6 @@ fn packed_tt_entry_round_trips_compact_fields() {
     assert_eq!(unpacked.value, entry.value);
     assert_eq!(unpacked.depth, entry.depth);
     assert_eq!(unpacked.bound, entry.bound);
-    assert_eq!(unpacked.best_action, Action::NONE);
     assert_eq!(TtPackedEntry::packed_age(meta), 3);
     assert_ne!(meta, 0);
 }
@@ -674,7 +667,6 @@ fn tt_non_exact_entry_is_skipped_after_age_bump() {
         value: 42,
         depth: 5,
         bound: Bound::Lower, // non-Exact
-        best_action: Action::NONE,
     };
     // Written at age 0.
     tt.save(key, entry);
@@ -700,7 +692,6 @@ fn tt_exact_entry_is_skipped_after_age_bump() {
         value: 42,
         depth: 5,
         bound: Bound::Exact,
-        best_action: Action::NONE,
     };
     tt.save(key, entry);
     tt.bump_age();
@@ -718,7 +709,6 @@ fn tt_clear_resets_age_and_removes_entries() {
         value: 42,
         depth: 5,
         bound: Bound::Exact,
-        best_action: Action::NONE,
     };
     tt.save(key, entry);
     tt.bump_age();

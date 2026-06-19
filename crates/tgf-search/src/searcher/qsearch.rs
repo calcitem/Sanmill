@@ -3,7 +3,7 @@
 // with `alpha_beta`.  Hosted in a sibling impl block so the main
 // `searcher/mod.rs` stays under 1k lines.
 
-use tgf_core::{Action, Evaluator, Game, SearchActionList, Workbench};
+use tgf_core::{Evaluator, Game, SearchActionList, Workbench};
 
 use super::Searcher;
 use crate::tt::{Bound, TtEntry};
@@ -155,21 +155,13 @@ impl<G: Game> Searcher<G> {
     }
 
     #[inline]
-    pub(super) fn save_tt(
-        &mut self,
-        key: u64,
-        depth: i32,
-        value: i32,
-        bound: Bound,
-        best_action: Action,
-    ) {
+    pub(super) fn save_tt(&mut self, key: u64, depth: i32, value: i32, bound: Bound) {
         self.tt.save(
             key,
             TtEntry {
                 value,
                 depth,
                 bound,
-                best_action,
             },
         );
     }

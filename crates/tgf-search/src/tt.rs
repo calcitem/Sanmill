@@ -12,8 +12,6 @@ use std::sync::{
     atomic::{AtomicU8, AtomicU64, Ordering},
 };
 
-use tgf_core::Action;
-
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub(crate) enum Bound {
     Exact,
@@ -26,7 +24,6 @@ pub(crate) struct TtEntry {
     pub value: i32,
     pub depth: i32,
     pub bound: Bound,
-    pub best_action: Action,
 }
 
 // ---------------------------------------------------------------------------
@@ -301,7 +298,6 @@ impl TtPackedEntry {
             value: Self::unpack_value(meta),
             depth: Self::unpack_depth(meta),
             bound: Self::unpack_bound(meta),
-            best_action: Action::NONE,
         }
     }
 

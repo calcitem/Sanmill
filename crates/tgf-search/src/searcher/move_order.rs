@@ -93,17 +93,4 @@ impl<G: Game> Searcher<G> {
         // recovery.
         G::move_order_bias_ctx(wb, action, &self.options.move_order_context)
     }
-
-    #[allow(dead_code)]
-    fn order_moves_by_tt(&self, key: u64, moves: &mut SearchActionList) {
-        if key == 0 {
-            return;
-        }
-        let Some(entry) = self.tt.get(key) else {
-            return;
-        };
-        if let Some(index) = moves.iter().position(|m| *m == entry.best_action) {
-            moves.as_mut_slice().swap(0, index);
-        }
-    }
 }

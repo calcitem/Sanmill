@@ -11,13 +11,13 @@
 # next-branch revisions.
 
 [meta]
-locked_at = "2026-06-19T05:25:25Z"
-git_commit = "61599694e+working-tree"
+locked_at = "2026-06-19T08:59:50Z"
+git_commit = "dad59ffa9+working-tree"
 platform = "linux-x86_64-local"
 build_flags = "cargo build --release -p tgf-cli"
-command = "python3 scripts/compare_engine_perf.py --current 'target/release/tgf uci' --master '/tmp/sanmill_before_alloc_lock_tgf uci' --current-depth-go 'gomtdf {depth}' --master-depth-go 'gomtdf {depth}' --cases start,reduced_material --skills 15 --depths 12 --repeat 7 --timeout 240"
+command = "python3 scripts/compare_engine_perf.py --current 'target/release/tgf uci' --master '/tmp/sanmill_before_alloc_lock_tgf uci' --current-depth-go 'gomtdf {depth}' --master-depth-go 'gomtdf {depth}' --cases start,reduced_material --skills 15 --depths 12 --repeat 11 --timeout 240"
 summary_method = "median elapsed_ms from current engine rows"
-notes = "Locked after moving the search repetition stack to fixed ArrayVec storage, making worker-local MCTS node counters plain integers, and replacing one-shot lazy-SMP/MCTS channel dispatch with direct JoinHandles. The master engine remains the broad parity reference, but future next-branch optimization timing should compare against these Rust/TGF numbers before drawing conclusions."
+notes = "Locked after dropping the unused Action payload from packed TT entries and removing dead TT-move ordering scaffolding. Same-run A/B against /tmp/sanmill_before_alloc_lock_tgf showed unchanged bestmove/score/nodes and medians 0.981x start / 0.995x reduced_material. Raw candidate CSV: /tmp/sanmill_tt_entry_drop_action_r11.csv."
 
 [thresholds]
 max_elapsed_regress_pct = 8.0
@@ -34,9 +34,9 @@ bestmove = "d6"
 score = 3
 depth = 12
 nodes = 5_580_055
-median_ms = 1341.48
-ns_per_node = 240.41
-run_ms = [1342.80, 1283.71, 1405.43, 1146.08, 1341.48, 1293.79, 1451.95]
+median_ms = 1383.30
+ns_per_node = 247.90
+run_ms = [1565.33, 1285.76, 1314.82, 1245.04, 1430.22, 1546.76, 1383.30, 1405.08, 1297.72, 1464.46, 1311.99]
 
 [[cases]]
 name = "reduced_material"
@@ -46,6 +46,6 @@ bestmove = "c4-b4"
 score = -89
 depth = 12
 nodes = 3_209_969
-median_ms = 934.80
-ns_per_node = 291.22
-run_ms = [1092.02, 898.96, 930.13, 934.80, 985.32, 902.00, 938.53]
+median_ms = 1032.01
+ns_per_node = 321.50
+run_ms = [1037.98, 931.48, 943.16, 1099.36, 958.32, 1073.03, 951.59, 1152.59, 1024.30, 1032.01, 1063.09]

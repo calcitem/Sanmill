@@ -451,7 +451,6 @@ impl<G: Game> Searcher<G> {
         self.order_moves(wb, root_key, depth, &mut moves);
         let mut best_value = i32::MIN + 1;
         let mut best_action = Action::NONE;
-        let mut best_local = Action::NONE;
         let mut rows = Vec::with_capacity(moves.len());
         for action in moves.iter().copied() {
             let nodes_before = self.nodes;
@@ -470,7 +469,6 @@ impl<G: Game> Searcher<G> {
                 best_value = value;
                 if value > alpha {
                     best_action = action;
-                    best_local = action;
                     if value >= beta {
                         cutoff = true;
                     } else {
@@ -497,7 +495,7 @@ impl<G: Game> Searcher<G> {
         } else {
             Bound::Exact
         };
-        self.save_tt(root_key, depth, best_value, bound, best_local);
+        self.save_tt(root_key, depth, best_value, bound);
         (best_value, best_action, rows)
     }
 
@@ -642,7 +640,6 @@ impl<G: Game> Searcher<G> {
         }
 
         let mut best_value = i32::MIN + 1;
-        let mut best_action = Action::NONE;
         let depth_extension = if self.options.depth_extension && moves.len() == 1 {
             1
         } else {
@@ -663,10 +660,9 @@ impl<G: Game> Searcher<G> {
             self.pop_repetition_ancestor(key, previous_incoming_reset);
             if score > best_value {
                 best_value = score;
-                best_action = action;
             }
             if score >= beta {
-                self.save_tt(key, depth, score, Bound::Lower, action);
+                self.save_tt(key, depth, score, Bound::Lower);
                 return score;
             }
             if score > alpha {
@@ -680,7 +676,7 @@ impl<G: Game> Searcher<G> {
         } else {
             Bound::Exact
         };
-        self.save_tt(key, depth, best_value, bound, best_action);
+        self.save_tt(key, depth, best_value, bound);
         best_value
     }
 
