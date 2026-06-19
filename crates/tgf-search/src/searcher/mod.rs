@@ -12,6 +12,7 @@ use std::sync::Arc;
 use std::sync::atomic::{AtomicBool, Ordering};
 use std::time::{Duration, Instant};
 
+use arrayvec::ArrayVec;
 use tgf_core::{Action, Evaluator, Game, MoveOrderContext, SearchActionList, Workbench};
 
 use crate::abort::SearchAbortHandle;
@@ -42,6 +43,9 @@ pub struct RootProbeRow {
 }
 
 pub type RootProbeRows = Vec<RootProbeRow>;
+
+const REPETITION_STACK_CAPACITY: usize = 128;
+type RepetitionStack = ArrayVec<(u64, bool), REPETITION_STACK_CAPACITY>;
 
 pub struct Searcher<G: Game> {
     /// Per-search-instance node counter.
@@ -79,7 +83,7 @@ pub struct Searcher<G: Game> {
     /// node, plus whether the action that reached that ancestor reset
     /// repetition history.  This mirrors master `ss[i].move`: the barrier is
     /// attached to the ancestor itself, not to the outgoing child edge.
-    pub(crate) repetition_stack: Vec<(u64, bool)>,
+    pub(crate) repetition_stack: RepetitionStack,
     repetition_current_incoming_reset: bool,
     _phantom: PhantomData<G>,
 }
@@ -107,7 +111,7 @@ impl<G: Game> Searcher<G> {
             fixed_depth_no_budget: false,
             abort_flag: Arc::new(AtomicBool::new(false)),
             aborted: false,
-            repetition_stack: Vec::with_capacity(128),
+            repetition_stack: RepetitionStack::new(),
             repetition_current_incoming_reset: false,
             _phantom: PhantomData,
         }
@@ -747,6 +751,10 @@ impl<G: Game> Searcher<G> {
     fn push_repetition_ancestor(&mut self, key: u64, action_to_child: Action) -> bool {
         let previous_incoming_reset = self.repetition_current_incoming_reset;
         if key != 0 {
+            assert!(
+                self.repetition_stack.len() < REPETITION_STACK_CAPACITY,
+                "search repetition stack exceeded supported depth"
+            );
             self.repetition_stack.push((key, previous_incoming_reset));
         }
         self.repetition_current_incoming_reset = G::action_resets_repetition(action_to_child);

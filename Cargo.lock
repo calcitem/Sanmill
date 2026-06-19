@@ -1019,6 +1019,7 @@ dependencies = [
 name = "tgf-search"
 version = "0.1.0"
 dependencies = [
+ "arrayvec",
  "criterion",
  "crossbeam-channel",
  "tgf-core",

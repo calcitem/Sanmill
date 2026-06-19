@@ -3,8 +3,9 @@
 //
 // `SearchThreadPool` is intentionally game-agnostic: it accepts any
 // `FnOnce() + Send` job and wires up `crossbeam_channel` dispatch.  The
-// `lazy_smp_search` helper reuses it to spawn N searchers against a
-// shared TT and a shared abort flag.
+// `SearchThreadPool` remains available for callers that need a reusable
+// closure pool.  `lazy_smp_search` uses direct JoinHandles because it
+// dispatches exactly one job per worker and can avoid channel/box overhead.
 
 use std::sync::Arc;
 use std::sync::atomic::AtomicBool;
@@ -52,16 +53,15 @@ where
     };
     let abort = abort_flag.unwrap_or_else(|| Arc::new(AtomicBool::new(false)));
 
-    let pool = SearchThreadPool::new(workers.len());
-    let mut receivers = Vec::with_capacity(workers.len());
-    for worker in workers {
+    let mut handles = Vec::with_capacity(workers.len());
+    for worker in workers.iter().copied() {
         let game_for_worker = game.clone();
         let shared_tt = shared_tt.clone();
         let options_for_worker = options;
         let snapshot_for_worker = snapshot;
         let abort = Arc::clone(&abort);
         let depth = (base_depth + worker.extra_depth).max(1);
-        receivers.push(pool.submit(move || {
+        handles.push(thread::spawn(move || {
             let mut searcher = Searcher::<G>::with_shared_tt(shared_tt);
             searcher.set_abort_flag(abort);
             searcher.set_options(options_for_worker);
@@ -71,9 +71,9 @@ where
     }
 
     let mut best: Option<SearchResult> = None;
-    for rx in receivers {
-        let result = rx
-            .recv()
+    for handle in handles {
+        let result = handle
+            .join()
             .expect("lazy-smp worker should return a SearchResult");
         if best.as_ref().is_none_or(|prev| result.score > prev.score) {
             best = Some(result);

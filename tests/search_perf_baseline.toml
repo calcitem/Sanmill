@@ -11,13 +11,13 @@
 # next-branch revisions.
 
 [meta]
-locked_at = "2026-06-19T04:18:35Z"
-git_commit = "4069849b6+working-tree"
+locked_at = "2026-06-19T05:25:25Z"
+git_commit = "61599694e+working-tree"
 platform = "linux-x86_64-local"
 build_flags = "cargo build --release -p tgf-cli"
-command = "python3 scripts/compare_engine_perf.py --current 'target/release/tgf uci' --master '/tmp/sanmill_master_engine_perf' --current-depth-go 'gomtdf {depth}' --master-depth-go 'gomtdf {depth}' --cases start,reduced_material --skills 15 --depths 12 --repeat 7 --timeout 240"
+command = "python3 scripts/compare_engine_perf.py --current 'target/release/tgf uci' --master '/tmp/sanmill_before_alloc_lock_tgf uci' --current-depth-go 'gomtdf {depth}' --master-depth-go 'gomtdf {depth}' --cases start,reduced_material --skills 15 --depths 12 --repeat 7 --timeout 240"
 summary_method = "median elapsed_ms from current engine rows"
-notes = "Locked after stack-backed capture-line lists and mill-line member masks for remove/capture filtering on top of adjacency masks, star-square masks, bitboard mobility counts, and empty-neighbor move-generation prechecks. Master parity was exact, but runtime checks should compare future Rust candidates against these current Rust numbers."
+notes = "Locked after moving the search repetition stack to fixed ArrayVec storage, making worker-local MCTS node counters plain integers, and replacing one-shot lazy-SMP/MCTS channel dispatch with direct JoinHandles. The master engine remains the broad parity reference, but future next-branch optimization timing should compare against these Rust/TGF numbers before drawing conclusions."
 
 [thresholds]
 max_elapsed_regress_pct = 8.0
@@ -34,9 +34,9 @@ bestmove = "d6"
 score = 3
 depth = 12
 nodes = 5_580_055
-median_ms = 1317.65
-ns_per_node = 236.14
-run_ms = [1367.15, 1473.96, 1399.51, 1264.33, 1298.85, 1317.65, 1291.41]
+median_ms = 1341.48
+ns_per_node = 240.41
+run_ms = [1342.80, 1283.71, 1405.43, 1146.08, 1341.48, 1293.79, 1451.95]
 
 [[cases]]
 name = "reduced_material"
@@ -46,6 +46,6 @@ bestmove = "c4-b4"
 score = -89
 depth = 12
 nodes = 3_209_969
-median_ms = 978.32
-ns_per_node = 304.78
-run_ms = [1043.43, 977.66, 978.32, 1072.06, 948.52, 953.83, 1032.28]
+median_ms = 934.80
+ns_per_node = 291.22
+run_ms = [1092.02, 898.96, 930.13, 934.80, 985.32, 902.00, 938.53]

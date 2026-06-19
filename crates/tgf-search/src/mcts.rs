@@ -8,16 +8,19 @@
 
 use std::collections::HashMap;
 use std::marker::PhantomData;
-use std::sync::atomic::{AtomicI64, AtomicU32, Ordering};
+use std::thread;
 use std::time::{Duration, Instant};
 
+use arrayvec::ArrayVec;
 use tgf_core::{
     Action, Evaluator, Game, GameStateSnapshot, MoveOrderContext, SearchActionList, Workbench,
 };
 
 use crate::options::SearchPolicy;
 use crate::searcher::Searcher;
-use crate::thread_pool::SearchThreadPool;
+
+const MCTS_PATH_CAPACITY: usize = 128;
+type MctsPath = ArrayVec<usize, MCTS_PATH_CAPACITY>;
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct MctsResult {
@@ -89,8 +92,11 @@ pub(crate) struct MctsNode {
     action: Action,
     children: Vec<usize>,
     untried: Vec<Action>,
-    visits: AtomicU32,
-    wins: AtomicI64,
+    // Each parallel MCTS worker owns its tree exclusively.  Cross-thread
+    // aggregation happens after workers return, so atomics only add RMW
+    // overhead and potential cache-line traffic here.
+    visits: u32,
+    wins: u32,
     move_index: usize,
 }
 
@@ -100,8 +106,8 @@ impl MctsNode {
             action: Action::NONE,
             children: Vec::new(),
             untried,
-            visits: AtomicU32::new(0),
-            wins: AtomicI64::new(0),
+            visits: 0,
+            wins: 0,
             move_index: 0,
         }
     }
@@ -111,24 +117,24 @@ impl MctsNode {
             action,
             children: Vec::new(),
             untried,
-            visits: AtomicU32::new(0),
-            wins: AtomicI64::new(0),
+            visits: 0,
+            wins: 0,
             move_index,
         }
     }
 
     fn visits(&self) -> u32 {
-        self.visits.load(Ordering::Relaxed)
+        self.visits
     }
 
-    fn wins(&self) -> i64 {
-        self.wins.load(Ordering::Relaxed)
+    fn wins(&self) -> u32 {
+        self.wins
     }
 
-    fn record_simulation(&self, win: bool) {
-        self.visits.fetch_add(1, Ordering::Relaxed);
+    fn record_simulation(&mut self, win: bool) {
+        self.visits += 1;
         if win {
-            self.wins.fetch_add(1, Ordering::Relaxed);
+            self.wins += 1;
         }
     }
 
@@ -140,6 +146,35 @@ impl MctsNode {
             self.wins() as f64 / visits as f64
         }
     }
+}
+
+#[inline]
+fn initial_mcts_node_capacity(total_iterations: usize, root_untried: usize) -> usize {
+    // MCTS expands all legal moves at the selected node, so one iteration can
+    // create several children.  Reserve a moderate arena up front to reduce
+    // common growth allocations without overcommitting large searches.
+    total_iterations
+        .saturating_mul(8)
+        .saturating_add(root_untried)
+        .saturating_add(1)
+}
+
+#[inline]
+fn new_mcts_path() -> MctsPath {
+    let mut path = MctsPath::new();
+    path.push(0);
+    path
+}
+
+#[inline]
+fn push_mcts_path(path: &mut MctsPath, node_idx: usize) {
+    // Mill search depths are far below this bound.  Assert instead of
+    // spilling to heap so a rule/search bug is surfaced immediately.
+    assert!(
+        path.len() < MCTS_PATH_CAPACITY,
+        "MCTS path exceeded supported depth"
+    );
+    path.push(node_idx);
 }
 
 pub struct MctsSearcher<G: Game> {
@@ -231,7 +266,11 @@ impl<G: Game> MctsSearcher<G> {
 
         let root_untried = root_moves.into_iter().collect::<Vec<_>>();
         let total_iterations = options.iterations.max(1) as usize;
-        let mut nodes = vec![MctsNode::root(root_untried)];
+        let mut nodes = Vec::with_capacity(initial_mcts_node_capacity(
+            total_iterations,
+            root_untried.len(),
+        ));
+        nodes.push(MctsNode::root(root_untried));
 
         for i in 0..total_iterations {
             if let Some(limit_ms) = options.time_limit_ms
@@ -241,7 +280,7 @@ impl<G: Game> MctsSearcher<G> {
                 break;
             }
             let mut node_idx = 0_usize;
-            let mut path = vec![0_usize];
+            let mut path = new_mcts_path();
             let mut applied_moves = 0_usize;
 
             // Selection: descend by UCT while fully expanded.
@@ -251,7 +290,7 @@ impl<G: Game> MctsSearcher<G> {
                 wb.do_move(action);
                 applied_moves += 1;
                 node_idx = child_idx;
-                path.push(node_idx);
+                push_mcts_path(&mut path, node_idx);
             }
 
             // Expansion mirrors master MCTS: sort all legal moves, expand all
@@ -279,7 +318,7 @@ impl<G: Game> MctsSearcher<G> {
                 wb.do_move(action);
                 applied_moves += 1;
                 node_idx = first_child_idx;
-                path.push(node_idx);
+                push_mcts_path(&mut path, node_idx);
             }
 
             let mut win = self.simulate(wb, options.playout_depth, &options);
@@ -317,7 +356,7 @@ impl<G: Game> MctsSearcher<G> {
         MctsResult {
             best_action: nodes[best_child].action,
             visits: nodes[best_child].visits(),
-            wins: nodes[best_child].wins().max(0) as u32,
+            wins: nodes[best_child].wins(),
             score: G::mcts_terminal_score(wb),
         }
     }
@@ -418,9 +457,10 @@ impl<G: Game> MctsSearcher<G> {
 ///     seed mix);
 ///   * each worker builds its own `Workbench` from `snapshot` so the
 ///     shared `Game` can be reused across threads;
-///   * the per-action visits / wins are summed in atomic maps and the
-///     final best action is the one with the highest total visit
-///     count, matching master `best_move_index` selection.
+///   * the per-action visits / wins are summed after workers return, and the
+///     final best action is the one with the highest total visit count,
+///     matching master `best_move_index` selection.  Worker-local node
+///     counters are plain integers; no tree node is shared between threads.
 ///
 /// `MctsOptions::num_threads` controls the worker count:
 ///   * `Some(n)` forces `n` workers (use `Some(1)` for deterministic
@@ -452,8 +492,7 @@ where
     // sees iterations/num_threads).
     let per_worker = options.iterations.max(num_threads) / num_threads;
 
-    let pool = SearchThreadPool::new(num_threads as usize);
-    let mut receivers = Vec::with_capacity(num_threads as usize);
+    let mut handles = Vec::with_capacity(num_threads as usize);
     for w in 0..num_threads {
         let game = game.clone();
         let mut local_options = options;
@@ -465,7 +504,7 @@ where
         let worker_seed = base_seed
             .wrapping_add(0x9E37_79B9_7F4A_7C15_u64.wrapping_mul(u64::from(w) + 1))
             .max(1);
-        receivers.push(pool.submit(move || {
+        handles.push(thread::spawn(move || {
             let mut searcher = MctsSearcher::<G>::new();
             searcher.set_random_seed(worker_seed);
             let mut wb = game.build_workbench(&snapshot);
@@ -477,8 +516,10 @@ where
     // Aggregate visits / wins per action across workers.
     let mut visits_total: HashMap<Action, u64> = HashMap::new();
     let mut wins_total: HashMap<Action, u64> = HashMap::new();
-    for rx in receivers {
-        let stats = rx.recv().expect("MCTS worker must return per-action stats");
+    for handle in handles {
+        let stats = handle
+            .join()
+            .expect("MCTS worker must return per-action stats");
         for (action, (visits, wins)) in stats {
             *visits_total.entry(action).or_insert(0) += u64::from(visits);
             *wins_total.entry(action).or_insert(0) += wins;
@@ -546,7 +587,11 @@ where
     }
     let root_untried = root_moves.into_iter().collect::<Vec<_>>();
     let total_iterations = options.iterations.max(1) as usize;
-    let mut nodes = vec![MctsNode::root(root_untried)];
+    let mut nodes = Vec::with_capacity(initial_mcts_node_capacity(
+        total_iterations,
+        root_untried.len(),
+    ));
+    nodes.push(MctsNode::root(root_untried));
 
     for i in 0..total_iterations {
         if let Some(limit_ms) = options.time_limit_ms
@@ -556,7 +601,7 @@ where
             break;
         }
         let mut node_idx = 0_usize;
-        let mut path = vec![0_usize];
+        let mut path = new_mcts_path();
         let mut applied_moves = 0_usize;
         while nodes[node_idx].untried.is_empty() && !nodes[node_idx].children.is_empty() {
             let child_idx = searcher.best_uct_child(&nodes, node_idx);
@@ -564,7 +609,7 @@ where
             wb.do_move(action);
             applied_moves += 1;
             node_idx = child_idx;
-            path.push(node_idx);
+            push_mcts_path(&mut path, node_idx);
         }
         if !nodes[node_idx].untried.is_empty() {
             let actions = std::mem::take(&mut nodes[node_idx].untried);
@@ -589,7 +634,7 @@ where
             wb.do_move(action);
             applied_moves += 1;
             node_idx = first_child_idx;
-            path.push(node_idx);
+            push_mcts_path(&mut path, node_idx);
         }
         let mut win = searcher.simulate(wb, options.playout_depth, &options);
         for _ in 0..applied_moves {
@@ -607,7 +652,7 @@ where
         .iter()
         .map(|&idx| {
             let n = &nodes[idx];
-            (n.action, (n.visits(), n.wins().max(0) as u64))
+            (n.action, (n.visits(), u64::from(n.wins())))
         })
         .collect()
 }
