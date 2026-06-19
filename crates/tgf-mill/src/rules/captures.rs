@@ -6,27 +6,46 @@
 // `custodian_targets / intervention_targets / leap_targets` state
 // management that follows once a capture is activated.
 
+use arrayvec::ArrayVec;
+
 use super::lines::{CAPTURE_CROSS_LINES, CAPTURE_DIAGONAL_LINES, CAPTURE_SQUARE_EDGE_LINES};
 use super::{
-    CaptureRuleConfig, MillPhase, MillState, MillVariantOptions, is_piece_in_mill, node_bit,
-    piece_bitboard,
+    CaptureRuleConfig, MillPhase, MillState, MillVariantOptions, mill_members_mask_for_piece,
+    node_bit, piece_bitboard,
 };
+
+const MAX_ACTIVE_CAPTURE_LINES: usize =
+    CAPTURE_CROSS_LINES.len() + CAPTURE_SQUARE_EDGE_LINES.len() + CAPTURE_DIAGONAL_LINES.len();
+type CaptureLineList = ArrayVec<[usize; 3], MAX_ACTIVE_CAPTURE_LINES>;
 
 pub(super) fn active_capture_lines(
     config: &CaptureRuleConfig,
     options: &MillVariantOptions,
-) -> Vec<[usize; 3]> {
-    let mut lines = Vec::new();
+) -> CaptureLineList {
+    let mut lines = CaptureLineList::new();
     if config.on_cross_lines {
-        lines.extend_from_slice(CAPTURE_CROSS_LINES);
+        push_capture_lines(&mut lines, CAPTURE_CROSS_LINES);
     }
     if config.on_square_edges {
-        lines.extend_from_slice(CAPTURE_SQUARE_EDGE_LINES);
+        push_capture_lines(&mut lines, CAPTURE_SQUARE_EDGE_LINES);
     }
     if config.on_diagonal_lines && options.has_diagonal_lines {
-        lines.extend_from_slice(CAPTURE_DIAGONAL_LINES);
+        push_capture_lines(&mut lines, CAPTURE_DIAGONAL_LINES);
     }
     lines
+}
+
+#[inline]
+fn push_capture_lines(out: &mut CaptureLineList, lines: &[[usize; 3]]) {
+    // The line families are tiny and static (4 cross + 12 square-edge +
+    // 4 diagonal).  Keep them on the stack via ArrayVec instead of allocating
+    // a heap Vec every time a capture rule probes active lines.  The assert
+    // documents the capacity calculation and makes future table growth fail
+    // loudly during tests instead of silently spilling to the heap.
+    assert!(out.len() + lines.len() <= MAX_ACTIVE_CAPTURE_LINES);
+    for &line in lines {
+        out.push(line);
+    }
 }
 
 pub(super) fn capture_phase_allowed(config: &CaptureRuleConfig, phase: MillPhase) -> bool {
@@ -67,12 +86,11 @@ pub(super) fn capture_piece_count_allowed_leap(
     us <= 3
 }
 
+#[cfg(test)]
 pub(super) fn is_all_in_mills(state: &MillState, options: &MillVariantOptions, piece: i8) -> bool {
     let target_bb = piece_bitboard(state, piece);
-    (0_usize..24).all(|idx| {
-        let mask = node_bit(idx);
-        (target_bb & mask) == 0 || is_piece_in_mill(state, options, idx)
-    })
+    let mill_members = mill_members_mask_for_piece(state, options, piece);
+    (target_bb & !mill_members) == 0
 }
 
 /// Validates that the piece at `mid` (the captured middle square) is actually
@@ -84,16 +102,17 @@ pub(super) fn leap_capture_target_is_removable(
     mid: usize,
 ) -> bool {
     let opponent_piece = (state.side_to_move ^ 1) + 1;
-    if (piece_bitboard(state, opponent_piece) & node_bit(mid)) == 0 {
+    let opponent_bb = piece_bitboard(state, opponent_piece);
+    if (opponent_bb & node_bit(mid)) == 0 {
         return false;
     }
     // Mill protection: if may_remove_from_mills_always is false, a piece in a
     // mill cannot be captured unless ALL opponent pieces are in mills.
-    if !options.may_remove_from_mills_always
-        && is_piece_in_mill(state, options, mid)
-        && !is_all_in_mills(state, options, opponent_piece)
-    {
-        return false;
+    if !options.may_remove_from_mills_always {
+        let mill_members = mill_members_mask_for_piece(state, options, opponent_piece);
+        if (mill_members & node_bit(mid)) != 0 && (opponent_bb & !mill_members) != 0 {
+            return false;
+        }
     }
     true
 }
@@ -120,22 +139,20 @@ pub(super) fn filter_capture_targets(
 ) -> u32 {
     let opponent_piece = (state.side_to_move ^ 1) + 1;
     let opponent_bb = piece_bitboard(state, opponent_piece);
-    let mut filtered = 0_u32;
-    let all_in_mills = is_all_in_mills(state, options, opponent_piece);
-    for node in 0..24_usize {
-        let mask = node_bit(node);
-        if (targets & mask) == 0 || (opponent_bb & mask) == 0 {
-            continue;
-        }
-        if !options.may_remove_from_mills_always
-            && is_piece_in_mill(state, options, node)
-            && !all_in_mills
-        {
-            continue;
-        }
-        filtered |= mask;
+    let filtered = targets & opponent_bb;
+    if options.may_remove_from_mills_always {
+        return filtered;
     }
-    filtered
+    let mill_members = mill_members_mask_for_piece(state, options, opponent_piece);
+    if (opponent_bb & !mill_members) == 0 {
+        filtered
+    } else {
+        // When at least one non-mill opponent piece exists, mill-protected
+        // targets are illegal.  Both sides of the branch are pure masks, so
+        // the capture detector avoids a 24-node scan while preserving the
+        // old unordered target bitset semantics.
+        filtered & !mill_members
+    }
 }
 
 pub(super) fn detect_custodian_targets(
@@ -182,29 +199,40 @@ pub(super) fn detect_intervention_targets(
     // of falling back to another line.
     let preferred = state.preferred_remove_target;
 
-    let mut capture_lines: Vec<u32> = Vec::new();
+    let preferred_mask = if preferred >= 0 {
+        Some(node_bit(preferred as usize))
+    } else {
+        None
+    };
+    let mut first_line: Option<u32> = None;
+    let mut preferred_line: Option<u32> = None;
     for line in active_capture_lines(config, options) {
         if to == line[1]
             && (opponent_bb & node_bit(line[0])) != 0
             && (opponent_bb & node_bit(line[2])) != 0
         {
             let targets = node_bit(line[0]) | node_bit(line[2]);
-            capture_lines.push(targets);
+            // Master builds a short vector of candidate lines, then chooses
+            // the first line containing preferredRemoveTarget, or otherwise
+            // the first valid line.  Store only those two facts on the stack;
+            // retaining every candidate would allocate for no rule benefit.
+            if first_line.is_none() {
+                first_line = Some(targets);
+            }
+            if let Some(pref_mask) = preferred_mask {
+                if (targets & pref_mask) != 0 {
+                    preferred_line = Some(targets);
+                    break;
+                }
+            } else {
+                break;
+            }
         }
     }
-    if capture_lines.is_empty() {
+    let Some(line) = preferred_line.or(first_line) else {
         return 0;
-    }
-
-    // Select the line containing preferredRemoveTarget if specified.
-    if preferred >= 0 {
-        let pref_mask = node_bit(preferred as usize);
-        if let Some(&line) = capture_lines.iter().find(|&&l| (l & pref_mask) != 0) {
-            return filter_capture_targets(state, options, line);
-        }
-    }
-    // Fall back to the first valid line (mirrors master's captureLines[0]).
-    filter_capture_targets(state, options, capture_lines[0])
+    };
+    filter_capture_targets(state, options, line)
 }
 
 pub(super) fn detect_leap_targets(

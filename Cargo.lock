@@ -1001,6 +1001,7 @@ dependencies = [
 name = "tgf-mill"
 version = "0.1.0"
 dependencies = [
+ "arrayvec",
  "criterion",
  "tgf-core",
  "tgf-search",

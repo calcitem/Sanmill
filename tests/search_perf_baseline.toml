@@ -11,13 +11,13 @@
 # next-branch revisions.
 
 [meta]
-locked_at = "2026-06-19T03:39:39Z"
-git_commit = "00253225d+working-tree"
+locked_at = "2026-06-19T04:18:35Z"
+git_commit = "4069849b6+working-tree"
 platform = "linux-x86_64-local"
 build_flags = "cargo build --release -p tgf-cli"
 command = "python3 scripts/compare_engine_perf.py --current 'target/release/tgf uci' --master '/tmp/sanmill_master_engine_perf' --current-depth-go 'gomtdf {depth}' --master-depth-go 'gomtdf {depth}' --cases start,reduced_material --skills 15 --depths 12 --repeat 7 --timeout 240"
 summary_method = "median elapsed_ms from current engine rows"
-notes = "Locked after adjacency masks, star-square masks, bitboard mobility counts, and empty-neighbor move-generation prechecks. Master parity was exact, but runtime checks should compare future Rust candidates against these current Rust numbers."
+notes = "Locked after stack-backed capture-line lists and mill-line member masks for remove/capture filtering on top of adjacency masks, star-square masks, bitboard mobility counts, and empty-neighbor move-generation prechecks. Master parity was exact, but runtime checks should compare future Rust candidates against these current Rust numbers."
 
 [thresholds]
 max_elapsed_regress_pct = 8.0
@@ -34,9 +34,9 @@ bestmove = "d6"
 score = 3
 depth = 12
 nodes = 5_580_055
-median_ms = 1339.36
-ns_per_node = 240.03
-run_ms = [1420.73, 1339.36, 1402.55, 1272.23, 1300.69, 1462.21, 1250.50]
+median_ms = 1317.65
+ns_per_node = 236.14
+run_ms = [1367.15, 1473.96, 1399.51, 1264.33, 1298.85, 1317.65, 1291.41]
 
 [[cases]]
 name = "reduced_material"
@@ -46,6 +46,6 @@ bestmove = "c4-b4"
 score = -89
 depth = 12
 nodes = 3_209_969
-median_ms = 994.86
-ns_per_node = 309.93
-run_ms = [994.86, 1124.30, 1007.62, 964.88, 956.82, 989.08, 1030.65]
+median_ms = 978.32
+ns_per_node = 304.78
+run_ms = [1043.43, 977.66, 978.32, 1072.06, 948.52, 953.83, 1032.28]

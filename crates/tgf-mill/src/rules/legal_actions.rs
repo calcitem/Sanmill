@@ -429,9 +429,6 @@ impl MillRules {
         // legacy `removeColorPiece` matching against `byColorBB[c]`,
         // which excludes MARKED_PIECE squares.
         let target_bb = piece_bitboard(state, target_piece);
-        let has_non_mill_target = (0_usize..24).any(|idx| {
-            (target_bb & node_bit(idx)) != 0 && !is_piece_in_mill(state, &self.options, idx)
-        });
         // Mirror master generate<REMOVE>'s branch structure: the
         // stalemate-removal path applies ONLY the "adjacent to the
         // remover's pieces" filter (own-colour targets are unrestricted)
@@ -441,6 +438,18 @@ impl MillRules {
         // (non-stalemate) path.
         let stalemate_removal = self.is_stalemate_removal_context(state);
         let removing_own = state.side_to_move >= 0 && target_piece == state.side_to_move + 1;
+        let use_mill_protection = !self.options.may_remove_from_mills_always && !stalemate_removal;
+        let mill_members = if use_mill_protection {
+            mill_members_mask_for_piece(state, &self.options, target_piece)
+        } else {
+            0
+        };
+        // Precompute the mill-protected target set once.  The old shape asked
+        // `is_piece_in_mill()` for every candidate, which rescanned up to
+        // three lines per node.  This mask keeps the same rule test but turns
+        // the repeated checks into `target_bb & !mill_members` and a single
+        // membership bit.
+        let has_non_mill_target = use_mill_protection && (target_bb & !mill_members) != 0;
 
         for &node in priority.iter().rev() {
             if (target_bb & node_bit(node)) == 0 {
@@ -455,7 +464,7 @@ impl MillRules {
                 }
             } else if !self.options.may_remove_from_mills_always
                 && has_non_mill_target
-                && is_piece_in_mill(state, &self.options, node)
+                && (mill_members & node_bit(node)) != 0
             {
                 continue;
             }
@@ -477,11 +486,12 @@ impl MillRules {
     ) {
         let opponent_piece = (state.side_to_move ^ 1) + 1;
         let target_bb = piece_bitboard(state, opponent_piece);
-        for node in 0..24_usize {
-            let mask = node_bit(node);
-            if (targets & mask) == 0 || (target_bb & mask) == 0 {
-                continue;
-            }
+        let mut legal_targets = targets & target_bb;
+        while legal_targets != 0 {
+            // Popping the least-significant bit preserves the previous
+            // 0..24 ascending dense-node order without scanning empty bits.
+            let node = legal_targets.trailing_zeros() as usize;
+            legal_targets &= legal_targets - 1;
             out.push(Action {
                 kind_tag: MillActionKind::Remove as i16,
                 from_node: -1,

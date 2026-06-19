@@ -294,6 +294,10 @@ const STANDARD_MILL_LINE_PEER_MASKS_BY_NODE: [[u32; MAX_MILL_LINES_PER_NODE]; 24
     build_mill_line_peer_masks_by_node(STANDARD_MILL_LINES);
 const DIAGONAL_MILL_LINE_PEER_MASKS_BY_NODE: [[u32; MAX_MILL_LINES_PER_NODE]; 24] =
     build_mill_line_peer_masks_by_node(DIAGONAL_MILL_LINES);
+const STANDARD_MILL_LINE_MASKS: [u32; STANDARD_MILL_LINES.len()] =
+    build_mill_line_masks::<{ STANDARD_MILL_LINES.len() }>(STANDARD_MILL_LINES);
+const DIAGONAL_MILL_LINE_MASKS: [u32; DIAGONAL_MILL_LINES.len()] =
+    build_mill_line_masks::<{ DIAGONAL_MILL_LINES.len() }>(DIAGONAL_MILL_LINES);
 
 const fn build_mill_line_indices_by_node(
     lines: &[[usize; 3]],
@@ -338,6 +342,24 @@ const fn build_mill_line_peer_masks_by_node(
             counts[node] = count + 1;
             offset += 1;
         }
+        line_idx += 1;
+    }
+    table
+}
+
+const fn build_mill_line_masks<const N: usize>(lines: &[[usize; 3]]) -> [u32; N] {
+    assert!(lines.len() == N);
+    let mut table = [0_u32; N];
+    let mut line_idx = 0_usize;
+    while line_idx < lines.len() {
+        let line = lines[line_idx];
+        let a = line[0];
+        let b = line[1];
+        let c = line[2];
+        assert!(a < 24);
+        assert!(b < 24);
+        assert!(c < 24);
+        table[line_idx] = node_bit(a) | node_bit(b) | node_bit(c);
         line_idx += 1;
     }
     table
@@ -1156,6 +1178,7 @@ fn potential_mills_count_standard_unrestricted_pair(
     (our_count, their_count)
 }
 
+#[cfg(test)]
 #[inline(always)]
 fn is_piece_in_mill(state: &MillState, options: &MillVariantOptions, node: usize) -> bool {
     let piece = live_piece(state, node);
@@ -1181,6 +1204,39 @@ fn is_piece_in_mill(state: &MillState, options: &MillVariantOptions, node: usize
                 .iter()
                 .all(|idx| live_piece(state, *idx) == piece)
         })
+}
+
+#[inline(always)]
+fn mill_members_mask_for_color(
+    state: &MillState,
+    options: &MillVariantOptions,
+    color: usize,
+) -> u32 {
+    debug_assert!(color < 2);
+    let color_bb = state.by_color_bb[color];
+    let mut members = 0_u32;
+    for &line_mask in mill_line_masks(options) {
+        // Stockfish keeps full-line bitboards such as LineBB so repeated
+        // geometry questions become set algebra.  Mill lines are only
+        // three nodes, but remove/capture filtering asks the same
+        // "which of this side's pieces are protected by mills?" question
+        // several times per node.  Building the union once keeps the
+        // unusual hex-free masks maintainable and preserves exact rules:
+        // `by_color_bb` contains live pieces only, so delayed-marked
+        // squares are not treated as mill members.
+        if (color_bb & line_mask) == line_mask {
+            members |= line_mask;
+        }
+    }
+    members
+}
+
+#[inline(always)]
+fn mill_members_mask_for_piece(state: &MillState, options: &MillVariantOptions, piece: i8) -> u32 {
+    let Some(color) = color_index_for_piece(piece) else {
+        return 0;
+    };
+    mill_members_mask_for_color(state, options, color)
 }
 
 #[inline(always)]
@@ -1215,6 +1271,15 @@ fn mill_lines(options: &MillVariantOptions) -> &'static [[usize; 3]] {
         DIAGONAL_MILL_LINES
     } else {
         STANDARD_MILL_LINES
+    }
+}
+
+#[inline(always)]
+fn mill_line_masks(options: &MillVariantOptions) -> &'static [u32] {
+    if options.has_diagonal_lines {
+        &DIAGONAL_MILL_LINE_MASKS
+    } else {
+        &STANDARD_MILL_LINE_MASKS
     }
 }
 

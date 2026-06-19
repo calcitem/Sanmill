@@ -6,6 +6,7 @@ description = "TGF – Mill (Nine/Ten/Twelve Men's Morris) game implementation"
 license     = "GPL-3.0-or-later"
 
 [dependencies]
+arrayvec = "0.7"
 tgf-core = { path = "../tgf-core" }
 
 [dev-dependencies]
