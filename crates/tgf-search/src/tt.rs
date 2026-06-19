@@ -7,9 +7,17 @@
 // configurations (see `crate::thread_pool::lazy_smp_search`) without
 // any locking on the hot path.
 
-use std::sync::{
-    Arc,
-    atomic::{AtomicU8, AtomicU64, Ordering},
+#[cfg(target_os = "linux")]
+use std::ffi::{c_int, c_void};
+use std::{
+    alloc::{Layout, alloc, dealloc, handle_alloc_error},
+    ops::Index,
+    ptr::NonNull,
+    slice,
+    sync::{
+        Arc,
+        atomic::{AtomicU8, AtomicU64, Ordering},
+    },
 };
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -45,6 +53,7 @@ pub(crate) struct TtEntry {
 ///   * meta (u64): [key_sig:32][age:6][value:16][depth:8][bound:2]
 ///
 /// Total slot size = 8 bytes.
+#[repr(transparent)]
 pub(crate) struct TtCluster {
     pub(crate) meta: AtomicU64,
 }
@@ -58,8 +67,99 @@ impl TtCluster {
     }
 }
 
+pub(crate) const TT_STORAGE_ALIGNMENT: usize = 4096;
+
+pub(crate) struct TtStorage {
+    ptr: NonNull<TtCluster>,
+    len: usize,
+    layout: Layout,
+}
+
+// The storage owns a contiguous allocation of `TtCluster`, and each cluster
+// is accessed through atomics. Sharing the backing allocation across search
+// threads is therefore as safe as sharing a boxed `[TtCluster]`.
+unsafe impl Send for TtStorage {}
+unsafe impl Sync for TtStorage {}
+
+impl TtStorage {
+    fn new(len: usize) -> Self {
+        assert!(len > 0, "TT storage length must be non-zero");
+        let bytes = len
+            .checked_mul(std::mem::size_of::<TtCluster>())
+            .expect("TT storage size overflow");
+        let align = TT_STORAGE_ALIGNMENT.max(std::mem::align_of::<TtCluster>());
+        debug_assert!(align.is_power_of_two());
+        let layout = Layout::from_size_align(bytes, align).expect("invalid TT storage layout");
+        // Match Stockfish/master's page-aligned TT allocation path while
+        // keeping Sanmill's packed 8-byte slots. We explicitly construct
+        // each AtomicU64 so the table is fully first-touched at allocation,
+        // preserving the old Vec-backed allocation behaviour.
+        let ptr = unsafe { alloc(layout) };
+        let Some(ptr) = NonNull::new(ptr.cast::<TtCluster>()) else {
+            handle_alloc_error(layout);
+        };
+        advise_huge_pages(ptr.as_ptr().cast::<u8>(), bytes);
+        for i in 0..len {
+            unsafe { ptr.as_ptr().add(i).write(TtCluster::empty()) };
+        }
+        Self { ptr, len, layout }
+    }
+
+    #[cfg(test)]
+    #[inline]
+    pub(crate) fn as_ptr(&self) -> *const TtCluster {
+        self.ptr.as_ptr()
+    }
+
+    #[cfg(test)]
+    #[inline]
+    pub(crate) fn len(&self) -> usize {
+        self.len
+    }
+
+    #[inline]
+    pub(crate) fn iter(&self) -> slice::Iter<'_, TtCluster> {
+        unsafe { slice::from_raw_parts(self.ptr.as_ptr(), self.len) }.iter()
+    }
+}
+
+#[cfg(target_os = "linux")]
+fn advise_huge_pages(ptr: *mut u8, bytes: usize) {
+    const MADV_HUGEPAGE: c_int = 14;
+    unsafe extern "C" {
+        fn madvise(addr: *mut c_void, length: usize, advice: c_int) -> c_int;
+    }
+    // Transparent huge pages are an optional kernel performance hint. Failure
+    // keeps the page-aligned allocation valid and must not affect TT semantics.
+    let _ = unsafe { madvise(ptr.cast::<c_void>(), bytes, MADV_HUGEPAGE) };
+}
+
+#[cfg(not(target_os = "linux"))]
+fn advise_huge_pages(ptr: *mut u8, bytes: usize) {
+    let _ = (ptr, bytes);
+}
+
+impl Index<usize> for TtStorage {
+    type Output = TtCluster;
+
+    #[inline]
+    fn index(&self, index: usize) -> &Self::Output {
+        assert!(index < self.len, "TT cluster index out of bounds");
+        unsafe { &*self.ptr.as_ptr().add(index) }
+    }
+}
+
+impl Drop for TtStorage {
+    fn drop(&mut self) {
+        for i in 0..self.len {
+            unsafe { self.ptr.as_ptr().add(i).drop_in_place() };
+        }
+        unsafe { dealloc(self.ptr.as_ptr().cast::<u8>(), self.layout) };
+    }
+}
+
 pub(crate) struct ClusteredTt {
-    pub(crate) clusters: Box<[TtCluster]>,
+    pub(crate) clusters: TtStorage,
     pub(crate) cluster_mask: usize,
     /// Global generation counter used for soft "fake-clean" clear semantics,
     /// matching C++ `transpositionTableAge` in `src/tt.cpp`. Incrementing this
@@ -83,10 +183,8 @@ impl ClusteredTt {
         let bits = bits.clamp(10, 26);
         let n = 1usize << bits;
         let mask = n - 1;
-        let mut clusters = Vec::with_capacity(n);
-        clusters.resize_with(n, TtCluster::empty);
         Self {
-            clusters: clusters.into_boxed_slice(),
+            clusters: TtStorage::new(n),
             cluster_mask: mask,
             current_age: AtomicU8::new(0),
         }

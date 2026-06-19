@@ -12,7 +12,7 @@ use tgf_core::{
 // Re-export internal TT primitives so the regression suite can poke
 // directly at them.  These items are `pub(crate)` so the public crate
 // API stays unchanged.
-use crate::tt::{Bound, ClusteredTt, TtEntry, TtPackedEntry};
+use crate::tt::{Bound, ClusteredTt, TT_STORAGE_ALIGNMENT, TtCluster, TtEntry, TtPackedEntry};
 
 #[derive(Clone, Copy, Debug)]
 struct SameSideWorkbench {
@@ -729,6 +729,23 @@ fn shared_tt_with_capacity_mb_respects_requested_floor() {
     assert!(
         large.inner.clusters.len() >= small.inner.clusters.len(),
         "larger Hash option must not allocate fewer clusters"
+    );
+}
+
+#[test]
+fn shared_tt_storage_is_page_aligned_without_slot_bloat() {
+    let tt = SharedTt::with_capacity_mb(1, 14);
+    let addr = tt.inner.clusters.as_ptr() as usize;
+
+    assert_eq!(
+        std::mem::size_of::<TtCluster>(),
+        8,
+        "TT slot size must stay packed"
+    );
+    assert_eq!(
+        addr % TT_STORAGE_ALIGNMENT,
+        0,
+        "TT storage must start at a page-aligned address"
     );
 }
 
