@@ -4,6 +4,7 @@
 // `MillGame`.  Hosting these here keeps `rules/mod.rs` focused on
 // state / configuration rather than search-side wiring.
 
+use std::mem::MaybeUninit;
 use tgf_core::{
     Action, Evaluator, Game, GameStateSnapshot, MoveOrderContext, SearchActionList, Workbench,
 };
@@ -22,7 +23,7 @@ use super::types::{MillActionKind, MillActionState};
 use super::{
     MILL_SEARCH_STACK_CAPACITY, MILL_TERMINAL_WIN_SCORE, MillEvaluator,
     MillFormationActionInPlacingPhase, MillGame, MillOutcomeReason, MillPhase, MillRules,
-    MillWorkbench,
+    MillState, MillVariantOptions, MillWorkbench,
 };
 use super::{
     potential_mills_count_standard_unrestricted, potential_mills_count_standard_unrestricted_pair,
@@ -285,6 +286,241 @@ impl Evaluator<MillWorkbench> for MillEvaluator {
     }
 }
 
+struct MillMoveOrderScorer<'a> {
+    state: &'a MillState,
+    options: &'a MillVariantOptions,
+    side: i8,
+    valid_side: bool,
+    opponent: i8,
+    side_bb: u32,
+    opponent_bb: u32,
+    side_piece_count: u32,
+    opponent_piece_count: u32,
+    black_piece_count: u32,
+    standard_place_no_move: bool,
+    standard_no_diagonal_no_one_time: bool,
+    algorithm_is_mcts: bool,
+}
+
+impl<'a> MillMoveOrderScorer<'a> {
+    #[inline]
+    fn new(wb: &'a MillWorkbench, ctx: &'a MoveOrderContext) -> Self {
+        let state = &wb.state;
+        let options = &wb.rules.options;
+        let side = state.side_to_move;
+        let valid_side = (0..2).contains(&side);
+        let side_idx = if valid_side { side as usize } else { 0 };
+        let opponent = side ^ 1;
+        let opponent_idx = side_idx ^ 1;
+        let side_bb = state.by_color_bb[side_idx];
+        let opponent_bb = state.by_color_bb[opponent_idx];
+        let standard_no_diagonal_no_one_time =
+            !options.has_diagonal_lines && !options.one_time_use_mill;
+        Self {
+            state,
+            options,
+            side,
+            valid_side,
+            opponent,
+            side_bb,
+            opponent_bb,
+            side_piece_count: side_bb.count_ones(),
+            opponent_piece_count: opponent_bb.count_ones(),
+            black_piece_count: state.by_color_bb[1].count_ones(),
+            standard_place_no_move: state.phase == MillPhase::Placing
+                && !options.has_diagonal_lines
+                && !options.may_move_in_placing_phase
+                && !options.one_time_use_mill
+                && ctx.algorithm != tgf_core::MoveOrderAlgorithm::Mcts,
+            standard_no_diagonal_no_one_time,
+            algorithm_is_mcts: ctx.algorithm == tgf_core::MoveOrderAlgorithm::Mcts,
+        }
+    }
+
+    #[inline]
+    fn score(&self, action: Action) -> i32 {
+        let to = action.to_node as usize;
+        if to >= 24 {
+            return 0;
+        }
+        let kind = action.kind_tag;
+
+        if kind == MillActionKind::Remove as i16 {
+            return remove_move_score(self.state, self.options, to);
+        }
+
+        if kind != MillActionKind::Place as i16 && kind != MillActionKind::Move as i16 {
+            return 0;
+        }
+
+        if !self.valid_side {
+            return 0;
+        }
+
+        let can_form_mill = if kind == MillActionKind::Place as i16 {
+            self.side_piece_count >= 2
+        } else {
+            self.side_piece_count >= 3
+        };
+        let can_block_mill = self.opponent_piece_count >= 2;
+        if kind == MillActionKind::Place as i16 && self.standard_place_no_move {
+            if !can_form_mill && !can_block_mill {
+                return 0;
+            }
+            let (our_mills, their_mills) = if can_form_mill && can_block_mill {
+                potential_mills_count_standard_unrestricted_pair(
+                    self.side_bb,
+                    self.opponent_bb,
+                    to,
+                    None,
+                )
+            } else if can_form_mill {
+                (
+                    potential_mills_count_standard_unrestricted(self.side_bb, to, None),
+                    0,
+                )
+            } else {
+                (
+                    0,
+                    potential_mills_count_standard_unrestricted(self.opponent_bb, to, None),
+                )
+            };
+            let our_mills = our_mills as i32;
+            if our_mills > 0 {
+                return RATING_ONE_MILL * our_mills;
+            }
+            return RATING_BLOCK_ONE_MILL * their_mills as i32;
+        }
+        let from = if kind == MillActionKind::Move as i16 {
+            Some(action.from_node as usize)
+        } else {
+            None
+        };
+
+        if self.standard_no_diagonal_no_one_time {
+            let our_mills = if can_form_mill {
+                potential_mills_count_standard_unrestricted(self.side_bb, to, from) as i32
+            } else {
+                0
+            };
+            let mut score = 0_i32;
+            if our_mills > 0 {
+                score += RATING_ONE_MILL * our_mills;
+            } else if self.state.phase == MillPhase::Placing
+                && !self.options.may_move_in_placing_phase
+            {
+                if can_block_mill {
+                    let their_mills =
+                        potential_mills_count_standard_unrestricted(self.opponent_bb, to, None)
+                            as i32;
+                    score += RATING_BLOCK_ONE_MILL * their_mills;
+                }
+            } else if can_block_mill
+                && (self.state.phase == MillPhase::Moving
+                    || (self.state.phase == MillPhase::Placing
+                        && self.options.may_move_in_placing_phase))
+            {
+                let their_mills =
+                    potential_mills_count_standard_unrestricted(self.opponent_bb, to, None) as i32;
+                if their_mills > 0 {
+                    let (_, theirs, _) = surrounded_pieces_count(self.state, self.options, to);
+                    // Master keys this branch off legacy `Square` parity. In
+                    // the dense node mapping, legacy-even squares are exactly
+                    // odd dense nodes.
+                    let parity_match = if to.is_multiple_of(2) {
+                        theirs == 2
+                    } else {
+                        theirs == 3
+                    };
+                    if parity_match {
+                        score += RATING_BLOCK_ONE_MILL * their_mills;
+                    }
+                }
+            }
+            if self.state.phase == MillPhase::Placing
+                && self.side == 1
+                && self.algorithm_is_mcts
+                && self.black_piece_count < 2
+                && is_star_square(self.options, to)
+            {
+                score += RATING_STAR_SQUARE;
+            }
+            return score;
+        }
+
+        let our_mills = if can_form_mill {
+            potential_mills_count_at(self.state, self.options, to, self.side, from) as i32
+        } else {
+            0
+        };
+        let mut score = 0_i32;
+        if our_mills > 0 {
+            score += RATING_ONE_MILL * our_mills;
+        } else if self.state.phase == MillPhase::Placing && !self.options.may_move_in_placing_phase
+        {
+            if can_block_mill {
+                let their_mills =
+                    potential_mills_count_at(self.state, self.options, to, self.opponent, None)
+                        as i32;
+                score += RATING_BLOCK_ONE_MILL * their_mills;
+            }
+        } else if can_block_mill
+            && (self.state.phase == MillPhase::Moving
+                || (self.state.phase == MillPhase::Placing
+                    && self.options.may_move_in_placing_phase))
+        {
+            let their_mills =
+                potential_mills_count_at(self.state, self.options, to, self.opponent, None) as i32;
+            if their_mills > 0 {
+                let (_, theirs, _) = surrounded_pieces_count(self.state, self.options, to);
+                // Master keys this branch off legacy `Square` parity. In the
+                // dense node mapping, legacy-even squares are exactly odd
+                // dense nodes.
+                let parity_match = if to.is_multiple_of(2) {
+                    theirs == 2
+                } else {
+                    theirs == 3
+                };
+                if parity_match {
+                    score += RATING_BLOCK_ONE_MILL * their_mills;
+                }
+            }
+        }
+
+        if self.state.phase == MillPhase::Placing
+            && self.side == 1
+            && (self.options.has_diagonal_lines || self.algorithm_is_mcts)
+            && self.black_piece_count < 2
+            && is_star_square(self.options, to)
+        {
+            score += RATING_STAR_SQUARE;
+        }
+
+        score
+    }
+
+    #[inline]
+    fn score_actions(&self, actions: &[Action], scores: &mut [MaybeUninit<i32>]) -> bool {
+        assert!(
+            actions.len() <= scores.len(),
+            "Mill move-order score buffer is smaller than action list"
+        );
+        let mut previous_score = 0_i32;
+        let mut has_previous = false;
+        let mut needs_sort = false;
+        for (i, action) in actions.iter().copied().enumerate() {
+            let score = self.score(action);
+            scores[i].write(score);
+            if has_previous && previous_score < score {
+                needs_sort = true;
+            }
+            previous_score = score;
+            has_previous = true;
+        }
+        needs_sort
+    }
+}
+
 impl Game for MillGame {
     type Workbench = MillWorkbench;
     type Evaluator = MillEvaluator;
@@ -379,168 +615,17 @@ impl Game for MillGame {
         action: Action,
         ctx: &tgf_core::MoveOrderContext,
     ) -> i32 {
-        let to = action.to_node as usize;
-        if to >= 24 {
-            return 0;
-        }
-        let state = &wb.state;
-        let options = &wb.rules.options;
-        let kind = action.kind_tag;
+        MillMoveOrderScorer::new(wb, ctx).score(action)
+    }
 
-        if kind == MillActionKind::Remove as i16 {
-            return remove_move_score(state, options, to);
-        }
-
-        if kind != MillActionKind::Place as i16 && kind != MillActionKind::Move as i16 {
-            return 0;
-        }
-
-        let side = state.side_to_move;
-        if !(0..2).contains(&side) {
-            return 0;
-        }
-        let opponent = side ^ 1;
-        let side_idx = side as usize;
-        let opponent_idx = opponent as usize;
-        let side_bb = state.by_color_bb[side_idx];
-        let opponent_bb = state.by_color_bb[opponent_idx];
-        let side_piece_count = side_bb.count_ones();
-        let opponent_piece_count = opponent_bb.count_ones();
-        // This is a move-order scoring fast path, not a terminal shortcut:
-        // early placing positions with fewer pieces are normal.
-        let can_form_mill = if kind == MillActionKind::Place as i16 {
-            side_piece_count >= 2
-        } else {
-            side_piece_count >= 3
-        };
-        let can_block_mill = opponent_piece_count >= 2;
-        if kind == MillActionKind::Place as i16
-            && state.phase == MillPhase::Placing
-            && !options.has_diagonal_lines
-            && !options.may_move_in_placing_phase
-            && !options.one_time_use_mill
-            && ctx.algorithm != tgf_core::MoveOrderAlgorithm::Mcts
-        {
-            if !can_form_mill && !can_block_mill {
-                return 0;
-            }
-            let (our_mills, their_mills) = if can_form_mill && can_block_mill {
-                potential_mills_count_standard_unrestricted_pair(side_bb, opponent_bb, to, None)
-            } else if can_form_mill {
-                (
-                    potential_mills_count_standard_unrestricted(side_bb, to, None),
-                    0,
-                )
-            } else {
-                (
-                    0,
-                    potential_mills_count_standard_unrestricted(opponent_bb, to, None),
-                )
-            };
-            let our_mills = our_mills as i32;
-            if our_mills > 0 {
-                return RATING_ONE_MILL * our_mills;
-            }
-            return RATING_BLOCK_ONE_MILL * their_mills as i32;
-        }
-        let from = if kind == MillActionKind::Move as i16 {
-            Some(action.from_node as usize)
-        } else {
-            None
-        };
-
-        if !options.has_diagonal_lines && !options.one_time_use_mill {
-            let our_mills = if can_form_mill {
-                potential_mills_count_standard_unrestricted(side_bb, to, from) as i32
-            } else {
-                0
-            };
-            let mut score = 0_i32;
-            if our_mills > 0 {
-                score += RATING_ONE_MILL * our_mills;
-            } else if state.phase == MillPhase::Placing && !options.may_move_in_placing_phase {
-                if can_block_mill {
-                    let their_mills =
-                        potential_mills_count_standard_unrestricted(opponent_bb, to, None) as i32;
-                    score += RATING_BLOCK_ONE_MILL * their_mills;
-                }
-            } else if can_block_mill
-                && (state.phase == MillPhase::Moving
-                    || (state.phase == MillPhase::Placing && options.may_move_in_placing_phase))
-            {
-                let their_mills =
-                    potential_mills_count_standard_unrestricted(opponent_bb, to, None) as i32;
-                if their_mills > 0 {
-                    let (_, theirs, _) = surrounded_pieces_count(state, options, to);
-                    // Master keys this branch off legacy `Square` parity. In
-                    // the dense node mapping, legacy-even squares are exactly
-                    // odd dense nodes.
-                    let parity_match = if to.is_multiple_of(2) {
-                        theirs == 2
-                    } else {
-                        theirs == 3
-                    };
-                    if parity_match {
-                        score += RATING_BLOCK_ONE_MILL * their_mills;
-                    }
-                }
-            }
-            if state.phase == MillPhase::Placing
-                && side == 1
-                && ctx.algorithm == tgf_core::MoveOrderAlgorithm::Mcts
-                && state.by_color_bb[1].count_ones() < 2
-                && is_star_square(options, to)
-            {
-                score += RATING_STAR_SQUARE;
-            }
-            return score;
-        }
-
-        let our_mills = if can_form_mill {
-            potential_mills_count_at(state, options, to, side, from) as i32
-        } else {
-            0
-        };
-        let mut score = 0_i32;
-        if our_mills > 0 {
-            score += RATING_ONE_MILL * our_mills;
-        } else if state.phase == MillPhase::Placing && !options.may_move_in_placing_phase {
-            if can_block_mill {
-                let their_mills =
-                    potential_mills_count_at(state, options, to, opponent, None) as i32;
-                score += RATING_BLOCK_ONE_MILL * their_mills;
-            }
-        } else if can_block_mill
-            && (state.phase == MillPhase::Moving
-                || (state.phase == MillPhase::Placing && options.may_move_in_placing_phase))
-        {
-            let their_mills = potential_mills_count_at(state, options, to, opponent, None) as i32;
-            if their_mills > 0 {
-                let (_, theirs, _) = surrounded_pieces_count(state, options, to);
-                // Master keys this branch off legacy `Square` parity. In the
-                // dense node mapping, legacy-even squares are exactly odd
-                // dense nodes.
-                let parity_match = if to.is_multiple_of(2) {
-                    theirs == 2
-                } else {
-                    theirs == 3
-                };
-                if parity_match {
-                    score += RATING_BLOCK_ONE_MILL * their_mills;
-                }
-            }
-        }
-
-        if state.phase == MillPhase::Placing
-            && side == 1
-            && (options.has_diagonal_lines || ctx.algorithm == tgf_core::MoveOrderAlgorithm::Mcts)
-            && state.by_color_bb[1].count_ones() < 2
-            && is_star_square(options, to)
-        {
-            score += RATING_STAR_SQUARE;
-        }
-
-        score
+    #[inline]
+    fn move_order_scores_ctx(
+        wb: &Self::Workbench,
+        actions: &[Action],
+        ctx: &MoveOrderContext,
+        scores: &mut [MaybeUninit<i32>],
+    ) -> bool {
+        MillMoveOrderScorer::new(wb, ctx).score_actions(actions, scores)
     }
 
     /// Mill terminal-score for the searcher.  Mirrors master

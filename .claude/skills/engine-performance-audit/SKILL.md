@@ -449,10 +449,24 @@ Conservative, node-preserving candidates:
   stable priority lists.  Rust can first compute the legal removal target mask
   and then emit targets by precomputed priority ranks.  This should remove
   repeated legality branches while preserving exact emitted order.
-- Cache node-local move-order inputs.  Move scoring repeatedly uses side
+- [x] Cache node-local move-order inputs.  Move scoring repeatedly uses side
   bitboards, opponent bitboards, phase flags, standard-rule flags, and
   occupancy-derived facts.  Measure a small node-local context passed through
   scoring helpers instead of reloading those fields for every action.
+
+  Done on 2026-06-19: added `Game::move_order_scores_ctx` as a batch scoring
+  hook with a conservative default that exactly mirrors repeated
+  `move_order_bias_ctx` calls.  `MillGame` overrides it with a
+  `MillMoveOrderScorer` that caches side/opponent bitboards, piece counts,
+  phase/rule flags, and the MCTS flag once per generated move list.  A unit
+  test compares every batch score with the single-action scorer and validates
+  the `needs_sort` result.  Same-run release A/B against pre-change
+  `5164064c1` kept bestmove, score, depth, and node counts unchanged:
+  `start` depth 12 improved 1171.73 ms -> 1098.21 ms (0.937x), and
+  `reduced_material` depth 12 improved 919.53 ms -> 835.00 ms (0.908x).
+  Raw CSV: `/tmp/sanmill_move_order_batch_scores_r7.csv`.  Revisit this
+  area when compact search-only actions or a staged MovePicker are introduced,
+  because either change may require a different score storage layout.
 - Audit exact standard `key_after` for prefetch only.  Rust currently accepts a
   rough O(1) key prediction because prefetch only needs a likely cache line.
   If prefetch is enabled in benchmarks, compare a standard-only exact child

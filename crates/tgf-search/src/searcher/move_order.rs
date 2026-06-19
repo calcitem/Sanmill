@@ -3,7 +3,7 @@
 // These are pure `Searcher<G>` methods; they live in a sibling impl
 // block so the main `searcher/mod.rs` does not have to host them too.
 
-use tgf_core::{Action, Game, SEARCH_ACTION_CAPACITY, SearchActionList};
+use tgf_core::{Game, SEARCH_ACTION_CAPACITY, SearchActionList};
 
 use super::Searcher;
 use std::mem::MaybeUninit;
@@ -13,8 +13,8 @@ impl<G: Game> Searcher<G> {
     pub(super) fn order_moves(
         &self,
         wb: &G::Workbench,
-        key: u64,
-        depth: i32,
+        _key: u64,
+        _depth: i32,
         moves: &mut SearchActionList,
     ) {
         let moves = moves.as_mut_slice();
@@ -24,18 +24,11 @@ impl<G: Game> Searcher<G> {
         let mut scores: [MaybeUninit<i32>; SEARCH_ACTION_CAPACITY] =
             [MaybeUninit::uninit(); SEARCH_ACTION_CAPACITY];
         assert!(moves.len() <= scores.len());
-        let mut previous_score = 0_i32;
-        let mut has_previous = false;
-        let mut needs_sort = false;
-        for (i, action) in moves.iter().copied().enumerate() {
-            let score = self.move_score(wb, key, depth, action);
-            scores[i].write(score);
-            if has_previous && previous_score < score {
-                needs_sort = true;
-            }
-            previous_score = score;
-            has_previous = true;
-        }
+        // Master only adds a TT-move bonus when TT_MOVE_ENABLE is compiled in.
+        // The default legacy build leaves it disabled, so this scorer remains
+        // a pure static move-order bias path and does not probe the TT.
+        let needs_sort =
+            G::move_order_scores_ctx(wb, moves, &self.options.move_order_context, &mut scores);
         if !needs_sort {
             return;
         }
@@ -73,24 +66,5 @@ impl<G: Game> Searcher<G> {
             let j = self.next_random_index(i + 1);
             moves.as_mut_slice().swap(i, j);
         }
-    }
-
-    #[inline]
-    pub(super) fn move_score(
-        &self,
-        wb: &G::Workbench,
-        _key: u64,
-        _depth: i32,
-        action: Action,
-    ) -> i32 {
-        // Master MovePicker::score (src/movepick.cpp:46-52) only adds
-        // RATING_TT (=100) when ttMove is non-NONE, but TT_MOVE_ENABLE
-        // is undefined in the default master config so ttMove always
-        // stays MOVE_NONE and the bonus never fires.  The Rust port
-        // mirrors that no-op by intentionally NOT consulting the TT for
-        // a best-action bonus here.  TT lookups remain available
-        // through `Searcher::search_mtdf_with_guess` for root move
-        // recovery.
-        G::move_order_bias_ctx(wb, action, &self.options.move_order_context)
     }
 }

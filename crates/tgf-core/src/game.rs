@@ -40,6 +40,7 @@ use crate::{
     board_topology::BoardTopology,
     game_state::{GameStateSnapshot, MultiPlayerInfo, Outcome},
 };
+use std::mem::MaybeUninit;
 
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
 pub enum MoveOrderAlgorithm {
@@ -302,6 +303,41 @@ pub trait Game: 'static + Send + Sync {
     #[inline]
     fn move_order_bias_ctx(wb: &Self::Workbench, action: Action, _ctx: &MoveOrderContext) -> i32 {
         Self::move_order_bias(wb, action)
+    }
+
+    /// Batch form of [`Self::move_order_bias_ctx`].
+    ///
+    /// The generic searcher calls this once per generated move list so games
+    /// can cache node-local inputs such as side bitboards, phase flags, or
+    /// rule booleans while preserving the exact per-action scores.  The
+    /// default writes the same scores as repeated `move_order_bias_ctx`
+    /// calls and returns whether stable descending sort is needed.
+    ///
+    /// Implementations must initialize exactly `actions.len()` score slots.
+    #[inline]
+    fn move_order_scores_ctx(
+        wb: &Self::Workbench,
+        actions: &[Action],
+        ctx: &MoveOrderContext,
+        scores: &mut [MaybeUninit<i32>],
+    ) -> bool {
+        assert!(
+            actions.len() <= scores.len(),
+            "move-order score buffer is smaller than action list"
+        );
+        let mut previous_score = 0_i32;
+        let mut has_previous = false;
+        let mut needs_sort = false;
+        for (i, action) in actions.iter().copied().enumerate() {
+            let score = Self::move_order_bias_ctx(wb, action, ctx);
+            scores[i].write(score);
+            if has_previous && previous_score < score {
+                needs_sort = true;
+            }
+            previous_score = score;
+            has_previous = true;
+        }
+        needs_sort
     }
 
     // -----------------------------------------------------------------

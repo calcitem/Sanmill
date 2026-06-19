@@ -489,6 +489,44 @@ fn move_order_bias_star_square_matches_movepick_rating() {
 }
 
 #[test]
+fn move_order_batch_scores_match_single_action_scores() {
+    use std::mem::MaybeUninit;
+
+    let rules = MillRules::default();
+    let game = MillGame::default();
+    let snap = apply_uci_sequence(&rules, &["d6", "f4", "d2", "b4"]);
+    let wb = game.build_workbench(&snap);
+    let ctx = tgf_core::MoveOrderContext {
+        skill_level: 15,
+        ..Default::default()
+    };
+    let mut actions = SearchActionList::new();
+    <MillGame as Game>::generate_legal_ctx(&wb, &mut actions, &ctx);
+
+    let mut scores: [MaybeUninit<i32>; tgf_core::SEARCH_ACTION_CAPACITY] =
+        [MaybeUninit::uninit(); tgf_core::SEARCH_ACTION_CAPACITY];
+    let needs_sort =
+        <MillGame as Game>::move_order_scores_ctx(&wb, actions.as_slice(), &ctx, &mut scores);
+
+    let mut expected_needs_sort = false;
+    let mut previous_score = 0_i32;
+    let mut has_previous = false;
+    for (i, action) in actions.iter().copied().enumerate() {
+        let expected = <MillGame as Game>::move_order_bias_ctx(&wb, action, &ctx);
+        // SAFETY: `move_order_scores_ctx` promises to initialize exactly the
+        // prefix covered by the action slice.
+        let actual = unsafe { scores[i].assume_init() };
+        assert_eq!(actual, expected, "batch score diverged at index {i}");
+        if has_previous && previous_score < expected {
+            expected_needs_sort = true;
+        }
+        previous_score = expected;
+        has_previous = true;
+    }
+    assert_eq!(needs_sort, expected_needs_sort);
+}
+
+#[test]
 fn move_order_bias_mcts_enables_star_square_without_diagonals() {
     use tgf_core::{Game, MoveOrderAlgorithm, MoveOrderContext};
 

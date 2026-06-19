@@ -11,13 +11,13 @@
 # next-branch revisions.
 
 [meta]
-locked_at = "2026-06-19T12:07:04Z"
-git_commit = "d2a447b51+working-tree"
+locked_at = "2026-06-19T13:52:52Z"
+git_commit = "5164064c1+working-tree"
 platform = "linux-x86_64-local"
 build_flags = "cargo build --release -p tgf-cli"
-command = "python3 scripts/compare_engine_perf.py --current 'target/release/tgf uci' --master '/tmp/sanmill_before_page_aligned_tt_tgf uci' --current-depth-go 'gomtdf {depth}' --master-depth-go 'gomtdf {depth}' --cases start,reduced_material --skills 15 --depths 12 --repeat 11 --timeout 240"
+command = "python3 scripts/compare_engine_perf.py --current 'target/release/tgf uci' --master '/tmp/sanmill_perf_head_target/release/tgf uci' --current-depth-go 'gomtdf {depth}' --master-depth-go 'gomtdf {depth}' --cases start,reduced_material --skills 15 --depths 12 --repeat 7 --timeout 240"
 summary_method = "median elapsed_ms from current engine rows"
-notes = "Locked after moving the packed TT slot array to a 4096-byte page-aligned allocation and issuing a Linux MADV_HUGEPAGE hint while keeping each TtCluster at 8 bytes. Same-run A/B against d2a447b51 kept bestmove/score/nodes unchanged; timing was 0.840x start and 0.883x reduced_material. Raw candidate CSV: /tmp/sanmill_page_aligned_tt_thp_r11.csv."
+notes = "Locked after adding a batch move-order scoring hook and a Mill node-local scorer that reuses side bitboards, phase flags, and standard-rule booleans across one generated move list. Same-run A/B against 5164064c1 kept bestmove/score/nodes unchanged; timing was 0.937x start and 0.908x reduced_material. Raw candidate CSV: /tmp/sanmill_move_order_batch_scores_r7.csv."
 
 [thresholds]
 max_elapsed_regress_pct = 8.0
@@ -34,9 +34,9 @@ bestmove = "d6"
 score = 3
 depth = 12
 nodes = 5_580_055
-median_ms = 1151.09
-ns_per_node = 206.29
-run_ms = [1170.45, 1150.33, 1079.51, 1214.35, 1114.45, 1186.23, 1043.95, 1105.38, 1251.17, 1151.09, 1161.82]
+median_ms = 1098.21
+ns_per_node = 196.81
+run_ms = [1098.21, 1078.32, 1131.92, 992.49, 1176.33, 1079.00, 1170.98]
 
 [[cases]]
 name = "reduced_material"
@@ -46,6 +46,6 @@ bestmove = "c4-b4"
 score = -89
 depth = 12
 nodes = 3_209_969
-median_ms = 921.24
-ns_per_node = 286.99
-run_ms = [941.80, 976.10, 851.94, 948.95, 902.28, 944.21, 893.80, 895.95, 929.30, 862.13, 921.24]
+median_ms = 835.00
+ns_per_node = 260.13
+run_ms = [914.01, 758.65, 792.59, 835.00, 798.23, 922.59, 965.36]
