@@ -90,11 +90,9 @@ void main() {
         session.resetGame(
           rules: const RuleSettings(nMoveRule: 30, endgameNMoveRule: 20),
           generalSettings: const GeneralSettings(
-            aiIsLazy: false,
             skillLevel: 15,
             moveTime: 0,
             shufflingEnabled: false,
-            usePerfectDatabase: false,
           ),
         );
         await replayMoves(session, const <String>[
@@ -141,13 +139,10 @@ void main() {
 
         final GameAction? best = await session.searchBestAction(
           depth: 15,
-          moveLimitMs: 0,
           engineSettings: const GeneralSettings(
-            aiIsLazy: false,
             skillLevel: 15,
             moveTime: 0,
             shufflingEnabled: false,
-            usePerfectDatabase: false,
           ),
         );
 

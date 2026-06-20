@@ -44,10 +44,7 @@ void main() {
         ),
         isFalse,
       );
-      expect(
-        supports(const RuleSettings(piecesCount: 12, hasDiagonalLines: false)),
-        isFalse,
-      );
+      expect(supports(const RuleSettings(piecesCount: 12)), isFalse);
     });
 
     test('rejects supported variants when common Perfect DB rules differ', () {

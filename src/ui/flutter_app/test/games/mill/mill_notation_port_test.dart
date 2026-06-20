@@ -83,7 +83,7 @@ void main() {
 
     test('ignores move numbers, comments, NAGs, suffixes, and results', () {
       final List<GameAction> actions = port.decodeMoveList(
-        '1. d6! {forms a mill} \$1 1-0 2... f6?',
+        r'1. d6! {forms a mill} $1 1-0 2... f6?',
       );
       expect(actions.map(port.describeMove), <String>['d6', 'f6']);
       expect(actions.map((GameAction action) => action.type), <String>[

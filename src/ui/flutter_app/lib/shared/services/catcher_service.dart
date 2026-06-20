@@ -13,13 +13,12 @@ import 'package:catcher_2/catcher_2.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:path_provider/path_provider.dart';
 
 import '../config/constants.dart';
 import '../database/database.dart';
 import 'email_handler.dart';
 import 'environment_config.dart';
-import 'logger.dart';
+import 'logger.dart' show logger, resolveCrashLogFilePath;
 
 late Catcher2 catcher;
 
@@ -27,26 +26,8 @@ late Catcher2 catcher;
 Future<void> initCatcher(Catcher2 c) async {
   final Map<String, String> customParameters =
       await _buildCrashReportParameters();
-  late final String externalDirStr;
-
-  if (kIsWeb ||
-      Platform.isIOS ||
-      Platform.isLinux ||
-      Platform.isWindows ||
-      Platform.isMacOS) {
-    externalDirStr = ".";
-  } else {
-    try {
-      final Directory? externalDir = await getExternalStorageDirectory();
-      externalDirStr = externalDir != null ? externalDir.path : ".";
-    } on Object catch (e) {
-      logger.e(e.toString());
-      externalDirStr = ".";
-    }
-  }
-
-  final String path = "$externalDirStr/${Constants.crashLogsFile}";
-  logger.t("[env] ExternalStorageDirectory: $externalDirStr");
+  final String path = await resolveCrashLogFilePath();
+  logger.t("[env] Crash log file: $path");
 
   final Catcher2Options debugOptions = Catcher2Options(
     kIsWeb || Platform.isLinux || Platform.isWindows || Platform.isMacOS

@@ -14,13 +14,8 @@ import 'package:sanmill/rule_settings/models/rule_settings.dart';
 import '../../helpers/test_native_library.dart';
 
 const GeneralSettings _deterministicAiSettings = GeneralSettings(
-  aiIsLazy: false,
-  skillLevel: 1,
   moveTime: 0,
   shufflingEnabled: false,
-  usePerfectDatabase: false,
-  drawOnHumanExperience: true,
-  searchAlgorithm: SearchAlgorithm.mtdf,
 );
 
 const RuleSettings _boundedSelfPlayRules = RuleSettings(

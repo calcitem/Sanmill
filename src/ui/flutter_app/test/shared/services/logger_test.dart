@@ -79,6 +79,35 @@ void main() {
   // ---------------------------------------------------------------------------
   // Global logger
   // ---------------------------------------------------------------------------
+  group('Log level mapping', () {
+    test('resolveConfiguredLogLevel should map documented values', () {
+      expect(resolveConfiguredLogLevel(0), Level.all);
+      expect(resolveConfiguredLogLevel(1), Level.trace);
+      expect(resolveConfiguredLogLevel(2), Level.debug);
+      expect(resolveConfiguredLogLevel(3), Level.info);
+      expect(resolveConfiguredLogLevel(4), Level.warning);
+      expect(resolveConfiguredLogLevel(5), Level.error);
+      expect(resolveConfiguredLogLevel(6), Level.fatal);
+      expect(resolveConfiguredLogLevel(99), Level.all);
+    });
+  });
+
+  group('formatMemoryLogsForExport', () {
+    test('should include buffered events', () {
+      memoryOutput.clear();
+      memoryOutput.output(
+        OutputEvent(LogEvent(Level.info, 'export test'), <String>['hello']),
+      );
+
+      final String exported = formatMemoryLogsForExport(
+        exportedAt: DateTime.utc(2026, 1),
+      );
+      expect(exported, contains('Sanmill logs - 2026-01-01T00:00:00.000'));
+      expect(exported, contains('[INFO]'));
+      expect(exported, contains('hello'));
+    });
+  });
+
   group('Global logger instance', () {
     test('logger should be non-null', () {
       expect(logger, isNotNull);
@@ -87,6 +116,23 @@ void main() {
     test('memoryOutput should be accessible', () {
       expect(memoryOutput, isNotNull);
       expect(memoryOutput, isA<MemoryOutput>());
+    });
+
+    test('logger should log to memoryOutput in release-style filtering', () {
+      final MemoryOutput output = MemoryOutput();
+      final Logger releaseStyleLogger = Logger(
+        filter: ProductionFilter(),
+        output: output,
+        level: Level.all,
+      );
+
+      releaseStyleLogger.i('release mode log entry');
+
+      expect(output.logs, isNotEmpty);
+      expect(
+        output.logs.last.lines.join('\n'),
+        contains('release mode log entry'),
+      );
     });
 
     test('logger should log to memoryOutput', () {

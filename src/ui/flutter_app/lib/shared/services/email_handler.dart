@@ -3,6 +3,8 @@
 
 // email_handler.dart
 
+import 'dart:io';
+
 import 'package:catcher_2/handlers/base_email_handler.dart';
 import 'package:catcher_2/model/platform_type.dart';
 import 'package:catcher_2/model/report.dart';
@@ -43,11 +45,18 @@ class SanmillEmailHandler extends BaseEmailHandler {
     try {
       final String? configPath =
           await ConfigImportExportService.exportSettingsJsonOnly();
+      final String? memoryLogPath = await exportMemoryLogsToTempFile();
+      final String crashLogPath = await resolveCrashLogFilePath();
 
       final List<String> attachments = <String>[
         if (report.screenshot?.path.isNotEmpty ?? false)
           report.screenshot!.path,
         ?configPath,
+        ?memoryLogPath,
+        if (crashLogPath != null &&
+            crashLogPath != memoryLogPath &&
+            File(crashLogPath).existsSync())
+          crashLogPath,
       ];
 
       _printLog(

@@ -36,7 +36,7 @@ Future<void> initApp(WidgetTester tester) async {
   SoundManager().mute();
   addTearDown(disposeTestAudio);
   await tester.pumpWidget(const app.SanmillApp());
-  await pumpAndSettleWithin(tester, timeout: kDefaultPumpTimeout);
+  await pumpAndSettleWithin(tester);
 }
 
 /// Releases audio players that can keep scheduler callbacks alive in tests.

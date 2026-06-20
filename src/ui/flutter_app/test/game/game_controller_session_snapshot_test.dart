@@ -5,10 +5,10 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:sanmill/appearance_settings/models/display_settings.dart';
 import 'package:sanmill/game_page/services/mill.dart';
 import 'package:sanmill/game_platform/game_id.dart';
 import 'package:sanmill/game_platform/game_session.dart' as platform;
-import 'package:sanmill/appearance_settings/models/display_settings.dart';
 import 'package:sanmill/general_settings/models/general_settings.dart';
 import 'package:sanmill/shared/database/database.dart';
 import 'package:sanmill/shared/services/environment_config.dart';
@@ -158,7 +158,7 @@ void main() {
     expect(controller.shouldAutoRestartAfterGameOver(), isFalse);
 
     controller.gameInstance.gameMode = GameMode.aiVsAi;
-    db.displaySettings = const DisplaySettings(animationDuration: 1.0);
+    db.displaySettings = const DisplaySettings();
     expect(controller.shouldAutoRestartAfterGameOver(), isFalse);
   });
 }
