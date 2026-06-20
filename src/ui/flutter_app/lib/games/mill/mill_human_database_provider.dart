@@ -1,6 +1,10 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // Copyright (C) 2019-2026 The Sanmill developers (see AUTHORS file)
 
+import 'dart:math';
+
+import 'package:flutter/foundation.dart' show visibleForTesting;
+
 import '../../game_platform/game_session.dart';
 import '../../game_platform/opening_book_provider.dart';
 import '../../general_settings/models/general_settings.dart';
@@ -16,13 +20,21 @@ class MillHumanDatabaseProvider implements OpeningBookProvider {
   MillHumanDatabaseProvider({
     required this.ruleSettings,
     required this.generalSettings,
-  });
+    Random? random,
+  }) : _random = random ?? Random();
 
   static const int _maxCandidates = 24;
   static const int _minSamples = 3;
 
+  // Mainstream pool used by the "Move randomly" mode: a candidate qualifies
+  // when it was played at least [_mainstreamMinSamples] times and reached at
+  // least [_mainstreamRatio] of the most-played move's sample count.
+  static const double _mainstreamRatio = 0.25;
+  static const int _mainstreamMinSamples = 10;
+
   final RuleSettings ruleSettings;
   final GeneralSettings generalSettings;
+  final Random _random;
 
   String? _pendingCapture;
   HumanDatabaseMoveStats? _pendingStats;
@@ -87,34 +99,131 @@ class MillHumanDatabaseProvider implements OpeningBookProvider {
       return null;
     }
 
-    for (final tgf.MillHumanDatabaseMove candidate in query.moves) {
-      final _HumanDbMoveParts parts = _HumanDbMoveParts.parse(
-        candidate.notation,
-      );
+    // Collect every database candidate that maps to a legal base move, then
+    // pick one according to the "Move randomly" switch.
+    final List<_HumanDbCandidate> candidates = <_HumanDbCandidate>[];
+    for (final tgf.MillHumanDatabaseMove move in query.moves) {
+      final _HumanDbMoveParts parts = _HumanDbMoveParts.parse(move.notation);
       final GameAction? action = _findLegalAction(session, parts.baseMove);
       if (action == null) {
         continue;
       }
-      final HumanDatabaseMoveStats stats = HumanDatabaseMoveStats(
-        notation: candidate.notation,
-        wins: candidate.wins,
-        losses: candidate.losses,
-        draws: candidate.draws,
-        total: candidate.total,
-        scoreDelta: candidate.scoreDelta,
+      candidates.add(
+        _HumanDbCandidate(move: move, parts: parts, action: action),
       );
-      _pendingCapture = parts.captureMove;
-      _pendingStats = parts.captureMove == null ? null : stats;
-      lastStats = stats;
-      logger.t(
-        '[MillHumanDatabaseProvider] selected ${candidate.notation} '
-        'score=${candidate.scoreDelta.toStringAsFixed(3)} '
-        'samples=${candidate.total}',
-      );
-      return action;
+    }
+    if (candidates.isEmpty) {
+      return null;
     }
 
-    return null;
+    final List<tgf.MillHumanDatabaseMove> moves = <tgf.MillHumanDatabaseMove>[
+      for (final _HumanDbCandidate candidate in candidates) candidate.move,
+    ];
+    final int index = selectCandidateIndex(
+      moves,
+      shuffling: generalSettings.shufflingEnabled,
+      random: _random,
+    );
+    final _HumanDbCandidate chosen = candidates[index];
+
+    final HumanDatabaseMoveStats stats = HumanDatabaseMoveStats(
+      notation: chosen.move.notation,
+      wins: chosen.move.wins,
+      losses: chosen.move.losses,
+      draws: chosen.move.draws,
+      total: chosen.move.total,
+      scoreDelta: chosen.move.scoreDelta,
+    );
+    _pendingCapture = chosen.parts.captureMove;
+    _pendingStats = chosen.parts.captureMove == null ? null : stats;
+    lastStats = stats;
+    logger.t(
+      '[MillHumanDatabaseProvider] selected ${chosen.move.notation} '
+      'score=${chosen.move.scoreDelta.toStringAsFixed(3)} '
+      'samples=${chosen.move.total} '
+      'shuffling=${generalSettings.shufflingEnabled}',
+    );
+    return chosen.action;
+  }
+
+  /// Selects the index of the Human Database candidate to play.
+  ///
+  /// When [shuffling] is false the move with the highest confidence-weighted
+  /// score is chosen (ties broken by the larger sample count). When [shuffling]
+  /// is true a move is drawn at random, weighted by play frequency, from the
+  /// "mainstream" pool (moves played often enough relative to the most popular
+  /// one); if that pool is empty the best-score move is used instead.
+  @visibleForTesting
+  static int selectCandidateIndex(
+    List<tgf.MillHumanDatabaseMove> candidates, {
+    required bool shuffling,
+    required Random random,
+  }) {
+    assert(candidates.isNotEmpty, 'Candidate list must not be empty.');
+    if (!shuffling) {
+      return _bestScoreIndex(candidates);
+    }
+    final List<int> pool = _mainstreamPoolIndices(candidates);
+    if (pool.isEmpty) {
+      return _bestScoreIndex(candidates);
+    }
+    return _frequencyWeightedChoice(candidates, pool, random);
+  }
+
+  static int _bestScoreIndex(List<tgf.MillHumanDatabaseMove> candidates) {
+    int best = 0;
+    for (int i = 1; i < candidates.length; i++) {
+      final tgf.MillHumanDatabaseMove a = candidates[i];
+      final tgf.MillHumanDatabaseMove b = candidates[best];
+      if (a.scoreDelta > b.scoreDelta ||
+          (a.scoreDelta == b.scoreDelta && a.total > b.total)) {
+        best = i;
+      }
+    }
+    return best;
+  }
+
+  static List<int> _mainstreamPoolIndices(
+    List<tgf.MillHumanDatabaseMove> candidates,
+  ) {
+    int maxTotal = 0;
+    for (final tgf.MillHumanDatabaseMove move in candidates) {
+      if (move.total > maxTotal) {
+        maxTotal = move.total;
+      }
+    }
+    final double threshold = max(
+      _mainstreamMinSamples.toDouble(),
+      maxTotal * _mainstreamRatio,
+    );
+    final List<int> pool = <int>[];
+    for (int i = 0; i < candidates.length; i++) {
+      if (candidates[i].total >= threshold) {
+        pool.add(i);
+      }
+    }
+    return pool;
+  }
+
+  static int _frequencyWeightedChoice(
+    List<tgf.MillHumanDatabaseMove> candidates,
+    List<int> pool,
+    Random random,
+  ) {
+    int totalWeight = 0;
+    for (final int i in pool) {
+      totalWeight += candidates[i].total;
+    }
+    assert(totalWeight > 0, 'Mainstream pool weight must be positive.');
+    int target = random.nextInt(totalWeight);
+    for (final int i in pool) {
+      target -= candidates[i].total;
+      if (target < 0) {
+        return i;
+      }
+    }
+    // Defensive fallback; unreachable when weights sum to totalWeight.
+    return pool.last;
   }
 
   bool _supportsCurrentRules() {
@@ -159,6 +268,18 @@ class MillHumanDatabaseProvider implements OpeningBookProvider {
     }
     return null;
   }
+}
+
+class _HumanDbCandidate {
+  const _HumanDbCandidate({
+    required this.move,
+    required this.parts,
+    required this.action,
+  });
+
+  final tgf.MillHumanDatabaseMove move;
+  final _HumanDbMoveParts parts;
+  final GameAction action;
 }
 
 class _HumanDbMoveParts {
