@@ -469,6 +469,16 @@ Conservative, node-preserving candidates:
   clone repetition history into each workbench.  Measure repeated engine calls
   and consider borrowing, sharing, or fixed-capacity copying only the search
   window that is actually queried during deterministic search.
+
+  Partial cleanup on 2026-06-20: `MillRules::repetition_history_from_snapshots`
+  no longer fully decodes every historical snapshot just to test whether the
+  serialized repetition window is empty.  It now reads the dedicated payload
+  length byte and uses the snapshot Zobrist key directly, falling back to a
+  full decode only when it must return the current snapshot's embedded
+  key-history window.  This preserves root repetition semantics while reducing
+  per-search setup work in FRB/CLI paths that pass a non-empty history stack.
+  The larger `root_repetition_history` clone into `MillGame` /
+  `MillWorkbench` is still open and should be measured separately.
 - Split hot and cold Mill state fields.  Standard search nodes mostly touch
   side-to-move, phase, piece counts, board cells, color bitboards, pending
   removals, rule50, key, and compact repetition data.  Fields such as formed
@@ -580,6 +590,17 @@ Conservative, node-preserving candidates:
   retry or choosing a random move.  For deterministic performance audits this
   must be disabled so regressions fail loudly and movelist comparisons remain
   meaningful.
+- [x] Stop early while checking real-play threefold counts.  Production apply
+  only needs to know whether the current repetition signature occurs at least
+  three times.  Counting every matching key across the full capped history is
+  unnecessary once the third match is found.
+
+  Done on 2026-06-20: both `push_key_and_check_threefold` variants now use a
+  small `key_occurs_at_least` helper that exits at the threshold.  This is a
+  Rust kernel apply-boundary cleanup, not a search-node optimization, and it
+  preserves repetition adjudication semantics.  Validated with
+  `cargo test -p tgf-mill repetition_history` and
+  `cargo test -p tgf-mill threefold`.
 - [x] Audit benchmark timing and node accounting before trusting new baselines.
   `tgf bench` must never time multiple searches while reporting only one
   search's nodes.  If a warm-up search is desired, run it before the timer; if

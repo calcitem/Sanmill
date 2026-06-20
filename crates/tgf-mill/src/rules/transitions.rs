@@ -455,8 +455,7 @@ pub(super) fn push_key_and_check_threefold(
     if !adjudicate {
         return;
     }
-    let count = state.key_history.iter().filter(|k| **k == key).count();
-    if count >= 3 {
+    if key_occurs_at_least(&state.key_history, key, 3) {
         state.phase = MillPhase::GameOver;
         state.winner = 2;
         state.outcome_reason = MillOutcomeReason::DrawThreefold;
@@ -483,11 +482,24 @@ pub(super) fn push_key_and_check_threefold_with_key(
     if !adjudicate {
         return;
     }
-    let count = state.key_history.iter().filter(|k| **k == key).count();
-    if count >= 3 {
+    if key_occurs_at_least(&state.key_history, key, 3) {
         state.phase = MillPhase::GameOver;
         state.winner = 2;
         state.outcome_reason = MillOutcomeReason::DrawThreefold;
         state.side_to_move = -1;
     }
+}
+
+fn key_occurs_at_least(history: &[u64], key: u64, threshold: usize) -> bool {
+    debug_assert!(threshold > 0, "repetition threshold must be non-zero");
+    let mut remaining = threshold;
+    for &candidate in history {
+        if candidate == key {
+            remaining -= 1;
+            if remaining == 0 {
+                return true;
+            }
+        }
+    }
+    false
 }

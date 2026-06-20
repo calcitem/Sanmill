@@ -39,15 +39,13 @@ impl MillRules {
         snap: &GameStateSnapshot,
         history: &[GameStateSnapshot],
     ) -> Vec<u64> {
-        let decoded_current = Self::decode(snap);
         if history.is_empty() {
-            return decoded_current.key_history;
+            return Self::decode(snap).key_history;
         }
 
         let mut reversed = Vec::new();
         for candidate in history.iter().chain(std::iter::once(snap)).rev() {
-            let decoded = Self::decode(candidate);
-            if decoded.key_history_len == 0 {
+            if snapshot_repetition_window_len(candidate) == 0 {
                 break;
             }
             let key = candidate.zobrist_key;
@@ -59,7 +57,7 @@ impl MillRules {
         }
 
         if reversed.is_empty() {
-            decoded_current.key_history
+            Self::decode(snap).key_history
         } else {
             reversed.reverse();
             reversed
@@ -88,6 +86,10 @@ impl MillRules {
             u16::from(current.pieces_on_board[0]) + u16::from(current.pieces_on_board[1]);
         current_total < previous_total
     }
+}
+
+fn snapshot_repetition_window_len(snapshot: &GameStateSnapshot) -> usize {
+    usize::from(snapshot.opaque_payload[236].min(MILL_REPETITION_SNAPSHOT_WINDOW as u8))
 }
 
 impl GameRules for MillRules {
