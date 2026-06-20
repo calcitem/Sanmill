@@ -1,6 +1,6 @@
 ---
 name: engine-performance-audit
-description: Locate Sanmill engine performance regressions and hotspots by comparing next with ~/Sanmill-master master, using parity checks, compare_engine_perf.py, perf, Criterion, and focused traces.
+description: Locate Sanmill engine performance regressions and hotspots by comparing the next-branch Rust/TGF engine with the legacy master C++ reference, using parity checks, compare_engine_perf.py, profilers (perf on Linux, WPA/flamegraph on Windows), Criterion, and focused traces.
 ---
 
 # Engine Performance Audit
@@ -11,9 +11,75 @@ Find why the Sanmill engine is slower, where time is spent, and which change
 can improve it without breaking search parity. Prefer evidence over intuition:
 same position, same options, same nodes, measured time, then profiler output.
 
-Use `/home/user/Sanmill` on `next` as the Rust/TGF candidate and
-`/home/user/Sanmill-master` on `master` as the legacy C++ reference unless the
-user gives different paths.
+Resolve the three repository roots and per-platform tool names from the
+"Repositories, paths, and platform" section below, then reuse the placeholders
+(`$NEXT`, `$MASTER`, `$SF`, `$TGF`, `$PY`, `$MASTER_BIN`, `$SCRATCH`) in every
+command instead of hardcoding any absolute path.
+
+## Repositories, paths, and platform
+
+This skill compares a Rust/TGF candidate on `next` against a legacy C++
+reference on `master`, with Stockfish as a design reference only. Resolve the
+three repo roots and tool names once per shell, then reuse the placeholders in
+every command below. Replace the example values with the user's actual paths.
+
+| Placeholder   | Meaning                         | Windows (Git Bash)                 | Linux / macOS          |
+| ------------- | ------------------------------- | ---------------------------------- | ---------------------- |
+| `$NEXT`       | Rust/TGF candidate (`next`)     | `D:/Repo/Sanmill`                  | `~/Sanmill`            |
+| `$MASTER`     | Legacy C++ reference (`master`) | `D:/Repo/Sanmill-master/Sanmill`   | `~/Sanmill-master`     |
+| `$SF`         | Stockfish design reference      | `D:/Repo/Stockfish`                | `~/Stockfish`          |
+| `$TGF`        | Candidate engine binary         | `target/release/tgf.exe`           | `target/release/tgf`   |
+| `$PY`         | Python interpreter              | `python`                           | `python3`              |
+
+On Windows the master repo root has a nested `Sanmill` folder
+(`D:/Repo/Sanmill-master/Sanmill`), not `D:/Repo/Sanmill-master`. Use
+drive-letter forward-slash paths (`D:/Repo/...`) so both Git Bash and native
+Python accept the same string; do not use the `/d/Repo/...` MSYS form for
+arguments passed to Python scripts.
+
+Set up the environment once per shell. Windows (Git Bash / MSYS2):
+
+```bash
+export NEXT="D:/Repo/Sanmill"
+export MASTER="D:/Repo/Sanmill-master/Sanmill"
+export SF="D:/Repo/Stockfish"
+export TGF="target/release/tgf.exe"
+export PY="python"
+export SCRATCH="$(cygpath -m "$TEMP")/sanmill-perf"
+export MASTER_BIN="$SCRATCH/master_engine.exe"
+mkdir -p "$SCRATCH"
+cd "$NEXT"
+```
+
+Linux / macOS:
+
+```bash
+export NEXT="$HOME/Sanmill"
+export MASTER="$HOME/Sanmill-master"
+export SF="$HOME/Stockfish"
+export TGF="target/release/tgf"
+export PY="python3"
+export SCRATCH="${TMPDIR:-/tmp}/sanmill-perf"
+export MASTER_BIN="$SCRATCH/master_engine"
+mkdir -p "$SCRATCH"
+cd "$NEXT"
+```
+
+Platform gotchas (verified on the current Windows host):
+
+- The candidate binary is `target/release/tgf.exe` on Windows. Commands and
+  `compare_engine_perf.py --current` must use `$TGF`, otherwise the script
+  aborts with `current engine not found` because it checks the literal path.
+- Use `$PY`. This host has no `python3` alias, only `python`.
+- `perf` and `/proc/sys/kernel/perf_event_paranoid` are Linux-only; the whole
+  "perf workflow" section does not run on Windows. Use the Windows alternatives
+  noted there (Windows Performance Analyzer / ETW, `cargo flamegraph`,
+  `hyperfine`); symbols come from the `tgf.pdb` next to `tgf.exe`.
+- Keep scratch files under `$SCRATCH` (a real path both Git Bash and native
+  Python understand). Do not hardcode `/tmp`: Git Bash `/tmp` and native
+  Python's `/tmp` resolve to different locations on Windows.
+- Building `$MASTER_BIN` needs MinGW-w64 `g++` on Windows;
+  `build_console_engine.sh` autodetects it and emits a `.exe`.
 
 ## Hard rules
 
@@ -23,7 +89,7 @@ user gives different paths.
 3. Never compare against stale binaries. Rebuild and record executable paths.
 4. Change one variable at a time: build flags, TT size, thread count, depth,
    rule options, and database/book settings must be explicit.
-5. When using `/home/user/Sanmill-master` as the reference, ignore its Qt UI
+5. When using `$MASTER` as the reference, ignore its Qt UI
    code. Compare only the core engine/search/rules code, Flutter-facing engine
    integration, Flutter UI behavior that drives engine calls, and shared build
    tooling needed to reproduce those paths.
@@ -58,18 +124,20 @@ Build candidate:
 
 ```bash
 cargo build --release -p tgf-cli
-ls -l target/release/tgf
-file target/release/tgf
+ls -l "$TGF"
+file "$TGF"
 ```
 
 Build reference:
 
 ```bash
-bash /home/user/Sanmill-master/scripts/build_console_engine.sh \
-  /tmp/sanmill_master_engine_perf
-ls -l /tmp/sanmill_master_engine_perf
-file /tmp/sanmill_master_engine_perf
+bash "$MASTER/scripts/build_console_engine.sh" "$MASTER_BIN"
+ls -l "$MASTER_BIN"
+file "$MASTER_BIN"
 ```
+
+On Windows this requires MinGW-w64 `g++` on `PATH`; the script autodetects it
+and writes a `.exe` (so `$MASTER_BIN` already ends in `.exe`).
 
 If symbolized profiling is needed, rebuild a profiling-only binary with debug
 symbols and frame pointers. Keep the comparable release binary separate.
@@ -77,19 +145,21 @@ symbols and frame pointers. Keep the comparable release binary separate.
 Rust:
 
 ```bash
-env CARGO_TARGET_DIR=/tmp/sanmill-symbol-release \
+env CARGO_TARGET_DIR="$SCRATCH/symbol-release" \
   CARGO_PROFILE_RELEASE_STRIP=false \
   CARGO_PROFILE_RELEASE_DEBUG=1 \
   RUSTFLAGS="-C force-frame-pointers=yes" \
   cargo build --release -p tgf-cli
 ```
 
-The repository's normal release profile strips symbols. Do not overwrite or
-time the standard `target/release/tgf` when the goal is only to get function
-names for `perf`; use the `/tmp` profiling binary for call stacks and the
-standard release binary for comparable timings.
+The repository's normal release profile strips symbols on Linux. Do not
+overwrite or time the standard `$TGF` when the goal is only to get function
+names for `perf`; use the `$SCRATCH/symbol-release` profiling binary for call
+stacks and the standard release binary for comparable timings. On Windows this
+frame-pointer rebuild is unnecessary: the release `tgf.exe` already ships a
+`tgf.pdb` next to it, which WPA/VTune/`cargo flamegraph` consume directly.
 
-C++: inspect `scripts/build_console_engine.sh` and add `-g
+C++: inspect `$MASTER/scripts/build_console_engine.sh` and add `-g
 -fno-omit-frame-pointer` to a temporary profiling build only. Record the exact
 command because it is no longer the standard reference build.
 
@@ -101,9 +171,9 @@ more nodes or spends more time per node.
 Shallow deterministic matrix:
 
 ```bash
-python3 scripts/compare_engine_perf.py \
-  --current 'target/release/tgf uci' \
-  --master '/tmp/sanmill_master_engine_perf' \
+"$PY" scripts/compare_engine_perf.py \
+  --current "$TGF uci" \
+  --master "$MASTER_BIN" \
   --current-depth-go 'gomtdf {depth}' \
   --master-depth-go 'gomtdf {depth}' \
   --cases start,placing4,placing8,placing14,moving_entry,moving_loop,capture_pending,reduced_material,flutter_n30_e20_black20 \
@@ -111,7 +181,7 @@ python3 scripts/compare_engine_perf.py \
   --depths 1,2 \
   --repeat 3 \
   --timeout 180 \
-  --csv /tmp/sanmill_perf_compare.csv
+  --csv "$SCRATCH/sanmill_perf_compare.csv"
 ```
 
 For `SkillLevel=1`, the legacy `gomtdf` command does not enter
@@ -119,9 +189,9 @@ For `SkillLevel=1`, the legacy `gomtdf` command does not enter
 fixed-depth probe:
 
 ```bash
-python3 scripts/compare_engine_perf.py \
-  --current 'target/release/tgf uci' \
-  --master '/tmp/sanmill_master_engine_perf' \
+"$PY" scripts/compare_engine_perf.py \
+  --current "$TGF uci" \
+  --master "$MASTER_BIN" \
   --current-depth-go 'gomtdf {depth}' \
   --master-depth-go 'gomtdf {depth}' \
   --master-prime-go go \
@@ -130,7 +200,7 @@ python3 scripts/compare_engine_perf.py \
   --depths 1,2 \
   --repeat 3 \
   --timeout 180 \
-  --csv /tmp/sanmill_perf_skill1.csv
+  --csv "$SCRATCH/sanmill_perf_skill1.csv"
 ```
 
 Interpretation:
@@ -144,7 +214,7 @@ Interpretation:
 
 ## Next-branch performance baseline
 
-Do not judge every optimization only against `/home/user/Sanmill-master`.
+Do not judge every optimization only against `$MASTER`.
 Master is still the reference for parity and broad context, but it can mislead
 when deciding whether a new next-branch change improved or regressed relative
 to the previous Rust/TGF implementation.
@@ -159,9 +229,9 @@ For future optimization candidates, run the same fixed-depth probe and compare
 against the locked Rust baseline before making claims about improvement:
 
 ```bash
-python3 scripts/compare_engine_perf.py \
-  --current 'target/release/tgf uci' \
-  --master '/tmp/sanmill_master_engine_perf' \
+"$PY" scripts/compare_engine_perf.py \
+  --current "$TGF uci" \
+  --master "$MASTER_BIN" \
   --current-depth-go 'gomtdf {depth}' \
   --master-depth-go 'gomtdf {depth}' \
   --cases start,reduced_material \
@@ -169,11 +239,11 @@ python3 scripts/compare_engine_perf.py \
   --depths 12 \
   --repeat 3 \
   --timeout 240 \
-  --csv /tmp/sanmill_perf_candidate.csv
+  --csv "$SCRATCH/sanmill_perf_candidate.csv"
 
-python3 scripts/check_search_perf_baseline.py \
+"$PY" scripts/check_search_perf_baseline.py \
   --baseline tests/search_perf_baseline.toml \
-  --result /tmp/sanmill_perf_candidate.csv
+  --result "$SCRATCH/sanmill_perf_candidate.csv"
 ```
 
 Only update `tests/search_perf_baseline.toml` after parity checks pass and the
@@ -197,6 +267,14 @@ conservative runtime floors. Criterion output lives under `target/criterion/`.
 
 ## perf workflow
 
+**Linux only.** `perf` does not exist on Windows (verified: not found), and
+`/proc/sys/kernel/perf_event_paranoid` is a Linux pseudo-file. On Windows,
+profile with Windows Performance Analyzer (WPR/WPA or `xperf`), `cargo
+flamegraph` (blondie/ETW backend, run from an elevated shell), or `hyperfine`
+for whole-command timing only after parity is locked; symbols come from the
+`tgf.pdb` next to `tgf.exe`. The remaining commands in this section assume a
+Linux host.
+
 Check availability:
 
 ```bash
@@ -208,7 +286,7 @@ cat /proc/sys/kernel/perf_event_paranoid
 Create a deterministic UCI transcript for one expensive case:
 
 ```bash
-cat >/tmp/sanmill_perf.uci <<'EOF'
+cat >"$SCRATCH/sanmill_perf.uci" <<'EOF'
 uci
 setoption name DeveloperMode value false
 setoption name DrawOnHumanExperience value true
@@ -231,18 +309,18 @@ EOF
 Collect counters:
 
 ```bash
-perf stat -r 5 -d -- target/release/tgf uci < /tmp/sanmill_perf.uci
-perf stat -r 5 -d -- /tmp/sanmill_master_engine_perf < /tmp/sanmill_perf.uci
+perf stat -r 5 -d -- "$TGF" uci < "$SCRATCH/sanmill_perf.uci"
+perf stat -r 5 -d -- "$MASTER_BIN" < "$SCRATCH/sanmill_perf.uci"
 ```
 
 Collect call stacks for one engine at a time:
 
 ```bash
 perf record -F 997 --call-graph dwarf \
-  -o /tmp/sanmill-current.data -- \
-  target/release/tgf uci < /tmp/sanmill_perf.uci
+  -o "$SCRATCH/sanmill-current.data" -- \
+  "$TGF" uci < "$SCRATCH/sanmill_perf.uci"
 
-perf report --stdio -i /tmp/sanmill-current.data \
+perf report --stdio -i "$SCRATCH/sanmill-current.data" \
   --sort comm,dso,symbol | head -120
 ```
 
@@ -275,14 +353,14 @@ Start near the hottest symbol, then map it to the owning layer:
   `crates/tgf-mill/src/rules/zobrist.rs` and
   `crates/tgf-search/src/tt.rs`.
 - Evaluation:
-  `crates/tgf-mill/src/evaluator.rs` and rule helpers it calls.
+  `crates/tgf-mill/src/rules/evaluation.rs` and rule helpers it calls.
 - CLI/diagnostic overhead:
   `crates/tgf-cli/src/mill_uci/`.
 - Flutter/FRB integration overhead:
   `crates/tgf-frb/src/games/mill/search.rs` and
   `src/ui/flutter_app/lib/games/mill/`.
 - Reference-scope guard:
-  do not use `/home/user/Sanmill-master/src/ui/qt/` or other Qt-only code as
+  do not use `$MASTER/src/ui/qt/` or other Qt-only code as
   parity or performance evidence. Use Flutter and core engine paths instead.
 - Perfect database overhead:
   `crates/perfect-db/` and the C++ shim under `crates/perfect-db/csrc/`.
@@ -337,12 +415,27 @@ node counts stay identical.  Move to behavior-changing experiments only after
 the conservative queue is exhausted or profiling proves the hotspot cannot be
 fixed without changing the searched tree.
 
+Two standing rules for this backlog:
+
+- **Follow the profiler, not the queue length.** The measured dominant cost is
+  TT `probe_value_bound` / `save` memory traffic in deep moving searches (see
+  Current investigation notes). Conservative work that targets TT locality
+  (prefetch, page size, per-node slot touches) outranks another
+  move-gen/move-order micro-optimization, even though micro-ops are easier to
+  land.
+- **Evidence bar for rejecting a node-preserving change.** Do not revert a
+  parity-preserving change on a <~5% median delta from one or two positions;
+  that is inside this harness's noise. A rejection needs the full standard
+  matrix (including a deep moving position such as `moving_entry d15`) plus
+  instruction / cache-miss counters (`perf stat` on Linux, WPA/ETW on Windows).
+  Several past rejections below do not meet this bar and are flagged for re-try.
+
 Reference anchors for future audits:
 
-- Legacy master engine: `~/Sanmill-master/src/search.cpp`,
+- Legacy master engine: `$MASTER/src/search.cpp`,
   `search_engine.cpp`, `position.cpp`, `movegen.h`, `movepick.h`, `tt.cpp`,
   `hashmap.h`, `mills.cpp`, and `evaluate.cpp`.
-- Stockfish design references: `~/Stockfish/src/tt.cpp`,
+- Stockfish design references: `$SF/src/tt.cpp`,
   `position.cpp`, `movepick.cpp`, `thread.cpp`, and `memory.cpp`.
 - Current Rust hot paths: `crates/tgf-search/src/searcher/`,
   `crates/tgf-search/src/thread_pool.rs`,
@@ -564,7 +657,14 @@ Conservative, node-preserving candidates:
   keys across clusters, while legacy Sanmill and current Rust primarily use
   masked bits.  Treat alternate indexing as diagnostic first, because it can
   change collisions, TT hits, and node counts even when search code is
-  otherwise unchanged.
+  otherwise unchanged.  Note the current design uses `cluster_ix = key_sig &
+  mask` AND stores `key_sig = key as u32`, so index and signature share the low
+  bits: within one bucket only the top `32 - cluster_bits` bits (8 bits at the
+  default 24) actually discriminate, i.e. ~1/256 in-bucket false matches.  The
+  `tt.rs` comment claiming the 32-bit signature "eliminates the 1/256
+  false-positive rate" is therefore overstated (master shares this property).
+  An independent index (high bits) + signature (low bits) split is the real
+  fix, but it changes collisions/nodes, so re-baseline parity before keeping it.
 - Keep thread creation out of repeated UI searches.  Stockfish parks workers
   and reuses per-thread state.  Rust Lazy-SMP currently spawns workers per
   search.  A persistent worker pool can reduce OS calls and preserve cache
@@ -761,6 +861,33 @@ Conservative, node-preserving candidates:
   provide equivalent root/subtree counters behind compile-time or explicit
   debug options so they remain reusable without release overhead.
 
+Bottleneck-aligned conservative candidates added 2026-06-21 (see review):
+
+- Back the 128 MiB TT with large pages on Windows.  `advise_huge_pages` only
+  calls `madvise(MADV_HUGEPAGE)` on Linux, so on Windows the table uses 4 KiB
+  pages and pays extra dTLB misses on exactly the random TT access that
+  dominates deep search.  Measure `VirtualAlloc(MEM_LARGE_PAGES)` (needs the
+  SeLockMemoryPrivilege) for the process-global TT; node counts are unchanged.
+- Re-time the noise-rejected node-preserving micro-optimizations.  The
+  mill-formation score table, the remove-target bitset ordering, and the
+  fixed-depth abort-check trim were each reverted on a <5% delta from `start` +
+  `reduced_material` only.  Per the evidence bar above, re-run them on the deep
+  moving cases with instruction / cache-miss counters before treating them as
+  dead; the harness wall-clock alone did not justify the rejections.
+- Skip or bound the per-node repetition path scan.  `path_repeats_since_reset`
+  walks `repetition_stack` in reverse on every interior node and
+  `has_current_repetition` scans the pre-root window.  Measure a per-node
+  "any reversible ancestor since the last REMOVE barrier" guard so positions
+  with no reversible ancestor skip the loop entirely, preserving the exact
+  2nd-occurrence semantics.  This is the conservative counterpart to the
+  behavior-changing "carry repetition metadata on reversible updates" item.
+- Snapshot the TT generation per search.  `ClusteredTt::get` /
+  `probe_value_bound` / `save` each reload `current_age` (a relaxed atomic) on
+  every node, yet it is constant during one search; caching it in the
+  `Searcher` removes those loads.  Likely negligible on x86 (a hot L1 `mov`),
+  so measure with a counter first and keep it only if the reduction is real —
+  listed mainly so it is not mistaken for a large win.
+
 Behavior-changing or high-risk experiments:
 
 - TT cluster and replacement policy.  Stockfish uses 32-byte clusters with
@@ -830,20 +957,29 @@ Behavior-changing or high-risk experiments:
   counts. Treat it as a diagnostic for cache locality, not a default release
   fix, unless node-count parity is explicitly re-baselined and accepted.
 - TT prefetch: `TGF_PREFETCH_MODE=first` can help some moving/capture probes
-  without changing nodes, while `all` has shown regressions. Keep prefetch
-  default-off until a full matrix proves a stable win.
+  without changing nodes, while `all` has shown regressions. It is currently
+  default-off, but because TT memory traffic is the dominant cost, prefetch is
+  the single most bottleneck-aligned conservative lever and was only rejected on
+  thin 1-2 position timing. Re-evaluate it with cache-miss / LLC-miss counters
+  on the deep moving matrix (not wall-clock on `start` / `reduced_material`),
+  comparing first-only `key_after` prefetch against `all`, before concluding it
+  cannot pay off.
 - TT allocation/reuse: master owns a process-global TT and `clear()` is a
   fake-clean generation bump. Rust UCI and FRB search paths must reuse
   `SharedTt` across searches and call `clear_tt()` / `bump_age()` before each
   new search. Do not allocate a fresh 16 Mi-slot TT inside every `go`,
   `gomtdf`, or Flutter search request; repeated in-process depth-18 probes
   showed this as high `sys` time rather than a tree-shape issue.
-- TT first-touch behavior: Rust zeroed allocation may leave TT pages backed by
-  demand-zero mappings. The first search can then fault once on probe reads and
-  again on save writes. Pre-touch process-global UCI/FRB TT allocations with a
-  physical clear, then use fake-clean for later searches. Validate this with
-  `perf stat -e page-faults,minor-faults,task-clock` on a fresh-process first
-  `gomtdf` probe.
+- TT first-touch behavior: `TtStorage::new` already eagerly writes every slot
+  at allocation (the `ptr.add(i).write(TtCluster::empty())` loop), so pages are
+  physically first-touched once and later searches only `bump_age`. The earlier
+  "first search faults on demand-zero pages" hypothesis is therefore already
+  handled for the initial allocation; do not re-derive it. The remaining open
+  work is (a) parallelizing that first-touch for very large hashes and (b)
+  backing the table with large pages (Linux `madvise(MADV_HUGEPAGE)` is wired;
+  Windows uses 4 KiB pages today). Validate page behavior with
+  `perf stat -e page-faults,minor-faults,dTLB-load-misses` (Linux) or WPA/ETW
+  memory counters (Windows) on a fresh-process first `gomtdf` probe.
 - Measurement caveat: `scripts/compare_engine_perf.py` starts a fresh process
   for each measured run, so it hides benefits that come from reusing process
   state such as TT allocation. Pair it with a same-process repeated-search
@@ -875,8 +1011,8 @@ Behavior-changing or high-risk experiments:
 Keep the final report short but complete:
 
 ```text
-Reference: /home/user/Sanmill-master <branch> <sha> <binary>
-Candidate: /home/user/Sanmill <branch> <sha> <binary>
+Reference: $MASTER <branch> <sha> <binary>
+Candidate: $NEXT <branch> <sha> <binary>
 Case: <position/options/depth>
 Parity: bestmove=<same?> score=<same?> nodes=<same?>
 Timing: current=<ms> master=<ms> ratio=<x> ns/node=<values>
