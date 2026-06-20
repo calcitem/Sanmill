@@ -1248,8 +1248,7 @@ class GameController {
       return false;
     }
 
-    final PieceColor winner =
-        activeSessionWinner ?? activeBoardView.winner;
+    final PieceColor winner = activeSessionWinner ?? activeBoardView.winner;
     if (winner == PieceColor.nobody) {
       return false;
     }

@@ -6,7 +6,7 @@
 
 use super::{
     MillBoardFullAction, MillPhase, MillState, MillVariantOptions, StalemateAction,
-    board_occupied_bitboard, live_occupied_bitboard, live_piece,
+    board_occupied_bitboard, live_occupied_bitboard, live_piece, node_bit,
 };
 
 // Limit inverted bitboards to the 24 real board nodes.  Rust's `!u32`
@@ -178,6 +178,13 @@ fn adjacent_mobility_counts(
 /// matches `Position::is_all_surrounded`).  Used by stalemate handling and
 /// by the static evaluator's gameover branch where C++ checks
 /// `phase == moving && action == select && is_all_surrounded(side)`.
+///
+/// Mirrors `Position::is_all_surrounded` from master `src/position.cpp`.
+/// When `restrict_repeated_mills_formation` is enabled the function also
+/// treats a piece as "surrounded" if its only free neighbour is the
+/// shuttle-back square that the restriction rule blocks — matching the
+/// inline `isMoveRestricted` + `wouldFormMill` logic in the C++ version
+/// (lines 3239-3297).
 pub(super) fn is_all_surrounded(state: &MillState, options: &MillVariantOptions, side: i8) -> bool {
     if (side & 1) != side {
         return false;
@@ -188,6 +195,11 @@ pub(super) fn is_all_surrounded(state: &MillState, options: &MillVariantOptions,
     }
     if options.may_fly && state.pieces_on_board[s] <= options.fly_piece_count {
         // Fly endgame: never surrounded as long as an empty square exists.
+        // Mirror master: `restrictRepeatedMillsFormation` can only restrict
+        // the single piece at lastMillToSquare from returning to
+        // lastMillFromSquare; the remaining (flyPieceCount - 1) pieces are
+        // unrestricted and can fly to any empty square, so the player always
+        // has at least one legal move when flying is available.
         return state.pieces_on_board[0] + state.pieces_on_board[1] >= 24;
     }
     let own_bb = state.by_color_bb[s];
@@ -199,12 +211,92 @@ pub(super) fn is_all_surrounded(state: &MillState, options: &MillVariantOptions,
         // Surrounded checks are about legal movement, so delayed-marked
         // squares remain occupied here.  The mask already limits `!occupied`
         // to adjacent board nodes, making an extra board mask unnecessary.
-        if (neighbor_mask & !occupied) != 0 {
-            return false;
+        let empty_adjacent = neighbor_mask & !occupied;
+        if empty_adjacent == 0 {
+            // All adjacent squares are occupied — physically surrounded.
+            pieces &= pieces - 1;
+            continue;
         }
-        pieces &= pieces - 1;
+        // At least one empty adjacent square exists.  When
+        // `restrict_repeated_mills_formation` is active this piece may still
+        // be effectively stuck if its only free neighbour is the single
+        // square that the shuttle restriction forbids.  Mirror master
+        // `Position::is_all_surrounded` lines 3239-3297.
+        if options.restrict_repeated_mills_formation {
+            let last_to = state.last_mill_to[s];
+            let last_from = state.last_mill_from[s];
+            if last_to >= 0
+                && last_from >= 0
+                && from == last_to as usize
+                && empty_adjacent == node_bit(last_from as usize)
+            {
+                // The sole free neighbour is the restricted destination.
+                // Check whether the restriction conditions actually hold:
+                //   1. `from` must currently be part of a usable mill.
+                //   2. Moving to `last_from` would form a new usable mill.
+                if is_shuttle_move_restricted(state, options, from, last_from as usize, s) {
+                    // Treat this piece as surrounded and continue to the next.
+                    pieces &= pieces - 1;
+                    continue;
+                }
+            }
+        }
+        return false;
     }
     true
+}
+
+/// Returns `true` when the move `from` → `to` is blocked by the
+/// `restrict_repeated_mills_formation` rule.  Mirrors the C++
+/// `isMoveRestricted` lambda inside `Position::is_all_surrounded` and the
+/// shared `is_restricted_repeated_mill` logic used during move generation.
+///
+/// Preconditions (caller must verify):
+///   * `from == state.last_mill_to[side]`
+///   * `to   == state.last_mill_from[side]` (both non-negative)
+fn is_shuttle_move_restricted(
+    state: &MillState,
+    options: &MillVariantOptions,
+    from: usize,
+    to: usize,
+    side: usize,
+) -> bool {
+    // Condition 1 — piece at `from` is currently in a usable mill.
+    let color_bb = state.by_color_bb[side];
+    let from_in_mill = super::mill_line_peer_masks_for_node(options, from)
+        .iter()
+        .take_while(|&&m| m != 0)
+        .any(|&peer_mask| {
+            if (color_bb & peer_mask) != peer_mask {
+                return false;
+            }
+            if options.one_time_use_mill {
+                let line_bb = super::node_bit(from) | peer_mask;
+                (line_bb & state.formed_mills_bb[side]) != line_bb
+            } else {
+                true
+            }
+        });
+    if !from_in_mill {
+        return false;
+    }
+    // Condition 2 — moving `from` → `to` would form a new usable mill at `to`.
+    // Virtually remove the piece at `from` to simulate the move.
+    let color_bb_virtual = color_bb & !super::node_bit(from);
+    super::mill_line_peer_masks_for_node(options, to)
+        .iter()
+        .take_while(|&&m| m != 0)
+        .any(|&peer_mask| {
+            if (color_bb_virtual & peer_mask) != peer_mask {
+                return false;
+            }
+            if options.one_time_use_mill {
+                let line_bb = super::node_bit(to) | peer_mask;
+                (line_bb & state.formed_mills_bb[side]) != line_bb
+            } else {
+                true
+            }
+        })
 }
 
 /// Translation of `Phase::gameOver` branch of `Evaluation::value`.
