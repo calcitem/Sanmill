@@ -83,7 +83,6 @@ All gameplay logic and AI search live in the Rust/TGF stack.
 │   └── perf_baseline.toml    # Search perf baseline
 ├── scripts/                  # Utility scripts
 ├── fastlane/metadata/        # App store metadata
-├── include/                  # Public headers (version.h)
 ├── format.sh                 # Code formatting script
 ├── flutter-init.sh           # Flutter setup
 └── *.sh                      # Various build/deploy scripts
