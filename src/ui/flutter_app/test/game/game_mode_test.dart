@@ -227,5 +227,12 @@ void main() {
         );
       }
     });
+
+    test('should distinguish perfect and human database icons', () {
+      expect(
+        aiMoveTypeIcons[AiMoveType.humanDatabase],
+        isNot(aiMoveTypeIcons[AiMoveType.perfect]),
+      );
+    });
   });
 }
