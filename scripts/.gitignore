@@ -8,6 +8,7 @@
 *.sh
 *.pl
 !ensure_flutter.sh
+!ensure_rust.sh
 !ensure_frb_codegen.sh
 !generate_frb.sh
 !run_head_to_head.sh
