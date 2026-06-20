@@ -17,6 +17,7 @@ import '../../general_settings/models/general_settings.dart';
 import '../../rule_settings/models/rule_settings.dart';
 import '../../shared/services/environment_config.dart';
 import '../../shared/services/logger.dart';
+import '../../src/rust/api/kernel.dart' as tgf_kernel;
 import '../../src/rust/api/simple.dart' as tgf;
 import 'lan_session_meta.dart';
 import 'mill_action_codec.dart';
@@ -570,16 +571,18 @@ class NativeMillGameSession implements GameSessionHandle {
     return String.fromCharCodes(chars);
   }
 
-  /// Map a Rust `bestMove` event back to one of this session's current
-  /// legal actions.
+  /// Map a Rust `bestMove` event back to one checked action for this session.
   ///
   /// The event's `reason` field starts with the full UCI notation of the
   /// searched action ("a4", "a1-a4", "xa4"), produced by the Rust
   /// `MillUciCodec` from the same node-label table that
-  /// [MillActionCodec.moveStringFromTgfAction] uses, so an exact string
-  /// match identifies the action without ambiguity.  Matching by `toNode`
-  /// alone is NOT sufficient: in the moving phase two pieces can converge
-  /// on the same destination square, and in `mayMoveInPlacingPhase`
+  /// [MillActionCodec.moveStringFromTgfAction] uses.  Parse that one notation
+  /// directly, then ask the live kernel whether the action is still legal.
+  ///
+  /// This preserves the old stale-search guard without materialising and
+  /// string-scanning the full legal-action list on every AI move.  Matching by
+  /// `toNode` alone is NOT sufficient: in the moving phase two pieces can
+  /// converge on the same destination square, and in `mayMoveInPlacingPhase`
   /// variants a place and a move can share a destination.
   GameAction? _legalActionForBestMove(tgf.EngineEvent event) {
     final String notation = event.reason.split(' ').first;
@@ -588,20 +591,27 @@ class NativeMillGameSession implements GameSessionHandle {
       'bestMove event (toNode=${event.toNode}) carries no notation in '
       'reason="${event.reason}".',
     );
-    for (final GameAction action in legalActions) {
-      if (MillActionCodec.moveStringFrom(action) == notation) {
-        assert(
-          action.payload['toNode'] == null ||
-              action.payload['toNode'] == event.toNode,
-          'Legal action "$notation" has toNode=${action.payload['toNode']} '
-          'but the engine reported toNode=${event.toNode}.',
-        );
-        return action;
-      }
+    final tgf_kernel.TgfAction? tgfAction =
+        MillActionCodec.tgfActionFromMoveString(notation);
+    if (tgfAction == null) {
+      logger.w(
+        '$_logTag bestMove "$notation" (toNode=${event.toNode}) cannot be '
+        'parsed as a Mill action; treating as no best move.',
+      );
+      return null;
+    }
+    assert(
+      tgfAction.toNode == event.toNode,
+      'Parsed bestMove "$notation" has toNode=${tgfAction.toNode} '
+      'but the engine reported toNode=${event.toNode}.',
+    );
+    final GameAction action = MillActionCodec.fromTgfAction(tgfAction);
+    if (rulesPort.isLegal(action)) {
+      return action;
     }
     logger.w(
-      '$_logTag bestMove "$notation" (toNode=${event.toNode}) matches no '
-      'current legal action; treating as no best move.',
+      '$_logTag bestMove "$notation" (toNode=${event.toNode}) is no longer '
+      'legal in the current session; treating as no best move.',
     );
     return null;
   }

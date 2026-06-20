@@ -5,6 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:sanmill/game_platform/game_session.dart';
 import 'package:sanmill/games/mill/mill_opening_book_provider.dart';
 import 'package:sanmill/games/mill/native_mill_game_session.dart';
+import 'package:sanmill/games/mill/native_mill_rules_port.dart';
 import 'package:sanmill/general_settings/models/general_settings.dart';
 import 'package:sanmill/rule_settings/models/rule_settings.dart';
 import 'package:sanmill/shared/database/database.dart';
@@ -86,5 +87,44 @@ void main() {
 
       expect(provider.lookup(session), isNull);
     }, skip: skip);
+
+    test('skips FEN export outside placing phase', () {
+      (DB.instance! as MockDB).generalSettings = DB().generalSettings.copyWith(
+        useOpeningBook: true,
+      );
+
+      final _CountingFenSession session = _CountingFenSession(
+        generalSettings: DB().generalSettings,
+      );
+      addTearDown(session.dispose);
+      expect(
+        session.loadFen(
+          'OOOO@@@@/OOOO@@@@/O****@** w m s '
+          '9 0 9 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes',
+        ),
+        isTrue,
+      );
+      expect(session.state.value.phase, 'moving');
+      final MillOpeningBookProvider provider = MillOpeningBookProvider(
+        ruleSettings: const RuleSettings(),
+        generalSettings: DB().generalSettings,
+      );
+
+      expect(provider.lookup(session), isNull);
+      expect(session.getFenCount, 0);
+    }, skip: skip);
   });
+}
+
+class _CountingFenSession extends NativeMillGameSession {
+  _CountingFenSession({GeneralSettings? generalSettings})
+    : super.fromPort(NativeMillRulesPort(generalSettings: generalSettings));
+
+  int getFenCount = 0;
+
+  @override
+  String getFen() {
+    getFenCount++;
+    return super.getFen();
+  }
 }

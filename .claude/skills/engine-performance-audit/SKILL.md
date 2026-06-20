@@ -692,18 +692,43 @@ Conservative, node-preserving candidates:
   progress traces should be dev-only.  Revisit this area with a dedicated
   same-process Flutter/FRB self-play benchmark before making claims about
   percentage speedups.
-- Audit opening-book and UI-loop costs in Flutter AI self-play.  The native
-  AI-vs-AI loop consults the opening book before every search; lookup exports
-  a full FEN, normalises string fields, hashes the string, then scans legal
-  actions to map a book move back to a `GameAction`.  This is useful while a
-  book entry can still match, including delayed-removal opening positions, but
-  it is pure overhead once the game has left the book-covered prefix.  Do not
-  gate this only on `phase == placing`: the current book contains `p r`
-  delayed-removal entries.  Prefer a data-backed bound, such as a maximum
-  placed-piece count observed in the book keys, before skipping FEN export.
-  Also remember that the UI loop refreshes header state and deliberately
-  awaits animation or `Duration.zero` after each move, so visible Flutter
-  self-play throughput is not the same metric as engine NPS.
+- [x] Reduce opening-book and best-move mapping costs in Flutter AI self-play.
+  Do not dismiss this area because pure engine NPS looks stable: Flutter
+  AI-vs-AI pays boundary costs once per applied engine move, and those costs
+  can hide small search-node wins from board-index or bitboard work.  Keep the
+  theoretical model explicit: after the game leaves opening-book coverage,
+  exporting FEN and normalising string fields cannot improve move quality; and
+  after Rust has already reported a concrete best-move notation, converting the
+  full legal-action list to Dart objects just to find one matching string is
+  avoidable work.
+
+  Done on 2026-06-19: `MillOpeningBookProvider.lookup` now returns before
+  `getFen()` when the session is terminal or not in `placing` phase.  This is
+  data-backed: the current 1461 node-id opening-book FEN keys all use phase
+  token `p`; delayed-removal entries use action token `r` while staying in
+  phase `p`, so they remain eligible.  A regression test uses a counting
+  native session to prove moving-phase lookup does not export FEN.
+
+  Done on 2026-06-19: `NativeMillGameSession` maps a Rust bestMove event by
+  parsing the single UCI notation from `EngineEvent.reason`, building one
+  `TgfAction`/`GameAction`, and asking the live kernel whether that action is
+  still legal.  This preserves the stale-search guard but avoids materialising
+  and string-scanning the whole legal-action list after every search.  Tests
+  keep the two important safety cases covered: two moves can share a
+  destination node, and place/move can share a destination in
+  `mayMoveInPlacingPhase` variants.  The stale test fixtures were also updated
+  from old node ids to the current node-id map (`a1` = 21, `a4` = 22, `a7` =
+  23), because old-number assumptions can otherwise hide the real cost model.
+
+  Validated with:
+  `flutter test test/games/mill/mill_opening_book_provider_test.dart`,
+  `flutter test test/games/mill/native_mill_game_session_test.dart`, and
+  `flutter test test/games/mill/native_mill_ai_vs_ai_selfplay_ffi_test.dart`.
+
+  Revisit this area with a dedicated same-process Flutter/FRB self-play
+  benchmark before claiming a percentage speedup.  Remaining UI-loop costs:
+  header refresh and the deliberate animation or `Duration.zero` yield after
+  each move.
 - Audit score-width choices in move ordering.  Master ratings fit in small
   signed integers, while Rust currently computes `i32` scores and stores a
   temporary `[i32; 72]` score array beside a 72-action stack list.  A

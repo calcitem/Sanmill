@@ -33,6 +33,16 @@ class MillOpeningBookProvider implements OpeningBookProvider {
     if (session is! NativeMillGameSession) {
       return null;
     }
+    if (session.outcome.isTerminal) {
+      return null;
+    }
+    // Opening-book FEN keys currently cover placing-phase positions only.
+    // Delayed-removal book entries use action token `r`, but their FEN phase
+    // remains `p`, so checking the session phase keeps those entries eligible
+    // while avoiding FEN export throughout the moving phase.
+    if (session.state.value.phase != 'placing') {
+      return null;
+    }
 
     final String? normalizedFen = _normalizeFen(session.getFen());
     if (normalizedFen == null) {

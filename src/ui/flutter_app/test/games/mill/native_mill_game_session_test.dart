@@ -227,15 +227,23 @@ void main() {
 
     test('searchBestAction picks the searched move when two moving-phase '
         'actions share the destination node', () async {
-      // a7-a4 (node 0 -> 7) is listed BEFORE a1-a4 (node 6 -> 7); a
+      // a7-a4 (node 23 -> 22) is listed BEFORE a1-a4 (node 21 -> 22); a
       // destination-only match would wrongly return a7-a4.
       const GameAction moveA7A4 = GameAction(
         type: MillActionTypes.move,
-        payload: <String, Object?>{'move': 'a7-a4', 'fromNode': 0, 'toNode': 7},
+        payload: <String, Object?>{
+          'move': 'a7-a4',
+          'fromNode': 23,
+          'toNode': 22,
+        },
       );
       const GameAction moveA1A4 = GameAction(
         type: MillActionTypes.move,
-        payload: <String, Object?>{'move': 'a1-a4', 'fromNode': 6, 'toNode': 7},
+        payload: <String, Object?>{
+          'move': 'a1-a4',
+          'fromNode': 21,
+          'toNode': 22,
+        },
       );
       final _FakeNativeMillRulesPort rulesPort = _FakeNativeMillRulesPort(
         initial: const GameStateSnapshot(
@@ -251,7 +259,7 @@ void main() {
             depth: 6,
             score: 0,
             nodes: BigInt.zero,
-            toNode: 7,
+            toNode: 22,
             reason: 'a1-a4 rawScore=0',
           ),
         ]),
@@ -267,8 +275,9 @@ void main() {
       expect(rulesPort.lastApplied?.payload['move'], 'a1-a4');
       expect(
         rulesPort.isLegalCount,
-        0,
-        reason: 'bestMove was already matched against legalActions',
+        1,
+        reason:
+            'bestMove is checked once during mapping and not again on apply',
       );
     });
 
@@ -278,11 +287,15 @@ void main() {
       // the same destination at the same time.
       const GameAction moveA1A4 = GameAction(
         type: MillActionTypes.move,
-        payload: <String, Object?>{'move': 'a1-a4', 'fromNode': 6, 'toNode': 7},
+        payload: <String, Object?>{
+          'move': 'a1-a4',
+          'fromNode': 21,
+          'toNode': 22,
+        },
       );
       const GameAction placeA4 = GameAction(
         type: MillActionTypes.place,
-        payload: <String, Object?>{'move': 'a4', 'fromNode': -1, 'toNode': 7},
+        payload: <String, Object?>{'move': 'a4', 'fromNode': -1, 'toNode': 22},
       );
       final _FakeNativeMillRulesPort rulesPort = _FakeNativeMillRulesPort(
         legalActionsOverride: const <GameAction>[moveA1A4, placeA4],
@@ -292,7 +305,7 @@ void main() {
             depth: -1,
             score: 0,
             nodes: BigInt.zero,
-            toNode: 7,
+            toNode: 22,
             reason: 'a4 rawScore=0',
           ),
         ]),
@@ -317,7 +330,7 @@ void main() {
             depth: -1,
             score: 0,
             nodes: BigInt.zero,
-            toNode: 7,
+            toNode: 22,
             reason: 'a4 rawScore=0',
           ),
         ]),
