@@ -71,6 +71,31 @@ class MillKernelSession {
     });
   }
 
+  /// Query the perfect database for the current kernel position without
+  /// running search or mutating the session.
+  tgf.TgfAction? rawPerfectDbBestAction({
+    required bool usePerfectDatabase,
+    bool aiIsLazy = false,
+    bool shuffling = true,
+  }) {
+    if (kernel.isDisposed) {
+      throw KernelException('handle already disposed');
+    }
+    return tgf_mill.tgfKernelMillPerfectDbBestAction(
+      handle: kernel.rawHandle,
+      config: tgf_simple.MillEngineConfig(
+        algorithm: tgf_simple.MillSearchAlgorithm.pvs,
+        depth: 1,
+        moveTimeMs: 0,
+        aiIsLazy: aiIsLazy,
+        lastBestValue: _lastRawBestValue,
+        skillLevel: 1,
+        usePerfectDatabase: usePerfectDatabase,
+        shuffling: shuffling,
+      ),
+    );
+  }
+
   // ---------------------------------------------------------- setup-position
 
   /// Clear the board and reset all pieces for setup-position editing.

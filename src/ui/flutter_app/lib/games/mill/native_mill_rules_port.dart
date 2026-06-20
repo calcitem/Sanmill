@@ -210,6 +210,24 @@ class NativeMillRulesPort implements RulesPort {
     );
   }
 
+  /// Query the perfect database for the current position without running
+  /// search. Returns null when the setting is off, the rule set is unsupported,
+  /// or the database has no action for the current sector.
+  GameAction? perfectDatabaseBestAction({GeneralSettings? engineSettings}) {
+    final GeneralSettings settings = engineSettings ?? _generalSettings;
+    final bool usePerfectDatabase =
+        settings.usePerfectDatabase && isRuleSupportingPerfectDatabase();
+    if (!usePerfectDatabase) {
+      return null;
+    }
+    final tgf.TgfAction? action = _session.rawPerfectDbBestAction(
+      usePerfectDatabase: usePerfectDatabase,
+      aiIsLazy: settings.aiIsLazy,
+      shuffling: settings.shufflingEnabled,
+    );
+    return action == null ? null : MillActionCodec.fromTgfAction(action);
+  }
+
   /// Map the persisted Dart [SearchAlgorithm] enum onto the FRB
   /// [tgf_simple.MillSearchAlgorithm] consumed by the Rust dispatcher.
   /// Falls back to MTD(f) when the setting is null (matches the engine

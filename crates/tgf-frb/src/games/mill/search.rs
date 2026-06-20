@@ -111,7 +111,9 @@ impl Default for MillEngineConfigPlan {
     }
 }
 
-fn perfect_move_ordering(config: &MillEngineConfigPlan) -> perfect_db::PerfectMoveOrdering {
+pub(crate) fn perfect_move_ordering(
+    config: &MillEngineConfigPlan,
+) -> perfect_db::PerfectMoveOrdering {
     if config.algorithm == MillSearchAlgorithmKind::Random && !config.ai_is_lazy {
         perfect_db::PerfectMoveOrdering::StrictSteps
     } else {

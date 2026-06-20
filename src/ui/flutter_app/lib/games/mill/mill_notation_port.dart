@@ -3,6 +3,7 @@
 
 import '../../game_platform/game_session.dart';
 import '../../game_platform/notation_port.dart';
+import '../../src/rust/api/kernel.dart' as tgf_kernel;
 import 'mill_action_codec.dart';
 
 /// Notation adapter for Mill's compact move-token list.
@@ -15,7 +16,8 @@ class MillNotationPort implements NotationPort {
     final List<GameAction> actions = <GameAction>[];
     for (final String token in _moveTokens(notation)) {
       for (final String segment in _splitCaptures(token)) {
-        final tgfAction = MillActionCodec.tgfActionFromMoveString(segment);
+        final tgf_kernel.TgfAction? tgfAction =
+            MillActionCodec.tgfActionFromMoveString(segment);
         assert(tgfAction != null, 'Invalid Mill move token: $segment.');
         actions.add(MillActionCodec.fromTgfAction(tgfAction!));
       }

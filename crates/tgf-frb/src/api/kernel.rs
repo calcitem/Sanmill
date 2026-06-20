@@ -48,7 +48,7 @@ impl TgfAction {
         }
     }
 
-    fn from_action(a: Action) -> Self {
+    pub(super) fn from_action(a: Action) -> Self {
         Self {
             kind_tag: a.kind_tag as i32,
             from_node: a.from_node as i32,

@@ -437,6 +437,15 @@ class NativeMillGameSession implements GameSessionHandle {
     return bestAction;
   }
 
+  /// Query the perfect database for the current position without running
+  /// search or mutating the session.
+  GameAction? perfectDatabaseBestAction({GeneralSettings? engineSettings}) {
+    if (_disposed || outcome.isTerminal) {
+      return null;
+    }
+    return rulesPort.perfectDatabaseBestAction(engineSettings: engineSettings);
+  }
+
   /// Run Rust search from the current session, apply the best action if
   /// available, and return it to the caller for recording / UI feedback.
   ///

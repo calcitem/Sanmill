@@ -122,6 +122,21 @@ MillAnalysisReport tgfKernelMillPerfectDbAnalyze({
   trapAwareness: trapAwareness,
 );
 
+/// Query the perfect database for the best legal action in the kernel's
+/// **current** Mill position without running a search or mutating state.
+///
+/// Returns `None` when the caller disabled the perfect database, the database
+/// is unavailable, the active variant is unsupported, or no database-backed
+/// legal action exists. This is used by Flutter to validate an advisory move
+/// source, such as the Human Database, before applying that move.
+TgfAction? tgfKernelMillPerfectDbBestAction({
+  required int handle,
+  required MillEngineConfig config,
+}) => RustLib.instance.api.crateApiMillKernelTgfKernelMillPerfectDbBestAction(
+  handle: handle,
+  config: config,
+);
+
 /// Export the current Mill kernel state as a FEN string.
 String tgfKernelExportFen({required int handle}) =>
     RustLib.instance.api.crateApiMillKernelTgfKernelExportFen(handle: handle);

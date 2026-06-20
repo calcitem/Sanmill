@@ -7,6 +7,7 @@ import '../../game_platform/engine/engine_port.dart';
 import '../../game_platform/engine/native_engine_client.dart';
 import '../../game_platform/game_id.dart';
 import '../../game_platform/game_session.dart';
+import '../../general_settings/models/general_settings.dart';
 import '../../shared/database/database.dart';
 import '../../src/rust/api/kernel.dart' as tgf_kernel;
 import '../../src/rust/api/mill_kernel.dart' as tgf_mill;
@@ -320,7 +321,7 @@ class MillEnginePortAdapter implements EnginePort {
   }
 
   tgf.MillEngineConfig _engineConfig(int depth) {
-    final settings = DB().generalSettings;
+    final GeneralSettings settings = DB().generalSettings;
     return tgf.MillEngineConfig(
       algorithm: NativeMillRulesPort.millSearchAlgorithmFor(
         settings.searchAlgorithm,

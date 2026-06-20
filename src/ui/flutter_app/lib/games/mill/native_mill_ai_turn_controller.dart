@@ -6,7 +6,7 @@ import '../../game_platform/opening_book_provider.dart';
 import '../../general_settings/models/general_settings.dart';
 import '../../shared/services/environment_config.dart';
 import '../../shared/services/logger.dart';
-import 'mill_constants.dart';
+import 'mill_action_codec.dart';
 import 'mill_human_database_provider.dart';
 import 'mill_types.dart';
 import 'native_mill_game_session.dart';
@@ -225,17 +225,34 @@ class NativeMillAiTurnController {
       final GameAction? humanDatabaseAction = humanDatabase?.lookup(session);
       if (humanDatabaseAction != null) {
         final HumanDatabaseMoveStats? stats = humanDatabase?.lastStats;
-        if (humanDatabaseAction.type == MillActionTypes.remove) {
+        final GameAction? perfectAction = session.perfectDatabaseBestAction(
+          engineSettings: generalSettings,
+        );
+        final bool correctedByPerfect =
+            perfectAction != null &&
+            !_isSameAction(perfectAction, humanDatabaseAction);
+        final GameAction action = correctedByPerfect
+            ? perfectAction
+            : humanDatabaseAction;
+        if (correctedByPerfect) {
+          humanDatabase?.discardPendingMove();
+        }
+
+        if (action.type == MillActionTypes.remove) {
           await onBeforeRemoveApply?.call();
         }
-        await session.apply(humanDatabaseAction);
-        session.lastAiMoveType = AiMoveType.humanDatabase;
-        session.lastHumanDatabaseMoveStats = stats;
-        lastApplied = humanDatabaseAction;
+        await session.apply(action);
+        session.lastAiMoveType = correctedByPerfect
+            ? AiMoveType.perfect
+            : AiMoveType.humanDatabase;
+        session.lastHumanDatabaseMoveStats = correctedByPerfect ? null : stats;
+        lastApplied = action;
         if (EnvironmentConfig.devMode) {
           logger.i(
             '[NativeMillAiTurnController] step=$step human-db '
-            'applied=${humanDatabaseAction.payload['move']}',
+            'candidate=${humanDatabaseAction.payload['move']} '
+            'applied=${action.payload['move']} '
+            'perfectCorrected=$correctedByPerfect',
           );
         }
         continue;
@@ -284,6 +301,12 @@ class NativeMillAiTurnController {
       );
     }
     return lastApplied;
+  }
+
+  bool _isSameAction(GameAction left, GameAction right) {
+    return left.type == right.type &&
+        MillActionCodec.moveStringFrom(left) ==
+            MillActionCodec.moveStringFrom(right);
   }
 }
 

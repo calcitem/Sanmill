@@ -13,16 +13,16 @@
 
 use std::sync::Arc;
 
-use tgf_core::{GameKernel, GameRules};
+use tgf_core::{ActionList, GameKernel, GameRules};
 use tgf_mill::{MillPhase, MillRules, MillVariantOptions as NativeMillVariantOptions};
 
-use super::kernel::TgfSnapshot;
+use super::kernel::{TgfAction, TgfSnapshot};
 use crate::api::simple::{
     EngineEvent, MillAnalysisReport, MillEngineConfig, MillMoveAnalysis, MillVariantOptions,
     spawn_kernel_search_error, spawn_mill_engine_config_event_stream, spawn_mill_pvs_event_stream,
 };
 use crate::frb_generated::StreamSink;
-use crate::games::mill::{perfect, variant_extras};
+use crate::games::mill::{perfect, search, variant_extras};
 use crate::session_registry::{insert_kernel, with_kernel};
 
 /// Create a Mill kernel with explicit variant options.  Use this once
@@ -303,6 +303,43 @@ pub fn tgf_kernel_mill_perfect_db_analyze(
             .collect(),
         traps: report.traps,
     })
+}
+
+/// Query the perfect database for the best legal action in the kernel's
+/// **current** Mill position without running a search or mutating state.
+///
+/// Returns `None` when the caller disabled the perfect database, the database
+/// is unavailable, the active variant is unsupported, or no database-backed
+/// legal action exists. This is used by Flutter to validate an advisory move
+/// source, such as the Human Database, before applying that move.
+#[flutter_rust_bridge::frb(sync)]
+pub fn tgf_kernel_mill_perfect_db_best_action(
+    handle: u32,
+    config: MillEngineConfig,
+) -> Result<Option<TgfAction>, String> {
+    let plan: crate::games::mill::search::MillEngineConfigPlan = config.into();
+    if !plan.use_perfect_database {
+        return Ok(None);
+    }
+
+    let game_id = with_kernel(handle, |k| k.game_id().to_owned())?;
+    if game_id != "mill" {
+        return Err(format!("kernel game_id is {game_id}, expected mill"));
+    }
+
+    let snapshot = with_kernel(handle, |k| k.snapshot())?;
+    let options = variant_extras::options_for(handle);
+    let rules = MillRules::new(options);
+    let mut legal = ActionList::<256>::default();
+    rules.legal_actions(&snapshot, &mut legal);
+
+    Ok(perfect::try_perfect_best_action(
+        &snapshot,
+        rules.options(),
+        legal.as_slice(),
+        search::perfect_move_ordering(&plan),
+    )
+    .map(TgfAction::from_action))
 }
 
 /// Export the current Mill kernel state as a FEN string.

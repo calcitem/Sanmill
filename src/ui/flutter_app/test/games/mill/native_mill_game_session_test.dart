@@ -344,6 +344,27 @@ void main() {
       expect(rulesPort.applyCount, 0);
     });
 
+    test('perfectDatabaseBestAction forwards the rules-port action', () {
+      final _FakeNativeMillRulesPort rulesPort = _FakeNativeMillRulesPort(
+        perfectDatabaseBestAction: const GameAction(
+          type: MillActionTypes.place,
+          payload: <String, Object?>{'move': 'a4'},
+        ),
+      );
+      final NativeMillGameSession session = NativeMillGameSession(
+        rulesPort: rulesPort,
+      );
+      addTearDown(session.dispose);
+
+      final GameAction? action = session.perfectDatabaseBestAction(
+        engineSettings: const GeneralSettings(usePerfectDatabase: true),
+      );
+
+      expect(action, isNotNull);
+      expect(action!.payload['move'], 'a4');
+      expect(rulesPort.perfectDatabaseBestActionCount, 1);
+    });
+
     test('stores LAN metadata for native LAN turn checks', () {
       final _FakeNativeMillRulesPort rulesPort = _FakeNativeMillRulesPort();
       final NativeMillGameSession session = NativeMillGameSession(
@@ -367,9 +388,11 @@ class _FakeNativeMillRulesPort implements NativeMillRulesPort {
     GameStateSnapshot? initial,
     List<GameAction>? legalActionsOverride,
     Stream<tgf.EngineEvent>? searchEvents,
+    GameAction? perfectDatabaseBestAction,
   }) : _snapshot = initial ?? _initialSnapshot,
        _legalActionsOverride = legalActionsOverride,
-       _searchEvents = searchEvents;
+       _searchEvents = searchEvents,
+       _perfectDatabaseBestAction = perfectDatabaseBestAction;
 
   static const GameStateSnapshot _initialSnapshot = GameStateSnapshot(
     gameId: GameId.mill,
@@ -386,10 +409,12 @@ class _FakeNativeMillRulesPort implements NativeMillRulesPort {
   GameStateSnapshot _snapshot;
   final List<GameAction>? _legalActionsOverride;
   final Stream<tgf.EngineEvent>? _searchEvents;
+  final GameAction? _perfectDatabaseBestAction;
   int applyCount = 0;
   int isLegalCount = 0;
   int undoCount = 0;
   int redoCount = 0;
+  int perfectDatabaseBestActionCount = 0;
   bool disposed = false;
   GameAction? lastApplied;
 
@@ -469,6 +494,12 @@ class _FakeNativeMillRulesPort implements NativeMillRulesPort {
     GeneralSettings? engineSettings,
   }) {
     return _searchEvents ?? const Stream<tgf.EngineEvent>.empty();
+  }
+
+  @override
+  GameAction? perfectDatabaseBestAction({GeneralSettings? engineSettings}) {
+    perfectDatabaseBestActionCount++;
+    return _perfectDatabaseBestAction;
   }
 
   @override

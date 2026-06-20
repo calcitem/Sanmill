@@ -28,6 +28,12 @@ class MillHumanDatabaseProvider implements OpeningBookProvider {
   HumanDatabaseMoveStats? _pendingStats;
   HumanDatabaseMoveStats? lastStats;
 
+  void discardPendingMove() {
+    _pendingCapture = null;
+    _pendingStats = null;
+    lastStats = null;
+  }
+
   @override
   GameAction? lookup(GameSession session) {
     lastStats = null;

@@ -6,8 +6,16 @@ import 'dart:typed_data';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sanmill/game_platform/game_id.dart';
 import 'package:sanmill/game_platform/game_session.dart';
+import 'package:sanmill/games/mill/mill_constants.dart';
+import 'package:sanmill/games/mill/mill_human_database_provider.dart';
+import 'package:sanmill/games/mill/mill_marked_pieces_codec.dart';
+import 'package:sanmill/games/mill/mill_types.dart';
 import 'package:sanmill/games/mill/native_mill_ai_turn_controller.dart';
+import 'package:sanmill/games/mill/native_mill_game_session.dart';
+import 'package:sanmill/games/mill/native_mill_rules_port.dart';
 import 'package:sanmill/general_settings/models/general_settings.dart';
+import 'package:sanmill/rule_settings/models/rule_settings.dart';
+import 'package:sanmill/src/rust/api/simple.dart' as tgf;
 
 void main() {
   group('NativeMillAiTurnController', () {
@@ -69,7 +77,182 @@ void main() {
         expect(controller.searchDepthForSnapshot(_movingSnapshot()), 6);
       },
     );
+
+    test(
+      'corrects human database candidates with perfect database actions',
+      () async {
+        const GameAction humanAction = GameAction(
+          type: MillActionTypes.place,
+          payload: <String, Object?>{'move': 'd6'},
+        );
+        const GameAction perfectAction = GameAction(
+          type: MillActionTypes.place,
+          payload: <String, Object?>{'move': 'a7'},
+        );
+        final _FakeNativeMillRulesPort rulesPort = _FakeNativeMillRulesPort(
+          legalActions: const <GameAction>[humanAction, perfectAction],
+          perfectDatabaseBestAction: perfectAction,
+        );
+        final NativeMillGameSession session = NativeMillGameSession(
+          rulesPort: rulesPort,
+        );
+        addTearDown(session.dispose);
+        final _FakeHumanDatabaseProvider humanDatabase =
+            _FakeHumanDatabaseProvider(humanAction);
+        final NativeMillAiTurnController controller =
+            NativeMillAiTurnController(
+              generalSettings: const GeneralSettings(
+                aiMovesFirst: true,
+                usePerfectDatabase: true,
+              ),
+              humanDatabase: humanDatabase,
+            );
+
+        final GameAction? applied = await controller.playIfAiTurn(session);
+
+        expect(applied, perfectAction);
+        expect(rulesPort.lastApplied, perfectAction);
+        expect(session.lastAiMoveType, AiMoveType.perfect);
+        expect(session.lastHumanDatabaseMoveStats, isNull);
+        expect(humanDatabase.discarded, isTrue);
+      },
+    );
   });
+}
+
+class _FakeHumanDatabaseProvider extends MillHumanDatabaseProvider {
+  _FakeHumanDatabaseProvider(this.action)
+    : super(
+        ruleSettings: const RuleSettings(),
+        generalSettings: const GeneralSettings(humanDatabaseEnabled: true),
+      );
+
+  final GameAction action;
+  bool discarded = false;
+
+  @override
+  GameAction? lookup(GameSession session) {
+    lastStats = const HumanDatabaseMoveStats(
+      notation: 'd6',
+      wins: 7,
+      draws: 1,
+      losses: 2,
+      total: 10,
+      scoreDelta: 0.25,
+    );
+    return action;
+  }
+
+  @override
+  void discardPendingMove() {
+    discarded = true;
+    super.discardPendingMove();
+  }
+}
+
+class _FakeNativeMillRulesPort implements NativeMillRulesPort {
+  _FakeNativeMillRulesPort({
+    required this.legalActions,
+    GameAction? perfectDatabaseBestAction,
+    GameStateSnapshot? initial,
+  }) : perfectDatabaseBestActionResult = perfectDatabaseBestAction,
+       _snapshot = initial ?? _initialSnapshot;
+
+  static final GameStateSnapshot _initialSnapshot = GameStateSnapshot(
+    gameId: GameId.mill,
+    activeSeat: PlayerSeat.first,
+    outcome: const GameOutcome.ongoing(),
+    phase: 'placing',
+    payload: <String, Object?>{
+      'tgfPayload': _emptyBoardPayload,
+      millMarkedNodesPayloadKey: const <int>{},
+    },
+  );
+  static final Uint8List _emptyBoardPayload = Uint8List(280);
+
+  @override
+  final List<GameAction> legalActions;
+  final GameAction? perfectDatabaseBestActionResult;
+  GameStateSnapshot _snapshot;
+  GameAction? lastApplied;
+
+  @override
+  int get redoDepth => 0;
+
+  @override
+  GameStateSnapshot get snapshot => _snapshot;
+
+  @override
+  int get undoDepth => 0;
+
+  @override
+  bool isLegal(GameAction action) {
+    return legalActions.contains(action);
+  }
+
+  @override
+  GameStateSnapshot apply(GameAction action) {
+    lastApplied = action;
+    final Uint8List payload = Uint8List(280);
+    payload[0] = 1;
+    _snapshot = GameStateSnapshot(
+      gameId: GameId.mill,
+      activeSeat: PlayerSeat.second,
+      outcome: const GameOutcome.ongoing(),
+      phase: 'placing',
+      lastAction: action,
+      payload: <String, Object?>{
+        'tgfPayload': payload,
+        millMarkedNodesPayloadKey: const <int>{},
+      },
+    );
+    return _snapshot;
+  }
+
+  @override
+  tgf.MillAnalysisReport analyzePerfectDb() => const tgf.MillAnalysisReport(
+    moves: <tgf.MillMoveAnalysis>[],
+    traps: <String>[],
+  );
+
+  @override
+  void dispose() {}
+
+  @override
+  String exportFen() => '';
+
+  @override
+  Stream<tgf.EngineEvent> millSearchEvents({
+    required int depth,
+    int moveLimitMs = 0,
+    GeneralSettings? engineSettings,
+  }) => const Stream<tgf.EngineEvent>.empty();
+
+  @override
+  GameAction? perfectDatabaseBestAction({GeneralSettings? engineSettings}) {
+    return perfectDatabaseBestActionResult;
+  }
+
+  @override
+  GameStateSnapshot redo() => _snapshot;
+
+  @override
+  GameStateSnapshot setFromFen(String fen) => _snapshot;
+
+  @override
+  GameStateSnapshot setupClear() => _snapshot;
+
+  @override
+  GameStateSnapshot setupFinish() => _snapshot;
+
+  @override
+  GameStateSnapshot setupSetPiece(int node, int owner) => _snapshot;
+
+  @override
+  GameStateSnapshot setupSetSide(int side) => _snapshot;
+
+  @override
+  GameStateSnapshot undo() => _snapshot;
 }
 
 GameStateSnapshot _placingSnapshot({
