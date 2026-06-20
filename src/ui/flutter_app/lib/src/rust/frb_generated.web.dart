@@ -55,6 +55,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   double dco_decode_f_32(dynamic raw);
 
   @protected
+  double dco_decode_f_64(dynamic raw);
+
+  @protected
   int dco_decode_i_32(dynamic raw);
 
   @protected
@@ -62,6 +65,11 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   List<Uint16List> dco_decode_list_list_prim_u_16_strict(dynamic raw);
+
+  @protected
+  List<MillHumanDatabaseMove> dco_decode_list_mill_human_database_move(
+    dynamic raw,
+  );
 
   @protected
   List<MillMoveAnalysis> dco_decode_list_mill_move_analysis(dynamic raw);
@@ -97,6 +105,15 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   MillFormationActionInPlacingPhase
   dco_decode_mill_formation_action_in_placing_phase(dynamic raw);
+
+  @protected
+  MillHumanDatabaseMove dco_decode_mill_human_database_move(dynamic raw);
+
+  @protected
+  MillHumanDatabaseQuery dco_decode_mill_human_database_query(dynamic raw);
+
+  @protected
+  MillHumanDatabaseStatus dco_decode_mill_human_database_status(dynamic raw);
 
   @protected
   MillMoveAnalysis dco_decode_mill_move_analysis(dynamic raw);
@@ -194,6 +211,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   double sse_decode_f_32(SseDeserializer deserializer);
 
   @protected
+  double sse_decode_f_64(SseDeserializer deserializer);
+
+  @protected
   int sse_decode_i_32(SseDeserializer deserializer);
 
   @protected
@@ -201,6 +221,11 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   List<Uint16List> sse_decode_list_list_prim_u_16_strict(
+    SseDeserializer deserializer,
+  );
+
+  @protected
+  List<MillHumanDatabaseMove> sse_decode_list_mill_human_database_move(
     SseDeserializer deserializer,
   );
 
@@ -250,6 +275,21 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   MillFormationActionInPlacingPhase
   sse_decode_mill_formation_action_in_placing_phase(
+    SseDeserializer deserializer,
+  );
+
+  @protected
+  MillHumanDatabaseMove sse_decode_mill_human_database_move(
+    SseDeserializer deserializer,
+  );
+
+  @protected
+  MillHumanDatabaseQuery sse_decode_mill_human_database_query(
+    SseDeserializer deserializer,
+  );
+
+  @protected
+  MillHumanDatabaseStatus sse_decode_mill_human_database_status(
     SseDeserializer deserializer,
   );
 
@@ -363,6 +403,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void sse_encode_f_32(double self, SseSerializer serializer);
 
   @protected
+  void sse_encode_f_64(double self, SseSerializer serializer);
+
+  @protected
   void sse_encode_i_32(int self, SseSerializer serializer);
 
   @protected
@@ -371,6 +414,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   void sse_encode_list_list_prim_u_16_strict(
     List<Uint16List> self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void sse_encode_list_mill_human_database_move(
+    List<MillHumanDatabaseMove> self,
     SseSerializer serializer,
   );
 
@@ -437,6 +486,24 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   void sse_encode_mill_formation_action_in_placing_phase(
     MillFormationActionInPlacingPhase self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void sse_encode_mill_human_database_move(
+    MillHumanDatabaseMove self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void sse_encode_mill_human_database_query(
+    MillHumanDatabaseQuery self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void sse_encode_mill_human_database_status(
+    MillHumanDatabaseStatus self,
     SseSerializer serializer,
   );
 

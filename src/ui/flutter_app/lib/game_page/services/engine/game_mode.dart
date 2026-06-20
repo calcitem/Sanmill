@@ -26,6 +26,7 @@ Map<AiMoveType, IconData> aiMoveTypeIcons = <AiMoveType, IconData>{
   AiMoveType.perfect: FluentIcons.database_24_filled,
   AiMoveType.consensus: FluentIcons.bot_add_24_filled,
   AiMoveType.openingBook: FluentIcons.book_24_filled,
+  AiMoveType.humanDatabase: FluentIcons.database_24_filled,
   AiMoveType.unknown: FluentIcons.bot_24_filled,
 };
 

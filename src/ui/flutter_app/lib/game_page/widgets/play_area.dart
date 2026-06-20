@@ -74,6 +74,69 @@ class PlayAreaState extends State<PlayArea> {
     return value;
   }
 
+  Widget? _buildHumanDatabaseStatsLine(BuildContext context) {
+    if (!DB().generalSettings.showHumanDatabaseStats) {
+      return null;
+    }
+    final HumanDatabaseMoveStats? stats =
+        GameController().activeNativeMillSession?.lastHumanDatabaseMoveStats;
+    if (stats == null) {
+      return null;
+    }
+
+    final ThemeData theme = Theme.of(context);
+    final String text = S
+        .of(context)
+        .humanGameDatabaseStatsLine(
+          stats.notation,
+          stats.winPercent.toStringAsFixed(1),
+          stats.drawPercent.toStringAsFixed(1),
+          stats.lossPercent.toStringAsFixed(1),
+          stats.total,
+        );
+    return Padding(
+      key: const Key('play_area_human_database_stats_padding'),
+      padding: const EdgeInsets.symmetric(
+        horizontal: AppTheme.boardMargin,
+        vertical: 4,
+      ),
+      child: DecoratedBox(
+        key: const Key('play_area_human_database_stats'),
+        decoration: BoxDecoration(
+          color: theme.colorScheme.surfaceContainerHighest.withValues(
+            alpha: 0.72,
+          ),
+          borderRadius: BorderRadius.circular(6),
+          border: Border.all(color: theme.colorScheme.outlineVariant),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Icon(
+                Icons.storage_rounded,
+                size: 16,
+                color: theme.colorScheme.onSurfaceVariant,
+              ),
+              const SizedBox(width: 6),
+              Flexible(
+                child: Text(
+                  text,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: theme.colorScheme.onSurfaceVariant,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   /// Updates the UI by calling setState.
   /// Appends the current advantage value so that the chart reflects
   /// the latest advantage trend after each AI move.
@@ -459,6 +522,9 @@ class PlayAreaState extends State<PlayArea> {
         // interface clean; the PuzzlePage provides its own puzzle controls.
         final bool isPuzzle =
             GameController().gameInstance.gameMode == GameMode.puzzle;
+        final Widget? humanDatabaseStatsLine = _buildHumanDatabaseStatsLine(
+          context,
+        );
 
         // Main content without bottom toolbars:
         final Widget mainContent = SizedBox(
@@ -497,6 +563,8 @@ class PlayAreaState extends State<PlayArea> {
                       child: widget.child,
                     ),
                   ),
+
+                  ?humanDatabaseStatsLine,
 
                   // Removed pieces row or spacing
                   if (DB().displaySettings.isUnplacedAndRemovedPiecesShown &&

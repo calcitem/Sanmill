@@ -168,6 +168,9 @@ class GeneralSettings {
     this.backgroundMusicFilePath = '',
     this.lastPgnSaveDirectory = '',
     this.experienceRecordingEnabled = false,
+    this.humanDatabaseEnabled = false,
+    this.humanDatabaseFilePath = '',
+    this.showHumanDatabaseStats = false,
 
     /// Deprecated: always true. Retained to preserve the Hive `@HiveField(46)`
     /// slot for existing saved data. The field will be removed in a future
@@ -340,6 +343,18 @@ class GeneralSettings {
   // Enable experience recording for digital twin replay / bug reproduction.
   @HiveField(45, defaultValue: false)
   final bool experienceRecordingEnabled;
+
+  // Enable the optional external NMM_LLM human-game SQLite database.
+  @HiveField(47, defaultValue: false)
+  final bool humanDatabaseEnabled;
+
+  // Local path to an external NMM_LLM human-game SQLite database.
+  @HiveField(48, defaultValue: "")
+  final String humanDatabaseFilePath;
+
+  // Show the latest HumanDB move statistics below the board.
+  @HiveField(49, defaultValue: false)
+  final bool showHumanDatabaseStats;
 
   /// Deprecated field retained for Hive backward compatibility.
   ///

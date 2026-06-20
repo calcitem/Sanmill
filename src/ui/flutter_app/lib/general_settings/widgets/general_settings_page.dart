@@ -24,6 +24,7 @@ import '../../shared/database/database.dart';
 import '../../shared/database/settings_repositories.dart';
 import '../../shared/database/settings_repository.dart';
 import '../../shared/services/environment_config.dart';
+import '../../shared/services/human_database_service.dart';
 import '../../shared/services/logger.dart';
 import '../../shared/services/snackbar_service.dart';
 import '../../shared/themes/app_theme.dart';
@@ -298,6 +299,137 @@ class GeneralSettingsPage extends StatelessWidget {
     );
 
     logger.t("$_logTag useOpeningBook: $value");
+  }
+
+  Future<void> _setHumanDatabaseEnabled(
+    BuildContext context,
+    GeneralSettings generalSettings,
+    bool value,
+  ) async {
+    if (!value) {
+      HumanDatabaseService.instance.disable();
+      _settingsRepository.generalSettings = generalSettings.copyWith(
+        humanDatabaseEnabled: false,
+      );
+      logger.t("$_logTag humanDatabaseEnabled: false");
+      return;
+    }
+
+    if (generalSettings.humanDatabaseFilePath.trim().isEmpty) {
+      await _pickHumanDatabaseFile(
+        context,
+        generalSettings,
+        enableAfterPick: true,
+      );
+      return;
+    }
+
+    final HumanDatabaseReadyResult ready = await HumanDatabaseService.instance
+        .ensureReady(generalSettings.humanDatabaseFilePath);
+    if (!context.mounted) {
+      return;
+    }
+    if (!ready.ready) {
+      _settingsRepository.generalSettings = generalSettings.copyWith(
+        humanDatabaseEnabled: false,
+      );
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            S.of(context).humanGameDatabaseLoadFailed(ready.status.error),
+          ),
+        ),
+      );
+      return;
+    }
+
+    _settingsRepository.generalSettings = generalSettings.copyWith(
+      humanDatabaseEnabled: true,
+    );
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          S
+              .of(context)
+              .humanGameDatabaseLoaded(
+                ready.status.positionCount,
+                ready.status.moveCount,
+              ),
+        ),
+      ),
+    );
+    logger.t("$_logTag humanDatabaseEnabled: true");
+  }
+
+  Future<void> _pickHumanDatabaseFile(
+    BuildContext context,
+    GeneralSettings generalSettings, {
+    bool enableAfterPick = false,
+  }) async {
+    if (EnvironmentConfig.test == true) {
+      return;
+    }
+
+    final FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: <String>['sqlite', 'sqlite3', 'db'],
+    );
+    if (result == null || result.files.single.path == null) {
+      return;
+    }
+
+    final String path = result.files.single.path!;
+    final HumanDatabaseReadyResult ready = await HumanDatabaseService.instance
+        .ensureReady(path);
+    if (!context.mounted) {
+      return;
+    }
+    if (!ready.ready) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            S.of(context).humanGameDatabaseLoadFailed(ready.status.error),
+          ),
+        ),
+      );
+      return;
+    }
+
+    _settingsRepository.generalSettings = generalSettings.copyWith(
+      humanDatabaseEnabled:
+          enableAfterPick || generalSettings.humanDatabaseEnabled,
+      humanDatabaseFilePath: path,
+    );
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          S
+              .of(context)
+              .humanGameDatabaseLoaded(
+                ready.status.positionCount,
+                ready.status.moveCount,
+              ),
+        ),
+      ),
+    );
+    logger.t("$_logTag humanDatabaseFilePath: $path");
+  }
+
+  void _clearHumanDatabaseFile(GeneralSettings generalSettings) {
+    HumanDatabaseService.instance.disable();
+    _settingsRepository.generalSettings = generalSettings.copyWith(
+      humanDatabaseEnabled: false,
+      humanDatabaseFilePath: '',
+    );
+    logger.t("$_logTag humanDatabase cleared");
+  }
+
+  void _setShowHumanDatabaseStats(GeneralSettings generalSettings, bool value) {
+    _settingsRepository.generalSettings = generalSettings.copyWith(
+      showHumanDatabaseStats: value,
+    );
+
+    logger.t("$_logTag showHumanDatabaseStats: $value");
   }
 
   void _setTone(GeneralSettings generalSettings, bool value) {
@@ -753,6 +885,53 @@ class GeneralSettingsPage extends StatelessWidget {
                 titleString: S.of(context).useOpeningBook,
                 subtitleString: S.of(context).useOpeningBook_Detail,
               ),
+            if (DB().ruleSettings.isLikelyNineMensMorris()) ...<Widget>[
+              SettingsListTile.switchTile(
+                key: const Key(
+                  'general_settings_page_settings_card_ais_play_style_use_human_database',
+                ),
+                value: generalSettings.humanDatabaseEnabled,
+                onChanged: (bool val) {
+                  unawaited(
+                    _setHumanDatabaseEnabled(context, generalSettings, val),
+                  );
+                },
+                titleString: S.of(context).useHumanGameDatabase,
+                subtitleString: S.of(context).useHumanGameDatabase_Detail,
+              ),
+              SettingsListTile(
+                key: const Key(
+                  'general_settings_page_settings_card_ais_play_style_human_database_file',
+                ),
+                titleString: S.of(context).humanGameDatabaseFile,
+                subtitleString: S.of(context).humanGameDatabaseFile_Detail,
+                trailingString: generalSettings.humanDatabaseFilePath.isEmpty
+                    ? S.of(context).none
+                    : p.basename(generalSettings.humanDatabaseFilePath),
+                onTap: () {
+                  unawaited(_pickHumanDatabaseFile(context, generalSettings));
+                },
+              ),
+              if (generalSettings.humanDatabaseFilePath.isNotEmpty)
+                SettingsListTile(
+                  key: const Key(
+                    'general_settings_page_settings_card_ais_play_style_clear_human_database_file',
+                  ),
+                  titleString: S.of(context).clearHumanGameDatabaseFile,
+                  onTap: () => _clearHumanDatabaseFile(generalSettings),
+                ),
+              SettingsListTile.switchTile(
+                key: const Key(
+                  'general_settings_page_settings_card_ais_play_style_show_human_database_stats',
+                ),
+                value: generalSettings.showHumanDatabaseStats,
+                onChanged: (bool val) {
+                  _setShowHumanDatabaseStats(generalSettings, val);
+                },
+                titleString: S.of(context).showHumanGameDatabaseStats,
+                subtitleString: S.of(context).showHumanGameDatabaseStats_Detail,
+              ),
+            ],
             SettingsListTile.switchTile(
               key: const Key(
                 'general_settings_page_settings_card_ais_play_style_draw_on_human_experience',

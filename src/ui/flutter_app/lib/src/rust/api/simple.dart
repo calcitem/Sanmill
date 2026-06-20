@@ -7,7 +7,7 @@ import '../frb_generated.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
 // These functions are ignored because they are not marked as `pub`: `spawn_mill_engine_config_event_stream`, `spawn_mill_pvs_event_stream`
-// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `assert_fields_are_eq`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `eq`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`
+// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `assert_fields_are_eq`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `eq`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`
 
 /// Returns a greeting string confirming that the Rust → Dart bridge works.
 /// Called from Dart as `tgfHelloWorld()` after `await RustLib.init()`.
@@ -42,6 +42,29 @@ MillPerfectDatabaseStatus millPerfectDbStatus({required String path}) =>
 /// Release perfect-database resources for the current process.
 void millPerfectDbDeinit() =>
     RustLib.instance.api.crateApiSimpleMillPerfectDbDeinit();
+
+/// Initialize a read-only NMM_LLM human-game SQLite database.
+bool millHumanDbInit({required String path}) =>
+    RustLib.instance.api.crateApiSimpleMillHumanDbInit(path: path);
+
+/// Inspect an NMM_LLM human-game SQLite database without requiring a query.
+MillHumanDatabaseStatus millHumanDbStatus({required String path}) =>
+    RustLib.instance.api.crateApiSimpleMillHumanDbStatus(path: path);
+
+/// Query candidate moves for a Mill FEN from the initialized Human DB.
+MillHumanDatabaseQuery millHumanDbQuery({
+  required String fen,
+  required int maxMoves,
+  required int minSamples,
+}) => RustLib.instance.api.crateApiSimpleMillHumanDbQuery(
+  fen: fen,
+  maxMoves: maxMoves,
+  minSamples: minSamples,
+);
+
+/// Release Human DB resources for the current process.
+void millHumanDbDeinit() =>
+    RustLib.instance.api.crateApiSimpleMillHumanDbDeinit();
 
 /// Return the Rust-native standard 24-point Mill topology.
 ///
@@ -361,6 +384,147 @@ enum MillFormationActionInPlacingPhase {
   opponentRemovesOwnPiece,
   markAndDelayRemovingPieces,
   removalBasedOnMillCounts,
+}
+
+/// One Human DB move candidate mapped back into the current board orientation.
+class MillHumanDatabaseMove {
+  /// Move notation (`"a4"`, `"a1-a4"`, or complete `"a4xb6"`).
+  final String notation;
+  final int wins;
+  final int losses;
+  final int draws;
+  final int total;
+
+  /// Raw human-game win percentage for the side to move.
+  final double winPct;
+
+  /// Confidence-weighted delta in the range [-0.5, 0.5].
+  final double scoreDelta;
+
+  const MillHumanDatabaseMove({
+    required this.notation,
+    required this.wins,
+    required this.losses,
+    required this.draws,
+    required this.total,
+    required this.winPct,
+    required this.scoreDelta,
+  });
+
+  @override
+  int get hashCode =>
+      notation.hashCode ^
+      wins.hashCode ^
+      losses.hashCode ^
+      draws.hashCode ^
+      total.hashCode ^
+      winPct.hashCode ^
+      scoreDelta.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is MillHumanDatabaseMove &&
+          runtimeType == other.runtimeType &&
+          notation == other.notation &&
+          wins == other.wins &&
+          losses == other.losses &&
+          draws == other.draws &&
+          total == other.total &&
+          winPct == other.winPct &&
+          scoreDelta == other.scoreDelta;
+}
+
+/// Human DB query result for the current Mill FEN.
+class MillHumanDatabaseQuery {
+  final bool available;
+  final String stateKey;
+  final String error;
+  final List<MillHumanDatabaseMove> moves;
+
+  const MillHumanDatabaseQuery({
+    required this.available,
+    required this.stateKey,
+    required this.error,
+    required this.moves,
+  });
+
+  @override
+  int get hashCode =>
+      available.hashCode ^ stateKey.hashCode ^ error.hashCode ^ moves.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is MillHumanDatabaseQuery &&
+          runtimeType == other.runtimeType &&
+          available == other.available &&
+          stateKey == other.stateKey &&
+          error == other.error &&
+          moves == other.moves;
+}
+
+/// Runtime status for an optional NMM_LLM human-game SQLite database.
+class MillHumanDatabaseStatus {
+  /// Whether the SQLite file could be opened and passed schema checks.
+  final bool readable;
+
+  /// Whether this exact file is currently initialized for queries.
+  final bool initialized;
+
+  /// Read/schema error when `readable` is false; empty otherwise.
+  final String error;
+
+  /// Source database schema version from the metadata table.
+  final String schemaVersion;
+
+  /// Source database build date from the metadata table.
+  final String buildDate;
+
+  /// Number of games indexed by the database builder.
+  final int totalGames;
+
+  /// Number of indexed canonical positions.
+  final int positionCount;
+
+  /// Number of indexed move rows.
+  final int moveCount;
+
+  const MillHumanDatabaseStatus({
+    required this.readable,
+    required this.initialized,
+    required this.error,
+    required this.schemaVersion,
+    required this.buildDate,
+    required this.totalGames,
+    required this.positionCount,
+    required this.moveCount,
+  });
+
+  @override
+  int get hashCode =>
+      readable.hashCode ^
+      initialized.hashCode ^
+      error.hashCode ^
+      schemaVersion.hashCode ^
+      buildDate.hashCode ^
+      totalGames.hashCode ^
+      positionCount.hashCode ^
+      moveCount.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is MillHumanDatabaseStatus &&
+          runtimeType == other.runtimeType &&
+          readable == other.readable &&
+          initialized == other.initialized &&
+          error == other.error &&
+          schemaVersion == other.schemaVersion &&
+          buildDate == other.buildDate &&
+          totalGames == other.totalGames &&
+          positionCount == other.positionCount &&
+          moveCount == other.moveCount;
 }
 
 /// Perfect-database verdict for one legal move, used by the analysis overlay.

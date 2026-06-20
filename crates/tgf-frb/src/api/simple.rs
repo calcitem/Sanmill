@@ -24,6 +24,7 @@ use tgf_search::{MctsOptions, MctsSearcher, SearchOptions};
 
 use tgf_mill::MillSearchAlgorithmKind;
 
+use crate::games::mill::human_db as mill_human_db;
 use crate::games::mill::perfect as mill_perfect;
 use crate::games::mill::search::{
     MillEngineConfigPlan, mcts_move_order_context, mill_searcher_default,
@@ -600,6 +601,119 @@ pub fn mill_perfect_db_status(path: String) -> MillPerfectDatabaseStatus {
 #[flutter_rust_bridge::frb(sync)]
 pub fn mill_perfect_db_deinit() {
     mill_perfect::deinit_database();
+}
+
+/// Runtime status for an optional NMM_LLM human-game SQLite database.
+#[derive(Clone, Debug)]
+pub struct MillHumanDatabaseStatus {
+    /// Whether the SQLite file could be opened and passed schema checks.
+    pub readable: bool,
+    /// Whether this exact file is currently initialized for queries.
+    pub initialized: bool,
+    /// Read/schema error when `readable` is false; empty otherwise.
+    pub error: String,
+    /// Source database schema version from the metadata table.
+    pub schema_version: String,
+    /// Source database build date from the metadata table.
+    pub build_date: String,
+    /// Number of games indexed by the database builder.
+    pub total_games: u32,
+    /// Number of indexed canonical positions.
+    pub position_count: u32,
+    /// Number of indexed move rows.
+    pub move_count: u32,
+}
+
+impl From<mill_human_db::HumanDatabaseStatus> for MillHumanDatabaseStatus {
+    fn from(value: mill_human_db::HumanDatabaseStatus) -> Self {
+        Self {
+            readable: value.readable,
+            initialized: value.initialized,
+            error: value.error,
+            schema_version: value.schema_version,
+            build_date: value.build_date,
+            total_games: value.total_games,
+            position_count: value.position_count,
+            move_count: value.move_count,
+        }
+    }
+}
+
+/// One Human DB move candidate mapped back into the current board orientation.
+#[derive(Clone, Debug)]
+pub struct MillHumanDatabaseMove {
+    /// Move notation (`"a4"`, `"a1-a4"`, or complete `"a4xb6"`).
+    pub notation: String,
+    pub wins: u32,
+    pub losses: u32,
+    pub draws: u32,
+    pub total: u32,
+    /// Raw human-game win percentage for the side to move.
+    pub win_pct: f64,
+    /// Confidence-weighted delta in the range [-0.5, 0.5].
+    pub score_delta: f64,
+}
+
+impl From<mill_human_db::HumanDatabaseMove> for MillHumanDatabaseMove {
+    fn from(value: mill_human_db::HumanDatabaseMove) -> Self {
+        Self {
+            notation: value.notation,
+            wins: value.wins,
+            losses: value.losses,
+            draws: value.draws,
+            total: value.total,
+            win_pct: value.win_pct,
+            score_delta: value.score_delta,
+        }
+    }
+}
+
+/// Human DB query result for the current Mill FEN.
+#[derive(Clone, Debug)]
+pub struct MillHumanDatabaseQuery {
+    pub available: bool,
+    pub state_key: String,
+    pub error: String,
+    pub moves: Vec<MillHumanDatabaseMove>,
+}
+
+impl From<mill_human_db::HumanDatabaseQuery> for MillHumanDatabaseQuery {
+    fn from(value: mill_human_db::HumanDatabaseQuery) -> Self {
+        Self {
+            available: value.available,
+            state_key: value.state_key,
+            error: value.error,
+            moves: value.moves.into_iter().map(Into::into).collect(),
+        }
+    }
+}
+
+/// Initialize a read-only NMM_LLM human-game SQLite database.
+#[flutter_rust_bridge::frb(sync)]
+pub fn mill_human_db_init(path: String) -> bool {
+    mill_human_db::init_database_path(path)
+}
+
+/// Inspect an NMM_LLM human-game SQLite database without requiring a query.
+#[flutter_rust_bridge::frb(sync)]
+pub fn mill_human_db_status(path: String) -> MillHumanDatabaseStatus {
+    mill_human_db::database_status(path).into()
+}
+
+/// Query candidate moves for a Mill FEN from the initialized Human DB.
+#[flutter_rust_bridge::frb(sync)]
+pub fn mill_human_db_query(
+    fen: String,
+    max_moves: u32,
+    min_samples: u32,
+) -> MillHumanDatabaseQuery {
+    mill_human_db::query_moves(fen, max_moves, min_samples).into()
+}
+
+/// Release Human DB resources for the current process.
+#[flutter_rust_bridge::frb(sync)]
+pub fn mill_human_db_deinit() {
+    mill_human_db::deinit_database();
 }
 
 /// Perfect-database verdict for one legal move, used by the analysis overlay.

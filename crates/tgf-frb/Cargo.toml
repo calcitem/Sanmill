@@ -22,6 +22,7 @@ once_cell = "1"
 
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]
 perfect-db = { path = "../perfect-db", default-features = false }
+rusqlite = { version = "0.32", features = ["bundled"] }
 
 [package.metadata.wasm-pack.profile.release]
 wasm-opt = false

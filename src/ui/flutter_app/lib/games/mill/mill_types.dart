@@ -46,8 +46,48 @@ Color getTranslucentColor(Color c, double opacity) {
 enum PieceColor { none, white, black, marked, nobody, draw }
 
 /// Whether the AI move comes from the engine's traditional search or from
-/// the ensemble (consensus) path.
-enum AiMoveType { unknown, traditional, perfect, consensus, openingBook }
+/// an optional advisory source.
+enum AiMoveType {
+  unknown,
+  traditional,
+  perfect,
+  consensus,
+  openingBook,
+  humanDatabase,
+}
+
+/// Statistics for the HumanDB candidate that supplied the latest AI move.
+class HumanDatabaseMoveStats {
+  const HumanDatabaseMoveStats({
+    required this.notation,
+    required this.wins,
+    required this.losses,
+    required this.draws,
+    required this.total,
+    required this.scoreDelta,
+  });
+
+  final String notation;
+  final int wins;
+  final int losses;
+  final int draws;
+  final int total;
+  final double scoreDelta;
+
+  double get winPercent => _percent(wins);
+
+  double get lossPercent => _percent(losses);
+
+  double get drawPercent => _percent(draws);
+
+  double _percent(int count) {
+    assert(total >= 0, 'Human DB sample count must not be negative.');
+    if (total == 0) {
+      return 0;
+    }
+    return count * 100.0 / total;
+  }
+}
 
 /// Mill game phases.
 enum Phase { ready, placing, moving, gameOver }

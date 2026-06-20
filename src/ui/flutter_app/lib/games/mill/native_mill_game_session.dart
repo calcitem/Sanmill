@@ -63,6 +63,7 @@ class NativeMillGameSession implements GameSessionHandle {
   bool _forcedTerminal = false;
 
   AiMoveType lastAiMoveType = AiMoveType.unknown;
+  HumanDatabaseMoveStats? lastHumanDatabaseMoveStats;
 
   static final RegExp _aimovetypePattern = RegExp(
     r'(?:^|\s)aimovetype=(\w+)(?:\s|$)',
@@ -95,6 +96,8 @@ class NativeMillGameSession implements GameSessionHandle {
     if (_disposed) {
       return;
     }
+    lastAiMoveType = AiMoveType.unknown;
+    lastHumanDatabaseMoveStats = null;
     if (rules != null) {
       final NativeMillRulesPort nextPort = NativeMillRulesPort(
         ruleSettings: rules,
@@ -274,6 +277,7 @@ class NativeMillGameSession implements GameSessionHandle {
       // setup / loadFen) clears the override.
       return false;
     }
+    lastHumanDatabaseMoveStats = null;
     final bool alreadyMatchedLegalSearchAction = identical(
       action,
       _lastSearchLegalAction,
@@ -309,6 +313,7 @@ class NativeMillGameSession implements GameSessionHandle {
       return;
     }
     try {
+      lastHumanDatabaseMoveStats = null;
       _setState(rulesPort.undo());
       _emit(MillEventTypes.undoApplied, const <String, Object?>{});
     } on Object catch (e) {
@@ -322,6 +327,7 @@ class NativeMillGameSession implements GameSessionHandle {
       return;
     }
     try {
+      lastHumanDatabaseMoveStats = null;
       _setState(rulesPort.redo());
       _emit(MillEventTypes.redoApplied, const <String, Object?>{});
     } on Object catch (e) {
@@ -625,6 +631,7 @@ class NativeMillGameSession implements GameSessionHandle {
       'perfect' => AiMoveType.perfect,
       'consensus' => AiMoveType.consensus,
       'openingBook' => AiMoveType.openingBook,
+      'humanDatabase' => AiMoveType.humanDatabase,
       'traditional' => AiMoveType.traditional,
       _ => AiMoveType.traditional,
     };

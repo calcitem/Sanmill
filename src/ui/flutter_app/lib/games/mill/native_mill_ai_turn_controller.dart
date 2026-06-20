@@ -7,6 +7,7 @@ import '../../general_settings/models/general_settings.dart';
 import '../../shared/services/environment_config.dart';
 import '../../shared/services/logger.dart';
 import 'mill_constants.dart';
+import 'mill_human_database_provider.dart';
 import 'mill_types.dart';
 import 'native_mill_game_session.dart';
 
@@ -29,6 +30,7 @@ class NativeMillAiTurnController {
     this.bothSidesAi = false,
     this.onBeforeRemoveApply,
     this.openingBook,
+    this.humanDatabase,
   });
 
   /// Optional fixed depth override used by tests and targeted diagnostics.
@@ -56,6 +58,9 @@ class NativeMillAiTurnController {
 
   /// Optional opening-book lookup consulted before engine search.
   final OpeningBookProvider? openingBook;
+
+  /// Optional HumanDB lookup consulted before engine search.
+  final MillHumanDatabaseProvider? humanDatabase;
 
   PlayerSeat get aiSeat =>
       generalSettings.aiMovesFirst ? PlayerSeat.first : PlayerSeat.second;
@@ -206,6 +211,7 @@ class NativeMillAiTurnController {
         }
         await session.apply(bookAction);
         session.lastAiMoveType = AiMoveType.openingBook;
+        session.lastHumanDatabaseMoveStats = null;
         lastApplied = bookAction;
         if (EnvironmentConfig.devMode) {
           logger.i(
@@ -215,6 +221,27 @@ class NativeMillAiTurnController {
         }
         continue;
       }
+
+      final GameAction? humanDatabaseAction = humanDatabase?.lookup(session);
+      if (humanDatabaseAction != null) {
+        final HumanDatabaseMoveStats? stats = humanDatabase?.lastStats;
+        if (humanDatabaseAction.type == MillActionTypes.remove) {
+          await onBeforeRemoveApply?.call();
+        }
+        await session.apply(humanDatabaseAction);
+        session.lastAiMoveType = AiMoveType.humanDatabase;
+        session.lastHumanDatabaseMoveStats = stats;
+        lastApplied = humanDatabaseAction;
+        if (EnvironmentConfig.devMode) {
+          logger.i(
+            '[NativeMillAiTurnController] step=$step human-db '
+            'applied=${humanDatabaseAction.payload['move']}',
+          );
+        }
+        continue;
+      }
+
+      session.lastHumanDatabaseMoveStats = null;
       final Stopwatch sw = Stopwatch()..start();
       // Pass the controller's live [generalSettings] so the engine honours
       // the *current* user settings (shuffling, algorithm, skill level, lazy

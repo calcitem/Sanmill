@@ -1340,6 +1340,10 @@ class GameController {
             ruleSettings: DB().ruleSettings,
             generalSettings: DB().generalSettings,
           ),
+          humanDatabase: MillHumanDatabaseProvider(
+            ruleSettings: DB().ruleSettings,
+            generalSettings: DB().generalSettings,
+          ),
         );
     final bool aiTurn = gameInstance.isAiSideToMove;
     if (isMoveNow && !aiTurn) {
@@ -1434,6 +1438,10 @@ class GameController {
           bothSidesAi: true,
           onBeforeRemoveApply: gameInstance.awaitPendingMillSoundBeforeRemove,
           openingBook: MillOpeningBookProvider(
+            ruleSettings: DB().ruleSettings,
+            generalSettings: DB().generalSettings,
+          ),
+          humanDatabase: MillHumanDatabaseProvider(
             ruleSettings: DB().ruleSettings,
             generalSettings: DB().generalSettings,
           ),

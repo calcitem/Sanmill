@@ -195,8 +195,8 @@ void main() {
   // AiMoveType
   // ---------------------------------------------------------------------------
   group('AiMoveType', () {
-    test('should have five values', () {
-      expect(AiMoveType.values.length, 5);
+    test('should have six values', () {
+      expect(AiMoveType.values.length, 6);
     });
 
     test('should include all expected types', () {
@@ -208,6 +208,7 @@ void main() {
           AiMoveType.perfect,
           AiMoveType.consensus,
           AiMoveType.openingBook,
+          AiMoveType.humanDatabase,
         ]),
       );
     });

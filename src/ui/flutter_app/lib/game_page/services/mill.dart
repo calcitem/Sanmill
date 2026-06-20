@@ -32,6 +32,7 @@ import '../../game_shell/game_session_scope.dart';
 import '../../games/mill/lan_session_meta.dart';
 import '../../games/mill/mill_action_codec.dart';
 import '../../games/mill/mill_board_coordinate_maps.dart';
+import '../../games/mill/mill_human_database_provider.dart';
 import '../../games/mill/mill_marked_pieces_codec.dart';
 import '../../games/mill/mill_opening_book_provider.dart';
 import '../../games/mill/mill_score.dart';

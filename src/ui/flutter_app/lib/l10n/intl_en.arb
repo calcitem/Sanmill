@@ -1657,6 +1657,67 @@
     "@daSanQi": {},
     "useOpeningBook_Detail": "Let the AI use opening moves commonly employed by professional human players during the early game. Note: This feature is currently available only for specific rule sets.",
     "@useOpeningBook_Detail": {},
+    "useHumanGameDatabase": "Use human game database",
+    "@useHumanGameDatabase": {},
+    "useHumanGameDatabase_Detail": "Let the AI consult an external NMM_LLM human-game SQLite database before falling back to search.",
+    "@useHumanGameDatabase_Detail": {},
+    "humanGameDatabaseFile": "Human game database file",
+    "@humanGameDatabaseFile": {},
+    "humanGameDatabaseFile_Detail": "Select the external SQLite database file. The database is not bundled with the app.",
+    "@humanGameDatabaseFile_Detail": {},
+    "clearHumanGameDatabaseFile": "Clear human game database file",
+    "@clearHumanGameDatabaseFile": {},
+    "showHumanGameDatabaseStats": "Show human database stats on board",
+    "@showHumanGameDatabaseStats": {},
+    "showHumanGameDatabaseStats_Detail": "Show the win, draw, loss, and sample-count statistics for the latest AI move supplied by the human game database.",
+    "@showHumanGameDatabaseStats_Detail": {},
+    "humanGameDatabaseLoaded": "Human game database loaded: {positionCount} positions, {moveCount} moves.",
+    "@humanGameDatabaseLoaded": {
+        "placeholders": {
+            "positionCount": {
+                "description": "Number of positions in the database.",
+                "example": "123456"
+            },
+            "moveCount": {
+                "description": "Number of moves in the database.",
+                "example": "789012"
+            }
+        }
+    },
+    "humanGameDatabaseLoadFailed": "Human game database could not be loaded: {error}",
+    "@humanGameDatabaseLoadFailed": {
+        "placeholders": {
+            "error": {
+                "description": "Error returned while loading the database.",
+                "example": "missing table moves"
+            }
+        }
+    },
+    "humanGameDatabaseStatsLine": "Human DB {move}: W {winPct}%, D {drawPct}%, L {lossPct}% (n={total})",
+    "@humanGameDatabaseStatsLine": {
+        "placeholders": {
+            "move": {
+                "description": "Move notation selected from the human database.",
+                "example": "d6-d7xa4"
+            },
+            "winPct": {
+                "description": "Win percentage string.",
+                "example": "68.4"
+            },
+            "drawPct": {
+                "description": "Draw percentage string.",
+                "example": "2.1"
+            },
+            "lossPct": {
+                "description": "Loss percentage string.",
+                "example": "29.5"
+            },
+            "total": {
+                "description": "Total sample count.",
+                "example": "137"
+            }
+        }
+    },
     "showAdvantageGraph": "Show advantage graph",
     "@showAdvantageGraph": {},
     "advantageGraphHint": "Advantage graph will only be drawn after the AI makes a move. It will not be drawn when the human player makes a move.",

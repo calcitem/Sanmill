@@ -104,6 +104,10 @@ class TapHandler {
             ruleSettings: DB().ruleSettings,
             generalSettings: DB().generalSettings,
           ),
+          humanDatabase: MillHumanDatabaseProvider(
+            ruleSettings: DB().ruleSettings,
+            generalSettings: DB().generalSettings,
+          ),
         );
     if (mode == GameMode.humanVsAi && aiTurnController.isAiTurn(session)) {
       controller.refreshNativeSessionHeader(
