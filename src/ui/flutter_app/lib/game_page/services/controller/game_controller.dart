@@ -225,6 +225,13 @@ class GameController {
       return;
     }
 
+    // Master always shows the cumulative W-D-L tally in AI-vs-AI mode,
+    // never turn prompts like "Please place".
+    if (gameInstance.gameMode == GameMode.aiVsAi) {
+      headerTipNotifier.showTip(millScoreString, snackBar: false);
+      return;
+    }
+
     if (showThinking) {
       headerTipNotifier.showTip(S.of(context).thinking, snackBar: false);
       return;

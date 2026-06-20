@@ -46,18 +46,25 @@ class GameOptionsModal extends StatelessWidget {
 
       GameController().engineToGo(context, isMoveNow: false);
 
-      final String side = _sideToMoveName(context);
-
-      if (DB().ruleSettings.mayMoveInPlacingPhase) {
+      if (GameController().gameInstance.gameMode == GameMode.aiVsAi) {
         GameController().headerTipNotifier.showTip(
-          S.of(context).tipToMove(side),
+          millScoreString,
           snackBar: false,
         );
       } else {
-        GameController().headerTipNotifier.showTip(
-          S.of(context).tipPlace,
-          snackBar: false,
-        );
+        final String side = _sideToMoveName(context);
+
+        if (DB().ruleSettings.mayMoveInPlacingPhase) {
+          GameController().headerTipNotifier.showTip(
+            S.of(context).tipToMove(side),
+            snackBar: false,
+          );
+        } else {
+          GameController().headerTipNotifier.showTip(
+            S.of(context).tipPlace,
+            snackBar: false,
+          );
+        }
       }
     }
 
