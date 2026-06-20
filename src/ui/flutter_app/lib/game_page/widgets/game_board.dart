@@ -593,12 +593,13 @@ class _GameBoardState extends State<GameBoard>
                             GameController().gameRecorder.mainlineMoves;
                         await EngineFailureDialog.show(
                           context,
-                          diagnosticContext: _engineFailureDiagnosticContext(
-                            context,
-                            lastMove: moves.isNotEmpty
-                                ? moves.last.notation
-                                : null,
-                          ),
+                          diagnosticContext: GameController()
+                              .buildEngineFailureDiagnosticContext(
+                                context,
+                                lastMove: moves.isNotEmpty
+                                    ? moves.last.notation
+                                    : null,
+                              ),
                         );
                       }
                       break;
@@ -618,28 +619,6 @@ class _GameBoardState extends State<GameBoard>
           },
         );
       },
-    );
-  }
-
-  String _engineFailureDiagnosticContext(
-    BuildContext context, {
-    String? lastMove,
-  }) {
-    final GameStateSnapshot? snapshot = GameController().activeSessionSnapshot;
-    if (snapshot != null) {
-      return EngineFailureDialog.buildDiagnosticContext(
-        phase: snapshot.phase,
-        sideToMove: snapshot.activeSeat.name,
-        zobrist: snapshot.payload['tgfZobrist']?.toString(),
-        lastMove: lastMove,
-      );
-    }
-    final MillBoardView view = GameController().activeBoardView;
-    return EngineFailureDialog.buildDiagnosticContext(
-      fen: GameController().activeFen,
-      phase: view.phase.name,
-      sideToMove: view.sideToMove.playerName(context),
-      lastMove: lastMove,
     );
   }
 

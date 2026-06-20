@@ -107,6 +107,25 @@ class GameController {
   /// eventually [position.dart] can be deleted.
   String? get activeFen => activeBoardView.fen;
 
+  /// Human-readable context for [EngineFailureDialog] error reports.
+  ///
+  /// Always includes the exported FEN (matching master-branch reports) plus
+  /// phase, side to move, optional native Zobrist key, and last move.
+  String buildEngineFailureDiagnosticContext(
+    BuildContext context, {
+    String? lastMove,
+  }) {
+    final MillBoardView view = activeBoardView;
+    final String? fen = activeFen ?? activeNativeMillSession?.getFen();
+    return EngineFailureDialog.buildDiagnosticContext(
+      fen: fen,
+      phase: view.phase.name,
+      sideToMove: view.sideToMove.playerName(context),
+      zobrist: activeSessionSnapshot?.payload['tgfZobrist']?.toString(),
+      lastMove: lastMove,
+    );
+  }
+
   PieceColor? get activeSessionSideToMove {
     return switch (activeSessionSnapshot?.activeSeat) {
       PlayerSeat.first => PieceColor.white,
@@ -1729,10 +1748,8 @@ class GameController {
         final List<ExtMove> moves = gameRecorder.mainlineMoves;
         await EngineFailureDialog.show(
           context,
-          diagnosticContext: EngineFailureDialog.buildDiagnosticContext(
-            fen: activeFen,
-            phase: activeBoardView.phase.name,
-            sideToMove: activeBoardView.sideToMove.playerName(context),
+          diagnosticContext: buildEngineFailureDiagnosticContext(
+            context,
             lastMove: moves.isNotEmpty ? moves.last.notation : null,
           ),
         );
