@@ -80,57 +80,66 @@ class PlayAreaState extends State<PlayArea> {
     }
     final HumanDatabaseMoveStats? stats =
         GameController().activeNativeMillSession?.lastHumanDatabaseMoveStats;
-    if (stats == null) {
-      return null;
-    }
 
     final ThemeData theme = Theme.of(context);
-    final String text = S
-        .of(context)
-        .humanGameDatabaseStatsLine(
-          stats.notation,
-          stats.winPercent.toStringAsFixed(1),
-          stats.drawPercent.toStringAsFixed(1),
-          stats.lossPercent.toStringAsFixed(1),
-          stats.total,
-        );
+    // Render real stats when the latest AI move came from the Human Database,
+    // otherwise a blank single-line placeholder. The slot keeps its size via
+    // Visibility.maintainSize so the toolbar below does not jump up and down
+    // as the line appears and disappears between moves.
+    final String text = stats == null
+        ? ' '
+        : S
+              .of(context)
+              .humanGameDatabaseStatsLine(
+                stats.notation,
+                stats.winPercent.toStringAsFixed(1),
+                stats.drawPercent.toStringAsFixed(1),
+                stats.lossPercent.toStringAsFixed(1),
+                stats.total,
+              );
     return Padding(
       key: const Key('play_area_human_database_stats_padding'),
       padding: const EdgeInsets.symmetric(
         horizontal: AppTheme.boardMargin,
         vertical: 4,
       ),
-      child: DecoratedBox(
-        key: const Key('play_area_human_database_stats'),
-        decoration: BoxDecoration(
-          color: theme.colorScheme.surfaceContainerHighest.withValues(
-            alpha: 0.72,
+      child: Visibility(
+        visible: stats != null,
+        maintainSize: true,
+        maintainAnimation: true,
+        maintainState: true,
+        child: DecoratedBox(
+          key: const Key('play_area_human_database_stats'),
+          decoration: BoxDecoration(
+            color: theme.colorScheme.surfaceContainerHighest.withValues(
+              alpha: 0.72,
+            ),
+            borderRadius: BorderRadius.circular(6),
+            border: Border.all(color: theme.colorScheme.outlineVariant),
           ),
-          borderRadius: BorderRadius.circular(6),
-          border: Border.all(color: theme.colorScheme.outlineVariant),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Icon(
-                Icons.storage_rounded,
-                size: 16,
-                color: theme.colorScheme.onSurfaceVariant,
-              ),
-              const SizedBox(width: 6),
-              Flexible(
-                child: Text(
-                  text,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: theme.textTheme.bodySmall?.copyWith(
-                    color: theme.colorScheme.onSurfaceVariant,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Icon(
+                  Icons.storage_rounded,
+                  size: 16,
+                  color: theme.colorScheme.onSurfaceVariant,
+                ),
+                const SizedBox(width: 6),
+                Flexible(
+                  child: Text(
+                    text,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: theme.colorScheme.onSurfaceVariant,
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
