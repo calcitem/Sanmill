@@ -124,12 +124,8 @@ class TapHandler {
               ? const EngineNoBestMove()
               : const EngineResponseOK();
         }
-        // Sync the AI move type before refreshing the header so the bot icon
-        // rebuild reads the move source that was just applied. Refreshing
-        // first would render the stale icon and the later sync would not
-        // trigger another rebuild (the side-to-move icon is unchanged).
-        controller.syncAiMoveTypeFromSession(session);
         controller.refreshNativeSessionHeader(context, session);
+        controller.syncAiMoveTypeFromSession(session);
         logger.i(
           "$_logTag Native Mill AI pre-tap action: ${aiAction?.payload['move'] ?? '(none)'}",
         );
@@ -193,15 +189,10 @@ class TapHandler {
                   ? const EngineNoBestMove()
                   : const EngineResponseOK();
             }
-            // Sync the AI move type before refreshing the header so the bot
-            // icon rebuild reads the move source that was just applied.
-            // Refreshing first would render the stale icon and the later sync
-            // would not trigger another rebuild (the side-to-move icon is
-            // unchanged).
+            controller.refreshNativeSessionHeader(context, session);
             if (aiAction != null) {
               controller.syncAiMoveTypeFromSession(session);
             }
-            controller.refreshNativeSessionHeader(context, session);
             logger.i(
               "$_logTag Native Mill AI response: ${aiAction?.payload['move'] ?? '(none)'}",
             );

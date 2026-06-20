@@ -454,6 +454,11 @@ class HeaderStateIcons extends State<HeaderIcons> {
   // Add a flag to track if it's the first move
   bool _isFirstMove = true;
 
+  // Last AI move source rendered by the header. The bot glyph in build() is
+  // derived from GameController.aiMoveType, which the side-to-move
+  // ValueNotifier does not track, so the header must rebuild when it changes.
+  Object? _lastAiMoveType = GameController().aiMoveType;
+
   @override
   void initState() {
     super.initState();
@@ -517,6 +522,17 @@ class HeaderStateIcons extends State<HeaderIcons> {
 
     // Update first move flag when moves are made
     _isFirstMove = GameController().gameRecorder.mainlineMoves.isEmpty;
+
+    // The AI bot glyph (left/right header icon) is read from
+    // GameController.aiMoveType in build(), but the side-to-move ValueNotifier
+    // only rebuilds the header when the turn icon changes. Rebuild explicitly
+    // when the move source changes so the icon updates on the same turn the AI
+    // plays the move instead of on a later turn.
+    final Object? botType = controller.aiMoveType;
+    if (mounted && botType != _lastAiMoveType) {
+      _lastAiMoveType = botType;
+      setState(() {});
+    }
   }
 
   void _refreshLanHostPlaysWhite() {
