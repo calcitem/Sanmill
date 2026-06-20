@@ -110,19 +110,22 @@ class GameController {
   /// Human-readable context for [EngineFailureDialog] error reports.
   ///
   /// Always includes the exported FEN (matching master-branch reports) plus
-  /// phase, side to move, optional native Zobrist key, and last move.
+  /// phase, side to move, optional native Zobrist key, last move, and the
+  /// mainline move list without variations.
   String buildEngineFailureDiagnosticContext(
     BuildContext context, {
     String? lastMove,
   }) {
     final MillBoardView view = activeBoardView;
     final String? fen = activeFen ?? activeNativeMillSession?.getFen();
+    final String moveList = gameRecorder.moveHistoryTextWithoutVariations;
     return EngineFailureDialog.buildDiagnosticContext(
       fen: fen,
       phase: view.phase.name,
       sideToMove: view.sideToMove.playerName(context),
       zobrist: activeSessionSnapshot?.payload['tgfZobrist']?.toString(),
       lastMove: lastMove,
+      moveList: moveList,
     );
   }
 

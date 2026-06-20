@@ -27,6 +27,7 @@ class EngineFailureDialog extends StatelessWidget {
     String? sideToMove,
     String? zobrist,
     String? lastMove,
+    String? moveList,
   }) {
     final StringBuffer buf = StringBuffer();
     if (fen != null) {
@@ -43,6 +44,9 @@ class EngineFailureDialog extends StatelessWidget {
     }
     if (lastMove != null) {
       buf.writeln('Last move: $lastMove');
+    }
+    if (moveList != null && moveList.isNotEmpty) {
+      buf.writeln('Move list: $moveList');
     }
     return buf.toString().trimRight();
   }
