@@ -688,6 +688,15 @@ class _GameBoardState extends State<GameBoard>
 
     GameController().headerIconsNotifier.showIcons();
 
+    if (GameController().shouldAutoRestartAfterGameOver()) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!mounted) {
+          return;
+        }
+        GameController().performAutoRestartIfEnabled(context);
+      });
+    }
+
     // Check conditions for showing game result dialog
     final bool shouldShowDialog =
         GameController().isAutoRestart() == false &&

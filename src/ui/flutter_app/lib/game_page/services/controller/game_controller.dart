@@ -1223,6 +1223,60 @@ class GameController {
     return DB().generalSettings.isAutoRestart;
   }
 
+  /// Whether the finished game should immediately start a fresh board.
+  ///
+  /// Mirrors master `engineToGo` auto-restart gating: the option is
+  /// honoured for local play modes, AI-vs-AI additionally requires zero
+  /// animation time and disabled shuffling (same constraints as the
+  /// result dialog), and LAN / setup / puzzle flows are excluded.
+  bool shouldAutoRestartAfterGameOver() {
+    if (!isAutoRestart()) {
+      return false;
+    }
+
+    final GameMode gameMode = gameInstance.gameMode;
+    if (gameMode == GameMode.setupPosition ||
+        gameMode == GameMode.humanVsLAN ||
+        gameMode == GameMode.puzzle) {
+      return false;
+    }
+
+    final PieceColor winner =
+        activeSessionWinner ?? activeBoardView.winner;
+    if (winner == PieceColor.nobody) {
+      return false;
+    }
+
+    if (gameMode == GameMode.aiVsAi) {
+      return DB().displaySettings.animationDuration == 0.0 &&
+          DB().generalSettings.shufflingEnabled == false;
+    }
+
+    return true;
+  }
+
+  /// Reset the session and resume AI play when [shouldAutoRestartAfterGameOver]
+  /// is true.  Restores the master `engineToGo` behaviour that was lost
+  /// during the Rust/FRB migration.
+  void performAutoRestartIfEnabled(BuildContext context) {
+    if (!shouldAutoRestartAfterGameOver()) {
+      return;
+    }
+
+    gameResultNotifier.clearResult();
+    reset();
+
+    if (!context.mounted) {
+      return;
+    }
+
+    final GameMode gameMode = gameInstance.gameMode;
+    if (gameInstance.isAiSideToMove &&
+        (gameMode == GameMode.humanVsAi || gameMode == GameMode.aiVsAi)) {
+      unawaited(engineToGo(context, isMoveNow: false));
+    }
+  }
+
   Future<EngineResponse> engineToGo(
     BuildContext context, {
     required bool isMoveNow,
