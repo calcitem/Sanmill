@@ -56,7 +56,7 @@ enum AiMoveType {
   humanDatabase,
 }
 
-/// Statistics for the HumanDB candidate that supplied the latest AI move.
+/// Statistics for the Human Database candidate that supplied the latest AI move.
 class HumanDatabaseMoveStats {
   const HumanDatabaseMoveStats({
     required this.notation,
@@ -81,7 +81,7 @@ class HumanDatabaseMoveStats {
   double get drawPercent => _percent(draws);
 
   double _percent(int count) {
-    assert(total >= 0, 'Human DB sample count must not be negative.');
+    assert(total >= 0, 'Human Database sample count must not be negative.');
     if (total == 0) {
       return 0;
     }

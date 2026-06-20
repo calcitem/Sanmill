@@ -28,7 +28,7 @@ class HumanDatabaseService {
 
   HumanDatabaseReadyResult ensureReadySync(String path) {
     final String normalizedPath = path.trim();
-    assert(normalizedPath.isNotEmpty, 'Human DB path must not be empty.');
+    assert(normalizedPath.isNotEmpty, 'Human Database path must not be empty.');
 
     if (kIsWeb || normalizedPath.isEmpty) {
       return HumanDatabaseReadyResult(
@@ -39,7 +39,7 @@ class HumanDatabaseService {
 
     final File file = File(normalizedPath);
     if (!file.existsSync()) {
-      logger.w('Human DB file does not exist: $normalizedPath');
+      logger.w('Human Database file does not exist: $normalizedPath');
       return HumanDatabaseReadyResult(
         ready: false,
         status: tgf.millHumanDbStatus(path: normalizedPath),
@@ -50,7 +50,7 @@ class HumanDatabaseService {
       path: normalizedPath,
     );
     if (!currentStatus.readable) {
-      logger.w('Human DB is not readable: ${currentStatus.error}');
+      logger.w('Human Database is not readable: ${currentStatus.error}');
       return HumanDatabaseReadyResult(ready: false, status: currentStatus);
     }
 
@@ -60,7 +60,7 @@ class HumanDatabaseService {
 
     final bool initialized = tgf.millHumanDbInit(path: normalizedPath);
     if (!initialized) {
-      logger.w('Human DB initialization was rejected by Rust.');
+      logger.w('Human Database initialization was rejected by Rust.');
       return HumanDatabaseReadyResult(
         ready: false,
         status: tgf.millHumanDbStatus(path: normalizedPath),

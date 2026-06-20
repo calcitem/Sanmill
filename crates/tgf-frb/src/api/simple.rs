@@ -603,7 +603,7 @@ pub fn mill_perfect_db_deinit() {
     mill_perfect::deinit_database();
 }
 
-/// Runtime status for an optional NMM_LLM human-game SQLite database.
+/// Runtime status for an optional human-game SQLite database.
 #[derive(Clone, Debug)]
 pub struct MillHumanDatabaseStatus {
     /// Whether the SQLite file could be opened and passed schema checks.
@@ -639,7 +639,7 @@ impl From<mill_human_db::HumanDatabaseStatus> for MillHumanDatabaseStatus {
     }
 }
 
-/// One Human DB move candidate mapped back into the current board orientation.
+/// One Human Database move candidate mapped back into the current board orientation.
 #[derive(Clone, Debug)]
 pub struct MillHumanDatabaseMove {
     /// Move notation (`"a4"`, `"a1-a4"`, or complete `"a4xb6"`).
@@ -668,7 +668,7 @@ impl From<mill_human_db::HumanDatabaseMove> for MillHumanDatabaseMove {
     }
 }
 
-/// Human DB query result for the current Mill FEN.
+/// Human Database query result for the current Mill FEN.
 #[derive(Clone, Debug)]
 pub struct MillHumanDatabaseQuery {
     pub available: bool,
@@ -688,19 +688,19 @@ impl From<mill_human_db::HumanDatabaseQuery> for MillHumanDatabaseQuery {
     }
 }
 
-/// Initialize a read-only NMM_LLM human-game SQLite database.
+/// Initialize a read-only human-game SQLite database.
 #[flutter_rust_bridge::frb(sync)]
 pub fn mill_human_db_init(path: String) -> bool {
     mill_human_db::init_database_path(path)
 }
 
-/// Inspect an NMM_LLM human-game SQLite database without requiring a query.
+/// Inspect a human-game SQLite database without requiring a query.
 #[flutter_rust_bridge::frb(sync)]
 pub fn mill_human_db_status(path: String) -> MillHumanDatabaseStatus {
     mill_human_db::database_status(path).into()
 }
 
-/// Query candidate moves for a Mill FEN from the initialized Human DB.
+/// Query candidate moves for a Mill FEN from the initialized Human Database.
 #[flutter_rust_bridge::frb(sync)]
 pub fn mill_human_db_query(
     fen: String,
@@ -710,7 +710,7 @@ pub fn mill_human_db_query(
     mill_human_db::query_moves(fen, max_moves, min_samples).into()
 }
 
-/// Release Human DB resources for the current process.
+/// Release Human Database resources for the current process.
 #[flutter_rust_bridge::frb(sync)]
 pub fn mill_human_db_deinit() {
     mill_human_db::deinit_database();

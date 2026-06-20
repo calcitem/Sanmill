@@ -43,15 +43,15 @@ MillPerfectDatabaseStatus millPerfectDbStatus({required String path}) =>
 void millPerfectDbDeinit() =>
     RustLib.instance.api.crateApiSimpleMillPerfectDbDeinit();
 
-/// Initialize a read-only NMM_LLM human-game SQLite database.
+/// Initialize a read-only human-game SQLite database.
 bool millHumanDbInit({required String path}) =>
     RustLib.instance.api.crateApiSimpleMillHumanDbInit(path: path);
 
-/// Inspect an NMM_LLM human-game SQLite database without requiring a query.
+/// Inspect a human-game SQLite database without requiring a query.
 MillHumanDatabaseStatus millHumanDbStatus({required String path}) =>
     RustLib.instance.api.crateApiSimpleMillHumanDbStatus(path: path);
 
-/// Query candidate moves for a Mill FEN from the initialized Human DB.
+/// Query candidate moves for a Mill FEN from the initialized Human Database.
 MillHumanDatabaseQuery millHumanDbQuery({
   required String fen,
   required int maxMoves,
@@ -62,7 +62,7 @@ MillHumanDatabaseQuery millHumanDbQuery({
   minSamples: minSamples,
 );
 
-/// Release Human DB resources for the current process.
+/// Release Human Database resources for the current process.
 void millHumanDbDeinit() =>
     RustLib.instance.api.crateApiSimpleMillHumanDbDeinit();
 
@@ -386,7 +386,7 @@ enum MillFormationActionInPlacingPhase {
   removalBasedOnMillCounts,
 }
 
-/// One Human DB move candidate mapped back into the current board orientation.
+/// One Human Database move candidate mapped back into the current board orientation.
 class MillHumanDatabaseMove {
   /// Move notation (`"a4"`, `"a1-a4"`, or complete `"a4xb6"`).
   final String notation;
@@ -435,7 +435,7 @@ class MillHumanDatabaseMove {
           scoreDelta == other.scoreDelta;
 }
 
-/// Human DB query result for the current Mill FEN.
+/// Human Database query result for the current Mill FEN.
 class MillHumanDatabaseQuery {
   final bool available;
   final String stateKey;
@@ -464,7 +464,7 @@ class MillHumanDatabaseQuery {
           moves == other.moves;
 }
 
-/// Runtime status for an optional NMM_LLM human-game SQLite database.
+/// Runtime status for an optional human-game SQLite database.
 class MillHumanDatabaseStatus {
   /// Whether the SQLite file could be opened and passed schema checks.
   final bool readable;

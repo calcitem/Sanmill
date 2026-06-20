@@ -59,7 +59,7 @@ class NativeMillAiTurnController {
   /// Optional opening-book lookup consulted before engine search.
   final OpeningBookProvider? openingBook;
 
-  /// Optional HumanDB lookup consulted before engine search.
+  /// Optional Human Database lookup consulted before engine search.
   final MillHumanDatabaseProvider? humanDatabase;
 
   PlayerSeat get aiSeat =>

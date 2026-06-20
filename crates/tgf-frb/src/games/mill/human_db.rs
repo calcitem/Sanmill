@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // Human-game database lookup for standard Nine Men's Morris positions.
 //
-// The database is produced by the optional NMM_LLM tooling.  It is intentionally
-// read-only here: Sanmill uses it as an advisory move source before falling
-// back to the native Rust search.
+// The database is produced outside Sanmill. It is intentionally read-only here:
+// Sanmill uses it as an advisory move source before falling back to the native
+// Rust search.
 
 #[cfg(not(target_arch = "wasm32"))]
 use std::path::Path;
@@ -137,7 +137,7 @@ pub(crate) fn init_database_path(path: String) -> bool {
     };
     *HUMAN_DB
         .lock()
-        .expect("Human DB mutex must not be poisoned") = Some(database);
+        .expect("Human Database mutex must not be poisoned") = Some(database);
     true
 }
 
@@ -148,7 +148,7 @@ pub(crate) fn deinit_database() {}
 pub(crate) fn deinit_database() {
     *HUMAN_DB
         .lock()
-        .expect("Human DB mutex must not be poisoned") = None;
+        .expect("Human Database mutex must not be poisoned") = None;
 }
 
 #[cfg(target_arch = "wasm32")]
@@ -190,7 +190,7 @@ pub(crate) fn query_moves(fen: String, max_moves: u32, min_samples: u32) -> Huma
 
     let guard = HUMAN_DB
         .lock()
-        .expect("Human DB mutex must not be poisoned");
+        .expect("Human Database mutex must not be poisoned");
     let Some(database) = guard.as_ref() else {
         return HumanDatabaseQuery {
             available: false,
@@ -220,7 +220,7 @@ pub(crate) fn query_moves(fen: String, max_moves: u32, min_samples: u32) -> Huma
 fn is_initialized_path(path: &str) -> bool {
     HUMAN_DB
         .lock()
-        .expect("Human DB mutex must not be poisoned")
+        .expect("Human Database mutex must not be poisoned")
         .as_ref()
         .is_some_and(|database| database.path == path)
 }
@@ -232,7 +232,7 @@ impl HumanDatabase {
             return Err(format!("Human game database file not found: {path}"));
         }
         let conn = Connection::open_with_flags(path, OpenFlags::SQLITE_OPEN_READ_ONLY)
-            .map_err(|err| format!("failed to open Human DB: {err}"))?;
+            .map_err(|err| format!("failed to open Human Database: {err}"))?;
         validate_schema(&conn)?;
 
         let schema_version = meta_value(&conn, "schema_version")?;
@@ -284,7 +284,7 @@ impl HumanDatabase {
                  ORDER BY ((wins + 0.4 * draws) * 1.0 / total) DESC, total DESC \
                  LIMIT ?3",
             )
-            .map_err(|err| format!("failed to prepare Human DB query: {err}"))?;
+            .map_err(|err| format!("failed to prepare Human Database query: {err}"))?;
 
         let rows = stmt
             .query_map(params![state_key, min_samples, max_moves], |row| {
@@ -296,12 +296,12 @@ impl HumanDatabase {
                     row.get::<_, u32>(4)?,
                 ))
             })
-            .map_err(|err| format!("failed to query Human DB moves: {err}"))?;
+            .map_err(|err| format!("failed to query Human Database moves: {err}"))?;
 
         let mut moves = Vec::new();
         for row in rows {
             let (notation, wins, losses, draws, total) =
-                row.map_err(|err| format!("failed to read Human DB row: {err}"))?;
+                row.map_err(|err| format!("failed to read Human Database row: {err}"))?;
             let Some(actual_notation) = transform_notation(&notation, inverse) else {
                 continue;
             };
@@ -344,9 +344,11 @@ fn validate_schema(conn: &Connection) -> Result<(), String> {
                 [table],
                 |row| row.get(0),
             )
-            .map_err(|err| format!("failed to inspect Human DB schema: {err}"))?;
+            .map_err(|err| format!("failed to inspect Human Database schema: {err}"))?;
         if !exists {
-            return Err(format!("Human DB is missing required table '{table}'"));
+            return Err(format!(
+                "Human Database is missing required table '{table}'"
+            ));
         }
     }
     Ok(())
@@ -357,7 +359,7 @@ fn meta_value(conn: &Connection, key: &str) -> Result<String, String> {
     conn.query_row("SELECT value FROM meta WHERE key = ?1", [key], |row| {
         row.get(0)
     })
-    .map_err(|err| format!("Human DB metadata '{key}' is missing or invalid: {err}"))
+    .map_err(|err| format!("Human Database metadata '{key}' is missing or invalid: {err}"))
 }
 
 #[cfg(not(target_arch = "wasm32"))]
@@ -365,7 +367,7 @@ fn count_rows(conn: &Connection, table: &str) -> Result<u32, String> {
     let sql = format!("SELECT COUNT(*) FROM {table}");
     let count = conn
         .query_row(&sql, [], |row| row.get::<_, u32>(0))
-        .map_err(|err| format!("failed to count Human DB table '{table}': {err}"))?;
+        .map_err(|err| format!("failed to count Human Database table '{table}': {err}"))?;
     Ok(count)
 }
 
@@ -386,11 +388,11 @@ fn state_key_from_fen(fen: &str) -> Result<(String, usize), String> {
     for (side, in_hand) in pieces_in_hand.iter().enumerate() {
         assert!(
             *in_hand <= 9,
-            "Human DB supports standard Nine Men's Morris hand counts only"
+            "Human Database supports standard Nine Men's Morris hand counts only"
         );
         assert!(
             pieces_on_board[side] + *in_hand <= 9,
-            "Human DB supports standard Nine Men's Morris piece totals only"
+            "Human Database supports standard Nine Men's Morris piece totals only"
         );
     }
 
@@ -435,7 +437,7 @@ fn nmm_board24(board: &[i8; 24]) -> String {
 fn canonical_board_str(board24: &str) -> (String, usize) {
     assert!(
         board24.len() == 24,
-        "Human DB canonicalization requires a 24-character board"
+        "Human Database canonicalization requires a 24-character board"
     );
     let mut best = board24.to_owned();
     let mut best_idx = 0;

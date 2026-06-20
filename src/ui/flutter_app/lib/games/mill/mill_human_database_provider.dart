@@ -64,7 +64,7 @@ class MillHumanDatabaseProvider implements OpeningBookProvider {
         .ensureReadySync(generalSettings.humanDatabaseFilePath);
     if (!ready.ready) {
       logger.w(
-        '[MillHumanDatabaseProvider] Human DB unavailable: ${ready.status.error}',
+        '[MillHumanDatabaseProvider] Human Database unavailable: ${ready.status.error}',
       );
       return null;
     }
@@ -76,7 +76,7 @@ class MillHumanDatabaseProvider implements OpeningBookProvider {
     );
     if (!query.available) {
       logger.w(
-        '[MillHumanDatabaseProvider] Human DB query unavailable: ${query.error}',
+        '[MillHumanDatabaseProvider] Human Database query unavailable: ${query.error}',
       );
       return null;
     }
@@ -134,7 +134,7 @@ class MillHumanDatabaseProvider implements OpeningBookProvider {
     final GameAction? action = _findLegalAction(session, captureMove);
     assert(
       action != null || !_isRemoveTurn(session),
-      'Human DB suggested capture $captureMove is not legal in the remove turn.',
+      'Human Database suggested capture $captureMove is not legal in the remove turn.',
     );
     lastStats = action == null ? null : _pendingStats;
     _pendingCapture = null;
@@ -170,11 +170,11 @@ class _HumanDbMoveParts {
     final String captureMove = notation.substring(captureIndex);
     assert(
       baseMove.isNotEmpty,
-      'Human DB move notation must include a base move.',
+      'Human Database move notation must include a base move.',
     );
     assert(
       captureMove.length > 1,
-      'Human DB capture notation must include a target.',
+      'Human Database capture notation must include a target.',
     );
     return _HumanDbMoveParts(baseMove: baseMove, captureMove: captureMove);
   }

@@ -1659,7 +1659,7 @@
     "@useOpeningBook_Detail": {},
     "useHumanGameDatabase": "Use human game database",
     "@useHumanGameDatabase": {},
-    "useHumanGameDatabase_Detail": "Let the AI consult an external NMM_LLM human-game SQLite database before falling back to search.",
+    "useHumanGameDatabase_Detail": "Let the AI consult an external human-game SQLite database before falling back to search.",
     "@useHumanGameDatabase_Detail": {},
     "humanGameDatabaseFile": "Human game database file",
     "@humanGameDatabaseFile": {},
@@ -1693,7 +1693,7 @@
             }
         }
     },
-    "humanGameDatabaseStatsLine": "Human DB {move}: W {winPct}%, D {drawPct}%, L {lossPct}% (n={total})",
+    "humanGameDatabaseStatsLine": "Human Database {move}: W {winPct}%, D {drawPct}%, L {lossPct}% (n={total})",
     "@humanGameDatabaseStatsLine": {
         "placeholders": {
             "move": {

@@ -344,15 +344,15 @@ class GeneralSettings {
   @HiveField(45, defaultValue: false)
   final bool experienceRecordingEnabled;
 
-  // Enable the optional external NMM_LLM human-game SQLite database.
+  // Enable the optional external human-game SQLite database.
   @HiveField(47, defaultValue: false)
   final bool humanDatabaseEnabled;
 
-  // Local path to an external NMM_LLM human-game SQLite database.
+  // Local path to an external human-game SQLite database.
   @HiveField(48, defaultValue: "")
   final String humanDatabaseFilePath;
 
-  // Show the latest HumanDB move statistics below the board.
+  // Show the latest Human Database move statistics below the board.
   @HiveField(49, defaultValue: false)
   final bool showHumanDatabaseStats;
 
