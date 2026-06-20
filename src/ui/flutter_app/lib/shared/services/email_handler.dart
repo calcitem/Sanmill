@@ -13,6 +13,7 @@ import 'package:flutter_email_sender/flutter_email_sender.dart';
 
 import '../../general_settings/services/config_import_export_service.dart';
 import 'logger.dart';
+import 'report_attachment_registry.dart';
 
 /// A catcher_2 [ReportHandler] that sends crash reports via e-mail and
 /// attaches a freshly-exported sanmill_config archive so the developer can
@@ -53,11 +54,19 @@ class SanmillEmailHandler extends BaseEmailHandler {
           report.screenshot!.path,
         ?configPath,
         ?memoryLogPath,
-        if (crashLogPath != null &&
-            crashLogPath != memoryLogPath &&
-            File(crashLogPath).existsSync())
+        if (crashLogPath != memoryLogPath && File(crashLogPath).existsSync())
           crashLogPath,
       ];
+
+      // Feature layers (e.g. the Mill move-list exporter) contribute extra
+      // files through the registry so this handler stays game-agnostic.
+      final List<String> extraAttachments =
+          await ReportAttachmentRegistry.collectPaths();
+      for (final String path in extraAttachments) {
+        if (!attachments.contains(path) && File(path).existsSync()) {
+          attachments.add(path);
+        }
+      }
 
       _printLog(
         '$_logTag Sending crash report email '

@@ -100,7 +100,7 @@ void main() {
       );
 
       final String exported = formatMemoryLogsForExport(
-        exportedAt: DateTime.utc(2026, 1),
+        exportedAt: DateTime.utc(2026),
       );
       expect(exported, contains('Sanmill logs - 2026-01-01T00:00:00.000'));
       expect(exported, contains('[INFO]'));

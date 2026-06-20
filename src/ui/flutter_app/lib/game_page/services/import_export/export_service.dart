@@ -15,6 +15,31 @@ enum ExportVariationOption {
 class ExportService {
   const ExportService._();
 
+  /// Exports the current mainline move list (with PGN tag pairs) to a
+  /// temporary `.pgn` file, suitable for attaching to crash / error reports.
+  ///
+  /// Returns the file path, or `null` when there is no move to export so the
+  /// report does not carry an empty attachment.  Registered with
+  /// [ReportAttachmentRegistry] during app start-up.
+  static Future<String?> exportMoveListToTempFile() async {
+    final GameRecorder recorder = GameController().gameRecorder;
+    final String moveText = recorder.moveHistoryTextWithoutVariations;
+    if (moveText.trim().isEmpty) {
+      return null;
+    }
+
+    final String content = ImportService.addTagPairs(moveText);
+    final Directory tempDir = await getTemporaryDirectory();
+    final String timestamp = DateTime.now()
+        .toIso8601String()
+        .replaceAll(':', '-')
+        .split('.')
+        .first;
+    final File file = File('${tempDir.path}/sanmill_movelist_$timestamp.pgn');
+    await file.writeAsString(content);
+    return file.path;
+  }
+
   /// Exports the game to the device's clipboard.
   /// If the game contains variations, asks the user what to export.
   static Future<void> exportGame(

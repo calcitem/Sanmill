@@ -18,7 +18,7 @@ import 'package:hive_ce_flutter/hive_flutter.dart' show Box;
 
 import 'appearance_settings/models/display_settings.dart';
 import 'experience_recording/services/recording_navigator_observer.dart';
-import 'game_page/services/mill.dart' show LoadService;
+import 'game_page/services/mill.dart' show ExportService, LoadService;
 import 'game_platform/game_registry.dart';
 import 'games/built_in_game_modules.dart';
 import 'general_settings/models/general_settings.dart';
@@ -32,6 +32,7 @@ import 'shared/database/settings_side_effect_coordinator.dart';
 import 'shared/services/catcher_service.dart';
 import 'shared/services/environment_config.dart';
 import 'shared/services/logger.dart';
+import 'shared/services/report_attachment_registry.dart';
 import 'shared/services/screenshot_service.dart';
 import 'shared/services/snackbar_service.dart';
 import 'shared/services/system_ui_service.dart';
@@ -70,6 +71,10 @@ Future<void> main() async {
 
   registerBuiltInGameModules(GameRegistry.instance);
   SettingsRepositories.instance.init();
+
+  // Attach the current move list to crash / error reports so engine-failure
+  // diagnostics ship with a replayable PGN file.
+  ReportAttachmentRegistry.register(ExportService.exportMoveListToTempFile);
 
   // Wire engine callbacks through the active module so settings changes do not
   // depend on a specific game implementation.
