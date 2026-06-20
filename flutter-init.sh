@@ -6,6 +6,10 @@ source "${SCRIPT_DIR}/scripts/ensure_flutter.sh"
 
 ensure_flutter_on_path
 
+# shellcheck source=scripts/ensure_rust.sh
+source "${SCRIPT_DIR}/scripts/ensure_rust.sh"
+ensure_rust_on_path
+
 APP_DIR="${SCRIPT_DIR}/src/ui/flutter_app"
 GEN_FILE_PATH="${APP_DIR}/lib/generated"
 FLUTTER_VERSION_FILE="${GEN_FILE_PATH}/flutter_version.dart"
@@ -84,11 +88,7 @@ sed -i.bak -e ':a' -e 'N' -e '$!ba' -e 's/}\([[:space:]]*\)$/};\1/' "${FLUTTER_V
 echo "[flutter-init] Generating FRB bindings..."
 bash "${SCRIPT_DIR}/scripts/generate_frb.sh"
 
-if command -v cargo &>/dev/null; then
-  echo "[flutter-init] Building Rust workspace (cargo build --workspace)..."
-  ( cd "${SCRIPT_DIR}" && cargo build --workspace ) || \
-    echo "[flutter-init] WARN: Rust workspace build failed (see above)."
-else
-  echo "[flutter-init] SKIP: cargo not found; Rust workspace not built."
-fi
+echo "[flutter-init] Building Rust workspace (cargo build --workspace)..."
+( cd "${SCRIPT_DIR}" && cargo build --workspace ) || \
+  echo "[flutter-init] WARN: Rust workspace build failed (see above)."
 
