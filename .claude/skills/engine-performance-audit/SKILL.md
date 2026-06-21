@@ -956,14 +956,23 @@ Behavior-changing or high-risk experiments:
   `moving_entry` much faster, but it changes TT collision behavior and node
   counts. Treat it as a diagnostic for cache locality, not a default release
   fix, unless node-count parity is explicitly re-baselined and accepted.
-- TT prefetch: `TGF_PREFETCH_MODE=first` can help some moving/capture probes
-  without changing nodes, while `all` has shown regressions. It is currently
-  default-off, but because TT memory traffic is the dominant cost, prefetch is
-  the single most bottleneck-aligned conservative lever and was only rejected on
-  thin 1-2 position timing. Re-evaluate it with cache-miss / LLC-miss counters
-  on the deep moving matrix (not wall-clock on `start` / `reduced_material`),
-  comparing first-only `key_after` prefetch against `all`, before concluding it
-  cannot pay off.
+- TT prefetch (RESOLVED 2026-06-21, now default-on for the CLI engine):
+  re-measured on an AMD Ryzen 9 7950X3D (Zen4, 3D V-Cache) under the new
+  evidence bar. `all` (full prefetch) is a node-preserving win on every tested
+  position vs off — start d12 0.77x, placing8 d12 0.87x, placing14 d12 0.88x,
+  capture_pending d12 0.83x, reduced_material d12 0.94x, moving_entry d20 0.85x,
+  moving_loop d20 0.88x, flutter_n30_e20_black20 0.95x — with identical
+  node/bestmove/score. (placing8 first looked like a 1.07x regression at
+  repeat=5; that was noise — at repeat=11 it is a 0.87x win, a live example of
+  the evidence bar above.) AMD uProf `assess` confirmed the mechanism: off->all
+  raised IPC 1.59->2.39 and cut CYCLES_NOT_IN_HALT ~33% at equal RETIRED_INST,
+  i.e. prefetch hides the dominant TT miss latency (helped here by the large
+  V-Cache L3). `first` was ~flat. `prefetch_mode_from_env` now returns `all`
+  when `TGF_PREFETCH_MODE` is unset; override with `=off` / `=first`. The
+  earlier slow-PC "all regresses" note was microarchitecture-specific. STILL
+  PENDING: validate on Intel and mobile ARM before enabling prefetch in the
+  game-neutral `SearchOptions::default()` and the FRB/Flutter search path,
+  which both remain off for now.
 - TT allocation/reuse: master owns a process-global TT and `clear()` is a
   fake-clean generation bump. Rust UCI and FRB search paths must reuse
   `SharedTt` across searches and call `clear_tt()` / `bump_age()` before each

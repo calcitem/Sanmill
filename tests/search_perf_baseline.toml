@@ -11,13 +11,13 @@
 # next-branch revisions.
 
 [meta]
-locked_at = "2026-06-19T13:52:52Z"
-git_commit = "5164064c1+working-tree"
-platform = "linux-x86_64-local"
+locked_at = "2026-06-21T07:45:00+08:00"
+git_commit = "69193db4a+working-tree (prefetch default-on)"
+platform = "windows-x86_64 AMD Ryzen 9 7950X3D (Zen4, 3D V-Cache)"
 build_flags = "cargo build --release -p tgf-cli"
-command = "python3 scripts/compare_engine_perf.py --current 'target/release/tgf uci' --master '/tmp/sanmill_perf_head_target/release/tgf uci' --current-depth-go 'gomtdf {depth}' --master-depth-go 'gomtdf {depth}' --cases start,reduced_material --skills 15 --depths 12 --repeat 7 --timeout 240"
+command = "python scripts/compare_engine_perf.py --current 'target/release/tgf.exe uci' --master 'target/release/tgf.exe uci' --current-depth-go 'gomtdf {depth}' --master-depth-go 'gomtdf {depth}' --cases start,reduced_material --skills 15 --depths 12 --repeat 7 --timeout 120"
 summary_method = "median elapsed_ms from current engine rows"
-notes = "Locked after adding a batch move-order scoring hook and a Mill node-local scorer that reuses side bitboards, phase flags, and standard-rule booleans across one generated move list. Same-run A/B against 5164064c1 kept bestmove/score/nodes unchanged; timing was 0.937x start and 0.908x reduced_material. Raw candidate CSV: /tmp/sanmill_move_order_batch_scores_r7.csv."
+notes = "Re-collected on a high-performance Windows PC (AMD Ryzen 9 7950X3D) after enabling full TT prefetch by default (TGF_PREFETCH_MODE unset => all). Node counts, bestmove, and score are unchanged from the prior baseline (parity preserved); only timing improved. AMD uProf 'assess' on a 6x start-d12 workload showed off->all: IPC 1.59->2.39, CPI 0.628->0.419, CYCLES_NOT_IN_HALT -33% at equal RETIRED_INST. Prefetch is a node-preserving latency-hiding win on this Zen4/V-Cache part; override with TGF_PREFETCH_MODE=off/first. Prior baseline (slow PC, prefetch off): start 1098.21 ms / 196.81 ns-node, reduced_material 835.00 ms / 260.13 ns-node."
 
 [thresholds]
 max_elapsed_regress_pct = 8.0
@@ -34,9 +34,9 @@ bestmove = "d6"
 score = 3
 depth = 12
 nodes = 5_580_055
-median_ms = 1098.21
-ns_per_node = 196.81
-run_ms = [1098.21, 1078.32, 1131.92, 992.49, 1176.33, 1079.00, 1170.98]
+median_ms = 344.19
+ns_per_node = 61.68
+run_ms = [367.71, 337.04, 334.74, 366.02, 344.19, 332.45, 359.14]
 
 [[cases]]
 name = "reduced_material"
@@ -46,6 +46,6 @@ bestmove = "c4-b4"
 score = -89
 depth = 12
 nodes = 3_209_969
-median_ms = 835.00
-ns_per_node = 260.13
-run_ms = [914.01, 758.65, 792.59, 835.00, 798.23, 922.59, 965.36]
+median_ms = 283.50
+ns_per_node = 88.32
+run_ms = [288.69, 286.86, 285.96, 279.69, 278.42, 281.27, 283.50]
