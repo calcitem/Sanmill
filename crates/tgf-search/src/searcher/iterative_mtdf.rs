@@ -59,6 +59,7 @@ impl<G: Game> Searcher<G> {
         let aspiration_enabled = self.options.enable_aspiration_window;
         for depth in 2..=max_depth {
             self.tt.bump_age();
+            self.tt_age = self.tt.current_age();
             self.tt_age_bumps += 1;
             if !aspiration_enabled || depth < 3 || result.score.abs() >= ASPIRATION_MAX_WINDOW {
                 // Master shape: full window for every IDS iteration.

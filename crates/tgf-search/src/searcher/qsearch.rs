@@ -134,7 +134,7 @@ impl<G: Game> Searcher<G> {
         alpha: &mut i32,
         beta: &mut i32,
     ) -> TtProbe {
-        let Some((value, bound)) = self.tt.probe_value_bound(key, depth) else {
+        let Some((value, bound)) = self.tt.probe_value_bound_at_age(key, depth, self.tt_age) else {
             return TtProbe::Miss;
         };
         match bound {
@@ -160,13 +160,14 @@ impl<G: Game> Searcher<G> {
 
     #[inline]
     pub(super) fn save_tt(&mut self, key: u64, depth: i32, value: i32, bound: Bound) {
-        self.tt.save(
+        self.tt.save_at_age(
             key,
             TtEntry {
                 value,
                 depth,
                 bound,
             },
+            self.tt_age,
         );
     }
 

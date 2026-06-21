@@ -221,8 +221,12 @@ impl ClusteredTt {
     }
 
     #[inline(always)]
-    pub(crate) fn probe_value_bound(&self, key: u64, depth: i32) -> Option<(i32, Bound)> {
-        let cur_age = self.current_age.load(Ordering::Relaxed);
+    pub(crate) fn probe_value_bound_at_age(
+        &self,
+        key: u64,
+        depth: i32,
+        cur_age: u8,
+    ) -> Option<(i32, Bound)> {
         let key_sig = TtPackedEntry::key_sig(key);
         let meta = self.clusters[self.cluster_ix_from_sig(key_sig)]
             .meta
@@ -242,9 +246,15 @@ impl ClusteredTt {
         ))
     }
 
+    #[cfg(test)]
     #[inline(always)]
     pub(crate) fn save(&self, key: u64, entry: TtEntry) {
         let cur_age = self.current_age.load(Ordering::Relaxed);
+        self.save_at_age(key, entry, cur_age);
+    }
+
+    #[inline(always)]
+    pub(crate) fn save_at_age(&self, key: u64, entry: TtEntry, cur_age: u8) {
         let new_meta = TtPackedEntry::pack_meta(key, &entry, cur_age);
         let key_sig = TtPackedEntry::key_sig(key);
         let ix = self.cluster_ix_from_sig(key_sig);

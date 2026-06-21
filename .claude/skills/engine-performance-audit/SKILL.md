@@ -924,12 +924,24 @@ Bottleneck-aligned conservative candidates added 2026-06-21 (see review):
   (`MillMoveOrderScorer::score` ~11%, `order_moves` ~8%, `remove_move_score` ~3%
   => ~22%).  Target move generation / apply / move-order scoring next, not
   repetition.
-- Snapshot the TT generation per search.  `ClusteredTt::get` /
-  `probe_value_bound` / `save` each reload `current_age` (a relaxed atomic) on
-  every node, yet it is constant during one search; caching it in the
-  `Searcher` removes those loads.  Likely negligible on x86 (a hot L1 `mov`),
-  so measure with a counter first and keep it only if the reduction is real —
-  listed mainly so it is not mistaken for a large win.
+- [x] Snapshot the TT generation per search.  `ClusteredTt::get` /
+  `probe_value_bound` / `save` each reloaded `current_age` (a relaxed atomic)
+  on every node, yet it is constant during one search.  Cache it in
+  `Searcher`, synchronize at root-search start and after Searcher-owned TT age
+  bumps, and keep the old uncached `get` path for diagnostics.
+
+  Done on 2026-06-21: added a Searcher-local `tt_age` used by the hot
+  `probe_tt` / `save_tt` path.  This preserves SharedTt semantics because
+  UCI/FRB either bump before constructing workers or call `clear_tt()` through
+  the Searcher, and root-search start also resynchronizes in case an external
+  SharedTt bump happened before reuse.  Fixed-position checks preserved
+  bestmove, score, and node counts.  Against the previous Linux/KVM lock:
+  `start` depth 12 improved 1033.03 ms -> 972.67 ms (`5.84%`),
+  `reduced_material` depth 12 improved 935.05 ms -> 866.56 ms (`7.32%`),
+  `moving_loop` depth 18 was effectively flat/noisy at 52.86 ms -> 53.33 ms,
+  and `capture_pending` depth 18 improved 1899.53 ms -> 1765.44 ms (`7.06%`).
+  Treat this as a small node-preserving cleanup, not a replacement for deeper
+  TT layout / replacement experiments.
 
 Behavior-changing or high-risk experiments:
 

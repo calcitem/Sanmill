@@ -11,14 +11,14 @@
 # next-branch revisions.
 
 [meta]
-locked_at = "2026-06-21T06:42:52+00:00"
-git_commit = "77455bffc+working-tree (standard move-order/movegen)"
+locked_at = "2026-06-21T11:45:40+00:00"
+git_commit = "b404f2dee+working-tree (TT age cache)"
 platform = "linux-x86_64 KVM 4 vCPU Intel Xeon E5-2680 v4 @ 2.40GHz"
 build_flags = "cargo build --release -p tgf-cli"
 command = "python3 scripts/compare_engine_perf.py --current 'target/release/tgf uci' --master 'target/release/tgf uci' --current-depth-go 'gomtdf {depth}' --master-depth-go 'gomtdf {depth}' --cases start,reduced_material --skills 15 --depths 12 --repeat 7 --timeout 240"
 supplemental_command = "python3 scripts/compare_engine_perf.py --current 'target/release/tgf uci' --master 'target/release/tgf uci' --current-depth-go 'gomtdf {depth}' --master-depth-go 'gomtdf {depth}' --cases moving_loop,capture_pending --skills 15 --depths 18 --repeat 5 --timeout 240"
 summary_method = "median elapsed_ms from current engine rows"
-notes = "Re-collected in the current Linux/KVM workspace after the previous locked data came from a different high-performance Windows PC (AMD Ryzen 9 7950X3D). Do not compare elapsed time across those machines. TGF_PREFETCH_MODE was unset, so the CLI used its current default. The command intentionally uses the same Rust binary for current/master labels; this file locks the next-branch Rust baseline, while master remains the external parity reference. This lock includes the accepted standard move-generation branch hoist and lazy moving-phase block-score cache. Raw CSVs during collection: /tmp/sanmill-perf/search_after_lazy_standard_moving_scores_primary.csv and /tmp/sanmill-perf/search_after_lazy_standard_moving_scores.csv. Supplemental observation only: /tmp/sanmill-perf/search_after_lazy_standard_moving_scores_d22.csv kept bestmove/score/nodes identical at moving_loop depth 22."
+notes = "Re-collected in the current Linux/KVM workspace after the previous locked data came from a different high-performance Windows PC (AMD Ryzen 9 7950X3D). Do not compare elapsed time across those machines. TGF_PREFETCH_MODE was unset, so the CLI used its current default. The command intentionally uses the same Rust binary for current/master labels; this file locks the next-branch Rust baseline, while master remains the external parity reference. This lock includes the accepted standard move-generation branch hoist, lazy moving-phase block-score cache, and Searcher-cached TT generation age. Raw CSVs during collection: /tmp/sanmill-perf/search_after_tt_age_cache_primary.csv and /tmp/sanmill-perf/search_after_tt_age_cache_moving.csv."
 
 [thresholds]
 max_elapsed_regress_pct = 8.0
@@ -35,9 +35,9 @@ bestmove = "d6"
 score = 3
 depth = 12
 nodes = 5_580_055
-median_ms = 1033.03
-ns_per_node = 185.13
-run_ms = [1126.62, 1033.03, 1011.17, 999.27, 1011.28, 1103.08, 1037.26]
+median_ms = 972.67
+ns_per_node = 174.31
+run_ms = [944.00, 974.96, 972.67, 935.45, 949.92, 1187.33, 1229.30]
 
 [[cases]]
 name = "reduced_material"
@@ -47,9 +47,9 @@ bestmove = "c4-b4"
 score = -89
 depth = 12
 nodes = 3_209_969
-median_ms = 935.05
-ns_per_node = 291.30
-run_ms = [770.21, 985.30, 853.88, 959.05, 888.13, 935.05, 1011.87]
+median_ms = 866.56
+ns_per_node = 269.96
+run_ms = [736.09, 736.55, 869.66, 871.47, 964.16, 810.26, 866.56]
 
 [[cases]]
 name = "moving_loop"
@@ -59,9 +59,9 @@ bestmove = "c4-c5"
 score = 0
 depth = 18
 nodes = 137_221
-median_ms = 52.86
-ns_per_node = 385.22
-run_ms = [59.85, 48.95, 57.33, 52.86, 51.38]
+median_ms = 53.33
+ns_per_node = 388.64
+run_ms = [53.33, 55.04, 63.84, 44.11, 42.49]
 
 [[cases]]
 name = "capture_pending"
@@ -71,6 +71,6 @@ bestmove = "xf4"
 score = 28
 depth = 18
 nodes = 7_842_354
-median_ms = 1899.53
-ns_per_node = 242.21
-run_ms = [1715.63, 1883.04, 2229.38, 1899.53, 2000.25]
+median_ms = 1765.44
+ns_per_node = 225.12
+run_ms = [1774.16, 1765.44, 1867.70, 1650.28, 1518.20]

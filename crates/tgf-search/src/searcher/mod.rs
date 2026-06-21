@@ -68,6 +68,13 @@ pub struct Searcher<G: Game> {
     tt_age_bumps: u64,
     rng_state: u64,
     tt: Arc<ClusteredTt>,
+    /// Cached TT generation for hot probe/save calls.
+    ///
+    /// The TT age changes only on explicit clear / IDS bump.  Synchronizing it
+    /// at root-search boundaries avoids an atomic age load at every TT probe
+    /// and save while still observing external SharedTt bumps before a search
+    /// starts.
+    tt_age: u8,
     policy: SearchPolicy,
     options: SearchOptions,
     /// Maximum quiescence depth extension beyond `depth == 0`.  Mirrors the
@@ -96,6 +103,7 @@ impl<G: Game> Default for Searcher<G> {
 
 impl<G: Game> Searcher<G> {
     fn with_tt_arc(tt: Arc<ClusteredTt>) -> Self {
+        let tt_age = tt.current_age();
         Self {
             nodes: 0,
             tt_hits: 0,
@@ -104,6 +112,7 @@ impl<G: Game> Searcher<G> {
             tt_age_bumps: 0,
             rng_state: 0x9E37_79B9_7F4A_7C15,
             tt,
+            tt_age,
             policy: SearchPolicy::default(),
             options: SearchOptions::default(),
             qsearch_max_depth: 0,
@@ -201,6 +210,7 @@ impl<G: Game> Searcher<G> {
     /// stale on the next probe, matching the C++ fake-clean semantics.
     pub fn clear_tt(&mut self) {
         self.tt.bump_age();
+        self.tt_age = self.tt.current_age();
         self.tt_age_bumps += 1;
     }
 
@@ -723,6 +733,7 @@ impl<G: Game> Searcher<G> {
         self.tt_misses = 0;
         self.repetition_cuts = 0;
         self.aborted = false;
+        self.tt_age = self.tt.current_age();
         self.repetition_stack.clear();
         self.repetition_current_incoming_reset = false;
         self.fixed_depth_no_budget =
