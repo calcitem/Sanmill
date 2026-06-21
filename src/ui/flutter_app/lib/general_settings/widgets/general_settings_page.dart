@@ -418,18 +418,61 @@ class GeneralSettingsPage extends StatelessWidget {
     if (result == null || result.files.single.path == null) {
       return;
     }
-
-    final String path = result.files.single.path!;
-    final HumanDatabaseReadyResult ready = await HumanDatabaseService.instance
-        .ensureReady(path);
     if (!context.mounted) {
       return;
     }
-    if (!ready.ready) {
+
+    final String pickedPath = result.files.single.path!;
+
+    // Persisting a multi-hundred-MB database takes a moment; block input with
+    // a progress dialog so the user does not re-tap and queue a second import.
+    showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) => AlertDialog(
+        content: Row(
+          children: <Widget>[
+            const CircularProgressIndicator(),
+            const SizedBox(width: 16),
+            Expanded(child: Text(S.of(context).pleaseWait)),
+          ],
+        ),
+      ),
+    );
+
+    String? persistentPath;
+    HumanDatabaseReadyResult? ready;
+    String? error;
+    try {
+      // Copy the picked file out of the OS cache into durable app-private
+      // storage first (see HumanDatabaseService.importDatabaseFile); the cache
+      // path FilePicker returns is cleared by the system and would leave the
+      // feature "enabled but file gone".  Validate the persisted copy.
+      persistentPath = await HumanDatabaseService.instance.importDatabaseFile(
+        pickedPath,
+      );
+      ready = await HumanDatabaseService.instance.ensureReady(persistentPath);
+    } catch (e) {
+      error = '$e';
+    }
+
+    if (!context.mounted) {
+      return;
+    }
+    Navigator.of(context, rootNavigator: true).pop(); // dismiss progress
+
+    if (error != null ||
+        persistentPath == null ||
+        ready == null ||
+        !ready.ready) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
-            S.of(context).humanGameDatabaseLoadFailed(ready.status.error),
+            S
+                .of(context)
+                .humanGameDatabaseLoadFailed(
+                  error ?? ready?.status.error ?? '',
+                ),
           ),
         ),
       );
@@ -439,7 +482,7 @@ class GeneralSettingsPage extends StatelessWidget {
     _settingsRepository.generalSettings = generalSettings.copyWith(
       humanDatabaseEnabled:
           enableAfterPick || generalSettings.humanDatabaseEnabled,
-      humanDatabaseFilePath: path,
+      humanDatabaseFilePath: persistentPath,
     );
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -453,7 +496,7 @@ class GeneralSettingsPage extends StatelessWidget {
         ),
       ),
     );
-    logger.t("$_logTag humanDatabaseFilePath: $path");
+    logger.t("$_logTag humanDatabaseFilePath: $persistentPath");
   }
 
   void _clearHumanDatabaseFile(GeneralSettings generalSettings) {
