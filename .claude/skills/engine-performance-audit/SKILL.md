@@ -863,11 +863,19 @@ Conservative, node-preserving candidates:
 
 Bottleneck-aligned conservative candidates added 2026-06-21 (see review):
 
-- Back the 128 MiB TT with large pages on Windows.  `advise_huge_pages` only
-  calls `madvise(MADV_HUGEPAGE)` on Linux, so on Windows the table uses 4 KiB
-  pages and pays extra dTLB misses on exactly the random TT access that
-  dominates deep search.  Measure `VirtualAlloc(MEM_LARGE_PAGES)` (needs the
-  SeLockMemoryPrivilege) for the process-global TT; node counts are unchanged.
+- Large pages for the 128 MiB TT: tried on Windows in `f439c38c0`
+  (`VirtualAlloc(MEM_LARGE_PAGES)`) and reverted in `65999263e`.  Windows large
+  pages REQUIRE `SeLockMemoryPrivilege` ("Lock pages in memory"), which ordinary
+  users never enable (it needs an admin policy change plus a re-login), so the
+  path was dormant for end users (4 KiB fallback = zero benefit) while carrying
+  unsafe FFI (token-privilege adjustment, VirtualAlloc/VirtualFree, a backing
+  enum).  Default-on prefetch already hides most of the TT miss + TLB latency it
+  targeted (the prefetch warms the cache line and its TLB translation), and
+  Windows has no privilege-free transparent-huge-page mechanism, so there is no
+  way to reach normal users.  Linux still benefits for free via the kept
+  `madvise(MADV_HUGEPAGE)` hint in `advise_huge_pages`.  Revisit only if Windows
+  gains a privilege-free large-page path, or a privilege-holding benchmark shows
+  a real gain ON TOP of prefetch.
 - Re-time the noise-rejected node-preserving micro-optimizations.  The
   mill-formation score table, the remove-target bitset ordering, and the
   fixed-depth abort-check trim were each reverted on a <5% delta from `start` +
@@ -985,8 +993,11 @@ Behavior-changing or high-risk experiments:
   "first search faults on demand-zero pages" hypothesis is therefore already
   handled for the initial allocation; do not re-derive it. The remaining open
   work is (a) parallelizing that first-touch for very large hashes and (b)
-  backing the table with large pages (Linux `madvise(MADV_HUGEPAGE)` is wired;
-  Windows uses 4 KiB pages today). Validate page behavior with
+  large pages -- Linux gets transparent THP for free via `madvise`, but the
+  Windows `VirtualAlloc(MEM_LARGE_PAGES)` path was tried (`f439c38c0`) and
+  reverted (`65999263e`): it needs `SeLockMemoryPrivilege` that normal users
+  lack (dormant, 4 KiB fallback), so it is not a general Windows win. Validate
+  page behavior with
   `perf stat -e page-faults,minor-faults,dTLB-load-misses` (Linux) or WPA/ETW
   memory counters (Windows) on a fresh-process first `gomtdf` probe.
 - Measurement caveat: `scripts/compare_engine_perf.py` starts a fresh process
