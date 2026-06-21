@@ -906,6 +906,21 @@ Conservative, node-preserving candidates:
   temporary `[i32; 72]` score array beside a 72-action stack list.  A
   Mill-specific packed move list can use a narrower score lane if assertions
   prove no comparison-changing saturation occurs.
+- [x] Short-circuit all-zero standard move-order score lists: CHECKED
+  2026-06-21, rejected.  The prototype detected standard placing/moving cases
+  where neither side can form or block a mill, wrote zero scores into the
+  existing buffer, and returned "already sorted" without inspecting each
+  action.  It preserved bestmove, score, and nodes, but A/B against `c61a47060`
+  was slower or flat: `start` d12 `1.076x`, `reduced_material` d12 `1.093x`,
+  `moving_loop` d18 `1.022x`, and `capture_pending` d18 `1.011x`.  Raw CSVs:
+  `/tmp/sanmill-perf/search_zero_score_fast_path_vs_c61a_primary.csv` and
+  `/tmp/sanmill-perf/search_zero_score_fast_path_vs_c61a_moving.csv`.
+
+  Theory after measurement: the existing per-action loop is simple enough for
+  the compiler, while the extra early branches and helper call change the hot
+  function shape without removing a dominant cost.  Revisit only together with
+  a packed score/action list, where skipping per-action `Action` loads may
+  become a real saving.
 - Preserve master-style debug hooks without hot-path branches.  Legacy
   `search.cpp` has many subtree node-count diagnostics that helped isolate
   parity mismatches, but they are hard-coded branches.  Rust diagnostics should
