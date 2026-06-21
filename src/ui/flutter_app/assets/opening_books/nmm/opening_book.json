@@ -1,0 +1,1219 @@
+{
+  "schemaVersion": 1,
+  "variant": "nmm",
+  "symmetry": "ring16",
+  "oracle": {
+    "********/********/******** w p p 0 9 0 9 0 0 -1 -1 -1 -1 0 0 1 ids:nodes": [
+      "d2",
+      "b4",
+      "d6",
+      "f4",
+      "b2",
+      "b6",
+      "f6",
+      "f2"
+    ],
+    "********/*******O/******** b p p 1 8 0 9 0 0 -1 -1 -1 -1 0 0 1 ids:nodes": [
+      "d2",
+      "f4",
+      "f2"
+    ],
+    "********/******O*/******** b p p 1 8 0 9 0 0 -1 -1 -1 -1 0 0 1 ids:nodes": [
+      "f4",
+      "f2",
+      "f6",
+      "d2",
+      "d6",
+      "b6",
+      "b2"
+    ],
+    "********/******O@/******** w p p 1 8 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes": [
+      "f2"
+    ],
+    "********/****@**O/******** w p p 1 8 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes": [
+      "f2"
+    ],
+    "********/****@*O*/******** w p p 1 8 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes": [
+      "f4"
+    ],
+    "********/****O**@/******** w p p 1 8 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes": [
+      "f2",
+      "b4",
+      "f4"
+    ],
+    "********/****O*O@/******** b p p 2 7 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes": [
+      "f2"
+    ],
+    "********/***@***O/******** w p p 1 8 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes": [
+      "b4",
+      "f4",
+      "d2"
+    ],
+    "********/***@**OO/******** b p p 2 7 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes": [
+      "b2"
+    ],
+    "********/***@O**O/******** b p p 2 7 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes": [
+      "f4",
+      "b4",
+      "d6"
+    ],
+    "********/***@O*O@/******** w p p 2 7 2 7 0 0 -1 -1 -1 -1 0 0 3 ids:nodes": [
+      "f4",
+      "d6"
+    ],
+    "********/***@O@OO/******** b p p 3 6 2 7 0 0 -1 -1 -1 -1 0 0 3 ids:nodes": [
+      "a4",
+      "c4",
+      "d6"
+    ],
+    "********/***O**@O/******** b p p 2 7 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes": [
+      "d2",
+      "d6"
+    ],
+    "********/***O@*@O/******** w p p 2 7 2 7 0 0 -1 -1 -1 -1 0 0 3 ids:nodes": [
+      "f4",
+      "d6"
+    ],
+    "********/**@***O*/******** w p p 1 8 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes": [
+      "d2",
+      "d6",
+      "f2",
+      "f6"
+    ],
+    "********/**@*O*O*/******** b p p 2 7 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes": [
+      "d6",
+      "b2",
+      "b6",
+      "f2"
+    ],
+    "********/**@O**O*/******** b p p 2 7 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes": [
+      "d6"
+    ],
+    "********/**@O@**O/******** w p p 2 7 2 7 0 0 -1 -1 -1 -1 0 0 3 ids:nodes": [
+      "d6",
+      "b4"
+    ],
+    "********/**@O@*@O/*****O** w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes": [
+      "c4",
+      "d3",
+      "e4"
+    ],
+    "********/**@O@*@O/O******* w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes": [
+      "c5",
+      "c4",
+      "a4",
+      "c5",
+      "d1",
+      "d3",
+      "g4",
+      "e4",
+      "e3"
+    ],
+    "********/**O*@*@O/******** w p p 2 7 2 7 0 0 -1 -1 -1 -1 0 0 3 ids:nodes": [
+      "d7",
+      "d5",
+      "a4",
+      "c4",
+      "c3",
+      "d3",
+      "e3",
+      "f2",
+      "a1",
+      "d1",
+      "g1"
+    ],
+    "********/**O*@*O*/******** b p p 2 7 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes": [
+      "d6"
+    ],
+    "********/**O*O**@/******** b p p 2 7 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes": [
+      "f2"
+    ],
+    "********/*@OO@*@O/******** w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes": [
+      "d7",
+      "d5",
+      "d3",
+      "d1"
+    ],
+    "********/@*@*O*O*/******** w p p 2 7 2 7 0 0 -1 -1 -1 -1 0 0 3 ids:nodes": [
+      "b2",
+      "d5",
+      "d7",
+      "e4",
+      "g4",
+      "f6",
+      "c3",
+      "a1"
+    ],
+    "********/@*@*O*O*/*****O** b p p 3 6 2 7 0 0 -1 -1 -1 -1 0 0 3 ids:nodes": [
+      "d1",
+      "a4"
+    ],
+    "********/@*@*O*O*/*****O@* w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes": [
+      "d1"
+    ],
+    "********/@*@*O*O*/**O***** b p p 3 6 2 7 0 0 -1 -1 -1 -1 0 0 3 ids:nodes": [
+      "f6"
+    ],
+    "********/@*@*O*O*/*OO@@O** b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes": [
+      "c4"
+    ],
+    "********/@*@*O@O*/O*O***@* w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes": [
+      "f6",
+      "e5",
+      "d5",
+      "c5",
+      "e4",
+      "c4",
+      "e3",
+      "d3",
+      "c3",
+      "a1"
+    ],
+    "********/@*@*OOO*/******** b p p 3 6 2 7 0 0 -1 -1 -1 -1 0 0 3 ids:nodes": [
+      "b6",
+      "f2"
+    ],
+    "********/@*@*OOO@/******** w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes": [
+      "f2",
+      "f6"
+    ],
+    "********/@*@*OOOO/******** b p p 4 5 2 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes": [
+      "f2"
+    ],
+    "********/@*@@OOOO/******** w p p 4 5 3 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes": [
+      "f6",
+      "c3"
+    ],
+    "********/@*@@OOOO/******** w p r 4 5 3 6 1 0 -1 -1 -1 -1 0 0 4 ids:nodes": [
+      "xf2"
+    ],
+    "********/@*@O@*OO/******** w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes": [
+      "g1",
+      "g4",
+      "e3",
+      "e4",
+      "d1",
+      "d3",
+      "d5",
+      "d7",
+      "c5",
+      "a7"
+    ],
+    "********/@*O*@*O*/******** w p p 2 7 2 7 0 0 -1 -1 -1 -1 0 0 3 ids:nodes": [
+      "b6",
+      "b2",
+      "d7",
+      "d5",
+      "d3",
+      "d1",
+      "f6",
+      "f2"
+    ],
+    "********/@*O*@*O*/O*@*O*@* w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes": [
+      "c5",
+      "c3",
+      "b6",
+      "b2",
+      "d5",
+      "d3",
+      "f6",
+      "f2",
+      "e5",
+      "e3"
+    ],
+    "********/@*O*O*@@/******O* w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes": [
+      "f6"
+    ],
+    "********/@*O*O*@O/******** b p p 3 6 2 7 0 0 -1 -1 -1 -1 0 0 3 ids:nodes": [
+      "a1",
+      "d1",
+      "g1",
+      "b2",
+      "f2",
+      "c3",
+      "d3",
+      "e3",
+      "a4",
+      "c4",
+      "e4",
+      "g4",
+      "c5",
+      "d5",
+      "e5",
+      "f6",
+      "a7",
+      "d7",
+      "g7"
+    ],
+    "********/@*O*O@@@/******O* w p p 3 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes": [
+      "f6"
+    ],
+    "********/@*O*OO@@/O******* b p p 4 5 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes": [
+      "f2",
+      "f6"
+    ],
+    "********/@*O@O*@O/**@O@*O* w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes": [
+      "c5",
+      "c4",
+      "c3",
+      "d7",
+      "d5",
+      "d3",
+      "e5",
+      "e4",
+      "e3"
+    ],
+    "********/@*O@OO@@/O******* w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes": [
+      "f6"
+    ],
+    "********/@*OOO@@O/******** b p p 4 5 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes": [
+      "f6"
+    ],
+    "********/@@@@O*OO/**O***** b p p 4 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes": [
+      "b2"
+    ],
+    "********/@@@@O*OO/**O***** b p r 4 5 4 5 0 1 -1 -1 -1 -1 0 0 4 ids:nodes": [
+      "xb6"
+    ],
+    "********/@@@OO@OO/**O***** b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes": [
+      "a1"
+    ],
+    "********/@@OO@@OO/****O*@* w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes": [
+      "e3",
+      "d3",
+      "c3"
+    ],
+    "********/@@OOO@@O/******** w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes": [
+      "a4",
+      "c4",
+      "d5",
+      "d7"
+    ],
+    "********/@@OOOO@O/******** b p p 5 4 3 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes": [
+      "g7",
+      "d7",
+      "e5",
+      "d5",
+      "g4",
+      "e4",
+      "c4",
+      "a4",
+      "e3",
+      "d3",
+      "c3",
+      "g1",
+      "d1",
+      "a1"
+    ],
+    "********/@@OOOO@O/******@* w p p 5 4 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes": [
+      "e5",
+      "g7",
+      "e4",
+      "g4",
+      "g1",
+      "a1",
+      "e3"
+    ],
+    "********/@@OOOO@O/*****@** w p p 5 4 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes": [
+      "a7"
+    ],
+    "********/@@OOOO@O/*****@O* b p p 6 3 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes": [
+      "g1"
+    ],
+    "********/@@OOOO@O/****@*** w p p 5 4 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes": [
+      "d5",
+      "c5",
+      "g7",
+      "d7",
+      "a7",
+      "a4",
+      "c4",
+      "g1"
+    ],
+    "********/@@OOOO@O/***@**** w p p 5 4 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes": [
+      "e5",
+      "d5",
+      "c5",
+      "g7",
+      "a7",
+      "e4",
+      "a4",
+      "c4",
+      "c3"
+    ],
+    "********/@@OOOO@O/***@*@O* w p p 6 3 5 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes": [
+      "d5"
+    ],
+    "********/@@OOOO@O/***@*@O* w p p 6 3 5 3 0 0 -1 -1 -1 -1 0 0 8 ids:nodes": [
+      "d5"
+    ],
+    "********/@@OOOO@O/**@***** w p p 5 4 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes": [
+      "d5",
+      "c5",
+      "g7",
+      "d7",
+      "a7",
+      "a4",
+      "c4",
+      "g1",
+      "a1"
+    ],
+    "********/@@OOOO@O/*@****** w p p 5 4 4 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes": [
+      "e5",
+      "d5",
+      "c5",
+      "d7",
+      "a7",
+      "e4",
+      "g4",
+      "a4",
+      "c4",
+      "g1",
+      "a1",
+      "e3"
+    ],
+    "*******@/@*@*O*O*/**O***** w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes": [
+      "g7",
+      "g1",
+      "f6",
+      "f2",
+      "e5",
+      "e4",
+      "e3",
+      "d7",
+      "d5",
+      "d3",
+      "d1",
+      "c4",
+      "c3",
+      "b6",
+      "b2",
+      "a7",
+      "a1"
+    ],
+    "*******O/@*O@O@OO/@******* b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes": [
+      "c4",
+      "e4",
+      "d3",
+      "d1"
+    ],
+    "******@*/*@**O@O*/******O* w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes": [
+      "e3",
+      "e4",
+      "e5",
+      "f4",
+      "g1",
+      "g4",
+      "g7",
+      "d7",
+      "d6",
+      "d5",
+      "c3",
+      "c5"
+    ],
+    "******@*/*O@*@OO@/****O*** w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes": [
+      "c3",
+      "d7"
+    ],
+    "******@*/@*@OO@*O/******O* w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes": [
+      "g4",
+      "e4"
+    ],
+    "******@*/@*@OO@*O/**O*@*O* w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes": [
+      "e5"
+    ],
+    "******@*/@*@OOOO@/****@OOO w p p 7 2 5 2 0 0 -1 -1 -1 -1 0 0 9 ids:nodes": [
+      "d5",
+      "g7",
+      "g4"
+    ],
+    "******@*/@*O*O*@*/O*****O* b p p 4 5 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes": [
+      "d1",
+      "a1",
+      "f2",
+      "b2",
+      "d3",
+      "g4",
+      "e4",
+      "e5",
+      "f6",
+      "g7",
+      "a7"
+    ],
+    "******@*/@*O*O@O*/OO**@**@ w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes": [
+      "e3"
+    ],
+    "******@*/@@OOO@@O/*****OO@ w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes": [
+      "d7",
+      "d5",
+      "g1",
+      "g4",
+      "e4"
+    ],
+    "******@*/@@OOO@@O/***O**O* b p p 6 3 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes": [
+      "e5",
+      "g4",
+      "d3",
+      "d1",
+      "d7"
+    ],
+    "******@*/@@OOO@@O/**@OO*O* b p p 7 2 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes": [
+      "c5",
+      "d3",
+      "d7"
+    ],
+    "******@*/@@OOO@@O/O*@**OO@ w p p 7 2 7 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes": [
+      "c3",
+      "d3",
+      "e5",
+      "e3"
+    ],
+    "******@*/@O@@OOO@/****@O*O w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes": [
+      "e3",
+      "e4",
+      "e5",
+      "d5"
+    ],
+    "******@*/O@OOO@O@/@O**@*** w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes": [
+      "e3",
+      "e4",
+      "e5",
+      "g1",
+      "a1",
+      "a4",
+      "c3",
+      "c5"
+    ],
+    "******@O/OOO@O@O@/**@*@*** w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes": [
+      "g1",
+      "a1",
+      "e3",
+      "e4",
+      "a4",
+      "e5",
+      "g7",
+      "d7",
+      "a7"
+    ],
+    "******O*/*O@*O@O*/*****O@@ b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes": [
+      "d6",
+      "d3",
+      "g4"
+    ],
+    "******O*/@*@OO@*O/**O*@*@* w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes": [
+      "e5",
+      "e3",
+      "a1"
+    ],
+    "******O*/@*O*O*@*/O**O@*@* b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes": [
+      "a7",
+      "b6",
+      "b2",
+      "c5",
+      "d3",
+      "e5",
+      "e4",
+      "e3",
+      "f6",
+      "f2",
+      "g4"
+    ],
+    "******O*/@O@*O@O*/O***@*@* w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes": [
+      "a1",
+      "d5",
+      "g4",
+      "e5",
+      "e4"
+    ],
+    "******O*/@OO@O@O*/O*@*@*@* w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes": [
+      "e5",
+      "e3",
+      "g7",
+      "g1",
+      "d5",
+      "a7",
+      "c5"
+    ],
+    "*****@OO/@*O*@O@*/****O*@* w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes": [
+      "f6"
+    ],
+    "*****@OO/@@OO@*@O/O*****@* w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes": [
+      "d3",
+      "d1"
+    ],
+    "****@**@/@OO@O*O@/O@****OO b p p 7 2 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes": [
+      "g1",
+      "g4",
+      "e3",
+      "e4",
+      "e5",
+      "d5",
+      "c3",
+      "b2"
+    ],
+    "****@**O/@*@OO@@O/O*O**@** w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes": [
+      "a4",
+      "d5",
+      "a7",
+      "g7"
+    ],
+    "****@*@*/@*@*O*O*/**O*O*** w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes": [
+      "e3"
+    ],
+    "****@*@*/@*@O*@OO/O***O*** w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes": [
+      "e5",
+      "e4",
+      "c5"
+    ],
+    "****@*@*/@*O*@*O*/***@OOOO w p p 6 3 5 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes": [
+      "e4"
+    ],
+    "****@*@*/@*O*O*@O/O*****O* b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes": [
+      "g4",
+      "f2",
+      "e5",
+      "e4",
+      "e3",
+      "d5",
+      "d1",
+      "a7",
+      "a1"
+    ],
+    "****@*@*/@*O*O@O*/O*@***O* w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes": [
+      "e5"
+    ],
+    "****@*O*/O*@O@*O@/@*OO**@* w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes": [
+      "d1"
+    ],
+    "****@*O*/O@O@O*@O/@*@***O* w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes": [
+      "g1",
+      "e3"
+    ],
+    "****@*O*/OO@*O@O@/@*O***@* w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes": [
+      "g1",
+      "e3"
+    ],
+    "****@O@O/@OO@O@O*/OO@*@*@* w p p 8 1 8 1 0 0 -1 -1 -1 -1 0 0 9 ids:nodes": [
+      "a1"
+    ],
+    "****O*@@/@@OO@*OO/O*@*O*@* w p p 7 2 7 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes": [
+      "c3",
+      "e5",
+      "d5"
+    ],
+    "****O*O*/@*O*@*O*/**@***@* w p p 4 5 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes": [
+      "d7"
+    ],
+    "****O*O*/@OO@O@O*/O*@*@O@@ b p p 8 1 7 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes": [
+      "c3"
+    ],
+    "****O*O@/O*@O@*O@/@***O*@* w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes": [
+      "e3"
+    ],
+    "****OO*O/O@O*@OO@/@@**@*O* b p p 8 1 6 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes": [
+      "c3"
+    ],
+    "***@OOOO/O@*O@@OO/**@*@*@* w p p 8 1 7 1 0 0 -1 -1 -1 -1 0 0 9 ids:nodes": [
+      "g1",
+      "a1"
+    ],
+    "**@***O*/@@OOOO@O/O**@*@** w p p 7 2 6 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes": [
+      "a4"
+    ],
+    "**@*@*O*/@*O@O*@O/O*O**@** w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes": [
+      "c3",
+      "a7"
+    ],
+    "**@*O**O/O@O@O*@O/@*@*@*O* w p p 7 2 7 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes": [
+      "a7",
+      "a1"
+    ],
+    "**@*O*O*/@*O*O@@O/O@@O@**O b p p 8 1 7 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes": [
+      "e3",
+      "c3",
+      "c5"
+    ],
+    "**@*O*O*/@*O@O*@O/O***@O*@ b p p 7 2 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes": [
+      "a4",
+      "b2",
+      "c5",
+      "c3",
+      "d5",
+      "e3",
+      "f6",
+      "g7",
+      "g4",
+      "g1"
+    ],
+    "**@*O*O*/O*O@OO@@/@*@*@O*O b p p 8 1 7 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes": [
+      "f6"
+    ],
+    "**@O@*O*/**@*@***/O*O*O*** b p p 5 4 4 5 0 0 -1 -1 -1 -1 0 0 5 ids:nodes": [
+      "b6",
+      "b4",
+      "a4",
+      "d6",
+      "g7"
+    ],
+    "**O***O*/@*@*O*O*/O*@*@*@* w p p 5 4 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes": [
+      "f6"
+    ],
+    "@*@*O*O*/O@O@@O@O/O*@*O*@* w p p 8 1 8 1 0 0 -1 -1 -1 -1 0 0 9 ids:nodes": [
+      "c5",
+      "e5"
+    ]
+  },
+  "openings": [
+    {
+      "id": "mill-rush-parallel",
+      "name": "Mill Rush — Parallel",
+      "aliases": [
+        "Parallel Lines",
+        "Double Horizontal"
+      ],
+      "family": "Mill Rush",
+      "side": "W",
+      "source": "book",
+      "sourceReference": "Chapter 15.2, Game 1a — parallel lines mill rush",
+      "confidence": 1.0,
+      "tags": [
+        "aggressive",
+        "flank",
+        "early-mill",
+        "placement",
+        "parallel"
+      ],
+      "strategicNotes": "W builds toward the b2-d2-f2 mill (line 2) and the f2-f4-f6 mill (line f). B mirrors with b6-d6-f6 (line 6), forcing parallel horizontal mills. W must fill b2 on ply 7 to close line 2; leaving it open risks B claiming it.",
+      "commonBlunders": [
+        "b4",
+        "a4"
+      ],
+      "recommendedResponses": {
+        "B": [
+          "b6",
+          "d6",
+          "f6"
+        ]
+      },
+      "outcomeStats": {
+        "W": 0,
+        "B": 0,
+        "D": 0
+      },
+      "lineMoves": [
+        "d2",
+        "d6",
+        "f4",
+        "b4",
+        "f2",
+        "f6",
+        "b2",
+        "b6"
+      ],
+      "branchMoves": [
+        {
+          "branchId": "mill-rush-parallel-b2-alt",
+          "deviationPly": 7,
+          "deviationMove": "d1",
+          "name": "Mill Rush Parallel — d1 Variant",
+          "lineContinuation": [
+            "d1",
+            "b6"
+          ],
+          "strategicNotes": "W plays d1 to contest the south cross-line instead of sealing line 2.",
+          "source": "book",
+          "outcomeStats": {
+            "W": 0,
+            "B": 0,
+            "D": 0
+          }
+        }
+      ],
+      "favoredSide": "W"
+    },
+    {
+      "id": "mill-rush-perpendicular",
+      "name": "Mill Rush — Perpendicular",
+      "aliases": [
+        "Perpendicular Lines"
+      ],
+      "family": "Mill Rush",
+      "side": "W",
+      "source": "book",
+      "sourceReference": "Chapter 15.2, Game 2a — perpendicular lines mill rush",
+      "confidence": 1.0,
+      "tags": [
+        "aggressive",
+        "flank",
+        "early-mill",
+        "placement",
+        "perpendicular"
+      ],
+      "strategicNotes": "B does not claim f6, allowing W to form the f2-f4-f6 mill (vertical). W places d1 as piece 8 to contest the south cross-line and block B's potential b2-d2 mill. The two mills (line f vertical, line 2 horizontal) are perpendicular. W is more mobile than in the parallel setup.",
+      "commonBlunders": [
+        "b2"
+      ],
+      "recommendedResponses": {
+        "B": [
+          "d1",
+          "c5"
+        ]
+      },
+      "outcomeStats": {
+        "W": 0,
+        "B": 0,
+        "D": 0
+      },
+      "lineMoves": [
+        "d2",
+        "d6",
+        "f4",
+        "b4",
+        "f2",
+        "b6",
+        "f6",
+        "d1"
+      ],
+      "branchMoves": [],
+      "favoredSide": "W"
+    },
+    {
+      "id": "mill-rush-parallel-alt",
+      "name": "Mill Rush — Parallel (Alt)",
+      "aliases": [
+        "Parallel Lines Alt"
+      ],
+      "family": "Mill Rush",
+      "side": "W",
+      "source": "book",
+      "sourceReference": "Chapter 15.2, Game 1b — parallel lines (alt) mill rush",
+      "confidence": 1.0,
+      "tags": [
+        "flank",
+        "placement",
+        "parallel"
+      ],
+      "strategicNotes": "B fills b2 to block W's line 2 mill. B gains potential b2-b4-b6. W should play d1 then redirect toward outer ring mills.",
+      "commonBlunders": [
+        "g7",
+        "a7"
+      ],
+      "recommendedResponses": {
+        "B": [
+          "b6"
+        ]
+      },
+      "outcomeStats": {
+        "W": 0,
+        "B": 0,
+        "D": 0
+      },
+      "lineMoves": [
+        "d2",
+        "d6",
+        "f4",
+        "b4",
+        "f2",
+        "f6",
+        "b2",
+        "a4",
+        "d1",
+        "b6"
+      ],
+      "branchMoves": [],
+      "favoredSide": "W"
+    },
+    {
+      "id": "mill-rush-perpendicular-alt",
+      "name": "Mill Rush — Perpendicular (Alt)",
+      "aliases": [
+        "Perpendicular Lines Alt"
+      ],
+      "family": "Mill Rush",
+      "side": "W",
+      "source": "book",
+      "sourceReference": "Chapter 15.2, Game 2b — perpendicular lines (alt) mill rush",
+      "confidence": 1.0,
+      "tags": [
+        "flank",
+        "placement",
+        "perpendicular"
+      ],
+      "strategicNotes": "B fills b2 in the perpendicular setup, blocking W's line 2 and forming potential b2-b4-b6. W retains f2-f4-f6 vertical mill. B rarely does this as it costs tempo.",
+      "commonBlunders": [
+        "d1"
+      ],
+      "recommendedResponses": {
+        "W": [
+          "f6",
+          "g7"
+        ]
+      },
+      "outcomeStats": {
+        "W": 0,
+        "B": 0,
+        "D": 0
+      },
+      "lineMoves": [
+        "d2",
+        "d6",
+        "f4",
+        "b4",
+        "f2",
+        "b2",
+        "f6",
+        "b6"
+      ],
+      "branchMoves": [],
+      "favoredSide": "equal"
+    },
+    {
+      "id": "mill-rush-extended-parallel",
+      "name": "Mill Rush — Extended Parallel",
+      "aliases": [
+        "Extended Parallel"
+      ],
+      "family": "Mill Rush",
+      "side": "W",
+      "source": "book",
+      "sourceReference": "Chapter 15.2, Game 3 — extended parallel mill rush",
+      "confidence": 1.0,
+      "tags": [
+        "flank",
+        "placement",
+        "parallel",
+        "outer-ring"
+      ],
+      "strategicNotes": "W extends into the outer ring after sealing line 2, building toward a7-d7-g7 outer top mill. This is usually a stalemate if played correctly.",
+      "commonBlunders": [
+        "d7"
+      ],
+      "recommendedResponses": {
+        "B": [
+          "b6",
+          "d7"
+        ]
+      },
+      "outcomeStats": {
+        "W": 0,
+        "B": 0,
+        "D": 0
+      },
+      "lineMoves": [
+        "d2",
+        "d6",
+        "f4",
+        "b4",
+        "f2",
+        "f6",
+        "b2",
+        "a7",
+        "g7",
+        "b6"
+      ],
+      "branchMoves": [],
+      "favoredSide": "W"
+    },
+    {
+      "id": "inverted-mill-rush-parallel",
+      "name": "Inverted Mill Rush — Parallel",
+      "aliases": [
+        "Inverted Parallel"
+      ],
+      "family": "Inverted Mill Rush",
+      "side": "W",
+      "source": "book",
+      "sourceReference": "Chapter 15.3 — Inverted Mill Rush, parallel lines",
+      "confidence": 1.0,
+      "tags": [
+        "flank",
+        "placement",
+        "parallel",
+        "inverted"
+      ],
+      "strategicNotes": "W starts at d7 (inverted) then builds f6-f4-f2 (line f, vertical). B mirrors on line b. After both sides form horizontal mills (line 6 for W, line 2 for B) the game resembles the standard parallel mill rush but mirrored. Piece 15 placement at c4 is critical.",
+      "commonBlunders": [
+        "a7",
+        "g7"
+      ],
+      "recommendedResponses": {
+        "B": [
+          "b2",
+          "d2"
+        ]
+      },
+      "outcomeStats": {
+        "W": 0,
+        "B": 0,
+        "D": 0
+      },
+      "lineMoves": [
+        "d7",
+        "d1",
+        "f6",
+        "b6",
+        "f4",
+        "b4",
+        "f2",
+        "b2"
+      ],
+      "branchMoves": [],
+      "favoredSide": "B"
+    },
+    {
+      "id": "inverted-mill-rush-perpendicular",
+      "name": "Inverted Mill Rush — Perpendicular",
+      "aliases": [
+        "Inverted Perpendicular"
+      ],
+      "family": "Inverted Mill Rush",
+      "side": "W",
+      "source": "book",
+      "sourceReference": "Chapter 15.3 — Inverted Mill Rush, perpendicular",
+      "confidence": 1.0,
+      "tags": [
+        "flank",
+        "placement",
+        "perpendicular",
+        "inverted"
+      ],
+      "strategicNotes": "W builds f2-f4-f6 vertically; B is forced into perpendicular layout. W's c4 piece contests the west cross-line (a4-b4-c4) and restricts B. If W does not place c4, B can take it and dominate the inner square.",
+      "commonBlunders": [
+        "a7"
+      ],
+      "recommendedResponses": {
+        "B": [
+          "c5",
+          "e3"
+        ]
+      },
+      "outcomeStats": {
+        "W": 0,
+        "B": 0,
+        "D": 0
+      },
+      "lineMoves": [
+        "d7",
+        "d1",
+        "f6",
+        "b6",
+        "f4",
+        "b4",
+        "f2",
+        "c4"
+      ],
+      "branchMoves": [],
+      "favoredSide": "W"
+    },
+    {
+      "id": "battle-lines",
+      "name": "Battle Lines",
+      "aliases": [
+        "Aggressive Lines"
+      ],
+      "family": "Battle Lines",
+      "side": "W",
+      "source": "book",
+      "sourceReference": "Chapter 15.4 — Battle Lines",
+      "confidence": 1.0,
+      "tags": [
+        "aggressive",
+        "placement",
+        "centre"
+      ],
+      "strategicNotes": "W builds multiple potential mills aggressively across all ring sections. B responds by mirroring. The game rewards the side that converts potential mills first — W usually has more options if it keeps removing B pieces strategically and does not allow B to isolate its pieces.",
+      "commonBlunders": [
+        "a7",
+        "g7",
+        "a1",
+        "g1"
+      ],
+      "recommendedResponses": {
+        "B": [
+          "d5",
+          "c5",
+          "e3"
+        ]
+      },
+      "outcomeStats": {
+        "W": 0,
+        "B": 0,
+        "D": 0
+      },
+      "lineMoves": [
+        "d2",
+        "d6",
+        "f4",
+        "b4",
+        "f6",
+        "b6",
+        "f2",
+        "b2",
+        "d1",
+        "d7"
+      ],
+      "branchMoves": [],
+      "favoredSide": "B"
+    },
+    {
+      "id": "z-mill-closed",
+      "name": "Z Mill — Closed",
+      "aliases": [
+        "Z Mill",
+        "Closed Z Mill"
+      ],
+      "family": "Z Mill",
+      "side": "W",
+      "source": "book",
+      "sourceReference": "Chapter 15.5 — The Z Mill",
+      "confidence": 1.0,
+      "tags": [
+        "defensive",
+        "inner-ring",
+        "placement",
+        "centre"
+      ],
+      "strategicNotes": "W builds c4 and e3 to create a Z-shaped arrangement of potential mills across the inner ring: c3-c4-c5 (left), e3-d3-c3 (bottom), and d1-d2-d3 (south cross). B must contest the inner ring to prevent W from dominating it. The Z shape creates cross-ring threats that are hard to block simultaneously.",
+      "commonBlunders": [
+        "f4",
+        "b4"
+      ],
+      "recommendedResponses": {
+        "B": [
+          "d5",
+          "e5",
+          "c5"
+        ]
+      },
+      "outcomeStats": {
+        "W": 0,
+        "B": 0,
+        "D": 0
+      },
+      "lineMoves": [
+        "d2",
+        "d6",
+        "c4",
+        "c5",
+        "e3",
+        "e5",
+        "d3",
+        "d5"
+      ],
+      "branchMoves": [
+        {
+          "branchId": "z-mill-closed-c4-e3",
+          "deviationPly": 5,
+          "deviationMove": "e5",
+          "name": "Z Mill — c4/e3 Variant",
+          "lineContinuation": [
+            "e5",
+            "d3",
+            "d5"
+          ],
+          "strategicNotes": "B plays e5 to threaten inner-ring mill c5-d5-e5.",
+          "source": "book",
+          "outcomeStats": {
+            "W": 0,
+            "B": 0,
+            "D": 0
+          }
+        }
+      ],
+      "favoredSide": "B"
+    },
+    {
+      "id": "z-mill-open",
+      "name": "Z Mill — Open",
+      "aliases": [
+        "Open Z Mill",
+        "Z Mill Variation"
+      ],
+      "family": "Z Mill",
+      "side": "W",
+      "source": "book",
+      "sourceReference": "Chapter 15.6 — The Open Z Mill",
+      "confidence": 1.0,
+      "tags": [
+        "inner-ring",
+        "placement",
+        "centre"
+      ],
+      "strategicNotes": "W first claims d2 and f4 (middle ring), then pivots to the inner ring with c4 and e3. This variation leaves the f2-f4-f6 mill potential partially open while threatening inner-ring control. B should contest d5 or e5 to prevent W from sealing the inner ring.",
+      "commonBlunders": [
+        "g7",
+        "a7"
+      ],
+      "recommendedResponses": {
+        "B": [
+          "d5",
+          "c3"
+        ]
+      },
+      "outcomeStats": {
+        "W": 0,
+        "B": 0,
+        "D": 0
+      },
+      "lineMoves": [
+        "d2",
+        "d6",
+        "f4",
+        "b4",
+        "c4",
+        "c5",
+        "e3",
+        "e5"
+      ],
+      "branchMoves": [],
+      "favoredSide": "equal"
+    },
+    {
+      "id": "corner-gambit",
+      "name": "Corner Gambit",
+      "aliases": [
+        "Outer Corner Play"
+      ],
+      "family": "Corner Gambit",
+      "side": "W",
+      "source": "book",
+      "sourceReference": "Chapter 15 — A Gambit",
+      "confidence": 1.0,
+      "tags": [
+        "aggressive",
+        "outer-ring",
+        "placement",
+        "gambit"
+      ],
+      "strategicNotes": "W occupies all four outer ring corners early. Each pair threatens a potential mill along the outer ring sides. B must respond to contain the outer ring. This can be a gambit trap — the predictability of needing to block open mills can help W plan traps.",
+      "commonBlunders": [
+        "d7",
+        "d1"
+      ],
+      "recommendedResponses": {
+        "B": [
+          "d5",
+          "d2",
+          "f2"
+        ]
+      },
+      "outcomeStats": {
+        "W": 0,
+        "B": 0,
+        "D": 0
+      },
+      "lineMoves": [
+        "a7",
+        "d6",
+        "g7",
+        "b6",
+        "a1",
+        "b4",
+        "g1",
+        "f4"
+      ],
+      "branchMoves": [],
+      "favoredSide": "B"
+    }
+  ]
+}

@@ -1,0 +1,719 @@
+[
+  {
+    "opening_id": "mill-rush-parallel",
+    "name": "Mill Rush — Parallel",
+    "aliases": [
+      "Parallel Lines",
+      "Double Horizontal"
+    ],
+    "family": "Mill Rush",
+    "side": "W",
+    "seed_source": "book",
+    "line_moves": [
+      "d2",
+      "d6",
+      "f4",
+      "b4",
+      "f2",
+      "f6",
+      "b2",
+      "b6"
+    ],
+    "branch_moves": [
+      {
+        "branch_id": "mill-rush-parallel-b2-alt",
+        "deviation_ply": 7,
+        "deviation_move": "d1",
+        "name": "Mill Rush Parallel — d1 Variant",
+        "line_continuation": [
+          "d1",
+          "b6"
+        ],
+        "strategic_notes": "W plays d1 to contest the south cross-line instead of sealing line 2.",
+        "seed_source": "book",
+        "outcome_stats": {
+          "W": 0,
+          "B": 0,
+          "D": 0
+        }
+      }
+    ],
+    "strategic_notes": "W builds toward the b2-d2-f2 mill (line 2) and the f2-f4-f6 mill (line f). B mirrors with b6-d6-f6 (line 6), forcing parallel horizontal mills. W must fill b2 on ply 7 to close line 2; leaving it open risks B claiming it.",
+    "common_blunders": [
+      "b4",
+      "a4"
+    ],
+    "recommended_responses": {
+      "B": [
+        "b6",
+        "d6",
+        "f6"
+      ]
+    },
+    "outcome_stats": {
+      "W": 0,
+      "B": 0,
+      "D": 0
+    },
+    "confidence": 1.0,
+    "tags": [
+      "aggressive",
+      "flank",
+      "early-mill",
+      "placement",
+      "parallel"
+    ],
+    "source_reference": "Chapter 15.2, Game 1a — parallel lines mill rush",
+    "opening_fen_signatures": [
+      {
+        "ply": 4,
+        "fen": ".........B.W.W.B........|W|2|2"
+      },
+      {
+        "ply": 6,
+        "fen": ".........BBWWW.B........|W|3|3"
+      },
+      {
+        "ply": 8,
+        "fen": "........BBBWWWWB........|W|4|4"
+      }
+    ],
+    "favored_side": "W"
+  },
+  {
+    "opening_id": "mill-rush-perpendicular",
+    "name": "Mill Rush — Perpendicular",
+    "aliases": [
+      "Perpendicular Lines"
+    ],
+    "family": "Mill Rush",
+    "side": "W",
+    "seed_source": "book",
+    "line_moves": [
+      "d2",
+      "d6",
+      "f4",
+      "b4",
+      "f2",
+      "b6",
+      "f6",
+      "d1"
+    ],
+    "branch_moves": [],
+    "strategic_notes": "B does not claim f6, allowing W to form the f2-f4-f6 mill (vertical). W places d1 as piece 8 to contest the south cross-line and block B's potential b2-d2 mill. The two mills (line f vertical, line 2 horizontal) are perpendicular. W is more mobile than in the parallel setup.",
+    "common_blunders": [
+      "b2"
+    ],
+    "recommended_responses": {
+      "B": [
+        "d1",
+        "c5"
+      ]
+    },
+    "outcome_stats": {
+      "W": 0,
+      "B": 0,
+      "D": 0
+    },
+    "confidence": 1.0,
+    "tags": [
+      "aggressive",
+      "flank",
+      "early-mill",
+      "placement",
+      "perpendicular"
+    ],
+    "source_reference": "Chapter 15.2, Game 2a — perpendicular lines mill rush",
+    "opening_fen_signatures": [
+      {
+        "ply": 4,
+        "fen": ".........B.W.W.B........|W|2|2"
+      },
+      {
+        "ply": 6,
+        "fen": "........BB.WWW.B........|W|3|3"
+      },
+      {
+        "ply": 8,
+        "fen": ".....B..BBWWWW.B........|W|4|4"
+      }
+    ],
+    "favored_side": "W"
+  },
+  {
+    "opening_id": "mill-rush-parallel-alt",
+    "name": "Mill Rush — Parallel (Alt)",
+    "aliases": [
+      "Parallel Lines Alt"
+    ],
+    "family": "Mill Rush",
+    "side": "W",
+    "seed_source": "book",
+    "line_moves": [
+      "d2",
+      "d6",
+      "f4",
+      "b4",
+      "f2",
+      "f6",
+      "b2",
+      "a4",
+      "d1",
+      "b6"
+    ],
+    "branch_moves": [],
+    "strategic_notes": "B fills b2 to block W's line 2 mill. B gains potential b2-b4-b6. W should play d1 then redirect toward outer ring mills.",
+    "common_blunders": [
+      "g7",
+      "a7"
+    ],
+    "recommended_responses": {
+      "B": [
+        "b6"
+      ]
+    },
+    "outcome_stats": {
+      "W": 0,
+      "B": 0,
+      "D": 0
+    },
+    "confidence": 1.0,
+    "tags": [
+      "flank",
+      "placement",
+      "parallel"
+    ],
+    "source_reference": "Chapter 15.2, Game 1b — parallel lines (alt) mill rush",
+    "opening_fen_signatures": [
+      {
+        "ply": 4,
+        "fen": ".........B.W.W.B........|W|2|2"
+      },
+      {
+        "ply": 6,
+        "fen": ".........BBWWW.B........|W|3|3"
+      },
+      {
+        "ply": 8,
+        "fen": ".......B.BBWWWWB........|W|4|4"
+      },
+      {
+        "ply": 10,
+        "fen": ".....W.BBBBWWWWB........|W|5|5"
+      }
+    ],
+    "favored_side": "W"
+  },
+  {
+    "opening_id": "mill-rush-perpendicular-alt",
+    "name": "Mill Rush — Perpendicular (Alt)",
+    "aliases": [
+      "Perpendicular Lines Alt"
+    ],
+    "family": "Mill Rush",
+    "side": "W",
+    "seed_source": "book",
+    "line_moves": [
+      "d2",
+      "d6",
+      "f4",
+      "b4",
+      "f2",
+      "b2",
+      "f6",
+      "b6"
+    ],
+    "branch_moves": [],
+    "strategic_notes": "B fills b2 in the perpendicular setup, blocking W's line 2 and forming potential b2-b4-b6. W retains f2-f4-f6 vertical mill. B rarely does this as it costs tempo.",
+    "common_blunders": [
+      "d1"
+    ],
+    "recommended_responses": {
+      "W": [
+        "f6",
+        "g7"
+      ]
+    },
+    "outcome_stats": {
+      "W": 0,
+      "B": 0,
+      "D": 0
+    },
+    "confidence": 1.0,
+    "tags": [
+      "flank",
+      "placement",
+      "perpendicular"
+    ],
+    "source_reference": "Chapter 15.2, Game 2b — perpendicular lines (alt) mill rush",
+    "opening_fen_signatures": [
+      {
+        "ply": 4,
+        "fen": ".........B.W.W.B........|W|2|2"
+      },
+      {
+        "ply": 6,
+        "fen": ".........B.WWWBB........|W|3|3"
+      },
+      {
+        "ply": 8,
+        "fen": "........BBWWWWBB........|W|4|4"
+      }
+    ],
+    "favored_side": "equal"
+  },
+  {
+    "opening_id": "mill-rush-extended-parallel",
+    "name": "Mill Rush — Extended Parallel",
+    "aliases": [
+      "Extended Parallel"
+    ],
+    "family": "Mill Rush",
+    "side": "W",
+    "seed_source": "book",
+    "line_moves": [
+      "d2",
+      "d6",
+      "f4",
+      "b4",
+      "f2",
+      "f6",
+      "b2",
+      "a7",
+      "g7",
+      "b6"
+    ],
+    "branch_moves": [],
+    "strategic_notes": "W extends into the outer ring after sealing line 2, building toward a7-d7-g7 outer top mill. This is usually a stalemate if played correctly.",
+    "common_blunders": [
+      "d7"
+    ],
+    "recommended_responses": {
+      "B": [
+        "b6",
+        "d7"
+      ]
+    },
+    "outcome_stats": {
+      "W": 0,
+      "B": 0,
+      "D": 0
+    },
+    "confidence": 1.0,
+    "tags": [
+      "flank",
+      "placement",
+      "parallel",
+      "outer-ring"
+    ],
+    "source_reference": "Chapter 15.2, Game 3 — extended parallel mill rush",
+    "opening_fen_signatures": [
+      {
+        "ply": 4,
+        "fen": ".........B.W.W.B........|W|2|2"
+      },
+      {
+        "ply": 6,
+        "fen": ".........BBWWW.B........|W|3|3"
+      },
+      {
+        "ply": 8,
+        "fen": "B........BBWWWWB........|W|4|4"
+      },
+      {
+        "ply": 10,
+        "fen": "B.W.....BBBWWWWB........|W|5|5"
+      }
+    ],
+    "favored_side": "W"
+  },
+  {
+    "opening_id": "inverted-mill-rush-parallel",
+    "name": "Inverted Mill Rush — Parallel",
+    "aliases": [
+      "Inverted Parallel"
+    ],
+    "family": "Inverted Mill Rush",
+    "side": "W",
+    "seed_source": "book",
+    "line_moves": [
+      "d7",
+      "d1",
+      "f6",
+      "b6",
+      "f4",
+      "b4",
+      "f2",
+      "b2"
+    ],
+    "branch_moves": [],
+    "strategic_notes": "W starts at d7 (inverted) then builds f6-f4-f2 (line f, vertical). B mirrors on line b. After both sides form horizontal mills (line 6 for W, line 2 for B) the game resembles the standard parallel mill rush but mirrored. Piece 15 placement at c4 is critical.",
+    "common_blunders": [
+      "a7",
+      "g7"
+    ],
+    "recommended_responses": {
+      "B": [
+        "b2",
+        "d2"
+      ]
+    },
+    "outcome_stats": {
+      "W": 0,
+      "B": 0,
+      "D": 0
+    },
+    "confidence": 1.0,
+    "tags": [
+      "flank",
+      "placement",
+      "parallel",
+      "inverted"
+    ],
+    "source_reference": "Chapter 15.3 — Inverted Mill Rush, parallel lines",
+    "opening_fen_signatures": [
+      {
+        "ply": 4,
+        "fen": ".W...B..B.W.............|W|2|2"
+      },
+      {
+        "ply": 6,
+        "fen": ".W...B..B.WW...B........|W|3|3"
+      },
+      {
+        "ply": 8,
+        "fen": ".W...B..B.WWW.BB........|W|4|4"
+      }
+    ],
+    "favored_side": "B"
+  },
+  {
+    "opening_id": "inverted-mill-rush-perpendicular",
+    "name": "Inverted Mill Rush — Perpendicular",
+    "aliases": [
+      "Inverted Perpendicular"
+    ],
+    "family": "Inverted Mill Rush",
+    "side": "W",
+    "seed_source": "book",
+    "line_moves": [
+      "d7",
+      "d1",
+      "f6",
+      "b6",
+      "f4",
+      "b4",
+      "f2",
+      "c4"
+    ],
+    "branch_moves": [],
+    "strategic_notes": "W builds f2-f4-f6 vertically; B is forced into perpendicular layout. W's c4 piece contests the west cross-line (a4-b4-c4) and restricts B. If W does not place c4, B can take it and dominate the inner square.",
+    "common_blunders": [
+      "a7"
+    ],
+    "recommended_responses": {
+      "B": [
+        "c5",
+        "e3"
+      ]
+    },
+    "outcome_stats": {
+      "W": 0,
+      "B": 0,
+      "D": 0
+    },
+    "confidence": 1.0,
+    "tags": [
+      "flank",
+      "placement",
+      "perpendicular",
+      "inverted"
+    ],
+    "source_reference": "Chapter 15.3 — Inverted Mill Rush, perpendicular",
+    "opening_fen_signatures": [
+      {
+        "ply": 4,
+        "fen": ".W...B..B.W.............|W|2|2"
+      },
+      {
+        "ply": 6,
+        "fen": ".W...B..B.WW...B........|W|3|3"
+      },
+      {
+        "ply": 8,
+        "fen": ".W...B..B.WWW..B.......B|W|4|4"
+      }
+    ],
+    "favored_side": "W"
+  },
+  {
+    "opening_id": "battle-lines",
+    "name": "Battle Lines",
+    "aliases": [
+      "Aggressive Lines"
+    ],
+    "family": "Battle Lines",
+    "side": "W",
+    "seed_source": "book",
+    "line_moves": [
+      "d2",
+      "d6",
+      "f4",
+      "b4",
+      "f6",
+      "b6",
+      "f2",
+      "b2",
+      "d1",
+      "d7"
+    ],
+    "branch_moves": [],
+    "strategic_notes": "W builds multiple potential mills aggressively across all ring sections. B responds by mirroring. The game rewards the side that converts potential mills first — W usually has more options if it keeps removing B pieces strategically and does not allow B to isolate its pieces.",
+    "common_blunders": [
+      "a7",
+      "g7",
+      "a1",
+      "g1"
+    ],
+    "recommended_responses": {
+      "B": [
+        "d5",
+        "c5",
+        "e3"
+      ]
+    },
+    "outcome_stats": {
+      "W": 0,
+      "B": 0,
+      "D": 0
+    },
+    "confidence": 1.0,
+    "tags": [
+      "aggressive",
+      "placement",
+      "centre"
+    ],
+    "source_reference": "Chapter 15.4 — Battle Lines",
+    "opening_fen_signatures": [
+      {
+        "ply": 4,
+        "fen": ".........B.W.W.B........|W|2|2"
+      },
+      {
+        "ply": 6,
+        "fen": "........BBWW.W.B........|W|3|3"
+      },
+      {
+        "ply": 8,
+        "fen": "........BBWWWWBB........|W|4|4"
+      },
+      {
+        "ply": 10,
+        "fen": ".B...W..BBWWWWBB........|W|5|5"
+      }
+    ],
+    "favored_side": "B"
+  },
+  {
+    "opening_id": "z-mill-closed",
+    "name": "Z Mill — Closed",
+    "aliases": [
+      "Z Mill",
+      "Closed Z Mill"
+    ],
+    "family": "Z Mill",
+    "side": "W",
+    "seed_source": "book",
+    "line_moves": [
+      "d2",
+      "d6",
+      "c4",
+      "c5",
+      "e3",
+      "e5",
+      "d3",
+      "d5"
+    ],
+    "branch_moves": [
+      {
+        "branch_id": "z-mill-closed-c4-e3",
+        "deviation_ply": 5,
+        "deviation_move": "e5",
+        "name": "Z Mill — c4/e3 Variant",
+        "line_continuation": [
+          "e5",
+          "d3",
+          "d5"
+        ],
+        "strategic_notes": "B plays e5 to threaten inner-ring mill c5-d5-e5.",
+        "seed_source": "book",
+        "outcome_stats": {
+          "W": 0,
+          "B": 0,
+          "D": 0
+        }
+      }
+    ],
+    "strategic_notes": "W builds c4 and e3 to create a Z-shaped arrangement of potential mills across the inner ring: c3-c4-c5 (left), e3-d3-c3 (bottom), and d1-d2-d3 (south cross). B must contest the inner ring to prevent W from dominating it. The Z shape creates cross-ring threats that are hard to block simultaneously.",
+    "common_blunders": [
+      "f4",
+      "b4"
+    ],
+    "recommended_responses": {
+      "B": [
+        "d5",
+        "e5",
+        "c5"
+      ]
+    },
+    "outcome_stats": {
+      "W": 0,
+      "B": 0,
+      "D": 0
+    },
+    "confidence": 1.0,
+    "tags": [
+      "defensive",
+      "inner-ring",
+      "placement",
+      "centre"
+    ],
+    "source_reference": "Chapter 15.5 — The Z Mill",
+    "opening_fen_signatures": [
+      {
+        "ply": 4,
+        "fen": ".........B...W..B......W|W|2|2"
+      },
+      {
+        "ply": 6,
+        "fen": ".........B...W..B.B.W..W|W|3|3"
+      },
+      {
+        "ply": 8,
+        "fen": ".........B...W..BBB.WW.W|W|4|4"
+      }
+    ],
+    "favored_side": "B"
+  },
+  {
+    "opening_id": "z-mill-open",
+    "name": "Z Mill — Open",
+    "aliases": [
+      "Open Z Mill",
+      "Z Mill Variation"
+    ],
+    "family": "Z Mill",
+    "side": "W",
+    "seed_source": "book",
+    "line_moves": [
+      "d2",
+      "d6",
+      "f4",
+      "b4",
+      "c4",
+      "c5",
+      "e3",
+      "e5"
+    ],
+    "branch_moves": [],
+    "strategic_notes": "W first claims d2 and f4 (middle ring), then pivots to the inner ring with c4 and e3. This variation leaves the f2-f4-f6 mill potential partially open while threatening inner-ring control. B should contest d5 or e5 to prevent W from sealing the inner ring.",
+    "common_blunders": [
+      "g7",
+      "a7"
+    ],
+    "recommended_responses": {
+      "B": [
+        "d5",
+        "c3"
+      ]
+    },
+    "outcome_stats": {
+      "W": 0,
+      "B": 0,
+      "D": 0
+    },
+    "confidence": 1.0,
+    "tags": [
+      "inner-ring",
+      "placement",
+      "centre"
+    ],
+    "source_reference": "Chapter 15.6 — The Open Z Mill",
+    "opening_fen_signatures": [
+      {
+        "ply": 4,
+        "fen": ".........B.W.W.B........|W|2|2"
+      },
+      {
+        "ply": 6,
+        "fen": ".........B.W.W.BB......W|W|3|3"
+      },
+      {
+        "ply": 8,
+        "fen": ".........B.W.W.BB.B.W..W|W|4|4"
+      }
+    ],
+    "favored_side": "equal"
+  },
+  {
+    "opening_id": "corner-gambit",
+    "name": "Corner Gambit",
+    "aliases": [
+      "Outer Corner Play"
+    ],
+    "family": "Corner Gambit",
+    "side": "W",
+    "seed_source": "book",
+    "line_moves": [
+      "a7",
+      "d6",
+      "g7",
+      "b6",
+      "a1",
+      "b4",
+      "g1",
+      "f4"
+    ],
+    "branch_moves": [],
+    "strategic_notes": "W occupies all four outer ring corners early. Each pair threatens a potential mill along the outer ring sides. B must respond to contain the outer ring. This can be a gambit trap — the predictability of needing to block open mills can help W plan traps.",
+    "common_blunders": [
+      "d7",
+      "d1"
+    ],
+    "recommended_responses": {
+      "B": [
+        "d5",
+        "d2",
+        "f2"
+      ]
+    },
+    "outcome_stats": {
+      "W": 0,
+      "B": 0,
+      "D": 0
+    },
+    "confidence": 1.0,
+    "tags": [
+      "aggressive",
+      "outer-ring",
+      "placement",
+      "gambit"
+    ],
+    "source_reference": "Chapter 15 — A Gambit",
+    "opening_fen_signatures": [
+      {
+        "ply": 4,
+        "fen": "W.W.....BB..............|W|2|2"
+      },
+      {
+        "ply": 6,
+        "fen": "W.W...W.BB.....B........|W|3|3"
+      },
+      {
+        "ply": 8,
+        "fen": "W.W.W.W.BB.B...B........|W|4|4"
+      }
+    ],
+    "favored_side": "B"
+  }
+]

@@ -171,6 +171,8 @@ class GeneralSettings {
     this.humanDatabaseEnabled = false,
     this.humanDatabaseFilePath = '',
     this.showHumanDatabaseStats = false,
+    this.showOpeningInfo = false,
+    this.preferFavoredOpenings = false,
 
     /// Deprecated: always true. Retained to preserve the Hive `@HiveField(46)`
     /// slot for existing saved data. The field will be removed in a future
@@ -355,6 +357,16 @@ class GeneralSettings {
   // Show the latest Human Database move statistics below the board.
   @HiveField(49, defaultValue: false)
   final bool showHumanDatabaseStats;
+
+  // Show recognised opening name / source / notes in the game header.
+  @HiveField(50, defaultValue: false)
+  final bool showOpeningInfo;
+
+  // Let the AI follow a named opening line whose favoured side matches its own
+  // colour (before the move oracle). Off by default so the default AI move
+  // behaviour and oracle strength are unchanged.
+  @HiveField(51, defaultValue: false)
+  final bool preferFavoredOpenings;
 
   /// Deprecated field retained for Hive backward compatibility.
   ///

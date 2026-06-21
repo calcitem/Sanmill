@@ -4504,5 +4504,21 @@
     "nativeMillSessionDeveloperDescription": "Enabled by default. Toggle off to revert to the legacy session; a new game is required.",
     "@nativeMillSessionDeveloperDescription": {
         "description": "Subtitle for the native Mill session developer toggle"
-    }
+    },
+    "showOpeningInfo": "Show opening information",
+    "@showOpeningInfo": {},
+    "showOpeningInfo_Detail": "Display the recognised opening's name and source above the board while playing, when the position matches a known opening.",
+    "@showOpeningInfo_Detail": {},
+    "openingLabel": "Opening",
+    "@openingLabel": {},
+    "openingAvoid": "avoid",
+    "@openingAvoid": {},
+    "openingReply": "reply",
+    "@openingReply": {},
+    "openingFavours": "favours",
+    "@openingFavours": {},
+    "preferFavoredOpenings": "Prefer favourable openings",
+    "@preferFavoredOpenings": {},
+    "preferFavoredOpenings_Detail": "When the opening book is enabled, let the AI follow a known opening line that favours its own side before falling back to the engine's best move. This adds variety and a more human feel, and may deviate from the strongest move.",
+    "@preferFavoredOpenings_Detail": {}
 }

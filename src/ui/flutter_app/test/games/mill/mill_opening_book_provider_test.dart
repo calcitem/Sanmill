@@ -6,12 +6,15 @@ import 'package:sanmill/game_platform/game_session.dart';
 import 'package:sanmill/games/mill/mill_opening_book_provider.dart';
 import 'package:sanmill/games/mill/native_mill_game_session.dart';
 import 'package:sanmill/games/mill/native_mill_rules_port.dart';
+import 'package:sanmill/games/mill/opening_book/mill_opening_recognizer.dart';
+import 'package:sanmill/games/mill/opening_book/opening_book_repository.dart';
 import 'package:sanmill/general_settings/models/general_settings.dart';
 import 'package:sanmill/rule_settings/models/rule_settings.dart';
 import 'package:sanmill/shared/database/database.dart';
 
 import '../../helpers/mocks/mock_database.dart';
 import '../../helpers/test_native_library.dart';
+import 'opening_book/opening_book_test_assets.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -20,9 +23,15 @@ void main() {
 
   setUpAll(() async {
     await initRustLibForTests();
+    OpeningBookRepository.instance.resetForTest();
+    OpeningBookRepository.instance.assetLoader = loadOpeningBookAssetFromDisk;
+    await OpeningBookRepository.instance.ensureLoaded();
   });
 
-  tearDownAll(disposeRustLibForTests);
+  tearDownAll(() {
+    OpeningBookRepository.instance.resetForTest();
+    disposeRustLibForTests();
+  });
 
   setUp(() {
     DB.instance = MockDB();
@@ -50,6 +59,36 @@ void main() {
         ),
         isTrue,
       );
+    }, skip: skip);
+
+    test('prefers a favoured opening move when the toggle is on', () {
+      (DB.instance! as MockDB).generalSettings = DB().generalSettings.copyWith(
+        useOpeningBook: true,
+        preferFavoredOpenings: true,
+        // Deterministic: the selector takes the best-ranked candidate.
+        shufflingEnabled: false,
+      );
+
+      final NativeMillGameSession session = NativeMillGameSession();
+      addTearDown(session.dispose);
+      final MillOpeningBookProvider provider = MillOpeningBookProvider(
+        ruleSettings: const RuleSettings(),
+        generalSettings: DB().generalSettings,
+        // Start of game: no placements yet (White to move).
+        placementHistory: () => const <String>[],
+      );
+
+      final GameAction? bookMove = provider.lookup(session);
+      expect(bookMove, isNotNull);
+
+      // The chosen move must be a first move of a White-favoured named opening.
+      final List<String> favored = MillOpeningRecognizer.favoredOpeningMoves(
+        const <String>[],
+        OpeningBookRepository.instance.openingsFor(isElFilja: false),
+        'W',
+      );
+      expect(favored, isNotEmpty);
+      expect(favored, contains(bookMove!.payload['move']));
     }, skip: skip);
 
     test('returns null when useOpeningBook is disabled', () {

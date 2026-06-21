@@ -21,6 +21,7 @@ import 'experience_recording/services/recording_navigator_observer.dart';
 import 'game_page/services/mill.dart' show ExportService, LoadService;
 import 'game_platform/game_registry.dart';
 import 'games/built_in_game_modules.dart';
+import 'games/mill/opening_book/opening_book_repository.dart';
 import 'general_settings/models/general_settings.dart';
 import 'generated/intl/l10n.dart';
 import 'home/home.dart';
@@ -71,6 +72,11 @@ Future<void> main() async {
 
   registerBuiltInGameModules(GameRegistry.instance);
   SettingsRepositories.instance.init();
+
+  // Load the unified opening book (move oracle + named-line metadata). The
+  // book is advisory, so a failure here is non-fatal; do not block startup on
+  // it beyond the small JSON parse.
+  unawaited(OpeningBookRepository.instance.ensureLoaded());
 
   // Attach the current move list to crash / error reports so engine-failure
   // diagnostics ship with a replayable PGN file.

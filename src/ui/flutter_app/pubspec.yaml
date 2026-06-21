@@ -178,6 +178,8 @@ flutter:
     - assets/databases/mora_1_2_11_10.sec2
     - assets/databases/mora_1_3_10_9.sec2
     - assets/databases/mora_2_2_10_10.sec2
+    - assets/opening_books/nmm/opening_book.json
+    - assets/opening_books/el_filja/opening_book.json
 
 msix_config:
   display_name: Mill (N Men's Morris)

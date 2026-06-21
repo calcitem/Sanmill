@@ -313,6 +313,22 @@ class GeneralSettingsPage extends StatelessWidget {
     logger.t("$_logTag useOpeningBook: $value");
   }
 
+  void _setShowOpeningInfo(GeneralSettings generalSettings, bool value) {
+    _settingsRepository.generalSettings = generalSettings.copyWith(
+      showOpeningInfo: value,
+    );
+
+    logger.t("$_logTag showOpeningInfo: $value");
+  }
+
+  void _setPreferFavoredOpenings(GeneralSettings generalSettings, bool value) {
+    _settingsRepository.generalSettings = generalSettings.copyWith(
+      preferFavoredOpenings: value,
+    );
+
+    logger.t("$_logTag preferFavoredOpenings: $value");
+  }
+
   void _setUsePerfectDatabase(GeneralSettings generalSettings, bool value) {
     _settingsRepository.generalSettings = generalSettings.copyWith(
       usePerfectDatabase: value,
@@ -979,6 +995,32 @@ class GeneralSettingsPage extends StatelessWidget {
                 },
                 titleString: S.of(context).useOpeningBook,
                 subtitleString: S.of(context).useOpeningBook_Detail,
+              ),
+            if (DB().ruleSettings.isLikelyNineMensMorris() ||
+                DB().ruleSettings.isLikelyElFilja())
+              SettingsListTile.switchTile(
+                key: const Key(
+                  'general_settings_page_settings_card_ais_play_style_show_opening_info',
+                ),
+                value: generalSettings.showOpeningInfo,
+                onChanged: (bool val) {
+                  _setShowOpeningInfo(generalSettings, val);
+                },
+                titleString: S.of(context).showOpeningInfo,
+                subtitleString: S.of(context).showOpeningInfo_Detail,
+              ),
+            if (DB().ruleSettings.isLikelyNineMensMorris() ||
+                DB().ruleSettings.isLikelyElFilja())
+              SettingsListTile.switchTile(
+                key: const Key(
+                  'general_settings_page_settings_card_ais_play_style_prefer_favored_openings',
+                ),
+                value: generalSettings.preferFavoredOpenings,
+                onChanged: (bool val) {
+                  _setPreferFavoredOpenings(generalSettings, val);
+                },
+                titleString: S.of(context).preferFavoredOpenings,
+                subtitleString: S.of(context).preferFavoredOpenings_Detail,
               ),
             if (!kIsWeb)
               SettingsListTile.switchTile(

@@ -1,18 +1,21 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // Copyright (C) 2019-2026 The Sanmill developers (see AUTHORS file)
 
-// mill_opening_book_data.dart
+// mill_opening_book_oracle_source.dart
 //
-// Canonical FEN -> best-move tables for Nine Men's Morris and El Filja.
+// Authored canonical FEN -> best-move oracle for Nine Men's Morris and El
+// Filja. This is BUILD INPUT only: it is not imported by the app at runtime.
+// `tool/build_opening_book.dart` merges this oracle with the curated named
+// openings to produce the shipped asset(s) under assets/opening_books/, which
+// OpeningBookRepository loads at runtime.
 //
 // Each key is the lexicographically smallest FEN in its 16-way symmetry orbit
 // and stores a single representative best-move line in that canonical frame.
-// [MillOpeningBookProvider] maps a query position onto its canonical key and
-// rotates the stored line back into the query frame via transform.dart, so the
-// 16 symmetric variants of every position are covered without duplicating data.
+// At runtime the symmetry helpers expand each entry across all 16 variants, so
+// the 16 symmetric positions are covered without duplicating data.
 //
-// Regenerate after editing entries with:
-//   dart run tool/compress_mill_opening_book.dart
+// Regenerate the shipped JSON after editing entries with:
+//   dart run tool/build_opening_book.dart
 
 Map<String, List<String>>
 nineMensMorrisCanonicalOpeningBook = <String, List<String>>{

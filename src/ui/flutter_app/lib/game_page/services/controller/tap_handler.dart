@@ -123,6 +123,7 @@ class TapHandler {
           openingBook: MillOpeningBookProvider(
             ruleSettings: DB().ruleSettings,
             generalSettings: DB().generalSettings,
+            placementHistory: openingBookPlacementHistory,
           ),
           humanDatabase: MillHumanDatabaseProvider(
             ruleSettings: DB().ruleSettings,

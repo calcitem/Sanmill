@@ -259,10 +259,95 @@ class GameController {
       return;
     }
 
+    // When enabled, surface the recognised opening (name + source) while the
+    // game follows a known book line; normal turn prompts resume once the line
+    // ends (novel / out of book).
+    final String? openingTip = _openingInfoTip(context, session);
+    if (openingTip != null) {
+      headerTipNotifier.showTip(openingTip, snackBar: false);
+      return;
+    }
+
     final String? tip = _nativeSessionTurnTip(context, session);
     if (tip != null) {
       headerTipNotifier.showTip(tip, snackBar: false);
     }
+  }
+
+  /// Builds the opening-information tip for [refreshNativeSessionHeader], or
+  /// null when the feature is off, the variant is unsupported, or no named
+  /// opening is currently recognised.
+  String? _openingInfoTip(BuildContext context, NativeMillGameSession session) {
+    if (!DB().generalSettings.showOpeningInfo) {
+      return null;
+    }
+    final RuleSettings rules = DB().ruleSettings;
+    final bool isElFilja = rules.isLikelyElFilja();
+    if (!rules.isLikelyNineMensMorris() && !isElFilja) {
+      return null;
+    }
+    final List<String> placements = openingBookPlacementHistory();
+    if (placements.isEmpty) {
+      return null;
+    }
+    final MillOpeningRecognition recognition = MillOpeningRecognizer.recognize(
+      placements,
+      OpeningBookRepository.instance.openingsFor(isElFilja: isElFilja),
+    );
+    if (!recognition.isNamed) {
+      return null;
+    }
+
+    final String display =
+        recognition.status == MillOpeningStatus.deviation &&
+            (recognition.branchName?.isNotEmpty ?? false)
+        ? recognition.branchName!
+        : (recognition.name ?? '');
+    if (display.isEmpty) {
+      return null;
+    }
+    final StringBuffer buffer = StringBuffer(
+      '${S.of(context).openingLabel}: $display',
+    );
+    final String reference = recognition.sourceReference ?? '';
+    if (reference.isNotEmpty) {
+      buffer.write(' ($reference)');
+    }
+    final String favourName = switch (recognition.favoredSide) {
+      'W' => S.of(context).white,
+      'B' => S.of(context).black,
+      _ => '',
+    };
+    if (favourName.isNotEmpty) {
+      buffer.write(' \u2022 ${S.of(context).openingFavours} $favourName');
+    }
+    if (recognition.commonBlunders.isNotEmpty) {
+      buffer.write(
+        ' \u2022 ${S.of(context).openingAvoid}: '
+        '${recognition.commonBlunders.join(", ")}',
+      );
+    }
+    final List<String> replies = _openingResponsesForSide(session, recognition);
+    if (replies.isNotEmpty) {
+      buffer.write(
+        ' \u2022 ${S.of(context).openingReply}: ${replies.join(", ")}',
+      );
+    }
+    return buffer.toString();
+  }
+
+  /// Recommended replies for the side currently to move, if the recognised
+  /// opening lists any.
+  List<String> _openingResponsesForSide(
+    NativeMillGameSession session,
+    MillOpeningRecognition recognition,
+  ) {
+    final String key = switch (session.state.value.activeSeat) {
+      PlayerSeat.first => 'W',
+      PlayerSeat.second => 'B',
+      PlayerSeat.none => '',
+    };
+    return recognition.recommendedResponses[key] ?? const <String>[];
   }
 
   String? _nativeSessionTurnTip(
@@ -1434,6 +1519,7 @@ class GameController {
           openingBook: MillOpeningBookProvider(
             ruleSettings: DB().ruleSettings,
             generalSettings: DB().generalSettings,
+            placementHistory: openingBookPlacementHistory,
           ),
           humanDatabase: MillHumanDatabaseProvider(
             ruleSettings: DB().ruleSettings,
@@ -1535,6 +1621,7 @@ class GameController {
           openingBook: MillOpeningBookProvider(
             ruleSettings: DB().ruleSettings,
             generalSettings: DB().generalSettings,
+            placementHistory: openingBookPlacementHistory,
           ),
           humanDatabase: MillHumanDatabaseProvider(
             ruleSettings: DB().ruleSettings,
@@ -1888,4 +1975,13 @@ class GameController {
     _gameStartTime = null;
     _gameStartTimeRecorded = false;
   }
+}
+
+/// Placement moves played so far (in order, removals filtered), used by the
+/// opening-book recognizer and the favoured-opening director.
+List<String> openingBookPlacementHistory() {
+  return GameController().gameRecorder.mainlineMoves
+      .where((ExtMove move) => move.type == MoveType.place)
+      .map((ExtMove move) => move.move)
+      .toList(growable: false);
 }
