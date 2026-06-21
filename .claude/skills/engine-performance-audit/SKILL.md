@@ -593,11 +593,20 @@ Conservative, node-preserving candidates:
   per-node hot-path cleanup and should preserve node counts.  Revisit this
   direction only if repetition metadata is later carried directly in reversible
   state updates, which could remove the scan entirely.
-- Replace capped `Vec::remove(0)` history aging.  Runtime key history has a
-  fixed 256-entry cap and a 24-entry serialized snapshot window, but removing
-  the oldest key from a `Vec` shifts the whole tail.  A ring buffer, bounded
-  inline queue, or split hot/cold history can preserve external behavior while
-  making eviction O(1).
+- [x] Replace capped `Vec::remove(0)` history aging: CHECKED 2026-06-21, not a
+  current search-NPS target.  Runtime key history has a fixed 256-entry cap
+  and a 24-entry serialized snapshot window, so `remove(0)` would shift the
+  tail when a real-play reversible history exceeds the cap.  However,
+  `MillWorkbench::do_move` calls `apply_to_state(..., false)`, and
+  `apply_to_state_impl` only pushes into `key_history` when
+  `adjudicate_repetition` is true.  In-tree repetitions are tracked by
+  `Searcher::repetition_stack`, so search nodes do not trigger this `Vec`
+  aging path.
+
+  Do not spend current NPS work on converting this to a ring buffer.  Revisit
+  for UI/FRB real-play latency or very long reversible game sessions, where a
+  bounded ring can remove the cold O(n) shift while preserving the 256-entry
+  runtime cap and 24-entry snapshot window.
 - Reduce `build_workbench` root-history cloning.  FRB and CLI search setup can
   clone repetition history into each workbench.  Measure repeated engine calls
   and consider borrowing, sharing, or fixed-capacity copying only the search
