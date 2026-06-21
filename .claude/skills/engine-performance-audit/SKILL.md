@@ -548,11 +548,21 @@ Conservative, node-preserving candidates:
   least one of instructions, cache events, I-cache events, or fixed-position
   timing, so those exact micro-optimizations should not be reintroduced unless
   a later profile changes the cost model.
-- Audit `key_after` prefetch quality.  The current Mill override deliberately
-  predicts only the cache-line address and skips rare misc/capture-state
-  updates.  If TT prefetch becomes useful again, measure whether a slightly
-  more accurate but still O(1) key prediction improves TT-cache locality
-  without paying a do/undo cost.
+- [x] Audit standard mill-forming side prediction in `key_after`: CHECKED
+  2026-06-21, rejected.  The prototype made `key_after` skip the Zobrist side
+  xor for standard Place/Move actions that would immediately form a mill,
+  using the same two-line bitboard test as move ordering.  It preserved
+  bestmove, score, and nodes, but the extra per-candidate mill test outweighed
+  the occasional more accurate TT prefetch address: A/B against `07a74c645`
+  gave `start` d12 `1.062x`, `reduced_material` d12 `0.996x`,
+  `moving_loop` d18 `0.944x`, and `capture_pending` d18 `1.145x`.  Raw CSVs:
+  `/tmp/sanmill-perf/search_key_after_mill_side_vs_07a_primary.csv` and
+  `/tmp/sanmill-perf/search_key_after_mill_side_vs_07a_moving.csv`.
+
+  Keep the current rough O(1) prefetch-quality key for now.  It intentionally
+  predicts only the dominant piece-square and side xor contributions; trying
+  to make it exact by repeating apply/mill logic can cost more than a wasted
+  prefetch, especially with `prefetch_all` enabled.
 - Re-check hot `dyn` use only at runtime boundaries.  `Searcher<G: Game>` is
   already monomorphised; remaining `dyn GameRules`, `dyn BoardTopology`, and
   CLI game registries are boundary/tooling paths.  Do not refactor them unless
