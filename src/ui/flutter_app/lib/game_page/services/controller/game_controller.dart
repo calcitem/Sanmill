@@ -232,6 +232,12 @@ class GameController {
 
   void syncAiMoveTypeFromSession(NativeMillGameSession session) {
     aiMoveType = session.lastAiMoveType;
+    final int? bestValue = session.lastAiBestValue;
+    value = bestValue?.toString();
+    lastMoveFromAI =
+        bestValue != null &&
+        aiMoveType != null &&
+        aiMoveType != AiMoveType.unknown;
     headerIconsNotifier.showIcons();
   }
 

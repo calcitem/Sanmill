@@ -68,6 +68,7 @@ class NativeMillGameSession implements GameSessionHandle {
   bool _forcedTerminal = false;
 
   AiMoveType lastAiMoveType = AiMoveType.unknown;
+  int? lastAiBestValue;
   HumanDatabaseMoveStats? lastHumanDatabaseMoveStats;
 
   static final RegExp _aimovetypePattern = RegExp(
@@ -102,6 +103,7 @@ class NativeMillGameSession implements GameSessionHandle {
       return;
     }
     lastAiMoveType = AiMoveType.unknown;
+    lastAiBestValue = null;
     lastHumanDatabaseMoveStats = null;
     if (rules != null) {
       final NativeMillRulesPort nextPort = NativeMillRulesPort(
@@ -396,6 +398,7 @@ class NativeMillGameSession implements GameSessionHandle {
     }
 
     _lastSearchLegalAction = null;
+    lastAiBestValue = null;
     GameAction? bestAction;
     int eventCount = 0;
     try {
@@ -428,6 +431,7 @@ class NativeMillGameSession implements GameSessionHandle {
           continue;
         }
         lastAiMoveType = _aiMoveTypeFromReason(event.reason);
+        lastAiBestValue = event.score;
         bestAction = _legalActionForBestMove(event);
         _lastSearchLegalAction = bestAction;
         if (EnvironmentConfig.devMode) {

@@ -211,6 +211,7 @@ class NativeMillAiTurnController {
         }
         await session.apply(bookAction);
         session.lastAiMoveType = AiMoveType.openingBook;
+        session.lastAiBestValue = null;
         session.lastHumanDatabaseMoveStats = null;
         lastApplied = bookAction;
         if (EnvironmentConfig.devMode) {
@@ -245,6 +246,7 @@ class NativeMillAiTurnController {
         session.lastAiMoveType = correctedByPerfect
             ? AiMoveType.perfect
             : AiMoveType.humanDatabase;
+        session.lastAiBestValue = null;
         session.lastHumanDatabaseMoveStats = correctedByPerfect ? null : stats;
         lastApplied = action;
         if (EnvironmentConfig.devMode) {

@@ -10,6 +10,7 @@ import 'package:sanmill/game_platform/game_session.dart';
 import 'package:sanmill/games/mill/lan_session_meta.dart';
 import 'package:sanmill/games/mill/mill_constants.dart';
 import 'package:sanmill/games/mill/mill_marked_pieces_codec.dart';
+import 'package:sanmill/games/mill/mill_types.dart';
 import 'package:sanmill/games/mill/native_mill_game_session.dart';
 import 'package:sanmill/games/mill/native_mill_rules_port.dart';
 import 'package:sanmill/general_settings/models/general_settings.dart';
@@ -175,10 +176,41 @@ void main() {
           rulesPort: rulesPort,
         );
         addTearDown(session.dispose);
+        session.lastAiBestValue = 12;
 
         expect(await session.searchBestAction(), isNull);
+        expect(session.lastAiBestValue, isNull);
         expect(await session.searchAndApplyBestAction(), isNull);
         expect(rulesPort.applyCount, 0);
+      },
+    );
+
+    test(
+      'searchBestAction stores the bestMove score for the advantage graph',
+      () async {
+        final _FakeNativeMillRulesPort rulesPort = _FakeNativeMillRulesPort(
+          searchEvents: Stream<tgf.EngineEvent>.fromIterable(<tgf.EngineEvent>[
+            tgf.EngineEvent(
+              kind: 'bestMove',
+              depth: -1,
+              score: -42,
+              nodes: BigInt.from(256),
+              toNode: 23,
+              reason: 'a7 aimovetype=perfect rawScore=42',
+            ),
+          ]),
+        );
+        final NativeMillGameSession session = NativeMillGameSession(
+          rulesPort: rulesPort,
+        );
+        addTearDown(session.dispose);
+
+        final GameAction? best = await session.searchBestAction();
+
+        expect(best, isNotNull);
+        expect(best!.payload['move'], 'a7');
+        expect(session.lastAiBestValue, -42);
+        expect(session.lastAiMoveType, AiMoveType.perfect);
       },
     );
 
