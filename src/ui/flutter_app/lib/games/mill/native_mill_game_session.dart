@@ -56,6 +56,11 @@ class NativeMillGameSession implements GameSessionHandle {
   bool _disposed = false;
   GameAction? _lastSearchLegalAction;
 
+  /// True while a [searchBestAction] call is in flight on this session.
+  /// Exactly one engine search may run at a time; see the assert in
+  /// [searchBestAction] for the rationale.
+  bool _searchInFlight = false;
+
   /// True while a session-level terminal result (resignation / timeout /
   /// abandonment) is overlaid on top of the Rust kernel state.  Cleared by
   /// the next real kernel transition (every [_setState] call that is not a
@@ -368,6 +373,21 @@ class NativeMillGameSession implements GameSessionHandle {
       return null;
     }
 
+    // Serialization tripwire (fail-fast, not a fallback): exactly one engine
+    // search may run on a session at a time.  Concurrent searches read the
+    // same pre-move snapshot, so the first applies its move and the second's
+    // identical bestMove is then rejected by isLegal -- the spurious
+    // EngineNoBestMove root cause.  The entry-point guards (TapHandler and
+    // GameController.engineToGo isEngineRunning serialization) must prevent
+    // this; assert here so any caller that bypasses them fails loudly in
+    // debug and tests instead of silently masking a stale move in release.
+    assert(
+      !_searchInFlight,
+      'Concurrent searchBestAction: a second engine search started while one '
+      'was already in flight. A caller is missing the isEngineRunning guard.',
+    );
+    _searchInFlight = true;
+
     if (EnvironmentConfig.devMode) {
       logger.d(
         '$_logTag searchBestAction: depth=$depth '
@@ -421,6 +441,10 @@ class NativeMillGameSession implements GameSessionHandle {
       // Stream error (e.g. Rust search panicked); treat as no best action.
       logger.e('$_logTag searchBestAction stream error: $e');
       return null;
+    } finally {
+      // The stream has ended (success or error), so the search is complete;
+      // release the in-flight latch before the post-loop diagnostics/return.
+      _searchInFlight = false;
     }
     if (eventCount == 0) {
       logger.w(

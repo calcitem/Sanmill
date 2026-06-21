@@ -365,6 +365,39 @@ void main() {
       expect(rulesPort.perfectDatabaseBestActionCount, 1);
     });
 
+    test('rejects a concurrent search to serialize engine access', () async {
+      // Two overlapping searchBestAction calls would read the same pre-move
+      // snapshot; the first applies its move and the second's identical
+      // bestMove is then rejected as illegal -- the spurious EngineNoBestMove
+      // root cause.  The session asserts the single-search invariant so any
+      // caller that bypasses the isEngineRunning serialization fails loudly.
+      final StreamController<tgf.EngineEvent> controller =
+          StreamController<tgf.EngineEvent>();
+      addTearDown(controller.close);
+      final _FakeNativeMillRulesPort rulesPort = _FakeNativeMillRulesPort(
+        searchEvents: controller.stream,
+      );
+      final NativeMillGameSession session = NativeMillGameSession(
+        rulesPort: rulesPort,
+      );
+      addTearDown(session.dispose);
+
+      // The first search subscribes and latches the in-flight guard without
+      // completing (the controller stays open).
+      final Future<GameAction?> first = session.searchBestAction();
+      await Future<void>.delayed(Duration.zero);
+
+      // A second, overlapping search must trip the serialization assert.
+      await expectLater(
+        session.searchBestAction(),
+        throwsA(isA<AssertionError>()),
+      );
+
+      // Let the first search finish cleanly so the in-flight guard releases.
+      await controller.close();
+      await first;
+    });
+
     test('stores LAN metadata for native LAN turn checks', () {
       final _FakeNativeMillRulesPort rulesPort = _FakeNativeMillRulesPort();
       final NativeMillGameSession session = NativeMillGameSession(

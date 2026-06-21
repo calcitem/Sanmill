@@ -1350,6 +1350,19 @@ class GameController {
       return const EngineResponseSkip();
     }
 
+    // Master-parity re-entrancy guard (legacy engineToGo / search_engine):
+    // never start a second concurrent search while one is already in flight.
+    // Move Now is the only exception and is handled above by aborting the
+    // running search.  Without this guard a re-triggered engineToGo (new
+    // game, auto-restart, replay kick, or a stray notifier) races the
+    // in-flight search for the global ACTIVE_SEARCH slot; the first applies
+    // its move and the second's now-stale bestMove is rejected as illegal --
+    // the spurious EngineNoBestMove symptom this branch fixed in the tap path.
+    if (isEngineRunning && !isMoveNow) {
+      logger.t("$tag engineToGo still running; skip re-entrant call.");
+      return const EngineResponseSkip();
+    }
+
     if (gameInstance.gameMode == GameMode.humanVsAi) {
       return _nativeSessionEngineToGo(context, isMoveNow: isMoveNow);
     }

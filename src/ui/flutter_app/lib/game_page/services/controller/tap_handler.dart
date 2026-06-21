@@ -65,6 +65,15 @@ class TapHandler {
       return const EngineResponseSkip();
     }
 
+    // Master parity (onBoardTap): ignore board taps while an experience
+    // replay is driving the session.  The replay engine applies both sides'
+    // recorded moves; a user tap here would inject an out-of-band move or a
+    // concurrent AI search into the replay timeline.
+    if (controller.isExperienceReplayActive) {
+      logger.i("$_logTag Experience replay active; ignoring tap <$sq>.");
+      return const EngineResponseSkip();
+    }
+
     // Serialize AI search: while one search is already in flight, a second
     // board tap must not launch another.  Both searches would read the same
     // pre-move snapshot; the first applies its move and the second's identical
