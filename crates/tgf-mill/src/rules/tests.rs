@@ -294,6 +294,177 @@ fn workbench_do_undo_restores_all_fields_for_legal_actions() {
     );
 }
 
+/// Snapshot-driven counterpart of [`assert_all_legal_actions_restore_workbench`]
+/// for positions that are easier to construct directly than to reach through a
+/// UCI move prefix (capture variants, pending-removal states).  For every legal
+/// action at `snap`, do_move followed by undo_move must restore every
+/// `MillState` field.
+fn assert_all_legal_actions_restore_workbench_snapshot(
+    options: &MillVariantOptions,
+    snap: &GameStateSnapshot,
+) {
+    let game = MillGame::new(options.clone());
+    let probe_wb = game.build_workbench(snap);
+    let mut actions = SearchActionList::new();
+    MillGame::generate_legal(&probe_wb, &mut actions);
+    assert!(
+        !actions.is_empty(),
+        "test position must expose at least one legal action"
+    );
+    for action in actions.iter().copied() {
+        let mut wb = game.build_workbench(snap);
+        let before = wb.state.clone();
+        wb.do_move(action);
+        wb.undo_move();
+        assert_eq!(
+            wb.state,
+            before,
+            "do/undo must restore every MillState field for {}",
+            MillUciCodec::encode_action(action)
+        );
+    }
+}
+
+/// Validate do/undo full-field restoration through the *Full* undo path
+/// (`MillUndoFullCore`) for a capture variant.  Covers both directions: the
+/// trigger action that arms the capture (the SET path, exercised from the
+/// pre-trigger position) and the resolving removals that clear it (the CLEAR
+/// path, exercised from the pending-removal position reached by `trigger`).
+fn assert_capture_variant_full_undo(
+    options: MillVariantOptions,
+    pre_state: MillState,
+    trigger: Action,
+) {
+    let rules = MillRules::new(options.clone());
+    let pre_snap = rules.encode(pre_state);
+
+    // The trigger must be a real legal action so the scenario is genuine.
+    let game = MillGame::new(options.clone());
+    let pre_wb = game.build_workbench(&pre_snap);
+    let mut pre_actions = SearchActionList::new();
+    MillGame::generate_legal(&pre_wb, &mut pre_actions);
+    assert!(
+        pre_actions.as_slice().contains(&trigger),
+        "capture trigger {} must be legal in the pre-trigger position",
+        MillUciCodec::encode_action(trigger)
+    );
+
+    // SET path: the arming place/move plus every sibling legal action.
+    assert_all_legal_actions_restore_workbench_snapshot(&options, &pre_snap);
+
+    // CLEAR path: resolve the capture and exercise the removal undo.
+    let post_snap = rules.apply(&pre_snap, trigger);
+    let post = MillRules::decode(&post_snap);
+    assert!(
+        post.pending_removals.iter().any(|&n| n > 0),
+        "capture trigger must arm at least one pending removal"
+    );
+    assert_all_legal_actions_restore_workbench_snapshot(&options, &post_snap);
+}
+
+#[test]
+fn workbench_do_undo_restores_all_fields_through_full_capture_undo_path() {
+    // Custodian capture: W places a7, trapping B d7 between W a7 / W g7.
+    assert_capture_variant_full_undo(
+        MillVariantOptions {
+            custodian_capture: CaptureRuleConfig {
+                enabled: true,
+                ..CaptureRuleConfig::default()
+            },
+            ..MillVariantOptions::default()
+        },
+        MillState {
+            board: {
+                let mut board = [0_i8; 24];
+                board[old_node(1)] = 2; // B d7.
+                board[old_node(2)] = 1; // W g7.
+                board
+            },
+            side_to_move: 0,
+            phase: MillPhase::Placing,
+            move_number: 2,
+            pieces_in_hand: [8, 8],
+            pieces_on_board: [1, 1],
+            ..MillState::default()
+        },
+        Action {
+            kind_tag: MillActionKind::Place as i16,
+            from_node: -1,
+            to_node: old_node_i16(0), // W a7 arms the custodian capture.
+            aux: -1,
+            payload_bits: 0,
+        },
+    );
+
+    // Intervention capture: W places d7 between B a7 / B g7 (two targets).
+    assert_capture_variant_full_undo(
+        MillVariantOptions {
+            intervention_capture: CaptureRuleConfig {
+                enabled: true,
+                ..CaptureRuleConfig::default()
+            },
+            ..MillVariantOptions::default()
+        },
+        MillState {
+            board: {
+                let mut board = [0_i8; 24];
+                board[old_node(0)] = 2; // B a7.
+                board[old_node(2)] = 2; // B g7.
+                board
+            },
+            side_to_move: 0,
+            phase: MillPhase::Placing,
+            move_number: 2,
+            pieces_in_hand: [9, 7],
+            pieces_on_board: [0, 2],
+            ..MillState::default()
+        },
+        Action {
+            kind_tag: MillActionKind::Place as i16,
+            from_node: -1,
+            to_node: old_node_i16(1), // W d7 intervenes between the two B pieces.
+            aux: -1,
+            payload_bits: 0,
+        },
+    );
+
+    // Leap capture (moving phase): W a7 leaps to g7 over B d7.
+    assert_capture_variant_full_undo(
+        MillVariantOptions {
+            leap_capture: CaptureRuleConfig {
+                enabled: true,
+                ..CaptureRuleConfig::default()
+            },
+            ..MillVariantOptions::default()
+        },
+        MillState {
+            board: {
+                let mut board = [0_i8; 24];
+                board[old_node(0)] = 1; // W a7 leaps to g7.
+                board[old_node(1)] = 2; // B d7 jumped.
+                board[old_node(3)] = 1; // W g4.
+                board[old_node(4)] = 1; // W g1.
+                board[old_node(5)] = 2;
+                board[old_node(6)] = 2;
+                board
+            },
+            side_to_move: 0,
+            phase: MillPhase::Moving,
+            move_number: 20,
+            pieces_in_hand: [0, 0],
+            pieces_on_board: [3, 3],
+            ..MillState::default()
+        },
+        Action {
+            kind_tag: MillActionKind::Move as i16,
+            from_node: old_node_i16(0),
+            to_node: old_node_i16(2), // a7 -> g7 over d7.
+            aux: -1,
+            payload_bits: 0,
+        },
+    );
+}
+
 #[test]
 fn mill_board_undo_keeps_full_snapshot_out_of_standard_delta() {
     assert_eq!(
