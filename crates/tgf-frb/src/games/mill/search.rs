@@ -134,7 +134,35 @@ pub(crate) fn mill_searcher_default() -> Searcher<MillGame> {
         quiescence_kind_tag: Some(MillActionKind::Remove as i16),
         ..Default::default()
     });
+    s.set_options(mill_base_search_options());
     s
+}
+
+/// Whether this build enables full TT prefetch for the Mill engine.
+///
+/// Prefetch is a measured, node-preserving win on modern desktop CPUs (see the
+/// engine-performance-audit skill: ~+50% IPC / ~-33% cycles on a Zen4 part).
+/// Mobile targets (Android/iOS, ARM) and wasm stay off pending per-device
+/// validation: their cache hierarchies and TT sizes differ, and a `key_after`
+/// hint buys nothing on wasm where `TT::prefetch` is a no-op. `MillGame`'s
+/// `key_after` is an O(1) incremental-Zobrist hint, which is exactly the
+/// precondition documented on `SearchOptions::enable_prefetch`.
+pub(crate) const MILL_PREFETCH: bool = cfg!(not(any(
+    target_os = "android",
+    target_os = "ios",
+    target_arch = "wasm32"
+)));
+
+/// Base [`SearchOptions`] for the Mill engine: identical to the searcher
+/// default except that desktop builds enable full TT prefetch. Use this
+/// instead of `SearchOptions::default()` at every Mill search-setup site so the
+/// prefetch policy lives in exactly one place.
+pub(crate) fn mill_base_search_options() -> SearchOptions {
+    SearchOptions {
+        enable_prefetch: MILL_PREFETCH,
+        prefetch_all: MILL_PREFETCH,
+        ..SearchOptions::default()
+    }
 }
 
 /// Move-order context used for the MCTS path.
@@ -293,7 +321,7 @@ fn run_mill_engine_config_event_stream(
         searcher.set_options(SearchOptions {
             time_limit_ms: Some(config.move_time_ms as u64),
             move_order_context: search_context,
-            ..SearchOptions::default()
+            ..mill_base_search_options()
         });
     }
 
@@ -565,5 +593,92 @@ mod tests {
             }),
             perfect_db::PerfectMoveOrdering::LegacyWdl
         );
+    }
+
+    fn search_startpos(depth: i32, prefetch: bool) -> SearchResult {
+        let game = MillGame::default();
+        let snap = MillRules::default().initial_state(&[]);
+        let mut wb = game.build_workbench(&snap);
+        let mut s = Searcher::<MillGame>::new();
+        s.set_policy(SearchPolicy {
+            quiescence_kind_tag: Some(MillActionKind::Remove as i16),
+            ..Default::default()
+        });
+        s.set_options(SearchOptions {
+            enable_prefetch: prefetch,
+            prefetch_all: prefetch,
+            ..SearchOptions::default()
+        });
+        // Production default for the Mill AI is MTD(f) (see
+        // MillEngineConfigPlan::default), which is the TT-probe-heavy path that
+        // prefetch targets. Match it here rather than the plain alpha-beta
+        // `search()` entry point.
+        s.search_mtdf_with_guess(&mut wb, depth, 0)
+    }
+
+    #[test]
+    fn desktop_build_enables_full_tt_prefetch() {
+        let base = mill_base_search_options();
+        assert_eq!(base.enable_prefetch, MILL_PREFETCH);
+        assert_eq!(base.prefetch_all, MILL_PREFETCH);
+        #[cfg(not(any(target_os = "android", target_os = "ios", target_arch = "wasm32")))]
+        {
+            assert!(
+                base.enable_prefetch,
+                "desktop builds must enable TT prefetch"
+            );
+            assert!(base.prefetch_all);
+        }
+    }
+
+    #[test]
+    fn prefetch_is_node_preserving() {
+        // Prefetch only issues cache hints on predicted keys; probe/save use
+        // the real key, so the searched tree must be identical with it on or
+        // off. A small depth keeps this debug-mode test fast.
+        let on = search_startpos(6, true);
+        let off = search_startpos(6, false);
+        assert_eq!(on.nodes, off.nodes, "prefetch changed the node count");
+        assert_eq!(on.best_action, off.best_action);
+        assert_eq!(on.score, off.score);
+    }
+
+    /// Reusable desktop micro-benchmark (skipped by default). Run with:
+    /// `cargo test -p rust_lib_sanmill --release prefetch_desktop_speedup --`
+    /// ` -- --ignored --nocapture`
+    #[test]
+    #[ignore = "manual desktop benchmark; prints timing, not a pass/fail gate"]
+    fn prefetch_desktop_speedup() {
+        use std::time::Instant;
+        let depth = 12;
+        for &(label, pf) in &[("off", false), ("all", true)] {
+            let game = MillGame::default();
+            let snap = MillRules::default().initial_state(&[]);
+            let mut s = Searcher::<MillGame>::new();
+            s.set_policy(SearchPolicy {
+                quiescence_kind_tag: Some(MillActionKind::Remove as i16),
+                ..Default::default()
+            });
+            s.set_options(SearchOptions {
+                enable_prefetch: pf,
+                prefetch_all: pf,
+                ..SearchOptions::default()
+            });
+            // Warm code/data caches, then clear the TT so the measured search
+            // starts from an empty table (matching the CLI cold-process A/B).
+            {
+                let mut wb = game.build_workbench(&snap);
+                let _ = s.search_mtdf_with_guess(&mut wb, 4, 0);
+            }
+            s.clear_tt();
+            let mut wb = game.build_workbench(&snap);
+            let t = Instant::now();
+            let r = s.search_mtdf_with_guess(&mut wb, depth, 0);
+            let ms = t.elapsed().as_secs_f64() * 1e3;
+            println!(
+                "prefetch={label:<3} depth={depth} nodes={} elapsed_ms={ms:.2}",
+                r.nodes
+            );
+        }
     }
 }
