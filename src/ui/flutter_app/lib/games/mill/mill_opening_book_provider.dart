@@ -10,6 +10,7 @@ import '../../rule_settings/models/rule_settings.dart';
 import '../../shared/services/logger.dart';
 import 'mill_action_codec.dart';
 import 'mill_opening_book_data.dart';
+import 'mill_opening_book_symmetry.dart';
 import 'native_mill_game_session.dart';
 
 class MillOpeningBookProvider implements OpeningBookProvider {
@@ -44,15 +45,15 @@ class MillOpeningBookProvider implements OpeningBookProvider {
       return null;
     }
 
-    final String? normalizedFen = _normalizeFen(session.getFen());
-    if (normalizedFen == null) {
-      return null;
-    }
+    final String normalizedFen = normalizeOpeningBookFen(session.getFen());
 
     final Map<String, List<String>> book = ruleSettings.isLikelyElFilja()
-        ? elFiljaFenToBestMoves
-        : nineMensMorrisFenToBestMoves;
-    final List<String>? bestMoves = book[normalizedFen];
+        ? elFiljaCanonicalOpeningBook
+        : nineMensMorrisCanonicalOpeningBook;
+    final List<String>? bestMoves = lookupCanonicalOpeningBook(
+      book,
+      normalizedFen,
+    );
     if (bestMoves == null || bestMoves.isEmpty) {
       return null;
     }
@@ -74,18 +75,5 @@ class MillOpeningBookProvider implements OpeningBookProvider {
       'action for FEN $normalizedFen',
     );
     return null;
-  }
-
-  static String? _normalizeFen(String fen) {
-    final List<String> fenFields = fen.split(' ');
-    if (fenFields.length < 17) {
-      return fen;
-    }
-    // Mill FEN mandatory fields are fixed.  Keep dialect markers such as
-    // `ids:nodes` untouched while normalising the volatile formed-mills and
-    // rule50 counters used by the static opening book keys.
-    fenFields[14] = '0';
-    fenFields[15] = '0';
-    return fenFields.join(' ');
   }
 }
