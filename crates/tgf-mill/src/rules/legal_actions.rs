@@ -69,11 +69,24 @@ impl MillRules {
     }
 
     pub(super) fn maybe_handle_stalemate(&self, state: &mut MillState) -> bool {
-        if state.phase != MillPhase::Moving
-            || state.side_to_move < 0
-            || state.pending_removals[state.side_to_move as usize] != 0
-            || !evaluation::is_all_surrounded(state, &self.options, state.side_to_move)
-        {
+        if state.phase != MillPhase::Moving || state.side_to_move < 0 {
+            return false;
+        }
+        let side = state.side_to_move as usize;
+        if state.pending_removals[side] != 0 {
+            return false;
+        }
+        // When flying is enabled and at least one board point is empty, a
+        // side at or below the fly threshold always has a legal destination.
+        // This mirrors the early return inside `is_all_surrounded` but avoids
+        // calling into the full stalemate scan at every search node.
+        if self.options.may_fly && state.pieces_on_board[side] <= self.options.fly_piece_count {
+            let occupied_count = state.pieces_on_board[0] + state.pieces_on_board[1];
+            if occupied_count < 24 {
+                return false;
+            }
+        }
+        if !evaluation::is_all_surrounded(state, &self.options, state.side_to_move) {
             return false;
         }
 

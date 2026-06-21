@@ -11,14 +11,14 @@
 # next-branch revisions.
 
 [meta]
-locked_at = "2026-06-21T12:41:54+00:00"
-git_commit = "ed4f4d992+working-tree (remove-order score cache)"
+locked_at = "2026-06-21T13:00:44+00:00"
+git_commit = "00f46123a+working-tree (fly stalemate scan bypass)"
 platform = "linux-x86_64 KVM 4 vCPU Intel Xeon E5-2680 v4 @ 2.40GHz"
 build_flags = "cargo build --release -p tgf-cli"
-command = "python3 scripts/compare_engine_perf.py --current 'target/release/tgf uci' --master '/tmp/sanmill-before-remove-order-cache-tgf uci' --current-depth-go 'gomtdf {depth}' --master-depth-go 'gomtdf {depth}' --cases start,reduced_material --skills 15 --depths 12 --repeat 5 --timeout 240"
-supplemental_command = "python3 scripts/compare_engine_perf.py --current 'target/release/tgf uci' --master '/tmp/sanmill-before-remove-order-cache-tgf uci' --current-depth-go 'gomtdf {depth}' --master-depth-go 'gomtdf {depth}' --cases moving_loop,capture_pending --skills 15 --depths 18 --repeat 5 --timeout 240"
+command = "python3 scripts/compare_engine_perf.py --current 'target/release/tgf uci' --master '/tmp/sanmill-before-fly-stalemate-tgf uci' --current-depth-go 'gomtdf {depth}' --master-depth-go 'gomtdf {depth}' --cases start,reduced_material --skills 15 --depths 12 --repeat 7 --timeout 240"
+supplemental_command = "python3 scripts/compare_engine_perf.py --current 'target/release/tgf uci' --master '/tmp/sanmill-before-fly-stalemate-tgf uci' --current-depth-go 'gomtdf {depth}' --master-depth-go 'gomtdf {depth}' --cases moving_loop,capture_pending --skills 15 --depths 18 --repeat 5 --timeout 240"
 summary_method = "median elapsed_ms from current engine rows"
-notes = "Re-collected in the current Linux/KVM workspace after accepting the Mill remove-order score cache. Do not compare elapsed time across different machines. TGF_PREFETCH_MODE was unset, so the CLI used its current default. The master label in the command is the saved previous Rust/TGF binary at ed4f4d992, not the legacy C++ engine. Master remains the external parity reference for broader audits. This lock includes the accepted standard move-generation branch hoist, lazy moving-phase block-score cache, Searcher-cached TT generation age, and Mill remove-order score cache. Raw CSVs during collection: /tmp/sanmill-perf/search_remove_order_cache_vs_ed4f_primary.csv, /tmp/sanmill-perf/search_remove_order_cache_vs_ed4f_moving.csv, and /tmp/sanmill-perf/search_remove_order_cache_vs_ed4f_capture_r11.csv."
+notes = "Re-collected in the current Linux/KVM workspace after accepting the fly-threshold stalemate scan bypass. Do not compare elapsed time across different machines. TGF_PREFETCH_MODE was unset, so the CLI used its current default. The master label in the command is the saved previous Rust/TGF binary at 00f46123a, not the legacy C++ engine. Master remains the external parity reference for broader audits. This lock includes the accepted standard move-generation branch hoist, lazy moving-phase block-score cache, Searcher-cached TT generation age, Mill remove-order score cache, and fly-threshold stalemate scan bypass. Raw CSVs during collection: /tmp/sanmill-perf/search_fly_stalemate_lazy_count_vs_00f_start_r7.csv, /tmp/sanmill-perf/search_fly_stalemate_lazy_count_vs_00f_reduced_r7.csv, /tmp/sanmill-perf/search_fly_stalemate_lazy_count_vs_00f_moving.csv, and /tmp/sanmill-perf/search_fly_stalemate_lazy_count_vs_00f_moving_loop_r11.csv."
 
 [thresholds]
 max_elapsed_regress_pct = 8.0
@@ -35,9 +35,9 @@ bestmove = "d6"
 score = 3
 depth = 12
 nodes = 5_580_055
-median_ms = 1004.34
-ns_per_node = 179.99
-run_ms = [1004.34, 1108.18, 1041.96, 964.82, 921.17]
+median_ms = 1034.47
+ns_per_node = 185.39
+run_ms = [943.13, 1034.47, 1165.36, 1005.66, 1061.58, 1014.79, 1088.02]
 
 [[cases]]
 name = "reduced_material"
@@ -47,9 +47,9 @@ bestmove = "c4-b4"
 score = -89
 depth = 12
 nodes = 3_209_969
-median_ms = 794.12
-ns_per_node = 247.39
-run_ms = [898.40, 826.95, 751.54, 777.53, 794.12]
+median_ms = 802.58
+ns_per_node = 250.03
+run_ms = [841.08, 802.58, 924.37, 756.39, 770.26, 782.57, 859.03]
 
 [[cases]]
 name = "moving_loop"
@@ -59,9 +59,9 @@ bestmove = "c4-c5"
 score = 0
 depth = 18
 nodes = 137_221
-median_ms = 49.92
-ns_per_node = 363.77
-run_ms = [47.71, 66.44, 45.48, 49.92, 51.58]
+median_ms = 52.69
+ns_per_node = 383.98
+run_ms = [70.51, 58.68, 46.86, 52.69, 70.08, 47.52, 51.54, 45.85, 47.05, 54.72, 60.10]
 
 [[cases]]
 name = "capture_pending"
@@ -71,6 +71,6 @@ bestmove = "xf4"
 score = 28
 depth = 18
 nodes = 7_842_354
-median_ms = 1696.47
-ns_per_node = 216.32
-run_ms = [1768.78, 1751.64, 1754.93, 1683.98, 1633.37, 1865.52, 1635.45, 1950.51, 1696.47, 1613.53, 1652.96]
+median_ms = 1671.26
+ns_per_node = 213.11
+run_ms = [1604.31, 1650.76, 1761.28, 1697.50, 1671.26]

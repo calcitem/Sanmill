@@ -539,6 +539,26 @@ Conservative, node-preserving candidates:
   plus stable priority lists; Rust should keep emitted order identical while
   replacing repeated full-board scans with masks, `trailing_zeros`, and
   precomputed peer/line masks where the order is provably unchanged.
+- [x] Bypass fly-threshold stalemate scans.  `maybe_handle_stalemate` called
+  `is_all_surrounded` even in default flying endgames where the callee would
+  immediately return `false`: if `may_fly` is enabled, the side to move has at
+  most `fly_piece_count` pieces, and at least one board point is empty, the
+  player has a legal flying destination and cannot be stalemated.  Done on
+  2026-06-21: moved that exact early-return predicate to the caller, computing
+  the occupied count only inside the fly-threshold branch so non-flying nodes
+  do not pay extra work.  This preserves the existing `is_all_surrounded`
+  semantics and only skips a redundant scan.
+
+  Fixed-depth A/B against clean `00f46123a` preserved bestmove, score, and
+  nodes for all checked cases.  Median ratios after the lazy occupied-count
+  shape: `start` d12 repeat=7 `1.011x`, `reduced_material` d12 repeat=7
+  `0.974x`, `capture_pending` d18 repeat=5 `0.961x`, and `moving_loop` d18
+  repeat=11 `1.011x` on a tiny 137k-node sample.  Raw CSVs:
+  `/tmp/sanmill-perf/search_fly_stalemate_lazy_count_vs_00f_start_r7.csv`,
+  `/tmp/sanmill-perf/search_fly_stalemate_lazy_count_vs_00f_reduced_r7.csv`,
+  `/tmp/sanmill-perf/search_fly_stalemate_lazy_count_vs_00f_moving.csv`, and
+  `/tmp/sanmill-perf/search_fly_stalemate_lazy_count_vs_00f_moving_loop_r11.csv`.
+  `tests/search_perf_baseline.toml` was updated with the accepted medians.
 - [x] Audit master-normalized node numbering for bitboard geometry.  Master
   numbers real board squares as `SQ_8..SQ_31`, starting at the inner 12
   o'clock point and proceeding clockwise by ring.  Rust previously used a
