@@ -772,11 +772,22 @@ Conservative, node-preserving candidates:
   `u16`.  A Rust search-only `PackedMillAction` can reduce stack pressure in
   move lists and score arrays while preserving the public `Action` ABI at
   FRB/CLI boundaries.
-- Precompute standard move-action templates.  Stockfish's SIMD movegen is not
-  directly portable to Mill, but its idea of precomputed ordered move payloads
-  is useful.  For standard Mill, store ordered move actions per source square
-  and filter them with empty-neighbor masks, so generation copies compact
-  prebuilt actions instead of rebuilding every `Action` field at each node.
+- [x] Precompute standard move-action templates: CHECKED 2026-06-21, rejected
+  for the current `Action` layout.  The prototype stored ordered
+  `(to_bit, Action)` templates per source square and preserved exact topology
+  order, then filtered by the existing empty-neighbor mask.  It preserved
+  bestmove, score, and nodes, but fixed-depth A/B against `c61a47060` was not
+  a win: `start` d12 `0.992x`, `reduced_material` d12 `1.030x`,
+  `moving_loop` d18 `1.025x`, and `capture_pending` d18 `1.063x`.  Raw CSVs:
+  `/tmp/sanmill-perf/search_standard_move_templates_vs_c61a_primary.csv` and
+  `/tmp/sanmill-perf/search_standard_move_templates_vs_c61a_moving.csv`.
+
+  Theory after measurement: constructing the small POD `Action` with constant
+  kind/aux/payload is already cheap and likely lowers to immediates/register
+  stores, while the template table adds extra static data loads and sentinel
+  checks in the movegen hot path.  Do not reintroduce this exact table shape
+  unless `Action` is first packed or a future staged generator can consume
+  compact `(from, to)` entries directly without loading full `Action` values.
 - [x] Cache mill-formation scores by bit masks.  Master repeatedly calls
   `potential_mills_count` during move ordering; Rust already uses line masks,
   but every action still recomputes several facts.  Investigate tables keyed by
