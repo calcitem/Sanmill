@@ -69,21 +69,10 @@ impl TtCluster {
 
 pub(crate) const TT_STORAGE_ALIGNMENT: usize = 4096;
 
-/// How a [`TtStorage`] allocation is backed, so [`Drop`] frees it the right
-/// way. Windows large pages come from `VirtualAlloc(MEM_LARGE_PAGES)` and must
-/// be released with `VirtualFree`; every other allocation uses the global
-/// allocator and is released with `dealloc`.
-enum TtBacking {
-    Heap,
-    #[cfg(windows)]
-    LargePagesWin,
-}
-
 pub(crate) struct TtStorage {
     ptr: NonNull<TtCluster>,
     len: usize,
     layout: Layout,
-    backing: TtBacking,
 }
 
 // The storage owns a contiguous allocation of `TtCluster`, and each cluster
@@ -101,29 +90,6 @@ impl TtStorage {
         let align = TT_STORAGE_ALIGNMENT.max(std::mem::align_of::<TtCluster>());
         debug_assert!(align.is_power_of_two());
         let layout = Layout::from_size_align(bytes, align).expect("invalid TT storage layout");
-
-        // Prefer Windows large pages for the TT backing store. The TT is the
-        // dominant random-access working set in deep search; 4 KiB pages cost
-        // extra dTLB misses on every probe/save, while 2 MiB large pages keep
-        // the page-table walk short. This is purely a backing-store change:
-        // node counts and TT semantics are identical. Falls back to the
-        // page-aligned global allocator when the SeLockMemoryPrivilege is not
-        // held or large pages are unsupported.
-        #[cfg(windows)]
-        {
-            if let Some(ptr) = alloc_tt_large_pages_win(bytes) {
-                for i in 0..len {
-                    unsafe { ptr.as_ptr().add(i).write(TtCluster::empty()) };
-                }
-                return Self {
-                    ptr,
-                    len,
-                    layout,
-                    backing: TtBacking::LargePagesWin,
-                };
-            }
-        }
-
         // Match Stockfish/master's page-aligned TT allocation path while
         // keeping Sanmill's packed 8-byte slots. We explicitly construct
         // each AtomicU64 so the table is fully first-touched at allocation,
@@ -136,12 +102,7 @@ impl TtStorage {
         for i in 0..len {
             unsafe { ptr.as_ptr().add(i).write(TtCluster::empty()) };
         }
-        Self {
-            ptr,
-            len,
-            layout,
-            backing: TtBacking::Heap,
-        }
+        Self { ptr, len, layout }
     }
 
     #[cfg(test)]
@@ -178,174 +139,6 @@ fn advise_huge_pages(ptr: *mut u8, bytes: usize) {
     let _ = (ptr, bytes);
 }
 
-/// Try to back the TT with Windows large pages. Returns `None` (so the caller
-/// falls back to 4 KiB pages) when large pages are unsupported or the process
-/// lacks `SeLockMemoryPrivilege`. Set `TGF_TT_LOG` to print which path ran.
-#[cfg(windows)]
-fn alloc_tt_large_pages_win(bytes: usize) -> Option<NonNull<TtCluster>> {
-    let log = std::env::var_os("TGF_TT_LOG").is_some();
-    let page = win_large_pages::large_page_size();
-    if page == 0 {
-        if log {
-            eprintln!("info string TT large pages: unsupported on this system");
-        }
-        return None;
-    }
-    // VirtualAlloc(MEM_LARGE_PAGES) requires a multiple of the large-page size.
-    let commit = bytes.div_ceil(page).checked_mul(page)?;
-    let raw = win_large_pages::alloc(commit);
-    match NonNull::new(raw.cast::<TtCluster>()) {
-        Some(ptr) => {
-            if log {
-                eprintln!(
-                    "info string TT large pages: ON ({} MiB, {} KiB pages)",
-                    commit >> 20,
-                    page >> 10
-                );
-            }
-            Some(ptr)
-        }
-        None => {
-            if log {
-                eprintln!(
-                    "info string TT large pages: VirtualAlloc failed; grant \
-                     \"Lock pages in memory\" (SeLockMemoryPrivilege) to use \
-                     them. Falling back to 4 KiB pages."
-                );
-            }
-            None
-        }
-    }
-}
-
-/// Minimal FFI for Windows large-page TT allocation.
-///
-/// The transposition table is the hottest random-access region in deep
-/// search; with 4 KiB pages every probe/save can miss the dTLB. Backing it
-/// with large pages (typically 2 MiB) shortens the page walk. This requires
-/// the process to hold `SeLockMemoryPrivilege` ("Lock pages in memory"); when
-/// it is missing the allocation simply fails and the caller falls back.
-#[cfg(windows)]
-mod win_large_pages {
-    use core::ffi::c_void;
-    use core::ptr;
-    use std::sync::Once;
-
-    type Handle = *mut c_void;
-
-    #[repr(C)]
-    struct Luid {
-        low_part: u32,
-        high_part: i32,
-    }
-    #[repr(C)]
-    struct LuidAndAttributes {
-        luid: Luid,
-        attributes: u32,
-    }
-    #[repr(C)]
-    struct TokenPrivileges {
-        privilege_count: u32,
-        privileges: [LuidAndAttributes; 1],
-    }
-
-    const TOKEN_ADJUST_PRIVILEGES: u32 = 0x0020;
-    const TOKEN_QUERY: u32 = 0x0008;
-    const SE_PRIVILEGE_ENABLED: u32 = 0x0000_0002;
-    const MEM_COMMIT: u32 = 0x0000_1000;
-    const MEM_RESERVE: u32 = 0x0000_2000;
-    const MEM_LARGE_PAGES: u32 = 0x2000_0000;
-    const MEM_RELEASE: u32 = 0x0000_8000;
-    const PAGE_READWRITE: u32 = 0x04;
-
-    #[link(name = "kernel32")]
-    unsafe extern "system" {
-        fn GetCurrentProcess() -> Handle;
-        fn CloseHandle(handle: Handle) -> i32;
-        fn GetLargePageMinimum() -> usize;
-        fn VirtualAlloc(
-            addr: *mut c_void,
-            size: usize,
-            alloc_type: u32,
-            protect: u32,
-        ) -> *mut c_void;
-        fn VirtualFree(addr: *mut c_void, size: usize, free_type: u32) -> i32;
-    }
-
-    #[link(name = "advapi32")]
-    unsafe extern "system" {
-        fn OpenProcessToken(process: Handle, access: u32, token: *mut Handle) -> i32;
-        fn LookupPrivilegeValueW(system: *const u16, name: *const u16, luid: *mut Luid) -> i32;
-        fn AdjustTokenPrivileges(
-            token: Handle,
-            disable_all: i32,
-            new_state: *const TokenPrivileges,
-            buffer_len: u32,
-            previous: *mut TokenPrivileges,
-            return_len: *mut u32,
-        ) -> i32;
-    }
-
-    /// Best-effort enable of `SeLockMemoryPrivilege` in the current process
-    /// token. A no-op when the account was never granted the right (the later
-    /// `VirtualAlloc` then fails and the caller falls back to 4 KiB pages).
-    fn enable_lock_memory_privilege() {
-        let name: Vec<u16> = "SeLockMemoryPrivilege"
-            .encode_utf16()
-            .chain(core::iter::once(0))
-            .collect();
-        unsafe {
-            let mut token: Handle = ptr::null_mut();
-            if OpenProcessToken(
-                GetCurrentProcess(),
-                TOKEN_ADJUST_PRIVILEGES | TOKEN_QUERY,
-                &mut token,
-            ) == 0
-            {
-                return;
-            }
-            let mut luid = Luid {
-                low_part: 0,
-                high_part: 0,
-            };
-            if LookupPrivilegeValueW(ptr::null(), name.as_ptr(), &mut luid) != 0 {
-                let privileges = TokenPrivileges {
-                    privilege_count: 1,
-                    privileges: [LuidAndAttributes {
-                        luid,
-                        attributes: SE_PRIVILEGE_ENABLED,
-                    }],
-                };
-                AdjustTokenPrivileges(token, 0, &privileges, 0, ptr::null_mut(), ptr::null_mut());
-            }
-            CloseHandle(token);
-        }
-    }
-
-    pub(super) fn large_page_size() -> usize {
-        unsafe { GetLargePageMinimum() }
-    }
-
-    pub(super) fn alloc(commit_bytes: usize) -> *mut c_void {
-        static PRIVILEGE: Once = Once::new();
-        PRIVILEGE.call_once(enable_lock_memory_privilege);
-        unsafe {
-            VirtualAlloc(
-                ptr::null_mut(),
-                commit_bytes,
-                MEM_RESERVE | MEM_COMMIT | MEM_LARGE_PAGES,
-                PAGE_READWRITE,
-            )
-        }
-    }
-
-    pub(super) unsafe fn free(addr: *mut c_void) {
-        unsafe {
-            VirtualFree(addr, 0, MEM_RELEASE);
-        }
-    }
-}
-
 impl Index<usize> for TtStorage {
     type Output = TtCluster;
 
@@ -358,20 +151,10 @@ impl Index<usize> for TtStorage {
 
 impl Drop for TtStorage {
     fn drop(&mut self) {
-        match self.backing {
-            TtBacking::Heap => {
-                for i in 0..self.len {
-                    unsafe { self.ptr.as_ptr().add(i).drop_in_place() };
-                }
-                unsafe { dealloc(self.ptr.as_ptr().cast::<u8>(), self.layout) };
-            }
-            #[cfg(windows)]
-            TtBacking::LargePagesWin => unsafe {
-                // AtomicU64 has no Drop, so the slots need no per-element
-                // teardown; release the whole large-page reservation.
-                win_large_pages::free(self.ptr.as_ptr().cast());
-            },
+        for i in 0..self.len {
+            unsafe { self.ptr.as_ptr().add(i).drop_in_place() };
         }
+        unsafe { dealloc(self.ptr.as_ptr().cast::<u8>(), self.layout) };
     }
 }
 
