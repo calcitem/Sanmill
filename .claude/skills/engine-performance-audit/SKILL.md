@@ -882,13 +882,24 @@ Bottleneck-aligned conservative candidates added 2026-06-21 (see review):
   `reduced_material` only.  Per the evidence bar above, re-run them on the deep
   moving cases with instruction / cache-miss counters before treating them as
   dead; the harness wall-clock alone did not justify the rejections.
-- Skip or bound the per-node repetition path scan.  `path_repeats_since_reset`
-  walks `repetition_stack` in reverse on every interior node and
-  `has_current_repetition` scans the pre-root window.  Measure a per-node
-  "any reversible ancestor since the last REMOVE barrier" guard so positions
-  with no reversible ancestor skip the loop entirely, preserving the exact
-  2nd-occurrence semantics.  This is the conservative counterpart to the
-  behavior-changing "carry repetition metadata on reversible updates" item.
+- [x] Per-node repetition path scan: CHECKED 2026-06-21, negligible -- DO NOT
+  pursue.  uProf `assess` on a repetition-heavy `moving_loop d24` workload, with
+  `path_repeats_since_reset` and `has_current_repetition` FORCED non-inline
+  (rebuild verified), attributed ZERO measurable cycles to both: they do not
+  appear in the function profile at all, while functions down to 2.5% do, and
+  `alpha_beta` stayed ~18% even with the repetition code pulled out of it.  Why
+  it is cheap: `do_move` keeps `key_history` unchanged during search (the
+  pre-root window is fixed and short, the in-search path is the small
+  `repetition_stack`).  Also a landmine: the tempting `step-by-2`
+  (even-distance-only) micro-opt is UNSAFE in Mill, because a mill-forming Move
+  does not flip side-to-move, so distance parity != side-to-move parity inside a
+  reversible window -- it could drop a real repetition and change the move list.
+  Real hotspots on that workload instead: move generation + apply/undo
+  (`do_move` ~20%, `generate_move_actions_with_priority` ~19%, `undo_move` ~7%,
+  `apply_to_state` ~6%, `generate_remove_actions` ~5% => ~57%) and move ordering
+  (`MillMoveOrderScorer::score` ~11%, `order_moves` ~8%, `remove_move_score` ~3%
+  => ~22%).  Target move generation / apply / move-order scoring next, not
+  repetition.
 - Snapshot the TT generation per search.  `ClusteredTt::get` /
   `probe_value_bound` / `save` each reload `current_age` (a relaxed atomic) on
   every node, yet it is constant during one search; caching it in the
