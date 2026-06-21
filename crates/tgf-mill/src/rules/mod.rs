@@ -1029,24 +1029,32 @@ struct MillStandardUndo {
     // Standard rules never mutate delayed-marking or capture-extension
     // fields, so the hot search path only stores fields that can change.
     board: MillBoardUndo,
+    scalars: MillStandardUndoScalars,
+}
+
+#[derive(Clone, Copy, Debug)]
+struct MillStandardUndoScalars {
+    // Keep larger fields first.  This compact Copy block is restored as a
+    // single logical unit by standard undo, while board deltas and repetition
+    // history stay outside it because their lifetimes and sizes differ.
+    zobrist_key: u64,
+    key_history_len: usize,
     by_color_bb: [u32; 2],
-    side_to_move: i8,
-    phase: MillPhase,
-    action: MillActionState,
+    used_mill_lines: u32,
+    mobility_diff: i32,
     move_number: i16,
+    ply_since_capture: u16,
     pieces_in_hand: [u8; 2],
     pieces_on_board: [u8; 2],
-    mobility_diff: i32,
     pending_removals: [u8; 2],
-    flags: MillStateFlags,
-    winner: i8,
-    outcome_reason: MillOutcomeReason,
-    ply_since_capture: u16,
     last_mill_from: [i8; 2],
     last_mill_to: [i8; 2],
-    used_mill_lines: u32,
-    key_history_len: usize,
-    zobrist_key: u64,
+    phase: MillPhase,
+    side_to_move: i8,
+    winner: i8,
+    action: MillActionState,
+    flags: MillStateFlags,
+    outcome_reason: MillOutcomeReason,
 }
 
 #[derive(Clone, Debug)]
@@ -1166,48 +1174,14 @@ impl MillStandardUndo {
         }
         Some(Self {
             board: MillBoardUndo::capture(state, action, options),
-            by_color_bb: state.by_color_bb,
-            side_to_move: state.side_to_move,
-            phase: state.phase,
-            action: state.action,
-            move_number: state.move_number,
-            pieces_in_hand: state.pieces_in_hand,
-            pieces_on_board: state.pieces_on_board,
-            mobility_diff: state.mobility_diff,
-            pending_removals: state.pending_removals,
-            flags: state.flags,
-            winner: state.winner,
-            outcome_reason: state.outcome_reason,
-            ply_since_capture: state.ply_since_capture,
-            last_mill_from: state.last_mill_from,
-            last_mill_to: state.last_mill_to,
-            used_mill_lines: state.used_mill_lines,
-            key_history_len: state.key_history_len,
-            zobrist_key: state.zobrist_key,
+            scalars: MillStandardUndoScalars::capture(state),
         })
     }
 
     fn restore(self, state: &mut MillState) {
         self.board.restore_board(state);
-        state.side_to_move = self.side_to_move;
-        state.phase = self.phase;
-        state.action = self.action;
-        state.move_number = self.move_number;
-        state.pieces_in_hand = self.pieces_in_hand;
-        state.pieces_on_board = self.pieces_on_board;
-        state.mobility_diff = self.mobility_diff;
-        state.pending_removals = self.pending_removals;
-        state.flags = self.flags;
-        state.winner = self.winner;
-        state.outcome_reason = self.outcome_reason;
-        state.ply_since_capture = self.ply_since_capture;
-        state.last_mill_from = self.last_mill_from;
-        state.last_mill_to = self.last_mill_to;
-        state.used_mill_lines = self.used_mill_lines;
+        self.scalars.restore(state);
         state.delayed_marked_pieces = 0;
-        state.by_color_bb = self.by_color_bb;
-        state.key_history_len = self.key_history_len;
-        state.zobrist_key = self.zobrist_key;
         debug_assert_eq!(
             state.by_color_bb,
             bitboards_from_board(&state.board, state.delayed_marked_pieces),
@@ -1224,6 +1198,54 @@ impl MillStandardUndo {
             ),
             "standard undo must not restore non-standard capture state"
         );
+    }
+}
+
+impl MillStandardUndoScalars {
+    #[inline]
+    fn capture(state: &MillState) -> Self {
+        Self {
+            zobrist_key: state.zobrist_key,
+            key_history_len: state.key_history_len,
+            by_color_bb: state.by_color_bb,
+            used_mill_lines: state.used_mill_lines,
+            mobility_diff: state.mobility_diff,
+            move_number: state.move_number,
+            ply_since_capture: state.ply_since_capture,
+            pieces_in_hand: state.pieces_in_hand,
+            pieces_on_board: state.pieces_on_board,
+            pending_removals: state.pending_removals,
+            last_mill_from: state.last_mill_from,
+            last_mill_to: state.last_mill_to,
+            phase: state.phase,
+            side_to_move: state.side_to_move,
+            winner: state.winner,
+            action: state.action,
+            flags: state.flags,
+            outcome_reason: state.outcome_reason,
+        }
+    }
+
+    #[inline]
+    fn restore(self, state: &mut MillState) {
+        state.zobrist_key = self.zobrist_key;
+        state.key_history_len = self.key_history_len;
+        state.by_color_bb = self.by_color_bb;
+        state.used_mill_lines = self.used_mill_lines;
+        state.mobility_diff = self.mobility_diff;
+        state.move_number = self.move_number;
+        state.ply_since_capture = self.ply_since_capture;
+        state.pieces_in_hand = self.pieces_in_hand;
+        state.pieces_on_board = self.pieces_on_board;
+        state.pending_removals = self.pending_removals;
+        state.last_mill_from = self.last_mill_from;
+        state.last_mill_to = self.last_mill_to;
+        state.phase = self.phase;
+        state.side_to_move = self.side_to_move;
+        state.winner = self.winner;
+        state.action = self.action;
+        state.flags = self.flags;
+        state.outcome_reason = self.outcome_reason;
     }
 }
 

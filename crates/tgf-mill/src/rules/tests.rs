@@ -492,6 +492,10 @@ fn mill_board_undo_keeps_full_snapshot_out_of_standard_delta() {
         72,
         "standard per-ply undo core must stay cache compact"
     );
+    assert!(
+        std::mem::size_of::<MillStandardUndoScalars>() <= 64,
+        "standard undo scalars should fit in one cache line"
+    );
     assert_eq!(
         std::mem::size_of::<MillUndoFullCore>(),
         112,

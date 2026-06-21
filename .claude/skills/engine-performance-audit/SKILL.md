@@ -451,12 +451,28 @@ Conservative, node-preserving candidates:
   list that converts exactly at API boundaries.  Validate with
   `generate_legal_ctx_uses_*`, do/undo field-restore tests, fixed-depth node
   parity, and self-play movelist parity before changing any public FRB shape.
-- Group standard undo scalars into a copyable block.  `MillStandardUndo`
-  currently restores many scalar fields one by one.  A `Copy` scalar payload
-  with explicit layout/size assertions may let Rust lower restore to a block
-  copy while keeping `MillBoardUndo` and repetition history separate.  This is
-  only safe if every copied field is proven necessary by the existing
-  do/undo-all-fields tests; never omit a field just because it looks cold.
+- [x] Group standard undo scalars into a copyable block.  `MillStandardUndo`
+  restored many scalar fields from individually stored undo fields.  Done on
+  2026-06-21: moved those fields into a compact `Copy`
+  `MillStandardUndoScalars` payload, kept `MillBoardUndo` and repetition
+  history separate, and added a size assertion that the scalar payload remains
+  within one cache line.  The change deliberately copies every field that the
+  old undo saved; no field was omitted for apparent coldness.
+
+  Validated with the standard do/undo all-field tests, the full capture undo
+  tests, and full `cargo test -p tgf-mill`, including default self-play parity.
+  Fixed-depth A/B against clean `a50b516e` preserved bestmove, score, and
+  nodes for all checked cases.  Median results: `start` d12 `0.999x`,
+  `reduced_material` d12 `0.856x`, `capture_pending` d18 `0.919x`, and
+  `moving_loop` d18 `1.088x` on a very short/noisy 137k-node case.  Raw CSVs:
+  `/tmp/sanmill-perf/search_undo_scalars_vs_a50b516e_primary.csv` and
+  `/tmp/sanmill-perf/search_undo_scalars_vs_a50b516e_moving.csv`.
+
+  This is not a full live-state memcpy optimization: `MillState` still keeps
+  the corresponding fields in its existing layout, so restore still writes the
+  live fields explicitly.  Revisit only if profiling shows undo stores remain
+  material after lower-risk movegen, move-order, and TT work; moving live state
+  into a scalar substructure would touch many more invariants and fixtures.
 - Reduce repetition-history allocation and cloning.  `MillState::key_history`
   and root repetition context still use `Vec<u64>`, while master keeps the
   search path in a fixed `Sanmill::Stack<Position, 128>` and Stockfish owns
