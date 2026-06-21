@@ -23,7 +23,7 @@ use super::types::{MillActionKind, MillActionState};
 use super::{
     MILL_SEARCH_STACK_CAPACITY, MILL_TERMINAL_WIN_SCORE, MillEvaluator,
     MillFormationActionInPlacingPhase, MillGame, MillOutcomeReason, MillPhase, MillRules,
-    MillState, MillVariantOptions, MillWorkbench,
+    MillState, MillVariantOptions, MillWorkbench, board_occupied_bitboard,
 };
 use super::{
     potential_mills_count_standard_unrestricted, potential_mills_count_standard_unrestricted_pair,
@@ -712,16 +712,13 @@ fn score_remove_actions(
         actions.len() <= scores.len(),
         "Mill move-order score buffer is smaller than action list"
     );
+    let scorer = MillRemoveOrderScorer::new(state, options);
     let mut previous_score = 0_i32;
     let mut has_previous = false;
     let mut needs_sort = false;
     for (i, action) in actions.iter().copied().enumerate() {
         let to = action.to_node as usize;
-        let score = if to < 24 {
-            remove_move_score(state, options, to)
-        } else {
-            0
-        };
+        let score = if to < 24 { scorer.score(to) } else { 0 };
         scores[i].write(score);
         if has_previous && previous_score < score {
             needs_sort = true;
@@ -730,6 +727,91 @@ fn score_remove_actions(
         has_previous = true;
     }
     needs_sort
+}
+
+struct MillRemoveOrderScorer<'a> {
+    state: &'a MillState,
+    options: &'a MillVariantOptions,
+    valid_side: bool,
+    side: i8,
+    opponent: i8,
+    side_bb: u32,
+    opponent_bb: u32,
+    occupied: u32,
+    standard_unrestricted: bool,
+}
+
+impl<'a> MillRemoveOrderScorer<'a> {
+    #[inline]
+    fn new(state: &'a MillState, options: &'a MillVariantOptions) -> Self {
+        let side = state.side_to_move;
+        let valid_side = (0..2).contains(&side);
+        let side_idx = if valid_side { side as usize } else { 0 };
+        let opponent = side ^ 1;
+        let opponent_idx = side_idx ^ 1;
+        Self {
+            state,
+            options,
+            valid_side,
+            side,
+            opponent,
+            side_bb: state.by_color_bb[side_idx],
+            opponent_bb: state.by_color_bb[opponent_idx],
+            occupied: board_occupied_bitboard(state),
+            standard_unrestricted: state.delayed_marked_pieces == 0
+                && !options.has_diagonal_lines
+                && !options.one_time_use_mill,
+        }
+    }
+
+    #[inline]
+    fn score(&self, to: usize) -> i32 {
+        if !self.valid_side {
+            return 0;
+        }
+
+        let (our_mills, their_mills) = if self.standard_unrestricted {
+            let (our_mills, their_mills) = potential_mills_count_standard_unrestricted_pair(
+                self.side_bb,
+                self.opponent_bb,
+                to,
+                None,
+            );
+            (our_mills as i32, their_mills as i32)
+        } else {
+            (
+                potential_mills_count_at(self.state, self.options, to, self.side, None) as i32,
+                potential_mills_count_at(self.state, self.options, to, self.opponent, None) as i32,
+            )
+        };
+
+        // Remove scoring is called for every legal removal target in the same
+        // node. Cache the side bitboards and occupied mask once, then keep the
+        // exact bucket arithmetic from `remove_move_score`.
+        let neighbor_mask = if self.options.has_diagonal_lines {
+            crate::topology::diagonal_neighbor_mask_for(to)
+        } else {
+            crate::topology::standard_neighbor_mask_for(to)
+        };
+        let our_count = (neighbor_mask & self.side_bb).count_ones() as i32;
+        let their_count = (neighbor_mask & self.opponent_bb).count_ones() as i32;
+        let empty_count = (neighbor_mask & !self.occupied).count_ones() as i32;
+
+        let mut score = 0_i32;
+        if our_mills > 0 && their_count == 0 {
+            score += 1;
+            if our_count > 0 {
+                score += our_count;
+            }
+        }
+        if their_mills > 0 && their_count >= 2 {
+            score -= their_count;
+            if our_count == 0 {
+                score -= 1;
+            }
+        }
+        score + empty_count
+    }
 }
 
 impl Game for MillGame {

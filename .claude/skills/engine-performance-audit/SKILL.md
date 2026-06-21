@@ -504,11 +504,37 @@ Conservative, node-preserving candidates:
   137k-node case), and `capture_pending` 1899.53 ms (`3.57%` faster).  Treat
   this as a small conservative win, not as proof that move-order micro-opts
   outrank TT/cache work in deeper moving searches.
-- Revisit standard removal checks only if profiling shows remove scoring or
-  removal generation above the current TT/movegen/apply hotspots.  The
-  2026-06-21 profile had `remove_move_score` around 1.2% self time, so this
-  is lower priority than TT layout, action compaction, and apply/undo memory
-  traffic.
+- [x] Cache remove move-order inputs.  The 2026-06-21 profile had
+  `remove_move_score` around 1.2% self time, so this remained lower priority
+  than TT layout, action compaction, and apply/undo memory traffic.  Still, it
+  is a safe node-preserving cleanup because remove-action lists score several
+  targets from the same state.
+
+  Done on 2026-06-21: added a batch-only `MillRemoveOrderScorer` that caches
+  the valid side, side/opponent bitboards, occupied mask, and standard-rule
+  branch once per remove-action list.  The single-action `remove_move_score`
+  remains the semantic reference, and the
+  `move_order_batch_scores_match_single_action_scores` test verifies that the
+  batch scorer produces identical scores.
+  The change removes repeated side validation, occupied-mask reconstruction,
+  and rule-shape checks from remove-list scoring without changing generated
+  actions, sorting semantics, apply/undo, or TT state.
+
+  Fixed-depth A/B against clean `ed4f4d992` preserved bestmove, score, and
+  nodes for every checked case.  Median ratios: `start` d12 `0.966x`,
+  `reduced_material` d12 `0.982x`, `moving_loop` d18 `0.983x`,
+  `capture_pending` d18 repeat=11 `0.955x`.  `moving_entry` d15 repeat=11
+  was `1.039x` on a tiny 133k-node sample, so treat that as short-run noise
+  rather than a stable regression.  Raw CSVs:
+  `/tmp/sanmill-perf/search_remove_order_cache_vs_ed4f_primary.csv`,
+  `/tmp/sanmill-perf/search_remove_order_cache_vs_ed4f_moving.csv`,
+  `/tmp/sanmill-perf/search_remove_order_cache_vs_ed4f_capture_r11.csv`, and
+  `/tmp/sanmill-perf/search_remove_order_cache_vs_ed4f_moving_entry_r11.csv`.
+  `tests/search_perf_baseline.toml` was updated with the accepted medians.
+
+  Revisit removal scoring only if a future profile shows it materially hotter
+  after TT/cache and compact-action work, or if packed search actions make it
+  worthwhile to merge the batch scorer with the single-action reference.
 - Continue converting scans to ordered bit operations.  Master uses `Bitboard`
   plus stable priority lists; Rust should keep emitted order identical while
   replacing repeated full-board scans with masks, `trailing_zeros`, and
