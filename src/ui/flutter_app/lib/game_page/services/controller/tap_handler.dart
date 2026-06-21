@@ -65,6 +65,17 @@ class TapHandler {
       return const EngineResponseSkip();
     }
 
+    // Serialize AI search: while one search is already in flight, a second
+    // board tap must not launch another.  Both searches would read the same
+    // pre-move snapshot; the first applies its move and the second's identical
+    // result is then rejected as illegal (`bestMove ... is no longer legal`),
+    // surfacing as a spurious EngineNoBestMove.  Ignoring the tap lets the
+    // single in-flight search finish cleanly.
+    if (controller.isEngineRunning) {
+      logger.i("$_logTag AI search in flight; ignoring tap <$sq>.");
+      return const EngineResponseSkip();
+    }
+
     if (mode == GameMode.humanVsLAN) {
       if (controller.isNativeLanOpponentTurn(session)) {
         rootScaffoldMessengerKey.currentState!.showSnackBarClear(
@@ -110,6 +121,7 @@ class TapHandler {
           ),
         );
     if (mode == GameMode.humanVsAi && aiTurnController.isAiTurn(session)) {
+      controller.isEngineRunning = true;
       controller.refreshNativeSessionHeader(
         context,
         session,
@@ -141,6 +153,8 @@ class TapHandler {
           stackTrace: st,
         );
         return const EngineNoBestMove();
+      } finally {
+        controller.isEngineRunning = false;
       }
     }
 
@@ -180,6 +194,7 @@ class TapHandler {
           showThinking: shouldPlayAi,
         );
         if (shouldPlayAi) {
+          controller.isEngineRunning = true;
           try {
             final GameAction? aiAction = await aiTurnController.playIfAiTurn(
               session,
@@ -208,6 +223,8 @@ class TapHandler {
               stackTrace: st,
             );
             return const EngineNoBestMove();
+          } finally {
+            controller.isEngineRunning = false;
           }
         }
         controller.refreshNativeSessionHeader(context, session);
