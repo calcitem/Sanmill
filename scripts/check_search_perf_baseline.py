@@ -50,7 +50,15 @@ def parse_result_rows(path, engine):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--baseline", default="tests/search_perf_baseline.toml")
-    parser.add_argument("--result", required=True, help="CSV emitted by compare_engine_perf.py")
+    parser.add_argument(
+        "--result",
+        required=True,
+        action="append",
+        help=(
+            "CSV emitted by compare_engine_perf.py. Pass multiple times when "
+            "the baseline combines separately-collected case groups."
+        ),
+    )
     parser.add_argument("--engine", default="current", help="engine label to compare from the CSV")
     parser.add_argument(
         "--warn-only",
@@ -60,13 +68,16 @@ def main():
     args = parser.parse_args()
 
     baseline_path = Path(args.baseline)
-    result_path = Path(args.result)
+    result_paths = [Path(path) for path in args.result]
     with baseline_path.open("rb") as handle:
         baseline = tomllib.load(handle)
 
     thresholds = baseline.get("thresholds", {})
     max_regress_pct = float(thresholds.get("max_elapsed_regress_pct", 8.0))
-    result_rows = parse_result_rows(result_path, args.engine)
+    result_rows = {}
+    for result_path in result_paths:
+        for key, rows in parse_result_rows(result_path, args.engine).items():
+            result_rows.setdefault(key, []).extend(rows)
 
     failed = False
     for case in baseline.get("cases", []):
@@ -74,7 +85,8 @@ def main():
         rows = result_rows.get(key, [])
         label = f"{key[0]} skill={key[1]} depth={key[2]}"
         if not rows:
-            print(f"[FAIL-missing] {label}: no {args.engine} rows in {result_path}")
+            result_list = ", ".join(str(path) for path in result_paths)
+            print(f"[FAIL-missing] {label}: no {args.engine} rows in {result_list}")
             failed = True
             continue
 

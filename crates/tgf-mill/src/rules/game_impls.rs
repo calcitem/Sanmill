@@ -533,11 +533,68 @@ impl<'a> MillMoveOrderScorer<'a> {
         if self.standard_place_no_move {
             return self.score_standard_place_no_move_actions(actions, scores);
         }
+        if self.standard_no_diagonal_no_one_time
+            && self.valid_side
+            && self.state.phase == MillPhase::Moving
+            && actions
+                .first()
+                .is_some_and(|action| action.kind_tag == MillActionKind::Move as i16)
+        {
+            debug_assert!(
+                actions
+                    .iter()
+                    .all(|action| action.kind_tag == MillActionKind::Move as i16),
+                "Mill moving-phase action lists must contain only move actions"
+            );
+            return self.score_standard_moving_actions(actions, scores);
+        }
         let mut previous_score = 0_i32;
         let mut has_previous = false;
         let mut needs_sort = false;
         for (i, action) in actions.iter().copied().enumerate() {
             let score = self.score(action);
+            scores[i].write(score);
+            if has_previous && previous_score < score {
+                needs_sort = true;
+            }
+            previous_score = score;
+            has_previous = true;
+        }
+        needs_sort
+    }
+
+    #[inline]
+    fn score_standard_moving_actions(
+        &self,
+        actions: &[Action],
+        scores: &mut [MaybeUninit<i32>],
+    ) -> bool {
+        let can_form_mill = self.side_piece_count >= 3;
+        let can_block_mill = self.opponent_piece_count >= 2;
+        let mut block_scores = [STANDARD_BLOCK_SCORE_UNKNOWN; 24];
+
+        let mut previous_score = 0_i32;
+        let mut has_previous = false;
+        let mut needs_sort = false;
+        for (i, action) in actions.iter().copied().enumerate() {
+            let to = action.to_node as usize;
+            let from = action.from_node as usize;
+            let score = if to < 24 && from < 24 {
+                let our_mills = if can_form_mill {
+                    potential_mills_count_standard_unrestricted(self.side_bb, to, Some(from))
+                } else {
+                    0
+                };
+                if our_mills > 0 {
+                    RATING_ONE_MILL * our_mills as i32
+                } else if can_block_mill {
+                    standard_moving_block_score(&mut block_scores, self.opponent_bb, to)
+                } else {
+                    0
+                }
+            } else {
+                self.score(action)
+            };
             scores[i].write(score);
             if has_previous && previous_score < score {
                 needs_sort = true;
@@ -608,6 +665,40 @@ impl<'a> MillMoveOrderScorer<'a> {
         }
         needs_sort
     }
+}
+
+const STANDARD_BLOCK_SCORE_UNKNOWN: i32 = i32::MIN;
+
+#[inline(always)]
+fn standard_moving_block_score(cache: &mut [i32; 24], opponent_bb: u32, to: usize) -> i32 {
+    let cached = cache[to];
+    if cached != STANDARD_BLOCK_SCORE_UNKNOWN {
+        return cached;
+    }
+
+    let their_mills = potential_mills_count_standard_unrestricted(opponent_bb, to, None);
+    let score = if their_mills == 0 {
+        0
+    } else {
+        // In moving-phase standard rules the block bonus depends only on the
+        // destination square: opponent potential mills at `to` and the count
+        // of opponent pieces adjacent to `to`.  Lazily cache it per batch so
+        // sparse action lists do not pay for all 24 board nodes.
+        let their_neighbors =
+            (crate::topology::standard_neighbor_mask_for(to) & opponent_bb).count_ones() as i32;
+        let parity_match = if to.is_multiple_of(2) {
+            their_neighbors == 3
+        } else {
+            their_neighbors == 2
+        };
+        if parity_match {
+            RATING_BLOCK_ONE_MILL * their_mills as i32
+        } else {
+            0
+        }
+    };
+    cache[to] = score;
+    score
 }
 
 #[inline]

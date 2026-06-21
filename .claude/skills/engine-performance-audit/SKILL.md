@@ -463,12 +463,36 @@ Conservative, node-preserving candidates:
   preallocated `StateInfo` objects outside the hot allocation path.  Evaluate a
   bounded inline/ring representation for reversible history, preserving the
   256-entry runtime cap and 24-entry snapshot window exactly.
-- Specialize standard Nine Men's Morris rule checks.  The current Rust code
-  already has `standard_fast_path`, cached color bitboards, line masks, and
-  neighbor masks, but many hot helpers still branch through variant options.
-  Profile whether a standard-only helper for move generation, removal checks,
-  and move-order scoring can remove option loads without duplicating complex
-  variant logic.  Keep generic variant paths conservative and covered.
+- [x] Specialize standard Nine Men's Morris move generation and moving
+  move-order scoring.  The current Rust code already had `standard_fast_path`,
+  cached color bitboards, line masks, and neighbor masks, but perf on
+  `capture_pending` depth 18 still showed visible time in
+  `generate_move_actions_with_priority`, `MillMoveOrderScorer::score`, and
+  generic `order_moves`.
+
+  Done on 2026-06-21: hoisted the standard/diagonal/fly rule-shape branch out
+  of the per-piece move-generation loop, then added a standard moving-phase
+  batch scorer that lazily caches block scores by destination square.  The
+  scorer keeps each action's own-mill test per `from -> to`, but avoids
+  repeating opponent block potential and adjacent-opponent popcounts for the
+  same `to`.  The first eager 24-node cache attempt hurt short action lists;
+  keep the lazy cache shape unless a later profile shows full-board
+  precomputation wins on a different CPU.
+
+  Accepted as node-preserving on the Linux/KVM baseline: bestmove, score, and
+  node counts stayed identical for `start` depth 12, `reduced_material` depth
+  12, `moving_loop` depth 18, and `capture_pending` depth 18.  New locked
+  medians in `tests/search_perf_baseline.toml` were `start` 1033.03 ms
+  (`5.74%` faster than the pre-change Linux lock), `reduced_material` 935.05
+  ms (`0.35%` faster), `moving_loop` 52.86 ms (`2.52%` slower; short/noisy
+  137k-node case), and `capture_pending` 1899.53 ms (`3.57%` faster).  Treat
+  this as a small conservative win, not as proof that move-order micro-opts
+  outrank TT/cache work in deeper moving searches.
+- Revisit standard removal checks only if profiling shows remove scoring or
+  removal generation above the current TT/movegen/apply hotspots.  The
+  2026-06-21 profile had `remove_move_score` around 1.2% self time, so this
+  is lower priority than TT layout, action compaction, and apply/undo memory
+  traffic.
 - Continue converting scans to ordered bit operations.  Master uses `Bitboard`
   plus stable priority lists; Rust should keep emitted order identical while
   replacing repeated full-board scans with masks, `trailing_zeros`, and

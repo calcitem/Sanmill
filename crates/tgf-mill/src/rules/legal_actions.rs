@@ -211,17 +211,22 @@ impl MillRules {
             && !self.options.restrict_repeated_mills_formation
             && !leap_enabled
         {
-            for &from in priority.iter().rev() {
-                if (own_bb & node_bit(from)) == 0 {
-                    continue;
-                }
-                if can_fly {
+            if can_fly {
+                for &from in priority.iter().rev() {
+                    if (own_bb & node_bit(from)) == 0 {
+                        continue;
+                    }
                     for &to in LEGACY_SQUARE_ORDER_NODES.iter() {
                         if (occupied & node_bit(to)) == 0 {
                             out.push(move_action(from, to));
                         }
                     }
-                } else if self.options.has_diagonal_lines {
+                }
+            } else if self.options.has_diagonal_lines {
+                for &from in priority.iter().rev() {
+                    if (own_bb & node_bit(from)) == 0 {
+                        continue;
+                    }
                     // Fast path without delayed marks, repeated-mill
                     // filtering, or leap captures: the adjacency mask is
                     // only an empty-neighbor precheck.  We still iterate the
@@ -238,10 +243,16 @@ impl MillRules {
                             out.push(move_action(from, to));
                         }
                     }
-                } else {
+                }
+            } else {
+                for &from in priority.iter().rev() {
+                    if (own_bb & node_bit(from)) == 0 {
+                        continue;
+                    }
                     // Standard-board counterpart of the diagonal fast path:
-                    // mask for cheap emptiness testing, slice for stable
-                    // move ordering.
+                    // keep this branch outside the per-piece loop so the
+                    // standard Nine Men's Morris hot path does not re-test
+                    // the rule shape for every owned piece.
                     let empty_neighbors =
                         crate::topology::standard_neighbor_mask_for(from) & !occupied;
                     if empty_neighbors == 0 {
