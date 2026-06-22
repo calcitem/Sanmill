@@ -9,7 +9,8 @@
 //   * the engine move oracle (canonical Sanmill FEN -> moves) in
 //     tool/mill_opening_book_oracle_source.dart, and
 //   * the curated, human-readable named openings in
-//     tool/<variant>_curated_openings.json (NMM_LLM schema).
+//     tool/<variant>_curated_openings.json (Sanmill source schema; the legacy
+//     NMM_LLM array schema is still accepted during migration).
 //
 // Outputs:
 //   * assets/opening_books/<variant>/opening_book.json — the ONLY shipped
@@ -26,6 +27,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:sanmill/games/mill/opening_book/opening_book_models.dart';
+import 'package:sanmill/games/mill/opening_book/opening_book_source_models.dart';
 
 import 'mill_opening_book_oracle_source.dart';
 
@@ -40,20 +42,31 @@ List<OpeningEntry> _loadCuratedOpenings(String path) {
     return <OpeningEntry>[];
   }
   final Object? decoded = jsonDecode(file.readAsStringSync());
-  if (decoded is! List) {
-    throw const FormatException('curated openings file must be a JSON array');
+  final List<OpeningEntry> entries;
+  if (decoded is List) {
+    entries = decoded
+        .whereType<Map<Object?, Object?>>()
+        .map(
+          (Map<Object?, Object?> raw) =>
+              OpeningEntry.fromJson(Map<String, dynamic>.from(raw)),
+        )
+        .toList(growable: false);
+  } else if (decoded is Map) {
+    entries = SanmillOpeningBookSourcePackage.fromJson(
+      Map<String, dynamic>.from(decoded),
+    ).toOpeningEntries();
+  } else {
+    throw const FormatException(
+      'curated openings file must be a JSON array or source package',
+    );
   }
+
   final List<OpeningEntry> openings = <OpeningEntry>[];
-  for (final Object? raw in decoded) {
-    if (raw is Map) {
-      final OpeningEntry entry = OpeningEntry.fromJson(
-        Map<String, dynamic>.from(raw),
-      );
-      // Only ship curated book lines; learned/self-play entries stay out of
-      // the bundled asset (loader can opt them in later).
-      if (entry.source == 'book') {
-        openings.add(entry);
-      }
+  for (final OpeningEntry entry in entries) {
+    // Only ship curated book lines; learned/self-play entries stay out of
+    // the bundled asset (loader can opt them in later).
+    if (entry.source == 'book') {
+      openings.add(entry);
     }
   }
   return openings;

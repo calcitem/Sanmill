@@ -10,6 +10,7 @@ import '../../appearance_settings/models/color_settings.dart';
 import '../../custom_drawer/custom_drawer.dart';
 import '../../experience_recording/pages/session_list_page.dart';
 import '../../experience_recording/services/recording_service.dart';
+import '../../games/mill/opening_book/opening_book_studio_page.dart';
 import '../../generated/intl/l10n.dart';
 import '../../shared/database/database.dart';
 import '../../shared/services/snackbar_service.dart';
@@ -99,6 +100,17 @@ class DeveloperOptionsPage extends StatelessWidget {
               onTap: () => Navigator.of(context).push(
                 MaterialPageRoute<void>(
                   builder: (BuildContext context) => const LogsPage(),
+                ),
+              ),
+            ),
+            SettingsListTile(
+              key: const Key('developer_options_page_opening_book_studio'),
+              titleString: S.of(context).openingBookStudio,
+              subtitleString: S.of(context).openingBookStudioDescription,
+              onTap: () => Navigator.of(context).push(
+                MaterialPageRoute<void>(
+                  builder: (BuildContext context) =>
+                      const OpeningBookStudioPage(),
                 ),
               ),
             ),
