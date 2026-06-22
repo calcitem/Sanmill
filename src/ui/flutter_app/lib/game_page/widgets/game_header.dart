@@ -355,9 +355,39 @@ class HeaderTipState extends State<HeaderTip> {
                       ),
                     );
                   } else {
-                    // Keep overflow text scrollable without Linux-unsafe
-                    // selection-box measurement paths.
-                    return _HeaderTipText(
+                    // Read-only mode
+                    final TextStyle textStyle = TextStyle(
+                      color: displayColor,
+                      fontSize: AppTheme.textScaler.scale(
+                        AppTheme.defaultFontSize,
+                      ),
+                      fontFeatures: const <FontFeature>[
+                        FontFeature.tabularFigures(),
+                      ],
+                    );
+                    final TextSpan span = TextSpan(
+                      text: textToShow,
+                      style: textStyle,
+                    );
+                    final TextPainter tp = TextPainter(
+                      text: span,
+                      maxLines: 1,
+                      textDirection: TextDirection.ltr,
+                    );
+                    tp.layout(maxWidth: constraints.maxWidth);
+
+                    if (!tp.didExceedMaxLines) {
+                      return Text(
+                        textToShow,
+                        key: const Key('header_tip_text'),
+                        maxLines: 1,
+                        textAlign: TextAlign.center,
+                        style: textStyle,
+                      );
+                    }
+
+                    return Marquee(
+                      key: const Key('header_tip_marquee'),
                       text: textToShow,
                       style: TextStyle(
                         color: displayColor,
@@ -368,6 +398,9 @@ class HeaderTipState extends State<HeaderTip> {
                           FontFeature.tabularFigures(),
                         ],
                       ),
+                      blankSpace: 40.0,
+                      velocity: 30.0,
+                      pauseAfterRound: const Duration(seconds: 1),
                     );
                   }
                 },
@@ -385,136 +418,6 @@ class HeaderTipState extends State<HeaderTip> {
     _focusNode.dispose();
     _editingController.dispose();
     super.dispose();
-  }
-}
-
-class _HeaderTipText extends StatefulWidget {
-  const _HeaderTipText({required this.text, required this.style});
-
-  final String text;
-  final TextStyle style;
-
-  @override
-  State<_HeaderTipText> createState() => _HeaderTipTextState();
-}
-
-class _HeaderTipTextState extends State<_HeaderTipText>
-    with SingleTickerProviderStateMixin {
-  static const double _scrollPixelsPerSecond = 30;
-
-  late final AnimationController _animationController;
-  final ScrollController _scrollController = ScrollController();
-  double _lastDistance = 0;
-
-  @override
-  void initState() {
-    super.initState();
-    _animationController = AnimationController(vsync: this)
-      ..addListener(_handleScrollTick);
-  }
-
-  @override
-  void didUpdateWidget(covariant _HeaderTipText oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (oldWidget.text == widget.text && oldWidget.style == widget.style) {
-      return;
-    }
-    _resetScroll();
-  }
-
-  @override
-  void dispose() {
-    _animationController.dispose();
-    _scrollController.dispose();
-    super.dispose();
-  }
-
-  void _handleScrollTick() {
-    if (!_scrollController.hasClients) {
-      return;
-    }
-
-    final double maxScrollExtent = _scrollController.position.maxScrollExtent;
-    if (maxScrollExtent <= 0) {
-      return;
-    }
-
-    _scrollController.jumpTo(maxScrollExtent * _animationController.value);
-  }
-
-  void _syncScrollAnimation() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (!mounted) {
-        return;
-      }
-
-      if (!_scrollController.hasClients) {
-        return;
-      }
-
-      final double distance = _scrollController.position.maxScrollExtent;
-      if (distance <= 0) {
-        _resetScroll();
-        return;
-      }
-
-      if (_animationController.isAnimating && distance == _lastDistance) {
-        return;
-      }
-
-      _lastDistance = distance;
-      _animationController.duration = _durationFor(distance);
-      _animationController
-        ..value = 0
-        ..repeat(reverse: true);
-    });
-  }
-
-  void _resetScroll() {
-    _animationController.stop();
-    _animationController.value = 0;
-    _lastDistance = 0;
-    if (_scrollController.hasClients) {
-      _scrollController.jumpTo(0);
-    }
-  }
-
-  Duration _durationFor(double distance) {
-    final int milliseconds = (distance / _scrollPixelsPerSecond * 1000)
-        .round()
-        .clamp(1200, 30000);
-    return Duration(milliseconds: milliseconds);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (BuildContext context, BoxConstraints constraints) {
-        _syncScrollAnimation();
-
-        return ClipRect(
-          child: SingleChildScrollView(
-            key: const Key('header_tip_scroll_view'),
-            controller: _scrollController,
-            scrollDirection: Axis.horizontal,
-            physics: const NeverScrollableScrollPhysics(),
-            child: ConstrainedBox(
-              constraints: constraints.hasBoundedWidth
-                  ? BoxConstraints(minWidth: constraints.maxWidth)
-                  : const BoxConstraints(),
-              child: Text(
-                widget.text,
-                key: const Key('header_tip_text'),
-                maxLines: 1,
-                softWrap: false,
-                textAlign: TextAlign.center,
-                style: widget.style,
-              ),
-            ),
-          ),
-        );
-      },
-    );
   }
 }
 

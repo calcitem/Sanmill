@@ -285,7 +285,7 @@ class GameController {
     if (secondary == null || secondary.isEmpty) {
       return primary;
     }
-    return '$primary \u2022 $secondary';
+    return '$primary; $secondary';
   }
 
   /// Builds the opening-information tip for [refreshNativeSessionHeader], or

@@ -67,8 +67,8 @@ void main() {
       await tester.pump(const Duration(milliseconds: 1));
       await tester.pump(const Duration(milliseconds: 1));
 
-      expect(find.byKey(const Key('header_tip_scroll_view')), findsOneWidget);
-      final Finder textFinder = find.byKey(const Key('header_tip_text'));
+      expect(find.byKey(const Key('header_tip_marquee')), findsOneWidget);
+      final Finder textFinder = find.textContaining('Opening:').first;
       final double initialLeft = tester.getTopLeft(textFinder).dx;
 
       await tester.pump(const Duration(milliseconds: 800));
@@ -77,6 +77,24 @@ void main() {
       expect(movedLeft, lessThan(initialLeft));
 
       await tester.pumpWidget(const SizedBox.shrink());
+    });
+
+    testWidgets("HeaderTip normalizes unsafe punctuation", (
+      WidgetTester tester,
+    ) async {
+      DB.instance = MockDB();
+      final GameController controller = GameController();
+
+      controller.headerTipNotifier.showTip(
+        'Opening: Alpha — Beta • Thinking…',
+        snackBar: false,
+      );
+      await tester.pump(Duration.zero);
+
+      expect(
+        controller.headerTipNotifier.message,
+        'Opening: Alpha - Beta - Thinking...',
+      );
     });
 
     testWidgets("GameHeader position", (WidgetTester tester) async {

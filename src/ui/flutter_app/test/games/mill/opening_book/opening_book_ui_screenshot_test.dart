@@ -88,6 +88,7 @@ void main() {
     final OpeningEntry opening = OpeningBookRepository.instance
         .openingsFor(isElFilja: false)
         .firstWhere((OpeningEntry entry) => entry.lineMoves.length >= 2);
+    final String normalizedOpeningName = opening.name.replaceAll('—', '-');
     final GlobalKey screenshotKey = GlobalKey();
     BuildContext? headerContext;
     final List<String> openingPrefix = opening.lineMoves.take(2).toList();
@@ -152,24 +153,32 @@ void main() {
     await _flushHeaderNotifierTimers(tester);
 
     expect(controller.headerTipNotifier.message, contains('Opening:'));
-    expect(controller.headerTipNotifier.message, contains(opening.name));
     expect(
       controller.headerTipNotifier.message,
-      contains(S.of(headerContext!).thinking),
+      contains(normalizedOpeningName),
     );
+    expect(
+      controller.headerTipNotifier.message,
+      contains(S.of(headerContext!).thinking.replaceAll('…', '...')),
+    );
+    expect(controller.headerTipNotifier.message, isNot(contains('—')));
+    expect(controller.headerTipNotifier.message, isNot(contains('•')));
 
     controller.refreshNativeSessionHeader(headerContext!, session);
     await _flushHeaderNotifierTimers(tester);
 
     expect(controller.headerTipNotifier.message, contains('Opening:'));
-    expect(controller.headerTipNotifier.message, contains(opening.name));
+    expect(
+      controller.headerTipNotifier.message,
+      contains(normalizedOpeningName),
+    );
     expect(
       controller.headerTipNotifier.message,
       contains(S.of(headerContext!).tipToMove(S.of(headerContext!).white)),
     );
-    expect(find.textContaining('Opening:'), findsOneWidget);
+    expect(find.textContaining('Opening:'), findsAtLeastNWidgets(1));
     expect(find.text('existing user comment'), findsNothing);
-    expect(find.byKey(const Key('header_tip_text')), findsOneWidget);
+    expect(find.byKey(const Key('header_tip_marquee')), findsOneWidget);
 
     final int brightPixels =
         await tester.runAsync<int>(() async {

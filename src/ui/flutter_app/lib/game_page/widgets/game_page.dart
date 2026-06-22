@@ -13,6 +13,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart' show Box;
+import 'package:marquee/marquee.dart';
 
 import '../../appearance_settings/models/display_settings.dart';
 import '../../appearance_settings/widgets/appearance_settings_page.dart';
