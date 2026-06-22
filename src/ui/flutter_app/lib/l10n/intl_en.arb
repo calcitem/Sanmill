@@ -4615,9 +4615,5 @@
     "openingRandomness": "Opening randomness",
     "@openingRandomness": {},
     "openingRandomness_Detail": "How varied the opening book's move choice is when 'Move randomly' is on. 0% always plays the strongest book move; 100% picks uniformly at random among all book candidates. Default 60% slightly favours better moves while still varying the opening.",
-    "@openingRandomness_Detail": {},
-    "humanGameDatabaseMinGames": "Minimum games to use a database move",
-    "@humanGameDatabaseMinGames": {},
-    "humanGameDatabaseMinGames_Detail": "Only play a move from the human game database when it appears in at least this many human games. Rarely played positions — most mid-game and endgame positions — fall back to the AI's own search. Raise this if the AI seems to give up when losing; the opening still follows human play.",
-    "@humanGameDatabaseMinGames_Detail": {}
+    "@openingRandomness_Detail": {}
 }

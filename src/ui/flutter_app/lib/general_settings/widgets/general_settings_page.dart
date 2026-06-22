@@ -45,7 +45,6 @@ part 'modals/duration_modal.dart';
 part 'modals/ratio_modal.dart';
 part 'modals/sound_theme_modal.dart';
 part 'pickers/skill_level_picker.dart';
-part 'sliders/human_database_min_games_slider.dart';
 part 'sliders/move_time_slider.dart';
 part 'sliders/opening_randomness_slider.dart';
 
@@ -335,12 +334,6 @@ class GeneralSettingsPage extends StatelessWidget {
       showModalBottomSheet<void>(
         context: context,
         builder: (_) => const _OpeningRandomnessSlider(),
-      );
-
-  void _setHumanDatabaseMinGames(BuildContext context) =>
-      showModalBottomSheet<void>(
-        context: context,
-        builder: (_) => const _HumanDatabaseMinGamesSlider(),
       );
 
   void _setUsePerfectDatabase(GeneralSettings generalSettings, bool value) {
@@ -1116,15 +1109,6 @@ class GeneralSettingsPage extends StatelessWidget {
                   titleString: S.of(context).clearHumanGameDatabaseFile,
                   onTap: () => _clearHumanDatabaseFile(generalSettings),
                 ),
-              SettingsListTile(
-                key: const Key(
-                  'general_settings_page_settings_card_ais_play_style_human_database_min_games',
-                ),
-                titleString: S.of(context).humanGameDatabaseMinGames,
-                subtitleString: S.of(context).humanGameDatabaseMinGames_Detail,
-                trailingString: '${generalSettings.humanDatabaseMinGames}',
-                onTap: () => _setHumanDatabaseMinGames(context),
-              ),
               SettingsListTile.switchTile(
                 key: const Key(
                   'general_settings_page_settings_card_ais_play_style_show_human_database_stats',

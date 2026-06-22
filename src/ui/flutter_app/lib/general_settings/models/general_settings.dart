@@ -174,7 +174,6 @@ class GeneralSettings {
     this.showOpeningInfo = false,
     this.preferFavoredOpenings = false,
     this.openingRandomness = 60,
-    this.humanDatabaseMinGames = 10,
 
     /// Deprecated: always true. Retained to preserve the Hive `@HiveField(46)`
     /// slot for existing saved data. The field will be removed in a future
@@ -375,15 +374,6 @@ class GeneralSettings {
   // candidates; 60 = the legacy rank-biased default (bias 0.6).
   @HiveField(52, defaultValue: 60)
   final int openingRandomness;
-
-  // Minimum number of human games a move must have before the AI plays it from
-  // the human database instead of running its own search. Coverage thins out
-  // with depth, so a higher threshold keeps the AI calculating in sparsely
-  // sampled mid-game/endgame positions (where a thin human entry would
-  // otherwise override stronger play) while well-played opening positions still
-  // pass. Clamped to a sane floor at the lookup site.
-  @HiveField(53, defaultValue: 10)
-  final int humanDatabaseMinGames;
 
   /// Deprecated field retained for Hive backward compatibility.
   ///

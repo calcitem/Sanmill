@@ -23,116 +23,155 @@ tgf.MillHumanDatabaseMove _move({
   );
 }
 
+/// Tally the chosen index over a fixed range of seeds, so the softmax draw is
+/// exercised deterministically and its distribution can be asserted.
+Map<int, int> _tally(
+  List<tgf.MillHumanDatabaseMove> candidates, {
+  required int skillLevel,
+  int seeds = 500,
+}) {
+  final Map<int, int> counts = <int, int>{};
+  for (int seed = 0; seed < seeds; seed++) {
+    final int index = MillHumanDatabaseProvider.selectCandidateIndex(
+      candidates,
+      shuffling: true,
+      skillLevel: skillLevel,
+      random: Random(seed),
+    );
+    counts[index] = (counts[index] ?? 0) + 1;
+  }
+  return counts;
+}
+
 void main() {
-  group('MillHumanDatabaseProvider.selectCandidateIndex', () {
-    test('off picks the highest confidence-weighted score', () {
-      final List<tgf.MillHumanDatabaseMove> candidates =
-          <tgf.MillHumanDatabaseMove>[
-            _move(total: 100, scoreDelta: 0.10),
-            _move(total: 10, scoreDelta: 0.40),
-            _move(total: 50, scoreDelta: 0.20),
-          ];
+  // Clear best (0), mid (1), weak (2); equal samples so only the score matters.
+  List<tgf.MillHumanDatabaseMove> spread() => <tgf.MillHumanDatabaseMove>[
+    _move(total: 50, scoreDelta: 0.40),
+    _move(total: 50, scoreDelta: 0.20),
+    _move(total: 50, scoreDelta: 0.00),
+  ];
 
-      final int index = MillHumanDatabaseProvider.selectCandidateIndex(
-        candidates,
-        shuffling: false,
-        random: Random(0),
-      );
+  group(
+    'MillHumanDatabaseProvider.selectCandidateIndex (Move randomly off)',
+    () {
+      test('picks the highest confidence-weighted score', () {
+        final List<tgf.MillHumanDatabaseMove> candidates =
+            <tgf.MillHumanDatabaseMove>[
+              _move(total: 100, scoreDelta: 0.10),
+              _move(total: 10, scoreDelta: 0.40),
+              _move(total: 50, scoreDelta: 0.20),
+            ];
 
-      expect(index, 1);
-    });
-
-    test('off breaks score ties by the larger sample count', () {
-      final List<tgf.MillHumanDatabaseMove> candidates =
-          <tgf.MillHumanDatabaseMove>[
-            _move(total: 20, scoreDelta: 0.30),
-            _move(total: 50, scoreDelta: 0.30),
-          ];
-
-      final int index = MillHumanDatabaseProvider.selectCandidateIndex(
-        candidates,
-        shuffling: false,
-        random: Random(0),
-      );
-
-      expect(index, 1);
-    });
-
-    test('on never picks moves outside the mainstream pool', () {
-      // maxTotal = 100 -> threshold = max(10, 25) = 25; only A and B qualify.
-      final List<tgf.MillHumanDatabaseMove> candidates =
-          <tgf.MillHumanDatabaseMove>[
-            _move(total: 100, scoreDelta: 0.0), // A: in pool
-            _move(total: 50, scoreDelta: 0.0), // B: in pool
-            _move(total: 5, scoreDelta: 0.5), // C: rare, excluded
-          ];
-
-      final Set<int> chosen = <int>{};
-      for (int seed = 0; seed < 500; seed++) {
-        chosen.add(
-          MillHumanDatabaseProvider.selectCandidateIndex(
-            candidates,
-            shuffling: true,
-            random: Random(seed),
-          ),
-        );
-      }
-
-      expect(chosen.contains(2), isFalse);
-      expect(chosen, containsAll(<int>[0, 1]));
-    });
-
-    test('on falls back to the best score when the pool is empty', () {
-      // maxTotal = 8 -> threshold = max(10, 2) = 10; nothing qualifies.
-      final List<tgf.MillHumanDatabaseMove> candidates =
-          <tgf.MillHumanDatabaseMove>[
-            _move(total: 5, scoreDelta: 0.10),
-            _move(total: 8, scoreDelta: 0.40),
-            _move(total: 3, scoreDelta: 0.20),
-          ];
-
-      for (int seed = 0; seed < 50; seed++) {
         final int index = MillHumanDatabaseProvider.selectCandidateIndex(
           candidates,
-          shuffling: true,
-          random: Random(seed),
+          shuffling: false,
+          skillLevel: 15,
+          random: Random(0),
         );
+
         expect(index, 1);
-      }
+      });
+
+      test('breaks score ties by the larger sample count', () {
+        final List<tgf.MillHumanDatabaseMove> candidates =
+            <tgf.MillHumanDatabaseMove>[
+              _move(total: 20, scoreDelta: 0.30),
+              _move(total: 50, scoreDelta: 0.30),
+            ];
+
+        final int index = MillHumanDatabaseProvider.selectCandidateIndex(
+          candidates,
+          shuffling: false,
+          skillLevel: 1,
+          random: Random(0),
+        );
+
+        expect(index, 1);
+      });
+
+      test('is independent of skill level', () {
+        final List<tgf.MillHumanDatabaseMove> candidates = spread();
+        for (final int skill in <int>[1, 15, 30]) {
+          expect(
+            MillHumanDatabaseProvider.selectCandidateIndex(
+              candidates,
+              shuffling: false,
+              skillLevel: skill,
+              random: Random(0),
+            ),
+            0,
+          );
+        }
+      });
+    },
+  );
+
+  group(
+    'MillHumanDatabaseProvider.selectCandidateIndex (Move randomly on, skill→temperature)',
+    () {
+      test('max skill concentrates on the best-scoring move', () {
+        final Map<int, int> counts = _tally(spread(), skillLevel: 30);
+        // The best move dominates (low temperature), and the weakest is almost
+        // never played.
+        expect(counts[0] ?? 0, greaterThan(450));
+        expect(counts[2] ?? 0, lessThan(10));
+      });
+
+      test('min skill spreads the draw toward weaker, more varied moves', () {
+        final Map<int, int> counts = _tally(spread(), skillLevel: 1);
+        // Variety: more than one move is played, including the weakest one, and
+        // the best no longer dominates.
+        expect(counts.keys.length, greaterThan(1));
+        expect(counts[2] ?? 0, greaterThan(0));
+        expect(counts[0] ?? 0, lessThan(350));
+      });
+
+      test('higher skill is strictly more concentrated than lower skill', () {
+        final int hiBest = _tally(spread(), skillLevel: 30)[0] ?? 0;
+        final int midBest = _tally(spread(), skillLevel: 15)[0] ?? 0;
+        final int loBest = _tally(spread(), skillLevel: 1)[0] ?? 0;
+        expect(hiBest, greaterThan(midBest));
+        expect(midBest, greaterThan(loBest));
+      });
+
+      test('single candidate is always selected, any skill', () {
+        final List<tgf.MillHumanDatabaseMove> only =
+            <tgf.MillHumanDatabaseMove>[_move(total: 3, scoreDelta: 0.10)];
+        for (final int skill in <int>[1, 30]) {
+          expect(
+            MillHumanDatabaseProvider.selectCandidateIndex(
+              only,
+              shuffling: true,
+              skillLevel: skill,
+              random: Random(skill),
+            ),
+            0,
+          );
+        }
+      });
+    },
+  );
+
+  group('MillHumanDatabaseProvider.minSamplesForSkill', () {
+    test('spans 3 (min skill) to 30 (max skill)', () {
+      expect(MillHumanDatabaseProvider.minSamplesForSkill(1), 3);
+      expect(MillHumanDatabaseProvider.minSamplesForSkill(30), 30);
     });
 
-    test('single candidate is always selected in both modes', () {
-      final List<tgf.MillHumanDatabaseMove> popular =
-          <tgf.MillHumanDatabaseMove>[_move(total: 100, scoreDelta: 0.10)];
-      final List<tgf.MillHumanDatabaseMove> rare = <tgf.MillHumanDatabaseMove>[
-        _move(total: 3, scoreDelta: 0.10),
-      ];
+    test('clamps out-of-range skill into the supported band', () {
+      expect(MillHumanDatabaseProvider.minSamplesForSkill(-5), 3);
+      expect(MillHumanDatabaseProvider.minSamplesForSkill(0), 3);
+      expect(MillHumanDatabaseProvider.minSamplesForSkill(99), 30);
+    });
 
-      expect(
-        MillHumanDatabaseProvider.selectCandidateIndex(
-          popular,
-          shuffling: false,
-          random: Random(0),
-        ),
-        0,
-      );
-      expect(
-        MillHumanDatabaseProvider.selectCandidateIndex(
-          popular,
-          shuffling: true,
-          random: Random(0),
-        ),
-        0,
-      );
-      // Rare single move: pool is empty, but the fallback still returns it.
-      expect(
-        MillHumanDatabaseProvider.selectCandidateIndex(
-          rare,
-          shuffling: true,
-          random: Random(0),
-        ),
-        0,
-      );
+    test('is monotonic non-decreasing in skill', () {
+      int previous = 0;
+      for (int skill = 1; skill <= 30; skill++) {
+        final int samples = MillHumanDatabaseProvider.minSamplesForSkill(skill);
+        expect(samples, greaterThanOrEqualTo(previous));
+        expect(samples, inInclusiveRange(3, 30));
+        previous = samples;
+      }
     });
   });
 }

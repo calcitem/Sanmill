@@ -65,17 +65,20 @@ All settings live in `GeneralSettings` and the AI play-style settings card.
 - `humanDatabaseFilePath` (String): absolute path to the selected SQLite file.
 - `showHumanDatabaseStats` (bool): show the win / draw / loss / sample-count
   line for the latest AI move that came from the database.
-- `humanDatabaseMinGames` (int, default 10): the "Minimum games to use a
-  database move" setting. A move is only played from the database when it
-  appears in at least this many human games; otherwise the position falls
-  through to the native search. Because coverage thins out with depth (see
-  [Coverage](#coverage-characteristics)), raising it keeps the AI calculating
-  in sparsely sampled mid-game / endgame positions — where a thin entry would
-  otherwise override stronger play — while well-played opening positions still
-  pass. Clamped to a floor of 1 at the lookup site.
 - `shufflingEnabled` ("Move randomly", bool): controls move selection (see
   [Move selection](#move-selection)). This existing switch is shared with the
   opening book and the native search move ordering.
+- `skillLevel` (int, 1..30): there is no separate human-database knob; the skill
+  level drives both database behaviours (see [Move selection](#move-selection)):
+  - The **minimum games** a candidate needs before it is played from the
+    database (otherwise the position falls through to the native search).
+    Geometric in skill, from 3 games at skill 1 to 30 at skill 30: a stronger
+    AI leans on its deep search and only trusts well-supported human moves,
+    while a weaker AI uses the database more freely — including thin,
+    more-human entries.
+  - When "Move randomly" is on, the **softmax temperature** for the draw —
+    higher skill plays the strongest human move more often, lower skill is more
+    varied (no effect when "Move randomly" is off).
 
 ## Database format
 
@@ -134,10 +137,11 @@ are always legal in the real position. The empty board key is
 ## Move selection
 
 The provider asks the engine for up to 24 candidate moves with at least
-`humanDatabaseMinGames` plays each (the "Minimum games to use a database move"
-setting, default 10, floored at 1), then chooses one based on the "Move
-randomly" switch. When no candidate clears the threshold the provider returns
-nothing and the position falls through to the native search.
+`minSamplesForSkill(skillLevel)` plays each — a per-move sample floor derived
+from the skill level (geometric, 3 games at skill 1 to 30 at skill 30) — then
+chooses one based on the "Move randomly" switch. When no candidate clears the
+threshold the provider returns nothing and the position falls through to the
+native search.
 
 ```mermaid
 flowchart TD
@@ -145,10 +149,7 @@ flowchart TD
   B -->|No| Z["return null -> native PVS/MTD(f) search"]
   B -->|Yes| C{"shufflingEnabled?"}
   C -->|Off| D["pick max score_delta (tie-break: larger total)"]
-  C -->|On| E["pool: total >= max(10, 25% of most-played)"]
-  E --> F{"pool non-empty?"}
-  F -->|No| D
-  F -->|Yes| G["frequency-weighted random from pool"]
+  C -->|On| G["softmax over score_delta, temperature = f(skillLevel)"]
   D --> H["set pending capture + stats, return action"]
   G --> H
   H --> I["perfect-DB correction may still override"]
@@ -158,15 +159,19 @@ flowchart TD
   `score_delta` (ties broken by the larger sample count). `score_delta` is the
   draw-weighted win rate centered at zero and scaled by a confidence factor that
   grows with the sample count, so a thinly-sampled fluke does not outrank a
-  well-supported move.
-- "Move randomly" on: draw a move at random, weighted by play frequency, from
-  the **mainstream pool** -- candidates played at least 10 times and at least
-  25% as often as the most-played move. If that pool is empty (rare position),
-  fall back to the highest-score move.
+  well-supported move. This is independent of the skill level.
+- "Move randomly" on: draw a move from a softmax over the candidates'
+  `score_delta`, with the temperature set by the **skill level**. The mapping
+  is geometric across the skill range (1..30): the maximum skill uses a low
+  temperature (~0.05) that concentrates the draw on the strongest human move,
+  while the minimum skill uses a high temperature (~0.5) that spreads it toward
+  weaker, more varied moves. Skill therefore scales how human/varied vs. sharp
+  the randomized play is. Because `score_delta` already folds in a sample-size
+  confidence factor, thinly-sampled flukes stay unlikely.
 
 Because roughly 90% of stored positions hold only a single move (see
-[Coverage](#coverage-characteristics)), the random variety is mostly visible in
-the opening, where popular positions offer several mainstream alternatives.
+[Coverage](#coverage-characteristics)), this variety is mostly visible in the
+opening, where popular positions offer several alternatives.
 
 ### Captures (mills)
 
@@ -223,12 +228,12 @@ off the beaten path -- falls back to the native PVS / MTD(f) search.
   reading it requires a writable directory (so SQLite can create the `-shm` /
   `-wal` side files). Picked files copied into app-writable storage work; a
   genuinely read-only location can fail to open.
-- The `humanDatabaseMinGames` threshold (default 10) keeps thinly-sampled moves
-  out; lowering it to 1 restores the old permissive behaviour, while raising it
-  makes the AI rely on its own search outside well-played positions. With "Move
-  randomly" off the selection can still rest on relatively few samples; the
-  perfect-database correction and the native-search fallback bound the
-  practical impact.
+- The skill-derived sample floor (`minSamplesForSkill`, 3..30 games) keeps
+  thinly-sampled moves out; a low skill is permissive (down to 3, the old
+  default), a high skill makes the AI rely on its own search outside well-played
+  positions. With "Move randomly" off the selection can still rest on relatively
+  few samples at low skill; the perfect-database correction and the
+  native-search fallback bound the practical impact.
 - Web builds do not support the Human Database (no native SQLite); the FRB
   entry points report it as unavailable.
 

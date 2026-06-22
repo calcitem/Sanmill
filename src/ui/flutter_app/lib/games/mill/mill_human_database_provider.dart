@@ -25,17 +25,26 @@ class MillHumanDatabaseProvider implements OpeningBookProvider {
 
   static const int _maxCandidates = 24;
 
-  /// Absolute floor for the per-move sample threshold sent to the query. The
-  /// effective value is the user's "Minimum games to use a database move"
-  /// setting ([GeneralSettings.humanDatabaseMinGames]); clamping here keeps a
-  /// stored 0 or negative from dropping below a safe floor.
-  static const int _minSamplesFloor = 1;
+  // Skill -> minimum human games a move needs before it is played from the
+  // database (otherwise the position falls through to the native search). Tied
+  // to skill rather than a user knob: a stronger AI leans on its deep search
+  // and only trusts well-supported human moves, so it requires more games; a
+  // weaker AI uses the database more freely, including thinly sampled, more
+  // human moves. Interpolated geometrically across the clamped skill range.
+  static const int _minSamplesAtMinSkill = 3; // weak AI: permissive
+  static const int _minSamplesAtMaxSkill = 30; // strong AI: selective
 
-  // Mainstream pool used by the "Move randomly" mode: a candidate qualifies
-  // when it was played at least [_mainstreamMinSamples] times and reached at
-  // least [_mainstreamRatio] of the most-played move's sample count.
-  static const double _mainstreamRatio = 0.25;
-  static const int _mainstreamMinSamples = 10;
+  // Skill -> softmax temperature for randomized ("Move randomly") selection over
+  // each candidate's confidence-weighted score ([tgf.MillHumanDatabaseMove.
+  // scoreDelta]). Low skill = high temperature = a broad, more varied and weaker
+  // choice; high skill = low temperature = concentrate on the strongest human
+  // move. Interpolated geometrically across the clamped skill range so the
+  // change in concentration is smooth and perceptually even.
+  static const double _minTemperature = 0.05; // _maxSkill: near-deterministic
+  static const double _maxTemperature = 0.5; // _minSkill: broad
+  static const double _temperatureFloor = 1e-3;
+  static const int _minSkill = 1;
+  static const int _maxSkill = 30;
 
   final RuleSettings ruleSettings;
   final GeneralSettings generalSettings;
@@ -51,12 +60,37 @@ class MillHumanDatabaseProvider implements OpeningBookProvider {
     lastStats = null;
   }
 
-  /// Per-move sample threshold actually used for the query: the user's
-  /// "Minimum games to use a database move" setting, never below the safety
-  /// floor. Positions whose only candidates fall short are left to the engine
-  /// search, so a thin entry can no longer override calculated play.
+  /// Per-move sample threshold used for the query, derived from
+  /// [GeneralSettings.skillLevel] (see [minSamplesForSkill]). Positions whose
+  /// only candidates fall short are left to the engine search, so a thin entry
+  /// can no longer override calculated play; how thin is "too thin" scales with
+  /// skill.
   int get _effectiveMinSamples =>
-      max(_minSamplesFloor, generalSettings.humanDatabaseMinGames);
+      minSamplesForSkill(generalSettings.skillLevel);
+
+  /// Maps a skill level (clamped to [_minSkill]..[_maxSkill]) to the minimum
+  /// number of human games a candidate must have. Geometric interpolation
+  /// across the skill range: the minimum skill yields [_minSamplesAtMinSkill],
+  /// the maximum skill [_minSamplesAtMaxSkill]. Exposed for tests.
+  @visibleForTesting
+  static int minSamplesForSkill(int skillLevel) {
+    final int skill = skillLevel.clamp(_minSkill, _maxSkill);
+    final double fraction = (skill - _minSkill) / (_maxSkill - _minSkill);
+    final int samples =
+        (_minSamplesAtMinSkill *
+                pow(
+                  _minSamplesAtMaxSkill / _minSamplesAtMinSkill,
+                  fraction,
+                ).toDouble())
+            .round();
+    if (samples < _minSamplesAtMinSkill) {
+      return _minSamplesAtMinSkill;
+    }
+    if (samples > _minSamplesAtMaxSkill) {
+      return _minSamplesAtMaxSkill;
+    }
+    return samples;
+  }
 
   @override
   GameAction? lookup(GameSession session) {
@@ -134,6 +168,7 @@ class MillHumanDatabaseProvider implements OpeningBookProvider {
     final int index = selectCandidateIndex(
       moves,
       shuffling: generalSettings.shufflingEnabled,
+      skillLevel: generalSettings.skillLevel,
       random: _random,
     );
     final _HumanDbCandidate chosen = candidates[index];
@@ -153,33 +188,44 @@ class MillHumanDatabaseProvider implements OpeningBookProvider {
       '[MillHumanDatabaseProvider] selected ${chosen.move.notation} '
       'score=${chosen.move.scoreDelta.toStringAsFixed(3)} '
       'samples=${chosen.move.total} '
-      'shuffling=${generalSettings.shufflingEnabled}',
+      'shuffling=${generalSettings.shufflingEnabled} '
+      'skill=${generalSettings.skillLevel}',
     );
     return chosen.action;
   }
 
   /// Selects the index of the Human Database candidate to play.
   ///
-  /// When [shuffling] is false the move with the highest confidence-weighted
-  /// score is chosen (ties broken by the larger sample count). When [shuffling]
-  /// is true a move is drawn at random, weighted by play frequency, from the
-  /// "mainstream" pool (moves played often enough relative to the most popular
-  /// one); if that pool is empty the best-score move is used instead.
+  /// With [shuffling] off the move with the highest confidence-weighted score
+  /// is chosen (ties broken by the larger sample count) — the strongest human
+  /// move, independent of skill.
+  ///
+  /// With [shuffling] on the move is drawn from a softmax over each candidate's
+  /// [tgf.MillHumanDatabaseMove.scoreDelta], with the temperature derived from
+  /// [skillLevel] (see [_temperatureForSkill]): a higher skill concentrates the
+  /// draw on the best-scoring move, a lower skill spreads it toward weaker, more
+  /// varied moves. Score (not raw popularity) drives the weighting, and
+  /// `scoreDelta` already folds in a sample-size confidence factor, so thinly
+  /// sampled flukes stay unlikely.
   @visibleForTesting
   static int selectCandidateIndex(
     List<tgf.MillHumanDatabaseMove> candidates, {
     required bool shuffling,
+    required int skillLevel,
     required Random random,
   }) {
     assert(candidates.isNotEmpty, 'Candidate list must not be empty.');
+    if (candidates.length == 1) {
+      return 0;
+    }
     if (!shuffling) {
       return _bestScoreIndex(candidates);
     }
-    final List<int> pool = _mainstreamPoolIndices(candidates);
-    if (pool.isEmpty) {
-      return _bestScoreIndex(candidates);
-    }
-    return _frequencyWeightedChoice(candidates, pool, random);
+    return _softmaxSampleIndex(
+      candidates,
+      _temperatureForSkill(skillLevel),
+      random,
+    );
   }
 
   static int _bestScoreIndex(List<tgf.MillHumanDatabaseMove> candidates) {
@@ -195,47 +241,51 @@ class MillHumanDatabaseProvider implements OpeningBookProvider {
     return best;
   }
 
-  static List<int> _mainstreamPoolIndices(
-    List<tgf.MillHumanDatabaseMove> candidates,
-  ) {
-    int maxTotal = 0;
-    for (final tgf.MillHumanDatabaseMove move in candidates) {
-      if (move.total > maxTotal) {
-        maxTotal = move.total;
-      }
-    }
-    final double threshold = max(
-      _mainstreamMinSamples.toDouble(),
-      maxTotal * _mainstreamRatio,
-    );
-    final List<int> pool = <int>[];
-    for (int i = 0; i < candidates.length; i++) {
-      if (candidates[i].total >= threshold) {
-        pool.add(i);
-      }
-    }
-    return pool;
+  /// Maps a skill level (clamped to [_minSkill]..[_maxSkill]) to a softmax
+  /// temperature in [_minTemperature].._maxTemperature]. The interpolation is
+  /// geometric in the skill fraction, so each skill step changes the
+  /// concentration by a roughly constant ratio: the minimum skill yields the
+  /// broad [_maxTemperature], the maximum skill the sharp [_minTemperature].
+  static double _temperatureForSkill(int skillLevel) {
+    final int skill = skillLevel.clamp(_minSkill, _maxSkill);
+    final double fraction = (skill - _minSkill) / (_maxSkill - _minSkill);
+    return _maxTemperature *
+        pow(_minTemperature / _maxTemperature, fraction).toDouble();
   }
 
-  static int _frequencyWeightedChoice(
+  /// Numerically stable softmax over `scoreDelta`, then one weighted draw.
+  static int _softmaxSampleIndex(
     List<tgf.MillHumanDatabaseMove> candidates,
-    List<int> pool,
+    double temperature,
     Random random,
   ) {
-    int totalWeight = 0;
-    for (final int i in pool) {
-      totalWeight += candidates[i].total;
+    final double t = temperature < _temperatureFloor
+        ? _temperatureFloor
+        : temperature;
+    double maxScore = candidates.first.scoreDelta;
+    for (final tgf.MillHumanDatabaseMove move in candidates) {
+      if (move.scoreDelta > maxScore) {
+        maxScore = move.scoreDelta;
+      }
     }
-    assert(totalWeight > 0, 'Mainstream pool weight must be positive.');
-    int target = random.nextInt(totalWeight);
-    for (final int i in pool) {
-      target -= candidates[i].total;
+    final List<double> weights = <double>[
+      for (final tgf.MillHumanDatabaseMove move in candidates)
+        exp((move.scoreDelta - maxScore) / t),
+    ];
+    double totalWeight = 0;
+    for (final double weight in weights) {
+      totalWeight += weight;
+    }
+    assert(totalWeight > 0, 'Softmax weights must sum to a positive value.');
+    double target = random.nextDouble() * totalWeight;
+    for (int i = 0; i < weights.length; i++) {
+      target -= weights[i];
       if (target < 0) {
         return i;
       }
     }
-    // Defensive fallback; unreachable when weights sum to totalWeight.
-    return pool.last;
+    // Defensive fallback for floating-point rounding; the loop normally returns.
+    return candidates.length - 1;
   }
 
   bool _supportsCurrentRules() {
