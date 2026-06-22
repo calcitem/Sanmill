@@ -33,7 +33,6 @@ void main() {
 
       final GameAction action = rulesPort.placeA7;
       await session.apply(action);
-      await Future<void>.delayed(Duration.zero);
 
       expect(rulesPort.isLegalCount, 1);
       expect(rulesPort.applyCount, 1);

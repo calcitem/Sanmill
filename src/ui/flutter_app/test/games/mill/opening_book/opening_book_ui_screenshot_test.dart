@@ -16,7 +16,9 @@ import 'package:sanmill/game_page/services/mill.dart';
 import 'package:sanmill/game_page/widgets/game_page.dart';
 import 'package:sanmill/game_platform/game_id.dart';
 import 'package:sanmill/game_platform/game_session.dart';
+import 'package:sanmill/games/mill/mill_constants.dart';
 import 'package:sanmill/games/mill/mill_marked_pieces_codec.dart';
+import 'package:sanmill/games/mill/mill_session_recorder_bridge.dart';
 import 'package:sanmill/games/mill/native_mill_game_session.dart';
 import 'package:sanmill/games/mill/native_mill_rules_port.dart';
 import 'package:sanmill/games/mill/opening_book/opening_book_models.dart';
@@ -86,23 +88,17 @@ void main() {
     final OpeningEntry opening = OpeningBookRepository.instance
         .openingsFor(isElFilja: false)
         .firstWhere((OpeningEntry entry) => entry.lineMoves.length >= 2);
-    final GameController controller = GameController();
-    for (int i = 0; i < 2; i++) {
-      controller.gameRecorder.appendMove(
-        ExtMove(
-          opening.lineMoves[i],
-          side: i.isEven ? PieceColor.white : PieceColor.black,
-        ),
-      );
-    }
-
     final GlobalKey screenshotKey = GlobalKey();
     BuildContext? headerContext;
+    final List<String> openingPrefix = opening.lineMoves.take(2).toList();
     final NativeMillGameSession session = NativeMillGameSession(
-      rulesPort: _HeaderTestRulesPort(),
+      rulesPort: _HeaderTestRulesPort(legalMoves: openingPrefix),
     );
     addTearDown(session.dispose);
-    await tester.binding.setSurfaceSize(const Size(1600, 160));
+    final MillSessionRecorderBridge recorderBridge =
+        MillSessionRecorderBridge.forGameController(session: session);
+    addTearDown(recorderBridge.dispose);
+    await tester.binding.setSurfaceSize(const Size(2400, 160));
     addTearDown(() => tester.binding.setSurfaceSize(null));
 
     await tester.pumpWidget(
@@ -112,7 +108,7 @@ void main() {
             headerContext = context;
             return Center(
               child: SizedBox(
-                width: 1500,
+                width: 2200,
                 height: 48,
                 child: ColoredBox(
                   color: Colors.black,
@@ -128,16 +124,52 @@ void main() {
       ),
     );
 
+    for (final String move in openingPrefix) {
+      await session.apply(
+        GameAction(
+          type: MillActionTypes.place,
+          payload: <String, Object?>{'move': move},
+        ),
+      );
+    }
+    expect(
+      GameController().gameRecorder.mainlineMoves.map(
+        (ExtMove move) => move.move,
+      ),
+      openingPrefix,
+    );
+
+    GameController().gameRecorder.activeNode!.data!.comments = <String>[
+      'existing user comment',
+    ];
+
+    final GameController controller = GameController();
+    controller.refreshNativeSessionHeader(
+      headerContext!,
+      session,
+      showThinking: true,
+    );
+    await _flushHeaderNotifierTimers(tester);
+
+    expect(controller.headerTipNotifier.message, contains('Opening:'));
+    expect(controller.headerTipNotifier.message, contains(opening.name));
+    expect(
+      controller.headerTipNotifier.message,
+      contains(S.of(headerContext!).thinking),
+    );
+
     controller.refreshNativeSessionHeader(headerContext!, session);
     await _flushHeaderNotifierTimers(tester);
 
     expect(controller.headerTipNotifier.message, contains('Opening:'));
     expect(controller.headerTipNotifier.message, contains(opening.name));
     expect(
-      find.byKey(const Key('header_tip_text')).evaluate().isNotEmpty ||
-          find.byKey(const Key('header_tip_marquee')).evaluate().isNotEmpty,
-      isTrue,
+      controller.headerTipNotifier.message,
+      contains(S.of(headerContext!).tipToMove(S.of(headerContext!).white)),
     );
+    expect(find.textContaining('Opening:'), findsOneWidget);
+    expect(find.text('existing user comment'), findsNothing);
+    expect(find.byKey(const Key('header_tip_text')), findsOneWidget);
 
     final int brightPixels =
         await tester.runAsync<int>(() async {
@@ -276,8 +308,9 @@ class _SettingsBox<T> extends Fake implements Box<T> {
 }
 
 class _HeaderTestRulesPort implements NativeMillRulesPort {
-  _HeaderTestRulesPort()
-    : _snapshot = GameStateSnapshot(
+  _HeaderTestRulesPort({List<String> legalMoves = const <String>[]})
+    : _legalMoves = legalMoves,
+      _snapshot = GameStateSnapshot(
         gameId: GameId.mill,
         activeSeat: PlayerSeat.first,
         outcome: const GameOutcome.ongoing(),
@@ -288,7 +321,28 @@ class _HeaderTestRulesPort implements NativeMillRulesPort {
         },
       );
 
+  final List<String> _legalMoves;
+  int _nextMoveIndex = 0;
   GameStateSnapshot _snapshot;
+
+  GameAction _actionFor(String move) {
+    return GameAction(
+      type: MillActionTypes.place,
+      payload: <String, Object?>{'move': move},
+    );
+  }
+
+  Uint8List _payloadForCurrentBoard() {
+    final Uint8List payload = Uint8List(280);
+    for (int i = 0; i < _nextMoveIndex && i < 24; i++) {
+      payload[i] = i.isEven ? 1 : 2;
+    }
+    return payload;
+  }
+
+  PlayerSeat get _nextSeat => _snapshot.activeSeat == PlayerSeat.first
+      ? PlayerSeat.second
+      : PlayerSeat.first;
 
   @override
   int get redoDepth => 0;
@@ -300,10 +354,39 @@ class _HeaderTestRulesPort implements NativeMillRulesPort {
   int get undoDepth => 0;
 
   @override
-  List<GameAction> get legalActions => const <GameAction>[];
+  List<GameAction> get legalActions {
+    if (_nextMoveIndex >= _legalMoves.length) {
+      return const <GameAction>[];
+    }
+    return <GameAction>[_actionFor(_legalMoves[_nextMoveIndex])];
+  }
 
   @override
-  GameStateSnapshot apply(GameAction action) => _snapshot;
+  GameStateSnapshot apply(GameAction action) {
+    assert(isLegal(action), 'test action must be legal');
+    _nextMoveIndex++;
+    _snapshot = GameStateSnapshot(
+      gameId: GameId.mill,
+      activeSeat: _nextSeat,
+      outcome: const GameOutcome.ongoing(),
+      phase: 'placing',
+      lastAction: action,
+      payload: <String, Object?>{
+        'tgfPayload': _payloadForCurrentBoard(),
+        millMarkedNodesPayloadKey: const <int>{},
+      },
+    );
+    return _snapshot;
+  }
+
+  @override
+  bool isLegal(GameAction action) {
+    if (_nextMoveIndex >= _legalMoves.length) {
+      return false;
+    }
+    return action.type == MillActionTypes.place &&
+        action.payload['move'] == _legalMoves[_nextMoveIndex];
+  }
 
   @override
   tgf.MillAnalysisReport analyzePerfectDb() => const tgf.MillAnalysisReport(
@@ -316,9 +399,6 @@ class _HeaderTestRulesPort implements NativeMillRulesPort {
 
   @override
   String exportFen() => '';
-
-  @override
-  bool isLegal(GameAction action) => false;
 
   @override
   Stream<tgf.EngineEvent> millSearchEvents({

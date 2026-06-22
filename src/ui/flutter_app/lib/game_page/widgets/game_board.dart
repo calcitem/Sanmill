@@ -639,11 +639,14 @@ class _GameBoardState extends State<GameBoard>
     // generic explanation.
     final GameOverReason? reason = GameController().activeSessionGameOverReason;
     final bool force = GameController().gameResultNotifier.force;
+    final bool hasResult = GameController().gameResultNotifier.hasResult;
 
     // Header tip shows simple win/lose message
     final String? message = winner.getWinString(context);
 
-    if (message != null && (force == true || winner != PieceColor.nobody)) {
+    if (message != null &&
+        hasResult &&
+        (force == true || winner != PieceColor.nobody)) {
       if (view.action == Act.remove) {
         // Fix sometimes tip show "Please place" when action is remove
         // Commit e9884ea

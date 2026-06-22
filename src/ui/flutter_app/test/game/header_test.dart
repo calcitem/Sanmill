@@ -15,6 +15,10 @@ import '../helpers/locale_helper.dart';
 import '../helpers/mocks/mock_database.dart';
 
 void main() {
+  tearDown(() {
+    DB.instance = null;
+  });
+
   group("GameHeader", () {
     testWidgets("GameHeader updates tip", (WidgetTester tester) async {
       const String testString = "Test";
@@ -38,6 +42,41 @@ void main() {
 
       // Verify updated text
       expect(find.text(testString), findsOneWidget);
+    });
+
+    testWidgets("HeaderTip scrolls overflowing tip", (
+      WidgetTester tester,
+    ) async {
+      DB.instance = MockDB();
+      final GameController controller = GameController();
+      controller.gameInstance.gameMode = GameMode.humanVsHuman;
+      controller.headerTipNotifier.showTip('', snackBar: false);
+
+      await tester.pumpWidget(
+        makeTestableWidget(
+          const Center(
+            child: SizedBox(width: 140, height: 48, child: HeaderTip()),
+          ),
+        ),
+      );
+
+      controller.headerTipNotifier.showTip(
+        'Opening: Very long header text that must scroll horizontally',
+        snackBar: false,
+      );
+      await tester.pump(const Duration(milliseconds: 1));
+      await tester.pump(const Duration(milliseconds: 1));
+
+      expect(find.byKey(const Key('header_tip_scroll_view')), findsOneWidget);
+      final Finder textFinder = find.byKey(const Key('header_tip_text'));
+      final double initialLeft = tester.getTopLeft(textFinder).dx;
+
+      await tester.pump(const Duration(milliseconds: 800));
+
+      final double movedLeft = tester.getTopLeft(textFinder).dx;
+      expect(movedLeft, lessThan(initialLeft));
+
+      await tester.pumpWidget(const SizedBox.shrink());
     });
 
     testWidgets("GameHeader position", (WidgetTester tester) async {

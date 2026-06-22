@@ -52,7 +52,7 @@ class NativeMillGameSession implements GameSessionHandle {
   LanSessionMeta? lanMeta;
   final ValueNotifier<GameStateSnapshot> _state;
   final StreamController<GameSessionEvent> _events =
-      StreamController<GameSessionEvent>.broadcast();
+      StreamController<GameSessionEvent>.broadcast(sync: true);
   bool _disposed = false;
   GameAction? _lastSearchLegalAction;
 

@@ -5,18 +5,28 @@
 
 part of '../mill.dart';
 
+enum HeaderTipKind { general, openingInfo }
+
 class HeaderTipNotifier with ChangeNotifier {
   HeaderTipNotifier();
 
   String _message = "";
+  HeaderTipKind _kind = HeaderTipKind.general;
   bool showSnackBar = false;
 
   String get message => _message;
 
-  void showTip(String tip, {bool snackBar = true}) {
+  HeaderTipKind get kind => _kind;
+
+  void showTip(
+    String tip, {
+    bool snackBar = true,
+    HeaderTipKind kind = HeaderTipKind.general,
+  }) {
     logger.i("[tip] $tip");
     showSnackBar = DB().generalSettings.screenReaderSupport && snackBar;
     _message = tip;
+    _kind = kind;
     Future<void>.delayed(Duration.zero, () {
       notifyListeners();
     });

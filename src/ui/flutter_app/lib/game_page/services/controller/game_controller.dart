@@ -260,24 +260,32 @@ class GameController {
       return;
     }
 
-    if (showThinking) {
-      headerTipNotifier.showTip(S.of(context).thinking, snackBar: false);
-      return;
-    }
-
     // When enabled, surface the recognised opening (name + source) while the
-    // game follows a known book line; normal turn prompts resume once the line
-    // ends (novel / out of book).
+    // game follows a known book line; append the current turn prompt so the
+    // opening and actionable state remain visible as one header sentence.
     final String? openingTip = _openingInfoTip(context, session);
+    final String? turnTip = showThinking
+        ? S.of(context).thinking
+        : _nativeSessionTurnTip(context, session);
     if (openingTip != null) {
-      headerTipNotifier.showTip(openingTip, snackBar: false);
+      headerTipNotifier.showTip(
+        _joinHeaderTips(openingTip, turnTip),
+        snackBar: false,
+        kind: HeaderTipKind.openingInfo,
+      );
       return;
     }
 
-    final String? tip = _nativeSessionTurnTip(context, session);
-    if (tip != null) {
-      headerTipNotifier.showTip(tip, snackBar: false);
+    if (turnTip != null) {
+      headerTipNotifier.showTip(turnTip, snackBar: false);
     }
+  }
+
+  String _joinHeaderTips(String primary, String? secondary) {
+    if (secondary == null || secondary.isEmpty) {
+      return primary;
+    }
+    return '$primary \u2022 $secondary';
   }
 
   /// Builds the opening-information tip for [refreshNativeSessionHeader], or
