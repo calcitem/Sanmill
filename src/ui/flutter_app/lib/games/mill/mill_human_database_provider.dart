@@ -24,7 +24,12 @@ class MillHumanDatabaseProvider implements OpeningBookProvider {
   }) : _random = random ?? Random();
 
   static const int _maxCandidates = 24;
-  static const int _minSamples = 3;
+
+  /// Absolute floor for the per-move sample threshold sent to the query. The
+  /// effective value is the user's "Minimum games to use a database move"
+  /// setting ([GeneralSettings.humanDatabaseMinGames]); clamping here keeps a
+  /// stored 0 or negative from dropping below a safe floor.
+  static const int _minSamplesFloor = 1;
 
   // Mainstream pool used by the "Move randomly" mode: a candidate qualifies
   // when it was played at least [_mainstreamMinSamples] times and reached at
@@ -45,6 +50,13 @@ class MillHumanDatabaseProvider implements OpeningBookProvider {
     _pendingStats = null;
     lastStats = null;
   }
+
+  /// Per-move sample threshold actually used for the query: the user's
+  /// "Minimum games to use a database move" setting, never below the safety
+  /// floor. Positions whose only candidates fall short are left to the engine
+  /// search, so a thin entry can no longer override calculated play.
+  int get _effectiveMinSamples =>
+      max(_minSamplesFloor, generalSettings.humanDatabaseMinGames);
 
   @override
   GameAction? lookup(GameSession session) {
@@ -90,7 +102,7 @@ class MillHumanDatabaseProvider implements OpeningBookProvider {
     final tgf.MillHumanDatabaseQuery query = tgf.millHumanDbQuery(
       fen: session.getFen(),
       maxMoves: _maxCandidates,
-      minSamples: _minSamples,
+      minSamples: _effectiveMinSamples,
     );
     if (!query.available) {
       logger.w(
