@@ -8,8 +8,6 @@ jobs:
   linter:
     runs-on: ubuntu-latest
     name: Lint flutter code
-    env:
-      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
     steps:
       - name: Checkout code
         uses: actions/checkout@v5
@@ -26,10 +24,12 @@ jobs:
         run: cp -f ./src/ui/flutter_app/analysis_options.yaml ./
 
       - name: Analyze Flutter
-        uses: ValentinVignal/action-dart-analyze@v1.1
-        with:
-          fail-on: 'format'
-          working-directory: src/ui/flutter_app
+        working-directory: src/ui/flutter_app
+        run: dart analyze --fatal-infos --fatal-warnings .
+
+      - name: Check Flutter formatting
+        working-directory: src/ui/flutter_app
+        run: dart format -o none --set-exit-if-changed lib test integration_test test_driver
 
   build:
     runs-on: ubuntu-latest
