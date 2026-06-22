@@ -1214,6 +1214,4350 @@
       ],
       "branchMoves": [],
       "favoredSide": "B"
+    },
+    {
+      "id": "book-00-287755",
+      "name": "Game One",
+      "aliases": [],
+      "family": "Early Game",
+      "side": "B",
+      "source": "learned",
+      "sourceReference": "Nine Men's Morris Strategy — Brandwood",
+      "confidence": 0.8,
+      "tags": [
+        "book",
+        "early-game"
+      ],
+      "strategicNotes": "",
+      "commonBlunders": [],
+      "recommendedResponses": {
+        "W": [],
+        "B": []
+      },
+      "outcomeStats": {
+        "W": 0,
+        "B": 1,
+        "D": 0
+      },
+      "lineMoves": [
+        "c5",
+        "f4",
+        "e3",
+        "b4",
+        "e5",
+        "d5",
+        "e4"
+      ],
+      "branchMoves": [],
+      "favoredSide": "equal"
+    },
+    {
+      "id": "book-01-a3fa19",
+      "name": "Scattered start",
+      "aliases": [],
+      "family": "Early Game",
+      "side": "W",
+      "source": "learned",
+      "sourceReference": "Nine Men's Morris Strategy — Brandwood",
+      "confidence": 0.8,
+      "tags": [
+        "book",
+        "early-game"
+      ],
+      "strategicNotes": "",
+      "commonBlunders": [],
+      "recommendedResponses": {
+        "W": [],
+        "B": []
+      },
+      "outcomeStats": {
+        "W": 1,
+        "B": 7,
+        "D": 0
+      },
+      "lineMoves": [
+        "d2",
+        "d6",
+        "f4",
+        "b4",
+        "e3",
+        "e4",
+        "d3",
+        "d1",
+        "c3"
+      ],
+      "branchMoves": [],
+      "favoredSide": "W"
+    },
+    {
+      "id": "book-03-572229",
+      "name": "Game Three",
+      "aliases": [],
+      "family": "Early Game",
+      "side": "both",
+      "source": "learned",
+      "sourceReference": "Nine Men's Morris Strategy — Brandwood",
+      "confidence": 0.8,
+      "tags": [
+        "book",
+        "early-game"
+      ],
+      "strategicNotes": "",
+      "commonBlunders": [],
+      "recommendedResponses": {
+        "W": [],
+        "B": []
+      },
+      "outcomeStats": {
+        "W": 0,
+        "B": 0,
+        "D": 0
+      },
+      "lineMoves": [
+        "d2",
+        "d6",
+        "f4",
+        "b4",
+        "c4",
+        "e4",
+        "e5",
+        "d1",
+        "b6",
+        "d7",
+        "d5",
+        "f2",
+        "g1",
+        "a4",
+        "a7",
+        "c3",
+        "g7",
+        "g4"
+      ],
+      "branchMoves": [],
+      "favoredSide": "W"
+    },
+    {
+      "id": "book-04-b6d865",
+      "name": "Battle Lines",
+      "aliases": [],
+      "family": "Early Game",
+      "side": "both",
+      "source": "learned",
+      "sourceReference": "Nine Men's Morris Strategy — Brandwood",
+      "confidence": 0.8,
+      "tags": [
+        "book",
+        "early-game"
+      ],
+      "strategicNotes": "",
+      "commonBlunders": [],
+      "recommendedResponses": {
+        "W": [],
+        "B": []
+      },
+      "outcomeStats": {
+        "W": 1,
+        "B": 2,
+        "D": 0
+      },
+      "lineMoves": [
+        "d6",
+        "f4",
+        "b4",
+        "d2",
+        "b6",
+        "f6",
+        "b2",
+        "d2",
+        "f2",
+        "c4",
+        "a7",
+        "d5",
+        "c5",
+        "e3",
+        "d3",
+        "g1"
+      ],
+      "branchMoves": [],
+      "favoredSide": "W"
+    },
+    {
+      "id": "book-06-2971b5",
+      "name": "Black diagonal",
+      "aliases": [],
+      "family": "Early Game",
+      "side": "B",
+      "source": "learned",
+      "sourceReference": "Nine Men's Morris Strategy — Brandwood",
+      "confidence": 0.8,
+      "tags": [
+        "book",
+        "early-game"
+      ],
+      "strategicNotes": "",
+      "commonBlunders": [],
+      "recommendedResponses": {
+        "W": [],
+        "B": []
+      },
+      "outcomeStats": {
+        "W": 2,
+        "B": 12,
+        "D": 0
+      },
+      "lineMoves": [
+        "d6",
+        "d2",
+        "b4",
+        "f4",
+        "g4",
+        "b6",
+        "f2",
+        "a4",
+        "e4",
+        "a7",
+        "a1",
+        "d3",
+        "d1",
+        "g1",
+        "c3",
+        "d5",
+        "d7",
+        "e5"
+      ],
+      "branchMoves": [],
+      "favoredSide": "B"
+    },
+    {
+      "id": "book-07-a33845",
+      "name": "Z mill c4 intrerrupt",
+      "aliases": [],
+      "family": "Early Game",
+      "side": "W",
+      "source": "learned",
+      "sourceReference": "Nine Men's Morris Strategy — Brandwood",
+      "confidence": 0.8,
+      "tags": [
+        "book",
+        "early-game"
+      ],
+      "strategicNotes": "",
+      "commonBlunders": [],
+      "recommendedResponses": {
+        "W": [],
+        "B": []
+      },
+      "outcomeStats": {
+        "W": 75,
+        "B": 4,
+        "D": 0
+      },
+      "lineMoves": [
+        "d6",
+        "d2",
+        "f4",
+        "b4",
+        "f6",
+        "f2",
+        "b6",
+        "b4",
+        "c4",
+        "d7",
+        "e3",
+        "g7",
+        "c3",
+        "a7",
+        "d3",
+        "c3",
+        "e5",
+        "e4"
+      ],
+      "branchMoves": [],
+      "favoredSide": "W"
+    },
+    {
+      "id": "book-10-5ce37b",
+      "name": "Game Seven — Patience",
+      "aliases": [],
+      "family": "Early Game",
+      "side": "both",
+      "source": "learned",
+      "sourceReference": "Nine Men's Morris Strategy — Brandwood",
+      "confidence": 0.8,
+      "tags": [
+        "book",
+        "early-game"
+      ],
+      "strategicNotes": "",
+      "commonBlunders": [],
+      "recommendedResponses": {
+        "W": [],
+        "B": []
+      },
+      "outcomeStats": {
+        "W": 0,
+        "B": 0,
+        "D": 0
+      },
+      "lineMoves": [
+        "d6",
+        "d2",
+        "b4",
+        "f4",
+        "d7",
+        "d5",
+        "a4",
+        "c4",
+        "f2",
+        "e3",
+        "c5",
+        "b6",
+        "d1",
+        "a1",
+        "e4",
+        "g7",
+        "d3",
+        "g1"
+      ],
+      "branchMoves": [],
+      "favoredSide": "B"
+    },
+    {
+      "id": "book-11-04f0dc",
+      "name": "Yin-Yang - B scan ahead",
+      "aliases": [],
+      "family": "Early Game",
+      "side": "both",
+      "source": "learned",
+      "sourceReference": "Nine Men's Morris Strategy — Brandwood",
+      "confidence": 0.8,
+      "tags": [
+        "book",
+        "early-game"
+      ],
+      "strategicNotes": "",
+      "commonBlunders": [],
+      "recommendedResponses": {
+        "W": [],
+        "B": []
+      },
+      "outcomeStats": {
+        "W": 0,
+        "B": 12,
+        "D": 0
+      },
+      "lineMoves": [
+        "f4",
+        "b4",
+        "d2",
+        "d6",
+        "d5",
+        "e4",
+        "d7",
+        "b6",
+        "b2",
+        "f6",
+        "b2",
+        "f2",
+        "a7",
+        "g7",
+        "c5",
+        "e5",
+        "e3",
+        "d3"
+      ],
+      "branchMoves": [],
+      "favoredSide": "W"
+    },
+    {
+      "id": "book-12-7c431c",
+      "name": "Which Piece to Take",
+      "aliases": [],
+      "family": "Early Game",
+      "side": "both",
+      "source": "learned",
+      "sourceReference": "Nine Men's Morris Strategy — Brandwood",
+      "confidence": 0.8,
+      "tags": [
+        "book",
+        "early-game"
+      ],
+      "strategicNotes": "",
+      "commonBlunders": [],
+      "recommendedResponses": {
+        "W": [],
+        "B": []
+      },
+      "outcomeStats": {
+        "W": 0,
+        "B": 0,
+        "D": 0
+      },
+      "lineMoves": [
+        "d6",
+        "d2",
+        "f4",
+        "b4",
+        "c4",
+        "d7",
+        "d3",
+        "g4",
+        "c3",
+        "c5",
+        "f6",
+        "f2",
+        "b6"
+      ],
+      "branchMoves": [],
+      "favoredSide": "W"
+    },
+    {
+      "id": "book-13-a872a2",
+      "name": "Right Angle Potential Mills",
+      "aliases": [],
+      "family": "Early Game",
+      "side": "both",
+      "source": "learned",
+      "sourceReference": "Nine Men's Morris Strategy — Brandwood",
+      "confidence": 0.8,
+      "tags": [
+        "book",
+        "early-game"
+      ],
+      "strategicNotes": "",
+      "commonBlunders": [],
+      "recommendedResponses": {
+        "W": [],
+        "B": []
+      },
+      "outcomeStats": {
+        "W": 0,
+        "B": 0,
+        "D": 0
+      },
+      "lineMoves": [
+        "d6",
+        "d2",
+        "f4",
+        "f2",
+        "b2",
+        "b4",
+        "g7",
+        "e4",
+        "d1",
+        "c3",
+        "c4",
+        "e3",
+        "d3",
+        "e5"
+      ],
+      "branchMoves": [],
+      "favoredSide": "equal"
+    },
+    {
+      "id": "book-14-b4b5b3",
+      "name": "End Play Placements",
+      "aliases": [],
+      "family": "Early Game",
+      "side": "B",
+      "source": "learned",
+      "sourceReference": "Nine Men's Morris Strategy — Brandwood",
+      "confidence": 0.8,
+      "tags": [
+        "book",
+        "early-game"
+      ],
+      "strategicNotes": "",
+      "commonBlunders": [],
+      "recommendedResponses": {
+        "W": [],
+        "B": []
+      },
+      "outcomeStats": {
+        "W": 0,
+        "B": 1,
+        "D": 0
+      },
+      "lineMoves": [
+        "d6",
+        "d2",
+        "f4",
+        "b4",
+        "d5",
+        "d7",
+        "g4",
+        "e4",
+        "d1",
+        "e5",
+        "e3",
+        "b2",
+        "f2",
+        "f6",
+        "b6",
+        "c5",
+        "c4",
+        "g7"
+      ],
+      "branchMoves": [],
+      "favoredSide": "W"
+    },
+    {
+      "id": "book-15-1c9103",
+      "name": "Early Game to Victory",
+      "aliases": [],
+      "family": "Early Game",
+      "side": "both",
+      "source": "learned",
+      "sourceReference": "Nine Men's Morris Strategy — Brandwood",
+      "confidence": 0.8,
+      "tags": [
+        "book",
+        "early-game"
+      ],
+      "strategicNotes": "",
+      "commonBlunders": [],
+      "recommendedResponses": {
+        "W": [],
+        "B": []
+      },
+      "outcomeStats": {
+        "W": 1,
+        "B": 0,
+        "D": 0
+      },
+      "lineMoves": [
+        "d6",
+        "d2",
+        "f4",
+        "b6",
+        "c4",
+        "g4",
+        "d1",
+        "a7",
+        "b4",
+        "a4",
+        "a1",
+        "g1",
+        "g7",
+        "d5",
+        "f2",
+        "f6"
+      ],
+      "branchMoves": [],
+      "favoredSide": "equal"
+    },
+    {
+      "id": "book-16-c24880",
+      "name": "Cannon Fodder",
+      "aliases": [],
+      "family": "Early Game",
+      "side": "both",
+      "source": "learned",
+      "sourceReference": "Nine Men's Morris Strategy — Brandwood",
+      "confidence": 0.8,
+      "tags": [
+        "book",
+        "early-game"
+      ],
+      "strategicNotes": "",
+      "commonBlunders": [],
+      "recommendedResponses": {
+        "W": [],
+        "B": []
+      },
+      "outcomeStats": {
+        "W": 0,
+        "B": 0,
+        "D": 0
+      },
+      "lineMoves": [
+        "d6",
+        "d2",
+        "f4",
+        "b4",
+        "c4",
+        "e4",
+        "d3",
+        "d7",
+        "a4",
+        "e5",
+        "e3",
+        "c3",
+        "d1",
+        "b2",
+        "f2",
+        "b6"
+      ],
+      "branchMoves": [],
+      "favoredSide": "B"
+    },
+    {
+      "id": "book-19-5af166",
+      "name": "Sacrificial Mills",
+      "aliases": [],
+      "family": "Early Game",
+      "side": "both",
+      "source": "learned",
+      "sourceReference": "Nine Men's Morris Strategy — Brandwood",
+      "confidence": 0.8,
+      "tags": [
+        "book",
+        "early-game"
+      ],
+      "strategicNotes": "",
+      "commonBlunders": [],
+      "recommendedResponses": {
+        "W": [],
+        "B": []
+      },
+      "outcomeStats": {
+        "W": 0,
+        "B": 0,
+        "D": 0
+      },
+      "lineMoves": [
+        "d6",
+        "d2",
+        "f4",
+        "b4",
+        "f6",
+        "f2",
+        "b6",
+        "b4",
+        "c4",
+        "d5",
+        "e3",
+        "e4",
+        "c3",
+        "d3",
+        "c5"
+      ],
+      "branchMoves": [],
+      "favoredSide": "W"
+    },
+    {
+      "id": "book-22-7cd89e",
+      "name": "Man-to-Man Marking",
+      "aliases": [],
+      "family": "Man-to-Man Marking",
+      "side": "both",
+      "source": "learned",
+      "sourceReference": "Nine Men's Morris Strategy — Brandwood",
+      "confidence": 0.8,
+      "tags": [
+        "book",
+        "man-to-man-marking"
+      ],
+      "strategicNotes": "",
+      "commonBlunders": [],
+      "recommendedResponses": {
+        "W": [],
+        "B": []
+      },
+      "outcomeStats": {
+        "W": 0,
+        "B": 0,
+        "D": 0
+      },
+      "lineMoves": [
+        "d6",
+        "d2",
+        "f4",
+        "b4",
+        "b2",
+        "f6",
+        "c4",
+        "e4",
+        "d1",
+        "d7",
+        "a7",
+        "g1",
+        "e3",
+        "c5",
+        "e5",
+        "c3",
+        "g4",
+        "a4"
+      ],
+      "branchMoves": [],
+      "favoredSide": "equal"
+    },
+    {
+      "id": "book-23-5f1cc8",
+      "name": "Black Diamond",
+      "aliases": [],
+      "family": "Black Diamond",
+      "side": "both",
+      "source": "learned",
+      "sourceReference": "Nine Men's Morris Strategy — Brandwood",
+      "confidence": 0.8,
+      "tags": [
+        "book",
+        "black-diamond"
+      ],
+      "strategicNotes": "",
+      "commonBlunders": [],
+      "recommendedResponses": {
+        "W": [],
+        "B": []
+      },
+      "outcomeStats": {
+        "W": 0,
+        "B": 0,
+        "D": 0
+      },
+      "lineMoves": [
+        "d6",
+        "d2",
+        "f4",
+        "b4",
+        "c4",
+        "e4",
+        "d3",
+        "d5",
+        "a4",
+        "g4",
+        "d1",
+        "b2",
+        "f2",
+        "f6",
+        "b6",
+        "e5",
+        "e3",
+        "c5"
+      ],
+      "branchMoves": [],
+      "favoredSide": "W"
+    },
+    {
+      "id": "book-24-b516d2",
+      "name": "Mill Rush — Misplacement Loss",
+      "aliases": [],
+      "family": "Mill Rush",
+      "side": "B",
+      "source": "learned",
+      "sourceReference": "Nine Men's Morris Strategy — Brandwood",
+      "confidence": 0.8,
+      "tags": [
+        "book",
+        "mill-rush"
+      ],
+      "strategicNotes": "",
+      "commonBlunders": [],
+      "recommendedResponses": {
+        "W": [],
+        "B": []
+      },
+      "outcomeStats": {
+        "W": 0,
+        "B": 1,
+        "D": 0
+      },
+      "lineMoves": [
+        "d6",
+        "d2",
+        "f4",
+        "b4",
+        "f6",
+        "f2",
+        "b6",
+        "b4",
+        "e5",
+        "d5",
+        "e4",
+        "g4",
+        "e3"
+      ],
+      "branchMoves": [],
+      "favoredSide": "B"
+    },
+    {
+      "id": "book-25-b14595",
+      "name": "Mill Rush — Parallel Lines",
+      "aliases": [],
+      "family": "Mill Rush",
+      "side": "both",
+      "source": "learned",
+      "sourceReference": "Nine Men's Morris Strategy — Brandwood",
+      "confidence": 0.8,
+      "tags": [
+        "book",
+        "mill-rush"
+      ],
+      "strategicNotes": "",
+      "commonBlunders": [],
+      "recommendedResponses": {
+        "W": [],
+        "B": []
+      },
+      "outcomeStats": {
+        "W": 0,
+        "B": 0,
+        "D": 0
+      },
+      "lineMoves": [
+        "d6",
+        "d2",
+        "f4",
+        "b4",
+        "f6",
+        "f2",
+        "b6",
+        "b4",
+        "e5",
+        "e4",
+        "d5",
+        "d7",
+        "c5"
+      ],
+      "branchMoves": [],
+      "favoredSide": "W"
+    },
+    {
+      "id": "book-29-36a60f",
+      "name": "Mill Rush — Extended Parallel",
+      "aliases": [],
+      "family": "Mill Rush",
+      "side": "both",
+      "source": "learned",
+      "sourceReference": "Nine Men's Morris Strategy — Brandwood",
+      "confidence": 0.8,
+      "tags": [
+        "book",
+        "mill-rush"
+      ],
+      "strategicNotes": "",
+      "commonBlunders": [],
+      "recommendedResponses": {
+        "W": [],
+        "B": []
+      },
+      "outcomeStats": {
+        "W": 0,
+        "B": 0,
+        "D": 0
+      },
+      "lineMoves": [
+        "d6",
+        "d2",
+        "f4",
+        "b4",
+        "f6",
+        "f2",
+        "b6",
+        "b4",
+        "e5",
+        "d5",
+        "e4",
+        "e3",
+        "g4"
+      ],
+      "branchMoves": [],
+      "favoredSide": "W"
+    },
+    {
+      "id": "book-30-a37ce9",
+      "name": "Mill Rush — Alt Extended Parallel",
+      "aliases": [],
+      "family": "Mill Rush",
+      "side": "both",
+      "source": "learned",
+      "sourceReference": "Nine Men's Morris Strategy — Brandwood",
+      "confidence": 0.8,
+      "tags": [
+        "book",
+        "mill-rush"
+      ],
+      "strategicNotes": "",
+      "commonBlunders": [],
+      "recommendedResponses": {
+        "W": [],
+        "B": []
+      },
+      "outcomeStats": {
+        "W": 0,
+        "B": 0,
+        "D": 0
+      },
+      "lineMoves": [
+        "d6",
+        "d2",
+        "f4",
+        "b4",
+        "f6",
+        "f2",
+        "b6",
+        "b4",
+        "e5",
+        "d7",
+        "e4",
+        "e3",
+        "g4"
+      ],
+      "branchMoves": [],
+      "favoredSide": "W"
+    },
+    {
+      "id": "book-31-3609fe",
+      "name": "Mill Rush — Black's Alternate Response",
+      "aliases": [],
+      "family": "Mill Rush",
+      "side": "both",
+      "source": "learned",
+      "sourceReference": "Nine Men's Morris Strategy — Brandwood",
+      "confidence": 0.8,
+      "tags": [
+        "book",
+        "mill-rush"
+      ],
+      "strategicNotes": "",
+      "commonBlunders": [],
+      "recommendedResponses": {
+        "W": [],
+        "B": []
+      },
+      "outcomeStats": {
+        "W": 0,
+        "B": 0,
+        "D": 0
+      },
+      "lineMoves": [
+        "d6",
+        "d2",
+        "f4",
+        "b4",
+        "f6",
+        "f2",
+        "b6",
+        "b4",
+        "e5",
+        "a4",
+        "c4",
+        "d1",
+        "d3",
+        "a1",
+        "g1",
+        "a7"
+      ],
+      "branchMoves": [],
+      "favoredSide": "W"
+    },
+    {
+      "id": "book-32-7819d1",
+      "name": "Mill Rush — Alternate Black Response",
+      "aliases": [],
+      "family": "Mill Rush",
+      "side": "both",
+      "source": "learned",
+      "sourceReference": "Nine Men's Morris Strategy — Brandwood",
+      "confidence": 0.8,
+      "tags": [
+        "book",
+        "mill-rush"
+      ],
+      "strategicNotes": "",
+      "commonBlunders": [],
+      "recommendedResponses": {
+        "W": [],
+        "B": []
+      },
+      "outcomeStats": {
+        "W": 0,
+        "B": 0,
+        "D": 0
+      },
+      "lineMoves": [
+        "d6",
+        "d2",
+        "f4",
+        "b4",
+        "f6",
+        "f2",
+        "b6",
+        "b4",
+        "e5",
+        "d3",
+        "d1",
+        "c4",
+        "a4",
+        "c3",
+        "e3",
+        "c5"
+      ],
+      "branchMoves": [],
+      "favoredSide": "W"
+    },
+    {
+      "id": "book-36-ca1431",
+      "name": "Mill Rush — Endgame Stalemate",
+      "aliases": [],
+      "family": "Mill Rush",
+      "side": "both",
+      "source": "learned",
+      "sourceReference": "Nine Men's Morris Strategy — Brandwood",
+      "confidence": 0.8,
+      "tags": [
+        "book",
+        "mill-rush"
+      ],
+      "strategicNotes": "",
+      "commonBlunders": [],
+      "recommendedResponses": {
+        "W": [],
+        "B": []
+      },
+      "outcomeStats": {
+        "W": 1,
+        "B": 0,
+        "D": 0,
+        "human_wins": 1,
+        "ai_losses": 1
+      },
+      "lineMoves": [
+        "d6",
+        "d2",
+        "f4",
+        "b4",
+        "f6",
+        "b6",
+        "f2"
+      ],
+      "branchMoves": [],
+      "favoredSide": "W"
+    },
+    {
+      "id": "book-37-e4eb5c",
+      "name": "Battle Lines — Black Loss",
+      "aliases": [],
+      "family": "Battle Lines",
+      "side": "both",
+      "source": "learned",
+      "sourceReference": "Nine Men's Morris Strategy — Brandwood",
+      "confidence": 0.8,
+      "tags": [
+        "book",
+        "battle-lines"
+      ],
+      "strategicNotes": "",
+      "commonBlunders": [],
+      "recommendedResponses": {
+        "W": [],
+        "B": []
+      },
+      "outcomeStats": {
+        "W": 0,
+        "B": 0,
+        "D": 0
+      },
+      "lineMoves": [
+        "d6",
+        "d2",
+        "f4",
+        "b4",
+        "f6",
+        "f2",
+        "b6",
+        "b2",
+        "d3",
+        "g4",
+        "c4",
+        "c3",
+        "a4",
+        "b4",
+        "g7",
+        "d7",
+        "e5",
+        "d5"
+      ],
+      "branchMoves": [],
+      "favoredSide": "equal"
+    },
+    {
+      "id": "book-38-fc8361",
+      "name": "Battle Lines — Better Response",
+      "aliases": [],
+      "family": "Battle Lines",
+      "side": "both",
+      "source": "learned",
+      "sourceReference": "Nine Men's Morris Strategy — Brandwood",
+      "confidence": 0.8,
+      "tags": [
+        "book",
+        "battle-lines"
+      ],
+      "strategicNotes": "",
+      "commonBlunders": [],
+      "recommendedResponses": {
+        "W": [],
+        "B": []
+      },
+      "outcomeStats": {
+        "W": 0,
+        "B": 0,
+        "D": 0
+      },
+      "lineMoves": [
+        "d6",
+        "d2",
+        "f4",
+        "b4",
+        "f6",
+        "f2",
+        "b6",
+        "b2",
+        "d3",
+        "g4",
+        "e4",
+        "d7",
+        "e3",
+        "a1",
+        "e5",
+        "g1",
+        "c3"
+      ],
+      "branchMoves": [],
+      "favoredSide": "W"
+    },
+    {
+      "id": "book-39-726701",
+      "name": "Closed Z Mill",
+      "aliases": [],
+      "family": "Z Mill",
+      "side": "both",
+      "source": "learned",
+      "sourceReference": "Nine Men's Morris Strategy — Brandwood",
+      "confidence": 0.8,
+      "tags": [
+        "book",
+        "z-mill"
+      ],
+      "strategicNotes": "",
+      "commonBlunders": [],
+      "recommendedResponses": {
+        "W": [],
+        "B": []
+      },
+      "outcomeStats": {
+        "W": 0,
+        "B": 0,
+        "D": 0
+      },
+      "lineMoves": [
+        "d6",
+        "d2",
+        "f4",
+        "b4",
+        "f6",
+        "f2",
+        "b6",
+        "b4",
+        "b2",
+        "c5",
+        "c4",
+        "e5",
+        "d1",
+        "d5"
+      ],
+      "branchMoves": [],
+      "favoredSide": "W"
+    },
+    {
+      "id": "book-40-658b81",
+      "name": "Open Z Mill",
+      "aliases": [],
+      "family": "Z Mill",
+      "side": "both",
+      "source": "learned",
+      "sourceReference": "Nine Men's Morris Strategy — Brandwood",
+      "confidence": 0.8,
+      "tags": [
+        "book",
+        "z-mill"
+      ],
+      "strategicNotes": "",
+      "commonBlunders": [],
+      "recommendedResponses": {
+        "W": [],
+        "B": []
+      },
+      "outcomeStats": {
+        "W": 0,
+        "B": 0,
+        "D": 0
+      },
+      "lineMoves": [
+        "d6",
+        "d2",
+        "f4",
+        "b4",
+        "f6",
+        "f2",
+        "b6",
+        "b4",
+        "c4",
+        "d7",
+        "d3",
+        "d5",
+        "g1",
+        "e5",
+        "e3",
+        "c5",
+        "b2",
+        "a1"
+      ],
+      "branchMoves": [],
+      "favoredSide": "W"
+    },
+    {
+      "id": "book-41-827489",
+      "name": "Z Mill — Variation A",
+      "aliases": [],
+      "family": "Z Mill",
+      "side": "both",
+      "source": "learned",
+      "sourceReference": "Nine Men's Morris Strategy — Brandwood",
+      "confidence": 0.8,
+      "tags": [
+        "book",
+        "z-mill"
+      ],
+      "strategicNotes": "",
+      "commonBlunders": [],
+      "recommendedResponses": {
+        "W": [],
+        "B": []
+      },
+      "outcomeStats": {
+        "W": 0,
+        "B": 0,
+        "D": 0
+      },
+      "lineMoves": [
+        "d6",
+        "d2",
+        "f4",
+        "b4",
+        "f6",
+        "f2",
+        "b6",
+        "b4",
+        "c4",
+        "d7",
+        "d3",
+        "d5",
+        "g1",
+        "g4",
+        "c3",
+        "e3",
+        "c5"
+      ],
+      "branchMoves": [],
+      "favoredSide": "W"
+    },
+    {
+      "id": "book-42-2538c4",
+      "name": "Z Mill — Variation B",
+      "aliases": [],
+      "family": "Z Mill",
+      "side": "both",
+      "source": "learned",
+      "sourceReference": "Nine Men's Morris Strategy — Brandwood",
+      "confidence": 0.8,
+      "tags": [
+        "book",
+        "z-mill"
+      ],
+      "strategicNotes": "",
+      "commonBlunders": [],
+      "recommendedResponses": {
+        "W": [],
+        "B": []
+      },
+      "outcomeStats": {
+        "W": 0,
+        "B": 0,
+        "D": 0
+      },
+      "lineMoves": [
+        "d6",
+        "d2",
+        "f4",
+        "b4",
+        "f6",
+        "f2",
+        "b6",
+        "b4",
+        "c4",
+        "d7",
+        "d3",
+        "a7",
+        "e3",
+        "g7"
+      ],
+      "branchMoves": [],
+      "favoredSide": "W"
+    },
+    {
+      "id": "book-43-c3c1bd",
+      "name": "Z Mill — Variation C",
+      "aliases": [],
+      "family": "Z Mill",
+      "side": "both",
+      "source": "learned",
+      "sourceReference": "Nine Men's Morris Strategy — Brandwood",
+      "confidence": 0.8,
+      "tags": [
+        "book",
+        "z-mill"
+      ],
+      "strategicNotes": "",
+      "commonBlunders": [],
+      "recommendedResponses": {
+        "W": [],
+        "B": []
+      },
+      "outcomeStats": {
+        "W": 0,
+        "B": 0,
+        "D": 0
+      },
+      "lineMoves": [
+        "d6",
+        "d2",
+        "f4",
+        "b4",
+        "f6",
+        "f2",
+        "b6",
+        "b4",
+        "c4",
+        "e4",
+        "d3",
+        "d5",
+        "c3",
+        "e3"
+      ],
+      "branchMoves": [],
+      "favoredSide": "equal"
+    },
+    {
+      "id": "book-44-2f8c37",
+      "name": "Z Mill — Variation D",
+      "aliases": [],
+      "family": "Z Mill",
+      "side": "both",
+      "source": "learned",
+      "sourceReference": "Nine Men's Morris Strategy — Brandwood",
+      "confidence": 0.8,
+      "tags": [
+        "book",
+        "z-mill"
+      ],
+      "strategicNotes": "",
+      "commonBlunders": [],
+      "recommendedResponses": {
+        "W": [],
+        "B": []
+      },
+      "outcomeStats": {
+        "W": 0,
+        "B": 0,
+        "D": 0
+      },
+      "lineMoves": [
+        "d6",
+        "d2",
+        "f4",
+        "b4",
+        "f6",
+        "f2",
+        "b6",
+        "b4",
+        "c4",
+        "d7",
+        "d3",
+        "c5",
+        "e3",
+        "c3",
+        "g4",
+        "e4",
+        "b2",
+        "a1"
+      ],
+      "branchMoves": [],
+      "favoredSide": "W"
+    },
+    {
+      "id": "book-47-502dd6",
+      "name": "Z Mill c4/e3 — Parallel Mills",
+      "aliases": [],
+      "family": "Z Mill",
+      "side": "both",
+      "source": "learned",
+      "sourceReference": "Nine Men's Morris Strategy — Brandwood",
+      "confidence": 0.8,
+      "tags": [
+        "book",
+        "z-mill"
+      ],
+      "strategicNotes": "",
+      "commonBlunders": [],
+      "recommendedResponses": {
+        "W": [],
+        "B": []
+      },
+      "outcomeStats": {
+        "W": 0,
+        "B": 0,
+        "D": 0
+      },
+      "lineMoves": [
+        "d6",
+        "d2",
+        "f4",
+        "b4",
+        "f6",
+        "f2",
+        "b6",
+        "b4",
+        "c4",
+        "d5",
+        "e3",
+        "e4",
+        "c3",
+        "c5",
+        "d3"
+      ],
+      "branchMoves": [],
+      "favoredSide": "W"
+    },
+    {
+      "id": "book-48-5c1df5",
+      "name": "Z Mill c4/e3 — Ring Round the Rosie",
+      "aliases": [],
+      "family": "Z Mill",
+      "side": "both",
+      "source": "learned",
+      "sourceReference": "Nine Men's Morris Strategy — Brandwood",
+      "confidence": 0.8,
+      "tags": [
+        "book",
+        "z-mill"
+      ],
+      "strategicNotes": "",
+      "commonBlunders": [],
+      "recommendedResponses": {
+        "W": [],
+        "B": []
+      },
+      "outcomeStats": {
+        "W": 0,
+        "B": 0,
+        "D": 0
+      },
+      "lineMoves": [
+        "d6",
+        "d2",
+        "f4",
+        "b4",
+        "f6",
+        "f2",
+        "b6",
+        "b4",
+        "c4",
+        "d5",
+        "e3",
+        "e5",
+        "c5",
+        "c3",
+        "g4",
+        "e4",
+        "d1",
+        "a1"
+      ],
+      "branchMoves": [],
+      "favoredSide": "W"
+    },
+    {
+      "id": "book-49-76adc2",
+      "name": "Z Mill c4/e3 — All Along the Watchtower",
+      "aliases": [],
+      "family": "Z Mill",
+      "side": "both",
+      "source": "learned",
+      "sourceReference": "Nine Men's Morris Strategy — Brandwood",
+      "confidence": 0.8,
+      "tags": [
+        "book",
+        "z-mill"
+      ],
+      "strategicNotes": "",
+      "commonBlunders": [],
+      "recommendedResponses": {
+        "W": [],
+        "B": []
+      },
+      "outcomeStats": {
+        "W": 0,
+        "B": 0,
+        "D": 0
+      },
+      "lineMoves": [
+        "d6",
+        "d2",
+        "f4",
+        "b4",
+        "f6",
+        "f2",
+        "b6",
+        "b4",
+        "c4",
+        "a7",
+        "e3",
+        "g7",
+        "d7",
+        "d5",
+        "e4",
+        "g4",
+        "e5",
+        "b2"
+      ],
+      "branchMoves": [],
+      "favoredSide": "W"
+    },
+    {
+      "id": "book-52-70951b",
+      "name": "Z Mill c4/e3 — Misdirection",
+      "aliases": [],
+      "family": "Z Mill",
+      "side": "both",
+      "source": "learned",
+      "sourceReference": "Nine Men's Morris Strategy — Brandwood",
+      "confidence": 0.8,
+      "tags": [
+        "book",
+        "z-mill"
+      ],
+      "strategicNotes": "",
+      "commonBlunders": [],
+      "recommendedResponses": {
+        "W": [],
+        "B": []
+      },
+      "outcomeStats": {
+        "W": 0,
+        "B": 0,
+        "D": 0
+      },
+      "lineMoves": [
+        "d6",
+        "d2",
+        "f4",
+        "b4",
+        "f6",
+        "f2",
+        "b6",
+        "b4",
+        "c4",
+        "b2",
+        "c4",
+        "d3",
+        "d1",
+        "d7",
+        "e5",
+        "g7",
+        "a7",
+        "d5"
+      ],
+      "branchMoves": [],
+      "favoredSide": "W"
+    },
+    {
+      "id": "book-53-56b4ad",
+      "name": "Z Mill c4/e3 — Cut the Bottom Out",
+      "aliases": [],
+      "family": "Z Mill",
+      "side": "both",
+      "source": "learned",
+      "sourceReference": "Nine Men's Morris Strategy — Brandwood",
+      "confidence": 0.8,
+      "tags": [
+        "book",
+        "z-mill"
+      ],
+      "strategicNotes": "",
+      "commonBlunders": [],
+      "recommendedResponses": {
+        "W": [],
+        "B": []
+      },
+      "outcomeStats": {
+        "W": 0,
+        "B": 0,
+        "D": 0
+      },
+      "lineMoves": [
+        "d6",
+        "d2",
+        "f4",
+        "b4",
+        "f6",
+        "f2",
+        "b6",
+        "b4",
+        "c4",
+        "d5",
+        "e3",
+        "d1",
+        "d3",
+        "c3",
+        "g4",
+        "e4",
+        "a7",
+        "d7"
+      ],
+      "branchMoves": [],
+      "favoredSide": "B"
+    },
+    {
+      "id": "book-54-f97b6d",
+      "name": "Z Mill c4/e3 — Two L's",
+      "aliases": [],
+      "family": "Z Mill",
+      "side": "both",
+      "source": "learned",
+      "sourceReference": "Nine Men's Morris Strategy — Brandwood",
+      "confidence": 0.8,
+      "tags": [
+        "book",
+        "z-mill"
+      ],
+      "strategicNotes": "",
+      "commonBlunders": [],
+      "recommendedResponses": {
+        "W": [],
+        "B": []
+      },
+      "outcomeStats": {
+        "W": 0,
+        "B": 0,
+        "D": 0
+      },
+      "lineMoves": [
+        "d6",
+        "d2",
+        "f4",
+        "b4",
+        "f6",
+        "f2",
+        "b6",
+        "b4",
+        "c4",
+        "d7",
+        "e3",
+        "g4",
+        "c3",
+        "c5",
+        "d3"
+      ],
+      "branchMoves": [],
+      "favoredSide": "W"
+    },
+    {
+      "id": "book-55-b98a9e",
+      "name": "Z Mill c4/e3 — Hangman",
+      "aliases": [],
+      "family": "Z Mill",
+      "side": "both",
+      "source": "learned",
+      "sourceReference": "Nine Men's Morris Strategy — Brandwood",
+      "confidence": 0.8,
+      "tags": [
+        "book",
+        "z-mill"
+      ],
+      "strategicNotes": "",
+      "commonBlunders": [],
+      "recommendedResponses": {
+        "W": [],
+        "B": []
+      },
+      "outcomeStats": {
+        "W": 0,
+        "B": 0,
+        "D": 0
+      },
+      "lineMoves": [
+        "d6",
+        "d2",
+        "f4",
+        "b4",
+        "f6",
+        "f2",
+        "b6",
+        "b4",
+        "c4",
+        "e4",
+        "e3",
+        "c3",
+        "d1",
+        "d7",
+        "e5",
+        "d5",
+        "a1",
+        "g4"
+      ],
+      "branchMoves": [],
+      "favoredSide": "equal"
+    },
+    {
+      "id": "book-56-cde7dd",
+      "name": "Z Mill c4/e3 — Perpendicular Mills 2",
+      "aliases": [],
+      "family": "Z Mill",
+      "side": "both",
+      "source": "learned",
+      "sourceReference": "Nine Men's Morris Strategy — Brandwood",
+      "confidence": 0.8,
+      "tags": [
+        "book",
+        "z-mill"
+      ],
+      "strategicNotes": "",
+      "commonBlunders": [],
+      "recommendedResponses": {
+        "W": [],
+        "B": []
+      },
+      "outcomeStats": {
+        "W": 0,
+        "B": 0,
+        "D": 0
+      },
+      "lineMoves": [
+        "d6",
+        "d2",
+        "f4",
+        "b4",
+        "f6",
+        "f2",
+        "b6",
+        "b4",
+        "c4",
+        "d7",
+        "e3",
+        "c3",
+        "e4",
+        "g4",
+        "e5"
+      ],
+      "branchMoves": [],
+      "favoredSide": "W"
+    },
+    {
+      "id": "book-57-266124",
+      "name": "Z Mill c4/e3 — Roof Falls In",
+      "aliases": [],
+      "family": "Z Mill",
+      "side": "both",
+      "source": "learned",
+      "sourceReference": "Nine Men's Morris Strategy — Brandwood",
+      "confidence": 0.8,
+      "tags": [
+        "book",
+        "z-mill"
+      ],
+      "strategicNotes": "",
+      "commonBlunders": [],
+      "recommendedResponses": {
+        "W": [],
+        "B": []
+      },
+      "outcomeStats": {
+        "W": 0,
+        "B": 0,
+        "D": 0
+      },
+      "lineMoves": [
+        "d6",
+        "d2",
+        "f4",
+        "b4",
+        "f6",
+        "f2",
+        "b6",
+        "b4",
+        "c4",
+        "a1",
+        "e3",
+        "d1",
+        "d3",
+        "g1"
+      ],
+      "branchMoves": [],
+      "favoredSide": "equal"
+    },
+    {
+      "id": "book-58-706988",
+      "name": "Black L, White Wrap",
+      "aliases": [],
+      "family": "Z Mill",
+      "side": "both",
+      "source": "learned",
+      "sourceReference": "Nine Men's Morris Strategy — Brandwood",
+      "confidence": 0.8,
+      "tags": [
+        "book",
+        "z-mill"
+      ],
+      "strategicNotes": "",
+      "commonBlunders": [],
+      "recommendedResponses": {
+        "W": [],
+        "B": []
+      },
+      "outcomeStats": {
+        "W": 0,
+        "B": 0,
+        "D": 0
+      },
+      "lineMoves": [
+        "d6",
+        "d2",
+        "f4",
+        "b6",
+        "c3",
+        "b2",
+        "f2",
+        "b4"
+      ],
+      "branchMoves": [],
+      "favoredSide": "B"
+    },
+    {
+      "id": "book-59-a76197",
+      "name": "Into White — White to a1",
+      "aliases": [],
+      "family": "Z Mill",
+      "side": "both",
+      "source": "learned",
+      "sourceReference": "Nine Men's Morris Strategy — Brandwood",
+      "confidence": 0.8,
+      "tags": [
+        "book",
+        "z-mill"
+      ],
+      "strategicNotes": "",
+      "commonBlunders": [],
+      "recommendedResponses": {
+        "W": [],
+        "B": []
+      },
+      "outcomeStats": {
+        "W": 0,
+        "B": 0,
+        "D": 0
+      },
+      "lineMoves": [
+        "d6",
+        "d2",
+        "f4",
+        "b2",
+        "f2",
+        "f6",
+        "g7",
+        "d5",
+        "a4",
+        "c4",
+        "d1",
+        "c3",
+        "a7",
+        "c5",
+        "e5",
+        "d7",
+        "e4",
+        "g4"
+      ],
+      "branchMoves": [],
+      "favoredSide": "W"
+    },
+    {
+      "id": "novel-6402adb4",
+      "name": "T mills",
+      "aliases": [],
+      "family": "novel",
+      "side": "both",
+      "source": "learned",
+      "sourceReference": "",
+      "confidence": 0.3,
+      "tags": [
+        "novel",
+        "learned"
+      ],
+      "strategicNotes": "",
+      "commonBlunders": [],
+      "recommendedResponses": {
+        "W": [],
+        "B": []
+      },
+      "outcomeStats": {
+        "W": 1,
+        "B": 0,
+        "D": 0
+      },
+      "lineMoves": [
+        "d6",
+        "f4",
+        "d2",
+        "d7",
+        "b4",
+        "d5",
+        "e4",
+        "c4",
+        "a1",
+        "d1",
+        "b6",
+        "b2",
+        "f6"
+      ],
+      "branchMoves": [],
+      "favoredSide": "W"
+    },
+    {
+      "id": "novel-3212661a",
+      "name": "The \"Midland Fortress Opening",
+      "aliases": [],
+      "family": "novel",
+      "side": "both",
+      "source": "learned",
+      "sourceReference": "",
+      "confidence": 0.3,
+      "tags": [
+        "novel",
+        "learned"
+      ],
+      "strategicNotes": "",
+      "commonBlunders": [],
+      "recommendedResponses": {
+        "W": [],
+        "B": []
+      },
+      "outcomeStats": {
+        "W": 0,
+        "B": 1,
+        "D": 0
+      },
+      "lineMoves": [
+        "f6",
+        "b4",
+        "d6",
+        "b6",
+        "b2",
+        "f4",
+        "d5",
+        "d7",
+        "e3",
+        "d1",
+        "a4",
+        "e4",
+        "g4",
+        "d2",
+        "d3",
+        "c3",
+        "c5",
+        "e5"
+      ],
+      "branchMoves": [],
+      "favoredSide": "B"
+    },
+    {
+      "id": "novel-d838a418",
+      "name": "The Umbrella",
+      "aliases": [],
+      "family": "novel",
+      "side": "both",
+      "source": "learned",
+      "sourceReference": "",
+      "confidence": 0.3,
+      "tags": [
+        "novel",
+        "learned"
+      ],
+      "strategicNotes": "",
+      "commonBlunders": [],
+      "recommendedResponses": {
+        "W": [],
+        "B": []
+      },
+      "outcomeStats": {
+        "W": 0,
+        "B": 0,
+        "D": 0
+      },
+      "lineMoves": [
+        "d6",
+        "d5",
+        "f4",
+        "c4",
+        "d3",
+        "a4",
+        "b4",
+        "d2",
+        "d1",
+        "g4",
+        "e5",
+        "e4",
+        "c3",
+        "e3",
+        "b6",
+        "b2",
+        "f6"
+      ],
+      "branchMoves": [],
+      "favoredSide": "W"
+    },
+    {
+      "id": "novel-64281011",
+      "name": "Side column - diamond response",
+      "aliases": [],
+      "family": "novel",
+      "side": "both",
+      "source": "learned",
+      "sourceReference": "",
+      "confidence": 0.3,
+      "tags": [
+        "novel",
+        "learned"
+      ],
+      "strategicNotes": "",
+      "commonBlunders": [],
+      "recommendedResponses": {
+        "W": [],
+        "B": []
+      },
+      "outcomeStats": {
+        "W": 0,
+        "B": 1,
+        "D": 0
+      },
+      "lineMoves": [
+        "d7",
+        "d1",
+        "g4",
+        "a4",
+        "d2",
+        "d6",
+        "e4",
+        "f4",
+        "b4",
+        "c4",
+        "g7",
+        "g1",
+        "a7",
+        "f6",
+        "f2",
+        "b2",
+        "d3",
+        "b6"
+      ],
+      "branchMoves": [],
+      "favoredSide": "W"
+    },
+    {
+      "id": "novel-fff7d408",
+      "name": "Side mill entrapment",
+      "aliases": [],
+      "family": "novel",
+      "side": "both",
+      "source": "learned",
+      "sourceReference": "",
+      "confidence": 0.3,
+      "tags": [
+        "novel",
+        "learned"
+      ],
+      "strategicNotes": "",
+      "commonBlunders": [],
+      "recommendedResponses": {
+        "W": [],
+        "B": []
+      },
+      "outcomeStats": {
+        "W": 1,
+        "B": 0,
+        "D": 0
+      },
+      "lineMoves": [
+        "d6",
+        "d7",
+        "d2",
+        "g4",
+        "e4",
+        "g7",
+        "a7",
+        "g1",
+        "d1",
+        "f4"
+      ],
+      "branchMoves": [],
+      "favoredSide": "equal"
+    },
+    {
+      "id": "novel-90a3812e",
+      "name": "The \"Midground Master",
+      "aliases": [],
+      "family": "novel",
+      "side": "both",
+      "source": "learned",
+      "sourceReference": "",
+      "confidence": 0.3,
+      "tags": [
+        "novel",
+        "learned"
+      ],
+      "strategicNotes": "",
+      "commonBlunders": [],
+      "recommendedResponses": {
+        "W": [],
+        "B": []
+      },
+      "outcomeStats": {
+        "W": 1,
+        "B": 0,
+        "D": 0
+      },
+      "lineMoves": [
+        "c5",
+        "b4",
+        "e3",
+        "f4",
+        "e5",
+        "d3",
+        "e4"
+      ],
+      "branchMoves": [],
+      "favoredSide": "B"
+    },
+    {
+      "id": "novel-6309fc03",
+      "name": "The \"Crossing the Lines\" Opening",
+      "aliases": [],
+      "family": "novel",
+      "side": "both",
+      "source": "learned",
+      "sourceReference": "",
+      "confidence": 0.3,
+      "tags": [
+        "novel",
+        "learned"
+      ],
+      "strategicNotes": "",
+      "commonBlunders": [],
+      "recommendedResponses": {
+        "W": [],
+        "B": []
+      },
+      "outcomeStats": {
+        "W": 1,
+        "B": 0,
+        "D": 0
+      },
+      "lineMoves": [
+        "d6",
+        "b6",
+        "c3",
+        "b4",
+        "c5",
+        "b2"
+      ],
+      "branchMoves": [],
+      "favoredSide": "B"
+    },
+    {
+      "id": "novel-ec09d026",
+      "name": "Midnight Storm Opening",
+      "aliases": [],
+      "family": "novel",
+      "side": "both",
+      "source": "learned",
+      "sourceReference": "",
+      "confidence": 0.3,
+      "tags": [
+        "novel",
+        "learned"
+      ],
+      "strategicNotes": "",
+      "commonBlunders": [],
+      "recommendedResponses": {
+        "W": [],
+        "B": []
+      },
+      "outcomeStats": {
+        "W": 0,
+        "B": 1,
+        "D": 0
+      },
+      "lineMoves": [
+        "c5",
+        "e5",
+        "e3",
+        "c3",
+        "d6",
+        "f4",
+        "e4",
+        "d2",
+        "d7",
+        "d5",
+        "c4",
+        "b4",
+        "g4",
+        "d1",
+        "g7",
+        "d3",
+        "f2",
+        "g1"
+      ],
+      "branchMoves": [],
+      "favoredSide": "B"
+    },
+    {
+      "id": "novel-1475f4d5",
+      "name": "Closed Z mill - side column fail",
+      "aliases": [],
+      "family": "novel",
+      "side": "both",
+      "source": "learned",
+      "sourceReference": "",
+      "confidence": 0.3,
+      "tags": [
+        "novel",
+        "learned"
+      ],
+      "strategicNotes": "",
+      "commonBlunders": [],
+      "recommendedResponses": {
+        "W": [],
+        "B": []
+      },
+      "outcomeStats": {
+        "W": 4,
+        "B": 0,
+        "D": 0
+      },
+      "lineMoves": [
+        "d6",
+        "d7",
+        "f4",
+        "a4",
+        "f6",
+        "f2",
+        "b6",
+        "g4",
+        "c3",
+        "d5",
+        "a4",
+        "b4",
+        "d2",
+        "g7",
+        "g1",
+        "a7",
+        "d1",
+        "d3"
+      ],
+      "branchMoves": [],
+      "favoredSide": "W"
+    },
+    {
+      "id": "novel-25964b79",
+      "name": "The \"Northern Shield Formation",
+      "aliases": [],
+      "family": "novel",
+      "side": "both",
+      "source": "learned",
+      "sourceReference": "",
+      "confidence": 0.3,
+      "tags": [
+        "novel",
+        "learned"
+      ],
+      "strategicNotes": "",
+      "commonBlunders": [],
+      "recommendedResponses": {
+        "W": [],
+        "B": []
+      },
+      "outcomeStats": {
+        "W": 0,
+        "B": 1,
+        "D": 0
+      },
+      "lineMoves": [
+        "f4",
+        "b4",
+        "d2",
+        "b6",
+        "g4",
+        "e4",
+        "g7",
+        "b2",
+        "d1",
+        "d3",
+        "e4",
+        "f4",
+        "g1",
+        "g7",
+        "e5",
+        "a1",
+        "d5",
+        "c5"
+      ],
+      "branchMoves": [],
+      "favoredSide": "B"
+    },
+    {
+      "id": "novel-aaff64e3",
+      "name": "The \"Five Rings Advance",
+      "aliases": [],
+      "family": "novel",
+      "side": "both",
+      "source": "learned",
+      "sourceReference": "",
+      "confidence": 0.3,
+      "tags": [
+        "novel",
+        "learned"
+      ],
+      "strategicNotes": "",
+      "commonBlunders": [],
+      "recommendedResponses": {
+        "W": [],
+        "B": []
+      },
+      "outcomeStats": {
+        "W": 1,
+        "B": 0,
+        "D": 0
+      },
+      "lineMoves": [
+        "d7",
+        "b6",
+        "e5",
+        "f2"
+      ],
+      "branchMoves": [],
+      "favoredSide": "B"
+    },
+    {
+      "id": "novel-8954c3ea",
+      "name": "Cardinal Keyhole",
+      "aliases": [],
+      "family": "novel",
+      "side": "both",
+      "source": "learned",
+      "sourceReference": "",
+      "confidence": 0.3,
+      "tags": [
+        "novel",
+        "learned"
+      ],
+      "strategicNotes": "",
+      "commonBlunders": [],
+      "recommendedResponses": {
+        "W": [],
+        "B": []
+      },
+      "outcomeStats": {
+        "W": 1,
+        "B": 0,
+        "D": 0
+      },
+      "lineMoves": [
+        "f4",
+        "b4",
+        "d2",
+        "e4",
+        "f6",
+        "f2",
+        "b6",
+        "a4",
+        "e5",
+        "c4",
+        "d5",
+        "c5",
+        "d2",
+        "c3",
+        "d3",
+        "g4",
+        "d2"
+      ],
+      "branchMoves": [],
+      "favoredSide": "B"
+    },
+    {
+      "id": "novel-211dd44b",
+      "name": "The King's Anchor",
+      "aliases": [],
+      "family": "novel",
+      "side": "both",
+      "source": "learned",
+      "sourceReference": "",
+      "confidence": 0.3,
+      "tags": [
+        "novel",
+        "learned"
+      ],
+      "strategicNotes": "",
+      "commonBlunders": [],
+      "recommendedResponses": {
+        "W": [],
+        "B": []
+      },
+      "outcomeStats": {
+        "W": 1,
+        "B": 0,
+        "D": 0
+      },
+      "lineMoves": [
+        "b2",
+        "f2",
+        "b6",
+        "f4",
+        "e5",
+        "f6",
+        "e5"
+      ],
+      "branchMoves": [],
+      "favoredSide": "B"
+    },
+    {
+      "id": "novel-9797f3f0",
+      "name": "The \"Midline Fortress",
+      "aliases": [],
+      "family": "novel",
+      "side": "both",
+      "source": "learned",
+      "sourceReference": "",
+      "confidence": 0.3,
+      "tags": [
+        "novel",
+        "learned"
+      ],
+      "strategicNotes": "",
+      "commonBlunders": [],
+      "recommendedResponses": {
+        "W": [],
+        "B": []
+      },
+      "outcomeStats": {
+        "W": 0,
+        "B": 1,
+        "D": 0
+      },
+      "lineMoves": [
+        "e5",
+        "e3",
+        "c3",
+        "c5",
+        "g7",
+        "g1",
+        "f2"
+      ],
+      "branchMoves": [],
+      "favoredSide": "B"
+    },
+    {
+      "id": "novel-03c5f5dc",
+      "name": "The Weaver’s Ascent",
+      "aliases": [],
+      "family": "novel",
+      "side": "both",
+      "source": "learned",
+      "sourceReference": "",
+      "confidence": 0.3,
+      "tags": [
+        "novel",
+        "learned"
+      ],
+      "strategicNotes": "",
+      "commonBlunders": [],
+      "recommendedResponses": {
+        "W": [],
+        "B": []
+      },
+      "outcomeStats": {
+        "W": 0,
+        "B": 1,
+        "D": 0
+      },
+      "lineMoves": [
+        "d7",
+        "d6",
+        "b2",
+        "f2",
+        "d2",
+        "a4",
+        "a7",
+        "g4",
+        "g7",
+        "d6",
+        "f4",
+        "d3",
+        "a1",
+        "c4",
+        "b4",
+        "b6",
+        "f6",
+        "e3"
+      ],
+      "branchMoves": [],
+      "favoredSide": "B"
+    },
+    {
+      "id": "novel-6390aa8a",
+      "name": "The Guardian’s Ascent",
+      "aliases": [],
+      "family": "novel",
+      "side": "both",
+      "source": "learned",
+      "sourceReference": "",
+      "confidence": 0.3,
+      "tags": [
+        "novel",
+        "learned"
+      ],
+      "strategicNotes": "",
+      "commonBlunders": [],
+      "recommendedResponses": {
+        "W": [],
+        "B": []
+      },
+      "outcomeStats": {
+        "W": 0,
+        "B": 2,
+        "D": 0
+      },
+      "lineMoves": [
+        "d7",
+        "d6",
+        "a7",
+        "g7",
+        "g4",
+        "e4",
+        "d1",
+        "b2",
+        "f6",
+        "c4",
+        "g1",
+        "a1",
+        "b4",
+        "f2",
+        "d2",
+        "d3",
+        "d5",
+        "e3"
+      ],
+      "branchMoves": [],
+      "favoredSide": "equal"
+    },
+    {
+      "id": "novel-052cdb96",
+      "name": "Leaning Z d1",
+      "aliases": [],
+      "family": "novel",
+      "side": "both",
+      "source": "learned",
+      "sourceReference": "",
+      "confidence": 0.3,
+      "tags": [
+        "novel",
+        "learned"
+      ],
+      "strategicNotes": "",
+      "commonBlunders": [],
+      "recommendedResponses": {
+        "W": [],
+        "B": []
+      },
+      "outcomeStats": {
+        "W": 9,
+        "B": 0,
+        "D": 0
+      },
+      "lineMoves": [
+        "d6",
+        "d2",
+        "f4",
+        "a7",
+        "g7",
+        "d7",
+        "g1",
+        "g4",
+        "d3",
+        "f2",
+        "b4",
+        "d5",
+        "b2",
+        "b6",
+        "a1",
+        "d1",
+        "c4",
+        "a4"
+      ],
+      "branchMoves": [],
+      "favoredSide": "W"
+    },
+    {
+      "id": "novel-de906242",
+      "name": "Battle lines variant 5",
+      "aliases": [],
+      "family": "novel",
+      "side": "both",
+      "source": "learned",
+      "sourceReference": "",
+      "confidence": 0.3,
+      "tags": [
+        "novel",
+        "learned"
+      ],
+      "strategicNotes": "",
+      "commonBlunders": [],
+      "recommendedResponses": {
+        "W": [],
+        "B": []
+      },
+      "outcomeStats": {
+        "W": 11,
+        "B": 1,
+        "D": 0
+      },
+      "lineMoves": [
+        "d6",
+        "d2",
+        "f4",
+        "d7",
+        "c4",
+        "f2",
+        "b2",
+        "b4",
+        "d1",
+        "a4",
+        "e3",
+        "d5",
+        "g7",
+        "g4",
+        "b6",
+        "f6",
+        "d3",
+        "c3"
+      ],
+      "branchMoves": [],
+      "favoredSide": "B"
+    },
+    {
+      "id": "novel-75f55995",
+      "name": "The Serpent’s Coil",
+      "aliases": [],
+      "family": "novel",
+      "side": "both",
+      "source": "learned",
+      "sourceReference": "",
+      "confidence": 0.3,
+      "tags": [
+        "novel",
+        "learned"
+      ],
+      "strategicNotes": "",
+      "commonBlunders": [],
+      "recommendedResponses": {
+        "W": [],
+        "B": []
+      },
+      "outcomeStats": {
+        "W": 0,
+        "B": 1,
+        "D": 0
+      },
+      "lineMoves": [
+        "d2",
+        "f4",
+        "b4",
+        "f2",
+        "b6",
+        "c5",
+        "d7",
+        "d5",
+        "e5",
+        "g4"
+      ],
+      "branchMoves": [],
+      "favoredSide": "equal"
+    },
+    {
+      "id": "novel-dea28e83",
+      "name": "The cross",
+      "aliases": [],
+      "family": "novel",
+      "side": "both",
+      "source": "learned",
+      "sourceReference": "",
+      "confidence": 0.3,
+      "tags": [
+        "novel",
+        "learned"
+      ],
+      "strategicNotes": "",
+      "commonBlunders": [],
+      "recommendedResponses": {
+        "W": [],
+        "B": []
+      },
+      "outcomeStats": {
+        "W": 0,
+        "B": 2,
+        "D": 0
+      },
+      "lineMoves": [
+        "d6",
+        "d2",
+        "d7",
+        "d5",
+        "a7",
+        "g7",
+        "g4",
+        "b4",
+        "d1",
+        "f4",
+        "g1",
+        "c4",
+        "a1",
+        "a4",
+        "d3",
+        "d2",
+        "a7",
+        "e5"
+      ],
+      "branchMoves": [],
+      "favoredSide": "B"
+    },
+    {
+      "id": "novel-1555692c",
+      "name": "The Storm’s Ascent",
+      "aliases": [],
+      "family": "novel",
+      "side": "both",
+      "source": "learned",
+      "sourceReference": "",
+      "confidence": 0.3,
+      "tags": [
+        "novel",
+        "learned"
+      ],
+      "strategicNotes": "",
+      "commonBlunders": [],
+      "recommendedResponses": {
+        "W": [],
+        "B": []
+      },
+      "outcomeStats": {
+        "W": 0,
+        "B": 1,
+        "D": 0
+      },
+      "lineMoves": [
+        "b4",
+        "d7",
+        "d6",
+        "g7",
+        "a7",
+        "g4",
+        "e4",
+        "a4",
+        "g1",
+        "b2",
+        "d2",
+        "a1",
+        "d3",
+        "d1",
+        "e3",
+        "e5",
+        "c3"
+      ],
+      "branchMoves": [],
+      "favoredSide": "W"
+    },
+    {
+      "id": "novel-70f3d63e",
+      "name": "The Serpent’s Ascent",
+      "aliases": [],
+      "family": "novel",
+      "side": "both",
+      "source": "learned",
+      "sourceReference": "",
+      "confidence": 0.3,
+      "tags": [
+        "novel",
+        "learned"
+      ],
+      "strategicNotes": "",
+      "commonBlunders": [],
+      "recommendedResponses": {
+        "W": [],
+        "B": []
+      },
+      "outcomeStats": {
+        "W": 1,
+        "B": 1,
+        "D": 0
+      },
+      "lineMoves": [
+        "d7",
+        "d1",
+        "f4",
+        "g4",
+        "d2",
+        "d6",
+        "c4",
+        "b2",
+        "b6",
+        "a1",
+        "g1",
+        "a4",
+        "a7",
+        "g7",
+        "f6",
+        "f2",
+        "e3",
+        "d5"
+      ],
+      "branchMoves": [],
+      "favoredSide": "equal"
+    },
+    {
+      "id": "novel-e375a1d7",
+      "name": "The Serpent’s Dance",
+      "aliases": [],
+      "family": "novel",
+      "side": "both",
+      "source": "learned",
+      "sourceReference": "",
+      "confidence": 0.3,
+      "tags": [
+        "novel",
+        "learned"
+      ],
+      "strategicNotes": "",
+      "commonBlunders": [],
+      "recommendedResponses": {
+        "W": [],
+        "B": []
+      },
+      "outcomeStats": {
+        "W": 4,
+        "B": 0,
+        "D": 0
+      },
+      "lineMoves": [
+        "d6",
+        "d2",
+        "f4",
+        "a4",
+        "f6",
+        "b6",
+        "f2",
+        "b6",
+        "c4",
+        "d7",
+        "d1",
+        "g4",
+        "g7",
+        "e5",
+        "a1",
+        "g1",
+        "d3",
+        "b2"
+      ],
+      "branchMoves": [],
+      "favoredSide": "B"
+    },
+    {
+      "id": "novel-003932a3",
+      "name": "Z mill c4 - B line 1",
+      "aliases": [],
+      "family": "novel",
+      "side": "both",
+      "source": "learned",
+      "sourceReference": "",
+      "confidence": 0.3,
+      "tags": [
+        "novel",
+        "learned"
+      ],
+      "strategicNotes": "",
+      "commonBlunders": [],
+      "recommendedResponses": {
+        "W": [],
+        "B": []
+      },
+      "outcomeStats": {
+        "W": 1,
+        "B": 0,
+        "D": 0
+      },
+      "lineMoves": [
+        "f6",
+        "b2",
+        "d2",
+        "d3",
+        "g4",
+        "e4",
+        "g7",
+        "g1",
+        "d1",
+        "e3",
+        "e5",
+        "c3",
+        "f6"
+      ],
+      "branchMoves": [],
+      "favoredSide": "B"
+    },
+    {
+      "id": "novel-c6599580",
+      "name": "Black dead move",
+      "aliases": [],
+      "family": "novel",
+      "side": "both",
+      "source": "learned",
+      "sourceReference": "",
+      "confidence": 0.3,
+      "tags": [
+        "novel",
+        "learned"
+      ],
+      "strategicNotes": "",
+      "commonBlunders": [],
+      "recommendedResponses": {
+        "W": [],
+        "B": []
+      },
+      "outcomeStats": {
+        "W": 1,
+        "B": 0,
+        "D": 0
+      },
+      "lineMoves": [
+        "d7",
+        "d3",
+        "g7",
+        "a7",
+        "d2",
+        "e4",
+        "d5",
+        "d1",
+        "a1",
+        "c4",
+        "a4",
+        "b6",
+        "f6",
+        "b2"
+      ],
+      "branchMoves": [],
+      "favoredSide": "B"
+    },
+    {
+      "id": "novel-a19466e5",
+      "name": "Black side, white scan ahead",
+      "aliases": [],
+      "family": "novel",
+      "side": "both",
+      "source": "learned",
+      "sourceReference": "",
+      "confidence": 0.3,
+      "tags": [
+        "novel",
+        "learned"
+      ],
+      "strategicNotes": "",
+      "commonBlunders": [],
+      "recommendedResponses": {
+        "W": [],
+        "B": []
+      },
+      "outcomeStats": {
+        "W": 1,
+        "B": 0,
+        "D": 0
+      },
+      "lineMoves": [
+        "d7",
+        "d3",
+        "g7",
+        "g4",
+        "a7",
+        "a4",
+        "d2",
+        "b2",
+        "d1",
+        "e4",
+        "g1",
+        "e5",
+        "a1",
+        "a4",
+        "e3"
+      ],
+      "branchMoves": [],
+      "favoredSide": "W"
+    },
+    {
+      "id": "novel-1fd72240",
+      "name": "White column loss",
+      "aliases": [],
+      "family": "novel",
+      "side": "both",
+      "source": "learned",
+      "sourceReference": "",
+      "confidence": 0.3,
+      "tags": [
+        "novel",
+        "learned"
+      ],
+      "strategicNotes": "",
+      "commonBlunders": [],
+      "recommendedResponses": {
+        "W": [],
+        "B": []
+      },
+      "outcomeStats": {
+        "W": 0,
+        "B": 2,
+        "D": 0
+      },
+      "lineMoves": [
+        "d7",
+        "d6",
+        "b2",
+        "c4",
+        "d2",
+        "f2",
+        "d5",
+        "g4",
+        "f4",
+        "d1",
+        "a1",
+        "d3",
+        "a7",
+        "a4",
+        "g7",
+        "a4",
+        "b4",
+        "e3"
+      ],
+      "branchMoves": [],
+      "favoredSide": "B"
+    },
+    {
+      "id": "novel-c1383e61",
+      "name": "Novel — d1-d6-f2",
+      "aliases": [],
+      "family": "novel",
+      "side": "both",
+      "source": "learned",
+      "sourceReference": "",
+      "confidence": 0.3,
+      "tags": [
+        "novel",
+        "learned"
+      ],
+      "strategicNotes": "",
+      "commonBlunders": [],
+      "recommendedResponses": {
+        "W": [],
+        "B": []
+      },
+      "outcomeStats": {
+        "W": 0,
+        "B": 1,
+        "D": 0
+      },
+      "lineMoves": [
+        "d1",
+        "d6",
+        "f2",
+        "b4",
+        "f4",
+        "f6",
+        "b6",
+        "d3",
+        "d5",
+        "g4",
+        "a4",
+        "a7",
+        "g7",
+        "e5",
+        "e3",
+        "c5",
+        "d2",
+        "c4"
+      ],
+      "branchMoves": [],
+      "favoredSide": "W"
+    },
+    {
+      "id": "novel-3c3beda6",
+      "name": "Sparse placement",
+      "aliases": [],
+      "family": "novel",
+      "side": "both",
+      "source": "learned",
+      "sourceReference": "",
+      "confidence": 0.3,
+      "tags": [
+        "novel",
+        "learned"
+      ],
+      "strategicNotes": "",
+      "commonBlunders": [],
+      "recommendedResponses": {
+        "W": [],
+        "B": []
+      },
+      "outcomeStats": {
+        "W": 1,
+        "B": 0,
+        "D": 0
+      },
+      "lineMoves": [
+        "d6",
+        "d2",
+        "c4",
+        "b4",
+        "g4",
+        "d5",
+        "e3",
+        "d1",
+        "d3",
+        "c3",
+        "f4",
+        "e4",
+        "f6",
+        "b6",
+        "f2",
+        "b6",
+        "b2",
+        "a7"
+      ],
+      "branchMoves": [],
+      "favoredSide": "B"
+    },
+    {
+      "id": "novel-dd9c428c",
+      "name": "Convergence cluster B win",
+      "aliases": [],
+      "family": "novel",
+      "side": "both",
+      "source": "learned",
+      "sourceReference": "",
+      "confidence": 0.3,
+      "tags": [
+        "novel",
+        "learned"
+      ],
+      "strategicNotes": "",
+      "commonBlunders": [],
+      "recommendedResponses": {
+        "W": [],
+        "B": []
+      },
+      "outcomeStats": {
+        "W": 0,
+        "B": 1,
+        "D": 0
+      },
+      "lineMoves": [
+        "c3",
+        "d6",
+        "e5",
+        "e4",
+        "d3",
+        "e3",
+        "d2",
+        "d1",
+        "f4",
+        "b4",
+        "a7",
+        "d7",
+        "d5",
+        "c5",
+        "g4",
+        "a4",
+        "c4",
+        "g1"
+      ],
+      "branchMoves": [],
+      "favoredSide": "B"
+    },
+    {
+      "id": "novel-ba1f7236",
+      "name": "Black scan ahead busy v2",
+      "aliases": [],
+      "family": "novel",
+      "side": "both",
+      "source": "learned",
+      "sourceReference": "",
+      "confidence": 0.3,
+      "tags": [
+        "novel",
+        "learned"
+      ],
+      "strategicNotes": "",
+      "commonBlunders": [],
+      "recommendedResponses": {
+        "W": [],
+        "B": []
+      },
+      "outcomeStats": {
+        "W": 0,
+        "B": 4,
+        "D": 0
+      },
+      "lineMoves": [
+        "b6",
+        "f4",
+        "b2",
+        "b4",
+        "d6",
+        "f6",
+        "f2",
+        "d2",
+        "d7",
+        "d5",
+        "e3",
+        "a1",
+        "a7",
+        "g7",
+        "g4",
+        "c4",
+        "a4",
+        "e5"
+      ],
+      "branchMoves": [],
+      "favoredSide": "B"
+    },
+    {
+      "id": "novel-462cd0d7",
+      "name": "White late central",
+      "aliases": [],
+      "family": "novel",
+      "side": "both",
+      "source": "learned",
+      "sourceReference": "",
+      "confidence": 0.3,
+      "tags": [
+        "novel",
+        "learned"
+      ],
+      "strategicNotes": "",
+      "commonBlunders": [],
+      "recommendedResponses": {
+        "W": [],
+        "B": []
+      },
+      "outcomeStats": {
+        "W": 0,
+        "B": 0,
+        "D": 0
+      },
+      "lineMoves": [
+        "d7",
+        "d6",
+        "b2",
+        "f4",
+        "b4",
+        "b6",
+        "f6",
+        "e3",
+        "d1",
+        "a4",
+        "d2",
+        "d3",
+        "f2",
+        "b6",
+        "c3",
+        "g4",
+        "e4",
+        "g1"
+      ],
+      "branchMoves": [],
+      "favoredSide": "W"
+    },
+    {
+      "id": "novel-45ddc095",
+      "name": "White column loss variant 2",
+      "aliases": [],
+      "family": "novel",
+      "side": "both",
+      "source": "learned",
+      "sourceReference": "",
+      "confidence": 0.3,
+      "tags": [
+        "novel",
+        "learned"
+      ],
+      "strategicNotes": "",
+      "commonBlunders": [],
+      "recommendedResponses": {
+        "W": [],
+        "B": []
+      },
+      "outcomeStats": {
+        "W": 0,
+        "B": 2,
+        "D": 0
+      },
+      "lineMoves": [
+        "b4",
+        "f4",
+        "d6",
+        "d2",
+        "d3",
+        "d5",
+        "a1",
+        "a4",
+        "g4",
+        "d7",
+        "g1",
+        "g7",
+        "d1",
+        "d2",
+        "a7",
+        "c5",
+        "e5",
+        "b2"
+      ],
+      "branchMoves": [],
+      "favoredSide": "equal"
+    },
+    {
+      "id": "novel-d1624efa",
+      "name": "White 2 configs, B busy scan",
+      "aliases": [],
+      "family": "novel",
+      "side": "both",
+      "source": "learned",
+      "sourceReference": "",
+      "confidence": 0.3,
+      "tags": [
+        "novel",
+        "learned"
+      ],
+      "strategicNotes": "",
+      "commonBlunders": [],
+      "recommendedResponses": {
+        "W": [],
+        "B": []
+      },
+      "outcomeStats": {
+        "W": 0,
+        "B": 1,
+        "D": 0
+      },
+      "lineMoves": [
+        "f4",
+        "d6",
+        "d2",
+        "b4",
+        "d1",
+        "d3",
+        "d5",
+        "g4",
+        "a7",
+        "e4",
+        "d7",
+        "g7",
+        "g1",
+        "a1",
+        "c5",
+        "e5",
+        "e3",
+        "f6"
+      ],
+      "branchMoves": [],
+      "favoredSide": "B"
+    },
+    {
+      "id": "novel-9ae57f57",
+      "name": "White column loss variant 3",
+      "aliases": [],
+      "family": "novel",
+      "side": "both",
+      "source": "learned",
+      "sourceReference": "",
+      "confidence": 0.3,
+      "tags": [
+        "novel",
+        "learned"
+      ],
+      "strategicNotes": "",
+      "commonBlunders": [],
+      "recommendedResponses": {
+        "W": [],
+        "B": []
+      },
+      "outcomeStats": {
+        "W": 0,
+        "B": 1,
+        "D": 0
+      },
+      "lineMoves": [
+        "d7",
+        "d2",
+        "g7",
+        "a7",
+        "f4",
+        "e4",
+        "d1",
+        "b4",
+        "c4",
+        "g4",
+        "d5",
+        "d6",
+        "a1",
+        "a4",
+        "g1",
+        "b2",
+        "f2",
+        "b4"
+      ],
+      "branchMoves": [],
+      "favoredSide": "B"
+    },
+    {
+      "id": "novel-e34cdaca",
+      "name": "White central corner start",
+      "aliases": [],
+      "family": "novel",
+      "side": "both",
+      "source": "learned",
+      "sourceReference": "",
+      "confidence": 0.3,
+      "tags": [
+        "novel",
+        "learned"
+      ],
+      "strategicNotes": "",
+      "commonBlunders": [],
+      "recommendedResponses": {
+        "W": [],
+        "B": []
+      },
+      "outcomeStats": {
+        "W": 0,
+        "B": 1,
+        "D": 0
+      },
+      "lineMoves": [
+        "b6",
+        "f6",
+        "b2",
+        "b4",
+        "d1",
+        "d3",
+        "g4",
+        "e4",
+        "d7",
+        "a7",
+        "e3",
+        "c4",
+        "a4",
+        "f2",
+        "f4",
+        "c5",
+        "c3",
+        "g1"
+      ],
+      "branchMoves": [],
+      "favoredSide": "equal"
+    },
+    {
+      "id": "novel-2d9a1245",
+      "name": "white side column loss",
+      "aliases": [],
+      "family": "novel",
+      "side": "both",
+      "source": "learned",
+      "sourceReference": "",
+      "confidence": 0.3,
+      "tags": [
+        "novel",
+        "learned"
+      ],
+      "strategicNotes": "",
+      "commonBlunders": [],
+      "recommendedResponses": {
+        "W": [],
+        "B": []
+      },
+      "outcomeStats": {
+        "W": 0,
+        "B": 1,
+        "D": 0
+      },
+      "lineMoves": [
+        "d7",
+        "d6",
+        "a4",
+        "b4",
+        "a7",
+        "g7",
+        "e4",
+        "d1",
+        "a1",
+        "d5",
+        "d2",
+        "f4",
+        "d6",
+        "c5",
+        "e5",
+        "e3",
+        "g4",
+        "d3"
+      ],
+      "branchMoves": [],
+      "favoredSide": "W"
+    },
+    {
+      "id": "novel-17e922b1",
+      "name": "The Storm’s Rise v2",
+      "aliases": [],
+      "family": "novel",
+      "side": "both",
+      "source": "learned",
+      "sourceReference": "",
+      "confidence": 0.3,
+      "tags": [
+        "novel",
+        "learned"
+      ],
+      "strategicNotes": "",
+      "commonBlunders": [],
+      "recommendedResponses": {
+        "W": [],
+        "B": []
+      },
+      "outcomeStats": {
+        "W": 0,
+        "B": 1,
+        "D": 0
+      },
+      "lineMoves": [
+        "d7",
+        "d6",
+        "g4",
+        "f4",
+        "f6",
+        "a4",
+        "g1",
+        "g7",
+        "d1",
+        "a1",
+        "a7",
+        "c4",
+        "b4",
+        "d2",
+        "b6",
+        "b2",
+        "f2",
+        "e4"
+      ],
+      "branchMoves": [],
+      "favoredSide": "B"
+    },
+    {
+      "id": "novel-81badf8f",
+      "name": "The Path Ascends",
+      "aliases": [],
+      "family": "novel",
+      "side": "both",
+      "source": "learned",
+      "sourceReference": "",
+      "confidence": 0.3,
+      "tags": [
+        "novel",
+        "learned"
+      ],
+      "strategicNotes": "",
+      "commonBlunders": [],
+      "recommendedResponses": {
+        "W": [],
+        "B": []
+      },
+      "outcomeStats": {
+        "W": 0,
+        "B": 1,
+        "D": 0
+      },
+      "lineMoves": [
+        "d7",
+        "d6",
+        "g7",
+        "g4",
+        "a7",
+        "g4",
+        "b4",
+        "a4",
+        "d2",
+        "f2",
+        "f6",
+        "e4",
+        "f4",
+        "d5",
+        "d1",
+        "d3",
+        "g1",
+        "a1"
+      ],
+      "branchMoves": [],
+      "favoredSide": "equal"
+    },
+    {
+      "id": "novel-8ae3cee3",
+      "name": "White side column loss",
+      "aliases": [],
+      "family": "novel",
+      "side": "both",
+      "source": "learned",
+      "sourceReference": "",
+      "confidence": 0.3,
+      "tags": [
+        "novel",
+        "learned"
+      ],
+      "strategicNotes": "",
+      "commonBlunders": [],
+      "recommendedResponses": {
+        "W": [],
+        "B": []
+      },
+      "outcomeStats": {
+        "W": 0,
+        "B": 1,
+        "D": 0
+      },
+      "lineMoves": [
+        "c5",
+        "f4",
+        "e3",
+        "c4",
+        "g4",
+        "d7",
+        "g1",
+        "d1",
+        "g7",
+        "d1",
+        "b4",
+        "b6",
+        "d6",
+        "d3",
+        "d2",
+        "f2",
+        "f6",
+        "d5"
+      ],
+      "branchMoves": [],
+      "favoredSide": "equal"
+    },
+    {
+      "id": "novel-98450726",
+      "name": "Scattered start",
+      "aliases": [],
+      "family": "novel",
+      "side": "both",
+      "source": "learned",
+      "sourceReference": "",
+      "confidence": 0.3,
+      "tags": [
+        "novel",
+        "learned"
+      ],
+      "strategicNotes": "",
+      "commonBlunders": [],
+      "recommendedResponses": {
+        "W": [],
+        "B": []
+      },
+      "outcomeStats": {
+        "W": 0,
+        "B": 0,
+        "D": 0
+      },
+      "lineMoves": [
+        "a4",
+        "f4",
+        "b2",
+        "b4",
+        "g4",
+        "d1",
+        "d2",
+        "f2",
+        "f6",
+        "d7",
+        "d5",
+        "d3",
+        "c4",
+        "e5",
+        "e4",
+        "c3",
+        "e3",
+        "d6"
+      ],
+      "branchMoves": [],
+      "favoredSide": "W"
+    },
+    {
+      "id": "novel-5cd9726a",
+      "name": "Novel — a7-d6-g7",
+      "aliases": [],
+      "family": "novel",
+      "side": "both",
+      "source": "learned",
+      "sourceReference": "",
+      "confidence": 0.3,
+      "tags": [
+        "novel",
+        "learned"
+      ],
+      "strategicNotes": "",
+      "commonBlunders": [],
+      "recommendedResponses": {
+        "W": [],
+        "B": []
+      },
+      "outcomeStats": {
+        "W": 0,
+        "B": 1,
+        "D": 0
+      },
+      "lineMoves": [
+        "a7",
+        "d6",
+        "g7",
+        "d7",
+        "d5",
+        "f4",
+        "f6",
+        "b2",
+        "a4",
+        "a1",
+        "d1",
+        "g4",
+        "e4",
+        "d2",
+        "f2",
+        "b4",
+        "b6",
+        "e3"
+      ],
+      "branchMoves": [],
+      "favoredSide": "B"
+    },
+    {
+      "id": "novel-c5295bcb",
+      "name": "Scattered rediredt -Black win",
+      "aliases": [],
+      "family": "novel",
+      "side": "both",
+      "source": "learned",
+      "sourceReference": "",
+      "confidence": 0.3,
+      "tags": [
+        "novel",
+        "learned"
+      ],
+      "strategicNotes": "",
+      "commonBlunders": [],
+      "recommendedResponses": {
+        "W": [],
+        "B": []
+      },
+      "outcomeStats": {
+        "W": 0,
+        "B": 1,
+        "D": 0
+      },
+      "lineMoves": [
+        "d1",
+        "d6",
+        "d7",
+        "f4",
+        "f6",
+        "a4",
+        "g4",
+        "c3",
+        "c4",
+        "d2",
+        "e3",
+        "a7",
+        "a1",
+        "g1",
+        "b4",
+        "e5",
+        "c5",
+        "b2"
+      ],
+      "branchMoves": [],
+      "favoredSide": "B"
+    },
+    {
+      "id": "novel-c4e07f15",
+      "name": "Battle Lines variant 3",
+      "aliases": [],
+      "family": "novel",
+      "side": "both",
+      "source": "learned",
+      "sourceReference": "",
+      "confidence": 0.3,
+      "tags": [
+        "novel",
+        "learned"
+      ],
+      "strategicNotes": "",
+      "commonBlunders": [],
+      "recommendedResponses": {
+        "W": [],
+        "B": []
+      },
+      "outcomeStats": {
+        "W": 1,
+        "B": 0,
+        "D": 0
+      },
+      "lineMoves": [
+        "d6",
+        "d2",
+        "f4",
+        "f6",
+        "b6",
+        "f2",
+        "c4",
+        "e4",
+        "d3",
+        "c3",
+        "d1"
+      ],
+      "branchMoves": [],
+      "favoredSide": "B"
+    },
+    {
+      "id": "novel-ccc52161",
+      "name": "Cardinal mill wrap variant - redirect",
+      "aliases": [],
+      "family": "novel",
+      "side": "both",
+      "source": "learned",
+      "sourceReference": "",
+      "confidence": 0.3,
+      "tags": [
+        "novel",
+        "learned"
+      ],
+      "strategicNotes": "",
+      "commonBlunders": [],
+      "recommendedResponses": {
+        "W": [],
+        "B": []
+      },
+      "outcomeStats": {
+        "W": 0,
+        "B": 1,
+        "D": 0
+      },
+      "lineMoves": [
+        "d1",
+        "d6",
+        "f2",
+        "f4",
+        "d2",
+        "d3",
+        "b2",
+        "d3",
+        "d5",
+        "a4",
+        "b4",
+        "b6",
+        "f6",
+        "a1",
+        "a7",
+        "e4",
+        "g4",
+        "c3"
+      ],
+      "branchMoves": [],
+      "favoredSide": "W"
+    },
+    {
+      "id": "novel-75bbbaae",
+      "name": "Novel — g4-f4-b6",
+      "aliases": [],
+      "family": "novel",
+      "side": "both",
+      "source": "learned",
+      "sourceReference": "",
+      "confidence": 0.3,
+      "tags": [
+        "novel",
+        "learned"
+      ],
+      "strategicNotes": "",
+      "commonBlunders": [],
+      "recommendedResponses": {
+        "W": [],
+        "B": []
+      },
+      "outcomeStats": {
+        "W": 0,
+        "B": 1,
+        "D": 0
+      },
+      "lineMoves": [
+        "g4",
+        "f4",
+        "b6",
+        "d5",
+        "a7",
+        "b4",
+        "d7",
+        "g7",
+        "c4",
+        "d2",
+        "f2",
+        "e5",
+        "c5",
+        "c3",
+        "d3",
+        "e3",
+        "e4",
+        "a4"
+      ],
+      "branchMoves": [],
+      "favoredSide": "B"
+    },
+    {
+      "id": "novel-c25d4b08",
+      "name": "The Silent Ascent",
+      "aliases": [],
+      "family": "novel",
+      "side": "both",
+      "source": "learned",
+      "sourceReference": "",
+      "confidence": 0.3,
+      "tags": [
+        "novel",
+        "learned"
+      ],
+      "strategicNotes": "",
+      "commonBlunders": [],
+      "recommendedResponses": {
+        "W": [],
+        "B": []
+      },
+      "outcomeStats": {
+        "W": 1,
+        "B": 0,
+        "D": 0
+      },
+      "lineMoves": [
+        "f2",
+        "b6",
+        "b4",
+        "c4",
+        "a7",
+        "d3",
+        "e5",
+        "c3",
+        "c5",
+        "e3",
+        "g7",
+        "c5",
+        "g7"
+      ],
+      "branchMoves": [],
+      "favoredSide": "B"
+    },
+    {
+      "id": "novel-c95b15b4",
+      "name": "Novel — b2-f4-d2",
+      "aliases": [],
+      "family": "novel",
+      "side": "both",
+      "source": "learned",
+      "sourceReference": "",
+      "confidence": 0.3,
+      "tags": [
+        "novel",
+        "learned"
+      ],
+      "strategicNotes": "",
+      "commonBlunders": [],
+      "recommendedResponses": {
+        "W": [],
+        "B": []
+      },
+      "outcomeStats": {
+        "W": 0,
+        "B": 0,
+        "D": 0
+      },
+      "lineMoves": [
+        "b2",
+        "f4",
+        "d2",
+        "f2",
+        "f6",
+        "a4",
+        "d1",
+        "d3",
+        "b6",
+        "d6",
+        "b4",
+        "d6",
+        "g4",
+        "c4",
+        "d5",
+        "a1",
+        "a7",
+        "c5"
+      ],
+      "branchMoves": [],
+      "favoredSide": "equal"
+    },
+    {
+      "id": "novel-f201dfd5",
+      "name": "Cat's in the cradle",
+      "aliases": [],
+      "family": "novel",
+      "side": "both",
+      "source": "learned",
+      "sourceReference": "",
+      "confidence": 0.3,
+      "tags": [
+        "novel",
+        "learned"
+      ],
+      "strategicNotes": "",
+      "commonBlunders": [],
+      "recommendedResponses": {
+        "W": [],
+        "B": []
+      },
+      "outcomeStats": {
+        "W": 1,
+        "B": 0,
+        "D": 0
+      },
+      "lineMoves": [
+        "d7",
+        "f4",
+        "c4",
+        "d6",
+        "d3",
+        "a4",
+        "e4",
+        "d1",
+        "d5",
+        "b4",
+        "d2",
+        "c3",
+        "f2",
+        "b2",
+        "b6",
+        "a1",
+        "g1",
+        "a7"
+      ],
+      "branchMoves": [],
+      "favoredSide": "B"
+    },
+    {
+      "id": "novel-b66c36fb",
+      "name": "Novel — d6-d2-f6",
+      "aliases": [],
+      "family": "novel",
+      "side": "both",
+      "source": "learned",
+      "sourceReference": "",
+      "confidence": 0.3,
+      "tags": [
+        "novel",
+        "learned"
+      ],
+      "strategicNotes": "",
+      "commonBlunders": [],
+      "recommendedResponses": {
+        "W": [],
+        "B": []
+      },
+      "outcomeStats": {
+        "W": 0,
+        "B": 1,
+        "D": 0
+      },
+      "lineMoves": [
+        "d6",
+        "d2",
+        "f6",
+        "b6",
+        "f2",
+        "f4",
+        "c4",
+        "d1",
+        "a4",
+        "d3",
+        "d7",
+        "d5",
+        "g7",
+        "a7",
+        "g1",
+        "g4",
+        "e4",
+        "b4"
+      ],
+      "branchMoves": [],
+      "favoredSide": "B"
+    },
+    {
+      "id": "novel-5dc9a092",
+      "name": "Novel — d6-d1-f4",
+      "aliases": [],
+      "family": "novel",
+      "side": "both",
+      "source": "learned",
+      "sourceReference": "",
+      "confidence": 0.3,
+      "tags": [
+        "novel",
+        "learned"
+      ],
+      "strategicNotes": "",
+      "commonBlunders": [],
+      "recommendedResponses": {
+        "W": [],
+        "B": []
+      },
+      "outcomeStats": {
+        "W": 1,
+        "B": 0,
+        "D": 0
+      },
+      "lineMoves": [
+        "d6",
+        "d1",
+        "f4",
+        "b4",
+        "d2",
+        "e4",
+        "d5",
+        "d7",
+        "a4",
+        "g4",
+        "g1",
+        "c3",
+        "f6",
+        "b6",
+        "f2",
+        "b6",
+        "b2",
+        "d3"
+      ],
+      "branchMoves": [],
+      "favoredSide": "W"
+    },
+    {
+      "id": "novel-be53b8a4",
+      "name": "Sidestep - B centre",
+      "aliases": [],
+      "family": "novel",
+      "side": "both",
+      "source": "learned",
+      "sourceReference": "",
+      "confidence": 0.3,
+      "tags": [
+        "novel",
+        "learned"
+      ],
+      "strategicNotes": "",
+      "commonBlunders": [],
+      "recommendedResponses": {
+        "W": [],
+        "B": []
+      },
+      "outcomeStats": {
+        "W": 0,
+        "B": 0,
+        "D": 0
+      },
+      "lineMoves": [
+        "d6",
+        "d2",
+        "g4",
+        "f4",
+        "b4",
+        "f2",
+        "b2",
+        "f6",
+        "e5",
+        "a7",
+        "e3",
+        "e4",
+        "d5",
+        "d7",
+        "c5",
+        "d7",
+        "g7",
+        "c4"
+      ],
+      "branchMoves": [],
+      "favoredSide": "B"
+    },
+    {
+      "id": "novel-57888c26",
+      "name": "Novel — f4-b4-d6",
+      "aliases": [],
+      "family": "novel",
+      "side": "both",
+      "source": "learned",
+      "sourceReference": "",
+      "confidence": 0.3,
+      "tags": [
+        "novel",
+        "learned"
+      ],
+      "strategicNotes": "",
+      "commonBlunders": [],
+      "recommendedResponses": {
+        "W": [],
+        "B": []
+      },
+      "outcomeStats": {
+        "W": 1,
+        "B": 0,
+        "D": 0
+      },
+      "lineMoves": [
+        "f4",
+        "b4",
+        "d6",
+        "d3",
+        "f6",
+        "b6",
+        "f2",
+        "b6",
+        "d1",
+        "d7",
+        "a4",
+        "c4",
+        "b2",
+        "a1",
+        "e4",
+        "g4",
+        "c5",
+        "d2"
+      ],
+      "branchMoves": [],
+      "favoredSide": "W"
+    },
+    {
+      "id": "novel-522128b4",
+      "name": "Novel — d7-f4-c4",
+      "aliases": [],
+      "family": "novel",
+      "side": "both",
+      "source": "learned",
+      "sourceReference": "",
+      "confidence": 0.3,
+      "tags": [
+        "novel",
+        "learned"
+      ],
+      "strategicNotes": "",
+      "commonBlunders": [],
+      "recommendedResponses": {
+        "W": [],
+        "B": []
+      },
+      "outcomeStats": {
+        "W": 0,
+        "B": 1,
+        "D": 0
+      },
+      "lineMoves": [
+        "d7",
+        "f4",
+        "c4",
+        "b6",
+        "d6",
+        "b2",
+        "b4",
+        "d5",
+        "d3",
+        "a4",
+        "d2",
+        "d1",
+        "a1",
+        "g7",
+        "g4",
+        "e3",
+        "c5",
+        "c3"
+      ],
+      "branchMoves": [],
+      "favoredSide": "B"
+    },
+    {
+      "id": "novel-dcd1704b",
+      "name": "Scattered white column",
+      "aliases": [],
+      "family": "novel",
+      "side": "both",
+      "source": "learned",
+      "sourceReference": "",
+      "confidence": 0.3,
+      "tags": [
+        "novel",
+        "learned"
+      ],
+      "strategicNotes": "",
+      "commonBlunders": [],
+      "recommendedResponses": {
+        "W": [],
+        "B": []
+      },
+      "outcomeStats": {
+        "W": 1,
+        "B": 0,
+        "D": 0
+      },
+      "lineMoves": [
+        "d7",
+        "f4",
+        "c4",
+        "d2",
+        "f2",
+        "a4",
+        "d3",
+        "d5",
+        "g4",
+        "b6",
+        "c3",
+        "e3",
+        "g7",
+        "g1",
+        "a7",
+        "c5",
+        "e3",
+        "b2"
+      ],
+      "branchMoves": [],
+      "favoredSide": "B"
     }
   ]
 }

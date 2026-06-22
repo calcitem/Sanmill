@@ -5,12 +5,20 @@
 //
 //   dart run tool/build_opening_book.dart
 //
-// It merges two AUTHORED SOURCES (both under tool/) into one JSON per variant:
+// It merges AUTHORED SOURCES (all under tool/) into one JSON per variant:
 //   * the engine move oracle (canonical Sanmill FEN -> moves) in
-//     tool/mill_opening_book_oracle_source.dart, and
+//     tool/mill_opening_book_oracle_source.dart,
 //   * the curated, human-readable named openings in
 //     tool/<variant>_curated_openings.json (Sanmill source schema; the legacy
-//     NMM_LLM array schema is still accepted during migration).
+//     NMM_LLM array schema is still accepted during migration), and
+//   * the imported/self-play learned openings in
+//     tool/<variant>_learned_openings.json (legacy NMM_LLM array schema).
+//
+// Curated and learned openings are concatenated and then deduplicated under the
+// board's full 16-element symmetry group (D4 x inner/outer ring swap): lines
+// that coincide after some rotation, reflection, or ring swap collapse to a
+// single entry, keeping the highest-priority representative (curated > book
+// import > novel self-play).
 //
 // Outputs:
 //   * assets/opening_books/<variant>/opening_book.json — the ONLY shipped
@@ -26,6 +34,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:sanmill/game_page/services/transform/transform.dart';
 import 'package:sanmill/games/mill/opening_book/opening_book_models.dart';
 import 'package:sanmill/games/mill/opening_book/opening_book_source_models.dart';
 
@@ -34,42 +43,216 @@ import 'mill_opening_book_oracle_source.dart';
 const String _nmmDir = 'assets/opening_books/nmm';
 const String _elFiljaDir = 'assets/opening_books/el_filja';
 const String _nmmCuratedSource = 'tool/nmm_curated_openings.json';
+const String _nmmLearnedSource = 'tool/nmm_learned_openings.json';
 
-List<OpeningEntry> _loadCuratedOpenings(String path) {
+/// Parses every opening in [path] (Sanmill source package or legacy NMM_LLM
+/// array) in file order, without filtering. A missing file yields an empty
+/// list so optional sources stay optional.
+List<OpeningEntry> _loadOpeningEntries(String path) {
   final File file = File(path);
   if (!file.existsSync()) {
-    stdout.writeln('note: $path not found; emitting no named openings.');
+    stdout.writeln('note: $path not found; skipping.');
     return <OpeningEntry>[];
   }
   final Object? decoded = jsonDecode(file.readAsStringSync());
-  final List<OpeningEntry> entries;
   if (decoded is List) {
-    entries = decoded
+    return decoded
         .whereType<Map<Object?, Object?>>()
         .map(
           (Map<Object?, Object?> raw) =>
               OpeningEntry.fromJson(Map<String, dynamic>.from(raw)),
         )
         .toList(growable: false);
-  } else if (decoded is Map) {
-    entries = SanmillOpeningBookSourcePackage.fromJson(
+  }
+  if (decoded is Map) {
+    return SanmillOpeningBookSourcePackage.fromJson(
       Map<String, dynamic>.from(decoded),
     ).toOpeningEntries();
-  } else {
-    throw const FormatException(
-      'curated openings file must be a JSON array or source package',
-    );
   }
+  throw FormatException(
+    'opening source must be a JSON array or package: $path',
+  );
+}
 
-  final List<OpeningEntry> openings = <OpeningEntry>[];
-  for (final OpeningEntry entry in entries) {
-    // Only ship curated book lines; learned/self-play entries stay out of
-    // the bundled asset (loader can opt them in later).
-    if (entry.source == 'book') {
-      openings.add(entry);
+/// Tie-break priority when several openings collapse onto the same symmetry
+/// class. Lower wins: hand-curated book lines first, then imported book games,
+/// then self-play "novel" discoveries, then anything else.
+int _openingRank(OpeningEntry entry) {
+  if (entry.source == 'book') {
+    return 0;
+  }
+  if (entry.id.startsWith('book-')) {
+    return 1;
+  }
+  if (entry.id.startsWith('novel-')) {
+    return 2;
+  }
+  return 3;
+}
+
+/// Canonical key for a placement line under the board's full 16-element
+/// symmetry group (D4 x inner/outer ring swap): the lexicographically smallest
+/// of all 16 transformed move sequences. Two lines share a key iff they are the
+/// same sequence of positions up to rotation, reflection, and ring swap.
+String _canonicalLineKey(List<String> moves) {
+  assert(moves.isNotEmpty, 'line must contain at least one move');
+  String? best;
+  for (final TransformationType type in TransformationType.values) {
+    final String candidate = moves
+        .map((String move) => transformMoveNotation(move, type))
+        .join(',');
+    if (best == null || candidate.compareTo(best) < 0) {
+      best = candidate;
     }
   }
-  return openings;
+  return best!;
+}
+
+/// Concatenates all opening sources and drops symmetry-equivalent duplicates,
+/// keeping the highest-priority representative of each class (see
+/// [_openingRank]). Output order is stable and diff-friendly: by rank first,
+/// then by original load order.
+List<OpeningEntry> _mergeAndDedupOpenings(List<OpeningEntry> entries) {
+  final List<int> order = List<int>.generate(entries.length, (int i) => i);
+  order.sort((int a, int b) {
+    final int byRank = _openingRank(
+      entries[a],
+    ).compareTo(_openingRank(entries[b]));
+    return byRank != 0 ? byRank : a.compareTo(b);
+  });
+
+  final Set<String> seen = <String>{};
+  final List<OpeningEntry> kept = <OpeningEntry>[];
+  int dropped = 0;
+  for (final int index in order) {
+    final OpeningEntry entry = entries[index];
+    assert(entry.lineMoves.isNotEmpty, 'opening ${entry.id} has no line moves');
+    if (seen.add(_canonicalLineKey(entry.lineMoves))) {
+      kept.add(entry);
+    } else {
+      dropped++;
+    }
+  }
+  stdout.writeln(
+    'Merged ${entries.length} openings -> ${kept.length} unique '
+    '($dropped symmetry duplicate(s) removed).',
+  );
+  return kept;
+}
+
+/// Standard Nine Men's Morris mills (no diagonals), in placement notation.
+const List<List<String>> _nmmMills = <List<String>>[
+  <String>['a7', 'd7', 'g7'],
+  <String>['b6', 'd6', 'f6'],
+  <String>['c5', 'd5', 'e5'],
+  <String>['a4', 'b4', 'c4'],
+  <String>['e4', 'f4', 'g4'],
+  <String>['c3', 'd3', 'e3'],
+  <String>['b2', 'd2', 'f2'],
+  <String>['a1', 'd1', 'g1'],
+  <String>['a7', 'a4', 'a1'],
+  <String>['b6', 'b4', 'b2'],
+  <String>['c5', 'c4', 'c3'],
+  <String>['d7', 'd6', 'd5'],
+  <String>['d3', 'd2', 'd1'],
+  <String>['e5', 'e4', 'e3'],
+  <String>['f6', 'f4', 'f2'],
+  <String>['g7', 'g4', 'g1'],
+];
+
+/// Length of the longest valid placement prefix of [moves].
+///
+/// Placement alternates between the two players (even plies = first player).
+/// A square may only be re-used after a mill-forming move frees an opponent
+/// piece; because removals are stripped from the stored line, we credit one
+/// re-placement per mill formed. The placement phase caps at 18 moves (9 per
+/// side), so anything beyond — or any placement onto an occupied square without
+/// an available removal credit — is moving-phase data or noise and is dropped.
+int _validPlacementPrefix(List<String> moves) {
+  final Map<String, int> occupied = <String, int>{};
+  int removalCredits = 0;
+  final int limit = moves.length < 18 ? moves.length : 18;
+  int kept = 0;
+  for (; kept < limit; kept++) {
+    final String square = moves[kept];
+    final int player = kept.isEven ? 0 : 1;
+    if (occupied.containsKey(square)) {
+      if (removalCredits == 0) {
+        break;
+      }
+      removalCredits--;
+    }
+    occupied[square] = player;
+    final bool formedMill = _nmmMills.any(
+      (List<String> mill) =>
+          mill.contains(square) &&
+          mill.every((String s) => occupied[s] == player),
+    );
+    if (formedMill) {
+      removalCredits++;
+    }
+  }
+  return kept;
+}
+
+/// Returns [entry] truncated to its valid placement prefix (see
+/// [_validPlacementPrefix]); the original entry is returned untouched when the
+/// whole line is already valid. Branches anchored beyond the kept prefix are
+/// dropped so the line stays self-consistent.
+OpeningEntry _sanitizeOpening(OpeningEntry entry) {
+  final int keep = _validPlacementPrefix(entry.lineMoves);
+  if (keep == entry.lineMoves.length) {
+    return entry;
+  }
+  return OpeningEntry(
+    id: entry.id,
+    name: entry.name,
+    aliases: entry.aliases,
+    family: entry.family,
+    side: entry.side,
+    source: entry.source,
+    sourceReference: entry.sourceReference,
+    confidence: entry.confidence,
+    tags: entry.tags,
+    strategicNotes: entry.strategicNotes,
+    commonBlunders: entry.commonBlunders,
+    recommendedResponses: entry.recommendedResponses,
+    outcomeStats: entry.outcomeStats,
+    lineMoves: entry.lineMoves.sublist(0, keep),
+    branchMoves: entry.branchMoves
+        .where((OpeningBranch branch) => branch.deviationPly <= keep)
+        .toList(growable: false),
+    favoredSide: entry.favoredSide,
+  );
+}
+
+/// Assembles the shipped NMM named openings: the hand-curated book lines plus
+/// the imported/self-play learned lines. Each line is first sanitised to a
+/// valid placement prefix (dropping moving-phase/corrupt tails), then the whole
+/// set is symmetry-deduplicated.
+List<OpeningEntry> _assembleNmmOpenings() {
+  final List<OpeningEntry> all = <OpeningEntry>[
+    ..._loadOpeningEntries(_nmmCuratedSource),
+    ..._loadOpeningEntries(_nmmLearnedSource),
+  ];
+
+  int truncated = 0;
+  final List<OpeningEntry> sanitized = <OpeningEntry>[];
+  for (final OpeningEntry entry in all) {
+    final OpeningEntry clean = _sanitizeOpening(entry);
+    if (clean.lineMoves.length != entry.lineMoves.length) {
+      truncated++;
+    }
+    // A line shorter than two plies carries no usable opening knowledge.
+    if (clean.lineMoves.length >= 2) {
+      sanitized.add(clean);
+    }
+  }
+  stdout.writeln(
+    'Sanitised ${all.length} openings: $truncated truncated, '
+    '${all.length - sanitized.length} dropped (too short).',
+  );
+  return _mergeAndDedupOpenings(sanitized);
 }
 
 void _writeBook(String dir, OpeningBookData data) {
@@ -237,7 +420,7 @@ void main() {
     variant: 'nmm',
     symmetry: 'ring16',
     oracle: nineMensMorrisCanonicalOpeningBook,
-    openings: _loadCuratedOpenings(_nmmCuratedSource),
+    openings: _assembleNmmOpenings(),
   );
   _writeBook(_nmmDir, nmm);
   _writeAtlas('tool/nmm_opening_book_atlas.md', nmm, "Nine Men's Morris");

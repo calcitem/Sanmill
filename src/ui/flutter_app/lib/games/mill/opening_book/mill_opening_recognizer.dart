@@ -189,8 +189,37 @@ abstract final class MillOpeningRecognizer {
     if (aiSide != 'W' && aiSide != 'B') {
       return const <String>[];
     }
+    return _continuationMoves(
+      placementMoves,
+      openings,
+      requiredFavoredSide: aiSide,
+    );
+  }
+
+  /// Distinct next moves (in the live board frame) that continue ANY named line
+  /// consistent with [placementMoves], ordered best line first (confidence,
+  /// then line length). Unlike [favoredOpeningMoves] this ignores which side a
+  /// line favours, so curated, imported, and self-play lines can all guide AI
+  /// placement when the move oracle has no entry for the current position.
+  static List<String> bookContinuationMoves(
+    List<String> placementMoves,
+    List<OpeningEntry> openings,
+  ) {
+    return _continuationMoves(placementMoves, openings);
+  }
+
+  /// Shared engine behind [favoredOpeningMoves] and [bookContinuationMoves]:
+  /// collects, across all 16 symmetry frames, the next move of every opening
+  /// whose line extends [placementMoves]; when [requiredFavoredSide] is set,
+  /// only lines favouring that side are considered. Results are ordered by
+  /// confidence then line length, deduplicated by move (best occurrence wins).
+  static List<String> _continuationMoves(
+    List<String> placementMoves,
+    List<OpeningEntry> openings, {
+    String? requiredFavoredSide,
+  }) {
     final int ply = placementMoves.length;
-    final List<_FavoredCandidate> candidates = <_FavoredCandidate>[];
+    final List<_ContinuationCandidate> candidates = <_ContinuationCandidate>[];
     for (final TransformationType type in TransformationType.values) {
       final List<String> moved = placementMoves
           .map((String m) => transformMoveNotation(m, type))
@@ -199,13 +228,16 @@ abstract final class MillOpeningRecognizer {
         getTransformMap(type),
       );
       for (final OpeningEntry opening in openings) {
-        if (opening.favoredSide != aiSide ||
-            opening.lineMoves.length <= ply ||
+        if (requiredFavoredSide != null &&
+            opening.favoredSide != requiredFavoredSide) {
+          continue;
+        }
+        if (opening.lineMoves.length <= ply ||
             _commonPrefix(moved, opening.lineMoves) != ply) {
           continue;
         }
         candidates.add(
-          _FavoredCandidate(
+          _ContinuationCandidate(
             move: transformMoveNotationWithMap(
               opening.lineMoves[ply],
               fromCanonical,
@@ -216,7 +248,7 @@ abstract final class MillOpeningRecognizer {
         );
       }
     }
-    candidates.sort((_FavoredCandidate a, _FavoredCandidate b) {
+    candidates.sort((_ContinuationCandidate a, _ContinuationCandidate b) {
       final int byConfidence = b.confidence.compareTo(a.confidence);
       return byConfidence != 0
           ? byConfidence
@@ -224,7 +256,7 @@ abstract final class MillOpeningRecognizer {
     });
     final List<String> ordered = <String>[];
     final Set<String> seen = <String>{};
-    for (final _FavoredCandidate c in candidates) {
+    for (final _ContinuationCandidate c in candidates) {
       if (seen.add(c.move)) {
         ordered.add(c.move);
       }
@@ -410,8 +442,8 @@ class _PartialMatch {
   final int prefix;
 }
 
-class _FavoredCandidate {
-  const _FavoredCandidate({
+class _ContinuationCandidate {
+  const _ContinuationCandidate({
     required this.move,
     required this.confidence,
     required this.lineLength,

@@ -20,11 +20,15 @@ It combines two layers in one asset:
   is stored once for the lexicographically smallest FEN in its 16-way symmetry
   orbit and expanded to all 16 variants at lookup time, so the table stays
   compact without losing coverage.
-- **Named openings** — rich, human-curated lines (`line_moves` plus metadata:
+- **Named openings** — curated and imported lines (`line_moves` plus metadata:
   name, family, source, strategic notes, common blunders, recommended
-  responses, branch variations, and which side the line favours). These power
-  opening **recognition**, the on-board **display**, and the optional
-  **favoured-opening director**.
+  responses, branch variations, and which side the line favours). They come in
+  three provenance classes — hand-curated `book` lines, imported `book-*` game
+  transcriptions, and self-play `novel-*` discoveries (see
+  [Named-opening sources](#named-opening-sources-sanitisation-and-dedup)) — and
+  power opening **recognition**, the on-board **display**, the optional
+  **favoured-opening director**, and an **oracle-miss continuation fallback**
+  that lets them guide AI placement beyond the oracle's coverage.
 
 Metadata never lives inside a FEN — a FEN is only ever a lookup key. This mirrors
 the chess-world separation of an engine (search), a move book (hash/position ->
@@ -38,11 +42,12 @@ oracle only (no curated named lines yet).
 ```mermaid
 flowchart TD
   OracleSrc["tool/mill_opening_book_oracle_source.dart (authored oracle, with board comments)"] --> Build
-  Curated["tool/&lt;variant&gt;_curated_openings.json (authored named lines)"] --> Build
-  Build["tool/build_opening_book.dart (dart run)"] --> Json["assets/opening_books/&lt;variant&gt;/opening_book.json (shipped)"]
+  Curated["tool/&lt;variant&gt;_curated_openings.json (hand-authored named lines)"] --> Build
+  Learned["tool/&lt;variant&gt;_learned_openings.json (imported / self-play lines)"] --> Build
+  Build["tool/build_opening_book.dart (dart run: sanitise + symmetry-dedup)"] --> Json["assets/opening_books/&lt;variant&gt;/opening_book.json (shipped)"]
   Build --> Atlas["tool/&lt;variant&gt;_opening_book_atlas.md (human-readable)"]
   Json --> Repo["OpeningBookRepository.ensureLoaded() (async, at startup)"]
-  Repo --> Provider["MillOpeningBookProvider.lookup() -> AI placement"]
+  Repo --> Provider["MillOpeningBookProvider.lookup() (director -> oracle -> continuation) -> AI placement"]
   Repo --> Recognizer["MillOpeningRecognizer -> name / notes / favoured side"]
   Provider --> AiTurn["NativeMillAiTurnController (AI turn)"]
   Recognizer --> Header["Game header tip (when 'Show opening information' is on)"]
@@ -53,10 +58,15 @@ Layers:
 - **Authored sources** (`tool/`, build input, not shipped):
   - `tool/mill_opening_book_oracle_source.dart` — the canonical-FEN move oracle,
     keeping ASCII board diagrams in comments for readability.
-  - `tool/<variant>_curated_openings.json` — named lines in the source schema
-    (snake_case, NMM_LLM-compatible). Only `nmm` has one today.
-- **Build tool** `tool/build_opening_book.dart` (`dart run`): merges the oracle
-  and the curated lines into the shipped JSON, and emits a human-readable atlas.
+  - `tool/<variant>_curated_openings.json` — hand-authored named lines in the
+    source schema (snake_case, NMM_LLM-compatible). Only `nmm` has one today.
+  - `tool/<variant>_learned_openings.json` — imported `book-*` game
+    transcriptions and self-play `novel-*` lines, a committed mirror of the
+    NMM_LLM export (legacy array schema). Only `nmm` has one today.
+- **Build tool** `tool/build_opening_book.dart` (`dart run`): copies the oracle
+  verbatim, then merges the curated and learned lines — sanitising each to a
+  valid placement line and removing 16-way symmetry duplicates — into the
+  shipped JSON, and emits a human-readable atlas.
 - **Shipped asset** `assets/opening_books/<variant>/opening_book.json`: the only
   runtime artefact, registered in `pubspec.yaml`.
 - **Runtime (Dart)**:
@@ -66,7 +76,8 @@ Layers:
   - `lib/games/mill/mill_opening_book_symmetry.dart` — FEN normalisation, 16-way
     canonicalisation, and the symmetry-aware oracle lookup.
   - `lib/games/mill/mill_opening_book_provider.dart` — the move source consulted
-    on AI turns (oracle lookup + optional favoured-opening director).
+    on AI turns (optional favoured-opening director, then the oracle lookup, then
+    the named-opening continuation fallback).
   - `lib/games/mill/opening_book/mill_opening_move_selector.dart` — chooses among
     candidate book moves.
   - `lib/games/mill/opening_book/mill_opening_recognizer.dart` — stateless
@@ -137,6 +148,39 @@ These are different axes and are easy to confuse:
   is the distilled outcome prior; it drives the display and the favoured-opening
   director.
 
+## Named-opening sources, sanitisation, and dedup
+
+The `openings` array is assembled from two authored files and cleaned before it
+ships. Entries fall into three provenance classes (the `source` field plus the
+`id` prefix):
+
+| Class | `source` | Typical `id` | Origin | `confidence` |
+|-------|----------|--------------|--------|--------------|
+| Curated book line | `book` | `mill-rush-parallel` | Hand-authored in `tool/<variant>_curated_openings.json` | `1.0` |
+| Imported book game | `learned` | `book-25-b14595` | Full games transcribed from Brandwood's book (via NMM_LLM) | `0.8` |
+| Self-play novel line | `learned` | `novel-dcd1704b` | Lines NMM_LLM's recogniser could not match during self-play | `0.3` |
+
+Curated lines live in `tool/<variant>_curated_openings.json`; imported and novel
+lines live in `tool/<variant>_learned_openings.json`. Both are **build inputs** —
+deleting either makes the next build silently drop those lines.
+
+**Sanitisation.** Each line is truncated to its longest valid *placement* prefix
+before bundling. A line is valid while every ply places on an empty square, with
+one exception: a square may be re-used after a mill-forming move, because forming
+a mill removes an opponent piece (removals are stripped from `line_moves`, so the
+build credits one re-placement per mill formed). The placing phase caps at 18
+plies (9 per side); anything beyond — or any placement onto an occupied square
+with no removal credit — is moving-phase data or noise and is dropped. Lines left
+with fewer than two plies are discarded entirely.
+
+**Symmetry dedup.** The cleaned lines are then deduplicated under the full
+16-element symmetry group: two lines collapse when one maps onto the other by a
+rotation, reflection, or inner/outer-ring swap. The canonical key is the
+lexicographically smallest of a line's 16 transformed move sequences. When lines
+collapse, the highest-priority representative is kept —
+**curated `book` > imported `book-*` > self-play `novel-*`**, then original load
+order — so the result is stable and diff-friendly.
+
 ## Symmetry handling
 
 Nine Men's Morris has a 16-element board symmetry group (the dihedral group D4
@@ -164,8 +208,11 @@ When the oracle returns several candidate moves for a position,
   favours the stronger, earlier candidates while still varying the opening
   (`bias` defaults to 0.6; `bias == 1.0` is a uniform shuffle).
 
-Because every candidate is already an oracle "best" move, the selector can never
-weaken the AI — it only changes which equally-good move is played.
+Because every *oracle* candidate is already a "best" move, the selector can never
+weaken the AI on the oracle path — it only changes which equally-good move is
+played. The same selector also picks among the openings offered by the
+continuation fallback below, where the candidates are not oracle bests; that is a
+separate, opt-in path.
 
 ## Opening recognition
 
@@ -209,13 +256,42 @@ The placement history is supplied to the provider at its construction sites
 (`tap_handler.dart` and `game_controller.dart`) via the shared
 `openingBookPlacementHistory()` helper.
 
+## Oracle-miss continuation fallback
+
+The oracle is dense in the earliest plies but does not cover every position. When
+it has **no** entry for the current placing position, the provider falls back to
+the named openings so curated, imported, and self-play lines can still guide AI
+placement:
+
+1. `MillOpeningRecognizer.bookContinuationMoves` finds, across all 16
+   symmetries, every named line whose `line_moves` extend the placements played
+   so far, and returns their next moves in the live frame, ordered by
+   `confidence` then line length (so curated `1.0` outranks imported `0.8`, which
+   outranks novel `0.3`).
+2. The provider keeps the legal candidates and picks one with
+   `MillOpeningMoveSelector` (honouring `shufflingEnabled`).
+
+Unlike the favoured-opening director — which runs *before* the oracle and only
+considers lines favouring the AI's own colour — this fallback runs *after* the
+oracle and is **side-independent**. The full AI-turn order inside the book is
+therefore:
+
+**favoured-opening director (opt-in) → oracle → continuation fallback.**
+
+The fallback is active whenever **Use opening book** is on (which is **off** by
+default, so default play is unaffected). Because it can play a learned/novel move
+rather than an oracle "best", it may be weaker than a pure search; it only fires
+when the oracle is silent and the user has opted into the book. To keep it
+conservative, candidates are confidence-ordered, so a curated or imported line is
+always preferred over a `novel-*` line when both extend the current placements.
+
 ## Settings
 
 All three live in the AI play-style card of the general settings page and apply
 to Nine Men's Morris / El Filja:
 
-- **Use opening book** (`useOpeningBook`) — master switch; gates oracle lookups
-  and the director.
+- **Use opening book** (`useOpeningBook`) — master switch; gates the
+  favoured-opening director, the oracle, and the continuation fallback.
 - **Show opening information** (`showOpeningInfo`, default off) — shows the
   recognised opening name, source, favoured side, blunder warnings, and
   recommended replies in the game header while playing.
@@ -229,8 +305,10 @@ for both the oracle selector and the director.
 
 On an AI turn the order is: **opening book → Human Database → native search**
 (with an optional perfect-database correction layered on the Human Database
-move). See [HUMAN_DATABASE.md](HUMAN_DATABASE.md). When the opening book returns
-a move, it is applied directly and tagged `AiMoveType.openingBook`.
+move). See [HUMAN_DATABASE.md](HUMAN_DATABASE.md). Within the opening book itself
+the order is **favoured-opening director (opt-in) → oracle → continuation
+fallback**. When the opening book returns a move, it is applied directly and
+tagged `AiMoveType.openingBook`.
 
 ## Maintaining and extending the book
 
@@ -238,11 +316,18 @@ The shipped JSON is **generated** — do not hand-edit
 `assets/opening_books/**/opening_book.json`. Edit the authored sources and
 regenerate:
 
-1. To add/adjust **named openings**, edit `tool/<variant>_curated_openings.json`
-   (only `nmm` exists today; create `el_filja_curated_openings.json` to add
-   El Filja lines). Each entry follows the source schema; set `favored_side`
-   (`W` / `B` / `equal`) so the display and director can use it. Only entries
-   with `source: "book"` are bundled.
+1. To add/adjust **named openings**:
+   - hand-authored lines go in `tool/<variant>_curated_openings.json` (only
+     `nmm` exists today; create `el_filja_curated_openings.json` to add El Filja
+     lines). Each entry follows the source schema; set `favored_side`
+     (`W` / `B` / `equal`) so the display, director, and fallback can use it.
+   - imported / self-play lines go in `tool/<variant>_learned_openings.json`
+     (the committed NMM_LLM mirror).
+
+   All sources are merged, sanitised to valid placement lines, and
+   symmetry-deduplicated at build time (see
+   [Named-opening sources](#named-opening-sources-sanitisation-and-dedup)); there
+   is no `source`-based filter — every provenance class is bundled.
 2. To add/adjust the **move oracle**, edit
    `tool/mill_opening_book_oracle_source.dart`.
 3. Regenerate:
@@ -268,13 +353,18 @@ It renders on GitHub and is regenerated alongside the JSON.
 ## Limitations and non-goals
 
 - The book covers the **placing phase** only.
-- Runtime **learning** (persisting `outcome_stats`, exploring new lines,
-  adaptive opening swaps, novel auto-naming) is not implemented. `outcomeStats`
-  is retained in the model, read-only, to support such a subsystem later.
+- The imported `book-*` and self-play `novel-*` lines are produced **offline**
+  (in NMM_LLM) and mirrored into the repo. *Runtime* learning inside Sanmill
+  (persisting `outcome_stats`, exploring new lines, adaptive opening swaps, novel
+  auto-naming) is not implemented. `outcomeStats` is retained in the model,
+  read-only, to support such a subsystem later.
 - El Filja ships an oracle only; it has no curated named lines yet.
 
 ## Provenance
 
-The curated named openings and the rich schema (`favoredSide`, `branchMoves`,
+The named openings and the rich schema (`favoredSide`, `branchMoves`,
 `recommendedResponses`, …) are derived from and inspired by Ben Brandwood's
-NMM_LLM project. The move oracle is Sanmill's own engine-derived table.
+NMM_LLM project, whose three-layer book — hand-curated `book` lines, imported
+`book-*` game transcriptions, and self-play `novel-*` lines — is mirrored into
+`tool/nmm_curated_openings.json` and `tool/nmm_learned_openings.json`. The move
+oracle is Sanmill's own engine-derived table.

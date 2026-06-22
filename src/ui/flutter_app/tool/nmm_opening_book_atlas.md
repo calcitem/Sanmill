@@ -1549,7 +1549,7 @@ best: c5, e5
 
 ```
 
-## Named openings (11)
+## Named openings (108)
 
 ```text
 [mill-rush-parallel] Mill Rush — Parallel
@@ -1665,5 +1665,532 @@ best: c5, e5
   notes: W occupies all four outer ring corners early. Each pair threatens a potential mill along the outer ring sides. B must respond to contain the outer ring. This can be a gambit trap — the predictability of needing to block open mills can help W plan traps.
   avoid: d7, d1
   reply (B): d5, d2, f2
+
+[book-00-287755] Game One
+  side B | favours equal | source learned
+  family: Early Game
+  reference: Nine Men's Morris Strategy — Brandwood
+  line: c5 f4 e3 b4 e5 d5 e4
+
+[book-01-a3fa19] Scattered start
+  side W | favours W | source learned
+  family: Early Game
+  reference: Nine Men's Morris Strategy — Brandwood
+  line: d2 d6 f4 b4 e3 e4 d3 d1 c3
+
+[book-03-572229] Game Three
+  side both | favours W | source learned
+  family: Early Game
+  reference: Nine Men's Morris Strategy — Brandwood
+  line: d2 d6 f4 b4 c4 e4 e5 d1 b6 d7 d5 f2 g1 a4 a7 c3 g7 g4
+
+[book-04-b6d865] Battle Lines
+  side both | favours W | source learned
+  family: Early Game
+  reference: Nine Men's Morris Strategy — Brandwood
+  line: d6 f4 b4 d2 b6 f6 b2 d2 f2 c4 a7 d5 c5 e3 d3 g1
+
+[book-06-2971b5] Black diagonal
+  side B | favours B | source learned
+  family: Early Game
+  reference: Nine Men's Morris Strategy — Brandwood
+  line: d6 d2 b4 f4 g4 b6 f2 a4 e4 a7 a1 d3 d1 g1 c3 d5 d7 e5
+
+[book-07-a33845] Z mill c4 intrerrupt
+  side W | favours W | source learned
+  family: Early Game
+  reference: Nine Men's Morris Strategy — Brandwood
+  line: d6 d2 f4 b4 f6 f2 b6 b4 c4 d7 e3 g7 c3 a7 d3 c3 e5 e4
+
+[book-10-5ce37b] Game Seven — Patience
+  side both | favours B | source learned
+  family: Early Game
+  reference: Nine Men's Morris Strategy — Brandwood
+  line: d6 d2 b4 f4 d7 d5 a4 c4 f2 e3 c5 b6 d1 a1 e4 g7 d3 g1
+
+[book-11-04f0dc] Yin-Yang - B scan ahead
+  side both | favours W | source learned
+  family: Early Game
+  reference: Nine Men's Morris Strategy — Brandwood
+  line: f4 b4 d2 d6 d5 e4 d7 b6 b2 f6 b2 f2 a7 g7 c5 e5 e3 d3
+
+[book-12-7c431c] Which Piece to Take
+  side both | favours W | source learned
+  family: Early Game
+  reference: Nine Men's Morris Strategy — Brandwood
+  line: d6 d2 f4 b4 c4 d7 d3 g4 c3 c5 f6 f2 b6
+
+[book-13-a872a2] Right Angle Potential Mills
+  side both | favours equal | source learned
+  family: Early Game
+  reference: Nine Men's Morris Strategy — Brandwood
+  line: d6 d2 f4 f2 b2 b4 g7 e4 d1 c3 c4 e3 d3 e5
+
+[book-14-b4b5b3] End Play Placements
+  side B | favours W | source learned
+  family: Early Game
+  reference: Nine Men's Morris Strategy — Brandwood
+  line: d6 d2 f4 b4 d5 d7 g4 e4 d1 e5 e3 b2 f2 f6 b6 c5 c4 g7
+
+[book-15-1c9103] Early Game to Victory
+  side both | favours equal | source learned
+  family: Early Game
+  reference: Nine Men's Morris Strategy — Brandwood
+  line: d6 d2 f4 b6 c4 g4 d1 a7 b4 a4 a1 g1 g7 d5 f2 f6
+
+[book-16-c24880] Cannon Fodder
+  side both | favours B | source learned
+  family: Early Game
+  reference: Nine Men's Morris Strategy — Brandwood
+  line: d6 d2 f4 b4 c4 e4 d3 d7 a4 e5 e3 c3 d1 b2 f2 b6
+
+[book-19-5af166] Sacrificial Mills
+  side both | favours W | source learned
+  family: Early Game
+  reference: Nine Men's Morris Strategy — Brandwood
+  line: d6 d2 f4 b4 f6 f2 b6 b4 c4 d5 e3 e4 c3 d3 c5
+
+[book-22-7cd89e] Man-to-Man Marking
+  side both | favours equal | source learned
+  family: Man-to-Man Marking
+  reference: Nine Men's Morris Strategy — Brandwood
+  line: d6 d2 f4 b4 b2 f6 c4 e4 d1 d7 a7 g1 e3 c5 e5 c3 g4 a4
+
+[book-23-5f1cc8] Black Diamond
+  side both | favours W | source learned
+  family: Black Diamond
+  reference: Nine Men's Morris Strategy — Brandwood
+  line: d6 d2 f4 b4 c4 e4 d3 d5 a4 g4 d1 b2 f2 f6 b6 e5 e3 c5
+
+[book-24-b516d2] Mill Rush — Misplacement Loss
+  side B | favours B | source learned
+  family: Mill Rush
+  reference: Nine Men's Morris Strategy — Brandwood
+  line: d6 d2 f4 b4 f6 f2 b6 b4 e5 d5 e4 g4 e3
+
+[book-25-b14595] Mill Rush — Parallel Lines
+  side both | favours W | source learned
+  family: Mill Rush
+  reference: Nine Men's Morris Strategy — Brandwood
+  line: d6 d2 f4 b4 f6 f2 b6 b4 e5 e4 d5 d7 c5
+
+[book-29-36a60f] Mill Rush — Extended Parallel
+  side both | favours W | source learned
+  family: Mill Rush
+  reference: Nine Men's Morris Strategy — Brandwood
+  line: d6 d2 f4 b4 f6 f2 b6 b4 e5 d5 e4 e3 g4
+
+[book-30-a37ce9] Mill Rush — Alt Extended Parallel
+  side both | favours W | source learned
+  family: Mill Rush
+  reference: Nine Men's Morris Strategy — Brandwood
+  line: d6 d2 f4 b4 f6 f2 b6 b4 e5 d7 e4 e3 g4
+
+[book-31-3609fe] Mill Rush — Black's Alternate Response
+  side both | favours W | source learned
+  family: Mill Rush
+  reference: Nine Men's Morris Strategy — Brandwood
+  line: d6 d2 f4 b4 f6 f2 b6 b4 e5 a4 c4 d1 d3 a1 g1 a7
+
+[book-32-7819d1] Mill Rush — Alternate Black Response
+  side both | favours W | source learned
+  family: Mill Rush
+  reference: Nine Men's Morris Strategy — Brandwood
+  line: d6 d2 f4 b4 f6 f2 b6 b4 e5 d3 d1 c4 a4 c3 e3 c5
+
+[book-36-ca1431] Mill Rush — Endgame Stalemate
+  side both | favours W | source learned
+  family: Mill Rush
+  reference: Nine Men's Morris Strategy — Brandwood
+  line: d6 d2 f4 b4 f6 b6 f2
+
+[book-37-e4eb5c] Battle Lines — Black Loss
+  side both | favours equal | source learned
+  family: Battle Lines
+  reference: Nine Men's Morris Strategy — Brandwood
+  line: d6 d2 f4 b4 f6 f2 b6 b2 d3 g4 c4 c3 a4 b4 g7 d7 e5 d5
+
+[book-38-fc8361] Battle Lines — Better Response
+  side both | favours W | source learned
+  family: Battle Lines
+  reference: Nine Men's Morris Strategy — Brandwood
+  line: d6 d2 f4 b4 f6 f2 b6 b2 d3 g4 e4 d7 e3 a1 e5 g1 c3
+
+[book-39-726701] Closed Z Mill
+  side both | favours W | source learned
+  family: Z Mill
+  reference: Nine Men's Morris Strategy — Brandwood
+  line: d6 d2 f4 b4 f6 f2 b6 b4 b2 c5 c4 e5 d1 d5
+
+[book-40-658b81] Open Z Mill
+  side both | favours W | source learned
+  family: Z Mill
+  reference: Nine Men's Morris Strategy — Brandwood
+  line: d6 d2 f4 b4 f6 f2 b6 b4 c4 d7 d3 d5 g1 e5 e3 c5 b2 a1
+
+[book-41-827489] Z Mill — Variation A
+  side both | favours W | source learned
+  family: Z Mill
+  reference: Nine Men's Morris Strategy — Brandwood
+  line: d6 d2 f4 b4 f6 f2 b6 b4 c4 d7 d3 d5 g1 g4 c3 e3 c5
+
+[book-42-2538c4] Z Mill — Variation B
+  side both | favours W | source learned
+  family: Z Mill
+  reference: Nine Men's Morris Strategy — Brandwood
+  line: d6 d2 f4 b4 f6 f2 b6 b4 c4 d7 d3 a7 e3 g7
+
+[book-43-c3c1bd] Z Mill — Variation C
+  side both | favours equal | source learned
+  family: Z Mill
+  reference: Nine Men's Morris Strategy — Brandwood
+  line: d6 d2 f4 b4 f6 f2 b6 b4 c4 e4 d3 d5 c3 e3
+
+[book-44-2f8c37] Z Mill — Variation D
+  side both | favours W | source learned
+  family: Z Mill
+  reference: Nine Men's Morris Strategy — Brandwood
+  line: d6 d2 f4 b4 f6 f2 b6 b4 c4 d7 d3 c5 e3 c3 g4 e4 b2 a1
+
+[book-47-502dd6] Z Mill c4/e3 — Parallel Mills
+  side both | favours W | source learned
+  family: Z Mill
+  reference: Nine Men's Morris Strategy — Brandwood
+  line: d6 d2 f4 b4 f6 f2 b6 b4 c4 d5 e3 e4 c3 c5 d3
+
+[book-48-5c1df5] Z Mill c4/e3 — Ring Round the Rosie
+  side both | favours W | source learned
+  family: Z Mill
+  reference: Nine Men's Morris Strategy — Brandwood
+  line: d6 d2 f4 b4 f6 f2 b6 b4 c4 d5 e3 e5 c5 c3 g4 e4 d1 a1
+
+[book-49-76adc2] Z Mill c4/e3 — All Along the Watchtower
+  side both | favours W | source learned
+  family: Z Mill
+  reference: Nine Men's Morris Strategy — Brandwood
+  line: d6 d2 f4 b4 f6 f2 b6 b4 c4 a7 e3 g7 d7 d5 e4 g4 e5 b2
+
+[book-52-70951b] Z Mill c4/e3 — Misdirection
+  side both | favours W | source learned
+  family: Z Mill
+  reference: Nine Men's Morris Strategy — Brandwood
+  line: d6 d2 f4 b4 f6 f2 b6 b4 c4 b2 c4 d3 d1 d7 e5 g7 a7 d5
+
+[book-53-56b4ad] Z Mill c4/e3 — Cut the Bottom Out
+  side both | favours B | source learned
+  family: Z Mill
+  reference: Nine Men's Morris Strategy — Brandwood
+  line: d6 d2 f4 b4 f6 f2 b6 b4 c4 d5 e3 d1 d3 c3 g4 e4 a7 d7
+
+[book-54-f97b6d] Z Mill c4/e3 — Two L's
+  side both | favours W | source learned
+  family: Z Mill
+  reference: Nine Men's Morris Strategy — Brandwood
+  line: d6 d2 f4 b4 f6 f2 b6 b4 c4 d7 e3 g4 c3 c5 d3
+
+[book-55-b98a9e] Z Mill c4/e3 — Hangman
+  side both | favours equal | source learned
+  family: Z Mill
+  reference: Nine Men's Morris Strategy — Brandwood
+  line: d6 d2 f4 b4 f6 f2 b6 b4 c4 e4 e3 c3 d1 d7 e5 d5 a1 g4
+
+[book-56-cde7dd] Z Mill c4/e3 — Perpendicular Mills 2
+  side both | favours W | source learned
+  family: Z Mill
+  reference: Nine Men's Morris Strategy — Brandwood
+  line: d6 d2 f4 b4 f6 f2 b6 b4 c4 d7 e3 c3 e4 g4 e5
+
+[book-57-266124] Z Mill c4/e3 — Roof Falls In
+  side both | favours equal | source learned
+  family: Z Mill
+  reference: Nine Men's Morris Strategy — Brandwood
+  line: d6 d2 f4 b4 f6 f2 b6 b4 c4 a1 e3 d1 d3 g1
+
+[book-58-706988] Black L, White Wrap
+  side both | favours B | source learned
+  family: Z Mill
+  reference: Nine Men's Morris Strategy — Brandwood
+  line: d6 d2 f4 b6 c3 b2 f2 b4
+
+[book-59-a76197] Into White — White to a1
+  side both | favours W | source learned
+  family: Z Mill
+  reference: Nine Men's Morris Strategy — Brandwood
+  line: d6 d2 f4 b2 f2 f6 g7 d5 a4 c4 d1 c3 a7 c5 e5 d7 e4 g4
+
+[novel-6402adb4] T mills
+  side both | favours W | source learned
+  family: novel
+  line: d6 f4 d2 d7 b4 d5 e4 c4 a1 d1 b6 b2 f6
+
+[novel-3212661a] The "Midland Fortress Opening
+  side both | favours B | source learned
+  family: novel
+  line: f6 b4 d6 b6 b2 f4 d5 d7 e3 d1 a4 e4 g4 d2 d3 c3 c5 e5
+
+[novel-d838a418] The Umbrella
+  side both | favours W | source learned
+  family: novel
+  line: d6 d5 f4 c4 d3 a4 b4 d2 d1 g4 e5 e4 c3 e3 b6 b2 f6
+
+[novel-64281011] Side column - diamond response
+  side both | favours W | source learned
+  family: novel
+  line: d7 d1 g4 a4 d2 d6 e4 f4 b4 c4 g7 g1 a7 f6 f2 b2 d3 b6
+
+[novel-fff7d408] Side mill entrapment
+  side both | favours equal | source learned
+  family: novel
+  line: d6 d7 d2 g4 e4 g7 a7 g1 d1 f4
+
+[novel-90a3812e] The "Midground Master
+  side both | favours B | source learned
+  family: novel
+  line: c5 b4 e3 f4 e5 d3 e4
+
+[novel-6309fc03] The "Crossing the Lines" Opening
+  side both | favours B | source learned
+  family: novel
+  line: d6 b6 c3 b4 c5 b2
+
+[novel-ec09d026] Midnight Storm Opening
+  side both | favours B | source learned
+  family: novel
+  line: c5 e5 e3 c3 d6 f4 e4 d2 d7 d5 c4 b4 g4 d1 g7 d3 f2 g1
+
+[novel-1475f4d5] Closed Z mill - side column fail
+  side both | favours W | source learned
+  family: novel
+  line: d6 d7 f4 a4 f6 f2 b6 g4 c3 d5 a4 b4 d2 g7 g1 a7 d1 d3
+
+[novel-25964b79] The "Northern Shield Formation
+  side both | favours B | source learned
+  family: novel
+  line: f4 b4 d2 b6 g4 e4 g7 b2 d1 d3 e4 f4 g1 g7 e5 a1 d5 c5
+
+[novel-aaff64e3] The "Five Rings Advance
+  side both | favours B | source learned
+  family: novel
+  line: d7 b6 e5 f2
+
+[novel-8954c3ea] Cardinal Keyhole
+  side both | favours B | source learned
+  family: novel
+  line: f4 b4 d2 e4 f6 f2 b6 a4 e5 c4 d5 c5 d2 c3 d3 g4 d2
+
+[novel-211dd44b] The King's Anchor
+  side both | favours B | source learned
+  family: novel
+  line: b2 f2 b6 f4 e5 f6 e5
+
+[novel-9797f3f0] The "Midline Fortress
+  side both | favours B | source learned
+  family: novel
+  line: e5 e3 c3 c5 g7 g1 f2
+
+[novel-03c5f5dc] The Weaver’s Ascent
+  side both | favours B | source learned
+  family: novel
+  line: d7 d6 b2 f2 d2 a4 a7 g4 g7 d6 f4 d3 a1 c4 b4 b6 f6 e3
+
+[novel-6390aa8a] The Guardian’s Ascent
+  side both | favours equal | source learned
+  family: novel
+  line: d7 d6 a7 g7 g4 e4 d1 b2 f6 c4 g1 a1 b4 f2 d2 d3 d5 e3
+
+[novel-052cdb96] Leaning Z d1
+  side both | favours W | source learned
+  family: novel
+  line: d6 d2 f4 a7 g7 d7 g1 g4 d3 f2 b4 d5 b2 b6 a1 d1 c4 a4
+
+[novel-de906242] Battle lines variant 5
+  side both | favours B | source learned
+  family: novel
+  line: d6 d2 f4 d7 c4 f2 b2 b4 d1 a4 e3 d5 g7 g4 b6 f6 d3 c3
+
+[novel-75f55995] The Serpent’s Coil
+  side both | favours equal | source learned
+  family: novel
+  line: d2 f4 b4 f2 b6 c5 d7 d5 e5 g4
+
+[novel-dea28e83] The cross
+  side both | favours B | source learned
+  family: novel
+  line: d6 d2 d7 d5 a7 g7 g4 b4 d1 f4 g1 c4 a1 a4 d3 d2 a7 e5
+
+[novel-1555692c] The Storm’s Ascent
+  side both | favours W | source learned
+  family: novel
+  line: b4 d7 d6 g7 a7 g4 e4 a4 g1 b2 d2 a1 d3 d1 e3 e5 c3
+
+[novel-70f3d63e] The Serpent’s Ascent
+  side both | favours equal | source learned
+  family: novel
+  line: d7 d1 f4 g4 d2 d6 c4 b2 b6 a1 g1 a4 a7 g7 f6 f2 e3 d5
+
+[novel-e375a1d7] The Serpent’s Dance
+  side both | favours B | source learned
+  family: novel
+  line: d6 d2 f4 a4 f6 b6 f2 b6 c4 d7 d1 g4 g7 e5 a1 g1 d3 b2
+
+[novel-003932a3] Z mill c4 - B line 1
+  side both | favours B | source learned
+  family: novel
+  line: f6 b2 d2 d3 g4 e4 g7 g1 d1 e3 e5 c3 f6
+
+[novel-c6599580] Black dead move
+  side both | favours B | source learned
+  family: novel
+  line: d7 d3 g7 a7 d2 e4 d5 d1 a1 c4 a4 b6 f6 b2
+
+[novel-a19466e5] Black side, white scan ahead
+  side both | favours W | source learned
+  family: novel
+  line: d7 d3 g7 g4 a7 a4 d2 b2 d1 e4 g1 e5 a1 a4 e3
+
+[novel-1fd72240] White column loss
+  side both | favours B | source learned
+  family: novel
+  line: d7 d6 b2 c4 d2 f2 d5 g4 f4 d1 a1 d3 a7 a4 g7 a4 b4 e3
+
+[novel-c1383e61] Novel — d1-d6-f2
+  side both | favours W | source learned
+  family: novel
+  line: d1 d6 f2 b4 f4 f6 b6 d3 d5 g4 a4 a7 g7 e5 e3 c5 d2 c4
+
+[novel-3c3beda6] Sparse placement
+  side both | favours B | source learned
+  family: novel
+  line: d6 d2 c4 b4 g4 d5 e3 d1 d3 c3 f4 e4 f6 b6 f2 b6 b2 a7
+
+[novel-dd9c428c] Convergence cluster B win
+  side both | favours B | source learned
+  family: novel
+  line: c3 d6 e5 e4 d3 e3 d2 d1 f4 b4 a7 d7 d5 c5 g4 a4 c4 g1
+
+[novel-ba1f7236] Black scan ahead busy v2
+  side both | favours B | source learned
+  family: novel
+  line: b6 f4 b2 b4 d6 f6 f2 d2 d7 d5 e3 a1 a7 g7 g4 c4 a4 e5
+
+[novel-462cd0d7] White late central
+  side both | favours W | source learned
+  family: novel
+  line: d7 d6 b2 f4 b4 b6 f6 e3 d1 a4 d2 d3 f2 b6 c3 g4 e4 g1
+
+[novel-45ddc095] White column loss variant 2
+  side both | favours equal | source learned
+  family: novel
+  line: b4 f4 d6 d2 d3 d5 a1 a4 g4 d7 g1 g7 d1 d2 a7 c5 e5 b2
+
+[novel-d1624efa] White 2 configs, B busy scan
+  side both | favours B | source learned
+  family: novel
+  line: f4 d6 d2 b4 d1 d3 d5 g4 a7 e4 d7 g7 g1 a1 c5 e5 e3 f6
+
+[novel-9ae57f57] White column loss variant 3
+  side both | favours B | source learned
+  family: novel
+  line: d7 d2 g7 a7 f4 e4 d1 b4 c4 g4 d5 d6 a1 a4 g1 b2 f2 b4
+
+[novel-e34cdaca] White central corner start
+  side both | favours equal | source learned
+  family: novel
+  line: b6 f6 b2 b4 d1 d3 g4 e4 d7 a7 e3 c4 a4 f2 f4 c5 c3 g1
+
+[novel-2d9a1245] white side column loss
+  side both | favours W | source learned
+  family: novel
+  line: d7 d6 a4 b4 a7 g7 e4 d1 a1 d5 d2 f4 d6 c5 e5 e3 g4 d3
+
+[novel-17e922b1] The Storm’s Rise v2
+  side both | favours B | source learned
+  family: novel
+  line: d7 d6 g4 f4 f6 a4 g1 g7 d1 a1 a7 c4 b4 d2 b6 b2 f2 e4
+
+[novel-81badf8f] The Path Ascends
+  side both | favours equal | source learned
+  family: novel
+  line: d7 d6 g7 g4 a7 g4 b4 a4 d2 f2 f6 e4 f4 d5 d1 d3 g1 a1
+
+[novel-8ae3cee3] White side column loss
+  side both | favours equal | source learned
+  family: novel
+  line: c5 f4 e3 c4 g4 d7 g1 d1 g7 d1 b4 b6 d6 d3 d2 f2 f6 d5
+
+[novel-98450726] Scattered start
+  side both | favours W | source learned
+  family: novel
+  line: a4 f4 b2 b4 g4 d1 d2 f2 f6 d7 d5 d3 c4 e5 e4 c3 e3 d6
+
+[novel-5cd9726a] Novel — a7-d6-g7
+  side both | favours B | source learned
+  family: novel
+  line: a7 d6 g7 d7 d5 f4 f6 b2 a4 a1 d1 g4 e4 d2 f2 b4 b6 e3
+
+[novel-c5295bcb] Scattered rediredt -Black win
+  side both | favours B | source learned
+  family: novel
+  line: d1 d6 d7 f4 f6 a4 g4 c3 c4 d2 e3 a7 a1 g1 b4 e5 c5 b2
+
+[novel-c4e07f15] Battle Lines variant 3
+  side both | favours B | source learned
+  family: novel
+  line: d6 d2 f4 f6 b6 f2 c4 e4 d3 c3 d1
+
+[novel-ccc52161] Cardinal mill wrap variant - redirect
+  side both | favours W | source learned
+  family: novel
+  line: d1 d6 f2 f4 d2 d3 b2 d3 d5 a4 b4 b6 f6 a1 a7 e4 g4 c3
+
+[novel-75bbbaae] Novel — g4-f4-b6
+  side both | favours B | source learned
+  family: novel
+  line: g4 f4 b6 d5 a7 b4 d7 g7 c4 d2 f2 e5 c5 c3 d3 e3 e4 a4
+
+[novel-c25d4b08] The Silent Ascent
+  side both | favours B | source learned
+  family: novel
+  line: f2 b6 b4 c4 a7 d3 e5 c3 c5 e3 g7 c5 g7
+
+[novel-c95b15b4] Novel — b2-f4-d2
+  side both | favours equal | source learned
+  family: novel
+  line: b2 f4 d2 f2 f6 a4 d1 d3 b6 d6 b4 d6 g4 c4 d5 a1 a7 c5
+
+[novel-f201dfd5] Cat's in the cradle
+  side both | favours B | source learned
+  family: novel
+  line: d7 f4 c4 d6 d3 a4 e4 d1 d5 b4 d2 c3 f2 b2 b6 a1 g1 a7
+
+[novel-b66c36fb] Novel — d6-d2-f6
+  side both | favours B | source learned
+  family: novel
+  line: d6 d2 f6 b6 f2 f4 c4 d1 a4 d3 d7 d5 g7 a7 g1 g4 e4 b4
+
+[novel-5dc9a092] Novel — d6-d1-f4
+  side both | favours W | source learned
+  family: novel
+  line: d6 d1 f4 b4 d2 e4 d5 d7 a4 g4 g1 c3 f6 b6 f2 b6 b2 d3
+
+[novel-be53b8a4] Sidestep - B centre
+  side both | favours B | source learned
+  family: novel
+  line: d6 d2 g4 f4 b4 f2 b2 f6 e5 a7 e3 e4 d5 d7 c5 d7 g7 c4
+
+[novel-57888c26] Novel — f4-b4-d6
+  side both | favours W | source learned
+  family: novel
+  line: f4 b4 d6 d3 f6 b6 f2 b6 d1 d7 a4 c4 b2 a1 e4 g4 c5 d2
+
+[novel-522128b4] Novel — d7-f4-c4
+  side both | favours B | source learned
+  family: novel
+  line: d7 f4 c4 b6 d6 b2 b4 d5 d3 a4 d2 d1 a1 g7 g4 e3 c5 c3
+
+[novel-dcd1704b] Scattered white column
+  side both | favours B | source learned
+  family: novel
+  line: d7 f4 c4 d2 f2 a4 d3 d5 g4 b6 c3 e3 g7 g1 a7 c5 e3 b2
 
 ```

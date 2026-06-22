@@ -197,4 +197,59 @@ void main() {
       );
     });
   });
+
+  group('bookContinuationMoves (oracle-miss fallback)', () {
+    test('extends a matching line regardless of which side it favours', () {
+      // o1 favours White, but the continuation fallback is side-independent.
+      final List<String> moves = MillOpeningRecognizer.bookContinuationMoves(
+        <String>['d2', 'd6'],
+        book,
+      );
+      expect(moves, contains('f4'));
+      // The favoured-side director would not offer this line to Black, proving
+      // the continuation path is broader than the director.
+      expect(
+        MillOpeningRecognizer.favoredOpeningMoves(
+          <String>['d2', 'd6'],
+          book,
+          'B',
+        ),
+        isEmpty,
+      );
+    });
+
+    test('history off every line yields no continuation', () {
+      expect(
+        MillOpeningRecognizer.bookContinuationMoves(<String>['a1', 'g7'], book),
+        isEmpty,
+      );
+    });
+
+    test('higher-confidence line is offered first', () {
+      final List<OpeningEntry> mixed = <OpeningEntry>[
+        OpeningEntry.fromJson(<String, dynamic>{
+          'id': 'low',
+          'name': 'Low confidence',
+          'source': 'learned',
+          'confidence': 0.3,
+          'lineMoves': <String>['d2', 'd6', 'b4'],
+          'favoredSide': 'equal',
+        }),
+        OpeningEntry.fromJson(<String, dynamic>{
+          'id': 'high',
+          'name': 'High confidence',
+          'source': 'book',
+          'confidence': 0.9,
+          'lineMoves': <String>['d2', 'd6', 'f4'],
+          'favoredSide': 'equal',
+        }),
+      ];
+      final List<String> moves = MillOpeningRecognizer.bookContinuationMoves(
+        <String>['d2', 'd6'],
+        mixed,
+      );
+      expect(moves.first, 'f4');
+      expect(moves, containsAll(<String>['f4', 'b4']));
+    });
+  });
 }

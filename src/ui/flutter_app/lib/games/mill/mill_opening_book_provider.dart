@@ -65,26 +65,26 @@ class MillOpeningBookProvider implements OpeningBookProvider {
       book,
       normalizedFen,
     );
-    if (bestMoves == null || bestMoves.isEmpty) {
-      return null;
-    }
-
-    final String selectedMove = MillOpeningMoveSelector.select(
-      bestMoves,
-      shuffling: generalSettings.shufflingEnabled,
-    );
-
-    for (final GameAction action in session.legalActions) {
-      if (MillActionCodec.moveStringFrom(action) == selectedMove) {
-        return action;
+    if (bestMoves != null && bestMoves.isNotEmpty) {
+      final String selectedMove = MillOpeningMoveSelector.select(
+        bestMoves,
+        shuffling: generalSettings.shufflingEnabled,
+      );
+      for (final GameAction action in session.legalActions) {
+        if (MillActionCodec.moveStringFrom(action) == selectedMove) {
+          return action;
+        }
       }
+      logger.w(
+        '[MillOpeningBookProvider] book move "$selectedMove" matches no legal '
+        'action for FEN $normalizedFen',
+      );
     }
 
-    logger.w(
-      '[MillOpeningBookProvider] book move "$selectedMove" matches no legal '
-      'action for FEN $normalizedFen',
-    );
-    return null;
+    // Oracle miss (or its move is somehow illegal): fall back to the next move
+    // of a recognised opening line so curated + learned/novel lines also guide
+    // AI placement beyond the engine-quality oracle's coverage.
+    return _bookContinuationMove(session);
   }
 
   /// Returns a legal move that continues a named opening favouring the side to
@@ -106,20 +106,48 @@ class MillOpeningBookProvider implements OpeningBookProvider {
     if (aiSide.isEmpty) {
       return null;
     }
-
-    final List<String> candidates = MillOpeningRecognizer.favoredOpeningMoves(
-      history,
-      OpeningBookRepository.instance.openingsFor(
-        isElFilja: ruleSettings.isLikelyElFilja(),
+    return _selectLegalCandidate(
+      session,
+      MillOpeningRecognizer.favoredOpeningMoves(
+        history,
+        OpeningBookRepository.instance.openingsFor(
+          isElFilja: ruleSettings.isLikelyElFilja(),
+        ),
+        aiSide,
       ),
-      aiSide,
     );
+  }
+
+  /// Returns the next move of a recognised opening line (curated, imported, or
+  /// self-play) consistent with the placements so far. Used as a fallback when
+  /// the engine-quality move oracle has no entry for the current position, so
+  /// learned/novel lines also participate in AI placement. Null when no line
+  /// extends the current placements with a legal move, or no history is wired.
+  GameAction? _bookContinuationMove(NativeMillGameSession session) {
+    final List<String>? history = placementHistory?.call();
+    if (history == null) {
+      return null;
+    }
+    return _selectLegalCandidate(
+      session,
+      MillOpeningRecognizer.bookContinuationMoves(
+        history,
+        OpeningBookRepository.instance.openingsFor(
+          isElFilja: ruleSettings.isLikelyElFilja(),
+        ),
+      ),
+    );
+  }
+
+  /// Picks the best legal move from [candidates] (already ordered best-first),
+  /// applying the shared shuffling policy. Returns null when none is legal.
+  GameAction? _selectLegalCandidate(
+    NativeMillGameSession session,
+    List<String> candidates,
+  ) {
     if (candidates.isEmpty) {
       return null;
     }
-
-    // Keep only candidates that are legal right now, preserving best-first
-    // priority for the selector.
     final Set<String> legalMoves = <String>{};
     for (final GameAction action in session.legalActions) {
       final String? move = MillActionCodec.moveStringFrom(action);
@@ -133,7 +161,6 @@ class MillOpeningBookProvider implements OpeningBookProvider {
     if (legalCandidates.isEmpty) {
       return null;
     }
-
     final String selected = MillOpeningMoveSelector.select(
       legalCandidates,
       shuffling: generalSettings.shufflingEnabled,
