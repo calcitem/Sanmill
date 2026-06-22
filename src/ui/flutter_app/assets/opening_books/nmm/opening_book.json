@@ -2188,44 +2188,6 @@
       "favoredSide": "W"
     },
     {
-      "id": "book-36-ca1431",
-      "name": "Mill Rush — Endgame Stalemate",
-      "aliases": [],
-      "family": "Mill Rush",
-      "side": "both",
-      "source": "learned",
-      "sourceReference": "Nine Men's Morris Strategy — Brandwood",
-      "confidence": 0.8,
-      "tags": [
-        "book",
-        "mill-rush"
-      ],
-      "strategicNotes": "",
-      "commonBlunders": [],
-      "recommendedResponses": {
-        "W": [],
-        "B": []
-      },
-      "outcomeStats": {
-        "W": 1,
-        "B": 0,
-        "D": 0,
-        "human_wins": 1,
-        "ai_losses": 1
-      },
-      "lineMoves": [
-        "d6",
-        "d2",
-        "f4",
-        "b4",
-        "f6",
-        "b6",
-        "f2"
-      ],
-      "branchMoves": [],
-      "favoredSide": "W"
-    },
-    {
       "id": "book-37-e4eb5c",
       "name": "Battle Lines — Black Loss",
       "aliases": [],

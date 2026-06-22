@@ -312,6 +312,19 @@ class GameController {
       return null;
     }
 
+    // Ambiguous shared start: several different families still fit the played
+    // prefix (e.g. the common d2/d6/f4/b4 opening of Battle Lines and the Open
+    // Z Mill). Show the family shortlist rather than committing to one name,
+    // which previously surfaced the wrong opening until the lines diverged.
+    if (recognition.status != MillOpeningStatus.deviation &&
+        recognition.candidateFamilies.length > 1) {
+      const int maxShown = 3;
+      final List<String> families = recognition.candidateFamilies;
+      final String shown = families.take(maxShown).join(' / ');
+      final String suffix = families.length > maxShown ? ' \u2026' : '';
+      return '${S.of(context).openingLabel}: $shown$suffix';
+    }
+
     final String display =
         recognition.status == MillOpeningStatus.deviation &&
             (recognition.branchName?.isNotEmpty ?? false)

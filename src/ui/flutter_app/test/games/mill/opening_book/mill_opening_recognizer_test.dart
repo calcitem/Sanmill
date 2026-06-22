@@ -10,13 +10,14 @@ OpeningEntry _entry({
   required String id,
   required List<String> line,
   String name = 'Test Opening',
+  String family = 'Test',
   String favoredSide = 'equal',
   List<Map<String, dynamic>> branches = const <Map<String, dynamic>>[],
 }) {
   return OpeningEntry.fromJson(<String, dynamic>{
     'id': id,
     'name': name,
-    'family': 'Test',
+    'family': family,
     'side': 'W',
     'source': 'book',
     'sourceReference': 'Ref 1',
@@ -147,6 +148,115 @@ void main() {
     ], book);
     expect(r.status, MillOpeningStatus.novel);
     expect(r.isNamed, isFalse);
+  });
+
+  group('shared prefix ambiguity (Z Mill vs Battle Lines)', () {
+    // Both are curated book lines that share the exact d2/d6/f4/b4 start and
+    // only diverge at ply 5; Battle Lines has the longer line.
+    final List<OpeningEntry> shared = <OpeningEntry>[
+      _entry(
+        id: 'battle-lines',
+        name: 'Battle Lines',
+        family: 'Battle Lines',
+        line: <String>[
+          'd2',
+          'd6',
+          'f4',
+          'b4',
+          'f6',
+          'b6',
+          'f2',
+          'b2',
+          'd1',
+          'd7',
+        ],
+      ),
+      _entry(
+        id: 'z-mill-open',
+        name: 'Z Mill — Open',
+        family: 'Z Mill',
+        line: <String>['d2', 'd6', 'f4', 'b4', 'c4', 'c5', 'e3', 'e5'],
+      ),
+    ];
+
+    test('shared prefix stays ambiguous and lists both families', () {
+      final MillOpeningRecognition r = MillOpeningRecognizer.recognize(<String>[
+        'd2',
+        'd6',
+        'f4',
+        'b4',
+      ], shared);
+      // No longer committed to the longer line's single name.
+      expect(r.status, MillOpeningStatus.probable);
+      expect(
+        r.candidateFamilies,
+        containsAll(<String>['Battle Lines', 'Z Mill']),
+      );
+    });
+
+    test('the divergent move resolves to the right single opening', () {
+      final MillOpeningRecognition r = MillOpeningRecognizer.recognize(<String>[
+        'd2',
+        'd6',
+        'f4',
+        'b4',
+        'c4',
+      ], shared);
+      expect(r.status, MillOpeningStatus.exact);
+      expect(r.openingId, 'z-mill-open');
+      expect(r.candidateFamilies, <String>['Z Mill']);
+    });
+
+    test('a long learned import never outvotes a curated line', () {
+      final List<OpeningEntry> mixed = <OpeningEntry>[
+        _entry(
+          id: 'z-mill-open',
+          name: 'Z Mill — Open',
+          family: 'Z Mill',
+          line: <String>['d2', 'd6', 'f4', 'b4', 'c4', 'c5', 'e3', 'e5'],
+        ),
+        // Imported (learned) line: different family, shares the prefix, far
+        // longer. Previously this hijacked the name via the longest-line rule.
+        OpeningEntry.fromJson(<String, dynamic>{
+          'id': 'book-99-aaaaaa',
+          'name': 'Battle Lines — Black Loss',
+          'family': 'Battle Lines',
+          'source': 'learned',
+          'confidence': 0.8,
+          'line_moves': <String>[
+            'd2',
+            'd6',
+            'f4',
+            'b4',
+            'f6',
+            'f2',
+            'b6',
+            'b2',
+            'd3',
+            'g4',
+            'c4',
+            'c3',
+            'a4',
+            'e5',
+            'd5',
+            'd7',
+            'g7',
+            'e3',
+          ],
+          'favoredSide': 'equal',
+        }),
+      ];
+      final MillOpeningRecognition r = MillOpeningRecognizer.recognize(<String>[
+        'd2',
+        'd6',
+        'f4',
+        'b4',
+      ], mixed);
+      // Curated tier wins naming; the learned family is excluded entirely.
+      expect(r.openingId, 'z-mill-open');
+      expect(r.candidateFamilies, <String>['Z Mill']);
+      expect(r.status, MillOpeningStatus.exact);
+    });
   });
 
   group('favoredOpeningMoves (director)', () {

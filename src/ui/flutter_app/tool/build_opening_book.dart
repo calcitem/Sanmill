@@ -108,10 +108,80 @@ String _canonicalLineKey(List<String> moves) {
   return best!;
 }
 
+/// True when some symmetry frame of [shorter] reproduces the first
+/// `shorter.length` moves of [longer]; i.e. [shorter] is the same opening line
+/// as the start of [longer] up to rotation, reflection, and ring swap.
+bool _isSymmetricPrefix(List<String> shorter, List<String> longer) {
+  if (shorter.length > longer.length) {
+    return false;
+  }
+  for (final TransformationType type in TransformationType.values) {
+    bool matches = true;
+    for (int i = 0; i < shorter.length; i++) {
+      if (transformMoveNotation(shorter[i], type) != longer[i]) {
+        matches = false;
+        break;
+      }
+    }
+    if (matches) {
+      return true;
+    }
+  }
+  return false;
+}
+
+/// Second-stage denoise: drop a NON-curated opening whose entire line is a
+/// symmetric prefix of a strictly longer kept opening of the SAME family. Such
+/// a line is redundant — the longer same-family line already matches the shared
+/// prefix (so recognition still resolves to that family) and offers the same
+/// early moves plus more (so the director loses nothing). Hand-curated lines
+/// are never dropped, and cross-family prefix overlaps (e.g. Battle Lines vs
+/// Z Mill, which genuinely share an opening) are preserved. This trims the
+/// learned long tail that otherwise inflates the recogniser's candidate set.
+List<OpeningEntry> _dropRedundantPrefixVariants(List<OpeningEntry> kept) {
+  final List<OpeningEntry> result = <OpeningEntry>[];
+  int dropped = 0;
+  for (int i = 0; i < kept.length; i++) {
+    final OpeningEntry entry = kept[i];
+    if (_openingRank(entry) == 0 || entry.family.isEmpty) {
+      result.add(entry); // curated, or no family to compare against: keep
+      continue;
+    }
+    bool redundant = false;
+    for (int j = 0; j < kept.length; j++) {
+      if (i == j) {
+        continue;
+      }
+      final OpeningEntry other = kept[j];
+      if (other.family != entry.family ||
+          other.lineMoves.length <= entry.lineMoves.length) {
+        continue;
+      }
+      if (_isSymmetricPrefix(entry.lineMoves, other.lineMoves)) {
+        redundant = true;
+        break;
+      }
+    }
+    if (redundant) {
+      dropped++;
+    } else {
+      result.add(entry);
+    }
+  }
+  if (dropped > 0) {
+    stdout.writeln(
+      'Prefix denoise: dropped $dropped redundant same-family variant(s) '
+      '-> ${result.length} kept.',
+    );
+  }
+  return result;
+}
+
 /// Concatenates all opening sources and drops symmetry-equivalent duplicates,
 /// keeping the highest-priority representative of each class (see
-/// [_openingRank]). Output order is stable and diff-friendly: by rank first,
-/// then by original load order.
+/// [_openingRank]), then trims redundant same-family prefix variants (see
+/// [_dropRedundantPrefixVariants]). Output order is stable and diff-friendly:
+/// by rank first, then by original load order.
 List<OpeningEntry> _mergeAndDedupOpenings(List<OpeningEntry> entries) {
   final List<int> order = List<int>.generate(entries.length, (int i) => i);
   order.sort((int a, int b) {
@@ -137,7 +207,7 @@ List<OpeningEntry> _mergeAndDedupOpenings(List<OpeningEntry> entries) {
     'Merged ${entries.length} openings -> ${kept.length} unique '
     '($dropped symmetry duplicate(s) removed).',
   );
-  return kept;
+  return _dropRedundantPrefixVariants(kept);
 }
 
 /// Standard Nine Men's Morris mills (no diagonals), in placement notation.

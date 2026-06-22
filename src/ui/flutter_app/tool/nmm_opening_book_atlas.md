@@ -1549,7 +1549,7 @@ best: c5, e5
 
 ```
 
-## Named openings (108)
+## Named openings (107)
 
 ```text
 [mill-rush-parallel] Mill Rush — Parallel
@@ -1797,12 +1797,6 @@ best: c5, e5
   family: Mill Rush
   reference: Nine Men's Morris Strategy — Brandwood
   line: d6 d2 f4 b4 f6 f2 b6 b4 e5 d3 d1 c4 a4 c3 e3 c5
-
-[book-36-ca1431] Mill Rush — Endgame Stalemate
-  side both | favours W | source learned
-  family: Mill Rush
-  reference: Nine Men's Morris Strategy — Brandwood
-  line: d6 d2 f4 b4 f6 b6 f2
 
 [book-37-e4eb5c] Battle Lines — Black Loss
   side both | favours equal | source learned

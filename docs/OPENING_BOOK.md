@@ -181,6 +181,15 @@ collapse, the highest-priority representative is kept —
 **curated `book` > imported `book-*` > self-play `novel-*`**, then original load
 order — so the result is stable and diff-friendly.
 
+**Prefix denoise.** A second pass drops a **non-curated** line whose entire
+sequence is a symmetric prefix of a strictly longer kept line of the **same
+family**. Such a line adds nothing: the longer same-family line already matches
+the shared prefix (recognition still resolves to that family) and offers the
+same early moves plus more (the director loses no guidance). Curated lines are
+never dropped, and cross-family prefix overlaps — e.g. Battle Lines and the Open
+Z Mill genuinely share the `d2 d6 f4 b4` start — are preserved. This trims the
+learned long tail that would otherwise inflate the recogniser's candidate set.
+
 ## Symmetry handling
 
 Nine Men's Morris has a 16-element board symmetry group (the dihedral group D4
@@ -238,9 +247,24 @@ and classifies the game, symmetry-aware over all 16 transforms:
 - `novel` — nothing matched once enough moves are in (`novelCommitPly`).
 - `none` — too early / no book.
 
+**Representative & tie-break.** All openings matching the played prefix (across
+every frame) are collected. Naming is confined to the **highest source tier**
+present, so when a curated `book` line fits, imported/self-play `learned` lines
+never influence the displayed name. Within that tier the representative is the
+most authoritative, then the **shortest** line (closest to the live position),
+then a stable id — deliberately **not** the longest line, which previously let a
+long, loosely-related import outvote the opening actually being played.
+
+**Honest ambiguity.** While several *different families* still fit the shared
+start, the result is `probable` and `candidateFamilies` lists them (ranked,
+de-duplicated). The header then shows the shortlist — e.g. `Opening: Battle
+Lines / Z Mill` — instead of committing to one (possibly wrong) name, until a
+divergent move narrows it to a single family. This fixes the report of an Open
+Z Mill being shown as "Battle Lines" during their common `d2 d6 f4 b4` prefix.
+
 The result carries the opening's name, family, source, strategic notes, common
-blunders, recommended responses, `favoredSide`, and the book's next move in the
-live board frame.
+blunders, recommended responses, `favoredSide`, the `candidateFamilies`
+shortlist, and the book's next move in the live board frame.
 
 ## Favoured-opening director (opt-in)
 

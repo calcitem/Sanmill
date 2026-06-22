@@ -50,6 +50,7 @@ class MillOpeningRecognition {
     this.aliases = const <String>[],
     this.tags = const <String>[],
     this.favoredSide = 'equal',
+    this.candidateFamilies = const <String>[],
     this.nextMove,
     this.branchName,
     this.deviationPly,
@@ -77,6 +78,13 @@ class MillOpeningRecognition {
 
   /// Which side the recognised opening favours: "W", "B", or "equal".
   final String favoredSide;
+
+  /// When several distinct families still fit the played prefix, the ranked,
+  /// de-duplicated family shortlist (e.g. `["Battle Lines", "Z Mill"]`); empty
+  /// for an unambiguous single-family match. Lets the UI surface the
+  /// alternatives instead of committing to one (possibly wrong) name while the
+  /// lines still share a common start.
+  final List<String> candidateFamilies;
 
   /// Book's recommended next move in the live board frame, when known.
   final String? nextMove;
@@ -107,8 +115,14 @@ abstract final class MillOpeningRecognizer {
       return MillOpeningRecognition.none;
     }
 
-    _BestMatch? exact;
-    _BestMatch? transposition;
+    // Every distinct opening (keyed by id, first matching frame retained for
+    // next-move recovery) whose line covers the played prefix. Collecting all
+    // candidates — rather than greedily keeping the longest line — lets us pick
+    // a principled representative and detect when several *different families*
+    // fit the same prefix, so the result can stay honestly ambiguous instead of
+    // naming one at random.
+    final Map<String, _BestMatch> exactById = <String, _BestMatch>{};
+    final Map<String, _BestMatch> transpositionById = <String, _BestMatch>{};
     int bestPrefix = 0; // longest in-order prefix across all openings/frames
     final List<_PartialMatch> prefixMatches = <_PartialMatch>[];
 
@@ -130,30 +144,34 @@ abstract final class MillOpeningRecognizer {
         }
 
         if (line.length >= ply && prefix == ply) {
-          exact = _better(exact, opening, type, line.length);
+          exactById.putIfAbsent(
+            opening.id,
+            () => _BestMatch(
+              opening: opening,
+              type: type,
+              lineLength: line.length,
+            ),
+          );
           continue;
         }
         if (line.length >= ply && _setMatch(moved, line, ply)) {
-          transposition = _better(transposition, opening, type, line.length);
+          transpositionById.putIfAbsent(
+            opening.id,
+            () => _BestMatch(
+              opening: opening,
+              type: type,
+              lineLength: line.length,
+            ),
+          );
         }
       }
     }
 
-    if (exact != null) {
-      final int candidates = _countExact(placementMoves, openings, ply);
-      final MillOpeningStatus status = candidates <= 1
-          ? MillOpeningStatus.exact
-          : MillOpeningStatus.probable;
-      return _build(
-        exact,
-        ply,
-        status,
-        candidates <= 1 ? 1.0 : 1.0 / candidates,
-      );
+    if (exactById.isNotEmpty) {
+      return _resolveAmbiguous(exactById.values, ply, exact: true);
     }
-
-    if (transposition != null) {
-      return _build(transposition, ply, MillOpeningStatus.transposition, 0.7);
+    if (transpositionById.isNotEmpty) {
+      return _resolveAmbiguous(transpositionById.values, ply, exact: false);
     }
 
     // No full-length match: did we leave a line we were following?
@@ -313,12 +331,62 @@ abstract final class MillOpeningRecognizer {
     return null;
   }
 
+  /// Picks a single representative from [candidates] (all openings matching the
+  /// played prefix) and records any family-level ambiguity.
+  ///
+  /// Naming is confined to the highest source tier present (see [_sourceRank]):
+  /// when a curated book line fits, imported/self-play "learned" lines never
+  /// influence the displayed name or family shortlist. Within that tier the
+  /// representative is chosen by [_preferred] — most authoritative, then
+  /// shortest (closest to the live position), then a stable id — never simply
+  /// the longest line. When the surviving candidates still span more than one
+  /// family the match is reported as `probable` and [candidateFamilies] lists
+  /// them, so the UI can show "A / B" instead of committing to one name.
+  static MillOpeningRecognition _resolveAmbiguous(
+    Iterable<_BestMatch> candidates,
+    int ply, {
+    required bool exact,
+  }) {
+    final List<_BestMatch> all = candidates.toList(growable: false);
+    final int topRank = all
+        .map((_BestMatch m) => _sourceRank(m.opening))
+        .reduce((int a, int b) => a < b ? a : b);
+    final List<_BestMatch> named =
+        all.where((_BestMatch m) => _sourceRank(m.opening) == topRank).toList()
+          ..sort(_preferred);
+
+    final List<String> families = <String>[];
+    final Set<String> seenFamilies = <String>{};
+    for (final _BestMatch m in named) {
+      final String family = m.opening.family;
+      if (family.isNotEmpty && seenFamilies.add(family)) {
+        families.add(family);
+      }
+    }
+
+    final bool ambiguous = named.length > 1;
+    final MillOpeningStatus status = exact
+        ? (ambiguous ? MillOpeningStatus.probable : MillOpeningStatus.exact)
+        : MillOpeningStatus.transposition;
+    final double confidence = exact
+        ? (ambiguous ? 1.0 / named.length : 1.0)
+        : 0.7;
+    return _build(
+      named.first,
+      ply,
+      status,
+      confidence,
+      candidateFamilies: families,
+    );
+  }
+
   static MillOpeningRecognition _build(
     _BestMatch match,
     int ply,
     MillOpeningStatus status,
-    double confidence,
-  ) {
+    double confidence, {
+    List<String> candidateFamilies = const <String>[],
+  }) {
     final OpeningEntry opening = match.opening;
     String? nextMove;
     if (opening.lineMoves.length > ply) {
@@ -344,43 +412,46 @@ abstract final class MillOpeningRecognizer {
       aliases: opening.aliases,
       tags: opening.tags,
       favoredSide: opening.favoredSide,
+      candidateFamilies: candidateFamilies,
       nextMove: nextMove,
       confidence: confidence,
     );
   }
 
-  static _BestMatch _better(
-    _BestMatch? current,
-    OpeningEntry opening,
-    TransformationType type,
-    int lineLength,
-  ) {
-    if (current == null || lineLength > current.lineLength) {
-      return _BestMatch(opening: opening, type: type, lineLength: lineLength);
+  /// Naming priority by provenance. Lower wins: hand-curated book lines first,
+  /// then imported book games, then self-play "novel" discoveries, then the
+  /// rest. Mirrors the build tool's dedup ranking so the recognised name always
+  /// comes from the most authoritative source available for the position.
+  static int _sourceRank(OpeningEntry entry) {
+    if (entry.source == 'book') {
+      return 0;
     }
-    return current;
+    if (entry.id.startsWith('book-')) {
+      return 1;
+    }
+    if (entry.id.startsWith('novel-')) {
+      return 2;
+    }
+    return 3;
   }
 
-  /// Number of distinct openings whose line begins with the exact (any-frame)
-  /// played prefix, used to grade `exact` vs `probable`.
-  static int _countExact(
-    List<String> placementMoves,
-    List<OpeningEntry> openings,
-    int ply,
-  ) {
-    final Set<String> ids = <String>{};
-    for (final TransformationType type in TransformationType.values) {
-      final List<String> moved = placementMoves
-          .map((String m) => transformMoveNotation(m, type))
-          .toList(growable: false);
-      for (final OpeningEntry opening in openings) {
-        if (opening.lineMoves.length >= ply &&
-            _commonPrefix(moved, opening.lineMoves) == ply) {
-          ids.add(opening.id);
-        }
-      }
+  /// Tie-break among equally-ranked prefix matches: highest confidence, then
+  /// the SHORTEST line (closest to the live position, least speculative), then
+  /// a stable id order. Deliberately NOT "longest line", which previously let a
+  /// long, loosely-related line (e.g. an 18-ply import) outvote the opening the
+  /// player was actually in.
+  static int _preferred(_BestMatch a, _BestMatch b) {
+    final int byConfidence = b.opening.confidence.compareTo(
+      a.opening.confidence,
+    );
+    if (byConfidence != 0) {
+      return byConfidence;
     }
-    return ids.length;
+    final int byLength = a.lineLength.compareTo(b.lineLength);
+    if (byLength != 0) {
+      return byLength;
+    }
+    return a.opening.id.compareTo(b.opening.id);
   }
 
   static int _commonPrefix(List<String> a, List<String> b) {
