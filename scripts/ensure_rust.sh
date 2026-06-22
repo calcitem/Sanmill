@@ -18,6 +18,21 @@ RUST_TOOLCHAIN_FILE="${SANMILL_REPO_ROOT}/rust-toolchain.toml"
 REQUIRED_RUST_VERSION=""
 RUST_COMPONENTS=()
 
+rust__activate_cargo_home() {
+  export RUSTUP_HOME
+  export CARGO_HOME
+
+  local cargo_bin_dir="${CARGO_HOME}/bin"
+  case ":${PATH}:" in
+    *:"${cargo_bin_dir}":*)
+      ;;
+    *)
+      export PATH="${cargo_bin_dir}:${PATH}"
+      echo "Added Rust to PATH: ${cargo_bin_dir}" >&2
+      ;;
+  esac
+}
+
 rust__read_toolchain_metadata() {
   if [[ ! -f "${RUST_TOOLCHAIN_FILE}" ]]; then
     echo "rust-toolchain.toml not found at ${RUST_TOOLCHAIN_FILE}." >&2
@@ -99,31 +114,32 @@ rust__ensure_toolchain_components() {
     return 0
   fi
 
-  rustup toolchain install "${REQUIRED_RUST_VERSION}" >/dev/null
+  rustup toolchain install "${REQUIRED_RUST_VERSION}" >/dev/null || return 1
 
   local component
   for component in "${RUST_COMPONENTS[@]}"; do
-    rustup component add --toolchain "${REQUIRED_RUST_VERSION}" "${component}" >/dev/null
+    rustup component add --toolchain "${REQUIRED_RUST_VERSION}" "${component}" >/dev/null || return 1
   done
 }
 
 ensure_rust_toolchain() {
   rust__read_toolchain_metadata || return 1
+  rust__activate_cargo_home
 
   if rust__detect_system_rust; then
-    rust__ensure_toolchain_components
+    rust__ensure_toolchain_components || return 1
     return 0
   fi
 
   if command -v rustup >/dev/null 2>&1; then
-    rust__ensure_toolchain_components
+    rust__ensure_toolchain_components || return 1
     if rust__detect_system_rust; then
       return 0
     fi
   fi
 
   rust__install_rustup || return 1
-  rust__ensure_toolchain_components
+  rust__ensure_toolchain_components || return 1
 
   if ! rust__detect_system_rust; then
     echo "Rust ${REQUIRED_RUST_VERSION} is required but was not activated." >&2
@@ -133,19 +149,7 @@ ensure_rust_toolchain() {
 
 ensure_rust_on_path() {
   ensure_rust_toolchain || return 1
-
-  export RUSTUP_HOME
-  export CARGO_HOME
-
-  local cargo_bin_dir="${CARGO_HOME}/bin"
-  case ":${PATH}:" in
-    *:"${cargo_bin_dir}":*)
-      ;;
-    *)
-      export PATH="${cargo_bin_dir}:${PATH}"
-      echo "Added Rust to PATH: ${cargo_bin_dir}" >&2
-      ;;
-  esac
+  rust__activate_cargo_home
 
   if ! command -v cargo >/dev/null 2>&1; then
     echo "Warning: cargo command still not available after adding to PATH." >&2
