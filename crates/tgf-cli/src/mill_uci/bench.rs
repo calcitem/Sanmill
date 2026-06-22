@@ -12,7 +12,16 @@ use tgf_search::{
     lazy_smp_search, perft,
 };
 
-use super::{mill_searcher, tt_cluster_bits_from_env};
+use super::{mill_searcher, prefetch_mode_from_env, tt_cluster_bits_from_env};
+
+fn mill_benchmark_search_options() -> SearchOptions {
+    let (enable_prefetch, prefetch_all) = prefetch_mode_from_env();
+    SearchOptions {
+        enable_prefetch,
+        prefetch_all,
+        ..SearchOptions::default()
+    }
+}
 
 pub fn print_benchmark_toml() {
     let git_commit = option_env!("GIT_COMMIT").unwrap_or("");
@@ -30,7 +39,10 @@ pub fn print_benchmark_toml() {
     let mut wb = game.build_workbench(&mid_snap);
     let mid_d3 = perft::<MillGame>(&mut wb, 3);
 
+    let search_options = mill_benchmark_search_options();
+
     let mut searcher = mill_searcher();
+    searcher.set_options(search_options);
     let mut warmup_wb = game.build_workbench(&snap);
     let _ = searcher.search(&mut warmup_wb, 4);
     let mut wb = game.build_workbench(&snap);
@@ -46,6 +58,7 @@ pub fn print_benchmark_toml() {
     let cold_start_begin = Instant::now();
     let mut wb = game.build_workbench(&snap);
     let mut searcher = mill_searcher();
+    searcher.set_options(search_options);
     let _ = searcher.search(&mut wb, 1);
     let first_move_ms = cold_start_begin.elapsed().as_millis() as u64;
 
@@ -60,7 +73,7 @@ pub fn print_benchmark_toml() {
         snap,
         4,
         &smp_workers,
-        SearchOptions::default(),
+        search_options,
         smp_shared_tt,
         None,
     );
@@ -78,6 +91,8 @@ pub fn print_benchmark_toml() {
         "tt_cluster_bits = {}  # set TGF_TT_CLUSTER_BITS to override",
         tt_cluster_bits_from_env()
     );
+    println!("enable_prefetch = {}", search_options.enable_prefetch);
+    println!("prefetch_all = {}", search_options.prefetch_all);
     println!("build_flags = \"cargo bench scaffold\"");
     println!("tt_age_bumps   = {}", tt_age_bumps);
     println!("tt_current_age = {}", tt_current_age);

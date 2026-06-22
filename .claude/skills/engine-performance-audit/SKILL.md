@@ -1013,6 +1013,37 @@ Bottleneck-aligned conservative candidates added 2026-06-21 (see review):
   `reduced_material` only.  Per the evidence bar above, re-run them on the deep
   moving cases with instruction / cache-miss counters before treating them as
   dead; the harness wall-clock alone did not justify the rejections.
+- [x] Re-check small movegen / move-order cache micro-optimizations.  CHECKED
+  2026-06-22 on the Linux/KVM host against the current Rust baseline; do not
+  reintroduce these exact shapes without a new profile:
+
+  * A standard-rule `adjacent_mobility_counts` fast path that bypassed
+    `live_occupied_bitboard` for non-delayed positions preserved nodes but was
+    not a clean machine-work reduction.  On `capture_pending d18`,
+    `perf stat -r 3 -d` showed candidate instructions around 8.122B versus
+    8.048B before, and branches around 1.376B versus 1.338B before.
+    Wall-clock samples were mixed; the extra hot-branch shape is not justified.
+  * Replacing Mill movegen `ArrayVec::push` with a private
+    `push_unchecked` wrapper preserved focused movegen tests but made the
+    fixed-depth A/B slower (`start d12` 1.035x, `reduced_material d12`
+    1.054x).  Since release-mode overflow would be UB instead of a panic,
+    this unsafe boundary is not worth keeping without a clear speedup.
+  * Replacing the moving-phase block-score `i32::MIN` sentinel array with a
+    zeroed array plus a 24-bit known mask preserved node counts but raised
+    instructions and branch misses on `reduced_material d12` (`perf stat -r 3`
+    candidate 3.744B instructions / 14.10M branch misses versus 3.714B /
+    12.77M before).  `capture_pending d18` had lower L1D misses and slightly
+    better wall time but more instructions and branch misses, so keep the
+    simpler sentinel cache.
+
+  Raw CSVs:
+  `/tmp/sanmill-perf/standard_mobility_primary_r5.csv`,
+  `/tmp/sanmill-perf/standard_mobility_moving_r5.csv`,
+  `/tmp/sanmill-perf/push_unchecked_movegen_primary_r5.csv`,
+  `/tmp/sanmill-perf/block_score_known_mask_primary_r5.csv`, and
+  `/tmp/sanmill-perf/block_score_known_mask_moving_r5.csv`.
+  Perf-stat logs are under `/tmp/sanmill-perf/*mobility*perf.out` and
+  `/tmp/sanmill-perf/block_score_*_perf.out` in that audit workspace.
 - [x] Per-node repetition path scan: CHECKED 2026-06-21, negligible -- DO NOT
   pursue.  uProf `assess` on a repetition-heavy `moving_loop d24` workload, with
   `path_repeats_since_reset` and `has_current_repetition` FORCED non-inline
@@ -1118,7 +1149,8 @@ Behavior-changing or high-risk experiments:
   `moving_entry` much faster, but it changes TT collision behavior and node
   counts. Treat it as a diagnostic for cache locality, not a default release
   fix, unless node-count parity is explicitly re-baselined and accepted.
-- TT prefetch (RESOLVED 2026-06-21, now default-on for the CLI engine):
+- TT prefetch (RESOLVED 2026-06-21, now default-on for the CLI engine and
+  desktop FRB Mill search path):
   re-measured on an AMD Ryzen 9 7950X3D (Zen4, 3D V-Cache) under the new
   evidence bar. `all` (full prefetch) is a node-preserving win on every tested
   position vs off — start d12 0.77x, placing8 d12 0.87x, placing14 d12 0.88x,
@@ -1131,10 +1163,14 @@ Behavior-changing or high-risk experiments:
   i.e. prefetch hides the dominant TT miss latency (helped here by the large
   V-Cache L3). `first` was ~flat. `prefetch_mode_from_env` now returns `all`
   when `TGF_PREFETCH_MODE` is unset; override with `=off` / `=first`. The
-  earlier slow-PC "all regresses" note was microarchitecture-specific. STILL
-  PENDING: validate on Intel and mobile ARM before enabling prefetch in the
-  game-neutral `SearchOptions::default()` and the FRB/Flutter search path,
-  which both remain off for now.
+  earlier slow-PC "all regresses" note was microarchitecture-specific. The
+  desktop FRB path now uses `mill_base_search_options()` with full prefetch
+  enabled outside Android/iOS/wasm; keep mobile targets off pending device
+  validation. The game-neutral `SearchOptions::default()` remains off because
+  non-Mill games may not have an O(1) `key_after`. Follow-up on 2026-06-22:
+  `tgf bench` now uses the same Mill-specific prefetch policy for its measured
+  depth search, cold-start probe, and Lazy-SMP subsection, and prints
+  `enable_prefetch` / `prefetch_all` in the benchmark metadata.
 - TT allocation/reuse: master owns a process-global TT and `clear()` is a
   fake-clean generation bump. Rust UCI and FRB search paths must reuse
   `SharedTt` across searches and call `clear_tt()` / `bump_age()` before each
