@@ -6,6 +6,7 @@ import 'dart:typed_data';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sanmill/game_platform/game_id.dart';
 import 'package:sanmill/game_platform/game_session.dart';
+import 'package:sanmill/game_platform/opening_book_provider.dart';
 import 'package:sanmill/games/mill/mill_constants.dart';
 import 'package:sanmill/games/mill/mill_human_database_provider.dart';
 import 'package:sanmill/games/mill/mill_marked_pieces_codec.dart';
@@ -117,7 +118,57 @@ void main() {
         expect(humanDatabase.discarded, isTrue);
       },
     );
+
+    test('uses opening book before human database and engine search', () async {
+      const GameAction bookAction = GameAction(
+        type: MillActionTypes.place,
+        payload: <String, Object?>{'move': 'd2'},
+      );
+      const GameAction humanAction = GameAction(
+        type: MillActionTypes.place,
+        payload: <String, Object?>{'move': 'd6'},
+      );
+      final _FakeNativeMillRulesPort rulesPort = _FakeNativeMillRulesPort(
+        legalActions: const <GameAction>[bookAction, humanAction],
+      );
+      final NativeMillGameSession session = NativeMillGameSession(
+        rulesPort: rulesPort,
+      );
+      addTearDown(session.dispose);
+      final _FakeOpeningBookProvider openingBook = _FakeOpeningBookProvider(
+        bookAction,
+      );
+      final _FakeHumanDatabaseProvider humanDatabase =
+          _FakeHumanDatabaseProvider(humanAction);
+      final NativeMillAiTurnController controller = NativeMillAiTurnController(
+        generalSettings: const GeneralSettings(aiMovesFirst: true),
+        openingBook: openingBook,
+        humanDatabase: humanDatabase,
+      );
+
+      final GameAction? applied = await controller.playIfAiTurn(session);
+
+      expect(applied, bookAction);
+      expect(rulesPort.lastApplied, bookAction);
+      expect(session.lastAiMoveType, AiMoveType.openingBook);
+      expect(session.lastHumanDatabaseMoveStats, isNull);
+      expect(openingBook.lookupCount, 1);
+      expect(humanDatabase.lookupCount, 0);
+    });
   });
+}
+
+class _FakeOpeningBookProvider implements OpeningBookProvider {
+  _FakeOpeningBookProvider(this.action);
+
+  final GameAction action;
+  int lookupCount = 0;
+
+  @override
+  GameAction? lookup(GameSession session) {
+    lookupCount++;
+    return action;
+  }
 }
 
 class _FakeHumanDatabaseProvider extends MillHumanDatabaseProvider {
@@ -129,9 +180,11 @@ class _FakeHumanDatabaseProvider extends MillHumanDatabaseProvider {
 
   final GameAction action;
   bool discarded = false;
+  int lookupCount = 0;
 
   @override
   GameAction? lookup(GameSession session) {
+    lookupCount++;
     lastStats = const HumanDatabaseMoveStats(
       notation: 'd6',
       wins: 7,
