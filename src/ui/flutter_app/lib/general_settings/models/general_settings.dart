@@ -173,6 +173,7 @@ class GeneralSettings {
     this.showHumanDatabaseStats = false,
     this.showOpeningInfo = false,
     this.preferFavoredOpenings = false,
+    this.openingRandomness = 60,
 
     /// Deprecated: always true. Retained to preserve the Hive `@HiveField(46)`
     /// slot for existing saved data. The field will be removed in a future
@@ -367,6 +368,12 @@ class GeneralSettings {
   // behaviour and oracle strength are unchanged.
   @HiveField(51, defaultValue: false)
   final bool preferFavoredOpenings;
+
+  // Opening-book randomness level (0-100) when "Move randomly" is on.
+  // 0 = always play the strongest book move; 100 = uniform random among book
+  // candidates; 60 = the legacy rank-biased default (bias 0.6).
+  @HiveField(52, defaultValue: 60)
+  final int openingRandomness;
 
   /// Deprecated field retained for Hive backward compatibility.
   ///

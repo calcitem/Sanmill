@@ -3,6 +3,7 @@
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sanmill/games/mill/opening_book/opening_book_models.dart';
+import 'package:sanmill/general_settings/models/general_settings.dart';
 
 void main() {
   group('OpeningEntry.fromJson', () {
@@ -93,5 +94,21 @@ void main() {
       expect(round.oracle['fen-a'], <String>['d2', 'b4']);
       expect(round.openings.single.lineMoves, <String>['d2', 'd6']);
     });
+  });
+
+  group('GeneralSettings.openingRandomness', () {
+    test('defaults to 60', () {
+      expect(const GeneralSettings().openingRandomness, 60);
+    });
+
+    test(
+      'copyWith preserves other fields while changing openingRandomness',
+      () {
+        const GeneralSettings base = GeneralSettings();
+        final GeneralSettings modified = base.copyWith(openingRandomness: 80);
+        expect(modified.openingRandomness, 80);
+        expect(modified.shufflingEnabled, base.shufflingEnabled);
+      },
+    );
   });
 }

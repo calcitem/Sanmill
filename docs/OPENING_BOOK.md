@@ -205,14 +205,23 @@ When the oracle returns several candidate moves for a position,
 - **Shuffling off**: deterministic first candidate (the oracle lists best-first)
   — identical to the legacy behaviour.
 - **Shuffling on** (`shufflingEnabled`): rank-biased weighted sampling that
-  favours the stronger, earlier candidates while still varying the opening
-  (`bias` defaults to 0.6; `bias == 1.0` is a uniform shuffle).
+  favours the stronger, earlier candidates while still varying the opening.
+  The degree of randomness is set by the **Opening randomness** slider
+  (`openingRandomness`, 0–100, default **60**), which maps directly to the
+  geometric `bias` parameter: `bias = openingRandomness / 100`.
+
+The bias controls how weight decays from the best candidate downward:
+
+| `openingRandomness` | `bias` | Effect |
+|---|---|---|
+| 0% | 0.0 | Always the top book move (deterministic) |
+| 60% (default) | 0.6 | Moderately favours stronger moves |
+| 100% | 1.0 | Uniform random among all book candidates |
 
 Because every *oracle* candidate is already a "best" move, the selector can never
 weaken the AI on the oracle path — it only changes which equally-good move is
-played. The same selector also picks among the openings offered by the
-continuation fallback below, where the candidates are not oracle bests; that is a
-separate, opt-in path.
+played. The same selector (and the same bias) also applies to the favoured-opening
+director and the continuation fallback.
 
 ## Opening recognition
 
@@ -297,9 +306,9 @@ to Nine Men's Morris / El Filja:
   recommended replies in the game header while playing.
 - **Prefer favourable openings** (`preferFavoredOpenings`, default off) — enables
   the favoured-opening director described above.
-
-`shufflingEnabled` (the existing "Move randomly" toggle) controls move variety
-for both the oracle selector and the director.
+- **Opening randomness** (`openingRandomness`, 0–100%, default 60%, visible only
+  when "Move randomly" and "Use opening book" are both on) — controls how varied
+  the opening book's move choice is. See [Move selection](#move-selection).
 
 ## Interaction with other move sources
 

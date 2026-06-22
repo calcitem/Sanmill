@@ -46,6 +46,7 @@ part 'modals/ratio_modal.dart';
 part 'modals/sound_theme_modal.dart';
 part 'pickers/skill_level_picker.dart';
 part 'sliders/move_time_slider.dart';
+part 'sliders/opening_randomness_slider.dart';
 
 class GeneralSettingsPage extends StatelessWidget {
   const GeneralSettingsPage({super.key});
@@ -328,6 +329,12 @@ class GeneralSettingsPage extends StatelessWidget {
 
     logger.t("$_logTag preferFavoredOpenings: $value");
   }
+
+  void _setOpeningRandomness(BuildContext context) =>
+      showModalBottomSheet<void>(
+        context: context,
+        builder: (_) => const _OpeningRandomnessSlider(),
+      );
 
   void _setUsePerfectDatabase(GeneralSettings generalSettings, bool value) {
     _settingsRepository.generalSettings = generalSettings.copyWith(
@@ -995,6 +1002,18 @@ class GeneralSettingsPage extends StatelessWidget {
                 },
                 titleString: S.of(context).useOpeningBook,
                 subtitleString: S.of(context).useOpeningBook_Detail,
+              ),
+            if ((DB().ruleSettings.isLikelyNineMensMorris() ||
+                    DB().ruleSettings.isLikelyElFilja()) &&
+                generalSettings.useOpeningBook &&
+                generalSettings.shufflingEnabled)
+              SettingsListTile(
+                key: const Key(
+                  'general_settings_page_settings_card_ais_play_style_opening_randomness',
+                ),
+                titleString: S.of(context).openingRandomness,
+                trailingString: '${generalSettings.openingRandomness}%',
+                onTap: () => _setOpeningRandomness(context),
               ),
             if (DB().ruleSettings.isLikelyNineMensMorris() ||
                 DB().ruleSettings.isLikelyElFilja())

@@ -69,6 +69,7 @@ class MillOpeningBookProvider implements OpeningBookProvider {
       final String selectedMove = MillOpeningMoveSelector.select(
         bestMoves,
         shuffling: generalSettings.shufflingEnabled,
+        bias: _openingBias,
       );
       for (final GameAction action in session.legalActions) {
         if (MillActionCodec.moveStringFrom(action) == selectedMove) {
@@ -139,6 +140,12 @@ class MillOpeningBookProvider implements OpeningBookProvider {
     );
   }
 
+  /// Bias for [MillOpeningMoveSelector]: derived from [openingRandomness]
+  /// (0–100) as `bias = openingRandomness / 100`. 0 → always the best
+  /// candidate; 1.0 → uniform random; legacy default 60 → bias 0.6.
+  double get _openingBias =>
+      generalSettings.openingRandomness.clamp(0, 100) / 100.0;
+
   /// Picks the best legal move from [candidates] (already ordered best-first),
   /// applying the shared shuffling policy. Returns null when none is legal.
   GameAction? _selectLegalCandidate(
@@ -164,6 +171,7 @@ class MillOpeningBookProvider implements OpeningBookProvider {
     final String selected = MillOpeningMoveSelector.select(
       legalCandidates,
       shuffling: generalSettings.shufflingEnabled,
+      bias: _openingBias,
     );
     for (final GameAction action in session.legalActions) {
       if (MillActionCodec.moveStringFrom(action) == selected) {

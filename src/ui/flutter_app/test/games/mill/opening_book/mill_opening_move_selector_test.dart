@@ -53,6 +53,21 @@ void main() {
     expect(firstCount, greaterThan(lastCount));
   });
 
+  test('bias of 0.0 always returns the first candidate', () {
+    final Random rng = Random(99);
+    for (int i = 0; i < 100; i++) {
+      expect(
+        MillOpeningMoveSelector.select(
+          candidates,
+          shuffling: true,
+          random: rng,
+          bias: 0.0,
+        ),
+        'd2',
+      );
+    }
+  });
+
   test('bias of 1.0 reproduces a uniform shuffle', () {
     final Random rng = Random(123);
     final Map<String, int> counts = <String, int>{};

@@ -91,6 +91,32 @@ void main() {
       expect(favored, contains(bookMove!.payload['move']));
     }, skip: skip);
 
+    test('openingRandomness=0 always returns the best book move', () {
+      (DB.instance! as MockDB).generalSettings = DB().generalSettings.copyWith(
+        useOpeningBook: true,
+        shufflingEnabled: true,
+        openingRandomness: 0,
+      );
+
+      final NativeMillGameSession session = NativeMillGameSession();
+      addTearDown(session.dispose);
+      final MillOpeningBookProvider provider = MillOpeningBookProvider(
+        ruleSettings: const RuleSettings(),
+        generalSettings: DB().generalSettings,
+      );
+
+      // With bias=0 the selector always picks the first (best) candidate. Run
+      // several times to confirm it is stable (not just lucky).
+      final String? first =
+          provider.lookup(session)?.payload['move'] as String?;
+      expect(first, isNotNull);
+      for (int i = 0; i < 8; i++) {
+        final String? move =
+            provider.lookup(session)?.payload['move'] as String?;
+        expect(move, first);
+      }
+    }, skip: skip);
+
     test('returns null when useOpeningBook is disabled', () {
       (DB.instance! as MockDB).generalSettings = DB().generalSettings.copyWith(
         useOpeningBook: false,

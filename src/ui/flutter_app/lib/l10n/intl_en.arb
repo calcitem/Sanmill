@@ -4611,5 +4611,9 @@
     "openingBookStudioDraws": "Draws",
     "@openingBookStudioDraws": {},
     "openingBookStudioSampleSize": "Sample size",
-    "@openingBookStudioSampleSize": {}
+    "@openingBookStudioSampleSize": {},
+    "openingRandomness": "Opening randomness",
+    "@openingRandomness": {},
+    "openingRandomness_Detail": "How varied the opening book's move choice is when 'Move randomly' is on. 0% always plays the strongest book move; 100% picks uniformly at random among all book candidates. Default 60% slightly favours better moves while still varying the opening.",
+    "@openingRandomness_Detail": {}
 }
