@@ -6,6 +6,7 @@ import '../../game_platform/opening_book_provider.dart';
 import '../../general_settings/models/general_settings.dart';
 import '../../shared/services/environment_config.dart';
 import '../../shared/services/logger.dart';
+import '../../src/rust/api/simple.dart' as tgf;
 import 'mill_action_codec.dart';
 import 'mill_human_database_provider.dart';
 import 'mill_types.dart';
@@ -211,7 +212,7 @@ class NativeMillAiTurnController {
         }
         await session.apply(bookAction);
         session.lastAiMoveType = AiMoveType.openingBook;
-        session.lastAiBestValue = null;
+        session.lastAiBestValue = 0;
         session.lastHumanDatabaseMoveStats = null;
         lastApplied = bookAction;
         if (EnvironmentConfig.devMode) {
@@ -235,6 +236,9 @@ class NativeMillAiTurnController {
         final GameAction action = correctedByPerfect
             ? perfectAction
             : humanDatabaseAction;
+        final int graphScore = correctedByPerfect
+            ? _perfectDatabaseGraphScore(session, action)
+            : _humanDatabaseGraphScore(session, stats);
         if (correctedByPerfect) {
           humanDatabase?.discardPendingMove();
         }
@@ -246,7 +250,7 @@ class NativeMillAiTurnController {
         session.lastAiMoveType = correctedByPerfect
             ? AiMoveType.perfect
             : AiMoveType.humanDatabase;
-        session.lastAiBestValue = null;
+        session.lastAiBestValue = graphScore;
         session.lastHumanDatabaseMoveStats = correctedByPerfect ? null : stats;
         lastApplied = action;
         if (EnvironmentConfig.devMode) {
@@ -285,6 +289,10 @@ class NativeMillAiTurnController {
       if (action.type == MillActionTypes.remove) {
         await onBeforeRemoveApply?.call();
       }
+      if (session.lastAiMoveType == AiMoveType.perfect ||
+          session.lastAiMoveType == AiMoveType.consensus) {
+        session.lastAiBestValue = _perfectDatabaseGraphScore(session, action);
+      }
       await session.apply(action);
       sw.stop();
       if (EnvironmentConfig.devMode) {
@@ -309,6 +317,70 @@ class NativeMillAiTurnController {
     return left.type == right.type &&
         MillActionCodec.moveStringFrom(left) ==
             MillActionCodec.moveStringFrom(right);
+  }
+
+  int _humanDatabaseGraphScore(
+    NativeMillGameSession session,
+    HumanDatabaseMoveStats? stats,
+  ) {
+    assert(stats != null, 'Human Database move must carry move statistics.');
+    if (stats == null) {
+      return 0;
+    }
+    return _whitePerspectiveGraphScore(
+      session.state.value.activeSeat,
+      stats.scoreDelta * 200.0,
+    );
+  }
+
+  int _perfectDatabaseGraphScore(
+    NativeMillGameSession session,
+    GameAction action,
+  ) {
+    final String? selectedMove = MillActionCodec.moveStringFrom(action);
+    assert(
+      selectedMove != null,
+      'Perfect Database action must be a Mill move.',
+    );
+    if (selectedMove == null) {
+      return 0;
+    }
+
+    final tgf.MillAnalysisReport report = session.analyzePerfectDb();
+    for (final tgf.MillMoveAnalysis move in report.moves) {
+      if (move.mv != selectedMove) {
+        continue;
+      }
+      final double moverScore = switch (move.outcome) {
+        'win' => 100.0,
+        'draw' => 0.0,
+        'loss' => -100.0,
+        _ => move.value.toDouble(),
+      };
+      return _whitePerspectiveGraphScore(
+        session.state.value.activeSeat,
+        moverScore,
+      );
+    }
+
+    assert(
+      false,
+      'Perfect Database analysis must include chosen move $selectedMove.',
+    );
+    return 0;
+  }
+
+  int _whitePerspectiveGraphScore(PlayerSeat activeSeat, double moverScore) {
+    assert(
+      activeSeat != PlayerSeat.none,
+      'Graph score mapping requires an active side to move.',
+    );
+    final double whiteScore = switch (activeSeat) {
+      PlayerSeat.first => moverScore,
+      PlayerSeat.second => -moverScore,
+      PlayerSeat.none => 0.0,
+    };
+    return whiteScore.round().clamp(-100, 100);
   }
 }
 

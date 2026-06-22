@@ -93,6 +93,17 @@ void main() {
         final _FakeNativeMillRulesPort rulesPort = _FakeNativeMillRulesPort(
           legalActions: const <GameAction>[humanAction, perfectAction],
           perfectDatabaseBestAction: perfectAction,
+          analysisReport: const tgf.MillAnalysisReport(
+            moves: <tgf.MillMoveAnalysis>[
+              tgf.MillMoveAnalysis(
+                mv: 'a7',
+                outcome: 'win',
+                value: 1,
+                steps: 3,
+              ),
+            ],
+            traps: <String>[],
+          ),
         );
         final NativeMillGameSession session = NativeMillGameSession(
           rulesPort: rulesPort,
@@ -114,8 +125,64 @@ void main() {
         expect(applied, perfectAction);
         expect(rulesPort.lastApplied, perfectAction);
         expect(session.lastAiMoveType, AiMoveType.perfect);
+        expect(session.lastAiBestValue, 100);
         expect(session.lastHumanDatabaseMoveStats, isNull);
         expect(humanDatabase.discarded, isTrue);
+      },
+    );
+
+    test('maps human database score delta to white graph score', () async {
+      const GameAction humanAction = GameAction(
+        type: MillActionTypes.place,
+        payload: <String, Object?>{'move': 'd6'},
+      );
+      final _FakeNativeMillRulesPort rulesPort = _FakeNativeMillRulesPort(
+        legalActions: const <GameAction>[humanAction],
+      );
+      final NativeMillGameSession session = NativeMillGameSession(
+        rulesPort: rulesPort,
+      );
+      addTearDown(session.dispose);
+      final _FakeHumanDatabaseProvider humanDatabase =
+          _FakeHumanDatabaseProvider(humanAction);
+      final NativeMillAiTurnController controller = NativeMillAiTurnController(
+        generalSettings: const GeneralSettings(aiMovesFirst: true),
+        humanDatabase: humanDatabase,
+      );
+
+      final GameAction? applied = await controller.playIfAiTurn(session);
+
+      expect(applied, humanAction);
+      expect(session.lastAiMoveType, AiMoveType.humanDatabase);
+      expect(session.lastAiBestValue, 50);
+      expect(session.lastHumanDatabaseMoveStats, isNotNull);
+    });
+
+    test(
+      'maps black human database score delta to black graph score',
+      () async {
+        const GameAction humanAction = GameAction(
+          type: MillActionTypes.place,
+          payload: <String, Object?>{'move': 'd6'},
+        );
+        final _FakeNativeMillRulesPort rulesPort = _FakeNativeMillRulesPort(
+          legalActions: const <GameAction>[humanAction],
+          initial: _placingSnapshot(activeSeat: PlayerSeat.second),
+        );
+        final NativeMillGameSession session = NativeMillGameSession(
+          rulesPort: rulesPort,
+        );
+        addTearDown(session.dispose);
+        final _FakeHumanDatabaseProvider humanDatabase =
+            _FakeHumanDatabaseProvider(humanAction);
+        final NativeMillAiTurnController controller =
+            NativeMillAiTurnController(humanDatabase: humanDatabase);
+
+        final GameAction? applied = await controller.playIfAiTurn(session);
+
+        expect(applied, humanAction);
+        expect(session.lastAiMoveType, AiMoveType.humanDatabase);
+        expect(session.lastAiBestValue, -50);
       },
     );
 
@@ -151,6 +218,7 @@ void main() {
       expect(applied, bookAction);
       expect(rulesPort.lastApplied, bookAction);
       expect(session.lastAiMoveType, AiMoveType.openingBook);
+      expect(session.lastAiBestValue, 0);
       expect(session.lastHumanDatabaseMoveStats, isNull);
       expect(openingBook.lookupCount, 1);
       expect(humanDatabase.lookupCount, 0);
@@ -208,7 +276,12 @@ class _FakeNativeMillRulesPort implements NativeMillRulesPort {
     required this.legalActions,
     GameAction? perfectDatabaseBestAction,
     GameStateSnapshot? initial,
+    tgf.MillAnalysisReport analysisReport = const tgf.MillAnalysisReport(
+      moves: <tgf.MillMoveAnalysis>[],
+      traps: <String>[],
+    ),
   }) : perfectDatabaseBestActionResult = perfectDatabaseBestAction,
+       analysisReportResult = analysisReport,
        _snapshot = initial ?? _initialSnapshot;
 
   static final GameStateSnapshot _initialSnapshot = GameStateSnapshot(
@@ -226,6 +299,7 @@ class _FakeNativeMillRulesPort implements NativeMillRulesPort {
   @override
   final List<GameAction> legalActions;
   final GameAction? perfectDatabaseBestActionResult;
+  final tgf.MillAnalysisReport analysisReportResult;
   GameStateSnapshot _snapshot;
   GameAction? lastApplied;
 
@@ -246,11 +320,16 @@ class _FakeNativeMillRulesPort implements NativeMillRulesPort {
   @override
   GameStateSnapshot apply(GameAction action) {
     lastApplied = action;
+    final PlayerSeat nextSeat = switch (_snapshot.activeSeat) {
+      PlayerSeat.first => PlayerSeat.second,
+      PlayerSeat.second => PlayerSeat.first,
+      PlayerSeat.none => PlayerSeat.none,
+    };
     final Uint8List payload = Uint8List(280);
     payload[0] = 1;
     _snapshot = GameStateSnapshot(
       gameId: GameId.mill,
-      activeSeat: PlayerSeat.second,
+      activeSeat: nextSeat,
       outcome: const GameOutcome.ongoing(),
       phase: 'placing',
       lastAction: action,
@@ -263,10 +342,7 @@ class _FakeNativeMillRulesPort implements NativeMillRulesPort {
   }
 
   @override
-  tgf.MillAnalysisReport analyzePerfectDb() => const tgf.MillAnalysisReport(
-    moves: <tgf.MillMoveAnalysis>[],
-    traps: <String>[],
-  );
+  tgf.MillAnalysisReport analyzePerfectDb() => analysisReportResult;
 
   @override
   void dispose() {}
@@ -313,6 +389,7 @@ GameStateSnapshot _placingSnapshot({
   int blackInHand = 9,
   int whiteOnBoard = 0,
   int blackOnBoard = 0,
+  PlayerSeat activeSeat = PlayerSeat.first,
 }) {
   final Uint8List payload = Uint8List(256);
   payload[24] = whiteInHand;
@@ -321,7 +398,7 @@ GameStateSnapshot _placingSnapshot({
   payload[27] = blackOnBoard;
   return GameStateSnapshot(
     gameId: GameId.mill,
-    activeSeat: PlayerSeat.first,
+    activeSeat: activeSeat,
     outcome: const GameOutcome.ongoing(),
     phase: 'placing',
     payload: <String, Object?>{'tgfPayload': payload},
