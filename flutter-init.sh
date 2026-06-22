@@ -75,6 +75,7 @@ generate_xcconfig "macos"
 echo "const Map<String, String> flutterVersion =" > "${FLUTTER_VERSION_FILE}"
 flutter --version --machine | tee -a "${FLUTTER_VERSION_FILE}"
 sed -i.bak -e ':a' -e 'N' -e '$!ba' -e 's/}\([[:space:]]*\)$/};\1/' "${FLUTTER_VERSION_FILE}" && rm "${FLUTTER_VERSION_FILE}.bak"
+dart format "${FLUTTER_VERSION_FILE}" >/dev/null
 
 ( cd "${APP_DIR}" && dart run build_runner build --delete-conflicting-outputs )
 ( cd "${APP_DIR}" && flutter gen-l10n )
@@ -91,4 +92,3 @@ bash "${SCRIPT_DIR}/scripts/generate_frb.sh"
 echo "[flutter-init] Building Rust workspace (cargo build --workspace)..."
 ( cd "${SCRIPT_DIR}" && cargo build --workspace ) || \
   echo "[flutter-init] WARN: Rust workspace build failed (see above)."
-

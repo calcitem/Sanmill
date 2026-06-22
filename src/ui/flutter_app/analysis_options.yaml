@@ -36,6 +36,9 @@ analyzer:
     # top-level generated files (e.g. lib/hive_registrar.g.dart) are not
     # covered by the nested glob above
     - lib/*.g.dart
+    # rust_builder contains vendored build tooling with its own package graph.
+    - rust_builder/**
+    - src/ui/flutter_app/rust_builder/**
 
 linter:
   rules:

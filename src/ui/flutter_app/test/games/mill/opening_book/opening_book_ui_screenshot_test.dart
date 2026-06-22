@@ -10,7 +10,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart' show Box;
-import 'package:mockito/mockito.dart' show Fake;
 import 'package:sanmill/appearance_settings/models/color_settings.dart';
 import 'package:sanmill/game_page/services/mill.dart';
 import 'package:sanmill/game_page/widgets/game_page.dart';
@@ -220,7 +219,7 @@ Widget _localizedApp(Widget child) {
 Future<ui.Image> _captureImage(GlobalKey key) {
   final RenderRepaintBoundary boundary =
       key.currentContext!.findRenderObject()! as RenderRepaintBoundary;
-  return boundary.toImage(pixelRatio: 1);
+  return boundary.toImage();
 }
 
 Future<int> _countBrightPixels(ui.Image image, Rect region) async {
@@ -236,9 +235,7 @@ Future<int> _countPixels(
   Rect region,
   bool Function(int r, int g, int b, int a) predicate,
 ) async {
-  final ByteData? data = await image.toByteData(
-    format: ui.ImageByteFormat.rawRgba,
-  );
+  final ByteData? data = await image.toByteData();
   assert(data != null, 'screenshot byte data must be available');
   final Uint8List bytes = data!.buffer.asUint8List();
   final int left = region.left.isFinite && region.left > 0
