@@ -15,6 +15,10 @@ Typical workflows:
     # Bless the current Rust engine after an intentional search change.
     python3 tools/update_selfplay_expectations.py --source current --write
 
+    # Check whether selected expectations are stale without editing files.
+    python3 tools/update_selfplay_expectations.py \\
+        --source current --standard --skills 1-8 --check
+
 The script is intentionally explicit about the source engine because these
 tests can be used in two different ways: conservative master parity checks or
 new baseline checks after a deliberate search-ordering change.
@@ -204,6 +208,14 @@ def parse_skill_list(value: str) -> list[int]:
     return out
 
 
+def parse_variant_labels(value: str) -> set[str] | None:
+    if value == "all":
+        return None
+    labels = {part.strip() for part in value.split(",") if part.strip()}
+    assert labels, "--variant-labels must be 'all' or a non-empty list"
+    return labels
+
+
 def normalize_variant_label(label: str) -> str:
     for suffix in ("_transition", "_deep"):
         if label.endswith(suffix):
@@ -254,6 +266,24 @@ def format_const(name: str, moves: list[str]) -> str:
     return f"const {name}: &[&str] = {format_array_literal(moves, '')};"
 
 
+def move_literals(text: str) -> list[str]:
+    return re.findall(r'"([^"]+)"', text)
+
+
+def const_block(text: str, name: str) -> str:
+    pattern = re.compile(
+        rf"const {re.escape(name)}: &\[&str\] = &\[\n.*?\n\];",
+        re.DOTALL,
+    )
+    match = pattern.search(text)
+    assert match is not None, f"could not find Rust const {name}"
+    return match.group(0)
+
+
+def const_moves(text: str, name: str) -> list[str]:
+    return move_literals(const_block(text, name))
+
+
 def replace_const(text: str, name: str, moves: list[str]) -> str:
     pattern = re.compile(
         rf"const {re.escape(name)}: &\[&str\] = &\[\n.*?\n\];",
@@ -289,11 +319,21 @@ def find_matching_bracket(text: str, open_index: int) -> int:
     raise AssertionError("unterminated Rust array literal")
 
 
-def replace_variant_array(text: str, label: str, moves: list[str]) -> str:
+def variant_array_bounds(text: str, label: str) -> tuple[int, int]:
     label_pos = text.index(f'"{label}"')
     array_start = text.index("&[", label_pos)
     bracket_start = array_start + 1
     array_end = find_matching_bracket(text, bracket_start)
+    return array_start, array_end
+
+
+def variant_moves(text: str, label: str) -> list[str]:
+    array_start, array_end = variant_array_bounds(text, label)
+    return move_literals(text[array_start : array_end + 1])
+
+
+def replace_variant_array(text: str, label: str, moves: list[str]) -> str:
+    array_start, array_end = variant_array_bounds(text, label)
     replacement = format_array_literal(moves, "        ")
     return text[:array_start] + replacement + text[array_end + 1 :]
 
@@ -303,21 +343,25 @@ def update_standard_constants(
     command: str,
     skills: list[int],
     timeout: float,
-) -> tuple[str, list[str]]:
+) -> tuple[str, list[str], bool]:
     summaries: list[str] = []
+    changed = False
     for skill in skills:
         name = f"MASTER_GO_SKILL{skill}_FULL_GAME"
         moves = run_selfplay(command, skill, DEFAULT_MAX_PLIES, (), timeout)
+        item_changed = const_moves(text, name) != moves
+        changed |= item_changed
         text = replace_const(text, name, moves)
-        summaries.append(f"{name}: {len(moves)} plies")
-    return text, summaries
+        status = "changed" if item_changed else "unchanged"
+        summaries.append(f"{name}: {len(moves)} plies {status}")
+    return text, summaries, changed
 
 
 def update_n30_endgame20_constant(
     text: str,
     command: str,
     timeout: float,
-) -> tuple[str, str]:
+) -> tuple[str, str, bool]:
     name = "MASTER_GO_SKILL15_N30_ENDGAME20_FULL_GAME"
     moves = run_selfplay(
         command,
@@ -326,22 +370,39 @@ def update_n30_endgame20_constant(
         (("NMoveRule", "30"), ("EndgameNMoveRule", "20")),
         timeout,
     )
-    return replace_const(text, name, moves), f"{name}: {len(moves)} plies"
+    changed = const_moves(text, name) != moves
+    status = "changed" if changed else "unchanged"
+    return replace_const(text, name, moves), f"{name}: {len(moves)} plies {status}", changed
 
 
 def update_variant_prefixes(
     text: str,
     command: str,
     timeout: float,
-) -> tuple[str, list[str]]:
+    requested_labels: set[str] | None,
+) -> tuple[str, list[str], bool]:
     summaries: list[str] = []
     calls = list(VARIANT_CALL_RE.finditer(text))
     assert calls, "no assert_selfplay_variant_prefix calls found"
+    known_labels = {call.group("label") for call in calls}
+    exact_labels = requested_labels & known_labels if requested_labels else set()
+    case_labels = requested_labels - known_labels if requested_labels else set()
+    matched_labels: set[str] = set()
+    changed = False
     for call in calls:
         label = call.group("label")
         skill = int(call.group("skill"))
         plies = int(call.group("plies"))
         case_name = normalize_variant_label(label)
+        if requested_labels is not None:
+            matched = set()
+            if label in exact_labels:
+                matched.add(label)
+            if case_name in case_labels:
+                matched.add(case_name)
+            if not matched:
+                continue
+            matched_labels.update(matched)
         assert (
             case_name in VARIANT_CASE_OPTIONS
         ), f"no UCI option mapping for variant prefix {label!r}"
@@ -352,13 +413,22 @@ def update_variant_prefixes(
             VARIANT_CASE_OPTIONS[case_name],
             timeout,
         )
+        item_changed = variant_moves(text, label) != moves
+        changed |= item_changed
         text = replace_variant_array(text, label, moves)
-        summaries.append(f"{label}: {len(moves)} plies")
-    return text, summaries
+        status = "changed" if item_changed else "unchanged"
+        summaries.append(f"{label}: {len(moves)} plies {status}")
+    if requested_labels is not None:
+        missing = requested_labels - matched_labels
+        assert not missing, f"unknown variant labels: {', '.join(sorted(missing))}"
+    return text, summaries, changed
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description=__doc__)
+    parser = argparse.ArgumentParser(
+        description=__doc__,
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+    )
     parser.add_argument("--source", choices=("current", "master"), required=True)
     parser.add_argument("--current", default=DEFAULT_CURRENT)
     parser.add_argument("--master", default=DEFAULT_MASTER)
@@ -368,6 +438,19 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--standard", action="store_true")
     parser.add_argument("--n30-endgame20", action="store_true")
     parser.add_argument("--variant-prefixes", action="store_true")
+    parser.add_argument(
+        "--variant-labels",
+        default="all",
+        help=(
+            "comma-separated Rust labels to update; names without exact "
+            "label matches fall back to normalized case labels"
+        ),
+    )
+    parser.add_argument(
+        "--check",
+        action="store_true",
+        help="return non-zero if regenerated expectations differ from target",
+    )
     parser.add_argument("--write", action="store_true")
     return parser.parse_args()
 
@@ -376,6 +459,7 @@ def main() -> int:
     args = parse_args()
     target = args.target.resolve()
     assert target.is_file(), f"target file does not exist: {target}"
+    assert not (args.check and args.write), "--check cannot be combined with --write"
     command = args.current if args.source == "current" else args.master
 
     run_standard = args.standard
@@ -386,31 +470,47 @@ def main() -> int:
         run_n30 = True
         run_variants = True
 
-    text = target.read_text()
+    original_text = target.read_text()
+    text = original_text
     summaries: list[str] = []
+    semantic_changed = False
     if run_standard:
-        text, standard_summaries = update_standard_constants(
+        text, standard_summaries, standard_changed = update_standard_constants(
             text,
             command,
             parse_skill_list(args.skills),
             args.timeout,
         )
         summaries.extend(standard_summaries)
+        semantic_changed |= standard_changed
     if run_n30:
-        text, n30_summary = update_n30_endgame20_constant(text, command, args.timeout)
+        text, n30_summary, n30_changed = update_n30_endgame20_constant(
+            text, command, args.timeout
+        )
         summaries.append(n30_summary)
+        semantic_changed |= n30_changed
     if run_variants:
-        text, variant_summaries = update_variant_prefixes(text, command, args.timeout)
+        text, variant_summaries, variants_changed = update_variant_prefixes(
+            text,
+            command,
+            args.timeout,
+            parse_variant_labels(args.variant_labels),
+        )
         summaries.extend(variant_summaries)
+        semantic_changed |= variants_changed
 
-    if args.write:
-        target.write_text(text)
+    if args.check:
+        print("target is stale" if semantic_changed else "target is up to date")
+    elif args.write:
+        if semantic_changed:
+            target.write_text(text)
     else:
         print("dry-run only; pass --write to update the Rust test file")
+    print(f"target_changed={semantic_changed}")
     print(f"source={args.source} command={command!r}")
     for summary in summaries:
         print(summary)
-    return 0
+    return 1 if args.check and semantic_changed else 0
 
 
 if __name__ == "__main__":
