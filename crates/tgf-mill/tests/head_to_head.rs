@@ -24,6 +24,8 @@
 //   H2H_GAMES      games per color (default 20)
 //   H2H_SKILL      skill level (default 14)
 //   H2H_MAX_PLIES  ply cap -> over-cap counted as a maneuvering draw (default 200)
+//   H2H_N_MOVE_RULE regular no-capture draw threshold (default 100)
+//   H2H_ENDGAME_N_MOVE_RULE endgame no-capture draw threshold (default 100)
 //   H2H_GO_CURRENT go command for the current engine (default "go depth 0")
 //   H2H_GO_MASTER  go command for the master engine     (default "go")
 //   H2H_MOVETIME   per-move thinking time in SECONDS via the MoveTime option
@@ -60,14 +62,20 @@ struct Engine {
     name: String,
 }
 
+struct EngineOptions {
+    skill: u32,
+    move_time_secs: u32,
+    n_move_rule: u32,
+    endgame_n_move_rule: u32,
+}
+
 impl Engine {
     fn spawn(
         program: &str,
         args: &[String],
         go: &str,
         name: &str,
-        skill: u32,
-        move_time_secs: u32,
+        options: &EngineOptions,
     ) -> Engine {
         let mut child = Command::new(program)
             .args(args)
@@ -88,12 +96,14 @@ impl Engine {
         e.cmd("uci");
         assert!(e.wait("uciok").is_some(), "{name}: no uciok");
         for (k, v) in [
-            ("SkillLevel", skill.to_string()),
+            ("SkillLevel", options.skill.to_string()),
             ("DeveloperMode", "false".to_string()),
             ("DrawOnHumanExperience", "true".to_string()),
             ("Shuffling", "true".to_string()),
             ("Algorithm", "2".to_string()),
-            ("MoveTime", move_time_secs.to_string()),
+            ("MoveTime", options.move_time_secs.to_string()),
+            ("NMoveRule", options.n_move_rule.to_string()),
+            ("EndgameNMoveRule", options.endgame_n_move_rule.to_string()),
             ("UsePerfectDatabase", "false".to_string()),
         ] {
             e.cmd(&format!("setoption name {k} value {v}"));
@@ -253,9 +263,13 @@ fn repetition_referee_preserves_long_reversible_history() {
 
 /// Play one full game between the `white` and `black` engines; returns the
 /// outcome by board colour (`tgf-mill` is the referee).
-fn play_game(white: &mut Engine, black: &mut Engine, max_plies: usize) -> (GameResult, usize) {
-    let rules = MillRules::default();
-    let game = MillGame::new(MillVariantOptions::default());
+fn play_game(
+    rules: &MillRules,
+    game: &MillGame,
+    white: &mut Engine,
+    black: &mut Engine,
+    max_plies: usize,
+) -> (GameResult, usize) {
     let mut snap = rules.initial_state(&[]);
     let mut moves: Vec<String> = Vec::new();
     let mut repetition = RepetitionReferee::default();
@@ -420,6 +434,15 @@ fn engine_args_from_env(name: &str, default: &str) -> Vec<String> {
         .collect()
 }
 
+fn env_u32(name: &str, default: u32) -> u32 {
+    env::var(name)
+        .map(|s| {
+            s.parse::<u32>()
+                .unwrap_or_else(|e| panic!("{name} must be a u32, got `{s}`: {e}"))
+        })
+        .unwrap_or(default)
+}
+
 #[test]
 #[ignore = "head-to-head match vs master C++; set H2H_* and run with --ignored --nocapture"]
 fn head_to_head_vs_master() {
@@ -447,6 +470,22 @@ fn head_to_head_vs_master() {
         .ok()
         .and_then(|s| s.parse().ok())
         .unwrap_or(0);
+    let n_move_rule = env_u32("H2H_N_MOVE_RULE", 100);
+    let endgame_n_move_rule = env_u32("H2H_ENDGAME_N_MOVE_RULE", 100);
+    let engine_options = EngineOptions {
+        skill,
+        move_time_secs: move_time,
+        n_move_rule,
+        endgame_n_move_rule,
+    };
+
+    let options = MillVariantOptions {
+        n_move_rule,
+        endgame_n_move_rule,
+        ..MillVariantOptions::default()
+    };
+    let rules = MillRules::new(options.clone());
+    let game = MillGame::new(options);
 
     // Mode: "vs" (current vs master, default), "self-current", "self-master".
     let mode = env::var("H2H_MODE").unwrap_or_else(|_| "vs".to_string());
@@ -462,15 +501,15 @@ fn head_to_head_vs_master() {
         let is_master = mode == "self-master";
         let label = if is_master { "master" } else { "current" };
         eprintln!(
-            "Self-play: {label} vs {label}  (rows = board side)\n  skill={skill} movetime_s={move_time} shuffling=on algo=MTD(f) games={total} ply_cap={max_plies}"
+            "Self-play: {label} vs {label}  (rows = board side)\n  skill={skill} movetime_s={move_time} shuffling=on algo=MTD(f) games={total} ply_cap={max_plies} n_move={n_move_rule} endgame_n_move={endgame_n_move_rule}"
         );
         // Two independent instances of the SAME engine (separate TTs), one
         // permanently White and one permanently Black, so the table directly
         // measures the game's first/second-player (White/Black) bias.
         let (mut ew, mut eb) = if is_master {
             (
-                Engine::spawn(&master, &master_args, &go_master, "white", skill, move_time),
-                Engine::spawn(&master, &master_args, &go_master, "black", skill, move_time),
+                Engine::spawn(&master, &master_args, &go_master, "white", &engine_options),
+                Engine::spawn(&master, &master_args, &go_master, "black", &engine_options),
             )
         } else {
             (
@@ -479,21 +518,19 @@ fn head_to_head_vs_master() {
                     &current_args,
                     &go_current,
                     "white",
-                    skill,
-                    move_time,
+                    &engine_options,
                 ),
                 Engine::spawn(
                     &current,
                     &current_args,
                     &go_current,
                     "black",
-                    skill,
-                    move_time,
+                    &engine_options,
                 ),
             )
         };
         for i in 0..total {
-            let (res, plies) = play_game(&mut ew, &mut eb, max_plies);
+            let (res, plies) = play_game(&rules, &game, &mut ew, &mut eb, max_plies);
             // A White win is a Black loss and vice versa, so every game updates
             // both rows; the White/Black Score% gap is the colour bias.
             match res {
@@ -538,30 +575,22 @@ fn head_to_head_vs_master() {
         // vs mode: current vs master, alternating colours each game so the live
         // rates are not skewed by Black's structural edge until colours balance.
         eprintln!(
-            "Head-to-head: current=`{current}` vs master=`{master}`  (rows = current's colour)\n  skill={skill} movetime_s={move_time} shuffling=on algo=MTD(f) games/color={games} ply_cap={max_plies}\n  current_args={current_args:?} master_args={master_args:?}\n  go_current=`{go_current}` go_master=`{go_master}`"
+            "Head-to-head: current=`{current}` vs master=`{master}`  (rows = current's colour)\n  skill={skill} movetime_s={move_time} shuffling=on algo=MTD(f) games/color={games} ply_cap={max_plies} n_move={n_move_rule} endgame_n_move={endgame_n_move_rule}\n  current_args={current_args:?} master_args={master_args:?}\n  go_current=`{go_current}` go_master=`{go_master}`"
         );
         let mut cur = Engine::spawn(
             &current,
             &current_args,
             &go_current,
             "current",
-            skill,
-            move_time,
+            &engine_options,
         );
-        let mut mas = Engine::spawn(
-            &master,
-            &master_args,
-            &go_master,
-            "master",
-            skill,
-            move_time,
-        );
+        let mut mas = Engine::spawn(&master, &master_args, &go_master, "master", &engine_options);
         for i in 0..total {
             let current_white = i % 2 == 0;
             let (res, plies) = if current_white {
-                play_game(&mut cur, &mut mas, max_plies)
+                play_game(&rules, &game, &mut cur, &mut mas, max_plies)
             } else {
-                play_game(&mut mas, &mut cur, max_plies)
+                play_game(&rules, &game, &mut mas, &mut cur, max_plies)
             };
             // Map the board outcome to the current engine's row for its colour.
             let idx = match (res, current_white) {

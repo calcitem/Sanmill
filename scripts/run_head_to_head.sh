@@ -42,6 +42,8 @@ GAMES="${GAMES:-10}"
 SKILL="${SKILL:-10}"
 MOVETIME="${MOVETIME:-0}"
 MAX_PLIES="${MAX_PLIES:-160}"
+N_MOVE_RULE="${N_MOVE_RULE:-20}"
+ENDGAME_N_MOVE_RULE="${ENDGAME_N_MOVE_RULE:-20}"
 MASTER_ENGINE="${MASTER_ENGINE:-$(default_master_engine)}"
 CURRENT_OVERRIDE="${CURRENT_ENGINE:-}"
 CURRENT_ARGS="${CURRENT_ARGS:-uci}"
@@ -73,6 +75,9 @@ Options:
   -s, --skill N        Skill Level for the engine(s), 0..30       [default: 10]
   -t, --time SECONDS   per-move Thinking Time, 0..60, 0=unlimited [default: 0]
   -p, --max-plies N    ply cap; reaching it scores a draw         [default: 160]
+      --n-move-rule N  no-capture draw threshold                  [default: 20]
+      --endgame-n-move-rule N
+                         endgame no-capture draw threshold        [default: 20]
       --self ENGINE     self-play ENGINE (current|master) instead of vs match
   -m, --master PATH    path to master_engine
   -c, --current PATH   path to current engine (default: freshly built tgf)
@@ -85,7 +90,8 @@ Options:
 
 Each option also has an environment-variable form (command-line flags win):
   GAMES, SKILL, MOVETIME (seconds), MAX_PLIES, SELF, MASTER_ENGINE,
-  CURRENT_ENGINE, CURRENT_ARGS, MASTER_ARGS, CURRENT_GO, MASTER_GO, MINGW_BIN.
+  CURRENT_ENGINE, CURRENT_ARGS, MASTER_ARGS, CURRENT_GO, MASTER_GO,
+  N_MOVE_RULE, ENDGAME_N_MOVE_RULE, MINGW_BIN.
 
 Fairness notes:
   * Depth is controlled by --skill: the master engine IGNORES UCI `go depth N`
@@ -114,6 +120,10 @@ while [ $# -gt 0 ]; do
         --time=*)       MOVETIME="${1#*=}"; shift ;;
         -p|--max-plies) MAX_PLIES="$2"; shift 2 ;;
         --max-plies=*)  MAX_PLIES="${1#*=}"; shift ;;
+        --n-move-rule)  N_MOVE_RULE="$2"; shift 2 ;;
+        --n-move-rule=*) N_MOVE_RULE="${1#*=}"; shift ;;
+        --endgame-n-move-rule) ENDGAME_N_MOVE_RULE="$2"; shift 2 ;;
+        --endgame-n-move-rule=*) ENDGAME_N_MOVE_RULE="${1#*=}"; shift ;;
         --self)         SELF="$2"; shift 2 ;;
         --self=*)       SELF="${1#*=}"; shift ;;
         -m|--master)    MASTER_ENGINE="$2"; shift 2 ;;
@@ -181,7 +191,7 @@ if [ "$NEED_MASTER" -eq 1 ]; then
     fi
 fi
 
-echo ">> Config: mode=$MODE  skill=$SKILL  games/colour=$GAMES  thinking_time=${MOVETIME}s  ply_cap=$MAX_PLIES"
+echo ">> Config: mode=$MODE  skill=$SKILL  games/colour=$GAMES  thinking_time=${MOVETIME}s  ply_cap=$MAX_PLIES  n_move=$N_MOVE_RULE  endgame_n_move=$ENDGAME_N_MOVE_RULE"
 [ "$NEED_CURRENT" -eq 1 ] && echo "     current = $CURRENT_ENGINE"
 [ "$NEED_MASTER" -eq 1 ] && echo "     master  = $MASTER_ENGINE"
 if [ "$MOVETIME" -gt 0 ] 2>/dev/null; then
@@ -198,6 +208,8 @@ H2H_SKILL="$SKILL" \
 H2H_GAMES="$GAMES" \
 H2H_MOVETIME="$MOVETIME" \
 H2H_MAX_PLIES="$MAX_PLIES" \
+H2H_N_MOVE_RULE="$N_MOVE_RULE" \
+H2H_ENDGAME_N_MOVE_RULE="$ENDGAME_N_MOVE_RULE" \
 H2H_GO_CURRENT="$CURRENT_GO" \
 H2H_GO_MASTER="$MASTER_GO" \
     cargo test -p tgf-mill --release --test head_to_head \
