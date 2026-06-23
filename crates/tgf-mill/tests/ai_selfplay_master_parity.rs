@@ -207,6 +207,13 @@ fn selfplay_variant_options() -> MillVariantOptions {
     }
 }
 
+// Regenerate the hardcoded self-play expectations with:
+//
+//   python3 tools/update_selfplay_expectations.py --source master --write
+//
+// Use `--source current --write` only when deliberately blessing a new Rust
+// engine baseline after a search or move-ordering change that is expected to
+// alter self-play sequences.
 const MASTER_GO_SKILL1_FULL_GAME: &[&str] = &[
     "d6", "f4", "d2", "b4", "e4", "d5", "c4", "d3", "g4", "d7", "a4", "d1", "e5", "e3", "c3", "c5",
     "f6", "b6", "a4-a7", "b4-a4", "c4-b4", "c5-c4", "g4-g1", "d7-g7", "g1-g4", "g7-d7", "g4-g1",
