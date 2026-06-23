@@ -55,6 +55,20 @@ fn legal_uci_labels(rules: &MillRules, snap: &GameStateSnapshot) -> Vec<String> 
     labels
 }
 
+fn first_legal_action_of_kind(
+    rules: &MillRules,
+    snap: &GameStateSnapshot,
+    kind: MillActionKind,
+) -> Action {
+    let mut actions = ActionList::<256>::new();
+    rules.legal_actions(snap, &mut actions);
+    actions
+        .iter()
+        .copied()
+        .find(|action| action.kind_tag == kind as i16)
+        .unwrap_or_else(|| panic!("expected at least one legal {kind:?} action"))
+}
+
 fn old_node(node: usize) -> usize {
     // Test fixtures written before the master-normalized layout used the old
     // Rust topology order (outer, middle, inner rings, starting at top-left).
@@ -1199,6 +1213,61 @@ fn from_hand_removal_emptying_opponent_hand_starts_their_moving_turn() {
 }
 
 #[test]
+fn final_placement_transition_from_hand_removal_opponent_turn_enters_black_moving() {
+    let rules = MillRules::new(MillVariantOptions {
+        mill_formation_action_in_placing_phase:
+            MillFormationActionInPlacingPhase::RemoveOpponentsPieceFromHandThenOpponentsTurn,
+        ..MillVariantOptions::default()
+    });
+    let mut state = MillState {
+        side_to_move: 0,
+        phase: MillPhase::Placing,
+        move_number: 17,
+        pieces_in_hand: [1, 1],
+        pieces_on_board: [2, 3],
+        pending_removals: [0, 0],
+        winner: -1,
+        ..MillState::default()
+    };
+    // White's last placement completes a7-d7-g7. The rule removes
+    // black's final hand piece, so both hands become empty at once.
+    state.board[old_node(0)] = 1;
+    state.board[old_node(1)] = 1;
+    for node in [6_usize, 8, 10] {
+        state.board[old_node(node)] = 2;
+    }
+
+    let snap = rules.apply(
+        &rules.encode(state),
+        Action {
+            kind_tag: MillActionKind::Place as i16,
+            from_node: -1,
+            to_node: old_node_i16(2),
+            aux: -1,
+            payload_bits: 0,
+        },
+    );
+    let state = MillRules::decode(&snap);
+    assert_eq!(state.pieces_in_hand, [0, 0]);
+    assert_eq!(state.pieces_on_board, [3, 3]);
+    assert_eq!(state.pending_removals, [0, 0]);
+    assert_eq!(state.phase, MillPhase::Moving);
+    assert_eq!(
+        state.side_to_move, 1,
+        "opponent-turn hand removal keeps black to move at placing end"
+    );
+
+    let mut actions = ActionList::<256>::new();
+    rules.legal_actions(&snap, &mut actions);
+    assert!(!actions.is_empty(), "black must receive moving actions");
+    assert!(
+        actions
+            .iter()
+            .all(|action| action.kind_tag == MillActionKind::Move as i16)
+    );
+}
+
+#[test]
 fn mill_action_remove_from_hand_then_your_turn() {
     let (_rules, snap) = placing_mill_fixture_for_action(
         MillFormationActionInPlacingPhase::RemoveOpponentsPieceFromHandThenYourTurn,
@@ -1207,6 +1276,63 @@ fn mill_action_remove_from_hand_then_your_turn() {
     assert_eq!(state.pieces_in_hand[1], 6, "black lost one piece from hand");
     assert_eq!(state.pending_removals[0], 0);
     assert_eq!(state.side_to_move, 0, "active player keeps the turn");
+}
+
+#[test]
+fn final_placement_transition_from_hand_your_turn_multi_keeps_active_black() {
+    let rules = MillRules::new(MillVariantOptions {
+        may_remove_multiple: true,
+        mill_formation_action_in_placing_phase:
+            MillFormationActionInPlacingPhase::RemoveOpponentsPieceFromHandThenYourTurn,
+        ..MillVariantOptions::default()
+    });
+    let mut state = MillState {
+        side_to_move: 1,
+        phase: MillPhase::Placing,
+        move_number: 17,
+        pieces_in_hand: [1, 1],
+        pieces_on_board: [3, 2],
+        pending_removals: [0, 0],
+        winner: -1,
+        ..MillState::default()
+    };
+    // Black's last placement completes a7-d7-g7 and removes White's
+    // final hand piece. With mayRemoveMultiple, legacy placing-end logic
+    // keeps the active side for the "your turn" rule instead of resetting
+    // to the default first mover.
+    state.board[old_node(0)] = 2;
+    state.board[old_node(1)] = 2;
+    for node in [6_usize, 8, 10] {
+        state.board[old_node(node)] = 1;
+    }
+
+    let snap = rules.apply(
+        &rules.encode(state),
+        Action {
+            kind_tag: MillActionKind::Place as i16,
+            from_node: -1,
+            to_node: old_node_i16(2),
+            aux: -1,
+            payload_bits: 0,
+        },
+    );
+    let state = MillRules::decode(&snap);
+    assert_eq!(state.pieces_in_hand, [0, 0]);
+    assert_eq!(state.pending_removals, [0, 0]);
+    assert_eq!(state.phase, MillPhase::Moving);
+    assert_eq!(
+        state.side_to_move, 1,
+        "your-turn plus mayRemoveMultiple keeps black active at placing end"
+    );
+
+    let mut actions = ActionList::<256>::new();
+    rules.legal_actions(&snap, &mut actions);
+    assert!(!actions.is_empty(), "black must receive moving actions");
+    assert!(
+        actions
+            .iter()
+            .all(|action| action.kind_tag == MillActionKind::Move as i16)
+    );
 }
 
 #[test]
@@ -1295,6 +1421,70 @@ fn mill_action_removal_based_on_mill_counts_assigns_at_placing_end() {
     );
 }
 
+#[test]
+fn final_placement_transition_removal_based_defender_first_starts_black_removal() {
+    let rules = MillRules::new(MillVariantOptions {
+        is_defender_move_first: true,
+        mill_formation_action_in_placing_phase:
+            MillFormationActionInPlacingPhase::RemovalBasedOnMillCounts,
+        ..MillVariantOptions::default()
+    });
+    let mut state = MillState {
+        board: {
+            let mut board = [0_i8; 24];
+            // White has one mill a7-d7-g7; black has no mills.
+            board[old_node(0)] = 1;
+            board[old_node(1)] = 1;
+            board[old_node(2)] = 1;
+            board[old_node(6)] = 2;
+            board[old_node(11)] = 2;
+            board[old_node(14)] = 2;
+            board
+        },
+        side_to_move: 0,
+        phase: MillPhase::Placing,
+        move_number: 17,
+        pieces_in_hand: [1, 0],
+        pieces_on_board: [3, 3],
+        pending_removals: [0, 0],
+        winner: -1,
+        ..MillState::default()
+    };
+    // The final placement does not create a new mill, so the only
+    // placing-end work is the removalBasedOnMillCounts transition.
+    state.board[old_node(8)] = 0;
+    let after = rules.apply(
+        &rules.encode(state),
+        Action {
+            kind_tag: MillActionKind::Place as i16,
+            from_node: -1,
+            to_node: old_node_i16(8),
+            aux: -1,
+            payload_bits: 0,
+        },
+    );
+    let state = MillRules::decode(&after);
+
+    assert_eq!(state.phase, MillPhase::Moving);
+    assert_eq!(
+        state.pending_removals,
+        [2, 1],
+        "white has one mill while black has none at placing end"
+    );
+    assert_eq!(
+        state.side_to_move, 1,
+        "defender-first must start black's removal quota"
+    );
+
+    let mut actions = ActionList::<256>::new();
+    rules.legal_actions(&after, &mut actions);
+    assert!(!actions.is_empty(), "black must receive removal targets");
+    assert!(actions.iter().all(|action| {
+        action.kind_tag == MillActionKind::Remove as i16
+            && state.board[action.to_node as usize] == 1
+    }));
+}
+
 /// `MarkAndDelayRemovingPieces` mirrors C++ position.cpp: mill formation
 /// arms a regular remove obligation, and the chosen target is *marked*
 /// (kept on the board with its colour) instead of physically removed.
@@ -1361,6 +1551,142 @@ fn mark_and_delay_marked_pieces_sweep_on_phase_transition() {
         "marked square must be cleared on entering moving phase"
     );
     assert_eq!(state.delayed_marked_pieces, 0);
+    assert_color_bitboards_match_board(&state);
+}
+
+#[test]
+fn final_placement_transition_mark_and_delay_remove_sweeps_before_moving() {
+    let rules = MillRules::new(MillVariantOptions {
+        mill_formation_action_in_placing_phase:
+            MillFormationActionInPlacingPhase::MarkAndDelayRemovingPieces,
+        ..MillVariantOptions::default()
+    });
+    let state = MillState {
+        board: {
+            let mut board = [0_i8; 24];
+            // White's last hand piece will complete a7-d7-g7.
+            for node in [0_usize, 2, 8, 10, 13, 15, 17, 19] {
+                board[old_node(node)] = 1;
+            }
+            for node in [3_usize, 5, 6, 11, 12, 14, 16, 18] {
+                board[old_node(node)] = 2;
+            }
+            board
+        },
+        side_to_move: 0,
+        phase: MillPhase::Placing,
+        move_number: 17,
+        pieces_in_hand: [1, 0],
+        pieces_on_board: [8, 8],
+        pending_removals: [0, 0],
+        winner: -1,
+        ..MillState::default()
+    };
+
+    let after_place = rules.apply(
+        &rules.encode(state),
+        Action {
+            kind_tag: MillActionKind::Place as i16,
+            from_node: -1,
+            to_node: old_node_i16(1),
+            aux: -1,
+            payload_bits: 0,
+        },
+    );
+    let state = MillRules::decode(&after_place);
+    assert_eq!(state.pieces_in_hand, [0, 0]);
+    assert_eq!(state.phase, MillPhase::Placing);
+    assert_eq!(state.pending_removals[0], 1);
+    assert_eq!(state.side_to_move, 0);
+
+    let remove = first_legal_action_of_kind(&rules, &after_place, MillActionKind::Remove);
+    let removed_node = remove.to_node as usize;
+    assert_eq!(state.board[removed_node], 2);
+
+    let after_remove = rules.apply(&after_place, remove);
+    let state = MillRules::decode(&after_remove);
+    assert_eq!(state.phase, MillPhase::Moving);
+    assert_eq!(state.pending_removals, [0, 0]);
+    assert_eq!(state.delayed_marked_pieces, 0);
+    assert_eq!(
+        state.board[removed_node], 0,
+        "delayed mark must sweep before the moving phase becomes observable"
+    );
+    assert_eq!(
+        state.side_to_move, 0,
+        "markAndDelay follows the regular first-mover reset at placing end"
+    );
+    assert_color_bitboards_match_board(&state);
+}
+
+#[test]
+fn final_placement_transition_mark_delay_multi_sweeps_all_marked_targets() {
+    let rules = MillRules::new(MillVariantOptions {
+        may_remove_multiple: true,
+        mill_formation_action_in_placing_phase:
+            MillFormationActionInPlacingPhase::MarkAndDelayRemovingPieces,
+        ..MillVariantOptions::default()
+    });
+    let state = MillState {
+        board: {
+            let mut board = [0_i8; 24];
+            // Placing at old node 1 completes both [0,1,2] and [1,9,17].
+            for node in [0_usize, 2, 9, 17, 8, 10, 13, 15] {
+                board[old_node(node)] = 1;
+            }
+            for node in [3_usize, 5, 6, 11, 12, 14, 16, 18] {
+                board[old_node(node)] = 2;
+            }
+            board
+        },
+        side_to_move: 0,
+        phase: MillPhase::Placing,
+        move_number: 17,
+        pieces_in_hand: [1, 0],
+        pieces_on_board: [8, 8],
+        pending_removals: [0, 0],
+        winner: -1,
+        ..MillState::default()
+    };
+
+    let after_place = rules.apply(
+        &rules.encode(state),
+        Action {
+            kind_tag: MillActionKind::Place as i16,
+            from_node: -1,
+            to_node: old_node_i16(1),
+            aux: -1,
+            payload_bits: 0,
+        },
+    );
+    let state = MillRules::decode(&after_place);
+    assert_eq!(state.phase, MillPhase::Placing);
+    assert_eq!(
+        state.pending_removals[0], 2,
+        "two newly usable mills must schedule two delayed removals"
+    );
+
+    let first_remove = first_legal_action_of_kind(&rules, &after_place, MillActionKind::Remove);
+    let first_node = first_remove.to_node as usize;
+    let after_first = rules.apply(&after_place, first_remove);
+    let state = MillRules::decode(&after_first);
+    assert_eq!(state.phase, MillPhase::Placing);
+    assert_eq!(state.pending_removals[0], 1);
+    assert_ne!(state.delayed_marked_pieces, 0);
+    assert_eq!(state.board[first_node], 2);
+    assert_eq!(live_piece(&state, first_node), 0);
+
+    let second_remove = first_legal_action_of_kind(&rules, &after_first, MillActionKind::Remove);
+    let second_node = second_remove.to_node as usize;
+    assert_ne!(second_node, first_node);
+    let after_second = rules.apply(&after_first, second_remove);
+    let state = MillRules::decode(&after_second);
+    assert_eq!(state.phase, MillPhase::Moving);
+    assert_eq!(state.pending_removals, [0, 0]);
+    assert_eq!(state.delayed_marked_pieces, 0);
+    assert_eq!(state.board[first_node], 0);
+    assert_eq!(state.board[second_node], 0);
+    assert_eq!(state.pieces_on_board[1], 6);
     assert_color_bitboards_match_board(&state);
 }
 
@@ -2701,6 +3027,69 @@ fn stop_placing_two_empty_does_not_preempt_mill_removal() {
 }
 
 #[test]
+fn final_placement_transition_stop_two_empty_mark_delay_removes_before_sweep() {
+    let options = MillVariantOptions {
+        piece_count: 12,
+        stop_placing_when_two_empty_squares: true,
+        mill_formation_action_in_placing_phase:
+            MillFormationActionInPlacingPhase::MarkAndDelayRemovingPieces,
+        ..MillVariantOptions::default()
+    };
+    let rules = MillRules::new(options);
+    let mut board = [2_i8; 24];
+    // White forms a mill on [20, 21, 22] by placing at 22 while
+    // stop-two-empty is also true. The removal obligation must resolve
+    // before entering Moving and sweeping the delayed mark.
+    board[old_node(20)] = 1;
+    board[old_node(21)] = 1;
+    board[old_node(22)] = 0;
+    board[old_node(23)] = 0;
+    board[old_node(0)] = 0;
+    let state = MillState {
+        board,
+        side_to_move: 0,
+        phase: MillPhase::Placing,
+        move_number: 21,
+        pieces_in_hand: [1, 0],
+        pieces_on_board: [2, 19],
+        pending_removals: [0, 0],
+        winner: -1,
+        ..MillState::default()
+    };
+
+    let after_place = rules.apply(
+        &rules.encode(state),
+        Action {
+            kind_tag: MillActionKind::Place as i16,
+            from_node: -1,
+            to_node: old_node_i16(22),
+            aux: -1,
+            payload_bits: 0,
+        },
+    );
+    let state = MillRules::decode(&after_place);
+    assert_eq!(state.pieces_in_hand, [0, 0]);
+    assert_eq!(state.phase, MillPhase::Placing);
+    assert_eq!(state.pending_removals[0], 1);
+    assert_eq!(state.side_to_move, 0);
+
+    let remove = first_legal_action_of_kind(&rules, &after_place, MillActionKind::Remove);
+    let removed_node = remove.to_node as usize;
+    assert_eq!(state.board[removed_node], 2);
+
+    let after_remove = rules.apply(&after_place, remove);
+    let state = MillRules::decode(&after_remove);
+    assert_eq!(state.phase, MillPhase::Moving);
+    assert_eq!(state.pending_removals, [0, 0]);
+    assert_eq!(state.delayed_marked_pieces, 0);
+    assert_eq!(
+        state.board[removed_node], 0,
+        "marked piece must not survive the stop-two-empty transition"
+    );
+    assert_color_bitboards_match_board(&state);
+}
+
+#[test]
 fn stop_placing_when_two_empty_squares_is_twelve_men_only() {
     let options = MillVariantOptions {
         piece_count: 9,
@@ -2931,6 +3320,64 @@ fn board_full_side_to_move_remove_respects_defender_setting() {
     assert_eq!(state.phase, MillPhase::Moving);
     assert_eq!(state.side_to_move, 1);
     assert_eq!(state.pending_removals, [0, 1]);
+}
+
+#[test]
+fn final_placement_transition_board_full_waits_for_mill_remove_then_skips_full_action() {
+    let rules = MillRules::new(MillVariantOptions {
+        piece_count: 12,
+        board_full_action: MillBoardFullAction::FirstAndSecondPlayerRemovePiece,
+        ..MillVariantOptions::default()
+    });
+    let mut board = [2_i8; 24];
+    // The last empty square also completes White's [20, 21, 22] mill.
+    // Board-full handling must wait until that mill removal resolves; after
+    // the removal, the board is no longer full, so no full-board removal
+    // sequence should be armed.
+    board[old_node(20)] = 1;
+    board[old_node(21)] = 1;
+    board[old_node(22)] = 0;
+    for node in [0_usize, 2, 4, 6, 8, 10, 12, 14, 18] {
+        board[old_node(node)] = 1;
+    }
+    let state = MillState {
+        board,
+        side_to_move: 0,
+        phase: MillPhase::Placing,
+        move_number: 23,
+        pieces_in_hand: [1, 0],
+        pieces_on_board: [11, 12],
+        pending_removals: [0, 0],
+        winner: -1,
+        ..MillState::default()
+    };
+
+    let after_place = rules.apply(
+        &rules.encode(state),
+        Action {
+            kind_tag: MillActionKind::Place as i16,
+            from_node: -1,
+            to_node: old_node_i16(22),
+            aux: -1,
+            payload_bits: 0,
+        },
+    );
+    let state = MillRules::decode(&after_place);
+    assert_eq!(state.phase, MillPhase::Placing);
+    assert_eq!(state.pieces_in_hand, [0, 0]);
+    assert_eq!(state.pending_removals, [1, 0]);
+    assert_eq!(state.side_to_move, 0);
+
+    let remove = first_legal_action_of_kind(&rules, &after_place, MillActionKind::Remove);
+    let after_remove = rules.apply(&after_place, remove);
+    let state = MillRules::decode(&after_remove);
+    assert_eq!(state.phase, MillPhase::Moving);
+    assert_eq!(state.pending_removals, [0, 0]);
+    assert_eq!(
+        rules.outcome(&after_remove).kind,
+        OutcomeKind::Ongoing,
+        "mill removal creates an empty square, so board-full action must not fire"
+    );
 }
 
 /// Helper: build a small moving-phase state where W just moved

@@ -894,6 +894,87 @@ fn variant_selfplay_skill2_prefixes_match_master() {
 }
 
 #[test]
+#[ignore = "slow transition-heavy variant parity audit; run after rule or search changes"]
+fn variant_selfplay_skill6_transition_prefixes_match_master() {
+    assert_selfplay_variant_prefix(
+        "hand_remove_opponent_turn_transition",
+        6,
+        80,
+        variant_options(|options| {
+            options.mill_formation_action_in_placing_phase =
+                MillFormationActionInPlacingPhase::RemoveOpponentsPieceFromHandThenOpponentsTurn;
+        }),
+        &[
+            "d6", "f4", "d2", "b4", "g4", "d7", "a4", "d1", "e4", "d5", "c4", "d3", "f6", "b6",
+            "b2", "f2", "g7", "g1", "a4-a1", "d3-c3", "a1-a4", "c3-d3", "a4-a1", "d3-e3", "a1-a4",
+            "d1-a1", "c4-c5", "b4-c4", "b2-b4", "d5-e5", "c5-d5", "e3-d3", "e4-e3", "e5-e4",
+            "d5-e5", "a1-d1", "e5-d5", "c4-c5",
+        ],
+    );
+    assert_selfplay_variant_prefix(
+        "mark_delay_remove_transition",
+        6,
+        80,
+        variant_options(|options| {
+            options.mill_formation_action_in_placing_phase =
+                MillFormationActionInPlacingPhase::MarkAndDelayRemovingPieces;
+        }),
+        &[
+            "d6", "f4", "d2", "b4", "g4", "d7", "a4", "d1", "e4", "d5", "c4", "d3", "f6", "b6",
+            "b2", "f2", "g7", "g1", "a4-a1", "d3-c3", "a1-a4", "c3-d3", "a4-a1", "d3-e3", "a1-a4",
+            "d1-a1", "c4-c5", "b4-c4", "b2-b4", "d5-e5", "c5-d5", "e3-d3", "e4-e3", "e5-e4",
+            "d5-e5", "a1-d1", "e5-d5", "c4-c5",
+        ],
+    );
+    assert_selfplay_variant_prefix(
+        "twelve_mens_stop_two_empty_transition",
+        6,
+        80,
+        variant_options(|options| {
+            options.piece_count = 12;
+            options.stop_placing_when_two_empty_squares = true;
+        }),
+        &[
+            "d6", "f4", "d2", "b4", "g4", "d7", "a4", "d1", "e4", "d5", "c4", "d3", "f6", "b6",
+            "b2", "f2", "g7", "g1", "a7", "a1", "xc4", "c4", "e5", "c5", "c4-c3", "d3-e3", "c3-d3",
+            "b4-c4", "b2-b4", "c4-c3", "c5-c4", "xd7", "d5-c5", "d6-d5", "b6-d6", "a7-d7", "d6-b6",
+            "d7-d6",
+        ],
+    );
+    assert_selfplay_variant_prefix(
+        "twelve_mens_mark_delay_transition",
+        6,
+        80,
+        variant_options(|options| {
+            options.piece_count = 12;
+            options.mill_formation_action_in_placing_phase =
+                MillFormationActionInPlacingPhase::MarkAndDelayRemovingPieces;
+        }),
+        &[
+            "d6", "f4", "d2", "b4", "g4", "d7", "a4", "d1", "e4", "d5", "c4", "d3", "f6", "b6",
+            "b2", "f2", "g7", "g1", "a1", "a7", "e5", "e3", "c5", "c3", "xc5", "c4-c5", "c3-c4",
+        ],
+    );
+    assert_selfplay_variant_prefix(
+        "defender_first_removal_based_transition",
+        6,
+        80,
+        variant_options(|options| {
+            options.is_defender_move_first = true;
+            options.mill_formation_action_in_placing_phase =
+                MillFormationActionInPlacingPhase::RemovalBasedOnMillCounts;
+        }),
+        &[
+            "d6", "f4", "d2", "b4", "d7", "d5", "g4", "d1", "a4", "e4", "d3", "c4", "f6", "b6",
+            "b2", "g1", "f2", "a1", "xa4", "xc4", "a1-a4", "d7-g7", "a4-a1", "xg4", "g7-g4",
+            "a1-a4", "d3-c3", "a4-a1", "xg4", "c3-c4", "g1-g4", "xc4", "d6-d7", "b6-d6", "d2-d3",
+            "g4-g1", "xd3", "b2-d2", "d5-c5", "d7-g7", "g1-g4", "xd2", "g7-g1", "e4-e5", "g1-d5",
+            "e5-e4", "xf2",
+        ],
+    );
+}
+
+#[test]
 #[ignore = "slow variant parity audit; run after rule or search changes"]
 fn variant_selfplay_skill8_deep_prefixes_match_master() {
     assert_selfplay_variant_prefix(
