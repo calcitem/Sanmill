@@ -311,9 +311,9 @@ so fixed-depth elapsed-time ratios alone are insufficient. For such changes:
   ```
 
 - Compare old and new binaries with self-play or head-to-head harnesses
-  (`tests/ai_selfplay_master_parity.rs`, `tests/head_to_head.rs`, or
-  `scripts/run_head_to_head.sh`) before claiming playing-strength or practical
-  speed improvements.
+  (`crates/tgf-mill/tests/ai_selfplay_master_parity.rs`,
+  `crates/tgf-cli/tests/head_to_head.rs`, or `scripts/run_head_to_head.sh`)
+  before claiming playing-strength or practical speed improvements.
 - Report both speed and behavior: elapsed time, NPS or ns/node when useful,
   node-count deltas, move-list changes, score changes, and match/self-play
   results.

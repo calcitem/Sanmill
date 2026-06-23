@@ -13,7 +13,7 @@
 // every game.
 //
 // Ignored by default (needs both built engines).  Run with:
-//   H2H_GAMES=20 cargo test -p tgf-mill --release --test head_to_head \
+//   H2H_GAMES=20 cargo test -p tgf-cli --release --test head_to_head \
 //     head_to_head_vs_master -- --ignored --nocapture
 //
 // Env vars:
@@ -26,6 +26,9 @@
 //   H2H_MAX_PLIES  ply cap -> over-cap counted as a maneuvering draw (default 200)
 //   H2H_N_MOVE_RULE regular no-capture draw threshold (default 100)
 //   H2H_ENDGAME_N_MOVE_RULE endgame no-capture draw threshold (default 100)
+//   H2H_OPENING_PLIES paired Perfect DB random opening plies (default 0)
+//   H2H_OPENING_DB_PATH Perfect DB asset dir (default Flutter DB assets)
+//   H2H_OPENING_SEED deterministic seed for paired Perfect DB openings
 //   H2H_GO_CURRENT go command for the current engine (default "go depth 0")
 //   H2H_GO_MASTER  go command for the master engine     (default "go")
 //   H2H_MOVETIME   per-move thinking time in SECONDS via the MoveTime option
@@ -48,9 +51,11 @@
 
 use std::env;
 use std::io::{BufRead, BufReader, Write};
+use std::path::PathBuf;
 use std::process::{Child, ChildStdin, ChildStdout, Command, Stdio};
 
-use tgf_core::{Action, Game, GameRules, GameStateSnapshot, OutcomeKind, Workbench};
+use perfect_db::database::{Database, FileDatabaseProvider};
+use tgf_core::{Action, ActionList, Game, GameRules, GameStateSnapshot, OutcomeKind, Workbench};
 use tgf_mill::{MillActionKind, MillGame, MillPhase, MillRules, MillUciCodec, MillVariantOptions};
 
 /// One UCI engine subprocess.
@@ -239,6 +244,217 @@ fn moving_snapshot_with_key(key: u64) -> GameStateSnapshot {
     }
 }
 
+fn splitmix64(mut value: u64) -> u64 {
+    value = value.wrapping_add(0x9E37_79B9_7F4A_7C15);
+    let mut z = value;
+    z = (z ^ (z >> 30)).wrapping_mul(0xBF58_476D_1CE4_E5B9);
+    z = (z ^ (z >> 27)).wrapping_mul(0x94D0_49BB_1331_11EB);
+    z ^ (z >> 31)
+}
+
+fn paired_opening_seed(base_seed: u64, game_index: usize) -> u64 {
+    let pair_index = game_index / 2;
+    splitmix64(base_seed ^ (pair_index as u64).wrapping_mul(0xD1B5_4A32_D192_ED03))
+}
+
+fn default_perfect_db_path() -> PathBuf {
+    PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../../src/ui/flutter_app/assets/databases")
+}
+
+type OpeningDatabase = Database<FileDatabaseProvider>;
+
+struct PerfectOpening {
+    plies: usize,
+    seed: u64,
+    db_path: Option<PathBuf>,
+    db: Option<OpeningDatabase>,
+}
+
+impl PerfectOpening {
+    fn new(plies: usize, seed: u64, db_path: Option<PathBuf>) -> Self {
+        let db_path = if plies == 0 {
+            db_path
+        } else {
+            Some(db_path.unwrap_or_else(default_perfect_db_path))
+        };
+        let db = db_path.as_ref().filter(|_| plies > 0).map(|path| {
+            assert!(
+                path.is_dir(),
+                "Perfect DB opening path must be an existing directory: {}",
+                path.display()
+            );
+            Database::open(FileDatabaseProvider::new(path.clone())).unwrap_or_else(|e| {
+                panic!(
+                    "failed to open Perfect DB opening path `{}`: {e}",
+                    path.display()
+                )
+            })
+        });
+        Self {
+            plies,
+            seed,
+            db_path,
+            db,
+        }
+    }
+
+    fn describe(&self) -> String {
+        match (self.plies, self.db_path.as_ref()) {
+            (0, _) => "opening_plies=0".to_string(),
+            (_, Some(path)) => format!(
+                "opening_plies={} opening_db=`{}`",
+                self.plies,
+                path.display()
+            ),
+            _ => unreachable!("positive Perfect DB opening plies require a database path"),
+        }
+    }
+}
+
+struct Referee {
+    rules: MillRules,
+    game: MillGame,
+    options: MillVariantOptions,
+    opening: PerfectOpening,
+}
+
+impl Referee {
+    fn new(options: MillVariantOptions, opening: PerfectOpening) -> Self {
+        Self {
+            rules: MillRules::new(options.clone()),
+            game: MillGame::new(options.clone()),
+            options,
+            opening,
+        }
+    }
+
+    fn legal_action_for_token(&self, snap: &GameStateSnapshot, token: &str) -> Option<Action> {
+        let mut legal = ActionList::<256>::new();
+        self.rules.legal_actions(snap, &mut legal);
+        legal
+            .as_slice()
+            .iter()
+            .copied()
+            .find(|action| MillUciCodec::encode_action(*action) == token)
+    }
+
+    fn append_perfect_opening_prefix(
+        &mut self,
+        snap: &mut GameStateSnapshot,
+        moves: &mut Vec<String>,
+        repetition: &mut RepetitionReferee,
+        game_index: usize,
+    ) -> Vec<String> {
+        let opening_plies = self.opening.plies;
+        if opening_plies == 0 {
+            return Vec::new();
+        }
+
+        let mut seed = paired_opening_seed(self.opening.seed, game_index);
+        let mut opening_moves = Vec::with_capacity(opening_plies);
+
+        for _ in 0..opening_plies {
+            if !matches!(self.rules.outcome(snap).kind, OutcomeKind::Ongoing)
+                || repetition.is_root_threefold_draw(snap)
+            {
+                break;
+            }
+
+            let db = self
+                .opening
+                .db
+                .as_mut()
+                .expect("positive Perfect DB opening plies require an open database");
+            let mut choices = perfect_db::best_move_choices_with_ordering(
+                db,
+                &self.rules,
+                snap,
+                &self.options,
+                perfect_db::PerfectMoveOrdering::StrictSteps,
+            )
+            .unwrap_or_else(|e| panic!("Perfect DB opening lookup failed: {e}"))
+            .unwrap_or_else(|| {
+                panic!("Perfect DB has no opening move after `{}`", moves.join(" "))
+            });
+            assert!(
+                !choices.is_empty(),
+                "Perfect DB opening lookup returned an empty choice list"
+            );
+
+            // Match master PerfectPlayer's Algorithm=Random branch: first keep
+            // only strict best database moves, then choose a random tie.
+            choices.sort_by(|a, b| a.token.cmp(&b.token));
+            seed = splitmix64(seed);
+            let choice = choices[(seed as usize) % choices.len()].clone();
+            let action = self
+                .legal_action_for_token(snap, &choice.token)
+                .unwrap_or_else(|| {
+                    panic!(
+                        "Perfect DB returned illegal opening token `{}` after `{}`",
+                        choice.token,
+                        moves.join(" ")
+                    )
+                });
+            *snap = self.rules.apply(snap, action);
+            repetition.record_after_apply(action, snap);
+            moves.push(choice.token.clone());
+            opening_moves.push(choice.token);
+        }
+
+        opening_moves
+    }
+
+    /// Play one full game between the `white` and `black` engines; returns the
+    /// outcome by board colour (`tgf-mill` is the referee).
+    fn play_game(
+        &mut self,
+        white: &mut Engine,
+        black: &mut Engine,
+        max_plies: usize,
+        game_index: usize,
+    ) -> (GameResult, usize, Vec<String>) {
+        let mut snap = self.rules.initial_state(&[]);
+        let mut moves: Vec<String> = Vec::new();
+        let mut repetition = RepetitionReferee::default();
+        white.new_game();
+        black.new_game();
+        let opening_moves =
+            self.append_perfect_opening_prefix(&mut snap, &mut moves, &mut repetition, game_index);
+
+        for ply in moves.len()..max_plies {
+            match self.rules.outcome(&snap).kind {
+                OutcomeKind::Ongoing => {}
+                OutcomeKind::Win(0) => return (GameResult::WhiteWin, ply, opening_moves),
+                OutcomeKind::Win(1) => return (GameResult::BlackWin, ply, opening_moves),
+                OutcomeKind::Draw => return (GameResult::Draw, ply, opening_moves),
+                _ => return (GameResult::Unfinished, ply, opening_moves),
+            }
+            if repetition.is_root_threefold_draw(&snap) {
+                return (GameResult::Draw, ply, opening_moves);
+            }
+
+            let stm = self.game.build_workbench(&snap).side_to_move();
+            let engine = if stm == 0 { &mut *white } else { &mut *black };
+            let Some(mv) = engine.best_move(&moves) else {
+                eprintln!("  ! {} returned no move at ply {ply}", engine.name);
+                return (GameResult::Unfinished, ply, opening_moves);
+            };
+            let Some(action) = MillUciCodec::decode_action(&snap, &mv) else {
+                eprintln!(
+                    "  ! undecodable move `{mv}` from {} at ply {ply}",
+                    engine.name
+                );
+                return (GameResult::Unfinished, ply, opening_moves);
+            };
+            snap = self.rules.apply(&snap, action);
+            repetition.record_after_apply(action, &snap);
+            moves.push(mv);
+        }
+        // Ply cap reached: both sides maneuvering -> score as a draw.
+        (GameResult::Draw, max_plies, opening_moves)
+    }
+}
+
 #[test]
 fn repetition_referee_preserves_long_reversible_history() {
     let mut referee = RepetitionReferee::default();
@@ -259,54 +475,6 @@ fn repetition_referee_preserves_long_reversible_history() {
 
     referee.record_after_apply(action(MillActionKind::Remove), &repeated);
     assert!(!referee.is_root_threefold_draw(&repeated));
-}
-
-/// Play one full game between the `white` and `black` engines; returns the
-/// outcome by board colour (`tgf-mill` is the referee).
-fn play_game(
-    rules: &MillRules,
-    game: &MillGame,
-    white: &mut Engine,
-    black: &mut Engine,
-    max_plies: usize,
-) -> (GameResult, usize) {
-    let mut snap = rules.initial_state(&[]);
-    let mut moves: Vec<String> = Vec::new();
-    let mut repetition = RepetitionReferee::default();
-    white.new_game();
-    black.new_game();
-
-    for ply in 0..max_plies {
-        match rules.outcome(&snap).kind {
-            OutcomeKind::Ongoing => {}
-            OutcomeKind::Win(0) => return (GameResult::WhiteWin, ply),
-            OutcomeKind::Win(1) => return (GameResult::BlackWin, ply),
-            OutcomeKind::Draw => return (GameResult::Draw, ply),
-            _ => return (GameResult::Unfinished, ply),
-        }
-        if repetition.is_root_threefold_draw(&snap) {
-            return (GameResult::Draw, ply);
-        }
-
-        let stm = game.build_workbench(&snap).side_to_move();
-        let engine = if stm == 0 { &mut *white } else { &mut *black };
-        let Some(mv) = engine.best_move(&moves) else {
-            eprintln!("  ! {} returned no move at ply {ply}", engine.name);
-            return (GameResult::Unfinished, ply);
-        };
-        let Some(action) = MillUciCodec::decode_action(&snap, &mv) else {
-            eprintln!(
-                "  ! undecodable move `{mv}` from {} at ply {ply}",
-                engine.name
-            );
-            return (GameResult::Unfinished, ply);
-        };
-        snap = rules.apply(&snap, action);
-        repetition.record_after_apply(action, &snap);
-        moves.push(mv);
-    }
-    // Ply cap reached: both sides maneuvering -> score as a draw.
-    (GameResult::Draw, max_plies)
 }
 
 /// Percentage of `num` out of `den` (0 when `den == 0`).
@@ -434,6 +602,15 @@ fn engine_args_from_env(name: &str, default: &str) -> Vec<String> {
         .collect()
 }
 
+fn env_usize(name: &str, default: usize) -> usize {
+    env::var(name)
+        .map(|s| {
+            s.parse::<usize>()
+                .unwrap_or_else(|e| panic!("{name} must be a usize, got `{s}`: {e}"))
+        })
+        .unwrap_or(default)
+}
+
 fn env_u32(name: &str, default: u32) -> u32 {
     env::var(name)
         .map(|s| {
@@ -441,6 +618,43 @@ fn env_u32(name: &str, default: u32) -> u32 {
                 .unwrap_or_else(|e| panic!("{name} must be a u32, got `{s}`: {e}"))
         })
         .unwrap_or(default)
+}
+
+fn parse_u64_env_value(name: &str, value: &str) -> u64 {
+    let trimmed = value.trim();
+    if let Some(hex) = trimmed
+        .strip_prefix("0x")
+        .or_else(|| trimmed.strip_prefix("0X"))
+    {
+        u64::from_str_radix(hex, 16)
+            .unwrap_or_else(|e| panic!("{name} must be a u64, got `{value}`: {e}"))
+    } else {
+        trimmed
+            .parse::<u64>()
+            .unwrap_or_else(|e| panic!("{name} must be a u64, got `{value}`: {e}"))
+    }
+}
+
+fn env_u64(name: &str, default: u64) -> u64 {
+    env::var(name)
+        .map(|s| parse_u64_env_value(name, &s))
+        .unwrap_or(default)
+}
+
+fn env_path(name: &str) -> Option<PathBuf> {
+    env::var(name)
+        .ok()
+        .map(|s| s.trim().to_string())
+        .filter(|s| !s.is_empty())
+        .map(PathBuf::from)
+}
+
+fn opening_desc(opening_moves: &[String]) -> String {
+    if opening_moves.is_empty() {
+        String::new()
+    } else {
+        format!(" opening=[{}]", opening_moves.join(" "))
+    }
 }
 
 #[test]
@@ -472,6 +686,9 @@ fn head_to_head_vs_master() {
         .unwrap_or(0);
     let n_move_rule = env_u32("H2H_N_MOVE_RULE", 100);
     let endgame_n_move_rule = env_u32("H2H_ENDGAME_N_MOVE_RULE", 100);
+    let opening_plies = env_usize("H2H_OPENING_PLIES", 0);
+    let opening_seed = env_u64("H2H_OPENING_SEED", 0x9E37_79B9_7F4A_7C15);
+    let opening_db_path = env_path("H2H_OPENING_DB_PATH");
     let engine_options = EngineOptions {
         skill,
         move_time_secs: move_time,
@@ -484,8 +701,9 @@ fn head_to_head_vs_master() {
         endgame_n_move_rule,
         ..MillVariantOptions::default()
     };
-    let rules = MillRules::new(options.clone());
-    let game = MillGame::new(options);
+    let opening = PerfectOpening::new(opening_plies, opening_seed, opening_db_path);
+    let opening_config = opening.describe();
+    let mut referee = Referee::new(options, opening);
 
     // Mode: "vs" (current vs master, default), "self-current", "self-master".
     let mode = env::var("H2H_MODE").unwrap_or_else(|_| "vs".to_string());
@@ -501,7 +719,7 @@ fn head_to_head_vs_master() {
         let is_master = mode == "self-master";
         let label = if is_master { "master" } else { "current" };
         eprintln!(
-            "Self-play: {label} vs {label}  (rows = board side)\n  skill={skill} movetime_s={move_time} shuffling=on algo=MTD(f) games={total} ply_cap={max_plies} n_move={n_move_rule} endgame_n_move={endgame_n_move_rule}"
+            "Self-play: {label} vs {label}  (rows = board side)\n  skill={skill} movetime_s={move_time} shuffling=on algo=MTD(f) games={total} ply_cap={max_plies} n_move={n_move_rule} endgame_n_move={endgame_n_move_rule} {opening_config}"
         );
         // Two independent instances of the SAME engine (separate TTs), one
         // permanently White and one permanently Black, so the table directly
@@ -530,7 +748,7 @@ fn head_to_head_vs_master() {
             )
         };
         for i in 0..total {
-            let (res, plies) = play_game(&rules, &game, &mut ew, &mut eb, max_plies);
+            let (res, plies, opening_moves) = referee.play_game(&mut ew, &mut eb, max_plies, i);
             // A White win is a Black loss and vice versa, so every game updates
             // both rows; the White/Black Score% gap is the colour bias.
             match res {
@@ -553,8 +771,9 @@ fn head_to_head_vs_master() {
             }
             eprintln!();
             eprintln!(
-                "Game {}/{total}: White vs Black -> {res:?} ({plies} plies)",
-                i + 1
+                "Game {}/{total}: White vs Black -> {res:?} ({plies} plies){}",
+                i + 1,
+                opening_desc(&opening_moves)
             );
             print_standings(i + 1, total, &white, &black, skill, move_time);
         }
@@ -575,7 +794,7 @@ fn head_to_head_vs_master() {
         // vs mode: current vs master, alternating colours each game so the live
         // rates are not skewed by Black's structural edge until colours balance.
         eprintln!(
-            "Head-to-head: current=`{current}` vs master=`{master}`  (rows = current's colour)\n  skill={skill} movetime_s={move_time} shuffling=on algo=MTD(f) games/color={games} ply_cap={max_plies} n_move={n_move_rule} endgame_n_move={endgame_n_move_rule}\n  current_args={current_args:?} master_args={master_args:?}\n  go_current=`{go_current}` go_master=`{go_master}`"
+            "Head-to-head: current=`{current}` vs master=`{master}`  (rows = current's colour)\n  skill={skill} movetime_s={move_time} shuffling=on algo=MTD(f) games/color={games} ply_cap={max_plies} n_move={n_move_rule} endgame_n_move={endgame_n_move_rule} {opening_config}\n  current_args={current_args:?} master_args={master_args:?}\n  go_current=`{go_current}` go_master=`{go_master}`"
         );
         let mut cur = Engine::spawn(
             &current,
@@ -587,10 +806,10 @@ fn head_to_head_vs_master() {
         let mut mas = Engine::spawn(&master, &master_args, &go_master, "master", &engine_options);
         for i in 0..total {
             let current_white = i % 2 == 0;
-            let (res, plies) = if current_white {
-                play_game(&rules, &game, &mut cur, &mut mas, max_plies)
+            let (res, plies, opening_moves) = if current_white {
+                referee.play_game(&mut cur, &mut mas, max_plies, i)
             } else {
-                play_game(&rules, &game, &mut mas, &mut cur, max_plies)
+                referee.play_game(&mut mas, &mut cur, max_plies, i)
             };
             // Map the board outcome to the current engine's row for its colour.
             let idx = match (res, current_white) {
@@ -606,7 +825,7 @@ fn head_to_head_vs_master() {
             }
             eprintln!();
             eprintln!(
-                "Game {}/{total}: current={} -> {} ({plies} plies)",
+                "Game {}/{total}: current={} -> {} ({plies} plies){}",
                 i + 1,
                 if current_white { "White" } else { "Black" },
                 match idx {
@@ -614,7 +833,8 @@ fn head_to_head_vs_master() {
                     1 => "current loss",
                     2 => "draw",
                     _ => "unfinished",
-                }
+                },
+                opening_desc(&opening_moves)
             );
             print_standings(i + 1, total, &white, &black, skill, move_time);
         }

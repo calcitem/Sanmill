@@ -44,6 +44,9 @@ MOVETIME="${MOVETIME:-0}"
 MAX_PLIES="${MAX_PLIES:-160}"
 N_MOVE_RULE="${N_MOVE_RULE:-20}"
 ENDGAME_N_MOVE_RULE="${ENDGAME_N_MOVE_RULE:-20}"
+OPENING_PLIES="${OPENING_PLIES:-0}"
+OPENING_SEED="${OPENING_SEED:-0x9E3779B97F4A7C15}"
+OPENING_DB_PATH="${OPENING_DB_PATH:-$REPO_ROOT/src/ui/flutter_app/assets/databases}"
 MASTER_ENGINE="${MASTER_ENGINE:-$(default_master_engine)}"
 CURRENT_OVERRIDE="${CURRENT_ENGINE:-}"
 CURRENT_ARGS="${CURRENT_ARGS:-uci}"
@@ -78,6 +81,10 @@ Options:
       --n-move-rule N  no-capture draw threshold                  [default: 20]
       --endgame-n-move-rule N
                          endgame no-capture draw threshold        [default: 20]
+      --opening-plies N
+                         paired Perfect DB random opening plies    [default: 0]
+      --opening-seed N  seed for paired Perfect DB random openings
+      --opening-db PATH Perfect DB asset directory
       --self ENGINE     self-play ENGINE (current|master) instead of vs match
   -m, --master PATH    path to master_engine
   -c, --current PATH   path to current engine (default: freshly built tgf)
@@ -91,7 +98,8 @@ Options:
 Each option also has an environment-variable form (command-line flags win):
   GAMES, SKILL, MOVETIME (seconds), MAX_PLIES, SELF, MASTER_ENGINE,
   CURRENT_ENGINE, CURRENT_ARGS, MASTER_ARGS, CURRENT_GO, MASTER_GO,
-  N_MOVE_RULE, ENDGAME_N_MOVE_RULE, MINGW_BIN.
+  N_MOVE_RULE, ENDGAME_N_MOVE_RULE, OPENING_PLIES, OPENING_SEED,
+  OPENING_DB_PATH, MINGW_BIN.
 
 Fairness notes:
   * Depth is controlled by --skill: the master engine IGNORES UCI `go depth N`
@@ -100,6 +108,11 @@ Fairness notes:
   * --time 0 (fixed depth) is speed-independent and matches "Thinking Time 0".
     --time >0 favours the FASTER engine (master, C++); use only for a
     deliberately time-limited comparison.
+  * --opening-plies N asks the Rust Perfect DB referee for a shared opening
+    prefix per two-game colour pair.  Each pair keeps only strict DB-best
+    moves, randomises among tied choices, then plays the same prefix once with
+    current as White and once with current as Black.  The actual match search
+    still uses MTD(f) with Perfect DB disabled for both engines.
 
 Examples:
   run_head_to_head.sh                       # current vs master, skill 10, 10 games/colour
@@ -124,6 +137,12 @@ while [ $# -gt 0 ]; do
         --n-move-rule=*) N_MOVE_RULE="${1#*=}"; shift ;;
         --endgame-n-move-rule) ENDGAME_N_MOVE_RULE="$2"; shift 2 ;;
         --endgame-n-move-rule=*) ENDGAME_N_MOVE_RULE="${1#*=}"; shift ;;
+        --opening-plies) OPENING_PLIES="$2"; shift 2 ;;
+        --opening-plies=*) OPENING_PLIES="${1#*=}"; shift ;;
+        --opening-seed) OPENING_SEED="$2"; shift 2 ;;
+        --opening-seed=*) OPENING_SEED="${1#*=}"; shift ;;
+        --opening-db)   OPENING_DB_PATH="$2"; shift 2 ;;
+        --opening-db=*) OPENING_DB_PATH="${1#*=}"; shift ;;
         --self)         SELF="$2"; shift 2 ;;
         --self=*)       SELF="${1#*=}"; shift ;;
         -m|--master)    MASTER_ENGINE="$2"; shift 2 ;;
@@ -191,9 +210,13 @@ if [ "$NEED_MASTER" -eq 1 ]; then
     fi
 fi
 
-echo ">> Config: mode=$MODE  skill=$SKILL  games/colour=$GAMES  thinking_time=${MOVETIME}s  ply_cap=$MAX_PLIES  n_move=$N_MOVE_RULE  endgame_n_move=$ENDGAME_N_MOVE_RULE"
+echo ">> Config: mode=$MODE  skill=$SKILL  games/colour=$GAMES  thinking_time=${MOVETIME}s  ply_cap=$MAX_PLIES  n_move=$N_MOVE_RULE  endgame_n_move=$ENDGAME_N_MOVE_RULE  opening_plies=$OPENING_PLIES"
 [ "$NEED_CURRENT" -eq 1 ] && echo "     current = $CURRENT_ENGINE"
 [ "$NEED_MASTER" -eq 1 ] && echo "     master  = $MASTER_ENGINE"
+if [ "$OPENING_PLIES" -gt 0 ] 2>/dev/null; then
+    echo "     opening_db = $OPENING_DB_PATH"
+    echo "     opening_seed = $OPENING_SEED"
+fi
 if [ "$MOVETIME" -gt 0 ] 2>/dev/null; then
     echo "     (thinking_time>0: time-limited; favours the faster engine, master)"
 fi
@@ -210,7 +233,10 @@ H2H_MOVETIME="$MOVETIME" \
 H2H_MAX_PLIES="$MAX_PLIES" \
 H2H_N_MOVE_RULE="$N_MOVE_RULE" \
 H2H_ENDGAME_N_MOVE_RULE="$ENDGAME_N_MOVE_RULE" \
+H2H_OPENING_PLIES="$OPENING_PLIES" \
+H2H_OPENING_SEED="$OPENING_SEED" \
+H2H_OPENING_DB_PATH="$(winpath "$OPENING_DB_PATH")" \
 H2H_GO_CURRENT="$CURRENT_GO" \
 H2H_GO_MASTER="$MASTER_GO" \
-    cargo test -p tgf-mill --release --test head_to_head \
+    cargo test -p tgf-cli --release --test head_to_head \
         head_to_head_vs_master -- --ignored --nocapture
