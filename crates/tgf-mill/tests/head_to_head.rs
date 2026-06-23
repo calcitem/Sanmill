@@ -18,7 +18,9 @@
 //
 // Env vars:
 //   H2H_CURRENT    path to the current-branch UCI engine (default tgf.exe)
+//   H2H_CURRENT_ARGS extra args for current engine (default "uci")
 //   H2H_MASTER     path to the master C++ UCI engine
+//   H2H_MASTER_ARGS extra args for master/opponent engine (default empty)
 //   H2H_GAMES      games per color (default 20)
 //   H2H_SKILL      skill level (default 14)
 //   H2H_MAX_PLIES  ply cap -> over-cap counted as a maneuvering draw (default 200)
@@ -61,7 +63,7 @@ struct Engine {
 impl Engine {
     fn spawn(
         program: &str,
-        args: &[&str],
+        args: &[String],
         go: &str,
         name: &str,
         skill: u32,
@@ -410,13 +412,23 @@ fn print_standings(
     }
 }
 
+fn engine_args_from_env(name: &str, default: &str) -> Vec<String> {
+    env::var(name)
+        .unwrap_or_else(|_| default.to_string())
+        .split_whitespace()
+        .map(str::to_string)
+        .collect()
+}
+
 #[test]
 #[ignore = "head-to-head match vs master C++; set H2H_* and run with --ignored --nocapture"]
 fn head_to_head_vs_master() {
     let current = env::var("H2H_CURRENT")
         .unwrap_or_else(|_| "D:/Repo/Sanmill/target/release/tgf.exe".to_string());
+    let current_args = engine_args_from_env("H2H_CURRENT_ARGS", "uci");
     let master = env::var("H2H_MASTER")
         .unwrap_or_else(|_| "D:/Repo/Sanmill-master/Sanmill/master_engine.exe".to_string());
+    let master_args = engine_args_from_env("H2H_MASTER_ARGS", "");
     let games: usize = env::var("H2H_GAMES")
         .ok()
         .and_then(|s| s.parse().ok())
@@ -457,13 +469,27 @@ fn head_to_head_vs_master() {
         // measures the game's first/second-player (White/Black) bias.
         let (mut ew, mut eb) = if is_master {
             (
-                Engine::spawn(&master, &[], &go_master, "white", skill, move_time),
-                Engine::spawn(&master, &[], &go_master, "black", skill, move_time),
+                Engine::spawn(&master, &master_args, &go_master, "white", skill, move_time),
+                Engine::spawn(&master, &master_args, &go_master, "black", skill, move_time),
             )
         } else {
             (
-                Engine::spawn(&current, &["uci"], &go_current, "white", skill, move_time),
-                Engine::spawn(&current, &["uci"], &go_current, "black", skill, move_time),
+                Engine::spawn(
+                    &current,
+                    &current_args,
+                    &go_current,
+                    "white",
+                    skill,
+                    move_time,
+                ),
+                Engine::spawn(
+                    &current,
+                    &current_args,
+                    &go_current,
+                    "black",
+                    skill,
+                    move_time,
+                ),
             )
         };
         for i in 0..total {
@@ -512,10 +538,24 @@ fn head_to_head_vs_master() {
         // vs mode: current vs master, alternating colours each game so the live
         // rates are not skewed by Black's structural edge until colours balance.
         eprintln!(
-            "Head-to-head: current=`{current}` vs master=`{master}`  (rows = current's colour)\n  skill={skill} movetime_s={move_time} shuffling=on algo=MTD(f) games/color={games} ply_cap={max_plies}\n  go_current=`{go_current}` go_master=`{go_master}`"
+            "Head-to-head: current=`{current}` vs master=`{master}`  (rows = current's colour)\n  skill={skill} movetime_s={move_time} shuffling=on algo=MTD(f) games/color={games} ply_cap={max_plies}\n  current_args={current_args:?} master_args={master_args:?}\n  go_current=`{go_current}` go_master=`{go_master}`"
         );
-        let mut cur = Engine::spawn(&current, &["uci"], &go_current, "current", skill, move_time);
-        let mut mas = Engine::spawn(&master, &[], &go_master, "master", skill, move_time);
+        let mut cur = Engine::spawn(
+            &current,
+            &current_args,
+            &go_current,
+            "current",
+            skill,
+            move_time,
+        );
+        let mut mas = Engine::spawn(
+            &master,
+            &master_args,
+            &go_master,
+            "master",
+            skill,
+            move_time,
+        );
         for i in 0..total {
             let current_white = i % 2 == 0;
             let (res, plies) = if current_white {

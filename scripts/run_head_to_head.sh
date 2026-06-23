@@ -44,6 +44,10 @@ MOVETIME="${MOVETIME:-0}"
 MAX_PLIES="${MAX_PLIES:-160}"
 MASTER_ENGINE="${MASTER_ENGINE:-$(default_master_engine)}"
 CURRENT_OVERRIDE="${CURRENT_ENGINE:-}"
+CURRENT_ARGS="${CURRENT_ARGS:-uci}"
+MASTER_ARGS="${MASTER_ARGS:-}"
+CURRENT_GO="${CURRENT_GO:-go depth 0}"
+MASTER_GO="${MASTER_GO:-go}"
 MINGW_BIN="${MINGW_BIN:-}"
 SELF="${SELF:-}"
 
@@ -72,12 +76,16 @@ Options:
       --self ENGINE     self-play ENGINE (current|master) instead of vs match
   -m, --master PATH    path to master_engine
   -c, --current PATH   path to current engine (default: freshly built tgf)
+      --current-args A extra args for current engine                  [default: uci]
+      --master-args A  extra args for master/opponent engine          [default: empty]
+      --current-go CMD go command for current engine             [default: go depth 0]
+      --master-go CMD  go command for master/opponent engine     [default: go]
       --mingw-bin DIR   dir holding MinGW runtime DLLs to copy next to master
   -h, --help           show this help and exit
 
 Each option also has an environment-variable form (command-line flags win):
   GAMES, SKILL, MOVETIME (seconds), MAX_PLIES, SELF, MASTER_ENGINE,
-  CURRENT_ENGINE, MINGW_BIN.
+  CURRENT_ENGINE, CURRENT_ARGS, MASTER_ARGS, CURRENT_GO, MASTER_GO, MINGW_BIN.
 
 Fairness notes:
   * Depth is controlled by --skill: the master engine IGNORES UCI `go depth N`
@@ -112,6 +120,14 @@ while [ $# -gt 0 ]; do
         --master=*)     MASTER_ENGINE="${1#*=}"; shift ;;
         -c|--current)   CURRENT_OVERRIDE="$2"; shift 2 ;;
         --current=*)    CURRENT_OVERRIDE="${1#*=}"; shift ;;
+        --current-args) CURRENT_ARGS="$2"; shift 2 ;;
+        --current-args=*) CURRENT_ARGS="${1#*=}"; shift ;;
+        --master-args)  MASTER_ARGS="$2"; shift 2 ;;
+        --master-args=*) MASTER_ARGS="${1#*=}"; shift ;;
+        --current-go)   CURRENT_GO="$2"; shift 2 ;;
+        --current-go=*) CURRENT_GO="${1#*=}"; shift ;;
+        --master-go)    MASTER_GO="$2"; shift 2 ;;
+        --master-go=*)  MASTER_GO="${1#*=}"; shift ;;
         --mingw-bin)    MINGW_BIN="$2"; shift 2 ;;
         --mingw-bin=*)  MINGW_BIN="${1#*=}"; shift ;;
         *) echo "Unknown option: $1" >&2; echo "Try '$0 -h' for help." >&2; exit 2 ;;
@@ -174,13 +190,15 @@ fi
 
 cd "$REPO_ROOT"
 H2H_CURRENT="$(winpath "$CURRENT_ENGINE")" \
+H2H_CURRENT_ARGS="$CURRENT_ARGS" \
 H2H_MASTER="$(winpath "$MASTER_ENGINE")" \
+H2H_MASTER_ARGS="$MASTER_ARGS" \
 H2H_MODE="$MODE" \
 H2H_SKILL="$SKILL" \
 H2H_GAMES="$GAMES" \
 H2H_MOVETIME="$MOVETIME" \
 H2H_MAX_PLIES="$MAX_PLIES" \
-H2H_GO_CURRENT="go depth 0" \
-H2H_GO_MASTER="go" \
+H2H_GO_CURRENT="$CURRENT_GO" \
+H2H_GO_MASTER="$MASTER_GO" \
     cargo test -p tgf-mill --release --test head_to_head \
         head_to_head_vs_master -- --ignored --nocapture
