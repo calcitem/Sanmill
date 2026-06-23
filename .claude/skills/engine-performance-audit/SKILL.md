@@ -473,6 +473,21 @@ Conservative, node-preserving candidates:
   live fields explicitly.  Revisit only if profiling shows undo stores remain
   material after lower-risk movegen, move-order, and TT work; moving live state
   into a scalar substructure would touch many more invariants and fixtures.
+
+  Follow-up checked on 2026-06-23: direct board-delta capture by action kind
+  was rejected.  The prototype bypassed the generic `push_cell` de-dup path
+  for canonical Place/Remove and Move actions while preserving the generic
+  fallback for malformed diagnostics.  It kept bestmove, score, and node
+  counts identical, but same-run A/B against the previous local binary was not
+  a win: `start` d12 repeat=5 `1.028x`, `reduced_material` d12 repeat=5
+  `0.982x`, `moving_loop` d18 repeat=5 `1.232x` on the tiny/noisy 137k-node
+  case, and `capture_pending` d18 repeat=5 `1.051x`.  Theory after
+  measurement: the old two-cell generic path is already tiny, while adding
+  action-kind branches and extra code shape can hurt I-cache/branch behavior.
+  Do not reintroduce this exact board-delta classifier unless a future profile
+  shows `MillBoardUndo::capture` itself as a clear self-time hotspot.  Raw
+  rejected CSVs: `/tmp/sanmill-perf/undo_delta_fastpath_start_reduced.csv` and
+  `/tmp/sanmill-perf/undo_delta_fastpath_moving_capture.csv`.
 - Reduce repetition-history allocation and cloning.  `MillState::key_history`
   and root repetition context still use `Vec<u64>`, while master keeps the
   search path in a fixed `Sanmill::Stack<Position, 128>` and Stockfish owns
@@ -971,21 +986,39 @@ Conservative, node-preserving candidates:
   temporary `[i32; 72]` score array beside a 72-action stack list.  A
   Mill-specific packed move list can use a narrower score lane if assertions
   prove no comparison-changing saturation occurs.
-- [x] Short-circuit all-zero standard move-order score lists: CHECKED
-  2026-06-21, rejected.  The prototype detected standard placing/moving cases
-  where neither side can form or block a mill, wrote zero scores into the
-  existing buffer, and returned "already sorted" without inspecting each
-  action.  It preserved bestmove, score, and nodes, but A/B against `c61a47060`
-  was slower or flat: `start` d12 `1.076x`, `reduced_material` d12 `1.093x`,
-  `moving_loop` d18 `1.022x`, and `capture_pending` d18 `1.011x`.  Raw CSVs:
+- [x] Short-circuit all-zero standard move-order score lists.  The first
+  2026-06-21 prototype was rejected because it still wrote a zero score for
+  every action before returning "already sorted"; it preserved bestmove, score,
+  and nodes, but A/B against `c61a47060` was slower or flat (`start` d12
+  `1.076x`, `reduced_material` d12 `1.093x`, `moving_loop` d18 `1.022x`,
+  `capture_pending` d18 `1.011x`).  Do not reintroduce that exact shape.  Raw
+  rejected CSVs:
   `/tmp/sanmill-perf/search_zero_score_fast_path_vs_c61a_primary.csv` and
   `/tmp/sanmill-perf/search_zero_score_fast_path_vs_c61a_moving.csv`.
 
-  Theory after measurement: the existing per-action loop is simple enough for
-  the compiler, while the extra early branches and helper call change the hot
-  function shape without removing a dominant cost.  Revisit only together with
-  a packed score/action list, where skipping per-action `Action` loads may
-  become a real saving.
+  Re-checked on 2026-06-23 with the cheaper shape: when standard placing has
+  `side_piece_count < 2` and `opponent_piece_count < 2`, or standard moving has
+  `side_piece_count < 3` and `opponent_piece_count < 2`, no generated action can
+  receive a static ordering score.  Return `false` immediately and do not touch
+  the score buffer.  This removes the per-action score writes that made the
+  earlier prototype pointless while keeping stable generated order for the
+  all-zero case.
+
+  Fixed-depth A/B against clean `086f32c83` preserved bestmove, score, and node
+  counts for all checked cases.  Median ratios on the noisy Linux/KVM host:
+  `start` d12 repeat=5 `0.916x`, `reduced_material` d12 repeat=5 `0.969x`,
+  `moving_loop` d18 repeat=5 `0.926x`, and `capture_pending` d18 repeat=9
+  `0.986x`.  A first `capture_pending` repeat=5 looked like `1.041x`, but the
+  repeat=9 rerun reversed it, so treat sub-5% deltas on this host as noise.
+  Raw accepted CSVs:
+  `/tmp/sanmill-perf/zero_score_skip_start_reduced.csv`,
+  `/tmp/sanmill-perf/zero_score_skip_moving_capture.csv`, and
+  `/tmp/sanmill-perf/zero_score_skip_capture_r9.csv`.
+
+  `tests/search_perf_baseline.toml` was intentionally not re-locked in this
+  audit because the current KVM wall-clock spread was too wide: the change is
+  accepted on same-run A/B evidence, but a new official baseline should be
+  collected with a larger repeat count or on a more stable host.
 - Preserve master-style debug hooks without hot-path branches.  Legacy
   `search.cpp` has many subtree node-count diagnostics that helped isolate
   parity mismatches, but they are hard-coded branches.  Rust diagnostics should
@@ -1194,14 +1227,51 @@ Behavior-changing or high-risk experiments:
   for each measured run, so it hides benefits that come from reusing process
   state such as TT allocation. Pair it with a same-process repeated-search
   `perf stat` run and inspect user/sys time when auditing allocation fixes.
+- Recent search-apply fast paths, 2026-06-23:
+  * `MillWorkbench::do_move` now calls a search-only apply entry.  External
+    FRB/kernel apply still checks out-of-range nodes, while generated search
+    actions use a debug assertion and skip the release boundary guard at every
+    tree edge.  A/B against the previous local binary preserved bestmove,
+    score, and nodes.  Median ratios: `start` d12 repeat=9 `0.973x`,
+    `reduced_material` d12 repeat=5 `0.959x`, `capture_pending` d18 repeat=5
+    `0.976x`, and `moving_loop` d18 repeat=5 `1.144x` on the tiny/noisy
+    137k-node case.  Raw CSVs:
+    `/tmp/sanmill-perf/search_apply_fastpath_start_r9.csv`,
+    `/tmp/sanmill-perf/search_apply_fastpath_start_reduced.csv`, and
+    `/tmp/sanmill-perf/search_apply_fastpath_moving_capture.csv`.
+  * Standard Place/Move apply fast paths now feed the incremental Zobrist
+    update with known old piece values from movegen invariants instead of
+    reloading board cells in release.  Debug assertions keep the invariants
+    visible.  A/B preserved bestmove, score, and nodes.  Median ratios:
+    `start` d12 `0.934x`, `reduced_material` d12 `0.882x`,
+    `moving_loop` d18 `0.970x`, and `capture_pending` d18 `0.961x`.
+    Raw CSVs:
+    `/tmp/sanmill-perf/standard_apply_constants_start_reduced.csv` and
+    `/tmp/sanmill-perf/standard_apply_constants_moving_capture.csv`.
+  * A narrow standard Remove search fast path is accepted only for the common
+    default-rule case: exactly one opponent live piece is removed, no delayed
+    marks or extra capture state are active, and the turn flips unless the
+    removal ends the game.  It is intentionally not a general Remove rewrite.
+    A/B preserved bestmove, score, and nodes.  Median ratios:
+    `start` d12 repeat=5 `0.950x`, `reduced_material` d12 repeat=11 `0.999x`,
+    `moving_loop` d18 repeat=5 `0.846x`, and `capture_pending` d18 repeat=5
+    `0.928x`.  Raw CSVs:
+    `/tmp/sanmill-perf/standard_remove_fastpath_start_reduced.csv`,
+    `/tmp/sanmill-perf/standard_remove_fastpath_reduced_r11.csv`, and
+    `/tmp/sanmill-perf/standard_remove_fastpath_moving_capture.csv`.
+  * Direct counter decrements inside the standard fast paths replace
+    `saturating_sub(1)` where generated legal actions prove the count is
+    non-zero.  Keep this limited to the fast paths; complex variants still use
+    the generic defensive apply code.  A/B preserved bestmove, score, and
+    nodes.  Median ratios: `start` d12 `0.953x`, `reduced_material` d12
+    `1.018x`, `moving_loop` d18 `1.125x` on the tiny/noisy case, and
+    `capture_pending` d18 `0.976x`.  Raw CSVs:
+    `/tmp/sanmill-perf/direct_fastpath_decrements_start_reduced.csv` and
+    `/tmp/sanmill-perf/direct_fastpath_decrements_moving_capture.csv`.
 - Recent prefetch retest after standard apply fast paths: both `first` and
   `all` preserved nodes/bestmove on the tested matrix, but worsened
   `placing8` / `capture_pending` and did not improve `moving_entry d15`.
   Do not enable either mode by default from a single moving-position win.
-- Standard Remove fast path experiment: a narrow search-only remove fast path
-  preserved node and self-play parity, but did not produce a stable timing win
-  and sometimes worsened `moving_entry d15`. Do not keep or reintroduce it
-  unless a future profile shows remove apply itself as the dominant bottleneck.
 - Standard move-generation branch-hoist experiment: hoisting `can_fly` /
   `has_diagonal_lines` out of the per-piece loop preserved parity but did not
   improve the standard matrix. Avoid making the generator more duplicated for

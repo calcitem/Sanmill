@@ -243,9 +243,12 @@ impl MillRules {
             return false;
         }
         let to = action.to_node as usize;
-        let old_to_piece = state.board[to];
+        // Generated standard Place actions always target an empty point.
+        // Keep the board read as a debug invariant only; the release hot path
+        // can feed the incremental key with the known old value.
+        let old_to_piece = 0;
         debug_assert!(to < 24);
-        debug_assert_eq!(old_to_piece, 0);
+        debug_assert_eq!(state.board[to], old_to_piece);
         debug_assert!(state.pending_removals == [0, 0]);
         debug_assert!(!state.mill_available_at_removal());
         debug_assert!(super::zobrist::capture_state_is_empty(
@@ -259,7 +262,8 @@ impl MillRules {
 
         let side = state.side_to_move as usize;
         place_live_piece(state, to, side);
-        state.pieces_in_hand[side] = state.pieces_in_hand[side].saturating_sub(1);
+        debug_assert!(state.pieces_in_hand[side] > 0);
+        state.pieces_in_hand[side] -= 1;
         state.pieces_on_board[side] += 1;
         update_mobility_place(state, &self.options, to, side);
         state.move_number += 1;
@@ -326,11 +330,13 @@ impl MillRules {
         }
         let from = action.from_node as usize;
         let to = action.to_node as usize;
-        let old_from_piece = state.board[from];
-        let old_to_piece = state.board[to];
-        debug_assert_eq!(old_from_piece, state.side_to_move + 1);
-        debug_assert_eq!(old_to_piece, 0);
-        debug_assert_eq!(state.board[to], 0);
+        // Generated standard Move actions always move the active side's live
+        // piece into an empty point.  Avoid two release board loads and keep
+        // them as debug-only invariants.
+        let old_from_piece = old_side_to_move + 1;
+        let old_to_piece = 0;
+        debug_assert_eq!(state.board[from], old_from_piece);
+        debug_assert_eq!(state.board[to], old_to_piece);
         debug_assert!(state.pending_removals == [0, 0]);
         debug_assert!(!state.mill_available_at_removal());
         debug_assert_eq!(state.delayed_marked_pieces, 0);
@@ -378,6 +384,98 @@ impl MillRules {
         true
     }
 
+    #[inline]
+    fn try_apply_standard_remove_search_fast_path(
+        &self,
+        state: &mut MillState,
+        action: Action,
+    ) -> bool {
+        if action.kind_tag != MillActionKind::Remove as i16
+            || action.from_node != -1
+            || !self.standard_fast_path
+            || state.delayed_marked_pieces != 0
+            || !state.mill_available_at_removal()
+            || state.stalemate_removing()
+            || state.both_stalemate_removing()
+            || state.board_full_removing()
+        {
+            return false;
+        }
+
+        let old_key = state.zobrist_key;
+        if old_key == 0 {
+            return false;
+        }
+        let old_side_to_move = state.side_to_move;
+        if !(0..2).contains(&old_side_to_move) || !(0..24).contains(&action.to_node) {
+            return false;
+        }
+        let side = old_side_to_move as usize;
+        if state.pending_removals[side] != 1 || state.remove_own_piece(side) {
+            return false;
+        }
+        if !super::zobrist::capture_state_is_empty(
+            state.custodian_targets,
+            state.custodian_count,
+            state.intervention_targets,
+            state.intervention_count,
+            state.leap_targets,
+            state.leap_count,
+        ) {
+            return false;
+        }
+
+        // This fast path covers the common default-rule mill removal only:
+        // remove exactly one opponent live piece, clear the removal state,
+        // and hand the turn to the opponent unless the removal ends the game.
+        let to = action.to_node as usize;
+        let opponent = side ^ 1;
+        let old_to_piece = opponent as i8 + 1;
+        debug_assert_eq!(state.board[to], old_to_piece);
+
+        update_mobility_remove(state, &self.options, to);
+        clear_live_piece(state, to, opponent);
+        debug_assert!(state.pieces_on_board[opponent] > 0);
+        state.pieces_on_board[opponent] -= 1;
+        state.pending_removals[side] = 0;
+        state.set_mill_available_at_removal(false);
+        state.ply_since_capture = 0;
+        clear_key_history(state);
+
+        let pieces_total =
+            u32::from(state.pieces_on_board[opponent]) + u32::from(state.pieces_in_hand[opponent]);
+        if pieces_total < u32::from(self.options.pieces_at_least_count) {
+            state.phase = MillPhase::GameOver;
+            state.winner = old_side_to_move;
+            state.outcome_reason = MillOutcomeReason::LoseFewerThanThree;
+            state.side_to_move = -1;
+        } else {
+            state.side_to_move ^= 1;
+            maybe_transition_to_moving(state, &self.options);
+            sync_phase_with_active_hand(state);
+            maybe_finish_full_board(state, &self.options);
+            sync_action_state(state);
+        }
+
+        self.maybe_handle_stalemate(state);
+        state.key_history_len = state.key_history.len();
+        state.zobrist_key = super::zobrist::key_after_apply_from_changed_squares(
+            old_key,
+            old_side_to_move,
+            0,
+            old_to_piece,
+            state,
+            action.from_node,
+            action.to_node,
+        );
+        debug_assert_eq!(
+            state.zobrist_key,
+            super::zobrist::full_state_key(state),
+            "standard remove fast path Zobrist key diverged from full_state_key",
+        );
+        true
+    }
+
     /// In-place core of [`GameRules::apply`].
     ///
     /// Applies `action` by mutating `state_out` directly, skipping the
@@ -393,23 +491,40 @@ impl MillRules {
         action: Action,
         adjudicate_repetition: bool,
     ) {
-        self.apply_to_state_impl(state_out, action, adjudicate_repetition);
+        if !is_action_within_board_bounds(&action) {
+            return;
+        }
+        self.apply_to_state_unchecked(state_out, action, adjudicate_repetition);
+    }
+
+    /// Search-tree apply path for actions generated by this engine.
+    ///
+    /// External FRB/kernel callers still use [`Self::apply_to_state`],
+    /// which rejects out-of-range actions without indexing the board.  The
+    /// search hot path only consumes actions emitted by Mill movegen, so an
+    /// out-of-range node is an invariant violation.  Use an assertion here
+    /// instead of a release fallback to keep that bug visible in debug builds
+    /// and avoid paying the boundary guard at every searched edge.
+    pub(super) fn apply_search_to_state(&self, state_out: &mut MillState, action: Action) {
+        debug_assert!(
+            is_action_within_board_bounds(&action),
+            "search generated an out-of-range Mill action"
+        );
+        self.apply_to_state_unchecked(state_out, action, false);
     }
 
     #[allow(clippy::needless_borrow)]
-    fn apply_to_state_impl(
+    fn apply_to_state_unchecked(
         &self,
         state_out: &mut MillState,
         action: Action,
         adjudicate_repetition: bool,
     ) {
-        if !is_action_within_board_bounds(&action) {
-            return;
-        }
         let mut state = state_out;
         if self.try_apply_standard_place_fast_path(&mut state, action)
             || (!adjudicate_repetition
-                && self.try_apply_standard_move_search_fast_path(&mut state, action))
+                && (self.try_apply_standard_move_search_fast_path(&mut state, action)
+                    || self.try_apply_standard_remove_search_fast_path(&mut state, action)))
         {
             return;
         }

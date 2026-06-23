@@ -83,7 +83,7 @@ impl Workbench for MillWorkbench {
         // The pre-root repetition history is kept unchanged; master stores
         // searched path nodes only in `ss`, which `Searcher` mirrors with its
         // own repetition stack.
-        self.rules.apply_to_state(&mut self.state, a, false);
+        self.rules.apply_search_to_state(&mut self.state, a);
         self.undo_stack.push(undo);
     }
 
@@ -571,6 +571,10 @@ impl<'a> MillMoveOrderScorer<'a> {
     ) -> bool {
         let can_form_mill = self.side_piece_count >= 3;
         let can_block_mill = self.opponent_piece_count >= 2;
+        // No generated standard moving action can receive a static score.
+        if !can_form_mill && !can_block_mill {
+            return false;
+        }
         let mut block_scores = [STANDARD_BLOCK_SCORE_UNKNOWN; 24];
 
         let mut previous_score = 0_i32;
@@ -613,34 +617,36 @@ impl<'a> MillMoveOrderScorer<'a> {
     ) -> bool {
         let can_form_mill = self.side_piece_count >= 2;
         let can_block_mill = self.opponent_piece_count >= 2;
+        // Early placing plies have only zero-valued static ordering scores.
+        if !can_form_mill && !can_block_mill {
+            return false;
+        }
         let mut node_scores = [0_i32; 24];
 
-        if can_form_mill || can_block_mill {
-            for (to, score) in node_scores.iter_mut().enumerate() {
-                let (our_mills, their_mills) = if can_form_mill && can_block_mill {
-                    potential_mills_count_standard_unrestricted_pair(
-                        self.side_bb,
-                        self.opponent_bb,
-                        to,
-                        None,
-                    )
-                } else if can_form_mill {
-                    (
-                        potential_mills_count_standard_unrestricted(self.side_bb, to, None),
-                        0,
-                    )
-                } else {
-                    (
-                        0,
-                        potential_mills_count_standard_unrestricted(self.opponent_bb, to, None),
-                    )
-                };
-                *score = if our_mills > 0 {
-                    RATING_ONE_MILL * our_mills as i32
-                } else {
-                    RATING_BLOCK_ONE_MILL * their_mills as i32
-                };
-            }
+        for (to, score) in node_scores.iter_mut().enumerate() {
+            let (our_mills, their_mills) = if can_form_mill && can_block_mill {
+                potential_mills_count_standard_unrestricted_pair(
+                    self.side_bb,
+                    self.opponent_bb,
+                    to,
+                    None,
+                )
+            } else if can_form_mill {
+                (
+                    potential_mills_count_standard_unrestricted(self.side_bb, to, None),
+                    0,
+                )
+            } else {
+                (
+                    0,
+                    potential_mills_count_standard_unrestricted(self.opponent_bb, to, None),
+                )
+            };
+            *score = if our_mills > 0 {
+                RATING_ONE_MILL * our_mills as i32
+            } else {
+                RATING_BLOCK_ONE_MILL * their_mills as i32
+            };
         }
 
         let mut previous_score = 0_i32;
