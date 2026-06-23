@@ -33,10 +33,12 @@
 // only used when manually diagnosing search/eval divergences against another
 // engine.  They never run during a normal game, so they add no overhead to the
 // standard position/go/bestmove path used by the head-to-head harness.
+// Build with -DSANMILL_SEARCH_DIAGNOSTICS=1 to include node counters.
 #include "evaluate.h"
 #include "position.h"
 #include "search.h"
 #include "movegen.h"
+#include "movepick.h"
 #include "tt.h"
 #include <algorithm>
 #include <charconv>
@@ -305,6 +307,133 @@ void UCI::loop(int argc, char *argv[])
             if (flog)
                 std::fclose(flog);
             sync_cout << "valuevec done depth=" << childDepth << sync_endl;
+        } else if (token == "key") {
+            sync_cout << "key " << static_cast<uint32_t>(pos->key())
+                      << sync_endl;
+        } else if (token == "hist") {
+            const Key key = pos->key();
+            const auto count = std::count(posKeyHistory.begin(),
+                                          posKeyHistory.end(), key);
+            sync_cout << "hist key=" << static_cast<uint32_t>(key)
+                      << " len=" << posKeyHistory.size()
+                      << " current_count=" << count << sync_endl;
+        } else if (token == "moves") {
+            std::ostringstream movesOut;
+            movesOut << "moves";
+            for (const auto &mm : MoveList<LEGAL>(*pos)) {
+                movesOut << " " << UCI::move(mm);
+            }
+            sync_cout << movesOut.str() << sync_endl;
+        }
+        // `rootprobe [depth] [beta...]` runs one or more root zero-window
+        // probes while preserving the TT between probes.  It mirrors the root
+        // body of Search::search and prints each searched root move.
+        else if (token == "rootprobe") {
+            int d = 15;
+            string dtok;
+            if (is >> dtok)
+                parse_optional_int(dtok, d);
+            std::vector<int> betas;
+            string btok;
+            while (is >> btok) {
+                int beta = 0;
+                parse_optional_int(btok, beta);
+                betas.push_back(beta);
+            }
+            if (betas.empty())
+                betas.push_back(0);
+
+            searchEngine.beginNewSearch(pos);
+#ifdef TRANSPOSITION_TABLE_ENABLE
+            TranspositionTable::clear();
+#endif
+            const std::string savedFen = pos->fen();
+            for (int betaInt : betas) {
+                pos->set(savedFen);
+                Sanmill::Stack<Position> ssrp;
+                Value alpha = static_cast<Value>(betaInt - 1);
+                const Value beta = static_cast<Value>(betaInt);
+                const Value oldAlpha = alpha;
+                Value bestValue = -VALUE_INFINITE;
+                Move bestMove = MOVE_NONE;
+                Move bestLocal = MOVE_NONE;
+                const Key rootKey = pos->key();
+                MovePicker mp(*pos, MOVE_NONE);
+                (void)mp.next_move<LEGAL>();
+                const int moveCount = mp.move_count();
+                for (int i = 0; i < moveCount; i++) {
+#if SANMILL_SEARCH_DIAGNOSTICS
+                    const auto nodesBefore = Search::nodes();
+#endif
+                    ssrp.push(*pos);
+                    const Color before = pos->side_to_move();
+                    const Move move = mp.moves[i].move;
+                    pos->do_move(move);
+                    const Color after = pos->side_to_move();
+                    const Value value = (after != before) ?
+                                            static_cast<Value>(-Search::search(
+                                                searchEngine, pos, ssrp,
+                                                static_cast<Depth>(d - 1),
+                                                static_cast<Depth>(d),
+                                                static_cast<Value>(-beta),
+                                                static_cast<Value>(-alpha),
+                                                bestMove)) :
+                                            Search::search(
+                                                searchEngine, pos, ssrp,
+                                                static_cast<Depth>(d - 1),
+                                                static_cast<Depth>(d), alpha,
+                                                beta, bestMove);
+                    pos->undo_move(ssrp);
+#if SANMILL_SEARCH_DIAGNOSTICS
+                    const auto actionNodes = Search::nodes() - nodesBefore;
+#endif
+                    bool cutoff = false;
+                    if (value > bestValue) {
+                        bestValue = value;
+                        if (value > alpha) {
+                            bestMove = move;
+                            bestLocal = move;
+                            if (value >= beta) {
+                                cutoff = true;
+                            } else {
+                                alpha = value;
+                            }
+                        }
+                    }
+                    sync_cout << "  rootmove " << UCI::move(move)
+                              << " value=" << static_cast<int>(value)
+#if SANMILL_SEARCH_DIAGNOSTICS
+                              << " nodes=" << actionNodes
+#endif
+                              << " cutoff=" << (cutoff ? "true" : "false")
+                              << sync_endl;
+                    if (cutoff)
+                        break;
+                }
+#ifdef TRANSPOSITION_TABLE_ENABLE
+                Bound bound = BOUND_EXACT;
+                if (bestValue <= oldAlpha)
+                    bound = BOUND_UPPER;
+                else if (bestValue >= beta)
+                    bound = BOUND_LOWER;
+                TranspositionTable::save(bestValue, static_cast<Depth>(d),
+                                         bound, rootKey
+#ifdef TT_MOVE_ENABLE
+                                         ,
+                                         bestLocal
+#endif
+                );
+#endif
+                sync_cout << "rootprobe depth=" << d << " beta=" << betaInt
+                          << " value=" << static_cast<int>(bestValue)
+                          << " bestmove " << UCI::move(bestMove)
+#if SANMILL_SEARCH_DIAGNOSTICS
+                          << " nodes " << Search::nodes()
+#endif
+                          << sync_endl;
+                (void)bestLocal;
+            }
+            pos->set(savedFen);
         }
         // `gomtdf [depth]` runs an explicit MTD(f) loop at a fixed depth,
         // mirroring the engine's per-move fake-clean TT handling, and logs
@@ -333,7 +462,14 @@ void UCI::loop(int argc, char *argv[])
                 sync_cout << "  mtdf-iter " << it++
                           << " beta=" << static_cast<int>(beta)
                           << " g=" << static_cast<int>(g)
-                          << " best=" << UCI::move(bm) << sync_endl;
+                          << " best=" << UCI::move(bm)
+#if SANMILL_SEARCH_DIAGNOSTICS
+                          << " nodes=" << Search::nodes()
+                          << " repcuts=" << Search::repetition_cuts()
+                          << " tthits=" << Search::tt_hits()
+                          << " ttmisses=" << Search::tt_misses()
+#endif
+                          << sync_endl;
                 if (g < beta) {
                     upper = g;
                 } else {
@@ -342,7 +478,11 @@ void UCI::loop(int argc, char *argv[])
             }
             sync_cout << "gomtdf depth=" << d
                       << " value=" << static_cast<int>(g) << " bestmove "
-                      << UCI::move(bm) << sync_endl;
+                      << UCI::move(bm)
+#if SANMILL_SEARCH_DIAGNOSTICS
+                      << " nodes " << Search::nodes()
+#endif
+                      << sync_endl;
         }
         // `goab [depth]` runs a single plain alpha-beta search at a fixed
         // depth with a full window and a freshly cleared TT.
@@ -362,7 +502,11 @@ void UCI::loop(int argc, char *argv[])
                                            static_cast<Depth>(d),
                                            -VALUE_INFINITE, VALUE_INFINITE, bm);
             sync_cout << "goab depth=" << d << " value=" << static_cast<int>(v)
-                      << " bestmove " << UCI::move(bm) << sync_endl;
+                      << " bestmove " << UCI::move(bm)
+#if SANMILL_SEARCH_DIAGNOSTICS
+                      << " nodes " << Search::nodes()
+#endif
+                      << sync_endl;
         }
         // `mobdiff` compares the incrementally tracked mobility difference with
         // a full recalculation, to catch incremental-update drift.

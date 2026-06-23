@@ -6,6 +6,7 @@
 #ifndef SEARCH_H_INCLUDED
 #define SEARCH_H_INCLUDED
 
+#include <cstdint>
 #include <vector>
 
 #include "endgame.h"
@@ -13,6 +14,10 @@
 #include "types.h"
 #include "misc.h"
 #include "stack.h"
+
+#ifndef SANMILL_SEARCH_DIAGNOSTICS
+#define SANMILL_SEARCH_DIAGNOSTICS 0
+#endif
 
 #ifdef CYCLE_STAT
 #include "stopwatch.h"
@@ -26,6 +31,11 @@ namespace Search {
 
 void init() noexcept;
 void clear();
+void reset_nodes();
+uint64_t nodes();
+uint64_t repetition_cuts();
+uint64_t tt_hits();
+uint64_t tt_misses();
 
 // Search algorithms
 Value MTDF(SearchEngine &searchEngine, Position *pos,

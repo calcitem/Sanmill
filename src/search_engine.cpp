@@ -63,6 +63,9 @@ void SearchEngine::emitCommand()
 
     ss << "info score " << static_cast<int>(outputValue) << aiMoveTypeStr
        << " bestmove " << bestMoveString;
+#if SANMILL_SEARCH_DIAGNOSTICS
+    ss << " nodes " << Search::nodes();
+#endif
 
 #ifdef QT_GUI_LIB
     // If you want to send a signal to Qt
@@ -710,6 +713,7 @@ uint64_t SearchEngine::beginNewSearch(Position *p)
     currentSearchId.store(newId, std::memory_order_relaxed);
 
     searchAborted.store(false, std::memory_order_relaxed);
+    Search::reset_nodes();
 
     // Initialize search start time for timeout checks
     searchStartTime = now();

@@ -21,6 +21,42 @@
 using Eval::evaluate;
 using std::string;
 
+namespace {
+
+#if SANMILL_SEARCH_DIAGNOSTICS
+uint64_t gSearchNodes = 0;
+uint64_t gRepetitionCuts = 0;
+uint64_t gTtHits = 0;
+uint64_t gTtMisses = 0;
+
+inline void count_node()
+{
+    ++gSearchNodes;
+}
+
+inline void count_repetition_cut()
+{
+    ++gRepetitionCuts;
+}
+
+inline void count_tt_hit()
+{
+    ++gTtHits;
+}
+
+inline void count_tt_miss()
+{
+    ++gTtMisses;
+}
+#else
+inline void count_node() { }
+inline void count_repetition_cut() { }
+inline void count_tt_hit() { }
+inline void count_tt_miss() { }
+#endif
+
+} // namespace
+
 /// Search::init() is called at startup
 void Search::init() noexcept { }
 
@@ -34,6 +70,52 @@ void Search::clear()
 #endif
 }
 
+void Search::reset_nodes()
+{
+#if SANMILL_SEARCH_DIAGNOSTICS
+    gSearchNodes = 0;
+    gRepetitionCuts = 0;
+    gTtHits = 0;
+    gTtMisses = 0;
+#endif
+}
+
+uint64_t Search::nodes()
+{
+#if SANMILL_SEARCH_DIAGNOSTICS
+    return gSearchNodes;
+#else
+    return 0;
+#endif
+}
+
+uint64_t Search::repetition_cuts()
+{
+#if SANMILL_SEARCH_DIAGNOSTICS
+    return gRepetitionCuts;
+#else
+    return 0;
+#endif
+}
+
+uint64_t Search::tt_hits()
+{
+#if SANMILL_SEARCH_DIAGNOSTICS
+    return gTtHits;
+#else
+    return 0;
+#endif
+}
+
+uint64_t Search::tt_misses()
+{
+#if SANMILL_SEARCH_DIAGNOSTICS
+    return gTtMisses;
+#else
+    return 0;
+#endif
+}
+
 vector<Key> posKeyHistory;
 
 // Quiescence Search
@@ -42,6 +124,8 @@ Value Search::qsearch(SearchEngine &searchEngine, Position *pos,
                       Depth originDepth, Value alpha, Value beta,
                       Move &bestMove)
 {
+    count_node();
+
     // Evaluate the current position
     Value stand_pat = Eval::evaluate(*pos);
 
@@ -141,6 +225,8 @@ Value Search::search(SearchEngine &searchEngine, Position *pos,
                      Sanmill::Stack<Position> &ss, Depth depth,
                      Depth originDepth, Value alpha, Value beta, Move &bestMove)
 {
+    count_node();
+
     Value bestValue = -VALUE_INFINITE;
 
     // Check for terminal position or search abortion
@@ -228,6 +314,7 @@ Value Search::search(SearchEngine &searchEngine, Position *pos,
     );
 
     if (probeVal != VALUE_UNKNOWN) {
+        count_tt_hit();
 #ifdef TRANSPOSITION_TABLE_DEBUG
         Threads.main()->ttHitCount++;
 #endif
@@ -250,6 +337,9 @@ Value Search::search(SearchEngine &searchEngine, Position *pos,
         Threads.main()->ttMissCount++;
     }
 #endif
+    if (probeVal == VALUE_UNKNOWN) {
+        count_tt_miss();
+    }
 
 #endif /* TRANSPOSITION_TABLE_ENABLE */
 
@@ -257,6 +347,7 @@ Value Search::search(SearchEngine &searchEngine, Position *pos,
     if (rule.threefoldRepetitionRule && depth != originDepth &&
         pos->has_repeated(ss)) {
         // Add a small component to draw evaluations to avoid 3-fold blindness
+        count_repetition_cut();
         return VALUE_DRAW + 1;
     }
 
@@ -307,8 +398,34 @@ Value Search::search(SearchEngine &searchEngine, Position *pos,
 #endif // TRANSPOSITION_TABLE_ENABLE
 
     // Iterate through all possible moves
+#if SANMILL_SEARCH_DIAGNOSTICS
+    const bool debugSubtree = ss.size() == 1 && depth == 10 && alpha == 87 &&
+                              beta == 88;
+    const bool debugSubtreeD9 = ss.size() == 2 && depth == 9 && alpha == -88 &&
+                                beta == -87;
+    const bool debugSubtreeD8 = ss.size() == 3 && depth == 8 && alpha == 87 &&
+                                beta == 88;
+    const bool debugSubtreeD8Same = ss.size() == 3 && depth == 8 &&
+                                    alpha == -88 && beta == -87;
+    const bool debugSubtreeExtD9Same = ss.size() == 3 && depth == 9 &&
+                                       alpha == -88 && beta == -87;
+    const bool debugSubtreeExtD9Flip = ss.size() == 3 && depth == 9 &&
+                                       alpha == 87 && beta == 88;
+    const bool debugSubtreeD8AfterExt = ss.size() == 4 && depth == 8 &&
+                                        alpha == -88 && beta == -87;
+    const bool debugSubtreeD7AfterExt = ss.size() == 5 && depth == 7 &&
+                                        alpha == 87 && beta == 88;
+    const bool debugSubtreeExtD8Flip = ss.size() == 5 && depth == 8 &&
+                                       alpha == 87 && beta == 88;
+    const bool debugSubtreeD7AfterA4 = ss.size() == 6 && depth == 7 &&
+                                       alpha == -88 && beta == -87;
+#endif
+
     for (int i = 0; i < moveCount; i++) {
         static uint64_t nodeCounter = 0; // TODO: thread_local
+#if SANMILL_SEARCH_DIAGNOSTICS
+        const uint64_t nodesBefore = Search::nodes();
+#endif
 
         const unsigned checkMask = (depth <= 3) ? 31 :
                                                   ((depth <= 6) ? 127 : 511);
@@ -343,6 +460,76 @@ Value Search::search(SearchEngine &searchEngine, Position *pos,
 
         // Undo the move
         pos->undo_move(ss);
+
+#if SANMILL_SEARCH_DIAGNOSTICS
+        if (debugSubtree) {
+            sync_cout << "    subtree-d10 action=" << UCI::move(move)
+                      << " value=" << static_cast<int>(value)
+                      << " nodes=" << (Search::nodes() - nodesBefore)
+                      << sync_endl;
+        }
+        if (debugSubtreeD9) {
+            sync_cout << "      subtree-d9 action=" << UCI::move(move)
+                      << " value=" << static_cast<int>(value)
+                      << " nodes=" << (Search::nodes() - nodesBefore)
+                      << sync_endl;
+        }
+        if (debugSubtreeD8) {
+            sync_cout << "        subtree-d8 action=" << UCI::move(move)
+                      << " value=" << static_cast<int>(value)
+                      << " nodes=" << (Search::nodes() - nodesBefore)
+                      << sync_endl;
+        }
+        if (debugSubtreeD8Same) {
+            sync_cout << "        subtree-d8-same action=" << UCI::move(move)
+                      << " value=" << static_cast<int>(value)
+                      << " nodes=" << (Search::nodes() - nodesBefore)
+                      << sync_endl;
+        }
+        if (debugSubtreeExtD9Same) {
+            sync_cout << "        subtree-ext-d9-same action="
+                      << UCI::move(move) << " value=" << static_cast<int>(value)
+                      << " nodes=" << (Search::nodes() - nodesBefore)
+                      << sync_endl;
+        }
+        if (debugSubtreeExtD9Flip) {
+            sync_cout << "        subtree-ext-d9-flip action="
+                      << UCI::move(move) << " value=" << static_cast<int>(value)
+                      << " nodes=" << (Search::nodes() - nodesBefore)
+                      << sync_endl;
+        }
+        if (debugSubtreeD8AfterExt) {
+            sync_cout << "          subtree-d8-after-ext action="
+                      << UCI::move(move) << " value=" << static_cast<int>(value)
+                      << " nodes=" << (Search::nodes() - nodesBefore)
+                      << sync_endl;
+        }
+        if (debugSubtreeD7AfterExt) {
+            sync_cout << "            subtree-d7-after-ext action="
+                      << UCI::move(move) << " value=" << static_cast<int>(value)
+                      << " nodes=" << (Search::nodes() - nodesBefore)
+                      << sync_endl;
+        }
+        if (debugSubtreeExtD8Flip) {
+            sync_cout << "            subtree-ext-d8-flip action="
+                      << UCI::move(move) << " value=" << static_cast<int>(value)
+                      << " nodes=" << (Search::nodes() - nodesBefore)
+                      << sync_endl;
+        }
+        if (debugSubtreeD7AfterA4) {
+            sync_cout << "              subtree-d7-after-a4 action="
+                      << UCI::move(move) << " value=" << static_cast<int>(value)
+                      << " nodes=" << (Search::nodes() - nodesBefore)
+                      << sync_endl;
+        }
+
+        if (depth == originDepth) {
+            sync_cout << "  mtdf-rootmove " << UCI::move(move)
+                      << " value=" << static_cast<int>(value)
+                      << " nodes=" << (Search::nodes() - nodesBefore)
+                      << sync_endl;
+        }
+#endif
 
         // Update best value and best move if necessary
         if (value > bestValue) {
