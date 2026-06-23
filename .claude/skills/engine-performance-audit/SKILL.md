@@ -1182,28 +1182,45 @@ Behavior-changing or high-risk experiments:
   `moving_entry` much faster, but it changes TT collision behavior and node
   counts. Treat it as a diagnostic for cache locality, not a default release
   fix, unless node-count parity is explicitly re-baselined and accepted.
-- TT prefetch (RESOLVED 2026-06-21, now default-on for the CLI engine and
-  desktop FRB Mill search path):
+- TT prefetch (RESOLVED 2026-06-21, rechecked 2026-06-23):
   re-measured on an AMD Ryzen 9 7950X3D (Zen4, 3D V-Cache) under the new
-  evidence bar. `all` (full prefetch) is a node-preserving win on every tested
+  evidence bar. `all` (full prefetch) was a node-preserving win on every tested
   position vs off — start d12 0.77x, placing8 d12 0.87x, placing14 d12 0.88x,
   capture_pending d12 0.83x, reduced_material d12 0.94x, moving_entry d20 0.85x,
   moving_loop d20 0.88x, flutter_n30_e20_black20 0.95x — with identical
-  node/bestmove/score. (placing8 first looked like a 1.07x regression at
-  repeat=5; that was noise — at repeat=11 it is a 0.87x win, a live example of
-  the evidence bar above.) AMD uProf `assess` confirmed the mechanism: off->all
+  node/bestmove/score. AMD uProf `assess` confirmed the mechanism: off->all
   raised IPC 1.59->2.39 and cut CYCLES_NOT_IN_HALT ~33% at equal RETIRED_INST,
-  i.e. prefetch hides the dominant TT miss latency (helped here by the large
-  V-Cache L3). `first` was ~flat. `prefetch_mode_from_env` now returns `all`
-  when `TGF_PREFETCH_MODE` is unset; override with `=off` / `=first`. The
-  earlier slow-PC "all regresses" note was microarchitecture-specific. The
-  desktop FRB path now uses `mill_base_search_options()` with full prefetch
-  enabled outside Android/iOS/wasm; keep mobile targets off pending device
-  validation. The game-neutral `SearchOptions::default()` remains off because
-  non-Mill games may not have an O(1) `key_after`. Follow-up on 2026-06-22:
-  `tgf bench` now uses the same Mill-specific prefetch policy for its measured
-  depth search, cold-start probe, and Lazy-SMP subsection, and prints
-  `enable_prefetch` / `prefetch_all` in the benchmark metadata.
+  i.e. prefetch hides the dominant TT miss latency on that large-cache CPU.
+
+  After later standard apply fast paths reduced per-node apply overhead,
+  first-child prefetch looked promising in same-binary environment-variable
+  tests on the current Linux/KVM host.  With identical bestmove/score/nodes it
+  beat full prefetch on the checked matrix: `start` d12 repeat=5 `0.931x`,
+  `reduced_material` d12 repeat=5 `0.909x`, `capture_pending` d12 repeat=5
+  `0.898x`, `moving_entry` d12 repeat=5 `0.887x`, and `capture_pending` d18
+  repeat=7 `0.959x`.  Off-vs-first was mixed (`capture_pending` d18 repeat=7
+  `1.021x` for off).  However, actually changing the default and rebuilding
+  produced mixed same-run A/B against the previous binary: `start` d12
+  `0.994x`, `reduced_material` d12 `0.874x`, `capture_pending` d12 `1.084x`,
+  `moving_entry` d12 `1.465x` on the tiny/noisy 19k-node sample, and
+  `capture_pending` d18 repeat=7 `1.023x`.  Do not switch the default from
+  full to first-child prefetch yet; retest on a stable physical machine with
+  instruction/cache counters and a larger matrix first.  Raw CSVs:
+  `/tmp/sanmill-perf/prefetch_first_vs_all_after_apply_fastpaths.csv`,
+  `/tmp/sanmill-perf/prefetch_off_vs_first_after_apply_fastpaths.csv`,
+  `/tmp/sanmill-perf/prefetch_first_vs_all_capture_d18_after_apply_fastpaths.csv`,
+  `/tmp/sanmill-perf/prefetch_off_vs_first_capture_d18_after_apply_fastpaths.csv`,
+  `/tmp/sanmill-perf/default_prefetch_first_vs_all_matrix.csv`, and
+  `/tmp/sanmill-perf/default_prefetch_first_vs_all_capture_d18.csv`.
+
+  `prefetch_mode_from_env` still returns full prefetch when
+  `TGF_PREFETCH_MODE` is unset; override with `=off`, `=first`, or `=all`.
+  The desktop FRB path uses `mill_base_search_options()` with full prefetch
+  outside Android/iOS/wasm; mobile targets stay off pending device validation.
+  The game-neutral `SearchOptions::default()` remains off because non-Mill
+  games may not have an O(1) `key_after`.  `tgf bench` uses the same
+  Mill-specific prefetch policy and prints `enable_prefetch` / `prefetch_all`
+  in benchmark metadata.
 - TT allocation/reuse: master owns a process-global TT and `clear()` is a
   fake-clean generation bump. Rust UCI and FRB search paths must reuse
   `SharedTt` across searches and call `clear_tt()` / `bump_age()` before each
@@ -1268,6 +1285,60 @@ Behavior-changing or high-risk experiments:
     `capture_pending` d18 `0.976x`.  Raw CSVs:
     `/tmp/sanmill-perf/direct_fastpath_decrements_start_reduced.csv` and
     `/tmp/sanmill-perf/direct_fastpath_decrements_moving_capture.csv`.
+  * Standard Place apply now skips the mill-formation line scan when the mover
+    had fewer than two live pieces before placing.  A three-point mill is then
+    impossible by construction, and a debug assertion keeps the invariant
+    checked in test builds.  A/B preserved bestmove, score, and nodes.  Median
+    ratios: `start` d12 repeat=11 `0.960x` in the first run and `0.990x` in a
+    final retest after reverting the rejected follow-up, `reduced_material` d12
+    repeat=11 `0.993x`, `moving_loop` d18 repeat=5 `1.040x` on the tiny/noisy
+    case, and `capture_pending` d18 repeat=5 `0.993x`.  Treat this as a small
+    conservative cleanup, not a headline speedup.  Raw CSVs:
+    `/tmp/sanmill-perf/place_mill_count_skip_start_reduced.csv`,
+    `/tmp/sanmill-perf/place_mill_count_skip_start_r11.csv`,
+    `/tmp/sanmill-perf/place_mill_count_skip_reduced_r11.csv`, and
+    `/tmp/sanmill-perf/place_mill_count_skip_moving_capture.csv`,
+    `/tmp/sanmill-perf/place_mill_count_skip_final_matrix.csv`, and
+    `/tmp/sanmill-perf/place_mill_count_skip_final_start_r11.csv`.
+  * Standard Place apply now uses a standard-rule, already-occupied mill-bit
+    helper after the new piece is placed.  The default rule has exactly two
+    lines through every node, so the helper avoids the generic color lookup,
+    target-occupancy test, option-based table dispatch, and sentinel loop.
+    Keep the branchless bit-payload form; the first `if`-based experiment
+    preserved parity but was mixed on this KVM host (`start` d12 repeat=11
+    `0.984x`, `reduced_material` d12 repeat=11 `1.051x`).  The branchless
+    version preserved bestmove, score, and nodes and retested better: `start`
+    d12 repeat=11 `0.952x`, `reduced_material` d12 repeat=11 `0.955x`,
+    `capture_pending` d18 repeat=7 `0.982x`, and `moving_loop` d18 repeat=11
+    `1.002x` on the tiny/noisy 137k-node case.  Raw CSVs:
+    `/tmp/sanmill-perf/standard_place_mill_helper_primary.csv`,
+    `/tmp/sanmill-perf/standard_place_mill_helper_start_reduced_r11.csv`,
+    `/tmp/sanmill-perf/standard_place_mill_helper_branchless_primary.csv`,
+    `/tmp/sanmill-perf/standard_place_mill_helper_branchless_start_reduced_r11.csv`,
+    `/tmp/sanmill-perf/standard_place_mill_helper_branchless_moving_capture.csv`,
+    `/tmp/sanmill-perf/standard_place_mill_helper_branchless_capture_d18_r7.csv`,
+    and
+    `/tmp/sanmill-perf/standard_place_mill_helper_branchless_moving_loop_r11.csv`.
+  * Rejected follow-up: hoisting `node_bit(node)` into a local mask inside
+    regular Remove target filtering looked mechanically cleaner and helped the
+    remove-heavy samples, but it regressed the start-position median twice.
+    A/B preserved bestmove, score, and nodes.  Median ratios:
+    `capture_pending` d18 repeat=7 `0.968x`, `moving_loop` d18 repeat=7
+    `0.932x`, `reduced_material` d12 repeat=7 `1.000x`, but `start` d12
+    repeat=7 `1.036x` and repeat=11 `1.045x`.  Treat this as a code-layout /
+    optimizer-shape trap; do not reapply without assembly or hardware-counter
+    evidence that the start regression was noise.  Raw CSVs:
+    `/tmp/sanmill-perf/remove_target_mask_hoist_capture_moving.csv`,
+    `/tmp/sanmill-perf/remove_target_mask_hoist_start_reduced.csv`, and
+    `/tmp/sanmill-perf/remove_target_mask_hoist_start_r11.csv`.
+  * Rejected follow-up: skipping the generic phase/action synchronization chain
+    for early no-mill standard Place nodes preserved parity but did not show a
+    stable win (`start` d12 repeat=11 `1.003x`, `reduced_material` d12
+    repeat=5 `0.995x`).  The extra branch/code shape is not worth keeping
+    without profiler evidence that these synchronization helpers are dominant.
+    Raw CSVs:
+    `/tmp/sanmill-perf/early_place_sync_skip_start_reduced.csv` and
+    `/tmp/sanmill-perf/early_place_sync_skip_start_r11.csv`.
 - Recent prefetch retest after standard apply fast paths: both `first` and
   `all` preserved nodes/bestmove on the tested matrix, but worsened
   `placing8` / `capture_pending` and did not improve `moving_entry d15`.

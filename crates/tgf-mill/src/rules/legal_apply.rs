@@ -261,6 +261,7 @@ impl MillRules {
         ));
 
         let side = state.side_to_move as usize;
+        let can_form_mill = state.pieces_on_board[side] >= 2;
         place_live_piece(state, to, side);
         debug_assert!(state.pieces_in_hand[side] > 0);
         state.pieces_in_hand[side] -= 1;
@@ -270,7 +271,24 @@ impl MillRules {
         state.ply_since_capture = 0;
         clear_key_history(state);
 
-        let mill_bits = formed_mill_bits_at(state, &self.options, to, state.side_to_move);
+        // A newly placed piece cannot complete a three-point mill until this
+        // side already had at least two live pieces before the placement.
+        // Avoid the line-mask scan in the early opening while retaining a
+        // debug invariant for hand-built fixtures and future rule changes.
+        let mill_bits = if can_form_mill {
+            let bits = formed_mill_bits_standard_occupied(state.by_color_bb[side], to);
+            debug_assert_eq!(
+                bits,
+                formed_mill_bits_at(state, &self.options, to, state.side_to_move)
+            );
+            bits
+        } else {
+            debug_assert_eq!(
+                formed_mill_bits_at(state, &self.options, to, state.side_to_move),
+                0
+            );
+            0
+        };
         if mill_bits != 0 {
             state.pending_removals[side] = removal_count_for_bits(mill_bits, &self.options);
             state.set_mill_available_at_removal(true);

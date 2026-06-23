@@ -1512,6 +1512,30 @@ fn potential_mills_count_standard_unrestricted(
 }
 
 #[inline(always)]
+fn formed_mill_bits_standard_occupied(color_bb: u32, node: usize) -> u32 {
+    debug_assert!(node < 24, "node {node} out of range");
+    debug_assert_ne!(
+        color_bb & node_bit(node),
+        0,
+        "standard mill probe requires an occupied target"
+    );
+    let peer_masks = &STANDARD_MILL_LINE_PEER_MASKS_BY_NODE[node];
+    let line_indices = &STANDARD_MILL_LINE_INDICES_BY_NODE[node];
+    debug_assert_ne!(line_indices[0], NO_MILL_LINE);
+    debug_assert_ne!(line_indices[1], NO_MILL_LINE);
+    debug_assert_eq!(line_indices[2], NO_MILL_LINE);
+
+    // Standard Mill has exactly two lines through every node.  This fixed
+    // shape avoids the generic option dispatch, target-occupancy test, and
+    // sentinel loop on the standard search apply path.
+    // Convert the two equality tests directly into the line-bit payload.
+    // This keeps the standard path fixed-width and avoids adding two
+    // branch targets in the high-frequency Place apply path.
+    (u32::from((color_bb & peer_masks[0]) == peer_masks[0]) << u32::from(line_indices[0]))
+        | (u32::from((color_bb & peer_masks[1]) == peer_masks[1]) << u32::from(line_indices[1]))
+}
+
+#[inline(always)]
 fn potential_mills_count_standard_unrestricted_pair(
     our_bb: u32,
     their_bb: u32,
