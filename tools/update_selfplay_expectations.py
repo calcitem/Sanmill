@@ -115,9 +115,10 @@ VARIANT_CALL_RE = re.compile(
 
 
 class UciEngine:
-    def __init__(self, command: str, timeout: float) -> None:
+    def __init__(self, command: str, timeout: float, terminal_phase: int) -> None:
         self.command = command
         self.timeout = timeout
+        self.terminal_phase = terminal_phase
         self.process = subprocess.Popen(
             shlex.split(command),
             cwd=REPO_ROOT,
@@ -188,6 +189,40 @@ class UciEngine:
             return ""
         return move
 
+    def terminal(self, moves: list[str]) -> bool:
+        position = "position startpos"
+        if moves:
+            position += " moves " + " ".join(moves)
+        self.send(position)
+        self.send("evaldecomp")
+        self.send("isready")
+        lines: list[str] = []
+        seen_evaldecomp = False
+        while True:
+            assert self.process.stdout is not None, "UCI stdout closed"
+            line = self.process.stdout.readline()
+            if line == "":
+                raise RuntimeError(
+                    f"{self.command!r} exited while waiting for evaldecomp phase"
+                )
+            last = line.strip()
+            if "evaldecomp" in last:
+                seen_evaldecomp = True
+            if seen_evaldecomp:
+                lines.append(last)
+                match = re.search(r"\bphase=[^0-9]*(\d+)", last)
+                if match:
+                    return int(match.group(1)) == self.terminal_phase
+            if "readyok" in last:
+                break
+        joined = " ".join(lines)
+        match = re.search(r"\bphase=[^0-9]*(\d+)", joined)
+        if match:
+            return int(match.group(1)) == self.terminal_phase
+        raise AssertionError(
+            f"{self.command!r} evaldecomp did not report phase: {lines!r}"
+        )
+
 
 def parse_skill_list(value: str) -> list[int]:
     out: list[int] = []
@@ -232,17 +267,28 @@ def options_for(skill: int, overrides: tuple[tuple[str, str], ...]) -> dict[str,
 
 def run_selfplay(
     command: str,
+    terminal_phase: int,
     skill: int,
     max_plies: int,
     option_overrides: tuple[tuple[str, str], ...],
+    expected_stop: list[str] | None,
+    allow_expected_terminal_stop: bool,
     timeout: float,
 ) -> list[str]:
     assert max_plies > 0, "max_plies must be positive"
-    engine = UciEngine(command, timeout)
+    engine = UciEngine(command, timeout, terminal_phase)
     moves: list[str] = []
     try:
         engine.initialize(options_for(skill, option_overrides))
         for _ in range(max_plies):
+            if (
+                allow_expected_terminal_stop
+                and expected_stop is not None
+                and len(moves) == len(expected_stop)
+                and moves == expected_stop
+                and engine.terminal(moves)
+            ):
+                break
             move = engine.bestmove(moves)
             if not move:
                 break
@@ -341,6 +387,7 @@ def replace_variant_array(text: str, label: str, moves: list[str]) -> str:
 def update_standard_constants(
     text: str,
     command: str,
+    terminal_phase: int,
     skills: list[int],
     timeout: float,
 ) -> tuple[str, list[str], bool]:
@@ -348,8 +395,18 @@ def update_standard_constants(
     changed = False
     for skill in skills:
         name = f"MASTER_GO_SKILL{skill}_FULL_GAME"
-        moves = run_selfplay(command, skill, DEFAULT_MAX_PLIES, (), timeout)
-        item_changed = const_moves(text, name) != moves
+        expected = const_moves(text, name)
+        moves = run_selfplay(
+            command,
+            terminal_phase,
+            skill,
+            DEFAULT_MAX_PLIES,
+            (),
+            expected,
+            False,
+            timeout,
+        )
+        item_changed = expected != moves
         changed |= item_changed
         text = replace_const(text, name, moves)
         status = "changed" if item_changed else "unchanged"
@@ -360,17 +417,22 @@ def update_standard_constants(
 def update_n30_endgame20_constant(
     text: str,
     command: str,
+    terminal_phase: int,
     timeout: float,
 ) -> tuple[str, str, bool]:
     name = "MASTER_GO_SKILL15_N30_ENDGAME20_FULL_GAME"
+    expected = const_moves(text, name)
     moves = run_selfplay(
         command,
+        terminal_phase,
         15,
         DEFAULT_MAX_PLIES,
         (("NMoveRule", "30"), ("EndgameNMoveRule", "20")),
+        expected,
+        False,
         timeout,
     )
-    changed = const_moves(text, name) != moves
+    changed = expected != moves
     status = "changed" if changed else "unchanged"
     return replace_const(text, name, moves), f"{name}: {len(moves)} plies {status}", changed
 
@@ -378,6 +440,7 @@ def update_n30_endgame20_constant(
 def update_variant_prefixes(
     text: str,
     command: str,
+    terminal_phase: int,
     timeout: float,
     requested_labels: set[str] | None,
 ) -> tuple[str, list[str], bool]:
@@ -406,14 +469,18 @@ def update_variant_prefixes(
         assert (
             case_name in VARIANT_CASE_OPTIONS
         ), f"no UCI option mapping for variant prefix {label!r}"
+        expected = variant_moves(text, label)
         moves = run_selfplay(
             command,
+            terminal_phase,
             skill,
             plies,
             VARIANT_CASE_OPTIONS[case_name],
+            expected,
+            len(expected) < plies,
             timeout,
         )
-        item_changed = variant_moves(text, label) != moves
+        item_changed = expected != moves
         changed |= item_changed
         text = replace_variant_array(text, label, moves)
         status = "changed" if item_changed else "unchanged"
@@ -461,6 +528,7 @@ def main() -> int:
     assert target.is_file(), f"target file does not exist: {target}"
     assert not (args.check and args.write), "--check cannot be combined with --write"
     command = args.current if args.source == "current" else args.master
+    terminal_phase = 3 if args.source == "current" else 4
 
     run_standard = args.standard
     run_n30 = args.n30_endgame20
@@ -478,6 +546,7 @@ def main() -> int:
         text, standard_summaries, standard_changed = update_standard_constants(
             text,
             command,
+            terminal_phase,
             parse_skill_list(args.skills),
             args.timeout,
         )
@@ -485,7 +554,7 @@ def main() -> int:
         semantic_changed |= standard_changed
     if run_n30:
         text, n30_summary, n30_changed = update_n30_endgame20_constant(
-            text, command, args.timeout
+            text, command, terminal_phase, args.timeout
         )
         summaries.append(n30_summary)
         semantic_changed |= n30_changed
@@ -493,6 +562,7 @@ def main() -> int:
         text, variant_summaries, variants_changed = update_variant_prefixes(
             text,
             command,
+            terminal_phase,
             args.timeout,
             parse_variant_labels(args.variant_labels),
         )
