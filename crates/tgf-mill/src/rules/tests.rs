@@ -1214,20 +1214,23 @@ fn mill_action_opponent_removes_own_piece() {
     let (rules, snap) =
         placing_mill_fixture_for_action(MillFormationActionInPlacingPhase::OpponentRemovesOwnPiece);
     let state = MillRules::decode(&snap);
-    assert_eq!(state.side_to_move, 1);
-    assert_eq!(state.pending_removals[1], 1);
+    // Master exposes this option value but the C++ engine applies it through
+    // the same branch as RemoveOpponentsPieceFromBoard.  Keep engine parity:
+    // the mill-forming side removes an opponent board piece.
+    assert_eq!(state.side_to_move, 0);
+    assert_eq!(state.pending_removals[0], 1);
+    assert!(state.mill_available_at_removal());
     let mut actions = ActionList::<256>::new();
     rules.legal_actions(&snap, &mut actions);
-    // Opponent removes one of White's pieces; at least the just formed
-    // mill pieces are legal targets.
     assert!(
         actions
             .iter()
             .all(|a| a.kind_tag == MillActionKind::Remove as i16)
     );
-    assert!(actions.iter().any(|a| a.to_node == old_node_i16(0)));
-    assert!(actions.iter().any(|a| a.to_node == old_node_i16(1)));
-    assert!(actions.iter().any(|a| a.to_node == old_node_i16(2)));
+    assert!(
+        actions.iter().all(|a| state.board[a.to_node as usize] == 2),
+        "remove targets must be opponent pieces, matching master"
+    );
 }
 
 #[test]
@@ -1439,6 +1442,45 @@ fn mill_action_removal_based_on_mill_counts_double_zero_removes_own_piece() {
     assert!(
         !state.remove_own_piece(active as usize),
         "remove_own_piece flag must clear once quota reaches zero"
+    );
+}
+
+#[test]
+fn removal_based_own_remove_uses_legacy_eval_count_view() {
+    let options = MillVariantOptions {
+        mill_formation_action_in_placing_phase:
+            MillFormationActionInPlacingPhase::RemovalBasedOnMillCounts,
+        ..MillVariantOptions::default()
+    };
+    let rules = MillRules::new(options.clone());
+    let moves = [
+        "d6", "f4", "d2", "b4", "d7", "d5", "g4", "d1", "a4", "e4", "d3", "c4", "f6", "b6", "b2",
+        "f2", "e5", "g7",
+    ];
+    let snap = apply_uci_sequence(&rules, &moves);
+    let state = MillRules::decode(&snap);
+    assert_eq!(state.phase, MillPhase::Moving);
+    assert_eq!(state.pending_removals, [1, 1]);
+    assert_eq!(state.remove_own_pieces(), [true, true]);
+
+    let after = apply_uci_sequence(&rules, &[&moves[..], &["xb2"]].concat());
+    let state = MillRules::decode(&after);
+    assert_eq!(state.side_to_move, 1);
+    assert_eq!(state.pending_removals, [0, 1]);
+    assert_eq!(state.remove_own_pieces(), [false, true]);
+    assert_eq!(
+        state.pieces_on_board,
+        [8, 9],
+        "Rust keeps real board counts even though master evaluates a legacy count view"
+    );
+    assert_color_bitboards_match_board(&state);
+
+    let game = MillGame::new(options);
+    let wb = game.build_workbench(&after);
+    assert_eq!(
+        MillEvaluator::score(&wb),
+        -10,
+        "match master evaldecomp after the first negative-count removal"
     );
 }
 
@@ -3247,6 +3289,54 @@ fn custodian_capture_places_single_remove_obligation() {
         actions.iter().map(|a| a.to_node).collect::<Vec<_>>(),
         vec![old_node_i16(1)]
     );
+}
+
+#[test]
+fn moving_custodian_multiple_targets_still_removes_one_piece() {
+    let options = MillVariantOptions {
+        may_remove_multiple: true,
+        custodian_capture: CaptureRuleConfig {
+            enabled: true,
+            ..CaptureRuleConfig::default()
+        },
+        ..MillVariantOptions::default()
+    };
+    let rules = MillRules::new(options);
+    let mut board = [0_i8; 24];
+    board[6] = 2; // B c4, moving to a1.
+    board[19] = 2; // B g1 brackets W d1 after c4-a1.
+    board[23] = 2; // B a7 brackets W a4 after c4-a1.
+    board[20] = 1; // W d1.
+    board[22] = 1; // W a4.
+    board[5] = 1;
+    board[9] = 1;
+    board[16] = 1;
+    let state = MillState {
+        board,
+        side_to_move: 1,
+        phase: MillPhase::Moving,
+        move_number: 40,
+        pieces_in_hand: [0, 0],
+        pieces_on_board: [5, 3],
+        ..MillState::default()
+    };
+    let after = rules.apply(
+        &rules.encode(state),
+        Action {
+            kind_tag: MillActionKind::Move as i16,
+            from_node: 6,
+            to_node: 21,
+            aux: -1,
+            payload_bits: 0,
+        },
+    );
+    let state = MillRules::decode(&after);
+
+    assert_eq!(state.pending_removals[1], 1);
+    assert_eq!(state.custodian_targets[1], node_bit(20) | node_bit(22));
+    assert_eq!(state.custodian_count[1], 1);
+    assert!(!state.mill_available_at_removal());
+    assert_eq!(legal_uci_labels(&rules, &after), vec!["xa4", "xd1"]);
 }
 
 #[test]

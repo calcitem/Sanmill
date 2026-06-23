@@ -7,7 +7,10 @@
 // skill 9-15 full-depth self-play, repetition adjudication, and move ordering.
 
 use tgf_core::{Game, GameRules, MoveOrderAlgorithm, MoveOrderContext, Workbench};
-use tgf_mill::{MillGame, MillRules, MillUciCodec, MillVariantOptions};
+use tgf_mill::{
+    MillBoardFullAction, MillFormationActionInPlacingPhase, MillGame, MillRules, MillUciCodec,
+    MillVariantOptions,
+};
 use tgf_search::{SearchPolicy, Searcher};
 
 fn apply_line(rules: &MillRules, snap: &mut tgf_core::GameStateSnapshot, moves: &[&str]) {
@@ -629,6 +632,27 @@ fn assert_deterministic_selfplay_full_game(skill_level: u8, expected: &[&str]) -
     first
 }
 
+fn variant_options(mut edit: impl FnMut(&mut MillVariantOptions)) -> MillVariantOptions {
+    let mut options = selfplay_variant_options();
+    edit(&mut options);
+    options
+}
+
+fn assert_selfplay_variant_prefix(
+    name: &str,
+    skill_level: u8,
+    max_plies: usize,
+    options: MillVariantOptions,
+    expected: &[&str],
+) {
+    let actual = faithful_selfplay_opts(skill_level, max_plies, options, false, false);
+    assert_eq!(
+        actual,
+        move_vec(expected),
+        "{name} self-play prefix drifted"
+    );
+}
+
 fn faithful_selfplay_opts(
     skill_level: u8,
     max_plies: usize,
@@ -795,6 +819,180 @@ fn selfplay_skill7_time0_shuffling_off_matches_master_go_full_game() {
 #[test]
 fn selfplay_skill8_time0_shuffling_off_matches_master_go_full_game() {
     assert_selfplay_full_game(8, MASTER_GO_SKILL8_FULL_GAME);
+}
+
+#[test]
+#[ignore = "slow variant parity audit; run after rule or search changes"]
+fn variant_selfplay_skill2_prefixes_match_master() {
+    assert_selfplay_variant_prefix(
+        "removal_based_on_mill_counts",
+        2,
+        30,
+        variant_options(|options| {
+            options.mill_formation_action_in_placing_phase =
+                MillFormationActionInPlacingPhase::RemovalBasedOnMillCounts;
+        }),
+        &[
+            "d6", "f4", "d2", "b4", "d7", "d5", "g4", "d1", "a4", "e4", "d3", "c4", "f6", "b6",
+            "b2", "f2", "e5", "g7", "xb2", "xb4", "d3-e3", "c4-b4", "e3-d3", "e4-e3", "e5-e4",
+            "b4-c4", "a4-b4", "c4-c3", "d7-a7", "g7-d7",
+        ],
+    );
+    assert_selfplay_variant_prefix(
+        "twelve_mens_board_full_first_second_remove",
+        2,
+        30,
+        variant_options(|options| {
+            options.piece_count = 12;
+            options.board_full_action = MillBoardFullAction::FirstAndSecondPlayerRemovePiece;
+        }),
+        &[
+            "d6", "f4", "d2", "b4", "g4", "d7", "a4", "d1", "e4", "d5", "c4", "d3", "f6", "b6",
+            "b2", "f2", "g7", "g1", "a1", "a7", "e5", "e3", "c3", "c5", "xb4", "xb2", "c4-b4",
+            "c5-c4", "b4-b2", "b6-b4",
+        ],
+    );
+    assert_selfplay_variant_prefix(
+        "custodian_capture",
+        2,
+        30,
+        variant_options(|options| {
+            options.custodian_capture.enabled = true;
+        }),
+        &[
+            "d6", "f4", "d2", "b4", "g4", "e4", "a4", "c4", "e5", "e3", "c3", "c5", "d7", "d5",
+            "d1", "d3", "f6", "f2", "d2-b2", "b4-b6", "b2-d2", "b6-b4", "d6-b6", "b4-b2", "xd2",
+            "d7-d6", "xb2", "f2-d2", "b6-b4", "d2-b2",
+        ],
+    );
+    assert_selfplay_variant_prefix(
+        "intervention_capture",
+        2,
+        30,
+        variant_options(|options| {
+            options.intervention_capture.enabled = true;
+        }),
+        &[
+            "d6", "f4", "d2", "b4", "g4", "d7", "a4", "d1", "e4", "d5", "c4", "d3", "f6", "b6",
+            "b2", "f2", "g7", "g1", "c4-c5", "b4-c4", "b2-b4", "d3-e3", "a4-a7", "e3-d3", "a7-a4",
+            "d3-e3", "a4-a1", "e3-d3", "a1-a4",
+        ],
+    );
+    assert_selfplay_variant_prefix(
+        "leap_capture",
+        2,
+        30,
+        variant_options(|options| {
+            options.leap_capture.enabled = true;
+        }),
+        &[
+            "d6", "f4", "d2", "b4", "g4", "d7", "a4", "d1", "e4", "d5", "c4", "d3", "f6", "b6",
+            "b2", "f2", "g7", "a7", "a4-a1", "d3-c3", "a1-g1", "xd1", "c3-c5", "xc4", "g1-d1",
+            "c5-c4", "d1-g1", "xc4", "d5-e5", "g1-d1",
+        ],
+    );
+}
+
+#[test]
+#[ignore = "slow variant parity audit; run after rule or search changes"]
+fn variant_selfplay_skill8_deep_prefixes_match_master() {
+    assert_selfplay_variant_prefix(
+        "removal_based_on_mill_counts_deep",
+        8,
+        36,
+        variant_options(|options| {
+            options.mill_formation_action_in_placing_phase =
+                MillFormationActionInPlacingPhase::RemovalBasedOnMillCounts;
+        }),
+        &[
+            "d6", "f4", "d2", "b4", "d7", "d5", "g4", "d1", "a4", "e4", "c4", "f6", "f2", "b2",
+            "d3", "g7", "b6", "e3", "xb6", "xb2", "c4-c5", "d5-e5", "xc5", "d2-b2", "d1-d2",
+            "d6-d5", "f6-d6", "a4-a7", "b4-b6", "a7-a4", "f4-f6", "xd3", "b2-b4", "f6-f4", "d5-c5",
+            "f4-f6",
+        ],
+    );
+    assert_selfplay_variant_prefix(
+        "diagonal_removal_based_deep",
+        8,
+        36,
+        variant_options(|options| {
+            options.has_diagonal_lines = true;
+            options.mill_formation_action_in_placing_phase =
+                MillFormationActionInPlacingPhase::RemovalBasedOnMillCounts;
+        }),
+        &[
+            "f6", "f2", "b2", "b6", "g7", "e5", "g1", "g4", "a1", "c3", "d1", "d7", "a7", "a4",
+            "d3", "c5", "d2", "d6", "xf2", "xd6", "xb2", "d3-e3", "d7-d6", "d2-f2", "xe5", "c5-c4",
+            "e3-e4", "b6-c5", "xe4", "f2-f4", "c4-b4", "g1-f2", "xb4", "g4-g1", "g7-d7", "a4-b4",
+        ],
+    );
+    assert_selfplay_variant_prefix(
+        "custodian_intervention_multi_deep",
+        8,
+        60,
+        variant_options(|options| {
+            options.custodian_capture.enabled = true;
+            options.intervention_capture.enabled = true;
+            options.may_remove_multiple = true;
+        }),
+        &[
+            "d6", "f4", "d2", "b4", "g4", "d7", "a4", "d1", "g7", "g1", "a1", "a7", "f6", "b6",
+            "b2", "d5", "xd6", "d6", "xd5", "xd7", "d5", "g7-d7", "b4-c4", "b2-b4", "f4-f2",
+            "f6-f4", "d5-e5", "b4-b2", "e5-e4", "d2-d3", "f2-d2", "f4-f2", "xd2", "d1-d2", "xf2",
+            "xb2", "a1-d1", "xd2", "e4-f4", "d6-f6", "b6-b4", "d3-e3", "f4-e4", "f6-f4", "b4-b6",
+            "f4-f2", "c4-c3", "d7-d6", "a7-d7", "g4-g7", "d7-a7", "d6-d5", "e4-f4", "e3-d3",
+            "b6-b4", "f2-d2", "xc3", "a7-d7", "d3-e3", "b4-b6",
+        ],
+    );
+    assert_selfplay_variant_prefix(
+        "capture_no_mill_removal_relax_deep",
+        8,
+        60,
+        variant_options(|options| {
+            options.custodian_capture.enabled = true;
+            options.intervention_capture.enabled = true;
+            options.may_remove_from_mills_always = true;
+        }),
+        &[
+            "d6", "f4", "d2", "b4", "g4", "d7", "a4", "d1", "e5", "c4", "c3", "e4", "d5", "g7",
+            "a7", "a1", "e3", "xe4", "e4", "xe3", "xe5", "d6-f6", "b4-b2", "d5-c5", "xc4", "f4-f2",
+            "xd2", "f6-d6", "d1-d2", "xc3", "a4-b4", "f2-f4", "c5-c4", "a1-a4", "d6-f6", "d2-d1",
+            "c4-c5", "d1-g1", "xg4", "c5-d5", "g7-g4", "xa7", "f6-g7", "e4-e3", "d5-e4", "a4-a7",
+            "b4-d1", "b2-d2", "d1-d5", "e3-d3", "e4-d1", "a7-a4", "d5-a1", "f4-f2", "d1-a7", "xd7",
+            "g1-d1", "xa7",
+        ],
+    );
+    assert_selfplay_variant_prefix(
+        "leap_capture_deep",
+        8,
+        60,
+        variant_options(|options| {
+            options.leap_capture.enabled = true;
+        }),
+        &[
+            "d6", "f4", "d2", "b4", "g4", "d7", "a4", "d1", "e4", "d5", "c4", "g7", "a7", "a1",
+            "g1", "e5", "c5", "f6", "c4-c3", "f6-b6", "xd6", "a4-c4", "xb4", "d1-d3", "xd2",
+            "c3-e3", "xd3", "b6-d6", "xc5", "c4-c5", "d6-f6", "e3-d3", "f6-d6", "xg1", "e4-e3",
+            "g7-g1", "xg4", "c5-c4", "g1-g4", "c4-c3", "xf4", "d7-g7", "c3-c4", "g7-d7", "xd3",
+            "e3-c5", "a1-d1", "c5-a1", "e5-e4", "c4-a4", "xg4", "e4-e3", "a7-e5", "e3-d3", "e5-a7",
+            "xd3", "d7-g7", "a1-d7", "d1-a1", "a4-e5",
+        ],
+    );
+    assert_selfplay_variant_prefix(
+        "one_time_restrict_repeated_deep",
+        8,
+        60,
+        variant_options(|options| {
+            options.one_time_use_mill = true;
+            options.restrict_repeated_mills_formation = true;
+        }),
+        &[
+            "d6", "f4", "d2", "b4", "g4", "d7", "a4", "d1", "e4", "d5", "c4", "d3", "g7", "g1",
+            "a1", "a7", "f6", "e5", "c4-c5", "d3-c3", "c5-c4", "c3-d3", "c4-c5", "d3-e3", "c5-c4",
+            "d5-c5", "d6-d5", "d7-d6", "g7-d7", "e3-d3", "c4-c3", "c5-c4", "e4-e3", "e5-e4",
+            "d5-e5", "c4-c5", "c3-c4", "c5-d5",
+        ],
+    );
 }
 
 #[test]

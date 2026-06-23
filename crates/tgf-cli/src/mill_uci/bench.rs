@@ -54,6 +54,7 @@ pub fn print_benchmark_toml() {
     let tt_hit_rate_pct = searcher.tt_hit_rate_pct();
     let tt_age_bumps = searcher.tt_age_bumps();
     let tt_current_age = searcher.tt_current_age();
+    let tt_stats = searcher.tt_stats();
 
     let cold_start_begin = Instant::now();
     let mut wb = game.build_workbench(&snap);
@@ -110,6 +111,24 @@ pub fn print_benchmark_toml() {
     println!("hit_rate_pct = {:.3}", tt_hit_rate_pct);
     println!("age_bumps = {}", tt_age_bumps);
     println!("current_age = {}", tt_current_age);
+    println!("slots = {}", tt_stats.slots);
+    println!("occupied = {}", tt_stats.occupied);
+    println!("current_age_occupied = {}", tt_stats.current_age_occupied);
+    println!("stale = {}", tt_stats.stale);
+    println!("load_pct = {:.3}", tt_stats.load_pct());
+    println!(
+        "current_age_load_pct = {:.3}",
+        tt_stats.current_age_load_pct()
+    );
+    println!(
+        "stale_pct_of_occupied = {:.3}",
+        tt_stats.stale_pct_of_occupied()
+    );
+    println!("exact = {}", tt_stats.exact);
+    println!("lower = {}", tt_stats.lower);
+    println!("upper = {}", tt_stats.upper);
+    println!("average_depth = {:.3}", tt_stats.average_depth());
+    println!("max_depth = {}", tt_stats.max_depth);
     println!();
     println!("[baseline.startup]");
     println!("first_move_ms = {}", first_move_ms);

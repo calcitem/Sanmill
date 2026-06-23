@@ -721,6 +721,67 @@ fn tt_clear_resets_age_and_removes_entries() {
 }
 
 #[test]
+fn tt_stats_report_current_stale_and_bound_mix() {
+    let tt = ClusteredTt::new_with_cluster_bits(10);
+    let exact_key = 0x1111_2222_3333_0001;
+    let lower_key = 0x1111_2222_3333_0002;
+    let upper_key = 0x1111_2222_3333_0003;
+
+    tt.save(
+        exact_key,
+        TtEntry {
+            value: 10,
+            depth: 3,
+            bound: Bound::Exact,
+        },
+    );
+    tt.save(
+        lower_key,
+        TtEntry {
+            value: 20,
+            depth: 5,
+            bound: Bound::Lower,
+        },
+    );
+
+    let stats = tt.stats();
+    assert_eq!(stats.slots, 1usize << 10);
+    assert_eq!(stats.occupied, 2);
+    assert_eq!(stats.current_age_occupied, 2);
+    assert_eq!(stats.stale, 0);
+    assert_eq!(stats.exact, 1);
+    assert_eq!(stats.lower, 1);
+    assert_eq!(stats.upper, 0);
+    assert_eq!(stats.max_depth, 5);
+    assert_eq!(stats.average_depth(), 4.0);
+
+    tt.bump_age();
+    let stats = tt.stats();
+    assert_eq!(stats.occupied, 2);
+    assert_eq!(stats.current_age_occupied, 0);
+    assert_eq!(stats.stale, 2);
+    assert_eq!(stats.stale_pct_of_occupied(), 100.0);
+
+    tt.save(
+        upper_key,
+        TtEntry {
+            value: 30,
+            depth: 7,
+            bound: Bound::Upper,
+        },
+    );
+    let stats = tt.stats();
+    assert_eq!(stats.occupied, 3);
+    assert_eq!(stats.current_age_occupied, 1);
+    assert_eq!(stats.stale, 2);
+    assert_eq!(stats.exact, 0);
+    assert_eq!(stats.lower, 0);
+    assert_eq!(stats.upper, 1);
+    assert_eq!(stats.max_depth, 7);
+    assert_eq!(stats.average_depth(), 7.0);
+}
+
+#[test]
 fn shared_tt_with_capacity_mb_respects_requested_floor() {
     let small = SharedTt::with_capacity_mb(1, 14);
     let large = SharedTt::with_capacity_mb(64, 14);

@@ -291,6 +291,7 @@ impl MillRules {
         };
         if mill_bits != 0 {
             state.pending_removals[side] = removal_count_for_bits(mill_bits, &self.options);
+            state.refresh_zobrist_misc_for_side(side);
             state.set_mill_available_at_removal(true);
             sync_action_state(state);
             note_mill_formation(state, side, -1, to as i8, mill_bits, &self.options);
@@ -456,6 +457,7 @@ impl MillRules {
         debug_assert!(state.pieces_on_board[opponent] > 0);
         state.pieces_on_board[opponent] -= 1;
         state.pending_removals[side] = 0;
+        state.refresh_zobrist_misc_for_side(side);
         state.set_mill_available_at_removal(false);
         state.ply_since_capture = 0;
         clear_key_history(state);
@@ -626,6 +628,7 @@ impl MillRules {
                             let remaining = removals - hand_removed;
                             if remaining > 0 {
                                 state.pending_removals[side] = remaining;
+                                state.refresh_zobrist_misc_for_side(side);
                                 state.set_mill_available_at_removal(true);
                                 sync_action_state(&mut state);
                             } else {
@@ -644,14 +647,6 @@ impl MillRules {
                             }
                             clear_capture_state(&mut state);
                         }
-                        MillFormationActionInPlacingPhase::OpponentRemovesOwnPiece => {
-                            let opponent = side ^ 1;
-                            state.side_to_move = opponent as i8;
-                            state.pending_removals[opponent] = removals;
-                            state.set_mill_available_at_removal(false);
-                            clear_capture_state(&mut state);
-                            sync_action_state(&mut state);
-                        }
                         MillFormationActionInPlacingPhase::MarkAndDelayRemovingPieces => {
                             // Same shape as the standard "remove opponent's
                             // piece from board" branch: pending_removals is
@@ -662,11 +657,13 @@ impl MillRules {
                             // marked square at the placing-to-moving boundary
                             // (mirrors Position::remove_marked_pieces).
                             state.pending_removals[side] = removals;
+                            state.refresh_zobrist_misc_for_side(side);
                             state.set_mill_available_at_removal(true);
                             activate_capture_state(&mut state, custodian, intervention, 0);
                             if self.options.may_remove_multiple {
                                 state.pending_removals[side] = state.pending_removals[side]
                                     .saturating_add(capture_total(&state));
+                                state.refresh_zobrist_misc_for_side(side);
                             }
                             sync_action_state(&mut state);
                         }
@@ -682,13 +679,22 @@ impl MillRules {
                             maybe_finish_full_board(&mut state, &self.options);
                             sync_action_state(&mut state);
                         }
-                        MillFormationActionInPlacingPhase::RemoveOpponentsPieceFromBoard => {
+                        MillFormationActionInPlacingPhase::RemoveOpponentsPieceFromBoard
+                        | MillFormationActionInPlacingPhase::OpponentRemovesOwnPiece => {
+                            // Legacy master exposes OpponentRemovesOwnPiece
+                            // as a selectable rule value, but the core C++
+                            // apply path has no distinct branch for it.  It
+                            // falls through to the same board-removal flow as
+                            // RemoveOpponentsPieceFromBoard, so keep the
+                            // engine/search semantics identical for parity.
                             state.pending_removals[side] = removals;
+                            state.refresh_zobrist_misc_for_side(side);
                             state.set_mill_available_at_removal(true);
                             activate_capture_state(&mut state, custodian, intervention, 0);
                             if self.options.may_remove_multiple {
                                 state.pending_removals[side] =
                                     state.pending_removals[side].saturating_add(capture_total(&state));
+                                state.refresh_zobrist_misc_for_side(side);
                             }
                             sync_action_state(&mut state);
                         }
@@ -697,6 +703,7 @@ impl MillRules {
                 } else if custodian != 0 || intervention != 0 {
                     activate_capture_state(&mut state, custodian, intervention, 0);
                     state.pending_removals[side] = capture_total(&state);
+                    state.refresh_zobrist_misc_for_side(side);
                     state.set_mill_available_at_removal(false);
                     sync_action_state(&mut state);
                 } else {
@@ -708,7 +715,13 @@ impl MillRules {
                     // remaining hand counts intact until their removal flow
                     // completes.
                     maybe_stop_placing_when_two_empty(&mut state, &self.options);
-                    state.side_to_move ^= 1;
+                    let removal_based_final_placing = matches!(
+                        self.options.mill_formation_action_in_placing_phase,
+                        MillFormationActionInPlacingPhase::RemovalBasedOnMillCounts
+                    ) && state.pieces_in_hand == [0, 0];
+                    if !removal_based_final_placing {
+                        state.side_to_move ^= 1;
+                    }
                     maybe_transition_to_moving(&mut state, &self.options);
                     sync_phase_with_active_hand(&mut state);
                     maybe_finish_full_board(&mut state, &self.options);
@@ -752,17 +765,18 @@ impl MillRules {
                 if leap != 0 {
                     activate_capture_state(&mut state, 0, 0, leap);
                     state.pending_removals[side] = 1;
+                    state.refresh_zobrist_misc_for_side(side);
                     state.set_mill_available_at_removal(false);
                     sync_action_state(&mut state);
                 } else if usable_bits != 0 {
                     state.pending_removals[side] =
                         removal_count_for_bits(usable_bits, &self.options);
+                    state.refresh_zobrist_misc_for_side(side);
                     state.set_mill_available_at_removal(true);
                     activate_capture_state(&mut state, custodian, intervention, 0);
-                    if self.options.may_remove_multiple {
-                        state.pending_removals[side] =
-                            state.pending_removals[side].saturating_add(capture_total(&state));
-                    }
+                    // In the moving phase, master starts from the mill removal
+                    // count and only publishes custodian/intervention targets.
+                    // The first remove action then chooses mill or capture mode.
                     note_mill_formation(
                         &mut state,
                         side,
@@ -775,6 +789,7 @@ impl MillRules {
                 } else if custodian != 0 || intervention != 0 {
                     activate_capture_state(&mut state, custodian, intervention, 0);
                     state.pending_removals[side] = capture_total(&state);
+                    state.refresh_zobrist_misc_for_side(side);
                     state.set_mill_available_at_removal(false);
                     sync_action_state(&mut state);
                 } else {
@@ -881,6 +896,7 @@ impl MillRules {
                     state.leap_targets[side] = 0;
                     state.leap_count[side] = 0;
                     state.pending_removals[side] = state.intervention_count[side];
+                    state.refresh_zobrist_misc_for_side(side);
                 } else if is_custodian {
                     state.set_mill_available_at_removal(false);
                     state.intervention_targets[side] = 0;
@@ -888,6 +904,7 @@ impl MillRules {
                     state.leap_targets[side] = 0;
                     state.leap_count[side] = 0;
                     state.pending_removals[side] = 1;
+                    state.refresh_zobrist_misc_for_side(side);
                 } else if is_leap {
                     state.set_mill_available_at_removal(false);
                     state.custodian_targets[side] = 0;
@@ -895,9 +912,11 @@ impl MillRules {
                     state.intervention_targets[side] = 0;
                     state.intervention_count[side] = 0;
                     state.pending_removals[side] = 1;
+                    state.refresh_zobrist_misc_for_side(side);
                 } else if state.mill_available_at_removal() && cap_total > 0 {
                     if self.options.may_remove_multiple && remaining_before > cap_total {
                         state.pending_removals[side] = remaining_before.saturating_sub(cap_total);
+                        state.refresh_zobrist_misc_for_side(side);
                     }
                     clear_capture_state_for_side(&mut state, side);
                     state.set_mill_available_at_removal(true);
@@ -928,6 +947,7 @@ impl MillRules {
                 state.pieces_on_board[target_color_index] =
                     state.pieces_on_board[target_color_index].saturating_sub(1);
                 state.pending_removals[side] = state.pending_removals[side].saturating_sub(1);
+                state.refresh_zobrist_misc_for_side(side);
                 if is_custodian {
                     state.custodian_targets[side] &= !mask;
                     state.custodian_count[side] = state.custodian_count[side].saturating_sub(1);

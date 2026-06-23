@@ -408,3 +408,17 @@ fn active_search_try_take_finished_updates_last_best_value() {
     assert!(active.is_none(), "finished search must be drained");
     assert_eq!(cfg.last_best_value, 5);
 }
+
+#[test]
+fn format_spawn_result_prints_draw_bestmove_for_draw_short_circuit() {
+    let spawn = SpawnResult {
+        depth: 2,
+        result: SearchResult::draw_short_circuit("draw"),
+        root_side_to_move: -1,
+    };
+
+    assert_eq!(
+        format_spawn_result(&spawn),
+        "info depth 2 score cp 0 nodes 0 bestmove draw"
+    );
+}

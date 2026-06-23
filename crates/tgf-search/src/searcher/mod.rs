@@ -19,7 +19,7 @@ use crate::abort::SearchAbortHandle;
 use crate::options::{SearchOptions, SearchPolicy};
 use crate::result::SearchResult;
 use crate::searcher::qsearch::TtProbe;
-use crate::tt::{Bound, ClusteredTt, SharedTt};
+use crate::tt::{Bound, ClusteredTt, SharedTt, TtStats};
 
 mod iterative_mtdf;
 mod move_order;
@@ -227,6 +227,10 @@ impl<G: Game> Searcher<G> {
 
     pub fn tt_len(&self) -> usize {
         self.tt.len_occupied()
+    }
+
+    pub fn tt_stats(&self) -> TtStats {
+        self.tt.stats()
     }
 
     pub fn debug_tt_entry_for_key(&self, key: u64) -> Option<DebugTtEntry> {

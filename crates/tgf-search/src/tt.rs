@@ -168,6 +168,58 @@ pub(crate) struct ClusteredTt {
     pub(crate) current_age: AtomicU8,
 }
 
+/// Snapshot of TT occupancy and bound mix for diagnostics.
+///
+/// Collecting this scans the whole table, so callers should use it at
+/// benchmark / logging boundaries instead of inside the node loop.
+#[derive(Clone, Copy, Debug, Default, PartialEq)]
+pub struct TtStats {
+    pub slots: usize,
+    pub occupied: usize,
+    pub current_age_occupied: usize,
+    pub stale: usize,
+    pub exact: usize,
+    pub lower: usize,
+    pub upper: usize,
+    pub depth_sum: i64,
+    pub max_depth: i32,
+}
+
+impl TtStats {
+    #[inline]
+    pub fn load_pct(&self) -> f64 {
+        ratio_pct(self.occupied, self.slots)
+    }
+
+    #[inline]
+    pub fn current_age_load_pct(&self) -> f64 {
+        ratio_pct(self.current_age_occupied, self.slots)
+    }
+
+    #[inline]
+    pub fn stale_pct_of_occupied(&self) -> f64 {
+        ratio_pct(self.stale, self.occupied)
+    }
+
+    #[inline]
+    pub fn average_depth(&self) -> f64 {
+        if self.current_age_occupied == 0 {
+            0.0
+        } else {
+            self.depth_sum as f64 / self.current_age_occupied as f64
+        }
+    }
+}
+
+#[inline]
+fn ratio_pct(numerator: usize, denominator: usize) -> f64 {
+    if denominator == 0 {
+        0.0
+    } else {
+        numerator as f64 * 100.0 / denominator as f64
+    }
+}
+
 impl ClusteredTt {
     /// 24 → 16 Mi direct slots (~128 MiB), matching master
     /// `TRANSPOSITION_TABLE_SIZE = 0x1000000` (16 Mi entries) in
@@ -304,6 +356,35 @@ impl ClusteredTt {
             .iter()
             .filter(|c| c.meta.load(Ordering::Relaxed) != 0)
             .count()
+    }
+
+    pub(crate) fn stats(&self) -> TtStats {
+        let current_age = self.current_age();
+        let mut stats = TtStats {
+            slots: self.clusters.len,
+            ..TtStats::default()
+        };
+        for c in self.clusters.iter() {
+            let meta = c.meta.load(Ordering::Relaxed);
+            if meta == 0 {
+                continue;
+            }
+            stats.occupied += 1;
+            if TtPackedEntry::packed_age(meta) != current_age {
+                stats.stale += 1;
+                continue;
+            }
+            stats.current_age_occupied += 1;
+            let depth = TtPackedEntry::unpack_depth(meta);
+            stats.depth_sum += i64::from(depth);
+            stats.max_depth = stats.max_depth.max(depth);
+            match TtPackedEntry::unpack_bound(meta) {
+                Bound::Exact => stats.exact += 1,
+                Bound::Lower => stats.lower += 1,
+                Bound::Upper => stats.upper += 1,
+            }
+        }
+        stats
     }
 
     /// Issue an architecture-specific prefetch hint for the cluster
@@ -515,6 +596,14 @@ impl SharedTt {
     /// debug logging and bench instrumentation.
     pub fn len_occupied(&self) -> usize {
         self.inner.len_occupied()
+    }
+
+    /// Snapshot TT occupancy and current-generation bound mix.
+    ///
+    /// This scans the full table and is intended for diagnostics, not for
+    /// per-node search accounting.
+    pub fn stats(&self) -> TtStats {
+        self.inner.stats()
     }
 
     /// Architecture-specific prefetch hint for the cluster `key` would

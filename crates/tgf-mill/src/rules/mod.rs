@@ -681,6 +681,8 @@ impl MillStateFlags {
     const REMOVE_OWN_FIRST: u8 = 1 << 3;
     const REMOVE_OWN_SECOND: u8 = 1 << 4;
     const BOARD_FULL_REMOVING: u8 = 1 << 5;
+    const ZOBRIST_MISC_SHIFT: u8 = 6;
+    const ZOBRIST_MISC_MASK: u8 = 0b11 << Self::ZOBRIST_MISC_SHIFT;
     const PAYLOAD_MASK: u8 = Self::MILL_AVAILABLE_AT_REMOVAL
         | Self::STALEMATE_REMOVING
         | Self::BOTH_STALEMATE_REMOVING
@@ -805,6 +807,16 @@ impl MillStateFlags {
     fn set_board_full_removing(&mut self, enabled: bool) {
         self.set_bit(Self::BOARD_FULL_REMOVING, enabled);
     }
+
+    #[inline]
+    fn zobrist_misc_count(self) -> u8 {
+        (self.0 & Self::ZOBRIST_MISC_MASK) >> Self::ZOBRIST_MISC_SHIFT
+    }
+
+    #[inline]
+    fn set_zobrist_misc_count(&mut self, count: u8) {
+        self.0 = (self.0 & !Self::ZOBRIST_MISC_MASK) | ((count & 3) << Self::ZOBRIST_MISC_SHIFT);
+    }
 }
 
 impl std::fmt::Debug for MillStateFlags {
@@ -818,6 +830,7 @@ impl std::fmt::Debug for MillStateFlags {
             .field("stalemate_removing", &self.stalemate_removing())
             .field("both_stalemate_removing", &self.both_stalemate_removing())
             .field("board_full_removing", &self.board_full_removing())
+            .field("zobrist_misc_count", &self.zobrist_misc_count())
             .finish()
     }
 }
@@ -933,10 +946,34 @@ impl MillState {
         self.flags.remove_own_piece(side)
     }
 
-    #[cfg(test)]
     #[inline]
-    fn remove_own_pieces(&self) -> [bool; 2] {
+    pub fn remove_own_pieces(&self) -> [bool; 2] {
         self.flags.remove_own_pieces()
+    }
+
+    #[inline]
+    fn legacy_misc_count_for_side(&self, side: usize) -> u8 {
+        let count = self.pending_removals[side] & 3;
+        if self.remove_own_piece(side) && count != 0 {
+            (0_u8.wrapping_sub(count)) & 3
+        } else {
+            count
+        }
+    }
+
+    #[inline]
+    fn refresh_zobrist_misc_for_side(&mut self, side: usize) {
+        self.flags
+            .set_zobrist_misc_count(self.legacy_misc_count_for_side(side));
+    }
+
+    #[inline]
+    fn refresh_zobrist_misc_for_active_side(&mut self) {
+        if (0..=1).contains(&self.side_to_move) {
+            self.refresh_zobrist_misc_for_side(self.side_to_move as usize);
+        } else {
+            self.flags.set_zobrist_misc_count(0);
+        }
     }
 
     #[inline]

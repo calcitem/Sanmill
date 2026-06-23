@@ -698,11 +698,29 @@ Conservative, node-preserving candidates:
   mills, preferred remove targets, UI-facing capture metadata, and full
   key-history storage should be reviewed for cold placement so the standard
   undo and state copies carry fewer cache lines.
-- Cache a compact standard-rule fast path.  `MillRules` is general and
-  variant-rich.  For default Nine Men's Morris, a small immutable fast-path
-  descriptor in `MillWorkbench` could avoid repeated option loads and branch
-  chains in move generation, mill checks, remove legality, and move-order
-  bias.  Keep asserts proving that the fast descriptor matches the full rules.
+- [x] Cache a compact standard-rule fast path: CHECKED 2026-06-23, rejected
+  for the current move-order code shape.  `MillRules` is general and
+  variant-rich, so default Nine Men's Morris looked like a good candidate for
+  immutable cached descriptors such as `!has_diagonal_lines &&
+  !one_time_use_mill` and the placing/no-move move-order rule.  The prototype
+  cached those booleans in `MillRules`, added debug assertions against the
+  original options, and used the cached values in `MillMoveOrderScorer`.
+
+  The patch preserved bestmove, score, and node counts for every checked
+  case, but timing did not justify keeping it.  Same-run release A/B against
+  the previous local binary showed small placing wins (`start` d12 r7
+  `0.982x`, `reduced_material` d12 r7 `0.984x`) but moving/removal regressions
+  (`moving_loop` d18 r5 `1.075x`, `capture_pending` d18 r5 `1.026x`, and
+  `capture_pending` d18 r9 `1.038x`).  Theory after measurement: the current
+  compiler already folds the few option loads well, while adding extra fields
+  to `MillRules` and scorer construction changes code/data layout enough to
+  hurt the deeper TT-heavy removal path.  Do not reintroduce this exact
+  descriptor shape unless a future profile shows the option-combination branch
+  itself as material, or a broader packed/staged move-order refactor changes
+  the construction cost model.  Raw CSVs:
+  `/tmp/sanmill-perf/ttstats_rulefast_primary_d12_r7.csv`,
+  `/tmp/sanmill-perf/ttstats_rulefast_moving_d18_r5.csv`, and
+  `/tmp/sanmill-perf/ttstats_rulefast_capture_d18_r9.csv`.
 - [x] Revisit remove-target ordering with bitsets.  Master combines bitboards with
   stable priority lists.  Rust can first compute the legal removal target mask
   and then emit targets by precomputed priority ranks.  This should remove
@@ -763,11 +781,25 @@ Conservative, node-preserving candidates:
   If prefetch is enabled in benchmarks, compare a standard-only exact child
   key that includes pending-removal and misc-state updates.  Do not use this
   path for correctness; it is a locality experiment only.
-- Add TT occupancy and replacement diagnostics.  Stockfish reports hashfull
-  and uses age-aware replacement data; master exposes TT hit/miss counters in
-  debug builds.  Rust should have cheap optional counters for TT hit, miss,
-  overwrite, age skip, and occupancy sampling so future TT experiments are not
-  judged only by elapsed time.
+- [x] Add TT occupancy and replacement diagnostics.  Stockfish reports
+  hashfull and uses age-aware replacement data; master exposes TT hit/miss
+  counters in debug builds.  Done on 2026-06-23: added a scan-only
+  `TtStats` snapshot API plus `Searcher::tt_stats()` and `SharedTt::stats()`.
+  The diagnostic records total slots, occupied slots, current-generation
+  occupied slots, stale slots, Exact/Lower/Upper bound mix, average depth, and
+  max depth.  `tgf bench` now emits these fields under `[baseline.tt]` beside
+  the existing hit rate and age counters.
+
+  This is deliberately not a per-node counter and is not claimed as an NPS
+  optimization.  It avoids hot-path atomics, locks, and false sharing by
+  scanning only at benchmark / logging boundaries.  Use these fields before
+  accepting or rejecting future TT cluster, replacement, independent-index, or
+  `tt_move` experiments; elapsed time alone is too noisy on the current VM.
+  A debug `tgf bench` smoke run after the measured search showed the new TT
+  fields are populated (`2^24` slots, `1387` occupied, `0` stale, bound mix
+  `117/765/505` at depth 4) before the unrelated debug MCTS tail was
+  interrupted for runtime.  Tests: `cargo test -p tgf-search
+  tt_stats_report_current_stale_and_bound_mix` and `cargo test -p tgf-cli`.
 - Parallelize large TT clear and pre-touch.  Stockfish clears TT memory with
   worker threads and NUMA-aware chunking.  Rust currently initializes shared TT
   state at session boundaries.  For large hash sizes, measure a parallel clear

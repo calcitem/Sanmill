@@ -38,7 +38,7 @@ pub use result::MILL_VALUE_UNIQUE;
 pub use result::{SearchResult, VALUE_UNIQUE_ROOT_MOVE};
 pub use searcher::Searcher;
 pub use thread_pool::{LazySmpWorker, SearchThreadPool, lazy_smp_search};
-pub use tt::SharedTt;
+pub use tt::{SharedTt, TtStats};
 
 #[cfg(test)]
 mod tests;

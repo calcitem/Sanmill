@@ -19,10 +19,10 @@
 //     avoiding sparse runtime arrays.
 //   * `Key` is u64 internally to match the rest of `tgf-core`'s API, but the
 //     generated values occupy only master's low 32-bit key space.
-//   * KEY_MISC_BIT semantics match: the top 2 bits of the final key
-//     hold `min(pending_removals[stm], 3)` so positions with the same
-//     piece-square layout but different remove counts hash to
-//     different keys.
+//   * KEY_MISC_BIT semantics match: the top 2 bits of the final key hold the
+//     cached value from master `update_key_misc()`.  That value is not
+//     recomputed when `set_side_to_move()` flips the side bit, so it is stored
+//     explicitly in the spare bits of `MillStateFlags`.
 
 use super::{MillPhase, MillState};
 
@@ -244,15 +244,11 @@ pub(crate) fn full_state_key(state: &MillState) -> u64 {
         }
     }
 
-    // Misc counter: piece-to-remove count for the side to move
-    // (master `update_key_misc`).  GameOver positions keep the phase
-    // contribution only; some terminal states still preserve side_to_move
-    // for key parity with master.
-    let count = if state.phase != MillPhase::GameOver
-        && (state.side_to_move == 0 || state.side_to_move == 1)
-    {
-        let stm = state.side_to_move as usize;
-        u64::from(state.pending_removals[stm].min(3))
+    // Misc counter: cached master `update_key_misc()` value.  Do not derive it
+    // from the current side here; master leaves these bits stale across
+    // `set_side_to_move()` and search parity depends on preserving that cache.
+    let count = if state.phase != MillPhase::GameOver {
+        u64::from(state.flags.zobrist_misc_count())
     } else {
         0
     };
@@ -545,9 +541,8 @@ pub(crate) fn key_after_apply_from_changed_squares(
 
 #[inline]
 fn misc_count(state: &MillState) -> u64 {
-    if state.phase != MillPhase::GameOver && (state.side_to_move == 0 || state.side_to_move == 1) {
-        let stm = state.side_to_move as usize;
-        u64::from(state.pending_removals[stm].min(3))
+    if state.phase != MillPhase::GameOver {
+        u64::from(state.flags.zobrist_misc_count())
     } else {
         0
     }

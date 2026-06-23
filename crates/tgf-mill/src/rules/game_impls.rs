@@ -242,11 +242,10 @@ impl Evaluator<MillWorkbench> for MillEvaluator {
         let options = &wb.rules.options;
         let mut value: i32 = 0;
 
-        let removals_diff =
-            i32::from(state.pending_removals[0]) - i32::from(state.pending_removals[1]);
+        let effective_on_board = legacy_removal_count_view(state, options);
+        let removals_diff = signed_pending_removals_diff(state);
         let in_hand_diff = i32::from(state.pieces_in_hand[0]) - i32::from(state.pieces_in_hand[1]);
-        let on_board_diff =
-            i32::from(state.pieces_on_board[0]) - i32::from(state.pieces_on_board[1]);
+        let on_board_diff = i32::from(effective_on_board[0]) - i32::from(effective_on_board[1]);
         let action_is_remove = state.pending_removals[0] > 0 || state.pending_removals[1] > 0;
 
         match state.phase {
@@ -285,6 +284,54 @@ impl Evaluator<MillWorkbench> for MillEvaluator {
         }
         value
     }
+}
+
+fn legacy_removal_count_view(state: &MillState, options: &MillVariantOptions) -> [u8; 2] {
+    let mut counts = state.pieces_on_board;
+    if !matches!(
+        options.mill_formation_action_in_placing_phase,
+        MillFormationActionInPlacingPhase::RemovalBasedOnMillCounts
+    ) {
+        return counts;
+    }
+    if state.phase != MillPhase::Moving {
+        return counts;
+    }
+
+    let own_pending = [
+        state.remove_own_piece(0) && state.pending_removals[0] > 0,
+        state.remove_own_piece(1) && state.pending_removals[1] > 0,
+    ];
+    let pending_side = match own_pending {
+        [true, false] => 0_usize,
+        [false, true] => 1_usize,
+        _ => return counts,
+    };
+    let completed_side = pending_side ^ 1;
+    if state.pending_removals[completed_side] != 0 || state.remove_own_piece(completed_side) {
+        return counts;
+    }
+
+    // Legacy C++ negative `pieceToRemoveCount` requires the mover to pick
+    // an own piece, but `remove_piece()` still decrements `pieceOnBoardCount`
+    // for `them`. Keep Rust's board/count invariants intact and reproduce
+    // that transient count view only for evaluation until the other side's
+    // own-removal quota clears and the legacy counts become consistent again.
+    counts[pending_side] = counts[pending_side].saturating_sub(1);
+    counts[completed_side] = counts[completed_side].saturating_add(1);
+    counts
+}
+
+fn signed_pending_removals_diff(state: &MillState) -> i32 {
+    let signed = |side: usize| -> i32 {
+        let count = i32::from(state.pending_removals[side]);
+        if state.remove_own_piece(side) {
+            -count
+        } else {
+            count
+        }
+    };
+    signed(0) - signed(1)
 }
 
 struct MillMoveOrderScorer<'a> {

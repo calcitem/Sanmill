@@ -102,6 +102,13 @@ pub(super) fn enter_moving_phase(state: &mut MillState, options: &MillVariantOpt
         options.mill_formation_action_in_placing_phase,
         MillFormationActionInPlacingPhase::RemovalBasedOnMillCounts
     );
+    if removal_mill_counts {
+        // Master calculates the removal counts before resetting the side to
+        // the rule-defined first mover.  `calculate_removal_based_on_mill_counts`
+        // also refreshes the Zobrist misc bits for the final placing side;
+        // the later side switch intentionally leaves those bits untouched.
+        apply_removal_based_on_mill_counts(state, options);
+    }
     if invariant && !mark_and_delay && !removal_mill_counts {
         // Master returns early after `if (isDefenderMoveFirst) set_side_to_move(BLACK)`,
         // leaving the caller to skip the default change_side_to_move when
@@ -115,12 +122,6 @@ pub(super) fn enter_moving_phase(state: &mut MillState, options: &MillVariantOpt
         // Default branch + markAndDelay + removalBasedOnMillCounts all
         // funnel through master `set_side_to_move(defender ? BLACK : WHITE)`.
         state.side_to_move = if options.is_defender_move_first { 1 } else { 0 };
-    }
-    if matches!(
-        options.mill_formation_action_in_placing_phase,
-        MillFormationActionInPlacingPhase::RemovalBasedOnMillCounts
-    ) {
-        apply_removal_based_on_mill_counts(state, options);
     }
 }
 
@@ -188,11 +189,13 @@ pub(super) fn maybe_finish_full_board(state: &mut MillState, options: &MillVaria
             state.pending_removals = [1, 1];
             state.side_to_move = 0;
             state.set_board_full_removing(true);
+            state.refresh_zobrist_misc_for_active_side();
         }
         MillBoardFullAction::SecondAndFirstPlayerRemovePiece => {
             state.pending_removals = [1, 1];
             state.side_to_move = 1;
             state.set_board_full_removing(true);
+            state.refresh_zobrist_misc_for_active_side();
         }
         MillBoardFullAction::SideToMoveRemovePiece => {
             state.pending_removals = [0, 0];
@@ -200,6 +203,7 @@ pub(super) fn maybe_finish_full_board(state: &mut MillState, options: &MillVaria
             state.side_to_move = remover;
             state.pending_removals[remover as usize] = 1;
             state.set_board_full_removing(true);
+            state.refresh_zobrist_misc_for_active_side();
         }
     }
 }
@@ -260,6 +264,7 @@ pub(super) fn apply_removal_based_on_mill_counts(
         (white, white + 1)
     };
     state.pending_removals = [white_remove, black_remove];
+    state.refresh_zobrist_misc_for_active_side();
     if state.pending_removals[state.side_to_move as usize] == 0 {
         state.side_to_move ^= 1;
     }

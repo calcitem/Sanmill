@@ -139,6 +139,15 @@ impl MillState {
             u32::from_le_bytes(bytes)
         };
         let delayed_marked_pieces = read_u32(39);
+        let mut flags = super::MillStateFlags::from_payload(payload[252]);
+        let misc_count = if snapshot.zobrist_key != 0 {
+            ((snapshot.zobrist_key >> 30) & 3) as u8
+        } else if (0..=1).contains(&snapshot.side_to_move) {
+            payload[28 + snapshot.side_to_move as usize] & 3
+        } else {
+            0
+        };
+        flags.set_zobrist_misc_count(misc_count);
         Self {
             by_color_bb: bitboards_from_board(&board, delayed_marked_pieces),
             board,
@@ -204,7 +213,7 @@ impl MillState {
             custodian_count: [payload[249], payload[276]],
             intervention_count: [payload[250], payload[277]],
             leap_count: [payload[251], payload[278]],
-            flags: super::MillStateFlags::from_payload(payload[252]),
+            flags,
             preferred_remove_target: payload[255] as i8,
             formed_mills_bb: [read_u32(256), read_u32(260)],
             // Snapshot-side Zobrist key was computed in
@@ -249,6 +258,10 @@ impl MillState {
 
     pub fn set_side_to_move(&mut self, side: i8) {
         self.side_to_move = if side == 0 || side == 1 { side } else { 0 };
+    }
+
+    pub fn side_to_move(&self) -> i8 {
+        self.side_to_move
     }
 
     pub fn set_phase(&mut self, phase: MillPhase) {
@@ -298,6 +311,10 @@ impl MillState {
         self.pending_removals
     }
 
+    pub fn mobility_diff(&self) -> i32 {
+        self.mobility_diff
+    }
+
     /// Set the winner field directly.  Used by setup-position tools that
     /// need to mark an immediate-GameOver position (e.g. fewer than
     /// pieces_at_least_count pieces after `setup_finish`).
@@ -338,6 +355,9 @@ impl MillState {
     pub fn set_pending_removal(&mut self, side_idx: usize, count: u8) {
         if side_idx < 2 {
             self.pending_removals[side_idx] = count;
+            if self.side_to_move == side_idx as i8 {
+                self.refresh_zobrist_misc_for_side(side_idx);
+            }
         }
     }
 

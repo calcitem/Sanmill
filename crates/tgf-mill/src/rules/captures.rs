@@ -301,7 +301,9 @@ pub(super) fn activate_capture_state(
     state.custodian_targets[side] = custodian;
     state.intervention_targets[side] = intervention;
     state.leap_targets[side] = leap;
-    state.custodian_count[side] = bit_count(custodian);
+    // Custodian capture can expose several sandwiched candidates, but master
+    // allows choosing exactly one of them regardless of mayRemoveMultiple.
+    state.custodian_count[side] = if custodian == 0 { 0 } else { 1 };
     state.intervention_count[side] = bit_count(intervention);
     state.leap_count[side] = bit_count(leap);
 }

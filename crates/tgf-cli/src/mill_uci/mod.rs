@@ -18,11 +18,11 @@ use std::thread::{self, JoinHandle};
 
 use perfect_db::database::{DatabaseOptions, DatabaseVariant, PerfectDatabaseRuleMismatch};
 use tgf_core::{
-    Action, ActionList, Game, GameRules, GameStateSnapshot, MoveOrderAlgorithm, MoveOrderContext,
-    Workbench,
+    Action, ActionList, Evaluator, Game, GameRules, GameStateSnapshot, MoveOrderAlgorithm,
+    MoveOrderContext, SearchActionList, Workbench,
 };
 use tgf_mill::{
-    EngineRuntimeOptions, MillActionKind, MillGame, MillRules, MillVariantOptions,
+    EngineRuntimeOptions, MillActionKind, MillEvaluator, MillGame, MillRules, MillVariantOptions,
     recommended_search_depth,
 };
 use tgf_search::{
@@ -333,12 +333,21 @@ pub(crate) fn run_uci_loop() {
             state_history = parsed.history;
         } else if line == "d" {
             print_board_ascii(&state, &options);
+        } else if line == "fen" {
+            println!(
+                "fen {}",
+                rules.export_fen(&MillRules::decode_snapshot(state))
+            );
+        } else if line == "evaldecomp" {
+            print_eval_decomp(&options, state);
         } else if line == "key" {
             let game = MillGame::new(options.clone());
             let wb = game.build_workbench(&state);
             println!("key {}", wb.key() as u32);
         } else if line == "hist" {
             print_repetition_history(&options, state, &state_history);
+        } else if line == "moves" {
+            print_legal_moves(&options, &state, &engine_cfg);
         } else if line.starts_with("gomtdf") {
             finish_active_search(&mut active_search, &mut engine_cfg);
             let depth = parse_fixed_depth_debug_command(line, 15);
@@ -521,6 +530,29 @@ fn spawn_search(
     }
 }
 
+fn print_eval_decomp(options: &MillVariantOptions, state: GameStateSnapshot) {
+    let game = MillGame::new(options.clone());
+    let wb = game.build_workbench(&state);
+    let decoded = MillRules::decode_snapshot(state);
+    let remove_own = decoded.remove_own_pieces();
+    println!(
+        "evaldecomp phase={} mob={} onbW={} onbB={} inhW={} inhB={} \
+rmW={} rmB={} ownW={} ownB={} stm={} eval={}",
+        decoded.phase() as u8,
+        decoded.mobility_diff(),
+        decoded.pieces_on_board()[0],
+        decoded.pieces_on_board()[1],
+        decoded.pieces_in_hand()[0],
+        decoded.pieces_in_hand()[1],
+        decoded.pending_removals()[0],
+        decoded.pending_removals()[1],
+        remove_own[0],
+        remove_own[1],
+        decoded.side_to_move(),
+        MillEvaluator::score(&wb)
+    );
+}
+
 fn run_configured_search(
     options: MillVariantOptions,
     state: GameStateSnapshot,
@@ -530,6 +562,13 @@ fn run_configured_search(
     cfg: &EngineConfig,
     searcher: &mut Searcher<MillGame>,
 ) -> SearchResult {
+    let root_outcome = MillRules::new(options.clone()).outcome(&state);
+    if matches!(root_outcome.kind, tgf_core::OutcomeKind::Draw)
+        && root_outcome.reason != "drawFullBoard"
+    {
+        return SearchResult::draw_short_circuit("draw");
+    }
+
     // Mirror master src/search_engine.cpp:381 executeSearch: route the
     // user-visible Algorithm option into the actual search implementation.
     let game = MillGame::new_with_repetition_context(
@@ -731,6 +770,21 @@ fn print_repetition_history(
         root_position_resets_repetition,
         state_history.len()
     );
+}
+
+fn print_legal_moves(options: &MillVariantOptions, state: &GameStateSnapshot, cfg: &EngineConfig) {
+    let game = MillGame::new(options.clone());
+    let wb = game.build_workbench(state);
+    let mut legal = SearchActionList::new();
+    MillGame::generate_legal_ctx(&wb, &mut legal, &move_order_context(cfg));
+    let mut line = String::from("moves");
+    for action in legal.as_slice().iter().copied() {
+        if let Some(token) = action_to_uci(action) {
+            line.push(' ');
+            line.push_str(&token);
+        }
+    }
+    println!("{line}");
 }
 
 fn parse_fixed_depth_debug_command(line: &str, default_depth: i32) -> i32 {
@@ -1093,7 +1147,11 @@ fn format_spawn_result(spawn: &SpawnResult) -> String {
         spawn.result.score
     };
     let score_str = format_score(output_score);
-    let uci = action_to_uci(spawn.result.best_action).unwrap_or_else(|| "none".to_owned());
+    let uci = if spawn.result.draw_reason.is_some() {
+        "draw".to_owned()
+    } else {
+        action_to_uci(spawn.result.best_action).unwrap_or_else(|| "none".to_owned())
+    };
     format!(
         "info depth {} {} nodes {} bestmove {}",
         spawn.depth, score_str, spawn.result.nodes, uci
