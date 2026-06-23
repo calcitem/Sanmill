@@ -36,7 +36,9 @@
 // the action sets / snapshots agree.
 
 use crate::{
-    action::{Action, ActionList, ActionTrail, SearchActionList},
+    action::{
+        Action, ActionList, ActionTrail, MoveOrderScore, SearchActionList, pack_move_order_score,
+    },
     board_topology::BoardTopology,
     game_state::{GameStateSnapshot, MultiPlayerInfo, Outcome},
 };
@@ -319,7 +321,7 @@ pub trait Game: 'static + Send + Sync {
         wb: &Self::Workbench,
         actions: &[Action],
         ctx: &MoveOrderContext,
-        scores: &mut [MaybeUninit<i32>],
+        scores: &mut [MaybeUninit<MoveOrderScore>],
     ) -> bool {
         assert!(
             actions.len() <= scores.len(),
@@ -330,7 +332,7 @@ pub trait Game: 'static + Send + Sync {
         let mut needs_sort = false;
         for (i, action) in actions.iter().copied().enumerate() {
             let score = Self::move_order_bias_ctx(wb, action, ctx);
-            scores[i].write(score);
+            scores[i].write(pack_move_order_score(score));
             if has_previous && previous_score < score {
                 needs_sort = true;
             }

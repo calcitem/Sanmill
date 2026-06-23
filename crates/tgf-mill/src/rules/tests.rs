@@ -715,7 +715,7 @@ fn move_order_batch_scores_match_single_action_scores() {
     let mut actions = SearchActionList::new();
     <MillGame as Game>::generate_legal_ctx(&wb, &mut actions, &ctx);
 
-    let mut scores: [MaybeUninit<i32>; tgf_core::SEARCH_ACTION_CAPACITY] =
+    let mut scores: [MaybeUninit<tgf_core::MoveOrderScore>; tgf_core::SEARCH_ACTION_CAPACITY] =
         [MaybeUninit::uninit(); tgf_core::SEARCH_ACTION_CAPACITY];
     let needs_sort =
         <MillGame as Game>::move_order_scores_ctx(&wb, actions.as_slice(), &ctx, &mut scores);
@@ -727,7 +727,7 @@ fn move_order_batch_scores_match_single_action_scores() {
         let expected = <MillGame as Game>::move_order_bias_ctx(&wb, action, &ctx);
         // SAFETY: `move_order_scores_ctx` promises to initialize exactly the
         // prefix covered by the action slice.
-        let actual = unsafe { scores[i].assume_init() };
+        let actual = i32::from(unsafe { scores[i].assume_init() });
         assert_eq!(actual, expected, "batch score diverged at index {i}");
         if has_previous && previous_score < expected {
             expected_needs_sort = true;

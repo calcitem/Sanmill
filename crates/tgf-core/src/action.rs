@@ -54,6 +54,24 @@ pub type ActionList<const N: usize = 256> = arrayvec::ArrayVec<Action, N>;
 pub const SEARCH_ACTION_CAPACITY: usize = 72;
 pub type SearchActionList = ActionList<SEARCH_ACTION_CAPACITY>;
 
+/// Compact score lane used only by the search move-order buffer.
+///
+/// Mill's legacy ratings are tiny (`RATING_*` values around 10), and generic
+/// games should keep static ordering bonuses similarly bounded.  The semantic
+/// APIs still return `i32`; this narrow lane reduces per-node stack pressure
+/// for the temporary sortable score array without changing the public action
+/// ABI.
+pub type MoveOrderScore = i16;
+
+#[inline(always)]
+pub fn pack_move_order_score(score: i32) -> MoveOrderScore {
+    debug_assert!(
+        (i32::from(MoveOrderScore::MIN)..=i32::from(MoveOrderScore::MAX)).contains(&score),
+        "move-order score {score} does not fit in MoveOrderScore"
+    );
+    score as MoveOrderScore
+}
+
 /// Canonical [`Action::kind_tag`] values shared across games.
 ///
 /// Concrete games still own their kind-tag namespace, but games that

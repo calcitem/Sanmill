@@ -18,7 +18,8 @@ pub mod zobrist;
 
 // Convenience re-exports for downstream crates.
 pub use action::{
-    Action, ActionList, ActionTrail, SEARCH_ACTION_CAPACITY, SearchActionList, action_kind,
+    Action, ActionList, ActionTrail, MoveOrderScore, SEARCH_ACTION_CAPACITY, SearchActionList,
+    action_kind, pack_move_order_score,
 };
 pub use board_topology::{BoardTopology, Decoration, Edge, UnitPoint, Zone};
 pub use game::{

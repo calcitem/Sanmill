@@ -3,7 +3,7 @@
 // These are pure `Searcher<G>` methods; they live in a sibling impl
 // block so the main `searcher/mod.rs` does not have to host them too.
 
-use tgf_core::{Game, SEARCH_ACTION_CAPACITY, SearchActionList};
+use tgf_core::{Game, MoveOrderScore, SEARCH_ACTION_CAPACITY, SearchActionList};
 
 use super::Searcher;
 use std::mem::MaybeUninit;
@@ -21,7 +21,7 @@ impl<G: Game> Searcher<G> {
         if moves.len() < 2 {
             return;
         }
-        let mut scores: [MaybeUninit<i32>; SEARCH_ACTION_CAPACITY] =
+        let mut scores: [MaybeUninit<MoveOrderScore>; SEARCH_ACTION_CAPACITY] =
             [MaybeUninit::uninit(); SEARCH_ACTION_CAPACITY];
         assert!(moves.len() <= scores.len());
         // Master only adds a TT-move bonus when TT_MOVE_ENABLE is compiled in.

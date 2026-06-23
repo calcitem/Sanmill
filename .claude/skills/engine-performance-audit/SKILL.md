@@ -981,11 +981,30 @@ Conservative, node-preserving candidates:
   benchmark before claiming a percentage speedup.  Remaining UI-loop costs:
   header refresh and the deliberate animation or `Duration.zero` yield after
   each move.
-- Audit score-width choices in move ordering.  Master ratings fit in small
-  signed integers, while Rust currently computes `i32` scores and stores a
-  temporary `[i32; 72]` score array beside a 72-action stack list.  A
-  Mill-specific packed move list can use a narrower score lane if assertions
-  prove no comparison-changing saturation occurs.
+- [x] Audit score-width choices in move ordering.  Master ratings fit in small
+  signed integers, while Rust computed `i32` scores and stored a temporary
+  `[i32; 72]` score array beside a 72-action stack list.  Done on 2026-06-23:
+  the semantic `move_order_bias_ctx` API still returns `i32`, but the
+  generated per-node sortable score buffer now uses `MoveOrderScore = i16`.
+  `pack_move_order_score` keeps a debug assertion that future static-ordering
+  bonuses still fit exactly, so a later packed action list can rely on the
+  narrower lane without changing public FRB/CLI `Action` ABI.
+
+  Fixed-depth A/B against the previous local binary preserved bestmove, score,
+  and nodes for every checked case.  Median ratios were mixed but overall
+  acceptable for a stack-pressure reduction: first matrix `start` d12
+  repeat=7 `0.966x`, `reduced_material` d12 repeat=7 `0.979x`,
+  `capture_pending` d12 repeat=7 `1.109x` on a small/noisy 182k-node case,
+  and `moving_loop` d12 repeat=7 `1.001x`; deeper moving checks gave
+  `capture_pending` d18 repeat=7 `0.973x` and `moving_loop` d18 repeat=7
+  `0.901x`; start repeat=11 reruns were noisy (`1.029x` then `0.977x`).
+  Keep the change because it preserves tree shape, reduces the hot temporary
+  score array from 288 to 144 bytes, and does not show a stable >5%
+  regression.  Raw CSVs:
+  `/tmp/sanmill-perf/move_order_score_i16_primary.csv`,
+  `/tmp/sanmill-perf/move_order_score_i16_moving_capture_d18.csv`,
+  `/tmp/sanmill-perf/move_order_score_i16_start_reduced_r11.csv`, and
+  `/tmp/sanmill-perf/move_order_score_i16_start_r11_second.csv`.
 - [x] Short-circuit all-zero standard move-order score lists.  The first
   2026-06-21 prototype was rejected because it still wrote a zero score for
   every action before returning "already sorted"; it preserved bestmove, score,

@@ -6,7 +6,8 @@
 
 use std::mem::MaybeUninit;
 use tgf_core::{
-    Action, Evaluator, Game, GameStateSnapshot, MoveOrderContext, SearchActionList, Workbench,
+    Action, Evaluator, Game, GameStateSnapshot, MoveOrderContext, MoveOrderScore, SearchActionList,
+    Workbench, pack_move_order_score,
 };
 
 use super::evaluation::{
@@ -525,7 +526,11 @@ impl<'a> MillMoveOrderScorer<'a> {
     }
 
     #[inline]
-    fn score_actions(&self, actions: &[Action], scores: &mut [MaybeUninit<i32>]) -> bool {
+    fn score_actions(
+        &self,
+        actions: &[Action],
+        scores: &mut [MaybeUninit<MoveOrderScore>],
+    ) -> bool {
         assert!(
             actions.len() <= scores.len(),
             "Mill move-order score buffer is smaller than action list"
@@ -553,7 +558,7 @@ impl<'a> MillMoveOrderScorer<'a> {
         let mut needs_sort = false;
         for (i, action) in actions.iter().copied().enumerate() {
             let score = self.score(action);
-            scores[i].write(score);
+            scores[i].write(pack_move_order_score(score));
             if has_previous && previous_score < score {
                 needs_sort = true;
             }
@@ -567,7 +572,7 @@ impl<'a> MillMoveOrderScorer<'a> {
     fn score_standard_moving_actions(
         &self,
         actions: &[Action],
-        scores: &mut [MaybeUninit<i32>],
+        scores: &mut [MaybeUninit<MoveOrderScore>],
     ) -> bool {
         let can_form_mill = self.side_piece_count >= 3;
         let can_block_mill = self.opponent_piece_count >= 2;
@@ -599,7 +604,7 @@ impl<'a> MillMoveOrderScorer<'a> {
             } else {
                 self.score(action)
             };
-            scores[i].write(score);
+            scores[i].write(pack_move_order_score(score));
             if has_previous && previous_score < score {
                 needs_sort = true;
             }
@@ -613,7 +618,7 @@ impl<'a> MillMoveOrderScorer<'a> {
     fn score_standard_place_no_move_actions(
         &self,
         actions: &[Action],
-        scores: &mut [MaybeUninit<i32>],
+        scores: &mut [MaybeUninit<MoveOrderScore>],
     ) -> bool {
         let can_form_mill = self.side_piece_count >= 2;
         let can_block_mill = self.opponent_piece_count >= 2;
@@ -662,7 +667,7 @@ impl<'a> MillMoveOrderScorer<'a> {
             } else {
                 self.score(action)
             };
-            scores[i].write(score);
+            scores[i].write(pack_move_order_score(score));
             if has_previous && previous_score < score {
                 needs_sort = true;
             }
@@ -712,7 +717,7 @@ fn score_remove_actions(
     state: &MillState,
     options: &MillVariantOptions,
     actions: &[Action],
-    scores: &mut [MaybeUninit<i32>],
+    scores: &mut [MaybeUninit<MoveOrderScore>],
 ) -> bool {
     assert!(
         actions.len() <= scores.len(),
@@ -725,7 +730,7 @@ fn score_remove_actions(
     for (i, action) in actions.iter().copied().enumerate() {
         let to = action.to_node as usize;
         let score = if to < 24 { scorer.score(to) } else { 0 };
-        scores[i].write(score);
+        scores[i].write(pack_move_order_score(score));
         if has_previous && previous_score < score {
             needs_sort = true;
         }
@@ -922,7 +927,7 @@ impl Game for MillGame {
         wb: &Self::Workbench,
         actions: &[Action],
         ctx: &MoveOrderContext,
-        scores: &mut [MaybeUninit<i32>],
+        scores: &mut [MaybeUninit<MoveOrderScore>],
     ) -> bool {
         if actions
             .first()
