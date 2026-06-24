@@ -470,6 +470,28 @@ pub trait Game: 'static + Send + Sync {
         false
     }
 
+    /// Optional compact action codec for TT move-order hints.
+    ///
+    /// The generic [`Action`] is a 12-byte POD that may carry game-specific
+    /// auxiliary data. Search keeps TT moves as optional ordering hints only,
+    /// so concrete games may return a compact non-zero code for actions whose
+    /// full semantics fit a small representation. Games that do not override
+    /// this hook store no TT move and keep the same search behaviour.
+    #[inline]
+    fn pack_tt_action(_action: Action) -> Option<u16> {
+        None
+    }
+
+    /// Decode a compact TT action code produced by [`Self::pack_tt_action`].
+    ///
+    /// Searchers must still verify the decoded action against the current
+    /// legal move list before using it. A stale or colliding TT move must only
+    /// affect ordering, never legality or TT cutoff semantics.
+    #[inline]
+    fn unpack_tt_action(_packed: u16) -> Option<Action> {
+        None
+    }
+
     /// Compute the post-MCTS material score reported alongside the
     /// best move.  Mirrors master `monte_carlo_tree_search`
     /// (src/mcts.cpp:391-395) which returns

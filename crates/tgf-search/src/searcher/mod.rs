@@ -135,6 +135,15 @@ impl<G: Game> Searcher<G> {
         Self::with_tt_arc(Arc::new(ClusteredTt::new_with_cluster_bits(cluster_bits)))
     }
 
+    /// Override TT size and optionally allocate side storage for compact
+    /// TT move-order hints.
+    pub fn new_with_tt_cluster_bits_and_tt_move(cluster_bits: u32, enable_tt_move: bool) -> Self {
+        Self::with_tt_arc(Arc::new(ClusteredTt::new_with_cluster_bits_and_tt_move(
+            cluster_bits,
+            enable_tt_move,
+        )))
+    }
+
     /// Resize the TT from the UCI `Hash` option while preserving the supplied
     /// lower bound.  Production callers pass [`ClusteredTt::DEFAULT_CLUSTER_BITS`],
     /// matching master: the C++ engine starts with 16 Mi direct entries and
@@ -148,7 +157,10 @@ impl<G: Game> Searcher<G> {
         let bits = (63 - num_clusters.leading_zeros())
             .max(floor_bits)
             .clamp(10, 26);
-        self.tt = Arc::new(ClusteredTt::new_with_cluster_bits(bits));
+        self.tt = Arc::new(ClusteredTt::new_with_cluster_bits_and_tt_move(
+            bits,
+            self.tt.tt_move_enabled(),
+        ));
     }
 
     pub fn resize_tt_by_mb(&mut self, mb: u32) {
@@ -232,6 +244,10 @@ impl<G: Game> Searcher<G> {
 
     pub fn tt_stats(&self) -> TtStats {
         self.tt.stats()
+    }
+
+    pub fn tt_move_enabled(&self) -> bool {
+        self.tt.tt_move_enabled()
     }
 
     pub fn debug_tt_entry_for_key(&self, key: u64) -> Option<DebugTtEntry> {
@@ -510,7 +526,7 @@ impl<G: Game> Searcher<G> {
         } else {
             Bound::Exact
         };
-        self.save_tt(root_key, depth, best_value, bound);
+        self.save_tt(root_key, depth, best_value, bound, best_action);
         (best_value, best_action, rows)
     }
 
@@ -574,7 +590,8 @@ impl<G: Game> Searcher<G> {
 
         let key = wb.key();
         let old_alpha = alpha;
-        match self.probe_tt(key, depth, &mut alpha, &mut beta) {
+        let tt_probe = self.probe_tt(key, depth, &mut alpha, &mut beta);
+        match tt_probe.probe {
             TtProbe::Cutoff(value) => {
                 self.tt_hits += 1;
                 return value;
@@ -650,12 +667,13 @@ impl<G: Game> Searcher<G> {
 
         let mut moves = SearchActionList::new();
         G::generate_legal_ctx(wb, &mut moves, &self.options.move_order_context);
-        self.order_moves(wb, key, depth, &mut moves);
+        self.order_moves_with_tt_move(wb, key, depth, &mut moves, tt_probe.tt_move);
         if moves.is_empty() {
             return G::Evaluator::score(wb);
         }
 
         let mut best_value = i32::MIN + 1;
+        let mut best_action = Action::NONE;
         let depth_extension = if self.options.depth_extension && moves.len() == 1 {
             1
         } else {
@@ -676,9 +694,10 @@ impl<G: Game> Searcher<G> {
             self.pop_repetition_ancestor(key, previous_incoming_reset);
             if score > best_value {
                 best_value = score;
+                best_action = action;
             }
             if score >= beta {
-                self.save_tt(key, depth, score, Bound::Lower);
+                self.save_tt(key, depth, score, Bound::Lower, action);
                 return score;
             }
             if score > alpha {
@@ -692,7 +711,7 @@ impl<G: Game> Searcher<G> {
         } else {
             Bound::Exact
         };
-        self.save_tt(key, depth, best_value, bound);
+        self.save_tt(key, depth, best_value, bound, best_action);
         best_value
     }
 

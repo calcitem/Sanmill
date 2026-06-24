@@ -872,6 +872,63 @@ impl<'a> MillRemoveOrderScorer<'a> {
     }
 }
 
+#[inline]
+fn pack_mill_tt_node(node: i16) -> Option<u16> {
+    if node == -1 {
+        return Some(31);
+    }
+    (0..24).contains(&node).then_some(node as u16)
+}
+
+#[inline]
+fn unpack_mill_tt_node(code: u16) -> Option<i16> {
+    if code == 31 {
+        return Some(-1);
+    }
+    (code < 24).then_some(code as i16)
+}
+
+#[inline]
+fn pack_mill_tt_action(action: Action) -> Option<u16> {
+    if action.is_none() || action.aux != -1 || action.payload_bits != 0 {
+        return None;
+    }
+    let kind = action.kind_tag;
+    if !(MillActionKind::Place as i16..=MillActionKind::Remove as i16).contains(&kind) {
+        return None;
+    }
+    let from = pack_mill_tt_node(action.from_node)?;
+    let to = pack_mill_tt_node(action.to_node)?;
+    // Layout before the +1 sentinel offset:
+    //   [0:1]  kind  (Place/Move/Remove)
+    //   [2:6]  from  (0..23 or 31 for none)
+    //   [7:11] to    (0..23 or 31 for none)
+    // Code 0 is reserved for "no TT move" in the side storage.
+    let raw = (kind as u16) | (from << 2) | (to << 7);
+    Some(raw + 1)
+}
+
+#[inline]
+fn unpack_mill_tt_action(packed: u16) -> Option<Action> {
+    if packed == 0 {
+        return None;
+    }
+    let raw = packed - 1;
+    let kind = (raw & 0x03) as i16;
+    if !(MillActionKind::Place as i16..=MillActionKind::Remove as i16).contains(&kind) {
+        return None;
+    }
+    let from = unpack_mill_tt_node((raw >> 2) & 0x1f)?;
+    let to = unpack_mill_tt_node((raw >> 7) & 0x1f)?;
+    Some(Action {
+        kind_tag: kind,
+        from_node: from,
+        to_node: to,
+        aux: -1,
+        payload_bits: 0,
+    })
+}
+
 impl Game for MillGame {
     type Workbench = MillWorkbench;
     type Evaluator = MillEvaluator;
@@ -1047,6 +1104,16 @@ impl Game for MillGame {
         // counts differ, so omitting Place as a barrier is faithful AND
         // harmless for detection.)
         action.kind_tag == MillActionKind::Remove as i16
+    }
+
+    #[inline]
+    fn pack_tt_action(action: Action) -> Option<u16> {
+        pack_mill_tt_action(action)
+    }
+
+    #[inline]
+    fn unpack_tt_action(packed: u16) -> Option<Action> {
+        unpack_mill_tt_action(packed)
     }
 
     /// Mill MCTS post-search material score, mirroring master

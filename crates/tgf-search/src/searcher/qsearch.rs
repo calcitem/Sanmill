@@ -3,15 +3,20 @@
 // with `alpha_beta`.  Hosted in a sibling impl block so the main
 // `searcher/mod.rs` stays under 1k lines.
 
-use tgf_core::{Evaluator, Game, SearchActionList, Workbench};
+use tgf_core::{Action, Evaluator, Game, SearchActionList, Workbench};
 
 use super::Searcher;
-use crate::tt::{Bound, TtEntry};
+use crate::tt::{Bound, TT_MOVE_NONE, TtEntry};
 
 pub(super) enum TtProbe {
     Miss,
     HitNoCutoff,
     Cutoff(i32),
+}
+
+pub(super) struct TtProbeResult {
+    pub probe: TtProbe,
+    pub tt_move: Option<Action>,
 }
 
 impl<G: Game> Searcher<G> {
@@ -133,11 +138,16 @@ impl<G: Game> Searcher<G> {
         depth: i32,
         alpha: &mut i32,
         beta: &mut i32,
-    ) -> TtProbe {
-        let Some((value, bound)) = self.tt.probe_value_bound_at_age(key, depth, self.tt_age) else {
-            return TtProbe::Miss;
+    ) -> TtProbeResult {
+        let entry = self.tt.probe_entry_at_age(key, depth, self.tt_age);
+        let tt_move = entry.tt_move.and_then(G::unpack_tt_action);
+        let Some((value, bound)) = entry.value_bound else {
+            return TtProbeResult {
+                probe: TtProbe::Miss,
+                tt_move,
+            };
         };
-        match bound {
+        let probe = match bound {
             Bound::Exact => TtProbe::Cutoff(value),
             Bound::Lower => {
                 *alpha = (*alpha).max(value);
@@ -155,17 +165,31 @@ impl<G: Game> Searcher<G> {
                     TtProbe::HitNoCutoff
                 }
             }
-        }
+        };
+        TtProbeResult { probe, tt_move }
     }
 
     #[inline]
-    pub(super) fn save_tt(&mut self, key: u64, depth: i32, value: i32, bound: Bound) {
+    pub(super) fn save_tt(
+        &mut self,
+        key: u64,
+        depth: i32,
+        value: i32,
+        bound: Bound,
+        best_action: Action,
+    ) {
+        let tt_move = if self.tt.tt_move_enabled() {
+            G::pack_tt_action(best_action).unwrap_or(TT_MOVE_NONE)
+        } else {
+            TT_MOVE_NONE
+        };
         self.tt.save_at_age(
             key,
             TtEntry {
                 value,
                 depth,
                 bound,
+                tt_move,
             },
             self.tt_age,
         );

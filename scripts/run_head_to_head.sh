@@ -52,6 +52,8 @@ MASTER_ENGINE="${MASTER_ENGINE:-$(default_master_engine)}"
 CURRENT_OVERRIDE="${CURRENT_ENGINE:-}"
 CURRENT_ARGS="${CURRENT_ARGS:-uci}"
 MASTER_ARGS="${MASTER_ARGS:-}"
+CURRENT_ENV="${CURRENT_ENV:-${H2H_CURRENT_ENV:-}}"
+MASTER_ENV="${MASTER_ENV:-${H2H_MASTER_ENV:-}}"
 CURRENT_GO="${CURRENT_GO:-go depth 0}"
 MASTER_GO="${MASTER_GO:-go}"
 MINGW_BIN="${MINGW_BIN:-}"
@@ -92,6 +94,8 @@ Options:
   -c, --current PATH   path to current engine (default: freshly built tgf)
       --current-args A extra args for current engine                  [default: uci]
       --master-args A  extra args for master/opponent engine          [default: empty]
+      --current-env E  env assignments for current, KEY=VALUE...
+      --master-env E   env assignments for master/opponent, KEY=VALUE...
       --current-go CMD go command for current engine             [default: go depth 0]
       --master-go CMD  go command for master/opponent engine     [default: go]
       --mingw-bin DIR   dir holding MinGW runtime DLLs to copy next to master
@@ -99,7 +103,8 @@ Options:
 
 Each option also has an environment-variable form (command-line flags win):
   GAMES, SKILL, MOVETIME (seconds), MAX_PLIES, JOBS, SELF, MASTER_ENGINE,
-  CURRENT_ENGINE, CURRENT_ARGS, MASTER_ARGS, CURRENT_GO, MASTER_GO,
+  CURRENT_ENGINE, CURRENT_ARGS, MASTER_ARGS, CURRENT_ENV, MASTER_ENV,
+  H2H_CURRENT_ENV, H2H_MASTER_ENV, CURRENT_GO, MASTER_GO,
   N_MOVE_RULE, ENDGAME_N_MOVE_RULE, OPENING_PLIES, OPENING_SEED,
   OPENING_DB_PATH, MINGW_BIN.
 
@@ -157,6 +162,10 @@ while [ $# -gt 0 ]; do
         --current-args=*) CURRENT_ARGS="${1#*=}"; shift ;;
         --master-args)  MASTER_ARGS="$2"; shift 2 ;;
         --master-args=*) MASTER_ARGS="${1#*=}"; shift ;;
+        --current-env)  CURRENT_ENV="$2"; shift 2 ;;
+        --current-env=*) CURRENT_ENV="${1#*=}"; shift ;;
+        --master-env)   MASTER_ENV="$2"; shift 2 ;;
+        --master-env=*) MASTER_ENV="${1#*=}"; shift ;;
         --current-go)   CURRENT_GO="$2"; shift 2 ;;
         --current-go=*) CURRENT_GO="${1#*=}"; shift ;;
         --master-go)    MASTER_GO="$2"; shift 2 ;;
@@ -310,6 +319,8 @@ fi
 echo ">> Config: mode=$MODE  skill=$SKILL  games/colour=$GAMES  jobs=$JOBS  thinking_time=${MOVETIME}s  ply_cap=$MAX_PLIES  n_move=$N_MOVE_RULE  endgame_n_move=$ENDGAME_N_MOVE_RULE  opening_plies=$OPENING_PLIES"
 [ "$NEED_CURRENT" -eq 1 ] && echo "     current = $CURRENT_ENGINE"
 [ "$NEED_MASTER" -eq 1 ] && echo "     master  = $MASTER_ENGINE"
+[ -n "$CURRENT_ENV" ] && echo "     current_env = $CURRENT_ENV"
+[ -n "$MASTER_ENV" ] && echo "     master_env = $MASTER_ENV"
 if [ "$OPENING_PLIES" -gt 0 ] 2>/dev/null; then
     echo "     opening_db = $OPENING_DB_PATH"
     echo "     opening_seed = $OPENING_SEED"
@@ -321,8 +332,10 @@ fi
 cd "$REPO_ROOT"
 H2H_CURRENT="$(winpath "$CURRENT_ENGINE")" \
 H2H_CURRENT_ARGS="$CURRENT_ARGS" \
+H2H_CURRENT_ENV="$CURRENT_ENV" \
 H2H_MASTER="$(winpath "$MASTER_ENGINE")" \
 H2H_MASTER_ARGS="$MASTER_ARGS" \
+H2H_MASTER_ENV="$MASTER_ENV" \
 H2H_MODE="$MODE" \
 H2H_SKILL="$SKILL" \
 H2H_GAMES="$GAMES" \

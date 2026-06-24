@@ -12,7 +12,9 @@ use tgf_search::{
     lazy_smp_search, perft,
 };
 
-use super::{mill_searcher, prefetch_mode_from_env, tt_cluster_bits_from_env};
+use super::{
+    mill_searcher, prefetch_mode_from_env, tt_cluster_bits_from_env, tt_move_enabled_from_env,
+};
 
 fn mill_benchmark_search_options() -> SearchOptions {
     let (enable_prefetch, prefetch_all) = prefetch_mode_from_env();
@@ -67,7 +69,8 @@ pub fn print_benchmark_toml() {
         LazySmpWorker { extra_depth: 0 },
         LazySmpWorker { extra_depth: 1 },
     ];
-    let smp_shared_tt = SharedTt::new(tt_cluster_bits_from_env());
+    let smp_shared_tt =
+        SharedTt::new_with_tt_move(tt_cluster_bits_from_env(), tt_move_enabled_from_env());
     let smp_start = Instant::now();
     let smp_result = lazy_smp_search::<MillGame>(
         game.clone(),
@@ -94,6 +97,7 @@ pub fn print_benchmark_toml() {
     );
     println!("enable_prefetch = {}", search_options.enable_prefetch);
     println!("prefetch_all = {}", search_options.prefetch_all);
+    println!("enable_tt_move = {}", searcher.tt_move_enabled());
     println!("build_flags = \"cargo bench scaffold\"");
     println!("tt_age_bumps   = {}", tt_age_bumps);
     println!("tt_current_age = {}", tt_current_age);

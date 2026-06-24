@@ -12,7 +12,9 @@ use tgf_core::{
 // Re-export internal TT primitives so the regression suite can poke
 // directly at them.  These items are `pub(crate)` so the public crate
 // API stays unchanged.
-use crate::tt::{Bound, ClusteredTt, TT_STORAGE_ALIGNMENT, TtCluster, TtEntry, TtPackedEntry};
+use crate::tt::{
+    Bound, ClusteredTt, TT_MOVE_NONE, TT_STORAGE_ALIGNMENT, TtCluster, TtEntry, TtPackedEntry,
+};
 
 #[derive(Clone, Copy, Debug)]
 struct SameSideWorkbench {
@@ -164,6 +166,32 @@ impl tgf_core::Game for BiasGame {
             0
         }
     }
+
+    fn pack_tt_action(action: Action) -> Option<u16> {
+        if action.kind_tag == 0
+            && action.from_node == -1
+            && (0..=1).contains(&action.to_node)
+            && action.aux == -1
+            && action.payload_bits == 0
+        {
+            Some((action.to_node + 1) as u16)
+        } else {
+            None
+        }
+    }
+
+    fn unpack_tt_action(packed: u16) -> Option<Action> {
+        if !(1..=2).contains(&packed) {
+            return None;
+        }
+        Some(Action {
+            kind_tag: 0,
+            from_node: -1,
+            to_node: (packed - 1) as i16,
+            aux: -1,
+            payload_bits: 0,
+        })
+    }
 }
 
 #[test]
@@ -176,6 +204,57 @@ fn search_order_uses_contextual_move_bias() {
         skill_level: 7,
         ..Default::default()
     });
+
+    let result = searcher.search(&mut wb, 1);
+    assert_eq!(result.best_action.to_node, 1);
+    assert_eq!(BIAS_SCORE_CALLS.load(Ordering::Relaxed), 2);
+}
+
+#[test]
+fn search_order_promotes_context_hash_move_when_legal() {
+    let game = BiasGame;
+    let mut wb = game.build_workbench(&GameStateSnapshot::default());
+    let mut searcher = Searcher::<BiasGame>::new();
+    BIAS_SCORE_CALLS.store(0, Ordering::Relaxed);
+    searcher.set_move_order_context(MoveOrderContext {
+        hash_move: Some(Action {
+            kind_tag: 0,
+            from_node: -1,
+            to_node: 1,
+            aux: -1,
+            payload_bits: 0,
+        }),
+        ..Default::default()
+    });
+
+    let result = searcher.search(&mut wb, 1);
+    assert_eq!(result.best_action.to_node, 1);
+    assert_eq!(BIAS_SCORE_CALLS.load(Ordering::Relaxed), 2);
+}
+
+#[test]
+fn search_order_promotes_stored_tt_move_when_legal() {
+    let game = BiasGame;
+    let mut wb = game.build_workbench(&GameStateSnapshot::default());
+    let tt_move = Action {
+        kind_tag: 0,
+        from_node: -1,
+        to_node: 1,
+        aux: -1,
+        payload_bits: 0,
+    };
+    let shared_tt = SharedTt::new_with_tt_move(10, true);
+    shared_tt.inner.save(
+        wb.key(),
+        TtEntry {
+            value: 0,
+            depth: 1,
+            bound: Bound::Exact,
+            tt_move: BiasGame::pack_tt_action(tt_move).expect("fixture action must pack"),
+        },
+    );
+    let mut searcher = Searcher::<BiasGame>::with_shared_tt(shared_tt);
+    BIAS_SCORE_CALLS.store(0, Ordering::Relaxed);
 
     let result = searcher.search(&mut wb, 1);
     assert_eq!(result.best_action.to_node, 1);
@@ -376,6 +455,7 @@ fn packed_tt_entry_round_trips_compact_fields() {
         value: 900,
         depth: 12,
         bound: Bound::Lower,
+        tt_move: TT_MOVE_NONE,
     };
 
     let meta = TtPackedEntry::pack_meta(0x1234_5678_9abc_def0, &entry, 3);
@@ -413,6 +493,7 @@ fn clustered_tt_retains_multiple_keys_in_one_bucket() {
                 value: i as i32,
                 depth: 5,
                 bound: Bound::Exact,
+                tt_move: TT_MOVE_NONE,
             },
         );
     }
@@ -423,6 +504,47 @@ fn clustered_tt_retains_multiple_keys_in_one_bucket() {
             .expect("same-bucket key should remain available");
         assert_eq!(entry.value, i as i32);
     }
+}
+
+#[test]
+fn clustered_tt_move_side_storage_round_trips_and_clears() {
+    let tt = ClusteredTt::new_with_cluster_bits_and_tt_move(10, true);
+    let key = 0x1234_5678_9abc_def0_u64;
+    let tt_move = 37;
+    tt.save(
+        key,
+        TtEntry {
+            value: 10,
+            depth: 5,
+            bound: Bound::Exact,
+            tt_move,
+        },
+    );
+
+    assert_eq!(tt.get(key).expect("entry must exist").tt_move, tt_move);
+    assert_eq!(
+        tt.probe_tt_move_at_age(key, tt.current_age()),
+        Some(tt_move)
+    );
+
+    tt.save(
+        key,
+        TtEntry {
+            value: 11,
+            depth: 6,
+            bound: Bound::Lower,
+            tt_move: TT_MOVE_NONE,
+        },
+    );
+    assert_eq!(
+        tt.get(key).expect("updated entry must exist").tt_move,
+        tt_move,
+        "same-key updates without a new TT move should preserve the old move"
+    );
+
+    tt.clear();
+    assert!(tt.get(key).is_none());
+    assert_eq!(tt.probe_tt_move_at_age(key, tt.current_age()), None);
 }
 
 #[test]
@@ -704,6 +826,7 @@ fn tt_non_exact_entry_is_skipped_after_age_bump() {
         value: 42,
         depth: 5,
         bound: Bound::Lower, // non-Exact
+        tt_move: TT_MOVE_NONE,
     };
     // Written at age 0.
     tt.save(key, entry);
@@ -729,6 +852,7 @@ fn tt_exact_entry_is_skipped_after_age_bump() {
         value: 42,
         depth: 5,
         bound: Bound::Exact,
+        tt_move: TT_MOVE_NONE,
     };
     tt.save(key, entry);
     tt.bump_age();
@@ -746,6 +870,7 @@ fn tt_clear_resets_age_and_removes_entries() {
         value: 42,
         depth: 5,
         bound: Bound::Exact,
+        tt_move: TT_MOVE_NONE,
     };
     tt.save(key, entry);
     tt.bump_age();
@@ -770,6 +895,7 @@ fn tt_stats_report_current_stale_and_bound_mix() {
             value: 10,
             depth: 3,
             bound: Bound::Exact,
+            tt_move: TT_MOVE_NONE,
         },
     );
     tt.save(
@@ -778,6 +904,7 @@ fn tt_stats_report_current_stale_and_bound_mix() {
             value: 20,
             depth: 5,
             bound: Bound::Lower,
+            tt_move: TT_MOVE_NONE,
         },
     );
 
@@ -805,6 +932,7 @@ fn tt_stats_report_current_stale_and_bound_mix() {
             value: 30,
             depth: 7,
             bound: Bound::Upper,
+            tt_move: TT_MOVE_NONE,
         },
     );
     let stats = tt.stats();

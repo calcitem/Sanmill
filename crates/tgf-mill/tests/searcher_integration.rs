@@ -480,7 +480,7 @@ fn mill_searcher_clear_tt_uses_bump_age_not_physical_clear() {
 }
 
 #[test]
-fn mill_iterative_deepening_bumps_age_between_depths() {
+fn mill_iterative_deepening_reuses_tt_age_between_depths() {
     let rules = MillRules::default();
     let game = MillGame::default();
     let snap = rules.initial_state(&[]);
@@ -488,11 +488,10 @@ fn mill_iterative_deepening_bumps_age_between_depths() {
     let mut searcher = Searcher::<MillGame>::new();
 
     let result = searcher.iterative_deepening(&mut wb, 3);
-    // Depth 1→2 and 2→3 each bump once, so 2 bumps for max_depth = 3.
     assert_eq!(
         searcher.tt_age_bumps(),
-        2,
-        "age bumped once per iteration boundary (max_depth - 1)"
+        0,
+        "one root IDS search should reuse the same TT generation"
     );
     assert!(!result.best_action.is_none());
 }

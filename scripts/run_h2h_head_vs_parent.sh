@@ -6,6 +6,9 @@
 # Override examples:
 #   GAMES=100 scripts/run_h2h_head_vs_parent.sh
 #   PARENT_REV=607907cb9 JOBS=12 scripts/run_h2h_head_vs_parent.sh
+#   H2H_CURRENT_ENV=TGF_ENABLE_TT_MOVE=1 \
+#     PARENT_REV=607907cb9 SKILL=30 MOVETIME=1 GAMES=1000 JOBS=20 \
+#     scripts/run_h2h_head_vs_parent.sh
 #
 set -euo pipefail
 

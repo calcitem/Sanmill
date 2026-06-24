@@ -363,7 +363,8 @@ impl<G: Game> Searcher<G> {
         // value WITHOUT updating `bestMove`, so the threaded `best_action` is
         // preserved across MTD(f) iterations.  Reusing the root entry the same
         // way mirrors master's deterministic deep MTD(f) behaviour.
-        match self.probe_tt(root_key, depth, &mut alpha, &mut beta) {
+        let tt_probe = self.probe_tt(root_key, depth, &mut alpha, &mut beta);
+        match tt_probe.probe {
             TtProbe::Cutoff(value) => {
                 self.tt_hits += 1;
                 return value;
@@ -379,7 +380,7 @@ impl<G: Game> Searcher<G> {
         }
         let mut moves = SearchActionList::new();
         G::generate_legal_ctx(wb, &mut moves, &self.options.move_order_context);
-        self.order_moves(wb, root_key, depth, &mut moves);
+        self.order_moves_with_tt_move(wb, root_key, depth, &mut moves, tt_probe.tt_move);
         promote_root_pv_move(&mut moves, *best_action);
         let mut best_value = i32::MIN + 1;
         for action in moves.iter().copied() {
@@ -422,9 +423,10 @@ impl<G: Game> Searcher<G> {
             }
         }
         // Master saves bestValue + bound at every node (src/search.cpp:372).
-        // TT_MOVE is undefined in master, so the Rust packed TT stores only
-        // value/depth/bound metadata. The root best move remains threaded
-        // separately through `best_action`, matching master MTD(f).
+        // The root best move remains threaded separately through
+        // `best_action`; when optional TT-move side storage is enabled, it is
+        // saved only as a future ordering hint and never used to recover the
+        // MTD(f) result.
         let bound = if best_value <= old_alpha {
             Bound::Upper
         } else if best_value >= beta {
@@ -432,7 +434,7 @@ impl<G: Game> Searcher<G> {
         } else {
             Bound::Exact
         };
-        self.save_tt(root_key, depth, best_value, bound);
+        self.save_tt(root_key, depth, best_value, bound, *best_action);
         best_value
     }
 }

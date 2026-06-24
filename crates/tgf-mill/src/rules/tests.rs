@@ -753,6 +753,50 @@ fn move_order_batch_scores_match_single_action_scores() {
 }
 
 #[test]
+fn mill_tt_action_codec_round_trips_search_actions() {
+    let actions = [
+        Action {
+            kind_tag: MillActionKind::Place as i16,
+            from_node: -1,
+            to_node: 0,
+            aux: -1,
+            payload_bits: 0,
+        },
+        Action {
+            kind_tag: MillActionKind::Move as i16,
+            from_node: 3,
+            to_node: 9,
+            aux: -1,
+            payload_bits: 0,
+        },
+        Action {
+            kind_tag: MillActionKind::Remove as i16,
+            from_node: -1,
+            to_node: 23,
+            aux: -1,
+            payload_bits: 0,
+        },
+    ];
+
+    for action in actions {
+        let packed = <MillGame as Game>::pack_tt_action(action)
+            .expect("standard Mill search action must fit the TT move codec");
+        assert_ne!(packed, 0);
+        assert_eq!(<MillGame as Game>::unpack_tt_action(packed), Some(action));
+    }
+
+    assert_eq!(<MillGame as Game>::pack_tt_action(Action::NONE), None);
+    assert_eq!(
+        <MillGame as Game>::pack_tt_action(Action {
+            payload_bits: 1,
+            ..actions[0]
+        }),
+        None,
+        "TT move codec must not silently truncate payload-bearing actions"
+    );
+}
+
+#[test]
 fn move_order_bias_mcts_enables_star_square_without_diagonals() {
     use tgf_core::{Game, MoveOrderAlgorithm, MoveOrderContext};
 

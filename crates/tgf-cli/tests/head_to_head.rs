@@ -19,8 +19,12 @@
 // Env vars:
 //   H2H_CURRENT    path to the current-branch UCI engine (default tgf.exe)
 //   H2H_CURRENT_ARGS extra args for current engine (default "uci")
+//   H2H_CURRENT_ENV  env assignments for current engine, KEY=VALUE separated
+//                    by whitespace (default empty)
 //   H2H_MASTER     path to the master C++ UCI engine
 //   H2H_MASTER_ARGS extra args for master/opponent engine (default empty)
+//   H2H_MASTER_ENV   env assignments for master/opponent engine, KEY=VALUE
+//                    separated by whitespace (default empty)
 //   H2H_GAMES      games per color (default 20)
 //   H2H_SKILL      skill level (default 14)
 //   H2H_MAX_PLIES  ply cap -> over-cap counted as a maneuvering draw (default 200)
@@ -82,15 +86,19 @@ impl Engine {
     fn spawn(
         program: &str,
         args: &[String],
+        env_vars: &[(String, String)],
         go: &str,
         name: &str,
         options: &EngineOptions,
     ) -> Engine {
-        let mut child = Command::new(program)
+        let mut command = Command::new(program);
+        command
             .args(args)
+            .envs(env_vars.iter().map(|(key, value)| (key, value)))
             .stdin(Stdio::piped())
             .stdout(Stdio::piped())
-            .stderr(Stdio::null())
+            .stderr(Stdio::null());
+        let mut child = command
             .spawn()
             .unwrap_or_else(|e| panic!("failed to spawn {name} engine `{program}`: {e}"));
         let stdin = child.stdin.take().expect("engine stdin");
@@ -606,6 +614,24 @@ fn engine_args_from_env(name: &str, default: &str) -> Vec<String> {
         .collect()
 }
 
+fn engine_env_from_env(name: &str) -> Vec<(String, String)> {
+    env::var(name)
+        .unwrap_or_default()
+        .split_whitespace()
+        .filter(|assignment| !assignment.is_empty())
+        .map(|assignment| {
+            let (key, value) = assignment
+                .split_once('=')
+                .unwrap_or_else(|| panic!("{name} item must be KEY=VALUE, got `{assignment}`"));
+            assert!(
+                !key.is_empty(),
+                "{name} item has an empty key: `{assignment}`"
+            );
+            (key.to_string(), value.to_string())
+        })
+        .collect()
+}
+
 fn env_usize(name: &str, default: usize) -> usize {
     env::var(name)
         .map(|s| {
@@ -665,8 +691,10 @@ fn opening_desc(opening_moves: &[String]) -> String {
 struct MatchConfig {
     current: String,
     current_args: Vec<String>,
+    current_env: Vec<(String, String)>,
     master: String,
     master_args: Vec<String>,
+    master_env: Vec<(String, String)>,
     go_current: String,
     go_master: String,
     engine_options: EngineOptions,
@@ -770,6 +798,7 @@ fn run_self_play_parallel(config: MatchConfig, is_master: bool, label: &str) {
                     Engine::spawn(
                         &config.master,
                         &config.master_args,
+                        &config.master_env,
                         &config.go_master,
                         &format!("worker-{worker_id}-white"),
                         &config.engine_options,
@@ -777,6 +806,7 @@ fn run_self_play_parallel(config: MatchConfig, is_master: bool, label: &str) {
                     Engine::spawn(
                         &config.master,
                         &config.master_args,
+                        &config.master_env,
                         &config.go_master,
                         &format!("worker-{worker_id}-black"),
                         &config.engine_options,
@@ -787,6 +817,7 @@ fn run_self_play_parallel(config: MatchConfig, is_master: bool, label: &str) {
                     Engine::spawn(
                         &config.current,
                         &config.current_args,
+                        &config.current_env,
                         &config.go_current,
                         &format!("worker-{worker_id}-white"),
                         &config.engine_options,
@@ -794,6 +825,7 @@ fn run_self_play_parallel(config: MatchConfig, is_master: bool, label: &str) {
                     Engine::spawn(
                         &config.current,
                         &config.current_args,
+                        &config.current_env,
                         &config.go_current,
                         &format!("worker-{worker_id}-black"),
                         &config.engine_options,
@@ -884,6 +916,7 @@ fn run_vs_parallel(config: MatchConfig) {
             let mut cur = Engine::spawn(
                 &config.current,
                 &config.current_args,
+                &config.current_env,
                 &config.go_current,
                 &format!("worker-{worker_id}-current"),
                 &config.engine_options,
@@ -891,6 +924,7 @@ fn run_vs_parallel(config: MatchConfig) {
             let mut mas = Engine::spawn(
                 &config.master,
                 &config.master_args,
+                &config.master_env,
                 &config.go_master,
                 &format!("worker-{worker_id}-master"),
                 &config.engine_options,
@@ -988,9 +1022,11 @@ fn head_to_head_vs_master() {
     let current = env::var("H2H_CURRENT")
         .unwrap_or_else(|_| "D:/Repo/Sanmill/target/release/tgf.exe".to_string());
     let current_args = engine_args_from_env("H2H_CURRENT_ARGS", "uci");
+    let current_env = engine_env_from_env("H2H_CURRENT_ENV");
     let master = env::var("H2H_MASTER")
         .unwrap_or_else(|_| "D:/Repo/Sanmill-master/Sanmill/master_engine.exe".to_string());
     let master_args = engine_args_from_env("H2H_MASTER_ARGS", "");
+    let master_env = engine_env_from_env("H2H_MASTER_ENV");
     let games: usize = env::var("H2H_GAMES")
         .ok()
         .and_then(|s| s.parse().ok())
@@ -1038,8 +1074,10 @@ fn head_to_head_vs_master() {
     let config = MatchConfig {
         current: current.clone(),
         current_args: current_args.clone(),
+        current_env: current_env.clone(),
         master: master.clone(),
         master_args: master_args.clone(),
+        master_env: master_env.clone(),
         go_current: go_current.clone(),
         go_master: go_master.clone(),
         engine_options,
@@ -1058,14 +1096,14 @@ fn head_to_head_vs_master() {
         let is_master = mode == "self-master";
         let label = if is_master { "master" } else { "current" };
         eprintln!(
-            "Self-play: {label} vs {label}  (rows = board side)\n  skill={skill} movetime_s={move_time} shuffling=on algo=MTD(f) games={total} jobs={jobs} ply_cap={max_plies} n_move={n_move_rule} endgame_n_move={endgame_n_move_rule} {opening_config}"
+            "Self-play: {label} vs {label}  (rows = board side)\n  skill={skill} movetime_s={move_time} shuffling=on algo=MTD(f) games={total} jobs={jobs} ply_cap={max_plies} n_move={n_move_rule} endgame_n_move={endgame_n_move_rule} {opening_config}\n  current_env={current_env:?} master_env={master_env:?}"
         );
         run_self_play_parallel(config, is_master, label);
     } else {
         // vs mode: current vs master, alternating colours each game so the live
         // rates are not skewed by Black's structural edge until colours balance.
         eprintln!(
-            "Head-to-head: current=`{current}` vs master=`{master}`  (rows = current's colour)\n  skill={skill} movetime_s={move_time} shuffling=on algo=MTD(f) games/color={games} jobs={jobs} ply_cap={max_plies} n_move={n_move_rule} endgame_n_move={endgame_n_move_rule} {opening_config}\n  current_args={current_args:?} master_args={master_args:?}\n  go_current=`{go_current}` go_master=`{go_master}`"
+            "Head-to-head: current=`{current}` vs master=`{master}`  (rows = current's colour)\n  skill={skill} movetime_s={move_time} shuffling=on algo=MTD(f) games/color={games} jobs={jobs} ply_cap={max_plies} n_move={n_move_rule} endgame_n_move={endgame_n_move_rule} {opening_config}\n  current_args={current_args:?} master_args={master_args:?}\n  current_env={current_env:?} master_env={master_env:?}\n  go_current=`{go_current}` go_master=`{go_master}`"
         );
         run_vs_parallel(config);
     }

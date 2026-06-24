@@ -88,8 +88,22 @@ fn prefetch_mode_from_env() -> (bool, bool) {
     }
 }
 
+fn tt_move_enabled_from_env() -> bool {
+    match std::env::var("TGF_ENABLE_TT_MOVE") {
+        Ok(value) => match value.to_ascii_lowercase().as_str() {
+            "1" | "true" | "on" | "yes" => true,
+            "0" | "false" | "off" | "no" => false,
+            _ => panic!("invalid TGF_ENABLE_TT_MOVE value: {value}"),
+        },
+        Err(_) => false,
+    }
+}
+
 fn mill_searcher() -> Searcher<MillGame> {
-    let mut s = Searcher::new_with_tt_cluster_bits(tt_cluster_bits_from_env());
+    let mut s = Searcher::new_with_tt_cluster_bits_and_tt_move(
+        tt_cluster_bits_from_env(),
+        tt_move_enabled_from_env(),
+    );
     s.set_policy(SearchPolicy {
         quiescence_kind_tag: Some(MillActionKind::Remove as i16),
         ..Default::default()
@@ -107,7 +121,11 @@ fn mill_searcher_with_shared_tt(shared_tt: SharedTt) -> Searcher<MillGame> {
 }
 
 fn allocate_shared_tt(hash_mb: u32) -> SharedTt {
-    let tt = SharedTt::with_capacity_mb(hash_mb, tt_cluster_bits_from_env());
+    let tt = SharedTt::with_capacity_mb_and_tt_move(
+        hash_mb,
+        tt_cluster_bits_from_env(),
+        tt_move_enabled_from_env(),
+    );
     // Master physically initializes the process-global TT before search and
     // later uses fake-clean generation bumps. Touch the Rust shared TT once at
     // allocation time so first-search probe/save traffic does not pay both
