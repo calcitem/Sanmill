@@ -1,11 +1,12 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // Packed transposition table shared by every searcher in the crate.
 //
-// `ClusteredTt` is a fixed-size array of two-slot clusters that are
-// each backed by an `AtomicU64`.  The atomic packing lets multiple
-// `Searcher<G>` instances probe / save concurrently in lazy-SMP
-// configurations (see `crate::thread_pool::lazy_smp_search`) without
-// any locking on the hot path.
+// `ClusteredTt` is a fixed-size array of small buckets.  Each bucket holds
+// several packed `AtomicU64` entries so unrelated keys that map to the same
+// index do not immediately evict each other.  The atomic packing lets multiple
+// `Searcher<G>` instances probe / save concurrently in lazy-SMP configurations
+// (see `crate::thread_pool::lazy_smp_search`) without any locking on the hot
+// path.
 
 #[cfg(target_os = "linux")]
 use std::ffi::{c_int, c_void};
@@ -35,10 +36,13 @@ pub(crate) struct TtEntry {
 }
 
 // ---------------------------------------------------------------------------
-// Clustered TT: fixed `2^cluster_bits` packed atomic direct slots.
+// Clustered TT: fixed `2^cluster_bits` packed atomic slots.
 // ---------------------------------------------------------------------------
 
-/// One direct-mapped TT slot.
+const TT_CLUSTER_ENTRY_COUNT: usize = 4;
+const TT_CLUSTER_ENTRY_BITS: u32 = 2;
+
+/// One TT bucket containing several packed entries.
 ///
 /// Master `src/tt.h` stores a `TTEntry { value8, depth8, genBound8 }`
 /// plus optional `ttMove` (disabled by default via TT_MOVE_ENABLE).
@@ -49,21 +53,28 @@ pub(crate) struct TtEntry {
 /// search path mirrors master's default TT_MOVE_ENABLE-off build:
 /// the best action is threaded at the root and is not stored in TT.
 ///
-/// Layout:
+/// Entry layout:
 ///   * meta (u64): [key_sig:32][age:6][value:16][depth:8][bound:2]
 ///
-/// Total slot size = 8 bytes.
-#[repr(transparent)]
+/// Total entry size = 8 bytes; bucket size = 32 bytes.  `cluster_bits`
+/// remains a total-slot count at API boundaries, so the default table keeps
+/// roughly the old 128 MiB footprint while reducing collision evictions.
+#[repr(C, align(32))]
 pub(crate) struct TtCluster {
-    pub(crate) meta: AtomicU64,
+    pub(crate) entries: [AtomicU64; TT_CLUSTER_ENTRY_COUNT],
 }
 
 impl TtCluster {
     #[inline]
     fn empty() -> Self {
         Self {
-            meta: AtomicU64::new(0),
+            entries: std::array::from_fn(|_| AtomicU64::new(0)),
         }
+    }
+
+    #[inline]
+    fn iter_entries(&self) -> impl Iterator<Item = &AtomicU64> {
+        self.entries.iter()
     }
 }
 
@@ -109,12 +120,6 @@ impl TtStorage {
     #[inline]
     pub(crate) fn as_ptr(&self) -> *const TtCluster {
         self.ptr.as_ptr()
-    }
-
-    #[cfg(test)]
-    #[inline]
-    pub(crate) fn len(&self) -> usize {
-        self.len
     }
 
     #[inline]
@@ -221,7 +226,7 @@ fn ratio_pct(numerator: usize, denominator: usize) -> f64 {
 }
 
 impl ClusteredTt {
-    /// 24 → 16 Mi direct slots (~128 MiB), matching master
+    /// 24 → 16 Mi packed entries (~128 MiB), matching master
     /// `TRANSPOSITION_TABLE_SIZE = 0x1000000` (16 Mi entries) in
     /// `src/tt.cpp`.  Users with constrained memory
     /// can downsize via `Searcher::resize_tt_by_mb` or the
@@ -230,10 +235,11 @@ impl ClusteredTt {
 
     pub(crate) fn new_with_cluster_bits(bits: u32) -> Self {
         // Permit larger TTs: master defaults to 16 Mi slots which
-        // requires cluster_bits >= 23.  Cap at 26 (≈1 GiB) to keep
+        // requires cluster_bits >= 23.  Cap at 26 (≈512 MiB) to keep
         // accidental misuse from immediately exhausting memory.
         let bits = bits.clamp(10, 26);
-        let n = 1usize << bits;
+        let cluster_bits = bits.saturating_sub(TT_CLUSTER_ENTRY_BITS);
+        let n = 1usize << cluster_bits;
         let mask = n - 1;
         Self {
             clusters: TtStorage::new(n),
@@ -244,32 +250,41 @@ impl ClusteredTt {
 
     #[inline]
     fn cluster_ix(&self, key: u64) -> usize {
-        self.cluster_ix_from_sig(TtPackedEntry::key_sig(key))
+        // Use both halves of the Zobrist key for indexing.  The stored
+        // signature is still the low 32 bits, so index and verification draw
+        // from different mixed lanes without paying a 128-bit multiply.
+        ((key as usize) ^ ((key >> 32) as usize)) & self.cluster_mask
+    }
+
+    #[cfg(test)]
+    #[inline]
+    pub(crate) fn cluster_index_for_key(&self, key: u64) -> usize {
+        self.cluster_ix(key)
     }
 
     #[inline]
-    fn cluster_ix_from_sig(&self, key_sig: u32) -> usize {
-        (key_sig as usize) & self.cluster_mask
+    fn slot_count(&self) -> usize {
+        self.clusters.len * TT_CLUSTER_ENTRY_COUNT
     }
 
     #[inline(always)]
     pub(crate) fn get(&self, key: u64) -> Option<TtEntry> {
         let cur_age = self.current_age.load(Ordering::Relaxed);
         let key_sig = TtPackedEntry::key_sig(key);
-        let meta = self.clusters[self.cluster_ix_from_sig(key_sig)]
-            .meta
-            .load(Ordering::Relaxed);
-        if meta == 0 || TtPackedEntry::packed_key_sig(meta) != key_sig {
-            return None;
+        let cluster = &self.clusters[self.cluster_ix(key)];
+        for slot in cluster.iter_entries() {
+            let meta = slot.load(Ordering::Relaxed);
+            if meta == 0 || TtPackedEntry::packed_key_sig(meta) != key_sig {
+                continue;
+            }
+            // Fake-clean: master has TRANSPOSITION_TABLE_FAKE_CLEAN enabled
+            // and TRANSPOSITION_TABLE_FAKE_CLEAN_NOT_EXACT_ONLY disabled, so
+            // every old-generation entry is a miss, including Exact entries.
+            if TtPackedEntry::packed_age(meta) == cur_age {
+                return Some(TtPackedEntry::unpack_entry(meta));
+            }
         }
-        // Fake-clean: master has TRANSPOSITION_TABLE_FAKE_CLEAN enabled and
-        // TRANSPOSITION_TABLE_FAKE_CLEAN_NOT_EXACT_ONLY disabled, so every
-        // old-generation entry is a miss, including Exact entries.
-        let entry_age = TtPackedEntry::packed_age(meta);
-        if entry_age != cur_age {
-            return None;
-        }
-        Some(TtPackedEntry::unpack_entry(meta))
+        None
     }
 
     #[inline(always)]
@@ -280,22 +295,24 @@ impl ClusteredTt {
         cur_age: u8,
     ) -> Option<(i32, Bound)> {
         let key_sig = TtPackedEntry::key_sig(key);
-        let meta = self.clusters[self.cluster_ix_from_sig(key_sig)]
-            .meta
-            .load(Ordering::Relaxed);
-        if meta == 0 || TtPackedEntry::packed_key_sig(meta) != key_sig {
-            return None;
+        let cluster = &self.clusters[self.cluster_ix(key)];
+        for slot in cluster.iter_entries() {
+            let meta = slot.load(Ordering::Relaxed);
+            if meta == 0 || TtPackedEntry::packed_key_sig(meta) != key_sig {
+                continue;
+            }
+            if TtPackedEntry::packed_age(meta) != cur_age {
+                continue;
+            }
+            if TtPackedEntry::unpack_depth(meta) < depth {
+                continue;
+            }
+            return Some((
+                TtPackedEntry::unpack_value(meta),
+                TtPackedEntry::unpack_bound(meta),
+            ));
         }
-        if TtPackedEntry::packed_age(meta) != cur_age {
-            return None;
-        }
-        if TtPackedEntry::unpack_depth(meta) < depth {
-            return None;
-        }
-        Some((
-            TtPackedEntry::unpack_value(meta),
-            TtPackedEntry::unpack_bound(meta),
-        ))
+        None
     }
 
     #[cfg(test)]
@@ -309,39 +326,67 @@ impl ClusteredTt {
     pub(crate) fn save_at_age(&self, key: u64, entry: TtEntry, cur_age: u8) {
         let new_meta = TtPackedEntry::pack_meta(key, &entry, cur_age);
         let key_sig = TtPackedEntry::key_sig(key);
-        let ix = self.cluster_ix_from_sig(key_sig);
-        let slot = &self.clusters[ix].meta;
-        let meta = slot.load(Ordering::Relaxed);
-        if meta != 0 && TtPackedEntry::packed_key_sig(meta) == key_sig {
-            let same_gen = TtPackedEntry::packed_age(meta) == cur_age;
-            if same_gen && entry.depth < TtPackedEntry::unpack_depth(meta) {
+        let cluster = &self.clusters[self.cluster_ix(key)];
+        let mut replace_index = 0usize;
+        let mut replace_score = i32::MAX;
+
+        for (i, slot) in cluster.entries.iter().enumerate() {
+            let meta = slot.load(Ordering::Relaxed);
+            if meta == 0 {
+                replace_index = i;
+                break;
+            }
+            if TtPackedEntry::packed_key_sig(meta) == key_sig {
+                let same_gen = TtPackedEntry::packed_age(meta) == cur_age;
+                if same_gen {
+                    let old_depth = TtPackedEntry::unpack_depth(meta);
+                    let old_bound = TtPackedEntry::unpack_bound(meta);
+                    if entry.depth < old_depth
+                        || (entry.depth == old_depth
+                            && old_bound == Bound::Exact
+                            && entry.bound != Bound::Exact)
+                    {
+                        return;
+                    }
+                }
+                cluster.entries[i].store(new_meta, Ordering::Relaxed);
                 return;
             }
+
+            let score = replacement_score(meta, cur_age);
+            if score < replace_score {
+                replace_score = score;
+                replace_index = i;
+            }
         }
-        slot.store(new_meta, Ordering::Relaxed);
+        cluster.entries[replace_index].store(new_meta, Ordering::Relaxed);
     }
 
     /// Physical clear: zeros all slots and resets the generation counter.
     /// Use [`bump_age`] for the cheaper soft-clear that leaves memory intact
-    /// but marks all non-Exact existing entries as stale.
+    /// but marks all existing entries as stale.
     pub(crate) fn clear(&self) {
         for c in self.clusters.iter() {
-            c.meta.store(0, Ordering::Relaxed);
+            for slot in c.iter_entries() {
+                slot.store(0, Ordering::Relaxed);
+            }
         }
         self.current_age.store(0, Ordering::Relaxed);
     }
 
-    /// Soft "fake-clean" clear: increment the generation counter so all
-    /// non-Exact entries are treated as stale on the next probe.  Cheaper
-    /// than zeroing the whole table.  Wraps at 63 (the new 6-bit age
-    /// field) → performs a full physical clear to avoid generation-0
-    /// aliasing with stale slots.
+    /// Soft "fake-clean" clear: increment the generation counter so entries
+    /// from older generations are treated as stale on the next probe.  Cheaper
+    /// than zeroing the whole table.  Wraps at 63 (the 6-bit age field) and
+    /// performs a full physical clear to avoid generation aliasing with stale
+    /// slots.
     pub(crate) fn bump_age(&self) {
         let prev = self.current_age.fetch_add(1, Ordering::Relaxed);
         // Age is encoded in 6 bits (mask 0x3f); wrap at the field max.
         if prev >= 0x3f {
             for c in self.clusters.iter() {
-                c.meta.store(0, Ordering::Relaxed);
+                for slot in c.iter_entries() {
+                    slot.store(0, Ordering::Relaxed);
+                }
             }
             self.current_age.store(1, Ordering::Relaxed);
         }
@@ -354,34 +399,37 @@ impl ClusteredTt {
     pub(crate) fn len_occupied(&self) -> usize {
         self.clusters
             .iter()
-            .filter(|c| c.meta.load(Ordering::Relaxed) != 0)
+            .flat_map(TtCluster::iter_entries)
+            .filter(|slot| slot.load(Ordering::Relaxed) != 0)
             .count()
     }
 
     pub(crate) fn stats(&self) -> TtStats {
         let current_age = self.current_age();
         let mut stats = TtStats {
-            slots: self.clusters.len,
+            slots: self.slot_count(),
             ..TtStats::default()
         };
         for c in self.clusters.iter() {
-            let meta = c.meta.load(Ordering::Relaxed);
-            if meta == 0 {
-                continue;
-            }
-            stats.occupied += 1;
-            if TtPackedEntry::packed_age(meta) != current_age {
-                stats.stale += 1;
-                continue;
-            }
-            stats.current_age_occupied += 1;
-            let depth = TtPackedEntry::unpack_depth(meta);
-            stats.depth_sum += i64::from(depth);
-            stats.max_depth = stats.max_depth.max(depth);
-            match TtPackedEntry::unpack_bound(meta) {
-                Bound::Exact => stats.exact += 1,
-                Bound::Lower => stats.lower += 1,
-                Bound::Upper => stats.upper += 1,
+            for slot in c.iter_entries() {
+                let meta = slot.load(Ordering::Relaxed);
+                if meta == 0 {
+                    continue;
+                }
+                stats.occupied += 1;
+                if TtPackedEntry::packed_age(meta) != current_age {
+                    stats.stale += 1;
+                    continue;
+                }
+                stats.current_age_occupied += 1;
+                let depth = TtPackedEntry::unpack_depth(meta);
+                stats.depth_sum += i64::from(depth);
+                stats.max_depth = stats.max_depth.max(depth);
+                match TtPackedEntry::unpack_bound(meta) {
+                    Bound::Exact => stats.exact += 1,
+                    Bound::Lower => stats.lower += 1,
+                    Bound::Upper => stats.upper += 1,
+                }
             }
         }
         stats
@@ -400,9 +448,21 @@ impl ClusteredTt {
     #[inline]
     pub(crate) fn prefetch(&self, key: u64) {
         let ix = self.cluster_ix(key);
-        let slot_ptr = &self.clusters[ix].meta as *const AtomicU64 as *const i8;
+        let slot_ptr = self.clusters[ix].entries.as_ptr() as *const i8;
         prefetch_read(slot_ptr);
     }
+}
+
+#[inline]
+fn replacement_score(meta: u64, cur_age: u8) -> i32 {
+    let depth = TtPackedEntry::unpack_depth(meta);
+    let age = (cur_age.wrapping_sub(TtPackedEntry::packed_age(meta))) & 0x3f;
+    let exact_bonus = if TtPackedEntry::unpack_bound(meta) == Bound::Exact {
+        2
+    } else {
+        0
+    };
+    depth + exact_bonus - i32::from(age) * 8
 }
 
 /// Architecture-specific prefetch hint helper.
@@ -549,7 +609,7 @@ pub struct SharedTt {
 impl SharedTt {
     /// Allocate a fresh TT sized like
     /// [`crate::Searcher::new_with_tt_cluster_bits`] (`2^cluster_bits`
-    /// direct slots).
+    /// total packed slots).
     pub fn new(cluster_bits: u32) -> Self {
         Self {
             inner: Arc::new(ClusteredTt::new_with_cluster_bits(cluster_bits)),
@@ -565,9 +625,9 @@ impl SharedTt {
     /// cache locality without changing production defaults.
     pub fn with_capacity_mb(mb: u32, cluster_bits_floor: u32) -> Self {
         let bytes = (mb.max(1) as usize).saturating_mul(1024 * 1024);
-        let cluster_size = std::mem::size_of::<TtCluster>().max(1);
-        let clusters = (bytes / cluster_size).max(1);
-        let bits = (usize::BITS - 1 - clusters.leading_zeros())
+        let entry_size = std::mem::size_of::<AtomicU64>().max(1);
+        let slots = (bytes / entry_size).max(1);
+        let bits = (usize::BITS - 1 - slots.leading_zeros())
             .max(cluster_bits_floor)
             .clamp(10, 26);
         Self::new(bits)
@@ -580,9 +640,10 @@ impl SharedTt {
         self.inner.clear();
     }
 
-    /// Soft clear: increment the generation counter so non-Exact cached
-    /// entries are treated as stale on the next probe.  Matches the
-    /// C++ `TranspositionTable::clear()` fake-clean path.
+    /// Soft clear: increment the generation counter so cached entries from
+    /// older generations are treated as stale on the next probe.  Matches the
+    /// C++ `TranspositionTable::clear()` fake-clean path with exact entries
+    /// also invalidated.
     pub fn bump_age(&self) {
         self.inner.bump_age();
     }

@@ -206,8 +206,9 @@ impl<G: Game> Searcher<G> {
     }
 
     /// Soft-clear the transposition table by bumping its generation counter.
-    /// Non-Exact entries stored in the previous generation are treated as
-    /// stale on the next probe, matching the C++ fake-clean semantics.
+    /// Entries stored in the previous generation are treated as stale on the
+    /// next probe, matching the C++ fake-clean semantics with
+    /// `TRANSPOSITION_TABLE_FAKE_CLEAN_NOT_EXACT_ONLY` disabled.
     pub fn clear_tt(&mut self) {
         self.tt.bump_age();
         self.tt_age = self.tt.current_age();

@@ -22,8 +22,8 @@ use tgf_core::{
     MoveOrderContext, SearchActionList, Workbench,
 };
 use tgf_mill::{
-    EngineRuntimeOptions, MillActionKind, MillEvaluator, MillGame, MillRules, MillVariantOptions,
-    recommended_search_depth,
+    EngineRuntimeOptions, MillActionKind, MillEvaluator, MillGame, MillPhase, MillRules,
+    MillVariantOptions, recommended_search_depth,
 };
 use tgf_search::{
     LazySmpWorker, MctsOptions, MctsSearcher, SearchAbortHandle, SearchOptions, SearchPolicy,
@@ -303,6 +303,7 @@ pub(crate) fn run_uci_loop() {
                     rules = MillRules::new(options.clone());
                     state = rules.initial_state(&[]);
                     state_history.clear();
+                    shared_tt.bump_age();
                     sync_perfect_db(&mut engine_cfg, &options);
                 }
                 SetoptionResult::ClearHash => {
@@ -314,6 +315,8 @@ pub(crate) fn run_uci_loop() {
                 SetoptionResult::SearchConfig => {
                     if engine_cfg.hash_mb != old_hash_mb {
                         shared_tt = allocate_shared_tt(engine_cfg.hash_mb);
+                    } else {
+                        shared_tt.bump_age();
                     }
                     // A search/engine parameter changed; the perfect-database
                     // toggle and path live here, so reconcile the global handle.
@@ -455,6 +458,7 @@ fn spawn_search(
     let search_options = search_options_for_go(&cfg, &go);
     let depth = effective_search_depth(&options, &state, go.depth, &cfg);
     let root_side_to_move = state.side_to_move;
+    let bump_tt_age = should_bump_tt_age_before_search(&options, &state);
     let (tx, rx) = mpsc::channel();
     let abort = Arc::new(AtomicBool::new(false));
     let abort_handle = SearchAbortHandle::from_arc(Arc::clone(&abort));
@@ -469,7 +473,9 @@ fn spawn_search(
         let abort_for_worker = Arc::clone(&abort);
         thread::spawn(move || {
             let mut searcher = mill_searcher_with_shared_tt(shared_tt);
-            searcher.clear_tt();
+            if bump_tt_age {
+                searcher.clear_tt();
+            }
             searcher.set_abort_flag(abort_for_worker);
             searcher.set_options(search_options);
             searcher.set_qsearch_max_depth(qsearch_max_depth);
@@ -498,7 +504,9 @@ fn spawn_search(
                     extra_depth: (i % 2) as i32,
                 })
                 .collect();
-            shared_tt.bump_age();
+            if bump_tt_age {
+                shared_tt.bump_age();
+            }
             let game = MillGame::new_with_repetition_context(
                 options,
                 root_repetition_history,
@@ -528,6 +536,18 @@ fn spawn_search(
         abort_handle,
         receiver: rx,
     }
+}
+
+fn should_bump_tt_age_before_search(
+    options: &MillVariantOptions,
+    state: &GameStateSnapshot,
+) -> bool {
+    // TT keys intentionally exclude root repetition history.  Reusing entries
+    // across moving-phase roots can therefore import a stale threefold cut from
+    // a different pre-root history.  Placing-phase roots have no reversible
+    // move repetition context, so keeping the current generation lets the next
+    // move reuse the previous root's searched child subtree.
+    options.threefold_repetition_rule && state.phase_tag == MillPhase::Moving as i16
 }
 
 fn print_eval_decomp(options: &MillVariantOptions, state: GameStateSnapshot) {

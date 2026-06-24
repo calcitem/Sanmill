@@ -27,9 +27,12 @@ impl<G: Game> Searcher<G> {
     /// the search falls outside the window, the window is widened and the depth
     /// is re-searched.  This typically improves NPS by reducing the search tree.
     ///
-    /// The TT generation counter is bumped between iterations so non-Exact
-    /// entries from the previous iteration are treated as stale, matching C++
-    /// `Search::clear` semantics from `src/search.cpp`.
+    /// TT entries are intentionally kept across adjacent IDS iterations.
+    /// The lower-depth search shares the same root context, and transposed
+    /// subtrees can still be depth-sufficient deeper in the next iteration.
+    /// Generation bumps are reserved for real context invalidation, such as a
+    /// UCI clear/hash/rule change or a moving-phase root with path-dependent
+    /// repetition state.
     ///
     /// # Divergence from master `src/search.cpp`
     ///
@@ -58,9 +61,6 @@ impl<G: Game> Searcher<G> {
         let mut result = self.search_pvs(wb, 1);
         let aspiration_enabled = self.options.enable_aspiration_window;
         for depth in 2..=max_depth {
-            self.tt.bump_age();
-            self.tt_age = self.tt.current_age();
-            self.tt_age_bumps += 1;
             if !aspiration_enabled || depth < 3 || result.score.abs() >= ASPIRATION_MAX_WINDOW {
                 // Master shape: full window for every IDS iteration.
                 result = self.search_pvs(wb, depth);
@@ -380,6 +380,7 @@ impl<G: Game> Searcher<G> {
         let mut moves = SearchActionList::new();
         G::generate_legal_ctx(wb, &mut moves, &self.options.move_order_context);
         self.order_moves(wb, root_key, depth, &mut moves);
+        promote_root_pv_move(&mut moves, *best_action);
         let mut best_value = i32::MIN + 1;
         for action in moves.iter().copied() {
             if self.should_abort() {
@@ -433,5 +434,15 @@ impl<G: Game> Searcher<G> {
         };
         self.save_tt(root_key, depth, best_value, bound);
         best_value
+    }
+}
+
+#[inline]
+fn promote_root_pv_move(moves: &mut SearchActionList, best_action: Action) {
+    if best_action.is_none() || moves.first().copied() == Some(best_action) {
+        return;
+    }
+    if let Some(index) = moves.iter().position(|action| *action == best_action) {
+        moves.as_mut_slice().swap(0, index);
     }
 }

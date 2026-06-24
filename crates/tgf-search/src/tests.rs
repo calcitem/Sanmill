@@ -389,6 +389,43 @@ fn packed_tt_entry_round_trips_compact_fields() {
 }
 
 #[test]
+fn clustered_tt_retains_multiple_keys_in_one_bucket() {
+    let tt = ClusteredTt::new_with_cluster_bits(10);
+    let base = 0x1234_5678_9abc_def0_u64;
+    let bucket = tt.cluster_index_for_key(base);
+    let mut keys = Vec::new();
+    let mut candidate = base;
+    while keys.len() < 4 {
+        if tt.cluster_index_for_key(candidate) == bucket
+            && !keys
+                .iter()
+                .any(|key| TtPackedEntry::key_sig(*key) == TtPackedEntry::key_sig(candidate))
+        {
+            keys.push(candidate);
+        }
+        candidate = candidate.wrapping_add(0x9E37_79B9_7F4A_7C15);
+    }
+
+    for (i, key) in keys.iter().copied().enumerate() {
+        tt.save(
+            key,
+            TtEntry {
+                value: i as i32,
+                depth: 5,
+                bound: Bound::Exact,
+            },
+        );
+    }
+
+    for (i, key) in keys.iter().copied().enumerate() {
+        let entry = tt
+            .get(key)
+            .expect("same-bucket key should remain available");
+        assert_eq!(entry.value, i as i32);
+    }
+}
+
+#[test]
 fn search_thread_pool_runs_jobs_and_returns_results() {
     let pool = SearchThreadPool::new(2);
     assert_eq!(pool.worker_count(), 2);
@@ -786,10 +823,10 @@ fn shared_tt_with_capacity_mb_respects_requested_floor() {
     let small = SharedTt::with_capacity_mb(1, 14);
     let large = SharedTt::with_capacity_mb(64, 14);
 
-    assert!(small.inner.clusters.len() >= (1usize << 14));
+    assert!(small.inner.stats().slots >= (1usize << 14));
     assert!(
-        large.inner.clusters.len() >= small.inner.clusters.len(),
-        "larger Hash option must not allocate fewer clusters"
+        large.inner.stats().slots >= small.inner.stats().slots,
+        "larger Hash option must not allocate fewer slots"
     );
 }
 
@@ -800,8 +837,8 @@ fn shared_tt_storage_is_page_aligned_without_slot_bloat() {
 
     assert_eq!(
         std::mem::size_of::<TtCluster>(),
-        8,
-        "TT slot size must stay packed"
+        32,
+        "TT bucket size must stay packed"
     );
     assert_eq!(
         addr % TT_STORAGE_ALIGNMENT,
@@ -863,17 +900,16 @@ fn searcher_clear_tt_uses_bump_age_not_physical_clear() {
 }
 
 #[test]
-fn iterative_deepening_bumps_age_between_depths() {
+fn iterative_deepening_reuses_tt_age_between_depths() {
     let game = KeyedGame;
     let mut wb = game.build_workbench(&GameStateSnapshot::default());
     let mut searcher = Searcher::<KeyedGame>::new();
 
     let result = searcher.iterative_deepening(&mut wb, 3);
-    // Depth 1→2 and 2→3 each bump once, so 2 bumps for max_depth=3.
     assert_eq!(
         searcher.tt_age_bumps(),
-        2,
-        "age bumped once per iteration boundary (max_depth - 1)"
+        0,
+        "one root IDS search should keep TT entries across depth iterations"
     );
     assert!(!result.best_action.is_none());
 }
