@@ -280,6 +280,50 @@ fn engine_config_algorithm_routes_search() {
 }
 
 #[test]
+fn aborted_final_ids_iteration_keeps_last_completed_result() {
+    let completed = SearchResult {
+        best_action: Action {
+            kind_tag: MillActionKind::Place as i16,
+            from_node: -1,
+            to_node: 0,
+            aux: -1,
+            payload_bits: 0,
+        },
+        score: 7,
+        nodes: 100,
+        draw_reason: None,
+    };
+    let partial = SearchResult {
+        best_action: Action {
+            kind_tag: MillActionKind::Place as i16,
+            from_node: -1,
+            to_node: 1,
+            aux: -1,
+            payload_bits: 0,
+        },
+        score: -3,
+        nodes: 25,
+        draw_reason: None,
+    };
+
+    assert_eq!(
+        select_completed_search_result(partial, completed, true),
+        completed,
+        "a timed-out final IDS pass must not replace the last full-depth pass"
+    );
+    assert_eq!(
+        select_completed_search_result(partial, completed, false),
+        partial,
+        "a fully completed final pass should remain authoritative"
+    );
+    assert_eq!(
+        select_completed_search_result(partial, SearchResult::default_none(), true),
+        partial,
+        "without any completed IDS pass, keep the only available result"
+    );
+}
+
+#[test]
 fn default_go_depth_uses_recommended_depth() {
     let options = MillVariantOptions::default();
     let rules = MillRules::new(options.clone());

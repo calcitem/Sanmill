@@ -612,10 +612,11 @@ fn run_configured_search(
             }
         }
     }
-    let mut result = if !searcher.was_aborted() || best_so_far.best_action.is_none() {
-        run_algorithm_at_depth(searcher, &mut wb, cfg, depth, value)
-    } else {
+    let mut result = if searcher.was_aborted() && !best_so_far.best_action.is_none() {
         best_so_far
+    } else {
+        let final_result = run_algorithm_at_depth(searcher, &mut wb, cfg, depth, value);
+        select_completed_search_result(final_result, best_so_far, searcher.was_aborted())
     };
 
     // Perfect-database consultation (P-DB): when enabled and the active rule
@@ -670,6 +671,18 @@ fn run_configured_search(
         }
     }
     result
+}
+
+fn select_completed_search_result(
+    result: SearchResult,
+    best_so_far: SearchResult,
+    aborted: bool,
+) -> SearchResult {
+    if aborted && !best_so_far.best_action.is_none() {
+        best_so_far
+    } else {
+        result
+    }
 }
 
 fn run_algorithm_at_depth(
