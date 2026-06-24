@@ -43,16 +43,25 @@ ensure_parent_rev() {
     fi
 }
 
+worktree_is_git_checkout() {
+    git -C "$WORKTREE" rev-parse --is-inside-work-tree >/dev/null 2>&1
+}
+
 sync_parent_worktree() {
     local parent_sha
     parent_sha="$(git -C "$REPO_ROOT" rev-parse "${PARENT_REV}^{commit}")"
-    if [ -d "$WORKTREE/.git" ]; then
+    if worktree_is_git_checkout; then
         local checked_out
         checked_out="$(git -C "$WORKTREE" rev-parse HEAD)"
         if [ "$checked_out" != "$parent_sha" ]; then
             echo ">> Updating parent worktree to ${PARENT_REV} (${parent_sha:0:12}) ..."
             git -C "$WORKTREE" checkout --detach "$parent_sha" >/dev/null
         fi
+    elif [ -e "$WORKTREE" ]; then
+        echo "ERROR: $WORKTREE exists but is not a git worktree." >&2
+        echo "       Remove the directory or run:" >&2
+        echo "         git -C \"$REPO_ROOT\" worktree remove --force \"$WORKTREE\"" >&2
+        exit 1
     else
         echo ">> Creating parent worktree at $WORKTREE (${parent_sha:0:12}) ..."
         mkdir -p "$(dirname "$WORKTREE")"
