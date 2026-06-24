@@ -53,6 +53,9 @@ use std::env;
 use std::io::{BufRead, BufReader, Write};
 use std::path::PathBuf;
 use std::process::{Child, ChildStdin, ChildStdout, Command, Stdio};
+use std::sync::mpsc::{self, RecvTimeoutError};
+use std::thread;
+use std::time::Duration;
 
 use perfect_db::database::{Database, FileDatabaseProvider};
 use tgf_core::{Action, ActionList, Game, GameRules, GameStateSnapshot, OutcomeKind, Workbench};
@@ -67,6 +70,7 @@ struct Engine {
     name: String,
 }
 
+#[derive(Clone, Copy)]
 struct EngineOptions {
     skill: u32,
     move_time_secs: u32,
@@ -657,6 +661,327 @@ fn opening_desc(opening_moves: &[String]) -> String {
     }
 }
 
+#[derive(Clone)]
+struct MatchConfig {
+    current: String,
+    current_args: Vec<String>,
+    master: String,
+    master_args: Vec<String>,
+    go_current: String,
+    go_master: String,
+    engine_options: EngineOptions,
+    variant_options: MillVariantOptions,
+    total_games: usize,
+    jobs: usize,
+    max_plies: usize,
+    skill: u32,
+    move_time: u32,
+    opening_plies: usize,
+    opening_seed: u64,
+    opening_db_path: Option<PathBuf>,
+}
+
+#[derive(Debug)]
+struct GameReport {
+    worker_id: usize,
+    game_index: usize,
+    result: GameResult,
+    plies: usize,
+    opening_moves: Vec<String>,
+    current_white: Option<bool>,
+}
+
+fn build_referee(config: &MatchConfig) -> Referee {
+    Referee::new(
+        config.variant_options.clone(),
+        PerfectOpening::new(
+            config.opening_plies,
+            config.opening_seed,
+            config.opening_db_path.clone(),
+        ),
+    )
+}
+
+fn jobs_for_total(total: usize) -> usize {
+    let jobs = env_usize("H2H_JOBS", 1).max(1);
+    jobs.min(total.max(1))
+}
+
+fn progress_interval() -> Duration {
+    Duration::from_secs(env_u64("H2H_PROGRESS_SECS", 30).max(1))
+}
+
+fn apply_self_report(report: &GameReport, white: &mut [usize; 4], black: &mut [usize; 4]) {
+    match report.result {
+        GameResult::WhiteWin => {
+            white[0] += 1;
+            black[1] += 1;
+        }
+        GameResult::BlackWin => {
+            white[1] += 1;
+            black[0] += 1;
+        }
+        GameResult::Draw => {
+            white[2] += 1;
+            black[2] += 1;
+        }
+        GameResult::Unfinished => {
+            white[3] += 1;
+            black[3] += 1;
+        }
+    }
+}
+
+fn apply_vs_report(report: &GameReport, white: &mut [usize; 4], black: &mut [usize; 4]) -> usize {
+    let current_white = report
+        .current_white
+        .expect("vs report must identify current engine colour");
+    let idx = match (report.result, current_white) {
+        (GameResult::WhiteWin, true) | (GameResult::BlackWin, false) => 0,
+        (GameResult::BlackWin, true) | (GameResult::WhiteWin, false) => 1,
+        (GameResult::Draw, _) => 2,
+        (GameResult::Unfinished, _) => 3,
+    };
+    if current_white {
+        white[idx] += 1;
+    } else {
+        black[idx] += 1;
+    }
+    idx
+}
+
+fn worker_game_indices(worker_id: usize, total: usize, jobs: usize) -> impl Iterator<Item = usize> {
+    (worker_id..total).step_by(jobs)
+}
+
+fn run_self_play_parallel(config: MatchConfig, is_master: bool, label: &str) {
+    let total = config.total_games;
+    let jobs = config.jobs;
+    let (tx, rx) = mpsc::channel::<GameReport>();
+    let mut handles = Vec::with_capacity(jobs);
+
+    for worker_id in 0..jobs {
+        let tx = tx.clone();
+        let config = config.clone();
+        handles.push(thread::spawn(move || {
+            let mut referee = build_referee(&config);
+            let (mut ew, mut eb) = if is_master {
+                (
+                    Engine::spawn(
+                        &config.master,
+                        &config.master_args,
+                        &config.go_master,
+                        &format!("worker-{worker_id}-white"),
+                        &config.engine_options,
+                    ),
+                    Engine::spawn(
+                        &config.master,
+                        &config.master_args,
+                        &config.go_master,
+                        &format!("worker-{worker_id}-black"),
+                        &config.engine_options,
+                    ),
+                )
+            } else {
+                (
+                    Engine::spawn(
+                        &config.current,
+                        &config.current_args,
+                        &config.go_current,
+                        &format!("worker-{worker_id}-white"),
+                        &config.engine_options,
+                    ),
+                    Engine::spawn(
+                        &config.current,
+                        &config.current_args,
+                        &config.go_current,
+                        &format!("worker-{worker_id}-black"),
+                        &config.engine_options,
+                    ),
+                )
+            };
+
+            for game_index in worker_game_indices(worker_id, config.total_games, config.jobs) {
+                let (result, plies, opening_moves) =
+                    referee.play_game(&mut ew, &mut eb, config.max_plies, game_index);
+                tx.send(GameReport {
+                    worker_id,
+                    game_index,
+                    result,
+                    plies,
+                    opening_moves,
+                    current_white: None,
+                })
+                .expect("main H2H collector should stay alive");
+            }
+        }));
+    }
+    drop(tx);
+
+    let mut white = [0usize; 4];
+    let mut black = [0usize; 4];
+    let mut done = 0usize;
+    let interval = progress_interval();
+    while done < total {
+        match rx.recv_timeout(interval) {
+            Ok(report) => {
+                done += 1;
+                apply_self_report(&report, &mut white, &mut black);
+                eprintln!();
+                eprintln!(
+                    "Game {}/{total}: White vs Black -> {:?} ({} plies){}  [worker {} game-index {}]",
+                    done,
+                    report.result,
+                    report.plies,
+                    opening_desc(&report.opening_moves),
+                    report.worker_id,
+                    report.game_index + 1
+                );
+                print_standings(done, total, &white, &black, config.skill, config.move_time);
+            }
+            Err(RecvTimeoutError::Timeout) => {
+                eprintln!();
+                eprintln!(
+                    "Progress heartbeat: completed {done}/{total}; jobs={jobs}; waiting for workers..."
+                );
+                print_standings(done, total, &white, &black, config.skill, config.move_time);
+            }
+            Err(RecvTimeoutError::Disconnected) => break,
+        }
+    }
+
+    for handle in handles {
+        handle.join().expect("H2H worker should not panic");
+    }
+    assert_eq!(done, total, "all scheduled self-play games must finish");
+
+    let (ww, bw) = (white[0], black[0]);
+    let net = ww as i64 - bw as i64;
+    let verdict = if net > 0 {
+        "White is favoured"
+    } else if net < 0 {
+        "Black is favoured"
+    } else {
+        "colours are even"
+    };
+    eprintln!();
+    eprintln!(
+        "FINAL: {label} self-play  White {ww} wins vs Black {bw} wins  net {net:+}  =>  {verdict}"
+    );
+}
+
+fn run_vs_parallel(config: MatchConfig) {
+    let total = config.total_games;
+    let jobs = config.jobs;
+    let (tx, rx) = mpsc::channel::<GameReport>();
+    let mut handles = Vec::with_capacity(jobs);
+
+    for worker_id in 0..jobs {
+        let tx = tx.clone();
+        let config = config.clone();
+        handles.push(thread::spawn(move || {
+            let mut referee = build_referee(&config);
+            let mut cur = Engine::spawn(
+                &config.current,
+                &config.current_args,
+                &config.go_current,
+                &format!("worker-{worker_id}-current"),
+                &config.engine_options,
+            );
+            let mut mas = Engine::spawn(
+                &config.master,
+                &config.master_args,
+                &config.go_master,
+                &format!("worker-{worker_id}-master"),
+                &config.engine_options,
+            );
+
+            for game_index in worker_game_indices(worker_id, config.total_games, config.jobs) {
+                let current_white = game_index % 2 == 0;
+                let (result, plies, opening_moves) = if current_white {
+                    referee.play_game(&mut cur, &mut mas, config.max_plies, game_index)
+                } else {
+                    referee.play_game(&mut mas, &mut cur, config.max_plies, game_index)
+                };
+                tx.send(GameReport {
+                    worker_id,
+                    game_index,
+                    result,
+                    plies,
+                    opening_moves,
+                    current_white: Some(current_white),
+                })
+                .expect("main H2H collector should stay alive");
+            }
+        }));
+    }
+    drop(tx);
+
+    let mut white = [0usize; 4];
+    let mut black = [0usize; 4];
+    let mut done = 0usize;
+    let interval = progress_interval();
+    while done < total {
+        match rx.recv_timeout(interval) {
+            Ok(report) => {
+                done += 1;
+                let idx = apply_vs_report(&report, &mut white, &mut black);
+                let current_white = report
+                    .current_white
+                    .expect("vs report must identify current engine colour");
+                eprintln!();
+                eprintln!(
+                    "Game {}/{total}: current={} -> {} ({} plies){}  [worker {} game-index {}]",
+                    done,
+                    if current_white { "White" } else { "Black" },
+                    match idx {
+                        0 => "current win",
+                        1 => "current loss",
+                        2 => "draw",
+                        _ => "unfinished",
+                    },
+                    report.plies,
+                    opening_desc(&report.opening_moves),
+                    report.worker_id,
+                    report.game_index + 1
+                );
+                print_standings(done, total, &white, &black, config.skill, config.move_time);
+            }
+            Err(RecvTimeoutError::Timeout) => {
+                eprintln!();
+                eprintln!(
+                    "Progress heartbeat: completed {done}/{total}; jobs={jobs}; waiting for workers..."
+                );
+                print_standings(done, total, &white, &black, config.skill, config.move_time);
+            }
+            Err(RecvTimeoutError::Disconnected) => break,
+        }
+    }
+
+    for handle in handles {
+        handle.join().expect("H2H worker should not panic");
+    }
+    assert_eq!(done, total, "all scheduled head-to-head games must finish");
+
+    let cwin = white[0] + black[0];
+    let closs = white[1] + black[1];
+    let cdraw = white[2] + black[2];
+    let decided = cwin + closs + cdraw;
+    let net = cwin as i64 - closs as i64;
+    let verdict = if net > 0 {
+        "current is STRONGER than master"
+    } else if net < 0 {
+        "current is WEAKER than master"
+    } else {
+        "current and master are EVEN"
+    };
+    eprintln!();
+    eprintln!(
+        "FINAL: current {cwin}W-{closs}L-{cdraw}D / {decided} decided  Score {:.1}%  net {net:+}  =>  {verdict}",
+        pct(cwin as f64 + 0.5 * cdraw as f64, decided)
+    );
+}
+
 #[test]
 #[ignore = "head-to-head match vs master C++; set H2H_* and run with --ignored --nocapture"]
 fn head_to_head_vs_master() {
@@ -689,6 +1014,9 @@ fn head_to_head_vs_master() {
     let opening_plies = env_usize("H2H_OPENING_PLIES", 0);
     let opening_seed = env_u64("H2H_OPENING_SEED", 0x9E37_79B9_7F4A_7C15);
     let opening_db_path = env_path("H2H_OPENING_DB_PATH");
+    let total = games * 2;
+    assert!(total > 0, "H2H_GAMES must schedule at least one game");
+    let jobs = jobs_for_total(total);
     let engine_options = EngineOptions {
         skill,
         move_time_secs: move_time,
@@ -703,157 +1031,42 @@ fn head_to_head_vs_master() {
     };
     let opening = PerfectOpening::new(opening_plies, opening_seed, opening_db_path);
     let opening_config = opening.describe();
-    let mut referee = Referee::new(options, opening);
+    drop(opening);
 
     // Mode: "vs" (current vs master, default), "self-current", "self-master".
     let mode = env::var("H2H_MODE").unwrap_or_else(|_| "vs".to_string());
-    let total = games * 2;
-
-    // Per-row tally [Win, Loss, Draw, Unfinished].  In "vs" mode the rows are
-    // the current engine playing White / Black; in self-play they are the
-    // White / Black side of the single engine under test.
-    let mut white = [0usize; 4];
-    let mut black = [0usize; 4];
+    let config = MatchConfig {
+        current: current.clone(),
+        current_args: current_args.clone(),
+        master: master.clone(),
+        master_args: master_args.clone(),
+        go_current: go_current.clone(),
+        go_master: go_master.clone(),
+        engine_options,
+        variant_options: options,
+        total_games: total,
+        jobs,
+        max_plies,
+        skill,
+        move_time,
+        opening_plies,
+        opening_seed,
+        opening_db_path: env_path("H2H_OPENING_DB_PATH"),
+    };
 
     if mode == "self-current" || mode == "self-master" {
         let is_master = mode == "self-master";
         let label = if is_master { "master" } else { "current" };
         eprintln!(
-            "Self-play: {label} vs {label}  (rows = board side)\n  skill={skill} movetime_s={move_time} shuffling=on algo=MTD(f) games={total} ply_cap={max_plies} n_move={n_move_rule} endgame_n_move={endgame_n_move_rule} {opening_config}"
+            "Self-play: {label} vs {label}  (rows = board side)\n  skill={skill} movetime_s={move_time} shuffling=on algo=MTD(f) games={total} jobs={jobs} ply_cap={max_plies} n_move={n_move_rule} endgame_n_move={endgame_n_move_rule} {opening_config}"
         );
-        // Two independent instances of the SAME engine (separate TTs), one
-        // permanently White and one permanently Black, so the table directly
-        // measures the game's first/second-player (White/Black) bias.
-        let (mut ew, mut eb) = if is_master {
-            (
-                Engine::spawn(&master, &master_args, &go_master, "white", &engine_options),
-                Engine::spawn(&master, &master_args, &go_master, "black", &engine_options),
-            )
-        } else {
-            (
-                Engine::spawn(
-                    &current,
-                    &current_args,
-                    &go_current,
-                    "white",
-                    &engine_options,
-                ),
-                Engine::spawn(
-                    &current,
-                    &current_args,
-                    &go_current,
-                    "black",
-                    &engine_options,
-                ),
-            )
-        };
-        for i in 0..total {
-            let (res, plies, opening_moves) = referee.play_game(&mut ew, &mut eb, max_plies, i);
-            // A White win is a Black loss and vice versa, so every game updates
-            // both rows; the White/Black Score% gap is the colour bias.
-            match res {
-                GameResult::WhiteWin => {
-                    white[0] += 1;
-                    black[1] += 1;
-                }
-                GameResult::BlackWin => {
-                    white[1] += 1;
-                    black[0] += 1;
-                }
-                GameResult::Draw => {
-                    white[2] += 1;
-                    black[2] += 1;
-                }
-                GameResult::Unfinished => {
-                    white[3] += 1;
-                    black[3] += 1;
-                }
-            }
-            eprintln!();
-            eprintln!(
-                "Game {}/{total}: White vs Black -> {res:?} ({plies} plies){}",
-                i + 1,
-                opening_desc(&opening_moves)
-            );
-            print_standings(i + 1, total, &white, &black, skill, move_time);
-        }
-        let (ww, bw) = (white[0], black[0]);
-        let net = ww as i64 - bw as i64;
-        let verdict = if net > 0 {
-            "White is favoured"
-        } else if net < 0 {
-            "Black is favoured"
-        } else {
-            "colours are even"
-        };
-        eprintln!();
-        eprintln!(
-            "FINAL: {label} self-play  White {ww} wins vs Black {bw} wins  net {net:+}  =>  {verdict}"
-        );
+        run_self_play_parallel(config, is_master, label);
     } else {
         // vs mode: current vs master, alternating colours each game so the live
         // rates are not skewed by Black's structural edge until colours balance.
         eprintln!(
-            "Head-to-head: current=`{current}` vs master=`{master}`  (rows = current's colour)\n  skill={skill} movetime_s={move_time} shuffling=on algo=MTD(f) games/color={games} ply_cap={max_plies} n_move={n_move_rule} endgame_n_move={endgame_n_move_rule} {opening_config}\n  current_args={current_args:?} master_args={master_args:?}\n  go_current=`{go_current}` go_master=`{go_master}`"
+            "Head-to-head: current=`{current}` vs master=`{master}`  (rows = current's colour)\n  skill={skill} movetime_s={move_time} shuffling=on algo=MTD(f) games/color={games} jobs={jobs} ply_cap={max_plies} n_move={n_move_rule} endgame_n_move={endgame_n_move_rule} {opening_config}\n  current_args={current_args:?} master_args={master_args:?}\n  go_current=`{go_current}` go_master=`{go_master}`"
         );
-        let mut cur = Engine::spawn(
-            &current,
-            &current_args,
-            &go_current,
-            "current",
-            &engine_options,
-        );
-        let mut mas = Engine::spawn(&master, &master_args, &go_master, "master", &engine_options);
-        for i in 0..total {
-            let current_white = i % 2 == 0;
-            let (res, plies, opening_moves) = if current_white {
-                referee.play_game(&mut cur, &mut mas, max_plies, i)
-            } else {
-                referee.play_game(&mut mas, &mut cur, max_plies, i)
-            };
-            // Map the board outcome to the current engine's row for its colour.
-            let idx = match (res, current_white) {
-                (GameResult::WhiteWin, true) | (GameResult::BlackWin, false) => 0, // current win
-                (GameResult::BlackWin, true) | (GameResult::WhiteWin, false) => 1, // current loss
-                (GameResult::Draw, _) => 2,
-                (GameResult::Unfinished, _) => 3,
-            };
-            if current_white {
-                white[idx] += 1;
-            } else {
-                black[idx] += 1;
-            }
-            eprintln!();
-            eprintln!(
-                "Game {}/{total}: current={} -> {} ({plies} plies){}",
-                i + 1,
-                if current_white { "White" } else { "Black" },
-                match idx {
-                    0 => "current win",
-                    1 => "current loss",
-                    2 => "draw",
-                    _ => "unfinished",
-                },
-                opening_desc(&opening_moves)
-            );
-            print_standings(i + 1, total, &white, &black, skill, move_time);
-        }
-        let cwin = white[0] + black[0];
-        let closs = white[1] + black[1];
-        let cdraw = white[2] + black[2];
-        let decided = cwin + closs + cdraw;
-        let net = cwin as i64 - closs as i64;
-        let verdict = if net > 0 {
-            "current is STRONGER than master"
-        } else if net < 0 {
-            "current is WEAKER than master"
-        } else {
-            "current and master are EVEN"
-        };
-        eprintln!();
-        eprintln!(
-            "FINAL: current {cwin}W-{closs}L-{cdraw}D / {decided} decided  Score {:.1}%  net {net:+}  =>  {verdict}",
-            pct(cwin as f64 + 0.5 * cdraw as f64, decided)
-        );
+        run_vs_parallel(config);
     }
 }

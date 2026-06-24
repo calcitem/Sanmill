@@ -47,6 +47,7 @@ ENDGAME_N_MOVE_RULE="${ENDGAME_N_MOVE_RULE:-20}"
 OPENING_PLIES="${OPENING_PLIES:-0}"
 OPENING_SEED="${OPENING_SEED:-0x9E3779B97F4A7C15}"
 OPENING_DB_PATH="${OPENING_DB_PATH:-$REPO_ROOT/src/ui/flutter_app/assets/databases}"
+JOBS="${JOBS:-${H2H_JOBS:-1}}"
 MASTER_ENGINE="${MASTER_ENGINE:-$(default_master_engine)}"
 CURRENT_OVERRIDE="${CURRENT_ENGINE:-}"
 CURRENT_ARGS="${CURRENT_ARGS:-uci}"
@@ -78,6 +79,7 @@ Options:
   -s, --skill N        Skill Level for the engine(s), 0..30       [default: 10]
   -t, --time SECONDS   per-move Thinking Time, 0..60, 0=unlimited [default: 0]
   -p, --max-plies N    ply cap; reaching it scores a draw         [default: 160]
+  -j, --jobs N         parallel worker count                       [default: 1]
       --n-move-rule N  no-capture draw threshold                  [default: 20]
       --endgame-n-move-rule N
                          endgame no-capture draw threshold        [default: 20]
@@ -96,7 +98,7 @@ Options:
   -h, --help           show this help and exit
 
 Each option also has an environment-variable form (command-line flags win):
-  GAMES, SKILL, MOVETIME (seconds), MAX_PLIES, SELF, MASTER_ENGINE,
+  GAMES, SKILL, MOVETIME (seconds), MAX_PLIES, JOBS, SELF, MASTER_ENGINE,
   CURRENT_ENGINE, CURRENT_ARGS, MASTER_ARGS, CURRENT_GO, MASTER_GO,
   N_MOVE_RULE, ENDGAME_N_MOVE_RULE, OPENING_PLIES, OPENING_SEED,
   OPENING_DB_PATH, MINGW_BIN.
@@ -133,6 +135,8 @@ while [ $# -gt 0 ]; do
         --time=*)       MOVETIME="${1#*=}"; shift ;;
         -p|--max-plies) MAX_PLIES="$2"; shift 2 ;;
         --max-plies=*)  MAX_PLIES="${1#*=}"; shift ;;
+        -j|--jobs)      JOBS="$2"; shift 2 ;;
+        --jobs=*)       JOBS="${1#*=}"; shift ;;
         --n-move-rule)  N_MOVE_RULE="$2"; shift 2 ;;
         --n-move-rule=*) N_MOVE_RULE="${1#*=}"; shift ;;
         --endgame-n-move-rule) ENDGAME_N_MOVE_RULE="$2"; shift 2 ;;
@@ -173,11 +177,102 @@ esac
 # Convert a path to a Windows form the native engine binaries accept.
 winpath() { cygpath -m "$1" 2>/dev/null || echo "$1"; }
 
+find_make() {
+    for cmd in make mingw32-make gmake; do
+        if command -v "$cmd" >/dev/null 2>&1; then
+            echo "$cmd"
+            return 0
+        fi
+    done
+    return 1
+}
+
+master_repo_root_for() {
+    local engine="$1"
+    local dir
+    dir="$(cd "$(dirname "$engine")" 2>/dev/null && pwd || true)"
+    if [ -n "$dir" ] && [ -d "$dir/src" ]; then
+        echo "$dir"
+        return 0
+    fi
+    if [ -n "$dir" ] && [ -d "$dir/../src" ]; then
+        (cd "$dir/.." && pwd)
+        return 0
+    fi
+    if [ -d "$REPO_ROOT/../Sanmill-master/src" ]; then
+        (cd "$REPO_ROOT/../Sanmill-master" && pwd)
+        return 0
+    fi
+    return 1
+}
+
+build_current_engine() {
+    echo ">> Building current engine (tgf, release) ..."
+    ( cd "$REPO_ROOT" && cargo build --release -p tgf-cli )
+}
+
+build_master_with_gxx() {
+    local root="$1"
+    local out="$2"
+    local src="$root/src"
+    local cxx="${CXX:-g++}"
+    local pthread_flag="-pthread"
+    local exe_dir
+    exe_dir="$(dirname "$out")"
+    mkdir -p "$exe_dir"
+    echo ">> Building master engine with $cxx fallback ..."
+    if is_windows_shell; then
+        pthread_flag=""
+    fi
+    (
+        cd "$src"
+        "$cxx" -std=c++17 -O3 -DNDEBUG -DIS_64BIT \
+            -Wall -Wextra -Wshadow -fno-exceptions \
+            -I../include -Iperfect -I. \
+            *.cpp perfect/*.cpp $pthread_flag -o "$out"
+    )
+}
+
+build_master_engine() {
+    local engine="$1"
+    local root make_cmd comp arch built
+    root="$(master_repo_root_for "$engine")" || {
+        echo "ERROR: cannot locate Sanmill-master source tree for: $engine" >&2
+        echo "       Expected a sibling directory with src/Makefile." >&2
+        exit 1
+    }
+    arch="${MASTER_ARCH:-x86-64-modern}"
+    if is_windows_shell; then
+        comp="${MASTER_COMP:-mingw}"
+    else
+        comp="${MASTER_COMP:-gcc}"
+    fi
+    if make_cmd="$(find_make)"; then
+        echo ">> Building master engine via $make_cmd (ARCH=$arch COMP=$comp) ..."
+        ( cd "$root/src" && "$make_cmd" -j"$JOBS" build ARCH="$arch" COMP="$comp" )
+        built="$root/src/sanmill$(engine_suffix)"
+        if [ ! -f "$built" ] && [ -f "$root/src/sanmill" ]; then
+            built="$root/src/sanmill"
+        fi
+        if [ ! -f "$built" ]; then
+            echo "ERROR: master build finished but executable was not found under $root/src" >&2
+            exit 1
+        fi
+        mkdir -p "$(dirname "$engine")"
+        cp -f "$built" "$engine"
+        chmod +x "$engine" 2>/dev/null || true
+    elif command -v g++ >/dev/null 2>&1; then
+        build_master_with_gxx "$root" "$engine"
+    else
+        echo "ERROR: cannot build master engine: neither make nor g++ is available" >&2
+        exit 1
+    fi
+}
+
 CURRENT_ENGINE="${CURRENT_OVERRIDE:-$(default_current_engine)}"
 if [ "$NEED_CURRENT" -eq 1 ]; then
-    if [ -z "$CURRENT_OVERRIDE" ]; then
-        echo ">> Building current engine (tgf, release) ..."
-        ( cd "$REPO_ROOT" && cargo build --release -p tgf-cli )
+    if [ -z "$CURRENT_OVERRIDE" ] || [ ! -f "$CURRENT_ENGINE" ]; then
+        build_current_engine
     fi
     if [ ! -f "$CURRENT_ENGINE" ]; then
         echo "ERROR: current engine not found: $CURRENT_ENGINE" >&2
@@ -204,13 +299,15 @@ if [ "$NEED_MASTER" -eq 1 ]; then
         fi
     fi
     if [ ! -f "$MASTER_ENGINE" ]; then
-        echo "ERROR: master engine not found: $MASTER_ENGINE" >&2
-        echo "       Pass --master /path/to/master_engine" >&2
+        build_master_engine "$MASTER_ENGINE"
+    fi
+    if [ ! -f "$MASTER_ENGINE" ]; then
+        echo "ERROR: master engine not found after build: $MASTER_ENGINE" >&2
         exit 1
     fi
 fi
 
-echo ">> Config: mode=$MODE  skill=$SKILL  games/colour=$GAMES  thinking_time=${MOVETIME}s  ply_cap=$MAX_PLIES  n_move=$N_MOVE_RULE  endgame_n_move=$ENDGAME_N_MOVE_RULE  opening_plies=$OPENING_PLIES"
+echo ">> Config: mode=$MODE  skill=$SKILL  games/colour=$GAMES  jobs=$JOBS  thinking_time=${MOVETIME}s  ply_cap=$MAX_PLIES  n_move=$N_MOVE_RULE  endgame_n_move=$ENDGAME_N_MOVE_RULE  opening_plies=$OPENING_PLIES"
 [ "$NEED_CURRENT" -eq 1 ] && echo "     current = $CURRENT_ENGINE"
 [ "$NEED_MASTER" -eq 1 ] && echo "     master  = $MASTER_ENGINE"
 if [ "$OPENING_PLIES" -gt 0 ] 2>/dev/null; then
@@ -229,6 +326,7 @@ H2H_MASTER_ARGS="$MASTER_ARGS" \
 H2H_MODE="$MODE" \
 H2H_SKILL="$SKILL" \
 H2H_GAMES="$GAMES" \
+H2H_JOBS="$JOBS" \
 H2H_MOVETIME="$MOVETIME" \
 H2H_MAX_PLIES="$MAX_PLIES" \
 H2H_N_MOVE_RULE="$N_MOVE_RULE" \

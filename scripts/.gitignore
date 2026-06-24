@@ -12,6 +12,7 @@
 !ensure_frb_codegen.sh
 !generate_frb.sh
 !run_head_to_head.sh
+!run_h2h_skill30_time1.sh
 !search-commit-message.py
 !check_perf_baseline.py
 !check_search_perf_baseline.py
