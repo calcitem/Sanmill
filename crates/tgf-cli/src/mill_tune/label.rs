@@ -143,7 +143,13 @@ pub(crate) fn run_label(args: &[String]) {
 
         match evaluate_state_with_database(&mut db, &state, &options, side) {
             Ok(Some((wdl, steps))) => {
-                rec.wdl = Some(wdl);
+                // DB returns WDL from the perspective of `side` (side-to-move).
+                // The eval function uses White-perspective scores (positive = White
+                // ahead), so we must convert to White perspective before storing:
+                // if Black is to move and wins, wdl=+1 from Black's view but the
+                // position is bad for White, so White-perspective wdl = -1.
+                let white_wdl = if side == 1 { -wdl } else { wdl };
+                rec.wdl = Some(white_wdl);
                 rec.steps = if steps < 0 { None } else { Some(steps) };
                 labeled += 1;
             }
