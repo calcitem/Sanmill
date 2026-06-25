@@ -122,6 +122,7 @@ pub(super) fn print_uci_options() {
     println!("option name MultiPV type spin default 1 min 1 max 500");
     println!("option name SkillLevel type spin default 1 min 0 max 30");
     println!("option name MoveTime type spin default 1 min 0 max 60");
+    println!("option name MoveTimeMs type spin default 1000 min 0 max 60000");
     println!("option name AiIsLazy type check default false");
     println!("option name IDSEnabled type check default false");
     println!("option name DepthExtension type check default true");
@@ -238,8 +239,8 @@ pub(super) struct GoOptions {
 /// P1-D: `wtime`/`btime` selection is now based on `root_side_to_move`
 /// (0=white, 1=black), matching master's time-management semantics.
 /// When no explicit `movetime` is given in the `go` command and no
-/// wtime/btime is present, `move_time_secs` from `setoption MoveTime`
-/// is used as a fallback (master's primary time-control mechanism).
+/// wtime/btime is present, `move_time_ms` from `setoption MoveTime` or
+/// `MoveTimeMs` is used as a fallback (master's primary mechanism).
 pub(super) fn parse_go_options(
     line: &str,
     root_side_to_move: i8,
@@ -287,9 +288,9 @@ pub(super) fn parse_go_options(
         if let Some(r) = remaining {
             let increment = find_u64(inc_key).unwrap_or(0);
             Some((r / 30).saturating_add(increment).max(100))
-        } else if engine_cfg.move_time_secs > 0 {
-            // Fall back to setoption MoveTime (master's primary mechanism).
-            Some(engine_cfg.move_time_secs as u64 * 1000)
+        } else if engine_cfg.move_time_ms > 0 {
+            // Fall back to setoption MoveTime / MoveTimeMs.
+            Some(engine_cfg.move_time_ms as u64)
         } else {
             None
         }

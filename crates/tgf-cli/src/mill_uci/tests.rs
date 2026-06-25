@@ -374,6 +374,67 @@ fn ai_is_lazy_uses_signed_previous_score() {
 }
 
 #[test]
+fn setoption_movetime_stores_seconds_as_ms_and_movetimems_stores_ms_directly() {
+    let mut options = MillVariantOptions::default();
+    let mut threads = 1;
+    let mut qsearch = 0;
+    let mut ecfg = EngineConfig::default();
+
+    // Legacy MoveTime (seconds): "5" must be stored as 5000 ms.
+    assert_eq!(
+        apply_setoption(
+            "setoption name MoveTime value 5",
+            &mut options,
+            &mut threads,
+            &mut qsearch,
+            &mut ecfg,
+        ),
+        SetoptionResult::SearchConfig
+    );
+    assert_eq!(ecfg.move_time_ms, 5000, "MoveTime 5 must store 5000 ms");
+
+    // MoveTimeMs (milliseconds direct): "200" must be stored as 200 ms.
+    assert_eq!(
+        apply_setoption(
+            "setoption name MoveTimeMs value 200",
+            &mut options,
+            &mut threads,
+            &mut qsearch,
+            &mut ecfg,
+        ),
+        SetoptionResult::SearchConfig
+    );
+    assert_eq!(ecfg.move_time_ms, 200, "MoveTimeMs 200 must store 200 ms");
+
+    // MoveTime 0 must store 0 ms (no time limit).
+    apply_setoption(
+        "setoption name MoveTime value 0",
+        &mut options,
+        &mut threads,
+        &mut qsearch,
+        &mut ecfg,
+    );
+    assert_eq!(ecfg.move_time_ms, 0);
+
+    // MoveTimeMs out of range (> 60000) must be rejected.
+    let prev = ecfg.move_time_ms;
+    assert_eq!(
+        apply_setoption(
+            "setoption name MoveTimeMs value 60001",
+            &mut options,
+            &mut threads,
+            &mut qsearch,
+            &mut ecfg,
+        ),
+        SetoptionResult::Unknown
+    );
+    assert_eq!(
+        ecfg.move_time_ms, prev,
+        "out-of-range must not change value"
+    );
+}
+
+#[test]
 fn clear_hash_button_does_not_require_value() {
     let mut options = MillVariantOptions::default();
     let mut threads = 1;

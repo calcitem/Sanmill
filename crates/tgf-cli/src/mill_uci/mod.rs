@@ -160,7 +160,11 @@ struct EngineConfig {
     ids_enabled: bool,
     depth_extension: bool,
     last_best_value: i32,
-    move_time_secs: u32,
+    /// Per-move thinking time in milliseconds.  0 = fixed depth (no time
+    /// limit).  Set via `setoption MoveTime` (seconds, stored as ms) or
+    /// the new `setoption MoveTimeMs` (milliseconds direct).  Default
+    /// 1000 ms matches the legacy 1-second default.
+    move_time_ms: u32,
     shuffling: bool,
     draw_on_human_experience: bool,
     developer_mode: bool,
@@ -188,7 +192,7 @@ impl Default for EngineConfig {
             ids_enabled: false,
             depth_extension: true,
             last_best_value: 0,
-            move_time_secs: 1,
+            move_time_ms: 1000,
             shuffling: true,
             draw_on_human_experience: true,
             developer_mode: true,
@@ -609,7 +613,7 @@ fn run_configured_search(
     let mut wb = game.build_workbench(&state);
     let mut value = 0;
     let mut best_so_far = SearchResult::default_none();
-    let run_ids = cfg.move_time_secs > 0 || cfg.ids_enabled;
+    let run_ids = cfg.move_time_ms > 0 || cfg.ids_enabled;
     if run_ids {
         for d in 2..depth {
             let result = run_algorithm_at_depth(searcher, &mut wb, cfg, d, value);
@@ -1014,7 +1018,7 @@ fn run_mcts_search(wb: &mut tgf_mill::MillWorkbench, cfg: &EngineConfig) -> Sear
         MctsOptions {
             iterations,
             playout_depth: 6,
-            time_limit_ms: cfg.move_time_secs.checked_mul(1000).map(u64::from),
+            time_limit_ms: (cfg.move_time_ms > 0).then(|| u64::from(cfg.move_time_ms)),
             exploration: 0.5,
             ab_assist_depth: 6,
             // CLI go path runs in the foreground UCI loop; keep MCTS

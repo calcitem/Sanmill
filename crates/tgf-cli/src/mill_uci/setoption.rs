@@ -73,12 +73,27 @@ pub(super) fn apply_setoption(
                 SetoptionResult::SearchConfig
             })
             .unwrap_or(SetoptionResult::Unknown),
+        // Legacy seconds-based option; kept for compatibility with master
+        // C++ engines and existing UCI GUIs. Value 0..=60 accepted;
+        // stored internally as milliseconds.
         "movetime" | "move time" => value
             .parse::<u32>()
             .ok()
             .filter(|v| (0..=60).contains(v))
             .map(|v| {
-                engine_cfg.move_time_secs = v;
+                engine_cfg.move_time_ms = v.saturating_mul(1000);
+                SetoptionResult::SearchConfig
+            })
+            .unwrap_or(SetoptionResult::Unknown),
+        // Millisecond-precision option; Sanmill-only (master C++ ignores it).
+        // Enables sub-second thinking times for faster H2H matches and
+        // eval-tuning verification runs. Range 0..=60000.
+        "movetimems" | "move time ms" => value
+            .parse::<u32>()
+            .ok()
+            .filter(|v| (0..=60_000).contains(v))
+            .map(|v| {
+                engine_cfg.move_time_ms = v;
                 SetoptionResult::SearchConfig
             })
             .unwrap_or(SetoptionResult::Unknown),
