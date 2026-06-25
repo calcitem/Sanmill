@@ -121,7 +121,7 @@ mod tests {
     #[test]
     fn parses_empty_board_sector_asset() {
         let bytes = std::fs::read(asset_path("std_0_0_9_9.sec2")).unwrap();
-        let sector = SectorFile::parse(&bytes, 1).unwrap();
+        let mut sector = SectorFile::parse(&bytes, 1).unwrap();
 
         assert_eq!(sector.header().version, 2);
         assert_eq!(sector.header().eval_struct_size, 3);
@@ -161,7 +161,7 @@ mod tests {
     #[test]
     fn parses_single_black_stone_sector_asset() {
         let bytes = std::fs::read(asset_path("std_0_1_9_8.sec2")).unwrap();
-        let sector = SectorFile::parse(&bytes, 24).unwrap();
+        let mut sector = SectorFile::parse(&bytes, 24).unwrap();
 
         assert_eq!(sector.eval_count(), 24);
         assert_eq!(sector.em_set_len(), 0);
@@ -187,7 +187,7 @@ mod tests {
         bytes.extend_from_slice(&0_i32.to_le_bytes());
         bytes.extend_from_slice(&(-3_i32).to_le_bytes());
 
-        let sector = SectorFile::parse(&bytes, 1).unwrap();
+        let mut sector = SectorFile::parse(&bytes, 1).unwrap();
         let eval = sector.eval_at(0).unwrap();
         assert_eq!(eval, RawEval::new(0, -3));
         assert_eq!(eval.kind(), RawEvalKind::Symmetry { operation: 2 });

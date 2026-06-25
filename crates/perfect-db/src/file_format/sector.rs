@@ -2,6 +2,8 @@
 // Copyright (C) 2019-2026 The Sanmill developers (see AUTHORS file)
 
 use std::collections::BTreeMap;
+use std::fmt;
+use std::io::{Read, Seek, SeekFrom};
 
 use super::{ParseError, ParseResult, read_i32_le};
 
@@ -102,15 +104,33 @@ pub enum RawEvalKind {
     Symmetry { operation: u8 },
 }
 
-#[derive(Clone, Debug, PartialEq, Eq)]
 pub struct SectorFile {
     header: SectorHeader,
     eval_count: usize,
-    eval_bytes: Vec<u8>,
     em_set: BTreeMap<usize, i32>,
+    /// Lazy sector body.  Mirrors the legacy C++ `WRAPPER` mode: the eval
+    /// array stays on disk and `eval_at` `seek+read`s only the
+    /// `eval_struct_size` bytes it needs, so opening a multi-GB sector no
+    /// longer blocks the AI on first access.
+    reader: Box<dyn crate::database::ReadSeek + Send>,
+}
+
+impl fmt::Debug for SectorFile {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.debug_struct("SectorFile")
+            .field("header", &self.header)
+            .field("eval_count", &self.eval_count)
+            .field("em_set_len", &self.em_set.len())
+            .finish_non_exhaustive()
+    }
 }
 
 impl SectorFile {
+    /// Parse a sector from an already-loaded byte buffer.
+    ///
+    /// Existing tests and any in-memory provider feed whole-file bytes
+    /// through here; the returned [`SectorFile`] wraps them in a `Cursor` so
+    /// the lazy `eval_at` path is shared with the file-backed provider.
     pub fn parse(bytes: &[u8], eval_count: usize) -> ParseResult<Self> {
         let header = SectorHeader::parse(bytes)?;
         let eval_size =
@@ -150,7 +170,6 @@ impl SectorFile {
             });
         }
 
-        let eval_bytes = bytes[DD_HEADER_SIZE..em_set_offset].to_vec();
         let mut em_set = BTreeMap::new();
         let mut offset = em_set_count_offset + 4;
         for _ in 0..em_set_len {
@@ -169,11 +188,92 @@ impl SectorFile {
             offset += 8;
         }
 
+        let reader = std::io::Cursor::new(bytes.to_vec());
+
         Ok(Self {
             header,
             eval_count,
-            eval_bytes,
             em_set,
+            reader: Box::new(reader),
+        })
+    }
+
+    /// Open a sector from a seekable reader (file-backed provider), reading
+    /// only the 64-byte header and the small `em_set` table up front.  The
+    /// eval array is probed lazily via [`eval_at`], matching the legacy C++
+    /// `WRAPPER` `FILE*` + `fseek` path.
+    pub fn open(
+        mut reader: Box<dyn crate::database::ReadSeek + Send>,
+        eval_count: usize,
+    ) -> ParseResult<Self> {
+        let mut header_bytes = [0u8; DD_HEADER_SIZE];
+        reader
+            .read_exact(&mut header_bytes)
+            .map_err(|_| ParseError::InvalidLength {
+                expected: DD_HEADER_SIZE,
+                actual: 0,
+            })?;
+        let header = SectorHeader::parse(&header_bytes)?;
+        let eval_size =
+            eval_count
+                .checked_mul(header.eval_struct_size)
+                .ok_or(ParseError::InvalidLength {
+                    expected: usize::MAX,
+                    actual: usize::MAX,
+                })?;
+        let em_set_count_offset =
+            DD_HEADER_SIZE
+                .checked_add(eval_size)
+                .ok_or(ParseError::InvalidLength {
+                    expected: usize::MAX,
+                    actual: usize::MAX,
+                })?;
+
+        reader
+            .seek(SeekFrom::Start(em_set_count_offset as u64))
+            .map_err(|source| ParseError::InvalidHeader {
+                message: format!("seek to em_set failed: {source}"),
+            })?;
+        let mut em_set_count_bytes = [0u8; 4];
+        reader
+            .read_exact(&mut em_set_count_bytes)
+            .map_err(|source| ParseError::InvalidHeader {
+                message: format!("read em_set count failed: {source}"),
+            })?;
+        let em_set_count = i32::from_le_bytes(em_set_count_bytes);
+        if em_set_count < 0 {
+            return Err(ParseError::InvalidHeader {
+                message: format!("negative em_set length {em_set_count}"),
+            });
+        }
+        let em_set_len = em_set_count as usize;
+        let mut em_set = BTreeMap::new();
+        for _ in 0..em_set_len {
+            let mut entry = [0u8; 8];
+            reader
+                .read_exact(&mut entry)
+                .map_err(|source| ParseError::InvalidHeader {
+                    message: format!("read em_set entry failed: {source}"),
+                })?;
+            let index = i32::from_le_bytes(entry[0..4].try_into().expect("4 bytes"));
+            let value = i32::from_le_bytes(entry[4..8].try_into().expect("4 bytes"));
+            if index < 0 {
+                return Err(ParseError::InvalidHeader {
+                    message: format!("negative em_set index {index}"),
+                });
+            }
+            let index = index as usize;
+            assert!(
+                em_set.insert(index, value).is_none(),
+                "duplicate em_set entry for eval index {index}"
+            );
+        }
+
+        Ok(Self {
+            header,
+            eval_count,
+            em_set,
+            reader,
         })
     }
 
@@ -189,7 +289,7 @@ impl SectorFile {
         self.em_set.len()
     }
 
-    pub fn eval_at(&self, index: usize) -> ParseResult<RawEval> {
+    pub fn eval_at(&mut self, index: usize) -> ParseResult<RawEval> {
         if index >= self.eval_count {
             return Err(ParseError::OutOfBounds {
                 index,
@@ -197,10 +297,23 @@ impl SectorFile {
             });
         }
 
-        let offset = index * self.header.eval_struct_size;
+        let offset = DD_HEADER_SIZE + index * self.header.eval_struct_size;
+        let n = self.header.eval_struct_size;
+        let mut buf = [0u8; 4];
+        self.reader
+            .seek(SeekFrom::Start(offset as u64))
+            .map_err(|source| ParseError::InvalidHeader {
+                message: format!("eval seek failed: {source}"),
+            })?;
+        self.reader
+            .read_exact(&mut buf[..n])
+            .map_err(|source| ParseError::InvalidHeader {
+                message: format!("eval read failed: {source}"),
+            })?;
+
         let mut raw = 0_u32;
-        for byte_index in 0..self.header.eval_struct_size {
-            raw |= u32::from(self.eval_bytes[offset + byte_index]) << (8 * byte_index);
+        for (byte_index, &byte) in buf.iter().enumerate().take(n) {
+            raw |= u32::from(byte) << (8 * byte_index);
         }
 
         let field1_bits = self.header.field2_offset;

@@ -66,6 +66,17 @@ impl fmt::Display for DatabaseError {
 
 impl std::error::Error for DatabaseError {}
 
+/// A seekable byte source for lazy sector eval reads.
+///
+/// Mirrors the legacy C++ `WRAPPER` mode (`perfect_sector.cpp`), which keeps
+/// the sector `FILE*` open and `fseek`s to `header_size + eval_struct_size * i`
+/// for every `get_eval_inner(i)` instead of loading the whole (up to 1.8 GB)
+/// eval blob into memory.  `File` satisfies this directly; tests fall back to
+/// `Cursor<Vec<u8>>` via the `DatabaseProvider::open_sector` default impl.
+pub trait ReadSeek: io::Read + io::Seek {}
+
+impl<T: io::Read + io::Seek> ReadSeek for T {}
+
 pub trait DatabaseProvider {
     fn read(&self, name: &str) -> Result<Vec<u8>, DatabaseError>;
 
@@ -75,6 +86,18 @@ pub trait DatabaseProvider {
             Err(err) if err.is_missing_asset() => Ok(false),
             Err(err) => Err(err),
         }
+    }
+
+    /// Open `name` as a seekable reader for lazy eval probing.
+    ///
+    /// The default implementation materialises the whole file via [`read`]
+    /// and wraps it in a `Cursor`, which preserves the previous behaviour for
+    /// in-memory providers and keeps tests working unchanged.  File-backed
+    /// providers override this to return an OS file handle so the database
+    /// never loads the full eval array (see [`ReadSeek`]).
+    fn open_sector(&self, name: &str) -> Result<Box<dyn ReadSeek + Send>, DatabaseError> {
+        let bytes = self.read(name)?;
+        Ok(Box::new(io::Cursor::new(bytes)))
     }
 }
 
@@ -101,6 +124,10 @@ impl DatabaseProvider for BoxDatabaseProvider {
     fn read(&self, name: &str) -> Result<Vec<u8>, DatabaseError> {
         self.inner.read(name)
     }
+
+    fn open_sector(&self, name: &str) -> Result<Box<dyn ReadSeek + Send>, DatabaseError> {
+        self.inner.open_sector(name)
+    }
 }
 
 #[derive(Clone, Debug)]
@@ -125,6 +152,15 @@ impl DatabaseProvider for FileDatabaseProvider {
             name: path.display().to_string(),
             source,
         })
+    }
+
+    fn open_sector(&self, name: &str) -> Result<Box<dyn ReadSeek + Send>, DatabaseError> {
+        let path = self.root.join(name);
+        let file = std::fs::File::open(&path).map_err(|source| DatabaseError::Read {
+            name: path.display().to_string(),
+            source,
+        })?;
+        Ok(Box::new(file))
     }
 
     fn exists(&self, name: &str) -> Result<bool, DatabaseError> {
@@ -596,7 +632,7 @@ pub struct Database<P> {
     sector_load_order: VecDeque<SectorId>,
 }
 
-#[derive(Clone, Debug)]
+#[derive(Debug)]
 struct LoadedSector {
     value: i16,
     hasher: PerfectHasher,
@@ -695,10 +731,8 @@ impl<P: DatabaseProvider> Database<P> {
             );
         }
 
-        Ok(Some(DatabaseEval {
-            raw,
-            sector_value: sector.value,
-        }))
+        let sector_value = sector.value;
+        Ok(Some(DatabaseEval { raw, sector_value }))
     }
 
     pub fn evaluate(&mut self, query: PerfectQuery) -> Result<Option<(i32, i32)>, DatabaseError> {
@@ -716,7 +750,7 @@ impl<P: DatabaseProvider> Database<P> {
             .map(|eval| eval.to_outcome(&self.sec_vals)))
     }
 
-    fn load_sector(&mut self, id: SectorId) -> Result<&LoadedSector, DatabaseError> {
+    fn load_sector(&mut self, id: SectorId) -> Result<&mut LoadedSector, DatabaseError> {
         if !self.sectors.contains_key(&id) {
             let value = self
                 .sec_vals
@@ -724,13 +758,18 @@ impl<P: DatabaseProvider> Database<P> {
                 .ok_or(DatabaseError::MissingSectorValue { id })?;
             let hasher = PerfectHasher::new(id.white_on_board, id.black_on_board);
             let name = self.variant.sector_file_name(id);
-            let bytes = self.provider.read(&name)?;
-            let file = SectorFile::parse(&bytes, hasher.hash_count()).map_err(|source| {
-                DatabaseError::Parse {
+            let hash_count = hasher.hash_count();
+            // Lazy open: the file-backed provider returns an OS file handle so
+            // only the 64-byte header + em_set are read now; the (possibly
+            // multi-GB) eval array is seek+read per probe, matching the
+            // legacy C++ WRAPPER.  The default provider impl still buffers
+            // the whole file for tests.
+            let reader = self.provider.open_sector(&name)?;
+            let file =
+                SectorFile::open(reader, hash_count).map_err(|source| DatabaseError::Parse {
                     name: name.clone(),
                     source,
-                }
-            })?;
+                })?;
             self.evict_sector_for_insert();
             self.sectors.insert(
                 id,
@@ -745,7 +784,7 @@ impl<P: DatabaseProvider> Database<P> {
 
         Ok(self
             .sectors
-            .get(&id)
+            .get_mut(&id)
             .expect("sector must be loaded after insertion"))
     }
 

@@ -293,7 +293,7 @@ mod tests {
     fn hashes_empty_board_sector() {
         let bytes = std::fs::read(asset_path("std_0_0_9_9.sec2")).unwrap();
         let hasher = PerfectHasher::new(0, 0);
-        let sector = SectorFile::parse(&bytes, hasher.hash_count()).unwrap();
+        let mut sector = SectorFile::parse(&bytes, hasher.hash_count()).unwrap();
 
         assert_eq!(hasher.hash_count(), 1);
         assert_eq!(hasher.hash_index(0), 0);
@@ -304,7 +304,7 @@ mod tests {
     fn hashes_single_black_stone_sector() {
         let bytes = std::fs::read(asset_path("std_0_1_9_8.sec2")).unwrap();
         let hasher = PerfectHasher::new(0, 1);
-        let sector = SectorFile::parse(&bytes, hasher.hash_count()).unwrap();
+        let mut sector = SectorFile::parse(&bytes, hasher.hash_count()).unwrap();
 
         let first = 1_u64 << 24;
         let last = (1_u64 << 23) << 24;
