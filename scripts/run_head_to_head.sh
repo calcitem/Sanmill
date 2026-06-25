@@ -41,6 +41,10 @@ default_master_engine() {
 GAMES="${GAMES:-10}"
 SKILL="${SKILL:-10}"
 MOVETIME="${MOVETIME:-0}"
+# Sub-second per-move time in milliseconds (Sanmill-only, 0..=60000).
+# Takes priority over MOVETIME when set.  Use for fast Sanmill-vs-Sanmill
+# matches (e.g. eval-tuning verification).  Typical value: 200 (0.2 s).
+MOVETIME_MS="${MOVETIME_MS:-}"
 MAX_PLIES="${MAX_PLIES:-160}"
 N_MOVE_RULE="${N_MOVE_RULE:-20}"
 ENDGAME_N_MOVE_RULE="${ENDGAME_N_MOVE_RULE:-20}"
@@ -80,6 +84,8 @@ Options:
   -g, --games N        games per colour (total played = 2*N)      [default: 10]
   -s, --skill N        Skill Level for the engine(s), 0..30       [default: 10]
   -t, --time SECONDS   per-move Thinking Time, 0..60, 0=unlimited [default: 0]
+      --time-ms MS     per-move time in milliseconds, 0..60000
+                         (Sanmill-only; takes priority over --time)
   -p, --max-plies N    ply cap; reaching it scores a draw         [default: 160]
   -j, --jobs N         parallel worker count                       [default: 1]
       --n-move-rule N  no-capture draw threshold                  [default: 20]
@@ -102,7 +108,8 @@ Options:
   -h, --help           show this help and exit
 
 Each option also has an environment-variable form (command-line flags win):
-  GAMES, SKILL, MOVETIME (seconds), MAX_PLIES, JOBS, SELF, MASTER_ENGINE,
+  GAMES, SKILL, MOVETIME (seconds), MOVETIME_MS (ms, priority), MAX_PLIES,
+  JOBS, SELF, MASTER_ENGINE,
   CURRENT_ENGINE, CURRENT_ARGS, MASTER_ARGS, CURRENT_ENV, MASTER_ENV,
   H2H_CURRENT_ENV, H2H_MASTER_ENV, CURRENT_GO, MASTER_GO,
   N_MOVE_RULE, ENDGAME_N_MOVE_RULE, OPENING_PLIES, OPENING_SEED,
@@ -138,6 +145,8 @@ while [ $# -gt 0 ]; do
         --skill=*)      SKILL="${1#*=}"; shift ;;
         -t|--time)      MOVETIME="$2"; shift 2 ;;
         --time=*)       MOVETIME="${1#*=}"; shift ;;
+        --time-ms)      MOVETIME_MS="$2"; shift 2 ;;
+        --time-ms=*)    MOVETIME_MS="${1#*=}"; shift ;;
         -p|--max-plies) MAX_PLIES="$2"; shift 2 ;;
         --max-plies=*)  MAX_PLIES="${1#*=}"; shift ;;
         -j|--jobs)      JOBS="$2"; shift 2 ;;
@@ -316,7 +325,11 @@ if [ "$NEED_MASTER" -eq 1 ]; then
     fi
 fi
 
-echo ">> Config: mode=$MODE  skill=$SKILL  games/colour=$GAMES  jobs=$JOBS  thinking_time=${MOVETIME}s  ply_cap=$MAX_PLIES  n_move=$N_MOVE_RULE  endgame_n_move=$ENDGAME_N_MOVE_RULE  opening_plies=$OPENING_PLIES"
+if [ -n "$MOVETIME_MS" ] && [ "$MOVETIME_MS" -gt 0 ] 2>/dev/null; then
+    echo ">> Config: mode=$MODE  skill=$SKILL  games/colour=$GAMES  jobs=$JOBS  thinking_time=${MOVETIME_MS}ms  ply_cap=$MAX_PLIES  n_move=$N_MOVE_RULE  endgame_n_move=$ENDGAME_N_MOVE_RULE  opening_plies=$OPENING_PLIES"
+else
+    echo ">> Config: mode=$MODE  skill=$SKILL  games/colour=$GAMES  jobs=$JOBS  thinking_time=${MOVETIME}s  ply_cap=$MAX_PLIES  n_move=$N_MOVE_RULE  endgame_n_move=$ENDGAME_N_MOVE_RULE  opening_plies=$OPENING_PLIES"
+fi
 [ "$NEED_CURRENT" -eq 1 ] && echo "     current = $CURRENT_ENGINE"
 [ "$NEED_MASTER" -eq 1 ] && echo "     master  = $MASTER_ENGINE"
 [ -n "$CURRENT_ENV" ] && echo "     current_env = $CURRENT_ENV"
@@ -325,7 +338,9 @@ if [ "$OPENING_PLIES" -gt 0 ] 2>/dev/null; then
     echo "     opening_db = $OPENING_DB_PATH"
     echo "     opening_seed = $OPENING_SEED"
 fi
-if [ "$MOVETIME" -gt 0 ] 2>/dev/null; then
+if [ -n "$MOVETIME_MS" ] && [ "$MOVETIME_MS" -gt 0 ] 2>/dev/null; then
+    echo "     (thinking_time>0: time-limited; Sanmill MoveTimeMs=${MOVETIME_MS}ms)"
+elif [ "$MOVETIME" -gt 0 ] 2>/dev/null; then
     echo "     (thinking_time>0: time-limited; favours the faster engine, master)"
 fi
 
@@ -341,6 +356,7 @@ H2H_SKILL="$SKILL" \
 H2H_GAMES="$GAMES" \
 H2H_JOBS="$JOBS" \
 H2H_MOVETIME="$MOVETIME" \
+H2H_MOVETIME_MS="${MOVETIME_MS:-}" \
 H2H_MAX_PLIES="$MAX_PLIES" \
 H2H_N_MOVE_RULE="$N_MOVE_RULE" \
 H2H_ENDGAME_N_MOVE_RULE="$ENDGAME_N_MOVE_RULE" \

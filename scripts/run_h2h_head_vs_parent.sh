@@ -1,16 +1,20 @@
 #!/usr/bin/env bash
 #
 # Strength match: working-tree HEAD engine vs parent commit (default HEAD^).
-# Match parameters follow run_h2h_skill30_time1.sh; default JOBS=16.
+# Both engines are Sanmill binaries so MoveTimeMs (milliseconds) is used
+# instead of the legacy seconds-only MoveTime.  Default: 200 ms / move.
 #
 # Override examples:
 #   GAMES=100 scripts/run_h2h_head_vs_parent.sh
 #   PARENT_REV=607907cb9 JOBS=12 scripts/run_h2h_head_vs_parent.sh
-#   SKILL=30 MOVETIME=1 PARENT_REV=HEAD^ GAMES=1000 JOBS=20 \
+#   SKILL=30 MOVETIME_MS=500 PARENT_REV=HEAD^ GAMES=1000 JOBS=20 \
 #     scripts/run_h2h_head_vs_parent.sh
 #   H2H_CURRENT_ENV=TGF_ENABLE_TT_MOVE=0 \
-#     SKILL=30 MOVETIME=1 PARENT_REV=HEAD^ GAMES=1000 JOBS=20 \
+#     SKILL=30 MOVETIME_MS=200 PARENT_REV=HEAD^ GAMES=1000 JOBS=20 \
 #     scripts/run_h2h_head_vs_parent.sh  # disable HEAD TT move for A/B
+#
+# Legacy MOVETIME (whole seconds) is still accepted but MOVETIME_MS takes
+# priority when set.
 #
 set -euo pipefail
 
@@ -119,10 +123,20 @@ export MASTER_ARGS="${MASTER_ARGS:-uci}"
 export CURRENT_GO="${CURRENT_GO:-go depth 0}"
 export MASTER_GO="${MASTER_GO:-go depth 0}"
 
+# Resolve the effective per-move time. MOVETIME_MS (milliseconds) takes
+# priority; fall back to legacy MOVETIME * 1000; default 200 ms.
+if [ -n "${MOVETIME_MS:-}" ]; then
+    _TIME_MS="$MOVETIME_MS"
+elif [ -n "${MOVETIME:-}" ] && [ "${MOVETIME:-0}" -gt 0 ] 2>/dev/null; then
+    _TIME_MS=$(( MOVETIME * 1000 ))
+else
+    _TIME_MS=200
+fi
+
 exec bash "$SCRIPT_DIR/run_head_to_head.sh" \
     --games "${GAMES:-5000}" \
     --skill "${SKILL:-30}" \
-    --time "${MOVETIME:-1}" \
+    --time-ms "$_TIME_MS" \
     --max-plies "${MAX_PLIES:-120}" \
     --n-move-rule "${N_MOVE_RULE:-20}" \
     --endgame-n-move-rule "${ENDGAME_N_MOVE_RULE:-20}" \

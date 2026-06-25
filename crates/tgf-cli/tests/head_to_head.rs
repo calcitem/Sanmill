@@ -35,8 +35,14 @@
 //   H2H_OPENING_SEED deterministic seed for paired Perfect DB openings
 //   H2H_GO_CURRENT go command for the current engine (default "go depth 0")
 //   H2H_GO_MASTER  go command for the master engine     (default "go")
-//   H2H_MOVETIME   per-move thinking time in SECONDS via the MoveTime option
-//                  (range 0..=60; default 0 = pure fixed depth / Time 0)
+//   H2H_MOVETIME   per-move thinking time in SECONDS via MoveTime setoption
+//                  (range 0..=60; default 0 = fixed depth).  Sanmill-vs-
+//                  Sanmill matches should prefer H2H_MOVETIME_MS instead.
+//   H2H_MOVETIME_MS per-move thinking time in MILLISECONDS (Sanmill only,
+//                  0..=60000; takes priority over H2H_MOVETIME).  Sent via
+//                  the MoveTimeMs setoption; master C++ ignores it and falls
+//                  back to the rounded MoveTime (seconds) value.
+//                  Typical fast-match value: 200 (0.2 s per move).
 //   H2H_MODE       "vs" (current vs master, default), "self-current" or
 //                  "self-master": the named engine plays ITSELF (two
 //                  independent instances), and the White / Black rows then show
@@ -46,12 +52,12 @@
 // Feasibility note: at Skill 14 / Time 0 (pure depth 14) quiet middlegame
 // positions can take ~a minute per move, so a drawn game can run for hours.
 // For a statistically meaningful multi-game match, cap per-move time equally
-// for BOTH engines with H2H_MOVETIME seconds (the MoveTime option drives a
-// timed iterative-deepening search up to depth = skill, so fast positions
-// still reach full depth while slow ones are bounded).  Both engines treat the
-// MoveTime option as whole seconds.  Note: the current engine's `go movetime N`
-// path is NOT used for this -- only the MoveTime option gives it a correct
-// timed search; `go movetime` collapses to a depth-1 search.
+// for BOTH engines (see H2H_MOVETIME / H2H_MOVETIME_MS above).  The MoveTime
+// setoption drives a timed iterative-deepening search up to depth = skill.
+// Note: `go movetime N` collapses to a depth-1 search; only the setoption
+// path gives a correct timed search.  For Sanmill-vs-Sanmill matches use
+// H2H_MOVETIME_MS (milliseconds); for matches against master C++ use
+// H2H_MOVETIME (seconds) because master ignores MoveTimeMs.
 
 use std::env;
 use std::io::{BufRead, BufReader, Write};
@@ -77,7 +83,11 @@ struct Engine {
 #[derive(Clone, Copy)]
 struct EngineOptions {
     skill: u32,
-    move_time_secs: u32,
+    /// Per-move thinking time in milliseconds.  Both MoveTime (seconds,
+    /// rounded down) and MoveTimeMs (milliseconds, Sanmill-only) are sent
+    /// so master C++ engines fall back to the rounded second value while
+    /// Sanmill engines use the full millisecond precision.
+    move_time_ms: u32,
     n_move_rule: u32,
     endgame_n_move_rule: u32,
 }
@@ -118,7 +128,13 @@ impl Engine {
             ("DrawOnHumanExperience", "true".to_string()),
             ("Shuffling", "true".to_string()),
             ("Algorithm", "2".to_string()),
-            ("MoveTime", options.move_time_secs.to_string()),
+            // Send the legacy seconds value first so master C++ engines
+            // (which do not recognise MoveTimeMs) get the rounded fallback.
+            ("MoveTime", (options.move_time_ms / 1000).to_string()),
+            // Send the millisecond value second; Sanmill engines override
+            // the seconds value with full sub-second precision.  Master C++
+            // engines silently ignore unknown setoption names.
+            ("MoveTimeMs", options.move_time_ms.to_string()),
             ("NMoveRule", options.n_move_rule.to_string()),
             ("EndgameNMoveRule", options.endgame_n_move_rule.to_string()),
             ("UsePerfectDatabase", "false".to_string()),
@@ -567,7 +583,7 @@ fn print_standings(
     white: &[usize; 4],
     black: &[usize; 4],
     skill: u32,
-    move_time: u32,
+    move_time_ms: u32,
 ) {
     let tot = [
         white[0] + black[0],
@@ -585,10 +601,14 @@ fn print_standings(
     standings_row("Black", black);
     standings_row("TOTAL", &tot);
     eprintln!("{TABLE_SEP}");
-    eprintln!(
-        "Skill Level: {skill}   Thinking Time: {move_time}s{}",
-        if move_time == 0 { " (fixed depth)" } else { "" }
-    );
+    let time_display = if move_time_ms == 0 {
+        " (fixed depth)".to_string()
+    } else if move_time_ms.is_multiple_of(1000) {
+        format!(" ({}s)", move_time_ms / 1000)
+    } else {
+        format!(" ({}ms)", move_time_ms)
+    };
+    eprintln!("Skill Level: {skill}   Thinking Time: {move_time_ms}ms{time_display}");
     eprintln!(
         "Completed: {done}/{total} ({:.1}%)   Remaining: {}",
         pct(done as f64, total),
@@ -703,7 +723,7 @@ struct MatchConfig {
     jobs: usize,
     max_plies: usize,
     skill: u32,
-    move_time: u32,
+    move_time_ms: u32,
     opening_plies: usize,
     opening_seed: u64,
     opening_db_path: Option<PathBuf>,
@@ -869,14 +889,28 @@ fn run_self_play_parallel(config: MatchConfig, is_master: bool, label: &str) {
                     report.worker_id,
                     report.game_index + 1
                 );
-                print_standings(done, total, &white, &black, config.skill, config.move_time);
+                print_standings(
+                    done,
+                    total,
+                    &white,
+                    &black,
+                    config.skill,
+                    config.move_time_ms,
+                );
             }
             Err(RecvTimeoutError::Timeout) => {
                 eprintln!();
                 eprintln!(
                     "Progress heartbeat: completed {done}/{total}; jobs={jobs}; waiting for workers..."
                 );
-                print_standings(done, total, &white, &black, config.skill, config.move_time);
+                print_standings(
+                    done,
+                    total,
+                    &white,
+                    &black,
+                    config.skill,
+                    config.move_time_ms,
+                );
             }
             Err(RecvTimeoutError::Disconnected) => break,
         }
@@ -979,14 +1013,28 @@ fn run_vs_parallel(config: MatchConfig) {
                     report.worker_id,
                     report.game_index + 1
                 );
-                print_standings(done, total, &white, &black, config.skill, config.move_time);
+                print_standings(
+                    done,
+                    total,
+                    &white,
+                    &black,
+                    config.skill,
+                    config.move_time_ms,
+                );
             }
             Err(RecvTimeoutError::Timeout) => {
                 eprintln!();
                 eprintln!(
                     "Progress heartbeat: completed {done}/{total}; jobs={jobs}; waiting for workers..."
                 );
-                print_standings(done, total, &white, &black, config.skill, config.move_time);
+                print_standings(
+                    done,
+                    total,
+                    &white,
+                    &black,
+                    config.skill,
+                    config.move_time_ms,
+                );
             }
             Err(RecvTimeoutError::Disconnected) => break,
         }
@@ -1041,10 +1089,18 @@ fn head_to_head_vs_master() {
         .unwrap_or(200);
     let go_current = env::var("H2H_GO_CURRENT").unwrap_or_else(|_| "go depth 0".to_string());
     let go_master = env::var("H2H_GO_MASTER").unwrap_or_else(|_| "go".to_string());
-    let move_time: u32 = env::var("H2H_MOVETIME")
-        .ok()
-        .and_then(|s| s.parse().ok())
-        .unwrap_or(0);
+    // H2H_MOVETIME_MS (milliseconds, Sanmill-only) takes priority over the
+    // legacy H2H_MOVETIME (whole seconds).  When only H2H_MOVETIME is set,
+    // convert to ms.  Default 0 = fixed depth.
+    let move_time_ms: u32 = if let Ok(ms) = env::var("H2H_MOVETIME_MS") {
+        ms.parse().unwrap_or(0)
+    } else {
+        env::var("H2H_MOVETIME")
+            .ok()
+            .and_then(|s| s.parse::<u32>().ok())
+            .unwrap_or(0)
+            .saturating_mul(1000)
+    };
     let n_move_rule = env_u32("H2H_N_MOVE_RULE", 100);
     let endgame_n_move_rule = env_u32("H2H_ENDGAME_N_MOVE_RULE", 100);
     let opening_plies = env_usize("H2H_OPENING_PLIES", 0);
@@ -1055,7 +1111,7 @@ fn head_to_head_vs_master() {
     let jobs = jobs_for_total(total);
     let engine_options = EngineOptions {
         skill,
-        move_time_secs: move_time,
+        move_time_ms,
         n_move_rule,
         endgame_n_move_rule,
     };
@@ -1086,7 +1142,7 @@ fn head_to_head_vs_master() {
         jobs,
         max_plies,
         skill,
-        move_time,
+        move_time_ms,
         opening_plies,
         opening_seed,
         opening_db_path: env_path("H2H_OPENING_DB_PATH"),
@@ -1096,14 +1152,14 @@ fn head_to_head_vs_master() {
         let is_master = mode == "self-master";
         let label = if is_master { "master" } else { "current" };
         eprintln!(
-            "Self-play: {label} vs {label}  (rows = board side)\n  skill={skill} movetime_s={move_time} shuffling=on algo=MTD(f) games={total} jobs={jobs} ply_cap={max_plies} n_move={n_move_rule} endgame_n_move={endgame_n_move_rule} {opening_config}\n  current_env={current_env:?} master_env={master_env:?}"
+            "Self-play: {label} vs {label}  (rows = board side)\n  skill={skill} movetime_ms={move_time_ms} shuffling=on algo=MTD(f) games={total} jobs={jobs} ply_cap={max_plies} n_move={n_move_rule} endgame_n_move={endgame_n_move_rule} {opening_config}\n  current_env={current_env:?} master_env={master_env:?}"
         );
         run_self_play_parallel(config, is_master, label);
     } else {
         // vs mode: current vs master, alternating colours each game so the live
         // rates are not skewed by Black's structural edge until colours balance.
         eprintln!(
-            "Head-to-head: current=`{current}` vs master=`{master}`  (rows = current's colour)\n  skill={skill} movetime_s={move_time} shuffling=on algo=MTD(f) games/color={games} jobs={jobs} ply_cap={max_plies} n_move={n_move_rule} endgame_n_move={endgame_n_move_rule} {opening_config}\n  current_args={current_args:?} master_args={master_args:?}\n  current_env={current_env:?} master_env={master_env:?}\n  go_current=`{go_current}` go_master=`{go_master}`"
+            "Head-to-head: current=`{current}` vs master=`{master}`  (rows = current's colour)\n  skill={skill} movetime_ms={move_time_ms} shuffling=on algo=MTD(f) games/color={games} jobs={jobs} ply_cap={max_plies} n_move={n_move_rule} endgame_n_move={endgame_n_move_rule} {opening_config}\n  current_args={current_args:?} master_args={master_args:?}\n  current_env={current_env:?} master_env={master_env:?}\n  go_current=`{go_current}` go_master=`{go_master}`"
         );
         run_vs_parallel(config);
     }
