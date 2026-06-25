@@ -10,6 +10,9 @@ pub(super) static MILL_GAME: MillCli = MillCli;
 const CMD_UCI: CommandId = CommandId::new("uci");
 const CMD_BENCH: CommandId = CommandId::new("bench");
 const CMD_SELFPLAY: CommandId = CommandId::new("selfplay");
+const CMD_TUNE_GEN: CommandId = CommandId::new("tune-gen");
+const CMD_TUNE_LABEL: CommandId = CommandId::new("tune-label");
+const CMD_TUNE_FIT: CommandId = CommandId::new("tune-fit");
 
 const MILL_COMMANDS: &[CommandSpec] = &[
     CommandSpec {
@@ -29,6 +32,24 @@ const MILL_COMMANDS: &[CommandSpec] = &[
         name: "selfplay",
         aliases: &["self-play"],
         description: "run a deterministic self-play regression harness",
+    },
+    CommandSpec {
+        id: CMD_TUNE_GEN,
+        name: "tune-gen",
+        aliases: &["tune gen"],
+        description: "sample quiet positions from self-play for eval tuning",
+    },
+    CommandSpec {
+        id: CMD_TUNE_LABEL,
+        name: "tune-label",
+        aliases: &["tune label"],
+        description: "annotate positions with Perfect DB WDL labels",
+    },
+    CommandSpec {
+        id: CMD_TUNE_FIT,
+        name: "tune-fit",
+        aliases: &["tune fit"],
+        description: "fit eval weights via Texel logistic regression",
     },
 ];
 
@@ -56,6 +77,9 @@ impl CliGame for MillCli {
                 crate::mill_uci::print_benchmark_toml();
             }
             CMD_SELFPLAY => crate::selfplay::run_selfplay(args),
+            CMD_TUNE_GEN => crate::mill_tune::run_gen(args),
+            CMD_TUNE_LABEL => crate::mill_tune::run_label(args),
+            CMD_TUNE_FIT => crate::mill_tune::run_fit(args),
             CMD_UCI => {
                 warn_unused_args("uci", args);
                 crate::mill_uci::run_uci_loop();

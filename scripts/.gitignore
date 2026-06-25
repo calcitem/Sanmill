@@ -15,6 +15,7 @@
 !run_h2h_skill30_time1.sh
 !run_h2h_head_vs_parent.sh
 !run_h2h_head_vs_parent_skill10_depth0.sh
+!tune_mill_eval.sh
 !search-commit-message.py
 !check_perf_baseline.py
 !check_search_perf_baseline.py

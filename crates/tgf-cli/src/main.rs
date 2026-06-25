@@ -8,6 +8,7 @@
 mod cli;
 mod game_adapter;
 mod games;
+mod mill_tune;
 mod mill_uci;
 mod selfplay;
 
