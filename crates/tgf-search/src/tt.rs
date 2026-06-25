@@ -57,20 +57,20 @@ const TT_CLUSTER_ENTRY_BITS: u32 = 2;
 /// plus optional `ttMove` when `TT_MOVE_ENABLE` is compiled in.
 /// The Rust packing widens the key signature to 32 bits to match
 /// master's default `Key = uint32_t` (TRANSPOSITION_TABLE_64BIT_KEY
-/// undefined) instead of 8 bits, eliminating the false-positive
-/// hit rate caused by 1/256 signature collisions.  Optional TT moves
-/// are stored in a separate side array so the packed value/bound meta
-/// keeps the same 32-bit key signature and 8-byte slot shape.
+/// undefined) instead of 8 bits.  Optional TT moves live in the same
+/// 64-byte bucket as the packed meta slots so probe/save touches one
+/// cache line instead of a separate side array.
 ///
 /// Entry layout:
 ///   * meta (u64): [key_sig:32][age:6][value:16][depth:8][bound:2]
+///   * move (u16): compact Mill action codec, parallel to each meta slot
 ///
-/// Total entry size = 8 bytes; bucket size = 32 bytes.  `cluster_bits`
-/// remains a total-slot count at API boundaries, so the default table keeps
-/// roughly the old 128 MiB footprint while reducing collision evictions.
-#[repr(C, align(32))]
+/// Total meta size = 32 bytes; bucket size = 64 bytes (one cache line).
+/// `cluster_bits` remains a total-slot count at API boundaries.
+#[repr(C, align(64))]
 pub(crate) struct TtCluster {
     pub(crate) entries: [AtomicU64; TT_CLUSTER_ENTRY_COUNT],
+    moves: [AtomicU16; TT_CLUSTER_ENTRY_COUNT],
 }
 
 impl TtCluster {
@@ -78,12 +78,23 @@ impl TtCluster {
     fn empty() -> Self {
         Self {
             entries: std::array::from_fn(|_| AtomicU64::new(0)),
+            moves: std::array::from_fn(|_| AtomicU16::new(TT_MOVE_NONE)),
         }
     }
 
     #[inline]
     fn iter_entries(&self) -> impl Iterator<Item = &AtomicU64> {
         self.entries.iter()
+    }
+
+    #[inline]
+    fn clear_slots(&self) {
+        for slot in self.iter_entries() {
+            slot.store(0, Ordering::Relaxed);
+        }
+        for mv in self.moves.iter() {
+            mv.store(TT_MOVE_NONE, Ordering::Relaxed);
+        }
     }
 }
 
@@ -174,7 +185,7 @@ impl Drop for TtStorage {
 
 pub(crate) struct ClusteredTt {
     pub(crate) clusters: TtStorage,
-    tt_moves: Option<Box<[AtomicU16]>>,
+    tt_move_enabled: bool,
     pub(crate) cluster_mask: usize,
     /// Global generation counter used for soft "fake-clean" clear semantics,
     /// matching C++ `transpositionTableAge` in `src/tt.cpp`. Incrementing this
@@ -257,7 +268,7 @@ impl ClusteredTt {
         let mask = n - 1;
         Self {
             clusters: TtStorage::new(n),
-            tt_moves: enable_tt_move.then(|| allocate_tt_move_storage(n * TT_CLUSTER_ENTRY_COUNT)),
+            tt_move_enabled: enable_tt_move,
             cluster_mask: mask,
             current_age: AtomicU8::new(0),
         }
@@ -265,7 +276,7 @@ impl ClusteredTt {
 
     #[inline]
     pub(crate) fn tt_move_enabled(&self) -> bool {
-        self.tt_moves.is_some()
+        self.tt_move_enabled
     }
 
     #[inline]
@@ -303,7 +314,7 @@ impl ClusteredTt {
             // every old-generation entry is a miss, including Exact entries.
             if TtPackedEntry::packed_age(meta) == cur_age {
                 let mut entry = TtPackedEntry::unpack_entry(meta);
-                entry.tt_move = self.load_tt_move(slot_index(cluster_ix, entry_ix));
+                entry.tt_move = self.load_tt_move(cluster, entry_ix);
                 return Some(entry);
             }
         }
@@ -312,7 +323,9 @@ impl ClusteredTt {
 
     #[inline(always)]
     pub(crate) fn probe_tt_move_at_age(&self, key: u64, cur_age: u8) -> Option<u16> {
-        let tt_moves = self.tt_moves.as_ref()?;
+        if !self.tt_move_enabled {
+            return None;
+        }
         let key_sig = TtPackedEntry::key_sig(key);
         let cluster_ix = self.cluster_ix(key);
         let cluster = &self.clusters[cluster_ix];
@@ -324,7 +337,7 @@ impl ClusteredTt {
             if TtPackedEntry::packed_age(meta) != cur_age {
                 continue;
             }
-            let packed = tt_moves[slot_index(cluster_ix, entry_ix)].load(Ordering::Relaxed);
+            let packed = cluster.moves[entry_ix].load(Ordering::Relaxed);
             return (packed != TT_MOVE_NONE).then_some(packed);
         }
         None
@@ -345,7 +358,7 @@ impl ClusteredTt {
                 continue;
             }
             if tt_move.is_none() {
-                let packed = self.load_tt_move(slot_index(cluster_ix, entry_ix));
+                let packed = self.load_tt_move(cluster, entry_ix);
                 if packed != TT_MOVE_NONE {
                     tt_move = Some(packed);
                 }
@@ -378,7 +391,8 @@ impl ClusteredTt {
     pub(crate) fn save_at_age(&self, key: u64, entry: TtEntry, cur_age: u8) {
         let new_meta = TtPackedEntry::pack_meta(key, &entry, cur_age);
         let key_sig = TtPackedEntry::key_sig(key);
-        let cluster = &self.clusters[self.cluster_ix(key)];
+        let cluster_ix = self.cluster_ix(key);
+        let cluster = &self.clusters[cluster_ix];
         let mut replace_index = 0usize;
         let mut replace_score = i32::MAX;
 
@@ -401,13 +415,12 @@ impl ClusteredTt {
                         return;
                     }
                 }
-                let index = slot_index(self.cluster_ix(key), i);
                 let tt_move = if entry.tt_move != TT_MOVE_NONE {
                     entry.tt_move
                 } else {
-                    self.load_tt_move(index)
+                    self.load_tt_move(cluster, i)
                 };
-                self.store_tt_move(index, tt_move);
+                self.store_tt_move(cluster, i, tt_move);
                 cluster.entries[i].store(new_meta, Ordering::Relaxed);
                 return;
             }
@@ -418,8 +431,7 @@ impl ClusteredTt {
                 replace_index = i;
             }
         }
-        let index = slot_index(self.cluster_ix(key), replace_index);
-        self.store_tt_move(index, entry.tt_move);
+        self.store_tt_move(cluster, replace_index, entry.tt_move);
         cluster.entries[replace_index].store(new_meta, Ordering::Relaxed);
     }
 
@@ -428,14 +440,7 @@ impl ClusteredTt {
     /// but marks all existing entries as stale.
     pub(crate) fn clear(&self) {
         for c in self.clusters.iter() {
-            for slot in c.iter_entries() {
-                slot.store(0, Ordering::Relaxed);
-            }
-        }
-        if let Some(tt_moves) = &self.tt_moves {
-            for slot in tt_moves.iter() {
-                slot.store(TT_MOVE_NONE, Ordering::Relaxed);
-            }
+            c.clear_slots();
         }
         self.current_age.store(0, Ordering::Relaxed);
     }
@@ -450,14 +455,7 @@ impl ClusteredTt {
         // Age is encoded in 6 bits (mask 0x3f); wrap at the field max.
         if prev >= 0x3f {
             for c in self.clusters.iter() {
-                for slot in c.iter_entries() {
-                    slot.store(0, Ordering::Relaxed);
-                }
-            }
-            if let Some(tt_moves) = &self.tt_moves {
-                for slot in tt_moves.iter() {
-                    slot.store(TT_MOVE_NONE, Ordering::Relaxed);
-                }
+                c.clear_slots();
             }
             self.current_age.store(1, Ordering::Relaxed);
         }
@@ -524,30 +522,19 @@ impl ClusteredTt {
     }
 
     #[inline]
-    fn load_tt_move(&self, index: usize) -> u16 {
-        self.tt_moves.as_ref().map_or(TT_MOVE_NONE, |tt_moves| {
-            tt_moves[index].load(Ordering::Relaxed)
-        })
+    fn load_tt_move(&self, cluster: &TtCluster, entry_ix: usize) -> u16 {
+        if !self.tt_move_enabled {
+            return TT_MOVE_NONE;
+        }
+        cluster.moves[entry_ix].load(Ordering::Relaxed)
     }
 
     #[inline]
-    fn store_tt_move(&self, index: usize, tt_move: u16) {
-        if let Some(tt_moves) = &self.tt_moves {
-            tt_moves[index].store(tt_move, Ordering::Relaxed);
+    fn store_tt_move(&self, cluster: &TtCluster, entry_ix: usize, tt_move: u16) {
+        if self.tt_move_enabled {
+            cluster.moves[entry_ix].store(tt_move, Ordering::Relaxed);
         }
     }
-}
-
-fn allocate_tt_move_storage(slot_count: usize) -> Box<[AtomicU16]> {
-    assert!(slot_count > 0, "TT move storage length must be non-zero");
-    let mut moves = Vec::with_capacity(slot_count);
-    moves.resize_with(slot_count, || AtomicU16::new(TT_MOVE_NONE));
-    moves.into_boxed_slice()
-}
-
-#[inline]
-fn slot_index(cluster_ix: usize, entry_ix: usize) -> usize {
-    cluster_ix * TT_CLUSTER_ENTRY_COUNT + entry_ix
 }
 
 #[inline]
@@ -600,8 +587,7 @@ impl TtPackedEntry {
     //
     // Master itself drops the move when TT_MOVE_ENABLE is undefined, which
     // only affects `MovePicker::score`'s ttMove bonus.  Rust stores the move
-    // in optional side storage so callers can enable the ordering hint without
-    // shrinking the key signature in this packed meta word.
+    // in the same 64-byte bucket as the packed meta slots when enabled.
     const KEY_SIG_MASK: u64 = 0xffff_ffff;
     const AGE_SHIFT: u32 = 32;
     const VALUE_SHIFT: u32 = 38;
@@ -712,9 +698,8 @@ impl SharedTt {
         Self::new_with_tt_move(cluster_bits, false)
     }
 
-    /// Allocate a fresh shared TT with optional side storage for compact
-    /// TT moves.  The side storage remains explicit at this generic layer so
-    /// non-Mill callers choose their own memory/strength tradeoff.
+    /// Allocate a fresh shared TT with optional in-cluster storage for compact
+    /// TT move-order hints.
     pub fn new_with_tt_move(cluster_bits: u32, enable_tt_move: bool) -> Self {
         Self {
             inner: Arc::new(ClusteredTt::new_with_cluster_bits_and_tt_move(
@@ -736,7 +721,7 @@ impl SharedTt {
     }
 
     /// Allocate a shared TT sized from the UCI `Hash` option, optionally
-    /// adding a 16-bit side slot per packed entry for TT move-order hints.
+    /// enabling in-cluster TT move-order hints.
     pub fn with_capacity_mb_and_tt_move(
         mb: u32,
         cluster_bits_floor: u32,
@@ -751,7 +736,7 @@ impl SharedTt {
         Self::new_with_tt_move(bits, enable_tt_move)
     }
 
-    /// Whether this TT has side storage for compact TT move-order hints.
+    /// Whether this TT reads and writes in-cluster TT move-order hints.
     #[inline]
     pub fn tt_move_enabled(&self) -> bool {
         self.inner.tt_move_enabled()

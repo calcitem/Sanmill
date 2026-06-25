@@ -507,7 +507,7 @@ fn clustered_tt_retains_multiple_keys_in_one_bucket() {
 }
 
 #[test]
-fn clustered_tt_move_side_storage_round_trips_and_clears() {
+fn clustered_tt_move_in_cluster_round_trips_and_clears() {
     let tt = ClusteredTt::new_with_cluster_bits_and_tt_move(10, true);
     let key = 0x1234_5678_9abc_def0_u64;
     let tt_move = 37;
@@ -959,14 +959,14 @@ fn shared_tt_with_capacity_mb_respects_requested_floor() {
 }
 
 #[test]
-fn shared_tt_storage_is_page_aligned_without_slot_bloat() {
+fn shared_tt_storage_is_page_aligned_with_one_cache_line_buckets() {
     let tt = SharedTt::with_capacity_mb(1, 14);
     let addr = tt.inner.clusters.as_ptr() as usize;
 
     assert_eq!(
         std::mem::size_of::<TtCluster>(),
-        32,
-        "TT bucket size must stay packed"
+        64,
+        "TT bucket must fit meta + move slots in one cache line"
     );
     assert_eq!(
         addr % TT_STORAGE_ALIGNMENT,
