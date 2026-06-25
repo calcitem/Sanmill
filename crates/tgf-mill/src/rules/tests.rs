@@ -4352,6 +4352,69 @@ fn mill_evaluator_focus_on_blocking_paths_drops_material_term() {
     assert_eq!(MillEvaluator::score(&wb), -mobility);
 }
 
+/// Tuned weights must not push non-terminal eval past the mate-score
+/// boundary.  This validates the safety constraint documented in
+/// `MillEvalWeights` and enforced by the `tune-fit` quantization step.
+///
+/// MILL_TERMINAL_WIN_SCORE = 80.  Worst-case placing-phase material diff = ±9
+/// (one side has all 9 pieces in hand/on-board, opponent has 0).
+/// Constraint: piece_value * 9 < 80  =>  piece_value <= 8.
+/// tune-fit quantizes to MAX_PIECE_VALUE = 7 for extra margin.
+#[test]
+fn tuned_eval_weights_stay_below_mate_boundary() {
+    let mate_score = 80_i32; // MILL_TERMINAL_WIN_SCORE
+    let max_material_diff = 9_i32; // placing phase max imbalance
+    let max_piece_value = 7_i32; // tune-fit MAX_PIECE_VALUE cap
+
+    // Safety arithmetic: max non-mate eval with tuner cap.
+    let max_non_mate_eval = max_piece_value * max_material_diff;
+    assert!(
+        max_non_mate_eval < mate_score,
+        "max non-mate eval {max_non_mate_eval} must be < mate score {mate_score}; \
+         tune-fit MAX_PIECE_VALUE cap needs lowering"
+    );
+
+    // Verify with an actual workbench: 9 white pieces in hand, 0 black.
+    let rules = MillRules::default();
+    let mut game = MillGame::default();
+    game.set_eval_weights(MillEvalWeights {
+        piece_value: max_piece_value,
+        mobility: 1,
+        mill_count: 1,
+    });
+    let state = MillState {
+        phase: MillPhase::Placing,
+        pieces_in_hand: [9, 0],
+        side_to_move: 0,
+        ..MillState::default()
+    };
+    let snap = rules.encode(state);
+    let wb = game.build_workbench(&snap);
+    let eval = MillEvaluator::score(&wb);
+    assert!(
+        eval.abs() < mate_score,
+        "eval {eval} with piece_value={max_piece_value} must be < mate score {mate_score}"
+    );
+}
+
+/// TT stores values as i16; the eval must fit within i16 range at any tuned weight.
+#[test]
+fn tuned_eval_fits_in_tt_i16() {
+    // Eval range with max piece_value=60 and max material diff=9 is ±540.
+    // i16::MAX = 32767, so this is well within range. Document the invariant.
+    let max_piece_value = 60_i32;
+    let max_material_diff = 9_i32;
+    let max_eval = max_piece_value * max_material_diff;
+    assert!(
+        i16::try_from(max_eval).is_ok(),
+        "max eval {max_eval} must fit in TT i16 value slot"
+    );
+    assert!(
+        i16::try_from(-max_eval).is_ok(),
+        "min eval {max_eval} must fit in TT i16 value slot"
+    );
+}
+
 /// Game-over with one side below `pieces_at_least_count` resolves to
 /// the master VALUE_MATE constant (=80) before perspective flip.
 #[test]

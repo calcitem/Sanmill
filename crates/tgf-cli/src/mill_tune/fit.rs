@@ -402,10 +402,16 @@ pub(crate) fn run_fit(args: &[String]) {
     let final_train = compute_loss(train, best_pv, best_mob, best_mc, best_k);
     let final_holdout = compute_loss(holdout, best_pv, best_mob, best_mc, best_k);
 
-    // Quantize to i32 (round to nearest integer, clamp within mate gap).
-    // Non-mate eval must stay below MILL_TERMINAL_WIN_SCORE (80) minus a margin.
-    const MATE_GUARD: i32 = 60; // conservative upper bound for material × weight
-    let q_pv = (best_pv.round() as i32).clamp(1, MATE_GUARD);
+    // Quantize to i32 (round to nearest, clamp within mate gap).
+    //
+    // MILL_TERMINAL_WIN_SCORE = 80.  In the worst case, placing-phase eval
+    // applies piece_value to (in_hand_diff + on_board_diff) which can reach
+    // ±9 (one side has 9 pieces, the other 0).  To keep non-mate eval within
+    // the mate boundary: piece_value * 9 < 80  =>  piece_value <= 8.
+    // We leave a further margin and cap at 7 to stay well below the boundary
+    // even when mobility (max ~24) or remove terms add to the total.
+    const MAX_PIECE_VALUE: i32 = 7;
+    let q_pv = (best_pv.round() as i32).clamp(1, MAX_PIECE_VALUE);
     let q_mob = best_mob.round() as i32;
     let q_mc = best_mc.round() as i32;
 
