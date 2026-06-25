@@ -234,12 +234,14 @@ impl Evaluator<MillWorkbench> for MillEvaluator {
     /// A perspective swap at the end mirrors C++ "value from the side to
     /// move" convention.
     fn score(wb: &MillWorkbench) -> i32 {
-        const VALUE_EACH_PIECE: i32 = 5;
+        // Terminal score constants are fixed by the TT mate-distance encoding
+        // and UCI `score mate` output; do NOT make these tunable.
         const VALUE_MATE: i32 = 80;
         const VALUE_DRAW: i32 = 0;
 
         let state = &wb.state;
         let options = &wb.rules.options;
+        let weights = &wb.rules.eval_weights;
         let mut value: i32 = 0;
 
         let effective_on_board = legacy_removal_count_view(state, options);
@@ -257,20 +259,20 @@ impl Evaluator<MillWorkbench> for MillEvaluator {
                 ) =>
             {
                 if action_is_remove {
-                    value += VALUE_EACH_PIECE * removals_diff;
+                    value += weights.piece_value * removals_diff;
                 } else {
-                    value += mills_pieces_count_difference(state, options);
+                    value += weights.mill_count * mills_pieces_count_difference(state, options);
                 }
             }
             MillPhase::Placing | MillPhase::Moving => {
                 if should_consider_mobility(options) {
-                    value += mobility_diff(state, options);
+                    value += weights.mobility * mobility_diff(state, options);
                 }
                 if !should_focus_on_blocking_paths(state, options) {
-                    value += VALUE_EACH_PIECE * in_hand_diff;
-                    value += VALUE_EACH_PIECE * on_board_diff;
+                    value += weights.piece_value * in_hand_diff;
+                    value += weights.piece_value * on_board_diff;
                     if action_is_remove {
-                        value += VALUE_EACH_PIECE * removals_diff;
+                        value += weights.piece_value * removals_diff;
                     }
                 }
             }

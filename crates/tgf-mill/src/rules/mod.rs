@@ -49,8 +49,8 @@ mod zobrist;
 
 use types::MillActionState;
 pub use types::{
-    CaptureRuleConfig, MillActionKind, MillBoardFullAction, MillFormationActionInPlacingPhase,
-    MillPhase, MillVariantOptions, StalemateAction,
+    CaptureRuleConfig, MillActionKind, MillBoardFullAction, MillEvalWeights,
+    MillFormationActionInPlacingPhase, MillPhase, MillVariantOptions, StalemateAction,
 };
 
 use state_impl::sync_action_state;
@@ -252,6 +252,12 @@ pub struct MillRules {
     options: MillVariantOptions,
     topology: &'static MillTopology,
     standard_fast_path: bool,
+    /// Tunable evaluator weights.  Default is `MillEvalWeights::LEGACY`,
+    /// which matches the hard-coded constants used before this field was
+    /// introduced and produces a bit-identical search tree.  Inject tuned
+    /// weights via `MillRules::set_eval_weights` before building a workbench
+    /// for a search session; changing weights mid-session is not supported.
+    pub(crate) eval_weights: MillEvalWeights,
 }
 
 #[derive(Clone, Debug, Default)]
@@ -428,7 +434,17 @@ impl MillRules {
             options,
             topology,
             standard_fast_path,
+            eval_weights: MillEvalWeights::default(),
         }
+    }
+
+    /// Replace the tunable evaluator weights for this rule set.
+    ///
+    /// Call before building a workbench for a search session; changing
+    /// weights mid-session is not supported.  The default weights produce
+    /// a bit-identical search tree to the pre-parameterisation evaluator.
+    pub fn set_eval_weights(&mut self, weights: MillEvalWeights) {
+        self.eval_weights = weights;
     }
 
     /// Borrow the variant options used when this `MillRules` was constructed.

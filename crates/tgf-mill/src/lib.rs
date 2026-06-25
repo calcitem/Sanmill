@@ -13,7 +13,7 @@ pub use engine_config::{MillEngineRuntime, MillSearchAlgorithmKind};
 pub use notation::MillUciCodec;
 pub use presets::{MillRulePreset, N_PRESETS, preset_for, rules_for_preset};
 pub use rules::{
-    CaptureRuleConfig, MillActionKind, MillBoardFullAction, MillEvaluator,
+    CaptureRuleConfig, MillActionKind, MillBoardFullAction, MillEvalWeights, MillEvaluator,
     MillFormationActionInPlacingPhase, MillGame, MillPhase, MillRules, MillVariantOptions,
     MillWorkbench, StalemateAction,
 };

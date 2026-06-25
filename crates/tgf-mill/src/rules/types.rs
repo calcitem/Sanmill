@@ -119,6 +119,42 @@ impl Default for CaptureRuleConfig {
     }
 }
 
+/// Tunable weights for the Mill static evaluator.
+///
+/// The defaults exactly match the hard-coded constants in the legacy master
+/// engine, so the search tree and eval scores are bit-identical when weights
+/// are left at their defaults. Tuned weights (produced by the offline
+/// perfect-DB Texel tuner) can be injected without altering any other rule
+/// behaviour, and are only applied to the standard variant by convention.
+///
+/// Fields:
+/// - `piece_value`:  per-piece material weight (master: 5 = VALUE_EACH_PIECE)
+/// - `mobility`:     weight on the mobility difference term (master: 1)
+/// - `mill_count`:   weight on the mill-pieces-count difference term used in
+///   the RemovalBasedOnMillCounts placing-phase variant (master: 1)
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub struct MillEvalWeights {
+    pub piece_value: i32,
+    pub mobility: i32,
+    pub mill_count: i32,
+}
+
+impl MillEvalWeights {
+    /// The legacy hard-coded weights.  Scores are identical to the
+    /// pre-parameterisation evaluator when these are used.
+    pub const LEGACY: Self = Self {
+        piece_value: 5,
+        mobility: 1,
+        mill_count: 1,
+    };
+}
+
+impl Default for MillEvalWeights {
+    fn default() -> Self {
+        Self::LEGACY
+    }
+}
+
 #[derive(Clone, Debug)]
 pub struct MillVariantOptions {
     pub piece_count: u8,

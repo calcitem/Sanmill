@@ -491,14 +491,20 @@ fn mill_board_undo_keeps_full_snapshot_out_of_standard_delta() {
         144,
         "live Mill state must stay cache compact"
     );
+    // MillRules grew by 12 bytes (MillEvalWeights: 3 x i32) + 4 bytes
+    // alignment padding when eval_weights was added (2025-06).  The comment
+    // "cold topology data" still holds: topology is a &'static reference
+    // (8 bytes), not an owned clone.  eval_weights is a tiny Copy struct
+    // (3 x i32 = 12 bytes) that is constant for a search session and is
+    // correct to keep next to the other per-session rule fields.
     assert_eq!(
         std::mem::size_of::<MillRules>(),
-        64,
+        80,
         "Mill rules must keep cold topology data out of every workbench"
     );
     assert_eq!(
         std::mem::size_of::<MillWorkbench>(),
-        240,
+        256,
         "search workbench must not carry an owned topology clone"
     );
     assert_eq!(
