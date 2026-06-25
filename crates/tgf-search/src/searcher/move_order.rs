@@ -57,8 +57,19 @@ impl<G: Game> Searcher<G> {
                 // preserves the existing stable ordering among every other
                 // candidate.
                 scores[index].write(MoveOrderScore::MAX);
-            } else if index != 0 {
-                moves.swap(0, index);
+            } else {
+                // `move_order_scores_ctx` returned `false`, so it left every
+                // slot in `scores` uninitialized. Entering the insertion sort
+                // below would then read uninitialized `MaybeUninit` slots,
+                // which is undefined behavior (it was observed to perturb node
+                // counts under some stack layouts). Because every static score
+                // is equal in this branch, the only ordering work is promoting
+                // the legal hash/TT move to the front, so return immediately
+                // and keep the generated order for every other candidate
+                // instead of falling through to the sort.
+                if index != 0 {
+                    moves.swap(0, index);
+                }
                 return;
             }
             needs_sort = true;

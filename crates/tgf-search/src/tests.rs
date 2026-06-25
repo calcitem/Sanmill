@@ -261,6 +261,36 @@ fn search_order_promotes_stored_tt_move_when_legal() {
     assert_eq!(BIAS_SCORE_CALLS.load(Ordering::Relaxed), 2);
 }
 
+#[test]
+fn order_keeps_first_ranked_hash_move_without_sorting_uninitialized_scores() {
+    // Regression: when a legal hash move is already at index 0 and no static
+    // ordering score applies (`move_order_scores_ctx` returns false and leaves
+    // the score buffer uninitialized), the searcher must NOT fall through to
+    // the insertion sort, which would read uninitialized `MaybeUninit` slots
+    // (undefined behavior, previously observed to perturb node counts). It must
+    // keep the generated order and still select the legal hash move.
+    let game = BiasGame;
+    let mut wb = game.build_workbench(&GameStateSnapshot::default());
+    let mut searcher = Searcher::<BiasGame>::new();
+    BIAS_SCORE_CALLS.store(0, Ordering::Relaxed);
+    // skill_level != 7 keeps every static bias 0 (needs_sort == false), and
+    // `generate_legal` emits to_node=0 first, so the hash move sits at index 0.
+    searcher.set_move_order_context(MoveOrderContext {
+        hash_move: Some(Action {
+            kind_tag: 0,
+            from_node: -1,
+            to_node: 0,
+            aux: -1,
+            payload_bits: 0,
+        }),
+        ..Default::default()
+    });
+
+    let result = searcher.search(&mut wb, 1);
+    assert_eq!(result.best_action.to_node, 0);
+    assert_eq!(BIAS_SCORE_CALLS.load(Ordering::Relaxed), 2);
+}
+
 #[derive(Clone, Copy, Debug)]
 struct RepetitionWorkbench {
     ply: u8,
