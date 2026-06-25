@@ -1574,6 +1574,88 @@ Behavior-changing or high-risk experiments:
   the deeper diagnostic moving/capture cases were already unaffected (identical
   node counts before and after).
 
+- H2H millisecond move-time (P0, 2026-06-25, commits `1af4a1da3` + `d6cff0d3c`):
+  `MoveTime` setoption was limited to whole seconds (0-60).  Added new
+  `MoveTimeMs` setoption (0-60000 ms, Sanmill-only) so sub-second thinking times
+  can be used for faster H2H matches.  Default behaviour unchanged (engine default
+  1000 ms, CLI default 1000 ms).  `run_h2h_head_vs_parent.sh` now defaults to
+  200 ms/move (~5× faster than 1 s).  `H2H_MOVETIME_MS` env takes priority over
+  `H2H_MOVETIME` in the test harness; master C++ engines ignore `MoveTimeMs` and
+  fall back to the rounded `MoveTime` (seconds) value.  Both engines in
+  run_h2h_head_vs_parent.sh are Sanmill binaries, so full millisecond precision
+  is used.  Use `MOVETIME_MS=500` to restore 0.5 s if faster matches produce
+  noisy results.
+
+- Mill eval-weight parameterisation (2026-06-25, commits `2408355dc` +
+  `f214e7cca`):  Introduced `MillEvalWeights { piece_value, mobility, mill_count }`
+  attached to `MillRules` and `MillGame`.  `MillEvaluator::score` now reads from
+  `wb.rules.eval_weights` instead of local `const` bindings.  Defaults
+  (`MillEvalWeights::LEGACY = {5, 1, 1}`) reproduce the pre-change scores exactly.
+  Injection channel: `TGF_EVAL_WEIGHTS=piece_value,mobility,mill_count` environment
+  variable read by `MillEvalWeights::from_env()` (tgf-mill) and applied by CLI
+  and FRB search paths before each session.
+
+- Perfect-DB supervised Texel tuning pipeline (2026-06-25, commits `e75d855c9` +
+  `4c70b0dd8`):  Three new tgf-cli subcommands implement a fully automated
+  offline eval-weight fitting pipeline:
+
+  `tgf tune-gen   --positions N --out PATH [--seed S]`
+    Samples quiet positions (pending_removals == 0) from random self-play walks.
+    Deduplicates by Zobrist key.  Output: pipe-delimited JSONL-like dataset.
+
+  `tgf tune-label --db PATH [--in PATH] [--out PATH] [--cache N] [--resume]`
+    Annotates positions with Perfect DB WDL labels using
+    `evaluate_state_with_database` (sector LRU cache, default 32 sectors).
+    Only the standard Nine Men's Morris DB is used (std variant, 498 sectors).
+    Positions whose DB sector is absent keep wdl=? and are skipped by tune-fit.
+    In-place update via atomic rename.
+
+  `tgf tune-fit   --in PATH [--out PATH] [--iters N] [--k K] [--resume]`
+    Texel logistic regression: minimises `(1/|S|) Σ (sigmoid(k*eval) - result)²`
+    via coordinate descent over [piece_value, mobility, mill_count, k].
+    20% holdout split; best-so-far by holdout loss (prevents overfitting).
+    Checkpoint saved every 10 iterations (atomic write + rename); --resume
+    restores from checkpoint.  Outputs `TGF_EVAL_WEIGHTS=pv,mob,mc` artifact.
+    Feature contribution analysis printed at end.
+
+  `bash scripts/tune_mill_eval.sh --db PATH [--positions N] [--iters N] ...`
+    Orchestrates all three stages end-to-end; supports --resume, --no-gen,
+    --no-label, --no-fit, --h2h for automatic H2H verification.
+
+  Quantization constraint: `piece_value` capped at 7 (MAX_PIECE_VALUE) so
+  worst-case placing-phase eval (7 × 9 = 63) stays below mate boundary (80).
+  Two safety tests validate this: `tuned_eval_weights_stay_below_mate_boundary`
+  and `tuned_eval_fits_in_tt_i16`.
+
+  End-to-end usage:
+  ```bash
+  bash scripts/tune_mill_eval.sh \
+    --db "D:/user/Documents/strong" \
+    --positions 50000 \
+    --iters 500 \
+    --workdir target/tune
+  # Produced weights: target/tune/tune_weights.txt → TGF_EVAL_WEIGHTS=pv,mob,mc
+  # H2H verification:
+  TGF_EVAL_WEIGHTS=5,1,1 SKILL=30 MOVETIME_MS=200 \
+    GAMES=10000 JOBS=20 bash scripts/run_h2h_head_vs_parent.sh
+  ```
+
+  Residual open items:
+  - H2H verification with actual tuned weights has not yet been run (requires
+    a full tune pipeline pass on the complete DB).  Run scripts/tune_mill_eval.sh
+    to generate weights, then use the H2H command above.
+  - Only material (piece_value), mobility (weight 1), and mill_count are tuned
+    in the first iteration.  Higher-value features (mill_threat, two_config,
+    blocked, fork) can be added later but each requires a performance gate
+    (weight=0 node-preserving NPS regression < ~2%) before being accepted.
+  - FRB / Flutter path reads TGF_EVAL_WEIGHTS at search-session start; this
+    is suitable for CLI/CI testing but not for production App tuning (env injection
+    in App context needs a separate config path).
+  - Scale redesign (optional, high risk): current mate=80 restricts piece_value
+    to ≤7, limiting dynamic range.  A full scale-up (Stockfish style, mate ≫ 80)
+    would require TT mate-distance re-encoding, UCI score-mate reformat, and
+    MTD(f) window adjustment — a separate high-risk workstream.
+
 ## Report format
 
 Keep the final report short but complete:
