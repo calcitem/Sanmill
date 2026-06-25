@@ -62,8 +62,12 @@ Future<void> main() async {
   await RustLib.init();
 
   await DB.init();
-  if (DB().generalSettings.usePerfectDatabase ||
-      DB().generalSettings.trapAwareness) {
+  // Perfect DB / trap awareness are unavailable on Web (the Rust wasm stubs
+  // return None), so clear them there to avoid a dead toggle.  On native
+  // targets the user's choice must persist across restarts — do NOT reset.
+  if (kIsWeb &&
+      (DB().generalSettings.usePerfectDatabase ||
+          DB().generalSettings.trapAwareness)) {
     DB().generalSettings = DB().generalSettings.copyWith(
       usePerfectDatabase: false,
       trapAwareness: false,
