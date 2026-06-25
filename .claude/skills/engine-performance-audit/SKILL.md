@@ -1414,6 +1414,79 @@ Behavior-changing or high-risk experiments:
   Mill apply, move-order scoring, and move generation are secondary. This
   points to TT/cache layout and compact search-action representation as the
   next major design areas, not to a different sorting algorithm.
+- TT move co-location (accepted 2026-06-25, commit `d9ca794e5`):
+  Before this commit the optional TT move-order hint lived in a separate
+  `Box<[AtomicU16]>` side array allocated alongside the main cluster array, so
+  every `save_at_age` and every `probe_entry_at_age` hit touched one cache line
+  in the cluster (meta) and a second line in the side array (move). Since the
+  measured dominant cost is TT probe/save memory traffic, this doubled the
+  per-node TT cache footprint once TT move ordering was enabled by default
+  (`1b6d43a4f`).
+
+  The commit widens `TtCluster` from 32 B (4 x `AtomicU64` meta only) to a
+  64 B single cache line (`align(64)`) by adding a parallel
+  `[AtomicU16; 4]` move array inside the struct. The side array allocation is
+  removed; a `tt_move_enabled: bool` flag replaces
+  `Option<Box<[AtomicU16]>>` as the opt-in guard, preserving the
+  `TGF_ENABLE_TT_MOVE=0` rollback path. `TtCluster::clear_slots` now zeros both
+  meta and move slots so `clear()` / `bump_age()` wrap paths stay consistent.
+
+  Memory: `2^22` clusters x 64 B = 256 MiB (was 128 MiB meta + 32 MiB side =
+  160 MiB when TT move was enabled; OFF path now also pays 256 MiB instead of
+  128 MiB, accepted because OFF is only an A/B rollback, not a release path).
+
+  Fixed-depth parity (skill 30, Shuffling off, TT move ON, vs `1b6d43a4f`
+  side-array binary):
+  - `moving_entry` / `moving_loop` / `capture_pending` / `reduced_material`
+    at depth 12/15/18: score, bestmove, and node counts all bit-exact.
+  - `startpos`: score and bestmove preserved; node count *reduced*
+    (~8-26% fewer nodes across d12-d18) because the co-located move hits the
+    cache earlier, so TT move ordering prunes sooner. This is a search-quality
+    improvement, not a tree-logic change.
+
+  Median ns/node improvement vs side-array layout (same TT move ON, fixed
+  depth 18, repeat=7, same-binary same-run A/B on Ryzen 9 7950X3D). The "old"
+  column is `1b6d43a4f` side-array (repeat=5), the "new" column is
+  `d9ca794e5` co-locate (repeat=7); both rows are `engine=current` from
+  `compare_engine_perf.py`:
+
+    capture_pending:    96.3 -> 78.9 ns/node  (ratio 0.819, -18%)
+    moving_entry:      119.8 -> 103.5 ns/node  (ratio 0.864, -14%)
+    moving_loop:       130.6 -> 120.1 ns/node  (ratio 0.919,  -8%)
+    reduced_material:   98.5 ->  91.7 ns/node  (ratio 0.931,  -7%)
+
+  This recovers most of the 18-28% ns/node penalty that enabling TT move
+  ordering introduced (measured earlier: TT move ON vs OFF on the side-array
+  binary gave ns_ratio 1.18-1.28 across the same matrix). Raw CSVs:
+  `/tmp/sanmill-perf/ttmove_on_r5.csv` (side-array baseline),
+  `/tmp/sanmill-perf/ttmove_off_r5.csv` (side-array TT move off),
+  `/tmp/sanmill-perf/colocate_new_r7.csv` (co-locate candidate),
+  `/tmp/sanmill-perf/parity_base_1b6d43a4f.txt` and
+  `/tmp/sanmill-perf/parity_new_colocate.txt` (parity records).
+
+  Validation commands run:
+  - `cargo test -p tgf-search` (38/38 passed)
+  - `cargo test -p tgf-mill --test searcher_integration` (24/24 passed)
+  - `cargo clippy -p tgf-search --all-targets --all-features -- -D warnings`
+    (clean); `./format.sh s` clean.
+
+  Residual risk / open items:
+  - A clean co-locate-only H2H (both sides TT move ON, isolating layout) was
+    not yet completed at audit time. Suggested command after the commit:
+    `SKILL=30 MOVETIME=1 PARENT_REV=HEAD^ GAMES=5000 JOBS=20
+    bash scripts/run_h2h_head_vs_parent.sh` (no `H2H_CURRENT_ENV`, both
+    sides default TT move ON). 5000 games yields a 99.9% CI near +-3.5%.
+  - The FRB / Flutter production path still uses `SharedTt::default()`
+    (`enable_tt_move=false`), so the App does not yet benefit from TT move
+    ordering at all, regardless of layout. Wiring TT move into
+    `crates/tgf-frb/src/games/mill/search.rs::MILL_SHARED_TT` is a separate
+    decision that depends on confirming the H2H win at full sample and on a
+    mobile memory budget (256 MiB is too large for phones; mobile would need
+    a smaller `cluster_bits` or a dedicated hash cap).
+  - OFF-path memory regression (256 MiB even when TT move is disabled) is
+    accepted for now because OFF is an A/B rollback, not a release path. If
+    OFF-on-mobile becomes relevant, introduce a dual layout rather than
+    re-adding the side array.
 
 ## Report format
 
