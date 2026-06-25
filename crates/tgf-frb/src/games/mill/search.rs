@@ -294,11 +294,14 @@ fn run_mill_engine_config_event_stream(
     }
 
     let rules_options = options.clone();
-    let game = MillGame::new_with_repetition_context(
+    let mut game = MillGame::new_with_repetition_context(
         options,
         root_repetition_history,
         root_position_resets_repetition,
     );
+    if let Some(weights) = tgf_mill::MillEvalWeights::from_env() {
+        game.set_eval_weights(weights);
+    }
     let mut wb = game.build_workbench(&snapshot);
     let mut searcher = mill_searcher_default();
     let search_context = MoveOrderContext {

@@ -155,6 +155,35 @@ impl Default for MillEvalWeights {
     }
 }
 
+impl MillEvalWeights {
+    /// Read `TGF_EVAL_WEIGHTS=piece_value,mobility,mill_count` from the
+    /// environment.  Returns `None` when the variable is unset so callers
+    /// fall back to `MillEvalWeights::LEGACY` silently.  Panics with a
+    /// clear message on a malformed value so misconfigured A/B runs fail
+    /// loudly rather than silently using wrong weights.
+    ///
+    /// Example: `TGF_EVAL_WEIGHTS=6,2,1`
+    pub fn from_env() -> Option<Self> {
+        let raw = std::env::var("TGF_EVAL_WEIGHTS").ok()?;
+        let parts: Vec<&str> = raw.split(',').collect();
+        assert!(
+            parts.len() == 3,
+            "TGF_EVAL_WEIGHTS must be 'piece_value,mobility,mill_count' \
+             (three comma-separated integers); got: {raw}"
+        );
+        let parse = |s: &str, name: &str| -> i32 {
+            s.trim()
+                .parse::<i32>()
+                .unwrap_or_else(|_| panic!("TGF_EVAL_WEIGHTS: invalid {name} value '{s}'"))
+        };
+        Some(Self {
+            piece_value: parse(parts[0], "piece_value"),
+            mobility: parse(parts[1], "mobility"),
+            mill_count: parse(parts[2], "mill_count"),
+        })
+    }
+}
+
 #[derive(Clone, Debug)]
 pub struct MillVariantOptions {
     pub piece_count: u8,

@@ -22,8 +22,8 @@ use tgf_core::{
     MoveOrderContext, SearchActionList, Workbench,
 };
 use tgf_mill::{
-    EngineRuntimeOptions, MillActionKind, MillEvaluator, MillGame, MillRules, MillVariantOptions,
-    recommended_search_depth,
+    EngineRuntimeOptions, MillActionKind, MillEvalWeights, MillEvaluator, MillGame, MillRules,
+    MillVariantOptions, recommended_search_depth,
 };
 use tgf_search::{
     LazySmpWorker, MctsOptions, MctsSearcher, SearchAbortHandle, SearchOptions, SearchPolicy,
@@ -106,6 +106,13 @@ fn parse_tt_move_enabled(value: &str) -> bool {
         "0" | "false" | "off" | "no" => false,
         _ => panic!("invalid TGF_ENABLE_TT_MOVE value: {value}"),
     }
+}
+
+/// Delegate to `MillEvalWeights::from_env()`.  Re-exposed here so the
+/// rest of this module can call `eval_weights_from_env()` without the
+/// fully-qualified path.
+fn eval_weights_from_env() -> Option<MillEvalWeights> {
+    MillEvalWeights::from_env()
 }
 
 fn mill_searcher() -> Searcher<MillGame> {
@@ -281,9 +288,21 @@ fn sync_perfect_db(cfg: &mut EngineConfig, options: &MillVariantOptions) {
     }
 }
 
+/// Build a `MillRules` and inject tunable eval weights from the environment
+/// (`TGF_EVAL_WEIGHTS=piece_value,mobility,mill_count`).
+/// When the variable is unset the returned rules use MillEvalWeights::LEGACY
+/// and the search tree is bit-identical to the pre-tuning evaluator.
+fn mill_rules_with_eval_weights(options: MillVariantOptions) -> MillRules {
+    let mut rules = MillRules::new(options);
+    if let Some(weights) = eval_weights_from_env() {
+        rules.set_eval_weights(weights);
+    }
+    rules
+}
+
 pub(crate) fn run_uci_loop() {
     let mut options = MillVariantOptions::default();
-    let mut rules = MillRules::new(options.clone());
+    let mut rules = mill_rules_with_eval_weights(options.clone());
     let mut state = rules.initial_state(&[]);
     let mut state_history: Vec<GameStateSnapshot> = Vec::new();
     let mut threads: usize = 1;
@@ -331,7 +350,7 @@ pub(crate) fn run_uci_loop() {
                     // option changes.  Rust resets the position because a
                     // mid-game variant switch can invalidate MillState counts;
                     // callers can re-issue `position fen ...` afterwards.
-                    rules = MillRules::new(options.clone());
+                    rules = mill_rules_with_eval_weights(options.clone());
                     state = rules.initial_state(&[]);
                     state_history.clear();
                     shared_tt.bump_age();
@@ -605,11 +624,14 @@ fn run_configured_search(
 
     // Mirror master src/search_engine.cpp:381 executeSearch: route the
     // user-visible Algorithm option into the actual search implementation.
-    let game = MillGame::new_with_repetition_context(
+    let mut game = MillGame::new_with_repetition_context(
         options.clone(),
         root_repetition_history,
         root_position_resets_repetition,
     );
+    if let Some(weights) = eval_weights_from_env() {
+        game.set_eval_weights(weights);
+    }
     let mut wb = game.build_workbench(&state);
     let mut value = 0;
     let mut best_so_far = SearchResult::default_none();

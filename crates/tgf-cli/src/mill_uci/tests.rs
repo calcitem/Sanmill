@@ -241,6 +241,28 @@ fn perfect_database_lookup_is_noop_when_uninitialized() {
 }
 
 #[test]
+fn eval_weights_from_env_parses_valid_triple() {
+    // MillEvalWeights::from_env reads TGF_EVAL_WEIGHTS.  When unset the
+    // helper returns None and the engine uses LEGACY weights.
+    assert!(
+        tgf_mill::MillEvalWeights::from_env().is_none(),
+        "TGF_EVAL_WEIGHTS must not be set for this test to be meaningful"
+    );
+    // Verify parsing via std::env in a sub-scope to avoid leaking the
+    // variable across parallel tests.
+    {
+        // SAFETY: single-threaded tests; no concurrent env reads expected.
+        unsafe { std::env::set_var("TGF_EVAL_WEIGHTS", "7,3,2") };
+        let weights = tgf_mill::MillEvalWeights::from_env()
+            .expect("TGF_EVAL_WEIGHTS=7,3,2 must parse successfully");
+        unsafe { std::env::remove_var("TGF_EVAL_WEIGHTS") };
+        assert_eq!(weights.piece_value, 7);
+        assert_eq!(weights.mobility, 3);
+        assert_eq!(weights.mill_count, 2);
+    }
+}
+
+#[test]
 fn perfect_database_ordering_matches_master_random_lazy_branch() {
     assert_eq!(
         perfect_move_ordering(&EngineConfig::default()),

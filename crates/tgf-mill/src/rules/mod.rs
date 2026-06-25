@@ -265,6 +265,10 @@ pub struct MillGame {
     options: MillVariantOptions,
     root_repetition_history: Vec<u64>,
     root_position_resets_repetition: bool,
+    /// Tunable eval weights forwarded to every workbench built from this
+    /// game instance.  Defaults to MillEvalWeights::LEGACY (bit-identical
+    /// to the pre-tuning evaluator).
+    eval_weights: MillEvalWeights,
 }
 
 #[derive(Clone, Debug)]
@@ -621,6 +625,7 @@ impl MillGame {
             options,
             root_repetition_history: Vec::new(),
             root_position_resets_repetition: false,
+            eval_weights: MillEvalWeights::default(),
         }
     }
 
@@ -636,6 +641,7 @@ impl MillGame {
             options,
             root_repetition_history,
             root_position_resets_repetition: false,
+            eval_weights: MillEvalWeights::default(),
         }
     }
 
@@ -652,7 +658,13 @@ impl MillGame {
             options,
             root_repetition_history,
             root_position_resets_repetition,
+            eval_weights: MillEvalWeights::default(),
         }
+    }
+
+    /// Set the tunable eval weights forwarded to every workbench.
+    pub fn set_eval_weights(&mut self, weights: MillEvalWeights) {
+        self.eval_weights = weights;
     }
 }
 

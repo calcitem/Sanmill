@@ -936,7 +936,8 @@ impl Game for MillGame {
     type Evaluator = MillEvaluator;
 
     fn build_workbench(&self, snap: &GameStateSnapshot) -> Self::Workbench {
-        let rules = MillRules::new(self.options.clone());
+        let mut rules = MillRules::new(self.options.clone());
+        rules.set_eval_weights(self.eval_weights);
         let mut state = rules.decode_with_options(snap);
         if self.root_repetition_history.len() > state.key_history.len() {
             state.key_history = self.root_repetition_history.clone();
