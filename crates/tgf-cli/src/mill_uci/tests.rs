@@ -8,6 +8,18 @@ use tgf_core::Action;
 use super::*;
 
 #[test]
+fn tt_move_toggle_accepts_candidate_values() {
+    assert!(parse_tt_move_enabled("1"));
+    assert!(parse_tt_move_enabled("true"));
+    assert!(parse_tt_move_enabled("on"));
+    assert!(parse_tt_move_enabled("yes"));
+    assert!(!parse_tt_move_enabled("0"));
+    assert!(!parse_tt_move_enabled("false"));
+    assert!(!parse_tt_move_enabled("off"));
+    assert!(!parse_tt_move_enabled("no"));
+}
+
+#[test]
 fn parse_position_fen_loads_board() {
     let rules = MillRules::default();
     let state = parse_position_command(

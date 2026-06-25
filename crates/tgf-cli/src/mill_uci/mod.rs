@@ -88,14 +88,23 @@ fn prefetch_mode_from_env() -> (bool, bool) {
     }
 }
 
+const DEFAULT_TT_MOVE_ENABLED: bool = true;
+
 fn tt_move_enabled_from_env() -> bool {
     match std::env::var("TGF_ENABLE_TT_MOVE") {
-        Ok(value) => match value.to_ascii_lowercase().as_str() {
-            "1" | "true" | "on" | "yes" => true,
-            "0" | "false" | "off" | "no" => false,
-            _ => panic!("invalid TGF_ENABLE_TT_MOVE value: {value}"),
-        },
-        Err(_) => false,
+        Ok(value) => parse_tt_move_enabled(&value),
+        // TT move ordering is a measured Skill 30 / MoveTime 1s H2H win.
+        // Keep it enabled by default, while preserving a cheap escape hatch:
+        // `TGF_ENABLE_TT_MOVE=0`.
+        Err(_) => DEFAULT_TT_MOVE_ENABLED,
+    }
+}
+
+fn parse_tt_move_enabled(value: &str) -> bool {
+    match value.to_ascii_lowercase().as_str() {
+        "1" | "true" | "on" | "yes" => true,
+        "0" | "false" | "off" | "no" => false,
+        _ => panic!("invalid TGF_ENABLE_TT_MOVE value: {value}"),
     }
 }
 

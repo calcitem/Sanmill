@@ -994,10 +994,10 @@ impl Game for MillGame {
     /// MovePicker-style move ordering bonus translated from
     /// `src/movepick.cpp::score()`.  Combines mill formation, mill blocking,
     /// star-square opening preference, and capture-target preference.  The
-    /// numeric weights match `RATING_*` constants in `src/types.h`.  The
-    /// default master build has TT move ordering disabled, and the Rust
-    /// searcher intentionally does not add killer / history bonuses unless a
-    /// future parity-and-performance audit proves they help.
+    /// numeric weights match `RATING_*` constants in `src/types.h`.  Rust now
+    /// promotes legal TT moves before static scoring by default; killer /
+    /// history bonuses stay disabled unless a future parity-and-performance
+    /// audit proves they help.
     ///
     /// # Note on master's "score-negation" bug (Diff 17)
     ///

@@ -1176,9 +1176,16 @@ Behavior-changing or high-risk experiments:
   head-to-head results.
 - TT move ordering.  Master has `TT_MOVE_ENABLE` support but the default build
   leaves it disabled; Stockfish uses `ttMove` as the first staged candidate.
-  Enabling a TT move bonus or storing best action in Rust TT may improve node
-  count, but it intentionally changes move order.  Gate it behind an option
-  until fixed-position reports plus self-play show a stable practical win.
+  Rust now stores compact, legal-checked TT move-order hints in optional side
+  storage and enables them by default for the Mill UCI/bench path.  Keep the
+  rollback knob documented: set `TGF_ENABLE_TT_MOVE=0` to disable the side
+  storage and ordering hint for A/B tests.  Early H2H against the immediate
+  parent after enabling showed a practical win at `Skill=30`, `MoveTime=1s`:
+  after 4908/20000 games the current side scored 53.7% +/- 2.3% at 99.9%
+  confidence, with `H2H_CURRENT_ENV=TGF_ENABLE_TT_MOVE=1` used only for the
+  current engine.  Revisit this direction only if longer H2H or future search
+  changes show a regression, and always compare both default-on and
+  `TGF_ENABLE_TT_MOVE=0`.
 - Staged MovePicker-style generation.  Stockfish emits TT move, captures, good
   quiets, bad captures, and bad quiets lazily.  Mill has fewer moves and a
   different tactical structure, so do not copy the chess staging blindly.

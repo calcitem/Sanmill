@@ -54,7 +54,7 @@ const TT_CLUSTER_ENTRY_BITS: u32 = 2;
 /// One TT bucket containing several packed entries.
 ///
 /// Master `src/tt.h` stores a `TTEntry { value8, depth8, genBound8 }`
-/// plus optional `ttMove` (disabled by default via TT_MOVE_ENABLE).
+/// plus optional `ttMove` when `TT_MOVE_ENABLE` is compiled in.
 /// The Rust packing widens the key signature to 32 bits to match
 /// master's default `Key = uint32_t` (TRANSPOSITION_TABLE_64BIT_KEY
 /// undefined) instead of 8 bits, eliminating the false-positive
@@ -598,10 +598,10 @@ impl TtPackedEntry {
     //   [54:61] depth    (8 bits)
     //   [62:63] bound    (2 bits)
     //
-    // Master itself drops the move when TT_MOVE_ENABLE is undefined
-    // (default), which only affects `MovePicker::score`'s ttMove bonus.
-    // The Rust move-ordering path intentionally leaves that bonus disabled,
-    // and MTD(f) threads its root best action outside the TT.
+    // Master itself drops the move when TT_MOVE_ENABLE is undefined, which
+    // only affects `MovePicker::score`'s ttMove bonus.  Rust stores the move
+    // in optional side storage so callers can enable the ordering hint without
+    // shrinking the key signature in this packed meta word.
     const KEY_SIG_MASK: u64 = 0xffff_ffff;
     const AGE_SHIFT: u32 = 32;
     const VALUE_SHIFT: u32 = 38;
@@ -713,8 +713,8 @@ impl SharedTt {
     }
 
     /// Allocate a fresh shared TT with optional side storage for compact
-    /// TT moves.  The side storage is intentionally opt-in so default
-    /// constructors keep the same memory footprint as the packed TT.
+    /// TT moves.  The side storage remains explicit at this generic layer so
+    /// non-Mill callers choose their own memory/strength tradeoff.
     pub fn new_with_tt_move(cluster_bits: u32, enable_tt_move: bool) -> Self {
         Self {
             inner: Arc::new(ClusteredTt::new_with_cluster_bits_and_tt_move(
