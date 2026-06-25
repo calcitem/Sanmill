@@ -20,6 +20,7 @@
 
 use std::fs::{self, File};
 use std::io::{BufRead, BufReader, BufWriter, Write};
+use std::time::Instant;
 
 use perfect_db::database::{Database, DatabaseOptions, DatabaseVariant, FileDatabaseProvider};
 use perfect_db::evaluate_state_with_database;
@@ -58,6 +59,21 @@ pub(crate) fn run_label(args: &[String]) {
 
     let rules = MillRules::new(options.clone());
 
+    // Pre-scan to count data lines so we can show a progress percentage.
+    let n_data_lines: usize = {
+        let f = File::open(&in_path)
+            .unwrap_or_else(|e| panic!("[tune label] cannot open input {in_path}: {e}"));
+        BufReader::new(f)
+            .lines()
+            .map_while(Result::ok)
+            .filter(|l| {
+                let t = l.trim();
+                !t.is_empty() && !t.starts_with('#')
+            })
+            .count()
+    };
+    eprintln!("[tune label] {n_data_lines} positions to process");
+
     // Decide output file.
     let tmp_path = if in_place {
         format!("{out_path}.tmp")
@@ -76,6 +92,7 @@ pub(crate) fn run_label(args: &[String]) {
     let mut skipped_resume = 0usize;
     let mut not_found = 0usize;
     let flush_every = 1000usize;
+    let start_time = Instant::now();
 
     for line in reader.lines().map_while(Result::ok) {
         if line.trim().is_empty() || line.starts_with('#') {
@@ -143,9 +160,19 @@ pub(crate) fn run_label(args: &[String]) {
 
         if total.is_multiple_of(flush_every) {
             writer.flush().expect("flush failed");
+            let pct = total as f64 * 100.0 / n_data_lines.max(1) as f64;
+            let elapsed = start_time.elapsed().as_secs_f64();
+            let eta_str = if total > 0 && elapsed > 0.1 {
+                let rate = total as f64 / elapsed; // positions/s
+                let remaining = (n_data_lines.saturating_sub(total)) as f64 / rate;
+                format!("  ETA {:.0}s", remaining)
+            } else {
+                String::new()
+            };
             eprintln!(
-                "[tune label] {total} processed: {labeled} labeled, \
-                 {not_found} not-found, {skipped_resume} resumed-skip"
+                "[tune label] {total}/{n_data_lines} ({pct:.1}%): \
+                 {labeled} labeled, {not_found} not-found, \
+                 {skipped_resume} resumed{eta_str}"
             );
         }
     }
@@ -162,8 +189,16 @@ pub(crate) fn run_label(args: &[String]) {
     } else {
         0.0
     };
+    let elapsed = start_time.elapsed().as_secs_f64();
+    let rate = if elapsed > 0.0 {
+        total as f64 / elapsed
+    } else {
+        0.0
+    };
     eprintln!(
-        "[tune label] done: {total} total, {labeled} labeled ({label_rate:.1}%), \
-         {not_found} not-found, {skipped_resume} resumed"
+        "[tune label] done: {total}/{n_data_lines} total, \
+         {labeled} labeled ({label_rate:.1}%), \
+         {not_found} not-found, {skipped_resume} resumed  \
+         ({elapsed:.1}s, {rate:.0} pos/s)"
     );
 }
