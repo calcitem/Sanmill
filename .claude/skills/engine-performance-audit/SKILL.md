@@ -417,12 +417,16 @@ fixed without changing the searched tree.
 
 Two standing rules for this backlog:
 
-- **Follow the profiler, not the queue length.** The measured dominant cost is
-  TT `probe_value_bound` / `save` memory traffic in deep moving searches (see
-  Current investigation notes). Conservative work that targets TT locality
-  (prefetch, page size, per-node slot touches) outranks another
-  move-gen/move-order micro-optimization, even though micro-ops are easier to
-  land.
+- **Follow the newest profiler, not the queue length.** Older profiles showed
+  TT `probe_value_bound` / `save` memory traffic dominating deep moving
+  searches, which justified TT prefetch and TT move co-location. After the
+  co-location work (`d9ca794e5`, `8f8da79a6`), fresh `perf` profiles show TT
+  probe/save as secondary to the inlined search body, move ordering, move
+  generation, and apply/undo (see Current investigation notes). Re-profile
+  before picking the next bottleneck; do not prioritize TT locality from stale
+  notes. Note that the obvious "pack the move list" idea was tried against
+  these new hotspots and rejected on Mill (see the compact-action backlog
+  entry): short move lists give no cache win, and decode cost dominates.
 - **Evidence bar for rejecting a node-preserving change.** Do not revert a
   parity-preserving change on a <~5% median delta from one or two positions;
   that is inside this harness's noise. A rejection needs the full standard
@@ -444,13 +448,28 @@ Reference anchors for future audits:
 
 Conservative, node-preserving candidates:
 
-- Compact search-only action representation.  Current `tgf_core::Action` is a
-  12-byte `repr(C)` boundary type, while master stores `Move` as a compact
-  integer and Stockfish stores moves in dense stack arrays.  Prototype a
-  search-only packed Mill action (`u16` or `u32`) or an internal packed action
-  list that converts exactly at API boundaries.  Validate with
-  `generate_legal_ctx_uses_*`, do/undo field-restore tests, fixed-depth node
-  parity, and self-play movelist parity before changing any public FRB shape.
+- [x] Compact search-only action representation: CHECKED 2026-06-25, REJECTED
+  for Mill.  A full packed path (`u16` codes carried through generation,
+  ordering, prefetch, and traversal, decoding to `Action` only at
+  `Workbench::do_move`) was implemented and then reverted with
+  `git reset --hard` back to `8f8da79a6`.  It preserved bestmove/score and was
+  node-identical to the Action path, but a same-run, node-identical A/B at
+  fixed depth 18 (TT move on, repeat 7, Ryzen 9 7950X3D) showed it 6-11%
+  SLOWER per node: `moving_entry` 0.887x, `reduced_material` 0.910x,
+  `capture_pending` 0.931x, `moving_loop` 0.937x (current = Action path,
+  master = packed path; ratio < 1 means Action is faster).  Two structural
+  reasons, both specific to Mill: (1) Mill move lists are short (placing <= 24,
+  moving a few per piece), so the whole list already lives in L1 and the
+  ~864 B -> ~144 B footprint cut bought no cache win; (2) every score and every
+  `do_move` then had to bit-decode the packed code (`(raw >> shift) & mask`),
+  which is more work than reading `Action` fields directly.  An end-to-end
+  packed `do_move` cannot recover this: decode is still required and there is
+  no footprint headroom.  Packing only pays for games with long move lists AND
+  an already-compact native move type (chess); do not reintroduce it for Mill.
+  The rejection is recorded in code next to `SearchActionList` in
+  `crates/tgf-core/src/action.rs`.  One fragment was salvaged and committed
+  separately: the move-order uninitialized-score fix (see Current investigation
+  notes).
 - [x] Group standard undo scalars into a copyable block.  `MillStandardUndo`
   restored many scalar fields from individually stored undo fields.  Done on
   2026-06-21: moved those fields into a compact `Copy`
@@ -1409,11 +1428,16 @@ Behavior-changing or high-risk experiments:
   non-diagonal, non-marked positions preserve parity and can slightly reduce
   apply/remove overhead. Keep the generic `live_piece` path for delayed-marked
   and diagonal variants.
-- Known current hotspots after the safe fast paths: depth-aware TT
-  `probe_value_bound` / `save` memory traffic dominates deep moving searches;
-  Mill apply, move-order scoring, and move generation are secondary. This
-  points to TT/cache layout and compact search-action representation as the
-  next major design areas, not to a different sorting algorithm.
+- Historical hotspot before TT move co-location: depth-aware TT
+  `probe_value_bound` / `save` memory traffic dominated deep moving searches;
+  Mill apply, move-order scoring, and move generation were secondary. This
+  justified the TT/cache layout work below. After co-location (`8f8da79a6`)
+  fresh `perf` profiles (recorded below) show the priority has shifted: TT
+  `probe_tt` / `save_tt` are still visible but no longer dominate. Move
+  ordering, move generation, and apply/undo are now the leading per-node costs
+  -- but compact-action packing was tried against exactly those and rejected
+  (see the backlog entry), so a different sorting algorithm or packed move list
+  is not the answer here.
 - TT move co-location (accepted 2026-06-25, commit `d9ca794e5`):
   Before this commit the optional TT move-order hint lived in a separate
   `Box<[AtomicU16]>` side array allocated alongside the main cluster array, so
@@ -1487,6 +1511,68 @@ Behavior-changing or high-risk experiments:
     accepted for now because OFF is an A/B rollback, not a release path. If
     OFF-on-mobile becomes relevant, introduce a dual layout rather than
     re-adding the side array.
+
+- Fresh profile after TT move co-location (2026-06-25, commit `8f8da79a6`):
+  Re-profile before choosing the next optimization; the post-co-location
+  hotspot distribution differs from the older uProf notes. Linux `perf` on a
+  separate symbolized release binary (`CARGO_PROFILE_RELEASE_DEBUG=1`,
+  `-C force-frame-pointers=yes`).
+
+  `moving_entry` (`position startpos moves d6 f4 d2 b4`, SkillLevel=15,
+  MoveTime=0, Shuffling=false, Algorithm=2, `gomtdf 14`; bestmove f6, value=2,
+  nodes=19311419) top flat symbols:
+
+  ```text
+  alpha_beta                          43.07%  (large inlined search body)
+  order_moves_impl                    11.91%
+  apply_to_state_unchecked             7.36%
+  legal_actions_ctx                    7.08%
+  probe_tt                             5.70%
+  undo_move                            3.04%
+  key_after                            2.91%
+  save_tt                              1.73%
+  ```
+
+  `capture_pending` (compare_engine_perf `SKILL5_CAPTURE_PENDING` prefix, same
+  options, `gomtdf 18`; bestmove xf4, value=28, nodes=7923515) top flat
+  symbols:
+
+  ```text
+  alpha_beta                          33.46%  (large inlined search body)
+  order_moves_impl                    11.02%
+  generate_move_actions_with_priority 10.59%
+  apply_to_state_unchecked             6.36%
+  do_move                              5.40%
+  probe_tt                             4.23%
+  undo_move                            3.01%
+  update_mobility_remove               2.16%
+  key_after                            2.13%
+  ```
+
+  Interpretation: after co-location, TT probe/save is still visible but no
+  longer dominant. Move ordering (`order_moves_impl`), move generation, and
+  apply/undo are the leading per-node costs. The obvious next idea -- packing
+  the move list -- was tried against exactly these symbols and rejected (see
+  the compact-action backlog entry): on Mill's short lists, decode cost beats
+  the (nonexistent) cache win. Profiling helped but did not point at a free
+  lunch; the remaining per-node cost is spread across many already-tuned hot
+  paths.
+
+- Move-order uninitialized-score fix (2026-06-25): `order_moves_impl` leaves
+  the `MaybeUninit` score buffer untouched when `move_order_scores_ctx` returns
+  false. The old code, when a legal hash/TT move was found AND already sat at
+  index 0, set `needs_sort = true` and fell into the insertion sort, which then
+  read uninitialized score slots (undefined behavior; it perturbed node counts
+  under some stack layouts and was first exposed by the packed prototype). The
+  fix returns immediately in the "no static scores" branch after promoting the
+  move to the front, so the sort never runs on an uninitialized buffer. This is
+  the one fragment kept from the rejected compact-action work and is committed
+  separately with the
+  `order_keeps_first_ranked_hash_move_without_sorting_uninitialized_scores`
+  regression test. Node-count effect: `startpos gomtdf` drops ~15% (e.g. d18
+  311.8M -> 263.9M nodes) because corrupted ordering no longer wastes nodes;
+  the deeper diagnostic moving/capture cases were already unaffected (identical
+  node counts before and after).
 
 ## Report format
 

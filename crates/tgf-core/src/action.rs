@@ -54,6 +54,30 @@ pub type ActionList<const N: usize = 256> = arrayvec::ArrayVec<Action, N>;
 pub const SEARCH_ACTION_CAPACITY: usize = 72;
 pub type SearchActionList = ActionList<SEARCH_ACTION_CAPACITY>;
 
+// Why the search hot path keeps the 12-byte `Action` instead of a packed
+// `u16`-per-move list:
+//
+// A compact search-only path that carries `u16` codes through generation,
+// ordering, prefetch, and traversal (decoding back to `Action` only at
+// `Workbench::do_move`) was prototyped and measured for Mill on 2026-06-25,
+// then rejected. Two structural reasons make packing a net loss here:
+//
+//   1. Mill move lists are short (placing <= 24; moving only a few per piece,
+//      well under `SEARCH_ACTION_CAPACITY`). The whole list already fits in
+//      L1, so the ~864 B -> ~144 B footprint reduction produced no measurable
+//      cache win.
+//   2. Every move-order score and every `do_move` then had to bit-decode the
+//      packed code (`(raw >> shift) & mask`), which is strictly more work than
+//      reading the `Action` fields directly.
+//
+// A same-run, node-identical A/B at fixed depth 18 (TT move ordering on) showed
+// the packed path 6-11% SLOWER per node across moving/capture/endgame cases. An
+// end-to-end packed `do_move` cannot recover this: decoding is still required
+// and there is no footprint headroom to win back. Packing only pays off for
+// games with long move lists AND an already-compact native move type (e.g.
+// chess); revisit it for such a game, not for Mill. See the
+// engine-performance-audit skill notes for the raw measurements.
+
 /// Compact score lane used only by the search move-order buffer.
 ///
 /// Mill's legacy ratings are tiny (`RATING_*` values around 10), and generic
