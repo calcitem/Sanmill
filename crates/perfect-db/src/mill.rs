@@ -235,6 +235,52 @@ pub fn best_move_token_for_state_with_ordering(
     crate::best_move_token_with_options(&query, options, ordering)
 }
 
+/// Every legal move tied for the best database outcome under `ordering`, as
+/// Mill UCI tokens.  The caller is expected to apply the legacy `chooseRandom`
+/// policy (prefer the search's pick among the tied moves, otherwise shuffle)
+/// rather than always taking the first — see `perfect_player.h` in the C++
+/// engine.  Returns `None` under the same conditions as
+/// [`best_move_token_for_state_with_ordering`].
+pub fn best_move_tokens_for_state_with_ordering(
+    state: &MillState,
+    options: &MillVariantOptions,
+    side_to_move: i8,
+    ordering: PerfectMoveOrdering,
+) -> Option<Vec<String>> {
+    if !crate::is_initialized() {
+        return None;
+    }
+    if side_to_move != 0 && side_to_move != 1 {
+        return None;
+    }
+    if !process_global_database_matches_options(options) {
+        return None;
+    }
+    let query = query_from_state(state, options, side_to_move)?;
+
+    if crate::is_rust_backend_enabled() {
+        return match crate::best_move_tokens_for_state_rust_database_with_ordering(
+            state,
+            options,
+            side_to_move,
+            ordering,
+        ) {
+            Ok(tokens) => tokens,
+            Err(err) if err.is_missing_asset() => None,
+            Err(err) => panic!("Rust Perfect DB state best moves failed: {err}"),
+        };
+    }
+
+    // The C++ oracle wrapper exposes only the single best token; fall back to
+    // a one-element list so the caller's chooseRandom path still works.
+    assert_eq!(
+        ordering,
+        PerfectMoveOrdering::LegacyWdl,
+        "C++ Perfect DB oracle wrapper does not expose strict-step ordering"
+    );
+    crate::best_move_token_with_options(&query, options, ordering).map(|token| vec![token])
+}
+
 /// Evaluate `state` through the perfect database, returning `(wdl, steps)`
 /// from the perspective of `side_to_move` (`wdl`: 1 = win, 0 = draw,
 /// -1 = loss; `steps`: distance-to-conversion, or a negative value when the

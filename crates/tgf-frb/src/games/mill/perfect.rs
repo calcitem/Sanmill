@@ -119,6 +119,7 @@ fn ensure_database_for_options(options: &MillVariantOptions) -> bool {
 /// returned token against the caller's legal action list via the shared
 /// `tgf_mill::MillUciCodec`.
 #[cfg(not(target_arch = "wasm32"))]
+#[cfg_attr(not(test), allow(dead_code))]
 pub(crate) fn try_perfect_best_action(
     snapshot: &tgf_core::GameStateSnapshot,
     options: &MillVariantOptions,
@@ -142,12 +143,129 @@ pub(crate) fn try_perfect_best_action(
         .find(|action| action_to_uci_str(*action) == token)
 }
 
+/// Query the perfect database for the best action, applying the legacy C++
+/// `PerfectPlayer::chooseRandom` policy over the tied-best moves:
+///
+///   * if `search_action` is among the database's tied-best moves, keep it
+///     (so a Random search's pick is preserved when it is already optimal —
+///     the `consensus` path);
+///   * otherwise, when `shuffling` is enabled, pick uniformly at random from
+///     the tied-best moves using `seed`;
+///   * otherwise (and when `search_action` is `NONE`), take the first
+///     tied-best move.
+///
+/// Mirrors `perfect_player.h` `chooseRandom` in the master C++ engine, which
+/// the original Rust port dropped by always returning the first tied move.
+#[cfg(not(target_arch = "wasm32"))]
+pub(crate) fn try_perfect_best_action_with_ref(
+    snapshot: &tgf_core::GameStateSnapshot,
+    options: &MillVariantOptions,
+    legal: &[Action],
+    ordering: perfect_db::PerfectMoveOrdering,
+    search_action: Action,
+    shuffling: bool,
+    seed: u64,
+) -> Option<Action> {
+    if !ensure_database_for_options(options) {
+        return None;
+    }
+    let state = MillRules::decode_snapshot(*snapshot);
+    let tokens = perfect_db::best_move_tokens_for_state_with_ordering(
+        &state,
+        options,
+        snapshot.side_to_move,
+        ordering,
+    )?;
+
+    // Match each tied-best token to a legal action, preserving the DB order.
+    let mut tied: Vec<Action> = Vec::with_capacity(tokens.len());
+    for token in tokens {
+        if let Some(action) = legal
+            .iter()
+            .copied()
+            .find(|a| action_to_uci_str(*a) == token)
+        {
+            tied.push(action);
+        }
+    }
+    if tied.is_empty() {
+        return None;
+    }
+
+    // chooseRandom: prefer the search's move when it is already tied-best.
+    if !search_action.is_none()
+        && let Some(found) = tied.iter().copied().find(|a| *a == search_action)
+    {
+        return Some(found);
+    }
+
+    if shuffling && tied.len() > 1 {
+        use std::collections::hash_map::DefaultHasher;
+        use std::hash::{Hash, Hasher};
+        let mut h = DefaultHasher::new();
+        seed.hash(&mut h);
+        let mut rng = match h.finish() {
+            0 => rand_for_seed(0x9E37_79B9_7F4A_7C15),
+            v => rand_for_seed(v),
+        };
+        let bound = tied.len() as u64;
+        Some(tied[(rng.next_u64() % bound) as usize])
+    } else {
+        Some(tied[0])
+    }
+}
+
+/// Minimal xorshift64* PRNG seeded from `seed`, so the shuffle does not pull
+/// in a `rand` dependency.  Good enough for uniform pick among a handful of
+/// tied moves.
+#[cfg(not(target_arch = "wasm32"))]
+struct SeededRng {
+    state: u64,
+}
+
+#[cfg(not(target_arch = "wasm32"))]
+fn rand_for_seed(seed: u64) -> SeededRng {
+    SeededRng {
+        state: if seed == 0 {
+            0x9E37_79B9_7F4A_7C15
+        } else {
+            seed
+        },
+    }
+}
+
+#[cfg(not(target_arch = "wasm32"))]
+impl SeededRng {
+    fn next_u64(&mut self) -> u64 {
+        // xorshift64* (Marsaglia).
+        let mut x = self.state;
+        x ^= x >> 12;
+        x ^= x << 25;
+        x ^= x >> 27;
+        self.state = x;
+        x.wrapping_mul(0x2545_F491_4F6C_DD1D)
+    }
+}
+
 #[cfg(target_arch = "wasm32")]
 pub(crate) fn try_perfect_best_action(
     _snapshot: &GameStateSnapshot,
     _options: &MillVariantOptions,
     _legal: &[Action],
     _ordering: perfect_db::PerfectMoveOrdering,
+) -> Option<Action> {
+    None
+}
+
+#[cfg(target_arch = "wasm32")]
+pub(crate) fn try_perfect_best_action_with_ref(
+    _snapshot: &GameStateSnapshot,
+    _options: &MillVariantOptions,
+    _legal: &[Action],
+    _ordering: perfect_db::PerfectMoveOrdering,
+    _search_action: Action,
+    _shuffling: bool,
+    _seed: u64,
 ) -> Option<Action> {
     None
 }
@@ -591,5 +709,87 @@ mod tests {
 
         deinit_database();
         fs::remove_dir_all(path).expect("temporary Lasker DB directory must be removable");
+    }
+
+    /// `try_perfect_best_action_with_ref` replicates the legacy C++
+    /// `PerfectPlayer::chooseRandom`: when the search's pick is already one of
+    /// the database's tied-best moves it is kept (consensus), and with
+    /// Shuffling off the choice is deterministic.  This locks in the
+    /// randomness-respecting behaviour that the original Rust port dropped.
+    #[test]
+    fn perfect_best_action_with_ref_keeps_search_pick_and_stays_in_tied_set() {
+        let _guard = perfect_db_test_lock();
+        deinit_database();
+        assert!(perfect_db::init(db_path()));
+
+        let rules = MillRules::default();
+        let options = MillVariantOptions::default();
+        let snapshot = rules.initial_state(&[]);
+        let mut legal = tgf_core::ActionList::<256>::default();
+        rules.legal_actions(&snapshot, &mut legal);
+        let legal_slice = legal.as_slice().to_vec();
+
+        // First, learn a genuine tied-best DB move for the start position.
+        let db_first = try_perfect_best_action(
+            &snapshot,
+            &options,
+            &legal_slice,
+            perfect_db::PerfectMoveOrdering::LegacyWdl,
+        )
+        .expect("start position must have a DB best move");
+
+        // chooseRandom with the DB move itself as the reference must return it
+        // (consensus path), regardless of shuffling.
+        assert_eq!(
+            try_perfect_best_action_with_ref(
+                &snapshot,
+                &options,
+                &legal_slice,
+                perfect_db::PerfectMoveOrdering::LegacyWdl,
+                db_first,
+                true,
+                12345,
+            ),
+            Some(db_first),
+            "chooseRandom must keep the search pick when it is tied-best"
+        );
+
+        // With Shuffling off and a NONE reference, the deterministic first
+        // tied-best move is returned.
+        let deterministic = try_perfect_best_action_with_ref(
+            &snapshot,
+            &options,
+            &legal_slice,
+            perfect_db::PerfectMoveOrdering::LegacyWdl,
+            tgf_core::Action::NONE,
+            false,
+            0,
+        )
+        .expect("deterministic chooseRandom must return a move");
+        assert!(
+            legal_slice.contains(&deterministic),
+            "chooseRandom must return a legal move"
+        );
+
+        // With Shuffling on, across several seeds the result must always stay
+        // within the legal set (the tied-best set is a subset of legal moves).
+        for seed in 0_u64..32 {
+            let picked = try_perfect_best_action_with_ref(
+                &snapshot,
+                &options,
+                &legal_slice,
+                perfect_db::PerfectMoveOrdering::LegacyWdl,
+                tgf_core::Action::NONE,
+                true,
+                seed,
+            )
+            .expect("shuffled chooseRandom must return a move");
+            assert!(
+                legal_slice.contains(&picked),
+                "shuffled chooseRandom (seed={seed}) returned an illegal move"
+            );
+        }
+
+        deinit_database();
     }
 }

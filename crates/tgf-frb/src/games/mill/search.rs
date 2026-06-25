@@ -514,11 +514,19 @@ fn run_mill_engine_config_event_stream(
         let rules = MillRules::new(rules_options.clone());
         rules.legal_actions(&snapshot, &mut legal);
         let legal_slice = legal.as_slice();
-        if let Some(pd_action) = perfect::try_perfect_best_action(
+        // chooseRandom (master perfect_player.h): prefer the search's pick
+        // when it is already tied-best in the DB, otherwise shuffle among the
+        // tied-best DB moves when Shuffling is on.  This preserves the Random
+        // algorithm's randomness instead of always overriding it with the
+        // first deterministic DB move.
+        if let Some(pd_action) = perfect::try_perfect_best_action_with_ref(
             &snapshot,
             rules.options(),
             legal_slice,
             perfect_move_ordering(&config),
+            search_action,
+            config.shuffling,
+            search_shuffle_seed(),
         ) {
             if pd_action == search_action {
                 aimovetype = "consensus";

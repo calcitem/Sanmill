@@ -15,8 +15,8 @@ use crate::database::{
 };
 use crate::mill::{
     PerfectMoveChoice, PerfectMoveOrdering, best_move_choice_for_query_with_ordering,
-    best_move_choice_with_ordering, evaluate_state_outcome_with_database,
-    evaluate_state_with_database,
+    best_move_choice_with_ordering, best_move_choices_with_ordering,
+    evaluate_state_outcome_with_database, evaluate_state_with_database,
 };
 use tgf_core::GameStateSnapshot;
 use tgf_mill::rules::MillState;
@@ -267,6 +267,30 @@ pub fn best_move_token_for_state_rust_database_with_ordering(
         return Ok(None);
     };
     Ok(result.map(|choice| choice.token))
+}
+
+/// Every legal move tied for the best database outcome under `ordering`,
+/// as Mill UCI tokens.  Mirrors the C++ `PerfectPlayer::get_good_moves` list
+/// so the caller can replicate `chooseRandom` (prefer the search's pick,
+/// otherwise shuffle among the tied moves) instead of always taking the
+/// first — see `perfect_player.h` in the legacy C++ engine.
+pub fn best_move_tokens_for_state_rust_database_with_ordering(
+    state: &MillState,
+    options: &MillVariantOptions,
+    side_to_move: i8,
+    ordering: PerfectMoveOrdering,
+) -> Result<Option<Vec<String>>, DatabaseError> {
+    let rules = MillRules::new(options.clone());
+    let mut state = state.clone();
+    state.set_side_to_move(side_to_move);
+    let snap = rules.encode_state(state);
+    let Some(result) = with_rust_database(|database| {
+        best_move_choices_with_ordering(database, &rules, &snap, options, ordering)
+    })?
+    else {
+        return Ok(None);
+    };
+    Ok(result.map(|choices| choices.into_iter().map(|choice| choice.token).collect()))
 }
 
 pub fn evaluate_state_for_rust_database(

@@ -13,7 +13,7 @@
 
 use std::sync::Arc;
 
-use tgf_core::{ActionList, GameKernel, GameRules};
+use tgf_core::{Action, ActionList, GameKernel, GameRules};
 use tgf_mill::{MillPhase, MillRules, MillVariantOptions as NativeMillVariantOptions};
 
 use super::kernel::{TgfAction, TgfSnapshot};
@@ -333,11 +333,17 @@ pub fn tgf_kernel_mill_perfect_db_best_action(
     let mut legal = ActionList::<256>::default();
     rules.legal_actions(&snapshot, &mut legal);
 
-    Ok(perfect::try_perfect_best_action(
+    // No search ran for this advisory query, so there is no reference move to
+    // prefer; pass NONE and let chooseRandom shuffle among the tied-best DB
+    // moves when Shuffling is on (mirrors master perfect_player.h).
+    Ok(perfect::try_perfect_best_action_with_ref(
         &snapshot,
         rules.options(),
         legal.as_slice(),
         search::perfect_move_ordering(&plan),
+        Action::NONE,
+        plan.shuffling,
+        search::search_shuffle_seed(),
     )
     .map(TgfAction::from_action))
 }
