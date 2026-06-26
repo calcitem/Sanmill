@@ -477,6 +477,7 @@ fn lazy_smp_selection_votes_by_bestmove() {
             nodes: 1,
             draw_reason: None,
         },
+        root_moves: Vec::new(),
     };
     let outcomes = [
         outcome(8, 10, shared_action),
@@ -488,6 +489,77 @@ fn lazy_smp_selection_votes_by_bestmove() {
 
     assert_eq!(selected.result.best_action, shared_action);
     assert_eq!(selected.result.score, 10);
+}
+
+#[test]
+fn lazy_smp_selection_uses_matching_root_summary_score() {
+    let action = Action {
+        kind_tag: MillActionKind::Move as i16,
+        from_node: 0,
+        to_node: 1,
+        aux: -1,
+        payload_bits: 0,
+    };
+    let outcome = |root_value| LazySmpWorkerOutcome {
+        depth: 8,
+        result: SearchResult {
+            best_action: action,
+            score: 10,
+            nodes: 1,
+            draw_reason: None,
+        },
+        root_moves: vec![LazySmpRootMove {
+            action,
+            value: root_value,
+            nodes: 1,
+            cutoff: false,
+        }],
+    };
+    let outcomes = [outcome(30), outcome(20)];
+
+    assert_eq!(lazy_smp_outcome_vote_action(&outcomes[0]), action);
+    assert_eq!(lazy_smp_vote_score(&outcomes[0]), 30);
+    assert!(
+        lazy_smp_thread_vote_weight(&outcomes, &outcomes[0])
+            > lazy_smp_thread_vote_weight(&outcomes, &outcomes[1])
+    );
+}
+
+#[test]
+fn lazy_smp_selection_ignores_mismatched_root_summary_action() {
+    let reported_action = Action {
+        kind_tag: MillActionKind::Move as i16,
+        from_node: 0,
+        to_node: 1,
+        aux: -1,
+        payload_bits: 0,
+    };
+    let mismatched_root_action = Action {
+        kind_tag: MillActionKind::Move as i16,
+        from_node: 2,
+        to_node: 3,
+        aux: -1,
+        payload_bits: 0,
+    };
+    let outcome = |best_action, root_action| LazySmpWorkerOutcome {
+        depth: 8,
+        result: SearchResult {
+            best_action,
+            score: 10,
+            nodes: 1,
+            draw_reason: None,
+        },
+        root_moves: vec![LazySmpRootMove {
+            action: root_action,
+            value: 50,
+            nodes: 1,
+            cutoff: false,
+        }],
+    };
+    let outcomes = [outcome(reported_action, mismatched_root_action)];
+
+    assert_eq!(lazy_smp_outcome_vote_action(&outcomes[0]), reported_action);
+    assert_eq!(lazy_smp_vote_score(&outcomes[0]), 10);
 }
 
 #[test]
