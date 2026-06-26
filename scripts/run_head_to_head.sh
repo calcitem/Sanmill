@@ -40,6 +40,7 @@ default_master_engine() {
 # Defaults (overridable by environment, then by command-line flags).
 GAMES="${GAMES:-10}"
 SKILL="${SKILL:-10}"
+ENGINE_THREADS="${ENGINE_THREADS:-${H2H_ENGINE_THREADS:-1}}"
 MOVETIME="${MOVETIME:-0}"
 # Sub-second per-move time in milliseconds (Sanmill-only, 0..=60000).
 # Takes priority over MOVETIME when set.  Use for fast Sanmill-vs-Sanmill
@@ -114,8 +115,8 @@ Options:
   -h, --help           show this help and exit
 
 Each option also has an environment-variable form (command-line flags win):
-  GAMES, SKILL, MOVETIME (seconds), MOVETIME_MS (ms, priority), MAX_PLIES,
-  JOBS, SELF, MASTER_ENGINE,
+  GAMES, SKILL, ENGINE_THREADS, MOVETIME (seconds), MOVETIME_MS (ms,
+  priority), MAX_PLIES, JOBS, SELF, MASTER_ENGINE,
   CURRENT_ENGINE, CURRENT_ARGS, MASTER_ARGS, CURRENT_ENV, MASTER_ENV,
   H2H_CURRENT_ENV, H2H_MASTER_ENV, CURRENT_GO, MASTER_GO,
   N_MOVE_RULE, ENDGAME_N_MOVE_RULE, OPENING_PLIES, OPENING_SEED,
@@ -137,6 +138,7 @@ Fairness notes:
 Examples:
   run_head_to_head.sh                       # current vs master, skill 10, 10 games/colour
   run_head_to_head.sh -s 14 -g 50           # skill 14, 50 games/colour
+  run_head_to_head.sh --engine-threads 4    # send UCI Threads=4 to engines
   run_head_to_head.sh --self master -g 50    # master self-play (colour bias)
   run_head_to_head.sh --self current -g 50   # current self-play (colour bias)
 EOF
@@ -149,6 +151,8 @@ while [ $# -gt 0 ]; do
         --games=*)      GAMES="${1#*=}"; shift ;;
         -s|--skill)     SKILL="$2"; shift 2 ;;
         --skill=*)      SKILL="${1#*=}"; shift ;;
+        --engine-threads) ENGINE_THREADS="$2"; shift 2 ;;
+        --engine-threads=*) ENGINE_THREADS="${1#*=}"; shift ;;
         -t|--time)      MOVETIME="$2"; shift 2 ;;
         --time=*)       MOVETIME="${1#*=}"; shift ;;
         --time-ms)      MOVETIME_MS="$2"; shift 2 ;;
@@ -335,9 +339,9 @@ if [ "$NEED_MASTER" -eq 1 ]; then
 fi
 
 if [ -n "$MOVETIME_MS" ] && [ "$MOVETIME_MS" -gt 0 ] 2>/dev/null; then
-    echo ">> Config: mode=$MODE  skill=$SKILL  games/colour=$GAMES  jobs=$JOBS  thinking_time=${MOVETIME_MS}ms  ply_cap=$MAX_PLIES  n_move=$N_MOVE_RULE  endgame_n_move=$ENDGAME_N_MOVE_RULE  opening_plies=$OPENING_PLIES"
+    echo ">> Config: mode=$MODE  skill=$SKILL  engine_threads=$ENGINE_THREADS  games/colour=$GAMES  jobs=$JOBS  thinking_time=${MOVETIME_MS}ms  ply_cap=$MAX_PLIES  n_move=$N_MOVE_RULE  endgame_n_move=$ENDGAME_N_MOVE_RULE  opening_plies=$OPENING_PLIES"
 else
-    echo ">> Config: mode=$MODE  skill=$SKILL  games/colour=$GAMES  jobs=$JOBS  thinking_time=${MOVETIME}s  ply_cap=$MAX_PLIES  n_move=$N_MOVE_RULE  endgame_n_move=$ENDGAME_N_MOVE_RULE  opening_plies=$OPENING_PLIES"
+    echo ">> Config: mode=$MODE  skill=$SKILL  engine_threads=$ENGINE_THREADS  games/colour=$GAMES  jobs=$JOBS  thinking_time=${MOVETIME}s  ply_cap=$MAX_PLIES  n_move=$N_MOVE_RULE  endgame_n_move=$ENDGAME_N_MOVE_RULE  opening_plies=$OPENING_PLIES"
 fi
 [ "$NEED_CURRENT" -eq 1 ] && echo "     current = $CURRENT_ENGINE"
 [ "$NEED_MASTER" -eq 1 ] && echo "     master  = $MASTER_ENGINE"
@@ -366,6 +370,7 @@ H2H_MASTER_ARGS="$MASTER_ARGS" \
 H2H_MASTER_ENV="$MASTER_ENV" \
 H2H_MODE="$MODE" \
 H2H_SKILL="$SKILL" \
+H2H_ENGINE_THREADS="$ENGINE_THREADS" \
 H2H_GAMES="$GAMES" \
 H2H_JOBS="$JOBS" \
 H2H_MOVETIME="$MOVETIME" \

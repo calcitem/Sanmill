@@ -31,6 +31,7 @@
 //   H2H_MASTER_PERFECT_DB_PATH  DB path for opponent when enabled
 //   H2H_GAMES      games per color (default 20)
 //   H2H_SKILL      skill level (default 14)
+//   H2H_ENGINE_THREADS UCI Threads option for both engines (default 1)
 //   H2H_MAX_PLIES  ply cap -> over-cap counted as a maneuvering draw (default 200)
 //   H2H_N_MOVE_RULE regular no-capture draw threshold (default 100)
 //   H2H_ENDGAME_N_MOVE_RULE endgame no-capture draw threshold (default 100)
@@ -87,6 +88,7 @@ struct Engine {
 #[derive(Clone, Copy)]
 struct EngineOptions {
     skill: u32,
+    threads: u32,
     /// Per-move thinking time in milliseconds.  Both MoveTime (seconds,
     /// rounded down) and MoveTimeMs (milliseconds, Sanmill-only) are sent
     /// so master C++ engines fall back to the rounded second value while
@@ -135,6 +137,7 @@ impl Engine {
         e.cmd("uci");
         assert!(e.wait("uciok").is_some(), "{name}: no uciok");
         for (k, v) in [
+            ("Threads", options.threads.to_string()),
             ("SkillLevel", options.skill.to_string()),
             ("DeveloperMode", "false".to_string()),
             ("DrawOnHumanExperience", "true".to_string()),
@@ -1128,6 +1131,7 @@ fn head_to_head_vs_master() {
         .ok()
         .and_then(|s| s.parse().ok())
         .unwrap_or(14);
+    let threads = env_u32("H2H_ENGINE_THREADS", 1).clamp(1, 512);
     let max_plies: usize = env::var("H2H_MAX_PLIES")
         .ok()
         .and_then(|s| s.parse().ok())
@@ -1156,6 +1160,7 @@ fn head_to_head_vs_master() {
     let jobs = jobs_for_total(total);
     let engine_options = EngineOptions {
         skill,
+        threads,
         move_time_ms,
         n_move_rule,
         endgame_n_move_rule,

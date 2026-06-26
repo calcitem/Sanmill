@@ -12,6 +12,9 @@
 #   H2H_CURRENT_ENV=TGF_ENABLE_TT_MOVE=0 \
 #     SKILL=30 MOVETIME_MS=200 PARENT_REV=HEAD^ GAMES=1000 JOBS=20 \
 #     scripts/run_h2h_head_vs_parent.sh  # disable HEAD TT move for A/B
+#   H2H_CURRENT_ENV=TGF_USE_LAZY_SMP=1 ENGINE_THREADS=4 \
+#     SKILL=30 MOVETIME_MS=200 PARENT_REV=HEAD^ GAMES=1000 JOBS=20 \
+#     scripts/run_h2h_head_vs_parent.sh  # enable HEAD Lazy SMP for A/B
 #   VS_PERFECT=1 PERFECT_DB_PATH=D:/user/Documents/strong \
 #     SKILL=30 MOVETIME_MS=200 PARENT_REV=HEAD GAMES=1000 JOBS=20 \
 #     scripts/run_h2h_head_vs_parent.sh  # current vs Perfect DB opponent
