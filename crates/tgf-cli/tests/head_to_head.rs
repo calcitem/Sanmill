@@ -545,6 +545,8 @@ fn pct(num: f64, den: usize) -> f64 {
 
 /// Two-sided normal critical value for 99.9% confidence (alpha = 0.001).
 const Z_99_9: f64 = 3.290_526_731_491_925;
+const SCORE_SUPERIORITY_THRESHOLD: f64 = 0.50;
+const INV_SQRT_2PI: f64 = 0.398_942_280_401_432_7;
 
 /// Observed Score proportion `(W + 0.5*D) / decided` and the decided-game count.
 fn score_proportion(s: &[usize; 4]) -> (f64, usize) {
@@ -563,6 +565,50 @@ fn margin_of_error_pct(p: f64, n: usize) -> f64 {
         return 0.0;
     }
     100.0 * Z_99_9 * (p * (1.0 - p) / n as f64).sqrt()
+}
+
+/// Standard normal CDF approximation (Abramowitz-Stegun 26.2.17).
+fn standard_normal_cdf(z: f64) -> f64 {
+    let x = z.abs();
+    let t = 1.0 / (1.0 + 0.231_641_9 * x);
+    let polynomial =
+        ((((1.330_274_429 * t - 1.821_255_978) * t + 1.781_477_937) * t - 0.356_563_782) * t
+            + 0.319_381_530)
+            * t;
+    let tail = INV_SQRT_2PI * (-0.5 * x * x).exp() * polynomial;
+    if z >= 0.0 { 1.0 - tail } else { tail }
+}
+
+/// Probability that the true total Score% is above 50%, using the same
+/// normal approximation as the sampling-error footer.
+fn superiority_probability(p: f64, n: usize) -> Option<f64> {
+    if n == 0 {
+        return None;
+    }
+    let se = (p * (1.0 - p) / n as f64).sqrt();
+    if se == 0.0 {
+        return Some(if p > SCORE_SUPERIORITY_THRESHOLD {
+            1.0
+        } else if p < SCORE_SUPERIORITY_THRESHOLD {
+            0.0
+        } else {
+            0.5
+        });
+    }
+    let z = (SCORE_SUPERIORITY_THRESHOLD - p) / se;
+    Some(1.0 - standard_normal_cdf(z))
+}
+
+fn format_superiority_probability(s: &[usize; 4]) -> String {
+    let (p, n) = score_proportion(s);
+    superiority_probability(p, n)
+        .map(|probability| {
+            format!(
+                "{:.2}% (Total true Score% > 50.0%, normal approximation, n={n})",
+                probability * 100.0
+            )
+        })
+        .unwrap_or_else(|| "N/A".to_string())
 }
 
 /// Format `Score% ± margin` with sample size for one standings row.
@@ -647,12 +693,37 @@ fn print_standings(
     eprintln!("  White: {}", format_score_with_margin(white));
     eprintln!("  Black: {}", format_score_with_margin(black));
     eprintln!("  Total: {}", format_score_with_margin(&tot));
+    eprintln!(
+        "  P(true Score% > 50.0%): {}",
+        format_superiority_probability(&tot)
+    );
     if tot[3] > 0 {
         eprintln!(
             "(note: {} game(s) unfinished/aborted, excluded from rates)",
             tot[3]
         );
     }
+}
+
+#[test]
+fn superiority_probability_matches_normal_approximation_example() {
+    let probability = superiority_probability(0.494, 10_000)
+        .expect("positive sample count should produce a probability");
+
+    assert!(
+        (probability - 0.115).abs() < 0.001,
+        "expected about 11.5%, got {:.4}%",
+        probability * 100.0
+    );
+}
+
+#[test]
+fn h2h_superiority_probability_uses_total_score() {
+    let total = [2266, 2386, 5348, 0];
+    let formatted = format_superiority_probability(&total);
+
+    assert!(formatted.starts_with("11.5"));
+    assert!(formatted.contains("n=10000"));
 }
 
 fn engine_args_from_env(name: &str, default: &str) -> Vec<String> {
