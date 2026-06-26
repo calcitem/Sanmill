@@ -26,8 +26,8 @@ use tgf_mill::{
     MillVariantOptions, recommended_search_depth,
 };
 use tgf_search::{
-    LazySmpWorker, MctsOptions, MctsSearcher, SearchAbortHandle, SearchOptions, SearchPolicy,
-    SearchResult, Searcher, SharedTt,
+    LazySmpWorker, MctsOptions, MctsSearcher, RootMoveSummary, SearchAbortHandle, SearchOptions,
+    SearchPolicy, SearchResult, Searcher, SharedTt,
 };
 
 mod bench;
@@ -589,15 +589,7 @@ fn spawn_search(
 struct LazySmpWorkerOutcome {
     depth: i32,
     result: SearchResult,
-    root_moves: Vec<LazySmpRootMove>,
-}
-
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
-struct LazySmpRootMove {
-    action: Action,
-    value: i32,
-    nodes: u64,
-    cutoff: bool,
+    root_moves: Vec<RootMoveSummary>,
 }
 
 struct LazySmpSearchInput {
@@ -668,19 +660,16 @@ fn run_configured_lazy_smp_search(input: LazySmpSearchInput) -> LazySmpWorkerOut
             searcher.set_abort_flag(abort_for_worker);
             searcher.set_options(search_options_for_worker);
             searcher.set_qsearch_max_depth(qsearch_max_depth);
-            let mut root_moves = Vec::new();
-            let result = run_configured_search_impl(
-                ConfiguredSearchJob {
-                    options: options_for_worker,
-                    state,
-                    root_repetition_history: root_repetition_history_for_worker,
-                    root_position_resets_repetition,
-                    depth: worker_depth,
-                },
+            let result = run_configured_search(
+                options_for_worker,
+                state,
+                root_repetition_history_for_worker,
+                root_position_resets_repetition,
+                worker_depth,
                 &cfg_for_worker,
                 &mut searcher,
-                Some(&mut root_moves),
             );
+            let root_moves = searcher.root_moves().to_vec();
             LazySmpWorkerOutcome {
                 depth: worker_depth,
                 result,
@@ -847,14 +836,6 @@ rmW={} rmB={} ownW={} ownB={} stm={} eval={}",
     );
 }
 
-struct ConfiguredSearchJob {
-    options: MillVariantOptions,
-    state: GameStateSnapshot,
-    root_repetition_history: Vec<u64>,
-    root_position_resets_repetition: bool,
-    depth: i32,
-}
-
 fn run_configured_search(
     options: MillVariantOptions,
     state: GameStateSnapshot,
@@ -864,33 +845,6 @@ fn run_configured_search(
     cfg: &EngineConfig,
     searcher: &mut Searcher<MillGame>,
 ) -> SearchResult {
-    run_configured_search_impl(
-        ConfiguredSearchJob {
-            options,
-            state,
-            root_repetition_history,
-            root_position_resets_repetition,
-            depth,
-        },
-        cfg,
-        searcher,
-        None,
-    )
-}
-
-fn run_configured_search_impl(
-    job: ConfiguredSearchJob,
-    cfg: &EngineConfig,
-    searcher: &mut Searcher<MillGame>,
-    root_moves: Option<&mut Vec<LazySmpRootMove>>,
-) -> SearchResult {
-    let ConfiguredSearchJob {
-        options,
-        state,
-        root_repetition_history,
-        root_position_resets_repetition,
-        depth,
-    } = job;
     let root_outcome = MillRules::new(options.clone()).outcome(&state);
     if matches!(root_outcome.kind, tgf_core::OutcomeKind::Draw)
         && root_outcome.reason != "drawFullBoard"
@@ -927,8 +881,7 @@ fn run_configured_search_impl(
     let mut result = if searcher.was_aborted() && !best_so_far.best_action.is_none() {
         best_so_far
     } else {
-        let final_result =
-            run_algorithm_at_depth_traced(searcher, &mut wb, cfg, depth, value, root_moves);
+        let final_result = run_algorithm_at_depth(searcher, &mut wb, cfg, depth, value);
         select_completed_search_result(final_result, best_so_far, searcher.was_aborted())
     };
 
@@ -1026,62 +979,6 @@ fn run_algorithm_at_depth(
         }
         _ => searcher.search(wb, depth),
     }
-}
-
-fn run_algorithm_at_depth_traced(
-    searcher: &mut Searcher<MillGame>,
-    wb: &mut tgf_mill::MillWorkbench,
-    cfg: &EngineConfig,
-    depth: i32,
-    first_guess: i32,
-    root_moves: Option<&mut Vec<LazySmpRootMove>>,
-) -> SearchResult {
-    let Some(root_moves) = root_moves else {
-        return run_algorithm_at_depth(searcher, wb, cfg, depth, first_guess);
-    };
-
-    root_moves.clear();
-    let result = match cfg.algorithm {
-        2 => run_mtdf_with_root_summary(searcher, wb, depth, first_guess, root_moves),
-        _ => run_algorithm_at_depth(searcher, wb, cfg, depth, first_guess),
-    };
-    if root_moves.is_empty() && !result.best_action.is_none() {
-        root_moves.push(LazySmpRootMove {
-            action: result.best_action,
-            value: result.score,
-            nodes: result.nodes,
-            cutoff: false,
-        });
-    }
-    result
-}
-
-fn run_mtdf_with_root_summary(
-    searcher: &mut Searcher<MillGame>,
-    wb: &mut tgf_mill::MillWorkbench,
-    depth: i32,
-    first_guess: i32,
-    root_moves: &mut Vec<LazySmpRootMove>,
-) -> SearchResult {
-    let mut active_iteration = None;
-    searcher.search_mtdf_with_guess_trace_roots(
-        wb,
-        depth,
-        first_guess,
-        &mut |_, _, _, _, _, _| {},
-        &mut |iteration, action, _, _, value, nodes, cutoff| {
-            if active_iteration != Some(iteration) {
-                root_moves.clear();
-                active_iteration = Some(iteration);
-            }
-            root_moves.push(LazySmpRootMove {
-                action,
-                value,
-                nodes,
-                cutoff,
-            });
-        },
-    )
 }
 
 fn search_options_for_go(cfg: &EngineConfig, go: &GoOptions) -> SearchOptions {

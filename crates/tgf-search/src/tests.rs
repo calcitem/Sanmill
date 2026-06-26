@@ -211,6 +211,20 @@ fn search_order_uses_contextual_move_bias() {
 }
 
 #[test]
+fn alpha_beta_records_root_move_summaries() {
+    let game = BiasGame;
+    let mut wb = game.build_workbench(&GameStateSnapshot::default());
+    let mut searcher = Searcher::<BiasGame>::new();
+
+    let result = searcher.search(&mut wb, 1);
+    let root_moves = searcher.root_moves();
+
+    assert_eq!(root_moves.len(), 2);
+    assert_eq!(root_moves[0].action, result.best_action);
+    assert!(root_moves.iter().all(|root_move| root_move.nodes > 0));
+}
+
+#[test]
 fn search_order_promotes_context_hash_move_when_legal() {
     let game = BiasGame;
     let mut wb = game.build_workbench(&GameStateSnapshot::default());
@@ -629,6 +643,22 @@ fn search_mtdf_returns_unique_for_single_root_move() {
     let result = searcher.search_mtdf(&mut wb, 3);
     assert_eq!(result.score, VALUE_UNIQUE_ROOT_MOVE);
     assert!(!result.best_action.is_none());
+}
+
+#[test]
+fn mtdf_records_root_move_summaries() {
+    let game = KeyedGame;
+    let mut wb = game.build_workbench(&GameStateSnapshot::default());
+    let mut searcher = Searcher::<KeyedGame>::new();
+
+    let result = searcher.search_mtdf_with_guess(&mut wb, 2, 0);
+    let root_moves = searcher.root_moves();
+
+    assert!(!root_moves.is_empty());
+    assert!(root_moves.iter().any(|root_move| {
+        root_move.action == result.best_action && root_move.value == result.score
+    }));
+    assert!(root_moves.iter().all(|root_move| root_move.nodes > 0));
 }
 
 #[test]

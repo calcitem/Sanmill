@@ -44,6 +44,14 @@ pub struct RootProbeRow {
 
 pub type RootProbeRows = Vec<RootProbeRow>;
 
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub struct RootMoveSummary {
+    pub action: Action,
+    pub value: i32,
+    pub nodes: u64,
+    pub cutoff: bool,
+}
+
 const REPETITION_STACK_CAPACITY: usize = 128;
 type RepetitionStack = ArrayVec<(u64, bool), REPETITION_STACK_CAPACITY>;
 
@@ -66,6 +74,7 @@ pub struct Searcher<G: Game> {
     tt_misses: u64,
     repetition_cuts: u64,
     tt_age_bumps: u64,
+    root_moves: Vec<RootMoveSummary>,
     rng_state: u64,
     tt: Arc<ClusteredTt>,
     /// Cached TT generation for hot probe/save calls.
@@ -110,6 +119,7 @@ impl<G: Game> Searcher<G> {
             tt_misses: 0,
             repetition_cuts: 0,
             tt_age_bumps: 0,
+            root_moves: Vec::new(),
             rng_state: 0x9E37_79B9_7F4A_7C15,
             tt,
             tt_age,
@@ -215,6 +225,10 @@ impl<G: Game> Searcher<G> {
         } else {
             self.tt_hits as f64 * 100.0 / total as f64
         }
+    }
+
+    pub fn root_moves(&self) -> &[RootMoveSummary] {
+        &self.root_moves
     }
 
     /// Soft-clear the transposition table by bumping its generation counter.
@@ -338,6 +352,7 @@ impl<G: Game> Searcher<G> {
         // return `VALUE_UNIQUE_ROOT_MOVE` (100) to flag the state and skip
         // wasted work.
         if moves.len() == 1 {
+            self.record_root_move(moves[0], G::unique_root_move_score(), 0, false);
             return SearchResult {
                 best_action: moves[0],
                 score: G::unique_root_move_score(),
@@ -353,6 +368,7 @@ impl<G: Game> Searcher<G> {
             if self.should_abort() {
                 break;
             }
+            let nodes_before = self.nodes;
             let before = wb.side_to_move();
             let previous_incoming_reset = self.push_repetition_ancestor(root_key, action);
             wb.do_move(action);
@@ -361,6 +377,8 @@ impl<G: Game> Searcher<G> {
                 self.search_after_move(wb, depth - 1, i32::MIN + 1, i32::MAX - 1, before, after);
             wb.undo_move();
             self.pop_repetition_ancestor(root_key, previous_incoming_reset);
+            let action_nodes = self.nodes.saturating_sub(nodes_before);
+            self.record_root_move(action, score, action_nodes, false);
             // Keep the FIRST move on ties, matching master `Search::search`'s
             // strict `value > bestValue` root update (src/search.cpp): the
             // best move only changes on a strict score improvement.
@@ -421,6 +439,7 @@ impl<G: Game> Searcher<G> {
         }
         // P2-D: single root action → no need to search.
         if moves.len() == 1 {
+            self.record_root_move(moves[0], G::unique_root_move_score(), 0, false);
             return SearchResult {
                 best_action: moves[0],
                 score: G::unique_root_move_score(),
@@ -438,6 +457,7 @@ impl<G: Game> Searcher<G> {
             if self.should_abort() {
                 break;
             }
+            let nodes_before = self.nodes;
             let before = wb.side_to_move();
             let previous_incoming_reset = self.push_repetition_ancestor(root_key, action);
             wb.do_move(action);
@@ -445,6 +465,8 @@ impl<G: Game> Searcher<G> {
             let value = self.pvs_after_move(wb, depth - 1, alpha, beta, i, before, after);
             wb.undo_move();
             self.pop_repetition_ancestor(root_key, previous_incoming_reset);
+            let action_nodes = self.nodes.saturating_sub(nodes_before);
+            self.record_root_move(action, value, action_nodes, false);
 
             // Keep the FIRST move on ties (strict `value > alpha`), matching
             // master's root update where the best move only changes on a
@@ -533,6 +555,7 @@ impl<G: Game> Searcher<G> {
     /// Deterministic random-search equivalent.  Production callers can seed
     /// this from time; tests pass a fixed seed to keep results reproducible.
     pub fn random_search(&mut self, wb: &mut G::Workbench) -> SearchResult {
+        self.clear_root_moves();
         let mut moves = SearchActionList::new();
         G::generate_legal_ctx(wb, &mut moves, &self.options.move_order_context);
         if moves.is_empty() {
@@ -548,6 +571,7 @@ impl<G: Game> Searcher<G> {
         // then choose a random index from the shuffled list.
         self.shuffle_moves(&mut moves);
         let index = self.next_random_index(moves.len());
+        self.record_root_move(moves[index], 0, 0, false);
         SearchResult {
             best_action: moves[index],
             score: 0,
@@ -756,6 +780,7 @@ impl<G: Game> Searcher<G> {
         self.tt_hits = 0;
         self.tt_misses = 0;
         self.repetition_cuts = 0;
+        self.clear_root_moves();
         self.aborted = false;
         self.tt_age = self.tt.current_age();
         self.repetition_stack.clear();
@@ -777,6 +802,27 @@ impl<G: Game> Searcher<G> {
     fn begin_root_search_at(&mut self, wb: &G::Workbench) {
         self.begin_root_search();
         self.repetition_current_incoming_reset = wb.current_position_resets_repetition();
+    }
+
+    #[inline]
+    pub(super) fn clear_root_moves(&mut self) {
+        self.root_moves.clear();
+    }
+
+    #[inline]
+    pub(super) fn record_root_move(
+        &mut self,
+        action: Action,
+        value: i32,
+        nodes: u64,
+        cutoff: bool,
+    ) {
+        self.root_moves.push(RootMoveSummary {
+            action,
+            value,
+            nodes,
+            cutoff,
+        });
     }
 
     #[inline]

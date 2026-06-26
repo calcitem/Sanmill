@@ -121,6 +121,15 @@ impl<G: Game> Searcher<G> {
                 draw_reason: None,
             };
         }
+        if moves.len() == 1 {
+            self.record_root_move(moves[0], G::unique_root_move_score(), 0, false);
+            return SearchResult {
+                best_action: moves[0],
+                score: G::unique_root_move_score(),
+                nodes: self.nodes,
+                draw_reason: None,
+            };
+        }
         let mut best_action = moves[0];
         let mut best_alpha = alpha;
         let root_key = wb.key();
@@ -128,6 +137,7 @@ impl<G: Game> Searcher<G> {
             if self.should_abort() {
                 break;
             }
+            let nodes_before = self.nodes;
             let before = wb.side_to_move();
             let previous_incoming_reset = self.push_repetition_ancestor(root_key, action);
             wb.do_move(action);
@@ -135,13 +145,16 @@ impl<G: Game> Searcher<G> {
             let value = self.pvs_after_move(wb, depth - 1, best_alpha, beta, i, before, after);
             wb.undo_move();
             self.pop_repetition_ancestor(root_key, previous_incoming_reset);
+            let action_nodes = self.nodes.saturating_sub(nodes_before);
+            let cutoff = value >= beta;
+            self.record_root_move(action, value, action_nodes, cutoff);
             // Keep the FIRST move on ties (strict `value > best_alpha`),
             // matching master's strict root update.
             if value > best_alpha {
                 best_alpha = value;
                 best_action = action;
             }
-            if best_alpha >= beta {
+            if cutoff {
                 break;
             }
         }
@@ -266,6 +279,7 @@ impl<G: Game> Searcher<G> {
             };
         }
         if moves.len() == 1 {
+            self.record_root_move(moves[0], G::unique_root_move_score(), 0, false);
             return SearchResult {
                 best_action: moves[0],
                 score: G::unique_root_move_score(),
@@ -378,6 +392,7 @@ impl<G: Game> Searcher<G> {
                 }
             }
         }
+        self.clear_root_moves();
         let mut moves = SearchActionList::new();
         G::generate_legal_ctx(wb, &mut moves, &self.options.move_order_context);
         self.order_moves_with_tt_move(wb, root_key, depth, &mut moves, tt_probe.tt_move);
@@ -397,8 +412,9 @@ impl<G: Game> Searcher<G> {
             let value = self.search_after_move(wb, depth - 1, alpha, beta, before, after);
             wb.undo_move();
             self.pop_repetition_ancestor(root_key, previous_incoming_reset);
-            let action_nodes = self.nodes - before_nodes;
+            let action_nodes = self.nodes.saturating_sub(before_nodes);
             let cutoff = value >= beta;
+            self.record_root_move(action, value, action_nodes, cutoff);
             on_root_move(
                 iteration,
                 action,

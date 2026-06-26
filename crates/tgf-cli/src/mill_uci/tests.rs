@@ -508,7 +508,7 @@ fn lazy_smp_selection_uses_matching_root_summary_score() {
             nodes: 1,
             draw_reason: None,
         },
-        root_moves: vec![LazySmpRootMove {
+        root_moves: vec![RootMoveSummary {
             action,
             value: root_value,
             nodes: 1,
@@ -549,7 +549,7 @@ fn lazy_smp_selection_ignores_mismatched_root_summary_action() {
             nodes: 1,
             draw_reason: None,
         },
-        root_moves: vec![LazySmpRootMove {
+        root_moves: vec![RootMoveSummary {
             action: root_action,
             value: 50,
             nodes: 1,
