@@ -552,7 +552,8 @@ fn spawn_search(
     } else {
         let abort_for_workers = Arc::clone(&abort);
         thread::spawn(move || {
-            let workers = lazy_smp_workers_for_go(threads, &go);
+            let workers =
+                lazy_smp_workers_for_go(threads, &go, search_options.time_limit_ms.is_some());
             shared_tt.bump_age();
             let outcome = run_configured_lazy_smp_search(LazySmpSearchInput {
                 options,
@@ -604,15 +605,17 @@ struct LazySmpSearchInput {
     workers: Vec<LazySmpWorker>,
 }
 
-fn lazy_smp_workers_for_go(threads: usize, go: &GoOptions) -> Vec<LazySmpWorker> {
+fn lazy_smp_workers_for_go(
+    threads: usize,
+    go: &GoOptions,
+    allow_depth_stagger: bool,
+) -> Vec<LazySmpWorker> {
     assert!(threads > 1, "lazy SMP requires at least two UCI threads");
+    let fixed_positive_depth = go.depth_is_explicit && go.depth > 0;
+    let stagger_depth = allow_depth_stagger && !fixed_positive_depth;
     (0..threads)
         .map(|i| LazySmpWorker {
-            extra_depth: if go.depth_is_explicit {
-                0
-            } else {
-                (i % 2) as i32
-            },
+            extra_depth: if stagger_depth { (i % 2) as i32 } else { 0 },
         })
         .collect()
 }
@@ -634,7 +637,7 @@ fn run_configured_lazy_smp_search(input: LazySmpSearchInput) -> LazySmpWorkerOut
     assert!(!workers.is_empty(), "lazy SMP must run at least one worker");
 
     let mut handles = Vec::with_capacity(workers.len());
-    for worker in workers.iter().copied() {
+    for (worker_index, worker) in workers.iter().copied().enumerate() {
         let options_for_worker = options.clone();
         let root_repetition_history_for_worker = root_repetition_history.clone();
         let shared_tt_for_worker = shared_tt.clone();
@@ -642,11 +645,13 @@ fn run_configured_lazy_smp_search(input: LazySmpSearchInput) -> LazySmpWorkerOut
         let mut cfg_for_worker = cfg.clone();
         cfg_for_worker.use_perfect_database = false;
         cfg_for_worker.active_perfect_db = None;
+        let search_options_for_worker =
+            lazy_smp_search_options_for_worker(search_options, worker_index);
         let worker_depth = (depth + worker.extra_depth).max(1);
         handles.push(thread::spawn(move || {
             let mut searcher = mill_searcher_with_shared_tt(shared_tt_for_worker);
             searcher.set_abort_flag(abort_for_worker);
-            searcher.set_options(search_options);
+            searcher.set_options(search_options_for_worker);
             searcher.set_qsearch_max_depth(qsearch_max_depth);
             let result = run_configured_search(
                 options_for_worker,
@@ -683,6 +688,24 @@ fn run_configured_lazy_smp_search(input: LazySmpSearchInput) -> LazySmpWorkerOut
     best.result.nodes = total_nodes;
     apply_perfect_database_result(&mut best.result, &options, &state, &cfg);
     best
+}
+
+fn lazy_smp_search_options_for_worker(
+    mut options: SearchOptions,
+    worker_index: usize,
+) -> SearchOptions {
+    if worker_index > 0 {
+        options.move_order_context.shuffle_seed =
+            mix_lazy_smp_worker_seed(options.move_order_context.shuffle_seed, worker_index as u64);
+    }
+    options
+}
+
+fn mix_lazy_smp_worker_seed(seed: u64, worker_index: u64) -> u64 {
+    let mut x = seed ^ worker_index.wrapping_mul(0x9E37_79B9_7F4A_7C15);
+    x = (x ^ (x >> 30)).wrapping_mul(0xBF58_476D_1CE4_E5B9);
+    x = (x ^ (x >> 27)).wrapping_mul(0x94D0_49BB_1331_11EB);
+    x ^ (x >> 31)
 }
 
 fn lazy_smp_outcome_is_better(

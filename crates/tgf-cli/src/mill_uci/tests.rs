@@ -401,17 +401,55 @@ fn lazy_smp_fixed_depth_workers_do_not_stagger_depth() {
     let cfg = EngineConfig::default();
 
     let fixed_depth_go = parse_go_options("go depth 10", snap.side_to_move, &cfg);
-    let fixed_workers = lazy_smp_workers_for_go(4, &fixed_depth_go);
+    let fixed_workers = lazy_smp_workers_for_go(4, &fixed_depth_go, true);
     assert!(fixed_workers.iter().all(|worker| worker.extra_depth == 0));
 
-    let auto_depth_go = parse_go_options("go", snap.side_to_move, &cfg);
-    let auto_workers = lazy_smp_workers_for_go(4, &auto_depth_go);
+    let no_time_cfg = EngineConfig {
+        move_time_ms: 0,
+        ..EngineConfig::default()
+    };
+    let auto_depth_go = parse_go_options("go", snap.side_to_move, &no_time_cfg);
+    let auto_workers = lazy_smp_workers_for_go(4, &auto_depth_go, false);
+    assert!(auto_workers.iter().all(|worker| worker.extra_depth == 0));
+
+    let timed_auto_depth_go = parse_go_options("go", snap.side_to_move, &cfg);
+    let timed_auto_workers = lazy_smp_workers_for_go(4, &timed_auto_depth_go, true);
     assert_eq!(
-        auto_workers
+        timed_auto_workers
             .iter()
             .map(|worker| worker.extra_depth)
             .collect::<Vec<_>>(),
         vec![0, 1, 0, 1]
+    );
+
+    let explicit_auto_depth_go = parse_go_options("go depth 0", snap.side_to_move, &cfg);
+    let explicit_auto_workers = lazy_smp_workers_for_go(4, &explicit_auto_depth_go, true);
+    assert_eq!(
+        explicit_auto_workers
+            .iter()
+            .map(|worker| worker.extra_depth)
+            .collect::<Vec<_>>(),
+        vec![0, 1, 0, 1]
+    );
+}
+
+#[test]
+fn lazy_smp_workers_diversify_move_order_seed() {
+    let mut options = SearchOptions::default();
+    options.move_order_context.shuffle_seed = 12345;
+
+    let worker0 = lazy_smp_search_options_for_worker(options, 0);
+    let worker1 = lazy_smp_search_options_for_worker(options, 1);
+    let worker2 = lazy_smp_search_options_for_worker(options, 2);
+
+    assert_eq!(worker0.move_order_context.shuffle_seed, 12345);
+    assert_ne!(
+        worker1.move_order_context.shuffle_seed,
+        worker0.move_order_context.shuffle_seed
+    );
+    assert_ne!(
+        worker2.move_order_context.shuffle_seed,
+        worker1.move_order_context.shuffle_seed
     );
 }
 
