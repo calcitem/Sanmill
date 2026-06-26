@@ -399,6 +399,25 @@ fn ai_is_lazy_uses_signed_previous_score() {
 }
 
 #[test]
+fn mtdf_initial_guess_requires_matching_side_to_move() {
+    let cfg = EngineConfig {
+        last_best_value: 18,
+        last_best_value_side_to_move: 0,
+        ..EngineConfig::default()
+    };
+
+    assert_eq!(mtdf_initial_guess(&cfg, 0), 18);
+    assert_eq!(mtdf_initial_guess(&cfg, 1), 0);
+}
+
+#[test]
+fn parse_mtdf_debug_command_accepts_optional_first_guess() {
+    assert_eq!(parse_mtdf_debug_command("gomtdf"), (15, 0));
+    assert_eq!(parse_mtdf_debug_command("gomtdf 10"), (10, 0));
+    assert_eq!(parse_mtdf_debug_command("gomtdf 10 18"), (10, 18));
+}
+
+#[test]
 fn setoption_movetime_stores_seconds_as_ms_and_movetimems_stores_ms_directly() {
     let mut options = MillVariantOptions::default();
     let mut threads = 1;

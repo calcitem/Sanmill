@@ -167,6 +167,10 @@ struct EngineConfig {
     ids_enabled: bool,
     depth_extension: bool,
     last_best_value: i32,
+    /// Side-to-move that produced `last_best_value`.  MTD(f) may use the
+    /// score as a cross-move first guess only when the next root is searched
+    /// for the same side; otherwise the sign convention is ambiguous.
+    last_best_value_side_to_move: i8,
     /// Per-move thinking time in milliseconds.  0 = fixed depth (no time
     /// limit).  Set via `setoption MoveTime` (seconds, stored as ms) or
     /// the new `setoption MoveTimeMs` (milliseconds direct).  Default
@@ -199,6 +203,7 @@ impl Default for EngineConfig {
             ids_enabled: false,
             depth_extension: true,
             last_best_value: 0,
+            last_best_value_side_to_move: -1,
             move_time_ms: 1000,
             shuffling: true,
             draw_on_human_experience: true,
@@ -403,7 +408,7 @@ pub(crate) fn run_uci_loop() {
             print_legal_moves(&options, &state, &engine_cfg);
         } else if line.starts_with("gomtdf") {
             finish_active_search(&mut active_search, &mut engine_cfg);
-            let depth = parse_fixed_depth_debug_command(line, 15);
+            let (depth, first_guess) = parse_mtdf_debug_command(line);
             run_mtdf_debug_command(
                 &options,
                 state,
@@ -412,6 +417,7 @@ pub(crate) fn run_uci_loop() {
                 qsearch_max_depth,
                 shared_tt.clone(),
                 depth,
+                first_guess,
             );
         } else if line.starts_with("goab") {
             finish_active_search(&mut active_search, &mut engine_cfg);
@@ -633,7 +639,7 @@ fn run_configured_search(
         game.set_eval_weights(weights);
     }
     let mut wb = game.build_workbench(&state);
-    let mut value = 0;
+    let mut value = mtdf_initial_guess(cfg, state.side_to_move);
     let mut best_so_far = SearchResult::default_none();
     let run_ids = cfg.move_time_ms > 0 || cfg.ids_enabled;
     if run_ids {
@@ -864,6 +870,20 @@ fn parse_fixed_depth_debug_command(line: &str, default_depth: i32) -> i32 {
         .max(1)
 }
 
+fn parse_mtdf_debug_command(line: &str) -> (i32, i32) {
+    let mut tokens = line.split_whitespace().skip(1);
+    let depth = tokens
+        .next()
+        .and_then(|token| token.parse::<i32>().ok())
+        .unwrap_or(15)
+        .max(1);
+    let first_guess = tokens
+        .next()
+        .and_then(|token| token.parse::<i32>().ok())
+        .unwrap_or(0);
+    (depth, first_guess)
+}
+
 fn parse_root_probe_debug_command(line: &str) -> (i32, Vec<i32>) {
     let mut tokens = line.split_whitespace().skip(1);
     let depth = tokens
@@ -941,6 +961,7 @@ fn run_root_probe_debug_command(
     }
 }
 
+#[allow(clippy::too_many_arguments)]
 fn run_mtdf_debug_command(
     options: &MillVariantOptions,
     state: GameStateSnapshot,
@@ -949,14 +970,17 @@ fn run_mtdf_debug_command(
     qsearch_max_depth: i32,
     shared_tt: SharedTt,
     depth: i32,
+    first_guess: i32,
 ) {
     let mut wb = debug_workbench(options, state, state_history);
     let mut searcher = debug_searcher(cfg, qsearch_max_depth, shared_tt, depth);
+    let mut iterations = 0usize;
     let result = searcher.search_mtdf_with_guess_trace_roots(
         &mut wb,
         depth,
-        0,
+        first_guess,
         &mut |iteration, beta, g, best_action, nodes, repetition_cuts| {
+            iterations = iteration + 1;
             println!(
                 "  mtdf-iter {} beta={} g={} best={} nodes={} repcuts={}",
                 iteration,
@@ -984,8 +1008,10 @@ fn run_mtdf_debug_command(
         },
     );
     println!(
-        "gomtdf depth={} value={} bestmove {} nodes {} repcuts {} tthits {} ttmisses {}",
+        "gomtdf depth={} guess={} iterations={} value={} bestmove {} nodes {} repcuts {} tthits {} ttmisses {}",
         depth,
+        first_guess,
+        iterations,
         result.score,
         action_to_uci(result.best_action).unwrap_or_else(|| "none".to_owned()),
         result.nodes,
@@ -1124,6 +1150,14 @@ fn move_order_context_with_algorithm(
     }
 }
 
+fn mtdf_initial_guess(cfg: &EngineConfig, root_side_to_move: i8) -> i32 {
+    if cfg.last_best_value_side_to_move == root_side_to_move {
+        cfg.last_best_value
+    } else {
+        0
+    }
+}
+
 fn search_shuffle_seed() -> u64 {
     std::time::SystemTime::now()
         .duration_since(std::time::UNIX_EPOCH)
@@ -1198,6 +1232,7 @@ fn join_and_update(active: ActiveSearch, cfg: &mut EngineConfig) {
 
 fn update_last_best_value(cfg: &mut EngineConfig, spawn: &SpawnResult) {
     cfg.last_best_value = spawn.result.score;
+    cfg.last_best_value_side_to_move = spawn.root_side_to_move;
 }
 
 fn format_spawn_result(spawn: &SpawnResult) -> String {
