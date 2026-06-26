@@ -522,7 +522,7 @@ fn spawn_search(
     // Mill search itself stays single-threaded. We mirror that default here;
     // set `UseLazySmp = true` (or TGF_USE_LAZY_SMP=1) to opt into Rust's
     // lazy-SMP variant for higher NPS.
-    let use_lazy_smp = cfg.use_lazy_smp && threads > 1;
+    let use_lazy_smp = lazy_smp_is_allowed(&cfg, threads);
 
     let handle = if !use_lazy_smp {
         let abort_for_worker = Arc::clone(&abort);
@@ -603,6 +603,12 @@ struct LazySmpSearchInput {
     shared_tt: SharedTt,
     abort: Arc<AtomicBool>,
     workers: Vec<LazySmpWorker>,
+}
+
+fn lazy_smp_is_allowed(cfg: &EngineConfig, threads: usize) -> bool {
+    // Shuffling is the UCI/Flutter "Move randomly" switch.  When it is off,
+    // preserve same-position bestmove stability by avoiding shared-TT races.
+    cfg.use_lazy_smp && threads > 1 && cfg.shuffling
 }
 
 fn lazy_smp_workers_for_go(

@@ -576,6 +576,7 @@ fn clear_hash_button_does_not_require_value() {
 fn lazy_smp_requires_explicit_option() {
     let mut cfg = EngineConfig::default();
     assert!(!cfg.use_lazy_smp);
+    assert!(!lazy_smp_is_allowed(&cfg, 4));
 
     let mut options = MillVariantOptions::default();
     let mut threads = 1;
@@ -591,6 +592,25 @@ fn lazy_smp_requires_explicit_option() {
         SetoptionResult::SearchConfig
     );
     assert!(cfg.use_lazy_smp);
+    assert!(!lazy_smp_is_allowed(&cfg, 1));
+    assert!(lazy_smp_is_allowed(&cfg, 4));
+}
+
+#[test]
+fn lazy_smp_requires_move_randomly_for_bestmove_stability() {
+    let mut cfg = EngineConfig {
+        use_lazy_smp: true,
+        shuffling: false,
+        ..EngineConfig::default()
+    };
+
+    assert!(
+        !lazy_smp_is_allowed(&cfg, 4),
+        "Move randomly off requires deterministic single-thread search"
+    );
+
+    cfg.shuffling = true;
+    assert!(lazy_smp_is_allowed(&cfg, 4));
 }
 
 #[test]
