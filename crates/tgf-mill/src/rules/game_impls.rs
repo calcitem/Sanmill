@@ -11,8 +11,8 @@ use tgf_core::{
 };
 
 use super::evaluation::{
-    gameover_value, mills_pieces_count_difference, mobility_diff, remove_move_score,
-    should_consider_mobility, should_focus_on_blocking_paths, surrounded_pieces_count,
+    eval_features, evaluate_features, gameover_value, phase_weights, remove_move_score,
+    should_focus_on_blocking_paths, surrounded_pieces_count,
 };
 use super::fen::position_key;
 use super::move_priority::{
@@ -241,14 +241,11 @@ impl Evaluator<MillWorkbench> for MillEvaluator {
 
         let state = &wb.state;
         let options = &wb.rules.options;
-        let weights = &wb.rules.eval_weights;
         let mut value: i32 = 0;
 
-        let effective_on_board = legacy_removal_count_view(state, options);
         let removals_diff = signed_pending_removals_diff(state);
-        let in_hand_diff = i32::from(state.pieces_in_hand[0]) - i32::from(state.pieces_in_hand[1]);
-        let on_board_diff = i32::from(effective_on_board[0]) - i32::from(effective_on_board[1]);
         let action_is_remove = state.pending_removals[0] > 0 || state.pending_removals[1] > 0;
+        let phase_weights = phase_weights(state, options, &wb.rules.eval_weights);
 
         match state.phase {
             MillPhase::Ready => {}
@@ -259,20 +256,23 @@ impl Evaluator<MillWorkbench> for MillEvaluator {
                 ) =>
             {
                 if action_is_remove {
-                    value += weights.piece_value * removals_diff;
+                    value += phase_weights.piece_value * removals_diff;
                 } else {
-                    value += weights.mill_count * mills_pieces_count_difference(state, options);
+                    let features = eval_features(state, options);
+                    value += phase_weights.mill_count * features.mill_count_diff;
+                    value += phase_weights.position_value * features.position_value_diff;
+                    value += phase_weights.cardinal_mill * features.cardinal_mill_diff;
+                    value += phase_weights.near_fly_bonus * features.near_fly_diff;
                 }
             }
             MillPhase::Placing | MillPhase::Moving => {
-                if should_consider_mobility(options) {
-                    value += weights.mobility * mobility_diff(state, options);
-                }
-                if !should_focus_on_blocking_paths(state, options) {
-                    value += weights.piece_value * in_hand_diff;
-                    value += weights.piece_value * on_board_diff;
+                let features = eval_features(state, options);
+                if should_focus_on_blocking_paths(state, options) {
+                    value += phase_weights.mobility * features.mobility_diff;
+                } else {
+                    value += evaluate_features(features, phase_weights);
                     if action_is_remove {
-                        value += weights.piece_value * removals_diff;
+                        value += phase_weights.piece_value * removals_diff;
                     }
                 }
             }
@@ -286,42 +286,6 @@ impl Evaluator<MillWorkbench> for MillEvaluator {
         }
         value
     }
-}
-
-fn legacy_removal_count_view(state: &MillState, options: &MillVariantOptions) -> [u8; 2] {
-    let mut counts = state.pieces_on_board;
-    if !matches!(
-        options.mill_formation_action_in_placing_phase,
-        MillFormationActionInPlacingPhase::RemovalBasedOnMillCounts
-    ) {
-        return counts;
-    }
-    if state.phase != MillPhase::Moving {
-        return counts;
-    }
-
-    let own_pending = [
-        state.remove_own_piece(0) && state.pending_removals[0] > 0,
-        state.remove_own_piece(1) && state.pending_removals[1] > 0,
-    ];
-    let pending_side = match own_pending {
-        [true, false] => 0_usize,
-        [false, true] => 1_usize,
-        _ => return counts,
-    };
-    let completed_side = pending_side ^ 1;
-    if state.pending_removals[completed_side] != 0 || state.remove_own_piece(completed_side) {
-        return counts;
-    }
-
-    // Legacy C++ negative `pieceToRemoveCount` requires the mover to pick
-    // an own piece, but `remove_piece()` still decrements `pieceOnBoardCount`
-    // for `them`. Keep Rust's board/count invariants intact and reproduce
-    // that transient count view only for evaluation until the other side's
-    // own-removal quota clears and the legacy counts become consistent again.
-    counts[pending_side] = counts[pending_side].saturating_sub(1);
-    counts[completed_side] = counts[completed_side].saturating_add(1);
-    counts
 }
 
 fn signed_pending_removals_diff(state: &MillState) -> i32 {

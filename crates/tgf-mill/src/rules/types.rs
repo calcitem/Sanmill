@@ -119,68 +119,181 @@ impl Default for CaptureRuleConfig {
     }
 }
 
-/// Tunable weights for the Mill static evaluator.
+/// Per-phase tunable weights for the Mill static evaluator.
 ///
-/// The defaults exactly match the hard-coded constants in the legacy master
-/// engine, so the search tree and eval scores are bit-identical when weights
-/// are left at their defaults. Tuned weights (produced by the offline
-/// perfect-DB Texel tuner) can be injected without altering any other rule
-/// behaviour, and are only applied to the standard variant by convention.
+/// `LEGACY` exactly matches the hard-coded constants in the retired C++
+/// engine.  `TUNED` is the H2H-accepted default for the Rust/TGF engine.
+/// Custom weights (produced by the offline perfect-DB Texel tuner) can still
+/// be injected through `TGF_EVAL_WEIGHTS` without altering any other rule
+/// behaviour.
 ///
 /// Fields:
 /// - `piece_value`:  per-piece material weight (master: 5 = VALUE_EACH_PIECE)
 /// - `mobility`:     weight on the mobility difference term (master: 1)
 /// - `mill_count`:   weight on the mill-pieces-count difference term used in
 ///   the RemovalBasedOnMillCounts placing-phase variant (master: 1)
+/// - `position_value`: weight on cardinal/T/corner square occupancy.
+/// - `cardinal_mill`: weight on mills formed along the four cardinal lines.
+/// - `near_fly_bonus`: weight on being at the fly threshold (`3` pieces).
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
-pub struct MillEvalWeights {
+pub struct MillPhaseEvalWeights {
     pub piece_value: i32,
     pub mobility: i32,
     pub mill_count: i32,
+    pub position_value: i32,
+    pub cardinal_mill: i32,
+    pub near_fly_bonus: i32,
+}
+
+impl MillPhaseEvalWeights {
+    pub const LEGACY: Self = Self {
+        piece_value: 5,
+        mobility: 1,
+        mill_count: 1,
+        position_value: 0,
+        cardinal_mill: 0,
+        near_fly_bonus: 0,
+    };
+}
+
+/// Phase-aware Mill evaluator weights.
+///
+/// `placing`, `moving_open`, `pre_fly`, and `flying` deliberately share the
+/// same shape so the offline tuner can fit them independently while the
+/// deployed evaluator stays branch-light and integer-only.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub struct MillEvalWeights {
+    pub placing: MillPhaseEvalWeights,
+    pub moving_open: MillPhaseEvalWeights,
+    pub pre_fly: MillPhaseEvalWeights,
+    pub flying: MillPhaseEvalWeights,
+}
+
+/// White-perspective feature vector consumed by the static evaluator and the
+/// offline Texel tuner.  Keeping this in `tgf-mill` prevents training and
+/// deployment from drifting apart as features evolve.
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
+pub struct MillEvalFeatureSet {
+    pub material_diff: i32,
+    pub mobility_diff: i32,
+    pub mill_count_diff: i32,
+    pub position_value_diff: i32,
+    pub cardinal_mill_diff: i32,
+    pub near_fly_diff: i32,
 }
 
 impl MillEvalWeights {
     /// The legacy hard-coded weights.  Scores are identical to the
     /// pre-parameterisation evaluator when these are used.
     pub const LEGACY: Self = Self {
-        piece_value: 5,
-        mobility: 1,
-        mill_count: 1,
+        placing: MillPhaseEvalWeights::LEGACY,
+        moving_open: MillPhaseEvalWeights::LEGACY,
+        pre_fly: MillPhaseEvalWeights::LEGACY,
+        flying: MillPhaseEvalWeights::LEGACY,
+    };
+
+    /// H2H-accepted Rust/TGF default:
+    ///
+    /// - placing/pre-fly keep the legacy weights,
+    /// - moving_open doubles mobility (1 -> 2),
+    /// - flying disables adjacent-square mobility because flying pieces can
+    ///   move to any empty square.
+    ///
+    /// Skill 30 / 200 ms H2H validation:
+    /// - 10000 games: 51.8% +/- 1.6% (99.9% CI)
+    /// - second seed partial 7528 games: 52.3% +/- 1.9% (99.9% CI)
+    pub const TUNED: Self = Self {
+        placing: MillPhaseEvalWeights::LEGACY,
+        moving_open: MillPhaseEvalWeights {
+            mobility: 2,
+            ..MillPhaseEvalWeights::LEGACY
+        },
+        pre_fly: MillPhaseEvalWeights::LEGACY,
+        flying: MillPhaseEvalWeights {
+            mobility: 0,
+            ..MillPhaseEvalWeights::LEGACY
+        },
     };
 }
 
 impl Default for MillEvalWeights {
     fn default() -> Self {
-        Self::LEGACY
+        Self::TUNED
     }
 }
 
 impl MillEvalWeights {
-    /// Read `TGF_EVAL_WEIGHTS=piece_value,mobility,mill_count` from the
-    /// environment.  Returns `None` when the variable is unset so callers
-    /// fall back to `MillEvalWeights::LEGACY` silently.  Panics with a
-    /// clear message on a malformed value so misconfigured A/B runs fail
-    /// loudly rather than silently using wrong weights.
+    /// Read `TGF_EVAL_WEIGHTS` from the environment.
+    ///
+    /// Accepted formats:
+    /// - `piece,mobility,mill_count` (legacy, applies to every phase)
+    /// - `piece,mobility,mill_count,position,cardinal_mill,near_fly`
+    ///   (single phase shape, applies to every phase)
+    /// - 24 comma-separated integers, four 6-value phase blocks in order:
+    ///   placing, moving-open, pre-fly, flying.
     ///
     /// Example: `TGF_EVAL_WEIGHTS=6,2,1`
     pub fn from_env() -> Option<Self> {
         let raw = std::env::var("TGF_EVAL_WEIGHTS").ok()?;
         let parts: Vec<&str> = raw.split(',').collect();
         assert!(
-            parts.len() == 3,
-            "TGF_EVAL_WEIGHTS must be 'piece_value,mobility,mill_count' \
-             (three comma-separated integers); got: {raw}"
+            matches!(parts.len(), 3 | 6 | 24),
+            "TGF_EVAL_WEIGHTS must contain 3, 6, or 24 comma-separated integers; got: {raw}"
         );
-        let parse = |s: &str, name: &str| -> i32 {
+        let parse = |s: &str, idx: usize| -> i32 {
             s.trim()
                 .parse::<i32>()
-                .unwrap_or_else(|_| panic!("TGF_EVAL_WEIGHTS: invalid {name} value '{s}'"))
+                .unwrap_or_else(|_| panic!("TGF_EVAL_WEIGHTS: invalid value #{idx} '{s}'"))
         };
-        Some(Self {
-            piece_value: parse(parts[0], "piece_value"),
-            mobility: parse(parts[1], "mobility"),
-            mill_count: parse(parts[2], "mill_count"),
-        })
+        let values: Vec<i32> = parts
+            .iter()
+            .enumerate()
+            .map(|(idx, part)| parse(part, idx))
+            .collect();
+        Some(Self::from_flat_values(&values))
+    }
+
+    pub fn from_flat_values(values: &[i32]) -> Self {
+        match values.len() {
+            3 => {
+                let phase = MillPhaseEvalWeights {
+                    piece_value: values[0],
+                    mobility: values[1],
+                    mill_count: values[2],
+                    ..MillPhaseEvalWeights::LEGACY
+                };
+                Self::same_for_all_phases(phase)
+            }
+            6 => Self::same_for_all_phases(phase_from_six(values)),
+            24 => Self {
+                placing: phase_from_six(&values[0..6]),
+                moving_open: phase_from_six(&values[6..12]),
+                pre_fly: phase_from_six(&values[12..18]),
+                flying: phase_from_six(&values[18..24]),
+            },
+            _ => panic!("MillEvalWeights requires 3, 6, or 24 values"),
+        }
+    }
+
+    pub fn same_for_all_phases(phase: MillPhaseEvalWeights) -> Self {
+        Self {
+            placing: phase,
+            moving_open: phase,
+            pre_fly: phase,
+            flying: phase,
+        }
+    }
+}
+
+fn phase_from_six(values: &[i32]) -> MillPhaseEvalWeights {
+    assert_eq!(values.len(), 6, "phase weights require six values");
+    MillPhaseEvalWeights {
+        piece_value: values[0],
+        mobility: values[1],
+        mill_count: values[2],
+        position_value: values[3],
+        cardinal_mill: values[4],
+        near_fly_bonus: values[5],
     }
 }
 

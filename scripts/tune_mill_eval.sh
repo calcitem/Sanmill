@@ -12,8 +12,10 @@
 #
 # Optional:
 #   --positions N   Target quiet positions for gen (default: 50000)
+#   --human-db PATH Use NMM_LLM human_db.sqlite as position source
 #   --iters N       Texel fit iterations (default: 500)
 #   --k SCALE       Initial sigmoid scaling K (default: 0.1)
+#   --placing-weight W  Placing-phase sample weight (default: 0.2)
 #   --seed HEX      RNG seed for gen (default: time-based)
 #   --workdir PATH  Output directory (default: target/tune)
 #   --resume        Resume from existing checkpoint / dataset
@@ -36,13 +38,29 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 
+# Format integer seconds as "Xh Ym Zs" (or "Ym Zs" / "Zs" for short durations).
+fmt_time() {
+    local t=$1
+    local h=$(( t / 3600 ))
+    local m=$(( (t % 3600) / 60 ))
+    local s=$(( t % 60 ))
+    if   [ "$h" -gt 0 ]; then printf '%dh %02dm %02ds' "$h" "$m" "$s"
+    elif [ "$m" -gt 0 ]; then printf '%dm %02ds' "$m" "$s"
+    else printf '%ds' "$s"
+    fi
+}
+
+PIPELINE_START=$SECONDS
+
 # --------------------------------------------------------------------------
 # Defaults
 # --------------------------------------------------------------------------
 DB_PATH=""
+HUMAN_DB_PATH=""
 POSITIONS="${POSITIONS:-50000}"
 ITERS="${ITERS:-500}"
 K_SCALE="${K_SCALE:-0.1}"
+PLACING_WEIGHT="${PLACING_WEIGHT:-0.2}"
 SEED="${SEED:-0}"
 WORKDIR="${WORKDIR:-$REPO_ROOT/target/tune}"
 RESUME=""
@@ -59,10 +77,14 @@ while [ $# -gt 0 ]; do
         --db=*)         DB_PATH="${1#*=}"; shift ;;
         --positions)    POSITIONS="$2"; shift 2 ;;
         --positions=*)  POSITIONS="${1#*=}"; shift ;;
+        --human-db)     HUMAN_DB_PATH="$2"; shift 2 ;;
+        --human-db=*)   HUMAN_DB_PATH="${1#*=}"; shift ;;
         --iters)        ITERS="$2"; shift 2 ;;
         --iters=*)      ITERS="${1#*=}"; shift ;;
         --k)            K_SCALE="$2"; shift 2 ;;
         --k=*)          K_SCALE="${1#*=}"; shift ;;
+        --placing-weight) PLACING_WEIGHT="$2"; shift 2 ;;
+        --placing-weight=*) PLACING_WEIGHT="${1#*=}"; shift ;;
         --seed)         SEED="$2"; shift 2 ;;
         --seed=*)       SEED="${1#*=}"; shift ;;
         --workdir)      WORKDIR="$2"; shift 2 ;;
@@ -118,7 +140,8 @@ run_tgf() {
     echo "  repo    = $REPO_ROOT"
     echo "  workdir = $WORKDIR"
     echo "  db      = ${DB_PATH:-<skipped>}"
-    echo "  positions=$POSITIONS  iters=$ITERS  k=$K_SCALE  seed=$SEED"
+    echo "  human_db= ${HUMAN_DB_PATH:-<none>}"
+    echo "  positions=$POSITIONS  iters=$ITERS  k=$K_SCALE  placing_weight=$PLACING_WEIGHT  seed=$SEED"
     echo "========================================"
 } | tee "$LOG_FILE"
 
@@ -128,12 +151,20 @@ run_tgf() {
 if [ -z "$NO_GEN" ]; then
     echo "" | tee -a "$LOG_FILE"
     echo ">> [1/3] Generating positions ..." | tee -a "$LOG_FILE"
-    run_tgf tune-gen \
-        --positions "$POSITIONS" \
-        --out "$POS_FILE" \
-        --seed "$SEED" \
-        ${RESUME:+--resume}
-    echo ">> Stage 1 done: $POS_FILE" | tee -a "$LOG_FILE"
+    _stage_t=$SECONDS
+    if [ -n "$HUMAN_DB_PATH" ]; then
+        run_tgf tune-gen-human \
+            --db "$HUMAN_DB_PATH" \
+            --positions "$POSITIONS" \
+            --out "$POS_FILE"
+    else
+        run_tgf tune-gen \
+            --positions "$POSITIONS" \
+            --out "$POS_FILE" \
+            --seed "$SEED" \
+            ${RESUME:+--resume}
+    fi
+    echo ">> Stage 1 done in $(fmt_time $(( SECONDS - _stage_t ))): $POS_FILE" | tee -a "$LOG_FILE"
 else
     echo ">> [1/3] Skipping gen (--no-gen)" | tee -a "$LOG_FILE"
     if [ ! -f "$POS_FILE" ]; then
@@ -147,12 +178,16 @@ fi
 if [ -z "$NO_LABEL" ]; then
     echo "" | tee -a "$LOG_FILE"
     echo ">> [2/3] Labeling with Perfect DB ..." | tee -a "$LOG_FILE"
+    _stage_t=$SECONDS
     run_tgf tune-label \
         --db "$DB_PATH" \
         --in "$POS_FILE" \
         --out "$LABEL_FILE" \
         ${RESUME:+--resume}
-    echo ">> Stage 2 done: $LABEL_FILE" | tee -a "$LOG_FILE"
+    echo "" | tee -a "$LOG_FILE"
+    echo ">> Label distribution by phase ..." | tee -a "$LOG_FILE"
+    run_tgf tune-stats --in "$LABEL_FILE"
+    echo ">> Stage 2 done in $(fmt_time $(( SECONDS - _stage_t ))): $LABEL_FILE" | tee -a "$LOG_FILE"
 else
     echo ">> [2/3] Skipping label (--no-label)" | tee -a "$LOG_FILE"
     if [ ! -f "$LABEL_FILE" ]; then
@@ -166,14 +201,16 @@ fi
 if [ -z "$NO_FIT" ]; then
     echo "" | tee -a "$LOG_FILE"
     echo ">> [3/3] Fitting weights (Texel logistic regression) ..." | tee -a "$LOG_FILE"
+    _stage_t=$SECONDS
     run_tgf tune-fit \
         --in "$LABEL_FILE" \
         --out "$WEIGHTS_FILE" \
         --iters "$ITERS" \
         --k "$K_SCALE" \
+        --placing-weight "$PLACING_WEIGHT" \
         --checkpoint "$CHECKPOINT_FILE" \
         ${RESUME:+--resume}
-    echo ">> Stage 3 done: $WEIGHTS_FILE" | tee -a "$LOG_FILE"
+    echo ">> Stage 3 done in $(fmt_time $(( SECONDS - _stage_t ))): $WEIGHTS_FILE" | tee -a "$LOG_FILE"
 else
     echo ">> [3/3] Skipping fit (--no-fit)" | tee -a "$LOG_FILE"
 fi
@@ -211,4 +248,4 @@ if [ -n "$DO_H2H" ] && [ -f "$WEIGHTS_FILE" ]; then
 fi
 
 echo "" | tee -a "$LOG_FILE"
-echo ">> All done.  Full log: $LOG_FILE" | tee -a "$LOG_FILE"
+echo ">> All done in $(fmt_time $(( SECONDS - PIPELINE_START ))).  Full log: $LOG_FILE" | tee -a "$LOG_FILE"

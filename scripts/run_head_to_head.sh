@@ -62,6 +62,9 @@ CURRENT_GO="${CURRENT_GO:-go depth 0}"
 MASTER_GO="${MASTER_GO:-go}"
 MINGW_BIN="${MINGW_BIN:-}"
 SELF="${SELF:-}"
+VS_PERFECT="${VS_PERFECT:-}"
+PERFECT_DB_PATH="${PERFECT_DB_PATH:-${OPENING_DB_PATH:-$REPO_ROOT/src/ui/flutter_app/assets/databases}}"
+PERFECT_DB_CACHE="${PERFECT_DB_CACHE:-32}"
 
 usage() {
     cat <<'EOF'
@@ -96,6 +99,9 @@ Options:
       --opening-seed N  seed for paired Perfect DB random openings
       --opening-db PATH Perfect DB asset directory
       --self ENGINE     self-play ENGINE (current|master) instead of vs match
+      --vs-perfect    make the opponent engine use the Perfect DB
+      --perfect-db PATH
+                     Perfect DB directory for --vs-perfect
   -m, --master PATH    path to master_engine
   -c, --current PATH   path to current engine (default: freshly built tgf)
       --current-args A extra args for current engine                  [default: uci]
@@ -163,6 +169,9 @@ while [ $# -gt 0 ]; do
         --opening-db=*) OPENING_DB_PATH="${1#*=}"; shift ;;
         --self)         SELF="$2"; shift 2 ;;
         --self=*)       SELF="${1#*=}"; shift ;;
+        --vs-perfect)   VS_PERFECT=1; shift ;;
+        --perfect-db)   PERFECT_DB_PATH="$2"; shift 2 ;;
+        --perfect-db=*) PERFECT_DB_PATH="${1#*=}"; shift ;;
         -m|--master)    MASTER_ENGINE="$2"; shift 2 ;;
         --master=*)     MASTER_ENGINE="${1#*=}"; shift ;;
         -c|--current)   CURRENT_OVERRIDE="$2"; shift 2 ;;
@@ -334,6 +343,10 @@ fi
 [ "$NEED_MASTER" -eq 1 ] && echo "     master  = $MASTER_ENGINE"
 [ -n "$CURRENT_ENV" ] && echo "     current_env = $CURRENT_ENV"
 [ -n "$MASTER_ENV" ] && echo "     master_env = $MASTER_ENV"
+if [ -n "$VS_PERFECT" ]; then
+    echo "     vs_perfect = on"
+    echo "     perfect_db = $PERFECT_DB_PATH"
+fi
 if [ "$OPENING_PLIES" -gt 0 ] 2>/dev/null; then
     echo "     opening_db = $OPENING_DB_PATH"
     echo "     opening_seed = $OPENING_SEED"
@@ -365,5 +378,8 @@ H2H_OPENING_SEED="$OPENING_SEED" \
 H2H_OPENING_DB_PATH="$(winpath "$OPENING_DB_PATH")" \
 H2H_GO_CURRENT="$CURRENT_GO" \
 H2H_GO_MASTER="$MASTER_GO" \
+H2H_MASTER_USE_PERFECT_DB="${VS_PERFECT:+true}" \
+H2H_MASTER_PERFECT_DB_PATH="$(winpath "$PERFECT_DB_PATH")" \
+H2H_MASTER_PERFECT_DB_CACHE="$PERFECT_DB_CACHE" \
     cargo test -p tgf-cli --release --test head_to_head \
         head_to_head_vs_master -- --ignored --nocapture

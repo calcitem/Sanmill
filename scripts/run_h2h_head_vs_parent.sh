@@ -12,6 +12,9 @@
 #   H2H_CURRENT_ENV=TGF_ENABLE_TT_MOVE=0 \
 #     SKILL=30 MOVETIME_MS=200 PARENT_REV=HEAD^ GAMES=1000 JOBS=20 \
 #     scripts/run_h2h_head_vs_parent.sh  # disable HEAD TT move for A/B
+#   VS_PERFECT=1 PERFECT_DB_PATH=D:/user/Documents/strong \
+#     SKILL=30 MOVETIME_MS=200 PARENT_REV=HEAD GAMES=1000 JOBS=20 \
+#     scripts/run_h2h_head_vs_parent.sh  # current vs Perfect DB opponent
 #
 # Legacy MOVETIME (whole seconds) is still accepted but MOVETIME_MS takes
 # priority when set.
@@ -133,6 +136,14 @@ else
     _TIME_MS=200
 fi
 
+EXTRA_ARGS=()
+if [ -n "${VS_PERFECT:-}" ]; then
+    EXTRA_ARGS+=(--vs-perfect)
+fi
+if [ -n "${PERFECT_DB_PATH:-}" ]; then
+    EXTRA_ARGS+=(--perfect-db "$PERFECT_DB_PATH")
+fi
+
 exec bash "$SCRIPT_DIR/run_head_to_head.sh" \
     --games "${GAMES:-5000}" \
     --skill "${SKILL:-30}" \
@@ -141,4 +152,5 @@ exec bash "$SCRIPT_DIR/run_head_to_head.sh" \
     --n-move-rule "${N_MOVE_RULE:-20}" \
     --endgame-n-move-rule "${ENDGAME_N_MOVE_RULE:-20}" \
     --opening-plies "${OPENING_PLIES:-4}" \
-    --jobs "$JOBS"
+    --jobs "$JOBS" \
+    "${EXTRA_ARGS[@]}"

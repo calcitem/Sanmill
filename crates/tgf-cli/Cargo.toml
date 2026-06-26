@@ -14,3 +14,4 @@ tgf-core   = { path = "../tgf-core" }
 tgf-mill   = { path = "../tgf-mill" }
 tgf-search = { path = "../tgf-search" }
 perfect-db = { path = "../perfect-db", default-features = false }
+rusqlite = { version = "0.32", features = ["bundled"] }

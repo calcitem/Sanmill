@@ -491,20 +491,19 @@ fn mill_board_undo_keeps_full_snapshot_out_of_standard_delta() {
         144,
         "live Mill state must stay cache compact"
     );
-    // MillRules grew by 12 bytes (MillEvalWeights: 3 x i32) + 4 bytes
-    // alignment padding when eval_weights was added (2025-06).  The comment
-    // "cold topology data" still holds: topology is a &'static reference
-    // (8 bytes), not an owned clone.  eval_weights is a tiny Copy struct
-    // (3 x i32 = 12 bytes) that is constant for a search session and is
-    // correct to keep next to the other per-session rule fields.
+    // MillRules carries phase-aware eval weights: four phase blocks with six
+    // i32 weights each.  The comment "cold topology data" still holds:
+    // topology is a &'static reference (8 bytes), not an owned clone.
+    // Eval weights are constant for a search session and belong next to the
+    // other per-session rule fields.
     assert_eq!(
         std::mem::size_of::<MillRules>(),
-        80,
+        160,
         "Mill rules must keep cold topology data out of every workbench"
     );
     assert_eq!(
         std::mem::size_of::<MillWorkbench>(),
-        256,
+        336,
         "search workbench must not carry an owned topology clone"
     );
     assert_eq!(
@@ -4377,11 +4376,7 @@ fn tuned_eval_weights_stay_below_mate_boundary() {
     // Verify with an actual workbench: 9 white pieces in hand, 0 black.
     let rules = MillRules::default();
     let mut game = MillGame::default();
-    game.set_eval_weights(MillEvalWeights {
-        piece_value: max_piece_value,
-        mobility: 1,
-        mill_count: 1,
-    });
+    game.set_eval_weights(MillEvalWeights::from_flat_values(&[max_piece_value, 1, 1]));
     let state = MillState {
         phase: MillPhase::Placing,
         pieces_in_hand: [9, 0],

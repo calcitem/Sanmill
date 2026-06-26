@@ -13,9 +13,9 @@ pub use engine_config::{MillEngineRuntime, MillSearchAlgorithmKind};
 pub use notation::MillUciCodec;
 pub use presets::{MillRulePreset, N_PRESETS, preset_for, rules_for_preset};
 pub use rules::{
-    CaptureRuleConfig, MillActionKind, MillBoardFullAction, MillEvalWeights, MillEvaluator,
-    MillFormationActionInPlacingPhase, MillGame, MillPhase, MillRules, MillVariantOptions,
-    MillWorkbench, StalemateAction,
+    CaptureRuleConfig, MillActionKind, MillBoardFullAction, MillEvalFeatureSet, MillEvalWeights,
+    MillEvaluator, MillFormationActionInPlacingPhase, MillGame, MillPhase, MillPhaseEvalWeights,
+    MillRules, MillState, MillVariantOptions, MillWorkbench, StalemateAction,
 };
 pub use search_depth::{EngineRuntimeOptions, recommended_search_depth};
 pub use text_format::MillFenFormat;

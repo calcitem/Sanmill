@@ -8,8 +8,8 @@
 
 use tgf_core::{Game, GameRules, MoveOrderAlgorithm, MoveOrderContext, Workbench};
 use tgf_mill::{
-    MillBoardFullAction, MillFormationActionInPlacingPhase, MillGame, MillRules, MillUciCodec,
-    MillVariantOptions,
+    MillBoardFullAction, MillEvalWeights, MillFormationActionInPlacingPhase, MillGame, MillRules,
+    MillUciCodec, MillVariantOptions,
 };
 use tgf_search::{SearchPolicy, Searcher};
 
@@ -18,6 +18,21 @@ fn apply_line(rules: &MillRules, snap: &mut tgf_core::GameStateSnapshot, moves: 
         let action = MillUciCodec::decode_action(snap, uci).expect(uci);
         *snap = rules.apply(snap, action);
     }
+}
+
+fn legacy_game(options: MillVariantOptions) -> MillGame {
+    let mut game = MillGame::new(options);
+    game.set_eval_weights(MillEvalWeights::LEGACY);
+    game
+}
+
+fn legacy_game_with_repetition_history(
+    options: MillVariantOptions,
+    root_repetition_history: Vec<u64>,
+) -> MillGame {
+    let mut game = MillGame::new_with_repetition_history(options, root_repetition_history);
+    game.set_eval_weights(MillEvalWeights::LEGACY);
+    game
 }
 
 fn root_search_move_order(snap: &tgf_core::GameStateSnapshot) -> Vec<String> {
@@ -29,7 +44,7 @@ fn root_search_move_order(snap: &tgf_core::GameStateSnapshot) -> Vec<String> {
         hash_move: None,
         shuffle_seed: 0,
     };
-    let game = MillGame::new(MillVariantOptions::default());
+    let game = legacy_game(MillVariantOptions::default());
     let wb = game.build_workbench(snap);
     let mut moves = SearchActionList::new();
     MillGame::generate_legal_ctx(&wb, &mut moves, &ctx);
@@ -86,7 +101,7 @@ fn mtdf_search_at_skill_with_options_and_nodes(
     skill_level: u8,
     options: MillVariantOptions,
 ) -> (String, i32, u64) {
-    let game = MillGame::new(options);
+    let game = legacy_game(options);
     let ctx = MoveOrderContext {
         algorithm: MoveOrderAlgorithm::Mtdf,
         skill_level,
@@ -116,7 +131,7 @@ fn mtdf_search_with_root_history(
     depth: i32,
     skill_level: u8,
 ) -> (String, i32) {
-    let game = MillGame::new_with_repetition_history(options, root_repetition_history);
+    let game = legacy_game_with_repetition_history(options, root_repetition_history);
     let ctx = MoveOrderContext {
         algorithm: MoveOrderAlgorithm::Mtdf,
         skill_level,
@@ -141,7 +156,7 @@ fn mtdf_search_with_root_history(
 fn score_all_legal_at_depth1(snap: &tgf_core::GameStateSnapshot) -> Vec<(String, i32)> {
     use tgf_core::{Game, SearchActionList};
     let options = MillVariantOptions::default();
-    let game = MillGame::new(options);
+    let game = legacy_game(options);
     let ctx = MoveOrderContext {
         algorithm: MoveOrderAlgorithm::Mtdf,
         skill_level: 1,
@@ -381,7 +396,7 @@ fn move15_legal_move_generation_order() {
         hash_move: None,
         shuffle_seed: 0,
     };
-    let game = MillGame::new(MillVariantOptions::default());
+    let game = legacy_game(MillVariantOptions::default());
     let wb = game.build_workbench(&snap);
     let mut moves = SearchActionList::new();
     MillGame::generate_legal_ctx(&wb, &mut moves, &ctx);
@@ -427,7 +442,7 @@ fn move15_repeated_mill_restrictions_on_zero_score_moves() {
         shuffling: false,
         ..Default::default()
     };
-    let game = MillGame::new(MillVariantOptions::default());
+    let game = legacy_game(MillVariantOptions::default());
     let wb = game.build_workbench(&snap);
     let mut moves = SearchActionList::new();
     MillGame::generate_legal_ctx(&wb, &mut moves, &ctx);
@@ -454,7 +469,7 @@ fn move15_move_order_bias_and_sorted_order() {
         hash_move: None,
         shuffle_seed: 0,
     };
-    let game = MillGame::new(MillVariantOptions::default());
+    let game = legacy_game(MillVariantOptions::default());
     let wb = game.build_workbench(&snap);
     let mut moves = SearchActionList::new();
     MillGame::generate_legal_ctx(&wb, &mut moves, &ctx);
@@ -670,7 +685,7 @@ fn faithful_selfplay_opts(
     use tgf_mill::{EngineRuntimeOptions, recommended_search_depth};
 
     let rules = MillRules::new(options.clone());
-    let game = MillGame::new(options.clone());
+    let game = legacy_game(options.clone());
     let mut snap = rules.initial_state(&[]);
     let mut moves: Vec<String> = Vec::new();
 

@@ -25,6 +25,10 @@
 //   H2H_MASTER_ARGS extra args for master/opponent engine (default empty)
 //   H2H_MASTER_ENV   env assignments for master/opponent engine, KEY=VALUE
 //                    separated by whitespace (default empty)
+//   H2H_CURRENT_USE_PERFECT_DB  true/false, enable DB override for current
+//   H2H_MASTER_USE_PERFECT_DB   true/false, enable DB override for opponent
+//   H2H_CURRENT_PERFECT_DB_PATH DB path for current when enabled
+//   H2H_MASTER_PERFECT_DB_PATH  DB path for opponent when enabled
 //   H2H_GAMES      games per color (default 20)
 //   H2H_SKILL      skill level (default 14)
 //   H2H_MAX_PLIES  ply cap -> over-cap counted as a maneuvering draw (default 200)
@@ -92,6 +96,13 @@ struct EngineOptions {
     endgame_n_move_rule: u32,
 }
 
+#[derive(Clone, Debug, Default)]
+struct EnginePerfectDbOptions {
+    enabled: bool,
+    path: Option<PathBuf>,
+    cache_sectors: Option<usize>,
+}
+
 impl Engine {
     fn spawn(
         program: &str,
@@ -100,6 +111,7 @@ impl Engine {
         go: &str,
         name: &str,
         options: &EngineOptions,
+        perfect_db: &EnginePerfectDbOptions,
     ) -> Engine {
         let mut command = Command::new(program);
         command
@@ -137,10 +149,24 @@ impl Engine {
             ("MoveTimeMs", options.move_time_ms.to_string()),
             ("NMoveRule", options.n_move_rule.to_string()),
             ("EndgameNMoveRule", options.endgame_n_move_rule.to_string()),
-            ("UsePerfectDatabase", "false".to_string()),
         ] {
             e.cmd(&format!("setoption name {k} value {v}"));
         }
+        if let Some(path) = perfect_db.path.as_ref() {
+            e.cmd(&format!(
+                "setoption name PerfectDatabasePath value {}",
+                path.display()
+            ));
+        }
+        if let Some(cache) = perfect_db.cache_sectors {
+            e.cmd(&format!(
+                "setoption name PerfectDatabaseCacheSectors value {cache}"
+            ));
+        }
+        e.cmd(&format!(
+            "setoption name UsePerfectDatabase value {}",
+            if perfect_db.enabled { "true" } else { "false" }
+        ));
         e.cmd("isready");
         assert!(e.wait("readyok").is_some(), "{name}: no readyok");
         e
@@ -670,6 +696,17 @@ fn env_u32(name: &str, default: u32) -> u32 {
         .unwrap_or(default)
 }
 
+fn env_bool(name: &str, default: bool) -> bool {
+    env::var(name)
+        .map(|s| match s.trim().to_ascii_lowercase().as_str() {
+            "" => default,
+            "1" | "true" | "on" | "yes" => true,
+            "0" | "false" | "off" | "no" => false,
+            _ => panic!("{name} must be a boolean, got `{s}`"),
+        })
+        .unwrap_or(default)
+}
+
 fn parse_u64_env_value(name: &str, value: &str) -> u64 {
     let trimmed = value.trim();
     if let Some(hex) = trimmed
@@ -718,6 +755,8 @@ struct MatchConfig {
     go_current: String,
     go_master: String,
     engine_options: EngineOptions,
+    current_perfect_db: EnginePerfectDbOptions,
+    master_perfect_db: EnginePerfectDbOptions,
     variant_options: MillVariantOptions,
     total_games: usize,
     jobs: usize,
@@ -822,6 +861,7 @@ fn run_self_play_parallel(config: MatchConfig, is_master: bool, label: &str) {
                         &config.go_master,
                         &format!("worker-{worker_id}-white"),
                         &config.engine_options,
+                        &config.master_perfect_db,
                     ),
                     Engine::spawn(
                         &config.master,
@@ -830,6 +870,7 @@ fn run_self_play_parallel(config: MatchConfig, is_master: bool, label: &str) {
                         &config.go_master,
                         &format!("worker-{worker_id}-black"),
                         &config.engine_options,
+                        &config.master_perfect_db,
                     ),
                 )
             } else {
@@ -841,6 +882,7 @@ fn run_self_play_parallel(config: MatchConfig, is_master: bool, label: &str) {
                         &config.go_current,
                         &format!("worker-{worker_id}-white"),
                         &config.engine_options,
+                        &config.current_perfect_db,
                     ),
                     Engine::spawn(
                         &config.current,
@@ -849,6 +891,7 @@ fn run_self_play_parallel(config: MatchConfig, is_master: bool, label: &str) {
                         &config.go_current,
                         &format!("worker-{worker_id}-black"),
                         &config.engine_options,
+                        &config.current_perfect_db,
                     ),
                 )
             };
@@ -954,6 +997,7 @@ fn run_vs_parallel(config: MatchConfig) {
                 &config.go_current,
                 &format!("worker-{worker_id}-current"),
                 &config.engine_options,
+                &config.current_perfect_db,
             );
             let mut mas = Engine::spawn(
                 &config.master,
@@ -962,6 +1006,7 @@ fn run_vs_parallel(config: MatchConfig) {
                 &config.go_master,
                 &format!("worker-{worker_id}-master"),
                 &config.engine_options,
+                &config.master_perfect_db,
             );
 
             for game_index in worker_game_indices(worker_id, config.total_games, config.jobs) {
@@ -1115,6 +1160,20 @@ fn head_to_head_vs_master() {
         n_move_rule,
         endgame_n_move_rule,
     };
+    let current_perfect_db = EnginePerfectDbOptions {
+        enabled: env_bool("H2H_CURRENT_USE_PERFECT_DB", false),
+        path: env_path("H2H_CURRENT_PERFECT_DB_PATH"),
+        cache_sectors: env::var("H2H_CURRENT_PERFECT_DB_CACHE")
+            .ok()
+            .and_then(|s| s.parse::<usize>().ok()),
+    };
+    let master_perfect_db = EnginePerfectDbOptions {
+        enabled: env_bool("H2H_MASTER_USE_PERFECT_DB", false),
+        path: env_path("H2H_MASTER_PERFECT_DB_PATH"),
+        cache_sectors: env::var("H2H_MASTER_PERFECT_DB_CACHE")
+            .ok()
+            .and_then(|s| s.parse::<usize>().ok()),
+    };
 
     let options = MillVariantOptions {
         n_move_rule,
@@ -1137,6 +1196,8 @@ fn head_to_head_vs_master() {
         go_current: go_current.clone(),
         go_master: go_master.clone(),
         engine_options,
+        current_perfect_db: current_perfect_db.clone(),
+        master_perfect_db: master_perfect_db.clone(),
         variant_options: options,
         total_games: total,
         jobs,
@@ -1152,14 +1213,14 @@ fn head_to_head_vs_master() {
         let is_master = mode == "self-master";
         let label = if is_master { "master" } else { "current" };
         eprintln!(
-            "Self-play: {label} vs {label}  (rows = board side)\n  skill={skill} movetime_ms={move_time_ms} shuffling=on algo=MTD(f) games={total} jobs={jobs} ply_cap={max_plies} n_move={n_move_rule} endgame_n_move={endgame_n_move_rule} {opening_config}\n  current_env={current_env:?} master_env={master_env:?}"
+            "Self-play: {label} vs {label}  (rows = board side)\n  skill={skill} movetime_ms={move_time_ms} shuffling=on algo=MTD(f) games={total} jobs={jobs} ply_cap={max_plies} n_move={n_move_rule} endgame_n_move={endgame_n_move_rule} {opening_config}\n  current_env={current_env:?} master_env={master_env:?}\n  current_db={current_perfect_db:?} master_db={master_perfect_db:?}"
         );
         run_self_play_parallel(config, is_master, label);
     } else {
         // vs mode: current vs master, alternating colours each game so the live
         // rates are not skewed by Black's structural edge until colours balance.
         eprintln!(
-            "Head-to-head: current=`{current}` vs master=`{master}`  (rows = current's colour)\n  skill={skill} movetime_ms={move_time_ms} shuffling=on algo=MTD(f) games/color={games} jobs={jobs} ply_cap={max_plies} n_move={n_move_rule} endgame_n_move={endgame_n_move_rule} {opening_config}\n  current_args={current_args:?} master_args={master_args:?}\n  current_env={current_env:?} master_env={master_env:?}\n  go_current=`{go_current}` go_master=`{go_master}`"
+            "Head-to-head: current=`{current}` vs master=`{master}`  (rows = current's colour)\n  skill={skill} movetime_ms={move_time_ms} shuffling=on algo=MTD(f) games/color={games} jobs={jobs} ply_cap={max_plies} n_move={n_move_rule} endgame_n_move={endgame_n_move_rule} {opening_config}\n  current_args={current_args:?} master_args={master_args:?}\n  current_env={current_env:?} master_env={master_env:?}\n  current_db={current_perfect_db:?} master_db={master_perfect_db:?}\n  go_current=`{go_current}` go_master=`{go_master}`"
         );
         run_vs_parallel(config);
     }

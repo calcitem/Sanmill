@@ -1586,75 +1586,89 @@ Behavior-changing or high-risk experiments:
   is used.  Use `MOVETIME_MS=500` to restore 0.5 s if faster matches produce
   noisy results.
 
-- Mill eval-weight parameterisation (2026-06-25, commits `2408355dc` +
-  `f214e7cca`):  Introduced `MillEvalWeights { piece_value, mobility, mill_count }`
-  attached to `MillRules` and `MillGame`.  `MillEvaluator::score` now reads from
-  `wb.rules.eval_weights` instead of local `const` bindings.  Defaults
-  (`MillEvalWeights::LEGACY = {5, 1, 1}`) reproduce the pre-change scores exactly.
-  Injection channel: `TGF_EVAL_WEIGHTS=piece_value,mobility,mill_count` environment
-  variable read by `MillEvalWeights::from_env()` (tgf-mill) and applied by CLI
-  and FRB search paths before each session.
+- Mill eval-weight parameterisation and accepted tuned default (2026-06-25/26):
+  `MillEvalWeights` is now phase-aware: placing, moving_open, pre_fly, and
+  flying each carry six integer weights: piece_value, mobility, mill_count,
+  position_value, cardinal_mill, and near_fly_bonus.  `LEGACY` remains
+  bit-identical to the retired C++ evaluator: all phase blocks use
+  `{5,1,1,0,0,0}`.  The Rust/TGF default is now the H2H-accepted `TUNED`
+  profile:
 
-- Perfect-DB supervised Texel tuning pipeline (2026-06-25, commits `e75d855c9` +
-  `4c70b0dd8`):  Three new tgf-cli subcommands implement a fully automated
-  offline eval-weight fitting pipeline:
+  - placing: `{5,1,1,0,0,0}`
+  - moving_open: `{5,2,1,0,0,0}` (double mobility)
+  - pre_fly: `{5,1,1,0,0,0}`
+  - flying: `{5,0,1,0,0,0}` (disable adjacent mobility)
 
-  `tgf tune-gen   --positions N --out PATH [--seed S]`
-    Samples quiet positions (pending_removals == 0) from random self-play walks.
-    Deduplicates by Zobrist key.  Output: pipe-delimited JSONL-like dataset.
+  `TGF_EVAL_WEIGHTS` remains backward-compatible with the old 3-value form,
+  accepts a 6-value single-phase form, and accepts the new 24-value phase-aware
+  form emitted by `tune-fit`.
+
+- Perfect-DB Texel tuning lesson learned: the first 10k-game 3-weight
+  tuned-vs-baseline H2H finished at Score 50.1% +/- 1.6% (99.9% CI), i.e.
+  no significant gain.  The later phase-aware pipeline used NMM_LLM human DB
+  positions, deterministic train/holdout shuffle, L2 regularization, small-phase
+  folding, and data-driven quantization.  The stable signal was not the new
+  structural features; they quantized to zero.  The robust improvement was
+  purely phase semantics: moving mobility should be stronger, while flying
+  mobility should be off.
+
+  H2H validation of the final default:
+  - Seed 1, 10000 games: Score 51.8% +/- 1.6% (99.9% CI), lower bound 50.2%.
+  - Seed 2, stopped at 7528/20000 games: Score 52.3% +/- 1.9% (99.9% CI),
+    lower bound 50.4%.
+
+  Both independent samples pass the acceptance gate (99.9% CI lower bound > 50).
+  Approximate combined effect is about +14 Elo at Skill 30 / 200 ms.
+
+- Current tuning commands:
+
+  `tgf tune-gen --positions N --out PATH [--seed S]`
+    Samples quiet positions from random self-play walks.
+
+  `tgf tune-gen-human --db D:/Repo/NMM_LLM/data/human_db.sqlite --out PATH`
+    Samples canonical positions from the NMM_LLM human-game SQLite DB and
+    reconstructs Sanmill FEN records.  Labels are still filled by Sanmill's own
+    Perfect DB path later.
 
   `tgf tune-label --db PATH [--in PATH] [--out PATH] [--cache N] [--resume]`
-    Annotates positions with Perfect DB WDL labels using
-    `evaluate_state_with_database` (sector LRU cache, default 32 sectors).
-    Only the standard Nine Men's Morris DB is used (std variant, 498 sectors).
-    Positions whose DB sector is absent keep wdl=? and are skipped by tune-fit.
-    In-place update via atomic rename.
+    Annotates WDL/STEPS with Sanmill Perfect DB.  It sorts records by sector
+    before probing by default to improve locality; pass `--no-sector-sort` to
+    restore input order.
 
-  `tgf tune-fit   --in PATH [--out PATH] [--iters N] [--k K] [--resume]`
-    Texel logistic regression: minimises `(1/|S|) Σ (sigmoid(k*eval) - result)²`
-    via coordinate descent over [piece_value, mobility, mill_count, k].
-    20% holdout split; best-so-far by holdout loss (prevents overfitting).
-    Checkpoint saved every 10 iterations (atomic write + rename); --resume
-    restores from checkpoint.  Outputs `TGF_EVAL_WEIGHTS=pv,mob,mc` artifact.
-    Feature contribution analysis printed at end.
+  `tgf tune-stats --in PATH`
+    Prints W/D/L/draw% by phase.  Use this before fitting to verify whether
+    placing is dominated by draw labels.
 
-  `bash scripts/tune_mill_eval.sh --db PATH [--positions N] [--iters N] ...`
-    Orchestrates all three stages end-to-end; supports --resume, --no-gen,
-    --no-label, --no-fit, --h2h for automatic H2H verification.
+  `tgf tune-fit --in PATH [--placing-weight 0.2] [--iters N] [--k K]`
+    Performs phase-aware coordinate descent over 24 weights plus K.  Training
+    and deployed search share the exact feature extractor via
+    `MillRules::eval_features`, preventing feature drift.
 
-  Quantization constraint: `piece_value` capped at 7 (MAX_PIECE_VALUE) so
-  worst-case placing-phase eval (7 × 9 = 63) stays below mate boundary (80).
-  Two safety tests validate this: `tuned_eval_weights_stay_below_mate_boundary`
-  and `tuned_eval_fits_in_tt_i16`.
+  `bash scripts/tune_mill_eval.sh --db PATH [--human-db PATH] ...`
+    Orchestrates gen -> label -> stats -> fit.  With `--human-db`, the position
+    source is the NMM_LLM human DB instead of random self-play.
 
-  End-to-end usage:
+  H2H:
+
   ```bash
-  bash scripts/tune_mill_eval.sh \
-    --db "D:/user/Documents/strong" \
-    --positions 50000 \
-    --iters 500 \
-    --workdir target/tune
-  # Produced weights: target/tune/tune_weights.txt → TGF_EVAL_WEIGHTS=pv,mob,mc
-  # H2H verification:
-  TGF_EVAL_WEIGHTS=5,1,1 SKILL=30 MOVETIME_MS=200 \
-    GAMES=10000 JOBS=20 bash scripts/run_h2h_head_vs_parent.sh
+  SKILL=30 MOVETIME_MS=200 PARENT_REV=<pre-tuned-rev> GAMES=10000 JOBS=20 \
+    bash scripts/run_h2h_head_vs_parent.sh
   ```
 
-  Residual open items:
-  - H2H verification with actual tuned weights has not yet been run (requires
-    a full tune pipeline pass on the complete DB).  Run scripts/tune_mill_eval.sh
-    to generate weights, then use the H2H command above.
-  - Only material (piece_value), mobility (weight 1), and mill_count are tuned
-    in the first iteration.  Higher-value features (mill_threat, two_config,
-    blocked, fork) can be added later but each requires a performance gate
-    (weight=0 node-preserving NPS regression < ~2%) before being accepted.
-  - FRB / Flutter path reads TGF_EVAL_WEIGHTS at search-session start; this
-    is suitable for CLI/CI testing but not for production App tuning (env injection
-    in App context needs a separate config path).
-  - Scale redesign (optional, high risk): current mate=80 restricts piece_value
-    to ≤7, limiting dynamic range.  A full scale-up (Stockfish style, mate ≫ 80)
-    would require TT mate-distance re-encoding, UCI score-mate reformat, and
-    MTD(f) window adjustment — a separate high-risk workstream.
+  For custom weights during experiments, set `H2H_CURRENT_ENV='TGF_EVAL_WEIGHTS=...'`
+  so only the candidate engine receives the override.
+
+  Absolute vs Perfect DB:
+
+  ```bash
+  VS_PERFECT=1 PERFECT_DB_PATH="D:/user/Documents/strong" \
+    SKILL=30 MOVETIME_MS=200 PARENT_REV=<pre-tuned-rev> GAMES=10000 JOBS=20 \
+    bash scripts/run_h2h_head_vs_parent.sh
+  ```
+
+  Residual open item: the high-risk eval scale redesign remains intentionally
+  disabled.  The accepted tuned profile fits within the existing mate=80 scale,
+  so no TT/UCI/MTD(f) score-scale redesign is justified.
 
 ## Report format
 

@@ -5,6 +5,7 @@
 //
 //   tgf tune gen   [--positions N] [--out PATH] [--seed N] [--depth D]
 //   tgf tune label [--in PATH] [--out PATH] [--db PATH] [--resume]
+//   tgf tune stats [--in PATH]
 //   tgf tune fit   [--in PATH] [--out PATH] [--iters N] [--k SCALE]
 //                  [--checkpoint PATH] [--resume]
 //
@@ -25,12 +26,16 @@
 // it with WDL/STEPS filled.  tune-fit reads labeled lines only.
 
 mod datagen;
+mod datagen_human;
 mod fit;
 mod label;
+mod stats;
 
 pub(crate) use datagen::run_gen;
+pub(crate) use datagen_human::run_gen_human;
 pub(crate) use fit::run_fit;
 pub(crate) use label::run_label;
+pub(crate) use stats::run_stats;
 
 /// One sampled position, including extracted features.
 #[derive(Clone, Debug)]

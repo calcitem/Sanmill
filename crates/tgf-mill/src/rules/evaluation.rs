@@ -5,8 +5,9 @@
 // keeps `mod.rs` focused on the rules / move dispatch surface.
 
 use super::{
-    MillBoardFullAction, MillPhase, MillState, MillVariantOptions, StalemateAction,
-    board_occupied_bitboard, live_occupied_bitboard, live_piece, node_bit,
+    MillBoardFullAction, MillEvalFeatureSet, MillEvalWeights, MillPhase, MillPhaseEvalWeights,
+    MillState, MillVariantOptions, StalemateAction, board_occupied_bitboard,
+    live_occupied_bitboard, live_piece, node_bit,
 };
 
 // Limit inverted bitboards to the 24 real board nodes.  Rust's `!u32`
@@ -14,6 +15,21 @@ use super::{
 // square counts include non-board bits when the expression is not already
 // intersected by a topology mask.
 const MILL_BOARD_MASK: u32 = (1_u32 << 24) - 1;
+const DEGREE4_NODE_MASK: u32 = node_bit(8) | node_bit(10) | node_bit(12) | node_bit(14);
+const DEGREE3_NODE_MASK: u32 = node_bit(0)
+    | node_bit(2)
+    | node_bit(4)
+    | node_bit(6)
+    | node_bit(16)
+    | node_bit(18)
+    | node_bit(20)
+    | node_bit(22);
+const CARDINAL_LINE_MASKS: [u32; 4] = [
+    node_bit(0) | node_bit(8) | node_bit(16),
+    node_bit(2) | node_bit(10) | node_bit(18),
+    node_bit(4) | node_bit(12) | node_bit(20),
+    node_bit(6) | node_bit(14) | node_bit(22),
+];
 
 /// Mirror of `Position::shouldConsiderMobility()` in option.h: enabled
 /// when the user requested mobility scoring or when blocking-path focus
@@ -63,6 +79,135 @@ pub(super) fn mills_pieces_count_difference(
     _options: &MillVariantOptions,
 ) -> i32 {
     state.formed_mills_bb[0].count_ones() as i32 - state.formed_mills_bb[1].count_ones() as i32
+}
+
+pub(super) fn eval_features(state: &MillState, options: &MillVariantOptions) -> MillEvalFeatureSet {
+    let effective_on_board = legacy_removal_count_view(state, options);
+    let in_hand_diff = i32::from(state.pieces_in_hand[0]) - i32::from(state.pieces_in_hand[1]);
+    let on_board_diff = i32::from(effective_on_board[0]) - i32::from(effective_on_board[1]);
+    let material_diff = match state.phase {
+        MillPhase::Placing => in_hand_diff + on_board_diff,
+        MillPhase::Moving => on_board_diff,
+        _ => 0,
+    };
+    MillEvalFeatureSet {
+        material_diff,
+        mobility_diff: mobility_diff(state, options),
+        mill_count_diff: mills_pieces_count_difference(state, options),
+        position_value_diff: position_value_diff(state),
+        cardinal_mill_diff: cardinal_mill_diff(state),
+        near_fly_diff: near_fly_diff(state, options),
+    }
+}
+
+pub(super) fn legacy_removal_count_view(
+    state: &MillState,
+    options: &MillVariantOptions,
+) -> [u8; 2] {
+    let mut counts = state.pieces_on_board;
+    if !matches!(
+        options.mill_formation_action_in_placing_phase,
+        super::MillFormationActionInPlacingPhase::RemovalBasedOnMillCounts
+    ) {
+        return counts;
+    }
+    if state.phase != MillPhase::Moving {
+        return counts;
+    }
+
+    let own_pending = [
+        state.remove_own_piece(0) && state.pending_removals[0] > 0,
+        state.remove_own_piece(1) && state.pending_removals[1] > 0,
+    ];
+    let pending_side = match own_pending {
+        [true, false] => 0_usize,
+        [false, true] => 1_usize,
+        _ => return counts,
+    };
+    let completed_side = pending_side ^ 1;
+    if state.pending_removals[completed_side] != 0 || state.remove_own_piece(completed_side) {
+        return counts;
+    }
+
+    counts[pending_side] = counts[pending_side].saturating_sub(1);
+    counts[completed_side] = counts[completed_side].saturating_add(1);
+    counts
+}
+
+pub(super) fn phase_weights<'a>(
+    state: &MillState,
+    options: &MillVariantOptions,
+    weights: &'a MillEvalWeights,
+) -> &'a MillPhaseEvalWeights {
+    match state.phase {
+        MillPhase::Placing => &weights.placing,
+        MillPhase::Moving if flying_phase_active(state, options) => &weights.flying,
+        MillPhase::Moving if pre_fly_phase_active(state, options) => &weights.pre_fly,
+        MillPhase::Moving => &weights.moving_open,
+        _ => &weights.moving_open,
+    }
+}
+
+pub(super) fn evaluate_features(
+    features: MillEvalFeatureSet,
+    weights: &MillPhaseEvalWeights,
+) -> i32 {
+    weights.piece_value * features.material_diff
+        + weights.mobility * features.mobility_diff
+        + weights.mill_count * features.mill_count_diff
+        + weights.position_value * features.position_value_diff
+        + weights.cardinal_mill * features.cardinal_mill_diff
+        + weights.near_fly_bonus * features.near_fly_diff
+}
+
+fn position_value_diff(state: &MillState) -> i32 {
+    let white = 2 * (state.by_color_bb[0] & DEGREE4_NODE_MASK).count_ones() as i32
+        + (state.by_color_bb[0] & DEGREE3_NODE_MASK).count_ones() as i32;
+    let black = 2 * (state.by_color_bb[1] & DEGREE4_NODE_MASK).count_ones() as i32
+        + (state.by_color_bb[1] & DEGREE3_NODE_MASK).count_ones() as i32;
+    white - black
+}
+
+fn cardinal_mill_diff(state: &MillState) -> i32 {
+    let count = |bb: u32| -> i32 {
+        CARDINAL_LINE_MASKS
+            .iter()
+            .filter(|&&mask| (bb & mask) == mask)
+            .count() as i32
+    };
+    count(state.by_color_bb[0]) - count(state.by_color_bb[1])
+}
+
+fn near_fly_diff(state: &MillState, options: &MillVariantOptions) -> i32 {
+    if !options.may_fly {
+        return 0;
+    }
+    let threshold = options.fly_piece_count;
+    let white = if state.pieces_on_board[0] == threshold {
+        1
+    } else {
+        0
+    };
+    let black = if state.pieces_on_board[1] == threshold {
+        1
+    } else {
+        0
+    };
+    white - black
+}
+
+fn flying_phase_active(state: &MillState, options: &MillVariantOptions) -> bool {
+    options.may_fly
+        && (state.pieces_on_board[0] <= options.fly_piece_count
+            || state.pieces_on_board[1] <= options.fly_piece_count)
+}
+
+fn pre_fly_phase_active(state: &MillState, options: &MillVariantOptions) -> bool {
+    if !options.may_fly {
+        return false;
+    }
+    let pre_fly = options.fly_piece_count.saturating_add(1);
+    state.pieces_on_board[0] == pre_fly || state.pieces_on_board[1] == pre_fly
 }
 
 /// Translation of `Position::calculate_mobility_diff`: every empty (or

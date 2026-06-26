@@ -1052,6 +1052,7 @@ name = "tgf-cli"
 version = "0.1.0"
 dependencies = [
  "perfect-db",
+ "rusqlite",
  "tgf-core",
  "tgf-mill",
  "tgf-search",

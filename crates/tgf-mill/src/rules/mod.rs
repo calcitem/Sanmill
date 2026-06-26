@@ -49,8 +49,9 @@ mod zobrist;
 
 use types::MillActionState;
 pub use types::{
-    CaptureRuleConfig, MillActionKind, MillBoardFullAction, MillEvalWeights,
-    MillFormationActionInPlacingPhase, MillPhase, MillVariantOptions, StalemateAction,
+    CaptureRuleConfig, MillActionKind, MillBoardFullAction, MillEvalFeatureSet, MillEvalWeights,
+    MillFormationActionInPlacingPhase, MillPhase, MillPhaseEvalWeights, MillVariantOptions,
+    StalemateAction,
 };
 
 use state_impl::sync_action_state;
@@ -252,11 +253,11 @@ pub struct MillRules {
     options: MillVariantOptions,
     topology: &'static MillTopology,
     standard_fast_path: bool,
-    /// Tunable evaluator weights.  Default is `MillEvalWeights::LEGACY`,
-    /// which matches the hard-coded constants used before this field was
-    /// introduced and produces a bit-identical search tree.  Inject tuned
-    /// weights via `MillRules::set_eval_weights` before building a workbench
-    /// for a search session; changing weights mid-session is not supported.
+    /// Tunable evaluator weights.  Default is `MillEvalWeights::TUNED`;
+    /// `MillEvalWeights::LEGACY` remains available for parity audits against
+    /// the retired C++ engine.  Inject custom weights via
+    /// `MillRules::set_eval_weights` before building a workbench for a search
+    /// session; changing weights mid-session is not supported.
     pub(crate) eval_weights: MillEvalWeights,
 }
 
@@ -265,9 +266,8 @@ pub struct MillGame {
     options: MillVariantOptions,
     root_repetition_history: Vec<u64>,
     root_position_resets_repetition: bool,
-    /// Tunable eval weights forwarded to every workbench built from this
-    /// game instance.  Defaults to MillEvalWeights::LEGACY (bit-identical
-    /// to the pre-tuning evaluator).
+    /// Tunable eval weights forwarded to every workbench built from this game
+    /// instance.  Defaults to MillEvalWeights::TUNED.
     eval_weights: MillEvalWeights,
 }
 
@@ -445,8 +445,8 @@ impl MillRules {
     /// Replace the tunable evaluator weights for this rule set.
     ///
     /// Call before building a workbench for a search session; changing
-    /// weights mid-session is not supported.  The default weights produce
-    /// a bit-identical search tree to the pre-parameterisation evaluator.
+    /// weights mid-session is not supported.  Use `MillEvalWeights::LEGACY`
+    /// explicitly when auditing retired C++ parity.
     pub fn set_eval_weights(&mut self, weights: MillEvalWeights) {
         self.eval_weights = weights;
     }
@@ -454,6 +454,13 @@ impl MillRules {
     /// Borrow the variant options used when this `MillRules` was constructed.
     pub fn options(&self) -> &MillVariantOptions {
         &self.options
+    }
+
+    /// Extract the same White-perspective feature vector used by
+    /// `MillEvaluator::score`.  Offline tuning tools call this after FEN
+    /// import so training and deployed evaluation use identical features.
+    pub fn eval_features(&self, state: &MillState) -> MillEvalFeatureSet {
+        evaluation::eval_features(state, &self.options)
     }
 
     /// Count the mill lines through `to` (optionally treating the square at

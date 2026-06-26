@@ -256,9 +256,12 @@ fn eval_weights_from_env_parses_valid_triple() {
         let weights = tgf_mill::MillEvalWeights::from_env()
             .expect("TGF_EVAL_WEIGHTS=7,3,2 must parse successfully");
         unsafe { std::env::remove_var("TGF_EVAL_WEIGHTS") };
-        assert_eq!(weights.piece_value, 7);
-        assert_eq!(weights.mobility, 3);
-        assert_eq!(weights.mill_count, 2);
+        assert_eq!(weights.placing.piece_value, 7);
+        assert_eq!(weights.placing.mobility, 3);
+        assert_eq!(weights.placing.mill_count, 2);
+        assert_eq!(weights.moving_open, weights.placing);
+        assert_eq!(weights.pre_fly, weights.placing);
+        assert_eq!(weights.flying, weights.placing);
     }
 }
 

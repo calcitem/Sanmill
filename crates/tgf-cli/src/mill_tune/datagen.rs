@@ -20,7 +20,7 @@
 use std::collections::HashSet;
 use std::fs::{File, OpenOptions};
 use std::io::{BufRead, BufReader, BufWriter, Write};
-use std::time::{Duration, SystemTime, UNIX_EPOCH};
+use std::time::{Duration, Instant, SystemTime, UNIX_EPOCH};
 
 use tgf_core::{ActionList, Game, GameRules, Workbench};
 use tgf_mill::{MillActionKind, MillGame, MillRules, MillVariantOptions};
@@ -75,6 +75,7 @@ pub(crate) fn run_gen(args: &[String]) {
     let mut games_played = 0usize;
     let mut positions_visited = 0usize;
     let mut filtered_removing = 0usize;
+    let start_time = Instant::now();
 
     let progress_every = n_positions / 20; // every 5%
 
@@ -145,11 +146,21 @@ pub(crate) fn run_gen(args: &[String]) {
                     collected += 1;
 
                     if progress_every > 0 && collected.is_multiple_of(progress_every) {
+                        let elapsed = start_time.elapsed().as_secs_f64();
+                        let eta_str = if collected > 0 && elapsed > 0.1 {
+                            let rate = collected as f64 / elapsed;
+                            let remaining_secs =
+                                (n_positions.saturating_sub(collected)) as f64 / rate;
+                            format!("  ETA {}", fmt_secs(remaining_secs))
+                        } else {
+                            String::new()
+                        };
                         eprintln!(
                             "[tune gen] {collected}/{n_positions} ({:.0}%)  \
-                             games={games_played} visited={positions_visited} \
-                             skip_removing={filtered_removing}",
-                            collected as f64 * 100.0 / n_positions as f64
+                             elapsed={}  games={games_played} visited={positions_visited} \
+                             skip_removing={filtered_removing}{eta_str}",
+                            collected as f64 * 100.0 / n_positions as f64,
+                            fmt_secs(elapsed),
                         );
                         writer.flush().expect("flush failed");
                     }
@@ -173,10 +184,26 @@ pub(crate) fn run_gen(args: &[String]) {
     }
 
     writer.flush().expect("final flush failed");
+    let elapsed = start_time.elapsed().as_secs_f64();
     eprintln!(
-        "[tune gen] done: {collected} unique quiet positions  \
-         games={games_played} visited={positions_visited} skip_removing={filtered_removing}"
+        "[tune gen] done in {}: {collected} unique quiet positions  \
+         games={games_played} visited={positions_visited} skip_removing={filtered_removing}",
+        fmt_secs(elapsed),
     );
+}
+
+fn fmt_secs(secs: f64) -> String {
+    let secs = secs.max(0.0) as u64;
+    let h = secs / 3600;
+    let m = (secs % 3600) / 60;
+    let s = secs % 60;
+    if h > 0 {
+        format!("{h}h{m:02}m{s:02}s")
+    } else if m > 0 {
+        format!("{m}m{s:02}s")
+    } else {
+        format!("{s}s")
+    }
 }
 
 fn xorshift64(state: &mut u64) -> u64 {
