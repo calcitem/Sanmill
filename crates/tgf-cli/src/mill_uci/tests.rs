@@ -374,8 +374,45 @@ fn default_go_depth_uses_recommended_depth() {
 
     let go = parse_go_options("go", snap.side_to_move, &cfg);
     assert_eq!(go.depth, 0, "missing depth is represented as auto");
+    assert!(
+        !go.depth_is_explicit,
+        "missing depth must remain distinguishable from go depth 0"
+    );
     let depth = effective_search_depth(&options, &snap, go.depth, &cfg);
     assert_eq!(depth, 5);
+}
+
+#[test]
+fn go_depth_marks_depth_as_explicit() {
+    let rules = MillRules::new(MillVariantOptions::default());
+    let snap = rules.initial_state(&[]);
+    let cfg = EngineConfig::default();
+
+    let go = parse_go_options("go depth 10", snap.side_to_move, &cfg);
+
+    assert_eq!(go.depth, 10);
+    assert!(go.depth_is_explicit);
+}
+
+#[test]
+fn lazy_smp_fixed_depth_workers_do_not_stagger_depth() {
+    let rules = MillRules::new(MillVariantOptions::default());
+    let snap = rules.initial_state(&[]);
+    let cfg = EngineConfig::default();
+
+    let fixed_depth_go = parse_go_options("go depth 10", snap.side_to_move, &cfg);
+    let fixed_workers = lazy_smp_workers_for_go(4, &fixed_depth_go);
+    assert!(fixed_workers.iter().all(|worker| worker.extra_depth == 0));
+
+    let auto_depth_go = parse_go_options("go", snap.side_to_move, &cfg);
+    let auto_workers = lazy_smp_workers_for_go(4, &auto_depth_go);
+    assert_eq!(
+        auto_workers
+            .iter()
+            .map(|worker| worker.extra_depth)
+            .collect::<Vec<_>>(),
+        vec![0, 1, 0, 1]
+    );
 }
 
 #[test]

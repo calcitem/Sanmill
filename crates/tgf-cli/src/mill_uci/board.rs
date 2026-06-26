@@ -228,6 +228,7 @@ pub(super) fn parse_position_command(rules: &MillRules, line: &str) -> ParsedPos
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub(super) struct GoOptions {
     pub(super) depth: i32,
+    pub(super) depth_is_explicit: bool,
     pub(super) movetime_ms: Option<u64>,
     pub(super) node_limit: Option<u64>,
 }
@@ -264,12 +265,14 @@ pub(super) fn parse_go_options(
     if tokens.contains(&"infinite") || tokens.contains(&"ponder") {
         return GoOptions {
             depth: 64,
+            depth_is_explicit: false,
             movetime_ms: None,
             node_limit: None,
         };
     }
 
-    let depth = find_i32("depth").unwrap_or(0).max(0);
+    let explicit_depth = find_i32("depth");
+    let depth = explicit_depth.unwrap_or(0).max(0);
     let node_limit = find_u64("nodes");
 
     // Explicit go movetime takes highest priority.
@@ -298,6 +301,7 @@ pub(super) fn parse_go_options(
 
     GoOptions {
         depth,
+        depth_is_explicit: explicit_depth.is_some(),
         movetime_ms,
         node_limit,
     }

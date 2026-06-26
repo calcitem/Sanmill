@@ -27,7 +27,7 @@ use tgf_mill::{
 };
 use tgf_search::{
     LazySmpWorker, MctsOptions, MctsSearcher, SearchAbortHandle, SearchOptions, SearchPolicy,
-    SearchResult, Searcher, SharedTt, lazy_smp_search,
+    SearchResult, Searcher, SharedTt,
 };
 
 mod bench;
@@ -552,29 +552,24 @@ fn spawn_search(
     } else {
         let abort_for_workers = Arc::clone(&abort);
         thread::spawn(move || {
-            let workers: Vec<LazySmpWorker> = (0..threads)
-                .map(|i| LazySmpWorker {
-                    extra_depth: (i % 2) as i32,
-                })
-                .collect();
+            let workers = lazy_smp_workers_for_go(threads, &go);
             shared_tt.bump_age();
-            let game = MillGame::new_with_repetition_context(
+            let outcome = run_configured_lazy_smp_search(LazySmpSearchInput {
                 options,
+                state,
                 root_repetition_history,
                 root_position_resets_repetition,
-            );
-            let result = lazy_smp_search::<MillGame>(
-                game,
-                state,
                 depth,
-                &workers,
+                cfg,
+                qsearch_max_depth,
                 search_options,
                 shared_tt,
-                Some(abort_for_workers),
-            );
+                abort: abort_for_workers,
+                workers,
+            });
             let spawn = SpawnResult {
-                depth,
-                result,
+                depth: outcome.depth,
+                result: outcome.result,
                 root_side_to_move,
             };
             println!("{}", format_spawn_result(&spawn));
@@ -587,6 +582,126 @@ fn spawn_search(
         abort_handle,
         receiver: rx,
     }
+}
+
+#[derive(Debug)]
+struct LazySmpWorkerOutcome {
+    depth: i32,
+    result: SearchResult,
+}
+
+struct LazySmpSearchInput {
+    options: MillVariantOptions,
+    state: GameStateSnapshot,
+    root_repetition_history: Vec<u64>,
+    root_position_resets_repetition: bool,
+    depth: i32,
+    cfg: EngineConfig,
+    qsearch_max_depth: i32,
+    search_options: SearchOptions,
+    shared_tt: SharedTt,
+    abort: Arc<AtomicBool>,
+    workers: Vec<LazySmpWorker>,
+}
+
+fn lazy_smp_workers_for_go(threads: usize, go: &GoOptions) -> Vec<LazySmpWorker> {
+    assert!(threads > 1, "lazy SMP requires at least two UCI threads");
+    (0..threads)
+        .map(|i| LazySmpWorker {
+            extra_depth: if go.depth_is_explicit {
+                0
+            } else {
+                (i % 2) as i32
+            },
+        })
+        .collect()
+}
+
+fn run_configured_lazy_smp_search(input: LazySmpSearchInput) -> LazySmpWorkerOutcome {
+    let LazySmpSearchInput {
+        options,
+        state,
+        root_repetition_history,
+        root_position_resets_repetition,
+        depth,
+        cfg,
+        qsearch_max_depth,
+        search_options,
+        shared_tt,
+        abort,
+        workers,
+    } = input;
+    assert!(!workers.is_empty(), "lazy SMP must run at least one worker");
+
+    let mut handles = Vec::with_capacity(workers.len());
+    for worker in workers.iter().copied() {
+        let options_for_worker = options.clone();
+        let root_repetition_history_for_worker = root_repetition_history.clone();
+        let shared_tt_for_worker = shared_tt.clone();
+        let abort_for_worker = Arc::clone(&abort);
+        let mut cfg_for_worker = cfg.clone();
+        cfg_for_worker.use_perfect_database = false;
+        cfg_for_worker.active_perfect_db = None;
+        let worker_depth = (depth + worker.extra_depth).max(1);
+        handles.push(thread::spawn(move || {
+            let mut searcher = mill_searcher_with_shared_tt(shared_tt_for_worker);
+            searcher.set_abort_flag(abort_for_worker);
+            searcher.set_options(search_options);
+            searcher.set_qsearch_max_depth(qsearch_max_depth);
+            let result = run_configured_search(
+                options_for_worker,
+                state,
+                root_repetition_history_for_worker,
+                root_position_resets_repetition,
+                worker_depth,
+                &cfg_for_worker,
+                &mut searcher,
+            );
+            LazySmpWorkerOutcome {
+                depth: worker_depth,
+                result,
+            }
+        }));
+    }
+
+    let mut best: Option<LazySmpWorkerOutcome> = None;
+    let mut total_nodes = 0_u64;
+    for handle in handles {
+        let outcome = handle
+            .join()
+            .expect("lazy SMP worker should return a SearchResult");
+        total_nodes = total_nodes.saturating_add(outcome.result.nodes);
+        if best
+            .as_ref()
+            .is_none_or(|current| lazy_smp_outcome_is_better(&outcome, current))
+        {
+            best = Some(outcome);
+        }
+    }
+
+    let mut best = best.expect("at least one lazy SMP worker should run");
+    best.result.nodes = total_nodes;
+    apply_perfect_database_result(&mut best.result, &options, &state, &cfg);
+    best
+}
+
+fn lazy_smp_outcome_is_better(
+    candidate: &LazySmpWorkerOutcome,
+    current: &LazySmpWorkerOutcome,
+) -> bool {
+    let candidate_valid = lazy_smp_outcome_is_valid(candidate);
+    let current_valid = lazy_smp_outcome_is_valid(current);
+    if candidate_valid != current_valid {
+        return candidate_valid;
+    }
+    if candidate.depth != current.depth {
+        return candidate.depth > current.depth;
+    }
+    candidate.result.score > current.result.score
+}
+
+fn lazy_smp_outcome_is_valid(outcome: &LazySmpWorkerOutcome) -> bool {
+    !outcome.result.best_action.is_none() || outcome.result.draw_reason.is_some()
 }
 
 fn print_eval_decomp(options: &MillVariantOptions, state: GameStateSnapshot) {
@@ -661,25 +776,7 @@ fn run_configured_search(
         select_completed_search_result(final_result, best_so_far, searcher.was_aborted())
     };
 
-    // Perfect-database consultation (P-DB): when enabled and the active rule
-    // variant has matching database assets, prefer the database move over the
-    // search result.  Emits an `aimovetype` info line mirroring the Flutter
-    // shell: `consensus` when search and DB agree, `perfect` when the DB
-    // overrides.
-    if cfg.use_perfect_database
-        && let Some(pd_action) =
-            try_perfect_best_action(&options, &state, perfect_move_ordering(cfg))
-    {
-        let same =
-            action_to_uci(result.best_action).as_deref() == action_to_uci(pd_action).as_deref();
-        if !same {
-            result.best_action = pd_action;
-        }
-        println!(
-            "info string aimovetype={}",
-            if same { "consensus" } else { "perfect" }
-        );
-    }
+    apply_perfect_database_result(&mut result, &options, &state, cfg);
 
     // Fallback chain mirroring master SearchEngine::executeSearch
     // (src/search_engine.cpp:643-680).  When the main search returns
@@ -713,6 +810,32 @@ fn run_configured_search(
         }
     }
     result
+}
+
+fn apply_perfect_database_result(
+    result: &mut SearchResult,
+    options: &MillVariantOptions,
+    state: &GameStateSnapshot,
+    cfg: &EngineConfig,
+) {
+    // Perfect-database consultation (P-DB): when enabled and the active rule
+    // variant has matching database assets, prefer the database move over the
+    // search result.  Emits an `aimovetype` info line mirroring the Flutter
+    // shell: `consensus` when search and DB agree, `perfect` when the DB
+    // overrides.
+    if cfg.use_perfect_database
+        && let Some(pd_action) = try_perfect_best_action(options, state, perfect_move_ordering(cfg))
+    {
+        let same =
+            action_to_uci(result.best_action).as_deref() == action_to_uci(pd_action).as_deref();
+        if !same {
+            result.best_action = pd_action;
+        }
+        println!(
+            "info string aimovetype={}",
+            if same { "consensus" } else { "perfect" }
+        );
+    }
 }
 
 fn select_completed_search_result(
@@ -784,6 +907,7 @@ fn debug_searcher(
         cfg,
         &GoOptions {
             depth,
+            depth_is_explicit: true,
             movetime_ms: None,
             node_limit: None,
         },

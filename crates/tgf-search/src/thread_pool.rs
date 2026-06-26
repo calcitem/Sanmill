@@ -29,10 +29,12 @@ pub struct LazySmpWorker {
 /// requesting an abort through [`SearchAbortHandle`] once stops every
 /// worker.
 ///
-/// The deepest completed result wins on score; this is intentionally
-/// simpler than full YBWC.  When `abort_flag` is `None` a fresh shared flag is
-/// allocated; pass `Some(...)` to participate in an existing cancellation chain
-/// (e.g. UCI `stop` from the main thread).
+/// The highest configured depth wins, with score as a tie-breaker; this is
+/// intentionally simpler than full YBWC.  Returned node count is the sum of
+/// all workers so bench output reflects the parallel work performed.  When
+/// `abort_flag` is `None` a fresh shared flag is allocated; pass `Some(...)`
+/// to participate in an existing cancellation chain (e.g. UCI `stop` from the
+/// main thread).
 pub fn lazy_smp_search<G>(
     game: G,
     snapshot: GameStateSnapshot,
@@ -66,20 +68,42 @@ where
             searcher.set_abort_flag(abort);
             searcher.set_options(options_for_worker);
             let mut wb = game_for_worker.build_workbench(&snapshot_for_worker);
-            searcher.iterative_deepening(&mut wb, depth)
+            (depth, searcher.iterative_deepening(&mut wb, depth))
         }));
     }
 
-    let mut best: Option<SearchResult> = None;
+    let mut best: Option<(i32, SearchResult)> = None;
+    let mut total_nodes = 0_u64;
     for handle in handles {
-        let result = handle
+        let (depth, result) = handle
             .join()
             .expect("lazy-smp worker should return a SearchResult");
-        if best.as_ref().is_none_or(|prev| result.score > prev.score) {
-            best = Some(result);
+        total_nodes = total_nodes.saturating_add(result.nodes);
+        if best
+            .as_ref()
+            .is_none_or(|prev| lazy_smp_result_is_better((depth, &result), (prev.0, &prev.1)))
+        {
+            best = Some((depth, result));
         }
     }
-    best.expect("at least one lazy-smp worker should run")
+    let (_, mut result) = best.expect("at least one lazy-smp worker should run");
+    result.nodes = total_nodes;
+    result
+}
+
+fn lazy_smp_result_is_better(
+    candidate: (i32, &SearchResult),
+    current: (i32, &SearchResult),
+) -> bool {
+    let candidate_valid = !candidate.1.best_action.is_none() || candidate.1.draw_reason.is_some();
+    let current_valid = !current.1.best_action.is_none() || current.1.draw_reason.is_some();
+    if candidate_valid != current_valid {
+        return candidate_valid;
+    }
+    if candidate.0 != current.0 {
+        return candidate.0 > current.0;
+    }
+    candidate.1.score > current.1.score
 }
 
 enum ThreadPoolMessage {
