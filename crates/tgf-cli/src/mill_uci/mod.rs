@@ -585,7 +585,7 @@ fn spawn_search(
     }
 }
 
-#[derive(Debug)]
+#[derive(Clone, Copy, Debug)]
 struct LazySmpWorkerOutcome {
     depth: i32,
     result: SearchResult,
@@ -675,22 +675,17 @@ fn run_configured_lazy_smp_search(input: LazySmpSearchInput) -> LazySmpWorkerOut
         }));
     }
 
-    let mut best: Option<LazySmpWorkerOutcome> = None;
+    let mut outcomes = Vec::with_capacity(handles.len());
     let mut total_nodes = 0_u64;
     for handle in handles {
         let outcome = handle
             .join()
             .expect("lazy SMP worker should return a SearchResult");
         total_nodes = total_nodes.saturating_add(outcome.result.nodes);
-        if best
-            .as_ref()
-            .is_none_or(|current| lazy_smp_outcome_is_better(&outcome, current))
-        {
-            best = Some(outcome);
-        }
+        outcomes.push(outcome);
     }
 
-    let mut best = best.expect("at least one lazy SMP worker should run");
+    let mut best = select_lazy_smp_outcome(&outcomes);
     best.result.nodes = total_nodes;
     apply_perfect_database_result(&mut best.result, &options, &state, &cfg);
     best
@@ -712,6 +707,68 @@ fn mix_lazy_smp_worker_seed(seed: u64, worker_index: u64) -> u64 {
     x = (x ^ (x >> 30)).wrapping_mul(0xBF58_476D_1CE4_E5B9);
     x = (x ^ (x >> 27)).wrapping_mul(0x94D0_49BB_1331_11EB);
     x ^ (x >> 31)
+}
+
+fn select_lazy_smp_outcome(outcomes: &[LazySmpWorkerOutcome]) -> LazySmpWorkerOutcome {
+    assert!(!outcomes.is_empty(), "lazy SMP must have worker outcomes");
+    let mut best = outcomes[0];
+    for candidate in outcomes.iter().copied().skip(1) {
+        if lazy_smp_outcome_is_better_with_votes(&candidate, &best, outcomes) {
+            best = candidate;
+        }
+    }
+    best
+}
+
+fn lazy_smp_outcome_is_better_with_votes(
+    candidate: &LazySmpWorkerOutcome,
+    current: &LazySmpWorkerOutcome,
+    outcomes: &[LazySmpWorkerOutcome],
+) -> bool {
+    let candidate_valid = lazy_smp_outcome_is_valid(candidate);
+    let current_valid = lazy_smp_outcome_is_valid(current);
+    if candidate_valid != current_valid {
+        return candidate_valid;
+    }
+    if candidate_valid {
+        let candidate_vote = lazy_smp_bestmove_vote(outcomes, candidate.result.best_action);
+        let current_vote = lazy_smp_bestmove_vote(outcomes, current.result.best_action);
+        if candidate_vote != current_vote {
+            return candidate_vote > current_vote;
+        }
+
+        let candidate_weight = lazy_smp_thread_vote_weight(outcomes, candidate);
+        let current_weight = lazy_smp_thread_vote_weight(outcomes, current);
+        if candidate_weight != current_weight {
+            return candidate_weight > current_weight;
+        }
+    }
+    lazy_smp_outcome_is_better(candidate, current)
+}
+
+fn lazy_smp_bestmove_vote(outcomes: &[LazySmpWorkerOutcome], action: Action) -> i64 {
+    outcomes
+        .iter()
+        .filter(|outcome| lazy_smp_outcome_is_valid(outcome))
+        .filter(|outcome| outcome.result.best_action == action)
+        .map(|outcome| lazy_smp_thread_vote_weight(outcomes, outcome))
+        .sum()
+}
+
+fn lazy_smp_thread_vote_weight(
+    outcomes: &[LazySmpWorkerOutcome],
+    outcome: &LazySmpWorkerOutcome,
+) -> i64 {
+    const STOCKFISH_THREAD_VOTE_MARGIN: i64 = 14;
+    assert!(!outcomes.is_empty(), "lazy SMP vote requires outcomes");
+    let min_score = outcomes
+        .iter()
+        .filter(|outcome| lazy_smp_outcome_is_valid(outcome))
+        .map(|outcome| i64::from(outcome.result.score))
+        .min()
+        .unwrap_or(0);
+    let score_delta = i64::from(outcome.result.score) - min_score + STOCKFISH_THREAD_VOTE_MARGIN;
+    score_delta.max(1) * i64::from(outcome.depth.max(1))
 }
 
 fn lazy_smp_outcome_is_better(

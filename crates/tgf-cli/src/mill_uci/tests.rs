@@ -454,6 +454,43 @@ fn lazy_smp_workers_diversify_move_order_seed() {
 }
 
 #[test]
+fn lazy_smp_selection_votes_by_bestmove() {
+    let shared_action = Action {
+        kind_tag: MillActionKind::Move as i16,
+        from_node: 0,
+        to_node: 1,
+        aux: -1,
+        payload_bits: 0,
+    };
+    let outlier_action = Action {
+        kind_tag: MillActionKind::Move as i16,
+        from_node: 2,
+        to_node: 3,
+        aux: -1,
+        payload_bits: 0,
+    };
+    let outcome = |depth, score, best_action| LazySmpWorkerOutcome {
+        depth,
+        result: SearchResult {
+            best_action,
+            score,
+            nodes: 1,
+            draw_reason: None,
+        },
+    };
+    let outcomes = [
+        outcome(8, 10, shared_action),
+        outcome(8, 9, shared_action),
+        outcome(9, 20, outlier_action),
+    ];
+
+    let selected = select_lazy_smp_outcome(&outcomes);
+
+    assert_eq!(selected.result.best_action, shared_action);
+    assert_eq!(selected.result.score, 10);
+}
+
+#[test]
 fn ai_is_lazy_uses_signed_previous_score() {
     let options = MillVariantOptions::default();
     let rules = MillRules::new(options.clone());
