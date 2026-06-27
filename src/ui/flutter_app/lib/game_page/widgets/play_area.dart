@@ -74,7 +74,7 @@ class PlayAreaState extends State<PlayArea> {
     return value;
   }
 
-  Widget? _buildHumanDatabaseStatsOverlay(BuildContext context) {
+  Widget? _buildHumanDatabaseStatsStrip(BuildContext context) {
     if (!DB().generalSettings.showHumanDatabaseStats) {
       return null;
     }
@@ -86,70 +86,75 @@ class PlayAreaState extends State<PlayArea> {
         ? const SizedBox.shrink(
             key: Key('play_area_human_database_stats_empty'),
           )
-        : Semantics(
-            key: const Key('play_area_human_database_stats_semantics'),
-            liveRegion: true,
-            child: DecoratedBox(
-              key: const Key('play_area_human_database_stats'),
-              decoration: BoxDecoration(
-                color: theme.colorScheme.surfaceContainerHighest.withValues(
-                  alpha: 0.82,
-                ),
-                borderRadius: BorderRadius.circular(6),
-                border: Border.all(color: theme.colorScheme.outlineVariant),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 10,
-                  vertical: 6,
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    Icon(
-                      Icons.storage_rounded,
-                      size: 16,
-                      color: theme.colorScheme.onSurfaceVariant,
+        : Padding(
+            key: const Key('play_area_human_database_stats_padding'),
+            padding: const EdgeInsets.symmetric(
+              horizontal: AppTheme.boardMargin,
+              vertical: 4,
+            ),
+            child: Align(
+              child: Semantics(
+                key: const Key('play_area_human_database_stats_semantics'),
+                liveRegion: true,
+                child: DecoratedBox(
+                  key: const Key('play_area_human_database_stats'),
+                  decoration: BoxDecoration(
+                    color: theme.colorScheme.surfaceContainerHighest.withValues(
+                      alpha: 0.82,
                     ),
-                    const SizedBox(width: 6),
-                    Flexible(
-                      child: Text(
-                        S
-                            .of(context)
-                            .humanGameDatabaseStatsLine(
-                              stats.notation,
-                              stats.winPercent.toStringAsFixed(1),
-                              stats.drawPercent.toStringAsFixed(1),
-                              stats.lossPercent.toStringAsFixed(1),
-                              stats.total,
-                            ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: theme.textTheme.bodySmall?.copyWith(
+                    borderRadius: BorderRadius.circular(6),
+                    border: Border.all(color: theme.colorScheme.outlineVariant),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 6,
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        Icon(
+                          Icons.storage_rounded,
+                          size: 16,
                           color: theme.colorScheme.onSurfaceVariant,
                         ),
-                      ),
+                        const SizedBox(width: 6),
+                        Flexible(
+                          child: Text(
+                            S
+                                .of(context)
+                                .humanGameDatabaseStatsLine(
+                                  stats.notation,
+                                  stats.winPercent.toStringAsFixed(1),
+                                  stats.drawPercent.toStringAsFixed(1),
+                                  stats.lossPercent.toStringAsFixed(1),
+                                  stats.total,
+                                ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: theme.textTheme.bodySmall?.copyWith(
+                              color: theme.colorScheme.onSurfaceVariant,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
               ),
             ),
           );
 
-    return Positioned(
-      key: const Key('play_area_human_database_stats_overlay'),
-      left: AppTheme.boardMargin,
-      right: AppTheme.boardMargin,
-      bottom: AppTheme.boardMargin,
-      child: IgnorePointer(
-        child: Center(
-          child: AnimatedSwitcher(
-            duration: const Duration(milliseconds: 160),
-            switchInCurve: Curves.easeOutCubic,
-            switchOutCurve: Curves.easeInCubic,
-            child: child,
-          ),
-        ),
+    return AnimatedSize(
+      key: const Key('play_area_human_database_stats_strip'),
+      duration: const Duration(milliseconds: 160),
+      curve: Curves.easeInOutCubic,
+      alignment: Alignment.topCenter,
+      child: AnimatedSwitcher(
+        duration: const Duration(milliseconds: 160),
+        switchInCurve: Curves.easeOutCubic,
+        switchOutCurve: Curves.easeInCubic,
+        child: child,
       ),
     );
   }
@@ -539,8 +544,9 @@ class PlayAreaState extends State<PlayArea> {
         // interface clean; the PuzzlePage provides its own puzzle controls.
         final bool isPuzzle =
             GameController().gameInstance.gameMode == GameMode.puzzle;
-        final Widget? humanDatabaseStatsOverlay =
-            _buildHumanDatabaseStatsOverlay(context);
+        final Widget? humanDatabaseStatsStrip = _buildHumanDatabaseStatsStrip(
+          context,
+        );
 
         // Main content without bottom toolbars:
         final Widget mainContent = SizedBox(
@@ -560,6 +566,8 @@ class PlayAreaState extends State<PlayArea> {
                   // The top game header with hints, icons, etc.
                   GameHeader(key: const Key('play_area_game_header')),
 
+                  ?humanDatabaseStatsStrip,
+
                   // Piece counts or spacing if not used
                   if (DB().displaySettings.isUnplacedAndRemovedPiecesShown &&
                       !(Constants.isSmallScreen(context) == true &&
@@ -575,15 +583,8 @@ class PlayAreaState extends State<PlayArea> {
                     child: Container(
                       key: const Key('play_area_game_board_container'),
                       alignment: Alignment.center,
-                      child: Stack(
-                        key: const Key('play_area_game_board_stack'),
-                        alignment: Alignment.center,
-                        children: <Widget>[
-                          // The 'child' from the constructor is the GameBoard:
-                          widget.child,
-                          ?humanDatabaseStatsOverlay,
-                        ],
-                      ),
+                      // The 'child' from the constructor is the GameBoard:
+                      child: widget.child,
                     ),
                   ),
 

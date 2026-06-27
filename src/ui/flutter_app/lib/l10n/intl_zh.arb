@@ -4334,7 +4334,7 @@
     "@humanGameDatabaseFile_Detail": {},
     "clearHumanGameDatabaseFile": "清除人类对局数据库文件",
     "@clearHumanGameDatabaseFile": {},
-    "showHumanGameDatabaseStats": "在棋盘上显示人类数据库统计",
+    "showHumanGameDatabaseStats": "在对局界面显示人类数据库统计",
     "@showHumanGameDatabaseStats": {},
     "showHumanGameDatabaseStats_Detail": "显示最近一次由人类对局数据库提供的 AI 着法的胜、和、负及样本数统计。",
     "@showHumanGameDatabaseStats_Detail": {},

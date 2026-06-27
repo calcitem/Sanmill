@@ -35,7 +35,7 @@ void main() {
     DB.instance = null;
   });
 
-  testWidgets('human database stats are overlaid inside the board', (
+  testWidgets('human database stats strip stays above the board', (
     WidgetTester tester,
   ) async {
     await tester.binding.setSurfaceSize(const Size(390, 844));
@@ -56,19 +56,24 @@ void main() {
     );
     await tester.pump();
 
-    final Finder overlay = find.byKey(
-      const Key('play_area_human_database_stats_overlay'),
+    final Finder strip = find.byKey(
+      const Key('play_area_human_database_stats_strip'),
     );
-    expect(overlay, findsOneWidget);
+    final Finder header = find.byKey(const Key('play_area_game_header'));
+    final Finder board = find.byKey(const Key('play_area_native_screenshot'));
+    expect(strip, findsOneWidget);
+    expect(header, findsOneWidget);
+    expect(board, findsOneWidget);
     expect(
-      find.ancestor(
-        of: overlay,
-        matching: find.byKey(const Key('play_area_game_board_stack')),
-      ),
-      findsOneWidget,
+      tester.getTopLeft(strip).dy,
+      greaterThanOrEqualTo(tester.getBottomLeft(header).dy),
     );
     expect(
-      find.byKey(const Key('play_area_human_database_stats_padding')),
+      tester.getBottomLeft(strip).dy,
+      lessThanOrEqualTo(tester.getTopLeft(board).dy),
+    );
+    expect(
+      find.byKey(const Key('play_area_human_database_stats_overlay')),
       findsNothing,
     );
   });

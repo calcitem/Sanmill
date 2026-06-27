@@ -4454,7 +4454,7 @@
     "@humanGameDatabaseFile_Detail": {},
     "clearHumanGameDatabaseFile": "Clear human game database file",
     "@clearHumanGameDatabaseFile": {},
-    "showHumanGameDatabaseStats": "Show human database stats on board",
+    "showHumanGameDatabaseStats": "Show human database stats on game screen",
     "@showHumanGameDatabaseStats": {},
     "showHumanGameDatabaseStats_Detail": "Show the win, draw, loss, and sample-count statistics for the latest AI move supplied by the human game database.",
     "@showHumanGameDatabaseStats_Detail": {},
