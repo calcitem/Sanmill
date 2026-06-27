@@ -1,0 +1,106 @@
+#!/bin/bash
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+APP_DIR="${SCRIPT_DIR}/src/ui/flutter_app"
+
+print_usage() {
+  cat <<'USAGE'
+Usage:
+  ./run [desktop|android|ios|linux|macos|windows] [-init]
+
+Examples:
+  ./run
+  ./run android
+  ./run ios
+  ./run -init
+  ./run android -init
+USAGE
+}
+
+detect_desktop_device() {
+  local system
+  system="$(uname -s 2>/dev/null || echo unknown)"
+
+  case "${system}" in
+    Linux*)
+      printf 'linux\n'
+      ;;
+    Darwin*)
+      printf 'macos\n'
+      ;;
+    MINGW*|MSYS*|CYGWIN*)
+      printf 'windows\n'
+      ;;
+    *)
+      echo "Unsupported desktop environment: ${system}" >&2
+      return 1
+      ;;
+  esac
+}
+
+resolve_device() {
+  local target="$1"
+
+  case "${target}" in
+    desktop)
+      detect_desktop_device
+      ;;
+    android|ios|linux|macos|windows)
+      printf '%s\n' "${target}"
+      ;;
+    *)
+      echo "Unsupported run target: ${target}" >&2
+      return 1
+      ;;
+  esac
+}
+
+run_init=false
+target="desktop"
+target_set=false
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    -init|--init)
+      run_init=true
+      ;;
+    -h|--help)
+      print_usage
+      exit 0
+      ;;
+    desktop|android|ios|linux|macos|windows)
+      if [[ "${target_set}" == true ]]; then
+        echo "Only one run target may be specified." >&2
+        print_usage >&2
+        exit 2
+      fi
+      target="$1"
+      target_set=true
+      ;;
+    *)
+      echo "Unknown argument: $1" >&2
+      print_usage >&2
+      exit 2
+      ;;
+  esac
+  shift
+done
+
+if [[ ! -d "${APP_DIR}" ]]; then
+  echo "Flutter app directory does not exist: ${APP_DIR}" >&2
+  exit 1
+fi
+
+if [[ "${run_init}" == true ]]; then
+  "${SCRIPT_DIR}/flutter-init.sh"
+fi
+
+# shellcheck source=scripts/ensure_flutter.sh
+source "${SCRIPT_DIR}/scripts/ensure_flutter.sh"
+ensure_flutter_on_path
+
+device="$(resolve_device "${target}")"
+
+echo "[run] Target: ${target} (${device})"
+(cd "${APP_DIR}" && flutter run -d "${device}")
