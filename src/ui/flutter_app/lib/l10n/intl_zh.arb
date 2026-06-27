@@ -4504,6 +4504,6 @@
     "@downloadHumanGameDatabase": {},
     "downloadHumanGameDatabase_Detail": "在默认浏览器中打开下载链接。数据库文件应会保存到“下载”目录。",
     "@downloadHumanGameDatabase_Detail": {},
-    "downloadHumanGameDatabaseConfirmation": "是否打开系统浏览器下载人类对局数据库？",
+    "downloadHumanGameDatabaseConfirmation": "是否打开系统浏览器下载人类对局数据库？如果下载目录中已有同名文件，浏览器可能会将新文件重命名，例如 human_db (1).sqlite。",
     "@downloadHumanGameDatabaseConfirmation": {}
 }
