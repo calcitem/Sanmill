@@ -82,8 +82,19 @@ class PlayAreaState extends State<PlayArea> {
         GameController().activeNativeMillSession?.lastHumanDatabaseMoveStats;
 
     final ThemeData theme = Theme.of(context);
-    final Color contentColor = theme.colorScheme.onSurfaceVariant.withValues(
-      alpha: stats == null ? 0.68 : 1,
+    final Color stripBackgroundColor = Color.alphaBlend(
+      DB().colorSettings.boardLineColor.withValues(alpha: 0.14),
+      DB().colorSettings.boardBackgroundColor,
+    );
+    final bool isDarkStrip =
+        ThemeData.estimateBrightnessForColor(stripBackgroundColor) ==
+        Brightness.dark;
+    final Color contentBaseColor = isDarkStrip ? Colors.white : Colors.black;
+    final Color contentColor = contentBaseColor.withValues(
+      alpha: stats == null ? 0.58 : 0.78,
+    );
+    final Color borderColor = contentBaseColor.withValues(
+      alpha: isDarkStrip ? 0.18 : 0.14,
     );
     final String statsText = stats == null
         ? S.of(context).humanGameDatabaseStatsUnavailable
@@ -109,11 +120,9 @@ class PlayAreaState extends State<PlayArea> {
         child: DecoratedBox(
           key: const Key('play_area_human_database_stats'),
           decoration: BoxDecoration(
-            color: theme.colorScheme.surfaceContainerHighest.withValues(
-              alpha: 0.82,
-            ),
+            color: stripBackgroundColor,
             borderRadius: BorderRadius.circular(6),
-            border: Border.all(color: theme.colorScheme.outlineVariant),
+            border: Border.all(color: borderColor),
           ),
           child: ConstrainedBox(
             constraints: const BoxConstraints(minHeight: 32),

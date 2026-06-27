@@ -65,6 +65,16 @@ void main() {
     expect(header, findsOneWidget);
     expect(board, findsOneWidget);
     expect(tester.getSize(strip).height, greaterThan(0));
+    final DecoratedBox statsBox = tester.widget<DecoratedBox>(
+      find.byKey(const Key('play_area_human_database_stats')),
+    );
+    final BoxDecoration statsDecoration = statsBox.decoration as BoxDecoration;
+    final ThemeData theme = Theme.of(tester.element(strip));
+    expect(statsDecoration.color, isNot(Colors.white));
+    expect(
+      statsDecoration.color,
+      isNot(theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.82)),
+    );
     expect(
       find.text('No human database stats for this position'),
       findsOneWidget,
