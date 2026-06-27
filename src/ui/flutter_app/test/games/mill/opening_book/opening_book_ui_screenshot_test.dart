@@ -66,6 +66,9 @@ void main() {
     await tester.pumpWidget(_localizedApp(const GeneralSettingsPage()));
     await tester.pump();
 
+    await tester.tap(find.text('AI knowledge sources'));
+    await tester.pumpAndSettle();
+
     final Finder useOpeningBook = find.text('Use opening book');
     final Finder showOpeningInfo = find.text('Show opening information');
     final Finder preferFavoredOpenings = find.text(

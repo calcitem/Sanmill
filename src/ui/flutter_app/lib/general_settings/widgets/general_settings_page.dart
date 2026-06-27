@@ -40,6 +40,9 @@ import 'dialogs/llm_prompt_dialog.dart';
 
 part 'dialogs/reset_settings_alert_dialog.dart';
 part 'dialogs/use_perfect_database_dialog.dart';
+part 'pages/settings_sub_page.dart';
+part 'pages/advanced_ai_search_page.dart';
+part 'pages/ai_knowledge_sources_page.dart';
 part 'modals/algorithm_modal.dart';
 part 'modals/duration_modal.dart';
 part 'modals/ratio_modal.dart';
@@ -311,6 +314,18 @@ class GeneralSettingsPage extends StatelessWidget {
     context: context,
     builder: (_) => const _SearchThreadsPicker(),
   );
+
+  void _openAiKnowledgeSources(BuildContext context) {
+    Navigator.of(
+      context,
+    ).push(_settingsDrillInRoute<void>(_AiKnowledgeSourcesPage(parent: this)));
+  }
+
+  void _openAdvancedAiSearch(BuildContext context) {
+    Navigator.of(
+      context,
+    ).push(_settingsDrillInRoute<void>(_AdvancedAiSearchPage(parent: this)));
+  }
 
   void _setTrapAwareness(GeneralSettings generalSettings, bool value) {
     _settingsRepository.generalSettings = generalSettings.copyWith(
@@ -929,17 +944,6 @@ class GeneralSettingsPage extends StatelessWidget {
       defaultValue: const GeneralSettings(),
     )!;
 
-    final String perfectDatabaseDescription = S
-        .of(context)
-        .perfectDatabaseDescription;
-    final String perfectDatabaseDescriptionFirstLine =
-        perfectDatabaseDescription.contains('\n')
-        ? perfectDatabaseDescription.substring(
-            0,
-            perfectDatabaseDescription.indexOf('\n'),
-          )
-        : perfectDatabaseDescription;
-
     return SettingsList(
       key: const Key('general_settings_page_settings_list'),
       children: <Widget>[
@@ -1022,227 +1026,24 @@ class GeneralSettingsPage extends StatelessWidget {
           children: <Widget>[
             SettingsListTile(
               key: const Key(
-                'general_settings_page_settings_card_ais_play_style_algorithm',
+                'general_settings_page_settings_card_ais_play_style_knowledge_sources',
               ),
-              titleString: S.of(context).algorithm,
-              trailingString: generalSettings.searchAlgorithm!.name,
-              onTap: () => _setAlgorithm(context, generalSettings),
-            ),
-            if (DB().ruleSettings.isLikelyNineMensMorris() ||
-                DB().ruleSettings.isLikelyElFilja())
-              SettingsListTile.switchTile(
-                key: const Key(
-                  'general_settings_page_settings_card_ais_play_style_use_opening_book',
-                ),
-                value: generalSettings.useOpeningBook,
-                onChanged: (bool val) {
-                  _setUseOpeningBook(generalSettings, val);
-                },
-                titleString: S.of(context).useOpeningBook,
-                subtitleString: S.of(context).useOpeningBook_Detail,
+              titleString: S.of(context).aiKnowledgeSources,
+              subtitleString: S.of(context).aiKnowledgeSources_Detail,
+              trailingString: _aiKnowledgeSourcesSummary(
+                context,
+                generalSettings,
               ),
-            if ((DB().ruleSettings.isLikelyNineMensMorris() ||
-                    DB().ruleSettings.isLikelyElFilja()) &&
-                generalSettings.useOpeningBook &&
-                generalSettings.shufflingEnabled)
-              SettingsListTile(
-                key: const Key(
-                  'general_settings_page_settings_card_ais_play_style_opening_randomness',
-                ),
-                titleString: S.of(context).openingRandomness,
-                trailingString: '${generalSettings.openingRandomness}%',
-                onTap: () => _setOpeningRandomness(context),
-              ),
-            if (DB().ruleSettings.isLikelyNineMensMorris() ||
-                DB().ruleSettings.isLikelyElFilja())
-              SettingsListTile.switchTile(
-                key: const Key(
-                  'general_settings_page_settings_card_ais_play_style_show_opening_info',
-                ),
-                value: generalSettings.showOpeningInfo,
-                onChanged: (bool val) {
-                  _setShowOpeningInfo(generalSettings, val);
-                },
-                titleString: S.of(context).showOpeningInfo,
-                subtitleString: S.of(context).showOpeningInfo_Detail,
-              ),
-            if (DB().ruleSettings.isLikelyNineMensMorris() ||
-                DB().ruleSettings.isLikelyElFilja())
-              SettingsListTile.switchTile(
-                key: const Key(
-                  'general_settings_page_settings_card_ais_play_style_prefer_favored_openings',
-                ),
-                value: generalSettings.preferFavoredOpenings,
-                onChanged: (bool val) {
-                  _setPreferFavoredOpenings(generalSettings, val);
-                },
-                titleString: S.of(context).preferFavoredOpenings,
-                subtitleString: S.of(context).preferFavoredOpenings_Detail,
-              ),
-            if (!kIsWeb)
-              SettingsListTile.switchTile(
-                key: const Key(
-                  'general_settings_page_settings_card_ais_play_style_use_perfect_database',
-                ),
-                value: generalSettings.usePerfectDatabase,
-                onChanged: (bool val) {
-                  if (val) {
-                    _showUsePerfectDatabaseDialog(context);
-                    if (isRuleSupportingPerfectDatabase()) {
-                      _setUsePerfectDatabase(generalSettings, true);
-                    }
-                  } else {
-                    _setUsePerfectDatabase(generalSettings, false);
-                  }
-                },
-                titleString: S.of(context).usePerfectDatabase,
-                subtitleString: perfectDatabaseDescriptionFirstLine,
-              ),
-            if (!kIsWeb &&
-                generalSettings.usePerfectDatabase &&
-                isRuleSupportingPerfectDatabase())
-              SettingsListTile.switchTile(
-                key: const Key(
-                  'general_settings_page_settings_card_ais_play_style_trap_awareness',
-                ),
-                value: generalSettings.trapAwareness,
-                onChanged: (bool val) {
-                  _setTrapAwareness(generalSettings, val);
-                },
-                titleString: S.of(context).trapAwareness,
-                subtitleString: S.of(context).trapAwarenessDescription,
-              ),
-            if (DB().ruleSettings.isLikelyNineMensMorris()) ...<Widget>[
-              SettingsListTile.switchTile(
-                key: const Key(
-                  'general_settings_page_settings_card_ais_play_style_use_human_database',
-                ),
-                value: generalSettings.humanDatabaseEnabled,
-                onChanged: (bool val) {
-                  unawaited(
-                    _setHumanDatabaseEnabled(context, generalSettings, val),
-                  );
-                },
-                titleString: S.of(context).useHumanGameDatabase,
-                subtitleString: S.of(context).useHumanGameDatabase_Detail,
-              ),
-              SettingsListTile(
-                key: const Key(
-                  'general_settings_page_settings_card_ais_play_style_human_database_file',
-                ),
-                titleString: S.of(context).humanGameDatabaseFile,
-                subtitleString: S.of(context).humanGameDatabaseFile_Detail,
-                trailingString: generalSettings.humanDatabaseFilePath.isEmpty
-                    ? S.of(context).none
-                    : p.basename(generalSettings.humanDatabaseFilePath),
-                onTap: () {
-                  unawaited(_pickHumanDatabaseFile(context, generalSettings));
-                },
-              ),
-              SettingsListTile(
-                key: const Key(
-                  'general_settings_page_settings_card_ais_play_style_download_human_database',
-                ),
-                titleString: S.of(context).downloadHumanGameDatabase,
-                subtitleString: S.of(context).downloadHumanGameDatabase_Detail,
-                onTap: () {
-                  unawaited(_downloadHumanDatabase(context));
-                },
-              ),
-              if (generalSettings.humanDatabaseFilePath.isNotEmpty)
-                SettingsListTile(
-                  key: const Key(
-                    'general_settings_page_settings_card_ais_play_style_clear_human_database_file',
-                  ),
-                  titleString: S.of(context).clearHumanGameDatabaseFile,
-                  onTap: () => _clearHumanDatabaseFile(generalSettings),
-                ),
-              SettingsListTile.switchTile(
-                key: const Key(
-                  'general_settings_page_settings_card_ais_play_style_show_human_database_stats',
-                ),
-                value: generalSettings.showHumanDatabaseStats,
-                onChanged: (bool val) {
-                  _setShowHumanDatabaseStats(generalSettings, val);
-                },
-                titleString: S.of(context).showHumanGameDatabaseStats,
-                subtitleString: S.of(context).showHumanGameDatabaseStats_Detail,
-              ),
-            ],
-            SettingsListTile.switchTile(
-              key: const Key(
-                'general_settings_page_settings_card_ais_play_style_draw_on_human_experience',
-              ),
-              value: generalSettings.drawOnHumanExperience,
-              onChanged: (bool val) {
-                _setDrawOnHumanExperience(generalSettings, val);
-              },
-              titleString: S.of(context).drawOnHumanExperience,
-              subtitleString: S.of(context).drawOnTheHumanExperienceDetail,
-            ),
-            SettingsListTile.switchTile(
-              key: const Key(
-                'general_settings_page_settings_card_ais_play_style_consider_mobility',
-              ),
-              value: generalSettings.considerMobility,
-              onChanged: (bool val) {
-                _setConsiderMobility(generalSettings, val);
-              },
-              titleString: S.of(context).considerMobility,
-              subtitleString: S.of(context).considerMobilityOfPiecesDetail,
-            ),
-            SettingsListTile.switchTile(
-              key: const Key(
-                'general_settings_page_settings_card_ais_play_style_focus_on_blocking_paths',
-              ),
-              value: generalSettings.focusOnBlockingPaths,
-              onChanged: (bool val) {
-                _setFocusOnBlockingPaths(generalSettings, val);
-              },
-              titleString: S.of(context).focusOnBlockingPaths,
-              subtitleString: S.of(context).focusOnBlockingPaths_Detail,
-            ),
-            SettingsListTile.switchTile(
-              key: const Key(
-                'general_settings_page_settings_card_ais_play_style_ai_is_lazy',
-              ),
-              value: generalSettings.aiIsLazy,
-              onChanged: (bool val) {
-                _setAiIsLazy(generalSettings, val);
-              },
-              titleString: S.of(context).passive,
-              subtitleString: S.of(context).passiveDetail,
-            ),
-            SettingsListTile.switchTile(
-              key: const Key(
-                'general_settings_page_settings_card_ais_play_style_shuffling_enabled',
-              ),
-              value: generalSettings.shufflingEnabled,
-              onChanged: (bool val) {
-                _setShufflingEnabled(generalSettings, val);
-              },
-              titleString: S.of(context).shufflingEnabled,
-              subtitleString: S.of(context).moveRandomlyDetail,
-            ),
-            SettingsListTile.switchTile(
-              key: const Key(
-                'general_settings_page_settings_card_ais_play_style_use_lazy_smp',
-              ),
-              value: generalSettings.useLazySmp,
-              onChanged: (bool val) {
-                _setUseLazySmp(generalSettings, val);
-              },
-              titleString: S.of(context).useLazySmp,
-              subtitleString: S.of(context).useLazySmp_Detail,
+              onTap: () => _openAiKnowledgeSources(context),
             ),
             SettingsListTile(
               key: const Key(
-                'general_settings_page_settings_card_ais_play_style_engine_threads',
+                'general_settings_page_settings_card_ais_play_style_advanced_search',
               ),
-              titleString: S.of(context).engineThreads,
-              subtitleString: S.of(context).engineThreads_Detail,
-              trailingString: generalSettings.engineThreads.toString(),
-              onTap: () => _setEngineThreads(context),
+              titleString: S.of(context).advancedAiSearch,
+              subtitleString: S.of(context).advancedAiSearch_Detail,
+              trailingString: _advancedAiSearchSummary(generalSettings),
+              onTap: () => _openAdvancedAiSearch(context),
             ),
           ],
         ),
