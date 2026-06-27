@@ -4499,5 +4499,11 @@
     "openingRandomness": "开局随机性",
     "@openingRandomness": {},
     "openingRandomness_Detail": "在启用“随机移动”时，控制开局库选择着法的变化程度。0% 始终选择最强开局库着法；100% 在所有开局库候选着法中均匀随机选择。默认 60% 会略微偏向更好的着法，同时仍保持开局变化。",
-    "@openingRandomness_Detail": {}
+    "@openingRandomness_Detail": {},
+    "downloadHumanGameDatabase": "下载人类对局数据库",
+    "@downloadHumanGameDatabase": {},
+    "downloadHumanGameDatabase_Detail": "在默认浏览器中打开下载链接。数据库文件应会保存到“下载”目录。",
+    "@downloadHumanGameDatabase_Detail": {},
+    "downloadHumanGameDatabaseConfirmation": "是否打开系统浏览器下载人类对局数据库？",
+    "@downloadHumanGameDatabaseConfirmation": {}
 }

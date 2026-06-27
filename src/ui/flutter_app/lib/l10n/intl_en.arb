@@ -4619,5 +4619,11 @@
     "openingRandomness": "Opening randomness",
     "@openingRandomness": {},
     "openingRandomness_Detail": "How varied the opening book's move choice is when 'Move randomly' is on. 0% always plays the strongest book move; 100% picks uniformly at random among all book candidates. Default 60% slightly favours better moves while still varying the opening.",
-    "@openingRandomness_Detail": {}
+    "@openingRandomness_Detail": {},
+    "downloadHumanGameDatabase": "Download human game database",
+    "@downloadHumanGameDatabase": {},
+    "downloadHumanGameDatabase_Detail": "Open the download link in your default browser. The database file should be saved to your Downloads folder.",
+    "@downloadHumanGameDatabase_Detail": {},
+    "downloadHumanGameDatabaseConfirmation": "Open the system browser to download the human game database?",
+    "@downloadHumanGameDatabaseConfirmation": {}
 }

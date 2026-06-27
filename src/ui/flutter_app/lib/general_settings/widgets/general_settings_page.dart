@@ -522,6 +522,30 @@ class GeneralSettingsPage extends StatelessWidget {
     logger.t("$_logTag humanDatabaseFilePath: $persistentPath");
   }
 
+  Future<void> _downloadHumanDatabase(BuildContext context) async {
+    final bool? confirmed = await showDialog<bool>(
+      context: context,
+      builder: (BuildContext ctx) => AlertDialog(
+        title: Text(S.of(ctx).downloadHumanGameDatabase),
+        content: Text(S.of(ctx).downloadHumanGameDatabaseConfirmation),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(false),
+            child: Text(S.of(ctx).no),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(true),
+            child: Text(S.of(ctx).yes),
+          ),
+        ],
+      ),
+    );
+    if (confirmed != true || !context.mounted) {
+      return;
+    }
+    await launchURL(context, Constants.humanDatabaseDownloadUrl);
+  }
+
   void _clearHumanDatabaseFile(GeneralSettings generalSettings) {
     HumanDatabaseService.instance.disable();
     _settingsRepository.generalSettings = generalSettings.copyWith(
@@ -1099,6 +1123,16 @@ class GeneralSettingsPage extends StatelessWidget {
                     : p.basename(generalSettings.humanDatabaseFilePath),
                 onTap: () {
                   unawaited(_pickHumanDatabaseFile(context, generalSettings));
+                },
+              ),
+              SettingsListTile(
+                key: const Key(
+                  'general_settings_page_settings_card_ais_play_style_download_human_database',
+                ),
+                titleString: S.of(context).downloadHumanGameDatabase,
+                subtitleString: S.of(context).downloadHumanGameDatabase_Detail,
+                onTap: () {
+                  unawaited(_downloadHumanDatabase(context));
                 },
               ),
               if (generalSettings.humanDatabaseFilePath.isNotEmpty)

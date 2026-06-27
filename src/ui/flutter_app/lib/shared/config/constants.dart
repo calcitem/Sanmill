@@ -90,6 +90,10 @@ class Constants {
     "Perfect-Database",
     "Perfect-Database-(Chinese)",
   );
+  static const UrlHelper humanDatabaseDownloadUrl = UrlHelper(
+    base: "https://archive.org/download/human_db/human_db.sqlite",
+    baseChinese: "https://archive.org/download/human_db/human_db.sqlite",
+  );
 
   static const UrlHelper nmmStrategyUrl = UrlHelper(
     base: "https://calcitem.github.io/Sanmill/nmm-strategy/",
