@@ -103,4 +103,26 @@ ensure_flutter_on_path
 device="$(resolve_device "${target}")"
 
 echo "[run] Target: ${target} (${device})"
-(cd "${APP_DIR}" && flutter run -d "${device}")
+
+run_flutter() {
+  (cd "${APP_DIR}" && flutter run -d "${device}")
+}
+
+if run_flutter; then
+  exit 0
+fi
+
+status="$?"
+if [[ "${run_init}" == true ]]; then
+  exit "${status}"
+fi
+if [[ "${status}" -ge 128 ]]; then
+  exit "${status}"
+fi
+
+echo "[run] Flutter run failed with exit code ${status}." >&2
+echo "[run] Running ./flutter-init.sh once, then retrying flutter run." >&2
+"${SCRIPT_DIR}/flutter-init.sh"
+
+echo "[run] Retrying target: ${target} (${device})"
+run_flutter
