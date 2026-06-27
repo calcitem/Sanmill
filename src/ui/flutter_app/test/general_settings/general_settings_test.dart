@@ -47,6 +47,8 @@ void main() {
       expect(s.backgroundMusicFilePath, '');
       expect(s.lastPgnSaveDirectory, '');
       expect(s.trapAwareness, isFalse);
+      expect(s.useLazySmp, isFalse);
+      expect(s.engineThreads, 4);
     });
   });
 

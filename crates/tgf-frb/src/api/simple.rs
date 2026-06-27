@@ -441,6 +441,8 @@ impl From<MillEngineConfig> for MillEngineConfigPlan {
             skill_level: cfg.skill_level,
             use_perfect_database: cfg.use_perfect_database,
             shuffling: cfg.shuffling,
+            use_lazy_smp: cfg.use_lazy_smp,
+            engine_threads: cfg.engine_threads,
         }
     }
 }
@@ -477,6 +479,13 @@ pub struct MillEngineConfig {
     /// deterministic play.  Also drives the per-rollout move ordering in the
     /// MCTS path.
     pub shuffling: bool,
+    /// Enable multi-threaded native search where supported.  Multi-threading is
+    /// ignored when `shuffling` is false so deterministic play still returns a
+    /// stable best move for a fixed position.
+    pub use_lazy_smp: bool,
+    /// Requested worker/thread count for multi-threaded search.  The engine
+    /// clamps the value to a conservative range.
+    pub engine_threads: u32,
 }
 
 impl Default for MillEngineConfig {
@@ -491,6 +500,8 @@ impl Default for MillEngineConfig {
             skill_level: 1,
             use_perfect_database: false,
             shuffling: true,
+            use_lazy_smp: false,
+            engine_threads: 4,
         }
     }
 }

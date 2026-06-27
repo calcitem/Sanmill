@@ -4625,5 +4625,13 @@
     "downloadHumanGameDatabase_Detail": "Open the download link in your default browser. The database file should be saved to your Downloads folder.",
     "@downloadHumanGameDatabase_Detail": {},
     "downloadHumanGameDatabaseConfirmation": "Open the system browser to download the human game database? If a file with the same name already exists, your browser may save the new download with a renamed filename such as human_db (1).sqlite.",
-    "@downloadHumanGameDatabaseConfirmation": {}
+    "@downloadHumanGameDatabaseConfirmation": {},
+    "useLazySmp": "Enable multi-threaded search",
+    "@useLazySmp": {},
+    "useLazySmp_Detail": "Off by default. Multi-threaded search can improve strength on some devices, but it does not guarantee a positive gain and may use more power or make search less stable.",
+    "@useLazySmp_Detail": {},
+    "engineThreads": "Search threads",
+    "@engineThreads": {},
+    "engineThreads_Detail": "Used only when multi-threaded search is enabled. More threads are not always stronger; strength does not scale linearly with thread count, and too many threads can be slower or weaker.",
+    "@engineThreads_Detail": {}
 }

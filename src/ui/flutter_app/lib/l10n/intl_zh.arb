@@ -4505,5 +4505,13 @@
     "downloadHumanGameDatabase_Detail": "在默认浏览器中打开下载链接。数据库文件应会保存到“下载”目录。",
     "@downloadHumanGameDatabase_Detail": {},
     "downloadHumanGameDatabaseConfirmation": "是否打开系统浏览器下载人类对局数据库？如果下载目录中已有同名文件，浏览器可能会将新文件重命名，例如 human_db (1).sqlite。",
-    "@downloadHumanGameDatabaseConfirmation": {}
+    "@downloadHumanGameDatabaseConfirmation": {},
+    "useLazySmp": "启用多线程搜索",
+    "@useLazySmp": {},
+    "useLazySmp_Detail": "默认关闭。多线程搜索在部分设备上可能提升棋力，但不保证一定有正收益，也可能增加耗电、发热或让搜索稳定性下降。",
+    "@useLazySmp_Detail": {},
+    "engineThreads": "搜索线程数",
+    "@engineThreads": {},
+    "engineThreads_Detail": "仅在启用多线程搜索时使用。线程数不是越多越好，棋力不会按线程数成倍提升；线程过多反而可能更慢或更弱。",
+    "@engineThreads_Detail": {}
 }

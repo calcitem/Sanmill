@@ -337,6 +337,15 @@ class MillEngineConfig {
   /// MCTS path.
   final bool shuffling;
 
+  /// Enable multi-threaded native search where supported.  Multi-threading is
+  /// ignored when `shuffling` is false so deterministic play still returns a
+  /// stable best move for a fixed position.
+  final bool useLazySmp;
+
+  /// Requested worker/thread count for multi-threaded search.  The engine
+  /// clamps the value to a conservative range.
+  final int engineThreads;
+
   const MillEngineConfig({
     required this.algorithm,
     required this.depth,
@@ -346,6 +355,8 @@ class MillEngineConfig {
     required this.skillLevel,
     required this.usePerfectDatabase,
     required this.shuffling,
+    required this.useLazySmp,
+    required this.engineThreads,
   });
 
   static Future<MillEngineConfig> default_() =>
@@ -360,7 +371,9 @@ class MillEngineConfig {
       lastBestValue.hashCode ^
       skillLevel.hashCode ^
       usePerfectDatabase.hashCode ^
-      shuffling.hashCode;
+      shuffling.hashCode ^
+      useLazySmp.hashCode ^
+      engineThreads.hashCode;
 
   @override
   bool operator ==(Object other) =>
@@ -374,7 +387,9 @@ class MillEngineConfig {
           lastBestValue == other.lastBestValue &&
           skillLevel == other.skillLevel &&
           usePerfectDatabase == other.usePerfectDatabase &&
-          shuffling == other.shuffling;
+          shuffling == other.shuffling &&
+          useLazySmp == other.useLazySmp &&
+          engineThreads == other.engineThreads;
 }
 
 enum MillFormationActionInPlacingPhase {

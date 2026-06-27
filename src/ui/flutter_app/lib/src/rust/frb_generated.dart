@@ -1944,8 +1944,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   MillEngineConfig dco_decode_mill_engine_config(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     final arr = raw as List<dynamic>;
-    if (arr.length != 8)
-      throw Exception('unexpected arr length: expect 8 but see ${arr.length}');
+    if (arr.length != 10)
+      throw Exception('unexpected arr length: expect 10 but see ${arr.length}');
     return MillEngineConfig(
       algorithm: dco_decode_mill_search_algorithm(arr[0]),
       depth: dco_decode_i_32(arr[1]),
@@ -1955,6 +1955,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       skillLevel: dco_decode_u_8(arr[5]),
       usePerfectDatabase: dco_decode_bool(arr[6]),
       shuffling: dco_decode_bool(arr[7]),
+      useLazySmp: dco_decode_bool(arr[8]),
+      engineThreads: dco_decode_u_32(arr[9]),
     );
   }
 
@@ -2503,6 +2505,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     var var_skillLevel = sse_decode_u_8(deserializer);
     var var_usePerfectDatabase = sse_decode_bool(deserializer);
     var var_shuffling = sse_decode_bool(deserializer);
+    var var_useLazySmp = sse_decode_bool(deserializer);
+    var var_engineThreads = sse_decode_u_32(deserializer);
     return MillEngineConfig(
       algorithm: var_algorithm,
       depth: var_depth,
@@ -2512,6 +2516,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       skillLevel: var_skillLevel,
       usePerfectDatabase: var_usePerfectDatabase,
       shuffling: var_shuffling,
+      useLazySmp: var_useLazySmp,
+      engineThreads: var_engineThreads,
     );
   }
 
@@ -3110,6 +3116,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_u_8(self.skillLevel, serializer);
     sse_encode_bool(self.usePerfectDatabase, serializer);
     sse_encode_bool(self.shuffling, serializer);
+    sse_encode_bool(self.useLazySmp, serializer);
+    sse_encode_u_32(self.engineThreads, serializer);
   }
 
   @protected

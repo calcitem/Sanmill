@@ -45,6 +45,8 @@ class MillKernelSession {
     bool aiIsLazy = false,
     int skillLevel = 1,
     bool shuffling = true,
+    bool useLazySmp = false,
+    int engineThreads = 4,
   }) {
     if (kernel.isDisposed) {
       throw KernelException('handle already disposed');
@@ -61,6 +63,8 @@ class MillKernelSession {
             skillLevel: skillLevel,
             usePerfectDatabase: usePerfectDatabase,
             shuffling: shuffling,
+            useLazySmp: useLazySmp,
+            engineThreads: engineThreads,
           ),
         );
     return events.map((tgf_simple.EngineEvent event) {
@@ -92,6 +96,8 @@ class MillKernelSession {
         skillLevel: 1,
         usePerfectDatabase: usePerfectDatabase,
         shuffling: shuffling,
+        useLazySmp: false,
+        engineThreads: 4,
       ),
     );
   }

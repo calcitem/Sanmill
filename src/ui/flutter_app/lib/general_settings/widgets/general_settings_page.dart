@@ -45,6 +45,7 @@ part 'modals/duration_modal.dart';
 part 'modals/ratio_modal.dart';
 part 'modals/sound_theme_modal.dart';
 part 'pickers/skill_level_picker.dart';
+part 'pickers/search_threads_picker.dart';
 part 'sliders/move_time_slider.dart';
 part 'sliders/opening_randomness_slider.dart';
 
@@ -297,6 +298,19 @@ class GeneralSettingsPage extends StatelessWidget {
 
     logger.t("$_logTag shufflingEnabled: $value");
   }
+
+  void _setUseLazySmp(GeneralSettings generalSettings, bool value) {
+    _settingsRepository.generalSettings = generalSettings.copyWith(
+      useLazySmp: value,
+    );
+
+    logger.t("$_logTag useLazySmp: $value");
+  }
+
+  void _setEngineThreads(BuildContext context) => showModalBottomSheet<void>(
+    context: context,
+    builder: (_) => const _SearchThreadsPicker(),
+  );
 
   void _setTrapAwareness(GeneralSettings generalSettings, bool value) {
     _settingsRepository.generalSettings = generalSettings.copyWith(
@@ -1209,6 +1223,26 @@ class GeneralSettingsPage extends StatelessWidget {
               },
               titleString: S.of(context).shufflingEnabled,
               subtitleString: S.of(context).moveRandomlyDetail,
+            ),
+            SettingsListTile.switchTile(
+              key: const Key(
+                'general_settings_page_settings_card_ais_play_style_use_lazy_smp',
+              ),
+              value: generalSettings.useLazySmp,
+              onChanged: (bool val) {
+                _setUseLazySmp(generalSettings, val);
+              },
+              titleString: S.of(context).useLazySmp,
+              subtitleString: S.of(context).useLazySmp_Detail,
+            ),
+            SettingsListTile(
+              key: const Key(
+                'general_settings_page_settings_card_ais_play_style_engine_threads',
+              ),
+              titleString: S.of(context).engineThreads,
+              subtitleString: S.of(context).engineThreads_Detail,
+              trailingString: generalSettings.engineThreads.toString(),
+              onTap: () => _setEngineThreads(context),
             ),
           ],
         ),

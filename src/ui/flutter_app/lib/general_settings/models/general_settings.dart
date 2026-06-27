@@ -174,6 +174,8 @@ class GeneralSettings {
     this.showOpeningInfo = false,
     this.preferFavoredOpenings = false,
     this.openingRandomness = 60,
+    this.useLazySmp = false,
+    this.engineThreads = 4,
 
     /// Deprecated: always true. Retained to preserve the Hive `@HiveField(46)`
     /// slot for existing saved data. The field will be removed in a future
@@ -374,6 +376,15 @@ class GeneralSettings {
   // candidates; 60 = the legacy rank-biased default (bias 0.6).
   @HiveField(52, defaultValue: 60)
   final int openingRandomness;
+
+  // Enable multi-threaded native AI search where supported.
+  @HiveField(53, defaultValue: false)
+  final bool useLazySmp;
+
+  // Requested native AI search thread count. Used only when [useLazySmp] is
+  // enabled, and still clamped by the Rust engine for safety.
+  @HiveField(54, defaultValue: 4)
+  final int engineThreads;
 
   /// Deprecated field retained for Hive backward compatibility.
   ///

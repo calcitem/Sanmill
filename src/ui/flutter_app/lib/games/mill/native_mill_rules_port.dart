@@ -207,6 +207,8 @@ class NativeMillRulesPort implements RulesPort {
       aiIsLazy: settings.aiIsLazy,
       skillLevel: settings.skillLevel,
       shuffling: settings.shufflingEnabled,
+      useLazySmp: settings.useLazySmp,
+      engineThreads: settings.engineThreads,
     );
   }
 

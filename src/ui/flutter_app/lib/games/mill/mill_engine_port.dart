@@ -334,6 +334,8 @@ class MillEnginePortAdapter implements EnginePort {
       usePerfectDatabase:
           settings.usePerfectDatabase && isRuleSupportingPerfectDatabase(),
       shuffling: settings.shufflingEnabled,
+      useLazySmp: settings.useLazySmp,
+      engineThreads: settings.engineThreads,
     );
   }
 

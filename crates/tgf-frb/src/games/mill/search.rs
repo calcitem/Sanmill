@@ -14,7 +14,8 @@
 // public `spawn_with_*` functions here so the FRB entry points remain
 // thin and game-neutral structurally.
 
-use std::sync::Mutex;
+use std::sync::atomic::AtomicBool;
+use std::sync::{Arc, Mutex};
 #[cfg(not(target_arch = "wasm32"))]
 use std::thread;
 
@@ -94,6 +95,11 @@ pub(crate) struct MillEngineConfigPlan {
     /// always pick the same line.  Maps to master's `Shuffling` UCI option;
     /// disable for deterministic play.
     pub shuffling: bool,
+    /// Enable multi-threaded native search where supported.  This is gated by
+    /// `shuffling` so fixed-position deterministic play remains single-threaded.
+    pub use_lazy_smp: bool,
+    /// Requested worker/thread count for multi-threaded search.
+    pub engine_threads: u32,
 }
 
 impl Default for MillEngineConfigPlan {
@@ -107,6 +113,8 @@ impl Default for MillEngineConfigPlan {
             skill_level: 1,
             use_perfect_database: false,
             shuffling: true,
+            use_lazy_smp: false,
+            engine_threads: 4,
         }
     }
 }
@@ -130,12 +138,22 @@ pub(crate) fn perfect_move_ordering(
 pub(crate) fn mill_searcher_default() -> Searcher<MillGame> {
     let mut s = Searcher::with_shared_tt(MILL_SHARED_TT.clone());
     s.clear_tt();
+    configure_mill_searcher_defaults(&mut s);
+    s
+}
+
+fn mill_searcher_with_shared_tt(shared_tt: SharedTt) -> Searcher<MillGame> {
+    let mut s = Searcher::with_shared_tt(shared_tt);
+    configure_mill_searcher_defaults(&mut s);
+    s
+}
+
+fn configure_mill_searcher_defaults(s: &mut Searcher<MillGame>) {
     s.set_policy(SearchPolicy {
         quiescence_kind_tag: Some(MillActionKind::Remove as i16),
         ..Default::default()
     });
     s.set_options(mill_base_search_options());
-    s
 }
 
 /// Whether this build enables full TT prefetch for the Mill engine.
@@ -183,6 +201,168 @@ pub(crate) fn search_shuffle_seed() -> u64 {
         .duration_since(std::time::UNIX_EPOCH)
         .map(|d| d.as_nanos() as u64)
         .unwrap_or(0)
+}
+
+fn configured_search_options(
+    config: &MillEngineConfigPlan,
+    search_context: MoveOrderContext,
+) -> SearchOptions {
+    SearchOptions {
+        time_limit_ms: if config.move_time_ms > 0 {
+            Some(config.move_time_ms as u64)
+        } else {
+            None
+        },
+        move_order_context: search_context,
+        ..mill_base_search_options()
+    }
+}
+
+fn run_searcher_algorithm(
+    searcher: &mut Searcher<MillGame>,
+    wb: &mut tgf_mill::MillWorkbench,
+    algorithm: MillSearchAlgorithmKind,
+    depth: i32,
+    first_guess: i32,
+) -> SearchResult {
+    match algorithm {
+        MillSearchAlgorithmKind::AlphaBeta | MillSearchAlgorithmKind::Pvs => {
+            // Master routes Algorithm 0 and 1 to Search::search.  Keep the
+            // same parity path here; Rust PVS remains available internally.
+            searcher.search(wb, depth)
+        }
+        MillSearchAlgorithmKind::Mtdf => searcher.search_mtdf_with_guess(wb, depth, first_guess),
+        MillSearchAlgorithmKind::Mcts | MillSearchAlgorithmKind::Random => {
+            SearchResult::default_none()
+        }
+    }
+}
+
+fn run_ab_like_search(
+    searcher: &mut Searcher<MillGame>,
+    wb: &mut tgf_mill::MillWorkbench,
+    config: &MillEngineConfigPlan,
+    max_depth: i32,
+    mut on_info: impl FnMut(i32, &SearchResult),
+) -> SearchResult {
+    let mut result = SearchResult::default_none();
+    let mut first_guess = 0;
+    if config.move_time_ms > 0 {
+        for d in 2..max_depth {
+            if searcher.was_aborted() {
+                break;
+            }
+            result = run_searcher_algorithm(searcher, wb, config.algorithm, d, first_guess);
+            first_guess = result.score;
+            on_info(d, &result);
+        }
+    }
+    if !searcher.was_aborted() || result.best_action.is_none() {
+        result = run_searcher_algorithm(searcher, wb, config.algorithm, max_depth, first_guess);
+        on_info(max_depth, &result);
+    }
+    result
+}
+
+fn search_threads_for_config(config: &MillEngineConfigPlan) -> u32 {
+    config.engine_threads.clamp(1, 16)
+}
+
+fn multi_thread_search_is_allowed(config: &MillEngineConfigPlan) -> bool {
+    #[cfg(target_arch = "wasm32")]
+    {
+        let _ = config;
+        false
+    }
+    #[cfg(not(target_arch = "wasm32"))]
+    {
+        config.use_lazy_smp && config.shuffling && search_threads_for_config(config) > 1
+    }
+}
+
+fn mix_lazy_smp_worker_seed(seed: u64, worker_index: u64) -> u64 {
+    let mut x = seed ^ worker_index.wrapping_mul(0x9E37_79B9_7F4A_7C15);
+    x = (x ^ (x >> 30)).wrapping_mul(0xBF58_476D_1CE4_E5B9);
+    x = (x ^ (x >> 27)).wrapping_mul(0x94D0_49BB_1331_11EB);
+    x ^ (x >> 31)
+}
+
+#[cfg(not(target_arch = "wasm32"))]
+fn run_lazy_smp_ab_like_search(
+    game: &MillGame,
+    snapshot: GameStateSnapshot,
+    config: &MillEngineConfigPlan,
+    base_depth: i32,
+    base_context: MoveOrderContext,
+    shared_tt: SharedTt,
+    abort: Arc<AtomicBool>,
+) -> SearchResult {
+    let worker_count = search_threads_for_config(config) as usize;
+    let mut handles = Vec::with_capacity(worker_count);
+    for worker_index in 0..worker_count {
+        let worker_game = game.clone();
+        let worker_shared_tt = shared_tt.clone();
+        let worker_abort = Arc::clone(&abort);
+        let mut worker_context = base_context;
+        if worker_index > 0 {
+            worker_context.shuffle_seed =
+                mix_lazy_smp_worker_seed(base_context.shuffle_seed, worker_index as u64);
+        }
+        let worker_config = config.clone();
+        let worker_depth = if config.move_time_ms > 0 {
+            base_depth + (worker_index % 2) as i32
+        } else {
+            base_depth
+        }
+        .max(1);
+        handles.push(thread::spawn(move || {
+            let mut searcher = mill_searcher_with_shared_tt(worker_shared_tt);
+            searcher.set_abort_flag(worker_abort);
+            searcher.set_options(configured_search_options(&worker_config, worker_context));
+            let mut wb = worker_game.build_workbench(&snapshot);
+            let result = run_ab_like_search(
+                &mut searcher,
+                &mut wb,
+                &worker_config,
+                worker_depth,
+                |_, _| {},
+            );
+            (worker_depth, result)
+        }));
+    }
+
+    let mut best: Option<(i32, SearchResult)> = None;
+    let mut total_nodes = 0_u64;
+    for handle in handles {
+        let (depth, result) = handle
+            .join()
+            .expect("lazy-SMP Mill worker should return a SearchResult");
+        total_nodes = total_nodes.saturating_add(result.nodes);
+        if best.as_ref().is_none_or(|current| {
+            lazy_smp_result_is_better((depth, &result), (current.0, &current.1))
+        }) {
+            best = Some((depth, result));
+        }
+    }
+    let (_, mut result) = best.expect("at least one lazy-SMP worker must run");
+    result.nodes = total_nodes;
+    result
+}
+
+#[cfg(not(target_arch = "wasm32"))]
+fn lazy_smp_result_is_better(
+    candidate: (i32, &SearchResult),
+    current: (i32, &SearchResult),
+) -> bool {
+    let candidate_valid = !candidate.1.best_action.is_none() || candidate.1.draw_reason.is_some();
+    let current_valid = !current.1.best_action.is_none() || current.1.draw_reason.is_some();
+    if candidate_valid != current_valid {
+        return candidate_valid;
+    }
+    if candidate.0 != current.0 {
+        return candidate.0 > current.0;
+    }
+    candidate.1.score > current.1.score
 }
 
 /// Fallback chain mirroring master `SearchEngine::executeSearch`
@@ -304,6 +484,7 @@ fn run_mill_engine_config_event_stream(
     }
     let mut wb = game.build_workbench(&snapshot);
     let mut searcher = mill_searcher_default();
+    let abort = Arc::new(AtomicBool::new(false));
     let search_context = MoveOrderContext {
         algorithm: match algorithm_to_search(config.algorithm) {
             SearchAlgorithm::AlphaBeta => MoveOrderAlgorithm::AlphaBeta,
@@ -317,16 +498,8 @@ fn run_mill_engine_config_event_stream(
         hash_move: None,
         shuffle_seed: search_shuffle_seed(),
     };
-    searcher.set_move_order_context(search_context);
-
-    // Apply time limit if requested.
-    if config.move_time_ms > 0 {
-        searcher.set_options(SearchOptions {
-            time_limit_ms: Some(config.move_time_ms as u64),
-            move_order_context: search_context,
-            ..mill_base_search_options()
-        });
-    }
+    searcher.set_abort_flag(Arc::clone(&abort));
+    searcher.set_options(configured_search_options(&config, search_context));
 
     {
         let mut active = ACTIVE_SEARCH.lock().expect("active search mutex poisoned");
@@ -363,11 +536,8 @@ fn run_mill_engine_config_event_stream(
         requested_depth.max(1)
     };
     let max_depth = origin_depth;
-    let mut result = SearchResult::default_none();
-    let run_ids = config.move_time_ms > 0;
-    let mut first_guess = 0;
 
-    match algorithm_to_search(config.algorithm) {
+    let mut result = match algorithm_to_search(config.algorithm) {
         SearchAlgorithm::Random => {
             // Use time-seeded random to match master's rand()+time() behaviour.
             let seed = std::time::SystemTime::now()
@@ -375,55 +545,60 @@ fn run_mill_engine_config_event_stream(
                 .map(|d| d.as_secs())
                 .unwrap_or(42);
             searcher.set_random_seed(seed);
-            result = searcher.random_search(&mut wb);
+            let result = searcher.random_search(&mut wb);
             let _ = sink.add(crate::engine_event::info(1, result.score, result.nodes));
+            result
         }
-        SearchAlgorithm::AlphaBeta | SearchAlgorithm::Pvs => {
-            if run_ids {
-                for d in 2..max_depth {
-                    if searcher.was_aborted() {
-                        break;
-                    }
-                    result = searcher.search(&mut wb, d);
-                    // first_guess is consumed by the MTD(f) branch only;
-                    // Pvs / AlphaBeta still update it for symmetry but
-                    // never read it back.
-                    let _ = first_guess;
-                    first_guess = result.score;
-                    let _ = sink.add(crate::engine_event::info(d, result.score, result.nodes));
+        SearchAlgorithm::AlphaBeta | SearchAlgorithm::Pvs | SearchAlgorithm::Mtdf => {
+            if multi_thread_search_is_allowed(&config) {
+                #[cfg(not(target_arch = "wasm32"))]
+                {
+                    let result = run_lazy_smp_ab_like_search(
+                        &game,
+                        snapshot,
+                        &config,
+                        max_depth,
+                        search_context,
+                        searcher.shared_tt(),
+                        Arc::clone(&abort),
+                    );
+                    let _ = sink.add(crate::engine_event::info(
+                        max_depth,
+                        result.score,
+                        result.nodes,
+                    ));
+                    result
                 }
-            }
-            if !searcher.was_aborted() || result.best_action.is_none() {
-                // Master executeSearch routes Algorithm 0 and 1 to
-                // the same Search::search path; search_pvs remains
-                // available as a Rust implementation but is not used
-                // for parity.
-                result = searcher.search(&mut wb, max_depth);
-                let _ = sink.add(crate::engine_event::info(
-                    max_depth,
-                    result.score,
-                    result.nodes,
-                ));
-            }
-        }
-        SearchAlgorithm::Mtdf => {
-            if run_ids {
-                for d in 2..max_depth {
-                    if searcher.was_aborted() {
-                        break;
-                    }
-                    result = searcher.search_mtdf_with_guess(&mut wb, d, first_guess);
-                    first_guess = result.score;
-                    let _ = sink.add(crate::engine_event::info(d, result.score, result.nodes));
+                #[cfg(target_arch = "wasm32")]
+                {
+                    run_ab_like_search(
+                        &mut searcher,
+                        &mut wb,
+                        &config,
+                        max_depth,
+                        |depth, current| {
+                            let _ = sink.add(crate::engine_event::info(
+                                depth,
+                                current.score,
+                                current.nodes,
+                            ));
+                        },
+                    )
                 }
-            }
-            if !searcher.was_aborted() || result.best_action.is_none() {
-                result = searcher.search_mtdf_with_guess(&mut wb, max_depth, first_guess);
-                let _ = sink.add(crate::engine_event::info(
+            } else {
+                run_ab_like_search(
+                    &mut searcher,
+                    &mut wb,
+                    &config,
                     max_depth,
-                    result.score,
-                    result.nodes,
-                ));
+                    |depth, current| {
+                        let _ = sink.add(crate::engine_event::info(
+                            depth,
+                            current.score,
+                            current.nodes,
+                        ));
+                    },
+                )
             }
         }
         SearchAlgorithm::Mcts => {
@@ -454,7 +629,11 @@ fn run_mill_engine_config_event_stream(
                     },
                     exploration: 0.5,
                     ab_assist_depth: 6,
-                    num_threads: None,
+                    num_threads: Some(if multi_thread_search_is_allowed(&config) {
+                        search_threads_for_config(&config)
+                    } else {
+                        1
+                    }),
                     move_order_context: mcts_move_order_context(
                         config.skill_level,
                         config.shuffling,
@@ -495,7 +674,7 @@ fn run_mill_engine_config_event_stream(
             // tgf_core::Game::mcts_terminal_score; reuse it instead
             // of recomputing locally so all MCTS callers stay
             // consistent.
-            result = SearchResult {
+            let result = SearchResult {
                 best_action: mcts_result.best_action,
                 score: mcts_result.score,
                 nodes: mcts_result.visits as u64,
@@ -506,8 +685,9 @@ fn run_mill_engine_config_event_stream(
                 result.score,
                 result.nodes,
             ));
+            result
         }
-    }
+    };
 
     let search_action = result.best_action;
     let mut aimovetype = "traditional";
