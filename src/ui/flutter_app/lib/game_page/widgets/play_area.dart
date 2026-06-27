@@ -74,7 +74,7 @@ class PlayAreaState extends State<PlayArea> {
     return value;
   }
 
-  Widget? _buildHumanDatabaseStatsLine(BuildContext context) {
+  Widget? _buildHumanDatabaseStatsOverlay(BuildContext context) {
     if (!DB().generalSettings.showHumanDatabaseStats) {
       return null;
     }
@@ -82,64 +82,72 @@ class PlayAreaState extends State<PlayArea> {
         GameController().activeNativeMillSession?.lastHumanDatabaseMoveStats;
 
     final ThemeData theme = Theme.of(context);
-    // Render real stats when the latest AI move came from the Human Database,
-    // otherwise a blank single-line placeholder. The slot keeps its size via
-    // Visibility.maintainSize so the toolbar below does not jump up and down
-    // as the line appears and disappears between moves.
-    final String text = stats == null
-        ? ' '
-        : S
-              .of(context)
-              .humanGameDatabaseStatsLine(
-                stats.notation,
-                stats.winPercent.toStringAsFixed(1),
-                stats.drawPercent.toStringAsFixed(1),
-                stats.lossPercent.toStringAsFixed(1),
-                stats.total,
-              );
-    return Padding(
-      key: const Key('play_area_human_database_stats_padding'),
-      padding: const EdgeInsets.symmetric(
-        horizontal: AppTheme.boardMargin,
-        vertical: 4,
-      ),
-      child: Visibility(
-        visible: stats != null,
-        maintainSize: true,
-        maintainAnimation: true,
-        maintainState: true,
-        child: DecoratedBox(
-          key: const Key('play_area_human_database_stats'),
-          decoration: BoxDecoration(
-            color: theme.colorScheme.surfaceContainerHighest.withValues(
-              alpha: 0.72,
-            ),
-            borderRadius: BorderRadius.circular(6),
-            border: Border.all(color: theme.colorScheme.outlineVariant),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Icon(
-                  Icons.storage_rounded,
-                  size: 16,
-                  color: theme.colorScheme.onSurfaceVariant,
+    final Widget child = stats == null
+        ? const SizedBox.shrink(
+            key: Key('play_area_human_database_stats_empty'),
+          )
+        : Semantics(
+            key: const Key('play_area_human_database_stats_semantics'),
+            liveRegion: true,
+            child: DecoratedBox(
+              key: const Key('play_area_human_database_stats'),
+              decoration: BoxDecoration(
+                color: theme.colorScheme.surfaceContainerHighest.withValues(
+                  alpha: 0.82,
                 ),
-                const SizedBox(width: 6),
-                Flexible(
-                  child: Text(
-                    text,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: theme.textTheme.bodySmall?.copyWith(
+                borderRadius: BorderRadius.circular(6),
+                border: Border.all(color: theme.colorScheme.outlineVariant),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 6,
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Icon(
+                      Icons.storage_rounded,
+                      size: 16,
                       color: theme.colorScheme.onSurfaceVariant,
                     ),
-                  ),
+                    const SizedBox(width: 6),
+                    Flexible(
+                      child: Text(
+                        S
+                            .of(context)
+                            .humanGameDatabaseStatsLine(
+                              stats.notation,
+                              stats.winPercent.toStringAsFixed(1),
+                              stats.drawPercent.toStringAsFixed(1),
+                              stats.lossPercent.toStringAsFixed(1),
+                              stats.total,
+                            ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          color: theme.colorScheme.onSurfaceVariant,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ],
+              ),
             ),
+          );
+
+    return Positioned(
+      key: const Key('play_area_human_database_stats_overlay'),
+      left: AppTheme.boardMargin,
+      right: AppTheme.boardMargin,
+      bottom: AppTheme.boardMargin,
+      child: IgnorePointer(
+        child: Center(
+          child: AnimatedSwitcher(
+            duration: const Duration(milliseconds: 160),
+            switchInCurve: Curves.easeOutCubic,
+            switchOutCurve: Curves.easeInCubic,
+            child: child,
           ),
         ),
       ),
@@ -531,9 +539,8 @@ class PlayAreaState extends State<PlayArea> {
         // interface clean; the PuzzlePage provides its own puzzle controls.
         final bool isPuzzle =
             GameController().gameInstance.gameMode == GameMode.puzzle;
-        final Widget? humanDatabaseStatsLine = _buildHumanDatabaseStatsLine(
-          context,
-        );
+        final Widget? humanDatabaseStatsOverlay =
+            _buildHumanDatabaseStatsOverlay(context);
 
         // Main content without bottom toolbars:
         final Widget mainContent = SizedBox(
@@ -568,12 +575,17 @@ class PlayAreaState extends State<PlayArea> {
                     child: Container(
                       key: const Key('play_area_game_board_container'),
                       alignment: Alignment.center,
-                      // The 'child' from the constructor is the GameBoard:
-                      child: widget.child,
+                      child: Stack(
+                        key: const Key('play_area_game_board_stack'),
+                        alignment: Alignment.center,
+                        children: <Widget>[
+                          // The 'child' from the constructor is the GameBoard:
+                          widget.child,
+                          ?humanDatabaseStatsOverlay,
+                        ],
+                      ),
                     ),
                   ),
-
-                  ?humanDatabaseStatsLine,
 
                   // Removed pieces row or spacing
                   if (DB().displaySettings.isUnplacedAndRemovedPiecesShown &&
