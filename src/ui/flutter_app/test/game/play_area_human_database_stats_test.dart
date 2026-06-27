@@ -35,7 +35,7 @@ void main() {
     DB.instance = null;
   });
 
-  testWidgets('human database stats strip stays above the board', (
+  testWidgets('human database stats strip reserves space above the board', (
     WidgetTester tester,
   ) async {
     await tester.binding.setSurfaceSize(const Size(390, 844));
@@ -64,6 +64,12 @@ void main() {
     expect(strip, findsOneWidget);
     expect(header, findsOneWidget);
     expect(board, findsOneWidget);
+    expect(tester.getSize(strip).height, greaterThan(0));
+    expect(find.text('Human game database'), findsOneWidget);
+    expect(
+      find.byKey(const Key('play_area_human_database_stats_empty')),
+      findsNothing,
+    );
     expect(
       tester.getTopLeft(strip).dy,
       greaterThanOrEqualTo(tester.getBottomLeft(header).dy),

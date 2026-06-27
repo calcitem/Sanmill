@@ -82,79 +82,68 @@ class PlayAreaState extends State<PlayArea> {
         GameController().activeNativeMillSession?.lastHumanDatabaseMoveStats;
 
     final ThemeData theme = Theme.of(context);
-    final Widget child = stats == null
-        ? const SizedBox.shrink(
-            key: Key('play_area_human_database_stats_empty'),
-          )
-        : Padding(
-            key: const Key('play_area_human_database_stats_padding'),
-            padding: const EdgeInsets.symmetric(
-              horizontal: AppTheme.boardMargin,
-              vertical: 4,
+    final Color contentColor = theme.colorScheme.onSurfaceVariant.withValues(
+      alpha: stats == null ? 0.68 : 1,
+    );
+    final String statsText = stats == null
+        ? S.of(context).humanGameDatabaseSettings
+        : S
+              .of(context)
+              .humanGameDatabaseStatsLine(
+                stats.notation,
+                stats.winPercent.toStringAsFixed(1),
+                stats.drawPercent.toStringAsFixed(1),
+                stats.lossPercent.toStringAsFixed(1),
+                stats.total,
+              );
+
+    return Padding(
+      key: const Key('play_area_human_database_stats_strip'),
+      padding: const EdgeInsets.symmetric(
+        horizontal: AppTheme.boardMargin,
+        vertical: 4,
+      ),
+      child: Semantics(
+        key: const Key('play_area_human_database_stats_semantics'),
+        liveRegion: stats != null,
+        child: DecoratedBox(
+          key: const Key('play_area_human_database_stats'),
+          decoration: BoxDecoration(
+            color: theme.colorScheme.surfaceContainerHighest.withValues(
+              alpha: 0.82,
             ),
-            child: Align(
-              child: Semantics(
-                key: const Key('play_area_human_database_stats_semantics'),
-                liveRegion: true,
-                child: DecoratedBox(
-                  key: const Key('play_area_human_database_stats'),
-                  decoration: BoxDecoration(
-                    color: theme.colorScheme.surfaceContainerHighest.withValues(
-                      alpha: 0.82,
-                    ),
-                    borderRadius: BorderRadius.circular(6),
-                    border: Border.all(color: theme.colorScheme.outlineVariant),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 10,
-                      vertical: 6,
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        Icon(
-                          Icons.storage_rounded,
-                          size: 16,
-                          color: theme.colorScheme.onSurfaceVariant,
+            borderRadius: BorderRadius.circular(6),
+            border: Border.all(color: theme.colorScheme.outlineVariant),
+          ),
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(minHeight: 32),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+              child: Row(
+                children: <Widget>[
+                  Icon(Icons.storage_rounded, size: 16, color: contentColor),
+                  const SizedBox(width: 6),
+                  Expanded(
+                    child: AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 160),
+                      switchInCurve: Curves.easeOutCubic,
+                      switchOutCurve: Curves.easeInCubic,
+                      child: Text(
+                        statsText,
+                        key: ValueKey<String>(statsText),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          color: contentColor,
                         ),
-                        const SizedBox(width: 6),
-                        Flexible(
-                          child: Text(
-                            S
-                                .of(context)
-                                .humanGameDatabaseStatsLine(
-                                  stats.notation,
-                                  stats.winPercent.toStringAsFixed(1),
-                                  stats.drawPercent.toStringAsFixed(1),
-                                  stats.lossPercent.toStringAsFixed(1),
-                                  stats.total,
-                                ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: theme.textTheme.bodySmall?.copyWith(
-                              color: theme.colorScheme.onSurfaceVariant,
-                            ),
-                          ),
-                        ),
-                      ],
+                      ),
                     ),
                   ),
-                ),
+                ],
               ),
             ),
-          );
-
-    return AnimatedSize(
-      key: const Key('play_area_human_database_stats_strip'),
-      duration: const Duration(milliseconds: 160),
-      curve: Curves.easeInOutCubic,
-      alignment: Alignment.topCenter,
-      child: AnimatedSwitcher(
-        duration: const Duration(milliseconds: 160),
-        switchInCurve: Curves.easeOutCubic,
-        switchOutCurve: Curves.easeInCubic,
-        child: child,
+          ),
+        ),
       ),
     );
   }
