@@ -86,7 +86,7 @@ class PlayAreaState extends State<PlayArea> {
       alpha: stats == null ? 0.68 : 1,
     );
     final String statsText = stats == null
-        ? S.of(context).humanGameDatabaseSettings
+        ? S.of(context).humanGameDatabaseStatsUnavailable
         : S
               .of(context)
               .humanGameDatabaseStatsLine(

@@ -65,7 +65,11 @@ void main() {
     expect(header, findsOneWidget);
     expect(board, findsOneWidget);
     expect(tester.getSize(strip).height, greaterThan(0));
-    expect(find.text('Human game database'), findsOneWidget);
+    expect(
+      find.text('No human database stats for this position'),
+      findsOneWidget,
+    );
+    expect(find.text('Human game database'), findsNothing);
     expect(
       find.byKey(const Key('play_area_human_database_stats_empty')),
       findsNothing,

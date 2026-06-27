@@ -4505,6 +4505,8 @@
             }
         }
     },
+    "humanGameDatabaseStatsUnavailable": "No human database stats for this position",
+    "@humanGameDatabaseStatsUnavailable": {},
     "ticTacToeSample": "Tic-Tac-Toe (sample)",
     "@ticTacToeSample": {
         "description": "Developer option that opens the bundled Tic-Tac-Toe sample game"

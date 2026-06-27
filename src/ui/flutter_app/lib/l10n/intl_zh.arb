@@ -4385,6 +4385,8 @@
             }
         }
     },
+    "humanGameDatabaseStatsUnavailable": "当前局面暂无人类数据库统计",
+    "@humanGameDatabaseStatsUnavailable": {},
     "ticTacToeSample": "井字棋（示例）",
     "@ticTacToeSample": {
         "description": "Developer option that opens the bundled Tic-Tac-Toe sample game"
