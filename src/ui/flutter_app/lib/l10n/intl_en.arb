@@ -2270,6 +2270,10 @@
     "@llmAssistedDevelopment": {
         "description": "Developer tool: build a developer prompt for an external LLM and copy it to clipboard"
     },
+    "ticTacToeSample": "Tic-Tac-Toe (sample)",
+    "@ticTacToeSample": {
+        "description": "Developer option that opens the bundled Tic-Tac-Toe sample game"
+    },
     "llmAssistedDevelopmentInputHint": "Describe the task you want the LLM to help with...",
     "@llmAssistedDevelopmentInputHint": {
         "description": "Hint text for the LLM-assisted development input field"

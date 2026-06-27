@@ -26,7 +26,6 @@ import '../game_platform/game_registry.dart';
 import '../game_platform/game_route_id.dart';
 import '../game_platform/game_session.dart';
 import '../game_platform/game_session_handle.dart';
-import '../game_shell/debug_route_ids.dart';
 import '../game_shell/game_session_scope.dart';
 import '../game_shell/shared_game_shell.dart';
 import '../game_shell/shell_route_ids.dart';
@@ -231,12 +230,6 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
       return;
     }
 
-    if (routeId == DebugRouteIds.platformProbe.value) {
-      logger.i('Switching to platform probe (tic-tac-toe demo).');
-      GameRegistry.instance.select(GameId.demoProbe);
-      return;
-    }
-
     if (routeId == ShellRouteIds.appExit.value) {
       logger.i('Exiting...');
       if (EnvironmentConfig.test == false && !kIsWeb) {
@@ -425,7 +418,6 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
     ShellRouteIds.appBackToMainGame.value: const Key(
       'drawer_item_back_to_main_game',
     ),
-    DebugRouteIds.platformProbe.value: const Key('drawer_item_platform_probe'),
   };
 
   /// Maps a route id string to the fluent icon shown in the drawer.
@@ -454,7 +446,6 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
     ShellRouteIds.appBackToMainGame.value: const Icon(
       FluentIcons.home_24_regular,
     ),
-    DebugRouteIds.platformProbe.value: const Icon(Icons.science_outlined),
   };
 
   /// Returns the stable drawer-item [Key] for [routeId], or `null` if unknown.
@@ -555,10 +546,6 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
           ),
           if (!kIsWeb && Platform.isAndroid)
             _appItem(ShellRouteIds.appExit, s.exit),
-          if (kDebugMode &&
-              GameRegistry.instance.isPrimarySelected &&
-              GameRegistry.instance.getModule(GameId.demoProbe) != null)
-            _appItem(DebugRouteIds.platformProbe, 'Tic-Tac-Toe (sample)'),
         ];
 
     return SharedGameShell(

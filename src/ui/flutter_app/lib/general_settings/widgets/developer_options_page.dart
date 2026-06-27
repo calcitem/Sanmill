@@ -3,6 +3,7 @@
 
 // developer_options_page.dart
 
+import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart' show Box;
 
@@ -10,6 +11,8 @@ import '../../appearance_settings/models/color_settings.dart';
 import '../../custom_drawer/custom_drawer.dart';
 import '../../experience_recording/pages/session_list_page.dart';
 import '../../experience_recording/services/recording_service.dart';
+import '../../game_platform/game_id.dart';
+import '../../game_platform/game_registry.dart';
 import '../../games/mill/opening_book/opening_book_studio_page.dart';
 import '../../generated/intl/l10n.dart';
 import '../../shared/database/database.dart';
@@ -54,6 +57,18 @@ class DeveloperOptionsPage extends StatelessWidget {
     );
   }
 
+  void _openTicTacToeSample(BuildContext context) {
+    assert(
+      GameRegistry.instance.getModule(GameId.demoProbe) != null,
+      'The Tic-Tac-Toe sample game module must be registered.',
+    );
+    GameRegistry.instance.select(GameId.demoProbe);
+    Navigator.of(
+      context,
+      rootNavigator: true,
+    ).popUntil((Route<dynamic> route) => route.isFirst);
+  }
+
   SettingsList _buildDeveloperOptionsList(
     BuildContext context,
     Box<GeneralSettings> box,
@@ -94,6 +109,13 @@ class DeveloperOptionsPage extends StatelessWidget {
                 builder: (_) => const LlmAssistedDevelopmentDialog(),
               ),
             ),
+            if (kDebugMode &&
+                GameRegistry.instance.getModule(GameId.demoProbe) != null)
+              SettingsListTile(
+                key: const Key('developer_options_page_tic_tac_toe_sample'),
+                titleString: S.of(context).ticTacToeSample,
+                onTap: () => _openTicTacToeSample(context),
+              ),
             SettingsListTile(
               key: const Key('developer_options_page_settings_card_logs'),
               titleString: S.of(context).logs,
