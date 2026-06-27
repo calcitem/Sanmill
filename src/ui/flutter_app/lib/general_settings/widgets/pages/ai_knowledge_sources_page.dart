@@ -204,13 +204,13 @@ class _AiKnowledgeSourcesPage extends StatelessWidget {
           _AnimatedSettingsCard(
             child: _buildOpeningBookCard(context, generalSettings),
           ),
-        if (!kIsWeb)
-          _AnimatedSettingsCard(
-            child: _buildPerfectDatabaseCard(context, generalSettings),
-          ),
         if (_humanDatabaseSettingsAvailable())
           _AnimatedSettingsCard(
             child: _buildHumanDatabaseCard(context, generalSettings),
+          ),
+        if (!kIsWeb)
+          _AnimatedSettingsCard(
+            child: _buildPerfectDatabaseCard(context, generalSettings),
           ),
       ],
     );
