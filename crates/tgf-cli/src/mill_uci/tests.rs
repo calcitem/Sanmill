@@ -752,6 +752,7 @@ fn active_search_try_take_finished_updates_last_best_value() {
                 draw_reason: None,
             },
             root_side_to_move: 0,
+            topn_request: None,
         })
         .unwrap();
     });
@@ -780,6 +781,7 @@ fn format_spawn_result_prints_draw_bestmove_for_draw_short_circuit() {
         depth: 2,
         result: SearchResult::draw_short_circuit("draw"),
         root_side_to_move: -1,
+        topn_request: None,
     };
 
     assert_eq!(

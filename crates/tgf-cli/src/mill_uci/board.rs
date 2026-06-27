@@ -231,6 +231,13 @@ pub(super) struct GoOptions {
     pub(super) depth_is_explicit: bool,
     pub(super) movetime_ms: Option<u64>,
     pub(super) node_limit: Option<u64>,
+    /// When set, score all legal moves at depth 2 after the main search and
+    /// emit `info topn rank K move <m> score <s>` lines (sorted best-first)
+    /// before the final `bestmove` line.  This is primarily intended for
+    /// bridge adapters that need per-move scores without running N separate
+    /// searches.  The main bestmove is still determined by the full search;
+    /// the topn ranking uses a shallow fixed-depth eval sweep.
+    pub(super) topn: Option<usize>,
 }
 
 /// Parse a `go …` invocation supporting the full UCI `go` subcommand set:
@@ -268,6 +275,7 @@ pub(super) fn parse_go_options(
             depth_is_explicit: false,
             movetime_ms: None,
             node_limit: None,
+            topn: None,
         };
     }
 
@@ -304,6 +312,7 @@ pub(super) fn parse_go_options(
         depth_is_explicit: explicit_depth.is_some(),
         movetime_ms,
         node_limit,
+        topn: find_u64("topn").map(|n| n.max(1) as usize),
     }
 }
 

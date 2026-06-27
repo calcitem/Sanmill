@@ -444,6 +444,16 @@ pub(crate) fn run_uci_loop() {
                 depth,
                 &betas,
             );
+        } else if line == "eval" {
+            // Output the static evaluation of the current position.
+            // Score is always from White's perspective (positive = White ahead),
+            // matching the `info depth … score cp N` convention used by the
+            // main search.  Useful for position analysis and bridge testing.
+            let game = MillGame::new(options.clone());
+            let wb = game.build_workbench(&state);
+            let raw = MillEvaluator::score(&wb);
+            let output_score = if state.side_to_move == 1 { -raw } else { raw };
+            println!("info eval {}", format_score(output_score));
         } else if line.starts_with("go") {
             finish_active_search(&mut active_search, &mut engine_cfg);
             let go = parse_go_options(line, state.side_to_move, &engine_cfg);
@@ -495,6 +505,19 @@ struct SpawnResult {
     /// Used by format_spawn_result to flip the score to White's perspective,
     /// matching master SearchEngine::emitCommand (P1-C.1).
     root_side_to_move: i8,
+    /// If set, after printing the main search result the engine will score
+    /// all legal moves at depth 2 and emit `info topn rank K move <m>
+    /// score <s>` lines (best-first, up to this count) before bestmove.
+    topn_request: Option<TopNRequest>,
+}
+
+/// Context needed to run per-move scoring for `go topn N`.
+struct TopNRequest {
+    topn: usize,
+    options: MillVariantOptions,
+    state: GameStateSnapshot,
+    root_repetition_history: Vec<u64>,
+    root_position_resets_repetition: bool,
 }
 
 fn spawn_search(
@@ -514,6 +537,13 @@ fn spawn_search(
     let search_options = search_options_for_go(&cfg, &go);
     let depth = effective_search_depth(&options, &state, go.depth, &cfg);
     let root_side_to_move = state.side_to_move;
+    let topn_request = go.topn.map(|topn| TopNRequest {
+        topn,
+        options: options.clone(),
+        state,
+        root_repetition_history: root_repetition_history.clone(),
+        root_position_resets_repetition,
+    });
     let (tx, rx) = mpsc::channel();
     let abort = Arc::new(AtomicBool::new(false));
     let abort_handle = SearchAbortHandle::from_arc(Arc::clone(&abort));
@@ -545,8 +575,9 @@ fn spawn_search(
                 depth,
                 result,
                 root_side_to_move,
+                topn_request,
             };
-            println!("{}", format_spawn_result(&spawn));
+            emit_topn_and_spawn_result(&spawn);
             let _ = tx.send(spawn);
         })
     } else {
@@ -572,8 +603,9 @@ fn spawn_search(
                 depth: outcome.depth,
                 result: outcome.result,
                 root_side_to_move,
+                topn_request,
             };
-            println!("{}", format_spawn_result(&spawn));
+            emit_topn_and_spawn_result(&spawn);
             let _ = tx.send(spawn);
         })
     };
@@ -1019,6 +1051,7 @@ fn debug_searcher(
             depth_is_explicit: true,
             movetime_ms: None,
             node_limit: None,
+            topn: None,
         },
     ));
     searcher.set_qsearch_max_depth(qsearch_max_depth);
@@ -1420,6 +1453,7 @@ fn take_finished_search(slot: &mut Option<ActiveSearch>) -> Option<SpawnResult> 
                 depth: 0,
                 result: SearchResult::default_none(),
                 root_side_to_move: 0,
+                topn_request: None,
             })
         }
     }
@@ -1461,6 +1495,80 @@ fn join_and_update(active: ActiveSearch, cfg: &mut EngineConfig) {
     if let Ok(spawn) = active.receiver.recv() {
         update_last_best_value(cfg, &spawn);
     }
+}
+
+/// Emit `info topn` lines (if requested) then the main `bestmove` line.
+/// Called from the search thread, where all stdout output for one `go`
+/// command must be serialised.
+fn emit_topn_and_spawn_result(spawn: &SpawnResult) {
+    if let Some(ref req) = spawn.topn_request {
+        // Score all legal moves at a fixed shallow depth and emit ranked lines
+        // before the bestmove.  Depth 2 balances quality against speed: at
+        // depth 2 each move is evaluated in O(branching²) which is < 24² ≈ 576
+        // nodes per move — fast even for the max 24 legal placements.
+        const TOPN_DEPTH: i32 = 2;
+        let mut scored: Vec<(Action, i32)> = score_moves_at_depth(
+            &req.options,
+            req.state,
+            req.root_repetition_history.clone(),
+            req.root_position_resets_repetition,
+            TOPN_DEPTH,
+        );
+        // Sort by score (best = highest from side-to-move perspective).
+        scored.sort_by_key(|b| std::cmp::Reverse(b.1));
+        let topn = req.topn.min(scored.len());
+        for (rank, (action, score)) in scored.iter().take(topn).enumerate() {
+            let move_str = action_to_uci(*action).unwrap_or_else(|| "none".to_owned());
+            // Flip score to White perspective so callers do not need to know
+            // which side is to move.
+            let output_score = if req.state.side_to_move == 1 {
+                -score
+            } else {
+                *score
+            };
+            println!(
+                "info topn rank {} move {} {}",
+                rank + 1,
+                move_str,
+                format_score(output_score)
+            );
+        }
+    }
+    println!("{}", format_spawn_result(spawn));
+}
+
+/// Score all legal moves from `state` at `depth` using independent searches
+/// and return `(action, score)` pairs (score is side-to-move perspective).
+fn score_moves_at_depth(
+    options: &MillVariantOptions,
+    state: GameStateSnapshot,
+    root_repetition_history: Vec<u64>,
+    root_position_resets_repetition: bool,
+    depth: i32,
+) -> Vec<(Action, i32)> {
+    let rules = MillRules::new(options.clone());
+    let mut legal = ActionList::<256>::new();
+    rules.legal_actions(&state, &mut legal);
+    let mut result = Vec::with_capacity(legal.len());
+    for action in legal.iter().copied() {
+        let next = rules.apply(&state, action);
+        // Evaluate from the opponent's perspective at depth-1, then negate so
+        // the score is from the current side's point of view.
+        let game = MillGame::new_with_repetition_context(
+            options.clone(),
+            root_repetition_history.clone(),
+            root_position_resets_repetition,
+        );
+        let mut wb = game.build_workbench(&next);
+        let mut searcher = Searcher::<MillGame>::new();
+        searcher.set_policy(SearchPolicy {
+            quiescence_kind_tag: Some(MillActionKind::Remove as i16),
+            ..Default::default()
+        });
+        let child_result = searcher.search(&mut wb, (depth - 1).max(0));
+        result.push((action, -child_result.score));
+    }
+    result
 }
 
 fn update_last_best_value(cfg: &mut EngineConfig, spawn: &SpawnResult) {
