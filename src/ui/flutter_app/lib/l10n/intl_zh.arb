@@ -4323,5 +4323,181 @@
     "nativeMillSessionDeveloperDescription": "默认开启。关闭可回滚到旧版对话栈；需新开一局后生效。",
     "@nativeMillSessionDeveloperDescription": {
         "description": "Subtitle for the native Mill session developer toggle"
-    }
+    },
+    "useHumanGameDatabase": "使用人类对局数据库",
+    "@useHumanGameDatabase": {},
+    "useHumanGameDatabase_Detail": "让 AI 在回退到搜索之前先查询外部人类对局 SQLite 数据库。",
+    "@useHumanGameDatabase_Detail": {},
+    "humanGameDatabaseFile": "人类对局数据库文件",
+    "@humanGameDatabaseFile": {},
+    "humanGameDatabaseFile_Detail": "选择外部 SQLite 数据库文件。该数据库不会随应用一起提供。",
+    "@humanGameDatabaseFile_Detail": {},
+    "clearHumanGameDatabaseFile": "清除人类对局数据库文件",
+    "@clearHumanGameDatabaseFile": {},
+    "showHumanGameDatabaseStats": "在棋盘上显示人类数据库统计",
+    "@showHumanGameDatabaseStats": {},
+    "showHumanGameDatabaseStats_Detail": "显示最近一次由人类对局数据库提供的 AI 着法的胜、和、负及样本数统计。",
+    "@showHumanGameDatabaseStats_Detail": {},
+    "humanGameDatabaseLoaded": "人类对局数据库已加载：{positionCount} 个局面，{moveCount} 个着法。",
+    "@humanGameDatabaseLoaded": {
+        "placeholders": {
+            "positionCount": {
+                "description": "Number of positions in the database.",
+                "example": "123456"
+            },
+            "moveCount": {
+                "description": "Number of moves in the database.",
+                "example": "789012"
+            }
+        }
+    },
+    "humanGameDatabaseLoadFailed": "无法加载人类对局数据库：{error}",
+    "@humanGameDatabaseLoadFailed": {
+        "placeholders": {
+            "error": {
+                "description": "Error returned while loading the database.",
+                "example": "missing table moves"
+            }
+        }
+    },
+    "humanGameDatabaseStatsLine": "人类数据库 {move}：胜 {winPct}%，和 {drawPct}%，负 {lossPct}%（n={total}）",
+    "@humanGameDatabaseStatsLine": {
+        "placeholders": {
+            "move": {
+                "description": "Move notation selected from the human database.",
+                "example": "d6-d7xa4"
+            },
+            "winPct": {
+                "description": "Win percentage string.",
+                "example": "68.4"
+            },
+            "drawPct": {
+                "description": "Draw percentage string.",
+                "example": "2.1"
+            },
+            "lossPct": {
+                "description": "Loss percentage string.",
+                "example": "29.5"
+            },
+            "total": {
+                "description": "Total sample count.",
+                "example": "137"
+            }
+        }
+    },
+    "ticTacToeSample": "井字棋（示例）",
+    "@ticTacToeSample": {
+        "description": "Developer option that opens the bundled Tic-Tac-Toe sample game"
+    },
+    "showOpeningInfo": "显示开局信息",
+    "@showOpeningInfo": {},
+    "showOpeningInfo_Detail": "当局面匹配已知开局时，在对局中于棋盘上方显示识别出的开局名称和来源。",
+    "@showOpeningInfo_Detail": {},
+    "openingLabel": "开局",
+    "@openingLabel": {},
+    "openingAvoid": "避免",
+    "@openingAvoid": {},
+    "openingReply": "应对",
+    "@openingReply": {},
+    "openingFavours": "有利于",
+    "@openingFavours": {},
+    "preferFavoredOpenings": "优先选择有利开局",
+    "@preferFavoredOpenings": {},
+    "preferFavoredOpenings_Detail": "开启开局库时，让 AI 在回退到引擎最佳着法之前，沿用一条对己方有利的已知开局路线。这会增加变化并带来更接近人类的感觉，但可能偏离最强着法。",
+    "@preferFavoredOpenings_Detail": {},
+    "openingBookStudio": "开局库工作室",
+    "@openingBookStudio": {},
+    "openingBookStudioDescription": "创建、编辑、验证、导入和导出 Sanmill 开局库源文件。",
+    "@openingBookStudioDescription": {},
+    "openingBookStudioLoadFailed": "开局库工作室无法加载源文件。",
+    "@openingBookStudioLoadFailed": {},
+    "openingBookStudioAssetSaved": "开局库源资源已保存。",
+    "@openingBookStudioAssetSaved": {},
+    "openingBookStudioExportDialogTitle": "导出 Sanmill 开局库",
+    "@openingBookStudioExportDialogTitle": {},
+    "openingBookStudioExported": "开局库已导出。",
+    "@openingBookStudioExported": {},
+    "openingBookStudioExportUnavailable": "当前平台不支持导出开局库。",
+    "@openingBookStudioExportUnavailable": {},
+    "openingBookStudioImported": "开局库已导入。",
+    "@openingBookStudioImported": {},
+    "openingBookStudioImportCancelled": "已取消导入开局库。",
+    "@openingBookStudioImportCancelled": {},
+    "openingBookStudioValidationFailed": "保存或导出前请修复验证错误。",
+    "@openingBookStudioValidationFailed": {},
+    "openingBookStudioValidationPassed": "验证通过。",
+    "@openingBookStudioValidationPassed": {},
+    "openingBookStudioSaveAsset": "保存源资源",
+    "@openingBookStudioSaveAsset": {},
+    "openingBookStudioAddOpening": "添加开局",
+    "@openingBookStudioAddOpening": {},
+    "openingBookStudioOpeningList": "开局",
+    "@openingBookStudioOpeningList": {},
+    "openingBookStudioSourceSummary": "{bookName}：{count} 个开局",
+    "@openingBookStudioSourceSummary": {
+        "placeholders": {
+            "bookName": {},
+            "count": {}
+        }
+    },
+    "openingBookStudioNoOpeningSelected": "未选择开局。",
+    "@openingBookStudioNoOpeningSelected": {},
+    "openingBookStudioEditor": "编辑器",
+    "@openingBookStudioEditor": {},
+    "openingBookStudioDeleteOpening": "删除开局",
+    "@openingBookStudioDeleteOpening": {},
+    "openingBookStudioOpeningName": "名称",
+    "@openingBookStudioOpeningName": {},
+    "openingBookStudioFamily": "系列",
+    "@openingBookStudioFamily": {},
+    "openingBookStudioSide": "方",
+    "@openingBookStudioSide": {},
+    "openingBookStudioFavoredSide": "有利方",
+    "@openingBookStudioFavoredSide": {},
+    "openingBookStudioConfidence": "置信度",
+    "@openingBookStudioConfidence": {},
+    "openingBookStudioLineMoves": "主线着法",
+    "@openingBookStudioLineMoves": {},
+    "openingBookStudioAliases": "别名",
+    "@openingBookStudioAliases": {},
+    "openingBookStudioTags": "标签",
+    "@openingBookStudioTags": {},
+    "openingBookStudioStrategicNotes": "战略说明",
+    "@openingBookStudioStrategicNotes": {},
+    "openingBookStudioCommonBlunders": "常见失误",
+    "@openingBookStudioCommonBlunders": {},
+    "openingBookStudioRecommendedWhite": "白方推荐应对",
+    "@openingBookStudioRecommendedWhite": {},
+    "openingBookStudioRecommendedBlack": "黑方推荐应对",
+    "@openingBookStudioRecommendedBlack": {},
+    "openingBookStudioVariations": "变化",
+    "@openingBookStudioVariations": {},
+    "openingBookStudioAddVariation": "添加变化",
+    "@openingBookStudioAddVariation": {},
+    "openingBookStudioVariationName": "变化名称",
+    "@openingBookStudioVariationName": {},
+    "openingBookStudioVariationMoves": "变化着法",
+    "@openingBookStudioVariationMoves": {},
+    "openingBookStudioAfterPly": "在半步后",
+    "@openingBookStudioAfterPly": {},
+    "openingBookStudioDeleteVariation": "删除变化",
+    "@openingBookStudioDeleteVariation": {},
+    "openingBookStudioValidation": "验证",
+    "@openingBookStudioValidation": {},
+    "openingBookStudioPreview": "识别器预览",
+    "@openingBookStudioPreview": {},
+    "openingBookStudioNextMove": "下一着",
+    "@openingBookStudioNextMove": {},
+    "openingBookStudioWhiteWins": "白方胜",
+    "@openingBookStudioWhiteWins": {},
+    "openingBookStudioBlackWins": "黑方胜",
+    "@openingBookStudioBlackWins": {},
+    "openingBookStudioDraws": "和棋",
+    "@openingBookStudioDraws": {},
+    "openingBookStudioSampleSize": "样本数",
+    "@openingBookStudioSampleSize": {},
+    "openingRandomness": "开局随机性",
+    "@openingRandomness": {},
+    "openingRandomness_Detail": "在启用“随机移动”时，控制开局库选择着法的变化程度。0% 始终选择最强开局库着法；100% 在所有开局库候选着法中均匀随机选择。默认 60% 会略微偏向更好的着法，同时仍保持开局变化。",
+    "@openingRandomness_Detail": {}
 }
