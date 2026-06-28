@@ -16,6 +16,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 
 import '../config/constants.dart';
 import '../database/database.dart';
+import 'build_info.dart';
 import 'email_handler.dart';
 import 'environment_config.dart';
 import 'logger.dart' show logger, resolveCrashLogFilePath;
@@ -90,9 +91,11 @@ Future<Map<String, String>> _buildCrashReportParameters() async {
 Future<Map<String, String>> _buildPackageParameters() async {
   try {
     final PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    final String? buildTime = await appBuildTime;
     return <String, String>{
       "App.version": packageInfo.version,
       "App.buildNumber": packageInfo.buildNumber,
+      "App.buildTime": buildTime ?? "unknown",
       "App.packageName": packageInfo.packageName,
     };
   } catch (e) {

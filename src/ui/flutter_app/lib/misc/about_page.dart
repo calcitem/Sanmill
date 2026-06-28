@@ -17,6 +17,7 @@ import '../generated/flutter_version.dart';
 import '../generated/intl/l10n.dart';
 import '../shared/config/constants.dart';
 import '../shared/database/database.dart';
+import '../shared/services/build_info.dart';
 import '../shared/services/git_info.dart';
 import '../shared/services/url.dart';
 import '../shared/themes/app_theme.dart';
@@ -239,6 +240,28 @@ class _VersionDialog extends StatelessWidget {
               }
 
               return Column(children: rows);
+            },
+          ),
+          FutureBuilder<String?>(
+            future: appBuildTime,
+            builder: (BuildContext context, AsyncSnapshot<String?> snapshot) {
+              final String? buildTime = snapshot.data;
+              if (buildTime == null || buildTime.isEmpty) {
+                return const SizedBox.shrink();
+              }
+              // Hardcoded label, consistent with the Branch/Revision build
+              // metadata rows above (developer diagnostics, not localized).
+              return Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'Build time: $buildTime',
+                  style: TextStyle(
+                    fontSize: AppTheme.textScaler.scale(
+                      AppTheme.defaultFontSize,
+                    ),
+                  ),
+                ),
+              );
             },
           ),
         ],

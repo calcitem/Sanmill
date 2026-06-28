@@ -16,6 +16,7 @@ FLUTTER_VERSION_FILE="${GEN_FILE_PATH}/flutter_version.dart"
 GIT_INFO_PATH="${APP_DIR}/assets/files"
 GIT_BRANCH_FILE="${GIT_INFO_PATH}/git-branch.txt"
 GIT_REVISION_FILE="${GIT_INFO_PATH}/git-revision.txt"
+BUILD_TIME_FILE="${GIT_INFO_PATH}/build-time.txt"
 
 mkdir -p "${GIT_INFO_PATH}" "${GEN_FILE_PATH}" || true
 
@@ -33,6 +34,11 @@ else
     fi
 fi
 git -C "${SCRIPT_DIR}" rev-parse HEAD > "${GIT_REVISION_FILE}"
+
+# Stamp the UTC build time (ISO 8601) so the About page version dialog and
+# the crash / engine-failure report can be tied to an exact build.  Mirrors
+# the git-revision stamp above; regenerated on every flutter-init.sh run.
+date -u +"%Y-%m-%dT%H:%M:%SZ" > "${BUILD_TIME_FILE}"
 
 flutter config --no-analytics
 
