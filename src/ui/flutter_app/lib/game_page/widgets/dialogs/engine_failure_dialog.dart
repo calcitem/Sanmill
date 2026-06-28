@@ -28,6 +28,7 @@ class EngineFailureDialog extends StatelessWidget {
     String? zobrist,
     String? lastMove,
     String? moveList,
+    String? failureDetails,
   }) {
     final StringBuffer buf = StringBuffer();
     if (fen != null) {
@@ -47,6 +48,12 @@ class EngineFailureDialog extends StatelessWidget {
     }
     if (moveList != null && moveList.isNotEmpty) {
       buf.writeln('Move list: $moveList');
+    }
+    // Precise, release-visible rejection diagnostics captured at the failure
+    // site (see NativeMillGameSession._recordEngineFailure): searched-vs-live
+    // FEN/Zobrist and whether the position changed under the in-flight search.
+    if (failureDetails != null && failureDetails.isNotEmpty) {
+      buf.writeln(failureDetails);
     }
     return buf.toString().trimRight();
   }

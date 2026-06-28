@@ -56,6 +56,23 @@ class NativeMillGameSession implements GameSessionHandle {
   bool _disposed = false;
   GameAction? _lastSearchLegalAction;
 
+  /// FEN / native Zobrist captured the moment the most recent engine
+  /// `bestMove` was validated as legal in [_legalActionForBestMove].  These
+  /// are compared against the live kernel state if a later apply is rejected,
+  /// so the release-visible engine-failure report can show whether the
+  /// position changed under the in-flight search (the stale-snapshot race)
+  /// rather than only reporting a generic "no best move".
+  String? _lastSearchValidatedFen;
+  int? _lastSearchValidatedZobrist;
+
+  /// Precise, release-visible diagnostics for the most recent engine-move
+  /// rejection (illegal at validation time, or rejected by the kernel on
+  /// apply).  Surfaced verbatim by [EngineFailureDialog] so a crash report
+  /// pinpoints the cause instead of the generic
+  /// "AI engine failed to produce a move".  Reset at the start of every
+  /// [searchBestAction] so stale diagnostics never leak into a later report.
+  String? _lastEngineFailureDetails;
+
   /// True while a [searchBestAction] call is in flight on this session.
   /// Exactly one engine search may run at a time; see the assert in
   /// [searchBestAction] for the rationale.
@@ -85,6 +102,13 @@ class NativeMillGameSession implements GameSessionHandle {
     }
     return rulesPort.legalActions;
   }
+
+  /// Precise diagnostics for the most recent engine-move rejection on this
+  /// session, or null if none has occurred since the last search.  Shown in
+  /// the release engine-failure dialog / crash report via
+  /// [GameController.buildEngineFailureDiagnosticContext] so the stale-snapshot
+  /// race can be confirmed from a user-submitted report.
+  String? get lastEngineFailureDetails => _lastEngineFailureDetails;
 
   @override
   GameOutcome get outcome => _state.value.outcome;
@@ -298,7 +322,25 @@ class NativeMillGameSession implements GameSessionHandle {
       return false;
     }
     final PlayerSeat mover = _state.value.activeSeat;
-    final GameStateSnapshot next = rulesPort.apply(action);
+    final GameStateSnapshot next;
+    try {
+      next = rulesPort.apply(action);
+    } catch (e) {
+      // The kernel rejected an action that already passed validation at
+      // search time (its isLegal re-check was skipped because it matched the
+      // cached search action).  Capture the live-vs-searched state so the
+      // release-visible report shows whether the position changed under the
+      // in-flight search.  Re-throw: the failure must still surface as an
+      // EngineNoBestMove dialog -- this enriches the report, it does not mask.
+      _recordEngineFailure(
+        stage: 'kernelApply',
+        chosenMove: MillActionCodec.moveStringFrom(action) ?? '(unknown)',
+        actionType: action.type,
+        rejectReason: e.toString(),
+        matchedSearchAction: alreadyMatchedLegalSearchAction,
+      );
+      rethrow;
+    }
     final String? boardLayout = _boardLayoutFromSnapshot(next);
     assert(
       boardLayout != null,
@@ -398,6 +440,7 @@ class NativeMillGameSession implements GameSessionHandle {
     }
 
     _lastSearchLegalAction = null;
+    _lastEngineFailureDetails = null;
     lastAiBestValue = null;
     GameAction? bestAction;
     int eventCount = 0;
@@ -628,6 +671,12 @@ class NativeMillGameSession implements GameSessionHandle {
   /// converge on the same destination square, and in `mayMoveInPlacingPhase`
   /// variants a place and a move can share a destination.
   GameAction? _legalActionForBestMove(tgf.EngineEvent event) {
+    // Capture the exact position the engine result is validated against, so a
+    // later apply rejection can be diagnosed as a stale snapshot (the state
+    // changed between here and apply) versus a genuinely illegal engine move.
+    _lastSearchValidatedFen = _safeExportFen();
+    _lastSearchValidatedZobrist = _zobristOf(_state.value);
+
     final String notation = event.reason.split(' ').first;
     assert(
       notation.isNotEmpty,
@@ -640,6 +689,13 @@ class NativeMillGameSession implements GameSessionHandle {
       logger.w(
         '$_logTag bestMove "$notation" (toNode=${event.toNode}) cannot be '
         'parsed as a Mill action; treating as no best move.',
+      );
+      _recordEngineFailure(
+        stage: 'notationParse',
+        chosenMove: notation.isEmpty ? '(empty)' : notation,
+        actionType: '(unparsed)',
+        rejectReason:
+            'engine bestMove notation could not be parsed into an action',
       );
       return null;
     }
@@ -656,7 +712,72 @@ class NativeMillGameSession implements GameSessionHandle {
       '$_logTag bestMove "$notation" (toNode=${event.toNode}) is no longer '
       'legal in the current session; treating as no best move.',
     );
+    _recordEngineFailure(
+      stage: 'searchValidation',
+      chosenMove: notation,
+      actionType: action.type,
+      rejectReason: 'engine bestMove rejected by isLegal at validation time',
+    );
     return null;
+  }
+
+  /// Native Zobrist key carried by a session snapshot, or null if absent.
+  static int? _zobristOf(GameStateSnapshot snapshot) {
+    final Object? z = snapshot.payload['tgfZobrist'];
+    return z is int ? z : null;
+  }
+
+  /// FEN of the live kernel state; never throws (diagnostic-only path).
+  String _safeExportFen() {
+    try {
+      return rulesPort.exportFen();
+    } catch (e) {
+      return '(exportFen failed: $e)';
+    }
+  }
+
+  /// Record a precise, release-visible explanation for an engine-move
+  /// rejection in [_lastEngineFailureDetails].  This never swallows the
+  /// failure (the EngineNoBestMove still propagates and the dialog still
+  /// shows); it only enriches the report so the stale-snapshot race -- where
+  /// the position changes between search validation and apply -- can be
+  /// confirmed from a user-submitted crash report instead of guessed at.
+  void _recordEngineFailure({
+    required String stage,
+    required String chosenMove,
+    required String actionType,
+    required String rejectReason,
+    bool matchedSearchAction = false,
+  }) {
+    final String liveFen = _safeExportFen();
+    final int? liveZobrist = _zobristOf(_state.value);
+    final bool stateChanged =
+        _lastSearchValidatedZobrist != null &&
+        liveZobrist != null &&
+        _lastSearchValidatedZobrist != liveZobrist;
+    String liveLegal;
+    try {
+      liveLegal = legalActions
+          .map((GameAction a) => MillActionCodec.moveStringFrom(a) ?? '?')
+          .join(' ');
+    } catch (e) {
+      liveLegal = '(legalActions failed: $e)';
+    }
+    final StringBuffer buf = StringBuffer()
+      ..writeln('EngineMoveRejected: stage=$stage')
+      ..writeln('chosenMove=$chosenMove type=$actionType')
+      ..writeln('matchedCachedSearchAction=$matchedSearchAction')
+      ..writeln('searchValidatedFen=${_lastSearchValidatedFen ?? "(none)"}')
+      ..writeln(
+        'searchValidatedZobrist=${_lastSearchValidatedZobrist ?? "(none)"}',
+      )
+      ..writeln('liveFen=$liveFen')
+      ..writeln('liveZobrist=${liveZobrist ?? "(none)"}')
+      ..writeln('stateChangedDuringSearch=$stateChanged')
+      ..writeln('liveLegalMoves=${liveLegal.isEmpty ? "(none)" : liveLegal}')
+      ..write('rejectReason=$rejectReason');
+    _lastEngineFailureDetails = buf.toString();
+    logger.e('$_logTag $_lastEngineFailureDetails');
   }
 
   static AiMoveType _aiMoveTypeFromReason(String reason) {

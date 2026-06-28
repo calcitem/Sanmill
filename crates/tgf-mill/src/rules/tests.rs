@@ -5168,3 +5168,120 @@ fn setup_clear_piece_owner_zero_empties_square() {
     assert_eq!(state.board[5], 0, "clearing owner=0 must empty the square");
     assert_eq!(state.pieces_on_board[0], 0);
 }
+
+// ---------------------------------------------------------------------------
+// Regression: EngineNoBestMove crash repro (error report
+// `sanmill_logs_2026-06-28T11-23-29`).  The Flutter app surfaced
+// `EngineNoBestMove` for the moving-phase position
+//   FEN ***O****/OO@*@*@@/@OOO@*O* w m s 7 0 6 0 ...
+// reached by the move list below, with the AI move `d2-b2` reported as an
+// "illegal action".  These tests replay that exact line through the same
+// legality gate the FRB kernel uses (`is_legal` then `apply_with_history`)
+// to localise the root cause: a played move judged illegal, or a
+// no-legal-move position not flagged terminal, would reproduce here; if both
+// pass the failure lives in the Dart session layer (stale-snapshot /
+// concurrent search).  Combined capture tokens ("g1xe4") are split into the
+// place/move plus a separate "x<sq>" removal, matching how the kernel applies
+// them atomically.
+// ---------------------------------------------------------------------------
+
+/// The authoritative crash position exported by the engine at crash time
+/// (white to move, moving phase, action=select).  Loading it directly is more
+/// reliable than replaying the textual move list, whose combined
+/// capture/mill tokens are ambiguous to re-expand by hand.
+const CRASH_0628_FEN: &str =
+    "***O****/OO@*@*@@/@OOO@*O* w m s 7 0 6 0 0 0 -1 -1 -1 -1 0 3 15 ids:nodes";
+
+#[test]
+fn crash_0628_moving_position_has_legal_moves_and_is_not_terminal() {
+    let rules = MillRules::default();
+    let state = rules
+        .set_from_fen(CRASH_0628_FEN)
+        .expect("crash FEN must parse");
+    // The engine reached this position in the Moving phase and it is NOT a
+    // stalemate: white has legal moves here.  Reproduction therefore shows
+    // the EngineNoBestMove crash is NOT an engine dead-end (the engine's
+    // random fallback always yields one of these legal moves); it is a
+    // downstream app-side rejection of a legal move (stale snapshot /
+    // concurrent search).  This test guards the engine side of that finding.
+    assert_eq!(
+        state.phase,
+        MillPhase::Moving,
+        "crash position must stay in the Moving phase (not terminal)",
+    );
+    let snap = rules.encode_state(state);
+    let mut legal = ActionList::<256>::new();
+    rules.legal_actions(&snap, &mut legal);
+    assert!(
+        !legal.as_slice().is_empty(),
+        "crash position must expose at least one legal move so the engine \
+         can always respond",
+    );
+}
+
+#[test]
+fn crash_0628_every_legal_action_round_trips_through_uci_notation() {
+    // The Dart `_legalActionForBestMove` reconstructs the engine's chosen move
+    // from its UCI notation string (encode -> notation -> decode), then checks
+    // legality and applies it.  If that round-trip is lossy for any move kind
+    // in this position, the reconstructed action can pass a list-`contains`
+    // legality check yet be rejected by the kernel's strict `is_legal` on
+    // apply -- which is the deterministic "illegal action" / EngineNoBestMove
+    // failure.  This test guards the Rust codec's half of that round-trip.
+    let rules = MillRules::default();
+    let state = rules
+        .set_from_fen(CRASH_0628_FEN)
+        .expect("crash FEN must parse");
+    let snap = rules.encode_state(state);
+    let mut legal = ActionList::<256>::new();
+    rules.legal_actions(&snap, &mut legal);
+    for action in legal.as_slice() {
+        let notation = MillUciCodec::encode_action(*action);
+        let decoded = MillUciCodec::decode_action(&snap, &notation)
+            .unwrap_or_else(|| panic!("notation {notation:?} failed to decode"));
+        assert_eq!(
+            decoded, *action,
+            "UCI round-trip changed the action for notation {notation:?}",
+        );
+        assert!(
+            rules.is_legal(&snap, decoded),
+            "decoded action for {notation:?} is not is_legal but was generated \
+             by legal_actions",
+        );
+    }
+}
+
+#[test]
+fn crash_0628_dart_style_reconstructed_action_passes_is_legal() {
+    // Dart's `MillActionCodec.tgfActionFromMoveString` rebuilds the engine's
+    // chosen move purely from its UCI notation, always setting `aux = -1` and
+    // `payload_bits = 0` (see mill_action_codec.dart).  If the kernel's own
+    // legal move actions carry a different `aux`/`payload_bits`, the kernel's
+    // strict `is_legal` (used by apply) rejects the reconstructed action even
+    // though `legal_actions` generated the "same" move -- producing the
+    // deterministic `illegal action` / EngineNoBestMove.  A failure here means
+    // matching the engine move against the kernel's own legal-action object
+    // (fix #1) is required; a pass means the reconstruction is faithful and
+    // the failure must come from state staleness instead.
+    let rules = MillRules::default();
+    let state = rules
+        .set_from_fen(CRASH_0628_FEN)
+        .expect("crash FEN must parse");
+    let snap = rules.encode_state(state);
+    let mut legal = ActionList::<256>::new();
+    rules.legal_actions(&snap, &mut legal);
+    for action in legal.as_slice() {
+        let reconstructed = Action {
+            kind_tag: action.kind_tag,
+            from_node: action.from_node,
+            to_node: action.to_node,
+            aux: -1,
+            payload_bits: 0,
+        };
+        assert!(
+            rules.is_legal(&snap, reconstructed),
+            "kernel rejected Dart-style reconstructed action {reconstructed:?} \
+             (legal_actions generated {action:?})",
+        );
+    }
+}

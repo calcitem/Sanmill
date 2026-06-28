@@ -126,6 +126,7 @@ class GameController {
       zobrist: activeSessionSnapshot?.payload['tgfZobrist']?.toString(),
       lastMove: lastMove,
       moveList: moveList,
+      failureDetails: activeNativeMillSession?.lastEngineFailureDetails,
     );
   }
 
