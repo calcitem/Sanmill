@@ -34,8 +34,11 @@ inline int popcnt_software(uint32_t x) noexcept
     return count;
 }
 #define POPCNT(x) popcnt_software(x)
-#else
+#elif defined(_MSC_VER)
+#include <intrin.h>
 #define POPCNT(x) __popcnt(x)
+#else
+#define POPCNT(x) __builtin_popcount(x)
 #endif
 
 #else // _WIN32

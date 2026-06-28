@@ -10,6 +10,7 @@
 #include "perfect_platform.h"
 
 #include <cassert>
+#include <cstdint>
 #include <sstream>
 #include <tuple>
 
