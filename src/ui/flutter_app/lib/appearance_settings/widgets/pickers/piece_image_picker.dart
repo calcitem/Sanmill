@@ -25,6 +25,62 @@ final List<String> _pieceBgPaths = <String>[
   Assets.images.blackPieceImage8.path,
 ];
 
+final List<_PieceImageSet> _pieceImageSets = <_PieceImageSet>[
+  const _PieceImageSet(index: 0, whiteImagePath: '', blackImagePath: ''),
+  _PieceImageSet(
+    index: 1,
+    whiteImagePath: Assets.images.whitePieceImage1.path,
+    blackImagePath: Assets.images.blackPieceImage1.path,
+  ),
+  _PieceImageSet(
+    index: 2,
+    whiteImagePath: Assets.images.whitePieceImage2.path,
+    blackImagePath: Assets.images.blackPieceImage2.path,
+  ),
+  _PieceImageSet(
+    index: 3,
+    whiteImagePath: Assets.images.whitePieceImage3.path,
+    blackImagePath: Assets.images.blackPieceImage3.path,
+  ),
+  _PieceImageSet(
+    index: 4,
+    whiteImagePath: Assets.images.whitePieceImage4.path,
+    blackImagePath: Assets.images.blackPieceImage4.path,
+  ),
+  _PieceImageSet(
+    index: 5,
+    whiteImagePath: Assets.images.whitePieceImage5.path,
+    blackImagePath: Assets.images.blackPieceImage5.path,
+  ),
+  _PieceImageSet(
+    index: 6,
+    whiteImagePath: Assets.images.whitePieceImage6.path,
+    blackImagePath: Assets.images.blackPieceImage6.path,
+  ),
+  _PieceImageSet(
+    index: 7,
+    whiteImagePath: Assets.images.whitePieceImage7.path,
+    blackImagePath: Assets.images.blackPieceImage7.path,
+  ),
+  _PieceImageSet(
+    index: 8,
+    whiteImagePath: Assets.images.whitePieceImage8.path,
+    blackImagePath: Assets.images.blackPieceImage8.path,
+  ),
+];
+
+class _PieceImageSet {
+  const _PieceImageSet({
+    required this.index,
+    required this.whiteImagePath,
+    required this.blackImagePath,
+  });
+
+  final int index;
+  final String whiteImagePath;
+  final String blackImagePath;
+}
+
 /// Lichess-style full-screen selector for both Mill piece images.
 class _PieceImageSelectionPage extends StatefulWidget {
   const _PieceImageSelectionPage();
@@ -73,6 +129,10 @@ class _PieceImageSelectionPageState extends State<_PieceImageSelectionPage> {
               key: const Key('piece_image_selection_list'),
               padding: const EdgeInsets.only(top: 16, bottom: 24),
               children: <Widget>[
+                _buildPieceSetSection(
+                  context: context,
+                  displaySettings: displaySettings,
+                ),
                 _buildPlayerSection(
                   context: context,
                   title: strings.player1,
@@ -98,6 +158,30 @@ class _PieceImageSelectionPageState extends State<_PieceImageSelectionPage> {
           },
         ),
       ),
+    );
+  }
+
+  Widget _buildPieceSetSection({
+    required BuildContext context,
+    required DisplaySettings displaySettings,
+  }) {
+    return SettingsCard(
+      key: const Key('piece_image_selection_piece_sets_card'),
+      title: Text(S.of(context).pieceSet),
+      children: <Widget>[
+        for (final _PieceImageSet set in _pieceImageSets)
+          _PieceImageSetChoiceTile(
+            key: Key('piece_image_selection_piece_set_${set.index}'),
+            title: _pieceSetChoiceTitle(context, set),
+            whiteImagePath: set.whiteImagePath,
+            blackImagePath: set.blackImagePath,
+            isSelected:
+                displaySettings.whitePieceImagePath == set.whiteImagePath &&
+                displaySettings.blackPieceImagePath == set.blackImagePath,
+            onTap: () =>
+                _selectPieceSet(displaySettings: displaySettings, set: set),
+          ),
+      ],
     );
   }
 
@@ -184,6 +268,24 @@ class _PieceImageSelectionPageState extends State<_PieceImageSelectionPage> {
       return S.of(context).solidColor;
     }
     return '${S.of(context).pieceImage} $index';
+  }
+
+  String _pieceSetChoiceTitle(BuildContext context, _PieceImageSet set) {
+    assert(set.index >= 0, 'Piece set index must not be negative.');
+    if (set.index == 0) {
+      return S.of(context).solidColor;
+    }
+    return '${S.of(context).pieceSet} ${set.index}';
+  }
+
+  void _selectPieceSet({
+    required DisplaySettings displaySettings,
+    required _PieceImageSet set,
+  }) {
+    DB().displaySettings = displaySettings.copyWith(
+      whitePieceImagePath: set.whiteImagePath,
+      blackPieceImagePath: set.blackImagePath,
+    );
   }
 
   void _selectPieceImage({
@@ -280,6 +382,139 @@ class _PieceImageSelectionPageState extends State<_PieceImageSelectionPage> {
         _isPicking = false;
       }
     }
+  }
+}
+
+class _PieceImageSetChoiceTile extends StatelessWidget {
+  const _PieceImageSetChoiceTile({
+    super.key,
+    required this.title,
+    required this.whiteImagePath,
+    required this.blackImagePath,
+    required this.isSelected,
+    required this.onTap,
+  });
+
+  final String title;
+  final String whiteImagePath;
+  final String blackImagePath;
+  final bool isSelected;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+    return ListTile(
+      selected: isSelected,
+      title: Text(title),
+      subtitle: Padding(
+        padding: const EdgeInsets.only(top: 8),
+        child: _PieceImageSetPreview(
+          whiteImagePath: whiteImagePath,
+          blackImagePath: blackImagePath,
+        ),
+      ),
+      trailing: isSelected
+          ? Icon(Icons.check, color: colorScheme.primary)
+          : null,
+      onTap: onTap,
+    );
+  }
+}
+
+class _PieceImageSetPreview extends StatelessWidget {
+  const _PieceImageSetPreview({
+    required this.whiteImagePath,
+    required this.blackImagePath,
+  });
+
+  final String whiteImagePath;
+  final String blackImagePath;
+
+  @override
+  Widget build(BuildContext context) {
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+    return ConstrainedBox(
+      constraints: const BoxConstraints(maxWidth: 264),
+      child: SizedBox(
+        height: 56,
+        child: Stack(
+          children: <Widget>[
+            Positioned.fill(
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    border: Border.all(color: colorScheme.outlineVariant),
+                  ),
+                  child: Row(
+                    children: <Widget>[
+                      for (int index = 0; index < 6; index++)
+                        Expanded(
+                          child: ColoredBox(
+                            color: index.isEven
+                                ? colorScheme.surfaceContainerHigh
+                                : colorScheme.surfaceContainerLow,
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            Positioned.fill(
+              child: Align(
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    _PieceImageSetPiecePreview(
+                      imagePath: whiteImagePath,
+                      isPlayerOne: true,
+                    ),
+                    const SizedBox(width: 18),
+                    _PieceImageSetPiecePreview(
+                      imagePath: blackImagePath,
+                      isPlayerOne: false,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _PieceImageSetPiecePreview extends StatelessWidget {
+  const _PieceImageSetPiecePreview({
+    required this.imagePath,
+    required this.isPlayerOne,
+  });
+
+  final String imagePath;
+  final bool isPlayerOne;
+
+  @override
+  Widget build(BuildContext context) {
+    if (imagePath.isNotEmpty) {
+      return SizedBox.square(
+        dimension: 42,
+        child: Image.asset(imagePath, fit: BoxFit.contain),
+      );
+    }
+
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: isPlayerOne
+            ? DB().colorSettings.whitePieceColor
+            : DB().colorSettings.blackPieceColor,
+        shape: BoxShape.circle,
+        border: Border.all(color: Theme.of(context).colorScheme.outline),
+      ),
+      child: const SizedBox.square(dimension: 40),
+    );
   }
 }
 

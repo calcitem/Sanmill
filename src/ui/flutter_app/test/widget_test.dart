@@ -11,6 +11,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:sanmill/app_shell/sanmill_app_shell.dart';
 import 'package:sanmill/appearance_settings/models/color_settings.dart';
+import 'package:sanmill/appearance_settings/models/display_settings.dart';
 import 'package:sanmill/appearance_settings/widgets/appearance_settings_page.dart';
 import 'package:sanmill/appearance_settings/widgets/theme_selection_page.dart';
 import 'package:sanmill/game_page/services/mill.dart';
@@ -26,6 +27,7 @@ import 'package:sanmill/games/mill/opening_book/opening_book_repository.dart';
 import 'package:sanmill/games/mill/opening_explorer/opening_explorer_page.dart';
 import 'package:sanmill/general_settings/models/general_settings.dart';
 import 'package:sanmill/general_settings/widgets/developer_options_page.dart';
+import 'package:sanmill/generated/assets/assets.gen.dart';
 import 'package:sanmill/generated/intl/l10n.dart';
 import 'package:sanmill/learn/mill_coordinate_training_page.dart';
 import 'package:sanmill/main.dart';
@@ -1361,6 +1363,21 @@ void main() {
         findsOneWidget,
       );
       expect(
+        find.byKey(const Key('piece_image_selection_piece_sets_card')),
+        findsOneWidget,
+      );
+      final Finder pieceSelectionScrollable = find.descendant(
+        of: find.byKey(const Key('piece_image_selection_list')),
+        matching: find.byType(Scrollable),
+      );
+      await tester.scrollUntilVisible(
+        find.byKey(const Key('piece_image_selection_player1_card')),
+        320,
+        scrollable: pieceSelectionScrollable,
+      );
+      await tester.pumpAndSettle();
+
+      expect(
         find.byKey(const Key('piece_image_selection_player1_card')),
         findsOneWidget,
       );
@@ -1384,6 +1401,60 @@ void main() {
         ),
       );
       expect(player1ImageTile.selected, isTrue);
+    },
+    skip: nativeLibrarySkipReason() != null,
+  );
+
+  testWidgets(
+    'Appearance piece set applies paired Lichess-style images',
+    (WidgetTester tester) async {
+      final DisplaySettings previousDisplaySettings = DB().displaySettings;
+      addTearDown(() => DB().displaySettings = previousDisplaySettings);
+      DB().displaySettings = const DisplaySettings();
+
+      await tester.pumpWidget(
+        const MaterialApp(
+          localizationsDelegates: sanmillLocalizationsDelegates,
+          supportedLocales: S.supportedLocales,
+          locale: Locale('en'),
+          home: AppearanceSettingsPage(),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      final Finder pieceSetTile = find.byKey(
+        const Key('display_settings_card_piece_image_settings_list_tile'),
+      );
+      final Finder appearanceScrollable = find.descendant(
+        of: find.byKey(const Key('settings_list')),
+        matching: find.byType(Scrollable),
+      );
+      await tester.scrollUntilVisible(
+        pieceSetTile,
+        320,
+        scrollable: appearanceScrollable,
+      );
+      await tester.pumpAndSettle();
+
+      await tester.tap(pieceSetTile);
+      await tester.pumpAndSettle();
+
+      await tester.tap(
+        find.byKey(const Key('piece_image_selection_piece_set_1')),
+      );
+      await tester.pumpAndSettle();
+
+      final DisplaySettings updated = DB().displaySettings;
+      expect(updated.whitePieceImagePath, Assets.images.whitePieceImage1.path);
+      expect(updated.blackPieceImagePath, Assets.images.blackPieceImage1.path);
+
+      final ListTile selectedSetTile = tester.widget<ListTile>(
+        find.descendant(
+          of: find.byKey(const Key('piece_image_selection_piece_set_1')),
+          matching: find.byType(ListTile),
+        ),
+      );
+      expect(selectedSetTile.selected, isTrue);
     },
     skip: nativeLibrarySkipReason() != null,
   );
