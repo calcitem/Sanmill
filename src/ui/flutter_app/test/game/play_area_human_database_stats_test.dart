@@ -209,7 +209,7 @@ void main() {
             find.byKey(const Key('play_area_regular_bottom_bar_previous')),
           )
           .label,
-      'Previous',
+      'Take back',
     );
     expect(
       find.byKey(const Key('play_area_regular_bottom_bar_next')),
