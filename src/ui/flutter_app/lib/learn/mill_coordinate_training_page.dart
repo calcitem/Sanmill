@@ -19,6 +19,11 @@ import '../shared/widgets/lichess_list_section.dart';
 const Duration _kTrainingDuration = Duration(seconds: 30);
 const Duration _kTickInterval = Duration(milliseconds: 100);
 const Duration _kGuessHighlightDuration = Duration(milliseconds: 220);
+const Duration _kCoordinateTransitionDuration = Duration(milliseconds: 150);
+const Offset _kNextCoordinateTranslation = Offset(0.72, 0.32);
+const double _kNextCoordinateScale = 0.42;
+const double _kCurrentCoordinateOpacity = 0.9;
+const double _kNextCoordinateOpacity = 0.68;
 const List<Duration> _kTrainingDurationChoices = <Duration>[
   Duration(seconds: 30),
   Duration(seconds: 60),
@@ -615,16 +620,54 @@ class _MillTrainingBoard extends StatelessWidget {
   }
 }
 
-class _CoordinateDisplay extends StatelessWidget {
+class _CoordinateDisplay extends StatefulWidget {
   const _CoordinateDisplay({required this.currentNode, required this.nextNode});
 
   final int currentNode;
   final int nextNode;
 
   @override
+  State<_CoordinateDisplay> createState() => _CoordinateDisplayState();
+}
+
+class _CoordinateDisplayState extends State<_CoordinateDisplay>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _controller = AnimationController(
+    vsync: this,
+    duration: _kCoordinateTransitionDuration,
+  )..value = 1.0;
+
+  late final Animation<double> _currentScale = Tween<double>(
+    begin: _kNextCoordinateScale,
+    end: 1.0,
+  ).animate(CurvedAnimation(parent: _controller, curve: Curves.linear));
+
+  late final Animation<Offset> _currentSlide = Tween<Offset>(
+    begin: _kNextCoordinateTranslation,
+    end: Offset.zero,
+  ).animate(CurvedAnimation(parent: _controller, curve: Curves.linear));
+
+  late final Animation<Offset> _nextSlide = Tween<Offset>(
+    begin: const Offset(0.5, 0),
+    end: Offset.zero,
+  ).animate(CurvedAnimation(parent: _controller, curve: Curves.linear));
+
+  late final Animation<double> _currentOpacity = Tween<double>(
+    begin: _kNextCoordinateOpacity,
+    end: _kCurrentCoordinateOpacity,
+  ).animate(CurvedAnimation(parent: _controller, curve: Curves.linear));
+
+  late final Animation<double> _nextOpacity = Tween<double>(
+    begin: 0,
+    end: _kNextCoordinateOpacity,
+  ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeIn));
+
+  @override
   Widget build(BuildContext context) {
-    final String current = MillBoardCoordinateMaps.nodeToNotation(currentNode);
-    final String next = MillBoardCoordinateMaps.nodeToNotation(nextNode);
+    final String current = MillBoardCoordinateMaps.nodeToNotation(
+      widget.currentNode,
+    );
+    final String next = MillBoardCoordinateMaps.nodeToNotation(widget.nextNode);
     assert(current.isNotEmpty, 'Coordinate training target needs notation.');
     assert(next.isNotEmpty, 'Coordinate training next target needs notation.');
 
@@ -644,15 +687,37 @@ class _CoordinateDisplay extends StatelessWidget {
       child: Stack(
         alignment: Alignment.center,
         children: <Widget>[
-          Text(current, style: currentStyle),
-          FractionalTranslation(
-            translation: const Offset(0.72, 0.32),
-            child: Transform.scale(
-              scale: 0.42,
-              child: Text(
-                next,
-                style: currentStyle.copyWith(
-                  color: Colors.white.withValues(alpha: 0.68),
+          FadeTransition(
+            opacity: _currentOpacity,
+            child: SlideTransition(
+              position: _currentSlide,
+              child: ScaleTransition(
+                scale: _currentScale,
+                child: Text(
+                  current,
+                  key: const Key('mill_coordinate_training_current_coordinate'),
+                  style: currentStyle,
+                ),
+              ),
+            ),
+          ),
+          FadeTransition(
+            opacity: _nextOpacity,
+            child: SlideTransition(
+              position: _nextSlide,
+              child: FractionalTranslation(
+                translation: _kNextCoordinateTranslation,
+                child: Transform.scale(
+                  scale: _kNextCoordinateScale,
+                  child: Text(
+                    next,
+                    key: const Key('mill_coordinate_training_next_coordinate'),
+                    style: currentStyle.copyWith(
+                      color: Colors.white.withValues(
+                        alpha: _kNextCoordinateOpacity,
+                      ),
+                    ),
+                  ),
                 ),
               ),
             ),
@@ -660,6 +725,20 @@ class _CoordinateDisplay extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  @override
+  void didUpdateWidget(covariant _CoordinateDisplay oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.nextNode != widget.nextNode) {
+      _controller.forward(from: 0);
+    }
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 }
 

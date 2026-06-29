@@ -387,6 +387,14 @@ void main() {
         findsOneWidget,
       );
       expect(
+        find.byKey(const Key('mill_coordinate_training_current_coordinate')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const Key('mill_coordinate_training_next_coordinate')),
+        findsOneWidget,
+      );
+      expect(
         find.byKey(const Key('mill_coordinate_training_action_button')),
         findsOneWidget,
       );
