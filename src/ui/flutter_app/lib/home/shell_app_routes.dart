@@ -14,6 +14,7 @@ import '../general_settings/widgets/general_settings_page.dart';
 import '../misc/about_page.dart';
 import '../misc/clock_tool_page.dart';
 import '../misc/how_to_play_screen.dart';
+import '../misc/mill_variants_page.dart';
 import '../shared/services/environment_config.dart';
 
 /// Resolves [ShellRouteIds] for app-level (`app.*`) routes.
@@ -35,6 +36,9 @@ Widget? buildAppRouteScreen(BuildContext context, String routeId) {
   }
   if (routeId == ShellRouteIds.appClock.value) {
     return const ClockToolPage();
+  }
+  if (routeId == ShellRouteIds.appVariants.value) {
+    return const MillVariantsPage();
   }
   if (routeId == ShellRouteIds.appExit.value) {
     if (EnvironmentConfig.test == false) {

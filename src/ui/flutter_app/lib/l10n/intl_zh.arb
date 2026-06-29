@@ -4599,5 +4599,43 @@
         }
     },
     "humanAiPlayer": "玩家",
-    "@humanAiPlayer": {}
+    "@humanAiPlayer": {},
+    "variants": "棋种",
+    "@variants": {},
+    "millGame": "Mill 棋",
+    "@millGame": {},
+    "variantPieces": "每方 {count} 枚棋子",
+    "@variantPieces": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "variantDiagonalLines": "含斜线",
+    "@variantDiagonalLines": {},
+    "variantPlacingPhaseMovement": "放置阶段可走子",
+    "@variantPlacingPhaseMovement": {},
+    "variantFlyingAt": "{count} 子可飞",
+    "@variantFlyingAt": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "variantOneTimeMillRule": "一次成三",
+    "@variantOneTimeMillRule": {},
+    "variantSpecialCapture": "特殊吃子",
+    "@variantSpecialCapture": {},
+    "variantDelayedCapture": "延迟吃子",
+    "@variantDelayedCapture": {},
+    "variantApplied": "已选择 {variant}",
+    "@variantApplied": {
+        "placeholders": {
+            "variant": {
+                "type": "String"
+            }
+        }
+    }
 }

@@ -2269,6 +2269,14 @@ class _MenuEntries extends StatelessWidget {
               title: strings.clock,
               onTap: () => onAppRouteSelected(ShellRouteIds.appClock.value),
             ),
+            if (module.metadata.id == GameId.mill)
+              _MoreTile(
+                key: const Key('drawer_item_variants'),
+                icon: Icons.category_outlined,
+                title: strings.variants,
+                onTap: () =>
+                    onAppRouteSelected(ShellRouteIds.appVariants.value),
+              ),
           ],
         ),
         _MoreSection(

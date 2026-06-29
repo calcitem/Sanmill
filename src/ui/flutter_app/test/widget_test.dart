@@ -591,6 +591,8 @@ void main() {
       expect(find.text('Board editor'), findsOneWidget);
       expect(find.byKey(const Key('drawer_item_clock')), findsOneWidget);
       expect(find.text('Clock'), findsOneWidget);
+      expect(find.byKey(const Key('drawer_item_variants')), findsOneWidget);
+      expect(find.text('Variants'), findsOneWidget);
 
       await tester.tap(find.byKey(const Key('drawer_item_import_game')));
       await tester.pumpAndSettle();
@@ -634,6 +636,32 @@ void main() {
       );
       expect(find.byKey(const Key('clock_tool_close_button')), findsOneWidget);
       expect(find.byKey(const Key('clock_tool_reset_button')), findsOneWidget);
+
+      await tester.binding.handlePopRoute();
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byKey(const Key('drawer_item_variants')));
+      await tester.pumpAndSettle();
+
+      final BuildContext variantsContext = tester.element(
+        find.byKey(const Key('mill_variants_page_scaffold')),
+      );
+      final Scaffold variantsScaffold = tester.widget<Scaffold>(
+        find.byKey(const Key('mill_variants_page_scaffold')),
+      );
+      expect(
+        variantsScaffold.backgroundColor,
+        Theme.of(variantsContext).colorScheme.surface,
+      );
+      expect(shellState.debugCurrentRouteId, ShellRouteIds.appVariants.value);
+      expect(
+        find.byKey(const Key('mill_variant_standard_9mm')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const Key('mill_variant_twelve_mens_morris')),
+        findsOneWidget,
+      );
 
       await tester.binding.handlePopRoute();
       await tester.pumpAndSettle();

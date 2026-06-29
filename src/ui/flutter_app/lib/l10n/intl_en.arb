@@ -4751,5 +4751,43 @@
         }
     },
     "humanAiPlayer": "Player",
-    "@humanAiPlayer": {}
+    "@humanAiPlayer": {},
+    "variants": "Variants",
+    "@variants": {},
+    "millGame": "Mill game",
+    "@millGame": {},
+    "variantPieces": "{count} pieces per player",
+    "@variantPieces": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "variantDiagonalLines": "diagonal lines",
+    "@variantDiagonalLines": {},
+    "variantPlacingPhaseMovement": "moves while placing",
+    "@variantPlacingPhaseMovement": {},
+    "variantFlyingAt": "flying at {count}",
+    "@variantFlyingAt": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "variantOneTimeMillRule": "one-time mill",
+    "@variantOneTimeMillRule": {},
+    "variantSpecialCapture": "special capture",
+    "@variantSpecialCapture": {},
+    "variantDelayedCapture": "delayed capture",
+    "@variantDelayedCapture": {},
+    "variantApplied": "{variant} selected",
+    "@variantApplied": {
+        "placeholders": {
+            "variant": {
+                "type": "String"
+            }
+        }
+    }
 }

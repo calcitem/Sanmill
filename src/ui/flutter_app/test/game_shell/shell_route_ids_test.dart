@@ -18,6 +18,8 @@ void main() {
         ShellRouteIds.appHowToPlay,
         ShellRouteIds.appFeedback,
         ShellRouteIds.appAbout,
+        ShellRouteIds.appClock,
+        ShellRouteIds.appVariants,
         ShellRouteIds.appExit,
       ];
       for (final GameRouteId routeId in appRoutes) {
@@ -36,6 +38,8 @@ void main() {
         ShellRouteIds.appHowToPlay,
         ShellRouteIds.appFeedback,
         ShellRouteIds.appAbout,
+        ShellRouteIds.appClock,
+        ShellRouteIds.appVariants,
         ShellRouteIds.appExit,
       ];
       final Set<String> values = all.map((GameRouteId r) => r.value).toSet();
