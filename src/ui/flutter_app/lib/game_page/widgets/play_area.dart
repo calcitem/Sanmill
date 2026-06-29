@@ -1241,7 +1241,7 @@ class PlayAreaState extends State<PlayArea> {
   }
 }
 
-class _InlineMoveList extends StatelessWidget {
+class _InlineMoveList extends StatefulWidget {
   const _InlineMoveList({
     super.key,
     required this.wrapKey,
@@ -1258,6 +1258,14 @@ class _InlineMoveList extends StatelessWidget {
   final bool showMovePreview;
   final _InlineMoveListLayout layout;
 
+  @override
+  State<_InlineMoveList> createState() => _InlineMoveListState();
+}
+
+class _InlineMoveListState extends State<_InlineMoveList> {
+  final GlobalKey _currentMoveKey = GlobalKey();
+  PgnNode<ExtMove>? _lastAutoScrolledNode;
+
   List<PgnNode<ExtMove>> _currentPathNodes() {
     final List<PgnNode<ExtMove>> nodes = <PgnNode<ExtMove>>[];
     PgnNode<ExtMove>? node = GameController().gameRecorder.activeNode;
@@ -1270,65 +1278,65 @@ class _InlineMoveList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-    final ColorScheme colorScheme = theme.colorScheme;
-
     return ValueListenableBuilder<int>(
       valueListenable: GameController().gameRecorder.moveCountNotifier,
       builder: (BuildContext context, _, _) {
         final List<PgnNode<ExtMove>> nodes = _currentPathNodes();
         final PgnNode<ExtMove>? activeNode =
             GameController().gameRecorder.activeNode;
+        _scheduleCurrentMoveAutoScroll(activeNode);
 
         return Container(
-          key: wrapKey,
+          key: widget.wrapKey,
           width: double.infinity,
-          constraints: layout == _InlineMoveListLayout.horizontal
+          constraints: widget.layout == _InlineMoveListLayout.horizontal
               ? const BoxConstraints.tightFor(height: 40)
               : const BoxConstraints(minHeight: 40),
-          padding: layout == _InlineMoveListLayout.horizontal
+          padding: widget.layout == _InlineMoveListLayout.horizontal
               ? const EdgeInsets.only(left: 5)
               : const EdgeInsets.fromLTRB(12, 6, 12, 4),
           child: nodes.isEmpty
               ? const SizedBox(height: 30)
-              : _buildMoves(
-                  context: context,
-                  nodes: nodes,
-                  activeNode: activeNode,
-                  colorScheme: colorScheme,
-                  textStyle: theme.textTheme.bodySmall,
-                ),
+              : _buildMoves(context: context, nodes: nodes),
         );
       },
     );
   }
 
+  void _scheduleCurrentMoveAutoScroll(PgnNode<ExtMove>? activeNode) {
+    if (widget.layout != _InlineMoveListLayout.horizontal ||
+        activeNode == null ||
+        identical(_lastAutoScrolledNode, activeNode)) {
+      return;
+    }
+
+    _lastAutoScrolledNode = activeNode;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) {
+        return;
+      }
+      final BuildContext? currentMoveContext = _currentMoveKey.currentContext;
+      if (currentMoveContext == null) {
+        return;
+      }
+      Scrollable.ensureVisible(
+        currentMoveContext,
+        alignment: 0.5,
+        duration: const Duration(milliseconds: 200),
+        curve: Curves.easeIn,
+      );
+    });
+  }
+
   Widget _buildMoves({
     required BuildContext context,
     required List<PgnNode<ExtMove>> nodes,
-    required PgnNode<ExtMove>? activeNode,
-    required ColorScheme colorScheme,
-    required TextStyle? textStyle,
   }) {
     final List<Widget> chips = <Widget>[
-      for (int i = 0; i < nodes.length; i++)
-        _GameMoveChip(
-          key: Key('$moveKeyPrefix${i + 1}'),
-          label: '${i + 1}. ${nodes[i].data!.notation}',
-          selected: nodes[i] == activeNode,
-          selectedColor: colorScheme.primaryContainer,
-          selectedTextColor: colorScheme.onPrimaryContainer,
-          textStyle: textStyle,
-          onTap: onMoveTap == null
-              ? null
-              : () => unawaited(onMoveTap!(context, nodes[i])),
-          onLongPress: showMovePreview && _hasPreviewBoard(nodes[i])
-              ? () => _showMovePreview(context, nodes[i], i + 1)
-              : null,
-        ),
+      for (int i = 0; i < nodes.length; i++) _buildMoveChip(context, nodes, i),
     ];
 
-    return switch (layout) {
+    return switch (widget.layout) {
       _InlineMoveListLayout.wrap => Wrap(
         spacing: 4,
         runSpacing: 4,
@@ -1340,6 +1348,41 @@ class _InlineMoveList extends StatelessWidget {
         child: Row(children: _spaceMoveChips(chips)),
       ),
     };
+  }
+
+  Widget _buildMoveChip(
+    BuildContext context,
+    List<PgnNode<ExtMove>> nodes,
+    int index,
+  ) {
+    final ThemeData theme = Theme.of(context);
+    final ColorScheme colorScheme = theme.colorScheme;
+    final PgnNode<ExtMove> node = nodes[index];
+    final PgnNode<ExtMove>? activeNode =
+        GameController().gameRecorder.activeNode;
+    final bool selected = node == activeNode;
+    final Widget chip = _GameMoveChip(
+      key: Key('${widget.moveKeyPrefix}${index + 1}'),
+      label: '${index + 1}. ${node.data!.notation}',
+      selected: selected,
+      selectedColor: colorScheme.primaryContainer,
+      selectedTextColor: colorScheme.onPrimaryContainer,
+      textStyle: theme.textTheme.bodySmall,
+      style: widget.layout == _InlineMoveListLayout.horizontal
+          ? _GameMoveChipStyle.inlineText
+          : _GameMoveChipStyle.filled,
+      onTap: widget.onMoveTap == null
+          ? null
+          : () => unawaited(widget.onMoveTap!(context, node)),
+      onLongPress: widget.showMovePreview && _hasPreviewBoard(node)
+          ? () => _showMovePreview(context, node, index + 1)
+          : null,
+    );
+
+    if (widget.layout == _InlineMoveListLayout.horizontal && selected) {
+      return KeyedSubtree(key: _currentMoveKey, child: chip);
+    }
+    return chip;
   }
 
   List<Widget> _spaceMoveChips(List<Widget> chips) {
@@ -1445,6 +1488,8 @@ class _InlineMoveList extends StatelessWidget {
 
 enum _InlineMoveListLayout { wrap, horizontal }
 
+enum _GameMoveChipStyle { filled, inlineText }
+
 class _GameMoveChip extends StatelessWidget {
   const _GameMoveChip({
     super.key,
@@ -1453,6 +1498,7 @@ class _GameMoveChip extends StatelessWidget {
     required this.selectedColor,
     required this.selectedTextColor,
     required this.textStyle,
+    this.style = _GameMoveChipStyle.filled,
     this.onTap,
     this.onLongPress,
   });
@@ -1462,6 +1508,7 @@ class _GameMoveChip extends StatelessWidget {
   final Color selectedColor;
   final Color selectedTextColor;
   final TextStyle? textStyle;
+  final _GameMoveChipStyle style;
   final VoidCallback? onTap;
   final VoidCallback? onLongPress;
 
@@ -1471,24 +1518,45 @@ class _GameMoveChip extends StatelessWidget {
     final BorderRadius borderRadius = BorderRadius.circular(
       AppStyles.compactRadius,
     );
-    final Widget content = DecoratedBox(
-      decoration: BoxDecoration(
-        color: selected ? selectedColor : colorScheme.surfaceContainerHighest,
-        borderRadius: borderRadius,
-      ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
-        child: Text(
-          label,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          style: textStyle?.copyWith(
-            color: selected ? selectedTextColor : colorScheme.onSurfaceVariant,
-            fontWeight: selected ? FontWeight.w600 : FontWeight.w500,
-          ),
+    final TextStyle moveTextStyle =
+        textStyle?.copyWith(
+          color: switch (style) {
+            _GameMoveChipStyle.filled =>
+              selected ? selectedTextColor : colorScheme.onSurfaceVariant,
+            _GameMoveChipStyle.inlineText =>
+              selected
+                  ? colorScheme.primary
+                  : colorScheme.onSurface.withValues(alpha: 0.8),
+          },
+          fontWeight: selected ? FontWeight.w600 : FontWeight.w500,
+        ) ??
+        TextStyle(
+          color: selected ? colorScheme.primary : colorScheme.onSurface,
+          fontWeight: selected ? FontWeight.w600 : FontWeight.w500,
+        );
+    final Widget labelText = Text(
+      label,
+      maxLines: 1,
+      overflow: TextOverflow.ellipsis,
+      style: moveTextStyle,
+    );
+
+    final Widget content = switch (style) {
+      _GameMoveChipStyle.filled => DecoratedBox(
+        decoration: BoxDecoration(
+          color: selected ? selectedColor : colorScheme.surfaceContainerHighest,
+          borderRadius: borderRadius,
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+          child: labelText,
         ),
       ),
-    );
+      _GameMoveChipStyle.inlineText => Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 3),
+        child: labelText,
+      ),
+    };
     return Semantics(
       selected: selected,
       button: onTap != null || onLongPress != null,

@@ -607,8 +607,14 @@ void main() {
     db.displaySettings = const DisplaySettings();
     final GameController controller = GameController();
     controller.gameInstance.gameMode = GameMode.humanVsAi;
-    controller.gameRecorder.appendMove(ExtMove('d6', side: PieceColor.white));
-    controller.gameRecorder.appendMove(ExtMove('f4', side: PieceColor.black));
+    for (int i = 0; i < 20; i++) {
+      controller.gameRecorder.appendMove(
+        ExtMove(
+          i.isEven ? 'd6' : 'f4',
+          side: i.isEven ? PieceColor.white : PieceColor.black,
+        ),
+      );
+    }
 
     await tester.binding.setSurfaceSize(const Size(390, 844));
     addTearDown(() => tester.binding.setSurfaceSize(null));
@@ -642,7 +648,24 @@ void main() {
         );
     expect(moveListScrollView.scrollDirection, Axis.horizontal);
     expect(find.byKey(const Key('play_area_human_ai_move_1')), findsOneWidget);
-    expect(find.byKey(const Key('play_area_human_ai_move_2')), findsOneWidget);
+    expect(find.byKey(const Key('play_area_human_ai_move_20')), findsOneWidget);
+    expect(
+      find.descendant(
+        of: find.byKey(const Key('play_area_human_ai_move_20')),
+        matching: find.byType(DecoratedBox),
+      ),
+      findsNothing,
+    );
+
+    final Finder scrollable = find.descendant(
+      of: find.byKey(const Key('play_area_inline_move_list_scroll_view')),
+      matching: find.byType(Scrollable),
+    );
+    expect(scrollable, findsOneWidget);
+    final ScrollableState scrollableState = tester.state<ScrollableState>(
+      scrollable,
+    );
+    expect(scrollableState.position.pixels, greaterThan(0));
   });
 
   testWidgets('human vs ai robot panel follows engine activity', (
