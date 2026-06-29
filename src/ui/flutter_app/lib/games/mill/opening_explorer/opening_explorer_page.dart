@@ -8,6 +8,8 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
 import '../../../appearance_settings/models/color_settings.dart';
+import '../../../game_page/services/mill.dart'
+    show ExtMove, GameController, MoveType;
 import '../../../game_page/services/transform/transform.dart';
 import '../../../game_platform/game_session.dart';
 import '../../../general_settings/models/general_settings.dart';
@@ -31,6 +33,8 @@ import '../mill_opening_book_symmetry.dart';
 import '../mill_session_tap_controller.dart';
 import '../native_mill_game_session.dart';
 import '../native_mill_snapshot_board_view.dart';
+import '../opening_book/mill_opening_recognizer.dart';
+import '../opening_book/opening_book_models.dart';
 import '../opening_book/opening_book_repository.dart';
 
 class OpeningExplorerPage extends StatefulWidget {
@@ -71,6 +75,20 @@ String _openingExplorerLabelFromAction(GameAction action) {
   return label;
 }
 
+List<String> _placementMovesFromRecorder(List<ExtMove> moves) {
+  return <String>[
+    for (final ExtMove move in moves)
+      if (move.type == MoveType.place && _isPlacementMoveLabel(move.move))
+        move.move,
+  ];
+}
+
+bool _isPlacementMoveLabel(String label) {
+  return !label.startsWith('x') &&
+      !label.contains('-') &&
+      MillBoardCoordinateMaps.notationToNode(label) >= 0;
+}
+
 class _OpeningExplorerPageState extends State<OpeningExplorerPage> {
   late final Future<void> _openingBookLoad = OpeningBookRepository.instance
       .ensureLoaded();
@@ -79,6 +97,7 @@ class _OpeningExplorerPageState extends State<OpeningExplorerPage> {
       <_OpeningExplorerHistoryEntry>[];
   NativeMillGameSession? _explorerSession;
   String? _initialExplorerFen;
+  List<String> _initialPlacementMoves = const <String>[];
   int _explorerCursor = 0;
 
   @override
@@ -105,6 +124,7 @@ class _OpeningExplorerPageState extends State<OpeningExplorerPage> {
     _explorerSession?.dispose();
     _explorerSession = null;
     _initialExplorerFen = null;
+    _initialPlacementMoves = const <String>[];
     _explorerHistory.clear();
     _explorerCursor = 0;
     _tapController.clearSelection();
@@ -121,9 +141,24 @@ class _OpeningExplorerPageState extends State<OpeningExplorerPage> {
         explorer.dispose();
         return;
       }
+      if (identical(source, GameController().activeNativeMillSession)) {
+        _initialPlacementMoves = _placementMovesFromRecorder(
+          GameController().gameRecorder.currentPath,
+        );
+      }
     }
     _explorerSession = explorer;
     _initialExplorerFen = explorer.getFen();
+  }
+
+  List<String> _currentPlacementMoves() {
+    return <String>[
+      ..._initialPlacementMoves,
+      for (final _OpeningExplorerHistoryEntry entry in _explorerHistory.take(
+        _explorerCursor,
+      ))
+        if (_isPlacementMoveLabel(entry.label)) entry.label,
+    ];
   }
 
   Future<void> _applyExplorerAction(GameAction action) async {
@@ -286,6 +321,7 @@ class _OpeningExplorerPageState extends State<OpeningExplorerPage> {
                           session: session,
                           ruleSettings: DB().ruleSettings,
                           generalSettings: DB().generalSettings,
+                          placementMoves: _currentPlacementMoves(),
                         );
                     return _OpeningExplorerBottomBar(
                       snapshot: snapshot,
@@ -310,6 +346,7 @@ class _OpeningExplorerPageState extends State<OpeningExplorerPage> {
                               session: session,
                               ruleSettings: DB().ruleSettings,
                               generalSettings: DB().generalSettings,
+                              placementMoves: _currentPlacementMoves(),
                             );
                         return _OpeningExplorerContent(
                           session: session,
@@ -500,6 +537,8 @@ class _OpeningExplorerContent extends StatelessWidget {
           message: strings.openingExplorerRuleUnsupported,
           inList: true,
         ),
+      if (snapshot.openingRecognition.isNamed)
+        _OpeningNameSection(recognition: snapshot.openingRecognition),
       _PositionSection(snapshot: snapshot),
       if (snapshot.moves.isEmpty)
         _OpeningExplorerMessage(
@@ -1077,6 +1116,127 @@ class _PositionSection extends StatelessWidget {
   }
 }
 
+class _OpeningNameSection extends StatelessWidget {
+  const _OpeningNameSection({required this.recognition});
+
+  final MillOpeningRecognition recognition;
+
+  @override
+  Widget build(BuildContext context) {
+    assert(recognition.isNamed, 'Opening name section requires a named line.');
+    final S strings = S.of(context);
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+    final String title = _openingRecognitionTitle(recognition);
+    final List<String> details = _openingRecognitionDetails(
+      strings,
+      recognition,
+    );
+
+    return LichessListSection(
+      header: Text(strings.openingLabel),
+      cardKey: const Key('opening_explorer_opening_card'),
+      hasLeading: false,
+      children: <Widget>[
+        ColoredBox(
+          color: colorScheme.surfaceContainerHighest.withValues(alpha: 0.62),
+          child: Padding(
+            key: const Key('opening_explorer_opening_header'),
+            padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Icon(
+                  Icons.auto_stories_rounded,
+                  size: 20,
+                  color: colorScheme.onSurface,
+                ),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        title,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                          color: colorScheme.onSurface,
+                          fontWeight: FontWeight.w700,
+                          letterSpacing: 0,
+                        ),
+                      ),
+                      if (details.isNotEmpty) ...<Widget>[
+                        const SizedBox(height: 4),
+                        Text(
+                          details.join(' · '),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: Theme.of(context).textTheme.bodySmall
+                              ?.copyWith(
+                                color: colorScheme.onSurfaceVariant,
+                                letterSpacing: 0,
+                              ),
+                        ),
+                      ],
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+String _openingRecognitionTitle(MillOpeningRecognition recognition) {
+  if (recognition.status != MillOpeningStatus.deviation &&
+      recognition.candidateFamilies.length > 1) {
+    const int maxShown = 3;
+    final Iterable<String> shown = recognition.candidateFamilies.take(maxShown);
+    final String suffix = recognition.candidateFamilies.length > maxShown
+        ? ' ...'
+        : '';
+    return '${shown.join(' / ')}$suffix';
+  }
+  if (recognition.status == MillOpeningStatus.deviation &&
+      (recognition.branchName?.isNotEmpty ?? false)) {
+    return recognition.branchName!;
+  }
+  final String? name = recognition.name;
+  assert(name != null && name.isNotEmpty, 'Named recognition requires a name.');
+  return name!;
+}
+
+List<String> _openingRecognitionDetails(
+  S strings,
+  MillOpeningRecognition recognition,
+) {
+  final List<String> details = <String>[];
+  if (recognition.candidateFamilies.length <= 1 &&
+      (recognition.family?.isNotEmpty ?? false)) {
+    details.add('${strings.openingBookStudioFamily}: ${recognition.family!}');
+  }
+  final String reference = recognition.sourceReference ?? '';
+  if (reference.isNotEmpty) {
+    details.add(reference);
+  }
+  final String favoredSide = switch (recognition.favoredSide) {
+    'W' => strings.white,
+    'B' => strings.black,
+    _ => '',
+  };
+  if (favoredSide.isNotEmpty) {
+    details.add('${strings.openingFavours} $favoredSide');
+  }
+  final String nextMove = recognition.nextMove ?? '';
+  if (nextMove.isNotEmpty) {
+    details.add('${strings.openingBookStudioNextMove}: $nextMove');
+  }
+  return details;
+}
+
 class _OpeningMoveTile extends StatelessWidget {
   const _OpeningMoveTile({
     required this.index,
@@ -1504,6 +1664,7 @@ class _OpeningExplorerSnapshot {
     required this.openingBookMoveCount,
     required this.humanDatabaseMoveCount,
     required this.perfectMoveAvailable,
+    required this.openingRecognition,
     required this.aggregateHumanStats,
     required this.moves,
   });
@@ -1512,10 +1673,17 @@ class _OpeningExplorerSnapshot {
     required NativeMillGameSession session,
     required RuleSettings ruleSettings,
     required GeneralSettings generalSettings,
+    required List<String> placementMoves,
   }) {
     final String fen = session.getFen();
     final bool isRuleSupported =
         ruleSettings.isLikelyNineMensMorris() || ruleSettings.isLikelyElFilja();
+    final bool isElFilja = ruleSettings.isLikelyElFilja();
+    final List<OpeningEntry> openingLines = isRuleSupported
+        ? OpeningBookRepository.instance.openingsFor(isElFilja: isElFilja)
+        : const <OpeningEntry>[];
+    final MillOpeningRecognition openingRecognition =
+        MillOpeningRecognizer.recognize(placementMoves, openingLines);
     final Map<String, GameAction> legalActions = <String, GameAction>{};
     for (final GameAction action in session.legalActions) {
       final String? notation = MillActionCodec.moveStringFrom(action);
@@ -1544,7 +1712,7 @@ class _OpeningExplorerSnapshot {
     int openingBookMoveCount = 0;
     if (isRuleSupported && session.state.value.phase == 'placing') {
       final Map<String, List<String>> book = OpeningBookRepository.instance
-          .oracleFor(isElFilja: ruleSettings.isLikelyElFilja());
+          .oracleFor(isElFilja: isElFilja);
       final List<String>? bookMoves = lookupCanonicalOpeningBook(
         book,
         normalizeOpeningBookFen(fen),
@@ -1650,6 +1818,7 @@ class _OpeningExplorerSnapshot {
       openingBookMoveCount: openingBookMoveCount,
       humanDatabaseMoveCount: humanDatabaseMoveCount,
       perfectMoveAvailable: perfectMoveAvailable,
+      openingRecognition: openingRecognition,
       aggregateHumanStats: aggregateHumanStats,
       moves: sortedMoves,
     );
@@ -1660,6 +1829,7 @@ class _OpeningExplorerSnapshot {
   final int openingBookMoveCount;
   final int humanDatabaseMoveCount;
   final bool perfectMoveAvailable;
+  final MillOpeningRecognition openingRecognition;
   final _HumanMoveStats? aggregateHumanStats;
   final List<_OpeningExplorerMove> moves;
 

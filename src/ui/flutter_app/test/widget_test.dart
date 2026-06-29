@@ -19,6 +19,7 @@ import 'package:sanmill/game_platform/game_session.dart' as platform;
 import 'package:sanmill/game_shell/shell_route_ids.dart';
 import 'package:sanmill/games/built_in_game_modules.dart';
 import 'package:sanmill/games/mill/mill_board_geometry.dart';
+import 'package:sanmill/games/mill/opening_book/opening_book_repository.dart';
 import 'package:sanmill/games/mill/opening_explorer/opening_explorer_page.dart';
 import 'package:sanmill/general_settings/models/general_settings.dart';
 import 'package:sanmill/general_settings/widgets/developer_options_page.dart';
@@ -34,6 +35,7 @@ import 'package:sanmill/shared/themes/app_theme.dart';
 import 'package:sanmill/shared/utils/localizations/sanmill_localizations.dart';
 import 'package:sanmill/shared/widgets/lichess_bottom_bar.dart';
 
+import 'games/mill/opening_book/opening_book_test_assets.dart';
 import 'helpers/test_native_library.dart';
 
 void main() {
@@ -95,6 +97,10 @@ void main() {
     // Initialize the database and other services
     await DB.init();
 
+    OpeningBookRepository.instance.resetForTest();
+    OpeningBookRepository.instance.assetLoader = loadOpeningBookAssetFromDisk;
+    await OpeningBookRepository.instance.ensureLoaded();
+
     // Register the built-in game modules, mirroring main(): the Home
     // shell asserts that a module is registered for the active GameId.
     registerBuiltInGameModules(GameRegistry.instance);
@@ -102,7 +108,10 @@ void main() {
     await initializeUI(true);
   });
 
-  tearDownAll(disposeRustLibForTests);
+  tearDownAll(() {
+    OpeningBookRepository.instance.resetForTest();
+    disposeRustLibForTests();
+  });
 
   testWidgets('SanmillApp smoke test', (WidgetTester tester) async {
     // Build the app and trigger a frame
@@ -1381,6 +1390,37 @@ void main() {
       );
       final S strings = S.of(tester.element(find.byType(OpeningExplorerPage)));
       expect(find.text(strings.openingExplorerUnavailable), findsNothing);
+      expect(
+        find.byKey(const Key('opening_explorer_opening_card')),
+        findsNothing,
+      );
+
+      final String firstOpeningMove = OpeningBookRepository.instance
+          .openingsFor(isElFilja: false)
+          .first
+          .lineMoves
+          .first;
+      final Finder firstMoveFinder = find.byKey(
+        Key('opening_explorer_move_$firstOpeningMove'),
+      );
+      await tester.ensureVisible(firstMoveFinder);
+      await tester.pumpAndSettle();
+      await tester.tap(firstMoveFinder);
+      await tester.pumpAndSettle();
+      await tester.drag(
+        find.byKey(const Key('opening_explorer_list')),
+        const Offset(0, 800),
+      );
+      await tester.pumpAndSettle();
+
+      expect(
+        find.byKey(const Key('opening_explorer_opening_card')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const Key('opening_explorer_opening_header')),
+        findsOneWidget,
+      );
 
       // Drain any settings-save debounce timer (see the smoke test above).
       await tester.pump(const Duration(milliseconds: 350));
