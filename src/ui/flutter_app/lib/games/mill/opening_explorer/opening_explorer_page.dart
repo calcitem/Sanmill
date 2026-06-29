@@ -56,6 +56,11 @@ typedef _OpeningExplorerPositionChanged =
 typedef _OpeningExplorerTransformSelected =
     void Function(TransformationType type, String label);
 
+const int _explorerMoveColumnFlex = 15;
+const int _explorerGamesColumnFlex = 35;
+const int _explorerStatsColumnFlex = 50;
+const double _explorerColumnGap = 8;
+
 class _OpeningExplorerHistoryEntry {
   const _OpeningExplorerHistoryEntry({required this.label, required this.fen});
 
@@ -1259,12 +1264,18 @@ class _OpeningMoveTile extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
           child: Row(
             children: <Widget>[
-              Expanded(flex: 20, child: _MoveCell(move: move)),
-              const SizedBox(width: 8),
-              Expanded(flex: 35, child: _MoveGamesCell(move: move)),
-              const SizedBox(width: 8),
               Expanded(
-                flex: 45,
+                flex: _explorerMoveColumnFlex,
+                child: _MoveCell(move: move),
+              ),
+              const SizedBox(width: _explorerColumnGap),
+              Expanded(
+                flex: _explorerGamesColumnFlex,
+                child: _MoveGamesCell(move: move),
+              ),
+              const SizedBox(width: _explorerColumnGap),
+              Expanded(
+                flex: _explorerStatsColumnFlex,
                 child: move.humanStats == null
                     ? const SizedBox.shrink()
                     : _HumanStatsBar(stats: move.humanStats!),
@@ -1298,10 +1309,13 @@ class _OpeningExplorerMovesHeader extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         child: Row(
           children: <Widget>[
-            Expanded(flex: 20, child: Text(strings.move, style: style)),
-            const SizedBox(width: 8),
             Expanded(
-              flex: 35,
+              flex: _explorerMoveColumnFlex,
+              child: Text(strings.move, style: style),
+            ),
+            const SizedBox(width: _explorerColumnGap),
+            Expanded(
+              flex: _explorerGamesColumnFlex,
               child: Text(
                 strings.openingExplorerGames,
                 maxLines: 1,
@@ -1309,9 +1323,9 @@ class _OpeningExplorerMovesHeader extends StatelessWidget {
                 style: style,
               ),
             ),
-            const SizedBox(width: 8),
+            const SizedBox(width: _explorerColumnGap),
             Expanded(
-              flex: 45,
+              flex: _explorerStatsColumnFlex,
               child: Text(
                 '${strings.wins} / ${strings.draws} / ${strings.losses}',
                 maxLines: 1,
@@ -1439,16 +1453,16 @@ class _OpeningExplorerTotalTile extends StatelessWidget {
         child: Row(
           children: <Widget>[
             Expanded(
-              flex: 20,
+              flex: _explorerMoveColumnFlex,
               child: Icon(
                 Icons.functions,
                 size: 18,
                 color: colorScheme.onSurfaceVariant,
               ),
             ),
-            const SizedBox(width: 8),
+            const SizedBox(width: _explorerColumnGap),
             Expanded(
-              flex: 35,
+              flex: _explorerGamesColumnFlex,
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: FittedBox(
@@ -1462,8 +1476,11 @@ class _OpeningExplorerTotalTile extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(width: 8),
-            Expanded(flex: 45, child: _HumanStatsBar(stats: stats)),
+            const SizedBox(width: _explorerColumnGap),
+            Expanded(
+              flex: _explorerStatsColumnFlex,
+              child: _HumanStatsBar(stats: stats),
+            ),
           ],
         ),
       ),
