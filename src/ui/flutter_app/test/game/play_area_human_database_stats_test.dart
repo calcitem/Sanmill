@@ -541,7 +541,16 @@ void main() {
 
     await tester.tap(find.byKey(const Key('play_area_bottom_bar_menu')));
     await tester.pumpAndSettle();
-    expect(find.byKey(const Key('play_area_game_menu_resign')), findsNothing);
+    expect(find.byKey(const Key('play_area_game_menu_resign')), findsOneWidget);
+
+    await tester.tap(find.byKey(const Key('play_area_game_menu_resign')));
+    await tester.pumpAndSettle();
+
+    expect(find.byKey(const Key('play_area_resign_cancel_button')), findsOne);
+    expect(find.byKey(const Key('play_area_resign_confirm_button')), findsOne);
+
+    await tester.tap(find.byKey(const Key('play_area_resign_cancel_button')));
+    await tester.pumpAndSettle();
   });
 
   testWidgets('human vs ai takeback removes a full player turn', (
