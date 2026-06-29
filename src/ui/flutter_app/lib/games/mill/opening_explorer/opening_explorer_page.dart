@@ -297,11 +297,13 @@ class _ExplorerBoardSection extends StatelessWidget {
                 heightFactor: boardHeightFactor,
               ),
               const SizedBox(height: 12),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              Wrap(
+                alignment: WrapAlignment.center,
+                spacing: 8,
+                runSpacing: 8,
                 children: <Widget>[
                   for (final MillBoardTransformAction action
-                      in millBoardTransformActions)
+                      in millBoardTransformFullActions)
                     _BoardTransformButton(
                       key: Key('opening_explorer_${action.id}_button'),
                       label: action.label(S.of(context)),

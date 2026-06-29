@@ -837,6 +837,10 @@ void main() {
       );
       expect(find.byKey(const Key('opening_explorer_board')), findsOneWidget);
       expect(
+        find.byKey(const Key('opening_explorer_swap_rotate_180_button')),
+        findsOneWidget,
+      );
+      expect(
         find.byKey(const Key('opening_explorer_position_card')),
         findsOneWidget,
       );
