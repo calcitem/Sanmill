@@ -701,7 +701,7 @@ void main() {
       final Text moreAppBarTitle = tester.widget<Text>(
         find.byKey(const Key('sanmill_more_appbar_title')),
       );
-      expect(moreAppBarTitle.data, 'More');
+      expect(moreAppBarTitle.data, 'Mill');
       expect(find.byKey(const Key('more_human_vs_ai')), findsNothing);
       expect(find.byKey(const Key('drawer_item_tools_group')), findsOneWidget);
       expect(find.byKey(const Key('drawer_item_import_game')), findsOneWidget);

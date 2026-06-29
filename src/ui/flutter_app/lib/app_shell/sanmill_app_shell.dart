@@ -2172,7 +2172,10 @@ class _MoreTabRoot extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(strings.more, key: const Key('sanmill_more_appbar_title')),
+        title: Text(
+          strings.appName,
+          key: const Key('sanmill_more_appbar_title'),
+        ),
       ),
       body: ListTileTheme.merge(
         iconColor: Theme.of(context).colorScheme.primary,
