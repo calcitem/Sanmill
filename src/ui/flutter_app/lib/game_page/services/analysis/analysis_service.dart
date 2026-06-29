@@ -125,15 +125,12 @@ class AnalysisService {
         return false;
       }
 
-      final Object? move = action.payload['move'];
+      final Object? movePayload = action.payload['move'];
       assert(
-        move is String && move.isNotEmpty,
+        movePayload is String && movePayload.isNotEmpty,
         'Hint action must carry a non-empty move notation.',
       );
-      if (move is! String || move.isEmpty) {
-        logger.w("$_logTag Hint action has no move notation: $action");
-        return false;
-      }
+      final String move = movePayload! as String;
 
       final int? score = session.lastAiBestValue;
       AnalysisMode.enable(<MoveAnalysisResult>[
