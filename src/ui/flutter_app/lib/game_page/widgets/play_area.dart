@@ -220,6 +220,32 @@ class PlayAreaState extends State<PlayArea> {
     showDialog(context: context, builder: (_) => dialog);
   }
 
+  void _openGameOptions(BuildContext context) {
+    _openModal(
+      context,
+      GameOptionsModal(onTriggerScreenshot: () => _takeScreenshot("gallery")),
+    );
+  }
+
+  void _openMoves(BuildContext context) {
+    if (DB().generalSettings.screenReaderSupport) {
+      // On screen readers, use a bottom sheet.
+      _openModal(context, _buildMoveModal(context));
+      return;
+    }
+
+    // Complete all ongoing animations before navigating to ensure pieces are
+    // in their final positions when the user returns.
+    GameController().animationManager.completeAllAnimations();
+    Navigator.push(
+      context,
+      MaterialPageRoute<void>(
+        settings: const RouteSettings(name: '/movesList'),
+        builder: (BuildContext context) => const MovesListPage(),
+      ),
+    );
+  }
+
   bool get _usesLichessHumanAiToolbar =>
       GameController().gameInstance.gameMode == GameMode.humanVsAi;
 
@@ -267,8 +293,37 @@ class PlayAreaState extends State<PlayArea> {
         !_isHintSearching;
   }
 
+  bool get _canResignFromRegularBottomBar {
+    final Phase phase = GameController().activeBoardView.phase;
+    return !_usesLichessHumanAiToolbar &&
+        GameController().gameRecorder.currentPath.length >= 2 &&
+        phase != Phase.ready &&
+        phase != Phase.gameOver;
+  }
+
+  bool get _isRegularGameOver {
+    return !_usesLichessHumanAiToolbar &&
+        GameController().activeBoardView.phase == Phase.gameOver;
+  }
+
+  bool get _canStepBackFromRegularBottomBar {
+    return !_usesLichessHumanAiToolbar &&
+        GameController().gameRecorder.activeNode?.parent != null &&
+        !GameController().isEngineRunning &&
+        !GameController().isEngineInDelay;
+  }
+
+  bool get _canStepForwardFromRegularBottomBar {
+    return !_usesLichessHumanAiToolbar &&
+        (GameController().gameRecorder.activeNode ??
+                GameController().gameRecorder.pgnRoot)
+            .children
+            .isNotEmpty &&
+        !GameController().isEngineRunning &&
+        !GameController().isEngineInDelay;
+  }
+
   void _toggleBoardFlipped(BuildContext context) {
-    assert(_usesLichessHumanAiToolbar);
     setState(() {
       _isBoardFlipped = !_isBoardFlipped;
     });
@@ -371,6 +426,89 @@ class PlayAreaState extends State<PlayArea> {
     await GameOptionsModal.showHumanAiNewGameSheet(context);
   }
 
+  Future<void> _showRegularResignConfirmation(BuildContext context) async {
+    assert(!_usesLichessHumanAiToolbar);
+    final bool? confirmed = await showDialog<bool>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext dialogContext) {
+        return AlertDialog(
+          title: Text(S.of(dialogContext).confirmResignation),
+          content: Text(S.of(dialogContext).areYouSureYouWantToResignThisGame),
+          actions: <Widget>[
+            TextButton(
+              key: const Key('play_area_regular_resign_cancel_button'),
+              onPressed: () => Navigator.of(dialogContext).pop(false),
+              child: Text(S.of(dialogContext).cancel),
+            ),
+            TextButton(
+              key: const Key('play_area_regular_resign_confirm_button'),
+              onPressed: () => Navigator.of(dialogContext).pop(true),
+              child: Text(S.of(dialogContext).resign),
+            ),
+          ],
+        );
+      },
+    );
+    if (confirmed != true || !mounted) {
+      return;
+    }
+    RecordingService().recordEvent(
+      RecordingEventType.toolbarAction,
+      <String, dynamic>{'toolbar': 'regularBottom', 'action': 'resign'},
+    );
+    GameController().requestResignation();
+  }
+
+  void _showRegularGameResult() {
+    assert(_isRegularGameOver);
+    RecordingService().recordEvent(
+      RecordingEventType.toolbarAction,
+      <String, dynamic>{'toolbar': 'regularBottom', 'action': 'showResult'},
+    );
+    GameController().gameResultNotifier.showResult(force: true);
+  }
+
+  void _showRegularGameMenu(BuildContext context) {
+    assert(!_usesLichessHumanAiToolbar);
+    showLichessActionSheet<void>(
+      context: context,
+      sheetKey: const Key('play_area_regular_game_menu_sheet'),
+      actions: <LichessActionSheetAction>[
+        LichessActionSheetAction(
+          key: const Key('play_area_regular_game_menu_flip_board'),
+          leading: const Icon(Icons.flip_camera_android_outlined),
+          makeLabel: (BuildContext context) => Text(S.of(context).flipBoard),
+          onPressed: () => _toggleBoardFlipped(context),
+        ),
+        LichessActionSheetAction(
+          key: const Key('play_area_toolbar_item_game'),
+          leading: const Icon(Icons.add_circle_outline),
+          makeLabel: (BuildContext context) => Text(S.of(context).game),
+          onPressed: () => _openGameOptions(context),
+        ),
+        LichessActionSheetAction(
+          key: const Key('play_area_toolbar_item_move'),
+          leading: const Icon(Icons.format_list_numbered),
+          makeLabel: (BuildContext context) => Text(S.of(context).move),
+          onPressed: () => _openMoves(context),
+        ),
+        LichessActionSheetAction(
+          key: const Key('play_area_toolbar_item_options'),
+          leading: const Icon(Icons.settings_outlined),
+          makeLabel: (BuildContext context) => Text(S.of(context).options),
+          onPressed: () => _navigateToSettings(context),
+        ),
+        LichessActionSheetAction(
+          key: const Key('play_area_toolbar_item_info'),
+          leading: const Icon(Icons.info_outline),
+          makeLabel: (BuildContext context) => Text(S.of(context).info),
+          onPressed: () => _openDialog(context, const InfoDialog()),
+        ),
+      ],
+    );
+  }
+
   void _showHumanAiGameMenu(BuildContext context) {
     assert(_usesLichessHumanAiToolbar);
     showLichessActionSheet<void>(
@@ -405,79 +543,6 @@ class PlayAreaState extends State<PlayArea> {
     List<ToolbarItem> items,
   ) {
     return items.map((ToolbarItem item) => Expanded(child: item)).toList();
-  }
-
-  /// Retrieves the main toolbar items for the game page.
-  List<ToolbarItem> _getMainToolbarItems(BuildContext context) {
-    return <ToolbarItem>[
-      ToolbarItem.icon(
-        key: const Key('play_area_toolbar_item_game'),
-        onPressed: () => _openModal(
-          context,
-          GameOptionsModal(
-            onTriggerScreenshot: () => _takeScreenshot("gallery"),
-          ),
-        ),
-        icon: const Icon(FluentIcons.table_simple_24_regular),
-        label: Text(
-          S.of(context).game,
-          key: const Key('play_area_toolbar_item_game_label'),
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-        ),
-      ),
-      ToolbarItem.icon(
-        key: const Key('play_area_toolbar_item_options'),
-        onPressed: () => _navigateToSettings(context),
-        icon: const Icon(FluentIcons.settings_24_regular),
-        label: Text(
-          S.of(context).options,
-          key: const Key('play_area_toolbar_item_options_label'),
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-        ),
-      ),
-      ToolbarItem.icon(
-        key: const Key('play_area_toolbar_item_move'),
-        onPressed: () {
-          if (DB().generalSettings.screenReaderSupport) {
-            // On screen readers, use a bottom sheet.
-            _openModal(context, _buildMoveModal(context));
-          } else {
-            // Complete all ongoing animations before navigating to ensure
-            // pieces are in their final positions when user returns
-            GameController().animationManager.completeAllAnimations();
-
-            // Otherwise, open a dedicated MovesListPage.
-            Navigator.push(
-              context,
-              MaterialPageRoute<void>(
-                settings: const RouteSettings(name: '/movesList'),
-                builder: (BuildContext context) => const MovesListPage(),
-              ),
-            );
-          }
-        },
-        icon: const Icon(FluentIcons.calendar_agenda_24_regular),
-        label: Text(
-          S.of(context).move,
-          key: const Key('play_area_toolbar_item_move_label'),
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-        ),
-      ),
-      ToolbarItem.icon(
-        key: const Key('play_area_toolbar_item_info'),
-        onPressed: () => _openDialog(context, const InfoDialog()),
-        icon: const Icon(FluentIcons.book_information_24_regular),
-        label: Text(
-          S.of(context).info,
-          key: const Key('play_area_toolbar_item_info_label'),
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-        ),
-      ),
-    ];
   }
 
   /// Builds the move modal bottom sheet.
@@ -870,15 +935,35 @@ class PlayAreaState extends State<PlayArea> {
                     key: Key('play_area_setup_position_toolbar_bottom'),
                   )
                 else if (!isPuzzle)
-                  GamePageToolbar(
-                    key: const Key('play_area_main_toolbar_bottom'),
-                    backgroundColor:
-                        DB().colorSettings.mainToolbarBackgroundColor,
-                    itemColor: DB().colorSettings.mainToolbarIconColor,
-                    children: _buildToolbarItems(
-                      context,
-                      _getMainToolbarItems(context),
-                    ),
+                  ValueListenableBuilder<int>(
+                    key: const Key('play_area_regular_bottom_bar_builder'),
+                    valueListenable:
+                        GameController().gameRecorder.moveCountNotifier,
+                    builder: (BuildContext context, _, _) {
+                      return _RegularGameBottomBar(
+                        onMenuPressed: () => _showRegularGameMenu(context),
+                        onResignOrResultPressed: _isRegularGameOver
+                            ? _showRegularGameResult
+                            : _canResignFromRegularBottomBar
+                            ? () => _showRegularResignConfirmation(context)
+                            : null,
+                        isShowingResult: _isRegularGameOver,
+                        onPreviousPressed: _canStepBackFromRegularBottomBar
+                            ? () => HistoryNavigator.takeBack(
+                                context,
+                                pop: false,
+                                toolbar: true,
+                              )
+                            : null,
+                        onNextPressed: _canStepForwardFromRegularBottomBar
+                            ? () => HistoryNavigator.stepForward(
+                                context,
+                                pop: false,
+                                toolbar: true,
+                              )
+                            : null,
+                      );
+                    },
                   ),
 
                 if (!usesLichessHumanAiToolbar)
@@ -888,6 +973,58 @@ class PlayAreaState extends State<PlayArea> {
           ),
         );
       },
+    );
+  }
+}
+
+class _RegularGameBottomBar extends StatelessWidget {
+  const _RegularGameBottomBar({
+    required this.onMenuPressed,
+    required this.onResignOrResultPressed,
+    required this.isShowingResult,
+    required this.onPreviousPressed,
+    required this.onNextPressed,
+  });
+
+  final VoidCallback onMenuPressed;
+  final VoidCallback? onResignOrResultPressed;
+  final bool isShowingResult;
+  final VoidCallback? onPreviousPressed;
+  final VoidCallback? onNextPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return LichessBottomBar(
+      key: const Key('play_area_main_toolbar_bottom'),
+      children: <Widget>[
+        LichessBottomBarButton(
+          key: const Key('play_area_regular_bottom_bar_menu'),
+          icon: Icons.menu,
+          label: S.of(context).menu,
+          onTap: onMenuPressed,
+        ),
+        LichessBottomBarButton(
+          key: const Key('play_area_regular_bottom_bar_resign_result'),
+          icon: isShowingResult ? Icons.info_outline : CupertinoIcons.flag,
+          label: isShowingResult ? S.of(context).results : S.of(context).resign,
+          onTap: onResignOrResultPressed,
+          highlighted: isShowingResult,
+        ),
+        LichessBottomBarButton(
+          key: const Key('play_area_regular_bottom_bar_previous'),
+          icon: CupertinoIcons.chevron_back,
+          label: S.of(context).takeBack,
+          onTap: onPreviousPressed,
+          showTooltip: false,
+        ),
+        LichessBottomBarButton(
+          key: const Key('play_area_regular_bottom_bar_next'),
+          icon: CupertinoIcons.chevron_forward,
+          label: S.of(context).stepForward,
+          onTap: onNextPressed,
+          showTooltip: false,
+        ),
+      ],
     );
   }
 }

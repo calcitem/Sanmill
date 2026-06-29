@@ -371,7 +371,17 @@ void verifyWidgetExists(WidgetTester tester, String key) {
 
 /// Taps a toolbar item identified by [key].
 Future<void> tapToolbarItem(WidgetTester tester, String key) async {
-  final Finder item = find.byKey(Key(key));
+  Finder item = find.byKey(Key(key));
+  if (item.evaluate().isEmpty) {
+    final Finder regularMenu = find.byKey(
+      const Key('play_area_regular_bottom_bar_menu'),
+    );
+    if (regularMenu.evaluate().isNotEmpty) {
+      await tester.tap(regularMenu);
+      await tester.pumpAndSettle();
+      item = find.byKey(Key(key));
+    }
+  }
   expect(item, findsOneWidget, reason: 'Toolbar item "$key" should exist');
   await tester.tap(item);
   await tester.pumpAndSettle();

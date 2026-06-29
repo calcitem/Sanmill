@@ -164,8 +164,13 @@ final List<Map<String, dynamic>> testScenarios = <Map<String, dynamic>>[
       },
       <String, String>{
         'action': 'tap',
+        'key': 'play_area_regular_bottom_bar_menu',
+        'expect': 'Regular game menu should be present',
+      },
+      <String, String>{
+        'action': 'tap',
         'key': 'play_area_toolbar_item_game',
-        'expect': 'Game toolbar item should be present',
+        'expect': 'Game menu item should be present',
       },
       <String, String>{
         'action': 'tap',

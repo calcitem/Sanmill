@@ -146,6 +146,23 @@ void main() {
       findsOneWidget,
     );
     expect(
+      find.byKey(const Key('play_area_regular_bottom_bar_menu')),
+      findsOneWidget,
+    );
+    expect(
+      find.byKey(const Key('play_area_regular_bottom_bar_resign_result')),
+      findsOneWidget,
+    );
+    expect(
+      find.byKey(const Key('play_area_regular_bottom_bar_previous')),
+      findsOneWidget,
+    );
+    expect(
+      find.byKey(const Key('play_area_regular_bottom_bar_next')),
+      findsOneWidget,
+    );
+    expect(find.byKey(const Key('play_area_toolbar_item_info')), findsNothing);
+    expect(
       tester
           .getBottomLeft(find.byKey(const Key('play_area_main_toolbar_bottom')))
           .dy,
