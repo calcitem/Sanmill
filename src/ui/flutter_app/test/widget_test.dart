@@ -186,6 +186,10 @@ void main() {
         SanmillShellRouteIds.homeRoot.value,
       );
       expect(find.byKey(const Key('sanmill_home_list')), findsOneWidget);
+      final Text homeAppBarTitle = tester.widget<Text>(
+        find.byKey(const Key('sanmill_home_appbar_title')),
+      );
+      expect(homeAppBarTitle.data, 'Mill');
       expect(find.byKey(const Key('drawer_item_human_vs_ai')), findsOneWidget);
       expect(
         find.byKey(const Key('play_area_lichess_bottom_bar')),
@@ -220,6 +224,10 @@ void main() {
         find.byKey(const Key('sanmill_more_list'), skipOffstage: false),
         findsOneWidget,
       );
+      final Text moreAppBarTitle = tester.widget<Text>(
+        find.byKey(const Key('sanmill_more_appbar_title')),
+      );
+      expect(moreAppBarTitle.data, 'Mill');
 
       final BuildContext settingsTileContext = tester.element(
         find.byKey(const Key('drawer_item_general_settings')),

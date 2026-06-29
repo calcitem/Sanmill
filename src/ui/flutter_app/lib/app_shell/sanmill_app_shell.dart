@@ -855,7 +855,12 @@ class _HomeTabRoot extends StatelessWidget {
         .toList(growable: false);
 
     return Scaffold(
-      appBar: AppBar(title: Text(strings.appName)),
+      appBar: AppBar(
+        title: Text(
+          strings.appName,
+          key: const Key('sanmill_home_appbar_title'),
+        ),
+      ),
       body: ListTileTheme.merge(
         iconColor: Theme.of(context).colorScheme.primary,
         child: ListView(
@@ -958,7 +963,12 @@ class _MoreTabRoot extends StatelessWidget {
     final S strings = S.of(context);
 
     return Scaffold(
-      appBar: AppBar(title: Text(strings.more)),
+      appBar: AppBar(
+        title: Text(
+          strings.appName,
+          key: const Key('sanmill_more_appbar_title'),
+        ),
+      ),
       body: ListTileTheme.merge(
         iconColor: Theme.of(context).colorScheme.primary,
         child: ListView(
