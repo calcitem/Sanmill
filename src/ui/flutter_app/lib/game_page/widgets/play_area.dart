@@ -12,6 +12,7 @@ import 'package:native_screenshot_widget/native_screenshot_widget.dart';
 
 import '../../experience_recording/models/recording_models.dart';
 import '../../experience_recording/services/recording_service.dart';
+import '../../games/mill/mill_board_transform_actions.dart';
 import '../../general_settings/widgets/general_settings_page.dart';
 import '../../generated/intl/l10n.dart';
 import '../../shared/config/constants.dart';
@@ -332,6 +333,49 @@ class PlayAreaState extends State<PlayArea> {
     ).showSnackBar(SnackBar(content: Text(S.of(context).flipBoard)));
   }
 
+  void _transformActiveBoard(
+    BuildContext context,
+    MillBoardTransformAction action,
+  ) {
+    final bool transformed = GameController().transformActiveLocalGame(
+      action.type,
+    );
+    if (transformed) {
+      setState(() {
+        _isBoardFlipped = false;
+      });
+      if (_usesLichessHumanAiToolbar &&
+          GameController().gameInstance.isAiSideToMove) {
+        unawaited(GameController().engineToGo(context, isMoveNow: false));
+      }
+    }
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          transformed
+              ? S.of(context).transformed
+              : S.of(context).cannotTransform,
+        ),
+      ),
+    );
+  }
+
+  List<LichessActionSheetAction> _buildBoardTransformActions(
+    BuildContext context, {
+    required String keyPrefix,
+  }) {
+    final S strings = S.of(context);
+    return <LichessActionSheetAction>[
+      for (final MillBoardTransformAction action in millBoardTransformActions)
+        LichessActionSheetAction(
+          key: Key('${keyPrefix}_${action.id}'),
+          leading: Icon(action.icon),
+          makeLabel: (BuildContext context) => Text(action.label(strings)),
+          onPressed: () => _transformActiveBoard(context, action),
+        ),
+    ];
+  }
+
   Future<void> _openAnalysisPanelFromBottomBar(BuildContext context) async {
     assert(_usesLichessHumanAiToolbar);
     RecordingService().recordEvent(
@@ -481,6 +525,10 @@ class PlayAreaState extends State<PlayArea> {
           makeLabel: (BuildContext context) => Text(S.of(context).flipBoard),
           onPressed: () => _toggleBoardFlipped(context),
         ),
+        ..._buildBoardTransformActions(
+          context,
+          keyPrefix: 'play_area_regular_game_menu_transform',
+        ),
         LichessActionSheetAction(
           key: const Key('play_area_toolbar_item_game'),
           leading: const Icon(Icons.add_circle_outline),
@@ -520,6 +568,10 @@ class PlayAreaState extends State<PlayArea> {
           leading: const Icon(Icons.flip_camera_android_outlined),
           makeLabel: (BuildContext context) => Text(S.of(context).flipBoard),
           onPressed: () => _toggleBoardFlipped(context),
+        ),
+        ..._buildBoardTransformActions(
+          context,
+          keyPrefix: 'play_area_game_menu_transform',
         ),
         LichessActionSheetAction(
           key: const Key('play_area_game_menu_analysis'),

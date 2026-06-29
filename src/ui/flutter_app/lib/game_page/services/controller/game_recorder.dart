@@ -150,6 +150,92 @@ class GameRecorder {
     moveCountNotifier.value = 0;
   }
 
+  /// Applies a Mill board symmetry to every recorded coordinate.
+  ///
+  /// This is used when the user transforms an active local game position. The
+  /// native session FEN is transformed separately; this method keeps the PGN
+  /// tree, setup FEN, and per-node board layouts in the same coordinate frame.
+  void transformCoordinates(TransformationType type) {
+    setupPosition = _transformFenOrNull(setupPosition, type);
+    lastPositionWithRemove = _transformFenOrNull(lastPositionWithRemove, type);
+    _transformNodeCoordinates(_pgnRoot, type);
+    moveCountNotifier.value = currentPath.length;
+  }
+
+  void _transformNodeCoordinates(
+    PgnNode<ExtMove> node,
+    TransformationType type,
+  ) {
+    final ExtMove? move = node.data;
+    if (move != null) {
+      node.data = _transformMove(move, type);
+    }
+    for (final PgnNode<ExtMove> child in node.children) {
+      _transformNodeCoordinates(child, type);
+    }
+  }
+
+  ExtMove _transformMove(ExtMove move, TransformationType type) {
+    final ExtMove transformed = ExtMove(
+      transformMoveNotation(move.move, type),
+      side: move.side,
+      boardLayout: _transformFenOrNull(move.boardLayout, type),
+      moveIndex: move.moveIndex,
+      roundIndex: move.roundIndex,
+      preferredRemoveTarget: _transformPreferredRemoveTarget(
+        move.preferredRemoveTarget,
+        type,
+      ),
+      nags: move.nags == null ? null : List<int>.from(move.nags!),
+      startingComments: move.startingComments == null
+          ? null
+          : List<String>.from(move.startingComments!),
+      comments: move.comments == null
+          ? null
+          : List<String>.from(move.comments!),
+    );
+    transformed.quality = move.quality;
+    transformed.isVariation = move.isVariation;
+    transformed.variationDepth = move.variationDepth;
+    transformed.branchColumns = move.branchColumns == null
+        ? null
+        : List<bool>.from(move.branchColumns!);
+    transformed.branchColumn = move.branchColumn;
+    transformed.branchLineType = move.branchLineType;
+    transformed.isLastSibling = move.isLastSibling;
+    transformed.siblingIndex = move.siblingIndex;
+    return transformed;
+  }
+
+  String? _transformFenOrNull(String? fen, TransformationType type) {
+    if (fen == null || fen.isEmpty) {
+      return fen;
+    }
+    assert(
+      fen.length >= 26,
+      'Mill FEN or board layout must include the 26-character board field.',
+    );
+    return transformFEN(fen, type);
+  }
+
+  int? _transformPreferredRemoveTarget(int? square, TransformationType type) {
+    if (square == null || square <= 0) {
+      return square;
+    }
+    final String notation = MillBoardCoordinateMaps.legacySquareToNotation(
+      square,
+    );
+    assert(notation.isNotEmpty, 'Preferred remove target must be a Mill node.');
+    final String transformed = transformMoveNotation(notation, type);
+    final int transformedSquare =
+        MillBoardCoordinateMaps.notationToLegacySquare(transformed);
+    assert(
+      transformedSquare > 0,
+      'Transformed preferred remove target must be a Mill node.',
+    );
+    return transformedSquare;
+  }
+
   /// Appends a new move at the end of the current active line.
   /// If a move already exists at this position with different notation,
   /// creates a new variation branch.

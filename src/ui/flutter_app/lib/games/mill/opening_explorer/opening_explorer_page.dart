@@ -3,7 +3,6 @@
 
 import 'dart:math' as math;
 
-import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -22,6 +21,7 @@ import '../../../src/rust/api/simple.dart' as tgf;
 import '../mill_action_codec.dart';
 import '../mill_board_coordinate_maps.dart';
 import '../mill_board_geometry.dart';
+import '../mill_board_transform_actions.dart';
 import '../mill_human_database_provider.dart';
 import '../mill_opening_book_symmetry.dart';
 import '../mill_session_tap_controller.dart';
@@ -242,34 +242,14 @@ class _ExplorerBoardSection extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
-                  _BoardTransformButton(
-                    key: const Key('opening_explorer_rotate_button'),
-                    label: S.of(context).rotate,
-                    icon: const Icon(
-                      FluentIcons.arrow_rotate_clockwise_24_regular,
+                  for (final MillBoardTransformAction action
+                      in millBoardTransformActions)
+                    _BoardTransformButton(
+                      key: Key('opening_explorer_${action.id}_button'),
+                      label: action.label(S.of(context)),
+                      icon: Icon(action.icon),
+                      onPressed: () => onTransform(action.type),
                     ),
-                    onPressed: () => onTransform(TransformationType.rotate90),
-                  ),
-                  _BoardTransformButton(
-                    key: const Key('opening_explorer_horizontal_flip_button'),
-                    label: S.of(context).horizontalFlip,
-                    icon: const Icon(FluentIcons.flip_horizontal_24_regular),
-                    onPressed: () =>
-                        onTransform(TransformationType.mirrorHorizontal),
-                  ),
-                  _BoardTransformButton(
-                    key: const Key('opening_explorer_vertical_flip_button'),
-                    label: S.of(context).verticalFlip,
-                    icon: const Icon(FluentIcons.flip_vertical_24_regular),
-                    onPressed: () =>
-                        onTransform(TransformationType.mirrorVertical),
-                  ),
-                  _BoardTransformButton(
-                    key: const Key('opening_explorer_inner_outer_flip_button'),
-                    label: S.of(context).innerOuterFlip,
-                    icon: const Icon(FluentIcons.arrow_expand_24_regular),
-                    onPressed: () => onTransform(TransformationType.swap),
-                  ),
                 ],
               ),
             ],

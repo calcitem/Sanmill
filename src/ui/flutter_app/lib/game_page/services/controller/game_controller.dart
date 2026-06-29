@@ -540,6 +540,53 @@ class GameController {
     boardSemanticsNotifier.updateSemantics();
   }
 
+  /// Apply a board symmetry to the current local playable Mill game.
+  ///
+  /// Setup-position editing has its own controller and LAN games cannot be
+  /// transformed locally without desynchronising the remote peer. For local
+  /// games this keeps the native session and the recorder in the same
+  /// coordinate frame.
+  bool transformActiveLocalGame(TransformationType type) {
+    assert(
+      gameInstance.gameMode != GameMode.setupPosition,
+      'Setup Position must transform through MillSetupPositionController.',
+    );
+    if (gameInstance.gameMode == GameMode.setupPosition ||
+        gameInstance.gameMode == GameMode.humanVsLAN ||
+        isEngineRunning ||
+        isEngineInDelay) {
+      return false;
+    }
+
+    final NativeMillGameSession? session = activeNativeMillSession;
+    if (session == null || session.outcome.isTerminal) {
+      return false;
+    }
+
+    final String transformedFen = transformFEN(session.getFen(), type);
+    final bool loaded = session.loadFen(transformedFen);
+    assert(loaded, 'Active game board transformation must keep a valid FEN.');
+    if (!loaded) {
+      return false;
+    }
+
+    gameRecorder.transformCoordinates(type);
+    session.lastHumanDatabaseMoveStats = null;
+    lastMoveFromAI = false;
+    activeSessionSnapshot = session.state.value;
+    headerIconsNotifier.showIcons();
+    boardSemanticsNotifier.updateSemantics();
+    RecordingService().recordEvent(
+      RecordingEventType.toolbarAction,
+      <String, dynamic>{
+        'toolbar': 'gameMenu',
+        'action': 'transformBoard',
+        'type': type.name,
+      },
+    );
+    return true;
+  }
+
   /// Discard an in-progress setup edit without changing the current game
   /// mode.  Used when the setup-position page is torn down by navigation:
   /// the next route has already set its own game mode, so this only rolls

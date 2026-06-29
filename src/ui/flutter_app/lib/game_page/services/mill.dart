@@ -74,6 +74,7 @@ import "gif_share/gif_share.dart";
 import 'import_export/import_helpers.dart';
 import 'import_export/pgn.dart';
 import 'player_timer.dart';
+import 'transform/transform.dart';
 
 export '../../games/mill/mill_perfect_database_support.dart';
 export '../../games/mill/mill_score.dart';
