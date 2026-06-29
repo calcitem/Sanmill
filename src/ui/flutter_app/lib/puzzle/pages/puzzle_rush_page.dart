@@ -75,123 +75,121 @@ class _PuzzleRushPageState extends State<PuzzleRushPage> {
       key: const Key('puzzle_rush_setup_scaffold'),
       backgroundColor: colorScheme.surface,
       appBar: AppBar(title: Text(s.puzzleRush)),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            // Header card - use white background for better readability
-            Card(
-              elevation: 4,
-              child: Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Column(
-                  children: <Widget>[
-                    const Icon(
-                      FluentIcons.flash_24_regular,
-                      size: 64,
-                      color: Colors.red,
-                    ),
-                    const SizedBox(height: 16),
-                    Text(
-                      s.puzzleRush,
-                      style: Theme.of(context).textTheme.headlineMedium
-                          ?.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.red,
-                          ),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      s.puzzleRushTagline,
-                      style: Theme.of(context).textTheme.bodyLarge,
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
+      body: _withFlatCards(
+        context,
+        SingleChildScrollView(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Column(
+                    children: <Widget>[
+                      const Icon(
+                        FluentIcons.flash_24_regular,
+                        size: 64,
+                        color: Colors.red,
+                      ),
+                      const SizedBox(height: 16),
+                      Text(
+                        s.puzzleRush,
+                        style: Theme.of(context).textTheme.headlineMedium
+                            ?.copyWith(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.red,
+                            ),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        s.puzzleRushTagline,
+                        style: Theme.of(context).textTheme.bodyLarge,
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(height: 24),
+              const SizedBox(height: 24),
 
-            // Rules card
-            Card(
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      s.puzzleRushRules,
-                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-                    _buildRuleItem(
-                      s.puzzleRushRule1,
-                      FluentIcons.timer_24_regular,
-                    ),
-                    _buildRuleItem(
-                      s.puzzleRushRule2,
-                      FluentIcons.heart_24_regular,
-                    ),
-                    _buildRuleItem(
-                      s.puzzleRushRule3,
-                      FluentIcons.trophy_24_regular,
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            const SizedBox(height: 24),
-
-            // Difficulty selection
-            Card(
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      s.puzzleDifficulty,
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-                    Wrap(
-                      spacing: 8,
-                      runSpacing: 8,
-                      children: <Widget>[
-                        _buildDifficultyChip(null, s.all),
-                        ...PuzzleDifficulty.values.map(
-                          (PuzzleDifficulty diff) => _buildDifficultyChip(
-                            diff,
-                            diff.displayName(context),
-                          ),
+              Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        s.puzzleRushRules,
+                        style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                          fontWeight: FontWeight.bold,
                         ),
-                      ],
-                    ),
-                  ],
+                      ),
+                      const SizedBox(height: 12),
+                      _buildRuleItem(
+                        s.puzzleRushRule1,
+                        FluentIcons.timer_24_regular,
+                      ),
+                      _buildRuleItem(
+                        s.puzzleRushRule2,
+                        FluentIcons.heart_24_regular,
+                      ),
+                      _buildRuleItem(
+                        s.puzzleRushRule3,
+                        FluentIcons.trophy_24_regular,
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(height: 32),
+              const SizedBox(height: 24),
 
-            FilledButton.icon(
-              onPressed: _startRush,
-              icon: const Icon(FluentIcons.play_24_regular),
-              label: Text(
-                s.puzzleRushStart,
-                style: const TextStyle(fontSize: 18),
+              Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        s.puzzleDifficulty,
+                        style: Theme.of(context).textTheme.titleMedium
+                            ?.copyWith(fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(height: 12),
+                      Wrap(
+                        spacing: 8,
+                        runSpacing: 8,
+                        children: <Widget>[
+                          _buildDifficultyChip(null, s.all),
+                          ...PuzzleDifficulty.values.map(
+                            (PuzzleDifficulty diff) => _buildDifficultyChip(
+                              diff,
+                              diff.displayName(context),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
               ),
-              style: FilledButton.styleFrom(
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                backgroundColor: colorScheme.error,
-                foregroundColor: colorScheme.onError,
+              const SizedBox(height: 32),
+
+              FilledButton.icon(
+                onPressed: _startRush,
+                icon: const Icon(FluentIcons.play_24_regular),
+                label: Text(
+                  s.puzzleRushStart,
+                  style: const TextStyle(fontSize: 18),
+                ),
+                style: FilledButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  backgroundColor: colorScheme.error,
+                  foregroundColor: colorScheme.onError,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -252,79 +250,82 @@ class _PuzzleRushPageState extends State<PuzzleRushPage> {
       key: const Key('puzzle_rush_results_scaffold'),
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(title: Text(s.puzzleRushResults)),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Icon(
-                outOfLives
-                    ? FluentIcons.emoji_sad_24_regular
-                    : FluentIcons.trophy_24_regular,
-                size: 80,
-                color: outOfLives ? Colors.red : Colors.amber,
-              ),
-              const SizedBox(height: 24),
-              Text(
-                timeUp
-                    ? s.puzzleRushTimeUp
-                    : outOfLives
-                    ? s.puzzleRushOutOfLives
-                    : s.puzzleRushComplete,
-                style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
+      body: _withFlatCards(
+        context,
+        Center(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Icon(
+                  outOfLives
+                      ? FluentIcons.emoji_sad_24_regular
+                      : FluentIcons.trophy_24_regular,
+                  size: 80,
+                  color: outOfLives ? Colors.red : Colors.amber,
                 ),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 32),
-              Card(
-                child: Padding(
-                  padding: const EdgeInsets.all(24.0),
-                  child: Column(
-                    children: <Widget>[
-                      _buildResultRow(
-                        s.puzzleRushSolved,
-                        _solvedCount.toString(),
-                        Colors.green,
-                      ),
-                      const Divider(height: 24),
-                      _buildResultRow(
-                        s.puzzleRushFailed,
-                        _failedCount.toString(),
-                        Colors.red,
-                      ),
-                      const Divider(height: 24),
-                      _buildResultRow(
-                        s.puzzleRushAccuracy,
-                        '${_calculateAccuracy()}%',
-                        Colors.blue,
-                      ),
-                    ],
+                const SizedBox(height: 24),
+                Text(
+                  timeUp
+                      ? s.puzzleRushTimeUp
+                      : outOfLives
+                      ? s.puzzleRushOutOfLives
+                      : s.puzzleRushComplete,
+                  style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 32),
+                Card(
+                  child: Padding(
+                    padding: const EdgeInsets.all(24.0),
+                    child: Column(
+                      children: <Widget>[
+                        _buildResultRow(
+                          s.puzzleRushSolved,
+                          _solvedCount.toString(),
+                          Colors.green,
+                        ),
+                        const Divider(height: 24),
+                        _buildResultRow(
+                          s.puzzleRushFailed,
+                          _failedCount.toString(),
+                          Colors.red,
+                        ),
+                        const Divider(height: 24),
+                        _buildResultRow(
+                          s.puzzleRushAccuracy,
+                          '${_calculateAccuracy()}%',
+                          Colors.blue,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(height: 32),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  OutlinedButton.icon(
-                    onPressed: () {
-                      if (mounted) {
-                        Navigator.of(context).pop();
-                      }
-                    },
-                    icon: const Icon(FluentIcons.dismiss_24_regular),
-                    label: Text(s.close),
-                  ),
-                  ElevatedButton.icon(
-                    onPressed: _resetAndStart,
-                    icon: const Icon(FluentIcons.arrow_clockwise_24_regular),
-                    label: Text(s.puzzleRushPlayAgain),
-                  ),
-                ],
-              ),
-            ],
+                const SizedBox(height: 32),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    OutlinedButton.icon(
+                      onPressed: () {
+                        if (mounted) {
+                          Navigator.of(context).pop();
+                        }
+                      },
+                      icon: const Icon(FluentIcons.dismiss_24_regular),
+                      label: Text(s.close),
+                    ),
+                    ElevatedButton.icon(
+                      onPressed: _resetAndStart,
+                      icon: const Icon(FluentIcons.arrow_clockwise_24_regular),
+                      label: Text(s.puzzleRushPlayAgain),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -355,6 +356,26 @@ class _PuzzleRushPageState extends State<PuzzleRushPage> {
           _selectedDifficulty = difficulty;
         });
       },
+    );
+  }
+
+  Widget _withFlatCards(BuildContext context, Widget child) {
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+
+    return CardTheme(
+      data: CardThemeData(
+        color: colorScheme.surfaceContainer,
+        elevation: 0,
+        margin: const EdgeInsets.symmetric(vertical: 4.0),
+        surfaceTintColor: Colors.transparent,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+          side: BorderSide(
+            color: colorScheme.outlineVariant.withValues(alpha: 0.32),
+          ),
+        ),
+      ),
+      child: child,
     );
   }
 

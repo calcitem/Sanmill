@@ -95,128 +95,126 @@ class _PuzzleStreakPageState extends State<PuzzleStreakPage> {
       key: const Key('puzzle_streak_setup_scaffold'),
       backgroundColor: colorScheme.surface,
       appBar: AppBar(title: Text(s.puzzleStreak)),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            // Header card - use white background for better readability
-            Card(
-              elevation: 4,
-              child: Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Column(
-                  children: <Widget>[
-                    const Icon(
-                      FluentIcons.flash_24_filled,
-                      size: 64,
-                      color: Colors.purple,
-                    ),
-                    const SizedBox(height: 16),
-                    Text(
-                      s.puzzleStreak,
-                      style: Theme.of(context).textTheme.headlineMedium
-                          ?.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.purple,
-                          ),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      s.puzzleStreakTagline,
-                      style: Theme.of(context).textTheme.bodyLarge,
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            const SizedBox(height: 24),
-
-            // Rules card
-            Card(
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      s.puzzleStreakRules,
-                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-                    _buildRuleItem(
-                      s.puzzleStreakRule1,
-                      FluentIcons.target_24_regular,
-                    ),
-                    _buildRuleItem(
-                      s.puzzleStreakRule2,
-                      FluentIcons.dismiss_circle_24_regular,
-                    ),
-                    _buildRuleItem(
-                      s.puzzleStreakRule3,
-                      FluentIcons.trophy_24_regular,
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            const SizedBox(height: 24),
-
-            // Best streak card - use white background for better text readability
-            if (_bestStreak > 0)
+      body: _withFlatCards(
+        context,
+        SingleChildScrollView(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
               Card(
-                elevation: 2,
                 child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                  padding: const EdgeInsets.all(20.0),
+                  child: Column(
                     children: <Widget>[
                       const Icon(
-                        FluentIcons.trophy_24_filled,
-                        color: Colors.amber,
-                        size: 32,
+                        FluentIcons.flash_24_filled,
+                        size: 64,
+                        color: Colors.purple,
                       ),
-                      const SizedBox(width: 12),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            s.puzzleStreakBest,
-                            style: Theme.of(context).textTheme.bodySmall,
-                          ),
-                          Text(
-                            '$_bestStreak',
-                            style: const TextStyle(
-                              fontSize: 32,
+                      const SizedBox(height: 16),
+                      Text(
+                        s.puzzleStreak,
+                        style: Theme.of(context).textTheme.headlineMedium
+                            ?.copyWith(
                               fontWeight: FontWeight.bold,
-                              color: Colors.amber,
+                              color: Colors.purple,
                             ),
-                          ),
-                        ],
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        s.puzzleStreakTagline,
+                        style: Theme.of(context).textTheme.bodyLarge,
+                        textAlign: TextAlign.center,
                       ),
                     ],
                   ),
                 ),
               ),
-            const SizedBox(height: 24),
+              const SizedBox(height: 24),
 
-            FilledButton.icon(
-              onPressed: _startStreak,
-              icon: const Icon(FluentIcons.play_24_regular),
-              label: Text(
-                s.puzzleStreakStart,
-                style: const TextStyle(fontSize: 18),
+              Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        s.puzzleStreakRules,
+                        style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      _buildRuleItem(
+                        s.puzzleStreakRule1,
+                        FluentIcons.target_24_regular,
+                      ),
+                      _buildRuleItem(
+                        s.puzzleStreakRule2,
+                        FluentIcons.dismiss_circle_24_regular,
+                      ),
+                      _buildRuleItem(
+                        s.puzzleStreakRule3,
+                        FluentIcons.trophy_24_regular,
+                      ),
+                    ],
+                  ),
+                ),
               ),
-              style: FilledButton.styleFrom(
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                backgroundColor: colorScheme.secondary,
-                foregroundColor: colorScheme.onSecondary,
+              const SizedBox(height: 24),
+
+              if (_bestStreak > 0)
+                Card(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        const Icon(
+                          FluentIcons.trophy_24_filled,
+                          color: Colors.amber,
+                          size: 32,
+                        ),
+                        const SizedBox(width: 12),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              s.puzzleStreakBest,
+                              style: Theme.of(context).textTheme.bodySmall,
+                            ),
+                            Text(
+                              '$_bestStreak',
+                              style: const TextStyle(
+                                fontSize: 32,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.amber,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              const SizedBox(height: 24),
+
+              FilledButton.icon(
+                onPressed: _startStreak,
+                icon: const Icon(FluentIcons.play_24_regular),
+                label: Text(
+                  s.puzzleStreakStart,
+                  style: const TextStyle(fontSize: 18),
+                ),
+                style: FilledButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  backgroundColor: colorScheme.secondary,
+                  foregroundColor: colorScheme.onSecondary,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -338,120 +336,123 @@ class _PuzzleStreakPageState extends State<PuzzleStreakPage> {
       key: const Key('puzzle_streak_results_scaffold'),
       backgroundColor: colorScheme.surface,
       appBar: AppBar(title: Text(s.puzzleStreakResults)),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Icon(
-                newRecord
-                    ? FluentIcons.trophy_24_filled
-                    : FluentIcons.emoji_sad_24_regular,
-                size: 80,
-                color: newRecord ? Colors.amber : Colors.grey[400],
-              ),
-              const SizedBox(height: 24),
-              Text(
-                newRecord ? s.puzzleStreakNewRecord : s.puzzleStreakEnded,
-                style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
+      body: _withFlatCards(
+        context,
+        Center(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Icon(
+                  newRecord
+                      ? FluentIcons.trophy_24_filled
+                      : FluentIcons.emoji_sad_24_regular,
+                  size: 80,
+                  color: newRecord ? Colors.amber : Colors.grey[400],
                 ),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 32),
-              Card(
-                child: Padding(
-                  padding: const EdgeInsets.all(24.0),
-                  child: Column(
-                    children: <Widget>[
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          const Icon(
-                            FluentIcons.flash_24_filled,
-                            color: Colors.purple,
-                            size: 48,
-                          ),
-                          const SizedBox(width: 16),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text(
-                                s.puzzleStreakFinalScore,
-                                style: Theme.of(context).textTheme.bodyLarge,
-                              ),
-                              Text(
-                                '$_currentStreak',
-                                style: const TextStyle(
-                                  fontSize: 48,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.purple,
+                const SizedBox(height: 24),
+                Text(
+                  newRecord ? s.puzzleStreakNewRecord : s.puzzleStreakEnded,
+                  style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 32),
+                Card(
+                  child: Padding(
+                    padding: const EdgeInsets.all(24.0),
+                    child: Column(
+                      children: <Widget>[
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            const Icon(
+                              FluentIcons.flash_24_filled,
+                              color: Colors.purple,
+                              size: 48,
+                            ),
+                            const SizedBox(width: 16),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                  s.puzzleStreakFinalScore,
+                                  style: Theme.of(context).textTheme.bodyLarge,
                                 ),
-                              ),
-                            ],
+                                Text(
+                                  '$_currentStreak',
+                                  style: const TextStyle(
+                                    fontSize: 48,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.purple,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                        if (newRecord) ...<Widget>[
+                          const SizedBox(height: 16),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 16,
+                              vertical: 8,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Colors.amber.withValues(alpha: 0.2),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                const Icon(
+                                  FluentIcons.trophy_24_filled,
+                                  color: Colors.amber,
+                                ),
+                                const SizedBox(width: 8),
+                                Text(
+                                  s.puzzleStreakNewRecord,
+                                  style: const TextStyle(
+                                    color: Colors.amber,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ],
-                      ),
-                      if (newRecord) ...<Widget>[
-                        const SizedBox(height: 16),
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 8,
-                          ),
-                          decoration: BoxDecoration(
-                            color: Colors.amber.withValues(alpha: 0.2),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              const Icon(
-                                FluentIcons.trophy_24_filled,
-                                color: Colors.amber,
-                              ),
-                              const SizedBox(width: 8),
-                              Text(
-                                s.puzzleStreakNewRecord,
-                                style: const TextStyle(
-                                  color: Colors.amber,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
                       ],
-                    ],
-                  ),
-                ),
-              ),
-              const SizedBox(height: 32),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  OutlinedButton.icon(
-                    onPressed: () {
-                      if (mounted) {
-                        Navigator.of(context).pop();
-                      }
-                    },
-                    icon: const Icon(FluentIcons.dismiss_24_regular),
-                    label: Text(s.close),
-                  ),
-                  FilledButton.icon(
-                    onPressed: _resetAndStart,
-                    icon: const Icon(FluentIcons.arrow_clockwise_24_regular),
-                    label: Text(s.puzzleStreakTryAgain),
-                    style: FilledButton.styleFrom(
-                      backgroundColor: colorScheme.secondary,
-                      foregroundColor: colorScheme.onSecondary,
                     ),
                   ),
-                ],
-              ),
-            ],
+                ),
+                const SizedBox(height: 32),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    OutlinedButton.icon(
+                      onPressed: () {
+                        if (mounted) {
+                          Navigator.of(context).pop();
+                        }
+                      },
+                      icon: const Icon(FluentIcons.dismiss_24_regular),
+                      label: Text(s.close),
+                    ),
+                    FilledButton.icon(
+                      onPressed: _resetAndStart,
+                      icon: const Icon(FluentIcons.arrow_clockwise_24_regular),
+                      label: Text(s.puzzleStreakTryAgain),
+                      style: FilledButton.styleFrom(
+                        backgroundColor: colorScheme.secondary,
+                        foregroundColor: colorScheme.onSecondary,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -468,6 +469,26 @@ class _PuzzleStreakPageState extends State<PuzzleStreakPage> {
           Expanded(child: Text(text)),
         ],
       ),
+    );
+  }
+
+  Widget _withFlatCards(BuildContext context, Widget child) {
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+
+    return CardTheme(
+      data: CardThemeData(
+        color: colorScheme.surfaceContainer,
+        elevation: 0,
+        margin: const EdgeInsets.symmetric(vertical: 4.0),
+        surfaceTintColor: Colors.transparent,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+          side: BorderSide(
+            color: colorScheme.outlineVariant.withValues(alpha: 0.32),
+          ),
+        ),
+      ),
+      child: child,
     );
   }
 
