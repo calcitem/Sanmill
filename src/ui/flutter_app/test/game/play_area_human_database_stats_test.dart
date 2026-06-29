@@ -121,7 +121,7 @@ void main() {
     );
   });
 
-  testWidgets('regular game toolbar stays pinned to the bottom', (
+  testWidgets('regular game uses a Lichess-style inline move list', (
     WidgetTester tester,
   ) async {
     db.displaySettings = const DisplaySettings(
@@ -159,8 +159,24 @@ void main() {
       find.byKey(const Key('play_area_regular_move_list_wrap')),
       findsOneWidget,
     );
+    expect(
+      find.byKey(const Key('play_area_inline_move_list_scroll_view')),
+      findsOneWidget,
+    );
+    final SingleChildScrollView moveListScrollView = tester
+        .widget<SingleChildScrollView>(
+          find.byKey(const Key('play_area_inline_move_list_scroll_view')),
+        );
+    expect(moveListScrollView.scrollDirection, Axis.horizontal);
     expect(find.byKey(const Key('play_area_regular_move_1')), findsOneWidget);
     expect(find.byKey(const Key('play_area_regular_move_2')), findsOneWidget);
+    expect(
+      find.descendant(
+        of: find.byKey(const Key('play_area_regular_move_2')),
+        matching: find.byType(DecoratedBox),
+      ),
+      findsNothing,
+    );
     expect(
       find.byKey(const Key('play_area_human_ai_move_list_wrap')),
       findsNothing,

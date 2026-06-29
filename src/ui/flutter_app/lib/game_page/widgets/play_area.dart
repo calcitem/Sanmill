@@ -1235,6 +1235,7 @@ class PlayAreaState extends State<PlayArea> {
                                   );
                                 },
                             showMovePreview: true,
+                            layout: _InlineMoveListLayout.horizontal,
                           ),
 
                         // The top game header with hints, icons, etc.
