@@ -8,12 +8,16 @@ import 'package:flutter/material.dart';
 
 import '../../../experience_recording/models/recording_models.dart';
 import '../../../experience_recording/services/recording_service.dart';
+import '../../../general_settings/models/general_settings.dart';
 import '../../../generated/intl/l10n.dart';
 import '../../../shared/config/constants.dart';
 import '../../../shared/database/database.dart';
 import '../../../shared/services/logger.dart';
+import '../../../shared/themes/app_styles.dart';
 import '../../../shared/themes/app_theme.dart';
 import '../../../shared/widgets/custom_spacer.dart';
+import '../../../shared/widgets/lichess_list_section.dart';
+import '../../../shared/widgets/snackbars/scaffold_messenger.dart';
 import '../../services/gif_share/gif_share.dart';
 import '../../services/mill.dart';
 import '../game_page.dart';
@@ -110,6 +114,20 @@ class GameOptionsModal extends StatelessWidget {
     await showRestartGameAlertDialog(
       context,
       closeCurrentRoute: closeCurrentRoute,
+    );
+  }
+
+  static Future<void> showHumanAiNewGameSheet(BuildContext context) async {
+    assert(
+      GameController().gameInstance.gameMode == GameMode.humanVsAi,
+      'The Lichess-style new game sheet is only used for Human vs AI.',
+    );
+    await showModalBottomSheet<void>(
+      context: context,
+      useSafeArea: true,
+      isScrollControlled: true,
+      showDragHandle: true,
+      builder: (BuildContext context) => const _HumanAiNewGameSheet(),
     );
   }
 
@@ -385,6 +403,231 @@ class GameOptionsModal extends StatelessWidget {
       builder: (BuildContext context) {
         return alert;
       },
+    );
+  }
+}
+
+class _HumanAiNewGameSheet extends StatefulWidget {
+  const _HumanAiNewGameSheet();
+
+  @override
+  State<_HumanAiNewGameSheet> createState() => _HumanAiNewGameSheetState();
+}
+
+class _HumanAiNewGameSheetState extends State<_HumanAiNewGameSheet> {
+  late int _skillLevel;
+  late int _moveTime;
+  late bool _aiMovesFirst;
+
+  @override
+  void initState() {
+    super.initState();
+    final GeneralSettings settings = DB().generalSettings;
+    _skillLevel = settings.skillLevel.clamp(1, Constants.highestSkillLevel);
+    _moveTime = settings.moveTime.clamp(0, 60);
+    _aiMovesFirst = settings.aiMovesFirst;
+  }
+
+  void _startNewGame(BuildContext context) {
+    assert(
+      GameController().gameInstance.gameMode == GameMode.humanVsAi,
+      'Human vs AI settings cannot start a different game mode.',
+    );
+    DB().generalSettings = DB().generalSettings.copyWith(
+      skillLevel: _skillLevel,
+      moveTime: _moveTime,
+      aiMovesFirst: _aiMovesFirst,
+    );
+    if (_skillLevel > 15 && _moveTime < 10) {
+      rootScaffoldMessengerKey.currentState!.showSnackBarClear(
+        S.of(context).noteActualDifficultyLevelMayBeLimited,
+      );
+    }
+    GameOptionsModal.startNewGame(context);
+    Navigator.of(context).pop();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+    final ColorScheme colorScheme = theme.colorScheme;
+    final TextStyle valueStyle =
+        theme.textTheme.titleMedium?.copyWith(
+          color: colorScheme.onSurface,
+          fontWeight: FontWeight.w600,
+          letterSpacing: 0,
+        ) ??
+        AppStyles.sectionTitle.copyWith(color: colorScheme.onSurface);
+
+    return Semantics(
+      key: const Key('human_ai_new_game_sheet'),
+      namesRoute: true,
+      label: S.of(context).newGame,
+      child: SingleChildScrollView(
+        padding: EdgeInsets.fromLTRB(
+          0,
+          0,
+          0,
+          MediaQuery.viewInsetsOf(context).bottom + AppStyles.bodyPadding,
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.fromLTRB(
+                AppStyles.bodyPadding,
+                0,
+                AppStyles.bodyPadding,
+                AppStyles.bodyPadding,
+              ),
+              child: Text(
+                S.of(context).newGame,
+                style: theme.textTheme.titleLarge?.copyWith(
+                  fontWeight: FontWeight.w600,
+                  letterSpacing: 0,
+                ),
+              ),
+            ),
+            LichessListSection(
+              header: Text(S.of(context).humanVsAi),
+              hasLeading: false,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 12, 16, 4),
+                  child: _SheetValueHeader(
+                    title: S.of(context).skillLevel,
+                    value: _skillLevel.toString(),
+                    valueStyle: valueStyle,
+                  ),
+                ),
+                Slider(
+                  key: const Key('human_ai_new_game_sheet_skill_slider'),
+                  min: 1,
+                  max: Constants.highestSkillLevel.toDouble(),
+                  divisions: Constants.highestSkillLevel - 1,
+                  value: _skillLevel.toDouble(),
+                  label: _skillLevel.toString(),
+                  onChanged: (double value) {
+                    setState(() {
+                      _skillLevel = value.round();
+                    });
+                  },
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 12, 16, 4),
+                  child: _SheetValueHeader(
+                    title: S.of(context).moveTime,
+                    value: _moveTime.toString(),
+                    valueStyle: valueStyle,
+                  ),
+                ),
+                Slider(
+                  key: const Key('human_ai_new_game_sheet_move_time_slider'),
+                  max: 60,
+                  divisions: 60,
+                  value: _moveTime.toDouble(),
+                  label: _moveTime.toString(),
+                  onChanged: (double value) {
+                    setState(() {
+                      _moveTime = value.round();
+                    });
+                  },
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 12, 16, 16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        S.of(context).human,
+                        style: theme.textTheme.bodyLarge,
+                      ),
+                      const SizedBox(height: 8),
+                      LayoutBuilder(
+                        builder:
+                            (BuildContext context, BoxConstraints constraints) {
+                              return ConstrainedBox(
+                                constraints: BoxConstraints(
+                                  maxWidth: constraints.maxWidth,
+                                ),
+                                child: FittedBox(
+                                  fit: BoxFit.scaleDown,
+                                  alignment: AlignmentDirectional.centerStart,
+                                  child: SegmentedButton<bool>(
+                                    key: const Key(
+                                      'human_ai_new_game_sheet_side_picker',
+                                    ),
+                                    segments: <ButtonSegment<bool>>[
+                                      ButtonSegment<bool>(
+                                        value: false,
+                                        icon: const Icon(Icons.person_outline),
+                                        label: Text(S.of(context).player1),
+                                      ),
+                                      ButtonSegment<bool>(
+                                        value: true,
+                                        icon: const Icon(Icons.person_outline),
+                                        label: Text(S.of(context).player2),
+                                      ),
+                                    ],
+                                    selected: <bool>{_aiMovesFirst},
+                                    showSelectedIcon: false,
+                                    onSelectionChanged: (Set<bool> selection) {
+                                      assert(
+                                        selection.length == 1,
+                                        'Human side picker must have exactly one value.',
+                                      );
+                                      setState(() {
+                                        _aiMovesFirst = selection.single;
+                                      });
+                                    },
+                                  ),
+                                ),
+                              );
+                            },
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: AppStyles.bodyPadding,
+              ),
+              child: FilledButton(
+                key: const Key('human_ai_new_game_sheet_start'),
+                onPressed: () => _startNewGame(context),
+                child: Text(S.of(context).newGame),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _SheetValueHeader extends StatelessWidget {
+  const _SheetValueHeader({
+    required this.title,
+    required this.value,
+    required this.valueStyle,
+  });
+
+  final String title;
+  final String value;
+  final TextStyle valueStyle;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: <Widget>[
+        Expanded(
+          child: Text(title, style: Theme.of(context).textTheme.bodyLarge),
+        ),
+        Text(value, style: valueStyle),
+      ],
     );
   }
 }

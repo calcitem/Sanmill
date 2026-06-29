@@ -228,6 +228,31 @@ void main() {
     expect(find.byKey(const Key('play_area_game_menu_resign')), findsNothing);
     expect(find.byKey(const Key('play_area_game_menu_new_game')), findsOne);
 
+    await tester.tap(find.byKey(const Key('play_area_game_menu_new_game')));
+    await tester.pumpAndSettle();
+
+    expect(find.byKey(const Key('human_ai_new_game_sheet')), findsOne);
+    expect(
+      find.byKey(const Key('human_ai_new_game_sheet_skill_slider')),
+      findsOne,
+    );
+    expect(
+      find.byKey(const Key('human_ai_new_game_sheet_move_time_slider')),
+      findsOne,
+    );
+    expect(
+      find.byKey(const Key('human_ai_new_game_sheet_side_picker')),
+      findsOne,
+    );
+
+    await tester.binding.handlePopRoute();
+    await tester.pumpAndSettle();
+
+    expect(find.byKey(const Key('human_ai_new_game_sheet')), findsNothing);
+
+    await tester.tap(find.byKey(const Key('play_area_bottom_bar_menu')));
+    await tester.pumpAndSettle();
+
     await tester.tap(find.byKey(const Key('play_area_game_menu_analysis')));
     await tester.pumpAndSettle();
 

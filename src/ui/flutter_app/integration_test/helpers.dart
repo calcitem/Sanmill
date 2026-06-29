@@ -381,6 +381,14 @@ Future<void> startNewGame(WidgetTester tester) async {
     );
     await tester.tap(bottomNewGameOption);
     await tester.pumpAndSettle();
+
+    final Finder humanAiNewGameStart = find.byKey(
+      const Key('human_ai_new_game_sheet_start'),
+    );
+    if (humanAiNewGameStart.evaluate().isNotEmpty) {
+      await tester.tap(humanAiNewGameStart);
+      await tester.pumpAndSettle();
+    }
   } else {
     // Tap the Game toolbar item to open the game options modal.
     await tapToolbarItem(tester, 'play_area_toolbar_item_game');

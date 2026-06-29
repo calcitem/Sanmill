@@ -368,7 +368,7 @@ class PlayAreaState extends State<PlayArea> {
       RecordingEventType.toolbarAction,
       <String, dynamic>{'toolbar': 'lichessBottom', 'action': 'newGame'},
     );
-    await GameOptionsModal.requestNewGame(context);
+    await GameOptionsModal.showHumanAiNewGameSheet(context);
   }
 
   void _showHumanAiGameMenu(BuildContext context) {
