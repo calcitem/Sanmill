@@ -158,6 +158,46 @@ void main() {
   );
 
   testWidgets(
+    'Home play sheet promotes LAN play with friend mode',
+    (WidgetTester tester) async {
+      tester.view
+        ..physicalSize = const Size(390, 844)
+        ..devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+
+      await tester.pumpWidget(const SanmillApp());
+
+      await tester.tap(find.byKey(const Key('sanmill_home_play_fab')));
+      await tester.pumpAndSettle();
+
+      final Finder quickStartCard = find.byKey(
+        const Key('sanmill_home_play_sheet_card'),
+      );
+      final Finder moreModesCard = find.byKey(
+        const Key('sanmill_home_play_sheet_more_modes_card'),
+      );
+      final Finder lanMode = find.byKey(
+        const Key('sanmill_home_play_sheet_mill.play.humanVsLan'),
+      );
+
+      expect(find.byKey(const Key('sanmill_home_play_sheet')), findsOneWidget);
+      expect(
+        find.descendant(of: quickStartCard, matching: lanMode),
+        findsOneWidget,
+      );
+      expect(
+        find.descendant(of: moreModesCard, matching: lanMode),
+        findsNothing,
+      );
+
+      // Drain any settings-save debounce timer (see the smoke test above).
+      await tester.pump(const Duration(milliseconds: 350));
+    },
+    skip: nativeLibrarySkipReason() != null,
+  );
+
+  testWidgets(
     'Verify mobile shell bottom navigation and more menu',
     (WidgetTester tester) async {
       tester.view

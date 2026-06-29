@@ -2045,7 +2045,9 @@ class _PlayBottomSheet extends StatelessWidget {
 
   static bool _isQuickStartMode(GameModeEntry mode) {
     final String id = mode.id.value.toLowerCase();
-    return id.contains('humanvsai') || id.contains('humanvshuman');
+    return id.contains('humanvsai') ||
+        id.contains('humanvshuman') ||
+        id.contains('humanvslan');
   }
 }
 
