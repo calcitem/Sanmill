@@ -445,7 +445,11 @@ class AppearanceSettingsPage extends StatelessWidget {
     );
   }
 
-  Widget _buildColorSettings(BuildContext context, Box<ColorSettings> box, _) {
+  Widget _buildBoardStyleSettings(
+    BuildContext context,
+    Box<ColorSettings> box,
+    _,
+  ) {
     final ColorSettings colorSettings = box.get(
       DB.colorSettingsKey,
       defaultValue: const ColorSettings(),
@@ -459,7 +463,7 @@ class AppearanceSettingsPage extends StatelessWidget {
         SettingsCard(
           key: const Key('appearance_settings_page_theme_settings_card'),
           title: Text(
-            S.of(context).display,
+            S.of(context).board,
             key: const Key('theme_settings_card_title'),
           ),
           children: <Widget>[
@@ -518,6 +522,24 @@ class AppearanceSettingsPage extends StatelessWidget {
             ),
           ],
         ),
+      ],
+    );
+  }
+
+  Widget _buildColorTuningSettings(
+    BuildContext context,
+    Box<ColorSettings> box,
+    _,
+  ) {
+    final ColorSettings colorSettings = box.get(
+      DB.colorSettingsKey,
+      defaultValue: const ColorSettings(),
+    )!;
+
+    return Column(
+      key: const Key('appearance_settings_page_color_tuning_column'),
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: <Widget>[
         SettingsCard(
           key: const Key('appearance_settings_page_board_color_settings_card'),
           title: Text(
@@ -822,24 +844,6 @@ class AppearanceSettingsPage extends StatelessWidget {
                 },
                 titleString: strings.fullScreen,
               ),
-            SettingsListTile.switchTile(
-              key: const Key(
-                'display_settings_card_history_navigation_toolbar_shown_switch_tile',
-              ),
-              value: displaySettings.isHistoryNavigationToolbarShown,
-              onChanged: (bool val) => DB().displaySettings = displaySettings
-                  .copyWith(isHistoryNavigationToolbarShown: val),
-              titleString: strings.isHistoryNavigationToolbarShown,
-            ),
-            SettingsListTile.switchTile(
-              key: const Key(
-                'display_settings_card_annotation_toolbar_shown_switch_tile',
-              ),
-              value: displaySettings.isAnnotationToolbarShown,
-              onChanged: (bool val) => DB().displaySettings = displaySettings
-                  .copyWith(isAnnotationToolbarShown: val),
-              titleString: strings.isAnnotationToolbarShown,
-            ),
           ],
         ),
         SettingsCard(
@@ -993,6 +997,24 @@ class AppearanceSettingsPage extends StatelessWidget {
           children: <Widget>[
             SettingsListTile.switchTile(
               key: const Key(
+                'display_settings_card_history_navigation_toolbar_shown_switch_tile',
+              ),
+              value: displaySettings.isHistoryNavigationToolbarShown,
+              onChanged: (bool val) => DB().displaySettings = displaySettings
+                  .copyWith(isHistoryNavigationToolbarShown: val),
+              titleString: strings.isHistoryNavigationToolbarShown,
+            ),
+            SettingsListTile.switchTile(
+              key: const Key(
+                'display_settings_card_annotation_toolbar_shown_switch_tile',
+              ),
+              value: displaySettings.isAnnotationToolbarShown,
+              onChanged: (bool val) => DB().displaySettings = displaySettings
+                  .copyWith(isAnnotationToolbarShown: val),
+              titleString: strings.isAnnotationToolbarShown,
+            ),
+            SettingsListTile.switchTile(
+              key: const Key(
                 'display_settings_card_positional_advantage_indicator_shown_switch_tile',
               ),
               value: displaySettings.isPositionalAdvantageIndicatorShown,
@@ -1076,7 +1098,7 @@ class AppearanceSettingsPage extends StatelessWidget {
                 'appearance_settings_page_color_settings_value_listenable_builder',
               ),
               valueListenable: DB().listenColorSettings,
-              builder: _buildColorSettings,
+              builder: _buildBoardStyleSettings,
             ),
             ValueListenableBuilder<Box<DisplaySettings>>(
               key: const Key(
@@ -1084,6 +1106,13 @@ class AppearanceSettingsPage extends StatelessWidget {
               ),
               valueListenable: DB().listenDisplaySettings,
               builder: _buildDisplaySettings,
+            ),
+            ValueListenableBuilder<Box<ColorSettings>>(
+              key: const Key(
+                'appearance_settings_page_color_tuning_value_listenable_builder',
+              ),
+              valueListenable: DB().listenColorSettings,
+              builder: _buildColorTuningSettings,
             ),
           ],
         ),

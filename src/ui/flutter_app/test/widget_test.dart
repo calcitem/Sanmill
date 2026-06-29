@@ -1020,6 +1020,44 @@ void main() {
         tester.getTopLeft(backgroundImageTile).dy,
         greaterThan(tester.getTopLeft(boardCoordinatesTile).dy),
       );
+      final Finder displaySettings = find.byKey(
+        const Key('appearance_settings_page_display_settings_card'),
+      );
+      final Finder colorTuning = find.byKey(
+        const Key('appearance_settings_page_board_color_settings_card'),
+      );
+      final Finder appearanceScrollable = find.descendant(
+        of: find.byKey(const Key('settings_list')),
+        matching: find.byType(Scrollable),
+      );
+      await tester.scrollUntilVisible(
+        displaySettings,
+        320,
+        scrollable: appearanceScrollable,
+      );
+      await tester.pumpAndSettle();
+      final double displaySettingsOffset = tester
+          .state<ScrollableState>(appearanceScrollable)
+          .position
+          .pixels;
+      await tester.scrollUntilVisible(
+        colorTuning,
+        320,
+        scrollable: appearanceScrollable,
+      );
+      await tester.pumpAndSettle();
+      expect(colorTuning, findsOneWidget);
+      final double colorTuningOffset = tester
+          .state<ScrollableState>(appearanceScrollable)
+          .position
+          .pixels;
+      expect(colorTuningOffset, greaterThan(displaySettingsOffset));
+      await tester.scrollUntilVisible(
+        pieceSetTile,
+        -320,
+        scrollable: appearanceScrollable,
+      );
+      await tester.pumpAndSettle();
       await tester.tap(pieceSetTile);
       await tester.pumpAndSettle();
 
