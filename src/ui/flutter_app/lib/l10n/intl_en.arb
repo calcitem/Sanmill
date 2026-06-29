@@ -1067,6 +1067,10 @@
     "@analysis": {
         "description": "Analysis"
     },
+    "flipBoard": "Flip board",
+    "@flipBoard": {
+        "description": "Flip the board orientation"
+    },
     "saveGame": "Save game",
     "@saveGame": {
         "description": "Save game"

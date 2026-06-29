@@ -26,11 +26,11 @@ class GameOptionsModal extends StatelessWidget {
 
   static const String _logTag = "[GameOptionsModal]";
 
-  String _sideToMoveName(BuildContext context) {
+  static String _sideToMoveName(BuildContext context) {
     return GameController().activeBoardView.sideToMove.playerName(context);
   }
 
-  void _startNewGame(BuildContext context) {
+  static void startNewGame(BuildContext context) {
     GameController().reset(force: true);
 
     GameController().headerTipNotifier.showTip(S.of(context).gameStarted);
@@ -71,7 +71,7 @@ class GameOptionsModal extends StatelessWidget {
     GameController().headerIconsNotifier.showIcons();
   }
 
-  bool _canStartNewGame() {
+  static bool canStartNewGame() {
     if (GameController().activeSessionSnapshot != null) {
       return true;
     }
@@ -83,6 +83,34 @@ class GameOptionsModal extends StatelessWidget {
         (phase == Phase.placing &&
             GameController().gameRecorder.mainlineMoves.length <= 3) ||
         phase == Phase.gameOver;
+  }
+
+  static Future<void> requestNewGame(
+    BuildContext context, {
+    bool closeCurrentRoute = false,
+  }) async {
+    GameController().loadedGameFilenamePrefix = null;
+
+    logger.i(
+      "$_logTag New Game pressed: "
+      "gameMode=${GameController().gameInstance.gameMode}, "
+      "canStart=${canStartNewGame()}, "
+      "isEngineRunning=${GameController().isEngineRunning}, "
+      "snapshot=${GameController().activeSessionSnapshot != null}",
+    );
+
+    if (canStartNewGame()) {
+      startNewGame(context);
+      if (closeCurrentRoute) {
+        Navigator.of(context).pop();
+      }
+      return;
+    }
+
+    await showRestartGameAlertDialog(
+      context,
+      closeCurrentRoute: closeCurrentRoute,
+    );
   }
 
   @override
@@ -103,22 +131,7 @@ class GameOptionsModal extends StatelessWidget {
             );
             //Navigator.pop(context);
 
-            GameController().loadedGameFilenamePrefix = null;
-
-            logger.i(
-              "$_logTag New Game pressed: "
-              "gameMode=${GameController().gameInstance.gameMode}, "
-              "canStart=${_canStartNewGame()}, "
-              "isEngineRunning=${GameController().isEngineRunning}, "
-              "snapshot=${GameController().activeSessionSnapshot != null}",
-            );
-
-            if (_canStartNewGame()) {
-              _startNewGame(context);
-              Navigator.of(context).pop();
-            } else {
-              await showRestartGameAlertDialog(context);
-            }
+            await requestNewGame(context, closeCurrentRoute: true);
           },
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 2.0),
@@ -314,7 +327,10 @@ class GameOptionsModal extends StatelessWidget {
     );
   }
 
-  Future<Widget?> showRestartGameAlertDialog(BuildContext context) async {
+  static Future<void> showRestartGameAlertDialog(
+    BuildContext context, {
+    bool closeCurrentRoute = false,
+  }) async {
     final Widget yesButton = TextButton(
       key: const Key('restart_game_yes_button'),
       child: Text(
@@ -324,9 +340,11 @@ class GameOptionsModal extends StatelessWidget {
         ),
       ),
       onPressed: () {
-        _startNewGame(context);
+        startNewGame(context);
         Navigator.of(context, rootNavigator: true).pop(true);
-        Navigator.of(context).pop();
+        if (closeCurrentRoute) {
+          Navigator.of(context).pop();
+        }
       },
     );
 
@@ -340,7 +358,9 @@ class GameOptionsModal extends StatelessWidget {
       ),
       onPressed: () {
         Navigator.of(context, rootNavigator: true).pop(false);
-        Navigator.of(context).pop();
+        if (closeCurrentRoute) {
+          Navigator.of(context).pop();
+        }
       },
     );
 
@@ -366,7 +386,5 @@ class GameOptionsModal extends StatelessWidget {
         return alert;
       },
     );
-
-    return null;
   }
 }

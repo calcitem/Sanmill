@@ -417,20 +417,40 @@ Future<void> tapToolbarItem(WidgetTester tester, String key) async {
 
 /// Starts a new game from the game page toolbar.
 ///
-/// Taps the Game toolbar item, selects New Game, and confirms if a restart
-/// dialog appears. Handles both fresh game (no dialog) and active game
-/// (with restart confirmation dialog) scenarios.
+/// Taps either the Lichess-style bottom menu or the legacy Game toolbar item,
+/// selects New Game, and confirms if a restart dialog appears.
 Future<void> startNewGame(WidgetTester tester) async {
   await dismissBlockingDialogs(tester);
 
-  // Tap the Game toolbar item to open the game options modal
-  await tapToolbarItem(tester, 'play_area_toolbar_item_game');
+  final Finder lichessMenu = find.byKey(const Key('play_area_bottom_bar_menu'));
+  if (lichessMenu.evaluate().isNotEmpty) {
+    await tester.tap(lichessMenu);
+    await tester.pumpAndSettle();
 
-  // Tap the New Game option
-  final Finder newGameOption = find.byKey(const Key('new_game_option'));
-  expect(newGameOption, findsOneWidget, reason: 'New Game option should exist');
-  await tester.tap(newGameOption);
-  await tester.pumpAndSettle();
+    final Finder bottomNewGameOption = find.byKey(
+      const Key('play_area_game_menu_new_game'),
+    );
+    expect(
+      bottomNewGameOption,
+      findsOneWidget,
+      reason: 'Bottom New Game option should exist',
+    );
+    await tester.tap(bottomNewGameOption);
+    await tester.pumpAndSettle();
+  } else {
+    // Tap the Game toolbar item to open the game options modal.
+    await tapToolbarItem(tester, 'play_area_toolbar_item_game');
+
+    // Tap the New Game option.
+    final Finder newGameOption = find.byKey(const Key('new_game_option'));
+    expect(
+      newGameOption,
+      findsOneWidget,
+      reason: 'New Game option should exist',
+    );
+    await tester.tap(newGameOption);
+    await tester.pumpAndSettle();
+  }
 
   // If the restart confirmation dialog appears, tap Yes
   final Finder yesButton = find.byKey(const Key('restart_game_yes_button'));

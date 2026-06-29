@@ -97,6 +97,73 @@ void main() {
       findsNothing,
     );
   });
+
+  testWidgets('human vs ai uses lichess-style bottom toolbar', (
+    WidgetTester tester,
+  ) async {
+    db.generalSettings = const GeneralSettings();
+    db.displaySettings = const DisplaySettings();
+    GameController().gameInstance.gameMode = GameMode.humanVsAi;
+
+    await tester.binding.setSurfaceSize(const Size(390, 844));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+
+    await tester.pumpWidget(
+      _localizedApp(
+        const Scaffold(
+          body: PlayArea(
+            boardImage: null,
+            child: SizedBox.square(
+              key: Key('test_board_square'),
+              dimension: 390,
+            ),
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.byKey(const Key('play_area_lichess_bottom_bar')), findsOne);
+    expect(find.byKey(const Key('play_area_bottom_bar_menu')), findsOne);
+    expect(find.byKey(const Key('play_area_bottom_bar_resign')), findsOne);
+    expect(find.byKey(const Key('play_area_bottom_bar_take_back')), findsOne);
+    expect(find.byKey(const Key('play_area_bottom_bar_hint')), findsOne);
+    expect(find.byKey(const Key('play_area_main_toolbar')), findsNothing);
+    expect(
+      find.byKey(const Key('play_area_main_toolbar_bottom')),
+      findsNothing,
+    );
+    expect(
+      find.byKey(const Key('play_area_history_nav_toolbar')),
+      findsNothing,
+    );
+    expect(
+      find.byKey(const Key('play_area_history_nav_toolbar_bottom')),
+      findsNothing,
+    );
+    expect(find.byKey(const Key('play_area_toolbar_item_info')), findsNothing);
+
+    RotatedBox boardOrientation = tester.widget<RotatedBox>(
+      find.byKey(const Key('play_area_board_orientation')),
+    );
+    expect(boardOrientation.quarterTurns, 0);
+
+    await tester.tap(find.byKey(const Key('play_area_bottom_bar_menu')));
+    await tester.pumpAndSettle();
+
+    expect(find.byKey(const Key('play_area_game_menu_sheet')), findsOne);
+    expect(find.byKey(const Key('play_area_game_menu_flip_board')), findsOne);
+    expect(find.byKey(const Key('play_area_game_menu_analysis')), findsOne);
+    expect(find.byKey(const Key('play_area_game_menu_new_game')), findsOne);
+
+    await tester.tap(find.byKey(const Key('play_area_game_menu_flip_board')));
+    await tester.pumpAndSettle();
+
+    boardOrientation = tester.widget<RotatedBox>(
+      find.byKey(const Key('play_area_board_orientation')),
+    );
+    expect(boardOrientation.quarterTurns, 2);
+  });
 }
 
 Widget _localizedApp(Widget child) => MaterialApp(

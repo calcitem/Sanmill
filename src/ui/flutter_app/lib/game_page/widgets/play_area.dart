@@ -15,6 +15,8 @@ import '../../shared/config/constants.dart';
 import '../../shared/database/database.dart';
 import '../../shared/services/screenshot_service.dart';
 import '../../shared/themes/app_theme.dart';
+import '../services/analysis/analysis_service.dart';
+import '../services/analysis_mode.dart';
 import '../services/mill.dart';
 import '../services/painters/advantage_graph_painter.dart';
 import 'game_page.dart';
@@ -47,6 +49,8 @@ class PlayArea extends StatefulWidget {
 class PlayAreaState extends State<PlayArea> {
   /// A list to store historical advantage values for the advantage chart.
   List<int> advantageData = <int>[];
+
+  bool _isBoardFlipped = false;
 
   @override
   void initState() {
@@ -208,6 +212,152 @@ class PlayAreaState extends State<PlayArea> {
   /// Opens a dialog with the provided [dialog] widget.
   void _openDialog(BuildContext context, Widget dialog) {
     showDialog(context: context, builder: (_) => dialog);
+  }
+
+  bool get _usesLichessHumanAiToolbar =>
+      GameController().gameInstance.gameMode == GameMode.humanVsAi;
+
+  bool get _canResignFromBottomBar {
+    final Phase phase = GameController().activeBoardView.phase;
+    return _usesLichessHumanAiToolbar &&
+        phase != Phase.ready &&
+        phase != Phase.gameOver;
+  }
+
+  bool get _canTakeBackFromBottomBar {
+    return _usesLichessHumanAiToolbar &&
+        GameController().gameRecorder.mainlineMoves.isNotEmpty &&
+        !GameController().isEngineRunning;
+  }
+
+  bool get _canToggleHintFromBottomBar {
+    final Phase phase = GameController().activeBoardView.phase;
+    return _usesLichessHumanAiToolbar &&
+        phase != Phase.gameOver &&
+        !AnalysisMode.isAnalyzing;
+  }
+
+  void _toggleBoardFlipped(BuildContext context) {
+    assert(_usesLichessHumanAiToolbar);
+    setState(() {
+      _isBoardFlipped = !_isBoardFlipped;
+    });
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text(S.of(context).flipBoard)));
+  }
+
+  Future<void> _toggleAnalysisFromBottomBar(
+    BuildContext context, {
+    required String source,
+  }) async {
+    assert(_usesLichessHumanAiToolbar);
+    RecordingService().recordEvent(
+      RecordingEventType.toolbarAction,
+      <String, dynamic>{'toolbar': 'lichessBottom', 'action': source},
+    );
+    await AnalysisService.toggle(context);
+  }
+
+  Future<void> _showResignConfirmation(BuildContext context) async {
+    assert(_usesLichessHumanAiToolbar);
+    final bool? confirmed = await showDialog<bool>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext dialogContext) {
+        return AlertDialog(
+          title: Text(S.of(dialogContext).confirmResignation),
+          content: Text(S.of(dialogContext).areYouSureYouWantToResignThisGame),
+          actions: <Widget>[
+            TextButton(
+              key: const Key('play_area_resign_cancel_button'),
+              onPressed: () => Navigator.of(dialogContext).pop(false),
+              child: Text(S.of(dialogContext).cancel),
+            ),
+            TextButton(
+              key: const Key('play_area_resign_confirm_button'),
+              onPressed: () => Navigator.of(dialogContext).pop(true),
+              child: Text(S.of(dialogContext).resign),
+            ),
+          ],
+        );
+      },
+    );
+    if (confirmed != true || !mounted) {
+      return;
+    }
+    RecordingService().recordEvent(
+      RecordingEventType.toolbarAction,
+      <String, dynamic>{'toolbar': 'lichessBottom', 'action': 'resign'},
+    );
+    GameController().requestResignation();
+  }
+
+  Future<void> _takeBackFromBottomBar(BuildContext context) async {
+    assert(_usesLichessHumanAiToolbar);
+    RecordingService().recordEvent(
+      RecordingEventType.toolbarAction,
+      <String, dynamic>{'toolbar': 'lichessBottom', 'action': 'takeBack'},
+    );
+    await HistoryNavigator.takeBack(context, pop: false, toolbar: true);
+  }
+
+  Future<void> _requestNewGameFromBottomBar(BuildContext context) async {
+    assert(_usesLichessHumanAiToolbar);
+    RecordingService().recordEvent(
+      RecordingEventType.toolbarAction,
+      <String, dynamic>{'toolbar': 'lichessBottom', 'action': 'newGame'},
+    );
+    await GameOptionsModal.requestNewGame(context);
+  }
+
+  void _showHumanAiGameMenu(BuildContext context) {
+    assert(_usesLichessHumanAiToolbar);
+    showModalBottomSheet<void>(
+      context: context,
+      showDragHandle: true,
+      backgroundColor: Theme.of(context).colorScheme.surface,
+      builder: (BuildContext sheetContext) {
+        return SafeArea(
+          key: const Key('play_area_game_menu_sheet'),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              _GameMenuActionTile(
+                key: const Key('play_area_game_menu_flip_board'),
+                icon: Icons.flip_camera_android_outlined,
+                label: S.of(sheetContext).flipBoard,
+                onTap: () {
+                  Navigator.of(sheetContext).pop();
+                  _toggleBoardFlipped(context);
+                },
+              ),
+              _GameMenuActionTile(
+                key: const Key('play_area_game_menu_analysis'),
+                icon: Icons.analytics_outlined,
+                label: S.of(sheetContext).analysis,
+                onTap: () async {
+                  Navigator.of(sheetContext).pop();
+                  await _toggleAnalysisFromBottomBar(
+                    context,
+                    source: 'analysis',
+                  );
+                },
+              ),
+              _GameMenuActionTile(
+                key: const Key('play_area_game_menu_new_game'),
+                icon: Icons.add_circle_outline,
+                label: S.of(sheetContext).newGame,
+                onTap: () async {
+                  Navigator.of(sheetContext).pop();
+                  await _requestNewGameFromBottomBar(context);
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 
   /// Builds a list of toolbar items by expanding each [ToolbarItem].
@@ -530,9 +680,6 @@ class PlayAreaState extends State<PlayArea> {
                 ? 1.0
                 : 0.65);
 
-        // Check if the user wants toolbars at the bottom.
-        final bool isToolbarAtBottom = DB().displaySettings.isToolbarAtBottom;
-
         // While editing a setup position the regular history / analysis /
         // main toolbars are replaced by the dedicated setup toolbar.
         final bool isSetupPosition =
@@ -542,6 +689,13 @@ class PlayAreaState extends State<PlayArea> {
         // interface clean; the PuzzlePage provides its own puzzle controls.
         final bool isPuzzle =
             GameController().gameInstance.gameMode == GameMode.puzzle;
+        final bool usesLichessHumanAiToolbar =
+            _usesLichessHumanAiToolbar && !isSetupPosition && !isPuzzle;
+
+        // Human vs AI mirrors the Lichess offline-computer screen: one
+        // bottom bar with menu, resign, takeback, and hint.
+        final bool isToolbarAtBottom =
+            DB().displaySettings.isToolbarAtBottom || usesLichessHumanAiToolbar;
         final Widget? humanDatabaseStatsStrip = _buildHumanDatabaseStatsStrip(
           context,
         );
@@ -582,7 +736,11 @@ class PlayAreaState extends State<PlayArea> {
                       key: const Key('play_area_game_board_container'),
                       alignment: Alignment.center,
                       // The 'child' from the constructor is the GameBoard:
-                      child: widget.child,
+                      child: RotatedBox(
+                        key: const Key('play_area_board_orientation'),
+                        quarterTurns: _isBoardFlipped ? 2 : 0,
+                        child: widget.child,
+                      ),
                     ),
                   ),
 
@@ -613,7 +771,8 @@ class PlayAreaState extends State<PlayArea> {
                   if (DB().displaySettings.isHistoryNavigationToolbarShown &&
                       !isToolbarAtBottom &&
                       !isSetupPosition &&
-                      !isPuzzle)
+                      !isPuzzle &&
+                      !usesLichessHumanAiToolbar)
                     GamePageToolbar(
                       key: const Key('play_area_history_nav_toolbar'),
                       backgroundColor:
@@ -636,7 +795,7 @@ class PlayAreaState extends State<PlayArea> {
                       const SetupPositionToolbar(
                         key: Key('play_area_setup_position_toolbar'),
                       )
-                    else if (!isPuzzle)
+                    else if (!isPuzzle && !usesLichessHumanAiToolbar)
                       GamePageToolbar(
                         key: const Key('play_area_main_toolbar'),
                         backgroundColor:
@@ -672,7 +831,8 @@ class PlayAreaState extends State<PlayArea> {
                   // History navigation toolbar if enabled
                   if (DB().displaySettings.isHistoryNavigationToolbarShown &&
                       !isSetupPosition &&
-                      !isPuzzle)
+                      !isPuzzle &&
+                      !usesLichessHumanAiToolbar)
                     GamePageToolbar(
                       key: const Key('play_area_history_nav_toolbar_bottom'),
                       backgroundColor:
@@ -685,7 +845,30 @@ class PlayAreaState extends State<PlayArea> {
                     ),
 
                   // Main toolbar (or setup-position toolbar)
-                  if (isSetupPosition)
+                  if (usesLichessHumanAiToolbar)
+                    ValueListenableBuilder<bool>(
+                      key: const Key('play_area_lichess_bottom_bar_builder'),
+                      valueListenable: AnalysisMode.stateNotifier,
+                      builder: (BuildContext context, _, _) {
+                        return _LichessGameBottomBar(
+                          onMenuPressed: () => _showHumanAiGameMenu(context),
+                          onResignPressed: _canResignFromBottomBar
+                              ? () => _showResignConfirmation(context)
+                              : null,
+                          onTakeBackPressed: _canTakeBackFromBottomBar
+                              ? () => _takeBackFromBottomBar(context)
+                              : null,
+                          onHintPressed: _canToggleHintFromBottomBar
+                              ? () => _toggleAnalysisFromBottomBar(
+                                  context,
+                                  source: 'hint',
+                                )
+                              : null,
+                          isHintHighlighted: AnalysisMode.isEnabled,
+                        );
+                      },
+                    )
+                  else if (isSetupPosition)
                     const SetupPositionToolbar(
                       key: Key('play_area_setup_position_toolbar_bottom'),
                     )
@@ -711,6 +894,130 @@ class PlayAreaState extends State<PlayArea> {
         // If toolbars are not at the bottom, return main content as is.
         return mainContent;
       },
+    );
+  }
+}
+
+class _LichessGameBottomBar extends StatelessWidget {
+  const _LichessGameBottomBar({
+    required this.onMenuPressed,
+    required this.onResignPressed,
+    required this.onTakeBackPressed,
+    required this.onHintPressed,
+    required this.isHintHighlighted,
+  });
+
+  final VoidCallback onMenuPressed;
+  final VoidCallback? onResignPressed;
+  final VoidCallback? onTakeBackPressed;
+  final VoidCallback? onHintPressed;
+  final bool isHintHighlighted;
+
+  @override
+  Widget build(BuildContext context) {
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+    return BottomAppBar(
+      key: const Key('play_area_lichess_bottom_bar'),
+      color: colorScheme.surface,
+      elevation: 3,
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      child: SizedBox(
+        height: 48,
+        child: Row(
+          children: <Widget>[
+            _LichessBottomBarButton(
+              key: const Key('play_area_bottom_bar_menu'),
+              icon: Icons.menu,
+              label: S.of(context).menu,
+              onPressed: onMenuPressed,
+            ),
+            _LichessBottomBarButton(
+              key: const Key('play_area_bottom_bar_resign'),
+              icon: Icons.outlined_flag,
+              label: S.of(context).resign,
+              onPressed: onResignPressed,
+            ),
+            _LichessBottomBarButton(
+              key: const Key('play_area_bottom_bar_take_back'),
+              icon: Icons.undo,
+              label: S.of(context).takeBack,
+              onPressed: onTakeBackPressed,
+            ),
+            _LichessBottomBarButton(
+              key: const Key('play_area_bottom_bar_hint'),
+              icon: Icons.lightbulb_outline,
+              label: S.of(context).hint,
+              onPressed: onHintPressed,
+              highlighted: isHintHighlighted,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _LichessBottomBarButton extends StatelessWidget {
+  const _LichessBottomBarButton({
+    super.key,
+    required this.icon,
+    required this.label,
+    required this.onPressed,
+    this.highlighted = false,
+  });
+
+  final IconData icon;
+  final String label;
+  final VoidCallback? onPressed;
+  final bool highlighted;
+
+  @override
+  Widget build(BuildContext context) {
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+    final Color enabledColor = highlighted
+        ? colorScheme.primary
+        : colorScheme.onSurfaceVariant;
+    final Color iconColor = onPressed == null
+        ? colorScheme.onSurface.withValues(alpha: 0.38)
+        : enabledColor;
+
+    return Expanded(
+      child: Tooltip(
+        message: label,
+        child: Semantics(
+          button: true,
+          enabled: onPressed != null,
+          label: label,
+          child: IconButton(
+            onPressed: onPressed,
+            icon: Icon(icon),
+            color: iconColor,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _GameMenuActionTile extends StatelessWidget {
+  const _GameMenuActionTile({
+    super.key,
+    required this.icon,
+    required this.label,
+    required this.onTap,
+  });
+
+  final IconData icon;
+  final String label;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+    return ListTile(
+      leading: Icon(icon, color: colorScheme.onSurfaceVariant),
+      title: Text(label),
+      onTap: onTap,
     );
   }
 }
