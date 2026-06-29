@@ -56,6 +56,21 @@ enum SanmillShellTab {
   IconData get icon {
     switch (this) {
       case SanmillShellTab.home:
+        return Icons.home_outlined;
+      case SanmillShellTab.puzzles:
+        return Icons.extension_outlined;
+      case SanmillShellTab.learn:
+        return Icons.school_outlined;
+      case SanmillShellTab.watch:
+        return Icons.live_tv_outlined;
+      case SanmillShellTab.more:
+        return Icons.menu;
+    }
+  }
+
+  IconData get selectedIcon {
+    switch (this) {
+      case SanmillShellTab.home:
         return Icons.home_rounded;
       case SanmillShellTab.puzzles:
         return Icons.extension_rounded;
@@ -594,7 +609,7 @@ class SanmillAppShellState extends State<SanmillAppShell> {
               NavigationDestination(
                 key: tab.key,
                 icon: Icon(tab.icon),
-                selectedIcon: Icon(tab.icon),
+                selectedIcon: Icon(tab.selectedIcon),
                 label: tab.label(strings),
               ),
           ],

@@ -170,7 +170,7 @@ void main() {
           .widget<NavigationDestination>(
             find.byKey(const Key('sanmill_tab_watch')),
           );
-      expect((watchDestination.icon as Icon).icon, Icons.live_tv_rounded);
+      expect((watchDestination.icon as Icon).icon, Icons.live_tv_outlined);
       expect(watchDestination.selectedIcon, isA<Icon>());
       expect(
         (watchDestination.selectedIcon! as Icon).icon,
