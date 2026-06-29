@@ -600,6 +600,51 @@ void main() {
     expect(find.byKey(const Key('play_area_human_ai_player_panel')), findsOne);
   });
 
+  testWidgets('human vs ai move list uses a horizontal lichess layout', (
+    WidgetTester tester,
+  ) async {
+    db.generalSettings = const GeneralSettings();
+    db.displaySettings = const DisplaySettings();
+    final GameController controller = GameController();
+    controller.gameInstance.gameMode = GameMode.humanVsAi;
+    controller.gameRecorder.appendMove(ExtMove('d6', side: PieceColor.white));
+    controller.gameRecorder.appendMove(ExtMove('f4', side: PieceColor.black));
+
+    await tester.binding.setSurfaceSize(const Size(390, 844));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+
+    await tester.pumpWidget(
+      _localizedApp(
+        const Scaffold(
+          body: PlayArea(
+            boardImage: null,
+            child: SizedBox.square(
+              key: Key('test_board_square'),
+              dimension: 390,
+            ),
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(
+      find.byKey(const Key('play_area_human_ai_move_list_wrap')),
+      findsOneWidget,
+    );
+    expect(
+      find.byKey(const Key('play_area_inline_move_list_scroll_view')),
+      findsOneWidget,
+    );
+    final SingleChildScrollView moveListScrollView = tester
+        .widget<SingleChildScrollView>(
+          find.byKey(const Key('play_area_inline_move_list_scroll_view')),
+        );
+    expect(moveListScrollView.scrollDirection, Axis.horizontal);
+    expect(find.byKey(const Key('play_area_human_ai_move_1')), findsOneWidget);
+    expect(find.byKey(const Key('play_area_human_ai_move_2')), findsOneWidget);
+  });
+
   testWidgets('human vs ai robot panel follows engine activity', (
     WidgetTester tester,
   ) async {

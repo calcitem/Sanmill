@@ -999,6 +999,7 @@ class PlayAreaState extends State<PlayArea> {
                 key: Key('play_area_human_ai_move_list'),
                 wrapKey: Key('play_area_human_ai_move_list_wrap'),
                 moveKeyPrefix: 'play_area_human_ai_move_',
+                layout: _InlineMoveListLayout.horizontal,
               ),
               const _HumanAiPlayerPanel(
                 key: Key('play_area_human_ai_robot_panel'),
@@ -1247,6 +1248,7 @@ class _InlineMoveList extends StatelessWidget {
     required this.moveKeyPrefix,
     this.onMoveTap,
     this.showMovePreview = false,
+    this.layout = _InlineMoveListLayout.wrap,
   });
 
   final Key wrapKey;
@@ -1254,6 +1256,7 @@ class _InlineMoveList extends StatelessWidget {
   final Future<void> Function(BuildContext context, PgnNode<ExtMove> node)?
   onMoveTap;
   final bool showMovePreview;
+  final _InlineMoveListLayout layout;
 
   List<PgnNode<ExtMove>> _currentPathNodes() {
     final List<PgnNode<ExtMove>> nodes = <PgnNode<ExtMove>>[];
@@ -1280,35 +1283,74 @@ class _InlineMoveList extends StatelessWidget {
         return Container(
           key: wrapKey,
           width: double.infinity,
-          constraints: const BoxConstraints(minHeight: 40),
-          padding: const EdgeInsets.fromLTRB(12, 6, 12, 4),
+          constraints: layout == _InlineMoveListLayout.horizontal
+              ? const BoxConstraints.tightFor(height: 40)
+              : const BoxConstraints(minHeight: 40),
+          padding: layout == _InlineMoveListLayout.horizontal
+              ? const EdgeInsets.only(left: 5)
+              : const EdgeInsets.fromLTRB(12, 6, 12, 4),
           child: nodes.isEmpty
               ? const SizedBox(height: 30)
-              : Wrap(
-                  spacing: 4,
-                  runSpacing: 4,
-                  children: <Widget>[
-                    for (int i = 0; i < nodes.length; i++)
-                      _GameMoveChip(
-                        key: Key('$moveKeyPrefix${i + 1}'),
-                        label: '${i + 1}. ${nodes[i].data!.notation}',
-                        selected: nodes[i] == activeNode,
-                        selectedColor: colorScheme.primaryContainer,
-                        selectedTextColor: colorScheme.onPrimaryContainer,
-                        textStyle: theme.textTheme.bodySmall,
-                        onTap: onMoveTap == null
-                            ? null
-                            : () => unawaited(onMoveTap!(context, nodes[i])),
-                        onLongPress:
-                            showMovePreview && _hasPreviewBoard(nodes[i])
-                            ? () => _showMovePreview(context, nodes[i], i + 1)
-                            : null,
-                      ),
-                  ],
+              : _buildMoves(
+                  context: context,
+                  nodes: nodes,
+                  activeNode: activeNode,
+                  colorScheme: colorScheme,
+                  textStyle: theme.textTheme.bodySmall,
                 ),
         );
       },
     );
+  }
+
+  Widget _buildMoves({
+    required BuildContext context,
+    required List<PgnNode<ExtMove>> nodes,
+    required PgnNode<ExtMove>? activeNode,
+    required ColorScheme colorScheme,
+    required TextStyle? textStyle,
+  }) {
+    final List<Widget> chips = <Widget>[
+      for (int i = 0; i < nodes.length; i++)
+        _GameMoveChip(
+          key: Key('$moveKeyPrefix${i + 1}'),
+          label: '${i + 1}. ${nodes[i].data!.notation}',
+          selected: nodes[i] == activeNode,
+          selectedColor: colorScheme.primaryContainer,
+          selectedTextColor: colorScheme.onPrimaryContainer,
+          textStyle: textStyle,
+          onTap: onMoveTap == null
+              ? null
+              : () => unawaited(onMoveTap!(context, nodes[i])),
+          onLongPress: showMovePreview && _hasPreviewBoard(nodes[i])
+              ? () => _showMovePreview(context, nodes[i], i + 1)
+              : null,
+        ),
+    ];
+
+    return switch (layout) {
+      _InlineMoveListLayout.wrap => Wrap(
+        spacing: 4,
+        runSpacing: 4,
+        children: chips,
+      ),
+      _InlineMoveListLayout.horizontal => SingleChildScrollView(
+        key: const Key('play_area_inline_move_list_scroll_view'),
+        scrollDirection: Axis.horizontal,
+        child: Row(children: _spaceMoveChips(chips)),
+      ),
+    };
+  }
+
+  List<Widget> _spaceMoveChips(List<Widget> chips) {
+    final List<Widget> spaced = <Widget>[];
+    for (int i = 0; i < chips.length; i++) {
+      if (i > 0) {
+        spaced.add(const SizedBox(width: 10));
+      }
+      spaced.add(chips[i]);
+    }
+    return spaced;
   }
 
   bool _hasPreviewBoard(PgnNode<ExtMove> node) {
@@ -1400,6 +1442,8 @@ class _InlineMoveList extends StatelessWidget {
     );
   }
 }
+
+enum _InlineMoveListLayout { wrap, horizontal }
 
 class _GameMoveChip extends StatelessWidget {
   const _GameMoveChip({
