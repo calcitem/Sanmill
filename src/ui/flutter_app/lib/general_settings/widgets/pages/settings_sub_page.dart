@@ -131,39 +131,17 @@ class _SettingsSubPageScaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder<Box<ColorSettings>>(
-      valueListenable: DB().listenColorSettings,
-      builder: (BuildContext context, Box<ColorSettings> box, Widget? child) {
-        final ThemeData settingsTheme = Theme.of(context);
-        final bool useDarkSettingsUi =
-            settingsTheme.brightness == Brightness.dark;
-
-        final Widget page = BlockSemantics(
-          key: pageKey,
-          child: Scaffold(
-            resizeToAvoidBottomInset: false,
-            backgroundColor: useDarkSettingsUi
-                ? settingsTheme.scaffoldBackgroundColor
-                : AppTheme.lightBackgroundColor,
-            appBar: AppBar(
-              title: Text(
-                titleBuilder(S.of(context)),
-                style: useDarkSettingsUi
-                    ? null
-                    : AppTheme.appBarTheme.titleTextStyle,
-              ),
-            ),
-            body: ValueListenableBuilder<Box<GeneralSettings>>(
-              valueListenable: DB().listenGeneralSettings,
-              builder: settingsBuilder,
-            ),
-          ),
-        );
-
-        return useDarkSettingsUi
-            ? Theme(data: settingsTheme, child: page)
-            : page;
-      },
+    return BlockSemantics(
+      key: pageKey,
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        backgroundColor: Theme.of(context).colorScheme.surface,
+        appBar: AppBar(title: Text(titleBuilder(S.of(context)))),
+        body: ValueListenableBuilder<Box<GeneralSettings>>(
+          valueListenable: DB().listenGeneralSettings,
+          builder: settingsBuilder,
+        ),
+      ),
     );
   }
 }

@@ -14,7 +14,6 @@ import 'package:hive_ce_flutter/hive_flutter.dart' show Box;
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 
-import '../../appearance_settings/models/color_settings.dart';
 import '../../game_page/services/gif_share/gif_share.dart';
 import '../../game_page/services/mill.dart';
 import '../../generated/intl/l10n.dart';

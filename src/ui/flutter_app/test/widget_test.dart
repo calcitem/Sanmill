@@ -12,11 +12,13 @@ import 'package:sanmill/app_shell/sanmill_app_shell.dart';
 import 'package:sanmill/game_platform/game_registry.dart';
 import 'package:sanmill/game_shell/shell_route_ids.dart';
 import 'package:sanmill/games/built_in_game_modules.dart';
+import 'package:sanmill/general_settings/widgets/developer_options_page.dart';
 import 'package:sanmill/generated/intl/l10n.dart';
 import 'package:sanmill/main.dart';
 import 'package:sanmill/shared/database/database.dart';
 import 'package:sanmill/shared/services/environment_config.dart';
 import 'package:sanmill/shared/services/system_ui_service.dart';
+import 'package:sanmill/shared/utils/localizations/sanmill_localizations.dart';
 
 import 'helpers/test_native_library.dart';
 
@@ -225,6 +227,41 @@ void main() {
         ShellRouteIds.appGeneralSettings.value,
       );
 
+      await tester.ensureVisible(
+        find.byKey(
+          const Key(
+            'general_settings_page_settings_card_ais_play_style_advanced_search',
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+      await tester.tap(
+        find.byKey(
+          const Key(
+            'general_settings_page_settings_card_ais_play_style_advanced_search',
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      final Finder advancedAiScaffoldFinder = find.descendant(
+        of: find.byKey(const Key('advanced_ai_search_page')),
+        matching: find.byType(Scaffold),
+      );
+      final BuildContext advancedAiContext = tester.element(
+        advancedAiScaffoldFinder,
+      );
+      final Scaffold advancedAiScaffold = tester.widget<Scaffold>(
+        advancedAiScaffoldFinder,
+      );
+      expect(
+        advancedAiScaffold.backgroundColor,
+        Theme.of(advancedAiContext).colorScheme.surface,
+      );
+
+      await tester.binding.handlePopRoute();
+      await tester.pumpAndSettle();
+
       await tester.binding.handlePopRoute();
       await tester.pumpAndSettle();
 
@@ -266,6 +303,35 @@ void main() {
 
       expect(shellState.debugCurrentTab, SanmillShellTab.home);
       expect(shellState.debugCurrentRouteId, shellState.debugPlayRouteId);
+
+      // Drain any settings-save debounce timer (see the smoke test above).
+      await tester.pump(const Duration(milliseconds: 350));
+    },
+    skip: nativeLibrarySkipReason() != null,
+  );
+
+  testWidgets(
+    'Developer options use the themed settings surface',
+    (WidgetTester tester) async {
+      await tester.pumpWidget(
+        const MaterialApp(
+          localizationsDelegates: sanmillLocalizationsDelegates,
+          supportedLocales: S.supportedLocales,
+          home: DeveloperOptionsPage(),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      final BuildContext developerOptionsContext = tester.element(
+        find.byKey(const Key('developer_options_page_scaffold')),
+      );
+      final Scaffold developerOptionsScaffold = tester.widget<Scaffold>(
+        find.byKey(const Key('developer_options_page_scaffold')),
+      );
+      expect(
+        developerOptionsScaffold.backgroundColor,
+        Theme.of(developerOptionsContext).colorScheme.surface,
+      );
 
       // Drain any settings-save debounce timer (see the smoke test above).
       await tester.pump(const Duration(milliseconds: 350));
