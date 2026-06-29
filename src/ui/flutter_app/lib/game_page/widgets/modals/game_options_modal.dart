@@ -458,6 +458,69 @@ class _HumanAiNewGameSheetState extends State<_HumanAiNewGameSheet> {
     Navigator.of(context).pop();
   }
 
+  String _sideChoiceLabel(BuildContext context, _HumanAiSideChoice choice) {
+    return switch (choice) {
+      _HumanAiSideChoice.white => S.of(context).white,
+      _HumanAiSideChoice.random => S.of(context).randomColor,
+      _HumanAiSideChoice.black => S.of(context).black,
+    };
+  }
+
+  IconData _sideChoiceIcon(_HumanAiSideChoice choice) {
+    return switch (choice) {
+      _HumanAiSideChoice.white => Icons.person_outline_rounded,
+      _HumanAiSideChoice.random => Icons.shuffle_rounded,
+      _HumanAiSideChoice.black => Icons.smart_toy_outlined,
+    };
+  }
+
+  Future<void> _showSidePicker(BuildContext context) async {
+    final _HumanAiSideChoice? selected =
+        await showModalBottomSheet<_HumanAiSideChoice>(
+          context: context,
+          useSafeArea: true,
+          showDragHandle: true,
+          builder: (BuildContext context) {
+            final ColorScheme colorScheme = Theme.of(context).colorScheme;
+
+            return SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: AppStyles.bodyPadding),
+                child: LichessListSection(
+                  header: Text(S.of(context).side),
+                  children: <Widget>[
+                    for (final _HumanAiSideChoice choice
+                        in _HumanAiSideChoice.values)
+                      ListTile(
+                        key: Key('human_ai_new_game_sheet_side_${choice.name}'),
+                        leading: Icon(_sideChoiceIcon(choice)),
+                        title: Text(_sideChoiceLabel(context, choice)),
+                        trailing: choice == _sideChoice
+                            ? Icon(
+                                Icons.check_rounded,
+                                color: colorScheme.primary,
+                              )
+                            : null,
+                        selected: choice == _sideChoice,
+                        selectedColor: colorScheme.primary,
+                        onTap: () => Navigator.of(context).pop(choice),
+                      ),
+                  ],
+                ),
+              ),
+            );
+          },
+        );
+
+    if (!mounted || selected == null) {
+      return;
+    }
+
+    setState(() {
+      _sideChoice = selected;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
@@ -507,8 +570,7 @@ class _HumanAiNewGameSheetState extends State<_HumanAiNewGameSheet> {
                 Padding(
                   padding: const EdgeInsets.fromLTRB(16, 12, 16, 4),
                   child: _SheetValueHeader(
-                    title: S.of(context).skillLevel,
-                    value: _skillLevel.toString(),
+                    title: S.of(context).humanAiRobotLevel(_skillLevel),
                     valueStyle: valueStyle,
                   ),
                 ),
@@ -525,6 +587,19 @@ class _HumanAiNewGameSheetState extends State<_HumanAiNewGameSheet> {
                     });
                   },
                 ),
+                _SheetOptionTile(
+                  key: const Key('human_ai_new_game_sheet_side_picker'),
+                  title: S.of(context).side,
+                  value: _sideChoiceLabel(context, _sideChoice),
+                  leadingIcon: _sideChoiceIcon(_sideChoice),
+                  onTap: () => _showSidePicker(context),
+                ),
+              ],
+            ),
+            LichessListSection(
+              header: Text(S.of(context).advanced),
+              hasLeading: false,
+              children: <Widget>[
                 Padding(
                   padding: const EdgeInsets.fromLTRB(16, 12, 16, 4),
                   child: _SheetValueHeader(
@@ -545,76 +620,6 @@ class _HumanAiNewGameSheetState extends State<_HumanAiNewGameSheet> {
                     });
                   },
                 ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(16, 12, 16, 16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                        S.of(context).side,
-                        style: theme.textTheme.bodyLarge,
-                      ),
-                      const SizedBox(height: 8),
-                      LayoutBuilder(
-                        builder:
-                            (BuildContext context, BoxConstraints constraints) {
-                              return ConstrainedBox(
-                                constraints: BoxConstraints(
-                                  maxWidth: constraints.maxWidth,
-                                ),
-                                child: FittedBox(
-                                  fit: BoxFit.scaleDown,
-                                  alignment: AlignmentDirectional.centerStart,
-                                  child: SegmentedButton<_HumanAiSideChoice>(
-                                    key: const Key(
-                                      'human_ai_new_game_sheet_side_picker',
-                                    ),
-                                    segments:
-                                        <ButtonSegment<_HumanAiSideChoice>>[
-                                          ButtonSegment<_HumanAiSideChoice>(
-                                            value: _HumanAiSideChoice.white,
-                                            icon: const Icon(
-                                              Icons.person_outline,
-                                            ),
-                                            label: Text(S.of(context).white),
-                                          ),
-                                          ButtonSegment<_HumanAiSideChoice>(
-                                            value: _HumanAiSideChoice.random,
-                                            icon: const Icon(
-                                              Icons.shuffle_rounded,
-                                            ),
-                                            label: Text(
-                                              S.of(context).randomColor,
-                                            ),
-                                          ),
-                                          ButtonSegment<_HumanAiSideChoice>(
-                                            value: _HumanAiSideChoice.black,
-                                            icon: const Icon(
-                                              Icons.person_outline,
-                                            ),
-                                            label: Text(S.of(context).black),
-                                          ),
-                                        ],
-                                    selected: <_HumanAiSideChoice>{_sideChoice},
-                                    showSelectedIcon: false,
-                                    onSelectionChanged:
-                                        (Set<_HumanAiSideChoice> selection) {
-                                          assert(
-                                            selection.length == 1,
-                                            'Human side picker must have exactly one value.',
-                                          );
-                                          setState(() {
-                                            _sideChoice = selection.single;
-                                          });
-                                        },
-                                  ),
-                                ),
-                              );
-                            },
-                      ),
-                    ],
-                  ),
-                ),
               ],
             ),
             Padding(
@@ -624,7 +629,7 @@ class _HumanAiNewGameSheetState extends State<_HumanAiNewGameSheet> {
               child: FilledButton(
                 key: const Key('human_ai_new_game_sheet_start'),
                 onPressed: () => _startNewGame(context),
-                child: Text(S.of(context).newGame),
+                child: Text(S.of(context).play),
               ),
             ),
           ],
@@ -637,12 +642,12 @@ class _HumanAiNewGameSheetState extends State<_HumanAiNewGameSheet> {
 class _SheetValueHeader extends StatelessWidget {
   const _SheetValueHeader({
     required this.title,
-    required this.value,
     required this.valueStyle,
+    this.value,
   });
 
   final String title;
-  final String value;
+  final String? value;
   final TextStyle valueStyle;
 
   @override
@@ -652,8 +657,64 @@ class _SheetValueHeader extends StatelessWidget {
         Expanded(
           child: Text(title, style: Theme.of(context).textTheme.bodyLarge),
         ),
-        Text(value, style: valueStyle),
+        if (value != null) Text(value!, style: valueStyle),
       ],
+    );
+  }
+}
+
+class _SheetOptionTile extends StatelessWidget {
+  const _SheetOptionTile({
+    super.key,
+    required this.title,
+    required this.value,
+    required this.leadingIcon,
+    required this.onTap,
+  });
+
+  final String title;
+  final String value;
+  final IconData leadingIcon;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+    final ColorScheme colorScheme = theme.colorScheme;
+
+    return ListTile(
+      leading: Icon(leadingIcon),
+      title: Text(title, style: theme.textTheme.bodyLarge),
+      trailing: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          ConstrainedBox(
+            constraints: BoxConstraints(
+              maxWidth: MediaQuery.sizeOf(context).width * 0.32,
+            ),
+            child: Text(
+              value,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: colorScheme.onSurfaceVariant.withValues(
+                  alpha: AppStyles.subtitleOpacity,
+                ),
+                letterSpacing: 0,
+              ),
+            ),
+          ),
+          const SizedBox(width: 4),
+          Icon(
+            Icons.chevron_right_rounded,
+            size: 20,
+            color: colorScheme.onSurfaceVariant.withValues(
+              alpha: AppStyles.subtitleOpacity,
+            ),
+          ),
+        ],
+      ),
+      onTap: onTap,
     );
   }
 }
