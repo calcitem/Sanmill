@@ -1217,6 +1217,7 @@ void main() {
         find.byKey(const Key('setup_position_action_sheet')),
         findsOneWidget,
       );
+      expect(find.text('Board editor'), findsOneWidget);
       expect(
         find.byKey(const Key('setup_placed_count_button')),
         findsOneWidget,

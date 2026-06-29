@@ -287,7 +287,7 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
       showLichessActionSheet<void>(
         context: context,
         sheetKey: const Key('setup_position_action_sheet'),
-        title: Text(S.of(context).setupPosition),
+        title: Text(S.of(context).boardEditor),
         actions: <LichessActionSheetAction>[
           LichessActionSheetAction(
             key: const Key('setup_placed_count_button'),

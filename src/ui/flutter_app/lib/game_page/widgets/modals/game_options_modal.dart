@@ -175,14 +175,14 @@ class GameOptionsModal extends StatelessWidget {
               GameController().loadedGameFilenamePrefix = null;
               GameController().enterSetupPosition();
               GameController().headerTipNotifier.showTip(
-                S.of(context).setupPosition,
+                S.of(context).boardEditor,
                 snackBar: false,
               );
               Navigator.of(context).pop();
             },
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 2.0),
-              child: Text(S.of(context).setupPosition),
+              child: Text(S.of(context).boardEditor),
             ),
           ),
         if (GameController().activeNativeMillSession != null)
