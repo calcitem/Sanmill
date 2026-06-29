@@ -781,12 +781,12 @@ class _OpeningMoveTile extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
           child: Row(
             children: <Widget>[
-              Expanded(flex: 34, child: _MoveCell(move: move)),
+              Expanded(flex: 20, child: _MoveCell(move: move)),
               const SizedBox(width: 8),
-              SizedBox(width: 104, child: _MoveGamesCell(move: move)),
+              Expanded(flex: 35, child: _MoveGamesCell(move: move)),
               const SizedBox(width: 8),
               Expanded(
-                flex: 42,
+                flex: 45,
                 child: move.humanStats == null
                     ? Text(
                         _sourceOnlySubtitle(strings, move),
@@ -839,21 +839,20 @@ class _OpeningExplorerMovesHeader extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         child: Row(
           children: <Widget>[
-            Expanded(flex: 34, child: Text(strings.move, style: style)),
+            Expanded(flex: 20, child: Text(strings.move, style: style)),
             const SizedBox(width: 8),
-            SizedBox(
-              width: 104,
+            Expanded(
+              flex: 35,
               child: Text(
                 strings.openingExplorerGames,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: style,
-                textAlign: TextAlign.end,
               ),
             ),
             const SizedBox(width: 8),
             Expanded(
-              flex: 42,
+              flex: 45,
               child: Text(
                 '${strings.wins} / ${strings.draws} / ${strings.losses}',
                 maxLines: 1,
@@ -926,20 +925,21 @@ class _MoveGamesCell extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _HumanMoveStats? stats = move.humanStats;
-    final String text = stats == null
-        ? '-'
-        : _formatExplorerGamesText(
-            games: stats.total,
-            percent: move.gamesPercent,
-          );
-    return Text(
-      text,
-      maxLines: 1,
-      overflow: TextOverflow.ellipsis,
-      textAlign: TextAlign.end,
-      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-        fontFeatures: const <FontFeature>[FontFeature.tabularFigures()],
-        letterSpacing: 0,
+    final String text = _formatExplorerGamesText(
+      games: stats?.total ?? 0,
+      percent: stats == null ? 0 : move.gamesPercent,
+    );
+    final TextStyle? style = Theme.of(context).textTheme.bodySmall?.copyWith(
+      fontFeatures: const <FontFeature>[FontFeature.tabularFigures()],
+      letterSpacing: 0,
+    );
+
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: FittedBox(
+        fit: BoxFit.scaleDown,
+        alignment: Alignment.centerLeft,
+        child: Text(text, maxLines: 1, style: style),
       ),
     );
   }
@@ -977,7 +977,7 @@ class _OpeningExplorerTotalTile extends StatelessWidget {
         child: Row(
           children: <Widget>[
             Expanded(
-              flex: 34,
+              flex: 20,
               child: Icon(
                 Icons.functions,
                 size: 18,
@@ -985,18 +985,23 @@ class _OpeningExplorerTotalTile extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 8),
-            SizedBox(
-              width: 104,
-              child: Text(
-                _formatExplorerGamesText(games: stats.total, percent: 100),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                textAlign: TextAlign.end,
-                style: textStyle,
+            Expanded(
+              flex: 35,
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: FittedBox(
+                  fit: BoxFit.scaleDown,
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    _formatExplorerGamesText(games: stats.total, percent: 100),
+                    maxLines: 1,
+                    style: textStyle,
+                  ),
+                ),
               ),
             ),
             const SizedBox(width: 8),
-            Expanded(flex: 42, child: _HumanStatsBar(stats: stats)),
+            Expanded(flex: 45, child: _HumanStatsBar(stats: stats)),
           ],
         ),
       ),
@@ -1058,24 +1063,30 @@ class _HumanStatsBar extends StatelessWidget {
         height: 20,
         child: Row(
           children: <Widget>[
-            _HumanStatsBarSegment(
-              count: stats.wins,
-              total: total,
-              color: _explorerWinBoxColor(context),
-              textColor: Colors.black,
-            ),
-            _HumanStatsBarSegment(
-              count: stats.draws,
-              total: total,
-              color: Colors.grey,
-              textColor: Colors.white,
-            ),
-            _HumanStatsBarSegment(
-              count: stats.losses,
-              total: total,
-              color: _explorerLossBoxColor(context),
-              textColor: Colors.white,
-            ),
+            if (stats.wins > 0)
+              _HumanStatsBarSegment(
+                count: stats.wins,
+                total: total,
+                flex: _explorerBarFlex(stats.wins, total),
+                color: _explorerWinBoxColor(context),
+                textColor: Colors.black,
+              ),
+            if (stats.draws > 0)
+              _HumanStatsBarSegment(
+                count: stats.draws,
+                total: total,
+                flex: _explorerBarFlex(stats.draws, total),
+                color: Colors.grey,
+                textColor: Colors.white,
+              ),
+            if (stats.losses > 0)
+              _HumanStatsBarSegment(
+                count: stats.losses,
+                total: total,
+                flex: _explorerBarFlex(stats.losses, total),
+                color: _explorerLossBoxColor(context),
+                textColor: Colors.white,
+              ),
           ],
         ),
       ),
@@ -1106,16 +1117,25 @@ String _formatExplorerGamesText({required int games, required int percent}) {
   return '${_formatExplorerSampleCount(games)} ($percent%)';
 }
 
+int _explorerBarFlex(int count, int total) {
+  assert(count > 0, 'Opening explorer bar segment count must be positive.');
+  assert(total > 0, 'Opening explorer bar total must be positive.');
+  assert(count <= total, 'Opening explorer bar segment cannot exceed total.');
+  return math.max(1, (count * 1000 / total).round());
+}
+
 class _HumanStatsBarSegment extends StatelessWidget {
   const _HumanStatsBarSegment({
     required this.count,
     required this.total,
+    required this.flex,
     required this.color,
     required this.textColor,
   });
 
   final int count;
   final int total;
+  final int flex;
   final Color color;
   final Color textColor;
 
@@ -1123,7 +1143,7 @@ class _HumanStatsBarSegment extends StatelessWidget {
   Widget build(BuildContext context) {
     final int percent = (count * 100 / total).round();
     return Expanded(
-      flex: math.max(0, percent),
+      flex: flex,
       child: ColoredBox(
         color: color,
         child: Center(
