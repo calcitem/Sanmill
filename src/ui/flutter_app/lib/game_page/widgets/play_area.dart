@@ -1925,20 +1925,15 @@ class _HumanAiPlayerPanel extends StatelessWidget {
               : 'play_area_human_ai_player_row',
         ),
         children: <Widget>[
-          CircleAvatar(
-            radius: 20,
-            backgroundColor: isRobot
-                ? colorScheme.secondaryContainer
-                : colorScheme.primaryContainer,
-            foregroundColor: isRobot
-                ? colorScheme.onSecondaryContainer
-                : colorScheme.onPrimaryContainer,
+          SizedBox.square(
+            dimension: 44,
             child: Icon(
-              isRobot ? Icons.smart_toy_rounded : Icons.person_rounded,
-              size: 22,
+              isRobot ? Icons.smart_toy_outlined : Icons.person_outline,
+              size: 32,
+              color: isRobot ? colorScheme.secondary : colorScheme.primary,
             ),
           ),
-          const SizedBox(width: 10),
+          const SizedBox(width: 8),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
