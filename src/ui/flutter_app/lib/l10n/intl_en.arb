@@ -4739,5 +4739,7 @@
     "resume": "Resume",
     "@resume": {},
     "ongoingGames": "Ongoing games",
-    "@ongoingGames": {}
+    "@ongoingGames": {},
+    "boardOrientation": "Board orientation",
+    "@boardOrientation": {}
 }

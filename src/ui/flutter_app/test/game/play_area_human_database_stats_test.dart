@@ -307,9 +307,36 @@ void main() {
     expect(find.byType(Dialog), findsOneWidget);
     expect(find.byType(BottomSheet), findsNothing);
     expect(find.byKey(const Key('play_area_game_menu_flip_board')), findsOne);
+    expect(
+      find.byKey(const Key('play_area_game_menu_board_orientation')),
+      findsOne,
+    );
+    expect(
+      find.byKey(const Key('play_area_game_menu_transform_swap_rotate_180')),
+      findsNothing,
+    );
     expect(find.byKey(const Key('play_area_game_menu_analysis')), findsOne);
     expect(find.byKey(const Key('play_area_game_menu_resign')), findsNothing);
     expect(find.byKey(const Key('play_area_game_menu_new_game')), findsOne);
+
+    await tester.tap(
+      find.byKey(const Key('play_area_game_menu_board_orientation')),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.byKey(const Key('play_area_board_transform_sheet')), findsOne);
+    expect(
+      find.byKey(const Key('play_area_board_transform_swap_rotate_180')),
+      findsOne,
+    );
+
+    Navigator.of(
+      tester.element(find.byKey(const Key('play_area_board_transform_sheet'))),
+    ).pop();
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byKey(const Key('play_area_bottom_bar_menu')));
+    await tester.pumpAndSettle();
 
     await tester.tap(find.byKey(const Key('play_area_game_menu_new_game')));
     await tester.pumpAndSettle();

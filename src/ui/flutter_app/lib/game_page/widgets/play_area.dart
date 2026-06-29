@@ -377,6 +377,19 @@ class PlayAreaState extends State<PlayArea> {
     ];
   }
 
+  void _showBoardTransformSheet(
+    BuildContext context, {
+    required Key sheetKey,
+    required String keyPrefix,
+  }) {
+    showLichessActionSheet<void>(
+      context: context,
+      sheetKey: sheetKey,
+      title: Text(S.of(context).boardOrientation),
+      actions: _buildBoardTransformActions(context, keyPrefix: keyPrefix),
+    );
+  }
+
   Future<void> _openAnalysisPanelFromBottomBar(BuildContext context) async {
     assert(_usesLichessHumanAiToolbar);
     RecordingService().recordEvent(
@@ -526,9 +539,17 @@ class PlayAreaState extends State<PlayArea> {
           makeLabel: (BuildContext context) => Text(S.of(context).flipBoard),
           onPressed: () => _toggleBoardFlipped(context),
         ),
-        ..._buildBoardTransformActions(
-          context,
-          keyPrefix: 'play_area_regular_game_menu_transform',
+        LichessActionSheetAction(
+          key: const Key('play_area_regular_game_menu_board_orientation'),
+          leading: const Icon(Icons.screen_rotation_alt_outlined),
+          trailing: const Icon(Icons.chevron_right),
+          makeLabel: (BuildContext context) =>
+              Text(S.of(context).boardOrientation),
+          onPressed: () => _showBoardTransformSheet(
+            context,
+            sheetKey: const Key('play_area_regular_board_transform_sheet'),
+            keyPrefix: 'play_area_regular_board_transform',
+          ),
         ),
         LichessActionSheetAction(
           key: const Key('play_area_toolbar_item_game'),
@@ -570,9 +591,17 @@ class PlayAreaState extends State<PlayArea> {
           makeLabel: (BuildContext context) => Text(S.of(context).flipBoard),
           onPressed: () => _toggleBoardFlipped(context),
         ),
-        ..._buildBoardTransformActions(
-          context,
-          keyPrefix: 'play_area_game_menu_transform',
+        LichessActionSheetAction(
+          key: const Key('play_area_game_menu_board_orientation'),
+          leading: const Icon(Icons.screen_rotation_alt_outlined),
+          trailing: const Icon(Icons.chevron_right),
+          makeLabel: (BuildContext context) =>
+              Text(S.of(context).boardOrientation),
+          onPressed: () => _showBoardTransformSheet(
+            context,
+            sheetKey: const Key('play_area_board_transform_sheet'),
+            keyPrefix: 'play_area_board_transform',
+          ),
         ),
         LichessActionSheetAction(
           key: const Key('play_area_game_menu_analysis'),

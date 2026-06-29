@@ -4587,5 +4587,7 @@
     "resume": "继续",
     "@resume": {},
     "ongoingGames": "正在进行的对局",
-    "@ongoingGames": {}
+    "@ongoingGames": {},
+    "boardOrientation": "棋盘方向",
+    "@boardOrientation": {}
 }
