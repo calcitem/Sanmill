@@ -230,6 +230,24 @@ void main() {
         findsNothing,
       );
 
+      await tester.tap(find.byKey(const Key('sanmill_tab_puzzles')));
+      await tester.pumpAndSettle();
+
+      expect(shellState.debugCurrentTab, SanmillShellTab.puzzles);
+      expect(find.byKey(const Key('puzzles_home_list')), findsOneWidget);
+      expect(
+        find.byKey(const Key('puzzles_home_progress_section')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const Key('puzzles_home_modes_section')),
+        findsOneWidget,
+      );
+      expect(find.byKey(const Key('puzzles_home_daily')), findsOneWidget);
+      expect(find.byKey(const Key('puzzles_home_all')), findsOneWidget);
+      expect(find.byKey(const Key('puzzles_home_rush')), findsOneWidget);
+      expect(find.byKey(const Key('puzzles_home_streak')), findsOneWidget);
+
       await tester.tap(find.byKey(const Key('sanmill_tab_more')));
       await tester.pumpAndSettle();
 
