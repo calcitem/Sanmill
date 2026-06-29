@@ -803,6 +803,10 @@ class PlayAreaState extends State<PlayArea> {
             GameController().gameInstance.gameMode == GameMode.puzzle;
         final bool usesLichessHumanAiToolbar =
             _usesLichessHumanAiToolbar && !isSetupPosition && !isPuzzle;
+        final bool showPieceCountRows =
+            DB().displaySettings.isUnplacedAndRemovedPiecesShown &&
+            !(Constants.isSmallScreen(context) == true &&
+                DB().ruleSettings.piecesCount > 9);
 
         // Human vs AI mirrors the Lichess offline-computer screen: one
         // bottom bar with menu, resign, takeback, and hint. Other game modes
@@ -831,10 +835,10 @@ class PlayAreaState extends State<PlayArea> {
                   ?humanDatabaseStatsStrip,
 
                   // Piece counts or spacing if not used
-                  if (DB().displaySettings.isUnplacedAndRemovedPiecesShown &&
-                      !(Constants.isSmallScreen(context) == true &&
-                          DB().ruleSettings.piecesCount > 9))
-                    _buildPieceCountRow()
+                  if (showPieceCountRows)
+                    _isBoardFlipped
+                        ? _buildRemovedPieceCountRow()
+                        : _buildPieceCountRow()
                   else
                     const SizedBox(height: AppTheme.boardMargin),
 
@@ -855,10 +859,10 @@ class PlayAreaState extends State<PlayArea> {
                   ),
 
                   // Removed pieces row or spacing
-                  if (DB().displaySettings.isUnplacedAndRemovedPiecesShown &&
-                      !(Constants.isSmallScreen(context) == true &&
-                          DB().ruleSettings.piecesCount > 9))
-                    _buildRemovedPieceCountRow()
+                  if (showPieceCountRows)
+                    _isBoardFlipped
+                        ? _buildPieceCountRow()
+                        : _buildRemovedPieceCountRow()
                   else
                     const SizedBox(height: AppTheme.boardMargin),
 

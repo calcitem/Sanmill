@@ -282,6 +282,23 @@ void main() {
       find.byKey(const Key('play_area_board_orientation')),
     );
     expect(boardOrientation.quarterTurns, 0);
+    final Finder board = find.byKey(const Key('play_area_native_screenshot'));
+    final Finder pieceCountRow = find.byKey(
+      const Key('play_area_piece_count_row'),
+    );
+    final Finder removedPieceCountRow = find.byKey(
+      const Key('play_area_removed_piece_count_row'),
+    );
+    expect(pieceCountRow, findsOneWidget);
+    expect(removedPieceCountRow, findsOneWidget);
+    expect(
+      tester.getTopLeft(pieceCountRow).dy,
+      lessThan(tester.getTopLeft(board).dy),
+    );
+    expect(
+      tester.getTopLeft(removedPieceCountRow).dy,
+      greaterThan(tester.getTopLeft(board).dy),
+    );
 
     await tester.tap(find.byKey(const Key('play_area_bottom_bar_menu')));
     await tester.pumpAndSettle();
@@ -349,6 +366,14 @@ void main() {
       find.byKey(const Key('play_area_board_orientation')),
     );
     expect(boardOrientation.quarterTurns, 2);
+    expect(
+      tester.getTopLeft(removedPieceCountRow).dy,
+      lessThan(tester.getTopLeft(board).dy),
+    );
+    expect(
+      tester.getTopLeft(pieceCountRow).dy,
+      greaterThan(tester.getTopLeft(board).dy),
+    );
   });
 
   testWidgets('human vs ai route asks before leaving an active game', (
