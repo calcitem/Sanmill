@@ -854,22 +854,6 @@ class _OpeningMoveTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final S strings = S.of(context);
-    final ThemeData theme = Theme.of(context);
-    final ColorScheme colorScheme = theme.colorScheme;
-    final TextStyle sourceStyle =
-        theme.textTheme.labelSmall?.copyWith(
-          color: colorScheme.onSurfaceVariant.withValues(
-            alpha: AppStyles.subtitleOpacity,
-          ),
-          letterSpacing: 0,
-        ) ??
-        AppStyles.tileSubtitle.copyWith(
-          color: colorScheme.onSurfaceVariant.withValues(
-            alpha: AppStyles.subtitleOpacity,
-          ),
-        );
-
     return ColoredBox(
       color: _openingExplorerRowColor(context, index),
       child: InkWell(
@@ -886,12 +870,7 @@ class _OpeningMoveTile extends StatelessWidget {
               Expanded(
                 flex: 45,
                 child: move.humanStats == null
-                    ? Text(
-                        _sourceOnlySubtitle(strings, move),
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: sourceStyle,
-                      )
+                    ? const SizedBox.shrink()
                     : _HumanStatsBar(stats: move.humanStats!),
               ),
             ],
@@ -899,20 +878,6 @@ class _OpeningMoveTile extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  static String _sourceOnlySubtitle(S strings, _OpeningExplorerMove move) {
-    if (move.isPerfectMove && move.bookRank != null) {
-      return '${strings.openingExplorerPerfectMove} · '
-          '${strings.openingExplorerBookMove} #${move.bookRank! + 1}';
-    }
-    if (move.isPerfectMove) {
-      return strings.openingExplorerPerfectMove;
-    }
-    if (move.bookRank != null) {
-      return '${strings.openingExplorerBookMove} #${move.bookRank! + 1}';
-    }
-    return strings.openingExplorerNoData;
   }
 }
 
@@ -1001,7 +966,7 @@ class _MoveCell extends StatelessWidget {
               ),
             if (move.bookRank != null)
               _SourceBadge(
-                label: strings.openingBookSettings,
+                label: '${strings.openingBookSettings} #${move.bookRank! + 1}',
                 color: colorScheme.tertiary,
                 icon: Icons.menu_book_rounded,
               ),
