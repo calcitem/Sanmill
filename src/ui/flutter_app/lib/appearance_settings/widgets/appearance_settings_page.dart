@@ -18,7 +18,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../../../../shared/widgets/settings/settings.dart';
-import '../../custom_drawer/custom_drawer.dart';
 import '../../game_page/services/mill.dart';
 import '../../generated/assets/assets.gen.dart';
 import '../../generated/intl/l10n.dart';
@@ -936,7 +935,6 @@ class AppearanceSettingsPage extends StatelessWidget {
         backgroundColor: theme.colorScheme.surface,
         appBar: AppBar(
           key: const Key('appearance_settings_page_appbar'),
-          leading: CustomDrawerIcon.of(context)?.drawerIcon,
           title: Text(
             S.of(context).appearance,
             key: const Key('appearance_settings_page_appbar_title'),

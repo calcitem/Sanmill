@@ -6,7 +6,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import '../../custom_drawer/custom_drawer.dart';
 import '../../generated/intl/l10n.dart';
 import '../../shared/database/database.dart';
 import '../../shared/widgets/settings/settings.dart';
@@ -28,7 +27,6 @@ class StatisticsPage extends StatelessWidget {
         key: const Key('statistics_page_scaffold'),
         appBar: AppBar(
           key: const Key('statistics_page_app_bar'),
-          leading: CustomDrawerIcon.of(context)?.drawerIcon,
           title: Text(
             S.of(context).statistics,
             key: const Key('statistics_page_app_bar_title'),

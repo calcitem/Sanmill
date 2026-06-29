@@ -5,7 +5,6 @@
 
 import 'package:flutter/material.dart';
 
-import '../custom_drawer/custom_drawer.dart';
 import '../generated/intl/l10n.dart';
 
 class HowToPlayScreen extends StatelessWidget {
@@ -22,7 +21,6 @@ class HowToPlayScreen extends StatelessWidget {
         backgroundColor: theme.colorScheme.surface,
         appBar: AppBar(
           key: const Key('how_to_play_screen_appbar'),
-          leading: CustomDrawerIcon.of(context)?.drawerIcon,
           title: Text(
             S.of(context).howToPlay,
             key: const Key('how_to_play_screen_appbar_title'),

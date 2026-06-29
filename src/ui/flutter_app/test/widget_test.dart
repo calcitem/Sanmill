@@ -298,6 +298,37 @@ void main() {
         SanmillShellRouteIds.moreRoot.value,
       );
 
+      await tester.tap(find.byKey(const Key('drawer_item_appearance')));
+      await tester.pumpAndSettle();
+
+      final BuildContext appearanceSettingsContext = tester.element(
+        find.byKey(const Key('appearance_settings_page_scaffold')),
+      );
+      final Scaffold appearanceSettingsScaffold = tester.widget<Scaffold>(
+        find.byKey(const Key('appearance_settings_page_scaffold')),
+      );
+      expect(
+        appearanceSettingsScaffold.backgroundColor,
+        Theme.of(appearanceSettingsContext).colorScheme.surface,
+      );
+      expect(
+        find.descendant(
+          of: find.byKey(const Key('appearance_settings_page_appbar')),
+          matching: find.byType(BackButton),
+        ),
+        findsOneWidget,
+      );
+      expect(shellState.debugCurrentRouteId, ShellRouteIds.appAppearance.value);
+
+      await tester.binding.handlePopRoute();
+      await tester.pumpAndSettle();
+
+      expect(shellState.debugCurrentTab, SanmillShellTab.more);
+      expect(
+        shellState.debugCurrentRouteId,
+        SanmillShellRouteIds.moreRoot.value,
+      );
+
       await tester.binding.handlePopRoute();
       await tester.pumpAndSettle();
 

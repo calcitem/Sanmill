@@ -8,7 +8,6 @@
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 
-import '../../custom_drawer/custom_drawer.dart';
 import '../../generated/intl/l10n.dart';
 import '../models/puzzle_models.dart';
 import '../services/puzzle_manager.dart';
@@ -39,10 +38,7 @@ class _PuzzlesHomePageState extends State<PuzzlesHomePage> {
 
     return Scaffold(
       backgroundColor: theme.colorScheme.surface,
-      appBar: AppBar(
-        leading: CustomDrawerIcon.of(context)?.drawerIcon,
-        title: Text(s.puzzles),
-      ),
+      appBar: AppBar(title: Text(s.puzzles)),
       body: Padding(
         padding: const EdgeInsets.all(12.0),
         child: Column(
