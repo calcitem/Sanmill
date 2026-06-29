@@ -226,6 +226,7 @@ class PlayAreaState extends State<PlayArea> {
   bool get _canResignFromBottomBar {
     final Phase phase = GameController().activeBoardView.phase;
     return _usesLichessHumanAiToolbar &&
+        GameController().gameRecorder.currentPath.length >= 2 &&
         phase != Phase.ready &&
         phase != Phase.gameOver;
   }

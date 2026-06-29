@@ -296,6 +296,65 @@ void main() {
     );
   });
 
+  testWidgets('human vs ai resign is disabled while game is abortable', (
+    WidgetTester tester,
+  ) async {
+    final NativeMillGameSession session = await _bindNativeHumanAiGame();
+    final MillSessionRecorderBridge recorderBridge =
+        MillSessionRecorderBridge.forGameController(session: session);
+    addTearDown(recorderBridge.dispose);
+
+    await _pumpSessionPlayArea(tester, session);
+    expect(
+      _bottomBarButtonOpacity(tester, const Key('play_area_bottom_bar_resign')),
+      0.4,
+    );
+
+    expect(
+      await session.replayMainline(<ExtMove>[
+        ExtMove('d6', side: PieceColor.white),
+      ]),
+      isTrue,
+    );
+    await tester.pumpAndSettle();
+    expect(
+      _bottomBarButtonOpacity(tester, const Key('play_area_bottom_bar_resign')),
+      0.4,
+    );
+
+    await tester.tap(find.byKey(const Key('play_area_bottom_bar_menu')));
+    await tester.pumpAndSettle();
+    expect(find.byKey(const Key('play_area_game_menu_resign')), findsNothing);
+  });
+
+  testWidgets('human vs ai resign is enabled after both sides moved', (
+    WidgetTester tester,
+  ) async {
+    final NativeMillGameSession session = await _bindNativeHumanAiGame();
+    final MillSessionRecorderBridge recorderBridge =
+        MillSessionRecorderBridge.forGameController(session: session);
+    addTearDown(recorderBridge.dispose);
+
+    expect(
+      await session.replayMainline(<ExtMove>[
+        ExtMove('d6', side: PieceColor.white),
+        ExtMove('f4', side: PieceColor.black),
+      ]),
+      isTrue,
+    );
+    await tester.pump();
+
+    await _pumpSessionPlayArea(tester, session);
+    expect(
+      _bottomBarButtonOpacity(tester, const Key('play_area_bottom_bar_resign')),
+      1.0,
+    );
+
+    await tester.tap(find.byKey(const Key('play_area_bottom_bar_menu')));
+    await tester.pumpAndSettle();
+    expect(find.byKey(const Key('play_area_game_menu_resign')), findsOne);
+  });
+
   testWidgets('human vs ai takeback removes a full player turn', (
     WidgetTester tester,
   ) async {
