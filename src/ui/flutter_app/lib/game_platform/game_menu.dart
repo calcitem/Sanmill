@@ -9,6 +9,9 @@ import 'game_session.dart';
 /// Where a game module wants its action to appear in the app shell.
 enum GameMenuSection { play, tools, game, settings, help, debug }
 
+/// Which top-level shell tab should surface a game contribution.
+enum GameMenuTarget { puzzles, learn, watch, more }
+
 typedef GameMenuWidgetBuilder =
     Widget Function(BuildContext context, {Key? key, GameSession? session});
 typedef GameMenuAvailability = bool Function(BuildContext context);
@@ -25,13 +28,15 @@ class GameMenuContribution {
     this.isAvailable,
     this.drawerKey,
     this.contentKey,
-  });
+    this.targets = const <GameMenuTarget>{GameMenuTarget.more},
+  }) : assert(targets.length > 0, 'Game menu contribution needs a target.');
 
   final GameRouteId id;
   final String label;
   final IconData? icon;
   final GameMenuSection section;
   final GameMenuWidgetBuilder builder;
+  final Set<GameMenuTarget> targets;
 
   /// Stable key for the drawer item. Modules should provide this when tests or
   /// persisted UI automation depend on a specific drawer entry.

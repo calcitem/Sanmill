@@ -398,6 +398,10 @@ class MillGameModule extends GameModule {
         label: s.analysis,
         section: GameMenuSection.tools,
         icon: FluentIcons.beaker_24_regular,
+        targets: const <GameMenuTarget>{
+          GameMenuTarget.learn,
+          GameMenuTarget.more,
+        },
         drawerKey: const Key('drawer_item_analysis'),
         contentKey: const Key('analysis_panel'),
         builder: (BuildContext context, {Key? key, GameSession? session}) {
@@ -409,6 +413,10 @@ class MillGameModule extends GameModule {
         label: s.openingExplorer,
         section: GameMenuSection.tools,
         icon: FluentIcons.book_open_24_regular,
+        targets: const <GameMenuTarget>{
+          GameMenuTarget.learn,
+          GameMenuTarget.more,
+        },
         drawerKey: const Key('drawer_item_opening_explorer'),
         contentKey: const Key('opening_explorer'),
         builder: (BuildContext context, {Key? key, GameSession? session}) {
@@ -420,6 +428,7 @@ class MillGameModule extends GameModule {
           id: MillRouteIds.puzzles,
           label: s.puzzles,
           icon: FluentIcons.puzzle_piece_24_regular,
+          targets: const <GameMenuTarget>{GameMenuTarget.puzzles},
           drawerKey: const Key('drawer_item_puzzles'),
           contentKey: const Key('puzzles'),
           isAvailable: (_) => features.supports(GameCapability.puzzles),
@@ -432,6 +441,7 @@ class MillGameModule extends GameModule {
           id: MillRouteIds.statistics,
           label: s.statistics,
           icon: FluentIcons.calculator_24_regular,
+          targets: const <GameMenuTarget>{GameMenuTarget.watch},
           drawerKey: const Key('drawer_item_statistics'),
           contentKey: const Key('statistics'),
           isAvailable: (_) => features.supports(GameCapability.statistics),

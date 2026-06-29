@@ -500,42 +500,38 @@ class SanmillAppShellState extends State<SanmillAppShell> {
   }
 
   GameMenuContribution? _puzzlesContribution(BuildContext context) {
-    return _findContribution(
-      context,
-      (GameMenuContribution contribution) =>
-          contribution.id.value.toLowerCase().contains('puzzle'),
-    );
+    return _targetedContribution(context, GameMenuTarget.puzzles);
   }
 
   GameMenuContribution? _statisticsContribution(BuildContext context) {
-    return _findContribution(
-      context,
-      (GameMenuContribution contribution) =>
-          contribution.id.value.toLowerCase().contains('statistic'),
-    );
+    return _targetedContribution(context, GameMenuTarget.watch);
   }
 
-  GameMenuContribution? _analysisContribution(BuildContext context) {
-    return _findContribution(
-      context,
-      (GameMenuContribution contribution) =>
-          contribution.id.value.toLowerCase().contains('analysis'),
-    );
-  }
-
-  GameMenuContribution? _openingExplorerContribution(BuildContext context) {
-    return _findContribution(
-      context,
-      (GameMenuContribution contribution) =>
-          contribution.id.value.toLowerCase().contains('opening'),
-    );
-  }
-
-  GameMenuContribution? _findContribution(
+  GameMenuContribution? _targetedContribution(
     BuildContext context,
-    bool Function(GameMenuContribution contribution) test,
+    GameMenuTarget target, [
+    bool Function(GameMenuContribution contribution)? test,
+  ]) {
+    return _findGameMenuContribution(
+      context,
+      (GameMenuContribution contribution) =>
+          contribution.targets.contains(target) &&
+          (test?.call(contribution) ?? true),
+    );
+  }
+
+  List<GameMenuContribution> _targetedContributions(
+    BuildContext context,
+    GameMenuTarget target,
   ) {
-    return _findGameMenuContribution(context, test);
+    return GameRegistry.instance.current
+        .drawerContributions(context)
+        .where(
+          (GameMenuContribution contribution) =>
+              contribution.availableIn(context) &&
+              contribution.targets.contains(target),
+        )
+        .toList(growable: false);
   }
 
   Widget _buildRouteSurface(String routeId) {
@@ -579,8 +575,7 @@ class SanmillAppShellState extends State<SanmillAppShell> {
       case SanmillShellTab.learn:
         return _LearnTabRoot(
           scrollController: _scrollControllers[SanmillShellTab.learn]!,
-          analysisContribution: _analysisContribution(context),
-          openingExplorerContribution: _openingExplorerContribution(context),
+          studyTools: _targetedContributions(context, GameMenuTarget.learn),
           onLearnRouteSelected: _pushLearnRoute,
         );
       case SanmillShellTab.watch:
@@ -1552,23 +1547,17 @@ class _PlayBottomSheet extends StatelessWidget {
 class _LearnTabRoot extends StatelessWidget {
   const _LearnTabRoot({
     required this.scrollController,
-    required this.analysisContribution,
-    required this.openingExplorerContribution,
+    required this.studyTools,
     required this.onLearnRouteSelected,
   });
 
   final ScrollController scrollController;
-  final GameMenuContribution? analysisContribution;
-  final GameMenuContribution? openingExplorerContribution;
+  final List<GameMenuContribution> studyTools;
   final ValueChanged<String> onLearnRouteSelected;
 
   @override
   Widget build(BuildContext context) {
     final S strings = S.of(context);
-    final List<GameMenuContribution> studyTools = <GameMenuContribution>[
-      ?analysisContribution,
-      ?openingExplorerContribution,
-    ];
 
     return Scaffold(
       appBar: AppBar(title: Text(strings.learn)),
@@ -1734,6 +1723,7 @@ class _MenuEntries extends StatelessWidget {
         .where(
           (GameMenuContribution contribution) =>
               contribution.section == GameMenuSection.tools &&
+              contribution.targets.contains(GameMenuTarget.more) &&
               contribution.availableIn(context),
         )
         .toList(growable: false);
