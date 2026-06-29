@@ -5,7 +5,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sanmill/custom_drawer/custom_drawer.dart';
 import 'package:sanmill/game_page/services/mill.dart';
 import 'package:sanmill/game_page/widgets/game_page.dart';
 import 'package:sanmill/generated/intl/l10n_en.dart';
@@ -97,20 +96,14 @@ void main() {
       );
     });
 
-    testWidgets("GameHeader position", (WidgetTester tester) async {
+    testWidgets("GameHeader renders without drawer context", (
+      WidgetTester tester,
+    ) async {
       DB.instance = MockDB();
       final GameController controller = GameController();
       controller.gameInstance.gameMode = GameMode.humanVsHuman;
 
-      const Key iconKey = Key("DrawerIcon");
-
-      final CustomDrawerIcon screen = CustomDrawerIcon(
-        drawerIcon: IconButton(
-          icon: const Icon(Icons.menu, key: iconKey),
-          onPressed: () {},
-        ),
-        child: Scaffold(appBar: GameHeader()),
-      );
+      final Scaffold screen = Scaffold(appBar: GameHeader());
 
       await tester.pumpWidget(makeTestableWidget(screen));
 

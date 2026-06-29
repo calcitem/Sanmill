@@ -17,7 +17,6 @@ import 'package:marquee/marquee.dart';
 
 import '../../appearance_settings/models/display_settings.dart';
 import '../../appearance_settings/widgets/appearance_settings_page.dart';
-import '../../custom_drawer/custom_drawer.dart';
 import '../../experience_recording/services/recording_service.dart';
 import '../../experience_recording/widgets/recording_indicator.dart';
 import '../../experience_recording/widgets/replay_controls.dart';
@@ -121,8 +120,8 @@ class _GamePageInnerState extends State<_GamePageInner> {
     // Auto-start experience recording if enabled and not already recording.
     _maybeStartRecording();
 
-    // When this page is mounted directly on the setup-position route (via the
-    // drawer), open the editor once the active native session is bound.
+    // When this page is mounted directly on the setup-position route, open the
+    // editor once the active native session is bound.
     if (widget.controller.gameInstance.gameMode == GameMode.setupPosition) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (mounted &&
@@ -198,9 +197,9 @@ class _GamePageInnerState extends State<_GamePageInner> {
               _buildBackground(),
               // Game board widget.
               _buildGameBoard(context, widget.controller),
-              // Drawer icon or back button in the top-left corner.
+              // Back button in the top-left corner when this route can pop.
               Align(
-                key: const Key('game_page_drawer_icon_align'),
+                key: const Key('game_page_top_left_button_align'),
                 alignment: AlignmentDirectional.topStart,
                 child: SafeArea(child: _buildTopLeftButton(context)),
               ),
@@ -478,19 +477,8 @@ class _GamePageInnerState extends State<_GamePageInner> {
     );
   }
 
-  /// Build top-left button: either drawer icon or back button
-  /// Shows back button when:
-  /// 1. No CustomDrawerIcon is available (e.g., pushed from another page)
-  /// 2. Navigator can pop (there's a previous route to return to)
+  /// Builds the top-left back button when this route can pop.
   Widget _buildTopLeftButton(BuildContext context) {
-    final Widget? drawerIcon = CustomDrawerIcon.of(context)?.drawerIcon;
-
-    // If drawer icon exists, use it
-    if (drawerIcon != null) {
-      return drawerIcon;
-    }
-
-    // Otherwise, show back button if we can pop
     if (Navigator.canPop(context)) {
       return Padding(
         padding: const EdgeInsets.all(8.0),
@@ -507,7 +495,6 @@ class _GamePageInnerState extends State<_GamePageInner> {
       );
     }
 
-    // No drawer and can't pop, show nothing
     return const SizedBox.shrink();
   }
 
@@ -529,10 +516,9 @@ class _GamePageInnerState extends State<_GamePageInner> {
   /// game mode supports it.  We intentionally do NOT gate on
   /// [GameController.isDisposed] here because the controller's disposed flag
   /// is an engine-lifecycle concern that can be `true` during the first build
-  /// frame when navigating via the drawer (the old GameBoard's dispose sets
-  /// it before the new GameBoard's initState resets it).  Checking it here
-  /// would hide the button on initial drawer navigation, which is the bug
-  /// this change fixes.
+  /// frame while the previous GameBoard is being disposed and the next one is
+  /// initializing. Checking it here would hide the button during route
+  /// transitions.
   bool _shouldShowAiChatButton(GeneralSettings settings) {
     // Check if AI chat feature is enabled in settings
     if (!settings.aiChatEnabled) {
