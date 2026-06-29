@@ -113,8 +113,6 @@ class SanmillAppShell extends StatefulWidget {
 }
 
 class SanmillAppShellState extends State<SanmillAppShell> {
-  static const double _desktopNavigationBreakpoint = 720;
-
   final Map<SanmillShellTab, GlobalKey<NavigatorState>> _navigatorKeys =
       <SanmillShellTab, GlobalKey<NavigatorState>>{
         for (final SanmillShellTab tab in SanmillShellTab.values)
@@ -568,53 +566,29 @@ class SanmillAppShellState extends State<SanmillAppShell> {
     final Widget content = DoubleBackToCloseApp(
       snackBar: CustomSnackBar(strings.tapBackAgainToLeave),
       willBack: _handleBack,
-      child: LayoutBuilder(
-        builder: (BuildContext context, BoxConstraints constraints) {
-          final bool useNavigationRail =
-              constraints.maxWidth >= _desktopNavigationBreakpoint;
-          final Widget stack = _SanmillTabSwitchingView(
-            key: const Key('sanmill_tab_indexed_stack'),
-            currentTab: _currentTab,
-            tabBuilder: (BuildContext context, SanmillShellTab tab) =>
-                _buildTabNavigator(tab),
-          );
-
-          if (useNavigationRail) {
-            return Scaffold(
-              key: SanmillAppShell.shellKey,
-              body: Row(
-                children: <Widget>[
-                  _DesktopSideMenu(
-                    currentTab: _currentTab,
-                    onTabSelected: _selectTab,
-                  ),
-                  const VerticalDivider(width: 1),
-                  Expanded(child: stack),
-                ],
+      child: Scaffold(
+        key: SanmillAppShell.shellKey,
+        body: _SanmillTabSwitchingView(
+          key: const Key('sanmill_tab_indexed_stack'),
+          currentTab: _currentTab,
+          tabBuilder: (BuildContext context, SanmillShellTab tab) =>
+              _buildTabNavigator(tab),
+        ),
+        bottomNavigationBar: NavigationBar(
+          key: const Key('sanmill_bottom_navigation_bar'),
+          selectedIndex: _currentTab.index,
+          destinations: <NavigationDestination>[
+            for (final SanmillShellTab tab in SanmillShellTab.values)
+              NavigationDestination(
+                key: tab.key,
+                icon: Icon(tab.icon),
+                selectedIcon: Icon(tab.icon),
+                label: tab.label(strings),
               ),
-            );
-          }
-
-          return Scaffold(
-            key: SanmillAppShell.shellKey,
-            body: stack,
-            bottomNavigationBar: NavigationBar(
-              key: const Key('sanmill_bottom_navigation_bar'),
-              selectedIndex: _currentTab.index,
-              destinations: <NavigationDestination>[
-                for (final SanmillShellTab tab in SanmillShellTab.values)
-                  NavigationDestination(
-                    key: tab.key,
-                    icon: Icon(tab.icon),
-                    selectedIcon: Icon(tab.icon),
-                    label: tab.label(strings),
-                  ),
-              ],
-              onDestinationSelected: (int index) =>
-                  _selectTab(SanmillShellTab.values[index]),
-            ),
-          );
-        },
+          ],
+          onDestinationSelected: (int index) =>
+              _selectTab(SanmillShellTab.values[index]),
+        ),
       ),
     );
 
@@ -1133,109 +1107,6 @@ class _MoreSection extends StatelessWidget {
       headerKey: headerKey,
       header: Text(title),
       children: children,
-    );
-  }
-}
-
-class _DesktopSideMenu extends StatelessWidget {
-  const _DesktopSideMenu({
-    required this.currentTab,
-    required this.onTabSelected,
-  });
-
-  final SanmillShellTab currentTab;
-  final ValueChanged<SanmillShellTab> onTabSelected;
-
-  @override
-  Widget build(BuildContext context) {
-    final S strings = S.of(context);
-    final ColorScheme colorScheme = Theme.of(context).colorScheme;
-
-    return Container(
-      key: const Key('sanmill_navigation_rail'),
-      width: 192,
-      color: colorScheme.surfaceContainerLow,
-      child: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.fromLTRB(20, 20, 20, 16),
-              child: Text(
-                strings.appName,
-                style: Theme.of(
-                  context,
-                ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w700),
-              ),
-            ),
-            for (final SanmillShellTab tab in SanmillShellTab.values)
-              _DesktopSideMenuItem(
-                key: tab.key,
-                selected: tab == currentTab,
-                icon: tab.icon,
-                label: tab.label(strings),
-                onTap: () => onTabSelected(tab),
-              ),
-            const Spacer(),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(20, 8, 20, 16),
-              child: Text(
-                strings.more,
-                style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                  color: colorScheme.onSurfaceVariant,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _DesktopSideMenuItem extends StatelessWidget {
-  const _DesktopSideMenuItem({
-    super.key,
-    required this.selected,
-    required this.icon,
-    required this.label,
-    required this.onTap,
-  });
-
-  final bool selected;
-  final IconData icon;
-  final String label;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    final ColorScheme colorScheme = Theme.of(context).colorScheme;
-    final Color background = selected
-        ? colorScheme.primaryContainer.withValues(alpha: 0.75)
-        : Colors.transparent;
-    final Color foreground = selected
-        ? colorScheme.onPrimaryContainer
-        : colorScheme.onSurfaceVariant;
-
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-      child: Material(
-        color: background,
-        borderRadius: BorderRadius.circular(8),
-        clipBehavior: Clip.antiAlias,
-        child: ListTile(
-          dense: true,
-          leading: Icon(icon, color: foreground),
-          title: Text(
-            label,
-            style: TextStyle(
-              color: selected ? colorScheme.onSurface : foreground,
-              fontWeight: selected ? FontWeight.w600 : FontWeight.w400,
-            ),
-          ),
-          onTap: onTap,
-        ),
-      ),
     );
   }
 }

@@ -117,9 +117,9 @@ void main() {
       expect(find.byType(SanmillAppShell), findsOneWidget);
       expect(
         find.byKey(const Key('sanmill_bottom_navigation_bar')),
-        findsNothing,
+        findsOneWidget,
       );
-      expect(find.byKey(const Key('sanmill_navigation_rail')), findsOneWidget);
+      expect(find.byKey(const Key('sanmill_navigation_rail')), findsNothing);
       expect(find.byKey(const Key('sanmill_tab_home')), findsOneWidget);
       expect(find.byKey(const Key('sanmill_tab_watch')), findsOneWidget);
       expect(find.byKey(const Key('sanmill_tab_records')), findsNothing);
