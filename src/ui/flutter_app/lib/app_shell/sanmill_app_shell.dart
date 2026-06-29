@@ -139,6 +139,11 @@ class SanmillAppShellState extends State<SanmillAppShell> {
         for (final SanmillShellTab tab in SanmillShellTab.values)
           tab: ScrollController(debugLabel: 'Sanmill ${tab.name} root'),
       };
+  final Map<SanmillShellTab, _SanmillTabInteraction> _tabInteractions =
+      <SanmillShellTab, _SanmillTabInteraction>{
+        for (final SanmillShellTab tab in SanmillShellTab.values)
+          tab: _SanmillTabInteraction(),
+      };
 
   SanmillShellTab _currentTab = SanmillShellTab.home;
   late String _routeId;
@@ -194,6 +199,9 @@ class SanmillAppShellState extends State<SanmillAppShell> {
     GameRegistry.instance.removeListener(_onRegistryChanged);
     for (final ScrollController controller in _scrollControllers.values) {
       controller.dispose();
+    }
+    for (final _SanmillTabInteraction interaction in _tabInteractions.values) {
+      interaction.dispose();
     }
     _disposeActiveSessionBindings();
     _activeSession?.dispose();
@@ -327,7 +335,9 @@ class SanmillAppShellState extends State<SanmillAppShell> {
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeOut,
       );
+      return;
     }
+    _tabInteractions[tab]?.notifyItemTapped();
   }
 
   Future<bool> _transitionToRoute(String nextRouteId) async {
@@ -560,6 +570,7 @@ class SanmillAppShellState extends State<SanmillAppShell> {
       case SanmillShellTab.home:
         return _HomeTabRoot(
           scrollController: _scrollControllers[SanmillShellTab.home]!,
+          tabInteraction: _tabInteractions[SanmillShellTab.home]!,
           isActive: _currentTab == SanmillShellTab.home,
           currentPlayRouteId: _playRouteId,
           onContinueGame: _continueCurrentGame,
@@ -887,6 +898,12 @@ class _SanmillTabRouteObserver extends NavigatorObserver {
   }
 }
 
+class _SanmillTabInteraction extends ChangeNotifier {
+  void notifyItemTapped() {
+    notifyListeners();
+  }
+}
+
 class _SanmillTabSwitchingView extends StatefulWidget {
   const _SanmillTabSwitchingView({
     super.key,
@@ -985,6 +1002,7 @@ class _TabVisibility extends StatelessWidget {
 class _HomeTabRoot extends StatefulWidget {
   const _HomeTabRoot({
     required this.scrollController,
+    required this.tabInteraction,
     required this.isActive,
     required this.currentPlayRouteId,
     required this.onContinueGame,
@@ -993,6 +1011,7 @@ class _HomeTabRoot extends StatefulWidget {
   });
 
   final ScrollController scrollController;
+  final Listenable tabInteraction;
   final bool isActive;
   final String currentPlayRouteId;
   final VoidCallback onContinueGame;
@@ -1098,6 +1117,7 @@ class _HomeTabRootState extends State<_HomeTabRoot> {
       currentPlayRouteId: widget.currentPlayRouteId,
       playModes: playModes,
       useCarousel: !useWideHomeLayout,
+      tabInteraction: widget.tabInteraction,
       onContinueGame: widget.onContinueGame,
       onPlayRouteSelected: widget.onPlayRouteSelected,
     );
@@ -1105,6 +1125,7 @@ class _HomeTabRootState extends State<_HomeTabRoot> {
       future: _recentGamesFuture,
       limit: _recentGamesLimit,
       useCarousel: !useWideHomeLayout,
+      tabInteraction: widget.tabInteraction,
       onShowAll: _openSavedGamesPage,
       onSavedGameSelected: widget.onSavedGameSelected,
     );
@@ -1151,6 +1172,7 @@ class _HomePlaySections extends StatelessWidget {
     required this.currentPlayRouteId,
     required this.playModes,
     required this.useCarousel,
+    required this.tabInteraction,
     required this.onContinueGame,
     required this.onPlayRouteSelected,
   });
@@ -1158,6 +1180,7 @@ class _HomePlaySections extends StatelessWidget {
   final String currentPlayRouteId;
   final List<GameModeEntry> playModes;
   final bool useCarousel;
+  final Listenable tabInteraction;
   final VoidCallback onContinueGame;
   final ValueChanged<String> onPlayRouteSelected;
 
@@ -1180,6 +1203,7 @@ class _HomePlaySections extends StatelessWidget {
                 moveCount: moveCount,
                 playModes: playModes,
                 useCarousel: useCarousel,
+                tabInteraction: tabInteraction,
                 onTap: onContinueGame,
               ),
             _MoreSection(
@@ -1207,6 +1231,7 @@ class _HomeRecentGames extends StatelessWidget {
     required this.future,
     required this.limit,
     required this.useCarousel,
+    required this.tabInteraction,
     required this.onShowAll,
     required this.onSavedGameSelected,
   });
@@ -1214,6 +1239,7 @@ class _HomeRecentGames extends StatelessWidget {
   final Future<List<SavedGameSummary>> future;
   final int limit;
   final bool useCarousel;
+  final Listenable tabInteraction;
   final VoidCallback onShowAll;
   final ValueChanged<String> onSavedGameSelected;
 
@@ -1232,6 +1258,7 @@ class _HomeRecentGames extends StatelessWidget {
               games: recentGames,
               limit: limit,
               useCarousel: useCarousel,
+              tabInteraction: tabInteraction,
               onShowAll: onShowAll,
               onSavedGameSelected: onSavedGameSelected,
             );
@@ -1247,6 +1274,7 @@ class _OngoingGameSection extends StatelessWidget {
     required this.moveCount,
     required this.playModes,
     required this.useCarousel,
+    required this.tabInteraction,
     required this.onTap,
   }) : assert(moveCount > 0, 'Ongoing game tile requires moves.');
 
@@ -1255,6 +1283,7 @@ class _OngoingGameSection extends StatelessWidget {
   final int moveCount;
   final List<GameModeEntry> playModes;
   final bool useCarousel;
+  final Listenable tabInteraction;
   final VoidCallback onTap;
 
   @override
@@ -1275,6 +1304,7 @@ class _OngoingGameSection extends StatelessWidget {
         title: strings.continueGame,
         headerKey: const Key('sanmill_home_ongoing_game_group'),
         listKey: const Key('sanmill_home_ongoing_game_card'),
+        tabInteraction: tabInteraction,
         children: <Widget>[
           _GamePreviewCarouselCard(
             key: const Key('sanmill_home_ongoing_game'),
@@ -1342,6 +1372,7 @@ class _RecentGamesSection extends StatelessWidget {
     required this.games,
     required this.limit,
     required this.useCarousel,
+    required this.tabInteraction,
     required this.onShowAll,
     required this.onSavedGameSelected,
   }) : assert(limit > 0, 'Recent games section limit must be positive.');
@@ -1349,6 +1380,7 @@ class _RecentGamesSection extends StatelessWidget {
   final List<SavedGameSummary> games;
   final int limit;
   final bool useCarousel;
+  final Listenable tabInteraction;
   final VoidCallback onShowAll;
   final ValueChanged<String> onSavedGameSelected;
 
@@ -1369,6 +1401,7 @@ class _RecentGamesSection extends StatelessWidget {
       return _HomeGameCarouselSection(
         title: strings.recentGames,
         headerKey: const Key('sanmill_home_recent_games_group'),
+        tabInteraction: tabInteraction,
         onHeaderTap: hasMore ? onShowAll : null,
         children: <Widget>[
           for (final (int index, SavedGameSummary game) in visibleGames)
@@ -1435,10 +1468,11 @@ class _RecentGamesSection extends StatelessWidget {
   }
 }
 
-class _HomeGameCarouselSection extends StatelessWidget {
+class _HomeGameCarouselSection extends StatefulWidget {
   const _HomeGameCarouselSection({
     required this.title,
     required this.children,
+    required this.tabInteraction,
     this.headerKey,
     this.listKey,
     this.onHeaderTap,
@@ -1446,13 +1480,55 @@ class _HomeGameCarouselSection extends StatelessWidget {
 
   final String title;
   final List<Widget> children;
+  final Listenable tabInteraction;
   final Key? headerKey;
   final Key? listKey;
   final VoidCallback? onHeaderTap;
 
   @override
+  State<_HomeGameCarouselSection> createState() =>
+      _HomeGameCarouselSectionState();
+}
+
+class _HomeGameCarouselSectionState extends State<_HomeGameCarouselSection> {
+  final ScrollController _controller = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    widget.tabInteraction.addListener(_handleTabInteraction);
+  }
+
+  @override
+  void didUpdateWidget(covariant _HomeGameCarouselSection oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (!identical(widget.tabInteraction, oldWidget.tabInteraction)) {
+      oldWidget.tabInteraction.removeListener(_handleTabInteraction);
+      widget.tabInteraction.addListener(_handleTabInteraction);
+    }
+  }
+
+  @override
+  void dispose() {
+    widget.tabInteraction.removeListener(_handleTabInteraction);
+    _controller.dispose();
+    super.dispose();
+  }
+
+  void _handleTabInteraction() {
+    if (!_controller.hasClients || _controller.offset <= 0) {
+      return;
+    }
+    _controller.animateTo(
+      0,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeOut,
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
-    if (children.isEmpty) {
+    if (widget.children.isEmpty) {
       return const SizedBox.shrink();
     }
     return LayoutBuilder(
@@ -1467,7 +1543,7 @@ class _HomeGameCarouselSection extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Padding(
-                key: headerKey,
+                key: widget.headerKey,
                 padding: const EdgeInsets.fromLTRB(
                   AppStyles.bodyPadding,
                   0,
@@ -1478,27 +1554,31 @@ class _HomeGameCarouselSection extends StatelessWidget {
                   style: AppStyles.sectionTitle.copyWith(
                     color: Theme.of(context).colorScheme.onSurfaceVariant,
                   ),
-                  child: onHeaderTap == null
-                      ? Text(title)
+                  child: widget.onHeaderTap == null
+                      ? Text(widget.title)
                       : _MoreSectionHeaderLink(
-                          title: title,
-                          onTap: onHeaderTap!,
+                          title: widget.title,
+                          onTap: widget.onHeaderTap!,
                         ),
                 ),
               ),
               SizedBox(
-                key: listKey,
+                key: widget.listKey,
                 height: cardSize,
                 child: ListView.separated(
+                  controller: _controller,
                   scrollDirection: Axis.horizontal,
                   padding: const EdgeInsets.symmetric(
                     horizontal: AppStyles.bodyPadding,
                   ),
-                  itemCount: children.length,
+                  itemCount: widget.children.length,
                   separatorBuilder: (BuildContext context, int index) =>
                       const SizedBox(width: 10),
                   itemBuilder: (BuildContext context, int index) {
-                    return SizedBox(width: cardSize, child: children[index]);
+                    return SizedBox(
+                      width: cardSize,
+                      child: widget.children[index],
+                    );
                   },
                 ),
               ),
