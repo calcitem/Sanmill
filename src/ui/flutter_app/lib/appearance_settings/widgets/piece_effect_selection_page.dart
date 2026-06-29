@@ -12,7 +12,6 @@ import '../../game_page/services/mill.dart';
 import '../../game_page/services/painters/animations/piece_effect_animation.dart';
 import '../../generated/intl/l10n.dart';
 import '../../shared/database/database.dart';
-import '../../shared/themes/app_theme.dart';
 
 /// Effect item model to hold the name and animation instance.
 class EffectItem {
@@ -115,7 +114,6 @@ class PieceEffectSelectionPageState extends State<PieceEffectSelectionPage> {
               ? S.of(context).placeEffectAnimation
               : S.of(context).removeEffectAnimation,
           key: const Key('piece_effect_selection_page_appbar_title'),
-          style: AppTheme.appBarTheme.titleTextStyle,
         ),
       ),
       body: GridView.builder(

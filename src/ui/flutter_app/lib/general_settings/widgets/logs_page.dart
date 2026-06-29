@@ -14,7 +14,6 @@ import 'package:share_plus/share_plus.dart';
 
 import '../../generated/intl/l10n.dart';
 import '../../shared/services/logger.dart';
-import '../../shared/themes/app_theme.dart';
 import '../../shared/widgets/snackbars/scaffold_messenger.dart';
 
 // Regular expression to remove ANSI escape codes (color codes, etc.)
@@ -242,8 +241,9 @@ class _LogsPageState extends State<LogsPage> {
     final S s = S.of(context);
 
     return Scaffold(
+      key: const Key('logs_page_scaffold'),
       appBar: AppBar(
-        title: Text(s.logs, style: AppTheme.appBarTheme.titleTextStyle),
+        title: Text(s.logs),
         actions: <Widget>[
           if (_isSelectionMode) ...<Widget>[
             // Copy selected button in selection mode
@@ -762,16 +762,15 @@ class _LogItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bool isDark = Theme.of(context).brightness == Brightness.dark;
-
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
     final Color levelColor = _getLevelColor(log.level);
     Color backgroundColor = index.isEven
-        ? (isDark ? Colors.grey[900]! : Colors.grey[50]!)
-        : (isDark ? Colors.grey[850] ?? Colors.grey[800]! : Colors.white);
+        ? colorScheme.surfaceContainerLow
+        : colorScheme.surfaceContainerLowest;
 
     // Highlight selected logs
     if (isSelected) {
-      backgroundColor = Theme.of(context).colorScheme.primaryContainer;
+      backgroundColor = colorScheme.primaryContainer;
     }
 
     final String levelStr = _getLevelString(log.level);
@@ -834,8 +833,8 @@ class _LogItem extends StatelessWidget {
                     .join('\n'),
                 style: TextStyle(
                   color: isSelected
-                      ? Theme.of(context).colorScheme.onPrimaryContainer
-                      : (isDark ? Colors.grey[300] : Colors.grey[800]),
+                      ? colorScheme.onPrimaryContainer
+                      : colorScheme.onSurface,
                   fontFamily: 'monospace',
                   fontSize: 12,
                   height: 1.4,
