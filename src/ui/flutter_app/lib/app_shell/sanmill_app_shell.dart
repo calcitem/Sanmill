@@ -44,6 +44,7 @@ import '../shared/dialogs/privacy_policy_dialog.dart';
 import '../shared/services/catcher_service.dart' show generateOptionsContent;
 import '../shared/services/environment_config.dart';
 import '../shared/services/logger.dart';
+import '../shared/themes/app_styles.dart';
 import '../shared/widgets/double_back_to_close_app.dart';
 import '../shared/widgets/lichess_list_section.dart';
 import '../shared/widgets/snackbars/scaffold_messenger.dart';
@@ -1096,12 +1097,14 @@ class _HomeTabRootState extends State<_HomeTabRoot> {
     final Widget playSections = _HomePlaySections(
       currentPlayRouteId: widget.currentPlayRouteId,
       playModes: playModes,
+      useCarousel: !useWideHomeLayout,
       onContinueGame: widget.onContinueGame,
       onPlayRouteSelected: widget.onPlayRouteSelected,
     );
     final Widget recentGames = _HomeRecentGames(
       future: _recentGamesFuture,
       limit: _recentGamesLimit,
+      useCarousel: !useWideHomeLayout,
       onShowAll: _openSavedGamesPage,
       onSavedGameSelected: widget.onSavedGameSelected,
     );
@@ -1147,12 +1150,14 @@ class _HomePlaySections extends StatelessWidget {
   const _HomePlaySections({
     required this.currentPlayRouteId,
     required this.playModes,
+    required this.useCarousel,
     required this.onContinueGame,
     required this.onPlayRouteSelected,
   });
 
   final String currentPlayRouteId;
   final List<GameModeEntry> playModes;
+  final bool useCarousel;
   final VoidCallback onContinueGame;
   final ValueChanged<String> onPlayRouteSelected;
 
@@ -1174,6 +1179,7 @@ class _HomePlaySections extends StatelessWidget {
                 snapshot: snapshot,
                 moveCount: moveCount,
                 playModes: playModes,
+                useCarousel: useCarousel,
                 onTap: onContinueGame,
               ),
             _MoreSection(
@@ -1200,12 +1206,14 @@ class _HomeRecentGames extends StatelessWidget {
   const _HomeRecentGames({
     required this.future,
     required this.limit,
+    required this.useCarousel,
     required this.onShowAll,
     required this.onSavedGameSelected,
   });
 
   final Future<List<SavedGameSummary>> future;
   final int limit;
+  final bool useCarousel;
   final VoidCallback onShowAll;
   final ValueChanged<String> onSavedGameSelected;
 
@@ -1223,6 +1231,7 @@ class _HomeRecentGames extends StatelessWidget {
             return _RecentGamesSection(
               games: recentGames,
               limit: limit,
+              useCarousel: useCarousel,
               onShowAll: onShowAll,
               onSavedGameSelected: onSavedGameSelected,
             );
@@ -1237,6 +1246,7 @@ class _OngoingGameSection extends StatelessWidget {
     required this.snapshot,
     required this.moveCount,
     required this.playModes,
+    required this.useCarousel,
     required this.onTap,
   }) : assert(moveCount > 0, 'Ongoing game tile requires moves.');
 
@@ -1244,6 +1254,7 @@ class _OngoingGameSection extends StatelessWidget {
   final GameStateSnapshot? snapshot;
   final int moveCount;
   final List<GameModeEntry> playModes;
+  final bool useCarousel;
   final VoidCallback onTap;
 
   @override
@@ -1256,6 +1267,28 @@ class _OngoingGameSection extends StatelessWidget {
       }
     }
     final S strings = S.of(context);
+    final String? boardLayout = _boardLayoutFromSnapshot(snapshot);
+    final String title = mode?.label ?? strings.game;
+    final String subtitle = _subtitle(strings, snapshot, moveCount);
+    if (useCarousel) {
+      return _HomeGameCarouselSection(
+        title: strings.continueGame,
+        headerKey: const Key('sanmill_home_ongoing_game_group'),
+        listKey: const Key('sanmill_home_ongoing_game_card'),
+        children: <Widget>[
+          _GamePreviewCarouselCard(
+            key: const Key('sanmill_home_ongoing_game'),
+            boardLayout: boardLayout,
+            fallbackIcon: Icons.play_circle_outline_rounded,
+            title: title,
+            subtitle: subtitle,
+            detail: strings.continueGame,
+            onTap: onTap,
+          ),
+        ],
+      );
+    }
+
     return LichessListSection(
       header: Text(strings.continueGame),
       headerKey: const Key('sanmill_home_ongoing_game_group'),
@@ -1264,10 +1297,10 @@ class _OngoingGameSection extends StatelessWidget {
       children: <Widget>[
         _GamePreviewTile(
           key: const Key('sanmill_home_ongoing_game'),
-          boardLayout: _boardLayoutFromSnapshot(snapshot),
+          boardLayout: boardLayout,
           fallbackIcon: Icons.play_circle_outline_rounded,
-          title: mode?.label ?? strings.game,
-          subtitle: _subtitle(strings, snapshot, moveCount),
+          title: title,
+          subtitle: subtitle,
           detail: strings.continueGame,
           onTap: onTap,
         ),
@@ -1308,12 +1341,14 @@ class _RecentGamesSection extends StatelessWidget {
   const _RecentGamesSection({
     required this.games,
     required this.limit,
+    required this.useCarousel,
     required this.onShowAll,
     required this.onSavedGameSelected,
   }) : assert(limit > 0, 'Recent games section limit must be positive.');
 
   final List<SavedGameSummary> games;
   final int limit;
+  final bool useCarousel;
   final VoidCallback onShowAll;
   final ValueChanged<String> onSavedGameSelected;
 
@@ -1330,6 +1365,26 @@ class _RecentGamesSection extends StatelessWidget {
     final Iterable<(int, SavedGameSummary)> visibleGames = games
         .take(limit)
         .indexed;
+    if (useCarousel) {
+      return _HomeGameCarouselSection(
+        title: strings.recentGames,
+        headerKey: const Key('sanmill_home_recent_games_group'),
+        onHeaderTap: hasMore ? onShowAll : null,
+        children: <Widget>[
+          for (final (int index, SavedGameSummary game) in visibleGames)
+            _GamePreviewCarouselCard(
+              key: Key('sanmill_home_recent_game_$index'),
+              boardLayout: game.preview?.boardLayout,
+              fallbackIcon: Icons.history_rounded,
+              title: game.displayName,
+              subtitle: _subtitle(localizations, strings, game),
+              detail: _players(game.preview),
+              onTap: () => onSavedGameSelected(game.path),
+            ),
+        ],
+      );
+    }
+
     return _MoreSection(
       title: strings.recentGames,
       headerKey: const Key('sanmill_home_recent_games_group'),
@@ -1377,6 +1432,180 @@ class _RecentGamesSection extends StatelessWidget {
       return '$white - $black';
     }
     return white ?? black;
+  }
+}
+
+class _HomeGameCarouselSection extends StatelessWidget {
+  const _HomeGameCarouselSection({
+    required this.title,
+    required this.children,
+    this.headerKey,
+    this.listKey,
+    this.onHeaderTap,
+  });
+
+  final String title;
+  final List<Widget> children;
+  final Key? headerKey;
+  final Key? listKey;
+  final VoidCallback? onHeaderTap;
+
+  @override
+  Widget build(BuildContext context) {
+    if (children.isEmpty) {
+      return const SizedBox.shrink();
+    }
+    return LayoutBuilder(
+      builder: (BuildContext context, BoxConstraints constraints) {
+        final double cardSize = (constraints.maxWidth * 0.72).clamp(
+          220.0,
+          300.0,
+        );
+        return Padding(
+          padding: const EdgeInsets.only(bottom: AppStyles.bodyPadding),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Padding(
+                key: headerKey,
+                padding: const EdgeInsets.fromLTRB(
+                  AppStyles.bodyPadding,
+                  0,
+                  AppStyles.bodyPadding,
+                  8,
+                ),
+                child: DefaultTextStyle.merge(
+                  style: AppStyles.sectionTitle.copyWith(
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
+                  child: onHeaderTap == null
+                      ? Text(title)
+                      : _MoreSectionHeaderLink(
+                          title: title,
+                          onTap: onHeaderTap!,
+                        ),
+                ),
+              ),
+              SizedBox(
+                key: listKey,
+                height: cardSize,
+                child: ListView.separated(
+                  scrollDirection: Axis.horizontal,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: AppStyles.bodyPadding,
+                  ),
+                  itemCount: children.length,
+                  separatorBuilder: (BuildContext context, int index) =>
+                      const SizedBox(width: 10),
+                  itemBuilder: (BuildContext context, int index) {
+                    return SizedBox(width: cardSize, child: children[index]);
+                  },
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+}
+
+class _GamePreviewCarouselCard extends StatelessWidget {
+  const _GamePreviewCarouselCard({
+    super.key,
+    required this.boardLayout,
+    required this.fallbackIcon,
+    required this.title,
+    required this.subtitle,
+    required this.onTap,
+    this.detail,
+  });
+
+  final String? boardLayout;
+  final IconData fallbackIcon;
+  final String title;
+  final String subtitle;
+  final String? detail;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      margin: EdgeInsets.zero,
+      clipBehavior: Clip.hardEdge,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(AppStyles.compactRadius),
+      ),
+      child: InkWell(
+        onTap: onTap,
+        child: Stack(
+          fit: StackFit.expand,
+          children: <Widget>[
+            _BoardPreviewSurface(
+              layout: boardLayout,
+              fallbackIcon: fallbackIcon,
+            ),
+            DecoratedBox(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: <Color>[
+                    Colors.transparent,
+                    Colors.black.withValues(alpha: 0.72),
+                  ],
+                  stops: const <double>[0.48, 1],
+                ),
+              ),
+            ),
+            PositionedDirectional(
+              start: 12,
+              end: 12,
+              bottom: 12,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Text(
+                    title,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w700,
+                      letterSpacing: 0,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    subtitle,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: Colors.white.withValues(alpha: 0.86),
+                      letterSpacing: 0,
+                    ),
+                  ),
+                  if (detail != null) ...<Widget>[
+                    const SizedBox(height: 4),
+                    Text(
+                      detail!,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w600,
+                        letterSpacing: 0,
+                      ),
+                    ),
+                  ],
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
 
@@ -1469,19 +1698,43 @@ class _BoardPreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ColorScheme colorScheme = Theme.of(context).colorScheme;
-    final String? boardLayout = layout;
     return SizedBox.square(
       dimension: 92,
-      child: boardLayout == null || boardLayout.isEmpty
-          ? DecoratedBox(
-              decoration: BoxDecoration(
-                color: colorScheme.surfaceContainerHighest,
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Icon(fallbackIcon, color: colorScheme.onSurfaceVariant),
-            )
-          : IgnorePointer(child: MiniBoard(boardLayout: boardLayout)),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(AppStyles.compactRadius),
+        child: _BoardPreviewSurface(layout: layout, fallbackIcon: fallbackIcon),
+      ),
+    );
+  }
+}
+
+class _BoardPreviewSurface extends StatelessWidget {
+  const _BoardPreviewSurface({
+    required this.layout,
+    required this.fallbackIcon,
+  });
+
+  final String? layout;
+  final IconData fallbackIcon;
+
+  @override
+  Widget build(BuildContext context) {
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+    final String? boardLayout = layout;
+    if (boardLayout == null || boardLayout.isEmpty) {
+      return ColoredBox(
+        color: colorScheme.surfaceContainerHighest,
+        child: Icon(fallbackIcon, color: colorScheme.onSurfaceVariant),
+      );
+    }
+    return IgnorePointer(
+      child: FittedBox(
+        fit: BoxFit.cover,
+        child: SizedBox.square(
+          dimension: 320,
+          child: MiniBoard(boardLayout: boardLayout),
+        ),
+      ),
     );
   }
 }
