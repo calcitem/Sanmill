@@ -200,6 +200,20 @@ void main() {
         ),
         findsNothing,
       );
+      expect(
+        find.ancestor(
+          of: find.byKey(const Key('drawer_item_general_settings')),
+          matching: find.byType(Card),
+        ),
+        findsOneWidget,
+      );
+      expect(
+        find.descendant(
+          of: find.byKey(const Key('drawer_item_general_settings')),
+          matching: find.byIcon(Icons.chevron_right_rounded),
+        ),
+        findsNothing,
+      );
 
       final SanmillAppShellState shellState = tester
           .state<SanmillAppShellState>(find.byType(SanmillAppShell));

@@ -40,6 +40,7 @@ import '../shared/services/catcher_service.dart' show generateOptionsContent;
 import '../shared/services/environment_config.dart';
 import '../shared/services/logger.dart';
 import '../shared/widgets/double_back_to_close_app.dart';
+import '../shared/widgets/lichess_list_section.dart';
 import '../shared/widgets/snackbars/scaffold_messenger.dart';
 import '../tutorial/widgets/tutorial_dialog.dart';
 
@@ -900,7 +901,7 @@ class _MoreTabRoot extends StatelessWidget {
         child: ListView(
           key: const Key('sanmill_more_list'),
           controller: scrollController,
-          padding: const EdgeInsets.fromLTRB(12, 8, 12, 24),
+          padding: const EdgeInsets.only(top: 16, bottom: 8),
           children: <Widget>[
             _MenuEntries(
               onPlayRouteSelected: onPlayRouteSelected,
@@ -1038,32 +1039,10 @@ class _MoreSection extends StatelessWidget {
     if (children.isEmpty) {
       return const SizedBox.shrink();
     }
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Padding(
-            key: headerKey,
-            padding: const EdgeInsets.fromLTRB(4, 0, 4, 8),
-            child: Text(
-              title,
-              style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                color: Theme.of(context).colorScheme.onSurfaceVariant,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ),
-          Card(
-            margin: EdgeInsets.zero,
-            clipBehavior: Clip.antiAlias,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: children,
-            ),
-          ),
-        ],
-      ),
+    return LichessListSection(
+      headerKey: headerKey,
+      header: Text(title),
+      children: children,
     );
   }
 }
@@ -1188,7 +1167,9 @@ class _MoreTile extends StatelessWidget {
     return ListTile(
       leading: Icon(icon),
       title: Text(title),
-      trailing: const Icon(Icons.chevron_right_rounded),
+      trailing: Theme.of(context).platform == TargetPlatform.iOS
+          ? const Icon(Icons.chevron_right_rounded)
+          : null,
       onTap: onTap,
     );
   }
