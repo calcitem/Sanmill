@@ -267,6 +267,71 @@ void main() {
     );
   });
 
+  testWidgets('regular move chip long press opens mini board preview', (
+    WidgetTester tester,
+  ) async {
+    db.displaySettings = const DisplaySettings(
+      isUnplacedAndRemovedPiecesShown: false,
+      isHistoryNavigationToolbarShown: false,
+    );
+    GameController().gameInstance.gameMode = GameMode.humanVsHuman;
+    GameController().gameRecorder.reset();
+    GameController().gameRecorder.appendMove(
+      ExtMove(
+        'd6',
+        side: PieceColor.white,
+        boardLayout: '********/********/O*******',
+      ),
+    );
+
+    await tester.binding.setSurfaceSize(const Size(390, 844));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+
+    await tester.pumpWidget(
+      _localizedApp(
+        const Scaffold(
+          body: PlayArea(
+            boardImage: null,
+            child: SizedBox.square(
+              key: Key('test_board_square'),
+              dimension: 390,
+            ),
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.longPress(find.byKey(const Key('play_area_regular_move_1')));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 300));
+
+    expect(
+      find.byKey(const Key('play_area_move_preview_dialog')),
+      findsOneWidget,
+    );
+    expect(
+      find.byKey(const Key('play_area_move_preview_board')),
+      findsOneWidget,
+    );
+    expect(
+      find.byKey(const Key('play_area_move_preview_go_button')),
+      findsOneWidget,
+    );
+    expect(
+      find.descendant(
+        of: find.byKey(const Key('play_area_move_preview_dialog')),
+        matching: find.text('1. d6'),
+      ),
+      findsOneWidget,
+    );
+
+    await tester.tap(
+      find.byKey(const Key('play_area_move_preview_close_button')),
+    );
+    await tester.pumpAndSettle();
+  });
+
   testWidgets('human vs ai uses lichess-style bottom toolbar', (
     WidgetTester tester,
   ) async {

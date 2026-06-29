@@ -30,6 +30,7 @@ import '../services/mill.dart';
 import '../services/painters/advantage_graph_painter.dart';
 import 'ai_chat_dialog.dart';
 import 'game_page.dart';
+import 'mini_board.dart';
 import 'modals/game_options_modal.dart';
 import 'moves_list_page.dart';
 import 'toolbars/game_toolbar.dart';
@@ -1048,6 +1049,7 @@ class PlayAreaState extends State<PlayArea> {
                                     pop: false,
                                   );
                                 },
+                            showMovePreview: true,
                           ),
 
                         // The top game header with hints, icons, etc.
@@ -1199,12 +1201,14 @@ class _InlineMoveList extends StatelessWidget {
     required this.wrapKey,
     required this.moveKeyPrefix,
     this.onMoveTap,
+    this.showMovePreview = false,
   });
 
   final Key wrapKey;
   final String moveKeyPrefix;
   final Future<void> Function(BuildContext context, PgnNode<ExtMove> node)?
   onMoveTap;
+  final bool showMovePreview;
 
   List<PgnNode<ExtMove>> _currentPathNodes() {
     final List<PgnNode<ExtMove>> nodes = <PgnNode<ExtMove>>[];
@@ -1250,9 +1254,102 @@ class _InlineMoveList extends StatelessWidget {
                         onTap: onMoveTap == null
                             ? null
                             : () => unawaited(onMoveTap!(context, nodes[i])),
+                        onLongPress:
+                            showMovePreview && _hasPreviewBoard(nodes[i])
+                            ? () => _showMovePreview(context, nodes[i], i + 1)
+                            : null,
                       ),
                   ],
                 ),
+        );
+      },
+    );
+  }
+
+  bool _hasPreviewBoard(PgnNode<ExtMove> node) {
+    final String? boardLayout = node.data?.boardLayout;
+    return boardLayout != null && boardLayout.isNotEmpty;
+  }
+
+  Future<void> _showMovePreview(
+    BuildContext context,
+    PgnNode<ExtMove> node,
+    int moveNumber,
+  ) {
+    final ExtMove? move = node.data;
+    assert(move != null, 'Move preview requires node data.');
+    final String? boardLayout = move?.boardLayout;
+    assert(
+      boardLayout != null && boardLayout.isNotEmpty,
+      'Move preview requires a board layout.',
+    );
+
+    return showDialog<void>(
+      context: context,
+      useRootNavigator: false,
+      builder: (BuildContext dialogContext) {
+        final ThemeData theme = Theme.of(dialogContext);
+        final ColorScheme colorScheme = theme.colorScheme;
+        final String label = '$moveNumber. ${move!.notation}';
+
+        return Dialog(
+          key: const Key('play_area_move_preview_dialog'),
+          child: Padding(
+            padding: const EdgeInsets.all(AppStyles.bodyPadding),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: Text(
+                        label,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        textDirection: TextDirection.ltr,
+                        style: AppStyles.sectionTitle.copyWith(
+                          color: colorScheme.onSurface,
+                        ),
+                      ),
+                    ),
+                    IconButton.filledTonal(
+                      key: const Key('play_area_move_preview_go_button'),
+                      tooltip: S.of(dialogContext).moveList,
+                      icon: const Icon(Icons.my_location_rounded),
+                      onPressed: () {
+                        Navigator.of(dialogContext).pop();
+                        unawaited(
+                          HistoryNavigator.gotoNode(context, node, pop: false),
+                        );
+                      },
+                    ),
+                    IconButton(
+                      key: const Key('play_area_move_preview_close_button'),
+                      tooltip: S.of(dialogContext).close,
+                      icon: const Icon(Icons.close_rounded),
+                      onPressed: () => Navigator.of(dialogContext).pop(),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 12),
+                ConstrainedBox(
+                  constraints: const BoxConstraints(
+                    maxWidth: 300,
+                    maxHeight: 300,
+                  ),
+                  child: AspectRatio(
+                    aspectRatio: 1,
+                    child: MiniBoard(
+                      key: const Key('play_area_move_preview_board'),
+                      boardLayout: boardLayout!,
+                      extMove: move,
+                      node: node,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
         );
       },
     );
@@ -1268,6 +1365,7 @@ class _GameMoveChip extends StatelessWidget {
     required this.selectedTextColor,
     required this.textStyle,
     this.onTap,
+    this.onLongPress,
   });
 
   final String label;
@@ -1276,6 +1374,7 @@ class _GameMoveChip extends StatelessWidget {
   final Color selectedTextColor;
   final TextStyle? textStyle;
   final VoidCallback? onTap;
+  final VoidCallback? onLongPress;
 
   @override
   Widget build(BuildContext context) {
@@ -1303,14 +1402,15 @@ class _GameMoveChip extends StatelessWidget {
     );
     return Semantics(
       selected: selected,
-      button: onTap != null,
-      child: onTap == null
+      button: onTap != null || onLongPress != null,
+      child: onTap == null && onLongPress == null
           ? content
           : Material(
               color: Colors.transparent,
               child: InkWell(
                 borderRadius: borderRadius,
                 onTap: onTap,
+                onLongPress: onLongPress,
                 child: content,
               ),
             ),
