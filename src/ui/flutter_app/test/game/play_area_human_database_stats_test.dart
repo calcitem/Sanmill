@@ -167,6 +167,68 @@ void main() {
       findsOneWidget,
     );
     expect(find.byKey(const Key('play_area_toolbar_item_info')), findsNothing);
+
+    await tester.tap(
+      find.byKey(const Key('play_area_regular_bottom_bar_menu')),
+    );
+    await tester.pumpAndSettle();
+
+    expect(
+      find.byKey(const Key('play_area_regular_game_menu_sheet')),
+      findsOne,
+    );
+    expect(
+      find.byKey(const Key('play_area_regular_game_menu_flip_board')),
+      findsOne,
+    );
+    expect(
+      find.byKey(const Key('play_area_regular_game_menu_board_orientation')),
+      findsOne,
+    );
+
+    await tester.tap(
+      find.byKey(const Key('play_area_regular_game_menu_board_orientation')),
+    );
+    await tester.pumpAndSettle();
+
+    expect(
+      find.byKey(const Key('play_area_regular_board_transform_sheet')),
+      findsOne,
+    );
+    expect(
+      find.byKey(const Key('play_area_regular_board_transform_rotate')),
+      findsOne,
+    );
+    expect(
+      find.byKey(
+        const Key('play_area_regular_board_transform_horizontal_flip'),
+      ),
+      findsOne,
+    );
+    expect(
+      find.byKey(const Key('play_area_regular_board_transform_vertical_flip')),
+      findsOne,
+    );
+    expect(
+      find.byKey(
+        const Key('play_area_regular_board_transform_inner_outer_flip'),
+      ),
+      findsOne,
+    );
+    expect(
+      find.byKey(
+        const Key('play_area_regular_board_transform_swap_rotate_180'),
+      ),
+      findsNothing,
+    );
+
+    Navigator.of(
+      tester.element(
+        find.byKey(const Key('play_area_regular_board_transform_sheet')),
+      ),
+    ).pop();
+    await tester.pumpAndSettle();
+
     expect(
       tester
           .getBottomLeft(find.byKey(const Key('play_area_main_toolbar_bottom')))
