@@ -1068,22 +1068,22 @@ class AppearanceSettingsPage extends StatelessWidget {
         body: SettingsList(
           key: const Key('appearance_settings_page_settings_list'),
           children: <Widget>[
-            ValueListenableBuilder<Box<DisplaySettings>>(
-              key: const Key(
-                'appearance_settings_page_display_settings_value_listenable_builder',
-              ),
-              valueListenable: DB().listenDisplaySettings,
-              builder: _buildDisplaySettings,
-            ),
-            // Always show color settings regardless of screen size.
-            // Previously hidden on small screens, but users should have
-            // access to color customization on all platforms.
+            // Board display settings come first to match the Lichess Board
+            // settings flow: board theme, piece set, and coordinates are the
+            // primary choices for this page.
             ValueListenableBuilder<Box<ColorSettings>>(
               key: const Key(
                 'appearance_settings_page_color_settings_value_listenable_builder',
               ),
               valueListenable: DB().listenColorSettings,
               builder: _buildColorSettings,
+            ),
+            ValueListenableBuilder<Box<DisplaySettings>>(
+              key: const Key(
+                'appearance_settings_page_display_settings_value_listenable_builder',
+              ),
+              valueListenable: DB().listenDisplaySettings,
+              builder: _buildDisplaySettings,
             ),
           ],
         ),

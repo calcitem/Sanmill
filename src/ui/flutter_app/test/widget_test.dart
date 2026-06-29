@@ -985,6 +985,7 @@ void main() {
       final Finder boardThemeTile = find.byKey(
         const Key('color_settings_card_theme_settings_list_tile'),
       );
+      expect(boardThemeTile, findsOneWidget);
       await tester.scrollUntilVisible(
         boardThemeTile,
         320,
@@ -1003,7 +1004,6 @@ void main() {
       final Finder backgroundImageTile = find.byKey(
         const Key('display_settings_card_background_image_settings_list_tile'),
       );
-      expect(boardThemeTile, findsOneWidget);
       expect(pieceSetTile, findsOneWidget);
       expect(boardCoordinatesTile, findsOneWidget);
       expect(backgroundImageTile, findsOneWidget);
