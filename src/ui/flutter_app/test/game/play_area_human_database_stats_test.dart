@@ -1234,6 +1234,68 @@ void main() {
     expect(_currentPathMoves(), isEmpty);
     expect(session.undoDepth, 0);
   });
+
+  testWidgets('human vs human black requester removes only black reply', (
+    WidgetTester tester,
+  ) async {
+    final NativeMillGameSession session = await _bindNativeGame(
+      GameMode.humanVsHuman,
+    );
+    final MillSessionRecorderBridge recorderBridge =
+        MillSessionRecorderBridge.forGameController(session: session);
+    addTearDown(recorderBridge.dispose);
+
+    expect(await session.replayMainline(_takeBackCaptureFixture()), isTrue);
+    await tester.pump();
+
+    await _pumpSessionPlayArea(tester, session);
+    await tester.tap(
+      find.byKey(const Key('play_area_regular_bottom_bar_previous')),
+    );
+    await tester.pumpAndSettle();
+    expect(
+      find.byKey(const Key('play_area_take_back_requester_sheet')),
+      findsOneWidget,
+    );
+
+    await tester.tap(
+      find.byKey(const Key('play_area_take_back_requester_black')),
+    );
+    await tester.pumpAndSettle();
+
+    expect(_currentPathMoves(), <String>['a1', 'd1', 'a4', 'd2', 'a7', 'xd1']);
+  });
+
+  testWidgets('human vs human white requester removes reply and own capture', (
+    WidgetTester tester,
+  ) async {
+    final NativeMillGameSession session = await _bindNativeGame(
+      GameMode.humanVsHuman,
+    );
+    final MillSessionRecorderBridge recorderBridge =
+        MillSessionRecorderBridge.forGameController(session: session);
+    addTearDown(recorderBridge.dispose);
+
+    expect(await session.replayMainline(_takeBackCaptureFixture()), isTrue);
+    await tester.pump();
+
+    await _pumpSessionPlayArea(tester, session);
+    await tester.tap(
+      find.byKey(const Key('play_area_regular_bottom_bar_previous')),
+    );
+    await tester.pumpAndSettle();
+    expect(
+      find.byKey(const Key('play_area_take_back_requester_sheet')),
+      findsOneWidget,
+    );
+
+    await tester.tap(
+      find.byKey(const Key('play_area_take_back_requester_white')),
+    );
+    await tester.pumpAndSettle();
+
+    expect(_currentPathMoves(), <String>['a1', 'd1', 'a4', 'd2', 'a7']);
+  });
 }
 
 Widget _localizedApp(Widget child) => MaterialApp(
@@ -1289,10 +1351,14 @@ double _bottomBarButtonOpacity(WidgetTester tester, Key key) {
   return opacity.opacity;
 }
 
-Future<NativeMillGameSession> _bindNativeHumanAiGame() async {
+Future<NativeMillGameSession> _bindNativeHumanAiGame() {
+  return _bindNativeGame(GameMode.humanVsAi);
+}
+
+Future<NativeMillGameSession> _bindNativeGame(GameMode gameMode) async {
   final GameController controller = GameController();
   controller.reset(force: true);
-  controller.gameInstance.gameMode = GameMode.humanVsAi;
+  controller.gameInstance.gameMode = gameMode;
   final NativeMillGameSession session = NativeMillGameSession();
   controller.bindActiveSession(session);
 
@@ -1308,6 +1374,18 @@ Future<NativeMillGameSession> _bindNativeHumanAiGame() async {
     session.dispose();
   });
   return session;
+}
+
+List<ExtMove> _takeBackCaptureFixture() {
+  return <ExtMove>[
+    ExtMove('a1', side: PieceColor.white),
+    ExtMove('d1', side: PieceColor.black),
+    ExtMove('a4', side: PieceColor.white),
+    ExtMove('d2', side: PieceColor.black),
+    ExtMove('a7', side: PieceColor.white),
+    ExtMove('xd1', side: PieceColor.white),
+    ExtMove('g7', side: PieceColor.black),
+  ];
 }
 
 Future<void> _pumpSessionPlayArea(

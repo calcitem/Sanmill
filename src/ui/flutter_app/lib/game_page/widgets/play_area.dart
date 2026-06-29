@@ -400,16 +400,72 @@ class PlayAreaState extends State<PlayArea> {
 
   Future<void> _takeBackFromRegularBottomBar(BuildContext context) async {
     if (GameController().gameInstance.gameMode == GameMode.humanVsLAN) {
-      await HistoryNavigator.takeBackN(
+      await _takeBackForRequesterFromRegularBottomBar(
         context,
-        _lanTakeBackStepCount,
-        pop: false,
-        toolbar: true,
+        requesterSide: GameController().getLocalColor(),
       );
       return;
     }
 
+    if (GameController().gameInstance.gameMode == GameMode.humanVsHuman) {
+      _showHumanVsHumanTakeBackRequesterSheet(context);
+      return;
+    }
+
     await HistoryNavigator.takeBack(context, pop: false, toolbar: true);
+  }
+
+  Future<void> _takeBackForRequesterFromRegularBottomBar(
+    BuildContext context, {
+    required PieceColor requesterSide,
+  }) async {
+    final int steps = _takeBackStepCountForRequester(requesterSide);
+    RecordingService()
+        .recordEvent(RecordingEventType.toolbarAction, <String, dynamic>{
+          'toolbar': 'regularBottom',
+          'action': 'takeBack',
+          'requester': requesterSide.name,
+          'steps': steps,
+        });
+    await HistoryNavigator.takeBackN(context, steps, pop: false, toolbar: true);
+  }
+
+  void _showHumanVsHumanTakeBackRequesterSheet(BuildContext context) {
+    assert(GameController().gameInstance.gameMode == GameMode.humanVsHuman);
+    final S strings = S.of(context);
+    showLichessActionSheet<void>(
+      context: context,
+      sheetKey: const Key('play_area_take_back_requester_sheet'),
+      title: Text(strings.takeBack),
+      actions: <LichessActionSheetAction>[
+        LichessActionSheetAction(
+          key: const Key('play_area_take_back_requester_white'),
+          leading: _TakeBackRequesterSwatch(
+            color: DB().colorSettings.whitePieceColor,
+          ),
+          makeLabel: (BuildContext context) => Text(strings.player1),
+          onPressed: () => unawaited(
+            _takeBackForRequesterFromRegularBottomBar(
+              context,
+              requesterSide: PieceColor.white,
+            ),
+          ),
+        ),
+        LichessActionSheetAction(
+          key: const Key('play_area_take_back_requester_black'),
+          leading: _TakeBackRequesterSwatch(
+            color: DB().colorSettings.blackPieceColor,
+          ),
+          makeLabel: (BuildContext context) => Text(strings.player2),
+          onPressed: () => unawaited(
+            _takeBackForRequesterFromRegularBottomBar(
+              context,
+              requesterSide: PieceColor.black,
+            ),
+          ),
+        ),
+      ],
+    );
   }
 
   bool get _canShowHintFromBottomBar {
@@ -1972,6 +2028,24 @@ class _RegularGameBottomBar extends StatelessWidget {
           showTooltip: false,
         ),
       ],
+    );
+  }
+}
+
+class _TakeBackRequesterSwatch extends StatelessWidget {
+  const _TakeBackRequesterSwatch({required this.color});
+
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) {
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: color,
+        border: Border.all(color: Theme.of(context).colorScheme.outlineVariant),
+      ),
+      child: const SizedBox.square(dimension: 24),
     );
   }
 }

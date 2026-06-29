@@ -9,7 +9,6 @@ import 'dart:io';
 
 import 'package:crop_your_image/crop_your_image.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive_ce_flutter/adapters.dart';
@@ -207,10 +206,13 @@ class AppearanceSettingsPage extends StatelessWidget {
     builder: (_) => const _BoardImagePicker(),
   );
 
-  void setPieceImage(BuildContext context) => showModalBottomSheet(
-    context: context,
-    builder: (_) => const _PieceImagePicker(),
-  );
+  void setPieceImage(BuildContext context) {
+    Navigator.of(context).push<void>(
+      MaterialPageRoute<void>(
+        builder: (BuildContext context) => const _PieceImageSelectionPage(),
+      ),
+    );
+  }
 
   Future<void> importColorSettings(BuildContext context) async {
     final String strImport = S.of(context).import;

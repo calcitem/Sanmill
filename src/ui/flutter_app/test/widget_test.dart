@@ -10,6 +10,7 @@ import 'package:flutter/services.dart'; // Import flutter services
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:sanmill/app_shell/sanmill_app_shell.dart';
+import 'package:sanmill/appearance_settings/widgets/appearance_settings_page.dart';
 import 'package:sanmill/game_page/services/mill.dart';
 import 'package:sanmill/game_page/widgets/mini_board.dart';
 import 'package:sanmill/game_page/widgets/toolbars/game_toolbar.dart';
@@ -1070,24 +1071,37 @@ void main() {
       await tester.tap(pieceSetTile);
       await tester.pumpAndSettle();
 
-      final Finder piecePicker = find.byKey(
-        const Key('piece_image_picker_container'),
+      final Finder pieceSelectionPage = find.byKey(
+        const Key('piece_image_selection_page'),
       );
-      expect(piecePicker, findsOneWidget);
-      final Finder selectedPieceIcons = find.byKey(
-        const Key('pure_color_piece_selected_icon'),
+      expect(pieceSelectionPage, findsOneWidget);
+      expect(
+        find.byKey(const Key('piece_image_selection_player1_card')),
+        findsOneWidget,
       );
-      expect(selectedPieceIcons, findsWidgets);
-      final Icon selectedPieceIcon = tester.widget<Icon>(
+      final ListTile player1SolidTile = tester.widget<ListTile>(
         find.descendant(
-          of: selectedPieceIcons.first,
-          matching: find.byType(Icon),
+          of: find.byKey(const Key('piece_image_selection_player1_0')),
+          matching: find.byType(ListTile),
         ),
       );
+      expect(player1SolidTile.selected, isTrue);
       expect(
-        selectedPieceIcon.color,
-        Theme.of(tester.element(piecePicker)).colorScheme.primary,
+        find.byKey(const Key('piece_image_selection_solid_color_preview')),
+        findsWidgets,
       );
+
+      await tester.tap(
+        find.byKey(const Key('piece_image_selection_player1_1')),
+      );
+      await tester.pumpAndSettle();
+      final ListTile player1ImageTile = tester.widget<ListTile>(
+        find.descendant(
+          of: find.byKey(const Key('piece_image_selection_player1_1')),
+          matching: find.byType(ListTile),
+        ),
+      );
+      expect(player1ImageTile.selected, isTrue);
 
       await tester.binding.handlePopRoute();
       await tester.pumpAndSettle();
@@ -1128,6 +1142,68 @@ void main() {
 
       // Drain any settings-save debounce timer (see the smoke test above).
       await tester.pump(const Duration(milliseconds: 350));
+    },
+    skip: nativeLibrarySkipReason() != null,
+  );
+
+  testWidgets(
+    'Appearance piece set uses full-screen selector',
+    (WidgetTester tester) async {
+      await tester.pumpWidget(
+        const MaterialApp(
+          localizationsDelegates: sanmillLocalizationsDelegates,
+          supportedLocales: S.supportedLocales,
+          locale: Locale('en'),
+          home: AppearanceSettingsPage(),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      final Finder pieceSetTile = find.byKey(
+        const Key('display_settings_card_piece_image_settings_list_tile'),
+      );
+      final Finder appearanceScrollable = find.descendant(
+        of: find.byKey(const Key('settings_list')),
+        matching: find.byType(Scrollable),
+      );
+      await tester.scrollUntilVisible(
+        pieceSetTile,
+        320,
+        scrollable: appearanceScrollable,
+      );
+      await tester.pumpAndSettle();
+
+      await tester.tap(pieceSetTile);
+      await tester.pumpAndSettle();
+
+      expect(
+        find.byKey(const Key('piece_image_selection_page')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const Key('piece_image_selection_player1_card')),
+        findsOneWidget,
+      );
+      final ListTile player1SolidTile = tester.widget<ListTile>(
+        find.descendant(
+          of: find.byKey(const Key('piece_image_selection_player1_0')),
+          matching: find.byType(ListTile),
+        ),
+      );
+      expect(player1SolidTile.selected, isTrue);
+
+      await tester.tap(
+        find.byKey(const Key('piece_image_selection_player1_1')),
+      );
+      await tester.pumpAndSettle();
+
+      final ListTile player1ImageTile = tester.widget<ListTile>(
+        find.descendant(
+          of: find.byKey(const Key('piece_image_selection_player1_1')),
+          matching: find.byType(ListTile),
+        ),
+      );
+      expect(player1ImageTile.selected, isTrue);
     },
     skip: nativeLibrarySkipReason() != null,
   );
