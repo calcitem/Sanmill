@@ -328,6 +328,9 @@ class PlayAreaState extends State<PlayArea> {
     final List<ExtMove> path = GameController().gameRecorder.currentPath;
     assert(path.isNotEmpty, 'Cannot take back without a move history.');
 
+    // Undo until the requester is the next side to act. Captures are separate
+    // actions in the history, so a requester capture can be taken back together
+    // with the opponent's reply.
     for (int steps = 1; steps <= path.length; steps++) {
       final PieceColor sideAfterUndo = path[path.length - steps].side;
       assert(
@@ -340,7 +343,8 @@ class PlayAreaState extends State<PlayArea> {
       }
     }
 
-    return path.length;
+    assert(false, 'Move history does not contain the requester side.');
+    throw StateError('Move history does not contain the requester side.');
   }
 
   Future<void> _takeBackFromRegularBottomBar(BuildContext context) async {
