@@ -730,243 +730,284 @@ class AppearanceSettingsPage extends StatelessWidget {
       DB.displaySettingsKey,
       defaultValue: const DisplaySettings(),
     )!;
-    return SettingsCard(
-      key: const Key('appearance_settings_page_display_settings_card'),
-      title: Text(
-        S.of(context).display,
-        key: const Key('display_settings_card_title'),
-      ),
+    final S strings = S.of(context);
+
+    return Column(
+      key: const Key('appearance_settings_page_display_settings_column'),
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
-        SettingsListTile(
-          key: const Key('display_settings_card_language_settings_list_tile'),
-          titleString: S.of(context).language,
-          trailingString: DB().displaySettings.locale != null
-              ? localeToLanguageName[displaySettings.locale]
-              : null,
-          onTap: () => _selectLanguage(context, displaySettings),
-        ),
-        SettingsListTile(
-          key: const Key('display_settings_card_theme_mode_settings_list_tile'),
-          titleString: S.of(context).themeMode,
-          trailingString: _themeModeLabel(context, displaySettings.themeMode),
-          onTap: () => _setThemeMode(context, displaySettings),
-        ),
-        if (!kIsWeb && (Platform.isAndroid || Platform.isIOS))
-          SettingsListTile.switchTile(
-            key: const Key('display_settings_card_full_screen_switch_tile'),
-            value: displaySettings.isFullScreen,
-            onChanged: (bool val) {
-              DB().displaySettings = displaySettings.copyWith(
-                isFullScreen: val,
-              );
-              rootScaffoldMessengerKey.currentState!.showSnackBarClear(
-                S.of(context).reopenToTakeEffect,
-              );
-            },
-            titleString: S.of(context).fullScreen,
+        SettingsCard(
+          key: const Key('appearance_settings_page_display_settings_card'),
+          title: Text(
+            strings.display,
+            key: const Key('display_settings_card_title'),
           ),
-        SettingsListTile.switchTile(
-          key: const Key(
-            'display_settings_card_piece_count_in_hand_shown_switch_tile',
-          ),
-          value: displaySettings.isPieceCountInHandShown,
-          onChanged: (bool val) => DB().displaySettings = displaySettings
-              .copyWith(isPieceCountInHandShown: val),
-          titleString: S.of(context).isPieceCountInHandShown,
-        ),
-        if (!(Constants.isSmallScreen(context) == true &&
-            DB().ruleSettings.piecesCount > 9))
-          SettingsListTile.switchTile(
-            key: const Key(
-              'display_settings_card_unplaced_removed_pieces_shown_switch_tile',
+          children: <Widget>[
+            SettingsListTile(
+              key: const Key(
+                'display_settings_card_language_settings_list_tile',
+              ),
+              titleString: strings.language,
+              trailingString: DB().displaySettings.locale != null
+                  ? localeToLanguageName[displaySettings.locale]
+                  : null,
+              onTap: () => _selectLanguage(context, displaySettings),
             ),
-            value: displaySettings.isUnplacedAndRemovedPiecesShown,
-            onChanged: (bool val) => DB().displaySettings = displaySettings
-                .copyWith(isUnplacedAndRemovedPiecesShown: val),
-            titleString: S.of(context).isUnplacedAndRemovedPiecesShown,
-          ),
-        SettingsListTile.switchTile(
-          key: const Key('display_settings_card_notations_shown_switch_tile'),
-          value: displaySettings.isNotationsShown,
-          onChanged: (bool val) => DB().displaySettings = displaySettings
-              .copyWith(isNotationsShown: val),
-          titleString: S.of(context).isNotationsShown,
-        ),
-        SettingsListTile.switchTile(
-          key: const Key(
-            'display_settings_card_history_navigation_toolbar_shown_switch_tile',
-          ),
-          value: displaySettings.isHistoryNavigationToolbarShown,
-          onChanged: (bool val) => DB().displaySettings = displaySettings
-              .copyWith(isHistoryNavigationToolbarShown: val),
-          titleString: S.of(context).isHistoryNavigationToolbarShown,
-        ),
-        SettingsListTile.switchTile(
-          key: const Key(
-            'display_settings_card_annotation_toolbar_shown_switch_tile',
-          ),
-          value: displaySettings.isAnnotationToolbarShown,
-          onChanged: (bool val) => DB().displaySettings = displaySettings
-              .copyWith(isAnnotationToolbarShown: val),
-          titleString: S.of(context).isAnnotationToolbarShown,
-        ),
-        SettingsListTile.switchTile(
-          key: const Key(
-            'display_settings_card_positional_advantage_indicator_shown_switch_tile',
-          ),
-          value: displaySettings.isPositionalAdvantageIndicatorShown,
-          onChanged: (bool val) => DB().displaySettings = displaySettings
-              .copyWith(isPositionalAdvantageIndicatorShown: val),
-          titleString: S.of(context).showPositionalAdvantageIndicator,
-        ),
-        SettingsListTile.switchTile(
-          key: const Key(
-            'display_settings_card_advantage_graph_shown_switch_tile',
-          ),
-          value: displaySettings.isAdvantageGraphShown,
-          onChanged: (bool val) {
-            DB().displaySettings = displaySettings.copyWith(
-              isAdvantageGraphShown: val,
-            );
-            if (val) {
-              rootScaffoldMessengerKey.currentState!.showSnackBarClear(
-                S.of(context).advantageGraphHint,
-              );
-            }
-          },
-          titleString: S.of(context).showAdvantageGraph,
-        ),
-        SettingsListTile(
-          key: const Key(
-            'display_settings_card_board_corner_radius_settings_list_tile',
-          ),
-          titleString: S.of(context).boardCornerRadius,
-          onTap: () => setBoardCornerRadius(context),
-        ),
-        SettingsListTile(
-          key: const Key(
-            'display_settings_card_board_border_line_width_settings_list_tile',
-          ),
-          titleString: S.of(context).boardBorderLineWidth,
-          onTap: () => setBoardBorderLineWidth(context),
-        ),
-        SettingsListTile(
-          key: const Key(
-            'display_settings_card_board_inner_line_width_settings_list_tile',
-          ),
-          titleString: S.of(context).boardInnerLineWidth,
-          onTap: () => setBoardInnerLineWidth(context),
-        ),
-        SettingsListTile(
-          key: const Key(
-            'display_settings_card_board_inner_ring_size_settings_list_tile',
-          ),
-          titleString: S.of(context).boardInnerRingSize,
-          onTap: () => setBoardInnerRingSize(context),
-        ),
-        SettingsListTile.switchTile(
-          key: const Key('display_settings_card_board_shadow_switch_tile'),
-          value: displaySettings.boardShadowEnabled,
-          onChanged: (bool val) => DB().displaySettings = displaySettings
-              .copyWith(boardShadowEnabled: val),
-          titleString: S.of(context).boardShadowEnabled,
-        ),
-        SettingsListTile(
-          key: const Key(
-            'display_settings_card_point_style_settings_list_tile',
-          ),
-          titleString: S.of(context).pointStyle,
-          onTap: () => setPointPaintingStyle(context, displaySettings),
-        ),
-        SettingsListTile(
-          key: const Key(
-            'display_settings_card_point_width_settings_list_tile',
-          ),
-          titleString: S.of(context).pointWidth,
-          onTap: () => setPointWidth(context),
-        ),
-        SettingsListTile(
-          key: const Key('display_settings_card_board_top_settings_list_tile'),
-          titleString: S.of(context).boardTop,
-          onTap: () => setBoardTop(context),
-        ),
-        SettingsListTile.switchTile(
-          key: const Key(
-            'display_settings_card_numbers_on_pieces_shown_switch_tile',
-          ),
-          value: displaySettings.isNumbersOnPiecesShown,
-          onChanged: (bool val) => DB().displaySettings = displaySettings
-              .copyWith(isNumbersOnPiecesShown: val),
-          titleString: S.of(context).showNumbersOnPieces,
-        ),
-        SettingsListTile.switchTile(
-          key: const Key(
-            'display_settings_card_capturable_pieces_highlight_shown_switch_tile',
-          ),
-          value: displaySettings.isCapturablePiecesHighlightShown,
-          onChanged: (bool val) => DB().displaySettings = displaySettings
-              .copyWith(isCapturablePiecesHighlightShown: val),
-          titleString: S.of(context).highlightCapturablePieces,
-        ),
-        SettingsListTile(
-          key: const Key(
-            'display_settings_card_piece_width_settings_list_tile',
-          ),
-          titleString: S.of(context).pieceWidth,
-          onTap: () => setPieceWidth(context),
-        ),
-        SettingsListTile(
-          key: const Key('display_settings_card_font_size_settings_list_tile'),
-          titleString: S.of(context).fontSize,
-          onTap: () => setFontSize(context),
-        ),
-        SettingsListTile(
-          key: const Key(
-            'display_settings_card_animation_duration_settings_list_tile',
-          ),
-          titleString: S.of(context).animationDuration,
-          onTap: () => setAnimationDuration(context),
-        ),
-        if (!displaySettings.isPiecePickUpAnimationEnabled)
-          SettingsListTile(
-            key: const Key(
-              'display_settings_card_place_effect_animation_settings_list_tile',
+            SettingsListTile(
+              key: const Key(
+                'display_settings_card_theme_mode_settings_list_tile',
+              ),
+              titleString: strings.themeMode,
+              trailingString: _themeModeLabel(
+                context,
+                displaySettings.themeMode,
+              ),
+              onTap: () => _setThemeMode(context, displaySettings),
             ),
-            titleString: S.of(context).placeEffectAnimation,
-            onTap: () => setPlaceEffectAnimation(context),
-          ),
-        if (!displaySettings.isPiecePickUpAnimationEnabled)
-          SettingsListTile(
-            key: const Key(
-              'display_settings_card_remove_effect_animation_settings_list_tile',
+            if (!kIsWeb && (Platform.isAndroid || Platform.isIOS))
+              SettingsListTile.switchTile(
+                key: const Key('display_settings_card_full_screen_switch_tile'),
+                value: displaySettings.isFullScreen,
+                onChanged: (bool val) {
+                  DB().displaySettings = displaySettings.copyWith(
+                    isFullScreen: val,
+                  );
+                  rootScaffoldMessengerKey.currentState!.showSnackBarClear(
+                    strings.reopenToTakeEffect,
+                  );
+                },
+                titleString: strings.fullScreen,
+              ),
+            SettingsListTile.switchTile(
+              key: const Key(
+                'display_settings_card_history_navigation_toolbar_shown_switch_tile',
+              ),
+              value: displaySettings.isHistoryNavigationToolbarShown,
+              onChanged: (bool val) => DB().displaySettings = displaySettings
+                  .copyWith(isHistoryNavigationToolbarShown: val),
+              titleString: strings.isHistoryNavigationToolbarShown,
             ),
-            titleString: S.of(context).removeEffectAnimation,
-            onTap: () => setRemoveEffectAnimation(context),
-          ),
-        SettingsListTile.switchTile(
-          key: const Key(
-            'display_settings_card_piece_pick_up_animation_enabled_switch_tile',
-          ),
-          value: displaySettings.isPiecePickUpAnimationEnabled,
-          onChanged: (bool val) => DB().displaySettings = displaySettings
-              .copyWith(isPiecePickUpAnimationEnabled: val),
-          titleString: S.of(context).enablePiecePickUpAnimation,
+            SettingsListTile.switchTile(
+              key: const Key(
+                'display_settings_card_annotation_toolbar_shown_switch_tile',
+              ),
+              value: displaySettings.isAnnotationToolbarShown,
+              onChanged: (bool val) => DB().displaySettings = displaySettings
+                  .copyWith(isAnnotationToolbarShown: val),
+              titleString: strings.isAnnotationToolbarShown,
+            ),
+          ],
         ),
-        SettingsListTile.switchTile(
-          key: const Key('display_settings_card_vignette_effect_switch_tile'),
-          value: displaySettings.vignetteEffectEnabled,
-          onChanged: (bool val) => DB().displaySettings = displaySettings
-              .copyWith(vignetteEffectEnabled: val),
-          titleString: S.of(context).vignetteEffect,
+        SettingsCard(
+          key: const Key('appearance_settings_page_board_display_card'),
+          title: Text(strings.boardColor),
+          children: <Widget>[
+            SettingsListTile.switchTile(
+              key: const Key(
+                'display_settings_card_piece_count_in_hand_shown_switch_tile',
+              ),
+              value: displaySettings.isPieceCountInHandShown,
+              onChanged: (bool val) => DB().displaySettings = displaySettings
+                  .copyWith(isPieceCountInHandShown: val),
+              titleString: strings.isPieceCountInHandShown,
+            ),
+            if (!(Constants.isSmallScreen(context) == true &&
+                DB().ruleSettings.piecesCount > 9))
+              SettingsListTile.switchTile(
+                key: const Key(
+                  'display_settings_card_unplaced_removed_pieces_shown_switch_tile',
+                ),
+                value: displaySettings.isUnplacedAndRemovedPiecesShown,
+                onChanged: (bool val) => DB().displaySettings = displaySettings
+                    .copyWith(isUnplacedAndRemovedPiecesShown: val),
+                titleString: strings.isUnplacedAndRemovedPiecesShown,
+              ),
+            SettingsListTile.switchTile(
+              key: const Key(
+                'display_settings_card_notations_shown_switch_tile',
+              ),
+              value: displaySettings.isNotationsShown,
+              onChanged: (bool val) => DB().displaySettings = displaySettings
+                  .copyWith(isNotationsShown: val),
+              titleString: strings.isNotationsShown,
+            ),
+            SettingsListTile(
+              key: const Key(
+                'display_settings_card_board_corner_radius_settings_list_tile',
+              ),
+              titleString: strings.boardCornerRadius,
+              onTap: () => setBoardCornerRadius(context),
+            ),
+            SettingsListTile(
+              key: const Key(
+                'display_settings_card_board_border_line_width_settings_list_tile',
+              ),
+              titleString: strings.boardBorderLineWidth,
+              onTap: () => setBoardBorderLineWidth(context),
+            ),
+            SettingsListTile(
+              key: const Key(
+                'display_settings_card_board_inner_line_width_settings_list_tile',
+              ),
+              titleString: strings.boardInnerLineWidth,
+              onTap: () => setBoardInnerLineWidth(context),
+            ),
+            SettingsListTile(
+              key: const Key(
+                'display_settings_card_board_inner_ring_size_settings_list_tile',
+              ),
+              titleString: strings.boardInnerRingSize,
+              onTap: () => setBoardInnerRingSize(context),
+            ),
+            SettingsListTile.switchTile(
+              key: const Key('display_settings_card_board_shadow_switch_tile'),
+              value: displaySettings.boardShadowEnabled,
+              onChanged: (bool val) => DB().displaySettings = displaySettings
+                  .copyWith(boardShadowEnabled: val),
+              titleString: strings.boardShadowEnabled,
+            ),
+            SettingsListTile(
+              key: const Key(
+                'display_settings_card_point_style_settings_list_tile',
+              ),
+              titleString: strings.pointStyle,
+              onTap: () => setPointPaintingStyle(context, displaySettings),
+            ),
+            SettingsListTile(
+              key: const Key(
+                'display_settings_card_point_width_settings_list_tile',
+              ),
+              titleString: strings.pointWidth,
+              onTap: () => setPointWidth(context),
+            ),
+            SettingsListTile(
+              key: const Key(
+                'display_settings_card_board_top_settings_list_tile',
+              ),
+              titleString: strings.boardTop,
+              onTap: () => setBoardTop(context),
+            ),
+          ],
         ),
-        SettingsListTile.switchTile(
-          key: const Key(
-            'display_settings_card_screenshot_game_info_shown_switch_tile',
-          ),
-          value: displaySettings.isScreenshotGameInfoShown,
-          onChanged: (bool val) => DB().displaySettings = displaySettings
-              .copyWith(isScreenshotGameInfoShown: val),
-          titleString: S.of(context).showGameInfoOnScreenshots,
+        SettingsCard(
+          key: const Key('appearance_settings_page_piece_display_card'),
+          title: Text(strings.pieces),
+          children: <Widget>[
+            SettingsListTile.switchTile(
+              key: const Key(
+                'display_settings_card_numbers_on_pieces_shown_switch_tile',
+              ),
+              value: displaySettings.isNumbersOnPiecesShown,
+              onChanged: (bool val) => DB().displaySettings = displaySettings
+                  .copyWith(isNumbersOnPiecesShown: val),
+              titleString: strings.showNumbersOnPieces,
+            ),
+            SettingsListTile.switchTile(
+              key: const Key(
+                'display_settings_card_capturable_pieces_highlight_shown_switch_tile',
+              ),
+              value: displaySettings.isCapturablePiecesHighlightShown,
+              onChanged: (bool val) => DB().displaySettings = displaySettings
+                  .copyWith(isCapturablePiecesHighlightShown: val),
+              titleString: strings.highlightCapturablePieces,
+            ),
+            SettingsListTile(
+              key: const Key(
+                'display_settings_card_piece_width_settings_list_tile',
+              ),
+              titleString: strings.pieceWidth,
+              onTap: () => setPieceWidth(context),
+            ),
+            SettingsListTile(
+              key: const Key(
+                'display_settings_card_animation_duration_settings_list_tile',
+              ),
+              titleString: strings.animationDuration,
+              onTap: () => setAnimationDuration(context),
+            ),
+            if (!displaySettings.isPiecePickUpAnimationEnabled)
+              SettingsListTile(
+                key: const Key(
+                  'display_settings_card_place_effect_animation_settings_list_tile',
+                ),
+                titleString: strings.placeEffectAnimation,
+                onTap: () => setPlaceEffectAnimation(context),
+              ),
+            if (!displaySettings.isPiecePickUpAnimationEnabled)
+              SettingsListTile(
+                key: const Key(
+                  'display_settings_card_remove_effect_animation_settings_list_tile',
+                ),
+                titleString: strings.removeEffectAnimation,
+                onTap: () => setRemoveEffectAnimation(context),
+              ),
+            SettingsListTile.switchTile(
+              key: const Key(
+                'display_settings_card_piece_pick_up_animation_enabled_switch_tile',
+              ),
+              value: displaySettings.isPiecePickUpAnimationEnabled,
+              onChanged: (bool val) => DB().displaySettings = displaySettings
+                  .copyWith(isPiecePickUpAnimationEnabled: val),
+              titleString: strings.enablePiecePickUpAnimation,
+            ),
+          ],
+        ),
+        SettingsCard(
+          key: const Key('appearance_settings_page_advanced_display_card'),
+          title: Text(strings.advanced),
+          children: <Widget>[
+            SettingsListTile.switchTile(
+              key: const Key(
+                'display_settings_card_positional_advantage_indicator_shown_switch_tile',
+              ),
+              value: displaySettings.isPositionalAdvantageIndicatorShown,
+              onChanged: (bool val) => DB().displaySettings = displaySettings
+                  .copyWith(isPositionalAdvantageIndicatorShown: val),
+              titleString: strings.showPositionalAdvantageIndicator,
+            ),
+            SettingsListTile.switchTile(
+              key: const Key(
+                'display_settings_card_advantage_graph_shown_switch_tile',
+              ),
+              value: displaySettings.isAdvantageGraphShown,
+              onChanged: (bool val) {
+                DB().displaySettings = displaySettings.copyWith(
+                  isAdvantageGraphShown: val,
+                );
+                if (val) {
+                  rootScaffoldMessengerKey.currentState!.showSnackBarClear(
+                    strings.advantageGraphHint,
+                  );
+                }
+              },
+              titleString: strings.showAdvantageGraph,
+            ),
+            SettingsListTile(
+              key: const Key(
+                'display_settings_card_font_size_settings_list_tile',
+              ),
+              titleString: strings.fontSize,
+              onTap: () => setFontSize(context),
+            ),
+            SettingsListTile.switchTile(
+              key: const Key(
+                'display_settings_card_vignette_effect_switch_tile',
+              ),
+              value: displaySettings.vignetteEffectEnabled,
+              onChanged: (bool val) => DB().displaySettings = displaySettings
+                  .copyWith(vignetteEffectEnabled: val),
+              titleString: strings.vignetteEffect,
+            ),
+            SettingsListTile.switchTile(
+              key: const Key(
+                'display_settings_card_screenshot_game_info_shown_switch_tile',
+              ),
+              value: displaySettings.isScreenshotGameInfoShown,
+              onChanged: (bool val) => DB().displaySettings = displaySettings
+                  .copyWith(isScreenshotGameInfoShown: val),
+              titleString: strings.showGameInfoOnScreenshots,
+            ),
+          ],
         ),
       ],
     );
