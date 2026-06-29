@@ -37,8 +37,37 @@ class GameController {
   bool isDisposed = false;
   bool isControllerReady = false;
   bool isControllerActive = false;
-  bool isEngineRunning = false;
-  bool isEngineInDelay = false;
+  bool _isEngineRunning = false;
+  bool _isEngineInDelay = false;
+
+  final ValueNotifier<bool> engineActivityNotifier = ValueNotifier<bool>(false);
+
+  bool get isEngineRunning => _isEngineRunning;
+
+  set isEngineRunning(bool value) {
+    if (_isEngineRunning == value) {
+      return;
+    }
+    _isEngineRunning = value;
+    _updateEngineActivityNotifier();
+  }
+
+  bool get isEngineInDelay => _isEngineInDelay;
+
+  set isEngineInDelay(bool value) {
+    if (_isEngineInDelay == value) {
+      return;
+    }
+    _isEngineInDelay = value;
+    _updateEngineActivityNotifier();
+  }
+
+  void _updateEngineActivityNotifier() {
+    final bool isEngineActive = _isEngineRunning || _isEngineInDelay;
+    if (engineActivityNotifier.value != isEngineActive) {
+      engineActivityNotifier.value = isEngineActive;
+    }
+  }
 
   /// Monotonic counter incremented on every reset() so any in-flight
   /// AI loop (e.g. _nativeAiVsAiLoop) can detect that a New Game has

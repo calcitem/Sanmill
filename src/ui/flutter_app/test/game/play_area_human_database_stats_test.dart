@@ -47,6 +47,8 @@ void main() {
     final GameController controller = GameController();
     controller.animationManager = MockAnimationManager();
     controller.gameInstance.gameMode = GameMode.humanVsHuman;
+    controller.isEngineRunning = false;
+    controller.isEngineInDelay = false;
   });
 
   tearDown(() {
@@ -429,6 +431,65 @@ void main() {
     expect(boardOrientation.quarterTurns, 2);
     expect(find.byKey(const Key('play_area_human_ai_robot_panel')), findsOne);
     expect(find.byKey(const Key('play_area_human_ai_player_panel')), findsOne);
+  });
+
+  testWidgets('human vs ai robot panel follows engine activity', (
+    WidgetTester tester,
+  ) async {
+    db.generalSettings = const GeneralSettings();
+    db.displaySettings = const DisplaySettings();
+    final GameController controller = GameController();
+    controller.gameInstance.gameMode = GameMode.humanVsAi;
+    controller.isEngineRunning = false;
+    controller.isEngineInDelay = false;
+
+    await tester.binding.setSurfaceSize(const Size(390, 844));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+
+    await tester.pumpWidget(
+      _localizedApp(
+        const Scaffold(
+          body: PlayArea(
+            boardImage: null,
+            child: SizedBox.square(
+              key: Key('test_board_square'),
+              dimension: 390,
+            ),
+          ),
+        ),
+      ),
+    );
+    await tester.pump();
+
+    expect(
+      find.byKey(const Key('play_area_human_ai_robot_thinking_icon')),
+      findsNothing,
+    );
+
+    controller.isEngineRunning = true;
+    await tester.pump();
+
+    expect(
+      find.byKey(const Key('play_area_human_ai_robot_thinking_icon')),
+      findsOneWidget,
+    );
+
+    controller.isEngineRunning = false;
+    controller.isEngineInDelay = true;
+    await tester.pump();
+
+    expect(
+      find.byKey(const Key('play_area_human_ai_robot_thinking_icon')),
+      findsOneWidget,
+    );
+
+    controller.isEngineInDelay = false;
+    await tester.pump();
+
+    expect(
+      find.byKey(const Key('play_area_human_ai_robot_thinking_icon')),
+      findsNothing,
+    );
   });
 
   testWidgets('human vs ai route asks before leaving an active game', (

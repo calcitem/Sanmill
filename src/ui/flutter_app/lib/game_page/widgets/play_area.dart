@@ -1228,15 +1228,24 @@ class _HumanAiPlayerPanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (isRobot) {
+      return ValueListenableBuilder<bool>(
+        valueListenable: GameController().engineActivityNotifier,
+        builder: (BuildContext context, bool isThinking, Widget? child) {
+          return _buildPanel(context, isThinking: isThinking);
+        },
+      );
+    }
+    return _buildPanel(context, isThinking: false);
+  }
+
+  Widget _buildPanel(BuildContext context, {required bool isThinking}) {
     final ThemeData theme = Theme.of(context);
     final ColorScheme colorScheme = theme.colorScheme;
     final int level = DB().generalSettings.skillLevel;
     final int rating = isRobot
         ? EloRatingService.getFixedAiEloRating(level)
         : DB().statsSettings.humanStats.rating;
-    final bool isThinking =
-        isRobot &&
-        (GameController().isEngineRunning || GameController().isEngineInDelay);
     final String title = isRobot
         ? S.of(context).humanAiRobotLevel(level)
         : S.of(context).humanAiPlayer;
