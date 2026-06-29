@@ -16,7 +16,8 @@ import 'package:path_provider/path_provider.dart';
 
 import '../experience_recording/models/recording_models.dart';
 import '../experience_recording/services/recording_service.dart';
-import '../game_page/services/mill.dart' show GameController, LoadService;
+import '../game_page/services/mill.dart'
+    show GameController, LoadService, PieceColor;
 import '../game_page/services/save_load/saved_game_catalog.dart';
 import '../game_page/widgets/mini_board.dart';
 import '../game_page/widgets/saved_games_page.dart';
@@ -1606,11 +1607,27 @@ class _SavedGamePreviewSection extends StatelessWidget {
     if (preview != null && preview.moveCount > 0) {
       parts.add('${strings.moves}: ${preview.moveCount}');
     }
+    final String? sideToMove = _sideToMove(strings, preview);
+    if (sideToMove != null) {
+      parts.add(sideToMove);
+    }
     final String? result = preview?.result;
     if (result != null && result != '*') {
       parts.add(result);
     }
     return parts.join(' · ');
+  }
+
+  static String? _sideToMove(S strings, SavedGamePreview? preview) {
+    if (preview == null || !preview.isOngoing) {
+      return null;
+    }
+    final String? player = switch (preview.sideToMove) {
+      PieceColor.white => strings.player1,
+      PieceColor.black => strings.player2,
+      _ => null,
+    };
+    return player == null ? null : strings.sideToMove(player);
   }
 
   static String? players(SavedGameSummary game) {

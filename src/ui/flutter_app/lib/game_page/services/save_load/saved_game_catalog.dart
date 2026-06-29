@@ -7,6 +7,9 @@ import 'package:flutter/foundation.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 
+import '../../../game_platform/game_session.dart' show GameAction, PlayerSeat;
+import '../../../games/mill/mill_action_codec.dart';
+import '../../../games/mill/native_mill_rules_port.dart';
 import '../../../shared/database/database.dart';
 import '../import_export/pgn.dart';
 import '../mill.dart';
@@ -19,6 +22,7 @@ class SavedGamePreview {
     this.white,
     this.black,
     this.result,
+    this.sideToMove,
   });
 
   final String? boardLayout;
@@ -27,6 +31,7 @@ class SavedGamePreview {
   final String? white;
   final String? black;
   final String? result;
+  final PieceColor? sideToMove;
 
   bool get isOngoing => result?.trim() == '*';
 }
@@ -132,6 +137,7 @@ final class SavedGameCatalog {
       white: _headerValue(game.headers['White']),
       black: _headerValue(game.headers['Black']),
       result: _headerValue(game.headers['Result']),
+      sideToMove: replay.sideToMove,
     );
   }
 
@@ -162,50 +168,73 @@ final class SavedGameCatalog {
 
   _SavedGameReplayPreview _replayMainlinePreview(PgnGame<PgnNodeData> game) {
     final String? fen = game.headers['FEN'];
-    final PgnNode<ExtMove> root = PgnNode<ExtMove>();
-    PgnNode<ExtMove> current = root;
+    final NativeMillRulesPort port = NativeMillRulesPort(
+      ruleSettings: DB().ruleSettings,
+      generalSettings: DB().generalSettings,
+    );
     int moveCount = 0;
     String? lastMove;
+    String? boardLayout = boardLayoutFromMillFen(fen);
+    PieceColor? sideToMove;
 
-    for (final PgnNodeData node in game.moves.mainline()) {
-      final String san = node.san.trim().toLowerCase();
-      if (san.isEmpty) {
-        continue;
+    try {
+      if (fen != null && fen.isNotEmpty) {
+        port.setFromFen(fen);
       }
-      final List<String> segments = _splitSan(san);
-      for (final String segment in segments) {
-        final String standard = _toStandardMove(segment);
-        if (standard.isEmpty) {
+      sideToMove = _pieceColorFromSeat(port.snapshot.activeSeat);
+
+      for (final PgnNodeData node in game.moves.mainline()) {
+        final String san = node.san.trim().toLowerCase();
+        if (san.isEmpty) {
           continue;
         }
-        final ExtMove move = ExtMove(standard, side: PieceColor.white);
-        final PgnNode<ExtMove> child = PgnNode<ExtMove>(move);
-        child.parent = current;
-        current.children.add(child);
-        current = child;
-        moveCount++;
-        lastMove = standard;
+        final List<String> segments = _splitSan(san);
+        for (final String segment in segments) {
+          final String standard = _toStandardMove(segment);
+          if (standard.isEmpty) {
+            continue;
+          }
+          moveCount++;
+          lastMove = standard;
+          final GameAction? action = _legalActionForMoveString(port, standard);
+          if (action == null) {
+            continue;
+          }
+          port.apply(action);
+          boardLayout = boardLayoutFromMillFen(port.exportFen()) ?? boardLayout;
+          sideToMove = _pieceColorFromSeat(port.snapshot.activeSeat);
+        }
       }
+    } finally {
+      port.dispose();
     }
 
-    ImportService.fillAllNodesBoardLayout(root, setupFen: fen);
-
-    PgnNode<ExtMove> cursor = root;
-    PgnNode<ExtMove>? last;
-    while (cursor.children.isNotEmpty) {
-      cursor = cursor.children.first;
-      last = cursor;
-    }
-
-    final String? replayLayout = last?.data?.boardLayout;
-    final String? boardLayout = replayLayout != null && replayLayout.isNotEmpty
-        ? replayLayout
-        : boardLayoutFromMillFen(fen);
     return _SavedGameReplayPreview(
       boardLayout: boardLayout,
       moveCount: moveCount,
       lastMove: lastMove,
+      sideToMove: sideToMove,
     );
+  }
+
+  static GameAction? _legalActionForMoveString(
+    NativeMillRulesPort port,
+    String move,
+  ) {
+    for (final GameAction action in port.legalActions) {
+      if (MillActionCodec.moveStringFrom(action) == move) {
+        return action;
+      }
+    }
+    return null;
+  }
+
+  static PieceColor? _pieceColorFromSeat(PlayerSeat seat) {
+    return switch (seat) {
+      PlayerSeat.first => PieceColor.white,
+      PlayerSeat.second => PieceColor.black,
+      PlayerSeat.none => null,
+    };
   }
 
   String? boardLayoutFromMillFen(String? fen) {
@@ -283,9 +312,11 @@ class _SavedGameReplayPreview {
     required this.boardLayout,
     required this.moveCount,
     required this.lastMove,
+    required this.sideToMove,
   });
 
   final String? boardLayout;
   final int moveCount;
   final String? lastMove;
+  final PieceColor? sideToMove;
 }
