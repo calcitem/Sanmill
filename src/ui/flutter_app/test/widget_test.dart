@@ -29,9 +29,11 @@ import 'package:sanmill/general_settings/widgets/developer_options_page.dart';
 import 'package:sanmill/generated/intl/l10n.dart';
 import 'package:sanmill/learn/mill_coordinate_training_page.dart';
 import 'package:sanmill/main.dart';
+import 'package:sanmill/misc/mill_variants_page.dart';
 import 'package:sanmill/puzzle/models/puzzle_models.dart';
 import 'package:sanmill/puzzle/pages/puzzle_creation_page.dart';
 import 'package:sanmill/puzzle/widgets/puzzle_card.dart';
+import 'package:sanmill/rule_settings/models/rule_settings.dart';
 import 'package:sanmill/shared/database/database.dart';
 import 'package:sanmill/shared/services/environment_config.dart';
 import 'package:sanmill/shared/services/system_ui_service.dart';
@@ -1221,6 +1223,46 @@ void main() {
     );
     expect(showCoordinatesTile.value, isFalse);
     expect(showPiecesTile.value, isTrue);
+  });
+
+  testWidgets('Variants page opens detail before applying a rule set', (
+    WidgetTester tester,
+  ) async {
+    final RuleSettings previousRuleSettings = DB().ruleSettings;
+    addTearDown(() {
+      DB().ruleSettings = previousRuleSettings;
+    });
+    DB().ruleSettings = const RuleSettings();
+
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: AppTheme.lightThemeData,
+        localizationsDelegates: sanmillLocalizationsDelegates,
+        supportedLocales: S.supportedLocales,
+        locale: const Locale('en'),
+        home: const MillVariantsPage(),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byKey(const Key('mill_variant_twelve_mens_morris')));
+    await tester.pumpAndSettle();
+
+    expect(
+      find.byKey(const Key('mill_variant_detail_twelve_mens_morris')),
+      findsOneWidget,
+    );
+    expect(
+      find.byKey(const Key('mill_variant_detail_rules_twelve_mens_morris')),
+      findsOneWidget,
+    );
+    expect(DB().ruleSettings.piecesCount, 9);
+
+    await tester.tap(find.byKey(const Key('mill_variant_detail_apply_button')));
+    await tester.pumpAndSettle();
+
+    expect(DB().ruleSettings.piecesCount, 12);
+    expect(find.byKey(const Key('mill_variants_page_list')), findsOneWidget);
   });
 
   testWidgets(

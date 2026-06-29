@@ -4659,5 +4659,7 @@
     "humanVsHumanTakeBackRequesterBlack": "黑方悔棋",
     "@humanVsHumanTakeBackRequesterBlack": {},
     "coordinateTrainingShowPieces": "显示棋子",
-    "@coordinateTrainingShowPieces": {}
+    "@coordinateTrainingShowPieces": {},
+    "useVariant": "使用此棋种",
+    "@useVariant": {}
 }

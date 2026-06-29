@@ -4811,5 +4811,7 @@
     "humanVsHumanTakeBackRequesterBlack": "Black takes back",
     "@humanVsHumanTakeBackRequesterBlack": {},
     "coordinateTrainingShowPieces": "Show pieces",
-    "@coordinateTrainingShowPieces": {}
+    "@coordinateTrainingShowPieces": {},
+    "useVariant": "Use variant",
+    "@useVariant": {}
 }

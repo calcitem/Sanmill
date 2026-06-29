@@ -46,7 +46,7 @@ class MillVariantsPage extends StatelessWidget {
                       key: Key('mill_variant_${entry.id}'),
                       entry: entry,
                       selected: entry.id == currentVariant.id,
-                      onTap: () => _applyVariant(context, entry),
+                      onTap: () => _openVariantDetails(context, entry),
                     ),
                 ],
               ),
@@ -103,7 +103,7 @@ class MillVariantsPage extends StatelessWidget {
           return _VariantEntry(
             id: source.id,
             title: _localizedVariantTitle(strings, source.titleKey),
-            description: _variantDescription(strings, settings),
+            features: _variantFeatures(strings, settings),
             settings: settings,
           );
         })
@@ -141,7 +141,7 @@ class MillVariantsPage extends StatelessWidget {
     }
   }
 
-  static String _variantDescription(S strings, RuleSettings settings) {
+  static List<String> _variantFeatures(S strings, RuleSettings settings) {
     final List<String> features = <String>[
       strings.variantPieces(settings.piecesCount),
     ];
@@ -167,16 +167,27 @@ class MillVariantsPage extends StatelessWidget {
         MillFormationActionInPlacingPhase.markAndDelayRemovingPieces) {
       features.add(strings.variantDelayedCapture);
     }
-
-    return features.join(' · ');
+    return features;
   }
 
-  void _applyVariant(BuildContext context, _VariantEntry entry) {
+  void _openVariantDetails(BuildContext context, _VariantEntry entry) {
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        builder: (BuildContext context) =>
+            _MillVariantDetailsPage(entry: entry),
+      ),
+    );
+  }
+
+  static void _applyVariant(
+    BuildContext context,
+    _VariantEntry entry, {
+    bool closeRoute = false,
+  }) {
     final RuleVariant currentVariant = RuleVariant.fromRuleSettings(
       DB().ruleSettings,
     );
     if (currentVariant.id == entry.id) {
-      Navigator.of(context).maybePop();
       return;
     }
 
@@ -184,7 +195,128 @@ class MillVariantsPage extends StatelessWidget {
     ScaffoldMessenger.of(
       context,
     ).showSnackBarClear(S.of(context).variantApplied(entry.title));
-    Navigator.of(context).maybePop();
+    if (closeRoute) {
+      Navigator.of(context).pop();
+    }
+  }
+}
+
+class _MillVariantDetailsPage extends StatelessWidget {
+  const _MillVariantDetailsPage({required this.entry});
+
+  final _VariantEntry entry;
+
+  @override
+  Widget build(BuildContext context) {
+    final S strings = S.of(context);
+
+    return Scaffold(
+      key: Key('mill_variant_detail_${entry.id}'),
+      backgroundColor: Theme.of(context).colorScheme.surface,
+      appBar: AppBar(title: Text(entry.title)),
+      body: ValueListenableBuilder<Box<RuleSettings>>(
+        valueListenable: DB().listenRuleSettings,
+        builder: (BuildContext context, Box<RuleSettings> box, Widget? child) {
+          final RuleVariant currentVariant = RuleVariant.fromRuleSettings(
+            DB().ruleSettings,
+          );
+          final bool selected = currentVariant.id == entry.id;
+
+          return ListView(
+            padding: const EdgeInsets.fromLTRB(0, 16, 0, 24),
+            children: <Widget>[
+              _VariantDetailsHeader(entry: entry, selected: selected),
+              LichessListSection(
+                header: Text(strings.rules),
+                cardKey: Key('mill_variant_detail_rules_${entry.id}'),
+                children: <Widget>[
+                  for (final String feature in entry.features)
+                    ListTile(
+                      leading: const Icon(Icons.check_circle_outline_rounded),
+                      title: Text(feature),
+                    ),
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: FilledButton.icon(
+                  key: const Key('mill_variant_detail_apply_button'),
+                  onPressed: selected
+                      ? null
+                      : () => MillVariantsPage._applyVariant(
+                          context,
+                          entry,
+                          closeRoute: true,
+                        ),
+                  icon: Icon(
+                    selected ? Icons.check_rounded : Icons.play_arrow_rounded,
+                  ),
+                  label: Text(selected ? strings.selected : strings.useVariant),
+                ),
+              ),
+            ],
+          );
+        },
+      ),
+    );
+  }
+}
+
+class _VariantDetailsHeader extends StatelessWidget {
+  const _VariantDetailsHeader({required this.entry, required this.selected});
+
+  final _VariantEntry entry;
+  final bool selected;
+
+  @override
+  Widget build(BuildContext context) {
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+    final TextTheme textTheme = Theme.of(context).textTheme;
+
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          CircleAvatar(
+            radius: 24,
+            backgroundColor: colorScheme.primaryContainer,
+            foregroundColor: colorScheme.onPrimaryContainer,
+            child: const Icon(Icons.category_outlined),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: Text(
+                        entry.title,
+                        style: textTheme.titleLarge?.copyWith(
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                    if (selected)
+                      Icon(Icons.check_rounded, color: colorScheme.primary),
+                  ],
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  entry.description,
+                  style: AppStyles.tileSubtitle.copyWith(
+                    color: colorScheme.onSurfaceVariant,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
 
@@ -223,7 +355,7 @@ class _VariantTile extends StatelessWidget {
       ),
       trailing: selected
           ? Icon(Icons.check_rounded, color: colorScheme.primary)
-          : const SizedBox(width: 24),
+          : Icon(Icons.chevron_right_rounded, color: colorScheme.outline),
       onTap: onTap,
     );
   }
@@ -233,14 +365,16 @@ class _VariantEntry {
   const _VariantEntry({
     required this.id,
     required this.title,
-    required this.description,
+    required this.features,
     required this.settings,
   });
 
   final String id;
   final String title;
-  final String description;
+  final List<String> features;
   final RuleSettings settings;
+
+  String get description => features.join(' · ');
 }
 
 class _VariantSource {
