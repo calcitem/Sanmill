@@ -180,6 +180,23 @@ void main() {
       await tester.binding.handlePopRoute();
       await tester.pumpAndSettle();
 
+      await tester.tap(find.byKey(const Key('sanmill_tab_more')));
+      await tester.pumpAndSettle();
+
+      final SanmillAppShellState shellState = tester
+          .state<SanmillAppShellState>(find.byType(SanmillAppShell));
+      expect(shellState.debugCurrentTab, SanmillShellTab.more);
+      expect(
+        shellState.debugCurrentRouteId,
+        SanmillShellRouteIds.moreRoot.value,
+      );
+
+      await tester.binding.handlePopRoute();
+      await tester.pumpAndSettle();
+
+      expect(shellState.debugCurrentTab, SanmillShellTab.home);
+      expect(shellState.debugCurrentRouteId, shellState.debugPlayRouteId);
+
       // Drain any settings-save debounce timer (see the smoke test above).
       await tester.pump(const Duration(milliseconds: 350));
     },

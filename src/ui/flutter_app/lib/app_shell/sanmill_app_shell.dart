@@ -5,7 +5,8 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:feedback/feedback.dart';
-import 'package:flutter/foundation.dart' show kDebugMode, kIsWeb;
+import 'package:flutter/foundation.dart'
+    show kDebugMode, kIsWeb, visibleForTesting;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
@@ -139,6 +140,15 @@ class SanmillAppShellState extends State<SanmillAppShell> {
 
   SettingsRepository get _settingsRepository =>
       SettingsRepositories.instance.current.repository;
+
+  @visibleForTesting
+  SanmillShellTab get debugCurrentTab => _currentTab;
+
+  @visibleForTesting
+  String get debugCurrentRouteId => _routeId;
+
+  @visibleForTesting
+  String get debugPlayRouteId => _playRouteId;
 
   @override
   void initState() {
@@ -495,13 +505,19 @@ class SanmillAppShellState extends State<SanmillAppShell> {
     }
   }
 
-  bool _handleBack() {
+  Future<bool> _handleBack() async {
     final NavigatorState? navigator = _navigatorKeys[_currentTab]?.currentState;
     if (navigator?.canPop() ?? false) {
       navigator!.pop();
       return false;
     }
     if (_currentTab != SanmillShellTab.home) {
+      if (!await _transitionToRoute(_playRouteId)) {
+        return false;
+      }
+      if (!mounted) {
+        return false;
+      }
       setState(() {
         _currentTab = SanmillShellTab.home;
       });

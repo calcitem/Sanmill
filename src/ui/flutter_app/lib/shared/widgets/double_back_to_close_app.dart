@@ -8,7 +8,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-typedef WillBackCall = bool Function();
+typedef WillBackCall = FutureOr<bool> Function();
 
 /// Allows the user to close the app by double tapping the back-button.
 ///
@@ -84,13 +84,18 @@ class _DoubleBackToCloseAppState extends State<DoubleBackToCloseApp> {
       return false;
     }
 
-    if (widget.willBack != null && !widget.willBack!.call()) {
-      return false;
-    }
-
     if (_willHandlePopInternally) {
       // A local history entry such as a Drawer is waiting to handle the pop
       // event, so we must not close the application here.
+      Navigator.of(context).pop();
+      return false;
+    }
+
+    final WillBackCall? willBack = widget.willBack;
+    if (willBack != null && !await willBack()) {
+      return false;
+    }
+    if (!mounted) {
       return false;
     }
 
