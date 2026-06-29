@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import '../../game_page/widgets/mini_board.dart';
 import '../../generated/intl/l10n.dart';
 import '../../shared/database/database.dart';
+import '../../shared/themes/app_theme.dart';
 import '../models/puzzle_models.dart';
 
 /// Card widget for displaying a puzzle in the list
@@ -53,21 +54,20 @@ class PuzzleCard extends StatelessWidget {
 
     // If both edit and delete callbacks are provided, wrap in Dismissible for swipe actions
     if (onEdit != null && onDelete != null && !showSelection) {
+      final ColorScheme colorScheme = Theme.of(context).colorScheme;
       return Dismissible(
         key: Key(puzzle.id),
-        // Background for swipe right (edit) - shows on the left
         background: Container(
           alignment: Alignment.centerLeft,
           padding: const EdgeInsets.only(left: 20.0),
-          color: Colors.blue,
-          child: const Icon(Icons.edit, color: Colors.white, size: 30),
+          color: colorScheme.primary,
+          child: Icon(Icons.edit, color: colorScheme.onPrimary, size: 30),
         ),
-        // Secondary background for swipe left (delete) - shows on the right
         secondaryBackground: Container(
           alignment: Alignment.centerRight,
           padding: const EdgeInsets.only(right: 20.0),
-          color: Colors.red,
-          child: const Icon(Icons.delete, color: Colors.white, size: 30),
+          color: colorScheme.error,
+          child: Icon(Icons.delete, color: colorScheme.onError, size: 30),
         ),
         confirmDismiss: (DismissDirection direction) async {
           if (direction == DismissDirection.endToStart) {
@@ -87,7 +87,7 @@ class PuzzleCard extends StatelessWidget {
                       onPressed: () => Navigator.of(context).pop(true),
                       child: Text(
                         s.delete,
-                        style: const TextStyle(color: Colors.red),
+                        style: TextStyle(color: colorScheme.error),
                       ),
                     ),
                   ],
@@ -131,10 +131,25 @@ class PuzzleCard extends StatelessWidget {
     bool showSelection,
     bool selected,
   ) {
+    final ThemeData theme = Theme.of(context);
+    final ColorScheme colorScheme = theme.colorScheme;
+    final AppCustomColors customColors = theme.extension<AppCustomColors>()!;
+    final Color cardColor = selected
+        ? colorScheme.primaryContainer.withValues(alpha: 0.56)
+        : colorScheme.surfaceContainer;
+    final Color borderColor = selected
+        ? colorScheme.primary
+        : colorScheme.outlineVariant.withValues(alpha: 0.28);
+
     return Card(
-      elevation: selected ? 8 : 2,
-      margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-      color: selected ? Colors.blue.withValues(alpha: 0.1) : null,
+      key: Key('puzzle_card_${puzzle.id}'),
+      elevation: 0,
+      margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+      color: cardColor,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+        side: BorderSide(color: borderColor),
+      ),
       child: InkWell(
         onTap: onTap,
         onLongPress: onLongPress,
@@ -144,80 +159,94 @@ class PuzzleCard extends StatelessWidget {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              // Selection indicator (if in multi-select mode)
               if (showSelection) ...<Widget>[
                 Checkbox(value: selected, onChanged: (_) => onTap?.call()),
                 const SizedBox(width: 8),
               ],
-              // Mini board showing puzzle position
-              SizedBox(
-                width: 64,
-                height: 64,
-                child: MiniBoard(
-                  boardLayout: _extractBoardLayout(puzzle.initialPosition),
+              DecoratedBox(
+                decoration: BoxDecoration(
+                  color: colorScheme.surface,
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: colorScheme.outlineVariant),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(4),
+                  child: SizedBox(
+                    width: 64,
+                    height: 64,
+                    child: MiniBoard(
+                      boardLayout: _extractBoardLayout(puzzle.initialPosition),
+                    ),
+                  ),
                 ),
               ),
               const SizedBox(width: 12),
-
-              // Puzzle info
               Expanded(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    // Title
                     Text(
                       puzzle.title,
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      style: theme.textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
-                    ),
-                    const SizedBox(height: 4),
-
-                    // Description
-                    Text(
-                      puzzle.description,
-                      style: Theme.of(context).textTheme.bodySmall,
-                      maxLines: 2,
+                      maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
                     const SizedBox(height: 4),
-
-                    // Difficulty and category badges
+                    Text(
+                      puzzle.description,
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        color: colorScheme.onSurfaceVariant,
+                      ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    const SizedBox(height: 8),
                     Wrap(
-                      spacing: 4,
+                      spacing: 6,
+                      runSpacing: 6,
                       children: <Widget>[
                         _buildBadge(
+                          context,
                           puzzle.difficulty.getDisplayName(S.of, context),
-                          _getDifficultyColor(),
+                          _getDifficultyColor(context),
                         ),
                         _buildBadge(
+                          context,
                           puzzle.category.getDisplayName(S.of, context),
-                          Colors.blue,
+                          colorScheme.primary,
                         ),
                         if (showCustomBadge)
-                          _buildBadge(s.puzzleCustom, Colors.purple),
+                          _buildBadge(
+                            context,
+                            s.puzzleCustom,
+                            colorScheme.secondary,
+                          ),
                         if (_isRuleMismatch())
-                          _buildBadge(s.puzzleRuleMismatch, Colors.orange),
+                          _buildBadge(
+                            context,
+                            s.puzzleRuleMismatch,
+                            colorScheme.tertiary,
+                          ),
                       ],
                     ),
                   ],
                 ),
               ),
-
-              // Progress indicator
               if (!showSelection)
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     if (isCompleted)
-                      const Icon(
+                      Icon(
                         Icons.check_circle,
-                        color: Colors.green,
+                        color: customColors.good,
                         size: 32,
                       ),
                     const SizedBox(height: 4),
-                    _buildStars(stars),
+                    _buildStars(context, stars),
                   ],
                 ),
             ],
@@ -232,60 +261,69 @@ class PuzzleCard extends StatelessWidget {
   /// Example: "OO******/********/******** w p p 2 7 0 9 0 0 -1 -1 -1 -1 0 0 1 ids:nodes"
   /// Returns just the board layout part: "OO******/********/********"
   String _extractBoardLayout(String fen) {
-    final List<String> parts = fen.split(' ');
-    if (parts.isEmpty) {
-      // Return empty board if FEN is invalid
-      return '********/********/********';
-    }
+    final String trimmedFen = fen.trim();
+    assert(trimmedFen.isNotEmpty, 'Puzzle initial position must not be empty.');
+    final List<String> parts = trimmedFen.split(' ');
+    assert(
+      parts.first.isNotEmpty,
+      'Puzzle initial position must have a board.',
+    );
     return parts[0];
   }
 
-  Widget _buildBadge(String text, Color color) {
+  Widget _buildBadge(BuildContext context, String text, Color color) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+      padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
       decoration: BoxDecoration(
-        color: color.withValues(alpha: 0.2),
-        borderRadius: BorderRadius.circular(4),
+        color: color.withValues(alpha: 0.13),
+        borderRadius: BorderRadius.circular(999),
+        border: Border.all(color: color.withValues(alpha: 0.24)),
       ),
       child: Text(
         text,
-        style: TextStyle(
-          fontSize: 12, // Increased from 10 to 12 for better readability
+        style: Theme.of(context).textTheme.labelSmall?.copyWith(
           color: color,
-          fontWeight: FontWeight.w500,
+          fontWeight: FontWeight.w700,
         ),
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
       ),
     );
   }
 
-  Widget _buildStars(int count) {
+  Widget _buildStars(BuildContext context, int count) {
+    final Color color = Theme.of(context).colorScheme.tertiary;
+
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: List<Widget>.generate(
         3,
         (int index) => Icon(
           index < count ? Icons.star : Icons.star_border,
-          color: Colors.amber,
+          color: color,
           size: 16,
         ),
       ),
     );
   }
 
-  Color _getDifficultyColor() {
+  Color _getDifficultyColor(BuildContext context) {
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+    final AppCustomColors customColors = Theme.of(
+      context,
+    ).extension<AppCustomColors>()!;
+
     switch (puzzle.difficulty) {
       case PuzzleDifficulty.beginner:
-        return Colors.green;
       case PuzzleDifficulty.easy:
-        return Colors.lightGreen;
+        return customColors.good;
       case PuzzleDifficulty.medium:
-        return Colors.orange;
+        return colorScheme.tertiary;
       case PuzzleDifficulty.hard:
-        return Colors.deepOrange;
       case PuzzleDifficulty.expert:
-        return Colors.red;
+        return colorScheme.error;
       case PuzzleDifficulty.master:
-        return Colors.purple;
+        return colorScheme.secondary;
     }
   }
 }

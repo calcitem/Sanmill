@@ -9,15 +9,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart'; // Import flutter services
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sanmill/app_shell/sanmill_app_shell.dart';
+import 'package:sanmill/game_page/widgets/mini_board.dart';
 import 'package:sanmill/game_platform/game_registry.dart';
 import 'package:sanmill/game_shell/shell_route_ids.dart';
 import 'package:sanmill/games/built_in_game_modules.dart';
 import 'package:sanmill/general_settings/widgets/developer_options_page.dart';
 import 'package:sanmill/generated/intl/l10n.dart';
 import 'package:sanmill/main.dart';
+import 'package:sanmill/puzzle/models/puzzle_models.dart';
+import 'package:sanmill/puzzle/widgets/puzzle_card.dart';
 import 'package:sanmill/shared/database/database.dart';
 import 'package:sanmill/shared/services/environment_config.dart';
 import 'package:sanmill/shared/services/system_ui_service.dart';
+import 'package:sanmill/shared/themes/app_theme.dart';
 import 'package:sanmill/shared/utils/localizations/sanmill_localizations.dart';
 
 import 'helpers/test_native_library.dart';
@@ -710,6 +714,58 @@ void main() {
       );
 
       // Drain any settings-save debounce timer (see the smoke test above).
+      await tester.pump(const Duration(milliseconds: 350));
+    },
+    skip: nativeLibrarySkipReason() != null,
+  );
+
+  testWidgets(
+    'PuzzleCard uses a flat themed list-card surface',
+    (WidgetTester tester) async {
+      final PuzzleInfo puzzle = PuzzleInfo(
+        id: 'test-puzzle',
+        title: 'Opening tactic',
+        description: 'Find the forcing mill.',
+        category: PuzzleCategory.formMill,
+        difficulty: PuzzleDifficulty.medium,
+        initialPosition: '********/********/******** w p p 0 9 0 9 0 0',
+        solutions: const <PuzzleSolution>[],
+      );
+      final PuzzleProgress progress = PuzzleProgress(
+        puzzleId: puzzle.id,
+        completed: true,
+        stars: 2,
+      );
+
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: AppTheme.lightThemeData,
+          localizationsDelegates: sanmillLocalizationsDelegates,
+          supportedLocales: S.supportedLocales,
+          home: Scaffold(
+            body: Center(
+              child: PuzzleCard(
+                puzzle: puzzle,
+                progress: progress,
+                showCustomBadge: true,
+              ),
+            ),
+          ),
+        ),
+      );
+      await tester.pump();
+
+      final Finder cardFinder = find.byKey(
+        const Key('puzzle_card_test-puzzle'),
+      );
+      final BuildContext cardContext = tester.element(cardFinder);
+      final Card card = tester.widget<Card>(cardFinder);
+      expect(card.elevation, 0);
+      expect(card.color, Theme.of(cardContext).colorScheme.surfaceContainer);
+      expect(find.text('Opening tactic'), findsOneWidget);
+      expect(find.byType(MiniBoard), findsOneWidget);
+      expect(find.byIcon(Icons.check_circle), findsOneWidget);
+
       await tester.pump(const Duration(milliseconds: 350));
     },
     skip: nativeLibrarySkipReason() != null,
