@@ -4637,5 +4637,15 @@
                 "type": "String"
             }
         }
-    }
+    },
+    "coordinateTraining": "坐标训练",
+    "@coordinateTraining": {},
+    "coordinateTrainingStart": "开始训练",
+    "@coordinateTrainingStart": {},
+    "coordinateTrainingAbort": "停止训练",
+    "@coordinateTrainingAbort": {},
+    "coordinateTrainingShowCoordinates": "显示坐标",
+    "@coordinateTrainingShowCoordinates": {},
+    "coordinateTrainingDescription": "棋盘上会出现一个坐标。请尽快点击对应的 Mill 棋盘交点。你有 30 秒时间尽可能找到更多坐标。",
+    "@coordinateTrainingDescription": {}
 }

@@ -11,6 +11,7 @@ import '../appearance_settings/widgets/appearance_settings_page.dart';
 import '../game_platform/game_registry.dart';
 import '../game_shell/shell_route_ids.dart';
 import '../general_settings/widgets/general_settings_page.dart';
+import '../learn/mill_coordinate_training_page.dart';
 import '../misc/about_page.dart';
 import '../misc/clock_tool_page.dart';
 import '../misc/how_to_play_screen.dart';
@@ -33,6 +34,9 @@ Widget? buildAppRouteScreen(BuildContext context, String routeId) {
   }
   if (routeId == ShellRouteIds.appAbout.value) {
     return const AboutPage();
+  }
+  if (routeId == ShellRouteIds.appCoordinateTraining.value) {
+    return const MillCoordinateTrainingPage();
   }
   if (routeId == ShellRouteIds.appClock.value) {
     return const ClockToolPage();

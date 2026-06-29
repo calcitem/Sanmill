@@ -266,6 +266,10 @@ void main() {
       );
       expect(find.byKey(const Key('sanmill_learn_tools_group')), findsNothing);
       expect(
+        find.byKey(const Key('sanmill_learn_coordinate_training')),
+        findsOneWidget,
+      );
+      expect(
         find.byKey(const Key('sanmill_learn_how_to_play')),
         findsOneWidget,
       );
@@ -281,6 +285,65 @@ void main() {
         find.byKey(const Key('how_to_play_screen_scaffold')),
         findsNothing,
       );
+
+      await tester.tap(
+        find.byKey(const Key('sanmill_learn_coordinate_training')),
+      );
+      await tester.pumpAndSettle();
+
+      final BuildContext coordinateTrainingContext = tester.element(
+        find.byKey(const Key('mill_coordinate_training_page_scaffold')),
+      );
+      final Scaffold coordinateTrainingScaffold = tester.widget<Scaffold>(
+        find.byKey(const Key('mill_coordinate_training_page_scaffold')),
+      );
+      expect(
+        coordinateTrainingScaffold.backgroundColor,
+        Theme.of(coordinateTrainingContext).colorScheme.surface,
+      );
+      expect(
+        shellState.debugCurrentRouteId,
+        ShellRouteIds.appCoordinateTraining.value,
+      );
+      expect(
+        find.byKey(const Key('mill_coordinate_training_board')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const Key('mill_coordinate_training_start_button')),
+        findsOneWidget,
+      );
+
+      await tester.tap(
+        find.byKey(const Key('mill_coordinate_training_start_button')),
+      );
+      await tester.pump();
+
+      expect(
+        find.byKey(const Key('mill_coordinate_training_score')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const Key('mill_coordinate_training_action_button')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const Key('mill_coordinate_training_bottom_bar')),
+        findsNothing,
+      );
+
+      await tester.tap(
+        find.byKey(const Key('mill_coordinate_training_action_button')),
+      );
+      await tester.pumpAndSettle();
+
+      expect(
+        find.byKey(const Key('mill_coordinate_training_start_button')),
+        findsOneWidget,
+      );
+
+      await tester.binding.handlePopRoute();
+      await tester.pumpAndSettle();
 
       await tester.tap(find.byKey(const Key('sanmill_learn_how_to_play')));
       await tester.pumpAndSettle();

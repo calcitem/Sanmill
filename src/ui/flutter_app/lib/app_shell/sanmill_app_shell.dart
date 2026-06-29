@@ -2081,6 +2081,15 @@ class _LearnTabRoot extends StatelessWidget {
               title: strings.learn,
               headerKey: const Key('sanmill_learn_guides_group'),
               children: <Widget>[
+                if (GameRegistry.instance.current.metadata.id == GameId.mill)
+                  _MoreTile(
+                    key: const Key('sanmill_learn_coordinate_training'),
+                    icon: Symbols.where_to_vote,
+                    title: strings.coordinateTraining,
+                    onTap: () => onLearnRouteSelected(
+                      ShellRouteIds.appCoordinateTraining.value,
+                    ),
+                  ),
                 _MoreTile(
                   key: const Key('sanmill_learn_how_to_play'),
                   icon: Icons.school_rounded,

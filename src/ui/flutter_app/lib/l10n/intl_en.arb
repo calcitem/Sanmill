@@ -4789,5 +4789,15 @@
                 "type": "String"
             }
         }
-    }
+    },
+    "coordinateTraining": "Coordinate training",
+    "@coordinateTraining": {},
+    "coordinateTrainingStart": "Start training",
+    "@coordinateTrainingStart": {},
+    "coordinateTrainingAbort": "Abort training",
+    "@coordinateTrainingAbort": {},
+    "coordinateTrainingShowCoordinates": "Show coordinates",
+    "@coordinateTrainingShowCoordinates": {},
+    "coordinateTrainingDescription": "A coordinate appears on the board. Tap the matching Mill point as quickly as possible. You have 30 seconds to find as many coordinates as you can.",
+    "@coordinateTrainingDescription": {}
 }

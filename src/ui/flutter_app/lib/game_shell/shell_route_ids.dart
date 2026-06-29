@@ -25,6 +25,9 @@ abstract final class ShellRouteIds {
   static const GameRouteId appHowToPlay = GameRouteId('app.help.howToPlay');
   static const GameRouteId appFeedback = GameRouteId('app.help.feedback');
   static const GameRouteId appAbout = GameRouteId('app.help.about');
+  static const GameRouteId appCoordinateTraining = GameRouteId(
+    'app.learn.coordinateTraining',
+  );
   static const GameRouteId appClock = GameRouteId('app.tools.clock');
   static const GameRouteId appVariants = GameRouteId('app.tools.variants');
   static const GameRouteId appExit = GameRouteId('app.exit');
