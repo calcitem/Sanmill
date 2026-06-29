@@ -6,6 +6,7 @@ import 'dart:async';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sanmill/game_platform/game_platform.dart';
+import 'package:sanmill/games/built_in_game_modules.dart';
 import 'package:sanmill/games/demo_probe/demo_probe_game_module.dart';
 import 'package:sanmill/games/demo_probe/demo_probe_notation_port.dart';
 import 'package:sanmill/games/demo_probe/demo_probe_rules_port.dart';
@@ -193,6 +194,26 @@ void main() {
     expect(module.metadata.id, GameId.othello);
     expect(module.metadata.showInGamePicker, isFalse);
   });
+
+  test(
+    'Built-in app modules expose only Mill while the UI focuses on Mill',
+    () {
+      final GameRegistry registry = GameRegistry.instance;
+      registry.resetForTesting();
+
+      registerBuiltInGameModules(registry);
+
+      expect(
+        registry.registeredModules.map(
+          (GameModule module) => module.metadata.id,
+        ),
+        <GameId>[GameId.mill],
+      );
+      expect(registry.currentId, GameId.mill);
+
+      registry.resetForTesting();
+    },
+  );
 
   test('DemoProbeRulesPort detects tic-tac-toe wins', () {
     final DemoProbeRulesPort rules = DemoProbeRulesPort();
