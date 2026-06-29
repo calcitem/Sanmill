@@ -369,6 +369,10 @@
     "@settings": {
         "description": "Settings"
     },
+    "tools": "Tools",
+    "@tools": {
+        "description": "Tools section title"
+    },
     "options": "Options",
     "@options": {
         "description": "Options"

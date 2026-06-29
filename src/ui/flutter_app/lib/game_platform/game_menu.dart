@@ -7,7 +7,7 @@ import 'game_route_id.dart';
 import 'game_session.dart';
 
 /// Where a game module wants its action to appear in the app shell.
-enum GameMenuSection { play, game, settings, help, debug }
+enum GameMenuSection { play, tools, game, settings, help, debug }
 
 typedef GameMenuWidgetBuilder =
     Widget Function(BuildContext context, {Key? key, GameSession? session});
@@ -51,6 +51,7 @@ class GameModeEntry {
     required this.id,
     required this.label,
     required this.builder,
+    this.section = GameMenuSection.play,
     this.icon,
     this.isAvailable,
     this.drawerKey,
@@ -60,6 +61,7 @@ class GameModeEntry {
   final GameRouteId id;
   final String label;
   final IconData? icon;
+  final GameMenuSection section;
   final GameMenuWidgetBuilder builder;
 
   /// Stable key for the drawer item. Keep old values stable across refactors.

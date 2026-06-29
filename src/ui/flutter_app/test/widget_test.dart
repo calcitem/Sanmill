@@ -191,6 +191,7 @@ void main() {
       );
       expect(homeAppBarTitle.data, 'Mill');
       expect(find.byKey(const Key('drawer_item_human_vs_ai')), findsOneWidget);
+      expect(find.byKey(const Key('drawer_item_setup_position')), findsNothing);
       expect(
         find.byKey(const Key('play_area_lichess_bottom_bar')),
         findsNothing,
@@ -229,6 +230,11 @@ void main() {
       );
       expect(moreAppBarTitle.data, 'Mill');
       expect(find.byKey(const Key('more_human_vs_ai')), findsNothing);
+      expect(find.byKey(const Key('drawer_item_tools_group')), findsOneWidget);
+      expect(
+        find.byKey(const Key('drawer_item_setup_position')),
+        findsOneWidget,
+      );
 
       final BuildContext settingsTileContext = tester.element(
         find.byKey(const Key('drawer_item_general_settings')),

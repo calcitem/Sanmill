@@ -46,13 +46,22 @@ void main() {
       final GameModeEntry humanVsHuman = playModes.singleWhere(
         (GameModeEntry mode) => mode.id == MillRouteIds.humanVsHuman,
       );
+      final GameModeEntry setupPosition = playModes.singleWhere(
+        (GameModeEntry mode) => mode.id == MillRouteIds.setupPosition,
+      );
 
       expect(humanVsAi.drawerKey, const Key('drawer_item_human_vs_ai'));
       expect(humanVsAi.contentKey, const Key('human_ai'));
+      expect(humanVsAi.section, GameMenuSection.play);
       expect(humanVsAi.icon, isNotNull);
       expect(humanVsHuman.drawerKey, const Key('drawer_item_human_vs_human'));
       expect(humanVsHuman.contentKey, const Key('human_human'));
+      expect(humanVsHuman.section, GameMenuSection.play);
       expect(humanVsHuman.icon, isNotNull);
+      expect(setupPosition.drawerKey, const Key('drawer_item_setup_position'));
+      expect(setupPosition.contentKey, const Key('setup_position'));
+      expect(setupPosition.section, GameMenuSection.tools);
+      expect(setupPosition.icon, isNotNull);
     });
 
     testWidgets('Mill gates optional drawer contributions with capabilities', (

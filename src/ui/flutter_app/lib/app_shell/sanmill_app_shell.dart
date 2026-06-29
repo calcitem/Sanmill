@@ -850,7 +850,10 @@ class _HomeTabRoot extends StatelessWidget {
     final GameModule module = GameRegistry.instance.current;
     final List<GameModeEntry> playModes = module
         .playModes(context)
-        .where((GameModeEntry mode) => mode.availableIn(context))
+        .where(
+          (GameModeEntry mode) =>
+              mode.section == GameMenuSection.play && mode.availableIn(context),
+        )
         .toList(growable: false);
 
     return Scaffold(
@@ -1000,10 +1003,31 @@ class _MenuEntries extends StatelessWidget {
   Widget build(BuildContext context) {
     final S strings = S.of(context);
     final GameModule module = GameRegistry.instance.current;
+    final List<GameModeEntry> tools = module
+        .playModes(context)
+        .where(
+          (GameModeEntry mode) =>
+              mode.section == GameMenuSection.tools &&
+              mode.availableIn(context),
+        )
+        .toList(growable: false);
 
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
+        _MoreSection(
+          title: strings.tools,
+          headerKey: const Key('drawer_item_tools_group'),
+          children: <Widget>[
+            for (final GameModeEntry tool in tools)
+              _MoreTile(
+                key: tool.drawerKey ?? Key('more_tool_${tool.id.value}'),
+                icon: tool.icon ?? Icons.build_rounded,
+                title: tool.label,
+                onTap: () => onAppRouteSelected(tool.id.value),
+              ),
+          ],
+        ),
         _MoreSection(
           title: strings.settings,
           headerKey: const Key('drawer_item_settings_group'),

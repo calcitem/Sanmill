@@ -164,7 +164,7 @@ Future<void> navigateToShellItem(WidgetTester tester, String itemKey) async {
       await _tapHomePlayItem(tester, itemKey);
       return;
     case 'drawer_item_setup_position':
-      await _tapHomePlayItem(tester, itemKey);
+      await _tapMoreItem(tester, itemKey);
       return;
     case 'drawer_item_general_settings':
     case 'drawer_item_general_settings_child':
