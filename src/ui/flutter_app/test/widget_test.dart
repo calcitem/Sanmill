@@ -248,6 +248,38 @@ void main() {
       expect(find.byKey(const Key('puzzles_home_rush')), findsOneWidget);
       expect(find.byKey(const Key('puzzles_home_streak')), findsOneWidget);
 
+      await tester.tap(find.byKey(const Key('sanmill_tab_watch')));
+      await tester.pumpAndSettle();
+
+      expect(shellState.debugCurrentTab, SanmillShellTab.watch);
+      expect(find.byKey(const Key('sanmill_watch_list')), findsOneWidget);
+      expect(find.byKey(const Key('drawer_item_statistics')), findsOneWidget);
+
+      await tester.tap(find.byKey(const Key('drawer_item_statistics')));
+      await tester.pumpAndSettle();
+
+      expect(find.byKey(const Key('statistics_page_scaffold')), findsOneWidget);
+      expect(
+        find.byKey(const Key('statistics_page_human_rating_card')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const Key('statistics_page_games_played_row')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const Key('statistics_page_ai_statistics_card')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const Key('statistics_page_ai_level_1')),
+        findsOneWidget,
+      );
+      expect(find.byType(DataTable), findsNothing);
+
+      await tester.binding.handlePopRoute();
+      await tester.pumpAndSettle();
+
       await tester.tap(find.byKey(const Key('sanmill_tab_more')));
       await tester.pumpAndSettle();
 

@@ -145,7 +145,9 @@ class StatisticsPage extends StatelessWidget {
   Widget _buildHumanStatsCard(BuildContext context, PlayerStats humanStats) {
     final S l10n = S.of(context);
     final DateFormat dateFormat = DateFormat.yMd().add_Hm();
-    final ThemeData theme = Theme.of(context);
+    final String lastUpdated = humanStats.lastUpdated != null
+        ? dateFormat.format(humanStats.lastUpdated!)
+        : "-";
 
     return SettingsCard(
       key: const Key('statistics_page_human_rating_card'),
@@ -154,289 +156,55 @@ class StatisticsPage extends StatelessWidget {
         key: const Key('statistics_page_human_rating_card_title'),
       ),
       children: <Widget>[
-        // Central large rating display
+        _RatingSummary(
+          rating: humanStats.rating,
+          ratingColor: _getRatingColor(context, humanStats.rating),
+        ),
         Padding(
-          padding: const EdgeInsets.symmetric(vertical: 16.0),
-          child: Center(
-            child: Text(
-              '${humanStats.rating}',
-              style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                color: _getRatingColor(context, humanStats.rating),
-              ),
-            ),
-          ),
-        ),
-
-        // Wins/Draws/Losses in table format with large text
-        Container(
-          margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
-          decoration: BoxDecoration(
-            color: theme.colorScheme.surfaceContainerHighest.withValues(
-              alpha: 0.3,
-            ),
-            borderRadius: BorderRadius.circular(8),
-          ),
-          child: Table(
-            defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-            children: <TableRow>[
-              // Header row
-              TableRow(
-                decoration: BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(
-                      color: theme.colorScheme.onSurface.withValues(alpha: 0.1),
-                    ),
-                  ),
+          padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+          child: Row(
+            children: <Widget>[
+              Expanded(
+                child: _ResultMetric(
+                  label: l10n.wins,
+                  value: humanStats.wins.toString(),
+                  detail: _formatRate(humanStats.wins, humanStats.gamesPlayed),
+                  color: Theme.of(context).colorScheme.primary,
                 ),
-                children: <Widget>[
-                  TableCell(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Center(
-                        child: Text(
-                          l10n.wins,
-                          style: theme.textTheme.bodyMedium?.copyWith(
-                            color: theme.colorScheme.onSurface.withValues(
-                              alpha: 0.6,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  TableCell(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Center(
-                        child: Text(
-                          l10n.draws,
-                          style: theme.textTheme.bodyMedium?.copyWith(
-                            color: theme.colorScheme.onSurface.withValues(
-                              alpha: 0.6,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  TableCell(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Center(
-                        child: Text(
-                          l10n.losses,
-                          style: theme.textTheme.bodyMedium?.copyWith(
-                            color: theme.colorScheme.onSurface.withValues(
-                              alpha: 0.6,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
               ),
-              // Values row with large text
-              TableRow(
-                children: <Widget>[
-                  TableCell(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 12.0),
-                      child: Center(
-                        child: Text(
-                          '${humanStats.wins}',
-                          style: theme.textTheme.titleLarge?.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.green,
-                          ),
-                        ),
-                      ),
-                    ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: _ResultMetric(
+                  label: l10n.draws,
+                  value: humanStats.draws.toString(),
+                  detail: _formatRate(humanStats.draws, humanStats.gamesPlayed),
+                  color: Theme.of(context).colorScheme.secondary,
+                ),
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: _ResultMetric(
+                  label: l10n.losses,
+                  value: humanStats.losses.toString(),
+                  detail: _formatRate(
+                    humanStats.losses,
+                    humanStats.gamesPlayed,
                   ),
-                  TableCell(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 12.0),
-                      child: Center(
-                        child: Text(
-                          '${humanStats.draws}',
-                          style: theme.textTheme.titleLarge?.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.blue,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  TableCell(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 12.0),
-                      child: Center(
-                        child: Text(
-                          '${humanStats.losses}',
-                          style: theme.textTheme.titleLarge?.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.red,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
+                  color: Theme.of(context).colorScheme.error,
+                ),
               ),
             ],
           ),
         ),
-
-        // Percentage table showing win/draw/loss rates
-        Container(
-          margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
-          decoration: BoxDecoration(
-            color: theme.colorScheme.surfaceContainerHighest.withValues(
-              alpha: 0.3,
-            ),
-            borderRadius: BorderRadius.circular(8),
-          ),
-          child: Table(
-            defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-            children: <TableRow>[
-              // Header row
-              TableRow(
-                decoration: BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(
-                      color: theme.colorScheme.onSurface.withValues(alpha: 0.1),
-                    ),
-                  ),
-                ),
-                children: <Widget>[
-                  TableCell(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Center(
-                        child: Text(
-                          S.of(context).winRate, // Win rate
-                          style: theme.textTheme.bodyMedium?.copyWith(
-                            color: theme.colorScheme.onSurface.withValues(
-                              alpha: 0.6,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  TableCell(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Center(
-                        child: Text(
-                          S.of(context).drawRate, // Draw rate
-                          style: theme.textTheme.bodyMedium?.copyWith(
-                            color: theme.colorScheme.onSurface.withValues(
-                              alpha: 0.6,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  TableCell(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Center(
-                        child: Text(
-                          S.of(context).lossRate, // Loss rate
-                          style: theme.textTheme.bodyMedium?.copyWith(
-                            color: theme.colorScheme.onSurface.withValues(
-                              alpha: 0.6,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              // Values row with percentage
-              TableRow(
-                children: <Widget>[
-                  TableCell(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 12.0),
-                      child: Center(
-                        child: Text(
-                          humanStats.gamesPlayed > 0
-                              ? '${(humanStats.wins / humanStats.gamesPlayed * 100).toStringAsFixed(1)}%'
-                              : '0.0%',
-                          style: theme.textTheme.titleLarge?.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.green,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  TableCell(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 12.0),
-                      child: Center(
-                        child: Text(
-                          humanStats.gamesPlayed > 0
-                              ? '${(humanStats.draws / humanStats.gamesPlayed * 100).toStringAsFixed(1)}%'
-                              : '0.0%',
-                          style: theme.textTheme.titleLarge?.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.blue,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  TableCell(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 12.0),
-                      child: Center(
-                        child: Text(
-                          humanStats.gamesPlayed > 0
-                              ? '${(humanStats.losses / humanStats.gamesPlayed * 100).toStringAsFixed(1)}%'
-                              : '0.0%',
-                          style: theme.textTheme.titleLarge?.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.red,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
+        ListTile(
+          key: const Key('statistics_page_games_played_row'),
+          title: Text(l10n.gamesPlayed),
+          trailing: _StatTrailingText(humanStats.gamesPlayed.toString()),
         ),
-
-        // Games Played and Last Updated as separate items
-        Column(
-          children: <Widget>[
-            ListTile(
-              title: Text(l10n.gamesPlayed),
-              trailing: Text(
-                humanStats.gamesPlayed.toString(),
-                style: theme.textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-            ListTile(
-              title: Text(l10n.lastUpdated),
-              trailing: Text(
-                humanStats.lastUpdated != null
-                    ? dateFormat.format(humanStats.lastUpdated!)
-                    : "-",
-                style: theme.textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-          ],
+        ListTile(
+          key: const Key('statistics_page_last_updated_row'),
+          title: Text(l10n.lastUpdated),
+          trailing: _StatTrailingText(lastUpdated),
         ),
       ],
     );
@@ -447,114 +215,42 @@ class StatisticsPage extends StatelessWidget {
     StatsSettings settings,
   ) {
     final S l10n = S.of(context);
-    final ThemeData theme = Theme.of(context);
-
-    // Define monospace text style for statistics
-    const TextStyle monoStyle = TextStyle(
-      fontFamily: 'monospace',
-      fontFeatures: <FontFeature>[FontFeature.tabularFigures()],
-    );
 
     return SettingsCard(
       key: const Key('statistics_page_ai_statistics_card'),
       title: Text(
-        S.of(context).aiStatistics,
+        l10n.aiStatistics,
         key: const Key('statistics_page_ai_statistics_card_title'),
       ),
       children: <Widget>[
-        // DataTable for AI statistics
-        SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: DataTable(
-            columnSpacing: 20,
-            columns: const <DataColumn>[
-              DataColumn(
-                label: Center(child: Text('🎚️')), // Difficulty Level
-                numeric: true,
-              ),
-              DataColumn(
-                label: Center(child: Text('⭐')), // Rating
-                numeric: true,
-              ),
-              DataColumn(label: Center(child: Text('🔢'))), // Total
-              DataColumn(
-                label: Center(child: Text('⚪')),
-              ), // White (Human perspective)
-              DataColumn(
-                label: Center(child: Text('⚫')),
-              ), // Black (Human perspective)
-            ],
-            rows: List<DataRow>.generate(
-              30, // Display levels 1-30
-              (int index) {
-                final int level = index + 1; // Levels start from 1
-                // Get the Statistics object for statistics (games played, wins, losses, draws, etc.)
-                final PlayerStats aiLvlStats = settings.getAiDifficultyStats(
-                  level,
-                );
-
-                // Get the actual fixed ELO rating for this AI level for display
-                final int fixedAiEloRating =
-                    EloRatingService.getFixedAiEloRating(level);
-
-                // Format: L/D/W (Losses/Draws/Wins) - Human perspective
-                final String totalStats =
-                    '${aiLvlStats.losses}/${aiLvlStats.draws}/${aiLvlStats.wins}';
-
-                // Black stats from AI perspective becomes White stats from Human perspective (L/D/W format)
-                final String whiteStats = aiLvlStats.blackGamesPlayed > 0
-                    ? '${aiLvlStats.blackLosses}/${aiLvlStats.blackDraws}/${aiLvlStats.blackWins}'
-                    : '0/0/0';
-
-                // White stats from AI perspective becomes Black stats from Human perspective (L/D/W format)
-                final String blackStats = aiLvlStats.whiteGamesPlayed > 0
-                    ? '${aiLvlStats.whiteLosses}/${aiLvlStats.whiteDraws}/${aiLvlStats.whiteWins}'
-                    : '0/0/0';
-
-                return DataRow(
-                  cells: <DataCell>[
-                    // Level
-                    DataCell(
-                      Text(
-                        '$level',
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                    // ELO rating - Use the fixed ELO for display
-                    DataCell(
-                      Text(
-                        '$fixedAiEloRating', // Display the fixed ELO rating
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: _getRatingColor(
-                            context,
-                            fixedAiEloRating,
-                          ), // Color based on fixed ELO
-                        ),
-                      ),
-                    ),
-                    // Total stats with monospace font - from human perspective
-                    DataCell(Text(totalStats, style: monoStyle)),
-                    // White stats with monospace font - from human perspective
-                    DataCell(Text(whiteStats, style: monoStyle)),
-                    // Black stats with monospace font - from human perspective
-                    DataCell(Text(blackStats, style: monoStyle)),
-                  ],
-                );
-              },
+        Padding(
+          padding: const EdgeInsets.fromLTRB(16, 14, 16, 6),
+          child: Text(
+            '${l10n.format} W/D/L (${l10n.wins}/${l10n.draws}/${l10n.losses})',
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
             ),
           ),
         ),
-
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(
-            '${S.of(context).format} W/D/L (${l10n.wins}/${l10n.draws}/${l10n.losses})',
-            style: theme.textTheme.bodySmall,
+        for (int level = 1; level <= 30; level++)
+          _AiDifficultyStatsTile(
+            key: Key('statistics_page_ai_level_$level'),
+            level: level,
+            rating: EloRatingService.getFixedAiEloRating(level),
+            stats: settings.getAiDifficultyStats(level),
+            ratingColor: _getRatingColor(
+              context,
+              EloRatingService.getFixedAiEloRating(level),
+            ),
           ),
-        ),
       ],
     );
+  }
+
+  String _formatRate(int count, int total) {
+    assert(count >= 0, 'Statistics count must not be negative.');
+    assert(total >= 0, 'Statistics total must not be negative.');
+    return total > 0 ? '${(count / total * 100).toStringAsFixed(1)}%' : '0.0%';
   }
 
   Color _getRatingColor(BuildContext context, int rating) {
@@ -571,5 +267,161 @@ class StatisticsPage extends StatelessWidget {
     } else {
       return Colors.red; // Beginner
     }
+  }
+}
+
+class _RatingSummary extends StatelessWidget {
+  const _RatingSummary({required this.rating, required this.ratingColor});
+
+  final int rating;
+  final Color ratingColor;
+
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 20, 16, 18),
+      child: Column(
+        children: <Widget>[
+          Text(
+            rating.toString(),
+            style: theme.textTheme.displaySmall?.copyWith(
+              color: ratingColor,
+              fontWeight: FontWeight.w700,
+              fontFeatures: const <FontFeature>[FontFeature.tabularFigures()],
+            ),
+          ),
+          const SizedBox(height: 2),
+          Text(
+            S.of(context).myRating,
+            style: theme.textTheme.bodyMedium?.copyWith(
+              color: theme.colorScheme.onSurfaceVariant,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _ResultMetric extends StatelessWidget {
+  const _ResultMetric({
+    required this.label,
+    required this.value,
+    required this.detail,
+    required this.color,
+  });
+
+  final String label;
+  final String value;
+  final String detail;
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: color.withValues(alpha: 0.10),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Text(
+              value,
+              style: theme.textTheme.titleLarge?.copyWith(
+                color: color,
+                fontWeight: FontWeight.w700,
+                fontFeatures: const <FontFeature>[FontFeature.tabularFigures()],
+              ),
+            ),
+            const SizedBox(height: 2),
+            Text(
+              label,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: theme.colorScheme.onSurfaceVariant,
+              ),
+            ),
+            const SizedBox(height: 2),
+            Text(
+              detail,
+              style: theme.textTheme.labelMedium?.copyWith(color: color),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _AiDifficultyStatsTile extends StatelessWidget {
+  const _AiDifficultyStatsTile({
+    super.key,
+    required this.level,
+    required this.rating,
+    required this.stats,
+    required this.ratingColor,
+  });
+
+  final int level;
+  final int rating;
+  final PlayerStats stats;
+  final Color ratingColor;
+
+  @override
+  Widget build(BuildContext context) {
+    assert(level >= 1 && level <= 30, 'AI difficulty level must be 1-30.');
+    final S l10n = S.of(context);
+    final TextStyle? monoStyle = Theme.of(context).textTheme.bodySmall
+        ?.copyWith(
+          fontFeatures: const <FontFeature>[FontFeature.tabularFigures()],
+        );
+
+    return ListTile(
+      title: Text('${l10n.difficulty} $level'),
+      subtitle: Text(
+        '${l10n.totalGames}: ${_score(stats.losses, stats.draws, stats.wins)}\n'
+        '${l10n.white}: ${_score(stats.blackLosses, stats.blackDraws, stats.blackWins)} · '
+        '${l10n.black}: ${_score(stats.whiteLosses, stats.whiteDraws, stats.whiteWins)}',
+        maxLines: 2,
+        overflow: TextOverflow.ellipsis,
+        style: monoStyle,
+      ),
+      trailing: _StatTrailingText(rating.toString(), color: ratingColor),
+    );
+  }
+
+  String _score(int wins, int draws, int losses) {
+    assert(wins >= 0, 'Wins must not be negative.');
+    assert(draws >= 0, 'Draws must not be negative.');
+    assert(losses >= 0, 'Losses must not be negative.');
+    return '$wins/$draws/$losses';
+  }
+}
+
+class _StatTrailingText extends StatelessWidget {
+  const _StatTrailingText(this.value, {this.color});
+
+  final String value;
+  final Color? color;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      value,
+      textAlign: TextAlign.end,
+      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+        color: color,
+        fontWeight: FontWeight.w700,
+        fontFeatures: const <FontFeature>[FontFeature.tabularFigures()],
+      ),
+    );
   }
 }
