@@ -4723,5 +4723,7 @@
     "openingExplorerPerfectMove": "Perfect move",
     "@openingExplorerPerfectMove": {},
     "openingExplorerBookMove": "Book move",
-    "@openingExplorerBookMove": {}
+    "@openingExplorerBookMove": {},
+    "openingExplorerGames": "Games",
+    "@openingExplorerGames": {}
 }

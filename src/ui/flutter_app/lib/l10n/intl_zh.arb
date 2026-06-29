@@ -4571,5 +4571,7 @@
     "openingExplorerPerfectMove": "完美着法",
     "@openingExplorerPerfectMove": {},
     "openingExplorerBookMove": "开局库着法",
-    "@openingExplorerBookMove": {}
+    "@openingExplorerBookMove": {},
+    "openingExplorerGames": "对局",
+    "@openingExplorerGames": {}
 }

@@ -187,6 +187,8 @@ Future<void> navigateToShellItem(WidgetTester tester, String itemKey) async {
     case 'drawer_item_how_to_play':
     case 'drawer_item_how_to_play_child':
       await tapSanmillTab(tester, 'learn');
+      await tester.tap(find.byKey(const Key('sanmill_learn_how_to_play')));
+      await tester.pumpAndSettle();
       return;
     case 'drawer_item_about':
     case 'drawer_item_about_child':

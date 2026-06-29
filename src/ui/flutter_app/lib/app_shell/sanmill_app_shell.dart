@@ -95,6 +95,7 @@ enum SanmillShellTab {
 
 abstract final class SanmillShellRouteIds {
   static const GameRouteId homeRoot = GameRouteId('app.tab.home');
+  static const GameRouteId learnRoot = GameRouteId('app.tab.learn');
   static const GameRouteId watchRoot = GameRouteId('app.tab.watch');
   static const GameRouteId moreRoot = GameRouteId('app.tab.more');
 }
@@ -455,6 +456,33 @@ class SanmillAppShellState extends State<SanmillAppShell> {
     );
   }
 
+  Future<void> _pushLearnRoute(String routeId) async {
+    final Widget? screen =
+        buildModuleScreenForGame(
+          context,
+          GameRegistry.instance.currentId,
+          routeId,
+          session: _activeSession,
+        ) ??
+        buildAppShellScreen(context, routeId);
+    if (screen == null) {
+      logger.w('No Learn screen for route $routeId.');
+      return;
+    }
+    if (!await _transitionToRoute(routeId)) {
+      return;
+    }
+    if (!mounted) {
+      return;
+    }
+    setState(() {
+      _currentTab = SanmillShellTab.learn;
+    });
+    _navigatorKeys[SanmillShellTab.learn]?.currentState?.push(
+      MaterialPageRoute<void>(builder: (_) => screen),
+    );
+  }
+
   String _rootRouteIdForTab(SanmillShellTab tab) {
     switch (tab) {
       case SanmillShellTab.home:
@@ -463,7 +491,7 @@ class SanmillAppShellState extends State<SanmillAppShell> {
         return _puzzlesContribution(context)?.id.value ??
             SanmillShellRouteIds.moreRoot.value;
       case SanmillShellTab.learn:
-        return ShellRouteIds.appHowToPlay.value;
+        return SanmillShellRouteIds.learnRoot.value;
       case SanmillShellTab.watch:
         return SanmillShellRouteIds.watchRoot.value;
       case SanmillShellTab.more:
@@ -484,6 +512,22 @@ class SanmillAppShellState extends State<SanmillAppShell> {
       context,
       (GameMenuContribution contribution) =>
           contribution.id.value.toLowerCase().contains('statistic'),
+    );
+  }
+
+  GameMenuContribution? _analysisContribution(BuildContext context) {
+    return _findContribution(
+      context,
+      (GameMenuContribution contribution) =>
+          contribution.id.value.toLowerCase().contains('analysis'),
+    );
+  }
+
+  GameMenuContribution? _openingExplorerContribution(BuildContext context) {
+    return _findContribution(
+      context,
+      (GameMenuContribution contribution) =>
+          contribution.id.value.toLowerCase().contains('opening'),
     );
   }
 
@@ -533,9 +577,11 @@ class SanmillAppShellState extends State<SanmillAppShell> {
             ? _UnavailableTabPage(label: S.of(context).puzzles)
             : _buildScrollableRouteSurface(tab, contribution.id.value);
       case SanmillShellTab.learn:
-        return _buildScrollableRouteSurface(
-          tab,
-          ShellRouteIds.appHowToPlay.value,
+        return _LearnTabRoot(
+          scrollController: _scrollControllers[SanmillShellTab.learn]!,
+          analysisContribution: _analysisContribution(context),
+          openingExplorerContribution: _openingExplorerContribution(context),
+          onLearnRouteSelected: _pushLearnRoute,
         );
       case SanmillShellTab.watch:
         return _WatchTabRoot(
@@ -1431,6 +1477,69 @@ class _PlayBottomSheet extends StatelessWidget {
               },
             ),
         ],
+      ),
+    );
+  }
+}
+
+class _LearnTabRoot extends StatelessWidget {
+  const _LearnTabRoot({
+    required this.scrollController,
+    required this.analysisContribution,
+    required this.openingExplorerContribution,
+    required this.onLearnRouteSelected,
+  });
+
+  final ScrollController scrollController;
+  final GameMenuContribution? analysisContribution;
+  final GameMenuContribution? openingExplorerContribution;
+  final ValueChanged<String> onLearnRouteSelected;
+
+  @override
+  Widget build(BuildContext context) {
+    final S strings = S.of(context);
+    final List<GameMenuContribution> studyTools = <GameMenuContribution>[
+      ?analysisContribution,
+      ?openingExplorerContribution,
+    ];
+
+    return Scaffold(
+      appBar: AppBar(title: Text(strings.learn)),
+      body: ListTileTheme.merge(
+        iconColor: Theme.of(context).colorScheme.primary,
+        child: ListView(
+          key: const Key('sanmill_learn_list'),
+          controller: scrollController,
+          padding: const EdgeInsets.fromLTRB(12, 8, 12, 24),
+          children: <Widget>[
+            _MoreSection(
+              title: strings.learn,
+              headerKey: const Key('sanmill_learn_guides_group'),
+              children: <Widget>[
+                _MoreTile(
+                  key: const Key('sanmill_learn_how_to_play'),
+                  icon: Icons.school_rounded,
+                  title: strings.howToPlay,
+                  onTap: () =>
+                      onLearnRouteSelected(ShellRouteIds.appHowToPlay.value),
+                ),
+              ],
+            ),
+            _MoreSection(
+              title: strings.tools,
+              headerKey: const Key('sanmill_learn_tools_group'),
+              children: <Widget>[
+                for (final GameMenuContribution tool in studyTools)
+                  _MoreTile(
+                    key: Key('sanmill_learn_${tool.id.value}'),
+                    icon: tool.icon ?? Icons.auto_stories_rounded,
+                    title: tool.label,
+                    onTap: () => onLearnRouteSelected(tool.id.value),
+                  ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

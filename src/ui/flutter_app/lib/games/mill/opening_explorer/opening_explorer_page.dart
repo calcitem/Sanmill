@@ -781,7 +781,7 @@ class _OpeningExplorerMovesHeader extends StatelessWidget {
             SizedBox(
               width: 104,
               child: Text(
-                strings.totalGames,
+                strings.openingExplorerGames,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: style,

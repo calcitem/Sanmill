@@ -248,6 +248,59 @@ void main() {
         findsNothing,
       );
 
+      await tester.tap(find.byKey(const Key('sanmill_tab_learn')));
+      await tester.pumpAndSettle();
+
+      expect(shellState.debugCurrentTab, SanmillShellTab.learn);
+      expect(
+        shellState.debugCurrentRouteId,
+        SanmillShellRouteIds.learnRoot.value,
+      );
+      expect(find.byKey(const Key('sanmill_learn_list')), findsOneWidget);
+      expect(
+        find.byKey(const Key('sanmill_learn_guides_group')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const Key('sanmill_learn_tools_group')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const Key('sanmill_learn_how_to_play')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const Key('sanmill_learn_mill.tools.analysis')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const Key('sanmill_learn_mill.tools.openingExplorer')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const Key('how_to_play_screen_scaffold')),
+        findsNothing,
+      );
+
+      await tester.tap(find.byKey(const Key('sanmill_learn_how_to_play')));
+      await tester.pumpAndSettle();
+
+      expect(shellState.debugCurrentRouteId, ShellRouteIds.appHowToPlay.value);
+      expect(
+        find.byKey(const Key('how_to_play_screen_scaffold')),
+        findsOneWidget,
+      );
+
+      await tester.binding.handlePopRoute();
+      await tester.pumpAndSettle();
+
+      expect(shellState.debugCurrentTab, SanmillShellTab.learn);
+      expect(
+        shellState.debugCurrentRouteId,
+        SanmillShellRouteIds.learnRoot.value,
+      );
+      expect(find.byKey(const Key('sanmill_learn_list')), findsOneWidget);
+
       await tester.tap(find.byKey(const Key('sanmill_tab_puzzles')));
       await tester.pumpAndSettle();
 
