@@ -720,13 +720,6 @@ class AppearanceSettingsPage extends StatelessWidget {
           titleString: S.of(context).isAnnotationToolbarShown,
         ),
         SettingsListTile.switchTile(
-          key: const Key('display_settings_card_toolbar_at_bottom_switch_tile'),
-          value: displaySettings.isToolbarAtBottom,
-          onChanged: (bool val) => DB().displaySettings = displaySettings
-              .copyWith(isToolbarAtBottom: val),
-          titleString: S.of(context).isToolbarAtBottom,
-        ),
-        SettingsListTile.switchTile(
           key: const Key(
             'display_settings_card_positional_advantage_indicator_shown_switch_tile',
           ),

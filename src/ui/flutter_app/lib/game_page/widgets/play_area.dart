@@ -732,9 +732,8 @@ class PlayAreaState extends State<PlayArea> {
             _usesLichessHumanAiToolbar && !isSetupPosition && !isPuzzle;
 
         // Human vs AI mirrors the Lichess offline-computer screen: one
-        // bottom bar with menu, resign, takeback, and hint.
-        final bool isToolbarAtBottom =
-            DB().displaySettings.isToolbarAtBottom || usesLichessHumanAiToolbar;
+        // bottom bar with menu, resign, takeback, and hint. Other game modes
+        // also keep their toolbars at the bottom for a consistent shell.
         final Widget? humanDatabaseStatsStrip = _buildHumanDatabaseStatsStrip(
           context,
         );
@@ -745,8 +744,7 @@ class PlayAreaState extends State<PlayArea> {
           width: dimension,
           child: SafeArea(
             top: MediaQuery.of(context).orientation == Orientation.portrait,
-            bottom: !isToolbarAtBottom,
-            // If toolbars are at bottom, we skip the bottom safe area
+            bottom: false,
             right: false,
             left: false,
             child: SingleChildScrollView(
@@ -806,46 +804,10 @@ class PlayAreaState extends State<PlayArea> {
                       ),
                     ),
 
-                  // History navigation toolbar if enabled and not at bottom
-                  if (DB().displaySettings.isHistoryNavigationToolbarShown &&
-                      !isToolbarAtBottom &&
-                      !isSetupPosition &&
-                      !isPuzzle &&
-                      !usesLichessHumanAiToolbar)
-                    GamePageToolbar(
-                      key: const Key('play_area_history_nav_toolbar'),
-                      backgroundColor:
-                          DB().colorSettings.navigationToolbarBackgroundColor,
-                      itemColor: DB().colorSettings.navigationToolbarIconColor,
-                      children: _buildToolbarItems(
-                        context,
-                        _getHistoryNavToolbarItems(context),
-                      ),
-                    ),
-
                   // ──────────────────────────────────────────────────────────
                   // NOTE: The bottom black Annotation Toolbar is removed.
                   //       All annotation features are now in the center overlay.
                   // ──────────────────────────────────────────────────────────
-
-                  // Main toolbar (or setup-position toolbar) if not at bottom
-                  if (!isToolbarAtBottom)
-                    if (isSetupPosition)
-                      const SetupPositionToolbar(
-                        key: Key('play_area_setup_position_toolbar'),
-                      )
-                    else if (!isPuzzle && !usesLichessHumanAiToolbar)
-                      GamePageToolbar(
-                        key: const Key('play_area_main_toolbar'),
-                        backgroundColor:
-                            DB().colorSettings.mainToolbarBackgroundColor,
-                        itemColor: DB().colorSettings.mainToolbarIconColor,
-                        children: _buildToolbarItems(
-                          context,
-                          _getMainToolbarItems(context),
-                        ),
-                      ),
-
                   if (!usesLichessHumanAiToolbar)
                     const SizedBox(height: AppTheme.boardMargin),
                 ],
@@ -854,83 +816,77 @@ class PlayAreaState extends State<PlayArea> {
           ),
         );
 
-        // If toolbars are pinned to the bottom, place them after main content.
-        if (isToolbarAtBottom) {
-          return SizedBox(
-            key: const Key('play_area_sized_box_toolbar_bottom'),
-            width: dimension,
-            child: SafeArea(
-              top: MediaQuery.of(context).orientation == Orientation.portrait,
-              right: false,
-              left: false,
-              child: Column(
-                key: const Key('play_area_column_toolbar_bottom'),
-                children: <Widget>[
-                  Expanded(child: mainContent),
+        return SizedBox(
+          key: const Key('play_area_sized_box_toolbar_bottom'),
+          width: dimension,
+          child: SafeArea(
+            top: MediaQuery.of(context).orientation == Orientation.portrait,
+            right: false,
+            left: false,
+            child: Column(
+              key: const Key('play_area_column_toolbar_bottom'),
+              children: <Widget>[
+                Expanded(child: mainContent),
 
-                  // History navigation toolbar if enabled
-                  if (DB().displaySettings.isHistoryNavigationToolbarShown &&
-                      !isSetupPosition &&
-                      !isPuzzle &&
-                      !usesLichessHumanAiToolbar)
-                    GamePageToolbar(
-                      key: const Key('play_area_history_nav_toolbar_bottom'),
-                      backgroundColor:
-                          DB().colorSettings.navigationToolbarBackgroundColor,
-                      itemColor: DB().colorSettings.navigationToolbarIconColor,
-                      children: _buildToolbarItems(
-                        context,
-                        _getHistoryNavToolbarItems(context),
-                      ),
+                // History navigation toolbar if enabled
+                if (DB().displaySettings.isHistoryNavigationToolbarShown &&
+                    !isSetupPosition &&
+                    !isPuzzle &&
+                    !usesLichessHumanAiToolbar)
+                  GamePageToolbar(
+                    key: const Key('play_area_history_nav_toolbar_bottom'),
+                    backgroundColor:
+                        DB().colorSettings.navigationToolbarBackgroundColor,
+                    itemColor: DB().colorSettings.navigationToolbarIconColor,
+                    children: _buildToolbarItems(
+                      context,
+                      _getHistoryNavToolbarItems(context),
                     ),
+                  ),
 
-                  // Main toolbar (or setup-position toolbar)
-                  if (usesLichessHumanAiToolbar)
-                    ValueListenableBuilder<bool>(
-                      key: const Key('play_area_lichess_bottom_bar_builder'),
-                      valueListenable: AnalysisMode.stateNotifier,
-                      builder: (BuildContext context, _, _) {
-                        return _LichessGameBottomBar(
-                          onMenuPressed: () => _showHumanAiGameMenu(context),
-                          onResignPressed: _canResignFromBottomBar
-                              ? () => _showResignConfirmation(context)
-                              : null,
-                          onTakeBackPressed: _canTakeBackFromBottomBar
-                              ? () => _takeBackFromBottomBar(context)
-                              : null,
-                          onHintPressed: _canShowHintFromBottomBar
-                              ? () => _showHintFromBottomBar(context)
-                              : null,
-                          isHintHighlighted: AnalysisMode.isHint,
-                        );
-                      },
-                    )
-                  else if (isSetupPosition)
-                    const SetupPositionToolbar(
-                      key: Key('play_area_setup_position_toolbar_bottom'),
-                    )
-                  else if (!isPuzzle)
-                    GamePageToolbar(
-                      key: const Key('play_area_main_toolbar_bottom'),
-                      backgroundColor:
-                          DB().colorSettings.mainToolbarBackgroundColor,
-                      itemColor: DB().colorSettings.mainToolbarIconColor,
-                      children: _buildToolbarItems(
-                        context,
-                        _getMainToolbarItems(context),
-                      ),
+                // Main toolbar (or setup-position toolbar)
+                if (usesLichessHumanAiToolbar)
+                  ValueListenableBuilder<bool>(
+                    key: const Key('play_area_lichess_bottom_bar_builder'),
+                    valueListenable: AnalysisMode.stateNotifier,
+                    builder: (BuildContext context, _, _) {
+                      return _LichessGameBottomBar(
+                        onMenuPressed: () => _showHumanAiGameMenu(context),
+                        onResignPressed: _canResignFromBottomBar
+                            ? () => _showResignConfirmation(context)
+                            : null,
+                        onTakeBackPressed: _canTakeBackFromBottomBar
+                            ? () => _takeBackFromBottomBar(context)
+                            : null,
+                        onHintPressed: _canShowHintFromBottomBar
+                            ? () => _showHintFromBottomBar(context)
+                            : null,
+                        isHintHighlighted: AnalysisMode.isHint,
+                      );
+                    },
+                  )
+                else if (isSetupPosition)
+                  const SetupPositionToolbar(
+                    key: Key('play_area_setup_position_toolbar_bottom'),
+                  )
+                else if (!isPuzzle)
+                  GamePageToolbar(
+                    key: const Key('play_area_main_toolbar_bottom'),
+                    backgroundColor:
+                        DB().colorSettings.mainToolbarBackgroundColor,
+                    itemColor: DB().colorSettings.mainToolbarIconColor,
+                    children: _buildToolbarItems(
+                      context,
+                      _getMainToolbarItems(context),
                     ),
+                  ),
 
-                  if (!usesLichessHumanAiToolbar)
-                    const SizedBox(height: AppTheme.boardMargin),
-                ],
-              ),
+                if (!usesLichessHumanAiToolbar)
+                  const SizedBox(height: AppTheme.boardMargin),
+              ],
             ),
-          );
-        }
-
-        // If toolbars are not at the bottom, return main content as is.
-        return mainContent;
+          ),
+        );
       },
     );
   }

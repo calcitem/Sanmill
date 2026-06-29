@@ -113,6 +113,52 @@ void main() {
     );
   });
 
+  testWidgets('regular game toolbar stays pinned to the bottom', (
+    WidgetTester tester,
+  ) async {
+    db.displaySettings = const DisplaySettings(
+      isUnplacedAndRemovedPiecesShown: false,
+      isHistoryNavigationToolbarShown: false,
+    );
+    GameController().gameInstance.gameMode = GameMode.humanVsHuman;
+
+    await tester.binding.setSurfaceSize(const Size(390, 844));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+
+    await tester.pumpWidget(
+      _localizedApp(
+        const Scaffold(
+          body: PlayArea(
+            boardImage: null,
+            child: SizedBox.square(
+              key: Key('test_board_square'),
+              dimension: 390,
+            ),
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.byKey(const Key('play_area_main_toolbar')), findsNothing);
+    expect(
+      find.byKey(const Key('play_area_main_toolbar_bottom')),
+      findsOneWidget,
+    );
+    expect(
+      tester
+          .getBottomLeft(find.byKey(const Key('play_area_main_toolbar_bottom')))
+          .dy,
+      lessThanOrEqualTo(
+        tester
+            .getBottomLeft(
+              find.byKey(const Key('play_area_sized_box_toolbar_bottom')),
+            )
+            .dy,
+      ),
+    );
+  });
+
   testWidgets('human vs ai uses lichess-style bottom toolbar', (
     WidgetTester tester,
   ) async {
