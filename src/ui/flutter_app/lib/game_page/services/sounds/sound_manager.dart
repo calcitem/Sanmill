@@ -306,14 +306,20 @@ class SoundManager {
   }
 
   Future<void> disposePool() async {
-    for (final SoundPlayer soundPlayer in _players.values) {
-      await soundPlayer.player.dispose();
-    }
-    _players.clear();
+    await (_loadSoundsSerial = _loadSoundsSerial.then((_) async {
+      _allSoundsLoaded = false;
+      final List<SoundPlayer> players = _players.values.toList(growable: false);
+      _players.clear();
 
-    await _backgroundMusicPlayer?.dispose();
-    _backgroundMusicPlayer = null;
-    _backgroundMusicPath = null;
+      for (final SoundPlayer soundPlayer in players) {
+        await soundPlayer.player.dispose();
+      }
+
+      final AudioPlayer? backgroundMusicPlayer = _backgroundMusicPlayer;
+      _backgroundMusicPlayer = null;
+      _backgroundMusicPath = null;
+      await backgroundMusicPlayer?.dispose();
+    }));
   }
 }
 

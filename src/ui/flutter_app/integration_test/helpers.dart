@@ -100,19 +100,32 @@ Future<void> openDrawer(WidgetTester tester) async {
   final Finder drawerButton = find.byKey(
     const Key('custom_drawer_drawer_overlay_button'),
   );
-  expect(drawerButton, findsOneWidget, reason: 'Drawer button should exist');
-  await tester.tap(drawerButton);
-  await tester.pumpAndSettle();
+  if (drawerButton.evaluate().isNotEmpty) {
+    await tester.tap(drawerButton);
+    await tester.pumpAndSettle();
+    return;
+  }
+  await tapSanmillTab(tester, 'more');
 }
 
-/// Closes the custom drawer by tapping the drawer overlay button again.
+/// Closes the custom drawer, or returns to the game tab when no drawer exists.
 Future<void> closeDrawer(WidgetTester tester) async {
+  final Finder drawer = find.byKey(const Key('sanmill_navigation_drawer'));
+  if (drawer.evaluate().isNotEmpty) {
+    await tester.binding.handlePopRoute();
+    await tester.pumpAndSettle();
+    return;
+  }
+
   final Finder drawerButton = find.byKey(
     const Key('custom_drawer_drawer_overlay_button'),
   );
-  expect(drawerButton, findsOneWidget, reason: 'Drawer button should exist');
-  await tester.tap(drawerButton);
-  await tester.pumpAndSettle();
+  if (drawerButton.evaluate().isNotEmpty) {
+    await tester.tap(drawerButton);
+    await tester.pumpAndSettle();
+    return;
+  }
+  await tapSanmillTab(tester, 'game');
 }
 
 /// Navigates to a top-level drawer item (non-grouped).
@@ -120,6 +133,14 @@ Future<void> closeDrawer(WidgetTester tester) async {
 /// Opens the drawer, taps the item identified by [itemKey], and waits
 /// for the transition to settle.
 Future<void> navigateToDrawerItem(WidgetTester tester, String itemKey) async {
+  final Finder drawerButton = find.byKey(
+    const Key('custom_drawer_drawer_overlay_button'),
+  );
+  if (drawerButton.evaluate().isEmpty) {
+    await navigateToShellItem(tester, itemKey);
+    return;
+  }
+
   await openDrawer(tester);
   final Finder itemFinder = find.byKey(Key(itemKey));
   expect(itemFinder, findsOneWidget, reason: '$itemKey should be present');
@@ -136,6 +157,14 @@ Future<void> navigateToGroupChild(
   String groupKey,
   String childKey,
 ) async {
+  final Finder drawerButton = find.byKey(
+    const Key('custom_drawer_drawer_overlay_button'),
+  );
+  if (drawerButton.evaluate().isEmpty) {
+    await navigateToShellItem(tester, childKey);
+    return;
+  }
+
   await openDrawer(tester);
 
   // Tap the group item to expand it
@@ -149,6 +178,75 @@ Future<void> navigateToGroupChild(
   expect(childFinder, findsOneWidget, reason: '$childKey should be present');
   await tester.tap(childFinder);
   await tester.pumpAndSettle();
+}
+
+/// Taps one of the Lichess-style Sanmill shell tabs.
+Future<void> tapSanmillTab(WidgetTester tester, String tabName) async {
+  final Finder tab = find.byKey(Key('sanmill_tab_$tabName'));
+  expect(tab, findsWidgets, reason: 'Sanmill tab "$tabName" should exist');
+  await tester.tap(tab.first, warnIfMissed: false);
+  await pumpAndSettleWithin(tester);
+}
+
+/// Compatibility navigation for tests that still use the former drawer keys.
+Future<void> navigateToShellItem(WidgetTester tester, String itemKey) async {
+  switch (itemKey) {
+    case 'drawer_item_puzzles':
+      await tapSanmillTab(tester, 'puzzles');
+      return;
+    case 'drawer_item_statistics':
+      await tapSanmillTab(tester, 'records');
+      return;
+    case 'drawer_item_human_vs_ai':
+      await _tapMoreItem(tester, itemKey);
+      return;
+    case 'drawer_item_human_vs_human':
+      await _tapMoreItem(tester, itemKey);
+      return;
+    case 'drawer_item_ai_vs_ai':
+      await _tapMoreItem(tester, itemKey);
+      return;
+    case 'drawer_item_human_vs_lan':
+      await _tapMoreItem(tester, itemKey);
+      return;
+    case 'drawer_item_setup_position':
+      await _tapMoreItem(tester, itemKey);
+      return;
+    case 'drawer_item_general_settings':
+    case 'drawer_item_general_settings_child':
+      await _tapMoreItem(tester, 'drawer_item_general_settings');
+      return;
+    case 'drawer_item_rule_settings':
+    case 'drawer_item_rule_settings_child':
+      await _tapMoreItem(tester, 'drawer_item_rule_settings');
+      return;
+    case 'drawer_item_appearance':
+    case 'drawer_item_appearance_child':
+      await _tapMoreItem(tester, 'drawer_item_appearance');
+      return;
+    case 'drawer_item_how_to_play':
+    case 'drawer_item_how_to_play_child':
+      await tapSanmillTab(tester, 'learn');
+      return;
+    case 'drawer_item_about':
+    case 'drawer_item_about_child':
+      await _tapMoreItem(tester, 'drawer_item_about');
+      return;
+    case 'drawer_item_feedback':
+    case 'drawer_item_feedback_child':
+      await _tapMoreItem(tester, 'drawer_item_feedback');
+      return;
+    default:
+      await _tapMoreItem(tester, itemKey);
+  }
+}
+
+Future<void> _tapMoreItem(WidgetTester tester, String itemKey) async {
+  await tapSanmillTab(tester, 'more');
+  final Finder itemFinder = find.byKey(Key(itemKey));
+  expect(itemFinder, findsOneWidget, reason: '$itemKey should be present');
+  await tester.tap(itemFinder, warnIfMissed: false);
+  await pumpAndSettleWithin(tester);
 }
 
 // ---------------------------------------------------------------------------

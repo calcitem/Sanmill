@@ -35,33 +35,61 @@ import 'ui_colors.dart';
 class AppTheme {
   const AppTheme._();
 
-  static final ColorScheme _colorScheme = ColorScheme(
-    //Color configuration of light theme
-    brightness: Brightness.light,
-    primary: _appPrimaryColor,
-    // Primary color, which has been defined as green in the code
-    onPrimary: Colors.white,
-    // A color that contrasts significantly with the main color, usually used for text or icons
-    primaryContainer: Colors.green.shade700,
-    // Dark variant of the main color, used for containers, etc.
-    onPrimaryContainer: Colors.white,
-    // Color that contrasts with primaryContainer
-    secondary: UIColors.spruce,
-    // Secondary colors, selectable from your color theme
-    onSecondary: Colors.black,
-    // A color that contrasts significantly with the secondary color
-    secondaryContainer: UIColors.spruce,
-    // Dark variant of secondary color
-    onSecondaryContainer: Colors.white,
-    // Color that contrasts significantly with secondaryContainer
-    surface: Colors.white,
-    // Surface color, used for cards, backgrounds, etc.
-    onSurface: Colors.black,
-    // Text or icon color on the background
-    error: Colors.red,
-    // Error color
-    onError: Colors.white, // Text or icon color in error state
-    // Other required colors can continue to be defined
+  // Color
+  static const Color _appPrimaryColor = Color(0xFF629924);
+  static const Color _appSecondaryColor = Color(0xFF3F6F9F);
+  static const Color _appTertiaryColor = Color(0xFFC78B2D);
+
+  static final ColorScheme _colorScheme =
+      ColorScheme.fromSeed(
+        seedColor: _appPrimaryColor,
+        brightness: Brightness.light,
+        dynamicSchemeVariant: DynamicSchemeVariant.neutral,
+      ).copyWith(
+        primary: _appPrimaryColor,
+        secondary: _appSecondaryColor,
+        tertiary: _appTertiaryColor,
+        surface: const Color(0xFFFAFAF8),
+        surfaceContainerLowest: Colors.white,
+        surfaceContainerLow: const Color(0xFFF4F4F1),
+        surfaceContainer: const Color(0xFFEFEFEB),
+        surfaceContainerHigh: const Color(0xFFE8E8E2),
+        surfaceContainerHighest: const Color(0xFFE0E0D9),
+        onSurface: const Color(0xFF242421),
+        onSurfaceVariant: const Color(0xFF5E5D57),
+      );
+
+  static final ColorScheme _darkColorScheme =
+      ColorScheme.fromSeed(
+        seedColor: _appPrimaryColor,
+        brightness: Brightness.dark,
+        dynamicSchemeVariant: DynamicSchemeVariant.neutral,
+      ).copyWith(
+        primary: const Color(0xFF8BBF4D),
+        secondary: const Color(0xFF8DB8DF),
+        tertiary: const Color(0xFFE1B15B),
+        surface: const Color(0xFF1F1F1C),
+        surfaceContainerLowest: const Color(0xFF141412),
+        surfaceContainerLow: const Color(0xFF242420),
+        surfaceContainer: const Color(0xFF2B2B27),
+        surfaceContainerHigh: const Color(0xFF34342F),
+        surfaceContainerHighest: const Color(0xFF3D3D37),
+        onSurface: const Color(0xFFE7E5DE),
+        onSurfaceVariant: const Color(0xFFC8C5BB),
+      );
+
+  static final AppBarTheme appBarTheme = AppBarTheme(
+    backgroundColor: _colorScheme.surface,
+    foregroundColor: _colorScheme.onSurface,
+    surfaceTintColor: Colors.transparent,
+    titleTextStyle: TextStyle(
+      color: _colorScheme.onSurface,
+      fontSize: 20.0,
+      fontWeight: FontWeight.w600,
+    ),
+    elevation: 0,
+    scrolledUnderElevation: 0,
+    iconTheme: IconThemeData(color: _colorScheme.onSurface),
   );
 
   ///Light theme
@@ -69,26 +97,32 @@ class AppTheme {
     useMaterial3: true,
     brightness: Brightness.light,
     colorScheme: _colorScheme,
-    // use ColorScheme
+    scaffoldBackgroundColor: _colorScheme.surface,
     sliderTheme: _sliderThemeData.copyWith(
-      activeTrackColor: _colorScheme.primary, // Use colors in ColorScheme
+      activeTrackColor: _colorScheme.primary,
       inactiveTrackColor: _colorScheme.onSurface.withValues(alpha: 0.5),
       thumbColor: _colorScheme.primary,
-      // Other slider-related color and style adjustments
     ),
-    cardTheme: _cardTheme,
+    cardTheme: _cardThemeData(_colorScheme),
     appBarTheme: appBarTheme.copyWith(
-      backgroundColor: _colorScheme.primary, // Use colors from ColorScheme
-      titleTextStyle: TextStyle(color: _colorScheme.onPrimary),
-      // Other style adjustments related to AppBar
+      backgroundColor: _colorScheme.surface,
+      foregroundColor: _colorScheme.onSurface,
+      titleTextStyle: TextStyle(
+        color: _colorScheme.onSurface,
+        fontSize: 20,
+        fontWeight: FontWeight.w600,
+      ),
     ),
+    navigationBarTheme: _navigationBarThemeData(_colorScheme),
+    navigationRailTheme: _navigationRailThemeData(_colorScheme),
+    listTileTheme: _listTileThemeData(_colorScheme),
+    bottomSheetTheme: _bottomSheetThemeData(_colorScheme),
+    dialogTheme: _dialogThemeData(_colorScheme),
     textTheme: _textTheme,
-    // Adjust the text theme to fit the light background if necessary
     dividerTheme: _dividerTheme,
     switchTheme: _lightSwitchTheme,
     checkboxTheme: _buildCheckboxTheme(_colorScheme),
     radioTheme: _buildRadioTheme(_colorScheme),
-    // Other theme settings...
     pageTransitionsTheme: _pageTransitionsTheme,
   );
 
@@ -103,43 +137,39 @@ class AppTheme {
     },
   );
 
-  /// Dark theme
-  static final ColorScheme _darkColorScheme = _colorScheme.copyWith(
-    brightness: Brightness.dark,
-    //Adjust colors as needed to fit the dark theme
-    // For example, use a darker or lighter color variant
-  );
-
   static final ThemeData darkThemeData = ThemeData(
     useMaterial3: true,
     brightness: Brightness.dark,
     colorScheme: _darkColorScheme,
-    // Use dark ColorScheme
+    scaffoldBackgroundColor: _darkColorScheme.surface,
     sliderTheme: _sliderThemeData.copyWith(
       activeTrackColor: _darkColorScheme.primary,
       inactiveTrackColor: _darkColorScheme.onSurface.withValues(alpha: 0.5),
-      thumbColor: _colorScheme.primary,
-      // Other slider-related color and style adjustments
+      thumbColor: _darkColorScheme.primary,
     ),
-    cardTheme: _cardTheme,
+    cardTheme: _cardThemeData(_darkColorScheme),
     appBarTheme: appBarTheme.copyWith(
-      backgroundColor: _darkColorScheme.primary,
-      titleTextStyle: TextStyle(color: _darkColorScheme.onPrimary),
-      // Other style adjustments related to AppBar
+      backgroundColor: _darkColorScheme.surface,
+      foregroundColor: _darkColorScheme.onSurface,
+      titleTextStyle: TextStyle(
+        color: _darkColorScheme.onSurface,
+        fontSize: 20,
+        fontWeight: FontWeight.w600,
+      ),
+      iconTheme: IconThemeData(color: _darkColorScheme.onSurface),
     ),
+    navigationBarTheme: _navigationBarThemeData(_darkColorScheme),
+    navigationRailTheme: _navigationRailThemeData(_darkColorScheme),
+    listTileTheme: _listTileThemeData(_darkColorScheme),
+    bottomSheetTheme: _bottomSheetThemeData(_darkColorScheme),
+    dialogTheme: _dialogThemeData(_darkColorScheme),
     textTheme: _textTheme,
-    // Adjust the text theme to fit the dark background if necessary
     dividerTheme: _dividerTheme,
     switchTheme: _darkSwitchTheme,
     checkboxTheme: _buildCheckboxTheme(_darkColorScheme),
     radioTheme: _buildRadioTheme(_darkColorScheme),
-    // Other theme settings...
     pageTransitionsTheme: _pageTransitionsTheme,
   );
-
-  // Color
-  static const MaterialColor _appPrimaryColor =
-      Colors.green; // App bar & Dialog button
 
   // Theme
   static final SliderThemeData _sliderThemeData = SliderThemeData(
@@ -177,14 +207,88 @@ class AppTheme {
     ), //Adjust color transparency according to theme surface color
   );
 
-  static final CardThemeData _cardTheme = CardThemeData(
+  static CardThemeData _cardThemeData(ColorScheme colorScheme) => CardThemeData(
     margin: const EdgeInsets.symmetric(vertical: 4.0),
-    color: cardColor,
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(12), // rounded corner design
-    ),
-    elevation: 1, // slight shadow effect
+    color: colorScheme.surfaceContainerLow,
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+    elevation: 0,
+    surfaceTintColor: Colors.transparent,
   );
+
+  static NavigationBarThemeData _navigationBarThemeData(
+    ColorScheme colorScheme,
+  ) {
+    return NavigationBarThemeData(
+      height: 64,
+      backgroundColor: colorScheme.surfaceContainerLow,
+      indicatorColor: colorScheme.primaryContainer.withValues(alpha: 0.75),
+      labelTextStyle: WidgetStateProperty.resolveWith<TextStyle>((
+        Set<WidgetState> states,
+      ) {
+        final Color color = states.contains(WidgetState.selected)
+            ? colorScheme.onSurface
+            : colorScheme.onSurfaceVariant;
+        return TextStyle(color: color, fontSize: 12);
+      }),
+      iconTheme: WidgetStateProperty.resolveWith<IconThemeData>((
+        Set<WidgetState> states,
+      ) {
+        final Color color = states.contains(WidgetState.selected)
+            ? colorScheme.onPrimaryContainer
+            : colorScheme.onSurfaceVariant;
+        return IconThemeData(color: color, size: 24);
+      }),
+    );
+  }
+
+  static NavigationRailThemeData _navigationRailThemeData(
+    ColorScheme colorScheme,
+  ) {
+    return NavigationRailThemeData(
+      backgroundColor: colorScheme.surfaceContainerLow,
+      indicatorColor: colorScheme.primaryContainer.withValues(alpha: 0.75),
+      selectedIconTheme: IconThemeData(color: colorScheme.onPrimaryContainer),
+      unselectedIconTheme: IconThemeData(color: colorScheme.onSurfaceVariant),
+      selectedLabelTextStyle: TextStyle(
+        color: colorScheme.onSurface,
+        fontSize: 12,
+      ),
+      unselectedLabelTextStyle: TextStyle(
+        color: colorScheme.onSurfaceVariant,
+        fontSize: 12,
+      ),
+    );
+  }
+
+  static ListTileThemeData _listTileThemeData(ColorScheme colorScheme) {
+    return ListTileThemeData(
+      iconColor: colorScheme.onSurfaceVariant,
+      textColor: colorScheme.onSurface,
+      selectedColor: colorScheme.primary,
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+      minLeadingWidth: 32,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+    );
+  }
+
+  static BottomSheetThemeData _bottomSheetThemeData(ColorScheme colorScheme) {
+    return BottomSheetThemeData(
+      backgroundColor: colorScheme.surfaceContainerLow,
+      modalBackgroundColor: colorScheme.surfaceContainerLow,
+      surfaceTintColor: Colors.transparent,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      ),
+    );
+  }
+
+  static DialogThemeData _dialogThemeData(ColorScheme colorScheme) {
+    return DialogThemeData(
+      backgroundColor: colorScheme.surfaceContainerLow,
+      surfaceTintColor: Colors.transparent,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+    );
+  }
 
   static final SwitchThemeData _lightSwitchTheme = SwitchThemeData(
     thumbColor: WidgetStateProperty.resolveWith<Color>((
@@ -309,23 +413,6 @@ class AppTheme {
       }),
     );
   }
-
-  static final AppBarTheme appBarTheme = AppBarTheme(
-    backgroundColor:
-        _colorScheme.primary, // Use the primary color of ColorScheme
-    titleTextStyle: TextStyle(
-      color: _colorScheme
-          .onPrimary, // Select color based on primary color contrast
-      fontSize: 20.0, // font size
-      fontWeight: FontWeight.bold,
-    ),
-    elevation: 0, // Reduce or remove shadows for a flatter design
-    iconTheme: IconThemeData(
-      color: _colorScheme
-          .onPrimary, // Make the icon the same color as the title text
-    ),
-    // You may also need to adjust other properties, such as the brightness of the system status bar, etc.
-  );
 
   static const TextTheme _textTheme = TextTheme(
     headlineLarge: TextStyle(

@@ -16,6 +16,7 @@ import 'package:flutter_sharing_intent/flutter_sharing_intent.dart';
 import 'package:flutter_sharing_intent/model/sharing_file.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart' show Box;
 
+import 'app_shell/sanmill_app_shell.dart';
 import 'appearance_settings/models/display_settings.dart';
 import 'experience_recording/services/recording_navigator_observer.dart';
 import 'game_page/services/mill.dart' show ExportService, LoadService;
@@ -24,7 +25,6 @@ import 'games/built_in_game_modules.dart';
 import 'games/mill/opening_book/opening_book_repository.dart';
 import 'general_settings/models/general_settings.dart';
 import 'generated/intl/l10n.dart';
-import 'home/home.dart';
 import 'puzzle/services/puzzle_manager.dart';
 import 'shared/config/constants.dart';
 import 'shared/database/database.dart';
@@ -356,7 +356,7 @@ class SanmillAppState extends State<SanmillApp> {
     return const Scaffold(
       key: Key('home_scaffold_key'),
       resizeToAvoidBottomInset: false,
-      body: Home(key: Home.homeMainKey),
+      body: SanmillAppShell(),
     );
   }
 

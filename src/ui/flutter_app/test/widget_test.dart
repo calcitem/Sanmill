@@ -8,10 +8,10 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart'; // Import flutter services
 import 'package:flutter_test/flutter_test.dart';
+import 'package:sanmill/app_shell/sanmill_app_shell.dart';
 import 'package:sanmill/game_platform/game_registry.dart';
 import 'package:sanmill/games/built_in_game_modules.dart';
 import 'package:sanmill/generated/intl/l10n.dart';
-import 'package:sanmill/home/home.dart';
 import 'package:sanmill/main.dart';
 import 'package:sanmill/shared/database/database.dart';
 import 'package:sanmill/shared/services/environment_config.dart';
@@ -110,8 +110,52 @@ void main() {
       // Check that the supported locales include English
       expect(S.supportedLocales.contains(const Locale('en')), isTrue);
 
-      // Verify that the Home widget is present
-      expect(find.byType(Home), findsOneWidget);
+      // Verify that the Lichess-style shell is present.
+      expect(find.byType(SanmillAppShell), findsOneWidget);
+      expect(
+        find.byKey(const Key('sanmill_bottom_navigation_bar')),
+        findsNothing,
+      );
+      expect(find.byKey(const Key('sanmill_navigation_rail')), findsOneWidget);
+
+      // Drain any settings-save debounce timer (see the smoke test above).
+      await tester.pump(const Duration(milliseconds: 350));
+    },
+    skip: nativeLibrarySkipReason() != null,
+  );
+
+  testWidgets(
+    'Verify mobile shell drawer and bottom navigation',
+    (WidgetTester tester) async {
+      tester.view
+        ..physicalSize = const Size(390, 844)
+        ..devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+
+      await tester.pumpWidget(const SanmillApp());
+
+      expect(find.byType(SanmillAppShell), findsOneWidget);
+      expect(
+        find.byKey(const Key('sanmill_bottom_navigation_bar')),
+        findsOneWidget,
+      );
+      expect(find.byKey(const Key('sanmill_navigation_rail')), findsNothing);
+
+      await tester.tap(
+        find.byKey(const Key('custom_drawer_drawer_overlay_button')),
+      );
+      await tester.pumpAndSettle();
+
+      expect(
+        find.byKey(const Key('sanmill_navigation_drawer')),
+        findsOneWidget,
+      );
+      expect(find.byKey(const Key('drawer_item_puzzles')), findsOneWidget);
+      expect(find.byKey(const Key('drawer_item_statistics')), findsOneWidget);
+
+      await tester.binding.handlePopRoute();
+      await tester.pumpAndSettle();
 
       // Drain any settings-save debounce timer (see the smoke test above).
       await tester.pump(const Duration(milliseconds: 350));
