@@ -131,7 +131,7 @@ void main() {
   );
 
   testWidgets(
-    'Verify mobile shell drawer and bottom navigation',
+    'Verify mobile shell bottom navigation and more menu',
     (WidgetTester tester) async {
       tester.view
         ..physicalSize = const Size(390, 844)
@@ -172,20 +172,11 @@ void main() {
         Icons.live_tv_rounded,
       );
 
-      await tester.tap(
-        find.byKey(const Key('sanmill_navigation_drawer_button')),
-      );
-      await tester.pumpAndSettle();
-
       expect(
-        find.byKey(const Key('sanmill_navigation_drawer')),
-        findsOneWidget,
+        find.byKey(const Key('sanmill_navigation_drawer_button')),
+        findsNothing,
       );
-      expect(find.byKey(const Key('drawer_item_puzzles')), findsOneWidget);
-      expect(find.byKey(const Key('drawer_item_statistics')), findsOneWidget);
-
-      await tester.binding.handlePopRoute();
-      await tester.pumpAndSettle();
+      expect(find.byKey(const Key('sanmill_navigation_drawer')), findsNothing);
 
       await tester.tap(find.byKey(const Key('sanmill_tab_more')));
       await tester.pumpAndSettle();

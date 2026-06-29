@@ -370,13 +370,10 @@ class SmartActions {
   }
 
   Future<ActionResult> _uiOpenCloseDrawer(WidgetTester tester) async {
-    print('[SmartAction] UI: open/close drawer');
+    print('[SmartAction] UI: open/close more tab');
     try {
-      final Finder drawerButton = find.byKey(
-        const Key('sanmill_navigation_drawer_button'),
-      );
-      if (drawerButton.evaluate().isEmpty ||
-          tester.widget<IconButton>(drawerButton).onPressed == null) {
+      final Finder moreTab = find.byKey(const Key('sanmill_tab_more'));
+      if (moreTab.evaluate().isEmpty) {
         skippedActions++;
         return ActionResult.skipped;
       }
@@ -388,7 +385,7 @@ class SmartActions {
       uiActions++;
       return ActionResult.success;
     } catch (e) {
-      print('[SmartAction] UI Drawer failed: $e');
+      print('[SmartAction] UI More tab failed: $e');
       return ActionResult.skipped;
     }
   }

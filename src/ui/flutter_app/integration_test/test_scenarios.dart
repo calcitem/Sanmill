@@ -11,8 +11,8 @@ final List<Map<String, dynamic>> testScenarios = <Map<String, dynamic>>[
     'steps': <Map<String, String>>[
       <String, String>{
         'action': 'tap',
-        'key': 'sanmill_navigation_drawer_button',
-        'expect': 'Drawer button should be present',
+        'key': 'sanmill_tab_more',
+        'expect': 'More tab should be present',
       },
       <String, String>{
         'action': 'tap',
@@ -91,8 +91,8 @@ final List<Map<String, dynamic>> testScenarios = <Map<String, dynamic>>[
       },
       <String, String>{
         'action': 'tap',
-        'key': 'sanmill_navigation_drawer_button',
-        'expect': 'Drawer button should be present',
+        'key': 'sanmill_tab_more',
+        'expect': 'More tab should be present',
       },
       <String, String>{
         'action': 'tap',
@@ -111,8 +111,8 @@ final List<Map<String, dynamic>> testScenarios = <Map<String, dynamic>>[
       },
       <String, String>{
         'action': 'tap',
-        'key': 'sanmill_navigation_drawer_button',
-        'expect': 'Drawer button should be present',
+        'key': 'sanmill_tab_more',
+        'expect': 'More tab should be present',
       },
       <String, String>{
         'action': 'tap',
@@ -154,8 +154,8 @@ final List<Map<String, dynamic>> testScenarios = <Map<String, dynamic>>[
       },
       <String, String>{
         'action': 'tap',
-        'key': 'sanmill_navigation_drawer_button',
-        'expect': 'Drawer button should be present',
+        'key': 'sanmill_tab_more',
+        'expect': 'More tab should be present',
       },
       <String, String>{
         'action': 'tap',

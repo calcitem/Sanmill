@@ -92,92 +92,36 @@ Future<void> dismissBlockingDialogs(WidgetTester tester) async {
 }
 
 // ---------------------------------------------------------------------------
-// Navigation Drawer Operations
+// Shell Navigation Operations
 // ---------------------------------------------------------------------------
 
-/// Opens the navigation drawer by tapping the shell drawer button.
+/// Opens the More tab that now owns the former drawer entries.
 Future<void> openDrawer(WidgetTester tester) async {
-  final Finder drawerButton = find.byKey(
-    const Key('sanmill_navigation_drawer_button'),
-  );
-  if (drawerButton.evaluate().isNotEmpty) {
-    await tester.tap(drawerButton);
-    await tester.pumpAndSettle();
-    return;
-  }
   await tapSanmillTab(tester, 'more');
 }
 
-/// Closes the navigation drawer, or returns to the game tab when no drawer exists.
+/// Leaves the More tab and returns to the Home tab.
 Future<void> closeDrawer(WidgetTester tester) async {
-  final Finder drawer = find.byKey(const Key('sanmill_navigation_drawer'));
-  if (drawer.evaluate().isNotEmpty) {
-    await tester.binding.handlePopRoute();
-    await tester.pumpAndSettle();
-    return;
-  }
-
-  final Finder drawerButton = find.byKey(
-    const Key('sanmill_navigation_drawer_button'),
-  );
-  if (drawerButton.evaluate().isNotEmpty) {
-    await tester.tap(drawerButton);
-    await tester.pumpAndSettle();
-    return;
-  }
-  await tapSanmillTab(tester, 'game');
+  await tapSanmillTab(tester, 'home');
 }
 
-/// Navigates to a top-level drawer item (non-grouped).
+/// Navigates to an item using the current Lichess-style shell.
 ///
-/// Opens the drawer, taps the item identified by [itemKey], and waits
-/// for the transition to settle.
+/// The method keeps the former drawer item keys to limit integration test
+/// churn while routing through the bottom tabs and More page.
 Future<void> navigateToDrawerItem(WidgetTester tester, String itemKey) async {
-  final Finder drawerButton = find.byKey(
-    const Key('sanmill_navigation_drawer_button'),
-  );
-  if (drawerButton.evaluate().isEmpty) {
-    await navigateToShellItem(tester, itemKey);
-    return;
-  }
-
-  await openDrawer(tester);
-  final Finder itemFinder = find.byKey(Key(itemKey));
-  expect(itemFinder, findsOneWidget, reason: '$itemKey should be present');
-  await tester.tap(itemFinder);
-  await tester.pumpAndSettle();
+  await navigateToShellItem(tester, itemKey);
 }
 
-/// Navigates to a child item inside a collapsible drawer group.
+/// Navigates to a child entry inside the More tab section.
 ///
-/// Opens the drawer, taps the [groupKey] to expand the group, then taps
-/// the [childKey] to navigate to the child page.
+/// [groupKey] is accepted for compatibility with older data-driven tests.
 Future<void> navigateToGroupChild(
   WidgetTester tester,
   String groupKey,
   String childKey,
 ) async {
-  final Finder drawerButton = find.byKey(
-    const Key('sanmill_navigation_drawer_button'),
-  );
-  if (drawerButton.evaluate().isEmpty) {
-    await navigateToShellItem(tester, childKey);
-    return;
-  }
-
-  await openDrawer(tester);
-
-  // Tap the group item to expand it
-  final Finder groupFinder = find.byKey(Key(groupKey));
-  expect(groupFinder, findsOneWidget, reason: '$groupKey should be present');
-  await tester.tap(groupFinder);
-  await tester.pumpAndSettle();
-
-  // Tap the child item
-  final Finder childFinder = find.byKey(Key(childKey));
-  expect(childFinder, findsOneWidget, reason: '$childKey should be present');
-  await tester.tap(childFinder);
-  await tester.pumpAndSettle();
+  await navigateToShellItem(tester, childKey);
 }
 
 /// Taps one of the Lichess-style Sanmill shell tabs.

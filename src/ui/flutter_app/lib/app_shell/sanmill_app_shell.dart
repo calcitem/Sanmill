@@ -113,9 +113,6 @@ class SanmillAppShell extends StatefulWidget {
 class SanmillAppShellState extends State<SanmillAppShell> {
   static const double _desktopNavigationBreakpoint = 720;
 
-  final GlobalKey<ScaffoldState> _mobileScaffoldKey = GlobalKey<ScaffoldState>(
-    debugLabel: 'Sanmill mobile shell',
-  );
   final Map<SanmillShellTab, GlobalKey<NavigatorState>> _navigatorKeys =
       <SanmillShellTab, GlobalKey<NavigatorState>>{
         for (final SanmillShellTab tab in SanmillShellTab.values)
@@ -583,24 +580,8 @@ class SanmillAppShellState extends State<SanmillAppShell> {
           }
 
           return Scaffold(
-            key: _mobileScaffoldKey,
-            drawer: _SanmillNavigationDrawer(
-              onTabSelected: _selectTab,
-              onPlayRouteSelected: _selectPlayRoute,
-              onWatchRouteSelected: _pushWatchRoute,
-              onAppRouteSelected: _pushAppRoute,
-              onFeedback: _showFeedback,
-              onExit: _exitApp,
-            ),
-            body: Stack(
-              children: <Widget>[
-                stack,
-                _MobileDrawerButton(
-                  onPressed: () =>
-                      _mobileScaffoldKey.currentState?.openDrawer(),
-                ),
-              ],
-            ),
+            key: SanmillAppShell.shellKey,
+            body: stack,
             bottomNavigationBar: NavigationBar(
               key: const Key('sanmill_bottom_navigation_bar'),
               selectedIndex: _currentTab.index,
@@ -838,156 +819,6 @@ class _TabVisibility extends StatelessWidget {
   }
 }
 
-class _MobileDrawerButton extends StatelessWidget {
-  const _MobileDrawerButton({required this.onPressed});
-
-  final VoidCallback onPressed;
-
-  @override
-  Widget build(BuildContext context) {
-    return Align(
-      alignment: AlignmentDirectional.topStart,
-      child: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(8),
-          child: Material(
-            color: Theme.of(
-              context,
-            ).colorScheme.surfaceContainerLow.withValues(alpha: 0.88),
-            borderRadius: BorderRadius.circular(8),
-            clipBehavior: Clip.antiAlias,
-            child: IconButton(
-              key: const Key('sanmill_navigation_drawer_button'),
-              icon: const Icon(Icons.menu_rounded),
-              tooltip: S.of(context).more,
-              onPressed: onPressed,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _SanmillNavigationDrawer extends StatelessWidget {
-  const _SanmillNavigationDrawer({
-    required this.onTabSelected,
-    required this.onPlayRouteSelected,
-    required this.onWatchRouteSelected,
-    required this.onAppRouteSelected,
-    required this.onFeedback,
-    required this.onExit,
-  });
-
-  final ValueChanged<SanmillShellTab> onTabSelected;
-  final ValueChanged<String> onPlayRouteSelected;
-  final ValueChanged<String> onWatchRouteSelected;
-  final ValueChanged<String> onAppRouteSelected;
-  final VoidCallback onFeedback;
-  final VoidCallback onExit;
-
-  @override
-  Widget build(BuildContext context) {
-    final S strings = S.of(context);
-    final GameMenuContribution? statisticsContribution =
-        _findGameMenuContribution(
-          context,
-          (GameMenuContribution contribution) =>
-              contribution.id.value.toLowerCase().contains('statistic'),
-        );
-
-    return Drawer(
-      key: const Key('sanmill_navigation_drawer'),
-      child: SafeArea(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.fromLTRB(20, 20, 20, 12),
-              child: Text(
-                strings.appName,
-                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-            ),
-            const Divider(height: 1),
-            _DrawerTabTile(
-              key: const Key('drawer_item_puzzles'),
-              tab: SanmillShellTab.puzzles,
-              icon: Icons.extension_rounded,
-              label: strings.puzzles,
-              onSelected: onTabSelected,
-            ),
-            ListTile(
-              key: const Key('drawer_item_statistics'),
-              leading: const Icon(Icons.bar_chart_rounded),
-              title: Text(strings.statistics),
-              onTap: () {
-                Navigator.of(context).pop();
-                final GameMenuContribution? contribution =
-                    statisticsContribution;
-                if (contribution == null) {
-                  onTabSelected(SanmillShellTab.watch);
-                  return;
-                }
-                onWatchRouteSelected(contribution.id.value);
-              },
-            ),
-            const Divider(height: 1),
-            _MenuEntries(
-              mode: _MenuEntryMode.drawer,
-              onPlayRouteSelected: (String routeId) {
-                Navigator.of(context).pop();
-                onPlayRouteSelected(routeId);
-              },
-              onAppRouteSelected: (String routeId) {
-                Navigator.of(context).pop();
-                onAppRouteSelected(routeId);
-              },
-              onFeedback: () {
-                Navigator.of(context).pop();
-                onFeedback();
-              },
-              onExit: () {
-                Navigator.of(context).pop();
-                onExit();
-              },
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _DrawerTabTile extends StatelessWidget {
-  const _DrawerTabTile({
-    super.key,
-    required this.tab,
-    required this.icon,
-    required this.label,
-    required this.onSelected,
-  });
-
-  final SanmillShellTab tab;
-  final IconData icon;
-  final String label;
-  final ValueChanged<SanmillShellTab> onSelected;
-
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      leading: Icon(icon),
-      title: Text(label),
-      onTap: () {
-        Navigator.of(context).pop();
-        onSelected(tab);
-      },
-    );
-  }
-}
-
 class _WatchTabRoot extends StatelessWidget {
   const _WatchTabRoot({
     required this.scrollController,
@@ -1016,7 +847,6 @@ class _WatchTabRoot extends StatelessWidget {
             if (contribution != null)
               _MoreSection(
                 title: strings.watch,
-                mode: _MenuEntryMode.more,
                 children: <Widget>[
                   _MoreTile(
                     key: const Key('drawer_item_statistics'),
@@ -1073,7 +903,6 @@ class _MoreTabRoot extends StatelessWidget {
           padding: const EdgeInsets.fromLTRB(12, 8, 12, 24),
           children: <Widget>[
             _MenuEntries(
-              mode: _MenuEntryMode.more,
               onPlayRouteSelected: onPlayRouteSelected,
               onAppRouteSelected: onAppRouteSelected,
               onFeedback: onFeedback,
@@ -1086,18 +915,14 @@ class _MoreTabRoot extends StatelessWidget {
   }
 }
 
-enum _MenuEntryMode { more, drawer }
-
 class _MenuEntries extends StatelessWidget {
   const _MenuEntries({
-    required this.mode,
     required this.onPlayRouteSelected,
     required this.onAppRouteSelected,
     required this.onFeedback,
     required this.onExit,
   });
 
-  final _MenuEntryMode mode;
   final ValueChanged<String> onPlayRouteSelected;
   final ValueChanged<String> onAppRouteSelected;
   final VoidCallback onFeedback;
@@ -1117,7 +942,6 @@ class _MenuEntries extends StatelessWidget {
       children: <Widget>[
         _MoreSection(
           title: strings.game,
-          mode: mode,
           children: <Widget>[
             for (final GameModeEntry mode in playModes)
               _MoreTile(
@@ -1130,7 +954,6 @@ class _MenuEntries extends StatelessWidget {
         ),
         _MoreSection(
           title: strings.settings,
-          mode: mode,
           headerKey: const Key('drawer_item_settings_group'),
           children: <Widget>[
             _MoreTile(
@@ -1159,7 +982,6 @@ class _MenuEntries extends StatelessWidget {
         ),
         _MoreSection(
           title: strings.help,
-          mode: mode,
           headerKey: const Key('drawer_item_help_group'),
           children: <Widget>[
             _MoreTile(
@@ -1186,7 +1008,6 @@ class _MenuEntries extends StatelessWidget {
         if (!kIsWeb && Platform.isAndroid)
           _MoreSection(
             title: strings.appName,
-            mode: mode,
             children: <Widget>[
               _MoreTile(
                 key: const Key('drawer_item_exit'),
@@ -1205,13 +1026,11 @@ class _MoreSection extends StatelessWidget {
   const _MoreSection({
     required this.title,
     required this.children,
-    required this.mode,
     this.headerKey,
   });
 
   final String title;
   final List<Widget> children;
-  final _MenuEntryMode mode;
   final Key? headerKey;
 
   @override
@@ -1219,55 +1038,14 @@ class _MoreSection extends StatelessWidget {
     if (children.isEmpty) {
       return const SizedBox.shrink();
     }
-    if (mode == _MenuEntryMode.more) {
-      return Padding(
-        padding: const EdgeInsets.only(bottom: 16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Padding(
-              key: headerKey,
-              padding: const EdgeInsets.fromLTRB(4, 0, 4, 8),
-              child: Text(
-                title,
-                style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  color: Theme.of(context).colorScheme.onSurfaceVariant,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ),
-            Card(
-              margin: EdgeInsets.zero,
-              clipBehavior: Clip.antiAlias,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: children,
-              ),
-            ),
-          ],
-        ),
-      );
-    }
     return Padding(
-      padding: const EdgeInsets.only(bottom: 4),
-      child: _sectionContent(context),
-    );
-  }
-
-  Widget _sectionContent(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        InkWell(
-          key: headerKey,
-          onTap: () {},
-          child: Padding(
-            padding: EdgeInsets.fromLTRB(
-              16,
-              mode == _MenuEntryMode.more ? 14 : 16,
-              16,
-              6,
-            ),
+      padding: const EdgeInsets.only(bottom: 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Padding(
+            key: headerKey,
+            padding: const EdgeInsets.fromLTRB(4, 0, 4, 8),
             child: Text(
               title,
               style: Theme.of(context).textTheme.titleSmall?.copyWith(
@@ -1276,9 +1054,16 @@ class _MoreSection extends StatelessWidget {
               ),
             ),
           ),
-        ),
-        ...children,
-      ],
+          Card(
+            margin: EdgeInsets.zero,
+            clipBehavior: Clip.antiAlias,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: children,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
