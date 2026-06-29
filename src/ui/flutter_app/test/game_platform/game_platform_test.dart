@@ -9,6 +9,7 @@ import 'package:sanmill/game_platform/game_platform.dart';
 import 'package:sanmill/games/demo_probe/demo_probe_game_module.dart';
 import 'package:sanmill/games/demo_probe/demo_probe_notation_port.dart';
 import 'package:sanmill/games/demo_probe/demo_probe_rules_port.dart';
+import 'package:sanmill/games/othello/othello_game_module.dart';
 
 void main() {
   test('GameFeatureFlags supports legacy booleans and capabilities', () {
@@ -183,6 +184,14 @@ void main() {
     expect(module.notationPort, isA<DemoProbeNotationPort>());
     expect(module.enginePort, isNull);
     expect(module.persistenceScope.gameId, GameId.demoProbe);
+    expect(module.metadata.showInGamePicker, isFalse);
+  });
+
+  test('Othello stays hidden while the app focuses on Mill', () {
+    final OthelloGameModule module = OthelloGameModule();
+
+    expect(module.metadata.id, GameId.othello);
+    expect(module.metadata.showInGamePicker, isFalse);
   });
 
   test('DemoProbeRulesPort detects tic-tac-toe wins', () {

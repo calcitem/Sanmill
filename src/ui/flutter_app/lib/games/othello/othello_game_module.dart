@@ -17,8 +17,11 @@ import 'othello_page.dart';
 
 class OthelloGameModule extends GameModule {
   @override
-  GameModuleMetadata get metadata =>
-      const GameModuleMetadata(id: GameId.othello, shortLabel: 'Othello');
+  GameModuleMetadata get metadata => const GameModuleMetadata(
+    id: GameId.othello,
+    shortLabel: 'Othello',
+    showInGamePicker: false,
+  );
 
   @override
   GameFeatureFlags get features => const GameFeatureFlags(supportsAi: true);

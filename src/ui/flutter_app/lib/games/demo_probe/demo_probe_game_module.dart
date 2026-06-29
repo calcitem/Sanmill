@@ -21,8 +21,11 @@ import 'demo_probe_session.dart';
 
 class DemoProbeGameModule extends GameModule {
   @override
-  GameModuleMetadata get metadata =>
-      const GameModuleMetadata(id: GameId.demoProbe, shortLabel: 'Probe');
+  GameModuleMetadata get metadata => const GameModuleMetadata(
+    id: GameId.demoProbe,
+    shortLabel: 'Probe',
+    showInGamePicker: false,
+  );
 
   @override
   GameFeatureFlags get features => const GameFeatureFlags();

@@ -11,6 +11,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:sanmill/app_shell/sanmill_app_shell.dart';
 import 'package:sanmill/game_page/widgets/mini_board.dart';
+import 'package:sanmill/game_page/widgets/toolbars/game_toolbar.dart';
 import 'package:sanmill/game_platform/game_registry.dart';
 import 'package:sanmill/game_shell/shell_route_ids.dart';
 import 'package:sanmill/games/built_in_game_modules.dart';
@@ -989,6 +990,91 @@ void main() {
 
       expect(tester.widget<IconButton>(previousButtonFinder).onPressed, isNull);
       expect(tester.widget<IconButton>(nextButtonFinder).onPressed, isNotNull);
+
+      // Drain any settings-save debounce timer (see the smoke test above).
+      await tester.pump(const Duration(milliseconds: 350));
+    },
+    skip: nativeLibrarySkipReason() != null,
+  );
+
+  testWidgets(
+    'Setup position toolbar uses a Lichess-style bottom bar',
+    (WidgetTester tester) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: AppTheme.lightThemeData,
+          localizationsDelegates: sanmillLocalizationsDelegates,
+          supportedLocales: S.supportedLocales,
+          home: const Scaffold(
+            body: Align(
+              alignment: Alignment.bottomCenter,
+              child: SetupPositionToolbar(),
+            ),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      expect(
+        find.byKey(const Key('setup_position_lichess_bottom_bar')),
+        findsOneWidget,
+      );
+      expect(find.byKey(const Key('setup_menu_button')), findsOneWidget);
+      expect(find.byKey(const Key('setup_paint_color_button')), findsOneWidget);
+      expect(find.byKey(const Key('setup_phase_button')), findsOneWidget);
+      expect(
+        find.byKey(const Key('setup_transform_menu_button')),
+        findsOneWidget,
+      );
+      expect(find.byKey(const Key('setup_done_button')), findsOneWidget);
+      expect(
+        find.byKey(const Key('setup_position_buttons_container_row1')),
+        findsNothing,
+      );
+
+      await tester.tap(find.byKey(const Key('setup_transform_menu_button')));
+      await tester.pumpAndSettle();
+
+      expect(
+        find.byKey(const Key('setup_transform_action_sheet')),
+        findsOneWidget,
+      );
+      expect(find.byKey(const Key('setup_rotate_button')), findsOneWidget);
+      expect(
+        find.byKey(const Key('setup_horizontal_flip_button')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const Key('setup_vertical_flip_button')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const Key('setup_inner_outer_flip_button')),
+        findsOneWidget,
+      );
+
+      await tester.binding.handlePopRoute();
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byKey(const Key('setup_menu_button')));
+      await tester.pumpAndSettle();
+
+      expect(
+        find.byKey(const Key('setup_position_action_sheet')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const Key('setup_placed_count_button')),
+        findsOneWidget,
+      );
+      expect(find.byKey(const Key('setup_need_remove_button')), findsOneWidget);
+      expect(find.byKey(const Key('setup_copy_button')), findsOneWidget);
+      expect(find.byKey(const Key('setup_paste_button')), findsOneWidget);
+      expect(find.byKey(const Key('setup_clear_button')), findsOneWidget);
+      expect(find.byKey(const Key('setup_cancel_button')), findsOneWidget);
+
+      await tester.binding.handlePopRoute();
+      await tester.pumpAndSettle();
 
       // Drain any settings-save debounce timer (see the smoke test above).
       await tester.pump(const Duration(milliseconds: 350));
