@@ -107,7 +107,7 @@ GameMenuContribution? _findGameMenuContribution(
   bool Function(GameMenuContribution contribution) test,
 ) {
   for (final GameMenuContribution contribution
-      in GameRegistry.instance.current.drawerContributions(context)) {
+      in GameRegistry.instance.current.menuContributions(context)) {
     if (contribution.availableIn(context) && test(contribution)) {
       return contribution;
     }
@@ -537,7 +537,7 @@ class SanmillAppShellState extends State<SanmillAppShell> {
     GameMenuTarget target,
   ) {
     return GameRegistry.instance.current
-        .drawerContributions(context)
+        .menuContributions(context)
         .where(
           (GameMenuContribution contribution) =>
               contribution.availableIn(context) &&
@@ -2212,7 +2212,7 @@ class _MenuEntries extends StatelessWidget {
     final S strings = S.of(context);
     final GameModule module = GameRegistry.instance.current;
     final List<GameMenuContribution> contributionTools = module
-        .drawerContributions(context)
+        .menuContributions(context)
         .where(
           (GameMenuContribution contribution) =>
               contribution.section == GameMenuSection.tools &&
@@ -2238,14 +2238,14 @@ class _MenuEntries extends StatelessWidget {
           children: <Widget>[
             for (final GameMenuContribution tool in contributionTools)
               _MoreTile(
-                key: tool.drawerKey ?? Key('more_tool_${tool.id.value}'),
+                key: tool.menuKey ?? Key('more_tool_${tool.id.value}'),
                 icon: tool.icon ?? Icons.build_rounded,
                 title: tool.label,
                 onTap: () => onAppRouteSelected(tool.id.value),
               ),
             for (final GameModeEntry tool in tools)
               _MoreTile(
-                key: tool.drawerKey ?? Key('more_tool_${tool.id.value}'),
+                key: tool.menuKey ?? Key('more_tool_${tool.id.value}'),
                 icon: tool.icon ?? Icons.build_rounded,
                 title: tool.label,
                 onTap: () => onAppRouteSelected(tool.id.value),

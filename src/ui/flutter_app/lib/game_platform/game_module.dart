@@ -55,8 +55,14 @@ abstract class GameModule {
   ];
 
   /// Non-play screens such as puzzles, statistics, or game-specific settings.
-  List<GameMenuContribution> drawerContributions(BuildContext context) =>
+  List<GameMenuContribution> menuContributions(BuildContext context) =>
       const <GameMenuContribution>[];
+
+  /// Legacy name kept while older tests and integrations still refer to drawer
+  /// terminology.
+  @Deprecated('Use menuContributions instead.')
+  List<GameMenuContribution> drawerContributions(BuildContext context) =>
+      menuContributions(context);
 
   /// Optional rules engine port (for import/export, tests, future UI).
   RulesPort? get rulesPort => null;
@@ -133,7 +139,7 @@ abstract class GameModule {
   }) {}
 
   /// True if [routeId] is a [playModes] entry for this module (a primary
-  /// play surface), as opposed to a [drawerContributions] screen or an app
+  /// play surface), as opposed to a [menuContributions] screen or an app
   /// shell route. Used by the shared shell for back-stack and gesture policy.
   bool isPlayModeRoute(String routeId, BuildContext context) {
     for (final GameModeEntry mode in playModes(context)) {

@@ -14,7 +14,7 @@ extension.
 ## Module entry
 
 * `mill_game_module.dart` — implements `GameModule` for Mill, registers
-  the `MillKernelExtraDecoder`, exposes `playModes` / `drawerContributions`,
+  the `MillKernelExtraDecoder`, exposes `playModes` / `menuContributions`,
   applies first-run language defaults, etc.
 
 ## Ports (`game_platform` interface implementations)

@@ -11,7 +11,7 @@ import '../game_platform/game_session.dart';
 import 'shell_app_routes.dart';
 
 /// Resolves a [GameModule] surface for [routeId], or `null` if the route is
-/// not a play mode or drawer contribution of [gameId].
+/// not a play mode or menu contribution of [gameId].
 Widget? buildModuleScreenForGame(
   BuildContext context,
   GameId gameId,
@@ -31,7 +31,7 @@ Widget? buildModuleScreenForGame(
       return mode.builder(context, key: mode.contentKey, session: session);
     }
   }
-  for (final GameMenuContribution c in module.drawerContributions(context)) {
+  for (final GameMenuContribution c in module.menuContributions(context)) {
     if (c.id.value == routeId) {
       if (!c.availableIn(context)) {
         return null;

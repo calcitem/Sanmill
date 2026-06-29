@@ -330,7 +330,7 @@ class MillGameModule extends GameModule {
         id: MillRouteIds.humanVsAi,
         label: s.playAgainstComputer,
         icon: Icons.memory_rounded,
-        drawerKey: const Key('drawer_item_human_vs_ai'),
+        menuKey: const Key('drawer_item_human_vs_ai'),
         contentKey: const Key('human_ai'),
         isAvailable: (_) => features.supports(GameCapability.ai),
         builder: (BuildContext context, {Key? key, GameSession? session}) =>
@@ -340,7 +340,7 @@ class MillGameModule extends GameModule {
         id: MillRouteIds.humanVsHuman,
         label: s.overTheBoard,
         icon: Icons.table_restaurant_outlined,
-        drawerKey: const Key('drawer_item_human_vs_human'),
+        menuKey: const Key('drawer_item_human_vs_human'),
         contentKey: const Key('human_human'),
         builder: (BuildContext context, {Key? key, GameSession? session}) =>
             GamePage(GameMode.humanVsHuman, key: key),
@@ -349,7 +349,7 @@ class MillGameModule extends GameModule {
         id: MillRouteIds.aiVsAi,
         label: s.aiVsAi,
         icon: FluentIcons.bot_24_regular,
-        drawerKey: const Key('drawer_item_ai_vs_ai'),
+        menuKey: const Key('drawer_item_ai_vs_ai'),
         contentKey: const Key('ai_ai'),
         isAvailable: (_) => features.supports(GameCapability.ai),
         builder: (BuildContext context, {Key? key, GameSession? session}) =>
@@ -359,7 +359,7 @@ class MillGameModule extends GameModule {
         id: MillRouteIds.humanVsLan,
         label: s.humanVsLAN,
         icon: FluentIcons.wifi_1_24_regular,
-        drawerKey: const Key('drawer_item_human_vs_lan'),
+        menuKey: const Key('drawer_item_human_vs_lan'),
         contentKey: const Key('human_lan'),
         isAvailable: (_) => features.supports(GameCapability.lan),
         builder: (BuildContext context, {Key? key, GameSession? session}) =>
@@ -370,7 +370,7 @@ class MillGameModule extends GameModule {
         label: s.boardEditor,
         section: GameMenuSection.tools,
         icon: FluentIcons.edit_24_regular,
-        drawerKey: const Key('drawer_item_setup_position'),
+        menuKey: const Key('drawer_item_setup_position'),
         contentKey: const Key('setup_position'),
         builder: (BuildContext context, {Key? key, GameSession? session}) =>
             GamePage(GameMode.setupPosition, key: key),
@@ -379,7 +379,7 @@ class MillGameModule extends GameModule {
   }
 
   @override
-  List<GameMenuContribution> drawerContributions(BuildContext context) {
+  List<GameMenuContribution> menuContributions(BuildContext context) {
     final S s = S.of(context);
     return <GameMenuContribution>[
       GameMenuContribution(
@@ -387,7 +387,7 @@ class MillGameModule extends GameModule {
         label: s.importGame,
         section: GameMenuSection.tools,
         icon: FluentIcons.clipboard_paste_24_regular,
-        drawerKey: const Key('drawer_item_import_game'),
+        menuKey: const Key('drawer_item_import_game'),
         contentKey: const Key('import_game'),
         builder: (BuildContext context, {Key? key, GameSession? session}) {
           return ImportGamePage(key: key);
@@ -398,7 +398,7 @@ class MillGameModule extends GameModule {
         label: s.analysis,
         section: GameMenuSection.tools,
         icon: FluentIcons.beaker_24_regular,
-        drawerKey: const Key('drawer_item_analysis'),
+        menuKey: const Key('drawer_item_analysis'),
         contentKey: const Key('analysis_panel'),
         builder: (BuildContext context, {Key? key, GameSession? session}) {
           return MovesListPage.analysisPanel(key: key);
@@ -409,7 +409,7 @@ class MillGameModule extends GameModule {
         label: s.openingExplorer,
         section: GameMenuSection.tools,
         icon: FluentIcons.book_open_24_regular,
-        drawerKey: const Key('drawer_item_opening_explorer'),
+        menuKey: const Key('drawer_item_opening_explorer'),
         contentKey: const Key('opening_explorer'),
         builder: (BuildContext context, {Key? key, GameSession? session}) {
           return OpeningExplorerPage(key: key, session: session);
@@ -421,7 +421,7 @@ class MillGameModule extends GameModule {
           label: s.puzzles,
           icon: FluentIcons.puzzle_piece_24_regular,
           targets: const <GameMenuTarget>{GameMenuTarget.puzzles},
-          drawerKey: const Key('drawer_item_puzzles'),
+          menuKey: const Key('drawer_item_puzzles'),
           contentKey: const Key('puzzles'),
           isAvailable: (_) => features.supports(GameCapability.puzzles),
           builder: (BuildContext context, {Key? key, GameSession? session}) {
@@ -434,7 +434,7 @@ class MillGameModule extends GameModule {
           label: s.statistics,
           icon: FluentIcons.calculator_24_regular,
           targets: const <GameMenuTarget>{GameMenuTarget.watch},
-          drawerKey: const Key('drawer_item_statistics'),
+          menuKey: const Key('drawer_item_statistics'),
           contentKey: const Key('statistics'),
           isAvailable: (_) => features.supports(GameCapability.statistics),
           builder: (BuildContext context, {Key? key, GameSession? session}) {
