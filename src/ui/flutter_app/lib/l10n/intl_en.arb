@@ -4729,5 +4729,13 @@
     "boardEditor": "Board editor",
     "@boardEditor": {},
     "quickPairing": "Quick pairing",
-    "@quickPairing": {}
+    "@quickPairing": {},
+    "clock": "Clock",
+    "@clock": {},
+    "start": "Start",
+    "@start": {},
+    "pause": "Pause",
+    "@pause": {},
+    "resume": "Resume",
+    "@resume": {}
 }

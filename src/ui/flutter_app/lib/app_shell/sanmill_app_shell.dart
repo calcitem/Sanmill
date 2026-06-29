@@ -2198,6 +2198,12 @@ class _MenuEntries extends StatelessWidget {
                 title: tool.label,
                 onTap: () => onAppRouteSelected(tool.id.value),
               ),
+            _MoreTile(
+              key: const Key('drawer_item_clock'),
+              icon: Icons.alarm_outlined,
+              title: strings.clock,
+              onTap: () => onAppRouteSelected(ShellRouteIds.appClock.value),
+            ),
           ],
         ),
         _MoreSection(

@@ -4577,5 +4577,13 @@
     "boardEditor": "棋盘编辑器",
     "@boardEditor": {},
     "quickPairing": "快速配对",
-    "@quickPairing": {}
+    "@quickPairing": {},
+    "clock": "棋钟",
+    "@clock": {},
+    "start": "开始",
+    "@start": {},
+    "pause": "暂停",
+    "@pause": {},
+    "resume": "继续",
+    "@resume": {}
 }

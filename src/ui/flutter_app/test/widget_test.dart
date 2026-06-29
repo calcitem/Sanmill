@@ -587,6 +587,8 @@ void main() {
         findsOneWidget,
       );
       expect(find.text('Board editor'), findsOneWidget);
+      expect(find.byKey(const Key('drawer_item_clock')), findsOneWidget);
+      expect(find.text('Clock'), findsOneWidget);
 
       await tester.tap(find.byKey(const Key('drawer_item_import_game')));
       await tester.pumpAndSettle();
@@ -614,6 +616,21 @@ void main() {
         find.byKey(const Key('analysis_panel_page_scaffold')),
         findsOneWidget,
       );
+
+      await tester.binding.handlePopRoute();
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byKey(const Key('drawer_item_clock')));
+      await tester.pumpAndSettle();
+
+      expect(find.byKey(const Key('clock_tool_page_scaffold')), findsOneWidget);
+      expect(find.byKey(const Key('clock_tool_top_tile')), findsOneWidget);
+      expect(find.byKey(const Key('clock_tool_bottom_tile')), findsOneWidget);
+      expect(
+        find.byKey(const Key('clock_tool_start_pause_button')),
+        findsOneWidget,
+      );
+      expect(find.byKey(const Key('clock_tool_reset_button')), findsOneWidget);
 
       await tester.binding.handlePopRoute();
       await tester.pumpAndSettle();
