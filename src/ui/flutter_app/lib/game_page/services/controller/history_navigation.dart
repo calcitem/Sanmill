@@ -32,15 +32,21 @@ class HistoryNavigator {
 
     // -----------------------------------------------------------
     //  LAN mode special rules:
-    //   - Only single-step takeBack is allowed (requires remote approval).
+    //   - Take-back requires remote approval and may cover multiple actions
+    //     when the requester's last turn included a capture.
     //   - All other history nav is disallowed in LAN mode.
     // -----------------------------------------------------------
     final GameMode currentMode = GameController().gameInstance.gameMode;
     if (currentMode == GameMode.humanVsLAN) {
-      if (navMode == HistoryNavMode.takeBack && number == null) {
-        // This is the user tapping a "Take Back 1" button
-        // Request a single-step take back from the opponent
-        final bool success = await _requestLanTakeBack(context, 1);
+      if (navMode == HistoryNavMode.takeBack ||
+          navMode == HistoryNavMode.takeBackN) {
+        assert(
+          navMode != HistoryNavMode.takeBackN || number != null,
+          'LAN takeBackN requires an explicit step count.',
+        );
+        final int steps = number ?? 1;
+        assert(steps > 0, 'LAN takeback requires a positive step count.');
+        final bool success = await _requestLanTakeBack(context, steps);
         // If user & remote accepted, success=true => done
         // If rejected or an error, success=false => do nothing
         if (pop && context.mounted) {
@@ -48,9 +54,8 @@ class HistoryNavigator {
         }
         return success ? const HistoryOK() : const HistoryAbort();
       } else {
-        // For takeBackN>=2, takeBackAll, stepForward, stepForwardAll => disallow
+        // For takeBackAll, stepForward, stepForwardAll => disallow
         if (context.mounted) {
-          // In LAN mode, only single-step take back is allowed.
           final String takeBackRejected = S.of(context).takeBackRejected;
           ScaffoldMessenger.of(
             context,
@@ -271,10 +276,12 @@ class HistoryNavigator {
     BuildContext context,
     int steps,
   ) async {
-    if (steps != 1) {
+    assert(steps > 0, 'LAN takeback requires a positive step count.');
+    if (steps <= 0) {
       return false;
     }
-    // This calls a new method in GameController that sends "take back:1:request"
+    // This calls a new method in GameController that sends
+    // "take back:<steps>:request"
     // and awaits an async result from the peer.
     final bool ok = await GameController().requestLanTakeBack(steps);
     if (!ok && context.mounted) {

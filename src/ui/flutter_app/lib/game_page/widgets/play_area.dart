@@ -295,6 +295,16 @@ class PlayAreaState extends State<PlayArea> {
     return _takeBackStepCountForRequester(_humanAiTakeBackRequesterSide);
   }
 
+  int get _lanTakeBackStepCount {
+    assert(GameController().gameInstance.gameMode == GameMode.humanVsLAN);
+    final PieceColor requesterSide = GameController().getLocalColor();
+    assert(
+      requesterSide == PieceColor.white || requesterSide == PieceColor.black,
+      'LAN takeback requires a playable local requester side.',
+    );
+    return _takeBackStepCountForRequester(requesterSide);
+  }
+
   PieceColor get _humanAiTakeBackRequesterSide {
     assert(_usesLichessHumanAiToolbar);
     final List<Player> humanPlayers = GameController().gameInstance.players
@@ -327,6 +337,20 @@ class PlayAreaState extends State<PlayArea> {
     }
 
     return path.length;
+  }
+
+  Future<void> _takeBackFromRegularBottomBar(BuildContext context) async {
+    if (GameController().gameInstance.gameMode == GameMode.humanVsLAN) {
+      await HistoryNavigator.takeBackN(
+        context,
+        _lanTakeBackStepCount,
+        pop: false,
+        toolbar: true,
+      );
+      return;
+    }
+
+    await HistoryNavigator.takeBack(context, pop: false, toolbar: true);
   }
 
   bool get _canShowHintFromBottomBar {
@@ -750,7 +774,9 @@ class PlayAreaState extends State<PlayArea> {
             final ScaffoldMessengerState messenger = ScaffoldMessenger.of(
               context,
             );
-            final bool accepted = await GameController().requestLanTakeBack(1);
+            final bool accepted = await GameController().requestLanTakeBack(
+              _lanTakeBackStepCount,
+            );
             if (!mounted) {
               return;
             }
@@ -1190,11 +1216,7 @@ class PlayAreaState extends State<PlayArea> {
                             : null,
                         isShowingResult: _isRegularGameOver,
                         onPreviousPressed: _canStepBackFromRegularBottomBar
-                            ? () => HistoryNavigator.takeBack(
-                                context,
-                                pop: false,
-                                toolbar: true,
-                              )
+                            ? () => _takeBackFromRegularBottomBar(context)
                             : null,
                         onNextPressed: _canStepForwardFromRegularBottomBar
                             ? () => HistoryNavigator.stepForward(

@@ -1325,13 +1325,13 @@ class GameController {
     }
   }
 
-  /// Sends a LAN take-back request (e.g. "take back:1:request").
+  /// Sends a LAN take-back request (e.g. "take back:2:request").
   Future<bool> requestLanTakeBack(int steps) async {
+    assert(steps > 0, 'LAN takeback requires a positive step count.');
     if (gameInstance.gameMode != GameMode.humanVsLAN) {
       return false; // Not in LAN mode => ignore
     }
-    if (steps != 1) {
-      // We only allow single-step, so fail
+    if (steps <= 0) {
       return false;
     }
 
@@ -1382,10 +1382,10 @@ class GameController {
     return pendingTakeBackCompleter!.future;
   }
 
-  /// Called when we receive "take back:1:request" from the opponent.
+  /// Called when we receive `take back:<steps>:request` from the opponent.
   void handleTakeBackRequest(int steps) {
-    if (steps != 1) {
-      // We only allow single-step in this requirement
+    assert(steps > 0, 'LAN takeback request requires a positive step count.');
+    if (steps <= 0) {
       networkService?.sendMove("take back:$steps:rejected");
       return;
     }
@@ -1411,9 +1411,8 @@ class GameController {
               onPressed: () {
                 Navigator.of(dialogContext).pop(true);
                 networkService?.sendMove("take back:$steps:accepted");
-                // Locally apply the 1-step rollback
-                HistoryNavigator.doEachMove(HistoryNavMode.takeBack, 1);
-                // Also mark the next turn, etc. as needed
+                HistoryNavigator.doEachMove(HistoryNavMode.takeBack, steps);
+                refreshLanTurn();
               },
               child: Text(S.of(dialogContext).yes),
             ),

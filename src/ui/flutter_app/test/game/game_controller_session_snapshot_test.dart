@@ -19,6 +19,8 @@ import 'package:sanmill/src/rust/api/simple.dart' as tgf;
 import '../helpers/mocks/mock_database.dart';
 
 void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
+
   test('GameController stores active session snapshots', () {
     DB.instance = MockDB();
     addTearDown(() => DB.instance = null);
@@ -200,6 +202,42 @@ void main() {
     db.displaySettings = const DisplaySettings();
     expect(controller.shouldAutoRestartAfterGameOver(), isFalse);
   });
+
+  test('GameController sends multi-step LAN takeback requests', () async {
+    DB.instance = MockDB();
+    final GameController controller = GameController.instance;
+    final _RecordingNetworkService networkService = _RecordingNetworkService();
+    addTearDown(() {
+      controller.pendingTakeBackCompleter = null;
+      controller.networkService = null;
+      controller.isLanOpponentTurn = false;
+      controller.gameInstance.gameMode = GameMode.humanVsAi;
+      networkService.dispose();
+      DB.instance = null;
+    });
+
+    controller.gameInstance.gameMode = GameMode.humanVsLAN;
+    controller.networkService = networkService;
+    controller.isLanOpponentTurn = false;
+
+    final Future<bool> result = controller.requestLanTakeBack(3);
+
+    expect(networkService.sentMessages, <String>['take back:3:request']);
+    controller.pendingTakeBackCompleter?.complete(true);
+    expect(await result, isTrue);
+  });
+}
+
+class _RecordingNetworkService extends NetworkService {
+  final List<String> sentMessages = <String>[];
+
+  @override
+  bool get isConnected => true;
+
+  @override
+  void sendMove(String move) {
+    sentMessages.add(move);
+  }
 }
 
 class _SnapshotOnlyNativeMillRulesPort implements NativeMillRulesPort {
