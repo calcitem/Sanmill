@@ -28,6 +28,7 @@ import '../services/analysis_mode.dart';
 import '../services/import_export/pgn.dart';
 import '../services/mill.dart';
 import '../services/painters/advantage_graph_painter.dart';
+import 'ai_chat_dialog.dart';
 import 'game_page.dart';
 import 'modals/game_options_modal.dart';
 import 'moves_list_page.dart';
@@ -247,6 +248,26 @@ class PlayAreaState extends State<PlayArea> {
         settings: const RouteSettings(name: '/movesList'),
         builder: (BuildContext context) => const MovesListPage(),
       ),
+    );
+  }
+
+  bool get _shouldShowAiChatMenuAction {
+    if (!DB().generalSettings.aiChatEnabled) {
+      return false;
+    }
+
+    final GameMode mode = GameController().gameInstance.gameMode;
+    return mode == GameMode.humanVsAi ||
+        mode == GameMode.humanVsHuman ||
+        mode == GameMode.aiVsAi;
+  }
+
+  void _showAiChatDialog(BuildContext context) {
+    showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (BuildContext context) => const AiChatDialog(),
     );
   }
 
@@ -565,6 +586,14 @@ class PlayAreaState extends State<PlayArea> {
           makeLabel: (BuildContext context) => Text(S.of(context).move),
           onPressed: () => _openMoves(context),
         ),
+        if (_shouldShowAiChatMenuAction)
+          LichessActionSheetAction(
+            key: const Key('play_area_regular_game_menu_ai_chat'),
+            leading: const Icon(FluentIcons.chat_24_regular),
+            makeLabel: (BuildContext context) =>
+                Text(S.of(context).aiChatButtonTooltip),
+            onPressed: () => _showAiChatDialog(context),
+          ),
         LichessActionSheetAction(
           key: const Key('play_area_toolbar_item_options'),
           leading: const Icon(Icons.settings_outlined),
@@ -611,6 +640,14 @@ class PlayAreaState extends State<PlayArea> {
           makeLabel: (BuildContext context) => Text(S.of(context).analysis),
           onPressed: () => unawaited(_openAnalysisPanelFromBottomBar(context)),
         ),
+        if (_shouldShowAiChatMenuAction)
+          LichessActionSheetAction(
+            key: const Key('play_area_game_menu_ai_chat'),
+            leading: const Icon(FluentIcons.chat_24_regular),
+            makeLabel: (BuildContext context) =>
+                Text(S.of(context).aiChatButtonTooltip),
+            onPressed: () => _showAiChatDialog(context),
+          ),
         if (_canResignFromBottomBar)
           LichessActionSheetAction(
             key: const Key('play_area_game_menu_resign'),

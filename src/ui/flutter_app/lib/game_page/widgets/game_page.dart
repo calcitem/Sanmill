@@ -53,7 +53,6 @@ import '../services/import_export/pgn.dart';
 import '../services/painters/animations/piece_effect_animation.dart';
 import '../services/painters/painters.dart';
 import '../services/player_timer.dart';
-import 'ai_chat_dialog.dart';
 import 'challenge_confetti.dart';
 import 'dialogs/engine_failure_dialog.dart';
 import 'dialogs/performance_warning_dialog.dart';
@@ -229,14 +228,10 @@ class _GamePageInnerState extends State<_GamePageInner> {
                   ),
                 ),
               ),
-              // Top-right corner buttons (analysis, AI chat, image recognition)
+              // Setup Position keeps editor-specific tools in the top corner;
+              // regular play actions live in the Lichess-style bottom menu.
               if (GameController().gameInstance.gameMode ==
-                      GameMode.humanVsHuman ||
-                  GameController().gameInstance.gameMode ==
-                      GameMode.humanVsAi ||
-                  GameController().gameInstance.gameMode == GameMode.aiVsAi ||
-                  GameController().gameInstance.gameMode ==
-                      GameMode.setupPosition)
+                  GameMode.setupPosition)
                 Align(
                   key: const Key('game_page_top_right_buttons_align'),
                   alignment: AlignmentDirectional.topEnd,
@@ -245,83 +240,39 @@ class _GamePageInnerState extends State<_GamePageInner> {
                       padding: const EdgeInsets.all(8.0),
                       child: Material(
                         color: Colors.transparent,
-                        child: ValueListenableBuilder<Box<GeneralSettings>>(
-                          valueListenable: DB().listenGeneralSettings,
-                          builder:
-                              (
-                                BuildContext context,
-                                Box<GeneralSettings> box,
-                                Widget? child,
-                              ) {
-                                final GeneralSettings settings = box.get(
-                                  DB.generalSettingsKey,
-                                  defaultValue: const GeneralSettings(),
-                                )!;
-                                return Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: <Widget>[
-                                    // AI Chat Assistant button (shown when game board is active)
-                                    if (_shouldShowAiChatButton(settings))
-                                      IconButton(
-                                        key: const Key(
-                                          'game_page_ai_chat_button',
-                                        ),
-                                        icon: const Icon(
-                                          FluentIcons.chat_24_regular,
-                                          color: Colors.white,
-                                        ),
-                                        tooltip: S
-                                            .of(context)
-                                            .aiChatButtonTooltip,
-                                        onPressed: () =>
-                                            _showAiChatDialog(context),
-                                      ),
-                                    // Board image recognition (Setup Position
-                                    // mode only): load a board position from a
-                                    // gallery image into the setup editor.
-                                    if (GameController()
-                                            .gameInstance
-                                            .gameMode ==
-                                        GameMode.setupPosition) ...<Widget>[
-                                      // Recognition tuning sliders, dev builds
-                                      // only.
-                                      if (EnvironmentConfig.devMode)
-                                        IconButton(
-                                          key: const Key(
-                                            'game_page_recognition_params_button',
-                                          ),
-                                          icon: const Icon(
-                                            FluentIcons.settings_24_regular,
-                                            color: Colors.white,
-                                          ),
-                                          tooltip: S
-                                              .of(context)
-                                              .recognitionParameters,
-                                          onPressed: () =>
-                                              BoardRecognitionImport.showParametersDialog(
-                                                context,
-                                              ),
-                                        ),
-                                      IconButton(
-                                        key: const Key(
-                                          'game_page_image_recognition_button',
-                                        ),
-                                        icon: const Icon(
-                                          FluentIcons.camera_24_regular,
-                                          color: Colors.white,
-                                        ),
-                                        tooltip: S
-                                            .of(context)
-                                            .recognizeBoardFromImage,
-                                        onPressed: () =>
-                                            BoardRecognitionImport.recognizeFromGallery(
-                                              context,
-                                            ),
-                                      ),
-                                    ],
-                                  ],
-                                );
-                              },
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            if (EnvironmentConfig.devMode)
+                              IconButton(
+                                key: const Key(
+                                  'game_page_recognition_params_button',
+                                ),
+                                icon: const Icon(
+                                  FluentIcons.settings_24_regular,
+                                  color: Colors.white,
+                                ),
+                                tooltip: S.of(context).recognitionParameters,
+                                onPressed: () =>
+                                    BoardRecognitionImport.showParametersDialog(
+                                      context,
+                                    ),
+                              ),
+                            IconButton(
+                              key: const Key(
+                                'game_page_image_recognition_button',
+                              ),
+                              icon: const Icon(
+                                FluentIcons.camera_24_regular,
+                                color: Colors.white,
+                              ),
+                              tooltip: S.of(context).recognizeBoardFromImage,
+                              onPressed: () =>
+                                  BoardRecognitionImport.recognizeFromGallery(
+                                    context,
+                                  ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
@@ -599,36 +550,5 @@ class _GamePageInnerState extends State<_GamePageInner> {
       toolbarHeight *= 4;
     }
     return toolbarHeight;
-  }
-
-  /// Determine if the AI chat button should be visible.
-  ///
-  /// The button is shown when AI chat is enabled in settings and the current
-  /// game mode supports it.  We intentionally do NOT gate on
-  /// [GameController.isDisposed] here because the controller's disposed flag
-  /// is an engine-lifecycle concern that can be `true` during the first build
-  /// frame while the previous GameBoard is being disposed and the next one is
-  /// initializing. Checking it here would hide the button during route
-  /// transitions.
-  bool _shouldShowAiChatButton(GeneralSettings settings) {
-    // Check if AI chat feature is enabled in settings
-    if (!settings.aiChatEnabled) {
-      return false;
-    }
-
-    final GameMode mode = GameController().gameInstance.gameMode;
-    return mode == GameMode.humanVsAi ||
-        mode == GameMode.humanVsHuman ||
-        mode == GameMode.aiVsAi;
-  }
-
-  /// Show the AI chat assistant dialog
-  void _showAiChatDialog(BuildContext context) {
-    showModalBottomSheet<void>(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      builder: (BuildContext context) => const AiChatDialog(),
-    );
   }
 }

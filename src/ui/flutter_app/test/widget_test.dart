@@ -20,6 +20,7 @@ import 'package:sanmill/game_shell/shell_route_ids.dart';
 import 'package:sanmill/games/built_in_game_modules.dart';
 import 'package:sanmill/games/mill/mill_board_geometry.dart';
 import 'package:sanmill/games/mill/opening_explorer/opening_explorer_page.dart';
+import 'package:sanmill/general_settings/models/general_settings.dart';
 import 'package:sanmill/general_settings/widgets/developer_options_page.dart';
 import 'package:sanmill/generated/intl/l10n.dart';
 import 'package:sanmill/main.dart';
@@ -151,6 +152,14 @@ void main() {
         ..devicePixelRatio = 1.0;
       addTearDown(tester.view.resetPhysicalSize);
       addTearDown(tester.view.resetDevicePixelRatio);
+      final GeneralSettings originalGeneralSettings = DB().generalSettings;
+      DB().generalSettings = GeneralSettings.fromJson(
+        Map<String, dynamic>.from(originalGeneralSettings.toJson())
+          ..['aiChatEnabled'] = true,
+      );
+      addTearDown(() {
+        DB().generalSettings = originalGeneralSettings;
+      });
 
       await tester.pumpWidget(const SanmillApp());
 
@@ -257,6 +266,11 @@ void main() {
       expect(shellState.debugCurrentTab, SanmillShellTab.home);
       expect(shellState.debugCurrentRouteId, shellState.debugPlayRouteId);
       expect(find.byKey(const Key('human_ai')), findsOneWidget);
+      expect(
+        find.byKey(const Key('game_page_top_right_buttons_align')),
+        findsNothing,
+      );
+      expect(find.byKey(const Key('game_page_ai_chat_button')), findsNothing);
 
       await tester.binding.handlePopRoute();
       await tester.pumpAndSettle();
