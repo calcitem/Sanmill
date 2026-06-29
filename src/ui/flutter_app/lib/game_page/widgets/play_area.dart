@@ -1076,6 +1076,7 @@ class PlayAreaState extends State<PlayArea> {
                 wrapKey: Key('play_area_human_ai_move_list_wrap'),
                 moveKeyPrefix: 'play_area_human_ai_move_',
                 layout: _InlineMoveListLayout.horizontal,
+                groupByRound: true,
               ),
               const _HumanAiPlayerPanel(
                 key: Key('play_area_human_ai_robot_panel'),
@@ -1328,6 +1329,7 @@ class _InlineMoveList extends StatefulWidget {
     this.onMoveTap,
     this.showMovePreview = false,
     this.layout = _InlineMoveListLayout.wrap,
+    this.groupByRound = false,
   });
 
   final Key wrapKey;
@@ -1336,6 +1338,7 @@ class _InlineMoveList extends StatefulWidget {
   onMoveTap;
   final bool showMovePreview;
   final _InlineMoveListLayout layout;
+  final bool groupByRound;
 
   @override
   State<_InlineMoveList> createState() => _InlineMoveListState();
@@ -1411,6 +1414,14 @@ class _InlineMoveListState extends State<_InlineMoveList> {
     required BuildContext context,
     required List<PgnNode<ExtMove>> nodes,
   }) {
+    if (widget.groupByRound) {
+      assert(
+        widget.layout == _InlineMoveListLayout.horizontal,
+        'Grouped inline move lists are only supported in horizontal layout.',
+      );
+      return _buildGroupedMoves(context: context, nodes: nodes);
+    }
+
     final List<Widget> chips = <Widget>[
       for (int i = 0; i < nodes.length; i++) _buildMoveChip(context, nodes, i),
     ];
@@ -1427,6 +1438,108 @@ class _InlineMoveListState extends State<_InlineMoveList> {
         child: Row(children: _spaceMoveChips(chips)),
       ),
     };
+  }
+
+  Widget _buildGroupedMoves({
+    required BuildContext context,
+    required List<PgnNode<ExtMove>> nodes,
+  }) {
+    final List<_InlineMoveRound> rounds = _buildMoveRounds(nodes);
+    final List<Widget> children = <Widget>[
+      for (final _InlineMoveRound round in rounds)
+        _buildMoveRound(context, round),
+    ];
+
+    return SingleChildScrollView(
+      key: const Key('play_area_inline_move_list_scroll_view'),
+      scrollDirection: Axis.horizontal,
+      child: Row(children: _spaceMoveChips(children)),
+    );
+  }
+
+  List<_InlineMoveRound> _buildMoveRounds(List<PgnNode<ExtMove>> nodes) {
+    final List<_InlineMoveRound> rounds = <_InlineMoveRound>[];
+    PieceColor? firstSide;
+    PieceColor? previousSide;
+    int computedRound = 1;
+
+    for (int i = 0; i < nodes.length; i++) {
+      final ExtMove? move = nodes[i].data;
+      assert(move != null, 'Inline move list nodes must carry move data.');
+      final PieceColor side = move!.side;
+      assert(
+        side == PieceColor.white || side == PieceColor.black,
+        'Inline move list requires a playable side, got $side.',
+      );
+
+      firstSide ??= side;
+      if (previousSide != null &&
+          side == firstSide &&
+          previousSide != firstSide) {
+        computedRound++;
+      }
+      previousSide = side;
+
+      final int roundNumber = move.roundIndex ?? computedRound;
+      final _InlineMoveRound round;
+      if (rounds.isNotEmpty && rounds.last.number == roundNumber) {
+        round = rounds.last;
+      } else {
+        round = _InlineMoveRound(roundNumber);
+        rounds.add(round);
+      }
+
+      final _InlineMoveSegment segment;
+      if (round.segments.isNotEmpty && round.segments.last.side == side) {
+        segment = round.segments.last;
+      } else {
+        segment = _InlineMoveSegment(side: side);
+        round.segments.add(segment);
+      }
+      segment.nodes.add(_IndexedMoveNode(index: i, node: nodes[i]));
+    }
+
+    return rounds;
+  }
+
+  Widget _buildMoveRound(BuildContext context, _InlineMoveRound round) {
+    return Row(
+      key: Key('play_area_human_ai_round_${round.number}'),
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        _InlineMoveCount(count: round.number),
+        for (final _InlineMoveSegment segment in round.segments)
+          _buildMoveSegment(context, segment),
+      ],
+    );
+  }
+
+  Widget _buildMoveSegment(BuildContext context, _InlineMoveSegment segment) {
+    final ThemeData theme = Theme.of(context);
+    final ColorScheme colorScheme = theme.colorScheme;
+    final PgnNode<ExtMove>? activeNode =
+        GameController().gameRecorder.activeNode;
+    final bool selected = segment.nodes.any(
+      (_IndexedMoveNode indexed) => indexed.node == activeNode,
+    );
+    final _IndexedMoveNode lastNode = segment.nodes.last;
+    final String label = segment.nodes
+        .map((_IndexedMoveNode indexed) => indexed.node.data!.notation)
+        .join(' ');
+    final Widget chip = _GameMoveChip(
+      key: Key('${widget.moveKeyPrefix}${lastNode.index + 1}'),
+      label: label,
+      selected: selected,
+      selectedColor: colorScheme.primaryContainer,
+      selectedTextColor: colorScheme.onPrimaryContainer,
+      textStyle: theme.textTheme.bodySmall,
+      style: _GameMoveChipStyle.inlineText,
+    );
+
+    if (selected) {
+      return KeyedSubtree(key: _currentMoveKey, child: chip);
+    }
+    return chip;
   }
 
   Widget _buildMoveChip(
@@ -1565,9 +1678,54 @@ class _InlineMoveListState extends State<_InlineMoveList> {
   }
 }
 
+class _InlineMoveRound {
+  _InlineMoveRound(this.number);
+
+  final int number;
+  final List<_InlineMoveSegment> segments = <_InlineMoveSegment>[];
+}
+
+class _InlineMoveSegment {
+  _InlineMoveSegment({required this.side});
+
+  final PieceColor side;
+  final List<_IndexedMoveNode> nodes = <_IndexedMoveNode>[];
+}
+
+class _IndexedMoveNode {
+  const _IndexedMoveNode({required this.index, required this.node});
+
+  final int index;
+  final PgnNode<ExtMove> node;
+}
+
 enum _InlineMoveListLayout { wrap, horizontal }
 
 enum _GameMoveChipStyle { filled, inlineText }
+
+class _InlineMoveCount extends StatelessWidget {
+  const _InlineMoveCount({required this.count});
+
+  final int count;
+
+  @override
+  Widget build(BuildContext context) {
+    final Color color = Theme.of(
+      context,
+    ).colorScheme.onSurface.withValues(alpha: 0.8);
+    return Padding(
+      padding: const EdgeInsets.only(right: 3),
+      child: Text(
+        '$count.',
+        style: TextStyle(
+          color: color,
+          fontWeight: FontWeight.w500,
+          letterSpacing: 0,
+        ),
+      ),
+    );
+  }
+}
 
 class _GameMoveChip extends StatelessWidget {
   const _GameMoveChip({

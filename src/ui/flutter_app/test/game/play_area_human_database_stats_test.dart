@@ -698,6 +698,49 @@ void main() {
     expect(scrollableState.position.pixels, greaterThan(0));
   });
 
+  testWidgets('human vs ai move list groups capture with the mill move', (
+    WidgetTester tester,
+  ) async {
+    db.generalSettings = const GeneralSettings();
+    db.displaySettings = const DisplaySettings();
+    final GameController controller = GameController();
+    controller.gameInstance.gameMode = GameMode.humanVsAi;
+    <ExtMove>[
+      ExtMove('a1', side: PieceColor.white, roundIndex: 1),
+      ExtMove('d1', side: PieceColor.black, roundIndex: 1),
+      ExtMove('a4', side: PieceColor.white, roundIndex: 2),
+      ExtMove('d2', side: PieceColor.black, roundIndex: 2),
+      ExtMove('a7', side: PieceColor.white, roundIndex: 3),
+      ExtMove('xd1', side: PieceColor.white, roundIndex: 3),
+      ExtMove('g7', side: PieceColor.black, roundIndex: 3),
+    ].forEach(controller.gameRecorder.appendMove);
+
+    await tester.binding.setSurfaceSize(const Size(390, 844));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+
+    await tester.pumpWidget(
+      _localizedApp(
+        const Scaffold(
+          body: PlayArea(
+            boardImage: null,
+            child: SizedBox.square(
+              key: Key('test_board_square'),
+              dimension: 390,
+            ),
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.byKey(const Key('play_area_human_ai_round_3')), findsOneWidget);
+    expect(find.byKey(const Key('play_area_human_ai_move_5')), findsNothing);
+    expect(find.byKey(const Key('play_area_human_ai_move_6')), findsOneWidget);
+    expect(find.text('a7 xd1'), findsOneWidget);
+    expect(find.byKey(const Key('play_area_human_ai_move_7')), findsOneWidget);
+    expect(find.text('g7'), findsOneWidget);
+  });
+
   testWidgets('human vs ai robot panel follows engine activity', (
     WidgetTester tester,
   ) async {
