@@ -45,8 +45,8 @@ class _PuzzlesHomePageState extends State<PuzzlesHomePage> {
           key: const Key('puzzles_home_list'),
           padding: const EdgeInsets.only(top: 16, bottom: 24),
           children: <Widget>[
-            _buildStatsSection(context, s),
             _buildPuzzleSection(context, s),
+            _buildStatsSection(context, s),
           ],
         ),
       ),
