@@ -17,57 +17,6 @@ void main() {
   });
 
   // ---------------------------------------------------------------------------
-  // shouldUseDarkSettingsUi
-  // ---------------------------------------------------------------------------
-  group('shouldUseDarkSettingsUi', () {
-    test('should return true for built-in Dark theme', () {
-      const ColorSettings darkTheme = ColorSettings(
-        boardLineColor: Color(0xFF878D91),
-        darkBackgroundColor: Colors.black,
-        boardBackgroundColor: Colors.black,
-        drawerColor: Colors.black,
-      );
-
-      expect(AppTheme.shouldUseDarkSettingsUi(darkTheme), isTrue);
-    });
-
-    test('should return true for built-in Midnight Blue theme', () {
-      const ColorSettings midnightBlue = ColorSettings(
-        boardBackgroundColor: Color(0xFF162447),
-        darkBackgroundColor: Color(0xFF1f4068),
-        drawerColor: Color(0xFF1f4068),
-      );
-
-      expect(AppTheme.shouldUseDarkSettingsUi(midnightBlue), isTrue);
-    });
-
-    test('should return true for Dark Mystery theme', () {
-      const ColorSettings darkMystery = ColorSettings(
-        darkBackgroundColor: Color(0xFF0F0F0F),
-        drawerColor: Color(0xFF0F0F0F),
-      );
-
-      expect(AppTheme.shouldUseDarkSettingsUi(darkMystery), isTrue);
-    });
-
-    test('should return false for default light theme', () {
-      const ColorSettings lightTheme = ColorSettings(); // Defaults
-
-      expect(AppTheme.shouldUseDarkSettingsUi(lightTheme), isFalse);
-    });
-
-    test('should return false for pastel theme', () {
-      const ColorSettings pastel = ColorSettings(
-        boardBackgroundColor: Color(0xFFf7bacf),
-        darkBackgroundColor: Color(0xFFefc3e6),
-        drawerColor: Color(0xFFa95c5c),
-      );
-
-      expect(AppTheme.shouldUseDarkSettingsUi(pastel), isFalse);
-    });
-  });
-
-  // ---------------------------------------------------------------------------
   // colorThemes map
   // ---------------------------------------------------------------------------
   group('colorThemes', () {
@@ -148,40 +97,6 @@ void main() {
 
     test('darkThemeData should use Material 3', () {
       expect(AppTheme.darkThemeData.useMaterial3, isTrue);
-    });
-  });
-
-  // ---------------------------------------------------------------------------
-  // buildAccessibleSettingsDarkTheme
-  // ---------------------------------------------------------------------------
-  group('buildAccessibleSettingsDarkTheme', () {
-    test('should return a dark theme for dark color settings', () {
-      const ColorSettings darkColors = ColorSettings(
-        darkBackgroundColor: Colors.black,
-        boardBackgroundColor: Colors.black,
-        drawerColor: Colors.black,
-      );
-
-      final ThemeData theme = AppTheme.buildAccessibleSettingsDarkTheme(
-        darkColors,
-      );
-
-      expect(theme.brightness, Brightness.dark);
-      expect(theme.useMaterial3, isTrue);
-    });
-
-    test('should return a dark theme for midnight blue settings', () {
-      const ColorSettings midnightBlue = ColorSettings(
-        boardBackgroundColor: Color(0xFF162447),
-        darkBackgroundColor: Color(0xFF1f4068),
-        drawerColor: Color(0xFF1f4068),
-      );
-
-      final ThemeData theme = AppTheme.buildAccessibleSettingsDarkTheme(
-        midnightBlue,
-      );
-
-      expect(theme.brightness, Brightness.dark);
     });
   });
 

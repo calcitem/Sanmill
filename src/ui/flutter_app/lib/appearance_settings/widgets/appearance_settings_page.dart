@@ -390,10 +390,6 @@ class AppearanceSettingsPage extends StatelessWidget {
       capturablePieceHighlightColor:
           AppTheme.colorThemes[selectedTheme]!.capturablePieceHighlightColor,
       messageColor: AppTheme.colorThemes[selectedTheme]!.messageColor,
-      drawerColor: AppTheme.colorThemes[selectedTheme]!.drawerColor,
-      drawerTextColor: AppTheme.colorThemes[selectedTheme]!.drawerTextColor,
-      drawerHighlightItemColor:
-          AppTheme.colorThemes[selectedTheme]!.drawerHighlightItemColor,
       mainToolbarBackgroundColor:
           AppTheme.colorThemes[selectedTheme]!.mainToolbarBackgroundColor,
       mainToolbarIconColor:
