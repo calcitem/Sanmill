@@ -304,6 +304,7 @@ void main() {
         find.byKey(const Key('sanmill_learn_coordinate_training')),
         findsOneWidget,
       );
+      expect(find.byKey(const Key('sanmill_learn_tutorial')), findsOneWidget);
       expect(
         find.byKey(const Key('sanmill_learn_how_to_play')),
         findsOneWidget,

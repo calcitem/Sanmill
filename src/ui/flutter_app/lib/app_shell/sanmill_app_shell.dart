@@ -733,23 +733,18 @@ class SanmillAppShellState extends State<SanmillAppShell> {
         context: context,
         barrierDismissible: false,
         builder: (BuildContext context) =>
-            PrivacyPolicyDialog(onConfirm: _showTutorialDialog),
+            PrivacyPolicyDialog(onConfirm: _showFirstRunGuidance),
       );
     } else {
-      _showTutorialDialog();
+      _showFirstRunGuidance();
     }
   }
 
-  Future<void> _showTutorialDialog() async {
+  void _showFirstRunGuidance() {
     if (!kDebugMode && DB().generalSettings.showTutorial) {
-      await Navigator.of(context).push(
-        MaterialPageRoute<dynamic>(
-          builder: (BuildContext context) => const TutorialDialog(),
-          fullscreenDialog: true,
-        ),
-      );
-      _showRuleSettingsOnboarding();
+      DB().generalSettings = DB().generalSettings.copyWith(showTutorial: false);
     }
+    _showRuleSettingsOnboarding();
   }
 
   void _showRuleSettingsOnboarding() {
@@ -2043,6 +2038,17 @@ class _LearnTabRoot extends StatelessWidget {
                       ShellRouteIds.appCoordinateTraining.value,
                     ),
                   ),
+                _MoreTile(
+                  key: const Key('sanmill_learn_tutorial'),
+                  icon: Icons.tips_and_updates_rounded,
+                  title: strings.tutorial,
+                  onTap: () => Navigator.of(context).push(
+                    MaterialPageRoute<void>(
+                      fullscreenDialog: true,
+                      builder: (_) => const TutorialDialog(),
+                    ),
+                  ),
+                ),
                 _MoreTile(
                   key: const Key('sanmill_learn_how_to_play'),
                   icon: Icons.school_rounded,
