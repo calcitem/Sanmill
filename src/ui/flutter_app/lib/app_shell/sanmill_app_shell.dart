@@ -17,6 +17,7 @@ import '../experience_recording/models/recording_models.dart';
 import '../experience_recording/services/recording_service.dart';
 import '../game_page/services/mill.dart' show GameController, LoadService;
 import '../game_page/services/save_load/saved_game_catalog.dart';
+import '../game_page/widgets/mini_board.dart';
 import '../game_page/widgets/saved_games_page.dart';
 import '../game_platform/game_id.dart';
 import '../game_platform/game_menu.dart';
@@ -29,6 +30,7 @@ import '../game_shell/game_session_scope.dart';
 import '../game_shell/shell_route_ids.dart';
 import '../games/mill/mill_session_animation_bridge.dart';
 import '../games/mill/mill_session_recorder_bridge.dart';
+import '../games/mill/native_mill_snapshot_board_view.dart';
 import '../general_settings/models/general_settings.dart';
 import '../general_settings/services/config_import_export_service.dart';
 import '../generated/intl/l10n.dart';
@@ -980,7 +982,10 @@ class _HomeTabRootState extends State<_HomeTabRoot> {
   }
 
   Future<List<SavedGameSummary>> _loadRecentGames() {
-    return savedGameCatalog.listRecent(limit: _recentGamesLimit + 1);
+    return savedGameCatalog.listRecent(
+      limit: _recentGamesLimit + 1,
+      includePreviews: true,
+    );
   }
 
   Future<void> _refreshRecentGames() async {
@@ -1035,31 +1040,36 @@ class _HomeTabRootState extends State<_HomeTabRoot> {
                 valueListenable:
                     GameController().gameRecorder.moveCountNotifier,
                 builder: (BuildContext context, int moveCount, _) {
-                  final bool isTerminal =
-                      GameController()
-                          .activeSessionSnapshot
-                          ?.outcome
-                          .isTerminal ??
-                      false;
-                  return _MoreSection(
-                    title: strings.game,
-                    headerKey: const Key('sanmill_home_play_modes_group'),
+                  final GameStateSnapshot? snapshot =
+                      GameController().activeSessionSnapshot;
+                  final bool isTerminal = snapshot?.outcome.isTerminal ?? false;
+                  return Column(
+                    mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
                       if (moveCount > 0 && !isTerminal)
-                        _OngoingGameTile(
+                        _OngoingGameSection(
                           currentPlayRouteId: widget.currentPlayRouteId,
+                          snapshot: snapshot,
                           moveCount: moveCount,
                           playModes: playModes,
                           onTap: widget.onContinueGame,
                         ),
-                      for (final GameModeEntry mode in playModes)
-                        _MoreTile(
-                          key: mode.drawerKey ?? Key('home_${mode.id.value}'),
-                          icon: mode.icon ?? Icons.sports_esports_rounded,
-                          title: mode.label,
-                          onTap: () =>
-                              widget.onPlayRouteSelected(mode.id.value),
-                        ),
+                      _MoreSection(
+                        title: strings.play,
+                        headerKey: const Key('sanmill_home_play_modes_group'),
+                        children: <Widget>[
+                          for (final GameModeEntry mode in playModes)
+                            _MoreTile(
+                              key:
+                                  mode.drawerKey ??
+                                  Key('home_${mode.id.value}'),
+                              icon: mode.icon ?? Icons.sports_esports_rounded,
+                              title: mode.label,
+                              onTap: () =>
+                                  widget.onPlayRouteSelected(mode.id.value),
+                            ),
+                        ],
+                      ),
                     ],
                   );
                 },
@@ -1114,15 +1124,17 @@ class _HomeTabRootState extends State<_HomeTabRoot> {
   }
 }
 
-class _OngoingGameTile extends StatelessWidget {
-  const _OngoingGameTile({
+class _OngoingGameSection extends StatelessWidget {
+  const _OngoingGameSection({
     required this.currentPlayRouteId,
+    required this.snapshot,
     required this.moveCount,
     required this.playModes,
     required this.onTap,
   }) : assert(moveCount > 0, 'Ongoing game tile requires moves.');
 
   final String currentPlayRouteId;
+  final GameStateSnapshot? snapshot;
   final int moveCount;
   final List<GameModeEntry> playModes;
   final VoidCallback onTap;
@@ -1137,13 +1149,51 @@ class _OngoingGameTile extends StatelessWidget {
       }
     }
     final S strings = S.of(context);
-    return _MoreTile(
-      key: const Key('sanmill_home_ongoing_game'),
-      icon: Icons.play_circle_outline_rounded,
-      title: strings.continueGame,
-      subtitle: '${mode?.label ?? strings.game} · ${strings.moves}: $moveCount',
-      onTap: onTap,
+    return LichessListSection(
+      header: Text(strings.continueGame),
+      headerKey: const Key('sanmill_home_ongoing_game_group'),
+      cardKey: const Key('sanmill_home_ongoing_game_card'),
+      hasLeading: false,
+      children: <Widget>[
+        _GamePreviewTile(
+          key: const Key('sanmill_home_ongoing_game'),
+          boardLayout: _boardLayoutFromSnapshot(snapshot),
+          fallbackIcon: Icons.play_circle_outline_rounded,
+          title: mode?.label ?? strings.game,
+          subtitle: _subtitle(strings, snapshot, moveCount),
+          detail: strings.continueGame,
+          onTap: onTap,
+        ),
+      ],
     );
+  }
+
+  static String? _boardLayoutFromSnapshot(GameStateSnapshot? snapshot) {
+    if (snapshot == null) {
+      return null;
+    }
+    return NativeMillSnapshotBoardView.fromSnapshot(snapshot)?.toBoardLayout();
+  }
+
+  static String _subtitle(
+    S strings,
+    GameStateSnapshot? snapshot,
+    int moveCount,
+  ) {
+    final List<String> parts = <String>['${strings.moves}: $moveCount'];
+    final String? sideToMove = _sideToMove(strings, snapshot);
+    if (sideToMove != null) {
+      parts.add(strings.sideToMove(sideToMove));
+    }
+    return parts.join(' · ');
+  }
+
+  static String? _sideToMove(S strings, GameStateSnapshot? snapshot) {
+    return switch (snapshot?.activeSeat) {
+      PlayerSeat.first => strings.player1,
+      PlayerSeat.second => strings.player2,
+      PlayerSeat.none || null => null,
+    };
   }
 }
 
@@ -1179,16 +1229,152 @@ class _RecentGamesSection extends StatelessWidget {
       onHeaderTap: hasMore ? onShowAll : null,
       children: <Widget>[
         for (final (int index, SavedGameSummary game) in visibleGames)
-          _MoreTile(
+          _GamePreviewTile(
             key: Key('sanmill_home_recent_game_$index'),
-            icon: Icons.history_rounded,
+            boardLayout: game.preview?.boardLayout,
+            fallbackIcon: Icons.history_rounded,
             title: game.displayName,
-            subtitle:
-                '${localizations.formatShortDate(game.modified.toLocal())} '
-                '${localizations.formatTimeOfDay(TimeOfDay.fromDateTime(game.modified.toLocal()))}',
+            subtitle: _subtitle(localizations, strings, game),
+            detail: _players(game.preview),
             onTap: () => onSavedGameSelected(game.path),
           ),
       ],
+    );
+  }
+
+  static String _subtitle(
+    MaterialLocalizations localizations,
+    S strings,
+    SavedGameSummary game,
+  ) {
+    final DateTime modified = game.modified.toLocal();
+    final String modifiedAt =
+        '${localizations.formatShortDate(modified)} '
+        '${localizations.formatTimeOfDay(TimeOfDay.fromDateTime(modified))}';
+    final List<String> parts = <String>[modifiedAt];
+    final SavedGamePreview? preview = game.preview;
+    if (preview != null && preview.moveCount > 0) {
+      parts.add('${strings.moves}: ${preview.moveCount}');
+    }
+    final String? result = preview?.result;
+    if (result != null && result != '*') {
+      parts.add(result);
+    }
+    return parts.join(' · ');
+  }
+
+  static String? _players(SavedGamePreview? preview) {
+    final String? white = preview?.white;
+    final String? black = preview?.black;
+    if (white != null && black != null) {
+      return '$white - $black';
+    }
+    return white ?? black;
+  }
+}
+
+class _GamePreviewTile extends StatelessWidget {
+  const _GamePreviewTile({
+    super.key,
+    required this.boardLayout,
+    required this.fallbackIcon,
+    required this.title,
+    required this.subtitle,
+    required this.onTap,
+    this.detail,
+  });
+
+  final String? boardLayout;
+  final IconData fallbackIcon;
+  final String title;
+  final String subtitle;
+  final String? detail;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+    return InkWell(
+      onTap: onTap,
+      child: Padding(
+        padding: const EdgeInsets.all(12),
+        child: Row(
+          children: <Widget>[
+            _BoardPreview(layout: boardLayout, fallbackIcon: fallbackIcon),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Text(
+                    title,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.w700,
+                      letterSpacing: 0,
+                    ),
+                  ),
+                  const SizedBox(height: 6),
+                  Text(
+                    subtitle,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: colorScheme.onSurfaceVariant,
+                      letterSpacing: 0,
+                    ),
+                  ),
+                  if (detail != null) ...<Widget>[
+                    const SizedBox(height: 6),
+                    Text(
+                      detail!,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                        color: colorScheme.primary,
+                        fontWeight: FontWeight.w600,
+                        letterSpacing: 0,
+                      ),
+                    ),
+                  ],
+                ],
+              ),
+            ),
+            const SizedBox(width: 8),
+            Icon(
+              Icons.chevron_right_rounded,
+              color: colorScheme.onSurfaceVariant,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _BoardPreview extends StatelessWidget {
+  const _BoardPreview({required this.layout, required this.fallbackIcon});
+
+  final String? layout;
+  final IconData fallbackIcon;
+
+  @override
+  Widget build(BuildContext context) {
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+    final String? boardLayout = layout;
+    return SizedBox.square(
+      dimension: 92,
+      child: boardLayout == null || boardLayout.isEmpty
+          ? DecoratedBox(
+              decoration: BoxDecoration(
+                color: colorScheme.surfaceContainerHighest,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Icon(fallbackIcon, color: colorScheme.onSurfaceVariant),
+            )
+          : IgnorePointer(child: MiniBoard(boardLayout: boardLayout)),
     );
   }
 }
@@ -1535,12 +1721,10 @@ class _MoreTile extends StatelessWidget {
     required this.icon,
     required this.title,
     required this.onTap,
-    this.subtitle,
   });
 
   final IconData icon;
   final String title;
-  final String? subtitle;
   final VoidCallback onTap;
 
   @override
@@ -1548,7 +1732,6 @@ class _MoreTile extends StatelessWidget {
     return ListTile(
       leading: Icon(icon),
       title: Text(title),
-      subtitle: subtitle == null ? null : Text(subtitle!),
       trailing: Theme.of(context).platform == TargetPlatform.iOS
           ? const Icon(Icons.chevron_right_rounded)
           : null,

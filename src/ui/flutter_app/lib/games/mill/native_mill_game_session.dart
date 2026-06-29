@@ -24,6 +24,7 @@ import 'mill_action_codec.dart';
 import 'mill_marked_pieces_codec.dart';
 import 'mill_types.dart';
 import 'native_mill_rules_port.dart';
+import 'native_mill_snapshot_board_view.dart';
 
 const String _logTag = '[NativeMillGameSession]';
 
@@ -619,42 +620,7 @@ class NativeMillGameSession implements GameSessionHandle {
   }
 
   static String? _boardLayoutFromSnapshot(GameStateSnapshot snapshot) {
-    final Object? rawPayload = snapshot.payload['tgfPayload'];
-    if (rawPayload is! Uint8List || rawPayload.length < 24) {
-      return null;
-    }
-    final Object? rawMarkedNodes = snapshot.payload[millMarkedNodesPayloadKey];
-    final Set<int> markedNodes = rawMarkedNodes is Set<int>
-        ? rawMarkedNodes
-        : MillMarkedPiecesCodec.markedNodesFromOpaquePayload(rawPayload);
-
-    // The native node-id FEN dialect stores board nodes in the same order as
-    // the first 24 bytes of MillState::encode(), with slashes after each ring.
-    const int empty = 42; // '*'
-    const int slash = 47; // '/'
-    const int white = 79; // 'O'
-    const int black = 64; // '@'
-    const int marked = 88; // 'X'
-    final List<int> chars = List<int>.filled(26, empty);
-    chars[8] = slash;
-    chars[17] = slash;
-    for (int node = 0; node < 24; node++) {
-      final int slot = node < 8
-          ? node
-          : node < 16
-          ? node + 1
-          : node + 2;
-      if (markedNodes.contains(node)) {
-        chars[slot] = marked;
-      } else {
-        chars[slot] = switch (rawPayload[node]) {
-          1 => white,
-          2 => black,
-          _ => empty,
-        };
-      }
-    }
-    return String.fromCharCodes(chars);
+    return NativeMillSnapshotBoardView.fromSnapshot(snapshot)?.toBoardLayout();
   }
 
   /// Map a Rust `bestMove` event back to one checked action for this session.

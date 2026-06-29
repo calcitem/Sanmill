@@ -20,7 +20,6 @@ import '../../generated/intl/l10n.dart';
 import '../../shared/database/database.dart';
 import '../../shared/themes/app_theme.dart';
 import '../../shared/utils/helpers/text_helpers/safe_text_editing_controller.dart';
-import '../services/import_export/pgn.dart';
 import '../services/mill.dart';
 import '../services/save_load/saved_game_catalog.dart';
 import 'mini_board.dart';
@@ -240,120 +239,7 @@ class _SavedGamesPageState extends State<SavedGamesPage> {
 
   /// Compute the final board layout for a PGN content without mutating global state.
   Future<String?> _computeFinalBoardLayout(String pgnContent) async {
-    // Parse the PGN string (supports headers and comments)
-    final PgnGame<PgnNodeData> game = PgnGame.parsePgn(pgnContent);
-
-    final String? fen = game.headers['FEN'];
-
-    // Helper to split complex tokens like "b6xd3" into ["b6", "xd3"].
-    List<String> splitSan(String san) {
-      san = san.replaceAll(RegExp(r'\{[^}]*\}'), '').trim();
-
-      if (san.contains('x')) {
-        if (san.startsWith('x')) {
-          final RegExp regex = RegExp(r'(x[a-g][1-7])');
-          return regex
-              .allMatches(san)
-              .map((RegExpMatch m) => m.group(0)!)
-              .toList();
-        } else {
-          final int firstX = san.indexOf('x');
-          if (firstX > 0) {
-            final String firstSegment = san.substring(0, firstX);
-            final RegExp regex = RegExp(r'(x[a-g][1-7])');
-            final String remainingSan = san.substring(firstX);
-            final List<String> xs = regex
-                .allMatches(remainingSan)
-                .map((RegExpMatch m) => m.group(0)!)
-                .toList();
-            return <String>[firstSegment, ...xs];
-          } else {
-            final RegExp regex = RegExp(r'(x[a-g][1-7])');
-            return regex
-                .allMatches(san)
-                .map((RegExpMatch m) => m.group(0)!)
-                .toList();
-          }
-        }
-      }
-      return <String>[san];
-    }
-
-    // Validate/normalize move token to the standard notation expected by engine.
-    String toStandard(String token) {
-      final String t = token.trim().toLowerCase();
-      if (t == 'p' || t == '*' || t == 'x' || t == 'xx' || t == 'xxx') {
-        // Pass/invalid markers do not change the board for preview.
-        return '';
-      }
-      if (RegExp(r'^x[a-g][1-7]$').hasMatch(t)) {
-        return t.substring(0, 3);
-      }
-      if (RegExp(r'^[a-g][1-7]-[a-g][1-7]$').hasMatch(t)) {
-        return t;
-      }
-      if (RegExp(r'^[a-g][1-7]$').hasMatch(t)) {
-        return t;
-      }
-      // Ignore result tokens like 1-0, 0-1, 1/2-1/2
-      if (t == '1-0' || t == '0-1' || t == '1/2-1/2') {
-        return '';
-      }
-      // Unknown token, ignore in preview
-      return '';
-    }
-
-    // Build a simple mainline PgnNode<ExtMove> tree to reuse engine replay.
-    final PgnNode<ExtMove> root = PgnNode<ExtMove>();
-    PgnNode<ExtMove> cur = root;
-
-    for (final PgnNodeData node in game.moves.mainline()) {
-      final String san = node.san.trim().toLowerCase();
-      if (san.isEmpty) {
-        continue;
-      }
-      final List<String> segments = splitSan(san);
-      for (final String seg in segments) {
-        final String u = toStandard(seg);
-        if (u.isEmpty) {
-          continue;
-        }
-        final ExtMove em = ExtMove(u, side: PieceColor.white);
-        final PgnNode<ExtMove> child = PgnNode<ExtMove>(em);
-        child.parent = cur;
-        cur.children.add(child);
-        cur = child;
-      }
-    }
-
-    // Fill boardLayout for each node via internal engine replay (does not affect UI state).
-    ImportService.fillAllNodesBoardLayout(root, setupFen: fen);
-
-    // Traverse to the last node on the mainline to fetch its layout.
-    PgnNode<ExtMove> t = root;
-    PgnNode<ExtMove>? last;
-    while (t.children.isNotEmpty) {
-      t = t.children.first;
-      last = t;
-    }
-
-    if (last?.data?.boardLayout != null &&
-        last!.data!.boardLayout!.isNotEmpty) {
-      return last.data!.boardLayout;
-    }
-
-    // If there are no moves, but FEN exists, produce a layout from FEN directly.
-    // The first 26 characters of a Mill FEN are the ring-layout
-    // string ("OO***@**/..." -- outer / middle / inner ring), which is
-    // the same shape `MiniBoardPainter` expects.
-    if (fen != null && fen.isNotEmpty && fen.length >= 26) {
-      final int spaceIdx = fen.indexOf(' ');
-      final int end = spaceIdx == -1 ? fen.length : spaceIdx;
-      if (end >= 26) {
-        return fen.substring(0, 26);
-      }
-    }
-    return '';
+    return savedGameCatalog.computeFinalBoardLayout(pgnContent);
   }
 
   /// Create and share a zip file containing all PGN files from records directory

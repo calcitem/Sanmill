@@ -92,6 +92,36 @@ class NativeMillSnapshotBoardView {
     return out;
   }
 
+  /// Converts the native snapshot payload into the slash-separated layout used
+  /// by [MiniBoard].
+  String toBoardLayout() {
+    const int empty = 42; // '*'
+    const int slash = 47; // '/'
+    const int white = 79; // 'O'
+    const int black = 64; // '@'
+    const int marked = 88; // 'X'
+    final List<int> chars = List<int>.filled(26, empty);
+    chars[8] = slash;
+    chars[17] = slash;
+    for (int node = 0; node < nodeCount; node++) {
+      final int slot = node < 8
+          ? node
+          : node < 16
+          ? node + 1
+          : node + 2;
+      if (markedNodes.contains(node)) {
+        chars[slot] = marked;
+      } else {
+        chars[slot] = switch (_payload[node]) {
+          1 => white,
+          2 => black,
+          _ => empty,
+        };
+      }
+    }
+    return String.fromCharCodes(chars);
+  }
+
   int pieceCount(PlayerSeat seat) {
     if (seat == PlayerSeat.none) {
       return 0;
