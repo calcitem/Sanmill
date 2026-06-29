@@ -460,6 +460,24 @@ void main() {
       expect(find.byKey(const Key('sanmill_watch_load_game')), findsOneWidget);
       expect(find.byKey(const Key('drawer_item_statistics')), findsOneWidget);
 
+      await tester.tap(find.byKey(const Key('sanmill_watch_load_game')));
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 350));
+
+      final BuildContext savedGamesContext = tester.element(
+        find.byKey(const Key('saved_games_page_scaffold')),
+      );
+      final Scaffold savedGamesScaffold = tester.widget<Scaffold>(
+        find.byKey(const Key('saved_games_page_scaffold')),
+      );
+      expect(
+        savedGamesScaffold.backgroundColor,
+        Theme.of(savedGamesContext).colorScheme.surface,
+      );
+
+      await tester.binding.handlePopRoute();
+      await tester.pumpAndSettle();
+
       await tester.tap(find.byKey(const Key('drawer_item_statistics')));
       await tester.pumpAndSettle();
 

@@ -18,7 +18,6 @@ import 'package:share_plus/share_plus.dart';
 
 import '../../generated/intl/l10n.dart';
 import '../../shared/database/database.dart';
-import '../../shared/themes/app_theme.dart';
 import '../../shared/utils/helpers/text_helpers/safe_text_editing_controller.dart';
 import '../services/mill.dart';
 import '../services/save_load/saved_game_catalog.dart';
@@ -436,6 +435,7 @@ class _SavedGamesPageState extends State<SavedGamesPage> {
       await showDialog<void>(
         context: context,
         builder: (BuildContext context) {
+          final ColorScheme colorScheme = Theme.of(context).colorScheme;
           return AlertDialog(
             title: Text(p.basename(path)),
             content: SingleChildScrollView(
@@ -449,11 +449,9 @@ class _SavedGamesPageState extends State<SavedGamesPage> {
                   const SizedBox(height: 16),
                   Text(
                     path,
-                    style: TextStyle(
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
                       fontSize: 12,
-                      color: DB().colorSettings.messageColor.withValues(
-                        alpha: 0.7,
-                      ),
+                      color: colorScheme.onSurfaceVariant,
                     ),
                   ),
                 ],
@@ -584,13 +582,15 @@ class _SavedGamesPageState extends State<SavedGamesPage> {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+    final ColorScheme colorScheme = theme.colorScheme;
+    final TextTheme textTheme = theme.textTheme;
+
     return Scaffold(
-      backgroundColor: AppTheme.appBarTheme.backgroundColor,
+      key: const Key('saved_games_page_scaffold'),
+      backgroundColor: colorScheme.surface,
       appBar: AppBar(
-        title: Text(
-          S.of(context).loadGame,
-          style: AppTheme.appBarTheme.titleTextStyle,
-        ),
+        title: Text(S.of(context).loadGame),
         actions: <Widget>[
           // Browse button
           IconButton(
@@ -642,14 +642,17 @@ class _SavedGamesPageState extends State<SavedGamesPage> {
           ? Center(
               child: Text(
                 S.of(context).none,
-                style: TextStyle(color: DB().colorSettings.messageColor),
+                style: textTheme.bodyMedium?.copyWith(
+                  color: colorScheme.onSurfaceVariant,
+                ),
               ),
             )
           : ListView.builder(
               itemCount: _entries.length,
               itemBuilder: (BuildContext context, int index) {
                 final SavedGameEntry e = _entries[index];
-                final Color textColor = DB().colorSettings.messageColor;
+                final Color textColor = colorScheme.onSurface;
+                final Color subtitleColor = colorScheme.onSurfaceVariant;
                 final String title = e.filename;
                 // Format date according to user's locale without milliseconds
                 final String subtitle = DateFormat.yMd().add_Hms().format(
@@ -662,7 +665,7 @@ class _SavedGamesPageState extends State<SavedGamesPage> {
                   background: Container(
                     alignment: Alignment.centerLeft,
                     padding: const EdgeInsets.only(left: 20.0),
-                    color: Colors.blue,
+                    color: colorScheme.primary,
                     child: const Icon(
                       Icons.edit,
                       color: Colors.white,
@@ -673,7 +676,7 @@ class _SavedGamesPageState extends State<SavedGamesPage> {
                   secondaryBackground: Container(
                     alignment: Alignment.centerRight,
                     padding: const EdgeInsets.only(right: 20.0),
-                    color: Colors.red,
+                    color: colorScheme.error,
                     child: const Icon(
                       Icons.delete,
                       color: Colors.white,
@@ -728,15 +731,13 @@ class _SavedGamesPageState extends State<SavedGamesPage> {
                       ),
                       child: Container(
                         decoration: BoxDecoration(
-                          color: DB().colorSettings.darkBackgroundColor,
-                          borderRadius: BorderRadius.circular(4),
-                          boxShadow: const <BoxShadow>[
-                            BoxShadow(
-                              color: Colors.black26,
-                              blurRadius: 2,
-                              offset: Offset(2, 2),
+                          color: colorScheme.surfaceContainerHigh,
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(
+                            color: colorScheme.outlineVariant.withValues(
+                              alpha: 0.36,
                             ),
-                          ],
+                          ),
                         ),
                         child: AnimatedOpacity(
                           duration: const Duration(milliseconds: 250),
@@ -814,7 +815,7 @@ class _SavedGamesPageState extends State<SavedGamesPage> {
                                         maxLines: 1,
                                         overflow: TextOverflow.ellipsis,
                                         style: TextStyle(
-                                          color: textColor.withAlpha(180),
+                                          color: subtitleColor,
                                           fontSize: 12,
                                         ),
                                       ),
@@ -825,9 +826,7 @@ class _SavedGamesPageState extends State<SavedGamesPage> {
                                           maxLines: 2,
                                           overflow: TextOverflow.ellipsis,
                                           style: TextStyle(
-                                            color: DB()
-                                                .colorSettings
-                                                .pieceHighlightColor,
+                                            color: colorScheme.error,
                                             fontSize: 12,
                                           ),
                                         ),
@@ -838,7 +837,7 @@ class _SavedGamesPageState extends State<SavedGamesPage> {
                               ),
                               IconButton(
                                 icon: const Icon(Icons.chevron_right),
-                                color: textColor,
+                                color: colorScheme.onSurfaceVariant,
                                 onPressed: () => _openGame(e),
                               ),
                             ],
