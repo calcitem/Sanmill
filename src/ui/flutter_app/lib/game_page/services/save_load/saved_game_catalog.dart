@@ -27,6 +27,8 @@ class SavedGamePreview {
   final String? white;
   final String? black;
   final String? result;
+
+  bool get isOngoing => result?.trim() == '*';
 }
 
 class SavedGameSummary {
@@ -43,6 +45,8 @@ class SavedGameSummary {
   final SavedGamePreview? preview;
 
   String get displayName => p.basenameWithoutExtension(filename);
+
+  bool get isOngoing => preview?.isOngoing ?? false;
 }
 
 const SavedGameCatalog savedGameCatalog = SavedGameCatalog();

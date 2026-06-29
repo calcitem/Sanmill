@@ -1024,6 +1024,7 @@ class _HomeTabRoot extends StatefulWidget {
 
 class _HomeTabRootState extends State<_HomeTabRoot> {
   static const int _recentGamesLimit = 5;
+  static const int _savedGamesQueryLimit = (_recentGamesLimit + 1) * 4;
 
   late Future<List<SavedGameSummary>> _recentGamesFuture;
 
@@ -1043,7 +1044,7 @@ class _HomeTabRootState extends State<_HomeTabRoot> {
 
   Future<List<SavedGameSummary>> _loadRecentGames() {
     return savedGameCatalog.listRecent(
-      limit: _recentGamesLimit + 1,
+      limit: _savedGamesQueryLimit,
       includePreviews: true,
     );
   }
@@ -1333,6 +1334,8 @@ class _QuickPairingChoice extends StatelessWidget {
   }
 }
 
+typedef _SavedGameDetailBuilder = String? Function(SavedGameSummary game);
+
 class _HomeRecentGames extends StatelessWidget {
   const _HomeRecentGames({
     required this.future,
@@ -1359,15 +1362,50 @@ class _HomeRecentGames extends StatelessWidget {
             BuildContext context,
             AsyncSnapshot<List<SavedGameSummary>> snapshot,
           ) {
-            final List<SavedGameSummary> recentGames =
+            final List<SavedGameSummary> homeGames =
                 snapshot.data ?? const <SavedGameSummary>[];
-            return _RecentGamesSection(
-              games: recentGames,
-              limit: limit,
-              useCarousel: useCarousel,
-              tabInteraction: tabInteraction,
-              onShowAll: onShowAll,
-              onSavedGameSelected: onSavedGameSelected,
+            final List<SavedGameSummary> ongoingGames = homeGames
+                .where((SavedGameSummary game) => game.isOngoing)
+                .toList(growable: false);
+            final List<SavedGameSummary> recentGames = homeGames
+                .where((SavedGameSummary game) => !game.isOngoing)
+                .toList(growable: false);
+            if (ongoingGames.isEmpty && recentGames.isEmpty) {
+              return const SizedBox.shrink();
+            }
+            final S strings = S.of(context);
+            return Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                _SavedGamePreviewSection(
+                  title: strings.ongoingGames,
+                  headerKey: const Key(
+                    'sanmill_home_saved_ongoing_games_group',
+                  ),
+                  gameKeyPrefix: 'sanmill_home_saved_ongoing_game',
+                  games: ongoingGames,
+                  limit: limit,
+                  useCarousel: useCarousel,
+                  tabInteraction: tabInteraction,
+                  fallbackIcon: Icons.play_circle_outline_rounded,
+                  onShowAll: onShowAll,
+                  onSavedGameSelected: onSavedGameSelected,
+                  detailForGame: (_) => strings.continueGame,
+                ),
+                _SavedGamePreviewSection(
+                  title: strings.recentGames,
+                  headerKey: const Key('sanmill_home_recent_games_group'),
+                  gameKeyPrefix: 'sanmill_home_recent_game',
+                  games: recentGames,
+                  limit: limit,
+                  useCarousel: useCarousel,
+                  tabInteraction: tabInteraction,
+                  fallbackIcon: Icons.history_rounded,
+                  onShowAll: onShowAll,
+                  onSavedGameSelected: onSavedGameSelected,
+                  detailForGame: _SavedGamePreviewSection.players,
+                ),
+              ],
             );
           },
     );
@@ -1474,22 +1512,32 @@ class _OngoingGameSection extends StatelessWidget {
   }
 }
 
-class _RecentGamesSection extends StatelessWidget {
-  const _RecentGamesSection({
+class _SavedGamePreviewSection extends StatelessWidget {
+  const _SavedGamePreviewSection({
+    required this.title,
+    required this.headerKey,
+    required this.gameKeyPrefix,
     required this.games,
     required this.limit,
     required this.useCarousel,
     required this.tabInteraction,
+    required this.fallbackIcon,
     required this.onShowAll,
     required this.onSavedGameSelected,
+    required this.detailForGame,
   }) : assert(limit > 0, 'Recent games section limit must be positive.');
 
+  final String title;
+  final Key headerKey;
+  final String gameKeyPrefix;
   final List<SavedGameSummary> games;
   final int limit;
   final bool useCarousel;
   final Listenable tabInteraction;
+  final IconData fallbackIcon;
   final VoidCallback onShowAll;
   final ValueChanged<String> onSavedGameSelected;
+  final _SavedGameDetailBuilder detailForGame;
 
   @override
   Widget build(BuildContext context) {
@@ -1506,19 +1554,19 @@ class _RecentGamesSection extends StatelessWidget {
         .indexed;
     if (useCarousel) {
       return _HomeGameCarouselSection(
-        title: strings.recentGames,
-        headerKey: const Key('sanmill_home_recent_games_group'),
+        title: title,
+        headerKey: headerKey,
         tabInteraction: tabInteraction,
         onHeaderTap: hasMore ? onShowAll : null,
         children: <Widget>[
           for (final (int index, SavedGameSummary game) in visibleGames)
             _GamePreviewCarouselCard(
-              key: Key('sanmill_home_recent_game_$index'),
+              key: Key('${gameKeyPrefix}_$index'),
               boardLayout: game.preview?.boardLayout,
-              fallbackIcon: Icons.history_rounded,
+              fallbackIcon: fallbackIcon,
               title: game.displayName,
               subtitle: _subtitle(localizations, strings, game),
-              detail: _players(game.preview),
+              detail: detailForGame(game),
               onTap: () => onSavedGameSelected(game.path),
             ),
         ],
@@ -1526,18 +1574,18 @@ class _RecentGamesSection extends StatelessWidget {
     }
 
     return _MoreSection(
-      title: strings.recentGames,
-      headerKey: const Key('sanmill_home_recent_games_group'),
+      title: title,
+      headerKey: headerKey,
       onHeaderTap: hasMore ? onShowAll : null,
       children: <Widget>[
         for (final (int index, SavedGameSummary game) in visibleGames)
           _GamePreviewTile(
-            key: Key('sanmill_home_recent_game_$index'),
+            key: Key('${gameKeyPrefix}_$index'),
             boardLayout: game.preview?.boardLayout,
-            fallbackIcon: Icons.history_rounded,
+            fallbackIcon: fallbackIcon,
             title: game.displayName,
             subtitle: _subtitle(localizations, strings, game),
-            detail: _players(game.preview),
+            detail: detailForGame(game),
             onTap: () => onSavedGameSelected(game.path),
           ),
       ],
@@ -1565,9 +1613,9 @@ class _RecentGamesSection extends StatelessWidget {
     return parts.join(' · ');
   }
 
-  static String? _players(SavedGamePreview? preview) {
-    final String? white = preview?.white;
-    final String? black = preview?.black;
+  static String? players(SavedGameSummary game) {
+    final String? white = game.preview?.white;
+    final String? black = game.preview?.black;
     if (white != null && black != null) {
       return '$white - $black';
     }
