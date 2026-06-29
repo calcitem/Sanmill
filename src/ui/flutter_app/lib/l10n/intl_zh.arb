@@ -4543,5 +4543,11 @@
     "continueGame": "继续对局",
     "@continueGame": {},
     "recentGames": "最近对局",
-    "@recentGames": {}
+    "@recentGames": {},
+    "play": "开始下棋",
+    "@play": {},
+    "playAgainstComputer": "和电脑下棋",
+    "@playAgainstComputer": {},
+    "overTheBoard": "面对面下棋",
+    "@overTheBoard": {}
 }

@@ -1203,9 +1203,9 @@ class _FloatingPlayButton extends StatelessWidget {
     return FloatingActionButton.extended(
       key: const Key('sanmill_home_play_fab'),
       onPressed: onPressed,
-      tooltip: S.of(context).newGame,
+      tooltip: S.of(context).play,
       icon: const Icon(Icons.sports_esports_rounded),
-      label: Text(S.of(context).newGame),
+      label: Text(S.of(context).play),
     );
   }
 }
@@ -1232,7 +1232,7 @@ class _PlayBottomSheet extends StatelessWidget {
         MediaQuery.viewInsetsOf(context).bottom + 16,
       ),
       child: LichessListSection(
-        header: Text(strings.game),
+        header: Text(strings.play),
         cardKey: const Key('sanmill_home_play_sheet_card'),
         children: <Widget>[
           for (final GameModeEntry mode in playModes)

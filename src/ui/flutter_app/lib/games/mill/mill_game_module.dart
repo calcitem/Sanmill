@@ -327,8 +327,8 @@ class MillGameModule extends GameModule {
     return <GameModeEntry>[
       GameModeEntry(
         id: MillRouteIds.humanVsAi,
-        label: s.humanVsAi,
-        icon: FluentIcons.person_24_regular,
+        label: s.playAgainstComputer,
+        icon: Icons.memory_rounded,
         drawerKey: const Key('drawer_item_human_vs_ai'),
         contentKey: const Key('human_ai'),
         isAvailable: (_) => features.supports(GameCapability.ai),
@@ -337,8 +337,8 @@ class MillGameModule extends GameModule {
       ),
       GameModeEntry(
         id: MillRouteIds.humanVsHuman,
-        label: s.humanVsHuman,
-        icon: FluentIcons.people_24_regular,
+        label: s.overTheBoard,
+        icon: Icons.table_restaurant_outlined,
         drawerKey: const Key('drawer_item_human_vs_human'),
         contentKey: const Key('human_human'),
         builder: (BuildContext context, {Key? key, GameSession? session}) =>

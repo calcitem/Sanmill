@@ -4695,5 +4695,11 @@
     "continueGame": "Continue game",
     "@continueGame": {},
     "recentGames": "Recent games",
-    "@recentGames": {}
+    "@recentGames": {},
+    "play": "Play",
+    "@play": {},
+    "playAgainstComputer": "Play against computer",
+    "@playAgainstComputer": {},
+    "overTheBoard": "Over the board",
+    "@overTheBoard": {}
 }
