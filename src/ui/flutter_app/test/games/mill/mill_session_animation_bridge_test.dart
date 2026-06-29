@@ -12,9 +12,9 @@ void main() {
   group('MillSessionAnimationBridge.gridIndexForNode', () {
     test('maps board nodes to legacy 7x7 grid indices', () {
       // node -> legacy square -> grid index (see MillBoardCoordinateMaps).
-      expect(MillSessionAnimationBridge.gridIndexForNode(0), 0); // sq 31
-      expect(MillSessionAnimationBridge.gridIndexForNode(1), 3); // sq 24
-      expect(MillSessionAnimationBridge.gridIndexForNode(16), 16); // sq 15
+      expect(MillSessionAnimationBridge.gridIndexForNode(0), 17); // sq 8
+      expect(MillSessionAnimationBridge.gridIndexForNode(1), 18); // sq 9
+      expect(MillSessionAnimationBridge.gridIndexForNode(16), 3); // sq 24
     });
 
     test('returns null for missing or out-of-range nodes', () {
@@ -32,11 +32,11 @@ void main() {
     }
 
     test('detects a completed standard mill through the destination', () {
-      final Uint8List occ = occupancyWith(<int, int>{0: 1, 1: 1, 2: 1});
+      final Uint8List occ = occupancyWith(<int, int>{7: 1, 0: 1, 1: 1});
       expect(
         MillSessionAnimationBridge.formedMillAt(
           occupancy: occ,
-          toNode: 2,
+          toNode: 1,
           moverByte: 1,
           hasDiagonalLines: false,
         ),
@@ -45,11 +45,11 @@ void main() {
     });
 
     test('returns false when no line through the destination is complete', () {
-      final Uint8List occ = occupancyWith(<int, int>{0: 1, 2: 1});
+      final Uint8List occ = occupancyWith(<int, int>{7: 1, 1: 1});
       expect(
         MillSessionAnimationBridge.formedMillAt(
           occupancy: occ,
-          toNode: 2,
+          toNode: 1,
           moverByte: 1,
           hasDiagonalLines: false,
         ),
@@ -58,11 +58,11 @@ void main() {
     });
 
     test('returns false when the destination is not the mover colour', () {
-      final Uint8List occ = occupancyWith(<int, int>{0: 1, 1: 1, 2: 1});
+      final Uint8List occ = occupancyWith(<int, int>{7: 1, 0: 1, 1: 1});
       expect(
         MillSessionAnimationBridge.formedMillAt(
           occupancy: occ,
-          toNode: 2,
+          toNode: 1,
           moverByte: 2,
           hasDiagonalLines: false,
         ),
@@ -71,12 +71,12 @@ void main() {
     });
 
     test('diagonal lines only count when the rule is enabled', () {
-      // Nodes 0, 8, 16 form a diagonal mill in the standard topology.
-      final Uint8List occ = occupancyWith(<int, int>{0: 1, 8: 1, 16: 1});
+      // Nodes 23, 15, 7 form a diagonal mill in the diagonal-rule topology.
+      final Uint8List occ = occupancyWith(<int, int>{23: 1, 15: 1, 7: 1});
       expect(
         MillSessionAnimationBridge.formedMillAt(
           occupancy: occ,
-          toNode: 16,
+          toNode: 7,
           moverByte: 1,
           hasDiagonalLines: false,
         ),
@@ -85,7 +85,7 @@ void main() {
       expect(
         MillSessionAnimationBridge.formedMillAt(
           occupancy: occ,
-          toNode: 16,
+          toNode: 7,
           moverByte: 1,
           hasDiagonalLines: true,
         ),

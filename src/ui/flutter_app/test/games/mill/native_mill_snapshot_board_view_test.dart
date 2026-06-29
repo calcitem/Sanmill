@@ -36,10 +36,10 @@ void main() {
 
       expect(view.pieceAtNode(0), PlayerSeat.first);
       expect(view.pieceAtNode(23), PlayerSeat.second);
-      expect(view.pieceAtLegacySquare(31), PlayerSeat.first);
-      expect(view.pieceAtLegacySquare(14), PlayerSeat.second);
-      expect(view.pieceAtLegacyGridIndex(0), PlayerSeat.first);
-      expect(view.pieceAtLegacyGridIndex(23), PlayerSeat.second);
+      expect(view.pieceAtLegacySquare(8), PlayerSeat.first);
+      expect(view.pieceAtLegacySquare(31), PlayerSeat.second);
+      expect(view.pieceAtLegacyGridIndex(17), PlayerSeat.first);
+      expect(view.pieceAtLegacyGridIndex(0), PlayerSeat.second);
       expect(view.pieceAtLegacyGridIndex(24), isNull);
       expect(view.pieceCount(PlayerSeat.first), 1);
       expect(view.pieceCount(PlayerSeat.second), 1);
@@ -70,11 +70,11 @@ void main() {
           )!;
 
       expect(view.markedNodes, <int>{2, 7});
-      expect(view.isMarkedLegacySquare(25), isTrue);
-      expect(view.isMarkedLegacySquare(30), isTrue);
+      expect(view.isMarkedLegacySquare(10), isTrue);
+      expect(view.isMarkedLegacySquare(15), isTrue);
       expect(view.isMarkedLegacySquare(31), isFalse);
-      expect(view.isMarkedLegacyGridIndex(6), isTrue);
-      expect(view.isMarkedLegacyGridIndex(21), isTrue);
+      expect(view.isMarkedLegacyGridIndex(25), isTrue);
+      expect(view.isMarkedLegacyGridIndex(16), isTrue);
       expect(view.isMarkedLegacyGridIndex(0), isFalse);
     });
 
@@ -117,8 +117,8 @@ void main() {
       final Uint8List payload = Uint8List(256);
       payload[0] = 1;
       payload[1] = 1;
-      payload[2] = 1;
-      payload[35] = 1; // line 0: nodes [0,1,2]
+      payload[7] = 1;
+      payload[35] = 1; // line 0: nodes [7,0,1]
 
       final NativeMillSnapshotBoardView view =
           NativeMillSnapshotBoardView.fromSnapshot(
@@ -134,7 +134,7 @@ void main() {
         view.usedMillLinesAsLegacySquares(hasDiagonalLines: false),
         <PlayerSeat, List<List<int>>>{
           PlayerSeat.first: <List<int>>[
-            <int>[31, 24, 25],
+            <int>[15, 8, 9],
           ],
           PlayerSeat.second: <List<int>>[],
         },

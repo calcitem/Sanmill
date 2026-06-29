@@ -58,14 +58,14 @@ void main() {
       expect(MillBoardCoordinateMaps.standardMillNodeLines, hasLength(16));
       expect(MillBoardCoordinateMaps.diagonalMillNodeLines, hasLength(20));
       expect(MillBoardCoordinateMaps.standardMillNodeLines.first, <int>[
+        7,
         0,
         1,
-        2,
       ]);
       expect(MillBoardCoordinateMaps.diagonalMillNodeLines.last, <int>[
-        20,
-        12,
-        4,
+        3,
+        11,
+        19,
       ]);
     });
 
