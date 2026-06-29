@@ -27,6 +27,7 @@ import 'package:sanmill/games/mill/opening_explorer/opening_explorer_page.dart';
 import 'package:sanmill/general_settings/models/general_settings.dart';
 import 'package:sanmill/general_settings/widgets/developer_options_page.dart';
 import 'package:sanmill/generated/intl/l10n.dart';
+import 'package:sanmill/learn/mill_coordinate_training_page.dart';
 import 'package:sanmill/main.dart';
 import 'package:sanmill/puzzle/models/puzzle_models.dart';
 import 'package:sanmill/puzzle/pages/puzzle_creation_page.dart';
@@ -1147,6 +1148,40 @@ void main() {
     },
     skip: nativeLibrarySkipReason() != null,
   );
+
+  testWidgets('Coordinate training mirrors Lichess default toggles', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: AppTheme.lightThemeData,
+        localizationsDelegates: sanmillLocalizationsDelegates,
+        supportedLocales: S.supportedLocales,
+        locale: const Locale('en'),
+        home: const MillCoordinateTrainingPage(),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(
+      find.byKey(const Key('mill_coordinate_training_board')),
+      findsOneWidget,
+    );
+
+    await tester.tap(
+      find.byKey(const Key('mill_coordinate_training_menu_button')),
+    );
+    await tester.pumpAndSettle();
+
+    final SwitchListTile showCoordinatesTile = tester.widget<SwitchListTile>(
+      find.byKey(const Key('mill_coordinate_training_show_coordinates')),
+    );
+    final SwitchListTile showPiecesTile = tester.widget<SwitchListTile>(
+      find.byKey(const Key('mill_coordinate_training_show_pieces')),
+    );
+    expect(showCoordinatesTile.value, isFalse);
+    expect(showPiecesTile.value, isTrue);
+  });
 
   testWidgets(
     'Appearance board theme uses full-screen board selector',

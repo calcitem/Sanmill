@@ -7,6 +7,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart' show Box;
 
+import '../appearance_settings/models/color_settings.dart';
 import '../games/mill/mill_board_coordinate_maps.dart';
 import '../games/mill/mill_board_geometry.dart';
 import '../generated/intl/l10n.dart';
@@ -24,6 +25,8 @@ const Offset _kNextCoordinateTranslation = Offset(0.72, 0.32);
 const double _kNextCoordinateScale = 0.42;
 const double _kCurrentCoordinateOpacity = 0.9;
 const double _kNextCoordinateOpacity = 0.68;
+const double _kTimeBarHeight = 12;
+const double _kTrainingPanelMinHeight = 96;
 const List<Duration> _kTrainingDurationChoices = <Duration>[
   Duration(seconds: 30),
   Duration(seconds: 60),
@@ -63,7 +66,8 @@ class _MillCoordinateTrainingPageState
   int? _lastScore;
   Duration? _elapsed;
   Duration _trainingDuration = _kTrainingDuration;
-  bool _showCoordinates = true;
+  bool _showCoordinates = false;
+  bool _showPieces = true;
 
   bool get _trainingActive => _elapsed != null;
 
@@ -122,6 +126,8 @@ class _MillCoordinateTrainingPageState
                       return _TrainingLayout(
                         hasDiagonalLines: hasDiagonalLines,
                         showCoordinates: _showCoordinates,
+                        showPieces: _showPieces,
+                        colorSettings: DB().colorSettings,
                         trainingActive: _trainingActive,
                         score: _score,
                         lastScore: _lastScore,
@@ -278,6 +284,17 @@ class _MillCoordinateTrainingPageState
                       Navigator.of(context).pop();
                     },
                   ),
+                  SwitchListTile(
+                    key: const Key('mill_coordinate_training_show_pieces'),
+                    title: Text(strings.coordinateTrainingShowPieces),
+                    value: _showPieces,
+                    onChanged: (bool value) {
+                      setState(() {
+                        _showPieces = value;
+                      });
+                      Navigator.of(context).pop();
+                    },
+                  ),
                 ],
               ),
               LichessListSection(
@@ -338,6 +355,8 @@ class _TrainingLayout extends StatelessWidget {
   const _TrainingLayout({
     required this.hasDiagonalLines,
     required this.showCoordinates,
+    required this.showPieces,
+    required this.colorSettings,
     required this.trainingActive,
     required this.score,
     required this.lastScore,
@@ -353,6 +372,8 @@ class _TrainingLayout extends StatelessWidget {
 
   final bool hasDiagonalLines;
   final bool showCoordinates;
+  final bool showPieces;
+  final ColorSettings colorSettings;
   final bool trainingActive;
   final int score;
   final int? lastScore;
@@ -371,9 +392,17 @@ class _TrainingLayout extends StatelessWidget {
       builder: (BuildContext context, BoxConstraints constraints) {
         final bool landscape = constraints.maxWidth > constraints.maxHeight;
         final Axis direction = landscape ? Axis.horizontal : Axis.vertical;
-        final double boardSize = landscape
-            ? math.min(constraints.maxHeight - 24, constraints.maxWidth * 0.62)
-            : math.min(constraints.maxWidth, constraints.maxHeight * 0.72);
+        final double maxBoardHeight = landscape
+            ? constraints.maxHeight - _kTimeBarHeight - 24
+            : constraints.maxHeight -
+                  _kTimeBarHeight -
+                  _kTrainingPanelMinHeight;
+        final double boardSize = math.max(
+          0,
+          landscape
+              ? math.min(maxBoardHeight, constraints.maxWidth * 0.62)
+              : math.min(constraints.maxWidth, maxBoardHeight),
+        );
 
         final Widget board = SizedBox(
           width: boardSize,
@@ -390,6 +419,8 @@ class _TrainingLayout extends StatelessWidget {
                 child: _MillTrainingBoard(
                   hasDiagonalLines: hasDiagonalLines,
                   showCoordinates: showCoordinates,
+                  showPieces: showPieces,
+                  colorSettings: colorSettings,
                   trainingActive: trainingActive,
                   currentNode: currentNode,
                   nextNode: nextNode,
@@ -447,7 +478,7 @@ class _TimeBar extends StatelessWidget {
       alignment: Alignment.centerLeft,
       child: SizedBox(
         width: width * fraction,
-        height: 12,
+        height: _kTimeBarHeight,
         child: ColoredBox(color: color),
       ),
     );
@@ -552,6 +583,8 @@ class _MillTrainingBoard extends StatelessWidget {
   const _MillTrainingBoard({
     required this.hasDiagonalLines,
     required this.showCoordinates,
+    required this.showPieces,
+    required this.colorSettings,
     required this.trainingActive,
     required this.currentNode,
     required this.nextNode,
@@ -562,6 +595,8 @@ class _MillTrainingBoard extends StatelessWidget {
 
   final bool hasDiagonalLines;
   final bool showCoordinates;
+  final bool showPieces;
+  final ColorSettings colorSettings;
   final bool trainingActive;
   final int? currentNode;
   final int? nextNode;
@@ -599,8 +634,10 @@ class _MillTrainingBoard extends StatelessWidget {
                 size: size,
                 painter: _MillCoordinateTrainingPainter(
                   colorScheme: Theme.of(context).colorScheme,
+                  colorSettings: colorSettings,
                   hasDiagonalLines: hasDiagonalLines,
                   showCoordinates: showCoordinates,
+                  showPieces: showPieces,
                   lastGuessNode: lastGuessNode,
                   lastGuessCorrect: lastGuessCorrect,
                 ),
@@ -745,17 +782,24 @@ class _CoordinateDisplayState extends State<_CoordinateDisplay>
 class _MillCoordinateTrainingPainter extends CustomPainter {
   _MillCoordinateTrainingPainter({
     required this.colorScheme,
+    required this.colorSettings,
     required this.hasDiagonalLines,
     required this.showCoordinates,
+    required this.showPieces,
     required this.lastGuessNode,
     required this.lastGuessCorrect,
   });
 
   final ColorScheme colorScheme;
+  final ColorSettings colorSettings;
   final bool hasDiagonalLines;
   final bool showCoordinates;
+  final bool showPieces;
   final int? lastGuessNode;
   final bool? lastGuessCorrect;
+
+  static const List<int> _playerOneSampleNodes = <int>[23, 16, 8, 0, 1, 9];
+  static const List<int> _playerTwoSampleNodes = <int>[5, 13, 21, 20, 12, 4];
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -770,8 +814,11 @@ class _MillCoordinateTrainingPainter extends CustomPainter {
     );
 
     _drawLines(canvas, size);
-    _drawGuessHighlight(canvas, size);
     _drawPoints(canvas, size);
+    if (showPieces) {
+      _drawSamplePieces(canvas, size);
+    }
+    _drawGuessHighlight(canvas, size);
     if (showCoordinates) {
       _drawCoordinateLabels(canvas, size);
     }
@@ -842,6 +889,31 @@ class _MillCoordinateTrainingPainter extends CustomPainter {
     }
   }
 
+  void _drawSamplePieces(Canvas canvas, Size size) {
+    final double side = size.shortestSide;
+    final double radius = side * 0.043;
+    final Paint shadowPaint = Paint()
+      ..color = colorScheme.shadow.withValues(alpha: 0.24);
+    final Paint outlinePaint = Paint()
+      ..color = colorScheme.outline.withValues(alpha: 0.46)
+      ..strokeWidth = math.max(1.2, side * 0.004)
+      ..style = PaintingStyle.stroke;
+
+    void drawPiece(int node, Color color) {
+      final Offset center = MillBoardGeometry.nodeOffset(node, size);
+      canvas.drawCircle(center.translate(1.2, 1.8), radius, shadowPaint);
+      canvas.drawCircle(center, radius, Paint()..color = color);
+      canvas.drawCircle(center, radius, outlinePaint);
+    }
+
+    for (final int node in _playerOneSampleNodes) {
+      drawPiece(node, colorSettings.whitePieceColor);
+    }
+    for (final int node in _playerTwoSampleNodes) {
+      drawPiece(node, colorSettings.blackPieceColor);
+    }
+  }
+
   void _drawCoordinateLabels(Canvas canvas, Size size) {
     final Offset boardCenter = Offset(size.width / 2, size.height / 2);
     final double side = size.shortestSide;
@@ -908,8 +980,10 @@ class _MillCoordinateTrainingPainter extends CustomPainter {
   @override
   bool shouldRepaint(covariant _MillCoordinateTrainingPainter oldDelegate) {
     return oldDelegate.colorScheme != colorScheme ||
+        oldDelegate.colorSettings != colorSettings ||
         oldDelegate.hasDiagonalLines != hasDiagonalLines ||
         oldDelegate.showCoordinates != showCoordinates ||
+        oldDelegate.showPieces != showPieces ||
         oldDelegate.lastGuessNode != lastGuessNode ||
         oldDelegate.lastGuessCorrect != lastGuessCorrect;
   }

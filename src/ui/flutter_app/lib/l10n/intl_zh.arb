@@ -4654,8 +4654,10 @@
     "@pieceSet": {},
     "humanVsHumanTakeBackRequesterTitle": "哪一方要悔棋？",
     "@humanVsHumanTakeBackRequesterTitle": {},
-    "humanVsHumanTakeBackRequesterWhite": "先手方悔棋",
+    "humanVsHumanTakeBackRequesterWhite": "白方悔棋",
     "@humanVsHumanTakeBackRequesterWhite": {},
-    "humanVsHumanTakeBackRequesterBlack": "后手方悔棋",
-    "@humanVsHumanTakeBackRequesterBlack": {}
+    "humanVsHumanTakeBackRequesterBlack": "黑方悔棋",
+    "@humanVsHumanTakeBackRequesterBlack": {},
+    "coordinateTrainingShowPieces": "显示棋子",
+    "@coordinateTrainingShowPieces": {}
 }

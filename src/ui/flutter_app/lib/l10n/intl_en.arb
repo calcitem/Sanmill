@@ -4806,8 +4806,10 @@
     "@pieceSet": {},
     "humanVsHumanTakeBackRequesterTitle": "Who is taking back?",
     "@humanVsHumanTakeBackRequesterTitle": {},
-    "humanVsHumanTakeBackRequesterWhite": "Player 1 takes back",
+    "humanVsHumanTakeBackRequesterWhite": "White takes back",
     "@humanVsHumanTakeBackRequesterWhite": {},
-    "humanVsHumanTakeBackRequesterBlack": "Player 2 takes back",
-    "@humanVsHumanTakeBackRequesterBlack": {}
+    "humanVsHumanTakeBackRequesterBlack": "Black takes back",
+    "@humanVsHumanTakeBackRequesterBlack": {},
+    "coordinateTrainingShowPieces": "Show pieces",
+    "@coordinateTrainingShowPieces": {}
 }

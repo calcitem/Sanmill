@@ -1258,8 +1258,8 @@ void main() {
       findsOneWidget,
     );
     expect(find.text('Who is taking back?'), findsOneWidget);
-    expect(find.text('Player 1 takes back'), findsOneWidget);
-    expect(find.text('Player 2 takes back'), findsOneWidget);
+    expect(find.text('White takes back'), findsOneWidget);
+    expect(find.text('Black takes back'), findsOneWidget);
 
     await tester.tap(
       find.byKey(const Key('play_area_take_back_requester_black')),
@@ -1292,8 +1292,8 @@ void main() {
       findsOneWidget,
     );
     expect(find.text('Who is taking back?'), findsOneWidget);
-    expect(find.text('Player 1 takes back'), findsOneWidget);
-    expect(find.text('Player 2 takes back'), findsOneWidget);
+    expect(find.text('White takes back'), findsOneWidget);
+    expect(find.text('Black takes back'), findsOneWidget);
 
     await tester.tap(
       find.byKey(const Key('play_area_take_back_requester_white')),
