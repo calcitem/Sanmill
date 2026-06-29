@@ -366,8 +366,7 @@ class PlayAreaState extends State<PlayArea> {
   }) {
     final S strings = S.of(context);
     return <LichessActionSheetAction>[
-      for (final MillBoardTransformAction action
-          in millBoardTransformFullActions)
+      for (final MillBoardTransformAction action in millBoardTransformActions)
         LichessActionSheetAction(
           key: Key('${keyPrefix}_${action.id}'),
           leading: Icon(action.icon),

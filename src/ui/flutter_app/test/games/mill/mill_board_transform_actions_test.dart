@@ -6,31 +6,17 @@ import 'package:sanmill/game_page/services/transform/transform.dart';
 import 'package:sanmill/games/mill/mill_board_transform_actions.dart';
 
 void main() {
-  test('full board transform actions expose all visible symmetries', () {
-    final Set<String> ids = millBoardTransformFullActions
+  test('board transform actions remain the setup toolbar generators', () {
+    final Set<String> ids = millBoardTransformActions
         .map((MillBoardTransformAction action) => action.id)
         .toSet();
-    final Set<TransformationType> types = millBoardTransformFullActions
+    final Set<TransformationType> types = millBoardTransformActions
         .map((MillBoardTransformAction action) => action.type)
         .toSet();
 
-    expect(millBoardTransformFullActions, hasLength(15));
-    expect(ids, hasLength(millBoardTransformFullActions.length));
-    expect(types, hasLength(millBoardTransformFullActions.length));
-    expect(types, isNot(contains(TransformationType.identity)));
-    expect(
-      types,
-      equals(
-        TransformationType.values
-            .where(
-              (TransformationType type) => type != TransformationType.identity,
-            )
-            .toSet(),
-      ),
-    );
-  });
-
-  test('quick board transform actions remain the setup toolbar generators', () {
+    expect(millBoardTransformActions, hasLength(4));
+    expect(ids, hasLength(millBoardTransformActions.length));
+    expect(types, hasLength(millBoardTransformActions.length));
     expect(
       millBoardTransformActions.map(
         (MillBoardTransformAction action) => action.type,

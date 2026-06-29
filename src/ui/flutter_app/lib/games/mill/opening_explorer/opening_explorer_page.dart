@@ -303,7 +303,7 @@ class _ExplorerBoardSection extends StatelessWidget {
                 runSpacing: 8,
                 children: <Widget>[
                   for (final MillBoardTransformAction action
-                      in millBoardTransformFullActions)
+                      in millBoardTransformActions)
                     _BoardTransformButton(
                       key: Key('opening_explorer_${action.id}_button'),
                       label: action.label(S.of(context)),
@@ -901,16 +901,19 @@ class _MoveCell extends StatelessWidget {
               _SourceBadge(
                 label: strings.perfectDatabaseSettings,
                 color: colorScheme.primary,
+                icon: Icons.verified_rounded,
               ),
             if (move.bookRank != null)
               _SourceBadge(
                 label: strings.openingBookSettings,
                 color: colorScheme.tertiary,
+                icon: Icons.menu_book_rounded,
               ),
             if (move.humanStats != null)
               _SourceBadge(
                 label: strings.humanGameDatabaseSettings,
                 color: colorScheme.secondary,
+                icon: Icons.people_alt_rounded,
               ),
           ],
         ),
@@ -1020,26 +1023,30 @@ Color _openingExplorerRowColor(BuildContext context, int index) {
 }
 
 class _SourceBadge extends StatelessWidget {
-  const _SourceBadge({required this.label, required this.color});
+  const _SourceBadge({
+    required this.label,
+    required this.color,
+    required this.icon,
+  });
 
   final String label;
   final Color color;
+  final IconData icon;
 
   @override
   Widget build(BuildContext context) {
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: color.withValues(alpha: 0.12),
-        borderRadius: BorderRadius.circular(AppStyles.compactRadius),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-        child: Text(
-          label,
-          style: Theme.of(context).textTheme.labelSmall?.copyWith(
-            color: color,
-            fontWeight: FontWeight.w600,
-            letterSpacing: 0,
+    return Tooltip(
+      message: label,
+      child: Semantics(
+        label: label,
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+            color: color.withValues(alpha: 0.12),
+            borderRadius: BorderRadius.circular(999),
+          ),
+          child: SizedBox.square(
+            dimension: 22,
+            child: Icon(icon, size: 14, color: color),
           ),
         ),
       ),

@@ -325,9 +325,22 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.byKey(const Key('play_area_board_transform_sheet')), findsOne);
+    expect(find.byKey(const Key('play_area_board_transform_rotate')), findsOne);
+    expect(
+      find.byKey(const Key('play_area_board_transform_horizontal_flip')),
+      findsOne,
+    );
+    expect(
+      find.byKey(const Key('play_area_board_transform_vertical_flip')),
+      findsOne,
+    );
+    expect(
+      find.byKey(const Key('play_area_board_transform_inner_outer_flip')),
+      findsOne,
+    );
     expect(
       find.byKey(const Key('play_area_board_transform_swap_rotate_180')),
-      findsOne,
+      findsNothing,
     );
 
     Navigator.of(
