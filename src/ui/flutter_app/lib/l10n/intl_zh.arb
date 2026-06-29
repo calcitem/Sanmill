@@ -4651,5 +4651,11 @@
     "board": "棋盘",
     "@board": {},
     "pieceSet": "棋子样式",
-    "@pieceSet": {}
+    "@pieceSet": {},
+    "humanVsHumanTakeBackRequesterTitle": "哪一方要悔棋？",
+    "@humanVsHumanTakeBackRequesterTitle": {},
+    "humanVsHumanTakeBackRequesterWhite": "先手方悔棋",
+    "@humanVsHumanTakeBackRequesterWhite": {},
+    "humanVsHumanTakeBackRequesterBlack": "后手方悔棋",
+    "@humanVsHumanTakeBackRequesterBlack": {}
 }

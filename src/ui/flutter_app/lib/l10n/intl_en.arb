@@ -4803,5 +4803,11 @@
     "board": "Board",
     "@board": {},
     "pieceSet": "Piece set",
-    "@pieceSet": {}
+    "@pieceSet": {},
+    "humanVsHumanTakeBackRequesterTitle": "Who is taking back?",
+    "@humanVsHumanTakeBackRequesterTitle": {},
+    "humanVsHumanTakeBackRequesterWhite": "Player 1 takes back",
+    "@humanVsHumanTakeBackRequesterWhite": {},
+    "humanVsHumanTakeBackRequesterBlack": "Player 2 takes back",
+    "@humanVsHumanTakeBackRequesterBlack": {}
 }

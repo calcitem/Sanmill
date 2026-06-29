@@ -436,14 +436,15 @@ class PlayAreaState extends State<PlayArea> {
     showLichessActionSheet<void>(
       context: context,
       sheetKey: const Key('play_area_take_back_requester_sheet'),
-      title: Text(strings.takeBack),
+      title: Text(strings.humanVsHumanTakeBackRequesterTitle),
       actions: <LichessActionSheetAction>[
         LichessActionSheetAction(
           key: const Key('play_area_take_back_requester_white'),
           leading: _TakeBackRequesterSwatch(
             color: DB().colorSettings.whitePieceColor,
           ),
-          makeLabel: (BuildContext context) => Text(strings.player1),
+          makeLabel: (BuildContext context) =>
+              Text(strings.humanVsHumanTakeBackRequesterWhite),
           onPressed: () => unawaited(
             _takeBackForRequesterFromRegularBottomBar(
               context,
@@ -456,7 +457,8 @@ class PlayAreaState extends State<PlayArea> {
           leading: _TakeBackRequesterSwatch(
             color: DB().colorSettings.blackPieceColor,
           ),
-          makeLabel: (BuildContext context) => Text(strings.player2),
+          makeLabel: (BuildContext context) =>
+              Text(strings.humanVsHumanTakeBackRequesterBlack),
           onPressed: () => unawaited(
             _takeBackForRequesterFromRegularBottomBar(
               context,
