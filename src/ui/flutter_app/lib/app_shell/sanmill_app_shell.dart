@@ -809,7 +809,7 @@ class _MobileDrawerButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(8),
             clipBehavior: Clip.antiAlias,
             child: IconButton(
-              key: const Key('custom_drawer_drawer_overlay_button'),
+              key: const Key('sanmill_navigation_drawer_button'),
               icon: const Icon(Icons.menu_rounded),
               tooltip: S.of(context).more,
               onPressed: onPressed,

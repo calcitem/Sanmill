@@ -11,7 +11,7 @@ final List<Map<String, dynamic>> testScenarios = <Map<String, dynamic>>[
     'steps': <Map<String, String>>[
       <String, String>{
         'action': 'tap',
-        'key': 'custom_drawer_drawer_overlay_button',
+        'key': 'sanmill_navigation_drawer_button',
         'expect': 'Drawer button should be present',
       },
       <String, String>{
@@ -91,7 +91,7 @@ final List<Map<String, dynamic>> testScenarios = <Map<String, dynamic>>[
       },
       <String, String>{
         'action': 'tap',
-        'key': 'custom_drawer_drawer_overlay_button',
+        'key': 'sanmill_navigation_drawer_button',
         'expect': 'Drawer button should be present',
       },
       <String, String>{
@@ -111,7 +111,7 @@ final List<Map<String, dynamic>> testScenarios = <Map<String, dynamic>>[
       },
       <String, String>{
         'action': 'tap',
-        'key': 'custom_drawer_drawer_overlay_button',
+        'key': 'sanmill_navigation_drawer_button',
         'expect': 'Drawer button should be present',
       },
       <String, String>{
@@ -154,7 +154,7 @@ final List<Map<String, dynamic>> testScenarios = <Map<String, dynamic>>[
       },
       <String, String>{
         'action': 'tap',
-        'key': 'custom_drawer_drawer_overlay_button',
+        'key': 'sanmill_navigation_drawer_button',
         'expect': 'Drawer button should be present',
       },
       <String, String>{

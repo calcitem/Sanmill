@@ -3,7 +3,7 @@
 
 import '../game_platform/game_route_id.dart';
 
-/// Stable route ids for the shared [Home] / drawer shell.
+/// Stable route ids for the shared app shell.
 ///
 /// `app.*` is cross-game UI (settings, help, exit, game switch).
 abstract final class ShellRouteIds {

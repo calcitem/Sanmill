@@ -7,10 +7,10 @@ import '../game_platform/game_session.dart';
 
 /// Inherited widget that exposes the active [GameSession] to descendants.
 ///
-/// The shell ([Home] / [SharedGameShell]) owns the session lifecycle and
-/// rebuilds the scope when the active game changes. UI code that needs
-/// session-level state should read [GameSessionScope.maybeOf] rather than
-/// constructing or addressing a session directly.
+/// The app shell owns the session lifecycle and rebuilds the scope when the
+/// active game changes. UI code that needs session-level state should read
+/// [GameSessionScope.maybeOf] rather than constructing or addressing a session
+/// directly.
 class GameSessionScope extends InheritedWidget {
   const GameSessionScope({
     required this.session,

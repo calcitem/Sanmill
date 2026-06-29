@@ -9,7 +9,7 @@ import 'game_id.dart';
 import 'game_module.dart';
 
 /// Registers and selects [GameModule] implementations. Notifies on selection
-/// change so the shell (e.g. [Home]) can rebuild.
+/// change so the app shell can rebuild.
 class GameRegistry extends ChangeNotifier {
   GameRegistry._();
 

@@ -92,13 +92,13 @@ Future<void> dismissBlockingDialogs(WidgetTester tester) async {
 }
 
 // ---------------------------------------------------------------------------
-// Drawer Operations
+// Navigation Drawer Operations
 // ---------------------------------------------------------------------------
 
-/// Opens the custom drawer by tapping the drawer overlay button.
+/// Opens the navigation drawer by tapping the shell drawer button.
 Future<void> openDrawer(WidgetTester tester) async {
   final Finder drawerButton = find.byKey(
-    const Key('custom_drawer_drawer_overlay_button'),
+    const Key('sanmill_navigation_drawer_button'),
   );
   if (drawerButton.evaluate().isNotEmpty) {
     await tester.tap(drawerButton);
@@ -108,7 +108,7 @@ Future<void> openDrawer(WidgetTester tester) async {
   await tapSanmillTab(tester, 'more');
 }
 
-/// Closes the custom drawer, or returns to the game tab when no drawer exists.
+/// Closes the navigation drawer, or returns to the game tab when no drawer exists.
 Future<void> closeDrawer(WidgetTester tester) async {
   final Finder drawer = find.byKey(const Key('sanmill_navigation_drawer'));
   if (drawer.evaluate().isNotEmpty) {
@@ -118,7 +118,7 @@ Future<void> closeDrawer(WidgetTester tester) async {
   }
 
   final Finder drawerButton = find.byKey(
-    const Key('custom_drawer_drawer_overlay_button'),
+    const Key('sanmill_navigation_drawer_button'),
   );
   if (drawerButton.evaluate().isNotEmpty) {
     await tester.tap(drawerButton);
@@ -134,7 +134,7 @@ Future<void> closeDrawer(WidgetTester tester) async {
 /// for the transition to settle.
 Future<void> navigateToDrawerItem(WidgetTester tester, String itemKey) async {
   final Finder drawerButton = find.byKey(
-    const Key('custom_drawer_drawer_overlay_button'),
+    const Key('sanmill_navigation_drawer_button'),
   );
   if (drawerButton.evaluate().isEmpty) {
     await navigateToShellItem(tester, itemKey);
@@ -158,7 +158,7 @@ Future<void> navigateToGroupChild(
   String childKey,
 ) async {
   final Finder drawerButton = find.byKey(
-    const Key('custom_drawer_drawer_overlay_button'),
+    const Key('sanmill_navigation_drawer_button'),
   );
   if (drawerButton.evaluate().isEmpty) {
     await navigateToShellItem(tester, childKey);

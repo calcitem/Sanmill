@@ -373,7 +373,7 @@ class SmartActions {
     print('[SmartAction] UI: open/close drawer');
     try {
       final Finder drawerButton = find.byKey(
-        const Key('custom_drawer_drawer_overlay_button'),
+        const Key('sanmill_navigation_drawer_button'),
       );
       if (drawerButton.evaluate().isEmpty ||
           tester.widget<IconButton>(drawerButton).onPressed == null) {

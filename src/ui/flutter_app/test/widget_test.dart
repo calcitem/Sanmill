@@ -169,7 +169,7 @@ void main() {
       );
 
       await tester.tap(
-        find.byKey(const Key('custom_drawer_drawer_overlay_button')),
+        find.byKey(const Key('sanmill_navigation_drawer_button')),
       );
       await tester.pumpAndSettle();
 
