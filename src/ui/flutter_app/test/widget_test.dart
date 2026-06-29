@@ -17,6 +17,7 @@ import 'package:sanmill/general_settings/widgets/developer_options_page.dart';
 import 'package:sanmill/generated/intl/l10n.dart';
 import 'package:sanmill/main.dart';
 import 'package:sanmill/puzzle/models/puzzle_models.dart';
+import 'package:sanmill/puzzle/pages/puzzle_creation_page.dart';
 import 'package:sanmill/puzzle/widgets/puzzle_card.dart';
 import 'package:sanmill/shared/database/database.dart';
 import 'package:sanmill/shared/services/environment_config.dart';
@@ -767,6 +768,39 @@ void main() {
       expect(find.byIcon(Icons.check_circle), findsOneWidget);
 
       await tester.pump(const Duration(milliseconds: 350));
+    },
+    skip: nativeLibrarySkipReason() != null,
+  );
+
+  testWidgets(
+    'PuzzleCreationPage uses themed flat section surfaces',
+    (WidgetTester tester) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: AppTheme.lightThemeData,
+          localizationsDelegates: sanmillLocalizationsDelegates,
+          supportedLocales: S.supportedLocales,
+          home: const PuzzleCreationPage(),
+        ),
+      );
+      await tester.pump();
+
+      final Finder scaffoldFinder = find.byKey(
+        const Key('puzzle_creation_page_scaffold'),
+      );
+      final BuildContext pageContext = tester.element(scaffoldFinder);
+      final Scaffold scaffold = tester.widget<Scaffold>(scaffoldFinder);
+      expect(
+        scaffold.backgroundColor,
+        Theme.of(pageContext).colorScheme.surface,
+      );
+
+      final Card firstSection = tester.widget<Card>(find.byType(Card).first);
+      expect(firstSection.elevation, 0);
+      expect(
+        firstSection.color,
+        Theme.of(pageContext).colorScheme.surfaceContainer,
+      );
     },
     skip: nativeLibrarySkipReason() != null,
   );
