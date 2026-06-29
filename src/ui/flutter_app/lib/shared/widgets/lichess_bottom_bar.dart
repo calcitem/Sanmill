@@ -32,13 +32,11 @@ class LichessBottomBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
-    final ColorScheme colorScheme = theme.colorScheme;
-    final Color barColor =
+    final Color? barColor =
         theme.platform == TargetPlatform.iOS && cupertinoTransparent
-        ? (theme.bottomAppBarTheme.color ?? colorScheme.surface).withValues(
-            alpha: _kCupertinoBarOpacity,
-          )
-        : colorScheme.surface;
+        ? (theme.bottomAppBarTheme.color ?? theme.colorScheme.surface)
+              .withValues(alpha: _kCupertinoBarOpacity)
+        : null;
 
     Widget bar = BottomAppBar(
       color: barColor,
