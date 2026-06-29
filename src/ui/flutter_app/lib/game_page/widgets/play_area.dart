@@ -15,6 +15,7 @@ import '../../shared/config/constants.dart';
 import '../../shared/database/database.dart';
 import '../../shared/services/screenshot_service.dart';
 import '../../shared/themes/app_theme.dart';
+import '../../shared/widgets/lichess_bottom_bar.dart';
 import '../services/analysis/analysis_service.dart';
 import '../services/analysis_mode.dart';
 import '../services/mill.dart';
@@ -939,87 +940,35 @@ class _LichessGameBottomBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ColorScheme colorScheme = Theme.of(context).colorScheme;
-    return MediaQuery.withClampedTextScaling(
-      maxScaleFactor: 1.4,
-      child: BottomAppBar(
-        key: const Key('play_area_lichess_bottom_bar'),
-        color: colorScheme.surface,
-        elevation: 3,
-        height: 56,
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-        child: Row(
-          children: <Widget>[
-            _LichessBottomBarButton(
-              key: const Key('play_area_bottom_bar_menu'),
-              icon: Icons.menu,
-              label: S.of(context).menu,
-              onPressed: onMenuPressed,
-            ),
-            _LichessBottomBarButton(
-              key: const Key('play_area_bottom_bar_resign'),
-              icon: Icons.outlined_flag,
-              label: S.of(context).resign,
-              onPressed: onResignPressed,
-            ),
-            _LichessBottomBarButton(
-              key: const Key('play_area_bottom_bar_take_back'),
-              icon: Icons.undo,
-              label: S.of(context).takeBack,
-              onPressed: onTakeBackPressed,
-            ),
-            _LichessBottomBarButton(
-              key: const Key('play_area_bottom_bar_hint'),
-              icon: Icons.lightbulb_outline,
-              label: S.of(context).hint,
-              onPressed: onHintPressed,
-              highlighted: isHintHighlighted,
-            ),
-          ],
+    return LichessBottomBar(
+      key: const Key('play_area_lichess_bottom_bar'),
+      children: <Widget>[
+        LichessBottomBarButton(
+          key: const Key('play_area_bottom_bar_menu'),
+          icon: Icons.menu,
+          label: S.of(context).menu,
+          onTap: onMenuPressed,
         ),
-      ),
-    );
-  }
-}
-
-class _LichessBottomBarButton extends StatelessWidget {
-  const _LichessBottomBarButton({
-    super.key,
-    required this.icon,
-    required this.label,
-    required this.onPressed,
-    this.highlighted = false,
-  });
-
-  final IconData icon;
-  final String label;
-  final VoidCallback? onPressed;
-  final bool highlighted;
-
-  @override
-  Widget build(BuildContext context) {
-    final ColorScheme colorScheme = Theme.of(context).colorScheme;
-    final Color enabledColor = highlighted
-        ? colorScheme.primary
-        : colorScheme.onSurfaceVariant;
-    final Color iconColor = onPressed == null
-        ? colorScheme.onSurface.withValues(alpha: 0.38)
-        : enabledColor;
-
-    return Expanded(
-      child: Tooltip(
-        message: label,
-        child: Semantics(
-          button: true,
-          enabled: onPressed != null,
-          label: label,
-          child: IconButton(
-            onPressed: onPressed,
-            icon: Icon(icon),
-            color: iconColor,
-          ),
+        LichessBottomBarButton(
+          key: const Key('play_area_bottom_bar_resign'),
+          icon: Icons.outlined_flag,
+          label: S.of(context).resign,
+          onTap: onResignPressed,
         ),
-      ),
+        LichessBottomBarButton(
+          key: const Key('play_area_bottom_bar_take_back'),
+          icon: Icons.undo,
+          label: S.of(context).takeBack,
+          onTap: onTakeBackPressed,
+        ),
+        LichessBottomBarButton(
+          key: const Key('play_area_bottom_bar_hint'),
+          icon: Icons.lightbulb_outline,
+          label: S.of(context).hint,
+          onTap: onHintPressed,
+          highlighted: isHintHighlighted,
+        ),
+      ],
     );
   }
 }

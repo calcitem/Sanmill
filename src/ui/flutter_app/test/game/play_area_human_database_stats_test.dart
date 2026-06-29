@@ -12,6 +12,7 @@ import 'package:sanmill/general_settings/models/general_settings.dart';
 import 'package:sanmill/generated/intl/l10n.dart';
 import 'package:sanmill/shared/database/database.dart';
 import 'package:sanmill/shared/utils/localizations/sanmill_localizations.dart';
+import 'package:sanmill/shared/widgets/lichess_bottom_bar.dart';
 
 import '../helpers/mocks/mock_database.dart';
 
@@ -128,6 +129,29 @@ void main() {
     expect(find.byKey(const Key('play_area_bottom_bar_resign')), findsOne);
     expect(find.byKey(const Key('play_area_bottom_bar_take_back')), findsOne);
     expect(find.byKey(const Key('play_area_bottom_bar_hint')), findsOne);
+    expect(
+      tester
+          .getSize(find.byKey(const Key('play_area_lichess_bottom_bar')))
+          .height,
+      kLichessBottomBarHeight,
+    );
+
+    final Opacity menuOpacity = tester.widget<Opacity>(
+      find.descendant(
+        of: find.byKey(const Key('play_area_bottom_bar_menu')),
+        matching: find.byType(Opacity),
+      ),
+    );
+    expect(menuOpacity.opacity, 1);
+
+    final Opacity resignOpacity = tester.widget<Opacity>(
+      find.descendant(
+        of: find.byKey(const Key('play_area_bottom_bar_resign')),
+        matching: find.byType(Opacity),
+      ),
+    );
+    expect(resignOpacity.opacity, 0.4);
+
     expect(find.byKey(const Key('play_area_main_toolbar')), findsNothing);
     expect(
       find.byKey(const Key('play_area_main_toolbar_bottom')),
