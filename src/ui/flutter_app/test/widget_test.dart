@@ -528,4 +528,46 @@ void main() {
     },
     skip: nativeLibrarySkipReason() != null,
   );
+
+  testWidgets(
+    'Repeated puzzle tab tap scrolls the root list to top',
+    (WidgetTester tester) async {
+      tester.view
+        ..physicalSize = const Size(390, 480)
+        ..devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+
+      await tester.pumpWidget(const SanmillApp());
+
+      await tester.tap(find.byKey(const Key('sanmill_tab_puzzles')));
+      await tester.pumpAndSettle();
+
+      final Finder puzzlesScrollable = find.descendant(
+        of: find.byKey(const Key('puzzles_home_list')),
+        matching: find.byType(Scrollable),
+      );
+      final ScrollableState scrollable = tester.state<ScrollableState>(
+        puzzlesScrollable,
+      );
+      expect(scrollable.position.maxScrollExtent, greaterThan(0));
+
+      await tester.drag(
+        find.byKey(const Key('puzzles_home_list')),
+        const Offset(0, -220),
+      );
+      await tester.pumpAndSettle();
+      expect(scrollable.position.pixels, greaterThan(0));
+
+      await tester.tap(find.byKey(const Key('sanmill_tab_puzzles')));
+      await tester.pump(const Duration(milliseconds: 350));
+      await tester.pumpAndSettle();
+
+      expect(scrollable.position.pixels, moreOrLessEquals(0, epsilon: 0.5));
+
+      // Drain any settings-save debounce timer (see the smoke test above).
+      await tester.pump(const Duration(milliseconds: 350));
+    },
+    skip: nativeLibrarySkipReason() != null,
+  );
 }

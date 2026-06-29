@@ -466,6 +466,15 @@ class SanmillAppShellState extends State<SanmillAppShell> {
         _UnavailableTabPage(label: routeId);
   }
 
+  Widget _buildScrollableRouteSurface(SanmillShellTab tab, String routeId) {
+    final ScrollController? controller = _scrollControllers[tab];
+    assert(controller != null, 'Missing root scroll controller for $tab.');
+    return PrimaryScrollController(
+      controller: controller!,
+      child: _buildRouteSurface(routeId),
+    );
+  }
+
   Widget _buildTabRoot(SanmillShellTab tab) {
     switch (tab) {
       case SanmillShellTab.home:
@@ -479,9 +488,12 @@ class SanmillAppShellState extends State<SanmillAppShell> {
         );
         return contribution == null
             ? _UnavailableTabPage(label: S.of(context).puzzles)
-            : _buildRouteSurface(contribution.id.value);
+            : _buildScrollableRouteSurface(tab, contribution.id.value);
       case SanmillShellTab.learn:
-        return _buildRouteSurface(ShellRouteIds.appHowToPlay.value);
+        return _buildScrollableRouteSurface(
+          tab,
+          ShellRouteIds.appHowToPlay.value,
+        );
       case SanmillShellTab.watch:
         return _WatchTabRoot(
           scrollController: _scrollControllers[SanmillShellTab.watch]!,
