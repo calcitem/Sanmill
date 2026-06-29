@@ -18,6 +18,7 @@ class SettingsListTile extends StatelessWidget {
     required VoidCallback onTap,
     this.subtitleString,
     this.trailingString,
+    this.leading,
   }) : _type = _SettingsTileType.standard,
        _switchValue = null,
        _switchCallback = null,
@@ -31,6 +32,7 @@ class SettingsListTile extends StatelessWidget {
     required Color value,
     required ValueChanged<Color> onChanged,
     this.subtitleString,
+    this.leading,
   }) : _type = _SettingsTileType.color,
        _switchValue = null,
        _colorValue = value,
@@ -45,6 +47,7 @@ class SettingsListTile extends StatelessWidget {
     required bool value,
     required ValueChanged<bool> onChanged,
     this.subtitleString,
+    this.leading,
   }) : _type = _SettingsTileType.switchTile,
        _switchValue = value,
        _colorValue = null,
@@ -56,6 +59,7 @@ class SettingsListTile extends StatelessWidget {
   final String titleString;
   final String? subtitleString;
   final String? trailingString;
+  final Widget? leading;
 
   final _SettingsTileType _type;
   final bool? _switchValue;
@@ -102,6 +106,7 @@ class SettingsListTile extends StatelessWidget {
     switch (_type) {
       case _SettingsTileType.switchTile:
         return ListTile(
+          leading: leading,
           title: title,
           subtitle: subTitle,
           trailing: Switch.adaptive(
@@ -143,6 +148,7 @@ class SettingsListTile extends StatelessWidget {
               : '$titleString: $trailingString',
           excludeSemantics: true,
           child: ListTile(
+            leading: leading,
             title: title,
             subtitle: subTitle,
             trailing: trailing,
@@ -152,6 +158,7 @@ class SettingsListTile extends StatelessWidget {
 
       case _SettingsTileType.color:
         return ListTile(
+          leading: leading,
           title: title,
           subtitle: subTitle,
           trailing: DecoratedBox(

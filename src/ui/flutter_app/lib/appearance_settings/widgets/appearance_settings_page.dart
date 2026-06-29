@@ -471,6 +471,7 @@ class AppearanceSettingsPage extends StatelessWidget {
           children: <Widget>[
             SettingsListTile(
               key: const Key('color_settings_card_theme_settings_list_tile'),
+              leading: const Icon(Icons.dashboard_outlined),
               titleString: S.of(context).board,
               trailingString: _activeBoardThemeLabel(context, colorSettings),
               onTap: () => _setTheme(context, colorSettings),
@@ -479,6 +480,7 @@ class AppearanceSettingsPage extends StatelessWidget {
               key: const Key(
                 'display_settings_card_board_image_settings_list_tile',
               ),
+              leading: const Icon(Icons.image_outlined),
               titleString: S.of(context).boardImage,
               onTap: () => setBoardImage(context),
             ),
@@ -486,6 +488,7 @@ class AppearanceSettingsPage extends StatelessWidget {
               key: const Key(
                 'display_settings_card_piece_image_settings_list_tile',
               ),
+              leading: const Icon(Icons.radio_button_unchecked),
               titleString: S.of(context).pieceSet,
               onTap: () => setPieceImage(context),
             ),
@@ -508,6 +511,7 @@ class AppearanceSettingsPage extends StatelessWidget {
                       key: const Key(
                         'display_settings_card_notations_shown_switch_tile',
                       ),
+                      leading: const Icon(Icons.location_on_outlined),
                       value: displaySettings.isNotationsShown,
                       onChanged: (bool val) => DB().displaySettings =
                           displaySettings.copyWith(isNotationsShown: val),
@@ -519,6 +523,7 @@ class AppearanceSettingsPage extends StatelessWidget {
               key: const Key(
                 'display_settings_card_background_image_settings_list_tile',
               ),
+              leading: const Icon(Icons.wallpaper_outlined),
               titleString: S.of(context).backgroundImage,
               onTap: () => setBackgroundImage(context),
             ),

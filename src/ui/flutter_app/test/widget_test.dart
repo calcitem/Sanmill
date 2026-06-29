@@ -1307,6 +1307,14 @@ void main() {
       );
       await tester.pumpAndSettle();
 
+      final ListTile boardThemeListTile = tester.widget<ListTile>(
+        find.descendant(of: boardThemeTile, matching: find.byType(ListTile)),
+      );
+      expect(
+        (boardThemeListTile.leading! as Icon).icon,
+        Icons.dashboard_outlined,
+      );
+
       await tester.tap(boardThemeTile);
       await tester.pumpAndSettle();
 
