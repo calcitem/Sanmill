@@ -5,6 +5,7 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 
 import '../../../appearance_settings/models/color_settings.dart';
 import '../../../game_page/services/transform/transform.dart';
@@ -204,6 +205,10 @@ class _OpeningExplorerContent extends StatelessWidget {
                   _OpeningMoveTile(
                     move: move,
                     onSelected: () => onMoveSelected(move.action),
+                  ),
+                if (snapshot.aggregateHumanStats != null)
+                  _OpeningExplorerTotalTile(
+                    stats: snapshot.aggregateHumanStats!,
                   ),
               ],
             ),
@@ -716,7 +721,7 @@ class _OpeningMoveTile extends StatelessWidget {
           children: <Widget>[
             Expanded(flex: 34, child: _MoveCell(move: move)),
             const SizedBox(width: 8),
-            SizedBox(width: 88, child: _MoveGamesCell(move: move)),
+            SizedBox(width: 104, child: _MoveGamesCell(move: move)),
             const SizedBox(width: 8),
             Expanded(
               flex: 42,
@@ -774,9 +779,9 @@ class _OpeningExplorerMovesHeader extends StatelessWidget {
             Expanded(flex: 34, child: Text(strings.move, style: style)),
             const SizedBox(width: 8),
             SizedBox(
-              width: 88,
+              width: 104,
               child: Text(
-                strings.gamesPlayed,
+                strings.totalGames,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: style,
@@ -860,7 +865,8 @@ class _MoveGamesCell extends StatelessWidget {
     final _HumanMoveStats? stats = move.humanStats;
     final String text = stats == null
         ? '-'
-        : '${stats.total} (${move.samplePercent}%)';
+        : '${_formatExplorerSampleCount(stats.total)} '
+              '(${move.samplePercent}%)';
     return Text(
       text,
       maxLines: 1,
@@ -869,6 +875,58 @@ class _MoveGamesCell extends StatelessWidget {
       style: Theme.of(context).textTheme.bodySmall?.copyWith(
         fontFeatures: const <FontFeature>[FontFeature.tabularFigures()],
         letterSpacing: 0,
+      ),
+    );
+  }
+}
+
+class _OpeningExplorerTotalTile extends StatelessWidget {
+  const _OpeningExplorerTotalTile({required this.stats});
+
+  final _HumanMoveStats stats;
+
+  @override
+  Widget build(BuildContext context) {
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+    final TextStyle textStyle =
+        Theme.of(context).textTheme.bodySmall?.copyWith(
+          color: colorScheme.onSurfaceVariant,
+          fontFeatures: const <FontFeature>[FontFeature.tabularFigures()],
+          fontWeight: FontWeight.w700,
+          letterSpacing: 0,
+        ) ??
+        AppStyles.tileSubtitle.copyWith(
+          color: colorScheme.onSurfaceVariant,
+          fontWeight: FontWeight.w700,
+        );
+
+    return Padding(
+      key: const Key('opening_explorer_total_row'),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+      child: Row(
+        children: <Widget>[
+          Expanded(
+            flex: 34,
+            child: Icon(
+              Icons.functions,
+              size: 18,
+              color: colorScheme.onSurfaceVariant,
+            ),
+          ),
+          const SizedBox(width: 8),
+          SizedBox(
+            width: 104,
+            child: Text(
+              '${_formatExplorerSampleCount(stats.total)} (100%)',
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              textAlign: TextAlign.end,
+              style: textStyle,
+            ),
+          ),
+          const SizedBox(width: 8),
+          Expanded(flex: 42, child: _HumanStatsBar(stats: stats)),
+        ],
       ),
     );
   }
@@ -949,6 +1007,11 @@ class _HumanStatsBar extends StatelessWidget {
   }
 }
 
+String _formatExplorerSampleCount(int count) {
+  assert(count >= 0, 'Opening explorer sample count must not be negative.');
+  return NumberFormat.decimalPatternDigits().format(count);
+}
+
 class _HumanStatsBarSegment extends StatelessWidget {
   const _HumanStatsBarSegment({
     required this.count,
@@ -1021,6 +1084,7 @@ class _OpeningExplorerSnapshot {
     required this.openingBookMoveCount,
     required this.humanDatabaseMoveCount,
     required this.perfectMoveAvailable,
+    required this.aggregateHumanStats,
     required this.moves,
   });
 
@@ -1132,6 +1196,27 @@ class _OpeningExplorerSnapshot {
       (int total, _OpeningExplorerMove move) =>
           total + (move.humanStats?.total ?? 0),
     );
+    final _HumanMoveStats? aggregateHumanStats = totalHumanSamples <= 0
+        ? null
+        : _HumanMoveStats(
+            wins: sortedMoves.fold<int>(
+              0,
+              (int total, _OpeningExplorerMove move) =>
+                  total + (move.humanStats?.wins ?? 0),
+            ),
+            losses: sortedMoves.fold<int>(
+              0,
+              (int total, _OpeningExplorerMove move) =>
+                  total + (move.humanStats?.losses ?? 0),
+            ),
+            draws: sortedMoves.fold<int>(
+              0,
+              (int total, _OpeningExplorerMove move) =>
+                  total + (move.humanStats?.draws ?? 0),
+            ),
+            total: totalHumanSamples,
+            scoreDelta: 0,
+          );
     for (final _OpeningExplorerMove move in sortedMoves) {
       final int total = move.humanStats?.total ?? 0;
       move.samplePercent = totalHumanSamples <= 0
@@ -1145,6 +1230,7 @@ class _OpeningExplorerSnapshot {
       openingBookMoveCount: openingBookMoveCount,
       humanDatabaseMoveCount: humanDatabaseMoveCount,
       perfectMoveAvailable: perfectMoveAvailable,
+      aggregateHumanStats: aggregateHumanStats,
       moves: sortedMoves,
     );
   }
@@ -1154,6 +1240,7 @@ class _OpeningExplorerSnapshot {
   final int openingBookMoveCount;
   final int humanDatabaseMoveCount;
   final bool perfectMoveAvailable;
+  final _HumanMoveStats? aggregateHumanStats;
   final List<_OpeningExplorerMove> moves;
 
   String sourceSummary(S strings) {
@@ -1262,7 +1349,14 @@ class _HumanMoveStats {
     required this.draws,
     required this.total,
     required this.scoreDelta,
-  });
+  }) : assert(wins >= 0, 'Human Database wins must not be negative.'),
+       assert(losses >= 0, 'Human Database losses must not be negative.'),
+       assert(draws >= 0, 'Human Database draws must not be negative.'),
+       assert(total >= 0, 'Human Database total must not be negative.'),
+       assert(
+         total == wins + losses + draws,
+         'Human Database total must equal wins + draws + losses.',
+       );
 
   final int wins;
   final int losses;
