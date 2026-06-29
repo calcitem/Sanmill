@@ -18,6 +18,7 @@ import '../../../shared/services/human_database_service.dart';
 import '../../../shared/services/snackbar_service.dart';
 import '../../../shared/themes/app_styles.dart';
 import '../../../shared/themes/app_theme.dart';
+import '../../../shared/widgets/lichess_bottom_bar.dart';
 import '../../../shared/widgets/lichess_list_section.dart';
 import '../../../src/rust/api/simple.dart' as tgf;
 import '../mill_action_codec.dart';
@@ -123,6 +124,9 @@ class _OpeningExplorerPageState extends State<OpeningExplorerPage> {
 
     return Scaffold(
       appBar: AppBar(title: Text(strings.openingExplorer)),
+      bottomNavigationBar: session == null
+          ? null
+          : _OpeningExplorerBottomBar(onTransform: _transformExplorerPosition),
       body: session != null
           ? ValueListenableBuilder<GameStateSnapshot>(
               valueListenable: session.state,
@@ -142,7 +146,6 @@ class _OpeningExplorerPageState extends State<OpeningExplorerPage> {
                           snapshot: snapshot,
                           tapController: _tapController,
                           onMoveSelected: _applyExplorerAction,
-                          onTransform: _transformExplorerPosition,
                         );
                       },
                     );
@@ -161,14 +164,12 @@ class _OpeningExplorerContent extends StatelessWidget {
     required this.snapshot,
     required this.tapController,
     required this.onMoveSelected,
-    required this.onTransform,
   });
 
   final NativeMillGameSession session;
   final _OpeningExplorerSnapshot snapshot;
   final MillSessionTapController tapController;
   final ValueChanged<GameAction> onMoveSelected;
-  final ValueChanged<TransformationType> onTransform;
 
   @override
   Widget build(BuildContext context) {
@@ -224,7 +225,6 @@ class _OpeningExplorerContent extends StatelessWidget {
     return _ExplorerBoardSection(
       session: session,
       tapController: tapController,
-      onTransform: onTransform,
       boardHeightFactor: boardHeightFactor,
     );
   }
@@ -272,13 +272,11 @@ class _ExplorerBoardSection extends StatelessWidget {
   const _ExplorerBoardSection({
     required this.session,
     required this.tapController,
-    required this.onTransform,
     required this.boardHeightFactor,
   });
 
   final NativeMillGameSession session;
   final MillSessionTapController tapController;
-  final ValueChanged<TransformationType> onTransform;
   final double boardHeightFactor;
 
   @override
@@ -296,22 +294,6 @@ class _ExplorerBoardSection extends StatelessWidget {
                 tapController: tapController,
                 heightFactor: boardHeightFactor,
               ),
-              const SizedBox(height: 12),
-              Wrap(
-                alignment: WrapAlignment.center,
-                spacing: 8,
-                runSpacing: 8,
-                children: <Widget>[
-                  for (final MillBoardTransformAction action
-                      in millBoardTransformActions)
-                    _BoardTransformButton(
-                      key: Key('opening_explorer_${action.id}_button'),
-                      label: action.label(S.of(context)),
-                      icon: Icon(action.icon),
-                      onPressed: () => onTransform(action.type),
-                    ),
-                ],
-              ),
             ],
           ),
         ),
@@ -320,27 +302,26 @@ class _ExplorerBoardSection extends StatelessWidget {
   }
 }
 
-class _BoardTransformButton extends StatelessWidget {
-  const _BoardTransformButton({
-    super.key,
-    required this.label,
-    required this.icon,
-    required this.onPressed,
-  });
+class _OpeningExplorerBottomBar extends StatelessWidget {
+  const _OpeningExplorerBottomBar({required this.onTransform});
 
-  final String label;
-  final Widget icon;
-  final VoidCallback onPressed;
+  final ValueChanged<TransformationType> onTransform;
 
   @override
   Widget build(BuildContext context) {
-    return Tooltip(
-      message: label,
-      child: Semantics(
-        label: label,
-        button: true,
-        child: IconButton.filledTonal(onPressed: onPressed, icon: icon),
-      ),
+    final S strings = S.of(context);
+    return LichessBottomBar(
+      key: const Key('opening_explorer_bottom_bar'),
+      children: <Widget>[
+        for (final MillBoardTransformAction action in millBoardTransformActions)
+          LichessBottomBarButton(
+            key: Key('opening_explorer_${action.id}_button'),
+            icon: action.icon,
+            label: action.label(strings),
+            showLabel: true,
+            onTap: () => onTransform(action.type),
+          ),
+      ],
     );
   }
 }
