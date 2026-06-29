@@ -128,10 +128,26 @@ class _ThemeSelectionPageState extends State<ThemeSelectionPage> {
     return mapEquals(candidate, _appliedColorsSnapshot);
   }
 
-  /// Determine if current theme item should be selected
-  /// Always show as selected, but especially when no other theme matches
+  /// Select the current colors row only when they do not match a saved choice.
   bool _shouldSelectCurrentTheme() {
-    return true; // Current theme is always conceptually selected
+    return !_hasThemeMatch();
+  }
+
+  bool _hasThemeMatch() {
+    for (final ColorTheme theme in AppTheme.colorThemes.keys) {
+      if (theme == ColorTheme.custom) {
+        continue;
+      }
+      if (_shouldSelectBuiltInTheme(theme)) {
+        return true;
+      }
+    }
+    for (final ColorSettings customColors in _customThemes) {
+      if (_shouldSelectCustomTheme(customColors)) {
+        return true;
+      }
+    }
+    return false;
   }
 
   /// Determine if a built-in theme should be selected
@@ -175,7 +191,7 @@ class _ThemeSelectionPageState extends State<ThemeSelectionPage> {
     return Scaffold(
       backgroundColor: theme.colorScheme.surface,
       appBar: AppBar(
-        title: Text(S.of(context).theme, style: AppStyles.pageTitle),
+        title: Text(S.of(context).board, style: AppStyles.pageTitle),
       ),
       body: SafeArea(
         child: ListView.separated(

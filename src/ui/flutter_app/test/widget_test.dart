@@ -10,7 +10,9 @@ import 'package:flutter/services.dart'; // Import flutter services
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:sanmill/app_shell/sanmill_app_shell.dart';
+import 'package:sanmill/appearance_settings/models/color_settings.dart';
 import 'package:sanmill/appearance_settings/widgets/appearance_settings_page.dart';
+import 'package:sanmill/appearance_settings/widgets/theme_selection_page.dart';
 import 'package:sanmill/game_page/services/mill.dart';
 import 'package:sanmill/game_page/widgets/mini_board.dart';
 import 'package:sanmill/game_page/widgets/toolbars/game_toolbar.dart';
@@ -1142,6 +1144,67 @@ void main() {
 
       // Drain any settings-save debounce timer (see the smoke test above).
       await tester.pump(const Duration(milliseconds: 350));
+    },
+    skip: nativeLibrarySkipReason() != null,
+  );
+
+  testWidgets(
+    'Appearance board theme uses full-screen board selector',
+    (WidgetTester tester) async {
+      final ColorSettings previousColorSettings = DB().colorSettings;
+      final List<ColorSettings> previousCustomThemes = List<ColorSettings>.of(
+        DB().customThemes,
+      );
+      addTearDown(() {
+        DB().colorSettings = previousColorSettings;
+        DB().customThemes = previousCustomThemes;
+      });
+
+      DB().colorSettings = AppTheme.colorThemes[ColorTheme.light]!;
+      DB().customThemes = <ColorSettings>[];
+
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: AppTheme.lightThemeData,
+          localizationsDelegates: sanmillLocalizationsDelegates,
+          supportedLocales: S.supportedLocales,
+          locale: const Locale('en'),
+          home: const AppearanceSettingsPage(),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      final Finder boardThemeTile = find.byKey(
+        const Key('color_settings_card_theme_settings_list_tile'),
+      );
+      final Finder appearanceScrollable = find.descendant(
+        of: find.byKey(const Key('settings_list')),
+        matching: find.byType(Scrollable),
+      );
+      await tester.scrollUntilVisible(
+        boardThemeTile,
+        320,
+        scrollable: appearanceScrollable,
+      );
+      await tester.pumpAndSettle();
+
+      await tester.tap(boardThemeTile);
+      await tester.pumpAndSettle();
+
+      expect(find.byType(ThemeSelectionPage), findsOneWidget);
+      expect(
+        find.descendant(of: find.byType(AppBar), matching: find.text('Board')),
+        findsOneWidget,
+      );
+
+      final ThemePreviewItem currentTheme = tester.widget<ThemePreviewItem>(
+        find.byKey(const Key('theme_preview_current')),
+      );
+      final ThemePreviewItem lightTheme = tester.widget<ThemePreviewItem>(
+        find.byKey(const Key('theme_preview_light')),
+      );
+      expect(currentTheme.isSelected, isFalse);
+      expect(lightTheme.isSelected, isTrue);
     },
     skip: nativeLibrarySkipReason() != null,
   );
