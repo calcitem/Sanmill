@@ -319,6 +319,25 @@ void main() {
       await tester.binding.handlePopRoute();
       await tester.pumpAndSettle();
 
+      await tester.ensureVisible(find.byKey(const Key('puzzles_home_streak')));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const Key('puzzles_home_streak')));
+      await tester.pumpAndSettle();
+
+      final BuildContext puzzleStreakContext = tester.element(
+        find.byKey(const Key('puzzle_streak_setup_scaffold')),
+      );
+      final Scaffold puzzleStreakScaffold = tester.widget<Scaffold>(
+        find.byKey(const Key('puzzle_streak_setup_scaffold')),
+      );
+      expect(
+        puzzleStreakScaffold.backgroundColor,
+        Theme.of(puzzleStreakContext).colorScheme.surface,
+      );
+
+      await tester.binding.handlePopRoute();
+      await tester.pumpAndSettle();
+
       await tester.ensureVisible(find.byKey(const Key('puzzles_home_custom')));
       await tester.pumpAndSettle();
       await tester.tap(find.byKey(const Key('puzzles_home_custom')));

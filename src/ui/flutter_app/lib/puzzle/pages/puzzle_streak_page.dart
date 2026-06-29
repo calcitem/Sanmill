@@ -7,13 +7,10 @@
 
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
-import 'package:hive_ce_flutter/hive_flutter.dart' show Box;
 
-import '../../appearance_settings/models/color_settings.dart';
 import '../../generated/intl/l10n.dart';
 import '../../shared/database/database.dart';
 import '../../shared/services/logger.dart';
-import '../../shared/themes/app_theme.dart';
 import '../models/puzzle_models.dart';
 import '../services/puzzle_manager.dart';
 import 'puzzle_page.dart';
@@ -81,64 +78,23 @@ class _PuzzleStreakPageState extends State<PuzzleStreakPage> {
   Widget build(BuildContext context) {
     final S s = S.of(context);
 
-    return ValueListenableBuilder<Box<ColorSettings>>(
-      valueListenable: DB().listenColorSettings,
-      builder: (BuildContext context, Box<ColorSettings> box, Widget? child) {
-        final ThemeData settingsTheme = Theme.of(context);
-        final bool useDarkSettingsUi =
-            settingsTheme.brightness == Brightness.dark;
-
-        // Use Builder to ensure the context has the correct theme
-        return Theme(
-          data: settingsTheme,
-          child: Builder(
-            builder: (BuildContext context) {
-              if (!_isActive) {
-                return _buildSetupScreen(
-                  context,
-                  s,
-                  useDarkSettingsUi,
-                  settingsTheme,
-                );
-              } else if (_failed) {
-                return _buildResultsScreen(
-                  context,
-                  s,
-                  useDarkSettingsUi,
-                  settingsTheme,
-                );
-              } else {
-                return _buildStreakScreen(
-                  context,
-                  s,
-                  useDarkSettingsUi,
-                  settingsTheme,
-                );
-              }
-            },
-          ),
-        );
-      },
-    );
+    if (!_isActive) {
+      return _buildSetupScreen(context, s);
+    }
+    if (_failed) {
+      return _buildResultsScreen(context, s);
+    }
+    return _buildStreakScreen(context, s);
   }
 
   /// Build setup/intro screen
-  Widget _buildSetupScreen(
-    BuildContext context,
-    S s,
-    bool useDarkSettingsUi,
-    ThemeData settingsTheme,
-  ) {
+  Widget _buildSetupScreen(BuildContext context, S s) {
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+
     return Scaffold(
-      backgroundColor: useDarkSettingsUi
-          ? settingsTheme.scaffoldBackgroundColor
-          : AppTheme.lightBackgroundColor,
-      appBar: AppBar(
-        title: Text(
-          s.puzzleStreak,
-          style: useDarkSettingsUi ? null : AppTheme.appBarTheme.titleTextStyle,
-        ),
-      ),
+      key: const Key('puzzle_streak_setup_scaffold'),
+      backgroundColor: colorScheme.surface,
+      appBar: AppBar(title: Text(s.puzzleStreak)),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -247,18 +203,17 @@ class _PuzzleStreakPageState extends State<PuzzleStreakPage> {
               ),
             const SizedBox(height: 24),
 
-            // Start button - use darker purple for better text contrast
-            ElevatedButton.icon(
+            FilledButton.icon(
               onPressed: _startStreak,
               icon: const Icon(FluentIcons.play_24_regular),
               label: Text(
                 s.puzzleStreakStart,
-                style: const TextStyle(fontSize: 18, color: Colors.white),
+                style: const TextStyle(fontSize: 18),
               ),
-              style: ElevatedButton.styleFrom(
+              style: FilledButton.styleFrom(
                 padding: const EdgeInsets.symmetric(vertical: 16),
-                backgroundColor: Colors.purple.shade700,
-                foregroundColor: Colors.white,
+                backgroundColor: colorScheme.secondary,
+                foregroundColor: colorScheme.onSecondary,
               ),
             ),
           ],
@@ -268,34 +223,25 @@ class _PuzzleStreakPageState extends State<PuzzleStreakPage> {
   }
 
   /// Build active streak screen
-  Widget _buildStreakScreen(
-    BuildContext context,
-    S s,
-    bool useDarkSettingsUi,
-    ThemeData settingsTheme,
-  ) {
+  Widget _buildStreakScreen(BuildContext context, S s) {
     if (_streakPuzzles.isEmpty) {
-      return _buildSetupScreen(context, s, useDarkSettingsUi, settingsTheme);
+      return _buildSetupScreen(context, s);
     }
     if (_currentPuzzleIndex >= _streakPuzzles.length) {
       // Need to load more puzzles
       _loadMorePuzzles();
     }
     if (_currentPuzzleIndex >= _streakPuzzles.length) {
-      return _buildSetupScreen(context, s, useDarkSettingsUi, settingsTheme);
+      return _buildSetupScreen(context, s);
     }
 
     final PuzzleInfo currentPuzzle = _streakPuzzles[_currentPuzzleIndex];
 
     return Scaffold(
-      backgroundColor: useDarkSettingsUi
-          ? settingsTheme.scaffoldBackgroundColor
-          : AppTheme.lightBackgroundColor,
+      key: const Key('puzzle_streak_active_scaffold'),
+      backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
-        title: Text(
-          s.puzzleStreak,
-          style: useDarkSettingsUi ? null : AppTheme.appBarTheme.titleTextStyle,
-        ),
+        title: Text(s.puzzleStreak),
         leading: IconButton(
           icon: const Icon(FluentIcons.dismiss_24_regular),
           onPressed: _confirmQuit,
@@ -306,10 +252,8 @@ class _PuzzleStreakPageState extends State<PuzzleStreakPage> {
           // Stats bar - use Card for better contrast in light mode
           Card(
             margin: EdgeInsets.zero,
-            elevation: useDarkSettingsUi ? 0 : 2,
-            color: useDarkSettingsUi
-                ? Theme.of(context).colorScheme.surface.withValues(alpha: 0.3)
-                : Theme.of(context).colorScheme.surface,
+            elevation: 0,
+            color: Theme.of(context).colorScheme.surfaceContainerHighest,
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: Row(
@@ -386,24 +330,14 @@ class _PuzzleStreakPageState extends State<PuzzleStreakPage> {
   }
 
   /// Build results screen
-  Widget _buildResultsScreen(
-    BuildContext context,
-    S s,
-    bool useDarkSettingsUi,
-    ThemeData settingsTheme,
-  ) {
+  Widget _buildResultsScreen(BuildContext context, S s) {
     final bool newRecord = _currentStreak > _bestStreak;
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
 
     return Scaffold(
-      backgroundColor: useDarkSettingsUi
-          ? settingsTheme.scaffoldBackgroundColor
-          : AppTheme.lightBackgroundColor,
-      appBar: AppBar(
-        title: Text(
-          s.puzzleStreakResults,
-          style: useDarkSettingsUi ? null : AppTheme.appBarTheme.titleTextStyle,
-        ),
-      ),
+      key: const Key('puzzle_streak_results_scaffold'),
+      backgroundColor: colorScheme.surface,
+      appBar: AppBar(title: Text(s.puzzleStreakResults)),
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -506,19 +440,13 @@ class _PuzzleStreakPageState extends State<PuzzleStreakPage> {
                     icon: const Icon(FluentIcons.dismiss_24_regular),
                     label: Text(s.close),
                   ),
-                  ElevatedButton.icon(
+                  FilledButton.icon(
                     onPressed: _resetAndStart,
-                    icon: const Icon(
-                      FluentIcons.arrow_clockwise_24_regular,
-                      color: Colors.white,
-                    ),
-                    label: Text(
-                      s.puzzleStreakTryAgain,
-                      style: const TextStyle(color: Colors.white),
-                    ),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.purple.shade700,
-                      foregroundColor: Colors.white,
+                    icon: const Icon(FluentIcons.arrow_clockwise_24_regular),
+                    label: Text(s.puzzleStreakTryAgain),
+                    style: FilledButton.styleFrom(
+                      backgroundColor: colorScheme.secondary,
+                      foregroundColor: colorScheme.onSecondary,
                     ),
                   ),
                 ],
