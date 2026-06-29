@@ -4727,5 +4727,7 @@
     "openingExplorerGames": "Games",
     "@openingExplorerGames": {},
     "boardEditor": "Board editor",
-    "@boardEditor": {}
+    "@boardEditor": {},
+    "quickPairing": "Quick pairing",
+    "@quickPairing": {}
 }

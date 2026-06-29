@@ -200,6 +200,7 @@ void main() {
       );
       expect(homeAppBarTitle.data, 'Mill');
       expect(find.byKey(const Key('sanmill_home_play_fab')), findsOneWidget);
+      expect(find.text('Quick pairing'), findsOneWidget);
       expect(find.byKey(const Key('drawer_item_human_vs_ai')), findsOneWidget);
       expect(find.byKey(const Key('drawer_item_setup_position')), findsNothing);
       expect(

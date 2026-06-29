@@ -1206,12 +1206,12 @@ class _HomePlaySections extends StatelessWidget {
                 tabInteraction: tabInteraction,
                 onTap: onContinueGame,
               ),
-            _MoreSection(
-              title: strings.play,
+            _QuickPairingSection(
+              title: strings.quickPairing,
               headerKey: const Key('sanmill_home_play_modes_group'),
-              children: <Widget>[
+              children: <_QuickPairingChoice>[
                 for (final GameModeEntry mode in playModes)
-                  _MoreTile(
+                  _QuickPairingChoice(
                     key: mode.drawerKey ?? Key('home_${mode.id.value}'),
                     icon: mode.icon ?? Icons.sports_esports_rounded,
                     title: mode.label,
@@ -1222,6 +1222,113 @@ class _HomePlaySections extends StatelessWidget {
           ],
         );
       },
+    );
+  }
+}
+
+class _QuickPairingSection extends StatelessWidget {
+  const _QuickPairingSection({
+    required this.title,
+    required this.headerKey,
+    required this.children,
+  });
+
+  final String title;
+  final Key headerKey;
+  final List<_QuickPairingChoice> children;
+
+  @override
+  Widget build(BuildContext context) {
+    if (children.isEmpty) {
+      return const SizedBox.shrink();
+    }
+    final List<List<_QuickPairingChoice>> rows = <List<_QuickPairingChoice>>[];
+    for (int i = 0; i < children.length; i += 2) {
+      final int end = i + 2 > children.length ? children.length : i + 2;
+      rows.add(children.sublist(i, end));
+    }
+
+    return Padding(
+      key: headerKey,
+      padding: const EdgeInsets.fromLTRB(
+        AppStyles.bodyPadding,
+        0,
+        AppStyles.bodyPadding,
+        AppStyles.sectionSpacing,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(title, style: AppStyles.sectionTitle),
+          const SizedBox(height: 6),
+          for (final (int index, List<_QuickPairingChoice> row) in rows.indexed)
+            Padding(
+              padding: EdgeInsets.only(top: index == 0 ? 0 : 8),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  for (final (int childIndex, _QuickPairingChoice child)
+                      in row.indexed) ...<Widget>[
+                    if (childIndex > 0) const SizedBox(width: 8),
+                    Expanded(child: child),
+                  ],
+                ],
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+}
+
+class _QuickPairingChoice extends StatelessWidget {
+  const _QuickPairingChoice({
+    super.key,
+    required this.icon,
+    required this.title,
+    required this.onTap,
+  });
+
+  final IconData icon;
+  final String title;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+    final Color background = colorScheme.surfaceContainerHighest.withValues(
+      alpha: Theme.of(context).brightness == Brightness.dark ? 0.64 : 0.50,
+    );
+    return ConstrainedBox(
+      constraints: const BoxConstraints(minHeight: 76),
+      child: Material(
+        color: background,
+        borderRadius: BorderRadius.circular(6),
+        clipBehavior: Clip.antiAlias,
+        child: InkWell(
+          onTap: onTap,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Icon(icon, color: colorScheme.primary),
+                const SizedBox(height: 6),
+                Text(
+                  title,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.center,
+                  style: AppStyles.tileSubtitle.copyWith(
+                    color: colorScheme.onSurface.withValues(alpha: 0.82),
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

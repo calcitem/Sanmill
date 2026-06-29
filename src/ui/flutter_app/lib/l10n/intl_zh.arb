@@ -4575,5 +4575,7 @@
     "openingExplorerGames": "对局",
     "@openingExplorerGames": {},
     "boardEditor": "棋盘编辑器",
-    "@boardEditor": {}
+    "@boardEditor": {},
+    "quickPairing": "快速配对",
+    "@quickPairing": {}
 }
