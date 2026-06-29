@@ -9,12 +9,8 @@ import 'dart:async';
 
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
-import 'package:hive_ce_flutter/hive_flutter.dart' show Box;
 
-import '../../appearance_settings/models/color_settings.dart';
 import '../../generated/intl/l10n.dart';
-import '../../shared/database/database.dart';
-import '../../shared/themes/app_theme.dart';
 import '../models/puzzle_models.dart';
 import '../services/puzzle_manager.dart';
 import 'puzzle_page.dart';
@@ -65,57 +61,20 @@ class _PuzzleRushPageState extends State<PuzzleRushPage> {
   Widget build(BuildContext context) {
     final S s = S.of(context);
 
-    return ValueListenableBuilder<Box<ColorSettings>>(
-      valueListenable: DB().listenColorSettings,
-      builder: (BuildContext context, Box<ColorSettings> box, Widget? child) {
-        final ThemeData settingsTheme = Theme.of(context);
-        final bool useDarkSettingsUi =
-            settingsTheme.brightness == Brightness.dark;
-
-        // Use Builder to ensure the context has the correct theme
-        return Theme(
-          data: settingsTheme,
-          child: Builder(
-            builder: (BuildContext context) {
-              if (!_isActive) {
-                return _buildSetupScreen(
-                  context,
-                  s,
-                  useDarkSettingsUi,
-                  settingsTheme,
-                );
-              } else {
-                return _buildRushScreen(
-                  context,
-                  s,
-                  useDarkSettingsUi,
-                  settingsTheme,
-                );
-              }
-            },
-          ),
-        );
-      },
-    );
+    if (!_isActive) {
+      return _buildSetupScreen(context, s);
+    }
+    return _buildRushScreen(context, s);
   }
 
   /// Build setup/intro screen
-  Widget _buildSetupScreen(
-    BuildContext context,
-    S s,
-    bool useDarkSettingsUi,
-    ThemeData settingsTheme,
-  ) {
+  Widget _buildSetupScreen(BuildContext context, S s) {
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+
     return Scaffold(
-      backgroundColor: useDarkSettingsUi
-          ? settingsTheme.scaffoldBackgroundColor
-          : AppTheme.lightBackgroundColor,
-      appBar: AppBar(
-        title: Text(
-          s.puzzleRush,
-          style: useDarkSettingsUi ? null : AppTheme.appBarTheme.titleTextStyle,
-        ),
-      ),
+      key: const Key('puzzle_rush_setup_scaffold'),
+      backgroundColor: colorScheme.surface,
+      appBar: AppBar(title: Text(s.puzzleRush)),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -219,18 +178,17 @@ class _PuzzleRushPageState extends State<PuzzleRushPage> {
             ),
             const SizedBox(height: 32),
 
-            // Start button - use darker red for better text contrast
-            ElevatedButton.icon(
+            FilledButton.icon(
               onPressed: _startRush,
               icon: const Icon(FluentIcons.play_24_regular),
               label: Text(
                 s.puzzleRushStart,
-                style: const TextStyle(fontSize: 18, color: Colors.white),
+                style: const TextStyle(fontSize: 18),
               ),
-              style: ElevatedButton.styleFrom(
+              style: FilledButton.styleFrom(
                 padding: const EdgeInsets.symmetric(vertical: 16),
-                backgroundColor: Colors.red.shade700,
-                foregroundColor: Colors.white,
+                backgroundColor: colorScheme.error,
+                foregroundColor: colorScheme.onError,
               ),
             ),
           ],
@@ -240,30 +198,21 @@ class _PuzzleRushPageState extends State<PuzzleRushPage> {
   }
 
   /// Build active rush screen
-  Widget _buildRushScreen(
-    BuildContext context,
-    S s,
-    bool useDarkSettingsUi,
-    ThemeData settingsTheme,
-  ) {
+  Widget _buildRushScreen(BuildContext context, S s) {
     // Check if rush should end (time up, out of lives, or no puzzles)
     if (_remainingSeconds <= 0 ||
         _livesRemaining <= 0 ||
         _currentPuzzleIndex >= _rushPuzzles.length) {
-      return _buildResultsScreen(context, s, useDarkSettingsUi, settingsTheme);
+      return _buildResultsScreen(context, s);
     }
 
     final PuzzleInfo currentPuzzle = _rushPuzzles[_currentPuzzleIndex];
 
     return Scaffold(
-      backgroundColor: useDarkSettingsUi
-          ? settingsTheme.scaffoldBackgroundColor
-          : AppTheme.lightBackgroundColor,
+      key: const Key('puzzle_rush_active_scaffold'),
+      backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
-        title: Text(
-          s.puzzleRush,
-          style: useDarkSettingsUi ? null : AppTheme.appBarTheme.titleTextStyle,
-        ),
+        title: Text(s.puzzleRush),
         leading: IconButton(
           icon: const Icon(FluentIcons.dismiss_24_regular),
           onPressed: _confirmQuit,
@@ -277,7 +226,6 @@ class _PuzzleRushPageState extends State<PuzzleRushPage> {
             solvedCountNotifier: _solvedCountNotifier,
             livesRemainingNotifier: _livesRemainingNotifier,
             maxLives: _maxLives,
-            useDarkSettingsUi: useDarkSettingsUi,
           ),
 
           // Puzzle - this won't rebuild when timer ticks
@@ -296,25 +244,14 @@ class _PuzzleRushPageState extends State<PuzzleRushPage> {
   }
 
   /// Build results screen
-  Widget _buildResultsScreen(
-    BuildContext context,
-    S s,
-    bool useDarkSettingsUi,
-    ThemeData settingsTheme,
-  ) {
+  Widget _buildResultsScreen(BuildContext context, S s) {
     final bool timeUp = _remainingSeconds <= 0;
     final bool outOfLives = _livesRemaining <= 0;
 
     return Scaffold(
-      backgroundColor: useDarkSettingsUi
-          ? settingsTheme.scaffoldBackgroundColor
-          : AppTheme.lightBackgroundColor,
-      appBar: AppBar(
-        title: Text(
-          s.puzzleRushResults,
-          style: useDarkSettingsUi ? null : AppTheme.appBarTheme.titleTextStyle,
-        ),
-      ),
+      key: const Key('puzzle_rush_results_scaffold'),
+      backgroundColor: Theme.of(context).colorScheme.surface,
+      appBar: AppBar(title: Text(s.puzzleRushResults)),
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -591,24 +528,21 @@ class _RushStatsBar extends StatelessWidget {
     required this.solvedCountNotifier,
     required this.livesRemainingNotifier,
     required this.maxLives,
-    required this.useDarkSettingsUi,
   });
 
   final ValueNotifier<int> remainingSecondsNotifier;
   final ValueNotifier<int> solvedCountNotifier;
   final ValueNotifier<int> livesRemainingNotifier;
   final int maxLives;
-  final bool useDarkSettingsUi;
 
   @override
   Widget build(BuildContext context) {
-    // Use Card instead of Container for better contrast in both light and dark modes
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+
     return Card(
       margin: EdgeInsets.zero,
-      elevation: useDarkSettingsUi ? 0 : 2,
-      color: useDarkSettingsUi
-          ? Theme.of(context).colorScheme.surface.withValues(alpha: 0.3)
-          : Theme.of(context).colorScheme.surface,
+      elevation: 0,
+      color: colorScheme.surfaceContainerHighest,
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Row(

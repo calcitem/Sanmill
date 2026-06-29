@@ -300,6 +300,25 @@ void main() {
       await tester.binding.handlePopRoute();
       await tester.pumpAndSettle();
 
+      await tester.ensureVisible(find.byKey(const Key('puzzles_home_rush')));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const Key('puzzles_home_rush')));
+      await tester.pumpAndSettle();
+
+      final BuildContext puzzleRushContext = tester.element(
+        find.byKey(const Key('puzzle_rush_setup_scaffold')),
+      );
+      final Scaffold puzzleRushScaffold = tester.widget<Scaffold>(
+        find.byKey(const Key('puzzle_rush_setup_scaffold')),
+      );
+      expect(
+        puzzleRushScaffold.backgroundColor,
+        Theme.of(puzzleRushContext).colorScheme.surface,
+      );
+
+      await tester.binding.handlePopRoute();
+      await tester.pumpAndSettle();
+
       await tester.ensureVisible(find.byKey(const Key('puzzles_home_custom')));
       await tester.pumpAndSettle();
       await tester.tap(find.byKey(const Key('puzzles_home_custom')));
