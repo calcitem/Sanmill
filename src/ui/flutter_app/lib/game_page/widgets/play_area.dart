@@ -275,12 +275,16 @@ class PlayAreaState extends State<PlayArea> {
   bool get _usesLichessHumanAiToolbar =>
       GameController().gameInstance.gameMode == GameMode.humanVsAi;
 
+  Phase get _activePhase {
+    return GameController().activeSessionPhase ??
+        GameController().activeBoardView.phase;
+  }
+
   bool get _canResignFromBottomBar {
-    final Phase phase = GameController().activeBoardView.phase;
     return _usesLichessHumanAiToolbar &&
         GameController().gameRecorder.currentPath.length >= 2 &&
-        phase != Phase.ready &&
-        phase != Phase.gameOver;
+        _activePhase != Phase.ready &&
+        _activePhase != Phase.gameOver;
   }
 
   bool get _canTakeBackFromBottomBar {
@@ -354,10 +358,9 @@ class PlayAreaState extends State<PlayArea> {
   }
 
   bool get _canShowHintFromBottomBar {
-    final Phase phase = GameController().activeBoardView.phase;
     final PieceColor sideToMove = GameController().activeBoardView.sideToMove;
     return _usesLichessHumanAiToolbar &&
-        phase != Phase.gameOver &&
+        _activePhase != Phase.gameOver &&
         (sideToMove == PieceColor.white || sideToMove == PieceColor.black) &&
         GameController().gameInstance.isHumanToMove &&
         !GameController().isEngineRunning &&
@@ -367,16 +370,18 @@ class PlayAreaState extends State<PlayArea> {
   }
 
   bool get _canResignFromRegularBottomBar {
-    final Phase phase = GameController().activeBoardView.phase;
     return !_usesLichessHumanAiToolbar &&
         GameController().gameRecorder.currentPath.length >= 2 &&
-        phase != Phase.ready &&
-        phase != Phase.gameOver;
+        _activePhase != Phase.ready &&
+        _activePhase != Phase.gameOver;
   }
 
   bool get _isRegularGameOver {
-    return !_usesLichessHumanAiToolbar &&
-        GameController().activeBoardView.phase == Phase.gameOver;
+    return !_usesLichessHumanAiToolbar && _activePhase == Phase.gameOver;
+  }
+
+  bool get _isHumanAiGameOver {
+    return _usesLichessHumanAiToolbar && _activePhase == Phase.gameOver;
   }
 
   bool get _canStepBackFromRegularBottomBar {
@@ -600,6 +605,15 @@ class PlayAreaState extends State<PlayArea> {
     GameController().gameResultNotifier.showResult(force: true);
   }
 
+  void _showHumanAiGameResult() {
+    assert(_isHumanAiGameOver);
+    RecordingService().recordEvent(
+      RecordingEventType.toolbarAction,
+      <String, dynamic>{'toolbar': 'lichessBottom', 'action': 'showResult'},
+    );
+    GameController().gameResultNotifier.showResult(force: true);
+  }
+
   void _showRegularGameMenu(BuildContext context) {
     assert(!_usesLichessHumanAiToolbar);
     showLichessActionSheet<void>(
@@ -708,7 +722,14 @@ class PlayAreaState extends State<PlayArea> {
                 Text(S.of(context).aiChatButtonTooltip),
             onPressed: () => _showAiChatDialog(context),
           ),
-        if (_canResignFromBottomBar)
+        if (_isHumanAiGameOver)
+          LichessActionSheetAction(
+            key: const Key('play_area_game_menu_result'),
+            leading: const Icon(Icons.info_outline),
+            makeLabel: (BuildContext context) => Text(S.of(context).results),
+            onPressed: _showHumanAiGameResult,
+          )
+        else if (_canResignFromBottomBar)
           LichessActionSheetAction(
             key: const Key('play_area_game_menu_resign'),
             leading: const Icon(CupertinoIcons.flag),
@@ -1185,7 +1206,9 @@ class PlayAreaState extends State<PlayArea> {
                     builder: (BuildContext context, _, _) {
                       return _LichessGameBottomBar(
                         onMenuPressed: () => _showHumanAiGameMenu(context),
-                        onResignPressed: _canResignFromBottomBar
+                        onResignOrResultPressed: _isHumanAiGameOver
+                            ? _showHumanAiGameResult
+                            : _canResignFromBottomBar
                             ? () => _showResignConfirmation(context)
                             : null,
                         onTakeBackPressed: _canTakeBackFromBottomBar
@@ -1194,6 +1217,7 @@ class PlayAreaState extends State<PlayArea> {
                         onHintPressed: _canShowHintFromBottomBar
                             ? () => _showHintFromBottomBar(context)
                             : null,
+                        isShowingResult: _isHumanAiGameOver,
                         isHintHighlighted: AnalysisMode.isHint,
                       );
                     },
@@ -1742,16 +1766,18 @@ class _RegularGameBottomBar extends StatelessWidget {
 class _LichessGameBottomBar extends StatelessWidget {
   const _LichessGameBottomBar({
     required this.onMenuPressed,
-    required this.onResignPressed,
+    required this.onResignOrResultPressed,
     required this.onTakeBackPressed,
     required this.onHintPressed,
+    required this.isShowingResult,
     required this.isHintHighlighted,
   });
 
   final VoidCallback onMenuPressed;
-  final VoidCallback? onResignPressed;
+  final VoidCallback? onResignOrResultPressed;
   final VoidCallback? onTakeBackPressed;
   final VoidCallback? onHintPressed;
+  final bool isShowingResult;
   final bool isHintHighlighted;
 
   @override
@@ -1773,9 +1799,10 @@ class _LichessGameBottomBar extends StatelessWidget {
         ),
         LichessBottomBarButton(
           key: const Key('play_area_bottom_bar_resign'),
-          icon: CupertinoIcons.flag,
-          label: S.of(context).resign,
-          onTap: onResignPressed,
+          icon: isShowingResult ? Icons.info_outline : CupertinoIcons.flag,
+          label: isShowingResult ? S.of(context).results : S.of(context).resign,
+          onTap: onResignOrResultPressed,
+          highlighted: isShowingResult,
         ),
         LichessBottomBarButton(
           key: const Key('play_area_bottom_bar_hint'),

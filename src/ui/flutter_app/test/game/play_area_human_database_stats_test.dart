@@ -12,6 +12,8 @@ import 'package:sanmill/appearance_settings/models/display_settings.dart';
 import 'package:sanmill/game_page/services/mill.dart';
 import 'package:sanmill/game_page/widgets/game_page.dart';
 import 'package:sanmill/game_page/widgets/play_area.dart';
+import 'package:sanmill/game_platform/game_id.dart';
+import 'package:sanmill/game_platform/game_session.dart' as platform;
 import 'package:sanmill/game_shell/game_session_scope.dart';
 import 'package:sanmill/games/mill/mill_session_recorder_bridge.dart';
 import 'package:sanmill/games/mill/native_mill_game_session.dart';
@@ -974,6 +976,49 @@ void main() {
 
     await tester.tap(find.byKey(const Key('play_area_resign_cancel_button')));
     await tester.pumpAndSettle();
+  });
+
+  testWidgets('human vs ai finished game shows result action', (
+    WidgetTester tester,
+  ) async {
+    final NativeMillGameSession session = await _bindNativeHumanAiGame();
+    final MillSessionRecorderBridge recorderBridge =
+        MillSessionRecorderBridge.forGameController(session: session);
+    addTearDown(recorderBridge.dispose);
+
+    GameController().activeSessionSnapshot = const platform.GameStateSnapshot(
+      gameId: GameId.mill,
+      activeSeat: platform.PlayerSeat.none,
+      outcome: platform.GameOutcome.win(platform.PlayerSeat.first),
+      phase: 'gameOver',
+    );
+
+    await _pumpSessionPlayArea(tester, session);
+
+    final LichessBottomBarButton resultButton = tester
+        .widget<LichessBottomBarButton>(
+          find.byKey(const Key('play_area_bottom_bar_resign')),
+        );
+    expect(resultButton.label, 'Results');
+    expect(resultButton.highlighted, isTrue);
+    expect(resultButton.onTap, isNotNull);
+    expect(
+      find.descendant(
+        of: find.byKey(const Key('play_area_bottom_bar_resign')),
+        matching: find.byIcon(Icons.info_outline),
+      ),
+      findsOneWidget,
+    );
+    expect(find.byKey(const Key('play_area_bottom_bar_hint')), findsOneWidget);
+    expect(
+      _bottomBarButtonOpacity(tester, const Key('play_area_bottom_bar_hint')),
+      0.4,
+    );
+
+    await tester.tap(find.byKey(const Key('play_area_bottom_bar_menu')));
+    await tester.pumpAndSettle();
+    expect(find.byKey(const Key('play_area_game_menu_result')), findsOneWidget);
+    expect(find.byKey(const Key('play_area_game_menu_resign')), findsNothing);
   });
 
   testWidgets('human vs ai takeback removes a full player turn', (
