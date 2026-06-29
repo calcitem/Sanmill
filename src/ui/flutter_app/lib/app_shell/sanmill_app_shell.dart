@@ -1115,34 +1115,17 @@ class _HomeTabRootState extends State<_HomeTabRoot> {
     List<GameModeEntry> playModes,
     bool useWideHomeLayout,
   ) {
-    final Widget activeGame = _HomeActiveGameSection(
-      currentPlayRouteId: widget.currentPlayRouteId,
-      playModes: playModes,
-      useCarousel: !useWideHomeLayout,
-      tabInteraction: widget.tabInteraction,
-      onContinueGame: widget.onContinueGame,
-    );
-    final Widget recentGames = _HomeRecentGames(
-      future: _recentGamesFuture,
-      limit: _recentGamesLimit,
-      useCarousel: !useWideHomeLayout,
-      tabInteraction: widget.tabInteraction,
-      onShowAll: _openSavedGamesPage,
-      onSavedGameSelected: widget.onSavedGameSelected,
-    );
-
-    if (!useWideHomeLayout) {
-      return <Widget>[activeGame, recentGames];
-    }
-
     return <Widget>[
-      Row(
-        key: const Key('sanmill_home_wide_content'),
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Expanded(child: activeGame),
-          Expanded(child: recentGames),
-        ],
+      _HomeGamesOverview(
+        currentPlayRouteId: widget.currentPlayRouteId,
+        playModes: playModes,
+        future: _recentGamesFuture,
+        limit: _recentGamesLimit,
+        useWideLayout: useWideHomeLayout,
+        tabInteraction: widget.tabInteraction,
+        onContinueGame: widget.onContinueGame,
+        onShowAll: _openSavedGamesPage,
+        onSavedGameSelected: widget.onSavedGameSelected,
       ),
     ];
   }
@@ -1168,106 +1151,72 @@ class _HomeTabRootState extends State<_HomeTabRoot> {
   }
 }
 
-class _HomeActiveGameSection extends StatelessWidget {
-  const _HomeActiveGameSection({
+class _HomeGamesOverview extends StatelessWidget {
+  const _HomeGamesOverview({
     required this.currentPlayRouteId,
     required this.playModes,
-    required this.useCarousel,
+    required this.future,
+    required this.limit,
+    required this.useWideLayout,
     required this.tabInteraction,
     required this.onContinueGame,
+    required this.onShowAll,
+    required this.onSavedGameSelected,
   });
 
   final String currentPlayRouteId;
   final List<GameModeEntry> playModes;
-  final bool useCarousel;
+  final Future<List<SavedGameSummary>> future;
+  final int limit;
+  final bool useWideLayout;
   final Listenable tabInteraction;
   final VoidCallback onContinueGame;
+  final VoidCallback onShowAll;
+  final ValueChanged<String> onSavedGameSelected;
 
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder<int>(
       valueListenable: GameController().gameRecorder.moveCountNotifier,
       builder: (BuildContext context, int moveCount, _) {
-        final GameStateSnapshot? snapshot =
-            GameController().activeSessionSnapshot;
-        final bool isTerminal = snapshot?.outcome.isTerminal ?? false;
-        if (moveCount == 0 || isTerminal) {
-          return const SizedBox.shrink();
-        }
-        return _OngoingGameSection(
-          currentPlayRouteId: currentPlayRouteId,
-          snapshot: snapshot,
-          moveCount: moveCount,
-          playModes: playModes,
-          useCarousel: useCarousel,
-          tabInteraction: tabInteraction,
-          onTap: onContinueGame,
+        final _ActiveGamePreview? activeGame = _activeGamePreview(
+          context,
+          moveCount,
         );
-      },
-    );
-  }
-}
+        return FutureBuilder<List<SavedGameSummary>>(
+          future: future,
+          builder:
+              (
+                BuildContext context,
+                AsyncSnapshot<List<SavedGameSummary>> snapshot,
+              ) {
+                final List<SavedGameSummary> homeGames =
+                    snapshot.data ?? const <SavedGameSummary>[];
+                final List<SavedGameSummary> ongoingGames = homeGames
+                    .where((SavedGameSummary game) => game.isOngoing)
+                    .toList(growable: false);
+                final List<SavedGameSummary> recentGames = homeGames
+                    .where((SavedGameSummary game) => !game.isOngoing)
+                    .toList(growable: false);
+                if (activeGame == null &&
+                    ongoingGames.isEmpty &&
+                    recentGames.isEmpty) {
+                  return const SizedBox.shrink();
+                }
 
-typedef _SavedGameDetailBuilder = String? Function(SavedGameSummary game);
-
-class _HomeRecentGames extends StatelessWidget {
-  const _HomeRecentGames({
-    required this.future,
-    required this.limit,
-    required this.useCarousel,
-    required this.tabInteraction,
-    required this.onShowAll,
-    required this.onSavedGameSelected,
-  });
-
-  final Future<List<SavedGameSummary>> future;
-  final int limit;
-  final bool useCarousel;
-  final Listenable tabInteraction;
-  final VoidCallback onShowAll;
-  final ValueChanged<String> onSavedGameSelected;
-
-  @override
-  Widget build(BuildContext context) {
-    return FutureBuilder<List<SavedGameSummary>>(
-      future: future,
-      builder:
-          (
-            BuildContext context,
-            AsyncSnapshot<List<SavedGameSummary>> snapshot,
-          ) {
-            final List<SavedGameSummary> homeGames =
-                snapshot.data ?? const <SavedGameSummary>[];
-            final List<SavedGameSummary> ongoingGames = homeGames
-                .where((SavedGameSummary game) => game.isOngoing)
-                .toList(growable: false);
-            final List<SavedGameSummary> recentGames = homeGames
-                .where((SavedGameSummary game) => !game.isOngoing)
-                .toList(growable: false);
-            if (ongoingGames.isEmpty && recentGames.isEmpty) {
-              return const SizedBox.shrink();
-            }
-            final S strings = S.of(context);
-            return Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                _SavedGamePreviewSection(
-                  title: strings.ongoingGames,
-                  headerKey: const Key(
-                    'sanmill_home_saved_ongoing_games_group',
-                  ),
-                  gameKeyPrefix: 'sanmill_home_saved_ongoing_game',
-                  games: ongoingGames,
+                final bool useCarousel = !useWideLayout;
+                final Widget ongoingSection = _HomeOngoingGames(
+                  activeGame: activeGame,
+                  savedGames: ongoingGames,
                   limit: limit,
                   useCarousel: useCarousel,
                   tabInteraction: tabInteraction,
-                  fallbackIcon: Icons.play_circle_outline_rounded,
                   onShowAll: onShowAll,
+                  onContinueGame: onContinueGame,
                   onSavedGameSelected: onSavedGameSelected,
-                  detailForGame: (_) => strings.continueGame,
-                ),
-                _SavedGamePreviewSection(
-                  title: strings.recentGames,
+                );
+                final Widget recentSection = _SavedGamePreviewSection(
+                  title: S.of(context).recentGames,
                   headerKey: const Key('sanmill_home_recent_games_group'),
                   gameKeyPrefix: 'sanmill_home_recent_game',
                   games: recentGames,
@@ -1278,35 +1227,36 @@ class _HomeRecentGames extends StatelessWidget {
                   onShowAll: onShowAll,
                   onSavedGameSelected: onSavedGameSelected,
                   detailForGame: _SavedGamePreviewSection.players,
-                ),
-              ],
-            );
-          },
+                );
+
+                if (!useWideLayout) {
+                  return Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[ongoingSection, recentSection],
+                  );
+                }
+
+                return Row(
+                  key: const Key('sanmill_home_wide_content'),
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Expanded(child: ongoingSection),
+                    Expanded(child: recentSection),
+                  ],
+                );
+              },
+        );
+      },
     );
   }
-}
 
-class _OngoingGameSection extends StatelessWidget {
-  const _OngoingGameSection({
-    required this.currentPlayRouteId,
-    required this.snapshot,
-    required this.moveCount,
-    required this.playModes,
-    required this.useCarousel,
-    required this.tabInteraction,
-    required this.onTap,
-  }) : assert(moveCount > 0, 'Ongoing game tile requires moves.');
+  _ActiveGamePreview? _activeGamePreview(BuildContext context, int moveCount) {
+    final GameStateSnapshot? snapshot = GameController().activeSessionSnapshot;
+    final bool isTerminal = snapshot?.outcome.isTerminal ?? false;
+    if (moveCount == 0 || isTerminal) {
+      return null;
+    }
 
-  final String currentPlayRouteId;
-  final GameStateSnapshot? snapshot;
-  final int moveCount;
-  final List<GameModeEntry> playModes;
-  final bool useCarousel;
-  final Listenable tabInteraction;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
     GameModeEntry? mode;
     for (final GameModeEntry entry in playModes) {
       if (entry.id.value == currentPlayRouteId) {
@@ -1314,57 +1264,41 @@ class _OngoingGameSection extends StatelessWidget {
         break;
       }
     }
-    final S strings = S.of(context);
-    final String? boardLayout = _boardLayoutFromSnapshot(snapshot);
-    final String title = mode?.label ?? strings.game;
-    final String subtitle = _subtitle(strings, snapshot, moveCount);
-    if (useCarousel) {
-      return _HomeGameCarouselSection(
-        title: strings.ongoingGames,
-        headerKey: const Key('sanmill_home_ongoing_game_group'),
-        listKey: const Key('sanmill_home_ongoing_game_card'),
-        tabInteraction: tabInteraction,
-        children: <Widget>[
-          _GamePreviewCarouselCard(
-            key: const Key('sanmill_home_ongoing_game'),
-            boardLayout: boardLayout,
-            fallbackIcon: Icons.play_circle_outline_rounded,
-            title: title,
-            subtitle: subtitle,
-            detail: strings.continueGame,
-            onTap: onTap,
-          ),
-        ],
-      );
-    }
 
-    return LichessListSection(
-      header: Text(strings.ongoingGames),
-      headerKey: const Key('sanmill_home_ongoing_game_group'),
-      cardKey: const Key('sanmill_home_ongoing_game_card'),
-      hasLeading: false,
-      children: <Widget>[
-        _GamePreviewTile(
-          key: const Key('sanmill_home_ongoing_game'),
-          boardLayout: boardLayout,
-          fallbackIcon: Icons.play_circle_outline_rounded,
-          title: title,
-          subtitle: subtitle,
-          detail: strings.continueGame,
-          onTap: onTap,
-        ),
-      ],
+    final S strings = S.of(context);
+    return _ActiveGamePreview(
+      boardLayout: _ActiveGamePreview.boardLayoutFromSnapshot(snapshot),
+      title: mode?.label ?? strings.game,
+      subtitle: _ActiveGamePreview.subtitleFromSnapshot(
+        strings,
+        snapshot,
+        moveCount,
+      ),
     );
   }
+}
 
-  static String? _boardLayoutFromSnapshot(GameStateSnapshot? snapshot) {
+typedef _SavedGameDetailBuilder = String? Function(SavedGameSummary game);
+
+class _ActiveGamePreview {
+  const _ActiveGamePreview({
+    required this.boardLayout,
+    required this.title,
+    required this.subtitle,
+  });
+
+  final String? boardLayout;
+  final String title;
+  final String subtitle;
+
+  static String? boardLayoutFromSnapshot(GameStateSnapshot? snapshot) {
     if (snapshot == null) {
       return null;
     }
     return NativeMillSnapshotBoardView.fromSnapshot(snapshot)?.toBoardLayout();
   }
 
-  static String _subtitle(
+  static String subtitleFromSnapshot(
     S strings,
     GameStateSnapshot? snapshot,
     int moveCount,
@@ -1383,6 +1317,110 @@ class _OngoingGameSection extends StatelessWidget {
       PlayerSeat.second => strings.player2,
       PlayerSeat.none || null => null,
     };
+  }
+}
+
+class _HomeOngoingGames extends StatelessWidget {
+  const _HomeOngoingGames({
+    required this.activeGame,
+    required this.savedGames,
+    required this.limit,
+    required this.useCarousel,
+    required this.tabInteraction,
+    required this.onShowAll,
+    required this.onContinueGame,
+    required this.onSavedGameSelected,
+  }) : assert(limit > 0, 'Ongoing games section limit must be positive.');
+
+  final _ActiveGamePreview? activeGame;
+  final List<SavedGameSummary> savedGames;
+  final int limit;
+  final bool useCarousel;
+  final Listenable tabInteraction;
+  final VoidCallback onShowAll;
+  final VoidCallback onContinueGame;
+  final ValueChanged<String> onSavedGameSelected;
+
+  @override
+  Widget build(BuildContext context) {
+    if (activeGame == null && savedGames.isEmpty) {
+      return const SizedBox.shrink();
+    }
+
+    final S strings = S.of(context);
+    final int savedLimit = activeGame == null ? limit : limit - 1;
+    final Iterable<(int, SavedGameSummary)> visibleSavedGames = savedGames
+        .take(savedLimit)
+        .indexed;
+    final bool hasMore = savedGames.length > savedLimit;
+
+    if (useCarousel) {
+      return _HomeGameCarouselSection(
+        title: strings.ongoingGames,
+        headerKey: const Key('sanmill_home_ongoing_game_group'),
+        listKey: const Key('sanmill_home_ongoing_game_card'),
+        tabInteraction: tabInteraction,
+        onHeaderTap: hasMore ? onShowAll : null,
+        children: <Widget>[
+          if (activeGame != null)
+            _GamePreviewCarouselCard(
+              key: const Key('sanmill_home_ongoing_game'),
+              boardLayout: activeGame!.boardLayout,
+              fallbackIcon: Icons.play_circle_outline_rounded,
+              title: activeGame!.title,
+              subtitle: activeGame!.subtitle,
+              detail: strings.continueGame,
+              onTap: onContinueGame,
+            ),
+          for (final (int index, SavedGameSummary game) in visibleSavedGames)
+            _GamePreviewCarouselCard(
+              key: Key('sanmill_home_saved_ongoing_game_$index'),
+              boardLayout: game.preview?.boardLayout,
+              fallbackIcon: Icons.play_circle_outline_rounded,
+              title: game.displayName,
+              subtitle: _SavedGamePreviewSection.subtitleForGame(
+                MaterialLocalizations.of(context),
+                strings,
+                game,
+              ),
+              detail: strings.continueGame,
+              onTap: () => onSavedGameSelected(game.path),
+            ),
+        ],
+      );
+    }
+
+    return _MoreSection(
+      title: strings.ongoingGames,
+      headerKey: const Key('sanmill_home_ongoing_game_group'),
+      onHeaderTap: hasMore ? onShowAll : null,
+      children: <Widget>[
+        if (activeGame != null)
+          _GamePreviewTile(
+            key: const Key('sanmill_home_ongoing_game'),
+            boardLayout: activeGame!.boardLayout,
+            fallbackIcon: Icons.play_circle_outline_rounded,
+            title: activeGame!.title,
+            subtitle: activeGame!.subtitle,
+            detail: strings.continueGame,
+            onTap: onContinueGame,
+          ),
+        for (final (int index, SavedGameSummary game) in visibleSavedGames)
+          _GamePreviewTile(
+            key: Key('sanmill_home_saved_ongoing_game_$index'),
+            boardLayout: game.preview?.boardLayout,
+            fallbackIcon: Icons.play_circle_outline_rounded,
+            title: game.displayName,
+            subtitle: _SavedGamePreviewSection.subtitleForGame(
+              MaterialLocalizations.of(context),
+              strings,
+              game,
+            ),
+            detail: strings.continueGame,
+            onTap: () => onSavedGameSelected(game.path),
+          ),
+      ],
+    );
   }
 }
 
@@ -1439,7 +1477,7 @@ class _SavedGamePreviewSection extends StatelessWidget {
               boardLayout: game.preview?.boardLayout,
               fallbackIcon: fallbackIcon,
               title: game.displayName,
-              subtitle: _subtitle(localizations, strings, game),
+              subtitle: subtitleForGame(localizations, strings, game),
               detail: detailForGame(game),
               onTap: () => onSavedGameSelected(game.path),
             ),
@@ -1458,7 +1496,7 @@ class _SavedGamePreviewSection extends StatelessWidget {
             boardLayout: game.preview?.boardLayout,
             fallbackIcon: fallbackIcon,
             title: game.displayName,
-            subtitle: _subtitle(localizations, strings, game),
+            subtitle: subtitleForGame(localizations, strings, game),
             detail: detailForGame(game),
             onTap: () => onSavedGameSelected(game.path),
           ),
@@ -1466,7 +1504,7 @@ class _SavedGamePreviewSection extends StatelessWidget {
     );
   }
 
-  static String _subtitle(
+  static String subtitleForGame(
     MaterialLocalizations localizations,
     S strings,
     SavedGameSummary game,

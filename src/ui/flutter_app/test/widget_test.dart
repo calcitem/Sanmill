@@ -10,9 +10,12 @@ import 'package:flutter/services.dart'; // Import flutter services
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:sanmill/app_shell/sanmill_app_shell.dart';
+import 'package:sanmill/game_page/services/mill.dart';
 import 'package:sanmill/game_page/widgets/mini_board.dart';
 import 'package:sanmill/game_page/widgets/toolbars/game_toolbar.dart';
+import 'package:sanmill/game_platform/game_id.dart';
 import 'package:sanmill/game_platform/game_registry.dart';
+import 'package:sanmill/game_platform/game_session.dart' as platform;
 import 'package:sanmill/game_shell/shell_route_ids.dart';
 import 'package:sanmill/games/built_in_game_modules.dart';
 import 'package:sanmill/games/mill/mill_board_geometry.dart';
@@ -1189,6 +1192,50 @@ void main() {
       );
       final S strings = S.of(tester.element(find.byType(OpeningExplorerPage)));
       expect(find.text(strings.openingExplorerUnavailable), findsNothing);
+
+      // Drain any settings-save debounce timer (see the smoke test above).
+      await tester.pump(const Duration(milliseconds: 350));
+    },
+    skip: nativeLibrarySkipReason() != null,
+  );
+
+  testWidgets(
+    'Home tab merges the current active game into ongoing games',
+    (WidgetTester tester) async {
+      final GameController controller = GameController();
+      addTearDown(() {
+        controller.activeSessionSnapshot = null;
+        controller.gameRecorder.reset();
+      });
+
+      await tester.pumpWidget(const SanmillApp());
+      await tester.pumpAndSettle();
+
+      controller.activeSessionSnapshot = const platform.GameStateSnapshot(
+        gameId: GameId.mill,
+        activeSeat: platform.PlayerSeat.second,
+        outcome: platform.GameOutcome.ongoing(),
+        phase: 'placing',
+      );
+      controller.gameRecorder.appendMove(ExtMove('d6', side: PieceColor.white));
+      await tester.pumpAndSettle();
+
+      expect(
+        find.byKey(const Key('sanmill_home_ongoing_game_group')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const Key('sanmill_home_ongoing_game')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const Key('sanmill_home_saved_ongoing_games_group')),
+        findsNothing,
+      );
+      expect(
+        find.byKey(const Key('sanmill_home_recent_games_group')),
+        findsNothing,
+      );
 
       // Drain any settings-save debounce timer (see the smoke test above).
       await tester.pump(const Duration(milliseconds: 350));
