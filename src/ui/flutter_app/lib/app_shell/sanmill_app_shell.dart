@@ -788,6 +788,11 @@ class _SanmillTabSwitchingView extends StatefulWidget {
 
 class _SanmillTabSwitchingViewState extends State<_SanmillTabSwitchingView> {
   final Set<SanmillShellTab> _builtTabs = <SanmillShellTab>{};
+  final Map<SanmillShellTab, FocusScopeNode> _tabFocusNodes =
+      <SanmillShellTab, FocusScopeNode>{
+        for (final SanmillShellTab tab in SanmillShellTab.values)
+          tab: FocusScopeNode(debugLabel: 'Sanmill ${tab.name} tab focus'),
+      };
 
   @override
   void initState() {
@@ -796,9 +801,30 @@ class _SanmillTabSwitchingViewState extends State<_SanmillTabSwitchingView> {
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _focusActiveTab();
+  }
+
+  @override
   void didUpdateWidget(covariant _SanmillTabSwitchingView oldWidget) {
     super.didUpdateWidget(oldWidget);
     _builtTabs.add(widget.currentTab);
+    _focusActiveTab();
+  }
+
+  @override
+  void dispose() {
+    for (final FocusScopeNode node in _tabFocusNodes.values) {
+      node.dispose();
+    }
+    super.dispose();
+  }
+
+  void _focusActiveTab() {
+    final FocusScopeNode? node = _tabFocusNodes[widget.currentTab];
+    assert(node != null, 'Missing focus node for ${widget.currentTab}.');
+    FocusScope.of(context).setFirstFocus(node!);
   }
 
   @override
@@ -813,7 +839,11 @@ class _SanmillTabSwitchingViewState extends State<_SanmillTabSwitchingView> {
               enabled: tab == widget.currentTab,
               child: _TabVisibility(
                 active: tab == widget.currentTab,
-                child: widget.tabBuilder(context, tab),
+                child: FocusScope(
+                  key: Key('sanmill_tab_focus_${tab.name}'),
+                  node: _tabFocusNodes[tab],
+                  child: widget.tabBuilder(context, tab),
+                ),
               ),
             ),
       ],

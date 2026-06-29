@@ -186,6 +186,7 @@ void main() {
       final SanmillAppShellState shellState = tester
           .state<SanmillAppShellState>(find.byType(SanmillAppShell));
       expect(shellState.debugCurrentTab, SanmillShellTab.home);
+      expect(find.byKey(const Key('sanmill_tab_focus_home')), findsOneWidget);
       expect(
         shellState.debugCurrentRouteId,
         SanmillShellRouteIds.homeRoot.value,
@@ -478,6 +479,7 @@ void main() {
         find.byKey(const Key('sanmill_more_list'), skipOffstage: false),
         findsOneWidget,
       );
+      expect(find.byKey(const Key('sanmill_tab_focus_more')), findsOneWidget);
       final Text moreAppBarTitle = tester.widget<Text>(
         find.byKey(const Key('sanmill_more_appbar_title')),
       );
