@@ -228,6 +228,7 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.byKey(const Key('sanmill_home_play_sheet')), findsOneWidget);
+      expect(find.text('Quick pairing'), findsNothing);
       expect(
         find.byKey(const Key('sanmill_home_play_sheet_quick_start_group')),
         findsOneWidget,

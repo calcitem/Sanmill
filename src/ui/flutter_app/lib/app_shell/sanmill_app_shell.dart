@@ -1967,7 +1967,7 @@ class _PlayBottomSheet extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           LichessListSection(
-            header: Text(strings.quickPairing),
+            header: Text(strings.play),
             headerKey: const Key('sanmill_home_play_sheet_quick_start_group'),
             cardKey: const Key('sanmill_home_play_sheet_card'),
             children: <Widget>[
