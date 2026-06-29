@@ -4,10 +4,13 @@
 // play_area_human_database_stats_test.dart
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:hive_ce_flutter/hive_flutter.dart' show Box;
 import 'package:sanmill/appearance_settings/models/display_settings.dart';
 import 'package:sanmill/game_page/services/mill.dart';
+import 'package:sanmill/game_page/widgets/game_page.dart';
 import 'package:sanmill/game_page/widgets/play_area.dart';
 import 'package:sanmill/game_shell/game_session_scope.dart';
 import 'package:sanmill/games/mill/mill_session_recorder_bridge.dart';
@@ -348,6 +351,104 @@ void main() {
     expect(boardOrientation.quarterTurns, 2);
   });
 
+  testWidgets('human vs ai route asks before leaving an active game', (
+    WidgetTester tester,
+  ) async {
+    db = _GamePageDb(
+      generalSettings: const GeneralSettings(),
+      displaySettings: const DisplaySettings(
+        isUnplacedAndRemovedPiecesShown: false,
+        isHistoryNavigationToolbarShown: false,
+      ),
+    );
+    DB.instance = db;
+
+    final NativeMillGameSession session = await _bindNativeHumanAiGame();
+    final MillSessionRecorderBridge recorderBridge =
+        MillSessionRecorderBridge.forGameController(session: session);
+    addTearDown(recorderBridge.dispose);
+
+    await tester.binding.setSurfaceSize(const Size(390, 844));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+
+    await tester.pumpWidget(
+      _localizedApp(
+        GameSessionScope(
+          session: session,
+          child: Navigator(
+            onGenerateRoute: (RouteSettings settings) {
+              if (settings.name == '/game') {
+                return MaterialPageRoute<void>(
+                  builder: (_) => const GamePage(GameMode.humanVsAi),
+                );
+              }
+              return MaterialPageRoute<void>(
+                builder: (BuildContext context) {
+                  return Scaffold(
+                    body: Center(
+                      child: TextButton(
+                        key: const Key('open_human_ai_game_page'),
+                        onPressed: () =>
+                            Navigator.of(context).pushNamed('/game'),
+                        child: const Text('Open game'),
+                      ),
+                    ),
+                  );
+                },
+              );
+            },
+          ),
+        ),
+      ),
+    );
+    await tester.pump();
+
+    await tester.tap(find.byKey(const Key('open_human_ai_game_page')));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 300));
+
+    expect(find.byKey(const Key('game_page_scaffold')), findsOneWidget);
+    expect(find.byKey(const Key('game_page_back_button')), findsOneWidget);
+
+    expect(
+      await session.replayMainline(<ExtMove>[
+        ExtMove('d6', side: PieceColor.white),
+        ExtMove('f4', side: PieceColor.black),
+      ]),
+      isTrue,
+    );
+    await tester.pump();
+    expect(_currentPathMoves(), <String>['d6', 'f4']);
+
+    await tester.tap(find.byKey(const Key('game_page_back_button')));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 300));
+
+    expect(find.byKey(const Key('game_page_leave_dialog')), findsOneWidget);
+    expect(find.text('Leave current game?'), findsOneWidget);
+    expect(find.text('No worries, your game will be kept.'), findsOneWidget);
+
+    await tester.tap(find.byKey(const Key('game_page_leave_cancel_button')));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 300));
+
+    expect(find.byKey(const Key('game_page_leave_dialog')), findsNothing);
+    expect(find.byKey(const Key('game_page_scaffold')), findsOneWidget);
+
+    await tester.tap(find.byKey(const Key('game_page_back_button')));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 300));
+    await tester.tap(find.byKey(const Key('game_page_leave_confirm_button')));
+    await tester.pump();
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 300));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 300));
+
+    expect(find.byKey(const Key('open_human_ai_game_page')), findsOneWidget);
+    expect(find.byKey(const Key('game_page_scaffold')), findsNothing);
+  });
+
   testWidgets('human vs ai hint is disabled while AI is to move', (
     WidgetTester tester,
   ) async {
@@ -563,4 +664,44 @@ List<String> _currentPathMoves() {
   return GameController().gameRecorder.currentPath
       .map((ExtMove move) => move.move)
       .toList();
+}
+
+class _GamePageDb extends MockDB {
+  _GamePageDb({
+    required GeneralSettings generalSettings,
+    required DisplaySettings displaySettings,
+  }) : _generalSettingsListenable = ValueNotifier<Box<GeneralSettings>>(
+         _SettingsBox<GeneralSettings>(DB.generalSettingsKey, generalSettings),
+       ),
+       _displaySettingsListenable = ValueNotifier<Box<DisplaySettings>>(
+         _SettingsBox<DisplaySettings>(DB.displaySettingsKey, displaySettings),
+       ) {
+    this.generalSettings = generalSettings;
+    this.displaySettings = displaySettings;
+  }
+
+  final ValueNotifier<Box<GeneralSettings>> _generalSettingsListenable;
+  final ValueNotifier<Box<DisplaySettings>> _displaySettingsListenable;
+
+  @override
+  ValueListenable<Box<GeneralSettings>> get listenGeneralSettings {
+    return _generalSettingsListenable;
+  }
+
+  @override
+  ValueListenable<Box<DisplaySettings>> get listenDisplaySettings {
+    return _displaySettingsListenable;
+  }
+}
+
+class _SettingsBox<T> extends Fake implements Box<T> {
+  _SettingsBox(this.settingsKey, this.value);
+
+  final String settingsKey;
+  final T value;
+
+  @override
+  T? get(dynamic key, {T? defaultValue}) {
+    return key == settingsKey ? value : defaultValue;
+  }
 }

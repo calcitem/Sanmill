@@ -104,6 +104,7 @@ class _GamePageInnerState extends State<_GamePageInner> {
   final GlobalKey _gameBoardKey = GlobalKey();
 
   bool _isAnnotationMode = false;
+  bool _allowNextPop = false;
   late final AnnotationManager _annotationManager;
 
   @override
@@ -359,7 +360,79 @@ class _GamePageInnerState extends State<_GamePageInner> {
     }
 
     // Return a Stack with base content, annotation overlay, and toolbar.
-    return Stack(children: <Widget>[baseContent, annotationOverlay, toolbar]);
+    final Widget content = Stack(
+      children: <Widget>[baseContent, annotationOverlay, toolbar],
+    );
+
+    return PopScope<Object?>(
+      canPop: _allowNextPop || !_isHumanAiGame,
+      onPopInvokedWithResult: _handleRoutePop,
+      child: content,
+    );
+  }
+
+  bool get _isHumanAiGame =>
+      widget.controller.gameInstance.gameMode == GameMode.humanVsAi;
+
+  bool get _shouldConfirmLeavingCurrentGame {
+    if (widget.controller.activeSessionSnapshot?.outcome.isTerminal ?? false) {
+      return false;
+    }
+    return widget.controller.gameRecorder.currentPath.isNotEmpty;
+  }
+
+  Future<void> _handleRoutePop(bool didPop, Object? result) async {
+    if (didPop || !mounted) {
+      return;
+    }
+
+    if (!_isHumanAiGame || !Navigator.canPop(context)) {
+      return;
+    }
+
+    if (_shouldConfirmLeavingCurrentGame &&
+        !await _confirmLeavingCurrentGame(context)) {
+      return;
+    }
+
+    if (!mounted) {
+      return;
+    }
+    setState(() {
+      _allowNextPop = true;
+    });
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        Navigator.of(context).pop(result);
+      }
+    });
+  }
+
+  Future<bool> _confirmLeavingCurrentGame(BuildContext context) async {
+    final bool? confirmed = await showDialog<bool>(
+      context: context,
+      builder: (BuildContext dialogContext) {
+        final S strings = S.of(dialogContext);
+        return AlertDialog(
+          key: const Key('game_page_leave_dialog'),
+          title: Text(strings.leaveCurrentGame),
+          content: Text(strings.currentGameWillBeKept),
+          actions: <Widget>[
+            TextButton(
+              key: const Key('game_page_leave_cancel_button'),
+              onPressed: () => Navigator.of(dialogContext).pop(false),
+              child: Text(strings.cancel),
+            ),
+            TextButton(
+              key: const Key('game_page_leave_confirm_button'),
+              onPressed: () => Navigator.of(dialogContext).pop(true),
+              child: Text(strings.ok),
+            ),
+          ],
+        );
+      },
+    );
+    return confirmed ?? false;
   }
 
   // Builds the background widget based on display settings.
@@ -489,7 +562,7 @@ class _GamePageInnerState extends State<_GamePageInner> {
             key: const Key('game_page_back_button'),
             icon: const Icon(Icons.arrow_back, color: Colors.white),
             tooltip: S.of(context).back,
-            onPressed: () => Navigator.of(context).pop(),
+            onPressed: () => unawaited(Navigator.of(context).maybePop()),
           ),
         ),
       );
