@@ -579,14 +579,6 @@ class PlayAreaState extends State<PlayArea> {
           makeLabel: (BuildContext context) => Text(S.of(context).analysis),
           onPressed: () => unawaited(_openAnalysisPanelFromBottomBar(context)),
         ),
-        if (_canResignFromBottomBar)
-          LichessActionSheetAction(
-            key: const Key('play_area_game_menu_resign'),
-            leading: const Icon(CupertinoIcons.flag),
-            makeLabel: (BuildContext context) => Text(S.of(context).resign),
-            isDestructiveAction: true,
-            onPressed: () => unawaited(_showResignConfirmation(context)),
-          ),
         LichessActionSheetAction(
           key: const Key('play_area_game_menu_new_game'),
           leading: const Icon(Icons.add_circle_outline),

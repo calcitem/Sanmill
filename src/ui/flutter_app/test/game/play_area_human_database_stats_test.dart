@@ -550,7 +550,7 @@ void main() {
     expect(find.byKey(const Key('play_area_game_menu_resign')), findsNothing);
   });
 
-  testWidgets('human vs ai resign is enabled after both sides moved', (
+  testWidgets('human vs ai bottom resign is enabled after both sides moved', (
     WidgetTester tester,
   ) async {
     final NativeMillGameSession session = await _bindNativeHumanAiGame();
@@ -575,9 +575,14 @@ void main() {
 
     await tester.tap(find.byKey(const Key('play_area_bottom_bar_menu')));
     await tester.pumpAndSettle();
-    expect(find.byKey(const Key('play_area_game_menu_resign')), findsOneWidget);
+    expect(find.byKey(const Key('play_area_game_menu_resign')), findsNothing);
 
-    await tester.tap(find.byKey(const Key('play_area_game_menu_resign')));
+    Navigator.of(
+      tester.element(find.byKey(const Key('play_area_game_menu_sheet'))),
+    ).pop();
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byKey(const Key('play_area_bottom_bar_resign')));
     await tester.pumpAndSettle();
 
     expect(find.byKey(const Key('play_area_resign_cancel_button')), findsOne);
