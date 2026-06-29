@@ -333,6 +333,21 @@ void main() {
       );
 
       await tester.tap(
+        find.byKey(const Key('mill_coordinate_training_menu_button')),
+      );
+      await tester.pumpAndSettle();
+
+      expect(
+        find.byKey(const Key('mill_coordinate_training_duration_60')),
+        findsOneWidget,
+      );
+
+      await tester.tap(
+        find.byKey(const Key('mill_coordinate_training_duration_60')),
+      );
+      await tester.pumpAndSettle();
+
+      await tester.tap(
         find.byKey(const Key('mill_coordinate_training_start_button')),
       );
       await tester.pump();

@@ -19,6 +19,20 @@ import '../shared/widgets/lichess_list_section.dart';
 const Duration _kTrainingDuration = Duration(seconds: 30);
 const Duration _kTickInterval = Duration(milliseconds: 100);
 const Duration _kGuessHighlightDuration = Duration(milliseconds: 220);
+const List<Duration> _kTrainingDurationChoices = <Duration>[
+  Duration(seconds: 30),
+  Duration(seconds: 60),
+  Duration(seconds: 120),
+];
+
+String _formatTrainingDuration(Duration duration) {
+  assert(!duration.isNegative, 'Training duration must not be negative.');
+  assert(duration.inSeconds > 0, 'Training duration must be positive.');
+  if (duration.inSeconds % 60 == 0) {
+    return '${duration.inMinutes}min';
+  }
+  return '${duration.inSeconds}s';
+}
 
 class MillCoordinateTrainingPage extends StatefulWidget {
   const MillCoordinateTrainingPage({super.key});
@@ -43,6 +57,7 @@ class _MillCoordinateTrainingPageState
   int _score = 0;
   int? _lastScore;
   Duration? _elapsed;
+  Duration _trainingDuration = _kTrainingDuration;
   bool _showCoordinates = true;
 
   bool get _trainingActive => _elapsed != null;
@@ -52,7 +67,7 @@ class _MillCoordinateTrainingPageState
     if (elapsed == null) {
       return 0;
     }
-    return (elapsed.inMilliseconds / _kTrainingDuration.inMilliseconds).clamp(
+    return (elapsed.inMilliseconds / _trainingDuration.inMilliseconds).clamp(
       0,
       1,
     );
@@ -162,7 +177,7 @@ class _MillCoordinateTrainingPageState
       if (!mounted) {
         return;
       }
-      if (_stopwatch.elapsed >= _kTrainingDuration) {
+      if (_stopwatch.elapsed >= _trainingDuration) {
         _finishTraining();
         return;
       }
@@ -238,20 +253,51 @@ class _MillCoordinateTrainingPageState
       context: context,
       showDragHandle: true,
       builder: (BuildContext context) {
+        final S strings = S.of(context);
         return SafeArea(
-          child: LichessListSection(
-            header: Text(S.of(context).settings),
+          child: ListView(
+            shrinkWrap: true,
+            padding: const EdgeInsets.only(bottom: 16),
             children: <Widget>[
-              SwitchListTile(
-                key: const Key('mill_coordinate_training_show_coordinates'),
-                title: Text(S.of(context).coordinateTrainingShowCoordinates),
-                value: _showCoordinates,
-                onChanged: (bool value) {
-                  setState(() {
-                    _showCoordinates = value;
-                  });
-                  Navigator.of(context).pop();
-                },
+              LichessListSection(
+                header: Text(strings.settings),
+                children: <Widget>[
+                  SwitchListTile(
+                    key: const Key('mill_coordinate_training_show_coordinates'),
+                    title: Text(strings.coordinateTrainingShowCoordinates),
+                    value: _showCoordinates,
+                    onChanged: (bool value) {
+                      setState(() {
+                        _showCoordinates = value;
+                      });
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              ),
+              LichessListSection(
+                header: Text(strings.duration),
+                children: <Widget>[
+                  for (final Duration duration in _kTrainingDurationChoices)
+                    ListTile(
+                      key: Key(
+                        'mill_coordinate_training_duration_${duration.inSeconds}',
+                      ),
+                      title: Text(_formatTrainingDuration(duration)),
+                      trailing: duration == _trainingDuration
+                          ? Icon(
+                              Icons.check_rounded,
+                              color: Theme.of(context).colorScheme.primary,
+                            )
+                          : null,
+                      onTap: () {
+                        setState(() {
+                          _trainingDuration = duration;
+                        });
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                ],
               ),
             ],
           ),
@@ -267,7 +313,10 @@ class _MillCoordinateTrainingPageState
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text(strings.coordinateTraining),
-          content: Text(strings.coordinateTrainingDescription),
+          content: Text(
+            '${strings.coordinateTrainingDescription}\n\n'
+            '${strings.duration}: ${_formatTrainingDuration(_trainingDuration)}',
+          ),
           actions: <Widget>[
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
