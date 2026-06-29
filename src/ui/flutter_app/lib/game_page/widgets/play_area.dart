@@ -1792,17 +1792,17 @@ class _LichessGameBottomBar extends StatelessWidget {
           onTap: onMenuPressed,
         ),
         LichessBottomBarButton(
-          key: const Key('play_area_bottom_bar_take_back'),
-          icon: CupertinoIcons.arrow_uturn_left,
-          label: S.of(context).takeBack,
-          onTap: onTakeBackPressed,
-        ),
-        LichessBottomBarButton(
           key: const Key('play_area_bottom_bar_resign'),
           icon: isShowingResult ? Icons.info_outline : CupertinoIcons.flag,
           label: isShowingResult ? S.of(context).results : S.of(context).resign,
           onTap: onResignOrResultPressed,
           highlighted: isShowingResult,
+        ),
+        LichessBottomBarButton(
+          key: const Key('play_area_bottom_bar_take_back'),
+          icon: CupertinoIcons.arrow_uturn_left,
+          label: S.of(context).takeBack,
+          onTap: onTakeBackPressed,
         ),
         LichessBottomBarButton(
           key: const Key('play_area_bottom_bar_hint'),

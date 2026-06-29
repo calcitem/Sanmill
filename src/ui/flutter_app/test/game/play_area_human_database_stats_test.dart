@@ -407,6 +407,34 @@ void main() {
           .height,
       kLichessBottomBarHeight,
     );
+    expect(
+      tester.getTopLeft(find.byKey(const Key('play_area_bottom_bar_menu'))).dx,
+      lessThan(
+        tester
+            .getTopLeft(find.byKey(const Key('play_area_bottom_bar_resign')))
+            .dx,
+      ),
+    );
+    expect(
+      tester
+          .getTopLeft(find.byKey(const Key('play_area_bottom_bar_resign')))
+          .dx,
+      lessThan(
+        tester
+            .getTopLeft(find.byKey(const Key('play_area_bottom_bar_take_back')))
+            .dx,
+      ),
+    );
+    expect(
+      tester
+          .getTopLeft(find.byKey(const Key('play_area_bottom_bar_take_back')))
+          .dx,
+      lessThan(
+        tester
+            .getTopLeft(find.byKey(const Key('play_area_bottom_bar_hint')))
+            .dx,
+      ),
+    );
 
     final Opacity menuOpacity = tester.widget<Opacity>(
       find.descendant(
