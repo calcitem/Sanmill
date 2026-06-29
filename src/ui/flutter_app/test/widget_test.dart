@@ -1398,7 +1398,8 @@ void main() {
       });
 
       await tester.pumpWidget(const SanmillApp());
-      await tester.pumpAndSettle();
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 500));
 
       controller.activeSessionSnapshot = const platform.GameStateSnapshot(
         gameId: GameId.mill,
@@ -1407,7 +1408,7 @@ void main() {
         phase: 'placing',
       );
       controller.gameRecorder.appendMove(ExtMove('d6', side: PieceColor.white));
-      await tester.pumpAndSettle();
+      await tester.pump();
 
       expect(
         find.byKey(const Key('sanmill_home_ongoing_game_group')),
@@ -1433,6 +1434,73 @@ void main() {
   );
 
   testWidgets(
+    'Home tab shows a newly started active game before the first move',
+    (WidgetTester tester) async {
+      final GameController controller = GameController();
+      addTearDown(() {
+        controller.activeSessionSnapshot = null;
+        controller.gameRecorder.reset();
+      });
+
+      await tester.pumpWidget(const SanmillApp());
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 500));
+
+      controller.activeSessionSnapshot = const platform.GameStateSnapshot(
+        gameId: GameId.mill,
+        activeSeat: platform.PlayerSeat.first,
+        outcome: platform.GameOutcome.ongoing(),
+        phase: 'ready',
+      );
+      await tester.pump();
+      expect(
+        find.byKey(const Key('sanmill_home_ongoing_game_group')),
+        findsNothing,
+      );
+
+      controller.activeSessionSnapshot = const platform.GameStateSnapshot(
+        gameId: GameId.mill,
+        activeSeat: platform.PlayerSeat.first,
+        outcome: platform.GameOutcome.ongoing(),
+        phase: 'placing',
+      );
+      await tester.pump();
+      expect(
+        find.byKey(const Key('sanmill_home_ongoing_game_group')),
+        findsNothing,
+      );
+
+      await tester.tap(find.byKey(const Key('sanmill_home_play_fab')));
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 500));
+      await tester.tap(
+        find.byKey(const Key('sanmill_home_play_sheet_mill.play.humanVsAi')),
+      );
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 500));
+      await tester.binding.handlePopRoute();
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 500));
+      await tester.binding.handlePopRoute();
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 500));
+
+      expect(
+        find.byKey(const Key('sanmill_home_ongoing_game_group')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const Key('sanmill_home_ongoing_game')),
+        findsOneWidget,
+      );
+
+      // Drain any settings-save debounce timer (see the smoke test above).
+      await tester.pump(const Duration(milliseconds: 350));
+    },
+    skip: nativeLibrarySkipReason() != null,
+  );
+
+  testWidgets(
     'Home tab keeps play modes in the FAB on wide screens',
     (WidgetTester tester) async {
       tester.view
@@ -1442,7 +1510,8 @@ void main() {
       addTearDown(tester.view.resetDevicePixelRatio);
 
       await tester.pumpWidget(const SanmillApp());
-      await tester.pumpAndSettle();
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 500));
 
       expect(find.byKey(const Key('sanmill_home_list')), findsOneWidget);
       expect(

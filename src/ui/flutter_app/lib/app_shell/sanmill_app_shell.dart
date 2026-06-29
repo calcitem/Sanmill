@@ -150,6 +150,7 @@ class SanmillAppShellState extends State<SanmillAppShell> {
   late String _routeId;
   late String _playRouteId;
   bool _initialized = false;
+  bool _hasOpenedCurrentPlaySession = false;
 
   GameSessionHandle? _activeSession;
   GameId? _activeSessionGameId;
@@ -291,6 +292,7 @@ class SanmillAppShellState extends State<SanmillAppShell> {
     final String nextRouteId = module.defaultShellRoute(context);
     _playRouteId = nextRouteId;
     _routeId = SanmillShellRouteIds.homeRoot.value;
+    _hasOpenedCurrentPlaySession = false;
     module.didNavigateShellRoute(
       context,
       previousRouteId: null,
@@ -378,6 +380,7 @@ class SanmillAppShellState extends State<SanmillAppShell> {
     }
     setState(() {
       _playRouteId = routeId;
+      _hasOpenedCurrentPlaySession = true;
       _currentTab = SanmillShellTab.home;
     });
     final NavigatorState? navigator =
@@ -574,6 +577,7 @@ class SanmillAppShellState extends State<SanmillAppShell> {
           tabInteraction: _tabInteractions[SanmillShellTab.home]!,
           isActive: _currentTab == SanmillShellTab.home,
           currentPlayRouteId: _playRouteId,
+          hasOpenedCurrentPlaySession: _hasOpenedCurrentPlaySession,
           onContinueGame: _continueCurrentGame,
           onPlayRouteSelected: _selectPlayRoute,
           onSavedGameSelected: _openSavedGame,
@@ -1017,6 +1021,7 @@ class _HomeTabRoot extends StatefulWidget {
     required this.tabInteraction,
     required this.isActive,
     required this.currentPlayRouteId,
+    required this.hasOpenedCurrentPlaySession,
     required this.onContinueGame,
     required this.onPlayRouteSelected,
     required this.onSavedGameSelected,
@@ -1026,6 +1031,7 @@ class _HomeTabRoot extends StatefulWidget {
   final Listenable tabInteraction;
   final bool isActive;
   final String currentPlayRouteId;
+  final bool hasOpenedCurrentPlaySession;
   final VoidCallback onContinueGame;
   final ValueChanged<String> onPlayRouteSelected;
   final ValueChanged<String> onSavedGameSelected;
@@ -1133,6 +1139,7 @@ class _HomeTabRootState extends State<_HomeTabRoot> {
         future: _recentGamesFuture,
         limit: _recentGamesLimit,
         useWideLayout: useWideHomeLayout,
+        hasOpenedCurrentPlaySession: widget.hasOpenedCurrentPlaySession,
         tabInteraction: widget.tabInteraction,
         onContinueGame: widget.onContinueGame,
         onShowAll: _openSavedGamesPage,
@@ -1169,6 +1176,7 @@ class _HomeGamesOverview extends StatelessWidget {
     required this.future,
     required this.limit,
     required this.useWideLayout,
+    required this.hasOpenedCurrentPlaySession,
     required this.tabInteraction,
     required this.onContinueGame,
     required this.onShowAll,
@@ -1180,6 +1188,7 @@ class _HomeGamesOverview extends StatelessWidget {
   final Future<List<SavedGameSummary>> future;
   final int limit;
   final bool useWideLayout;
+  final bool hasOpenedCurrentPlaySession;
   final Listenable tabInteraction;
   final VoidCallback onContinueGame;
   final VoidCallback onShowAll;
@@ -1187,9 +1196,14 @@ class _HomeGamesOverview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder<int>(
-      valueListenable: GameController().gameRecorder.moveCountNotifier,
-      builder: (BuildContext context, int moveCount, _) {
+    final GameController controller = GameController();
+    return ListenableBuilder(
+      listenable: Listenable.merge(<Listenable>[
+        controller.activeSessionSnapshotNotifier,
+        controller.gameRecorder.moveCountNotifier,
+      ]),
+      builder: (BuildContext context, _) {
+        final int moveCount = controller.gameRecorder.moveCountNotifier.value;
         final _ActiveGamePreview? activeGame = _activeGamePreview(
           context,
           moveCount,
@@ -1263,8 +1277,10 @@ class _HomeGamesOverview extends StatelessWidget {
 
   _ActiveGamePreview? _activeGamePreview(BuildContext context, int moveCount) {
     final GameStateSnapshot? snapshot = GameController().activeSessionSnapshot;
-    final bool isTerminal = snapshot?.outcome.isTerminal ?? false;
-    if (moveCount == 0 || isTerminal) {
+    if (!_ActiveGamePreview.shouldShow(
+      snapshot,
+      hasPlayableHistory: moveCount > 0 || hasOpenedCurrentPlaySession,
+    )) {
       return null;
     }
 
@@ -1301,6 +1317,22 @@ class _ActiveGamePreview {
   final String? boardLayout;
   final String title;
   final String subtitle;
+
+  static bool shouldShow(
+    GameStateSnapshot? snapshot, {
+    required bool hasPlayableHistory,
+  }) {
+    if (snapshot == null || snapshot.outcome.isTerminal) {
+      return false;
+    }
+    if (!hasPlayableHistory) {
+      return false;
+    }
+    return switch (snapshot.phase) {
+      'ready' => false,
+      _ => true,
+    };
+  }
 
   static String? boardLayoutFromSnapshot(GameStateSnapshot? snapshot) {
     if (snapshot == null) {
