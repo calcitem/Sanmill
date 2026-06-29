@@ -1898,31 +1898,73 @@ class _PlayBottomSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     assert(playModes.isNotEmpty, 'Play bottom sheet requires play modes.');
     final S strings = S.of(context);
+    final List<GameModeEntry> quickStartModes = _quickStartModes(playModes);
+    final Set<String> quickStartIds = quickStartModes
+        .map((GameModeEntry mode) => mode.id.value)
+        .toSet();
+    final List<GameModeEntry> moreModes = playModes
+        .where((GameModeEntry mode) => !quickStartIds.contains(mode.id.value))
+        .toList(growable: false);
+
     return SingleChildScrollView(
       key: const Key('sanmill_home_play_sheet'),
       padding: EdgeInsets.fromLTRB(
         0,
-        8,
+        16,
         0,
         MediaQuery.viewInsetsOf(context).bottom + 16,
       ),
-      child: LichessListSection(
-        header: Text(strings.play),
-        cardKey: const Key('sanmill_home_play_sheet_card'),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          for (final GameModeEntry mode in playModes)
-            _MoreTile(
-              key: Key('sanmill_home_play_sheet_${mode.id.value}'),
-              icon: mode.icon ?? Icons.sports_esports_rounded,
-              title: mode.label,
-              onTap: () {
-                Navigator.of(context).pop();
-                onPlayRouteSelected(mode.id.value);
-              },
-            ),
+          LichessListSection(
+            header: Text(strings.quickPairing),
+            headerKey: const Key('sanmill_home_play_sheet_quick_start_group'),
+            cardKey: const Key('sanmill_home_play_sheet_card'),
+            children: <Widget>[
+              for (final GameModeEntry mode in quickStartModes)
+                _buildModeTile(context, mode),
+            ],
+          ),
+          LichessListSection(
+            header: Text(strings.more),
+            headerKey: const Key('sanmill_home_play_sheet_more_modes_group'),
+            cardKey: const Key('sanmill_home_play_sheet_more_modes_card'),
+            children: <Widget>[
+              for (final GameModeEntry mode in moreModes)
+                _buildModeTile(context, mode),
+            ],
+          ),
         ],
       ),
     );
+  }
+
+  Widget _buildModeTile(BuildContext context, GameModeEntry mode) {
+    return _MoreTile(
+      key: Key('sanmill_home_play_sheet_${mode.id.value}'),
+      icon: mode.icon ?? Icons.sports_esports_rounded,
+      title: mode.label,
+      onTap: () {
+        Navigator.of(context).pop();
+        onPlayRouteSelected(mode.id.value);
+      },
+    );
+  }
+
+  static List<GameModeEntry> _quickStartModes(List<GameModeEntry> modes) {
+    final List<GameModeEntry> quickModes = modes
+        .where(_isQuickStartMode)
+        .toList(growable: false);
+    if (quickModes.isNotEmpty) {
+      return quickModes;
+    }
+    return modes.take(2).toList(growable: false);
+  }
+
+  static bool _isQuickStartMode(GameModeEntry mode) {
+    final String id = mode.id.value.toLowerCase();
+    return id.contains('humanvsai') || id.contains('humanvshuman');
   }
 }
 

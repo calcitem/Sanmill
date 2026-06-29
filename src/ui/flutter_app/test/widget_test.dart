@@ -216,7 +216,23 @@ void main() {
 
       expect(find.byKey(const Key('sanmill_home_play_sheet')), findsOneWidget);
       expect(
+        find.byKey(const Key('sanmill_home_play_sheet_quick_start_group')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const Key('sanmill_home_play_sheet_more_modes_group')),
+        findsOneWidget,
+      );
+      expect(
         find.byKey(const Key('sanmill_home_play_sheet_mill.play.humanVsAi')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const Key('sanmill_home_play_sheet_mill.play.humanVsHuman')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const Key('sanmill_home_play_sheet_mill.play.aiVsAi')),
         findsOneWidget,
       );
 
