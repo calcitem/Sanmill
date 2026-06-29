@@ -1491,7 +1491,12 @@ class _HomeGameCarouselSection extends StatefulWidget {
 }
 
 class _HomeGameCarouselSectionState extends State<_HomeGameCarouselSection> {
-  final ScrollController _controller = ScrollController();
+  static const List<int> _flexWeights = <int>[6, 2];
+  static const EdgeInsets _carouselPadding = EdgeInsets.symmetric(
+    horizontal: 8,
+  );
+
+  final CarouselController _controller = CarouselController();
 
   @override
   void initState() {
@@ -1565,21 +1570,20 @@ class _HomeGameCarouselSectionState extends State<_HomeGameCarouselSection> {
               SizedBox(
                 key: widget.listKey,
                 height: cardSize,
-                child: ListView.separated(
+                child: CarouselView.weighted(
                   controller: _controller,
-                  scrollDirection: Axis.horizontal,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: AppStyles.bodyPadding,
+                  padding: _carouselPadding,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(
+                      AppStyles.compactRadius,
+                    ),
                   ),
-                  itemCount: widget.children.length,
-                  separatorBuilder: (BuildContext context, int index) =>
-                      const SizedBox(width: 10),
-                  itemBuilder: (BuildContext context, int index) {
-                    return SizedBox(
-                      width: cardSize,
-                      child: widget.children[index],
-                    );
-                  },
+                  elevation: Theme.of(context).platform == TargetPlatform.iOS
+                      ? 0
+                      : 1,
+                  flexWeights: _flexWeights,
+                  itemSnapping: true,
+                  children: widget.children,
                 ),
               ),
             ],
