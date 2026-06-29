@@ -8,6 +8,7 @@ import 'dart:math' as math;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+import '../../../appearance_settings/models/color_settings.dart';
 import '../../../experience_recording/models/recording_models.dart';
 import '../../../experience_recording/services/recording_service.dart';
 import '../../../general_settings/models/general_settings.dart';
@@ -548,10 +549,11 @@ class _HumanAiNewGameSheetState extends State<_HumanAiNewGameSheet> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
+            const _HumanAiNewGamePreview(),
             Padding(
               padding: const EdgeInsets.fromLTRB(
                 AppStyles.bodyPadding,
-                0,
+                AppStyles.bodyPadding,
                 AppStyles.bodyPadding,
                 AppStyles.bodyPadding,
               ),
@@ -636,6 +638,146 @@ class _HumanAiNewGameSheetState extends State<_HumanAiNewGameSheet> {
         ),
       ),
     );
+  }
+}
+
+class _HumanAiNewGamePreview extends StatelessWidget {
+  const _HumanAiNewGamePreview();
+
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+    final ColorScheme colorScheme = theme.colorScheme;
+    final ColorSettings colors = DB().colorSettings;
+
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(
+        AppStyles.bodyPadding,
+        0,
+        AppStyles.bodyPadding,
+        8,
+      ),
+      child: Center(
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 220),
+          child: AspectRatio(
+            aspectRatio: 1,
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                color: colorScheme.surfaceContainerLow,
+                borderRadius: BorderRadius.circular(AppStyles.cardRadius),
+                border: Border.all(
+                  color: colorScheme.outlineVariant.withValues(alpha: 0.7),
+                ),
+                boxShadow: <BoxShadow>[
+                  BoxShadow(
+                    color: colorScheme.shadow.withValues(alpha: 0.08),
+                    blurRadius: 16,
+                    offset: const Offset(0, 6),
+                  ),
+                ],
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(12),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(AppStyles.compactRadius),
+                  child: ColoredBox(
+                    color: colors.boardBackgroundColor,
+                    child: CustomPaint(
+                      key: const Key('human_ai_new_game_sheet_preview'),
+                      painter: _HumanAiNewGamePreviewPainter(colors),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _HumanAiNewGamePreviewPainter extends CustomPainter {
+  const _HumanAiNewGamePreviewPainter(this.colors);
+
+  final ColorSettings colors;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final double side = size.shortestSide;
+    final Offset origin = Offset(
+      (size.width - side) / 2,
+      (size.height - side) / 2,
+    );
+    final Rect board = origin & Size.square(side);
+    final double outerMargin = side * 0.12;
+    final double ringGap = side * 0.19;
+    final double pieceRadius = side * 0.045;
+
+    final Paint linePaint = Paint()
+      ..color = colors.boardLineColor
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = math.max(1.8, side * 0.012)
+      ..strokeCap = StrokeCap.round;
+
+    Rect squareAt(int ring) {
+      final double inset = outerMargin + ring * ringGap;
+      return Rect.fromLTRB(
+        board.left + inset,
+        board.top + inset,
+        board.right - inset,
+        board.bottom - inset,
+      );
+    }
+
+    final List<Rect> rings = <Rect>[squareAt(0), squareAt(1), squareAt(2)];
+    for (final Rect ring in rings) {
+      canvas.drawRect(ring, linePaint);
+    }
+
+    canvas.drawLine(rings[0].topCenter, rings[2].topCenter, linePaint);
+    canvas.drawLine(rings[0].centerLeft, rings[2].centerLeft, linePaint);
+    canvas.drawLine(rings[0].centerRight, rings[2].centerRight, linePaint);
+    canvas.drawLine(rings[0].bottomCenter, rings[2].bottomCenter, linePaint);
+
+    void drawPiece(Offset center, Color color, {bool highlighted = false}) {
+      canvas.drawCircle(
+        center.translate(1.4, 2),
+        pieceRadius,
+        Paint()..color = Colors.black.withValues(alpha: 0.16),
+      );
+      canvas.drawCircle(center, pieceRadius, Paint()..color = color);
+      canvas.drawCircle(
+        center,
+        pieceRadius,
+        Paint()
+          ..color = colors.boardLineColor.withValues(alpha: 0.32)
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = math.max(1, side * 0.006),
+      );
+      if (highlighted) {
+        canvas.drawCircle(
+          center,
+          pieceRadius * 1.55,
+          Paint()
+            ..color = colors.pieceHighlightColor
+            ..style = PaintingStyle.stroke
+            ..strokeWidth = math.max(2, side * 0.01),
+        );
+      }
+    }
+
+    drawPiece(rings[0].topLeft, colors.whitePieceColor);
+    drawPiece(rings[0].bottomRight, colors.blackPieceColor);
+    drawPiece(rings[1].topCenter, colors.whitePieceColor, highlighted: true);
+    drawPiece(rings[1].centerLeft, colors.blackPieceColor);
+    drawPiece(rings[2].bottomCenter, colors.whitePieceColor);
+  }
+
+  @override
+  bool shouldRepaint(covariant _HumanAiNewGamePreviewPainter oldDelegate) {
+    return oldDelegate.colors != colors;
   }
 }
 
