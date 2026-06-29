@@ -228,6 +228,7 @@ void main() {
         find.byKey(const Key('sanmill_more_appbar_title')),
       );
       expect(moreAppBarTitle.data, 'Mill');
+      expect(find.byKey(const Key('more_human_vs_ai')), findsNothing);
 
       final BuildContext settingsTileContext = tester.element(
         find.byKey(const Key('drawer_item_general_settings')),

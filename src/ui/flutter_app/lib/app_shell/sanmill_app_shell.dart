@@ -493,7 +493,6 @@ class SanmillAppShellState extends State<SanmillAppShell> {
       case SanmillShellTab.more:
         return _MoreTabRoot(
           scrollController: _scrollControllers[SanmillShellTab.more]!,
-          onPlayRouteSelected: _selectPlayRoute,
           onAppRouteSelected: _pushAppRoute,
           onFeedback: _showFeedback,
           onExit: _exitApp,
@@ -946,14 +945,12 @@ class _WatchTabRoot extends StatelessWidget {
 class _MoreTabRoot extends StatelessWidget {
   const _MoreTabRoot({
     required this.scrollController,
-    required this.onPlayRouteSelected,
     required this.onAppRouteSelected,
     required this.onFeedback,
     required this.onExit,
   });
 
   final ScrollController scrollController;
-  final ValueChanged<String> onPlayRouteSelected;
   final ValueChanged<String> onAppRouteSelected;
   final VoidCallback onFeedback;
   final VoidCallback onExit;
@@ -977,7 +974,6 @@ class _MoreTabRoot extends StatelessWidget {
           padding: const EdgeInsets.only(top: 16, bottom: 8),
           children: <Widget>[
             _MenuEntries(
-              onPlayRouteSelected: onPlayRouteSelected,
               onAppRouteSelected: onAppRouteSelected,
               onFeedback: onFeedback,
               onExit: onExit,
@@ -991,13 +987,11 @@ class _MoreTabRoot extends StatelessWidget {
 
 class _MenuEntries extends StatelessWidget {
   const _MenuEntries({
-    required this.onPlayRouteSelected,
     required this.onAppRouteSelected,
     required this.onFeedback,
     required this.onExit,
   });
 
-  final ValueChanged<String> onPlayRouteSelected;
   final ValueChanged<String> onAppRouteSelected;
   final VoidCallback onFeedback;
   final VoidCallback onExit;
@@ -1006,26 +1000,10 @@ class _MenuEntries extends StatelessWidget {
   Widget build(BuildContext context) {
     final S strings = S.of(context);
     final GameModule module = GameRegistry.instance.current;
-    final List<GameModeEntry> playModes = module
-        .playModes(context)
-        .where((GameModeEntry mode) => mode.availableIn(context))
-        .toList(growable: false);
 
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        _MoreSection(
-          title: strings.game,
-          children: <Widget>[
-            for (final GameModeEntry mode in playModes)
-              _MoreTile(
-                key: Key('more_${mode.id.value}'),
-                icon: mode.icon ?? Icons.sports_esports_rounded,
-                title: mode.label,
-                onTap: () => onPlayRouteSelected(mode.id.value),
-              ),
-          ],
-        ),
         _MoreSection(
           title: strings.settings,
           headerKey: const Key('drawer_item_settings_group'),
