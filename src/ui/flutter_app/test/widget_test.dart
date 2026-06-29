@@ -245,6 +245,14 @@ void main() {
         find.byKey(const Key('import_game_page_scaffold')),
         findsOneWidget,
       );
+      expect(
+        find.byKey(const Key('import_game_from_file_button')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const Key('import_game_from_clipboard_button')),
+        findsOneWidget,
+      );
 
       await tester.binding.handlePopRoute();
       await tester.pumpAndSettle();
