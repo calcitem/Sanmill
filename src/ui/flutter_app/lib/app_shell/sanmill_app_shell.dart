@@ -559,16 +559,11 @@ class SanmillAppShellState extends State<SanmillAppShell> {
         builder: (BuildContext context, BoxConstraints constraints) {
           final bool useNavigationRail =
               constraints.maxWidth >= _desktopNavigationBreakpoint;
-          final Widget stack = IndexedStack(
+          final Widget stack = _SanmillTabSwitchingView(
             key: const Key('sanmill_tab_indexed_stack'),
-            index: _currentTab.index,
-            children: <Widget>[
-              for (final SanmillShellTab tab in SanmillShellTab.values)
-                _TabVisibility(
-                  active: tab == _currentTab,
-                  child: _buildTabNavigator(tab),
-                ),
-            ],
+            currentTab: _currentTab,
+            tabBuilder: (BuildContext context, SanmillShellTab tab) =>
+                _buildTabNavigator(tab),
           );
 
           if (useNavigationRail) {
@@ -772,6 +767,59 @@ class SanmillAppShellState extends State<SanmillAppShell> {
     }
     await screenshotFile.writeAsBytes(screenshot);
     return screenshotFilePath;
+  }
+}
+
+typedef _SanmillTabBuilder =
+    Widget Function(BuildContext context, SanmillShellTab tab);
+
+class _SanmillTabSwitchingView extends StatefulWidget {
+  const _SanmillTabSwitchingView({
+    super.key,
+    required this.currentTab,
+    required this.tabBuilder,
+  });
+
+  final SanmillShellTab currentTab;
+  final _SanmillTabBuilder tabBuilder;
+
+  @override
+  State<_SanmillTabSwitchingView> createState() =>
+      _SanmillTabSwitchingViewState();
+}
+
+class _SanmillTabSwitchingViewState extends State<_SanmillTabSwitchingView> {
+  final Set<SanmillShellTab> _builtTabs = <SanmillShellTab>{};
+
+  @override
+  void initState() {
+    super.initState();
+    _builtTabs.add(widget.currentTab);
+  }
+
+  @override
+  void didUpdateWidget(covariant _SanmillTabSwitchingView oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    _builtTabs.add(widget.currentTab);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    _builtTabs.add(widget.currentTab);
+    return Stack(
+      fit: StackFit.expand,
+      children: <Widget>[
+        for (final SanmillShellTab tab in SanmillShellTab.values)
+          if (_builtTabs.contains(tab))
+            HeroMode(
+              enabled: tab == widget.currentTab,
+              child: _TabVisibility(
+                active: tab == widget.currentTab,
+                child: widget.tabBuilder(context, tab),
+              ),
+            ),
+      ],
+    );
   }
 }
 

@@ -150,6 +150,10 @@ void main() {
       expect(find.byKey(const Key('sanmill_tab_home')), findsOneWidget);
       expect(find.byKey(const Key('sanmill_tab_watch')), findsOneWidget);
       expect(find.byKey(const Key('sanmill_tab_records')), findsNothing);
+      expect(
+        find.byKey(const Key('sanmill_more_list'), skipOffstage: false),
+        findsNothing,
+      );
 
       final NavigationDestination learnDestination = tester
           .widget<NavigationDestination>(
@@ -185,6 +189,11 @@ void main() {
 
       await tester.tap(find.byKey(const Key('sanmill_tab_more')));
       await tester.pumpAndSettle();
+
+      expect(
+        find.byKey(const Key('sanmill_more_list'), skipOffstage: false),
+        findsOneWidget,
+      );
 
       final BuildContext settingsTileContext = tester.element(
         find.byKey(const Key('drawer_item_general_settings')),
