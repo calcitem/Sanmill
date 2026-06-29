@@ -1293,6 +1293,7 @@ void main() {
       find.byKey(const Key('mill_variant_detail_rules_twelve_mens_morris')),
       findsOneWidget,
     );
+    expect(find.byType(CircleAvatar), findsNothing);
     expect(DB().ruleSettings.piecesCount, 9);
 
     await tester.tap(find.byKey(const Key('mill_variant_detail_apply_button')));
