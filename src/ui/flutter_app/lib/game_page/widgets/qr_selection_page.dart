@@ -9,7 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_zxing/flutter_zxing.dart';
 
 import '../../generated/intl/l10n.dart';
-import '../../shared/themes/app_theme.dart';
 
 /// Displays a picked image overlaid with tappable bounding-box highlights
 /// at each detected QR code position, so the user can tap the one to import.
@@ -180,9 +179,7 @@ class _QrSelectionPageState extends State<QrSelectionPage> {
     final S s = S.of(context);
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(s.selectQrCode, style: AppTheme.appBarTheme.titleTextStyle),
-      ),
+      appBar: AppBar(title: Text(s.selectQrCode)),
       body: Column(
         children: <Widget>[
           // Instruction banner

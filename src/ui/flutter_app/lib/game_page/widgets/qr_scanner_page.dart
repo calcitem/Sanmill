@@ -12,7 +12,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:just_screenshot/screenshot.dart';
 
 import '../../generated/intl/l10n.dart';
-import '../../shared/themes/app_theme.dart';
 import 'qr_scanner_temp_png_stub.dart'
     if (dart.library.io) 'qr_scanner_temp_png_io.dart';
 import 'qr_selection_page.dart';
@@ -558,7 +557,7 @@ class _QrScannerPageState extends State<QrScannerPage>
     if (!_usesLiveCameraScanner) {
       return Scaffold(
         appBar: AppBar(
-          title: Text(s.scanQrCode, style: AppTheme.appBarTheme.titleTextStyle),
+          title: Text(s.scanQrCode),
           actions: <Widget>[
             if (_isDecoding)
               const Padding(
@@ -609,7 +608,7 @@ class _QrScannerPageState extends State<QrScannerPage>
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(s.scanQrCode, style: AppTheme.appBarTheme.titleTextStyle),
+        title: Text(s.scanQrCode),
         actions: <Widget>[
           if (_isDecoding || _isCapturing)
             const Padding(
