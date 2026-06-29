@@ -945,7 +945,11 @@ class PlayAreaState extends State<PlayArea> {
           child: Column(
             key: const Key('play_area_human_ai_column'),
             children: <Widget>[
-              const _HumanAiMoveList(key: Key('play_area_human_ai_move_list')),
+              const _InlineMoveList(
+                key: Key('play_area_human_ai_move_list'),
+                wrapKey: Key('play_area_human_ai_move_list_wrap'),
+                moveKeyPrefix: 'play_area_human_ai_move_',
+              ),
               const _HumanAiPlayerPanel(
                 key: Key('play_area_human_ai_robot_panel'),
                 isRobot: true,
@@ -1029,6 +1033,23 @@ class PlayAreaState extends State<PlayArea> {
                     child: Column(
                       key: const Key('play_area_column'),
                       children: <Widget>[
+                        if (!isSetupPosition && !isPuzzle)
+                          _InlineMoveList(
+                            key: const Key('play_area_regular_move_list'),
+                            wrapKey: const Key(
+                              'play_area_regular_move_list_wrap',
+                            ),
+                            moveKeyPrefix: 'play_area_regular_move_',
+                            onMoveTap:
+                                (BuildContext context, PgnNode<ExtMove> node) {
+                                  return HistoryNavigator.gotoNode(
+                                    context,
+                                    node,
+                                    pop: false,
+                                  );
+                                },
+                          ),
+
                         // The top game header with hints, icons, etc.
                         GameHeader(key: const Key('play_area_game_header')),
 
@@ -1172,8 +1193,18 @@ class PlayAreaState extends State<PlayArea> {
   }
 }
 
-class _HumanAiMoveList extends StatelessWidget {
-  const _HumanAiMoveList({super.key});
+class _InlineMoveList extends StatelessWidget {
+  const _InlineMoveList({
+    super.key,
+    required this.wrapKey,
+    required this.moveKeyPrefix,
+    this.onMoveTap,
+  });
+
+  final Key wrapKey;
+  final String moveKeyPrefix;
+  final Future<void> Function(BuildContext context, PgnNode<ExtMove> node)?
+  onMoveTap;
 
   List<PgnNode<ExtMove>> _currentPathNodes() {
     final List<PgnNode<ExtMove>> nodes = <PgnNode<ExtMove>>[];
@@ -1198,7 +1229,7 @@ class _HumanAiMoveList extends StatelessWidget {
             GameController().gameRecorder.activeNode;
 
         return Container(
-          key: const Key('play_area_human_ai_move_list_wrap'),
+          key: wrapKey,
           width: double.infinity,
           constraints: const BoxConstraints(minHeight: 40),
           padding: const EdgeInsets.fromLTRB(12, 6, 12, 4),
@@ -1209,13 +1240,16 @@ class _HumanAiMoveList extends StatelessWidget {
                   runSpacing: 4,
                   children: <Widget>[
                     for (int i = 0; i < nodes.length; i++)
-                      _HumanAiMoveChip(
-                        key: Key('play_area_human_ai_move_${i + 1}'),
+                      _GameMoveChip(
+                        key: Key('$moveKeyPrefix${i + 1}'),
                         label: '${i + 1}. ${nodes[i].data!.notation}',
                         selected: nodes[i] == activeNode,
                         selectedColor: colorScheme.primaryContainer,
                         selectedTextColor: colorScheme.onPrimaryContainer,
                         textStyle: theme.textTheme.bodySmall,
+                        onTap: onMoveTap == null
+                            ? null
+                            : () => unawaited(onMoveTap!(context, nodes[i])),
                       ),
                   ],
                 ),
@@ -1225,14 +1259,15 @@ class _HumanAiMoveList extends StatelessWidget {
   }
 }
 
-class _HumanAiMoveChip extends StatelessWidget {
-  const _HumanAiMoveChip({
+class _GameMoveChip extends StatelessWidget {
+  const _GameMoveChip({
     super.key,
     required this.label,
     required this.selected,
     required this.selectedColor,
     required this.selectedTextColor,
     required this.textStyle,
+    this.onTap,
   });
 
   final String label;
@@ -1240,32 +1275,45 @@ class _HumanAiMoveChip extends StatelessWidget {
   final Color selectedColor;
   final Color selectedTextColor;
   final TextStyle? textStyle;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
-    return Semantics(
-      selected: selected,
-      child: DecoratedBox(
-        decoration: BoxDecoration(
-          color: selected ? selectedColor : colorScheme.surfaceContainerHighest,
-          borderRadius: BorderRadius.circular(AppStyles.compactRadius),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
-          child: Text(
-            label,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: textStyle?.copyWith(
-              color: selected
-                  ? selectedTextColor
-                  : colorScheme.onSurfaceVariant,
-              fontWeight: selected ? FontWeight.w600 : FontWeight.w500,
-            ),
+    final BorderRadius borderRadius = BorderRadius.circular(
+      AppStyles.compactRadius,
+    );
+    final Widget content = DecoratedBox(
+      decoration: BoxDecoration(
+        color: selected ? selectedColor : colorScheme.surfaceContainerHighest,
+        borderRadius: borderRadius,
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+        child: Text(
+          label,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          style: textStyle?.copyWith(
+            color: selected ? selectedTextColor : colorScheme.onSurfaceVariant,
+            fontWeight: selected ? FontWeight.w600 : FontWeight.w500,
           ),
         ),
       ),
+    );
+    return Semantics(
+      selected: selected,
+      button: onTap != null,
+      child: onTap == null
+          ? content
+          : Material(
+              color: Colors.transparent,
+              child: InkWell(
+                borderRadius: borderRadius,
+                onTap: onTap,
+                child: content,
+              ),
+            ),
     );
   }
 }

@@ -47,6 +47,7 @@ void main() {
     final GameController controller = GameController();
     controller.animationManager = MockAnimationManager();
     controller.gameInstance.gameMode = GameMode.humanVsHuman;
+    controller.gameRecorder.reset();
     controller.isEngineRunning = false;
     controller.isEngineInDelay = false;
   });
@@ -126,6 +127,13 @@ void main() {
       isHistoryNavigationToolbarShown: false,
     );
     GameController().gameInstance.gameMode = GameMode.humanVsHuman;
+    GameController().gameRecorder.reset();
+    GameController().gameRecorder.appendMove(
+      ExtMove('d6', side: PieceColor.white),
+    );
+    GameController().gameRecorder.appendMove(
+      ExtMove('f4', side: PieceColor.black),
+    );
 
     await tester.binding.setSurfaceSize(const Size(390, 844));
     addTearDown(() => tester.binding.setSurfaceSize(null));
@@ -145,6 +153,16 @@ void main() {
     );
     await tester.pumpAndSettle();
 
+    expect(
+      find.byKey(const Key('play_area_regular_move_list_wrap')),
+      findsOneWidget,
+    );
+    expect(find.byKey(const Key('play_area_regular_move_1')), findsOneWidget);
+    expect(find.byKey(const Key('play_area_regular_move_2')), findsOneWidget);
+    expect(
+      find.byKey(const Key('play_area_human_ai_move_list_wrap')),
+      findsNothing,
+    );
     expect(find.byKey(const Key('play_area_main_toolbar')), findsNothing);
     expect(
       find.byKey(const Key('play_area_main_toolbar_bottom')),
