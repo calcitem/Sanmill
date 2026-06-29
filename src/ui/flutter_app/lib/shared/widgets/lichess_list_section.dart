@@ -12,6 +12,7 @@ class LichessListSection extends StatelessWidget {
     required this.children,
     this.header,
     this.headerKey,
+    this.cardKey,
     this.margin = const EdgeInsets.fromLTRB(
       AppStyles.bodyPadding,
       0,
@@ -27,6 +28,7 @@ class LichessListSection extends StatelessWidget {
   final List<Widget> children;
   final Widget? header;
   final Key? headerKey;
+  final Key? cardKey;
   final EdgeInsetsGeometry margin;
   final bool hasLeading;
   final double? leadingIndent;
@@ -63,6 +65,7 @@ class LichessListSection extends StatelessWidget {
                 ),
               ),
             Card(
+              key: cardKey,
               margin: EdgeInsets.zero,
               clipBehavior: clipBehavior,
               color: backgroundColor,

@@ -12,53 +12,11 @@ class SettingsCard extends StatelessWidget {
   final List<Widget> children;
 
   @override
-  Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-    final TextStyle textStyle =
-        theme.textTheme.titleMedium?.copyWith(
-          color: theme.colorScheme.onSurface,
-          fontWeight: FontWeight.w600,
-          letterSpacing: 0,
-        ) ??
-        AppStyles.sectionTitle.copyWith(color: theme.colorScheme.onSurface);
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Padding(
-          padding: const EdgeInsetsDirectional.fromSTEB(4, 0, 4, 6),
-          child: DefaultTextStyle(
-            key: const Key('settings_card_title'),
-            style: textStyle,
-            textAlign: TextAlign.start,
-            child: title,
-          ),
-        ),
-        Card(
-          key: const Key('settings_card_card'),
-          margin: EdgeInsets.zero,
-          child: Padding(
-            padding: EdgeInsets.zero,
-            child: Column(
-              children: <Widget>[
-                for (int i = 0; i < children.length; i++)
-                  i == children.length - 1
-                      ? children[i]
-                      : Column(
-                          children: <Widget>[
-                            children[i],
-                            Divider(
-                              color: theme.colorScheme.onSurface.withValues(
-                                alpha: 0.10,
-                              ),
-                            ),
-                          ],
-                        ),
-              ],
-            ),
-          ),
-        ),
-      ],
-    );
-  }
+  Widget build(BuildContext context) => LichessListSection(
+    header: title,
+    headerKey: const Key('settings_card_title'),
+    cardKey: const Key('settings_card_card'),
+    margin: const EdgeInsets.all(AppStyles.bodyPadding),
+    children: children,
+  );
 }

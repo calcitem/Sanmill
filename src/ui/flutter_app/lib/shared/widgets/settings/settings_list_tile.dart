@@ -5,6 +5,8 @@
 
 part of 'settings.dart';
 
+const int kSettingsTileTitleMaxLines = 3;
+
 enum _SettingsTileType { standard, color, switchTile }
 
 // Standard, color, and switch tiles cover the existing settings variants; link
@@ -87,47 +89,65 @@ class SettingsListTile extends StatelessWidget {
           ),
         );
 
-    final Widget title = Text(titleString, style: titleStyle);
+    final Widget title = Text(
+      titleString,
+      maxLines: kSettingsTileTitleMaxLines,
+      overflow: TextOverflow.ellipsis,
+      style: titleStyle,
+    );
     final Widget? subTitle = subtitleString != null
-        ? Text(subtitleString!, style: subtitleStyle)
+        ? Text(subtitleString!, maxLines: 5, style: subtitleStyle)
         : null;
 
     switch (_type) {
       case _SettingsTileType.switchTile:
-        return SwitchListTile(
-          value: _switchValue!,
-          onChanged: _switchCallback,
+        return ListTile(
           title: title,
           subtitle: subTitle,
+          trailing: Switch.adaptive(
+            value: _switchValue!,
+            onChanged: _switchCallback,
+            padding: const EdgeInsetsDirectional.only(start: 8),
+          ),
         );
       case _SettingsTileType.standard:
-        Widget trailing;
+        Widget? trailing;
         if (trailingString != null) {
-          // Use IntrinsicWidth to make the text auto size
-          trailing = IntrinsicWidth(
-            child: Container(
-              alignment: Alignment.centerRight,
-              child: Text(
-                trailingString!,
-                style: subtitleStyle,
-                overflow: TextOverflow.ellipsis,
-              ),
+          trailing = ConstrainedBox(
+            constraints: BoxConstraints(
+              maxWidth: MediaQuery.sizeOf(context).width * 0.25,
+            ),
+            child: Text(
+              trailingString!,
+              style: subtitleStyle,
+              overflow: TextOverflow.ellipsis,
+              textAlign: TextAlign.end,
+              maxLines: kSettingsTileTitleMaxLines,
             ),
           );
-        } else {
+        } else if (theme.platform == TargetPlatform.iOS) {
           trailing = Icon(
-            FluentIcons.chevron_right_24_regular,
+            Icons.chevron_right,
+            size: 20,
             color: colorScheme.onSurfaceVariant.withValues(
               alpha: AppStyles.subtitleOpacity,
             ),
           );
         }
 
-        return ListTile(
-          title: title,
-          subtitle: subTitle,
-          trailing: trailing,
-          onTap: _standardCallback,
+        return Semantics(
+          container: true,
+          button: true,
+          label: trailingString == null
+              ? titleString
+              : '$titleString: $trailingString',
+          excludeSemantics: true,
+          child: ListTile(
+            title: title,
+            subtitle: subTitle,
+            trailing: trailing,
+            onTap: _standardCallback,
+          ),
         );
 
       case _SettingsTileType.color:

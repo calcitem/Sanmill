@@ -7,7 +7,6 @@
 
 library;
 
-import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 
@@ -17,7 +16,7 @@ import '../../services/environment_config.dart';
 import '../../services/logger.dart';
 import '../../themes/app_styles.dart';
 import '../../themes/app_theme.dart';
-import '../../widgets/custom_spacer.dart';
+import '../lichess_list_section.dart';
 
 part 'settings_card.dart';
 part 'settings_list.dart';
