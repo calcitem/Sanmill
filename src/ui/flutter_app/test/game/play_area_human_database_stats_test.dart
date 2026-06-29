@@ -142,6 +142,16 @@ void main() {
       findsNothing,
     );
     expect(find.byKey(const Key('play_area_toolbar_item_info')), findsNothing);
+    expect(
+      tester
+          .getBottomLeft(find.byKey(const Key('play_area_lichess_bottom_bar')))
+          .dy,
+      tester
+          .getBottomLeft(
+            find.byKey(const Key('play_area_sized_box_toolbar_bottom')),
+          )
+          .dy,
+    );
 
     RotatedBox boardOrientation = tester.widget<RotatedBox>(
       find.byKey(const Key('play_area_board_orientation')),

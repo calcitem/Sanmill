@@ -807,7 +807,8 @@ class PlayAreaState extends State<PlayArea> {
                         ),
                       ),
 
-                  const SizedBox(height: AppTheme.boardMargin),
+                  if (!usesLichessHumanAiToolbar)
+                    const SizedBox(height: AppTheme.boardMargin),
                 ],
               ),
             ),
@@ -884,7 +885,8 @@ class PlayAreaState extends State<PlayArea> {
                       ),
                     ),
 
-                  const SizedBox(height: AppTheme.boardMargin),
+                  if (!usesLichessHumanAiToolbar)
+                    const SizedBox(height: AppTheme.boardMargin),
                 ],
               ),
             ),
@@ -916,13 +918,14 @@ class _LichessGameBottomBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
-    return BottomAppBar(
-      key: const Key('play_area_lichess_bottom_bar'),
-      color: colorScheme.surface,
-      elevation: 3,
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-      child: SizedBox(
-        height: 48,
+    return MediaQuery.withClampedTextScaling(
+      maxScaleFactor: 1.4,
+      child: BottomAppBar(
+        key: const Key('play_area_lichess_bottom_bar'),
+        color: colorScheme.surface,
+        elevation: 3,
+        height: 56,
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
         child: Row(
           children: <Widget>[
             _LichessBottomBarButton(
