@@ -852,6 +852,20 @@ void main() {
         findsOneWidget,
       );
       expect(find.byKey(const Key('settings_hub_appearance')), findsOneWidget);
+      expect(
+        find.descendant(
+          of: find.byKey(const Key('settings_hub_appearance')),
+          matching: find.text('Board'),
+        ),
+        findsOneWidget,
+      );
+      expect(
+        find.descendant(
+          of: find.byKey(const Key('settings_hub_appearance')),
+          matching: find.text('Appearance'),
+        ),
+        findsNothing,
+      );
 
       await tester.tap(find.byKey(const Key('settings_hub_general_settings')));
       await tester.pumpAndSettle();
@@ -957,6 +971,10 @@ void main() {
         appearanceSettingsScaffold.backgroundColor,
         Theme.of(appearanceSettingsContext).colorScheme.surface,
       );
+      final Text appearanceTitle = tester.widget<Text>(
+        find.byKey(const Key('appearance_settings_page_appbar_title')),
+      );
+      expect(appearanceTitle.data, 'Board');
       expect(
         find.descendant(
           of: find.byKey(const Key('appearance_settings_page_appbar')),

@@ -1061,7 +1061,7 @@ class AppearanceSettingsPage extends StatelessWidget {
         appBar: AppBar(
           key: const Key('appearance_settings_page_appbar'),
           title: Text(
-            S.of(context).appearance,
+            S.of(context).board,
             key: const Key('appearance_settings_page_appbar_title'),
           ),
         ),

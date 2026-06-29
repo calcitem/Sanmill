@@ -54,8 +54,8 @@ class SettingsHubPage extends StatelessWidget {
                   ),
                 _SettingsHubTile(
                   key: const Key('settings_hub_appearance'),
-                  icon: Icons.palette_rounded,
-                  title: strings.appearance,
+                  icon: Icons.grid_view_rounded,
+                  title: strings.board,
                   pageBuilder: (_) => const AppearanceSettingsPage(),
                 ),
               ],
