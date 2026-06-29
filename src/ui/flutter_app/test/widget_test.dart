@@ -117,6 +117,9 @@ void main() {
         findsNothing,
       );
       expect(find.byKey(const Key('sanmill_navigation_rail')), findsOneWidget);
+      expect(find.byKey(const Key('sanmill_tab_home')), findsOneWidget);
+      expect(find.byKey(const Key('sanmill_tab_watch')), findsOneWidget);
+      expect(find.byKey(const Key('sanmill_tab_records')), findsNothing);
 
       // Drain any settings-save debounce timer (see the smoke test above).
       await tester.pump(const Duration(milliseconds: 350));
@@ -141,6 +144,9 @@ void main() {
         findsOneWidget,
       );
       expect(find.byKey(const Key('sanmill_navigation_rail')), findsNothing);
+      expect(find.byKey(const Key('sanmill_tab_home')), findsOneWidget);
+      expect(find.byKey(const Key('sanmill_tab_watch')), findsOneWidget);
+      expect(find.byKey(const Key('sanmill_tab_records')), findsNothing);
 
       await tester.tap(
         find.byKey(const Key('custom_drawer_drawer_overlay_button')),

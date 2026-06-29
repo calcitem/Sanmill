@@ -43,24 +43,24 @@ import '../shared/widgets/snackbars/scaffold_messenger.dart';
 import '../tutorial/widgets/tutorial_dialog.dart';
 
 enum SanmillShellTab {
-  game,
+  home,
   puzzles,
   learn,
-  records,
+  watch,
   more;
 
   Key get key => Key('sanmill_tab_$name');
 
   IconData get icon {
     switch (this) {
-      case SanmillShellTab.game:
+      case SanmillShellTab.home:
         return Icons.home_rounded;
       case SanmillShellTab.puzzles:
         return Icons.extension_rounded;
       case SanmillShellTab.learn:
         return Icons.school_rounded;
-      case SanmillShellTab.records:
-        return Icons.bar_chart_rounded;
+      case SanmillShellTab.watch:
+        return Icons.visibility_rounded;
       case SanmillShellTab.more:
         return Icons.menu_rounded;
     }
@@ -68,14 +68,14 @@ enum SanmillShellTab {
 
   String label(S strings) {
     switch (this) {
-      case SanmillShellTab.game:
-        return strings.game;
+      case SanmillShellTab.home:
+        return strings.home;
       case SanmillShellTab.puzzles:
         return strings.puzzles;
       case SanmillShellTab.learn:
         return strings.howToPlay;
-      case SanmillShellTab.records:
-        return strings.statistics;
+      case SanmillShellTab.watch:
+        return strings.watch;
       case SanmillShellTab.more:
         return strings.more;
     }
@@ -83,7 +83,21 @@ enum SanmillShellTab {
 }
 
 abstract final class SanmillShellRouteIds {
+  static const GameRouteId watchRoot = GameRouteId('app.tab.watch');
   static const GameRouteId moreRoot = GameRouteId('app.tab.more');
+}
+
+GameMenuContribution? _findGameMenuContribution(
+  BuildContext context,
+  bool Function(GameMenuContribution contribution) test,
+) {
+  for (final GameMenuContribution contribution
+      in GameRegistry.instance.current.drawerContributions(context)) {
+    if (contribution.availableIn(context) && test(contribution)) {
+      return contribution;
+    }
+  }
+  return null;
 }
 
 class SanmillAppShell extends StatefulWidget {
@@ -112,7 +126,7 @@ class SanmillAppShellState extends State<SanmillAppShell> {
           tab: ScrollController(debugLabel: 'Sanmill ${tab.name} root'),
       };
 
-  SanmillShellTab _currentTab = SanmillShellTab.game;
+  SanmillShellTab _currentTab = SanmillShellTab.home;
   late String _routeId;
   late String _playRouteId;
   bool _initialized = false;
@@ -251,7 +265,7 @@ class SanmillAppShellState extends State<SanmillAppShell> {
       nextRouteId: nextRouteId,
     );
     setState(() {
-      _currentTab = SanmillShellTab.game;
+      _currentTab = SanmillShellTab.home;
       _popAllTabsToRoot();
     });
   }
@@ -324,9 +338,9 @@ class SanmillAppShellState extends State<SanmillAppShell> {
     }
     setState(() {
       _playRouteId = routeId;
-      _currentTab = SanmillShellTab.game;
+      _currentTab = SanmillShellTab.home;
     });
-    _navigatorKeys[SanmillShellTab.game]?.currentState?.popUntil(
+    _navigatorKeys[SanmillShellTab.home]?.currentState?.popUntil(
       (Route<dynamic> route) => route.isFirst,
     );
   }
@@ -358,18 +372,42 @@ class SanmillAppShellState extends State<SanmillAppShell> {
     );
   }
 
+  Future<void> _pushWatchRoute(String routeId) async {
+    final Widget? screen = buildModuleScreenForGame(
+      context,
+      GameRegistry.instance.currentId,
+      routeId,
+      session: _activeSession,
+    );
+    if (screen == null) {
+      logger.w('No Watch screen for route $routeId.');
+      return;
+    }
+    if (!await _transitionToRoute(routeId)) {
+      return;
+    }
+    if (!mounted) {
+      return;
+    }
+    setState(() {
+      _currentTab = SanmillShellTab.watch;
+    });
+    _navigatorKeys[SanmillShellTab.watch]?.currentState?.push(
+      MaterialPageRoute<void>(builder: (_) => screen),
+    );
+  }
+
   String _rootRouteIdForTab(SanmillShellTab tab) {
     switch (tab) {
-      case SanmillShellTab.game:
+      case SanmillShellTab.home:
         return _playRouteId;
       case SanmillShellTab.puzzles:
         return _puzzlesContribution(context)?.id.value ??
             SanmillShellRouteIds.moreRoot.value;
       case SanmillShellTab.learn:
         return ShellRouteIds.appHowToPlay.value;
-      case SanmillShellTab.records:
-        return _statisticsContribution(context)?.id.value ??
-            SanmillShellRouteIds.moreRoot.value;
+      case SanmillShellTab.watch:
+        return SanmillShellRouteIds.watchRoot.value;
       case SanmillShellTab.more:
         return SanmillShellRouteIds.moreRoot.value;
     }
@@ -395,13 +433,7 @@ class SanmillAppShellState extends State<SanmillAppShell> {
     BuildContext context,
     bool Function(GameMenuContribution contribution) test,
   ) {
-    for (final GameMenuContribution contribution
-        in GameRegistry.instance.current.drawerContributions(context)) {
-      if (contribution.availableIn(context) && test(contribution)) {
-        return contribution;
-      }
-    }
-    return null;
+    return _findGameMenuContribution(context, test);
   }
 
   Widget _buildRouteSurface(String routeId) {
@@ -417,7 +449,7 @@ class SanmillAppShellState extends State<SanmillAppShell> {
 
   Widget _buildTabRoot(SanmillShellTab tab) {
     switch (tab) {
-      case SanmillShellTab.game:
+      case SanmillShellTab.home:
         return _buildRouteSurface(_playRouteId);
       case SanmillShellTab.puzzles:
         final GameMenuContribution? contribution = _puzzlesContribution(
@@ -428,13 +460,12 @@ class SanmillAppShellState extends State<SanmillAppShell> {
             : _buildRouteSurface(contribution.id.value);
       case SanmillShellTab.learn:
         return _buildRouteSurface(ShellRouteIds.appHowToPlay.value);
-      case SanmillShellTab.records:
-        final GameMenuContribution? contribution = _statisticsContribution(
-          context,
+      case SanmillShellTab.watch:
+        return _WatchTabRoot(
+          scrollController: _scrollControllers[SanmillShellTab.watch]!,
+          statisticsContribution: _statisticsContribution(context),
+          onWatchRouteSelected: _pushWatchRoute,
         );
-        return contribution == null
-            ? _UnavailableTabPage(label: S.of(context).statistics)
-            : _buildRouteSurface(contribution.id.value);
       case SanmillShellTab.more:
         return _MoreTabRoot(
           scrollController: _scrollControllers[SanmillShellTab.more]!,
@@ -470,9 +501,9 @@ class SanmillAppShellState extends State<SanmillAppShell> {
       navigator!.pop();
       return false;
     }
-    if (_currentTab != SanmillShellTab.game) {
+    if (_currentTab != SanmillShellTab.home) {
       setState(() {
-        _currentTab = SanmillShellTab.game;
+        _currentTab = SanmillShellTab.home;
       });
       return false;
     }
@@ -538,6 +569,7 @@ class SanmillAppShellState extends State<SanmillAppShell> {
             drawer: _SanmillNavigationDrawer(
               onTabSelected: _selectTab,
               onPlayRouteSelected: _selectPlayRoute,
+              onWatchRouteSelected: _pushWatchRoute,
               onAppRouteSelected: _pushAppRoute,
               onFeedback: _showFeedback,
               onExit: _exitApp,
@@ -770,6 +802,7 @@ class _SanmillNavigationDrawer extends StatelessWidget {
   const _SanmillNavigationDrawer({
     required this.onTabSelected,
     required this.onPlayRouteSelected,
+    required this.onWatchRouteSelected,
     required this.onAppRouteSelected,
     required this.onFeedback,
     required this.onExit,
@@ -777,6 +810,7 @@ class _SanmillNavigationDrawer extends StatelessWidget {
 
   final ValueChanged<SanmillShellTab> onTabSelected;
   final ValueChanged<String> onPlayRouteSelected;
+  final ValueChanged<String> onWatchRouteSelected;
   final ValueChanged<String> onAppRouteSelected;
   final VoidCallback onFeedback;
   final VoidCallback onExit;
@@ -784,6 +818,12 @@ class _SanmillNavigationDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final S strings = S.of(context);
+    final GameMenuContribution? statisticsContribution =
+        _findGameMenuContribution(
+          context,
+          (GameMenuContribution contribution) =>
+              contribution.id.value.toLowerCase().contains('statistic'),
+        );
 
     return Drawer(
       key: const Key('sanmill_navigation_drawer'),
@@ -808,12 +848,20 @@ class _SanmillNavigationDrawer extends StatelessWidget {
               label: strings.puzzles,
               onSelected: onTabSelected,
             ),
-            _DrawerTabTile(
+            ListTile(
               key: const Key('drawer_item_statistics'),
-              tab: SanmillShellTab.records,
-              icon: Icons.bar_chart_rounded,
-              label: strings.statistics,
-              onSelected: onTabSelected,
+              leading: const Icon(Icons.bar_chart_rounded),
+              title: Text(strings.statistics),
+              onTap: () {
+                Navigator.of(context).pop();
+                final GameMenuContribution? contribution =
+                    statisticsContribution;
+                if (contribution == null) {
+                  onTabSelected(SanmillShellTab.watch);
+                  return;
+                }
+                onWatchRouteSelected(contribution.id.value);
+              },
             ),
             const Divider(height: 1),
             _MenuEntries(
@@ -865,6 +913,59 @@ class _DrawerTabTile extends StatelessWidget {
         Navigator.of(context).pop();
         onSelected(tab);
       },
+    );
+  }
+}
+
+class _WatchTabRoot extends StatelessWidget {
+  const _WatchTabRoot({
+    required this.scrollController,
+    required this.statisticsContribution,
+    required this.onWatchRouteSelected,
+  });
+
+  final ScrollController scrollController;
+  final GameMenuContribution? statisticsContribution;
+  final ValueChanged<String> onWatchRouteSelected;
+
+  @override
+  Widget build(BuildContext context) {
+    final S strings = S.of(context);
+    final GameMenuContribution? contribution = statisticsContribution;
+
+    return Scaffold(
+      appBar: AppBar(title: Text(strings.watch)),
+      body: ListView(
+        key: const Key('sanmill_watch_list'),
+        controller: scrollController,
+        padding: const EdgeInsets.fromLTRB(12, 8, 12, 24),
+        children: <Widget>[
+          if (contribution != null)
+            _MoreSection(
+              title: strings.watch,
+              mode: _MenuEntryMode.more,
+              children: <Widget>[
+                _MoreTile(
+                  key: const Key('drawer_item_statistics'),
+                  icon: contribution.icon ?? Icons.bar_chart_rounded,
+                  title: contribution.label,
+                  onTap: () => onWatchRouteSelected(contribution.id.value),
+                ),
+              ],
+            )
+          else
+            SizedBox(
+              height: MediaQuery.sizeOf(context).height * 0.5,
+              child: Center(
+                child: Icon(
+                  Icons.visibility_off_rounded,
+                  size: 48,
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                ),
+              ),
+            ),
+        ],
+      ),
     );
   }
 }

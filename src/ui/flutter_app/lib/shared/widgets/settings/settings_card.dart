@@ -14,27 +14,29 @@ class SettingsCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
-    final bool isDark = theme.brightness == Brightness.dark;
-    final TextStyle textStyle = isDark
-        ? theme.textTheme.titleLarge!.copyWith(
-            color: theme.colorScheme.onSurface,
-            fontWeight: FontWeight.w700,
-          )
-        : theme.textTheme.titleLarge!.apply(
-            color: AppTheme.settingsHeaderTextColor,
-          );
+    final TextStyle textStyle =
+        theme.textTheme.titleMedium?.copyWith(
+          color: theme.colorScheme.onSurface,
+          fontWeight: FontWeight.w600,
+          letterSpacing: 0,
+        ) ??
+        AppStyles.sectionTitle.copyWith(color: theme.colorScheme.onSurface);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        DefaultTextStyle(
-          key: const Key('settings_card_title'),
-          style: textStyle,
-          textAlign: TextAlign.start,
-          child: title,
+        Padding(
+          padding: const EdgeInsetsDirectional.fromSTEB(4, 0, 4, 6),
+          child: DefaultTextStyle(
+            key: const Key('settings_card_title'),
+            style: textStyle,
+            textAlign: TextAlign.start,
+            child: title,
+          ),
         ),
         Card(
           key: const Key('settings_card_card'),
+          margin: EdgeInsets.zero,
           child: Padding(
             padding: EdgeInsets.zero,
             child: Column(
@@ -46,11 +48,9 @@ class SettingsCard extends StatelessWidget {
                           children: <Widget>[
                             children[i],
                             Divider(
-                              color: isDark
-                                  ? theme.colorScheme.onSurface.withValues(
-                                      alpha: 0.12,
-                                    )
-                                  : AppTheme.listItemDividerColor,
+                              color: theme.colorScheme.onSurface.withValues(
+                                alpha: 0.10,
+                              ),
                             ),
                           ],
                         ),

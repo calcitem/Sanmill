@@ -195,7 +195,17 @@ Future<void> navigateToShellItem(WidgetTester tester, String itemKey) async {
       await tapSanmillTab(tester, 'puzzles');
       return;
     case 'drawer_item_statistics':
-      await tapSanmillTab(tester, 'records');
+      await tapSanmillTab(tester, 'watch');
+      final Finder statisticsItem = find.byKey(
+        const Key('drawer_item_statistics'),
+      );
+      expect(
+        statisticsItem,
+        findsWidgets,
+        reason: 'Statistics entry should exist inside the Watch tab',
+      );
+      await tester.tap(statisticsItem.first, warnIfMissed: false);
+      await pumpAndSettleWithin(tester);
       return;
     case 'drawer_item_human_vs_ai':
       await _tapMoreItem(tester, itemKey);

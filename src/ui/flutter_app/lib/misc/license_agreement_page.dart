@@ -21,14 +21,9 @@ class LicenseAgreementPage extends StatelessWidget {
     return ValueListenableBuilder<Box<ColorSettings>>(
       valueListenable: DB().listenColorSettings,
       builder: (BuildContext context, Box<ColorSettings> box, Widget? child) {
-        final ColorSettings colors = box.get(
-          DB.colorSettingsKey,
-          defaultValue: const ColorSettings(),
-        )!;
-        final bool useDarkSettingsUi = AppTheme.shouldUseDarkSettingsUi(colors);
-        final ThemeData settingsTheme = useDarkSettingsUi
-            ? AppTheme.buildAccessibleSettingsDarkTheme(colors)
-            : Theme.of(context);
+        final ThemeData settingsTheme = Theme.of(context);
+        final bool useDarkSettingsUi =
+            settingsTheme.brightness == Brightness.dark;
 
         return FutureBuilder<String>(
           future: rootBundle.loadString(Assets.licenses.gpl30),

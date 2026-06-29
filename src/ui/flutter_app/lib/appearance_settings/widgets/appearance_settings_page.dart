@@ -505,32 +505,6 @@ class AppearanceSettingsPage extends StatelessWidget {
               DB().colorSettings = colorSettings.copyWith(messageColor: val),
         ),
         SettingsListTile.color(
-          key: const Key('color_settings_card_drawer_color_settings_list_tile'),
-          titleString: S.of(context).drawerColor,
-          value: DB().colorSettings.drawerColor,
-          onChanged: (Color val) =>
-              DB().colorSettings = colorSettings.copyWith(drawerColor: val),
-        ),
-        SettingsListTile.color(
-          key: const Key(
-            'color_settings_card_drawer_text_color_settings_list_tile',
-          ),
-          titleString: S.of(context).drawerTextColor,
-          value: DB().colorSettings.drawerTextColor,
-          onChanged: (Color val) =>
-              DB().colorSettings = colorSettings.copyWith(drawerTextColor: val),
-        ),
-        SettingsListTile.color(
-          key: const Key(
-            'color_settings_card_drawer_highlight_item_color_settings_list_tile',
-          ),
-          titleString: S.of(context).drawerHighlightItemColor,
-          value: DB().colorSettings.drawerHighlightItemColor,
-          onChanged: (Color val) => DB().colorSettings = colorSettings.copyWith(
-            drawerHighlightItemColor: val,
-          ),
-        ),
-        SettingsListTile.color(
           key: const Key(
             'color_settings_card_main_toolbar_background_color_settings_list_tile',
           ),
@@ -619,6 +593,48 @@ class AppearanceSettingsPage extends StatelessWidget {
     });
   }
 
+  String _themeModeLabel(BuildContext context, AppThemeMode themeMode) {
+    final S strings = S.of(context);
+    return switch (themeMode) {
+      AppThemeMode.system => strings.system,
+      AppThemeMode.light => strings.light,
+      AppThemeMode.dark => strings.dark,
+    };
+  }
+
+  void _setThemeMode(BuildContext context, DisplaySettings displaySettings) {
+    showModalBottomSheet<AppThemeMode>(
+      context: context,
+      builder: (BuildContext context) {
+        return SafeArea(
+          child: RadioGroup<AppThemeMode>(
+            groupValue: displaySettings.themeMode,
+            onChanged: (AppThemeMode? value) {
+              assert(value != null, 'Theme mode cannot be null.');
+              Navigator.pop(context, value);
+            },
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                for (final AppThemeMode themeMode in AppThemeMode.values)
+                  RadioListTile<AppThemeMode>(
+                    key: Key('theme_mode_${themeMode.name}_radio_tile'),
+                    title: Text(_themeModeLabel(context, themeMode)),
+                    value: themeMode,
+                  ),
+              ],
+            ),
+          ),
+        );
+      },
+    ).then((AppThemeMode? themeMode) {
+      if (themeMode == null || themeMode == displaySettings.themeMode) {
+        return;
+      }
+      DB().displaySettings = displaySettings.copyWith(themeMode: themeMode);
+    });
+  }
+
   Widget _buildDisplaySettings(
     BuildContext context,
     Box<DisplaySettings> box,
@@ -642,6 +658,12 @@ class AppearanceSettingsPage extends StatelessWidget {
               ? localeToLanguageName[displaySettings.locale]
               : null,
           onTap: () => _selectLanguage(context, displaySettings),
+        ),
+        SettingsListTile(
+          key: const Key('display_settings_card_theme_mode_settings_list_tile'),
+          titleString: S.of(context).themeMode,
+          trailingString: _themeModeLabel(context, displaySettings.themeMode),
+          onTap: () => _setThemeMode(context, displaySettings),
         ),
         if (!kIsWeb && (Platform.isAndroid || Platform.isIOS))
           SettingsListTile.switchTile(
@@ -904,66 +926,45 @@ class AppearanceSettingsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder<Box<ColorSettings>>(
-      valueListenable: DB().listenColorSettings,
-      builder: (BuildContext context, Box<ColorSettings> box, Widget? child) {
-        final ColorSettings colors = box.get(
-          DB.colorSettingsKey,
-          defaultValue: const ColorSettings(),
-        )!;
-        final bool useDarkSettingsUi = AppTheme.shouldUseDarkSettingsUi(colors);
-        final ThemeData settingsTheme = useDarkSettingsUi
-            ? AppTheme.buildAccessibleSettingsDarkTheme(colors)
-            : Theme.of(context);
+    final ThemeData theme = Theme.of(context);
 
-        final Widget page = BlockSemantics(
-          key: const Key('appearance_settings_page_block_semantics'),
-          child: Scaffold(
-            key: const Key('appearance_settings_page_scaffold'),
-            resizeToAvoidBottomInset: false,
-            backgroundColor: useDarkSettingsUi
-                ? settingsTheme.scaffoldBackgroundColor
-                : AppTheme.lightBackgroundColor,
-            appBar: AppBar(
-              key: const Key('appearance_settings_page_appbar'),
-              leading: CustomDrawerIcon.of(context)?.drawerIcon,
-              title: Text(
-                S.of(context).appearance,
-                key: const Key('appearance_settings_page_appbar_title'),
-                style: useDarkSettingsUi
-                    ? null
-                    : AppTheme.appBarTheme.titleTextStyle,
-              ),
-            ),
-            body: SettingsList(
-              key: const Key('appearance_settings_page_settings_list'),
-              children: <Widget>[
-                ValueListenableBuilder<Box<DisplaySettings>>(
-                  key: const Key(
-                    'appearance_settings_page_display_settings_value_listenable_builder',
-                  ),
-                  valueListenable: DB().listenDisplaySettings,
-                  builder: _buildDisplaySettings,
-                ),
-                // Always show color settings regardless of screen size.
-                // Previously hidden on small screens, but users should have
-                // access to color customization on all platforms.
-                ValueListenableBuilder<Box<ColorSettings>>(
-                  key: const Key(
-                    'appearance_settings_page_color_settings_value_listenable_builder',
-                  ),
-                  valueListenable: DB().listenColorSettings,
-                  builder: _buildColorSettings,
-                ),
-              ],
-            ),
+    return BlockSemantics(
+      key: const Key('appearance_settings_page_block_semantics'),
+      child: Scaffold(
+        key: const Key('appearance_settings_page_scaffold'),
+        resizeToAvoidBottomInset: false,
+        backgroundColor: theme.colorScheme.surface,
+        appBar: AppBar(
+          key: const Key('appearance_settings_page_appbar'),
+          leading: CustomDrawerIcon.of(context)?.drawerIcon,
+          title: Text(
+            S.of(context).appearance,
+            key: const Key('appearance_settings_page_appbar_title'),
           ),
-        );
-
-        return useDarkSettingsUi
-            ? Theme(data: settingsTheme, child: page)
-            : page;
-      },
+        ),
+        body: SettingsList(
+          key: const Key('appearance_settings_page_settings_list'),
+          children: <Widget>[
+            ValueListenableBuilder<Box<DisplaySettings>>(
+              key: const Key(
+                'appearance_settings_page_display_settings_value_listenable_builder',
+              ),
+              valueListenable: DB().listenDisplaySettings,
+              builder: _buildDisplaySettings,
+            ),
+            // Always show color settings regardless of screen size.
+            // Previously hidden on small screens, but users should have
+            // access to color customization on all platforms.
+            ValueListenableBuilder<Box<ColorSettings>>(
+              key: const Key(
+                'appearance_settings_page_color_settings_value_listenable_builder',
+              ),
+              valueListenable: DB().listenColorSettings,
+              builder: _buildColorSettings,
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

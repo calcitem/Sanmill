@@ -38,6 +38,25 @@ enum MovesViewLayout {
   details,
 }
 
+/// App shell theme mode independent of board colors.
+@HiveType(typeId: 14)
+enum AppThemeMode {
+  @HiveField(0)
+  system,
+  @HiveField(1)
+  light,
+  @HiveField(2)
+  dark;
+
+  ThemeMode get materialThemeMode {
+    return switch (this) {
+      AppThemeMode.system => ThemeMode.system,
+      AppThemeMode.light => ThemeMode.light,
+      AppThemeMode.dark => ThemeMode.dark,
+    };
+  }
+}
+
 /// Display Settings data model
 ///
 /// Holds the data needed for the Display Settings
@@ -96,6 +115,7 @@ class DisplaySettings {
     this.isCapturablePiecesHighlightShown = false,
     this.isPiecePickUpAnimationEnabled = true,
     this.showBranchTree = false,
+    this.themeMode = AppThemeMode.system,
   });
 
   /// Encodes a Json style map into a [DisplaySettings] object
@@ -253,6 +273,10 @@ class DisplaySettings {
   /// Whether to show git-style branch tree for PGN variations
   @HiveField(45, defaultValue: false)
   final bool showBranchTree;
+
+  /// Whether the app shell follows the system, light, or dark theme.
+  @HiveField(46, defaultValue: AppThemeMode.system)
+  final AppThemeMode themeMode;
 
   /// Decodes a Json from a [DisplaySettings] object
   Map<String, dynamic> toJson() => _$DisplaySettingsToJson(this);

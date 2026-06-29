@@ -321,6 +321,7 @@ class SanmillAppState extends State<SanmillApp> {
       locale: locale,
       theme: AppTheme.lightThemeData,
       darkTheme: AppTheme.darkThemeData,
+      themeMode: displaySettings.themeMode.materialThemeMode,
       debugShowCheckedModeBanner: EnvironmentConfig.devMode,
       builder: (BuildContext context, Widget? child) {
         initializeScreenOrientation(context);

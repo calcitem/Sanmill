@@ -13,7 +13,7 @@ class SettingsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) => ListView.separated(
     key: const Key('settings_list'),
-    padding: const EdgeInsets.all(16),
+    padding: const EdgeInsets.all(AppStyles.bodyPadding),
     itemBuilder: (_, int i) => children[i],
     separatorBuilder: (_, int i) =>
         const CustomSpacer(key: Key('custom_spacer')),

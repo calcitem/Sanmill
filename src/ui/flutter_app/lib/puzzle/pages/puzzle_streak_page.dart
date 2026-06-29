@@ -84,14 +84,9 @@ class _PuzzleStreakPageState extends State<PuzzleStreakPage> {
     return ValueListenableBuilder<Box<ColorSettings>>(
       valueListenable: DB().listenColorSettings,
       builder: (BuildContext context, Box<ColorSettings> box, Widget? child) {
-        final ColorSettings colors = box.get(
-          DB.colorSettingsKey,
-          defaultValue: const ColorSettings(),
-        )!;
-        final bool useDarkSettingsUi = AppTheme.shouldUseDarkSettingsUi(colors);
-        final ThemeData settingsTheme = useDarkSettingsUi
-            ? AppTheme.buildAccessibleSettingsDarkTheme(colors)
-            : Theme.of(context);
+        final ThemeData settingsTheme = Theme.of(context);
+        final bool useDarkSettingsUi =
+            settingsTheme.brightness == Brightness.dark;
 
         // Use Builder to ensure the context has the correct theme
         return Theme(

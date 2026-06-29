@@ -15,6 +15,7 @@ import '../../../generated/intl/l10n.dart';
 import '../../database/database.dart';
 import '../../services/environment_config.dart';
 import '../../services/logger.dart';
+import '../../themes/app_styles.dart';
 import '../../themes/app_theme.dart';
 import '../../widgets/custom_spacer.dart';
 

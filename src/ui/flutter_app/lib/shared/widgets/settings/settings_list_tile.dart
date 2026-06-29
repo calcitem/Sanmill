@@ -65,19 +65,27 @@ class SettingsListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
-    final bool isDark = theme.brightness == Brightness.dark;
+    final ColorScheme colorScheme = theme.colorScheme;
 
-    final TextStyle titleStyle = isDark
-        ? theme.textTheme.bodyLarge!.copyWith(
-            color: theme.colorScheme.onSurface,
-          )
-        : AppTheme.listTileTitleStyle;
+    final TextStyle titleStyle =
+        theme.textTheme.bodyLarge?.copyWith(
+          color: colorScheme.onSurface,
+          letterSpacing: 0,
+        ) ??
+        AppStyles.tileTitle.copyWith(color: colorScheme.onSurface);
 
-    final TextStyle subtitleStyle = isDark
-        ? theme.textTheme.bodyMedium!.copyWith(
-            color: theme.colorScheme.onSurfaceVariant,
-          )
-        : AppTheme.listTileSubtitleStyle;
+    final TextStyle subtitleStyle =
+        theme.textTheme.bodyMedium?.copyWith(
+          color: colorScheme.onSurfaceVariant.withValues(
+            alpha: AppStyles.subtitleOpacity,
+          ),
+          letterSpacing: 0,
+        ) ??
+        AppStyles.tileSubtitle.copyWith(
+          color: colorScheme.onSurfaceVariant.withValues(
+            alpha: AppStyles.subtitleOpacity,
+          ),
+        );
 
     final Widget title = Text(titleString, style: titleStyle);
     final Widget? subTitle = subtitleString != null
@@ -109,9 +117,9 @@ class SettingsListTile extends StatelessWidget {
         } else {
           trailing = Icon(
             FluentIcons.chevron_right_24_regular,
-            color: isDark
-                ? theme.colorScheme.onSurfaceVariant
-                : AppTheme.listTileSubtitleColor,
+            color: colorScheme.onSurfaceVariant.withValues(
+              alpha: AppStyles.subtitleOpacity,
+            ),
           );
         }
 
@@ -126,9 +134,25 @@ class SettingsListTile extends StatelessWidget {
         return ListTile(
           title: title,
           subtitle: subTitle,
-          trailing: Text(
-            _colorValue!.toHexString(),
-            style: TextStyle(backgroundColor: _colorValue),
+          trailing: DecoratedBox(
+            decoration: BoxDecoration(
+              color: _colorValue,
+              borderRadius: BorderRadius.circular(6),
+              border: Border.all(
+                color: colorScheme.outlineVariant.withValues(alpha: 0.7),
+              ),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+              child: Text(
+                _colorValue!.toHexString(),
+                style: TextStyle(
+                  color: _colorValue.computeLuminance() > 0.5
+                      ? Colors.black
+                      : Colors.white,
+                ),
+              ),
+            ),
           ),
           onTap: () => showDialog(
             context: context,

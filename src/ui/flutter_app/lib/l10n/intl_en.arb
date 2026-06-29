@@ -931,6 +931,14 @@
     "@tapBackAgainToLeave": {
         "description": "Tap Back again to exit."
     },
+    "home": "Home",
+    "@home": {
+        "description": "Bottom navigation tab label for the home tab"
+    },
+    "watch": "Watch",
+    "@watch": {
+        "description": "Bottom navigation tab label for the watch tab"
+    },
     "more": "More",
     "@more": {
         "description": "More"
@@ -1022,6 +1030,14 @@
     "chooseYourPicture": "Choose your picture",
     "@chooseYourPicture": {
         "description": "Choose your picture"
+    },
+    "themeMode": "Theme mode",
+    "@themeMode": {
+        "description": "Setting title for app light/dark/system theme mode"
+    },
+    "system": "System",
+    "@system": {
+        "description": "Theme mode option that follows the operating system"
     },
     "light": "Light",
     "@light": {

@@ -8,8 +8,57 @@ import 'package:flutter/material.dart';
 
 import '../../appearance_settings/models/color_settings.dart';
 import '../database/database.dart';
+import 'app_styles.dart';
 import 'custom_page_transitions.dart';
 import 'ui_colors.dart';
+
+@immutable
+class AppCustomColors extends ThemeExtension<AppCustomColors> {
+  const AppCustomColors({
+    required this.accent,
+    required this.good,
+    required this.error,
+    required this.rowEven,
+    required this.rowOdd,
+  });
+
+  final Color accent;
+  final Color good;
+  final Color error;
+  final Color rowEven;
+  final Color rowOdd;
+
+  @override
+  AppCustomColors copyWith({
+    Color? accent,
+    Color? good,
+    Color? error,
+    Color? rowEven,
+    Color? rowOdd,
+  }) {
+    return AppCustomColors(
+      accent: accent ?? this.accent,
+      good: good ?? this.good,
+      error: error ?? this.error,
+      rowEven: rowEven ?? this.rowEven,
+      rowOdd: rowOdd ?? this.rowOdd,
+    );
+  }
+
+  @override
+  AppCustomColors lerp(ThemeExtension<AppCustomColors>? other, double t) {
+    if (other is! AppCustomColors) {
+      return this;
+    }
+    return AppCustomColors(
+      accent: Color.lerp(accent, other.accent, t)!,
+      good: Color.lerp(good, other.good, t)!,
+      error: Color.lerp(error, other.error, t)!,
+      rowEven: Color.lerp(rowEven, other.rowEven, t)!,
+      rowOdd: Color.lerp(rowOdd, other.rowOdd, t)!,
+    );
+  }
+}
 
 /// The Apps Theme
 ///
@@ -124,6 +173,7 @@ class AppTheme {
     checkboxTheme: _buildCheckboxTheme(_colorScheme),
     radioTheme: _buildRadioTheme(_colorScheme),
     pageTransitionsTheme: _pageTransitionsTheme,
+    extensions: <ThemeExtension<dynamic>>[_customColors(_colorScheme)],
   );
 
   static const PageTransitionsTheme
@@ -169,6 +219,7 @@ class AppTheme {
     checkboxTheme: _buildCheckboxTheme(_darkColorScheme),
     radioTheme: _buildRadioTheme(_darkColorScheme),
     pageTransitionsTheme: _pageTransitionsTheme,
+    extensions: <ThemeExtension<dynamic>>[_customColors(_darkColorScheme)],
   );
 
   // Theme
@@ -210,10 +261,22 @@ class AppTheme {
   static CardThemeData _cardThemeData(ColorScheme colorScheme) => CardThemeData(
     margin: const EdgeInsets.symmetric(vertical: 4.0),
     color: colorScheme.surfaceContainerLow,
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(AppStyles.cardRadius),
+    ),
     elevation: 0,
     surfaceTintColor: Colors.transparent,
   );
+
+  static AppCustomColors _customColors(ColorScheme colorScheme) {
+    return AppCustomColors(
+      accent: colorScheme.primary,
+      good: const Color(0xFF629924),
+      error: colorScheme.error,
+      rowEven: colorScheme.surfaceContainerLow,
+      rowOdd: colorScheme.surfaceContainer,
+    );
+  }
 
   static NavigationBarThemeData _navigationBarThemeData(
     ColorScheme colorScheme,
@@ -495,12 +558,12 @@ class AppTheme {
       .withValues(alpha: 0.8);
 
   /// Settings page
-  static const Color listItemDividerColor = UIColors.rosewood20;
-  static const Color _switchListTileTitleColor = UIColors.spruce;
-  static const Color cardColor = UIColors.floralWhite;
-  static const Color settingsHeaderTextColor = UIColors.spruce;
-  static const Color lightBackgroundColor = UIColors.papayaWhip;
-  static const Color listTileSubtitleColor = UIColors.cocoaBean60;
+  static const Color listItemDividerColor = Color(0x1F242421);
+  static const Color _switchListTileTitleColor = Color(0xFF242421);
+  static const Color cardColor = Color(0xFFF4F4F1);
+  static const Color settingsHeaderTextColor = Color(0xFF242421);
+  static const Color lightBackgroundColor = Color(0xFFFAFAF8);
+  static const Color listTileSubtitleColor = Color(0xB35E5D57);
 
   /// Returns whether Settings/Config pages should use an accessible dark UI.
   ///
@@ -634,7 +697,7 @@ class AppTheme {
   static const Color helpTextColor = UIColors.burlyWood;
 
   /// About
-  static const Color aboutPageBackgroundColor = UIColors.papayaWhip;
+  static const Color aboutPageBackgroundColor = Color(0xFFFAFAF8);
 
   /// Drawer
   static const Color drawerDividerColor = UIColors.riverBed60;
