@@ -178,6 +178,41 @@ void main() {
       );
       expect(find.byKey(const Key('sanmill_navigation_drawer')), findsNothing);
 
+      final SanmillAppShellState shellState = tester
+          .state<SanmillAppShellState>(find.byType(SanmillAppShell));
+      expect(shellState.debugCurrentTab, SanmillShellTab.home);
+      expect(
+        shellState.debugCurrentRouteId,
+        SanmillShellRouteIds.homeRoot.value,
+      );
+      expect(find.byKey(const Key('sanmill_home_list')), findsOneWidget);
+      expect(find.byKey(const Key('drawer_item_human_vs_ai')), findsOneWidget);
+      expect(
+        find.byKey(const Key('play_area_lichess_bottom_bar')),
+        findsNothing,
+      );
+
+      await tester.tap(find.byKey(const Key('drawer_item_human_vs_ai')));
+      await tester.pumpAndSettle();
+
+      expect(shellState.debugCurrentTab, SanmillShellTab.home);
+      expect(shellState.debugCurrentRouteId, shellState.debugPlayRouteId);
+      expect(find.byKey(const Key('human_ai')), findsOneWidget);
+
+      await tester.binding.handlePopRoute();
+      await tester.pumpAndSettle();
+
+      expect(shellState.debugCurrentTab, SanmillShellTab.home);
+      expect(
+        shellState.debugCurrentRouteId,
+        SanmillShellRouteIds.homeRoot.value,
+      );
+      expect(find.byKey(const Key('sanmill_home_list')), findsOneWidget);
+      expect(
+        find.byKey(const Key('play_area_lichess_bottom_bar')),
+        findsNothing,
+      );
+
       await tester.tap(find.byKey(const Key('sanmill_tab_more')));
       await tester.pumpAndSettle();
 
@@ -215,8 +250,6 @@ void main() {
         findsNothing,
       );
 
-      final SanmillAppShellState shellState = tester
-          .state<SanmillAppShellState>(find.byType(SanmillAppShell));
       expect(shellState.debugCurrentTab, SanmillShellTab.more);
       expect(
         shellState.debugCurrentRouteId,
@@ -347,7 +380,10 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(shellState.debugCurrentTab, SanmillShellTab.home);
-      expect(shellState.debugCurrentRouteId, shellState.debugPlayRouteId);
+      expect(
+        shellState.debugCurrentRouteId,
+        SanmillShellRouteIds.homeRoot.value,
+      );
 
       // Drain any settings-save debounce timer (see the smoke test above).
       await tester.pump(const Duration(milliseconds: 350));

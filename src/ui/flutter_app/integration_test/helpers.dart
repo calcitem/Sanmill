@@ -152,19 +152,19 @@ Future<void> navigateToShellItem(WidgetTester tester, String itemKey) async {
       await pumpAndSettleWithin(tester);
       return;
     case 'drawer_item_human_vs_ai':
-      await _tapMoreItem(tester, itemKey);
+      await _tapHomePlayItem(tester, itemKey);
       return;
     case 'drawer_item_human_vs_human':
-      await _tapMoreItem(tester, itemKey);
+      await _tapHomePlayItem(tester, itemKey);
       return;
     case 'drawer_item_ai_vs_ai':
-      await _tapMoreItem(tester, itemKey);
+      await _tapHomePlayItem(tester, itemKey);
       return;
     case 'drawer_item_human_vs_lan':
-      await _tapMoreItem(tester, itemKey);
+      await _tapHomePlayItem(tester, itemKey);
       return;
     case 'drawer_item_setup_position':
-      await _tapMoreItem(tester, itemKey);
+      await _tapHomePlayItem(tester, itemKey);
       return;
     case 'drawer_item_general_settings':
     case 'drawer_item_general_settings_child':
@@ -193,6 +193,18 @@ Future<void> navigateToShellItem(WidgetTester tester, String itemKey) async {
     default:
       await _tapMoreItem(tester, itemKey);
   }
+}
+
+Future<void> _tapHomePlayItem(WidgetTester tester, String itemKey) async {
+  await tapSanmillTab(tester, 'home');
+  final Finder itemFinder = find.byKey(Key(itemKey));
+  expect(
+    itemFinder,
+    findsOneWidget,
+    reason: '$itemKey should be present inside the Home tab',
+  );
+  await tester.tap(itemFinder, warnIfMissed: false);
+  await pumpAndSettleWithin(tester);
 }
 
 Future<void> _tapMoreItem(WidgetTester tester, String itemKey) async {

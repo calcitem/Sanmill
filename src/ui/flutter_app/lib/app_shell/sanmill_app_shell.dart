@@ -85,6 +85,7 @@ enum SanmillShellTab {
 }
 
 abstract final class SanmillShellRouteIds {
+  static const GameRouteId homeRoot = GameRouteId('app.tab.home');
   static const GameRouteId watchRoot = GameRouteId('app.tab.watch');
   static const GameRouteId moreRoot = GameRouteId('app.tab.more');
 }
@@ -165,7 +166,7 @@ class SanmillAppShellState extends State<SanmillAppShell> {
     _ensureSessionForCurrentGame();
     final GameModule module = GameRegistry.instance.current;
     _playRouteId = module.defaultShellRoute(context);
-    _routeId = _playRouteId;
+    _routeId = SanmillShellRouteIds.homeRoot.value;
     module.didNavigateShellRoute(
       context,
       previousRouteId: null,
@@ -266,11 +267,11 @@ class SanmillAppShellState extends State<SanmillAppShell> {
     final GameModule module = GameRegistry.instance.current;
     final String nextRouteId = module.defaultShellRoute(context);
     _playRouteId = nextRouteId;
-    _routeId = nextRouteId;
+    _routeId = SanmillShellRouteIds.homeRoot.value;
     module.didNavigateShellRoute(
       context,
       previousRouteId: null,
-      nextRouteId: nextRouteId,
+      nextRouteId: _routeId,
     );
     setState(() {
       _currentTab = SanmillShellTab.home;
@@ -280,7 +281,7 @@ class SanmillAppShellState extends State<SanmillAppShell> {
 
   Future<void> _selectTab(SanmillShellTab tab) async {
     if (tab == _currentTab) {
-      _handleRepeatedTabTap(tab);
+      await _handleRepeatedTabTap(tab);
       return;
     }
 
@@ -293,11 +294,17 @@ class SanmillAppShellState extends State<SanmillAppShell> {
     });
   }
 
-  void _handleRepeatedTabTap(SanmillShellTab tab) {
+  Future<void> _handleRepeatedTabTap(SanmillShellTab tab) async {
     final NavigatorState? navigator = _navigatorKeys[tab]?.currentState;
     if (navigator?.canPop() ?? false) {
+      if (!await _transitionToRoute(_rootRouteIdForTab(tab))) {
+        return;
+      }
       navigator!.popUntil((Route<dynamic> route) => route.isFirst);
       return;
+    }
+    if (_routeId != _rootRouteIdForTab(tab)) {
+      await _transitionToRoute(_rootRouteIdForTab(tab));
     }
     final ScrollController? controller = _scrollControllers[tab];
     if (controller != null && controller.hasClients && controller.offset > 0) {
@@ -348,8 +355,14 @@ class SanmillAppShellState extends State<SanmillAppShell> {
       _playRouteId = routeId;
       _currentTab = SanmillShellTab.home;
     });
-    _navigatorKeys[SanmillShellTab.home]?.currentState?.popUntil(
-      (Route<dynamic> route) => route.isFirst,
+    final NavigatorState? navigator =
+        _navigatorKeys[SanmillShellTab.home]?.currentState;
+    navigator?.popUntil((Route<dynamic> route) => route.isFirst);
+    navigator?.push(
+      MaterialPageRoute<void>(
+        settings: RouteSettings(name: routeId),
+        builder: (_) => _buildRouteSurface(routeId),
+      ),
     );
   }
 
@@ -408,7 +421,7 @@ class SanmillAppShellState extends State<SanmillAppShell> {
   String _rootRouteIdForTab(SanmillShellTab tab) {
     switch (tab) {
       case SanmillShellTab.home:
-        return _playRouteId;
+        return SanmillShellRouteIds.homeRoot.value;
       case SanmillShellTab.puzzles:
         return _puzzlesContribution(context)?.id.value ??
             SanmillShellRouteIds.moreRoot.value;
@@ -458,7 +471,10 @@ class SanmillAppShellState extends State<SanmillAppShell> {
   Widget _buildTabRoot(SanmillShellTab tab) {
     switch (tab) {
       case SanmillShellTab.home:
-        return _buildRouteSurface(_playRouteId);
+        return _HomeTabRoot(
+          scrollController: _scrollControllers[SanmillShellTab.home]!,
+          onPlayRouteSelected: _selectPlayRoute,
+        );
       case SanmillShellTab.puzzles:
         final GameMenuContribution? contribution = _puzzlesContribution(
           context,
@@ -517,7 +533,7 @@ class SanmillAppShellState extends State<SanmillAppShell> {
       return false;
     }
     if (_currentTab != SanmillShellTab.home) {
-      if (!await _transitionToRoute(_playRouteId)) {
+      if (!await _transitionToRoute(SanmillShellRouteIds.homeRoot.value)) {
         return false;
       }
       if (!mounted) {
@@ -820,6 +836,53 @@ class _TabVisibility extends StatelessWidget {
   }
 }
 
+class _HomeTabRoot extends StatelessWidget {
+  const _HomeTabRoot({
+    required this.scrollController,
+    required this.onPlayRouteSelected,
+  });
+
+  final ScrollController scrollController;
+  final ValueChanged<String> onPlayRouteSelected;
+
+  @override
+  Widget build(BuildContext context) {
+    final S strings = S.of(context);
+    final GameModule module = GameRegistry.instance.current;
+    final List<GameModeEntry> playModes = module
+        .playModes(context)
+        .where((GameModeEntry mode) => mode.availableIn(context))
+        .toList(growable: false);
+
+    return Scaffold(
+      appBar: AppBar(title: Text(strings.appName)),
+      body: ListTileTheme.merge(
+        iconColor: Theme.of(context).colorScheme.primary,
+        child: ListView(
+          key: const Key('sanmill_home_list'),
+          controller: scrollController,
+          padding: const EdgeInsets.only(top: 16, bottom: 24),
+          children: <Widget>[
+            _MoreSection(
+              title: strings.game,
+              headerKey: const Key('sanmill_home_play_modes_group'),
+              children: <Widget>[
+                for (final GameModeEntry mode in playModes)
+                  _MoreTile(
+                    key: mode.drawerKey ?? Key('home_${mode.id.value}'),
+                    icon: mode.icon ?? Icons.sports_esports_rounded,
+                    title: mode.label,
+                    onTap: () => onPlayRouteSelected(mode.id.value),
+                  ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 class _WatchTabRoot extends StatelessWidget {
   const _WatchTabRoot({
     required this.scrollController,
@@ -946,7 +1009,7 @@ class _MenuEntries extends StatelessWidget {
           children: <Widget>[
             for (final GameModeEntry mode in playModes)
               _MoreTile(
-                key: mode.drawerKey ?? Key('more_${mode.id.value}'),
+                key: Key('more_${mode.id.value}'),
                 icon: mode.icon ?? Icons.sports_esports_rounded,
                 title: mode.label,
                 onTap: () => onPlayRouteSelected(mode.id.value),
