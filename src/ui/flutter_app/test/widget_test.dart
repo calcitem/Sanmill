@@ -162,6 +162,41 @@ void main() {
   );
 
   testWidgets(
+    'Learn tab starts with coordinate training',
+    (WidgetTester tester) async {
+      tester.view
+        ..physicalSize = const Size(390, 844)
+        ..devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+
+      await tester.pumpWidget(const SanmillApp());
+      await tester.tap(find.byKey(const Key('sanmill_tab_learn')));
+      await tester.pumpAndSettle();
+
+      final Finder coordinateTraining = find.byKey(
+        const Key('sanmill_learn_coordinate_training'),
+      );
+      final Finder guidesHeader = find.byKey(
+        const Key('sanmill_learn_guides_group'),
+      );
+
+      expect(find.byKey(const Key('sanmill_learn_list')), findsOneWidget);
+      expect(coordinateTraining, findsOneWidget);
+      expect(guidesHeader, findsOneWidget);
+      expect(find.byKey(const Key('sanmill_learn_tools_group')), findsNothing);
+      expect(
+        tester.getTopLeft(coordinateTraining).dy,
+        lessThan(tester.getTopLeft(guidesHeader).dy),
+      );
+
+      // Drain any settings-save debounce timer (see the smoke test above).
+      await tester.pump(const Duration(milliseconds: 350));
+    },
+    skip: nativeLibrarySkipReason() != null,
+  );
+
+  testWidgets(
     'Home play sheet promotes LAN play with friend mode',
     (WidgetTester tester) async {
       tester.view

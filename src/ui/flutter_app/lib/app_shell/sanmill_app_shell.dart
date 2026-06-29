@@ -2068,6 +2068,37 @@ class _LearnTabRoot extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final S strings = S.of(context);
+    final bool isMillGame =
+        GameRegistry.instance.current.metadata.id == GameId.mill;
+    final List<Widget> coordinateTrainingSection = <Widget>[
+      if (isMillGame)
+        _MoreTile(
+          key: const Key('sanmill_learn_coordinate_training'),
+          icon: Symbols.where_to_vote,
+          title: strings.coordinateTraining,
+          onTap: () =>
+              onLearnRouteSelected(ShellRouteIds.appCoordinateTraining.value),
+        ),
+    ];
+    final List<Widget> guideSection = <Widget>[
+      _MoreTile(
+        key: const Key('sanmill_learn_tutorial'),
+        icon: Icons.tips_and_updates_rounded,
+        title: strings.tutorial,
+        onTap: () => Navigator.of(context).push(
+          MaterialPageRoute<void>(
+            fullscreenDialog: true,
+            builder: (_) => const TutorialDialog(),
+          ),
+        ),
+      ),
+      _MoreTile(
+        key: const Key('sanmill_learn_how_to_play'),
+        icon: Icons.school_rounded,
+        title: strings.howToPlay,
+        onTap: () => onLearnRouteSelected(ShellRouteIds.appHowToPlay.value),
+      ),
+    ];
 
     return Scaffold(
       appBar: AppBar(title: Text(strings.learn)),
@@ -2076,40 +2107,13 @@ class _LearnTabRoot extends StatelessWidget {
         child: ListView(
           key: const Key('sanmill_learn_list'),
           controller: scrollController,
-          padding: const EdgeInsets.fromLTRB(12, 8, 12, 24),
+          padding: const EdgeInsets.only(top: 16, bottom: 8),
           children: <Widget>[
+            LichessListSection(children: coordinateTrainingSection),
             _MoreSection(
               title: strings.learn,
               headerKey: const Key('sanmill_learn_guides_group'),
-              children: <Widget>[
-                if (GameRegistry.instance.current.metadata.id == GameId.mill)
-                  _MoreTile(
-                    key: const Key('sanmill_learn_coordinate_training'),
-                    icon: Symbols.where_to_vote,
-                    title: strings.coordinateTraining,
-                    onTap: () => onLearnRouteSelected(
-                      ShellRouteIds.appCoordinateTraining.value,
-                    ),
-                  ),
-                _MoreTile(
-                  key: const Key('sanmill_learn_tutorial'),
-                  icon: Icons.tips_and_updates_rounded,
-                  title: strings.tutorial,
-                  onTap: () => Navigator.of(context).push(
-                    MaterialPageRoute<void>(
-                      fullscreenDialog: true,
-                      builder: (_) => const TutorialDialog(),
-                    ),
-                  ),
-                ),
-                _MoreTile(
-                  key: const Key('sanmill_learn_how_to_play'),
-                  icon: Icons.school_rounded,
-                  title: strings.howToPlay,
-                  onTap: () =>
-                      onLearnRouteSelected(ShellRouteIds.appHowToPlay.value),
-                ),
-              ],
+              children: guideSection,
             ),
             _MoreSection(
               title: strings.tools,
