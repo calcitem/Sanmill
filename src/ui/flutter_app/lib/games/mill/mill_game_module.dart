@@ -8,6 +8,7 @@ import '../../game_page/services/mill.dart' show GameController, GameMode;
 import '../../game_page/services/painters/painters.dart' show deviceWidth;
 import '../../game_page/widgets/dialogs/lan_config_dialog.dart';
 import '../../game_page/widgets/game_page.dart' show GamePage;
+import '../../game_page/widgets/import_game_page.dart';
 import '../../game_page/widgets/moves_list_page.dart';
 import '../../game_platform/board_geometry.dart';
 import '../../game_platform/engine/engine_port.dart';
@@ -380,6 +381,17 @@ class MillGameModule extends GameModule {
   List<GameMenuContribution> drawerContributions(BuildContext context) {
     final S s = S.of(context);
     return <GameMenuContribution>[
+      GameMenuContribution(
+        id: MillRouteIds.importGame,
+        label: s.importGame,
+        section: GameMenuSection.tools,
+        icon: FluentIcons.clipboard_paste_24_regular,
+        drawerKey: const Key('drawer_item_import_game'),
+        contentKey: const Key('import_game'),
+        builder: (BuildContext context, {Key? key, GameSession? session}) {
+          return ImportGamePage(key: key);
+        },
+      ),
       GameMenuContribution(
         id: MillRouteIds.analysis,
         label: s.analysis,

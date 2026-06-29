@@ -231,11 +231,23 @@ void main() {
       expect(moreAppBarTitle.data, 'Mill');
       expect(find.byKey(const Key('more_human_vs_ai')), findsNothing);
       expect(find.byKey(const Key('drawer_item_tools_group')), findsOneWidget);
+      expect(find.byKey(const Key('drawer_item_import_game')), findsOneWidget);
       expect(find.byKey(const Key('drawer_item_analysis')), findsOneWidget);
       expect(
         find.byKey(const Key('drawer_item_setup_position')),
         findsOneWidget,
       );
+
+      await tester.tap(find.byKey(const Key('drawer_item_import_game')));
+      await tester.pumpAndSettle();
+
+      expect(
+        find.byKey(const Key('import_game_page_scaffold')),
+        findsOneWidget,
+      );
+
+      await tester.binding.handlePopRoute();
+      await tester.pumpAndSettle();
 
       await tester.tap(find.byKey(const Key('drawer_item_analysis')));
       await tester.pumpAndSettle();

@@ -84,6 +84,10 @@ void main() {
 
       final List<GameMenuContribution> contributions = module
           .drawerContributions(context);
+      final GameMenuContribution importGame = contributions.singleWhere(
+        (GameMenuContribution contribution) =>
+            contribution.id == MillRouteIds.importGame,
+      );
       final GameMenuContribution analysis = contributions.singleWhere(
         (GameMenuContribution contribution) =>
             contribution.id == MillRouteIds.analysis,
@@ -93,6 +97,10 @@ void main() {
             contribution.id == MillRouteIds.statistics,
       );
 
+      expect(importGame.drawerKey, const Key('drawer_item_import_game'));
+      expect(importGame.contentKey, const Key('import_game'));
+      expect(importGame.section, GameMenuSection.tools);
+      expect(importGame.icon, isNotNull);
       expect(analysis.drawerKey, const Key('drawer_item_analysis'));
       expect(analysis.contentKey, const Key('analysis_panel'));
       expect(analysis.section, GameMenuSection.tools);
