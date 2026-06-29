@@ -246,6 +246,42 @@ void main() {
     );
     expect(boardOrientation.quarterTurns, 2);
   });
+
+  testWidgets('human vs ai hint is disabled while AI is to move', (
+    WidgetTester tester,
+  ) async {
+    db.generalSettings = const GeneralSettings(aiMovesFirst: true);
+    db.displaySettings = const DisplaySettings();
+    GameController().gameInstance.gameMode = GameMode.humanVsAi;
+
+    await tester.binding.setSurfaceSize(const Size(390, 844));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+
+    await tester.pumpWidget(
+      _localizedApp(
+        const Scaffold(
+          body: PlayArea(
+            boardImage: null,
+            child: SizedBox.square(
+              key: Key('test_board_square'),
+              dimension: 390,
+            ),
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.byKey(const Key('play_area_lichess_bottom_bar')), findsOne);
+    expect(
+      _bottomBarButtonOpacity(tester, const Key('play_area_bottom_bar_hint')),
+      0.4,
+    );
+    expect(
+      _bottomBarButtonOpacity(tester, const Key('play_area_bottom_bar_menu')),
+      1.0,
+    );
+  });
 }
 
 Widget _localizedApp(Widget child) => MaterialApp(
@@ -254,3 +290,10 @@ Widget _localizedApp(Widget child) => MaterialApp(
   locale: const Locale('en'),
   home: child,
 );
+
+double _bottomBarButtonOpacity(WidgetTester tester, Key key) {
+  final Opacity opacity = tester.widget<Opacity>(
+    find.descendant(of: find.byKey(key), matching: find.byType(Opacity)),
+  );
+  return opacity.opacity;
+}

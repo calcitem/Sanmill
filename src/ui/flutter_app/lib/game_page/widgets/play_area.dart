@@ -233,14 +233,19 @@ class PlayAreaState extends State<PlayArea> {
   bool get _canTakeBackFromBottomBar {
     return _usesLichessHumanAiToolbar &&
         GameController().gameRecorder.mainlineMoves.isNotEmpty &&
-        !GameController().isEngineRunning;
+        !GameController().isEngineRunning &&
+        !GameController().isEngineInDelay;
   }
 
   bool get _canShowHintFromBottomBar {
     final Phase phase = GameController().activeBoardView.phase;
+    final PieceColor sideToMove = GameController().activeBoardView.sideToMove;
     return _usesLichessHumanAiToolbar &&
         phase != Phase.gameOver &&
+        (sideToMove == PieceColor.white || sideToMove == PieceColor.black) &&
+        GameController().gameInstance.isHumanToMove &&
         !GameController().isEngineRunning &&
+        !GameController().isEngineInDelay &&
         !AnalysisMode.isAnalyzing &&
         !_isHintSearching;
   }
