@@ -51,6 +51,7 @@ class PlayAreaState extends State<PlayArea> {
   List<int> advantageData = <int>[];
 
   bool _isBoardFlipped = false;
+  bool _isHintSearching = false;
 
   @override
   void initState() {
@@ -230,11 +231,13 @@ class PlayAreaState extends State<PlayArea> {
         !GameController().isEngineRunning;
   }
 
-  bool get _canToggleHintFromBottomBar {
+  bool get _canShowHintFromBottomBar {
     final Phase phase = GameController().activeBoardView.phase;
     return _usesLichessHumanAiToolbar &&
         phase != Phase.gameOver &&
-        !AnalysisMode.isAnalyzing;
+        !GameController().isEngineRunning &&
+        !AnalysisMode.isAnalyzing &&
+        !_isHintSearching;
   }
 
   void _toggleBoardFlipped(BuildContext context) {
@@ -300,6 +303,28 @@ class PlayAreaState extends State<PlayArea> {
       <String, dynamic>{'toolbar': 'lichessBottom', 'action': 'takeBack'},
     );
     await HistoryNavigator.takeBack(context, pop: false, toolbar: true);
+  }
+
+  Future<void> _showHintFromBottomBar(BuildContext context) async {
+    assert(_usesLichessHumanAiToolbar);
+    assert(!_isHintSearching, 'Hint search is already in progress.');
+
+    setState(() {
+      _isHintSearching = true;
+    });
+    try {
+      RecordingService().recordEvent(
+        RecordingEventType.toolbarAction,
+        <String, dynamic>{'toolbar': 'lichessBottom', 'action': 'hint'},
+      );
+      await AnalysisService.showBestMoveHint(context);
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isHintSearching = false;
+        });
+      }
+    }
   }
 
   Future<void> _requestNewGameFromBottomBar(BuildContext context) async {
@@ -859,13 +884,10 @@ class PlayAreaState extends State<PlayArea> {
                           onTakeBackPressed: _canTakeBackFromBottomBar
                               ? () => _takeBackFromBottomBar(context)
                               : null,
-                          onHintPressed: _canToggleHintFromBottomBar
-                              ? () => _toggleAnalysisFromBottomBar(
-                                  context,
-                                  source: 'hint',
-                                )
+                          onHintPressed: _canShowHintFromBottomBar
+                              ? () => _showHintFromBottomBar(context)
                               : null,
-                          isHintHighlighted: AnalysisMode.isEnabled,
+                          isHintHighlighted: AnalysisMode.isHint,
                         );
                       },
                     )

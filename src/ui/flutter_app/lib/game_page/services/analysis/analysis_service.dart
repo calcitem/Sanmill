@@ -5,9 +5,12 @@
 
 import 'package:flutter/material.dart';
 
+import '../../../game_platform/game_session.dart';
 import '../../../game_shell/game_session_scope.dart';
 import '../../../games/mill/mill_perfect_database_support.dart';
+import '../../../games/mill/native_mill_ai_turn_controller.dart';
 import '../../../games/mill/native_mill_game_session.dart';
+import '../../../general_settings/models/general_settings.dart';
 import '../../../generated/intl/l10n.dart';
 import '../../../shared/database/database.dart';
 import '../../../shared/services/logger.dart';
@@ -35,7 +38,7 @@ class AnalysisService {
   /// enabled with the resulting verdicts.  User-facing reasons (unsupported
   /// rules, database disabled, no results) are surfaced via a snackbar.
   static Future<void> toggle(BuildContext context) async {
-    if (AnalysisMode.isEnabled) {
+    if (AnalysisMode.isFullAnalysis) {
       AnalysisMode.disable();
       return;
     }
@@ -87,9 +90,79 @@ class AnalysisService {
     }
   }
 
+  /// Show a Lichess-style single best-move hint without applying the move.
+  static Future<bool> showBestMoveHint(BuildContext context) async {
+    assert(
+      !AnalysisMode.isAnalyzing,
+      'Cannot request a hint while another analysis pass is running.',
+    );
+
+    final NativeMillGameSession? session = _activeNativeSession(context);
+    if (session == null) {
+      logger.w("$_logTag No active native Mill session to hint.");
+      return false;
+    }
+
+    final GeneralSettings engineSettings = DB().generalSettings.copyWith(
+      resignIfMostLose: false,
+    );
+    final NativeMillAiTurnController hintSearch = NativeMillAiTurnController(
+      generalSettings: engineSettings,
+    );
+
+    AnalysisMode.disable();
+    AnalysisMode.setAnalyzing(true);
+    try {
+      final GameAction? action = await session.searchBestAction(
+        depth: hintSearch.searchDepthForSession(session),
+        moveLimitMs: hintSearch.moveLimitMs,
+        engineSettings: engineSettings,
+      );
+      if (action == null) {
+        if (context.mounted) {
+          _showSnackBar(context, S.of(context).noMoreHintsAvailable);
+        }
+        return false;
+      }
+
+      final Object? move = action.payload['move'];
+      assert(
+        move is String && move.isNotEmpty,
+        'Hint action must carry a non-empty move notation.',
+      );
+      if (move is! String || move.isEmpty) {
+        logger.w("$_logTag Hint action has no move notation: $action");
+        return false;
+      }
+
+      final int? score = session.lastAiBestValue;
+      AnalysisMode.enable(<MoveAnalysisResult>[
+        MoveAnalysisResult(move: move, outcome: _hintOutcome(score)),
+      ], mode: AnalysisOverlayMode.hint);
+      return true;
+    } catch (e, st) {
+      logger.e("$_logTag Hint failed: $e", stackTrace: st);
+      return false;
+    } finally {
+      AnalysisMode.setAnalyzing(false);
+    }
+  }
+
   static NativeMillGameSession? _activeNativeSession(BuildContext context) {
     final Object? session = GameSessionScope.sessionOf(context);
     return session is NativeMillGameSession ? session : null;
+  }
+
+  static AnalysisOutcome _hintOutcome(int? score) {
+    if (score == null) {
+      return AnalysisOutcome.unknown;
+    }
+    final AnalysisOutcome base = switch (score.sign) {
+      1 => AnalysisOutcome.advantage,
+      -1 => AnalysisOutcome.disadvantage,
+      _ => AnalysisOutcome.draw,
+    };
+    return AnalysisOutcome.withValue(base, score.toString());
   }
 
   static MoveAnalysisResult _resultFromDto(tgf.MillMoveAnalysis dto) {

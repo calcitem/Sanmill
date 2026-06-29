@@ -85,6 +85,15 @@ class MoveAnalysisResult {
   final AnalysisOutcome outcome;
 }
 
+/// Kind of board overlay currently rendered by [AnalysisMode].
+enum AnalysisOverlayMode {
+  /// Full per-move analysis.
+  analysis,
+
+  /// Single best-move hint.
+  hint,
+}
+
 /// Holds the analysis-overlay state for the board.
 ///
 /// The overlay is populated by running the perfect database over every legal
@@ -93,6 +102,7 @@ class MoveAnalysisResult {
 class AnalysisMode {
   static bool _isEnabled = false;
   static bool _isAnalyzing = false;
+  static AnalysisOverlayMode? _overlayMode;
   static List<MoveAnalysisResult> _analysisResults = <MoveAnalysisResult>[];
   static List<String> _trapMoves = <String>[];
 
@@ -102,6 +112,14 @@ class AnalysisMode {
 
   /// Whether the analysis overlay is currently shown.
   static bool get isEnabled => _isEnabled;
+
+  /// Whether the current overlay is the full analysis view.
+  static bool get isFullAnalysis =>
+      _isEnabled && _overlayMode == AnalysisOverlayMode.analysis;
+
+  /// Whether the current overlay is a one-move hint.
+  static bool get isHint =>
+      _isEnabled && _overlayMode == AnalysisOverlayMode.hint;
 
   /// Whether an analysis pass is currently running.
   static bool get isAnalyzing => _isAnalyzing;
@@ -120,12 +138,14 @@ class AnalysisMode {
   static void enable(
     List<MoveAnalysisResult> results, {
     List<String> trapMoves = const <String>[],
+    AnalysisOverlayMode mode = AnalysisOverlayMode.analysis,
   }) {
     _analysisResults = results;
     _trapMoves = trapMoves;
+    _overlayMode = mode;
     _isEnabled = true;
     _isAnalyzing = false;
-    stateNotifier.value = true;
+    _publishState();
   }
 
   /// Disable the overlay and clear all results.  Idempotent.
@@ -138,14 +158,22 @@ class AnalysisMode {
     }
     _analysisResults = <MoveAnalysisResult>[];
     _trapMoves = <String>[];
+    _overlayMode = null;
     _isEnabled = false;
     _isAnalyzing = false;
-    stateNotifier.value = false;
+    _publishState();
   }
 
   /// Mark whether an analysis pass is in progress.
   static void setAnalyzing(bool analyzing) {
     _isAnalyzing = analyzing;
+    _publishState();
+  }
+
+  static void _publishState() {
+    if (stateNotifier.value == _isEnabled) {
+      stateNotifier.value = !_isEnabled;
+    }
     stateNotifier.value = _isEnabled;
   }
 
