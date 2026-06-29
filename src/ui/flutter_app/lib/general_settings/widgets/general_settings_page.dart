@@ -15,7 +15,6 @@ import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 
 import '../../appearance_settings/models/color_settings.dart';
-import '../../custom_drawer/custom_drawer.dart';
 import '../../game_page/services/gif_share/gif_share.dart';
 import '../../game_page/services/mill.dart';
 import '../../generated/intl/l10n.dart';
@@ -1306,44 +1305,25 @@ class GeneralSettingsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder<Box<ColorSettings>>(
-      valueListenable: DB().listenColorSettings,
-      builder: (BuildContext context, Box<ColorSettings> box, Widget? child) {
-        final ThemeData settingsTheme = Theme.of(context);
-        final bool useDarkSettingsUi =
-            settingsTheme.brightness == Brightness.dark;
-
-        final Widget page = BlockSemantics(
-          key: const Key('general_settings_page_block_semantics'),
-          child: Scaffold(
-            key: const Key('general_settings_page_scaffold'),
-            resizeToAvoidBottomInset: false,
-            backgroundColor: useDarkSettingsUi
-                ? settingsTheme.scaffoldBackgroundColor
-                : AppTheme.lightBackgroundColor,
-            appBar: AppBar(
-              key: const Key('general_settings_page_app_bar'),
-              leading: CustomDrawerIcon.of(context)?.drawerIcon,
-              title: Text(
-                S.of(context).generalSettings,
-                key: const Key('general_settings_page_app_bar_title'),
-                style: useDarkSettingsUi
-                    ? null
-                    : AppTheme.appBarTheme.titleTextStyle,
-              ),
-            ),
-            body: ValueListenableBuilder<Box<GeneralSettings>>(
-              key: const Key('general_settings_page_value_listenable_builder'),
-              valueListenable: DB().listenGeneralSettings,
-              builder: _buildGeneralSettingsList,
-            ),
+    return BlockSemantics(
+      key: const Key('general_settings_page_block_semantics'),
+      child: Scaffold(
+        key: const Key('general_settings_page_scaffold'),
+        resizeToAvoidBottomInset: false,
+        backgroundColor: Theme.of(context).colorScheme.surface,
+        appBar: AppBar(
+          key: const Key('general_settings_page_app_bar'),
+          title: Text(
+            S.of(context).generalSettings,
+            key: const Key('general_settings_page_app_bar_title'),
           ),
-        );
-
-        return useDarkSettingsUi
-            ? Theme(data: settingsTheme, child: page)
-            : page;
-      },
+        ),
+        body: ValueListenableBuilder<Box<GeneralSettings>>(
+          key: const Key('general_settings_page_value_listenable_builder'),
+          valueListenable: DB().listenGeneralSettings,
+          builder: _buildGeneralSettingsList,
+        ),
+      ),
     );
   }
 }

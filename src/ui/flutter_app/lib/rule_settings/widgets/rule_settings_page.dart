@@ -8,8 +8,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart' show Box;
 
-import '../../appearance_settings/models/color_settings.dart';
-import '../../custom_drawer/custom_drawer.dart';
 import '../../game_page/services/mill.dart';
 import '../../generated/intl/l10n.dart';
 import '../../shared/database/database.dart';
@@ -1166,42 +1164,21 @@ class RuleSettingsPage extends StatelessWidget {
     GameController().isControllerActive = false;
     GameController().reset();
 
-    return ValueListenableBuilder<Box<ColorSettings>>(
-      valueListenable: DB().listenColorSettings,
-      builder: (BuildContext context, Box<ColorSettings> box, Widget? child) {
-        final ThemeData settingsTheme = Theme.of(context);
-        final bool useDarkSettingsUi =
-            settingsTheme.brightness == Brightness.dark;
-
-        final Widget page = BlockSemantics(
-          child: Scaffold(
-            key: const Key('rule_settings_scaffold'),
-            resizeToAvoidBottomInset: false,
-            backgroundColor: useDarkSettingsUi
-                ? settingsTheme.scaffoldBackgroundColor
-                : AppTheme.lightBackgroundColor,
-            appBar: AppBar(
-              key: const Key('rule_settings_appbar'),
-              leading: CustomDrawerIcon.of(context)?.drawerIcon,
-              title: Text(
-                S.of(context).ruleSettings,
-                style: useDarkSettingsUi
-                    ? null
-                    : AppTheme.appBarTheme.titleTextStyle,
-              ),
-            ),
-            body: ValueListenableBuilder<Box<RuleSettings>>(
-              key: const Key('rule_settings_value_listenable_builder'),
-              valueListenable: DB().listenRuleSettings,
-              builder: _buildRuleSettings,
-            ),
-          ),
-        );
-
-        return useDarkSettingsUi
-            ? Theme(data: settingsTheme, child: page)
-            : page;
-      },
+    return BlockSemantics(
+      child: Scaffold(
+        key: const Key('rule_settings_scaffold'),
+        resizeToAvoidBottomInset: false,
+        backgroundColor: Theme.of(context).colorScheme.surface,
+        appBar: AppBar(
+          key: const Key('rule_settings_appbar'),
+          title: Text(S.of(context).ruleSettings),
+        ),
+        body: ValueListenableBuilder<Box<RuleSettings>>(
+          key: const Key('rule_settings_value_listenable_builder'),
+          valueListenable: DB().listenRuleSettings,
+          builder: _buildRuleSettings,
+        ),
+      ),
     );
   }
 }

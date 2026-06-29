@@ -10,6 +10,7 @@ import 'package:flutter/services.dart'; // Import flutter services
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sanmill/app_shell/sanmill_app_shell.dart';
 import 'package:sanmill/game_platform/game_registry.dart';
+import 'package:sanmill/game_shell/shell_route_ids.dart';
 import 'package:sanmill/games/built_in_game_modules.dart';
 import 'package:sanmill/generated/intl/l10n.dart';
 import 'package:sanmill/main.dart';
@@ -200,6 +201,60 @@ void main() {
 
       final SanmillAppShellState shellState = tester
           .state<SanmillAppShellState>(find.byType(SanmillAppShell));
+      expect(shellState.debugCurrentTab, SanmillShellTab.more);
+      expect(
+        shellState.debugCurrentRouteId,
+        SanmillShellRouteIds.moreRoot.value,
+      );
+
+      await tester.tap(find.byKey(const Key('drawer_item_general_settings')));
+      await tester.pumpAndSettle();
+
+      final BuildContext generalSettingsContext = tester.element(
+        find.byKey(const Key('general_settings_page_scaffold')),
+      );
+      final Scaffold generalSettingsScaffold = tester.widget<Scaffold>(
+        find.byKey(const Key('general_settings_page_scaffold')),
+      );
+      expect(
+        generalSettingsScaffold.backgroundColor,
+        Theme.of(generalSettingsContext).colorScheme.surface,
+      );
+      expect(
+        shellState.debugCurrentRouteId,
+        ShellRouteIds.appGeneralSettings.value,
+      );
+
+      await tester.binding.handlePopRoute();
+      await tester.pumpAndSettle();
+
+      expect(shellState.debugCurrentTab, SanmillShellTab.more);
+      expect(
+        shellState.debugCurrentRouteId,
+        SanmillShellRouteIds.moreRoot.value,
+      );
+
+      await tester.tap(find.byKey(const Key('drawer_item_rule_settings')));
+      await tester.pumpAndSettle();
+
+      final BuildContext ruleSettingsContext = tester.element(
+        find.byKey(const Key('rule_settings_scaffold')),
+      );
+      final Scaffold ruleSettingsScaffold = tester.widget<Scaffold>(
+        find.byKey(const Key('rule_settings_scaffold')),
+      );
+      expect(
+        ruleSettingsScaffold.backgroundColor,
+        Theme.of(ruleSettingsContext).colorScheme.surface,
+      );
+      expect(
+        shellState.debugCurrentRouteId,
+        ShellRouteIds.appRuleSettings.value,
+      );
+
+      await tester.binding.handlePopRoute();
+      await tester.pumpAndSettle();
+
       expect(shellState.debugCurrentTab, SanmillShellTab.more);
       expect(
         shellState.debugCurrentRouteId,

@@ -508,6 +508,13 @@ class SanmillAppShellState extends State<SanmillAppShell> {
   Future<bool> _handleBack() async {
     final NavigatorState? navigator = _navigatorKeys[_currentTab]?.currentState;
     if (navigator?.canPop() ?? false) {
+      final String nextRouteId = _rootRouteIdForTab(_currentTab);
+      if (!await _transitionToRoute(nextRouteId)) {
+        return false;
+      }
+      if (!mounted) {
+        return false;
+      }
       navigator!.pop();
       return false;
     }
