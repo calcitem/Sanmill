@@ -23,7 +23,6 @@ import '../../shared/services/environment_config.dart';
 import '../../shared/services/language_locale_mapping.dart';
 import '../../shared/services/llm_service.dart';
 import '../../shared/services/logger.dart';
-import '../../shared/themes/app_theme.dart';
 import '../../shared/utils/helpers/text_helpers/safe_text_editing_controller.dart';
 import '../../shared/widgets/snackbars/scaffold_messenger.dart';
 import '../services/import_export/pgn.dart';
@@ -68,11 +67,18 @@ class _ActivePathRowData {
 /// The user can pick from a set of layout options via a single active icon which,
 /// when tapped, reveals a row of layout icons.
 class MovesListPage extends StatefulWidget {
-  const MovesListPage({super.key});
+  const MovesListPage({super.key}) : panelMode = MovesListPanelMode.moveList;
+
+  const MovesListPage.analysisPanel({super.key})
+    : panelMode = MovesListPanelMode.analysis;
+
+  final MovesListPanelMode panelMode;
 
   @override
   MovesListPageState createState() => MovesListPageState();
 }
+
+enum MovesListPanelMode { moveList, analysis }
 
 class MovesListPageState extends State<MovesListPage> {
   /// A flat list of all PGN nodes (collected recursively).
@@ -2782,12 +2788,25 @@ class MovesListPageState extends State<MovesListPage> {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+    final bool isAnalysisPanel =
+        widget.panelMode == MovesListPanelMode.analysis;
+
     return Scaffold(
-      backgroundColor: AppTheme.appBarTheme.backgroundColor,
+      key: Key(
+        isAnalysisPanel
+            ? 'analysis_panel_page_scaffold'
+            : 'moves_list_page_scaffold',
+      ),
+      backgroundColor: theme.colorScheme.surface,
       appBar: AppBar(
+        key: Key(
+          isAnalysisPanel
+              ? 'analysis_panel_page_appbar'
+              : 'moves_list_page_appbar',
+        ),
         title: Text(
-          S.of(context).moveList,
-          style: AppTheme.appBarTheme.titleTextStyle,
+          isAnalysisPanel ? S.of(context).analysis : S.of(context).moveList,
         ),
         actions: <Widget>[
           // Jump to main line (only show when on variation branch)

@@ -166,6 +166,29 @@ void main() {
     expect(find.byKey(const Key('play_area_game_menu_analysis')), findsOne);
     expect(find.byKey(const Key('play_area_game_menu_new_game')), findsOne);
 
+    await tester.tap(find.byKey(const Key('play_area_game_menu_analysis')));
+    await tester.pumpAndSettle();
+
+    final Finder analysisPanel = find.byKey(
+      const Key('analysis_panel_page_scaffold'),
+    );
+    expect(analysisPanel, findsOneWidget);
+    final BuildContext analysisPanelContext = tester.element(analysisPanel);
+    final Scaffold analysisPanelScaffold = tester.widget<Scaffold>(
+      analysisPanel,
+    );
+    expect(
+      analysisPanelScaffold.backgroundColor,
+      Theme.of(analysisPanelContext).colorScheme.surface,
+    );
+    expect(find.text('Analysis'), findsOneWidget);
+
+    await tester.binding.handlePopRoute();
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byKey(const Key('play_area_bottom_bar_menu')));
+    await tester.pumpAndSettle();
+
     await tester.tap(find.byKey(const Key('play_area_game_menu_flip_board')));
     await tester.pumpAndSettle();
 

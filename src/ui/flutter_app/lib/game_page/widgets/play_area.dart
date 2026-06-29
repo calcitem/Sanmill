@@ -250,16 +250,19 @@ class PlayAreaState extends State<PlayArea> {
     ).showSnackBar(SnackBar(content: Text(S.of(context).flipBoard)));
   }
 
-  Future<void> _toggleAnalysisFromBottomBar(
-    BuildContext context, {
-    required String source,
-  }) async {
+  Future<void> _openAnalysisPanelFromBottomBar(BuildContext context) async {
     assert(_usesLichessHumanAiToolbar);
     RecordingService().recordEvent(
       RecordingEventType.toolbarAction,
-      <String, dynamic>{'toolbar': 'lichessBottom', 'action': source},
+      <String, dynamic>{'toolbar': 'lichessBottom', 'action': 'analysisPanel'},
     );
-    await AnalysisService.toggle(context);
+    AnalysisMode.disable();
+    await Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        settings: const RouteSettings(name: '/movesList'),
+        builder: (BuildContext context) => const MovesListPage.analysisPanel(),
+      ),
+    );
   }
 
   Future<void> _showResignConfirmation(BuildContext context) async {
@@ -363,10 +366,7 @@ class PlayAreaState extends State<PlayArea> {
                 label: S.of(sheetContext).analysis,
                 onTap: () async {
                   Navigator.of(sheetContext).pop();
-                  await _toggleAnalysisFromBottomBar(
-                    context,
-                    source: 'analysis',
-                  );
+                  await _openAnalysisPanelFromBottomBar(context);
                 },
               ),
               _GameMenuActionTile(
