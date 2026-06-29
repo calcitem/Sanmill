@@ -1016,7 +1016,6 @@ class _HumanStatsBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ColorScheme colorScheme = Theme.of(context).colorScheme;
     final int total = stats.total;
     if (total <= 0) {
       return const SizedBox.shrink();
@@ -1028,32 +1027,41 @@ class _HumanStatsBar extends StatelessWidget {
         height: 20,
         child: Row(
           children: <Widget>[
-            if (stats.wins > 0)
-              _HumanStatsBarSegment(
-                count: stats.wins,
-                total: total,
-                color: colorScheme.primary,
-                textColor: colorScheme.onPrimary,
-              ),
-            if (stats.draws > 0)
-              _HumanStatsBarSegment(
-                count: stats.draws,
-                total: total,
-                color: Colors.grey,
-                textColor: Colors.white,
-              ),
-            if (stats.losses > 0)
-              _HumanStatsBarSegment(
-                count: stats.losses,
-                total: total,
-                color: colorScheme.error,
-                textColor: colorScheme.onError,
-              ),
+            _HumanStatsBarSegment(
+              count: stats.wins,
+              total: total,
+              color: _explorerWinBoxColor(context),
+              textColor: Colors.black,
+            ),
+            _HumanStatsBarSegment(
+              count: stats.draws,
+              total: total,
+              color: Colors.grey,
+              textColor: Colors.white,
+            ),
+            _HumanStatsBarSegment(
+              count: stats.losses,
+              total: total,
+              color: _explorerLossBoxColor(context),
+              textColor: Colors.white,
+            ),
           ],
         ),
       ),
     );
   }
+}
+
+Color _explorerWinBoxColor(BuildContext context) {
+  return Theme.of(context).brightness == Brightness.dark
+      ? Colors.white.withValues(alpha: 0.8)
+      : Colors.white;
+}
+
+Color _explorerLossBoxColor(BuildContext context) {
+  return Theme.of(context).brightness == Brightness.light
+      ? Colors.black.withValues(alpha: 0.7)
+      : Colors.black;
 }
 
 String _formatExplorerSampleCount(int count) {
@@ -1078,7 +1086,7 @@ class _HumanStatsBarSegment extends StatelessWidget {
   Widget build(BuildContext context) {
     final int percent = (count * 100 / total).round();
     return Expanded(
-      flex: math.max(1, count),
+      flex: math.max(0, percent),
       child: ColoredBox(
         color: color,
         child: Center(
