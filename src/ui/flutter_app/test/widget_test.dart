@@ -273,6 +273,38 @@ void main() {
       await tester.binding.handlePopRoute();
       await tester.pumpAndSettle();
 
+      await tester.ensureVisible(find.byKey(const Key('puzzles_home_stats')));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const Key('puzzles_home_stats')));
+      await tester.pumpAndSettle();
+
+      final BuildContext puzzleStatsContext = tester.element(
+        find.byKey(const Key('puzzle_stats_page_scaffold')),
+      );
+      final Scaffold puzzleStatsScaffold = tester.widget<Scaffold>(
+        find.byKey(const Key('puzzle_stats_page_scaffold')),
+      );
+      expect(
+        puzzleStatsScaffold.backgroundColor,
+        Theme.of(puzzleStatsContext).colorScheme.surface,
+      );
+      expect(find.byKey(const Key('puzzle_stats_page_list')), findsOneWidget);
+      expect(
+        find.byKey(const Key('puzzle_stats_rating_section')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const Key('puzzle_stats_performance_section')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const Key('puzzle_stats_activity_section')),
+        findsOneWidget,
+      );
+
+      await tester.binding.handlePopRoute();
+      await tester.pumpAndSettle();
+
       await tester.tap(find.byKey(const Key('sanmill_tab_watch')));
       await tester.pumpAndSettle();
 

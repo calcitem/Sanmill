@@ -7,12 +7,10 @@
 
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
-import 'package:hive_ce_flutter/hive_flutter.dart' show Box;
 
-import '../../appearance_settings/models/color_settings.dart';
 import '../../generated/intl/l10n.dart';
-import '../../shared/database/database.dart';
 import '../../shared/themes/app_theme.dart';
+import '../../shared/widgets/lichess_list_section.dart';
 import '../services/puzzle_rating_service.dart';
 
 /// Advanced statistics page for puzzles
@@ -31,368 +29,142 @@ class _PuzzleStatsPageState extends State<PuzzleStatsPage> {
     final S s = S.of(context);
     final Map<String, dynamic> stats = _ratingService.getStatistics();
     final PuzzleRating rating = _ratingService.getUserRating();
+    final ThemeData theme = Theme.of(context);
 
-    return ValueListenableBuilder<Box<ColorSettings>>(
-      valueListenable: DB().listenColorSettings,
-      builder: (BuildContext context, Box<ColorSettings> box, Widget? child) {
-        final ThemeData settingsTheme = Theme.of(context);
-        final bool useDarkSettingsUi =
-            settingsTheme.brightness == Brightness.dark;
-
-        // Use Builder to ensure the context has the correct theme.
-        // This prevents computing text styles from a context outside the Theme wrapper.
-        return Theme(
-          data: settingsTheme,
-          child: Builder(
-            builder: (BuildContext context) {
-              return Scaffold(
-                backgroundColor: useDarkSettingsUi
-                    ? settingsTheme.scaffoldBackgroundColor
-                    : AppTheme.lightBackgroundColor,
-                appBar: AppBar(
-                  title: Text(
-                    s.puzzleStatistics,
-                    style: useDarkSettingsUi
-                        ? null
-                        : AppTheme.appBarTheme.titleTextStyle,
-                  ),
-                ),
-                body: SingleChildScrollView(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: <Widget>[
-                      // Rating card
-                      _buildRatingCard(context, rating, s),
-                      const SizedBox(height: 16),
-
-                      // Performance overview
-                      _buildPerformanceCard(context, stats, s),
-                      const SizedBox(height: 16),
-
-                      // Recent activity
-                      _buildRecentActivityCard(context, s),
-                    ],
-                  ),
-                ),
-              );
-            },
-          ),
-        );
-      },
-    );
-  }
-
-  Widget _buildRatingCard(BuildContext context, PuzzleRating rating, S s) {
-    // Use white card background for better text readability in light mode
-    return Card(
-      elevation: 4,
-      child: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
+    return Scaffold(
+      key: const Key('puzzle_stats_page_scaffold'),
+      backgroundColor: theme.colorScheme.surface,
+      appBar: AppBar(title: Text(s.puzzleStatistics)),
+      body: ListTileTheme.merge(
+        iconColor: theme.colorScheme.primary,
+        child: ListView(
+          key: const Key('puzzle_stats_page_list'),
+          padding: const EdgeInsets.only(top: 16, bottom: 24),
           children: <Widget>[
-            Text(
-              s.puzzleStatsRating,
-              style: Theme.of(context).textTheme.titleMedium,
-            ),
-            const SizedBox(height: 8),
-            Text(
-              '${rating.rating}',
-              style: const TextStyle(
-                fontSize: 48,
-                fontWeight: FontWeight.bold,
-                color: Colors.blue,
-              ),
-            ),
-            if (rating.isProvisional) ...<Widget>[
-              const SizedBox(height: 8),
-              // Use darker orange for better text contrast on light backgrounds
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 6,
-                ),
-                decoration: BoxDecoration(
-                  color: Colors.orange.shade100,
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: Colors.orange.shade300),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    Icon(
-                      FluentIcons.warning_24_regular,
-                      size: 16,
-                      color: Colors.orange.shade700,
-                    ),
-                    const SizedBox(width: 4),
-                    Text(
-                      s.puzzleStatsProvisional(
-                        rating.provisionalGames - rating.gamesPlayed,
-                      ),
-                      style: TextStyle(
-                        color: Colors.orange.shade900,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-            const SizedBox(height: 16),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                Flexible(
-                  child: _buildStatItem(
-                    context,
-                    s.puzzleStatsGamesPlayed,
-                    '${rating.gamesPlayed}',
-                    FluentIcons.games_24_regular,
-                  ),
-                ),
-                Container(
-                  width: 1,
-                  height: 40,
-                  color: Theme.of(context).dividerColor,
-                ),
-                Flexible(
-                  child: _buildStatItem(
-                    context,
-                    s.puzzleStatsDeviation,
-                    '±${rating.ratingDeviation.round()}',
-                    FluentIcons.chart_multiple_24_regular,
-                  ),
-                ),
-              ],
-            ),
+            _buildRatingSection(context, rating, s),
+            _buildPerformanceSection(context, stats, s),
+            _buildRecentActivitySection(context, s),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildPerformanceCard(
+  Widget _buildRatingSection(BuildContext context, PuzzleRating rating, S s) {
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+    final AppCustomColors customColors = Theme.of(
+      context,
+    ).extension<AppCustomColors>()!;
+
+    return LichessListSection(
+      header: Text(s.puzzleStatsRating),
+      cardKey: const Key('puzzle_stats_rating_section'),
+      children: <Widget>[
+        _PuzzleRatingSummary(
+          key: const Key('puzzle_stats_rating_summary'),
+          rating: rating,
+          label: s.puzzleStatsRating,
+          color: colorScheme.primary,
+          provisionalLabel: rating.isProvisional
+              ? s.puzzleStatsProvisional(
+                  rating.provisionalGames - rating.gamesPlayed,
+                )
+              : null,
+          provisionalColor: colorScheme.tertiary,
+        ),
+        _PuzzleStatsMetricTile(
+          key: const Key('puzzle_stats_games_played_tile'),
+          icon: FluentIcons.games_24_regular,
+          label: s.puzzleStatsGamesPlayed,
+          value: '${rating.gamesPlayed}',
+          color: customColors.good,
+        ),
+        _PuzzleStatsMetricTile(
+          key: const Key('puzzle_stats_deviation_tile'),
+          icon: FluentIcons.chart_multiple_24_regular,
+          label: s.puzzleStatsDeviation,
+          value: '±${rating.ratingDeviation.round()}',
+          color: colorScheme.secondary,
+        ),
+      ],
+    );
+  }
+
+  Widget _buildPerformanceSection(
     BuildContext context,
     Map<String, dynamic> stats,
     S s,
   ) {
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+    final AppCustomColors customColors = Theme.of(
+      context,
+    ).extension<AppCustomColors>()!;
     final double successRate = stats['successRate'] as double;
     final int avgTime = stats['averageTime'] as int;
 
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Text(
-              s.puzzleStatsPerformance,
-              style: Theme.of(
-                context,
-              ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 16),
-            Row(
-              children: <Widget>[
-                Flexible(
-                  child: _buildPerformanceTile(
-                    context,
-                    s.puzzleStatsSuccessRate,
-                    '${successRate.toStringAsFixed(1)}%',
-                    Colors.green,
-                    FluentIcons.checkmark_circle_24_filled,
-                  ),
-                ),
-                const SizedBox(width: 16),
-                Flexible(
-                  child: _buildPerformanceTile(
-                    context,
-                    s.puzzleStatsAvgTime,
-                    _formatAvgTime(avgTime),
-                    Colors.blue,
-                    FluentIcons.timer_24_filled,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 16),
-            Row(
-              children: <Widget>[
-                Flexible(
-                  child: _buildPerformanceTile(
-                    context,
-                    s.puzzleStatsSolved,
-                    '${stats['successCount']}',
-                    Colors.green,
-                    FluentIcons.checkmark_24_filled,
-                  ),
-                ),
-                const SizedBox(width: 16),
-                Flexible(
-                  child: _buildPerformanceTile(
-                    context,
-                    s.puzzleStatsFailed,
-                    '${stats['failCount']}',
-                    Colors.red,
-                    FluentIcons.dismiss_24_filled,
-                  ),
-                ),
-              ],
-            ),
-          ],
+    return LichessListSection(
+      header: Text(s.puzzleStatsPerformance),
+      cardKey: const Key('puzzle_stats_performance_section'),
+      children: <Widget>[
+        _PuzzleStatsMetricTile(
+          key: const Key('puzzle_stats_success_rate_tile'),
+          icon: FluentIcons.checkmark_circle_24_filled,
+          label: s.puzzleStatsSuccessRate,
+          value: '${successRate.toStringAsFixed(1)}%',
+          color: customColors.good,
         ),
-      ),
+        _PuzzleStatsMetricTile(
+          key: const Key('puzzle_stats_average_time_tile'),
+          icon: FluentIcons.timer_24_filled,
+          label: s.puzzleStatsAvgTime,
+          value: _formatAvgTime(avgTime),
+          color: colorScheme.primary,
+        ),
+        _PuzzleStatsMetricTile(
+          key: const Key('puzzle_stats_solved_tile'),
+          icon: FluentIcons.checkmark_24_filled,
+          label: s.puzzleStatsSolved,
+          value: '${stats['successCount']}',
+          color: customColors.good,
+        ),
+        _PuzzleStatsMetricTile(
+          key: const Key('puzzle_stats_failed_tile'),
+          icon: FluentIcons.dismiss_24_filled,
+          label: s.puzzleStatsFailed,
+          value: '${stats['failCount']}',
+          color: colorScheme.error,
+        ),
+      ],
     );
   }
 
-  Widget _buildPerformanceTile(
-    BuildContext context,
-    String label,
-    String value,
-    Color color,
-    IconData icon,
-  ) {
-    return Container(
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: color.withValues(alpha: 0.1),
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Icon(icon, color: color, size: 24),
-          const SizedBox(height: 8),
-          Text(
-            value,
-            style: TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-              color: color,
-            ),
-            overflow: TextOverflow.ellipsis,
-          ),
-          Text(
-            label,
-            style: TextStyle(
-              fontSize: 12,
-              color: Theme.of(context).colorScheme.onSurfaceVariant,
-            ),
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildRecentActivityCard(BuildContext context, S s) {
+  Widget _buildRecentActivitySection(BuildContext context, S s) {
     final List<PuzzleAttemptResult> recentAttempts = _ratingService
         .getAttemptHistory(limit: 5);
 
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Text(
-              s.puzzleStatsRecentActivity,
-              style: Theme.of(
-                context,
-              ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 16),
-            if (recentAttempts.isEmpty)
-              Center(
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Text(
-                    s.puzzleStatsNoActivity,
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+    return LichessListSection(
+      header: Text(s.puzzleStatsRecentActivity),
+      cardKey: const Key('puzzle_stats_activity_section'),
+      hasLeading: recentAttempts.isNotEmpty,
+      children: recentAttempts.isEmpty
+          ? <Widget>[
+              ListTile(
+                key: const Key('puzzle_stats_no_activity_tile'),
+                leading: const Icon(FluentIcons.history_24_regular),
+                title: Text(s.puzzleStatsNoActivity),
+              ),
+            ]
+          : recentAttempts
+                .map(
+                  (PuzzleAttemptResult attempt) => _PuzzleStatsActivityTile(
+                    attempt: attempt,
+                    timestampLabel: _formatTimestamp(
+                      context,
+                      attempt.timestamp,
                     ),
                   ),
-                ),
-              )
-            else
-              ...recentAttempts.map((PuzzleAttemptResult attempt) {
-                return _buildActivityItem(context, attempt);
-              }),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildActivityItem(BuildContext context, PuzzleAttemptResult attempt) {
-    final bool success = attempt.success;
-    final Color color = success ? Colors.green : Colors.red;
-    final IconData icon = success
-        ? FluentIcons.checkmark_circle_24_filled
-        : FluentIcons.dismiss_circle_24_filled;
-
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 8.0),
-      child: Row(
-        children: <Widget>[
-          Icon(icon, color: color, size: 20),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Text(
-              _formatTimestamp(context, attempt.timestamp),
-              style: Theme.of(context).textTheme.bodySmall,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
-          if (attempt.ratingChange != null) ...<Widget>[
-            const SizedBox(width: 8),
-            Flexible(
-              child: Text(
-                '${attempt.ratingChange! >= 0 ? '+' : ''}${attempt.ratingChange}',
-                style: TextStyle(
-                  color: attempt.ratingChange! >= 0 ? Colors.green : Colors.red,
-                  fontWeight: FontWeight.bold,
-                ),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
-          ],
-        ],
-      ),
-    );
-  }
-
-  Widget _buildStatItem(
-    BuildContext context,
-    String label,
-    String value,
-    IconData icon,
-  ) {
-    // Return Column directly - the calling code wraps this in Flexible
-    return Column(
-      children: <Widget>[
-        Icon(icon, color: Colors.blue, size: 24),
-        const SizedBox(height: 4),
-        Text(
-          value,
-          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-          overflow: TextOverflow.ellipsis,
-        ),
-        Text(
-          label,
-          style: Theme.of(context).textTheme.bodySmall?.copyWith(
-            color: Theme.of(context).colorScheme.onSurfaceVariant,
-          ),
-          textAlign: TextAlign.center,
-          maxLines: 2,
-          overflow: TextOverflow.ellipsis,
-        ),
-      ],
+                )
+                .toList(growable: false),
     );
   }
 
@@ -417,5 +189,194 @@ class _PuzzleStatsPageState extends State<PuzzleStatsPage> {
     } else {
       return s.justNow;
     }
+  }
+}
+
+class _PuzzleRatingSummary extends StatelessWidget {
+  const _PuzzleRatingSummary({
+    super.key,
+    required this.rating,
+    required this.label,
+    required this.color,
+    required this.provisionalColor,
+    this.provisionalLabel,
+  });
+
+  final PuzzleRating rating;
+  final String label;
+  final Color color;
+  final Color provisionalColor;
+  final String? provisionalLabel;
+
+  @override
+  Widget build(BuildContext context) {
+    final String? provisionalLabel = this.provisionalLabel;
+
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 18, 16, 12),
+      child: Column(
+        children: <Widget>[
+          Text(
+            '${rating.rating}',
+            style: Theme.of(context).textTheme.displayMedium?.copyWith(
+              color: color,
+              fontWeight: FontWeight.w700,
+            ),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+          Text(
+            label,
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
+            ),
+            textAlign: TextAlign.center,
+          ),
+          if (provisionalLabel != null) ...<Widget>[
+            const SizedBox(height: 10),
+            _PuzzleStatsStatusBadge(
+              icon: FluentIcons.warning_24_regular,
+              label: provisionalLabel,
+              color: provisionalColor,
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+}
+
+class _PuzzleStatsMetricTile extends StatelessWidget {
+  const _PuzzleStatsMetricTile({
+    super.key,
+    required this.icon,
+    required this.label,
+    required this.value,
+    required this.color,
+  });
+
+  final IconData icon;
+  final String label;
+  final String value;
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      leading: Icon(icon, color: color),
+      title: Text(label, maxLines: 2, overflow: TextOverflow.ellipsis),
+      trailing: Text(
+        value,
+        style: Theme.of(context).textTheme.titleMedium?.copyWith(
+          color: color,
+          fontWeight: FontWeight.w700,
+        ),
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+      ),
+    );
+  }
+}
+
+class _PuzzleStatsActivityTile extends StatelessWidget {
+  const _PuzzleStatsActivityTile({
+    required this.attempt,
+    required this.timestampLabel,
+  });
+
+  final PuzzleAttemptResult attempt;
+  final String timestampLabel;
+
+  @override
+  Widget build(BuildContext context) {
+    final AppCustomColors customColors = Theme.of(
+      context,
+    ).extension<AppCustomColors>()!;
+    final bool success = attempt.success;
+    final Color color = success
+        ? customColors.good
+        : Theme.of(context).colorScheme.error;
+    final IconData icon = success
+        ? FluentIcons.checkmark_circle_24_filled
+        : FluentIcons.dismiss_circle_24_filled;
+    final int? ratingChange = attempt.ratingChange;
+
+    return ListTile(
+      leading: Icon(icon, color: color),
+      title: Text(timestampLabel, maxLines: 1, overflow: TextOverflow.ellipsis),
+      trailing: ratingChange == null
+          ? null
+          : _PuzzleStatsRatingDelta(value: ratingChange),
+    );
+  }
+}
+
+class _PuzzleStatsRatingDelta extends StatelessWidget {
+  const _PuzzleStatsRatingDelta({required this.value});
+
+  final int value;
+
+  @override
+  Widget build(BuildContext context) {
+    final AppCustomColors customColors = Theme.of(
+      context,
+    ).extension<AppCustomColors>()!;
+    final Color color = value >= 0
+        ? customColors.good
+        : Theme.of(context).colorScheme.error;
+
+    return Text(
+      '${value >= 0 ? '+' : ''}$value',
+      style: Theme.of(context).textTheme.titleSmall?.copyWith(
+        color: color,
+        fontWeight: FontWeight.w700,
+      ),
+      maxLines: 1,
+      overflow: TextOverflow.ellipsis,
+    );
+  }
+}
+
+class _PuzzleStatsStatusBadge extends StatelessWidget {
+  const _PuzzleStatsStatusBadge({
+    required this.icon,
+    required this.label,
+    required this.color,
+  });
+
+  final IconData icon;
+  final String label;
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) {
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: color.withValues(alpha: 0.12),
+        borderRadius: BorderRadius.circular(999),
+        border: Border.all(color: color.withValues(alpha: 0.38)),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Icon(icon, size: 16, color: color),
+            const SizedBox(width: 6),
+            Flexible(
+              child: Text(
+                label,
+                style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                  color: color,
+                  fontWeight: FontWeight.w700,
+                ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
