@@ -4589,5 +4589,15 @@
     "ongoingGames": "正在进行的对局",
     "@ongoingGames": {},
     "boardOrientation": "棋盘方向",
-    "@boardOrientation": {}
+    "@boardOrientation": {},
+    "humanAiRobotLevel": "机器人 级别 {level}",
+    "@humanAiRobotLevel": {
+        "placeholders": {
+            "level": {
+                "type": "int"
+            }
+        }
+    },
+    "humanAiPlayer": "玩家",
+    "@humanAiPlayer": {}
 }

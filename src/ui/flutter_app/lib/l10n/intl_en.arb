@@ -4741,5 +4741,15 @@
     "ongoingGames": "Ongoing games",
     "@ongoingGames": {},
     "boardOrientation": "Board orientation",
-    "@boardOrientation": {}
+    "@boardOrientation": {},
+    "humanAiRobotLevel": "Robot level {level}",
+    "@humanAiRobotLevel": {
+        "placeholders": {
+            "level": {
+                "type": "int"
+            }
+        }
+    },
+    "humanAiPlayer": "Player",
+    "@humanAiPlayer": {}
 }

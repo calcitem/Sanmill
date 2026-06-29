@@ -283,20 +283,41 @@ void main() {
     );
     expect(boardOrientation.quarterTurns, 0);
     final Finder board = find.byKey(const Key('play_area_native_screenshot'));
-    final Finder pieceCountRow = find.byKey(
-      const Key('play_area_piece_count_row'),
+    final Finder humanAiMoveList = find.byKey(
+      const Key('play_area_human_ai_move_list'),
     );
-    final Finder removedPieceCountRow = find.byKey(
-      const Key('play_area_removed_piece_count_row'),
+    final Finder robotPanel = find.byKey(
+      const Key('play_area_human_ai_robot_panel'),
     );
-    expect(pieceCountRow, findsOneWidget);
-    expect(removedPieceCountRow, findsOneWidget);
+    final Finder playerPanel = find.byKey(
+      const Key('play_area_human_ai_player_panel'),
+    );
+    expect(humanAiMoveList, findsOneWidget);
+    expect(robotPanel, findsOneWidget);
+    expect(playerPanel, findsOneWidget);
     expect(
-      tester.getTopLeft(pieceCountRow).dy,
+      find.byKey(const Key('play_area_human_ai_robot_title')),
+      findsOneWidget,
+    );
+    expect(
+      find.byKey(const Key('play_area_human_ai_player_title')),
+      findsOneWidget,
+    );
+    expect(find.byKey(const Key('play_area_piece_count_row')), findsNothing);
+    expect(
+      find.byKey(const Key('play_area_removed_piece_count_row')),
+      findsNothing,
+    );
+    expect(
+      tester.getTopLeft(humanAiMoveList).dy,
+      lessThan(tester.getTopLeft(robotPanel).dy),
+    );
+    expect(
+      tester.getTopLeft(robotPanel).dy,
       lessThan(tester.getTopLeft(board).dy),
     );
     expect(
-      tester.getTopLeft(removedPieceCountRow).dy,
+      tester.getTopLeft(playerPanel).dy,
       greaterThan(tester.getTopLeft(board).dy),
     );
 
@@ -406,14 +427,8 @@ void main() {
       find.byKey(const Key('play_area_board_orientation')),
     );
     expect(boardOrientation.quarterTurns, 2);
-    expect(
-      tester.getTopLeft(removedPieceCountRow).dy,
-      lessThan(tester.getTopLeft(board).dy),
-    );
-    expect(
-      tester.getTopLeft(pieceCountRow).dy,
-      greaterThan(tester.getTopLeft(board).dy),
-    );
+    expect(find.byKey(const Key('play_area_human_ai_robot_panel')), findsOne);
+    expect(find.byKey(const Key('play_area_human_ai_player_panel')), findsOne);
   });
 
   testWidgets('human vs ai route asks before leaving an active game', (

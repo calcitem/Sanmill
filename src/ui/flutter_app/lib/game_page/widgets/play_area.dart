@@ -18,11 +18,14 @@ import '../../generated/intl/l10n.dart';
 import '../../shared/config/constants.dart';
 import '../../shared/database/database.dart';
 import '../../shared/services/screenshot_service.dart';
+import '../../shared/themes/app_styles.dart';
 import '../../shared/themes/app_theme.dart';
 import '../../shared/widgets/lichess_action_sheet.dart';
 import '../../shared/widgets/lichess_bottom_bar.dart';
+import '../../statistics/services/stats_service.dart';
 import '../services/analysis/analysis_service.dart';
 import '../services/analysis_mode.dart';
+import '../services/import_export/pgn.dart';
 import '../services/mill.dart';
 import '../services/painters/advantage_graph_painter.dart';
 import 'game_page.dart';
@@ -861,6 +864,67 @@ class PlayAreaState extends State<PlayArea> {
     );
   }
 
+  Widget _buildBoardScreenshot() {
+    return NativeScreenshot(
+      key: const Key('play_area_native_screenshot'),
+      controller: ScreenshotService.screenshotController,
+      child: Container(
+        key: const Key('play_area_game_board_container'),
+        alignment: Alignment.center,
+        child: RotatedBox(
+          key: const Key('play_area_board_orientation'),
+          quarterTurns: _isBoardFlipped ? 2 : 0,
+          child: widget.child,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildHumanAiMainContent({
+    required BuildContext context,
+    required Widget? humanDatabaseStatsStrip,
+  }) {
+    return SizedBox(
+      key: const Key('play_area_human_ai_main_content'),
+      child: SafeArea(
+        top: MediaQuery.of(context).orientation == Orientation.portrait,
+        bottom: false,
+        right: false,
+        left: false,
+        child: SingleChildScrollView(
+          key: const Key('play_area_human_ai_scroll_view'),
+          child: Column(
+            key: const Key('play_area_human_ai_column'),
+            children: <Widget>[
+              const _HumanAiMoveList(key: Key('play_area_human_ai_move_list')),
+              const _HumanAiPlayerPanel(
+                key: Key('play_area_human_ai_robot_panel'),
+                isRobot: true,
+              ),
+              ?humanDatabaseStatsStrip,
+              _buildBoardScreenshot(),
+              const _HumanAiPlayerPanel(
+                key: Key('play_area_human_ai_player_panel'),
+                isRobot: false,
+              ),
+              if (DB().displaySettings.isAdvantageGraphShown &&
+                  advantageData.isNotEmpty)
+                SizedBox(
+                  key: const Key('play_area_advantage_graph'),
+                  height: 112,
+                  width: double.infinity,
+                  child: CustomPaint(
+                    key: const Key('play_area_custom_paint_advantage_graph'),
+                    painter: AdvantageGraphPainter(advantageData),
+                  ),
+                ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
@@ -899,78 +963,68 @@ class PlayAreaState extends State<PlayArea> {
         final Widget mainContent = SizedBox(
           key: const Key('play_area_main_content'),
           width: dimension,
-          child: SafeArea(
-            top: MediaQuery.of(context).orientation == Orientation.portrait,
-            bottom: false,
-            right: false,
-            left: false,
-            child: SingleChildScrollView(
-              key: const Key('play_area_single_child_scroll_view'),
-              child: Column(
-                key: const Key('play_area_column'),
-                children: <Widget>[
-                  // The top game header with hints, icons, etc.
-                  GameHeader(key: const Key('play_area_game_header')),
+          child: usesLichessHumanAiToolbar
+              ? _buildHumanAiMainContent(
+                  context: context,
+                  humanDatabaseStatsStrip: humanDatabaseStatsStrip,
+                )
+              : SafeArea(
+                  top:
+                      MediaQuery.of(context).orientation ==
+                      Orientation.portrait,
+                  bottom: false,
+                  right: false,
+                  left: false,
+                  child: SingleChildScrollView(
+                    key: const Key('play_area_single_child_scroll_view'),
+                    child: Column(
+                      key: const Key('play_area_column'),
+                      children: <Widget>[
+                        // The top game header with hints, icons, etc.
+                        GameHeader(key: const Key('play_area_game_header')),
 
-                  ?humanDatabaseStatsStrip,
+                        ?humanDatabaseStatsStrip,
 
-                  // Piece counts or spacing if not used
-                  if (showPieceCountRows)
-                    _isBoardFlipped
-                        ? _buildRemovedPieceCountRow()
-                        : _buildPieceCountRow()
-                  else
-                    const SizedBox(height: AppTheme.boardMargin),
+                        // Piece counts or spacing if not used
+                        if (showPieceCountRows)
+                          _isBoardFlipped
+                              ? _buildRemovedPieceCountRow()
+                              : _buildPieceCountRow()
+                        else
+                          const SizedBox(height: AppTheme.boardMargin),
 
-                  // The main board wrapped with screenshot capturing
-                  NativeScreenshot(
-                    key: const Key('play_area_native_screenshot'),
-                    controller: ScreenshotService.screenshotController,
-                    child: Container(
-                      key: const Key('play_area_game_board_container'),
-                      alignment: Alignment.center,
-                      // The 'child' from the constructor is the GameBoard:
-                      child: RotatedBox(
-                        key: const Key('play_area_board_orientation'),
-                        quarterTurns: _isBoardFlipped ? 2 : 0,
-                        child: widget.child,
-                      ),
+                        // The main board wrapped with screenshot capturing
+                        _buildBoardScreenshot(),
+
+                        // Removed pieces row or spacing
+                        if (showPieceCountRows)
+                          _isBoardFlipped
+                              ? _buildPieceCountRow()
+                              : _buildRemovedPieceCountRow()
+                        else
+                          const SizedBox(height: AppTheme.boardMargin),
+
+                        // Advantage graph if enabled
+                        if (DB().displaySettings.isAdvantageGraphShown &&
+                            advantageData.isNotEmpty)
+                          SizedBox(
+                            key: const Key('play_area_advantage_graph'),
+                            height: 150,
+                            width: double.infinity,
+                            child: CustomPaint(
+                              key: const Key(
+                                'play_area_custom_paint_advantage_graph',
+                              ),
+                              painter: AdvantageGraphPainter(advantageData),
+                            ),
+                          ),
+
+                        if (!usesLichessHumanAiToolbar)
+                          const SizedBox(height: AppTheme.boardMargin),
+                      ],
                     ),
                   ),
-
-                  // Removed pieces row or spacing
-                  if (showPieceCountRows)
-                    _isBoardFlipped
-                        ? _buildPieceCountRow()
-                        : _buildRemovedPieceCountRow()
-                  else
-                    const SizedBox(height: AppTheme.boardMargin),
-
-                  // Advantage graph if enabled
-                  if (DB().displaySettings.isAdvantageGraphShown &&
-                      advantageData.isNotEmpty)
-                    SizedBox(
-                      key: const Key('play_area_advantage_graph'),
-                      height: 150,
-                      width: double.infinity,
-                      child: CustomPaint(
-                        key: const Key(
-                          'play_area_custom_paint_advantage_graph',
-                        ),
-                        painter: AdvantageGraphPainter(advantageData),
-                      ),
-                    ),
-
-                  // ──────────────────────────────────────────────────────────
-                  // NOTE: The bottom black Annotation Toolbar is removed.
-                  //       All annotation features are now in the center overlay.
-                  // ──────────────────────────────────────────────────────────
-                  if (!usesLichessHumanAiToolbar)
-                    const SizedBox(height: AppTheme.boardMargin),
-                ],
-              ),
-            ),
-          ),
+                ),
         );
 
         return SizedBox(
@@ -1065,6 +1119,207 @@ class PlayAreaState extends State<PlayArea> {
           ),
         );
       },
+    );
+  }
+}
+
+class _HumanAiMoveList extends StatelessWidget {
+  const _HumanAiMoveList({super.key});
+
+  List<PgnNode<ExtMove>> _currentPathNodes() {
+    final List<PgnNode<ExtMove>> nodes = <PgnNode<ExtMove>>[];
+    PgnNode<ExtMove>? node = GameController().gameRecorder.activeNode;
+    while (node != null && node.data != null) {
+      nodes.insert(0, node);
+      node = node.parent;
+    }
+    return nodes;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+    final ColorScheme colorScheme = theme.colorScheme;
+
+    return ValueListenableBuilder<int>(
+      valueListenable: GameController().gameRecorder.moveCountNotifier,
+      builder: (BuildContext context, _, _) {
+        final List<PgnNode<ExtMove>> nodes = _currentPathNodes();
+        final PgnNode<ExtMove>? activeNode =
+            GameController().gameRecorder.activeNode;
+
+        return Container(
+          key: const Key('play_area_human_ai_move_list_wrap'),
+          width: double.infinity,
+          constraints: const BoxConstraints(minHeight: 40),
+          padding: const EdgeInsets.fromLTRB(12, 6, 12, 4),
+          child: nodes.isEmpty
+              ? const SizedBox(height: 30)
+              : Wrap(
+                  spacing: 4,
+                  runSpacing: 4,
+                  children: <Widget>[
+                    for (int i = 0; i < nodes.length; i++)
+                      _HumanAiMoveChip(
+                        key: Key('play_area_human_ai_move_${i + 1}'),
+                        label: '${i + 1}. ${nodes[i].data!.notation}',
+                        selected: nodes[i] == activeNode,
+                        selectedColor: colorScheme.primaryContainer,
+                        selectedTextColor: colorScheme.onPrimaryContainer,
+                        textStyle: theme.textTheme.bodySmall,
+                      ),
+                  ],
+                ),
+        );
+      },
+    );
+  }
+}
+
+class _HumanAiMoveChip extends StatelessWidget {
+  const _HumanAiMoveChip({
+    super.key,
+    required this.label,
+    required this.selected,
+    required this.selectedColor,
+    required this.selectedTextColor,
+    required this.textStyle,
+  });
+
+  final String label;
+  final bool selected;
+  final Color selectedColor;
+  final Color selectedTextColor;
+  final TextStyle? textStyle;
+
+  @override
+  Widget build(BuildContext context) {
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+    return Semantics(
+      selected: selected,
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          color: selected ? selectedColor : colorScheme.surfaceContainerHighest,
+          borderRadius: BorderRadius.circular(AppStyles.compactRadius),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+          child: Text(
+            label,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: textStyle?.copyWith(
+              color: selected
+                  ? selectedTextColor
+                  : colorScheme.onSurfaceVariant,
+              fontWeight: selected ? FontWeight.w600 : FontWeight.w500,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _HumanAiPlayerPanel extends StatelessWidget {
+  const _HumanAiPlayerPanel({super.key, required this.isRobot});
+
+  final bool isRobot;
+
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+    final ColorScheme colorScheme = theme.colorScheme;
+    final int level = DB().generalSettings.skillLevel;
+    final int rating = isRobot
+        ? EloRatingService.getFixedAiEloRating(level)
+        : DB().statsSettings.humanStats.rating;
+    final bool isThinking =
+        isRobot &&
+        (GameController().isEngineRunning || GameController().isEngineInDelay);
+    final String title = isRobot
+        ? S.of(context).humanAiRobotLevel(level)
+        : S.of(context).humanAiPlayer;
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      child: Row(
+        key: Key(
+          isRobot
+              ? 'play_area_human_ai_robot_row'
+              : 'play_area_human_ai_player_row',
+        ),
+        children: <Widget>[
+          CircleAvatar(
+            radius: 20,
+            backgroundColor: isRobot
+                ? colorScheme.secondaryContainer
+                : colorScheme.primaryContainer,
+            foregroundColor: isRobot
+                ? colorScheme.onSecondaryContainer
+                : colorScheme.onPrimaryContainer,
+            child: Icon(
+              isRobot ? Icons.smart_toy_rounded : Icons.person_rounded,
+              size: 22,
+            ),
+          ),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Flexible(
+                      child: Text(
+                        title,
+                        key: Key(
+                          isRobot
+                              ? 'play_area_human_ai_robot_title'
+                              : 'play_area_human_ai_player_title',
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: theme.textTheme.bodyMedium?.copyWith(
+                          fontWeight: FontWeight.w600,
+                          letterSpacing: 0,
+                        ),
+                      ),
+                    ),
+                    if (isThinking) ...<Widget>[
+                      const SizedBox(width: 8),
+                      Icon(
+                        Icons.hourglass_top,
+                        key: const Key(
+                          'play_area_human_ai_robot_thinking_icon',
+                        ),
+                        size: 16,
+                        color: colorScheme.onSurfaceVariant,
+                      ),
+                    ],
+                  ],
+                ),
+                Text(
+                  '$rating ELO',
+                  key: Key(
+                    isRobot
+                        ? 'play_area_human_ai_robot_elo'
+                        : 'play_area_human_ai_player_elo',
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: colorScheme.onSurfaceVariant,
+                    letterSpacing: 0,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

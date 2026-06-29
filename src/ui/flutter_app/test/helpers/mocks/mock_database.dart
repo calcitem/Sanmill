@@ -10,6 +10,7 @@ import 'package:sanmill/general_settings/models/general_settings.dart';
 import 'package:sanmill/puzzle/models/puzzle_models.dart';
 import 'package:sanmill/rule_settings/models/rule_settings.dart';
 import 'package:sanmill/shared/database/database.dart';
+import 'package:sanmill/statistics/model/stats_settings.dart';
 
 class MockDB extends Mock implements DB {
   GeneralSettings _generalSettings = const GeneralSettings();
@@ -17,6 +18,7 @@ class MockDB extends Mock implements DB {
   DisplaySettings _displaySettings = const DisplaySettings();
   ColorSettings _colorSettings = const ColorSettings();
   PuzzleSettings _puzzleSettings = const PuzzleSettings();
+  StatsSettings _statsSettings = const StatsSettings();
 
   /// Gets the given [generalSettings] from the settings Box
   @override
@@ -59,4 +61,11 @@ class MockDB extends Mock implements DB {
   @override
   set puzzleSettings(PuzzleSettings puzzleSettings) =>
       _puzzleSettings = puzzleSettings;
+
+  @override
+  StatsSettings get statsSettings => _statsSettings;
+
+  @override
+  set statsSettings(StatsSettings statsSettings) =>
+      _statsSettings = statsSettings;
 }
