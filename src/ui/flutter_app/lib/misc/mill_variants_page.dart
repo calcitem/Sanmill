@@ -39,6 +39,7 @@ class MillVariantsPage extends StatelessWidget {
               LichessListSection(
                 header: Text(strings.millGame),
                 cardKey: const Key('mill_variants_section_card'),
+                hasLeading: false,
                 children: <Widget>[
                   for (final _VariantEntry entry in entries)
                     _VariantTile(
@@ -202,13 +203,16 @@ class _VariantTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
+    final TextStyle titleStyle = AppStyles.tileTitle.copyWith(
+      color: selected ? colorScheme.primary : colorScheme.onSurface,
+      fontWeight: selected ? FontWeight.w600 : FontWeight.w400,
+    );
 
     return ListTile(
-      leading: Icon(
-        selected ? Icons.radio_button_checked : Icons.radio_button_unchecked,
-        color: selected ? colorScheme.primary : colorScheme.onSurfaceVariant,
-      ),
-      title: Text(entry.title),
+      selected: selected,
+      selectedTileColor: colorScheme.primaryContainer.withValues(alpha: 0.36),
+      contentPadding: const EdgeInsetsDirectional.fromSTEB(16, 8, 16, 8),
+      title: Text(entry.title, style: titleStyle),
       subtitle: Text(
         entry.description,
         maxLines: 2,
@@ -219,7 +223,7 @@ class _VariantTile extends StatelessWidget {
       ),
       trailing: selected
           ? Icon(Icons.check_rounded, color: colorScheme.primary)
-          : null,
+          : const SizedBox(width: 24),
       onTap: onTap,
     );
   }
