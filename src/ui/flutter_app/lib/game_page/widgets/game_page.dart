@@ -57,6 +57,7 @@ import 'ai_chat_dialog.dart';
 import 'challenge_confetti.dart';
 import 'dialogs/engine_failure_dialog.dart';
 import 'dialogs/performance_warning_dialog.dart';
+import 'modals/game_options_modal.dart';
 import 'moves_list_page.dart';
 import 'play_area.dart';
 import 'toolbars/game_toolbar.dart';
@@ -105,6 +106,7 @@ class _GamePageInnerState extends State<_GamePageInner> {
 
   bool _isAnnotationMode = false;
   bool _allowNextPop = false;
+  bool _didShowInitialHumanAiNewGameSheet = false;
   late final AnnotationManager _annotationManager;
 
   @override
@@ -131,6 +133,11 @@ class _GamePageInnerState extends State<_GamePageInner> {
           widget.controller.enterSetupPosition();
         }
       });
+    }
+    if (widget.controller.gameInstance.gameMode == GameMode.humanVsAi) {
+      WidgetsBinding.instance.addPostFrameCallback(
+        (_) => _showInitialHumanAiNewGameSheet(),
+      );
     }
   }
 
@@ -373,6 +380,17 @@ class _GamePageInnerState extends State<_GamePageInner> {
 
   bool get _isHumanAiGame =>
       widget.controller.gameInstance.gameMode == GameMode.humanVsAi;
+
+  Future<void> _showInitialHumanAiNewGameSheet() async {
+    if (!mounted || _didShowInitialHumanAiNewGameSheet || !_isHumanAiGame) {
+      return;
+    }
+    if (widget.controller.gameRecorder.currentPath.isNotEmpty) {
+      return;
+    }
+    _didShowInitialHumanAiNewGameSheet = true;
+    await GameOptionsModal.showHumanAiNewGameSheet(context);
+  }
 
   bool get _shouldConfirmLeavingCurrentGame {
     if (widget.controller.activeSessionSnapshot?.outcome.isTerminal ?? false) {

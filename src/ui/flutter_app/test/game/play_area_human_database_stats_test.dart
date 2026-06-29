@@ -409,6 +409,15 @@ void main() {
 
     expect(find.byKey(const Key('game_page_scaffold')), findsOneWidget);
     expect(find.byKey(const Key('game_page_back_button')), findsOneWidget);
+    expect(find.byKey(const Key('human_ai_new_game_sheet')), findsOneWidget);
+
+    Navigator.of(
+      tester.element(find.byKey(const Key('human_ai_new_game_sheet'))),
+    ).pop();
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 300));
+
+    expect(find.byKey(const Key('human_ai_new_game_sheet')), findsNothing);
 
     expect(
       await session.replayMainline(<ExtMove>[

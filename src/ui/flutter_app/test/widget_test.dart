@@ -221,6 +221,15 @@ void main() {
       expect(shellState.debugCurrentTab, SanmillShellTab.home);
       expect(shellState.debugCurrentRouteId, shellState.debugPlayRouteId);
       expect(find.byKey(const Key('human_ai')), findsOneWidget);
+      expect(find.byKey(const Key('human_ai_new_game_sheet')), findsOneWidget);
+
+      await tester.binding.handlePopRoute();
+      await tester.pumpAndSettle();
+
+      expect(find.byKey(const Key('human_ai_new_game_sheet')), findsNothing);
+      expect(shellState.debugCurrentTab, SanmillShellTab.home);
+      expect(shellState.debugCurrentRouteId, shellState.debugPlayRouteId);
+      expect(find.byKey(const Key('human_ai')), findsOneWidget);
 
       await tester.binding.handlePopRoute();
       await tester.pumpAndSettle();

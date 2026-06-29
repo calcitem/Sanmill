@@ -133,6 +133,11 @@ class SanmillAppShellState extends State<SanmillAppShell> {
         for (final SanmillShellTab tab in SanmillShellTab.values)
           tab: GlobalKey<NavigatorState>(debugLabel: 'Sanmill ${tab.name}'),
       };
+  final Map<SanmillShellTab, _SanmillTabRouteObserver> _routeObservers =
+      <SanmillShellTab, _SanmillTabRouteObserver>{
+        for (final SanmillShellTab tab in SanmillShellTab.values)
+          tab: _SanmillTabRouteObserver(),
+      };
   final Map<SanmillShellTab, ScrollController> _scrollControllers =
       <SanmillShellTab, ScrollController>{
         for (final SanmillShellTab tab in SanmillShellTab.values)
@@ -528,6 +533,7 @@ class SanmillAppShellState extends State<SanmillAppShell> {
   Widget _buildTabNavigator(SanmillShellTab tab) {
     return Navigator(
       key: _navigatorKeys[tab],
+      observers: <NavigatorObserver>[_routeObservers[tab]!],
       onGenerateRoute: (RouteSettings settings) {
         return MaterialPageRoute<void>(
           settings: settings,
@@ -546,6 +552,11 @@ class SanmillAppShellState extends State<SanmillAppShell> {
   Future<bool> _handleBack() async {
     final NavigatorState? navigator = _navigatorKeys[_currentTab]?.currentState;
     if (navigator?.canPop() ?? false) {
+      final Route<dynamic>? topRoute = _routeObservers[_currentTab]?.topRoute;
+      if (topRoute is! PageRoute<dynamic>) {
+        navigator!.pop();
+        return false;
+      }
       final String nextRouteId = _rootRouteIdForTab(_currentTab);
       if (!await _transitionToRoute(nextRouteId)) {
         return false;
@@ -770,6 +781,45 @@ class SanmillAppShellState extends State<SanmillAppShell> {
 
 typedef _SanmillTabBuilder =
     Widget Function(BuildContext context, SanmillShellTab tab);
+
+class _SanmillTabRouteObserver extends NavigatorObserver {
+  final List<Route<dynamic>> _stack = <Route<dynamic>>[];
+
+  Route<dynamic>? get topRoute => _stack.isEmpty ? null : _stack.last;
+
+  @override
+  void didPush(Route<dynamic> route, Route<dynamic>? previousRoute) {
+    _stack.add(route);
+  }
+
+  @override
+  void didPop(Route<dynamic> route, Route<dynamic>? previousRoute) {
+    final bool removed = _stack.remove(route);
+    assert(removed, 'Popped route was not tracked by the tab route observer.');
+  }
+
+  @override
+  void didRemove(Route<dynamic> route, Route<dynamic>? previousRoute) {
+    final bool removed = _stack.remove(route);
+    assert(removed, 'Removed route was not tracked by the tab route observer.');
+  }
+
+  @override
+  void didReplace({Route<dynamic>? newRoute, Route<dynamic>? oldRoute}) {
+    if (oldRoute == null) {
+      assert(newRoute != null, 'Route replacement must provide a new route.');
+      _stack.add(newRoute!);
+      return;
+    }
+    final int index = _stack.indexOf(oldRoute);
+    assert(index != -1, 'Replaced route was not tracked by the tab observer.');
+    if (newRoute == null) {
+      _stack.removeAt(index);
+      return;
+    }
+    _stack[index] = newRoute;
+  }
+}
 
 class _SanmillTabSwitchingView extends StatefulWidget {
   const _SanmillTabSwitchingView({
