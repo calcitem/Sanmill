@@ -79,20 +79,18 @@ class _OpeningExplorerPageState extends State<OpeningExplorerPage> {
     _nextExplorerFens.clear();
     _tapController.clearSelection();
 
-    final GameSession? source = widget.session;
-    if (source is! NativeMillGameSession) {
-      return;
-    }
-
     final NativeMillGameSession explorer = NativeMillGameSession(
       rules: DB().ruleSettings,
       generalSettings: DB().generalSettings,
     );
-    final bool loaded = explorer.loadFen(source.getFen());
-    assert(loaded, 'Opening explorer source FEN must load into its session.');
-    if (!loaded) {
-      explorer.dispose();
-      return;
+    final GameSession? source = widget.session;
+    if (source is NativeMillGameSession) {
+      final bool loaded = explorer.loadFen(source.getFen());
+      assert(loaded, 'Opening explorer source FEN must load into its session.');
+      if (!loaded) {
+        explorer.dispose();
+        return;
+      }
     }
     _explorerSession = explorer;
   }

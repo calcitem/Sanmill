@@ -15,6 +15,7 @@ import 'package:sanmill/game_platform/game_registry.dart';
 import 'package:sanmill/game_shell/shell_route_ids.dart';
 import 'package:sanmill/games/built_in_game_modules.dart';
 import 'package:sanmill/games/mill/mill_board_geometry.dart';
+import 'package:sanmill/games/mill/opening_explorer/opening_explorer_page.dart';
 import 'package:sanmill/general_settings/widgets/developer_options_page.dart';
 import 'package:sanmill/generated/intl/l10n.dart';
 import 'package:sanmill/main.dart';
@@ -897,6 +898,38 @@ void main() {
 
       expect(tester.widget<IconButton>(previousButtonFinder).onPressed, isNull);
       expect(tester.widget<IconButton>(nextButtonFinder).onPressed, isNotNull);
+
+      // Drain any settings-save debounce timer (see the smoke test above).
+      await tester.pump(const Duration(milliseconds: 350));
+    },
+    skip: nativeLibrarySkipReason() != null,
+  );
+
+  testWidgets(
+    'Opening explorer starts from the initial position without a source game',
+    (WidgetTester tester) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: AppTheme.lightThemeData,
+          localizationsDelegates: sanmillLocalizationsDelegates,
+          supportedLocales: S.supportedLocales,
+          home: const OpeningExplorerPage(),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.byKey(const Key('opening_explorer_list')), findsOneWidget);
+      expect(find.byKey(const Key('opening_explorer_board')), findsOneWidget);
+      expect(
+        find.byKey(const Key('opening_explorer_bottom_bar')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const Key('opening_explorer_position_card')),
+        findsOneWidget,
+      );
+      final S strings = S.of(tester.element(find.byType(OpeningExplorerPage)));
+      expect(find.text(strings.openingExplorerUnavailable), findsNothing);
 
       // Drain any settings-save debounce timer (see the smoke test above).
       await tester.pump(const Duration(milliseconds: 350));
