@@ -41,10 +41,15 @@ class OpeningExplorerPage extends StatefulWidget {
   State<OpeningExplorerPage> createState() => _OpeningExplorerPageState();
 }
 
+typedef _OpeningExplorerPositionChanged =
+    void Function({required String previousFen, required String currentFen});
+
 class _OpeningExplorerPageState extends State<OpeningExplorerPage> {
   late final Future<void> _openingBookLoad = OpeningBookRepository.instance
       .ensureLoaded();
   final MillSessionTapController _tapController = MillSessionTapController();
+  final List<String> _previousExplorerFens = <String>[];
+  final List<String> _nextExplorerFens = <String>[];
   NativeMillGameSession? _explorerSession;
 
   @override
@@ -70,6 +75,8 @@ class _OpeningExplorerPageState extends State<OpeningExplorerPage> {
   void _recreateExplorerSession() {
     _explorerSession?.dispose();
     _explorerSession = null;
+    _previousExplorerFens.clear();
+    _nextExplorerFens.clear();
     _tapController.clearSelection();
 
     final GameSession? source = widget.session;
@@ -95,10 +102,15 @@ class _OpeningExplorerPageState extends State<OpeningExplorerPage> {
     if (session == null) {
       return;
     }
+    final String previousFen = session.getFen();
     await session.apply(action);
+    final String currentFen = session.getFen();
     _tapController.clearSelection();
     if (mounted) {
-      setState(() {});
+      _recordExplorerPositionChange(
+        previousFen: previousFen,
+        currentFen: currentFen,
+      );
     }
   }
 
@@ -107,13 +119,80 @@ class _OpeningExplorerPageState extends State<OpeningExplorerPage> {
     if (session == null) {
       return;
     }
-    final String transformed = transformFEN(session.getFen(), type);
+    final String previousFen = session.getFen();
+    final String transformed = transformFEN(previousFen, type);
     final bool loaded = session.loadFen(transformed);
     assert(loaded, 'Opening explorer transformation must keep a valid FEN.');
     if (!loaded) {
       return;
     }
     _tapController.clearSelection();
+    _recordExplorerPositionChange(
+      previousFen: previousFen,
+      currentFen: session.getFen(),
+    );
+  }
+
+  void _recordExplorerPositionChange({
+    required String previousFen,
+    required String currentFen,
+  }) {
+    assert(previousFen.isNotEmpty, 'Explorer previous FEN must not be empty.');
+    assert(currentFen.isNotEmpty, 'Explorer current FEN must not be empty.');
+    if (previousFen == currentFen) {
+      setState(() {});
+      return;
+    }
+    _previousExplorerFens.add(previousFen);
+    _nextExplorerFens.clear();
+    setState(() {});
+  }
+
+  bool _restoreExplorerFen(String fen) {
+    assert(fen.isNotEmpty, 'Explorer history FEN must not be empty.');
+    final NativeMillGameSession? session = _explorerSession;
+    assert(session != null, 'Opening explorer history requires a session.');
+    if (session == null) {
+      return false;
+    }
+    final bool loaded = session.loadFen(fen);
+    assert(loaded, 'Opening explorer history FEN must load.');
+    if (!loaded) {
+      return false;
+    }
+    _tapController.clearSelection();
+    return true;
+  }
+
+  void _goToPreviousExplorerPosition() {
+    final NativeMillGameSession? session = _explorerSession;
+    assert(session != null, 'Opening explorer history requires a session.');
+    if (session == null || _previousExplorerFens.isEmpty) {
+      return;
+    }
+    final String currentFen = session.getFen();
+    final String previousFen = _previousExplorerFens.last;
+    if (!_restoreExplorerFen(previousFen)) {
+      return;
+    }
+    _previousExplorerFens.removeLast();
+    _nextExplorerFens.add(currentFen);
+    setState(() {});
+  }
+
+  void _goToNextExplorerPosition() {
+    final NativeMillGameSession? session = _explorerSession;
+    assert(session != null, 'Opening explorer history requires a session.');
+    if (session == null || _nextExplorerFens.isEmpty) {
+      return;
+    }
+    final String currentFen = session.getFen();
+    final String nextFen = _nextExplorerFens.last;
+    if (!_restoreExplorerFen(nextFen)) {
+      return;
+    }
+    _nextExplorerFens.removeLast();
+    _previousExplorerFens.add(currentFen);
     setState(() {});
   }
 
@@ -123,7 +202,29 @@ class _OpeningExplorerPageState extends State<OpeningExplorerPage> {
     final NativeMillGameSession? session = _explorerSession;
 
     return Scaffold(
-      appBar: AppBar(title: Text(strings.openingExplorer)),
+      appBar: AppBar(
+        title: Text(strings.openingExplorer),
+        actions: session == null
+            ? null
+            : <Widget>[
+                IconButton(
+                  key: const Key('opening_explorer_previous_button'),
+                  tooltip: strings.previous,
+                  icon: const Icon(Icons.chevron_left_rounded),
+                  onPressed: _previousExplorerFens.isEmpty
+                      ? null
+                      : _goToPreviousExplorerPosition,
+                ),
+                IconButton(
+                  key: const Key('opening_explorer_next_button'),
+                  tooltip: strings.next,
+                  icon: const Icon(Icons.chevron_right_rounded),
+                  onPressed: _nextExplorerFens.isEmpty
+                      ? null
+                      : _goToNextExplorerPosition,
+                ),
+              ],
+      ),
       bottomNavigationBar: session == null
           ? null
           : _OpeningExplorerBottomBar(onTransform: _transformExplorerPosition),
@@ -146,6 +247,7 @@ class _OpeningExplorerPageState extends State<OpeningExplorerPage> {
                           snapshot: snapshot,
                           tapController: _tapController,
                           onMoveSelected: _applyExplorerAction,
+                          onPositionChanged: _recordExplorerPositionChange,
                         );
                       },
                     );
@@ -164,12 +266,14 @@ class _OpeningExplorerContent extends StatelessWidget {
     required this.snapshot,
     required this.tapController,
     required this.onMoveSelected,
+    required this.onPositionChanged,
   });
 
   final NativeMillGameSession session;
   final _OpeningExplorerSnapshot snapshot;
   final MillSessionTapController tapController;
   final ValueChanged<GameAction> onMoveSelected;
+  final _OpeningExplorerPositionChanged onPositionChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -226,6 +330,7 @@ class _OpeningExplorerContent extends StatelessWidget {
       session: session,
       tapController: tapController,
       boardHeightFactor: boardHeightFactor,
+      onPositionChanged: onPositionChanged,
     );
   }
 
@@ -273,11 +378,13 @@ class _ExplorerBoardSection extends StatelessWidget {
     required this.session,
     required this.tapController,
     required this.boardHeightFactor,
+    required this.onPositionChanged,
   });
 
   final NativeMillGameSession session;
   final MillSessionTapController tapController;
   final double boardHeightFactor;
+  final _OpeningExplorerPositionChanged onPositionChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -293,6 +400,7 @@ class _ExplorerBoardSection extends StatelessWidget {
                 session: session,
                 tapController: tapController,
                 heightFactor: boardHeightFactor,
+                onPositionChanged: onPositionChanged,
               ),
             ],
           ),
@@ -331,11 +439,13 @@ class _OpeningExplorerBoard extends StatefulWidget {
     required this.session,
     required this.tapController,
     required this.heightFactor,
+    required this.onPositionChanged,
   });
 
   final NativeMillGameSession session;
   final MillSessionTapController tapController;
   final double heightFactor;
+  final _OpeningExplorerPositionChanged onPositionChanged;
 
   @override
   State<_OpeningExplorerBoard> createState() => _OpeningExplorerBoardState();
@@ -351,12 +461,19 @@ class _OpeningExplorerBoardState extends State<_OpeningExplorerBoard> {
     }
     final String notation = MillBoardCoordinateMaps.nodeToNotation(node);
     assert(notation.isNotEmpty, 'Opening explorer node must have notation.');
+    final String previousFen = widget.session.getFen();
     final MillSessionTapResult result = await widget.tapController.tap(
       session: widget.session,
       tappedLabel: notation,
     );
     if (!mounted) {
       return;
+    }
+    if (result.status == MillSessionTapStatus.applied) {
+      widget.onPositionChanged(
+        previousFen: previousFen,
+        currentFen: widget.session.getFen(),
+      );
     }
     if (result.status != MillSessionTapStatus.ignored) {
       setState(() {});

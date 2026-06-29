@@ -14,6 +14,7 @@ import 'package:sanmill/game_page/widgets/mini_board.dart';
 import 'package:sanmill/game_platform/game_registry.dart';
 import 'package:sanmill/game_shell/shell_route_ids.dart';
 import 'package:sanmill/games/built_in_game_modules.dart';
+import 'package:sanmill/games/mill/mill_board_geometry.dart';
 import 'package:sanmill/general_settings/widgets/developer_options_page.dart';
 import 'package:sanmill/generated/intl/l10n.dart';
 import 'package:sanmill/main.dart';
@@ -840,6 +841,16 @@ void main() {
         find.byKey(const Key('opening_explorer_bottom_bar')),
         findsOneWidget,
       );
+      final Finder previousButtonFinder = find.byKey(
+        const Key('opening_explorer_previous_button'),
+      );
+      final Finder nextButtonFinder = find.byKey(
+        const Key('opening_explorer_next_button'),
+      );
+      expect(previousButtonFinder, findsOneWidget);
+      expect(nextButtonFinder, findsOneWidget);
+      expect(tester.widget<IconButton>(previousButtonFinder).onPressed, isNull);
+      expect(tester.widget<IconButton>(nextButtonFinder).onPressed, isNull);
       expect(
         find.byKey(const Key('opening_explorer_rotate_button')),
         findsOneWidget,
@@ -864,6 +875,28 @@ void main() {
         find.byKey(const Key('opening_explorer_position_card')),
         findsOneWidget,
       );
+
+      final Finder boardFinder = find.byKey(
+        const Key('opening_explorer_board'),
+      );
+      final Offset boardTopLeft = tester.getTopLeft(boardFinder);
+      final Size boardSize = tester.getSize(boardFinder);
+      await tester.tapAt(
+        boardTopLeft + MillBoardGeometry.nodeOffset(0, boardSize),
+      );
+      await tester.pumpAndSettle();
+
+      expect(
+        tester.widget<IconButton>(previousButtonFinder).onPressed,
+        isNotNull,
+      );
+      expect(tester.widget<IconButton>(nextButtonFinder).onPressed, isNull);
+
+      await tester.tap(previousButtonFinder);
+      await tester.pumpAndSettle();
+
+      expect(tester.widget<IconButton>(previousButtonFinder).onPressed, isNull);
+      expect(tester.widget<IconButton>(nextButtonFinder).onPressed, isNotNull);
 
       // Drain any settings-save debounce timer (see the smoke test above).
       await tester.pump(const Duration(milliseconds: 350));
