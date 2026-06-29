@@ -203,8 +203,8 @@ void main() {
       );
       expect(homeAppBarTitle.data, 'Mill');
       expect(find.byKey(const Key('sanmill_home_play_fab')), findsOneWidget);
-      expect(find.text('Quick pairing'), findsOneWidget);
-      expect(find.byKey(const Key('drawer_item_human_vs_ai')), findsOneWidget);
+      expect(find.text('Quick pairing'), findsNothing);
+      expect(find.byKey(const Key('drawer_item_human_vs_ai')), findsNothing);
       expect(find.byKey(const Key('drawer_item_setup_position')), findsNothing);
       expect(
         find.byKey(const Key('play_area_lichess_bottom_bar')),
@@ -1115,7 +1115,7 @@ void main() {
   );
 
   testWidgets(
-    'Home tab uses split content on wide screens',
+    'Home tab keeps play modes in the FAB on wide screens',
     (WidgetTester tester) async {
       tester.view
         ..physicalSize = const Size(960, 540)
@@ -1128,19 +1128,15 @@ void main() {
 
       expect(find.byKey(const Key('sanmill_home_list')), findsOneWidget);
       expect(
-        find.byKey(const Key('sanmill_home_wide_content')),
-        findsOneWidget,
-      );
-      expect(
         find.byKey(const Key('sanmill_home_play_modes_group')),
-        findsOneWidget,
+        findsNothing,
       );
       expect(
         find.byKey(const Key('sanmill_home_ongoing_game_group')),
         findsNothing,
       );
-      expect(find.byKey(const Key('drawer_item_human_vs_ai')), findsOneWidget);
-      expect(find.byKey(const Key('sanmill_home_play_fab')), findsNothing);
+      expect(find.byKey(const Key('drawer_item_human_vs_ai')), findsNothing);
+      expect(find.byKey(const Key('sanmill_home_play_fab')), findsOneWidget);
 
       // Drain any settings-save debounce timer (see the smoke test above).
       await tester.pump(const Duration(milliseconds: 350));

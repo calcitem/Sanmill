@@ -1102,7 +1102,7 @@ class _HomeTabRootState extends State<_HomeTabRoot> {
           ),
         ),
       ),
-      floatingActionButton: playModes.isEmpty || useWideHomeLayout
+      floatingActionButton: playModes.isEmpty
           ? null
           : _FloatingPlayButton(
               onPressed: () => _showPlayBottomSheet(context, playModes),
@@ -1115,13 +1115,12 @@ class _HomeTabRootState extends State<_HomeTabRoot> {
     List<GameModeEntry> playModes,
     bool useWideHomeLayout,
   ) {
-    final Widget playSections = _HomePlaySections(
+    final Widget activeGame = _HomeActiveGameSection(
       currentPlayRouteId: widget.currentPlayRouteId,
       playModes: playModes,
       useCarousel: !useWideHomeLayout,
       tabInteraction: widget.tabInteraction,
       onContinueGame: widget.onContinueGame,
-      onPlayRouteSelected: widget.onPlayRouteSelected,
     );
     final Widget recentGames = _HomeRecentGames(
       future: _recentGamesFuture,
@@ -1133,7 +1132,7 @@ class _HomeTabRootState extends State<_HomeTabRoot> {
     );
 
     if (!useWideHomeLayout) {
-      return <Widget>[playSections, recentGames];
+      return <Widget>[activeGame, recentGames];
     }
 
     return <Widget>[
@@ -1141,7 +1140,7 @@ class _HomeTabRootState extends State<_HomeTabRoot> {
         key: const Key('sanmill_home_wide_content'),
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Expanded(child: playSections),
+          Expanded(child: activeGame),
           Expanded(child: recentGames),
         ],
       ),
@@ -1169,14 +1168,13 @@ class _HomeTabRootState extends State<_HomeTabRoot> {
   }
 }
 
-class _HomePlaySections extends StatelessWidget {
-  const _HomePlaySections({
+class _HomeActiveGameSection extends StatelessWidget {
+  const _HomeActiveGameSection({
     required this.currentPlayRouteId,
     required this.playModes,
     required this.useCarousel,
     required this.tabInteraction,
     required this.onContinueGame,
-    required this.onPlayRouteSelected,
   });
 
   final String currentPlayRouteId;
@@ -1184,153 +1182,28 @@ class _HomePlaySections extends StatelessWidget {
   final bool useCarousel;
   final Listenable tabInteraction;
   final VoidCallback onContinueGame;
-  final ValueChanged<String> onPlayRouteSelected;
 
   @override
   Widget build(BuildContext context) {
-    final S strings = S.of(context);
     return ValueListenableBuilder<int>(
       valueListenable: GameController().gameRecorder.moveCountNotifier,
       builder: (BuildContext context, int moveCount, _) {
         final GameStateSnapshot? snapshot =
             GameController().activeSessionSnapshot;
         final bool isTerminal = snapshot?.outcome.isTerminal ?? false;
-        return Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            if (moveCount > 0 && !isTerminal)
-              _OngoingGameSection(
-                currentPlayRouteId: currentPlayRouteId,
-                snapshot: snapshot,
-                moveCount: moveCount,
-                playModes: playModes,
-                useCarousel: useCarousel,
-                tabInteraction: tabInteraction,
-                onTap: onContinueGame,
-              ),
-            _QuickPairingSection(
-              title: strings.quickPairing,
-              headerKey: const Key('sanmill_home_play_modes_group'),
-              children: <_QuickPairingChoice>[
-                for (final GameModeEntry mode in playModes)
-                  _QuickPairingChoice(
-                    key: mode.drawerKey ?? Key('home_${mode.id.value}'),
-                    icon: mode.icon ?? Icons.sports_esports_rounded,
-                    title: mode.label,
-                    onTap: () => onPlayRouteSelected(mode.id.value),
-                  ),
-              ],
-            ),
-          ],
+        if (moveCount == 0 || isTerminal) {
+          return const SizedBox.shrink();
+        }
+        return _OngoingGameSection(
+          currentPlayRouteId: currentPlayRouteId,
+          snapshot: snapshot,
+          moveCount: moveCount,
+          playModes: playModes,
+          useCarousel: useCarousel,
+          tabInteraction: tabInteraction,
+          onTap: onContinueGame,
         );
       },
-    );
-  }
-}
-
-class _QuickPairingSection extends StatelessWidget {
-  const _QuickPairingSection({
-    required this.title,
-    required this.headerKey,
-    required this.children,
-  });
-
-  final String title;
-  final Key headerKey;
-  final List<_QuickPairingChoice> children;
-
-  @override
-  Widget build(BuildContext context) {
-    if (children.isEmpty) {
-      return const SizedBox.shrink();
-    }
-    final List<List<_QuickPairingChoice>> rows = <List<_QuickPairingChoice>>[];
-    for (int i = 0; i < children.length; i += 2) {
-      final int end = i + 2 > children.length ? children.length : i + 2;
-      rows.add(children.sublist(i, end));
-    }
-
-    return Padding(
-      key: headerKey,
-      padding: const EdgeInsets.fromLTRB(
-        AppStyles.bodyPadding,
-        0,
-        AppStyles.bodyPadding,
-        AppStyles.sectionSpacing,
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text(title, style: AppStyles.sectionTitle),
-          const SizedBox(height: 6),
-          for (final (int index, List<_QuickPairingChoice> row) in rows.indexed)
-            Padding(
-              padding: EdgeInsets.only(top: index == 0 ? 0 : 8),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  for (final (int childIndex, _QuickPairingChoice child)
-                      in row.indexed) ...<Widget>[
-                    if (childIndex > 0) const SizedBox(width: 8),
-                    Expanded(child: child),
-                  ],
-                ],
-              ),
-            ),
-        ],
-      ),
-    );
-  }
-}
-
-class _QuickPairingChoice extends StatelessWidget {
-  const _QuickPairingChoice({
-    super.key,
-    required this.icon,
-    required this.title,
-    required this.onTap,
-  });
-
-  final IconData icon;
-  final String title;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    final ColorScheme colorScheme = Theme.of(context).colorScheme;
-    final Color background = colorScheme.surfaceContainerHighest.withValues(
-      alpha: Theme.of(context).brightness == Brightness.dark ? 0.64 : 0.50,
-    );
-    return ConstrainedBox(
-      constraints: const BoxConstraints(minHeight: 76),
-      child: Material(
-        color: background,
-        borderRadius: BorderRadius.circular(6),
-        clipBehavior: Clip.antiAlias,
-        child: InkWell(
-          onTap: onTap,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Icon(icon, color: colorScheme.primary),
-                const SizedBox(height: 6),
-                Text(
-                  title,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.center,
-                  style: AppStyles.tileSubtitle.copyWith(
-                    color: colorScheme.onSurface.withValues(alpha: 0.82),
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
     );
   }
 }
