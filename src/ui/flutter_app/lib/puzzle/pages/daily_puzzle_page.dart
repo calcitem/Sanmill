@@ -7,12 +7,9 @@
 
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
-import 'package:hive_ce_flutter/hive_flutter.dart' show Box;
 
-import '../../appearance_settings/models/color_settings.dart';
 import '../../generated/intl/l10n.dart';
-import '../../shared/database/database.dart';
-import '../../shared/themes/app_theme.dart';
+import '../../shared/widgets/lichess_list_section.dart';
 import '../models/puzzle_models.dart';
 import '../services/daily_puzzle_service.dart';
 import '../services/puzzle_manager.dart';
@@ -35,303 +32,45 @@ class _DailyPuzzlePageState extends State<DailyPuzzlePage> {
     final S s = S.of(context);
     final DailyPuzzleInfo dailyInfo = _dailyPuzzleService.getTodaysPuzzle();
     final PuzzleInfo? puzzle = _puzzleManager.getPuzzleById(dailyInfo.puzzleId);
+    final ThemeData theme = Theme.of(context);
 
-    return ValueListenableBuilder<Box<ColorSettings>>(
-      valueListenable: DB().listenColorSettings,
-      builder: (BuildContext context, Box<ColorSettings> box, Widget? child) {
-        final ThemeData settingsTheme = Theme.of(context);
-        final bool useDarkSettingsUi =
-            settingsTheme.brightness == Brightness.dark;
-
-        // Use Builder to ensure the context has the correct theme
-        return Theme(
-          data: settingsTheme,
-          child: Builder(
-            builder: (BuildContext context) {
-              if (puzzle == null) {
-                return Scaffold(
-                  backgroundColor: useDarkSettingsUi
-                      ? settingsTheme.scaffoldBackgroundColor
-                      : AppTheme.lightBackgroundColor,
-                  appBar: AppBar(
-                    title: Text(
-                      s.dailyPuzzle,
-                      style: useDarkSettingsUi
-                          ? null
-                          : AppTheme.appBarTheme.titleTextStyle,
-                    ),
-                  ),
-                  body: Center(child: Text(s.noPuzzlesAvailable)),
-                );
-              }
-
-              final PuzzleProgress? progress = _puzzleManager.getProgress(
-                puzzle.id,
-              );
-              final bool isCompleted = progress?.completed ?? false;
-              final int stars = progress?.stars ?? 0;
-
-              return Scaffold(
-                backgroundColor: useDarkSettingsUi
-                    ? settingsTheme.scaffoldBackgroundColor
-                    : AppTheme.lightBackgroundColor,
-                appBar: AppBar(
-                  title: Text(
-                    s.dailyPuzzle,
-                    style: useDarkSettingsUi
-                        ? null
-                        : AppTheme.appBarTheme.titleTextStyle,
-                  ),
-                  actions: <Widget>[
-                    // Streak info
-                    IconButton(
-                      icon: const Icon(FluentIcons.trophy_24_regular),
-                      onPressed: () =>
-                          _showStreakInfo(context, dailyInfo, settingsTheme),
-                      tooltip: s.dailyPuzzleStreak,
-                    ),
-                  ],
-                ),
-                body: SingleChildScrollView(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: <Widget>[
-                      // Date and streak card
-                      Card(
-                        elevation: 2,
-                        child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Column(
-                            children: <Widget>[
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  Expanded(
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: <Widget>[
-                                        Text(
-                                          _formatDate(dailyInfo.date),
-                                          style: Theme.of(
-                                            context,
-                                          ).textTheme.titleMedium,
-                                          maxLines: 2,
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                        Text(
-                                          s.dailyPuzzleNumber(
-                                            dailyInfo.dayNumber,
-                                          ),
-                                          style: Theme.of(
-                                            context,
-                                          ).textTheme.bodySmall,
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  const SizedBox(width: 8),
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: <Widget>[
-                                      Row(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: <Widget>[
-                                          const Icon(
-                                            FluentIcons.fire_24_regular,
-                                            color: Colors.orange,
-                                            size: 20,
-                                          ),
-                                          const SizedBox(width: 4),
-                                          Text(
-                                            '${dailyInfo.currentStreak}',
-                                            style: const TextStyle(
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.orange,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      Text(
-                                        s.dailyPuzzleDayStreak,
-                                        style: Theme.of(
-                                          context,
-                                        ).textTheme.bodySmall,
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                              if (dailyInfo.longestStreak >
-                                  dailyInfo.currentStreak) ...<Widget>[
-                                const SizedBox(height: 8),
-                                Text(
-                                  s.dailyPuzzleBestStreak(
-                                    dailyInfo.longestStreak,
-                                  ),
-                                  style: Theme.of(context).textTheme.bodySmall,
-                                ),
-                              ],
-                            ],
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-
-                      // Puzzle info card
-                      Card(
-                        elevation: 2,
-                        child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Row(
-                                children: <Widget>[
-                                  Icon(
-                                    puzzle.category.icon,
-                                    color: _getDifficultyColor(
-                                      puzzle.difficulty,
-                                    ),
-                                    size: 32,
-                                  ),
-                                  const SizedBox(width: 12),
-                                  Expanded(
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: <Widget>[
-                                        Text(
-                                          puzzle.title,
-                                          style: Theme.of(
-                                            context,
-                                          ).textTheme.titleLarge,
-                                          maxLines: 2,
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                        Text(
-                                          puzzle.difficulty.displayName(
-                                            context,
-                                          ),
-                                          style: TextStyle(
-                                            color: _getDifficultyColor(
-                                              puzzle.difficulty,
-                                            ),
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  if (isCompleted) ...<Widget>[
-                                    Column(
-                                      children: <Widget>[
-                                        const Icon(
-                                          FluentIcons
-                                              .checkmark_circle_24_regular,
-                                          color: Colors.green,
-                                          size: 32,
-                                        ),
-                                        Row(
-                                          children: List<Widget>.generate(
-                                            3,
-                                            (int index) => Icon(
-                                              index < stars
-                                                  ? FluentIcons.star_24_filled
-                                                  : FluentIcons.star_24_regular,
-                                              color: Colors.amber,
-                                              size: 16,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ],
-                              ),
-                              const SizedBox(height: 12),
-                              Text(
-                                puzzle.description,
-                                style: Theme.of(context).textTheme.bodyMedium,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 24),
-
-                      // Start button - use darker colors for better text contrast
-                      ElevatedButton.icon(
-                        onPressed: () => _startPuzzle(puzzle),
-                        icon: const Icon(
-                          FluentIcons.play_24_regular,
-                          color: Colors.white,
-                        ),
-                        label: Text(
-                          isCompleted ? s.tryAgain : s.dailyPuzzleStart,
-                          style: const TextStyle(
-                            fontSize: 18,
-                            color: Colors.white,
-                          ),
-                        ),
-                        style: ElevatedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                          backgroundColor: isCompleted
-                              ? Colors.blue.shade700
-                              : Colors.green.shade700,
-                          foregroundColor: Colors.white,
-                        ),
-                      ),
-
-                      const SizedBox(height: 16),
-
-                      // Hint: How to improve streak - use white card for better contrast
-                      if (!isCompleted)
-                        Card(
-                          elevation: 2,
-                          child: Padding(
-                            padding: const EdgeInsets.all(12.0),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                const Icon(
-                                  FluentIcons.lightbulb_24_regular,
-                                  color: Colors.blue,
-                                ),
-                                const SizedBox(width: 12),
-                                Expanded(
-                                  child: Text(
-                                    s.dailyPuzzleStreakHint,
-                                    style: const TextStyle(color: Colors.blue),
-                                    maxLines: 3,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                    ],
-                  ),
-                ),
-              );
-            },
+    return Scaffold(
+      key: const Key('daily_puzzle_page_scaffold'),
+      backgroundColor: theme.colorScheme.surface,
+      appBar: AppBar(
+        title: Text(s.dailyPuzzle),
+        actions: <Widget>[
+          IconButton(
+            key: const Key('daily_puzzle_streak_button'),
+            icon: const Icon(FluentIcons.trophy_24_regular),
+            onPressed: () => _showStreakInfo(context, dailyInfo),
+            tooltip: s.dailyPuzzleStreak,
           ),
-        );
-      },
+        ],
+      ),
+      body: puzzle == null
+          ? Center(
+              key: const Key('daily_puzzle_empty_state'),
+              child: Text(s.noPuzzlesAvailable),
+            )
+          : _DailyPuzzleContent(
+              dailyInfo: dailyInfo,
+              puzzle: puzzle,
+              progress: _puzzleManager.getProgress(puzzle.id),
+              formatDate: _formatDate,
+              difficultyColorFor: (PuzzleDifficulty difficulty) =>
+                  _getDifficultyColor(context, difficulty),
+              onStartPuzzle: _startPuzzle,
+            ),
     );
   }
 
   /// Format date for display
   String _formatDate(DateTime date) {
+    assert(
+      date.month >= DateTime.january && date.month <= DateTime.december,
+      'Daily puzzle date must have a valid month.',
+    );
     final S s = S.of(context);
     final List<String> months = <String>[
       s.monthJanuary,
@@ -351,20 +90,21 @@ class _DailyPuzzlePageState extends State<DailyPuzzlePage> {
   }
 
   /// Get color for difficulty level
-  Color _getDifficultyColor(PuzzleDifficulty difficulty) {
+  Color _getDifficultyColor(BuildContext context, PuzzleDifficulty difficulty) {
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
     switch (difficulty) {
       case PuzzleDifficulty.beginner:
-        return Colors.green;
+        return colorScheme.primary;
       case PuzzleDifficulty.easy:
-        return Colors.lightGreen;
+        return colorScheme.primary;
       case PuzzleDifficulty.medium:
-        return Colors.orange;
+        return colorScheme.tertiary;
       case PuzzleDifficulty.hard:
-        return Colors.deepOrange;
+        return colorScheme.error;
       case PuzzleDifficulty.expert:
-        return Colors.red;
+        return colorScheme.error;
       case PuzzleDifficulty.master:
-        return Colors.purple;
+        return colorScheme.secondary;
     }
   }
 
@@ -383,70 +123,63 @@ class _DailyPuzzlePageState extends State<DailyPuzzlePage> {
   }
 
   /// Show streak information dialog
-  void _showStreakInfo(
-    BuildContext context,
-    DailyPuzzleInfo dailyInfo,
-    ThemeData settingsTheme,
-  ) {
+  void _showStreakInfo(BuildContext context, DailyPuzzleInfo dailyInfo) {
     final S s = S.of(context);
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
 
     showDialog<void>(
       context: context,
       builder: (BuildContext context) {
-        return Theme(
-          data: settingsTheme,
-          child: AlertDialog(
-            title: Row(
-              children: <Widget>[
-                const Icon(FluentIcons.trophy_24_regular, color: Colors.orange),
-                const SizedBox(width: 8),
-                // Wrap text in Expanded to prevent overflow on small screens
-                Expanded(
-                  child: Text(
-                    s.dailyPuzzleStreak,
-                    overflow: TextOverflow.ellipsis,
-                  ),
+        return AlertDialog(
+          title: Row(
+            children: <Widget>[
+              Icon(FluentIcons.trophy_24_regular, color: colorScheme.tertiary),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  s.dailyPuzzleStreak,
+                  overflow: TextOverflow.ellipsis,
                 ),
-              ],
-            ),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                _buildStreakRow(
-                  s.dailyPuzzleCurrentStreak,
-                  '${dailyInfo.currentStreak} ${s.dailyPuzzleDays}',
-                  FluentIcons.fire_24_regular,
-                  Colors.orange,
-                ),
-                const SizedBox(height: 8),
-                _buildStreakRow(
-                  s.dailyPuzzleLongestStreak,
-                  '${dailyInfo.longestStreak} ${s.dailyPuzzleDays}',
-                  FluentIcons.trophy_24_regular,
-                  Colors.amber,
-                ),
-                const SizedBox(height: 8),
-                _buildStreakRow(
-                  s.dailyPuzzleTotalCompleted,
-                  dailyInfo.totalCompleted.toString(),
-                  FluentIcons.checkmark_circle_24_regular,
-                  Colors.green,
-                ),
-                const SizedBox(height: 16),
-                Text(
-                  s.dailyPuzzleStreakInfo,
-                  style: Theme.of(context).textTheme.bodySmall,
-                ),
-              ],
-            ),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(),
-                child: Text(s.close),
               ),
             ],
           ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              _buildStreakRow(
+                s.dailyPuzzleCurrentStreak,
+                '${dailyInfo.currentStreak} ${s.dailyPuzzleDays}',
+                FluentIcons.fire_24_regular,
+                colorScheme.tertiary,
+              ),
+              const SizedBox(height: 8),
+              _buildStreakRow(
+                s.dailyPuzzleLongestStreak,
+                '${dailyInfo.longestStreak} ${s.dailyPuzzleDays}',
+                FluentIcons.trophy_24_regular,
+                colorScheme.secondary,
+              ),
+              const SizedBox(height: 8),
+              _buildStreakRow(
+                s.dailyPuzzleTotalCompleted,
+                dailyInfo.totalCompleted.toString(),
+                FluentIcons.checkmark_circle_24_regular,
+                colorScheme.primary,
+              ),
+              const SizedBox(height: 16),
+              Text(
+                s.dailyPuzzleStreakInfo,
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
+            ],
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text(s.close),
+            ),
+          ],
         );
       },
     );
@@ -483,6 +216,204 @@ class _DailyPuzzlePageState extends State<DailyPuzzlePage> {
             style: TextStyle(fontWeight: FontWeight.bold, color: color),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _DailyPuzzleContent extends StatelessWidget {
+  const _DailyPuzzleContent({
+    required this.dailyInfo,
+    required this.puzzle,
+    required this.progress,
+    required this.formatDate,
+    required this.difficultyColorFor,
+    required this.onStartPuzzle,
+  });
+
+  final DailyPuzzleInfo dailyInfo;
+  final PuzzleInfo puzzle;
+  final PuzzleProgress? progress;
+  final String Function(DateTime date) formatDate;
+  final Color Function(PuzzleDifficulty difficulty) difficultyColorFor;
+  final ValueChanged<PuzzleInfo> onStartPuzzle;
+
+  @override
+  Widget build(BuildContext context) {
+    final S s = S.of(context);
+    final bool isCompleted = progress?.completed ?? false;
+    final int stars = progress?.stars ?? 0;
+
+    return ListView(
+      key: const Key('daily_puzzle_list'),
+      padding: const EdgeInsets.only(top: 16, bottom: 24),
+      children: <Widget>[
+        _buildPuzzleSection(context, s, isCompleted, stars),
+        _buildDailyInfoSection(context, s),
+        if (!isCompleted) _buildHintSection(context, s),
+      ],
+    );
+  }
+
+  Widget _buildPuzzleSection(
+    BuildContext context,
+    S s,
+    bool isCompleted,
+    int stars,
+  ) {
+    final ThemeData theme = Theme.of(context);
+    final Color difficultyColor = difficultyColorFor(puzzle.difficulty);
+
+    return LichessListSection(
+      header: Text(s.dailyPuzzle),
+      cardKey: const Key('daily_puzzle_card'),
+      children: <Widget>[
+        ListTile(
+          key: const Key('daily_puzzle_summary_tile'),
+          leading: Icon(puzzle.category.icon, color: difficultyColor),
+          title: Text(
+            puzzle.title,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+          ),
+          subtitle: Text(
+            '${puzzle.difficulty.displayName(context)}\n${puzzle.description}',
+            maxLines: 4,
+            overflow: TextOverflow.ellipsis,
+          ),
+          trailing: isCompleted
+              ? _DailyPuzzleCompletionBadge(stars: stars)
+              : null,
+        ),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+          child: FilledButton.icon(
+            key: const Key('daily_puzzle_start_button'),
+            onPressed: () => onStartPuzzle(puzzle),
+            icon: const Icon(FluentIcons.play_24_regular),
+            label: Text(isCompleted ? s.tryAgain : s.dailyPuzzleStart),
+            style: FilledButton.styleFrom(
+              minimumSize: const Size.fromHeight(48),
+              textStyle: theme.textTheme.titleMedium,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildDailyInfoSection(BuildContext context, S s) {
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+
+    return LichessListSection(
+      header: Text(formatDate(dailyInfo.date)),
+      cardKey: const Key('daily_puzzle_streak_section'),
+      children: <Widget>[
+        ListTile(
+          key: const Key('daily_puzzle_number_tile'),
+          leading: Icon(
+            FluentIcons.calendar_star_24_regular,
+            color: colorScheme.primary,
+          ),
+          title: Text(s.dailyPuzzleNumber(dailyInfo.dayNumber)),
+          trailing: _DailyPuzzleValue(
+            icon: FluentIcons.fire_24_regular,
+            value: dailyInfo.currentStreak.toString(),
+            color: colorScheme.tertiary,
+          ),
+        ),
+        if (dailyInfo.longestStreak > dailyInfo.currentStreak)
+          ListTile(
+            key: const Key('daily_puzzle_best_streak_tile'),
+            leading: Icon(
+              FluentIcons.trophy_24_regular,
+              color: colorScheme.secondary,
+            ),
+            title: Text(s.dailyPuzzleBestStreak(dailyInfo.longestStreak)),
+          ),
+      ],
+    );
+  }
+
+  Widget _buildHintSection(BuildContext context, S s) {
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+
+    return LichessListSection(
+      cardKey: const Key('daily_puzzle_hint_section'),
+      children: <Widget>[
+        ListTile(
+          leading: Icon(
+            FluentIcons.lightbulb_24_regular,
+            color: colorScheme.primary,
+          ),
+          title: Text(s.dailyPuzzleStreakHint),
+        ),
+      ],
+    );
+  }
+}
+
+class _DailyPuzzleCompletionBadge extends StatelessWidget {
+  const _DailyPuzzleCompletionBadge({required this.stars});
+
+  final int stars;
+
+  @override
+  Widget build(BuildContext context) {
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        Icon(
+          FluentIcons.checkmark_circle_24_regular,
+          color: colorScheme.primary,
+          size: 28,
+        ),
+        const SizedBox(height: 2),
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          children: List<Widget>.generate(
+            3,
+            (int index) => Icon(
+              index < stars
+                  ? FluentIcons.star_24_filled
+                  : FluentIcons.star_24_regular,
+              color: colorScheme.tertiary,
+              size: 14,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _DailyPuzzleValue extends StatelessWidget {
+  const _DailyPuzzleValue({
+    required this.icon,
+    required this.value,
+    required this.color,
+  });
+
+  final IconData icon;
+  final String value;
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        Icon(icon, color: color, size: 20),
+        const SizedBox(width: 4),
+        Text(
+          value,
+          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+            color: color,
+            fontWeight: FontWeight.w700,
           ),
         ),
       ],

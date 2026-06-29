@@ -248,6 +248,31 @@ void main() {
       expect(find.byKey(const Key('puzzles_home_rush')), findsOneWidget);
       expect(find.byKey(const Key('puzzles_home_streak')), findsOneWidget);
 
+      await tester.tap(find.byKey(const Key('puzzles_home_daily')));
+      await tester.pumpAndSettle();
+
+      final BuildContext dailyPuzzleContext = tester.element(
+        find.byKey(const Key('daily_puzzle_page_scaffold')),
+      );
+      final Scaffold dailyPuzzleScaffold = tester.widget<Scaffold>(
+        find.byKey(const Key('daily_puzzle_page_scaffold')),
+      );
+      expect(
+        dailyPuzzleScaffold.backgroundColor,
+        Theme.of(dailyPuzzleContext).colorScheme.surface,
+      );
+      expect(
+        find.byKey(const Key('daily_puzzle_card')).evaluate().isNotEmpty ||
+            find
+                .byKey(const Key('daily_puzzle_empty_state'))
+                .evaluate()
+                .isNotEmpty,
+        isTrue,
+      );
+
+      await tester.binding.handlePopRoute();
+      await tester.pumpAndSettle();
+
       await tester.tap(find.byKey(const Key('sanmill_tab_watch')));
       await tester.pumpAndSettle();
 
