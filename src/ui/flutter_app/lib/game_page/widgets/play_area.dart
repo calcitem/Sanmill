@@ -1007,7 +1007,7 @@ class PlayAreaState extends State<PlayArea> {
                 DB().ruleSettings.piecesCount > 9);
 
         // Human vs AI mirrors the Lichess offline-computer screen: one
-        // bottom bar with menu, resign, takeback, and hint. Other game modes
+        // bottom bar with menu, takeback, resign, and hint. Other game modes
         // also keep their toolbars at the bottom for a consistent shell.
         final Widget? humanDatabaseStatsStrip = _buildHumanDatabaseStatsStrip(
           context,
@@ -1609,16 +1609,16 @@ class _LichessGameBottomBar extends StatelessWidget {
           onTap: onMenuPressed,
         ),
         LichessBottomBarButton(
-          key: const Key('play_area_bottom_bar_resign'),
-          icon: CupertinoIcons.flag,
-          label: S.of(context).resign,
-          onTap: onResignPressed,
-        ),
-        LichessBottomBarButton(
           key: const Key('play_area_bottom_bar_take_back'),
           icon: CupertinoIcons.arrow_uturn_left,
           label: S.of(context).takeBack,
           onTap: onTakeBackPressed,
+        ),
+        LichessBottomBarButton(
+          key: const Key('play_area_bottom_bar_resign'),
+          icon: CupertinoIcons.flag,
+          label: S.of(context).resign,
+          onTap: onResignPressed,
         ),
         LichessBottomBarButton(
           key: const Key('play_area_bottom_bar_hint'),
