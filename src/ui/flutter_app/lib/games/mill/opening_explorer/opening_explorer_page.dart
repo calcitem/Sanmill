@@ -171,50 +171,94 @@ class _OpeningExplorerContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final S strings = S.of(context);
-
     return ListTileTheme.merge(
       iconColor: Theme.of(context).colorScheme.primary,
-      child: ListView(
-        key: const Key('opening_explorer_list'),
-        padding: const EdgeInsets.only(top: 16, bottom: 24),
-        children: <Widget>[
-          _ExplorerBoardSection(
-            session: session,
-            tapController: tapController,
-            onTransform: onTransform,
-          ),
-          if (!snapshot.isRuleSupported)
-            _OpeningExplorerMessage(
-              message: strings.openingExplorerRuleUnsupported,
-              inList: true,
-            ),
-          _PositionSection(snapshot: snapshot),
-          if (snapshot.moves.isEmpty)
-            _OpeningExplorerMessage(
-              message: strings.openingExplorerNoData,
-              inList: true,
-            )
-          else
-            LichessListSection(
-              header: Text(strings.openingExplorerMoves),
-              cardKey: const Key('opening_explorer_moves_card'),
-              children: <Widget>[
-                const _OpeningExplorerMovesHeader(),
-                for (final _OpeningExplorerMove move in snapshot.moves)
-                  _OpeningMoveTile(
-                    move: move,
-                    onSelected: () => onMoveSelected(move.action),
-                  ),
-                if (snapshot.aggregateHumanStats != null)
-                  _OpeningExplorerTotalTile(
-                    stats: snapshot.aggregateHumanStats!,
-                  ),
-              ],
-            ),
-        ],
+      child: LayoutBuilder(
+        builder: (BuildContext context, BoxConstraints constraints) {
+          final bool useSideBySide =
+              constraints.maxWidth >= 720 &&
+              constraints.maxWidth > constraints.maxHeight;
+          final Widget content = useSideBySide
+              ? Row(
+                  children: <Widget>[
+                    Expanded(
+                      flex: 5,
+                      child: ListView(
+                        key: const Key('opening_explorer_board_pane'),
+                        padding: const EdgeInsets.only(top: 16, bottom: 24),
+                        children: <Widget>[
+                          _buildBoardSection(boardHeightFactor: 0.78),
+                        ],
+                      ),
+                    ),
+                    const VerticalDivider(width: 1),
+                    Expanded(
+                      flex: 6,
+                      child: ListView(
+                        key: const Key('opening_explorer_data_pane'),
+                        padding: const EdgeInsets.only(top: 16, bottom: 24),
+                        children: _buildDataSections(context),
+                      ),
+                    ),
+                  ],
+                )
+              : ListView(
+                  padding: const EdgeInsets.only(top: 16, bottom: 24),
+                  children: <Widget>[
+                    _buildBoardSection(),
+                    ..._buildDataSections(context),
+                  ],
+                );
+
+          return KeyedSubtree(
+            key: const Key('opening_explorer_list'),
+            child: content,
+          );
+        },
       ),
     );
+  }
+
+  Widget _buildBoardSection({double boardHeightFactor = 0.56}) {
+    return _ExplorerBoardSection(
+      session: session,
+      tapController: tapController,
+      onTransform: onTransform,
+      boardHeightFactor: boardHeightFactor,
+    );
+  }
+
+  List<Widget> _buildDataSections(BuildContext context) {
+    final S strings = S.of(context);
+
+    return <Widget>[
+      if (!snapshot.isRuleSupported)
+        _OpeningExplorerMessage(
+          message: strings.openingExplorerRuleUnsupported,
+          inList: true,
+        ),
+      _PositionSection(snapshot: snapshot),
+      if (snapshot.moves.isEmpty)
+        _OpeningExplorerMessage(
+          message: strings.openingExplorerNoData,
+          inList: true,
+        )
+      else
+        LichessListSection(
+          header: Text(strings.openingExplorerMoves),
+          cardKey: const Key('opening_explorer_moves_card'),
+          children: <Widget>[
+            const _OpeningExplorerMovesHeader(),
+            for (final _OpeningExplorerMove move in snapshot.moves)
+              _OpeningMoveTile(
+                move: move,
+                onSelected: () => onMoveSelected(move.action),
+              ),
+            if (snapshot.aggregateHumanStats != null)
+              _OpeningExplorerTotalTile(stats: snapshot.aggregateHumanStats!),
+          ],
+        ),
+    ];
   }
 }
 
@@ -223,11 +267,13 @@ class _ExplorerBoardSection extends StatelessWidget {
     required this.session,
     required this.tapController,
     required this.onTransform,
+    required this.boardHeightFactor,
   });
 
   final NativeMillGameSession session;
   final MillSessionTapController tapController;
   final ValueChanged<TransformationType> onTransform;
+  final double boardHeightFactor;
 
   @override
   Widget build(BuildContext context) {
@@ -242,6 +288,7 @@ class _ExplorerBoardSection extends StatelessWidget {
               _OpeningExplorerBoard(
                 session: session,
                 tapController: tapController,
+                heightFactor: boardHeightFactor,
               ),
               const SizedBox(height: 12),
               Row(
@@ -294,10 +341,12 @@ class _OpeningExplorerBoard extends StatefulWidget {
   const _OpeningExplorerBoard({
     required this.session,
     required this.tapController,
+    required this.heightFactor,
   });
 
   final NativeMillGameSession session;
   final MillSessionTapController tapController;
+  final double heightFactor;
 
   @override
   State<_OpeningExplorerBoard> createState() => _OpeningExplorerBoardState();
@@ -335,7 +384,7 @@ class _OpeningExplorerBoardState extends State<_OpeningExplorerBoard> {
       builder: (BuildContext context, BoxConstraints constraints) {
         final double available = math.min(
           constraints.maxWidth,
-          MediaQuery.sizeOf(context).height * 0.56,
+          MediaQuery.sizeOf(context).height * widget.heightFactor,
         );
         final double side = available.isFinite ? available : 320;
 

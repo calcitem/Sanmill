@@ -786,6 +786,47 @@ void main() {
   );
 
   testWidgets(
+    'Opening explorer uses split panes in landscape',
+    (WidgetTester tester) async {
+      tester.view
+        ..physicalSize = const Size(960, 540)
+        ..devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+
+      await tester.pumpWidget(const SanmillApp());
+
+      await tester.tap(find.byKey(const Key('sanmill_tab_more')));
+      await tester.pumpAndSettle();
+      await tester.ensureVisible(
+        find.byKey(const Key('drawer_item_opening_explorer')),
+      );
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const Key('drawer_item_opening_explorer')));
+      await tester.pumpAndSettle();
+
+      expect(find.byKey(const Key('opening_explorer_list')), findsOneWidget);
+      expect(
+        find.byKey(const Key('opening_explorer_board_pane')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const Key('opening_explorer_data_pane')),
+        findsOneWidget,
+      );
+      expect(find.byKey(const Key('opening_explorer_board')), findsOneWidget);
+      expect(
+        find.byKey(const Key('opening_explorer_position_card')),
+        findsOneWidget,
+      );
+
+      // Drain any settings-save debounce timer (see the smoke test above).
+      await tester.pump(const Duration(milliseconds: 350));
+    },
+    skip: nativeLibrarySkipReason() != null,
+  );
+
+  testWidgets(
     'Developer options use the themed settings surface',
     (WidgetTester tester) async {
       await tester.pumpWidget(
