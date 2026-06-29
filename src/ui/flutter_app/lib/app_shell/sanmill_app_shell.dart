@@ -1056,6 +1056,7 @@ class _HomeTabRootState extends State<_HomeTabRoot> {
   Widget build(BuildContext context) {
     final S strings = S.of(context);
     final GameModule module = GameRegistry.instance.current;
+    final bool useWideHomeLayout = MediaQuery.sizeOf(context).width >= 720;
     final List<GameModeEntry> playModes = module
         .playModes(context)
         .where(
@@ -1080,72 +1081,50 @@ class _HomeTabRootState extends State<_HomeTabRoot> {
             controller: widget.scrollController,
             physics: const AlwaysScrollableScrollPhysics(),
             padding: const EdgeInsets.only(top: 16, bottom: 24),
-            children: <Widget>[
-              ValueListenableBuilder<int>(
-                valueListenable:
-                    GameController().gameRecorder.moveCountNotifier,
-                builder: (BuildContext context, int moveCount, _) {
-                  final GameStateSnapshot? snapshot =
-                      GameController().activeSessionSnapshot;
-                  final bool isTerminal = snapshot?.outcome.isTerminal ?? false;
-                  return Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      if (moveCount > 0 && !isTerminal)
-                        _OngoingGameSection(
-                          currentPlayRouteId: widget.currentPlayRouteId,
-                          snapshot: snapshot,
-                          moveCount: moveCount,
-                          playModes: playModes,
-                          onTap: widget.onContinueGame,
-                        ),
-                      _MoreSection(
-                        title: strings.play,
-                        headerKey: const Key('sanmill_home_play_modes_group'),
-                        children: <Widget>[
-                          for (final GameModeEntry mode in playModes)
-                            _MoreTile(
-                              key:
-                                  mode.drawerKey ??
-                                  Key('home_${mode.id.value}'),
-                              icon: mode.icon ?? Icons.sports_esports_rounded,
-                              title: mode.label,
-                              onTap: () =>
-                                  widget.onPlayRouteSelected(mode.id.value),
-                            ),
-                        ],
-                      ),
-                    ],
-                  );
-                },
-              ),
-              FutureBuilder<List<SavedGameSummary>>(
-                future: _recentGamesFuture,
-                builder:
-                    (
-                      BuildContext context,
-                      AsyncSnapshot<List<SavedGameSummary>> snapshot,
-                    ) {
-                      final List<SavedGameSummary> recentGames =
-                          snapshot.data ?? const <SavedGameSummary>[];
-                      return _RecentGamesSection(
-                        games: recentGames,
-                        limit: _recentGamesLimit,
-                        onShowAll: _openSavedGamesPage,
-                        onSavedGameSelected: widget.onSavedGameSelected,
-                      );
-                    },
-              ),
-            ],
+            children: _buildHomeContent(context, playModes, useWideHomeLayout),
           ),
         ),
       ),
-      floatingActionButton: playModes.isEmpty
+      floatingActionButton: playModes.isEmpty || useWideHomeLayout
           ? null
           : _FloatingPlayButton(
               onPressed: () => _showPlayBottomSheet(context, playModes),
             ),
     );
+  }
+
+  List<Widget> _buildHomeContent(
+    BuildContext context,
+    List<GameModeEntry> playModes,
+    bool useWideHomeLayout,
+  ) {
+    final Widget playSections = _HomePlaySections(
+      currentPlayRouteId: widget.currentPlayRouteId,
+      playModes: playModes,
+      onContinueGame: widget.onContinueGame,
+      onPlayRouteSelected: widget.onPlayRouteSelected,
+    );
+    final Widget recentGames = _HomeRecentGames(
+      future: _recentGamesFuture,
+      limit: _recentGamesLimit,
+      onShowAll: _openSavedGamesPage,
+      onSavedGameSelected: widget.onSavedGameSelected,
+    );
+
+    if (!useWideHomeLayout) {
+      return <Widget>[playSections, recentGames];
+    }
+
+    return <Widget>[
+      Row(
+        key: const Key('sanmill_home_wide_content'),
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Expanded(child: playSections),
+          Expanded(child: recentGames),
+        ],
+      ),
+    ];
   }
 
   void _showPlayBottomSheet(
@@ -1165,6 +1144,94 @@ class _HomeTabRootState extends State<_HomeTabRoot> {
           onPlayRouteSelected: widget.onPlayRouteSelected,
         );
       },
+    );
+  }
+}
+
+class _HomePlaySections extends StatelessWidget {
+  const _HomePlaySections({
+    required this.currentPlayRouteId,
+    required this.playModes,
+    required this.onContinueGame,
+    required this.onPlayRouteSelected,
+  });
+
+  final String currentPlayRouteId;
+  final List<GameModeEntry> playModes;
+  final VoidCallback onContinueGame;
+  final ValueChanged<String> onPlayRouteSelected;
+
+  @override
+  Widget build(BuildContext context) {
+    final S strings = S.of(context);
+    return ValueListenableBuilder<int>(
+      valueListenable: GameController().gameRecorder.moveCountNotifier,
+      builder: (BuildContext context, int moveCount, _) {
+        final GameStateSnapshot? snapshot =
+            GameController().activeSessionSnapshot;
+        final bool isTerminal = snapshot?.outcome.isTerminal ?? false;
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            if (moveCount > 0 && !isTerminal)
+              _OngoingGameSection(
+                currentPlayRouteId: currentPlayRouteId,
+                snapshot: snapshot,
+                moveCount: moveCount,
+                playModes: playModes,
+                onTap: onContinueGame,
+              ),
+            _MoreSection(
+              title: strings.play,
+              headerKey: const Key('sanmill_home_play_modes_group'),
+              children: <Widget>[
+                for (final GameModeEntry mode in playModes)
+                  _MoreTile(
+                    key: mode.drawerKey ?? Key('home_${mode.id.value}'),
+                    icon: mode.icon ?? Icons.sports_esports_rounded,
+                    title: mode.label,
+                    onTap: () => onPlayRouteSelected(mode.id.value),
+                  ),
+              ],
+            ),
+          ],
+        );
+      },
+    );
+  }
+}
+
+class _HomeRecentGames extends StatelessWidget {
+  const _HomeRecentGames({
+    required this.future,
+    required this.limit,
+    required this.onShowAll,
+    required this.onSavedGameSelected,
+  });
+
+  final Future<List<SavedGameSummary>> future;
+  final int limit;
+  final VoidCallback onShowAll;
+  final ValueChanged<String> onSavedGameSelected;
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<List<SavedGameSummary>>(
+      future: future,
+      builder:
+          (
+            BuildContext context,
+            AsyncSnapshot<List<SavedGameSummary>> snapshot,
+          ) {
+            final List<SavedGameSummary> recentGames =
+                snapshot.data ?? const <SavedGameSummary>[];
+            return _RecentGamesSection(
+              games: recentGames,
+              limit: limit,
+              onShowAll: onShowAll,
+              onSavedGameSelected: onSavedGameSelected,
+            );
+          },
     );
   }
 }

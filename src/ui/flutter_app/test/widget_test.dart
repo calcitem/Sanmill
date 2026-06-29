@@ -827,6 +827,36 @@ void main() {
   );
 
   testWidgets(
+    'Home tab uses split content on wide screens',
+    (WidgetTester tester) async {
+      tester.view
+        ..physicalSize = const Size(960, 540)
+        ..devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+
+      await tester.pumpWidget(const SanmillApp());
+      await tester.pumpAndSettle();
+
+      expect(find.byKey(const Key('sanmill_home_list')), findsOneWidget);
+      expect(
+        find.byKey(const Key('sanmill_home_wide_content')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const Key('sanmill_home_play_modes_group')),
+        findsOneWidget,
+      );
+      expect(find.byKey(const Key('drawer_item_human_vs_ai')), findsOneWidget);
+      expect(find.byKey(const Key('sanmill_home_play_fab')), findsNothing);
+
+      // Drain any settings-save debounce timer (see the smoke test above).
+      await tester.pump(const Duration(milliseconds: 350));
+    },
+    skip: nativeLibrarySkipReason() != null,
+  );
+
+  testWidgets(
     'Developer options use the themed settings surface',
     (WidgetTester tester) async {
       await tester.pumpWidget(
