@@ -148,6 +148,23 @@ void main() {
       expect(find.byKey(const Key('sanmill_tab_watch')), findsOneWidget);
       expect(find.byKey(const Key('sanmill_tab_records')), findsNothing);
 
+      final NavigationDestination learnDestination = tester
+          .widget<NavigationDestination>(
+            find.byKey(const Key('sanmill_tab_learn')),
+          );
+      expect(learnDestination.label, 'Learn');
+
+      final NavigationDestination watchDestination = tester
+          .widget<NavigationDestination>(
+            find.byKey(const Key('sanmill_tab_watch')),
+          );
+      expect((watchDestination.icon as Icon).icon, Icons.live_tv_rounded);
+      expect(watchDestination.selectedIcon, isA<Icon>());
+      expect(
+        (watchDestination.selectedIcon! as Icon).icon,
+        Icons.live_tv_rounded,
+      );
+
       await tester.tap(
         find.byKey(const Key('custom_drawer_drawer_overlay_button')),
       );

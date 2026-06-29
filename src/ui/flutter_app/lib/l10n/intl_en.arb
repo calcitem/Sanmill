@@ -935,6 +935,10 @@
     "@home": {
         "description": "Bottom navigation tab label for the home tab"
     },
+    "learn": "Learn",
+    "@learn": {
+        "description": "Bottom navigation tab label for the learn tab"
+    },
     "watch": "Watch",
     "@watch": {
         "description": "Bottom navigation tab label for the watch tab"

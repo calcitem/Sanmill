@@ -60,7 +60,7 @@ enum SanmillShellTab {
       case SanmillShellTab.learn:
         return Icons.school_rounded;
       case SanmillShellTab.watch:
-        return Icons.visibility_rounded;
+        return Icons.live_tv_rounded;
       case SanmillShellTab.more:
         return Icons.menu_rounded;
     }
@@ -73,7 +73,7 @@ enum SanmillShellTab {
       case SanmillShellTab.puzzles:
         return strings.puzzles;
       case SanmillShellTab.learn:
-        return strings.howToPlay;
+        return strings.learn;
       case SanmillShellTab.watch:
         return strings.watch;
       case SanmillShellTab.more:
