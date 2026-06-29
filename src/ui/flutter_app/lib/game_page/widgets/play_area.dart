@@ -12,7 +12,10 @@ import 'package:native_screenshot_widget/native_screenshot_widget.dart';
 
 import '../../experience_recording/models/recording_models.dart';
 import '../../experience_recording/services/recording_service.dart';
+import '../../game_platform/game_session.dart' show GameAction, PlayerSeat;
+import '../../games/mill/mill_action_codec.dart';
 import '../../games/mill/mill_board_transform_actions.dart';
+import '../../games/mill/native_mill_rules_port.dart';
 import '../../general_settings/widgets/general_settings_page.dart';
 import '../../generated/intl/l10n.dart';
 import '../../shared/config/constants.dart';
@@ -328,23 +331,71 @@ class PlayAreaState extends State<PlayArea> {
     final List<ExtMove> path = GameController().gameRecorder.currentPath;
     assert(path.isNotEmpty, 'Cannot take back without a move history.');
 
-    // Undo until the requester is the next side to act. Captures are separate
-    // actions in the history, so a requester capture can be taken back together
-    // with the opponent's reply.
-    for (int steps = 1; steps <= path.length; steps++) {
-      final PieceColor sideAfterUndo = path[path.length - steps].side;
-      assert(
-        sideAfterUndo == PieceColor.white || sideAfterUndo == PieceColor.black,
-        'Human vs AI takeback requires playable sides in move history.',
-      );
-
-      if (sideAfterUndo == requesterSide) {
-        return steps;
+    final NativeMillRulesPort preview = _takeBackPreviewPort(path);
+    try {
+      // Undo until the requester is truly the side to act. This keeps capture
+      // actions attached to the requester: if White made a mill and captured,
+      // then Black replied, a Black request removes only Black's move, while a
+      // White request removes Black's move and White's capture.
+      for (int steps = 1; steps <= path.length; steps++) {
+        preview.undo();
+        final PieceColor sideAfterUndo = _pieceColorFromSeat(
+          preview.snapshot.activeSeat,
+        );
+        if (sideAfterUndo == requesterSide) {
+          return steps;
+        }
       }
+    } finally {
+      preview.dispose();
     }
 
     assert(false, 'Move history does not contain the requester side.');
     throw StateError('Move history does not contain the requester side.');
+  }
+
+  NativeMillRulesPort _takeBackPreviewPort(List<ExtMove> path) {
+    final NativeMillRulesPort port = NativeMillRulesPort(
+      ruleSettings: DB().ruleSettings,
+      generalSettings: DB().generalSettings,
+    );
+
+    try {
+      final String? setupPosition = GameController().gameRecorder.setupPosition;
+      if (setupPosition != null) {
+        port.setFromFen(setupPosition);
+      }
+
+      for (final ExtMove move in path) {
+        final GameAction? action = _legalActionForMove(port, move.move);
+        assert(
+          action != null,
+          'Cannot replay ${move.move} while calculating requester takeback.',
+        );
+        port.apply(action!);
+      }
+      return port;
+    } on Object {
+      port.dispose();
+      rethrow;
+    }
+  }
+
+  GameAction? _legalActionForMove(NativeMillRulesPort port, String move) {
+    for (final GameAction action in port.legalActions) {
+      if (MillActionCodec.moveStringFrom(action) == move) {
+        return action;
+      }
+    }
+    return null;
+  }
+
+  PieceColor _pieceColorFromSeat(PlayerSeat seat) {
+    assert(
+      seat == PlayerSeat.first || seat == PlayerSeat.second,
+      'Requester takeback requires a playable side, got $seat.',
+    );
+    return seat == PlayerSeat.first ? PieceColor.white : PieceColor.black;
   }
 
   Future<void> _takeBackFromRegularBottomBar(BuildContext context) async {
