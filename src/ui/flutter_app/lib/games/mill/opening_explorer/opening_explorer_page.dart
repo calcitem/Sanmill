@@ -1,9 +1,14 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // Copyright (C) 2019-2026 The Sanmill developers (see AUTHORS file)
 
+import 'dart:math' as math;
+
+import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../../../appearance_settings/models/color_settings.dart';
+import '../../../game_page/services/transform/transform.dart';
 import '../../../game_platform/game_session.dart';
 import '../../../general_settings/models/general_settings.dart';
 import '../../../generated/intl/l10n.dart';
@@ -15,9 +20,13 @@ import '../../../shared/themes/app_styles.dart';
 import '../../../shared/widgets/lichess_list_section.dart';
 import '../../../src/rust/api/simple.dart' as tgf;
 import '../mill_action_codec.dart';
+import '../mill_board_coordinate_maps.dart';
+import '../mill_board_geometry.dart';
 import '../mill_human_database_provider.dart';
 import '../mill_opening_book_symmetry.dart';
+import '../mill_session_tap_controller.dart';
 import '../native_mill_game_session.dart';
+import '../native_mill_snapshot_board_view.dart';
 import '../opening_book/opening_book_repository.dart';
 
 class OpeningExplorerPage extends StatefulWidget {
@@ -32,15 +41,87 @@ class OpeningExplorerPage extends StatefulWidget {
 class _OpeningExplorerPageState extends State<OpeningExplorerPage> {
   late final Future<void> _openingBookLoad = OpeningBookRepository.instance
       .ensureLoaded();
+  final MillSessionTapController _tapController = MillSessionTapController();
+  NativeMillGameSession? _explorerSession;
+
+  @override
+  void initState() {
+    super.initState();
+    _recreateExplorerSession();
+  }
+
+  @override
+  void didUpdateWidget(covariant OpeningExplorerPage oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (!identical(widget.session, oldWidget.session)) {
+      _recreateExplorerSession();
+    }
+  }
+
+  @override
+  void dispose() {
+    _explorerSession?.dispose();
+    super.dispose();
+  }
+
+  void _recreateExplorerSession() {
+    _explorerSession?.dispose();
+    _explorerSession = null;
+    _tapController.clearSelection();
+
+    final GameSession? source = widget.session;
+    if (source is! NativeMillGameSession) {
+      return;
+    }
+
+    final NativeMillGameSession explorer = NativeMillGameSession(
+      rules: DB().ruleSettings,
+      generalSettings: DB().generalSettings,
+    );
+    final bool loaded = explorer.loadFen(source.getFen());
+    assert(loaded, 'Opening explorer source FEN must load into its session.');
+    if (!loaded) {
+      explorer.dispose();
+      return;
+    }
+    _explorerSession = explorer;
+  }
+
+  Future<void> _applyExplorerAction(GameAction action) async {
+    final NativeMillGameSession? session = _explorerSession;
+    if (session == null) {
+      return;
+    }
+    await session.apply(action);
+    _tapController.clearSelection();
+    if (mounted) {
+      setState(() {});
+    }
+  }
+
+  void _transformExplorerPosition(TransformationType type) {
+    final NativeMillGameSession? session = _explorerSession;
+    if (session == null) {
+      return;
+    }
+    final String transformed = transformFEN(session.getFen(), type);
+    final bool loaded = session.loadFen(transformed);
+    assert(loaded, 'Opening explorer transformation must keep a valid FEN.');
+    if (!loaded) {
+      return;
+    }
+    _tapController.clearSelection();
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
     final S strings = S.of(context);
-    final GameSession? session = widget.session;
+    final NativeMillGameSession? session = _explorerSession;
 
     return Scaffold(
       appBar: AppBar(title: Text(strings.openingExplorer)),
-      body: session is NativeMillGameSession
+      body: session != null
           ? ValueListenableBuilder<GameStateSnapshot>(
               valueListenable: session.state,
               builder:
@@ -54,7 +135,13 @@ class _OpeningExplorerPageState extends State<OpeningExplorerPage> {
                               ruleSettings: DB().ruleSettings,
                               generalSettings: DB().generalSettings,
                             );
-                        return _OpeningExplorerContent(snapshot: snapshot);
+                        return _OpeningExplorerContent(
+                          session: session,
+                          snapshot: snapshot,
+                          tapController: _tapController,
+                          onMoveSelected: _applyExplorerAction,
+                          onTransform: _transformExplorerPosition,
+                        );
                       },
                     );
                   },
@@ -67,9 +154,19 @@ class _OpeningExplorerPageState extends State<OpeningExplorerPage> {
 }
 
 class _OpeningExplorerContent extends StatelessWidget {
-  const _OpeningExplorerContent({required this.snapshot});
+  const _OpeningExplorerContent({
+    required this.session,
+    required this.snapshot,
+    required this.tapController,
+    required this.onMoveSelected,
+    required this.onTransform,
+  });
 
+  final NativeMillGameSession session;
   final _OpeningExplorerSnapshot snapshot;
+  final MillSessionTapController tapController;
+  final ValueChanged<GameAction> onMoveSelected;
+  final ValueChanged<TransformationType> onTransform;
 
   @override
   Widget build(BuildContext context) {
@@ -81,6 +178,11 @@ class _OpeningExplorerContent extends StatelessWidget {
         key: const Key('opening_explorer_list'),
         padding: const EdgeInsets.only(top: 16, bottom: 24),
         children: <Widget>[
+          _ExplorerBoardSection(
+            session: session,
+            tapController: tapController,
+            onTransform: onTransform,
+          ),
           if (!snapshot.isRuleSupported)
             _OpeningExplorerMessage(
               message: strings.openingExplorerRuleUnsupported,
@@ -97,13 +199,462 @@ class _OpeningExplorerContent extends StatelessWidget {
               header: Text(strings.openingExplorerMoves),
               cardKey: const Key('opening_explorer_moves_card'),
               children: <Widget>[
+                const _OpeningExplorerMovesHeader(),
                 for (final _OpeningExplorerMove move in snapshot.moves)
-                  _OpeningMoveTile(move: move),
+                  _OpeningMoveTile(
+                    move: move,
+                    onSelected: () => onMoveSelected(move.action),
+                  ),
               ],
             ),
         ],
       ),
     );
+  }
+}
+
+class _ExplorerBoardSection extends StatelessWidget {
+  const _ExplorerBoardSection({
+    required this.session,
+    required this.tapController,
+    required this.onTransform,
+  });
+
+  final NativeMillGameSession session;
+  final MillSessionTapController tapController;
+  final ValueChanged<TransformationType> onTransform;
+
+  @override
+  Widget build(BuildContext context) {
+    return LichessListSection(
+      hasLeading: false,
+      cardKey: const Key('opening_explorer_board_card'),
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.fromLTRB(12, 12, 12, 10),
+          child: Column(
+            children: <Widget>[
+              _OpeningExplorerBoard(
+                session: session,
+                tapController: tapController,
+              ),
+              const SizedBox(height: 12),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  _BoardTransformButton(
+                    key: const Key('opening_explorer_rotate_button'),
+                    label: S.of(context).rotate,
+                    icon: const Icon(
+                      FluentIcons.arrow_rotate_clockwise_24_regular,
+                    ),
+                    onPressed: () => onTransform(TransformationType.rotate90),
+                  ),
+                  _BoardTransformButton(
+                    key: const Key('opening_explorer_horizontal_flip_button'),
+                    label: S.of(context).horizontalFlip,
+                    icon: const Icon(FluentIcons.flip_horizontal_24_regular),
+                    onPressed: () =>
+                        onTransform(TransformationType.mirrorHorizontal),
+                  ),
+                  _BoardTransformButton(
+                    key: const Key('opening_explorer_vertical_flip_button'),
+                    label: S.of(context).verticalFlip,
+                    icon: const Icon(FluentIcons.flip_vertical_24_regular),
+                    onPressed: () =>
+                        onTransform(TransformationType.mirrorVertical),
+                  ),
+                  _BoardTransformButton(
+                    key: const Key('opening_explorer_inner_outer_flip_button'),
+                    label: S.of(context).innerOuterFlip,
+                    icon: const Icon(FluentIcons.arrow_expand_24_regular),
+                    onPressed: () => onTransform(TransformationType.swap),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _BoardTransformButton extends StatelessWidget {
+  const _BoardTransformButton({
+    super.key,
+    required this.label,
+    required this.icon,
+    required this.onPressed,
+  });
+
+  final String label;
+  final Widget icon;
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return Tooltip(
+      message: label,
+      child: Semantics(
+        label: label,
+        button: true,
+        child: IconButton.filledTonal(onPressed: onPressed, icon: icon),
+      ),
+    );
+  }
+}
+
+class _OpeningExplorerBoard extends StatefulWidget {
+  const _OpeningExplorerBoard({
+    required this.session,
+    required this.tapController,
+  });
+
+  final NativeMillGameSession session;
+  final MillSessionTapController tapController;
+
+  @override
+  State<_OpeningExplorerBoard> createState() => _OpeningExplorerBoardState();
+}
+
+class _OpeningExplorerBoardState extends State<_OpeningExplorerBoard> {
+  Future<void> _handleTap(Offset localPosition, Size size) async {
+    final int node = MillBoardGeometry.nodeFromPosition(localPosition, size);
+    if (node < 0) {
+      widget.tapController.clearSelection();
+      setState(() {});
+      return;
+    }
+    final String notation = MillBoardCoordinateMaps.nodeToNotation(node);
+    assert(notation.isNotEmpty, 'Opening explorer node must have notation.');
+    final MillSessionTapResult result = await widget.tapController.tap(
+      session: widget.session,
+      tappedLabel: notation,
+    );
+    if (!mounted) {
+      return;
+    }
+    if (result.status != MillSessionTapStatus.ignored) {
+      setState(() {});
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final ColorSettings colors = DB().colorSettings;
+    final RuleSettings rules = DB().ruleSettings;
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+
+    return LayoutBuilder(
+      builder: (BuildContext context, BoxConstraints constraints) {
+        final double available = math.min(
+          constraints.maxWidth,
+          MediaQuery.sizeOf(context).height * 0.56,
+        );
+        final double side = available.isFinite ? available : 320;
+
+        return Center(
+          child: SizedBox.square(
+            key: const Key('opening_explorer_board'),
+            dimension: side,
+            child: ValueListenableBuilder<GameStateSnapshot>(
+              valueListenable: widget.session.state,
+              builder:
+                  (
+                    BuildContext context,
+                    GameStateSnapshot snapshot,
+                    Widget? child,
+                  ) {
+                    final _OpeningExplorerLegalHints hints =
+                        _OpeningExplorerLegalHints.fromActions(
+                          legalActions: widget.session.legalActions,
+                          selectedFrom: widget.tapController.selectedFrom,
+                        );
+                    return GestureDetector(
+                      behavior: HitTestBehavior.opaque,
+                      onTapUp: (TapUpDetails details) =>
+                          _handleTap(details.localPosition, Size.square(side)),
+                      child: CustomPaint(
+                        painter: _OpeningExplorerBoardPainter(
+                          snapshot: snapshot,
+                          selectedFrom: widget.tapController.selectedFrom,
+                          legalHints: hints,
+                          hasDiagonalLines: rules.hasDiagonalLines,
+                          boardBackgroundColor: colors.boardBackgroundColor,
+                          boardLineColor: colors.boardLineColor,
+                          whitePieceColor: colors.whitePieceColor,
+                          blackPieceColor: colors.blackPieceColor,
+                          pieceHighlightColor: colors.pieceHighlightColor,
+                          hintColor: colorScheme.primary,
+                          removeHintColor: colorScheme.error,
+                          shadowColor: colorScheme.shadow,
+                        ),
+                        child: child,
+                      ),
+                    );
+                  },
+              child: const SizedBox.expand(),
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+
+class _OpeningExplorerLegalHints {
+  const _OpeningExplorerLegalHints({
+    required this.sources,
+    required this.targets,
+    required this.removals,
+  });
+
+  factory _OpeningExplorerLegalHints.fromActions({
+    required Iterable<GameAction> legalActions,
+    required String? selectedFrom,
+  }) {
+    final Set<int> sources = <int>{};
+    final Set<int> targets = <int>{};
+    final Set<int> removals = <int>{};
+    final String? selected = selectedFrom?.toLowerCase();
+
+    for (final GameAction action in legalActions) {
+      final String? move = MillActionCodec.moveStringFrom(action);
+      if (move == null || move.isEmpty) {
+        continue;
+      }
+      if (action.type == MillActionTypes.remove && move.startsWith('x')) {
+        _addNotationNode(removals, move.substring(1));
+        continue;
+      }
+      if (action.type == MillActionTypes.place) {
+        _addNotationNode(targets, move);
+        continue;
+      }
+      if (action.type != MillActionTypes.move || !move.contains('-')) {
+        continue;
+      }
+
+      final List<String> parts = move.split('-');
+      if (parts.length != 2) {
+        continue;
+      }
+      final String from = parts[0].toLowerCase();
+      final String to = parts[1].toLowerCase();
+      if (selected == null || selected.isEmpty) {
+        _addNotationNode(sources, from);
+      } else if (from == selected) {
+        _addNotationNode(targets, to);
+      }
+    }
+
+    return _OpeningExplorerLegalHints(
+      sources: sources,
+      targets: targets,
+      removals: removals,
+    );
+  }
+
+  final Set<int> sources;
+  final Set<int> targets;
+  final Set<int> removals;
+
+  static void _addNotationNode(Set<int> nodes, String notation) {
+    final int node = MillBoardCoordinateMaps.notationToNode(notation);
+    if (node >= 0) {
+      nodes.add(node);
+    }
+  }
+}
+
+class _OpeningExplorerBoardPainter extends CustomPainter {
+  const _OpeningExplorerBoardPainter({
+    required this.snapshot,
+    required this.selectedFrom,
+    required this.legalHints,
+    required this.hasDiagonalLines,
+    required this.boardBackgroundColor,
+    required this.boardLineColor,
+    required this.whitePieceColor,
+    required this.blackPieceColor,
+    required this.pieceHighlightColor,
+    required this.hintColor,
+    required this.removeHintColor,
+    required this.shadowColor,
+  });
+
+  final GameStateSnapshot snapshot;
+  final String? selectedFrom;
+  final _OpeningExplorerLegalHints legalHints;
+  final bool hasDiagonalLines;
+  final Color boardBackgroundColor;
+  final Color boardLineColor;
+  final Color whitePieceColor;
+  final Color blackPieceColor;
+  final Color pieceHighlightColor;
+  final Color hintColor;
+  final Color removeHintColor;
+  final Color shadowColor;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final NativeMillSnapshotBoardView? board =
+        NativeMillSnapshotBoardView.fromSnapshot(snapshot);
+
+    final RRect background = RRect.fromRectAndRadius(
+      Offset.zero & size,
+      Radius.circular(size.shortestSide * 0.035),
+    );
+    canvas.drawRRect(background, Paint()..color = boardBackgroundColor);
+
+    _drawLines(canvas, size);
+    _drawPoints(canvas, size);
+    _drawHints(canvas, size, legalHints.sources, hintColor, filled: false);
+    _drawHints(canvas, size, legalHints.targets, hintColor, filled: true);
+    _drawHints(
+      canvas,
+      size,
+      legalHints.removals,
+      removeHintColor,
+      filled: true,
+    );
+
+    if (board != null) {
+      _drawPieces(canvas, size, board);
+    }
+    _drawSelectedNode(canvas, size);
+  }
+
+  void _drawLines(Canvas canvas, Size size) {
+    final Paint linePaint = Paint()
+      ..color = boardLineColor
+      ..strokeWidth = math.max(2, size.shortestSide * 0.007)
+      ..strokeCap = StrokeCap.round
+      ..style = PaintingStyle.stroke;
+    final List<List<int>> lines = hasDiagonalLines
+        ? MillBoardCoordinateMaps.diagonalMillNodeLines
+        : MillBoardCoordinateMaps.standardMillNodeLines;
+    for (final List<int> line in lines) {
+      final Path path = Path();
+      for (int i = 0; i < line.length; i++) {
+        final Offset p = MillBoardGeometry.nodeOffset(line[i], size);
+        if (i == 0) {
+          path.moveTo(p.dx, p.dy);
+        } else {
+          path.lineTo(p.dx, p.dy);
+        }
+      }
+      canvas.drawPath(path, linePaint);
+    }
+  }
+
+  void _drawPoints(Canvas canvas, Size size) {
+    final Paint pointPaint = Paint()..color = boardLineColor;
+    final double radius = size.shortestSide * 0.013;
+    for (int node = 0; node < MillBoardGeometry.nodeCount; node++) {
+      canvas.drawCircle(
+        MillBoardGeometry.nodeOffset(node, size),
+        radius,
+        pointPaint,
+      );
+    }
+  }
+
+  void _drawHints(
+    Canvas canvas,
+    Size size,
+    Set<int> nodes,
+    Color color, {
+    required bool filled,
+  }) {
+    if (nodes.isEmpty) {
+      return;
+    }
+    final Paint paint = Paint()
+      ..color = color.withValues(alpha: filled ? 0.24 : 0.82)
+      ..strokeWidth = math.max(2, size.shortestSide * 0.006)
+      ..style = filled ? PaintingStyle.fill : PaintingStyle.stroke;
+    final double radius = size.shortestSide * (filled ? 0.035 : 0.052);
+    for (final int node in nodes) {
+      canvas.drawCircle(
+        MillBoardGeometry.nodeOffset(node, size),
+        radius,
+        paint,
+      );
+    }
+  }
+
+  void _drawPieces(
+    Canvas canvas,
+    Size size,
+    NativeMillSnapshotBoardView board,
+  ) {
+    final double radius = size.shortestSide * 0.052;
+    final Paint shadowPaint = Paint()
+      ..color = shadowColor.withValues(alpha: 0.25)
+      ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 2);
+    final Paint outlinePaint = Paint()
+      ..color = boardLineColor.withValues(alpha: 0.55)
+      ..strokeWidth = math.max(1, size.shortestSide * 0.004)
+      ..style = PaintingStyle.stroke;
+
+    for (int node = 0; node < MillBoardGeometry.nodeCount; node++) {
+      final PlayerSeat? seat = board.pieceAtNode(node);
+      if (seat == null) {
+        continue;
+      }
+      final Offset center = MillBoardGeometry.nodeOffset(node, size);
+      final Color pieceColor = seat == PlayerSeat.first
+          ? whitePieceColor
+          : blackPieceColor;
+      final Paint piecePaint = Paint()..color = pieceColor;
+      canvas.drawCircle(center.translate(1.5, 2), radius, shadowPaint);
+      canvas.drawCircle(center, radius, piecePaint);
+      canvas.drawCircle(center, radius, outlinePaint);
+      if (board.markedNodes.contains(node)) {
+        final Paint markedPaint = Paint()
+          ..color = pieceHighlightColor
+          ..strokeWidth = math.max(2, size.shortestSide * 0.007)
+          ..style = PaintingStyle.stroke;
+        canvas.drawCircle(center, radius * 1.22, markedPaint);
+      }
+    }
+  }
+
+  void _drawSelectedNode(Canvas canvas, Size size) {
+    final String? selected = selectedFrom;
+    if (selected == null || selected.isEmpty) {
+      return;
+    }
+    final int node = MillBoardCoordinateMaps.notationToNode(selected);
+    if (node < 0) {
+      return;
+    }
+    final Paint paint = Paint()
+      ..color = hintColor
+      ..strokeWidth = math.max(2, size.shortestSide * 0.009)
+      ..style = PaintingStyle.stroke;
+    canvas.drawCircle(
+      MillBoardGeometry.nodeOffset(node, size),
+      size.shortestSide * 0.068,
+      paint,
+    );
+  }
+
+  @override
+  bool shouldRepaint(covariant _OpeningExplorerBoardPainter oldDelegate) {
+    return oldDelegate.snapshot != snapshot ||
+        oldDelegate.selectedFrom != selectedFrom ||
+        oldDelegate.legalHints != legalHints ||
+        oldDelegate.hasDiagonalLines != hasDiagonalLines ||
+        oldDelegate.boardBackgroundColor != boardBackgroundColor ||
+        oldDelegate.boardLineColor != boardLineColor ||
+        oldDelegate.whitePieceColor != whitePieceColor ||
+        oldDelegate.blackPieceColor != blackPieceColor ||
+        oldDelegate.pieceHighlightColor != pieceHighlightColor ||
+        oldDelegate.hintColor != hintColor ||
+        oldDelegate.removeHintColor != removeHintColor;
   }
 }
 
@@ -153,17 +704,18 @@ class _PositionSection extends StatelessWidget {
 }
 
 class _OpeningMoveTile extends StatelessWidget {
-  const _OpeningMoveTile({required this.move});
+  const _OpeningMoveTile({required this.move, required this.onSelected});
 
   final _OpeningExplorerMove move;
+  final VoidCallback onSelected;
 
   @override
   Widget build(BuildContext context) {
     final S strings = S.of(context);
     final ThemeData theme = Theme.of(context);
     final ColorScheme colorScheme = theme.colorScheme;
-    final TextStyle subtitleStyle =
-        theme.textTheme.bodySmall?.copyWith(
+    final TextStyle sourceStyle =
+        theme.textTheme.labelSmall?.copyWith(
           color: colorScheme.onSurfaceVariant.withValues(
             alpha: AppStyles.subtitleOpacity,
           ),
@@ -175,37 +727,30 @@ class _OpeningMoveTile extends StatelessWidget {
           ),
         );
 
-    return ListTile(
+    return InkWell(
       key: Key('opening_explorer_move_${move.notation}'),
-      leading: _MoveNotationBadge(notation: move.notation),
-      title: Wrap(
-        spacing: 6,
-        runSpacing: 4,
-        crossAxisAlignment: WrapCrossAlignment.center,
-        children: <Widget>[
-          Text(move.notation, style: theme.textTheme.titleMedium),
-          if (move.isPerfectMove)
-            _SourceBadge(
-              label: strings.perfectDatabaseSettings,
-              color: colorScheme.primary,
+      onTap: onSelected,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+        child: Row(
+          children: <Widget>[
+            Expanded(flex: 34, child: _MoveCell(move: move)),
+            const SizedBox(width: 8),
+            SizedBox(width: 88, child: _MoveGamesCell(move: move)),
+            const SizedBox(width: 8),
+            Expanded(
+              flex: 42,
+              child: move.humanStats == null
+                  ? Text(
+                      _sourceOnlySubtitle(strings, move),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: sourceStyle,
+                    )
+                  : _HumanStatsBar(stats: move.humanStats!),
             ),
-          if (move.bookRank != null)
-            _SourceBadge(
-              label: strings.openingBookSettings,
-              color: colorScheme.tertiary,
-            ),
-          if (move.humanStats != null)
-            _SourceBadge(
-              label: strings.humanGameDatabaseSettings,
-              color: colorScheme.secondary,
-            ),
-        ],
-      ),
-      subtitle: Padding(
-        padding: const EdgeInsets.only(top: 6),
-        child: move.humanStats == null
-            ? Text(_sourceOnlySubtitle(strings, move), style: subtitleStyle)
-            : _HumanStatsSummary(stats: move.humanStats!),
+          ],
+        ),
       ),
     );
   }
@@ -225,31 +770,125 @@ class _OpeningMoveTile extends StatelessWidget {
   }
 }
 
-class _MoveNotationBadge extends StatelessWidget {
-  const _MoveNotationBadge({required this.notation});
-
-  final String notation;
+class _OpeningExplorerMovesHeader extends StatelessWidget {
+  const _OpeningExplorerMovesHeader();
 
   @override
   Widget build(BuildContext context) {
+    final S strings = S.of(context);
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
-    return Container(
-      width: 48,
-      height: 36,
-      alignment: Alignment.center,
-      decoration: BoxDecoration(
-        color: colorScheme.surfaceContainerHighest,
-        borderRadius: BorderRadius.circular(AppStyles.compactRadius),
-      ),
-      child: Text(
-        notation,
-        maxLines: 1,
-        overflow: TextOverflow.ellipsis,
-        style: Theme.of(context).textTheme.labelLarge?.copyWith(
-          color: colorScheme.onSurface,
-          fontFeatures: const <FontFeature>[FontFeature.tabularFigures()],
+    final TextStyle style =
+        Theme.of(context).textTheme.labelMedium?.copyWith(
+          color: colorScheme.onSurfaceVariant,
+          fontWeight: FontWeight.w700,
           letterSpacing: 0,
+        ) ??
+        AppStyles.tileSubtitle.copyWith(color: colorScheme.onSurfaceVariant);
+
+    return ColoredBox(
+      color: colorScheme.surfaceContainerHighest.withValues(alpha: 0.62),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        child: Row(
+          children: <Widget>[
+            Expanded(flex: 34, child: Text(strings.move, style: style)),
+            const SizedBox(width: 8),
+            SizedBox(
+              width: 88,
+              child: Text(
+                strings.gamesPlayed,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: style,
+                textAlign: TextAlign.end,
+              ),
+            ),
+            const SizedBox(width: 8),
+            Expanded(
+              flex: 42,
+              child: Text(
+                '${strings.wins} / ${strings.draws} / ${strings.losses}',
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: style,
+              ),
+            ),
+          ],
         ),
+      ),
+    );
+  }
+}
+
+class _MoveCell extends StatelessWidget {
+  const _MoveCell({required this.move});
+
+  final _OpeningExplorerMove move;
+
+  @override
+  Widget build(BuildContext context) {
+    final S strings = S.of(context);
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text(
+          move.notation,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          style: Theme.of(context).textTheme.titleSmall?.copyWith(
+            fontFeatures: const <FontFeature>[FontFeature.tabularFigures()],
+            fontWeight: FontWeight.w700,
+            letterSpacing: 0,
+          ),
+        ),
+        const SizedBox(height: 4),
+        Wrap(
+          spacing: 5,
+          runSpacing: 4,
+          children: <Widget>[
+            if (move.isPerfectMove)
+              _SourceBadge(
+                label: strings.perfectDatabaseSettings,
+                color: colorScheme.primary,
+              ),
+            if (move.bookRank != null)
+              _SourceBadge(
+                label: strings.openingBookSettings,
+                color: colorScheme.tertiary,
+              ),
+            if (move.humanStats != null)
+              _SourceBadge(
+                label: strings.humanGameDatabaseSettings,
+                color: colorScheme.secondary,
+              ),
+          ],
+        ),
+      ],
+    );
+  }
+}
+
+class _MoveGamesCell extends StatelessWidget {
+  const _MoveGamesCell({required this.move});
+
+  final _OpeningExplorerMove move;
+
+  @override
+  Widget build(BuildContext context) {
+    final _HumanMoveStats? stats = move.humanStats;
+    final String text = stats == null
+        ? '-'
+        : '${stats.total} (${move.samplePercent}%)';
+    return Text(
+      text,
+      maxLines: 1,
+      overflow: TextOverflow.ellipsis,
+      textAlign: TextAlign.end,
+      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+        fontFeatures: const <FontFeature>[FontFeature.tabularFigures()],
+        letterSpacing: 0,
       ),
     );
   }
@@ -283,47 +922,6 @@ class _SourceBadge extends StatelessWidget {
   }
 }
 
-class _HumanStatsSummary extends StatelessWidget {
-  const _HumanStatsSummary({required this.stats});
-
-  final _HumanMoveStats stats;
-
-  @override
-  Widget build(BuildContext context) {
-    final S strings = S.of(context);
-    final ThemeData theme = Theme.of(context);
-    final ColorScheme colorScheme = theme.colorScheme;
-    final TextStyle style =
-        theme.textTheme.bodySmall?.copyWith(
-          color: colorScheme.onSurfaceVariant.withValues(
-            alpha: AppStyles.subtitleOpacity,
-          ),
-          letterSpacing: 0,
-        ) ??
-        AppStyles.tileSubtitle.copyWith(
-          color: colorScheme.onSurfaceVariant.withValues(
-            alpha: AppStyles.subtitleOpacity,
-          ),
-        );
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        _HumanStatsBar(stats: stats),
-        const SizedBox(height: 6),
-        Text(
-          '${strings.gamesPlayed}: ${stats.total} · '
-          '${strings.wins}: ${stats.wins} · '
-          '${strings.draws}: ${stats.draws} · '
-          '${strings.losses}: ${stats.losses} · '
-          'Δ ${stats.scoreDelta.toStringAsFixed(3)}',
-          style: style,
-        ),
-      ],
-    );
-  }
-}
-
 class _HumanStatsBar extends StatelessWidget {
   const _HumanStatsBar({required this.stats});
 
@@ -332,35 +930,79 @@ class _HumanStatsBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
-    final double total = stats.total <= 0 ? 1 : stats.total.toDouble();
+    final int total = stats.total;
+    if (total <= 0) {
+      return const SizedBox.shrink();
+    }
 
     return ClipRRect(
-      borderRadius: BorderRadius.circular(999),
+      borderRadius: BorderRadius.circular(5),
       child: SizedBox(
-        height: 6,
+        height: 20,
         child: Row(
           children: <Widget>[
-            Expanded(
-              flex: _barFlex(stats.wins, total),
-              child: ColoredBox(color: colorScheme.primary),
-            ),
-            Expanded(
-              flex: _barFlex(stats.draws, total),
-              child: ColoredBox(color: colorScheme.outlineVariant),
-            ),
-            Expanded(
-              flex: _barFlex(stats.losses, total),
-              child: ColoredBox(color: colorScheme.error),
-            ),
+            if (stats.wins > 0)
+              _HumanStatsBarSegment(
+                count: stats.wins,
+                total: total,
+                color: colorScheme.primary,
+                textColor: colorScheme.onPrimary,
+              ),
+            if (stats.draws > 0)
+              _HumanStatsBarSegment(
+                count: stats.draws,
+                total: total,
+                color: Colors.grey,
+                textColor: Colors.white,
+              ),
+            if (stats.losses > 0)
+              _HumanStatsBarSegment(
+                count: stats.losses,
+                total: total,
+                color: colorScheme.error,
+                textColor: colorScheme.onError,
+              ),
           ],
         ),
       ),
     );
   }
+}
 
-  int _barFlex(int count, double total) {
-    final int flex = (count * 1000 / total).round();
-    return flex <= 0 ? 1 : flex;
+class _HumanStatsBarSegment extends StatelessWidget {
+  const _HumanStatsBarSegment({
+    required this.count,
+    required this.total,
+    required this.color,
+    required this.textColor,
+  });
+
+  final int count;
+  final int total;
+  final Color color;
+  final Color textColor;
+
+  @override
+  Widget build(BuildContext context) {
+    final int percent = (count * 100 / total).round();
+    return Expanded(
+      flex: math.max(1, count),
+      child: ColoredBox(
+        color: color,
+        child: Center(
+          child: Text(
+            percent < 20 ? '' : '$percent%',
+            maxLines: 1,
+            overflow: TextOverflow.clip,
+            style: Theme.of(context).textTheme.labelSmall?.copyWith(
+              color: textColor,
+              fontWeight: FontWeight.w600,
+              letterSpacing: 0,
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }
 
@@ -421,13 +1063,17 @@ class _OpeningExplorerSnapshot {
     final Map<String, _OpeningExplorerMove> moves =
         <String, _OpeningExplorerMove>{};
     _OpeningExplorerMove ensureMove(String notation) {
+      final GameAction? action = legalActions[notation];
       assert(
-        legalActions.containsKey(notation),
+        action != null,
         'Opening explorer move must map to a legal action.',
       );
+      if (action == null) {
+        throw StateError('Opening explorer move is not legal: $notation');
+      }
       return moves.putIfAbsent(
         notation,
-        () => _OpeningExplorerMove(notation: notation),
+        () => _OpeningExplorerMove(notation: notation, action: action),
       );
     }
 
@@ -501,6 +1147,17 @@ class _OpeningExplorerSnapshot {
 
     final List<_OpeningExplorerMove> sortedMoves = moves.values.toList();
     sortedMoves.sort(_compareExplorerMoves);
+    final int totalHumanSamples = sortedMoves.fold<int>(
+      0,
+      (int total, _OpeningExplorerMove move) =>
+          total + (move.humanStats?.total ?? 0),
+    );
+    for (final _OpeningExplorerMove move in sortedMoves) {
+      final int total = move.humanStats?.total ?? 0;
+      move.samplePercent = totalHumanSamples <= 0
+          ? 0
+          : (total * 100 / totalHumanSamples).round();
+    }
 
     return _OpeningExplorerSnapshot(
       fen: fen,
@@ -608,11 +1265,13 @@ class _OpeningExplorerSnapshot {
 }
 
 class _OpeningExplorerMove {
-  _OpeningExplorerMove({required this.notation});
+  _OpeningExplorerMove({required this.notation, required this.action});
 
   final String notation;
+  final GameAction action;
   int? bookRank;
   _HumanMoveStats? humanStats;
+  int samplePercent = 0;
   bool isPerfectMove = false;
 }
 
