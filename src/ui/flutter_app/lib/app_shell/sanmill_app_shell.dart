@@ -10,6 +10,7 @@ import 'package:flutter/foundation.dart'
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
+import 'package:material_symbols_icons/symbols.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -60,31 +61,20 @@ enum SanmillShellTab {
   IconData get icon {
     switch (this) {
       case SanmillShellTab.home:
-        return Icons.home_outlined;
+        return Symbols.home_rounded;
       case SanmillShellTab.puzzles:
-        return Icons.extension_outlined;
+        return Symbols.extension_rounded;
       case SanmillShellTab.learn:
-        return Icons.school_outlined;
+        return Symbols.school_rounded;
       case SanmillShellTab.watch:
-        return Icons.live_tv_outlined;
+        return Symbols.live_tv_rounded;
       case SanmillShellTab.more:
-        return Icons.menu;
+        return Symbols.menu_rounded;
     }
   }
 
   IconData get selectedIcon {
-    switch (this) {
-      case SanmillShellTab.home:
-        return Icons.home_rounded;
-      case SanmillShellTab.puzzles:
-        return Icons.extension_rounded;
-      case SanmillShellTab.learn:
-        return Icons.school_rounded;
-      case SanmillShellTab.watch:
-        return Icons.live_tv_rounded;
-      case SanmillShellTab.more:
-        return Icons.menu_rounded;
-    }
+    return icon;
   }
 
   String label(S strings) {
@@ -653,8 +643,8 @@ class SanmillAppShellState extends State<SanmillAppShell> {
             for (final SanmillShellTab tab in SanmillShellTab.values)
               NavigationDestination(
                 key: tab.key,
-                icon: Icon(tab.icon),
-                selectedIcon: Icon(tab.selectedIcon),
+                icon: Icon(tab.icon, fill: 0),
+                selectedIcon: Icon(tab.selectedIcon, fill: 1),
                 label: tab.label(strings),
               ),
           ],

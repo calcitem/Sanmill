@@ -48,6 +48,7 @@ dependencies:
   json_annotation: 4.9.0
   logger: 2.6.2
   marquee: 2.3.0
+  material_symbols_icons: 4.2858.1
   meta: 1.17.0
   flutter_zxing: 2.2.1
   native_screenshot_widget: 0.0.8

@@ -8,6 +8,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart'; // Import flutter services
 import 'package:flutter_test/flutter_test.dart';
+import 'package:material_symbols_icons/symbols.dart';
 import 'package:sanmill/app_shell/sanmill_app_shell.dart';
 import 'package:sanmill/game_page/widgets/mini_board.dart';
 import 'package:sanmill/game_platform/game_registry.dart';
@@ -170,12 +171,14 @@ void main() {
           .widget<NavigationDestination>(
             find.byKey(const Key('sanmill_tab_watch')),
           );
-      expect((watchDestination.icon as Icon).icon, Icons.live_tv_outlined);
+      expect((watchDestination.icon as Icon).icon, Symbols.live_tv_rounded);
+      expect((watchDestination.icon as Icon).fill, 0);
       expect(watchDestination.selectedIcon, isA<Icon>());
       expect(
         (watchDestination.selectedIcon! as Icon).icon,
-        Icons.live_tv_rounded,
+        Symbols.live_tv_rounded,
       );
+      expect((watchDestination.selectedIcon! as Icon).fill, 1);
 
       expect(
         find.byKey(const Key('sanmill_navigation_drawer_button')),

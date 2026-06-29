@@ -233,6 +233,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.5"
+  chalkdart:
+    dependency: transitive
+    description:
+      name: chalkdart
+      sha256: "7dcf37e0b3d8dcec8c4ae0420d85aad9b3167d6a759601fd5b0f2b1958746581"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.1.0"
   characters:
     dependency: transitive
     description:
@@ -1139,6 +1147,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.11.1"
+  material_symbols_icons:
+    dependency: "direct main"
+    description:
+      name: material_symbols_icons
+      sha256: ef20d86fb34c2b59eb7553c4d795bb8a7ec8c890c53ffd3148c64f7adc46ae50
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.2858.1"
   meta:
     dependency: "direct main"
     description:
