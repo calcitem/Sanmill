@@ -15,7 +15,8 @@ import 'package:path_provider/path_provider.dart';
 
 import '../experience_recording/models/recording_models.dart';
 import '../experience_recording/services/recording_service.dart';
-import '../game_page/services/mill.dart' show GameController;
+import '../game_page/services/mill.dart' show GameController, LoadService;
+import '../game_page/services/save_load/saved_game_catalog.dart';
 import '../game_platform/game_id.dart';
 import '../game_platform/game_menu.dart';
 import '../game_platform/game_module.dart';
@@ -384,6 +385,23 @@ class SanmillAppShellState extends State<SanmillAppShell> {
     );
   }
 
+  Future<void> _continueCurrentGame() async {
+    await _selectPlayRoute(_playRouteId);
+  }
+
+  Future<void> _openSavedGame(String path) async {
+    await LoadService.loadGame(
+      context,
+      path,
+      isRunning: true,
+      shouldPop: false,
+    );
+    if (!mounted) {
+      return;
+    }
+    await _selectPlayRoute(_playRouteId);
+  }
+
   Future<void> _pushAppRoute(String routeId) async {
     final Widget? screen =
         buildModuleScreenForGame(
@@ -500,7 +518,10 @@ class SanmillAppShellState extends State<SanmillAppShell> {
       case SanmillShellTab.home:
         return _HomeTabRoot(
           scrollController: _scrollControllers[SanmillShellTab.home]!,
+          currentPlayRouteId: _playRouteId,
+          onContinueGame: _continueCurrentGame,
           onPlayRouteSelected: _selectPlayRoute,
+          onSavedGameSelected: _openSavedGame,
         );
       case SanmillShellTab.puzzles:
         final GameMenuContribution? contribution = _puzzlesContribution(
@@ -916,14 +937,39 @@ class _TabVisibility extends StatelessWidget {
   }
 }
 
-class _HomeTabRoot extends StatelessWidget {
+class _HomeTabRoot extends StatefulWidget {
   const _HomeTabRoot({
     required this.scrollController,
+    required this.currentPlayRouteId,
+    required this.onContinueGame,
     required this.onPlayRouteSelected,
+    required this.onSavedGameSelected,
   });
 
   final ScrollController scrollController;
+  final String currentPlayRouteId;
+  final VoidCallback onContinueGame;
   final ValueChanged<String> onPlayRouteSelected;
+  final ValueChanged<String> onSavedGameSelected;
+
+  @override
+  State<_HomeTabRoot> createState() => _HomeTabRootState();
+}
+
+class _HomeTabRootState extends State<_HomeTabRoot> {
+  late Future<List<SavedGameSummary>> _recentGamesFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _recentGamesFuture = savedGameCatalog.listRecent(limit: 5);
+  }
+
+  void _refreshRecentGames() {
+    setState(() {
+      _recentGamesFuture = savedGameCatalog.listRecent(limit: 5);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -948,21 +994,55 @@ class _HomeTabRoot extends StatelessWidget {
         iconColor: Theme.of(context).colorScheme.primary,
         child: ListView(
           key: const Key('sanmill_home_list'),
-          controller: scrollController,
+          controller: widget.scrollController,
           padding: const EdgeInsets.only(top: 16, bottom: 24),
           children: <Widget>[
-            _MoreSection(
-              title: strings.game,
-              headerKey: const Key('sanmill_home_play_modes_group'),
-              children: <Widget>[
-                for (final GameModeEntry mode in playModes)
-                  _MoreTile(
-                    key: mode.drawerKey ?? Key('home_${mode.id.value}'),
-                    icon: mode.icon ?? Icons.sports_esports_rounded,
-                    title: mode.label,
-                    onTap: () => onPlayRouteSelected(mode.id.value),
-                  ),
-              ],
+            ValueListenableBuilder<int>(
+              valueListenable: GameController().gameRecorder.moveCountNotifier,
+              builder: (BuildContext context, int moveCount, _) {
+                final bool isTerminal =
+                    GameController()
+                        .activeSessionSnapshot
+                        ?.outcome
+                        .isTerminal ??
+                    false;
+                return _MoreSection(
+                  title: strings.game,
+                  headerKey: const Key('sanmill_home_play_modes_group'),
+                  children: <Widget>[
+                    if (moveCount > 0 && !isTerminal)
+                      _OngoingGameTile(
+                        currentPlayRouteId: widget.currentPlayRouteId,
+                        moveCount: moveCount,
+                        playModes: playModes,
+                        onTap: widget.onContinueGame,
+                      ),
+                    for (final GameModeEntry mode in playModes)
+                      _MoreTile(
+                        key: mode.drawerKey ?? Key('home_${mode.id.value}'),
+                        icon: mode.icon ?? Icons.sports_esports_rounded,
+                        title: mode.label,
+                        onTap: () => widget.onPlayRouteSelected(mode.id.value),
+                      ),
+                  ],
+                );
+              },
+            ),
+            FutureBuilder<List<SavedGameSummary>>(
+              future: _recentGamesFuture,
+              builder:
+                  (
+                    BuildContext context,
+                    AsyncSnapshot<List<SavedGameSummary>> snapshot,
+                  ) {
+                    final List<SavedGameSummary> recentGames =
+                        snapshot.data ?? const <SavedGameSummary>[];
+                    return _RecentGamesSection(
+                      games: recentGames,
+                      onRefresh: _refreshRecentGames,
+                      onSavedGameSelected: widget.onSavedGameSelected,
+                    );
+                  },
             ),
           ],
         ),
@@ -989,9 +1069,87 @@ class _HomeTabRoot extends StatelessWidget {
       builder: (BuildContext sheetContext) {
         return _PlayBottomSheet(
           playModes: playModes,
-          onPlayRouteSelected: onPlayRouteSelected,
+          onPlayRouteSelected: widget.onPlayRouteSelected,
         );
       },
+    );
+  }
+}
+
+class _OngoingGameTile extends StatelessWidget {
+  const _OngoingGameTile({
+    required this.currentPlayRouteId,
+    required this.moveCount,
+    required this.playModes,
+    required this.onTap,
+  }) : assert(moveCount > 0, 'Ongoing game tile requires moves.');
+
+  final String currentPlayRouteId;
+  final int moveCount;
+  final List<GameModeEntry> playModes;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    GameModeEntry? mode;
+    for (final GameModeEntry entry in playModes) {
+      if (entry.id.value == currentPlayRouteId) {
+        mode = entry;
+        break;
+      }
+    }
+    final S strings = S.of(context);
+    return _MoreTile(
+      key: const Key('sanmill_home_ongoing_game'),
+      icon: Icons.play_circle_outline_rounded,
+      title: strings.continueGame,
+      subtitle: '${mode?.label ?? strings.game} · ${strings.moves}: $moveCount',
+      onTap: onTap,
+    );
+  }
+}
+
+class _RecentGamesSection extends StatelessWidget {
+  const _RecentGamesSection({
+    required this.games,
+    required this.onRefresh,
+    required this.onSavedGameSelected,
+  });
+
+  final List<SavedGameSummary> games;
+  final VoidCallback onRefresh;
+  final ValueChanged<String> onSavedGameSelected;
+
+  @override
+  Widget build(BuildContext context) {
+    if (games.isEmpty) {
+      return const SizedBox.shrink();
+    }
+    final MaterialLocalizations localizations = MaterialLocalizations.of(
+      context,
+    );
+    final S strings = S.of(context);
+    return _MoreSection(
+      title: strings.recentGames,
+      headerKey: const Key('sanmill_home_recent_games_group'),
+      children: <Widget>[
+        for (final (int index, SavedGameSummary game) in games.indexed)
+          _MoreTile(
+            key: Key('sanmill_home_recent_game_$index'),
+            icon: Icons.history_rounded,
+            title: game.displayName,
+            subtitle:
+                '${localizations.formatShortDate(game.modified.toLocal())} '
+                '${localizations.formatTimeOfDay(TimeOfDay.fromDateTime(game.modified.toLocal()))}',
+            onTap: () => onSavedGameSelected(game.path),
+          ),
+        _MoreTile(
+          key: const Key('sanmill_home_recent_games_refresh'),
+          icon: Icons.refresh_rounded,
+          title: strings.refresh,
+          onTap: onRefresh,
+        ),
+      ],
     );
   }
 }
@@ -1307,10 +1465,12 @@ class _MoreTile extends StatelessWidget {
     required this.icon,
     required this.title,
     required this.onTap,
+    this.subtitle,
   });
 
   final IconData icon;
   final String title;
+  final String? subtitle;
   final VoidCallback onTap;
 
   @override
@@ -1318,6 +1478,7 @@ class _MoreTile extends StatelessWidget {
     return ListTile(
       leading: Icon(icon),
       title: Text(title),
+      subtitle: subtitle == null ? null : Text(subtitle!),
       trailing: Theme.of(context).platform == TargetPlatform.iOS
           ? const Icon(Icons.chevron_right_rounded)
           : null,

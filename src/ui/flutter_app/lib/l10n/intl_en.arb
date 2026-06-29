@@ -4689,5 +4689,11 @@
     "side": "Side",
     "@side": {},
     "randomColor": "Random",
-    "@randomColor": {}
+    "@randomColor": {},
+    "getAHint": "Get a hint",
+    "@getAHint": {},
+    "continueGame": "Continue game",
+    "@continueGame": {},
+    "recentGames": "Recent games",
+    "@recentGames": {}
 }

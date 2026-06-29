@@ -4537,5 +4537,11 @@
     "side": "执棋方",
     "@side": {},
     "randomColor": "随机",
-    "@randomColor": {}
+    "@randomColor": {},
+    "getAHint": "获取提示",
+    "@getAHint": {},
+    "continueGame": "继续对局",
+    "@continueGame": {},
+    "recentGames": "最近对局",
+    "@recentGames": {}
 }

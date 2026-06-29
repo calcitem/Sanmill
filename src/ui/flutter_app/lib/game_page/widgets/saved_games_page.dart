@@ -22,6 +22,7 @@ import '../../shared/themes/app_theme.dart';
 import '../../shared/utils/helpers/text_helpers/safe_text_editing_controller.dart';
 import '../services/import_export/pgn.dart';
 import '../services/mill.dart';
+import '../services/save_load/saved_game_catalog.dart';
 import 'mini_board.dart';
 
 /// A single saved game entry with metadata for preview.
@@ -232,44 +233,7 @@ class _SavedGamesPageState extends State<SavedGamesPage> {
 
   /// Determine the records directory. Mirrors LoadService behavior.
   Future<Directory?> _recordsDirectory() async {
-    try {
-      // On Android/iOS, always use the app's private records directory.
-      // User-selected directories (via SAF) cannot be enumerated with
-      // Directory.listSync() due to Scoped Storage restrictions in Android 11+.
-      final bool isMobilePlatform =
-          !kIsWeb && (Platform.isAndroid || Platform.isIOS);
-
-      if (!isMobilePlatform) {
-        // On desktop platforms, try to use the last saved directory if it exists
-        final String lastDirectory = DB().generalSettings.lastPgnSaveDirectory;
-
-        if (lastDirectory.isNotEmpty) {
-          final Directory lastDir = Directory(lastDirectory);
-
-          if (lastDir.existsSync()) {
-            return lastDir;
-          }
-        }
-      }
-
-      // Fallback to default records directory
-      Directory? base;
-      if (!kIsWeb && Platform.isAndroid) {
-        base = await getExternalStorageDirectory();
-      } else {
-        base = await getApplicationDocumentsDirectory();
-      }
-      if (base == null) {
-        return null;
-      }
-      final Directory records = Directory(p.join(base.path, 'records'));
-      if (!records.existsSync()) {
-        records.createSync(recursive: true);
-      }
-      return records;
-    } catch (_) {
-      return null;
-    }
+    return savedGameCatalog.recordsDirectory();
   }
 
   /// Compute the final board layout for a PGN content without mutating global state.
