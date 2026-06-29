@@ -15,6 +15,7 @@ import '../../generated/intl/l10n.dart';
 import '../../shared/database/database.dart';
 import '../../shared/services/environment_config.dart';
 import '../../shared/services/logger.dart';
+import '../../shared/themes/app_styles.dart';
 import '../../shared/themes/app_theme.dart';
 import '../models/color_settings.dart';
 
@@ -90,112 +91,93 @@ class _ThemeSelectionPageState extends State<ThemeSelectionPage> {
     final List<ColorTheme> builtInThemes = AppTheme.colorThemes.keys
         .where((ColorTheme theme) => theme != ColorTheme.custom)
         .toList();
+    final ThemeData theme = Theme.of(context);
 
     return Scaffold(
+      backgroundColor: theme.colorScheme.surface,
       appBar: AppBar(
-        title: Text(
-          S.of(context).theme,
-          style: const TextStyle(fontSize: AppTheme.largeFontSize),
-        ),
+        title: Text(S.of(context).theme, style: AppStyles.pageTitle),
       ),
-      body: GridView.builder(
-        padding: const EdgeInsets.all(16.0),
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2, // Two themes per row
-          childAspectRatio: 0.8, // Aspect ratio for the grid items
-          crossAxisSpacing: 16.0,
-          mainAxisSpacing: 16.0,
+      body: SafeArea(
+        child: ListView.separated(
+          key: const Key('theme_selection_list'),
+          padding: const EdgeInsets.symmetric(vertical: 8),
+          itemCount: builtInThemes.length + 1 + _customThemes.length,
+          separatorBuilder: (BuildContext context, int index) {
+            if (Theme.of(context).platform == TargetPlatform.iOS) {
+              return const Divider(height: 0, indent: AppStyles.bodyPadding);
+            }
+            return const SizedBox.shrink();
+          },
+          itemBuilder: (BuildContext context, int index) {
+            if (index == 0) {
+              final ColorSettings currentColors = DB().colorSettings;
+
+              return ThemePreviewItem(
+                key: const Key('theme_preview_current'),
+                theme: ColorTheme.current,
+                colors: currentColors,
+                isSelected: _shouldSelectCurrentTheme(),
+                onTap: () {
+                  Navigator.pop(context);
+                },
+                actionIcon: FluentIcons.save_20_regular,
+                actionTooltip: S.of(context).saveTheme,
+                onActionPressed: () {
+                  setState(() {
+                    _customThemes.add(currentColors);
+                    DB().customThemes = _customThemes;
+                  });
+                },
+                shareIcon: FluentIcons.share_20_regular,
+                shareTooltip: S.of(context).shareQrCode,
+                onSharePressed: () => _shareThemeJson(currentColors),
+              );
+            }
+
+            if (index > 0 && index <= _customThemes.length) {
+              final int customIndex = index - 1;
+              final ColorSettings customColors = _customThemes[customIndex];
+
+              return ThemePreviewItem(
+                key: Key('theme_preview_custom_$customIndex'),
+                theme: ColorTheme.custom,
+                colors: customColors,
+                isSelected: _shouldSelectCustomTheme(customColors),
+                onTap: () {
+                  AppTheme.updateCustomTheme(customColors);
+                  DB().colorSettings = customColors;
+                  Navigator.pop(context, ColorTheme.custom);
+                },
+                actionIcon: FluentIcons.delete_20_regular,
+                actionTooltip: S.of(context).delete,
+                onActionPressed: () {
+                  setState(() {
+                    _customThemes.removeAt(customIndex);
+                    DB().customThemes = _customThemes;
+                  });
+                },
+                shareIcon: FluentIcons.share_20_regular,
+                shareTooltip: S.of(context).shareQrCode,
+                onSharePressed: () => _shareThemeJson(customColors),
+              );
+            }
+
+            final int themeIndex = index - 1 - _customThemes.length;
+            final ColorTheme colorTheme = builtInThemes[themeIndex];
+            final ColorSettings colors = AppTheme.colorThemes[colorTheme]!;
+
+            return ThemePreviewItem(
+              key: Key('theme_preview_${colorTheme.name}'),
+              theme: colorTheme,
+              colors: colors,
+              isSelected: _shouldSelectBuiltInTheme(colorTheme),
+              onTap: () {
+                Navigator.pop(context, colorTheme);
+              },
+            );
+          },
         ),
-        // Update the item count to use builtInThemes instead of all themes
-        itemCount:
-            builtInThemes.length +
-            1 +
-            _customThemes.length, // Add 1 for Current theme + custom themes
-        itemBuilder: (BuildContext context, int index) {
-          // Add Current theme as the first item
-          if (index == 0) {
-            // Get current theme settings directly from the database
-            final ColorSettings currentColors = DB().colorSettings;
-
-            return ThemePreviewItem(
-              theme: ColorTheme.current,
-              colors: currentColors,
-              isSelected: _shouldSelectCurrentTheme(),
-              onTap: () {
-                // Just exit without returning a value
-                Navigator.pop(context);
-              },
-              hasActionButton: true,
-              actionIcon: FluentIcons.save_20_regular,
-              actionTooltip: 'Save as custom theme',
-              onActionPressed: () {
-                // Save current theme as custom
-                setState(() {
-                  _customThemes.add(currentColors);
-                  // Save to database for persistence
-                  DB().customThemes = _customThemes;
-                });
-              },
-              // Add share button to current theme
-              hasShareButton: true,
-              shareIcon: FluentIcons.share_20_regular,
-              shareTooltip: 'Share current theme',
-              onSharePressed: () => _shareThemeJson(currentColors),
-            );
-          }
-
-          // Check if this is a custom theme
-          if (index > 0 && index <= _customThemes.length) {
-            final int customIndex = index - 1;
-            final ColorSettings customColors = _customThemes[customIndex];
-
-            return ThemePreviewItem(
-              theme: ColorTheme.custom,
-              colors: customColors,
-              isSelected: _shouldSelectCustomTheme(customColors),
-              // Highlight the custom entry that matches the active colors
-              onTap: () {
-                // Update the custom theme in AppTheme.colorThemes so the system can access it
-                AppTheme.updateCustomTheme(customColors);
-
-                // Save to database
-                DB().colorSettings = customColors;
-
-                // Return the custom theme enum to caller
-                Navigator.pop(context, ColorTheme.custom);
-              },
-              hasActionButton: true,
-              actionIcon: FluentIcons.delete_20_regular,
-              actionTooltip: 'Delete custom theme',
-              onActionPressed: () {
-                // Delete this custom theme
-                setState(() {
-                  _customThemes.removeAt(customIndex);
-                  // Update database
-                  DB().customThemes = _customThemes;
-                });
-              },
-              hasShareButton: true,
-              shareIcon: FluentIcons.share_20_regular,
-              shareTooltip: 'Share custom theme',
-              onSharePressed: () => _shareThemeJson(customColors),
-            );
-          }
-
-          // Adjust index for the built-in themes and use builtInThemes list
-          final int themeIndex = index - 1 - _customThemes.length;
-          final ColorTheme theme = builtInThemes[themeIndex];
-          final ColorSettings colors = AppTheme.colorThemes[theme]!;
-
-          return ThemePreviewItem(
-            theme: theme,
-            colors: colors,
-            isSelected: _shouldSelectBuiltInTheme(theme),
-            onTap: () {
-              Navigator.pop(context, theme);
-            },
-          );
-        },
       ),
     );
   }
@@ -210,11 +192,9 @@ class ThemePreviewItem extends StatelessWidget {
     required this.colors,
     required this.isSelected,
     required this.onTap,
-    this.hasActionButton = false,
     this.actionIcon,
     this.actionTooltip,
     this.onActionPressed,
-    this.hasShareButton = false,
     this.shareIcon,
     this.shareTooltip,
     this.onSharePressed,
@@ -224,85 +204,94 @@ class ThemePreviewItem extends StatelessWidget {
   final ColorSettings colors;
   final bool isSelected;
   final VoidCallback onTap;
-  final bool hasActionButton;
   final IconData? actionIcon;
   final String? actionTooltip;
   final VoidCallback? onActionPressed;
-  final bool hasShareButton;
   final IconData? shareIcon;
   final String? shareTooltip;
   final VoidCallback? onSharePressed;
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      child: Card(
-        elevation: isSelected ? 4.0 : 1.0,
-        color: colors.darkBackgroundColor,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12.0),
-          side: isSelected
-              ? const BorderSide(color: Colors.green, width: 2.0)
-              : BorderSide.none,
-        ),
-        child: Stack(
-          children: <Widget>[
-            Column(
-              children: <Widget>[
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: ThemePreviewBoard(colors: colors),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    _getThemeName(context, theme),
-                    style: TextStyle(
-                      fontSize: 14.0,
-                      color: colors.messageColor,
+    final ThemeData theme = Theme.of(context);
+    final ColorScheme colorScheme = theme.colorScheme;
+    final TextStyle titleStyle = AppStyles.tileTitle.copyWith(
+      color: isSelected ? colorScheme.primary : colorScheme.onSurface,
+      fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
+    );
+
+    return Material(
+      color: isSelected
+          ? colorScheme.primary.withValues(alpha: 0.08)
+          : Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppStyles.bodyPadding,
+            vertical: 12,
+          ),
+          child: Row(
+            children: <Widget>[
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      _getThemeName(context, theme: this.theme),
+                      style: titleStyle,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              ],
-            ),
-            // Action button (Save or Delete)
-            if (hasActionButton && actionIcon != null)
-              Positioned(
-                right: 4.0,
-                bottom: 4.0,
-                child: IconButton(
-                  icon: Icon(
-                    actionIcon,
-                    color: colors.messageColor,
-                    size: 20.0,
-                  ),
-                  tooltip: actionTooltip,
-                  onPressed: onActionPressed,
+                    const SizedBox(height: 8),
+                    Align(
+                      alignment: AlignmentDirectional.centerStart,
+                      child: SizedBox(
+                        width: 136,
+                        height: 96,
+                        child: ThemePreviewBoard(colors: colors),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-            // Share button in bottom-left
-            if (hasShareButton && shareIcon != null)
-              Positioned(
-                left: 4.0,
-                bottom: 4.0,
-                child: IconButton(
-                  icon: Icon(shareIcon, color: colors.messageColor, size: 20.0),
-                  tooltip: shareTooltip,
-                  onPressed: onSharePressed,
-                ),
+              const SizedBox(width: 8),
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  if (shareIcon != null)
+                    IconButton(
+                      icon: Icon(shareIcon),
+                      tooltip: shareTooltip,
+                      visualDensity: VisualDensity.compact,
+                      color: colorScheme.onSurfaceVariant,
+                      onPressed: onSharePressed,
+                    ),
+                  if (actionIcon != null)
+                    IconButton(
+                      icon: Icon(actionIcon),
+                      tooltip: actionTooltip,
+                      visualDensity: VisualDensity.compact,
+                      color: colorScheme.onSurfaceVariant,
+                      onPressed: onActionPressed,
+                    ),
+                  SizedBox(
+                    width: 32,
+                    child: isSelected
+                        ? Icon(Icons.check_rounded, color: colorScheme.primary)
+                        : const SizedBox.shrink(),
+                  ),
+                ],
               ),
-          ],
+            ],
+          ),
         ),
       ),
     );
   }
 
   // Convert theme enum to readable name
-  String _getThemeName(BuildContext context, ColorTheme theme) {
+  String _getThemeName(BuildContext context, {required ColorTheme theme}) {
     switch (theme) {
       case ColorTheme.light:
         return S.of(context).light;
