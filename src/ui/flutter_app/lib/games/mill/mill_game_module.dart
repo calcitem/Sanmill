@@ -398,10 +398,6 @@ class MillGameModule extends GameModule {
         label: s.analysis,
         section: GameMenuSection.tools,
         icon: FluentIcons.beaker_24_regular,
-        targets: const <GameMenuTarget>{
-          GameMenuTarget.learn,
-          GameMenuTarget.more,
-        },
         drawerKey: const Key('drawer_item_analysis'),
         contentKey: const Key('analysis_panel'),
         builder: (BuildContext context, {Key? key, GameSession? session}) {
@@ -413,10 +409,6 @@ class MillGameModule extends GameModule {
         label: s.openingExplorer,
         section: GameMenuSection.tools,
         icon: FluentIcons.book_open_24_regular,
-        targets: const <GameMenuTarget>{
-          GameMenuTarget.learn,
-          GameMenuTarget.more,
-        },
         drawerKey: const Key('drawer_item_opening_explorer'),
         contentKey: const Key('opening_explorer'),
         builder: (BuildContext context, {Key? key, GameSession? session}) {

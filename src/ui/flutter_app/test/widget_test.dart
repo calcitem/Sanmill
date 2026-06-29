@@ -261,21 +261,18 @@ void main() {
         find.byKey(const Key('sanmill_learn_guides_group')),
         findsOneWidget,
       );
-      expect(
-        find.byKey(const Key('sanmill_learn_tools_group')),
-        findsOneWidget,
-      );
+      expect(find.byKey(const Key('sanmill_learn_tools_group')), findsNothing);
       expect(
         find.byKey(const Key('sanmill_learn_how_to_play')),
         findsOneWidget,
       );
       expect(
         find.byKey(const Key('sanmill_learn_mill.tools.analysis')),
-        findsOneWidget,
+        findsNothing,
       );
       expect(
         find.byKey(const Key('sanmill_learn_mill.tools.openingExplorer')),
-        findsOneWidget,
+        findsNothing,
       );
       expect(
         find.byKey(const Key('how_to_play_screen_scaffold')),
@@ -580,6 +577,10 @@ void main() {
       expect(find.byKey(const Key('drawer_item_tools_group')), findsOneWidget);
       expect(find.byKey(const Key('drawer_item_import_game')), findsOneWidget);
       expect(find.byKey(const Key('drawer_item_analysis')), findsOneWidget);
+      expect(
+        find.byKey(const Key('drawer_item_opening_explorer')),
+        findsOneWidget,
+      );
       expect(
         find.byKey(const Key('drawer_item_setup_position')),
         findsOneWidget,
