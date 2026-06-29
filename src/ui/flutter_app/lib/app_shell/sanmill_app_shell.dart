@@ -643,6 +643,7 @@ class SanmillAppShellState extends State<SanmillAppShell> {
         return false;
       }
       navigator!.pop();
+      setState(() {});
       return false;
     }
     if (_currentTab != SanmillShellTab.home) {
@@ -679,6 +680,7 @@ class SanmillAppShellState extends State<SanmillAppShell> {
 
   Widget _buildResponsiveShell(BuildContext context) {
     final S strings = S.of(context);
+    final bool showBottomNavigationBar = !_isImmersivePlayRoute(context);
     final Widget content = DoubleBackToCloseApp(
       snackBar: CustomSnackBar(strings.tapBackAgainToLeave),
       willBack: _handleBack,
@@ -690,25 +692,39 @@ class SanmillAppShellState extends State<SanmillAppShell> {
           tabBuilder: (BuildContext context, SanmillShellTab tab) =>
               _buildTabNavigator(tab),
         ),
-        bottomNavigationBar: NavigationBar(
-          key: const Key('sanmill_bottom_navigation_bar'),
-          selectedIndex: _currentTab.index,
-          destinations: <NavigationDestination>[
-            for (final SanmillShellTab tab in SanmillShellTab.values)
-              NavigationDestination(
-                key: tab.key,
-                icon: Icon(tab.icon, fill: 0),
-                selectedIcon: Icon(tab.selectedIcon, fill: 1),
-                label: tab.label(strings),
-              ),
-          ],
-          onDestinationSelected: (int index) =>
-              _selectTab(SanmillShellTab.values[index]),
-        ),
+        bottomNavigationBar: showBottomNavigationBar
+            ? NavigationBar(
+                key: const Key('sanmill_bottom_navigation_bar'),
+                selectedIndex: _currentTab.index,
+                destinations: <NavigationDestination>[
+                  for (final SanmillShellTab tab in SanmillShellTab.values)
+                    NavigationDestination(
+                      key: tab.key,
+                      icon: Icon(tab.icon, fill: 0),
+                      selectedIcon: Icon(tab.selectedIcon, fill: 1),
+                      label: tab.label(strings),
+                    ),
+                ],
+                onDestinationSelected: (int index) =>
+                    _selectTab(SanmillShellTab.values[index]),
+              )
+            : null,
       ),
     );
 
     return content;
+  }
+
+  bool _isImmersivePlayRoute(BuildContext context) {
+    if (_currentTab != SanmillShellTab.home || _routeId != _playRouteId) {
+      return false;
+    }
+    return GameRegistry.instance.current
+        .playModes(context)
+        .any(
+          (GameModeEntry mode) =>
+              mode.section == GameMenuSection.play && mode.id.value == _routeId,
+        );
   }
 
   void firstRun(BuildContext context) {

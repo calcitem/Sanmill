@@ -258,6 +258,10 @@ void main() {
       expect(shellState.debugCurrentRouteId, shellState.debugPlayRouteId);
       expect(find.byKey(const Key('human_ai')), findsOneWidget);
       expect(find.byKey(const Key('human_ai_new_game_sheet')), findsOneWidget);
+      expect(
+        find.byKey(const Key('sanmill_bottom_navigation_bar')),
+        findsNothing,
+      );
 
       await tester.binding.handlePopRoute();
       await tester.pumpAndSettle();
@@ -266,6 +270,10 @@ void main() {
       expect(shellState.debugCurrentTab, SanmillShellTab.home);
       expect(shellState.debugCurrentRouteId, shellState.debugPlayRouteId);
       expect(find.byKey(const Key('human_ai')), findsOneWidget);
+      expect(
+        find.byKey(const Key('sanmill_bottom_navigation_bar')),
+        findsNothing,
+      );
       expect(
         find.byKey(const Key('game_page_top_right_buttons_align')),
         findsNothing,
@@ -281,6 +289,10 @@ void main() {
         SanmillShellRouteIds.homeRoot.value,
       );
       expect(find.byKey(const Key('sanmill_home_list')), findsOneWidget);
+      expect(
+        find.byKey(const Key('sanmill_bottom_navigation_bar')),
+        findsOneWidget,
+      );
       expect(
         find.byKey(const Key('play_area_lichess_bottom_bar')),
         findsNothing,
