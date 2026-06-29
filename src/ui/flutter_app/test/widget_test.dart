@@ -1019,6 +1019,31 @@ void main() {
         tester.getTopLeft(backgroundImageTile).dy,
         greaterThan(tester.getTopLeft(boardCoordinatesTile).dy),
       );
+      await tester.tap(pieceSetTile);
+      await tester.pumpAndSettle();
+
+      final Finder piecePicker = find.byKey(
+        const Key('piece_image_picker_container'),
+      );
+      expect(piecePicker, findsOneWidget);
+      final Finder selectedPieceIcons = find.byKey(
+        const Key('pure_color_piece_selected_icon'),
+      );
+      expect(selectedPieceIcons, findsWidgets);
+      final Icon selectedPieceIcon = tester.widget<Icon>(
+        find.descendant(
+          of: selectedPieceIcons.first,
+          matching: find.byType(Icon),
+        ),
+      );
+      expect(
+        selectedPieceIcon.color,
+        Theme.of(tester.element(piecePicker)).colorScheme.primary,
+      );
+
+      await tester.binding.handlePopRoute();
+      await tester.pumpAndSettle();
+
       expect(
         shellState.debugCurrentRouteId,
         SanmillShellRouteIds.moreRoot.value,

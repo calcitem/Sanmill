@@ -195,6 +195,7 @@ class _PieceImagePickerState extends State<_PieceImagePicker> {
                               : null,
                           child: asset.isEmpty
                               ? _buildPureColorPiece(
+                                  context: context,
                                   key: isPlayerOne
                                       ? const Key('player1_pure_color_piece')
                                       : const Key('player2_pure_color_piece'),
@@ -259,10 +260,13 @@ class _PieceImagePickerState extends State<_PieceImagePicker> {
   }
 
   Widget _buildPureColorPiece({
+    required BuildContext context,
     required bool isSelected,
     required bool isPlayerOne,
     Key? key,
   }) {
+    final Color selectionColor = Theme.of(context).colorScheme.primary;
+
     return Container(
       key: key,
       width: 60,
@@ -272,12 +276,12 @@ class _PieceImagePickerState extends State<_PieceImagePicker> {
             ? DB().colorSettings.whitePieceColor
             : DB().colorSettings.blackPieceColor,
         shape: BoxShape.circle,
-        border: isSelected ? Border.all(color: Colors.green, width: 2) : null,
+        border: isSelected ? Border.all(color: selectionColor, width: 2) : null,
       ),
       child: isSelected
-          ? const Align(
-              key: Key('pure_color_piece_selected_icon'),
-              child: Icon(Icons.check_circle, color: Colors.green),
+          ? Align(
+              key: const Key('pure_color_piece_selected_icon'),
+              child: Icon(Icons.check_circle, color: selectionColor),
             )
           : null,
     );
@@ -392,6 +396,8 @@ class _PieceImageItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Color selectionColor = Theme.of(context).colorScheme.primary;
+
     return Opacity(
       key: Key('piece_image_item_opacity_$asset'),
       opacity: isSelectable ? 1.0 : 0.5,
@@ -408,15 +414,15 @@ class _PieceImageItem extends StatelessWidget {
                 fit: BoxFit.contain,
               ),
               border: isSelect
-                  ? Border.all(color: Colors.green, width: 2)
+                  ? Border.all(color: selectionColor, width: 2)
                   : null,
               borderRadius: BorderRadius.circular(8),
             ),
           ),
           if (isSelect)
-            const Align(
-              key: Key('piece_image_item_selected_icon'),
-              child: Icon(Icons.check_circle, color: Colors.green),
+            Align(
+              key: const Key('piece_image_item_selected_icon'),
+              child: Icon(Icons.check_circle, color: selectionColor),
             ),
         ],
       ),
@@ -444,6 +450,8 @@ class _CustomPieceImageItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Color selectionColor = Theme.of(context).colorScheme.primary;
+
     return GestureDetector(
       key: const Key('custom_piece_image_gesture_detector'),
       // Tap to select the image if customImagePath is available,
@@ -469,7 +477,7 @@ class _CustomPieceImageItem extends StatelessWidget {
                     )
                   : null,
               border: isSelected
-                  ? Border.all(color: Colors.green, width: 2)
+                  ? Border.all(color: selectionColor, width: 2)
                   : null,
               borderRadius: BorderRadius.circular(8),
             ),
@@ -494,9 +502,9 @@ class _CustomPieceImageItem extends StatelessWidget {
             ),
           // Checkmark icon when selected
           if (isSelected)
-            const Align(
-              key: Key('custom_piece_image_selected_icon'),
-              child: Icon(Icons.check_circle, color: Colors.green),
+            Align(
+              key: const Key('custom_piece_image_selected_icon'),
+              child: Icon(Icons.check_circle, color: selectionColor),
             ),
         ],
       ),
