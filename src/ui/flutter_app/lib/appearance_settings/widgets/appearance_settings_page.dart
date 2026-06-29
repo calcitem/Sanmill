@@ -483,6 +483,32 @@ class AppearanceSettingsPage extends StatelessWidget {
               titleString: S.of(context).pieceSet,
               onTap: () => setPieceImage(context),
             ),
+            ValueListenableBuilder<Box<DisplaySettings>>(
+              key: const Key(
+                'display_settings_card_notations_shown_value_listenable_builder',
+              ),
+              valueListenable: DB().listenDisplaySettings,
+              builder:
+                  (
+                    BuildContext context,
+                    Box<DisplaySettings> box,
+                    Widget? child,
+                  ) {
+                    final DisplaySettings displaySettings = box.get(
+                      DB.displaySettingsKey,
+                      defaultValue: const DisplaySettings(),
+                    )!;
+                    return SettingsListTile.switchTile(
+                      key: const Key(
+                        'display_settings_card_notations_shown_switch_tile',
+                      ),
+                      value: displaySettings.isNotationsShown,
+                      onChanged: (bool val) => DB().displaySettings =
+                          displaySettings.copyWith(isNotationsShown: val),
+                      titleString: S.of(context).isNotationsShown,
+                    );
+                  },
+            ),
             SettingsListTile(
               key: const Key(
                 'display_settings_card_background_image_settings_list_tile',
@@ -840,15 +866,6 @@ class AppearanceSettingsPage extends StatelessWidget {
                     .copyWith(isUnplacedAndRemovedPiecesShown: val),
                 titleString: strings.isUnplacedAndRemovedPiecesShown,
               ),
-            SettingsListTile.switchTile(
-              key: const Key(
-                'display_settings_card_notations_shown_switch_tile',
-              ),
-              value: displaySettings.isNotationsShown,
-              onChanged: (bool val) => DB().displaySettings = displaySettings
-                  .copyWith(isNotationsShown: val),
-              titleString: strings.isNotationsShown,
-            ),
             SettingsListTile(
               key: const Key(
                 'display_settings_card_board_corner_radius_settings_list_tile',

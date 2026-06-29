@@ -964,6 +964,43 @@ void main() {
         ),
         findsOneWidget,
       );
+      final Finder boardThemeTile = find.byKey(
+        const Key('color_settings_card_theme_settings_list_tile'),
+      );
+      await tester.scrollUntilVisible(
+        boardThemeTile,
+        320,
+        scrollable: find.descendant(
+          of: find.byKey(const Key('settings_list')),
+          matching: find.byType(Scrollable),
+        ),
+      );
+      await tester.pumpAndSettle();
+      final Finder pieceSetTile = find.byKey(
+        const Key('display_settings_card_piece_image_settings_list_tile'),
+      );
+      final Finder boardCoordinatesTile = find.byKey(
+        const Key('display_settings_card_notations_shown_switch_tile'),
+      );
+      final Finder backgroundImageTile = find.byKey(
+        const Key('display_settings_card_background_image_settings_list_tile'),
+      );
+      expect(boardThemeTile, findsOneWidget);
+      expect(pieceSetTile, findsOneWidget);
+      expect(boardCoordinatesTile, findsOneWidget);
+      expect(backgroundImageTile, findsOneWidget);
+      expect(
+        tester.getTopLeft(pieceSetTile).dy,
+        greaterThan(tester.getTopLeft(boardThemeTile).dy),
+      );
+      expect(
+        tester.getTopLeft(boardCoordinatesTile).dy,
+        greaterThan(tester.getTopLeft(pieceSetTile).dy),
+      );
+      expect(
+        tester.getTopLeft(backgroundImageTile).dy,
+        greaterThan(tester.getTopLeft(boardCoordinatesTile).dy),
+      );
       expect(
         shellState.debugCurrentRouteId,
         SanmillShellRouteIds.moreRoot.value,
