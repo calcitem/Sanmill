@@ -185,6 +185,12 @@ void main() {
       find.byKey(const Key('play_area_regular_game_menu_board_orientation')),
       findsOne,
     );
+    expect(
+      find.byKey(const Key('play_area_regular_game_menu_analysis')),
+      findsOne,
+    );
+    expect(find.byKey(const Key('play_area_toolbar_item_game')), findsOne);
+    expect(find.text('New game'), findsOne);
 
     await tester.tap(
       find.byKey(const Key('play_area_regular_game_menu_board_orientation')),

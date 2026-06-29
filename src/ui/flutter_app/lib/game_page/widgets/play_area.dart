@@ -413,11 +413,13 @@ class PlayAreaState extends State<PlayArea> {
     );
   }
 
-  Future<void> _openAnalysisPanelFromBottomBar(BuildContext context) async {
-    assert(_usesLichessHumanAiToolbar);
+  Future<void> _openAnalysisPanelFromBottomBar(
+    BuildContext context, {
+    required String toolbar,
+  }) async {
     RecordingService().recordEvent(
       RecordingEventType.toolbarAction,
-      <String, dynamic>{'toolbar': 'lichessBottom', 'action': 'analysisPanel'},
+      <String, dynamic>{'toolbar': toolbar, 'action': 'analysisPanel'},
     );
     AnalysisMode.disable();
     await Navigator.of(context).push(
@@ -575,9 +577,17 @@ class PlayAreaState extends State<PlayArea> {
           ),
         ),
         LichessActionSheetAction(
+          key: const Key('play_area_regular_game_menu_analysis'),
+          leading: const Icon(Icons.analytics_outlined),
+          makeLabel: (BuildContext context) => Text(S.of(context).analysis),
+          onPressed: () => unawaited(
+            _openAnalysisPanelFromBottomBar(context, toolbar: 'regularBottom'),
+          ),
+        ),
+        LichessActionSheetAction(
           key: const Key('play_area_toolbar_item_game'),
           leading: const Icon(Icons.add_circle_outline),
-          makeLabel: (BuildContext context) => Text(S.of(context).game),
+          makeLabel: (BuildContext context) => Text(S.of(context).newGame),
           onPressed: () => _openGameOptions(context),
         ),
         LichessActionSheetAction(
@@ -638,7 +648,9 @@ class PlayAreaState extends State<PlayArea> {
           key: const Key('play_area_game_menu_analysis'),
           leading: const Icon(Icons.analytics_outlined),
           makeLabel: (BuildContext context) => Text(S.of(context).analysis),
-          onPressed: () => unawaited(_openAnalysisPanelFromBottomBar(context)),
+          onPressed: () => unawaited(
+            _openAnalysisPanelFromBottomBar(context, toolbar: 'lichessBottom'),
+          ),
         ),
         if (_shouldShowAiChatMenuAction)
           LichessActionSheetAction(
