@@ -3,6 +3,7 @@
 
 // play_area_human_database_stats_test.dart
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sanmill/appearance_settings/models/display_settings.dart';
@@ -130,6 +131,27 @@ void main() {
     expect(find.byKey(const Key('play_area_bottom_bar_take_back')), findsOne);
     expect(find.byKey(const Key('play_area_bottom_bar_hint')), findsOne);
     expect(
+      find.descendant(
+        of: find.byKey(const Key('play_area_bottom_bar_resign')),
+        matching: find.byIcon(CupertinoIcons.flag),
+      ),
+      findsOneWidget,
+    );
+    expect(
+      find.descendant(
+        of: find.byKey(const Key('play_area_bottom_bar_take_back')),
+        matching: find.byIcon(CupertinoIcons.arrow_uturn_left),
+      ),
+      findsOneWidget,
+    );
+    expect(
+      find.descendant(
+        of: find.byKey(const Key('play_area_bottom_bar_hint')),
+        matching: find.byIcon(CupertinoIcons.lightbulb),
+      ),
+      findsOneWidget,
+    );
+    expect(
       tester
           .getSize(find.byKey(const Key('play_area_lichess_bottom_bar')))
           .height,
@@ -186,8 +208,11 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.byKey(const Key('play_area_game_menu_sheet')), findsOne);
+    expect(find.byType(Dialog), findsOneWidget);
+    expect(find.byType(BottomSheet), findsNothing);
     expect(find.byKey(const Key('play_area_game_menu_flip_board')), findsOne);
     expect(find.byKey(const Key('play_area_game_menu_analysis')), findsOne);
+    expect(find.byKey(const Key('play_area_game_menu_resign')), findsNothing);
     expect(find.byKey(const Key('play_area_game_menu_new_game')), findsOne);
 
     await tester.tap(find.byKey(const Key('play_area_game_menu_analysis')));

@@ -3,7 +3,10 @@
 
 // play_area.dart
 
+import 'dart:async';
+
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:native_screenshot_widget/native_screenshot_widget.dart';
 
@@ -15,6 +18,7 @@ import '../../shared/config/constants.dart';
 import '../../shared/database/database.dart';
 import '../../shared/services/screenshot_service.dart';
 import '../../shared/themes/app_theme.dart';
+import '../../shared/widgets/lichess_action_sheet.dart';
 import '../../shared/widgets/lichess_bottom_bar.dart';
 import '../services/analysis/analysis_service.dart';
 import '../services/analysis_mode.dart';
@@ -342,47 +346,37 @@ class PlayAreaState extends State<PlayArea> {
 
   void _showHumanAiGameMenu(BuildContext context) {
     assert(_usesLichessHumanAiToolbar);
-    showModalBottomSheet<void>(
+    showLichessActionSheet<void>(
       context: context,
-      showDragHandle: true,
-      backgroundColor: Theme.of(context).colorScheme.surface,
-      builder: (BuildContext sheetContext) {
-        return SafeArea(
-          key: const Key('play_area_game_menu_sheet'),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              _GameMenuActionTile(
-                key: const Key('play_area_game_menu_flip_board'),
-                icon: Icons.flip_camera_android_outlined,
-                label: S.of(sheetContext).flipBoard,
-                onTap: () {
-                  Navigator.of(sheetContext).pop();
-                  _toggleBoardFlipped(context);
-                },
-              ),
-              _GameMenuActionTile(
-                key: const Key('play_area_game_menu_analysis'),
-                icon: Icons.analytics_outlined,
-                label: S.of(sheetContext).analysis,
-                onTap: () async {
-                  Navigator.of(sheetContext).pop();
-                  await _openAnalysisPanelFromBottomBar(context);
-                },
-              ),
-              _GameMenuActionTile(
-                key: const Key('play_area_game_menu_new_game'),
-                icon: Icons.add_circle_outline,
-                label: S.of(sheetContext).newGame,
-                onTap: () async {
-                  Navigator.of(sheetContext).pop();
-                  await _requestNewGameFromBottomBar(context);
-                },
-              ),
-            ],
+      sheetKey: const Key('play_area_game_menu_sheet'),
+      actions: <LichessActionSheetAction>[
+        LichessActionSheetAction(
+          key: const Key('play_area_game_menu_flip_board'),
+          leading: const Icon(Icons.flip_camera_android_outlined),
+          makeLabel: (BuildContext context) => Text(S.of(context).flipBoard),
+          onPressed: () => _toggleBoardFlipped(context),
+        ),
+        LichessActionSheetAction(
+          key: const Key('play_area_game_menu_analysis'),
+          leading: const Icon(Icons.analytics_outlined),
+          makeLabel: (BuildContext context) => Text(S.of(context).analysis),
+          onPressed: () => unawaited(_openAnalysisPanelFromBottomBar(context)),
+        ),
+        if (_canResignFromBottomBar)
+          LichessActionSheetAction(
+            key: const Key('play_area_game_menu_resign'),
+            leading: const Icon(CupertinoIcons.flag),
+            makeLabel: (BuildContext context) => Text(S.of(context).resign),
+            isDestructiveAction: true,
+            onPressed: () => unawaited(_showResignConfirmation(context)),
           ),
-        );
-      },
+        LichessActionSheetAction(
+          key: const Key('play_area_game_menu_new_game'),
+          leading: const Icon(Icons.add_circle_outline),
+          makeLabel: (BuildContext context) => Text(S.of(context).newGame),
+          onPressed: () => unawaited(_requestNewGameFromBottomBar(context)),
+        ),
+      ],
     );
   }
 
@@ -951,47 +945,24 @@ class _LichessGameBottomBar extends StatelessWidget {
         ),
         LichessBottomBarButton(
           key: const Key('play_area_bottom_bar_resign'),
-          icon: Icons.outlined_flag,
+          icon: CupertinoIcons.flag,
           label: S.of(context).resign,
           onTap: onResignPressed,
         ),
         LichessBottomBarButton(
           key: const Key('play_area_bottom_bar_take_back'),
-          icon: Icons.undo,
+          icon: CupertinoIcons.arrow_uturn_left,
           label: S.of(context).takeBack,
           onTap: onTakeBackPressed,
         ),
         LichessBottomBarButton(
           key: const Key('play_area_bottom_bar_hint'),
-          icon: Icons.lightbulb_outline,
+          icon: CupertinoIcons.lightbulb,
           label: S.of(context).hint,
           onTap: onHintPressed,
           highlighted: isHintHighlighted,
         ),
       ],
-    );
-  }
-}
-
-class _GameMenuActionTile extends StatelessWidget {
-  const _GameMenuActionTile({
-    super.key,
-    required this.icon,
-    required this.label,
-    required this.onTap,
-  });
-
-  final IconData icon;
-  final String label;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    final ColorScheme colorScheme = Theme.of(context).colorScheme;
-    return ListTile(
-      leading: Icon(icon, color: colorScheme.onSurfaceVariant),
-      title: Text(label),
-      onTap: onTap,
     );
   }
 }
