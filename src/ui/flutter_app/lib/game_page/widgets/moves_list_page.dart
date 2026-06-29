@@ -1591,37 +1591,13 @@ class MovesListPageState extends State<MovesListPage> {
     return Center(
       child: OrientationBuilder(
         builder: (BuildContext context, Orientation orientation) {
-          if (orientation == Orientation.landscape) {
-            // Landscape: all icons laid out horizontally in a single row.
-            return Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                loadGameIcon,
-                const SizedBox(width: 32),
-                importGameIcon,
-                const SizedBox(width: 32),
-                scanQrIcon,
-              ],
-            );
-          }
-
-          // Portrait: two icons in the first row; QR scan icon centered below.
-          return Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  loadGameIcon,
-                  const SizedBox(width: 40),
-                  importGameIcon,
-                ],
-              ),
-              const SizedBox(height: 24),
-              scanQrIcon,
-            ],
+          return Wrap(
+            alignment: WrapAlignment.center,
+            runAlignment: WrapAlignment.center,
+            crossAxisAlignment: WrapCrossAlignment.center,
+            spacing: orientation == Orientation.landscape ? 32 : 40,
+            runSpacing: 24,
+            children: <Widget>[loadGameIcon, importGameIcon, scanQrIcon],
           );
         },
       ),

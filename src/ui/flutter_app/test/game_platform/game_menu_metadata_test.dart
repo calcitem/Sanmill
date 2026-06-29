@@ -84,13 +84,22 @@ void main() {
 
       final List<GameMenuContribution> contributions = module
           .drawerContributions(context);
+      final GameMenuContribution analysis = contributions.singleWhere(
+        (GameMenuContribution contribution) =>
+            contribution.id == MillRouteIds.analysis,
+      );
       final GameMenuContribution statistics = contributions.singleWhere(
         (GameMenuContribution contribution) =>
             contribution.id == MillRouteIds.statistics,
       );
 
+      expect(analysis.drawerKey, const Key('drawer_item_analysis'));
+      expect(analysis.contentKey, const Key('analysis_panel'));
+      expect(analysis.section, GameMenuSection.tools);
+      expect(analysis.icon, isNotNull);
       expect(statistics.drawerKey, const Key('drawer_item_statistics'));
       expect(statistics.contentKey, const Key('statistics'));
+      expect(statistics.section, GameMenuSection.game);
       expect(statistics.icon, isNotNull);
     });
   });

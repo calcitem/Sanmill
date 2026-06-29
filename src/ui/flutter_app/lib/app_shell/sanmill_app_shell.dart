@@ -1003,6 +1003,14 @@ class _MenuEntries extends StatelessWidget {
   Widget build(BuildContext context) {
     final S strings = S.of(context);
     final GameModule module = GameRegistry.instance.current;
+    final List<GameMenuContribution> contributionTools = module
+        .drawerContributions(context)
+        .where(
+          (GameMenuContribution contribution) =>
+              contribution.section == GameMenuSection.tools &&
+              contribution.availableIn(context),
+        )
+        .toList(growable: false);
     final List<GameModeEntry> tools = module
         .playModes(context)
         .where(
@@ -1019,6 +1027,13 @@ class _MenuEntries extends StatelessWidget {
           title: strings.tools,
           headerKey: const Key('drawer_item_tools_group'),
           children: <Widget>[
+            for (final GameMenuContribution tool in contributionTools)
+              _MoreTile(
+                key: tool.drawerKey ?? Key('more_tool_${tool.id.value}'),
+                icon: tool.icon ?? Icons.build_rounded,
+                title: tool.label,
+                onTap: () => onAppRouteSelected(tool.id.value),
+              ),
             for (final GameModeEntry tool in tools)
               _MoreTile(
                 key: tool.drawerKey ?? Key('more_tool_${tool.id.value}'),
