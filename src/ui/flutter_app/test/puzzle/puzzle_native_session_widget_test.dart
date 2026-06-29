@@ -304,6 +304,66 @@ void main() {
 
   group('Puzzle native session widget flows', () {
     testWidgets(
+      'shows Lichess-style puzzle bottom actions',
+      (WidgetTester tester) async {
+        final PuzzleInfo puzzle = buildPuzzle(
+          solutions: const <List<String>>[
+            <String>['a1', 'd7'],
+          ],
+        );
+        await pumpPuzzlePage(tester, puzzle);
+
+        expect(
+          find.byKey(const Key('puzzle_page_lichess_bottom_bar')),
+          findsOneWidget,
+        );
+        expect(
+          find.byKey(const Key('puzzle_page_bottom_bar_menu')),
+          findsOneWidget,
+        );
+        expect(
+          find.byKey(const Key('puzzle_page_bottom_bar_give_up')),
+          findsOneWidget,
+        );
+        expect(
+          find.byKey(const Key('puzzle_page_bottom_bar_undo')),
+          findsOneWidget,
+        );
+        expect(
+          find.byKey(const Key('puzzle_page_bottom_bar_hint')),
+          findsOneWidget,
+        );
+
+        await tester.tap(find.byKey(const Key('puzzle_page_bottom_bar_menu')));
+        await tester.pump();
+        await tester.pump(const Duration(milliseconds: 250));
+
+        expect(
+          find.byKey(const Key('puzzle_page_action_sheet')),
+          findsOneWidget,
+        );
+        expect(
+          find.byKey(const Key('puzzle_page_action_rotate')),
+          findsOneWidget,
+        );
+        expect(
+          find.byKey(const Key('puzzle_page_action_show_solution')),
+          findsOneWidget,
+        );
+        expect(
+          find.byKey(const Key('puzzle_page_action_reset')),
+          findsOneWidget,
+        );
+
+        await tester.tap(find.byKey(const Key('puzzle_page_action_reset')));
+        await tester.pump();
+        await tester.pump(const Duration(milliseconds: 250));
+        await teardownPuzzlePage(tester);
+      },
+      skip: nativeLibrarySkipReason() != null,
+    );
+
+    testWidgets(
       'auto-plays opponent response from solution line',
       (WidgetTester tester) async {
         final PuzzleInfo puzzle = buildPuzzle(

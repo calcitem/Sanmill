@@ -11,9 +11,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:hive_ce_flutter/hive_flutter.dart' show Box;
 
-import '../../appearance_settings/models/color_settings.dart';
 import '../../game_page/services/mill.dart';
 import '../../game_page/services/transform/transform.dart';
 import '../../games/mill/native_mill_game_session.dart';
@@ -21,7 +19,8 @@ import '../../generated/intl/l10n.dart';
 import '../../rule_settings/models/rule_settings.dart';
 import '../../shared/database/database.dart';
 import '../../shared/services/logger.dart';
-import '../../shared/themes/app_theme.dart';
+import '../../shared/widgets/lichess_action_sheet.dart';
+import '../../shared/widgets/lichess_bottom_bar.dart';
 import '../models/puzzle_models.dart';
 import '../services/puzzle_auto_player.dart';
 import '../services/puzzle_hint_service.dart';
@@ -476,223 +475,142 @@ class _PuzzlePageState extends State<PuzzlePage> {
   @override
   Widget build(BuildContext context) {
     final S s = S.of(context);
+    final ThemeData settingsTheme = Theme.of(context);
+    _settingsThemeForDialogs = settingsTheme;
 
-    return ValueListenableBuilder<Box<ColorSettings>>(
-      valueListenable: DB().listenColorSettings,
-      builder: (BuildContext context, Box<ColorSettings> box, Widget? child) {
-        final ThemeData settingsTheme = Theme.of(context);
-        final bool useDarkSettingsUi =
-            settingsTheme.brightness == Brightness.dark;
-        _settingsThemeForDialogs = settingsTheme;
-
-        // Use Builder to ensure the context has the correct theme.
-        // This prevents computing text styles from a context outside the Theme wrapper.
-        return Theme(
-          data: settingsTheme,
-          child: Builder(
-            builder: (BuildContext context) {
-              return PopScope(
-                canPop: false,
-                onPopInvokedWithResult: (bool didPop, Object? result) async {
-                  if (didPop) {
-                    return;
-                  }
-                  final bool? shouldPop = await showDialog<bool>(
-                    context: context,
-                    builder: (BuildContext dialogContext) {
-                      return Theme(
-                        data: settingsTheme,
-                        child: AlertDialog(
-                          title: Text(s.exitPuzzle),
-                          content: Text(s.puzzleProgressWillBeLost),
-                          actions: <Widget>[
-                            TextButton(
-                              onPressed: () =>
-                                  Navigator.of(dialogContext).pop(false),
-                              child: Text(s.cancel),
-                            ),
-                            TextButton(
-                              onPressed: () =>
-                                  Navigator.of(dialogContext).pop(true),
-                              child: Text(s.exit),
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                  );
-                  // Check if user confirmed exit and widget is still mounted
-                  if (shouldPop ?? false) {
-                    if (!mounted) {
-                      return;
-                    }
-                    if (context.mounted) {
-                      Navigator.of(context).pop();
-                    }
-                  }
-                },
-                child: Scaffold(
-                  backgroundColor: useDarkSettingsUi
-                      ? settingsTheme.scaffoldBackgroundColor
-                      : AppTheme.lightBackgroundColor,
-                  appBar: AppBar(
-                    title: Text(
-                      widget.puzzle.title,
-                      style: useDarkSettingsUi
-                          ? null
-                          : AppTheme.appBarTheme.titleTextStyle,
-                    ),
-                    actions: <Widget>[
-                      // Undo button
-                      ValueListenableBuilder<int>(
-                        valueListenable: _moveCountNotifier,
-                        builder:
-                            (
-                              BuildContext context,
-                              int moveCount,
-                              Widget? child,
-                            ) {
-                              final bool canUndo =
-                                  moveCount > 0 && !_isPlayingSolution;
-
-                              return IconButton(
-                                icon: const Icon(Icons.undo),
-                                onPressed: canUndo ? _undoMove : null,
-                                tooltip: s.undo,
-                              );
-                            },
-                      ),
-                      // Transform button — cycle through board symmetries
-                      IconButton(
-                        icon: const Icon(Icons.rotate_right),
-                        onPressed: _isPlayingSolution
-                            ? null
-                            : _cycleTransformation,
-                        tooltip: s.rotate,
-                      ),
-                      // Hint button
-                      if (DB().puzzleSettings.showHints &&
-                          _hintService.hasHints)
-                        IconButton(
-                          icon: const Icon(Icons.lightbulb_outline),
-                          onPressed: _showHint,
-                          tooltip: s.hint,
-                        ),
-                      // Reset button
-                      IconButton(
-                        icon: const Icon(Icons.refresh),
-                        onPressed: _resetPuzzle,
-                        tooltip: s.reset,
-                      ),
-                    ],
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (bool didPop, Object? result) async {
+        if (didPop) {
+          return;
+        }
+        final bool? shouldPop = await showDialog<bool>(
+          context: context,
+          builder: (BuildContext dialogContext) {
+            return Theme(
+              data: settingsTheme,
+              child: AlertDialog(
+                title: Text(s.exitPuzzle),
+                content: Text(s.puzzleProgressWillBeLost),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () => Navigator.of(dialogContext).pop(false),
+                    child: Text(s.cancel),
                   ),
-                  body: Column(
-                    children: <Widget>[
-                      // Puzzle info panel - only rebuilds when move count changes
-                      ValueListenableBuilder<int>(
-                        valueListenable: _moveCountNotifier,
-                        builder:
-                            (
-                              BuildContext context,
-                              int moveCount,
-                              Widget? child,
-                            ) {
-                              return _buildInfoPanel(
-                                context,
-                                s,
-                                moveCount,
-                                useDarkSettingsUi,
-                              );
-                            },
-                      ),
-
-                      // Game board - properly constructed with GameMode
-                      Expanded(
-                        child: PuzzleGameBoard(
-                          puzzle: widget.puzzle,
-                          onMoveCompleted: _onPlayerMove,
-                        ),
-                      ),
-
-                      // Action buttons
-                      _buildActionButtons(s),
-                    ],
+                  TextButton(
+                    onPressed: () => Navigator.of(dialogContext).pop(true),
+                    child: Text(s.exit),
                   ),
-                ),
-              );
-            },
-          ),
+                ],
+              ),
+            );
+          },
         );
+        if (shouldPop ?? false) {
+          if (!mounted) {
+            return;
+          }
+          if (context.mounted) {
+            Navigator.of(context).pop();
+          }
+        }
       },
+      child: Scaffold(
+        key: const Key('puzzle_page_scaffold'),
+        backgroundColor: settingsTheme.colorScheme.surface,
+        appBar: AppBar(title: Text(widget.puzzle.title)),
+        body: Column(
+          children: <Widget>[
+            ValueListenableBuilder<int>(
+              valueListenable: _moveCountNotifier,
+              builder: (BuildContext context, int moveCount, Widget? child) {
+                return _buildInfoPanel(context, s, moveCount);
+              },
+            ),
+            Expanded(
+              child: PuzzleGameBoard(
+                puzzle: widget.puzzle,
+                onMoveCompleted: _onPlayerMove,
+              ),
+            ),
+          ],
+        ),
+        bottomNavigationBar: ValueListenableBuilder<int>(
+          valueListenable: _moveCountNotifier,
+          builder: (BuildContext context, int moveCount, Widget? child) {
+            return _buildPuzzleBottomBar(context, s, moveCount);
+          },
+        ),
+      ),
     );
   }
 
-  Widget _buildInfoPanel(
-    BuildContext context,
-    S s,
-    int moveCount,
-    bool useDarkSettingsUi,
-  ) {
+  Widget _buildInfoPanel(BuildContext context, S s, int moveCount) {
+    final ThemeData theme = Theme.of(context);
+    final ColorScheme colorScheme = theme.colorScheme;
+
     return Container(
-      padding: const EdgeInsets.all(16.0),
-      color: useDarkSettingsUi
-          ? Theme.of(context).colorScheme.surface.withValues(alpha: 0.3)
-          : Theme.of(context).colorScheme.primaryContainer.withValues(
-              alpha: 0.1,
-            ), // Use theme color
+      width: double.infinity,
+      padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
+      decoration: BoxDecoration(
+        color: colorScheme.surfaceContainerLow,
+        border: Border(
+          bottom: BorderSide(
+            color: colorScheme.outlineVariant.withValues(alpha: 0.5),
+          ),
+        ),
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          // Show solution playback indicator
           if (_isPlayingSolution)
             Container(
               padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
               margin: const EdgeInsets.only(bottom: 12),
               decoration: BoxDecoration(
-                color: Colors.blue.withValues(alpha: 0.2),
+                color: colorScheme.primaryContainer,
                 borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: Colors.blue),
+                border: Border.all(color: colorScheme.primary),
               ),
               child: Row(
                 children: <Widget>[
-                  const SizedBox(
+                  SizedBox(
                     width: 16,
                     height: 16,
                     child: CircularProgressIndicator(
                       strokeWidth: 2,
-                      valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+                      valueColor: AlwaysStoppedAnimation<Color>(
+                        colorScheme.primary,
+                      ),
                     ),
                   ),
                   const SizedBox(width: 12),
                   Expanded(
                     child: Text(
                       s.puzzlePlayingSolution,
-                      style: const TextStyle(
-                        color: Colors.white,
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: colorScheme.onPrimaryContainer,
                         fontWeight: FontWeight.bold,
-                        fontSize: 14,
                       ),
                     ),
                   ),
                 ],
               ),
             ),
-
-          // Description
           Text(
             widget.puzzle.description,
-            style: Theme.of(context).textTheme.titleMedium,
+            style: theme.textTheme.titleMedium?.copyWith(
+              color: colorScheme.onSurface,
+            ),
             maxLines: 3,
             overflow: TextOverflow.ellipsis,
           ),
-          const SizedBox(height: 8),
-
-          // Stats row
+          const SizedBox(height: 10),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
               Flexible(
                 child: _buildStatChip(
+                  context,
                   s.moves,
                   moveCount.toString(),
                   Icons.swap_horiz,
@@ -701,6 +619,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
               const SizedBox(width: 4),
               Flexible(
                 child: _buildStatChip(
+                  context,
                   s.optimal,
                   widget.puzzle.optimalMoveCount.toString(),
                   Icons.star,
@@ -709,6 +628,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
               const SizedBox(width: 4),
               Flexible(
                 child: _buildStatChip(
+                  context,
                   s.difficulty,
                   widget.puzzle.difficulty.getDisplayName(S.of, context),
                   Icons.signal_cellular_alt,
@@ -717,8 +637,6 @@ class _PuzzlePageState extends State<PuzzlePage> {
             ],
           ),
           const SizedBox(height: 8),
-
-          // Attempt counter - show current session attempts
           ValueListenableBuilder<PuzzleSettings>(
             valueListenable: _puzzleManager.settingsNotifier,
             builder:
@@ -735,11 +653,8 @@ class _PuzzlePageState extends State<PuzzlePage> {
                         horizontal: 8,
                       ),
                       decoration: BoxDecoration(
-                        color: Theme.of(context)
-                            .colorScheme
-                            .surfaceContainerHighest
-                            .withValues(alpha: 0.5),
-                        borderRadius: BorderRadius.circular(4),
+                        color: colorScheme.surfaceContainerHigh,
+                        borderRadius: BorderRadius.circular(999),
                       ),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
@@ -747,18 +662,13 @@ class _PuzzlePageState extends State<PuzzlePage> {
                           Icon(
                             Icons.replay,
                             size: 14,
-                            color: Theme.of(
-                              context,
-                            ).colorScheme.onSurfaceVariant,
+                            color: colorScheme.onSurfaceVariant,
                           ),
                           const SizedBox(width: 4),
                           Text(
                             s.puzzleAttempts(attempts),
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: Theme.of(
-                                context,
-                              ).colorScheme.onSurfaceVariant,
+                            style: theme.textTheme.labelSmall?.copyWith(
+                              color: colorScheme.onSurfaceVariant,
                             ),
                           ),
                         ],
@@ -773,57 +683,122 @@ class _PuzzlePageState extends State<PuzzlePage> {
     );
   }
 
-  Widget _buildStatChip(String label, String value, IconData icon) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
-        Icon(icon, size: 16),
-        const SizedBox(width: 4),
-        Flexible(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text(
-                label,
-                style: const TextStyle(fontSize: 11), // Increased from 10 to 11
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              ),
-              Text(
-                value,
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 14,
+  Widget _buildStatChip(
+    BuildContext context,
+    String label,
+    String value,
+    IconData icon,
+  ) {
+    final ThemeData theme = Theme.of(context);
+    final ColorScheme colorScheme = theme.colorScheme;
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+      decoration: BoxDecoration(
+        color: colorScheme.surfaceContainerHigh,
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          Icon(icon, size: 16, color: colorScheme.primary),
+          const SizedBox(width: 6),
+          Flexible(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  label,
+                  style: theme.textTheme.labelSmall?.copyWith(
+                    color: colorScheme.onSurfaceVariant,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ],
+                Text(
+                  value,
+                  style: theme.textTheme.labelMedium?.copyWith(
+                    color: colorScheme.onSurface,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
+            ),
           ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPuzzleBottomBar(BuildContext context, S s, int moveCount) {
+    final bool canUseActions = !_isPlayingSolution && !_isSolved;
+    final bool canUndo = moveCount > 0 && canUseActions;
+    final bool canShowHint =
+        canUseActions && DB().puzzleSettings.showHints && _hintService.hasHints;
+
+    return LichessBottomBar(
+      key: const Key('puzzle_page_lichess_bottom_bar'),
+      children: <Widget>[
+        LichessBottomBarButton(
+          key: const Key('puzzle_page_bottom_bar_menu'),
+          icon: Icons.menu,
+          label: s.menu,
+          onTap: canUseActions ? () => _openPuzzleMenu(context) : null,
+        ),
+        LichessBottomBarButton(
+          key: const Key('puzzle_page_bottom_bar_give_up'),
+          icon: Icons.flag_outlined,
+          label: s.giveUp,
+          onTap: canUseActions ? _giveUp : null,
+        ),
+        LichessBottomBarButton(
+          key: const Key('puzzle_page_bottom_bar_undo'),
+          icon: Icons.undo,
+          label: s.takeBack,
+          onTap: canUndo ? () => _undoMove() : null,
+          showTooltip: false,
+        ),
+        LichessBottomBarButton(
+          key: const Key('puzzle_page_bottom_bar_hint'),
+          icon: Icons.lightbulb_outline,
+          label: s.hint,
+          onTap: canShowHint ? _showHint : null,
+          highlighted: canShowHint && !_hintsUsed,
         ),
       ],
     );
   }
 
-  Widget _buildActionButtons(S s) {
-    return Container(
-      padding: const EdgeInsets.all(16.0),
-      child: Row(
-        children: <Widget>[
-          // Give up button
-          Expanded(
-            child: OutlinedButton.icon(
-              onPressed: _giveUp,
-              icon: const Icon(Icons.flag),
-              label: Text(
-                s.giveUp,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
-          ),
-        ],
-      ),
+  void _openPuzzleMenu(BuildContext context) {
+    final S s = S.of(context);
+    showLichessActionSheet<void>(
+      context: context,
+      sheetKey: const Key('puzzle_page_action_sheet'),
+      title: Text(s.menu),
+      actions: <LichessActionSheetAction>[
+        LichessActionSheetAction(
+          key: const Key('puzzle_page_action_rotate'),
+          leading: const Icon(Icons.rotate_right),
+          makeLabel: (BuildContext context) => Text(s.rotate),
+          onPressed: _cycleTransformation,
+        ),
+        LichessActionSheetAction(
+          key: const Key('puzzle_page_action_show_solution'),
+          leading: const Icon(Icons.play_arrow),
+          makeLabel: (BuildContext context) => Text(s.puzzleShowSolution),
+          onPressed: () {
+            _showSolution();
+          },
+        ),
+        LichessActionSheetAction(
+          key: const Key('puzzle_page_action_reset'),
+          leading: const Icon(Icons.refresh),
+          makeLabel: (BuildContext context) => Text(s.reset),
+          onPressed: _resetPuzzle,
+        ),
+      ],
     );
   }
 
