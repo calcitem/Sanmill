@@ -4533,5 +4533,9 @@
     "searchBehaviorSettings": "搜索行为",
     "@searchBehaviorSettings": {},
     "threadingSettings": "线程设置",
-    "@threadingSettings": {}
+    "@threadingSettings": {},
+    "side": "执棋方",
+    "@side": {},
+    "randomColor": "随机",
+    "@randomColor": {}
 }

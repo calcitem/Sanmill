@@ -3,6 +3,8 @@
 
 // game_options_modal.dart
 
+import 'dart:math' as math;
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -414,10 +416,12 @@ class _HumanAiNewGameSheet extends StatefulWidget {
   State<_HumanAiNewGameSheet> createState() => _HumanAiNewGameSheetState();
 }
 
+enum _HumanAiSideChoice { white, random, black }
+
 class _HumanAiNewGameSheetState extends State<_HumanAiNewGameSheet> {
   late int _skillLevel;
   late int _moveTime;
-  late bool _aiMovesFirst;
+  late _HumanAiSideChoice _sideChoice;
 
   @override
   void initState() {
@@ -425,7 +429,9 @@ class _HumanAiNewGameSheetState extends State<_HumanAiNewGameSheet> {
     final GeneralSettings settings = DB().generalSettings;
     _skillLevel = settings.skillLevel.clamp(1, Constants.highestSkillLevel);
     _moveTime = settings.moveTime.clamp(0, 60);
-    _aiMovesFirst = settings.aiMovesFirst;
+    _sideChoice = settings.aiMovesFirst
+        ? _HumanAiSideChoice.black
+        : _HumanAiSideChoice.white;
   }
 
   void _startNewGame(BuildContext context) {
@@ -433,10 +439,15 @@ class _HumanAiNewGameSheetState extends State<_HumanAiNewGameSheet> {
       GameController().gameInstance.gameMode == GameMode.humanVsAi,
       'Human vs AI settings cannot start a different game mode.',
     );
+    final bool aiMovesFirst = switch (_sideChoice) {
+      _HumanAiSideChoice.white => false,
+      _HumanAiSideChoice.black => true,
+      _HumanAiSideChoice.random => math.Random().nextBool(),
+    };
     DB().generalSettings = DB().generalSettings.copyWith(
       skillLevel: _skillLevel,
       moveTime: _moveTime,
-      aiMovesFirst: _aiMovesFirst,
+      aiMovesFirst: aiMovesFirst,
     );
     if (_skillLevel > 15 && _moveTime < 10) {
       rootScaffoldMessengerKey.currentState!.showSnackBarClear(
@@ -540,7 +551,7 @@ class _HumanAiNewGameSheetState extends State<_HumanAiNewGameSheet> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(
-                        S.of(context).human,
+                        S.of(context).side,
                         style: theme.textTheme.bodyLarge,
                       ),
                       const SizedBox(height: 8),
@@ -554,33 +565,48 @@ class _HumanAiNewGameSheetState extends State<_HumanAiNewGameSheet> {
                                 child: FittedBox(
                                   fit: BoxFit.scaleDown,
                                   alignment: AlignmentDirectional.centerStart,
-                                  child: SegmentedButton<bool>(
+                                  child: SegmentedButton<_HumanAiSideChoice>(
                                     key: const Key(
                                       'human_ai_new_game_sheet_side_picker',
                                     ),
-                                    segments: <ButtonSegment<bool>>[
-                                      ButtonSegment<bool>(
-                                        value: false,
-                                        icon: const Icon(Icons.person_outline),
-                                        label: Text(S.of(context).player1),
-                                      ),
-                                      ButtonSegment<bool>(
-                                        value: true,
-                                        icon: const Icon(Icons.person_outline),
-                                        label: Text(S.of(context).player2),
-                                      ),
-                                    ],
-                                    selected: <bool>{_aiMovesFirst},
+                                    segments:
+                                        <ButtonSegment<_HumanAiSideChoice>>[
+                                          ButtonSegment<_HumanAiSideChoice>(
+                                            value: _HumanAiSideChoice.white,
+                                            icon: const Icon(
+                                              Icons.person_outline,
+                                            ),
+                                            label: Text(S.of(context).white),
+                                          ),
+                                          ButtonSegment<_HumanAiSideChoice>(
+                                            value: _HumanAiSideChoice.random,
+                                            icon: const Icon(
+                                              Icons.shuffle_rounded,
+                                            ),
+                                            label: Text(
+                                              S.of(context).randomColor,
+                                            ),
+                                          ),
+                                          ButtonSegment<_HumanAiSideChoice>(
+                                            value: _HumanAiSideChoice.black,
+                                            icon: const Icon(
+                                              Icons.person_outline,
+                                            ),
+                                            label: Text(S.of(context).black),
+                                          ),
+                                        ],
+                                    selected: <_HumanAiSideChoice>{_sideChoice},
                                     showSelectedIcon: false,
-                                    onSelectionChanged: (Set<bool> selection) {
-                                      assert(
-                                        selection.length == 1,
-                                        'Human side picker must have exactly one value.',
-                                      );
-                                      setState(() {
-                                        _aiMovesFirst = selection.single;
-                                      });
-                                    },
+                                    onSelectionChanged:
+                                        (Set<_HumanAiSideChoice> selection) {
+                                          assert(
+                                            selection.length == 1,
+                                            'Human side picker must have exactly one value.',
+                                          );
+                                          setState(() {
+                                            _sideChoice = selection.single;
+                                          });
+                                        },
                                   ),
                                 ),
                               );

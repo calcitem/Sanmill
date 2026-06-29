@@ -4685,5 +4685,9 @@
     "searchBehaviorSettings": "Search behavior",
     "@searchBehaviorSettings": {},
     "threadingSettings": "Threading",
-    "@threadingSettings": {}
+    "@threadingSettings": {},
+    "side": "Side",
+    "@side": {},
+    "randomColor": "Random",
+    "@randomColor": {}
 }
