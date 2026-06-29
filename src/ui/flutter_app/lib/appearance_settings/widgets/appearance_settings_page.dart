@@ -459,13 +459,14 @@ class AppearanceSettingsPage extends StatelessWidget {
         SettingsCard(
           key: const Key('appearance_settings_page_theme_settings_card'),
           title: Text(
-            S.of(context).theme,
+            S.of(context).display,
             key: const Key('theme_settings_card_title'),
           ),
           children: <Widget>[
             SettingsListTile(
               key: const Key('color_settings_card_theme_settings_list_tile'),
-              titleString: S.of(context).theme,
+              titleString: S.of(context).board,
+              trailingString: _activeBoardThemeLabel(context, colorSettings),
               onTap: () => _setTheme(context, colorSettings),
             ),
             SettingsListTile(
@@ -479,7 +480,7 @@ class AppearanceSettingsPage extends StatelessWidget {
               key: const Key(
                 'display_settings_card_piece_image_settings_list_tile',
               ),
-              titleString: S.of(context).pieceImage,
+              titleString: S.of(context).pieceSet,
               onTap: () => setPieceImage(context),
             ),
             SettingsListTile(
@@ -494,7 +495,7 @@ class AppearanceSettingsPage extends StatelessWidget {
         SettingsCard(
           key: const Key('appearance_settings_page_board_color_settings_card'),
           title: Text(
-            S.of(context).boardColor,
+            S.of(context).board,
             key: const Key('board_color_settings_card_title'),
           ),
           children: <Widget>[
@@ -721,6 +722,23 @@ class AppearanceSettingsPage extends StatelessWidget {
     });
   }
 
+  String _activeBoardThemeLabel(
+    BuildContext context,
+    ColorSettings colorSettings,
+  ) {
+    final Map<String, dynamic> activeColors = colorSettings.toJson();
+    for (final MapEntry<ColorTheme, ColorSettings> entry
+        in AppTheme.colorThemes.entries) {
+      if (entry.key == ColorTheme.current) {
+        continue;
+      }
+      if (mapEquals(entry.value.toJson(), activeColors)) {
+        return colorThemeLabel(context, entry.key);
+      }
+    }
+    return S.of(context).custom;
+  }
+
   Widget _buildDisplaySettings(
     BuildContext context,
     Box<DisplaySettings> box,
@@ -739,7 +757,7 @@ class AppearanceSettingsPage extends StatelessWidget {
         SettingsCard(
           key: const Key('appearance_settings_page_display_settings_card'),
           title: Text(
-            strings.display,
+            strings.general,
             key: const Key('display_settings_card_title'),
           ),
           children: <Widget>[
@@ -800,7 +818,7 @@ class AppearanceSettingsPage extends StatelessWidget {
         ),
         SettingsCard(
           key: const Key('appearance_settings_page_board_display_card'),
-          title: Text(strings.boardColor),
+          title: Text(strings.board),
           children: <Widget>[
             SettingsListTile.switchTile(
               key: const Key(

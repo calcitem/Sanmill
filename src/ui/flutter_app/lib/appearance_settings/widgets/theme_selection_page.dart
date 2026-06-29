@@ -19,6 +19,85 @@ import '../../shared/themes/app_styles.dart';
 import '../../shared/themes/app_theme.dart';
 import '../models/color_settings.dart';
 
+String colorThemeLabel(BuildContext context, ColorTheme theme) {
+  switch (theme) {
+    case ColorTheme.light:
+      return S.of(context).light;
+    case ColorTheme.dark:
+      return S.of(context).dark;
+    case ColorTheme.monochrome:
+      return S.of(context).monochrome;
+    case ColorTheme.transparentCanvas:
+      return S.of(context).transparentCanvas;
+    case ColorTheme.autumnLeaves:
+      return S.of(context).autumnLeaves;
+    case ColorTheme.legendaryLand:
+      return S.of(context).legendaryLand;
+    case ColorTheme.goldenJade:
+      return S.of(context).goldenJade;
+    case ColorTheme.forestWood:
+      return S.of(context).forestWood;
+    case ColorTheme.greenMeadow:
+      return S.of(context).greenMeadow;
+    case ColorTheme.stonyPath:
+      return S.of(context).stonyPath;
+    case ColorTheme.midnightBlue:
+      return S.of(context).midnightBlue;
+    case ColorTheme.greenForest:
+      return S.of(context).greenForest;
+    case ColorTheme.pastelPink:
+      return S.of(context).pastelPink;
+    case ColorTheme.turquoiseSea:
+      return S.of(context).turquoiseSea;
+    case ColorTheme.violetDream:
+      return S.of(context).violetDream;
+    case ColorTheme.mintChocolate:
+      return S.of(context).mintChocolate;
+    case ColorTheme.skyBlue:
+      return S.of(context).skyBlue;
+    case ColorTheme.playfulGarden:
+      return S.of(context).playfulGarden;
+    case ColorTheme.darkMystery:
+      return S.of(context).darkMystery;
+    case ColorTheme.ancientEgypt:
+      return S.of(context).ancientEgypt;
+    case ColorTheme.gothicIce:
+      return S.of(context).gothicIce;
+    case ColorTheme.riceField:
+      return S.of(context).riceField;
+    case ColorTheme.chinesePorcelain:
+      return S.of(context).chinesePorcelain;
+    case ColorTheme.desertDusk:
+      return S.of(context).desertDusk;
+    case ColorTheme.precisionCraft:
+      return S.of(context).precisionCraft;
+    case ColorTheme.folkEmbroidery:
+      return S.of(context).folkEmbroidery;
+    case ColorTheme.carpathianHeritage:
+      return S.of(context).carpathianHeritage;
+    case ColorTheme.imperialGrandeur:
+      return S.of(context).imperialGrandeur;
+    case ColorTheme.bohemianCrystal:
+      return S.of(context).bohemianCrystal;
+    case ColorTheme.savannaSunrise:
+      return S.of(context).savannaSunrise;
+    case ColorTheme.harmonyBalance:
+      return S.of(context).harmonyBalance;
+    case ColorTheme.cinnamonSpice:
+      return S.of(context).cinnamonSpice;
+    case ColorTheme.anatolianMosaic:
+      return S.of(context).anatolianMosaic;
+    case ColorTheme.carnivalSpirit:
+      return S.of(context).carnivalSpirit;
+    case ColorTheme.spiceMarket:
+      return S.of(context).spiceMarket;
+    case ColorTheme.current:
+      return S.of(context).currentTheme;
+    case ColorTheme.custom:
+      return S.of(context).custom;
+  }
+}
+
 /// A page that displays all available themes as mini boards,
 /// allowing users to visually preview and select a theme.
 class ThemeSelectionPage extends StatefulWidget {
@@ -238,7 +317,7 @@ class ThemePreviewItem extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      _getThemeName(context, theme: this.theme),
+                      colorThemeLabel(context, this.theme),
                       style: titleStyle,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
@@ -288,86 +367,6 @@ class ThemePreviewItem extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  // Convert theme enum to readable name
-  String _getThemeName(BuildContext context, {required ColorTheme theme}) {
-    switch (theme) {
-      case ColorTheme.light:
-        return S.of(context).light;
-      case ColorTheme.dark:
-        return S.of(context).dark;
-      case ColorTheme.monochrome:
-        return S.of(context).monochrome;
-      case ColorTheme.transparentCanvas:
-        return S.of(context).transparentCanvas;
-      case ColorTheme.autumnLeaves:
-        return S.of(context).autumnLeaves;
-      case ColorTheme.legendaryLand:
-        return S.of(context).legendaryLand;
-      case ColorTheme.goldenJade:
-        return S.of(context).goldenJade;
-      case ColorTheme.forestWood:
-        return S.of(context).forestWood;
-      case ColorTheme.greenMeadow:
-        return S.of(context).greenMeadow;
-      case ColorTheme.stonyPath:
-        return S.of(context).stonyPath;
-      case ColorTheme.midnightBlue:
-        return S.of(context).midnightBlue;
-      case ColorTheme.greenForest:
-        return S.of(context).greenForest;
-      case ColorTheme.pastelPink:
-        return S.of(context).pastelPink;
-      case ColorTheme.turquoiseSea:
-        return S.of(context).turquoiseSea;
-      case ColorTheme.violetDream:
-        return S.of(context).violetDream;
-      case ColorTheme.mintChocolate:
-        return S.of(context).mintChocolate;
-      case ColorTheme.skyBlue:
-        return S.of(context).skyBlue;
-      case ColorTheme.playfulGarden:
-        return S.of(context).playfulGarden;
-      case ColorTheme.darkMystery:
-        return S.of(context).darkMystery;
-      case ColorTheme.ancientEgypt:
-        return S.of(context).ancientEgypt;
-      case ColorTheme.gothicIce:
-        return S.of(context).gothicIce;
-      case ColorTheme.riceField:
-        return S.of(context).riceField;
-      case ColorTheme.chinesePorcelain:
-        return S.of(context).chinesePorcelain;
-      case ColorTheme.desertDusk:
-        return S.of(context).desertDusk;
-      case ColorTheme.precisionCraft:
-        return S.of(context).precisionCraft;
-      case ColorTheme.folkEmbroidery:
-        return S.of(context).folkEmbroidery;
-      case ColorTheme.carpathianHeritage:
-        return S.of(context).carpathianHeritage;
-      case ColorTheme.imperialGrandeur:
-        return S.of(context).imperialGrandeur;
-      case ColorTheme.bohemianCrystal:
-        return S.of(context).bohemianCrystal;
-      case ColorTheme.savannaSunrise:
-        return S.of(context).savannaSunrise;
-      case ColorTheme.harmonyBalance:
-        return S.of(context).harmonyBalance;
-      case ColorTheme.cinnamonSpice:
-        return S.of(context).cinnamonSpice;
-      case ColorTheme.anatolianMosaic:
-        return S.of(context).anatolianMosaic;
-      case ColorTheme.carnivalSpirit:
-        return S.of(context).carnivalSpirit;
-      case ColorTheme.spiceMarket:
-        return S.of(context).spiceMarket;
-      case ColorTheme.current:
-        return S.of(context).currentTheme;
-      case ColorTheme.custom:
-        return S.of(context).custom;
-    }
   }
 }
 
