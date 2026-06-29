@@ -181,6 +181,14 @@ void main() {
       findsOneWidget,
     );
     expect(
+      tester
+          .widget<LichessBottomBarButton>(
+            find.byKey(const Key('play_area_regular_bottom_bar_previous')),
+          )
+          .label,
+      'Previous',
+    );
+    expect(
       find.byKey(const Key('play_area_regular_bottom_bar_next')),
       findsOneWidget,
     );
@@ -361,6 +369,14 @@ void main() {
     expect(find.byKey(const Key('play_area_bottom_bar_menu')), findsOne);
     expect(find.byKey(const Key('play_area_bottom_bar_resign')), findsOne);
     expect(find.byKey(const Key('play_area_bottom_bar_take_back')), findsOne);
+    expect(
+      tester
+          .widget<LichessBottomBarButton>(
+            find.byKey(const Key('play_area_bottom_bar_take_back')),
+          )
+          .label,
+      'Take back',
+    );
     expect(find.byKey(const Key('play_area_bottom_bar_hint')), findsOne);
     expect(
       find.descendant(

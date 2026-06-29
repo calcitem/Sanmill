@@ -1611,7 +1611,7 @@ class _RegularGameBottomBar extends StatelessWidget {
         LichessBottomBarButton(
           key: const Key('play_area_regular_bottom_bar_previous'),
           icon: CupertinoIcons.chevron_back,
-          label: S.of(context).takeBack,
+          label: S.of(context).previous,
           onTap: onPreviousPressed,
           showTooltip: false,
         ),
