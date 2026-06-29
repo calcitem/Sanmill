@@ -339,6 +339,22 @@ class HistoryNavigator {
     );
   }
 
+  static Future<HistoryResponse?> takeBackN(
+    BuildContext context,
+    int n, {
+    bool pop = true,
+    bool toolbar = false,
+  }) async {
+    assert(n > 0, 'takeBackN requires a positive step count.');
+    return _gotoHistory(
+      context,
+      HistoryNavMode.takeBackN,
+      number: n,
+      pop: pop,
+      toolbar: toolbar,
+    );
+  }
+
   static Future<HistoryResponse?> stepForwardN(
     BuildContext context,
     int n, {

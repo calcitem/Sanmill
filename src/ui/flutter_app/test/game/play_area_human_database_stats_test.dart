@@ -9,16 +9,26 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:sanmill/appearance_settings/models/display_settings.dart';
 import 'package:sanmill/game_page/services/mill.dart';
 import 'package:sanmill/game_page/widgets/play_area.dart';
+import 'package:sanmill/game_shell/game_session_scope.dart';
+import 'package:sanmill/games/mill/mill_session_recorder_bridge.dart';
+import 'package:sanmill/games/mill/native_mill_game_session.dart';
 import 'package:sanmill/general_settings/models/general_settings.dart';
 import 'package:sanmill/generated/intl/l10n.dart';
 import 'package:sanmill/shared/database/database.dart';
 import 'package:sanmill/shared/utils/localizations/sanmill_localizations.dart';
 import 'package:sanmill/shared/widgets/lichess_bottom_bar.dart';
+import 'package:sanmill/shared/widgets/snackbars/scaffold_messenger.dart';
 
+import '../helpers/mocks/mock_animation_manager.dart';
+import '../helpers/mocks/mock_audios.dart';
 import '../helpers/mocks/mock_database.dart';
+import '../helpers/test_native_library.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
+
+  setUpAll(initRustLibForTests);
+  tearDownAll(disposeRustLibForTests);
 
   late MockDB db;
 
@@ -30,7 +40,10 @@ void main() {
       isHistoryNavigationToolbarShown: false,
     );
     DB.instance = db;
-    GameController().gameInstance.gameMode = GameMode.humanVsHuman;
+    SoundManager.instance = MockAudios();
+    final GameController controller = GameController();
+    controller.animationManager = MockAnimationManager();
+    controller.gameInstance.gameMode = GameMode.humanVsHuman;
   });
 
   tearDown(() {
@@ -282,9 +295,63 @@ void main() {
       1.0,
     );
   });
+
+  testWidgets('human vs ai takeback removes a full player turn', (
+    WidgetTester tester,
+  ) async {
+    final NativeMillGameSession session = await _bindNativeHumanAiGame();
+    final MillSessionRecorderBridge recorderBridge =
+        MillSessionRecorderBridge.forGameController(session: session);
+    addTearDown(recorderBridge.dispose);
+
+    expect(
+      await session.replayMainline(<ExtMove>[
+        ExtMove('d6', side: PieceColor.white),
+        ExtMove('f4', side: PieceColor.black),
+      ]),
+      isTrue,
+    );
+    await tester.pump();
+    expect(_currentPathMoves(), <String>['d6', 'f4']);
+    expect(GameController().gameInstance.isHumanToMove, isTrue);
+
+    await _pumpSessionPlayArea(tester, session);
+    await tester.tap(find.byKey(const Key('play_area_bottom_bar_take_back')));
+    await tester.pumpAndSettle();
+
+    expect(_currentPathMoves(), isEmpty);
+    expect(session.undoDepth, 0);
+  });
+
+  testWidgets('human vs ai takeback removes one move during AI turn', (
+    WidgetTester tester,
+  ) async {
+    final NativeMillGameSession session = await _bindNativeHumanAiGame();
+    final MillSessionRecorderBridge recorderBridge =
+        MillSessionRecorderBridge.forGameController(session: session);
+    addTearDown(recorderBridge.dispose);
+
+    expect(
+      await session.replayMainline(<ExtMove>[
+        ExtMove('d6', side: PieceColor.white),
+      ]),
+      isTrue,
+    );
+    await tester.pump();
+    expect(_currentPathMoves(), <String>['d6']);
+    expect(GameController().gameInstance.isHumanToMove, isFalse);
+
+    await _pumpSessionPlayArea(tester, session);
+    await tester.tap(find.byKey(const Key('play_area_bottom_bar_take_back')));
+    await tester.pumpAndSettle();
+
+    expect(_currentPathMoves(), isEmpty);
+    expect(session.undoDepth, 0);
+  });
 }
 
 Widget _localizedApp(Widget child) => MaterialApp(
+  scaffoldMessengerKey: rootScaffoldMessengerKey,
   localizationsDelegates: sanmillLocalizationsDelegates,
   supportedLocales: S.supportedLocales,
   locale: const Locale('en'),
@@ -296,4 +363,57 @@ double _bottomBarButtonOpacity(WidgetTester tester, Key key) {
     find.descendant(of: find.byKey(key), matching: find.byType(Opacity)),
   );
   return opacity.opacity;
+}
+
+Future<NativeMillGameSession> _bindNativeHumanAiGame() async {
+  final GameController controller = GameController();
+  controller.reset(force: true);
+  controller.gameInstance.gameMode = GameMode.humanVsAi;
+  final NativeMillGameSession session = NativeMillGameSession();
+  controller.bindActiveSession(session);
+
+  void listener() {
+    controller.activeSessionSnapshot = session.state.value;
+  }
+
+  session.state.addListener(listener);
+  controller.activeSessionSnapshot = session.state.value;
+  addTearDown(() {
+    session.state.removeListener(listener);
+    controller.unbindActiveSession(session);
+    session.dispose();
+  });
+  return session;
+}
+
+Future<void> _pumpSessionPlayArea(
+  WidgetTester tester,
+  NativeMillGameSession session,
+) async {
+  await tester.binding.setSurfaceSize(const Size(390, 844));
+  addTearDown(() => tester.binding.setSurfaceSize(null));
+
+  await tester.pumpWidget(
+    _localizedApp(
+      GameSessionScope(
+        session: session,
+        child: const Scaffold(
+          body: PlayArea(
+            boardImage: null,
+            child: SizedBox.square(
+              key: Key('test_board_square'),
+              dimension: 390,
+            ),
+          ),
+        ),
+      ),
+    ),
+  );
+  await tester.pumpAndSettle();
+}
+
+List<String> _currentPathMoves() {
+  return GameController().gameRecorder.currentPath
+      .map((ExtMove move) => move.move)
+      .toList();
 }

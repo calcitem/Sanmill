@@ -232,9 +232,25 @@ class PlayAreaState extends State<PlayArea> {
 
   bool get _canTakeBackFromBottomBar {
     return _usesLichessHumanAiToolbar &&
-        GameController().gameRecorder.mainlineMoves.isNotEmpty &&
+        GameController().gameRecorder.currentPath.isNotEmpty &&
         !GameController().isEngineRunning &&
         !GameController().isEngineInDelay;
+  }
+
+  int get _humanAiTakeBackStepCount {
+    assert(_usesLichessHumanAiToolbar);
+    final int moveCount = GameController().gameRecorder.currentPath.length;
+    assert(moveCount > 0, 'Cannot take back without a move history.');
+    if (moveCount == 1) {
+      return 1;
+    }
+
+    final PieceColor sideToMove = GameController().activeBoardView.sideToMove;
+    assert(
+      sideToMove == PieceColor.white || sideToMove == PieceColor.black,
+      'Human vs AI takeback requires a playable side to move.',
+    );
+    return GameController().gameInstance.isHumanToMove ? 2 : 1;
   }
 
   bool get _canShowHintFromBottomBar {
@@ -311,11 +327,16 @@ class PlayAreaState extends State<PlayArea> {
 
   Future<void> _takeBackFromBottomBar(BuildContext context) async {
     assert(_usesLichessHumanAiToolbar);
+    final int steps = _humanAiTakeBackStepCount;
     RecordingService().recordEvent(
       RecordingEventType.toolbarAction,
-      <String, dynamic>{'toolbar': 'lichessBottom', 'action': 'takeBack'},
+      <String, dynamic>{
+        'toolbar': 'lichessBottom',
+        'action': 'takeBack',
+        'steps': steps,
+      },
     );
-    await HistoryNavigator.takeBack(context, pop: false, toolbar: true);
+    await HistoryNavigator.takeBackN(context, steps, pop: false, toolbar: true);
   }
 
   Future<void> _showHintFromBottomBar(BuildContext context) async {
