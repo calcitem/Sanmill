@@ -951,36 +951,39 @@ class _WatchTabRoot extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(title: Text(strings.watch)),
-      body: ListView(
-        key: const Key('sanmill_watch_list'),
-        controller: scrollController,
-        padding: const EdgeInsets.fromLTRB(12, 8, 12, 24),
-        children: <Widget>[
-          if (contribution != null)
-            _MoreSection(
-              title: strings.watch,
-              mode: _MenuEntryMode.more,
-              children: <Widget>[
-                _MoreTile(
-                  key: const Key('drawer_item_statistics'),
-                  icon: contribution.icon ?? Icons.bar_chart_rounded,
-                  title: contribution.label,
-                  onTap: () => onWatchRouteSelected(contribution.id.value),
-                ),
-              ],
-            )
-          else
-            SizedBox(
-              height: MediaQuery.sizeOf(context).height * 0.5,
-              child: Center(
-                child: Icon(
-                  Icons.visibility_off_rounded,
-                  size: 48,
-                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+      body: ListTileTheme.merge(
+        iconColor: Theme.of(context).colorScheme.primary,
+        child: ListView(
+          key: const Key('sanmill_watch_list'),
+          controller: scrollController,
+          padding: const EdgeInsets.fromLTRB(12, 8, 12, 24),
+          children: <Widget>[
+            if (contribution != null)
+              _MoreSection(
+                title: strings.watch,
+                mode: _MenuEntryMode.more,
+                children: <Widget>[
+                  _MoreTile(
+                    key: const Key('drawer_item_statistics'),
+                    icon: contribution.icon ?? Icons.bar_chart_rounded,
+                    title: contribution.label,
+                    onTap: () => onWatchRouteSelected(contribution.id.value),
+                  ),
+                ],
+              )
+            else
+              SizedBox(
+                height: MediaQuery.sizeOf(context).height * 0.5,
+                child: Center(
+                  child: Icon(
+                    Icons.visibility_off_rounded,
+                    size: 48,
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
                 ),
               ),
-            ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -1007,19 +1010,22 @@ class _MoreTabRoot extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(title: Text(strings.more)),
-      body: ListView(
-        key: const Key('sanmill_more_list'),
-        controller: scrollController,
-        padding: const EdgeInsets.fromLTRB(12, 8, 12, 24),
-        children: <Widget>[
-          _MenuEntries(
-            mode: _MenuEntryMode.more,
-            onPlayRouteSelected: onPlayRouteSelected,
-            onAppRouteSelected: onAppRouteSelected,
-            onFeedback: onFeedback,
-            onExit: onExit,
-          ),
-        ],
+      body: ListTileTheme.merge(
+        iconColor: Theme.of(context).colorScheme.primary,
+        child: ListView(
+          key: const Key('sanmill_more_list'),
+          controller: scrollController,
+          padding: const EdgeInsets.fromLTRB(12, 8, 12, 24),
+          children: <Widget>[
+            _MenuEntries(
+              mode: _MenuEntryMode.more,
+              onPlayRouteSelected: onPlayRouteSelected,
+              onAppRouteSelected: onAppRouteSelected,
+              onFeedback: onFeedback,
+              onExit: onExit,
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -1158,11 +1164,38 @@ class _MoreSection extends StatelessWidget {
     if (children.isEmpty) {
       return const SizedBox.shrink();
     }
+    if (mode == _MenuEntryMode.more) {
+      return Padding(
+        padding: const EdgeInsets.only(bottom: 16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Padding(
+              key: headerKey,
+              padding: const EdgeInsets.fromLTRB(4, 0, 4, 8),
+              child: Text(
+                title,
+                style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+            Card(
+              margin: EdgeInsets.zero,
+              clipBehavior: Clip.antiAlias,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: children,
+              ),
+            ),
+          ],
+        ),
+      );
+    }
     return Padding(
-      padding: EdgeInsets.only(bottom: mode == _MenuEntryMode.more ? 12 : 4),
-      child: mode == _MenuEntryMode.more
-          ? Card(clipBehavior: Clip.antiAlias, child: _sectionContent(context))
-          : _sectionContent(context),
+      padding: const EdgeInsets.only(bottom: 4),
+      child: _sectionContent(context),
     );
   }
 

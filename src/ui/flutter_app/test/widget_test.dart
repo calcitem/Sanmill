@@ -183,6 +183,21 @@ void main() {
       await tester.tap(find.byKey(const Key('sanmill_tab_more')));
       await tester.pumpAndSettle();
 
+      final BuildContext settingsTileContext = tester.element(
+        find.byKey(const Key('drawer_item_general_settings')),
+      );
+      expect(
+        ListTileTheme.of(settingsTileContext).iconColor,
+        Theme.of(settingsTileContext).colorScheme.primary,
+      );
+      expect(
+        find.ancestor(
+          of: find.byKey(const Key('drawer_item_settings_group')),
+          matching: find.byType(Card),
+        ),
+        findsNothing,
+      );
+
       final SanmillAppShellState shellState = tester
           .state<SanmillAppShellState>(find.byType(SanmillAppShell));
       expect(shellState.debugCurrentTab, SanmillShellTab.more);
