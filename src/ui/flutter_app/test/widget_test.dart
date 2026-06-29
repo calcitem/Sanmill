@@ -28,6 +28,7 @@ import 'package:sanmill/shared/services/environment_config.dart';
 import 'package:sanmill/shared/services/system_ui_service.dart';
 import 'package:sanmill/shared/themes/app_theme.dart';
 import 'package:sanmill/shared/utils/localizations/sanmill_localizations.dart';
+import 'package:sanmill/shared/widgets/lichess_bottom_bar.dart';
 
 import 'helpers/test_native_library.dart';
 
@@ -958,8 +959,29 @@ void main() {
       );
       expect(previousButtonFinder, findsOneWidget);
       expect(nextButtonFinder, findsOneWidget);
-      expect(tester.widget<IconButton>(previousButtonFinder).onPressed, isNull);
-      expect(tester.widget<IconButton>(nextButtonFinder).onPressed, isNull);
+      expect(
+        tester.widget<LichessBottomBarButton>(previousButtonFinder).onTap,
+        isNull,
+      );
+      expect(
+        tester.widget<LichessBottomBarButton>(nextButtonFinder).onTap,
+        isNull,
+      );
+      expect(
+        find.byKey(const Key('opening_explorer_move_list')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const Key('opening_explorer_flip_button')),
+        findsOneWidget,
+      );
+      await tester.tap(find.byKey(const Key('opening_explorer_flip_button')));
+      await tester.pumpAndSettle();
+
+      expect(
+        find.byKey(const Key('opening_explorer_transform_sheet')),
+        findsOneWidget,
+      );
       expect(
         find.byKey(const Key('opening_explorer_rotate_button')),
         findsOneWidget,
@@ -980,6 +1002,14 @@ void main() {
         find.byKey(const Key('opening_explorer_swap_rotate_180_button')),
         findsNothing,
       );
+
+      Navigator.of(
+        tester.element(
+          find.byKey(const Key('opening_explorer_transform_sheet')),
+        ),
+      ).pop();
+      await tester.pumpAndSettle();
+
       expect(
         find.byKey(const Key('opening_explorer_position_card')),
         findsOneWidget,
@@ -996,16 +1026,37 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(
-        tester.widget<IconButton>(previousButtonFinder).onPressed,
+        tester.widget<LichessBottomBarButton>(previousButtonFinder).onTap,
         isNotNull,
       );
-      expect(tester.widget<IconButton>(nextButtonFinder).onPressed, isNull);
+      expect(
+        tester.widget<LichessBottomBarButton>(nextButtonFinder).onTap,
+        isNull,
+      );
+      expect(
+        find.byKey(const Key('opening_explorer_history_1')),
+        findsOneWidget,
+      );
 
       await tester.tap(previousButtonFinder);
       await tester.pumpAndSettle();
 
-      expect(tester.widget<IconButton>(previousButtonFinder).onPressed, isNull);
-      expect(tester.widget<IconButton>(nextButtonFinder).onPressed, isNotNull);
+      expect(
+        tester.widget<LichessBottomBarButton>(previousButtonFinder).onTap,
+        isNull,
+      );
+      expect(
+        tester.widget<LichessBottomBarButton>(nextButtonFinder).onTap,
+        isNotNull,
+      );
+
+      await tester.tap(find.byKey(const Key('opening_explorer_history_1')));
+      await tester.pumpAndSettle();
+
+      expect(
+        tester.widget<LichessBottomBarButton>(previousButtonFinder).onTap,
+        isNotNull,
+      );
 
       // Drain any settings-save debounce timer (see the smoke test above).
       await tester.pump(const Duration(milliseconds: 350));

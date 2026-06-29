@@ -18,6 +18,7 @@ import '../../../shared/services/human_database_service.dart';
 import '../../../shared/services/snackbar_service.dart';
 import '../../../shared/themes/app_styles.dart';
 import '../../../shared/themes/app_theme.dart';
+import '../../../shared/widgets/lichess_action_sheet.dart';
 import '../../../shared/widgets/lichess_bottom_bar.dart';
 import '../../../shared/widgets/lichess_list_section.dart';
 import '../../../src/rust/api/simple.dart' as tgf;
@@ -42,15 +43,43 @@ class OpeningExplorerPage extends StatefulWidget {
 }
 
 typedef _OpeningExplorerPositionChanged =
-    void Function({required String previousFen, required String currentFen});
+    void Function({
+      required String previousFen,
+      required String currentFen,
+      required String label,
+    });
+
+typedef _OpeningExplorerTransformSelected =
+    void Function(TransformationType type, String label);
+
+class _OpeningExplorerHistoryEntry {
+  const _OpeningExplorerHistoryEntry({required this.label, required this.fen});
+
+  final String label;
+  final String fen;
+}
+
+String _openingExplorerLabelFromAction(GameAction action) {
+  final String? label = MillActionCodec.moveStringFrom(action);
+  assert(
+    label != null && label.isNotEmpty,
+    'Opening explorer action must provide move notation.',
+  );
+  if (label == null || label.isEmpty) {
+    throw StateError('Opening explorer action must provide move notation.');
+  }
+  return label;
+}
 
 class _OpeningExplorerPageState extends State<OpeningExplorerPage> {
   late final Future<void> _openingBookLoad = OpeningBookRepository.instance
       .ensureLoaded();
   final MillSessionTapController _tapController = MillSessionTapController();
-  final List<String> _previousExplorerFens = <String>[];
-  final List<String> _nextExplorerFens = <String>[];
+  final List<_OpeningExplorerHistoryEntry> _explorerHistory =
+      <_OpeningExplorerHistoryEntry>[];
   NativeMillGameSession? _explorerSession;
+  String? _initialExplorerFen;
+  int _explorerCursor = 0;
 
   @override
   void initState() {
@@ -75,8 +104,9 @@ class _OpeningExplorerPageState extends State<OpeningExplorerPage> {
   void _recreateExplorerSession() {
     _explorerSession?.dispose();
     _explorerSession = null;
-    _previousExplorerFens.clear();
-    _nextExplorerFens.clear();
+    _initialExplorerFen = null;
+    _explorerHistory.clear();
+    _explorerCursor = 0;
     _tapController.clearSelection();
 
     final NativeMillGameSession explorer = NativeMillGameSession(
@@ -93,6 +123,7 @@ class _OpeningExplorerPageState extends State<OpeningExplorerPage> {
       }
     }
     _explorerSession = explorer;
+    _initialExplorerFen = explorer.getFen();
   }
 
   Future<void> _applyExplorerAction(GameAction action) async {
@@ -108,11 +139,12 @@ class _OpeningExplorerPageState extends State<OpeningExplorerPage> {
       _recordExplorerPositionChange(
         previousFen: previousFen,
         currentFen: currentFen,
+        label: _openingExplorerLabelFromAction(action),
       );
     }
   }
 
-  void _transformExplorerPosition(TransformationType type) {
+  void _transformExplorerPosition(TransformationType type, String label) {
     final NativeMillGameSession? session = _explorerSession;
     if (session == null) {
       return;
@@ -128,22 +160,47 @@ class _OpeningExplorerPageState extends State<OpeningExplorerPage> {
     _recordExplorerPositionChange(
       previousFen: previousFen,
       currentFen: session.getFen(),
+      label: label,
     );
   }
 
   void _recordExplorerPositionChange({
     required String previousFen,
     required String currentFen,
+    required String label,
   }) {
     assert(previousFen.isNotEmpty, 'Explorer previous FEN must not be empty.');
     assert(currentFen.isNotEmpty, 'Explorer current FEN must not be empty.');
+    assert(label.isNotEmpty, 'Explorer history label must not be empty.');
     if (previousFen == currentFen) {
       setState(() {});
       return;
     }
-    _previousExplorerFens.add(previousFen);
-    _nextExplorerFens.clear();
+    if (_explorerCursor < _explorerHistory.length) {
+      _explorerHistory.removeRange(_explorerCursor, _explorerHistory.length);
+    }
+    _explorerHistory.add(
+      _OpeningExplorerHistoryEntry(label: label, fen: currentFen),
+    );
+    _explorerCursor = _explorerHistory.length;
     setState(() {});
+  }
+
+  String _fenAtExplorerCursor(int cursor) {
+    assert(cursor >= 0, 'Explorer cursor must not be negative.');
+    assert(
+      cursor <= _explorerHistory.length,
+      'Explorer cursor cannot exceed history length.',
+    );
+    final String? initialFen = _initialExplorerFen;
+    assert(initialFen != null, 'Explorer initial FEN must be recorded.');
+    if (initialFen == null) {
+      throw StateError('Explorer initial FEN must be recorded.');
+    }
+    if (cursor == 0) {
+      return initialFen;
+    }
+    return _explorerHistory[cursor - 1].fen;
   }
 
   bool _restoreExplorerFen(String fen) {
@@ -163,34 +220,42 @@ class _OpeningExplorerPageState extends State<OpeningExplorerPage> {
   }
 
   void _goToPreviousExplorerPosition() {
-    final NativeMillGameSession? session = _explorerSession;
-    assert(session != null, 'Opening explorer history requires a session.');
-    if (session == null || _previousExplorerFens.isEmpty) {
+    if (_explorerCursor <= 0) {
       return;
     }
-    final String currentFen = session.getFen();
-    final String previousFen = _previousExplorerFens.last;
+    final String previousFen = _fenAtExplorerCursor(_explorerCursor - 1);
     if (!_restoreExplorerFen(previousFen)) {
       return;
     }
-    _previousExplorerFens.removeLast();
-    _nextExplorerFens.add(currentFen);
+    _explorerCursor--;
     setState(() {});
   }
 
   void _goToNextExplorerPosition() {
-    final NativeMillGameSession? session = _explorerSession;
-    assert(session != null, 'Opening explorer history requires a session.');
-    if (session == null || _nextExplorerFens.isEmpty) {
+    if (_explorerCursor >= _explorerHistory.length) {
       return;
     }
-    final String currentFen = session.getFen();
-    final String nextFen = _nextExplorerFens.last;
+    final String nextFen = _fenAtExplorerCursor(_explorerCursor + 1);
     if (!_restoreExplorerFen(nextFen)) {
       return;
     }
-    _nextExplorerFens.removeLast();
-    _previousExplorerFens.add(currentFen);
+    _explorerCursor++;
+    setState(() {});
+  }
+
+  void _jumpToExplorerPosition(int cursor) {
+    assert(cursor >= 0, 'Explorer move-list cursor must not be negative.');
+    assert(
+      cursor <= _explorerHistory.length,
+      'Explorer move-list cursor cannot exceed history length.',
+    );
+    if (cursor == _explorerCursor) {
+      return;
+    }
+    if (!_restoreExplorerFen(_fenAtExplorerCursor(cursor))) {
+      return;
+    }
+    _explorerCursor = cursor;
     setState(() {});
   }
 
@@ -202,30 +267,36 @@ class _OpeningExplorerPageState extends State<OpeningExplorerPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(strings.openingExplorer),
-        actions: session == null
+        bottom: session == null
             ? null
-            : <Widget>[
-                IconButton(
-                  key: const Key('opening_explorer_previous_button'),
-                  tooltip: strings.previous,
-                  icon: const Icon(Icons.chevron_left_rounded),
-                  onPressed: _previousExplorerFens.isEmpty
-                      ? null
-                      : _goToPreviousExplorerPosition,
-                ),
-                IconButton(
-                  key: const Key('opening_explorer_next_button'),
-                  tooltip: strings.next,
-                  icon: const Icon(Icons.chevron_right_rounded),
-                  onPressed: _nextExplorerFens.isEmpty
-                      ? null
-                      : _goToNextExplorerPosition,
-                ),
-              ],
+            : _OpeningExplorerMoveList(
+                history: _explorerHistory,
+                currentCursor: _explorerCursor,
+                onSelected: _jumpToExplorerPosition,
+              ),
       ),
       bottomNavigationBar: session == null
           ? null
-          : _OpeningExplorerBottomBar(onTransform: _transformExplorerPosition),
+          : ValueListenableBuilder<GameStateSnapshot>(
+              valueListenable: session.state,
+              builder:
+                  (BuildContext context, GameStateSnapshot _, Widget? child) {
+                    final _OpeningExplorerSnapshot snapshot =
+                        _OpeningExplorerSnapshot.fromSession(
+                          session: session,
+                          ruleSettings: DB().ruleSettings,
+                          generalSettings: DB().generalSettings,
+                        );
+                    return _OpeningExplorerBottomBar(
+                      snapshot: snapshot,
+                      canGoPrevious: _explorerCursor > 0,
+                      canGoNext: _explorerCursor < _explorerHistory.length,
+                      onPrevious: _goToPreviousExplorerPosition,
+                      onNext: _goToNextExplorerPosition,
+                      onTransform: _transformExplorerPosition,
+                    );
+                  },
+            ),
       body: session != null
           ? ValueListenableBuilder<GameStateSnapshot>(
               valueListenable: session.state,
@@ -254,6 +325,94 @@ class _OpeningExplorerPageState extends State<OpeningExplorerPage> {
           : _OpeningExplorerMessage(
               message: strings.openingExplorerUnavailable,
             ),
+    );
+  }
+}
+
+class _OpeningExplorerMoveList extends StatelessWidget
+    implements PreferredSizeWidget {
+  const _OpeningExplorerMoveList({
+    required this.history,
+    required this.currentCursor,
+    required this.onSelected,
+  });
+
+  final List<_OpeningExplorerHistoryEntry> history;
+  final int currentCursor;
+  final ValueChanged<int> onSelected;
+
+  @override
+  Size get preferredSize => const Size.fromHeight(40);
+
+  @override
+  Widget build(BuildContext context) {
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+    final TextStyle? textStyle = Theme.of(context).textTheme.labelLarge
+        ?.copyWith(letterSpacing: 0, fontWeight: FontWeight.w600);
+
+    return DecoratedBox(
+      key: const Key('opening_explorer_move_list'),
+      decoration: BoxDecoration(
+        color: colorScheme.surface,
+        border: Border(
+          top: BorderSide(color: colorScheme.outlineVariant),
+          bottom: BorderSide(color: colorScheme.outlineVariant),
+        ),
+      ),
+      child: SizedBox(
+        height: preferredSize.height,
+        child: history.isEmpty
+            ? const SizedBox.expand()
+            : ListView.separated(
+                scrollDirection: Axis.horizontal,
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+                itemBuilder: (BuildContext context, int index) {
+                  final int cursor = index + 1;
+                  final _OpeningExplorerHistoryEntry entry = history[index];
+                  final bool selected = cursor == currentCursor;
+                  return Semantics(
+                    button: true,
+                    selected: selected,
+                    child: InkWell(
+                      key: Key('opening_explorer_history_$cursor'),
+                      borderRadius: BorderRadius.circular(
+                        AppStyles.compactRadius,
+                      ),
+                      onTap: () => onSelected(cursor),
+                      child: DecoratedBox(
+                        decoration: BoxDecoration(
+                          color: selected
+                              ? colorScheme.primaryContainer
+                              : colorScheme.surfaceContainerHighest,
+                          borderRadius: BorderRadius.circular(
+                            AppStyles.compactRadius,
+                          ),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 9,
+                            vertical: 4,
+                          ),
+                          child: Text(
+                            '$cursor. ${entry.label}',
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: textStyle?.copyWith(
+                              color: selected
+                                  ? colorScheme.onPrimaryContainer
+                                  : colorScheme.onSurfaceVariant,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                },
+                separatorBuilder: (BuildContext context, int index) =>
+                    const SizedBox(width: 6),
+                itemCount: history.length,
+              ),
+      ),
     );
   }
 }
@@ -409,9 +568,58 @@ class _ExplorerBoardSection extends StatelessWidget {
 }
 
 class _OpeningExplorerBottomBar extends StatelessWidget {
-  const _OpeningExplorerBottomBar({required this.onTransform});
+  const _OpeningExplorerBottomBar({
+    required this.snapshot,
+    required this.canGoPrevious,
+    required this.canGoNext,
+    required this.onPrevious,
+    required this.onNext,
+    required this.onTransform,
+  });
 
-  final ValueChanged<TransformationType> onTransform;
+  final _OpeningExplorerSnapshot snapshot;
+  final bool canGoPrevious;
+  final bool canGoNext;
+  final VoidCallback onPrevious;
+  final VoidCallback onNext;
+  final _OpeningExplorerTransformSelected onTransform;
+
+  void _showSources(BuildContext context) {
+    final S strings = S.of(context);
+    showLichessActionSheet<void>(
+      context: context,
+      sheetKey: const Key('opening_explorer_sources_sheet'),
+      title: Text(strings.openingExplorerSources),
+      actions: <LichessActionSheetAction>[
+        LichessActionSheetAction(
+          key: const Key('opening_explorer_sources_summary'),
+          makeLabel: (BuildContext context) => Text(
+            snapshot.sourceSummary(strings),
+            textAlign: TextAlign.center,
+          ),
+          onPressed: () {},
+        ),
+      ],
+    );
+  }
+
+  void _showTransformSheet(BuildContext context) {
+    final S strings = S.of(context);
+    showLichessActionSheet<void>(
+      context: context,
+      sheetKey: const Key('opening_explorer_transform_sheet'),
+      title: Text(strings.flipBoard),
+      actions: <LichessActionSheetAction>[
+        for (final MillBoardTransformAction action in millBoardTransformActions)
+          LichessActionSheetAction(
+            key: Key('opening_explorer_${action.id}_button'),
+            leading: Icon(action.icon),
+            makeLabel: (BuildContext context) => Text(action.label(strings)),
+            onPressed: () => onTransform(action.type, action.label(strings)),
+          ),
+      ],
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -419,14 +627,36 @@ class _OpeningExplorerBottomBar extends StatelessWidget {
     return LichessBottomBar(
       key: const Key('opening_explorer_bottom_bar'),
       children: <Widget>[
-        for (final MillBoardTransformAction action in millBoardTransformActions)
-          LichessBottomBarButton(
-            key: Key('opening_explorer_${action.id}_button'),
-            icon: action.icon,
-            label: action.label(strings),
-            showLabel: true,
-            onTap: () => onTransform(action.type),
-          ),
+        LichessBottomBarButton(
+          key: const Key('opening_explorer_sources_button'),
+          icon: Icons.tune_rounded,
+          label: strings.openingExplorerSources,
+          showLabel: true,
+          onTap: () => _showSources(context),
+        ),
+        LichessBottomBarButton(
+          key: const Key('opening_explorer_flip_button'),
+          icon: Icons.flip_rounded,
+          label: strings.flipBoard,
+          showLabel: true,
+          onTap: () => _showTransformSheet(context),
+        ),
+        LichessBottomBarButton(
+          key: const Key('opening_explorer_previous_button'),
+          icon: Icons.chevron_left_rounded,
+          label: strings.previous,
+          showLabel: true,
+          showTooltip: false,
+          onTap: canGoPrevious ? onPrevious : null,
+        ),
+        LichessBottomBarButton(
+          key: const Key('opening_explorer_next_button'),
+          icon: Icons.chevron_right_rounded,
+          label: strings.next,
+          showLabel: true,
+          showTooltip: false,
+          onTap: canGoNext ? onNext : null,
+        ),
       ],
     );
   }
@@ -468,9 +698,15 @@ class _OpeningExplorerBoardState extends State<_OpeningExplorerBoard> {
       return;
     }
     if (result.status == MillSessionTapStatus.applied) {
+      final GameAction? action = result.action;
+      assert(action != null, 'Applied explorer tap must include its action.');
+      if (action == null) {
+        throw StateError('Applied explorer tap must include its action.');
+      }
       widget.onPositionChanged(
         previousFen: previousFen,
         currentFen: widget.session.getFen(),
+        label: _openingExplorerLabelFromAction(action),
       );
     }
     if (result.status != MillSessionTapStatus.ignored) {
