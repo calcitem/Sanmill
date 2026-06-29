@@ -780,7 +780,7 @@ void main() {
       await tester.pumpAndSettle();
 
       final BuildContext settingsTileContext = tester.element(
-        find.byKey(const Key('drawer_item_general_settings')),
+        find.byKey(const Key('drawer_item_settings')),
       );
       expect(
         ListTileTheme.of(settingsTileContext).iconColor,
@@ -795,14 +795,14 @@ void main() {
       );
       expect(
         find.ancestor(
-          of: find.byKey(const Key('drawer_item_general_settings')),
+          of: find.byKey(const Key('drawer_item_settings')),
           matching: find.byType(Card),
         ),
         findsOneWidget,
       );
       expect(
         find.descendant(
-          of: find.byKey(const Key('drawer_item_general_settings')),
+          of: find.byKey(const Key('drawer_item_settings')),
           matching: find.byIcon(Icons.chevron_right_rounded),
         ),
         findsNothing,
@@ -814,7 +814,25 @@ void main() {
         SanmillShellRouteIds.moreRoot.value,
       );
 
-      await tester.tap(find.byKey(const Key('drawer_item_general_settings')));
+      await tester.tap(find.byKey(const Key('drawer_item_settings')));
+      await tester.pumpAndSettle();
+
+      expect(find.byKey(const Key('settings_hub_list')), findsOneWidget);
+      expect(
+        shellState.debugCurrentRouteId,
+        ShellRouteIds.appSettingsGroup.value,
+      );
+      expect(
+        find.byKey(const Key('settings_hub_general_settings')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const Key('settings_hub_rule_settings')),
+        findsOneWidget,
+      );
+      expect(find.byKey(const Key('settings_hub_appearance')), findsOneWidget);
+
+      await tester.tap(find.byKey(const Key('settings_hub_general_settings')));
       await tester.pumpAndSettle();
 
       final BuildContext generalSettingsContext = tester.element(
@@ -829,7 +847,7 @@ void main() {
       );
       expect(
         shellState.debugCurrentRouteId,
-        ShellRouteIds.appGeneralSettings.value,
+        ShellRouteIds.appSettingsGroup.value,
       );
 
       await tester.ensureVisible(
@@ -871,12 +889,13 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(shellState.debugCurrentTab, SanmillShellTab.more);
+      expect(find.byKey(const Key('settings_hub_list')), findsOneWidget);
       expect(
         shellState.debugCurrentRouteId,
         SanmillShellRouteIds.moreRoot.value,
       );
 
-      await tester.tap(find.byKey(const Key('drawer_item_rule_settings')));
+      await tester.tap(find.byKey(const Key('settings_hub_rule_settings')));
       await tester.pumpAndSettle();
 
       final BuildContext ruleSettingsContext = tester.element(
@@ -891,19 +910,20 @@ void main() {
       );
       expect(
         shellState.debugCurrentRouteId,
-        ShellRouteIds.appRuleSettings.value,
+        SanmillShellRouteIds.moreRoot.value,
       );
 
       await tester.binding.handlePopRoute();
       await tester.pumpAndSettle();
 
       expect(shellState.debugCurrentTab, SanmillShellTab.more);
+      expect(find.byKey(const Key('settings_hub_list')), findsOneWidget);
       expect(
         shellState.debugCurrentRouteId,
         SanmillShellRouteIds.moreRoot.value,
       );
 
-      await tester.tap(find.byKey(const Key('drawer_item_appearance')));
+      await tester.tap(find.byKey(const Key('settings_hub_appearance')));
       await tester.pumpAndSettle();
 
       final BuildContext appearanceSettingsContext = tester.element(
@@ -923,12 +943,26 @@ void main() {
         ),
         findsOneWidget,
       );
-      expect(shellState.debugCurrentRouteId, ShellRouteIds.appAppearance.value);
+      expect(
+        shellState.debugCurrentRouteId,
+        SanmillShellRouteIds.moreRoot.value,
+      );
 
       await tester.binding.handlePopRoute();
       await tester.pumpAndSettle();
 
       expect(shellState.debugCurrentTab, SanmillShellTab.more);
+      expect(find.byKey(const Key('settings_hub_list')), findsOneWidget);
+      expect(
+        shellState.debugCurrentRouteId,
+        SanmillShellRouteIds.moreRoot.value,
+      );
+
+      await tester.binding.handlePopRoute();
+      await tester.pumpAndSettle();
+
+      expect(shellState.debugCurrentTab, SanmillShellTab.more);
+      expect(find.byKey(const Key('sanmill_more_list')), findsOneWidget);
       expect(
         shellState.debugCurrentRouteId,
         SanmillShellRouteIds.moreRoot.value,

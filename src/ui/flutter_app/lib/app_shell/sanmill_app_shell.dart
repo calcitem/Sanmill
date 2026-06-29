@@ -2246,26 +2246,11 @@ class _MenuEntries extends StatelessWidget {
           headerKey: const Key('drawer_item_settings_group'),
           children: <Widget>[
             _MoreTile(
-              key: const Key('drawer_item_general_settings'),
-              icon: Icons.tune_rounded,
-              title: strings.generalSettings,
+              key: const Key('drawer_item_settings'),
+              icon: Icons.settings_outlined,
+              title: strings.settings,
               onTap: () =>
-                  onAppRouteSelected(ShellRouteIds.appGeneralSettings.value),
-            ),
-            if (module.buildRuleSettingsScreen(context) != null)
-              _MoreTile(
-                key: const Key('drawer_item_rule_settings'),
-                icon: Icons.rule_rounded,
-                title: strings.ruleSettings,
-                onTap: () =>
-                    onAppRouteSelected(ShellRouteIds.appRuleSettings.value),
-              ),
-            _MoreTile(
-              key: const Key('drawer_item_appearance'),
-              icon: Icons.palette_rounded,
-              title: strings.appearance,
-              onTap: () =>
-                  onAppRouteSelected(ShellRouteIds.appAppearance.value),
+                  onAppRouteSelected(ShellRouteIds.appSettingsGroup.value),
             ),
           ],
         ),

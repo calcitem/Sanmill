@@ -17,9 +17,13 @@ import '../misc/clock_tool_page.dart';
 import '../misc/how_to_play_screen.dart';
 import '../misc/mill_variants_page.dart';
 import '../shared/services/environment_config.dart';
+import 'settings_hub_page.dart';
 
 /// Resolves [ShellRouteIds] for app-level (`app.*`) routes.
 Widget? buildAppRouteScreen(BuildContext context, String routeId) {
+  if (routeId == ShellRouteIds.appSettingsGroup.value) {
+    return const SettingsHubPage();
+  }
   if (routeId == ShellRouteIds.appGeneralSettings.value) {
     return const GeneralSettingsPage();
   }
