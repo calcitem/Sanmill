@@ -630,6 +630,7 @@ void main() {
         find.byKey(const Key('clock_tool_start_pause_button')),
         findsOneWidget,
       );
+      expect(find.byKey(const Key('clock_tool_close_button')), findsOneWidget);
       expect(find.byKey(const Key('clock_tool_reset_button')), findsOneWidget);
 
       await tester.binding.handlePopRoute();

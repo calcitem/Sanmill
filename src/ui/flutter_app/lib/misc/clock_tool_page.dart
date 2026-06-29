@@ -54,6 +54,10 @@ class _ClockToolPageState extends State<ClockToolPage> {
     setState(_resetState);
   }
 
+  void _close() {
+    Navigator.of(context).maybePop();
+  }
+
   void _resetState() {
     _timer?.cancel();
     _timer = null;
@@ -159,10 +163,13 @@ class _ClockToolPageState extends State<ClockToolPage> {
   @override
   Widget build(BuildContext context) {
     final S strings = S.of(context);
+    final bool controlsEnabled =
+        !_running ||
+        _isFlagged(_ClockSide.top) ||
+        _isFlagged(_ClockSide.bottom);
 
     return Scaffold(
       key: const Key('clock_tool_page_scaffold'),
-      appBar: AppBar(title: Text(strings.clock)),
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -186,6 +193,8 @@ class _ClockToolPageState extends State<ClockToolPage> {
               onPresetSelected: _selectPreset,
               onReset: _reset,
               onStartPause: _toggleRunning,
+              onClose: _close,
+              controlsEnabled: controlsEnabled,
             ),
             Expanded(
               child: _ClockTile(
@@ -214,6 +223,8 @@ class _ClockControls extends StatelessWidget {
     required this.onPresetSelected,
     required this.onReset,
     required this.onStartPause,
+    required this.onClose,
+    required this.controlsEnabled,
   });
 
   final List<_ClockPreset> presets;
@@ -223,6 +234,8 @@ class _ClockControls extends StatelessWidget {
   final ValueChanged<_ClockPreset> onPresetSelected;
   final VoidCallback onReset;
   final VoidCallback onStartPause;
+  final VoidCallback onClose;
+  final bool controlsEnabled;
 
   @override
   Widget build(BuildContext context) {
@@ -263,9 +276,16 @@ class _ClockControls extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 IconButton.filledTonal(
+                  key: const Key('clock_tool_close_button'),
+                  tooltip: strings.close,
+                  onPressed: controlsEnabled ? onClose : null,
+                  icon: const Icon(Icons.home_rounded),
+                ),
+                const SizedBox(width: 12),
+                IconButton.filledTonal(
                   key: const Key('clock_tool_reset_button'),
                   tooltip: strings.reset,
-                  onPressed: onReset,
+                  onPressed: controlsEnabled ? onReset : null,
                   icon: const Icon(Icons.restart_alt_rounded),
                 ),
                 const SizedBox(width: 12),
