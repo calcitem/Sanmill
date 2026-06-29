@@ -17,6 +17,7 @@ import '../../../shared/database/database.dart' show DB;
 import '../../../shared/services/human_database_service.dart';
 import '../../../shared/services/snackbar_service.dart';
 import '../../../shared/themes/app_styles.dart';
+import '../../../shared/themes/app_theme.dart';
 import '../../../shared/widgets/lichess_list_section.dart';
 import '../../../src/rust/api/simple.dart' as tgf;
 import '../mill_action_codec.dart';
@@ -249,13 +250,18 @@ class _OpeningExplorerContent extends StatelessWidget {
           cardKey: const Key('opening_explorer_moves_card'),
           children: <Widget>[
             const _OpeningExplorerMovesHeader(),
-            for (final _OpeningExplorerMove move in snapshot.moves)
+            for (final (int index, _OpeningExplorerMove move)
+                in snapshot.moves.indexed)
               _OpeningMoveTile(
+                index: index,
                 move: move,
                 onSelected: () => onMoveSelected(move.action),
               ),
             if (snapshot.aggregateHumanStats != null)
-              _OpeningExplorerTotalTile(stats: snapshot.aggregateHumanStats!),
+              _OpeningExplorerTotalTile(
+                stats: snapshot.aggregateHumanStats!,
+                rowIndex: snapshot.moves.length,
+              ),
           ],
         ),
     ];
@@ -738,8 +744,13 @@ class _PositionSection extends StatelessWidget {
 }
 
 class _OpeningMoveTile extends StatelessWidget {
-  const _OpeningMoveTile({required this.move, required this.onSelected});
+  const _OpeningMoveTile({
+    required this.index,
+    required this.move,
+    required this.onSelected,
+  });
 
+  final int index;
   final _OpeningExplorerMove move;
   final VoidCallback onSelected;
 
@@ -761,29 +772,32 @@ class _OpeningMoveTile extends StatelessWidget {
           ),
         );
 
-    return InkWell(
-      key: Key('opening_explorer_move_${move.notation}'),
-      onTap: onSelected,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-        child: Row(
-          children: <Widget>[
-            Expanded(flex: 34, child: _MoveCell(move: move)),
-            const SizedBox(width: 8),
-            SizedBox(width: 104, child: _MoveGamesCell(move: move)),
-            const SizedBox(width: 8),
-            Expanded(
-              flex: 42,
-              child: move.humanStats == null
-                  ? Text(
-                      _sourceOnlySubtitle(strings, move),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: sourceStyle,
-                    )
-                  : _HumanStatsBar(stats: move.humanStats!),
-            ),
-          ],
+    return ColoredBox(
+      color: _openingExplorerRowColor(context, index),
+      child: InkWell(
+        key: Key('opening_explorer_move_${move.notation}'),
+        onTap: onSelected,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+          child: Row(
+            children: <Widget>[
+              Expanded(flex: 34, child: _MoveCell(move: move)),
+              const SizedBox(width: 8),
+              SizedBox(width: 104, child: _MoveGamesCell(move: move)),
+              const SizedBox(width: 8),
+              Expanded(
+                flex: 42,
+                child: move.humanStats == null
+                    ? Text(
+                        _sourceOnlySubtitle(strings, move),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: sourceStyle,
+                      )
+                    : _HumanStatsBar(stats: move.humanStats!),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -914,8 +928,10 @@ class _MoveGamesCell extends StatelessWidget {
     final _HumanMoveStats? stats = move.humanStats;
     final String text = stats == null
         ? '-'
-        : '${_formatExplorerSampleCount(stats.total)} '
-              '(${move.samplePercent}%)';
+        : _formatExplorerGamesText(
+            games: stats.total,
+            percent: move.gamesPercent,
+          );
     return Text(
       text,
       maxLines: 1,
@@ -930,9 +946,13 @@ class _MoveGamesCell extends StatelessWidget {
 }
 
 class _OpeningExplorerTotalTile extends StatelessWidget {
-  const _OpeningExplorerTotalTile({required this.stats});
+  const _OpeningExplorerTotalTile({
+    required this.stats,
+    required this.rowIndex,
+  });
 
   final _HumanMoveStats stats;
+  final int rowIndex;
 
   @override
   Widget build(BuildContext context) {
@@ -949,36 +969,47 @@ class _OpeningExplorerTotalTile extends StatelessWidget {
           fontWeight: FontWeight.w700,
         );
 
-    return Padding(
-      key: const Key('opening_explorer_total_row'),
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-      child: Row(
-        children: <Widget>[
-          Expanded(
-            flex: 34,
-            child: Icon(
-              Icons.functions,
-              size: 18,
-              color: colorScheme.onSurfaceVariant,
+    return ColoredBox(
+      color: _openingExplorerRowColor(context, rowIndex),
+      child: Padding(
+        key: const Key('opening_explorer_total_row'),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+        child: Row(
+          children: <Widget>[
+            Expanded(
+              flex: 34,
+              child: Icon(
+                Icons.functions,
+                size: 18,
+                color: colorScheme.onSurfaceVariant,
+              ),
             ),
-          ),
-          const SizedBox(width: 8),
-          SizedBox(
-            width: 104,
-            child: Text(
-              '${_formatExplorerSampleCount(stats.total)} (100%)',
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              textAlign: TextAlign.end,
-              style: textStyle,
+            const SizedBox(width: 8),
+            SizedBox(
+              width: 104,
+              child: Text(
+                _formatExplorerGamesText(games: stats.total, percent: 100),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                textAlign: TextAlign.end,
+                style: textStyle,
+              ),
             ),
-          ),
-          const SizedBox(width: 8),
-          Expanded(flex: 42, child: _HumanStatsBar(stats: stats)),
-        ],
+            const SizedBox(width: 8),
+            Expanded(flex: 42, child: _HumanStatsBar(stats: stats)),
+          ],
+        ),
       ),
     );
   }
+}
+
+Color _openingExplorerRowColor(BuildContext context, int index) {
+  final AppCustomColors? customColors = Theme.of(
+    context,
+  ).extension<AppCustomColors>();
+  assert(customColors != null, 'Opening explorer requires AppCustomColors.');
+  return index.isEven ? customColors!.rowEven : customColors!.rowOdd;
 }
 
 class _SourceBadge extends StatelessWidget {
@@ -1067,6 +1098,12 @@ Color _explorerLossBoxColor(BuildContext context) {
 String _formatExplorerSampleCount(int count) {
   assert(count >= 0, 'Opening explorer sample count must not be negative.');
   return NumberFormat.decimalPatternDigits().format(count);
+}
+
+String _formatExplorerGamesText({required int games, required int percent}) {
+  assert(games >= 0, 'Opening explorer games count must not be negative.');
+  assert(percent >= 0, 'Opening explorer games percent must not be negative.');
+  return '${_formatExplorerSampleCount(games)} ($percent%)';
 }
 
 class _HumanStatsBarSegment extends StatelessWidget {
@@ -1276,7 +1313,7 @@ class _OpeningExplorerSnapshot {
           );
     for (final _OpeningExplorerMove move in sortedMoves) {
       final int total = move.humanStats?.total ?? 0;
-      move.samplePercent = totalHumanSamples <= 0
+      move.gamesPercent = totalHumanSamples <= 0
           ? 0
           : (total * 100 / totalHumanSamples).round();
     }
@@ -1395,7 +1432,7 @@ class _OpeningExplorerMove {
   final GameAction action;
   int? bookRank;
   _HumanMoveStats? humanStats;
-  int samplePercent = 0;
+  int gamesPercent = 0;
   bool isPerfectMove = false;
 }
 
