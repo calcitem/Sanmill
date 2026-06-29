@@ -872,6 +872,10 @@ void main() {
         find.byKey(const Key('sanmill_home_play_modes_group')),
         findsOneWidget,
       );
+      expect(
+        find.byKey(const Key('sanmill_home_ongoing_game_group')),
+        findsNothing,
+      );
       expect(find.byKey(const Key('drawer_item_human_vs_ai')), findsOneWidget);
       expect(find.byKey(const Key('sanmill_home_play_fab')), findsNothing);
 

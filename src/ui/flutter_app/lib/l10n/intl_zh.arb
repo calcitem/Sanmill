@@ -4585,5 +4585,7 @@
     "pause": "暂停",
     "@pause": {},
     "resume": "继续",
-    "@resume": {}
+    "@resume": {},
+    "ongoingGames": "正在进行的对局",
+    "@ongoingGames": {}
 }

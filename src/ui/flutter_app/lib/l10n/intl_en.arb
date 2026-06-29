@@ -4737,5 +4737,7 @@
     "pause": "Pause",
     "@pause": {},
     "resume": "Resume",
-    "@resume": {}
+    "@resume": {},
+    "ongoingGames": "Ongoing games",
+    "@ongoingGames": {}
 }

@@ -1408,7 +1408,7 @@ class _OngoingGameSection extends StatelessWidget {
     final String subtitle = _subtitle(strings, snapshot, moveCount);
     if (useCarousel) {
       return _HomeGameCarouselSection(
-        title: strings.continueGame,
+        title: strings.ongoingGames,
         headerKey: const Key('sanmill_home_ongoing_game_group'),
         listKey: const Key('sanmill_home_ongoing_game_card'),
         tabInteraction: tabInteraction,
@@ -1427,7 +1427,7 @@ class _OngoingGameSection extends StatelessWidget {
     }
 
     return LichessListSection(
-      header: Text(strings.continueGame),
+      header: Text(strings.ongoingGames),
       headerKey: const Key('sanmill_home_ongoing_game_group'),
       cardKey: const Key('sanmill_home_ongoing_game_card'),
       hasLeading: false,
