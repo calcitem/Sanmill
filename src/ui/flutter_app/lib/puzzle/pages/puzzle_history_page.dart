@@ -7,12 +7,10 @@
 
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
-import 'package:hive_ce_flutter/hive_flutter.dart' show Box;
 
-import '../../appearance_settings/models/color_settings.dart';
 import '../../generated/intl/l10n.dart';
-import '../../shared/database/database.dart';
 import '../../shared/themes/app_theme.dart';
+import '../../shared/widgets/lichess_list_section.dart';
 import '../models/puzzle_models.dart';
 import '../services/puzzle_manager.dart';
 import '../services/puzzle_rating_service.dart';
@@ -26,261 +24,188 @@ class PuzzleHistoryPage extends StatefulWidget {
 }
 
 class _PuzzleHistoryPageState extends State<PuzzleHistoryPage> {
+  static const String _filterAll = 'all';
+  static const String _filterSuccess = 'success';
+  static const String _filterFailed = 'failed';
+
   final PuzzleRatingService _ratingService = PuzzleRatingService();
   final PuzzleManager _puzzleManager = PuzzleManager();
 
-  // Filter options
   bool _showSuccessOnly = false;
   bool _showFailedOnly = false;
 
   @override
   Widget build(BuildContext context) {
+    assert(
+      !(_showSuccessOnly && _showFailedOnly),
+      'Puzzle history cannot filter by success and failure simultaneously.',
+    );
+
     final S s = S.of(context);
-    final List<PuzzleAttemptResult> history = _ratingService
-        .getAttemptHistory();
+    final ThemeData theme = Theme.of(context);
+    final List<PuzzleAttemptResult> filteredHistory = _filteredHistory(
+      _ratingService.getAttemptHistory(),
+    );
 
-    // Apply filters
-    List<PuzzleAttemptResult> filteredHistory = history;
-    if (_showSuccessOnly) {
-      filteredHistory = history
-          .where((PuzzleAttemptResult r) => r.success)
-          .toList();
-    } else if (_showFailedOnly) {
-      filteredHistory = history
-          .where((PuzzleAttemptResult r) => !r.success)
-          .toList();
-    }
-
-    return ValueListenableBuilder<Box<ColorSettings>>(
-      valueListenable: DB().listenColorSettings,
-      builder: (BuildContext context, Box<ColorSettings> box, Widget? child) {
-        final ThemeData settingsTheme = Theme.of(context);
-        final bool useDarkSettingsUi =
-            settingsTheme.brightness == Brightness.dark;
-
-        // Use Builder to ensure the context has the correct theme
-        return Theme(
-          data: settingsTheme,
-          child: Builder(
-            builder: (BuildContext context) {
-              return Scaffold(
-                backgroundColor: useDarkSettingsUi
-                    ? settingsTheme.scaffoldBackgroundColor
-                    : AppTheme.lightBackgroundColor,
-                appBar: AppBar(
-                  title: Text(
-                    s.puzzleHistory,
-                    style: useDarkSettingsUi
-                        ? null
-                        : AppTheme.appBarTheme.titleTextStyle,
+    return Scaffold(
+      key: const Key('puzzle_history_page_scaffold'),
+      backgroundColor: theme.colorScheme.surface,
+      appBar: AppBar(
+        title: Text(s.puzzleHistory),
+        actions: <Widget>[_buildFilterMenu(context, s)],
+      ),
+      body: filteredHistory.isEmpty
+          ? _buildEmptyState(context, s)
+          : ListTileTheme.merge(
+              iconColor: theme.colorScheme.primary,
+              child: ListView(
+                key: const Key('puzzle_history_page_list'),
+                padding: const EdgeInsets.only(top: 16, bottom: 24),
+                children: <Widget>[
+                  LichessListSection(
+                    header: Text(_currentFilterLabel(s)),
+                    cardKey: const Key('puzzle_history_entries_section'),
+                    children: List<Widget>.generate(filteredHistory.length, (
+                      int index,
+                    ) {
+                      final PuzzleAttemptResult attempt =
+                          filteredHistory[index];
+                      final PuzzleInfo? puzzle = _puzzleManager.getPuzzleById(
+                        attempt.puzzleId,
+                      );
+                      return _buildHistoryTile(context, attempt, puzzle, s);
+                    }, growable: false),
                   ),
-                  actions: <Widget>[
-                    // Filter menu
-                    PopupMenuButton<String>(
-                      icon: const Icon(FluentIcons.filter_24_regular),
-                      onSelected: (String value) {
-                        setState(() {
-                          if (value == 'all') {
-                            _showSuccessOnly = false;
-                            _showFailedOnly = false;
-                          } else if (value == 'success') {
-                            _showSuccessOnly = true;
-                            _showFailedOnly = false;
-                          } else if (value == 'failed') {
-                            _showSuccessOnly = false;
-                            _showFailedOnly = true;
-                          }
-                        });
-                      },
-                      itemBuilder: (BuildContext context) =>
-                          <PopupMenuEntry<String>>[
-                            PopupMenuItem<String>(
-                              value: 'all',
-                              child: Row(
-                                children: <Widget>[
-                                  const Icon(FluentIcons.apps_list_24_regular),
-                                  const SizedBox(width: 12),
-                                  Text(s.all),
-                                ],
-                              ),
-                            ),
-                            PopupMenuItem<String>(
-                              value: 'success',
-                              child: Row(
-                                children: <Widget>[
-                                  const Icon(
-                                    FluentIcons.checkmark_circle_24_regular,
-                                    color: Colors.green,
-                                  ),
-                                  const SizedBox(width: 12),
-                                  Text(s.puzzleHistorySuccess),
-                                ],
-                              ),
-                            ),
-                            PopupMenuItem<String>(
-                              value: 'failed',
-                              child: Row(
-                                children: <Widget>[
-                                  const Icon(
-                                    FluentIcons.dismiss_circle_24_regular,
-                                    color: Colors.red,
-                                  ),
-                                  const SizedBox(width: 12),
-                                  Text(s.puzzleHistoryFailed),
-                                ],
-                              ),
-                            ),
-                          ],
-                    ),
-                  ],
-                ),
-                body: filteredHistory.isEmpty
-                    ? _buildEmptyState(s)
-                    : ListView.builder(
-                        padding: const EdgeInsets.all(8.0),
-                        itemCount: filteredHistory.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          final PuzzleAttemptResult attempt =
-                              filteredHistory[index];
-                          final PuzzleInfo? puzzle = _puzzleManager
-                              .getPuzzleById(attempt.puzzleId);
-                          return _buildHistoryCard(attempt, puzzle, s);
-                        },
-                      ),
-              );
-            },
-          ),
-        );
-      },
+                ],
+              ),
+            ),
     );
   }
 
-  Widget _buildEmptyState(S s) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+  List<PuzzleAttemptResult> _filteredHistory(
+    List<PuzzleAttemptResult> history,
+  ) {
+    if (_showSuccessOnly) {
+      return history.where((PuzzleAttemptResult r) => r.success).toList();
+    }
+    if (_showFailedOnly) {
+      return history.where((PuzzleAttemptResult r) => !r.success).toList();
+    }
+    return history;
+  }
+
+  Widget _buildFilterMenu(BuildContext context, S s) {
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+    final AppCustomColors customColors = Theme.of(
+      context,
+    ).extension<AppCustomColors>()!;
+
+    return PopupMenuButton<String>(
+      key: const Key('puzzle_history_filter_button'),
+      icon: const Icon(FluentIcons.filter_24_regular),
+      initialValue: _currentFilterValue,
+      onSelected: _selectFilter,
+      itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+        _buildFilterItem(
+          value: _filterAll,
+          icon: FluentIcons.apps_list_24_regular,
+          label: s.all,
+          color: colorScheme.primary,
+        ),
+        _buildFilterItem(
+          value: _filterSuccess,
+          icon: FluentIcons.checkmark_circle_24_regular,
+          label: s.puzzleHistorySuccess,
+          color: customColors.good,
+        ),
+        _buildFilterItem(
+          value: _filterFailed,
+          icon: FluentIcons.dismiss_circle_24_regular,
+          label: s.puzzleHistoryFailed,
+          color: colorScheme.error,
+        ),
+      ],
+    );
+  }
+
+  PopupMenuItem<String> _buildFilterItem({
+    required String value,
+    required IconData icon,
+    required String label,
+    required Color color,
+  }) {
+    return PopupMenuItem<String>(
+      value: value,
+      child: Row(
         children: <Widget>[
-          Icon(
-            FluentIcons.history_24_regular,
-            size: 80,
-            color: Colors.grey[400],
-          ),
-          const SizedBox(height: 16),
-          Text(
-            s.puzzleHistoryEmpty,
-            style: Theme.of(context).textTheme.titleLarge,
-          ),
-          const SizedBox(height: 8),
-          Text(
-            s.puzzleHistoryEmptyHint,
-            style: Theme.of(context).textTheme.bodyMedium,
-            textAlign: TextAlign.center,
-          ),
+          Icon(icon, color: color),
+          const SizedBox(width: 12),
+          Expanded(child: Text(label, overflow: TextOverflow.ellipsis)),
         ],
       ),
     );
   }
 
-  Widget _buildHistoryCard(
-    PuzzleAttemptResult attempt,
-    PuzzleInfo? puzzle,
-    S s,
-  ) {
-    final bool success = attempt.success;
-    final Color resultColor = success ? Colors.green : Colors.red;
-    final IconData resultIcon = success
-        ? FluentIcons.checkmark_circle_24_filled
-        : FluentIcons.dismiss_circle_24_filled;
+  String get _currentFilterValue {
+    if (_showSuccessOnly) {
+      return _filterSuccess;
+    }
+    if (_showFailedOnly) {
+      return _filterFailed;
+    }
+    return _filterAll;
+  }
 
-    return Card(
-      margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+  String _currentFilterLabel(S s) {
+    if (_showSuccessOnly) {
+      return s.puzzleHistorySuccess;
+    }
+    if (_showFailedOnly) {
+      return s.puzzleHistoryFailed;
+    }
+    return s.all;
+  }
+
+  void _selectFilter(String value) {
+    assert(
+      value == _filterAll || value == _filterSuccess || value == _filterFailed,
+      'Unsupported puzzle history filter: $value',
+    );
+
+    setState(() {
+      _showSuccessOnly = value == _filterSuccess;
+      _showFailedOnly = value == _filterFailed;
+    });
+  }
+
+  Widget _buildEmptyState(BuildContext context, S s) {
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+
+    return Center(
+      key: const Key('puzzle_history_empty_state'),
       child: Padding(
-        padding: const EdgeInsets.all(12.0),
+        padding: const EdgeInsets.all(24),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            // Header row
-            Row(
-              children: <Widget>[
-                Icon(resultIcon, color: resultColor, size: 24),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: Text(
-                    puzzle?.title ?? s.puzzleHistoryUnknown,
-                    style: Theme.of(context).textTheme.titleMedium,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-                if (attempt.ratingChange != null) ...<Widget>[
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 8,
-                      vertical: 4,
-                    ),
-                    decoration: BoxDecoration(
-                      color:
-                          (attempt.ratingChange! >= 0
-                                  ? Colors.green
-                                  : Colors.red)
-                              .withValues(alpha: 0.2),
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                    child: Text(
-                      '${attempt.ratingChange! >= 0 ? '+' : ''}${attempt.ratingChange}',
-                      style: TextStyle(
-                        color: attempt.ratingChange! >= 0
-                            ? Colors.green
-                            : Colors.red,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ],
-              ],
+            Icon(
+              FluentIcons.history_24_regular,
+              size: 72,
+              color: colorScheme.onSurfaceVariant,
             ),
-            const SizedBox(height: 8),
-
-            // Details row - Use Row with Flexible instead of Wrap to prevent overflow
-            Row(
-              children: <Widget>[
-                Flexible(
-                  child: _buildDetailChip(
-                    FluentIcons.timer_24_regular,
-                    _formatDuration(attempt.timeSpent),
-                    Colors.blue,
-                  ),
-                ),
-                if (attempt.hintsUsed > 0) ...<Widget>[
-                  const SizedBox(width: 8),
-                  Flexible(
-                    child: _buildDetailChip(
-                      FluentIcons.lightbulb_24_regular,
-                      '${attempt.hintsUsed} ${s.puzzleHistoryHints}',
-                      Colors.orange,
-                    ),
-                  ),
-                ],
-                if (puzzle != null) ...<Widget>[
-                  const SizedBox(width: 8),
-                  Flexible(
-                    child: _buildDetailChip(
-                      puzzle.difficulty.icon,
-                      puzzle.difficulty.displayName(context),
-                      _getDifficultyColor(puzzle.difficulty),
-                    ),
-                  ),
-                ],
-              ],
-            ),
-            const SizedBox(height: 8),
-
-            // Timestamp
+            const SizedBox(height: 16),
             Text(
-              _formatTimestamp(context, attempt.timestamp, s),
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              s.puzzleHistoryEmpty,
+              style: Theme.of(context).textTheme.titleLarge,
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 8),
+            Text(
+              s.puzzleHistoryEmptyHint,
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                color: colorScheme.onSurfaceVariant,
               ),
+              textAlign: TextAlign.center,
             ),
           ],
         ),
@@ -288,21 +213,86 @@ class _PuzzleHistoryPageState extends State<PuzzleHistoryPage> {
     );
   }
 
-  Widget _buildDetailChip(IconData icon, String label, Color color) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
-        Icon(icon, size: 16, color: color),
-        const SizedBox(width: 4),
-        Flexible(
-          child: Text(
-            label,
-            style: TextStyle(fontSize: 12, color: color),
-            overflow: TextOverflow.ellipsis,
-          ),
+  Widget _buildHistoryTile(
+    BuildContext context,
+    PuzzleAttemptResult attempt,
+    PuzzleInfo? puzzle,
+    S s,
+  ) {
+    final AppCustomColors customColors = Theme.of(
+      context,
+    ).extension<AppCustomColors>()!;
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+    final bool success = attempt.success;
+    final Color resultColor = success ? customColors.good : colorScheme.error;
+    final IconData resultIcon = success
+        ? FluentIcons.checkmark_circle_24_filled
+        : FluentIcons.dismiss_circle_24_filled;
+    final int? ratingChange = attempt.ratingChange;
+
+    return ListTile(
+      leading: Icon(resultIcon, color: resultColor),
+      title: Text(
+        puzzle?.title ?? s.puzzleHistoryUnknown,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+      ),
+      subtitle: Padding(
+        padding: const EdgeInsets.only(top: 6),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Wrap(
+              spacing: 8,
+              runSpacing: 6,
+              children: _buildDetailChips(context, attempt, puzzle, s),
+            ),
+            const SizedBox(height: 6),
+            Text(
+              _formatTimestamp(context, attempt.timestamp, s),
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: colorScheme.onSurfaceVariant,
+              ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ],
         ),
-      ],
+      ),
+      trailing: ratingChange == null
+          ? null
+          : _PuzzleHistoryRatingDelta(value: ratingChange),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
     );
+  }
+
+  List<Widget> _buildDetailChips(
+    BuildContext context,
+    PuzzleAttemptResult attempt,
+    PuzzleInfo? puzzle,
+    S s,
+  ) {
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+
+    return <Widget>[
+      _PuzzleHistoryDetailChip(
+        icon: FluentIcons.timer_24_regular,
+        label: _formatDuration(attempt.timeSpent),
+        color: colorScheme.primary,
+      ),
+      if (attempt.hintsUsed > 0)
+        _PuzzleHistoryDetailChip(
+          icon: FluentIcons.lightbulb_24_regular,
+          label: '${attempt.hintsUsed} ${s.puzzleHistoryHints}',
+          color: colorScheme.tertiary,
+        ),
+      if (puzzle != null)
+        _PuzzleHistoryDetailChip(
+          icon: puzzle.difficulty.icon,
+          label: puzzle.difficulty.displayName(context),
+          color: _getDifficultyColor(context, puzzle.difficulty),
+        ),
+    ];
   }
 
   String _formatDuration(Duration duration) {
@@ -330,20 +320,95 @@ class _PuzzleHistoryPageState extends State<PuzzleHistoryPage> {
     }
   }
 
-  Color _getDifficultyColor(PuzzleDifficulty difficulty) {
+  Color _getDifficultyColor(BuildContext context, PuzzleDifficulty difficulty) {
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+    final AppCustomColors customColors = Theme.of(
+      context,
+    ).extension<AppCustomColors>()!;
+
     switch (difficulty) {
       case PuzzleDifficulty.beginner:
-        return Colors.green;
       case PuzzleDifficulty.easy:
-        return Colors.lightGreen;
+        return customColors.good;
       case PuzzleDifficulty.medium:
-        return Colors.orange;
+        return colorScheme.tertiary;
       case PuzzleDifficulty.hard:
-        return Colors.deepOrange;
       case PuzzleDifficulty.expert:
-        return Colors.red;
+        return colorScheme.error;
       case PuzzleDifficulty.master:
-        return Colors.purple;
+        return colorScheme.secondary;
     }
+  }
+}
+
+class _PuzzleHistoryDetailChip extends StatelessWidget {
+  const _PuzzleHistoryDetailChip({
+    required this.icon,
+    required this.label,
+    required this.color,
+  });
+
+  final IconData icon;
+  final String label;
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) {
+    return ConstrainedBox(
+      constraints: const BoxConstraints(maxWidth: 168),
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          color: color.withValues(alpha: 0.12),
+          borderRadius: BorderRadius.circular(999),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Icon(icon, size: 14, color: color),
+              const SizedBox(width: 4),
+              Flexible(
+                child: Text(
+                  label,
+                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                    color: color,
+                    fontWeight: FontWeight.w700,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _PuzzleHistoryRatingDelta extends StatelessWidget {
+  const _PuzzleHistoryRatingDelta({required this.value});
+
+  final int value;
+
+  @override
+  Widget build(BuildContext context) {
+    final AppCustomColors customColors = Theme.of(
+      context,
+    ).extension<AppCustomColors>()!;
+    final Color color = value >= 0
+        ? customColors.good
+        : Theme.of(context).colorScheme.error;
+
+    return Text(
+      '${value >= 0 ? '+' : ''}$value',
+      style: Theme.of(context).textTheme.titleSmall?.copyWith(
+        color: color,
+        fontWeight: FontWeight.w700,
+      ),
+      maxLines: 1,
+      overflow: TextOverflow.ellipsis,
+    );
   }
 }
