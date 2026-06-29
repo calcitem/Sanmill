@@ -18,7 +18,9 @@ import 'package:share_plus/share_plus.dart';
 
 import '../../generated/intl/l10n.dart';
 import '../../shared/database/database.dart';
+import '../../shared/themes/app_styles.dart';
 import '../../shared/utils/helpers/text_helpers/safe_text_editing_controller.dart';
+import '../../shared/widgets/lichess_list_section.dart';
 import '../services/mill.dart';
 import '../services/save_load/saved_game_catalog.dart';
 import 'mini_board.dart';
@@ -54,6 +56,8 @@ class SavedGamesPage extends StatefulWidget {
   @override
   State<SavedGamesPage> createState() => _SavedGamesPageState();
 }
+
+enum _SavedGameAction { rename, delete }
 
 class _SavedGamesPageState extends State<SavedGamesPage> {
   final List<SavedGameEntry> _entries = <SavedGameEntry>[];
@@ -330,6 +334,33 @@ class _SavedGamesPageState extends State<SavedGamesPage> {
     }
   }
 
+  Future<void> _confirmDeleteGame(SavedGameEntry e) async {
+    final bool shouldDelete =
+        await showDialog<bool>(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text(S.of(context).confirm),
+              content: Text('${S.of(context).delete} ${e.filename}'),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(false),
+                  child: Text(S.of(context).cancel),
+                ),
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(true),
+                  child: Text(S.of(context).delete),
+                ),
+              ],
+            );
+          },
+        ) ??
+        false;
+    if (shouldDelete) {
+      await _deleteGame(e);
+    }
+  }
+
   /// Rename a saved game file
   Future<void> _renameGame(SavedGameEntry e) async {
     final TextEditingController controller = SafeTextEditingController();
@@ -585,23 +616,24 @@ class _SavedGamesPageState extends State<SavedGamesPage> {
     final ThemeData theme = Theme.of(context);
     final ColorScheme colorScheme = theme.colorScheme;
     final TextTheme textTheme = theme.textTheme;
+    final S strings = S.of(context);
 
     return Scaffold(
       key: const Key('saved_games_page_scaffold'),
       backgroundColor: colorScheme.surface,
       appBar: AppBar(
-        title: Text(S.of(context).loadGame),
+        title: Text(strings.loadGame),
         actions: <Widget>[
           // Browse button
           IconButton(
             icon: const Icon(Icons.folder_open),
-            tooltip: S.of(context).loadGame,
+            tooltip: strings.loadGame,
             onPressed: _pickAndPreview,
           ),
           // Batch import button
           IconButton(
             icon: const Icon(Icons.file_upload),
-            tooltip: S.of(context).import,
+            tooltip: strings.import,
             onPressed: _batchImportFromZip,
           ),
           // Sort order button
@@ -631,7 +663,7 @@ class _SavedGamesPageState extends State<SavedGamesPage> {
           // Share button
           IconButton(
             icon: const Icon(Icons.share),
-            tooltip: S.of(context).exportGame,
+            tooltip: strings.exportGame,
             onPressed: _shareRecords,
           ),
         ],
@@ -641,214 +673,193 @@ class _SavedGamesPageState extends State<SavedGamesPage> {
           : _entries.isEmpty
           ? Center(
               child: Text(
-                S.of(context).none,
+                strings.none,
                 style: textTheme.bodyMedium?.copyWith(
                   color: colorScheme.onSurfaceVariant,
                 ),
               ),
             )
-          : ListView.builder(
-              itemCount: _entries.length,
-              itemBuilder: (BuildContext context, int index) {
-                final SavedGameEntry e = _entries[index];
-                final Color textColor = colorScheme.onSurface;
-                final Color subtitleColor = colorScheme.onSurfaceVariant;
-                final String title = e.filename;
-                // Format date according to user's locale without milliseconds
-                final String subtitle = DateFormat.yMd().add_Hms().format(
-                  e.modified.toLocal(),
-                );
-                final double contentOpacity = e.previewTimedOut ? 0.5 : 1.0;
-                return Dismissible(
-                  key: Key(e.path),
-                  // Background for swipe right to left (delete)
-                  background: Container(
-                    alignment: Alignment.centerLeft,
-                    padding: const EdgeInsets.only(left: 20.0),
-                    color: colorScheme.primary,
-                    child: const Icon(
-                      Icons.edit,
-                      color: Colors.white,
-                      size: 30,
-                    ),
-                  ),
-                  // Secondary background for swipe left to right (edit)
-                  secondaryBackground: Container(
-                    alignment: Alignment.centerRight,
-                    padding: const EdgeInsets.only(right: 20.0),
-                    color: colorScheme.error,
-                    child: const Icon(
-                      Icons.delete,
-                      color: Colors.white,
-                      size: 30,
-                    ),
-                  ),
-                  confirmDismiss: (DismissDirection direction) async {
-                    if (direction == DismissDirection.endToStart) {
-                      // Swipe left to right shows delete - need confirmation
-                      return await showDialog<bool>(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return AlertDialog(
-                                title: Text(S.of(context).confirm),
-                                content: Text(
-                                  '${S.of(context).delete} ${e.filename}',
-                                ),
-                                actions: <Widget>[
-                                  TextButton(
-                                    onPressed: () =>
-                                        Navigator.of(context).pop(false),
-                                    child: Text(S.of(context).cancel),
-                                  ),
-                                  TextButton(
-                                    onPressed: () =>
-                                        Navigator.of(context).pop(true),
-                                    child: Text(S.of(context).delete),
-                                  ),
-                                ],
-                              );
-                            },
-                          ) ??
-                          false;
-                    } else {
-                      // Swipe right to left shows edit - no confirmation needed, just trigger rename
-                      _renameGame(e);
-                      return false; // Don't actually dismiss the item
-                    }
-                  },
-                  onDismissed: (DismissDirection direction) {
-                    if (direction == DismissDirection.endToStart) {
-                      _deleteGame(e);
-                    }
-                    // Note: edit action is handled in confirmDismiss, so no action needed here
-                  },
-                  child: InkWell(
-                    onTap: () => _openGame(e),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 8.0,
-                        vertical: 6.0,
+          : ListView(
+              key: const Key('saved_games_page_list'),
+              padding: const EdgeInsets.only(top: 16, bottom: 24),
+              children: <Widget>[
+                LichessListSection(
+                  header: Text(strings.recentGames),
+                  cardKey: const Key('saved_games_page_section'),
+                  hasLeading: false,
+                  children: <Widget>[
+                    for (final SavedGameEntry entry in _entries)
+                      _SavedGameListTile(
+                        key: Key('saved_game_${entry.path}'),
+                        entry: entry,
+                        onOpen: () => _openGame(entry),
+                        onRename: () => _renameGame(entry),
+                        onDelete: () => _confirmDeleteGame(entry),
                       ),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: colorScheme.surfaceContainerHigh,
-                          borderRadius: BorderRadius.circular(8),
-                          border: Border.all(
-                            color: colorScheme.outlineVariant.withValues(
-                              alpha: 0.36,
-                            ),
-                          ),
-                        ),
-                        child: AnimatedOpacity(
-                          duration: const Duration(milliseconds: 250),
-                          opacity: contentOpacity,
-                          child: Row(
-                            children: <Widget>[
-                              // Left: MiniBoard preview
-                              SizedBox(
-                                width: 100,
-                                height: 100,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child:
-                                      e.boardLayout != null &&
-                                          e.boardLayout!.isNotEmpty
-                                      ? MiniBoard(boardLayout: e.boardLayout!)
-                                      : Container(
-                                          alignment: Alignment.center,
-                                          decoration: BoxDecoration(
-                                            color: DB()
-                                                .colorSettings
-                                                .boardBackgroundColor,
-                                            borderRadius: BorderRadius.circular(
-                                              DB()
-                                                  .displaySettings
-                                                  .boardCornerRadius,
-                                            ),
-                                          ),
-                                          child: e.error == null
-                                              ? e.isLoading
-                                                    ? const SizedBox(
-                                                        width: 18,
-                                                        height: 18,
-                                                        child:
-                                                            CircularProgressIndicator(
-                                                              strokeWidth: 2,
-                                                            ),
-                                                      )
-                                                    : const SizedBox(
-                                                        width: 18,
-                                                        height: 18,
-                                                      )
-                                              : Icon(
-                                                  Icons.error_outline,
-                                                  color: DB()
-                                                      .colorSettings
-                                                      .pieceHighlightColor,
-                                                ),
-                                        ),
-                                ),
-                              ),
-                              // Right: file info
-                              Expanded(
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    vertical: 12.0,
-                                    horizontal: 8.0,
-                                  ),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      Text(
-                                        title,
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(
-                                          color: textColor,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                      const SizedBox(height: 6),
-                                      Text(
-                                        subtitle,
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(
-                                          color: subtitleColor,
-                                          fontSize: 12,
-                                        ),
-                                      ),
-                                      if (e.error != null) ...<Widget>[
-                                        const SizedBox(height: 8),
-                                        Text(
-                                          e.error!,
-                                          maxLines: 2,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: TextStyle(
-                                            color: colorScheme.error,
-                                            fontSize: 12,
-                                          ),
-                                        ),
-                                      ],
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              IconButton(
-                                icon: const Icon(Icons.chevron_right),
-                                color: colorScheme.onSurfaceVariant,
-                                onPressed: () => _openGame(e),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                );
-              },
+                  ],
+                ),
+              ],
             ),
+    );
+  }
+}
+
+class _SavedGameListTile extends StatelessWidget {
+  const _SavedGameListTile({
+    super.key,
+    required this.entry,
+    required this.onOpen,
+    required this.onRename,
+    required this.onDelete,
+  });
+
+  final SavedGameEntry entry;
+  final VoidCallback onOpen;
+  final VoidCallback onRename;
+  final VoidCallback onDelete;
+
+  @override
+  Widget build(BuildContext context) {
+    final S strings = S.of(context);
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+    final String modified = DateFormat.yMMMd().add_Hm().format(
+      entry.modified.toLocal(),
+    );
+    final double contentOpacity = entry.previewTimedOut ? 0.5 : 1.0;
+
+    return InkWell(
+      onTap: onOpen,
+      child: AnimatedOpacity(
+        duration: const Duration(milliseconds: 250),
+        opacity: contentOpacity,
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(12, 10, 6, 10),
+          child: Row(
+            children: <Widget>[
+              _SavedGamePreview(entry: entry),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      entry.filename,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: AppStyles.tileTitle.copyWith(
+                        color: colorScheme.onSurface,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      modified,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: AppStyles.tileSubtitle.copyWith(
+                        color: colorScheme.onSurfaceVariant.withValues(
+                          alpha: AppStyles.subtitleOpacity,
+                        ),
+                      ),
+                    ),
+                    if (entry.error != null) ...<Widget>[
+                      const SizedBox(height: 6),
+                      Text(
+                        entry.error!,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: AppStyles.tileSubtitle.copyWith(
+                          color: colorScheme.error,
+                        ),
+                      ),
+                    ],
+                  ],
+                ),
+              ),
+              PopupMenuButton<_SavedGameAction>(
+                tooltip: strings.menu,
+                icon: Icon(
+                  Icons.more_vert_rounded,
+                  color: colorScheme.onSurfaceVariant,
+                ),
+                onSelected: (_SavedGameAction action) {
+                  switch (action) {
+                    case _SavedGameAction.rename:
+                      onRename();
+                      break;
+                    case _SavedGameAction.delete:
+                      onDelete();
+                      break;
+                  }
+                },
+                itemBuilder: (BuildContext context) =>
+                    <PopupMenuEntry<_SavedGameAction>>[
+                      PopupMenuItem<_SavedGameAction>(
+                        value: _SavedGameAction.rename,
+                        child: ListTile(
+                          leading: const Icon(Icons.edit_rounded),
+                          title: Text(strings.edit),
+                        ),
+                      ),
+                      PopupMenuItem<_SavedGameAction>(
+                        value: _SavedGameAction.delete,
+                        child: ListTile(
+                          leading: Icon(
+                            Icons.delete_rounded,
+                            color: colorScheme.error,
+                          ),
+                          title: Text(
+                            strings.delete,
+                            style: TextStyle(color: colorScheme.error),
+                          ),
+                        ),
+                      ),
+                    ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _SavedGamePreview extends StatelessWidget {
+  const _SavedGamePreview({required this.entry});
+
+  final SavedGameEntry entry;
+
+  @override
+  Widget build(BuildContext context) {
+    final String? boardLayout = entry.boardLayout;
+    if (boardLayout != null && boardLayout.isNotEmpty) {
+      return SizedBox.square(
+        dimension: 72,
+        child: MiniBoard(boardLayout: boardLayout),
+      );
+    }
+
+    final Color boardBackgroundColor = DB().colorSettings.boardBackgroundColor;
+    final Color pieceHighlightColor = DB().colorSettings.pieceHighlightColor;
+    return Container(
+      width: 72,
+      height: 72,
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        color: boardBackgroundColor,
+        borderRadius: BorderRadius.circular(
+          DB().displaySettings.boardCornerRadius,
+        ),
+      ),
+      child: entry.error == null
+          ? entry.isLoading
+                ? const SizedBox(
+                    width: 18,
+                    height: 18,
+                    child: CircularProgressIndicator(strokeWidth: 2),
+                  )
+                : const SizedBox(width: 18, height: 18)
+          : Icon(Icons.error_outline, color: pieceHighlightColor),
     );
   }
 }
