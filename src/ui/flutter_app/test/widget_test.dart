@@ -454,6 +454,7 @@ void main() {
 
       expect(shellState.debugCurrentTab, SanmillShellTab.watch);
       expect(find.byKey(const Key('sanmill_watch_list')), findsOneWidget);
+      expect(find.byKey(const Key('sanmill_watch_load_game')), findsOneWidget);
       expect(find.byKey(const Key('drawer_item_statistics')), findsOneWidget);
 
       await tester.tap(find.byKey(const Key('drawer_item_statistics')));

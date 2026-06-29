@@ -405,6 +405,14 @@ class SanmillAppShellState extends State<SanmillAppShell> {
     await _selectPlayRoute(_playRouteId);
   }
 
+  Future<void> _openSavedGamesFromWatch() async {
+    await _navigatorKeys[SanmillShellTab.watch]?.currentState?.push(
+      MaterialPageRoute<void>(
+        builder: (_) => SavedGamesPage(onGameLoaded: _continueCurrentGame),
+      ),
+    );
+  }
+
   Future<void> _pushAppRoute(String routeId) async {
     final Widget? screen =
         buildModuleScreenForGame(
@@ -543,6 +551,7 @@ class SanmillAppShellState extends State<SanmillAppShell> {
         return _WatchTabRoot(
           scrollController: _scrollControllers[SanmillShellTab.watch]!,
           statisticsContribution: _statisticsContribution(context),
+          onLoadGame: _openSavedGamesFromWatch,
           onWatchRouteSelected: _pushWatchRoute,
         );
       case SanmillShellTab.more:
@@ -1441,11 +1450,13 @@ class _WatchTabRoot extends StatelessWidget {
   const _WatchTabRoot({
     required this.scrollController,
     required this.statisticsContribution,
+    required this.onLoadGame,
     required this.onWatchRouteSelected,
   });
 
   final ScrollController scrollController;
   final GameMenuContribution? statisticsContribution;
+  final VoidCallback onLoadGame;
   final ValueChanged<String> onWatchRouteSelected;
 
   @override
@@ -1462,29 +1473,24 @@ class _WatchTabRoot extends StatelessWidget {
           controller: scrollController,
           padding: const EdgeInsets.fromLTRB(12, 8, 12, 24),
           children: <Widget>[
-            if (contribution != null)
-              _MoreSection(
-                title: strings.watch,
-                children: <Widget>[
+            _MoreSection(
+              title: strings.watch,
+              children: <Widget>[
+                _MoreTile(
+                  key: const Key('sanmill_watch_load_game'),
+                  icon: Icons.folder_open_rounded,
+                  title: strings.loadGame,
+                  onTap: onLoadGame,
+                ),
+                if (contribution != null)
                   _MoreTile(
                     key: const Key('drawer_item_statistics'),
                     icon: contribution.icon ?? Icons.bar_chart_rounded,
                     title: contribution.label,
                     onTap: () => onWatchRouteSelected(contribution.id.value),
                   ),
-                ],
-              )
-            else
-              SizedBox(
-                height: MediaQuery.sizeOf(context).height * 0.5,
-                child: Center(
-                  child: Icon(
-                    Icons.visibility_off_rounded,
-                    size: 48,
-                    color: Theme.of(context).colorScheme.onSurfaceVariant,
-                  ),
-                ),
-              ),
+              ],
+            ),
           ],
         ),
       ),
