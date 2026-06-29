@@ -1464,7 +1464,8 @@ class _WatchTabRoot extends StatelessWidget {
           padding: const EdgeInsets.fromLTRB(12, 8, 12, 24),
           children: <Widget>[
             _MoreSection(
-              title: strings.watch,
+              title: strings.replay,
+              headerKey: const Key('sanmill_watch_replay_group'),
               children: <Widget>[
                 _MoreTile(
                   key: const Key('sanmill_watch_load_game'),
@@ -1472,15 +1473,21 @@ class _WatchTabRoot extends StatelessWidget {
                   title: strings.loadGame,
                   onTap: onLoadGame,
                 ),
-                if (contribution != null)
+              ],
+            ),
+            if (contribution != null)
+              _MoreSection(
+                title: strings.statistics,
+                headerKey: const Key('sanmill_watch_statistics_group'),
+                children: <Widget>[
                   _MoreTile(
                     key: const Key('drawer_item_statistics'),
                     icon: contribution.icon ?? Icons.bar_chart_rounded,
                     title: contribution.label,
                     onTap: () => onWatchRouteSelected(contribution.id.value),
                   ),
-              ],
-            ),
+                ],
+              ),
           ],
         ),
       ),
