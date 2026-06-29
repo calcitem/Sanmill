@@ -292,18 +292,41 @@ class PlayAreaState extends State<PlayArea> {
 
   int get _humanAiTakeBackStepCount {
     assert(_usesLichessHumanAiToolbar);
-    final int moveCount = GameController().gameRecorder.currentPath.length;
-    assert(moveCount > 0, 'Cannot take back without a move history.');
-    if (moveCount == 1) {
-      return 1;
+    return _takeBackStepCountForRequester(_humanAiTakeBackRequesterSide);
+  }
+
+  PieceColor get _humanAiTakeBackRequesterSide {
+    assert(_usesLichessHumanAiToolbar);
+    final List<Player> humanPlayers = GameController().gameInstance.players
+        .where((Player player) => !player.isAi)
+        .toList(growable: false);
+    assert(
+      humanPlayers.length == 1,
+      'Human vs AI takeback requires exactly one human requester.',
+    );
+    return humanPlayers.single.color;
+  }
+
+  int _takeBackStepCountForRequester(PieceColor requesterSide) {
+    assert(
+      requesterSide == PieceColor.white || requesterSide == PieceColor.black,
+    );
+    final List<ExtMove> path = GameController().gameRecorder.currentPath;
+    assert(path.isNotEmpty, 'Cannot take back without a move history.');
+
+    for (int steps = 1; steps <= path.length; steps++) {
+      final PieceColor sideAfterUndo = path[path.length - steps].side;
+      assert(
+        sideAfterUndo == PieceColor.white || sideAfterUndo == PieceColor.black,
+        'Human vs AI takeback requires playable sides in move history.',
+      );
+
+      if (sideAfterUndo == requesterSide) {
+        return steps;
+      }
     }
 
-    final PieceColor sideToMove = GameController().activeBoardView.sideToMove;
-    assert(
-      sideToMove == PieceColor.white || sideToMove == PieceColor.black,
-      'Human vs AI takeback requires a playable side to move.',
-    );
-    return GameController().gameInstance.isHumanToMove ? 2 : 1;
+    return path.length;
   }
 
   bool get _canShowHintFromBottomBar {

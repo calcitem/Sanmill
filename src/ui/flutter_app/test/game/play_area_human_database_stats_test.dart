@@ -663,37 +663,12 @@ void main() {
     await tester.binding.setSurfaceSize(const Size(390, 844));
     addTearDown(() => tester.binding.setSurfaceSize(null));
 
-    await tester.pumpWidget(
-      _localizedApp(
-        GameSessionScope(
-          session: session,
-          child: Navigator(
-            onGenerateRoute: (RouteSettings settings) {
-              if (settings.name == '/game') {
-                return MaterialPageRoute<void>(
-                  builder: (_) => const GamePage(GameMode.humanVsAi),
-                );
-              }
-              return MaterialPageRoute<void>(
-                builder: (BuildContext context) {
-                  return Scaffold(
-                    body: Center(
-                      child: TextButton(
-                        key: const Key('open_human_ai_game_page'),
-                        onPressed: () =>
-                            Navigator.of(context).pushNamed('/game'),
-                        child: const Text('Open game'),
-                      ),
-                    ),
-                  );
-                },
-              );
-            },
-          ),
-        ),
-      ),
+    await _pumpGamePageRoute(
+      tester,
+      session: session,
+      gameMode: GameMode.humanVsAi,
+      openButtonKey: const Key('open_human_ai_game_page'),
     );
-    await tester.pump();
 
     await tester.tap(find.byKey(const Key('open_human_ai_game_page')));
     await tester.pump();
@@ -748,6 +723,60 @@ void main() {
 
     expect(find.byKey(const Key('open_human_ai_game_page')), findsOneWidget);
     expect(find.byKey(const Key('game_page_scaffold')), findsNothing);
+  });
+
+  testWidgets('human vs human route asks before leaving an active game', (
+    WidgetTester tester,
+  ) async {
+    db = _GamePageDb(
+      generalSettings: const GeneralSettings(),
+      displaySettings: const DisplaySettings(
+        isUnplacedAndRemovedPiecesShown: false,
+        isHistoryNavigationToolbarShown: false,
+      ),
+    );
+    DB.instance = db;
+
+    final NativeMillGameSession session = await _bindNativeHumanAiGame();
+    final MillSessionRecorderBridge recorderBridge =
+        MillSessionRecorderBridge.forGameController(session: session);
+    addTearDown(recorderBridge.dispose);
+
+    await tester.binding.setSurfaceSize(const Size(390, 844));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+
+    await _pumpGamePageRoute(
+      tester,
+      session: session,
+      gameMode: GameMode.humanVsHuman,
+      openButtonKey: const Key('open_human_game_page'),
+    );
+
+    await tester.tap(find.byKey(const Key('open_human_game_page')));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 300));
+
+    expect(find.byKey(const Key('game_page_scaffold')), findsOneWidget);
+    expect(find.byKey(const Key('game_page_back_button')), findsOneWidget);
+    expect(find.byKey(const Key('human_ai_new_game_sheet')), findsNothing);
+
+    expect(
+      await session.replayMainline(<ExtMove>[
+        ExtMove('d6', side: PieceColor.white),
+        ExtMove('f4', side: PieceColor.black),
+      ]),
+      isTrue,
+    );
+    await tester.pump();
+    expect(_currentPathMoves(), <String>['d6', 'f4']);
+
+    await tester.tap(find.byKey(const Key('game_page_back_button')));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 300));
+
+    expect(find.byKey(const Key('game_page_leave_dialog')), findsOneWidget);
+    expect(find.text('Leave current game?'), findsOneWidget);
+    expect(find.text('No worries, your game will be kept.'), findsOneWidget);
   });
 
   testWidgets('human vs ai hint is disabled while AI is to move', (
@@ -890,6 +919,46 @@ void main() {
     expect(session.undoDepth, 0);
   });
 
+  testWidgets('human vs ai takeback returns to a pending requester capture', (
+    WidgetTester tester,
+  ) async {
+    final NativeMillGameSession session = await _bindNativeHumanAiGame();
+    final MillSessionRecorderBridge recorderBridge =
+        MillSessionRecorderBridge.forGameController(session: session);
+    addTearDown(recorderBridge.dispose);
+
+    expect(
+      await session.replayMainline(<ExtMove>[
+        ExtMove('a1', side: PieceColor.white),
+        ExtMove('d1', side: PieceColor.black),
+        ExtMove('a4', side: PieceColor.white),
+        ExtMove('d2', side: PieceColor.black),
+        ExtMove('a7', side: PieceColor.white),
+        ExtMove('xd1', side: PieceColor.white),
+        ExtMove('g7', side: PieceColor.black),
+      ]),
+      isTrue,
+    );
+    await tester.pump();
+    expect(_currentPathMoves(), <String>[
+      'a1',
+      'd1',
+      'a4',
+      'd2',
+      'a7',
+      'xd1',
+      'g7',
+    ]);
+    expect(GameController().gameInstance.isHumanToMove, isTrue);
+
+    await _pumpSessionPlayArea(tester, session);
+    await tester.tap(find.byKey(const Key('play_area_bottom_bar_take_back')));
+    await tester.pumpAndSettle();
+
+    expect(_currentPathMoves(), <String>['a1', 'd1', 'a4', 'd2', 'a7']);
+    expect(GameController().gameInstance.isHumanToMove, isTrue);
+  });
+
   testWidgets('human vs ai takeback removes one move during AI turn', (
     WidgetTester tester,
   ) async {
@@ -924,6 +993,44 @@ Widget _localizedApp(Widget child) => MaterialApp(
   locale: const Locale('en'),
   home: child,
 );
+
+Future<void> _pumpGamePageRoute(
+  WidgetTester tester, {
+  required NativeMillGameSession session,
+  required GameMode gameMode,
+  required Key openButtonKey,
+}) async {
+  await tester.pumpWidget(
+    _localizedApp(
+      GameSessionScope(
+        session: session,
+        child: Navigator(
+          onGenerateRoute: (RouteSettings settings) {
+            if (settings.name == '/game') {
+              return MaterialPageRoute<void>(
+                builder: (_) => GamePage(gameMode),
+              );
+            }
+            return MaterialPageRoute<void>(
+              builder: (BuildContext context) {
+                return Scaffold(
+                  body: Center(
+                    child: TextButton(
+                      key: openButtonKey,
+                      onPressed: () => Navigator.of(context).pushNamed('/game'),
+                      child: const Text('Open game'),
+                    ),
+                  ),
+                );
+              },
+            );
+          },
+        ),
+      ),
+    ),
+  );
+  await tester.pump();
+}
 
 double _bottomBarButtonOpacity(WidgetTester tester, Key key) {
   final Opacity opacity = tester.widget<Opacity>(

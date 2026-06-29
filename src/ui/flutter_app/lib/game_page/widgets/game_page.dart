@@ -323,7 +323,7 @@ class _GamePageInnerState extends State<_GamePageInner> {
     );
 
     return PopScope<Object?>(
-      canPop: _allowNextPop || !_isHumanAiGame,
+      canPop: _allowNextPop || !_isPlayGameRoute,
       onPopInvokedWithResult: _handleRoutePop,
       child: content,
     );
@@ -331,6 +331,18 @@ class _GamePageInnerState extends State<_GamePageInner> {
 
   bool get _isHumanAiGame =>
       widget.controller.gameInstance.gameMode == GameMode.humanVsAi;
+
+  bool get _isPlayGameRoute {
+    return switch (widget.controller.gameInstance.gameMode) {
+      GameMode.humanVsAi ||
+      GameMode.humanVsHuman ||
+      GameMode.aiVsAi ||
+      GameMode.humanVsCloud ||
+      GameMode.humanVsLAN ||
+      GameMode.testViaLAN => true,
+      GameMode.setupPosition || GameMode.puzzle => false,
+    };
+  }
 
   Future<void> _showInitialHumanAiNewGameSheet() async {
     if (!mounted || _didShowInitialHumanAiNewGameSheet || !_isHumanAiGame) {
@@ -355,7 +367,7 @@ class _GamePageInnerState extends State<_GamePageInner> {
       return;
     }
 
-    if (!_isHumanAiGame || !Navigator.canPop(context)) {
+    if (!_isPlayGameRoute || !Navigator.canPop(context)) {
       return;
     }
 
