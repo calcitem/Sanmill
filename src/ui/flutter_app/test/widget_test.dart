@@ -190,6 +190,7 @@ void main() {
         find.byKey(const Key('sanmill_home_appbar_title')),
       );
       expect(homeAppBarTitle.data, 'Mill');
+      expect(find.byKey(const Key('sanmill_home_play_fab')), findsOneWidget);
       expect(find.byKey(const Key('drawer_item_human_vs_ai')), findsOneWidget);
       expect(find.byKey(const Key('drawer_item_setup_position')), findsNothing);
       expect(
@@ -197,7 +198,18 @@ void main() {
         findsNothing,
       );
 
-      await tester.tap(find.byKey(const Key('drawer_item_human_vs_ai')));
+      await tester.tap(find.byKey(const Key('sanmill_home_play_fab')));
+      await tester.pumpAndSettle();
+
+      expect(find.byKey(const Key('sanmill_home_play_sheet')), findsOneWidget);
+      expect(
+        find.byKey(const Key('sanmill_home_play_sheet_mill.play.humanVsAi')),
+        findsOneWidget,
+      );
+
+      await tester.tap(
+        find.byKey(const Key('sanmill_home_play_sheet_mill.play.humanVsAi')),
+      );
       await tester.pumpAndSettle();
 
       expect(shellState.debugCurrentTab, SanmillShellTab.home);

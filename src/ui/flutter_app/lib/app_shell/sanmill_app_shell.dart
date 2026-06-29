@@ -860,6 +860,89 @@ class _HomeTabRoot extends StatelessWidget {
           ],
         ),
       ),
+      floatingActionButton: playModes.isEmpty
+          ? null
+          : _FloatingPlayButton(
+              onPressed: () => _showPlayBottomSheet(context, playModes),
+            ),
+    );
+  }
+
+  void _showPlayBottomSheet(
+    BuildContext context,
+    List<GameModeEntry> playModes,
+  ) {
+    assert(playModes.isNotEmpty, 'Play bottom sheet requires play modes.');
+    showModalBottomSheet<void>(
+      context: context,
+      useRootNavigator: true,
+      useSafeArea: true,
+      isScrollControlled: true,
+      showDragHandle: true,
+      builder: (BuildContext sheetContext) {
+        return _PlayBottomSheet(
+          playModes: playModes,
+          onPlayRouteSelected: onPlayRouteSelected,
+        );
+      },
+    );
+  }
+}
+
+class _FloatingPlayButton extends StatelessWidget {
+  const _FloatingPlayButton({required this.onPressed});
+
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return FloatingActionButton.extended(
+      key: const Key('sanmill_home_play_fab'),
+      onPressed: onPressed,
+      tooltip: S.of(context).newGame,
+      icon: const Icon(Icons.sports_esports_rounded),
+      label: Text(S.of(context).newGame),
+    );
+  }
+}
+
+class _PlayBottomSheet extends StatelessWidget {
+  const _PlayBottomSheet({
+    required this.playModes,
+    required this.onPlayRouteSelected,
+  });
+
+  final List<GameModeEntry> playModes;
+  final ValueChanged<String> onPlayRouteSelected;
+
+  @override
+  Widget build(BuildContext context) {
+    assert(playModes.isNotEmpty, 'Play bottom sheet requires play modes.');
+    final S strings = S.of(context);
+    return SingleChildScrollView(
+      key: const Key('sanmill_home_play_sheet'),
+      padding: EdgeInsets.fromLTRB(
+        0,
+        8,
+        0,
+        MediaQuery.viewInsetsOf(context).bottom + 16,
+      ),
+      child: LichessListSection(
+        header: Text(strings.game),
+        cardKey: const Key('sanmill_home_play_sheet_card'),
+        children: <Widget>[
+          for (final GameModeEntry mode in playModes)
+            _MoreTile(
+              key: Key('sanmill_home_play_sheet_${mode.id.value}'),
+              icon: mode.icon ?? Icons.sports_esports_rounded,
+              title: mode.label,
+              onTap: () {
+                Navigator.of(context).pop();
+                onPlayRouteSelected(mode.id.value);
+              },
+            ),
+        ],
+      ),
     );
   }
 }
