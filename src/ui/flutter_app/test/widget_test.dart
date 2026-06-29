@@ -273,6 +273,33 @@ void main() {
       await tester.binding.handlePopRoute();
       await tester.pumpAndSettle();
 
+      await tester.ensureVisible(find.byKey(const Key('puzzles_home_all')));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const Key('puzzles_home_all')));
+      await tester.pumpAndSettle();
+
+      final BuildContext puzzleListContext = tester.element(
+        find.byKey(const Key('puzzle_list_page_scaffold')),
+      );
+      final Scaffold puzzleListScaffold = tester.widget<Scaffold>(
+        find.byKey(const Key('puzzle_list_page_scaffold')),
+      );
+      expect(
+        puzzleListScaffold.backgroundColor,
+        Theme.of(puzzleListContext).colorScheme.surface,
+      );
+      expect(
+        find.byKey(const Key('puzzle_list_page_list')).evaluate().isNotEmpty ||
+            find
+                .byKey(const Key('puzzle_list_empty_state'))
+                .evaluate()
+                .isNotEmpty,
+        isTrue,
+      );
+
+      await tester.binding.handlePopRoute();
+      await tester.pumpAndSettle();
+
       await tester.ensureVisible(find.byKey(const Key('puzzles_home_history')));
       await tester.pumpAndSettle();
       await tester.tap(find.byKey(const Key('puzzles_home_history')));
