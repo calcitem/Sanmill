@@ -975,6 +975,47 @@ void main() {
     expect(GameController().gameInstance.isHumanToMove, isTrue);
   });
 
+  testWidgets('human vs ai black takeback removes only black reply', (
+    WidgetTester tester,
+  ) async {
+    db.generalSettings = const GeneralSettings(aiMovesFirst: true);
+    final NativeMillGameSession session = await _bindNativeHumanAiGame();
+    final MillSessionRecorderBridge recorderBridge =
+        MillSessionRecorderBridge.forGameController(session: session);
+    addTearDown(recorderBridge.dispose);
+
+    expect(
+      await session.replayMainline(<ExtMove>[
+        ExtMove('a1', side: PieceColor.white),
+        ExtMove('d1', side: PieceColor.black),
+        ExtMove('a4', side: PieceColor.white),
+        ExtMove('d2', side: PieceColor.black),
+        ExtMove('a7', side: PieceColor.white),
+        ExtMove('xd1', side: PieceColor.white),
+        ExtMove('g7', side: PieceColor.black),
+      ]),
+      isTrue,
+    );
+    await tester.pump();
+    expect(_currentPathMoves(), <String>[
+      'a1',
+      'd1',
+      'a4',
+      'd2',
+      'a7',
+      'xd1',
+      'g7',
+    ]);
+    expect(GameController().gameInstance.isHumanToMove, isFalse);
+
+    await _pumpSessionPlayArea(tester, session);
+    await tester.tap(find.byKey(const Key('play_area_bottom_bar_take_back')));
+    await tester.pumpAndSettle();
+
+    expect(_currentPathMoves(), <String>['a1', 'd1', 'a4', 'd2', 'a7', 'xd1']);
+    expect(GameController().gameInstance.isHumanToMove, isTrue);
+  });
+
   testWidgets('human vs ai takeback removes one move during AI turn', (
     WidgetTester tester,
   ) async {
