@@ -49,7 +49,9 @@ class SavedGameEntry {
 
 /// A page that lists saved PGN files with a MiniBoard preview.
 class SavedGamesPage extends StatefulWidget {
-  const SavedGamesPage({super.key});
+  const SavedGamesPage({super.key, this.onGameLoaded});
+
+  final VoidCallback? onGameLoaded;
 
   @override
   State<SavedGamesPage> createState() => _SavedGamesPageState();
@@ -604,9 +606,13 @@ class _SavedGamesPageState extends State<SavedGamesPage> {
 
   Future<void> _openGame(SavedGameEntry e) async {
     await LoadService.loadGame(context, e.path, isRunning: true);
-    // Close the SavedGamesPage after loading the game
+    final VoidCallback? onGameLoaded = widget.onGameLoaded;
+    // Close the SavedGamesPage after loading the game.
     if (mounted) {
       Navigator.of(context).pop();
+    }
+    if (onGameLoaded != null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) => onGameLoaded());
     }
   }
 

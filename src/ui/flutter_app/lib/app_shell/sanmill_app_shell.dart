@@ -17,6 +17,7 @@ import '../experience_recording/models/recording_models.dart';
 import '../experience_recording/services/recording_service.dart';
 import '../game_page/services/mill.dart' show GameController, LoadService;
 import '../game_page/services/save_load/saved_game_catalog.dart';
+import '../game_page/widgets/saved_games_page.dart';
 import '../game_platform/game_id.dart';
 import '../game_platform/game_menu.dart';
 import '../game_platform/game_module.dart';
@@ -518,6 +519,7 @@ class SanmillAppShellState extends State<SanmillAppShell> {
       case SanmillShellTab.home:
         return _HomeTabRoot(
           scrollController: _scrollControllers[SanmillShellTab.home]!,
+          isActive: _currentTab == SanmillShellTab.home,
           currentPlayRouteId: _playRouteId,
           onContinueGame: _continueCurrentGame,
           onPlayRouteSelected: _selectPlayRoute,
@@ -940,6 +942,7 @@ class _TabVisibility extends StatelessWidget {
 class _HomeTabRoot extends StatefulWidget {
   const _HomeTabRoot({
     required this.scrollController,
+    required this.isActive,
     required this.currentPlayRouteId,
     required this.onContinueGame,
     required this.onPlayRouteSelected,
@@ -947,6 +950,7 @@ class _HomeTabRoot extends StatefulWidget {
   });
 
   final ScrollController scrollController;
+  final bool isActive;
   final String currentPlayRouteId;
   final VoidCallback onContinueGame;
   final ValueChanged<String> onPlayRouteSelected;
@@ -957,18 +961,45 @@ class _HomeTabRoot extends StatefulWidget {
 }
 
 class _HomeTabRootState extends State<_HomeTabRoot> {
+  static const int _recentGamesLimit = 5;
+
   late Future<List<SavedGameSummary>> _recentGamesFuture;
 
   @override
   void initState() {
     super.initState();
-    _recentGamesFuture = savedGameCatalog.listRecent(limit: 5);
+    _recentGamesFuture = _loadRecentGames();
   }
 
-  void _refreshRecentGames() {
+  @override
+  void didUpdateWidget(covariant _HomeTabRoot oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (!oldWidget.isActive && widget.isActive) {
+      unawaited(_refreshRecentGames());
+    }
+  }
+
+  Future<List<SavedGameSummary>> _loadRecentGames() {
+    return savedGameCatalog.listRecent(limit: _recentGamesLimit + 1);
+  }
+
+  Future<void> _refreshRecentGames() async {
+    final Future<List<SavedGameSummary>> nextRecentGames = _loadRecentGames();
     setState(() {
-      _recentGamesFuture = savedGameCatalog.listRecent(limit: 5);
+      _recentGamesFuture = nextRecentGames;
     });
+    await nextRecentGames;
+  }
+
+  Future<void> _openSavedGamesPage() async {
+    await Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        builder: (_) => SavedGamesPage(onGameLoaded: widget.onContinueGame),
+      ),
+    );
+    if (mounted) {
+      await _refreshRecentGames();
+    }
   }
 
   @override
@@ -990,61 +1021,68 @@ class _HomeTabRootState extends State<_HomeTabRoot> {
           key: const Key('sanmill_home_appbar_title'),
         ),
       ),
-      body: ListTileTheme.merge(
-        iconColor: Theme.of(context).colorScheme.primary,
-        child: ListView(
-          key: const Key('sanmill_home_list'),
-          controller: widget.scrollController,
-          padding: const EdgeInsets.only(top: 16, bottom: 24),
-          children: <Widget>[
-            ValueListenableBuilder<int>(
-              valueListenable: GameController().gameRecorder.moveCountNotifier,
-              builder: (BuildContext context, int moveCount, _) {
-                final bool isTerminal =
-                    GameController()
-                        .activeSessionSnapshot
-                        ?.outcome
-                        .isTerminal ??
-                    false;
-                return _MoreSection(
-                  title: strings.game,
-                  headerKey: const Key('sanmill_home_play_modes_group'),
-                  children: <Widget>[
-                    if (moveCount > 0 && !isTerminal)
-                      _OngoingGameTile(
-                        currentPlayRouteId: widget.currentPlayRouteId,
-                        moveCount: moveCount,
-                        playModes: playModes,
-                        onTap: widget.onContinueGame,
-                      ),
-                    for (final GameModeEntry mode in playModes)
-                      _MoreTile(
-                        key: mode.drawerKey ?? Key('home_${mode.id.value}'),
-                        icon: mode.icon ?? Icons.sports_esports_rounded,
-                        title: mode.label,
-                        onTap: () => widget.onPlayRouteSelected(mode.id.value),
-                      ),
-                  ],
-                );
-              },
-            ),
-            FutureBuilder<List<SavedGameSummary>>(
-              future: _recentGamesFuture,
-              builder:
-                  (
-                    BuildContext context,
-                    AsyncSnapshot<List<SavedGameSummary>> snapshot,
-                  ) {
-                    final List<SavedGameSummary> recentGames =
-                        snapshot.data ?? const <SavedGameSummary>[];
-                    return _RecentGamesSection(
-                      games: recentGames,
-                      onRefresh: _refreshRecentGames,
-                      onSavedGameSelected: widget.onSavedGameSelected,
-                    );
-                  },
-            ),
-          ],
+      body: RefreshIndicator.adaptive(
+        onRefresh: _refreshRecentGames,
+        child: ListTileTheme.merge(
+          iconColor: Theme.of(context).colorScheme.primary,
+          child: ListView(
+            key: const Key('sanmill_home_list'),
+            controller: widget.scrollController,
+            physics: const AlwaysScrollableScrollPhysics(),
+            padding: const EdgeInsets.only(top: 16, bottom: 24),
+            children: <Widget>[
+              ValueListenableBuilder<int>(
+                valueListenable:
+                    GameController().gameRecorder.moveCountNotifier,
+                builder: (BuildContext context, int moveCount, _) {
+                  final bool isTerminal =
+                      GameController()
+                          .activeSessionSnapshot
+                          ?.outcome
+                          .isTerminal ??
+                      false;
+                  return _MoreSection(
+                    title: strings.game,
+                    headerKey: const Key('sanmill_home_play_modes_group'),
+                    children: <Widget>[
+                      if (moveCount > 0 && !isTerminal)
+                        _OngoingGameTile(
+                          currentPlayRouteId: widget.currentPlayRouteId,
+                          moveCount: moveCount,
+                          playModes: playModes,
+                          onTap: widget.onContinueGame,
+                        ),
+                      for (final GameModeEntry mode in playModes)
+                        _MoreTile(
+                          key: mode.drawerKey ?? Key('home_${mode.id.value}'),
+                          icon: mode.icon ?? Icons.sports_esports_rounded,
+                          title: mode.label,
+                          onTap: () =>
+                              widget.onPlayRouteSelected(mode.id.value),
+                        ),
+                    ],
+                  );
+                },
+              ),
+              FutureBuilder<List<SavedGameSummary>>(
+                future: _recentGamesFuture,
+                builder:
+                    (
+                      BuildContext context,
+                      AsyncSnapshot<List<SavedGameSummary>> snapshot,
+                    ) {
+                      final List<SavedGameSummary> recentGames =
+                          snapshot.data ?? const <SavedGameSummary>[];
+                      return _RecentGamesSection(
+                        games: recentGames,
+                        limit: _recentGamesLimit,
+                        onShowAll: _openSavedGamesPage,
+                        onSavedGameSelected: widget.onSavedGameSelected,
+                      );
+                    },
+              ),
+            ],
+          ),
         ),
       ),
       floatingActionButton: playModes.isEmpty
@@ -1112,12 +1150,14 @@ class _OngoingGameTile extends StatelessWidget {
 class _RecentGamesSection extends StatelessWidget {
   const _RecentGamesSection({
     required this.games,
-    required this.onRefresh,
+    required this.limit,
+    required this.onShowAll,
     required this.onSavedGameSelected,
-  });
+  }) : assert(limit > 0, 'Recent games section limit must be positive.');
 
   final List<SavedGameSummary> games;
-  final VoidCallback onRefresh;
+  final int limit;
+  final VoidCallback onShowAll;
   final ValueChanged<String> onSavedGameSelected;
 
   @override
@@ -1129,11 +1169,16 @@ class _RecentGamesSection extends StatelessWidget {
       context,
     );
     final S strings = S.of(context);
+    final bool hasMore = games.length > limit;
+    final Iterable<(int, SavedGameSummary)> visibleGames = games
+        .take(limit)
+        .indexed;
     return _MoreSection(
       title: strings.recentGames,
       headerKey: const Key('sanmill_home_recent_games_group'),
+      onHeaderTap: hasMore ? onShowAll : null,
       children: <Widget>[
-        for (final (int index, SavedGameSummary game) in games.indexed)
+        for (final (int index, SavedGameSummary game) in visibleGames)
           _MoreTile(
             key: Key('sanmill_home_recent_game_$index'),
             icon: Icons.history_rounded,
@@ -1143,12 +1188,6 @@ class _RecentGamesSection extends StatelessWidget {
                 '${localizations.formatTimeOfDay(TimeOfDay.fromDateTime(game.modified.toLocal()))}',
             onTap: () => onSavedGameSelected(game.path),
           ),
-        _MoreTile(
-          key: const Key('sanmill_home_recent_games_refresh'),
-          icon: Icons.refresh_rounded,
-          title: strings.refresh,
-          onTap: onRefresh,
-        ),
       ],
     );
   }
@@ -1440,11 +1479,13 @@ class _MoreSection extends StatelessWidget {
     required this.title,
     required this.children,
     this.headerKey,
+    this.onHeaderTap,
   });
 
   final String title;
   final List<Widget> children;
   final Key? headerKey;
+  final VoidCallback? onHeaderTap;
 
   @override
   Widget build(BuildContext context) {
@@ -1453,8 +1494,37 @@ class _MoreSection extends StatelessWidget {
     }
     return LichessListSection(
       headerKey: headerKey,
-      header: Text(title),
+      header: onHeaderTap == null
+          ? Text(title)
+          : _MoreSectionHeaderLink(title: title, onTap: onHeaderTap!),
       children: children,
+    );
+  }
+}
+
+class _MoreSectionHeaderLink extends StatelessWidget {
+  const _MoreSectionHeaderLink({required this.title, required this.onTap});
+
+  final String title;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final Color color = Theme.of(context).colorScheme.onSurfaceVariant;
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(8),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 4),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Text(title),
+            const SizedBox(width: 4),
+            Icon(Icons.chevron_right_rounded, size: 18, color: color),
+          ],
+        ),
+      ),
     );
   }
 }
