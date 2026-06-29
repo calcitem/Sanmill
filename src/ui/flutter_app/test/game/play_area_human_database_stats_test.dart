@@ -168,8 +168,13 @@ void main() {
           find.byKey(const Key('play_area_inline_move_list_scroll_view')),
         );
     expect(moveListScrollView.scrollDirection, Axis.horizontal);
+    expect(find.byKey(const Key('play_area_regular_round_1')), findsOneWidget);
     expect(find.byKey(const Key('play_area_regular_move_1')), findsOneWidget);
     expect(find.byKey(const Key('play_area_regular_move_2')), findsOneWidget);
+    expect(find.text('1.'), findsOneWidget);
+    expect(find.text('d6'), findsOneWidget);
+    expect(find.text('f4'), findsOneWidget);
+    expect(find.text('2. f4'), findsNothing);
     expect(
       find.descendant(
         of: find.byKey(const Key('play_area_regular_move_2')),

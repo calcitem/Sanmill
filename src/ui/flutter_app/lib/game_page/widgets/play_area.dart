@@ -1132,6 +1132,7 @@ class PlayAreaState extends State<PlayArea> {
               const _InlineMoveList(
                 key: Key('play_area_human_ai_move_list'),
                 wrapKey: Key('play_area_human_ai_move_list_wrap'),
+                roundKeyPrefix: 'play_area_human_ai_round_',
                 moveKeyPrefix: 'play_area_human_ai_move_',
                 layout: _InlineMoveListLayout.horizontal,
                 groupByRound: true,
@@ -1225,6 +1226,7 @@ class PlayAreaState extends State<PlayArea> {
                             wrapKey: const Key(
                               'play_area_regular_move_list_wrap',
                             ),
+                            roundKeyPrefix: 'play_area_regular_round_',
                             moveKeyPrefix: 'play_area_regular_move_',
                             onMoveTap:
                                 (BuildContext context, PgnNode<ExtMove> node) {
@@ -1236,6 +1238,7 @@ class PlayAreaState extends State<PlayArea> {
                                 },
                             showMovePreview: true,
                             layout: _InlineMoveListLayout.horizontal,
+                            groupByRound: true,
                           ),
 
                         // The top game header with hints, icons, etc.
@@ -1385,14 +1388,19 @@ class _InlineMoveList extends StatefulWidget {
     super.key,
     required this.wrapKey,
     required this.moveKeyPrefix,
+    this.roundKeyPrefix,
     this.onMoveTap,
     this.showMovePreview = false,
     this.layout = _InlineMoveListLayout.wrap,
     this.groupByRound = false,
-  });
+  }) : assert(
+         !groupByRound || roundKeyPrefix != null,
+         'Grouped inline move lists require a round key prefix.',
+       );
 
   final Key wrapKey;
   final String moveKeyPrefix;
+  final String? roundKeyPrefix;
   final Future<void> Function(BuildContext context, PgnNode<ExtMove> node)?
   onMoveTap;
   final bool showMovePreview;
@@ -1562,8 +1570,9 @@ class _InlineMoveListState extends State<_InlineMoveList> {
   }
 
   Widget _buildMoveRound(BuildContext context, _InlineMoveRound round) {
+    final String roundKeyPrefix = widget.roundKeyPrefix!;
     return Row(
-      key: Key('play_area_human_ai_round_${round.number}'),
+      key: Key('$roundKeyPrefix${round.number}'),
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         _InlineMoveCount(count: round.number),
@@ -1585,6 +1594,7 @@ class _InlineMoveListState extends State<_InlineMoveList> {
     final String label = segment.nodes
         .map((_IndexedMoveNode indexed) => indexed.node.data!.notation)
         .join(' ');
+    final PgnNode<ExtMove> targetNode = lastNode.node;
     final Widget chip = _GameMoveChip(
       key: Key('${widget.moveKeyPrefix}${lastNode.index + 1}'),
       label: label,
@@ -1593,6 +1603,12 @@ class _InlineMoveListState extends State<_InlineMoveList> {
       selectedTextColor: colorScheme.onPrimaryContainer,
       textStyle: theme.textTheme.bodySmall,
       style: _GameMoveChipStyle.inlineText,
+      onTap: widget.onMoveTap == null
+          ? null
+          : () => unawaited(widget.onMoveTap!(context, targetNode)),
+      onLongPress: widget.showMovePreview && _hasPreviewBoard(targetNode)
+          ? () => _showMovePreview(context, targetNode, lastNode.index + 1)
+          : null,
     );
 
     if (selected) {
