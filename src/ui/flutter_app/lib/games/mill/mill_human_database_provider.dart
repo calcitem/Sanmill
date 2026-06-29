@@ -71,8 +71,8 @@ class MillHumanDatabaseProvider implements OpeningBookProvider {
   /// Maps a skill level (clamped to [_minSkill]..[_maxSkill]) to the minimum
   /// number of human games a candidate must have. Geometric interpolation
   /// across the skill range: the minimum skill yields [_minSamplesAtMinSkill],
-  /// the maximum skill [_minSamplesAtMaxSkill]. Exposed for tests.
-  @visibleForTesting
+  /// the maximum skill [_minSamplesAtMaxSkill]. Shared with the opening
+  /// explorer so advisory database rows use the same confidence floor.
   static int minSamplesForSkill(int skillLevel) {
     final int skill = skillLevel.clamp(_minSkill, _maxSkill);
     final double fraction = (skill - _minSkill) / (_maxSkill - _minSkill);

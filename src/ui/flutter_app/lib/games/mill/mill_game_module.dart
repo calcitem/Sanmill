@@ -44,6 +44,7 @@ import 'mill_route_ids.dart';
 import 'mill_rule_settings_port.dart';
 import 'native_mill_game_session.dart';
 import 'native_mill_rules_port.dart';
+import 'opening_explorer/opening_explorer_page.dart';
 
 typedef NativeMillSessionFactory =
     GameSessionHandle Function({
@@ -401,6 +402,17 @@ class MillGameModule extends GameModule {
         contentKey: const Key('analysis_panel'),
         builder: (BuildContext context, {Key? key, GameSession? session}) {
           return MovesListPage.analysisPanel(key: key);
+        },
+      ),
+      GameMenuContribution(
+        id: MillRouteIds.openingExplorer,
+        label: s.openingExplorer,
+        section: GameMenuSection.tools,
+        icon: FluentIcons.book_open_24_regular,
+        drawerKey: const Key('drawer_item_opening_explorer'),
+        contentKey: const Key('opening_explorer'),
+        builder: (BuildContext context, {Key? key, GameSession? session}) {
+          return OpeningExplorerPage(key: key, session: session);
         },
       ),
       if (features.supports(GameCapability.puzzles))
