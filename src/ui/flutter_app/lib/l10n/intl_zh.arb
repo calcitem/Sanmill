@@ -4573,5 +4573,7 @@
     "openingExplorerBookMove": "开局库着法",
     "@openingExplorerBookMove": {},
     "openingExplorerGames": "对局",
-    "@openingExplorerGames": {}
+    "@openingExplorerGames": {},
+    "boardEditor": "棋盘编辑器",
+    "@boardEditor": {}
 }

@@ -585,6 +585,7 @@ void main() {
         find.byKey(const Key('drawer_item_setup_position')),
         findsOneWidget,
       );
+      expect(find.text('Board editor'), findsOneWidget);
 
       await tester.tap(find.byKey(const Key('drawer_item_import_game')));
       await tester.pumpAndSettle();

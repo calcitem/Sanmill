@@ -367,7 +367,7 @@ class MillGameModule extends GameModule {
       ),
       GameModeEntry(
         id: MillRouteIds.setupPosition,
-        label: s.setupPosition,
+        label: s.boardEditor,
         section: GameMenuSection.tools,
         icon: FluentIcons.edit_24_regular,
         drawerKey: const Key('drawer_item_setup_position'),

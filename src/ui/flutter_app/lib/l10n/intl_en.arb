@@ -4725,5 +4725,7 @@
     "openingExplorerBookMove": "Book move",
     "@openingExplorerBookMove": {},
     "openingExplorerGames": "Games",
-    "@openingExplorerGames": {}
+    "@openingExplorerGames": {},
+    "boardEditor": "Board editor",
+    "@boardEditor": {}
 }
