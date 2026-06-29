@@ -49,6 +49,42 @@ part 'package:sanmill/appearance_settings/widgets/sliders/font_size_slider.dart'
 part 'package:sanmill/appearance_settings/widgets/sliders/piece_width_slider.dart';
 part 'package:sanmill/appearance_settings/widgets/sliders/point_width_slider.dart';
 
+class _BoardStylePreview extends StatelessWidget {
+  const _BoardStylePreview({required this.colors});
+
+  final ColorSettings colors;
+
+  @override
+  Widget build(BuildContext context) {
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+      child: Center(
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 260),
+          child: AspectRatio(
+            aspectRatio: 1,
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                color: colorScheme.surfaceContainerLow,
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(
+                  color: colorScheme.outlineVariant.withValues(alpha: 0.7),
+                ),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(12),
+                child: ThemePreviewBoard(colors: colors),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class AppearanceSettingsPage extends StatelessWidget {
   const AppearanceSettingsPage({super.key});
 
@@ -415,159 +451,214 @@ class AppearanceSettingsPage extends StatelessWidget {
       defaultValue: const ColorSettings(),
     )!;
 
-    return SettingsCard(
-      key: const Key('appearance_settings_page_color_settings_card'),
-      title: Text(
-        S.of(context).color,
-        key: const Key('color_settings_card_title'),
-      ),
+    return Column(
+      key: const Key('appearance_settings_page_style_settings_column'),
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
-        SettingsListTile(
-          key: const Key('color_settings_card_theme_settings_list_tile'),
-          titleString: S.of(context).theme,
-          onTap: () => _setTheme(context, colorSettings),
-        ),
-        SettingsListTile.color(
-          key: const Key('color_settings_card_board_color_settings_list_tile'),
-          titleString: S.of(context).boardColor,
-          value: DB().colorSettings.boardBackgroundColor,
-          onChanged: (Color val) => DB().colorSettings = colorSettings.copyWith(
-            boardBackgroundColor: val,
+        _BoardStylePreview(colors: colorSettings),
+        SettingsCard(
+          key: const Key('appearance_settings_page_theme_settings_card'),
+          title: Text(
+            S.of(context).theme,
+            key: const Key('theme_settings_card_title'),
           ),
+          children: <Widget>[
+            SettingsListTile(
+              key: const Key('color_settings_card_theme_settings_list_tile'),
+              titleString: S.of(context).theme,
+              onTap: () => _setTheme(context, colorSettings),
+            ),
+            SettingsListTile(
+              key: const Key(
+                'display_settings_card_board_image_settings_list_tile',
+              ),
+              titleString: S.of(context).boardImage,
+              onTap: () => setBoardImage(context),
+            ),
+            SettingsListTile(
+              key: const Key(
+                'display_settings_card_piece_image_settings_list_tile',
+              ),
+              titleString: S.of(context).pieceImage,
+              onTap: () => setPieceImage(context),
+            ),
+            SettingsListTile(
+              key: const Key(
+                'display_settings_card_background_image_settings_list_tile',
+              ),
+              titleString: S.of(context).backgroundImage,
+              onTap: () => setBackgroundImage(context),
+            ),
+          ],
         ),
-        SettingsListTile.color(
+        SettingsCard(
+          key: const Key('appearance_settings_page_board_color_settings_card'),
+          title: Text(
+            S.of(context).boardColor,
+            key: const Key('board_color_settings_card_title'),
+          ),
+          children: <Widget>[
+            SettingsListTile.color(
+              key: const Key(
+                'color_settings_card_board_color_settings_list_tile',
+              ),
+              titleString: S.of(context).boardColor,
+              value: DB().colorSettings.boardBackgroundColor,
+              onChanged: (Color val) => DB().colorSettings = colorSettings
+                  .copyWith(boardBackgroundColor: val),
+            ),
+            SettingsListTile.color(
+              key: const Key(
+                'color_settings_card_background_color_settings_list_tile',
+              ),
+              titleString: S.of(context).backgroundColor,
+              value: DB().colorSettings.darkBackgroundColor,
+              onChanged: (Color val) => DB().colorSettings = colorSettings
+                  .copyWith(darkBackgroundColor: val),
+            ),
+            SettingsListTile.color(
+              key: const Key(
+                'color_settings_card_line_color_settings_list_tile',
+              ),
+              titleString: S.of(context).lineColor,
+              value: DB().colorSettings.boardLineColor,
+              onChanged: (Color val) => DB().colorSettings = colorSettings
+                  .copyWith(boardLineColor: val),
+            ),
+          ],
+        ),
+        SettingsCard(
+          key: const Key('appearance_settings_page_piece_settings_card'),
+          title: Text(
+            S.of(context).pieces,
+            key: const Key('piece_settings_card_title'),
+          ),
+          children: <Widget>[
+            SettingsListTile.color(
+              key: const Key(
+                'color_settings_card_white_piece_color_settings_list_tile',
+              ),
+              titleString: S.of(context).whitePieceColor,
+              value: DB().colorSettings.whitePieceColor,
+              onChanged: (Color val) => DB().colorSettings = colorSettings
+                  .copyWith(whitePieceColor: val),
+            ),
+            SettingsListTile.color(
+              key: const Key(
+                'color_settings_card_black_piece_color_settings_list_tile',
+              ),
+              titleString: S.of(context).blackPieceColor,
+              value: DB().colorSettings.blackPieceColor,
+              onChanged: (Color val) => DB().colorSettings = colorSettings
+                  .copyWith(blackPieceColor: val),
+            ),
+            SettingsListTile.color(
+              key: const Key(
+                'color_settings_card_piece_highlight_color_settings_list_tile',
+              ),
+              titleString: S.of(context).pieceHighlightColor,
+              value: DB().colorSettings.pieceHighlightColor,
+              onChanged: (Color val) => DB().colorSettings = colorSettings
+                  .copyWith(pieceHighlightColor: val),
+            ),
+            SettingsListTile.color(
+              key: const Key(
+                'color_settings_card_capturable_piece_highlight_color_settings_list_tile',
+              ),
+              titleString: S.of(context).capturablePieceHighlightColor,
+              value: DB().colorSettings.capturablePieceHighlightColor,
+              onChanged: (Color val) => DB().colorSettings = colorSettings
+                  .copyWith(capturablePieceHighlightColor: val),
+            ),
+          ],
+        ),
+        SettingsCard(
           key: const Key(
-            'color_settings_card_background_color_settings_list_tile',
+            'appearance_settings_page_advanced_color_settings_card',
           ),
-          titleString: S.of(context).backgroundColor,
-          value: DB().colorSettings.darkBackgroundColor,
-          onChanged: (Color val) => DB().colorSettings = colorSettings.copyWith(
-            darkBackgroundColor: val,
+          title: Text(
+            S.of(context).advanced,
+            key: const Key('advanced_color_settings_card_title'),
           ),
-        ),
-        SettingsListTile.color(
-          key: const Key('color_settings_card_line_color_settings_list_tile'),
-          titleString: S.of(context).lineColor,
-          value: DB().colorSettings.boardLineColor,
-          onChanged: (Color val) =>
-              DB().colorSettings = colorSettings.copyWith(boardLineColor: val),
-        ),
-        SettingsListTile.color(
-          key: const Key(
-            'color_settings_card_white_piece_color_settings_list_tile',
-          ),
-          titleString: S.of(context).whitePieceColor,
-          value: DB().colorSettings.whitePieceColor,
-          onChanged: (Color val) =>
-              DB().colorSettings = colorSettings.copyWith(whitePieceColor: val),
-        ),
-        SettingsListTile.color(
-          key: const Key(
-            'color_settings_card_black_piece_color_settings_list_tile',
-          ),
-          titleString: S.of(context).blackPieceColor,
-          value: DB().colorSettings.blackPieceColor,
-          onChanged: (Color val) =>
-              DB().colorSettings = colorSettings.copyWith(blackPieceColor: val),
-        ),
-        SettingsListTile.color(
-          key: const Key(
-            'color_settings_card_piece_highlight_color_settings_list_tile',
-          ),
-          titleString: S.of(context).pieceHighlightColor,
-          value: DB().colorSettings.pieceHighlightColor,
-          onChanged: (Color val) => DB().colorSettings = colorSettings.copyWith(
-            pieceHighlightColor: val,
-          ),
-        ),
-        SettingsListTile.color(
-          key: const Key(
-            'color_settings_card_capturable_piece_highlight_color_settings_list_tile',
-          ),
-          titleString: S.of(context).capturablePieceHighlightColor,
-          value: DB().colorSettings.capturablePieceHighlightColor,
-          onChanged: (Color val) => DB().colorSettings = colorSettings.copyWith(
-            capturablePieceHighlightColor: val,
-          ),
-        ),
-        SettingsListTile.color(
-          key: const Key(
-            'color_settings_card_message_color_settings_list_tile',
-          ),
-          titleString: S.of(context).messageColor,
-          value: DB().colorSettings.messageColor,
-          onChanged: (Color val) =>
-              DB().colorSettings = colorSettings.copyWith(messageColor: val),
-        ),
-        SettingsListTile.color(
-          key: const Key(
-            'color_settings_card_main_toolbar_background_color_settings_list_tile',
-          ),
-          titleString: S.of(context).mainToolbarBackgroundColor,
-          value: DB().colorSettings.mainToolbarBackgroundColor,
-          onChanged: (Color val) => DB().colorSettings = colorSettings.copyWith(
-            mainToolbarBackgroundColor: val,
-          ),
-        ),
-        SettingsListTile.color(
-          key: const Key(
-            'color_settings_card_main_toolbar_icon_color_settings_list_tile',
-          ),
-          titleString: S.of(context).mainToolbarIconColor,
-          value: DB().colorSettings.mainToolbarIconColor,
-          onChanged: (Color val) => DB().colorSettings = colorSettings.copyWith(
-            mainToolbarIconColor: val,
-          ),
-        ),
-        SettingsListTile.color(
-          key: const Key(
-            'color_settings_card_navigation_toolbar_background_color_settings_list_tile',
-          ),
-          titleString: S.of(context).navigationToolbarBackgroundColor,
-          value: DB().colorSettings.navigationToolbarBackgroundColor,
-          onChanged: (Color val) => DB().colorSettings = colorSettings.copyWith(
-            navigationToolbarBackgroundColor: val,
-          ),
-        ),
-        SettingsListTile.color(
-          key: const Key(
-            'color_settings_card_navigation_toolbar_icon_color_settings_list_tile',
-          ),
-          titleString: S.of(context).navigationToolbarIconColor,
-          value: DB().colorSettings.navigationToolbarIconColor,
-          onChanged: (Color val) => DB().colorSettings = colorSettings.copyWith(
-            navigationToolbarIconColor: val,
-          ),
-        ),
-        SettingsListTile.color(
-          key: const Key(
-            'color_settings_card_annotation_toolbar_background_color_settings_list_tile',
-          ),
-          titleString: S.of(context).annotationToolbarBackgroundColor,
-          value: DB().colorSettings.annotationToolbarBackgroundColor,
-          onChanged: (Color val) => DB().colorSettings = colorSettings.copyWith(
-            annotationToolbarBackgroundColor: val,
-          ),
-        ),
-        SettingsListTile.color(
-          key: const Key(
-            'color_settings_card_annotation_toolbar_icon_color_settings_list_tile',
-          ),
-          titleString: S.of(context).annotationToolbarIconColor,
-          value: DB().colorSettings.annotationToolbarIconColor,
-          onChanged: (Color val) => DB().colorSettings = colorSettings.copyWith(
-            annotationToolbarIconColor: val,
-          ),
-        ),
-        SettingsListTile(
-          key: const Key('color_settings_card_import_color_settings_list_tile'),
-          titleString: S.of(context).importColorSettings,
-          onTap: () => importColorSettings(context),
-        ),
-        SettingsListTile(
-          key: const Key('color_settings_card_export_color_settings_list_tile'),
-          titleString: S.of(context).exportColorSettings,
-          onTap: () => exportColorSettings(context),
+          children: <Widget>[
+            SettingsListTile.color(
+              key: const Key(
+                'color_settings_card_message_color_settings_list_tile',
+              ),
+              titleString: S.of(context).messageColor,
+              value: DB().colorSettings.messageColor,
+              onChanged: (Color val) => DB().colorSettings = colorSettings
+                  .copyWith(messageColor: val),
+            ),
+            SettingsListTile.color(
+              key: const Key(
+                'color_settings_card_main_toolbar_background_color_settings_list_tile',
+              ),
+              titleString: S.of(context).mainToolbarBackgroundColor,
+              value: DB().colorSettings.mainToolbarBackgroundColor,
+              onChanged: (Color val) => DB().colorSettings = colorSettings
+                  .copyWith(mainToolbarBackgroundColor: val),
+            ),
+            SettingsListTile.color(
+              key: const Key(
+                'color_settings_card_main_toolbar_icon_color_settings_list_tile',
+              ),
+              titleString: S.of(context).mainToolbarIconColor,
+              value: DB().colorSettings.mainToolbarIconColor,
+              onChanged: (Color val) => DB().colorSettings = colorSettings
+                  .copyWith(mainToolbarIconColor: val),
+            ),
+            SettingsListTile.color(
+              key: const Key(
+                'color_settings_card_navigation_toolbar_background_color_settings_list_tile',
+              ),
+              titleString: S.of(context).navigationToolbarBackgroundColor,
+              value: DB().colorSettings.navigationToolbarBackgroundColor,
+              onChanged: (Color val) => DB().colorSettings = colorSettings
+                  .copyWith(navigationToolbarBackgroundColor: val),
+            ),
+            SettingsListTile.color(
+              key: const Key(
+                'color_settings_card_navigation_toolbar_icon_color_settings_list_tile',
+              ),
+              titleString: S.of(context).navigationToolbarIconColor,
+              value: DB().colorSettings.navigationToolbarIconColor,
+              onChanged: (Color val) => DB().colorSettings = colorSettings
+                  .copyWith(navigationToolbarIconColor: val),
+            ),
+            SettingsListTile.color(
+              key: const Key(
+                'color_settings_card_annotation_toolbar_background_color_settings_list_tile',
+              ),
+              titleString: S.of(context).annotationToolbarBackgroundColor,
+              value: DB().colorSettings.annotationToolbarBackgroundColor,
+              onChanged: (Color val) => DB().colorSettings = colorSettings
+                  .copyWith(annotationToolbarBackgroundColor: val),
+            ),
+            SettingsListTile.color(
+              key: const Key(
+                'color_settings_card_annotation_toolbar_icon_color_settings_list_tile',
+              ),
+              titleString: S.of(context).annotationToolbarIconColor,
+              value: DB().colorSettings.annotationToolbarIconColor,
+              onChanged: (Color val) => DB().colorSettings = colorSettings
+                  .copyWith(annotationToolbarIconColor: val),
+            ),
+            SettingsListTile(
+              key: const Key(
+                'color_settings_card_import_color_settings_list_tile',
+              ),
+              titleString: S.of(context).importColorSettings,
+              onTap: () => importColorSettings(context),
+            ),
+            SettingsListTile(
+              key: const Key(
+                'color_settings_card_export_color_settings_list_tile',
+              ),
+              titleString: S.of(context).exportColorSettings,
+              onTap: () => exportColorSettings(context),
+            ),
+          ],
         ),
       ],
     );
@@ -876,27 +967,6 @@ class AppearanceSettingsPage extends StatelessWidget {
           onChanged: (bool val) => DB().displaySettings = displaySettings
               .copyWith(isScreenshotGameInfoShown: val),
           titleString: S.of(context).showGameInfoOnScreenshots,
-        ),
-        SettingsListTile(
-          key: const Key(
-            'display_settings_card_background_image_settings_list_tile',
-          ),
-          titleString: S.of(context).backgroundImage,
-          onTap: () => setBackgroundImage(context),
-        ),
-        SettingsListTile(
-          key: const Key(
-            'display_settings_card_board_image_settings_list_tile',
-          ),
-          titleString: S.of(context).boardImage,
-          onTap: () => setBoardImage(context),
-        ),
-        SettingsListTile(
-          key: const Key(
-            'display_settings_card_piece_image_settings_list_tile',
-          ),
-          titleString: S.of(context).pieceImage,
-          onTap: () => setPieceImage(context),
         ),
       ],
     );
