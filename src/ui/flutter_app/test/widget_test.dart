@@ -1789,6 +1789,7 @@ void main() {
         find.byKey(const Key('sanmill_home_ongoing_game_group')),
         findsOneWidget,
       );
+      expect(find.text('1 game in play'), findsOneWidget);
       expect(
         find.byKey(const Key('sanmill_home_ongoing_game')),
         findsOneWidget,

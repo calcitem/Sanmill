@@ -4661,5 +4661,13 @@
     "coordinateTrainingShowPieces": "显示棋子",
     "@coordinateTrainingShowPieces": {},
     "useVariant": "使用此棋种",
-    "@useVariant": {}
+    "@useVariant": {},
+    "gamesInPlay": "{count} 局进行中",
+    "@gamesInPlay": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    }
 }

@@ -1396,10 +1396,13 @@ class _HomeOngoingGames extends StatelessWidget {
         .take(savedLimit)
         .indexed;
     final bool hasMore = savedGames.length > savedLimit;
+    final String title = strings.gamesInPlay(
+      savedGames.length + (activeGame == null ? 0 : 1),
+    );
 
     if (useCarousel) {
       return _HomeGameCarouselSection(
-        title: strings.ongoingGames,
+        title: title,
         headerKey: const Key('sanmill_home_ongoing_game_group'),
         listKey: const Key('sanmill_home_ongoing_game_card'),
         tabInteraction: tabInteraction,
@@ -1434,7 +1437,7 @@ class _HomeOngoingGames extends StatelessWidget {
     }
 
     return _MoreSection(
-      title: strings.ongoingGames,
+      title: title,
       headerKey: const Key('sanmill_home_ongoing_game_group'),
       onHeaderTap: hasMore ? onShowAll : null,
       children: <Widget>[

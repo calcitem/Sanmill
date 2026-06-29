@@ -4813,5 +4813,13 @@
     "coordinateTrainingShowPieces": "Show pieces",
     "@coordinateTrainingShowPieces": {},
     "useVariant": "Use variant",
-    "@useVariant": {}
+    "@useVariant": {},
+    "gamesInPlay": "{count, plural, =1{1 game in play} other{{count} games in play}}",
+    "@gamesInPlay": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    }
 }
