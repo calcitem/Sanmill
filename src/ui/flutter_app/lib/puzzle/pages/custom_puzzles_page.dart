@@ -11,18 +11,14 @@ import 'dart:ui' as ui;
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:hive_ce_flutter/hive_flutter.dart' show Box;
 import 'package:image_picker/image_picker.dart';
 
-import '../../appearance_settings/models/color_settings.dart';
 import '../../game_page/services/mill.dart';
 import '../../game_page/widgets/qr_code_dialog.dart';
 import '../../game_page/widgets/qr_image_option_dialog.dart';
 import '../../game_page/widgets/qr_scan_result_dialog.dart';
 import '../../game_page/widgets/qr_scanner_page.dart';
 import '../../generated/intl/l10n.dart';
-import '../../shared/database/database.dart';
-import '../../shared/themes/app_theme.dart';
 import '../models/puzzle_models.dart';
 import '../services/puzzle_export_service.dart';
 import '../services/puzzle_manager.dart';
@@ -48,197 +44,155 @@ class _CustomPuzzlesPageState extends State<CustomPuzzlesPage> {
   @override
   Widget build(BuildContext context) {
     final S s = S.of(context);
+    final ThemeData theme = Theme.of(context);
 
-    return ValueListenableBuilder<Box<ColorSettings>>(
-      valueListenable: DB().listenColorSettings,
-      builder: (BuildContext context, Box<ColorSettings> box, Widget? child) {
-        final ThemeData settingsTheme = Theme.of(context);
-        final bool useDarkSettingsUi =
-            settingsTheme.brightness == Brightness.dark;
+    return Scaffold(
+      key: const Key('custom_puzzles_page_scaffold'),
+      backgroundColor: theme.colorScheme.surface,
+      appBar: AppBar(
+        title: _isMultiSelectMode
+            ? Text(s.puzzleSelectedCount(_selectedPuzzleIds.length))
+            : Text(s.customPuzzles),
+        leading: _isMultiSelectMode
+            ? IconButton(
+                icon: const Icon(FluentIcons.dismiss_24_regular),
+                onPressed: _toggleMultiSelectMode,
+              )
+            : null,
+        actions: <Widget>[
+          if (_isMultiSelectMode) ...<Widget>[
+            IconButton(
+              icon: const Icon(FluentIcons.select_all_on_24_regular),
+              onPressed: _selectAllPuzzles,
+              tooltip: s.puzzleSelectAll,
+            ),
+            if (_selectedPuzzleIds.isNotEmpty)
+              IconButton(
+                icon: const Icon(FluentIcons.arrow_upload_24_regular),
+                onPressed: () => _contributeSelectedPuzzles(context, theme),
+                tooltip: s.contributeToSanmill,
+              ),
+            if (_selectedPuzzleIds.isNotEmpty)
+              IconButton(
+                icon: const Icon(FluentIcons.qr_code_24_regular),
+                onPressed: _exportSelectedPuzzlesAsQr,
+                tooltip: s.exportQrCode,
+              ),
+            if (_selectedPuzzleIds.isNotEmpty)
+              IconButton(
+                icon: const Icon(FluentIcons.share_24_regular),
+                onPressed: _exportSelectedPuzzles,
+                tooltip: s.puzzleExport,
+              ),
+            if (_selectedPuzzleIds.isNotEmpty)
+              IconButton(
+                icon: const Icon(FluentIcons.delete_24_regular),
+                onPressed: () => _deleteSelectedPuzzles(context, theme),
+                tooltip: s.delete,
+              ),
+          ] else ...<Widget>[
+            IconButton(
+              icon: const Icon(FluentIcons.scan_camera_24_regular),
+              onPressed: _scanPuzzleQrCode,
+              tooltip: s.scanQrCode,
+            ),
+            IconButton(
+              icon: const Icon(FluentIcons.folder_open_24_regular),
+              onPressed: _importPuzzles,
+              tooltip: s.puzzleImport,
+            ),
+            IconButton(
+              icon: const Icon(FluentIcons.info_24_regular),
+              onPressed: () => _showContributionInfo(context, theme),
+              tooltip: s.howToContribute,
+            ),
+            IconButton(
+              icon: const Icon(FluentIcons.checkbox_checked_24_regular),
+              onPressed: _toggleMultiSelectMode,
+              tooltip: s.puzzleSelect,
+            ),
+          ],
+        ],
+      ),
+      floatingActionButton: _isMultiSelectMode
+          ? null
+          : FloatingActionButton(
+              onPressed: _createNewPuzzle,
+              tooltip: s.puzzleCreateNew,
+              child: const Icon(FluentIcons.add_24_regular),
+            ),
+      body: ValueListenableBuilder<PuzzleSettings>(
+        valueListenable: _puzzleManager.settingsNotifier,
+        builder: (BuildContext context, PuzzleSettings settings, _) {
+          final List<PuzzleInfo> customPuzzles = _puzzleManager
+              .getCustomPuzzles();
 
-        // Use Builder to ensure the context has the correct theme.
-        // This prevents computing text styles from a context outside the Theme wrapper.
-        return Theme(
-          data: settingsTheme,
-          child: Builder(
-            builder: (BuildContext context) {
-              return Scaffold(
-                backgroundColor: useDarkSettingsUi
-                    ? settingsTheme.scaffoldBackgroundColor
-                    : AppTheme.lightBackgroundColor,
-                appBar: AppBar(
-                  title: _isMultiSelectMode
-                      ? Text(
-                          s.puzzleSelectedCount(_selectedPuzzleIds.length),
-                          style: useDarkSettingsUi
-                              ? null
-                              : AppTheme.appBarTheme.titleTextStyle,
-                        )
-                      : Text(
-                          s.customPuzzles,
-                          style: useDarkSettingsUi
-                              ? null
-                              : AppTheme.appBarTheme.titleTextStyle,
-                        ),
-                  leading: _isMultiSelectMode
-                      ? IconButton(
-                          icon: const Icon(FluentIcons.dismiss_24_regular),
-                          onPressed: _toggleMultiSelectMode,
-                        )
-                      : null,
-                  actions: <Widget>[
-                    if (_isMultiSelectMode) ...<Widget>[
-                      // Select all
-                      IconButton(
-                        icon: const Icon(FluentIcons.select_all_on_24_regular),
-                        onPressed: _selectAllPuzzles,
-                        tooltip: s.puzzleSelectAll,
-                      ),
-                      // Contribute selected
-                      if (_selectedPuzzleIds.isNotEmpty)
-                        IconButton(
-                          icon: const Icon(FluentIcons.arrow_upload_24_regular),
-                          onPressed: () => _contributeSelectedPuzzles(
-                            context,
-                            settingsTheme,
-                          ),
-                          tooltip: s.contributeToSanmill,
-                        ),
-                      // Export selected as QR code
-                      if (_selectedPuzzleIds.isNotEmpty)
-                        IconButton(
-                          icon: const Icon(FluentIcons.qr_code_24_regular),
-                          onPressed: _exportSelectedPuzzlesAsQr,
-                          tooltip: s.exportQrCode,
-                        ),
-                      // Export selected (file share)
-                      if (_selectedPuzzleIds.isNotEmpty)
-                        IconButton(
-                          icon: const Icon(FluentIcons.share_24_regular),
-                          onPressed: _exportSelectedPuzzles,
-                          tooltip: s.puzzleExport,
-                        ),
-                      // Delete selected
-                      if (_selectedPuzzleIds.isNotEmpty)
-                        IconButton(
-                          icon: const Icon(FluentIcons.delete_24_regular),
-                          onPressed: () =>
-                              _deleteSelectedPuzzles(context, settingsTheme),
-                          tooltip: s.delete,
-                        ),
-                    ] else ...<Widget>[
-                      IconButton(
-                        icon: const Icon(FluentIcons.scan_camera_24_regular),
-                        onPressed: _scanPuzzleQrCode,
-                        tooltip: s.scanQrCode,
-                      ),
-                      // Import button (open file to import puzzles)
-                      IconButton(
-                        icon: const Icon(FluentIcons.folder_open_24_regular),
-                        onPressed: _importPuzzles,
-                        tooltip: s.puzzleImport,
-                      ),
-                      // Contribution info button
-                      IconButton(
-                        icon: const Icon(FluentIcons.info_24_regular),
-                        onPressed: () =>
-                            _showContributionInfo(context, settingsTheme),
-                        tooltip: s.howToContribute,
-                      ),
-                      // Multi-select button
-                      IconButton(
-                        icon: const Icon(
-                          FluentIcons.checkbox_checked_24_regular,
-                        ),
-                        onPressed: _toggleMultiSelectMode,
-                        tooltip: s.puzzleSelect,
-                      ),
-                    ],
-                  ],
-                ),
-                floatingActionButton: _isMultiSelectMode
+          if (customPuzzles.isEmpty) {
+            return _buildEmptyState(context, s);
+          }
+
+          return ListView.builder(
+            key: const Key('custom_puzzles_page_list'),
+            padding: const EdgeInsets.all(8.0),
+            itemCount: customPuzzles.length,
+            itemBuilder: (BuildContext context, int index) {
+              final PuzzleInfo puzzle = customPuzzles[index];
+              final PuzzleProgress? progress = settings.getProgress(puzzle.id);
+              final bool isSelected = _selectedPuzzleIds.contains(puzzle.id);
+
+              return PuzzleCard(
+                puzzle: puzzle,
+                progress: progress,
+                onTap: _isMultiSelectMode
+                    ? () => _togglePuzzleSelection(puzzle.id)
+                    : () => _openPuzzle(puzzle),
+                onLongPress: _isMultiSelectMode
                     ? null
-                    : FloatingActionButton(
-                        onPressed: _createNewPuzzle,
-                        tooltip: s.puzzleCreateNew,
-                        child: const Icon(FluentIcons.add_24_regular),
-                      ),
-                body: ValueListenableBuilder<PuzzleSettings>(
-                  valueListenable: _puzzleManager.settingsNotifier,
-                  builder: (BuildContext context, PuzzleSettings settings, _) {
-                    final List<PuzzleInfo> customPuzzles = _puzzleManager
-                        .getCustomPuzzles();
-
-                    if (customPuzzles.isEmpty) {
-                      return _buildEmptyState(context, s);
-                    }
-
-                    return ListView.builder(
-                      padding: const EdgeInsets.all(8.0),
-                      itemCount: customPuzzles.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        final PuzzleInfo puzzle = customPuzzles[index];
-                        final PuzzleProgress? progress = settings.getProgress(
-                          puzzle.id,
-                        );
-                        final bool isSelected = _selectedPuzzleIds.contains(
-                          puzzle.id,
-                        );
-
-                        return PuzzleCard(
-                          puzzle: puzzle,
-                          progress: progress,
-                          onTap: _isMultiSelectMode
-                              ? () => _togglePuzzleSelection(puzzle.id)
-                              : () => _openPuzzle(puzzle),
-                          onLongPress: _isMultiSelectMode
-                              ? null
-                              : () {
-                                  _toggleMultiSelectMode();
-                                  _togglePuzzleSelection(puzzle.id);
-                                },
-                          isSelected: _isMultiSelectMode ? isSelected : null,
-                          showCustomBadge: true,
-                          onEdit: !_isMultiSelectMode
-                              ? () => _editPuzzle(puzzle)
-                              : null,
-                          onDelete: !_isMultiSelectMode
-                              ? () => _deleteSinglePuzzle(puzzle.id)
-                              : null,
-                        );
+                    : () {
+                        _toggleMultiSelectMode();
+                        _togglePuzzleSelection(puzzle.id);
                       },
-                    );
-                  },
-                ),
+                isSelected: _isMultiSelectMode ? isSelected : null,
+                showCustomBadge: true,
+                onEdit: !_isMultiSelectMode ? () => _editPuzzle(puzzle) : null,
+                onDelete: !_isMultiSelectMode
+                    ? () => _deleteSinglePuzzle(puzzle.id)
+                    : null,
               );
             },
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 
   Widget _buildEmptyState(BuildContext context, S s) {
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+
     return Center(
+      key: const Key('custom_puzzles_empty_state'),
       child: Padding(
         padding: const EdgeInsets.all(24.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             Icon(
               FluentIcons.puzzle_piece_24_regular,
               size: 64,
-              color: Colors.grey[400],
+              color: colorScheme.onSurfaceVariant,
             ),
             const SizedBox(height: 16),
             Text(
               s.noCustomPuzzles,
               style: Theme.of(context).textTheme.titleLarge,
+              textAlign: TextAlign.center,
             ),
             const SizedBox(height: 8),
             Text(
               s.noCustomPuzzlesHint,
-              style: Theme.of(context).textTheme.bodyMedium,
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                color: colorScheme.onSurfaceVariant,
+              ),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 24),

@@ -300,6 +300,36 @@ void main() {
       await tester.binding.handlePopRoute();
       await tester.pumpAndSettle();
 
+      await tester.ensureVisible(find.byKey(const Key('puzzles_home_custom')));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const Key('puzzles_home_custom')));
+      await tester.pumpAndSettle();
+
+      final BuildContext customPuzzlesContext = tester.element(
+        find.byKey(const Key('custom_puzzles_page_scaffold')),
+      );
+      final Scaffold customPuzzlesScaffold = tester.widget<Scaffold>(
+        find.byKey(const Key('custom_puzzles_page_scaffold')),
+      );
+      expect(
+        customPuzzlesScaffold.backgroundColor,
+        Theme.of(customPuzzlesContext).colorScheme.surface,
+      );
+      expect(
+        find
+                .byKey(const Key('custom_puzzles_page_list'))
+                .evaluate()
+                .isNotEmpty ||
+            find
+                .byKey(const Key('custom_puzzles_empty_state'))
+                .evaluate()
+                .isNotEmpty,
+        isTrue,
+      );
+
+      await tester.binding.handlePopRoute();
+      await tester.pumpAndSettle();
+
       await tester.ensureVisible(find.byKey(const Key('puzzles_home_history')));
       await tester.pumpAndSettle();
       await tester.tap(find.byKey(const Key('puzzles_home_history')));
