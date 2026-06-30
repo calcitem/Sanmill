@@ -1442,7 +1442,6 @@ class PlayAreaState extends State<PlayArea> {
     showLichessActionSheet<void>(
       context: sheetContext,
       sheetKey: const Key('play_area_analysis_engine_sheet'),
-      title: Text(strings.engine),
       content: _AnalysisEngineSheetStatus(
         depth: depth,
         isAnalyzing: AnalysisMode.isAnalyzing,
@@ -4395,7 +4394,7 @@ class _AnalysisEngineSheetStatus extends StatelessWidget {
 
     return ListTile(
       key: const Key('play_area_analysis_engine_status'),
-      contentPadding: const EdgeInsets.only(left: 16, right: 16, bottom: 8),
+      contentPadding: const EdgeInsets.only(left: 16),
       leading: Icon(Icons.memory_outlined, color: colorScheme.primary),
       trailing: IconButton(
         key: const Key('play_area_analysis_engine_go_deeper'),
