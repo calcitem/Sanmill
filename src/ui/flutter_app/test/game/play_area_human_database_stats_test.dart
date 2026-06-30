@@ -240,6 +240,18 @@ void main() {
     );
     expect(find.byKey(const Key('play_area_toolbar_item_game')), findsOne);
     expect(find.text('New game'), findsOne);
+    expect(find.byKey(const Key('play_area_toolbar_item_move')), findsOne);
+    expect(
+      find.descendant(
+        of: find.byKey(const Key('play_area_toolbar_item_move')),
+        matching: find.text('Move list'),
+      ),
+      findsOneWidget,
+    );
+    expect(
+      find.byKey(const Key('play_area_regular_game_menu_move_now')),
+      findsNothing,
+    );
 
     await tester.tap(
       find.byKey(const Key('play_area_regular_game_menu_board_orientation')),
@@ -557,6 +569,8 @@ void main() {
       findsNothing,
     );
     expect(find.byKey(const Key('play_area_game_menu_analysis')), findsOne);
+    expect(find.byKey(const Key('play_area_game_menu_move_list')), findsOne);
+    expect(find.byKey(const Key('play_area_game_menu_move_now')), findsOne);
     expect(find.byKey(const Key('play_area_game_menu_resign')), findsNothing);
     expect(find.byKey(const Key('play_area_game_menu_new_game')), findsOne);
 
@@ -717,6 +731,55 @@ void main() {
       scrollable,
     );
     expect(scrollableState.position.pixels, greaterThan(0));
+  });
+
+  testWidgets('human vs ai menu keeps QR move list import reachable', (
+    WidgetTester tester,
+  ) async {
+    db.generalSettings = const GeneralSettings();
+    db.displaySettings = const DisplaySettings();
+    GameController().gameInstance.gameMode = GameMode.humanVsAi;
+
+    await tester.binding.setSurfaceSize(const Size(390, 844));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+
+    await tester.pumpWidget(
+      _localizedApp(
+        const Scaffold(
+          body: PlayArea(
+            boardImage: null,
+            child: SizedBox.square(
+              key: Key('test_board_square'),
+              dimension: 390,
+            ),
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byKey(const Key('play_area_bottom_bar_menu')));
+    await tester.pumpAndSettle();
+
+    expect(find.byKey(const Key('play_area_game_menu_move_list')), findsOne);
+    expect(find.byKey(const Key('play_area_game_menu_move_now')), findsOne);
+
+    await tester.tap(find.byKey(const Key('play_area_game_menu_move_list')));
+    await tester.pumpAndSettle();
+
+    expect(find.byKey(const Key('moves_list_page_scaffold')), findsOneWidget);
+
+    await tester.tap(find.byKey(const Key('moves_list_more_menu_button')));
+    await tester.pumpAndSettle();
+
+    expect(find.byKey(const Key('moves_list_menu_scan_qr')), findsOneWidget);
+    expect(
+      find.descendant(
+        of: find.byKey(const Key('moves_list_menu_scan_qr')),
+        matching: find.text('Scan QR Code'),
+      ),
+      findsOneWidget,
+    );
   });
 
   testWidgets('human vs ai move list groups capture with the mill move', (

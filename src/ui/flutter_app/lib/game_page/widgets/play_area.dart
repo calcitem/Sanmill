@@ -596,6 +596,22 @@ class PlayAreaState extends State<PlayArea> {
     );
   }
 
+  Future<void> _moveNowFromGameMenu(
+    BuildContext context, {
+    required String toolbar,
+  }) async {
+    RecordingService().recordEvent(
+      RecordingEventType.toolbarAction,
+      <String, dynamic>{'toolbar': toolbar, 'action': 'moveNow'},
+    );
+    await GameController().moveNow(context);
+  }
+
+  bool get _shouldShowMoveNowMenuAction {
+    final GameMode mode = GameController().gameInstance.gameMode;
+    return mode == GameMode.humanVsAi || mode == GameMode.aiVsAi;
+  }
+
   Future<void> _showResignConfirmation(BuildContext context) async {
     assert(_usesLichessHumanAiToolbar);
     final bool? confirmed = await showDialog<bool>(
@@ -768,9 +784,18 @@ class PlayAreaState extends State<PlayArea> {
         LichessActionSheetAction(
           key: const Key('play_area_toolbar_item_move'),
           leading: const Icon(Icons.format_list_numbered),
-          makeLabel: (BuildContext context) => Text(S.of(context).move),
+          makeLabel: (BuildContext context) => Text(S.of(context).moveList),
           onPressed: () => _openMoves(context),
         ),
+        if (_shouldShowMoveNowMenuAction)
+          LichessActionSheetAction(
+            key: const Key('play_area_regular_game_menu_move_now'),
+            leading: const Icon(FluentIcons.play_24_regular),
+            makeLabel: (BuildContext context) => Text(S.of(context).moveNow),
+            onPressed: () => unawaited(
+              _moveNowFromGameMenu(context, toolbar: 'regularBottom'),
+            ),
+          ),
         if (_shouldShowAiChatMenuAction)
           LichessActionSheetAction(
             key: const Key('play_area_regular_game_menu_ai_chat'),
@@ -827,6 +852,21 @@ class PlayAreaState extends State<PlayArea> {
             _openAnalysisPanelFromBottomBar(context, toolbar: 'lichessBottom'),
           ),
         ),
+        LichessActionSheetAction(
+          key: const Key('play_area_game_menu_move_list'),
+          leading: const Icon(Icons.format_list_numbered),
+          makeLabel: (BuildContext context) => Text(S.of(context).moveList),
+          onPressed: () => _openMoves(context),
+        ),
+        if (_shouldShowMoveNowMenuAction)
+          LichessActionSheetAction(
+            key: const Key('play_area_game_menu_move_now'),
+            leading: const Icon(FluentIcons.play_24_regular),
+            makeLabel: (BuildContext context) => Text(S.of(context).moveNow),
+            onPressed: () => unawaited(
+              _moveNowFromGameMenu(context, toolbar: 'lichessBottom'),
+            ),
+          ),
         if (_shouldShowAiChatMenuAction)
           LichessActionSheetAction(
             key: const Key('play_area_game_menu_ai_chat'),

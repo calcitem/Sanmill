@@ -2877,6 +2877,7 @@ class MovesListPageState extends State<MovesListPage> {
           ),
           // The "three vertical dots" menu with multiple PopupMenuItem.
           PopupMenuButton<String>(
+            key: const Key('moves_list_more_menu_button'),
             onSelected: (String value) async {
               switch (value) {
                 case 'top':
@@ -3028,6 +3029,7 @@ class MovesListPageState extends State<MovesListPage> {
               ),
               const PopupMenuDivider(),
               PopupMenuItem<String>(
+                key: const Key('moves_list_menu_scan_qr'),
                 value: 'scan_qr',
                 child: Row(
                   children: <Widget>[
@@ -3036,11 +3038,17 @@ class MovesListPageState extends State<MovesListPage> {
                       color: Colors.black54,
                     ),
                     const SizedBox(width: 8),
-                    Text(S.of(context).scanQrCode),
+                    Expanded(
+                      child: Text(
+                        S.of(context).scanQrCode,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
                   ],
                 ),
               ),
               PopupMenuItem<String>(
+                key: const Key('moves_list_menu_export_qr'),
                 value: 'export_qr',
                 child: Row(
                   children: <Widget>[
@@ -3049,7 +3057,12 @@ class MovesListPageState extends State<MovesListPage> {
                       color: Colors.black54,
                     ),
                     const SizedBox(width: 8),
-                    Text(S.of(context).exportQrCode),
+                    Expanded(
+                      child: Text(
+                        S.of(context).exportQrCode,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -3063,7 +3076,12 @@ class MovesListPageState extends State<MovesListPage> {
                       color: Colors.black54,
                     ),
                     const SizedBox(width: 8),
-                    Text(S.of(context).llm),
+                    Expanded(
+                      child: Text(
+                        S.of(context).llm,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
                   ],
                 ),
               ),
