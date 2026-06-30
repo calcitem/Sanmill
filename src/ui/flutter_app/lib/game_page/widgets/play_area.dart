@@ -102,10 +102,6 @@ class PlayAreaState extends State<PlayArea> {
     final HumanDatabaseMoveStats? stats =
         GameController().activeNativeMillSession?.lastHumanDatabaseMoveStats;
 
-    final Color stripBackgroundColor = Color.alphaBlend(
-      DB().colorSettings.boardLineColor.withValues(alpha: 0.14),
-      DB().colorSettings.boardBackgroundColor,
-    );
     final Color contentColor = DB().colorSettings.messageColor.withValues(
       alpha: stats == null ? 0.58 : 0.78,
     );
@@ -132,7 +128,7 @@ class PlayAreaState extends State<PlayArea> {
         child: DecoratedBox(
           key: const Key('play_area_human_database_stats'),
           decoration: BoxDecoration(
-            color: stripBackgroundColor,
+            color: Colors.transparent,
             borderRadius: BorderRadius.circular(6),
             border: Border.all(color: borderColor),
           ),
@@ -1202,6 +1198,9 @@ class PlayAreaState extends State<PlayArea> {
     required BuildContext context,
     required bool showPieceCountRows,
   }) {
+    final bool showAdvantageGraph =
+        DB().displaySettings.isAdvantageGraphShown && advantageData.isNotEmpty;
+
     return SizedBox(
       key: const Key('play_area_human_ai_main_content'),
       child: SafeArea(
@@ -1209,11 +1208,9 @@ class PlayAreaState extends State<PlayArea> {
         bottom: false,
         right: false,
         left: false,
-        child: SingleChildScrollView(
-          key: const Key('play_area_human_ai_scroll_view'),
-          child: Column(
-            key: const Key('play_area_human_ai_column'),
-            children: <Widget>[
+        child: LayoutBuilder(
+          builder: (BuildContext context, BoxConstraints constraints) {
+            final List<Widget> topChildren = <Widget>[
               const _InlineMoveList(
                 key: Key('play_area_human_ai_move_list'),
                 wrapKey: Key('play_area_human_ai_move_list_wrap'),
@@ -1226,6 +1223,8 @@ class PlayAreaState extends State<PlayArea> {
                 key: Key('play_area_human_ai_robot_panel'),
                 isRobot: true,
               ),
+            ];
+            final List<Widget> boardChildren = <Widget>[
               if (showPieceCountRows)
                 _isBoardFlipped
                     ? _buildRemovedPieceCountRow()
@@ -1235,12 +1234,13 @@ class PlayAreaState extends State<PlayArea> {
                 _isBoardFlipped
                     ? _buildPieceCountRow()
                     : _buildRemovedPieceCountRow(),
+            ];
+            final List<Widget> bottomChildren = <Widget>[
               const _HumanAiPlayerPanel(
                 key: Key('play_area_human_ai_player_panel'),
                 isRobot: false,
               ),
-              if (DB().displaySettings.isAdvantageGraphShown &&
-                  advantageData.isNotEmpty)
+              if (showAdvantageGraph)
                 SizedBox(
                   key: const Key('play_area_advantage_graph'),
                   height: 112,
@@ -1250,8 +1250,55 @@ class PlayAreaState extends State<PlayArea> {
                     painter: AdvantageGraphPainter(advantageData),
                   ),
                 ),
-            ],
-          ),
+            ];
+
+            final double requiredHeight =
+                constraints.maxWidth +
+                32 +
+                56 +
+                56 +
+                (showPieceCountRows ? 48 : 0) +
+                (showAdvantageGraph ? 112 : 0);
+            final bool canBalance =
+                constraints.hasBoundedHeight &&
+                constraints.maxHeight >= requiredHeight;
+
+            if (canBalance) {
+              return SizedBox(
+                height: constraints.maxHeight,
+                child: Column(
+                  key: const Key('play_area_human_ai_column'),
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: topChildren,
+                    ),
+                    Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: boardChildren,
+                    ),
+                    Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: bottomChildren,
+                    ),
+                  ],
+                ),
+              );
+            }
+
+            return SingleChildScrollView(
+              key: const Key('play_area_human_ai_scroll_view'),
+              child: Column(
+                key: const Key('play_area_human_ai_column'),
+                children: <Widget>[
+                  ...topChildren,
+                  ...boardChildren,
+                  ...bottomChildren,
+                ],
+              ),
+            );
+          },
         ),
       ),
     );
@@ -1308,6 +1355,117 @@ class PlayAreaState extends State<PlayArea> {
           },
         );
       },
+    );
+  }
+
+  Widget _buildRegularMainContent({
+    required BuildContext context,
+    required bool isSetupPosition,
+    required bool isPuzzle,
+    required bool showPieceCountRows,
+  }) {
+    final bool isPlayableGame = !isSetupPosition && !isPuzzle;
+    final bool showAdvantageGraph =
+        DB().displaySettings.isAdvantageGraphShown && advantageData.isNotEmpty;
+
+    return SafeArea(
+      top: MediaQuery.of(context).orientation == Orientation.portrait,
+      bottom: false,
+      right: false,
+      left: false,
+      child: LayoutBuilder(
+        builder: (BuildContext context, BoxConstraints constraints) {
+          final List<Widget> topChildren = <Widget>[
+            if (isPlayableGame)
+              _InlineMoveList(
+                key: const Key('play_area_regular_move_list'),
+                wrapKey: const Key('play_area_regular_move_list_wrap'),
+                roundKeyPrefix: 'play_area_regular_round_',
+                moveKeyPrefix: 'play_area_regular_move_',
+                onMoveTap: (BuildContext context, PgnNode<ExtMove> node) {
+                  return HistoryNavigator.gotoNode(context, node, pop: false);
+                },
+                showMovePreview: true,
+                layout: _InlineMoveListLayout.horizontal,
+                groupByRound: true,
+              ),
+            GameHeader(key: const Key('play_area_game_header')),
+          ];
+          final List<Widget> boardChildren = <Widget>[
+            if (showPieceCountRows)
+              _isBoardFlipped
+                  ? _buildRemovedPieceCountRow()
+                  : _buildPieceCountRow()
+            else
+              const SizedBox(height: AppTheme.boardMargin),
+            _buildBoardScreenshot(),
+            if (showPieceCountRows)
+              _isBoardFlipped
+                  ? _buildPieceCountRow()
+                  : _buildRemovedPieceCountRow()
+            else
+              const SizedBox(height: AppTheme.boardMargin),
+          ];
+          final List<Widget> bottomChildren = <Widget>[
+            if (showAdvantageGraph)
+              SizedBox(
+                key: const Key('play_area_advantage_graph'),
+                height: 150,
+                width: double.infinity,
+                child: CustomPaint(
+                  key: const Key('play_area_custom_paint_advantage_graph'),
+                  painter: AdvantageGraphPainter(advantageData),
+                ),
+              ),
+            const SizedBox(height: AppTheme.boardMargin),
+          ];
+
+          final double requiredHeight =
+              constraints.maxWidth +
+              (isPlayableGame ? 32 : 0) +
+              32 +
+              (showPieceCountRows ? 48 : AppTheme.boardMargin * 2) +
+              (showAdvantageGraph ? 150 : 0) +
+              AppTheme.boardMargin;
+          final bool canBalance =
+              isPlayableGame &&
+              constraints.hasBoundedHeight &&
+              constraints.maxHeight >= requiredHeight;
+
+          if (canBalance) {
+            return SizedBox(
+              height: constraints.maxHeight,
+              child: Column(
+                key: const Key('play_area_column'),
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Column(mainAxisSize: MainAxisSize.min, children: topChildren),
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: boardChildren,
+                  ),
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: bottomChildren,
+                  ),
+                ],
+              ),
+            );
+          }
+
+          return SingleChildScrollView(
+            key: const Key('play_area_single_child_scroll_view'),
+            child: Column(
+              key: const Key('play_area_column'),
+              children: <Widget>[
+                ...topChildren,
+                ...boardChildren,
+                ...bottomChildren,
+              ],
+            ),
+          );
+        },
+      ),
     );
   }
 
@@ -1653,81 +1811,11 @@ class PlayAreaState extends State<PlayArea> {
                   context: context,
                   showPieceCountRows: showPieceCountRows,
                 )
-              : SafeArea(
-                  top:
-                      MediaQuery.of(context).orientation ==
-                      Orientation.portrait,
-                  bottom: false,
-                  right: false,
-                  left: false,
-                  child: SingleChildScrollView(
-                    key: const Key('play_area_single_child_scroll_view'),
-                    child: Column(
-                      key: const Key('play_area_column'),
-                      children: <Widget>[
-                        if (!isSetupPosition && !isPuzzle)
-                          _InlineMoveList(
-                            key: const Key('play_area_regular_move_list'),
-                            wrapKey: const Key(
-                              'play_area_regular_move_list_wrap',
-                            ),
-                            roundKeyPrefix: 'play_area_regular_round_',
-                            moveKeyPrefix: 'play_area_regular_move_',
-                            onMoveTap:
-                                (BuildContext context, PgnNode<ExtMove> node) {
-                                  return HistoryNavigator.gotoNode(
-                                    context,
-                                    node,
-                                    pop: false,
-                                  );
-                                },
-                            showMovePreview: true,
-                            layout: _InlineMoveListLayout.horizontal,
-                            groupByRound: true,
-                          ),
-
-                        // The top game header with hints, icons, etc.
-                        GameHeader(key: const Key('play_area_game_header')),
-
-                        // Piece counts or spacing if not used
-                        if (showPieceCountRows)
-                          _isBoardFlipped
-                              ? _buildRemovedPieceCountRow()
-                              : _buildPieceCountRow()
-                        else
-                          const SizedBox(height: AppTheme.boardMargin),
-
-                        // The main board wrapped with screenshot capturing
-                        _buildBoardScreenshot(),
-
-                        // Removed pieces row or spacing
-                        if (showPieceCountRows)
-                          _isBoardFlipped
-                              ? _buildPieceCountRow()
-                              : _buildRemovedPieceCountRow()
-                        else
-                          const SizedBox(height: AppTheme.boardMargin),
-
-                        // Advantage graph if enabled
-                        if (DB().displaySettings.isAdvantageGraphShown &&
-                            advantageData.isNotEmpty)
-                          SizedBox(
-                            key: const Key('play_area_advantage_graph'),
-                            height: 150,
-                            width: double.infinity,
-                            child: CustomPaint(
-                              key: const Key(
-                                'play_area_custom_paint_advantage_graph',
-                              ),
-                              painter: AdvantageGraphPainter(advantageData),
-                            ),
-                          ),
-
-                        if (!usesLichessHumanAiToolbar)
-                          const SizedBox(height: AppTheme.boardMargin),
-                      ],
-                    ),
-                  ),
+              : _buildRegularMainContent(
+                  context: context,
+                  isSetupPosition: isSetupPosition,
+                  isPuzzle: isPuzzle,
+                  showPieceCountRows: showPieceCountRows,
                 ),
         );
 

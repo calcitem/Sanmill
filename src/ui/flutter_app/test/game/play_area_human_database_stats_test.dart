@@ -98,12 +98,7 @@ void main() {
       find.byKey(const Key('play_area_human_database_stats')),
     );
     final BoxDecoration statsDecoration = statsBox.decoration as BoxDecoration;
-    final ThemeData theme = Theme.of(tester.element(strip));
-    expect(statsDecoration.color, isNot(Colors.white));
-    expect(
-      statsDecoration.color,
-      isNot(theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.82)),
-    );
+    expect(statsDecoration.color, Colors.transparent);
     expect(
       find.text('No human database stats for this position'),
       findsOneWidget,
@@ -677,6 +672,16 @@ void main() {
       tester.getTopLeft(pieceCountRow).dy,
       lessThan(tester.getTopLeft(board).dy),
     );
+    final Finder shell = find.byKey(
+      const Key('play_area_sized_box_toolbar_bottom'),
+    );
+    final Finder bottomBar = find.byKey(
+      const Key('play_area_lichess_bottom_bar'),
+    );
+    final double playableCenterY =
+        tester.getTopLeft(shell).dy +
+        (tester.getTopLeft(bottomBar).dy - tester.getTopLeft(shell).dy) / 2;
+    expect(tester.getCenter(board).dy, greaterThan(playableCenterY - 16));
     expect(
       tester.getTopLeft(board).dy,
       lessThan(tester.getTopLeft(removedPieceCountRow).dy),
