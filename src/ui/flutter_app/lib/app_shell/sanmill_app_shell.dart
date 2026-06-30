@@ -1285,6 +1285,12 @@ class _HomeGamesOverview extends StatelessWidget {
                 BuildContext context,
                 AsyncSnapshot<List<SavedGameSummary>> snapshot,
               ) {
+                if (snapshot.connectionState == ConnectionState.waiting &&
+                    !snapshot.hasData &&
+                    activeGame == null) {
+                  return const _HomeGamesLoadingSection();
+                }
+
                 final List<SavedGameSummary> homeGames =
                     snapshot.data ?? const <SavedGameSummary>[];
                 final List<SavedGameSummary> ongoingGames = homeGames
@@ -1374,6 +1380,27 @@ class _HomeGamesOverview extends StatelessWidget {
         snapshot,
         moveCount,
       ),
+    );
+  }
+}
+
+class _HomeGamesLoadingSection extends StatelessWidget {
+  const _HomeGamesLoadingSection();
+
+  @override
+  Widget build(BuildContext context) {
+    return LichessListSection(
+      key: const Key('sanmill_home_games_loading'),
+      header: Text(S.of(context).recentGames),
+      headerKey: const Key('sanmill_home_games_loading_group'),
+      cardKey: const Key('sanmill_home_games_loading_card'),
+      hasLeading: false,
+      children: const <Widget>[
+        SizedBox(
+          height: 96,
+          child: Center(child: CircularProgressIndicator.adaptive()),
+        ),
+      ],
     );
   }
 }
