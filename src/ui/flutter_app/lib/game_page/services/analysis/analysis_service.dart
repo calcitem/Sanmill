@@ -138,6 +138,9 @@ class AnalysisService {
     final int searchDepth = requestedDepth == null
         ? defaultDepth
         : math.min(64, math.max(defaultDepth, requestedDepth));
+    final int requestedLineCount = AnalysisMode.showEngineLines
+        ? math.max(1, AnalysisMode.engineLineCount)
+        : 1;
 
     AnalysisMode.setAnalyzing(true);
     try {
@@ -145,7 +148,7 @@ class AnalysisService {
           .searchPrincipalVariations(
             depth: searchDepth,
             moveLimitMs: analysisSearch.moveLimitMs,
-            multiPv: math.max(1, AnalysisMode.engineLineCount),
+            multiPv: requestedLineCount,
             engineSettings: engineSettings,
           );
       if (variations.isEmpty) {
