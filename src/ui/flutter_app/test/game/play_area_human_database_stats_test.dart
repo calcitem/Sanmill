@@ -1283,7 +1283,7 @@ void main() {
     );
     expect(
       find.byKey(const Key('play_area_analysis_engine_line_empty_1')),
-      findsNothing,
+      findsOneWidget,
     );
     expect(
       find.byKey(const Key('play_area_analysis_engine_line_empty_2')),
@@ -1823,6 +1823,8 @@ void main() {
     );
     expect(engineValue.data, '8');
     expect(find.text('d6 f4 a1'), findsOneWidget);
+    final Text engineLineText = tester.widget<Text>(find.text('d6 f4 a1'));
+    expect(engineLineText.style?.fontSize, 11);
     expect(
       tester.widgetList<Text>(find.byType(Text)).where((Text text) {
         return text.data?.contains('#1') ?? false;
@@ -2032,7 +2034,7 @@ void main() {
     );
     expect(
       find.byKey(const Key('play_area_analysis_engine_line_empty_1')),
-      findsNothing,
+      findsOneWidget,
     );
 
     AnalysisMode.setEngineLineCount(3);
@@ -2150,7 +2152,9 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(AnalysisMode.isFullAnalysis, isTrue);
-    expect(session.requestedMultiPvValues, <int>[1]);
+    expect(session.requestedMultiPvValues, <int>[
+      AnalysisMode.defaultEngineLineCount,
+    ]);
     expect(AnalysisMode.analysisResults.single.move, 'd6');
 
     AnalysisMode.enable(
@@ -2173,7 +2177,9 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(AnalysisMode.isThreatMode, isTrue);
-    expect(session.requestedMultiPvValues, <int>[1]);
+    expect(session.requestedMultiPvValues, <int>[
+      AnalysisMode.defaultEngineLineCount,
+    ]);
     expect(AnalysisMode.analysisResults.single.move, 'f4');
   });
 

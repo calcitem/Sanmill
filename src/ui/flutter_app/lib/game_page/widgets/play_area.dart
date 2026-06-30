@@ -4440,6 +4440,7 @@ class _AnalysisEngineLine extends StatelessWidget {
   });
 
   static const double height = 24;
+  static const double fontSize = 11;
 
   final MoveAnalysisResult result;
   final VoidCallback? onTap;
@@ -4462,7 +4463,7 @@ class _AnalysisEngineLine extends StatelessWidget {
       child: ConstrainedBox(
         constraints: const BoxConstraints(minHeight: height),
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+          padding: const EdgeInsets.all(2),
           child: Row(
             children: <Widget>[
               Container(
@@ -4477,6 +4478,7 @@ class _AnalysisEngineLine extends StatelessWidget {
                   textAlign: TextAlign.center,
                   style: theme.textTheme.labelSmall?.copyWith(
                     color: chipTextColor,
+                    fontSize: fontSize,
                     fontWeight: FontWeight.w700,
                     letterSpacing: 0,
                   ),
@@ -4493,6 +4495,7 @@ class _AnalysisEngineLine extends StatelessWidget {
                     color: colorScheme.onSurface.withValues(
                       alpha: onTap == null ? 0.72 : 1,
                     ),
+                    fontSize: fontSize,
                     letterSpacing: 0,
                   ),
                 ),

@@ -55,6 +55,21 @@ void main() {
     expect(session.requestedMultiPvValues, <int>[1]);
   });
 
+  testWidgets('visible engine lines request the default PV count', (
+    WidgetTester tester,
+  ) async {
+    final _RecordingAnalysisSession session = _RecordingAnalysisSession();
+    addTearDown(session.dispose);
+
+    await _pumpAnalysisButton(tester, session);
+    await tester.tap(find.byKey(const Key('analysis_service_toggle')));
+    await tester.pump();
+
+    expect(session.requestedMultiPvValues, <int>[
+      AnalysisMode.defaultEngineLineCount,
+    ]);
+  });
+
   testWidgets('visible engine lines request the selected PV count', (
     WidgetTester tester,
   ) async {

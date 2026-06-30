@@ -157,3 +157,64 @@ fn new(kind: &str) -> EngineEvent {
         reason: String::new(),
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use tgf_core::Action;
+
+    use super::{
+        PrincipalVariationEvent, best_move_with_notation_and_aimovetype, principal_variation,
+    };
+
+    const ACTION: Action = Action {
+        kind_tag: 0,
+        from_node: -1,
+        to_node: 3,
+        aux: -1,
+        payload_bits: 0,
+    };
+
+    #[test]
+    fn best_move_score_is_reported_from_first_player_perspective() {
+        let first_player =
+            best_move_with_notation_and_aimovetype(ACTION, 42, 0, "d6", "traditional");
+        let second_player =
+            best_move_with_notation_and_aimovetype(ACTION, 42, 1, "d6", "traditional");
+
+        assert_eq!(first_player.score, 42);
+        assert_eq!(second_player.score, -42);
+        assert!(second_player.reason.contains("rawScore=42"));
+    }
+
+    #[test]
+    fn principal_variation_score_is_reported_from_first_player_perspective() {
+        let first_player = principal_variation(PrincipalVariationEvent {
+            rank: 1,
+            action: ACTION,
+            score: -27,
+            root_side_to_move: 0,
+            notation: "d6",
+            pv_notation: "d6,f4",
+            nodes: 128,
+            depth: 3,
+            cutoff: false,
+        });
+        let second_player = principal_variation(PrincipalVariationEvent {
+            rank: 1,
+            action: ACTION,
+            score: -27,
+            root_side_to_move: 1,
+            notation: "d6",
+            pv_notation: "d6,f4",
+            nodes: 128,
+            depth: 3,
+            cutoff: false,
+        });
+
+        assert_eq!(first_player.score, -27);
+        assert_eq!(second_player.score, 27);
+        assert!(second_player.reason.contains("rawScore=-27"));
+        assert!(second_player.reason.contains("rank=1"));
+        assert!(second_player.reason.contains("pv=d6,f4"));
+    }
+}
