@@ -316,9 +316,17 @@ class _GamePageInnerState extends State<_GamePageInner> {
       );
     }
 
+    final Color gameTextColor = DB().colorSettings.messageColor;
+
     // Return a Stack with base content, annotation overlay, and toolbar.
-    final Widget content = Stack(
-      children: <Widget>[baseContent, annotationOverlay, toolbar],
+    final Widget content = DefaultTextStyle.merge(
+      style: TextStyle(color: gameTextColor),
+      child: IconTheme.merge(
+        data: IconThemeData(color: gameTextColor),
+        child: Stack(
+          children: <Widget>[baseContent, annotationOverlay, toolbar],
+        ),
+      ),
     );
 
     return PopScope<Object?>(

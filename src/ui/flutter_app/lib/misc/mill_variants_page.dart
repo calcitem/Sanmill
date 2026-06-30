@@ -31,29 +31,23 @@ class MillVariantsPage extends StatelessWidget {
             currentSettings,
           );
           final List<_VariantEntry> entries = _variantEntries(context);
-          final List<_VariantGroup> groups = _variantGroups(context, entries);
 
           return ListView(
             key: const Key('mill_variants_page_list'),
             padding: const EdgeInsets.fromLTRB(0, 16, 0, 24),
             children: <Widget>[
-              for (int index = 0; index < groups.length; index++)
-                LichessListSection(
-                  header: Text(groups[index].title),
-                  headerKey: Key('mill_variants_${groups[index].id}_header'),
-                  cardKey: index == 0
-                      ? const Key('mill_variants_section_card')
-                      : Key('mill_variants_${groups[index].id}_section_card'),
-                  children: <Widget>[
-                    for (final _VariantEntry entry in groups[index].entries)
-                      _VariantTile(
-                        key: Key('mill_variant_${entry.id}'),
-                        entry: entry,
-                        selected: entry.id == currentVariant.id,
-                        onTap: () => _openVariantDetails(context, entry),
-                      ),
-                  ],
-                ),
+              LichessListSection(
+                cardKey: const Key('mill_variants_section_card'),
+                children: <Widget>[
+                  for (final _VariantEntry entry in entries)
+                    _VariantTile(
+                      key: Key('mill_variant_${entry.id}'),
+                      entry: entry,
+                      selected: entry.id == currentVariant.id,
+                      onTap: () => _openVariantDetails(context, entry),
+                    ),
+                ],
+              ),
             ],
           );
         },
@@ -111,61 +105,6 @@ class MillVariantsPage extends StatelessWidget {
             settings: settings,
           );
         })
-        .toList(growable: false);
-  }
-
-  static List<_VariantGroup> _variantGroups(
-    BuildContext context,
-    List<_VariantEntry> entries,
-  ) {
-    final S strings = S.of(context);
-    final List<_VariantEntry> mainline = entries
-        .where(
-          (_VariantEntry entry) =>
-              entry.id == 'standard_9mm' ||
-              entry.id == 'twelve_mens_morris' ||
-              entry.id == 'morabaraba' ||
-              entry.id == 'dooz',
-        )
-        .toList(growable: false);
-    final List<_VariantEntry> capture = entries
-        .where(
-          (_VariantEntry entry) =>
-              _hasSpecialCapture(entry.settings) &&
-              !mainline.any((_VariantEntry main) => main.id == entry.id),
-        )
-        .toList(growable: false);
-    final List<_VariantEntry> rules = entries
-        .where(
-          (_VariantEntry entry) =>
-              !mainline.any((_VariantEntry main) => main.id == entry.id) &&
-              !capture.any((_VariantEntry capture) => capture.id == entry.id),
-        )
-        .toList(growable: false);
-    final Set<String> groupedIds = <String>{
-      for (final _VariantEntry entry in mainline) entry.id,
-      for (final _VariantEntry entry in capture) entry.id,
-      for (final _VariantEntry entry in rules) entry.id,
-    };
-    assert(
-      groupedIds.length == entries.length,
-      'Every Mill variant must appear in exactly one group.',
-    );
-
-    return <_VariantGroup>[
-          _VariantGroup(
-            id: 'mainline',
-            title: strings.millGame,
-            entries: mainline,
-          ),
-          _VariantGroup(
-            id: 'capture',
-            title: strings.puzzleCategoryCapturePieces,
-            entries: capture,
-          ),
-          _VariantGroup(id: 'rules', title: strings.rules, entries: rules),
-        ]
-        .where((_VariantGroup group) => group.entries.isNotEmpty)
         .toList(growable: false);
   }
 
@@ -464,18 +403,6 @@ class _VariantEntry {
     }
     return Icons.category_outlined;
   }
-}
-
-class _VariantGroup {
-  const _VariantGroup({
-    required this.id,
-    required this.title,
-    required this.entries,
-  });
-
-  final String id;
-  final String title;
-  final List<_VariantEntry> entries;
 }
 
 class _VariantSource {

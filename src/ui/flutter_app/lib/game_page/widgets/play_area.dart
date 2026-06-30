@@ -102,20 +102,15 @@ class PlayAreaState extends State<PlayArea> {
     final HumanDatabaseMoveStats? stats =
         GameController().activeNativeMillSession?.lastHumanDatabaseMoveStats;
 
-    final ThemeData theme = Theme.of(context);
     final Color stripBackgroundColor = Color.alphaBlend(
       DB().colorSettings.boardLineColor.withValues(alpha: 0.14),
       DB().colorSettings.boardBackgroundColor,
     );
-    final bool isDarkStrip =
-        ThemeData.estimateBrightnessForColor(stripBackgroundColor) ==
-        Brightness.dark;
-    final Color contentBaseColor = isDarkStrip ? Colors.white : Colors.black;
-    final Color contentColor = contentBaseColor.withValues(
+    final Color contentColor = DB().colorSettings.messageColor.withValues(
       alpha: stats == null ? 0.58 : 0.78,
     );
-    final Color borderColor = contentBaseColor.withValues(
-      alpha: isDarkStrip ? 0.18 : 0.14,
+    final Color borderColor = DB().colorSettings.messageColor.withValues(
+      alpha: 0.16,
     );
     final String statsText = stats == null
         ? S.of(context).humanGameDatabaseStatsUnavailable
@@ -159,9 +154,9 @@ class PlayAreaState extends State<PlayArea> {
                         key: ValueKey<String>(statsText),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: theme.textTheme.bodySmall?.copyWith(
-                          color: contentColor,
-                        ),
+                        style: Theme.of(
+                          context,
+                        ).textTheme.bodySmall?.copyWith(color: contentColor),
                       ),
                     ),
                   ),
@@ -2194,9 +2189,7 @@ class _InlineMoveCount extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Color color = Theme.of(
-      context,
-    ).colorScheme.onSurface.withValues(alpha: 0.8);
+    final Color color = DB().colorSettings.messageColor.withValues(alpha: 0.8);
     return Padding(
       padding: const EdgeInsets.only(right: 3),
       child: Text(
@@ -2236,6 +2229,7 @@ class _GameMoveChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
+    final Color messageColor = DB().colorSettings.messageColor;
     final BorderRadius borderRadius = BorderRadius.circular(
       AppStyles.compactRadius,
     );
@@ -2245,14 +2239,12 @@ class _GameMoveChip extends StatelessWidget {
             _GameMoveChipStyle.filled =>
               selected ? selectedTextColor : colorScheme.onSurfaceVariant,
             _GameMoveChipStyle.inlineText =>
-              selected
-                  ? colorScheme.primary
-                  : colorScheme.onSurface.withValues(alpha: 0.8),
+              selected ? messageColor : messageColor.withValues(alpha: 0.8),
           },
           fontWeight: selected ? FontWeight.w600 : FontWeight.w500,
         ) ??
         TextStyle(
-          color: selected ? colorScheme.primary : colorScheme.onSurface,
+          color: selected ? messageColor : messageColor.withValues(alpha: 0.8),
           fontWeight: selected ? FontWeight.w600 : FontWeight.w500,
         );
     final Widget labelText = Text(
@@ -2316,7 +2308,7 @@ class _HumanAiPlayerPanel extends StatelessWidget {
 
   Widget _buildPanel(BuildContext context, {required bool isThinking}) {
     final ThemeData theme = Theme.of(context);
-    final ColorScheme colorScheme = theme.colorScheme;
+    final Color messageColor = DB().colorSettings.messageColor;
     final int level = DB().generalSettings.skillLevel;
     final int rating = isRobot
         ? EloRatingService.getFixedAiEloRating(level)
@@ -2339,7 +2331,7 @@ class _HumanAiPlayerPanel extends StatelessWidget {
             child: Icon(
               isRobot ? Icons.smart_toy_outlined : Icons.person_outline,
               size: 32,
-              color: isRobot ? colorScheme.secondary : colorScheme.primary,
+              color: messageColor.withValues(alpha: 0.82),
             ),
           ),
           const SizedBox(width: 8),
@@ -2362,6 +2354,7 @@ class _HumanAiPlayerPanel extends StatelessWidget {
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: theme.textTheme.bodyMedium?.copyWith(
+                          color: messageColor,
                           fontWeight: FontWeight.w600,
                           letterSpacing: 0,
                         ),
@@ -2375,7 +2368,7 @@ class _HumanAiPlayerPanel extends StatelessWidget {
                           'play_area_human_ai_robot_thinking_icon',
                         ),
                         size: 16,
-                        color: colorScheme.onSurfaceVariant,
+                        color: messageColor.withValues(alpha: 0.72),
                       ),
                     ],
                   ],
@@ -2390,7 +2383,7 @@ class _HumanAiPlayerPanel extends StatelessWidget {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: theme.textTheme.bodySmall?.copyWith(
-                    color: colorScheme.onSurfaceVariant,
+                    color: messageColor.withValues(alpha: 0.72),
                     letterSpacing: 0,
                   ),
                 ),

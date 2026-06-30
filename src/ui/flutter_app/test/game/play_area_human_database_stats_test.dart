@@ -8,6 +8,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart' show Box;
+import 'package:sanmill/appearance_settings/models/color_settings.dart';
 import 'package:sanmill/appearance_settings/models/display_settings.dart';
 import 'package:sanmill/game_page/services/mill.dart';
 import 'package:sanmill/game_page/services/player_timer.dart';
@@ -472,7 +473,12 @@ void main() {
   testWidgets('human vs ai uses lichess-style bottom toolbar', (
     WidgetTester tester,
   ) async {
+    const Color messageTextColor = Color(0xFFE6F4EA);
     db.generalSettings = const GeneralSettings();
+    db.colorSettings = const ColorSettings(
+      darkBackgroundColor: Color(0xFF006B3F),
+      messageColor: messageTextColor,
+    );
     db.displaySettings = const DisplaySettings();
     GameController().gameInstance.gameMode = GameMode.humanVsAi;
 
@@ -628,6 +634,20 @@ void main() {
     expect(
       find.byKey(const Key('play_area_human_ai_player_title')),
       findsOneWidget,
+    );
+    expect(
+      tester
+          .widget<Text>(find.byKey(const Key('play_area_human_ai_robot_title')))
+          .style
+          ?.color,
+      messageTextColor,
+    );
+    expect(
+      tester
+          .widget<Text>(find.byKey(const Key('play_area_human_ai_player_elo')))
+          .style
+          ?.color,
+      messageTextColor.withValues(alpha: 0.72),
     );
     final Finder pieceCountRow = find.byKey(
       const Key('play_area_piece_count_row'),

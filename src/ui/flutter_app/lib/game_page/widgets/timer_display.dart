@@ -32,16 +32,25 @@ class TimerDisplay extends StatelessWidget {
         final String timeText =
             '${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
 
-        // Use red text when less than 10 seconds remaining
-        final Color textColor = remainingTime < 10 ? Colors.red : Colors.black;
+        // Use red text when less than 10 seconds remaining.
+        final Color normalTextColor = DB().colorSettings.messageColor;
+        final Color textColor = remainingTime < 10
+            ? Colors.red
+            : normalTextColor;
+        final Color backgroundColor = Color.alphaBlend(
+          DB().colorSettings.boardLineColor.withValues(alpha: 0.14),
+          DB().colorSettings.boardBackgroundColor,
+        );
 
         return Container(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
           decoration: BoxDecoration(
-            color: Colors.white.withValues(alpha: 0.8),
+            color: backgroundColor,
             borderRadius: BorderRadius.circular(16),
             border: Border.all(
-              color: remainingTime < 10 ? Colors.red : Colors.grey,
+              color: remainingTime < 10
+                  ? Colors.red
+                  : normalTextColor.withValues(alpha: 0.16),
             ),
           ),
           child: Row(

@@ -1365,6 +1365,22 @@ void main() {
     );
     await tester.pumpAndSettle();
 
+    expect(find.byKey(const Key('mill_variants_section_card')), findsOneWidget);
+    expect(
+      find.byKey(const Key('mill_variants_mainline_header')),
+      findsNothing,
+    );
+    expect(find.byKey(const Key('mill_variants_capture_header')), findsNothing);
+    expect(find.byKey(const Key('mill_variants_rules_header')), findsNothing);
+    expect(
+      find.byKey(const Key('mill_variants_capture_section_card')),
+      findsNothing,
+    );
+    expect(
+      find.byKey(const Key('mill_variants_rules_section_card')),
+      findsNothing,
+    );
+
     await tester.tap(find.byKey(const Key('mill_variant_twelve_mens_morris')));
     await tester.pumpAndSettle();
 
