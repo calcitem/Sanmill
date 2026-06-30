@@ -1446,6 +1446,8 @@ class PlayAreaState extends State<PlayArea> {
       content: _AnalysisEngineSheetStatus(
         depth: depth,
         isAnalyzing: AnalysisMode.isAnalyzing,
+        onGoDeeper: () =>
+            unawaited(_goDeeperFromAnalysisEngineSheet(sheetContext)),
       ),
       backgroundColor: _actionSheetBackground(sheetContext),
       foregroundColor: _actionSheetForeground(sheetContext),
@@ -1457,13 +1459,6 @@ class PlayAreaState extends State<PlayArea> {
           makeLabel: (BuildContext context) => Text(strings.settings),
           onPressed: () =>
               _showAnalysisSettingsSheet(sheetContext, strings: strings),
-        ),
-        LichessActionSheetAction(
-          key: const Key('play_area_analysis_engine_go_deeper'),
-          leading: const Icon(Icons.add_circle_outline),
-          makeLabel: (BuildContext context) => Text(strings.more),
-          onPressed: () =>
-              unawaited(_goDeeperFromAnalysisEngineSheet(sheetContext)),
         ),
       ],
     );
@@ -4380,10 +4375,12 @@ class _AnalysisEngineSheetStatus extends StatelessWidget {
   const _AnalysisEngineSheetStatus({
     required this.depth,
     required this.isAnalyzing,
+    required this.onGoDeeper,
   });
 
   final int? depth;
   final bool isAnalyzing;
+  final VoidCallback onGoDeeper;
 
   @override
   Widget build(BuildContext context) {
@@ -4400,6 +4397,13 @@ class _AnalysisEngineSheetStatus extends StatelessWidget {
       key: const Key('play_area_analysis_engine_status'),
       contentPadding: const EdgeInsets.only(left: 16, right: 16, bottom: 8),
       leading: Icon(Icons.memory_outlined, color: colorScheme.primary),
+      trailing: IconButton(
+        key: const Key('play_area_analysis_engine_go_deeper'),
+        tooltip: strings.more,
+        onPressed: isAnalyzing ? null : onGoDeeper,
+        icon: const Icon(Icons.add_circle_outline),
+        color: colorScheme.primary,
+      ),
       title: Text(
         strings.engine,
         style: theme.textTheme.titleMedium?.copyWith(
