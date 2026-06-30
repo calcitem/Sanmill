@@ -549,6 +549,21 @@ void main() {
           .height,
       kLichessBottomBarHeight,
     );
+    final BottomAppBar bottomAppBar = tester.widget<BottomAppBar>(
+      find.descendant(
+        of: find.byKey(const Key('play_area_lichess_bottom_bar')),
+        matching: find.byType(BottomAppBar),
+      ),
+    );
+    expect(bottomAppBar.color, Colors.transparent);
+    expect(bottomAppBar.elevation, 0);
+    final BuildContext menuIconContext = tester.element(
+      find.descendant(
+        of: find.byKey(const Key('play_area_bottom_bar_menu')),
+        matching: find.byIcon(Icons.menu),
+      ),
+    );
+    expect(IconTheme.of(menuIconContext).color, messageTextColor);
     expect(
       tester.getTopLeft(find.byKey(const Key('play_area_bottom_bar_menu'))).dx,
       lessThan(
@@ -673,9 +688,9 @@ void main() {
         tester.getTopLeft(playerPanel).dy -
         tester.getBottomLeft(removedPieceCountRow).dy;
     expect(robotToBoardTableGap, greaterThanOrEqualTo(0));
-    expect(robotToBoardTableGap, lessThan(96));
+    expect(robotToBoardTableGap, lessThanOrEqualTo(16));
     expect(boardTableToPlayerGap, greaterThanOrEqualTo(0));
-    expect(boardTableToPlayerGap, lessThan(96));
+    expect(boardTableToPlayerGap, lessThanOrEqualTo(16));
     expect(
       tester.getTopLeft(humanAiMoveList).dy,
       lessThan(tester.getTopLeft(robotPanel).dy),

@@ -1271,9 +1271,9 @@ class PlayAreaState extends State<PlayArea> {
                     const Expanded(
                       child: Padding(
                         padding: EdgeInsets.symmetric(horizontal: 12),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: <Widget>[topTable],
+                        child: Align(
+                          alignment: Alignment.bottomCenter,
+                          child: topTable,
                         ),
                       ),
                     ),
@@ -1284,9 +1284,12 @@ class PlayAreaState extends State<PlayArea> {
                     Expanded(
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 12),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: bottomChildren,
+                        child: Align(
+                          alignment: Alignment.topCenter,
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: bottomChildren,
+                          ),
                         ),
                       ),
                     ),
@@ -1450,9 +1453,9 @@ class PlayAreaState extends State<PlayArea> {
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 12),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: <Widget>[topTable],
+                      child: Align(
+                        alignment: Alignment.bottomCenter,
+                        child: topTable,
                       ),
                     ),
                   ),
@@ -1463,9 +1466,12 @@ class PlayAreaState extends State<PlayArea> {
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 12),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: bottomChildren,
+                      child: Align(
+                        alignment: Alignment.topCenter,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: bottomChildren,
+                        ),
                       ),
                     ),
                   ),
@@ -2542,8 +2548,12 @@ class _RegularGameBottomBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Color messageColor = DB().colorSettings.messageColor;
+
     return LichessBottomBar(
       key: const Key('play_area_main_toolbar_bottom'),
+      backgroundColor: Colors.transparent,
+      foregroundColor: messageColor,
       children: <Widget>[
         LichessBottomBarButton(
           key: const Key('play_area_regular_bottom_bar_menu'),
@@ -2613,8 +2623,12 @@ class _LichessGameBottomBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Color messageColor = DB().colorSettings.messageColor;
+
     return LichessBottomBar(
       key: const Key('play_area_lichess_bottom_bar'),
+      backgroundColor: Colors.transparent,
+      foregroundColor: messageColor,
       children: <Widget>[
         LichessBottomBarButton(
           key: const Key('play_area_bottom_bar_menu'),

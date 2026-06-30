@@ -17,37 +17,65 @@ class LichessBottomBar extends StatelessWidget {
     this.mainAxisAlignment = MainAxisAlignment.spaceAround,
     this.expandChildren = true,
     this.cupertinoTransparent = false,
+    this.backgroundColor,
+    this.foregroundColor,
   });
 
-  const LichessBottomBar.empty({super.key, this.cupertinoTransparent = false})
-    : children = const <Widget>[],
-      expandChildren = true,
-      mainAxisAlignment = MainAxisAlignment.spaceAround;
+  const LichessBottomBar.empty({
+    super.key,
+    this.cupertinoTransparent = false,
+    this.backgroundColor,
+    this.foregroundColor,
+  }) : children = const <Widget>[],
+       expandChildren = true,
+       mainAxisAlignment = MainAxisAlignment.spaceAround;
 
   final List<Widget> children;
   final MainAxisAlignment mainAxisAlignment;
   final bool expandChildren;
   final bool cupertinoTransparent;
+  final Color? backgroundColor;
+  final Color? foregroundColor;
 
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
-    final Color? barColor =
+    final Color? platformBarColor =
         theme.platform == TargetPlatform.iOS && cupertinoTransparent
         ? (theme.bottomAppBarTheme.color ?? theme.colorScheme.surface)
               .withValues(alpha: _kCupertinoBarOpacity)
         : null;
+    final Color? barColor = backgroundColor ?? platformBarColor;
+
+    Widget row = Row(
+      mainAxisAlignment: mainAxisAlignment,
+      children: expandChildren
+          ? children.map((Widget child) => Expanded(child: child)).toList()
+          : children,
+    );
+
+    if (foregroundColor != null) {
+      row = IconTheme.merge(
+        data: IconThemeData(color: foregroundColor),
+        child: DefaultTextStyle.merge(
+          style: TextStyle(color: foregroundColor),
+          child: row,
+        ),
+      );
+    }
 
     Widget bar = BottomAppBar(
       color: barColor,
+      elevation: backgroundColor == Colors.transparent ? 0 : null,
+      shadowColor: backgroundColor == Colors.transparent
+          ? Colors.transparent
+          : null,
+      surfaceTintColor: backgroundColor == Colors.transparent
+          ? Colors.transparent
+          : null,
       height: kLichessBottomBarHeight,
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-      child: Row(
-        mainAxisAlignment: mainAxisAlignment,
-        children: expandChildren
-            ? children.map((Widget child) => Expanded(child: child)).toList()
-            : children,
-      ),
+      child: row,
     );
 
     if (theme.platform == TargetPlatform.iOS && cupertinoTransparent) {
