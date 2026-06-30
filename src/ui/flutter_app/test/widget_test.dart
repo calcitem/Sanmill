@@ -162,6 +162,49 @@ void main() {
   );
 
   testWidgets(
+    'Rule onboarding is dismissed after choosing no',
+    (WidgetTester tester) async {
+      final GeneralSettings originalGeneralSettings = DB().generalSettings;
+      final DisplaySettings originalDisplaySettings = DB().displaySettings;
+      final bool originalTestEnvironment = EnvironmentConfig.test;
+
+      DB().generalSettings = GeneralSettings.fromJson(
+        Map<String, dynamic>.from(originalGeneralSettings.toJson())
+          ..['firstRun'] = false
+          ..['showTutorial'] = true,
+      );
+      DB().displaySettings = originalDisplaySettings.copyWith(
+        locale: const Locale('zh'),
+      );
+      EnvironmentConfig.test = false;
+
+      try {
+        await tester.pumpWidget(const SanmillApp());
+        await tester.pumpAndSettle();
+
+        expect(find.text('配置规则'), findsOneWidget);
+        await tester.tap(find.text('否'));
+        await tester.pumpAndSettle();
+        expect(DB().generalSettings.showTutorial, isFalse);
+
+        await tester.pumpWidget(const SizedBox.shrink());
+        await tester.pumpAndSettle();
+        await tester.pumpWidget(const SanmillApp());
+        await tester.pumpAndSettle();
+
+        expect(find.text('配置规则'), findsNothing);
+      } finally {
+        EnvironmentConfig.test = originalTestEnvironment;
+        DB().generalSettings = originalGeneralSettings;
+        DB().displaySettings = originalDisplaySettings;
+        await tester.pumpWidget(const SizedBox.shrink());
+        await tester.pump(const Duration(milliseconds: 350));
+      }
+    },
+    skip: nativeLibrarySkipReason() != null,
+  );
+
+  testWidgets(
     'Learn tab starts with coordinate training',
     (WidgetTester tester) async {
       tester.view

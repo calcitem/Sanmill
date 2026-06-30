@@ -5,6 +5,31 @@
 
 part of '../mill.dart';
 
+@immutable
+class MoveNowMessages {
+  const MoveNowMessages({
+    required this.aiIsDelaying,
+    required this.analyzing,
+    required this.notAIsTurn,
+    required this.timeout,
+  });
+
+  factory MoveNowMessages.of(BuildContext context) {
+    final S strings = S.of(context);
+    return MoveNowMessages(
+      aiIsDelaying: strings.aiIsDelaying,
+      analyzing: strings.analyzing,
+      notAIsTurn: strings.notAIsTurn,
+      timeout: strings.timeout,
+    );
+  }
+
+  final String aiIsDelaying;
+  final String analyzing;
+  final String notAIsTurn;
+  final String timeout;
+}
+
 /// Game Controller
 ///
 /// A singleton class that holds all objects and methods needed to play Mill.
@@ -1913,21 +1938,26 @@ class GameController {
     }
   }
 
-  Future<void> moveNow(BuildContext context) async {
+  Future<void> moveNow(
+    BuildContext context, {
+    MoveNowMessages? messages,
+  }) async {
     const String tag = "[engineToGo]";
     bool reversed = false;
+    final MoveNowMessages effectiveMessages =
+        messages ?? MoveNowMessages.of(context);
 
     loadedGameFilenamePrefix = null;
 
     if (isEngineInDelay) {
       return rootScaffoldMessengerKey.currentState!.showSnackBarClear(
-        S.of(context).aiIsDelaying,
+        effectiveMessages.aiIsDelaying,
       );
     }
 
     if (AnalysisMode.isEnabled || AnalysisMode.isAnalyzing) {
       return rootScaffoldMessengerKey.currentState!.showSnackBarClear(
-        S.of(context).analyzing,
+        effectiveMessages.analyzing,
       );
     }
 
@@ -1936,7 +1966,7 @@ class GameController {
     final PieceColor moveNowSide = activeBoardView.sideToMove;
     if (moveNowSide != PieceColor.white && moveNowSide != PieceColor.black) {
       return rootScaffoldMessengerKey.currentState!.showSnackBarClear(
-        S.of(context).notAIsTurn,
+        effectiveMessages.notAIsTurn,
       );
     }
 
@@ -1948,7 +1978,7 @@ class GameController {
       reversed = true;
     }
 
-    final String strTimeout = S.of(context).timeout;
+    final String strTimeout = effectiveMessages.timeout;
 
     GameController().disableStats = true;
 

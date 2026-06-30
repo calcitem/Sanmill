@@ -858,13 +858,20 @@ class SanmillAppShellState extends State<SanmillAppShell> {
   }
 
   void _showFirstRunGuidance() {
-    if (!kDebugMode && DB().generalSettings.showTutorial) {
-      DB().generalSettings = DB().generalSettings.copyWith(showTutorial: false);
+    final GeneralSettings generalSettings = _settingsRepository.generalSettings;
+    final bool shouldShowFirstRunGuidance = generalSettings.showTutorial;
+    if (shouldShowFirstRunGuidance) {
+      _settingsRepository.generalSettings = generalSettings.copyWith(
+        showTutorial: false,
+      );
     }
-    _showRuleSettingsOnboarding();
+    _showRuleSettingsOnboarding(shouldShowFirstRunGuidance);
   }
 
-  void _showRuleSettingsOnboarding() {
+  void _showRuleSettingsOnboarding(bool shouldShowFirstRunGuidance) {
+    if (!shouldShowFirstRunGuidance) {
+      return;
+    }
     final GameModule module = GameRegistry.instance.current;
     if (module.shouldShowRuleSettingsOnboarding(
       Localizations.localeOf(context),

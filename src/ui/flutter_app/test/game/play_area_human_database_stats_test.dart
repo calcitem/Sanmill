@@ -999,7 +999,7 @@ void main() {
       findsOne,
     );
     expect(
-      find.byKey(const Key('play_area_regular_bottom_bar_analysis')),
+      find.byKey(const Key('play_area_regular_bottom_bar_engine')),
       findsOne,
     );
     expect(
@@ -1027,7 +1027,7 @@ void main() {
     expect(find.byKey(const Key('play_area_toolbar_item_move')), findsNothing);
     expect(
       find.byKey(const Key('play_area_regular_game_menu_opening_explorer')),
-      findsOne,
+      findsNothing,
     );
     expect(
       find.byKey(const Key('play_area_regular_game_menu_board_editor')),
@@ -1037,14 +1037,38 @@ void main() {
       find.byKey(
         const Key('play_area_regular_game_menu_play_against_computer'),
       ),
-      findsOne,
+      findsNothing,
     );
     expect(
       find.byKey(const Key('play_area_regular_game_menu_over_the_board')),
-      findsOne,
+      findsNothing,
     );
     expect(
       find.byKey(const Key('play_area_regular_game_menu_analysis')),
+      findsNothing,
+    );
+    expect(
+      find.byKey(const Key('play_area_regular_game_menu_continue_from_here')),
+      findsOne,
+    );
+
+    await tester.tap(
+      find.byKey(const Key('play_area_regular_game_menu_continue_from_here')),
+    );
+    await tester.pumpAndSettle();
+
+    expect(
+      find.byKey(const Key('play_area_analysis_continue_from_here_sheet')),
+      findsOne,
+    );
+    expect(
+      find.byKey(
+        const Key('play_area_analysis_continue_play_against_computer'),
+      ),
+      findsOne,
+    );
+    expect(
+      find.byKey(const Key('play_area_analysis_continue_over_the_board')),
       findsOne,
     );
   });
@@ -1186,7 +1210,7 @@ void main() {
     );
   });
 
-  testWidgets('analysis menu exposes opening explorer', (
+  testWidgets('analysis menu keeps opening explorer as a tab', (
     WidgetTester tester,
   ) async {
     db.displaySettings = const DisplaySettings(
@@ -1224,21 +1248,13 @@ void main() {
 
     expect(
       find.byKey(const Key('play_area_regular_game_menu_opening_explorer')),
-      findsOneWidget,
+      findsNothing,
     );
     expect(
-      find.descendant(
-        of: find.byKey(
-          const Key('play_area_regular_game_menu_opening_explorer'),
-        ),
-        matching: find.text('Opening explorer'),
-      ),
+      find.byKey(const Key('play_area_regular_game_menu_continue_from_here')),
       findsOneWidget,
     );
-    expect(
-      find.byKey(const Key('play_area_regular_game_menu_analysis')),
-      findsOneWidget,
-    );
+    expect(find.byKey(const Key('opening_explorer_embedded')), findsOneWidget);
   });
 
   testWidgets('human vs ai uses landscape side panel layout', (

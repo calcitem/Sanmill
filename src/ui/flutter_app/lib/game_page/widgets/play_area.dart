@@ -269,7 +269,7 @@ class PlayAreaState extends State<PlayArea> {
     );
   }
 
-  void _requestRegularNewGame(BuildContext context) {
+  void _requestRegularNewGame(NavigatorState navigator) {
     if (_isAnalysisMode) {
       RecordingService().recordEvent(
         RecordingEventType.toolbarAction,
@@ -281,7 +281,7 @@ class PlayAreaState extends State<PlayArea> {
       return;
     }
 
-    _openGameOptions(context);
+    _openGameOptions(navigator.context);
   }
 
   void _openMovesWithNavigator(NavigatorState navigator) {
@@ -374,6 +374,37 @@ class PlayAreaState extends State<PlayArea> {
         builder: (BuildContext routeContext) =>
             _ContinueFromHereGameRoute(mode: mode),
       ),
+    );
+  }
+
+  void _showContinueFromHereMenu(BuildContext context, {S? strings}) {
+    assert(_isAnalysisMode, 'Continue from here menu is analysis-mode only.');
+    if (!mounted) {
+      return;
+    }
+    final S effectiveStrings = strings ?? S.of(context);
+    showLichessActionSheet<void>(
+      context: context,
+      sheetKey: const Key('play_area_analysis_continue_from_here_sheet'),
+      title: Text(effectiveStrings.continueFromHere),
+      backgroundColor: _actionSheetBackground(context),
+      foregroundColor: _actionSheetForeground(context),
+      actions: <LichessActionSheetAction>[
+        LichessActionSheetAction(
+          key: const Key('play_area_analysis_continue_play_against_computer'),
+          leading: const Icon(Icons.smart_toy_outlined),
+          makeLabel: (BuildContext context) =>
+              Text(effectiveStrings.playAgainstComputer),
+          onPressed: () => _continueFromHere(context, GameMode.humanVsAi),
+        ),
+        LichessActionSheetAction(
+          key: const Key('play_area_analysis_continue_over_the_board'),
+          leading: const Icon(Icons.groups_2_outlined),
+          makeLabel: (BuildContext context) =>
+              Text(effectiveStrings.overTheBoard),
+          onPressed: () => _continueFromHere(context, GameMode.humanVsHuman),
+        ),
+      ],
     );
   }
 
@@ -711,8 +742,8 @@ class PlayAreaState extends State<PlayArea> {
   List<LichessActionSheetAction> _buildBoardTransformActions(
     BuildContext context, {
     required String keyPrefix,
+    required S strings,
   }) {
-    final S strings = S.of(context);
     return <LichessActionSheetAction>[
       for (final MillBoardTransformAction action in millBoardTransformActions)
         LichessActionSheetAction(
@@ -728,35 +759,36 @@ class PlayAreaState extends State<PlayArea> {
     BuildContext context, {
     required Key sheetKey,
     required String keyPrefix,
+    S? strings,
   }) {
+    if (!mounted) {
+      return;
+    }
+    final S effectiveStrings = strings ?? S.of(context);
     showLichessActionSheet<void>(
       context: context,
       sheetKey: sheetKey,
-      title: Text(S.of(context).flipBoard),
+      title: Text(effectiveStrings.flipBoard),
       backgroundColor: _actionSheetBackground(context),
       foregroundColor: _actionSheetForeground(context),
-      actions: _buildBoardTransformActions(context, keyPrefix: keyPrefix),
+      actions: _buildBoardTransformActions(
+        context,
+        keyPrefix: keyPrefix,
+        strings: effectiveStrings,
+      ),
     );
   }
 
   Future<void> _moveNowFromGameMenu(
     BuildContext context, {
     required String toolbar,
+    required MoveNowMessages messages,
   }) async {
     RecordingService().recordEvent(
       RecordingEventType.toolbarAction,
       <String, dynamic>{'toolbar': toolbar, 'action': 'moveNow'},
     );
-    await GameController().moveNow(context);
-  }
-
-  void _openOpeningExplorer(BuildContext context) {
-    Navigator.of(context).push(
-      MaterialPageRoute<void>(
-        builder: (_) =>
-            OpeningExplorerPage(session: GameSessionScope.sessionOf(context)),
-      ),
-    );
+    await GameController().moveNow(context, messages: messages);
   }
 
   bool get _shouldShowMoveNowMenuAction {
@@ -834,13 +866,13 @@ class PlayAreaState extends State<PlayArea> {
     }
   }
 
-  Future<void> _requestNewGameFromBottomBar(BuildContext context) async {
+  Future<void> _requestNewGameFromBottomBar(NavigatorState navigator) async {
     assert(_usesLichessHumanAiToolbar);
     RecordingService().recordEvent(
       RecordingEventType.toolbarAction,
       <String, dynamic>{'toolbar': 'lichessBottom', 'action': 'newGame'},
     );
-    await GameOptionsModal.showHumanAiNewGameSheet(context);
+    await GameOptionsModal.showHumanAiNewGameSheet(navigator.context);
   }
 
   Future<void> _showRegularResignConfirmation(BuildContext context) async {
@@ -898,6 +930,8 @@ class PlayAreaState extends State<PlayArea> {
   void _showRegularGameMenu() {
     assert(!_usesLichessHumanAiToolbar);
     final BuildContext hostContext = context;
+    final S strings = S.of(hostContext);
+    final MoveNowMessages moveNowMessages = MoveNowMessages.of(hostContext);
     final NavigatorState hostNavigator = Navigator.of(hostContext);
     showLichessActionSheet<void>(
       context: hostContext,
@@ -914,28 +948,22 @@ class PlayAreaState extends State<PlayArea> {
             hostContext,
             sheetKey: const Key('play_area_regular_board_transform_sheet'),
             keyPrefix: 'play_area_regular_board_transform',
+            strings: strings,
           ),
         ),
-        LichessActionSheetAction(
-          key: const Key('play_area_toolbar_item_game'),
-          leading: const Icon(Icons.add_circle_outline),
-          makeLabel: (BuildContext context) => Text(S.of(context).newGame),
-          onPressed: () => _requestRegularNewGame(hostContext),
-        ),
+        if (!_isAnalysisMode)
+          LichessActionSheetAction(
+            key: const Key('play_area_toolbar_item_game'),
+            leading: const Icon(Icons.add_circle_outline),
+            makeLabel: (BuildContext context) => Text(S.of(context).newGame),
+            onPressed: () => _requestRegularNewGame(hostNavigator),
+          ),
         if (!_isAnalysisMode)
           LichessActionSheetAction(
             key: const Key('play_area_toolbar_item_move'),
             leading: const Icon(Icons.format_list_numbered),
             makeLabel: (BuildContext context) => Text(S.of(context).moveList),
             onPressed: () => _openMovesWithNavigator(hostNavigator),
-          ),
-        if (_isAnalysisMode)
-          LichessActionSheetAction(
-            key: const Key('play_area_regular_game_menu_opening_explorer'),
-            leading: const Icon(Icons.auto_stories_outlined),
-            makeLabel: (BuildContext context) =>
-                Text(S.of(context).openingExplorer),
-            onPressed: () => _openOpeningExplorer(hostContext),
           ),
         if (_isAnalysisMode)
           LichessActionSheetAction(
@@ -947,27 +975,13 @@ class PlayAreaState extends State<PlayArea> {
           ),
         if (_isAnalysisMode)
           LichessActionSheetAction(
-            key: const Key('play_area_regular_game_menu_play_against_computer'),
-            leading: const Icon(Icons.smart_toy_outlined),
+            key: const Key('play_area_regular_game_menu_continue_from_here'),
+            leading: const Icon(Icons.play_circle_outline),
+            trailing: const Icon(Icons.chevron_right),
             makeLabel: (BuildContext context) =>
-                Text(S.of(context).playAgainstComputer),
-            onPressed: () => _continueFromHere(hostContext, GameMode.humanVsAi),
-          ),
-        if (_isAnalysisMode)
-          LichessActionSheetAction(
-            key: const Key('play_area_regular_game_menu_over_the_board'),
-            leading: const Icon(Icons.groups_2_outlined),
-            makeLabel: (BuildContext context) =>
-                Text(S.of(context).overTheBoard),
+                Text(S.of(context).continueFromHere),
             onPressed: () =>
-                _continueFromHere(hostContext, GameMode.humanVsHuman),
-          ),
-        if (_isAnalysisMode)
-          LichessActionSheetAction(
-            key: const Key('play_area_regular_game_menu_analysis'),
-            leading: const Icon(Icons.biotech_outlined),
-            makeLabel: (BuildContext context) => Text(S.of(context).analyze),
-            onPressed: () => unawaited(AnalysisService.toggle(hostContext)),
+                _showContinueFromHereMenu(hostContext, strings: strings),
           ),
         if (_canStepBackFromRegularBottomBar)
           LichessActionSheetAction(
@@ -997,7 +1011,11 @@ class PlayAreaState extends State<PlayArea> {
             leading: const Icon(FluentIcons.play_24_regular),
             makeLabel: (BuildContext context) => Text(S.of(context).moveNow),
             onPressed: () => unawaited(
-              _moveNowFromGameMenu(hostContext, toolbar: 'regularBottom'),
+              _moveNowFromGameMenu(
+                hostContext,
+                toolbar: 'regularBottom',
+                messages: moveNowMessages,
+              ),
             ),
           ),
         if (_shouldShowAiChatMenuAction)
@@ -1050,6 +1068,8 @@ class PlayAreaState extends State<PlayArea> {
   void _showHumanAiGameMenu() {
     assert(_usesLichessHumanAiToolbar);
     final BuildContext hostContext = context;
+    final S strings = S.of(hostContext);
+    final MoveNowMessages moveNowMessages = MoveNowMessages.of(hostContext);
     final NavigatorState hostNavigator = Navigator.of(hostContext);
     showLichessActionSheet<void>(
       context: hostContext,
@@ -1066,6 +1086,7 @@ class PlayAreaState extends State<PlayArea> {
             hostContext,
             sheetKey: const Key('play_area_board_transform_sheet'),
             keyPrefix: 'play_area_board_transform',
+            strings: strings,
           ),
         ),
         LichessActionSheetAction(
@@ -1080,7 +1101,11 @@ class PlayAreaState extends State<PlayArea> {
             leading: const Icon(FluentIcons.play_24_regular),
             makeLabel: (BuildContext context) => Text(S.of(context).moveNow),
             onPressed: () => unawaited(
-              _moveNowFromGameMenu(hostContext, toolbar: 'lichessBottom'),
+              _moveNowFromGameMenu(
+                hostContext,
+                toolbar: 'lichessBottom',
+                messages: moveNowMessages,
+              ),
             ),
           ),
         if (_shouldShowAiChatMenuAction)
@@ -1109,7 +1134,8 @@ class PlayAreaState extends State<PlayArea> {
           key: const Key('play_area_game_menu_new_game'),
           leading: const Icon(Icons.add_circle_outline),
           makeLabel: (BuildContext context) => Text(S.of(context).newGame),
-          onPressed: () => unawaited(_requestNewGameFromBottomBar(hostContext)),
+          onPressed: () =>
+              unawaited(_requestNewGameFromBottomBar(hostNavigator)),
         ),
       ],
     );
@@ -3400,9 +3426,9 @@ class _RegularGameBottomBar extends StatelessWidget {
         ),
         if (isAnalysisMode)
           LichessBottomBarButton(
-            key: const Key('play_area_regular_bottom_bar_analysis'),
-            icon: Icons.biotech_outlined,
-            label: S.of(context).analyze,
+            key: const Key('play_area_regular_bottom_bar_engine'),
+            icon: Icons.memory_outlined,
+            label: S.of(context).engine,
             onTap: onAnalyzePressed,
             highlighted: isAnalysisHighlighted,
             withShadow: true,
