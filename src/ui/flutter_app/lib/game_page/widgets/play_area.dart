@@ -30,6 +30,7 @@ import '../../shared/themes/app_styles.dart';
 import '../../shared/themes/app_theme.dart';
 import '../../shared/widgets/lichess_action_sheet.dart';
 import '../../shared/widgets/lichess_bottom_bar.dart';
+import '../../shared/widgets/snackbars/scaffold_messenger.dart';
 import '../../statistics/services/stats_service.dart';
 import '../services/analysis/analysis_service.dart';
 import '../services/analysis_mode.dart';
@@ -713,9 +714,10 @@ class PlayAreaState extends State<PlayArea> {
   }
 
   void _transformActiveBoard(
-    BuildContext context,
-    MillBoardTransformAction action,
-  ) {
+    MillBoardTransformAction action, {
+    required S strings,
+    GameSession? session,
+  }) {
     final bool transformed = GameController().transformActiveLocalGame(
       action.type,
     );
@@ -725,24 +727,28 @@ class PlayAreaState extends State<PlayArea> {
       });
       if (_usesLichessHumanAiToolbar &&
           GameController().gameInstance.isAiSideToMove) {
-        unawaited(GameController().engineToGo(context, isMoveNow: false));
+        unawaited(
+          GameController().engineToGo(
+            context,
+            isMoveNow: false,
+            session: session,
+          ),
+        );
       }
     }
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          transformed
-              ? S.of(context).transformed
-              : S.of(context).cannotTransform,
-        ),
-      ),
+    assert(
+      rootScaffoldMessengerKey.currentState != null,
+      'Board transform feedback requires the root scaffold messenger.',
+    );
+    rootScaffoldMessengerKey.currentState!.showSnackBarClear(
+      transformed ? strings.transformed : strings.cannotTransform,
     );
   }
 
-  List<LichessActionSheetAction> _buildBoardTransformActions(
-    BuildContext context, {
+  List<LichessActionSheetAction> _buildBoardTransformActions({
     required String keyPrefix,
     required S strings,
+    GameSession? session,
   }) {
     return <LichessActionSheetAction>[
       for (final MillBoardTransformAction action in millBoardTransformActions)
@@ -750,7 +756,8 @@ class PlayAreaState extends State<PlayArea> {
           key: Key('${keyPrefix}_${action.id}'),
           leading: Icon(action.icon),
           makeLabel: (BuildContext context) => Text(action.label(strings)),
-          onPressed: () => _transformActiveBoard(context, action),
+          onPressed: () =>
+              _transformActiveBoard(action, strings: strings, session: session),
         ),
     ];
   }
@@ -760,8 +767,9 @@ class PlayAreaState extends State<PlayArea> {
     required Key sheetKey,
     required String keyPrefix,
     S? strings,
+    GameSession? session,
   }) {
-    if (!mounted) {
+    if (!mounted || !context.mounted) {
       return;
     }
     final S effectiveStrings = strings ?? S.of(context);
@@ -772,9 +780,9 @@ class PlayAreaState extends State<PlayArea> {
       backgroundColor: _actionSheetBackground(context),
       foregroundColor: _actionSheetForeground(context),
       actions: _buildBoardTransformActions(
-        context,
         keyPrefix: keyPrefix,
         strings: effectiveStrings,
+        session: session,
       ),
     );
   }
@@ -783,12 +791,17 @@ class PlayAreaState extends State<PlayArea> {
     BuildContext context, {
     required String toolbar,
     required MoveNowMessages messages,
+    GameSession? session,
   }) async {
     RecordingService().recordEvent(
       RecordingEventType.toolbarAction,
       <String, dynamic>{'toolbar': toolbar, 'action': 'moveNow'},
     );
-    await GameController().moveNow(context, messages: messages);
+    await GameController().moveNow(
+      context,
+      messages: messages,
+      session: session,
+    );
   }
 
   bool get _shouldShowMoveNowMenuAction {
@@ -944,6 +957,7 @@ class PlayAreaState extends State<PlayArea> {
     final S strings = S.of(hostContext);
     final MoveNowMessages moveNowMessages = MoveNowMessages.of(hostContext);
     final NavigatorState hostNavigator = Navigator.of(hostContext);
+    final GameSession? hostSession = GameSessionScope.sessionOf(hostContext);
     showLichessActionSheet<void>(
       context: hostContext,
       sheetKey: const Key('play_area_regular_game_menu_sheet'),
@@ -960,6 +974,7 @@ class PlayAreaState extends State<PlayArea> {
             sheetKey: const Key('play_area_regular_board_transform_sheet'),
             keyPrefix: 'play_area_regular_board_transform',
             strings: strings,
+            session: hostSession,
           ),
         ),
         if (!_isAnalysisMode)
@@ -1041,6 +1056,7 @@ class PlayAreaState extends State<PlayArea> {
                 hostContext,
                 toolbar: 'regularBottom',
                 messages: moveNowMessages,
+                session: hostSession,
               ),
             ),
           ),
@@ -1097,6 +1113,7 @@ class PlayAreaState extends State<PlayArea> {
     final S strings = S.of(hostContext);
     final MoveNowMessages moveNowMessages = MoveNowMessages.of(hostContext);
     final NavigatorState hostNavigator = Navigator.of(hostContext);
+    final GameSession? hostSession = GameSessionScope.sessionOf(hostContext);
     showLichessActionSheet<void>(
       context: hostContext,
       sheetKey: const Key('play_area_game_menu_sheet'),
@@ -1113,6 +1130,7 @@ class PlayAreaState extends State<PlayArea> {
             sheetKey: const Key('play_area_board_transform_sheet'),
             keyPrefix: 'play_area_board_transform',
             strings: strings,
+            session: hostSession,
           ),
         ),
         LichessActionSheetAction(
@@ -1131,6 +1149,7 @@ class PlayAreaState extends State<PlayArea> {
                 hostContext,
                 toolbar: 'lichessBottom',
                 messages: moveNowMessages,
+                session: hostSession,
               ),
             ),
           ),

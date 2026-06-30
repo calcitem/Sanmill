@@ -828,9 +828,16 @@ void main() {
       findsNothing,
     );
 
-    Navigator.of(
-      tester.element(find.byKey(const Key('play_area_board_transform_sheet'))),
-    ).pop();
+    await tester.tap(find.byKey(const Key('play_area_board_transform_rotate')));
+    await tester.pumpAndSettle();
+
+    expect(
+      find.byKey(const Key('play_area_board_transform_sheet')),
+      findsNothing,
+    );
+    expect(tester.takeException(), isNull);
+
+    await tester.pump(const Duration(seconds: 4));
     await tester.pumpAndSettle();
 
     await tester.tap(find.byKey(const Key('play_area_bottom_bar_menu')));

@@ -224,6 +224,7 @@ void _handleActionPressed(
     return;
   }
 
-  Navigator.of(context).pop();
+  final NavigatorState navigator = Navigator.of(context);
+  navigator.pop();
   WidgetsBinding.instance.addPostFrameCallback((_) => action.onPressed());
 }

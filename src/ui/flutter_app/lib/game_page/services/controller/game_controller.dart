@@ -301,6 +301,16 @@ class GameController {
     NativeMillGameSession session, {
     bool showThinking = false,
   }) {
+    final BuildContext effectiveContext =
+        rootScaffoldMessengerKey.currentContext ?? context;
+    assert(
+      effectiveContext.mounted,
+      'Native session header refresh requires a mounted context.',
+    );
+    if (!effectiveContext.mounted) {
+      return;
+    }
+
     headerIconsNotifier.showIcons();
     boardSemanticsNotifier.updateSemantics();
 
@@ -318,10 +328,10 @@ class GameController {
     // When enabled, surface the recognised opening (name + source) while the
     // game follows a known book line; append the current turn prompt so the
     // opening and actionable state remain visible as one header sentence.
-    final String? openingTip = _openingInfoTip(context, session);
+    final String? openingTip = _openingInfoTip(effectiveContext, session);
     final String? turnTip = showThinking
-        ? S.of(context).thinking
-        : _nativeSessionTurnTip(context, session);
+        ? S.of(effectiveContext).thinking
+        : _nativeSessionTurnTip(effectiveContext, session);
     if (openingTip != null) {
       headerTipNotifier.showTip(
         _joinHeaderTips(openingTip, turnTip),
@@ -1548,6 +1558,7 @@ class GameController {
   Future<EngineResponse> engineToGo(
     BuildContext context, {
     required bool isMoveNow,
+    GameSession? session,
   }) async {
     const String tag = "[engineToGo]";
     if (EnvironmentConfig.devMode) {
@@ -1604,7 +1615,11 @@ class GameController {
     }
 
     if (gameInstance.gameMode == GameMode.humanVsAi) {
-      return _nativeSessionEngineToGo(context, isMoveNow: isMoveNow);
+      return _nativeSessionEngineToGo(
+        context,
+        isMoveNow: isMoveNow,
+        session: session,
+      );
     }
 
     // AI vs AI must also drive the Rust/FRB native session.  The legacy
@@ -1617,7 +1632,7 @@ class GameController {
       if (EnvironmentConfig.devMode) {
         logger.i("$tag routing to _nativeAiVsAiLoop");
       }
-      return _nativeAiVsAiLoop(context, isMoveNow: isMoveNow);
+      return _nativeAiVsAiLoop(context, isMoveNow: isMoveNow, session: session);
     }
 
     // Every game mode that drives the AI is intercepted above
@@ -1638,14 +1653,19 @@ class GameController {
   Future<EngineResponse> _nativeSessionEngineToGo(
     BuildContext context, {
     required bool isMoveNow,
+    GameSession? session,
   }) async {
     const String tag = "[engineToGo][native]";
     // Same fall-back as _nativeAiVsAiLoop -- prefer the
     // controller-bound active session so flows triggered from the
     // modal route still work even if the InheritedWidget probe via
     // context returns null.
-    final GameSession? scopedFromContext = GameSessionScope.sessionOf(context);
-    final GameSession? scopedSession = scopedFromContext ?? _activeSession;
+    final GameSession? scopedFromContext =
+        session == null && _activeSession == null
+        ? GameSessionScope.sessionOf(context)
+        : null;
+    final GameSession? scopedSession =
+        session ?? _activeSession ?? scopedFromContext;
     if (scopedSession is! NativeMillGameSession) {
       logger.w(
         "$tag Native flag is enabled but session is "
@@ -1730,6 +1750,7 @@ class GameController {
   Future<EngineResponse> _nativeAiVsAiLoop(
     BuildContext context, {
     required bool isMoveNow,
+    GameSession? session,
   }) async {
     const String tag = "[engineToGo][native][aiVsAi]";
     // Resolve session via the controller-bound `_activeSession`
@@ -1739,8 +1760,12 @@ class GameController {
     // saw scopedSession show up as null in some app states; the
     // controller-bound reference is set by Home.dart whenever the
     // active session changes and never goes stale on a mode switch.
-    final GameSession? scopedFromContext = GameSessionScope.sessionOf(context);
-    final GameSession? scopedSession = scopedFromContext ?? _activeSession;
+    final GameSession? scopedFromContext =
+        session == null && _activeSession == null
+        ? GameSessionScope.sessionOf(context)
+        : null;
+    final GameSession? scopedSession =
+        session ?? _activeSession ?? scopedFromContext;
     if (EnvironmentConfig.devMode) {
       logger.i(
         "$tag enter: isMoveNow=$isMoveNow, "
@@ -1941,6 +1966,7 @@ class GameController {
   Future<void> moveNow(
     BuildContext context, {
     MoveNowMessages? messages,
+    GameSession? session,
   }) async {
     const String tag = "[engineToGo]";
     bool reversed = false;
@@ -1985,6 +2011,7 @@ class GameController {
     final EngineResponse engineResponse = await engineToGo(
       context,
       isMoveNow: true,
+      session: session,
     );
 
     if (!context.mounted) {
