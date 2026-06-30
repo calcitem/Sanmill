@@ -1977,6 +1977,14 @@ class PlayAreaState extends State<PlayArea> {
                   onAnalyzePressed: _isAnalysisMode
                       ? () => unawaited(AnalysisService.toggle(context))
                       : null,
+                  onAnalyzeLongPressed: _isAnalysisMode
+                      ? () => unawaited(
+                          _showAnalysisSettingsSheet(
+                            context,
+                            strings: S.of(context),
+                          ),
+                        )
+                      : null,
                   showClockControl: _shouldShowRegularClockControl,
                   isClockPaused: status == PlayerTimerStatus.paused,
                   isAnalysisMode: _isAnalysisMode,
@@ -3662,28 +3670,25 @@ class _AnalysisEngineLine extends StatelessWidget {
         ? Colors.white
         : Colors.black;
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 1),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(AppStyles.compactRadius),
-        onTap: onTap,
-        child: Container(
-          constraints: const BoxConstraints(minHeight: 24),
-          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
-          decoration: BoxDecoration(
-            color: colorScheme.surfaceContainerHighest.withValues(alpha: 0.75),
-            borderRadius: BorderRadius.circular(AppStyles.compactRadius),
-          ),
+    return InkWell(
+      borderRadius: BorderRadius.circular(AppStyles.compactRadius),
+      onTap: onTap,
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(minHeight: 24),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
           child: Row(
             children: <Widget>[
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                constraints: const BoxConstraints(minWidth: 34),
+                padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
                 decoration: BoxDecoration(
                   color: outcomeColor,
                   borderRadius: BorderRadius.circular(4),
                 ),
                 child: Text(
-                  result.outcome.name,
+                  _evalLabel(result.outcome),
+                  textAlign: TextAlign.center,
                   style: theme.textTheme.labelSmall?.copyWith(
                     color: chipTextColor,
                     fontWeight: FontWeight.w700,
@@ -3692,22 +3697,14 @@ class _AnalysisEngineLine extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 8),
-              Text(
-                result.move,
-                style: theme.textTheme.bodySmall?.copyWith(
-                  color: colorScheme.onSurface,
-                  fontWeight: FontWeight.w700,
-                  letterSpacing: 0,
-                ),
-              ),
-              const SizedBox(width: 8),
               Expanded(
                 child: Text(
-                  result.outcome.displayString,
+                  '${result.move}  ${result.outcome.displayString}',
                   maxLines: 1,
+                  softWrap: false,
                   overflow: TextOverflow.ellipsis,
                   style: theme.textTheme.bodySmall?.copyWith(
-                    color: colorScheme.onSurfaceVariant,
+                    color: colorScheme.onSurface,
                     letterSpacing: 0,
                   ),
                 ),
@@ -3717,6 +3714,23 @@ class _AnalysisEngineLine extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  String _evalLabel(AnalysisOutcome outcome) {
+    if (outcome.stepCount != null && outcome.stepCount! > 0) {
+      return '${outcome.name.substring(0, 1).toUpperCase()}${outcome.stepCount}';
+    }
+    if (outcome.valueStr != null && outcome.valueStr!.isNotEmpty) {
+      return outcome.valueStr!;
+    }
+    return switch (outcome.name) {
+      'win' => 'W',
+      'draw' => '=',
+      'loss' => 'L',
+      'advantage' => '+',
+      'disadvantage' => '-',
+      _ => '?',
+    };
   }
 }
 
@@ -3757,6 +3771,7 @@ class _RegularGameBottomBar extends StatelessWidget {
     required this.onMenuPressed,
     required this.onResignOrResultPressed,
     required this.onAnalyzePressed,
+    required this.onAnalyzeLongPressed,
     required this.showClockControl,
     required this.isClockPaused,
     required this.isAnalysisMode,
@@ -3771,6 +3786,7 @@ class _RegularGameBottomBar extends StatelessWidget {
   final VoidCallback onMenuPressed;
   final VoidCallback? onResignOrResultPressed;
   final VoidCallback? onAnalyzePressed;
+  final VoidCallback? onAnalyzeLongPressed;
   final bool showClockControl;
   final bool isClockPaused;
   final bool isAnalysisMode;
@@ -3798,13 +3814,12 @@ class _RegularGameBottomBar extends StatelessWidget {
           withShadow: true,
         ),
         if (isAnalysisMode)
-          LichessBottomBarButton(
+          _AnalysisEngineBottomBarButton(
             key: const Key('play_area_regular_bottom_bar_engine'),
-            icon: Icons.memory_outlined,
             label: S.of(context).engine,
             onTap: onAnalyzePressed,
+            onLongPress: onAnalyzeLongPressed,
             highlighted: isAnalysisHighlighted,
-            withShadow: true,
           )
         else
           LichessBottomBarButton(
@@ -3850,6 +3865,172 @@ class _RegularGameBottomBar extends StatelessWidget {
           ),
       ],
     );
+  }
+}
+
+class _AnalysisEngineBottomBarButton extends StatelessWidget {
+  const _AnalysisEngineBottomBarButton({
+    super.key,
+    required this.label,
+    required this.onTap,
+    required this.onLongPress,
+    required this.highlighted,
+  });
+
+  final String label;
+  final VoidCallback? onTap;
+  final VoidCallback? onLongPress;
+  final bool highlighted;
+
+  bool get _enabled => onTap != null;
+
+  @override
+  Widget build(BuildContext context) {
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+    final Color foreground =
+        IconTheme.of(context).color ??
+        DefaultTextStyle.of(context).style.color ??
+        colorScheme.onSurface;
+    final Color activeColor = colorScheme.primary;
+    final Color chipColor = highlighted || AnalysisMode.isAnalyzing
+        ? activeColor
+        : foreground.withValues(alpha: 0.72);
+    final Color textColor = highlighted || AnalysisMode.isAnalyzing
+        ? activeColor
+        : foreground;
+    final String chipText = _chipText;
+
+    return Semantics(
+      container: true,
+      button: true,
+      enabled: _enabled,
+      label: label,
+      excludeSemantics: true,
+      child: Tooltip(
+        excludeFromSemantics: true,
+        message: label,
+        triggerMode: TooltipTriggerMode.longPress,
+        child: InkWell(
+          borderRadius: BorderRadius.zero,
+          onTap: onTap,
+          onLongPress: onLongPress,
+          child: Opacity(
+            opacity: _enabled ? 1 : 0.4,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                SizedBox.square(
+                  dimension: 28,
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: <Widget>[
+                      CustomPaint(
+                        size: const Size.square(28),
+                        painter: _AnalysisEngineChipPainter(chipColor),
+                      ),
+                      Text(
+                        chipText,
+                        key: const Key(
+                          'play_area_regular_bottom_bar_engine_value',
+                        ),
+                        style: TextStyle(
+                          color: textColor,
+                          fontSize: chipText.length > 2 ? 9 : 11,
+                          fontWeight: FontWeight.w700,
+                          letterSpacing: 0,
+                          shadows: <Shadow>[
+                            Shadow(
+                              color: textColor.computeLuminance() < 0.5
+                                  ? Colors.white.withValues(alpha: 0.48)
+                                  : Colors.black.withValues(alpha: 0.48),
+                              blurRadius: 2,
+                              offset: const Offset(0, 1),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Text(
+                  'DB',
+                  key: const Key('play_area_regular_bottom_bar_engine_label'),
+                  style: TextStyle(
+                    color: textColor.withValues(alpha: 0.82),
+                    fontSize: 10,
+                    fontWeight: FontWeight.w700,
+                    letterSpacing: 0,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  String get _chipText {
+    if (AnalysisMode.isAnalyzing) {
+      return '...';
+    }
+    if (!AnalysisMode.isFullAnalysis) {
+      return '-';
+    }
+    final int count = AnalysisMode.analysisResults.length;
+    assert(count > 0, 'Full analysis mode must have at least one line.');
+    return math.min(99, count).toString();
+  }
+}
+
+class _AnalysisEngineChipPainter extends CustomPainter {
+  const _AnalysisEngineChipPainter(this.color);
+
+  final Color color;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final Paint stroke = Paint()
+      ..color = color
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 1.6;
+    final Paint fill = Paint()
+      ..color = color.withValues(alpha: 0.16)
+      ..style = PaintingStyle.fill;
+
+    final Rect body = Rect.fromLTWH(5, 5, size.width - 10, size.height - 10);
+    final RRect outer = RRect.fromRectAndRadius(body, const Radius.circular(5));
+    final RRect inner = RRect.fromRectAndRadius(
+      body.deflate(4),
+      const Radius.circular(2),
+    );
+    canvas.drawRRect(outer, fill);
+    canvas.drawRRect(outer, stroke);
+    canvas.drawRRect(inner, stroke..strokeWidth = 1);
+
+    const double pinLength = 3;
+    final double pinStep = body.height / 4;
+    for (int i = 1; i <= 3; i++) {
+      final double y = body.top + pinStep * i;
+      canvas.drawLine(Offset(1, y), Offset(1 + pinLength, y), stroke);
+      canvas.drawLine(
+        Offset(size.width - 1 - pinLength, y),
+        Offset(size.width - 1, y),
+        stroke,
+      );
+      final double x = body.left + pinStep * i;
+      canvas.drawLine(Offset(x, 1), Offset(x, 1 + pinLength), stroke);
+      canvas.drawLine(
+        Offset(x, size.height - 1 - pinLength),
+        Offset(x, size.height - 1),
+        stroke,
+      );
+    }
+  }
+
+  @override
+  bool shouldRepaint(_AnalysisEngineChipPainter oldDelegate) {
+    return oldDelegate.color != color;
   }
 }
 

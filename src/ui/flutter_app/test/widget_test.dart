@@ -359,15 +359,23 @@ void main() {
       expect(find.byKey(const Key('drawer_item_import_game')), findsOneWidget);
       expect(find.byKey(const Key('drawer_item_analysis')), findsOneWidget);
       expect(
-        tester
-            .getTopLeft(find.byKey(const Key('drawer_item_opening_explorer')))
-            .dy,
+        tester.getTopLeft(find.byKey(const Key('drawer_item_import_game'))).dy,
         lessThan(
           tester.getTopLeft(find.byKey(const Key('drawer_item_analysis'))).dy,
         ),
       );
       expect(
         tester.getTopLeft(find.byKey(const Key('drawer_item_analysis'))).dy,
+        lessThan(
+          tester
+              .getTopLeft(find.byKey(const Key('drawer_item_opening_explorer')))
+              .dy,
+        ),
+      );
+      expect(
+        tester
+            .getTopLeft(find.byKey(const Key('drawer_item_opening_explorer')))
+            .dy,
         lessThan(
           tester
               .getTopLeft(find.byKey(const Key('drawer_item_setup_position')))
@@ -390,10 +398,8 @@ void main() {
       );
       expect(
         tester.getTopLeft(find.byKey(const Key('drawer_item_variants'))).dy,
-        lessThan(
-          tester
-              .getTopLeft(find.byKey(const Key('drawer_item_import_game')))
-              .dy,
+        greaterThan(
+          tester.getTopLeft(find.byKey(const Key('drawer_item_clock'))).dy,
         ),
       );
 

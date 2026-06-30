@@ -2494,9 +2494,10 @@ class _MenuEntries extends StatelessWidget {
           title: strings.tools,
           headerKey: const Key('drawer_item_tools_group'),
           children: <Widget>[
+            if (importGame != null) _buildContributionToolTile(importGame),
+            if (analysis != null) _buildContributionToolTile(analysis),
             if (openingExplorer != null)
               _buildContributionToolTile(openingExplorer),
-            if (analysis != null) _buildContributionToolTile(analysis),
             if (boardEditor != null) _buildPlayModeToolTile(boardEditor),
             _MoreTile(
               key: const Key('drawer_item_clock'),
@@ -2512,7 +2513,6 @@ class _MenuEntries extends StatelessWidget {
                 onTap: () =>
                     onAppRouteSelected(ShellRouteIds.appVariants.value),
               ),
-            if (importGame != null) _buildContributionToolTile(importGame),
             for (final GameMenuContribution tool
                 in contributionToolsById.values)
               _buildContributionToolTile(tool),
