@@ -30,16 +30,16 @@ const List<MillBoardTransformAction> millBoardTransformActions =
         label: _rotateLabel,
       ),
       MillBoardTransformAction(
-        id: 'horizontal_flip',
-        type: TransformationType.mirrorHorizontal,
-        icon: FluentIcons.flip_horizontal_24_regular,
-        label: _horizontalFlipLabel,
-      ),
-      MillBoardTransformAction(
         id: 'vertical_flip',
         type: TransformationType.mirrorVertical,
         icon: FluentIcons.flip_vertical_24_regular,
         label: _verticalFlipLabel,
+      ),
+      MillBoardTransformAction(
+        id: 'horizontal_flip',
+        type: TransformationType.mirrorHorizontal,
+        icon: FluentIcons.flip_horizontal_24_regular,
+        label: _horizontalFlipLabel,
       ),
       MillBoardTransformAction(
         id: 'inner_outer_flip',

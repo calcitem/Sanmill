@@ -68,7 +68,7 @@ class PlayAreaState extends State<PlayArea> {
 
   bool _isBoardFlipped = false;
   bool _isHintSearching = false;
-  static const double _kMoveListRouteTopInset = 56;
+  static const double _kMoveListRouteTopInset = 64;
 
   @override
   void initState() {
@@ -1224,10 +1224,10 @@ class PlayAreaState extends State<PlayArea> {
           if (showAdvantageIndicator)
             PositionedDirectional(
               key: const Key('play_area_advantage_indicator_positioned'),
-              start: 4,
-              top: 8,
-              bottom: 8,
-              width: 8,
+              start: 8,
+              top: 14,
+              bottom: 14,
+              width: 14,
               child: _PositionalAdvantageIndicator(value: advantageValue),
             ),
         ],
@@ -2373,9 +2373,19 @@ class _PositionalAdvantageIndicator extends StatelessWidget {
         child: DecoratedBox(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(999),
+            color: Theme.of(
+              context,
+            ).colorScheme.surface.withValues(alpha: 0.74),
             border: Border.all(
-              color: DB().colorSettings.messageColor.withValues(alpha: 0.55),
+              color: DB().colorSettings.messageColor.withValues(alpha: 0.78),
             ),
+            boxShadow: <BoxShadow>[
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.22),
+                blurRadius: 3,
+                offset: const Offset(0, 1),
+              ),
+            ],
           ),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(999),

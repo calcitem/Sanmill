@@ -2097,7 +2097,10 @@ void main() {
         findsNothing,
       );
 
-      await tester.tap(find.byKey(const Key('sanmill_home_ongoing_game')));
+      final Rect ongoingGameRect = tester.getRect(
+        find.byKey(const Key('sanmill_home_ongoing_game')),
+      );
+      await tester.tapAt(ongoingGameRect.centerLeft + const Offset(46, 0));
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 500));
 

@@ -100,7 +100,7 @@ Future<T?> _showMaterialActionSheet<T>({
         child: SizedBox(
           width: math.min(screenWidth, _kMaterialPopupMenuMaxWidth),
           child: IconTheme.merge(
-            data: IconThemeData(color: colorScheme.onSurfaceVariant),
+            data: IconThemeData(color: colorScheme.onSurface),
             child: DefaultTextStyle.merge(
               style: TextStyle(color: colorScheme.onSurface),
               child: SingleChildScrollView(

@@ -14,12 +14,12 @@ enum GameMode {
   humanVsAi,
   humanVsHuman,
   aiVsAi,
-  analysis,
   setupPosition,
   puzzle,
   humanVsCloud, // Not Implemented
   humanVsLAN,
   testViaLAN, // Not Implemented
+  analysis,
 }
 
 Map<AiMoveType, IconData> aiMoveTypeIcons = <AiMoveType, IconData>{

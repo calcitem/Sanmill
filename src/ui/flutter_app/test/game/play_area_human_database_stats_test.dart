@@ -326,7 +326,7 @@ void main() {
     );
     expect(
       IconTheme.of(regularRotateActionContext).color,
-      Theme.of(regularRotateActionContext).colorScheme.onSurfaceVariant,
+      Theme.of(regularRotateActionContext).colorScheme.onSurface,
     );
     expect(
       find.byKey(const Key('play_area_regular_board_transform_rotate')),
@@ -341,6 +341,24 @@ void main() {
     expect(
       find.byKey(const Key('play_area_regular_board_transform_vertical_flip')),
       findsOne,
+    );
+    expect(
+      tester
+          .getTopLeft(
+            find.byKey(
+              const Key('play_area_regular_board_transform_vertical_flip'),
+            ),
+          )
+          .dy,
+      lessThan(
+        tester
+            .getTopLeft(
+              find.byKey(
+                const Key('play_area_regular_board_transform_horizontal_flip'),
+              ),
+            )
+            .dy,
+      ),
     );
     expect(
       find.byKey(
@@ -768,7 +786,7 @@ void main() {
     );
     expect(
       IconTheme.of(rotateActionContext).color,
-      Theme.of(rotateActionContext).colorScheme.onSurfaceVariant,
+      Theme.of(rotateActionContext).colorScheme.onSurface,
     );
     expect(find.byKey(const Key('play_area_board_transform_rotate')), findsOne);
     expect(
@@ -778,6 +796,22 @@ void main() {
     expect(
       find.byKey(const Key('play_area_board_transform_vertical_flip')),
       findsOne,
+    );
+    expect(
+      tester
+          .getTopLeft(
+            find.byKey(const Key('play_area_board_transform_vertical_flip')),
+          )
+          .dy,
+      lessThan(
+        tester
+            .getTopLeft(
+              find.byKey(
+                const Key('play_area_board_transform_horizontal_flip'),
+              ),
+            )
+            .dy,
+      ),
     );
     expect(
       find.byKey(const Key('play_area_board_transform_inner_outer_flip')),
@@ -1266,7 +1300,10 @@ void main() {
           .getTopLeft(find.byKey(const Key('play_area_human_ai_move_list')))
           .dy,
       greaterThanOrEqualTo(
-        tester.getBottomLeft(find.byKey(const Key('game_page_back_button'))).dy,
+        tester
+                .getBottomLeft(find.byKey(const Key('game_page_back_button')))
+                .dy +
+            8,
       ),
     );
 

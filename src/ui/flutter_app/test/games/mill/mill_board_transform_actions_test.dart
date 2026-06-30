@@ -23,8 +23,8 @@ void main() {
       ),
       <TransformationType>[
         TransformationType.rotate90,
-        TransformationType.mirrorHorizontal,
         TransformationType.mirrorVertical,
+        TransformationType.mirrorHorizontal,
         TransformationType.swap,
       ],
     );
