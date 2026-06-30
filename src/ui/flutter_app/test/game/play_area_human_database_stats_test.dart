@@ -1079,6 +1079,35 @@ void main() {
     expect(tester.takeException(), isNull);
   });
 
+  testWidgets('human vs ai move now plays from a human turn', (
+    WidgetTester tester,
+  ) async {
+    db.generalSettings = const GeneralSettings();
+    db.displaySettings = const DisplaySettings(
+      isUnplacedAndRemovedPiecesShown: false,
+      isHistoryNavigationToolbarShown: false,
+    );
+    final _MoveNowFakeSearchSession session = _MoveNowFakeSearchSession();
+    _bindExistingNativeGame(GameMode.humanVsAi, session);
+    final MillSessionRecorderBridge recorderBridge =
+        MillSessionRecorderBridge.forGameController(session: session);
+    addTearDown(recorderBridge.dispose);
+
+    expect(GameController().gameInstance.isHumanToMove, isTrue);
+    expect(_currentPathMoves(), isEmpty);
+
+    await _pumpSessionPlayArea(tester, session);
+    await tester.tap(find.byKey(const Key('play_area_bottom_bar_menu')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const Key('play_area_game_menu_move_now')));
+    await tester.pumpAndSettle();
+
+    expect(tester.takeException(), isNull);
+    expect(session.searchCalls, 1);
+    expect(_currentPathMoves(), hasLength(1));
+    expect(GameController().gameInstance.isHumanToMove, isFalse);
+  });
+
   testWidgets('human vs ai balanced layout fits with advantage graph', (
     WidgetTester tester,
   ) async {
@@ -3326,6 +3355,22 @@ Future<void> _holdBottomBarButton(WidgetTester tester, Key key) async {
 
 Future<NativeMillGameSession> _bindNativeHumanAiGame() {
   return _bindNativeGame(GameMode.humanVsAi);
+}
+
+class _MoveNowFakeSearchSession extends NativeMillGameSession {
+  _MoveNowFakeSearchSession() : super.fromPort(NativeMillRulesPort());
+
+  int searchCalls = 0;
+
+  @override
+  Future<platform.GameAction?> searchBestAction({
+    int depth = 1,
+    int moveLimitMs = 0,
+    GeneralSettings? engineSettings,
+  }) async {
+    searchCalls++;
+    return legalActions.isEmpty ? null : legalActions.first;
+  }
 }
 
 Future<NativeMillGameSession> _bindNativeGame(GameMode gameMode) async {
