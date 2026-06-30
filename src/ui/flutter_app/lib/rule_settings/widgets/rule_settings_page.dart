@@ -28,8 +28,26 @@ part 'modals/stalemate_action_modal.dart';
 
 bool visitedRuleSettingsPage = false;
 
-class RuleSettingsPage extends StatelessWidget {
+class RuleSettingsPage extends StatefulWidget {
   const RuleSettingsPage({super.key});
+
+  @override
+  State<RuleSettingsPage> createState() => _RuleSettingsPageState();
+}
+
+class _RuleSettingsPageState extends State<RuleSettingsPage> {
+  @override
+  void initState() {
+    super.initState();
+    visitedRuleSettingsPage = true;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) {
+        return;
+      }
+      GameController().isControllerActive = false;
+      GameController().reset();
+    });
+  }
 
   // Rule set
   void _setRuleSet(BuildContext context, RuleSettings ruleSettings) {
@@ -1159,11 +1177,6 @@ class RuleSettingsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    visitedRuleSettingsPage = true;
-
-    GameController().isControllerActive = false;
-    GameController().reset();
-
     return BlockSemantics(
       child: Scaffold(
         key: const Key('rule_settings_scaffold'),

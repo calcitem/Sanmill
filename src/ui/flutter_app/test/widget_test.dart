@@ -374,7 +374,8 @@ void main() {
       expect(find.byKey(const Key('game_page_ai_chat_button')), findsNothing);
 
       await tester.binding.handlePopRoute();
-      await tester.pumpAndSettle();
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 500));
 
       expect(shellState.debugCurrentTab, SanmillShellTab.home);
       expect(
@@ -1094,11 +1095,15 @@ void main() {
       final Finder boardCoordinatesTile = find.byKey(
         const Key('display_settings_card_notations_shown_switch_tile'),
       );
+      final Finder boardImageTile = find.byKey(
+        const Key('display_settings_card_board_image_settings_list_tile'),
+      );
       final Finder backgroundImageTile = find.byKey(
         const Key('display_settings_card_background_image_settings_list_tile'),
       );
       expect(pieceSetTile, findsOneWidget);
       expect(boardCoordinatesTile, findsOneWidget);
+      expect(boardImageTile, findsOneWidget);
       expect(backgroundImageTile, findsOneWidget);
       expect(
         tester.getTopLeft(pieceSetTile).dy,
@@ -1109,8 +1114,12 @@ void main() {
         greaterThan(tester.getTopLeft(pieceSetTile).dy),
       );
       expect(
-        tester.getTopLeft(backgroundImageTile).dy,
+        tester.getTopLeft(boardImageTile).dy,
         greaterThan(tester.getTopLeft(boardCoordinatesTile).dy),
+      );
+      expect(
+        tester.getTopLeft(backgroundImageTile).dy,
+        greaterThan(tester.getTopLeft(boardImageTile).dy),
       );
       final Finder displaySettings = find.byKey(
         const Key('appearance_settings_page_display_settings_card'),
@@ -1301,6 +1310,51 @@ void main() {
 
     expect(DB().ruleSettings.piecesCount, 12);
     expect(find.byKey(const Key('mill_variants_page_list')), findsOneWidget);
+  });
+
+  testWidgets('Appearance board settings follow Lichess primary order', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: AppTheme.lightThemeData,
+        localizationsDelegates: sanmillLocalizationsDelegates,
+        supportedLocales: S.supportedLocales,
+        locale: const Locale('en'),
+        home: const AppearanceSettingsPage(),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    final Finder boardThemeTile = find.byKey(
+      const Key('color_settings_card_theme_settings_list_tile'),
+    );
+    final Finder pieceSetTile = find.byKey(
+      const Key('display_settings_card_piece_image_settings_list_tile'),
+    );
+    final Finder boardCoordinatesTile = find.byKey(
+      const Key('display_settings_card_notations_shown_switch_tile'),
+    );
+    final Finder boardImageTile = find.byKey(
+      const Key('display_settings_card_board_image_settings_list_tile'),
+    );
+
+    expect(boardThemeTile, findsOneWidget);
+    expect(pieceSetTile, findsOneWidget);
+    expect(boardCoordinatesTile, findsOneWidget);
+    expect(boardImageTile, findsOneWidget);
+    expect(
+      tester.getTopLeft(pieceSetTile).dy,
+      greaterThan(tester.getTopLeft(boardThemeTile).dy),
+    );
+    expect(
+      tester.getTopLeft(boardCoordinatesTile).dy,
+      greaterThan(tester.getTopLeft(pieceSetTile).dy),
+    );
+    expect(
+      tester.getTopLeft(boardImageTile).dy,
+      greaterThan(tester.getTopLeft(boardCoordinatesTile).dy),
+    );
   });
 
   testWidgets(
@@ -1846,7 +1900,7 @@ void main() {
   );
 
   testWidgets(
-    'Home tab shows a newly started active game before the first move',
+    'Home tab keeps bottom navigation after leaving an active game',
     (WidgetTester tester) async {
       final GameController controller = GameController();
       addTearDown(() {
@@ -1896,6 +1950,14 @@ void main() {
       await tester.binding.handlePopRoute();
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 500));
+      controller.activeSessionSnapshot = const platform.GameStateSnapshot(
+        gameId: GameId.mill,
+        activeSeat: platform.PlayerSeat.second,
+        outcome: platform.GameOutcome.ongoing(),
+        phase: 'placing',
+      );
+      controller.gameRecorder.appendMove(ExtMove('d6', side: PieceColor.white));
+      await tester.pump();
 
       expect(
         find.byKey(const Key('sanmill_home_ongoing_game_group')),
@@ -1905,6 +1967,15 @@ void main() {
         find.byKey(const Key('sanmill_home_ongoing_game')),
         findsOneWidget,
       );
+      expect(
+        find.byKey(const Key('sanmill_bottom_navigation_bar')),
+        findsOneWidget,
+      );
+
+      await tester.tap(find.byKey(const Key('sanmill_tab_learn')));
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 500));
+      expect(find.byKey(const Key('sanmill_learn_list')), findsOneWidget);
 
       // Drain any settings-save debounce timer (see the smoke test above).
       await tester.pump(const Duration(milliseconds: 350));

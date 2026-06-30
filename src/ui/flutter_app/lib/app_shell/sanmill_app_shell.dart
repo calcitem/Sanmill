@@ -173,6 +173,14 @@ class SanmillAppShellState extends State<SanmillAppShell> {
   @override
   void initState() {
     super.initState();
+    for (final SanmillShellTab tab in SanmillShellTab.values) {
+      final _SanmillTabRouteObserver? observer = _routeObservers[tab];
+      assert(observer != null, 'Missing route observer for $tab.');
+      observer!.onRoutePopped =
+          (Route<dynamic> route, Route<dynamic>? previousRoute) {
+            _syncRouteAfterNavigatorPop(tab, route, previousRoute);
+          };
+    }
     GameRegistry.instance.addListener(_onRegistryChanged);
     WidgetsBinding.instance.addPostFrameCallback((_) => _showPrivacyDialog());
   }
@@ -442,7 +450,10 @@ class SanmillAppShellState extends State<SanmillAppShell> {
       _currentTab = SanmillShellTab.more;
     });
     _navigatorKeys[SanmillShellTab.more]?.currentState?.push(
-      MaterialPageRoute<void>(builder: (_) => screen),
+      MaterialPageRoute<void>(
+        settings: RouteSettings(name: routeId),
+        builder: (_) => screen,
+      ),
     );
   }
 
@@ -467,7 +478,10 @@ class SanmillAppShellState extends State<SanmillAppShell> {
       _currentTab = SanmillShellTab.watch;
     });
     _navigatorKeys[SanmillShellTab.watch]?.currentState?.push(
-      MaterialPageRoute<void>(builder: (_) => screen),
+      MaterialPageRoute<void>(
+        settings: RouteSettings(name: routeId),
+        builder: (_) => screen,
+      ),
     );
   }
 
@@ -494,7 +508,10 @@ class SanmillAppShellState extends State<SanmillAppShell> {
       _currentTab = SanmillShellTab.learn;
     });
     _navigatorKeys[SanmillShellTab.learn]?.currentState?.push(
-      MaterialPageRoute<void>(builder: (_) => screen),
+      MaterialPageRoute<void>(
+        settings: RouteSettings(name: routeId),
+        builder: (_) => screen,
+      ),
     );
   }
 
@@ -634,20 +651,11 @@ class SanmillAppShellState extends State<SanmillAppShell> {
   Future<bool> _handleBack() async {
     final NavigatorState? navigator = _navigatorKeys[_currentTab]?.currentState;
     if (navigator?.canPop() ?? false) {
-      final Route<dynamic>? topRoute = _routeObservers[_currentTab]?.topRoute;
-      if (topRoute is! PageRoute<dynamic>) {
-        navigator!.pop();
+      if (!_isImmersivePlayRoute(context) &&
+          !await _transitionToRoute(_rootRouteIdForTab(_currentTab))) {
         return false;
       }
-      final String nextRouteId = _rootRouteIdForTab(_currentTab);
-      if (!await _transitionToRoute(nextRouteId)) {
-        return false;
-      }
-      if (!mounted) {
-        return false;
-      }
-      navigator!.pop();
-      setState(() {});
+      await navigator!.maybePop();
       return false;
     }
     if (_currentTab != SanmillShellTab.home) {
@@ -663,6 +671,55 @@ class SanmillAppShellState extends State<SanmillAppShell> {
       return false;
     }
     return true;
+  }
+
+  void _syncRouteAfterNavigatorPop(
+    SanmillShellTab tab,
+    Route<dynamic> route,
+    Route<dynamic>? previousRoute,
+  ) {
+    if (!mounted || tab != _currentTab) {
+      return;
+    }
+
+    if (!_hasRouteName(route)) {
+      setState(() {});
+      return;
+    }
+
+    final String nextRouteId = _routeIdForNavigatorTop(tab, previousRoute);
+    if (_routeId == nextRouteId) {
+      setState(() {});
+      return;
+    }
+
+    final String previousRouteId = _routeId;
+    final GameModule module = GameRegistry.instance.current;
+    module.didNavigateShellRoute(
+      context,
+      previousRouteId: previousRouteId,
+      nextRouteId: nextRouteId,
+    );
+    _routeId = nextRouteId;
+    RecordingService().recordEvent(
+      RecordingEventType.gameModeChange,
+      <String, dynamic>{'mode': nextRouteId},
+    );
+    setState(() {});
+  }
+
+  String _routeIdForNavigatorTop(SanmillShellTab tab, Route<dynamic>? route) {
+    if (route != null && _hasRouteName(route)) {
+      return route.settings.name!;
+    }
+    return _rootRouteIdForTab(tab);
+  }
+
+  bool _hasRouteName(Route<dynamic> route) {
+    final String? routeName = route.settings.name;
+    return routeName != null &&
+        routeName.isNotEmpty &&
+        routeName != Navigator.defaultRouteName;
   }
 
   @override
@@ -878,6 +935,9 @@ typedef _SanmillTabBuilder =
 class _SanmillTabRouteObserver extends NavigatorObserver {
   final List<Route<dynamic>> _stack = <Route<dynamic>>[];
 
+  void Function(Route<dynamic> route, Route<dynamic>? previousRoute)?
+  onRoutePopped;
+
   Route<dynamic>? get topRoute => _stack.isEmpty ? null : _stack.last;
 
   @override
@@ -889,12 +949,14 @@ class _SanmillTabRouteObserver extends NavigatorObserver {
   void didPop(Route<dynamic> route, Route<dynamic>? previousRoute) {
     final bool removed = _stack.remove(route);
     assert(removed, 'Popped route was not tracked by the tab route observer.');
+    onRoutePopped?.call(route, previousRoute);
   }
 
   @override
   void didRemove(Route<dynamic> route, Route<dynamic>? previousRoute) {
     final bool removed = _stack.remove(route);
     assert(removed, 'Removed route was not tracked by the tab route observer.');
+    onRoutePopped?.call(route, previousRoute);
   }
 
   @override

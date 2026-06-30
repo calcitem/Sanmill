@@ -104,7 +104,6 @@ class _GamePageInnerState extends State<_GamePageInner> {
   final GlobalKey _gameBoardKey = GlobalKey();
 
   bool _isAnnotationMode = false;
-  bool _allowNextPop = false;
   bool _didShowInitialHumanAiNewGameSheet = false;
   late final AnnotationManager _annotationManager;
 
@@ -323,7 +322,7 @@ class _GamePageInnerState extends State<_GamePageInner> {
     );
 
     return PopScope<Object?>(
-      canPop: _allowNextPop || !_isPlayGameRoute,
+      canPop: !_isPlayGameRoute,
       onPopInvokedWithResult: _handleRoutePop,
       child: content,
     );
@@ -379,14 +378,9 @@ class _GamePageInnerState extends State<_GamePageInner> {
     if (!mounted) {
       return;
     }
-    setState(() {
-      _allowNextPop = true;
-    });
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (mounted) {
-        Navigator.of(context).pop(result);
-      }
-    });
+    final Route<Object?>? route = ModalRoute.of(context);
+    assert(route != null, 'A play game page must be hosted by a route.');
+    Navigator.of(context).removeRoute(route!);
   }
 
   Future<bool> _confirmLeavingCurrentGame(BuildContext context) async {

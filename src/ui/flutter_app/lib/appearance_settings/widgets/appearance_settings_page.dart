@@ -478,14 +478,6 @@ class AppearanceSettingsPage extends StatelessWidget {
             ),
             SettingsListTile(
               key: const Key(
-                'display_settings_card_board_image_settings_list_tile',
-              ),
-              leading: const Icon(Icons.image_outlined),
-              titleString: S.of(context).boardImage,
-              onTap: () => setBoardImage(context),
-            ),
-            SettingsListTile(
-              key: const Key(
                 'display_settings_card_piece_image_settings_list_tile',
               ),
               leading: const Icon(Icons.radio_button_unchecked),
@@ -518,6 +510,14 @@ class AppearanceSettingsPage extends StatelessWidget {
                       titleString: S.of(context).isNotationsShown,
                     );
                   },
+            ),
+            SettingsListTile(
+              key: const Key(
+                'display_settings_card_board_image_settings_list_tile',
+              ),
+              leading: const Icon(Icons.image_outlined),
+              titleString: S.of(context).boardImage,
+              onTap: () => setBoardImage(context),
             ),
             SettingsListTile(
               key: const Key(
