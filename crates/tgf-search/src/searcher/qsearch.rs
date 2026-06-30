@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3.0-or-later
+// SPDX-License-Identifier: AGPL-3.0-or-later
 // Quiescence search and the small TT probe / save helpers it shares
 // with `alpha_beta`.  Hosted in a sibling impl block so the main
 // `searcher/mod.rs` stays under 1k lines.

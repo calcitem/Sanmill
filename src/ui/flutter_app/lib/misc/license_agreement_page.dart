@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3.0-or-later
+// SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2019-2026 The Sanmill developers (see AUTHORS file)
 
 // license_agreement_page.dart
@@ -17,7 +17,7 @@ class LicenseAgreementPage extends StatelessWidget {
     final ThemeData theme = Theme.of(context);
 
     return FutureBuilder<String>(
-      future: rootBundle.loadString(Assets.licenses.gpl30),
+      future: rootBundle.loadString(Assets.licenses.agpl30),
       builder: (BuildContext context, AsyncSnapshot<String> data) {
         late final String str;
         if (!data.hasData) {

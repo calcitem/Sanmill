@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3.0-or-later
+// SPDX-License-Identifier: AGPL-3.0-or-later
 // Iterative deepening (with aspiration windows) and MTD(f) entry
 // points for `Searcher<G>`.  These two algorithms share the same TT
 // and TT-aging machinery and are conceptually a unit; hosting them

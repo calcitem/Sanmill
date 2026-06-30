@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3.0-or-later
+// SPDX-License-Identifier: AGPL-3.0-or-later
 // Offline eval-weight tuning pipeline for the Mill engine.
 //
 // Three sub-commands, intended to be run in sequence:

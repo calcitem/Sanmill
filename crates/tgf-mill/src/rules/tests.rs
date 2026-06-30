@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3.0-or-later
+// SPDX-License-Identifier: AGPL-3.0-or-later
 // Unit tests for `crates/tgf-mill/src/rules/mod.rs`.  Hosted in a
 // dedicated file so the main rules module stays under the 1k-line bar.
 

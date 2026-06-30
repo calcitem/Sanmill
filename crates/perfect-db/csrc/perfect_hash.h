@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3.0-or-later
+// SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2007-2016 Gabor E. Gevay, Gabor Danner
 // Copyright (C) 2019- Sanmill developers (see AUTHORS file)
 

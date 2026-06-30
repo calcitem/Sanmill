@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3.0-or-later
+// SPDX-License-Identifier: AGPL-3.0-or-later
 // tune label: annotate a position dataset with Perfect DB WDL labels.
 
 use std::fs::{self, File};

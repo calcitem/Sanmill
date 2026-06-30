@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3.0-or-later
+// SPDX-License-Identifier: AGPL-3.0-or-later
 // Shared CLI registration contract for game-specific front-ends.
 //
 // Each concrete game owns its UCI dialect, benchmark shape, and optional

@@ -83,7 +83,7 @@ Verify alignment with Sanmill Constitution v1.0.0 (`.specify/memory/constitution
 - [x] No PII collection or proper consent mechanism (N/A - no data collection)
 - [x] Secure data storage approach confirmed (FEN notation is game state only, not sensitive)
 - [x] Dependencies vetted for vulnerabilities (Using existing test frameworks only)
-- [x] GPL v3 compliance maintained (All test code under same license)
+- [x] AGPL v3 compliance maintained (All test code under same license)
 
 *All constitutional checks PASS. This is a verification/testing task with zero new user-facing features and minimal implementation changes (bug fixes only if tests fail).*
 

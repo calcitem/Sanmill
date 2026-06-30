@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3.0-or-later
+// SPDX-License-Identifier: AGPL-3.0-or-later
 // tune gen-human: sample positions from an NMM_LLM human_db.sqlite file.
 
 use std::collections::HashSet;

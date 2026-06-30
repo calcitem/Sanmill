@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# SPDX-License-Identifier: GPL-3.0-or-later
+# SPDX-License-Identifier: AGPL-3.0-or-later
 # Copyright (C) 2019-2026 The Sanmill developers (see AUTHORS file)
 #
 # Compare compare_engine_perf.py CSV output against tests/search_perf_baseline.toml.

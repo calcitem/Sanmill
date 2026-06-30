@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3.0-or-later
+// SPDX-License-Identifier: AGPL-3.0-or-later
 // Mill-specific FRB kernel API.
 //
 // Every entry point declared here is exclusively meaningful for

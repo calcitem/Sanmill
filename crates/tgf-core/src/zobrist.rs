@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3.0-or-later
+// SPDX-License-Identifier: AGPL-3.0-or-later
 // Generic Zobrist hash table generator + incremental-update helpers.
 //
 // Most board games maintain a 64-bit position key for transposition-

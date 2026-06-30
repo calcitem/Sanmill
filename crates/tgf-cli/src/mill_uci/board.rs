@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3.0-or-later
+// SPDX-License-Identifier: AGPL-3.0-or-later
 // Mill board / FEN helpers used by the UCI loop:
 //
 //   * print_board_ascii / board_ascii_lines / side_label  — `d` command output

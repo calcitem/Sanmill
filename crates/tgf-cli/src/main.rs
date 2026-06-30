@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3.0-or-later
+// SPDX-License-Identifier: AGPL-3.0-or-later
 // tgf-cli – command-line utilities for the Rust TGF engine.
 //
 // `main.rs` is intentionally game-neutral.  Concrete games register their

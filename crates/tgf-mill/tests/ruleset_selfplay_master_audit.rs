@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3.0-or-later
+// SPDX-License-Identifier: AGPL-3.0-or-later
 // Ignored audit harness for comparing named Mill rule-set self-play against
 // the legacy master engine. This intentionally spawns UCI binaries so the
 // regular test suite stays hermetic and fast.

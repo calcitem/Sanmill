@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3.0-or-later
+// SPDX-License-Identifier: AGPL-3.0-or-later
 // Runtime-polymorphic facade used at the FRB / kernel boundary.
 //
 // `GameKernel` holds an `Arc<dyn GameRules>` so the FRB layer can host

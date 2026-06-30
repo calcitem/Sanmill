@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3.0-or-later
+// SPDX-License-Identifier: AGPL-3.0-or-later
 // Mill three-in-a-row line tables.
 //
 // These are pure data: the standard 16 mill lines, the 20-line variant

@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3.0-or-later
+// SPDX-License-Identifier: AGPL-3.0-or-later
 // Regression tests pinning Rust engine move choices to the master C++ engine
 // under standard rules, Thinking-Time = 0 (fixed depth), shuffling off.
 //

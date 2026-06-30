@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3.0-or-later
+// SPDX-License-Identifier: AGPL-3.0-or-later
 // `Workbench` / `Evaluator` / `Game` trait implementations for the
 // CRTP search-hot-path types — `MillWorkbench`, `MillEvaluator`, and
 // `MillGame`.  Hosting these here keeps `rules/mod.rs` focused on

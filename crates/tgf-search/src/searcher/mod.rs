@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3.0-or-later
+// SPDX-License-Identifier: AGPL-3.0-or-later
 // Generic monomorphised game-tree searcher.
 //
 // `Searcher<G: Game>` is the hot-path entry point: alpha-beta, PVS,

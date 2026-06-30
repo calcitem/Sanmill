@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3.0-or-later
+// SPDX-License-Identifier: AGPL-3.0-or-later
 // Mill-specific searcher benchmarks.
 //
 // These benchmarks lock in concrete numbers for the Rust hot path so the

@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3.0-or-later
+// SPDX-License-Identifier: AGPL-3.0-or-later
 // Unit / integration tests for `crate::api::simple`.
 //
 // Despite the generic file name, the entire suite covers Mill-specific

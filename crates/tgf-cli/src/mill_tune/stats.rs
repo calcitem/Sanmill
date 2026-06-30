@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3.0-or-later
+// SPDX-License-Identifier: AGPL-3.0-or-later
 // tune stats: inspect labeled Mill tuning datasets by phase.
 
 use std::fs::File;

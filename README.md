@@ -34,7 +34,7 @@
 
 [![Readme-Chinese](https://img.shields.io/badge/README-简体中文-red.svg)](README-zh_CN.md)
 
-[Sanmill](https://github.com/calcitem/Sanmill) is a free, powerful N men's morris game with a Flutter GUI and a native Rust AI engine. It is distributed under the **GNU General Public License version 3** (GPL v3), ensuring that it remains free software. Users can modify and redistribute the software, provided they adhere to the GPL terms.
+[Sanmill](https://github.com/calcitem/Sanmill) is a free, powerful N men's morris game with a Flutter GUI and a native Rust AI engine. It is distributed under the **GNU Affero General Public License version 3** (AGPL v3), ensuring that it remains free software. Users can modify and redistribute the software, provided they adhere to the AGPL terms.
 
 [**Nine men's morris**](https://en.wikipedia.org/wiki/Nine_men%27s_morris) is a [strategy](https://en.wikipedia.org/wiki/Abstract_strategy_game) [board game](https://en.wikipedia.org/wiki/Board_games) for two players dating back to the [Roman Empire](https://en.wikipedia.org/wiki/Roman_Empire). The game is also known as **nine-man morris**, **mill**, **mills**, **the mill game**, **merels**, **merrills**, **merelles**, **marelles**, **morelles**, and **ninepenny marl** in English.
 
@@ -45,7 +45,7 @@
 This distribution of Sanmill consists of the following files:
 
 * `Readme.md`: The file you are currently reading.
-* `Copying.txt`: A text file containing the GNU General Public License version 3.
+* `Copying.txt`: A text file containing the GNU Affero General Public License version 3.
 * `crates`: The Rust/TGF workspace containing the rules engine, search code,
   FRB API crate, and headless CLI.
 * `src/ui/flutter_app`: The Flutter frontend.
@@ -141,11 +141,11 @@ Sanmill's improvements have been a community effort. You can contribute in sever
 
 ## Terms of Use
 
-Sanmill is distributed under the **GNU General Public License version 3** (GPL v3). This allows you to use, modify, and distribute the software, provided you include the full source code or a pointer to where the source can be found. Any changes to the source code must also be made available under the GPL.
+Sanmill is distributed under the **GNU Affero General Public License version 3** (AGPL v3). This allows you to use, modify, and distribute the software, provided you include the full source code or a pointer to where the source can be found. Any changes to the source code must also be made available under the AGPL.
 
-For full details, see the GPL v3 in the `Copying.txt` file.
+For full details, see the AGPL v3 in the `Copying.txt` file.
 
-**Note on App Store Distribution**: As an additional permission under section 7 of the GPL v3, you are allowed to distribute the software through app stores, even if they have restrictive terms that are incompatible with the GPL. However, the source code must also be available under the GPL, either through the app store or another channel without those restrictive terms.
+**Note on App Store Distribution**: As an additional permission under section 7 of the AGPL v3, you are allowed to distribute the software through app stores, even if they have restrictive terms that are incompatible with the AGPL. However, the source code must also be available under the AGPL, either through the app store or another channel without those restrictive terms.
 
 All unofficial builds and forks of the app must be clearly labeled as unofficial (e.g., "Sanmill UNOFFICIAL") or use a different name altogether. They must use a different application ID to avoid conflicts with official releases.
 
@@ -163,4 +163,4 @@ This data is used solely for improving the quality and stability of Sanmill and 
 
 ## Free Software Philosophy
 
-Sanmill is free software, and we emphasize the importance of free software as a matter of freedom. We encourage the use of GPL v3 or later as a license for contributions and discourage the use of non-free licenses.
+Sanmill is free software, and we emphasize the importance of free software as a matter of freedom. We encourage the use of AGPL v3 or later as a license for contributions and discourage the use of non-free licenses.

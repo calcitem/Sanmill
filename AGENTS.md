@@ -19,13 +19,13 @@ consistent, high-quality contributions.
 
 * **Project Name:** Sanmill
 * **Description:** A free, powerful Mill (N Men's Morris) game with Flutter GUI and a native Rust/TGF AI engine.
-* **License:** GNU General Public License version 3 (GPL v3)
+* **License:** GNU Affero General Public License version 3 (AGPL v3)
 * **Primary Goals:**
   - Deliver a high-quality, cross-platform Mill game
   - Provide excellent user experience through Flutter frontend
   - Support multiple platforms: Android, iOS, Windows, macOS, Linux
 * **Key Constraints:**
-  - GPL v3 compliance for all code contributions
+  - AGPL v3 compliance for all code contributions
   - Cross-platform compatibility required
   - Performance-critical AI/search paths (Rust/TGF framework)
   - Mobile-first UI/UX design (Flutter)

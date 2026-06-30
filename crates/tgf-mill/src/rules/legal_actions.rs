@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3.0-or-later
+// SPDX-License-Identifier: AGPL-3.0-or-later
 // Mill move generation and the supporting helpers consumed by
 // `crate::rules::legal_apply::apply`:
 //

@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3.0-or-later
+// SPDX-License-Identifier: AGPL-3.0-or-later
 // Game-neutral unit tests for the searcher / TT / thread pool / MCTS
 // components.  Mill end-to-end coverage lives under
 // `crates/tgf-mill/tests/searcher_integration.rs`.

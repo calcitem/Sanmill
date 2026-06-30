@@ -3,7 +3,7 @@ name        = "tgf-cli"
 version     = "0.1.0"
 edition     = "2024"
 description = "TGF – UCI command-line interface for headless engine operation and benchmarking"
-license     = "GPL-3.0-or-later"
+license     = "AGPL-3.0-or-later"
 
 [[bin]]
 name = "tgf"

@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3.0-or-later
+// SPDX-License-Identifier: AGPL-3.0-or-later
 // Mill FEN-style position text format adapter.
 //
 // `MillFenFormat` wraps the existing `MillRules::set_from_fen` /

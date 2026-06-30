@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3.0-or-later
+// SPDX-License-Identifier: AGPL-3.0-or-later
 // Mill UCI adapter for tgf-cli.
 //
 // Owns every Mill-specific piece of the CLI:

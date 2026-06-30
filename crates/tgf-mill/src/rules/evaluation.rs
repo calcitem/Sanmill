@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3.0-or-later
+// SPDX-License-Identifier: AGPL-3.0-or-later
 // Static evaluator helpers consumed by `MillEvaluator::score` and the
 // game-over branch.  These are pure functions of `MillState` plus a
 // `MillVariantOptions` snapshot; keeping them next to the evaluator

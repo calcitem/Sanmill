@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3.0-or-later
+// SPDX-License-Identifier: AGPL-3.0-or-later
 // Mill Zobrist hash tables.
 //
 // Mirrors master `src/position.cpp:25-37 namespace Zobrist`:

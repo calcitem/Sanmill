@@ -3,7 +3,7 @@ name        = "tgf-mill"
 version     = "0.1.0"
 edition     = "2024"
 description = "TGF – Mill (Nine/Ten/Twelve Men's Morris) game implementation"
-license     = "GPL-3.0-or-later"
+license     = "AGPL-3.0-or-later"
 
 [dependencies]
 arrayvec = "0.7"

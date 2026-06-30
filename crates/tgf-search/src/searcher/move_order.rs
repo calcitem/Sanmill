@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3.0-or-later
+// SPDX-License-Identifier: AGPL-3.0-or-later
 // Move-ordering / TT-best-action shuffling helpers.
 // These are pure `Searcher<G>` methods; they live in a sibling impl
 // block so the main `searcher/mod.rs` does not have to host them too.

@@ -3,7 +3,7 @@ name        = "perfect-db"
 version     = "0.1.0"
 edition     = "2024"
 description = "Rust-native Perfect Database loader with an optional C++ oracle"
-license     = "GPL-3.0-or-later"
+license     = "AGPL-3.0-or-later"
 
 [features]
 default = []

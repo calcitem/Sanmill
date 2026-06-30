@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3.0-or-later
+// SPDX-License-Identifier: AGPL-3.0-or-later
 
 #[cfg(feature = "cpp-oracle")]
 use perfect_db::database::PerfectOutcome;

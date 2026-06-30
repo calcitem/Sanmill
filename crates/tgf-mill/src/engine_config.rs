@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3.0-or-later
+// SPDX-License-Identifier: AGPL-3.0-or-later
 // Mill engine runtime configuration types shared by every front-end
 // (FRB, CLI, future REST/UCI proxies).
 //

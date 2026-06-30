@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3.0-or-later
+// SPDX-License-Identifier: AGPL-3.0-or-later
 // Mill-specific notation adapter for the FRB layer.
 //
 // The implementation lives in `tgf_mill::MillUciCodec`; this file

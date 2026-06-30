@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3.0-or-later
+// SPDX-License-Identifier: AGPL-3.0-or-later
 // Phase transitions, repetition / fifty-move bookkeeping, and the
 // supporting "is the action in board bounds" guard that protect the
 // FRB `apply_unchecked` path.

@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3.0-or-later
+// SPDX-License-Identifier: AGPL-3.0-or-later
 // Generic worker pool and lazy-SMP fan-out for the searcher.
 //
 // `SearchThreadPool` is intentionally game-agnostic: it accepts any

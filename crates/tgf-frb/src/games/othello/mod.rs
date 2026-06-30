@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3.0-or-later
+// SPDX-License-Identifier: AGPL-3.0-or-later
 // Othello-specific FRB adapter helpers.  Currently a thin set of smoke
 // helpers used by the FRB entry points in `crate::api::simple`.
 

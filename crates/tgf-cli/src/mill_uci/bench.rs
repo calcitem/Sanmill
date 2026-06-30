@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3.0-or-later
+// SPDX-License-Identifier: AGPL-3.0-or-later
 // `tgf bench` subcommand: emits a perf_baseline-compatible TOML block
 // covering perft, search NPS, TT hit-rate, lazy-SMP scale and an MCTS
 // self-play snapshot.

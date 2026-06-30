@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3.0-or-later
+// SPDX-License-Identifier: AGPL-3.0-or-later
 // Integration tests that exercise the generic `tgf_search::Searcher` /
 // `MctsSearcher` against the concrete `MillGame`.
 //

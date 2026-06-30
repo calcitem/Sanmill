@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3.0-or-later
+// SPDX-License-Identifier: AGPL-3.0-or-later
 // Registry of game front-ends available to tgf-cli.
 //
 // Adding another game should normally mean adding a sibling module and one

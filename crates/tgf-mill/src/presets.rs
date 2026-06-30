@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3.0-or-later
+// SPDX-License-Identifier: AGPL-3.0-or-later
 // Canonical Mill rule presets.
 //
 // Each preset is a named MillVariantOptions configuration that corresponds

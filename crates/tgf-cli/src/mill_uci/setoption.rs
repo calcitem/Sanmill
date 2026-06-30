@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3.0-or-later
+// SPDX-License-Identifier: AGPL-3.0-or-later
 // Mill `setoption` lookup table — parses every UCI rule / search /
 // engine option supported by the Mill CLI and applies the parsed value
 // to the matching slot in `MillVariantOptions` or `EngineConfig`.

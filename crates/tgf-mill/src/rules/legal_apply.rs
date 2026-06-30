@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3.0-or-later
+// SPDX-License-Identifier: AGPL-3.0-or-later
 // Implementation of `GameRules for MillRules` (`legal_actions`,
 // `is_legal`, `apply`, `outcome`) plus the supporting `MillRules`
 // helper methods consumed by the apply / legal-actions paths.

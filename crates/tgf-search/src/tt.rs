@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3.0-or-later
+// SPDX-License-Identifier: AGPL-3.0-or-later
 // Packed transposition table shared by every searcher in the crate.
 //
 // `ClusteredTt` is a fixed-size array of small buckets.  Each bucket holds

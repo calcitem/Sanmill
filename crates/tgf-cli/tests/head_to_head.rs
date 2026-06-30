@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3.0-or-later
+// SPDX-License-Identifier: AGPL-3.0-or-later
 // Head-to-head strength match: the current-branch engine vs the master C++
 // engine.  Both engines are driven as UCI subprocesses; `tgf-mill` is the
 // authoritative referee (move application + outcome adjudication), so neither

@@ -2,7 +2,7 @@
   "name": "rust_lib_sanmill",
   "description": "TGF – flutter_rust_bridge v2 public API surface; compiled as a cdylib for each Flutter target platform",
   "version": "0.1.0",
-  "license": "GPL-3.0-or-later",
+  "license": "AGPL-3.0-or-later",
   "files": [
     "rust_lib_sanmill_bg.wasm",
     "rust_lib_sanmill.js"

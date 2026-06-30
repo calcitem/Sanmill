@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3.0-or-later
+// SPDX-License-Identifier: AGPL-3.0-or-later
 // Human-game database lookup for standard Nine Men's Morris positions.
 //
 // The database is produced outside Sanmill. It is intentionally read-only here:

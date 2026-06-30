@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3.0-or-later
+// SPDX-License-Identifier: AGPL-3.0-or-later
 // TGF core – public re-exports.
 //
 // Game-neutral traits, POD types, kernels, and helpers shared by concrete

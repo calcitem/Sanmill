@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3.0-or-later
+// SPDX-License-Identifier: AGPL-3.0-or-later
 // Phase 1 integration smoke-test: verifies that the Rust/FRB bridge loads
 // correctly and that tgfHelloWorld() returns the expected prefix.
 import 'dart:async';

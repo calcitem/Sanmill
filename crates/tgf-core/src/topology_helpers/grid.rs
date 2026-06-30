@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3.0-or-later
+// SPDX-License-Identifier: AGPL-3.0-or-later
 // Rectangular grid topology builder shared by every "row × column"
 // board game (Chess, Checkers, Othello, Gomoku, Go, …).
 //

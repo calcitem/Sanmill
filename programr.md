@@ -2,7 +2,7 @@
 
 Sanmill is a mill game program.
 
-Usage of the source code is governed by the GPL license: see `Copying.txt` for details.
+Usage of the source code is governed by the AGPL license: see `Copying.txt` for details.
 
 Sanmill includes a console-based mill game engine that can be used with separately available interfaces for mill game programs, or with UCI-like interface programs. The Flutter frontend communicates with the native engine through the FRB bridge.
 

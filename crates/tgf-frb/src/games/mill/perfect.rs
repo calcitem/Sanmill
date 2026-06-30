@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3.0-or-later
+// SPDX-License-Identifier: AGPL-3.0-or-later
 // Perfect-database lookup for Mill positions.
 //
 // The native database backend reads database files from the local platform and

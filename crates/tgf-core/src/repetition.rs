@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3.0-or-later
+// SPDX-License-Identifier: AGPL-3.0-or-later
 // Generic repetition tracker shared by every game with an
 // "<n>-fold position repetition is a draw / loss" rule.
 //

@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3.0-or-later
+// SPDX-License-Identifier: AGPL-3.0-or-later
 // `MillRules` setup-position editing API plus FEN import/export.
 // These methods drive the FRB kernel's setup flow and position-FEN
 // round-trips.

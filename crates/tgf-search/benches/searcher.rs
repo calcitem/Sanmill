@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3.0-or-later
+// SPDX-License-Identifier: AGPL-3.0-or-later
 // Game-neutral searcher benchmarks.
 //
 // These benches exercise the generic searcher hot path against a tiny

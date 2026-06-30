@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3.0-or-later
+// SPDX-License-Identifier: AGPL-3.0-or-later
 // Othello board state plus the snapshot encode / decode round-trip.
 
 use tgf_core::{GameStateSnapshot, OPAQUE_PAYLOAD_LEN};

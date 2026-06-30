@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3.0-or-later
+// SPDX-License-Identifier: AGPL-3.0-or-later
 // `OthelloGame` plus its `Workbench` / `Evaluator` / `Game` trait
 // implementations — the search-side compile-time monomorphisation
 // surface that the generic `Searcher<G: Game>` consumes.

@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3.0-or-later
+// SPDX-License-Identifier: AGPL-3.0-or-later
 // Generic monomorphised game-tree searcher.
 //
 // The hot path is generic over `G: Game`; it never stores `dyn GameRules`

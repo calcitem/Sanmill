@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3.0-or-later
+// SPDX-License-Identifier: AGPL-3.0-or-later
 // Static move-priority tables and shuffle helpers consumed by the move
 // generator and the move-picker.  These mirror the legacy C++ engine's
 // `Mills::move_priority_list_shuffle` and `MovePicker` static tables.

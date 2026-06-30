@@ -299,7 +299,7 @@ By submitting puzzles, you agree to:
 - Grant perpetual usage rights to the project
 - Maintain attribution to your username
 
-**Note:** The Sanmill application code remains under GPL-3.0-or-later, but puzzle data uses the more permissive CC BY-SA 4.0 license, following industry best practices for chess/game content (similar to Lichess, Chess Tactics databases, etc.).
+**Note:** The Sanmill application code remains under AGPL-3.0-or-later, but puzzle data uses the more permissive CC BY-SA 4.0 license, following industry best practices for chess/game content (similar to Lichess, Chess Tactics databases, etc.).
 
 ### Third-Party Positions
 

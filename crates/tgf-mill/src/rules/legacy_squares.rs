@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3.0-or-later
+// SPDX-License-Identifier: AGPL-3.0-or-later
 // Import-side mapping from the legacy C++ engine's `Square` enum
 // (`SQ_8`..`SQ_31`) to Rust dense node ids (0..24).
 //

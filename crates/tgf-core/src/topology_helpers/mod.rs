@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3.0-or-later
+// SPDX-License-Identifier: AGPL-3.0-or-later
 // Reusable [`BoardTopology`] builders.
 //
 // Concrete games can construct their geometry by composing one of the

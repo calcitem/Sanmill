@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3.0-or-later
+// SPDX-License-Identifier: AGPL-3.0-or-later
 // 8x8 Othello board geometry plus tiny `idx` / `in_bounds` helpers
 // shared with `state.rs`.
 

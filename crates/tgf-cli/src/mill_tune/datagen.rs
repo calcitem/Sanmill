@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3.0-or-later
+// SPDX-License-Identifier: AGPL-3.0-or-later
 // tune gen: sample quiet Mill positions from self-play random walks.
 //
 // Usage:

@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3.0-or-later
+// SPDX-License-Identifier: AGPL-3.0-or-later
 // Search algorithm selection and runtime options.
 
 use tgf_core::MoveOrderContext;

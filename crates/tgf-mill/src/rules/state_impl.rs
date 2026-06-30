@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3.0-or-later
+// SPDX-License-Identifier: AGPL-3.0-or-later
 // `MillState` setup, encode/decode, recompute, and the small
 // `sync_action_state` helper that re-derives `MillState::action` from
 // the rest of the snapshot after a transition.

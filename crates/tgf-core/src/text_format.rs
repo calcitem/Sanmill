@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3.0-or-later
+// SPDX-License-Identifier: AGPL-3.0-or-later
 // Generic textual position format trait shared by every game with
 // import / export of board positions (FEN for chess / Mill, SGF for
 // Go, SFEN for shogi, JSON for puzzles, …).

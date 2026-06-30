@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3.0-or-later
+// SPDX-License-Identifier: AGPL-3.0-or-later
 // Typed FRB session API backed by the Rust `tgf_core::GameKernel`.
 //
 // Each `tgf_kernel_create_*` call inserts a fresh kernel into a global

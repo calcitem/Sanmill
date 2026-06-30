@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3.0-or-later
+// SPDX-License-Identifier: AGPL-3.0-or-later
 // Mill-specific FRB adapter helpers.
 //
 // The FRB-public functions (`tgf_kernel_create_mill`, `native_mill_*`,

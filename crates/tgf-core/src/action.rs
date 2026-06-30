@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3.0-or-later
+// SPDX-License-Identifier: AGPL-3.0-or-later
 // Game-neutral Action POD type plus auxiliary metadata
 // (`ActionTrail` for chained moves, `action_kind` canonical tags).
 

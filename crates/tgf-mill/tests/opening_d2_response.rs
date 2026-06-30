@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3.0-or-later
+// SPDX-License-Identifier: AGPL-3.0-or-later
 // Regression coverage for the opening reply the AI plays after the human
 // opens on a cross point (d2).  Mirrors the FRB MTD(f) dispatch used by the
 // Flutter app: standard 9MM rules, SkillLevel 1, infinite think time

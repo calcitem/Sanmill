@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3.0-or-later
+// SPDX-License-Identifier: AGPL-3.0-or-later
 // Generic node/edge `BoardTopology` builder for irregular boards
 // (军棋, Patolli, Game of Goose, …).
 //

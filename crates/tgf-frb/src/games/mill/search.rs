@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3.0-or-later
+// SPDX-License-Identifier: AGPL-3.0-or-later
 // Mill search-event spawn helpers used by the FRB streaming entry points.
 //
 // This module owns every piece of Mill-specific search wiring that used

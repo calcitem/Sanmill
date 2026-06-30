@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3.0-or-later
+// SPDX-License-Identifier: AGPL-3.0-or-later
 // Monte-Carlo tree search implementation.
 //
 // `MctsSearcher<G>` is monomorphised over the same `Game` trait family

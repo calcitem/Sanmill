@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3.0-or-later
+// SPDX-License-Identifier: AGPL-3.0-or-later
 // Six-pointed star `BoardTopology` builder used by Halma / Chinese
 // Checkers (中国跳棋).  The star consists of a central hexagon plus
 // six triangular points; every cell uses the same axial (q, r)

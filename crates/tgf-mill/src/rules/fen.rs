@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3.0-or-later
+// SPDX-License-Identifier: AGPL-3.0-or-later
 // FEN-import helpers shared by `MillRules::set_from_fen` and
 // `MillRules::export_fen`.  These are stateless conversion routines
 // that turn raw FEN tokens into the equivalent `MillState` field

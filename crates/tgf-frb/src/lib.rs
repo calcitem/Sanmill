@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3.0-or-later
+// SPDX-License-Identifier: AGPL-3.0-or-later
 // tgf-frb – flutter_rust_bridge v2 public API surface.
 //
 // This crate is the ONLY point of contact between Dart and Rust.
