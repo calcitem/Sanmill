@@ -217,6 +217,7 @@ class TapHandler {
             controller.refreshNativeSessionHeader(context, session);
             if (aiAction != null) {
               controller.syncAiMoveTypeFromSession(session);
+              PlayerTimer().start();
             }
             logger.i(
               "$_logTag Native Mill AI response: ${aiAction?.payload['move'] ?? '(none)'}",
@@ -237,6 +238,7 @@ class TapHandler {
             controller.isEngineRunning = false;
           }
         }
+        PlayerTimer().start();
         controller.refreshNativeSessionHeader(context, session);
         return const EngineResponseHumanOK();
       case MillSessionTapStatus.ignored:

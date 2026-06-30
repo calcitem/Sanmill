@@ -10,6 +10,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart' show Box;
 import 'package:sanmill/appearance_settings/models/display_settings.dart';
 import 'package:sanmill/game_page/services/mill.dart';
+import 'package:sanmill/game_page/services/player_timer.dart';
 import 'package:sanmill/game_page/widgets/game_page.dart';
 import 'package:sanmill/game_page/widgets/play_area.dart';
 import 'package:sanmill/game_platform/game_id.dart';
@@ -52,9 +53,11 @@ void main() {
     controller.gameRecorder.reset();
     controller.isEngineRunning = false;
     controller.isEngineInDelay = false;
+    PlayerTimer().reset();
   });
 
   tearDown(() {
+    PlayerTimer().reset();
     DB.instance = null;
   });
 
@@ -328,6 +331,56 @@ void main() {
             .dy,
       ),
     );
+  });
+
+  testWidgets('regular finite clock shows Lichess-style pause control', (
+    WidgetTester tester,
+  ) async {
+    db.generalSettings = const GeneralSettings(humanMoveTime: 30);
+    db.displaySettings = const DisplaySettings(
+      isUnplacedAndRemovedPiecesShown: false,
+      isHistoryNavigationToolbarShown: false,
+    );
+    final GameController controller = GameController();
+    controller.gameInstance.gameMode = GameMode.humanVsHuman;
+    controller.gameRecorder.reset();
+    controller.gameRecorder.appendMove(ExtMove('d6', side: PieceColor.white));
+    PlayerTimer().start();
+
+    await tester.binding.setSurfaceSize(const Size(390, 844));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+
+    await tester.pumpWidget(
+      _localizedApp(
+        const Scaffold(
+          body: PlayArea(
+            boardImage: null,
+            child: SizedBox.square(
+              key: Key('test_board_square'),
+              dimension: 390,
+            ),
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    final Finder clockButton = find.byKey(
+      const Key('play_area_regular_bottom_bar_clock'),
+    );
+    expect(clockButton, findsOneWidget);
+    expect(tester.widget<LichessBottomBarButton>(clockButton).label, 'Pause');
+
+    await tester.tap(clockButton);
+    await tester.pumpAndSettle();
+    expect(PlayerTimer().status, PlayerTimerStatus.paused);
+    expect(tester.widget<LichessBottomBarButton>(clockButton).label, 'Resume');
+
+    await tester.tap(clockButton);
+    await tester.pumpAndSettle();
+    expect(PlayerTimer().status, PlayerTimerStatus.running);
+    expect(tester.widget<LichessBottomBarButton>(clockButton).label, 'Pause');
+    PlayerTimer().reset();
   });
 
   testWidgets('regular move chip long press opens mini board preview', (

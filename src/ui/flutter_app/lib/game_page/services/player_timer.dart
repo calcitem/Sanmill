@@ -10,6 +10,8 @@ import 'package:flutter/material.dart';
 import '../../shared/database/database.dart';
 import 'mill.dart';
 
+enum PlayerTimerStatus { stopped, running, paused }
+
 /// PlayerTimer
 ///
 /// Handles the time limit for human player moves.
@@ -31,8 +33,15 @@ class PlayerTimer {
   // Callback to update UI with the remaining time
   final ValueNotifier<int> remainingTimeNotifier = ValueNotifier<int>(0);
 
-  // Flag to indicate if timer is active
-  bool _isActive = false;
+  final ValueNotifier<PlayerTimerStatus> statusNotifier =
+      ValueNotifier<PlayerTimerStatus>(PlayerTimerStatus.stopped);
+
+  PlayerTimerStatus _status = PlayerTimerStatus.stopped;
+
+  void _setStatus(PlayerTimerStatus status) {
+    _status = status;
+    statusNotifier.value = status;
+  }
 
   /// Start the timer for a player's move
   void start() {
@@ -40,18 +49,25 @@ class PlayerTimer {
 
     // Skip timer for LAN mode
     if (gameController.gameInstance.gameMode == GameMode.humanVsLAN) {
+      stop();
       return;
     }
 
     // Skip timer entirely for AI vs AI mode
     if (gameController.gameInstance.gameMode == GameMode.aiVsAi) {
-      _isActive = false; // Ensure timer is marked as inactive
+      stop(); // Ensure timer is marked as inactive
       remainingTimeNotifier.value = 0; // Reset displayed time
+      return;
+    }
+
+    if (gameController.activeBoardView.phase == Phase.gameOver) {
+      stop();
       return;
     }
 
     // Check if this is the first move of the game - don't start timer in that case
     if (gameController.gameRecorder.mainlineMoves.isEmpty) {
+      stop();
       return;
     }
 
@@ -62,9 +78,9 @@ class PlayerTimer {
         DB().generalSettings.moveTime <= 0;
     if (isAiWithUnlimitedTime) {
       // Just update the UI to show "-" via the notifier, but don't start a real timer
+      stop();
       _remainingTime = 0;
       remainingTimeNotifier.value = 0;
-      _isActive = false;
       return;
     }
 
@@ -79,13 +95,14 @@ class PlayerTimer {
 
     // If no time limit is set (value is 0) for human, don't start the timer
     if (timeLimit <= 0) {
+      stop();
       return;
     }
 
     // Initialize timer values
     _remainingTime = timeLimit;
     remainingTimeNotifier.value = _remainingTime;
-    _isActive = true;
+    _setStatus(PlayerTimerStatus.running);
 
     // Start a periodic timer that ticks every second
     _timer = Timer.periodic(const Duration(seconds: 1), _tick);
@@ -95,7 +112,28 @@ class PlayerTimer {
   void stop() {
     _timer?.cancel();
     _timer = null;
-    _isActive = false;
+    _setStatus(PlayerTimerStatus.stopped);
+  }
+
+  void pause() {
+    assert(
+      _status == PlayerTimerStatus.running,
+      'PlayerTimer.pause requires a running clock.',
+    );
+    _timer?.cancel();
+    _timer = null;
+    _setStatus(PlayerTimerStatus.paused);
+  }
+
+  void resume() {
+    assert(
+      _status == PlayerTimerStatus.paused,
+      'PlayerTimer.resume requires a paused clock.',
+    );
+    assert(_remainingTime > 0, 'Cannot resume an expired clock.');
+    _timer?.cancel();
+    _setStatus(PlayerTimerStatus.running);
+    _timer = Timer.periodic(const Duration(seconds: 1), _tick);
   }
 
   /// Reset the timer (e.g., when starting a new game)
@@ -158,7 +196,7 @@ class PlayerTimer {
           if (timeLimit > 0) {
             _remainingTime = timeLimit;
             remainingTimeNotifier.value = _remainingTime;
-            _isActive = true;
+            _setStatus(PlayerTimerStatus.running);
             _timer = Timer.periodic(const Duration(seconds: 1), _tick);
           }
         }
@@ -175,7 +213,11 @@ class PlayerTimer {
   }
 
   /// Check if the timer is currently active
-  bool get isActive => _isActive;
+  bool get isActive => _status == PlayerTimerStatus.running;
+
+  bool get isPaused => _status == PlayerTimerStatus.paused;
+
+  PlayerTimerStatus get status => _status;
 
   /// Get the current remaining time
   int get remainingTime => _remainingTime;

@@ -9,7 +9,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:sanmill/game_page/services/mill.dart';
 import 'package:sanmill/game_page/services/player_timer.dart';
+import 'package:sanmill/general_settings/models/general_settings.dart';
 import 'package:sanmill/shared/database/database.dart';
 
 import '../helpers/mocks/mock_database.dart';
@@ -96,6 +98,35 @@ void main() {
       PlayerTimer.instance.stop();
       PlayerTimer.instance.stop(); // Double stop
       expect(PlayerTimer.instance.isActive, isFalse);
+    });
+  });
+
+  // ---------------------------------------------------------------------------
+  // Pause / resume
+  // ---------------------------------------------------------------------------
+  group('PlayerTimer pause/resume', () {
+    test('pause and resume preserve the remaining move time', () {
+      DB().generalSettings = const GeneralSettings(humanMoveTime: 30);
+      final GameController controller = GameController();
+      controller.gameInstance.gameMode = GameMode.humanVsHuman;
+      controller.gameRecorder.reset();
+      controller.gameRecorder.appendMove(ExtMove('d6', side: PieceColor.white));
+
+      PlayerTimer.instance.start();
+      expect(PlayerTimer.instance.status, PlayerTimerStatus.running);
+      expect(PlayerTimer.instance.isActive, isTrue);
+      expect(PlayerTimer.instance.remainingTime, 30);
+
+      PlayerTimer.instance.pause();
+      expect(PlayerTimer.instance.status, PlayerTimerStatus.paused);
+      expect(PlayerTimer.instance.isActive, isFalse);
+      expect(PlayerTimer.instance.isPaused, isTrue);
+      expect(PlayerTimer.instance.remainingTime, 30);
+
+      PlayerTimer.instance.resume();
+      expect(PlayerTimer.instance.status, PlayerTimerStatus.running);
+      expect(PlayerTimer.instance.isActive, isTrue);
+      expect(PlayerTimer.instance.remainingTime, 30);
     });
   });
 

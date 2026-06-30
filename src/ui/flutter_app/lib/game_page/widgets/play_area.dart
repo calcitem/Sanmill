@@ -31,6 +31,7 @@ import '../services/analysis_mode.dart';
 import '../services/import_export/pgn.dart';
 import '../services/mill.dart';
 import '../services/painters/advantage_graph_painter.dart';
+import '../services/player_timer.dart';
 import 'ai_chat_dialog.dart';
 import 'game_page.dart';
 import 'mini_board.dart';
@@ -528,6 +529,26 @@ class PlayAreaState extends State<PlayArea> {
             .isNotEmpty &&
         !GameController().isEngineRunning &&
         !GameController().isEngineInDelay;
+  }
+
+  bool get _shouldShowRegularClockControl {
+    return !_usesLichessHumanAiToolbar &&
+        GameController().gameInstance.gameMode == GameMode.humanVsHuman &&
+        DB().generalSettings.humanMoveTime > 0;
+  }
+
+  VoidCallback? _regularClockControlAction(PlayerTimerStatus status) {
+    if (!_shouldShowRegularClockControl ||
+        _activePhase == Phase.gameOver ||
+        status == PlayerTimerStatus.stopped) {
+      return null;
+    }
+
+    return switch (status) {
+      PlayerTimerStatus.running => PlayerTimer().pause,
+      PlayerTimerStatus.paused => PlayerTimer().resume,
+      PlayerTimerStatus.stopped => null,
+    };
   }
 
   void _toggleBoardFlipped(BuildContext context) {
@@ -1429,21 +1450,43 @@ class PlayAreaState extends State<PlayArea> {
                     valueListenable:
                         GameController().gameRecorder.moveCountNotifier,
                     builder: (BuildContext context, _, _) {
-                      return _RegularGameBottomBar(
-                        onMenuPressed: _showRegularGameMenu,
-                        onPreviousPressed: _canStepBackFromRegularBottomBar
-                            ? () => _stepBackFromRegularBottomBar(context)
-                            : null,
-                        onNextPressed: _canStepForwardFromRegularBottomBar
-                            ? () => HistoryNavigator.stepForward(
-                                context,
-                                pop: false,
-                                toolbar: true,
-                              )
-                            : null,
-                        onTakeBackPressed: _canTakeBackFromRegularBottomBar
-                            ? () => _takeBackFromRegularBottomBar(context)
-                            : null,
+                      return ValueListenableBuilder<PlayerTimerStatus>(
+                        valueListenable: PlayerTimer().statusNotifier,
+                        builder:
+                            (
+                              BuildContext context,
+                              PlayerTimerStatus status,
+                              _,
+                            ) {
+                              return _RegularGameBottomBar(
+                                onMenuPressed: _showRegularGameMenu,
+                                showClockControl:
+                                    _shouldShowRegularClockControl,
+                                isClockPaused:
+                                    status == PlayerTimerStatus.paused,
+                                onClockPressed: _regularClockControlAction(
+                                  status,
+                                ),
+                                onPreviousPressed:
+                                    _canStepBackFromRegularBottomBar
+                                    ? () =>
+                                          _stepBackFromRegularBottomBar(context)
+                                    : null,
+                                onNextPressed:
+                                    _canStepForwardFromRegularBottomBar
+                                    ? () => HistoryNavigator.stepForward(
+                                        context,
+                                        pop: false,
+                                        toolbar: true,
+                                      )
+                                    : null,
+                                onTakeBackPressed:
+                                    _canTakeBackFromRegularBottomBar
+                                    ? () =>
+                                          _takeBackFromRegularBottomBar(context)
+                                    : null,
+                              );
+                            },
                       );
                     },
                   ),
@@ -2073,12 +2116,18 @@ class _HumanAiPlayerPanel extends StatelessWidget {
 class _RegularGameBottomBar extends StatelessWidget {
   const _RegularGameBottomBar({
     required this.onMenuPressed,
+    required this.showClockControl,
+    required this.isClockPaused,
+    required this.onClockPressed,
     required this.onPreviousPressed,
     required this.onNextPressed,
     required this.onTakeBackPressed,
   });
 
   final VoidCallback onMenuPressed;
+  final bool showClockControl;
+  final bool isClockPaused;
+  final VoidCallback? onClockPressed;
   final VoidCallback? onPreviousPressed;
   final VoidCallback? onNextPressed;
   final VoidCallback? onTakeBackPressed;
@@ -2094,6 +2143,13 @@ class _RegularGameBottomBar extends StatelessWidget {
           label: S.of(context).menu,
           onTap: onMenuPressed,
         ),
+        if (showClockControl)
+          LichessBottomBarButton(
+            key: const Key('play_area_regular_bottom_bar_clock'),
+            icon: isClockPaused ? CupertinoIcons.play : CupertinoIcons.pause,
+            label: isClockPaused ? S.of(context).resume : S.of(context).pause,
+            onTap: onClockPressed,
+          ),
         LichessBottomBarButton(
           key: const Key('play_area_regular_bottom_bar_previous'),
           icon: CupertinoIcons.chevron_back,

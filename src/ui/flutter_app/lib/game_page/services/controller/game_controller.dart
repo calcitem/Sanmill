@@ -1649,6 +1649,7 @@ class GameController {
         return const EngineNoBestMove();
       }
       syncAiMoveTypeFromSession(scopedSession);
+      PlayerTimer().start();
       if (EnvironmentConfig.devMode) {
         logger.i("$tag Applied native AI move ${action.payload['move']}");
       }
