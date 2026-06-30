@@ -1543,6 +1543,7 @@ class MovesListPageState extends State<MovesListPage> {
     required String label,
     required VoidCallback onTap,
   }) {
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
     return InkWell(
       borderRadius: BorderRadius.circular(12),
       onTap: onTap,
@@ -1551,11 +1552,11 @@ class MovesListPageState extends State<MovesListPage> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            Icon(icon, size: 64, color: DB().colorSettings.messageColor),
+            Icon(icon, size: 64, color: colorScheme.onSurfaceVariant),
             const SizedBox(height: 8),
             Text(
               label,
-              style: TextStyle(color: DB().colorSettings.messageColor),
+              style: TextStyle(color: colorScheme.onSurface),
               textAlign: TextAlign.center,
             ),
           ],
@@ -1666,12 +1667,13 @@ class MovesListPageState extends State<MovesListPage> {
     required bool isActiveRow,
   }) {
     // Use zebra striping for better readability
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
     final bool isEvenRow = roundIndex.isEven;
     final Color backgroundColor = isActiveRow
-        ? DB().colorSettings.pieceHighlightColor.withValues(alpha: 0.3)
+        ? colorScheme.primaryContainer.withValues(alpha: 0.72)
         : isEvenRow
-        ? DB().colorSettings.darkBackgroundColor
-        : DB().colorSettings.darkBackgroundColor.withValues(alpha: 0.7);
+        ? colorScheme.surface
+        : colorScheme.surfaceContainerLowest;
 
     return Container(
       color: backgroundColor,
@@ -1686,7 +1688,7 @@ class MovesListPageState extends State<MovesListPage> {
               "$roundIndex.",
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: DB().colorSettings.messageColor,
+                color: colorScheme.onSurfaceVariant,
                 fontFamily: 'monospace',
                 fontSize: 14,
                 fontWeight: FontWeight.w600,
@@ -1714,6 +1716,7 @@ class MovesListPageState extends State<MovesListPage> {
 
   /// Builds a single move cell with main move and variation chips
   Widget _buildMoveCell(_ActivePathRowData rowData) {
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
     // Build main move text (could include multiple moves if followed by remove moves)
     final String mainMoveText = _buildMoveText(rowData.node);
 
@@ -1736,8 +1739,8 @@ class MovesListPageState extends State<MovesListPage> {
       child: CustomPaint(
         foregroundPainter: ActiveLineGutterPainter(
           gutterWidth: gutterWidth,
-          baseColor: DB().colorSettings.messageColor,
-          highlightColor: DB().colorSettings.pieceHighlightColor,
+          baseColor: colorScheme.onSurfaceVariant,
+          highlightColor: colorScheme.primary,
           hasAlternatives: hasAlternatives,
           isVariationStart: isVariationStart,
           isOnVariationBranch: isOnVariationBranch,
@@ -1756,8 +1759,8 @@ class MovesListPageState extends State<MovesListPage> {
                   mainMoveText,
                   style: TextStyle(
                     color: rowData.isActiveNode
-                        ? DB().colorSettings.pieceHighlightColor
-                        : DB().colorSettings.messageColor,
+                        ? colorScheme.onPrimaryContainer
+                        : colorScheme.onSurface,
                     fontFamily: 'monospace',
                     fontSize: 14,
                     fontWeight: rowData.isActiveNode
@@ -1859,6 +1862,7 @@ class MovesListPageState extends State<MovesListPage> {
 
   /// Builds a variation chip for an alternative move
   Widget _buildVariationChip(PgnNode<ExtMove> variationNode) {
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
     // Use two-step preview for better branch recognition
     final String notation = _generateBranchPreview(variationNode);
 
@@ -1872,16 +1876,14 @@ class MovesListPageState extends State<MovesListPage> {
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
           decoration: BoxDecoration(
-            color: DB().colorSettings.messageColor.withValues(alpha: 0.2),
+            color: colorScheme.surfaceContainerHighest,
             borderRadius: BorderRadius.circular(4),
-            border: Border.all(
-              color: DB().colorSettings.messageColor.withValues(alpha: 0.3),
-            ),
+            border: Border.all(color: colorScheme.outlineVariant),
           ),
           child: Text(
             notation,
             style: TextStyle(
-              color: DB().colorSettings.messageColor.withValues(alpha: 0.7),
+              color: colorScheme.onSurfaceVariant,
               fontFamily: 'monospace',
               fontSize: 11,
             ),
@@ -1908,19 +1910,15 @@ class MovesListPageState extends State<MovesListPage> {
     showDialog<void>(
       context: context,
       builder: (BuildContext context) {
+        final ColorScheme colorScheme = Theme.of(context).colorScheme;
         return Dialog(
-          backgroundColor: Colors.transparent,
+          backgroundColor: colorScheme.surfaceContainerHigh,
           child: Container(
             constraints: const BoxConstraints(maxWidth: 400, maxHeight: 500),
             decoration: BoxDecoration(
-              color: DB().colorSettings.darkBackgroundColor,
+              color: colorScheme.surfaceContainerHigh,
               borderRadius: BorderRadius.circular(12),
-              border: Border.all(
-                color: DB().colorSettings.pieceHighlightColor.withValues(
-                  alpha: 0.5,
-                ),
-                width: 2,
-              ),
+              border: Border.all(color: colorScheme.outlineVariant),
             ),
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -1929,9 +1927,7 @@ class MovesListPageState extends State<MovesListPage> {
                 Container(
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
-                    color: DB().colorSettings.pieceHighlightColor.withValues(
-                      alpha: 0.2,
-                    ),
+                    color: colorScheme.primaryContainer,
                     borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(10),
                       topRight: Radius.circular(10),
@@ -1943,7 +1939,7 @@ class MovesListPageState extends State<MovesListPage> {
                       Text(
                         'Variation: $notation',
                         style: TextStyle(
-                          color: DB().colorSettings.messageColor,
+                          color: colorScheme.onPrimaryContainer,
                           fontFamily: 'monospace',
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
@@ -1952,7 +1948,7 @@ class MovesListPageState extends State<MovesListPage> {
                       IconButton(
                         icon: Icon(
                           FluentIcons.dismiss_24_regular,
-                          color: DB().colorSettings.messageColor,
+                          color: colorScheme.onPrimaryContainer,
                         ),
                         onPressed: () => Navigator.of(context).pop(),
                       ),
@@ -1977,11 +1973,7 @@ class MovesListPageState extends State<MovesListPage> {
                     padding: const EdgeInsets.all(32),
                     child: Text(
                       'No board preview available',
-                      style: TextStyle(
-                        color: DB().colorSettings.messageColor.withValues(
-                          alpha: 0.6,
-                        ),
-                      ),
+                      style: TextStyle(color: colorScheme.onSurfaceVariant),
                     ),
                   ),
                 // Action buttons
@@ -1995,15 +1987,11 @@ class MovesListPageState extends State<MovesListPage> {
                           Navigator.of(context).pop();
                           _navigateToNode(variationNode);
                         },
-                        icon: const Icon(
-                          FluentIcons.arrow_right_24_regular,
-                          color: Colors.white,
-                        ),
+                        icon: const Icon(FluentIcons.arrow_right_24_regular),
                         label: Text(S.of(context).jumpToVariation),
                         style: ElevatedButton.styleFrom(
-                          backgroundColor:
-                              DB().colorSettings.pieceHighlightColor,
-                          foregroundColor: Colors.white,
+                          backgroundColor: colorScheme.primary,
+                          foregroundColor: colorScheme.onPrimary,
                         ),
                       ),
                       OutlinedButton.icon(
@@ -2014,7 +2002,7 @@ class MovesListPageState extends State<MovesListPage> {
                         icon: const Icon(FluentIcons.more_vertical_24_regular),
                         label: Text(S.of(context).more),
                         style: OutlinedButton.styleFrom(
-                          foregroundColor: DB().colorSettings.messageColor,
+                          foregroundColor: colorScheme.onSurface,
                         ),
                       ),
                     ],
@@ -2254,23 +2242,20 @@ class MovesListPageState extends State<MovesListPage> {
     required int count,
     required List<PgnNode<ExtMove>> allSiblings,
   }) {
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
     return InkWell(
       onTap: () => _showOverflowVariationsDialog(allSiblings),
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
         decoration: BoxDecoration(
-          color: DB().colorSettings.pieceHighlightColor.withValues(alpha: 0.3),
+          color: colorScheme.primaryContainer,
           borderRadius: BorderRadius.circular(4),
-          border: Border.all(
-            color: DB().colorSettings.pieceHighlightColor.withValues(
-              alpha: 0.5,
-            ),
-          ),
+          border: Border.all(color: colorScheme.primary.withValues(alpha: 0.5)),
         ),
         child: Text(
           '+$count',
           style: TextStyle(
-            color: DB().colorSettings.pieceHighlightColor,
+            color: colorScheme.onPrimaryContainer,
             fontFamily: 'monospace',
             fontSize: 11,
             fontWeight: FontWeight.bold,
@@ -2378,15 +2363,16 @@ class MovesListPageState extends State<MovesListPage> {
 
   /// Builds a banner indicating the user is on a variation branch
   Widget _buildVariationBanner() {
+    final Color primary = Theme.of(context).colorScheme.primary;
     return Container(
       width: double.infinity,
       height: 6,
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: <Color>[
-            DB().colorSettings.pieceHighlightColor.withValues(alpha: 0.3),
-            DB().colorSettings.pieceHighlightColor.withValues(alpha: 0.6),
-            DB().colorSettings.pieceHighlightColor.withValues(alpha: 0.3),
+            primary.withValues(alpha: 0.3),
+            primary.withValues(alpha: 0.6),
+            primary.withValues(alpha: 0.3),
           ],
         ),
       ),
@@ -2765,6 +2751,7 @@ class MovesListPageState extends State<MovesListPage> {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
+    final ColorScheme colorScheme = theme.colorScheme;
     final bool isAnalysisPanel =
         widget.panelMode == MovesListPanelMode.analysis;
 
@@ -2862,7 +2849,9 @@ class MovesListPageState extends State<MovesListPage> {
                       return IconButton(
                         icon: Icon(
                           _iconForLayout(layout),
-                          color: isSelected ? Colors.black : Colors.black87,
+                          color: isSelected
+                              ? colorScheme.primary
+                              : colorScheme.onSurfaceVariant,
                         ),
                         onPressed: () {
                           _updateLayout(layout);
@@ -2920,9 +2909,9 @@ class MovesListPageState extends State<MovesListPage> {
                 value: 'top',
                 child: Row(
                   children: <Widget>[
-                    const Icon(
+                    Icon(
                       FluentIcons.arrow_upload_24_regular,
-                      color: Colors.black54,
+                      color: colorScheme.onSurfaceVariant,
                     ),
                     const SizedBox(width: 8),
                     Text(S.of(context).top),
@@ -2933,9 +2922,9 @@ class MovesListPageState extends State<MovesListPage> {
                 value: 'bottom',
                 child: Row(
                   children: <Widget>[
-                    const Icon(
+                    Icon(
                       FluentIcons.arrow_download_24_regular,
-                      color: Colors.black54,
+                      color: colorScheme.onSurfaceVariant,
                     ),
                     const SizedBox(width: 8),
                     Text(S.of(context).bottom),
@@ -2950,9 +2939,9 @@ class MovesListPageState extends State<MovesListPage> {
                   value: 'prev_branch',
                   child: Row(
                     children: <Widget>[
-                      const Icon(
+                      Icon(
                         FluentIcons.arrow_up_24_regular,
-                        color: Colors.black54,
+                        color: colorScheme.onSurfaceVariant,
                       ),
                       const SizedBox(width: 8),
                       Text(S.of(context).previousBranchPoint),
@@ -2963,9 +2952,9 @@ class MovesListPageState extends State<MovesListPage> {
                   value: 'next_branch',
                   child: Row(
                     children: <Widget>[
-                      const Icon(
+                      Icon(
                         FluentIcons.arrow_down_24_regular,
-                        color: Colors.black54,
+                        color: colorScheme.onSurfaceVariant,
                       ),
                       const SizedBox(width: 8),
                       Text(S.of(context).nextBranchPoint),
@@ -2978,9 +2967,9 @@ class MovesListPageState extends State<MovesListPage> {
                 value: 'save_game',
                 child: Row(
                   children: <Widget>[
-                    const Icon(
+                    Icon(
                       FluentIcons.save_24_regular,
-                      color: Colors.black54,
+                      color: colorScheme.onSurfaceVariant,
                     ),
                     const SizedBox(width: 8),
                     Text(S.of(context).saveGame),
@@ -2991,9 +2980,9 @@ class MovesListPageState extends State<MovesListPage> {
                 value: 'load_game',
                 child: Row(
                   children: <Widget>[
-                    const Icon(
+                    Icon(
                       FluentIcons.folder_open_24_regular,
-                      color: Colors.black54,
+                      color: colorScheme.onSurfaceVariant,
                     ),
                     const SizedBox(width: 8),
                     Text(S.of(context).loadGame),
@@ -3005,9 +2994,9 @@ class MovesListPageState extends State<MovesListPage> {
                 value: 'import_game',
                 child: Row(
                   children: <Widget>[
-                    const Icon(
+                    Icon(
                       FluentIcons.clipboard_paste_24_regular,
-                      color: Colors.black54,
+                      color: colorScheme.onSurfaceVariant,
                     ),
                     const SizedBox(width: 8),
                     Text(S.of(context).importGame),
@@ -3018,9 +3007,9 @@ class MovesListPageState extends State<MovesListPage> {
                 value: 'export_game',
                 child: Row(
                   children: <Widget>[
-                    const Icon(
+                    Icon(
                       FluentIcons.copy_24_regular,
-                      color: Colors.black54,
+                      color: colorScheme.onSurfaceVariant,
                     ),
                     const SizedBox(width: 8),
                     Text(S.of(context).exportGame),
@@ -3033,9 +3022,9 @@ class MovesListPageState extends State<MovesListPage> {
                 value: 'scan_qr',
                 child: Row(
                   children: <Widget>[
-                    const Icon(
+                    Icon(
                       FluentIcons.scan_camera_24_regular,
-                      color: Colors.black54,
+                      color: colorScheme.onSurfaceVariant,
                     ),
                     const SizedBox(width: 8),
                     Expanded(
@@ -3052,9 +3041,9 @@ class MovesListPageState extends State<MovesListPage> {
                 value: 'export_qr',
                 child: Row(
                   children: <Widget>[
-                    const Icon(
+                    Icon(
                       FluentIcons.qr_code_24_regular,
-                      color: Colors.black54,
+                      color: colorScheme.onSurfaceVariant,
                     ),
                     const SizedBox(width: 8),
                     Expanded(
@@ -3071,9 +3060,9 @@ class MovesListPageState extends State<MovesListPage> {
                 value: 'copy_llm_prompt',
                 child: Row(
                   children: <Widget>[
-                    const Icon(
+                    Icon(
                       FluentIcons.text_grammar_wand_24_regular,
-                      color: Colors.black54,
+                      color: colorScheme.onSurfaceVariant,
                     ),
                     const SizedBox(width: 8),
                     Expanded(
@@ -3151,6 +3140,16 @@ class MoveListItemState extends State<MoveListItem> {
 
   /// Cached comment text displayed in read-only mode.
   String _comment = "";
+
+  Color _itemBackgroundColor(ColorScheme colorScheme) {
+    return _isActiveNode()
+        ? colorScheme.primaryContainer.withValues(alpha: 0.72)
+        : colorScheme.surfaceContainerLow;
+  }
+
+  TextStyle _commentStyle(ColorScheme colorScheme) {
+    return TextStyle(fontSize: 12, color: colorScheme.onSurfaceVariant);
+  }
 
   @override
   void initState() {
@@ -3275,6 +3274,7 @@ class MoveListItemState extends State<MoveListItem> {
     if (moveData == null) {
       return const SizedBox.shrink();
     }
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
 
     final String notation = moveData.notation;
     final String boardLayout = moveData.boardLayout ?? "";
@@ -3299,8 +3299,8 @@ class MoveListItemState extends State<MoveListItem> {
       fontSize: 14,
       fontWeight: FontWeight.bold,
       color: isVariation
-          ? DB().colorSettings.pieceHighlightColor.withValues(alpha: 0.8)
-          : DB().colorSettings.messageColor,
+          ? colorScheme.primary.withValues(alpha: 0.9)
+          : colorScheme.onSurface,
       fontFamily: 'monospace', // Add monospace font
     );
 
@@ -3314,8 +3314,8 @@ class MoveListItemState extends State<MoveListItem> {
             isLastSibling: isLastSibling,
             siblingIndex: siblingIndex,
             color: isVariation
-                ? DB().colorSettings.pieceHighlightColor.withValues(alpha: 0.7)
-                : DB().colorSettings.messageColor.withValues(alpha: 0.5),
+                ? colorScheme.primary.withValues(alpha: 0.72)
+                : colorScheme.onSurfaceVariant.withValues(alpha: 0.56),
           )
         : const SizedBox.shrink();
 
@@ -3372,9 +3372,7 @@ class MoveListItemState extends State<MoveListItem> {
           decoration: BoxDecoration(
             border: Border(
               left: BorderSide(
-                color: DB().colorSettings.pieceHighlightColor.withValues(
-                  alpha: 0.6,
-                ),
+                color: colorScheme.primary.withValues(alpha: 0.64),
                 width: 3,
               ),
             ),
@@ -3395,14 +3393,13 @@ class MoveListItemState extends State<MoveListItem> {
     TextStyle combinedStyle,
     Widget branchTree,
   ) {
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
     return GestureDetector(
       onTap: () => _navigateToNode(),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Container(
-          color: _isActiveNode()
-              ? DB().colorSettings.pieceHighlightColor.withValues(alpha: 0.3)
-              : DB().colorSettings.darkBackgroundColor,
+          color: _itemBackgroundColor(colorScheme),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
@@ -3426,12 +3423,7 @@ class MoveListItemState extends State<MoveListItem> {
                     const SizedBox(height: 8),
                     Text(roundNotation + notation, style: combinedStyle),
                     const SizedBox(height: 6),
-                    _buildEditableComment(
-                      TextStyle(
-                        fontSize: 12,
-                        color: DB().colorSettings.messageColor,
-                      ),
-                    ),
+                    _buildEditableComment(_commentStyle(colorScheme)),
                     _buildNextMoveChips(),
                   ],
                 ),
@@ -3523,6 +3515,7 @@ class MoveListItemState extends State<MoveListItem> {
   }
 
   Widget _buildChildBranchChip(PgnNode<ExtMove> child) {
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
     final String label = _generateBranchPreview(child);
     final bool isSelected = _isNodeOrDescendantOfActive(child);
 
@@ -3532,21 +3525,21 @@ class MoveListItemState extends State<MoveListItem> {
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
         decoration: BoxDecoration(
           color: isSelected
-              ? DB().colorSettings.pieceHighlightColor.withValues(alpha: 0.25)
-              : DB().colorSettings.messageColor.withValues(alpha: 0.18),
+              ? colorScheme.primaryContainer
+              : colorScheme.surfaceContainerHighest,
           borderRadius: BorderRadius.circular(6),
           border: Border.all(
             color: isSelected
-                ? DB().colorSettings.pieceHighlightColor.withValues(alpha: 0.6)
-                : DB().colorSettings.messageColor.withValues(alpha: 0.25),
+                ? colorScheme.primary.withValues(alpha: 0.6)
+                : colorScheme.outlineVariant,
           ),
         ),
         child: Text(
           label,
           style: TextStyle(
             color: isSelected
-                ? DB().colorSettings.pieceHighlightColor
-                : DB().colorSettings.messageColor.withValues(alpha: 0.85),
+                ? colorScheme.onPrimaryContainer
+                : colorScheme.onSurfaceVariant,
             fontFamily: 'monospace',
             fontSize: 12,
             fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
@@ -3596,6 +3589,7 @@ class MoveListItemState extends State<MoveListItem> {
   /// next move options). This matches how chess GUIs display branching at the
   /// parent move (e.g., show the alternatives under "1... d6").
   Widget _buildNextMoveChips() {
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
     if (!widget.showNextMoveChips) {
       return const SizedBox.shrink();
     }
@@ -3626,20 +3620,16 @@ class MoveListItemState extends State<MoveListItem> {
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
-                  color: DB().colorSettings.pieceHighlightColor.withValues(
-                    alpha: 0.18,
-                  ),
+                  color: colorScheme.primaryContainer,
                   borderRadius: BorderRadius.circular(6),
                   border: Border.all(
-                    color: DB().colorSettings.pieceHighlightColor.withValues(
-                      alpha: 0.45,
-                    ),
+                    color: colorScheme.primary.withValues(alpha: 0.45),
                   ),
                 ),
                 child: Text(
                   '+$overflowCount',
                   style: TextStyle(
-                    color: DB().colorSettings.pieceHighlightColor,
+                    color: colorScheme.onPrimaryContainer,
                     fontFamily: 'monospace',
                     fontSize: 12,
                     fontWeight: FontWeight.bold,
@@ -3661,21 +3651,20 @@ class MoveListItemState extends State<MoveListItem> {
     TextStyle combinedStyle,
     Widget branchTree,
   ) {
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
     return GestureDetector(
       onTap: () => _navigateToNode(),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 6.0),
         child: Container(
           decoration: BoxDecoration(
-            color: _isActiveNode()
-                ? DB().colorSettings.pieceHighlightColor.withValues(alpha: 0.3)
-                : DB().colorSettings.darkBackgroundColor,
+            color: _itemBackgroundColor(colorScheme),
             borderRadius: BorderRadius.circular(4),
-            boxShadow: const <BoxShadow>[
+            boxShadow: <BoxShadow>[
               BoxShadow(
-                color: Colors.black26,
+                color: colorScheme.shadow.withValues(alpha: 0.12),
                 blurRadius: 2,
-                offset: Offset(2, 2),
+                offset: const Offset(2, 2),
               ),
             ],
           ),
@@ -3715,12 +3704,7 @@ class MoveListItemState extends State<MoveListItem> {
                         overflow: TextOverflow.ellipsis,
                       ),
                       const SizedBox(height: 8),
-                      _buildEditableComment(
-                        TextStyle(
-                          fontSize: 12,
-                          color: DB().colorSettings.messageColor,
-                        ),
-                      ),
+                      _buildEditableComment(_commentStyle(colorScheme)),
                       _buildNextMoveChips(),
                     ],
                   ),
@@ -3740,14 +3724,13 @@ class MoveListItemState extends State<MoveListItem> {
     String roundNotation,
     TextStyle combinedStyle,
   ) {
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
     return GestureDetector(
       onTap: () => _navigateToNode(),
       child: Padding(
         padding: const EdgeInsets.all(6.0),
         child: Container(
-          color: _isActiveNode()
-              ? DB().colorSettings.pieceHighlightColor.withValues(alpha: 0.3)
-              : DB().colorSettings.darkBackgroundColor,
+          color: _itemBackgroundColor(colorScheme),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
@@ -3784,15 +3767,14 @@ class MoveListItemState extends State<MoveListItem> {
     TextStyle combinedStyle,
     Widget branchTree,
   ) {
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
     return GestureDetector(
       onTap: () => _navigateToNode(),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Container(
           decoration: BoxDecoration(
-            color: _isActiveNode()
-                ? DB().colorSettings.pieceHighlightColor.withValues(alpha: 0.3)
-                : DB().colorSettings.darkBackgroundColor,
+            color: _itemBackgroundColor(colorScheme),
             borderRadius: BorderRadius.circular(4),
           ),
           child: Row(
@@ -3814,12 +3796,7 @@ class MoveListItemState extends State<MoveListItem> {
               const SizedBox(width: 8),
               // Comment
               Expanded(
-                child: _buildEditableComment(
-                  TextStyle(
-                    fontSize: 12,
-                    color: DB().colorSettings.messageColor,
-                  ),
-                ),
+                child: _buildEditableComment(_commentStyle(colorScheme)),
               ),
             ],
           ),
