@@ -910,14 +910,14 @@ class PlayAreaState extends State<PlayArea> {
     return _takeBackStepCountForRequesterOrNull(_humanAiTakeBackRequesterSide);
   }
 
-  int get _lanTakeBackStepCount {
+  int? get _lanTakeBackStepCountOrNull {
     assert(GameController().gameInstance.gameMode == GameMode.humanVsLAN);
     final PieceColor requesterSide = GameController().getLocalColor();
     assert(
       requesterSide == PieceColor.white || requesterSide == PieceColor.black,
       'LAN takeback requires a playable local requester side.',
     );
-    return _takeBackStepCountForRequester(requesterSide);
+    return _takeBackStepCountForRequesterOrNull(requesterSide);
   }
 
   PieceColor get _humanAiTakeBackRequesterSide {
@@ -930,15 +930,6 @@ class PlayAreaState extends State<PlayArea> {
       'Human vs AI takeback requires exactly one human requester.',
     );
     return humanPlayers.single.color;
-  }
-
-  int _takeBackStepCountForRequester(PieceColor requesterSide) {
-    final int? steps = _takeBackStepCountForRequesterOrNull(requesterSide);
-    assert(
-      steps != null,
-      'Move history does not contain an available requester turn.',
-    );
-    return steps!;
   }
 
   int? _takeBackStepCountForRequesterOrNull(PieceColor requesterSide) {
@@ -1143,10 +1134,18 @@ class PlayAreaState extends State<PlayArea> {
   }
 
   bool get _canTakeBackFromRegularBottomBar {
-    return !_usesLichessHumanAiToolbar &&
-        GameController().gameRecorder.activeNode?.parent != null &&
-        !GameController().isEngineRunning &&
-        !GameController().isEngineInDelay;
+    if (_usesLichessHumanAiToolbar || _isAnalysisMode) {
+      return false;
+    }
+    if (GameController().gameRecorder.activeNode?.parent == null ||
+        GameController().isEngineRunning ||
+        GameController().isEngineInDelay) {
+      return false;
+    }
+    if (GameController().gameInstance.gameMode == GameMode.humanVsLAN) {
+      return _lanTakeBackStepCountOrNull != null;
+    }
+    return true;
   }
 
   bool get _canStepForwardFromRegularBottomBar {
@@ -1818,8 +1817,13 @@ class PlayAreaState extends State<PlayArea> {
             final ScaffoldMessengerState messenger = ScaffoldMessenger.of(
               context,
             );
+            final int? lanSteps = _lanTakeBackStepCountOrNull;
+            if (lanSteps == null) {
+              GameController().headerTipNotifier.showTip(S.of(context).noMove);
+              return;
+            }
             final bool accepted = await GameController().requestLanTakeBack(
-              _lanTakeBackStepCount,
+              lanSteps,
             );
             if (!mounted) {
               return;
