@@ -2051,10 +2051,14 @@ void main() {
       ),
       findsOneWidget,
     );
+    expect(find.text('Multiple lines'), findsOneWidget);
 
-    await tester.tap(
-      find.byKey(const Key('play_area_analysis_settings_engine_line_count_1')),
+    final Finder lineCountSliderFinder = find.byKey(
+      const Key('play_area_analysis_settings_engine_line_count_control'),
     );
+    Slider lineCountSlider = tester.widget<Slider>(lineCountSliderFinder);
+    lineCountSlider.onChanged!(1);
+    lineCountSlider.onChangeEnd!(1);
     await tester.pumpAndSettle();
 
     expect(AnalysisMode.engineLineCount, 1);
@@ -2067,9 +2071,9 @@ void main() {
       findsNothing,
     );
 
-    await tester.tap(
-      find.byKey(const Key('play_area_analysis_settings_engine_line_count_0')),
-    );
+    lineCountSlider = tester.widget<Slider>(lineCountSliderFinder);
+    lineCountSlider.onChanged!(0);
+    lineCountSlider.onChangeEnd!(0);
     await tester.pumpAndSettle();
 
     expect(AnalysisMode.engineLineCount, 0);
@@ -2081,6 +2085,42 @@ void main() {
       find.byKey(const Key('play_area_analysis_engine_lines')),
       findsNothing,
     );
+  });
+
+  testWidgets('analysis settings line count refreshes engine MultiPV', (
+    WidgetTester tester,
+  ) async {
+    db.displaySettings = const DisplaySettings(
+      isUnplacedAndRemovedPiecesShown: false,
+      isHistoryNavigationToolbarShown: false,
+    );
+    final _RecordingAnalysisSession session = _RecordingAnalysisSession();
+    _bindExistingNativeGame(GameMode.analysis, session);
+    AnalysisMode.enable(<MoveAnalysisResult>[
+      const MoveAnalysisResult(
+        move: 'd6',
+        outcome: AnalysisOutcome.draw,
+        rank: 1,
+        depth: 1,
+        nodes: 1,
+        line: <String>['d6'],
+      ),
+    ], source: AnalysisSource.engine);
+
+    await _pumpSessionPlayArea(tester, session);
+    await _openAnalysisSettingsFromEnginePopup(tester);
+
+    final Slider slider = tester.widget<Slider>(
+      find.byKey(
+        const Key('play_area_analysis_settings_engine_line_count_control'),
+      ),
+    );
+    slider.onChanged!(3);
+    slider.onChangeEnd!(3);
+    await tester.pumpAndSettle();
+
+    expect(AnalysisMode.engineLineCount, 3);
+    expect(session.requestedMultiPvValues.last, 3);
   });
 
   testWidgets('analysis engine line tap keeps analysis active', (

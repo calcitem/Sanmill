@@ -194,6 +194,7 @@ Future<void> showAnalysisSettingsSheet(
                               },
                             );
                             AnalysisMode.setShowEngineLines(value);
+                            _refreshEngineAnalysisAfterSettingsChange(context);
                           },
                         ),
                         ListTile(
@@ -201,70 +202,38 @@ Future<void> showAnalysisSettingsSheet(
                             'play_area_analysis_settings_engine_line_count',
                           ),
                           leading: const Icon(Icons.format_list_numbered),
-                          title: Text(strings.engine),
-                          trailing: SegmentedButton<int>(
-                            key: const Key(
-                              'play_area_analysis_settings_engine_line_count_control',
+                          title: Text(_analysisMultipleLinesLabel(strings)),
+                          subtitle: Text('${AnalysisMode.engineLineCount}'),
+                          trailing: SizedBox(
+                            width: 180,
+                            child: Slider(
+                              key: const Key(
+                                'play_area_analysis_settings_engine_line_count_control',
+                              ),
+                              value: AnalysisMode.engineLineCount.toDouble(),
+                              max: AnalysisMode.maxEngineLineCount.toDouble(),
+                              divisions: AnalysisMode.maxEngineLineCount,
+                              label: AnalysisMode.engineLineCount.toString(),
+                              onChanged: (double value) {
+                                final int count = value.round();
+                                RecordingService().recordEvent(
+                                  RecordingEventType.toolbarAction,
+                                  <String, dynamic>{
+                                    'toolbar': 'analysisSettings',
+                                    'action': 'setEngineLineCount',
+                                    'count': count,
+                                  },
+                                );
+                                AnalysisMode.setEngineLineCount(count);
+                              },
+                              onChangeEnd: (double value) {
+                                final int count = value.round();
+                                AnalysisMode.setEngineLineCount(count);
+                                _refreshEngineAnalysisAfterSettingsChange(
+                                  context,
+                                );
+                              },
                             ),
-                            showSelectedIcon: false,
-                            style: const ButtonStyle(
-                              visualDensity: VisualDensity.compact,
-                            ),
-                            segments: const <ButtonSegment<int>>[
-                              ButtonSegment<int>(
-                                value: 0,
-                                label: Text(
-                                  '0',
-                                  key: Key(
-                                    'play_area_analysis_settings_engine_line_count_0',
-                                  ),
-                                ),
-                              ),
-                              ButtonSegment<int>(
-                                value: 1,
-                                label: Text(
-                                  '1',
-                                  key: Key(
-                                    'play_area_analysis_settings_engine_line_count_1',
-                                  ),
-                                ),
-                              ),
-                              ButtonSegment<int>(
-                                value: 2,
-                                label: Text(
-                                  '2',
-                                  key: Key(
-                                    'play_area_analysis_settings_engine_line_count_2',
-                                  ),
-                                ),
-                              ),
-                              ButtonSegment<int>(
-                                value: 3,
-                                label: Text(
-                                  '3',
-                                  key: Key(
-                                    'play_area_analysis_settings_engine_line_count_3',
-                                  ),
-                                ),
-                              ),
-                            ],
-                            selected: <int>{AnalysisMode.engineLineCount},
-                            onSelectionChanged: (Set<int> selection) {
-                              assert(
-                                selection.length == 1,
-                                'Engine line count selector is single-choice.',
-                              );
-                              final int value = selection.single;
-                              RecordingService().recordEvent(
-                                RecordingEventType.toolbarAction,
-                                <String, dynamic>{
-                                  'toolbar': 'analysisSettings',
-                                  'action': 'setEngineLineCount',
-                                  'count': value,
-                                },
-                              );
-                              AnalysisMode.setEngineLineCount(value);
-                            },
                           ),
                         ),
                       ],
@@ -278,6 +247,22 @@ Future<void> showAnalysisSettingsSheet(
       );
     },
   );
+}
+
+void _refreshEngineAnalysisAfterSettingsChange(BuildContext context) {
+  if (!AnalysisMode.isFullAnalysis ||
+      AnalysisMode.source != AnalysisSource.engine ||
+      AnalysisMode.isAnalyzing) {
+    return;
+  }
+  unawaited(AnalysisService.refresh(context));
+}
+
+String _analysisMultipleLinesLabel(S strings) {
+  return switch (strings.localeName.split('_').first) {
+    'zh' => '多条分析线',
+    _ => 'Multiple lines',
+  };
 }
 
 String _analysisThreatLabel(S strings) {

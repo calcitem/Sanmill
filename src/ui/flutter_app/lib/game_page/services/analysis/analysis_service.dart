@@ -19,6 +19,7 @@ import '../../../shared/services/logger.dart';
 import '../../../shared/services/perfect_database_service.dart';
 import '../../../src/rust/api/simple.dart' as tgf;
 import '../analysis_mode.dart';
+import '../mill.dart' show GameController;
 
 /// Drives the analysis overlay.
 ///
@@ -333,7 +334,10 @@ class AnalysisService {
 
   static NativeMillGameSession? _activeNativeSession(BuildContext context) {
     final Object? session = GameSessionScope.sessionOf(context);
-    return session is NativeMillGameSession ? session : null;
+    if (session is NativeMillGameSession) {
+      return session;
+    }
+    return GameController().activeNativeMillSession;
   }
 
   static int _defaultEngineDepth(NativeMillGameSession session) {
