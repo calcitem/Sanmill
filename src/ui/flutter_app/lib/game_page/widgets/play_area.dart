@@ -1542,6 +1542,40 @@ class PlayAreaState extends State<PlayArea> {
             onPressed: () =>
                 unawaited(_toggleAnalysisThreatFromMenu(actionContext)),
           ),
+        if (_isAnalysisMode)
+          LichessActionSheetAction(
+            key: const Key('play_area_regular_game_menu_analysis_settings'),
+            leading: const Icon(Icons.settings_outlined),
+            trailing: const Icon(Icons.chevron_right),
+            makeLabel: (BuildContext context) => Text(strings.settings),
+            onPressed: () =>
+                _showAnalysisSettingsSheet(actionContext, strings: strings),
+          ),
+        if (_isAnalysisMode)
+          LichessActionSheetAction(
+            key: const Key('play_area_regular_game_menu_toggle_engine_lines'),
+            leading: Icon(
+              AnalysisMode.showEngineLines
+                  ? Icons.subtitles_outlined
+                  : Icons.subtitles_off_outlined,
+            ),
+            makeLabel: (BuildContext context) => Text(
+              AnalysisMode.showEngineLines
+                  ? strings.hideEngineLines
+                  : strings.showEngineLines,
+            ),
+            onPressed: () {
+              RecordingService().recordEvent(
+                RecordingEventType.toolbarAction,
+                <String, dynamic>{
+                  'toolbar': 'analysisBottom',
+                  'action': 'toggleEngineLines',
+                  'visible': !AnalysisMode.showEngineLines,
+                },
+              );
+              AnalysisMode.toggleEngineLines(persist: true);
+            },
+          ),
         LichessActionSheetAction(
           key: const Key('play_area_regular_game_menu_flip_board'),
           leading: const Icon(Icons.flip_camera_android_outlined),
@@ -1599,28 +1633,6 @@ class PlayAreaState extends State<PlayArea> {
             makeLabel: (BuildContext context) => Text(strings.shareAndExport),
             onPressed: () =>
                 _showAnalysisShareExportMenu(actionContext, strings: strings),
-          ),
-        if (!_isAnalysisMode && _canStepBackFromRegularBottomBar)
-          LichessActionSheetAction(
-            key: const Key('play_area_regular_game_menu_previous'),
-            leading: const Icon(CupertinoIcons.chevron_back),
-            makeLabel: (BuildContext context) => Text(S.of(context).previous),
-            onPressed: () =>
-                unawaited(_stepBackFromRegularBottomBar(actionContext)),
-          ),
-        if (!_isAnalysisMode && _canStepForwardFromRegularBottomBar)
-          LichessActionSheetAction(
-            key: const Key('play_area_regular_game_menu_next'),
-            leading: const Icon(CupertinoIcons.chevron_forward),
-            makeLabel: (BuildContext context) =>
-                Text(S.of(context).stepForward),
-            onPressed: () => unawaited(
-              HistoryNavigator.stepForward(
-                actionContext,
-                pop: false,
-                toolbar: true,
-              ),
-            ),
           ),
         if (_shouldShowMoveNowMenuAction)
           LichessActionSheetAction(
@@ -2301,6 +2313,18 @@ class PlayAreaState extends State<PlayArea> {
                   onClockPressed: _regularClockControlAction(status),
                   onTakeBackPressed: _canTakeBackFromRegularBottomBar
                       ? () => _takeBackFromRegularBottomBar(context)
+                      : null,
+                  onPreviousPressed: _canStepBackFromRegularBottomBar
+                      ? () => unawaited(_stepBackFromRegularBottomBar(context))
+                      : null,
+                  onNextPressed: _canStepForwardFromRegularBottomBar
+                      ? () => unawaited(
+                          HistoryNavigator.stepForward(
+                            context,
+                            pop: false,
+                            toolbar: true,
+                          ),
+                        )
                       : null,
                 );
               },
@@ -4797,6 +4821,8 @@ class _RegularGameBottomBar extends StatelessWidget {
     required this.isShowingResult,
     required this.onClockPressed,
     required this.onTakeBackPressed,
+    required this.onPreviousPressed,
+    required this.onNextPressed,
   });
 
   final VoidCallback onMenuPressed;
@@ -4806,6 +4832,8 @@ class _RegularGameBottomBar extends StatelessWidget {
   final bool isShowingResult;
   final VoidCallback? onClockPressed;
   final VoidCallback? onTakeBackPressed;
+  final VoidCallback? onPreviousPressed;
+  final VoidCallback? onNextPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -4845,6 +4873,28 @@ class _RegularGameBottomBar extends StatelessWidget {
           label: S.of(context).takeBack,
           onTap: onTakeBackPressed,
           withShadow: true,
+        ),
+        _RepeatButton(
+          onLongPress: onPreviousPressed,
+          child: LichessBottomBarButton(
+            key: const Key('play_area_regular_bottom_bar_previous'),
+            icon: CupertinoIcons.chevron_back,
+            label: S.of(context).previous,
+            onTap: onPreviousPressed,
+            showTooltip: false,
+            withShadow: true,
+          ),
+        ),
+        _RepeatButton(
+          onLongPress: onNextPressed,
+          child: LichessBottomBarButton(
+            key: const Key('play_area_regular_bottom_bar_next'),
+            icon: CupertinoIcons.chevron_forward,
+            label: S.of(context).next,
+            onTap: onNextPressed,
+            showTooltip: false,
+            withShadow: true,
+          ),
         ),
       ],
     );

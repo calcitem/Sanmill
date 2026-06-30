@@ -552,8 +552,8 @@ class NativeMillGameSession implements GameSessionHandle {
     );
     _searchInFlight = true;
 
-    final List<NativeMillPrincipalVariation> variations =
-        <NativeMillPrincipalVariation>[];
+    final Map<int, NativeMillPrincipalVariation> variationsByRank =
+        <int, NativeMillPrincipalVariation>{};
     try {
       await for (final tgf.EngineEvent event in millSearchEvents(
         depth: depth,
@@ -562,11 +562,15 @@ class NativeMillGameSession implements GameSessionHandle {
         multiPv: multiPv,
       )) {
         if (event.kind == 'pv') {
-          variations.add(_principalVariationFromEvent(event));
+          final NativeMillPrincipalVariation variation =
+              _principalVariationFromEvent(event);
+          variationsByRank[variation.rank] = variation;
         } else if (event.kind == 'bestMove' &&
             multiPv == 1 &&
             event.toNode >= 0) {
-          variations.add(_principalVariationFromBestMoveEvent(event, depth));
+          final NativeMillPrincipalVariation variation =
+              _principalVariationFromBestMoveEvent(event, depth);
+          variationsByRank[variation.rank] = variation;
         }
       }
     } catch (e) {
@@ -575,6 +579,9 @@ class NativeMillGameSession implements GameSessionHandle {
     } finally {
       _searchInFlight = false;
     }
+    final List<NativeMillPrincipalVariation> variations = variationsByRank
+        .values
+        .toList(growable: false);
     variations.sort(
       (NativeMillPrincipalVariation a, NativeMillPrincipalVariation b) =>
           a.rank.compareTo(b.rank),

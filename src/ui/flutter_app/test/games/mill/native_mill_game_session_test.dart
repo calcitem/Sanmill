@@ -253,6 +253,55 @@ void main() {
       expect(variations.first.line, <String>['d6', 'f4', 'a1']);
     });
 
+    test(
+      'searchPrincipalVariations keeps the latest line for each rank',
+      () async {
+        final _FakeNativeMillRulesPort rulesPort = _FakeNativeMillRulesPort(
+          searchEvents: Stream<tgf.EngineEvent>.fromIterable(<tgf.EngineEvent>[
+            tgf.EngineEvent(
+              kind: 'pv',
+              depth: 2,
+              score: 10,
+              nodes: BigInt.from(64),
+              toNode: 3,
+              reason: 'd6 rank=1 rawScore=-10 cutoff=false pv=d6,f4',
+            ),
+            tgf.EngineEvent(
+              kind: 'pv',
+              depth: 4,
+              score: 28,
+              nodes: BigInt.from(512),
+              toNode: 3,
+              reason: 'd6 rank=1 rawScore=-28 cutoff=false pv=d6,f4,a1',
+            ),
+            tgf.EngineEvent(
+              kind: 'pv',
+              depth: 4,
+              score: -8,
+              nodes: BigInt.from(256),
+              toNode: 5,
+              reason: 'f4 rank=2 rawScore=8 cutoff=false pv=f4,a1',
+            ),
+          ]),
+        );
+        final NativeMillGameSession session = NativeMillGameSession(
+          rulesPort: rulesPort,
+        );
+        addTearDown(session.dispose);
+
+        final List<NativeMillPrincipalVariation> variations = await session
+            .searchPrincipalVariations(depth: 4, multiPv: 2);
+
+        expect(variations, hasLength(2));
+        expect(variations.first.rank, 1);
+        expect(variations.first.depth, 4);
+        expect(variations.first.score, 28);
+        expect(variations.first.nodes, 512);
+        expect(variations.first.line, <String>['d6', 'f4', 'a1']);
+        expect(variations.last.rank, 2);
+      },
+    );
+
     test('searchPrincipalVariations parses a single bestMove line', () async {
       final _FakeNativeMillRulesPort rulesPort = _FakeNativeMillRulesPort(
         searchEvents: Stream<tgf.EngineEvent>.fromIterable(<tgf.EngineEvent>[

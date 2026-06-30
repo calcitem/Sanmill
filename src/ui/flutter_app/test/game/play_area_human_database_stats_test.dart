@@ -255,11 +255,43 @@ void main() {
     );
     expect(
       find.byKey(const Key('play_area_regular_bottom_bar_previous')),
-      findsNothing,
+      findsOneWidget,
     );
     expect(
       find.byKey(const Key('play_area_regular_bottom_bar_next')),
-      findsNothing,
+      findsOneWidget,
+    );
+    expect(
+      tester
+          .widget<LichessBottomBarButton>(
+            find.byKey(const Key('play_area_regular_bottom_bar_previous')),
+          )
+          .label,
+      'Previous',
+    );
+    expect(
+      tester
+          .widget<LichessBottomBarButton>(
+            find.byKey(const Key('play_area_regular_bottom_bar_previous')),
+          )
+          .enabled,
+      isTrue,
+    );
+    expect(
+      tester
+          .widget<LichessBottomBarButton>(
+            find.byKey(const Key('play_area_regular_bottom_bar_next')),
+          )
+          .label,
+      'Next',
+    );
+    expect(
+      tester
+          .widget<LichessBottomBarButton>(
+            find.byKey(const Key('play_area_regular_bottom_bar_next')),
+          )
+          .enabled,
+      isFalse,
     );
     expect(find.byKey(const Key('play_area_toolbar_item_info')), findsNothing);
 
@@ -300,7 +332,7 @@ void main() {
     );
     expect(
       find.byKey(const Key('play_area_regular_game_menu_previous')),
-      findsOne,
+      findsNothing,
     );
     expect(
       find.byKey(const Key('play_area_regular_game_menu_next')),
@@ -1294,7 +1326,7 @@ void main() {
       findsNothing,
     );
 
-    AnalysisMode.setShowEngineLines(false);
+    AnalysisMode.setShowEngineLines(false, persist: true);
     await tester.pump();
 
     expect(
@@ -1606,11 +1638,11 @@ void main() {
     );
     expect(
       find.byKey(const Key('play_area_regular_game_menu_toggle_engine_lines')),
-      findsNothing,
+      findsOne,
     );
     expect(
       find.byKey(const Key('play_area_regular_game_menu_analysis_settings')),
-      findsNothing,
+      findsOne,
     );
     expect(
       find.byKey(const Key('play_area_regular_game_menu_show_threat')),
@@ -1624,6 +1656,23 @@ void main() {
       find.byKey(const Key('play_area_regular_game_menu_share_export')),
       findsOne,
     );
+
+    await tester.tap(
+      find.byKey(const Key('play_area_regular_game_menu_toggle_engine_lines')),
+    );
+    await tester.pumpAndSettle();
+
+    expect(AnalysisMode.showEngineLines, isFalse);
+    expect(db.displaySettings.analysisShowEngineLines, isFalse);
+    expect(
+      find.byKey(const Key('play_area_analysis_engine_lines_hidden')),
+      findsOneWidget,
+    );
+
+    await tester.tap(
+      find.byKey(const Key('play_area_analysis_bottom_bar_menu')),
+    );
+    await tester.pumpAndSettle();
 
     await tester.tap(
       find.byKey(const Key('play_area_regular_game_menu_share_export')),
