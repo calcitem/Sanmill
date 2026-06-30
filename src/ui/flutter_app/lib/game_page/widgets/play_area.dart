@@ -415,6 +415,13 @@ class PlayAreaState extends State<PlayArea> {
     await HistoryNavigator.takeBack(context, pop: false, toolbar: true);
   }
 
+  Future<void> _stepBackFromRegularBottomBar(BuildContext context) async {
+    if (GameController().gameInstance.gameMode == GameMode.humanVsLAN) {
+      return;
+    }
+    await HistoryNavigator.takeBack(context, pop: false, toolbar: true);
+  }
+
   Future<void> _takeBackForRequesterFromRegularBottomBar(
     BuildContext context, {
     required PieceColor requesterSide,
@@ -499,6 +506,14 @@ class PlayAreaState extends State<PlayArea> {
 
   bool get _canStepBackFromRegularBottomBar {
     return !_usesLichessHumanAiToolbar &&
+        GameController().gameInstance.gameMode != GameMode.humanVsLAN &&
+        GameController().gameRecorder.activeNode?.parent != null &&
+        !GameController().isEngineRunning &&
+        !GameController().isEngineInDelay;
+  }
+
+  bool get _canTakeBackFromRegularBottomBar {
+    return !_usesLichessHumanAiToolbar &&
         GameController().gameRecorder.activeNode?.parent != null &&
         !GameController().isEngineRunning &&
         !GameController().isEngineInDelay;
@@ -506,6 +521,7 @@ class PlayAreaState extends State<PlayArea> {
 
   bool get _canStepForwardFromRegularBottomBar {
     return !_usesLichessHumanAiToolbar &&
+        GameController().gameInstance.gameMode != GameMode.humanVsLAN &&
         (GameController().gameRecorder.activeNode ??
                 GameController().gameRecorder.pgnRoot)
             .children
@@ -803,6 +819,20 @@ class PlayAreaState extends State<PlayArea> {
             makeLabel: (BuildContext context) =>
                 Text(S.of(context).aiChatButtonTooltip),
             onPressed: () => _showAiChatDialog(context),
+          ),
+        if (_isRegularGameOver)
+          LichessActionSheetAction(
+            key: const Key('play_area_regular_game_menu_result'),
+            leading: const Icon(Icons.info_outline),
+            makeLabel: (BuildContext context) => Text(S.of(context).results),
+            onPressed: _showRegularGameResult,
+          )
+        else if (_canResignFromRegularBottomBar)
+          LichessActionSheetAction(
+            key: const Key('play_area_regular_game_menu_resign'),
+            leading: const Icon(CupertinoIcons.flag),
+            makeLabel: (BuildContext context) => Text(S.of(context).resign),
+            onPressed: () => unawaited(_showRegularResignConfirmation(context)),
           ),
         LichessActionSheetAction(
           key: const Key('play_area_toolbar_item_options'),
@@ -1392,14 +1422,8 @@ class PlayAreaState extends State<PlayArea> {
                     builder: (BuildContext context, _, _) {
                       return _RegularGameBottomBar(
                         onMenuPressed: () => _showRegularGameMenu(context),
-                        onResignOrResultPressed: _isRegularGameOver
-                            ? _showRegularGameResult
-                            : _canResignFromRegularBottomBar
-                            ? () => _showRegularResignConfirmation(context)
-                            : null,
-                        isShowingResult: _isRegularGameOver,
                         onPreviousPressed: _canStepBackFromRegularBottomBar
-                            ? () => _takeBackFromRegularBottomBar(context)
+                            ? () => _stepBackFromRegularBottomBar(context)
                             : null,
                         onNextPressed: _canStepForwardFromRegularBottomBar
                             ? () => HistoryNavigator.stepForward(
@@ -1407,6 +1431,9 @@ class PlayAreaState extends State<PlayArea> {
                                 pop: false,
                                 toolbar: true,
                               )
+                            : null,
+                        onTakeBackPressed: _canTakeBackFromRegularBottomBar
+                            ? () => _takeBackFromRegularBottomBar(context)
                             : null,
                       );
                     },
@@ -2037,17 +2064,15 @@ class _HumanAiPlayerPanel extends StatelessWidget {
 class _RegularGameBottomBar extends StatelessWidget {
   const _RegularGameBottomBar({
     required this.onMenuPressed,
-    required this.onResignOrResultPressed,
-    required this.isShowingResult,
     required this.onPreviousPressed,
     required this.onNextPressed,
+    required this.onTakeBackPressed,
   });
 
   final VoidCallback onMenuPressed;
-  final VoidCallback? onResignOrResultPressed;
-  final bool isShowingResult;
   final VoidCallback? onPreviousPressed;
   final VoidCallback? onNextPressed;
+  final VoidCallback? onTakeBackPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -2061,17 +2086,11 @@ class _RegularGameBottomBar extends StatelessWidget {
           onTap: onMenuPressed,
         ),
         LichessBottomBarButton(
-          key: const Key('play_area_regular_bottom_bar_resign_result'),
-          icon: isShowingResult ? Icons.info_outline : CupertinoIcons.flag,
-          label: isShowingResult ? S.of(context).results : S.of(context).resign,
-          onTap: onResignOrResultPressed,
-          highlighted: isShowingResult,
-        ),
-        LichessBottomBarButton(
           key: const Key('play_area_regular_bottom_bar_previous'),
-          icon: CupertinoIcons.arrow_uturn_left,
-          label: S.of(context).takeBack,
+          icon: CupertinoIcons.chevron_back,
+          label: S.of(context).previous,
           onTap: onPreviousPressed,
+          showTooltip: false,
         ),
         LichessBottomBarButton(
           key: const Key('play_area_regular_bottom_bar_next'),
@@ -2079,6 +2098,12 @@ class _RegularGameBottomBar extends StatelessWidget {
           label: S.of(context).stepForward,
           onTap: onNextPressed,
           showTooltip: false,
+        ),
+        LichessBottomBarButton(
+          key: const Key('play_area_regular_bottom_bar_take_back'),
+          icon: CupertinoIcons.arrow_uturn_left,
+          label: S.of(context).takeBack,
+          onTap: onTakeBackPressed,
         ),
       ],
     );

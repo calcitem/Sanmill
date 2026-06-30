@@ -197,6 +197,10 @@ void main() {
     );
     expect(
       find.byKey(const Key('play_area_regular_bottom_bar_resign_result')),
+      findsNothing,
+    );
+    expect(
+      find.byKey(const Key('play_area_regular_bottom_bar_take_back')),
       findsOneWidget,
     );
     expect(
@@ -207,6 +211,14 @@ void main() {
       tester
           .widget<LichessBottomBarButton>(
             find.byKey(const Key('play_area_regular_bottom_bar_previous')),
+          )
+          .label,
+      'Previous',
+    );
+    expect(
+      tester
+          .widget<LichessBottomBarButton>(
+            find.byKey(const Key('play_area_regular_bottom_bar_take_back')),
           )
           .label,
       'Take back',
@@ -250,6 +262,14 @@ void main() {
     );
     expect(
       find.byKey(const Key('play_area_regular_game_menu_move_now')),
+      findsNothing,
+    );
+    expect(
+      find.byKey(const Key('play_area_regular_game_menu_resign')),
+      findsNothing,
+    );
+    expect(
+      find.byKey(const Key('play_area_regular_game_menu_result')),
       findsNothing,
     );
 
@@ -1334,7 +1354,7 @@ void main() {
 
     await _pumpSessionPlayArea(tester, session);
     await tester.tap(
-      find.byKey(const Key('play_area_regular_bottom_bar_previous')),
+      find.byKey(const Key('play_area_regular_bottom_bar_take_back')),
     );
     await tester.pumpAndSettle();
     expect(
@@ -1368,7 +1388,7 @@ void main() {
 
     await _pumpSessionPlayArea(tester, session);
     await tester.tap(
-      find.byKey(const Key('play_area_regular_bottom_bar_previous')),
+      find.byKey(const Key('play_area_regular_bottom_bar_take_back')),
     );
     await tester.pumpAndSettle();
     expect(
