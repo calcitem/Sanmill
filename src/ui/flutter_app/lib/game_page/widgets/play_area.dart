@@ -120,7 +120,7 @@ Future<void> showAnalysisSettingsSheet(
                                 'enabled': value,
                               },
                             );
-                            AnalysisMode.setSmallBoard(value);
+                            AnalysisMode.setSmallBoard(value, persist: true);
                           },
                         ),
                       ],
@@ -193,7 +193,10 @@ Future<void> showAnalysisSettingsSheet(
                                 'visible': value,
                               },
                             );
-                            AnalysisMode.setShowEngineLines(value);
+                            AnalysisMode.setShowEngineLines(
+                              value,
+                              persist: true,
+                            );
                             _refreshEngineAnalysisAfterSettingsChange(context);
                           },
                         ),
@@ -228,7 +231,10 @@ Future<void> showAnalysisSettingsSheet(
                               },
                               onChangeEnd: (double value) {
                                 final int count = value.round();
-                                AnalysisMode.setEngineLineCount(count);
+                                AnalysisMode.setEngineLineCount(
+                                  count,
+                                  persist: true,
+                                );
                                 _refreshEngineAnalysisAfterSettingsChange(
                                   context,
                                 );

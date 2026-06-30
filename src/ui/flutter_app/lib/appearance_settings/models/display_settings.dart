@@ -116,11 +116,16 @@ class DisplaySettings {
     this.isPiecePickUpAnimationEnabled = true,
     this.showBranchTree = false,
     this.themeMode = AppThemeMode.system,
+    this.analysisSmallBoard = false,
+    this.analysisShowEngineLines = true,
+    this.analysisEngineLineCount = defaultAnalysisEngineLineCount,
   });
 
   /// Encodes a Json style map into a [DisplaySettings] object
   factory DisplaySettings.fromJson(Map<String, dynamic> json) =>
       _$DisplaySettingsFromJson(json);
+
+  static const int defaultAnalysisEngineLineCount = 2;
 
   @Deprecated("Use [locale] instead.")
   @HiveField(0, defaultValue: "Default")
@@ -278,6 +283,79 @@ class DisplaySettings {
   @HiveField(46, defaultValue: AppThemeMode.system)
   final AppThemeMode themeMode;
 
+  /// Whether analysis screens use a reduced board in portrait layout.
+  @HiveField(47, defaultValue: false)
+  final bool analysisSmallBoard;
+
+  /// Whether analysis screens show engine candidate lines.
+  @HiveField(48, defaultValue: true)
+  final bool analysisShowEngineLines;
+
+  /// Number of engine candidate lines shown in analysis screens.
+  @HiveField(49, defaultValue: defaultAnalysisEngineLineCount)
+  final int analysisEngineLineCount;
+
   /// Decodes a Json from a [DisplaySettings] object
   Map<String, dynamic> toJson() => _$DisplaySettingsToJson(this);
+
+  DisplaySettings copyWithAnalysisPreferences({
+    bool? analysisSmallBoard,
+    bool? analysisShowEngineLines,
+    int? analysisEngineLineCount,
+  }) {
+    return DisplaySettings(
+      languageCode: languageCode,
+      locale: locale,
+      isFullScreen: isFullScreen,
+      standardNotationEnabled: standardNotationEnabled,
+      isPieceCountInHandShown: isPieceCountInHandShown,
+      isUnplacedAndRemovedPiecesShown: isUnplacedAndRemovedPiecesShown,
+      isNotationsShown: isNotationsShown,
+      isHistoryNavigationToolbarShown: isHistoryNavigationToolbarShown,
+      boardBorderLineWidth: boardBorderLineWidth,
+      boardInnerLineWidth: boardInnerLineWidth,
+      pointStyle: pointStyle,
+      pointPaintingStyle: pointPaintingStyle,
+      pointWidth: pointWidth,
+      pieceWidth: pieceWidth,
+      fontSize: fontSize,
+      fontScale: fontScale,
+      boardTop: boardTop,
+      animationDuration: animationDuration,
+      aiResponseDelayTime: aiResponseDelayTime,
+      isPositionalAdvantageIndicatorShown: isPositionalAdvantageIndicatorShown,
+      backgroundImagePath: backgroundImagePath,
+      isNumbersOnPiecesShown: isNumbersOnPiecesShown,
+      isAnalysisToolbarShown: isAnalysisToolbarShown,
+      whitePieceImagePath: whitePieceImagePath,
+      blackPieceImagePath: blackPieceImagePath,
+      markedPieceImagePath: markedPieceImagePath,
+      boardImagePath: boardImagePath,
+      vignetteEffectEnabled: vignetteEffectEnabled,
+      placeEffectAnimation: placeEffectAnimation,
+      removeEffectAnimation: removeEffectAnimation,
+      isToolbarAtBottom: isToolbarAtBottom,
+      customBackgroundImagePath: customBackgroundImagePath,
+      customBoardImagePath: customBoardImagePath,
+      customWhitePieceImagePath: customWhitePieceImagePath,
+      customBlackPieceImagePath: customBlackPieceImagePath,
+      boardCornerRadius: boardCornerRadius,
+      isAdvantageGraphShown: isAdvantageGraphShown,
+      isAnnotationToolbarShown: isAnnotationToolbarShown,
+      movesViewLayout: movesViewLayout,
+      swipeToRevealTheDrawer: swipeToRevealTheDrawer,
+      isScreenshotGameInfoShown: isScreenshotGameInfoShown,
+      boardInnerRingSize: boardInnerRingSize,
+      boardShadowEnabled: boardShadowEnabled,
+      isCapturablePiecesHighlightShown: isCapturablePiecesHighlightShown,
+      isPiecePickUpAnimationEnabled: isPiecePickUpAnimationEnabled,
+      showBranchTree: showBranchTree,
+      themeMode: themeMode,
+      analysisSmallBoard: analysisSmallBoard ?? this.analysisSmallBoard,
+      analysisShowEngineLines:
+          analysisShowEngineLines ?? this.analysisShowEngineLines,
+      analysisEngineLineCount:
+          analysisEngineLineCount ?? this.analysisEngineLineCount,
+    );
+  }
 }

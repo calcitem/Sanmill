@@ -495,7 +495,7 @@ class _GamePageInnerState extends State<_GamePageInner> {
                         'visible': !AnalysisMode.showEngineLines,
                       },
                     );
-                    AnalysisMode.toggleEngineLines();
+                    AnalysisMode.toggleEngineLines(persist: true);
                 }
               },
               itemBuilder: (BuildContext context) {

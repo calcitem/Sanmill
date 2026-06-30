@@ -1305,6 +1305,7 @@ void main() {
       find.byKey(const Key('play_area_analysis_engine_lines')),
       findsNothing,
     );
+    expect(db.displaySettings.analysisShowEngineLines, isFalse);
   });
 
   testWidgets('setup position game page reserves toolbar height', (
@@ -2064,6 +2065,7 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(AnalysisMode.engineLineCount, 1);
+    expect(db.displaySettings.analysisEngineLineCount, 1);
     expect(
       find.byKey(const Key('play_area_analysis_engine_line_empty_0')),
       findsOneWidget,
@@ -2079,6 +2081,7 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(AnalysisMode.engineLineCount, 0);
+    expect(db.displaySettings.analysisEngineLineCount, 0);
     expect(
       find.byKey(const Key('play_area_analysis_engine_lines_disabled')),
       findsOneWidget,
@@ -2303,6 +2306,7 @@ void main() {
     );
     expect(smallBoardSize.width, lessThan(regularBoardSize.width));
     expect(smallBoardSize.height, lessThan(regularBoardSize.height));
+    expect(db.displaySettings.analysisSmallBoard, isTrue);
   });
 
   test(

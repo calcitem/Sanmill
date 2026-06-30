@@ -7,6 +7,9 @@
 
 import 'package:flutter/material.dart';
 
+import '../../appearance_settings/models/display_settings.dart';
+import '../../shared/database/database.dart';
+
 /// Verdict for a single analysed move.
 ///
 /// The standard win/draw/loss verdicts come from the perfect database;
@@ -132,7 +135,8 @@ enum AnalysisSource {
 /// move (see `AnalysisService`).  The renderer (`AnalysisRenderer`) reads the
 /// results to draw per-move win/draw/loss marks on the board.
 class AnalysisMode {
-  static const int defaultEngineLineCount = 2;
+  static const int defaultEngineLineCount =
+      DisplaySettings.defaultAnalysisEngineLineCount;
   static const int maxEngineLineCount = 3;
 
   static bool _isEnabled = false;
@@ -250,41 +254,80 @@ class AnalysisMode {
   }
 
   /// Toggle visibility of the engine line panel.
-  static void toggleEngineLines() {
-    setShowEngineLines(!_showEngineLines);
+  static void toggleEngineLines({bool persist = false}) {
+    setShowEngineLines(!_showEngineLines, persist: persist);
   }
 
   /// Set visibility of the engine line panel.
-  static void setShowEngineLines(bool value) {
+  static void setShowEngineLines(bool value, {bool persist = false}) {
     if (_showEngineLines == value) {
+      if (persist) {
+        _saveDisplayPreferences(showEngineLines: value);
+      }
       return;
     }
     _showEngineLines = value;
+    if (persist) {
+      _saveDisplayPreferences(showEngineLines: value);
+    }
     _publishState();
   }
 
   /// Toggle the reduced portrait analysis board layout.
-  static void toggleSmallBoard() {
-    setSmallBoard(!_smallBoard);
+  static void toggleSmallBoard({bool persist = false}) {
+    setSmallBoard(!_smallBoard, persist: persist);
   }
 
   /// Set whether the analysis screen uses a reduced board in portrait mode.
-  static void setSmallBoard(bool value) {
+  static void setSmallBoard(bool value, {bool persist = false}) {
     if (_smallBoard == value) {
+      if (persist) {
+        _saveDisplayPreferences(smallBoard: value);
+      }
       return;
     }
     _smallBoard = value;
+    if (persist) {
+      _saveDisplayPreferences(smallBoard: value);
+    }
     _publishState();
   }
 
   /// Set the number of visible engine candidate lines in analysis mode.
-  static void setEngineLineCount(int value) {
+  static void setEngineLineCount(int value, {bool persist = false}) {
     final int next = value.clamp(0, maxEngineLineCount);
     if (_engineLineCount == next) {
+      if (persist) {
+        _saveDisplayPreferences(engineLineCount: next);
+      }
       return;
     }
     _engineLineCount = next;
+    if (persist) {
+      _saveDisplayPreferences(engineLineCount: next);
+    }
     _publishState();
+  }
+
+  /// Load persisted analysis display preferences.
+  static void configurePreferences({
+    required bool smallBoard,
+    required bool showEngineLines,
+    required int engineLineCount,
+    bool notify = true,
+  }) {
+    final int nextLineCount = engineLineCount.clamp(0, maxEngineLineCount);
+    if (_smallBoard == smallBoard &&
+        _showEngineLines == showEngineLines &&
+        _engineLineCount == nextLineCount) {
+      return;
+    }
+    _smallBoard = smallBoard;
+    _showEngineLines = showEngineLines;
+    _engineLineCount = nextLineCount;
+    if (notify) {
+      _publishState();
+    }
   }
 
   /// Notify analysis widgets after external display preferences changed.
@@ -297,6 +340,21 @@ class AnalysisMode {
       stateNotifier.value = !_isEnabled;
     }
     stateNotifier.value = _isEnabled;
+  }
+
+  static void _saveDisplayPreferences({
+    bool? smallBoard,
+    bool? showEngineLines,
+    int? engineLineCount,
+  }) {
+    final DisplaySettings settings = DB().displaySettings;
+    DB().displaySettings = settings.copyWithAnalysisPreferences(
+      analysisSmallBoard: smallBoard ?? settings.analysisSmallBoard,
+      analysisShowEngineLines:
+          showEngineLines ?? settings.analysisShowEngineLines,
+      analysisEngineLineCount:
+          engineLineCount ?? settings.analysisEngineLineCount,
+    );
   }
 
   /// Colorblind-friendly color for an outcome.

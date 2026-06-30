@@ -56,6 +56,13 @@ void main() {
       expect(d.isCapturablePiecesHighlightShown, isFalse);
       expect(d.isPiecePickUpAnimationEnabled, isTrue);
       expect(d.showBranchTree, isFalse);
+      expect(d.themeMode, AppThemeMode.system);
+      expect(d.analysisSmallBoard, isFalse);
+      expect(d.analysisShowEngineLines, isTrue);
+      expect(
+        d.analysisEngineLineCount,
+        DisplaySettings.defaultAnalysisEngineLineCount,
+      );
     });
   });
 

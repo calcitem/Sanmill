@@ -19,6 +19,7 @@ import 'package:hive_ce_flutter/hive_flutter.dart' show Box;
 import 'app_shell/sanmill_app_shell.dart';
 import 'appearance_settings/models/display_settings.dart';
 import 'experience_recording/services/recording_navigator_observer.dart';
+import 'game_page/services/analysis_mode.dart';
 import 'game_page/services/mill.dart' show ExportService, LoadService;
 import 'game_platform/game_registry.dart';
 import 'games/built_in_game_modules.dart';
@@ -241,6 +242,7 @@ class SanmillAppState extends State<SanmillApp> {
     DB(
       View.of(context).platformDispatcher.views.first.platformDispatcher.locale,
     );
+    _syncAnalysisPreferences(DB().displaySettings);
 
     if (kIsWeb) {
       Locale? locale;
@@ -288,6 +290,7 @@ class SanmillAppState extends State<SanmillApp> {
       DB.displaySettingsKey,
       defaultValue: const DisplaySettings(),
     )!;
+    _syncAnalysisPreferences(displaySettings);
 
     Locale? locale;
 
@@ -358,6 +361,15 @@ class SanmillAppState extends State<SanmillApp> {
       key: Key('home_scaffold_key'),
       resizeToAvoidBottomInset: false,
       body: SanmillAppShell(),
+    );
+  }
+
+  void _syncAnalysisPreferences(DisplaySettings displaySettings) {
+    AnalysisMode.configurePreferences(
+      smallBoard: displaySettings.analysisSmallBoard,
+      showEngineLines: displaySettings.analysisShowEngineLines,
+      engineLineCount: displaySettings.analysisEngineLineCount,
+      notify: false,
     );
   }
 
