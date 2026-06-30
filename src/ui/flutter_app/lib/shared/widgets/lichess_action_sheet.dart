@@ -82,36 +82,47 @@ Future<T?> _showMaterialActionSheet<T>({
   Widget? title,
   Key? sheetKey,
 }) {
-  final TextStyle actionTextStyle =
-      Theme.of(context).textTheme.titleMedium ?? const TextStyle(fontSize: 18);
   final double screenWidth = MediaQuery.sizeOf(context).width;
 
   return showDialog<T>(
     context: context,
     barrierDismissible: isDismissible,
     builder: (BuildContext context) {
+      final ThemeData theme = Theme.of(context);
+      final ColorScheme colorScheme = theme.colorScheme;
+      final TextStyle actionTextStyle =
+          (theme.textTheme.titleMedium ?? const TextStyle(fontSize: 18))
+              .copyWith(color: colorScheme.onSurface);
       return Dialog(
         key: sheetKey,
+        backgroundColor:
+            theme.dialogTheme.backgroundColor ?? colorScheme.surfaceContainer,
         child: SizedBox(
           width: math.min(screenWidth, _kMaterialPopupMenuMaxWidth),
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                if (title != null)
-                  Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Center(child: title),
-                  ),
-                for (int index = 0; index < actions.length; index++)
-                  _MaterialActionSheetTile(
-                    action: actions[index],
-                    textStyle: actionTextStyle,
-                    isFirst: index == 0,
-                    isLast: index == actions.length - 1,
-                  ),
-              ],
+          child: IconTheme.merge(
+            data: IconThemeData(color: colorScheme.onSurfaceVariant),
+            child: DefaultTextStyle.merge(
+              style: TextStyle(color: colorScheme.onSurface),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    if (title != null)
+                      Padding(
+                        padding: const EdgeInsets.all(16),
+                        child: Center(child: title),
+                      ),
+                    for (int index = 0; index < actions.length; index++)
+                      _MaterialActionSheetTile(
+                        action: actions[index],
+                        textStyle: actionTextStyle,
+                        isFirst: index == 0,
+                        isLast: index == actions.length - 1,
+                      ),
+                  ],
+                ),
+              ),
             ),
           ),
         ),

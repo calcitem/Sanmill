@@ -68,6 +68,7 @@ class PlayAreaState extends State<PlayArea> {
 
   bool _isBoardFlipped = false;
   bool _isHintSearching = false;
+  static const double _kMoveListRouteTopInset = 56;
 
   @override
   void initState() {
@@ -162,6 +163,22 @@ class PlayAreaState extends State<PlayArea> {
           ),
         ),
       ),
+    );
+  }
+
+  double _moveListRouteTopInset(BuildContext context) {
+    return Navigator.canPop(context) ? _kMoveListRouteTopInset : 0;
+  }
+
+  Widget _withMoveListTopInset(BuildContext context, Widget child) {
+    final double topInset = _moveListRouteTopInset(context);
+    if (topInset == 0) {
+      return child;
+    }
+    return Padding(
+      key: const Key('play_area_move_list_route_top_inset'),
+      padding: EdgeInsets.only(top: topInset),
+      child: child,
     );
   }
 
@@ -539,15 +556,6 @@ class PlayAreaState extends State<PlayArea> {
     };
   }
 
-  void _toggleBoardFlipped(BuildContext context) {
-    setState(() {
-      _isBoardFlipped = !_isBoardFlipped;
-    });
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(SnackBar(content: Text(S.of(context).flipBoard)));
-  }
-
   void _transformActiveBoard(
     BuildContext context,
     MillBoardTransformAction action,
@@ -599,7 +607,7 @@ class PlayAreaState extends State<PlayArea> {
     showLichessActionSheet<void>(
       context: context,
       sheetKey: sheetKey,
-      title: Text(S.of(context).boardOrientation),
+      title: Text(S.of(context).flipBoard),
       actions: _buildBoardTransformActions(context, keyPrefix: keyPrefix),
     );
   }
@@ -762,15 +770,8 @@ class PlayAreaState extends State<PlayArea> {
         LichessActionSheetAction(
           key: const Key('play_area_regular_game_menu_flip_board'),
           leading: const Icon(Icons.flip_camera_android_outlined),
-          makeLabel: (BuildContext context) => Text(S.of(context).flipBoard),
-          onPressed: () => _toggleBoardFlipped(hostContext),
-        ),
-        LichessActionSheetAction(
-          key: const Key('play_area_regular_game_menu_board_orientation'),
-          leading: const Icon(Icons.screen_rotation_alt_outlined),
           trailing: const Icon(Icons.chevron_right),
-          makeLabel: (BuildContext context) =>
-              Text(S.of(context).boardOrientation),
+          makeLabel: (BuildContext context) => Text(S.of(context).flipBoard),
           onPressed: () => _showBoardTransformSheet(
             hostContext,
             sheetKey: const Key('play_area_regular_board_transform_sheet'),
@@ -878,15 +879,8 @@ class PlayAreaState extends State<PlayArea> {
         LichessActionSheetAction(
           key: const Key('play_area_game_menu_flip_board'),
           leading: const Icon(Icons.flip_camera_android_outlined),
-          makeLabel: (BuildContext context) => Text(S.of(context).flipBoard),
-          onPressed: () => _toggleBoardFlipped(hostContext),
-        ),
-        LichessActionSheetAction(
-          key: const Key('play_area_game_menu_board_orientation'),
-          leading: const Icon(Icons.screen_rotation_alt_outlined),
           trailing: const Icon(Icons.chevron_right),
-          makeLabel: (BuildContext context) =>
-              Text(S.of(context).boardOrientation),
+          makeLabel: (BuildContext context) => Text(S.of(context).flipBoard),
           onPressed: () => _showBoardTransformSheet(
             hostContext,
             sheetKey: const Key('play_area_board_transform_sheet'),
@@ -1179,17 +1173,67 @@ class PlayAreaState extends State<PlayArea> {
   }
 
   Widget _buildBoardScreenshot() {
+    final bool showAdvantageIndicator =
+        DB().displaySettings.isPositionalAdvantageIndicatorShown;
+    final int advantageValue = advantageData.isEmpty
+        ? _getCurrentAdvantageValue()
+        : advantageData.last;
     return NativeScreenshot(
       key: const Key('play_area_native_screenshot'),
       controller: ScreenshotService.screenshotController,
-      child: Container(
-        key: const Key('play_area_game_board_container'),
-        alignment: Alignment.center,
-        child: RotatedBox(
-          key: const Key('play_area_board_orientation'),
-          quarterTurns: _isBoardFlipped ? 2 : 0,
-          child: widget.child,
-        ),
+      child: Stack(
+        children: <Widget>[
+          Container(
+            key: const Key('play_area_game_board_container'),
+            alignment: Alignment.center,
+            child: RotatedBox(
+              key: const Key('play_area_board_orientation'),
+              quarterTurns: _isBoardFlipped ? 2 : 0,
+              child: widget.child,
+            ),
+          ),
+          if (showAdvantageIndicator)
+            PositionedDirectional(
+              key: const Key('play_area_advantage_indicator_positioned'),
+              start: 4,
+              top: 8,
+              bottom: 8,
+              width: 8,
+              child: _PositionalAdvantageIndicator(value: advantageValue),
+            ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildMoveListForHumanAi(BuildContext context) {
+    return _withMoveListTopInset(
+      context,
+      const _InlineMoveList(
+        key: Key('play_area_human_ai_move_list'),
+        wrapKey: Key('play_area_human_ai_move_list_wrap'),
+        roundKeyPrefix: 'play_area_human_ai_round_',
+        moveKeyPrefix: 'play_area_human_ai_move_',
+        layout: _InlineMoveListLayout.horizontal,
+        groupByRound: true,
+      ),
+    );
+  }
+
+  Widget _buildMoveListForRegularGame(BuildContext context) {
+    return _withMoveListTopInset(
+      context,
+      _InlineMoveList(
+        key: const Key('play_area_regular_move_list'),
+        wrapKey: const Key('play_area_regular_move_list_wrap'),
+        roundKeyPrefix: 'play_area_regular_round_',
+        moveKeyPrefix: 'play_area_regular_move_',
+        onMoveTap: (BuildContext context, PgnNode<ExtMove> node) {
+          return HistoryNavigator.gotoNode(context, node, pop: false);
+        },
+        showMovePreview: true,
+        layout: _InlineMoveListLayout.horizontal,
+        groupByRound: true,
       ),
     );
   }
@@ -1210,14 +1254,7 @@ class PlayAreaState extends State<PlayArea> {
         left: false,
         child: LayoutBuilder(
           builder: (BuildContext context, BoxConstraints constraints) {
-            const Widget moveList = _InlineMoveList(
-              key: Key('play_area_human_ai_move_list'),
-              wrapKey: Key('play_area_human_ai_move_list_wrap'),
-              roundKeyPrefix: 'play_area_human_ai_round_',
-              moveKeyPrefix: 'play_area_human_ai_move_',
-              layout: _InlineMoveListLayout.horizontal,
-              groupByRound: true,
-            );
+            final Widget moveList = _buildMoveListForHumanAi(context);
             const Widget topTable = _HumanAiPlayerPanel(
               key: Key('play_area_human_ai_robot_panel'),
               isRobot: true,
@@ -1387,18 +1424,7 @@ class PlayAreaState extends State<PlayArea> {
       left: false,
       child: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
-          final Widget moveList = _InlineMoveList(
-            key: const Key('play_area_regular_move_list'),
-            wrapKey: const Key('play_area_regular_move_list_wrap'),
-            roundKeyPrefix: 'play_area_regular_round_',
-            moveKeyPrefix: 'play_area_regular_move_',
-            onMoveTap: (BuildContext context, PgnNode<ExtMove> node) {
-              return HistoryNavigator.gotoNode(context, node, pop: false);
-            },
-            showMovePreview: true,
-            layout: _InlineMoveListLayout.horizontal,
-            groupByRound: true,
-          );
+          final Widget moveList = _buildMoveListForRegularGame(context);
           final Widget topTable = GameHeader(
             key: const Key('play_area_game_header'),
           );
@@ -2284,6 +2310,79 @@ class _InlineMoveListState extends State<_InlineMoveList> {
           ),
         );
       },
+    );
+  }
+}
+
+class _PositionalAdvantageIndicator extends StatelessWidget {
+  const _PositionalAdvantageIndicator({required this.value})
+    : assert(value >= -100 && value <= 100);
+
+  final int value;
+
+  @override
+  Widget build(BuildContext context) {
+    final Color whiteColor = DB().colorSettings.whitePieceColor;
+    final Color blackColor = DB().colorSettings.blackPieceColor;
+    final double whiteFraction = ((value + 100) / 200).clamp(0.0, 1.0);
+
+    return Semantics(
+      key: const Key('play_area_advantage_indicator'),
+      label: S.of(context).showPositionalAdvantageIndicator,
+      value: value.toString(),
+      child: IgnorePointer(
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(999),
+            border: Border.all(
+              color: DB().colorSettings.messageColor.withValues(alpha: 0.55),
+            ),
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(999),
+            child: LayoutBuilder(
+              builder: (BuildContext context, BoxConstraints constraints) {
+                final double height = constraints.maxHeight;
+                final double whiteHeight = height * whiteFraction;
+                final double blackHeight = height - whiteHeight;
+                return Column(
+                  children: <Widget>[
+                    SizedBox(
+                      height: blackHeight,
+                      width: double.infinity,
+                      child: DecoratedBox(
+                        decoration: BoxDecoration(
+                          color: blackColor.withValues(alpha: 0.88),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 1,
+                      width: double.infinity,
+                      child: DecoratedBox(
+                        decoration: BoxDecoration(
+                          color: DB().colorSettings.messageColor.withValues(
+                            alpha: 0.65,
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: math.max(0.0, whiteHeight - 1),
+                      width: double.infinity,
+                      child: DecoratedBox(
+                        decoration: BoxDecoration(
+                          color: whiteColor.withValues(alpha: 0.88),
+                        ),
+                      ),
+                    ),
+                  ],
+                );
+              },
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

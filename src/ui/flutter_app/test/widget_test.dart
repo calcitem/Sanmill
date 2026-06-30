@@ -2024,6 +2024,12 @@ void main() {
         findsNothing,
       );
 
+      await tester.tap(find.byKey(const Key('sanmill_home_ongoing_game')));
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 500));
+
+      expect(find.byKey(const Key('game_page_scaffold')), findsOneWidget);
+
       // Drain any settings-save debounce timer (see the smoke test above).
       await tester.pump(const Duration(milliseconds: 350));
     },

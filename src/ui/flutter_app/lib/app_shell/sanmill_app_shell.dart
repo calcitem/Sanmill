@@ -1854,6 +1854,18 @@ class _HomeGameCarouselSectionState extends State<_HomeGameCarouselSection> {
                       : 1,
                   flexWeights: _flexWeights,
                   itemSnapping: true,
+                  onTap: (int index) {
+                    assert(
+                      index >= 0 && index < widget.children.length,
+                      'Home carousel tap index must point to a child.',
+                    );
+                    final Widget child = widget.children[index];
+                    assert(
+                      child is _GamePreviewCarouselCard,
+                      'Home carousel items must be game preview cards.',
+                    );
+                    (child as _GamePreviewCarouselCard).onTap();
+                  },
                   children: widget.children,
                 ),
               ),

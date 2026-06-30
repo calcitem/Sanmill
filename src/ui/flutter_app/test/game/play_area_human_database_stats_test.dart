@@ -266,7 +266,7 @@ void main() {
     );
     expect(
       find.byKey(const Key('play_area_regular_game_menu_board_orientation')),
-      findsOne,
+      findsNothing,
     );
     expect(
       find.byKey(const Key('play_area_regular_game_menu_analysis')),
@@ -307,14 +307,26 @@ void main() {
       findsNothing,
     );
 
-    await tester.tap(
+    expect(
       find.byKey(const Key('play_area_regular_game_menu_board_orientation')),
+      findsNothing,
+    );
+
+    await tester.tap(
+      find.byKey(const Key('play_area_regular_game_menu_flip_board')),
     );
     await tester.pumpAndSettle();
 
     expect(
       find.byKey(const Key('play_area_regular_board_transform_sheet')),
       findsOne,
+    );
+    final BuildContext regularRotateActionContext = tester.element(
+      find.byKey(const Key('play_area_regular_board_transform_rotate')),
+    );
+    expect(
+      IconTheme.of(regularRotateActionContext).color,
+      Theme.of(regularRotateActionContext).colorScheme.onSurfaceVariant,
     );
     expect(
       find.byKey(const Key('play_area_regular_board_transform_rotate')),
@@ -634,7 +646,7 @@ void main() {
           .dy,
     );
 
-    RotatedBox boardOrientation = tester.widget<RotatedBox>(
+    final RotatedBox boardOrientation = tester.widget<RotatedBox>(
       find.byKey(const Key('play_area_board_orientation')),
     );
     expect(boardOrientation.quarterTurns, 0);
@@ -681,6 +693,10 @@ void main() {
     );
     expect(pieceCountRow, findsOneWidget);
     expect(removedPieceCountRow, findsOneWidget);
+    expect(
+      find.byKey(const Key('play_area_advantage_indicator')),
+      findsOneWidget,
+    );
     final double robotToBoardTableGap =
         tester.getTopLeft(pieceCountRow).dy -
         tester.getBottomLeft(robotPanel).dy;
@@ -731,7 +747,7 @@ void main() {
     expect(find.byKey(const Key('play_area_game_menu_flip_board')), findsOne);
     expect(
       find.byKey(const Key('play_area_game_menu_board_orientation')),
-      findsOne,
+      findsNothing,
     );
     expect(
       find.byKey(const Key('play_area_game_menu_transform_swap_rotate_180')),
@@ -743,12 +759,17 @@ void main() {
     expect(find.byKey(const Key('play_area_game_menu_resign')), findsNothing);
     expect(find.byKey(const Key('play_area_game_menu_new_game')), findsOne);
 
-    await tester.tap(
-      find.byKey(const Key('play_area_game_menu_board_orientation')),
-    );
+    await tester.tap(find.byKey(const Key('play_area_game_menu_flip_board')));
     await tester.pumpAndSettle();
 
     expect(find.byKey(const Key('play_area_board_transform_sheet')), findsOne);
+    final BuildContext rotateActionContext = tester.element(
+      find.byKey(const Key('play_area_board_transform_rotate')),
+    );
+    expect(
+      IconTheme.of(rotateActionContext).color,
+      Theme.of(rotateActionContext).colorScheme.onSurfaceVariant,
+    );
     expect(find.byKey(const Key('play_area_board_transform_rotate')), findsOne);
     expect(
       find.byKey(const Key('play_area_board_transform_horizontal_flip')),
@@ -803,10 +824,8 @@ void main() {
     await tester.tap(find.byKey(const Key('play_area_game_menu_flip_board')));
     await tester.pumpAndSettle();
 
-    boardOrientation = tester.widget<RotatedBox>(
-      find.byKey(const Key('play_area_board_orientation')),
-    );
-    expect(boardOrientation.quarterTurns, 2);
+    expect(find.byKey(const Key('play_area_board_transform_sheet')), findsOne);
+    expect(find.byKey(const Key('play_area_board_transform_rotate')), findsOne);
     expect(find.byKey(const Key('play_area_human_ai_robot_panel')), findsOne);
     expect(find.byKey(const Key('play_area_human_ai_player_panel')), findsOne);
   });
@@ -1238,6 +1257,18 @@ void main() {
     await tester.pump(const Duration(milliseconds: 300));
 
     expect(find.byKey(const Key('human_ai_new_game_sheet')), findsNothing);
+    expect(
+      find.byKey(const Key('play_area_move_list_route_top_inset')),
+      findsOneWidget,
+    );
+    expect(
+      tester
+          .getTopLeft(find.byKey(const Key('play_area_human_ai_move_list')))
+          .dy,
+      greaterThanOrEqualTo(
+        tester.getBottomLeft(find.byKey(const Key('game_page_back_button'))).dy,
+      ),
+    );
 
     expect(
       await session.replayMainline(<ExtMove>[
