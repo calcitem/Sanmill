@@ -3117,7 +3117,7 @@ class _InlineMoveListState extends State<_InlineMoveList> {
       ),
       _InlineMoveListLayout.stacked => SingleChildScrollView(
         key: const Key('play_area_inline_move_list_scroll_view'),
-        child: Wrap(spacing: 4, runSpacing: 4, children: chips),
+        child: _BoundedMoveWrap(spacing: 4, runSpacing: 4, children: chips),
       ),
       _InlineMoveListLayout.horizontal => SingleChildScrollView(
         key: const Key('play_area_inline_move_list_scroll_view'),
@@ -3149,7 +3149,11 @@ class _InlineMoveListState extends State<_InlineMoveList> {
       ),
       _InlineMoveListLayout.stacked => SingleChildScrollView(
         key: const Key('play_area_inline_move_list_scroll_view'),
-        child: Wrap(spacing: 8, runSpacing: 6, children: wrappedChildren),
+        child: _BoundedMoveWrap(
+          spacing: 8,
+          runSpacing: 6,
+          children: wrappedChildren,
+        ),
       ),
       _InlineMoveListLayout.wrap => Wrap(
         spacing: 8,
@@ -3519,6 +3523,38 @@ class _IndexedMoveNode {
 enum _InlineMoveListLayout { wrap, horizontal, stacked }
 
 enum _GameMoveChipStyle { filled, inlineText }
+
+class _BoundedMoveWrap extends StatelessWidget {
+  const _BoundedMoveWrap({
+    required this.spacing,
+    required this.runSpacing,
+    required this.children,
+  });
+
+  final double spacing;
+  final double runSpacing;
+  final List<Widget> children;
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (BuildContext context, BoxConstraints constraints) {
+        assert(
+          constraints.hasBoundedWidth,
+          'Inline move list wrapping requires a bounded width.',
+        );
+        return SizedBox(
+          width: constraints.maxWidth,
+          child: Wrap(
+            spacing: spacing,
+            runSpacing: runSpacing,
+            children: children,
+          ),
+        );
+      },
+    );
+  }
+}
 
 class _InlineMoveCount extends StatelessWidget {
   const _InlineMoveCount({required this.count});
@@ -4105,21 +4141,104 @@ class _AnalysisBottomBar extends StatelessWidget {
           onLongPress: onEngineLongPressed,
           highlighted: isEngineHighlighted,
         ),
-        LichessBottomBarButton(
-          key: const Key('play_area_analysis_bottom_bar_previous'),
-          icon: CupertinoIcons.chevron_back,
-          label: S.of(context).previous,
-          onTap: onPreviousPressed,
-          withShadow: true,
+        _RepeatButton(
+          onLongPress: onPreviousPressed,
+          child: LichessBottomBarButton(
+            key: const Key('play_area_analysis_bottom_bar_previous'),
+            icon: CupertinoIcons.chevron_back,
+            label: S.of(context).previous,
+            onTap: onPreviousPressed,
+            showTooltip: false,
+            withShadow: true,
+          ),
         ),
-        LichessBottomBarButton(
-          key: const Key('play_area_analysis_bottom_bar_next'),
-          icon: CupertinoIcons.chevron_forward,
-          label: S.of(context).next,
-          onTap: onNextPressed,
-          withShadow: true,
+        _RepeatButton(
+          onLongPress: onNextPressed,
+          child: LichessBottomBarButton(
+            key: const Key('play_area_analysis_bottom_bar_next'),
+            icon: CupertinoIcons.chevron_forward,
+            label: S.of(context).next,
+            onTap: onNextPressed,
+            showTooltip: false,
+            withShadow: true,
+          ),
         ),
       ],
+    );
+  }
+}
+
+class _RepeatButton extends StatefulWidget {
+  const _RepeatButton({required this.onLongPress, required this.child});
+
+  static const List<Duration> _triggerDelays = <Duration>[
+    Duration(milliseconds: 200),
+    Duration(milliseconds: 180),
+    Duration(milliseconds: 100),
+    Duration(milliseconds: 40),
+  ];
+  static const Duration _holdDelay = Duration(milliseconds: 30);
+
+  final Widget child;
+  final VoidCallback? onLongPress;
+
+  @override
+  State<_RepeatButton> createState() => _RepeatButtonState();
+}
+
+class _RepeatButtonState extends State<_RepeatButton> {
+  Timer? _holdTimer;
+  bool _isPressed = false;
+
+  @override
+  void didUpdateWidget(_RepeatButton oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.onLongPress != null && widget.onLongPress == null) {
+      _stopPress();
+    }
+  }
+
+  @override
+  void dispose() {
+    _holdTimer?.cancel();
+    super.dispose();
+  }
+
+  Future<void> _startPress() async {
+    _isPressed = true;
+    HapticFeedback.selectionClick();
+    widget.onLongPress?.call();
+
+    for (final Duration delay in _RepeatButton._triggerDelays) {
+      await Future<void>.delayed(delay);
+      if (!_isPressed) {
+        return;
+      }
+      widget.onLongPress?.call();
+    }
+
+    _holdTimer = Timer.periodic(_RepeatButton._holdDelay, (_) {
+      if (_isPressed) {
+        widget.onLongPress?.call();
+      }
+    });
+  }
+
+  void _stopPress() {
+    _isPressed = false;
+    _holdTimer?.cancel();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MergeSemantics(
+      child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onLongPress: widget.onLongPress == null ? null : _startPress,
+        onLongPressCancel: widget.onLongPress == null ? null : _stopPress,
+        onLongPressUp: widget.onLongPress == null ? null : _stopPress,
+        child: widget.child,
+      ),
     );
   }
 }

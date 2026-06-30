@@ -1437,6 +1437,45 @@ void main() {
     );
   });
 
+  testWidgets('analysis previous and next repeat while long pressed', (
+    WidgetTester tester,
+  ) async {
+    db.displaySettings = const DisplaySettings(
+      isUnplacedAndRemovedPiecesShown: false,
+      isHistoryNavigationToolbarShown: false,
+    );
+    final NativeMillGameSession session = await _bindNativeGame(
+      GameMode.analysis,
+    );
+    final MillSessionRecorderBridge recorderBridge =
+        MillSessionRecorderBridge.forGameController(session: session);
+    addTearDown(recorderBridge.dispose);
+
+    expect(
+      await session.replayMainline(<ExtMove>[
+        ExtMove('d6', side: PieceColor.white),
+        ExtMove('f4', side: PieceColor.black),
+      ]),
+      isTrue,
+    );
+    await tester.pump();
+    expect(_currentPathMoves(), <String>['d6', 'f4']);
+
+    await _pumpSessionPlayArea(tester, session);
+
+    await _holdBottomBarButton(
+      tester,
+      const Key('play_area_analysis_bottom_bar_previous'),
+    );
+    expect(_currentPathMoves(), isEmpty);
+
+    await _holdBottomBarButton(
+      tester,
+      const Key('play_area_analysis_bottom_bar_next'),
+    );
+    expect(_currentPathMoves(), <String>['d6', 'f4']);
+  });
+
   testWidgets('analysis menu clears saved moves back to the start position', (
     WidgetTester tester,
   ) async {
@@ -2762,6 +2801,17 @@ double _bottomBarButtonOpacity(WidgetTester tester, Key key) {
     find.descendant(of: find.byKey(key), matching: find.byType(Opacity)),
   );
   return opacity.opacity;
+}
+
+Future<void> _holdBottomBarButton(WidgetTester tester, Key key) async {
+  final Finder button = find.byKey(key);
+  expect(button, findsOneWidget);
+  final TestGesture gesture = await tester.startGesture(
+    tester.getCenter(button),
+  );
+  await tester.pump(const Duration(milliseconds: 900));
+  await gesture.up();
+  await tester.pumpAndSettle();
 }
 
 Future<NativeMillGameSession> _bindNativeHumanAiGame() {
