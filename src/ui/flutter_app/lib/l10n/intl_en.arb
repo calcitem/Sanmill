@@ -4833,5 +4833,9 @@
     "shareAndExport": "Share and export",
     "@shareAndExport": {},
     "copyPgn": "Copy PGN",
-    "@copyPgn": {}
+    "@copyPgn": {},
+    "clearAnalysisMoves": "Clear saved moves",
+    "@clearAnalysisMoves": {},
+    "analysisMovesCleared": "Analysis moves cleared.",
+    "@analysisMovesCleared": {}
 }

@@ -4685,5 +4685,9 @@
     "shareAndExport": "分享和导出",
     "@shareAndExport": {},
     "copyPgn": "复制 PGN",
-    "@copyPgn": {}
+    "@copyPgn": {},
+    "clearAnalysisMoves": "清空已保存着法",
+    "@clearAnalysisMoves": {},
+    "analysisMovesCleared": "已清空分析着法。",
+    "@analysisMovesCleared": {}
 }

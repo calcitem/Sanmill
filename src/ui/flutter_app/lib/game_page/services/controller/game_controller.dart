@@ -1155,6 +1155,38 @@ class GameController {
     return true;
   }
 
+  void clearAnalysisMoves({required NativeMillGameSession session}) {
+    assert(
+      gameInstance.gameMode == GameMode.analysis,
+      'Only analysis mode can clear analysis moves.',
+    );
+    assert(
+      activeNativeMillSession == session,
+      'Analysis move clearing requires the active native session.',
+    );
+
+    final String? setupFen = gameRecorder.setupPosition?.trim();
+    gameRecorder.reset();
+    AnalysisMode.disable();
+
+    if (setupFen != null && setupFen.isNotEmpty) {
+      final bool loaded = session.loadFen(setupFen);
+      assert(loaded, 'Analysis start FEN must be loadable.');
+      gameRecorder.setupPosition = setupFen;
+    } else {
+      session.resetGame(
+        rules: DB().ruleSettings,
+        generalSettings: DB().generalSettings,
+      );
+      gameRecorder.setupPosition = null;
+    }
+
+    gameRecorder.lastPositionWithRemove = session.getFen();
+    activeSessionSnapshot = session.state.value;
+    headerIconsNotifier.showIcons();
+    boardSemanticsNotifier.updateSemantics();
+  }
+
   /// S.of(context).starts the current game.
   ///
   /// This method is suitable to use for starting a new game.
