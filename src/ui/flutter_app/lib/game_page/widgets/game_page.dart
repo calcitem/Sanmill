@@ -40,6 +40,7 @@ import '../../shared/themes/ui_colors.dart';
 import '../../shared/utils/helpers/string_helpers/string_buffer_helper.dart';
 import '../../shared/utils/helpers/text_helpers/safe_text_editing_controller.dart';
 import '../../shared/widgets/custom_spacer.dart';
+import '../../shared/widgets/lichess_bottom_bar.dart';
 import '../../shared/widgets/snackbars/scaffold_messenger.dart';
 import '../../src/rust/api/simple.dart' as tgf;
 import '../../statistics/model/stats_settings.dart';
@@ -567,13 +568,31 @@ class _GamePageInnerState extends State<_GamePageInner> {
 
   // Calculates the toolbar height based on display settings.
   double _calculateToolbarHeight(BuildContext context) {
-    double toolbarHeight =
+    final DisplaySettings displaySettings = DB().displaySettings;
+    final double legacyToolbarHeight =
         GamePageToolbar.height + ButtonTheme.of(context).height;
-    if (DB().displaySettings.isHistoryNavigationToolbarShown) {
-      toolbarHeight *= 2;
-    } else if (DB().displaySettings.isAnnotationToolbarShown) {
-      toolbarHeight *= 4;
+    final GameMode mode = widget.controller.gameInstance.gameMode;
+
+    double toolbarHeight = switch (mode) {
+      GameMode.setupPosition =>
+        kLichessBottomBarHeight * 3 + AppTheme.boardMargin,
+      GameMode.puzzle => AppTheme.boardMargin,
+      GameMode.humanVsAi =>
+        kLichessBottomBarHeight +
+            (DB().generalSettings.showHumanDatabaseStats ? 40 : 0),
+      GameMode.analysis => kLichessBottomBarHeight + AppTheme.boardMargin,
+      _ =>
+        kLichessBottomBarHeight +
+            AppTheme.boardMargin +
+            (displaySettings.isHistoryNavigationToolbarShown
+                ? legacyToolbarHeight
+                : 0),
+    };
+
+    if (displaySettings.isAnnotationToolbarShown) {
+      toolbarHeight += legacyToolbarHeight * 3;
     }
+
     return toolbarHeight;
   }
 }

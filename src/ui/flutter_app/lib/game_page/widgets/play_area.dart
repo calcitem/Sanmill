@@ -31,6 +31,7 @@ import '../../shared/themes/app_styles.dart';
 import '../../shared/themes/app_theme.dart';
 import '../../shared/widgets/lichess_action_sheet.dart';
 import '../../shared/widgets/lichess_bottom_bar.dart';
+import '../../shared/widgets/lichess_list_section.dart';
 import '../../shared/widgets/snackbars/scaffold_messenger.dart';
 import '../../statistics/services/stats_service.dart';
 import '../services/analysis/analysis_service.dart';
@@ -230,6 +231,16 @@ class PlayAreaState extends State<PlayArea> {
     return isGameSurface &&
         DB().displaySettings.isAdvantageGraphShown &&
         advantageData.isNotEmpty;
+  }
+
+  double _pieceRowsHeightForLayout(BuildContext context) {
+    final double scaledTextHeight = MediaQuery.textScalerOf(context).scale(18);
+    return math.max(24, scaledTextHeight + 6) * 2;
+  }
+
+  double _humanAiPlayerPanelHeightForLayout(BuildContext context) {
+    final double scaledTextHeight = MediaQuery.textScalerOf(context).scale(38);
+    return math.max(_kPlayerPanelHeight, scaledTextHeight + 18);
   }
 
   /// Updates the UI by calling setState.
@@ -1110,6 +1121,96 @@ class PlayAreaState extends State<PlayArea> {
     AnalysisMode.toggleEngineLines();
   }
 
+  Future<void> _showAnalysisSettingsSheet(
+    BuildContext context, {
+    required S strings,
+  }) {
+    assert(_isAnalysisMode, 'Analysis settings are analysis-mode only.');
+    final BuildContext sheetContext = _stableActionContext(context);
+    return showDialog<void>(
+      context: sheetContext,
+      builder: (BuildContext dialogContext) {
+        final ThemeData theme = Theme.of(dialogContext);
+        final ColorScheme colorScheme = theme.colorScheme;
+        return Dialog(
+          key: const Key('play_area_analysis_settings_sheet'),
+          backgroundColor: colorScheme.surfaceContainerLow,
+          surfaceTintColor: Colors.transparent,
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              maxWidth: math.min(MediaQuery.sizeOf(dialogContext).width, 500),
+            ),
+            child: ValueListenableBuilder<bool>(
+              valueListenable: AnalysisMode.stateNotifier,
+              builder: (BuildContext context, _, Widget? child) {
+                return SingleChildScrollView(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(16, 16, 8, 8),
+                        child: Row(
+                          children: <Widget>[
+                            Expanded(
+                              child: Text(
+                                strings.settings,
+                                style: theme.textTheme.titleLarge?.copyWith(
+                                  fontWeight: FontWeight.w600,
+                                  letterSpacing: 0,
+                                ),
+                              ),
+                            ),
+                            IconButton(
+                              key: const Key(
+                                'play_area_analysis_settings_close',
+                              ),
+                              tooltip: strings.close,
+                              onPressed: () =>
+                                  Navigator.of(dialogContext).pop(),
+                              icon: const Icon(Icons.close),
+                            ),
+                          ],
+                        ),
+                      ),
+                      LichessListSection(
+                        header: Text(strings.engine),
+                        cardKey: const Key(
+                          'play_area_analysis_settings_engine_card',
+                        ),
+                        children: <Widget>[
+                          SwitchListTile.adaptive(
+                            key: const Key(
+                              'play_area_analysis_settings_engine_lines',
+                            ),
+                            secondary: const Icon(Icons.subtitles_outlined),
+                            title: Text(strings.showEngineLines),
+                            value: AnalysisMode.showEngineLines,
+                            onChanged: (bool value) {
+                              RecordingService().recordEvent(
+                                RecordingEventType.toolbarAction,
+                                <String, dynamic>{
+                                  'toolbar': 'analysisSettings',
+                                  'action': 'setEngineLines',
+                                  'visible': value,
+                                },
+                              );
+                              AnalysisMode.setShowEngineLines(value);
+                            },
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   void _showRegularGameMenu() {
     assert(!_usesLichessHumanAiToolbar);
     final BuildContext hostContext = context;
@@ -1160,6 +1261,15 @@ class PlayAreaState extends State<PlayArea> {
             leading: const Icon(Icons.format_list_numbered),
             makeLabel: (BuildContext context) => Text(S.of(context).moveList),
             onPressed: () => _openMovesWithNavigator(hostNavigator),
+          ),
+        if (_isAnalysisMode)
+          LichessActionSheetAction(
+            key: const Key('play_area_regular_game_menu_analysis_settings'),
+            leading: const Icon(Icons.settings_outlined),
+            trailing: const Icon(Icons.chevron_right),
+            makeLabel: (BuildContext context) => Text(strings.settings),
+            onPressed: () =>
+                _showAnalysisSettingsSheet(actionContext, strings: strings),
           ),
         if (_isAnalysisMode)
           LichessActionSheetAction(
@@ -1737,12 +1847,17 @@ class PlayAreaState extends State<PlayArea> {
             final double moveListHeight = _inlineMoveListHeightForRoute(
               context,
             );
-            final double boardRowsHeight = showPieceCountRows ? 48 : 0;
+            final double boardRowsHeight = showPieceCountRows
+                ? _pieceRowsHeightForLayout(context)
+                : 0;
             final double boardBlockHeight =
                 constraints.maxWidth + boardRowsHeight;
-            const double topPanelHeight = _kPlayerPanelHeight;
+            final double topPanelHeight = _humanAiPlayerPanelHeightForLayout(
+              context,
+            );
             final double bottomPanelHeight =
-                _kPlayerPanelHeight + (showAdvantageGraph ? 112 : 0);
+                _humanAiPlayerPanelHeightForLayout(context) +
+                (showAdvantageGraph ? 112 : 0);
             final double estimatedRequiredHeight =
                 moveListHeight +
                 boardBlockHeight +
@@ -1922,18 +2037,17 @@ class PlayAreaState extends State<PlayArea> {
                   : 0;
               const double tabPanelMinHeight = 174;
               final double pieceRowsHeight = showPieceCountRows
-                  ? 48
+                  ? _pieceRowsHeightForLayout(context)
                   : AppTheme.boardMargin * 2;
-              final double boardSize = math.min(
-                constraints.maxWidth,
-                math.max(
-                  160,
+              final double boardHeightBudget =
                   maxHeight -
-                      engineLinesReserve -
-                      tabPanelMinHeight -
-                      pieceRowsHeight -
-                      _kBalancedLayoutSafetyMargin,
-                ),
+                  engineLinesReserve -
+                  tabPanelMinHeight -
+                  pieceRowsHeight -
+                  _kBalancedLayoutSafetyMargin;
+              final double boardSize = math.max(
+                0,
+                math.min(constraints.maxWidth, boardHeightBudget),
               );
 
               return Column(
@@ -2106,7 +2220,9 @@ class PlayAreaState extends State<PlayArea> {
               constraints.maxWidth +
               (isPlayableGame ? _inlineMoveListHeightForRoute(context) : 0) +
               topPanelHeight +
-              (showPieceCountRows ? 48 : AppTheme.boardMargin * 2) +
+              (showPieceCountRows
+                  ? _pieceRowsHeightForLayout(context)
+                  : AppTheme.boardMargin * 2) +
               (showAdvantageGraph ? 150 : 0) +
               AppTheme.boardMargin;
           final bool canBalance =
@@ -2686,7 +2802,7 @@ class PlayAreaState extends State<PlayArea> {
           key: const Key('play_area_sized_box_toolbar_bottom'),
           width: dimension,
           child: SafeArea(
-            top: MediaQuery.of(context).orientation == Orientation.portrait,
+            top: false,
             right: false,
             left: false,
             child: Column(

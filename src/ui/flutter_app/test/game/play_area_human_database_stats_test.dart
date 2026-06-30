@@ -1010,6 +1010,138 @@ void main() {
     );
   });
 
+  testWidgets('human vs ai dense portrait layout handles insets', (
+    WidgetTester tester,
+  ) async {
+    db.generalSettings = const GeneralSettings(showHumanDatabaseStats: true);
+    db.displaySettings = const DisplaySettings(
+      isAdvantageGraphShown: true,
+      isHistoryNavigationToolbarShown: false,
+    );
+    GameController().gameInstance.gameMode = GameMode.humanVsAi;
+
+    await tester.binding.setSurfaceSize(const Size(390, 720));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+
+    await tester.pumpWidget(
+      _localizedApp(
+        const MediaQuery(
+          data: MediaQueryData(
+            size: Size(390, 720),
+            padding: EdgeInsets.only(top: 36, bottom: 24),
+            textScaler: TextScaler.linear(1.3),
+          ),
+          child: Scaffold(
+            body: PlayArea(
+              boardImage: null,
+              child: SizedBox.square(
+                key: Key('test_board_square'),
+                dimension: 390,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(tester.takeException(), isNull);
+    expect(find.byKey(const Key('play_area_lichess_bottom_bar')), findsOne);
+    expect(find.byKey(const Key('play_area_human_ai_scroll_view')), findsOne);
+  });
+
+  testWidgets('analysis dense portrait layout handles engine lines', (
+    WidgetTester tester,
+  ) async {
+    db.displaySettings = const DisplaySettings(
+      isHistoryNavigationToolbarShown: false,
+    );
+    final NativeMillGameSession session = await _bindNativeGame(
+      GameMode.analysis,
+    );
+    AnalysisMode.enable(<MoveAnalysisResult>[
+      const MoveAnalysisResult(move: 'd6', outcome: AnalysisOutcome.win),
+      const MoveAnalysisResult(move: 'a1', outcome: AnalysisOutcome.draw),
+      const MoveAnalysisResult(move: 'g7', outcome: AnalysisOutcome.loss),
+    ]);
+
+    await tester.binding.setSurfaceSize(const Size(390, 700));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+
+    await tester.pumpWidget(
+      _localizedApp(
+        GameSessionScope(
+          session: session,
+          child: const MediaQuery(
+            data: MediaQueryData(
+              size: Size(390, 700),
+              padding: EdgeInsets.only(top: 36, bottom: 24),
+              textScaler: TextScaler.linear(1.2),
+            ),
+            child: Scaffold(
+              body: PlayArea(
+                boardImage: null,
+                child: SizedBox.square(
+                  key: Key('test_board_square'),
+                  dimension: 390,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(tester.takeException(), isNull);
+    expect(find.byKey(const Key('play_area_analysis_board')), findsOne);
+    expect(find.byKey(const Key('play_area_analysis_engine_lines')), findsOne);
+    expect(find.byKey(const Key('play_area_analysis_panel')), findsOne);
+  });
+
+  testWidgets('setup position game page reserves toolbar height', (
+    WidgetTester tester,
+  ) async {
+    db = _GamePageDb(
+      generalSettings: const GeneralSettings(showHumanDatabaseStats: true),
+      displaySettings: const DisplaySettings(
+        isHistoryNavigationToolbarShown: false,
+      ),
+    );
+    DB.instance = db;
+    final NativeMillGameSession session = await _bindNativeGame(
+      GameMode.setupPosition,
+    );
+
+    await tester.binding.setSurfaceSize(const Size(390, 700));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+
+    await tester.pumpWidget(
+      _localizedApp(
+        GameSessionScope(
+          session: session,
+          child: const MediaQuery(
+            data: MediaQueryData(
+              size: Size(390, 700),
+              padding: EdgeInsets.only(top: 36, bottom: 24),
+              textScaler: TextScaler.linear(1.2),
+            ),
+            child: GamePage(GameMode.setupPosition),
+          ),
+        ),
+      ),
+    );
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 250));
+
+    expect(tester.takeException(), isNull);
+    expect(
+      find.byKey(const Key('play_area_setup_position_toolbar_bottom')),
+      findsOne,
+    );
+    expect(find.byKey(const Key('setup_position_three_row_toolbar')), findsOne);
+  });
+
   testWidgets('setup position hides the positional advantage indicator', (
     WidgetTester tester,
   ) async {
@@ -1235,6 +1367,61 @@ void main() {
     expect(
       find.byKey(const Key('play_area_analysis_engine_lines')),
       findsOneWidget,
+    );
+  });
+
+  testWidgets('analysis settings sheet toggles engine lines', (
+    WidgetTester tester,
+  ) async {
+    db.displaySettings = const DisplaySettings(
+      isUnplacedAndRemovedPiecesShown: false,
+      isHistoryNavigationToolbarShown: false,
+    );
+    final NativeMillGameSession session = await _bindNativeGame(
+      GameMode.analysis,
+    );
+    AnalysisMode.enable(<MoveAnalysisResult>[
+      const MoveAnalysisResult(move: 'd6', outcome: AnalysisOutcome.win),
+    ]);
+
+    await _pumpSessionPlayArea(tester, session);
+
+    await tester.tap(
+      find.byKey(const Key('play_area_regular_bottom_bar_menu')),
+    );
+    await tester.pumpAndSettle();
+
+    expect(
+      find.byKey(const Key('play_area_regular_game_menu_analysis_settings')),
+      findsOneWidget,
+    );
+
+    await tester.tap(
+      find.byKey(const Key('play_area_regular_game_menu_analysis_settings')),
+    );
+    await tester.pumpAndSettle();
+
+    expect(
+      find.byKey(const Key('play_area_analysis_settings_sheet')),
+      findsOneWidget,
+    );
+    expect(
+      find.byKey(const Key('play_area_analysis_settings_engine_lines')),
+      findsOneWidget,
+    );
+
+    await tester.tap(
+      find.byKey(const Key('play_area_analysis_settings_engine_lines')),
+    );
+    await tester.pumpAndSettle();
+
+    expect(
+      find.byKey(const Key('play_area_analysis_engine_lines_hidden')),
+      findsOneWidget,
+    );
+    expect(
+      find.byKey(const Key('play_area_analysis_engine_lines')),
+      findsNothing,
     );
   });
 
