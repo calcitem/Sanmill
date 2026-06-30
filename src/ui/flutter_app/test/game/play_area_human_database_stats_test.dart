@@ -59,12 +59,14 @@ void main() {
     controller.isEngineInDelay = false;
     AnalysisMode.disable();
     AnalysisMode.setShowEngineLines(true);
+    AnalysisMode.setSmallBoard(false);
     PlayerTimer().reset();
   });
 
   tearDown(() {
     AnalysisMode.disable();
     AnalysisMode.setShowEngineLines(true);
+    AnalysisMode.setSmallBoard(false);
     PlayerTimer().reset();
     DB.instance = null;
   });
@@ -1555,6 +1557,49 @@ void main() {
       find.byKey(const Key('play_area_analysis_engine_lines')),
       findsNothing,
     );
+  });
+
+  testWidgets('analysis settings sheet toggles small board', (
+    WidgetTester tester,
+  ) async {
+    db.displaySettings = const DisplaySettings(
+      isUnplacedAndRemovedPiecesShown: false,
+      isHistoryNavigationToolbarShown: false,
+    );
+    final NativeMillGameSession session = await _bindNativeGame(
+      GameMode.analysis,
+    );
+
+    await _pumpSessionPlayArea(tester, session);
+    final Size regularBoardSize = tester.getSize(
+      find.byKey(const Key('play_area_analysis_board')),
+    );
+
+    await tester.tap(
+      find.byKey(const Key('play_area_regular_bottom_bar_menu')),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.tap(
+      find.byKey(const Key('play_area_regular_game_menu_analysis_settings')),
+    );
+    await tester.pumpAndSettle();
+
+    expect(
+      find.byKey(const Key('play_area_analysis_settings_small_board')),
+      findsOneWidget,
+    );
+
+    await tester.tap(
+      find.byKey(const Key('play_area_analysis_settings_small_board')),
+    );
+    await tester.pumpAndSettle();
+
+    final Size smallBoardSize = tester.getSize(
+      find.byKey(const Key('play_area_analysis_board')),
+    );
+    expect(smallBoardSize.width, lessThan(regularBoardSize.width));
+    expect(smallBoardSize.height, lessThan(regularBoardSize.height));
   });
 
   test(

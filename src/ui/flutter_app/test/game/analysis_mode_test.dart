@@ -7,7 +7,10 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:sanmill/game_page/services/analysis_mode.dart';
 
 void main() {
-  tearDown(AnalysisMode.disable);
+  tearDown(() {
+    AnalysisMode.disable();
+    AnalysisMode.setSmallBoard(false);
+  });
 
   test('tracks full analysis and hint overlay modes separately', () {
     AnalysisMode.enable(const <MoveAnalysisResult>[
@@ -39,5 +42,17 @@ void main() {
     expect(AnalysisMode.isFullAnalysis, isFalse);
     expect(AnalysisMode.isHint, isFalse);
     expect(AnalysisMode.analysisResults, isEmpty);
+  });
+
+  test('tracks small board preference independently from overlay state', () {
+    expect(AnalysisMode.smallBoard, isFalse);
+
+    AnalysisMode.setSmallBoard(true);
+
+    expect(AnalysisMode.smallBoard, isTrue);
+
+    AnalysisMode.disable();
+
+    expect(AnalysisMode.smallBoard, isTrue);
   });
 }

@@ -4837,5 +4837,7 @@
     "clearAnalysisMoves": "Clear saved moves",
     "@clearAnalysisMoves": {},
     "analysisMovesCleared": "Analysis moves cleared.",
-    "@analysisMovesCleared": {}
+    "@analysisMovesCleared": {},
+    "smallBoard": "Small board",
+    "@smallBoard": {}
 }

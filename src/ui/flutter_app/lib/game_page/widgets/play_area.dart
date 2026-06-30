@@ -80,6 +80,7 @@ class PlayAreaState extends State<PlayArea> {
   static const double _kWrappedMoveListMaxHeight = 76;
   static const double _kPlayerPanelHeight = 56;
   static const double _kAnalysisEngineLinesReserveHeight = 90;
+  static const double _kAnalysisSmallBoardScale = 0.8;
   static const double _kBalancedLayoutSafetyMargin = 24;
   static const double _kHumanDatabaseStatsStripHeight = 40;
   static const double _kAdvantageIndicatorWidth = 16;
@@ -1221,6 +1222,32 @@ class PlayAreaState extends State<PlayArea> {
                         ),
                       ),
                       LichessListSection(
+                        cardKey: const Key(
+                          'play_area_analysis_settings_layout_card',
+                        ),
+                        children: <Widget>[
+                          SwitchListTile.adaptive(
+                            key: const Key(
+                              'play_area_analysis_settings_small_board',
+                            ),
+                            secondary: const Icon(Icons.fit_screen_outlined),
+                            title: Text(strings.smallBoard),
+                            value: AnalysisMode.smallBoard,
+                            onChanged: (bool value) {
+                              RecordingService().recordEvent(
+                                RecordingEventType.toolbarAction,
+                                <String, dynamic>{
+                                  'toolbar': 'analysisSettings',
+                                  'action': 'setSmallBoard',
+                                  'enabled': value,
+                                },
+                              );
+                              AnalysisMode.setSmallBoard(value);
+                            },
+                          ),
+                        ],
+                      ),
+                      LichessListSection(
                         header: Text(strings.engine),
                         cardKey: const Key(
                           'play_area_analysis_settings_engine_card',
@@ -2113,9 +2140,12 @@ class PlayAreaState extends State<PlayArea> {
                   tabPanelMinHeight -
                   pieceRowsHeight -
                   _kBalancedLayoutSafetyMargin;
+              final double boardWidthBudget =
+                  constraints.maxWidth *
+                  (AnalysisMode.smallBoard ? _kAnalysisSmallBoardScale : 1);
               final double boardSize = math.max(
                 0,
-                math.min(constraints.maxWidth, boardHeightBudget),
+                math.min(boardWidthBudget, boardHeightBudget),
               );
 
               return Column(
@@ -2128,10 +2158,12 @@ class PlayAreaState extends State<PlayArea> {
                         : _buildPieceCountRow()
                   else
                     const SizedBox(height: AppTheme.boardMargin),
-                  SizedBox.square(
-                    key: const Key('play_area_analysis_board'),
-                    dimension: boardSize,
-                    child: _buildBoardScreenshot(),
+                  Center(
+                    child: SizedBox.square(
+                      key: const Key('play_area_analysis_board'),
+                      dimension: boardSize,
+                      child: _buildBoardScreenshot(),
+                    ),
                   ),
                   if (showPieceCountRows)
                     _isBoardFlipped

@@ -103,6 +103,7 @@ class AnalysisMode {
   static bool _isEnabled = false;
   static bool _isAnalyzing = false;
   static bool _showEngineLines = true;
+  static bool _smallBoard = false;
   static AnalysisOverlayMode? _overlayMode;
   static List<MoveAnalysisResult> _analysisResults = <MoveAnalysisResult>[];
   static List<String> _trapMoves = <String>[];
@@ -127,6 +128,9 @@ class AnalysisMode {
 
   /// Whether the analysis screen shows the engine move lines.
   static bool get showEngineLines => _showEngineLines;
+
+  /// Whether the analysis screen uses a reduced board size in portrait mode.
+  static bool get smallBoard => _smallBoard;
 
   /// The current per-move analysis results.
   static List<MoveAnalysisResult> get analysisResults => _analysisResults;
@@ -185,6 +189,20 @@ class AnalysisMode {
       return;
     }
     _showEngineLines = value;
+    _publishState();
+  }
+
+  /// Toggle the reduced portrait analysis board layout.
+  static void toggleSmallBoard() {
+    setSmallBoard(!_smallBoard);
+  }
+
+  /// Set whether the analysis screen uses a reduced board in portrait mode.
+  static void setSmallBoard(bool value) {
+    if (_smallBoard == value) {
+      return;
+    }
+    _smallBoard = value;
     _publishState();
   }
 
