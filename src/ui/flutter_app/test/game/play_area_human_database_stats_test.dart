@@ -61,7 +61,7 @@ void main() {
     DB.instance = null;
   });
 
-  testWidgets('human database stats strip reserves space above the board', (
+  testWidgets('human database stats strip sits near the bottom bar', (
     WidgetTester tester,
   ) async {
     await tester.binding.setSurfaceSize(const Size(390, 844));
@@ -85,11 +85,13 @@ void main() {
     final Finder strip = find.byKey(
       const Key('play_area_human_database_stats_strip'),
     );
-    final Finder header = find.byKey(const Key('play_area_game_header'));
     final Finder board = find.byKey(const Key('play_area_native_screenshot'));
+    final Finder bottomBar = find.byKey(
+      const Key('play_area_main_toolbar_bottom'),
+    );
     expect(strip, findsOneWidget);
-    expect(header, findsOneWidget);
     expect(board, findsOneWidget);
+    expect(bottomBar, findsOneWidget);
     expect(tester.getSize(strip).height, greaterThan(0));
     final DecoratedBox statsBox = tester.widget<DecoratedBox>(
       find.byKey(const Key('play_area_human_database_stats')),
@@ -112,16 +114,39 @@ void main() {
     );
     expect(
       tester.getTopLeft(strip).dy,
-      greaterThanOrEqualTo(tester.getBottomLeft(header).dy),
+      greaterThanOrEqualTo(tester.getBottomLeft(board).dy),
     );
     expect(
       tester.getBottomLeft(strip).dy,
-      lessThanOrEqualTo(tester.getTopLeft(board).dy),
+      lessThanOrEqualTo(tester.getTopLeft(bottomBar).dy),
     );
     expect(
       find.byKey(const Key('play_area_human_database_stats_overlay')),
       findsNothing,
     );
+  });
+
+  testWidgets('human database stats strip uses compact sample text', (
+    WidgetTester tester,
+  ) async {
+    final NativeMillGameSession session = await _bindNativeGame(
+      GameMode.humanVsHuman,
+    );
+    session.lastHumanDatabaseMoveStats = const HumanDatabaseMoveStats(
+      notation: 'd6',
+      wins: 50,
+      draws: 30,
+      losses: 20,
+      total: 100,
+      scoreDelta: 0,
+    );
+
+    await _pumpSessionPlayArea(tester, session);
+
+    expect(find.textContaining('Human Database'), findsNothing);
+    expect(find.textContaining('Human game database'), findsNothing);
+    expect(find.textContaining('n=100'), findsOneWidget);
+    expect(find.textContaining('d6'), findsOneWidget);
   });
 
   testWidgets('regular game uses a Lichess-style inline move list', (

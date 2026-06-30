@@ -119,15 +119,11 @@ class PlayAreaState extends State<PlayArea> {
     );
     final String statsText = stats == null
         ? S.of(context).humanGameDatabaseStatsUnavailable
-        : S
-              .of(context)
-              .humanGameDatabaseStatsLine(
-                stats.notation,
-                stats.winPercent.toStringAsFixed(1),
-                stats.drawPercent.toStringAsFixed(1),
-                stats.lossPercent.toStringAsFixed(1),
-                stats.total,
-              );
+        : '${stats.notation}  '
+              'W ${stats.winPercent.toStringAsFixed(1)}%  '
+              'D ${stats.drawPercent.toStringAsFixed(1)}%  '
+              'L ${stats.lossPercent.toStringAsFixed(1)}%  '
+              'n=${stats.total}';
 
     return Padding(
       key: const Key('play_area_human_database_stats_strip'),
@@ -1226,7 +1222,6 @@ class PlayAreaState extends State<PlayArea> {
 
   Widget _buildHumanAiMainContent({
     required BuildContext context,
-    required Widget? humanDatabaseStatsStrip,
     required bool showPieceCountRows,
   }) {
     return SizedBox(
@@ -1253,7 +1248,6 @@ class PlayAreaState extends State<PlayArea> {
                 key: Key('play_area_human_ai_robot_panel'),
                 isRobot: true,
               ),
-              ?humanDatabaseStatsStrip,
               if (showPieceCountRows)
                 _isBoardFlipped
                     ? _buildRemovedPieceCountRow()
@@ -1436,7 +1430,6 @@ class PlayAreaState extends State<PlayArea> {
                       key: Key('play_area_human_ai_landscape_robot_panel'),
                       isRobot: true,
                     ),
-                    ?humanDatabaseStatsStrip,
                     const Expanded(
                       child: _InlineMoveList(
                         key: Key('play_area_human_ai_landscape_move_list'),
@@ -1449,6 +1442,7 @@ class PlayAreaState extends State<PlayArea> {
                         groupByRound: true,
                       ),
                     ),
+                    ?humanDatabaseStatsStrip,
                     _buildHumanAiBottomBar(context),
                     const SizedBox(height: verticalPadding),
                     const _HumanAiPlayerPanel(
@@ -1569,7 +1563,6 @@ class PlayAreaState extends State<PlayArea> {
                     GameHeader(
                       key: const Key('play_area_regular_landscape_header'),
                     ),
-                    ?humanDatabaseStatsStrip,
                     Expanded(
                       child: _InlineMoveList(
                         key: const Key('play_area_regular_landscape_move_list'),
@@ -1591,6 +1584,7 @@ class PlayAreaState extends State<PlayArea> {
                         groupByRound: true,
                       ),
                     ),
+                    ?humanDatabaseStatsStrip,
                     _buildRegularBottomBar(context),
                     if (DB().displaySettings.isAdvantageGraphShown &&
                         advantageData.isNotEmpty)
@@ -1648,6 +1642,8 @@ class PlayAreaState extends State<PlayArea> {
         final Widget? humanDatabaseStatsStrip = _buildHumanDatabaseStatsStrip(
           context,
         );
+        final Widget? bottomHumanDatabaseStatsStrip =
+            !isSetupPosition && !isPuzzle ? humanDatabaseStatsStrip : null;
         final bool useHumanAiLandscapeLayout =
             usesLichessHumanAiToolbar &&
             constraints.hasBoundedHeight &&
@@ -1657,7 +1653,7 @@ class PlayAreaState extends State<PlayArea> {
           return _buildHumanAiLandscapeContent(
             context: context,
             constraints: constraints,
-            humanDatabaseStatsStrip: humanDatabaseStatsStrip,
+            humanDatabaseStatsStrip: bottomHumanDatabaseStatsStrip,
             showPieceCountRows: showPieceCountRows,
           );
         }
@@ -1672,7 +1668,7 @@ class PlayAreaState extends State<PlayArea> {
           return _buildRegularLandscapeContent(
             context: context,
             constraints: constraints,
-            humanDatabaseStatsStrip: humanDatabaseStatsStrip,
+            humanDatabaseStatsStrip: bottomHumanDatabaseStatsStrip,
             showPieceCountRows: showPieceCountRows,
           );
         }
@@ -1684,7 +1680,6 @@ class PlayAreaState extends State<PlayArea> {
           child: usesLichessHumanAiToolbar
               ? _buildHumanAiMainContent(
                   context: context,
-                  humanDatabaseStatsStrip: humanDatabaseStatsStrip,
                   showPieceCountRows: showPieceCountRows,
                 )
               : SafeArea(
@@ -1722,8 +1717,6 @@ class PlayAreaState extends State<PlayArea> {
 
                         // The top game header with hints, icons, etc.
                         GameHeader(key: const Key('play_area_game_header')),
-
-                        ?humanDatabaseStatsStrip,
 
                         // Piece counts or spacing if not used
                         if (showPieceCountRows)
@@ -1778,6 +1771,8 @@ class PlayAreaState extends State<PlayArea> {
               key: const Key('play_area_column_toolbar_bottom'),
               children: <Widget>[
                 Expanded(child: mainContent),
+
+                ?bottomHumanDatabaseStatsStrip,
 
                 // History navigation toolbar if enabled
                 if (DB().displaySettings.isHistoryNavigationToolbarShown &&
