@@ -227,6 +227,12 @@ void main() {
       find.byKey(const Key('play_area_regular_bottom_bar_take_back')),
       findsOneWidget,
     );
+    final double headerToBoardGap =
+        tester.getTopLeft(find.byKey(const Key('test_board_square'))).dy -
+        tester.getBottomLeft(find.byKey(const Key('play_area_game_header'))).dy;
+    expect(headerToBoardGap, greaterThanOrEqualTo(0));
+    expect(headerToBoardGap, lessThan(120));
+
     expect(
       tester
           .widget<LichessBottomBarButton>(

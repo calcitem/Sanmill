@@ -1384,22 +1384,21 @@ class PlayAreaState extends State<PlayArea> {
       left: false,
       child: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
-          final List<Widget> topChildren = <Widget>[
-            if (isPlayableGame)
-              _InlineMoveList(
-                key: const Key('play_area_regular_move_list'),
-                wrapKey: const Key('play_area_regular_move_list_wrap'),
-                roundKeyPrefix: 'play_area_regular_round_',
-                moveKeyPrefix: 'play_area_regular_move_',
-                onMoveTap: (BuildContext context, PgnNode<ExtMove> node) {
-                  return HistoryNavigator.gotoNode(context, node, pop: false);
-                },
-                showMovePreview: true,
-                layout: _InlineMoveListLayout.horizontal,
-                groupByRound: true,
-              ),
-            GameHeader(key: const Key('play_area_game_header')),
-          ];
+          final Widget moveList = _InlineMoveList(
+            key: const Key('play_area_regular_move_list'),
+            wrapKey: const Key('play_area_regular_move_list_wrap'),
+            roundKeyPrefix: 'play_area_regular_round_',
+            moveKeyPrefix: 'play_area_regular_move_',
+            onMoveTap: (BuildContext context, PgnNode<ExtMove> node) {
+              return HistoryNavigator.gotoNode(context, node, pop: false);
+            },
+            showMovePreview: true,
+            layout: _InlineMoveListLayout.horizontal,
+            groupByRound: true,
+          );
+          final Widget topTable = GameHeader(
+            key: const Key('play_area_game_header'),
+          );
           final List<Widget> boardChildren = <Widget>[
             if (showPieceCountRows)
               _isBoardFlipped
@@ -1446,16 +1445,29 @@ class PlayAreaState extends State<PlayArea> {
               height: constraints.maxHeight,
               child: Column(
                 key: const Key('play_area_column'),
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Column(mainAxisSize: MainAxisSize.min, children: topChildren),
+                  moveList,
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: <Widget>[topTable],
+                      ),
+                    ),
+                  ),
                   Column(
                     mainAxisSize: MainAxisSize.min,
                     children: boardChildren,
                   ),
-                  Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: bottomChildren,
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: bottomChildren,
+                      ),
+                    ),
                   ),
                 ],
               ),
@@ -1467,7 +1479,8 @@ class PlayAreaState extends State<PlayArea> {
             child: Column(
               key: const Key('play_area_column'),
               children: <Widget>[
-                ...topChildren,
+                if (isPlayableGame) moveList,
+                topTable,
                 ...boardChildren,
                 ...bottomChildren,
               ],
