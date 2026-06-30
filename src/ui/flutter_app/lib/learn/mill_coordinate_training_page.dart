@@ -104,7 +104,7 @@ class _MillCoordinateTrainingPageState
             key: const Key('mill_coordinate_training_settings_button'),
             tooltip: strings.settings,
             icon: const Icon(Icons.settings_outlined),
-            onPressed: _showSettingsSheet,
+            onPressed: _showDisplaySettingsSheet,
           ),
         ],
       ),
@@ -152,7 +152,7 @@ class _MillCoordinateTrainingPageState
                     icon: Icons.tune_rounded,
                     label: strings.menu,
                     showLabel: true,
-                    onTap: _showSettingsSheet,
+                    onTap: _showTrainingMenuSheet,
                   ),
                   LichessBottomBarButton(
                     key: const Key('mill_coordinate_training_info_button'),
@@ -259,7 +259,7 @@ class _MillCoordinateTrainingPageState
     });
   }
 
-  void _showSettingsSheet() {
+  void _showDisplaySettingsSheet() {
     showModalBottomSheet<void>(
       context: context,
       showDragHandle: true,
@@ -297,6 +297,24 @@ class _MillCoordinateTrainingPageState
                   ),
                 ],
               ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  void _showTrainingMenuSheet() {
+    showModalBottomSheet<void>(
+      context: context,
+      showDragHandle: true,
+      builder: (BuildContext context) {
+        final S strings = S.of(context);
+        return SafeArea(
+          child: ListView(
+            shrinkWrap: true,
+            padding: const EdgeInsets.only(bottom: 16),
+            children: <Widget>[
               LichessListSection(
                 header: Text(strings.duration),
                 children: <Widget>[

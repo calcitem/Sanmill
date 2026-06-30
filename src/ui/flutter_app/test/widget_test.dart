@@ -1333,7 +1333,7 @@ void main() {
     );
 
     await tester.tap(
-      find.byKey(const Key('mill_coordinate_training_menu_button')),
+      find.byKey(const Key('mill_coordinate_training_settings_button')),
     );
     await tester.pumpAndSettle();
 
@@ -1345,6 +1345,30 @@ void main() {
     );
     expect(showCoordinatesTile.value, isFalse);
     expect(showPiecesTile.value, isTrue);
+
+    expect(
+      find.byKey(const Key('mill_coordinate_training_duration_30')),
+      findsNothing,
+    );
+
+    Navigator.of(
+      tester.element(find.byKey(const Key('mill_coordinate_training_board'))),
+    ).pop();
+    await tester.pumpAndSettle();
+
+    await tester.tap(
+      find.byKey(const Key('mill_coordinate_training_menu_button')),
+    );
+    await tester.pumpAndSettle();
+
+    expect(
+      find.byKey(const Key('mill_coordinate_training_duration_30')),
+      findsOneWidget,
+    );
+    expect(
+      find.byKey(const Key('mill_coordinate_training_show_coordinates')),
+      findsNothing,
+    );
   });
 
   testWidgets('Variants page opens detail before applying a rule set', (
