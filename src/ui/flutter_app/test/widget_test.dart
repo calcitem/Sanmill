@@ -1747,8 +1747,26 @@ void main() {
 
       expect(
         find.byKey(const Key('opening_explorer_position_card')),
+        findsNothing,
+      );
+      await tester.tap(
+        find.byKey(const Key('opening_explorer_sources_button')),
+      );
+      await tester.pumpAndSettle();
+
+      expect(
+        find.byKey(const Key('opening_explorer_sources_sheet')),
         findsOneWidget,
       );
+      expect(
+        find.byKey(const Key('opening_explorer_sources_copy_fen')),
+        findsOneWidget,
+      );
+
+      Navigator.of(
+        tester.element(find.byKey(const Key('opening_explorer_sources_sheet'))),
+      ).pop();
+      await tester.pumpAndSettle();
 
       final Finder boardFinder = find.byKey(
         const Key('opening_explorer_board'),
@@ -1877,8 +1895,20 @@ void main() {
       );
       expect(
         find.byKey(const Key('opening_explorer_position_card')),
+        findsNothing,
+      );
+      await tester.tap(
+        find.byKey(const Key('opening_explorer_sources_button')),
+      );
+      await tester.pumpAndSettle();
+      expect(
+        find.byKey(const Key('opening_explorer_sources_copy_fen')),
         findsOneWidget,
       );
+      Navigator.of(
+        tester.element(find.byKey(const Key('opening_explorer_sources_sheet'))),
+      ).pop();
+      await tester.pumpAndSettle();
       final S strings = S.of(tester.element(find.byType(OpeningExplorerPage)));
       expect(find.text(strings.openingExplorerUnavailable), findsNothing);
       expect(

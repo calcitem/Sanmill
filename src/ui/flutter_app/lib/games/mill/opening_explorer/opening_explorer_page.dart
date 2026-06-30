@@ -544,7 +544,6 @@ class _OpeningExplorerContent extends StatelessWidget {
         ),
       if (snapshot.openingRecognition.isNamed)
         _OpeningNameSection(recognition: snapshot.openingRecognition),
-      _PositionSection(snapshot: snapshot),
       LichessListSection(
         header: Text(strings.openingExplorerMoves),
         cardKey: const Key('opening_explorer_moves_card'),
@@ -640,6 +639,15 @@ class _OpeningExplorerBottomBar extends StatelessWidget {
             textAlign: TextAlign.center,
           ),
           onPressed: () {},
+        ),
+        LichessActionSheetAction(
+          key: const Key('opening_explorer_sources_copy_fen'),
+          leading: const Icon(Icons.location_searching_rounded),
+          makeLabel: (BuildContext context) => Text(strings.copyFen),
+          onPressed: () async {
+            await Clipboard.setData(ClipboardData(text: snapshot.fen));
+            SnackBarService.showRootSnackBar(strings.fenCopiedToClipboard);
+          },
         ),
       ],
     );
@@ -1071,51 +1079,6 @@ class _OpeningExplorerBoardPainter extends CustomPainter {
         oldDelegate.pieceHighlightColor != pieceHighlightColor ||
         oldDelegate.hintColor != hintColor ||
         oldDelegate.removeHintColor != removeHintColor;
-  }
-}
-
-class _PositionSection extends StatelessWidget {
-  const _PositionSection({required this.snapshot});
-
-  final _OpeningExplorerSnapshot snapshot;
-
-  @override
-  Widget build(BuildContext context) {
-    final S strings = S.of(context);
-    final ColorScheme colorScheme = Theme.of(context).colorScheme;
-
-    return LichessListSection(
-      header: Text(strings.openingExplorerCurrentPosition),
-      cardKey: const Key('opening_explorer_position_card'),
-      children: <Widget>[
-        ListTile(
-          key: const Key('opening_explorer_position_fen'),
-          leading: const Icon(Icons.location_searching_rounded),
-          title: Text(strings.copyFen),
-          subtitle: Text(
-            snapshot.fen,
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(
-              color: colorScheme.onSurfaceVariant.withValues(
-                alpha: AppStyles.subtitleOpacity,
-              ),
-              fontFeatures: const <FontFeature>[FontFeature.tabularFigures()],
-            ),
-          ),
-          onTap: () async {
-            await Clipboard.setData(ClipboardData(text: snapshot.fen));
-            SnackBarService.showRootSnackBar(strings.fenCopiedToClipboard);
-          },
-        ),
-        ListTile(
-          key: const Key('opening_explorer_position_sources'),
-          leading: const Icon(Icons.data_object_rounded),
-          title: Text(strings.openingExplorerSources),
-          subtitle: Text(snapshot.sourceSummary(strings)),
-        ),
-      ],
-    );
   }
 }
 
