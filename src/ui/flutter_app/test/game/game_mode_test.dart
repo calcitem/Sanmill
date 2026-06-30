@@ -37,8 +37,8 @@ void main() {
   // GameMode enum
   // ---------------------------------------------------------------------------
   group('GameMode enum', () {
-    test('should have eight modes', () {
-      expect(GameMode.values.length, 8);
+    test('should have nine modes', () {
+      expect(GameMode.values.length, 9);
     });
 
     test('should include all expected modes', () {
@@ -48,6 +48,7 @@ void main() {
           GameMode.humanVsAi,
           GameMode.humanVsHuman,
           GameMode.aiVsAi,
+          GameMode.analysis,
           GameMode.setupPosition,
           GameMode.puzzle,
           GameMode.humanVsCloud,
@@ -96,6 +97,12 @@ void main() {
 
     test('setupPosition: neither is AI', () {
       final Map<PieceColor, bool> who = GameMode.setupPosition.whoIsAI;
+      expect(who[PieceColor.white], isFalse);
+      expect(who[PieceColor.black], isFalse);
+    });
+
+    test('analysis: neither is AI', () {
+      final Map<PieceColor, bool> who = GameMode.analysis.whoIsAI;
       expect(who[PieceColor.white], isFalse);
       expect(who[PieceColor.black], isFalse);
     });
