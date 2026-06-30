@@ -237,7 +237,7 @@ void main() {
   );
 
   testWidgets(
-    'Home empty state keeps Lichess-style quick start visible',
+    'Home empty state keeps game lists visible',
     (WidgetTester tester) async {
       tester.view
         ..physicalSize = const Size(390, 844)
@@ -252,28 +252,21 @@ void main() {
       expect(find.byKey(const Key('sanmill_home_list')), findsOneWidget);
       expect(find.byKey(const Key('sanmill_home_empty_start')), findsOneWidget);
       expect(
-        find.byKey(const Key('sanmill_home_welcome_group')),
+        find.byKey(const Key('sanmill_home_empty_ongoing_group')),
         findsOneWidget,
       );
       expect(
-        find.byKey(const Key('sanmill_home_welcome_card')),
+        find.byKey(const Key('sanmill_home_empty_ongoing_card')),
         findsOneWidget,
       );
       expect(
-        find.byKey(const Key('sanmill_home_welcome_panel')),
+        find.byKey(const Key('sanmill_home_empty_ongoing_games')),
         findsOneWidget,
       );
+      expect(find.byKey(const Key('sanmill_home_welcome_group')), findsNothing);
       expect(
         find.byKey(const Key('sanmill_home_quick_start_group')),
-        findsOneWidget,
-      );
-      expect(
-        find.byKey(const Key('sanmill_home_quick_start_card')),
-        findsOneWidget,
-      );
-      expect(
-        find.byKey(const Key('sanmill_home_quick_start_mill.play.humanVsAi')),
-        findsOneWidget,
+        findsNothing,
       );
       expect(
         find.byKey(const Key('sanmill_home_empty_recent_group')),
@@ -287,14 +280,6 @@ void main() {
         find.byKey(const Key('sanmill_home_empty_recent_games')),
         findsOneWidget,
       );
-
-      await tester.tap(
-        find.byKey(const Key('sanmill_home_quick_start_mill.play.humanVsAi')),
-      );
-      await tester.pumpAndSettle();
-
-      expect(find.byKey(const Key('human_ai')), findsOneWidget);
-      expect(find.byKey(const Key('human_ai_new_game_sheet')), findsOneWidget);
 
       // Drain any settings-save debounce timer (see the smoke test above).
       await tester.pump(const Duration(milliseconds: 350));

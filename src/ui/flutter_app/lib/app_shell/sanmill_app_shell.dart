@@ -1302,11 +1302,7 @@ class _HomeGamesOverview extends StatelessWidget {
                 if (activeGame == null &&
                     ongoingGames.isEmpty &&
                     recentGames.isEmpty) {
-                  return _HomeEmptyContent(
-                    playModes: playModes,
-                    onPlayRouteSelected: onPlayRouteSelected,
-                    onShowAll: onShowAll,
-                  );
+                  return _HomeEmptyContent(onShowAll: onShowAll);
                 }
 
                 final bool useCarousel = !useWideLayout;
@@ -1407,56 +1403,29 @@ class _HomeGamesLoadingSection extends StatelessWidget {
 }
 
 class _HomeEmptyContent extends StatelessWidget {
-  const _HomeEmptyContent({
-    required this.playModes,
-    required this.onPlayRouteSelected,
-    required this.onShowAll,
-  });
+  const _HomeEmptyContent({required this.onShowAll});
 
-  final List<GameModeEntry> playModes;
-  final ValueChanged<String> onPlayRouteSelected;
   final VoidCallback onShowAll;
 
   @override
   Widget build(BuildContext context) {
-    final List<GameModeEntry> quickStartModes =
-        _PlayBottomSheet._quickStartModes(
-          playModes,
-        ).take(3).toList(growable: false);
-    if (quickStartModes.isEmpty) {
-      return const SizedBox.shrink();
-    }
-
     final S strings = S.of(context);
     return Column(
       key: const Key('sanmill_home_empty_start'),
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         LichessListSection(
-          key: const Key('sanmill_home_welcome_section'),
-          header: Text('${strings.welcome} ${strings.appName}'),
-          headerKey: const Key('sanmill_home_welcome_group'),
-          cardKey: const Key('sanmill_home_welcome_card'),
-          hasLeading: false,
+          key: const Key('sanmill_home_empty_ongoing_section'),
+          header: Text(strings.ongoingGames),
+          headerKey: const Key('sanmill_home_empty_ongoing_group'),
+          cardKey: const Key('sanmill_home_empty_ongoing_card'),
           children: <Widget>[
-            _HomeWelcomePanel(
-              onPlay: () => onPlayRouteSelected(quickStartModes.first.id.value),
+            _MoreTile(
+              key: const Key('sanmill_home_empty_ongoing_games'),
+              icon: Icons.play_circle_outline_rounded,
+              title: strings.empty,
+              onTap: onShowAll,
             ),
-          ],
-        ),
-        LichessListSection(
-          key: const Key('sanmill_home_quick_start_section'),
-          header: Text(strings.quickStart),
-          headerKey: const Key('sanmill_home_quick_start_group'),
-          cardKey: const Key('sanmill_home_quick_start_card'),
-          children: <Widget>[
-            for (final GameModeEntry mode in quickStartModes)
-              _MoreTile(
-                key: Key('sanmill_home_quick_start_${mode.id.value}'),
-                icon: mode.icon ?? Icons.sports_esports_rounded,
-                title: mode.label,
-                onTap: () => onPlayRouteSelected(mode.id.value),
-              ),
           ],
         ),
         LichessListSection(
@@ -1474,71 +1443,6 @@ class _HomeEmptyContent extends StatelessWidget {
           ],
         ),
       ],
-    );
-  }
-}
-
-class _HomeWelcomePanel extends StatelessWidget {
-  const _HomeWelcomePanel({required this.onPlay});
-
-  final VoidCallback onPlay;
-
-  @override
-  Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-    final ColorScheme colorScheme = theme.colorScheme;
-    final S strings = S.of(context);
-    return InkWell(
-      key: const Key('sanmill_home_welcome_panel'),
-      onTap: onPlay,
-      child: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Row(
-          children: <Widget>[
-            DecoratedBox(
-              decoration: BoxDecoration(
-                color: colorScheme.primaryContainer,
-                shape: BoxShape.circle,
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(14),
-                child: Icon(
-                  Icons.grid_4x4_rounded,
-                  color: colorScheme.onPrimaryContainer,
-                  size: 32,
-                ),
-              ),
-            ),
-            const SizedBox(width: 16),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Text(
-                    strings.appName,
-                    style: theme.textTheme.titleLarge?.copyWith(
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    strings.play,
-                    style: theme.textTheme.bodyMedium?.copyWith(
-                      color: colorScheme.onSurfaceVariant,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Icon(
-              Icons.play_arrow_rounded,
-              color: colorScheme.primary,
-              size: 30,
-            ),
-          ],
-        ),
-      ),
     );
   }
 }
