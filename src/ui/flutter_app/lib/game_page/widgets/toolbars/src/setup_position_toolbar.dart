@@ -441,6 +441,7 @@ class SetupPositionButtonsContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     final ColorScheme colorScheme = theme.colorScheme;
+    final Color messageColor = DB().colorSettings.messageColor;
     return Container(
       height: kLichessBottomBarHeight,
       decoration: BoxDecoration(
@@ -455,7 +456,8 @@ class SetupPositionButtonsContainer extends StatelessWidget {
       child: ToolbarItemTheme(
         data: ToolbarItemThemeData(
           style: ToolbarItem.styleFrom(
-            primary: colorScheme.onSurfaceVariant,
+            primary: messageColor,
+            onSurface: messageColor,
             padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 2),
             minimumSize: Size.zero,
             tapTargetSize: MaterialTapTargetSize.shrinkWrap,

@@ -1825,6 +1825,15 @@ void main() {
   testWidgets(
     'Setup position toolbar keeps legacy three-row editor controls',
     (WidgetTester tester) async {
+      const Color toolbarMessageColor = Color(0xFFFFE6A3);
+      final ColorSettings previousColorSettings = DB().colorSettings;
+      addTearDown(() {
+        DB().colorSettings = previousColorSettings;
+      });
+      DB().colorSettings = const ColorSettings(
+        messageColor: toolbarMessageColor,
+      );
+
       await tester.pumpWidget(
         MaterialApp(
           theme: AppTheme.lightThemeData,
@@ -1872,6 +1881,27 @@ void main() {
       expect(find.byKey(const Key('clear_button')), findsOneWidget);
       expect(find.byKey(const Key('cancel_button')), findsOneWidget);
       expect(find.byKey(const Key('done_button')), findsOneWidget);
+
+      for (final Key buttonKey in <Key>[
+        const Key('paint_color_button'),
+        const Key('rotate_button'),
+        const Key('copy_button'),
+      ]) {
+        final ToolbarItemThemeData toolbarTheme = ToolbarItemTheme.of(
+          tester.element(find.byKey(buttonKey)),
+        );
+        final WidgetStateProperty<Color?>? foregroundColor =
+            toolbarTheme.style?.foregroundColor;
+        assert(
+          foregroundColor != null,
+          'Setup position toolbar rows must define a foreground color.',
+        );
+        expect(foregroundColor!.resolve(<WidgetState>{}), toolbarMessageColor);
+        expect(
+          foregroundColor.resolve(<WidgetState>{WidgetState.disabled}),
+          toolbarMessageColor.withValues(alpha: 0.38),
+        );
+      }
 
       // Drain any settings-save debounce timer (see the smoke test above).
       await tester.pump(const Duration(milliseconds: 350));

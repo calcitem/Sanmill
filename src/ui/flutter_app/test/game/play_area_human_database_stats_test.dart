@@ -660,6 +660,16 @@ void main() {
     );
     expect(pieceCountRow, findsOneWidget);
     expect(removedPieceCountRow, findsOneWidget);
+    final double robotToBoardTableGap =
+        tester.getTopLeft(pieceCountRow).dy -
+        tester.getBottomLeft(robotPanel).dy;
+    final double boardTableToPlayerGap =
+        tester.getTopLeft(playerPanel).dy -
+        tester.getBottomLeft(removedPieceCountRow).dy;
+    expect(robotToBoardTableGap, greaterThanOrEqualTo(0));
+    expect(robotToBoardTableGap, lessThan(96));
+    expect(boardTableToPlayerGap, greaterThanOrEqualTo(0));
+    expect(boardTableToPlayerGap, lessThan(96));
     expect(
       tester.getTopLeft(humanAiMoveList).dy,
       lessThan(tester.getTopLeft(robotPanel).dy),

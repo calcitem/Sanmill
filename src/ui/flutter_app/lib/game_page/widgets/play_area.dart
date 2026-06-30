@@ -1210,20 +1210,18 @@ class PlayAreaState extends State<PlayArea> {
         left: false,
         child: LayoutBuilder(
           builder: (BuildContext context, BoxConstraints constraints) {
-            final List<Widget> topChildren = <Widget>[
-              const _InlineMoveList(
-                key: Key('play_area_human_ai_move_list'),
-                wrapKey: Key('play_area_human_ai_move_list_wrap'),
-                roundKeyPrefix: 'play_area_human_ai_round_',
-                moveKeyPrefix: 'play_area_human_ai_move_',
-                layout: _InlineMoveListLayout.horizontal,
-                groupByRound: true,
-              ),
-              const _HumanAiPlayerPanel(
-                key: Key('play_area_human_ai_robot_panel'),
-                isRobot: true,
-              ),
-            ];
+            const Widget moveList = _InlineMoveList(
+              key: Key('play_area_human_ai_move_list'),
+              wrapKey: Key('play_area_human_ai_move_list_wrap'),
+              roundKeyPrefix: 'play_area_human_ai_round_',
+              moveKeyPrefix: 'play_area_human_ai_move_',
+              layout: _InlineMoveListLayout.horizontal,
+              groupByRound: true,
+            );
+            const Widget topTable = _HumanAiPlayerPanel(
+              key: Key('play_area_human_ai_robot_panel'),
+              isRobot: true,
+            );
             final List<Widget> boardChildren = <Widget>[
               if (showPieceCountRows)
                 _isBoardFlipped
@@ -1268,19 +1266,29 @@ class PlayAreaState extends State<PlayArea> {
                 height: constraints.maxHeight,
                 child: Column(
                   key: const Key('play_area_human_ai_column'),
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: topChildren,
+                    moveList,
+                    const Expanded(
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 12),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: <Widget>[topTable],
+                        ),
+                      ),
                     ),
                     Column(
                       mainAxisSize: MainAxisSize.min,
                       children: boardChildren,
                     ),
-                    Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: bottomChildren,
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 12),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: bottomChildren,
+                        ),
+                      ),
                     ),
                   ],
                 ),
@@ -1292,7 +1300,8 @@ class PlayAreaState extends State<PlayArea> {
               child: Column(
                 key: const Key('play_area_human_ai_column'),
                 children: <Widget>[
-                  ...topChildren,
+                  moveList,
+                  topTable,
                   ...boardChildren,
                   ...bottomChildren,
                 ],
