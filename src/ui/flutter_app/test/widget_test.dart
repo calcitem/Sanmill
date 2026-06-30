@@ -1137,6 +1137,11 @@ void main() {
       final Finder boardCoordinatesTile = find.byKey(
         const Key('display_settings_card_notations_shown_switch_tile'),
       );
+      final Finder pieceAnimationTile = find.byKey(
+        const Key(
+          'display_settings_card_piece_pick_up_animation_enabled_switch_tile',
+        ),
+      );
       final Finder boardImageTile = find.byKey(
         const Key('display_settings_card_board_image_settings_list_tile'),
       );
@@ -1145,6 +1150,7 @@ void main() {
       );
       expect(pieceSetTile, findsOneWidget);
       expect(boardCoordinatesTile, findsOneWidget);
+      expect(pieceAnimationTile, findsOneWidget);
       expect(boardImageTile, findsOneWidget);
       expect(backgroundImageTile, findsOneWidget);
       expect(
@@ -1156,8 +1162,12 @@ void main() {
         greaterThan(tester.getTopLeft(pieceSetTile).dy),
       );
       expect(
-        tester.getTopLeft(boardImageTile).dy,
+        tester.getTopLeft(pieceAnimationTile).dy,
         greaterThan(tester.getTopLeft(boardCoordinatesTile).dy),
+      );
+      expect(
+        tester.getTopLeft(boardImageTile).dy,
+        greaterThan(tester.getTopLeft(pieceAnimationTile).dy),
       );
       expect(
         tester.getTopLeft(backgroundImageTile).dy,
@@ -1377,6 +1387,11 @@ void main() {
     final Finder boardCoordinatesTile = find.byKey(
       const Key('display_settings_card_notations_shown_switch_tile'),
     );
+    final Finder pieceAnimationTile = find.byKey(
+      const Key(
+        'display_settings_card_piece_pick_up_animation_enabled_switch_tile',
+      ),
+    );
     final Finder boardImageTile = find.byKey(
       const Key('display_settings_card_board_image_settings_list_tile'),
     );
@@ -1384,6 +1399,7 @@ void main() {
     expect(boardThemeTile, findsOneWidget);
     expect(pieceSetTile, findsOneWidget);
     expect(boardCoordinatesTile, findsOneWidget);
+    expect(pieceAnimationTile, findsOneWidget);
     expect(boardImageTile, findsOneWidget);
     expect(
       tester.getTopLeft(pieceSetTile).dy,
@@ -1394,8 +1410,12 @@ void main() {
       greaterThan(tester.getTopLeft(pieceSetTile).dy),
     );
     expect(
-      tester.getTopLeft(boardImageTile).dy,
+      tester.getTopLeft(pieceAnimationTile).dy,
       greaterThan(tester.getTopLeft(boardCoordinatesTile).dy),
+    );
+    expect(
+      tester.getTopLeft(boardImageTile).dy,
+      greaterThan(tester.getTopLeft(pieceAnimationTile).dy),
     );
   });
 

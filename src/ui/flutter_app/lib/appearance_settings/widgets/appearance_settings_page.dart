@@ -511,6 +511,35 @@ class AppearanceSettingsPage extends StatelessWidget {
                     );
                   },
             ),
+            ValueListenableBuilder<Box<DisplaySettings>>(
+              key: const Key(
+                'display_settings_card_piece_animation_value_listenable_builder',
+              ),
+              valueListenable: DB().listenDisplaySettings,
+              builder:
+                  (
+                    BuildContext context,
+                    Box<DisplaySettings> box,
+                    Widget? child,
+                  ) {
+                    final DisplaySettings displaySettings = box.get(
+                      DB.displaySettingsKey,
+                      defaultValue: const DisplaySettings(),
+                    )!;
+                    return SettingsListTile.switchTile(
+                      key: const Key(
+                        'display_settings_card_piece_pick_up_animation_enabled_switch_tile',
+                      ),
+                      leading: const Icon(Icons.animation_outlined),
+                      value: displaySettings.isPiecePickUpAnimationEnabled,
+                      onChanged: (bool val) =>
+                          DB().displaySettings = displaySettings.copyWith(
+                            isPiecePickUpAnimationEnabled: val,
+                          ),
+                      titleString: S.of(context).enablePiecePickUpAnimation,
+                    );
+                  },
+            ),
             SettingsListTile(
               key: const Key(
                 'display_settings_card_board_image_settings_list_tile',
@@ -987,15 +1016,6 @@ class AppearanceSettingsPage extends StatelessWidget {
                 titleString: strings.removeEffectAnimation,
                 onTap: () => setRemoveEffectAnimation(context),
               ),
-            SettingsListTile.switchTile(
-              key: const Key(
-                'display_settings_card_piece_pick_up_animation_enabled_switch_tile',
-              ),
-              value: displaySettings.isPiecePickUpAnimationEnabled,
-              onChanged: (bool val) => DB().displaySettings = displaySettings
-                  .copyWith(isPiecePickUpAnimationEnabled: val),
-              titleString: strings.enablePiecePickUpAnimation,
-            ),
           ],
         ),
         SettingsCard(
