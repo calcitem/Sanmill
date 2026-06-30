@@ -10,7 +10,7 @@ void main() {
   tearDown(() {
     AnalysisMode.disable();
     AnalysisMode.setSmallBoard(false);
-    AnalysisMode.setEngineLineCount(AnalysisMode.maxEngineLineCount);
+    AnalysisMode.setEngineLineCount(AnalysisMode.defaultEngineLineCount);
   });
 
   test('tracks full analysis and hint overlay modes separately', () {
@@ -65,7 +65,7 @@ void main() {
   });
 
   test('tracks engine line count as an analysis preference', () {
-    expect(AnalysisMode.engineLineCount, AnalysisMode.maxEngineLineCount);
+    expect(AnalysisMode.engineLineCount, AnalysisMode.defaultEngineLineCount);
 
     AnalysisMode.setEngineLineCount(1);
     expect(AnalysisMode.engineLineCount, 1);

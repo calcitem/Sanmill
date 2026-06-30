@@ -1447,6 +1447,14 @@ class PlayAreaState extends State<PlayArea> {
       foregroundColor: _actionSheetForeground(sheetContext),
       actions: <LichessActionSheetAction>[
         LichessActionSheetAction(
+          key: const Key('play_area_analysis_engine_settings'),
+          leading: const Icon(Icons.tune_outlined),
+          trailing: const Icon(Icons.chevron_right),
+          makeLabel: (BuildContext context) => Text(strings.settings),
+          onPressed: () =>
+              _showAnalysisSettingsSheet(sheetContext, strings: strings),
+        ),
+        LichessActionSheetAction(
           key: const Key('play_area_analysis_engine_go_deeper'),
           leading: const Icon(Icons.add_circle_outline),
           makeLabel: (BuildContext context) => Text(strings.more),

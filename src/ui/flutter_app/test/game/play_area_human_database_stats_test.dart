@@ -60,7 +60,7 @@ void main() {
     AnalysisMode.disable();
     AnalysisMode.setShowEngineLines(true);
     AnalysisMode.setSmallBoard(false);
-    AnalysisMode.setEngineLineCount(AnalysisMode.maxEngineLineCount);
+    AnalysisMode.setEngineLineCount(AnalysisMode.defaultEngineLineCount);
     PlayerTimer().reset();
   });
 
@@ -68,7 +68,7 @@ void main() {
     AnalysisMode.disable();
     AnalysisMode.setShowEngineLines(true);
     AnalysisMode.setSmallBoard(false);
-    AnalysisMode.setEngineLineCount(AnalysisMode.maxEngineLineCount);
+    AnalysisMode.setEngineLineCount(AnalysisMode.defaultEngineLineCount);
     PlayerTimer().reset();
     DB.instance = null;
   });
@@ -1712,13 +1712,32 @@ void main() {
       find.byKey(const Key('play_area_analysis_engine_go_deeper')),
       findsOneWidget,
     );
+    expect(
+      find.byKey(const Key('play_area_analysis_engine_settings')),
+      findsOneWidget,
+    );
     expect(find.text('d8'), findsOneWidget);
     expect(
       find.byKey(const Key('play_area_analysis_settings_sheet')),
       findsNothing,
     );
+    await tester.tap(
+      find.byKey(const Key('play_area_analysis_engine_settings')),
+    );
+    await tester.pumpAndSettle();
+
+    expect(
+      find.byKey(const Key('play_area_analysis_engine_sheet')),
+      findsNothing,
+    );
+    expect(
+      find.byKey(const Key('play_area_analysis_settings_sheet')),
+      findsOneWidget,
+    );
     Navigator.of(
-      tester.element(find.byKey(const Key('play_area_analysis_engine_sheet'))),
+      tester.element(
+        find.byKey(const Key('play_area_analysis_settings_sheet')),
+      ),
     ).pop();
     await tester.pumpAndSettle();
 
@@ -1846,7 +1865,19 @@ void main() {
 
     await _pumpSessionPlayArea(tester, session);
 
-    expect(AnalysisMode.engineLineCount, 3);
+    expect(AnalysisMode.engineLineCount, AnalysisMode.defaultEngineLineCount);
+    expect(
+      find.byKey(const Key('play_area_analysis_engine_line_empty_0')),
+      findsOneWidget,
+    );
+    expect(
+      find.byKey(const Key('play_area_analysis_engine_line_empty_1')),
+      findsNothing,
+    );
+
+    AnalysisMode.setEngineLineCount(3);
+    await tester.pumpAndSettle();
+
     expect(
       find.byKey(const Key('play_area_analysis_engine_line_empty_2')),
       findsOneWidget,

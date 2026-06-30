@@ -132,13 +132,14 @@ enum AnalysisSource {
 /// move (see `AnalysisService`).  The renderer (`AnalysisRenderer`) reads the
 /// results to draw per-move win/draw/loss marks on the board.
 class AnalysisMode {
+  static const int defaultEngineLineCount = 1;
   static const int maxEngineLineCount = 3;
 
   static bool _isEnabled = false;
   static bool _isAnalyzing = false;
   static bool _showEngineLines = true;
   static bool _smallBoard = false;
-  static int _engineLineCount = maxEngineLineCount;
+  static int _engineLineCount = defaultEngineLineCount;
   static AnalysisOverlayMode? _overlayMode;
   static AnalysisSource? _source;
   static List<MoveAnalysisResult> _analysisResults = <MoveAnalysisResult>[];

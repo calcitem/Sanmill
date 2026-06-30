@@ -927,7 +927,9 @@ mod tests {
         let mut wb = game.build_workbench(&snapshot);
         let mut searcher = mill_searcher_default();
         assert!(!searcher.tt_move_enabled());
-        assert!(!mill_searcher_for_config(&MillEngineConfigPlan::default()).tt_move_enabled());
+        let default_config_searcher = mill_searcher_for_config(&MillEngineConfigPlan::default());
+        assert!(!default_config_searcher.tt_move_enabled());
+        assert!(!default_config_searcher.root_move_summaries_enabled());
         let _ = searcher.search(&mut wb, 1);
 
         assert!(
@@ -947,6 +949,7 @@ mod tests {
             ..MillEngineConfigPlan::default()
         });
         assert!(pv_searcher.tt_move_enabled());
+        assert!(pv_searcher.root_move_summaries_enabled());
         let _ = pv_searcher.search(&mut wb, 2);
         let events = multi_pv_events(
             &game,
