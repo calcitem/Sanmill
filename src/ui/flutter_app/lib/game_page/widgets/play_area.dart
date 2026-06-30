@@ -3800,7 +3800,13 @@ class _BoundedMoveWrap extends StatelessWidget {
           child: Wrap(
             spacing: spacing,
             runSpacing: runSpacing,
-            children: children,
+            children: <Widget>[
+              for (final Widget child in children)
+                ConstrainedBox(
+                  constraints: BoxConstraints(maxWidth: constraints.maxWidth),
+                  child: child,
+                ),
+            ],
           ),
         );
       },

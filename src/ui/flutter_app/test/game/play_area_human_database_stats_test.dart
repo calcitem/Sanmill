@@ -2420,6 +2420,73 @@ void main() {
     );
   });
 
+  testWidgets('human vs ai move list constrains long capture groups', (
+    WidgetTester tester,
+  ) async {
+    db.generalSettings = const GeneralSettings();
+    db.displaySettings = const DisplaySettings();
+    final GameController controller = GameController();
+    controller.gameInstance.gameMode = GameMode.humanVsAi;
+    for (final String notation in <String>[
+      'd6',
+      'xa1',
+      'xd1',
+      'xg1',
+      'xb2',
+      'xd2',
+      'xf2',
+      'xc3',
+      'xd3',
+      'xe3',
+      'a4',
+      'b4',
+    ]) {
+      controller.gameRecorder.appendMove(
+        ExtMove(notation, side: PieceColor.white),
+      );
+    }
+
+    await tester.binding.setSurfaceSize(const Size(390, 844));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+
+    await tester.pumpWidget(
+      _localizedApp(
+        const Scaffold(
+          body: PlayArea(
+            boardImage: null,
+            child: SizedBox.square(
+              key: Key('test_board_square'),
+              dimension: 390,
+            ),
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    final Finder groupedMove = find.byKey(
+      const Key('play_area_human_ai_move_12'),
+    );
+    final Finder moveList = find.byKey(
+      const Key('play_area_human_ai_move_list_wrap'),
+    );
+    expect(find.byKey(const Key('play_area_human_ai_move_1')), findsNothing);
+    expect(find.byKey(const Key('play_area_human_ai_move_2')), findsNothing);
+    expect(groupedMove, findsOneWidget);
+    expect(
+      find.text('d6 xa1 xd1 xg1 xb2 xd2 xf2 xc3 xd3 xe3 a4 b4'),
+      findsOneWidget,
+    );
+    expect(
+      tester.getSize(groupedMove).height,
+      greaterThan(tester.getSize(find.text('1.')).height),
+    );
+    expect(
+      tester.getTopRight(groupedMove).dx,
+      lessThanOrEqualTo(tester.getTopRight(moveList).dx),
+    );
+  });
+
   testWidgets('human vs ai menu keeps QR move list import reachable', (
     WidgetTester tester,
   ) async {
