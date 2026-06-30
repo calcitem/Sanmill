@@ -1016,6 +1016,61 @@ void main() {
     );
   });
 
+  testWidgets('analysis menu exposes opening explorer', (
+    WidgetTester tester,
+  ) async {
+    db.displaySettings = const DisplaySettings(
+      isUnplacedAndRemovedPiecesShown: false,
+      isHistoryNavigationToolbarShown: false,
+    );
+    GameController().gameInstance.gameMode = GameMode.analysis;
+    GameController().gameRecorder.reset();
+    GameController().gameRecorder.appendMove(
+      ExtMove('d6', side: PieceColor.white),
+    );
+
+    await tester.binding.setSurfaceSize(const Size(390, 844));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+
+    await tester.pumpWidget(
+      _localizedApp(
+        const Scaffold(
+          body: PlayArea(
+            boardImage: null,
+            child: SizedBox.square(
+              key: Key('test_board_square'),
+              dimension: 390,
+            ),
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.tap(
+      find.byKey(const Key('play_area_regular_bottom_bar_menu')),
+    );
+    await tester.pumpAndSettle();
+
+    expect(
+      find.byKey(const Key('play_area_regular_game_menu_opening_explorer')),
+      findsOneWidget,
+    );
+    expect(
+      find.descendant(
+        of: find.byKey(
+          const Key('play_area_regular_game_menu_opening_explorer'),
+        ),
+        matching: find.text('Opening explorer'),
+      ),
+      findsOneWidget,
+    );
+    expect(
+      find.byKey(const Key('play_area_regular_game_menu_analysis')),
+      findsOneWidget,
+    );
+  });
+
   testWidgets('human vs ai uses landscape side panel layout', (
     WidgetTester tester,
   ) async {

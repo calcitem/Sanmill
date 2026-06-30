@@ -14,9 +14,11 @@ import 'package:native_screenshot_widget/native_screenshot_widget.dart';
 import '../../experience_recording/models/recording_models.dart';
 import '../../experience_recording/services/recording_service.dart';
 import '../../game_platform/game_session.dart' show GameAction, PlayerSeat;
+import '../../game_shell/game_session_scope.dart';
 import '../../games/mill/mill_action_codec.dart';
 import '../../games/mill/mill_board_transform_actions.dart';
 import '../../games/mill/native_mill_rules_port.dart';
+import '../../games/mill/opening_explorer/opening_explorer_page.dart';
 import '../../general_settings/widgets/general_settings_page.dart';
 import '../../generated/intl/l10n.dart';
 import '../../shared/config/constants.dart';
@@ -646,6 +648,15 @@ class PlayAreaState extends State<PlayArea> {
     await GameController().moveNow(context);
   }
 
+  void _openOpeningExplorer(BuildContext context) {
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        builder: (_) =>
+            OpeningExplorerPage(session: GameSessionScope.sessionOf(context)),
+      ),
+    );
+  }
+
   bool get _shouldShowMoveNowMenuAction {
     final GameMode mode = GameController().gameInstance.gameMode;
     return mode == GameMode.humanVsAi || mode == GameMode.aiVsAi;
@@ -813,6 +824,14 @@ class PlayAreaState extends State<PlayArea> {
           makeLabel: (BuildContext context) => Text(S.of(context).moveList),
           onPressed: () => _openMovesWithNavigator(hostNavigator),
         ),
+        if (_isAnalysisMode)
+          LichessActionSheetAction(
+            key: const Key('play_area_regular_game_menu_opening_explorer'),
+            leading: const Icon(Icons.auto_stories_outlined),
+            makeLabel: (BuildContext context) =>
+                Text(S.of(context).openingExplorer),
+            onPressed: () => _openOpeningExplorer(hostContext),
+          ),
         if (_isAnalysisMode)
           LichessActionSheetAction(
             key: const Key('play_area_regular_game_menu_analysis'),
