@@ -237,18 +237,18 @@ class PlayAreaState extends State<PlayArea> {
     );
   }
 
-  void _openMoves(BuildContext context) {
+  void _openMovesWithNavigator(NavigatorState navigator) {
     if (DB().generalSettings.screenReaderSupport) {
       // On screen readers, use a bottom sheet.
-      _openModal(context, _buildMoveModal(context));
+      final BuildContext navigatorContext = navigator.context;
+      _openModal(navigatorContext, _buildMoveModal(navigatorContext));
       return;
     }
 
     // Complete all ongoing animations before navigating to ensure pieces are
     // in their final positions when the user returns.
     GameController().animationManager.completeAllAnimations();
-    Navigator.push(
-      context,
+    navigator.push(
       MaterialPageRoute<void>(
         settings: const RouteSettings(name: '/movesList'),
         builder: (BuildContext context) => const MovesListPage(),
@@ -617,7 +617,7 @@ class PlayAreaState extends State<PlayArea> {
   }
 
   Future<void> _openAnalysisPanelFromBottomBar(
-    BuildContext context, {
+    NavigatorState navigator, {
     required String toolbar,
   }) async {
     RecordingService().recordEvent(
@@ -625,7 +625,7 @@ class PlayAreaState extends State<PlayArea> {
       <String, dynamic>{'toolbar': toolbar, 'action': 'analysisPanel'},
     );
     AnalysisMode.disable();
-    await Navigator.of(context).push(
+    await navigator.push(
       MaterialPageRoute<void>(
         settings: const RouteSettings(name: '/movesList'),
         builder: (BuildContext context) => const MovesListPage.analysisPanel(),
@@ -783,6 +783,7 @@ class PlayAreaState extends State<PlayArea> {
   void _showRegularGameMenu() {
     assert(!_usesLichessHumanAiToolbar);
     final BuildContext hostContext = context;
+    final NavigatorState hostNavigator = Navigator.of(hostContext);
     showLichessActionSheet<void>(
       context: hostContext,
       sheetKey: const Key('play_area_regular_game_menu_sheet'),
@@ -811,7 +812,7 @@ class PlayAreaState extends State<PlayArea> {
           makeLabel: (BuildContext context) => Text(S.of(context).analysis),
           onPressed: () => unawaited(
             _openAnalysisPanelFromBottomBar(
-              hostContext,
+              hostNavigator,
               toolbar: 'regularBottom',
             ),
           ),
@@ -826,7 +827,7 @@ class PlayAreaState extends State<PlayArea> {
           key: const Key('play_area_toolbar_item_move'),
           leading: const Icon(Icons.format_list_numbered),
           makeLabel: (BuildContext context) => Text(S.of(context).moveList),
-          onPressed: () => _openMoves(hostContext),
+          onPressed: () => _openMovesWithNavigator(hostNavigator),
         ),
         if (_shouldShowMoveNowMenuAction)
           LichessActionSheetAction(
@@ -879,6 +880,7 @@ class PlayAreaState extends State<PlayArea> {
   void _showHumanAiGameMenu() {
     assert(_usesLichessHumanAiToolbar);
     final BuildContext hostContext = context;
+    final NavigatorState hostNavigator = Navigator.of(hostContext);
     showLichessActionSheet<void>(
       context: hostContext,
       sheetKey: const Key('play_area_game_menu_sheet'),
@@ -907,7 +909,7 @@ class PlayAreaState extends State<PlayArea> {
           makeLabel: (BuildContext context) => Text(S.of(context).analysis),
           onPressed: () => unawaited(
             _openAnalysisPanelFromBottomBar(
-              hostContext,
+              hostNavigator,
               toolbar: 'lichessBottom',
             ),
           ),
@@ -916,7 +918,7 @@ class PlayAreaState extends State<PlayArea> {
           key: const Key('play_area_game_menu_move_list'),
           leading: const Icon(Icons.format_list_numbered),
           makeLabel: (BuildContext context) => Text(S.of(context).moveList),
-          onPressed: () => _openMoves(hostContext),
+          onPressed: () => _openMovesWithNavigator(hostNavigator),
         ),
         if (_shouldShowMoveNowMenuAction)
           LichessActionSheetAction(

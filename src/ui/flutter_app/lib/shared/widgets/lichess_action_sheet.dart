@@ -57,12 +57,7 @@ Future<T?> _showCupertinoActionSheet<T>({
               builder: (BuildContext actionContext) {
                 return CupertinoActionSheetAction(
                   key: action.key,
-                  onPressed: () {
-                    if (action.dismissOnPress) {
-                      Navigator.of(actionContext).pop();
-                    }
-                    action.onPressed();
-                  },
+                  onPressed: () => _handleActionPressed(actionContext, action),
                   isDestructiveAction: action.isDestructiveAction,
                   isDefaultAction: action.isDefaultAction,
                   child: action.makeLabel(actionContext),
@@ -168,12 +163,7 @@ class _MaterialActionSheetTile extends StatelessWidget {
         top: Radius.circular(isFirst ? 28 : 0),
         bottom: Radius.circular(isLast ? 28 : 0),
       ),
-      onTap: () {
-        if (action.dismissOnPress) {
-          Navigator.of(context).pop();
-        }
-        action.onPressed();
-      },
+      onTap: () => _handleActionPressed(context, action),
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Row(
@@ -200,4 +190,17 @@ class _MaterialActionSheetTile extends StatelessWidget {
       ),
     );
   }
+}
+
+void _handleActionPressed(
+  BuildContext context,
+  LichessActionSheetAction action,
+) {
+  if (!action.dismissOnPress) {
+    action.onPressed();
+    return;
+  }
+
+  Navigator.of(context).pop();
+  WidgetsBinding.instance.addPostFrameCallback((_) => action.onPressed());
 }
