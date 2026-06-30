@@ -4669,5 +4669,9 @@
                 "type": "int"
             }
         }
-    }
+    },
+    "leaveCurrentGame": "离开当前对局？",
+    "@leaveCurrentGame": {},
+    "currentGameWillBeKept": "不用担心，这局棋会保留。",
+    "@currentGameWillBeKept": {}
 }
