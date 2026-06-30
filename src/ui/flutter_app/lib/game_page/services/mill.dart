@@ -49,6 +49,7 @@ import '../../general_settings/models/general_settings.dart';
 import '../../generated/assets/assets.gen.dart';
 import '../../generated/intl/l10n.dart';
 import '../../rule_settings/models/rule_settings.dart';
+import '../../shared/config/constants.dart';
 import '../../shared/config/prompt_defaults.dart';
 import '../../shared/database/database.dart';
 import '../../shared/services/environment_config.dart';

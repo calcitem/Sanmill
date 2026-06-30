@@ -87,6 +87,27 @@ class GameController {
     _updateEngineActivityNotifier();
   }
 
+  BuildContext _stableDialogContext(BuildContext fallbackContext) {
+    final BuildContext? navigatorContext = currentNavigatorKey.currentContext;
+    if (navigatorContext != null && navigatorContext.mounted) {
+      return navigatorContext;
+    }
+
+    final BuildContext? messengerContext =
+        rootScaffoldMessengerKey.currentContext;
+    if (messengerContext != null &&
+        messengerContext.mounted &&
+        Navigator.maybeOf(messengerContext) != null) {
+      return messengerContext;
+    }
+
+    assert(
+      fallbackContext.mounted,
+      'Controller dialogs require a mounted context.',
+    );
+    return fallbackContext;
+  }
+
   void _updateEngineActivityNotifier() {
     final bool isEngineActive = _isEngineRunning || _isEngineInDelay;
     if (engineActivityNotifier.value != isEngineActive) {
@@ -2008,13 +2029,14 @@ class GameController {
 
     GameController().disableStats = true;
 
+    final BuildContext resultContext = _stableDialogContext(context);
     final EngineResponse engineResponse = await engineToGo(
       context,
       isMoveNow: true,
       session: session,
     );
 
-    if (!context.mounted) {
+    if (!resultContext.mounted) {
       if (reversed) {
         gameInstance.reverseWhoIsAi();
       }
@@ -2032,15 +2054,15 @@ class GameController {
       case EngineTimeOut():
         headerTipNotifier.showTip(strTimeout);
         if (gameInstance.gameMode != GameMode.aiVsAi) {
-          await PerformanceWarningDialog.showIfNeeded(context);
+          await PerformanceWarningDialog.showIfNeeded(resultContext);
         }
         break;
       case EngineNoBestMove():
         final List<ExtMove> moves = gameRecorder.mainlineMoves;
         await EngineFailureDialog.show(
-          context,
+          resultContext,
           diagnosticContext: buildEngineFailureDiagnosticContext(
-            context,
+            resultContext,
             lastMove: moves.isNotEmpty ? moves.last.notation : null,
           ),
         );

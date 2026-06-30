@@ -9,6 +9,7 @@ import 'dart:math' as math;
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:native_screenshot_widget/native_screenshot_widget.dart';
 
 import '../../experience_recording/models/recording_models.dart';
@@ -204,6 +205,24 @@ class PlayAreaState extends State<PlayArea> {
     return Theme.of(context).colorScheme.onSurface;
   }
 
+  BuildContext _stableActionContext(BuildContext fallbackContext) {
+    final BuildContext? navigatorContext = currentNavigatorKey.currentContext;
+    if (navigatorContext != null && navigatorContext.mounted) {
+      return navigatorContext;
+    }
+
+    final BuildContext? messengerContext =
+        rootScaffoldMessengerKey.currentContext;
+    if (messengerContext != null &&
+        messengerContext.mounted &&
+        Navigator.maybeOf(messengerContext) != null) {
+      return messengerContext;
+    }
+
+    assert(fallbackContext.mounted, 'Action menus require a mounted context.');
+    return fallbackContext;
+  }
+
   bool _shouldShowAdvantageGraph({required bool isGameSurface}) {
     return isGameSurface &&
         DB().displaySettings.isAdvantageGraphShown &&
@@ -339,20 +358,16 @@ class PlayAreaState extends State<PlayArea> {
     }
   }
 
-  void _continueFromHere(BuildContext context, GameMode mode) {
+  void _continueFromHere({
+    required NativeMillGameSession session,
+    required NavigatorState navigator,
+    required GameMode mode,
+  }) {
     assert(_isAnalysisMode, 'Continue from here is analysis-mode only.');
     assert(
       mode == GameMode.humanVsAi || mode == GameMode.humanVsHuman,
       'Continue from here only supports local playable modes.',
     );
-    final GameSession? scopedSession = GameSessionScope.sessionOf(context);
-    assert(
-      scopedSession is NativeMillGameSession,
-      'Continue from here requires a native Mill session.',
-    );
-    final NativeMillGameSession session =
-        scopedSession! as NativeMillGameSession;
-
     final String fen = session.getFen();
     final bool started = GameController().startGameFromFen(
       mode: mode,
@@ -369,7 +384,7 @@ class PlayAreaState extends State<PlayArea> {
       },
     );
 
-    Navigator.of(context).pushReplacement(
+    navigator.pushReplacement(
       MaterialPageRoute<void>(
         settings: RouteSettings(name: '/continueFromHere/${mode.name}'),
         builder: (BuildContext routeContext) =>
@@ -378,35 +393,175 @@ class PlayAreaState extends State<PlayArea> {
     );
   }
 
-  void _showContinueFromHereMenu(BuildContext context, {S? strings}) {
+  void _showContinueFromHereMenu(
+    BuildContext context, {
+    required NativeMillGameSession session,
+    required NavigatorState navigator,
+    S? strings,
+  }) {
     assert(_isAnalysisMode, 'Continue from here menu is analysis-mode only.');
     if (!mounted) {
       return;
     }
-    final S effectiveStrings = strings ?? S.of(context);
+    final BuildContext sheetContext = _stableActionContext(context);
+    final S effectiveStrings = strings ?? S.of(sheetContext);
     showLichessActionSheet<void>(
-      context: context,
+      context: sheetContext,
       sheetKey: const Key('play_area_analysis_continue_from_here_sheet'),
       title: Text(effectiveStrings.continueFromHere),
-      backgroundColor: _actionSheetBackground(context),
-      foregroundColor: _actionSheetForeground(context),
+      backgroundColor: _actionSheetBackground(sheetContext),
+      foregroundColor: _actionSheetForeground(sheetContext),
       actions: <LichessActionSheetAction>[
         LichessActionSheetAction(
           key: const Key('play_area_analysis_continue_play_against_computer'),
           leading: const Icon(Icons.smart_toy_outlined),
           makeLabel: (BuildContext context) =>
               Text(effectiveStrings.playAgainstComputer),
-          onPressed: () => _continueFromHere(context, GameMode.humanVsAi),
+          onPressed: () => _continueFromHere(
+            session: session,
+            navigator: navigator,
+            mode: GameMode.humanVsAi,
+          ),
         ),
         LichessActionSheetAction(
           key: const Key('play_area_analysis_continue_over_the_board'),
           leading: const Icon(Icons.groups_2_outlined),
           makeLabel: (BuildContext context) =>
               Text(effectiveStrings.overTheBoard),
-          onPressed: () => _continueFromHere(context, GameMode.humanVsHuman),
+          onPressed: () => _continueFromHere(
+            session: session,
+            navigator: navigator,
+            mode: GameMode.humanVsHuman,
+          ),
         ),
       ],
     );
+  }
+
+  void _showAnalysisShareExportMenu(BuildContext context, {S? strings}) {
+    assert(_isAnalysisMode, 'Share/export menu is analysis-mode only.');
+    if (!mounted) {
+      return;
+    }
+
+    final BuildContext sheetContext = _stableActionContext(context);
+    final S effectiveStrings = strings ?? S.of(sheetContext);
+    final GameRecorder recorder = GameController().gameRecorder;
+    final bool hasVariations = recorder.hasVariations();
+    final String pgn = recorder.moveHistoryText.trim();
+    final String mainlinePgn = recorder.moveHistoryTextWithoutVariations.trim();
+    final String currentLinePgn = recorder.moveHistoryTextCurrentLine.trim();
+    final String? fen =
+        GameController().activeFen ??
+        GameController().activeNativeMillSession?.getFen();
+
+    final List<LichessActionSheetAction> actions = <LichessActionSheetAction>[
+      if (!hasVariations && mainlinePgn.isNotEmpty)
+        LichessActionSheetAction(
+          key: const Key('play_area_analysis_share_export_copy_pgn'),
+          leading: const Icon(Icons.article_outlined),
+          makeLabel: (BuildContext context) => Text(effectiveStrings.copyPgn),
+          onPressed: () => unawaited(
+            _copyAnalysisTextToClipboard(
+              text: mainlinePgn,
+              message: effectiveStrings.moveHistoryCopied,
+              eventAction: 'copyPgn',
+            ),
+          ),
+        ),
+      if (hasVariations && mainlinePgn.isNotEmpty)
+        LichessActionSheetAction(
+          key: const Key('play_area_analysis_share_export_copy_mainline'),
+          leading: const Icon(Icons.show_chart_outlined),
+          makeLabel: (BuildContext context) =>
+              Text(effectiveStrings.includeVariationsMainline),
+          onPressed: () => unawaited(
+            _copyAnalysisTextToClipboard(
+              text: mainlinePgn,
+              message: effectiveStrings.moveHistoryCopied,
+              eventAction: 'copyMainlinePgn',
+            ),
+          ),
+        ),
+      if (hasVariations && currentLinePgn.isNotEmpty)
+        LichessActionSheetAction(
+          key: const Key('play_area_analysis_share_export_copy_current_line'),
+          leading: const Icon(Icons.trending_flat),
+          makeLabel: (BuildContext context) =>
+              Text(effectiveStrings.includeVariationsCurrentLine),
+          onPressed: () => unawaited(
+            _copyAnalysisTextToClipboard(
+              text: currentLinePgn,
+              message: effectiveStrings.moveHistoryCopied,
+              eventAction: 'copyCurrentLinePgn',
+            ),
+          ),
+        ),
+      if (hasVariations && pgn.isNotEmpty)
+        LichessActionSheetAction(
+          key: const Key('play_area_analysis_share_export_copy_all_variations'),
+          leading: const Icon(Icons.account_tree_outlined),
+          makeLabel: (BuildContext context) =>
+              Text(effectiveStrings.includeVariationsAll),
+          onPressed: () => unawaited(
+            _copyAnalysisTextToClipboard(
+              text: pgn,
+              message: effectiveStrings.moveHistoryCopied,
+              eventAction: 'copyAllVariationsPgn',
+            ),
+          ),
+        ),
+      if (fen != null && fen.trim().isNotEmpty)
+        LichessActionSheetAction(
+          key: const Key('play_area_analysis_share_export_copy_fen'),
+          leading: const Icon(Icons.content_copy_outlined),
+          makeLabel: (BuildContext context) => Text(effectiveStrings.copyFen),
+          onPressed: () => unawaited(
+            _copyAnalysisTextToClipboard(
+              text: fen,
+              message: effectiveStrings.fenCopiedToClipboard,
+              eventAction: 'copyFen',
+            ),
+          ),
+        ),
+    ];
+    assert(
+      actions.isNotEmpty,
+      'Share/export menu requires at least one PGN or FEN action.',
+    );
+    if (actions.isEmpty) {
+      return;
+    }
+
+    showLichessActionSheet<void>(
+      context: sheetContext,
+      sheetKey: const Key('play_area_analysis_share_export_sheet'),
+      title: Text(effectiveStrings.shareAndExport),
+      backgroundColor: _actionSheetBackground(sheetContext),
+      foregroundColor: _actionSheetForeground(sheetContext),
+      actions: actions,
+    );
+  }
+
+  Future<void> _copyAnalysisTextToClipboard({
+    required String text,
+    required String message,
+    required String eventAction,
+  }) async {
+    assert(_isAnalysisMode, 'Analysis export is analysis-mode only.');
+    assert(text.trim().isNotEmpty, 'Analysis export text must not be empty.');
+    RecordingService().recordEvent(
+      RecordingEventType.toolbarAction,
+      <String, dynamic>{'toolbar': 'analysisMenu', 'action': eventAction},
+    );
+
+    await Clipboard.setData(ClipboardData(text: text));
+
+    assert(
+      rootScaffoldMessengerKey.currentState != null,
+      'Analysis export feedback requires the root scaffold messenger.',
+    );
+    rootScaffoldMessengerKey.currentState!.showSnackBarClear(message);
   }
 
   bool get _shouldShowAiChatMenuAction {
@@ -769,16 +924,17 @@ class PlayAreaState extends State<PlayArea> {
     S? strings,
     GameSession? session,
   }) {
-    if (!mounted || !context.mounted) {
+    if (!mounted) {
       return;
     }
-    final S effectiveStrings = strings ?? S.of(context);
+    final BuildContext sheetContext = _stableActionContext(context);
+    final S effectiveStrings = strings ?? S.of(sheetContext);
     showLichessActionSheet<void>(
-      context: context,
+      context: sheetContext,
       sheetKey: sheetKey,
       title: Text(effectiveStrings.flipBoard),
-      backgroundColor: _actionSheetBackground(context),
-      foregroundColor: _actionSheetForeground(context),
+      backgroundColor: _actionSheetBackground(sheetContext),
+      foregroundColor: _actionSheetForeground(sheetContext),
       actions: _buildBoardTransformActions(
         keyPrefix: keyPrefix,
         strings: effectiveStrings,
@@ -954,10 +1110,21 @@ class PlayAreaState extends State<PlayArea> {
   void _showRegularGameMenu() {
     assert(!_usesLichessHumanAiToolbar);
     final BuildContext hostContext = context;
+    final BuildContext actionContext = _stableActionContext(hostContext);
     final S strings = S.of(hostContext);
     final MoveNowMessages moveNowMessages = MoveNowMessages.of(hostContext);
     final NavigatorState hostNavigator = Navigator.of(hostContext);
-    final GameSession? hostSession = GameSessionScope.sessionOf(hostContext);
+    final GameSession? hostSession =
+        GameSessionScope.sessionOf(hostContext) ??
+        GameController().activeNativeMillSession;
+    final NativeMillGameSession? nativeHostSession =
+        hostSession is NativeMillGameSession
+        ? hostSession
+        : GameController().activeNativeMillSession;
+    assert(
+      !_isAnalysisMode || nativeHostSession != null,
+      'Analysis menu requires a native Mill session.',
+    );
     showLichessActionSheet<void>(
       context: hostContext,
       sheetKey: const Key('play_area_regular_game_menu_sheet'),
@@ -970,7 +1137,7 @@ class PlayAreaState extends State<PlayArea> {
           trailing: const Icon(Icons.chevron_right),
           makeLabel: (BuildContext context) => Text(S.of(context).flipBoard),
           onPressed: () => _showBoardTransformSheet(
-            hostContext,
+            actionContext,
             sheetKey: const Key('play_area_regular_board_transform_sheet'),
             keyPrefix: 'play_area_regular_board_transform',
             strings: strings,
@@ -1014,15 +1181,28 @@ class PlayAreaState extends State<PlayArea> {
                 Text(S.of(context).boardEditor),
             onPressed: _openBoardEditorFromAnalysis,
           ),
-        if (_isAnalysisMode)
+        if (_isAnalysisMode && nativeHostSession != null)
           LichessActionSheetAction(
             key: const Key('play_area_regular_game_menu_continue_from_here'),
             leading: const Icon(Icons.play_circle_outline),
             trailing: const Icon(Icons.chevron_right),
             makeLabel: (BuildContext context) =>
                 Text(S.of(context).continueFromHere),
+            onPressed: () => _showContinueFromHereMenu(
+              actionContext,
+              session: nativeHostSession,
+              navigator: hostNavigator,
+              strings: strings,
+            ),
+          ),
+        if (_isAnalysisMode)
+          LichessActionSheetAction(
+            key: const Key('play_area_regular_game_menu_share_export'),
+            leading: const Icon(Icons.ios_share_outlined),
+            trailing: const Icon(Icons.chevron_right),
+            makeLabel: (BuildContext context) => Text(strings.shareAndExport),
             onPressed: () =>
-                _showContinueFromHereMenu(hostContext, strings: strings),
+                _showAnalysisShareExportMenu(actionContext, strings: strings),
           ),
         if (_canStepBackFromRegularBottomBar)
           LichessActionSheetAction(
@@ -1030,7 +1210,7 @@ class PlayAreaState extends State<PlayArea> {
             leading: const Icon(CupertinoIcons.chevron_back),
             makeLabel: (BuildContext context) => Text(S.of(context).previous),
             onPressed: () =>
-                unawaited(_stepBackFromRegularBottomBar(hostContext)),
+                unawaited(_stepBackFromRegularBottomBar(actionContext)),
           ),
         if (_canStepForwardFromRegularBottomBar)
           LichessActionSheetAction(
@@ -1040,7 +1220,7 @@ class PlayAreaState extends State<PlayArea> {
                 Text(S.of(context).stepForward),
             onPressed: () => unawaited(
               HistoryNavigator.stepForward(
-                hostContext,
+                actionContext,
                 pop: false,
                 toolbar: true,
               ),
@@ -1053,7 +1233,7 @@ class PlayAreaState extends State<PlayArea> {
             makeLabel: (BuildContext context) => Text(S.of(context).moveNow),
             onPressed: () => unawaited(
               _moveNowFromGameMenu(
-                hostContext,
+                actionContext,
                 toolbar: 'regularBottom',
                 messages: moveNowMessages,
                 session: hostSession,
@@ -1066,7 +1246,7 @@ class PlayAreaState extends State<PlayArea> {
             leading: const Icon(FluentIcons.chat_24_regular),
             makeLabel: (BuildContext context) =>
                 Text(S.of(context).aiChatButtonTooltip),
-            onPressed: () => _showAiChatDialog(hostContext),
+            onPressed: () => _showAiChatDialog(actionContext),
           ),
         if (_canTakeBackFromRegularBottomBar)
           LichessActionSheetAction(
@@ -1074,7 +1254,7 @@ class PlayAreaState extends State<PlayArea> {
             leading: const Icon(CupertinoIcons.arrow_uturn_left),
             makeLabel: (BuildContext context) => Text(S.of(context).takeBack),
             onPressed: () =>
-                unawaited(_takeBackFromRegularBottomBar(hostContext)),
+                unawaited(_takeBackFromRegularBottomBar(actionContext)),
           ),
         if (_isRegularGameOver)
           LichessActionSheetAction(
@@ -1089,19 +1269,19 @@ class PlayAreaState extends State<PlayArea> {
             leading: const Icon(CupertinoIcons.flag),
             makeLabel: (BuildContext context) => Text(S.of(context).resign),
             onPressed: () =>
-                unawaited(_showRegularResignConfirmation(hostContext)),
+                unawaited(_showRegularResignConfirmation(actionContext)),
           ),
         LichessActionSheetAction(
           key: const Key('play_area_toolbar_item_options'),
           leading: const Icon(Icons.settings_outlined),
           makeLabel: (BuildContext context) => Text(S.of(context).options),
-          onPressed: () => _navigateToSettings(hostContext),
+          onPressed: () => _navigateToSettings(actionContext),
         ),
         LichessActionSheetAction(
           key: const Key('play_area_toolbar_item_info'),
           leading: const Icon(Icons.info_outline),
           makeLabel: (BuildContext context) => Text(S.of(context).info),
-          onPressed: () => _openDialog(hostContext, const InfoDialog()),
+          onPressed: () => _openDialog(actionContext, const InfoDialog()),
         ),
       ],
     );
@@ -1110,10 +1290,13 @@ class PlayAreaState extends State<PlayArea> {
   void _showHumanAiGameMenu() {
     assert(_usesLichessHumanAiToolbar);
     final BuildContext hostContext = context;
+    final BuildContext actionContext = _stableActionContext(hostContext);
     final S strings = S.of(hostContext);
     final MoveNowMessages moveNowMessages = MoveNowMessages.of(hostContext);
     final NavigatorState hostNavigator = Navigator.of(hostContext);
-    final GameSession? hostSession = GameSessionScope.sessionOf(hostContext);
+    final GameSession? hostSession =
+        GameSessionScope.sessionOf(hostContext) ??
+        GameController().activeNativeMillSession;
     showLichessActionSheet<void>(
       context: hostContext,
       sheetKey: const Key('play_area_game_menu_sheet'),
@@ -1126,7 +1309,7 @@ class PlayAreaState extends State<PlayArea> {
           trailing: const Icon(Icons.chevron_right),
           makeLabel: (BuildContext context) => Text(S.of(context).flipBoard),
           onPressed: () => _showBoardTransformSheet(
-            hostContext,
+            actionContext,
             sheetKey: const Key('play_area_board_transform_sheet'),
             keyPrefix: 'play_area_board_transform',
             strings: strings,
@@ -1146,7 +1329,7 @@ class PlayAreaState extends State<PlayArea> {
             makeLabel: (BuildContext context) => Text(S.of(context).moveNow),
             onPressed: () => unawaited(
               _moveNowFromGameMenu(
-                hostContext,
+                actionContext,
                 toolbar: 'lichessBottom',
                 messages: moveNowMessages,
                 session: hostSession,
@@ -1159,7 +1342,7 @@ class PlayAreaState extends State<PlayArea> {
             leading: const Icon(FluentIcons.chat_24_regular),
             makeLabel: (BuildContext context) =>
                 Text(S.of(context).aiChatButtonTooltip),
-            onPressed: () => _showAiChatDialog(hostContext),
+            onPressed: () => _showAiChatDialog(actionContext),
           ),
         if (_isHumanAiGameOver)
           LichessActionSheetAction(
@@ -1173,7 +1356,7 @@ class PlayAreaState extends State<PlayArea> {
             key: const Key('play_area_game_menu_resign'),
             leading: const Icon(CupertinoIcons.flag),
             makeLabel: (BuildContext context) => Text(S.of(context).resign),
-            onPressed: () => unawaited(_showResignConfirmation(hostContext)),
+            onPressed: () => unawaited(_showResignConfirmation(actionContext)),
           ),
         LichessActionSheetAction(
           key: const Key('play_area_game_menu_new_game'),

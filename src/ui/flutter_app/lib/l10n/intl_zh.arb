@@ -4681,5 +4681,9 @@
     "showEngineLines": "显示引擎线",
     "@showEngineLines": {},
     "hideEngineLines": "隐藏引擎线",
-    "@hideEngineLines": {}
+    "@hideEngineLines": {},
+    "shareAndExport": "分享和导出",
+    "@shareAndExport": {},
+    "copyPgn": "复制 PGN",
+    "@copyPgn": {}
 }

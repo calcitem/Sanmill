@@ -4829,5 +4829,9 @@
     "showEngineLines": "Show Engine Lines",
     "@showEngineLines": {},
     "hideEngineLines": "Hide Engine Lines",
-    "@hideEngineLines": {}
+    "@hideEngineLines": {},
+    "shareAndExport": "Share and export",
+    "@shareAndExport": {},
+    "copyPgn": "Copy PGN",
+    "@copyPgn": {}
 }

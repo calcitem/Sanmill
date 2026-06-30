@@ -981,25 +981,10 @@ void main() {
       isUnplacedAndRemovedPiecesShown: false,
       isHistoryNavigationToolbarShown: false,
     );
-    GameController().gameInstance.gameMode = GameMode.analysis;
-
-    await tester.binding.setSurfaceSize(const Size(390, 844));
-    addTearDown(() => tester.binding.setSurfaceSize(null));
-
-    await tester.pumpWidget(
-      _localizedApp(
-        const Scaffold(
-          body: PlayArea(
-            boardImage: null,
-            child: SizedBox.square(
-              key: Key('test_board_square'),
-              dimension: 390,
-            ),
-          ),
-        ),
-      ),
+    final NativeMillGameSession session = await _bindNativeGame(
+      GameMode.analysis,
     );
-    await tester.pumpAndSettle();
+    await _pumpSessionPlayArea(tester, session);
 
     expect(find.byKey(const Key('play_area_analysis_board')), findsOne);
     expect(find.byKey(const Key('play_area_analysis_panel')), findsOne);
@@ -1067,6 +1052,36 @@ void main() {
       find.byKey(const Key('play_area_regular_game_menu_continue_from_here')),
       findsOne,
     );
+    expect(
+      find.byKey(const Key('play_area_regular_game_menu_share_export')),
+      findsOne,
+    );
+
+    await tester.tap(
+      find.byKey(const Key('play_area_regular_game_menu_share_export')),
+    );
+    await tester.pumpAndSettle();
+
+    expect(
+      find.byKey(const Key('play_area_analysis_share_export_sheet')),
+      findsOne,
+    );
+    expect(
+      find.byKey(const Key('play_area_analysis_share_export_copy_fen')),
+      findsOne,
+    );
+
+    Navigator.of(
+      tester.element(
+        find.byKey(const Key('play_area_analysis_share_export_sheet')),
+      ),
+    ).pop();
+    await tester.pumpAndSettle();
+
+    await tester.tap(
+      find.byKey(const Key('play_area_regular_bottom_bar_menu')),
+    );
+    await tester.pumpAndSettle();
 
     await tester.tap(
       find.byKey(const Key('play_area_regular_game_menu_continue_from_here')),
@@ -1096,28 +1111,14 @@ void main() {
       isUnplacedAndRemovedPiecesShown: false,
       isHistoryNavigationToolbarShown: false,
     );
-    GameController().gameInstance.gameMode = GameMode.analysis;
+    final NativeMillGameSession session = await _bindNativeGame(
+      GameMode.analysis,
+    );
     AnalysisMode.enable(<MoveAnalysisResult>[
       const MoveAnalysisResult(move: 'd6', outcome: AnalysisOutcome.win),
     ]);
 
-    await tester.binding.setSurfaceSize(const Size(390, 844));
-    addTearDown(() => tester.binding.setSurfaceSize(null));
-
-    await tester.pumpWidget(
-      _localizedApp(
-        const Scaffold(
-          body: PlayArea(
-            boardImage: null,
-            child: SizedBox.square(
-              key: Key('test_board_square'),
-              dimension: 390,
-            ),
-          ),
-        ),
-      ),
-    );
-    await tester.pumpAndSettle();
+    await _pumpSessionPlayArea(tester, session);
 
     expect(
       find.byKey(const Key('play_area_analysis_engine_lines')),
@@ -1311,29 +1312,15 @@ void main() {
       isUnplacedAndRemovedPiecesShown: false,
       isHistoryNavigationToolbarShown: false,
     );
-    GameController().gameInstance.gameMode = GameMode.analysis;
+    final NativeMillGameSession session = await _bindNativeGame(
+      GameMode.analysis,
+    );
     GameController().gameRecorder.reset();
     GameController().gameRecorder.appendMove(
       ExtMove('d6', side: PieceColor.white),
     );
 
-    await tester.binding.setSurfaceSize(const Size(390, 844));
-    addTearDown(() => tester.binding.setSurfaceSize(null));
-
-    await tester.pumpWidget(
-      _localizedApp(
-        const Scaffold(
-          body: PlayArea(
-            boardImage: null,
-            child: SizedBox.square(
-              key: Key('test_board_square'),
-              dimension: 390,
-            ),
-          ),
-        ),
-      ),
-    );
-    await tester.pumpAndSettle();
+    await _pumpSessionPlayArea(tester, session);
 
     await tester.tap(
       find.byKey(const Key('play_area_regular_bottom_bar_menu')),
