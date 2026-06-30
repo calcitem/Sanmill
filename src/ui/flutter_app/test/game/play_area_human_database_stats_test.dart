@@ -921,6 +921,71 @@ void main() {
     );
   });
 
+  testWidgets('regular games use landscape side panel layout', (
+    WidgetTester tester,
+  ) async {
+    db.displaySettings = const DisplaySettings(
+      isUnplacedAndRemovedPiecesShown: false,
+      isHistoryNavigationToolbarShown: false,
+    );
+    final GameController controller = GameController();
+    controller.gameInstance.gameMode = GameMode.humanVsHuman;
+    <ExtMove>[
+      ExtMove('a1', side: PieceColor.white, roundIndex: 1),
+      ExtMove('d1', side: PieceColor.black, roundIndex: 1),
+      ExtMove('a4', side: PieceColor.white, roundIndex: 2),
+    ].forEach(controller.gameRecorder.appendMove);
+
+    await tester.binding.setSurfaceSize(const Size(900, 420));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+
+    await tester.pumpWidget(
+      _localizedApp(
+        const Scaffold(
+          body: PlayArea(
+            boardImage: null,
+            child: SizedBox.square(
+              key: Key('test_board_square'),
+              dimension: 388,
+            ),
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    final Finder landscapeContent = find.byKey(
+      const Key('play_area_regular_landscape_content'),
+    );
+    final Finder boardPane = find.byKey(
+      const Key('play_area_regular_landscape_board_pane'),
+    );
+    final Finder sidePanel = find.byKey(
+      const Key('play_area_regular_landscape_side_panel'),
+    );
+
+    expect(landscapeContent, findsOneWidget);
+    expect(boardPane, findsOneWidget);
+    expect(sidePanel, findsOneWidget);
+    expect(find.byKey(const Key('play_area_main_toolbar_bottom')), findsOne);
+    expect(
+      find.byKey(const Key('play_area_regular_landscape_move_list')),
+      findsOneWidget,
+    );
+    expect(
+      find.byKey(const Key('play_area_regular_landscape_move_3')),
+      findsOneWidget,
+    );
+    expect(
+      tester.getTopLeft(boardPane).dx,
+      lessThan(tester.getTopLeft(sidePanel).dx),
+    );
+    expect(
+      find.byKey(const Key('play_area_sized_box_toolbar_bottom')),
+      findsNothing,
+    );
+  });
+
   testWidgets('human vs ai move list groups capture with the mill move', (
     WidgetTester tester,
   ) async {

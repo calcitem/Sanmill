@@ -1293,6 +1293,39 @@ class PlayAreaState extends State<PlayArea> {
     );
   }
 
+  Widget _buildRegularBottomBar(BuildContext context) {
+    return ValueListenableBuilder<int>(
+      key: const Key('play_area_regular_bottom_bar_builder'),
+      valueListenable: GameController().gameRecorder.moveCountNotifier,
+      builder: (BuildContext context, _, _) {
+        return ValueListenableBuilder<PlayerTimerStatus>(
+          valueListenable: PlayerTimer().statusNotifier,
+          builder: (BuildContext context, PlayerTimerStatus status, _) {
+            return _RegularGameBottomBar(
+              onMenuPressed: _showRegularGameMenu,
+              showClockControl: _shouldShowRegularClockControl,
+              isClockPaused: status == PlayerTimerStatus.paused,
+              onClockPressed: _regularClockControlAction(status),
+              onPreviousPressed: _canStepBackFromRegularBottomBar
+                  ? () => _stepBackFromRegularBottomBar(context)
+                  : null,
+              onNextPressed: _canStepForwardFromRegularBottomBar
+                  ? () => HistoryNavigator.stepForward(
+                      context,
+                      pop: false,
+                      toolbar: true,
+                    )
+                  : null,
+              onTakeBackPressed: _canTakeBackFromRegularBottomBar
+                  ? () => _takeBackFromRegularBottomBar(context)
+                  : null,
+            );
+          },
+        );
+      },
+    );
+  }
+
   Widget _buildHumanAiLandscapeContent({
     required BuildContext context,
     required BoxConstraints constraints,
@@ -1398,6 +1431,143 @@ class PlayAreaState extends State<PlayArea> {
     );
   }
 
+  Widget _buildRegularLandscapeContent({
+    required BuildContext context,
+    required BoxConstraints constraints,
+    required Widget? humanDatabaseStatsStrip,
+    required bool showPieceCountRows,
+  }) {
+    assert(
+      constraints.hasBoundedHeight,
+      'Regular landscape layout requires bounded height.',
+    );
+    final Size viewport = constraints.biggest;
+    const double horizontalPadding = AppStyles.bodyPadding;
+    const double verticalPadding = 8;
+    const double gap = AppStyles.bodyPadding;
+    const double pieceRowHeight = 24;
+    const double targetSidePanelWidth = 300;
+    final double availableWidth = math.max(
+      0,
+      viewport.width - horizontalPadding * 2,
+    );
+    final double availableHeight = math.max(
+      0,
+      viewport.height - verticalPadding * 2,
+    );
+    final double boardHeightAllowance = math.max(
+      0,
+      availableHeight - (showPieceCountRows ? pieceRowHeight * 2 : 0),
+    );
+    final double boardWidthWithPanel = math.max(
+      0,
+      availableWidth - targetSidePanelWidth - gap,
+    );
+    final double boardSize = math.min(
+      boardHeightAllowance,
+      boardWidthWithPanel > 0 ? boardWidthWithPanel : availableWidth * 0.58,
+    );
+
+    return SizedBox(
+      key: const Key('play_area_regular_landscape_content'),
+      width: viewport.width,
+      height: viewport.height,
+      child: SafeArea(
+        bottom: false,
+        right: false,
+        left: false,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: horizontalPadding,
+            vertical: verticalPadding,
+          ),
+          child: Row(
+            children: <Widget>[
+              SizedBox(
+                key: const Key('play_area_regular_landscape_board_pane'),
+                width: boardSize,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    if (showPieceCountRows)
+                      SizedBox(
+                        height: pieceRowHeight,
+                        child: _isBoardFlipped
+                            ? _buildRemovedPieceCountRow()
+                            : _buildPieceCountRow(),
+                      ),
+                    SizedBox.square(
+                      key: const Key('play_area_regular_landscape_board'),
+                      dimension: boardSize,
+                      child: _buildBoardScreenshot(),
+                    ),
+                    if (showPieceCountRows)
+                      SizedBox(
+                        height: pieceRowHeight,
+                        child: _isBoardFlipped
+                            ? _buildPieceCountRow()
+                            : _buildRemovedPieceCountRow(),
+                      ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: gap),
+              Expanded(
+                child: Column(
+                  key: const Key('play_area_regular_landscape_side_panel'),
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    GameHeader(
+                      key: const Key('play_area_regular_landscape_header'),
+                    ),
+                    ?humanDatabaseStatsStrip,
+                    Expanded(
+                      child: _InlineMoveList(
+                        key: const Key('play_area_regular_landscape_move_list'),
+                        wrapKey: const Key(
+                          'play_area_regular_landscape_move_list_wrap',
+                        ),
+                        roundKeyPrefix: 'play_area_regular_landscape_round_',
+                        moveKeyPrefix: 'play_area_regular_landscape_move_',
+                        onMoveTap:
+                            (BuildContext context, PgnNode<ExtMove> node) {
+                              return HistoryNavigator.gotoNode(
+                                context,
+                                node,
+                                pop: false,
+                              );
+                            },
+                        showMovePreview: true,
+                        layout: _InlineMoveListLayout.stacked,
+                        groupByRound: true,
+                      ),
+                    ),
+                    _buildRegularBottomBar(context),
+                    if (DB().displaySettings.isAdvantageGraphShown &&
+                        advantageData.isNotEmpty)
+                      SizedBox(
+                        key: const Key(
+                          'play_area_regular_landscape_advantage_graph',
+                        ),
+                        height: 80,
+                        width: double.infinity,
+                        child: CustomPaint(
+                          key: const Key(
+                            'play_area_regular_landscape_advantage_paint',
+                          ),
+                          painter: AdvantageGraphPainter(advantageData),
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
@@ -1441,6 +1611,21 @@ class PlayAreaState extends State<PlayArea> {
             context: context,
             constraints: constraints,
             humanDatabaseStatsStrip: humanDatabaseStatsStrip,
+          );
+        }
+        final bool useRegularLandscapeLayout =
+            !usesLichessHumanAiToolbar &&
+            !isSetupPosition &&
+            !isPuzzle &&
+            constraints.hasBoundedHeight &&
+            constraints.maxWidth > constraints.maxHeight;
+
+        if (useRegularLandscapeLayout) {
+          return _buildRegularLandscapeContent(
+            context: context,
+            constraints: constraints,
+            humanDatabaseStatsStrip: humanDatabaseStatsStrip,
+            showPieceCountRows: showPieceCountRows,
           );
         }
 
@@ -1569,51 +1754,7 @@ class PlayAreaState extends State<PlayArea> {
                     key: Key('play_area_setup_position_toolbar_bottom'),
                   )
                 else if (!isPuzzle)
-                  ValueListenableBuilder<int>(
-                    key: const Key('play_area_regular_bottom_bar_builder'),
-                    valueListenable:
-                        GameController().gameRecorder.moveCountNotifier,
-                    builder: (BuildContext context, _, _) {
-                      return ValueListenableBuilder<PlayerTimerStatus>(
-                        valueListenable: PlayerTimer().statusNotifier,
-                        builder:
-                            (
-                              BuildContext context,
-                              PlayerTimerStatus status,
-                              _,
-                            ) {
-                              return _RegularGameBottomBar(
-                                onMenuPressed: _showRegularGameMenu,
-                                showClockControl:
-                                    _shouldShowRegularClockControl,
-                                isClockPaused:
-                                    status == PlayerTimerStatus.paused,
-                                onClockPressed: _regularClockControlAction(
-                                  status,
-                                ),
-                                onPreviousPressed:
-                                    _canStepBackFromRegularBottomBar
-                                    ? () =>
-                                          _stepBackFromRegularBottomBar(context)
-                                    : null,
-                                onNextPressed:
-                                    _canStepForwardFromRegularBottomBar
-                                    ? () => HistoryNavigator.stepForward(
-                                        context,
-                                        pop: false,
-                                        toolbar: true,
-                                      )
-                                    : null,
-                                onTakeBackPressed:
-                                    _canTakeBackFromRegularBottomBar
-                                    ? () =>
-                                          _takeBackFromRegularBottomBar(context)
-                                    : null,
-                              );
-                            },
-                      );
-                    },
-                  ),
+                  _buildRegularBottomBar(context),
 
                 if (!usesLichessHumanAiToolbar)
                   const SizedBox(height: AppTheme.boardMargin),
