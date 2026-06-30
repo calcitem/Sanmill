@@ -12,6 +12,8 @@ import '../../shared/database/adapters/adapters.dart';
 
 part 'display_settings.g.dart';
 
+const int kDefaultAnalysisEngineLineCount = 2;
+
 /// Strategies for painting shapes and paths on points.
 @HiveType(typeId: 9)
 enum PointPaintingStyle {
@@ -118,14 +120,15 @@ class DisplaySettings {
     this.themeMode = AppThemeMode.system,
     this.analysisSmallBoard = false,
     this.analysisShowEngineLines = true,
-    this.analysisEngineLineCount = defaultAnalysisEngineLineCount,
+    this.analysisEngineLineCount = kDefaultAnalysisEngineLineCount,
   });
 
   /// Encodes a Json style map into a [DisplaySettings] object
   factory DisplaySettings.fromJson(Map<String, dynamic> json) =>
       _$DisplaySettingsFromJson(json);
 
-  static const int defaultAnalysisEngineLineCount = 2;
+  static const int defaultAnalysisEngineLineCount =
+      kDefaultAnalysisEngineLineCount;
 
   @Deprecated("Use [locale] instead.")
   @HiveField(0, defaultValue: "Default")
@@ -292,7 +295,7 @@ class DisplaySettings {
   final bool analysisShowEngineLines;
 
   /// Number of engine candidate lines shown in analysis screens.
-  @HiveField(49, defaultValue: defaultAnalysisEngineLineCount)
+  @HiveField(49, defaultValue: kDefaultAnalysisEngineLineCount)
   final int analysisEngineLineCount;
 
   /// Decodes a Json from a [DisplaySettings] object
