@@ -780,6 +780,11 @@ class SanmillAppShellState extends State<SanmillAppShell> {
     if (_currentTab != SanmillShellTab.home || _routeId != _playRouteId) {
       return false;
     }
+    final NavigatorState? homeNavigator =
+        _navigatorKeys[SanmillShellTab.home]?.currentState;
+    if (!(homeNavigator?.canPop() ?? false)) {
+      return false;
+    }
     return GameRegistry.instance.current
         .playModes(context)
         .any(

@@ -1947,7 +1947,20 @@ void main() {
       await tester.binding.handlePopRoute();
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 500));
+
+      controller.gameRecorder.appendMove(ExtMove('d6', side: PieceColor.white));
+      controller.activeSessionSnapshot = const platform.GameStateSnapshot(
+        gameId: GameId.mill,
+        activeSeat: platform.PlayerSeat.second,
+        outcome: platform.GameOutcome.ongoing(),
+        phase: 'placing',
+      );
+      await tester.pump();
+
       await tester.binding.handlePopRoute();
+      await tester.pumpAndSettle();
+      expect(find.byKey(const Key('game_page_leave_dialog')), findsOneWidget);
+      await tester.tap(find.byKey(const Key('game_page_leave_confirm_button')));
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 500));
       controller.activeSessionSnapshot = const platform.GameStateSnapshot(
