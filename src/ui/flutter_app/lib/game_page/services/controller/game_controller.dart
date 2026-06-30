@@ -430,6 +430,7 @@ class GameController {
     final Act action = boardView?.action ?? Act.place;
     final bool showSide =
         gameInstance.gameMode == GameMode.humanVsHuman ||
+        gameInstance.gameMode == GameMode.analysis ||
         gameInstance.gameMode == GameMode.humanVsLAN;
 
     if (action == Act.remove) {
@@ -992,7 +993,8 @@ class GameController {
 
     if (gameModeBak == GameMode.humanVsAi) {
       GameController().disableStats = false;
-    } else if (gameModeBak == GameMode.humanVsHuman) {
+    } else if (gameModeBak == GameMode.humanVsHuman ||
+        gameModeBak == GameMode.analysis) {
       GameController().disableStats = true;
     }
 
@@ -1454,6 +1456,7 @@ class GameController {
     final GameMode gameMode = gameInstance.gameMode;
     if (gameMode == GameMode.setupPosition ||
         gameMode == GameMode.humanVsLAN ||
+        gameMode == GameMode.analysis ||
         gameMode == GameMode.puzzle) {
       return false;
     }

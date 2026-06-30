@@ -14,6 +14,7 @@ enum GameMode {
   humanVsAi,
   humanVsHuman,
   aiVsAi,
+  analysis,
   setupPosition,
   puzzle,
   humanVsCloud, // Not Implemented
@@ -47,6 +48,8 @@ extension GameModeExtension on GameMode {
         return FluentIcons.person_24_filled;
       case GameMode.aiVsAi:
         return botIcon;
+      case GameMode.analysis:
+        return FluentIcons.search_24_filled;
       case GameMode.puzzle:
         return FluentIcons.puzzle_piece_24_filled;
       case GameMode.setupPosition:
@@ -80,6 +83,8 @@ extension GameModeExtension on GameMode {
         return FluentIcons.person_24_filled;
       case GameMode.aiVsAi:
         return botIcon;
+      case GameMode.analysis:
+        return FluentIcons.search_24_filled;
       case GameMode.puzzle:
         return FluentIcons.lightbulb_24_filled;
       case GameMode.setupPosition:
@@ -129,6 +134,7 @@ extension GameModeExtension on GameMode {
           PieceColor.black: false,
         };
       case GameMode.setupPosition:
+      case GameMode.analysis:
       case GameMode.humanVsHuman:
       case GameMode.humanVsLAN:
       case GameMode.humanVsCloud:

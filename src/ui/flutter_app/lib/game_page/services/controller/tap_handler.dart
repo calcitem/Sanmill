@@ -48,6 +48,7 @@ class TapHandler {
     final GameMode mode = controller.gameInstance.gameMode;
     if (mode != GameMode.humanVsHuman &&
         mode != GameMode.humanVsAi &&
+        mode != GameMode.analysis &&
         mode != GameMode.humanVsLAN &&
         mode != GameMode.puzzle) {
       _nativeSessionTapController.clearSelection();

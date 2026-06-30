@@ -53,6 +53,9 @@ class _SessionListPageState extends State<SessionListPage> {
     if (v.contains('aivsai')) {
       return GameMode.aiVsAi;
     }
+    if (v.contains('analysis')) {
+      return GameMode.analysis;
+    }
     if (v.contains('humanvslan')) {
       return GameMode.humanVsLAN;
     }

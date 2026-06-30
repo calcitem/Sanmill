@@ -242,6 +242,21 @@ class PlayAreaState extends State<PlayArea> {
     );
   }
 
+  void _requestRegularNewGame(BuildContext context) {
+    if (_isAnalysisMode) {
+      RecordingService().recordEvent(
+        RecordingEventType.toolbarAction,
+        <String, dynamic>{'toolbar': 'analysisBottom', 'action': 'newGame'},
+      );
+      GameController().reset();
+      GameController().headerIconsNotifier.showIcons();
+      GameController().boardSemanticsNotifier.updateSemantics();
+      return;
+    }
+
+    _openGameOptions(context);
+  }
+
   void _openMovesWithNavigator(NavigatorState navigator) {
     if (DB().generalSettings.screenReaderSupport) {
       // On screen readers, use a bottom sheet.
@@ -283,6 +298,9 @@ class PlayAreaState extends State<PlayArea> {
 
   bool get _usesLichessHumanAiToolbar =>
       GameController().gameInstance.gameMode == GameMode.humanVsAi;
+
+  bool get _isAnalysisMode =>
+      GameController().gameInstance.gameMode == GameMode.analysis;
 
   Phase get _activePhase {
     return GameController().activeSessionPhase ??
@@ -497,13 +515,16 @@ class PlayAreaState extends State<PlayArea> {
 
   bool get _canResignFromRegularBottomBar {
     return !_usesLichessHumanAiToolbar &&
+        !_isAnalysisMode &&
         GameController().gameRecorder.currentPath.length >= 2 &&
         _activePhase != Phase.ready &&
         _activePhase != Phase.gameOver;
   }
 
   bool get _isRegularGameOver {
-    return !_usesLichessHumanAiToolbar && _activePhase == Phase.gameOver;
+    return !_usesLichessHumanAiToolbar &&
+        !_isAnalysisMode &&
+        _activePhase == Phase.gameOver;
   }
 
   bool get _isHumanAiGameOver {
@@ -538,6 +559,7 @@ class PlayAreaState extends State<PlayArea> {
 
   bool get _shouldShowRegularClockControl {
     return !_usesLichessHumanAiToolbar &&
+        !_isAnalysisMode &&
         GameController().gameInstance.gameMode == GameMode.humanVsHuman &&
         DB().generalSettings.humanMoveTime > 0;
   }
@@ -782,7 +804,7 @@ class PlayAreaState extends State<PlayArea> {
           key: const Key('play_area_toolbar_item_game'),
           leading: const Icon(Icons.add_circle_outline),
           makeLabel: (BuildContext context) => Text(S.of(context).newGame),
-          onPressed: () => _openGameOptions(hostContext),
+          onPressed: () => _requestRegularNewGame(hostContext),
         ),
         LichessActionSheetAction(
           key: const Key('play_area_toolbar_item_move'),
@@ -790,6 +812,13 @@ class PlayAreaState extends State<PlayArea> {
           makeLabel: (BuildContext context) => Text(S.of(context).moveList),
           onPressed: () => _openMovesWithNavigator(hostNavigator),
         ),
+        if (_isAnalysisMode)
+          LichessActionSheetAction(
+            key: const Key('play_area_regular_game_menu_analysis'),
+            leading: const Icon(Icons.biotech_outlined),
+            makeLabel: (BuildContext context) => Text(S.of(context).analyze),
+            onPressed: () => unawaited(AnalysisService.toggle(hostContext)),
+          ),
         if (_canStepBackFromRegularBottomBar)
           LichessActionSheetAction(
             key: const Key('play_area_regular_game_menu_previous'),
@@ -1386,20 +1415,30 @@ class PlayAreaState extends State<PlayArea> {
         return ValueListenableBuilder<PlayerTimerStatus>(
           valueListenable: PlayerTimer().statusNotifier,
           builder: (BuildContext context, PlayerTimerStatus status, _) {
-            return _RegularGameBottomBar(
-              onMenuPressed: _showRegularGameMenu,
-              onResignOrResultPressed: _isRegularGameOver
-                  ? _showRegularGameResult
-                  : _canResignFromRegularBottomBar
-                  ? () => _showRegularResignConfirmation(context)
-                  : null,
-              showClockControl: _shouldShowRegularClockControl,
-              isClockPaused: status == PlayerTimerStatus.paused,
-              isShowingResult: _isRegularGameOver,
-              onClockPressed: _regularClockControlAction(status),
-              onTakeBackPressed: _canTakeBackFromRegularBottomBar
-                  ? () => _takeBackFromRegularBottomBar(context)
-                  : null,
+            return ValueListenableBuilder<bool>(
+              valueListenable: AnalysisMode.stateNotifier,
+              builder: (BuildContext context, _, _) {
+                return _RegularGameBottomBar(
+                  onMenuPressed: _showRegularGameMenu,
+                  onResignOrResultPressed: _isRegularGameOver
+                      ? _showRegularGameResult
+                      : _canResignFromRegularBottomBar
+                      ? () => _showRegularResignConfirmation(context)
+                      : null,
+                  onAnalyzePressed: _isAnalysisMode
+                      ? () => unawaited(AnalysisService.toggle(context))
+                      : null,
+                  showClockControl: _shouldShowRegularClockControl,
+                  isClockPaused: status == PlayerTimerStatus.paused,
+                  isAnalysisMode: _isAnalysisMode,
+                  isAnalysisHighlighted: AnalysisMode.isFullAnalysis,
+                  isShowingResult: _isRegularGameOver,
+                  onClockPressed: _regularClockControlAction(status),
+                  onTakeBackPressed: _canTakeBackFromRegularBottomBar
+                      ? () => _takeBackFromRegularBottomBar(context)
+                      : null,
+                );
+              },
             );
           },
         );
@@ -2630,8 +2669,11 @@ class _RegularGameBottomBar extends StatelessWidget {
   const _RegularGameBottomBar({
     required this.onMenuPressed,
     required this.onResignOrResultPressed,
+    required this.onAnalyzePressed,
     required this.showClockControl,
     required this.isClockPaused,
+    required this.isAnalysisMode,
+    required this.isAnalysisHighlighted,
     required this.isShowingResult,
     required this.onClockPressed,
     required this.onTakeBackPressed,
@@ -2639,8 +2681,11 @@ class _RegularGameBottomBar extends StatelessWidget {
 
   final VoidCallback onMenuPressed;
   final VoidCallback? onResignOrResultPressed;
+  final VoidCallback? onAnalyzePressed;
   final bool showClockControl;
   final bool isClockPaused;
+  final bool isAnalysisMode;
+  final bool isAnalysisHighlighted;
   final bool isShowingResult;
   final VoidCallback? onClockPressed;
   final VoidCallback? onTakeBackPressed;
@@ -2660,13 +2705,24 @@ class _RegularGameBottomBar extends StatelessWidget {
           label: S.of(context).menu,
           onTap: onMenuPressed,
         ),
-        LichessBottomBarButton(
-          key: const Key('play_area_regular_bottom_bar_resign_result'),
-          icon: isShowingResult ? Icons.info_outline : CupertinoIcons.flag,
-          label: isShowingResult ? S.of(context).results : S.of(context).resign,
-          onTap: onResignOrResultPressed,
-          highlighted: isShowingResult,
-        ),
+        if (isAnalysisMode)
+          LichessBottomBarButton(
+            key: const Key('play_area_regular_bottom_bar_analysis'),
+            icon: Icons.biotech_outlined,
+            label: S.of(context).analyze,
+            onTap: onAnalyzePressed,
+            highlighted: isAnalysisHighlighted,
+          )
+        else
+          LichessBottomBarButton(
+            key: const Key('play_area_regular_bottom_bar_resign_result'),
+            icon: isShowingResult ? Icons.info_outline : CupertinoIcons.flag,
+            label: isShowingResult
+                ? S.of(context).results
+                : S.of(context).resign,
+            onTap: onResignOrResultPressed,
+            highlighted: isShowingResult,
+          ),
         if (showClockControl)
           LichessBottomBarButton(
             key: const Key('play_area_regular_bottom_bar_clock'),

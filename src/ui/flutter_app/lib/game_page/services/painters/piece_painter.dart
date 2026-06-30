@@ -278,8 +278,10 @@ class PiecePainter extends CustomPainter {
             if (capturerColor != localColor) {
               isCapturerOpponent = true;
             }
-          } else if (mode == GameMode.aiVsAi || mode == GameMode.humanVsHuman) {
-            // In AI vs AI or Human vs Human mode:
+          } else if (mode == GameMode.aiVsAi ||
+              mode == GameMode.humanVsHuman ||
+              mode == GameMode.analysis) {
+            // In AI vs AI, Human vs Human, or Analysis mode:
             // White (first player) captures to bottom-left
             // Black (second player) captures to top-right
             if (capturerColor == PieceColor.black) {
@@ -328,8 +330,10 @@ class PiecePainter extends CustomPainter {
             if (pieceColor != localColor) {
               isOpponent = true;
             }
-          } else if (mode == GameMode.aiVsAi || mode == GameMode.humanVsHuman) {
-            // In AI vs AI or Human vs Human mode:
+          } else if (mode == GameMode.aiVsAi ||
+              mode == GameMode.humanVsHuman ||
+              mode == GameMode.analysis) {
+            // In AI vs AI, Human vs Human, or Analysis mode:
             // White (first player) pieces appear from bottom-right
             // Black (second player) pieces appear from top-left
             if (pieceColor == PieceColor.black) {

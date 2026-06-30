@@ -683,7 +683,8 @@ class _GameBoardState extends State<GameBoard>
     final bool shouldShowDialog =
         GameController().isAutoRestart() == false &&
         winner != PieceColor.nobody &&
-        gameMode != GameMode.setupPosition;
+        gameMode != GameMode.setupPosition &&
+        gameMode != GameMode.analysis;
 
     // For AI vs AI mode, additional conditions must be met
     final bool aiVsAiConditions =
@@ -705,7 +706,8 @@ class _GameBoardState extends State<GameBoard>
             GameController().activeSessionWinner ??
             GameController().activeBoardView.winner;
         if (currentWinner == PieceColor.nobody ||
-            currentGameMode == GameMode.setupPosition) {
+            currentGameMode == GameMode.setupPosition ||
+            currentGameMode == GameMode.analysis) {
           _isDialogShowing = false;
           return;
         }

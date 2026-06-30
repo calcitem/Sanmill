@@ -314,11 +314,17 @@ void main() {
       expect(find.byKey(const Key('drawer_item_clock')), findsOneWidget);
       expect(find.byKey(const Key('drawer_item_variants')), findsOneWidget);
       expect(find.byKey(const Key('drawer_item_import_game')), findsOneWidget);
-      expect(find.byKey(const Key('drawer_item_analysis')), findsNothing);
+      expect(find.byKey(const Key('drawer_item_analysis')), findsOneWidget);
       expect(
         tester
             .getTopLeft(find.byKey(const Key('drawer_item_opening_explorer')))
             .dy,
+        lessThan(
+          tester.getTopLeft(find.byKey(const Key('drawer_item_analysis'))).dy,
+        ),
+      );
+      expect(
+        tester.getTopLeft(find.byKey(const Key('drawer_item_analysis'))).dy,
         lessThan(
           tester
               .getTopLeft(find.byKey(const Key('drawer_item_setup_position')))
@@ -925,7 +931,7 @@ void main() {
       expect(find.byKey(const Key('more_human_vs_ai')), findsNothing);
       expect(find.byKey(const Key('drawer_item_tools_group')), findsOneWidget);
       expect(find.byKey(const Key('drawer_item_import_game')), findsOneWidget);
-      expect(find.byKey(const Key('drawer_item_analysis')), findsNothing);
+      expect(find.byKey(const Key('drawer_item_analysis')), findsOneWidget);
       expect(
         find.byKey(const Key('drawer_item_opening_explorer')),
         findsOneWidget,

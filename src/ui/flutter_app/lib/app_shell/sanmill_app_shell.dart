@@ -2436,6 +2436,9 @@ class _MenuEntries extends StatelessWidget {
     final GameMenuContribution? openingExplorer = contributionToolsById.remove(
       MillRouteIds.openingExplorer.value,
     );
+    final GameMenuContribution? analysis = contributionToolsById.remove(
+      MillRouteIds.analysis.value,
+    );
     final GameModeEntry? boardEditor = playModeToolsById.remove(
       MillRouteIds.setupPosition.value,
     );
@@ -2452,6 +2455,7 @@ class _MenuEntries extends StatelessWidget {
           children: <Widget>[
             if (openingExplorer != null)
               _buildContributionToolTile(openingExplorer),
+            if (analysis != null) _buildContributionToolTile(analysis),
             if (boardEditor != null) _buildPlayModeToolTile(boardEditor),
             _MoreTile(
               key: const Key('drawer_item_clock'),

@@ -403,6 +403,16 @@ class MillGameModule extends GameModule {
           return OpeningExplorerPage(key: key, session: session);
         },
       ),
+      GameMenuContribution(
+        id: MillRouteIds.analysis,
+        label: s.analysis,
+        section: GameMenuSection.tools,
+        icon: Icons.biotech_outlined,
+        menuKey: const Key('drawer_item_analysis'),
+        contentKey: const Key('analysis'),
+        builder: (BuildContext context, {Key? key, GameSession? session}) =>
+            GamePage(GameMode.analysis, key: key),
+      ),
       if (features.supports(GameCapability.puzzles))
         GameMenuContribution(
           id: MillRouteIds.puzzles,

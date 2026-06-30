@@ -89,6 +89,10 @@ void main() {
         (GameMenuContribution contribution) =>
             contribution.id == MillRouteIds.importGame,
       );
+      final GameMenuContribution analysis = contributions.singleWhere(
+        (GameMenuContribution contribution) =>
+            contribution.id == MillRouteIds.analysis,
+      );
       final GameMenuContribution statistics = contributions.singleWhere(
         (GameMenuContribution contribution) =>
             contribution.id == MillRouteIds.statistics,
@@ -98,13 +102,10 @@ void main() {
       expect(importGame.contentKey, const Key('import_game'));
       expect(importGame.section, GameMenuSection.tools);
       expect(importGame.icon, isNotNull);
-      expect(
-        contributions.where(
-          (GameMenuContribution contribution) =>
-              contribution.id == MillRouteIds.analysis,
-        ),
-        isEmpty,
-      );
+      expect(analysis.menuKey, const Key('drawer_item_analysis'));
+      expect(analysis.contentKey, const Key('analysis'));
+      expect(analysis.section, GameMenuSection.tools);
+      expect(analysis.icon, isNotNull);
       expect(statistics.menuKey, const Key('drawer_item_statistics'));
       expect(statistics.contentKey, const Key('statistics'));
       expect(statistics.section, GameMenuSection.game);

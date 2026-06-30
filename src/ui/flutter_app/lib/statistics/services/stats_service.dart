@@ -197,6 +197,9 @@ class EloRatingService {
           // No update needed for local human vs human games
           logger.i("$_logTag Human vs Human game, not updating stats");
           break;
+        case GameMode.analysis:
+          logger.i("$_logTag Analysis board, not updating stats");
+          break;
         case GameMode.humanVsLAN:
           // LAN games don't update stats
           logger.i("$_logTag Human vs LAN game, not updating stats");

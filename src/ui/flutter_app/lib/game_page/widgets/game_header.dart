@@ -580,7 +580,9 @@ class HeaderStateIcons extends State<HeaderIcons> {
     final GameMode currentMode = GameController().gameInstance.gameMode;
 
     // Never show timers in AI vs AI mode or LAN mode
-    if (currentMode == GameMode.aiVsAi || currentMode == GameMode.humanVsLAN) {
+    if (currentMode == GameMode.aiVsAi ||
+        currentMode == GameMode.humanVsLAN ||
+        currentMode == GameMode.analysis) {
       return false;
     }
 
@@ -603,10 +605,12 @@ class HeaderStateIcons extends State<HeaderIcons> {
         final GameController controller = GameController();
         final bool isAILeft =
             controller.gameInstance.gameMode != GameMode.humanVsHuman &&
+            controller.gameInstance.gameMode != GameMode.analysis &&
             controller.gameInstance.gameMode != GameMode.humanVsLAN &&
             controller.gameInstance.getPlayerByColor(PieceColor.white).isAi;
         final bool isAIRight =
             controller.gameInstance.gameMode != GameMode.humanVsHuman &&
+            controller.gameInstance.gameMode != GameMode.analysis &&
             controller.gameInstance.gameMode != GameMode.humanVsLAN &&
             controller.gameInstance.getPlayerByColor(PieceColor.black).isAi;
 

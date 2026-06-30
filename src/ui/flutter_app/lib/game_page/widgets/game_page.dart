@@ -347,7 +347,7 @@ class _GamePageInnerState extends State<_GamePageInner> {
       GameMode.humanVsCloud ||
       GameMode.humanVsLAN ||
       GameMode.testViaLAN => true,
-      GameMode.setupPosition || GameMode.puzzle => false,
+      GameMode.analysis || GameMode.setupPosition || GameMode.puzzle => false,
     };
   }
 
@@ -490,6 +490,7 @@ class _GamePageInnerState extends State<_GamePageInner> {
                         isLandscape &&
                         switch (controller.gameInstance.gameMode) {
                           GameMode.setupPosition || GameMode.puzzle => false,
+                          GameMode.analysis => false,
                           _ => true,
                         };
                     final BoxConstraints constraint = BoxConstraints(
