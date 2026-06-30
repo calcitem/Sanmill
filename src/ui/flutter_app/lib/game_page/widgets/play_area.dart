@@ -329,6 +329,14 @@ class PlayAreaState extends State<PlayArea> {
     await session.apply(selectedAction);
   }
 
+  void _openBoardEditorFromAnalysis() {
+    assert(_isAnalysisMode, 'Board editor menu entry is analysis-mode only.');
+    GameController().enterSetupPosition();
+    if (mounted) {
+      setState(() {});
+    }
+  }
+
   bool get _shouldShowAiChatMenuAction {
     if (!DB().generalSettings.aiChatEnabled) {
       return false;
@@ -888,6 +896,14 @@ class PlayAreaState extends State<PlayArea> {
             makeLabel: (BuildContext context) =>
                 Text(S.of(context).openingExplorer),
             onPressed: () => _openOpeningExplorer(hostContext),
+          ),
+        if (_isAnalysisMode)
+          LichessActionSheetAction(
+            key: const Key('play_area_regular_game_menu_board_editor'),
+            leading: const Icon(Icons.dashboard_customize_outlined),
+            makeLabel: (BuildContext context) =>
+                Text(S.of(context).boardEditor),
+            onPressed: _openBoardEditorFromAnalysis,
           ),
         if (_isAnalysisMode)
           LichessActionSheetAction(

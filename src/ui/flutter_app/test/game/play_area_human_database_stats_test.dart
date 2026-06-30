@@ -1030,6 +1030,10 @@ void main() {
       findsOne,
     );
     expect(
+      find.byKey(const Key('play_area_regular_game_menu_board_editor')),
+      findsOne,
+    );
+    expect(
       find.byKey(const Key('play_area_regular_game_menu_analysis')),
       findsOne,
     );
