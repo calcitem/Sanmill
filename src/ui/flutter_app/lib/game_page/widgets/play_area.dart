@@ -77,6 +77,7 @@ class PlayAreaState extends State<PlayArea> {
   bool _isHintSearching = false;
   static const double _kMoveListRouteTopInset = 80;
   static const double _kInlineMoveListHeight = 40;
+  static const double _kWrappedMoveListMaxHeight = 76;
   static const double _kPlayerPanelHeight = 56;
   static const double _kAnalysisEngineLinesReserveHeight = 90;
   static const double _kBalancedLayoutSafetyMargin = 24;
@@ -198,6 +199,10 @@ class PlayAreaState extends State<PlayArea> {
 
   double _inlineMoveListHeightForRoute(BuildContext context) {
     return _kInlineMoveListHeight + _moveListRouteTopInset(context);
+  }
+
+  double _wrappedMoveListHeightForRoute(BuildContext context) {
+    return _kWrappedMoveListMaxHeight + _moveListRouteTopInset(context);
   }
 
   Color _actionSheetBackground(BuildContext context) {
@@ -620,12 +625,13 @@ class PlayAreaState extends State<PlayArea> {
     return _usesLichessHumanAiToolbar &&
         GameController().gameRecorder.currentPath.isNotEmpty &&
         !GameController().isEngineRunning &&
-        !GameController().isEngineInDelay;
+        !GameController().isEngineInDelay &&
+        _humanAiTakeBackStepCountOrNull != null;
   }
 
-  int get _humanAiTakeBackStepCount {
+  int? get _humanAiTakeBackStepCountOrNull {
     assert(_usesLichessHumanAiToolbar);
-    return _takeBackStepCountForRequester(_humanAiTakeBackRequesterSide);
+    return _takeBackStepCountForRequesterOrNull(_humanAiTakeBackRequesterSide);
   }
 
   int get _lanTakeBackStepCount {
@@ -651,13 +657,27 @@ class PlayAreaState extends State<PlayArea> {
   }
 
   int _takeBackStepCountForRequester(PieceColor requesterSide) {
+    final int? steps = _takeBackStepCountForRequesterOrNull(requesterSide);
+    assert(
+      steps != null,
+      'Move history does not contain an available requester turn.',
+    );
+    return steps!;
+  }
+
+  int? _takeBackStepCountForRequesterOrNull(PieceColor requesterSide) {
     assert(
       requesterSide == PieceColor.white || requesterSide == PieceColor.black,
     );
     final List<ExtMove> path = GameController().gameRecorder.currentPath;
-    assert(path.isNotEmpty, 'Cannot take back without a move history.');
+    if (path.isEmpty) {
+      return null;
+    }
 
-    final NativeMillRulesPort preview = _takeBackPreviewPort(path);
+    final NativeMillRulesPort? preview = _takeBackPreviewPortOrNull(path);
+    if (preview == null) {
+      return null;
+    }
     try {
       // Undo until the requester is truly the side to act. This keeps capture
       // actions attached to the requester: if White made a mill and captured,
@@ -676,11 +696,10 @@ class PlayAreaState extends State<PlayArea> {
       preview.dispose();
     }
 
-    assert(false, 'Move history does not contain the requester side.');
-    throw StateError('Move history does not contain the requester side.');
+    return null;
   }
 
-  NativeMillRulesPort _takeBackPreviewPort(List<ExtMove> path) {
+  NativeMillRulesPort? _takeBackPreviewPortOrNull(List<ExtMove> path) {
     final NativeMillRulesPort port = NativeMillRulesPort(
       ruleSettings: DB().ruleSettings,
       generalSettings: DB().generalSettings,
@@ -694,11 +713,11 @@ class PlayAreaState extends State<PlayArea> {
 
       for (final ExtMove move in path) {
         final GameAction? action = _legalActionForMove(port, move.move);
-        assert(
-          action != null,
-          'Cannot replay ${move.move} while calculating requester takeback.',
-        );
-        port.apply(action!);
+        if (action == null) {
+          port.dispose();
+          return null;
+        }
+        port.apply(action);
       }
       return port;
     } on Object {
@@ -752,7 +771,11 @@ class PlayAreaState extends State<PlayArea> {
     BuildContext context, {
     required PieceColor requesterSide,
   }) async {
-    final int steps = _takeBackStepCountForRequester(requesterSide);
+    final int? steps = _takeBackStepCountForRequesterOrNull(requesterSide);
+    if (steps == null) {
+      GameController().headerTipNotifier.showTip(S.of(context).noMove);
+      return;
+    }
     RecordingService()
         .recordEvent(RecordingEventType.toolbarAction, <String, dynamic>{
           'toolbar': 'regularBottom',
@@ -1015,7 +1038,11 @@ class PlayAreaState extends State<PlayArea> {
 
   Future<void> _takeBackFromBottomBar(BuildContext context) async {
     assert(_usesLichessHumanAiToolbar);
-    final int steps = _humanAiTakeBackStepCount;
+    final int? steps = _humanAiTakeBackStepCountOrNull;
+    if (steps == null) {
+      GameController().headerTipNotifier.showTip(S.of(context).noMove);
+      return;
+    }
     RecordingService().recordEvent(
       RecordingEventType.toolbarAction,
       <String, dynamic>{
@@ -1767,8 +1794,9 @@ class PlayAreaState extends State<PlayArea> {
         wrapKey: Key('play_area_human_ai_move_list_wrap'),
         roundKeyPrefix: 'play_area_human_ai_round_',
         moveKeyPrefix: 'play_area_human_ai_move_',
-        layout: _InlineMoveListLayout.horizontal,
+        layout: _InlineMoveListLayout.stacked,
         groupByRound: true,
+        maxHeight: _kWrappedMoveListMaxHeight,
       ),
     );
   }
@@ -1844,7 +1872,7 @@ class PlayAreaState extends State<PlayArea> {
                 ),
             ];
 
-            final double moveListHeight = _inlineMoveListHeightForRoute(
+            final double moveListHeight = _wrappedMoveListHeightForRoute(
               context,
             );
             final double boardRowsHeight = showPieceCountRows
@@ -2867,6 +2895,7 @@ class _InlineMoveList extends StatefulWidget {
     this.showMovePreview = false,
     this.layout = _InlineMoveListLayout.wrap,
     this.groupByRound = false,
+    this.maxHeight,
   }) : assert(
          !groupByRound || roundKeyPrefix != null,
          'Grouped inline move lists require a round key prefix.',
@@ -2880,6 +2909,7 @@ class _InlineMoveList extends StatefulWidget {
   final bool showMovePreview;
   final _InlineMoveListLayout layout;
   final bool groupByRound;
+  final double? maxHeight;
 
   @override
   State<_InlineMoveList> createState() => _InlineMoveListState();
@@ -2916,8 +2946,11 @@ class _InlineMoveListState extends State<_InlineMoveList> {
             _InlineMoveListLayout.horizontal => const BoxConstraints.tightFor(
               height: 40,
             ),
-            _InlineMoveListLayout.wrap || _InlineMoveListLayout.stacked =>
-              const BoxConstraints(minHeight: 40),
+            _InlineMoveListLayout.wrap ||
+            _InlineMoveListLayout.stacked => BoxConstraints(
+              minHeight: 40,
+              maxHeight: widget.maxHeight ?? double.infinity,
+            ),
           },
           padding: widget.layout == _InlineMoveListLayout.horizontal
               ? const EdgeInsets.only(left: 5)
@@ -2931,7 +2964,7 @@ class _InlineMoveListState extends State<_InlineMoveList> {
   }
 
   void _scheduleCurrentMoveAutoScroll(PgnNode<ExtMove>? activeNode) {
-    if (widget.layout != _InlineMoveListLayout.horizontal ||
+    if (widget.layout == _InlineMoveListLayout.wrap ||
         activeNode == null ||
         identical(_lastAutoScrolledNode, activeNode)) {
       return;
@@ -2961,9 +2994,8 @@ class _InlineMoveListState extends State<_InlineMoveList> {
   }) {
     if (widget.groupByRound) {
       assert(
-        widget.layout == _InlineMoveListLayout.horizontal ||
-            widget.layout == _InlineMoveListLayout.stacked,
-        'Grouped inline move lists require horizontal or stacked layout.',
+        widget.layout != _InlineMoveListLayout.wrap,
+        'Grouped inline move lists require a scrollable layout.',
       );
       return _buildGroupedMoves(context: context, nodes: nodes);
     }

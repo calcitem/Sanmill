@@ -1445,7 +1445,7 @@ void main() {
     },
   );
 
-  testWidgets('human vs ai move list uses a horizontal lichess layout', (
+  testWidgets('human vs ai move list wraps when the line is full', (
     WidgetTester tester,
   ) async {
     db.generalSettings = const GeneralSettings();
@@ -1491,7 +1491,7 @@ void main() {
         .widget<SingleChildScrollView>(
           find.byKey(const Key('play_area_inline_move_list_scroll_view')),
         );
-    expect(moveListScrollView.scrollDirection, Axis.horizontal);
+    expect(moveListScrollView.scrollDirection, Axis.vertical);
     expect(find.byKey(const Key('play_area_human_ai_move_1')), findsOneWidget);
     expect(find.byKey(const Key('play_area_human_ai_move_20')), findsOneWidget);
     expect(
@@ -1501,16 +1501,13 @@ void main() {
       ),
       findsNothing,
     );
-
-    final Finder scrollable = find.descendant(
-      of: find.byKey(const Key('play_area_inline_move_list_scroll_view')),
-      matching: find.byType(Scrollable),
+    expect(
+      find.descendant(
+        of: find.byKey(const Key('play_area_inline_move_list_scroll_view')),
+        matching: find.byType(Wrap),
+      ),
+      findsOneWidget,
     );
-    expect(scrollable, findsOneWidget);
-    final ScrollableState scrollableState = tester.state<ScrollableState>(
-      scrollable,
-    );
-    expect(scrollableState.position.pixels, greaterThan(0));
   });
 
   testWidgets('human vs ai menu keeps QR move list import reachable', (
@@ -2298,6 +2295,40 @@ void main() {
 
     expect(_currentPathMoves(), isEmpty);
     expect(session.undoDepth, 0);
+  });
+
+  testWidgets('human vs ai disables takeback when requester has no turn', (
+    WidgetTester tester,
+  ) async {
+    db.generalSettings = const GeneralSettings(aiMovesFirst: true);
+    final NativeMillGameSession session = await _bindNativeHumanAiGame();
+    final MillSessionRecorderBridge recorderBridge =
+        MillSessionRecorderBridge.forGameController(session: session);
+    addTearDown(recorderBridge.dispose);
+
+    expect(
+      await session.replayMainline(<ExtMove>[
+        ExtMove('d6', side: PieceColor.white),
+      ]),
+      isTrue,
+    );
+    await tester.pump();
+    expect(_currentPathMoves(), <String>['d6']);
+
+    await _pumpSessionPlayArea(tester, session);
+    expect(
+      _bottomBarButtonOpacity(
+        tester,
+        const Key('play_area_bottom_bar_take_back'),
+      ),
+      0.4,
+    );
+
+    await tester.tap(find.byKey(const Key('play_area_bottom_bar_take_back')));
+    await tester.pumpAndSettle();
+
+    expect(tester.takeException(), isNull);
+    expect(_currentPathMoves(), <String>['d6']);
   });
 
   testWidgets('human vs human black requester removes only black reply', (
