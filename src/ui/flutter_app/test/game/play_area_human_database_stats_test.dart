@@ -1863,6 +1863,15 @@ void main() {
 
     await _pumpSessionPlayArea(tester, session);
 
+    expect(
+      find.byKey(const Key('play_area_analysis_evaluation_gauge')),
+      findsNothing,
+    );
+    expect(
+      find.byKey(const Key('play_area_advantage_indicator_positioned')),
+      findsNothing,
+    );
+
     await tester.tap(
       find.byKey(const Key('play_area_analysis_bottom_bar_menu')),
     );
@@ -2023,6 +2032,14 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(db.displaySettings.isPositionalAdvantageIndicatorShown, isTrue);
+    expect(
+      find.byKey(const Key('play_area_analysis_evaluation_gauge')),
+      findsOneWidget,
+    );
+    expect(
+      find.byKey(const Key('play_area_advantage_indicator_positioned')),
+      findsNothing,
+    );
 
     await tester.tap(
       find.byKey(const Key('play_area_analysis_settings_advantage_graph')),
