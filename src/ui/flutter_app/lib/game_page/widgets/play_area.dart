@@ -3670,6 +3670,7 @@ class _AnalysisPanel extends StatelessWidget {
 
     return DefaultTabController(
       length: 2,
+      initialIndex: 1,
       child: DecoratedBox(
         key: const Key('play_area_analysis_panel'),
         decoration: BoxDecoration(color: colorScheme.surfaceContainerLowest),

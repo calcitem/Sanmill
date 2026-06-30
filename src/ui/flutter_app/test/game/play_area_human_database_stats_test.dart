@@ -1699,7 +1699,7 @@ void main() {
     );
   });
 
-  testWidgets('analysis menu keeps opening explorer as a tab', (
+  testWidgets('analysis panel opens moves first and keeps explorer as a tab', (
     WidgetTester tester,
   ) async {
     db.displaySettings = const DisplaySettings(
@@ -1729,6 +1729,18 @@ void main() {
       find.byKey(const Key('play_area_regular_game_menu_continue_from_here')),
       findsOneWidget,
     );
+    expect(find.byKey(const Key('play_area_analysis_moves')), findsOneWidget);
+
+    Navigator.of(
+      tester.element(
+        find.byKey(const Key('play_area_regular_game_menu_sheet')),
+      ),
+    ).pop();
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byIcon(Icons.explore_outlined));
+    await tester.pumpAndSettle();
+
     expect(find.byKey(const Key('opening_explorer_embedded')), findsOneWidget);
   });
 
