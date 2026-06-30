@@ -1209,6 +1209,7 @@ class _HomeTabRootState extends State<_HomeTabRoot> {
         hasOpenedCurrentPlaySession: widget.hasOpenedCurrentPlaySession,
         tabInteraction: widget.tabInteraction,
         onContinueGame: widget.onContinueGame,
+        onPlayRouteSelected: widget.onPlayRouteSelected,
         onShowAll: _openSavedGamesPage,
         onSavedGameSelected: widget.onSavedGameSelected,
       ),
@@ -1246,6 +1247,7 @@ class _HomeGamesOverview extends StatelessWidget {
     required this.hasOpenedCurrentPlaySession,
     required this.tabInteraction,
     required this.onContinueGame,
+    required this.onPlayRouteSelected,
     required this.onShowAll,
     required this.onSavedGameSelected,
   });
@@ -1258,6 +1260,7 @@ class _HomeGamesOverview extends StatelessWidget {
   final bool hasOpenedCurrentPlaySession;
   final Listenable tabInteraction;
   final VoidCallback onContinueGame;
+  final ValueChanged<String> onPlayRouteSelected;
   final VoidCallback onShowAll;
   final ValueChanged<String> onSavedGameSelected;
 
@@ -1293,7 +1296,10 @@ class _HomeGamesOverview extends StatelessWidget {
                 if (activeGame == null &&
                     ongoingGames.isEmpty &&
                     recentGames.isEmpty) {
-                  return const SizedBox.shrink();
+                  return _HomeQuickStartSection(
+                    playModes: playModes,
+                    onPlayRouteSelected: onPlayRouteSelected,
+                  );
                 }
 
                 final bool useCarousel = !useWideLayout;
@@ -1368,6 +1374,44 @@ class _HomeGamesOverview extends StatelessWidget {
         snapshot,
         moveCount,
       ),
+    );
+  }
+}
+
+class _HomeQuickStartSection extends StatelessWidget {
+  const _HomeQuickStartSection({
+    required this.playModes,
+    required this.onPlayRouteSelected,
+  });
+
+  final List<GameModeEntry> playModes;
+  final ValueChanged<String> onPlayRouteSelected;
+
+  @override
+  Widget build(BuildContext context) {
+    final List<GameModeEntry> quickStartModes =
+        _PlayBottomSheet._quickStartModes(
+          playModes,
+        ).take(3).toList(growable: false);
+    if (quickStartModes.isEmpty) {
+      return const SizedBox.shrink();
+    }
+
+    final S strings = S.of(context);
+    return LichessListSection(
+      key: const Key('sanmill_home_empty_start'),
+      header: Text('${strings.welcome} ${strings.appName}'),
+      headerKey: const Key('sanmill_home_quick_start_group'),
+      cardKey: const Key('sanmill_home_quick_start_card'),
+      children: <Widget>[
+        for (final GameModeEntry mode in quickStartModes)
+          _MoreTile(
+            key: Key('sanmill_home_quick_start_${mode.id.value}'),
+            icon: mode.icon ?? Icons.sports_esports_rounded,
+            title: mode.label,
+            onTap: () => onPlayRouteSelected(mode.id.value),
+          ),
+      ],
     );
   }
 }

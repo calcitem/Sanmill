@@ -237,6 +237,48 @@ void main() {
   );
 
   testWidgets(
+    'Home empty state keeps Lichess-style quick start visible',
+    (WidgetTester tester) async {
+      tester.view
+        ..physicalSize = const Size(390, 844)
+        ..devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+
+      await tester.pumpWidget(const SanmillApp());
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 500));
+
+      expect(find.byKey(const Key('sanmill_home_list')), findsOneWidget);
+      expect(find.byKey(const Key('sanmill_home_empty_start')), findsOneWidget);
+      expect(
+        find.byKey(const Key('sanmill_home_quick_start_group')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const Key('sanmill_home_quick_start_card')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const Key('sanmill_home_quick_start_mill.play.humanVsAi')),
+        findsOneWidget,
+      );
+
+      await tester.tap(
+        find.byKey(const Key('sanmill_home_quick_start_mill.play.humanVsAi')),
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.byKey(const Key('human_ai')), findsOneWidget);
+      expect(find.byKey(const Key('human_ai_new_game_sheet')), findsOneWidget);
+
+      // Drain any settings-save debounce timer (see the smoke test above).
+      await tester.pump(const Duration(milliseconds: 350));
+    },
+    skip: nativeLibrarySkipReason() != null,
+  );
+
+  testWidgets(
     'Verify mobile shell bottom navigation and more menu',
     (WidgetTester tester) async {
       tester.view
