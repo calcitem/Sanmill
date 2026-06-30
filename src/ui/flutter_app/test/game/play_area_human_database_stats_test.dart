@@ -198,7 +198,7 @@ void main() {
         .widget<SingleChildScrollView>(
           find.byKey(const Key('play_area_inline_move_list_scroll_view')),
         );
-    expect(moveListScrollView.scrollDirection, Axis.horizontal);
+    expect(moveListScrollView.scrollDirection, Axis.vertical);
     expect(find.byKey(const Key('play_area_regular_round_1')), findsOneWidget);
     expect(find.byKey(const Key('play_area_regular_move_1')), findsOneWidget);
     expect(find.byKey(const Key('play_area_regular_move_2')), findsOneWidget);
@@ -398,6 +398,56 @@ void main() {
             )
             .dy,
       ),
+    );
+  });
+
+  testWidgets('regular game move list wraps when the line is full', (
+    WidgetTester tester,
+  ) async {
+    db.generalSettings = const GeneralSettings();
+    db.displaySettings = const DisplaySettings();
+    final GameController controller = GameController();
+    controller.gameInstance.gameMode = GameMode.humanVsHuman;
+    for (int i = 0; i < 20; i++) {
+      controller.gameRecorder.appendMove(
+        ExtMove(
+          i.isEven ? 'd6' : 'f4',
+          side: i.isEven ? PieceColor.white : PieceColor.black,
+        ),
+      );
+    }
+
+    await tester.binding.setSurfaceSize(const Size(390, 844));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+
+    await tester.pumpWidget(
+      _localizedApp(
+        const Scaffold(
+          body: PlayArea(
+            boardImage: null,
+            child: SizedBox.square(
+              key: Key('test_board_square'),
+              dimension: 390,
+            ),
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    final Finder firstMove = find.byKey(const Key('play_area_regular_move_1'));
+    final Finder lastMove = find.byKey(const Key('play_area_regular_move_20'));
+    expect(firstMove, findsOneWidget);
+    expect(lastMove, findsOneWidget);
+    expect(
+      tester.getTopLeft(lastMove).dy,
+      greaterThan(tester.getTopLeft(firstMove).dy),
+    );
+    expect(
+      tester
+          .getSize(find.byKey(const Key('play_area_regular_move_list_wrap')))
+          .height,
+      76,
     );
   });
 
@@ -1142,6 +1192,40 @@ void main() {
     expect(find.byKey(const Key('setup_position_three_row_toolbar')), findsOne);
   });
 
+  testWidgets('setup position dispose cleanup waits until the tree unlocks', (
+    WidgetTester tester,
+  ) async {
+    db = _GamePageDb(
+      generalSettings: const GeneralSettings(),
+      displaySettings: const DisplaySettings(
+        isHistoryNavigationToolbarShown: false,
+      ),
+    );
+    DB.instance = db;
+    final GameController controller = GameController();
+    final NativeMillGameSession session = await _bindNativeGame(
+      GameMode.setupPosition,
+    );
+
+    await tester.pumpWidget(
+      _localizedApp(
+        GameSessionScope(
+          session: session,
+          child: const GamePage(GameMode.setupPosition),
+        ),
+      ),
+    );
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 250));
+    expect(controller.setupPositionController, isNotNull);
+
+    await tester.pumpWidget(_localizedApp(const SizedBox.shrink()));
+    await tester.pump();
+
+    expect(tester.takeException(), isNull);
+    expect(controller.setupPositionController, isNull);
+  });
+
   testWidgets('setup position hides the positional advantage indicator', (
     WidgetTester tester,
   ) async {
@@ -1494,6 +1578,14 @@ void main() {
     expect(moveListScrollView.scrollDirection, Axis.vertical);
     expect(find.byKey(const Key('play_area_human_ai_move_1')), findsOneWidget);
     expect(find.byKey(const Key('play_area_human_ai_move_20')), findsOneWidget);
+    expect(
+      tester.getTopLeft(find.byKey(const Key('play_area_human_ai_move_20'))).dy,
+      greaterThan(
+        tester
+            .getTopLeft(find.byKey(const Key('play_area_human_ai_move_1')))
+            .dy,
+      ),
+    );
     expect(
       find.descendant(
         of: find.byKey(const Key('play_area_human_ai_move_20')),

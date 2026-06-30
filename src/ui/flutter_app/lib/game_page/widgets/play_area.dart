@@ -197,10 +197,6 @@ class PlayAreaState extends State<PlayArea> {
     );
   }
 
-  double _inlineMoveListHeightForRoute(BuildContext context) {
-    return _kInlineMoveListHeight + _moveListRouteTopInset(context);
-  }
-
   double _wrappedMoveListHeightForRoute(BuildContext context) {
     return _kWrappedMoveListMaxHeight + _moveListRouteTopInset(context);
   }
@@ -1813,8 +1809,9 @@ class PlayAreaState extends State<PlayArea> {
           return HistoryNavigator.gotoNode(context, node, pop: false);
         },
         showMovePreview: true,
-        layout: _InlineMoveListLayout.horizontal,
+        layout: _InlineMoveListLayout.stacked,
         groupByRound: true,
+        maxHeight: _kWrappedMoveListMaxHeight,
       ),
     );
   }
@@ -2254,7 +2251,7 @@ class PlayAreaState extends State<PlayArea> {
 
           final double estimatedRequiredHeight =
               constraints.maxWidth +
-              (isPlayableGame ? _inlineMoveListHeightForRoute(context) : 0) +
+              (isPlayableGame ? _wrappedMoveListHeightForRoute(context) : 0) +
               topPanelHeight +
               (showPieceCountRows
                   ? _pieceRowsHeightForLayout(context)
@@ -2944,7 +2941,7 @@ class _InlineMoveListState extends State<_InlineMoveList> {
           width: double.infinity,
           constraints: switch (widget.layout) {
             _InlineMoveListLayout.horizontal => const BoxConstraints.tightFor(
-              height: 40,
+              height: PlayAreaState._kInlineMoveListHeight,
             ),
             _InlineMoveListLayout.wrap ||
             _InlineMoveListLayout.stacked => BoxConstraints(
@@ -2993,10 +2990,6 @@ class _InlineMoveListState extends State<_InlineMoveList> {
     required List<PgnNode<ExtMove>> nodes,
   }) {
     if (widget.groupByRound) {
-      assert(
-        widget.layout != _InlineMoveListLayout.wrap,
-        'Grouped inline move lists require a scrollable layout.',
-      );
       return _buildGroupedMoves(context: context, nodes: nodes);
     }
 
@@ -3027,25 +3020,29 @@ class _InlineMoveListState extends State<_InlineMoveList> {
     required List<PgnNode<ExtMove>> nodes,
   }) {
     final List<_InlineMoveRound> rounds = _buildMoveRounds(nodes);
-    final List<Widget> children = <Widget>[
+    final List<Widget> roundChildren = <Widget>[
       for (final _InlineMoveRound round in rounds)
         _buildMoveRound(context, round),
+    ];
+    final List<Widget> wrappedChildren = <Widget>[
+      for (final _InlineMoveRound round in rounds)
+        ..._buildMoveRoundWrapChildren(context, round),
     ];
 
     return switch (widget.layout) {
       _InlineMoveListLayout.horizontal => SingleChildScrollView(
         key: const Key('play_area_inline_move_list_scroll_view'),
         scrollDirection: Axis.horizontal,
-        child: Row(children: _spaceMoveChips(children)),
+        child: Row(children: _spaceMoveChips(roundChildren)),
       ),
       _InlineMoveListLayout.stacked => SingleChildScrollView(
         key: const Key('play_area_inline_move_list_scroll_view'),
-        child: Wrap(spacing: 10, runSpacing: 6, children: children),
+        child: Wrap(spacing: 8, runSpacing: 6, children: wrappedChildren),
       ),
       _InlineMoveListLayout.wrap => Wrap(
-        spacing: 10,
+        spacing: 8,
         runSpacing: 6,
-        children: children,
+        children: wrappedChildren,
       ),
     };
   }
@@ -3106,6 +3103,30 @@ class _InlineMoveListState extends State<_InlineMoveList> {
           _buildMoveSegment(context, segment),
       ],
     );
+  }
+
+  List<Widget> _buildMoveRoundWrapChildren(
+    BuildContext context,
+    _InlineMoveRound round,
+  ) {
+    assert(
+      round.segments.isNotEmpty,
+      'Inline move rounds must contain at least one move segment.',
+    );
+    final String roundKeyPrefix = widget.roundKeyPrefix!;
+    final List<Widget> children = <Widget>[
+      Row(
+        key: Key('$roundKeyPrefix${round.number}'),
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          _InlineMoveCount(count: round.number),
+          _buildMoveSegment(context, round.segments.first),
+        ],
+      ),
+      for (final _InlineMoveSegment segment in round.segments.skip(1))
+        _buildMoveSegment(context, segment),
+    ];
+    return children;
   }
 
   Widget _buildMoveSegment(BuildContext context, _InlineMoveSegment segment) {

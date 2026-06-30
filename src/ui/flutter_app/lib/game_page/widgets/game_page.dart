@@ -156,8 +156,15 @@ class _GamePageInnerState extends State<_GamePageInner> {
   @override
   void dispose() {
     // Discard an unfinished setup edit when navigating away from the page
-    // without changing the mode the next route just installed.
-    widget.controller.abandonSetupPositionIfActive();
+    // after the current frame.  The cancel path reloads the native session and
+    // notifies listeners, which is unsafe while Flutter is finalizing the tree.
+    final GameController controller = widget.controller;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (controller.gameInstance.gameMode == GameMode.setupPosition &&
+          controller.setupPositionController != null) {
+        controller.abandonSetupPositionIfActive();
+      }
+    });
     super.dispose();
   }
 
