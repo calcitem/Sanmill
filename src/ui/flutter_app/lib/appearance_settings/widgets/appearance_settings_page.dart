@@ -413,37 +413,37 @@ class AppearanceSettingsPage extends StatelessWidget {
       return; // No theme selected or current theme selected
     }
 
-    // Update the color settings with the selected theme
+    final ColorSettings selectedColors = AppTheme.colorThemes[selectedTheme]!;
+
+    // A board theme in the Lichess settings sense only represents board and
+    // piece appearance. Preserve legacy shell / toolbar colors when changing
+    // it so upgraded custom setups are not overwritten.
     DB().colorSettings = colorSettings.copyWith(
-      boardLineColor: AppTheme.colorThemes[selectedTheme]!.boardLineColor,
-      darkBackgroundColor:
-          AppTheme.colorThemes[selectedTheme]!.darkBackgroundColor,
-      boardBackgroundColor:
-          AppTheme.colorThemes[selectedTheme]!.boardBackgroundColor,
-      whitePieceColor: AppTheme.colorThemes[selectedTheme]!.whitePieceColor,
-      blackPieceColor: AppTheme.colorThemes[selectedTheme]!.blackPieceColor,
-      pieceHighlightColor:
-          AppTheme.colorThemes[selectedTheme]!.pieceHighlightColor,
+      boardLineColor: selectedColors.boardLineColor,
+      darkBackgroundColor: selectedColors.darkBackgroundColor,
+      boardBackgroundColor: selectedColors.boardBackgroundColor,
+      whitePieceColor: selectedColors.whitePieceColor,
+      blackPieceColor: selectedColors.blackPieceColor,
+      pieceHighlightColor: selectedColors.pieceHighlightColor,
       capturablePieceHighlightColor:
-          AppTheme.colorThemes[selectedTheme]!.capturablePieceHighlightColor,
-      messageColor: AppTheme.colorThemes[selectedTheme]!.messageColor,
-      mainToolbarBackgroundColor:
-          AppTheme.colorThemes[selectedTheme]!.mainToolbarBackgroundColor,
-      mainToolbarIconColor:
-          AppTheme.colorThemes[selectedTheme]!.mainToolbarIconColor,
-      navigationToolbarBackgroundColor:
-          AppTheme.colorThemes[selectedTheme]!.navigationToolbarBackgroundColor,
-      navigationToolbarIconColor:
-          AppTheme.colorThemes[selectedTheme]!.navigationToolbarIconColor,
-      analysisToolbarBackgroundColor:
-          AppTheme.colorThemes[selectedTheme]!.analysisToolbarBackgroundColor,
-      analysisToolbarIconColor:
-          AppTheme.colorThemes[selectedTheme]!.analysisToolbarIconColor,
-      annotationToolbarBackgroundColor:
-          AppTheme.colorThemes[selectedTheme]!.annotationToolbarBackgroundColor,
-      annotationToolbarIconColor:
-          AppTheme.colorThemes[selectedTheme]!.annotationToolbarIconColor,
+          selectedColors.capturablePieceHighlightColor,
+      messageColor: selectedColors.messageColor,
     );
+  }
+
+  bool _sameBoardThemeAppearance(
+    ColorSettings themeColors,
+    ColorSettings activeColors,
+  ) {
+    return themeColors.boardLineColor == activeColors.boardLineColor &&
+        themeColors.darkBackgroundColor == activeColors.darkBackgroundColor &&
+        themeColors.boardBackgroundColor == activeColors.boardBackgroundColor &&
+        themeColors.whitePieceColor == activeColors.whitePieceColor &&
+        themeColors.blackPieceColor == activeColors.blackPieceColor &&
+        themeColors.pieceHighlightColor == activeColors.pieceHighlightColor &&
+        themeColors.capturablePieceHighlightColor ==
+            activeColors.capturablePieceHighlightColor &&
+        themeColors.messageColor == activeColors.messageColor;
   }
 
   Widget _buildBoardStyleSettings(
@@ -809,13 +809,12 @@ class AppearanceSettingsPage extends StatelessWidget {
     BuildContext context,
     ColorSettings colorSettings,
   ) {
-    final Map<String, dynamic> activeColors = colorSettings.toJson();
     for (final MapEntry<ColorTheme, ColorSettings> entry
         in AppTheme.colorThemes.entries) {
       if (entry.key == ColorTheme.current) {
         continue;
       }
-      if (mapEquals(entry.value.toJson(), activeColors)) {
+      if (_sameBoardThemeAppearance(entry.value, colorSettings)) {
         return colorThemeLabel(context, entry.key);
       }
     }

@@ -1811,6 +1811,117 @@ void main() {
     skip: nativeLibrarySkipReason() != null,
   );
 
+  testWidgets('Appearance board theme label ignores shell colors', (
+    WidgetTester tester,
+  ) async {
+    final ColorSettings previousColorSettings = DB().colorSettings;
+    addTearDown(() => DB().colorSettings = previousColorSettings);
+
+    final ColorSettings lightTheme = AppTheme.colorThemes[ColorTheme.light]!;
+    DB().colorSettings = lightTheme.copyWith(
+      drawerColor: Colors.pink,
+      drawerTextColor: Colors.orange,
+      mainToolbarBackgroundColor: Colors.red,
+      mainToolbarIconColor: Colors.green,
+      navigationToolbarBackgroundColor: Colors.yellow,
+      navigationToolbarIconColor: Colors.blue,
+      analysisToolbarBackgroundColor: Colors.purple,
+      analysisToolbarIconColor: Colors.cyan,
+      annotationToolbarBackgroundColor: Colors.brown,
+      annotationToolbarIconColor: Colors.teal,
+    );
+
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: AppTheme.lightThemeData,
+        localizationsDelegates: sanmillLocalizationsDelegates,
+        supportedLocales: S.supportedLocales,
+        locale: const Locale('en'),
+        home: const AppearanceSettingsPage(),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    final Finder boardThemeTile = find.byKey(
+      const Key('color_settings_card_theme_settings_list_tile'),
+    );
+    expect(
+      find.descendant(of: boardThemeTile, matching: find.text('Light')),
+      findsOneWidget,
+    );
+  });
+
+  testWidgets('Appearance board theme selection preserves shell colors', (
+    WidgetTester tester,
+  ) async {
+    final ColorSettings previousColorSettings = DB().colorSettings;
+    addTearDown(() => DB().colorSettings = previousColorSettings);
+
+    final ColorSettings lightTheme = AppTheme.colorThemes[ColorTheme.light]!;
+    final ColorSettings darkTheme = AppTheme.colorThemes[ColorTheme.dark]!;
+    DB().colorSettings = lightTheme.copyWith(
+      drawerColor: Colors.pink,
+      drawerTextColor: Colors.orange,
+      mainToolbarBackgroundColor: Colors.red,
+      mainToolbarIconColor: Colors.green,
+      navigationToolbarBackgroundColor: Colors.yellow,
+      navigationToolbarIconColor: Colors.blue,
+      analysisToolbarBackgroundColor: Colors.purple,
+      analysisToolbarIconColor: Colors.cyan,
+      annotationToolbarBackgroundColor: Colors.brown,
+      annotationToolbarIconColor: Colors.teal,
+    );
+
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: AppTheme.lightThemeData,
+        localizationsDelegates: sanmillLocalizationsDelegates,
+        supportedLocales: S.supportedLocales,
+        locale: const Locale('en'),
+        home: const AppearanceSettingsPage(),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.tap(
+      find.byKey(const Key('color_settings_card_theme_settings_list_tile')),
+    );
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const Key('theme_preview_dark')));
+    await tester.pumpAndSettle();
+
+    final ColorSettings updated = DB().colorSettings;
+    expect(updated.boardLineColor, darkTheme.boardLineColor);
+    expect(updated.boardBackgroundColor, darkTheme.boardBackgroundColor);
+    expect(updated.whitePieceColor, darkTheme.whitePieceColor);
+    expect(updated.blackPieceColor, darkTheme.blackPieceColor);
+    expect(updated.pieceHighlightColor, darkTheme.pieceHighlightColor);
+    expect(
+      updated.capturablePieceHighlightColor,
+      darkTheme.capturablePieceHighlightColor,
+    );
+    expect(updated.messageColor, darkTheme.messageColor);
+    expect(updated.drawerColor, Colors.pink);
+    expect(updated.drawerTextColor, Colors.orange);
+    expect(updated.mainToolbarBackgroundColor, Colors.red);
+    expect(updated.mainToolbarIconColor, Colors.green);
+    expect(updated.navigationToolbarBackgroundColor, Colors.yellow);
+    expect(updated.navigationToolbarIconColor, Colors.blue);
+    expect(updated.analysisToolbarBackgroundColor, Colors.purple);
+    expect(updated.analysisToolbarIconColor, Colors.cyan);
+    expect(updated.annotationToolbarBackgroundColor, Colors.brown);
+    expect(updated.annotationToolbarIconColor, Colors.teal);
+    expect(
+      find.descendant(
+        of: find.byKey(
+          const Key('color_settings_card_theme_settings_list_tile'),
+        ),
+        matching: find.text('Dark'),
+      ),
+      findsOneWidget,
+    );
+  });
+
   testWidgets(
     'Appearance piece set uses full-screen selector',
     (WidgetTester tester) async {
