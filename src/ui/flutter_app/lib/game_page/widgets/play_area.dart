@@ -1219,6 +1219,7 @@ class PlayAreaState extends State<PlayArea> {
   Widget _buildHumanAiMainContent({
     required BuildContext context,
     required Widget? humanDatabaseStatsStrip,
+    required bool showPieceCountRows,
   }) {
     return SizedBox(
       key: const Key('play_area_human_ai_main_content'),
@@ -1245,7 +1246,15 @@ class PlayAreaState extends State<PlayArea> {
                 isRobot: true,
               ),
               ?humanDatabaseStatsStrip,
+              if (showPieceCountRows)
+                _isBoardFlipped
+                    ? _buildRemovedPieceCountRow()
+                    : _buildPieceCountRow(),
               _buildBoardScreenshot(),
+              if (showPieceCountRows)
+                _isBoardFlipped
+                    ? _buildPieceCountRow()
+                    : _buildRemovedPieceCountRow(),
               const _HumanAiPlayerPanel(
                 key: Key('play_area_human_ai_player_panel'),
                 isRobot: false,
@@ -1330,6 +1339,7 @@ class PlayAreaState extends State<PlayArea> {
     required BuildContext context,
     required BoxConstraints constraints,
     required Widget? humanDatabaseStatsStrip,
+    required bool showPieceCountRows,
   }) {
     assert(
       constraints.hasBoundedHeight,
@@ -1339,6 +1349,7 @@ class PlayAreaState extends State<PlayArea> {
     const double horizontalPadding = AppStyles.bodyPadding;
     const double verticalPadding = 8;
     const double gap = AppStyles.bodyPadding;
+    const double pieceRowHeight = 24;
     final double availableWidth = math.max(
       0,
       viewport.width - horizontalPadding * 2,
@@ -1348,12 +1359,16 @@ class PlayAreaState extends State<PlayArea> {
       viewport.height - verticalPadding * 2,
     );
     const double targetSidePanelWidth = 280;
+    final double boardHeightAllowance = math.max(
+      0,
+      availableHeight - (showPieceCountRows ? pieceRowHeight * 2 : 0),
+    );
     final double boardWidthWithPanel = math.max(
       0,
       availableWidth - targetSidePanelWidth - gap,
     );
     final double boardSize = math.min(
-      availableHeight,
+      boardHeightAllowance,
       boardWidthWithPanel > 0 ? boardWidthWithPanel : availableWidth * 0.58,
     );
 
@@ -1372,10 +1387,33 @@ class PlayAreaState extends State<PlayArea> {
           ),
           child: Row(
             children: <Widget>[
-              SizedBox.square(
+              SizedBox(
                 key: const Key('play_area_human_ai_landscape_board_pane'),
-                dimension: boardSize,
-                child: _buildBoardScreenshot(),
+                width: boardSize,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    if (showPieceCountRows)
+                      SizedBox(
+                        height: pieceRowHeight,
+                        child: _isBoardFlipped
+                            ? _buildRemovedPieceCountRow()
+                            : _buildPieceCountRow(),
+                      ),
+                    SizedBox.square(
+                      key: const Key('play_area_human_ai_landscape_board'),
+                      dimension: boardSize,
+                      child: _buildBoardScreenshot(),
+                    ),
+                    if (showPieceCountRows)
+                      SizedBox(
+                        height: pieceRowHeight,
+                        child: _isBoardFlipped
+                            ? _buildPieceCountRow()
+                            : _buildRemovedPieceCountRow(),
+                      ),
+                  ],
+                ),
               ),
               const SizedBox(width: gap),
               Expanded(
@@ -1591,9 +1629,7 @@ class PlayAreaState extends State<PlayArea> {
         final bool usesLichessHumanAiToolbar =
             _usesLichessHumanAiToolbar && !isSetupPosition && !isPuzzle;
         final bool showPieceCountRows =
-            DB().displaySettings.isUnplacedAndRemovedPiecesShown &&
-            !(Constants.isSmallScreen(context) == true &&
-                DB().ruleSettings.piecesCount > 9);
+            DB().displaySettings.isUnplacedAndRemovedPiecesShown;
 
         // Human vs AI mirrors the Lichess offline-computer screen: one
         // bottom bar with menu, takeback, resign, and hint. Other game modes
@@ -1611,6 +1647,7 @@ class PlayAreaState extends State<PlayArea> {
             context: context,
             constraints: constraints,
             humanDatabaseStatsStrip: humanDatabaseStatsStrip,
+            showPieceCountRows: showPieceCountRows,
           );
         }
         final bool useRegularLandscapeLayout =
@@ -1637,6 +1674,7 @@ class PlayAreaState extends State<PlayArea> {
               ? _buildHumanAiMainContent(
                   context: context,
                   humanDatabaseStatsStrip: humanDatabaseStatsStrip,
+                  showPieceCountRows: showPieceCountRows,
                 )
               : SafeArea(
                   top:

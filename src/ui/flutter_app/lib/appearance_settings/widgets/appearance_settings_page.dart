@@ -20,7 +20,6 @@ import '../../../../shared/widgets/settings/settings.dart';
 import '../../game_page/services/mill.dart';
 import '../../generated/assets/assets.gen.dart';
 import '../../generated/intl/l10n.dart';
-import '../../shared/config/constants.dart';
 import '../../shared/database/database.dart';
 import '../../shared/services/language_locale_mapping.dart';
 import '../../shared/services/logger.dart';
@@ -895,17 +894,15 @@ class AppearanceSettingsPage extends StatelessWidget {
                   .copyWith(isPieceCountInHandShown: val),
               titleString: strings.isPieceCountInHandShown,
             ),
-            if (!(Constants.isSmallScreen(context) == true &&
-                DB().ruleSettings.piecesCount > 9))
-              SettingsListTile.switchTile(
-                key: const Key(
-                  'display_settings_card_unplaced_removed_pieces_shown_switch_tile',
-                ),
-                value: displaySettings.isUnplacedAndRemovedPiecesShown,
-                onChanged: (bool val) => DB().displaySettings = displaySettings
-                    .copyWith(isUnplacedAndRemovedPiecesShown: val),
-                titleString: strings.isUnplacedAndRemovedPiecesShown,
+            SettingsListTile.switchTile(
+              key: const Key(
+                'display_settings_card_unplaced_removed_pieces_shown_switch_tile',
               ),
+              value: displaySettings.isUnplacedAndRemovedPiecesShown,
+              onChanged: (bool val) => DB().displaySettings = displaySettings
+                  .copyWith(isUnplacedAndRemovedPiecesShown: val),
+              titleString: strings.isUnplacedAndRemovedPiecesShown,
+            ),
             SettingsListTile(
               key: const Key(
                 'display_settings_card_board_corner_radius_settings_list_tile',

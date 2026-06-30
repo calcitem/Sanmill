@@ -608,22 +608,33 @@ void main() {
       find.byKey(const Key('play_area_human_ai_player_title')),
       findsOneWidget,
     );
-    expect(find.byKey(const Key('play_area_piece_count_row')), findsNothing);
-    expect(
-      find.byKey(const Key('play_area_removed_piece_count_row')),
-      findsNothing,
+    final Finder pieceCountRow = find.byKey(
+      const Key('play_area_piece_count_row'),
     );
+    final Finder removedPieceCountRow = find.byKey(
+      const Key('play_area_removed_piece_count_row'),
+    );
+    expect(pieceCountRow, findsOneWidget);
+    expect(removedPieceCountRow, findsOneWidget);
     expect(
       tester.getTopLeft(humanAiMoveList).dy,
       lessThan(tester.getTopLeft(robotPanel).dy),
     );
     expect(
       tester.getTopLeft(robotPanel).dy,
+      lessThan(tester.getTopLeft(pieceCountRow).dy),
+    );
+    expect(
+      tester.getTopLeft(pieceCountRow).dy,
       lessThan(tester.getTopLeft(board).dy),
     );
     expect(
+      tester.getTopLeft(board).dy,
+      lessThan(tester.getTopLeft(removedPieceCountRow).dy),
+    );
+    expect(
       tester.getTopLeft(playerPanel).dy,
-      greaterThan(tester.getTopLeft(board).dy),
+      greaterThan(tester.getTopLeft(removedPieceCountRow).dy),
     );
 
     await tester.tap(find.byKey(const Key('play_area_bottom_bar_menu')));
@@ -736,6 +747,41 @@ void main() {
     expect(boardOrientation.quarterTurns, 2);
     expect(find.byKey(const Key('play_area_human_ai_robot_panel')), findsOne);
     expect(find.byKey(const Key('play_area_human_ai_player_panel')), findsOne);
+  });
+
+  testWidgets('human vs ai hides piece rows when the display switch is off', (
+    WidgetTester tester,
+  ) async {
+    db.generalSettings = const GeneralSettings();
+    db.displaySettings = const DisplaySettings(
+      isUnplacedAndRemovedPiecesShown: false,
+      isHistoryNavigationToolbarShown: false,
+    );
+    GameController().gameInstance.gameMode = GameMode.humanVsAi;
+
+    await tester.binding.setSurfaceSize(const Size(390, 844));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+
+    await tester.pumpWidget(
+      _localizedApp(
+        const Scaffold(
+          body: PlayArea(
+            boardImage: null,
+            child: SizedBox.square(
+              key: Key('test_board_square'),
+              dimension: 390,
+            ),
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.byKey(const Key('play_area_piece_count_row')), findsNothing);
+    expect(
+      find.byKey(const Key('play_area_removed_piece_count_row')),
+      findsNothing,
+    );
   });
 
   testWidgets('human vs ai move list uses a horizontal lichess layout', (
