@@ -13,7 +13,8 @@ import 'package:native_screenshot_widget/native_screenshot_widget.dart';
 
 import '../../experience_recording/models/recording_models.dart';
 import '../../experience_recording/services/recording_service.dart';
-import '../../game_platform/game_session.dart' show GameAction, PlayerSeat;
+import '../../game_platform/game_session.dart'
+    show GameAction, GameSession, PlayerSeat;
 import '../../game_shell/game_session_scope.dart';
 import '../../games/mill/mill_action_codec.dart';
 import '../../games/mill/mill_board_transform_actions.dart';
@@ -299,6 +300,33 @@ class PlayAreaState extends State<PlayArea> {
         builder: (BuildContext context) => const MovesListPage(),
       ),
     );
+  }
+
+  Future<void> _applyAnalysisMove(BuildContext context, String move) async {
+    final GameSession? session = GameSessionScope.sessionOf(context);
+    assert(session != null, 'Analysis move application requires a session.');
+    if (session == null) {
+      return;
+    }
+
+    GameAction? selectedAction;
+    for (final GameAction action in session.legalActions) {
+      if (MillActionCodec.moveStringFrom(action) == move) {
+        selectedAction = action;
+        break;
+      }
+    }
+
+    assert(
+      selectedAction != null,
+      'Analysis move "$move" must be legal in the active session.',
+    );
+    if (selectedAction == null) {
+      return;
+    }
+
+    AnalysisMode.disable();
+    await session.apply(selectedAction);
   }
 
   bool get _shouldShowAiChatMenuAction {
@@ -1535,6 +1563,136 @@ class PlayAreaState extends State<PlayArea> {
     );
   }
 
+  Widget _buildAnalysisMainContent({
+    required BuildContext context,
+    required bool showPieceCountRows,
+  }) {
+    return SafeArea(
+      top: MediaQuery.of(context).orientation == Orientation.portrait,
+      bottom: false,
+      right: false,
+      left: false,
+      child: LayoutBuilder(
+        builder: (BuildContext context, BoxConstraints constraints) {
+          final double maxHeight = constraints.hasBoundedHeight
+              ? constraints.maxHeight
+              : MediaQuery.sizeOf(context).height;
+          const double engineLinesReserve = 74;
+          const double tabPanelMinHeight = 174;
+          final double pieceRowsHeight = showPieceCountRows
+              ? 48
+              : AppTheme.boardMargin * 2;
+          final double boardSize = math.min(
+            constraints.maxWidth,
+            math.max(
+              160,
+              maxHeight -
+                  engineLinesReserve -
+                  tabPanelMinHeight -
+                  pieceRowsHeight,
+            ),
+          );
+
+          return Column(
+            key: const Key('play_area_analysis_column'),
+            children: <Widget>[
+              _buildAnalysisEngineLines(context),
+              if (showPieceCountRows)
+                _isBoardFlipped
+                    ? _buildRemovedPieceCountRow()
+                    : _buildPieceCountRow()
+              else
+                const SizedBox(height: AppTheme.boardMargin),
+              SizedBox.square(
+                key: const Key('play_area_analysis_board'),
+                dimension: boardSize,
+                child: _buildBoardScreenshot(),
+              ),
+              if (showPieceCountRows)
+                _isBoardFlipped
+                    ? _buildPieceCountRow()
+                    : _buildRemovedPieceCountRow()
+              else
+                const SizedBox(height: AppTheme.boardMargin),
+              Expanded(child: _buildAnalysisTabs(context)),
+            ],
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildAnalysisTabs(BuildContext context) {
+    final GameSession? session = GameSessionScope.sessionOf(context);
+    return _AnalysisPanel(
+      explorer: OpeningExplorerPage(
+        session: session,
+        startFromSession: true,
+        embedded: true,
+        showBoard: false,
+      ),
+      moves: _InlineMoveList(
+        key: const Key('play_area_analysis_moves'),
+        wrapKey: const Key('play_area_analysis_moves_wrap'),
+        roundKeyPrefix: 'play_area_analysis_round_',
+        moveKeyPrefix: 'play_area_analysis_move_',
+        onMoveTap: (BuildContext context, PgnNode<ExtMove> node) {
+          return HistoryNavigator.gotoNode(context, node, pop: false);
+        },
+        showMovePreview: true,
+        layout: _InlineMoveListLayout.stacked,
+        groupByRound: true,
+      ),
+    );
+  }
+
+  Widget _buildAnalysisEngineLines(BuildContext context) {
+    return ValueListenableBuilder<bool>(
+      key: const Key('play_area_analysis_engine_lines_builder'),
+      valueListenable: AnalysisMode.stateNotifier,
+      builder: (BuildContext context, _, _) {
+        if (AnalysisMode.isAnalyzing) {
+          final Color color = DB().colorSettings.messageColor;
+          return Padding(
+            key: const Key('play_area_analysis_engine_lines_loading'),
+            padding: const EdgeInsets.fromLTRB(12, 4, 12, 6),
+            child: Row(
+              children: <Widget>[
+                SizedBox.square(
+                  dimension: 16,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2,
+                    color: color,
+                  ),
+                ),
+                const SizedBox(width: 10),
+                Text(
+                  S.of(context).analyzing,
+                  style: Theme.of(
+                    context,
+                  ).textTheme.bodySmall?.copyWith(color: color),
+                ),
+              ],
+            ),
+          );
+        }
+
+        final List<MoveAnalysisResult> results = AnalysisMode.analysisResults;
+        if (!AnalysisMode.isFullAnalysis || results.isEmpty) {
+          return const SizedBox.shrink(
+            key: Key('play_area_analysis_engine_lines_empty'),
+          );
+        }
+
+        return _AnalysisEngineLines(
+          key: const Key('play_area_analysis_engine_lines'),
+          results: results.take(3).toList(growable: false),
+          onMoveTap: (String move) => _applyAnalysisMove(context, move),
+        );
+      },
+    );
+  }
+
   Widget _buildRegularMainContent({
     required BuildContext context,
     required bool isSetupPosition,
@@ -1651,6 +1809,109 @@ class PlayAreaState extends State<PlayArea> {
             ),
           );
         },
+      ),
+    );
+  }
+
+  Widget _buildAnalysisLandscapeContent({
+    required BuildContext context,
+    required BoxConstraints constraints,
+    required bool showPieceCountRows,
+  }) {
+    assert(
+      constraints.hasBoundedHeight,
+      'Analysis landscape layout requires bounded height.',
+    );
+    final Size viewport = constraints.biggest;
+    const double horizontalPadding = AppStyles.bodyPadding;
+    const double verticalPadding = 8;
+    const double gap = AppStyles.bodyPadding;
+    const double pieceRowHeight = 24;
+    final double availableWidth = math.max(
+      0,
+      viewport.width - horizontalPadding * 2,
+    );
+    final double availableHeight = math.max(
+      0,
+      viewport.height - kLichessBottomBarHeight - verticalPadding * 2,
+    );
+    final double boardHeightAllowance = math.max(
+      0,
+      availableHeight - (showPieceCountRows ? pieceRowHeight * 2 : 0),
+    );
+    final double boardSize = math.min(
+      boardHeightAllowance,
+      math.max(0, availableWidth * 0.52),
+    );
+
+    return SizedBox(
+      key: const Key('play_area_analysis_landscape_content'),
+      width: viewport.width,
+      height: viewport.height,
+      child: SafeArea(
+        bottom: false,
+        right: false,
+        left: false,
+        child: Column(
+          children: <Widget>[
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: horizontalPadding,
+                  vertical: verticalPadding,
+                ),
+                child: Row(
+                  children: <Widget>[
+                    SizedBox(
+                      key: const Key('play_area_analysis_landscape_board_pane'),
+                      width: boardSize,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          if (showPieceCountRows)
+                            SizedBox(
+                              height: pieceRowHeight,
+                              child: _isBoardFlipped
+                                  ? _buildRemovedPieceCountRow()
+                                  : _buildPieceCountRow(),
+                            ),
+                          SizedBox.square(
+                            key: const Key(
+                              'play_area_analysis_landscape_board',
+                            ),
+                            dimension: boardSize,
+                            child: _buildBoardScreenshot(),
+                          ),
+                          if (showPieceCountRows)
+                            SizedBox(
+                              height: pieceRowHeight,
+                              child: _isBoardFlipped
+                                  ? _buildPieceCountRow()
+                                  : _buildRemovedPieceCountRow(),
+                            ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(width: gap),
+                    Expanded(
+                      child: Column(
+                        key: const Key(
+                          'play_area_analysis_landscape_side_panel',
+                        ),
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: <Widget>[
+                          _buildAnalysisEngineLines(context),
+                          Expanded(child: _buildAnalysisTabs(context)),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            _buildRegularBottomBar(context),
+          ],
+        ),
       ),
     );
   }
@@ -1985,6 +2246,7 @@ class PlayAreaState extends State<PlayArea> {
         // interface clean; the PuzzlePage provides its own puzzle controls.
         final bool isPuzzle =
             GameController().gameInstance.gameMode == GameMode.puzzle;
+        final bool isAnalysisMode = _isAnalysisMode;
         final bool usesLichessHumanAiToolbar =
             _usesLichessHumanAiToolbar && !isSetupPosition && !isPuzzle;
         final bool showPieceCountRows =
@@ -1997,7 +2259,9 @@ class PlayAreaState extends State<PlayArea> {
           context,
         );
         final Widget? bottomHumanDatabaseStatsStrip =
-            !isSetupPosition && !isPuzzle ? humanDatabaseStatsStrip : null;
+            !isSetupPosition && !isPuzzle && !isAnalysisMode
+            ? humanDatabaseStatsStrip
+            : null;
         final bool useHumanAiLandscapeLayout =
             usesLichessHumanAiToolbar &&
             constraints.hasBoundedHeight &&
@@ -2011,8 +2275,21 @@ class PlayAreaState extends State<PlayArea> {
             showPieceCountRows: showPieceCountRows,
           );
         }
+        final bool useAnalysisLandscapeLayout =
+            isAnalysisMode &&
+            constraints.hasBoundedHeight &&
+            constraints.maxWidth > constraints.maxHeight;
+
+        if (useAnalysisLandscapeLayout) {
+          return _buildAnalysisLandscapeContent(
+            context: context,
+            constraints: constraints,
+            showPieceCountRows: showPieceCountRows,
+          );
+        }
         final bool useRegularLandscapeLayout =
             !usesLichessHumanAiToolbar &&
+            !isAnalysisMode &&
             !isSetupPosition &&
             !isPuzzle &&
             constraints.hasBoundedHeight &&
@@ -2033,6 +2310,11 @@ class PlayAreaState extends State<PlayArea> {
           width: dimension,
           child: usesLichessHumanAiToolbar
               ? _buildHumanAiMainContent(
+                  context: context,
+                  showPieceCountRows: showPieceCountRows,
+                )
+              : isAnalysisMode
+              ? _buildAnalysisMainContent(
                   context: context,
                   showPieceCountRows: showPieceCountRows,
                 )
@@ -2802,6 +3084,165 @@ class _HumanAiPlayerPanel extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _AnalysisPanel extends StatelessWidget {
+  const _AnalysisPanel({required this.explorer, required this.moves});
+
+  final Widget explorer;
+  final Widget moves;
+
+  @override
+  Widget build(BuildContext context) {
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+    final S strings = S.of(context);
+
+    return DefaultTabController(
+      length: 2,
+      child: DecoratedBox(
+        key: const Key('play_area_analysis_panel'),
+        decoration: BoxDecoration(color: colorScheme.surfaceContainerLowest),
+        child: Column(
+          children: <Widget>[
+            Material(
+              color: colorScheme.surface,
+              child: TabBar(
+                key: const Key('play_area_analysis_tabs'),
+                tabs: <Widget>[
+                  Tab(
+                    icon: Icon(
+                      Icons.explore_outlined,
+                      semanticLabel: strings.openingExplorer,
+                    ),
+                  ),
+                  Tab(
+                    icon: Icon(
+                      Icons.account_tree_outlined,
+                      semanticLabel: strings.moveList,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Expanded(
+              child: TabBarView(
+                key: const Key('play_area_analysis_tab_view'),
+                children: <Widget>[explorer, moves],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _AnalysisEngineLines extends StatelessWidget {
+  const _AnalysisEngineLines({
+    super.key,
+    required this.results,
+    required this.onMoveTap,
+  });
+
+  final List<MoveAnalysisResult> results;
+  final Future<void> Function(String move) onMoveTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(8, 4, 8, 6),
+      child: Column(
+        key: const Key('play_area_analysis_engine_lines_column'),
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          for (final (int index, MoveAnalysisResult result) in results.indexed)
+            _AnalysisEngineLine(
+              key: Key('play_area_analysis_engine_line_$index'),
+              result: result,
+              onTap: () => unawaited(onMoveTap(result.move)),
+            ),
+        ],
+      ),
+    );
+  }
+}
+
+class _AnalysisEngineLine extends StatelessWidget {
+  const _AnalysisEngineLine({
+    super.key,
+    required this.result,
+    required this.onTap,
+  });
+
+  final MoveAnalysisResult result;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+    final ColorScheme colorScheme = theme.colorScheme;
+    final Color outcomeColor = AnalysisMode.getColorForOutcome(result.outcome);
+    final Color chipTextColor =
+        ThemeData.estimateBrightnessForColor(outcomeColor) == Brightness.dark
+        ? Colors.white
+        : Colors.black;
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 1),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(AppStyles.compactRadius),
+        onTap: onTap,
+        child: Container(
+          constraints: const BoxConstraints(minHeight: 24),
+          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+          decoration: BoxDecoration(
+            color: colorScheme.surfaceContainerHighest.withValues(alpha: 0.75),
+            borderRadius: BorderRadius.circular(AppStyles.compactRadius),
+          ),
+          child: Row(
+            children: <Widget>[
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                decoration: BoxDecoration(
+                  color: outcomeColor,
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                child: Text(
+                  result.outcome.name,
+                  style: theme.textTheme.labelSmall?.copyWith(
+                    color: chipTextColor,
+                    fontWeight: FontWeight.w700,
+                    letterSpacing: 0,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 8),
+              Text(
+                result.move,
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: colorScheme.onSurface,
+                  fontWeight: FontWeight.w700,
+                  letterSpacing: 0,
+                ),
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  result.outcome.displayString,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: colorScheme.onSurfaceVariant,
+                    letterSpacing: 0,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

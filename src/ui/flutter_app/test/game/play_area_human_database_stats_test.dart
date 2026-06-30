@@ -22,6 +22,7 @@ import 'package:sanmill/games/mill/native_mill_game_session.dart';
 import 'package:sanmill/general_settings/models/general_settings.dart';
 import 'package:sanmill/generated/intl/l10n.dart';
 import 'package:sanmill/shared/database/database.dart';
+import 'package:sanmill/shared/themes/app_theme.dart';
 import 'package:sanmill/shared/utils/localizations/sanmill_localizations.dart';
 import 'package:sanmill/shared/widgets/lichess_bottom_bar.dart';
 import 'package:sanmill/shared/widgets/snackbars/scaffold_messenger.dart';
@@ -988,6 +989,10 @@ void main() {
     );
     await tester.pumpAndSettle();
 
+    expect(find.byKey(const Key('play_area_analysis_board')), findsOne);
+    expect(find.byKey(const Key('play_area_analysis_panel')), findsOne);
+    expect(find.byKey(const Key('play_area_analysis_tabs')), findsOne);
+    expect(find.byKey(const Key('opening_explorer_embedded')), findsOne);
     expect(find.byKey(const Key('play_area_main_toolbar_bottom')), findsOne);
     expect(
       find.byKey(const Key('play_area_regular_bottom_bar_menu')),
@@ -1982,6 +1987,7 @@ void main() {
 
 Widget _localizedApp(Widget child) => MaterialApp(
   scaffoldMessengerKey: rootScaffoldMessengerKey,
+  theme: AppTheme.lightThemeData,
   localizationsDelegates: sanmillLocalizationsDelegates,
   supportedLocales: S.supportedLocales,
   locale: const Locale('en'),

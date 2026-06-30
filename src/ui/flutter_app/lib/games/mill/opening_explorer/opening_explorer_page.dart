@@ -43,10 +43,14 @@ class OpeningExplorerPage extends StatefulWidget {
     super.key,
     this.session,
     this.startFromSession = false,
+    this.embedded = false,
+    this.showBoard = true,
   });
 
   final GameSession? session;
   final bool startFromSession;
+  final bool embedded;
+  final bool showBoard;
 
   @override
   State<OpeningExplorerPage> createState() => _OpeningExplorerPageState();
@@ -328,6 +332,41 @@ class _OpeningExplorerPageState extends State<OpeningExplorerPage> {
   Widget build(BuildContext context) {
     final S strings = S.of(context);
     final NativeMillGameSession? session = _explorerSession;
+    final Widget body = session != null
+        ? ValueListenableBuilder<GameStateSnapshot>(
+            valueListenable: session.state,
+            builder:
+                (BuildContext context, GameStateSnapshot _, Widget? child) {
+                  return FutureBuilder<void>(
+                    future: _openingBookLoad,
+                    builder: (BuildContext context, AsyncSnapshot<void> _) {
+                      final _OpeningExplorerSnapshot snapshot =
+                          _OpeningExplorerSnapshot.fromSession(
+                            session: session,
+                            ruleSettings: DB().ruleSettings,
+                            generalSettings: DB().generalSettings,
+                            placementMoves: _currentPlacementMoves(),
+                          );
+                      return _OpeningExplorerContent(
+                        session: session,
+                        snapshot: snapshot,
+                        tapController: _tapController,
+                        onMoveSelected: _applyExplorerAction,
+                        onPositionChanged: _recordExplorerPositionChange,
+                        showBoard: widget.showBoard,
+                      );
+                    },
+                  );
+                },
+          )
+        : _OpeningExplorerMessage(message: strings.openingExplorerUnavailable);
+
+    if (widget.embedded) {
+      return KeyedSubtree(
+        key: const Key('opening_explorer_embedded'),
+        child: body,
+      );
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -363,35 +402,7 @@ class _OpeningExplorerPageState extends State<OpeningExplorerPage> {
                     );
                   },
             ),
-      body: session != null
-          ? ValueListenableBuilder<GameStateSnapshot>(
-              valueListenable: session.state,
-              builder:
-                  (BuildContext context, GameStateSnapshot _, Widget? child) {
-                    return FutureBuilder<void>(
-                      future: _openingBookLoad,
-                      builder: (BuildContext context, AsyncSnapshot<void> _) {
-                        final _OpeningExplorerSnapshot snapshot =
-                            _OpeningExplorerSnapshot.fromSession(
-                              session: session,
-                              ruleSettings: DB().ruleSettings,
-                              generalSettings: DB().generalSettings,
-                              placementMoves: _currentPlacementMoves(),
-                            );
-                        return _OpeningExplorerContent(
-                          session: session,
-                          snapshot: snapshot,
-                          tapController: _tapController,
-                          onMoveSelected: _applyExplorerAction,
-                          onPositionChanged: _recordExplorerPositionChange,
-                        );
-                      },
-                    );
-                  },
-            )
-          : _OpeningExplorerMessage(
-              message: strings.openingExplorerUnavailable,
-            ),
+      body: body,
     );
   }
 }
@@ -491,6 +502,7 @@ class _OpeningExplorerContent extends StatelessWidget {
     required this.tapController,
     required this.onMoveSelected,
     required this.onPositionChanged,
+    required this.showBoard,
   });
 
   final NativeMillGameSession session;
@@ -498,6 +510,7 @@ class _OpeningExplorerContent extends StatelessWidget {
   final MillSessionTapController tapController;
   final ValueChanged<GameAction> onMoveSelected;
   final _OpeningExplorerPositionChanged onPositionChanged;
+  final bool showBoard;
 
   @override
   Widget build(BuildContext context) {
@@ -508,6 +521,16 @@ class _OpeningExplorerContent extends StatelessWidget {
           final bool useSideBySide =
               constraints.maxWidth >= 720 &&
               constraints.maxWidth > constraints.maxHeight;
+          if (!showBoard) {
+            return KeyedSubtree(
+              key: const Key('opening_explorer_list'),
+              child: ListView(
+                key: const Key('opening_explorer_data_pane'),
+                padding: const EdgeInsets.only(top: 8, bottom: 16),
+                children: _buildDataSections(context),
+              ),
+            );
+          }
           final Widget content = useSideBySide
               ? Row(
                   children: <Widget>[
