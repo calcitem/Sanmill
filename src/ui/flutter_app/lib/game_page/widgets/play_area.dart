@@ -759,17 +759,18 @@ class PlayAreaState extends State<PlayArea> {
     GameController().gameResultNotifier.showResult(force: true);
   }
 
-  void _showRegularGameMenu(BuildContext context) {
+  void _showRegularGameMenu() {
     assert(!_usesLichessHumanAiToolbar);
+    final BuildContext hostContext = context;
     showLichessActionSheet<void>(
-      context: context,
+      context: hostContext,
       sheetKey: const Key('play_area_regular_game_menu_sheet'),
       actions: <LichessActionSheetAction>[
         LichessActionSheetAction(
           key: const Key('play_area_regular_game_menu_flip_board'),
           leading: const Icon(Icons.flip_camera_android_outlined),
           makeLabel: (BuildContext context) => Text(S.of(context).flipBoard),
-          onPressed: () => _toggleBoardFlipped(context),
+          onPressed: () => _toggleBoardFlipped(hostContext),
         ),
         LichessActionSheetAction(
           key: const Key('play_area_regular_game_menu_board_orientation'),
@@ -778,7 +779,7 @@ class PlayAreaState extends State<PlayArea> {
           makeLabel: (BuildContext context) =>
               Text(S.of(context).boardOrientation),
           onPressed: () => _showBoardTransformSheet(
-            context,
+            hostContext,
             sheetKey: const Key('play_area_regular_board_transform_sheet'),
             keyPrefix: 'play_area_regular_board_transform',
           ),
@@ -788,20 +789,23 @@ class PlayAreaState extends State<PlayArea> {
           leading: const Icon(Icons.analytics_outlined),
           makeLabel: (BuildContext context) => Text(S.of(context).analysis),
           onPressed: () => unawaited(
-            _openAnalysisPanelFromBottomBar(context, toolbar: 'regularBottom'),
+            _openAnalysisPanelFromBottomBar(
+              hostContext,
+              toolbar: 'regularBottom',
+            ),
           ),
         ),
         LichessActionSheetAction(
           key: const Key('play_area_toolbar_item_game'),
           leading: const Icon(Icons.add_circle_outline),
           makeLabel: (BuildContext context) => Text(S.of(context).newGame),
-          onPressed: () => _openGameOptions(context),
+          onPressed: () => _openGameOptions(hostContext),
         ),
         LichessActionSheetAction(
           key: const Key('play_area_toolbar_item_move'),
           leading: const Icon(Icons.format_list_numbered),
           makeLabel: (BuildContext context) => Text(S.of(context).moveList),
-          onPressed: () => _openMoves(context),
+          onPressed: () => _openMoves(hostContext),
         ),
         if (_shouldShowMoveNowMenuAction)
           LichessActionSheetAction(
@@ -809,7 +813,7 @@ class PlayAreaState extends State<PlayArea> {
             leading: const Icon(FluentIcons.play_24_regular),
             makeLabel: (BuildContext context) => Text(S.of(context).moveNow),
             onPressed: () => unawaited(
-              _moveNowFromGameMenu(context, toolbar: 'regularBottom'),
+              _moveNowFromGameMenu(hostContext, toolbar: 'regularBottom'),
             ),
           ),
         if (_shouldShowAiChatMenuAction)
@@ -818,7 +822,7 @@ class PlayAreaState extends State<PlayArea> {
             leading: const Icon(FluentIcons.chat_24_regular),
             makeLabel: (BuildContext context) =>
                 Text(S.of(context).aiChatButtonTooltip),
-            onPressed: () => _showAiChatDialog(context),
+            onPressed: () => _showAiChatDialog(hostContext),
           ),
         if (_isRegularGameOver)
           LichessActionSheetAction(
@@ -832,35 +836,37 @@ class PlayAreaState extends State<PlayArea> {
             key: const Key('play_area_regular_game_menu_resign'),
             leading: const Icon(CupertinoIcons.flag),
             makeLabel: (BuildContext context) => Text(S.of(context).resign),
-            onPressed: () => unawaited(_showRegularResignConfirmation(context)),
+            onPressed: () =>
+                unawaited(_showRegularResignConfirmation(hostContext)),
           ),
         LichessActionSheetAction(
           key: const Key('play_area_toolbar_item_options'),
           leading: const Icon(Icons.settings_outlined),
           makeLabel: (BuildContext context) => Text(S.of(context).options),
-          onPressed: () => _navigateToSettings(context),
+          onPressed: () => _navigateToSettings(hostContext),
         ),
         LichessActionSheetAction(
           key: const Key('play_area_toolbar_item_info'),
           leading: const Icon(Icons.info_outline),
           makeLabel: (BuildContext context) => Text(S.of(context).info),
-          onPressed: () => _openDialog(context, const InfoDialog()),
+          onPressed: () => _openDialog(hostContext, const InfoDialog()),
         ),
       ],
     );
   }
 
-  void _showHumanAiGameMenu(BuildContext context) {
+  void _showHumanAiGameMenu() {
     assert(_usesLichessHumanAiToolbar);
+    final BuildContext hostContext = context;
     showLichessActionSheet<void>(
-      context: context,
+      context: hostContext,
       sheetKey: const Key('play_area_game_menu_sheet'),
       actions: <LichessActionSheetAction>[
         LichessActionSheetAction(
           key: const Key('play_area_game_menu_flip_board'),
           leading: const Icon(Icons.flip_camera_android_outlined),
           makeLabel: (BuildContext context) => Text(S.of(context).flipBoard),
-          onPressed: () => _toggleBoardFlipped(context),
+          onPressed: () => _toggleBoardFlipped(hostContext),
         ),
         LichessActionSheetAction(
           key: const Key('play_area_game_menu_board_orientation'),
@@ -869,7 +875,7 @@ class PlayAreaState extends State<PlayArea> {
           makeLabel: (BuildContext context) =>
               Text(S.of(context).boardOrientation),
           onPressed: () => _showBoardTransformSheet(
-            context,
+            hostContext,
             sheetKey: const Key('play_area_board_transform_sheet'),
             keyPrefix: 'play_area_board_transform',
           ),
@@ -879,14 +885,17 @@ class PlayAreaState extends State<PlayArea> {
           leading: const Icon(Icons.analytics_outlined),
           makeLabel: (BuildContext context) => Text(S.of(context).analysis),
           onPressed: () => unawaited(
-            _openAnalysisPanelFromBottomBar(context, toolbar: 'lichessBottom'),
+            _openAnalysisPanelFromBottomBar(
+              hostContext,
+              toolbar: 'lichessBottom',
+            ),
           ),
         ),
         LichessActionSheetAction(
           key: const Key('play_area_game_menu_move_list'),
           leading: const Icon(Icons.format_list_numbered),
           makeLabel: (BuildContext context) => Text(S.of(context).moveList),
-          onPressed: () => _openMoves(context),
+          onPressed: () => _openMoves(hostContext),
         ),
         if (_shouldShowMoveNowMenuAction)
           LichessActionSheetAction(
@@ -894,7 +903,7 @@ class PlayAreaState extends State<PlayArea> {
             leading: const Icon(FluentIcons.play_24_regular),
             makeLabel: (BuildContext context) => Text(S.of(context).moveNow),
             onPressed: () => unawaited(
-              _moveNowFromGameMenu(context, toolbar: 'lichessBottom'),
+              _moveNowFromGameMenu(hostContext, toolbar: 'lichessBottom'),
             ),
           ),
         if (_shouldShowAiChatMenuAction)
@@ -903,7 +912,7 @@ class PlayAreaState extends State<PlayArea> {
             leading: const Icon(FluentIcons.chat_24_regular),
             makeLabel: (BuildContext context) =>
                 Text(S.of(context).aiChatButtonTooltip),
-            onPressed: () => _showAiChatDialog(context),
+            onPressed: () => _showAiChatDialog(hostContext),
           ),
         if (_isHumanAiGameOver)
           LichessActionSheetAction(
@@ -917,13 +926,13 @@ class PlayAreaState extends State<PlayArea> {
             key: const Key('play_area_game_menu_resign'),
             leading: const Icon(CupertinoIcons.flag),
             makeLabel: (BuildContext context) => Text(S.of(context).resign),
-            onPressed: () => unawaited(_showResignConfirmation(context)),
+            onPressed: () => unawaited(_showResignConfirmation(hostContext)),
           ),
         LichessActionSheetAction(
           key: const Key('play_area_game_menu_new_game'),
           leading: const Icon(Icons.add_circle_outline),
           makeLabel: (BuildContext context) => Text(S.of(context).newGame),
-          onPressed: () => unawaited(_requestNewGameFromBottomBar(context)),
+          onPressed: () => unawaited(_requestNewGameFromBottomBar(hostContext)),
         ),
       ],
     );
@@ -1393,7 +1402,7 @@ class PlayAreaState extends State<PlayArea> {
                     valueListenable: AnalysisMode.stateNotifier,
                     builder: (BuildContext context, _, _) {
                       return _LichessGameBottomBar(
-                        onMenuPressed: () => _showHumanAiGameMenu(context),
+                        onMenuPressed: _showHumanAiGameMenu,
                         onResignOrResultPressed: _isHumanAiGameOver
                             ? _showHumanAiGameResult
                             : _canResignFromBottomBar
@@ -1421,7 +1430,7 @@ class PlayAreaState extends State<PlayArea> {
                         GameController().gameRecorder.moveCountNotifier,
                     builder: (BuildContext context, _, _) {
                       return _RegularGameBottomBar(
-                        onMenuPressed: () => _showRegularGameMenu(context),
+                        onMenuPressed: _showRegularGameMenu,
                         onPreviousPressed: _canStepBackFromRegularBottomBar
                             ? () => _stepBackFromRegularBottomBar(context)
                             : null,
