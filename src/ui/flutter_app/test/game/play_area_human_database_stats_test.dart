@@ -10,6 +10,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart' show Box;
 import 'package:sanmill/appearance_settings/models/color_settings.dart';
 import 'package:sanmill/appearance_settings/models/display_settings.dart';
+import 'package:sanmill/game_page/services/analysis/analysis_service.dart';
 import 'package:sanmill/game_page/services/analysis_mode.dart';
 import 'package:sanmill/game_page/services/mill.dart';
 import 'package:sanmill/game_page/services/player_timer.dart';
@@ -2087,12 +2088,11 @@ void main() {
       isHistoryNavigationToolbarShown: false,
       isPositionalAdvantageIndicatorShown: false,
     );
-    final NativeMillGameSession session = await _bindNativeGame(
-      GameMode.analysis,
-    );
+    final _RecordingAnalysisSession session = _RecordingAnalysisSession();
+    _bindExistingNativeGame(GameMode.analysis, session);
     AnalysisMode.enable(<MoveAnalysisResult>[
       const MoveAnalysisResult(move: 'd6', outcome: AnalysisOutcome.win),
-    ]);
+    ], source: AnalysisSource.engine);
 
     await _pumpSessionPlayArea(tester, session);
 
@@ -2129,6 +2129,7 @@ void main() {
       find.byKey(const Key('play_area_analysis_engine_lines')),
       findsNothing,
     );
+    expect(session.requestedMultiPvValues, isEmpty);
   });
 
   testWidgets('analysis settings sheet changes engine line count', (
@@ -2241,6 +2242,30 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(AnalysisMode.engineLineCount, 3);
+    expect(session.requestedMultiPvValues.last, 3);
+  });
+
+  testWidgets('hidden analysis engine lines keep configured MultiPV', (
+    WidgetTester tester,
+  ) async {
+    db.displaySettings = const DisplaySettings(
+      isUnplacedAndRemovedPiecesShown: false,
+      isHistoryNavigationToolbarShown: false,
+    );
+    final _RecordingAnalysisSession session = _RecordingAnalysisSession();
+    _bindExistingNativeGame(GameMode.analysis, session);
+    AnalysisMode.setEngineLineCount(3);
+    AnalysisMode.setShowEngineLines(false);
+
+    await _pumpSessionPlayArea(tester, session);
+    await AnalysisService.refresh(tester.element(find.byType(PlayArea)));
+    await tester.pumpAndSettle();
+
+    expect(AnalysisMode.showEngineLines, isFalse);
+    expect(
+      find.byKey(const Key('play_area_analysis_engine_lines_hidden')),
+      findsOneWidget,
+    );
     expect(session.requestedMultiPvValues.last, 3);
   });
 

@@ -202,9 +202,7 @@ class AnalysisService {
     String? fenOverride,
     bool isThreatMode = false,
   }) async {
-    final int requestedLineCount = AnalysisMode.showEngineLines
-        ? math.max(1, AnalysisMode.engineLineCount)
-        : 1;
+    final int requestedLineCount = math.max(1, AnalysisMode.engineLineCount);
     final GeneralSettings currentSettings = DB().generalSettings;
     final GeneralSettings engineSettings = currentSettings.copyWith(
       resignIfMostLose: false,

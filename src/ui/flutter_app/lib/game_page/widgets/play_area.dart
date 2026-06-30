@@ -197,7 +197,6 @@ Future<void> showAnalysisSettingsSheet(
                               value,
                               persist: true,
                             );
-                            _refreshEngineAnalysisAfterSettingsChange(context);
                           },
                         ),
                         ListTile(
