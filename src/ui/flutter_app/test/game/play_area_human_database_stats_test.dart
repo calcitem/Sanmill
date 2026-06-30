@@ -22,6 +22,7 @@ import 'package:sanmill/games/mill/mill_session_recorder_bridge.dart';
 import 'package:sanmill/games/mill/native_mill_game_session.dart';
 import 'package:sanmill/general_settings/models/general_settings.dart';
 import 'package:sanmill/generated/intl/l10n.dart';
+import 'package:sanmill/shared/config/constants.dart';
 import 'package:sanmill/shared/database/database.dart';
 import 'package:sanmill/shared/themes/app_theme.dart';
 import 'package:sanmill/shared/utils/localizations/sanmill_localizations.dart';
@@ -912,6 +913,43 @@ void main() {
     );
   });
 
+  testWidgets('human vs ai move now menu action keeps a live context', (
+    WidgetTester tester,
+  ) async {
+    db.generalSettings = const GeneralSettings();
+    db.displaySettings = const DisplaySettings(
+      isUnplacedAndRemovedPiecesShown: false,
+      isHistoryNavigationToolbarShown: false,
+    );
+    GameController().gameInstance.gameMode = GameMode.humanVsAi;
+
+    await tester.binding.setSurfaceSize(const Size(390, 844));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+
+    await tester.pumpWidget(
+      _localizedApp(
+        const Scaffold(
+          body: PlayArea(
+            boardImage: null,
+            child: SizedBox.square(
+              key: Key('test_board_square'),
+              dimension: 390,
+            ),
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byKey(const Key('play_area_bottom_bar_menu')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const Key('play_area_game_menu_move_now')));
+    await tester.pump();
+    await tester.pumpAndSettle();
+
+    expect(tester.takeException(), isNull);
+  });
+
   testWidgets('human vs ai balanced layout fits with advantage graph', (
     WidgetTester tester,
   ) async {
@@ -938,6 +976,38 @@ void main() {
 
     expect(tester.takeException(), isNull);
     expect(find.byKey(const Key('play_area_advantage_graph')), findsOneWidget);
+  });
+
+  testWidgets('regular board page avoids overflow when dense', (
+    WidgetTester tester,
+  ) async {
+    db.displaySettings = const DisplaySettings(isAdvantageGraphShown: true);
+    GameController().gameInstance.gameMode = GameMode.humanVsHuman;
+
+    await tester.binding.setSurfaceSize(const Size(390, 788));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+
+    await tester.pumpWidget(
+      _localizedApp(
+        const Scaffold(
+          body: PlayArea(
+            boardImage: null,
+            child: SizedBox.square(
+              key: Key('test_board_square'),
+              dimension: 390,
+            ),
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(tester.takeException(), isNull);
+    expect(find.byKey(const Key('play_area_advantage_graph')), findsOneWidget);
+    expect(
+      find.byKey(const Key('play_area_human_database_stats_strip')),
+      findsOneWidget,
+    );
   });
 
   testWidgets('setup position hides the positional advantage indicator', (
@@ -2117,6 +2187,7 @@ void main() {
 }
 
 Widget _localizedApp(Widget child) => MaterialApp(
+  navigatorKey: currentNavigatorKey,
   scaffoldMessengerKey: rootScaffoldMessengerKey,
   theme: AppTheme.lightThemeData,
   localizationsDelegates: sanmillLocalizationsDelegates,

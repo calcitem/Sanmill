@@ -88,13 +88,14 @@ class GameController {
   }
 
   BuildContext _stableDialogContext(BuildContext fallbackContext) {
-    final BuildContext? navigatorContext = currentNavigatorKey.currentContext;
-    if (navigatorContext != null && navigatorContext.mounted) {
-      return navigatorContext;
+    final BuildContext? overlayContext =
+        currentNavigatorKey.currentState?.overlay?.context;
+    if (overlayContext != null && overlayContext.mounted) {
+      return overlayContext;
     }
 
     final BuildContext? messengerContext =
-        rootScaffoldMessengerKey.currentContext;
+        rootScaffoldMessengerKey.currentState?.context;
     if (messengerContext != null &&
         messengerContext.mounted &&
         Navigator.maybeOf(messengerContext) != null) {
@@ -1990,9 +1991,11 @@ class GameController {
     GameSession? session,
   }) async {
     const String tag = "[engineToGo]";
+    final BuildContext actionContext = _stableDialogContext(context);
+    final GameSession? effectiveSession = session ?? activeNativeMillSession;
     bool reversed = false;
     final MoveNowMessages effectiveMessages =
-        messages ?? MoveNowMessages.of(context);
+        messages ?? MoveNowMessages.of(actionContext);
 
     loadedGameFilenamePrefix = null;
 
@@ -2029,14 +2032,13 @@ class GameController {
 
     GameController().disableStats = true;
 
-    final BuildContext resultContext = _stableDialogContext(context);
     final EngineResponse engineResponse = await engineToGo(
-      context,
+      actionContext,
       isMoveNow: true,
-      session: session,
+      session: effectiveSession,
     );
 
-    if (!resultContext.mounted) {
+    if (!actionContext.mounted) {
       if (reversed) {
         gameInstance.reverseWhoIsAi();
       }
@@ -2054,15 +2056,15 @@ class GameController {
       case EngineTimeOut():
         headerTipNotifier.showTip(strTimeout);
         if (gameInstance.gameMode != GameMode.aiVsAi) {
-          await PerformanceWarningDialog.showIfNeeded(resultContext);
+          await PerformanceWarningDialog.showIfNeeded(actionContext);
         }
         break;
       case EngineNoBestMove():
         final List<ExtMove> moves = gameRecorder.mainlineMoves;
         await EngineFailureDialog.show(
-          resultContext,
+          actionContext,
           diagnosticContext: buildEngineFailureDiagnosticContext(
-            resultContext,
+            actionContext,
             lastMove: moves.isNotEmpty ? moves.last.notation : null,
           ),
         );

@@ -77,6 +77,8 @@ class PlayAreaState extends State<PlayArea> {
   static const double _kMoveListRouteTopInset = 80;
   static const double _kInlineMoveListHeight = 40;
   static const double _kPlayerPanelHeight = 56;
+  static const double _kAnalysisEngineLinesReserveHeight = 90;
+  static const double _kBalancedLayoutSafetyMargin = 24;
   static const double _kHumanDatabaseStatsStripHeight = 40;
   static const double _kAdvantageIndicatorWidth = 16;
   static const double _kAdvantageIndicatorGap = 6;
@@ -206,13 +208,14 @@ class PlayAreaState extends State<PlayArea> {
   }
 
   BuildContext _stableActionContext(BuildContext fallbackContext) {
-    final BuildContext? navigatorContext = currentNavigatorKey.currentContext;
-    if (navigatorContext != null && navigatorContext.mounted) {
-      return navigatorContext;
+    final BuildContext? overlayContext =
+        currentNavigatorKey.currentState?.overlay?.context;
+    if (overlayContext != null && overlayContext.mounted) {
+      return overlayContext;
     }
 
     final BuildContext? messengerContext =
-        rootScaffoldMessengerKey.currentContext;
+        rootScaffoldMessengerKey.currentState?.context;
     if (messengerContext != null &&
         messengerContext.mounted &&
         Navigator.maybeOf(messengerContext) != null) {
@@ -1740,19 +1743,20 @@ class PlayAreaState extends State<PlayArea> {
             const double topPanelHeight = _kPlayerPanelHeight;
             final double bottomPanelHeight =
                 _kPlayerPanelHeight + (showAdvantageGraph ? 112 : 0);
-            final double requiredHeight =
+            final double estimatedRequiredHeight =
                 moveListHeight +
                 boardBlockHeight +
                 topPanelHeight +
                 bottomPanelHeight;
             final bool canBalance =
                 constraints.hasBoundedHeight &&
-                constraints.maxHeight >= requiredHeight;
+                constraints.maxHeight >=
+                    estimatedRequiredHeight + _kBalancedLayoutSafetyMargin;
 
             if (canBalance) {
               final double freeHeight = math.max(
                 0,
-                constraints.maxHeight - requiredHeight,
+                constraints.maxHeight - estimatedRequiredHeight,
               );
               final double topSpacerHeight = freeHeight * 0.42;
               final double bottomSpacerHeight = freeHeight - topSpacerHeight;
@@ -1913,7 +1917,9 @@ class PlayAreaState extends State<PlayArea> {
               final double maxHeight = constraints.hasBoundedHeight
                   ? constraints.maxHeight
                   : MediaQuery.sizeOf(context).height;
-              final double engineLinesReserve = hasEngineLinesSlot ? 74 : 0;
+              final double engineLinesReserve = hasEngineLinesSlot
+                  ? _kAnalysisEngineLinesReserveHeight
+                  : 0;
               const double tabPanelMinHeight = 174;
               final double pieceRowsHeight = showPieceCountRows
                   ? 48
@@ -1925,7 +1931,8 @@ class PlayAreaState extends State<PlayArea> {
                   maxHeight -
                       engineLinesReserve -
                       tabPanelMinHeight -
-                      pieceRowsHeight,
+                      pieceRowsHeight -
+                      _kBalancedLayoutSafetyMargin,
                 ),
               );
 
@@ -2059,6 +2066,10 @@ class PlayAreaState extends State<PlayArea> {
           final Widget topTable = GameHeader(
             key: const Key('play_area_game_header'),
           );
+          final double topPanelHeight =
+              kToolbarHeight +
+              DB().displaySettings.boardTop +
+              AppTheme.boardMargin;
           final List<Widget> boardChildren = <Widget>[
             if (showPieceCountRows)
               _isBoardFlipped
@@ -2091,17 +2102,18 @@ class PlayAreaState extends State<PlayArea> {
             const SizedBox(height: AppTheme.boardMargin),
           ];
 
-          final double requiredHeight =
+          final double estimatedRequiredHeight =
               constraints.maxWidth +
               (isPlayableGame ? _inlineMoveListHeightForRoute(context) : 0) +
-              32 +
+              topPanelHeight +
               (showPieceCountRows ? 48 : AppTheme.boardMargin * 2) +
               (showAdvantageGraph ? 150 : 0) +
               AppTheme.boardMargin;
           final bool canBalance =
               isPlayableGame &&
               constraints.hasBoundedHeight &&
-              constraints.maxHeight >= requiredHeight;
+              constraints.maxHeight >=
+                  estimatedRequiredHeight + _kBalancedLayoutSafetyMargin;
 
           if (canBalance) {
             return SizedBox(
