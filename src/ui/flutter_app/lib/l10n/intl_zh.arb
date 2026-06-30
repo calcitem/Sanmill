@@ -4695,5 +4695,7 @@
     "showThreat": "显示威胁",
     "@showThreat": {},
     "stopShowingThreat": "停止显示威胁",
-    "@stopShowingThreat": {}
+    "@stopShowingThreat": {},
+    "analysisThreat": "威胁",
+    "@analysisThreat": {}
 }

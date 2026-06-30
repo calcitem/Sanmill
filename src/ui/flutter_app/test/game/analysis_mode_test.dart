@@ -53,6 +53,12 @@ void main() {
   });
 
   test('tracks threat mode independently from analysis results', () {
+    AnalysisMode.enable(const <MoveAnalysisResult>[
+      MoveAnalysisResult(move: 'a1', outcome: AnalysisOutcome.win),
+    ], source: AnalysisSource.engine);
+
+    expect(AnalysisMode.normalEngineAnalysisResults.single.move, 'a1');
+
     AnalysisMode.enable(
       const <MoveAnalysisResult>[
         MoveAnalysisResult(move: 'd6', outcome: AnalysisOutcome.advantage),
@@ -63,10 +69,27 @@ void main() {
 
     expect(AnalysisMode.isThreatMode, isTrue);
     expect(AnalysisMode.source, AnalysisSource.engine);
+    expect(AnalysisMode.analysisResults.single.move, 'd6');
+    expect(AnalysisMode.normalEngineAnalysisResults.single.move, 'a1');
 
     AnalysisMode.disable();
 
     expect(AnalysisMode.isThreatMode, isFalse);
+    expect(AnalysisMode.normalEngineAnalysisResults, isEmpty);
+  });
+
+  test('clears normal engine cache for non-engine analysis overlays', () {
+    AnalysisMode.enable(const <MoveAnalysisResult>[
+      MoveAnalysisResult(move: 'a1', outcome: AnalysisOutcome.win),
+    ], source: AnalysisSource.engine);
+
+    expect(AnalysisMode.normalEngineAnalysisResults, isNotEmpty);
+
+    AnalysisMode.enable(const <MoveAnalysisResult>[
+      MoveAnalysisResult(move: 'd6', outcome: AnalysisOutcome.draw),
+    ]);
+
+    expect(AnalysisMode.normalEngineAnalysisResults, isEmpty);
   });
 
   test('tracks small board preference independently from overlay state', () {

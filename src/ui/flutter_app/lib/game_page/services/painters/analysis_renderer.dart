@@ -19,7 +19,7 @@ enum AnalysisResultType {
   remove,
 }
 
-/// Renderer for the perfect-database analysis overlay.
+/// Renderer for the analysis overlay.
 ///
 /// Draws one mark per analysed legal move: a circle for placements, an arrow
 /// for moves, and a circle around removal candidates, colored by the
@@ -34,9 +34,45 @@ class AnalysisRenderer {
       return;
     }
 
-    final List<MoveAnalysisResult> sortedResults = _getSortedResults(
+    if (AnalysisMode.isThreatMode) {
+      _renderNormalBestMove(canvas, size, squareSize);
+    }
+    _renderResults(
+      canvas,
+      size,
+      squareSize,
       AnalysisMode.analysisResults,
+      useThreatColors: AnalysisMode.isThreatMode,
     );
+  }
+
+  static void _renderNormalBestMove(
+    Canvas canvas,
+    Size size,
+    double squareSize,
+  ) {
+    final List<MoveAnalysisResult> normalResults =
+        AnalysisMode.normalEngineAnalysisResults;
+    if (normalResults.isEmpty) {
+      return;
+    }
+    _renderResults(canvas, size, squareSize, <MoveAnalysisResult>[
+      _getSortedResults(normalResults).first,
+    ], useThreatColors: false);
+  }
+
+  static void _renderResults(
+    Canvas canvas,
+    Size size,
+    double squareSize,
+    List<MoveAnalysisResult> results, {
+    required bool useThreatColors,
+  }) {
+    if (results.isEmpty) {
+      return;
+    }
+
+    final List<MoveAnalysisResult> sortedResults = _getSortedResults(results);
 
     final double? bestValue = _getBestValue(sortedResults);
 
@@ -80,6 +116,7 @@ class AnalysisRenderer {
               squareSize * 0.4,
               isTopResult,
               result.move,
+              useThreatColors: useThreatColors,
             );
           } else {
             logger.w("Failed to parse place move: ${result.move}");
@@ -93,6 +130,7 @@ class AnalysisRenderer {
             result.outcome,
             size,
             isTopResult,
+            useThreatColors: useThreatColors,
           );
           break;
 
@@ -104,6 +142,7 @@ class AnalysisRenderer {
             size,
             squareSize * 0.5,
             isTopResult,
+            useThreatColors: useThreatColors,
           );
           break;
       }
@@ -167,6 +206,28 @@ class AnalysisRenderer {
         outcome == AnalysisOutcome.disadvantage;
   }
 
+  static Color _resultColor(
+    AnalysisOutcome outcome,
+    bool isTopResult, {
+    required bool useThreatColors,
+  }) {
+    if (useThreatColors) {
+      return Colors.red.shade600;
+    }
+    return AnalysisMode.getColorForOutcome(outcome);
+  }
+
+  static double _resultOpacity(
+    AnalysisOutcome outcome,
+    bool isTopResult, {
+    required bool useThreatColors,
+  }) {
+    if (useThreatColors) {
+      return isTopResult ? 0.68 : 0.48;
+    }
+    return AnalysisMode.getOpacityForOutcome(outcome);
+  }
+
   /// Stroke width based on outcome, top-result status, and trap flag.
   static double _getStrokeWidth(
     AnalysisOutcome outcome,
@@ -194,8 +255,9 @@ class AnalysisRenderer {
     AnalysisOutcome outcome,
     double radius,
     bool isTopResult,
-    String move,
-  ) {
+    String move, {
+    required bool useThreatColors,
+  }) {
     final bool useDashPattern = _shouldUseDashPattern(outcome);
     final double strokeWidth = _getStrokeWidth(
       outcome,
@@ -203,8 +265,21 @@ class AnalysisRenderer {
       move: move,
     );
 
+    final Color resultColor = _resultColor(
+      outcome,
+      isTopResult,
+      useThreatColors: useThreatColors,
+    );
     final Paint paint = Paint()
-      ..color = AnalysisMode.getColorForOutcome(outcome).withValues(alpha: 0.7)
+      ..color = resultColor.withValues(
+        alpha: useThreatColors
+            ? _resultOpacity(
+                outcome,
+                isTopResult,
+                useThreatColors: useThreatColors,
+              )
+            : 0.7,
+      )
       ..style = PaintingStyle.stroke
       ..strokeWidth = strokeWidth;
 
@@ -224,7 +299,7 @@ class AnalysisRenderer {
       text: TextSpan(
         text: _getDisplaySymbolForOutcome(outcome),
         style: TextStyle(
-          color: AnalysisMode.getColorForOutcome(outcome),
+          color: resultColor,
           fontSize: radius * 0.8,
           fontWeight: FontWeight.bold,
           fontFamily: 'monospace',
@@ -246,8 +321,9 @@ class AnalysisRenderer {
     String moveStr,
     AnalysisOutcome outcome,
     Size size,
-    bool isTopResult,
-  ) {
+    bool isTopResult, {
+    required bool useThreatColors,
+  }) {
     if (!moveStr.contains('-') || moveStr.length != 5) {
       return;
     }
@@ -259,8 +335,16 @@ class AnalysisRenderer {
     final Offset startPos = _getPositionFromStandardNotation(squares[0], size);
     final Offset endPos = _getPositionFromStandardNotation(squares[1], size);
 
-    final Color arrowColor = AnalysisMode.getColorForOutcome(outcome);
-    final double opacity = AnalysisMode.getOpacityForOutcome(outcome);
+    final Color arrowColor = _resultColor(
+      outcome,
+      isTopResult,
+      useThreatColors: useThreatColors,
+    );
+    final double opacity = _resultOpacity(
+      outcome,
+      isTopResult,
+      useThreatColors: useThreatColors,
+    );
     final bool useDashPattern = _shouldUseDashPattern(outcome);
     final double strokeWidth = _getStrokeWidth(
       outcome,
@@ -320,8 +404,9 @@ class AnalysisRenderer {
     AnalysisOutcome outcome,
     Size size,
     double radius,
-    bool isTopResult,
-  ) {
+    bool isTopResult, {
+    required bool useThreatColors,
+  }) {
     if (!moveStr.startsWith('x') || moveStr.length != 3) {
       logger.w("Failed to parse remove move: $moveStr");
       return;
@@ -332,8 +417,16 @@ class AnalysisRenderer {
       size,
     );
 
-    final Color circleColor = AnalysisMode.getColorForOutcome(outcome);
-    final double opacity = AnalysisMode.getOpacityForOutcome(outcome);
+    final Color circleColor = _resultColor(
+      outcome,
+      isTopResult,
+      useThreatColors: useThreatColors,
+    );
+    final double opacity = _resultOpacity(
+      outcome,
+      isTopResult,
+      useThreatColors: useThreatColors,
+    );
     final bool useDashPattern = _shouldUseDashPattern(outcome);
     final double strokeWidth = _getStrokeWidth(
       outcome,

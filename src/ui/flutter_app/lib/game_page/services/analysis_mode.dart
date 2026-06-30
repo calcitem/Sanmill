@@ -144,6 +144,8 @@ class AnalysisMode {
   static AnalysisOverlayMode? _overlayMode;
   static AnalysisSource? _source;
   static List<MoveAnalysisResult> _analysisResults = <MoveAnalysisResult>[];
+  static List<MoveAnalysisResult> _normalEngineAnalysisResults =
+      <MoveAnalysisResult>[];
   static List<String> _trapMoves = <String>[];
 
   /// Notifies listeners whenever the enabled / analyzing flags change so the
@@ -182,6 +184,10 @@ class AnalysisMode {
   /// The current per-move analysis results.
   static List<MoveAnalysisResult> get analysisResults => _analysisResults;
 
+  /// The most recent non-threat engine results for the same analysis session.
+  static List<MoveAnalysisResult> get normalEngineAnalysisResults =>
+      _normalEngineAnalysisResults;
+
   /// Moves flagged as traps (aggressive moves with a worse verdict than the
   /// available alternatives).  Empty unless trap detection is populated.
   static List<String> get trapMoves => _trapMoves;
@@ -198,6 +204,13 @@ class AnalysisMode {
     bool isThreatMode = false,
   }) {
     _analysisResults = results;
+    if (!isThreatMode) {
+      _normalEngineAnalysisResults =
+          source == AnalysisSource.engine &&
+              mode == AnalysisOverlayMode.analysis
+          ? results
+          : <MoveAnalysisResult>[];
+    }
     _trapMoves = trapMoves;
     _overlayMode = mode;
     _source = source;
@@ -217,6 +230,7 @@ class AnalysisMode {
       return;
     }
     _analysisResults = <MoveAnalysisResult>[];
+    _normalEngineAnalysisResults = <MoveAnalysisResult>[];
     _trapMoves = <String>[];
     _overlayMode = null;
     _source = null;

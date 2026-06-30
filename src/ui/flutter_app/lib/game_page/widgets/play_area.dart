@@ -280,6 +280,21 @@ Future<void> showAnalysisSettingsSheet(
   );
 }
 
+String _analysisThreatLabel(S strings) {
+  return switch (strings.localeName.split('_').first) {
+    'zh' => '威胁',
+    _ => 'Threat',
+  };
+}
+
+String _analysisThreatActionLabel(S strings) {
+  final bool stop = AnalysisMode.isThreatMode;
+  return switch (strings.localeName.split('_').first) {
+    'zh' => stop ? '停止显示威胁' : '显示威胁',
+    _ => stop ? 'Stop showing threat' : 'Show threat',
+  };
+}
+
 /// The PlayArea widget is the main content of the game page.
 class PlayArea extends StatefulWidget {
   /// Creates a PlayArea widget.
@@ -662,14 +677,6 @@ class PlayAreaState extends State<PlayArea> {
         });
 
     await AnalysisService.toggleThreat(context);
-  }
-
-  String _analysisThreatMenuLabel(S strings) {
-    final bool stop = AnalysisMode.isThreatMode;
-    return switch (strings.localeName.split('_').first) {
-      'zh' => stop ? '停止显示威胁' : '显示威胁',
-      _ => stop ? 'Stop showing threat' : 'Show threat',
-    };
   }
 
   void _continueFromHere({
@@ -1540,7 +1547,7 @@ class PlayAreaState extends State<PlayArea> {
                   : Icons.online_prediction_outlined,
             ),
             makeLabel: (BuildContext context) =>
-                Text(_analysisThreatMenuLabel(strings)),
+                Text(_analysisThreatActionLabel(strings)),
             onPressed: () =>
                 unawaited(_toggleAnalysisThreatFromMenu(actionContext)),
           ),
@@ -3455,29 +3462,41 @@ class _InlineMoveListState extends State<_InlineMoveList> {
       'Inline move rounds must contain at least one move segment.',
     );
     final String roundKeyPrefix = widget.roundKeyPrefix!;
-    final List<_IndexedMoveNode> roundNodes = <_IndexedMoveNode>[
-      for (final _InlineMoveSegment segment in round.segments) ...segment.nodes,
-    ];
-    assert(
-      roundNodes.isNotEmpty,
-      'Inline move rounds must contain at least one move node.',
-    );
     final List<Widget> children = <Widget>[
-      Row(
+      LayoutBuilder(
         key: Key('$roundKeyPrefix${round.number}'),
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          _InlineMoveCount(count: round.number),
-          _buildGroupedMoveChip(context, roundNodes.first),
-        ],
+        builder: (BuildContext context, BoxConstraints constraints) {
+          assert(
+            constraints.hasBoundedWidth,
+            'Inline move round wrapping requires a bounded width.',
+          );
+          final double segmentMaxWidth = math.max(0, constraints.maxWidth - 36);
+          return Row(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              _InlineMoveCount(count: round.number),
+              _buildMoveSegment(
+                context,
+                round.segments.first,
+                maxWidth: segmentMaxWidth,
+                allowMultiline: true,
+              ),
+            ],
+          );
+        },
       ),
-      for (final _IndexedMoveNode indexed in roundNodes.skip(1))
-        _buildGroupedMoveChip(context, indexed),
+      for (final _InlineMoveSegment segment in round.segments.skip(1))
+        _buildMoveSegment(context, segment, allowMultiline: true),
     ];
     return children;
   }
 
-  Widget _buildMoveSegment(BuildContext context, _InlineMoveSegment segment) {
+  Widget _buildMoveSegment(
+    BuildContext context,
+    _InlineMoveSegment segment, {
+    double? maxWidth,
+    bool allowMultiline = false,
+  }) {
     final ThemeData theme = Theme.of(context);
     final ColorScheme colorScheme = theme.colorScheme;
     final PgnNode<ExtMove>? activeNode =
@@ -3498,6 +3517,7 @@ class _InlineMoveListState extends State<_InlineMoveList> {
       selectedTextColor: colorScheme.onPrimaryContainer,
       textStyle: theme.textTheme.bodySmall,
       style: _GameMoveChipStyle.inlineText,
+      maxLines: allowMultiline ? null : 1,
       onTap: widget.onMoveTap == null
           ? null
           : () => unawaited(widget.onMoveTap!(context, targetNode)),
@@ -3505,41 +3525,17 @@ class _InlineMoveListState extends State<_InlineMoveList> {
           ? () => _showMovePreview(context, targetNode, lastNode.index + 1)
           : null,
     );
+    final Widget result = maxWidth == null
+        ? chip
+        : ConstrainedBox(
+            constraints: BoxConstraints(maxWidth: maxWidth),
+            child: chip,
+          );
 
     if (selected) {
-      return KeyedSubtree(key: _currentMoveKey, child: chip);
+      return KeyedSubtree(key: _currentMoveKey, child: result);
     }
-    return chip;
-  }
-
-  Widget _buildGroupedMoveChip(BuildContext context, _IndexedMoveNode indexed) {
-    final ThemeData theme = Theme.of(context);
-    final ColorScheme colorScheme = theme.colorScheme;
-    final PgnNode<ExtMove>? activeNode =
-        GameController().gameRecorder.activeNode;
-    final ExtMove? move = indexed.node.data;
-    assert(move != null, 'Inline move list nodes must carry move data.');
-    final bool selected = indexed.node == activeNode;
-    final Widget chip = _GameMoveChip(
-      key: Key('${widget.moveKeyPrefix}${indexed.index + 1}'),
-      label: move!.notation,
-      selected: selected,
-      selectedColor: colorScheme.primaryContainer,
-      selectedTextColor: colorScheme.onPrimaryContainer,
-      textStyle: theme.textTheme.bodySmall,
-      style: _GameMoveChipStyle.inlineText,
-      onTap: widget.onMoveTap == null
-          ? null
-          : () => unawaited(widget.onMoveTap!(context, indexed.node)),
-      onLongPress: widget.showMovePreview && _hasPreviewBoard(indexed.node)
-          ? () => _showMovePreview(context, indexed.node, indexed.index + 1)
-          : null,
-    );
-
-    if (selected) {
-      return KeyedSubtree(key: _currentMoveKey, child: chip);
-    }
-    return chip;
+    return result;
   }
 
   Widget _buildMoveChip(
@@ -3849,6 +3845,7 @@ class _GameMoveChip extends StatelessWidget {
     required this.selectedTextColor,
     required this.textStyle,
     this.style = _GameMoveChipStyle.filled,
+    this.maxLines = 1,
     this.onTap,
     this.onLongPress,
   });
@@ -3859,6 +3856,7 @@ class _GameMoveChip extends StatelessWidget {
   final Color selectedTextColor;
   final TextStyle? textStyle;
   final _GameMoveChipStyle style;
+  final int? maxLines;
   final VoidCallback? onTap;
   final VoidCallback? onLongPress;
 
@@ -3885,8 +3883,9 @@ class _GameMoveChip extends StatelessWidget {
         );
     final Widget labelText = Text(
       label,
-      maxLines: 1,
-      overflow: TextOverflow.ellipsis,
+      maxLines: maxLines,
+      overflow: maxLines == 1 ? TextOverflow.ellipsis : TextOverflow.visible,
+      softWrap: maxLines != 1,
       style: moveTextStyle,
     );
 
@@ -4176,10 +4175,14 @@ class _AnalysisSummaryPanel extends StatelessWidget {
   }
 
   String _sourceLabel(BuildContext context) {
+    final S strings = S.of(context);
     return switch (AnalysisMode.source) {
-      AnalysisSource.engine => S.of(context).engine,
+      AnalysisSource.engine =>
+        AnalysisMode.isThreatMode
+            ? '${_analysisThreatLabel(strings)} · ${strings.engine}'
+            : strings.engine,
       AnalysisSource.perfectDatabase => 'DB',
-      null => S.of(context).openingExplorerNoDataShort,
+      null => strings.openingExplorerNoDataShort,
     };
   }
 
@@ -4360,7 +4363,9 @@ class _AnalysisEngineLines extends StatelessWidget {
               _AnalysisEngineLine(
                 key: Key('play_area_analysis_engine_line_$index'),
                 result: visibleResults[index],
-                onTap: () => unawaited(onMoveTap(visibleResults[index].move)),
+                onTap: AnalysisMode.isThreatMode
+                    ? null
+                    : () => unawaited(onMoveTap(visibleResults[index].move)),
               )
             else
               SizedBox(
@@ -4436,13 +4441,15 @@ class _AnalysisEngineLine extends StatelessWidget {
   static const double height = 24;
 
   final MoveAnalysisResult result;
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     final ColorScheme colorScheme = theme.colorScheme;
-    final Color outcomeColor = AnalysisMode.getColorForOutcome(result.outcome);
+    final Color outcomeColor = AnalysisMode.isThreatMode
+        ? Colors.red.shade600
+        : AnalysisMode.getColorForOutcome(result.outcome);
     final Color chipTextColor =
         ThemeData.estimateBrightnessForColor(outcomeColor) == Brightness.dark
         ? Colors.white
@@ -4482,7 +4489,9 @@ class _AnalysisEngineLine extends StatelessWidget {
                   softWrap: false,
                   overflow: TextOverflow.ellipsis,
                   style: theme.textTheme.bodySmall?.copyWith(
-                    color: colorScheme.onSurface,
+                    color: colorScheme.onSurface.withValues(
+                      alpha: onTap == null ? 0.72 : 1,
+                    ),
                     letterSpacing: 0,
                   ),
                 ),
@@ -4639,10 +4648,14 @@ class _AnalysisBottomBar extends StatelessWidget {
   }
 
   String _sourceLabel(BuildContext context) {
+    final S strings = S.of(context);
     return switch (AnalysisMode.source) {
-      AnalysisSource.engine => S.of(context).engine,
+      AnalysisSource.engine =>
+        AnalysisMode.isThreatMode
+            ? _analysisThreatLabel(strings)
+            : strings.engine,
       AnalysisSource.perfectDatabase => 'DB',
-      null => S.of(context).engine,
+      null => strings.engine,
     };
   }
 }

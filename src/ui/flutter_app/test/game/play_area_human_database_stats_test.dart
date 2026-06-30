@@ -510,22 +510,25 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    final Finder firstMove = find.byKey(const Key('play_area_regular_move_1'));
-    final Finder wrappedMove = find.byKey(
+    final Finder groupedMove = find.byKey(
       const Key('play_area_regular_move_12'),
     );
     final Finder moveList = find.byKey(
       const Key('play_area_regular_move_list_wrap'),
     );
-    expect(firstMove, findsOneWidget);
-    expect(find.byKey(const Key('play_area_regular_move_2')), findsOneWidget);
-    expect(wrappedMove, findsOneWidget);
+    expect(find.byKey(const Key('play_area_regular_move_1')), findsNothing);
+    expect(find.byKey(const Key('play_area_regular_move_2')), findsNothing);
+    expect(groupedMove, findsOneWidget);
     expect(
-      tester.getTopLeft(wrappedMove).dy,
-      greaterThan(tester.getTopLeft(firstMove).dy),
+      find.text('d6 xa1 xd1 xg1 xb2 xd2 xf2 xc3 xd3 xe3 a4 b4'),
+      findsOneWidget,
     );
     expect(
-      tester.getTopRight(wrappedMove).dx,
+      tester.getSize(groupedMove).height,
+      greaterThan(tester.getSize(find.text('1.')).height),
+    );
+    expect(
+      tester.getTopRight(groupedMove).dx,
       lessThanOrEqualTo(tester.getTopRight(moveList).dx),
     );
   });
@@ -1280,11 +1283,11 @@ void main() {
     );
     expect(
       find.byKey(const Key('play_area_analysis_engine_line_empty_1')),
-      findsOneWidget,
+      findsNothing,
     );
     expect(
       find.byKey(const Key('play_area_analysis_engine_line_empty_2')),
-      findsOneWidget,
+      findsNothing,
     );
     expect(
       find.byKey(const Key('play_area_analysis_engine_lines_empty')),
@@ -1504,6 +1507,36 @@ void main() {
       find.descendant(
         of: find.byKey(const Key('play_area_analysis_summary_engine')),
         matching: find.textContaining('d6 f4'),
+      ),
+      findsOne,
+    );
+    expect(
+      find.descendant(
+        of: find.byKey(const Key('play_area_analysis_summary_source')),
+        matching: find.text('Engine'),
+      ),
+      findsOne,
+    );
+
+    AnalysisMode.enable(
+      <MoveAnalysisResult>[
+        MoveAnalysisResult(
+          move: 'd6',
+          outcome: AnalysisOutcome.withValue(AnalysisOutcome.advantage, '+42'),
+          depth: 6,
+          nodes: 12345,
+          line: const <String>['d6', 'f4'],
+        ),
+      ],
+      source: AnalysisSource.engine,
+      isThreatMode: true,
+    );
+    await tester.pumpAndSettle();
+
+    expect(
+      find.descendant(
+        of: find.byKey(const Key('play_area_analysis_summary_source')),
+        matching: find.text('Threat · Engine'),
       ),
       findsOne,
     );
@@ -1757,6 +1790,22 @@ void main() {
       find.byKey(const Key('play_area_analysis_bottom_bar_engine_value')),
     );
     expect(engineValue.data, '1');
+
+    AnalysisMode.enable(
+      <MoveAnalysisResult>[
+        const MoveAnalysisResult(
+          move: 'd6',
+          outcome: AnalysisOutcome.advantage,
+        ),
+      ],
+      source: AnalysisSource.engine,
+      isThreatMode: true,
+    );
+    await tester.pump();
+    sourceLabel = tester.widget<Text>(
+      find.byKey(const Key('play_area_analysis_bottom_bar_engine_label')),
+    );
+    expect(sourceLabel.data, 'Threat');
 
     AnalysisMode.enable(<MoveAnalysisResult>[
       const MoveAnalysisResult(
@@ -2063,6 +2112,29 @@ void main() {
     expect(AnalysisMode.isFullAnalysis, isTrue);
     expect(session.requestedMultiPvValues, <int>[1]);
     expect(AnalysisMode.analysisResults.single.move, 'd6');
+
+    AnalysisMode.enable(
+      const <MoveAnalysisResult>[
+        MoveAnalysisResult(
+          move: 'f4',
+          outcome: AnalysisOutcome.advantage,
+          rank: 1,
+          depth: 2,
+          nodes: 2,
+          line: <String>['f4'],
+        ),
+      ],
+      source: AnalysisSource.engine,
+      isThreatMode: true,
+    );
+    await tester.pump();
+
+    await tester.tap(find.byKey(const Key('play_area_analysis_engine_line_0')));
+    await tester.pumpAndSettle();
+
+    expect(AnalysisMode.isThreatMode, isTrue);
+    expect(session.requestedMultiPvValues, <int>[1]);
+    expect(AnalysisMode.analysisResults.single.move, 'f4');
   });
 
   testWidgets('analysis settings sheet toggles evaluation displays', (

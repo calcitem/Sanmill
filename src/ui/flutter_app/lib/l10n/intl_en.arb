@@ -4843,5 +4843,7 @@
     "showThreat": "Show threat",
     "@showThreat": {},
     "stopShowingThreat": "Stop showing threat",
-    "@stopShowingThreat": {}
+    "@stopShowingThreat": {},
+    "analysisThreat": "Threat",
+    "@analysisThreat": {}
 }
