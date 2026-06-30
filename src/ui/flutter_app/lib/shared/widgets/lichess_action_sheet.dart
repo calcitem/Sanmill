@@ -16,6 +16,8 @@ Future<T?> showLichessActionSheet<T>({
   Widget? title,
   Key? sheetKey,
   bool isDismissible = true,
+  Color? backgroundColor,
+  Color? foregroundColor,
 }) {
   assert(actions.isNotEmpty, 'Action sheet must contain at least one action.');
 
@@ -34,6 +36,8 @@ Future<T?> showLichessActionSheet<T>({
     actions: actions,
     sheetKey: sheetKey,
     isDismissible: isDismissible,
+    backgroundColor: backgroundColor,
+    foregroundColor: foregroundColor,
   );
 }
 
@@ -81,6 +85,8 @@ Future<T?> _showMaterialActionSheet<T>({
   required bool isDismissible,
   Widget? title,
   Key? sheetKey,
+  Color? backgroundColor,
+  Color? foregroundColor,
 }) {
   final double screenWidth = MediaQuery.sizeOf(context).width;
 
@@ -90,19 +96,25 @@ Future<T?> _showMaterialActionSheet<T>({
     builder: (BuildContext context) {
       final ThemeData theme = Theme.of(context);
       final ColorScheme colorScheme = theme.colorScheme;
+      final Color effectiveBackground =
+          backgroundColor ??
+          theme.dialogTheme.backgroundColor ??
+          colorScheme.surfaceContainer;
+      final Color effectiveForeground =
+          foregroundColor ?? colorScheme.onSurface;
       final TextStyle actionTextStyle =
           (theme.textTheme.titleMedium ?? const TextStyle(fontSize: 18))
-              .copyWith(color: colorScheme.onSurface);
+              .copyWith(color: effectiveForeground);
       return Dialog(
         key: sheetKey,
-        backgroundColor:
-            theme.dialogTheme.backgroundColor ?? colorScheme.surfaceContainer,
+        backgroundColor: effectiveBackground,
+        surfaceTintColor: Colors.transparent,
         child: SizedBox(
           width: math.min(screenWidth, _kMaterialPopupMenuMaxWidth),
           child: IconTheme.merge(
-            data: IconThemeData(color: colorScheme.onSurface),
+            data: IconThemeData(color: effectiveForeground),
             child: DefaultTextStyle.merge(
-              style: TextStyle(color: colorScheme.onSurface),
+              style: TextStyle(color: effectiveForeground),
               child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,

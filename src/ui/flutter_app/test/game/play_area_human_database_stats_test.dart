@@ -899,6 +899,137 @@ void main() {
     );
   });
 
+  testWidgets('human vs ai balanced layout fits with advantage graph', (
+    WidgetTester tester,
+  ) async {
+    db.displaySettings = const DisplaySettings(isAdvantageGraphShown: true);
+    GameController().gameInstance.gameMode = GameMode.humanVsAi;
+
+    await tester.binding.setSurfaceSize(const Size(390, 844));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+
+    await tester.pumpWidget(
+      _localizedApp(
+        const Scaffold(
+          body: PlayArea(
+            boardImage: null,
+            child: SizedBox.square(
+              key: Key('test_board_square'),
+              dimension: 390,
+            ),
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(tester.takeException(), isNull);
+    expect(find.byKey(const Key('play_area_advantage_graph')), findsOneWidget);
+  });
+
+  testWidgets('setup position hides the positional advantage indicator', (
+    WidgetTester tester,
+  ) async {
+    db.displaySettings = const DisplaySettings();
+    GameController().gameInstance.gameMode = GameMode.setupPosition;
+
+    await tester.binding.setSurfaceSize(const Size(390, 844));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+
+    await tester.pumpWidget(
+      _localizedApp(
+        const Scaffold(
+          body: PlayArea(
+            boardImage: null,
+            child: SizedBox.square(
+              key: Key('test_board_square'),
+              dimension: 390,
+            ),
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(
+      find.byKey(const Key('play_area_advantage_indicator')),
+      findsNothing,
+    );
+    expect(
+      find.byKey(const Key('play_area_advantage_indicator_positioned')),
+      findsNothing,
+    );
+  });
+
+  testWidgets('analysis mode uses lichess-style navigation bottom bar', (
+    WidgetTester tester,
+  ) async {
+    db.displaySettings = const DisplaySettings(
+      isUnplacedAndRemovedPiecesShown: false,
+      isHistoryNavigationToolbarShown: false,
+    );
+    GameController().gameInstance.gameMode = GameMode.analysis;
+
+    await tester.binding.setSurfaceSize(const Size(390, 844));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+
+    await tester.pumpWidget(
+      _localizedApp(
+        const Scaffold(
+          body: PlayArea(
+            boardImage: null,
+            child: SizedBox.square(
+              key: Key('test_board_square'),
+              dimension: 390,
+            ),
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.byKey(const Key('play_area_main_toolbar_bottom')), findsOne);
+    expect(
+      find.byKey(const Key('play_area_regular_bottom_bar_menu')),
+      findsOne,
+    );
+    expect(
+      find.byKey(const Key('play_area_regular_bottom_bar_analysis')),
+      findsOne,
+    );
+    expect(
+      find.byKey(const Key('play_area_regular_bottom_bar_previous')),
+      findsOne,
+    );
+    expect(
+      find.byKey(const Key('play_area_regular_bottom_bar_next')),
+      findsOne,
+    );
+    expect(
+      find.byKey(const Key('play_area_regular_bottom_bar_take_back')),
+      findsNothing,
+    );
+    expect(
+      find.byKey(const Key('play_area_regular_bottom_bar_resign_result')),
+      findsNothing,
+    );
+
+    await tester.tap(
+      find.byKey(const Key('play_area_regular_bottom_bar_menu')),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.byKey(const Key('play_area_toolbar_item_move')), findsNothing);
+    expect(
+      find.byKey(const Key('play_area_regular_game_menu_opening_explorer')),
+      findsOne,
+    );
+    expect(
+      find.byKey(const Key('play_area_regular_game_menu_analysis')),
+      findsOne,
+    );
+  });
+
   testWidgets('human vs ai move list uses a horizontal lichess layout', (
     WidgetTester tester,
   ) async {

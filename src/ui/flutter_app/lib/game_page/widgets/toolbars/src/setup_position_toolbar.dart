@@ -439,19 +439,10 @@ class SetupPositionButtonsContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-    final ColorScheme colorScheme = theme.colorScheme;
     final Color messageColor = DB().colorSettings.messageColor;
     return Container(
       height: kLichessBottomBarHeight,
-      decoration: BoxDecoration(
-        color: theme.bottomAppBarTheme.color ?? colorScheme.surfaceContainer,
-        border: Border(
-          top: BorderSide(
-            color: colorScheme.outlineVariant.withValues(alpha: 0.5),
-          ),
-        ),
-      ),
+      color: Colors.transparent,
       padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
       child: ToolbarItemTheme(
         data: ToolbarItemThemeData(

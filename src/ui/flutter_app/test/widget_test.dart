@@ -958,6 +958,10 @@ void main() {
         findsOneWidget,
       );
       expect(
+        find.byKey(const Key('import_game_scan_qr_button')),
+        findsOneWidget,
+      );
+      expect(
         find.byKey(const Key('import_game_from_clipboard_button')),
         findsOneWidget,
       );
@@ -1289,6 +1293,16 @@ void main() {
         const Key('piece_image_selection_page'),
       );
       expect(pieceSelectionPage, findsOneWidget);
+      final Finder pieceSelectionScrollable = find.descendant(
+        of: find.byKey(const Key('piece_image_selection_list')),
+        matching: find.byType(Scrollable),
+      );
+      await tester.scrollUntilVisible(
+        find.byKey(const Key('piece_image_selection_player1_card')),
+        320,
+        scrollable: pieceSelectionScrollable,
+      );
+      await tester.pumpAndSettle();
       expect(
         find.byKey(const Key('piece_image_selection_player1_card')),
         findsOneWidget,
@@ -1346,7 +1360,7 @@ void main() {
       );
 
       await tester.binding.handlePopRoute();
-      await tester.pumpAndSettle();
+      await tester.pump(const Duration(milliseconds: 350));
 
       expect(shellState.debugCurrentTab, SanmillShellTab.home);
       expect(
@@ -1487,6 +1501,13 @@ void main() {
       find.byKey(const Key('mill_variants_rules_section_card')),
       findsNothing,
     );
+    final ListTile standardVariantTile = tester.widget<ListTile>(
+      find.descendant(
+        of: find.byKey(const Key('mill_variant_standard_9mm')),
+        matching: find.byType(ListTile),
+      ),
+    );
+    expect(standardVariantTile.leading, isNull);
 
     await tester.tap(find.byKey(const Key('mill_variant_twelve_mens_morris')));
     await tester.pumpAndSettle();
@@ -1972,6 +1993,17 @@ void main() {
         find.byKey(const Key('setup_position_buttons_container_row3')),
         findsOneWidget,
       );
+      final Container firstToolbarRow = tester.widget<Container>(
+        find
+            .descendant(
+              of: find.byKey(
+                const Key('setup_position_buttons_container_row1'),
+              ),
+              matching: find.byType(Container),
+            )
+            .first,
+      );
+      expect(firstToolbarRow.color, Colors.transparent);
 
       expect(find.byKey(const Key('paint_color_button')), findsOneWidget);
       expect(find.byKey(const Key('phase_button')), findsOneWidget);

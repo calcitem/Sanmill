@@ -1930,7 +1930,7 @@ class GameController {
 
     final EngineResponse engineResponse = await engineToGo(
       context,
-      isMoveNow: isEngineRunning,
+      isMoveNow: true,
     );
 
     if (!context.mounted) {

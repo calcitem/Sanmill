@@ -14,6 +14,8 @@ import '../../generated/intl/l10n.dart';
 import '../../shared/widgets/snackbars/scaffold_messenger.dart';
 import '../services/mill.dart';
 import 'moves_list_page.dart';
+import 'qr_scan_result_dialog.dart';
+import 'qr_scanner_page.dart';
 
 class ImportGamePage extends StatefulWidget {
   const ImportGamePage({super.key});
@@ -96,7 +98,7 @@ class _ImportGamePageState extends State<ImportGamePage> {
     await _importText(text.trim(), recordAsLoad: true);
   }
 
-  Future<void> _importText(String text, {required bool recordAsLoad}) async {
+  Future<bool> _importText(String text, {required bool recordAsLoad}) async {
     setState(() {
       _isImporting = true;
     });
@@ -104,14 +106,14 @@ class _ImportGamePageState extends State<ImportGamePage> {
     final ({bool success, bool includedVariations}) importResult =
         await LoadService.importGameData(context, text);
     if (!mounted) {
-      return;
+      return false;
     }
 
     if (!importResult.success) {
       setState(() {
         _isImporting = false;
       });
-      return;
+      return false;
     }
 
     if (recordAsLoad) {
@@ -133,7 +135,7 @@ class _ImportGamePageState extends State<ImportGamePage> {
       includedVariations: importResult.includedVariations,
     );
     if (!mounted) {
-      return;
+      return false;
     }
 
     await Navigator.of(context).pushReplacement(
@@ -141,6 +143,40 @@ class _ImportGamePageState extends State<ImportGamePage> {
         builder: (BuildContext context) => const MovesListPage(),
       ),
     );
+    return true;
+  }
+
+  Future<void> _scanQrCodeAndImport() async {
+    if (_isImporting) {
+      return;
+    }
+
+    final String? scannedData = await Navigator.of(context).push<String>(
+      MaterialPageRoute<String>(
+        builder: (BuildContext context) => const QrScannerPage(),
+      ),
+    );
+
+    if (!mounted) {
+      return;
+    }
+
+    final String text = scannedData?.trim() ?? '';
+    if (text.isEmpty) {
+      rootScaffoldMessengerKey.currentState?.showSnackBarClear(
+        S.of(context).qrCodeScanNoData,
+      );
+      return;
+    }
+
+    setState(() {
+      _controller.text = text;
+    });
+
+    final bool imported = await _importText(text, recordAsLoad: false);
+    if (!imported && mounted) {
+      await showQrScanResultDialog(context, text);
+    }
   }
 
   @override
@@ -187,6 +223,15 @@ class _ImportGamePageState extends State<ImportGamePage> {
                 onPressed: _isImporting ? null : _pickFileAndImport,
                 icon: const Icon(FluentIcons.folder_open_24_regular),
                 label: Text(strings.importFromFile),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+              child: OutlinedButton.icon(
+                key: const Key('import_game_scan_qr_button'),
+                onPressed: _isImporting ? null : _scanQrCodeAndImport,
+                icon: const Icon(FluentIcons.scan_camera_24_regular),
+                label: Text(strings.scanQrCode),
               ),
             ),
             Padding(

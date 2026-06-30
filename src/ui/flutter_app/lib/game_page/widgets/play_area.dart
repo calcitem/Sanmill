@@ -70,8 +70,12 @@ class PlayAreaState extends State<PlayArea> {
 
   bool _isBoardFlipped = false;
   bool _isHintSearching = false;
-  static const double _kMoveListRouteTopInset = 64;
+  static const double _kMoveListRouteTopInset = 80;
+  static const double _kInlineMoveListHeight = 40;
+  static const double _kPlayerPanelHeight = 56;
   static const double _kHumanDatabaseStatsStripHeight = 40;
+  static const double _kAdvantageIndicatorWidth = 16;
+  static const double _kAdvantageIndicatorGap = 6;
 
   @override
   void initState() {
@@ -183,6 +187,24 @@ class PlayAreaState extends State<PlayArea> {
       padding: EdgeInsets.only(top: topInset),
       child: child,
     );
+  }
+
+  double _inlineMoveListHeightForRoute(BuildContext context) {
+    return _kInlineMoveListHeight + _moveListRouteTopInset(context);
+  }
+
+  Color _actionSheetBackground(BuildContext context) {
+    return Theme.of(context).colorScheme.surfaceContainerLow;
+  }
+
+  Color _actionSheetForeground(BuildContext context) {
+    return Theme.of(context).colorScheme.onSurface;
+  }
+
+  bool _shouldShowAdvantageGraph({required bool isGameSurface}) {
+    return isGameSurface &&
+        DB().displaySettings.isAdvantageGraphShown &&
+        advantageData.isNotEmpty;
   }
 
   /// Updates the UI by calling setState.
@@ -471,6 +493,8 @@ class PlayAreaState extends State<PlayArea> {
       context: context,
       sheetKey: const Key('play_area_take_back_requester_sheet'),
       title: Text(strings.humanVsHumanTakeBackRequesterTitle),
+      backgroundColor: _actionSheetBackground(context),
+      foregroundColor: _actionSheetForeground(context),
       actions: <LichessActionSheetAction>[
         LichessActionSheetAction(
           key: const Key('play_area_take_back_requester_white'),
@@ -633,6 +657,8 @@ class PlayAreaState extends State<PlayArea> {
       context: context,
       sheetKey: sheetKey,
       title: Text(S.of(context).flipBoard),
+      backgroundColor: _actionSheetBackground(context),
+      foregroundColor: _actionSheetForeground(context),
       actions: _buildBoardTransformActions(context, keyPrefix: keyPrefix),
     );
   }
@@ -800,6 +826,8 @@ class PlayAreaState extends State<PlayArea> {
     showLichessActionSheet<void>(
       context: hostContext,
       sheetKey: const Key('play_area_regular_game_menu_sheet'),
+      backgroundColor: _actionSheetBackground(hostContext),
+      foregroundColor: _actionSheetForeground(hostContext),
       actions: <LichessActionSheetAction>[
         LichessActionSheetAction(
           key: const Key('play_area_regular_game_menu_flip_board'),
@@ -818,12 +846,13 @@ class PlayAreaState extends State<PlayArea> {
           makeLabel: (BuildContext context) => Text(S.of(context).newGame),
           onPressed: () => _requestRegularNewGame(hostContext),
         ),
-        LichessActionSheetAction(
-          key: const Key('play_area_toolbar_item_move'),
-          leading: const Icon(Icons.format_list_numbered),
-          makeLabel: (BuildContext context) => Text(S.of(context).moveList),
-          onPressed: () => _openMovesWithNavigator(hostNavigator),
-        ),
+        if (!_isAnalysisMode)
+          LichessActionSheetAction(
+            key: const Key('play_area_toolbar_item_move'),
+            leading: const Icon(Icons.format_list_numbered),
+            makeLabel: (BuildContext context) => Text(S.of(context).moveList),
+            onPressed: () => _openMovesWithNavigator(hostNavigator),
+          ),
         if (_isAnalysisMode)
           LichessActionSheetAction(
             key: const Key('play_area_regular_game_menu_opening_explorer'),
@@ -924,6 +953,8 @@ class PlayAreaState extends State<PlayArea> {
     showLichessActionSheet<void>(
       context: hostContext,
       sheetKey: const Key('play_area_game_menu_sheet'),
+      backgroundColor: _actionSheetBackground(hostContext),
+      foregroundColor: _actionSheetForeground(hostContext),
       actions: <LichessActionSheetAction>[
         LichessActionSheetAction(
           key: const Key('play_area_game_menu_flip_board'),
@@ -1222,7 +1253,11 @@ class PlayAreaState extends State<PlayArea> {
   }
 
   Widget _buildBoardScreenshot() {
+    final GameMode mode = GameController().gameInstance.gameMode;
+    final bool isGameSurface =
+        mode != GameMode.setupPosition && mode != GameMode.puzzle;
     final bool showAdvantageIndicator =
+        isGameSurface &&
         DB().displaySettings.isPositionalAdvantageIndicatorShown;
     final int advantageValue = advantageData.isEmpty
         ? _getCurrentAdvantageValue()
@@ -1231,6 +1266,7 @@ class PlayAreaState extends State<PlayArea> {
       key: const Key('play_area_native_screenshot'),
       controller: ScreenshotService.screenshotController,
       child: Stack(
+        clipBehavior: Clip.none,
         children: <Widget>[
           Container(
             key: const Key('play_area_game_board_container'),
@@ -1244,10 +1280,10 @@ class PlayAreaState extends State<PlayArea> {
           if (showAdvantageIndicator)
             PositionedDirectional(
               key: const Key('play_area_advantage_indicator_positioned'),
-              start: 8,
-              top: 14,
-              bottom: 14,
-              width: 14,
+              start: -_kAdvantageIndicatorWidth - _kAdvantageIndicatorGap,
+              top: 0,
+              bottom: 0,
+              width: _kAdvantageIndicatorWidth,
               child: _PositionalAdvantageIndicator(value: advantageValue),
             ),
         ],
@@ -1291,8 +1327,9 @@ class PlayAreaState extends State<PlayArea> {
     required BuildContext context,
     required bool showPieceCountRows,
   }) {
-    final bool showAdvantageGraph =
-        DB().displaySettings.isAdvantageGraphShown && advantageData.isNotEmpty;
+    final bool showAdvantageGraph = _shouldShowAdvantageGraph(
+      isGameSurface: true,
+    );
 
     return SizedBox(
       key: const Key('play_area_human_ai_main_content'),
@@ -1313,7 +1350,10 @@ class PlayAreaState extends State<PlayArea> {
                 _isBoardFlipped
                     ? _buildRemovedPieceCountRow()
                     : _buildPieceCountRow(),
-              _buildBoardScreenshot(),
+              SizedBox.square(
+                dimension: constraints.maxWidth,
+                child: _buildBoardScreenshot(),
+              ),
               if (showPieceCountRows)
                 _isBoardFlipped
                     ? _buildPieceCountRow()
@@ -1336,26 +1376,40 @@ class PlayAreaState extends State<PlayArea> {
                 ),
             ];
 
+            final double moveListHeight = _inlineMoveListHeightForRoute(
+              context,
+            );
+            final double boardRowsHeight = showPieceCountRows ? 48 : 0;
+            final double boardBlockHeight =
+                constraints.maxWidth + boardRowsHeight;
+            const double topPanelHeight = _kPlayerPanelHeight;
+            final double bottomPanelHeight =
+                _kPlayerPanelHeight + (showAdvantageGraph ? 112 : 0);
             final double requiredHeight =
-                constraints.maxWidth +
-                32 +
-                56 +
-                56 +
-                (showPieceCountRows ? 48 : 0) +
-                (showAdvantageGraph ? 112 : 0);
+                moveListHeight +
+                boardBlockHeight +
+                topPanelHeight +
+                bottomPanelHeight;
             final bool canBalance =
                 constraints.hasBoundedHeight &&
                 constraints.maxHeight >= requiredHeight;
 
             if (canBalance) {
+              final double freeHeight = math.max(
+                0,
+                constraints.maxHeight - requiredHeight,
+              );
+              final double topSpacerHeight = freeHeight * 0.42;
+              final double bottomSpacerHeight = freeHeight - topSpacerHeight;
               return SizedBox(
                 height: constraints.maxHeight,
                 child: Column(
                   key: const Key('play_area_human_ai_column'),
                   children: <Widget>[
                     moveList,
-                    const Expanded(
-                      child: Padding(
+                    SizedBox(
+                      height: topPanelHeight + topSpacerHeight,
+                      child: const Padding(
                         padding: EdgeInsets.symmetric(horizontal: 12),
                         child: Align(
                           alignment: Alignment.bottomCenter,
@@ -1367,7 +1421,8 @@ class PlayAreaState extends State<PlayArea> {
                       mainAxisSize: MainAxisSize.min,
                       children: boardChildren,
                     ),
-                    Expanded(
+                    SizedBox(
+                      height: bottomPanelHeight + bottomSpacerHeight,
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 12),
                         child: Align(
@@ -1457,6 +1512,20 @@ class PlayAreaState extends State<PlayArea> {
                   onTakeBackPressed: _canTakeBackFromRegularBottomBar
                       ? () => _takeBackFromRegularBottomBar(context)
                       : null,
+                  onPreviousPressed:
+                      _isAnalysisMode && _canStepBackFromRegularBottomBar
+                      ? () => unawaited(_stepBackFromRegularBottomBar(context))
+                      : null,
+                  onNextPressed:
+                      _isAnalysisMode && _canStepForwardFromRegularBottomBar
+                      ? () => unawaited(
+                          HistoryNavigator.stepForward(
+                            context,
+                            pop: false,
+                            toolbar: true,
+                          ),
+                        )
+                      : null,
                 );
               },
             );
@@ -1473,8 +1542,9 @@ class PlayAreaState extends State<PlayArea> {
     required bool showPieceCountRows,
   }) {
     final bool isPlayableGame = !isSetupPosition && !isPuzzle;
-    final bool showAdvantageGraph =
-        DB().displaySettings.isAdvantageGraphShown && advantageData.isNotEmpty;
+    final bool showAdvantageGraph = _shouldShowAdvantageGraph(
+      isGameSurface: isPlayableGame,
+    );
 
     return SafeArea(
       top: MediaQuery.of(context).orientation == Orientation.portrait,
@@ -1494,7 +1564,10 @@ class PlayAreaState extends State<PlayArea> {
                   : _buildPieceCountRow()
             else
               const SizedBox(height: AppTheme.boardMargin),
-            _buildBoardScreenshot(),
+            SizedBox.square(
+              dimension: constraints.maxWidth,
+              child: _buildBoardScreenshot(),
+            ),
             if (showPieceCountRows)
               _isBoardFlipped
                   ? _buildPieceCountRow()
@@ -1518,7 +1591,7 @@ class PlayAreaState extends State<PlayArea> {
 
           final double requiredHeight =
               constraints.maxWidth +
-              (isPlayableGame ? 32 : 0) +
+              (isPlayableGame ? _inlineMoveListHeightForRoute(context) : 0) +
               32 +
               (showPieceCountRows ? 48 : AppTheme.boardMargin * 2) +
               (showAdvantageGraph ? 150 : 0) +
@@ -1707,8 +1780,7 @@ class PlayAreaState extends State<PlayArea> {
                             ),
                             isRobot: false,
                           ),
-                          if (DB().displaySettings.isAdvantageGraphShown &&
-                              advantageData.isNotEmpty)
+                          if (_shouldShowAdvantageGraph(isGameSurface: true))
                             SizedBox(
                               key: const Key(
                                 'play_area_human_ai_landscape_advantage_graph',
@@ -1864,8 +1936,7 @@ class PlayAreaState extends State<PlayArea> {
                               groupByRound: true,
                             ),
                           ),
-                          if (DB().displaySettings.isAdvantageGraphShown &&
-                              advantageData.isNotEmpty)
+                          if (_shouldShowAdvantageGraph(isGameSurface: true))
                             SizedBox(
                               key: const Key(
                                 'play_area_regular_landscape_advantage_graph',
@@ -2748,6 +2819,8 @@ class _RegularGameBottomBar extends StatelessWidget {
     required this.isShowingResult,
     required this.onClockPressed,
     required this.onTakeBackPressed,
+    required this.onPreviousPressed,
+    required this.onNextPressed,
   });
 
   final VoidCallback onMenuPressed;
@@ -2760,6 +2833,8 @@ class _RegularGameBottomBar extends StatelessWidget {
   final bool isShowingResult;
   final VoidCallback? onClockPressed;
   final VoidCallback? onTakeBackPressed;
+  final VoidCallback? onPreviousPressed;
+  final VoidCallback? onNextPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -2775,6 +2850,7 @@ class _RegularGameBottomBar extends StatelessWidget {
           icon: Icons.menu,
           label: S.of(context).menu,
           onTap: onMenuPressed,
+          withShadow: true,
         ),
         if (isAnalysisMode)
           LichessBottomBarButton(
@@ -2783,6 +2859,7 @@ class _RegularGameBottomBar extends StatelessWidget {
             label: S.of(context).analyze,
             onTap: onAnalyzePressed,
             highlighted: isAnalysisHighlighted,
+            withShadow: true,
           )
         else
           LichessBottomBarButton(
@@ -2793,6 +2870,7 @@ class _RegularGameBottomBar extends StatelessWidget {
                 : S.of(context).resign,
             onTap: onResignOrResultPressed,
             highlighted: isShowingResult,
+            withShadow: true,
           ),
         if (showClockControl)
           LichessBottomBarButton(
@@ -2800,13 +2878,31 @@ class _RegularGameBottomBar extends StatelessWidget {
             icon: isClockPaused ? CupertinoIcons.play : CupertinoIcons.pause,
             label: isClockPaused ? S.of(context).resume : S.of(context).pause,
             onTap: onClockPressed,
+            withShadow: true,
           ),
-        LichessBottomBarButton(
-          key: const Key('play_area_regular_bottom_bar_take_back'),
-          icon: CupertinoIcons.arrow_uturn_left,
-          label: S.of(context).takeBack,
-          onTap: onTakeBackPressed,
-        ),
+        if (isAnalysisMode) ...<Widget>[
+          LichessBottomBarButton(
+            key: const Key('play_area_regular_bottom_bar_previous'),
+            icon: CupertinoIcons.chevron_back,
+            label: S.of(context).previous,
+            onTap: onPreviousPressed,
+            withShadow: true,
+          ),
+          LichessBottomBarButton(
+            key: const Key('play_area_regular_bottom_bar_next'),
+            icon: CupertinoIcons.chevron_forward,
+            label: S.of(context).next,
+            onTap: onNextPressed,
+            withShadow: true,
+          ),
+        ] else
+          LichessBottomBarButton(
+            key: const Key('play_area_regular_bottom_bar_take_back'),
+            icon: CupertinoIcons.arrow_uturn_left,
+            label: S.of(context).takeBack,
+            onTap: onTakeBackPressed,
+            withShadow: true,
+          ),
       ],
     );
   }
@@ -2861,6 +2957,7 @@ class _LichessGameBottomBar extends StatelessWidget {
           icon: Icons.menu,
           label: S.of(context).menu,
           onTap: onMenuPressed,
+          withShadow: true,
         ),
         LichessBottomBarButton(
           key: const Key('play_area_bottom_bar_resign'),
@@ -2868,12 +2965,14 @@ class _LichessGameBottomBar extends StatelessWidget {
           label: isShowingResult ? S.of(context).results : S.of(context).resign,
           onTap: onResignOrResultPressed,
           highlighted: isShowingResult,
+          withShadow: true,
         ),
         LichessBottomBarButton(
           key: const Key('play_area_bottom_bar_take_back'),
           icon: CupertinoIcons.arrow_uturn_left,
           label: S.of(context).takeBack,
           onTap: onTakeBackPressed,
+          withShadow: true,
         ),
         LichessBottomBarButton(
           key: const Key('play_area_bottom_bar_hint'),
@@ -2881,6 +2980,7 @@ class _LichessGameBottomBar extends StatelessWidget {
           label: S.of(context).getAHint,
           onTap: onHintPressed,
           highlighted: isHintHighlighted,
+          withShadow: true,
         ),
       ],
     );

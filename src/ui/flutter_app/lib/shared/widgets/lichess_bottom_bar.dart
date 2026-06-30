@@ -107,6 +107,7 @@ class LichessBottomBarButton extends StatelessWidget {
     this.showTooltip = true,
     this.blink = false,
     this.tooltip,
+    this.withShadow = false,
   });
 
   final IconData icon;
@@ -118,6 +119,7 @@ class LichessBottomBarButton extends StatelessWidget {
   final bool showTooltip;
   final bool blink;
   final String? tooltip;
+  final bool withShadow;
 
   bool get enabled => onTap != null;
 
@@ -125,9 +127,25 @@ class LichessBottomBarButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
     final Color primary = colorScheme.primary;
+    final Color baseForeground =
+        IconTheme.of(context).color ??
+        DefaultTextStyle.of(context).style.color ??
+        colorScheme.onSurface;
+    final Color shadowColor = baseForeground.computeLuminance() < 0.5
+        ? Colors.white.withValues(alpha: 0.62)
+        : Colors.black.withValues(alpha: 0.66);
     final double? labelFontSize = Theme.of(
       context,
     ).textTheme.bodySmall?.fontSize;
+    final List<Shadow>? shadows = withShadow
+        ? <Shadow>[
+            Shadow(
+              color: shadowColor,
+              blurRadius: 3,
+              offset: const Offset(0, 1),
+            ),
+          ]
+        : null;
 
     final Widget child = Opacity(
       opacity: enabled ? 1 : 0.4,
@@ -142,7 +160,11 @@ class LichessBottomBarButton extends StatelessWidget {
             ),
             isLabelVisible: badgeLabel != null,
             label: badgeLabel != null ? Text(badgeLabel!) : null,
-            child: Icon(icon, color: highlighted ? primary : null),
+            child: Icon(
+              icon,
+              color: highlighted ? primary : null,
+              shadows: shadows,
+            ),
           ),
           if (showLabel)
             Padding(
@@ -152,6 +174,7 @@ class LichessBottomBarButton extends StatelessWidget {
                 style: TextStyle(
                   fontSize: labelFontSize,
                   color: highlighted ? primary : null,
+                  shadows: shadows,
                 ),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,

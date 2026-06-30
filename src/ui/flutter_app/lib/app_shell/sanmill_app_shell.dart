@@ -8,6 +8,7 @@ import 'package:feedback/feedback.dart';
 import 'package:flutter/foundation.dart'
     show kDebugMode, kIsWeb, visibleForTesting;
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:material_symbols_icons/symbols.dart';
@@ -17,7 +18,7 @@ import 'package:path_provider/path_provider.dart';
 import '../experience_recording/models/recording_models.dart';
 import '../experience_recording/services/recording_service.dart';
 import '../game_page/services/mill.dart'
-    show GameController, LoadService, PieceColor;
+    show GameController, GameMode, LoadService, PieceColor;
 import '../game_page/services/save_load/saved_game_catalog.dart';
 import '../game_page/widgets/mini_board.dart';
 import '../game_page/widgets/saved_games_page.dart';
@@ -245,13 +246,29 @@ class SanmillAppShellState extends State<SanmillAppShell> {
   void _bindActiveSessionSnapshot(GameSession session) {
     GameController().bindActiveSession(session);
     void listener() {
+      _publishActiveSessionSnapshot(session);
+    }
+
+    session.state.addListener(listener);
+    _activeSessionSnapshotListener = listener;
+  }
+
+  void _publishActiveSessionSnapshot(GameSession session) {
+    void publish() {
+      if (!mounted || !identical(_activeSession, session)) {
+        return;
+      }
       final GameController controller = GameController();
       controller.activeSessionSnapshot = session.state.value;
       controller.headerIconsNotifier.showIcons();
     }
 
-    session.state.addListener(listener);
-    _activeSessionSnapshotListener = listener;
+    if (SchedulerBinding.instance.schedulerPhase == SchedulerPhase.idle) {
+      publish();
+      return;
+    }
+
+    SchedulerBinding.instance.addPostFrameCallback((_) => publish());
   }
 
   void _disposeActiveSessionBindings() {
@@ -404,7 +421,24 @@ class SanmillAppShellState extends State<SanmillAppShell> {
   }
 
   Future<void> _continueCurrentGame() async {
-    await _selectPlayRoute(_playRouteId);
+    await _selectPlayRoute(_currentGamePlayRouteId());
+  }
+
+  String _currentGamePlayRouteId() {
+    if (GameRegistry.instance.currentId != GameId.mill) {
+      return _playRouteId;
+    }
+    return switch (GameController().gameInstance.gameMode) {
+      GameMode.humanVsAi => MillRouteIds.humanVsAi.value,
+      GameMode.humanVsHuman => MillRouteIds.humanVsHuman.value,
+      GameMode.aiVsAi => MillRouteIds.aiVsAi.value,
+      GameMode.humanVsLAN => MillRouteIds.humanVsLan.value,
+      GameMode.testViaLAN => MillRouteIds.humanVsLan.value,
+      GameMode.humanVsCloud => _playRouteId,
+      GameMode.analysis ||
+      GameMode.setupPosition ||
+      GameMode.puzzle => _playRouteId,
+    };
   }
 
   Future<void> _openSavedGame(String path) async {

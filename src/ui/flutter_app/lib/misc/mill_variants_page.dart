@@ -108,14 +108,6 @@ class MillVariantsPage extends StatelessWidget {
         .toList(growable: false);
   }
 
-  static bool _hasSpecialCapture(RuleSettings settings) {
-    return settings.enableInterventionCapture ||
-        settings.enableCustodianCapture ||
-        settings.enableLeapCapture ||
-        settings.millFormationActionInPlacingPhase ==
-            MillFormationActionInPlacingPhase.markAndDelayRemovingPieces;
-  }
-
   static String _localizedVariantTitle(S strings, _VariantTitleKey key) {
     switch (key) {
       case _VariantTitleKey.nineMensMorris:
@@ -352,10 +344,6 @@ class _VariantTile extends StatelessWidget {
       selected: selected,
       selectedTileColor: colorScheme.primaryContainer.withValues(alpha: 0.36),
       contentPadding: const EdgeInsetsDirectional.fromSTEB(16, 8, 16, 8),
-      leading: Icon(
-        entry.icon,
-        color: selected ? colorScheme.primary : colorScheme.onSurfaceVariant,
-      ),
       title: Text(entry.title, style: titleStyle),
       subtitle: Text(
         entry.description,
@@ -387,22 +375,6 @@ class _VariantEntry {
   final RuleSettings settings;
 
   String get description => features.join(' · ');
-
-  IconData get icon {
-    if (id == 'standard_9mm') {
-      return Icons.grid_3x3_rounded;
-    }
-    if (settings.hasDiagonalLines) {
-      return Icons.hub_outlined;
-    }
-    if (MillVariantsPage._hasSpecialCapture(settings)) {
-      return Icons.control_camera_outlined;
-    }
-    if (settings.mayMoveInPlacingPhase || settings.mayFly) {
-      return Icons.alt_route_rounded;
-    }
-    return Icons.category_outlined;
-  }
 }
 
 class _VariantSource {

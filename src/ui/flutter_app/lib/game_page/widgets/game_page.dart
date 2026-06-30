@@ -548,15 +548,13 @@ class _GamePageInnerState extends State<_GamePageInner> {
     if (Navigator.canPop(context)) {
       return Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Material(
-          color: Colors.black.withValues(alpha: 0.3),
-          borderRadius: BorderRadius.circular(8),
-          child: IconButton(
-            key: const Key('game_page_back_button'),
-            icon: const Icon(Icons.arrow_back, color: Colors.white),
-            tooltip: S.of(context).back,
-            onPressed: () => unawaited(Navigator.of(context).maybePop()),
-          ),
+        child: IconButton(
+          key: const Key('game_page_back_button'),
+          style: IconButton.styleFrom(backgroundColor: Colors.transparent),
+          color: DB().colorSettings.messageColor,
+          icon: const Icon(Icons.arrow_back),
+          tooltip: S.of(context).back,
+          onPressed: () => unawaited(Navigator.of(context).maybePop()),
         ),
       );
     }

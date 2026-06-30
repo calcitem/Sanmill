@@ -2,6 +2,7 @@
 // Copyright (C) 2019-2026 The Sanmill developers (see AUTHORS file)
 
 import 'dart:math' as math;
+import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -38,9 +39,14 @@ import '../opening_book/opening_book_models.dart';
 import '../opening_book/opening_book_repository.dart';
 
 class OpeningExplorerPage extends StatefulWidget {
-  const OpeningExplorerPage({super.key, this.session});
+  const OpeningExplorerPage({
+    super.key,
+    this.session,
+    this.startFromSession = false,
+  });
 
   final GameSession? session;
+  final bool startFromSession;
 
   @override
   State<OpeningExplorerPage> createState() => _OpeningExplorerPageState();
@@ -60,6 +66,24 @@ const int _explorerMoveColumnFlex = 15;
 const int _explorerGamesColumnFlex = 35;
 const int _explorerStatsColumnFlex = 50;
 const double _explorerColumnGap = 8;
+const List<String> _openingExplorerVerticalCoordinates = <String>[
+  '7',
+  '6',
+  '5',
+  '4',
+  '3',
+  '2',
+  '1',
+];
+const List<String> _openingExplorerHorizontalCoordinates = <String>[
+  'a',
+  'b',
+  'c',
+  'd',
+  'e',
+  'f',
+  'g',
+];
 
 class _OpeningExplorerHistoryEntry {
   const _OpeningExplorerHistoryEntry({required this.label, required this.fen});
@@ -114,7 +138,8 @@ class _OpeningExplorerPageState extends State<OpeningExplorerPage> {
   @override
   void didUpdateWidget(covariant OpeningExplorerPage oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (!identical(widget.session, oldWidget.session)) {
+    if (!identical(widget.session, oldWidget.session) ||
+        widget.startFromSession != oldWidget.startFromSession) {
       _recreateExplorerSession();
     }
   }
@@ -138,7 +163,7 @@ class _OpeningExplorerPageState extends State<OpeningExplorerPage> {
       rules: DB().ruleSettings,
       generalSettings: DB().generalSettings,
     );
-    final GameSession? source = widget.session;
+    final GameSession? source = widget.startFromSession ? widget.session : null;
     if (source is NativeMillGameSession) {
       final bool loaded = explorer.loadFen(source.getFen());
       assert(loaded, 'Opening explorer source FEN must load into its session.');
@@ -853,7 +878,6 @@ class _OpeningExplorerLegalHints {
         continue;
       }
       if (action.type == MillActionTypes.place) {
-        _addNotationNode(targets, move);
         continue;
       }
       if (action.type != MillActionTypes.move || !move.contains('-')) {
@@ -932,6 +956,7 @@ class _OpeningExplorerBoardPainter extends CustomPainter {
     );
     canvas.drawRRect(background, Paint()..color = boardBackgroundColor);
 
+    _drawCoordinates(canvas, size);
     _drawLines(canvas, size);
     _drawPoints(canvas, size);
     _drawHints(canvas, size, legalHints.sources, hintColor, filled: false);
@@ -948,6 +973,69 @@ class _OpeningExplorerBoardPainter extends CustomPainter {
       _drawPieces(canvas, size, board);
     }
     _drawSelectedNode(canvas, size);
+  }
+
+  void _drawCoordinates(Canvas canvas, Size size) {
+    final double side = size.shortestSide;
+    final double padding = side * MillBoardGeometry.defaultPaddingFraction;
+    final double cell = (side - padding * 2) / 6;
+    final double originX = (size.width - side) / 2 + padding;
+    final double originY = (size.height - side) / 2 + padding;
+    final TextStyle textStyle = TextStyle(
+      color: boardLineColor.withValues(alpha: 1.0),
+      fontSize: AppTheme.textScaler.scale(math.max(10, side * 0.045)),
+      fontWeight: FontWeight.w500,
+      letterSpacing: 0,
+    );
+
+    for (
+      int index = 0;
+      index < _openingExplorerVerticalCoordinates.length;
+      index++
+    ) {
+      _paintCoordinate(
+        canvas,
+        text: _openingExplorerVerticalCoordinates[index],
+        style: textStyle,
+        center: Offset(originX - padding / 2, originY + index * cell),
+      );
+    }
+
+    for (
+      int index = 0;
+      index < _openingExplorerHorizontalCoordinates.length;
+      index++
+    ) {
+      final String label = DB().generalSettings.screenReaderSupport
+          ? _openingExplorerHorizontalCoordinates[index].toUpperCase()
+          : _openingExplorerHorizontalCoordinates[index];
+      _paintCoordinate(
+        canvas,
+        text: label,
+        style: textStyle,
+        center: Offset(
+          originX + index * cell,
+          originY + cell * 6 + padding / 2,
+        ),
+      );
+    }
+  }
+
+  void _paintCoordinate(
+    Canvas canvas, {
+    required String text,
+    required TextStyle style,
+    required Offset center,
+  }) {
+    final TextPainter textPainter = TextPainter(
+      text: TextSpan(style: style, text: text),
+      textAlign: TextAlign.center,
+      textDirection: ui.TextDirection.ltr,
+    )..layout();
+    textPainter.paint(
+      canvas,
+      center - Offset(textPainter.width / 2, textPainter.height / 2),
+    );
   }
 
   void _drawLines(Canvas canvas, Size size) {
