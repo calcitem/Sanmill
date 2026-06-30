@@ -653,6 +653,25 @@ class PlayAreaState extends State<PlayArea> {
     );
   }
 
+  Future<void> _toggleAnalysisThreatFromMenu(BuildContext context) async {
+    assert(_isAnalysisMode, 'Threat mode is analysis-mode only.');
+    RecordingService()
+        .recordEvent(RecordingEventType.toolbarAction, <String, dynamic>{
+          'toolbar': 'analysisMenu',
+          'action': AnalysisMode.isThreatMode ? 'stopThreat' : 'showThreat',
+        });
+
+    await AnalysisService.toggleThreat(context);
+  }
+
+  String _analysisThreatMenuLabel(S strings) {
+    final bool stop = AnalysisMode.isThreatMode;
+    return switch (strings.localeName.split('_').first) {
+      'zh' => stop ? '停止显示威胁' : '显示威胁',
+      _ => stop ? 'Stop showing threat' : 'Show threat',
+    };
+  }
+
   void _continueFromHere({
     required NativeMillGameSession session,
     required NavigatorState navigator,
@@ -1509,6 +1528,21 @@ class PlayAreaState extends State<PlayArea> {
               session: nativeHostSession,
               strings: strings,
             ),
+          ),
+        if (_isAnalysisMode &&
+            nativeHostSession != null &&
+            AnalysisService.canShowThreat(nativeHostSession))
+          LichessActionSheetAction(
+            key: const Key('play_area_regular_game_menu_show_threat'),
+            leading: Icon(
+              AnalysisMode.isThreatMode
+                  ? Icons.visibility_off_outlined
+                  : Icons.online_prediction_outlined,
+            ),
+            makeLabel: (BuildContext context) =>
+                Text(_analysisThreatMenuLabel(strings)),
+            onPressed: () =>
+                unawaited(_toggleAnalysisThreatFromMenu(actionContext)),
           ),
         LichessActionSheetAction(
           key: const Key('play_area_regular_game_menu_flip_board'),

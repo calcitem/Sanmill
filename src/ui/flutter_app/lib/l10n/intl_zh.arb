@@ -4691,5 +4691,9 @@
     "analysisMovesCleared": "已清空分析着法。",
     "@analysisMovesCleared": {},
     "smallBoard": "小棋盘",
-    "@smallBoard": {}
+    "@smallBoard": {},
+    "showThreat": "显示威胁",
+    "@showThreat": {},
+    "stopShowingThreat": "停止显示威胁",
+    "@stopShowingThreat": {}
 }

@@ -4839,5 +4839,9 @@
     "analysisMovesCleared": "Analysis moves cleared.",
     "@analysisMovesCleared": {},
     "smallBoard": "Small board",
-    "@smallBoard": {}
+    "@smallBoard": {},
+    "showThreat": "Show threat",
+    "@showThreat": {},
+    "stopShowingThreat": "Stop showing threat",
+    "@stopShowingThreat": {}
 }

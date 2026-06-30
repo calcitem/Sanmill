@@ -1579,6 +1579,10 @@ void main() {
       findsNothing,
     );
     expect(
+      find.byKey(const Key('play_area_regular_game_menu_show_threat')),
+      findsOne,
+    );
+    expect(
       find.byKey(const Key('play_area_regular_game_menu_continue_from_here')),
       findsOne,
     );

@@ -52,6 +52,23 @@ void main() {
     expect(AnalysisMode.analysisResults, isEmpty);
   });
 
+  test('tracks threat mode independently from analysis results', () {
+    AnalysisMode.enable(
+      const <MoveAnalysisResult>[
+        MoveAnalysisResult(move: 'd6', outcome: AnalysisOutcome.advantage),
+      ],
+      source: AnalysisSource.engine,
+      isThreatMode: true,
+    );
+
+    expect(AnalysisMode.isThreatMode, isTrue);
+    expect(AnalysisMode.source, AnalysisSource.engine);
+
+    AnalysisMode.disable();
+
+    expect(AnalysisMode.isThreatMode, isFalse);
+  });
+
   test('tracks small board preference independently from overlay state', () {
     expect(AnalysisMode.smallBoard, isFalse);
 

@@ -139,6 +139,7 @@ class AnalysisMode {
   static bool _isAnalyzing = false;
   static bool _showEngineLines = true;
   static bool _smallBoard = false;
+  static bool _isThreatMode = false;
   static int _engineLineCount = defaultEngineLineCount;
   static AnalysisOverlayMode? _overlayMode;
   static AnalysisSource? _source;
@@ -172,6 +173,9 @@ class AnalysisMode {
   /// Whether the analysis screen uses a reduced board size in portrait mode.
   static bool get smallBoard => _smallBoard;
 
+  /// Whether the current engine analysis is showing the opponent's threat.
+  static bool get isThreatMode => _isThreatMode;
+
   /// Number of engine candidate lines to show in analysis mode.
   static int get engineLineCount => _engineLineCount;
 
@@ -191,11 +195,13 @@ class AnalysisMode {
     List<String> trapMoves = const <String>[],
     AnalysisOverlayMode mode = AnalysisOverlayMode.analysis,
     AnalysisSource source = AnalysisSource.perfectDatabase,
+    bool isThreatMode = false,
   }) {
     _analysisResults = results;
     _trapMoves = trapMoves;
     _overlayMode = mode;
     _source = source;
+    _isThreatMode = isThreatMode;
     _isEnabled = true;
     _isAnalyzing = false;
     _publishState();
@@ -205,6 +211,7 @@ class AnalysisMode {
   static void disable() {
     if (!_isEnabled &&
         !_isAnalyzing &&
+        !_isThreatMode &&
         _analysisResults.isEmpty &&
         _trapMoves.isEmpty) {
       return;
@@ -213,6 +220,7 @@ class AnalysisMode {
     _trapMoves = <String>[];
     _overlayMode = null;
     _source = null;
+    _isThreatMode = false;
     _isEnabled = false;
     _isAnalyzing = false;
     _publishState();

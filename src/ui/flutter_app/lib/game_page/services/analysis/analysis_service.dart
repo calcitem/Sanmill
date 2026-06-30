@@ -99,6 +99,66 @@ class AnalysisService {
     );
   }
 
+  /// Whether threat mode can be requested without fabricating an impossible Mill
+  /// turn state.
+  static bool canShowThreat(NativeMillGameSession session) {
+    if (session.outcome.isTerminal) {
+      return false;
+    }
+    if (session.state.value.phase != 'placing' &&
+        session.state.value.phase != 'moving') {
+      return false;
+    }
+    final List<String> fields = session.getFen().trim().split(RegExp(r'\s+'));
+    if (fields.length < 4) {
+      assert(
+        false,
+        'Mill FEN must contain board, side, phase, and act fields.',
+      );
+      return false;
+    }
+    return fields[3] != 'r';
+  }
+
+  /// Toggle a Lichess-style threat search: analyse as if the opponent were to
+  /// move from the current board position.
+  static Future<void> toggleThreat(BuildContext context) async {
+    assert(
+      !AnalysisMode.isAnalyzing,
+      'Cannot toggle threat mode while another analysis pass is running.',
+    );
+    if (AnalysisMode.isAnalyzing) {
+      return;
+    }
+    if (AnalysisMode.isThreatMode) {
+      await refresh(context);
+      return;
+    }
+
+    final NativeMillGameSession? session = _activeNativeSession(context);
+    if (session == null) {
+      logger.w("$_logTag No active native Mill session to show threat.");
+      return;
+    }
+    if (!canShowThreat(session)) {
+      logger.w("$_logTag Threat mode is not available for this position.");
+      return;
+    }
+
+    final String threatFen = _fenWithOppositeSideToMove(session.getFen());
+    if (threatFen.isEmpty) {
+      logger.w("$_logTag Could not build threat-mode FEN.");
+      return;
+    }
+
+    await _enableEngineMultiPvAnalysis(
+      context,
+      session,
+      fenOverride: threatFen,
+      isThreatMode: true,
+    );
+  }
+
   static Future<void> _enablePerfectDatabaseAnalysis(
     BuildContext context,
     NativeMillGameSession session,
@@ -138,6 +198,8 @@ class AnalysisService {
     BuildContext context,
     NativeMillGameSession session, {
     int? requestedDepth,
+    String? fenOverride,
+    bool isThreatMode = false,
   }) async {
     final GeneralSettings engineSettings = DB().generalSettings.copyWith(
       resignIfMostLose: false,
@@ -153,9 +215,27 @@ class AnalysisService {
         ? math.max(1, AnalysisMode.engineLineCount)
         : 1;
 
+    NativeMillGameSession? temporarySession;
+    final NativeMillGameSession searchSession;
+    if (fenOverride == null) {
+      searchSession = session;
+    } else {
+      temporarySession = NativeMillGameSession(
+        rules: DB().ruleSettings,
+        generalSettings: engineSettings,
+      );
+      final bool loaded = temporarySession.loadFen(fenOverride);
+      assert(loaded, 'Threat-mode FEN must load into the temporary session.');
+      if (!loaded) {
+        temporarySession.dispose();
+        return;
+      }
+      searchSession = temporarySession;
+    }
+
     AnalysisMode.setAnalyzing(true);
     try {
-      final List<NativeMillPrincipalVariation> variations = await session
+      final List<NativeMillPrincipalVariation> variations = await searchSession
           .searchPrincipalVariations(
             depth: searchDepth,
             moveLimitMs: analysisSearch.moveLimitMs,
@@ -182,10 +262,12 @@ class AnalysisService {
             )
             .toList(growable: false),
         source: AnalysisSource.engine,
+        isThreatMode: isThreatMode,
       );
     } catch (e, st) {
       logger.e("$_logTag Engine MultiPV analysis failed: $e", stackTrace: st);
     } finally {
+      temporarySession?.dispose();
       AnalysisMode.setAnalyzing(false);
     }
   }
@@ -277,6 +359,22 @@ class AnalysisService {
       depth = depth == null ? candidate : math.max(depth, candidate);
     }
     return depth;
+  }
+
+  static String _fenWithOppositeSideToMove(String fen) {
+    final List<String> fields = fen.trim().split(RegExp(r'\s+'));
+    if (fields.length < 2) {
+      assert(false, 'Mill FEN must contain a side-to-move field.');
+      return '';
+    }
+    fields[1] = switch (fields[1]) {
+      'w' => 'b',
+      'b' => 'w',
+      final String side => throw StateError(
+        'Unsupported Mill FEN side-to-move token: $side',
+      ),
+    };
+    return fields.join(' ');
   }
 
   static AnalysisOutcome _hintOutcome(int? score) {
