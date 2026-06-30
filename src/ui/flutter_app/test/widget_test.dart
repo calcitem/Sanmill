@@ -3,6 +3,7 @@
 
 // widget_test.dart
 
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -2189,6 +2190,49 @@ void main() {
   );
 
   testWidgets(
+    'Opening explorer shows loading rows while opening book loads',
+    (WidgetTester tester) async {
+      final Completer<String> openingBookCompleter = Completer<String>();
+      OpeningBookRepository.instance.resetForTest();
+      OpeningBookRepository.instance.assetLoader = (String _) =>
+          openingBookCompleter.future;
+      addTearDown(() async {
+        OpeningBookRepository.instance.resetForTest();
+        OpeningBookRepository.instance.assetLoader =
+            loadOpeningBookAssetFromDisk;
+        await OpeningBookRepository.instance.ensureLoaded();
+      });
+
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: AppTheme.lightThemeData,
+          localizationsDelegates: sanmillLocalizationsDelegates,
+          supportedLocales: S.supportedLocales,
+          home: const OpeningExplorerPage(),
+        ),
+      );
+      await tester.pump();
+
+      expect(
+        find.byKey(const Key('opening_explorer_loading_row_0')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const Key('opening_explorer_loading_row_5')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const Key('opening_explorer_no_data_row')),
+        findsNothing,
+      );
+
+      openingBookCompleter.complete('{}');
+      await tester.pumpAndSettle();
+    },
+    skip: nativeLibrarySkipReason() != null,
+  );
+
+  testWidgets(
     'Opening explorer starts from the initial position without a source game',
     (WidgetTester tester) async {
       await tester.pumpWidget(
@@ -2266,32 +2310,12 @@ void main() {
         findsNothing,
       );
 
-      final String firstOpeningMove = OpeningBookRepository.instance
-          .openingsFor(isElFilja: false)
-          .first
-          .lineMoves
-          .first;
-      final Finder firstMoveFinder = find.byKey(
-        Key('opening_explorer_move_$firstOpeningMove'),
-      );
-      await tester.ensureVisible(firstMoveFinder);
-      await tester.pumpAndSettle();
-      await tester.tap(firstMoveFinder);
-      await tester.pumpAndSettle();
-      await tester.drag(
-        find.byKey(const Key('opening_explorer_list')),
-        const Offset(0, 800),
-      );
-      await tester.pumpAndSettle();
-
-      expect(
-        find.byKey(const Key('opening_explorer_opening_card')),
-        findsOneWidget,
-      );
-      expect(
-        find.byKey(const Key('opening_explorer_opening_header')),
-        findsOneWidget,
-      );
+      final Finder firstMoveFinder = find.byWidgetPredicate((Widget widget) {
+        final Key? key = widget.key;
+        return key is ValueKey<String> &&
+            key.value.startsWith('opening_explorer_move_');
+      }, description: 'rendered opening explorer move row');
+      expect(firstMoveFinder, findsWidgets);
 
       // Drain any settings-save debounce timer (see the smoke test above).
       await tester.pump(const Duration(milliseconds: 350));

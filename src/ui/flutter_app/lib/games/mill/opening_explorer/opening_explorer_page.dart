@@ -339,23 +339,30 @@ class _OpeningExplorerPageState extends State<OpeningExplorerPage> {
                 (BuildContext context, GameStateSnapshot _, Widget? child) {
                   return FutureBuilder<void>(
                     future: _openingBookLoad,
-                    builder: (BuildContext context, AsyncSnapshot<void> _) {
-                      final _OpeningExplorerSnapshot snapshot =
-                          _OpeningExplorerSnapshot.fromSession(
+                    builder:
+                        (
+                          BuildContext context,
+                          AsyncSnapshot<void> openingBookSnapshot,
+                        ) {
+                          final _OpeningExplorerSnapshot snapshot =
+                              _OpeningExplorerSnapshot.fromSession(
+                                session: session,
+                                ruleSettings: DB().ruleSettings,
+                                generalSettings: DB().generalSettings,
+                                placementMoves: _currentPlacementMoves(),
+                              );
+                          return _OpeningExplorerContent(
                             session: session,
-                            ruleSettings: DB().ruleSettings,
-                            generalSettings: DB().generalSettings,
-                            placementMoves: _currentPlacementMoves(),
+                            snapshot: snapshot,
+                            tapController: _tapController,
+                            onMoveSelected: _applyExplorerAction,
+                            onPositionChanged: _recordExplorerPositionChange,
+                            showBoard: widget.showBoard,
+                            isLoading:
+                                openingBookSnapshot.connectionState !=
+                                ConnectionState.done,
                           );
-                      return _OpeningExplorerContent(
-                        session: session,
-                        snapshot: snapshot,
-                        tapController: _tapController,
-                        onMoveSelected: _applyExplorerAction,
-                        onPositionChanged: _recordExplorerPositionChange,
-                        showBoard: widget.showBoard,
-                      );
-                    },
+                        },
                   );
                 },
           )
@@ -503,6 +510,7 @@ class _OpeningExplorerContent extends StatelessWidget {
     required this.onMoveSelected,
     required this.onPositionChanged,
     required this.showBoard,
+    required this.isLoading,
   });
 
   final NativeMillGameSession session;
@@ -511,6 +519,7 @@ class _OpeningExplorerContent extends StatelessWidget {
   final ValueChanged<GameAction> onMoveSelected;
   final _OpeningExplorerPositionChanged onPositionChanged;
   final bool showBoard;
+  final bool isLoading;
 
   @override
   Widget build(BuildContext context) {
@@ -590,14 +599,17 @@ class _OpeningExplorerContent extends StatelessWidget {
           message: strings.openingExplorerRuleUnsupported,
           inList: true,
         ),
-      if (snapshot.openingRecognition.isNamed)
+      if (!isLoading && snapshot.openingRecognition.isNamed)
         _OpeningNameSection(recognition: snapshot.openingRecognition),
       LichessListSection(
         header: Text(strings.openingExplorerMoves),
         cardKey: const Key('opening_explorer_moves_card'),
         children: <Widget>[
           const _OpeningExplorerMovesHeader(),
-          if (snapshot.moves.isEmpty)
+          if (isLoading)
+            for (int index = 0; index < 6; index++)
+              _OpeningExplorerLoadingTile(index: index)
+          else if (snapshot.moves.isEmpty)
             const _OpeningExplorerNoDataTile()
           else ...<Widget>[
             for (final (int index, _OpeningExplorerMove move)
@@ -1580,6 +1592,57 @@ class _OpeningExplorerMovesHeader extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class _OpeningExplorerLoadingTile extends StatelessWidget {
+  const _OpeningExplorerLoadingTile({required this.index});
+
+  final int index;
+
+  @override
+  Widget build(BuildContext context) {
+    return ColoredBox(
+      color: _openingExplorerRowColor(context, index),
+      child: Padding(
+        key: Key('opening_explorer_loading_row_$index'),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+        child: const Row(
+          children: <Widget>[
+            Expanded(
+              flex: _explorerMoveColumnFlex,
+              child: _OpeningExplorerLoadingCell(),
+            ),
+            SizedBox(width: _explorerColumnGap),
+            Expanded(
+              flex: _explorerGamesColumnFlex,
+              child: _OpeningExplorerLoadingCell(),
+            ),
+            SizedBox(width: _explorerColumnGap),
+            Expanded(
+              flex: _explorerStatsColumnFlex,
+              child: _OpeningExplorerLoadingCell(),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _OpeningExplorerLoadingCell extends StatelessWidget {
+  const _OpeningExplorerLoadingCell();
+
+  @override
+  Widget build(BuildContext context) {
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: colorScheme.onSurface.withValues(alpha: 0.10),
+        borderRadius: BorderRadius.circular(5),
+      ),
+      child: const SizedBox(height: 20),
     );
   }
 }
