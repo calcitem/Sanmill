@@ -449,7 +449,17 @@ void main() {
       tester
           .getSize(find.byKey(const Key('play_area_regular_move_list_wrap')))
           .height,
-      76,
+      104,
+    );
+    expect(
+      tester.getBottomLeft(lastMove).dy,
+      lessThanOrEqualTo(
+        tester
+            .getBottomLeft(
+              find.byKey(const Key('play_area_regular_move_list_wrap')),
+            )
+            .dy,
+      ),
     );
   });
 
@@ -1277,7 +1287,8 @@ void main() {
     expect(find.byKey(const Key('play_area_analysis_board')), findsOne);
     expect(find.byKey(const Key('play_area_analysis_panel')), findsOne);
     expect(find.byKey(const Key('play_area_analysis_tabs')), findsOne);
-    expect(find.byKey(const Key('opening_explorer_embedded')), findsOne);
+    expect(find.byKey(const Key('play_area_analysis_moves')), findsOne);
+    expect(find.byKey(const Key('opening_explorer_embedded')), findsNothing);
     expect(find.byKey(const Key('play_area_main_toolbar_bottom')), findsOne);
     expect(
       find.byKey(const Key('play_area_regular_bottom_bar_menu')),
@@ -1692,6 +1703,24 @@ void main() {
         matching: find.byType(Wrap),
       ),
       findsOneWidget,
+    );
+    expect(
+      tester
+          .getSize(find.byKey(const Key('play_area_human_ai_move_list_wrap')))
+          .height,
+      104,
+    );
+    expect(
+      tester
+          .getBottomLeft(find.byKey(const Key('play_area_human_ai_move_20')))
+          .dy,
+      lessThanOrEqualTo(
+        tester
+            .getBottomLeft(
+              find.byKey(const Key('play_area_human_ai_move_list_wrap')),
+            )
+            .dy,
+      ),
     );
   });
 

@@ -77,11 +77,14 @@ class PlayAreaState extends State<PlayArea> {
   bool _isHintSearching = false;
   static const double _kMoveListRouteTopInset = 80;
   static const double _kInlineMoveListHeight = 40;
-  static const double _kWrappedMoveListMaxHeight = 76;
+  static const double _kWrappedMoveListMaxHeight = 104;
+  static const int _kWrappedMoveListSingleLineMoveLimit = 8;
+  static const double _kWrappedMoveListEstimatedMoveWidth = 56;
   static const double _kPlayerPanelHeight = 56;
   static const double _kAnalysisEngineLinesReserveHeight = 90;
   static const double _kAnalysisSmallBoardScale = 0.8;
   static const double _kBalancedLayoutSafetyMargin = 24;
+  static const double _kBalancedLayoutMinWidth = 240;
   static const double _kHumanDatabaseStatsStripHeight = 40;
   static const double _kAdvantageIndicatorWidth = 16;
   static const double _kAdvantageIndicatorGap = 6;
@@ -198,8 +201,22 @@ class PlayAreaState extends State<PlayArea> {
     );
   }
 
-  double _wrappedMoveListHeightForRoute(BuildContext context) {
-    return _kWrappedMoveListMaxHeight + _moveListRouteTopInset(context);
+  double _wrappedMoveListReservedHeightForRoute(
+    BuildContext context,
+    double width,
+  ) {
+    final int moveCount = GameController().gameRecorder.currentPath.length;
+    final double usableWidth = math.max(1, width - AppStyles.bodyPadding * 1.5);
+    final int singleLineMoveLimit = math.max(
+      2,
+      (usableWidth / _kWrappedMoveListEstimatedMoveWidth).floor(),
+    );
+    final double moveListHeight =
+        moveCount >
+            math.min(_kWrappedMoveListSingleLineMoveLimit, singleLineMoveLimit)
+        ? _kWrappedMoveListMaxHeight
+        : _kInlineMoveListHeight;
+    return moveListHeight + _moveListRouteTopInset(context);
   }
 
   Color _actionSheetBackground(BuildContext context) {
@@ -1931,9 +1948,14 @@ class PlayAreaState extends State<PlayArea> {
                 ),
             ];
 
-            final double moveListHeight = _wrappedMoveListHeightForRoute(
-              context,
-            );
+            final double moveListHeight =
+                _wrappedMoveListReservedHeightForRoute(
+                  context,
+                  constraints.maxWidth,
+                );
+            final bool hasMultiLineMoveList =
+                moveListHeight - _moveListRouteTopInset(context) >
+                _kInlineMoveListHeight;
             final double boardRowsHeight = showPieceCountRows
                 ? _pieceRowsHeightForLayout(context)
                 : 0;
@@ -1951,6 +1973,8 @@ class PlayAreaState extends State<PlayArea> {
                 topPanelHeight +
                 bottomPanelHeight;
             final bool canBalance =
+                constraints.maxWidth >= _kBalancedLayoutMinWidth &&
+                !hasMultiLineMoveList &&
                 constraints.hasBoundedHeight &&
                 constraints.maxHeight >=
                     estimatedRequiredHeight + _kBalancedLayoutSafetyMargin;
@@ -2327,15 +2351,30 @@ class PlayAreaState extends State<PlayArea> {
 
           final double estimatedRequiredHeight =
               constraints.maxWidth +
-              (isPlayableGame ? _wrappedMoveListHeightForRoute(context) : 0) +
+              (isPlayableGame
+                  ? _wrappedMoveListReservedHeightForRoute(
+                      context,
+                      constraints.maxWidth,
+                    )
+                  : 0) +
               topPanelHeight +
               (showPieceCountRows
                   ? _pieceRowsHeightForLayout(context)
                   : AppTheme.boardMargin * 2) +
               (showAdvantageGraph ? 150 : 0) +
               AppTheme.boardMargin;
+          final bool hasMultiLineMoveList =
+              isPlayableGame &&
+              _wrappedMoveListReservedHeightForRoute(
+                        context,
+                        constraints.maxWidth,
+                      ) -
+                      _moveListRouteTopInset(context) >
+                  _kInlineMoveListHeight;
           final bool canBalance =
               isPlayableGame &&
+              constraints.maxWidth >= _kBalancedLayoutMinWidth &&
+              !hasMultiLineMoveList &&
               constraints.hasBoundedHeight &&
               constraints.maxHeight >=
                   estimatedRequiredHeight + _kBalancedLayoutSafetyMargin;
