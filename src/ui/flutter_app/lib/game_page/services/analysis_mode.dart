@@ -220,6 +220,9 @@ class AnalysisMode {
 
   /// Mark whether an analysis pass is in progress.
   static void setAnalyzing(bool analyzing) {
+    if (_isAnalyzing == analyzing) {
+      return;
+    }
     _isAnalyzing = analyzing;
     _publishState();
   }

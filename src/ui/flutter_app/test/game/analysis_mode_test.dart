@@ -76,4 +76,28 @@ void main() {
     AnalysisMode.setEngineLineCount(99);
     expect(AnalysisMode.engineLineCount, AnalysisMode.maxEngineLineCount);
   });
+
+  test('does not notify when analyzing state is unchanged', () {
+    int notifications = 0;
+    void listener() {
+      notifications += 1;
+    }
+
+    AnalysisMode.stateNotifier.addListener(listener);
+    addTearDown(() => AnalysisMode.stateNotifier.removeListener(listener));
+
+    AnalysisMode.setAnalyzing(true);
+    expect(AnalysisMode.isAnalyzing, isTrue);
+    expect(notifications, 2);
+
+    AnalysisMode.setAnalyzing(true);
+    expect(notifications, 2);
+
+    AnalysisMode.setAnalyzing(false);
+    expect(AnalysisMode.isAnalyzing, isFalse);
+    expect(notifications, 4);
+
+    AnalysisMode.setAnalyzing(false);
+    expect(notifications, 4);
+  });
 }
