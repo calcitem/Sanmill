@@ -2190,17 +2190,26 @@ class PlayAreaState extends State<PlayArea> {
         embedded: true,
         showBoard: false,
       ),
-      moves: _InlineMoveList(
-        key: const Key('play_area_analysis_moves'),
-        wrapKey: const Key('play_area_analysis_moves_wrap'),
-        roundKeyPrefix: 'play_area_analysis_round_',
-        moveKeyPrefix: 'play_area_analysis_move_',
-        onMoveTap: (BuildContext context, PgnNode<ExtMove> node) {
-          return HistoryNavigator.gotoNode(context, node, pop: false);
-        },
-        showMovePreview: true,
-        layout: _InlineMoveListLayout.stacked,
-        groupByRound: true,
+      moves: Column(
+        children: <Widget>[
+          Expanded(
+            child: _InlineMoveList(
+              key: const Key('play_area_analysis_moves'),
+              wrapKey: const Key('play_area_analysis_moves_wrap'),
+              roundKeyPrefix: 'play_area_analysis_round_',
+              moveKeyPrefix: 'play_area_analysis_move_',
+              onMoveTap: (BuildContext context, PgnNode<ExtMove> node) {
+                return HistoryNavigator.gotoNode(context, node, pop: false);
+              },
+              showMovePreview: true,
+              layout: _InlineMoveListLayout.stacked,
+              groupByRound: true,
+            ),
+          ),
+          const _AnalysisVariationsBar(
+            key: Key('play_area_analysis_variations_bar'),
+          ),
+        ],
       ),
     );
   }
@@ -3735,6 +3744,130 @@ class _AnalysisPanel extends StatelessWidget {
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class _AnalysisVariationsBar extends StatelessWidget {
+  const _AnalysisVariationsBar({super.key});
+
+  static const double _maxVariationWidth = 72;
+
+  @override
+  Widget build(BuildContext context) {
+    return ValueListenableBuilder<int>(
+      valueListenable: GameController().gameRecorder.moveCountNotifier,
+      builder: (BuildContext context, _, _) {
+        final PgnNode<ExtMove> currentNode =
+            GameController().gameRecorder.activeNode ??
+            GameController().gameRecorder.pgnRoot;
+        final List<PgnNode<ExtMove>> variations = currentNode.children;
+        if (variations.length <= 1) {
+          return const SizedBox.shrink(
+            key: Key('play_area_analysis_variations_bar_empty'),
+          );
+        }
+
+        return LayoutBuilder(
+          builder: (BuildContext context, BoxConstraints constraints) {
+            final int crossAxisCount = math.max(
+              1,
+              math.min(8, (constraints.maxWidth / _maxVariationWidth).floor()),
+            );
+            final List<Widget> rows = <Widget>[];
+
+            for (int i = 0; i < variations.length; i += crossAxisCount) {
+              final List<PgnNode<ExtMove>> rowVariations = variations
+                  .skip(i)
+                  .take(crossAxisCount)
+                  .toList(growable: false);
+              rows.add(
+                Row(
+                  children: <Widget>[
+                    for (final PgnNode<ExtMove> variation in rowVariations)
+                      Expanded(
+                        child: _AnalysisVariationButton(
+                          key: Key(
+                            'play_area_analysis_variation_${variations.indexOf(variation) + 1}',
+                          ),
+                          node: variation,
+                          isMainline: identical(variation, variations.first),
+                        ),
+                      ),
+                  ],
+                ),
+              );
+            }
+
+            return Column(
+              key: const Key('play_area_analysis_variations_bar_content'),
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisSize: MainAxisSize.min,
+              children: rows,
+            );
+          },
+        );
+      },
+    );
+  }
+}
+
+class _AnalysisVariationButton extends StatelessWidget {
+  const _AnalysisVariationButton({
+    super.key,
+    required this.node,
+    required this.isMainline,
+  });
+
+  final PgnNode<ExtMove> node;
+  final bool isMainline;
+
+  @override
+  Widget build(BuildContext context) {
+    final ExtMove? move = node.data;
+    assert(move != null, 'Analysis variation buttons require move data.');
+    final ThemeData theme = Theme.of(context);
+    final ColorScheme colorScheme = theme.colorScheme;
+    final Color backgroundColor = isMainline
+        ? colorScheme.primaryContainer
+        : colorScheme.secondaryContainer;
+    final Color foregroundColor = isMainline
+        ? colorScheme.onPrimaryContainer
+        : colorScheme.onSecondaryContainer;
+
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        border: Border(
+          right: BorderSide(color: theme.dividerColor),
+          bottom: BorderSide(color: theme.dividerColor),
+        ),
+      ),
+      child: Material(
+        color: backgroundColor,
+        child: InkWell(
+          onTap: () =>
+              unawaited(HistoryNavigator.gotoNode(context, node, pop: false)),
+          child: Container(
+            alignment: Alignment.center,
+            constraints: const BoxConstraints(
+              minHeight: kMinInteractiveDimension,
+            ),
+            padding: const EdgeInsets.symmetric(horizontal: 4),
+            child: FittedBox(
+              fit: BoxFit.scaleDown,
+              child: Text(
+                move!.notation,
+                maxLines: 1,
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: foregroundColor,
+                  fontWeight: FontWeight.w600,
+                  letterSpacing: 0,
+                ),
+              ),
+            ),
+          ),
         ),
       ),
     );

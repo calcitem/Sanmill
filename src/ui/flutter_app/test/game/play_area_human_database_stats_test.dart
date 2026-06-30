@@ -1789,6 +1789,51 @@ void main() {
     expect(find.byKey(const Key('opening_explorer_embedded')), findsOneWidget);
   });
 
+  testWidgets('analysis moves tab shows a variations bar', (
+    WidgetTester tester,
+  ) async {
+    db.displaySettings = const DisplaySettings(
+      isUnplacedAndRemovedPiecesShown: false,
+      isHistoryNavigationToolbarShown: false,
+    );
+    final NativeMillGameSession session = await _bindNativeGame(
+      GameMode.analysis,
+    );
+    final GameRecorder recorder = GameController().gameRecorder;
+    recorder.reset();
+    recorder.appendMove(ExtMove('d6', side: PieceColor.white));
+    recorder.activeNode = recorder.pgnRoot;
+    recorder.appendMove(ExtMove('f4', side: PieceColor.white));
+    recorder.activeNode = recorder.pgnRoot;
+    recorder.moveCountNotifier.value = 0;
+
+    await _pumpSessionPlayArea(tester, session);
+
+    expect(
+      find.byKey(const Key('play_area_analysis_variations_bar_content')),
+      findsOneWidget,
+    );
+    expect(
+      find.byKey(const Key('play_area_analysis_variation_1')),
+      findsOneWidget,
+    );
+    expect(
+      find.byKey(const Key('play_area_analysis_variation_2')),
+      findsOneWidget,
+    );
+    expect(find.text('d6'), findsOneWidget);
+    expect(find.text('f4'), findsOneWidget);
+
+    await tester.tap(find.byKey(const Key('play_area_analysis_variation_2')));
+    await tester.pumpAndSettle();
+
+    expect(_currentPathMoves(), <String>['f4']);
+    expect(
+      find.byKey(const Key('play_area_analysis_variations_bar_empty')),
+      findsOneWidget,
+    );
+  });
+
   testWidgets('human vs ai uses landscape side panel layout', (
     WidgetTester tester,
   ) async {
