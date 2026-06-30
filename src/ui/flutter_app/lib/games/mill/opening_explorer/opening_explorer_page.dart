@@ -545,17 +545,14 @@ class _OpeningExplorerContent extends StatelessWidget {
       if (snapshot.openingRecognition.isNamed)
         _OpeningNameSection(recognition: snapshot.openingRecognition),
       _PositionSection(snapshot: snapshot),
-      if (snapshot.moves.isEmpty)
-        _OpeningExplorerMessage(
-          message: strings.openingExplorerNoData,
-          inList: true,
-        )
-      else
-        LichessListSection(
-          header: Text(strings.openingExplorerMoves),
-          cardKey: const Key('opening_explorer_moves_card'),
-          children: <Widget>[
-            const _OpeningExplorerMovesHeader(),
+      LichessListSection(
+        header: Text(strings.openingExplorerMoves),
+        cardKey: const Key('opening_explorer_moves_card'),
+        children: <Widget>[
+          const _OpeningExplorerMovesHeader(),
+          if (snapshot.moves.isEmpty)
+            const _OpeningExplorerNoDataTile()
+          else ...<Widget>[
             for (final (int index, _OpeningExplorerMove move)
                 in snapshot.moves.indexed)
               _OpeningMoveTile(
@@ -569,7 +566,8 @@ class _OpeningExplorerContent extends StatelessWidget {
                 rowIndex: snapshot.moves.length,
               ),
           ],
-        ),
+        ],
+      ),
     ];
   }
 }
@@ -1332,6 +1330,52 @@ class _OpeningExplorerMovesHeader extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
                 style: style,
               ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _OpeningExplorerNoDataTile extends StatelessWidget {
+  const _OpeningExplorerNoDataTile();
+
+  @override
+  Widget build(BuildContext context) {
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+    final TextStyle? textStyle = Theme.of(context).textTheme.bodyMedium
+        ?.copyWith(color: colorScheme.onSurfaceVariant, letterSpacing: 0);
+
+    return ColoredBox(
+      color: _openingExplorerRowColor(context, 0),
+      child: Padding(
+        key: const Key('opening_explorer_no_data_row'),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+        child: Row(
+          children: <Widget>[
+            Expanded(
+              flex: _explorerMoveColumnFlex,
+              child: Icon(
+                Icons.not_interested_outlined,
+                size: 18,
+                color: colorScheme.onSurfaceVariant,
+              ),
+            ),
+            const SizedBox(width: _explorerColumnGap),
+            Expanded(
+              flex: _explorerGamesColumnFlex,
+              child: Text(
+                S.of(context).openingExplorerNoData,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: textStyle,
+              ),
+            ),
+            const SizedBox(width: _explorerColumnGap),
+            const Expanded(
+              flex: _explorerStatsColumnFlex,
+              child: SizedBox.shrink(),
             ),
           ],
         ),
