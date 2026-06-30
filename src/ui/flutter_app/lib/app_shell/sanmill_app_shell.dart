@@ -104,6 +104,28 @@ abstract final class SanmillShellRouteIds {
   static const GameRouteId moreRoot = GameRouteId('app.tab.more');
 }
 
+@visibleForTesting
+String sanmillPlayRouteIdForGameMode({
+  required GameId gameId,
+  required GameMode gameMode,
+  required String fallbackRouteId,
+}) {
+  if (gameId != GameId.mill) {
+    return fallbackRouteId;
+  }
+  return switch (gameMode) {
+    GameMode.humanVsAi => MillRouteIds.humanVsAi.value,
+    GameMode.humanVsHuman => MillRouteIds.humanVsHuman.value,
+    GameMode.aiVsAi => MillRouteIds.aiVsAi.value,
+    GameMode.humanVsLAN => MillRouteIds.humanVsLan.value,
+    GameMode.testViaLAN => MillRouteIds.humanVsLan.value,
+    GameMode.humanVsCloud => fallbackRouteId,
+    GameMode.analysis ||
+    GameMode.setupPosition ||
+    GameMode.puzzle => fallbackRouteId,
+  };
+}
+
 GameMenuContribution? _findGameMenuContribution(
   BuildContext context,
   bool Function(GameMenuContribution contribution) test,
@@ -425,20 +447,11 @@ class SanmillAppShellState extends State<SanmillAppShell> {
   }
 
   String _currentGamePlayRouteId() {
-    if (GameRegistry.instance.currentId != GameId.mill) {
-      return _playRouteId;
-    }
-    return switch (GameController().gameInstance.gameMode) {
-      GameMode.humanVsAi => MillRouteIds.humanVsAi.value,
-      GameMode.humanVsHuman => MillRouteIds.humanVsHuman.value,
-      GameMode.aiVsAi => MillRouteIds.aiVsAi.value,
-      GameMode.humanVsLAN => MillRouteIds.humanVsLan.value,
-      GameMode.testViaLAN => MillRouteIds.humanVsLan.value,
-      GameMode.humanVsCloud => _playRouteId,
-      GameMode.analysis ||
-      GameMode.setupPosition ||
-      GameMode.puzzle => _playRouteId,
-    };
+    return sanmillPlayRouteIdForGameMode(
+      gameId: GameRegistry.instance.currentId,
+      gameMode: GameController().gameInstance.gameMode,
+      fallbackRouteId: _playRouteId,
+    );
   }
 
   Future<void> _openSavedGame(String path) async {
@@ -451,7 +464,7 @@ class SanmillAppShellState extends State<SanmillAppShell> {
     if (!mounted) {
       return;
     }
-    await _selectPlayRoute(_playRouteId);
+    await _continueCurrentGame();
   }
 
   Future<void> _openSavedGamesFromWatch() async {

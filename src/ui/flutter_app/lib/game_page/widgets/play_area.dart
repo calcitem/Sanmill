@@ -4520,7 +4520,44 @@ class _AnalysisEngineLine extends StatelessWidget {
   }
 
   String _lineText(MoveAnalysisResult result) {
-    return result.displayLine.join(' ');
+    final List<String> line = result.displayLine;
+    final String rawLine = line.join(' ');
+    final PgnNode<ExtMove>? activeNode =
+        GameController().gameRecorder.activeNode;
+    final ExtMove? lastMove = activeNode?.data;
+    final PieceColor? sideToMove =
+        GameController().activeSessionSideToMove ??
+        _nextSideToMoveAfter(lastMove);
+    if (sideToMove != PieceColor.white && sideToMove != PieceColor.black) {
+      return rawLine;
+    }
+
+    final PieceColor playableSideToMove = sideToMove!;
+    final int moveNumber = _nextAnalysisMoveNumber(
+      lastMove,
+      playableSideToMove,
+    );
+    final String marker = playableSideToMove == PieceColor.black ? '...' : '.';
+    return '$moveNumber$marker $rawLine';
+  }
+
+  PieceColor? _nextSideToMoveAfter(ExtMove? lastMove) {
+    return switch (lastMove?.side) {
+      PieceColor.white => PieceColor.black,
+      PieceColor.black => PieceColor.white,
+      _ => PieceColor.white,
+    };
+  }
+
+  int _nextAnalysisMoveNumber(ExtMove? lastMove, PieceColor sideToMove) {
+    final int round = lastMove?.roundIndex ?? 1;
+    if (lastMove == null) {
+      return round;
+    }
+    if (sideToMove == PieceColor.white && lastMove.side == PieceColor.black) {
+      return round + 1;
+    }
+    return round;
   }
 
   String _evalLabel(AnalysisOutcome outcome) {

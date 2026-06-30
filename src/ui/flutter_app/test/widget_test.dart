@@ -25,6 +25,7 @@ import 'package:sanmill/game_platform/game_session.dart' as platform;
 import 'package:sanmill/game_shell/shell_route_ids.dart';
 import 'package:sanmill/games/built_in_game_modules.dart';
 import 'package:sanmill/games/mill/mill_board_geometry.dart';
+import 'package:sanmill/games/mill/mill_route_ids.dart';
 import 'package:sanmill/games/mill/opening_book/opening_book_repository.dart';
 import 'package:sanmill/games/mill/opening_explorer/opening_explorer_page.dart';
 import 'package:sanmill/general_settings/models/general_settings.dart';
@@ -2614,6 +2615,43 @@ void main() {
     },
     skip: nativeLibrarySkipReason() != null,
   );
+
+  test('Home saved game continuation selects the current game mode route', () {
+    const String fallbackRoute = 'mill.play.previous';
+
+    expect(
+      sanmillPlayRouteIdForGameMode(
+        gameId: GameId.mill,
+        gameMode: GameMode.humanVsHuman,
+        fallbackRouteId: fallbackRoute,
+      ),
+      MillRouteIds.humanVsHuman.value,
+    );
+    expect(
+      sanmillPlayRouteIdForGameMode(
+        gameId: GameId.mill,
+        gameMode: GameMode.humanVsAi,
+        fallbackRouteId: fallbackRoute,
+      ),
+      MillRouteIds.humanVsAi.value,
+    );
+    expect(
+      sanmillPlayRouteIdForGameMode(
+        gameId: GameId.mill,
+        gameMode: GameMode.analysis,
+        fallbackRouteId: fallbackRoute,
+      ),
+      fallbackRoute,
+    );
+    expect(
+      sanmillPlayRouteIdForGameMode(
+        gameId: GameId.othello,
+        gameMode: GameMode.humanVsHuman,
+        fallbackRouteId: fallbackRoute,
+      ),
+      fallbackRoute,
+    );
+  });
 
   testWidgets(
     'Home tab keeps play modes in the FAB on wide screens',

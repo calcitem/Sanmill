@@ -1823,9 +1823,32 @@ void main() {
       find.byKey(const Key('play_area_analysis_bottom_bar_engine_value')),
     );
     expect(engineValue.data, '8');
-    expect(find.text('d6 f4 a1'), findsOneWidget);
-    final Text engineLineText = tester.widget<Text>(find.text('d6 f4 a1'));
+    expect(find.text('1. d6 f4 a1'), findsOneWidget);
+    final Text engineLineText = tester.widget<Text>(find.text('1. d6 f4 a1'));
     expect(engineLineText.style?.fontSize, 11);
+
+    GameController().gameRecorder.appendMove(
+      ExtMove('d6', side: PieceColor.white, roundIndex: 1),
+    );
+    GameController().activeSessionSnapshot = const platform.GameStateSnapshot(
+      gameId: GameId.mill,
+      activeSeat: platform.PlayerSeat.second,
+      outcome: platform.GameOutcome.ongoing(),
+      phase: 'placing',
+    );
+    AnalysisMode.enable(<MoveAnalysisResult>[
+      const MoveAnalysisResult(
+        move: 'f4',
+        outcome: AnalysisOutcome.advantage,
+        rank: 1,
+        depth: 8,
+        nodes: 128000,
+        line: <String>['f4', 'a1'],
+      ),
+    ], source: AnalysisSource.engine);
+    await tester.pump();
+    expect(find.text('1... f4 a1'), findsOneWidget);
+
     expect(
       tester.widgetList<Text>(find.byType(Text)).where((Text text) {
         return text.data?.contains('#1') ?? false;
