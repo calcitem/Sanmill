@@ -223,16 +223,17 @@ class _MillVariantDetailsPage extends StatelessWidget {
           return ListView(
             padding: const EdgeInsets.fromLTRB(0, 16, 0, 24),
             children: <Widget>[
-              _VariantDetailsHeader(entry: entry, selected: selected),
+              _VariantDetailsHeader(
+                key: Key('mill_variant_detail_header_${entry.id}'),
+                entry: entry,
+                selected: selected,
+              ),
               LichessListSection(
                 header: Text(strings.rules),
                 cardKey: Key('mill_variant_detail_rules_${entry.id}'),
                 children: <Widget>[
                   for (final String feature in entry.features)
-                    ListTile(
-                      leading: const Icon(Icons.check_circle_outline_rounded),
-                      title: Text(feature),
-                    ),
+                    ListTile(title: Text(feature)),
                 ],
               ),
               Padding(
@@ -261,7 +262,11 @@ class _MillVariantDetailsPage extends StatelessWidget {
 }
 
 class _VariantDetailsHeader extends StatelessWidget {
-  const _VariantDetailsHeader({required this.entry, required this.selected});
+  const _VariantDetailsHeader({
+    super.key,
+    required this.entry,
+    required this.selected,
+  });
 
   final _VariantEntry entry;
   final bool selected;
@@ -273,45 +278,29 @@ class _VariantDetailsHeader extends StatelessWidget {
 
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-      child: Row(
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          SizedBox.square(
-            dimension: 44,
-            child: Icon(
-              Icons.category_outlined,
-              size: 32,
-              color: colorScheme.primary,
-            ),
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: Text(
-                        entry.title,
-                        style: textTheme.titleLarge?.copyWith(
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
-                    if (selected)
-                      Icon(Icons.check_rounded, color: colorScheme.primary),
-                  ],
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  entry.description,
-                  style: AppStyles.tileSubtitle.copyWith(
-                    color: colorScheme.onSurfaceVariant,
+          Row(
+            children: <Widget>[
+              Expanded(
+                child: Text(
+                  entry.title,
+                  style: textTheme.titleLarge?.copyWith(
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
-              ],
+              ),
+              if (selected)
+                Icon(Icons.check_rounded, color: colorScheme.primary),
+            ],
+          ),
+          const SizedBox(height: 4),
+          Text(
+            entry.description,
+            style: AppStyles.tileSubtitle.copyWith(
+              color: colorScheme.onSurfaceVariant,
             ),
           ),
         ],

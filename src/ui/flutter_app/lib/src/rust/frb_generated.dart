@@ -1944,8 +1944,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   MillEngineConfig dco_decode_mill_engine_config(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     final arr = raw as List<dynamic>;
-    if (arr.length != 10)
-      throw Exception('unexpected arr length: expect 10 but see ${arr.length}');
+    if (arr.length != 11)
+      throw Exception('unexpected arr length: expect 11 but see ${arr.length}');
     return MillEngineConfig(
       algorithm: dco_decode_mill_search_algorithm(arr[0]),
       depth: dco_decode_i_32(arr[1]),
@@ -1957,6 +1957,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       shuffling: dco_decode_bool(arr[7]),
       useLazySmp: dco_decode_bool(arr[8]),
       engineThreads: dco_decode_u_32(arr[9]),
+      multiPv: dco_decode_u_8(arr[10]),
     );
   }
 
@@ -2507,6 +2508,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     var var_shuffling = sse_decode_bool(deserializer);
     var var_useLazySmp = sse_decode_bool(deserializer);
     var var_engineThreads = sse_decode_u_32(deserializer);
+    var var_multiPv = sse_decode_u_8(deserializer);
     return MillEngineConfig(
       algorithm: var_algorithm,
       depth: var_depth,
@@ -2518,6 +2520,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       shuffling: var_shuffling,
       useLazySmp: var_useLazySmp,
       engineThreads: var_engineThreads,
+      multiPv: var_multiPv,
     );
   }
 
@@ -3118,6 +3121,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_bool(self.shuffling, serializer);
     sse_encode_bool(self.useLazySmp, serializer);
     sse_encode_u_32(self.engineThreads, serializer);
+    sse_encode_u_8(self.multiPv, serializer);
   }
 
   @protected

@@ -21,7 +21,9 @@ use std::thread;
 
 use once_cell::sync::Lazy;
 
-use tgf_core::{Game, GameRules, GameStateSnapshot, MoveOrderAlgorithm, MoveOrderContext};
+use tgf_core::{
+    Action, Game, GameRules, GameStateSnapshot, MoveOrderAlgorithm, MoveOrderContext, Workbench,
+};
 use tgf_mill::{
     EngineRuntimeOptions, MillActionKind, MillGame, MillRules, MillSearchAlgorithmKind,
     MillVariantOptions as NativeMillVariantOptions, recommended_search_depth,
@@ -57,6 +59,9 @@ static MILL_SHARED_TT: Lazy<SharedTt> = Lazy::new(|| {
     tt.clear();
     tt
 });
+
+const ANALYSIS_MULTI_PV_TT_MB: u32 = 16;
+const ANALYSIS_MULTI_PV_TT_CLUSTER_BITS_FLOOR: u32 = 14;
 
 // ---------------------------------------------------------------------------
 // Mill-specific runtime configuration consumed by the search dispatcher.
@@ -100,6 +105,9 @@ pub(crate) struct MillEngineConfigPlan {
     pub use_lazy_smp: bool,
     /// Requested worker/thread count for multi-threaded search.
     pub engine_threads: u32,
+    /// Requested MultiPV root line count.  `1` preserves the legacy event
+    /// stream and avoids the additional sorting / event emission work.
+    pub multi_pv: u8,
 }
 
 impl Default for MillEngineConfigPlan {
@@ -115,6 +123,7 @@ impl Default for MillEngineConfigPlan {
             shuffling: true,
             use_lazy_smp: false,
             engine_threads: 4,
+            multi_pv: 1,
         }
     }
 }
@@ -140,6 +149,17 @@ pub(crate) fn mill_searcher_default() -> Searcher<MillGame> {
     s.clear_tt();
     configure_mill_searcher_defaults(&mut s);
     s
+}
+
+fn mill_searcher_for_config(config: &MillEngineConfigPlan) -> Searcher<MillGame> {
+    if config.multi_pv > 1 {
+        return mill_searcher_with_shared_tt(SharedTt::with_capacity_mb_and_tt_move(
+            ANALYSIS_MULTI_PV_TT_MB,
+            ANALYSIS_MULTI_PV_TT_CLUSTER_BITS_FLOOR,
+            true,
+        ));
+    }
+    mill_searcher_default()
 }
 
 fn mill_searcher_with_shared_tt(shared_tt: SharedTt) -> Searcher<MillGame> {
@@ -276,7 +296,106 @@ fn multi_thread_search_is_allowed(config: &MillEngineConfigPlan) -> bool {
     }
     #[cfg(not(target_arch = "wasm32"))]
     {
-        config.use_lazy_smp && config.shuffling && search_threads_for_config(config) > 1
+        config.multi_pv <= 1
+            && config.use_lazy_smp
+            && config.shuffling
+            && search_threads_for_config(config) > 1
+    }
+}
+
+const MAX_MULTI_PV_LINES: usize = 8;
+const MAX_MULTI_PV_PLIES: usize = 16;
+
+fn multi_pv_limit(config: &MillEngineConfigPlan) -> usize {
+    usize::from(config.multi_pv).clamp(1, MAX_MULTI_PV_LINES)
+}
+
+fn multi_pv_events(
+    game: &MillGame,
+    snapshot: &GameStateSnapshot,
+    searcher: &Searcher<MillGame>,
+    depth: i32,
+    root_side_to_move: i8,
+    config: &MillEngineConfigPlan,
+) -> Vec<EngineEvent> {
+    if config.multi_pv <= 1 {
+        return Vec::new();
+    }
+
+    let mut rows = searcher.root_moves().to_vec();
+    if rows.is_empty() {
+        return Vec::new();
+    }
+    rows.sort_by(|a, b| b.value.cmp(&a.value).then_with(|| b.nodes.cmp(&a.nodes)));
+
+    let mut events = Vec::<EngineEvent>::new();
+    let mut emitted = Vec::<Action>::new();
+    for row in rows {
+        if emitted.contains(&row.action) {
+            continue;
+        }
+        let notation = action_to_uci_str(row.action);
+        let pv_notation = multi_pv_notation(game, snapshot, searcher, row.action, depth);
+        let rank = emitted.len() + 1;
+        events.push(crate::engine_event::principal_variation(
+            crate::engine_event::PrincipalVariationEvent {
+                rank,
+                action: row.action,
+                score: row.value,
+                root_side_to_move,
+                notation: &notation,
+                pv_notation: &pv_notation,
+                nodes: row.nodes,
+                depth,
+                cutoff: row.cutoff,
+            },
+        ));
+        emitted.push(row.action);
+        if emitted.len() >= multi_pv_limit(config) {
+            break;
+        }
+    }
+    events
+}
+
+fn multi_pv_notation(
+    game: &MillGame,
+    snapshot: &GameStateSnapshot,
+    searcher: &Searcher<MillGame>,
+    root_action: Action,
+    depth: i32,
+) -> String {
+    let mut line = Vec::<String>::new();
+    line.push(action_to_uci_str(root_action));
+    if root_action.is_none() {
+        return line.join(",");
+    }
+
+    let mut wb = game.build_workbench(snapshot);
+    wb.do_move(root_action);
+    let max_tail = multi_pv_ply_limit(depth).saturating_sub(1);
+    for action in searcher.principal_variation(&mut wb, max_tail) {
+        line.push(action_to_uci_str(action));
+    }
+    wb.undo_move();
+    line.join(",")
+}
+
+fn multi_pv_ply_limit(depth: i32) -> usize {
+    (depth.max(1) as usize).min(MAX_MULTI_PV_PLIES)
+}
+
+fn emit_multi_pv_events(
+    game: &MillGame,
+    snapshot: &GameStateSnapshot,
+    searcher: &Searcher<MillGame>,
+    sink: &StreamSink<EngineEvent>,
+    depth: i32,
+    root_side_to_move: i8,
+    config: &MillEngineConfigPlan,
+) {
+    for event in multi_pv_events(game, snapshot, searcher, depth, root_side_to_move, config) {
+        let _ = sink.add(event);
     }
 }
 
@@ -483,7 +602,7 @@ fn run_mill_engine_config_event_stream(
         game.set_eval_weights(weights);
     }
     let mut wb = game.build_workbench(&snapshot);
-    let mut searcher = mill_searcher_default();
+    let mut searcher = mill_searcher_for_config(&config);
     let abort = Arc::new(AtomicBool::new(false));
     let search_context = MoveOrderContext {
         algorithm: match algorithm_to_search(config.algorithm) {
@@ -689,6 +808,18 @@ fn run_mill_engine_config_event_stream(
         }
     };
 
+    if config.multi_pv > 1 {
+        emit_multi_pv_events(
+            &game,
+            &snapshot,
+            &searcher,
+            &sink,
+            max_depth,
+            snapshot.side_to_move,
+            &config,
+        );
+    }
+
     let search_action = result.best_action;
     let mut aimovetype = "traditional";
 
@@ -784,6 +915,69 @@ mod tests {
             }),
             perfect_db::PerfectMoveOrdering::LegacyWdl
         );
+    }
+
+    #[test]
+    fn multi_pv_events_are_opt_in_and_limited() {
+        let game = MillGame::default();
+        let snapshot = MillRules::default().initial_state(&[]);
+        let mut wb = game.build_workbench(&snapshot);
+        let mut searcher = mill_searcher_default();
+        assert!(!searcher.tt_move_enabled());
+        assert!(!mill_searcher_for_config(&MillEngineConfigPlan::default()).tt_move_enabled());
+        let _ = searcher.search(&mut wb, 1);
+
+        assert!(
+            multi_pv_events(
+                &game,
+                &snapshot,
+                &searcher,
+                1,
+                snapshot.side_to_move,
+                &MillEngineConfigPlan::default(),
+            )
+            .is_empty()
+        );
+
+        let mut pv_searcher = mill_searcher_for_config(&MillEngineConfigPlan {
+            multi_pv: 3,
+            ..MillEngineConfigPlan::default()
+        });
+        assert!(pv_searcher.tt_move_enabled());
+        let _ = pv_searcher.search(&mut wb, 2);
+        let events = multi_pv_events(
+            &game,
+            &snapshot,
+            &pv_searcher,
+            2,
+            snapshot.side_to_move,
+            &MillEngineConfigPlan {
+                multi_pv: 3,
+                ..MillEngineConfigPlan::default()
+            },
+        );
+        assert!(!events.is_empty());
+        assert!(events.len() <= 3);
+        assert!(events.iter().all(|event| event.kind == "pv"));
+        assert!(events[0].reason.contains("rank=1"));
+        assert!(events.iter().any(|event| event.reason.contains(',')));
+    }
+
+    #[cfg(not(target_arch = "wasm32"))]
+    #[test]
+    fn multi_pv_only_disables_lazy_smp_when_requested() {
+        let base = MillEngineConfigPlan {
+            use_lazy_smp: true,
+            shuffling: true,
+            engine_threads: 4,
+            multi_pv: 1,
+            ..MillEngineConfigPlan::default()
+        };
+        assert!(multi_thread_search_is_allowed(&base));
+        assert!(!multi_thread_search_is_allowed(&MillEngineConfigPlan {
+            multi_pv: 2,
+            ..base
+        }));
     }
 
     fn search_startpos(depth: i32, prefetch: bool) -> SearchResult {

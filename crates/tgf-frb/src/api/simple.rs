@@ -443,6 +443,7 @@ impl From<MillEngineConfig> for MillEngineConfigPlan {
             shuffling: cfg.shuffling,
             use_lazy_smp: cfg.use_lazy_smp,
             engine_threads: cfg.engine_threads,
+            multi_pv: cfg.multi_pv,
         }
     }
 }
@@ -486,6 +487,11 @@ pub struct MillEngineConfig {
     /// Requested worker/thread count for multi-threaded search.  The engine
     /// clamps the value to a conservative range.
     pub engine_threads: u32,
+    /// Requested MultiPV line count.  `1` keeps the legacy stream shape and
+    /// avoids extra work; values greater than one ask the engine to emit
+    /// additional root candidate events when the selected search path already
+    /// has root move summaries available.
+    pub multi_pv: u8,
 }
 
 impl Default for MillEngineConfig {
@@ -502,6 +508,7 @@ impl Default for MillEngineConfig {
             shuffling: true,
             use_lazy_smp: false,
             engine_threads: 4,
+            multi_pv: 1,
         }
     }
 }

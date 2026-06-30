@@ -481,6 +481,10 @@ class SanmillAppShellState extends State<SanmillAppShell> {
     if (!mounted) {
       return;
     }
+    if (_isFullscreenToolRoute(routeId)) {
+      await _pushFullscreenToolRoute(routeId, screen);
+      return;
+    }
     setState(() {
       _currentTab = SanmillShellTab.more;
     });
@@ -490,6 +494,42 @@ class SanmillAppShellState extends State<SanmillAppShell> {
         builder: (_) => screen,
       ),
     );
+  }
+
+  bool _isFullscreenToolRoute(String routeId) {
+    if (GameRegistry.instance.currentId != GameId.mill) {
+      return false;
+    }
+    return routeId == MillRouteIds.analysis.value ||
+        routeId == MillRouteIds.openingExplorer.value ||
+        routeId == MillRouteIds.setupPosition.value;
+  }
+
+  Future<void> _pushFullscreenToolRoute(String routeId, Widget screen) async {
+    final GameSession? session = _activeSession;
+    setState(() {
+      _currentTab = SanmillShellTab.more;
+    });
+
+    await Navigator.of(context, rootNavigator: true).push(
+      MaterialPageRoute<void>(
+        settings: RouteSettings(name: routeId),
+        builder: (_) {
+          if (session == null) {
+            return screen;
+          }
+          return GameSessionScope(session: session, child: screen);
+        },
+      ),
+    );
+
+    if (!mounted || _routeId != routeId) {
+      return;
+    }
+    if (await _transitionToRoute(_rootRouteIdForTab(SanmillShellTab.more)) &&
+        mounted) {
+      setState(() {});
+    }
   }
 
   Future<void> _pushWatchRoute(String routeId) async {
@@ -1808,6 +1848,10 @@ class _HomeGameCarouselSectionState extends State<_HomeGameCarouselSection> {
   static const EdgeInsets _carouselPadding = EdgeInsets.symmetric(
     horizontal: 8,
   );
+  static const EdgeInsets _carouselOuterPadding = EdgeInsets.symmetric(
+    horizontal: 8,
+  );
+  static const double _carouselAspectRatio = 1.15;
 
   final CarouselController _controller = CarouselController();
 
@@ -1849,72 +1893,66 @@ class _HomeGameCarouselSectionState extends State<_HomeGameCarouselSection> {
     if (widget.children.isEmpty) {
       return const SizedBox.shrink();
     }
-    return LayoutBuilder(
-      builder: (BuildContext context, BoxConstraints constraints) {
-        final double cardSize = (constraints.maxWidth * 0.72).clamp(
-          220.0,
-          300.0,
-        );
-        return Padding(
-          padding: const EdgeInsets.only(bottom: AppStyles.bodyPadding),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Padding(
-                key: widget.headerKey,
-                padding: const EdgeInsets.fromLTRB(
-                  AppStyles.bodyPadding,
-                  0,
-                  AppStyles.bodyPadding,
-                  8,
-                ),
-                child: DefaultTextStyle.merge(
-                  style: AppStyles.sectionTitle.copyWith(
-                    color: Theme.of(context).colorScheme.onSurfaceVariant,
-                  ),
-                  child: widget.onHeaderTap == null
-                      ? Text(widget.title)
-                      : _MoreSectionHeaderLink(
-                          title: widget.title,
-                          onTap: widget.onHeaderTap!,
-                        ),
-                ),
+    return Padding(
+      padding: const EdgeInsets.only(bottom: AppStyles.bodyPadding),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Padding(
+            key: widget.headerKey,
+            padding: const EdgeInsets.fromLTRB(
+              AppStyles.bodyPadding,
+              0,
+              AppStyles.bodyPadding,
+              8,
+            ),
+            child: DefaultTextStyle.merge(
+              style: AppStyles.sectionTitle.copyWith(
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
               ),
-              SizedBox(
-                key: widget.listKey,
-                height: cardSize,
-                child: CarouselView.weighted(
-                  controller: _controller,
-                  padding: _carouselPadding,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(
-                      AppStyles.compactRadius,
+              child: widget.onHeaderTap == null
+                  ? Text(widget.title)
+                  : _MoreSectionHeaderLink(
+                      title: widget.title,
+                      onTap: widget.onHeaderTap!,
                     ),
-                  ),
-                  elevation: Theme.of(context).platform == TargetPlatform.iOS
-                      ? 0
-                      : 1,
-                  flexWeights: _flexWeights,
-                  itemSnapping: true,
-                  onTap: (int index) {
-                    assert(
-                      index >= 0 && index < widget.children.length,
-                      'Home carousel tap index must point to a child.',
-                    );
-                    final Widget child = widget.children[index];
-                    assert(
-                      child is _GamePreviewCarouselCard,
-                      'Home carousel items must be game preview cards.',
-                    );
-                    (child as _GamePreviewCarouselCard).onTap();
-                  },
-                  children: widget.children,
-                ),
-              ),
-            ],
+            ),
           ),
-        );
-      },
+          Padding(
+            padding: _carouselOuterPadding,
+            child: AspectRatio(
+              key: const Key('sanmill_home_game_carousel_frame'),
+              aspectRatio: _carouselAspectRatio,
+              child: CarouselView.weighted(
+                key: widget.listKey,
+                controller: _controller,
+                padding: _carouselPadding,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(AppStyles.compactRadius),
+                ),
+                elevation: Theme.of(context).platform == TargetPlatform.iOS
+                    ? 0
+                    : 1,
+                flexWeights: _flexWeights,
+                itemSnapping: true,
+                onTap: (int index) {
+                  assert(
+                    index >= 0 && index < widget.children.length,
+                    'Home carousel tap index must point to a child.',
+                  );
+                  final Widget child = widget.children[index];
+                  assert(
+                    child is _GamePreviewCarouselCard,
+                    'Home carousel items must be game preview cards.',
+                  );
+                  (child as _GamePreviewCarouselCard).onTap();
+                },
+                children: widget.children,
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

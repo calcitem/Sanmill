@@ -27,7 +27,7 @@ const Offset _kNextCoordinateTranslation = Offset(0.72, 0.32);
 const double _kNextCoordinateScale = 0.42;
 const double _kCurrentCoordinateOpacity = 0.9;
 const double _kNextCoordinateOpacity = 0.68;
-const double _kTimeBarHeight = 12;
+const double _kTimeBarHeight = 15;
 const double _kTrainingPanelMinHeight = 96;
 const List<Duration> _kTrainingDurationChoices = <Duration>[
   Duration(seconds: 30),
@@ -559,6 +559,7 @@ class _TimeBar extends StatelessWidget {
     return Align(
       alignment: Alignment.centerLeft,
       child: SizedBox(
+        key: const Key('mill_coordinate_training_time_bar'),
         width: width * fraction,
         height: _kTimeBarHeight,
         child: ColoredBox(color: color),

@@ -14,6 +14,7 @@ Future<T?> showLichessActionSheet<T>({
   required BuildContext context,
   required List<LichessActionSheetAction> actions,
   Widget? title,
+  Widget? content,
   Key? sheetKey,
   bool isDismissible = true,
   Color? backgroundColor,
@@ -25,6 +26,7 @@ Future<T?> showLichessActionSheet<T>({
     return _showCupertinoActionSheet<T>(
       context: context,
       title: title,
+      content: content,
       actions: actions,
       sheetKey: sheetKey,
       isDismissible: isDismissible,
@@ -33,6 +35,7 @@ Future<T?> showLichessActionSheet<T>({
   return _showMaterialActionSheet<T>(
     context: context,
     title: title,
+    content: content,
     actions: actions,
     sheetKey: sheetKey,
     isDismissible: isDismissible,
@@ -47,6 +50,7 @@ Future<T?> _showCupertinoActionSheet<T>({
   required bool isDismissible,
   Key? sheetKey,
   Widget? title,
+  Widget? content,
 }) {
   return showCupertinoModalPopup<T>(
     context: context,
@@ -55,6 +59,7 @@ Future<T?> _showCupertinoActionSheet<T>({
       return CupertinoActionSheet(
         key: sheetKey,
         title: title,
+        message: content,
         actions: <Widget>[
           for (final LichessActionSheetAction action in actions)
             Builder(
@@ -84,6 +89,7 @@ Future<T?> _showMaterialActionSheet<T>({
   required List<LichessActionSheetAction> actions,
   required bool isDismissible,
   Widget? title,
+  Widget? content,
   Key? sheetKey,
   Color? backgroundColor,
   Color? foregroundColor,
@@ -125,6 +131,7 @@ Future<T?> _showMaterialActionSheet<T>({
                         padding: const EdgeInsets.all(16),
                         child: Center(child: title),
                       ),
+                    ?content,
                     for (int index = 0; index < actions.length; index++)
                       _MaterialActionSheetTile(
                         action: actions[index],

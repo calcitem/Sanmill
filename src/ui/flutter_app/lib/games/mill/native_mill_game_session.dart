@@ -28,6 +28,25 @@ import 'native_mill_snapshot_board_view.dart';
 
 const String _logTag = '[NativeMillGameSession]';
 
+@immutable
+class NativeMillPrincipalVariation {
+  const NativeMillPrincipalVariation({
+    required this.rank,
+    required this.move,
+    required this.score,
+    required this.nodes,
+    required this.depth,
+    this.line = const <String>[],
+  });
+
+  final int rank;
+  final String move;
+  final int score;
+  final int nodes;
+  final int depth;
+  final List<String> line;
+}
+
 class NativeMillGameSession implements GameSessionHandle {
   factory NativeMillGameSession({
     NativeMillRulesPort? rulesPort,
@@ -394,11 +413,13 @@ class NativeMillGameSession implements GameSessionHandle {
     required int depth,
     int moveLimitMs = 0,
     GeneralSettings? engineSettings,
+    int multiPv = 1,
   }) {
     return rulesPort.millSearchEvents(
       depth: depth,
       moveLimitMs: moveLimitMs,
       engineSettings: engineSettings,
+      multiPv: multiPv,
     );
   }
 
@@ -509,6 +530,55 @@ class NativeMillGameSession implements GameSessionHandle {
     return bestAction;
   }
 
+  /// Search the current kernel state and return the requested root candidate
+  /// lines without mutating the game.
+  Future<List<NativeMillPrincipalVariation>> searchPrincipalVariations({
+    int depth = 1,
+    int moveLimitMs = 0,
+    required int multiPv,
+    GeneralSettings? engineSettings,
+  }) async {
+    if (_disposed || outcome.isTerminal) {
+      return const <NativeMillPrincipalVariation>[];
+    }
+    assert(
+      multiPv > 1,
+      'searchPrincipalVariations should only be used for actual MultiPV.',
+    );
+    assert(
+      !_searchInFlight,
+      'Concurrent searchPrincipalVariations: a second engine search started '
+      'while one was already in flight.',
+    );
+    _searchInFlight = true;
+
+    final List<NativeMillPrincipalVariation> variations =
+        <NativeMillPrincipalVariation>[];
+    try {
+      await for (final tgf.EngineEvent event in millSearchEvents(
+        depth: depth,
+        moveLimitMs: moveLimitMs,
+        engineSettings: engineSettings,
+        multiPv: multiPv,
+      )) {
+        if (event.kind != 'pv') {
+          continue;
+        }
+        variations.add(_principalVariationFromEvent(event));
+      }
+    } catch (e) {
+      logger.e('$_logTag searchPrincipalVariations stream error: $e');
+      rethrow;
+    } finally {
+      _searchInFlight = false;
+    }
+    variations.sort(
+      (NativeMillPrincipalVariation a, NativeMillPrincipalVariation b) =>
+          a.rank.compareTo(b.rank),
+    );
+    return variations;
+  }
+
   /// Query the perfect database for the current position without running
   /// search or mutating the session.
   GameAction? perfectDatabaseBestAction({GeneralSettings? engineSettings}) {
@@ -554,6 +624,48 @@ class NativeMillGameSession implements GameSessionHandle {
     const int valueMate = 80;
     return (engineSettings?.resignIfMostLose ?? false) &&
         event.score <= -valueMate;
+  }
+
+  static NativeMillPrincipalVariation _principalVariationFromEvent(
+    tgf.EngineEvent event,
+  ) {
+    assert(event.kind == 'pv', 'Expected a pv event, got ${event.kind}.');
+    final String notation = event.reason.split(' ').first;
+    if (notation.isEmpty) {
+      throw StateError('pv event carries no move notation: ${event.reason}');
+    }
+    final RegExpMatch? rankMatch = RegExp(
+      r'(?:^|\s)rank=(\d+)(?:\s|$)',
+    ).firstMatch(event.reason);
+    if (rankMatch == null) {
+      throw StateError('pv event carries no rank: ${event.reason}');
+    }
+    return NativeMillPrincipalVariation(
+      rank: int.parse(rankMatch.group(1)!),
+      move: notation,
+      score: event.score,
+      nodes: event.nodes.toInt(),
+      depth: event.depth,
+      line: _pvLineFromReason(event.reason, fallbackMove: notation),
+    );
+  }
+
+  static List<String> _pvLineFromReason(
+    String reason, {
+    required String fallbackMove,
+  }) {
+    final RegExpMatch? pvMatch = RegExp(
+      r'(?:^|\s)pv=([^\s]+)(?:\s|$)',
+    ).firstMatch(reason);
+    if (pvMatch == null) {
+      return <String>[fallbackMove];
+    }
+    final List<String> line = pvMatch
+        .group(1)!
+        .split(',')
+        .where((String move) => move.isNotEmpty)
+        .toList(growable: false);
+    return line.isEmpty ? <String>[fallbackMove] : line;
   }
 
   static PlayerSeat _opponentSeat(PlayerSeat seat) {

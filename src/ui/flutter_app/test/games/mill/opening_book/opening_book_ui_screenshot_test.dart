@@ -415,6 +415,7 @@ class _HeaderTestRulesPort implements NativeMillRulesPort {
     required int depth,
     int moveLimitMs = 0,
     GeneralSettings? engineSettings,
+    int multiPv = 1,
   }) => const Stream<tgf.EngineEvent>.empty();
 
   @override

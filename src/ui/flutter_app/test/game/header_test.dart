@@ -5,6 +5,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:sanmill/appearance_settings/models/display_settings.dart';
 import 'package:sanmill/game_page/services/mill.dart';
 import 'package:sanmill/game_page/widgets/game_page.dart';
 import 'package:sanmill/generated/intl/l10n_en.dart';
@@ -112,5 +113,35 @@ void main() {
       expect(find.byType(HeaderIcons), findsOneWidget);
       expect(find.byKey(const Key("header_icon_row")), findsOneWidget);
     });
+
+    testWidgets(
+      "GameHeader clamps positional advantage divider on narrow width",
+      (WidgetTester tester) async {
+        final MockDB db = MockDB();
+        db.displaySettings = const DisplaySettings(boardTop: 0);
+        DB.instance = db;
+        final GameController controller = GameController();
+        controller.gameInstance.gameMode = GameMode.humanVsHuman;
+
+        await tester.pumpWidget(
+          makeTestableWidget(
+            Center(
+              child: SizedBox(width: 156, height: 96, child: GameHeader()),
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        expect(tester.takeException(), isNull);
+        final Size dividerSize = tester.getSize(
+          find.byKey(const Key('positional_advantage_divider')),
+        );
+        final Size rowSize = tester.getSize(
+          find.byKey(const Key('positional_advantage_row')),
+        );
+        expect(dividerSize.width, lessThanOrEqualTo(156));
+        expect(rowSize.width, dividerSize.width);
+      },
+    );
   });
 }

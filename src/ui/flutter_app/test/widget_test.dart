@@ -1018,6 +1018,68 @@ void main() {
       await tester.binding.handlePopRoute();
       await tester.pumpAndSettle();
 
+      await tester.tap(find.byKey(const Key('drawer_item_analysis')));
+      await tester.pumpAndSettle();
+
+      expect(GameController().gameInstance.gameMode, GameMode.analysis);
+      expect(find.byKey(const Key('game_page_scaffold')), findsOneWidget);
+      expect(
+        find.byKey(const Key('game_page_analysis_appbar')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const Key('game_page_analysis_appbar_title')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const Key('game_page_analysis_menu_button')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const Key('game_page_top_left_button_align')),
+        findsNothing,
+      );
+      expect(
+        find.byKey(const Key('sanmill_bottom_navigation_bar')),
+        findsNothing,
+      );
+
+      await tester.tap(find.byKey(const Key('game_page_analysis_menu_button')));
+      await tester.pumpAndSettle();
+
+      expect(
+        find.byKey(const Key('game_page_analysis_menu_settings')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const Key('game_page_analysis_menu_engine_lines')),
+        findsOneWidget,
+      );
+
+      await tester.tap(
+        find.byKey(const Key('game_page_analysis_menu_settings')),
+      );
+      await tester.pumpAndSettle();
+
+      expect(
+        find.byKey(const Key('play_area_analysis_settings_sheet')),
+        findsOneWidget,
+      );
+
+      await tester.tap(
+        find.byKey(const Key('play_area_analysis_settings_close')),
+      );
+      await tester.pumpAndSettle();
+
+      await tester.binding.handlePopRoute();
+      await tester.pumpAndSettle();
+
+      expect(shellState.debugCurrentTab, SanmillShellTab.more);
+      expect(
+        find.byKey(const Key('sanmill_bottom_navigation_bar')),
+        findsOneWidget,
+      );
+
       await tester.tap(find.byKey(const Key('drawer_item_clock')));
       await tester.pumpAndSettle();
 
@@ -1441,6 +1503,12 @@ void main() {
       find.byKey(const Key('mill_coordinate_training_board')),
       findsOneWidget,
     );
+    expect(
+      tester
+          .getSize(find.byKey(const Key('mill_coordinate_training_time_bar')))
+          .height,
+      15,
+    );
 
     await tester.tap(
       find.byKey(const Key('mill_coordinate_training_settings_button')),
@@ -1570,6 +1638,29 @@ void main() {
       findsOneWidget,
     );
     expect(find.byType(CircleAvatar), findsNothing);
+    expect(find.byIcon(Icons.category_outlined), findsNothing);
+    expect(
+      find.descendant(
+        of: find.byKey(
+          const Key('mill_variant_detail_rules_twelve_mens_morris'),
+        ),
+        matching: find.byIcon(Icons.check_circle_outline_rounded),
+      ),
+      findsNothing,
+    );
+    final Iterable<ListTile> detailRuleTiles = tester.widgetList<ListTile>(
+      find.descendant(
+        of: find.byKey(
+          const Key('mill_variant_detail_rules_twelve_mens_morris'),
+        ),
+        matching: find.byType(ListTile),
+      ),
+    );
+    expect(detailRuleTiles, isNotEmpty);
+    expect(
+      detailRuleTiles.every((ListTile tile) => tile.leading == null),
+      isTrue,
+    );
     expect(DB().ruleSettings.piecesCount, 9);
 
     await tester.tap(find.byKey(const Key('mill_variant_detail_apply_button')));
@@ -2113,6 +2204,42 @@ void main() {
       expect(find.byKey(const Key('opening_explorer_list')), findsOneWidget);
       expect(find.byKey(const Key('opening_explorer_board')), findsOneWidget);
       expect(
+        find.byKey(const Key('opening_explorer_in_hand_row')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const Key('opening_explorer_removed_row')),
+        findsOneWidget,
+      );
+      final Text firstInHandText = tester.widget<Text>(
+        find.descendant(
+          of: find.byKey(const Key('opening_explorer_first_in_hand_count')),
+          matching: find.byType(Text),
+        ),
+      );
+      final Text secondInHandText = tester.widget<Text>(
+        find.descendant(
+          of: find.byKey(const Key('opening_explorer_second_in_hand_count')),
+          matching: find.byType(Text),
+        ),
+      );
+      final Text firstRemovedText = tester.widget<Text>(
+        find.descendant(
+          of: find.byKey(const Key('opening_explorer_first_removed_count')),
+          matching: find.byType(Text),
+        ),
+      );
+      final Text secondRemovedText = tester.widget<Text>(
+        find.descendant(
+          of: find.byKey(const Key('opening_explorer_second_removed_count')),
+          matching: find.byType(Text),
+        ),
+      );
+      expect(firstInHandText.data, '●●● 9');
+      expect(secondInHandText.data, '●●● 9');
+      expect(firstRemovedText.data, isEmpty);
+      expect(secondRemovedText.data, isEmpty);
+      expect(
         find.byKey(const Key('opening_explorer_bottom_bar')),
         findsOneWidget,
       );
@@ -2175,6 +2302,12 @@ void main() {
   testWidgets(
     'Home tab merges the current active game into ongoing games',
     (WidgetTester tester) async {
+      tester.view
+        ..physicalSize = const Size(390, 844)
+        ..devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+
       final GameController controller = GameController();
       addTearDown(() {
         controller.activeSessionSnapshot = null;
@@ -2202,6 +2335,13 @@ void main() {
       expect(
         find.byKey(const Key('sanmill_home_ongoing_game')),
         findsOneWidget,
+      );
+      final Size carouselFrameSize = tester.getSize(
+        find.byKey(const Key('sanmill_home_game_carousel_frame')),
+      );
+      expect(
+        carouselFrameSize.width / carouselFrameSize.height,
+        moreOrLessEquals(1.15, epsilon: 0.01),
       );
       expect(
         find.byKey(const Key('sanmill_home_saved_ongoing_games_group')),

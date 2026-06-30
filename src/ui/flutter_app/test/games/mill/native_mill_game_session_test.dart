@@ -213,6 +213,46 @@ void main() {
       },
     );
 
+    test('searchPrincipalVariations parses and sorts MultiPV lines', () async {
+      final _FakeNativeMillRulesPort rulesPort = _FakeNativeMillRulesPort(
+        searchEvents: Stream<tgf.EngineEvent>.fromIterable(<tgf.EngineEvent>[
+          tgf.EngineEvent(
+            kind: 'pv',
+            depth: 4,
+            score: -12,
+            nodes: BigInt.from(128),
+            toNode: 5,
+            reason: 'f4 rank=2 rawScore=12 cutoff=false pv=f4,a1',
+          ),
+          tgf.EngineEvent(
+            kind: 'pv',
+            depth: 4,
+            score: 30,
+            nodes: BigInt.from(256),
+            toNode: 3,
+            reason: 'd6 rank=1 rawScore=-30 cutoff=false pv=d6,f4,a1',
+          ),
+        ]),
+      );
+      final NativeMillGameSession session = NativeMillGameSession(
+        rulesPort: rulesPort,
+      );
+      addTearDown(session.dispose);
+
+      final List<NativeMillPrincipalVariation> variations = await session
+          .searchPrincipalVariations(depth: 4, multiPv: 3);
+
+      expect(
+        variations.map((NativeMillPrincipalVariation pv) => pv.rank),
+        <int>[1, 2],
+      );
+      expect(variations.first.move, 'd6');
+      expect(variations.first.score, 30);
+      expect(variations.first.nodes, 256);
+      expect(variations.first.depth, 4);
+      expect(variations.first.line, <String>['d6', 'f4', 'a1']);
+    });
+
     test(
       'searchBestAction forces resignation when most-lost search is enabled',
       () async {
@@ -556,6 +596,7 @@ class _FakeNativeMillRulesPort implements NativeMillRulesPort {
     required int depth,
     int moveLimitMs = 0,
     GeneralSettings? engineSettings,
+    int multiPv = 1,
   }) {
     return _searchEvents ?? const Stream<tgf.EngineEvent>.empty();
   }

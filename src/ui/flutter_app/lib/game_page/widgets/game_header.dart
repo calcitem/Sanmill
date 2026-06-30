@@ -136,55 +136,83 @@ class _GameHeaderState extends State<GameHeader> {
     final num dividerWhiteLength = valueLimit + value;
     final num dividerBlackLength = valueLimit - value;
 
-    return Container(
-      key: const Key('positional_advantage_divider'),
-      height: 2,
-      width: valueLimit * 2,
-      margin: const EdgeInsets.only(bottom: AppTheme.boardMargin),
-      decoration: BoxDecoration(borderRadius: BorderRadius.circular(2)),
-      child: Row(
-        key: const Key('positional_advantage_row'),
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Container(
-            key: const Key('divider_white_container'),
-            height: 2,
-            width: dividerWhiteLength.toDouble(),
-            color: DB().colorSettings.whitePieceColor.withValues(
-              alpha: opacity,
-            ),
+    return LayoutBuilder(
+      builder: (BuildContext context, BoxConstraints constraints) {
+        const double fullWidth = valueLimit * 2.0;
+        final double availableWidth = constraints.hasBoundedWidth
+            ? constraints.maxWidth
+            : fullWidth;
+        final double dividerWidth = availableWidth < fullWidth
+            ? availableWidth
+            : fullWidth;
+        final double whiteWidth =
+            dividerWidth * dividerWhiteLength.toDouble() / fullWidth;
+        final double blackWidth =
+            dividerWidth * dividerBlackLength.toDouble() / fullWidth;
+
+        return Container(
+          key: const Key('positional_advantage_divider'),
+          height: 2,
+          width: dividerWidth,
+          margin: const EdgeInsets.only(bottom: AppTheme.boardMargin),
+          decoration: BoxDecoration(borderRadius: BorderRadius.circular(2)),
+          child: Row(
+            key: const Key('positional_advantage_row'),
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Container(
+                key: const Key('divider_white_container'),
+                height: 2,
+                width: whiteWidth,
+                color: DB().colorSettings.whitePieceColor.withValues(
+                  alpha: opacity,
+                ),
+              ),
+              Container(
+                key: const Key('divider_black_container'),
+                height: 2,
+                width: blackWidth,
+                color: DB().colorSettings.blackPieceColor.withValues(
+                  alpha: opacity,
+                ),
+              ),
+            ],
           ),
-          Container(
-            key: const Key('divider_black_container'),
-            height: 2,
-            width: dividerBlackLength.toDouble(),
-            color: DB().colorSettings.blackPieceColor.withValues(
-              alpha: opacity,
-            ),
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 
   Widget _buildDefaultDivider() {
     const double opacity = 1;
-    return Container(
-      key: const Key('default_divider'),
-      height: 2,
-      width: 180,
-      margin: const EdgeInsets.only(bottom: AppTheme.boardMargin),
-      decoration: BoxDecoration(
-        color:
-            (DB().colorSettings.darkBackgroundColor == Colors.white ||
-                DB().colorSettings.darkBackgroundColor ==
-                    const Color.fromARGB(1, 255, 255, 255))
-            ? DB().colorSettings.messageColor.withValues(alpha: opacity)
-            : DB().colorSettings.boardBackgroundColor.withValues(
-                alpha: opacity,
-              ),
-        borderRadius: BorderRadius.circular(2),
-      ),
+    return LayoutBuilder(
+      builder: (BuildContext context, BoxConstraints constraints) {
+        const double targetWidth = 180;
+        final double availableWidth = constraints.hasBoundedWidth
+            ? constraints.maxWidth
+            : targetWidth;
+        final double dividerWidth = availableWidth < targetWidth
+            ? availableWidth
+            : targetWidth;
+
+        return Container(
+          key: const Key('default_divider'),
+          height: 2,
+          width: dividerWidth,
+          margin: const EdgeInsets.only(bottom: AppTheme.boardMargin),
+          decoration: BoxDecoration(
+            color:
+                (DB().colorSettings.darkBackgroundColor == Colors.white ||
+                    DB().colorSettings.darkBackgroundColor ==
+                        const Color.fromARGB(1, 255, 255, 255))
+                ? DB().colorSettings.messageColor.withValues(alpha: opacity)
+                : DB().colorSettings.boardBackgroundColor.withValues(
+                    alpha: opacity,
+                  ),
+            borderRadius: BorderRadius.circular(2),
+          ),
+        );
+      },
     );
   }
 }

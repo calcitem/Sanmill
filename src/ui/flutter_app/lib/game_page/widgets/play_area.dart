@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:native_screenshot_widget/native_screenshot_widget.dart';
 
+import '../../appearance_settings/models/display_settings.dart';
 import '../../experience_recording/models/recording_models.dart';
 import '../../experience_recording/services/recording_service.dart';
 import '../../game_platform/game_session.dart'
@@ -46,6 +47,167 @@ import 'mini_board.dart';
 import 'modals/game_options_modal.dart';
 import 'moves_list_page.dart';
 import 'toolbars/game_toolbar.dart';
+
+Future<void> showAnalysisSettingsSheet(
+  BuildContext context, {
+  required S strings,
+}) {
+  assert(
+    GameController().gameInstance.gameMode == GameMode.analysis,
+    'Analysis settings are analysis-mode only.',
+  );
+  return showDialog<void>(
+    context: context,
+    builder: (BuildContext dialogContext) {
+      final ThemeData theme = Theme.of(dialogContext);
+      final ColorScheme colorScheme = theme.colorScheme;
+      return Dialog(
+        key: const Key('play_area_analysis_settings_sheet'),
+        backgroundColor: colorScheme.surfaceContainerLow,
+        surfaceTintColor: Colors.transparent,
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+            maxWidth: math.min(MediaQuery.sizeOf(dialogContext).width, 500),
+          ),
+          child: ValueListenableBuilder<bool>(
+            valueListenable: AnalysisMode.stateNotifier,
+            builder: (BuildContext context, _, Widget? child) {
+              return SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(16, 16, 8, 8),
+                      child: Row(
+                        children: <Widget>[
+                          Expanded(
+                            child: Text(
+                              strings.settings,
+                              style: theme.textTheme.titleLarge?.copyWith(
+                                fontWeight: FontWeight.w600,
+                                letterSpacing: 0,
+                              ),
+                            ),
+                          ),
+                          IconButton(
+                            key: const Key('play_area_analysis_settings_close'),
+                            tooltip: strings.close,
+                            onPressed: () => Navigator.of(dialogContext).pop(),
+                            icon: const Icon(Icons.close),
+                          ),
+                        ],
+                      ),
+                    ),
+                    LichessListSection(
+                      cardKey: const Key(
+                        'play_area_analysis_settings_layout_card',
+                      ),
+                      children: <Widget>[
+                        SwitchListTile.adaptive(
+                          key: const Key(
+                            'play_area_analysis_settings_small_board',
+                          ),
+                          secondary: const Icon(Icons.fit_screen_outlined),
+                          title: Text(strings.smallBoard),
+                          value: AnalysisMode.smallBoard,
+                          onChanged: (bool value) {
+                            RecordingService().recordEvent(
+                              RecordingEventType.toolbarAction,
+                              <String, dynamic>{
+                                'toolbar': 'analysisSettings',
+                                'action': 'setSmallBoard',
+                                'enabled': value,
+                              },
+                            );
+                            AnalysisMode.setSmallBoard(value);
+                          },
+                        ),
+                      ],
+                    ),
+                    LichessListSection(
+                      header: Text(strings.engine),
+                      cardKey: const Key(
+                        'play_area_analysis_settings_engine_card',
+                      ),
+                      children: <Widget>[
+                        SwitchListTile.adaptive(
+                          key: const Key(
+                            'play_area_analysis_settings_evaluation_gauge',
+                          ),
+                          secondary: const Icon(Icons.stacked_bar_chart),
+                          title: Text(strings.showPositionalAdvantageIndicator),
+                          value: DB()
+                              .displaySettings
+                              .isPositionalAdvantageIndicatorShown,
+                          onChanged: (bool value) {
+                            RecordingService().recordEvent(
+                              RecordingEventType.toolbarAction,
+                              <String, dynamic>{
+                                'toolbar': 'analysisSettings',
+                                'action': 'setEvaluationGauge',
+                                'visible': value,
+                              },
+                            );
+                            DB().displaySettings = DB().displaySettings
+                                .copyWith(
+                                  isPositionalAdvantageIndicatorShown: value,
+                                );
+                            AnalysisMode.refresh();
+                          },
+                        ),
+                        SwitchListTile.adaptive(
+                          key: const Key(
+                            'play_area_analysis_settings_advantage_graph',
+                          ),
+                          secondary: const Icon(Icons.show_chart_outlined),
+                          title: Text(strings.showAdvantageGraph),
+                          value: DB().displaySettings.isAdvantageGraphShown,
+                          onChanged: (bool value) {
+                            RecordingService().recordEvent(
+                              RecordingEventType.toolbarAction,
+                              <String, dynamic>{
+                                'toolbar': 'analysisSettings',
+                                'action': 'setEvaluationGraph',
+                                'visible': value,
+                              },
+                            );
+                            DB().displaySettings = DB().displaySettings
+                                .copyWith(isAdvantageGraphShown: value);
+                            AnalysisMode.refresh();
+                          },
+                        ),
+                        SwitchListTile.adaptive(
+                          key: const Key(
+                            'play_area_analysis_settings_engine_lines',
+                          ),
+                          secondary: const Icon(Icons.subtitles_outlined),
+                          title: Text(strings.showEngineLines),
+                          value: AnalysisMode.showEngineLines,
+                          onChanged: (bool value) {
+                            RecordingService().recordEvent(
+                              RecordingEventType.toolbarAction,
+                              <String, dynamic>{
+                                'toolbar': 'analysisSettings',
+                                'action': 'setEngineLines',
+                                'visible': value,
+                              },
+                            );
+                            AnalysisMode.setShowEngineLines(value);
+                          },
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+        ),
+      );
+    },
+  );
+}
 
 /// The PlayArea widget is the main content of the game page.
 class PlayArea extends StatefulWidget {
@@ -83,6 +245,7 @@ class PlayAreaState extends State<PlayArea> {
   static const double _kPlayerPanelHeight = 56;
   static const double _kAnalysisEngineLinesReserveHeight = 90;
   static const double _kAnalysisSmallBoardScale = 0.8;
+
   static const double _kBalancedLayoutSafetyMargin = 24;
   static const double _kBalancedLayoutMinWidth = 240;
   static const double _kHumanDatabaseStatsStripHeight = 40;
@@ -1191,115 +1354,60 @@ class PlayAreaState extends State<PlayArea> {
     required S strings,
   }) {
     assert(_isAnalysisMode, 'Analysis settings are analysis-mode only.');
-    final BuildContext sheetContext = _stableActionContext(context);
-    return showDialog<void>(
-      context: sheetContext,
-      builder: (BuildContext dialogContext) {
-        final ThemeData theme = Theme.of(dialogContext);
-        final ColorScheme colorScheme = theme.colorScheme;
-        return Dialog(
-          key: const Key('play_area_analysis_settings_sheet'),
-          backgroundColor: colorScheme.surfaceContainerLow,
-          surfaceTintColor: Colors.transparent,
-          child: ConstrainedBox(
-            constraints: BoxConstraints(
-              maxWidth: math.min(MediaQuery.sizeOf(dialogContext).width, 500),
-            ),
-            child: ValueListenableBuilder<bool>(
-              valueListenable: AnalysisMode.stateNotifier,
-              builder: (BuildContext context, _, Widget? child) {
-                return SingleChildScrollView(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(16, 16, 8, 8),
-                        child: Row(
-                          children: <Widget>[
-                            Expanded(
-                              child: Text(
-                                strings.settings,
-                                style: theme.textTheme.titleLarge?.copyWith(
-                                  fontWeight: FontWeight.w600,
-                                  letterSpacing: 0,
-                                ),
-                              ),
-                            ),
-                            IconButton(
-                              key: const Key(
-                                'play_area_analysis_settings_close',
-                              ),
-                              tooltip: strings.close,
-                              onPressed: () =>
-                                  Navigator.of(dialogContext).pop(),
-                              icon: const Icon(Icons.close),
-                            ),
-                          ],
-                        ),
-                      ),
-                      LichessListSection(
-                        cardKey: const Key(
-                          'play_area_analysis_settings_layout_card',
-                        ),
-                        children: <Widget>[
-                          SwitchListTile.adaptive(
-                            key: const Key(
-                              'play_area_analysis_settings_small_board',
-                            ),
-                            secondary: const Icon(Icons.fit_screen_outlined),
-                            title: Text(strings.smallBoard),
-                            value: AnalysisMode.smallBoard,
-                            onChanged: (bool value) {
-                              RecordingService().recordEvent(
-                                RecordingEventType.toolbarAction,
-                                <String, dynamic>{
-                                  'toolbar': 'analysisSettings',
-                                  'action': 'setSmallBoard',
-                                  'enabled': value,
-                                },
-                              );
-                              AnalysisMode.setSmallBoard(value);
-                            },
-                          ),
-                        ],
-                      ),
-                      LichessListSection(
-                        header: Text(strings.engine),
-                        cardKey: const Key(
-                          'play_area_analysis_settings_engine_card',
-                        ),
-                        children: <Widget>[
-                          SwitchListTile.adaptive(
-                            key: const Key(
-                              'play_area_analysis_settings_engine_lines',
-                            ),
-                            secondary: const Icon(Icons.subtitles_outlined),
-                            title: Text(strings.showEngineLines),
-                            value: AnalysisMode.showEngineLines,
-                            onChanged: (bool value) {
-                              RecordingService().recordEvent(
-                                RecordingEventType.toolbarAction,
-                                <String, dynamic>{
-                                  'toolbar': 'analysisSettings',
-                                  'action': 'setEngineLines',
-                                  'visible': value,
-                                },
-                              );
-                              AnalysisMode.setShowEngineLines(value);
-                            },
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                );
-              },
-            ),
-          ),
-        );
-      },
+    return showAnalysisSettingsSheet(
+      _stableActionContext(context),
+      strings: strings,
     );
+  }
+
+  void _showAnalysisEngineSheet(BuildContext context, {required S strings}) {
+    assert(_isAnalysisMode, 'Engine popup is analysis-mode only.');
+    final BuildContext sheetContext = _stableActionContext(context);
+    final int? depth = _currentAnalysisEngineDepth();
+    showLichessActionSheet<void>(
+      context: sheetContext,
+      sheetKey: const Key('play_area_analysis_engine_sheet'),
+      title: Text(strings.engine),
+      content: _AnalysisEngineSheetStatus(
+        depth: depth,
+        isAnalyzing: AnalysisMode.isAnalyzing,
+      ),
+      backgroundColor: _actionSheetBackground(sheetContext),
+      foregroundColor: _actionSheetForeground(sheetContext),
+      actions: <LichessActionSheetAction>[
+        LichessActionSheetAction(
+          key: const Key('play_area_analysis_engine_go_deeper'),
+          leading: const Icon(Icons.add_circle_outline),
+          makeLabel: (BuildContext context) => Text(strings.more),
+          onPressed: () =>
+              unawaited(_goDeeperFromAnalysisEngineSheet(sheetContext)),
+        ),
+      ],
+    );
+  }
+
+  Future<void> _goDeeperFromAnalysisEngineSheet(BuildContext context) async {
+    assert(_isAnalysisMode, 'Go deeper is analysis-mode only.');
+    RecordingService().recordEvent(
+      RecordingEventType.toolbarAction,
+      <String, dynamic>{'toolbar': 'analysisEngine', 'action': 'goDeeper'},
+    );
+    await AnalysisService.goDeeper(context);
+  }
+
+  int? _currentAnalysisEngineDepth() {
+    if (AnalysisMode.source != AnalysisSource.engine) {
+      return null;
+    }
+    int? depth;
+    for (final MoveAnalysisResult result in AnalysisMode.analysisResults) {
+      final int? candidate = result.depth;
+      if (candidate == null || candidate <= 0) {
+        continue;
+      }
+      depth = depth == null ? candidate : math.max(depth, candidate);
+    }
+    return depth;
   }
 
   void _showRegularGameMenu() {
@@ -1419,7 +1527,7 @@ class PlayAreaState extends State<PlayArea> {
             onPressed: () =>
                 _showAnalysisShareExportMenu(actionContext, strings: strings),
           ),
-        if (_canStepBackFromRegularBottomBar)
+        if (!_isAnalysisMode && _canStepBackFromRegularBottomBar)
           LichessActionSheetAction(
             key: const Key('play_area_regular_game_menu_previous'),
             leading: const Icon(CupertinoIcons.chevron_back),
@@ -1427,7 +1535,7 @@ class PlayAreaState extends State<PlayArea> {
             onPressed: () =>
                 unawaited(_stepBackFromRegularBottomBar(actionContext)),
           ),
-        if (_canStepForwardFromRegularBottomBar)
+        if (!_isAnalysisMode && _canStepForwardFromRegularBottomBar)
           LichessActionSheetAction(
             key: const Key('play_area_regular_game_menu_next'),
             leading: const Icon(CupertinoIcons.chevron_forward),
@@ -2080,9 +2188,8 @@ class PlayAreaState extends State<PlayArea> {
                 onMenuPressed: _showRegularGameMenu,
                 onEnginePressed: () =>
                     unawaited(AnalysisService.toggle(context)),
-                onEngineLongPressed: () => unawaited(
-                  _showAnalysisSettingsSheet(context, strings: S.of(context)),
-                ),
+                onEngineLongPressed: () =>
+                    _showAnalysisEngineSheet(context, strings: S.of(context)),
                 isEngineHighlighted: AnalysisMode.isFullAnalysis,
                 onPreviousPressed: _canStepBackFromRegularBottomBar
                     ? () => unawaited(_stepBackFromRegularBottomBar(context))
@@ -2132,11 +2239,7 @@ class PlayAreaState extends State<PlayArea> {
     return ValueListenableBuilder<bool>(
       valueListenable: AnalysisMode.stateNotifier,
       builder: (BuildContext context, _, _) {
-        final bool hasEngineLinesSlot =
-            AnalysisMode.showEngineLines &&
-            (AnalysisMode.isAnalyzing ||
-                (AnalysisMode.isFullAnalysis &&
-                    AnalysisMode.analysisResults.isNotEmpty));
+        final bool hasEngineLinesSlot = AnalysisMode.showEngineLines;
 
         return SafeArea(
           top: MediaQuery.of(context).orientation == Orientation.portrait,
@@ -2246,42 +2349,11 @@ class PlayAreaState extends State<PlayArea> {
           );
         }
 
-        if (AnalysisMode.isAnalyzing) {
-          final Color color = DB().colorSettings.messageColor;
-          return Padding(
-            key: const Key('play_area_analysis_engine_lines_loading'),
-            padding: const EdgeInsets.fromLTRB(12, 4, 12, 6),
-            child: Row(
-              children: <Widget>[
-                SizedBox.square(
-                  dimension: 16,
-                  child: CircularProgressIndicator(
-                    strokeWidth: 2,
-                    color: color,
-                  ),
-                ),
-                const SizedBox(width: 10),
-                Text(
-                  S.of(context).analyzing,
-                  style: Theme.of(
-                    context,
-                  ).textTheme.bodySmall?.copyWith(color: color),
-                ),
-              ],
-            ),
-          );
-        }
-
-        final List<MoveAnalysisResult> results = AnalysisMode.analysisResults;
-        if (!AnalysisMode.isFullAnalysis || results.isEmpty) {
-          return const SizedBox.shrink(
-            key: Key('play_area_analysis_engine_lines_empty'),
-          );
-        }
-
         return _AnalysisEngineLines(
           key: const Key('play_area_analysis_engine_lines'),
-          results: results.take(3).toList(growable: false),
+          results: AnalysisMode.isFullAnalysis
+              ? AnalysisMode.analysisResults
+              : const <MoveAnalysisResult>[],
           onMoveTap: (String move) => _applyAnalysisMove(context, move),
         );
       },
@@ -3230,17 +3302,24 @@ class _InlineMoveListState extends State<_InlineMoveList> {
       'Inline move rounds must contain at least one move segment.',
     );
     final String roundKeyPrefix = widget.roundKeyPrefix!;
+    final List<_IndexedMoveNode> roundNodes = <_IndexedMoveNode>[
+      for (final _InlineMoveSegment segment in round.segments) ...segment.nodes,
+    ];
+    assert(
+      roundNodes.isNotEmpty,
+      'Inline move rounds must contain at least one move node.',
+    );
     final List<Widget> children = <Widget>[
       Row(
         key: Key('$roundKeyPrefix${round.number}'),
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           _InlineMoveCount(count: round.number),
-          _buildMoveSegment(context, round.segments.first),
+          _buildGroupedMoveChip(context, roundNodes.first),
         ],
       ),
-      for (final _InlineMoveSegment segment in round.segments.skip(1))
-        _buildMoveSegment(context, segment),
+      for (final _IndexedMoveNode indexed in roundNodes.skip(1))
+        _buildGroupedMoveChip(context, indexed),
     ];
     return children;
   }
@@ -3271,6 +3350,36 @@ class _InlineMoveListState extends State<_InlineMoveList> {
           : () => unawaited(widget.onMoveTap!(context, targetNode)),
       onLongPress: widget.showMovePreview && _hasPreviewBoard(targetNode)
           ? () => _showMovePreview(context, targetNode, lastNode.index + 1)
+          : null,
+    );
+
+    if (selected) {
+      return KeyedSubtree(key: _currentMoveKey, child: chip);
+    }
+    return chip;
+  }
+
+  Widget _buildGroupedMoveChip(BuildContext context, _IndexedMoveNode indexed) {
+    final ThemeData theme = Theme.of(context);
+    final ColorScheme colorScheme = theme.colorScheme;
+    final PgnNode<ExtMove>? activeNode =
+        GameController().gameRecorder.activeNode;
+    final ExtMove? move = indexed.node.data;
+    assert(move != null, 'Inline move list nodes must carry move data.');
+    final bool selected = indexed.node == activeNode;
+    final Widget chip = _GameMoveChip(
+      key: Key('${widget.moveKeyPrefix}${indexed.index + 1}'),
+      label: move!.notation,
+      selected: selected,
+      selectedColor: colorScheme.primaryContainer,
+      selectedTextColor: colorScheme.onPrimaryContainer,
+      textStyle: theme.textTheme.bodySmall,
+      style: _GameMoveChipStyle.inlineText,
+      onTap: widget.onMoveTap == null
+          ? null
+          : () => unawaited(widget.onMoveTap!(context, indexed.node)),
+      onLongPress: widget.showMovePreview && _hasPreviewBoard(indexed.node)
+          ? () => _showMovePreview(context, indexed.node, indexed.index + 1)
           : null,
     );
 
@@ -3962,25 +4071,80 @@ class _AnalysisEngineLines extends StatelessWidget {
     required this.onMoveTap,
   });
 
+  static const int _lineCount = 3;
+
   final List<MoveAnalysisResult> results;
   final Future<void> Function(String move) onMoveTap;
 
   @override
   Widget build(BuildContext context) {
+    final List<MoveAnalysisResult> visibleResults = results
+        .take(_lineCount)
+        .toList(growable: false);
     return Padding(
       padding: const EdgeInsets.fromLTRB(8, 4, 8, 6),
       child: Column(
         key: const Key('play_area_analysis_engine_lines_column'),
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          for (final (int index, MoveAnalysisResult result) in results.indexed)
-            _AnalysisEngineLine(
-              key: Key('play_area_analysis_engine_line_$index'),
-              result: result,
-              onTap: () => unawaited(onMoveTap(result.move)),
-            ),
+          for (int index = 0; index < _lineCount; index++)
+            if (index < visibleResults.length)
+              _AnalysisEngineLine(
+                key: Key('play_area_analysis_engine_line_$index'),
+                result: visibleResults[index],
+                onTap: () => unawaited(onMoveTap(visibleResults[index].move)),
+              )
+            else
+              SizedBox(
+                key: Key('play_area_analysis_engine_line_empty_$index'),
+                height: _AnalysisEngineLine.height,
+              ),
         ],
       ),
+    );
+  }
+}
+
+class _AnalysisEngineSheetStatus extends StatelessWidget {
+  const _AnalysisEngineSheetStatus({
+    required this.depth,
+    required this.isAnalyzing,
+  });
+
+  final int? depth;
+  final bool isAnalyzing;
+
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+    final ColorScheme colorScheme = theme.colorScheme;
+    final S strings = S.of(context);
+    final String? subtitle = isAnalyzing
+        ? strings.thinking
+        : depth == null
+        ? null
+        : 'd$depth';
+
+    return ListTile(
+      key: const Key('play_area_analysis_engine_status'),
+      contentPadding: const EdgeInsets.only(left: 16, right: 16, bottom: 8),
+      leading: Icon(Icons.memory_outlined, color: colorScheme.primary),
+      title: Text(
+        strings.engine,
+        style: theme.textTheme.titleMedium?.copyWith(
+          color: colorScheme.onSurface,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+      subtitle: subtitle == null
+          ? null
+          : Text(
+              subtitle,
+              key: const Key('play_area_analysis_engine_status_depth'),
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: colorScheme.onSurfaceVariant,
+              ),
+            ),
     );
   }
 }
@@ -3991,6 +4155,8 @@ class _AnalysisEngineLine extends StatelessWidget {
     required this.result,
     required this.onTap,
   });
+
+  static const double height = 24;
 
   final MoveAnalysisResult result;
   final VoidCallback onTap;
@@ -4009,7 +4175,7 @@ class _AnalysisEngineLine extends StatelessWidget {
       borderRadius: BorderRadius.circular(AppStyles.compactRadius),
       onTap: onTap,
       child: ConstrainedBox(
-        constraints: const BoxConstraints(minHeight: 24),
+        constraints: const BoxConstraints(minHeight: height),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
           child: Row(
@@ -4034,7 +4200,7 @@ class _AnalysisEngineLine extends StatelessWidget {
               const SizedBox(width: 8),
               Expanded(
                 child: Text(
-                  '${result.move}  ${result.outcome.displayString}',
+                  _lineText(result),
                   maxLines: 1,
                   softWrap: false,
                   overflow: TextOverflow.ellipsis,
@@ -4049,6 +4215,10 @@ class _AnalysisEngineLine extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  String _lineText(MoveAnalysisResult result) {
+    return result.displayLine.join(' ');
   }
 
   String _evalLabel(AnalysisOutcome outcome) {
@@ -4137,6 +4307,7 @@ class _AnalysisBottomBar extends StatelessWidget {
         _AnalysisEngineBottomBarButton(
           key: const Key('play_area_analysis_bottom_bar_engine'),
           label: S.of(context).engine,
+          sourceLabel: _sourceLabel(context),
           onTap: onEnginePressed,
           onLongPress: onEngineLongPressed,
           highlighted: isEngineHighlighted,
@@ -4165,6 +4336,14 @@ class _AnalysisBottomBar extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  String _sourceLabel(BuildContext context) {
+    return switch (AnalysisMode.source) {
+      AnalysisSource.engine => S.of(context).engine,
+      AnalysisSource.perfectDatabase => 'DB',
+      null => S.of(context).engine,
+    };
   }
 }
 
@@ -4310,12 +4489,14 @@ class _AnalysisEngineBottomBarButton extends StatelessWidget {
   const _AnalysisEngineBottomBarButton({
     super.key,
     required this.label,
+    required this.sourceLabel,
     required this.onTap,
     required this.onLongPress,
     required this.highlighted,
   });
 
   final String label;
+  final String sourceLabel;
   final VoidCallback? onTap;
   final VoidCallback? onLongPress;
   final bool highlighted;
@@ -4391,8 +4572,11 @@ class _AnalysisEngineBottomBarButton extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  'DB',
+                  sourceLabel,
                   key: const Key('play_area_analysis_bottom_bar_engine_label'),
+                  maxLines: 1,
+                  overflow: TextOverflow.fade,
+                  softWrap: false,
                   style: TextStyle(
                     color: textColor.withValues(alpha: 0.82),
                     fontSize: 10,
@@ -4417,6 +4601,12 @@ class _AnalysisEngineBottomBarButton extends StatelessWidget {
     }
     final int count = AnalysisMode.analysisResults.length;
     assert(count > 0, 'Full analysis mode must have at least one line.');
+    if (AnalysisMode.source == AnalysisSource.engine) {
+      final int? depth = AnalysisMode.analysisResults.first.depth;
+      if (depth != null && depth > 0) {
+        return math.min(99, depth).toString();
+      }
+    }
     return math.min(99, count).toString();
   }
 }

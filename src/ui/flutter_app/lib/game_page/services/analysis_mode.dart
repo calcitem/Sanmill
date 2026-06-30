@@ -79,10 +79,33 @@ class AnalysisOutcome {
 /// notation token (`a4`, `a1-a4`, `xg7`).
 @immutable
 class MoveAnalysisResult {
-  const MoveAnalysisResult({required this.move, required this.outcome});
+  const MoveAnalysisResult({
+    required this.move,
+    required this.outcome,
+    this.rank,
+    this.depth,
+    this.nodes,
+    this.line = const <String>[],
+  });
 
   final String move;
   final AnalysisOutcome outcome;
+
+  /// 1-based engine line rank when the result comes from MultiPV.
+  final int? rank;
+
+  /// Search depth used for this engine line, when available.
+  final int? depth;
+
+  /// Searched node count for this engine line, when available.
+  final int? nodes;
+
+  /// Principal variation move tokens.  Current Mill engine support may only
+  /// provide the root move; the UI keeps this shape so deeper PVs can be wired
+  /// in without another model change.
+  final List<String> line;
+
+  List<String> get displayLine => line.isEmpty ? <String>[move] : line;
 }
 
 /// Kind of board overlay currently rendered by [AnalysisMode].
@@ -92,6 +115,15 @@ enum AnalysisOverlayMode {
 
   /// Single best-move hint.
   hint,
+}
+
+/// Source that produced the current analysis overlay.
+enum AnalysisSource {
+  /// Endgame-perfect database verdicts.
+  perfectDatabase,
+
+  /// Local engine search output.
+  engine,
 }
 
 /// Holds the analysis-overlay state for the board.
@@ -105,6 +137,7 @@ class AnalysisMode {
   static bool _showEngineLines = true;
   static bool _smallBoard = false;
   static AnalysisOverlayMode? _overlayMode;
+  static AnalysisSource? _source;
   static List<MoveAnalysisResult> _analysisResults = <MoveAnalysisResult>[];
   static List<String> _trapMoves = <String>[];
 
@@ -122,6 +155,9 @@ class AnalysisMode {
   /// Whether the current overlay is a one-move hint.
   static bool get isHint =>
       _isEnabled && _overlayMode == AnalysisOverlayMode.hint;
+
+  /// The source that produced the current overlay, or null when disabled.
+  static AnalysisSource? get source => _source;
 
   /// Whether an analysis pass is currently running.
   static bool get isAnalyzing => _isAnalyzing;
@@ -147,10 +183,12 @@ class AnalysisMode {
     List<MoveAnalysisResult> results, {
     List<String> trapMoves = const <String>[],
     AnalysisOverlayMode mode = AnalysisOverlayMode.analysis,
+    AnalysisSource source = AnalysisSource.perfectDatabase,
   }) {
     _analysisResults = results;
     _trapMoves = trapMoves;
     _overlayMode = mode;
+    _source = source;
     _isEnabled = true;
     _isAnalyzing = false;
     _publishState();
@@ -167,6 +205,7 @@ class AnalysisMode {
     _analysisResults = <MoveAnalysisResult>[];
     _trapMoves = <String>[];
     _overlayMode = null;
+    _source = null;
     _isEnabled = false;
     _isAnalyzing = false;
     _publishState();
@@ -203,6 +242,11 @@ class AnalysisMode {
       return;
     }
     _smallBoard = value;
+    _publishState();
+  }
+
+  /// Notify analysis widgets after external display preferences changed.
+  static void refresh() {
     _publishState();
   }
 

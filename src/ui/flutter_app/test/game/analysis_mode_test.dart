@@ -20,14 +20,20 @@ void main() {
     expect(AnalysisMode.isEnabled, isTrue);
     expect(AnalysisMode.isFullAnalysis, isTrue);
     expect(AnalysisMode.isHint, isFalse);
+    expect(AnalysisMode.source, AnalysisSource.perfectDatabase);
 
-    AnalysisMode.enable(const <MoveAnalysisResult>[
-      MoveAnalysisResult(move: 'a1-a4', outcome: AnalysisOutcome.advantage),
-    ], mode: AnalysisOverlayMode.hint);
+    AnalysisMode.enable(
+      const <MoveAnalysisResult>[
+        MoveAnalysisResult(move: 'a1-a4', outcome: AnalysisOutcome.advantage),
+      ],
+      mode: AnalysisOverlayMode.hint,
+      source: AnalysisSource.engine,
+    );
 
     expect(AnalysisMode.isEnabled, isTrue);
     expect(AnalysisMode.isFullAnalysis, isFalse);
     expect(AnalysisMode.isHint, isTrue);
+    expect(AnalysisMode.source, AnalysisSource.engine);
     expect(AnalysisMode.analysisResults.single.move, 'a1-a4');
   });
 
@@ -41,6 +47,7 @@ void main() {
     expect(AnalysisMode.isEnabled, isFalse);
     expect(AnalysisMode.isFullAnalysis, isFalse);
     expect(AnalysisMode.isHint, isFalse);
+    expect(AnalysisMode.source, isNull);
     expect(AnalysisMode.analysisResults, isEmpty);
   });
 

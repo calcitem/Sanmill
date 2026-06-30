@@ -346,6 +346,9 @@ class MillEngineConfig {
   /// clamps the value to a conservative range.
   final int engineThreads;
 
+  /// Requested MultiPV line count.  `1` keeps the legacy single-line stream.
+  final int multiPv;
+
   const MillEngineConfig({
     required this.algorithm,
     required this.depth,
@@ -357,6 +360,7 @@ class MillEngineConfig {
     required this.shuffling,
     required this.useLazySmp,
     required this.engineThreads,
+    required this.multiPv,
   });
 
   static Future<MillEngineConfig> default_() =>
@@ -373,7 +377,8 @@ class MillEngineConfig {
       usePerfectDatabase.hashCode ^
       shuffling.hashCode ^
       useLazySmp.hashCode ^
-      engineThreads.hashCode;
+      engineThreads.hashCode ^
+      multiPv.hashCode;
 
   @override
   bool operator ==(Object other) =>
@@ -389,7 +394,8 @@ class MillEngineConfig {
           usePerfectDatabase == other.usePerfectDatabase &&
           shuffling == other.shuffling &&
           useLazySmp == other.useLazySmp &&
-          engineThreads == other.engineThreads;
+          engineThreads == other.engineThreads &&
+          multiPv == other.multiPv;
 }
 
 enum MillFormationActionInPlacingPhase {

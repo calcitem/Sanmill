@@ -336,6 +336,7 @@ class MillEnginePortAdapter implements EnginePort {
       shuffling: settings.shufflingEnabled,
       useLazySmp: settings.useLazySmp,
       engineThreads: settings.engineThreads,
+      multiPv: 1,
     );
   }
 
@@ -374,6 +375,7 @@ class MillEnginePortAdapter implements EnginePort {
     final EngineEventKind kind = switch (event.kind) {
       'ready' => EngineEventKind.ready,
       'info' => EngineEventKind.info,
+      'pv' => EngineEventKind.pv,
       'bestMove' => EngineEventKind.bestMove,
       'stopped' => EngineEventKind.stopped,
       _ => EngineEventKind.error,

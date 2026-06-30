@@ -3,6 +3,8 @@
 
 // analysis_service.dart
 
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 
 import '../../../game_platform/game_session.dart';
@@ -18,7 +20,7 @@ import '../../../shared/services/perfect_database_service.dart';
 import '../../../src/rust/api/simple.dart' as tgf;
 import '../analysis_mode.dart';
 
-/// Drives the perfect-database analysis overlay.
+/// Drives the analysis overlay.
 ///
 /// [toggle] runs the analysis (or turns the overlay off when it is already
 /// on) and is the single entry point shared by the toolbar button and the
@@ -29,27 +31,19 @@ class AnalysisService {
   AnalysisService._();
 
   static const String _logTag = "[AnalysisService]";
+  static const int _engineMultiPvLines = 3;
+  static const int _goDeeperDepthStep = 2;
 
   /// Toggle the analysis overlay for the position currently shown by the
   /// session in scope of [context].
   ///
   /// When the overlay is already enabled it is simply disabled.  Otherwise
-  /// the perfect database is queried for every legal move and the overlay is
-  /// enabled with the resulting verdicts.  User-facing reasons (unsupported
-  /// rules, database disabled, no results) are surfaced via a snackbar.
+  /// Perfect Database verdicts are preferred when available.  Otherwise the
+  /// native engine emits a lightweight root MultiPV list for the current
+  /// position and the overlay shows those candidate moves.
   static Future<void> toggle(BuildContext context) async {
     if (AnalysisMode.isFullAnalysis) {
       AnalysisMode.disable();
-      return;
-    }
-
-    if (!isRuleSupportingPerfectDatabase()) {
-      _showSnackBar(context, S.of(context).currentRulesNoPerfectDatabase);
-      return;
-    }
-
-    if (!DB().generalSettings.usePerfectDatabase) {
-      _showSnackBar(context, S.of(context).perfectDatabaseNotEnabled);
       return;
     }
 
@@ -59,6 +53,46 @@ class AnalysisService {
       return;
     }
 
+    if (isRuleSupportingPerfectDatabase() &&
+        DB().generalSettings.usePerfectDatabase) {
+      await _enablePerfectDatabaseAnalysis(context, session);
+      return;
+    }
+
+    await _enableEngineMultiPvAnalysis(context, session);
+  }
+
+  /// Request a deeper local engine MultiPV pass for the current analysis
+  /// position.
+  static Future<void> goDeeper(BuildContext context) async {
+    assert(
+      !AnalysisMode.isAnalyzing,
+      'Cannot deepen analysis while another analysis pass is running.',
+    );
+    if (AnalysisMode.isAnalyzing) {
+      return;
+    }
+
+    final NativeMillGameSession? session = _activeNativeSession(context);
+    if (session == null) {
+      logger.w("$_logTag No active native Mill session to deepen.");
+      return;
+    }
+
+    final int requestedDepth =
+        (_currentEngineDepth() ?? _defaultEngineDepth(session)) +
+        _goDeeperDepthStep;
+    await _enableEngineMultiPvAnalysis(
+      context,
+      session,
+      requestedDepth: requestedDepth,
+    );
+  }
+
+  static Future<void> _enablePerfectDatabaseAnalysis(
+    BuildContext context,
+    NativeMillGameSession session,
+  ) async {
     AnalysisMode.setAnalyzing(true);
     try {
       // The overlay needs the database initialized; ensure copy + init has
@@ -85,6 +119,59 @@ class AnalysisService {
       AnalysisMode.enable(results, trapMoves: report.traps);
     } catch (e, st) {
       logger.e("$_logTag Analysis failed: $e", stackTrace: st);
+    } finally {
+      AnalysisMode.setAnalyzing(false);
+    }
+  }
+
+  static Future<void> _enableEngineMultiPvAnalysis(
+    BuildContext context,
+    NativeMillGameSession session, {
+    int? requestedDepth,
+  }) async {
+    final GeneralSettings engineSettings = DB().generalSettings.copyWith(
+      resignIfMostLose: false,
+      useLazySmp: false,
+    );
+    final NativeMillAiTurnController analysisSearch =
+        NativeMillAiTurnController(generalSettings: engineSettings);
+    final int defaultDepth = analysisSearch.searchDepthForSession(session);
+    final int searchDepth = requestedDepth == null
+        ? defaultDepth
+        : math.min(64, math.max(defaultDepth, requestedDepth));
+
+    AnalysisMode.setAnalyzing(true);
+    try {
+      final List<NativeMillPrincipalVariation> variations = await session
+          .searchPrincipalVariations(
+            depth: searchDepth,
+            moveLimitMs: analysisSearch.moveLimitMs,
+            multiPv: _engineMultiPvLines,
+            engineSettings: engineSettings,
+          );
+      if (variations.isEmpty) {
+        if (context.mounted) {
+          _showSnackBar(context, S.of(context).noMoreHintsAvailable);
+        }
+        return;
+      }
+      AnalysisMode.enable(
+        variations
+            .map(
+              (NativeMillPrincipalVariation variation) => MoveAnalysisResult(
+                move: variation.move,
+                outcome: _engineOutcome(variation.score),
+                rank: variation.rank,
+                depth: variation.depth,
+                nodes: variation.nodes,
+                line: variation.line,
+              ),
+            )
+            .toList(growable: false),
+        source: AnalysisSource.engine,
+      );
+    } catch (e, st) {
+      logger.e("$_logTag Engine MultiPV analysis failed: $e", stackTrace: st);
     } finally {
       AnalysisMode.setAnalyzing(false);
     }
@@ -133,9 +220,13 @@ class AnalysisService {
       final String move = movePayload! as String;
 
       final int? score = session.lastAiBestValue;
-      AnalysisMode.enable(<MoveAnalysisResult>[
-        MoveAnalysisResult(move: move, outcome: _hintOutcome(score)),
-      ], mode: AnalysisOverlayMode.hint);
+      AnalysisMode.enable(
+        <MoveAnalysisResult>[
+          MoveAnalysisResult(move: move, outcome: _hintOutcome(score)),
+        ],
+        mode: AnalysisOverlayMode.hint,
+        source: AnalysisSource.engine,
+      );
       return true;
     } catch (e, st) {
       logger.e("$_logTag Hint failed: $e", stackTrace: st);
@@ -150,10 +241,39 @@ class AnalysisService {
     return session is NativeMillGameSession ? session : null;
   }
 
+  static int _defaultEngineDepth(NativeMillGameSession session) {
+    final GeneralSettings engineSettings = DB().generalSettings.copyWith(
+      resignIfMostLose: false,
+      useLazySmp: false,
+    );
+    return NativeMillAiTurnController(
+      generalSettings: engineSettings,
+    ).searchDepthForSession(session);
+  }
+
+  static int? _currentEngineDepth() {
+    if (AnalysisMode.source != AnalysisSource.engine) {
+      return null;
+    }
+    int? depth;
+    for (final MoveAnalysisResult result in AnalysisMode.analysisResults) {
+      final int? candidate = result.depth;
+      if (candidate == null || candidate <= 0) {
+        continue;
+      }
+      depth = depth == null ? candidate : math.max(depth, candidate);
+    }
+    return depth;
+  }
+
   static AnalysisOutcome _hintOutcome(int? score) {
     if (score == null) {
       return AnalysisOutcome.unknown;
     }
+    return _engineOutcome(score);
+  }
+
+  static AnalysisOutcome _engineOutcome(int score) {
     final AnalysisOutcome base = switch (score.sign) {
       1 => AnalysisOutcome.advantage,
       -1 => AnalysisOutcome.disadvantage,

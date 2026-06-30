@@ -95,6 +95,42 @@ pub(crate) fn best_move_with_notation_and_aimovetype(
     }
 }
 
+pub(crate) struct PrincipalVariationEvent<'a> {
+    pub rank: usize,
+    pub action: tgf_core::Action,
+    pub score: i32,
+    pub root_side_to_move: i8,
+    pub notation: &'a str,
+    pub pv_notation: &'a str,
+    pub nodes: u64,
+    pub depth: i32,
+    pub cutoff: bool,
+}
+
+/// Construct a "pv" event for one root candidate line.
+///
+/// `event.rank` follows UCI MultiPV semantics: lower ranks are better for the
+/// side to move at the root.  `event.pv_notation` is a comma-separated line
+/// reconstructed from opt-in TT move hints when available.
+pub(crate) fn principal_variation(event: PrincipalVariationEvent<'_>) -> EngineEvent {
+    let output_score = if event.root_side_to_move == 1 {
+        -event.score
+    } else {
+        event.score
+    };
+    EngineEvent {
+        kind: "pv".to_owned(),
+        depth: event.depth,
+        score: output_score,
+        nodes: event.nodes,
+        to_node: event.action.to_node as i32,
+        reason: format!(
+            "{} rank={} rawScore={} cutoff={} pv={}",
+            event.notation, event.rank, event.score, event.cutoff, event.pv_notation
+        ),
+    }
+}
+
 /// Background-spawn an `error → stopped` sequence on a fresh thread so a
 /// failed search request still releases the Dart-side `Stream`.
 pub(crate) fn spawn_kernel_search_error(message: String, sink: StreamSink<EngineEvent>) {

@@ -634,24 +634,196 @@ class _ExplorerBoardSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bool showPieceRows =
+        DB().displaySettings.isUnplacedAndRemovedPiecesShown;
     return LichessListSection(
       hasLeading: false,
       cardKey: const Key('opening_explorer_board_card'),
       children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.fromLTRB(12, 12, 12, 10),
-          child: Column(
-            children: <Widget>[
-              _OpeningExplorerBoard(
-                session: session,
-                tapController: tapController,
-                heightFactor: boardHeightFactor,
-                onPositionChanged: onPositionChanged,
+        ValueListenableBuilder<GameStateSnapshot>(
+          valueListenable: session.state,
+          builder: (BuildContext context, GameStateSnapshot snapshot, _) {
+            final _OpeningExplorerPieceCounts counts =
+                _OpeningExplorerPieceCounts.fromSnapshot(
+                  snapshot: snapshot,
+                  piecesCount: DB().ruleSettings.piecesCount,
+                );
+            return Padding(
+              padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
+              child: Column(
+                children: <Widget>[
+                  if (showPieceRows) ...<Widget>[
+                    _ExplorerPieceCountRow(
+                      key: const Key('opening_explorer_in_hand_row'),
+                      firstKey: const Key(
+                        'opening_explorer_first_in_hand_count',
+                      ),
+                      secondKey: const Key(
+                        'opening_explorer_second_in_hand_count',
+                      ),
+                      firstCount: counts.firstInHand,
+                      secondCount: counts.secondInHand,
+                      muted: false,
+                    ),
+                    const SizedBox(height: 4),
+                  ],
+                  _OpeningExplorerBoard(
+                    session: session,
+                    tapController: tapController,
+                    heightFactor: boardHeightFactor,
+                    onPositionChanged: onPositionChanged,
+                  ),
+                  if (showPieceRows) ...<Widget>[
+                    const SizedBox(height: 4),
+                    _ExplorerPieceCountRow(
+                      key: const Key('opening_explorer_removed_row'),
+                      firstKey: const Key(
+                        'opening_explorer_first_removed_count',
+                      ),
+                      secondKey: const Key(
+                        'opening_explorer_second_removed_count',
+                      ),
+                      firstCount: counts.firstRemoved,
+                      secondCount: counts.secondRemoved,
+                      muted: true,
+                    ),
+                  ],
+                ],
               ),
-            ],
-          ),
+            );
+          },
         ),
       ],
+    );
+  }
+}
+
+class _OpeningExplorerPieceCounts {
+  const _OpeningExplorerPieceCounts({
+    required this.firstInHand,
+    required this.secondInHand,
+    required this.firstRemoved,
+    required this.secondRemoved,
+  });
+
+  factory _OpeningExplorerPieceCounts.fromSnapshot({
+    required GameStateSnapshot snapshot,
+    required int piecesCount,
+  }) {
+    final Object? rawPayload = snapshot.payload['tgfPayload'];
+    assert(
+      rawPayload is List<int> && rawPayload.length >= 28,
+      'Opening explorer piece counts require a native Mill payload.',
+    );
+    if (rawPayload is! List<int> || rawPayload.length < 28) {
+      throw StateError(
+        'Opening explorer piece counts require a native Mill payload.',
+      );
+    }
+
+    final int firstInHand = rawPayload[24];
+    final int secondInHand = rawPayload[25];
+    final int firstOnBoard = rawPayload[26];
+    final int secondOnBoard = rawPayload[27];
+    assert(
+      firstInHand >= 0 &&
+          secondInHand >= 0 &&
+          firstOnBoard >= 0 &&
+          secondOnBoard >= 0,
+      'Opening explorer piece counts must not be negative.',
+    );
+    assert(
+      firstInHand + firstOnBoard <= piecesCount &&
+          secondInHand + secondOnBoard <= piecesCount,
+      'Opening explorer piece counts cannot exceed the configured piece count.',
+    );
+
+    return _OpeningExplorerPieceCounts(
+      firstInHand: firstInHand,
+      secondInHand: secondInHand,
+      firstRemoved: piecesCount - firstInHand - firstOnBoard,
+      secondRemoved: piecesCount - secondInHand - secondOnBoard,
+    );
+  }
+
+  final int firstInHand;
+  final int secondInHand;
+  final int firstRemoved;
+  final int secondRemoved;
+}
+
+class _ExplorerPieceCountRow extends StatelessWidget {
+  const _ExplorerPieceCountRow({
+    super.key,
+    required this.firstKey,
+    required this.secondKey,
+    required this.firstCount,
+    required this.secondCount,
+    required this.muted,
+  });
+
+  final Key firstKey;
+  final Key secondKey;
+  final int firstCount;
+  final int secondCount;
+  final bool muted;
+
+  @override
+  Widget build(BuildContext context) {
+    final ColorSettings colors = DB().colorSettings;
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        _ExplorerPieceCountText(
+          key: firstKey,
+          count: firstCount,
+          color: colors.whitePieceColor,
+          muted: muted,
+        ),
+        _ExplorerPieceCountText(
+          key: secondKey,
+          count: secondCount,
+          color: colors.blackPieceColor,
+          muted: muted,
+        ),
+      ],
+    );
+  }
+}
+
+class _ExplorerPieceCountText extends StatelessWidget {
+  const _ExplorerPieceCountText({
+    super.key,
+    required this.count,
+    required this.color,
+    required this.muted,
+  }) : assert(count >= 0, 'Piece count text cannot be negative.');
+
+  final int count;
+  final Color color;
+  final bool muted;
+
+  @override
+  Widget build(BuildContext context) {
+    final int visibleDots = math.min(count, 3);
+    final String dots = '●' * visibleDots;
+    final String label = count <= 3 ? dots : '$dots $count';
+    final Color textColor = muted ? color.withValues(alpha: 0.55) : color;
+
+    return Text(
+      label,
+      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+        color: textColor,
+        fontWeight: FontWeight.w700,
+        letterSpacing: 0,
+        shadows: const <Shadow>[
+          Shadow(
+            offset: Offset(0, 1),
+            blurRadius: 2,
+            color: Color.fromARGB(110, 0, 0, 0),
+          ),
+        ],
+      ),
     );
   }
 }

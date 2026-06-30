@@ -17,6 +17,7 @@ import 'package:marquee/marquee.dart';
 
 import '../../appearance_settings/models/display_settings.dart';
 import '../../appearance_settings/widgets/appearance_settings_page.dart';
+import '../../experience_recording/models/recording_models.dart';
 import '../../experience_recording/services/recording_service.dart';
 import '../../experience_recording/widgets/recording_indicator.dart';
 import '../../experience_recording/widgets/replay_controls.dart';
@@ -46,6 +47,7 @@ import '../../src/rust/api/simple.dart' as tgf;
 import '../../statistics/model/stats_settings.dart';
 // Voice assistant functionality disabled
 // import '../../voice_assistant/widgets/voice_button.dart';
+import '../services/analysis_mode.dart';
 import '../services/animation/animation_manager.dart';
 import '../services/animation/headless_animation_manager.dart';
 import '../services/annotation/annotation_manager.dart';
@@ -73,6 +75,8 @@ part 'game_board.dart';
 part 'game_header.dart';
 part 'game_page_action_sheet.dart';
 part 'modals/move_options_modal.dart';
+
+enum _AnalysisAppBarAction { settings, toggleEngineLines }
 
 /// Main GamePage widget that initializes the game controller and passes it
 /// to a stateful inner widget managing annotation mode.
@@ -187,6 +191,7 @@ class _GamePageInnerState extends State<_GamePageInner> {
     final Widget baseContent = Scaffold(
       key: const Key('game_page_scaffold'),
       resizeToAvoidBottomInset: false,
+      appBar: _isAnalysisPage ? _buildAnalysisAppBar(context) : null,
       // Voice assistant functionality disabled
       // floatingActionButton: const VoiceAssistantButton(),
       body: LayoutBuilder(
@@ -212,11 +217,12 @@ class _GamePageInnerState extends State<_GamePageInner> {
               // Game board widget.
               _buildGameBoard(context, widget.controller),
               // Back button in the top-left corner when this route can pop.
-              Align(
-                key: const Key('game_page_top_left_button_align'),
-                alignment: AlignmentDirectional.topStart,
-                child: SafeArea(child: _buildTopLeftButton(context)),
-              ),
+              if (!_isAnalysisPage)
+                Align(
+                  key: const Key('game_page_top_left_button_align'),
+                  alignment: AlignmentDirectional.topStart,
+                  child: SafeArea(child: _buildTopLeftButton(context)),
+                ),
               // Experience recording indicator and replay controls.
               const Align(
                 key: Key('game_page_recording_indicator_align'),
@@ -347,6 +353,9 @@ class _GamePageInnerState extends State<_GamePageInner> {
   bool get _isHumanAiGame =>
       widget.controller.gameInstance.gameMode == GameMode.humanVsAi;
 
+  bool get _isAnalysisPage =>
+      widget.controller.gameInstance.gameMode == GameMode.analysis;
+
   bool get _isPlayGameRoute {
     return switch (widget.controller.gameInstance.gameMode) {
       GameMode.humanVsAi ||
@@ -427,6 +436,103 @@ class _GamePageInnerState extends State<_GamePageInner> {
       },
     );
     return confirmed ?? false;
+  }
+
+  PreferredSizeWidget _buildAnalysisAppBar(BuildContext context) {
+    final S strings = S.of(context);
+    return AppBar(
+      key: const Key('game_page_analysis_appbar'),
+      centerTitle: false,
+      leading: Navigator.canPop(context)
+          ? IconButton(
+              key: const Key('game_page_back_button'),
+              icon: const Icon(Icons.arrow_back),
+              tooltip: strings.back,
+              onPressed: () => unawaited(Navigator.of(context).maybePop()),
+            )
+          : null,
+      title: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          const Icon(Icons.biotech_outlined, size: 22),
+          const SizedBox(width: 8),
+          Flexible(
+            child: Text(
+              strings.analysis,
+              key: const Key('game_page_analysis_appbar_title'),
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+        ],
+      ),
+      actions: <Widget>[
+        ValueListenableBuilder<bool>(
+          valueListenable: AnalysisMode.stateNotifier,
+          builder: (BuildContext context, _, _) {
+            return PopupMenuButton<_AnalysisAppBarAction>(
+              key: const Key('game_page_analysis_menu_button'),
+              tooltip: strings.menu,
+              icon: const Icon(Icons.more_horiz),
+              onSelected: (_AnalysisAppBarAction action) {
+                switch (action) {
+                  case _AnalysisAppBarAction.settings:
+                    RecordingService().recordEvent(
+                      RecordingEventType.toolbarAction,
+                      <String, dynamic>{
+                        'toolbar': 'analysisAppBar',
+                        'action': 'settings',
+                      },
+                    );
+                    unawaited(
+                      showAnalysisSettingsSheet(context, strings: strings),
+                    );
+                  case _AnalysisAppBarAction.toggleEngineLines:
+                    RecordingService().recordEvent(
+                      RecordingEventType.toolbarAction,
+                      <String, dynamic>{
+                        'toolbar': 'analysisAppBar',
+                        'action': 'toggleEngineLines',
+                        'visible': !AnalysisMode.showEngineLines,
+                      },
+                    );
+                    AnalysisMode.toggleEngineLines();
+                }
+              },
+              itemBuilder: (BuildContext context) {
+                return <PopupMenuEntry<_AnalysisAppBarAction>>[
+                  PopupMenuItem<_AnalysisAppBarAction>(
+                    key: const Key('game_page_analysis_menu_settings'),
+                    value: _AnalysisAppBarAction.settings,
+                    child: ListTile(
+                      leading: const Icon(Icons.settings_outlined),
+                      title: Text(strings.settings),
+                      contentPadding: EdgeInsets.zero,
+                    ),
+                  ),
+                  PopupMenuItem<_AnalysisAppBarAction>(
+                    key: const Key('game_page_analysis_menu_engine_lines'),
+                    value: _AnalysisAppBarAction.toggleEngineLines,
+                    child: ListTile(
+                      leading: Icon(
+                        AnalysisMode.showEngineLines
+                            ? Icons.subtitles_outlined
+                            : Icons.subtitles_off_outlined,
+                      ),
+                      title: Text(
+                        AnalysisMode.showEngineLines
+                            ? strings.hideEngineLines
+                            : strings.showEngineLines,
+                      ),
+                      contentPadding: EdgeInsets.zero,
+                    ),
+                  ),
+                ];
+              },
+            );
+          },
+        ),
+      ],
+    );
   }
 
   // Builds the background widget based on display settings.

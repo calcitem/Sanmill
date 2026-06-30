@@ -36,7 +36,7 @@ class EngineSearchRequest {
   final int? depth;
 }
 
-enum EngineEventKind { ready, info, bestMove, error, stopped }
+enum EngineEventKind { ready, info, pv, bestMove, error, stopped }
 
 class EngineEvent {
   const EngineEvent({

@@ -23,6 +23,7 @@ use crate::tt::{Bound, ClusteredTt, SharedTt, TtStats};
 
 mod iterative_mtdf;
 mod move_order;
+mod pv;
 mod qsearch;
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]

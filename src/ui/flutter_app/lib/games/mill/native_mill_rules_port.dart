@@ -195,6 +195,7 @@ class NativeMillRulesPort implements RulesPort {
     required int depth,
     int moveLimitMs = 0,
     GeneralSettings? engineSettings,
+    int multiPv = 1,
   }) {
     final GeneralSettings settings = engineSettings ?? _generalSettings;
     final bool usePerfectDatabase =
@@ -209,6 +210,7 @@ class NativeMillRulesPort implements RulesPort {
       shuffling: settings.shufflingEnabled,
       useLazySmp: settings.useLazySmp,
       engineThreads: settings.engineThreads,
+      multiPv: multiPv,
     );
   }
 

@@ -472,6 +472,32 @@ impl tgf_core::Game for KeyedGame {
             });
         }
     }
+
+    fn pack_tt_action(action: Action) -> Option<u16> {
+        if action.kind_tag == 0
+            && action.from_node == -1
+            && (0..=1).contains(&action.to_node)
+            && action.aux == -1
+            && action.payload_bits == 0
+        {
+            Some((action.to_node + 1) as u16)
+        } else {
+            None
+        }
+    }
+
+    fn unpack_tt_action(packed: u16) -> Option<Action> {
+        if !(1..=2).contains(&packed) {
+            return None;
+        }
+        Some(Action {
+            kind_tag: 0,
+            from_node: -1,
+            to_node: (packed - 1) as i16,
+            aux: -1,
+            payload_bits: 0,
+        })
+    }
 }
 
 #[test]
@@ -490,6 +516,30 @@ fn transposition_table_saves_and_reuses_entries() {
     assert!(searcher.nodes() <= before.max(1));
     assert!(searcher.tt_hits() > 0);
     assert!(searcher.tt_hit_rate_pct() > 0.0);
+}
+
+#[test]
+fn principal_variation_follows_only_opt_in_legal_tt_moves() {
+    let game = KeyedGame;
+    let mut wb = game.build_workbench(&GameStateSnapshot::default());
+    let mut default_searcher = Searcher::<KeyedGame>::new();
+
+    let default_result = default_searcher.search(&mut wb, 2);
+    wb.do_move(default_result.best_action);
+    assert!(default_searcher.principal_variation(&mut wb, 8).is_empty());
+    wb.undo_move();
+
+    let shared_tt = SharedTt::new_with_tt_move(10, true);
+    let mut pv_searcher = Searcher::<KeyedGame>::with_shared_tt(shared_tt);
+    let pv_result = pv_searcher.search(&mut wb, 2);
+
+    wb.do_move(pv_result.best_action);
+    let child_key = wb.key();
+    let line = pv_searcher.principal_variation(&mut wb, 8);
+    assert_eq!(wb.key(), child_key);
+    assert_eq!(line.len(), 1);
+    assert!((0..=1).contains(&line[0].to_node));
+    wb.undo_move();
 }
 
 #[test]
