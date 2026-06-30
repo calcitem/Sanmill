@@ -1412,6 +1412,12 @@ void main() {
           .height,
       26,
     );
+    expect(
+      tester
+          .getSize(find.byKey(const Key('play_area_analysis_tab_summary')))
+          .height,
+      26,
+    );
     final Icon explorerTabIcon = tester.widget<Icon>(
       find.descendant(
         of: find.byKey(const Key('play_area_analysis_tab_explorer')),
@@ -1424,10 +1430,54 @@ void main() {
         matching: find.byIcon(Icons.account_tree_outlined),
       ),
     );
+    final Icon summaryTabIcon = tester.widget<Icon>(
+      find.descendant(
+        of: find.byKey(const Key('play_area_analysis_tab_summary')),
+        matching: find.byIcon(Icons.area_chart_outlined),
+      ),
+    );
     expect(explorerTabIcon.size, 18);
     expect(movesTabIcon.size, 18);
+    expect(summaryTabIcon.size, 18);
     expect(find.byKey(const Key('play_area_analysis_moves')), findsOne);
     expect(find.byKey(const Key('opening_explorer_embedded')), findsNothing);
+
+    AnalysisMode.enable(<MoveAnalysisResult>[
+      MoveAnalysisResult(
+        move: 'd6',
+        outcome: AnalysisOutcome.withValue(AnalysisOutcome.advantage, '+42'),
+        depth: 6,
+        nodes: 12345,
+        line: const <String>['d6', 'f4'],
+      ),
+    ], source: AnalysisSource.engine);
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byKey(const Key('play_area_analysis_tab_summary')));
+    await tester.pumpAndSettle();
+
+    expect(find.byKey(const Key('play_area_analysis_summary')), findsOne);
+    expect(
+      find.byKey(const Key('play_area_analysis_summary_source')),
+      findsOne,
+    );
+    expect(
+      find.byKey(const Key('play_area_analysis_summary_engine')),
+      findsOne,
+    );
+    expect(find.byKey(const Key('play_area_analysis_summary_moves')), findsOne);
+    expect(
+      find.byKey(const Key('play_area_analysis_summary_variations')),
+      findsOne,
+    );
+    expect(
+      find.descendant(
+        of: find.byKey(const Key('play_area_analysis_summary_engine')),
+        matching: find.textContaining('d6 f4'),
+      ),
+      findsOne,
+    );
+
     expect(find.byKey(const Key('play_area_main_toolbar_bottom')), findsOne);
     expect(
       find.byKey(const Key('play_area_analysis_bottom_bar_menu')),

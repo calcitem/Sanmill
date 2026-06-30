@@ -2415,6 +2415,7 @@ class PlayAreaState extends State<PlayArea> {
           ),
         ],
       ),
+      summary: const _AnalysisSummaryPanel(),
     );
   }
 
@@ -3965,13 +3966,18 @@ class _HumanAiPlayerPanel extends StatelessWidget {
 }
 
 class _AnalysisPanel extends StatelessWidget {
-  const _AnalysisPanel({required this.explorer, required this.moves});
+  const _AnalysisPanel({
+    required this.explorer,
+    required this.moves,
+    required this.summary,
+  });
 
   static const double _tabIconSize = 18;
   static const double _tabHeight = _tabIconSize + 8;
 
   final Widget explorer;
   final Widget moves;
+  final Widget summary;
 
   @override
   Widget build(BuildContext context) {
@@ -3979,7 +3985,7 @@ class _AnalysisPanel extends StatelessWidget {
     final S strings = S.of(context);
 
     return DefaultTabController(
-      length: 2,
+      length: 3,
       initialIndex: 1,
       child: DecoratedBox(
         key: const Key('play_area_analysis_panel'),
@@ -4009,19 +4015,130 @@ class _AnalysisPanel extends StatelessWidget {
                       semanticLabel: strings.moveList,
                     ),
                   ),
+                  Tab(
+                    key: const Key('play_area_analysis_tab_summary'),
+                    height: _tabHeight,
+                    icon: Icon(
+                      Icons.area_chart_outlined,
+                      size: _tabIconSize,
+                      semanticLabel: strings.analysis,
+                    ),
+                  ),
                 ],
               ),
             ),
             Expanded(
               child: TabBarView(
                 key: const Key('play_area_analysis_tab_view'),
-                children: <Widget>[explorer, moves],
+                children: <Widget>[explorer, moves, summary],
               ),
             ),
           ],
         ),
       ),
     );
+  }
+}
+
+class _AnalysisSummaryPanel extends StatelessWidget {
+  const _AnalysisSummaryPanel();
+
+  @override
+  Widget build(BuildContext context) {
+    return ValueListenableBuilder<bool>(
+      valueListenable: AnalysisMode.stateNotifier,
+      builder: (BuildContext context, _, _) {
+        return ValueListenableBuilder<int>(
+          valueListenable: GameController().gameRecorder.moveCountNotifier,
+          builder: (BuildContext context, int moveCount, _) {
+            final S strings = S.of(context);
+            final MoveAnalysisResult? bestResult = _bestResult();
+            final PgnNode<ExtMove> currentNode =
+                GameController().gameRecorder.activeNode ??
+                GameController().gameRecorder.pgnRoot;
+            final int variationCount = currentNode.children.length;
+
+            return ListView(
+              key: const Key('play_area_analysis_summary'),
+              padding: const EdgeInsets.symmetric(
+                vertical: AppStyles.bodyPadding,
+              ),
+              children: <Widget>[
+                LichessListSection(
+                  cardKey: const Key('play_area_analysis_summary_card'),
+                  children: <Widget>[
+                    ListTile(
+                      key: const Key('play_area_analysis_summary_source'),
+                      leading: const Icon(Icons.analytics_outlined),
+                      title: Text(strings.analysis),
+                      subtitle: Text(_sourceLabel(context)),
+                    ),
+                    ListTile(
+                      key: const Key('play_area_analysis_summary_engine'),
+                      leading: const Icon(Icons.memory_outlined),
+                      title: Text(strings.engine),
+                      subtitle: Text(_engineSummary(context, bestResult)),
+                    ),
+                    ListTile(
+                      key: const Key('play_area_analysis_summary_moves'),
+                      leading: const Icon(Icons.account_tree_outlined),
+                      title: Text(strings.moveList),
+                      subtitle: Text('$moveCount'),
+                    ),
+                    ListTile(
+                      key: const Key('play_area_analysis_summary_variations'),
+                      leading: const Icon(Icons.fork_right_outlined),
+                      title: Text(strings.variations),
+                      subtitle: Text('$variationCount'),
+                    ),
+                  ],
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
+
+  MoveAnalysisResult? _bestResult() {
+    if (!AnalysisMode.isFullAnalysis || AnalysisMode.analysisResults.isEmpty) {
+      return null;
+    }
+    return AnalysisMode.analysisResults.first;
+  }
+
+  String _sourceLabel(BuildContext context) {
+    return switch (AnalysisMode.source) {
+      AnalysisSource.engine => S.of(context).engine,
+      AnalysisSource.perfectDatabase => 'DB',
+      null => S.of(context).openingExplorerNoDataShort,
+    };
+  }
+
+  String _engineSummary(BuildContext context, MoveAnalysisResult? result) {
+    if (result == null) {
+      return S.of(context).openingExplorerNoDataShort;
+    }
+
+    final List<String> parts = <String>[
+      _analysisEvalLabel(result.outcome),
+      if (result.depth != null && result.depth! > 0) 'd${result.depth}',
+      if (result.nodes != null && result.nodes! > 0)
+        _compactCount(result.nodes!),
+      result.displayLine.join(' '),
+    ];
+    return parts.join(' · ');
+  }
+
+  String _compactCount(int value) {
+    if (value >= 1000000) {
+      return '${(value / 1000000).toStringAsFixed(value >= 10000000 ? 0 : 1)}M';
+    }
+    if (value >= 1000) {
+      return '${(value / 1000).toStringAsFixed(value >= 10000 ? 0 : 1)}k';
+    }
+    return '$value';
   }
 }
 
@@ -4306,21 +4423,25 @@ class _AnalysisEngineLine extends StatelessWidget {
   }
 
   String _evalLabel(AnalysisOutcome outcome) {
-    if (outcome.stepCount != null && outcome.stepCount! > 0) {
-      return '${outcome.name.substring(0, 1).toUpperCase()}${outcome.stepCount}';
-    }
-    if (outcome.valueStr != null && outcome.valueStr!.isNotEmpty) {
-      return outcome.valueStr!;
-    }
-    return switch (outcome.name) {
-      'win' => 'W',
-      'draw' => '=',
-      'loss' => 'L',
-      'advantage' => '+',
-      'disadvantage' => '-',
-      _ => '?',
-    };
+    return _analysisEvalLabel(outcome);
   }
+}
+
+String _analysisEvalLabel(AnalysisOutcome outcome) {
+  if (outcome.stepCount != null && outcome.stepCount! > 0) {
+    return '${outcome.name.substring(0, 1).toUpperCase()}${outcome.stepCount}';
+  }
+  if (outcome.valueStr != null && outcome.valueStr!.isNotEmpty) {
+    return outcome.valueStr!;
+  }
+  return switch (outcome.name) {
+    'win' => 'W',
+    'draw' => '=',
+    'loss' => 'L',
+    'advantage' => '+',
+    'disadvantage' => '-',
+    _ => '?',
+  };
 }
 
 class _ContinueFromHereGameRoute extends StatefulWidget {
