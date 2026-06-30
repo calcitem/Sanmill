@@ -252,6 +252,18 @@ void main() {
       expect(find.byKey(const Key('sanmill_home_list')), findsOneWidget);
       expect(find.byKey(const Key('sanmill_home_empty_start')), findsOneWidget);
       expect(
+        find.byKey(const Key('sanmill_home_welcome_group')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const Key('sanmill_home_welcome_card')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const Key('sanmill_home_welcome_panel')),
+        findsOneWidget,
+      );
+      expect(
         find.byKey(const Key('sanmill_home_quick_start_group')),
         findsOneWidget,
       );
@@ -261,6 +273,18 @@ void main() {
       );
       expect(
         find.byKey(const Key('sanmill_home_quick_start_mill.play.humanVsAi')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const Key('sanmill_home_empty_recent_group')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const Key('sanmill_home_empty_recent_card')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const Key('sanmill_home_empty_recent_games')),
         findsOneWidget,
       );
 
