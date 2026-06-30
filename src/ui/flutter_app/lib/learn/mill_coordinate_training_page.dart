@@ -4,10 +4,12 @@
 import 'dart:async';
 import 'dart:math' as math;
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart' show Box;
 
 import '../appearance_settings/models/color_settings.dart';
+import '../game_page/services/transform/transform.dart';
 import '../games/mill/mill_board_coordinate_maps.dart';
 import '../games/mill/mill_board_geometry.dart';
 import '../generated/intl/l10n.dart';
@@ -32,6 +34,8 @@ const List<Duration> _kTrainingDurationChoices = <Duration>[
   Duration(seconds: 60),
   Duration(seconds: 120),
 ];
+
+enum _CoordinateTrainingOrientationChoice { board, random }
 
 String _formatTrainingDuration(Duration duration) {
   assert(!duration.isNegative, 'Training duration must not be negative.');
@@ -66,6 +70,11 @@ class _MillCoordinateTrainingPageState
   int? _lastScore;
   Duration? _elapsed;
   Duration _trainingDuration = _kTrainingDuration;
+  _CoordinateTrainingOrientationChoice _orientationChoice =
+      _CoordinateTrainingOrientationChoice.random;
+  late TransformationType _currentTransform = _newTransformForChoice(
+    _orientationChoice,
+  );
   bool _showCoordinates = false;
   bool _showPieces = true;
 
@@ -128,6 +137,7 @@ class _MillCoordinateTrainingPageState
                         showCoordinates: _showCoordinates,
                         showPieces: _showPieces,
                         colorSettings: DB().colorSettings,
+                        transform: _currentTransform,
                         trainingActive: _trainingActive,
                         score: _score,
                         lastScore: _lastScore,
@@ -172,6 +182,7 @@ class _MillCoordinateTrainingPageState
   void _startTraining() {
     final int currentNode = _randomNode();
     setState(() {
+      _currentTransform = _newTransformForChoice(_orientationChoice);
       _currentNode = currentNode;
       _nextNode = _randomNode(previous: currentNode);
       _lastGuessNode = null;
@@ -227,6 +238,28 @@ class _MillCoordinateTrainingPageState
       node = _random.nextInt(MillBoardGeometry.nodeCount);
     }
     return node;
+  }
+
+  TransformationType _newTransformForChoice(
+    _CoordinateTrainingOrientationChoice choice,
+  ) {
+    return switch (choice) {
+      _CoordinateTrainingOrientationChoice.board => TransformationType.identity,
+      _CoordinateTrainingOrientationChoice.random =>
+        TransformationType.values[_random.nextInt(
+          TransformationType.values.length,
+        )],
+    };
+  }
+
+  String _orientationChoiceLabel(
+    S strings,
+    _CoordinateTrainingOrientationChoice choice,
+  ) {
+    return switch (choice) {
+      _CoordinateTrainingOrientationChoice.board => strings.board,
+      _CoordinateTrainingOrientationChoice.random => strings.randomColor,
+    };
   }
 
   void _guessNode(int node) {
@@ -316,6 +349,34 @@ class _MillCoordinateTrainingPageState
             padding: const EdgeInsets.only(bottom: 16),
             children: <Widget>[
               LichessListSection(
+                header: Text(strings.boardOrientation),
+                children: <Widget>[
+                  for (final _CoordinateTrainingOrientationChoice choice
+                      in _CoordinateTrainingOrientationChoice.values)
+                    ListTile(
+                      key: Key(
+                        'mill_coordinate_training_orientation_${choice.name}',
+                      ),
+                      title: Text(_orientationChoiceLabel(strings, choice)),
+                      trailing: choice == _orientationChoice
+                          ? Icon(
+                              Icons.check_rounded,
+                              color: Theme.of(context).colorScheme.primary,
+                            )
+                          : null,
+                      onTap: () {
+                        setState(() {
+                          _orientationChoice = choice;
+                          _currentTransform = _newTransformForChoice(choice);
+                          _lastGuessNode = null;
+                          _lastGuessCorrect = null;
+                        });
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                ],
+              ),
+              LichessListSection(
                 header: Text(strings.duration),
                 children: <Widget>[
                   for (final Duration duration in _kTrainingDurationChoices)
@@ -375,6 +436,7 @@ class _TrainingLayout extends StatelessWidget {
     required this.showCoordinates,
     required this.showPieces,
     required this.colorSettings,
+    required this.transform,
     required this.trainingActive,
     required this.score,
     required this.lastScore,
@@ -392,6 +454,7 @@ class _TrainingLayout extends StatelessWidget {
   final bool showCoordinates;
   final bool showPieces;
   final ColorSettings colorSettings;
+  final TransformationType transform;
   final bool trainingActive;
   final int score;
   final int? lastScore;
@@ -439,6 +502,7 @@ class _TrainingLayout extends StatelessWidget {
                   showCoordinates: showCoordinates,
                   showPieces: showPieces,
                   colorSettings: colorSettings,
+                  transform: transform,
                   trainingActive: trainingActive,
                   currentNode: currentNode,
                   nextNode: nextNode,
@@ -603,6 +667,7 @@ class _MillTrainingBoard extends StatelessWidget {
     required this.showCoordinates,
     required this.showPieces,
     required this.colorSettings,
+    required this.transform,
     required this.trainingActive,
     required this.currentNode,
     required this.nextNode,
@@ -615,6 +680,7 @@ class _MillTrainingBoard extends StatelessWidget {
   final bool showCoordinates;
   final bool showPieces;
   final ColorSettings colorSettings;
+  final TransformationType transform;
   final bool trainingActive;
   final int? currentNode;
   final int? nextNode;
@@ -626,6 +692,8 @@ class _MillTrainingBoard extends StatelessWidget {
   Widget build(BuildContext context) {
     final int? current = currentNode;
     final int? next = nextNode;
+    final List<int> transformMap = getTransformMap(transform);
+    final List<int> inverseTransform = inverseTransformMap(transformMap);
 
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
@@ -641,7 +709,7 @@ class _MillTrainingBoard extends StatelessWidget {
                     size,
                   );
                   if (node >= 0) {
-                    onGuess(node);
+                    onGuess(inverseTransform[node]);
                   }
                 }
               : null,
@@ -656,6 +724,7 @@ class _MillTrainingBoard extends StatelessWidget {
                   hasDiagonalLines: hasDiagonalLines,
                   showCoordinates: showCoordinates,
                   showPieces: showPieces,
+                  transformMap: transformMap,
                   lastGuessNode: lastGuessNode,
                   lastGuessCorrect: lastGuessCorrect,
                 ),
@@ -804,6 +873,7 @@ class _MillCoordinateTrainingPainter extends CustomPainter {
     required this.hasDiagonalLines,
     required this.showCoordinates,
     required this.showPieces,
+    required this.transformMap,
     required this.lastGuessNode,
     required this.lastGuessCorrect,
   });
@@ -813,6 +883,7 @@ class _MillCoordinateTrainingPainter extends CustomPainter {
   final bool hasDiagonalLines;
   final bool showCoordinates;
   final bool showPieces;
+  final List<int> transformMap;
   final int? lastGuessNode;
   final bool? lastGuessCorrect;
 
@@ -855,7 +926,7 @@ class _MillCoordinateTrainingPainter extends CustomPainter {
     for (final List<int> line in lines) {
       final Path path = Path();
       for (int i = 0; i < line.length; i++) {
-        final Offset p = MillBoardGeometry.nodeOffset(line[i], size);
+        final Offset p = _transformedNodeOffset(line[i], size);
         if (i == 0) {
           path.moveTo(p.dx, p.dy);
         } else {
@@ -874,7 +945,7 @@ class _MillCoordinateTrainingPainter extends CustomPainter {
     }
 
     final Color color = correct ? colorScheme.primary : colorScheme.error;
-    final Offset center = MillBoardGeometry.nodeOffset(node, size);
+    final Offset center = _transformedNodeOffset(node, size);
     final double radius = size.shortestSide * 0.062;
     canvas.drawCircle(
       center,
@@ -901,7 +972,7 @@ class _MillCoordinateTrainingPainter extends CustomPainter {
       ..style = PaintingStyle.stroke;
 
     for (int node = 0; node < MillBoardGeometry.nodeCount; node++) {
-      final Offset center = MillBoardGeometry.nodeOffset(node, size);
+      final Offset center = _transformedNodeOffset(node, size);
       canvas.drawCircle(center, radius, fill);
       canvas.drawCircle(center, radius, stroke);
     }
@@ -918,7 +989,7 @@ class _MillCoordinateTrainingPainter extends CustomPainter {
       ..style = PaintingStyle.stroke;
 
     void drawPiece(int node, Color color) {
-      final Offset center = MillBoardGeometry.nodeOffset(node, size);
+      final Offset center = _transformedNodeOffset(node, size);
       canvas.drawCircle(center.translate(1.2, 1.8), radius, shadowPaint);
       canvas.drawCircle(center, radius, Paint()..color = color);
       canvas.drawCircle(center, radius, outlinePaint);
@@ -940,7 +1011,7 @@ class _MillCoordinateTrainingPainter extends CustomPainter {
     for (int node = 0; node < MillBoardGeometry.nodeCount; node++) {
       final String notation = MillBoardCoordinateMaps.nodeToNotation(node);
       assert(notation.isNotEmpty, 'Mill node $node must have notation.');
-      final Offset nodeCenter = MillBoardGeometry.nodeOffset(node, size);
+      final Offset nodeCenter = _transformedNodeOffset(node, size);
       final Offset labelCenter = _labelCenterFor(
         nodeCenter: nodeCenter,
         boardCenter: boardCenter,
@@ -948,6 +1019,18 @@ class _MillCoordinateTrainingPainter extends CustomPainter {
       );
       _drawLabel(canvas, labelCenter, notation, fontSize);
     }
+  }
+
+  Offset _transformedNodeOffset(int logicalNode, Size size) {
+    assert(
+      transformMap.length == MillBoardGeometry.nodeCount,
+      'Mill coordinate training needs a complete transform map.',
+    );
+    assert(
+      logicalNode >= 0 && logicalNode < MillBoardGeometry.nodeCount,
+      'Mill coordinate training node is out of range.',
+    );
+    return MillBoardGeometry.nodeOffset(transformMap[logicalNode], size);
   }
 
   Offset _labelCenterFor({
@@ -1002,6 +1085,7 @@ class _MillCoordinateTrainingPainter extends CustomPainter {
         oldDelegate.hasDiagonalLines != hasDiagonalLines ||
         oldDelegate.showCoordinates != showCoordinates ||
         oldDelegate.showPieces != showPieces ||
+        !listEquals(oldDelegate.transformMap, transformMap) ||
         oldDelegate.lastGuessNode != lastGuessNode ||
         oldDelegate.lastGuessCorrect != lastGuessCorrect;
   }

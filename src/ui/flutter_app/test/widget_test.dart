@@ -1409,6 +1409,40 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(
+      find.byKey(const Key('mill_coordinate_training_orientation_random')),
+      findsOneWidget,
+    );
+    expect(
+      find.byKey(const Key('mill_coordinate_training_orientation_board')),
+      findsOneWidget,
+    );
+    expect(
+      find.descendant(
+        of: find.byKey(
+          const Key('mill_coordinate_training_orientation_random'),
+        ),
+        matching: find.byIcon(Icons.check_rounded),
+      ),
+      findsOneWidget,
+    );
+
+    await tester.tap(
+      find.byKey(const Key('mill_coordinate_training_orientation_board')),
+    );
+    await tester.pumpAndSettle();
+    await tester.tap(
+      find.byKey(const Key('mill_coordinate_training_menu_button')),
+    );
+    await tester.pumpAndSettle();
+
+    expect(
+      find.descendant(
+        of: find.byKey(const Key('mill_coordinate_training_orientation_board')),
+        matching: find.byIcon(Icons.check_rounded),
+      ),
+      findsOneWidget,
+    );
+    expect(
       find.byKey(const Key('mill_coordinate_training_duration_30')),
       findsOneWidget,
     );
