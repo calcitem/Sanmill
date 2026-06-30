@@ -2177,6 +2177,42 @@ void main() {
     expect(AnalysisMode.analysisResults.single.move, 'f4');
   });
 
+  testWidgets('analysis engine line tap is disabled while analyzing', (
+    WidgetTester tester,
+  ) async {
+    db.displaySettings = const DisplaySettings(
+      isUnplacedAndRemovedPiecesShown: false,
+      isHistoryNavigationToolbarShown: false,
+    );
+    final _RecordingAnalysisSession session = _RecordingAnalysisSession();
+    _bindExistingNativeGame(GameMode.analysis, session);
+
+    AnalysisMode.enable(const <MoveAnalysisResult>[
+      MoveAnalysisResult(
+        move: 'a7',
+        outcome: AnalysisOutcome.draw,
+        rank: 1,
+        depth: 1,
+        nodes: 1,
+        line: <String>['a7'],
+      ),
+    ], source: AnalysisSource.engine);
+
+    await _pumpSessionPlayArea(tester, session);
+    AnalysisMode.setAnalyzing(true);
+    await tester.pump();
+
+    await tester.tap(find.byKey(const Key('play_area_analysis_engine_line_0')));
+    await tester.pump();
+
+    expect(session.requestedMultiPvValues, isEmpty);
+    expect(AnalysisMode.analysisResults.single.move, 'a7');
+    expect(AnalysisMode.isAnalyzing, isTrue);
+
+    AnalysisMode.setAnalyzing(false);
+    await tester.pump();
+  });
+
   testWidgets('analysis settings sheet toggles evaluation displays', (
     WidgetTester tester,
   ) async {
@@ -2510,6 +2546,62 @@ void main() {
     expect(
       find.byKey(const Key('play_area_analysis_variations_bar_empty')),
       findsOneWidget,
+    );
+  });
+
+  testWidgets('analysis uses a framed side panel in landscape', (
+    WidgetTester tester,
+  ) async {
+    db.displaySettings = const DisplaySettings(
+      isUnplacedAndRemovedPiecesShown: false,
+      isHistoryNavigationToolbarShown: false,
+    );
+    final NativeMillGameSession session = await _bindNativeGame(
+      GameMode.analysis,
+    );
+
+    await tester.binding.setSurfaceSize(const Size(900, 420));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+
+    await tester.pumpWidget(
+      _localizedApp(
+        GameSessionScope(
+          session: session,
+          child: const Scaffold(
+            body: PlayArea(
+              boardImage: null,
+              child: SizedBox.square(
+                key: Key('test_board_square'),
+                dimension: 388,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    final Finder landscapeContent = find.byKey(
+      const Key('play_area_analysis_landscape_content'),
+    );
+    final Finder boardPane = find.byKey(
+      const Key('play_area_analysis_landscape_board_pane'),
+    );
+    final Finder sidePanel = find.byKey(
+      const Key('play_area_analysis_landscape_side_panel'),
+    );
+    final Finder panelCard = find.byKey(
+      const Key('play_area_analysis_panel_card'),
+    );
+
+    expect(landscapeContent, findsOneWidget);
+    expect(boardPane, findsOneWidget);
+    expect(sidePanel, findsOneWidget);
+    expect(panelCard, findsOneWidget);
+    expect(find.descendant(of: sidePanel, matching: panelCard), findsOneWidget);
+    expect(
+      tester.getTopLeft(boardPane).dx,
+      lessThan(tester.getTopLeft(sidePanel).dx),
     );
   });
 

@@ -2444,9 +2444,10 @@ class PlayAreaState extends State<PlayArea> {
     );
   }
 
-  Widget _buildAnalysisTabs(BuildContext context) {
+  Widget _buildAnalysisTabs(BuildContext context, {bool framed = false}) {
     final GameSession? session = GameSessionScope.sessionOf(context);
     return _AnalysisPanel(
+      framed: framed,
       explorer: OpeningExplorerPage(
         session: session,
         startFromSession: true,
@@ -2735,7 +2736,9 @@ class PlayAreaState extends State<PlayArea> {
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: <Widget>[
                           _buildAnalysisEngineLines(context),
-                          Expanded(child: _buildAnalysisTabs(context)),
+                          Expanded(
+                            child: _buildAnalysisTabs(context, framed: true),
+                          ),
                         ],
                       ),
                     ),
@@ -4018,6 +4021,7 @@ class _HumanAiPlayerPanel extends StatelessWidget {
 
 class _AnalysisPanel extends StatelessWidget {
   const _AnalysisPanel({
+    required this.framed,
     required this.explorer,
     required this.moves,
     required this.summary,
@@ -4026,6 +4030,7 @@ class _AnalysisPanel extends StatelessWidget {
   static const double _tabIconSize = 18;
   static const double _tabHeight = _tabIconSize + 8;
 
+  final bool framed;
   final Widget explorer;
   final Widget moves;
   final Widget summary;
@@ -4034,59 +4039,68 @@ class _AnalysisPanel extends StatelessWidget {
   Widget build(BuildContext context) {
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
     final S strings = S.of(context);
+    final Widget content = DecoratedBox(
+      key: const Key('play_area_analysis_panel'),
+      decoration: BoxDecoration(color: colorScheme.surfaceContainerLowest),
+      child: Column(
+        children: <Widget>[
+          Material(
+            color: colorScheme.surface,
+            child: TabBar(
+              key: const Key('play_area_analysis_tabs'),
+              tabs: <Widget>[
+                Tab(
+                  key: const Key('play_area_analysis_tab_explorer'),
+                  height: _tabHeight,
+                  icon: Icon(
+                    Icons.explore_outlined,
+                    size: _tabIconSize,
+                    semanticLabel: strings.openingExplorer,
+                  ),
+                ),
+                Tab(
+                  key: const Key('play_area_analysis_tab_moves'),
+                  height: _tabHeight,
+                  icon: Icon(
+                    Icons.account_tree_outlined,
+                    size: _tabIconSize,
+                    semanticLabel: strings.moveList,
+                  ),
+                ),
+                Tab(
+                  key: const Key('play_area_analysis_tab_summary'),
+                  height: _tabHeight,
+                  icon: Icon(
+                    Icons.area_chart_outlined,
+                    size: _tabIconSize,
+                    semanticLabel: strings.analysis,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Expanded(
+            child: TabBarView(
+              key: const Key('play_area_analysis_tab_view'),
+              children: <Widget>[explorer, moves, summary],
+            ),
+          ),
+        ],
+      ),
+    );
 
     return DefaultTabController(
       length: 3,
       initialIndex: 1,
-      child: DecoratedBox(
-        key: const Key('play_area_analysis_panel'),
-        decoration: BoxDecoration(color: colorScheme.surfaceContainerLowest),
-        child: Column(
-          children: <Widget>[
-            Material(
-              color: colorScheme.surface,
-              child: TabBar(
-                key: const Key('play_area_analysis_tabs'),
-                tabs: <Widget>[
-                  Tab(
-                    key: const Key('play_area_analysis_tab_explorer'),
-                    height: _tabHeight,
-                    icon: Icon(
-                      Icons.explore_outlined,
-                      size: _tabIconSize,
-                      semanticLabel: strings.openingExplorer,
-                    ),
-                  ),
-                  Tab(
-                    key: const Key('play_area_analysis_tab_moves'),
-                    height: _tabHeight,
-                    icon: Icon(
-                      Icons.account_tree_outlined,
-                      size: _tabIconSize,
-                      semanticLabel: strings.moveList,
-                    ),
-                  ),
-                  Tab(
-                    key: const Key('play_area_analysis_tab_summary'),
-                    height: _tabHeight,
-                    icon: Icon(
-                      Icons.area_chart_outlined,
-                      size: _tabIconSize,
-                      semanticLabel: strings.analysis,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Expanded(
-              child: TabBarView(
-                key: const Key('play_area_analysis_tab_view'),
-                children: <Widget>[explorer, moves, summary],
-              ),
-            ),
-          ],
-        ),
-      ),
+      child: framed
+          ? Card(
+              key: const Key('play_area_analysis_panel_card'),
+              clipBehavior: Clip.hardEdge,
+              semanticContainer: false,
+              margin: EdgeInsets.zero,
+              child: content,
+            )
+          : content,
     );
   }
 }
@@ -4337,6 +4351,8 @@ class _AnalysisEngineLines extends StatelessWidget {
     final List<MoveAnalysisResult> visibleResults = results
         .take(lineCount)
         .toList(growable: false);
+    final bool canApplyEngineLine =
+        !AnalysisMode.isThreatMode && !AnalysisMode.isAnalyzing;
     return Padding(
       padding: const EdgeInsets.fromLTRB(8, 4, 8, 6),
       child: Column(
@@ -4348,9 +4364,9 @@ class _AnalysisEngineLines extends StatelessWidget {
               _AnalysisEngineLine(
                 key: Key('play_area_analysis_engine_line_$index'),
                 result: visibleResults[index],
-                onTap: AnalysisMode.isThreatMode
-                    ? null
-                    : () => unawaited(onMoveTap(visibleResults[index].move)),
+                onTap: canApplyEngineLine
+                    ? () => unawaited(onMoveTap(visibleResults[index].move))
+                    : null,
               )
             else
               SizedBox(
