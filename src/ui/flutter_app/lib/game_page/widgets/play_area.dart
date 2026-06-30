@@ -847,6 +847,14 @@ class PlayAreaState extends State<PlayArea> {
                 Text(S.of(context).aiChatButtonTooltip),
             onPressed: () => _showAiChatDialog(hostContext),
           ),
+        if (_canTakeBackFromRegularBottomBar)
+          LichessActionSheetAction(
+            key: const Key('play_area_regular_game_menu_take_back'),
+            leading: const Icon(CupertinoIcons.arrow_uturn_left),
+            makeLabel: (BuildContext context) => Text(S.of(context).takeBack),
+            onPressed: () =>
+                unawaited(_takeBackFromRegularBottomBar(hostContext)),
+          ),
         if (_isRegularGameOver)
           LichessActionSheetAction(
             key: const Key('play_area_regular_game_menu_result'),
@@ -1312,8 +1320,14 @@ class PlayAreaState extends State<PlayArea> {
           builder: (BuildContext context, PlayerTimerStatus status, _) {
             return _RegularGameBottomBar(
               onMenuPressed: _showRegularGameMenu,
+              onResignOrResultPressed: _isRegularGameOver
+                  ? _showRegularGameResult
+                  : _canResignFromRegularBottomBar
+                  ? () => _showRegularResignConfirmation(context)
+                  : null,
               showClockControl: _shouldShowRegularClockControl,
               isClockPaused: status == PlayerTimerStatus.paused,
+              isShowingResult: _isRegularGameOver,
               onClockPressed: _regularClockControlAction(status),
               onPreviousPressed: _canStepBackFromRegularBottomBar
                   ? () => _stepBackFromRegularBottomBar(context)
@@ -1324,9 +1338,6 @@ class PlayAreaState extends State<PlayArea> {
                       pop: false,
                       toolbar: true,
                     )
-                  : null,
-              onTakeBackPressed: _canTakeBackFromRegularBottomBar
-                  ? () => _takeBackFromRegularBottomBar(context)
                   : null,
             );
           },
@@ -2439,21 +2450,23 @@ class _HumanAiPlayerPanel extends StatelessWidget {
 class _RegularGameBottomBar extends StatelessWidget {
   const _RegularGameBottomBar({
     required this.onMenuPressed,
+    required this.onResignOrResultPressed,
     required this.showClockControl,
     required this.isClockPaused,
+    required this.isShowingResult,
     required this.onClockPressed,
     required this.onPreviousPressed,
     required this.onNextPressed,
-    required this.onTakeBackPressed,
   });
 
   final VoidCallback onMenuPressed;
+  final VoidCallback? onResignOrResultPressed;
   final bool showClockControl;
   final bool isClockPaused;
+  final bool isShowingResult;
   final VoidCallback? onClockPressed;
   final VoidCallback? onPreviousPressed;
   final VoidCallback? onNextPressed;
-  final VoidCallback? onTakeBackPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -2465,6 +2478,13 @@ class _RegularGameBottomBar extends StatelessWidget {
           icon: Icons.menu,
           label: S.of(context).menu,
           onTap: onMenuPressed,
+        ),
+        LichessBottomBarButton(
+          key: const Key('play_area_regular_bottom_bar_resign_result'),
+          icon: isShowingResult ? Icons.info_outline : CupertinoIcons.flag,
+          label: isShowingResult ? S.of(context).results : S.of(context).resign,
+          onTap: onResignOrResultPressed,
+          highlighted: isShowingResult,
         ),
         if (showClockControl)
           LichessBottomBarButton(
@@ -2486,12 +2506,6 @@ class _RegularGameBottomBar extends StatelessWidget {
           label: S.of(context).stepForward,
           onTap: onNextPressed,
           showTooltip: false,
-        ),
-        LichessBottomBarButton(
-          key: const Key('play_area_regular_bottom_bar_take_back'),
-          icon: CupertinoIcons.arrow_uturn_left,
-          label: S.of(context).takeBack,
-          onTap: onTakeBackPressed,
         ),
       ],
     );
