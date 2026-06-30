@@ -3740,6 +3740,9 @@ class _HumanAiPlayerPanel extends StatelessWidget {
 class _AnalysisPanel extends StatelessWidget {
   const _AnalysisPanel({required this.explorer, required this.moves});
 
+  static const double _tabIconSize = 18;
+  static const double _tabHeight = _tabIconSize + 8;
+
   final Widget explorer;
   final Widget moves;
 
@@ -3762,14 +3765,20 @@ class _AnalysisPanel extends StatelessWidget {
                 key: const Key('play_area_analysis_tabs'),
                 tabs: <Widget>[
                   Tab(
+                    key: const Key('play_area_analysis_tab_explorer'),
+                    height: _tabHeight,
                     icon: Icon(
                       Icons.explore_outlined,
+                      size: _tabIconSize,
                       semanticLabel: strings.openingExplorer,
                     ),
                   ),
                   Tab(
+                    key: const Key('play_area_analysis_tab_moves'),
+                    height: _tabHeight,
                     icon: Icon(
                       Icons.account_tree_outlined,
+                      size: _tabIconSize,
                       semanticLabel: strings.moveList,
                     ),
                   ),

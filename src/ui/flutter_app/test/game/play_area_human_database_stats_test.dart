@@ -1287,6 +1287,32 @@ void main() {
     expect(find.byKey(const Key('play_area_analysis_board')), findsOne);
     expect(find.byKey(const Key('play_area_analysis_panel')), findsOne);
     expect(find.byKey(const Key('play_area_analysis_tabs')), findsOne);
+    expect(
+      tester
+          .getSize(find.byKey(const Key('play_area_analysis_tab_explorer')))
+          .height,
+      26,
+    );
+    expect(
+      tester
+          .getSize(find.byKey(const Key('play_area_analysis_tab_moves')))
+          .height,
+      26,
+    );
+    final Icon explorerTabIcon = tester.widget<Icon>(
+      find.descendant(
+        of: find.byKey(const Key('play_area_analysis_tab_explorer')),
+        matching: find.byIcon(Icons.explore_outlined),
+      ),
+    );
+    final Icon movesTabIcon = tester.widget<Icon>(
+      find.descendant(
+        of: find.byKey(const Key('play_area_analysis_tab_moves')),
+        matching: find.byIcon(Icons.account_tree_outlined),
+      ),
+    );
+    expect(explorerTabIcon.size, 18);
+    expect(movesTabIcon.size, 18);
     expect(find.byKey(const Key('play_area_analysis_moves')), findsOne);
     expect(find.byKey(const Key('opening_explorer_embedded')), findsNothing);
     expect(find.byKey(const Key('play_area_main_toolbar_bottom')), findsOne);
