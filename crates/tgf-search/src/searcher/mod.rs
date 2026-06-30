@@ -76,6 +76,7 @@ pub struct Searcher<G: Game> {
     repetition_cuts: u64,
     tt_age_bumps: u64,
     root_moves: Vec<RootMoveSummary>,
+    root_move_summaries_enabled: bool,
     rng_state: u64,
     tt: Arc<ClusteredTt>,
     /// Cached TT generation for hot probe/save calls.
@@ -121,6 +122,7 @@ impl<G: Game> Searcher<G> {
             repetition_cuts: 0,
             tt_age_bumps: 0,
             root_moves: Vec::new(),
+            root_move_summaries_enabled: false,
             rng_state: 0x9E37_79B9_7F4A_7C15,
             tt,
             tt_age,
@@ -230,6 +232,20 @@ impl<G: Game> Searcher<G> {
 
     pub fn root_moves(&self) -> &[RootMoveSummary] {
         &self.root_moves
+    }
+
+    /// Enable root-move summary collection for diagnostic consumers such as
+    /// analysis MultiPV. Disabled by default so normal engine searches do not
+    /// pay for extra root event bookkeeping.
+    pub fn set_root_move_summaries_enabled(&mut self, enabled: bool) {
+        self.root_move_summaries_enabled = enabled;
+        if !enabled {
+            self.root_moves.clear();
+        }
+    }
+
+    pub fn root_move_summaries_enabled(&self) -> bool {
+        self.root_move_summaries_enabled
     }
 
     /// Soft-clear the transposition table by bumping its generation counter.
@@ -818,6 +834,9 @@ impl<G: Game> Searcher<G> {
         nodes: u64,
         cutoff: bool,
     ) {
+        if !self.root_move_summaries_enabled {
+            return;
+        }
         self.root_moves.push(RootMoveSummary {
             action,
             value,

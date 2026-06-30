@@ -253,6 +253,36 @@ void main() {
       expect(variations.first.line, <String>['d6', 'f4', 'a1']);
     });
 
+    test('searchPrincipalVariations parses a single bestMove line', () async {
+      final _FakeNativeMillRulesPort rulesPort = _FakeNativeMillRulesPort(
+        searchEvents: Stream<tgf.EngineEvent>.fromIterable(<tgf.EngineEvent>[
+          tgf.EngineEvent(
+            kind: 'bestMove',
+            depth: -1,
+            score: 18,
+            nodes: BigInt.from(64),
+            toNode: 5,
+            reason: 'f4 aimovetype=traditional rawScore=18',
+          ),
+        ]),
+      );
+      final NativeMillGameSession session = NativeMillGameSession(
+        rulesPort: rulesPort,
+      );
+      addTearDown(session.dispose);
+
+      final List<NativeMillPrincipalVariation> variations = await session
+          .searchPrincipalVariations(depth: 5, multiPv: 1);
+
+      expect(variations, hasLength(1));
+      expect(variations.single.rank, 1);
+      expect(variations.single.move, 'f4');
+      expect(variations.single.score, 18);
+      expect(variations.single.nodes, 64);
+      expect(variations.single.depth, 5);
+      expect(variations.single.line, <String>['f4']);
+    });
+
     test(
       'searchBestAction forces resignation when most-lost search is enabled',
       () async {

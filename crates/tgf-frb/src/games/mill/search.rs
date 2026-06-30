@@ -152,14 +152,17 @@ pub(crate) fn mill_searcher_default() -> Searcher<MillGame> {
 }
 
 fn mill_searcher_for_config(config: &MillEngineConfigPlan) -> Searcher<MillGame> {
-    if config.multi_pv > 1 {
-        return mill_searcher_with_shared_tt(SharedTt::with_capacity_mb_and_tt_move(
+    let mut searcher = if config.multi_pv > 1 {
+        mill_searcher_with_shared_tt(SharedTt::with_capacity_mb_and_tt_move(
             ANALYSIS_MULTI_PV_TT_MB,
             ANALYSIS_MULTI_PV_TT_CLUSTER_BITS_FLOOR,
             true,
-        ));
-    }
-    mill_searcher_default()
+        ))
+    } else {
+        mill_searcher_default()
+    };
+    searcher.set_root_move_summaries_enabled(config.multi_pv > 1);
+    searcher
 }
 
 fn mill_searcher_with_shared_tt(shared_tt: SharedTt) -> Searcher<MillGame> {

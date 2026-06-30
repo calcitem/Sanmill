@@ -132,10 +132,13 @@ enum AnalysisSource {
 /// move (see `AnalysisService`).  The renderer (`AnalysisRenderer`) reads the
 /// results to draw per-move win/draw/loss marks on the board.
 class AnalysisMode {
+  static const int maxEngineLineCount = 3;
+
   static bool _isEnabled = false;
   static bool _isAnalyzing = false;
   static bool _showEngineLines = true;
   static bool _smallBoard = false;
+  static int _engineLineCount = maxEngineLineCount;
   static AnalysisOverlayMode? _overlayMode;
   static AnalysisSource? _source;
   static List<MoveAnalysisResult> _analysisResults = <MoveAnalysisResult>[];
@@ -167,6 +170,9 @@ class AnalysisMode {
 
   /// Whether the analysis screen uses a reduced board size in portrait mode.
   static bool get smallBoard => _smallBoard;
+
+  /// Number of engine candidate lines to show in analysis mode.
+  static int get engineLineCount => _engineLineCount;
 
   /// The current per-move analysis results.
   static List<MoveAnalysisResult> get analysisResults => _analysisResults;
@@ -242,6 +248,16 @@ class AnalysisMode {
       return;
     }
     _smallBoard = value;
+    _publishState();
+  }
+
+  /// Set the number of visible engine candidate lines in analysis mode.
+  static void setEngineLineCount(int value) {
+    final int next = value.clamp(0, maxEngineLineCount);
+    if (_engineLineCount == next) {
+      return;
+    }
+    _engineLineCount = next;
     _publishState();
   }
 

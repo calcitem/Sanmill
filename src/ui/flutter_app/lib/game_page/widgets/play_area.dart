@@ -196,6 +196,77 @@ Future<void> showAnalysisSettingsSheet(
                             AnalysisMode.setShowEngineLines(value);
                           },
                         ),
+                        ListTile(
+                          key: const Key(
+                            'play_area_analysis_settings_engine_line_count',
+                          ),
+                          leading: const Icon(Icons.format_list_numbered),
+                          title: Text(strings.engine),
+                          trailing: SegmentedButton<int>(
+                            key: const Key(
+                              'play_area_analysis_settings_engine_line_count_control',
+                            ),
+                            showSelectedIcon: false,
+                            style: const ButtonStyle(
+                              visualDensity: VisualDensity.compact,
+                            ),
+                            segments: const <ButtonSegment<int>>[
+                              ButtonSegment<int>(
+                                value: 0,
+                                label: Text(
+                                  '0',
+                                  key: Key(
+                                    'play_area_analysis_settings_engine_line_count_0',
+                                  ),
+                                ),
+                              ),
+                              ButtonSegment<int>(
+                                value: 1,
+                                label: Text(
+                                  '1',
+                                  key: Key(
+                                    'play_area_analysis_settings_engine_line_count_1',
+                                  ),
+                                ),
+                              ),
+                              ButtonSegment<int>(
+                                value: 2,
+                                label: Text(
+                                  '2',
+                                  key: Key(
+                                    'play_area_analysis_settings_engine_line_count_2',
+                                  ),
+                                ),
+                              ),
+                              ButtonSegment<int>(
+                                value: 3,
+                                label: Text(
+                                  '3',
+                                  key: Key(
+                                    'play_area_analysis_settings_engine_line_count_3',
+                                  ),
+                                ),
+                              ),
+                            ],
+                            selected: <int>{AnalysisMode.engineLineCount},
+                            onSelectionChanged: (Set<int> selection) {
+                              assert(
+                                selection.length == 1,
+                                'Engine line count selector is single-choice.',
+                              );
+                              final int value = selection.single;
+                              RecordingService().recordEvent(
+                                RecordingEventType.toolbarAction,
+                                <String, dynamic>{
+                                  'toolbar': 'analysisSettings',
+                                  'action': 'setEngineLineCount',
+                                  'count': value,
+                                },
+                              );
+                              AnalysisMode.setEngineLineCount(value);
+                            },
+                          ),
+                        ),
                       ],
                     ),
                   ],
@@ -2239,7 +2310,8 @@ class PlayAreaState extends State<PlayArea> {
     return ValueListenableBuilder<bool>(
       valueListenable: AnalysisMode.stateNotifier,
       builder: (BuildContext context, _, _) {
-        final bool hasEngineLinesSlot = AnalysisMode.showEngineLines;
+        final bool hasEngineLinesSlot =
+            AnalysisMode.showEngineLines && AnalysisMode.engineLineCount > 0;
 
         return SafeArea(
           top: MediaQuery.of(context).orientation == Orientation.portrait,
@@ -2346,6 +2418,11 @@ class PlayAreaState extends State<PlayArea> {
         if (!AnalysisMode.showEngineLines) {
           return const SizedBox.shrink(
             key: Key('play_area_analysis_engine_lines_hidden'),
+          );
+        }
+        if (AnalysisMode.engineLineCount == 0) {
+          return const SizedBox.shrink(
+            key: Key('play_area_analysis_engine_lines_disabled'),
           );
         }
 
@@ -4071,15 +4148,14 @@ class _AnalysisEngineLines extends StatelessWidget {
     required this.onMoveTap,
   });
 
-  static const int _lineCount = 3;
-
   final List<MoveAnalysisResult> results;
   final Future<void> Function(String move) onMoveTap;
 
   @override
   Widget build(BuildContext context) {
+    final int lineCount = AnalysisMode.engineLineCount;
     final List<MoveAnalysisResult> visibleResults = results
-        .take(_lineCount)
+        .take(lineCount)
         .toList(growable: false);
     return Padding(
       padding: const EdgeInsets.fromLTRB(8, 4, 8, 6),
@@ -4087,7 +4163,7 @@ class _AnalysisEngineLines extends StatelessWidget {
         key: const Key('play_area_analysis_engine_lines_column'),
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          for (int index = 0; index < _lineCount; index++)
+          for (int index = 0; index < lineCount; index++)
             if (index < visibleResults.length)
               _AnalysisEngineLine(
                 key: Key('play_area_analysis_engine_line_$index'),

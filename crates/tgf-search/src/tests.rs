@@ -215,6 +215,7 @@ fn alpha_beta_records_root_move_summaries() {
     let game = BiasGame;
     let mut wb = game.build_workbench(&GameStateSnapshot::default());
     let mut searcher = Searcher::<BiasGame>::new();
+    searcher.set_root_move_summaries_enabled(true);
 
     let result = searcher.search(&mut wb, 1);
     let root_moves = searcher.root_moves();
@@ -222,6 +223,18 @@ fn alpha_beta_records_root_move_summaries() {
     assert_eq!(root_moves.len(), 2);
     assert_eq!(root_moves[0].action, result.best_action);
     assert!(root_moves.iter().all(|root_move| root_move.nodes > 0));
+}
+
+#[test]
+fn root_move_summaries_are_opt_in() {
+    let game = BiasGame;
+    let mut wb = game.build_workbench(&GameStateSnapshot::default());
+    let mut searcher = Searcher::<BiasGame>::new();
+
+    let _ = searcher.search(&mut wb, 1);
+
+    assert!(!searcher.root_move_summaries_enabled());
+    assert!(searcher.root_moves().is_empty());
 }
 
 #[test]
@@ -700,6 +713,7 @@ fn mtdf_records_root_move_summaries() {
     let game = KeyedGame;
     let mut wb = game.build_workbench(&GameStateSnapshot::default());
     let mut searcher = Searcher::<KeyedGame>::new();
+    searcher.set_root_move_summaries_enabled(true);
 
     let result = searcher.search_mtdf_with_guess(&mut wb, 2, 0);
     let root_moves = searcher.root_moves();

@@ -31,7 +31,6 @@ class AnalysisService {
   AnalysisService._();
 
   static const String _logTag = "[AnalysisService]";
-  static const int _engineMultiPvLines = 3;
   static const int _goDeeperDepthStep = 2;
 
   /// Toggle the analysis overlay for the position currently shown by the
@@ -146,7 +145,7 @@ class AnalysisService {
           .searchPrincipalVariations(
             depth: searchDepth,
             moveLimitMs: analysisSearch.moveLimitMs,
-            multiPv: _engineMultiPvLines,
+            multiPv: math.max(1, AnalysisMode.engineLineCount),
             engineSettings: engineSettings,
           );
       if (variations.isEmpty) {

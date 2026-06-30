@@ -10,6 +10,7 @@ void main() {
   tearDown(() {
     AnalysisMode.disable();
     AnalysisMode.setSmallBoard(false);
+    AnalysisMode.setEngineLineCount(AnalysisMode.maxEngineLineCount);
   });
 
   test('tracks full analysis and hint overlay modes separately', () {
@@ -61,5 +62,18 @@ void main() {
     AnalysisMode.disable();
 
     expect(AnalysisMode.smallBoard, isTrue);
+  });
+
+  test('tracks engine line count as an analysis preference', () {
+    expect(AnalysisMode.engineLineCount, AnalysisMode.maxEngineLineCount);
+
+    AnalysisMode.setEngineLineCount(1);
+    expect(AnalysisMode.engineLineCount, 1);
+
+    AnalysisMode.setEngineLineCount(-1);
+    expect(AnalysisMode.engineLineCount, 0);
+
+    AnalysisMode.setEngineLineCount(99);
+    expect(AnalysisMode.engineLineCount, AnalysisMode.maxEngineLineCount);
   });
 }

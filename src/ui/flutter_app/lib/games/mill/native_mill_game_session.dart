@@ -542,8 +542,8 @@ class NativeMillGameSession implements GameSessionHandle {
       return const <NativeMillPrincipalVariation>[];
     }
     assert(
-      multiPv > 1,
-      'searchPrincipalVariations should only be used for actual MultiPV.',
+      multiPv >= 1,
+      'searchPrincipalVariations needs at least one candidate line.',
     );
     assert(
       !_searchInFlight,
@@ -561,10 +561,13 @@ class NativeMillGameSession implements GameSessionHandle {
         engineSettings: engineSettings,
         multiPv: multiPv,
       )) {
-        if (event.kind != 'pv') {
-          continue;
+        if (event.kind == 'pv') {
+          variations.add(_principalVariationFromEvent(event));
+        } else if (event.kind == 'bestMove' &&
+            multiPv == 1 &&
+            event.toNode >= 0) {
+          variations.add(_principalVariationFromBestMoveEvent(event, depth));
         }
-        variations.add(_principalVariationFromEvent(event));
       }
     } catch (e) {
       logger.e('$_logTag searchPrincipalVariations stream error: $e');
@@ -647,6 +650,30 @@ class NativeMillGameSession implements GameSessionHandle {
       nodes: event.nodes.toInt(),
       depth: event.depth,
       line: _pvLineFromReason(event.reason, fallbackMove: notation),
+    );
+  }
+
+  static NativeMillPrincipalVariation _principalVariationFromBestMoveEvent(
+    tgf.EngineEvent event,
+    int depth,
+  ) {
+    assert(
+      event.kind == 'bestMove',
+      'Expected a bestMove event, got ${event.kind}.',
+    );
+    final String notation = event.reason.split(' ').first;
+    if (notation.isEmpty) {
+      throw StateError(
+        'bestMove event carries no move notation: ${event.reason}',
+      );
+    }
+    return NativeMillPrincipalVariation(
+      rank: 1,
+      move: notation,
+      score: event.score,
+      nodes: event.nodes.toInt(),
+      depth: depth,
+      line: <String>[notation],
     );
   }
 

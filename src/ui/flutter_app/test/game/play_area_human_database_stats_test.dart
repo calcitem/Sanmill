@@ -60,6 +60,7 @@ void main() {
     AnalysisMode.disable();
     AnalysisMode.setShowEngineLines(true);
     AnalysisMode.setSmallBoard(false);
+    AnalysisMode.setEngineLineCount(AnalysisMode.maxEngineLineCount);
     PlayerTimer().reset();
   });
 
@@ -67,6 +68,7 @@ void main() {
     AnalysisMode.disable();
     AnalysisMode.setShowEngineLines(true);
     AnalysisMode.setSmallBoard(false);
+    AnalysisMode.setEngineLineCount(AnalysisMode.maxEngineLineCount);
     PlayerTimer().reset();
     DB.instance = null;
   });
@@ -1823,6 +1825,73 @@ void main() {
 
     expect(
       find.byKey(const Key('play_area_analysis_engine_lines_hidden')),
+      findsOneWidget,
+    );
+    expect(
+      find.byKey(const Key('play_area_analysis_engine_lines')),
+      findsNothing,
+    );
+  });
+
+  testWidgets('analysis settings sheet changes engine line count', (
+    WidgetTester tester,
+  ) async {
+    db.displaySettings = const DisplaySettings(
+      isUnplacedAndRemovedPiecesShown: false,
+      isHistoryNavigationToolbarShown: false,
+    );
+    final NativeMillGameSession session = await _bindNativeGame(
+      GameMode.analysis,
+    );
+
+    await _pumpSessionPlayArea(tester, session);
+
+    expect(AnalysisMode.engineLineCount, 3);
+    expect(
+      find.byKey(const Key('play_area_analysis_engine_line_empty_2')),
+      findsOneWidget,
+    );
+
+    await tester.tap(
+      find.byKey(const Key('play_area_analysis_bottom_bar_menu')),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.tap(
+      find.byKey(const Key('play_area_regular_game_menu_analysis_settings')),
+    );
+    await tester.pumpAndSettle();
+
+    expect(
+      find.byKey(
+        const Key('play_area_analysis_settings_engine_line_count_control'),
+      ),
+      findsOneWidget,
+    );
+
+    await tester.tap(
+      find.byKey(const Key('play_area_analysis_settings_engine_line_count_1')),
+    );
+    await tester.pumpAndSettle();
+
+    expect(AnalysisMode.engineLineCount, 1);
+    expect(
+      find.byKey(const Key('play_area_analysis_engine_line_empty_0')),
+      findsOneWidget,
+    );
+    expect(
+      find.byKey(const Key('play_area_analysis_engine_line_empty_1')),
+      findsNothing,
+    );
+
+    await tester.tap(
+      find.byKey(const Key('play_area_analysis_settings_engine_line_count_0')),
+    );
+    await tester.pumpAndSettle();
+
+    expect(AnalysisMode.engineLineCount, 0);
+    expect(
+      find.byKey(const Key('play_area_analysis_engine_lines_disabled')),
       findsOneWidget,
     );
     expect(
